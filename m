@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ob0-x235.google.com ([2607:f8b0:4003:c01::235])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wl3mq-0008GW-7C
- for barebox@lists.infradead.org; Thu, 15 May 2014 22:06:01 +0000
-Received: by mail-ob0-f181.google.com with SMTP id wm4so2017846obc.40
- for <barebox@lists.infradead.org>; Thu, 15 May 2014 15:05:39 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WlBFH-0004Io-NN
+ for barebox@lists.infradead.org; Fri, 16 May 2014 06:03:53 +0000
+Date: Fri, 16 May 2014 08:03:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140516060329.GR5858@pengutronix.de>
+References: <1400086769-31300-1-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20140515212125.GO5858@pengutronix.de>
-References: <1400177676-2870-1-git-send-email-fabio.estevam@freescale.com>
- <20140515212125.GO5858@pengutronix.de>
-Date: Thu, 15 May 2014 19:05:38 -0300
-Message-ID: <CAOMZO5D=SHf19XuptdZTVvn6GGvUEvAcG9RbG9r_g_Z-DZfdsg@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1400086769-31300-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,32 +22,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial: imx: Fix buggy transmissions when baudrate
- mismatches
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Eric Nelson <eric.nelson@boundarydevices.com>
+Subject: Re: [PATCH] drivers/net/ethoc: add mdio bus support
+To: Franck Jullien <franck.jullien@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+On Wed, May 14, 2014 at 06:59:29PM +0200, Franck Jullien wrote:
+> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 
-On Thu, May 15, 2014 at 6:21 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Applied, thanks
 
->> --- a/drivers/serial/serial_imx.c
->> +++ b/drivers/serial/serial_imx.c
->> @@ -258,7 +258,8 @@ static int imx_serial_getc(struct console_device *cdev)
->>         while (readl(priv->regs + priv->devtype->uts) & UTS_RXEMPTY);
->>
->>         ch = readl(priv->regs + URXD0);
->> -
->> +       if (ch >= 0x80)
->> +               ch = '?';
->
-> This is not part of the fix, right?
+Sascha
 
-Correct, this is not part of the fix.
+> ---
+>  drivers/net/Kconfig |    1 +
+>  drivers/net/ethoc.c |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 58 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+> index 057abd2..7a0d5e1 100644
+> --- a/drivers/net/Kconfig
+> +++ b/drivers/net/Kconfig
+> @@ -80,6 +80,7 @@ config DRIVER_NET_EP93XX
+>  
+>  config DRIVER_NET_ETHOC
+>  	bool "OpenCores ethernet MAC driver"
+> +	select PHYLIB
+>  	help
+>  	  This option enables support for the OpenCores 10/100 Mbps
+>  	  Ethernet MAC core.
+> diff --git a/drivers/net/ethoc.c b/drivers/net/ethoc.c
+> index b000875..1fb6111 100644
+> --- a/drivers/net/ethoc.c
+> +++ b/drivers/net/ethoc.c
+> @@ -178,6 +178,8 @@ struct ethoc {
+>  
+>  	u32 num_rx;
+>  	u32 cur_rx;
+> +
+> +	struct mii_bus miibus;
+>  };
+>  
+>  /**
+> @@ -481,6 +483,54 @@ static int ethoc_send_packet(struct eth_device *edev, void *packet, int length)
+>  	return 0;
+>  }
+>  
+> +static int ethoc_mdio_read(struct mii_bus *bus, int phy, int reg)
+> +{
+> +	struct ethoc *priv = bus->priv;
+> +	u64 start;
+> +	u32 data;
+> +
+> +	ethoc_write(priv, MIIADDRESS, MIIADDRESS_ADDR(phy, reg));
+> +	ethoc_write(priv, MIICOMMAND, MIICOMMAND_READ);
+> +
+> +	start = get_time_ns();
+> +	while (ethoc_read(priv, MIISTATUS) & MIISTATUS_BUSY) {
+> +		if (is_timeout(start, 2 * MSECOND)) {
+> +			dev_err(bus->parent, "PHY command timeout\n");
+> +			return -EBUSY;
+> +		}
+> +	}
+> +
+> +	data = ethoc_read(priv, MIIRX_DATA);
+> +
+> +	/* reset MII command register */
+> +	ethoc_write(priv, MIICOMMAND, 0);
+> +
+> +	return data;
+> +}
+> +
+> +static int ethoc_mdio_write(struct mii_bus *bus, int phy, int reg, u16 val)
+> +{
+> +	struct ethoc *priv = bus->priv;
+> +	u64 start;
+> +
+> +	ethoc_write(priv, MIIADDRESS, MIIADDRESS_ADDR(phy, reg));
+> +	ethoc_write(priv, MIITX_DATA, val);
+> +	ethoc_write(priv, MIICOMMAND, MIICOMMAND_WRITE);
+> +
+> +	start = get_time_ns();
+> +	while (ethoc_read(priv, MIISTATUS) & MIISTATUS_BUSY) {
+> +		if (is_timeout(start, 2 * MSECOND)) {
+> +			dev_err(bus->parent, "PHY command timeout\n");
+> +			return -EBUSY;
+> +		}
+> +	}
+> +
+> +	/* reset MII command register */
+> +	ethoc_write(priv, MIICOMMAND, 0);
+> +
+> +	return 0;
+> +}
+> +
+>  static int ethoc_probe(struct device_d *dev)
+>  {
+>  	struct eth_device *edev;
+> @@ -493,6 +543,11 @@ static int ethoc_probe(struct device_d *dev)
+>  	priv = edev->priv;
+>  	priv->iobase = dev_request_mem_region(dev, 0);
+>  
+> +	priv->miibus.read = ethoc_mdio_read;
+> +	priv->miibus.write = ethoc_mdio_write;
+> +	priv->miibus.priv = priv;
+> +	priv->miibus.parent = dev;
+> +
+>  	edev->init = ethoc_init_dev;
+>  	edev->open = ethoc_open;
+>  	edev->send = ethoc_send_packet;
+> @@ -503,6 +558,8 @@ static int ethoc_probe(struct device_d *dev)
+>  	edev->set_ethaddr = ethoc_set_ethaddr;
+>  	edev->parent = dev;
+>  
+> +	mdiobus_register(&priv->miibus);
+> +
+>  	eth_register(edev);
+>  
+>  	return 0;
+> -- 
+> 1.7.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-This code is just to help reproducing the issue in console, without
-the need of hooking an oscilloscope to the UART pins or inspecting
-directly the UART TX registers.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
