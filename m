@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WlFQ8-0007t8-Rn
- for barebox@lists.infradead.org; Fri, 16 May 2014 10:31:23 +0000
+ Linux)) id 1WlFQ8-0007t1-Rk
+ for barebox@lists.infradead.org; Fri, 16 May 2014 10:31:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 May 2014 12:30:58 +0200
-Message-Id: <1400236258-17924-11-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 16 May 2014 12:30:50 +0200
+Message-Id: <1400236258-17924-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1400236258-17924-1-git-send-email-s.hauer@pengutronix.de>
 References: <1400236258-17924-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,110 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] ARM: i.MX: iim: provide a MAC address convenience
- variable
+Subject: [PATCH 03/11] ARM: i.MX: iim: Add namespace to functions
 To: barebox@lists.infradead.org
-
-Allow to read/write the registered MAC addresses in the iim
-module directly via a device parameter.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/iim.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 57 insertions(+), 3 deletions(-)
+ arch/arm/mach-imx/iim.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
-index e87f5bc..294f41c 100644
+index 95db531..e2c971a 100644
 --- a/arch/arm/mach-imx/iim.c
 +++ b/arch/arm/mach-imx/iim.c
-@@ -257,18 +257,69 @@ static int imx_iim_add_bank(struct iim_priv *iim, int num)
+@@ -51,7 +51,7 @@ struct iim_priv {
+ 	struct iim_bank *bank[IIM_NUM_BANKS];
+ };
  
- #if IS_ENABLED(CONFIG_OFDEVICE)
- 
-+#define MAC_BYTES	6
-+
-+struct imx_iim_mac {
-+	struct iim_bank *bank;
-+	int offset;
-+	u8 ethaddr[MAC_BYTES];
-+};
-+
-+static int imx_iim_get_mac(struct param_d *param, void *priv)
-+{
-+	struct imx_iim_mac *iimmac = priv;
-+	struct iim_bank *bank = iimmac->bank;
-+	int ret;
-+
-+	ret = imx_iim_cdev_read(&bank->cdev, iimmac->ethaddr, MAC_BYTES, iimmac->offset, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int imx_iim_set_mac(struct param_d *param, void *priv)
-+{
-+	struct imx_iim_mac *iimmac = priv;
-+	struct iim_bank *bank = iimmac->bank;
-+	int ret;
-+
-+	ret = imx_iim_cdev_write(&bank->cdev, iimmac->ethaddr, MAC_BYTES, iimmac->offset, 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static void imx_iim_add_mac_param(struct iim_priv *iim, int macnum, int bank, int offset)
-+{
-+	struct imx_iim_mac *iimmac;
-+	char *name;
-+
-+	iimmac = xzalloc(sizeof(*iimmac));
-+	iimmac->offset = offset;
-+	iimmac->bank = iim->bank[bank];
-+
-+	name = asprintf("ethaddr%d", macnum);
-+
-+	dev_add_param_mac(&iim->dev, name, imx_iim_set_mac,
-+			imx_iim_get_mac, iimmac->ethaddr, iimmac);
-+
-+	free(name);
-+}
-+
- /*
-  * a single MAC address reference has the form
-  * <&phandle iim-bank-no offset>, so three cells
-  */
- #define MAC_ADDRESS_PROPLEN	(3 * sizeof(__be32))
- 
--static void imx_iim_init_dt(struct device_d *dev)
-+static void imx_iim_init_dt(struct device_d *dev, struct iim_priv *iim)
+-static int do_fuse_sense(void __iomem *reg_base, unsigned int bank,
++static int imx_iim_fuse_sense(void __iomem *reg_base, unsigned int bank,
+ 		unsigned int row)
  {
- 	char mac[6];
- 	const __be32 *prop;
- 	struct device_node *node = dev->device_node;
--	int len, ret;
-+	int len, ret, macnum = 0;
+ 	u8 err, stat;
+@@ -105,7 +105,7 @@ static ssize_t imx_iim_cdev_read(struct cdev *cdev, void *buf, size_t count,
+ 		for (i = 0; i < size; i++) {
+ 			int row_val;
  
- 	if (!node)
- 		return;
-@@ -294,11 +345,14 @@ static void imx_iim_init_dt(struct device_d *dev)
- 			dev_err(dev, "cannot read: %s\n", strerror(-ret));
- 		}
- 
-+		imx_iim_add_mac_param(iim, macnum, bank, offset);
-+		macnum++;
-+
- 		len -= MAC_ADDRESS_PROPLEN;
- 	}
+-			row_val = do_fuse_sense(iim->base,
++			row_val = imx_iim_fuse_sense(iim->base,
+ 						bank->bank, offset + i);
+ 			if (row_val < 0)
+ 				return row_val;
+@@ -119,7 +119,7 @@ static ssize_t imx_iim_cdev_read(struct cdev *cdev, void *buf, size_t count,
+ 	return size;
  }
- #else
--static inline void imx_iim_init_dt(struct device_d *dev)
-+static inline void imx_iim_init_dt(struct device_d *dev, struct iim_priv *iim)
+ 
+-static int do_fuse_blow(void __iomem *reg_base, unsigned int bank,
++static int imx_iim_fuse_blow(void __iomem *reg_base, unsigned int bank,
+ 		unsigned int row, u8 value)
  {
- }
- #endif
+ 	int bit, ret = 0;
+@@ -192,7 +192,7 @@ static ssize_t imx_iim_cdev_write(struct cdev *cdev, const void *buf, size_t cou
+ 		for (i = 0; i < size; i++) {
+ 			int ret;
+ 
+-			ret = do_fuse_blow(iim->base, bank->bank,
++			ret = imx_iim_fuse_blow(iim->base, bank->bank,
+ 					   offset + i, ((u8 *)buf)[i]);
+ 			if (ret < 0)
+ 				return ret;
 -- 
 2.0.0.rc0
 
