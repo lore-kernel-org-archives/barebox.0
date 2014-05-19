@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WmUfG-0003FN-Pw
- for barebox@lists.infradead.org; Mon, 19 May 2014 21:00:08 +0000
+ Linux)) id 1WmUfG-0003FP-Pl
+ for barebox@lists.infradead.org; Mon, 19 May 2014 21:00:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 May 2014 22:59:42 +0200
-Message-Id: <1400533184-668-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 19 May 2014 22:59:44 +0200
+Message-Id: <1400533184-668-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
 References: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,126 +21,152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] oftree: remove dump support
+Subject: [PATCH 6/6] oftree command: make devicetree file optargs to -l/-s
 To: barebox@lists.infradead.org
 
-This can now be done with the of_dump command.
+When loading or saving a devicetree it seems logical to add the
+filename to the option specifying the command. This is also slightly
+easier to parse.
+While at it add missing documentation for the -s option.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |  2 --
- commands/oftree.c | 42 +++---------------------------------------
- 2 files changed, 3 insertions(+), 41 deletions(-)
+ commands/oftree.c | 54 ++++++++++++++++--------------------------------------
+ 1 file changed, 16 insertions(+), 38 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 381f3fd..6043cb6 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1944,8 +1944,6 @@ config CMD_OFTREE
- 		  -l		Load DTB to internal device tree
- 		  -p		probe devices from stored device tree
- 		  -f		free stored device tree
--		  -d		dump device tree from DTB or the parsed tree if no DTB is given
--		  -n NODE	specify root device NODE to dump for -d
- 
- config CMD_TIME
- 	bool "time"
 diff --git a/commands/oftree.c b/commands/oftree.c
-index 16648d6..db31d59 100644
+index 2c45b93..a3b0e04 100644
 --- a/commands/oftree.c
 +++ b/commands/oftree.c
-@@ -46,8 +46,6 @@ static int do_oftree(int argc, char *argv[])
+@@ -42,13 +42,11 @@
+ static int do_oftree(int argc, char *argv[])
+ {
+ 	struct fdt_header *fdt = NULL;
+-	void *fdt_free = NULL;
  	int size;
  	int opt;
- 	char *file = NULL;
--	const char *node = "/";
--	int dump = 0;
+-	char *file = NULL;
  	int probe = 0;
- 	int load = 0;
- 	int save = 0;
-@@ -55,14 +53,11 @@ static int do_oftree(int argc, char *argv[])
+-	int load = 0;
+-	int save = 0;
++	char *load = NULL;
++	char *save = NULL;
+ 	int free_of = 0;
  	int ret;
- 	struct device_node *n, *root;
- 
--	while ((opt = getopt(argc, argv, "dpfn:ls")) > 0) {
-+	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
+ 	struct device_node *root;
+@@ -56,7 +54,7 @@ static int do_oftree(int argc, char *argv[])
+ 	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
  		switch (opt) {
  		case 'l':
- 			load = 1;
+-			load = 1;
++			load = optarg;
  			break;
--		case 'd':
--			dump = 1;
--			break;
  		case 'p':
  			if (IS_ENABLED(CONFIG_OFDEVICE)) {
- 				probe = 1;
-@@ -74,9 +69,6 @@ static int do_oftree(int argc, char *argv[])
- 		case 'f':
+@@ -70,7 +68,7 @@ static int do_oftree(int argc, char *argv[])
  			free_of = 1;
  			break;
--		case 'n':
--			node = optarg;
--			break;
  		case 's':
- 			save = 1;
+-			save = 1;
++			save = optarg;
  			break;
-@@ -96,7 +88,7 @@ static int do_oftree(int argc, char *argv[])
- 	if (optind < argc)
- 		file = argv[optind];
+ 		}
+ 	}
+@@ -85,20 +83,10 @@ static int do_oftree(int argc, char *argv[])
+ 			return 0;
+ 	}
  
--	if (!dump && !probe && !load && !save)
-+	if (!probe && !load && !save)
+-	if (optind < argc)
+-		file = argv[optind];
+-
+ 	if (!probe && !load && !save)
  		return COMMAND_ERROR_USAGE;
  
  	if (save) {
-@@ -155,31 +147,6 @@ static int do_oftree(int argc, char *argv[])
- 		}
- 	}
- 
--	if (dump) {
--		if (fdt) {
--			root = of_unflatten_dtb(NULL, fdt);
--			if (IS_ERR(root)) {
--				printf("parse oftree: %s\n", strerror(-PTR_ERR(root)));
--				ret = 1;
--				goto out;
--			}
--			of_print_nodes(root, 0);
--			of_delete_node(root);
--		} else {
--			struct device_node *n = of_find_node_by_path_or_alias(NULL, node);
--			if (!n) {
--				ret = -ENOENT;
--				goto out;
--			}
+-		if (!file) {
+-			printf("no file given\n");
+-			ret = -ENOENT;
 -
--			of_print_nodes(n, 0);
+-			goto out;
 -		}
 -
--		ret = 0;
--
--		goto out;
+ 		fdt = of_get_fixed_tree(NULL);
+ 		if (!fdt) {
+ 			printf("no devicetree available\n");
+@@ -107,39 +95,29 @@ static int do_oftree(int argc, char *argv[])
+ 			goto out;
+ 		}
+ 
+-		ret = write_file(file, fdt, fdt32_to_cpu(fdt->totalsize));
++		ret = write_file(save, fdt, fdt32_to_cpu(fdt->totalsize));
+ 
+ 		goto out;
+ 	}
+ 
+-	if (file) {
+-		fdt = read_file(file, &size);
++	if (load) {
++		fdt = read_file(load, &size);
+ 		if (!fdt) {
+-			printf("unable to read %s\n", file);
++			printf("unable to read %s\n", load);
+ 			return 1;
+ 		}
+ 
+-		fdt_free = fdt;
 -	}
 -
- 	if (probe) {
- 		ret = of_probe();
- 		if (ret)
-@@ -198,15 +165,12 @@ BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-l",  "Load DTB to internal device tree")
+-	if (load) {
+-		if (!fdt) {
+-			printf("no fdt given\n");
+-			ret = -ENOENT;
++		root = of_unflatten_dtb(fdt);
+ 
+-			goto out;
+-		}
++		free(fdt);
+ 
+-		root = of_unflatten_dtb(fdt);
+ 		if (IS_ERR(root))
+-			ret = PTR_ERR(root);
+-		else
+-			ret = 0;
++			return PTR_ERR(root);
+ 
+ 		ret = of_set_root_node(root);
+-
+ 		if (ret) {
+-			printf("parse oftree: %s\n", strerror(-ret));
++			printf("setting root node failed: %s\n", strerror(-ret));
++			of_delete_node(root);
+ 			goto out;
+ 		}
+ 	}
+@@ -152,14 +130,14 @@ static int do_oftree(int argc, char *argv[])
+ 
+ 	ret = 0;
+ out:
+-	free(fdt_free);
+ 
+ 	return ret;
+ }
+ 
+ BAREBOX_CMD_HELP_START(oftree)
+ BAREBOX_CMD_HELP_TEXT("Options:")
+-BAREBOX_CMD_HELP_OPT ("-l",  "Load DTB to internal device tree")
++BAREBOX_CMD_HELP_OPT ("-l <DTB>",  "Load <DTB> to internal devicetree\n")
++BAREBOX_CMD_HELP_OPT ("-s <DTB>",  "save internal devicetree to <DTB>\n")
  BAREBOX_CMD_HELP_OPT ("-p",  "probe devices from stored device tree")
  BAREBOX_CMD_HELP_OPT ("-f",  "free stored device tree")
--BAREBOX_CMD_HELP_OPT ("-d",  "dump device tree from DTB or the parsed tree if no DTB is given")
--BAREBOX_CMD_HELP_OPT ("-n NODE",  "specify root device NODE to dump for -d")
  BAREBOX_CMD_HELP_END
- 
+@@ -167,7 +145,7 @@ BAREBOX_CMD_HELP_END
  BAREBOX_CMD_START(oftree)
  	.cmd		= do_oftree,
  	BAREBOX_CMD_DESC("handle device trees")
--	BAREBOX_CMD_OPTS("[-lpfdn] [DTB]")
-+	BAREBOX_CMD_OPTS("[-lpf] [DTB]")
+-	BAREBOX_CMD_OPTS("[-lpf] [DTB]")
++	BAREBOX_CMD_OPTS("[-lpfs]")
  	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
  	BAREBOX_CMD_HELP(cmd_oftree_help)
--	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
  BAREBOX_CMD_END
 -- 
 2.0.0.rc0
