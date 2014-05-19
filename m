@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WmUfG-0003FM-Ps
- for barebox@lists.infradead.org; Mon, 19 May 2014 21:00:08 +0000
+ Linux)) id 1WmUfG-0003FO-Pv
+ for barebox@lists.infradead.org; Mon, 19 May 2014 21:00:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 May 2014 22:59:41 +0200
-Message-Id: <1400533184-668-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 19 May 2014 22:59:43 +0200
+Message-Id: <1400533184-668-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
 References: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,171 +21,255 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] commands: add of_dump command
+Subject: [PATCH 5/6] of: Drop devicetree merge support
 To: barebox@lists.infradead.org
 
-The oftree command is overloaded. This adds a dedicated command
-which only dumps devicetrees to the console so that the corresponding
-functionality in the oftree command can be removed in the next step.
+I assume I am the only person knowing that barebox is able to
+merge devicetrees. This feature seems broken for a while now since
+trying to merge devicetress results in:
+
+unflatten: too many end nodes
+
+Remove this feature to save the complexity.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig   |  13 +++++++
- commands/Makefile  |   1 +
- commands/of_dump.c | 108 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 122 insertions(+)
- create mode 100644 commands/of_dump.c
+ arch/arm/boards/highbank/init.c |  2 +-
+ arch/arm/cpu/dtb.c              |  2 +-
+ arch/arm/lib/bootm.c            |  2 +-
+ arch/mips/boot/dtb.c            |  2 +-
+ commands/of_dump.c              |  2 +-
+ commands/oftree.c               |  9 +++------
+ common/blspec.c                 |  2 +-
+ common/bootm.c                  |  2 +-
+ drivers/of/fdt.c                | 44 +++++++++++------------------------------
+ include/of.h                    |  2 +-
+ 10 files changed, 23 insertions(+), 46 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 02f0931..381f3fd 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1886,6 +1886,19 @@ config CMD_LSMOD
- 	help
- 	  List loaded barebox modules.
+diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
+index d5d341a..7b4f963 100644
+--- a/arch/arm/boards/highbank/init.c
++++ b/arch/arm/boards/highbank/init.c
+@@ -76,7 +76,7 @@ static int highbank_mem_init(void)
+ 	/* load by the firmware at 0x1000 */
+ 	fdt = IOMEM(FIRMWARE_DTB_BASE);
  
-+config CMD_OF_DUMP
-+	tristate
-+	select OFTREE
-+	prompt "of_dump"
-+	default y if CMD_OFTREE
-+	help
-+	  dump devicetree nodes to the console
-+
-+	  Usage: of_dump [-f] [NODE]
-+
-+	  Options:
-+		-f <dtb>	work on <dtb> instead of internal devicetree
-+
- config CMD_OF_NODE
- 	tristate
- 	select OFTREE
-diff --git a/commands/Makefile b/commands/Makefile
-index 2373ccf..030a906 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -75,6 +75,7 @@ obj-$(CONFIG_CMD_TIME)		+= time.o
- obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
- obj-$(CONFIG_CMD_OF_PROPERTY)	+= of_property.o
- obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
-+obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
- obj-$(CONFIG_CMD_IOMEM)		+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
+-	root = of_unflatten_dtb(NULL, fdt);
++	root = of_unflatten_dtb(fdt);
+ 	if (!root) {
+ 		pr_warn("no dtb found at 0x1000 use default configuration\n");
+ 		fdt = NULL;
+diff --git a/arch/arm/cpu/dtb.c b/arch/arm/cpu/dtb.c
+index a5881dd..abc3ccb 100644
+--- a/arch/arm/cpu/dtb.c
++++ b/arch/arm/cpu/dtb.c
+@@ -47,7 +47,7 @@ static int of_arm_init(void)
+ 		return 0;
+ 	}
+ 
+-	root = of_unflatten_dtb(NULL, fdt);
++	root = of_unflatten_dtb(fdt);
+ 	if (root) {
+ 		of_set_root_node(root);
+ 		if (IS_ENABLED(CONFIG_OFDEVICE))
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index 8035468..1d69052 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -215,7 +215,7 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
+ 	}
+ 
+ 	if (IS_BUILTIN(CONFIG_OFTREE)) {
+-		data->of_root_node = of_unflatten_dtb(NULL, oftree);
++		data->of_root_node = of_unflatten_dtb(oftree);
+ 		if (!data->of_root_node) {
+ 			pr_err("unable to unflatten devicetree\n");
+ 			ret = -EINVAL;
+diff --git a/arch/mips/boot/dtb.c b/arch/mips/boot/dtb.c
+index c1962bf..23d8979 100644
+--- a/arch/mips/boot/dtb.c
++++ b/arch/mips/boot/dtb.c
+@@ -48,7 +48,7 @@ static int of_mips_init(void)
+ 	if (root)
+ 		return 0;
+ 
+-	root = of_unflatten_dtb(NULL, __dtb_start);
++	root = of_unflatten_dtb(__dtb_start);
+ 	if (root) {
+ 		pr_debug("using internal DTB\n");
+ 		of_set_root_node(root);
 diff --git a/commands/of_dump.c b/commands/of_dump.c
-new file mode 100644
-index 0000000..0ed47bb
---- /dev/null
+index 0ed47bb..1aefcc7 100644
+--- a/commands/of_dump.c
 +++ b/commands/of_dump.c
-@@ -0,0 +1,108 @@
-+/*
-+ * of_dump.c - dump devicetrees to the console
-+ *
-+ * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <fdt.h>
-+#include <of.h>
-+#include <command.h>
-+#include <fs.h>
-+#include <malloc.h>
-+#include <complete.h>
-+#include <linux/ctype.h>
-+#include <asm/byteorder.h>
-+#include <errno.h>
-+#include <getopt.h>
-+#include <linux/err.h>
-+
-+static int do_of_dump(int argc, char *argv[])
-+{
-+	int opt;
+@@ -63,7 +63,7 @@ static int do_of_dump(int argc, char *argv[])
+ 			return -errno;
+ 		}
+ 
+-		root = of_unflatten_dtb(NULL, fdt);
++		root = of_unflatten_dtb(fdt);
+ 
+ 		free(fdt);
+ 
+diff --git a/commands/oftree.c b/commands/oftree.c
+index db31d59..2c45b93 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -51,7 +51,7 @@ static int do_oftree(int argc, char *argv[])
+ 	int save = 0;
+ 	int free_of = 0;
+ 	int ret;
+-	struct device_node *n, *root;
++	struct device_node *root;
+ 
+ 	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
+ 		switch (opt) {
+@@ -130,16 +130,13 @@ static int do_oftree(int argc, char *argv[])
+ 			goto out;
+ 		}
+ 
+-		n = of_get_root_node();
+-
+-		root = of_unflatten_dtb(n, fdt);
++		root = of_unflatten_dtb(fdt);
+ 		if (IS_ERR(root))
+ 			ret = PTR_ERR(root);
+ 		else
+ 			ret = 0;
+ 
+-		if (!n)
+-			ret = of_set_root_node(root);
++		ret = of_set_root_node(root);
+ 
+ 		if (ret) {
+ 			printf("parse oftree: %s\n", strerror(-ret));
+diff --git a/common/blspec.c b/common/blspec.c
+index f165b77..9314eea 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -281,7 +281,7 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
+ 		goto out;
+ 	}
+ 
+-	root = of_unflatten_dtb(NULL, fdt);
++	root = of_unflatten_dtb(fdt);
+ 	if (IS_ERR(root)) {
+ 		ret = PTR_ERR(root);
+ 		goto out;
+diff --git a/common/bootm.c b/common/bootm.c
+index 12d3ee0..b250bd1 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -297,7 +297,7 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
+ 		return -EINVAL;
+ 	}
+ 
+-	data->of_root_node = of_unflatten_dtb(NULL, fdt);
++	data->of_root_node = of_unflatten_dtb(fdt);
+ 	if (!data->of_root_node) {
+ 		pr_err("unable to unflatten devicetree\n");
+ 		free(fdt);
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 3dc5d47..8e4c775 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -54,20 +54,20 @@ static inline char *dt_string(struct fdt_header *f, char *strstart, uint32_t ofs
+  * Parse a flat device tree binary blob and return a pointer to the
+  * unflattened tree.
+  */
+-struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
++struct device_node *of_unflatten_dtb(void *infdt)
+ {
+ 	const void *nodep;	/* property node pointer */
+ 	uint32_t tag;		/* tag */
+ 	int  len;		/* length of the property */
+ 	const struct fdt_property *fdt_prop;
+ 	const char *pathp, *name;
+-	struct device_node *node = NULL;
++	struct device_node *root, *node = NULL;
+ 	struct property *p;
+ 	uint32_t dt_struct;
+ 	struct fdt_node_header *fnh;
+ 	void *dt_strings;
+ 	struct fdt_header f;
+-	int ret, merge = 0;
 +	int ret;
-+	struct device_node *root = NULL, *node, *of_free = NULL;
-+	char *dtbfile = NULL;
-+	size_t size;
-+	const char *nodename;
-+
-+	while ((opt = getopt(argc, argv, "f:")) > 0) {
-+		switch (opt) {
-+		case 'f':
-+			dtbfile = optarg;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (optind == argc)
-+		nodename = "/";
-+	else
-+		nodename = argv[optind];
-+
-+	if (dtbfile) {
-+		void *fdt;
-+
-+		fdt = read_file(dtbfile, &size);
-+		if (!fdt) {
-+			printf("unable to read %s: %s\n", dtbfile, strerror(errno));
-+			return -errno;
-+		}
-+
-+		root = of_unflatten_dtb(NULL, fdt);
-+
-+		free(fdt);
-+
-+		if (IS_ERR(root)) {
-+			ret = PTR_ERR(root);
-+			goto out;
-+		}
-+
-+		of_free = root;
-+	} else {
-+		root = of_get_root_node();
-+	}
-+
-+	node = of_find_node_by_path_or_alias(root, nodename);
-+	if (!node) {
-+		printf("Cannot find nodepath %s\n", nodename);
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
-+	of_print_nodes(node, 0);
-+
-+out:
-+	if (of_free)
-+		of_delete_node(of_free);
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(of_dump)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT  ("-f <dtb>",  "work on <dtb> instead of internal devicetree\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(of_dump)
-+	.cmd		= do_of_dump,
-+	BAREBOX_CMD_DESC("dump devicetree nodes")
-+	BAREBOX_CMD_OPTS("[-f]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
-+	BAREBOX_CMD_HELP(cmd_of_dump_help)
-+BAREBOX_CMD_END
+ 	unsigned int maxlen;
+ 	struct fdt_header *fdt = infdt;
+ 
+@@ -100,14 +100,9 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 	dt_struct = f.off_dt_struct;
+ 	dt_strings = (void *)fdt + f.off_dt_strings;
+ 
+-	if (root) {
+-		pr_debug("unflatten: merging into existing tree\n");
+-		merge = 1;
+-	} else {
+-		root = of_new_node(NULL, NULL);
+-		if (!root)
+-			return ERR_PTR(-ENOMEM);
+-	}
++	root = of_new_node(NULL, NULL);
++	if (!root)
++		return ERR_PTR(-ENOMEM);
+ 
+ 	while (1) {
+ 		tag = be32_to_cpu(*(uint32_t *)(infdt + dt_struct));
+@@ -132,15 +127,10 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 				goto err;
+ 			}
+ 
+-			if (!node) {
++			if (!node)
+ 				node = root;
+-			} else {
+-				if (merge)
+-					node = of_get_child_by_name(node,
+-								    pathp);
+-				if (!merge || !node)
+-					node = of_new_node(node, pathp);
+-			}
++			else
++				node = of_new_node(node, pathp);
+ 
+ 			break;
+ 
+@@ -179,19 +169,9 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 				goto err;
+ 			}
+ 
+-			p = NULL;
+-			if (merge)
+-				p = of_find_property(node, name, NULL);
+-			if (merge && p) {
+-				free(p->value);
+-				p->value = xzalloc(len);
+-				p->length = len;
+-				memcpy(p->value, nodep, len);
+-			} else {
+-				p = of_new_property(node, name, nodep, len);
+-				if (!strcmp(name, "phandle") && len == 4)
+-					node->phandle = be32_to_cpup(p->value);
+-			}
++			p = of_new_property(node, name, nodep, len);
++			if (!strcmp(name, "phandle") && len == 4)
++				node->phandle = be32_to_cpup(p->value);
+ 
+ 			break;
+ 
+diff --git a/include/of.h b/include/of.h
+index 3183428..e6993fd 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -98,7 +98,7 @@ void of_print_cmdline(struct device_node *root);
+ void of_print_nodes(struct device_node *node, int indent);
+ int of_probe(void);
+ int of_parse_dtb(struct fdt_header *fdt);
+-struct device_node *of_unflatten_dtb(struct device_node *root, void *fdt);
++struct device_node *of_unflatten_dtb(void *fdt);
+ 
+ struct cdev;
+ 
 -- 
 2.0.0.rc0
 
