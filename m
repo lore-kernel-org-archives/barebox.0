@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WmJEy-0002be-Ub
- for barebox@lists.infradead.org; Mon, 19 May 2014 08:48:13 +0000
-Date: Mon, 19 May 2014 10:47:50 +0200
+ Linux)) id 1WmNq3-0008Kj-Ri
+ for barebox@lists.infradead.org; Mon, 19 May 2014 13:42:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140519084750.GG5918@pengutronix.de>
-References: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
- <1399834166.925793804@f410.i.mail.ru>
- <20140512103850.GF5858@pengutronix.de>
- <1400090277.899030332@f387.i.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1400090277.899030332@f387.i.mail.ru>
+Date: Mon, 19 May 2014 15:42:25 +0200
+Message-Id: <1400506945-32568-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +14,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] spi: i.MX: Move to coredevice_initcall
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand: mxs: Fix 2k nand with oob size of 224 bytes
+To: barebox@lists.infradead.org
 
-On Wed, May 14, 2014 at 09:57:57PM +0400, Alexander Shiyan wrote:
-> > 
-> > - put the drivers private data into dev->priv
-> > - when returning an error from probe, instead of freeing the data
-> >   keep it.
-> > - when probing again re-use the data.
-> > 
-> > With this drivers could be written like:
-> > 
-> > 	priv = dev->priv;
-> > 	if (!priv) {
-> > 		priv = xzalloc(sizeof(priv));
-> > 		dev->priv = priv;
-> > 	}
-> > 
-> > 	if (!priv->clk) {
-> > 		clk = clk_get(dev, NULL);
-> > 		if (IS_ERR(clk))
-> > 			return PTR_ERR(clk);
-> > 		priv->clk = clk;
-> > 		clk_enable(priv->clk);
-> > 	}
-> > 
-> > 	if (!priv->regulator) {
-> > 		regulator = regulator_get(dev, "vmmc");
-> > 		if (IS_ERR(regulator))
-> > 			return PTR_ERR(regulator);
-> > 		priv->regulator = regulator;
-> > 	}
-> > 
-> > This way drivers could allocate the missing resources as needed without
-> > freeing them between different calls to probe().
-> 
-> The idea is good, but I think that it will not be so easy to do.
+The mxs nand driver has a calculation for the ecc strength.
+This calculation was not used for some common nands and it
+was assumed that 2k page nands always have a ecc strength
+of 8. This is not true since there are devices with 224 bytes
+of oob instread of 64 bytes. These allow for a greater ecc
+strength. Since the kernel relies on the calculation and
+we have to be consistent with the kernel use the calculcation
+in barebox aswell and just remove our assumptions.
 
-Where do you expect problems?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_mxs.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-> In addition, we obtain additional incompatibility with the kernel code.
-
-I think this is not a problem in this case. The probe pathes of the
-device drivers contain nearly the same elements, but are quite different
-in the details anyway.
-
-Sascha
-
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index d5428bc..5a4449d 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -238,22 +238,6 @@ static inline uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
+ 	int ecc_strength = 0;
+ 	int gf_len = 13;  /* length of Galois Field for non-DDR nand */
+ 
+-	/*
+-	 * Possibly this if-else calculation may be removed since
+-	 * ecc_strength calculated after it is taken from kernel driver
+-	 * and therefore should work for all cases. But it was tested only
+-	 * on devices with {data_size = 2046, oob_size = 64} and
+-	 * {data_size = 4096, oob_size = 224} configuration.
+-	 */
+-	if (page_data_size == 2048)
+-		return 8;
+-	else if (page_data_size == 4096) {
+-		if (page_oob_size == 128)
+-			return 8;
+-		if (page_oob_size == 218)
+-			return 16;
+-	}
+-
+ 	ecc_strength = ((page_oob_size - MXS_NAND_METADATA_SIZE) * 8)
+ 		/ (gf_len * ecc_chunk_count);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.0.rc0
+
 
 _______________________________________________
 barebox mailing list
