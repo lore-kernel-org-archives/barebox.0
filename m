@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WmNq3-0008Kj-Ri
- for barebox@lists.infradead.org; Mon, 19 May 2014 13:42:48 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 May 2014 15:42:25 +0200
-Message-Id: <1400506945-32568-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-ee0-x230.google.com ([2a00:1450:4013:c00::230])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WmUHy-00064n-R1
+ for barebox@lists.infradead.org; Mon, 19 May 2014 20:36:03 +0000
+Received: by mail-ee0-f48.google.com with SMTP id e49so3946952eek.21
+ for <barebox@lists.infradead.org>; Mon, 19 May 2014 13:35:39 -0700 (PDT)
+From: Beniamino Galvani <b.galvani@gmail.com>
+Date: Mon, 19 May 2014 22:34:59 +0200
+Message-Id: <1400531700-24248-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand: mxs: Fix 2k nand with oob size of 224 bytes
+Subject: [PATCH 1/2] net: arc_emac: remove delay from mdio polling loop
 To: barebox@lists.infradead.org
 
-The mxs nand driver has a calculation for the ecc strength.
-This calculation was not used for some common nands and it
-was assumed that 2k page nands always have a ecc strength
-of 8. This is not true since there are devices with 224 bytes
-of oob instread of 64 bytes. These allow for a greater ecc
-strength. Since the kernel relies on the calculation and
-we have to be consistent with the kernel use the calculcation
-in barebox aswell and just remove our assumptions.
+Avoid unneeded delay when waiting for the completion of a mdio
+operation and return as soon as possible.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
 ---
- drivers/mtd/nand/nand_mxs.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+ drivers/net/arc_emac.c |   19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index d5428bc..5a4449d 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -238,22 +238,6 @@ static inline uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
- 	int ecc_strength = 0;
- 	int gf_len = 13;  /* length of Galois Field for non-DDR nand */
+diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
+index 3f6f814..23df3fd 100644
+--- a/drivers/net/arc_emac.c
++++ b/drivers/net/arc_emac.c
+@@ -17,6 +17,7 @@
+  */
  
--	/*
--	 * Possibly this if-else calculation may be removed since
--	 * ecc_strength calculated after it is taken from kernel driver
--	 * and therefore should work for all cases. But it was tested only
--	 * on devices with {data_size = 2046, oob_size = 64} and
--	 * {data_size = 4096, oob_size = 224} configuration.
--	 */
--	if (page_data_size == 2048)
--		return 8;
--	else if (page_data_size == 4096) {
--		if (page_oob_size == 128)
--			return 8;
--		if (page_oob_size == 218)
--			return 16;
--	}
+ #include <asm/mmu.h>
++#include <clock.h>
+ #include <common.h>
+ #include <net.h>
+ #include <io.h>
+@@ -342,26 +343,18 @@ static int arc_emac_set_ethaddr(struct eth_device *edev, unsigned char *mac)
+ 	return 0;
+ }
+ 
+-/* Number of seconds we wait for "MDIO complete" flag to appear */
+-#define ARC_MDIO_COMPLETE_POLL_COUNT	1
 -
- 	ecc_strength = ((page_oob_size - MXS_NAND_METADATA_SIZE) * 8)
- 		/ (gf_len * ecc_chunk_count);
+ static int arc_mdio_complete_wait(struct arc_emac_priv *priv)
+ {
+-	unsigned int i;
+-
+-	for (i = 0; i < ARC_MDIO_COMPLETE_POLL_COUNT * 40; i++) {
+-		unsigned int status = arc_reg_get(priv, R_STATUS);
+-
+-		status &= MDIO_MASK;
++	uint64_t start = get_time_ns();
+ 
+-		if (status) {
++	while (!is_timeout(start, 1000 * MSECOND)) {
++		if (arc_reg_get(priv, R_STATUS) & MDIO_MASK) {
+ 			/* Reset "MDIO complete" flag */
+-			arc_reg_set(priv, R_STATUS, status);
++			arc_reg_set(priv, R_STATUS, MDIO_MASK);
+ 			return 0;
+ 		}
+-
+-		mdelay(25);
+ 	}
++
+ 	return -ETIMEDOUT;
+ }
  
 -- 
-2.0.0.rc0
+1.7.10.4
 
 
 _______________________________________________
