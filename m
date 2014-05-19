@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x235.google.com ([2a00:1450:4013:c00::235])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WmUI0-00065F-Uk
- for barebox@lists.infradead.org; Mon, 19 May 2014 20:36:05 +0000
-Received: by mail-ee0-f53.google.com with SMTP id c13so3952748eek.26
- for <barebox@lists.infradead.org>; Mon, 19 May 2014 13:35:43 -0700 (PDT)
-From: Beniamino Galvani <b.galvani@gmail.com>
-Date: Mon, 19 May 2014 22:35:00 +0200
-Message-Id: <1400531700-24248-2-git-send-email-b.galvani@gmail.com>
-In-Reply-To: <1400531700-24248-1-git-send-email-b.galvani@gmail.com>
-References: <1400531700-24248-1-git-send-email-b.galvani@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WmUfG-0003FK-Px
+ for barebox@lists.infradead.org; Mon, 19 May 2014 21:00:07 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 19 May 2014 22:59:39 +0200
+Message-Id: <1400533184-668-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
+References: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] net: arc_emac: disable interrupts
+Subject: [PATCH 1/6] complete: Fix completion after options
 To: barebox@lists.infradead.org
 
-The driver doesn't use interrupts and Linux driver crashes when emac
-interrupts are enabled at boot: keep them disabled.
+the command specific complete callbacks only work when no
+option is typed already. For example "devinfo <tab><tab>"
+correctly completes the devices, but "devinfo -x <tab><tab>"
+does nothing. That is because the options are passed to
+the input string of the completion handlers. Skip the option
+string by finding the last space in the input string. This
+is not perfect since "devinfo -f<tab><tab>" still does not
+work, but it's better than what we have now.
 
-Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/arc_emac.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ common/complete.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
-index 23df3fd..8b74ea5 100644
---- a/drivers/net/arc_emac.c
-+++ b/drivers/net/arc_emac.c
-@@ -210,9 +210,6 @@ static int arc_emac_open(struct eth_device *edev)
- 	arc_reg_set(priv, R_RX_RING, (unsigned int)priv->rxbd);
- 	arc_reg_set(priv, R_TX_RING, (unsigned int)priv->txbd);
+diff --git a/common/complete.c b/common/complete.c
+index 9206ef0..368321f 100644
+--- a/common/complete.c
++++ b/common/complete.c
+@@ -277,11 +277,16 @@ static char* cmd_complete_lookup(struct string_list *sl, char *instr)
+ 	int len;
+ 	int ret = COMPLETE_END;
+ 	char *res = NULL;
++	char *t;
  
--	/* Enable interrupts */
--	arc_reg_set(priv, R_ENABLE, RXINT_MASK | ERR_MASK);
--
- 	/* Set CONTROL */
- 	arc_reg_set(priv, R_CTRL,
- 		     (RX_BD_NUM << 24) |	/* RX BD table length */
-@@ -317,9 +314,6 @@ static void arc_emac_halt(struct eth_device *edev)
- {
- 	struct arc_emac_priv *priv = edev->priv;
- 
--	/* Disable interrupts */
--	arc_reg_clr(priv, R_ENABLE, RXINT_MASK | ERR_MASK);
--
- 	/* Disable EMAC */
- 	arc_reg_clr(priv, R_CTRL, EN_MASK);
- }
-@@ -440,6 +434,9 @@ static int arc_emac_probe(struct device_d *dev)
- 	/* Set poll rate so that it polls every 1 ms */
- 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
- 
-+	/* Disable interrupts */
-+	arc_reg_set(priv, R_ENABLE, 0);
+ 	for_each_command(cmdtp) {
+ 		len = strlen(cmdtp->name);
+ 		if (!strncmp(instr, cmdtp->name, len) && instr[len] == ' ') {
+ 			instr += len + 1;
++			t = strrchr(instr, ' ');
++			if (t)
++				instr = t + 1;
 +
- 	mdiobus_register(miibus);
- 	eth_register(edev);
- 
+ 			if (cmdtp->complete) {
+ 				ret = cmdtp->complete(sl, instr);
+ 				res = instr;
 -- 
-1.7.10.4
+2.0.0.rc0
 
 
 _______________________________________________
