@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x230.google.com ([2a00:1450:4013:c00::230])
+Received: from mail-ee0-x235.google.com ([2a00:1450:4013:c00::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WmUHy-00064n-R1
- for barebox@lists.infradead.org; Mon, 19 May 2014 20:36:03 +0000
-Received: by mail-ee0-f48.google.com with SMTP id e49so3946952eek.21
- for <barebox@lists.infradead.org>; Mon, 19 May 2014 13:35:39 -0700 (PDT)
+ id 1WmUI0-00065F-Uk
+ for barebox@lists.infradead.org; Mon, 19 May 2014 20:36:05 +0000
+Received: by mail-ee0-f53.google.com with SMTP id c13so3952748eek.26
+ for <barebox@lists.infradead.org>; Mon, 19 May 2014 13:35:43 -0700 (PDT)
 From: Beniamino Galvani <b.galvani@gmail.com>
-Date: Mon, 19 May 2014 22:34:59 +0200
-Message-Id: <1400531700-24248-1-git-send-email-b.galvani@gmail.com>
+Date: Mon, 19 May 2014 22:35:00 +0200
+Message-Id: <1400531700-24248-2-git-send-email-b.galvani@gmail.com>
+In-Reply-To: <1400531700-24248-1-git-send-email-b.galvani@gmail.com>
+References: <1400531700-24248-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] net: arc_emac: remove delay from mdio polling loop
+Subject: [PATCH 2/2] net: arc_emac: disable interrupts
 To: barebox@lists.infradead.org
 
-Avoid unneeded delay when waiting for the completion of a mdio
-operation and return as soon as possible.
+The driver doesn't use interrupts and Linux driver crashes when emac
+interrupts are enabled at boot: keep them disabled.
 
 Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
 ---
- drivers/net/arc_emac.c |   19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ drivers/net/arc_emac.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
-index 3f6f814..23df3fd 100644
+index 23df3fd..8b74ea5 100644
 --- a/drivers/net/arc_emac.c
 +++ b/drivers/net/arc_emac.c
-@@ -17,6 +17,7 @@
-  */
+@@ -210,9 +210,6 @@ static int arc_emac_open(struct eth_device *edev)
+ 	arc_reg_set(priv, R_RX_RING, (unsigned int)priv->rxbd);
+ 	arc_reg_set(priv, R_TX_RING, (unsigned int)priv->txbd);
  
- #include <asm/mmu.h>
-+#include <clock.h>
- #include <common.h>
- #include <net.h>
- #include <io.h>
-@@ -342,26 +343,18 @@ static int arc_emac_set_ethaddr(struct eth_device *edev, unsigned char *mac)
- 	return 0;
- }
- 
--/* Number of seconds we wait for "MDIO complete" flag to appear */
--#define ARC_MDIO_COMPLETE_POLL_COUNT	1
+-	/* Enable interrupts */
+-	arc_reg_set(priv, R_ENABLE, RXINT_MASK | ERR_MASK);
 -
- static int arc_mdio_complete_wait(struct arc_emac_priv *priv)
+ 	/* Set CONTROL */
+ 	arc_reg_set(priv, R_CTRL,
+ 		     (RX_BD_NUM << 24) |	/* RX BD table length */
+@@ -317,9 +314,6 @@ static void arc_emac_halt(struct eth_device *edev)
  {
--	unsigned int i;
--
--	for (i = 0; i < ARC_MDIO_COMPLETE_POLL_COUNT * 40; i++) {
--		unsigned int status = arc_reg_get(priv, R_STATUS);
--
--		status &= MDIO_MASK;
-+	uint64_t start = get_time_ns();
+ 	struct arc_emac_priv *priv = edev->priv;
  
--		if (status) {
-+	while (!is_timeout(start, 1000 * MSECOND)) {
-+		if (arc_reg_get(priv, R_STATUS) & MDIO_MASK) {
- 			/* Reset "MDIO complete" flag */
--			arc_reg_set(priv, R_STATUS, status);
-+			arc_reg_set(priv, R_STATUS, MDIO_MASK);
- 			return 0;
- 		}
+-	/* Disable interrupts */
+-	arc_reg_clr(priv, R_ENABLE, RXINT_MASK | ERR_MASK);
 -
--		mdelay(25);
- 	}
-+
- 	return -ETIMEDOUT;
+ 	/* Disable EMAC */
+ 	arc_reg_clr(priv, R_CTRL, EN_MASK);
  }
+@@ -440,6 +434,9 @@ static int arc_emac_probe(struct device_d *dev)
+ 	/* Set poll rate so that it polls every 1 ms */
+ 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
+ 
++	/* Disable interrupts */
++	arc_reg_set(priv, R_ENABLE, 0);
++
+ 	mdiobus_register(miibus);
+ 	eth_register(edev);
  
 -- 
 1.7.10.4
