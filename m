@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22c.google.com ([2a00:1450:4013:c00::22c])
+Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wmlek-0005JO-Cd
- for barebox@lists.infradead.org; Tue, 20 May 2014 15:08:43 +0000
-Received: by mail-ee0-f44.google.com with SMTP id c41so689146eek.31
- for <barebox@lists.infradead.org>; Tue, 20 May 2014 08:08:20 -0700 (PDT)
-Message-ID: <537B6FDF.2050507@gmail.com>
-Date: Tue, 20 May 2014 17:08:15 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
- <1400533184-668-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1400533184-668-6-git-send-email-s.hauer@pengutronix.de>
+ id 1Wmnpu-0000mX-76
+ for barebox@lists.infradead.org; Tue, 20 May 2014 17:28:22 +0000
+Received: by mail-la0-f46.google.com with SMTP id ec20so672757lab.5
+ for <barebox@lists.infradead.org>; Tue, 20 May 2014 10:27:59 -0700 (PDT)
+Received: from [46.246.41.51] (anon-41-51.vpn.ipredator.se. [46.246.41.51])
+ by mx.google.com with ESMTPSA id mk2sm21379677lbc.8.2014.05.20.10.27.57
+ for <barebox@lists.infradead.org>
+ (version=SSLv3 cipher=RC4-SHA bits=128/128);
+ Tue, 20 May 2014 10:27:58 -0700 (PDT)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Date: Tue, 20 May 2014 19:27:55 +0200
+Message-ID: <1400606875.26128.1.camel@mars>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,271 +22,207 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/6] of: Drop devicetree merge support
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: [PATCH] commands: add 'findstr' to get string from file
+To: barebox@lists.infradead.org
 
-On 05/19/2014 10:59 PM, Sascha Hauer wrote:
-> I assume I am the only person knowing that barebox is able to
-> merge devicetrees. This feature seems broken for a while now since
-> trying to merge devicetress results in:
-> 
-> unflatten: too many end nodes
+Command 'findstr' can be for example used to find the string
+"MAC=1C:BA:8C:F3:82:BB" in file /dev/eeprom0 to set the
+appropriate variable:
 
-Uhm, I know about it because I see it every time I load an updated
-dtb on my hacky Chromecast barebox. Loading the dtb a second time
-again works then..
+ $ findstr -o 4 -l 17 -t eth0.ethaddr MAC /dev/eeprom0
 
-Anyway, I don't want to merge any trees but overwrite the existing,
-so I am fine with the removal ;)
+Usage: findstr [OPTIONS] <STRING> <FILE>
+Find string in file and print it
+-o <offset>     set offset of string which gets printed
+-l <length>     set length of string which gets printed
+-t <var>        print into variable instead of stdio
 
-Sebastian
+Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+---
+ commands/Kconfig   |    7 +++
+ commands/Makefile  |    1 +
+ commands/findstr.c |  138 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 146 insertions(+)
+ create mode 100644 commands/findstr.c
 
-> Remove this feature to save the complexity.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/boards/highbank/init.c |  2 +-
->  arch/arm/cpu/dtb.c              |  2 +-
->  arch/arm/lib/bootm.c            |  2 +-
->  arch/mips/boot/dtb.c            |  2 +-
->  commands/of_dump.c              |  2 +-
->  commands/oftree.c               |  9 +++------
->  common/blspec.c                 |  2 +-
->  common/bootm.c                  |  2 +-
->  drivers/of/fdt.c                | 44 +++++++++++------------------------------
->  include/of.h                    |  2 +-
->  10 files changed, 23 insertions(+), 46 deletions(-)
-> 
-> diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
-> index d5d341a..7b4f963 100644
-> --- a/arch/arm/boards/highbank/init.c
-> +++ b/arch/arm/boards/highbank/init.c
-> @@ -76,7 +76,7 @@ static int highbank_mem_init(void)
->  	/* load by the firmware at 0x1000 */
->  	fdt = IOMEM(FIRMWARE_DTB_BASE);
->  
-> -	root = of_unflatten_dtb(NULL, fdt);
-> +	root = of_unflatten_dtb(fdt);
->  	if (!root) {
->  		pr_warn("no dtb found at 0x1000 use default configuration\n");
->  		fdt = NULL;
-> diff --git a/arch/arm/cpu/dtb.c b/arch/arm/cpu/dtb.c
-> index a5881dd..abc3ccb 100644
-> --- a/arch/arm/cpu/dtb.c
-> +++ b/arch/arm/cpu/dtb.c
-> @@ -47,7 +47,7 @@ static int of_arm_init(void)
->  		return 0;
->  	}
->  
-> -	root = of_unflatten_dtb(NULL, fdt);
-> +	root = of_unflatten_dtb(fdt);
->  	if (root) {
->  		of_set_root_node(root);
->  		if (IS_ENABLED(CONFIG_OFDEVICE))
-> diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-> index 8035468..1d69052 100644
-> --- a/arch/arm/lib/bootm.c
-> +++ b/arch/arm/lib/bootm.c
-> @@ -215,7 +215,7 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
->  	}
->  
->  	if (IS_BUILTIN(CONFIG_OFTREE)) {
-> -		data->of_root_node = of_unflatten_dtb(NULL, oftree);
-> +		data->of_root_node = of_unflatten_dtb(oftree);
->  		if (!data->of_root_node) {
->  			pr_err("unable to unflatten devicetree\n");
->  			ret = -EINVAL;
-> diff --git a/arch/mips/boot/dtb.c b/arch/mips/boot/dtb.c
-> index c1962bf..23d8979 100644
-> --- a/arch/mips/boot/dtb.c
-> +++ b/arch/mips/boot/dtb.c
-> @@ -48,7 +48,7 @@ static int of_mips_init(void)
->  	if (root)
->  		return 0;
->  
-> -	root = of_unflatten_dtb(NULL, __dtb_start);
-> +	root = of_unflatten_dtb(__dtb_start);
->  	if (root) {
->  		pr_debug("using internal DTB\n");
->  		of_set_root_node(root);
-> diff --git a/commands/of_dump.c b/commands/of_dump.c
-> index 0ed47bb..1aefcc7 100644
-> --- a/commands/of_dump.c
-> +++ b/commands/of_dump.c
-> @@ -63,7 +63,7 @@ static int do_of_dump(int argc, char *argv[])
->  			return -errno;
->  		}
->  
-> -		root = of_unflatten_dtb(NULL, fdt);
-> +		root = of_unflatten_dtb(fdt);
->  
->  		free(fdt);
->  
-> diff --git a/commands/oftree.c b/commands/oftree.c
-> index db31d59..2c45b93 100644
-> --- a/commands/oftree.c
-> +++ b/commands/oftree.c
-> @@ -51,7 +51,7 @@ static int do_oftree(int argc, char *argv[])
->  	int save = 0;
->  	int free_of = 0;
->  	int ret;
-> -	struct device_node *n, *root;
-> +	struct device_node *root;
->  
->  	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
->  		switch (opt) {
-> @@ -130,16 +130,13 @@ static int do_oftree(int argc, char *argv[])
->  			goto out;
->  		}
->  
-> -		n = of_get_root_node();
-> -
-> -		root = of_unflatten_dtb(n, fdt);
-> +		root = of_unflatten_dtb(fdt);
->  		if (IS_ERR(root))
->  			ret = PTR_ERR(root);
->  		else
->  			ret = 0;
->  
-> -		if (!n)
-> -			ret = of_set_root_node(root);
-> +		ret = of_set_root_node(root);
->  
->  		if (ret) {
->  			printf("parse oftree: %s\n", strerror(-ret));
-> diff --git a/common/blspec.c b/common/blspec.c
-> index f165b77..9314eea 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -281,7 +281,7 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
->  		goto out;
->  	}
->  
-> -	root = of_unflatten_dtb(NULL, fdt);
-> +	root = of_unflatten_dtb(fdt);
->  	if (IS_ERR(root)) {
->  		ret = PTR_ERR(root);
->  		goto out;
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 12d3ee0..b250bd1 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -297,7 +297,7 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
->  		return -EINVAL;
->  	}
->  
-> -	data->of_root_node = of_unflatten_dtb(NULL, fdt);
-> +	data->of_root_node = of_unflatten_dtb(fdt);
->  	if (!data->of_root_node) {
->  		pr_err("unable to unflatten devicetree\n");
->  		free(fdt);
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index 3dc5d47..8e4c775 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -54,20 +54,20 @@ static inline char *dt_string(struct fdt_header *f, char *strstart, uint32_t ofs
->   * Parse a flat device tree binary blob and return a pointer to the
->   * unflattened tree.
->   */
-> -struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
-> +struct device_node *of_unflatten_dtb(void *infdt)
->  {
->  	const void *nodep;	/* property node pointer */
->  	uint32_t tag;		/* tag */
->  	int  len;		/* length of the property */
->  	const struct fdt_property *fdt_prop;
->  	const char *pathp, *name;
-> -	struct device_node *node = NULL;
-> +	struct device_node *root, *node = NULL;
->  	struct property *p;
->  	uint32_t dt_struct;
->  	struct fdt_node_header *fnh;
->  	void *dt_strings;
->  	struct fdt_header f;
-> -	int ret, merge = 0;
-> +	int ret;
->  	unsigned int maxlen;
->  	struct fdt_header *fdt = infdt;
->  
-> @@ -100,14 +100,9 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
->  	dt_struct = f.off_dt_struct;
->  	dt_strings = (void *)fdt + f.off_dt_strings;
->  
-> -	if (root) {
-> -		pr_debug("unflatten: merging into existing tree\n");
-> -		merge = 1;
-> -	} else {
-> -		root = of_new_node(NULL, NULL);
-> -		if (!root)
-> -			return ERR_PTR(-ENOMEM);
-> -	}
-> +	root = of_new_node(NULL, NULL);
-> +	if (!root)
-> +		return ERR_PTR(-ENOMEM);
->  
->  	while (1) {
->  		tag = be32_to_cpu(*(uint32_t *)(infdt + dt_struct));
-> @@ -132,15 +127,10 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
->  				goto err;
->  			}
->  
-> -			if (!node) {
-> +			if (!node)
->  				node = root;
-> -			} else {
-> -				if (merge)
-> -					node = of_get_child_by_name(node,
-> -								    pathp);
-> -				if (!merge || !node)
-> -					node = of_new_node(node, pathp);
-> -			}
-> +			else
-> +				node = of_new_node(node, pathp);
->  
->  			break;
->  
-> @@ -179,19 +169,9 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
->  				goto err;
->  			}
->  
-> -			p = NULL;
-> -			if (merge)
-> -				p = of_find_property(node, name, NULL);
-> -			if (merge && p) {
-> -				free(p->value);
-> -				p->value = xzalloc(len);
-> -				p->length = len;
-> -				memcpy(p->value, nodep, len);
-> -			} else {
-> -				p = of_new_property(node, name, nodep, len);
-> -				if (!strcmp(name, "phandle") && len == 4)
-> -					node->phandle = be32_to_cpup(p->value);
-> -			}
-> +			p = of_new_property(node, name, nodep, len);
-> +			if (!strcmp(name, "phandle") && len == 4)
-> +				node->phandle = be32_to_cpup(p->value);
->  
->  			break;
->  
-> diff --git a/include/of.h b/include/of.h
-> index 3183428..e6993fd 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -98,7 +98,7 @@ void of_print_cmdline(struct device_node *root);
->  void of_print_nodes(struct device_node *node, int indent);
->  int of_probe(void);
->  int of_parse_dtb(struct fdt_header *fdt);
-> -struct device_node *of_unflatten_dtb(struct device_node *root, void *fdt);
-> +struct device_node *of_unflatten_dtb(void *fdt);
->  
->  struct cdev;
->  
-> 
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 3ef8860..a2f817a 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -149,6 +149,13 @@ config CMD_GLOBAL
+ 	help
+ 	  The global command allows to create global variables
+ 
++config CMD_FINDSTR
++	tristate
++	default n
++	prompt "findstr"
++	help
++	  Find string in file.
++
+ endmenu
+ 
+ menu "file commands"
+diff --git a/commands/Makefile b/commands/Makefile
+index f927d21..b7c7e31 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -97,3 +97,4 @@ obj-$(CONFIG_CMD_READF)		+= readf.o
+ obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
+ obj-$(CONFIG_CMD_2048)		+= 2048.o
+ obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
++obj-$(CONFIG_CMD_FINDSTR)	+= findstr.o
+\ No newline at end of file
+diff --git a/commands/findstr.c b/commands/findstr.c
+new file mode 100644
+index 0000000..37cfee3
+--- /dev/null
++++ b/commands/findstr.c
+@@ -0,0 +1,138 @@
++/*
++ * Copyright (c) 2014 Christoph Fritz <chf.fritz@googlemail.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++/**
++ * @file
++ * @brief Find string in file
++ */
++
++#include <common.h>
++#include <command.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <getopt.h>
++#include <environment.h>
++
++extern char *mem_rw_buf;
++
++/**
++ * @param[in] argc Argument count from command line
++ * @param[in] argv List of input arguments
++ */
++static int do_findstr(int argc, char *argv[])
++{
++	int opt, fd, r, ret = 1;
++	loff_t len = 0, offset = 0, idx = 0;
++	u_char *s, *t = NULL, *v = (u_char *)mem_rw_buf;
++	unsigned int v_idx, s_idx = 0;
++
++	if (argc < 2)
++		return COMMAND_ERROR_USAGE;
++
++	while ((opt = getopt(argc, argv, "o:l:t:")) > 0) {
++		switch (opt) {
++		case 'o':
++			offset = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 'l':
++			len = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 't':
++			t = optarg;
++			break;
++		}
++	}
++
++	if (argc - optind != 2)
++		return COMMAND_ERROR_USAGE;
++
++	s = argv[optind];
++
++	fd = open(argv[optind+1], O_RDONLY);
++	if (fd < 0)
++		return COMMAND_ERROR_USAGE;
++
++	while (1) {
++		r = read(fd, mem_rw_buf, RW_BUF_SIZE);
++		if (r < 0) {
++			ret = -EIO;
++			goto out;
++		}
++		if (!r)
++			break;
++
++		v_idx = 0;
++
++		while (r) {
++			if (v[v_idx] == s[s_idx])
++				s_idx++;
++			else
++				s_idx = 0;
++
++			idx++;
++			v_idx++;
++
++			if (s_idx == strlen(s)) {	/* found */
++				loff_t sz;
++				loff_t hit = idx - strlen(s);
++
++				if (lseek(fd, hit + offset, SEEK_SET) < 0) {
++					ret = -EIO;
++					goto out;
++				}
++
++				if (!len)
++					len = strlen(s);
++				sz = min_t(loff_t, len, RW_BUF_SIZE - 1);
++				r = read(fd, mem_rw_buf, sz);
++				if (r != sz) {
++					ret = -EIO;
++					goto out;
++				}
++
++				v[sz] = '\0';
++
++				if (t)
++					setenv(t, v);
++				else
++					printf("%s\n", v);
++
++				ret = 0;
++				goto out;
++			}
++			r--;
++		}
++	}
++out:
++	close(fd);
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(findstr)
++BAREBOX_CMD_HELP_USAGE("findstr [OPTIONS] <STRING> <FILE>\n")
++BAREBOX_CMD_HELP_SHORT("Find string in file and print it\n")
++BAREBOX_CMD_HELP_OPT("-o <offset>", "set offset of string which gets printed\n")
++BAREBOX_CMD_HELP_OPT("-l <length>", "set length of string which gets printed\n")
++BAREBOX_CMD_HELP_OPT("-t <var>", "print into variable instead of stdio\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(findstr)
++	.cmd		= do_findstr,
++	.usage		= "findstr [OPTIONS] <STRING> <FILE>",
++	BAREBOX_CMD_HELP(cmd_findstr_help)
++BAREBOX_CMD_END
+-- 
+1.7.10.4
 
 
 _______________________________________________
