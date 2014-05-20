@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WmUfG-0003FJ-Pu
- for barebox@lists.infradead.org; Mon, 19 May 2014 21:00:07 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1WmUeo-00085S-Ek
- for barebox@lists.infradead.org; Mon, 19 May 2014 22:59:38 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1WmUev-0000g1-8E
- for barebox@lists.infradead.org; Mon, 19 May 2014 22:59:45 +0200
+ Linux)) id 1Wmcun-0005g1-3W
+ for barebox@lists.infradead.org; Tue, 20 May 2014 05:48:42 +0000
+Date: Tue, 20 May 2014 07:48:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 19 May 2014 22:59:38 +0200
-Message-Id: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20140520054818.GG5858@pengutronix.de>
+References: <1400531700-24248-1-git-send-email-b.galvani@gmail.com>
+ <1400531700-24248-2-git-send-email-b.galvani@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1400531700-24248-2-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,48 +19,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] devicetree command changes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] net: arc_emac: disable interrupts
+To: Beniamino Galvani <b.galvani@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This series has some changes to the devicetree commands:
+On Mon, May 19, 2014 at 10:35:00PM +0200, Beniamino Galvani wrote:
+> The driver doesn't use interrupts and Linux driver crashes when emac
+> interrupts are enabled at boot: keep them disabled.
 
-- Add devicetree completion
-- Add a dedicated of_dump command to make dumping nodes easier
+This is the right thing to do in barebox, so applied.
+
+However, the Linux driver should not crash in this case.
 
 Sascha
 
-----------------------------------------------------------------
-Sascha Hauer (6):
-      complete: Fix completion after options
-      complete: Add devicetree completion
-      commands: add of_dump command
-      oftree: remove dump support
-      of: Drop devicetree merge support
-      oftree command: make devicetree file optargs to -l/-s
+> 
+> Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+> ---
+>  drivers/net/arc_emac.c |    9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
+> index 23df3fd..8b74ea5 100644
+> --- a/drivers/net/arc_emac.c
+> +++ b/drivers/net/arc_emac.c
+> @@ -210,9 +210,6 @@ static int arc_emac_open(struct eth_device *edev)
+>  	arc_reg_set(priv, R_RX_RING, (unsigned int)priv->rxbd);
+>  	arc_reg_set(priv, R_TX_RING, (unsigned int)priv->txbd);
+>  
+> -	/* Enable interrupts */
+> -	arc_reg_set(priv, R_ENABLE, RXINT_MASK | ERR_MASK);
+> -
+>  	/* Set CONTROL */
+>  	arc_reg_set(priv, R_CTRL,
+>  		     (RX_BD_NUM << 24) |	/* RX BD table length */
+> @@ -317,9 +314,6 @@ static void arc_emac_halt(struct eth_device *edev)
+>  {
+>  	struct arc_emac_priv *priv = edev->priv;
+>  
+> -	/* Disable interrupts */
+> -	arc_reg_clr(priv, R_ENABLE, RXINT_MASK | ERR_MASK);
+> -
+>  	/* Disable EMAC */
+>  	arc_reg_clr(priv, R_CTRL, EN_MASK);
+>  }
+> @@ -440,6 +434,9 @@ static int arc_emac_probe(struct device_d *dev)
+>  	/* Set poll rate so that it polls every 1 ms */
+>  	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
+>  
+> +	/* Disable interrupts */
+> +	arc_reg_set(priv, R_ENABLE, 0);
+> +
+>  	mdiobus_register(miibus);
+>  	eth_register(edev);
+>  
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
- arch/arm/boards/highbank/init.c |   2 +-
- arch/arm/cpu/dtb.c              |   2 +-
- arch/arm/lib/bootm.c            |   2 +-
- arch/mips/boot/dtb.c            |   2 +-
- commands/Kconfig                |  15 +++++-
- commands/Makefile               |   1 +
- commands/of_dump.c              | 108 ++++++++++++++++++++++++++++++++++++++++
- commands/of_node.c              |   2 +
- commands/of_property.c          |   2 +
- commands/oftree.c               | 101 ++++++++-----------------------------
- common/blspec.c                 |   2 +-
- common/bootm.c                  |   2 +-
- common/complete.c               |  76 ++++++++++++++++++++++++++++
- drivers/of/fdt.c                |  44 +++++-----------
- include/complete.h              |   5 +-
- include/of.h                    |   2 +-
- 16 files changed, 246 insertions(+), 122 deletions(-)
- create mode 100644 commands/of_dump.c
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
