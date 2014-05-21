@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wn74S-0005Dn-Ud
- for barebox@lists.infradead.org; Wed, 21 May 2014 14:00:41 +0000
-Received: by mail-la0-f53.google.com with SMTP id ty20so51827lab.26
- for <barebox@lists.infradead.org>; Wed, 21 May 2014 07:00:18 -0700 (PDT)
-Date: Wed, 21 May 2014 18:11:23 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140521181123.22fa7c295a12523e27d6964b@gmail.com>
-In-Reply-To: <CAOpc7mHG9eaRRWkYxazwRCeVrAXB_LPLuD2zPp8WLOj9yiTVnQ@mail.gmail.com>
-References: <1400662482-23560-1-git-send-email-antonynpavlov@gmail.com>
- <CAOpc7mHG9eaRRWkYxazwRCeVrAXB_LPLuD2zPp8WLOj9yiTVnQ@mail.gmail.com>
-Mime-Version: 1.0
+ id 1WnCQU-0002aK-0r
+ for barebox@lists.infradead.org; Wed, 21 May 2014 19:43:46 +0000
+Received: by mail-wi0-f180.google.com with SMTP id hi2so3305665wib.7
+ for <barebox@lists.infradead.org>; Wed, 21 May 2014 12:43:20 -0700 (PDT)
+From: Franck Jullien <franck.jullien@gmail.com>
+Date: Wed, 21 May 2014 21:43:16 +0200
+Message-Id: <1400701396-6018-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] [RFC] [WIP] commands: add tree view capable lsusb
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] devinfo: add human readable size after memory range
+To: barebox@lists.infradead.org
 
-On Wed, 21 May 2014 15:20:21 +0200
-Holger Schurig <holgerschurig@gmail.com> wrote:
+It's not always easy to know what is the size of a parition.
 
-> Nice, I would just remove the extra empty lines. Linux' "lsusb -t" for
+This patch adds the size of a memory range in human readable
+format. We now have for example:
 
-Good idea! I'll take a look on Linux' lsusb too.
+`---- cfi_flash0
+     `---- nor0
+          `---- 0x00000000-0x00ffffff (    16 MiB): /dev/nor0
+          `---- 0x00000000-0x0001ffff (   128 KiB): /dev/env0
+          `---- 0x00020000-0x0011ffff (     1 MiB): /dev/fpga0
+          `---- 0x00120000-0x0019ffff (   512 KiB): /dev/self0
+          `---- 0x001a0000-0x00d9ffff (    12 MiB): /dev/linux
+          `---- 0x00da0000-0x00ffffff (   2.4 MiB): /dev/elf
 
-> example produces this:
-> =
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+---
+ commands/devinfo.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-> holger@desktop:~$ lsusb -t
-> /:  Bus 02.Port 1: Dev 1, Class=3Droot_hub, Driver=3Dehci-pci/2p, 480M
->     |__ Port 1: Dev 2, If 0, Class=3Dhub, Driver=3Dhub/8p, 480M
->         |__ Port 1: Dev 27, If 0, Class=3DHID, Driver=3Dusbhid, 1.5M
->         |__ Port 2: Dev 4, If 0, Class=3DHID, Driver=3Dusbhid, 1.5M
->         |__ Port 6: Dev 126, If 0, Class=3Dhub, Driver=3Dhub/2p, 480M
-> /:  Bus 01.Port 1: Dev 1, Class=3Droot_hub, Driver=3Dehci-pci/2p, 480M
->     |__ Port 1: Dev 2, If 0, Class=3Dhub, Driver=3Dhub/6p, 480M
-> =
+diff --git a/commands/devinfo.c b/commands/devinfo.c
+index 806e45c..75bc9d4 100644
+--- a/commands/devinfo.c
++++ b/commands/devinfo.c
+@@ -33,9 +33,10 @@ static int do_devinfo_subtree(struct device_d *dev, int depth)
+ 		list_for_each_entry(cdev, &dev->cdevs, devices_list) {
+ 			for (i = 0; i < depth + 1; i++)
+ 				printf("     ");
+-			printf("`---- 0x%08llx-0x%08llx: /dev/%s\n",
++			printf("`---- 0x%08llx-0x%08llx (%10s): /dev/%s\n",
+ 					cdev->offset,
+ 					cdev->offset + cdev->size - 1,
++					size_human_readable(cdev->size),
+ 					cdev->name);
+ 		}
+ 	} else {
+-- 
+1.7.1
 
-> Also please add an entry into commands/Kconfig:
-
-I'll separate lsusb code into independent lsusb.c file.
-
-> And put it into the
-> info group, lsusb just shows something, it doesn't manipulate any
-> hardware.
-
-Not exactly so. It invokes usb_rescan(0).
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
