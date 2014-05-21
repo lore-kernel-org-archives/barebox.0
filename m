@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x229.google.com ([2607:f8b0:4002:c07::229])
+Received: from mail-yk0-x230.google.com ([2607:f8b0:4002:c07::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wn6Ot-0000Oj-5N
- for barebox@lists.infradead.org; Wed, 21 May 2014 13:17:43 +0000
-Received: by mail-yk0-f169.google.com with SMTP id 200so1536820ykr.14
- for <barebox@lists.infradead.org>; Wed, 21 May 2014 06:17:21 -0700 (PDT)
+ id 1Wn6Ro-0001iA-VQ
+ for barebox@lists.infradead.org; Wed, 21 May 2014 13:20:45 +0000
+Received: by mail-yk0-f176.google.com with SMTP id q9so1547858ykb.7
+ for <barebox@lists.infradead.org>; Wed, 21 May 2014 06:20:21 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1400533184-668-4-git-send-email-s.hauer@pengutronix.de>
-References: <1400533184-668-1-git-send-email-s.hauer@pengutronix.de>
- <1400533184-668-4-git-send-email-s.hauer@pengutronix.de>
-Date: Wed, 21 May 2014 15:17:20 +0200
-Message-ID: <CAOpc7mEMKbWg244JHWx3emMr0Mt1VMmkK0gKC97+LS_7jSA6UA@mail.gmail.com>
+In-Reply-To: <1400662482-23560-1-git-send-email-antonynpavlov@gmail.com>
+References: <1400662482-23560-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 21 May 2014 15:20:21 +0200
+Message-ID: <CAOpc7mHG9eaRRWkYxazwRCeVrAXB_LPLuD2zPp8WLOj9yiTVnQ@mail.gmail.com>
 From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,18 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] commands: add of_dump command
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] [RFC] [WIP] commands: add tree view capable lsusb
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-> +               -f <dtb>        work on <dtb> instead of internal devicetree
-> +BAREBOX_CMD_HELP_OPT  ("-f <dtb>",  "work on <dtb> instead of internal devicetree\n")
+Nice, I would just remove the extra empty lines. Linux' "lsusb -t" for
+example produces this:
 
-In my command-rework patches I have used "-f FOO" instead of "-f
-<foo>". Two reasons:
+holger@desktop:~$ lsusb -t
+/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/2p, 480M
+    |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/8p, 480M
+        |__ Port 1: Dev 27, If 0, Class=HID, Driver=usbhid, 1.5M
+        |__ Port 2: Dev 4, If 0, Class=HID, Driver=usbhid, 1.5M
+        |__ Port 6: Dev 126, If 0, Class=hub, Driver=hub/2p, 480M
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/2p, 480M
+    |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/6p, 480M
 
-1. saves 2 bytes
-2. less occurences of column align fixup with extra \t needed
+Also please add an entry into commands/Kconfig: And put it into the
+info group, lsusb just shows something, it doesn't manipulate any
+hardware.
 
 _______________________________________________
 barebox mailing list
