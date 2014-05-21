@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wn5UR-0006xe-20
- for barebox@lists.infradead.org; Wed, 21 May 2014 12:19:24 +0000
+ Linux)) id 1Wn5UR-0006xd-1u
+ for barebox@lists.infradead.org; Wed, 21 May 2014 12:19:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 21 May 2014 14:19:00 +0200
-Message-Id: <1400674740-6467-11-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 21 May 2014 14:18:58 +0200
+Message-Id: <1400674740-6467-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1400674740-6467-1-git-send-email-s.hauer@pengutronix.de>
 References: <1400674740-6467-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] net: fec_imx: Add devicetree support for mdio bus
+Subject: [PATCH 08/10] net: phy: genphy: always write MII_CTRL1000 when
+ available
 To: barebox@lists.infradead.org
 
-The fec has a mdio bus. This adds support for a subnode
-in which the phys on this bus can be specified.
+the phydev->supported field does not necessarily match the hardware
+capabilities, it could be limited by the board to force the phy
+to a lower speed. In this case make sure the gigabit advertise bits
+are cleared on a gigabit phy.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/phy/phy.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 72e689d..cc2a331 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -621,6 +621,7 @@ static int fec_alloc_receive_packets(struct fec_priv *fec, int count, int size)
- #ifdef CONFIG_OFDEVICE
- static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index b0e0c1e..e214c13 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -390,7 +390,7 @@ out:
+ int genphy_config_advert(struct phy_device *phydev)
  {
-+	struct device_node *mdiobus;
- 	int ret;
+ 	u32 advertise;
+-	int oldadv, adv;
++	int oldadv, adv, bmsr;
+ 	int err, changed = 0;
  
- 	ret = of_get_phy_mode(dev->device_node);
-@@ -629,6 +630,10 @@ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
- 	else
- 		fec->interface = ret;
+ 	/* Only allow advertising what
+@@ -417,8 +417,11 @@ int genphy_config_advert(struct phy_device *phydev)
+ 	}
  
-+	mdiobus = of_get_child_by_name(dev->device_node, "mdio");
-+	if (mdiobus)
-+		fec->miibus.dev.device_node = mdiobus;
+ 	/* Configure gigabit if it's supported */
+-	if (phydev->supported & (SUPPORTED_1000baseT_Half |
+-				SUPPORTED_1000baseT_Full)) {
++	bmsr = phy_read(phydev, MII_BMSR);
++	if (bmsr < 0)
++		return bmsr;
 +
- 	return 0;
- }
- #else
++	if (bmsr & BMSR_ESTATEN) {
+ 		oldadv = adv = phy_read(phydev, MII_CTRL1000);
+ 
+ 		if (adv < 0)
 -- 
 2.0.0.rc0
 
