@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wn5V6-0007IL-Ou
- for barebox@lists.infradead.org; Wed, 21 May 2014 12:20:05 +0000
+ Linux)) id 1Wn5V1-0007E8-Oe
+ for barebox@lists.infradead.org; Wed, 21 May 2014 12:20:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 21 May 2014 14:19:37 +0200
-Message-Id: <1400674777-7626-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1400674777-7626-1-git-send-email-s.hauer@pengutronix.de>
-References: <1400674777-7626-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 21 May 2014 14:19:36 +0200
+Message-Id: <1400674777-7626-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] net: fec_imx: check return value of registration functions
+Subject: [PATCH 1/2] net: fec_imx: mask mii register reads correctly
 To: barebox@lists.infradead.org
 
-We do not care about releasing the resources in the error
-path, but at least check the return value of eth_register
-and mdiobus_register.
+mii registers are 16bit wide, so mask out the higher bits.
+The higher bits confuse mii-tool.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/fec_imx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/fec_imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 714f8f2..808bf8f 100644
+index 72e689d..714f8f2 100644
 --- a/drivers/net/fec_imx.c
 +++ b/drivers/net/fec_imx.c
-@@ -732,9 +732,14 @@ static int fec_probe(struct device_d *dev)
- 	fec->miibus.priv = fec;
- 	fec->miibus.parent = dev;
+@@ -89,7 +89,7 @@ static int fec_miibus_read(struct mii_bus *bus, int phyAddr, int regAddr)
+ 	/*
+ 	 * it's now safe to read the PHY's register
+ 	 */
+-	return readl(fec->regs + FEC_MII_DATA);
++	return readl(fec->regs + FEC_MII_DATA) & 0xffff;
+ }
  
--	mdiobus_register(&fec->miibus);
-+	ret = mdiobus_register(&fec->miibus);
-+	if (ret)
-+		return ret;
-+
-+	ret = eth_register(edev);
-+	if (ret)
-+		return ret;
- 
--	eth_register(edev);
- 	return 0;
- 
- err_free:
+ static int fec_miibus_write(struct mii_bus *bus, int phyAddr,
 -- 
 2.0.0.rc0
 
