@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wn5Lg-0002kO-Pa
+ Linux)) id 1Wn5Lg-0002kP-Pf
  for barebox@lists.infradead.org; Wed, 21 May 2014 12:10:21 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Wn5LC-0003yd-9d
- for barebox@lists.infradead.org; Wed, 21 May 2014 14:09:50 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1Wn5LJ-0008Kz-Dj
- for barebox@lists.infradead.org; Wed, 21 May 2014 14:09:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 21 May 2014 14:09:53 +0200
-Message-Id: <1400674196-31951-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 21 May 2014 14:09:54 +0200
+Message-Id: <1400674196-31951-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1400674196-31951-1-git-send-email-s.hauer@pengutronix.de>
+References: <1400674196-31951-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,20 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mii-tool fixes
+Subject: [PATCH 1/3] mii-tool: Fix string length
 To: barebox@lists.infradead.org
 
-The mii-tool command has several bugs in the gigabit support.
-This series has some fixes for them.
+media_list writes into a static string. Worst case length of this string
+is 125 bytes, but the function only allocates 100 bytes. Use 256 bytes which
+is long enough for some extensions.
 
-----------------------------------------------------------------
-Sascha Hauer (3):
-      mii-tool: Fix string length
-      mii-tool: Fix gigabit link test
-      mii-tool: Fix gigabit advertise / link partner ability mixup
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/miitool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- commands/miitool.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+diff --git a/commands/miitool.c b/commands/miitool.c
+index 1e5d4eb..81b5a25 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -61,7 +61,7 @@ const struct {
+ 
+ static const char *media_list(unsigned mask, unsigned mask2, int best)
+ {
+-	static char buf[100];
++	static char buf[256];
+ 	int i;
+ 
+ 	*buf = '\0';
+-- 
+2.0.0.rc0
+
 
 _______________________________________________
 barebox mailing list
