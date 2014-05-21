@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wn5UR-0006xZ-21
- for barebox@lists.infradead.org; Wed, 21 May 2014 12:19:24 +0000
+ Linux)) id 1Wn5UR-0006xX-1u
+ for barebox@lists.infradead.org; Wed, 21 May 2014 12:19:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 21 May 2014 14:18:54 +0200
-Message-Id: <1400674740-6467-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 21 May 2014 14:18:53 +0200
+Message-Id: <1400674740-6467-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1400674740-6467-1-git-send-email-s.hauer@pengutronix.de>
 References: <1400674740-6467-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] net: phy: Support finding a phy in the devicetree
+Subject: [PATCH 03/10] net: phy: register phys specified in devicetree
 To: barebox@lists.infradead.org
 
-When the ethernet device has a device_node then try finding
-the associated phy via the phy-handle property.
-
-This makes the phy handling via devicetree transparent to the
-ethernet drivers.
+When a mdio bus has a device node attached then register the phys
+specified there. This makes it possible to lookup the phys using
+phandles later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/phy.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/net/phy/mdio_bus.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 1e26e45..257df74 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -262,6 +262,29 @@ int phy_register_device(struct phy_device* dev)
- 	return ret;
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 5c4dea4..ca01673 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -49,6 +49,71 @@ int mdiobus_detect(struct device_d *dev)
+ 	return 0;
  }
  
-+static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
++static int of_mdiobus_register_phy(struct mii_bus *mdio, struct device_node *child,
++				   u32 addr)
 +{
-+	struct device_d *dev;
-+	struct device_node *phy_node;
++	struct phy_device *phy;
++	int ret;
 +
-+	if (!IS_ENABLED(CONFIG_OFDEVICE))
-+		return NULL;
++	phy = get_phy_device(mdio, addr);
++	if (IS_ERR(phy))
++		return PTR_ERR(phy);
 +
-+	if (!edev->parent->device_node)
-+		return NULL;
++	/*
++	 * Associate the OF node with the device structure so it
++	 * can be looked up later
++	 */
++	phy->dev.device_node = child;
 +
-+	phy_node = of_parse_phandle(edev->parent->device_node, "phy-handle", 0);
-+	if (!phy_node)
-+		return NULL;
++	/*
++	 * All data is now stored in the phy struct;
++	 * register it
++	 */
++	ret = phy_register_device(phy);
++	if (ret)
++		return ret;
 +
-+	bus_for_each_device(&mdio_bus_type, dev) {
-+		if (dev->device_node == phy_node)
-+			return container_of(dev, struct phy_device, dev);
-+	}
++	dev_dbg(&mdio->dev, "registered phy %s at address %i\n",
++		child->name, addr);
 +
-+	return NULL;
++	return 0;
 +}
 +
- static int phy_device_attach(struct phy_device *phy, struct eth_device *edev,
- 		       void (*adjust_link) (struct eth_device *edev),
- 		       u32 flags, phy_interface_t interface)
-@@ -312,6 +335,13 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 		return 0;
- 	}
- 
-+	phy = of_mdio_find_phy(edev);
-+	if (phy) {
-+		ret = phy_device_attach(phy, edev, adjust_link, flags, interface);
++/**
++ * of_mdiobus_register - Register mii_bus and create PHYs from the device tree
++ * @mdio: pointer to mii_bus structure
++ * @np: pointer to device_node of MDIO bus.
++ *
++ * This function registers the mii_bus structure and registers a phy_device
++ * for each child node of @np.
++ */
++static int of_mdiobus_register(struct mii_bus *mdio, struct device_node *np)
++{
++	struct device_node *child;
++	u32 addr;
++	int ret;
 +
-+		goto out;
++	/* Loop over the child nodes and register a phy_device for each one */
++	for_each_available_child_of_node(np, child) {
++		ret = of_property_read_u32(child, "reg", &addr);
++		if (ret) {
++			dev_err(&mdio->dev, "%s has invalid PHY address\n",
++				child->full_name);
++			continue;
++		}
++
++		if (addr >= PHY_MAX_ADDR) {
++			dev_err(&mdio->dev, "%s PHY address %i is too large\n",
++				child->full_name, addr);
++			continue;
++		}
++
++		of_mdiobus_register_phy(mdio, child, addr);
 +	}
 +
- 	if (addr >= 0) {
- 		phy = mdiobus_scan(bus, addr);
- 		if (IS_ERR(phy)) {
++	return 0;
++}
++
+ /**
+  * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
+  * @bus: target mii_bus
+@@ -85,6 +150,10 @@ int mdiobus_register(struct mii_bus *bus)
+ 	list_add_tail(&bus->list, &mii_bus_list);
+ 
+ 	pr_info("%s: probed\n", dev_name(&bus->dev));
++
++	if (bus->dev.device_node)
++		of_mdiobus_register(bus, bus->dev.device_node);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(mdiobus_register);
 -- 
 2.0.0.rc0
 
