@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22b.google.com ([2a00:1450:400c:c00::22b])
+Received: from mail-we0-x22a.google.com ([2a00:1450:400c:c03::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WnE8B-0001Q2-V7
- for barebox@lists.infradead.org; Wed, 21 May 2014 21:33:00 +0000
-Received: by mail-wg0-f43.google.com with SMTP id l18so2523326wgh.2
- for <barebox@lists.infradead.org>; Wed, 21 May 2014 14:32:37 -0700 (PDT)
+ id 1WnE89-0001PV-GN
+ for barebox@lists.infradead.org; Wed, 21 May 2014 21:32:57 +0000
+Received: by mail-we0-f170.google.com with SMTP id u57so2655864wes.29
+ for <barebox@lists.infradead.org>; Wed, 21 May 2014 14:32:35 -0700 (PDT)
 From: Franck Jullien <franck.jullien@gmail.com>
-Date: Wed, 21 May 2014 23:32:29 +0200
-Message-Id: <1400707949-16521-3-git-send-email-franck.jullien@gmail.com>
-In-Reply-To: <1400707949-16521-1-git-send-email-franck.jullien@gmail.com>
-References: <1400707949-16521-1-git-send-email-franck.jullien@gmail.com>
+Date: Wed, 21 May 2014 23:32:27 +0200
+Message-Id: <1400707949-16521-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,100 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] openrisc: update cpuinfo
+Subject: [PATCH 1/3] openrisc: update SPR registers definition
 To: barebox@lists.infradead.org
 
-Update cpuinfo to display the current CPU implementation
-using the VR2 register defined in the architecture specification
-v1.0
+The OpenRISC architecture specification v1.0 defines
+new SPR registers. This patch adds registers definition
+for group 0 and update bit definitions for the CPU
+configuration register.
 
 Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 ---
- arch/openrisc/lib/cpuinfo.c |   50 +++++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 50 insertions(+), 0 deletions(-)
+ arch/openrisc/include/asm/spr-defs.h |   13 ++++++++++++-
+ 1 files changed, 12 insertions(+), 1 deletions(-)
 
-diff --git a/arch/openrisc/lib/cpuinfo.c b/arch/openrisc/lib/cpuinfo.c
-index 1f137f0..9434b5e 100644
---- a/arch/openrisc/lib/cpuinfo.c
-+++ b/arch/openrisc/lib/cpuinfo.c
-@@ -23,6 +23,13 @@
- #include <asm/cache.h>
- #include <asm/openrisc_exc.h>
+diff --git a/arch/openrisc/include/asm/spr-defs.h b/arch/openrisc/include/asm/spr-defs.h
+index cb0cdfa..b3b08db 100644
+--- a/arch/openrisc/include/asm/spr-defs.h
++++ b/arch/openrisc/include/asm/spr-defs.h
+@@ -49,6 +49,11 @@
+ #define SPR_ICCFGR	(SPRGROUP_SYS + 6)
+ #define SPR_DCFGR	(SPRGROUP_SYS + 7)
+ #define SPR_PCCFGR	(SPRGROUP_SYS + 8)
++#define SPR_VR2		(SPRGROUP_SYS + 9)
++#define SPR_AVR		(SPRGROUP_SYS + 10)
++#define SPR_EVBAR	(SPRGROUP_SYS + 11)
++#define SPR_AECR	(SPRGROUP_SYS + 12)
++#define SPR_AESR	(SPRGROUP_SYS + 13)
+ #define SPR_NPC		(SPRGROUP_SYS + 16)
+ #define SPR_SR		(SPRGROUP_SYS + 17)
+ #define SPR_PPC		(SPRGROUP_SYS + 18)
+@@ -164,7 +169,13 @@
+ #define SPR_CPUCFGR_OF32S	0x00000080 /* ORFPX32 supported */
+ #define SPR_CPUCFGR_OF64S	0x00000100 /* ORFPX64 supported */
+ #define SPR_CPUCFGR_OV64S	0x00000200 /* ORVDX64 supported */
+-#define SPR_CPUCFGR_RES		0xfffffc00 /* Reserved */
++#define SPR_CPUCFGR_ND		0x00000400 /* No delay slot */
++#define SPR_CPUCFGR_AVRP	0x00000800 /* Arch. Version Register present */
++#define SPR_CPUCFGR_EVBARP	0x00001000 /* Exception Vector Base Address Register (EVBAR) present */
++#define SPR_CPUCFGR_ISRP	0x00002000 /* Implementation-Specific Registers (ISR0-7) present */
++#define SPR_CPUCFGR_AECSRP	0x00004000 /* Arithmetic Exception Control Register (AECR) and */
++					   /* Arithmetic Exception Status Register (AESR) presents */
++#define SPR_CPUCFGR_RES		0xffffc000 /* Reserved */
  
-+/* CPUID */
-+#define OR1KSIM	0x00
-+#define OR1200	0x12
-+#define MOR1KX	0x01
-+#define ALTOR32	0x32
-+#define OR10	0x10
-+
- static volatile int illegal_instruction;
- 
- static void illegal_instruction_handler(void)
-@@ -56,10 +63,46 @@ static int checkinstructions(void)
- 	return 0;
- }
- 
-+static void cpu_implementation(ulong vr2, char *string)
-+{
-+	switch (vr2 >> 24) {
-+
-+	case OR1KSIM:
-+		sprintf(string, "or1ksim");
-+		break;
-+	case OR1200:
-+		sprintf(string, "OR1200");
-+		break;
-+	case MOR1KX:
-+		sprintf(string, "mor1kx v%u.%u - ", (uint)((vr2 >> 16) & 0xff),
-+			(uint)((vr2 >> 8) & 0xff));
-+
-+		if ((uint)(vr2 & 0xff) == 1)
-+			strcat(string, "cappuccino");
-+		else if ((uint)(vr2 & 0xff) == 2)
-+			strcat(string, "espresso");
-+		else if ((uint)(vr2 & 0xff) == 3)
-+			strcat(string, "prontoespresso");
-+		else
-+			strcat(string, "unknwown");
-+
-+		break;
-+	case ALTOR32:
-+		sprintf(string, "AltOr32");
-+		break;
-+	case OR10:
-+		sprintf(string, "OR10");
-+		break;
-+	default:
-+		sprintf(string, "unknown");
-+	}
-+}
-+
- int checkcpu(void)
- {
- 	ulong upr = mfspr(SPR_UPR);
- 	ulong vr = mfspr(SPR_VR);
-+	ulong vr2 = mfspr(SPR_VR2);
- 	ulong iccfgr = mfspr(SPR_ICCFGR);
- 	ulong dccfgr = mfspr(SPR_DCCFGR);
- 	ulong immucfgr = mfspr(SPR_IMMUCFGR);
-@@ -71,9 +114,16 @@ int checkcpu(void)
- 	uint ways;
- 	uint sets;
- 
-+	char impl_str[50];
-+
- 	printf("CPU:   OpenRISC-%x00 (rev %d) @ %d MHz\n",
- 		ver, rev, (CONFIG_SYS_CLK_FREQ / 1000000));
- 
-+	if (vr2) {
-+		cpu_implementation(vr2, impl_str);
-+		printf("       Implementation: %s\n", impl_str);
-+	}
-+
- 	if (upr & SPR_UPR_DCP) {
- 		block_size = (dccfgr & SPR_DCCFGR_CBS) ? 32 : 16;
- 		ways = 1 << (dccfgr & SPR_DCCFGR_NCW);
+ /*
+  * Bit definitions for the Debug configuration register and other
 -- 
 1.7.1
 
