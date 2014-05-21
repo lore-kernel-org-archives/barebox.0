@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wn5UR-0006xd-1u
- for barebox@lists.infradead.org; Wed, 21 May 2014 12:19:23 +0000
+ Linux)) id 1Wn5UR-0006xU-1y
+ for barebox@lists.infradead.org; Wed, 21 May 2014 12:19:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 21 May 2014 14:18:58 +0200
-Message-Id: <1400674740-6467-9-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 21 May 2014 14:18:51 +0200
+Message-Id: <1400674740-6467-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1400674740-6467-1-git-send-email-s.hauer@pengutronix.de>
 References: <1400674740-6467-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,47 +21,152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] net: phy: genphy: always write MII_CTRL1000 when
- available
+Subject: [PATCH 01/10] net: phy: factor out phy_device_attach function
 To: barebox@lists.infradead.org
 
-the phydev->supported field does not necessarily match the hardware
-capabilities, it could be limited by the board to force the phy
-to a lower speed. In this case make sure the gigabit advertise bits
-are cleared on a gigabit phy.
+phy_device_connect combines searching for a phy with actually attaching
+it to the ethernet device. Factor out a phy_device_attach function to
+have a function for each purpose. This makes the logic of phy_device_connect
+simpler.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/phy.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/phy/phy.c | 99 +++++++++++++++++++++++++++++----------------------
+ 1 file changed, 56 insertions(+), 43 deletions(-)
 
 diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index b0e0c1e..e214c13 100644
+index 879939d..a8a8a2c 100644
 --- a/drivers/net/phy/phy.c
 +++ b/drivers/net/phy/phy.c
-@@ -390,7 +390,7 @@ out:
- int genphy_config_advert(struct phy_device *phydev)
- {
- 	u32 advertise;
--	int oldadv, adv;
-+	int oldadv, adv, bmsr;
- 	int err, changed = 0;
+@@ -260,12 +260,48 @@ int phy_register_device(struct phy_device* dev)
+ 	return ret;
+ }
  
- 	/* Only allow advertising what
-@@ -417,8 +417,11 @@ int genphy_config_advert(struct phy_device *phydev)
++static int phy_device_attach(struct phy_device *phy, struct eth_device *edev,
++		       void (*adjust_link) (struct eth_device *edev),
++		       u32 flags, phy_interface_t interface)
++{
++	int ret;
++
++	if (phy->attached_dev)
++		return -EBUSY;
++
++	phy->interface = interface;
++	phy->dev_flags = flags;
++
++	if (!phy->registered) {
++		ret = phy_register_device(phy);
++		if (ret)
++			return ret;
++	}
++
++	edev->phydev = phy;
++	phy->attached_dev = edev;
++
++	ret = phy_init_hw(phy);
++	if (ret)
++		return ret;
++
++	/* Sanitize settings based on PHY capabilities */
++	if ((phy->supported & SUPPORTED_Autoneg) == 0)
++		phy->autoneg = AUTONEG_DISABLE;
++
++	phy_config_aneg(edev->phydev);
++
++	phy->adjust_link = adjust_link;
++
++	return 0;
++}
++
+ /* Automatically gets and returns the PHY device */
+ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+ 		       void (*adjust_link) (struct eth_device *edev),
+ 		       u32 flags, phy_interface_t interface)
+ {
+-	struct phy_device* dev = NULL;
++	struct phy_device *phy;
+ 	unsigned int i;
+ 	int ret = -EINVAL;
+ 
+@@ -275,59 +311,36 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
  	}
  
- 	/* Configure gigabit if it's supported */
--	if (phydev->supported & (SUPPORTED_1000baseT_Half |
--				SUPPORTED_1000baseT_Full)) {
-+	bmsr = phy_read(phydev, MII_BMSR);
-+	if (bmsr < 0)
-+		return bmsr;
-+
-+	if (bmsr & BMSR_ESTATEN) {
- 		oldadv = adv = phy_read(phydev, MII_CTRL1000);
+ 	if (addr >= 0) {
+-		dev = mdiobus_scan(bus, addr);
+-		if (IS_ERR(dev)) {
++		phy = mdiobus_scan(bus, addr);
++		if (IS_ERR(phy)) {
+ 			ret = -EIO;
+-			goto fail;
+-		}
+-	} else {
+-		for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
+-			/* skip masked out PHY addresses */
+-			if (bus->phy_mask & (1 << i))
+-				continue;
+-
+-			dev = mdiobus_scan(bus, i);
+-			if (!IS_ERR(dev) && !dev->attached_dev)
+-                                break;
++			goto out;
+ 		}
  
- 		if (adv < 0)
+-		if (IS_ERR(dev)) {
+-			ret = PTR_ERR(dev);
+-			goto fail;
+-		}
+-	}
+-
+-	if (dev->attached_dev)
+-		return -EBUSY;
++		ret = phy_device_attach(phy, edev, adjust_link, flags, interface);
+ 
+-	dev->interface = interface;
+-	dev->dev_flags = flags;
+-
+-	if (!dev->registered) {
+-		ret = phy_register_device(dev);
+-		if (ret)
+-			goto fail;
++		goto out;
+ 	}
+ 
+-	edev->phydev = dev;
+-	dev->attached_dev = edev;
++	for (i = 0; i < PHY_MAX_ADDR && !edev->phydev; i++) {
++		/* skip masked out PHY addresses */
++		if (bus->phy_mask & (1 << i))
++			continue;
+ 
+-	ret = phy_init_hw(dev);
+-	if (ret)
+-		goto fail;
++		phy = mdiobus_scan(bus, i);
++		if (IS_ERR(phy))
++			continue;
+ 
+-	/* Sanitize settings based on PHY capabilities */
+-	if ((dev->supported & SUPPORTED_Autoneg) == 0)
+-		dev->autoneg = AUTONEG_DISABLE;
++		ret = phy_device_attach(phy, edev, adjust_link, flags, interface);
+ 
+-	phy_config_aneg(edev->phydev);
+-
+-	dev->adjust_link = adjust_link;
++		goto out;
++	}
+ 
+-	return 0;
++	ret = -ENODEV;
++out:
++	if (ret)
++		puts("Unable to find a PHY (unknown ID?)\n");
+ 
+-fail:
+-	puts("Unable to find a PHY (unknown ID?)\n");
+ 	return ret;
+ }
+ 
 -- 
 2.0.0.rc0
 
