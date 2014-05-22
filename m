@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22a.google.com ([2a00:1450:400c:c03::22a])
+Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WnE89-0001PV-GN
- for barebox@lists.infradead.org; Wed, 21 May 2014 21:32:57 +0000
-Received: by mail-we0-f170.google.com with SMTP id u57so2655864wes.29
- for <barebox@lists.infradead.org>; Wed, 21 May 2014 14:32:35 -0700 (PDT)
-From: Franck Jullien <franck.jullien@gmail.com>
-Date: Wed, 21 May 2014 23:32:27 +0200
-Message-Id: <1400707949-16521-1-git-send-email-franck.jullien@gmail.com>
+ id 1WnLPv-0001eb-0P
+ for barebox@lists.infradead.org; Thu, 22 May 2014 05:19:47 +0000
+Received: by mail-lb0-f172.google.com with SMTP id l4so2269518lbv.17
+ for <barebox@lists.infradead.org>; Wed, 21 May 2014 22:19:24 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 22 May 2014 09:19:12 +0400
+Message-Id: <1400735952-6424-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1400735952-6424-1-git-send-email-antonynpavlov@gmail.com>
+References: <1400735952-6424-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] openrisc: update SPR registers definition
+Subject: [PATCH 2/2] usb: drop unused USB_UHCI_*_ID macros
 To: barebox@lists.infradead.org
 
-The OpenRISC architecture specification v1.0 defines
-new SPR registers. This patch adds registers definition
-for group 0 and update bit definitions for the CPU
-configuration register.
-
-Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/openrisc/include/asm/spr-defs.h |   13 ++++++++++++-
- 1 files changed, 12 insertions(+), 1 deletions(-)
+ include/usb/usb.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/openrisc/include/asm/spr-defs.h b/arch/openrisc/include/asm/spr-defs.h
-index cb0cdfa..b3b08db 100644
---- a/arch/openrisc/include/asm/spr-defs.h
-+++ b/arch/openrisc/include/asm/spr-defs.h
-@@ -49,6 +49,11 @@
- #define SPR_ICCFGR	(SPRGROUP_SYS + 6)
- #define SPR_DCFGR	(SPRGROUP_SYS + 7)
- #define SPR_PCCFGR	(SPRGROUP_SYS + 8)
-+#define SPR_VR2		(SPRGROUP_SYS + 9)
-+#define SPR_AVR		(SPRGROUP_SYS + 10)
-+#define SPR_EVBAR	(SPRGROUP_SYS + 11)
-+#define SPR_AECR	(SPRGROUP_SYS + 12)
-+#define SPR_AESR	(SPRGROUP_SYS + 13)
- #define SPR_NPC		(SPRGROUP_SYS + 16)
- #define SPR_SR		(SPRGROUP_SYS + 17)
- #define SPR_PPC		(SPRGROUP_SYS + 18)
-@@ -164,7 +169,13 @@
- #define SPR_CPUCFGR_OF32S	0x00000080 /* ORFPX32 supported */
- #define SPR_CPUCFGR_OF64S	0x00000100 /* ORFPX64 supported */
- #define SPR_CPUCFGR_OV64S	0x00000200 /* ORVDX64 supported */
--#define SPR_CPUCFGR_RES		0xfffffc00 /* Reserved */
-+#define SPR_CPUCFGR_ND		0x00000400 /* No delay slot */
-+#define SPR_CPUCFGR_AVRP	0x00000800 /* Arch. Version Register present */
-+#define SPR_CPUCFGR_EVBARP	0x00001000 /* Exception Vector Base Address Register (EVBAR) present */
-+#define SPR_CPUCFGR_ISRP	0x00002000 /* Implementation-Specific Registers (ISR0-7) present */
-+#define SPR_CPUCFGR_AECSRP	0x00004000 /* Arithmetic Exception Control Register (AECR) and */
-+					   /* Arithmetic Exception Status Register (AESR) presents */
-+#define SPR_CPUCFGR_RES		0xffffc000 /* Reserved */
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index b4ac4ba..6f5a351 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -219,10 +219,6 @@ int usb_register_host(struct usb_host *);
  
- /*
-  * Bit definitions for the Debug configuration register and other
+ int usb_host_detect(struct usb_host *host, int force);
+ 
+-/* Defines */
+-#define USB_UHCI_VEND_ID	0x8086
+-#define USB_UHCI_DEV_ID		0x7112
+-
+ int usb_set_protocol(struct usb_device *dev, int ifnum, int protocol);
+ int usb_set_idle(struct usb_device *dev, int ifnum, int duration,
+ 			int report_id);
 -- 
-1.7.1
+1.9.2
 
 
 _______________________________________________
