@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WnMAU-0004C3-9t
- for barebox@lists.infradead.org; Thu, 22 May 2014 06:07:55 +0000
-Date: Thu, 22 May 2014 08:07:33 +0200
+ Linux)) id 1WnM9G-0003iY-3R
+ for barebox@lists.infradead.org; Thu, 22 May 2014 06:06:39 +0000
+Date: Thu, 22 May 2014 08:06:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140522060733.GP5858@pengutronix.de>
-References: <1400707949-16521-1-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20140522060615.GO5858@pengutronix.de>
+References: <1400701396-6018-1-git-send-email-franck.jullien@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1400707949-16521-1-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1400701396-6018-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] openrisc: update SPR registers definition
+Subject: Re: [PATCH] devinfo: add human readable size after memory range
 To: Franck Jullien <franck.jullien@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 21, 2014 at 11:32:27PM +0200, Franck Jullien wrote:
-> The OpenRISC architecture specification v1.0 defines
-> new SPR registers. This patch adds registers definition
-> for group 0 and update bit definitions for the CPU
-> configuration register.
+On Wed, May 21, 2014 at 09:43:16PM +0200, Franck Jullien wrote:
+> It's not always easy to know what is the size of a parition.
+> 
+> This patch adds the size of a memory range in human readable
+> format. We now have for example:
+> 
+> `---- cfi_flash0
+>      `---- nor0
+>           `---- 0x00000000-0x00ffffff (    16 MiB): /dev/nor0
+>           `---- 0x00000000-0x0001ffff (   128 KiB): /dev/env0
+>           `---- 0x00020000-0x0011ffff (     1 MiB): /dev/fpga0
+>           `---- 0x00120000-0x0019ffff (   512 KiB): /dev/self0
+>           `---- 0x001a0000-0x00d9ffff (    12 MiB): /dev/linux
+>           `---- 0x00da0000-0x00ffffff (   2.4 MiB): /dev/elf
 > 
 > Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
 
-Applied, thanks
+Good idea. Applied, thanks
 
 Sascha
 
 > ---
->  arch/openrisc/include/asm/spr-defs.h |   13 ++++++++++++-
->  1 files changed, 12 insertions(+), 1 deletions(-)
+>  commands/devinfo.c |    3 ++-
+>  1 files changed, 2 insertions(+), 1 deletions(-)
 > 
-> diff --git a/arch/openrisc/include/asm/spr-defs.h b/arch/openrisc/include/asm/spr-defs.h
-> index cb0cdfa..b3b08db 100644
-> --- a/arch/openrisc/include/asm/spr-defs.h
-> +++ b/arch/openrisc/include/asm/spr-defs.h
-> @@ -49,6 +49,11 @@
->  #define SPR_ICCFGR	(SPRGROUP_SYS + 6)
->  #define SPR_DCFGR	(SPRGROUP_SYS + 7)
->  #define SPR_PCCFGR	(SPRGROUP_SYS + 8)
-> +#define SPR_VR2		(SPRGROUP_SYS + 9)
-> +#define SPR_AVR		(SPRGROUP_SYS + 10)
-> +#define SPR_EVBAR	(SPRGROUP_SYS + 11)
-> +#define SPR_AECR	(SPRGROUP_SYS + 12)
-> +#define SPR_AESR	(SPRGROUP_SYS + 13)
->  #define SPR_NPC		(SPRGROUP_SYS + 16)
->  #define SPR_SR		(SPRGROUP_SYS + 17)
->  #define SPR_PPC		(SPRGROUP_SYS + 18)
-> @@ -164,7 +169,13 @@
->  #define SPR_CPUCFGR_OF32S	0x00000080 /* ORFPX32 supported */
->  #define SPR_CPUCFGR_OF64S	0x00000100 /* ORFPX64 supported */
->  #define SPR_CPUCFGR_OV64S	0x00000200 /* ORVDX64 supported */
-> -#define SPR_CPUCFGR_RES		0xfffffc00 /* Reserved */
-> +#define SPR_CPUCFGR_ND		0x00000400 /* No delay slot */
-> +#define SPR_CPUCFGR_AVRP	0x00000800 /* Arch. Version Register present */
-> +#define SPR_CPUCFGR_EVBARP	0x00001000 /* Exception Vector Base Address Register (EVBAR) present */
-> +#define SPR_CPUCFGR_ISRP	0x00002000 /* Implementation-Specific Registers (ISR0-7) present */
-> +#define SPR_CPUCFGR_AECSRP	0x00004000 /* Arithmetic Exception Control Register (AECR) and */
-> +					   /* Arithmetic Exception Status Register (AESR) presents */
-> +#define SPR_CPUCFGR_RES		0xffffc000 /* Reserved */
->  
->  /*
->   * Bit definitions for the Debug configuration register and other
+> diff --git a/commands/devinfo.c b/commands/devinfo.c
+> index 806e45c..75bc9d4 100644
+> --- a/commands/devinfo.c
+> +++ b/commands/devinfo.c
+> @@ -33,9 +33,10 @@ static int do_devinfo_subtree(struct device_d *dev, int depth)
+>  		list_for_each_entry(cdev, &dev->cdevs, devices_list) {
+>  			for (i = 0; i < depth + 1; i++)
+>  				printf("     ");
+> -			printf("`---- 0x%08llx-0x%08llx: /dev/%s\n",
+> +			printf("`---- 0x%08llx-0x%08llx (%10s): /dev/%s\n",
+>  					cdev->offset,
+>  					cdev->offset + cdev->size - 1,
+> +					size_human_readable(cdev->size),
+>  					cdev->name);
+>  		}
+>  	} else {
 > -- 
 > 1.7.1
 > 
