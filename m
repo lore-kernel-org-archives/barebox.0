@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WnYzd-0004tn-Fk
- for barebox@lists.infradead.org; Thu, 22 May 2014 19:49:34 +0000
-Received: by mail-la0-f50.google.com with SMTP id b8so3073976lan.9
- for <barebox@lists.infradead.org>; Thu, 22 May 2014 12:49:10 -0700 (PDT)
+ id 1WnYzc-0004tm-1s
+ for barebox@lists.infradead.org; Thu, 22 May 2014 19:49:33 +0000
+Received: by mail-la0-f45.google.com with SMTP id gl10so3084438lab.4
+ for <barebox@lists.infradead.org>; Thu, 22 May 2014 12:49:08 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 22 May 2014 23:48:44 +0400
-Message-Id: <1400788130-24202-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
-References: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 22 May 2014 23:48:43 +0400
+Message-Id: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,136 +17,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/7] ARM: initial support for RC Module UEMD SoCs
+Subject: [PATCH v2 0/7] ARM: initial support for RC Module UEMD SoCs and MB
+ 77.07 board
 To: barebox@lists.infradead.org
 
-This commit adds minimal support for the UEMD SoCs
-from RC Module (http://www.module.ru).
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/Kconfig                           | 11 +++++++++++
- arch/arm/Makefile                          |  1 +
- arch/arm/mach-uemd/Kconfig                 |  7 +++++++
- arch/arm/mach-uemd/Makefile                |  1 +
- arch/arm/mach-uemd/include/mach/hardware.h |  7 +++++++
- arch/arm/mach-uemd/reset.c                 | 24 ++++++++++++++++++++++++
- 6 files changed, 51 insertions(+)
-
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 38b100d..81ee19b 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -194,6 +194,16 @@ config ARCH_TEGRA
- 	select RELOCATABLE
- 	select RESET_CONTROLLER
- 
-+config ARCH_UEMD
-+	bool "RC Module UEMD Platform"
-+	select CPU_ARM1176
-+	select COMMON_CLK
-+	select COMMON_CLK_OF_PROVIDER
-+	select CLKDEV_LOOKUP
-+	select OFDEVICE
-+	select OFTREE
-+	select CLOCKSOURCE_UEMD
-+
- config ARCH_ZYNQ
- 	bool "Xilinx Zynq-based boards"
- 	select HAS_DEBUG_LL
-@@ -220,6 +230,7 @@ source arch/arm/mach-socfpga/Kconfig
- source arch/arm/mach-versatile/Kconfig
- source arch/arm/mach-vexpress/Kconfig
- source arch/arm/mach-tegra/Kconfig
-+source arch/arm/mach-uemd/Kconfig
- source arch/arm/mach-zynq/Kconfig
- 
- config ARM_ASM_UNIFIED
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index c576999..64db73c 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -70,6 +70,7 @@ machine-$(CONFIG_ARCH_SOCFPGA)		:= socfpga
- machine-$(CONFIG_ARCH_VERSATILE)	:= versatile
- machine-$(CONFIG_ARCH_VEXPRESS)		:= vexpress
- machine-$(CONFIG_ARCH_TEGRA)		:= tegra
-+machine-$(CONFIG_ARCH_UEMD)		:= uemd
- machine-$(CONFIG_ARCH_ZYNQ)		:= zynq
- 
- 
-diff --git a/arch/arm/mach-uemd/Kconfig b/arch/arm/mach-uemd/Kconfig
-new file mode 100644
-index 0000000..f9cf859
---- /dev/null
-+++ b/arch/arm/mach-uemd/Kconfig
-@@ -0,0 +1,7 @@
-+if ARCH_UEMD
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x40800000
-+
-+endif
-diff --git a/arch/arm/mach-uemd/Makefile b/arch/arm/mach-uemd/Makefile
-new file mode 100644
-index 0000000..f3cc668
---- /dev/null
-+++ b/arch/arm/mach-uemd/Makefile
-@@ -0,0 +1 @@
-+obj-y += reset.o
-diff --git a/arch/arm/mach-uemd/include/mach/hardware.h b/arch/arm/mach-uemd/include/mach/hardware.h
-new file mode 100644
-index 0000000..2311ebf
---- /dev/null
-+++ b/arch/arm/mach-uemd/include/mach/hardware.h
-@@ -0,0 +1,7 @@
-+#ifndef __ASM_ARCH_HARDWARE_H
-+#define __ASM_ARCH_HARDWARE_H
-+
-+#define UEMD_EHCI_BASE	0x10040000
-+#define UEMD_UART0_BASE	0x2002b000
-+
-+#endif /* __ASM_ARCH_HARDWARE_H */
-diff --git a/arch/arm/mach-uemd/reset.c b/arch/arm/mach-uemd/reset.c
-new file mode 100644
-index 0000000..00ae0be
---- /dev/null
-+++ b/arch/arm/mach-uemd/reset.c
-@@ -0,0 +1,24 @@
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+
-+void __noreturn reset_cpu(ulong addr)
-+{
-+	hang();
-+}
-+EXPORT_SYMBOL(reset_cpu);
--- 
-1.9.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UmVzZWFyY2ggQ2VudHJlICJNb2R1bGUiIChSQyBNb2R1bGUpIGlzCmEgUnVzc2lhbiBkZXZlbG9w
+bWVudCBjb21wYW55IGRlc2lnbmluZwptaXhlZC1zaWduYWwgQVNJQ3MgYW5kIHJlYWwtdGltZSB2
+aWRlby1pbWFnZQpwcm9jZXNzaW5nIHN5c3RlbXMuCgrQmjE4NznQpdCRMdCvIChBS0EgSzE4NzlI
+QjFZQSkgaXMgYSBVRU1EIGZhbWlseSBTb0MgdGhhdCBjb21iaW5lcwphIERTUCBjb3JlIGJhc2Vk
+IG9uIHRoZSBOZXVyb01hdHJpeChyKSBmYW1pbHkKd2l0aCBhbiBBUk0gYXJjaGl0ZWN0dXJlIENQ
+VSBBUk0xMTc2SlpGLVMgY29yZS4KClRoZSBNQiA3Ny4wNyBpcyBhIHNtYWxsICg4MHg4MCBtbSkg
+c2luZ2xlLWJvYXJkIGNvbXB1dGVyCmRldmVsb3BlZCBpbiBSdXNzaWEgYnkgdGhlIFJDIE1vZHVs
+ZS4KSXQgd2FzIGRldmVsb3BlZCBhcyBhbiBlZHVjYXRpb25hbCBib2FyZCBmb3Ig0JoxODc50KXQ
+kTHQryBTb0MKY2FwYWJpbGl0aWVzIGRlbW9uc3RyYXRpb24uCgpTZWUgaHR0cDovL3d3dy5tb2R1
+bGUucnUvZW4vY2F0YWxvZy9taWNyby9taWNyb19wYy8gZm9yIGRldGFpbHMuCgpDaGFuZ2VzIHNp
+bmNlIHYxOgoKICAxLiBmaXggcmVzZXRfY3B1KCkKICAyLiBmaXggcGJsIGltYWdlIGJ1aWxkCiAg
+My4gYWRkIHVzYiBzdXBwb3J0CiAgNC4gYWRkIHVlbWQgY2xvY2tzb3VyY2UKICA1LiBhZGQgbWI3
+NzA3IGJhcmVib3ggbWluaS1ob3d0bwoKQW50b255IFBhdmxvdiAoNyk6CiAgQVJNOiBpbml0aWFs
+IHN1cHBvcnQgZm9yIFJDIE1vZHVsZSBVRU1EIFNvQ3MKICBBUk06IHVlbWQ6IGFkZCBERUJVR19M
+TCBzdXBwb3J0CiAgY2xvY2tzb3VyY2U6IGFkZCB1ZW1kIGNsb2Nrc291cmNlCiAgQVJNOiBkdHM6
+IGFkZCBtaW5pbWFsINCaMTg3OdCl0JEx0K8gZGV2aWNldHJlZSBmaWxlCiAgQVJNOiB1ZW1kOiBh
+ZGQgbWI3NzA3IGJvYXJkIHN1cHBvcnQKICBBUk06IHVlbWQ6IGFkZCBtb2R1bGUtbWI3NzA3X2Rl
+ZmNvbmZpZwogIEFSTTogbWI3NzA3OiBhZGQgYmFyZWJveCBtaW5pLWhvd3RvCgogYXJjaC9hcm0v
+S2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTIgKysrCiBhcmNoL2Fy
+bS9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiBhcmNoL2Fy
+bS9ib2FyZHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiBhcmNoL2Fy
+bS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9NYWtlZmlsZSAgICAgICAgICB8ICAgMiArCiBhcmNoL2Fy
+bS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9ib2FyZC5jICAgICAgICAgICB8ICA0MyArKysrKysrKwog
+YXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvbG93bGV2ZWwuYyAgICAgICAgfCAgMzQgKysr
+KysrKwogYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvbW9kdWxlLW1iNzcwNy5kb3ggfCAg
+MjkgKysrKysrCiBhcmNoL2FybS9jb25maWdzL21vZHVsZS1tYjc3MDdfZGVmY29uZmlnICAgICAg
+ICB8ICA0OSArKysrKysrKysKIGFyY2gvYXJtL2R0cy9rMTg3OWhiMXlhLmR0c2kgICAgICAgICAg
+ICAgICAgICAgIHwgIDM3ICsrKysrKysKIGFyY2gvYXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cyAg
+ICAgICAgICAgICAgICAgIHwgIDI0ICsrKysrCiBhcmNoL2FybS9tYWNoLXVlbWQvS2NvbmZpZyAg
+ICAgICAgICAgICAgICAgICAgICB8ICAxNiArKysKIGFyY2gvYXJtL21hY2gtdWVtZC9NYWtlZmls
+ZSAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGFyY2gvYXJtL21hY2gtdWVtZC9pbmNsdWRl
+L21hY2gvZGVidWdfbGwuaCAgICAgIHwgIDQyICsrKysrKysrCiBhcmNoL2FybS9tYWNoLXVlbWQv
+aW5jbHVkZS9tYWNoL2hhcmR3YXJlLmggICAgICB8ICAgNyArKwogYXJjaC9hcm0vbWFjaC11ZW1k
+L3Jlc2V0LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMjQgKysrKysKIGRyaXZlcnMvY2xvY2tz
+b3VyY2UvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgIHwgICA0ICsKIGRyaXZlcnMvY2xvY2tz
+b3VyY2UvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGRyaXZlcnMvY2xvY2tz
+b3VyY2UvdWVtZC5jICAgICAgICAgICAgICAgICAgICAgIHwgMTMwICsrKysrKysrKysrKysrKysr
+KysrKysrKwogMTggZmlsZXMgY2hhbmdlZCwgNDU3IGluc2VydGlvbnMoKykKIGNyZWF0ZSBtb2Rl
+IDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9NYWtlZmlsZQogY3JlYXRlIG1v
+ZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3L2JvYXJkLmMKIGNyZWF0ZSBt
+b2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9sb3dsZXZlbC5jCiBjcmVh
+dGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvbW9kdWxlLW1iNzcw
+Ny5kb3gKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdzL21vZHVsZS1tYjc3MDdf
+ZGVmY29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRz
+aQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cwogY3Jl
+YXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtdWVtZC9LY29uZmlnCiBjcmVhdGUgbW9kZSAx
+MDA2NDQgYXJjaC9hcm0vbWFjaC11ZW1kL01ha2VmaWxlCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
+aC9hcm0vbWFjaC11ZW1kL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCiBjcmVhdGUgbW9kZSAxMDA2
+NDQgYXJjaC9hcm0vbWFjaC11ZW1kL2luY2x1ZGUvbWFjaC9oYXJkd2FyZS5oCiBjcmVhdGUgbW9k
+ZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC11ZW1kL3Jlc2V0LmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBk
+cml2ZXJzL2Nsb2Nrc291cmNlL3VlbWQuYwoKLS0gCjEuOS4yCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
