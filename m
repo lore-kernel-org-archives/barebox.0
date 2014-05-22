@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WnYzn-0004u7-GG
- for barebox@lists.infradead.org; Thu, 22 May 2014 19:49:44 +0000
-Received: by mail-la0-f52.google.com with SMTP id gl10so2993773lab.25
- for <barebox@lists.infradead.org>; Thu, 22 May 2014 12:49:20 -0700 (PDT)
+ id 1WnYzp-0004u9-Iw
+ for barebox@lists.infradead.org; Thu, 22 May 2014 19:49:46 +0000
+Received: by mail-la0-f44.google.com with SMTP id hr17so3097232lab.3
+ for <barebox@lists.infradead.org>; Thu, 22 May 2014 12:49:26 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 22 May 2014 23:48:48 +0400
-Message-Id: <1400788130-24202-6-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 22 May 2014 23:48:50 +0400
+Message-Id: <1400788130-24202-8-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
 References: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,100 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/7] ARM: uemd: add mb7707 board support
+Subject: [PATCH v2 7/7] ARM: mb7707: add barebox mini-howto
 To: barebox@lists.infradead.org
 
-VGhlIE1CIDc3LjA3IGlzIGEgc21hbGwgKDgweDgwIG1tKSBzaW5nbGUtYm9hcmQgY29tcHV0ZXIK
-ZGV2ZWxvcGVkIGluIFJ1c3NpYSBieSB0aGUgUkMgTW9kdWxlLgpJdCB3YXMgZGV2ZWxvcGVkIGFz
-IGFuIGVkdWNhdGlvbmFsIGJvYXJkIGZvciDQmjE4NznQpdCRMdCvIFNvQwpjYXBhYmlsaXRpZXMg
-ZGVtb25zdHJhdGlvbi4KClNlZSBodHRwOi8vd3d3Lm1vZHVsZS5ydS9lbi9jYXRhbG9nL21pY3Jv
-L21pY3JvX3BjLyBmb3IgZGV0YWlscy4KClNpZ25lZC1vZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFu
-dG9ueW5wYXZsb3ZAZ21haWwuY29tPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSAgICAg
-ICAgICAgICAgICAgfCAgMSArCiBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9NYWtlZmls
-ZSAgIHwgIDIgKysKIGFyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3L2JvYXJkLmMgICAgfCA0
-MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vYm9hcmRzL21vZHVs
-ZS1tYjc3MDcvbG93bGV2ZWwuYyB8IDM0ICsrKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gv
-YXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cyAgICAgICAgICAgfCAyNCArKysrKysrKysrKysrKysr
-KysKIGFyY2gvYXJtL21hY2gtdWVtZC9LY29uZmlnICAgICAgICAgICAgICAgfCAgOSArKysrKysr
-CiA2IGZpbGVzIGNoYW5nZWQsIDExMyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vYm9hcmRzL01ha2VmaWxlIGIvYXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlCmluZGV4IGFlMDFi
-MjkuLjkxZTBmMzAgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQorKysgYi9h
-cmNoL2FybS9ib2FyZHMvTWFrZWZpbGUKQEAgLTQ4LDYgKzQ4LDcgQEAgb2JqLSQoQ09ORklHX01B
-Q0hfSElHSEJBTkspCQkJKz0gaGlnaGJhbmsvCiBvYmotJChDT05GSUdfTUFDSF9JTVgyMUFEUykJ
-CQkrPSBmcmVlc2NhbGUtbXgyMS1hZHMvCiBvYmotJChDT05GSUdfTUFDSF9JTVgyMzNfT0xJTlVY
-SU5PKQkJKz0gaW14MjMzLW9saW51eGluby8KIG9iai0kKENPTkZJR19NQUNIX0lNWDI3QURTKQkJ
-CSs9IGZyZWVzY2FsZS1teDI3LWFkcy8KK29iai0kKENPTkZJR19NQUNIX01CNzcwNykJCQkrPSBt
-b2R1bGUtbWI3NzA3Lwogb2JqLSQoQ09ORklHX01BQ0hfTUlPQTcwMSkJCQkrPSBtaW9hNzAxLwog
-b2JqLSQoQ09ORklHX01BQ0hfTU1DQ1BVKQkJCSs9IG1tY2NwdS8KIG9iai0kKENPTkZJR19NQUNI
-X01YMjNFVkspCQkJKz0gZnJlZXNjYWxlLW14MjMtZXZrLwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-Ym9hcmRzL21vZHVsZS1tYjc3MDcvTWFrZWZpbGUgYi9hcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1i
-NzcwNy9NYWtlZmlsZQpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi4wMWM3YTI1
-Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvTWFrZWZp
-bGUKQEAgLTAsMCArMSwyIEBACitvYmoteSArPSBib2FyZC5vCitsd2wteSArPSBsb3dsZXZlbC5v
-CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9ib2FyZC5jIGIvYXJj
-aC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvYm9hcmQuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NApp
-bmRleCAwMDAwMDAwLi43ZmZhZDZlCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRz
-L21vZHVsZS1tYjc3MDcvYm9hcmQuYwpAQCAtMCwwICsxLDQzIEBACisvKgorICogQ29weXJpZ2h0
-IChDKSAyMDE0IEFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwuY29tPgorICoKKyAq
-IFRoaXMgZmlsZSBpcyBwYXJ0IG9mIGJhcmVib3guCisgKiBTZWUgZmlsZSBDUkVESVRTIGZvciBs
-aXN0IG9mIHBlb3BsZSB3aG8gY29udHJpYnV0ZWQgdG8gdGhpcyBwcm9qZWN0LgorICoKKyAqIFRo
-aXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQv
-b3IgbW9kaWZ5CisgKiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1Ymxp
-YyBMaWNlbnNlIHZlcnNpb24gMgorICogYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJl
-IEZvdW5kYXRpb24uCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBo
-b3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7
-IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZ
-IG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdl
-bmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKi8KKworI2luY2x1
-ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGluaXQuaD4KKyNpbmNsdWRlIDxkcml2ZXIuaD4KKyNp
-bmNsdWRlIDx1c2IvZWhjaS5oPgorI2luY2x1ZGUgPG1hY2gvaGFyZHdhcmUuaD4KKworc3RhdGlj
-IGludCBob3N0bmFtZV9pbml0KHZvaWQpCit7CisJYmFyZWJveF9zZXRfaG9zdG5hbWUoIm1iNzcw
-NyIpOworCisJcmV0dXJuIDA7Cit9Citjb3JlX2luaXRjYWxsKGhvc3RuYW1lX2luaXQpOworCitz
-dGF0aWMgc3RydWN0IGVoY2lfcGxhdGZvcm1fZGF0YSBlaGNpX3BkYXRhID0geworCS5mbGFncyA9
-IDAsCit9OworCitzdGF0aWMgaW50IG1iNzcwN19kZXZpY2VzX2luaXQodm9pZCkKK3sKKwlhZGRf
-dXNiX2VoY2lfZGV2aWNlKERFVklDRV9JRF9EWU5BTUlDLCBVRU1EX0VIQ0lfQkFTRSwKKwkJVUVN
-RF9FSENJX0JBU0UgKyAweDEwLCAmZWhjaV9wZGF0YSk7CisKKwlyZXR1cm4gMDsKK30KK2Rldmlj
-ZV9pbml0Y2FsbChtYjc3MDdfZGV2aWNlc19pbml0KTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
-YXJkcy9tb2R1bGUtbWI3NzA3L2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1i
-NzcwNy9sb3dsZXZlbC5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLjVmNWUx
-ZDcKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9sb3ds
-ZXZlbC5jCkBAIC0wLDAgKzEsMzQgQEAKKy8qCisgKiBDb3B5cmlnaHQgKEMpIDIwMTQgQW50b255
-IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+CisgKgorICogVGhpcyBmaWxlIGlzIHBh
-cnQgb2YgYmFyZWJveC4KKyAqIFNlZSBmaWxlIENSRURJVFMgZm9yIGxpc3Qgb2YgcGVvcGxlIHdo
-byBjb250cmlidXRlZCB0byB0aGlzIHByb2plY3QuCisgKgorICogVGhpcyBwcm9ncmFtIGlzIGZy
-ZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKKyAqIGl0
-IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lv
-biAyCisgKiBhcyBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KKyAq
-CisgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxs
-IGJlIHVzZWZ1bCwKKyAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRo
-ZSBpbXBsaWVkIHdhcnJhbnR5IG9mCisgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1Ig
-QSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCisgKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGlj
-ZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgorICoKKyAqLworCisjZGVmaW5lIF9fTE9XTEVWRUxfSU5J
-VF9fCisKKyNpbmNsdWRlIDxjb21tb24uaD4KKyNpbmNsdWRlIDxhc20vYmFyZWJveC1hcm0uaD4K
-KyNpbmNsdWRlIDxhc20vYmFyZWJveC1hcm0taGVhZC5oPgorI2luY2x1ZGUgPGluaXQuaD4KKyNp
-bmNsdWRlIDxzaXplcy5oPgorCisjZGVmaW5lIE1CNzcwN19TUkFNX0JBU0UgMHg0MDAwMDAwMAor
-I2RlZmluZSBNQjc3MDdfU1JBTV9TSVpFIFNaXzEyOE0KKwordm9pZCBfX25ha2VkIF9fYmFyZV9p
-bml0IGJhcmVib3hfYXJtX3Jlc2V0X3ZlY3Rvcih2b2lkKQoreworCWFybV9jcHVfbG93bGV2ZWxf
-aW5pdCgpOworCisJYmFyZWJveF9hcm1fZW50cnkoTUI3NzA3X1NSQU1fQkFTRSwgTUI3NzA3X1NS
-QU1fU0laRSwgMCk7Cit9CmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvbW9kdWxlLW1iNzcwNy5k
-dHMgYi9hcmNoL2FybS9kdHMvbW9kdWxlLW1iNzcwNy5kdHMKbmV3IGZpbGUgbW9kZSAxMDA2NDQK
-aW5kZXggMDAwMDAwMC4uOTRhMzM3MwotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2R0cy9t
-b2R1bGUtbWI3NzA3LmR0cwpAQCAtMCwwICsxLDI0IEBACisvZHRzLXYxLzsKKworI2luY2x1ZGUg
-ImsxODc5aGIxeWEuZHRzaSIKKworLyB7CisJbW9kZWwgPSAiTW9kdWxlIE1CIDc3LjA3IjsKKwlj
-b21wYXRpYmxlID0gIm1vZHVsZSxtYjc3MDciOworCisJbWVtb3J5IHsKKwkJcmVnID0gPDB4NDAw
-MDAwMDAgMHg4MDAwMDAwPjsKKwl9OworfTsKKworJmNsa19hcGIgeworCWNsb2NrLWZyZXF1ZW5j
-eSA9IDw1NDAwMDAwMD47Cit9OworCismc2VyaWFsMCB7CisJc3RhdHVzID0gIm9rYXkiOworfTsK
-KworJnRpbWVyMCB7CisJc3RhdHVzID0gIm9rYXkiOworfTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L21hY2gtdWVtZC9LY29uZmlnIGIvYXJjaC9hcm0vbWFjaC11ZW1kL0tjb25maWcKaW5kZXggZjlj
-Zjg1OS4uYWVkZDc1NyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC11ZW1kL0tjb25maWcKKysr
-IGIvYXJjaC9hcm0vbWFjaC11ZW1kL0tjb25maWcKQEAgLTQsNCArNCwxMyBAQCBjb25maWcgQVJD
-SF9URVhUX0JBU0UKIAloZXgKIAlkZWZhdWx0IDB4NDA4MDAwMDAKIAorY2hvaWNlCisJcHJvbXB0
-ICJVRU1EIEJvYXJkIHR5cGUiCisKK2NvbmZpZyBNQUNIX01CNzcwNworCWJvb2wgIk1CNzcwNyIK
-KwlzZWxlY3QgSEFWRV9ERUZBVUxUX0VOVklST05NRU5UX05FVworCitlbmRjaG9pY2UKKwogZW5k
-aWYKLS0gCjEuOS4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/boards/module-mb7707/module-mb7707.dox | 29 +++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/arch/arm/boards/module-mb7707/module-mb7707.dox b/arch/arm/boards/module-mb7707/module-mb7707.dox
+new file mode 100644
+index 0000000..c0dbc8a
+--- /dev/null
++++ b/arch/arm/boards/module-mb7707/module-mb7707.dox
+@@ -0,0 +1,29 @@
++/** @page module-mb7707 MB 77.07 board
++
++The board uses MBOOT as bootloader.
++
++Barebox mini-howto:
++
++1. Connect to the boards's UART (38400 8N1);
++
++2. Turn board's power on;
++
++3. Wait 'Hit any key (in 2 sec) to skip autoload...' prompt and press the space key;
++
++4. Compile zbarebox.bin image and upload it to the board via tftp
++@verbatim
++    MBOOT # tftpboot zbarebox.bin
++    greth: greth_halt
++    TFTP Using GRETH_10/100 device
++    TFTP params: server 192.168.0.1 our_ip 192.168.0.7
++    TFTP params: filename 'zbarebox.bin' load_address 0x40100000
++    TFTP Loading: ################
++    TFTP done
++@endverbatim
++
++5. Run barebox
++@verbatim
++    MBOOT # go 0x40100000
++@endverbatim
++
++*/
+-- 
+1.9.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
