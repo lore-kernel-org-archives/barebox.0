@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
+Received: from mail-lb0-f180.google.com ([209.85.217.180])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WnYzc-0004tm-1s
- for barebox@lists.infradead.org; Thu, 22 May 2014 19:49:33 +0000
-Received: by mail-la0-f45.google.com with SMTP id gl10so3084438lab.4
- for <barebox@lists.infradead.org>; Thu, 22 May 2014 12:49:08 -0700 (PDT)
+ id 1WoV1j-0007iP-4M
+ for barebox@lists.infradead.org; Sun, 25 May 2014 09:47:35 +0000
+Received: by mail-lb0-f180.google.com with SMTP id p9so3560271lbv.25
+ for <barebox@lists.infradead.org>; Sun, 25 May 2014 02:47:08 -0700 (PDT)
+Date: Sun, 25 May 2014 13:58:19 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 22 May 2014 23:48:43 +0400
-Message-Id: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
+Message-Id: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,65 +17,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/7] ARM: initial support for RC Module UEMD SoCs and MB
- 77.07 board
+Subject: [RFC] [WIP] incorporate picotcp into barebox: a small demo
 To: barebox@lists.infradead.org
+Cc: Kristof Roelants <kristof.roelants@tass.be>, Daniele Lacamera <daniele.lacamera@tass.be>, Daniele Lacamera <mlists@danielinux.net>, Sam Van Den Berge <sam.van.den.berge@tass.be>
 
-UmVzZWFyY2ggQ2VudHJlICJNb2R1bGUiIChSQyBNb2R1bGUpIGlzCmEgUnVzc2lhbiBkZXZlbG9w
-bWVudCBjb21wYW55IGRlc2lnbmluZwptaXhlZC1zaWduYWwgQVNJQ3MgYW5kIHJlYWwtdGltZSB2
-aWRlby1pbWFnZQpwcm9jZXNzaW5nIHN5c3RlbXMuCgrQmjE4NznQpdCRMdCvIChBS0EgSzE4NzlI
-QjFZQSkgaXMgYSBVRU1EIGZhbWlseSBTb0MgdGhhdCBjb21iaW5lcwphIERTUCBjb3JlIGJhc2Vk
-IG9uIHRoZSBOZXVyb01hdHJpeChyKSBmYW1pbHkKd2l0aCBhbiBBUk0gYXJjaGl0ZWN0dXJlIENQ
-VSBBUk0xMTc2SlpGLVMgY29yZS4KClRoZSBNQiA3Ny4wNyBpcyBhIHNtYWxsICg4MHg4MCBtbSkg
-c2luZ2xlLWJvYXJkIGNvbXB1dGVyCmRldmVsb3BlZCBpbiBSdXNzaWEgYnkgdGhlIFJDIE1vZHVs
-ZS4KSXQgd2FzIGRldmVsb3BlZCBhcyBhbiBlZHVjYXRpb25hbCBib2FyZCBmb3Ig0JoxODc50KXQ
-kTHQryBTb0MKY2FwYWJpbGl0aWVzIGRlbW9uc3RyYXRpb24uCgpTZWUgaHR0cDovL3d3dy5tb2R1
-bGUucnUvZW4vY2F0YWxvZy9taWNyby9taWNyb19wYy8gZm9yIGRldGFpbHMuCgpDaGFuZ2VzIHNp
-bmNlIHYxOgoKICAxLiBmaXggcmVzZXRfY3B1KCkKICAyLiBmaXggcGJsIGltYWdlIGJ1aWxkCiAg
-My4gYWRkIHVzYiBzdXBwb3J0CiAgNC4gYWRkIHVlbWQgY2xvY2tzb3VyY2UKICA1LiBhZGQgbWI3
-NzA3IGJhcmVib3ggbWluaS1ob3d0bwoKQW50b255IFBhdmxvdiAoNyk6CiAgQVJNOiBpbml0aWFs
-IHN1cHBvcnQgZm9yIFJDIE1vZHVsZSBVRU1EIFNvQ3MKICBBUk06IHVlbWQ6IGFkZCBERUJVR19M
-TCBzdXBwb3J0CiAgY2xvY2tzb3VyY2U6IGFkZCB1ZW1kIGNsb2Nrc291cmNlCiAgQVJNOiBkdHM6
-IGFkZCBtaW5pbWFsINCaMTg3OdCl0JEx0K8gZGV2aWNldHJlZSBmaWxlCiAgQVJNOiB1ZW1kOiBh
-ZGQgbWI3NzA3IGJvYXJkIHN1cHBvcnQKICBBUk06IHVlbWQ6IGFkZCBtb2R1bGUtbWI3NzA3X2Rl
-ZmNvbmZpZwogIEFSTTogbWI3NzA3OiBhZGQgYmFyZWJveCBtaW5pLWhvd3RvCgogYXJjaC9hcm0v
-S2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTIgKysrCiBhcmNoL2Fy
-bS9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiBhcmNoL2Fy
-bS9ib2FyZHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiBhcmNoL2Fy
-bS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9NYWtlZmlsZSAgICAgICAgICB8ICAgMiArCiBhcmNoL2Fy
-bS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9ib2FyZC5jICAgICAgICAgICB8ICA0MyArKysrKysrKwog
-YXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvbG93bGV2ZWwuYyAgICAgICAgfCAgMzQgKysr
-KysrKwogYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvbW9kdWxlLW1iNzcwNy5kb3ggfCAg
-MjkgKysrKysrCiBhcmNoL2FybS9jb25maWdzL21vZHVsZS1tYjc3MDdfZGVmY29uZmlnICAgICAg
-ICB8ICA0OSArKysrKysrKysKIGFyY2gvYXJtL2R0cy9rMTg3OWhiMXlhLmR0c2kgICAgICAgICAg
-ICAgICAgICAgIHwgIDM3ICsrKysrKysKIGFyY2gvYXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cyAg
-ICAgICAgICAgICAgICAgIHwgIDI0ICsrKysrCiBhcmNoL2FybS9tYWNoLXVlbWQvS2NvbmZpZyAg
-ICAgICAgICAgICAgICAgICAgICB8ICAxNiArKysKIGFyY2gvYXJtL21hY2gtdWVtZC9NYWtlZmls
-ZSAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGFyY2gvYXJtL21hY2gtdWVtZC9pbmNsdWRl
-L21hY2gvZGVidWdfbGwuaCAgICAgIHwgIDQyICsrKysrKysrCiBhcmNoL2FybS9tYWNoLXVlbWQv
-aW5jbHVkZS9tYWNoL2hhcmR3YXJlLmggICAgICB8ICAgNyArKwogYXJjaC9hcm0vbWFjaC11ZW1k
-L3Jlc2V0LmMgICAgICAgICAgICAgICAgICAgICAgfCAgMjQgKysrKysKIGRyaXZlcnMvY2xvY2tz
-b3VyY2UvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgIHwgICA0ICsKIGRyaXZlcnMvY2xvY2tz
-b3VyY2UvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGRyaXZlcnMvY2xvY2tz
-b3VyY2UvdWVtZC5jICAgICAgICAgICAgICAgICAgICAgIHwgMTMwICsrKysrKysrKysrKysrKysr
-KysrKysrKwogMTggZmlsZXMgY2hhbmdlZCwgNDU3IGluc2VydGlvbnMoKykKIGNyZWF0ZSBtb2Rl
-IDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9NYWtlZmlsZQogY3JlYXRlIG1v
-ZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3L2JvYXJkLmMKIGNyZWF0ZSBt
-b2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9sb3dsZXZlbC5jCiBjcmVh
-dGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvbW9kdWxlLW1iNzcw
-Ny5kb3gKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdzL21vZHVsZS1tYjc3MDdf
-ZGVmY29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRz
-aQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cwogY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtdWVtZC9LY29uZmlnCiBjcmVhdGUgbW9kZSAx
-MDA2NDQgYXJjaC9hcm0vbWFjaC11ZW1kL01ha2VmaWxlCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
-aC9hcm0vbWFjaC11ZW1kL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCiBjcmVhdGUgbW9kZSAxMDA2
-NDQgYXJjaC9hcm0vbWFjaC11ZW1kL2luY2x1ZGUvbWFjaC9oYXJkd2FyZS5oCiBjcmVhdGUgbW9k
-ZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC11ZW1kL3Jlc2V0LmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBk
-cml2ZXJzL2Nsb2Nrc291cmNlL3VlbWQuYwoKLS0gCjEuOS4yCgoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+Hi all!
+
+I have adapted barebox for work with picotcp network stack.
+
+Picotcp is not a small piece of code so I can't easyly send
+a patch to the barebox maillist. I have put results of my work on github,
+see mini-howto below.
+
+This picotcp integration is a dirty hack in many ways.
+We need additional effors for adapting barebox and picotcp
+for more easy joint operation.
+
+Please express your opinion on my work. I'm awaiting your comments.
+
+Many thanks to Alessandro Rubini for his pointing on picotcp!
+
+
+barebox picotcp mini-howto
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+1. clone and build sandbox barebox
+
+  $ git clone https://github.com/frantony/barebox -b picotcp.20140525
+  ...
+  $ make sandbox_defconfig
+  ...
+  $ make
+
+2.  run sandbox barebox
+
+  # ./barebox
+
+3.  Inside sandbox barebox initialize the 'eth' network interface
+and check routes:
+
+  barebox@barebox sandbox:/ ifconfig eth 10.0.0.1 255.255.255.0
+  Assigned ipv4 10.0.0.1 to device eth
+  barebox@barebox sandbox:/ route
+  picotcp IPv4 routing table
+  Destination     Gateway         Genmask         Metric Iface
+  10.0.0.0        0.0.0.0         255.255.255.0   1      eth
+
+4. on host initialize the 'barebox' tap interface (you may need
+root account for this and bellow operations on host):
+
+  # ifconfig barebox 10.0.0.2
+
+and check barebox accessibility:
+
+  # ping -c 1 10.0.0.1
+  PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.
+  64 bytes from 10.0.0.1: icmp_seq=3D1 ttl=3D64 time=3D0.526 ms
+
+  --- 10.0.0.1 ping statistics ---
+  1 packets transmitted, 1 received, 0% packet loss, time 0ms
+  rtt min/avg/max/mdev =3D 0.526/0.526/0.526/0.000 ms
+
+5. inside sandbox barebox check host accessibility.
+Note: use picoping, not ping!
+
+  barebox@barebox sandbox:/ picoping 10.0.0.2
+  barebox@barebox sandbox:/ 48 bytes from 10.0.0.2: icmp_req=3D1 ttl=3D64 t=
+ime=3D304 ms
+  48 bytes from 10.0.0.2: icmp_req=3D2 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D3 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D4 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D5 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D6 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D7 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D8 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D9 ttl=3D64 time=3D0 ms
+  48 bytes from 10.0.0.2: icmp_req=3D10 ttl=3D64 time=3D0 ms
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
