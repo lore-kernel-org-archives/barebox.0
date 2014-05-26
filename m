@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f170.google.com ([209.85.217.170])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WorJl-0006JS-9i
- for barebox@lists.infradead.org; Mon, 26 May 2014 09:35:42 +0000
-Received: by mail-lb0-f170.google.com with SMTP id w7so4135657lbi.1
- for <barebox@lists.infradead.org>; Mon, 26 May 2014 02:35:18 -0700 (PDT)
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WorVI-0002If-Of
+ for barebox@lists.infradead.org; Mon, 26 May 2014 09:47:37 +0000
+Message-ID: <1401097557.4829.20.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 26 May 2014 11:45:57 +0200
 In-Reply-To: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
 References: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
-Date: Mon, 26 May 2014 11:35:18 +0200
-Message-ID: <CAOngqVXKEWNabzwCbYg_AXiy95Mzm6BNc7Nr-sNWUyDZ9sX0bA@mail.gmail.com>
-From: Daniele Lacamera <daniele.lacamera@tass.be>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +22,40 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] [WIP] incorporate picotcp into barebox: a small demo
-To: barebox <barebox@lists.infradead.org>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Kristof Roelants <kristof.roelants@tass.be>, barebox@lists.infradead.org, Sam Van Den Berge <sam.van.den.berge@tass.be>, Daniele Lacamera <daniele.lacamera@tass.be>, Daniele Lacamera <mlists@danielinux.net>
 
-On Sun, May 25, 2014 at 11:58 AM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+Am Sonntag, den 25.05.2014, 13:58 +0400 schrieb Antony Pavlov:
 > Hi all!
->
+> 
 > I have adapted barebox for work with picotcp network stack.
->
+> 
+> Picotcp is not a small piece of code so I can't easyly send
+> a patch to the barebox maillist. I have put results of my work on github,
+> see mini-howto below.
+> 
+> This picotcp integration is a dirty hack in many ways.
+> We need additional effors for adapting barebox and picotcp
+> for more easy joint operation.
+> 
+> Please express your opinion on my work. I'm awaiting your comments.
+> 
+You forgot to mention one important thing: Why is this change beneficial
+to barebox?
+Please don't get me wrong this is in no way a criticism on your work. I
+only skimmed through the branch as of now and can't really comment on
+the change. So please help me out: do you feel the code is
+leaner/cleaner than the existing barebox network support? Or what's your
+motivation for this?
 
-Hello Antony,
-
-Great news! Thanks for announcing this. Here is a few comments from our side.
-
-I've taken a look at the code. I like the general approach, and it
-seems that some functionality could already be replaced with picotcp
-modules and components (e.g. ARP, DHCP, DNS.), and some new can easily
-be integrated if the project would benefit of some other service
-available from cli, such as SLAAC, sNTP, mDNS, DHCP server, etc.
-
->  We need additional effors for adapting barebox and picotcp
->  for more easy joint operation.
+Regards,
+Lucas
 
 
-Regarding this, we would like to help with a cleaner integration, so
-feel free to submit requests in the form of "issues" on our github if
-you need to introduce new pico_err's, or any suggestion you might have
-regarding the APIs for the standalone tool support.
+-- 
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
 
-The whole PicoTCP team is very enthusiast about what you guys started,
-and we keep ourselves at your disposal for whatever you might need
-from our side.
-
-I have to add, it is possibly interesting for barebox community, we
-recently added the support for blocking sockets with a POSIX-compliant
-API, which would make socket development much easier if properly
-connected to the execution model. You might want to have a look at
-this repository we just created:
-
-https://github.com/tass-belgium/picotcp-bsd
-
-Last but not least, I would love to see some ipv6 integration, as soon
-as your interface is in the expected status, I could try and add the
-support for ipv6 addresses and routing myself, even if I don't know
-what are the plans of barebox regarding this.
-
-Kudos to you all for this great initiative, and a special "thank you"
-to Alessandro for endorsing our free TCP/IP stack :)
-
-Have a nice day
-
---
-
-Daniele Lacamera
-Senior Software Architect
-TASS.BE  - Part of Altran
 
 _______________________________________________
 barebox mailing list
