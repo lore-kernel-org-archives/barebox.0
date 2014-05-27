@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wp9yg-0004sN-8B
- for barebox@lists.infradead.org; Tue, 27 May 2014 05:31:11 +0000
-Date: Tue, 27 May 2014 07:30:45 +0200
+ Linux)) id 1WpA9k-0000Fg-Bs
+ for barebox@lists.infradead.org; Tue, 27 May 2014 05:42:37 +0000
+Date: Tue, 27 May 2014 07:42:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140527053045.GL15686@pengutronix.de>
-References: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
- <1401097557.4829.20.camel@weser.hi.pengutronix.de>
- <20140526160933.db2250dd20bc4c385d56c747@gmail.com>
+Message-ID: <20140527054213.GM15686@pengutronix.de>
+References: <1401127952-10811-1-git-send-email-franck.jullien@gmail.com>
+ <CAJfOKBx0YcSYarHJsE0FKJ5R5WVecPL=oLO+YPXGXpvs4YAg7A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140526160933.db2250dd20bc4c385d56c747@gmail.com>
+In-Reply-To: <CAJfOKBx0YcSYarHJsE0FKJ5R5WVecPL=oLO+YPXGXpvs4YAg7A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] [WIP] incorporate picotcp into barebox: a small demo
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Kristof Roelants <kristof.roelants@tass.be>, barebox@lists.infradead.org, Daniele Lacamera <mlists@danielinux.net>, Daniele Lacamera <daniele.lacamera@tass.be>, Sam Van Den Berge <sam.van.den.berge@tass.be>
+Subject: Re: [PATCH] cfi_flash: show progress while during erase
+To: Franck Jullien <franck.jullien@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Mon, May 26, 2014 at 04:09:33PM +0400, Antony Pavlov wrote:
-> On Mon, 26 May 2014 11:45:57 +0200
-> Lucas Stach <l.stach@pengutronix.de> wrote:
+On Mon, May 26, 2014 at 08:20:52PM +0200, Franck Jullien wrote:
+> Sascha,
 > 
-> 
-> 1. For end user barebox in many ways behave like linux shell console
-> 
->    We have files, standard shell commands, environment etc. It is very convenient!
-> 
->    But current network code breaks this illusion (e.g. you can't ping a barebox running board).
->    The details of network subsystem realisation shape barebox user network modus operandi.
-> 
->    Adding full-grown but tiny network stack to barebox makes barebox' behaviour
->    (from user's point of view) more close to linux shell console.
-> 
-> 2. tcp
-> 
->    IMHO __optional__ TCP support can be beneficial for bootloader.
->    E.g. I would like to use widely used telnet protocol for network console.
-> 
->    See also U-boot mod (https://forum.openwrt.org/viewtopic.php?id=43237),
->    http-server enabled U-Boot, less than 64K!
-> 
-> 3. ipv6
-> 
->    Current IPv4 address space is near totaly exhausted
->    (see https://www.icann.org/news/announcement-2-2014-05-20-en).
->    I suppose with the lapse of time IPv6 will be used even in bootloaders :)
->    picotcp gives you IPv6 just now.
+> Any reason why you removed the progress bar here in this commit:
+> 2749fbac48374b5f5ced ?
 
-These features sound very nice. I hope we can get the binary size
-impacts within sensible limits. Is it possible to disable TCP support in
-picotcp?
+The reason was that with the conversion of the cfi driver to mtd the
+loop over the erase blocks was no longer in the cfi driver but in the
+mtd layer. So if you see a progress bar for each erased block. You are
+probably irritated because of this patch which came in later:
 
-> 
-> 4. several simultaneously running network interfaces support
-> 
->    Imagine a small cluster system.
->    The processors of this cluster are connected via special interconnect, and only one
->    "master" processor has ethernet connection to the surrounding world. with current
->    "single active network device" conception you can't use barebox for connecting "slave" cluster'
->    processors to the surrounding world using "master" processor as a gateway.
+| commit 0d7ac7c3817e006cc4e258522a989642f1be1538
+| Author: Sascha Hauer <s.hauer@pengutronix.de>
+| Date:   Sat May 25 00:16:31 2013 +0200
+| 
+|     mtd: call mtd_erase with complete area if possible
+|     
+|     If a device does not have bad blocks loop over the eraseblocks
+|     in the driver instead of the core. This allows the mtd_dataflash
+|     driver to erase blocks instead of pages to gain more speed during
+|     erasing. Also the mtd_dataflash driver modifies the erase_info
+|     struct which causes the outer loop in the core to never end.
+|     
+|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+| 
+| diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+| index 61744b6..f358098 100644
+| --- a/drivers/mtd/core.c
+| +++ b/drivers/mtd/core.c
+| @@ -107,6 +107,12 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
+|  	memset(&erase, 0, sizeof(erase));
+|  	erase.mtd = mtd;
+|  	erase.addr = offset;
+| +
+| +	if (!mtd->block_isbad) {
+| +		erase.len = count;
+| +		return mtd_erase(mtd, &erase);
+| +	}
+| +
+|  	erase.len = mtd->erasesize;
+|  
+|  	while (count > 0) {
 
-That sound more like you should start Linux earlier.
-
-An integration of picotcp which allows to play with real hardware would
-be great, even if it's quick and dirty. That would allow us to see the
-size impact and the behaviour of the stack without interrupts.
+This moves the eraseblock iteration back into the drivers when the
+device does not have bad blocks, which is the case for cfi flashes.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
