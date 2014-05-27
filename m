@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
+Received: from mail-lb0-f171.google.com ([209.85.217.171])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WpHoe-0006vJ-03
- for barebox@lists.infradead.org; Tue, 27 May 2014 13:53:21 +0000
-Received: by mail-la0-f54.google.com with SMTP id pv20so6580387lab.27
- for <barebox@lists.infradead.org>; Tue, 27 May 2014 06:52:56 -0700 (PDT)
-Date: Tue, 27 May 2014 18:04:11 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
-In-Reply-To: <CAOngqVU9N6Y1yR9A2NW4LRWJN8HeWti+ErMW6OxOjpJxDc74rQ@mail.gmail.com>
+ id 1WpL92-0004dh-SN
+ for barebox@lists.infradead.org; Tue, 27 May 2014 17:26:37 +0000
+Received: by mail-lb0-f171.google.com with SMTP id 10so5242753lbg.30
+ for <barebox@lists.infradead.org>; Tue, 27 May 2014 10:26:14 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
 References: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
  <1401097557.4829.20.camel@weser.hi.pengutronix.de>
  <20140526160933.db2250dd20bc4c385d56c747@gmail.com>
  <CAOngqVU9N6Y1yR9A2NW4LRWJN8HeWti+ErMW6OxOjpJxDc74rQ@mail.gmail.com>
-Mime-Version: 1.0
+ <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
+Date: Tue, 27 May 2014 19:26:14 +0200
+Message-ID: <CAOngqVWfbkP7GunG25VP4-2a1_3y7Z0hxmBZf3OWKnL91b4JJA@mail.gmail.com>
+From: Daniele Lacamera <daniele.lacamera@tass.be>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,111 +23,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] [WIP] incorporate picotcp into barebox: a small demo
-To: Daniele Lacamera <daniele.lacamera@tass.be>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Kristof Roelants <kristof.roelants@tass.be>, barebox <barebox@lists.infradead.org>, Sam Van Den Berge <sam.van.den.berge@tass.be>, Daniele Lacamera <mlists@danielinux.net>
 
-T24gVHVlLCAyNyBNYXkgMjAxNCAxMTo0NjoyOSArMDIwMApEYW5pZWxlIExhY2FtZXJhIDxkYW5p
-ZWxlLmxhY2FtZXJhQHRhc3MuYmU+IHdyb3RlOgoKPiBBbnRvbnksIHJlZ2FyZGluZyB5b3VyIGNv
-bW1lbnRzIG9uIHBpY290Y3AgImNsZWFuaW5nIiwgY291bGQgeW91Cj4gcGxlYXNlIGVsYWJvcmF0
-ZSBhIGJpdCBtb3JlLCB0YWtpbmcgaW50byBhY2NvdW50IG15IGNvbW1lbnRzIGJlbG93Pwo+IAo+
-IE9uIE1vbiwgTWF5IDI2LCAyMDE0IGF0IDI6MDkgUE0sIEFudG9ueSBQYXZsb3YgPGFudG9ueW5w
-YXZsb3ZAZ21haWwuY29tPiB3cm90ZToKPiA+IFBpY290Y3AgbmVlZCBzb21lIHdvcmsgZm9yIGNs
-ZWFuaW5nLiBJIHRoaW5rIHRoYXQgb24gYXZlcmFnZSBiYXJlYm94IGNvZGUgaXMgbW9yZSBjbGVh
-bgo+ID4gdGhhdCBwaWNvdGNwIGNvZGUgKHRoZXJlIGFyZSB0b28gbWFueSAjaWZkZWZzLCBzb21l
-IGNvbXBpbGVyIHdhcm5pbmdzLCBmb3JtYXR0aW5nKSwKPiA+IGJ1dCBJTUhPIGl0IGlzIG5vdCB2
-ZXJ5IGRpZmZpY3VsdCB0byBtYWtlIGl0IGNsZWFuZXIuCj4gPgo+IAo+IC0gVGhlIGFtb3VudCBv
-ZiAjaWZkZWZzIGluIHRoZSBjb2RlIGlzIGR1ZSB0byB0aGUgc2l6ZSBvcHRpbWl6YXRpb25zLgo+
-IFR5cGVzIGFyZSBsZWZ0IG91dCB3aGVuIG1vZHVsZXMgYXJlIGRpc2FibGVkLCB3b3VsZCBiZSBt
-dWNoIG1vcmUKPiBkaWZmaWN1bHQgdG8gYWNoaWV2ZSB0aGUgc2FtZSBjb2RlIHNpemUsIGUuZy4g
-b24gYSA4LWJpdCBtYWNoaW5lLCBpZgo+IHdlIHVzZWQgZW1wdHkgcHJveGllcyBpbnN0ZWFkLCBs
-aWtlIGZvciBpbnN0YW5jZSBMaW51eCBkb2VzLiBLZWVwIGluCj4gbWluZCB0aGF0IHNhdmluZyBh
-IGZldyBieXRlcyBpcyB0aGUga2V5IGZvciBzb21lIG9mIG91ciBwcm9qZWN0cywgc28gSQo+IHdv
-dWxkIGFjY2VwdCBubyBtb2RpZmljYXRpb24gZm9yIHRoZSBzYWNrIG9mIGFlc3RoZXRpYyBpZiBp
-dCB3b3VsZAo+IGltcGFjdCBvbiBjb2RlIHNpemUuIE91ciBxdWFsaXR5IHByb2Nlc3NlcyBlbnN1
-cmUgdGhhdCB0aGUgYnJhbmNoaW5nCj4gaXMga2VwdCB1bmRlciBjb250cm9sLCBhbmQgb3VyIGNv
-bnRpbnVvdXMgaW50ZWdyYXRpb24gdGFrZXMgaW50bwo+IGFjY291bnQgZW5hYmxpbmcgYW5kIGRp
-c2FibGluZyB0aGUgbW9kdWxlcy4KCmxpbnV4IGtlcm5lbCBhbmQgYmFyZWJveCB1c2Ugbm90IHNv
-IG11Y2ggI2lmZGVmJ3MgYmVjYXVzZSB0aGV5IHVzZQp0aGV5IHVzZSBJU19FTkFCTEVEKCkgbWFj
-cm8gd2l0aCBqdXN0IHRoZSBzYW1lIHJlc3VsdC4KClBsZWFzZSBzZWUgbGludXguZ2l0L2RyaXZl
-cnMvZ3B1L2RybS90ZWdyYS9kc2kuYwooaHR0cHM6Ly9naXRodWIuY29tL3RvcnZhbGRzL2xpbnV4
-L2Jsb2IvbWFzdGVyL2RyaXZlcnMvZ3B1L2RybS90ZWdyYS9kc2kuYyNMNjI4KToKCiAgICAgICAg
-aWYgKElTX0VOQUJMRUQoQ09ORklHX0RFQlVHX0ZTKSkgewogICAgICAgICAgICAgICAgZXJyID0g
-dGVncmFfZHNpX2RlYnVnZnNfaW5pdChkc2ksIHRlZ3JhLT5kcm0tPnByaW1hcnkpOwogICAgICAg
-ICAgICAgICAgaWYgKGVyciA8IDApCiAgICAgICAgICAgICAgICAgICAgICAgIGRldl9lcnIoZHNp
-LT5kZXYsICJkZWJ1Z2ZzIHNldHVwIGZhaWxlZDogJWRcbiIsIGVycik7CiAgICAgICAgfQoKc28g
-dGhlIGNvZGUgdW5kZXIgSVNfRU5BQkxFRCgpIGlzIGFsd2F5cyBwYXJzZWQgYnkgQyBjb21waWxl
-cjsKaWYgdGhlcmUgaXMgYW4gc3ludGF4IGVycm9yIGluIHRoaXMgY29kZSB0aGVuIHRoZSBjb21w
-aWxhdGlvbiB3aWxsIGJlIHN0b3BwZWQuCgpJbiB0aGUgZXhhbW9wbGUgYWJvdmUsIGlmIENPTkZJ
-R19ERUJVR19GUyBpcyBub3QgYWN0aXZhdGVkIHRoZW4KY2xldmVyIG9wdGltaXppbmcgY29tcGls
-ZXIgd2lsbCBkcm9wIGFsbCBjb2RlIHVuZGVyIElTX0VOQUJMRUQoKS4KCklmIHlvdSB1c2UgI2lm
-ZGVmOgoKICAgICAgICAjaWZkZWYgQ09ORklHX0RFQlVHX0ZTCiAgICAgICAgICAgICAgICBlcnIg
-PSB0ZWdyYV9kc2lfZGVidWdmc19pbml0KGRzaSwgdGVncmEtPmRybS0+cHJpbWFyeSk7CiAgICAg
-ICAgICAgICAgICBpZiAoZXJyIDwgMCkKICAgICAgICAgICAgICAgICAgICAgICAgZGV2X2Vycihk
-c2ktPmRldiwgImRlYnVnZnMgc2V0dXAgZmFpbGVkOiAlZFxuIiwgZXJyKTsKICAgICAgICAjZW5k
-aWYKICAgCnRoZW4geW91IGdldCBqdXQgdGhlIHNhbWUgcmVzdWx0IGJ1dCB3aXRob3V0IGNoZWNr
-aW5nIHRoZSBjb2RlIHVuZGVyICNpZmRlZiBDT05GSUdfREVCVUdfRlMuCgo+IC0gY29tcGlsZXIg
-d2FybmluZ3M6IEFGQUlLLCBvdXIgY29kZSBpcyB3YXJuaW5nIGZyZWUgb24gZ2NjLCBpdCBtaWdo
-dAo+IGJlIHRoYXQgYSBzcGVjaWZpYyBwbGF0Zm9ybSBjb25maWcgY291bGQgdHJpZ2dlciBzb21l
-LiBXZSBhcmUKPiBpbnRlcmVzdGVkIGFib3V0IHlvdXIgZXhwZXJpZW5jZSwgcGxlYXNlIHNoYXJl
-IHlvdXIgZmluZGluZ3MsIGJ1dAo+IHBsZWFzZSBkbyBub3QgcmVwb3J0IC1Xc2hhZG93IHdhcm5p
-bmdzIG9idGFpbmVkIHdpdGggYnJva2VuIGdjYyAoPD0KPiA0LjYpLgo+IE91ciBkZWZhdWx0IHNl
-dCBvZiB3YXJuaW5nIGZsYWdzOiAgLVdhbGwgLVdkZWNsYXJhdGlvbi1hZnRlci1zdGF0ZW1lbnQK
-PiAtVyAtV2V4dHJhIC1Xc2hhZG93IC1XY2FzdC1xdWFsIC1Xd3JpdGUtc3RyaW5ncwo+IC1XbWlz
-c2luZy1maWVsZC1pbml0aWFsaXplcnMgLVdjb252ZXJzaW9uIC1XY2FzdC1hbGlnbgoKJCBnY2Mg
-LS12ZXJzaW9uCmdjYyAoRGViaWFuIDQuOC4zLTEpIDQuOC4zCgpIZXJlIGlzIG15ICdtYWtlIC1z
-JyBvdXRwdXQgZm9yIHNhbmRib3ggYmFyZWJveDoKCm5ldC9waWNvdGNwL21vZHVsZXMvcGljb19p
-cHY0LmM6IEluIGZ1bmN0aW9uIOKAmHBpY29faXB2NF9yZWJvdW5kX2xhcmdl4oCZOgpuZXQvcGlj
-b3RjcC9tb2R1bGVzL3BpY29faXB2NC5jOjE1ODI6MjQ6IHdhcm5pbmc6IHVudXNlZCB2YXJpYWJs
-ZSDigJhmcuKAmSBbLVd1bnVzZWQtdmFyaWFibGVdCiAgICAgc3RydWN0IHBpY29fZnJhbWUgKmZy
-OwogICAgICAgICAgICAgICAgICAgICAgICBeCm5ldC9waWNvdGNwL21vZHVsZXMvcGljb19pcHY0
-LmM6MTU4MToxNDogd2FybmluZzogdW51c2VkIHZhcmlhYmxlIOKAmGxlbuKAmSBbLVd1bnVzZWQt
-dmFyaWFibGVdCiAgICAgdWludDMyX3QgbGVuID0gZi0+dHJhbnNwb3J0X2xlbjsKICAgICAgICAg
-ICAgICBeCm5ldC9waWNvdGNwL21vZHVsZXMvcGljb19pcHY0LmM6MTU4MDoxNDogd2FybmluZzog
-dW51c2VkIHZhcmlhYmxlIOKAmHRvdGFsX3BheWxvYWRfd3JpdHRlbuKAmSBbLVd1bnVzZWQtdmFy
-aWFibGVdCiAgICAgdWludDMyX3QgdG90YWxfcGF5bG9hZF93cml0dGVuID0gMDsKICAgICAgICAg
-ICAgICBeCm5ldC9waWNvdGNwL3N0YWNrL3BpY29fc29ja2V0LmM6IEluIGZ1bmN0aW9uIOKAmHBp
-Y29fc29ja2V0X2FkZOKAmToKbmV0L3BpY290Y3Avc3RhY2svcGljb19zb2NrZXQuYzozOTc6NTog
-d2FybmluZzogIkRFQlVHX1NPQ0tFVF9UUkVFIiBpcyBub3QgZGVmaW5lZCBbLVd1bmRlZl0KICNp
-ZiBERUJVR19TT0NLRVRfVFJFRQogICAgIF4KbmV0L3BpY290Y3Avc3RhY2svcGljb19zb2NrZXQu
-YzogQXQgdG9wIGxldmVsOgpuZXQvcGljb3RjcC9zdGFjay9waWNvX3NvY2tldC5jOjEwMzc6MTM6
-IHdhcm5pbmc6IOKAmHBpY29fc29ja2V0X3htaXRfZmlyc3RfZnJhZ21lbnRfc2V0dXDigJkgZGVm
-aW5lZCBidXQgbm90IHVzZWQgWy1XdW51c2VkLWZ1bmN0aW9uXQogc3RhdGljIHZvaWQgcGljb19z
-b2NrZXRfeG1pdF9maXJzdF9mcmFnbWVudF9zZXR1cChzdHJ1Y3QgcGljb19mcmFtZSAqZiwgaW50
-IHNwYWNlLCBpbnQgaGRyX29mZnNldCkKICAgICAgICAgICAgIF4KbmV0L3BpY290Y3Avc3RhY2sv
-cGljb19zb2NrZXQuYzoxMDQ5OjEzOiB3YXJuaW5nOiDigJhwaWNvX3NvY2tldF94bWl0X25leHRf
-ZnJhZ21lbnRfc2V0dXDigJkgZGVmaW5lZCBidXQgbm90IHVzZWQgWy1XdW51c2VkLWZ1bmN0aW9u
-XQogc3RhdGljIHZvaWQgcGljb19zb2NrZXRfeG1pdF9uZXh0X2ZyYWdtZW50X3NldHVwKHN0cnVj
-dCBwaWNvX2ZyYW1lICpmLCBpbnQgaGRyX29mZnNldCwgaW50IHRvdGFsX3BheWxvYWRfd3JpdHRl
-biwgaW50IGxlbikKICAgICAgICAgICAgIF4KbmV0L3Rlc3RfcGljb3RjcC5jOiBJbiBmdW5jdGlv
-biDigJhkb190ZXN0X2lwdjTigJk6Cm5ldC90ZXN0X3BpY290Y3AuYzo1MTo0ODogd2FybmluZzog
-Y29tcGFyaXNvbiBiZXR3ZWVuIHBvaW50ZXIgYW5kIGludGVnZXIgW2VuYWJsZWQgYnkgZGVmYXVs
-dF0KICAgICAgICAgZmFpbF91bmxlc3MocGljb19pcHY0X2xpbmtfZmluZCgmYVtpXSkgPT0gZGV2
-W2ldLCAiRXJyb3IgZmluZGluZyBsaW5rIik7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIF4KbmV0L3Rlc3RfcGljb3RjcC5jOjExOjY6IG5vdGU6IGluIGRl
-ZmluaXRpb24gb2YgbWFjcm8g4oCYZmFpbF9pZuKAmQogIGlmIChhKSB7IFwKICAgICAgXgpuZXQv
-dGVzdF9waWNvdGNwLmM6NTE6OTogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGZhaWxf
-dW5sZXNz4oCZCiAgICAgICAgIGZhaWxfdW5sZXNzKHBpY29faXB2NF9saW5rX2ZpbmQoJmFbaV0p
-ID09IGRldltpXSwgIkVycm9yIGZpbmRpbmcgbGluayIpOwogICAgICAgICBeCgo+IAo+IC0gZm9y
-bWF0dGluZzogQ291bGQgaXQgYmUgdGhhdCB5b3UgY2hlY2tlZCBhbiBpbnRlcm1lZGlhdGUKPiBt
-YXN0ZXJicmFuY2ggdmVyc2lvbj8gV2UgcnVuIHVuY3J1c3RpZnkgcGVyaW9kaWNhbGx5IG9uIHRo
-ZSBjb2RlLCBhbmQKPiBvdXIgZm9ybWF0dGluZyBpcyBjb25zaXN0ZW50IHdpdGggb3VyIG93biBy
-dWxlcy4KCgpZZXMsIEkgc2VlIHlvdXIgJ0VuZm9yY2VkIGNvZGluZyBzdHlsZSB2aWEgdW5jcnVz
-dGlmeScgY29tbWl0LgoKQnV0IGluIGxpbnV4IGtlcm5lbCwgYmFyZWJveCwgcWVtdSBhbmQgSU1I
-TyBtYW55IG90aGVyIHByb2plY3RzCnRoZXJlIGFyZToKCiAgKiBDT0RJTkdfU1RZTEUgZG9jdW1l
-bnRhdGlvbiBmaWxlOwogICogc2NyaXB0cy9jaGVja3BhdGNoLnBsCgpUaGUgc2NyaXB0cy9jaGVj
-a3BhdGNoLnBsIGlzIHVzZWQgYnkgcHJvamVjdCBtYWludGFpbmVyIG9uIGdpdCBwYXRjaGVzCmJl
-Zm9yZSBhcHBseWluZyB0aGVtLCBzbyB0aGVyZSBpcyB2ZXJ5IHNtYWxsIHBvc3NpYmlsaXR5IGZv
-cgpiYWQgZm9ybWF0dGVkIHBhdGNoZXMgdG8gcGVuZXRyYXRlIGludG8gcmVwb3NpdG9yeS4KClRo
-ZXJlIGlzIGV2ZW4gY3J1ZWwgcHJhY3RpY2UgcnVubmluZyBjaGVja3BhdGNoLnBsIHNjcmlwdCB2
-aWEgZ2l0IHByZS1jb21taXQKaG9vayBzbyBvbmUgY2FuJ3QgZXZlbiBsb2NhbGx5IGNvbW1pdCBi
-YWQgZm9ybWF0dGVkIGNoYW5nZXMhCihzZWUgaHR0cDovL2Jsb2cudm1zcGxpY2UubmV0LzIwMTEv
-MDMvaG93LXRvLWF1dG9tYXRpY2FsbHktcnVuLWNoZWNrcGF0Y2hwbC5odG1sKQoKCi0twqAKQmVz
-dCByZWdhcmRzLArCoCBBbnRvbnkgUGF2bG92CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+Antony, thank you very much for the comments and the bug reports on
+our github. See comments below.
+
+On Tue, May 27, 2014 at 4:04 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> On Tue, 27 May 2014 11:46:29 +0200
+> Daniele Lacamera <daniele.lacamera@tass.be> wrote:
+>
+>
+> linux kernel and barebox use not so much #ifdef's because they use
+> they use IS_ENABLED() macro with just the same result.
+[...]
+> so the code under IS_ENABLED() is always parsed by C compiler;
+> if there is an syntax error in this code then the compilation will be stopped.
+
+We will discuss this and see if it is applicable for PicoTCP. The
+macro you are suggesting is indeed not increasing code size, but our
+static checkers might be not so happy about all this preprocessor
+machinery.
+
+>
+> $ gcc --version
+> gcc (Debian 4.8.3-1) 4.8.3
+>
+> Here is my 'make -s' output for sandbox barebox:
+>
+[cut]
+
+Thank You!! This *IS* very helpful input. We are going to add more -W
+flags and quickly fix these warnings.
+
+> But in linux kernel, barebox, qemu and IMHO many other projects
+> there are:
+>
+>   * CODING_STYLE documentation file;
+>   * scripts/checkpatch.pl
+>
+
+All good points. Being a kernel developer myself, I know the
+checkpatch.pl approach, and indeed it is a good thing to distribute
+coding rules if you accept contributions. Except it will never apply
+to us, because:
+
+- We have our company internal coding style which we apply to all our
+projects and we don't feel the need to distribute externally (keep in
+mind that we never planned to accept external contributions). Instead,
+the repository contains the uncrustify configuration file, which is
+pretty much self-explanatory.
+- A few of us are checking every single commit, and running uncrustify
+every now and then. We are comfortable with this approach
+- Linux coding rules are generally recognized as possibly not the best
+in the world. I especially dislike tabs.
+- commit hooks are tedious
+
+I am afraid we are not going to change our formatting style or policy,
+but thanks anyway for the suggestions!
+
+/d
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
