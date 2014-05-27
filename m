@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wp9jB-0007BZ-JA
- for barebox@lists.infradead.org; Tue, 27 May 2014 05:15:11 +0000
-Date: Tue, 27 May 2014 07:14:40 +0200
+ Linux)) id 1Wp9oC-0000A0-Gd
+ for barebox@lists.infradead.org; Tue, 27 May 2014 05:20:21 +0000
+Date: Tue, 27 May 2014 07:19:58 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140527051440.GJ15686@pengutronix.de>
-References: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140527051958.GK15686@pengutronix.de>
+References: <1401086450-1696-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1401086450-1696-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +18,274 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] ARM: initial support for RC Module UEMD SoCs and
- MB 77.07 board
+Subject: Re: [PATCH] MIPS: dlink-dir-320: switch to dt
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gVGh1LCBNYXkgMjIsIDIwMTQgYXQgMTE6NDg6NDNQTSArMDQwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBSZXNlYXJjaCBDZW50cmUgIk1vZHVsZSIgKFJDIE1vZHVsZSkgaXMKPiBhIFJ1c3Np
-YW4gZGV2ZWxvcG1lbnQgY29tcGFueSBkZXNpZ25pbmcKPiBtaXhlZC1zaWduYWwgQVNJQ3MgYW5k
-IHJlYWwtdGltZSB2aWRlby1pbWFnZQo+IHByb2Nlc3Npbmcgc3lzdGVtcy4KPiAKPiDQmjE4NznQ
-pdCRMdCvIChBS0EgSzE4NzlIQjFZQSkgaXMgYSBVRU1EIGZhbWlseSBTb0MgdGhhdCBjb21iaW5l
-cwo+IGEgRFNQIGNvcmUgYmFzZWQgb24gdGhlIE5ldXJvTWF0cml4KHIpIGZhbWlseQo+IHdpdGgg
-YW4gQVJNIGFyY2hpdGVjdHVyZSBDUFUgQVJNMTE3NkpaRi1TIGNvcmUuCj4gCj4gVGhlIE1CIDc3
-LjA3IGlzIGEgc21hbGwgKDgweDgwIG1tKSBzaW5nbGUtYm9hcmQgY29tcHV0ZXIKPiBkZXZlbG9w
-ZWQgaW4gUnVzc2lhIGJ5IHRoZSBSQyBNb2R1bGUuCj4gSXQgd2FzIGRldmVsb3BlZCBhcyBhbiBl
-ZHVjYXRpb25hbCBib2FyZCBmb3Ig0JoxODc50KXQkTHQryBTb0MKPiBjYXBhYmlsaXRpZXMgZGVt
-b25zdHJhdGlvbi4KPiAKPiBTZWUgaHR0cDovL3d3dy5tb2R1bGUucnUvZW4vY2F0YWxvZy9taWNy
-by9taWNyb19wYy8gZm9yIGRldGFpbHMuCj4gCgpBcHBsaWVkLCB0aGFua3MKClNhc2NoYQoKPiBD
-aGFuZ2VzIHNpbmNlIHYxOgo+IAo+ICAgMS4gZml4IHJlc2V0X2NwdSgpCj4gICAyLiBmaXggcGJs
-IGltYWdlIGJ1aWxkCj4gICAzLiBhZGQgdXNiIHN1cHBvcnQKPiAgIDQuIGFkZCB1ZW1kIGNsb2Nr
-c291cmNlCj4gICA1LiBhZGQgbWI3NzA3IGJhcmVib3ggbWluaS1ob3d0bwo+IAo+IEFudG9ueSBQ
-YXZsb3YgKDcpOgo+ICAgQVJNOiBpbml0aWFsIHN1cHBvcnQgZm9yIFJDIE1vZHVsZSBVRU1EIFNv
-Q3MKPiAgIEFSTTogdWVtZDogYWRkIERFQlVHX0xMIHN1cHBvcnQKPiAgIGNsb2Nrc291cmNlOiBh
-ZGQgdWVtZCBjbG9ja3NvdXJjZQo+ICAgQVJNOiBkdHM6IGFkZCBtaW5pbWFsINCaMTg3OdCl0JEx
-0K8gZGV2aWNldHJlZSBmaWxlCj4gICBBUk06IHVlbWQ6IGFkZCBtYjc3MDcgYm9hcmQgc3VwcG9y
-dAo+ICAgQVJNOiB1ZW1kOiBhZGQgbW9kdWxlLW1iNzcwN19kZWZjb25maWcKPiAgIEFSTTogbWI3
-NzA3OiBhZGQgYmFyZWJveCBtaW5pLWhvd3RvCj4gCj4gIGFyY2gvYXJtL0tjb25maWcgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDEyICsrKwo+ICBhcmNoL2FybS9NYWtlZmlsZSAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCj4gIGFyY2gvYXJtL2JvYXJkcy9N
-YWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKPiAgYXJjaC9hcm0vYm9hcmRz
-L21vZHVsZS1tYjc3MDcvTWFrZWZpbGUgICAgICAgICAgfCAgIDIgKwo+ICBhcmNoL2FybS9ib2Fy
-ZHMvbW9kdWxlLW1iNzcwNy9ib2FyZC5jICAgICAgICAgICB8ICA0MyArKysrKysrKwo+ICBhcmNo
-L2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9sb3dsZXZlbC5jICAgICAgICB8ICAzNCArKysrKysr
-Cj4gIGFyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3L21vZHVsZS1tYjc3MDcuZG94IHwgIDI5
-ICsrKysrKwo+ICBhcmNoL2FybS9jb25maWdzL21vZHVsZS1tYjc3MDdfZGVmY29uZmlnICAgICAg
-ICB8ICA0OSArKysrKysrKysKPiAgYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRzaSAgICAgICAg
-ICAgICAgICAgICAgfCAgMzcgKysrKysrKwo+ICBhcmNoL2FybS9kdHMvbW9kdWxlLW1iNzcwNy5k
-dHMgICAgICAgICAgICAgICAgICB8ICAyNCArKysrKwo+ICBhcmNoL2FybS9tYWNoLXVlbWQvS2Nv
-bmZpZyAgICAgICAgICAgICAgICAgICAgICB8ICAxNiArKysKPiAgYXJjaC9hcm0vbWFjaC11ZW1k
-L01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwo+ICBhcmNoL2FybS9tYWNoLXVl
-bWQvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggICAgICB8ICA0MiArKysrKysrKwo+ICBhcmNoL2Fy
-bS9tYWNoLXVlbWQvaW5jbHVkZS9tYWNoL2hhcmR3YXJlLmggICAgICB8ICAgNyArKwo+ICBhcmNo
-L2FybS9tYWNoLXVlbWQvcmVzZXQuYyAgICAgICAgICAgICAgICAgICAgICB8ICAyNCArKysrKwo+
-ICBkcml2ZXJzL2Nsb2Nrc291cmNlL0tjb25maWcgICAgICAgICAgICAgICAgICAgICB8ICAgNCAr
-Cj4gIGRyaXZlcnMvY2xvY2tzb3VyY2UvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgIHwgICAx
-ICsKPiAgZHJpdmVycy9jbG9ja3NvdXJjZS91ZW1kLmMgICAgICAgICAgICAgICAgICAgICAgfCAx
-MzAgKysrKysrKysrKysrKysrKysrKysrKysrCj4gIDE4IGZpbGVzIGNoYW5nZWQsIDQ1NyBpbnNl
-cnRpb25zKCspCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1i
-NzcwNy9NYWtlZmlsZQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL21vZHVs
-ZS1tYjc3MDcvYm9hcmQuYwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL21v
-ZHVsZS1tYjc3MDcvbG93bGV2ZWwuYwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9h
-cmRzL21vZHVsZS1tYjc3MDcvbW9kdWxlLW1iNzcwNy5kb3gKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0
-IGFyY2gvYXJtL2NvbmZpZ3MvbW9kdWxlLW1iNzcwN19kZWZjb25maWcKPiAgY3JlYXRlIG1vZGUg
-MTAwNjQ0IGFyY2gvYXJtL2R0cy9rMTg3OWhiMXlhLmR0c2kKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0
-IGFyY2gvYXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
-aC9hcm0vbWFjaC11ZW1kL0tjb25maWcKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21h
-Y2gtdWVtZC9NYWtlZmlsZQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC11ZW1k
-L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9t
-YWNoLXVlbWQvaW5jbHVkZS9tYWNoL2hhcmR3YXJlLmgKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFy
-Y2gvYXJtL21hY2gtdWVtZC9yZXNldC5jCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2Ns
-b2Nrc291cmNlL3VlbWQuYwo+IAo+IC0tIAo+IDEuOS4yCj4gCj4gCj4gX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+
-IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJp
-YWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9u
-aXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBo
-b25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
-Njg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, May 26, 2014 at 10:40:50AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/boards/dlink-dir-320/Makefile   |  1 -
+>  arch/mips/boards/dlink-dir-320/board.c    | 25 +++++++++---
+>  arch/mips/boards/dlink-dir-320/serial.c   | 43 ---------------------
+>  arch/mips/configs/dlink-dir-320_defconfig | 63 +++++++++++++++++--------------
+>  arch/mips/dts/dlink-dir-320.dts           | 32 ++++++++++++++++
+>  5 files changed, 86 insertions(+), 78 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/arch/mips/boards/dlink-dir-320/Makefile b/arch/mips/boards/dlink-dir-320/Makefile
+> index 9e14763..dcfc293 100644
+> --- a/arch/mips/boards/dlink-dir-320/Makefile
+> +++ b/arch/mips/boards/dlink-dir-320/Makefile
+> @@ -1,2 +1 @@
+>  obj-y += board.o
+> -obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
+> diff --git a/arch/mips/boards/dlink-dir-320/board.c b/arch/mips/boards/dlink-dir-320/board.c
+> index 3eed6f0..d00e4fa 100644
+> --- a/arch/mips/boards/dlink-dir-320/board.c
+> +++ b/arch/mips/boards/dlink-dir-320/board.c
+> @@ -1,12 +1,27 @@
+> +/*
+> + * Copyright (C) 2011, 2014 Antony Pavlov <antonynpavlov@gmail.com>
+> + *
+> + * This file is part of barebox.
+> + * See file CREDITS for list of people who contributed to this project.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+>  #include <common.h>
+>  #include <init.h>
+> -#include <sizes.h>
+> -#include <asm/memory.h>
+>  
+> -static int mem_init(void)
+> +static int dir320_console_init(void)
+>  {
+> -	mips_add_ram0(SZ_32M);
+> +	barebox_set_hostname("dir320");
+>  
+>  	return 0;
+>  }
+> -mem_initcall(mem_init);
+> +console_initcall(dir320_console_init);
+> diff --git a/arch/mips/boards/dlink-dir-320/serial.c b/arch/mips/boards/dlink-dir-320/serial.c
+> deleted file mode 100644
+> index eb87379..0000000
+> --- a/arch/mips/boards/dlink-dir-320/serial.c
+> +++ /dev/null
+> @@ -1,43 +0,0 @@
+> -/*
+> - * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
+> - *
+> - * This file is part of barebox.
+> - * See file CREDITS for list of people who contributed to this project.
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - */
+> -
+> -#include <common.h>
+> -#include <types.h>
+> -#include <driver.h>
+> -#include <init.h>
+> -#include <ns16550.h>
+> -#include <mach/hardware.h>
+> -#include <io.h>
+> -#include <asm/common.h>
+> -
+> -static struct NS16550_plat serial_plat = {
+> -	.clock = 25804800,
+> -	.shift = 0,
+> -};
+> -
+> -static int dir320_console_init(void)
+> -{
+> -	barebox_set_model("D-Link DIR-320");
+> -	barebox_set_hostname("dir320");
+> -
+> -	/* Register the serial port */
+> -	add_ns16550_device(DEVICE_ID_DYNAMIC, DEBUG_LL_UART_ADDR, 8,
+> -			IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
+> -
+> -	return 0;
+> -}
+> -console_initcall(dir320_console_init);
+> diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink-dir-320_defconfig
+> index 52ab295..ab29cf3 100644
+> --- a/arch/mips/configs/dlink-dir-320_defconfig
+> +++ b/arch/mips/configs/dlink-dir-320_defconfig
+> @@ -1,58 +1,63 @@
+> +CONFIG_BUILTIN_DTB=y
+> +CONFIG_BUILTIN_DTB_NAME="dlink-dir-320"
+>  CONFIG_MACH_MIPS_BCM47XX=y
+>  CONFIG_STACK_SIZE=0x7000
+>  CONFIG_BROKEN=y
+>  CONFIG_EXPERIMENTAL=y
+> -CONFIG_LONGHELP=y
+>  CONFIG_HUSH_FANCY_PROMPT=y
+> -CONFIG_CMD_GETOPT=y
+>  CONFIG_CMDLINE_EDITING=y
+>  CONFIG_AUTO_COMPLETE=y
+>  CONFIG_MENU=y
+>  CONFIG_PARTITION=y
+>  # CONFIG_DEFAULT_ENVIRONMENT is not set
+>  CONFIG_POLLER=y
+> -CONFIG_DEBUG_INFO=y
+> -CONFIG_CMD_EDIT=y
+> -CONFIG_CMD_SLEEP=y
+> -CONFIG_CMD_SAVEENV=y
+> -CONFIG_CMD_LOADENV=y
+> +CONFIG_LONGHELP=y
+> +CONFIG_CMD_IOMEM=y
+> +CONFIG_CMD_MEMINFO=y
+> +CONFIG_CMD_BOOTM_SHOW_TYPE=y
+> +CONFIG_CMD_GO=y
+> +CONFIG_CMD_LOADB=y
+> +CONFIG_CMD_LOADY=y
+> +CONFIG_CMD_RESET=y
+> +CONFIG_CMD_PARTITION=y
+>  CONFIG_CMD_EXPORT=y
+> +CONFIG_CMD_LOADENV=y
+>  CONFIG_CMD_PRINTENV=y
+> -CONFIG_CMD_READLINE=y
+> +CONFIG_CMD_SAVEENV=y
+> +CONFIG_CMD_MD5SUM=y
+> +CONFIG_CMD_SHA1SUM=y
+> +CONFIG_CMD_SHA256SUM=y
+> +CONFIG_CMD_UNCOMPRESS=y
+> +CONFIG_CMD_GETOPT=y
+> +CONFIG_CMD_SLEEP=y
+> +CONFIG_CMD_DHCP=y
+> +CONFIG_CMD_PING=y
+> +CONFIG_CMD_TFTP=y
+> +CONFIG_CMD_ECHO_E=y
+> +CONFIG_CMD_EDIT=y
+>  CONFIG_CMD_MENU=y
+>  CONFIG_CMD_MENU_MANAGEMENT=y
+>  CONFIG_CMD_PASSWD=y
+> -CONFIG_CMD_TIME=y
+> -CONFIG_CMD_ECHO_E=y
+> -CONFIG_CMD_LOADB=y
+> -CONFIG_CMD_LOADY=y
+> -CONFIG_CMD_MEMINFO=y
+> +CONFIG_CMD_READLINE=y
+> +CONFIG_CMD_TIMEOUT=y
+>  CONFIG_CMD_CRC=y
+>  CONFIG_CMD_CRC_CMP=y
+> -CONFIG_CMD_MD5SUM=y
+> -CONFIG_CMD_SHA1SUM=y
+> -CONFIG_CMD_SHA256SUM=y
+> -CONFIG_CMD_MTEST=y
+> +CONFIG_CMD_MM=y
+>  CONFIG_CMD_FLASH=y
+> -CONFIG_CMD_BOOTM_ZLIB=y
+> -CONFIG_CMD_BOOTM_BZLIB=y
+> -CONFIG_CMD_BOOTM_SHOW_TYPE=y
+> -CONFIG_CMD_RESET=y
+> -CONFIG_CMD_GO=y
+> -CONFIG_CMD_TIMEOUT=y
+> -CONFIG_CMD_PARTITION=y
+> -CONFIG_CMD_UNCOMPRESS=y
+> +CONFIG_CMD_OF_NODE=y
+> +CONFIG_CMD_OF_PROPERTY=y
+> +CONFIG_CMD_OFTREE=y
+> +CONFIG_CMD_TIME=y
+>  CONFIG_NET=y
+> -CONFIG_CMD_DHCP=y
+>  CONFIG_NET_NFS=y
+> -CONFIG_CMD_PING=y
+> -CONFIG_CMD_TFTP=y
+> -CONFIG_FS_TFTP=y
+>  CONFIG_NET_NETCONSOLE=y
+>  CONFIG_NET_RESOLV=y
+> +CONFIG_OFDEVICE=y
+> +CONFIG_OF_BAREBOX_DRIVERS=y
+>  # CONFIG_SPI is not set
+>  CONFIG_MTD=y
+>  CONFIG_FS_CRAMFS=y
+> +CONFIG_FS_TFTP=y
+>  CONFIG_FS_FAT=y
+>  CONFIG_FS_FAT_WRITE=y
+>  CONFIG_FS_FAT_LFN=y
+> diff --git a/arch/mips/dts/dlink-dir-320.dts b/arch/mips/dts/dlink-dir-320.dts
+> new file mode 100644
+> index 0000000..bad41d9
+> --- /dev/null
+> +++ b/arch/mips/dts/dlink-dir-320.dts
+> @@ -0,0 +1,32 @@
+> +/dts-v1/;
+> +
+> +#include "skeleton.dtsi"
+> +
+> +/ {
+> +	model = "D-Link DIR-320";
+> +	compatible = "dlink,dir320";
+> +
+> +	memory {
+> +		reg = <0x00000000 0x2000000>;
+> +	};
+> +
+> +	soc {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		compatible = "simple-bus";
+> +		device_type = "soc";
+> +		ranges;
+> +
+> +		serial0: serial@b8000300 {
+> +			compatible = "ns16550a";
+> +			reg = <0xb8000300 0x08>;
+> +			reg-shift = <0>;
+> +			clock-frequency = <25804800>;
+> +			status = "disabled";
+> +		};
+> +	};
+> +};
+> +
+> +&serial0 {
+> +	status = "okay";
+> +};
+> -- 
+> 1.9.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
