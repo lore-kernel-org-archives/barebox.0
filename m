@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22a.google.com ([2a00:1450:400c:c00::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wp0KJ-0007bI-6o
- for barebox@lists.infradead.org; Mon, 26 May 2014 19:12:51 +0000
-Received: by mail-wg0-f42.google.com with SMTP id y10so8267469wgg.13
- for <barebox@lists.infradead.org>; Mon, 26 May 2014 12:12:28 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Wp9jB-0007BZ-JA
+ for barebox@lists.infradead.org; Tue, 27 May 2014 05:15:11 +0000
+Date: Tue, 27 May 2014 07:14:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140527051440.GJ15686@pengutronix.de>
+References: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAOpc7mFb81QWXQg-iGvnNSqXoWiby4YqOGdOLGNpkBhdFtE5OQ@mail.gmail.com>
-References: <1401127952-10811-1-git-send-email-franck.jullien@gmail.com>
- <CAOpc7mFb81QWXQg-iGvnNSqXoWiby4YqOGdOLGNpkBhdFtE5OQ@mail.gmail.com>
-Date: Mon, 26 May 2014 21:12:27 +0200
-Message-ID: <CAJfOKBzMSTNFDCZs34-cN_SDOemcB1Qpod3t=_uOz3VkdU=xkA@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +18,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfi_flash: show progress while during erase
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 0/7] ARM: initial support for RC Module UEMD SoCs and
+ MB 77.07 board
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-2014-05-26 21:04 GMT+02:00 Holger Schurig <holgerschurig@gmail.com>:
->> -       ret = cfi_erase(info, instr->len, instr->addr);
->> +       ret = cfi_erase(info, instr->len, instr->addr, 1);
->
-> Hmm, why this parameter?  Basically, three things would be sane:
->
-
-I copied the code that was here before (I know that's not a good reason).
-Well, this "1" means: if you want to make verbose an option, implement
-this and replace "1" by whatever it needs.
-
-> * never output progress (no verbose parameter needed, obviously)
-> * always output progress (again no parameter needed)
-> * make it a command line option (parameter needed)
->
-> What you have here (in the current form) is a needless parameter to cfi_erase().
-
-What would you think if we had a command line option to make erase quiet (-q) ?
-By default we would have a progress bar displayed.
-
-Franck.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBNYXkgMjIsIDIwMTQgYXQgMTE6NDg6NDNQTSArMDQwMCwgQW50b255IFBhdmxvdiB3
+cm90ZToKPiBSZXNlYXJjaCBDZW50cmUgIk1vZHVsZSIgKFJDIE1vZHVsZSkgaXMKPiBhIFJ1c3Np
+YW4gZGV2ZWxvcG1lbnQgY29tcGFueSBkZXNpZ25pbmcKPiBtaXhlZC1zaWduYWwgQVNJQ3MgYW5k
+IHJlYWwtdGltZSB2aWRlby1pbWFnZQo+IHByb2Nlc3Npbmcgc3lzdGVtcy4KPiAKPiDQmjE4NznQ
+pdCRMdCvIChBS0EgSzE4NzlIQjFZQSkgaXMgYSBVRU1EIGZhbWlseSBTb0MgdGhhdCBjb21iaW5l
+cwo+IGEgRFNQIGNvcmUgYmFzZWQgb24gdGhlIE5ldXJvTWF0cml4KHIpIGZhbWlseQo+IHdpdGgg
+YW4gQVJNIGFyY2hpdGVjdHVyZSBDUFUgQVJNMTE3NkpaRi1TIGNvcmUuCj4gCj4gVGhlIE1CIDc3
+LjA3IGlzIGEgc21hbGwgKDgweDgwIG1tKSBzaW5nbGUtYm9hcmQgY29tcHV0ZXIKPiBkZXZlbG9w
+ZWQgaW4gUnVzc2lhIGJ5IHRoZSBSQyBNb2R1bGUuCj4gSXQgd2FzIGRldmVsb3BlZCBhcyBhbiBl
+ZHVjYXRpb25hbCBib2FyZCBmb3Ig0JoxODc50KXQkTHQryBTb0MKPiBjYXBhYmlsaXRpZXMgZGVt
+b25zdHJhdGlvbi4KPiAKPiBTZWUgaHR0cDovL3d3dy5tb2R1bGUucnUvZW4vY2F0YWxvZy9taWNy
+by9taWNyb19wYy8gZm9yIGRldGFpbHMuCj4gCgpBcHBsaWVkLCB0aGFua3MKClNhc2NoYQoKPiBD
+aGFuZ2VzIHNpbmNlIHYxOgo+IAo+ICAgMS4gZml4IHJlc2V0X2NwdSgpCj4gICAyLiBmaXggcGJs
+IGltYWdlIGJ1aWxkCj4gICAzLiBhZGQgdXNiIHN1cHBvcnQKPiAgIDQuIGFkZCB1ZW1kIGNsb2Nr
+c291cmNlCj4gICA1LiBhZGQgbWI3NzA3IGJhcmVib3ggbWluaS1ob3d0bwo+IAo+IEFudG9ueSBQ
+YXZsb3YgKDcpOgo+ICAgQVJNOiBpbml0aWFsIHN1cHBvcnQgZm9yIFJDIE1vZHVsZSBVRU1EIFNv
+Q3MKPiAgIEFSTTogdWVtZDogYWRkIERFQlVHX0xMIHN1cHBvcnQKPiAgIGNsb2Nrc291cmNlOiBh
+ZGQgdWVtZCBjbG9ja3NvdXJjZQo+ICAgQVJNOiBkdHM6IGFkZCBtaW5pbWFsINCaMTg3OdCl0JEx
+0K8gZGV2aWNldHJlZSBmaWxlCj4gICBBUk06IHVlbWQ6IGFkZCBtYjc3MDcgYm9hcmQgc3VwcG9y
+dAo+ICAgQVJNOiB1ZW1kOiBhZGQgbW9kdWxlLW1iNzcwN19kZWZjb25maWcKPiAgIEFSTTogbWI3
+NzA3OiBhZGQgYmFyZWJveCBtaW5pLWhvd3RvCj4gCj4gIGFyY2gvYXJtL0tjb25maWcgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDEyICsrKwo+ICBhcmNoL2FybS9NYWtlZmlsZSAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCj4gIGFyY2gvYXJtL2JvYXJkcy9N
+YWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKPiAgYXJjaC9hcm0vYm9hcmRz
+L21vZHVsZS1tYjc3MDcvTWFrZWZpbGUgICAgICAgICAgfCAgIDIgKwo+ICBhcmNoL2FybS9ib2Fy
+ZHMvbW9kdWxlLW1iNzcwNy9ib2FyZC5jICAgICAgICAgICB8ICA0MyArKysrKysrKwo+ICBhcmNo
+L2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9sb3dsZXZlbC5jICAgICAgICB8ICAzNCArKysrKysr
+Cj4gIGFyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3L21vZHVsZS1tYjc3MDcuZG94IHwgIDI5
+ICsrKysrKwo+ICBhcmNoL2FybS9jb25maWdzL21vZHVsZS1tYjc3MDdfZGVmY29uZmlnICAgICAg
+ICB8ICA0OSArKysrKysrKysKPiAgYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRzaSAgICAgICAg
+ICAgICAgICAgICAgfCAgMzcgKysrKysrKwo+ICBhcmNoL2FybS9kdHMvbW9kdWxlLW1iNzcwNy5k
+dHMgICAgICAgICAgICAgICAgICB8ICAyNCArKysrKwo+ICBhcmNoL2FybS9tYWNoLXVlbWQvS2Nv
+bmZpZyAgICAgICAgICAgICAgICAgICAgICB8ICAxNiArKysKPiAgYXJjaC9hcm0vbWFjaC11ZW1k
+L01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwo+ICBhcmNoL2FybS9tYWNoLXVl
+bWQvaW5jbHVkZS9tYWNoL2RlYnVnX2xsLmggICAgICB8ICA0MiArKysrKysrKwo+ICBhcmNoL2Fy
+bS9tYWNoLXVlbWQvaW5jbHVkZS9tYWNoL2hhcmR3YXJlLmggICAgICB8ICAgNyArKwo+ICBhcmNo
+L2FybS9tYWNoLXVlbWQvcmVzZXQuYyAgICAgICAgICAgICAgICAgICAgICB8ICAyNCArKysrKwo+
+ICBkcml2ZXJzL2Nsb2Nrc291cmNlL0tjb25maWcgICAgICAgICAgICAgICAgICAgICB8ICAgNCAr
+Cj4gIGRyaXZlcnMvY2xvY2tzb3VyY2UvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgIHwgICAx
+ICsKPiAgZHJpdmVycy9jbG9ja3NvdXJjZS91ZW1kLmMgICAgICAgICAgICAgICAgICAgICAgfCAx
+MzAgKysrKysrKysrKysrKysrKysrKysrKysrCj4gIDE4IGZpbGVzIGNoYW5nZWQsIDQ1NyBpbnNl
+cnRpb25zKCspCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1i
+NzcwNy9NYWtlZmlsZQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL21vZHVs
+ZS1tYjc3MDcvYm9hcmQuYwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL21v
+ZHVsZS1tYjc3MDcvbG93bGV2ZWwuYwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9h
+cmRzL21vZHVsZS1tYjc3MDcvbW9kdWxlLW1iNzcwNy5kb3gKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0
+IGFyY2gvYXJtL2NvbmZpZ3MvbW9kdWxlLW1iNzcwN19kZWZjb25maWcKPiAgY3JlYXRlIG1vZGUg
+MTAwNjQ0IGFyY2gvYXJtL2R0cy9rMTg3OWhiMXlhLmR0c2kKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0
+IGFyY2gvYXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
+aC9hcm0vbWFjaC11ZW1kL0tjb25maWcKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21h
+Y2gtdWVtZC9NYWtlZmlsZQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC11ZW1k
+L2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9t
+YWNoLXVlbWQvaW5jbHVkZS9tYWNoL2hhcmR3YXJlLmgKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFy
+Y2gvYXJtL21hY2gtdWVtZC9yZXNldC5jCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2Ns
+b2Nrc291cmNlL3VlbWQuYwo+IAo+IC0tIAo+IDEuOS4yCj4gCj4gCj4gX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+
+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJp
+YWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9u
+aXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBo
+b25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
+Njg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
