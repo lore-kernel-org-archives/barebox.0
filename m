@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f171.google.com ([209.85.217.171])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WpL92-0004dh-SN
- for barebox@lists.infradead.org; Tue, 27 May 2014 17:26:37 +0000
-Received: by mail-lb0-f171.google.com with SMTP id 10so5242753lbg.30
- for <barebox@lists.infradead.org>; Tue, 27 May 2014 10:26:14 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WpM3K-0008Ha-VN
+ for barebox@lists.infradead.org; Tue, 27 May 2014 18:24:48 +0000
+Date: Tue, 27 May 2014 20:24:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140527182424.GN15686@pengutronix.de>
+References: <1401127952-10811-1-git-send-email-franck.jullien@gmail.com>
+ <CAJfOKBx0YcSYarHJsE0FKJ5R5WVecPL=oLO+YPXGXpvs4YAg7A@mail.gmail.com>
+ <20140527054213.GM15686@pengutronix.de>
+ <CAJfOKBw9ZtwL-=QNhQ5=AZXsrRrJr0ij-oxAiWQnyReRr8cxjQ@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
-References: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
- <1401097557.4829.20.camel@weser.hi.pengutronix.de>
- <20140526160933.db2250dd20bc4c385d56c747@gmail.com>
- <CAOngqVU9N6Y1yR9A2NW4LRWJN8HeWti+ErMW6OxOjpJxDc74rQ@mail.gmail.com>
- <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
-Date: Tue, 27 May 2014 19:26:14 +0200
-Message-ID: <CAOngqVWfbkP7GunG25VP4-2a1_3y7Z0hxmBZf3OWKnL91b4JJA@mail.gmail.com>
-From: Daniele Lacamera <daniele.lacamera@tass.be>
+Content-Disposition: inline
+In-Reply-To: <CAJfOKBw9ZtwL-=QNhQ5=AZXsrRrJr0ij-oxAiWQnyReRr8cxjQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,67 +25,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] [WIP] incorporate picotcp into barebox: a small demo
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Kristof Roelants <kristof.roelants@tass.be>, barebox <barebox@lists.infradead.org>, Sam Van Den Berge <sam.van.den.berge@tass.be>, Daniele Lacamera <mlists@danielinux.net>
+Subject: Re: [PATCH] cfi_flash: show progress while during erase
+To: Franck Jullien <franck.jullien@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-Antony, thank you very much for the comments and the bug reports on
-our github. See comments below.
+On Tue, May 27, 2014 at 08:50:08AM +0200, Franck Jullien wrote:
+> 2014-05-27 7:42 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> > On Mon, May 26, 2014 at 08:20:52PM +0200, Franck Jullien wrote:
+> >> Sascha,
+> >>
+> >> Any reason why you removed the progress bar here in this commit:
+> >> 2749fbac48374b5f5ced ?
+> >
+> > The reason was that with the conversion of the cfi driver to mtd the
+> > loop over the erase blocks was no longer in the cfi driver but in the
+> > mtd layer. So if you see a progress bar for each erased block. You are
+> > probably irritated because of this patch which came in later:
+> >
+> > | commit 0d7ac7c3817e006cc4e258522a989642f1be1538
+> > | Author: Sascha Hauer <s.hauer@pengutronix.de>
+> > | Date:   Sat May 25 00:16:31 2013 +0200
+> > |
+> > |     mtd: call mtd_erase with complete area if possible
+> > |
+> > |     If a device does not have bad blocks loop over the eraseblocks
+> > |     in the driver instead of the core. This allows the mtd_dataflash
+> > |     driver to erase blocks instead of pages to gain more speed during
+> > |     erasing. Also the mtd_dataflash driver modifies the erase_info
+> > |     struct which causes the outer loop in the core to never end.
+> > |
+> > |     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > |
+> > | diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+> > | index 61744b6..f358098 100644
+> > | --- a/drivers/mtd/core.c
+> > | +++ b/drivers/mtd/core.c
+> > | @@ -107,6 +107,12 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
+> > |       memset(&erase, 0, sizeof(erase));
+> > |       erase.mtd = mtd;
+> > |       erase.addr = offset;
+> > | +
+> > | +     if (!mtd->block_isbad) {
+> > | +             erase.len = count;
+> > | +             return mtd_erase(mtd, &erase);
+> > | +     }
+> > | +
+> > |       erase.len = mtd->erasesize;
+> > |
+> > |       while (count > 0) {
+> >
+> > This moves the eraseblock iteration back into the drivers when the
+> > device does not have bad blocks, which is the case for cfi flashes.
+> >
+> 
+> Ok. So brings back the progress bar in the cfi_flash driver is good.
+> 
+> For NAND devices we could add a progress bar in the mtd core file.
+> However, I don't have a nand on my board so I can't test it.
 
-On Tue, May 27, 2014 at 4:04 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> On Tue, 27 May 2014 11:46:29 +0200
-> Daniele Lacamera <daniele.lacamera@tass.be> wrote:
->
->
-> linux kernel and barebox use not so much #ifdef's because they use
-> they use IS_ENABLED() macro with just the same result.
-[...]
-> so the code under IS_ENABLED() is always parsed by C compiler;
-> if there is an syntax error in this code then the compilation will be stopped.
+For NAND we don't need a progress bar since the erase operation is very
+fast. SPI NOR flashes could benefit from a progress bar though. However,
+since the eraseblock looping is in the driver the progress bar must be
+implemented there too.
 
-We will discuss this and see if it is applicable for PicoTCP. The
-macro you are suggesting is indeed not increasing code size, but our
-static checkers might be not so happy about all this preprocessor
-machinery.
+> 
+> Now, what would you think if we had a command line option to make
+> erase quiet (-q) ?
+> By default we would have a progress bar displayed.
 
->
-> $ gcc --version
-> gcc (Debian 4.8.3-1) 4.8.3
->
-> Here is my 'make -s' output for sandbox barebox:
->
-[cut]
+I would prefer a -v (verbose) option instead. That would be in line with
+the cp command.
 
-Thank You!! This *IS* very helpful input. We are going to add more -W
-flags and quickly fix these warnings.
+Sascha
 
-> But in linux kernel, barebox, qemu and IMHO many other projects
-> there are:
->
->   * CODING_STYLE documentation file;
->   * scripts/checkpatch.pl
->
-
-All good points. Being a kernel developer myself, I know the
-checkpatch.pl approach, and indeed it is a good thing to distribute
-coding rules if you accept contributions. Except it will never apply
-to us, because:
-
-- We have our company internal coding style which we apply to all our
-projects and we don't feel the need to distribute externally (keep in
-mind that we never planned to accept external contributions). Instead,
-the repository contains the uncrustify configuration file, which is
-pretty much self-explanatory.
-- A few of us are checking every single commit, and running uncrustify
-every now and then. We are comfortable with this approach
-- Linux coding rules are generally recognized as possibly not the best
-in the world. I especially dislike tabs.
-- commit hooks are tedious
-
-I am afraid we are not going to change our formatting style or policy,
-but thanks anyway for the suggestions!
-
-/d
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
