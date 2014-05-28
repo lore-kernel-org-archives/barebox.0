@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
+Received: from mail-wg0-x22a.google.com ([2a00:1450:400c:c00::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WpazH-0002vv-Uo
- for barebox@lists.infradead.org; Wed, 28 May 2014 10:21:36 +0000
-Received: by mail-lb0-f174.google.com with SMTP id n15so5704256lbi.19
- for <barebox@lists.infradead.org>; Wed, 28 May 2014 03:21:12 -0700 (PDT)
-Date: Wed, 28 May 2014 14:32:29 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140528143229.d5f41058f68d590b8e13e1f5@gmail.com>
-In-Reply-To: <201405280923.30797.jbe@pengutronix.de>
-References: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
- <CAOngqVU9N6Y1yR9A2NW4LRWJN8HeWti+ErMW6OxOjpJxDc74rQ@mail.gmail.com>
- <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
- <201405280923.30797.jbe@pengutronix.de>
-Mime-Version: 1.0
+ id 1WphTi-0005kG-S3
+ for barebox@lists.infradead.org; Wed, 28 May 2014 17:17:27 +0000
+Received: by mail-wg0-f42.google.com with SMTP id y10so11312329wgg.13
+ for <barebox@lists.infradead.org>; Wed, 28 May 2014 10:17:03 -0700 (PDT)
+MIME-Version: 1.0
+From: Matteo Fortini <matteo.fortini@gmail.com>
+Date: Wed, 28 May 2014 19:16:43 +0200
+Message-ID: <CAC_9p+84LdjnZ=7zRtHYchpCDigYWKhy5H7Ed+gr0SnvPUDH+g@mail.gmail.com>
+Content-Type: multipart/mixed; boundary=047d7bb03f9a2b3e7a04fa78fb4e
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] [WIP] incorporate picotcp into barebox: a small demo
-To: Juergen Borleis <jbe@pengutronix.de>
-Cc: Kristof Roelants <kristof.roelants@tass.be>, barebox@lists.infradead.org, Daniele Lacamera <daniele.lacamera@tass.be>, Daniele Lacamera <mlists@danielinux.net>, Sam Van Den Berge <sam.van.den.berge@tass.be>
+Subject: [PATCH] SAMA5D3X FIX AT91_SMC_CS offset stride
+To: barebox@lists.infradead.org
 
-T24gV2VkLCAyOCBNYXkgMjAxNCAwOToyMzozMCArMDIwMApKdWVyZ2VuIEJvcmxlaXMgPGpiZUBw
-ZW5ndXRyb25peC5kZT4gd3JvdGU6Cgo+IEhpIEFudG9ueSwKPiAKPiBPbiBUdWVzZGF5IDI3IE1h
-eSAyMDE0IDE2OjA0OjExIEFudG9ueSBQYXZsb3Ygd3JvdGU6Cj4gPiBbLi4uXQo+ID4gSWYgeW91
-IHVzZSAjaWZkZWY6Cj4gPgo+ID4gwqAgwqAgwqAgwqAgI2lmZGVmIENPTkZJR19ERUJVR19GUwo+
-ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZXJyID0gdGVncmFfZHNpX2RlYnVnZnNfaW5pdChk
-c2ksIHRlZ3JhLT5kcm0tPnByaW1hcnkpOwo+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYg
-KGVyciA8IDApCj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBkZXZfZXJy
-KGRzaS0+ZGV2LCAiZGVidWdmcyBzZXR1cCBmYWlsZWQ6ICVkXG4iLCBlcnIpOwo+ID4gwqAgwqAg
-wqAgwqAgI2VuZGlmIAo+ID4gwqAgwqAKPiA+IHRoZW4geW91IGdldCBqdXQgdGhlIHNhbWUgcmVz
-dWx0IGJ1dCB3aXRob3V0IGNoZWNraW5nIHRoZSBjb2RlIHVuZGVyICNpZmRlZgo+ID4gQ09ORklH
-X0RFQlVHX0ZTLgo+IAo+IEEgc3ludGF4IGNoZWNrIGlzIGFsd2F5cyBkb25lIGJ5IHRoZSBwcmUt
-cHJvY2Vzc29yLiBTbywgdGhlIGNvZGUgYmV0d2VlbiB0aGUKClllcywgdGhlIEMgcHJlLXByb2Nl
-c3NvciBjaGVja3MgdGhlIHN5bnRheCBmb3IgaW5wdXQsIGJ1dCBvbmx5IHRoZSBDIHByZS1wcm9j
-ZXNvciBkaXJlY3RpdmUgc3ludGF4IQpCdXQgaGVyZSBJIG1lYW4gZXhhY3RseSBDIGNvZGUgY2hl
-Y2tpbmcuCgo+ICNpZmRlZi8jZW5kaWYgbXVzdCBiZSB2YWxpZCBDIGNvZGUgb3IgYmUgY29tbWVu
-dGVkIG91dC4KPiBCdXQgdGhlcmUgaXMgbm8gZnVydGhlciBjaGVjaywgYmVjYXVzZSB0aGUgbGlu
-ZXMgYmV0d2VlbiB0aGUgI2lmZGVmLyNlbmRpZiBhcmUKPiBuZXZlciBzZWVuIGJ5IHRoZSBjb21w
-aWxlci4KPiAKClRoYXQncyBleGFjdGx5IHdoYXQgSSBtZWFuISBFLmcuCgphbnRvbnlAZG9jZTp+
-JCBjYXQgPiB0ZXN0LmMgPDxFT0Y7CmludCBtYWluKCkKewojaWZkZWYgU09NRV9VTkRFRklORURf
-TUFDUk8KICAgICAgICBmb28gYmFyOwogICAgICAgINGE0YMg0LHQsNGAOwojZW5kaWYKCXJldHVy
-biAwOwp9CkVPRgphbnRvbnlAZG9jZTp+JCBnY2MgdGVzdC5jIAphbnRvbnlAZG9jZTp+JCAuL2Eu
-b3V0IAphbnRvbnlAZG9jZTp+JCAuL2Eub3V0IAphbnRvbnlAZG9jZTp+JCBlY2hvICQKMAoKLS3C
-oApCZXN0IHJlZ2FyZHMsCsKgIEFudG9ueSBQYXZsb3YKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+--047d7bb03f9a2b3e7a04fa78fb4e
+Content-Type: text/plain; charset=UTF-8
+
+As stated in section 29.19.32 of SAMA5D3 Series datasheet, to move
+from CS(n) to CS(n+1) the stride is 0x14 and not 0x10.
+
+For this reason, I was unable to use the NAND memory on my board (CS
+configuration was not applied and the timings were wrong).
+
+This patch fixes the problem.
+
+Matteo
+
+--047d7bb03f9a2b3e7a04fa78fb4e
+Content-Type: text/x-patch; charset=US-ASCII; 
+	name="0001-sama5d3x-fix-AT91_SMC_CS-offset-stride.patch"
+Content-Disposition: attachment; 
+	filename="0001-sama5d3x-fix-AT91_SMC_CS-offset-stride.patch"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_hvqw9qjr0
+
+RnJvbSA2YzI2ZDdjMDAwMDVjYmY0NDcwMDE3YTZkNTM2MWEzNDY5ODFiYmU1IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBNYXR0ZW8gRm9ydGluaSA8bWF0dGVvLmZvcnRpbmlAZ21haWwu
+Y29tPgpEYXRlOiBXZWQsIDI4IE1heSAyMDE0IDE5OjAwOjQyICswMjAwClN1YmplY3Q6IFtQQVRD
+SF0gc2FtYTVkM3g6IGZpeCBBVDkxX1NNQ19DUyBvZmZzZXQgc3RyaWRlCgotLS0KIGFyY2gvYXJt
+L21hY2gtYXQ5MS9zYW05X3NtYy5jIHwgNCArKysrCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRp
+b25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1hdDkxL3NhbTlfc21jLmMgYi9hcmNo
+L2FybS9tYWNoLWF0OTEvc2FtOV9zbWMuYwppbmRleCBhMTM3ZGE0Li42NWM0NTU4IDEwMDY0NAot
+LS0gYS9hcmNoL2FybS9tYWNoLWF0OTEvc2FtOV9zbWMuYworKysgYi9hcmNoL2FybS9tYWNoLWF0
+OTEvc2FtOV9zbWMuYwpAQCAtMTYsNyArMTYsMTEgQEAKIAogI2luY2x1ZGUgPG1hY2gvYXQ5MXNh
+bTlfc21jLmg+CiAKKyNpZmRlZiBDT05GSUdfQVJDSF9TQU1BNUQzCisjZGVmaW5lIEFUOTFfU01D
+X0NTKGlkLCBuKQkoc21jX2Jhc2VfYWRkcltpZF0gKyAoKG4pICogMHgxNCkpCisjZWxzZQogI2Rl
+ZmluZSBBVDkxX1NNQ19DUyhpZCwgbikJKHNtY19iYXNlX2FkZHJbaWRdICsgKChuKSAqIDB4MTAp
+KQorI2VuZGlmCiAKIHN0YXRpYyB2b2lkIF9faW9tZW0gKnNtY19iYXNlX2FkZHJbMl07CiAKLS0g
+CjIuMC4wLnJjMgoK
+--047d7bb03f9a2b3e7a04fa78fb4e
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--047d7bb03f9a2b3e7a04fa78fb4e--
