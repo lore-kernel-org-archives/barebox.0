@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WpM3K-0008Ha-VN
- for barebox@lists.infradead.org; Tue, 27 May 2014 18:24:48 +0000
-Date: Tue, 27 May 2014 20:24:24 +0200
+ Linux)) id 1WpX3F-0004rA-HL
+ for barebox@lists.infradead.org; Wed, 28 May 2014 06:09:26 +0000
+Date: Wed, 28 May 2014 08:08:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140527182424.GN15686@pengutronix.de>
-References: <1401127952-10811-1-git-send-email-franck.jullien@gmail.com>
- <CAJfOKBx0YcSYarHJsE0FKJ5R5WVecPL=oLO+YPXGXpvs4YAg7A@mail.gmail.com>
- <20140527054213.GM15686@pengutronix.de>
- <CAJfOKBw9ZtwL-=QNhQ5=AZXsrRrJr0ij-oxAiWQnyReRr8cxjQ@mail.gmail.com>
+Message-ID: <20140528060859.GO15686@pengutronix.de>
+References: <20140525135819.ebfd62810f698e8f13dbf558@gmail.com>
+ <1401097557.4829.20.camel@weser.hi.pengutronix.de>
+ <20140526160933.db2250dd20bc4c385d56c747@gmail.com>
+ <CAOngqVU9N6Y1yR9A2NW4LRWJN8HeWti+ErMW6OxOjpJxDc74rQ@mail.gmail.com>
+ <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAJfOKBw9ZtwL-=QNhQ5=AZXsrRrJr0ij-oxAiWQnyReRr8cxjQ@mail.gmail.com>
+In-Reply-To: <20140527180411.9c1c650b8e9d19fdcec7614d@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,90 +22,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfi_flash: show progress while during erase
-To: Franck Jullien <franck.jullien@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [RFC] [WIP] incorporate picotcp into barebox: a small demo
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Kristof Roelants <kristof.roelants@tass.be>, barebox <barebox@lists.infradead.org>, Daniele Lacamera <daniele.lacamera@tass.be>, Daniele Lacamera <mlists@danielinux.net>, Sam Van Den Berge <sam.van.den.berge@tass.be>
 
-On Tue, May 27, 2014 at 08:50:08AM +0200, Franck Jullien wrote:
-> 2014-05-27 7:42 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> > On Mon, May 26, 2014 at 08:20:52PM +0200, Franck Jullien wrote:
-> >> Sascha,
-> >>
-> >> Any reason why you removed the progress bar here in this commit:
-> >> 2749fbac48374b5f5ced ?
-> >
-> > The reason was that with the conversion of the cfi driver to mtd the
-> > loop over the erase blocks was no longer in the cfi driver but in the
-> > mtd layer. So if you see a progress bar for each erased block. You are
-> > probably irritated because of this patch which came in later:
-> >
-> > | commit 0d7ac7c3817e006cc4e258522a989642f1be1538
-> > | Author: Sascha Hauer <s.hauer@pengutronix.de>
-> > | Date:   Sat May 25 00:16:31 2013 +0200
-> > |
-> > |     mtd: call mtd_erase with complete area if possible
-> > |
-> > |     If a device does not have bad blocks loop over the eraseblocks
-> > |     in the driver instead of the core. This allows the mtd_dataflash
-> > |     driver to erase blocks instead of pages to gain more speed during
-> > |     erasing. Also the mtd_dataflash driver modifies the erase_info
-> > |     struct which causes the outer loop in the core to never end.
-> > |
-> > |     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > |
-> > | diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-> > | index 61744b6..f358098 100644
-> > | --- a/drivers/mtd/core.c
-> > | +++ b/drivers/mtd/core.c
-> > | @@ -107,6 +107,12 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
-> > |       memset(&erase, 0, sizeof(erase));
-> > |       erase.mtd = mtd;
-> > |       erase.addr = offset;
-> > | +
-> > | +     if (!mtd->block_isbad) {
-> > | +             erase.len = count;
-> > | +             return mtd_erase(mtd, &erase);
-> > | +     }
-> > | +
-> > |       erase.len = mtd->erasesize;
-> > |
-> > |       while (count > 0) {
-> >
-> > This moves the eraseblock iteration back into the drivers when the
-> > device does not have bad blocks, which is the case for cfi flashes.
-> >
-> 
-> Ok. So brings back the progress bar in the cfi_flash driver is good.
-> 
-> For NAND devices we could add a progress bar in the mtd core file.
-> However, I don't have a nand on my board so I can't test it.
-
-For NAND we don't need a progress bar since the erase operation is very
-fast. SPI NOR flashes could benefit from a progress bar though. However,
-since the eraseblock looping is in the driver the progress bar must be
-implemented there too.
-
-> 
-> Now, what would you think if we had a command line option to make
-> erase quiet (-q) ?
-> By default we would have a progress bar displayed.
-
-I would prefer a -v (verbose) option instead. That would be in line with
-the cp command.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBNYXkgMjcsIDIwMTQgYXQgMDY6MDQ6MTFQTSArMDQwMCwgQW50b255IFBhdmxvdiB3
+cm90ZToKPiBPbiBUdWUsIDI3IE1heSAyMDE0IDExOjQ2OjI5ICswMjAwCj4gRGFuaWVsZSBMYWNh
+bWVyYSA8ZGFuaWVsZS5sYWNhbWVyYUB0YXNzLmJlPiB3cm90ZToKPiAKPiAkIGdjYyAtLXZlcnNp
+b24KPiBnY2MgKERlYmlhbiA0LjguMy0xKSA0LjguMwo+IAo+IEhlcmUgaXMgbXkgJ21ha2UgLXMn
+IG91dHB1dCBmb3Igc2FuZGJveCBiYXJlYm94Ogo+IAo+IG5ldC9waWNvdGNwL21vZHVsZXMvcGlj
+b19pcHY0LmM6IEluIGZ1bmN0aW9uIOKAmHBpY29faXB2NF9yZWJvdW5kX2xhcmdl4oCZOgo+IG5l
+dC9waWNvdGNwL21vZHVsZXMvcGljb19pcHY0LmM6MTU4MjoyNDogd2FybmluZzogdW51c2VkIHZh
+cmlhYmxlIOKAmGZy4oCZIFstV3VudXNlZC12YXJpYWJsZV0KPiAgICAgIHN0cnVjdCBwaWNvX2Zy
+YW1lICpmcjsKPiAgICAgICAgICAgICAgICAgICAgICAgICBeCj4gbmV0L3BpY290Y3AvbW9kdWxl
+cy9waWNvX2lwdjQuYzoxNTgxOjE0OiB3YXJuaW5nOiB1bnVzZWQgdmFyaWFibGUg4oCYbGVu4oCZ
+IFstV3VudXNlZC12YXJpYWJsZV0KPiAgICAgIHVpbnQzMl90IGxlbiA9IGYtPnRyYW5zcG9ydF9s
+ZW47Cj4gICAgICAgICAgICAgICBeCj4gbmV0L3BpY290Y3AvbW9kdWxlcy9waWNvX2lwdjQuYzox
+NTgwOjE0OiB3YXJuaW5nOiB1bnVzZWQgdmFyaWFibGUg4oCYdG90YWxfcGF5bG9hZF93cml0dGVu
+4oCZIFstV3VudXNlZC12YXJpYWJsZV0KPiAgICAgIHVpbnQzMl90IHRvdGFsX3BheWxvYWRfd3Jp
+dHRlbiA9IDA7Cj4gICAgICAgICAgICAgICBeCgpUaGF0J3MgYW5vdGhlciBhZHZhbnRhZ2Ugb2Yg
+SVNfRU5BQkxFRC4gVGhpcyBoYXBwZW5zIGJlY2F1c2UgdGhlIHZhcmlhYmxlcyBhcmUKb25seSB1
+c2VkIHVuZGVyIGFuIGlmZGVmLiBGaXhpbmcgdGhpcyB3b3VsZCBtZWFuIHRvIHB1dCB0aGUgZGVm
+aW5pdGlvbnMgdW5kZXIKdGhlIHNhbWUgaWZkZWYgd2hpY2ggcmVxdWlyZXMgYW5vdGhlciBpZmRl
+Zi4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRp
+b25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5l
+ciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0y
+MDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8
+IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
