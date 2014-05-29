@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wpx67-0001Xm-Ms
- for barebox@lists.infradead.org; Thu, 29 May 2014 09:58:08 +0000
-Received: by mail-wi0-f178.google.com with SMTP id cc10so293000wib.17
- for <barebox@lists.infradead.org>; Thu, 29 May 2014 02:57:45 -0700 (PDT)
-From: Matteo Fortini <matteo.fortini@gmail.com>
-Date: Thu, 29 May 2014 11:55:33 +0200
-Message-Id: <1401357333-6426-1-git-send-email-matteo.fortini@gmail.com>
+ id 1Wpz3c-0007ZW-TO
+ for barebox@lists.infradead.org; Thu, 29 May 2014 12:03:41 +0000
+Received: by mail-la0-f49.google.com with SMTP id pv20so122767lab.22
+ for <barebox@lists.infradead.org>; Thu, 29 May 2014 05:03:18 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 29 May 2014 16:03:04 +0400
+Message-Id: <1401364984-14327-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] sama5d3x: fix AT91_SMC_CS offset stride
+Subject: [PATCH] MIPS: dlink-dir-320_defconfig: drop duplicated symbols
 To: barebox@lists.infradead.org
 
-Acked-by: Bo Shen <voice.shen@atmel.com>
----
- arch/arm/mach-at91/sam9_smc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Duplicated symbols lead to this warnings:
 
-diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
-index a137da4..65c4558 100644
---- a/arch/arm/mach-at91/sam9_smc.c
-+++ b/arch/arm/mach-at91/sam9_smc.c
-@@ -16,7 +16,11 @@
- 
- #include <mach/at91sam9_smc.h>
- 
-+#ifdef CONFIG_ARCH_SAMA5D3
-+#define AT91_SMC_CS(id, n)	(smc_base_addr[id] + ((n) * 0x14))
-+#else
- #define AT91_SMC_CS(id, n)	(smc_base_addr[id] + ((n) * 0x10))
-+#endif
- 
- static void __iomem *smc_base_addr[2];
- 
+  $ make dlink-dir-320_defconfig
+  arch/mips/configs/dlink-dir-320_defconfig:52:warning: override: reassigning to symbol CMD_DHCP
+  arch/mips/configs/dlink-dir-320_defconfig:54:warning: override: reassigning to symbol CMD_PING
+  arch/mips/configs/dlink-dir-320_defconfig:55:warning: override: reassigning to symbol CMD_TFTP
+  arch/mips/configs/dlink-dir-320_defconfig:64:warning: override: reassigning to symbol FS_TFTP
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/configs/dlink-dir-320_defconfig | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink-dir-320_defconfig
+index 2ff9dd7..ab29cf3 100644
+--- a/arch/mips/configs/dlink-dir-320_defconfig
++++ b/arch/mips/configs/dlink-dir-320_defconfig
+@@ -49,11 +49,7 @@ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+-CONFIG_CMD_DHCP=y
+ CONFIG_NET_NFS=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_OFDEVICE=y
 -- 
-2.0.0.rc2
+1.9.2
 
 
 _______________________________________________
