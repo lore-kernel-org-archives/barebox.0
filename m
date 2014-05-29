@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp02.atmel.com ([204.2.163.16] helo=SJOEDG01.corp.atmel.com)
+Received: from nasmtp01.atmel.com ([192.199.1.246]
+ helo=DVREDG02.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WppCB-0003hF-VU
- for barebox@lists.infradead.org; Thu, 29 May 2014 01:31:52 +0000
-Message-ID: <53868DE7.9030207@atmel.com>
-Date: Thu, 29 May 2014 09:31:19 +0800
+ id 1WppMY-00004y-PO
+ for barebox@lists.infradead.org; Thu, 29 May 2014 01:42:35 +0000
 From: Bo Shen <voice.shen@atmel.com>
+Date: Thu, 29 May 2014 09:41:59 +0800
+Message-ID: <1401327719-4397-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
-References: <CAC_9p+84LdjnZ=7zRtHYchpCDigYWKhy5H7Ed+gr0SnvPUDH+g@mail.gmail.com>
-In-Reply-To: <CAC_9p+84LdjnZ=7zRtHYchpCDigYWKhy5H7Ed+gr0SnvPUDH+g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,32 +16,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] SAMA5D3X FIX AT91_SMC_CS offset stride
-To: Matteo Fortini <matteo.fortini@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: atmel: sama5d3xek: remove duplicate included file
+To: barebox@lists.infradead.org
 
-Hi Matteo,
-   Thanks for your patch. Can you resend it directly while not through 
-attachment?
-   When you resend, you can add my acked-by.
+As the at91sam9_smc.h duplicate in header list, remove one.
 
-Best Regards,
-Bo Shen
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
+---
+ arch/arm/boards/sama5d3xek/init.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-On 05/29/2014 01:16 AM, Matteo Fortini wrote:
-> As stated in section 29.19.32 of SAMA5D3 Series datasheet, to move
-> from CS(n) to CS(n+1) the stride is 0x14 and not 0x10.
->
-> For this reason, I was unable to use the NAND memory on my board (CS
-> configuration was not applied and the timings were wrong).
->
-> This patch fixes the problem.
->
-> Matteo
+diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+index e078642..731bbbb 100644
+--- a/arch/arm/boards/sama5d3xek/init.c
++++ b/arch/arm/boards/sama5d3xek/init.c
+@@ -30,7 +30,6 @@
+ #include <linux/mtd/nand.h>
+ #include <mach/board.h>
+ #include <mach/at91sam9_smc.h>
+-#include <mach/at91sam9_smc.h>
+ #include <gpio.h>
+ #include <mach/io.h>
+ #include <mach/iomux.h>
+-- 
+1.8.5.2
 
 
 _______________________________________________
