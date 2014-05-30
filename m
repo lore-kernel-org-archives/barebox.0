@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-x234.google.com ([2607:f8b0:4002:c01::234])
+Received: from mail-yk0-x234.google.com ([2607:f8b0:4002:c07::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WqIiu-0002aX-8Y
- for barebox@lists.infradead.org; Fri, 30 May 2014 09:03:37 +0000
-Received: by mail-yh0-f52.google.com with SMTP id z6so1313042yhz.25
- for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:03:13 -0700 (PDT)
+ id 1WqJ9F-00013d-42
+ for barebox@lists.infradead.org; Fri, 30 May 2014 09:30:49 +0000
+Received: by mail-yk0-f180.google.com with SMTP id q9so1267764ykb.39
+ for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:30:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20140530130508.ec39ce68bf04233e2c89feae@gmail.com>
-References: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
- <1400788130-24202-3-git-send-email-antonynpavlov@gmail.com>
- <CAOpc7mG1WzFvhzctPULHeaZV10uBbVxK1f0kn9qAAiFXkBxc_w@mail.gmail.com>
- <20140530130508.ec39ce68bf04233e2c89feae@gmail.com>
-Date: Fri, 30 May 2014 11:03:13 +0200
-Message-ID: <CAOpc7mHccwy5tTd50EVLCboOWM9vNApVsYWFmBf_5McgUyJS9Q@mail.gmail.com>
+In-Reply-To: <20140530091716.GA13550@omega>
+References: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
+ <1401440856-6145-10-git-send-email-holgerschurig@gmail.com>
+ <20140530091716.GA13550@omega>
+Date: Fri, 30 May 2014 11:30:27 +0200
+Message-ID: <CAOpc7mGQ0QPpY06qhQJpxjDPZqa7Uz7CdLrwJrtXRJxLRSBO7g@mail.gmail.com>
 From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,11 +25,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/7] ARM: uemd: add DEBUG_LL support
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 09/10] beautify PHY driver names
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Oops, you're of course right!
+I changed them because (before my patches) the driver list in
+"devinfo" looked ugly, with my drvinfo command that one looked ugly.
+Those driver names sticked out like a sore thumb.
+
+Now, if I do "diff linux/driver/net/phy/micrel.c
+barebox/driver/net/phy/micrel.c", I can see that those files are a bit
+similar ... but only a bit. Diff spits out 569 lines of diff output.
+And as micrel.c is only 281 lines long, this means that almost no
+identical lines are in those two files anyway ...    so, the drivers
+are following the Linux model, but they are not Linux drivers anyway.
+
+As this is purely cosmetical, I won't fight over it. Or at least not more :-)
 
 _______________________________________________
 barebox mailing list
