@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp02.atmel.com ([204.2.163.16] helo=SJOEDG01.corp.atmel.com)
+Received: from mail-yk0-x22b.google.com ([2607:f8b0:4002:c07::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WqBrE-000380-1A
- for barebox@lists.infradead.org; Fri, 30 May 2014 01:43:44 +0000
-Message-ID: <5387E231.9030403@atmel.com>
-Date: Fri, 30 May 2014 09:43:13 +0800
-From: Bo Shen <voice.shen@atmel.com>
+ id 1WqG0e-0002UD-Vt
+ for barebox@lists.infradead.org; Fri, 30 May 2014 06:09:45 +0000
+Received: by mail-yk0-f171.google.com with SMTP id 142so1148980ykq.2
+ for <barebox@lists.infradead.org>; Thu, 29 May 2014 23:09:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <1401357333-6426-1-git-send-email-matteo.fortini@gmail.com>
- <08875C68-8986-4E67-A4ED-2C3F9C203A73@jcrosoft.com>
-In-Reply-To: <08875C68-8986-4E67-A4ED-2C3F9C203A73@jcrosoft.com>
+In-Reply-To: <1400788130-24202-3-git-send-email-antonynpavlov@gmail.com>
+References: <1400788130-24202-1-git-send-email-antonynpavlov@gmail.com>
+ <1400788130-24202-3-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 30 May 2014 08:09:21 +0200
+Message-ID: <CAOpc7mG1WzFvhzctPULHeaZV10uBbVxK1f0kn9qAAiFXkBxc_w@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +20,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] sama5d3x: fix AT91_SMC_CS offset stride
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, Matteo Fortini <matteo.fortini@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 2/7] ARM: uemd: add DEBUG_LL support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi J,
+2014-05-22 21:48 GMT+02:00 Antony Pavlov <antonynpavlov@gmail.com>:
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -203,6 +203,7 @@ config ARCH_UEMD
+>         select OFDEVICE
+>         select OFTREE
+>         select CLOCKSOURCE_UEMD
+> +       select HAS_DEBUG_LL
 
-On 05/29/2014 08:11 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
->
-> On May 29, 2014, at 5:55 PM, Matteo Fortini <matteo.fortini@gmail.com> wrote:
->
->>
->> Acked-by: Bo Shen <voice.shen@atmel.com>
->> ---
->> arch/arm/mach-at91/sam9_smc.c | 4 ++++
->> 1 file changed, 4 insertions(+)
->>
->> diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
->> index a137da4..65c4558 100644
->> --- a/arch/arm/mach-at91/sam9_smc.c
->> +++ b/arch/arm/mach-at91/sam9_smc.c
->> @@ -16,7 +16,11 @@
->>
->> #include <mach/at91sam9_smc.h>
->>
->> +#ifdef CONFIG_ARCH_SAMA5D3
->> +#define AT91_SMC_CS(id, n)	(smc_base_addr[id] + ((n) * 0x14))
->> +#else
->> #define AT91_SMC_CS(id, n)	(smc_base_addr[id] + ((n) * 0x10))
->> +#endif
-> NACK no ifdef
->
-> this need to be runtime
+Why not putting this into the _defconfig?
 
-Oh, this make me read more and think more. The mode register in SMC on 
-sama5d3 SoC also has different offset.
-
-So, how about move this into <mach/at91sam9_smc.h>, or create a new 
-<mach/sama5_smc.h>, and then, use #ifdef to choose different SoC? If 
-this not acceptable, can we use #ifdef in <mach/at91sam9_smc.h>?
-
-> and you need to put our SOB
->>
->> static void __iomem *smc_base_addr[2];
->>
->> --
->> 2.0.0.rc2
-
-Best Regards,
-Bo Shen
-
+(On my device, it's neither in defconfig nor in Kconfig, I only had it
+on in the initial "bring it to live" period. Afterwards I turned it
+off)
 
 _______________________________________________
 barebox mailing list
