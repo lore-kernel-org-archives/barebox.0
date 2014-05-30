@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x235.google.com ([2a00:1450:400c:c03::235])
+Received: from mail-we0-x233.google.com ([2a00:1450:400c:c03::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WqIi8-0002Bb-0g
- for barebox@lists.infradead.org; Fri, 30 May 2014 09:02:48 +0000
-Received: by mail-we0-f181.google.com with SMTP id w61so1688264wes.12
- for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:02:25 -0700 (PDT)
+ id 1WqIi2-0002B5-Sz
+ for barebox@lists.infradead.org; Fri, 30 May 2014 09:02:43 +0000
+Received: by mail-we0-f179.google.com with SMTP id q59so1617970wes.24
+ for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:02:20 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Fri, 30 May 2014 11:07:31 +0200
-Message-Id: <1401440856-6145-6-git-send-email-holgerschurig@gmail.com>
+Date: Fri, 30 May 2014 11:07:28 +0200
+Message-Id: <1401440856-6145-3-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
 References: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,31 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] net: show enetaddr in lowercase
+Subject: [PATCH 02/10] devinfo: reduce indentation
 To: barebox@lists.infradead.org
 
-"ifconfig" and "ip" from normal Linux userspace shows ethernet addresses
-normally in lowercase.  And the %pM format specifier in Linux does that,
-too. Conform to this custom formatting.
+This patch reduces the indentation of "devinfo", to reduce the amount of
+overly long lines.
+
+And while we're at it, also remove the fixed-size of the human-readable
+area. As entries didn't align anyway (because of indentation), this was
+just eating more space without giving much more readability.
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
- net/net.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/devinfo.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index f54267a..07350ad 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -160,7 +160,7 @@ int string_to_ethaddr(const char *str, u8 enetaddr[6])
+diff --git a/commands/devinfo.c b/commands/devinfo.c
+index 448792d..3fb309b 100644
+--- a/commands/devinfo.c
++++ b/commands/devinfo.c
+@@ -25,15 +25,15 @@ static int do_devinfo_subtree(struct device_d *dev, int depth)
+ 	int i;
  
- void ethaddr_to_string(const u8 enetaddr[6], char *str)
- {
--	sprintf(str, "%02X:%02X:%02X:%02X:%02X:%02X",
-+	sprintf(str, "%02x:%02x:%02x:%02x:%02x:%02x",
- 		 enetaddr[0], enetaddr[1], enetaddr[2], enetaddr[3],
- 		 enetaddr[4], enetaddr[5]);
- }
+ 	for (i = 0; i < depth; i++)
+-		printf("     ");
++		printf("   ");
+ 
+-	printf("`---- %s", dev_name(dev));
++	printf("`-- %s", dev_name(dev));
+ 	if (!list_empty(&dev->cdevs)) {
+ 		printf("\n");
+ 		list_for_each_entry(cdev, &dev->cdevs, devices_list) {
+ 			for (i = 0; i < depth + 1; i++)
+-				printf("     ");
+-			printf("`---- 0x%08llx-0x%08llx (%10s): /dev/%s\n",
++				printf("   ");
++			printf("`-- 0x%08llx-0x%08llx (%s): /dev/%s\n",
+ 					cdev->offset,
+ 					cdev->offset + cdev->size - 1,
+ 					size_human_readable(cdev->size),
 -- 
 1.7.10.4
 
