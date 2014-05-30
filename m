@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-yh0-x235.google.com ([2607:f8b0:4002:c01::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WqImo-0000fP-MI
- for barebox@lists.infradead.org; Fri, 30 May 2014 09:07:39 +0000
-Received: by mail-lb0-f179.google.com with SMTP id c11so818460lbj.24
- for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:07:13 -0700 (PDT)
-Date: Fri, 30 May 2014 13:18:33 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140530131833.e6960587743c31fd85cd7788@gmail.com>
-Mime-Version: 1.0
+ id 1WqIlh-0007Dn-BH
+ for barebox@lists.infradead.org; Fri, 30 May 2014 09:06:29 +0000
+Received: by mail-yh0-f53.google.com with SMTP id i57so1314273yha.12
+ for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:06:07 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <1401440856-6145-9-git-send-email-holgerschurig@gmail.com>
+References: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
+ <1401440856-6145-9-git-send-email-holgerschurig@gmail.com>
+Date: Fri, 30 May 2014 11:06:07 +0200
+Message-ID: <CAOpc7mGt74byOT3H5OmRLn3fs3-DkiEe9Zso_JSrAb3RatbQQQ@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,37 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] picotcp.20140530
-To: barebox@lists.infradead.org
-Cc: Daniele Lacamera <daniele.lacamera@tass.be>
+Subject: Re: [PATCH 08/10] bootm: beautify output
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi All!
+The output is now ...
 
-My new barebox with picotcp support brunch is pushed to github:
+Without -v:
 
-    https://github.com/frantony/barebox/tree/picotcp.20140530
+    Loading ARM Linux zImage '/mnt/linux/arch/arm/boot/zImage'
+    commandline: console=ttymxc0,115200n8 quiet root=/dev/ram rdinit=/sbin/init
 
-For this version reworked content of Daniele Lacamera's push request
-is used (see https://github.com/frantony/barebox/pull/1).
+With -v:
 
-Changes since picotcp.20140525:
+    Loading ARM Linux zImage '/mnt/linux/arch/arm/boot/zImage'
+    OS image not yet relocated
+    Loading initrd GZIP compressed '/mnt/image/boot/initrd.img.gz'
+    initrd image not yet relocated
+    Passing control to ARM zImage handler
+    no OS load address, defaulting to 0x10707000
+    no initrd load address, defaulting to 0x109c9000
+    commandline: console=ttymxc0,115200n8 quiet root=/dev/ram rdinit=/sbin/init
 
-  * rebased over latest barebox;
-  * the latest picotcp is used (warnings and big-endian
-    tests fixed);
-  * add picotcp dhcp client support by Daniele Lacamera
-  * qemu mips malta defconfig is dropped as barebox qemu
-    malta has no network device support (you can rebase
-    over experimental pci branch but it is very different story ...)
-  * other small fixes.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+    Starting kernel at 0x10707000, initrd at 0x109c9000, oftree at 0x10a98000...
 
 _______________________________________________
 barebox mailing list
