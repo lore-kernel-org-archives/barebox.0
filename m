@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22c.google.com ([2a00:1450:400c:c03::22c])
+Received: from mail-we0-x22d.google.com ([2a00:1450:400c:c03::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WqIi8-0002CA-Ov
- for barebox@lists.infradead.org; Fri, 30 May 2014 09:02:49 +0000
-Received: by mail-we0-f172.google.com with SMTP id k48so1677485wev.31
- for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:02:29 -0700 (PDT)
+ id 1WqIi4-0002BA-Ih
+ for barebox@lists.infradead.org; Fri, 30 May 2014 09:02:45 +0000
+Received: by mail-we0-f173.google.com with SMTP id u57so1684039wes.32
+ for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:02:22 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Fri, 30 May 2014 11:07:35 +0200
-Message-Id: <1401440856-6145-10-git-send-email-holgerschurig@gmail.com>
+Date: Fri, 30 May 2014 11:07:29 +0200
+Message-Id: <1401440856-6145-4-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
 References: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,227 +23,133 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] beautify PHY driver names
+Subject: [PATCH 03/10] devinfo: make the output of "devinfo DEVICE" nicer
 To: barebox@lists.infradead.org
 
-Some device names where texts like "Atheros 8035 ethernet" or similar. They
-now got a prefix "phy-" and just their name and look now much more like the
-other driver names.
+* some output sections started with "foo: bar", some with "foo = bar". Unify this.
+* there was a fixed size to the "foo =" parameters, which wasn't fitting, this
+  was especially visible at "devinfo global"
+* don't output "resources:", "driver:" and "bus:" lines if there are none
+  resources, drivers or busses involved.
+* remove some empty lines
+* harmonize differentiation between headlines (e.g. "resources:") and values
+  by indenting values slightly
+* uppercase some texts
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
- drivers/net/phy/at803x.c   |    6 +++---
- drivers/net/phy/lxt.c      |    2 +-
- drivers/net/phy/micrel.c   |   18 +++++++++---------
- drivers/net/phy/national.c |    2 +-
- drivers/net/phy/phy.c      |    2 +-
- drivers/net/phy/smsc.c     |   10 +++++-----
- 6 files changed, 20 insertions(+), 20 deletions(-)
+ commands/devinfo.c |   38 +++++++++++++++++++++-----------------
+ drivers/video/fb.c |    7 ++-----
+ 2 files changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-index a244c87..a7b3ece 100644
---- a/drivers/net/phy/at803x.c
-+++ b/drivers/net/phy/at803x.c
-@@ -88,7 +88,7 @@ static struct phy_driver at803x_driver[] = {
- 	/* ATHEROS 8035 */
- 	.phy_id		= 0x004dd072,
- 	.phy_id_mask	= 0xffffffef,
--	.drv.name	= "Atheros 8035 ethernet",
-+	.drv.name	= "phy-ath8035",
- 	.config_init	= at803x_config_init,
- 	.features	= PHY_GBIT_FEATURES,
- 	.config_aneg	= &genphy_config_aneg,
-@@ -97,7 +97,7 @@ static struct phy_driver at803x_driver[] = {
- 	/* ATHEROS 8030 */
- 	.phy_id		= 0x004dd076,
- 	.phy_id_mask	= 0xffffffef,
--	.drv.name	= "Atheros 8030 ethernet",
-+	.drv.name	= "phy-ath8030",
- 	.config_init	= at803x_config_init,
- 	.features	= PHY_GBIT_FEATURES,
- 	.config_aneg	= &genphy_config_aneg,
-@@ -106,7 +106,7 @@ static struct phy_driver at803x_driver[] = {
- 	/* ATHEROS 8031 */
- 	.phy_id		= 0x004dd074,
- 	.phy_id_mask	= 0xffffffef,
--	.drv.name	= "Atheros 8031 ethernet",
-+	.drv.name	= "phy-ath8031",
- 	.config_init	= at803x_config_init,
- 	.features	= PHY_GBIT_FEATURES,
- 	.config_aneg	= &genphy_config_aneg,
-diff --git a/drivers/net/phy/lxt.c b/drivers/net/phy/lxt.c
-index 9e5ddbb..3ec5299 100644
---- a/drivers/net/phy/lxt.c
-+++ b/drivers/net/phy/lxt.c
-@@ -19,7 +19,7 @@ static struct phy_driver lxt97x_driver[] = {
- {
- 	.phy_id		= 0x001378e0,
- 	.phy_id_mask	= 0xfffffff0,
--	.drv.name	= "LXT971",
-+	.drv.name	= "phy-lxt971",
- 	.features	= PHY_BASIC_FEATURES,
- } };
- 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 8aea653..cf4ee77 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -191,7 +191,7 @@ static struct phy_driver ksphy_driver[] = {
- {
- 	.phy_id		= PHY_ID_KS8737,
- 	.phy_id_mask	= 0x00fffff0,
--	.drv.name	= "Micrel KS8737",
-+	.drv.name	= "phy-ks8737",
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
- 	.config_init	= kszphy_config_init,
- 	.config_aneg	= genphy_config_aneg,
-@@ -199,7 +199,7 @@ static struct phy_driver ksphy_driver[] = {
- }, {
- 	.phy_id		= PHY_ID_KSZ8021,
- 	.phy_id_mask	= 0x00ffffff,
--	.drv.name	= "Micrel KSZ8021",
-+	.drv.name	= "phy-ksz8021",
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause |
- 			   SUPPORTED_Asym_Pause),
- 	.config_init	= ksz8021_config_init,
-@@ -208,7 +208,7 @@ static struct phy_driver ksphy_driver[] = {
- }, {
- 	.phy_id		= PHY_ID_KSZ8031,
- 	.phy_id_mask	= 0x00ffffff,
--	.drv.name	= "Micrel KSZ8031",
-+	.drv.name	= "phy-ksz8031",
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause |
- 			   SUPPORTED_Asym_Pause),
- 	.config_init	= ksz8021_config_init,
-@@ -217,7 +217,7 @@ static struct phy_driver ksphy_driver[] = {
- }, {
- 	.phy_id		= PHY_ID_KSZ8041,
- 	.phy_id_mask	= 0x00fffff0,
--	.drv.name	= "Micrel KSZ8041",
-+	.drv.name	= "phy-ksz8041",
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
- 	.config_init	= kszphy_config_init,
-@@ -226,7 +226,7 @@ static struct phy_driver ksphy_driver[] = {
- }, {
- 	.phy_id		= PHY_ID_KSZ8051,
- 	.phy_id_mask	= 0x00fffff0,
--	.drv.name		= "Micrel KSZ8051",
-+	.drv.name		= "phy-ksz8051",
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
- 	.config_init	= ks8051_config_init,
-@@ -234,7 +234,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.read_status	= genphy_read_status,
- }, {
- 	.phy_id		= PHY_ID_KSZ8001,
--	.drv.name	= "Micrel KSZ8001 or KS8721",
-+	.drv.name	= "phy-ksz8001-ks8721",
- 	.phy_id_mask	= 0x00ffffff,
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
- 	.config_init	= kszphy_config_init,
-@@ -248,7 +248,7 @@ static struct phy_driver ksphy_driver[] = {
- 	 */
- 	.phy_id		= PHY_ID_KSZ9021,
- 	.phy_id_mask	= 0x000ffffe,
--	.drv.name	= "Micrel KSZ9021 Gigabit PHY",
-+	.drv.name	= "phy-ksz9021",
- 	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause),
- 	.config_init	= ksz9021_config_init,
- 	.config_aneg	= genphy_config_aneg,
-@@ -256,7 +256,7 @@ static struct phy_driver ksphy_driver[] = {
- }, {
- 	.phy_id		= PHY_ID_KSZ9031,
- 	.phy_id_mask	= 0x00fffff0,
--	.drv.name	= "Micrel KSZ9031 Gigabit PHY",
-+	.drv.name	= "phy-ksz9031",
- 	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
- 	.config_init	= kszphy_config_init,
-@@ -265,7 +265,7 @@ static struct phy_driver ksphy_driver[] = {
- }, {
- 	.phy_id		= PHY_ID_KSZ8873MLL,
- 	.phy_id_mask	= 0x00fffff0,
--	.drv.name	= "Micrel KSZ8873MLL Switch",
-+	.drv.name	= "phy-ksz8873mll",
- 	.features	= (SUPPORTED_Pause | SUPPORTED_Asym_Pause),
- 	.config_init	= ksz8873mll_config_init,
- 	.config_aneg	= ksz8873mll_config_aneg,
-diff --git a/drivers/net/phy/national.c b/drivers/net/phy/national.c
-index e46d587..83374ec 100644
---- a/drivers/net/phy/national.c
-+++ b/drivers/net/phy/national.c
-@@ -82,7 +82,7 @@ static int ns_config_init(struct phy_device *phydev)
- static struct phy_driver dp83865_driver = {
- 	.phy_id		= 0x20005c70,
- 	.phy_id_mask	= 0xfffffff0,
--	.drv.name	= "NatSemi DP83865",
-+	.drv.name	= "phy-dp83865",
- 	.features	= PHY_GBIT_FEATURES |
- 			SUPPORTED_Pause | SUPPORTED_Asym_Pause,
- 	.config_init    = ns_config_init,
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 1a2fdf1..aef9350 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -855,7 +855,7 @@ int phy_init_hw(struct phy_device *phydev)
+diff --git a/commands/devinfo.c b/commands/devinfo.c
+index 3fb309b..1a35e3f 100644
+--- a/commands/devinfo.c
++++ b/commands/devinfo.c
+@@ -52,16 +52,16 @@ static int do_devinfo_subtree(struct device_d *dev, int depth)
+ 	return 0;
  }
  
- static struct phy_driver genphy_driver = {
--	.drv.name = "Generic PHY",
-+	.drv.name = "phy-generic",
- 	.phy_id = PHY_ANY_UID,
- 	.phy_id_mask = PHY_ANY_UID,
- 	.features = PHY_GBIT_FEATURES | SUPPORTED_MII |
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index a318624..e540754 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -80,7 +80,7 @@ static struct phy_driver smsc_phy_driver[] = {
++
+ static int do_devinfo(int argc, char *argv[])
  {
- 	.phy_id		= 0x0007c0a0, /* OUI=0x00800f, Model#=0x0a */
- 	.phy_id_mask	= 0xfffffff0,
--	.drv.name	= "SMSC LAN83C185",
-+	.drv.name	= "phy-lan83c185",
+ 	struct device_d *dev;
+ 	struct param_d *param;
+ 	int i;
++	int first;
+ 	struct resource *res;
  
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
-@@ -92,7 +92,7 @@ static struct phy_driver smsc_phy_driver[] = {
- }, {
- 	.phy_id		= 0x0007c0b0, /* OUI=0x00800f, Model#=0x0b */
- 	.phy_id_mask	= 0xfffffff0,
--	.drv.name	= "SMSC LAN8187",
-+	.drv.name	= "phy-lan8187",
+ 	if (argc == 1) {
+-		printf("devices:\n");
+-
+ 		for_each_device(dev) {
+ 			if (!dev->parent)
+ 				do_devinfo_subtree(dev, 0);
+@@ -74,38 +74,42 @@ static int do_devinfo(int argc, char *argv[])
+ 			return -1;
+ 		}
  
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
-@@ -104,7 +104,7 @@ static struct phy_driver smsc_phy_driver[] = {
- }, {
- 	.phy_id		= 0x0007c0c0, /* OUI=0x00800f, Model#=0x0c */
- 	.phy_id_mask	= 0xfffffff0,
--	.drv.name	= "SMSC LAN8700",
-+	.drv.name	= "phy-lan8700",
+-		printf("resources:\n");
++		if (dev->num_resources)
++			printf("Resources:\n");
+ 		for (i = 0; i < dev->num_resources; i++) {
+ 			res = &dev->resource[i];
+-			printf("num   : %d\n", i);
++			printf("  num: %d\n", i);
+ 			if (res->name)
+-				printf("name  : %s\n", res->name);
+-			printf("start : " PRINTF_CONVERSION_RESOURCE "\nsize  : "
+-					PRINTF_CONVERSION_RESOURCE "\n",
++				printf("  name: %s\n", res->name);
++			printf("  start: " PRINTF_CONVERSION_RESOURCE "\n"
++				   "  size: "  PRINTF_CONVERSION_RESOURCE "\n",
+ 			       res->start, resource_size(res));
+ 		}
  
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
-@@ -116,7 +116,7 @@ static struct phy_driver smsc_phy_driver[] = {
- }, {
- 	.phy_id		= 0x0007c0d0, /* OUI=0x00800f, Model#=0x0d */
- 	.phy_id_mask	= 0xfffffff0,
--	.drv.name	= "SMSC LAN911x Internal PHY",
-+	.drv.name	= "phy-lan911x",
+-		printf("driver: %s\n", dev->driver ?
+-				dev->driver->name : "none");
++		if (dev->driver)
++			printf("Driver: %s\n", dev->driver->name);
  
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
-@@ -128,7 +128,7 @@ static struct phy_driver smsc_phy_driver[] = {
- }, {
- 	.phy_id		= 0x0007c0f0, /* OUI=0x00800f, Model#=0x0f */
- 	.phy_id_mask	= 0xfffffff0,
--	.drv.name	= "SMSC LAN8710/LAN8720",
-+	.drv.name	= "phy-lan8710",
+-		printf("bus: %s\n\n", dev->bus ?
+-				dev->bus->name : "none");
++		if (dev->bus)
++			printf("Bus: %s\n", dev->bus->name);
  
- 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause
- 				| SUPPORTED_Asym_Pause),
+ 		if (dev->info)
+ 			dev->info(dev);
+ 
+-		printf("%s\n", list_empty(&dev->parameters) ?
+-				"no parameters available" : "Parameters:");
+-
++		first = true;
+ 		list_for_each_entry(param, &dev->parameters, list) {
+-			printf("%16s = %s", param->name, dev_get_param(dev, param->name));
+-			if (param->info)
++			if (first) {
++				printf("Parameters:\n");
++				first = false;
++			}
++			printf("  %s: %s", param->name, dev_get_param(dev, param->name));
++			if (param->info) {
+ 				param->info(param);
++			}
+ 			printf("\n");
+ 		}
+ #ifdef CONFIG_OFDEVICE
+ 		if (dev->device_node) {
+-			printf("\ndevice node: %s\n", dev->device_node->full_name);
++			printf("Device node: %s\n", dev->device_node->full_name);
+ 			of_print_nodes(dev->device_node, 0);
+ 		}
+ #endif
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index ecf6142..e30ab59 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -125,7 +125,7 @@ static struct file_operations fb_ops = {
+ 
+ static void fb_print_mode(struct fb_videomode *mode)
+ {
+-	printf("%-20s %dx%d@%d\n", mode->name,
++	printf("  %s: %dx%d@%d\n", mode->name,
+ 			mode->xres, mode->yres, mode->refresh);
+ }
+ 
+@@ -141,12 +141,9 @@ static void fb_info(struct device_d *dev)
+ {
+ 	struct fb_info *info = dev->priv;
+ 
+-	printf("available modes:\n");
+-
++	printf("Available modes:\n");
+ 	fb_print_modes(&info->modes);
+ 	fb_print_modes(&info->edid_modes);
+-
+-	printf("\n");
+ }
+ 
+ int register_framebuffer(struct fb_info *info)
 -- 
 1.7.10.4
 
