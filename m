@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x235.google.com ([2607:f8b0:4002:c07::235])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WqImp-0000hU-3F
+ id 1WqImo-0000fP-MI
  for barebox@lists.infradead.org; Fri, 30 May 2014 09:07:39 +0000
-Received: by mail-yk0-f181.google.com with SMTP id 131so1258734ykp.26
- for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:07:17 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1401440856-6145-4-git-send-email-holgerschurig@gmail.com>
-References: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
- <1401440856-6145-4-git-send-email-holgerschurig@gmail.com>
-Date: Fri, 30 May 2014 11:07:17 +0200
-Message-ID: <CAOpc7mHnKgzk4Usm0t21YZe3WT1WPRF47U8oEHfecbJyqoG90A@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+Received: by mail-lb0-f179.google.com with SMTP id c11so818460lbj.24
+ for <barebox@lists.infradead.org>; Fri, 30 May 2014 02:07:13 -0700 (PDT)
+Date: Fri, 30 May 2014 13:18:33 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140530131833.e6960587743c31fd85cd7788@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/10] devinfo: make the output of "devinfo DEVICE" nicer
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [RFC] picotcp.20140530
+To: barebox@lists.infradead.org
+Cc: Daniele Lacamera <daniele.lacamera@tass.be>
 
-Example output before of "devinfo fb0":
+Hi All!
 
-    resources:
-    num   : 0
-    start : 0x4c242000
-    size  : 0x00300000
-    driver: none
-    bus: none
+My new barebox with picotcp support brunch is pushed to github:
 
-    available modes:
-    hsd100pxn1           1024x768@0
+    https://github.com/frantony/barebox/tree/picotcp.20140530
 
-    Parameters:
-              enable = 0
-           mode_name = hsd100pxn1 ("hsd100pxn1")
+For this version reworked content of Daniele Lacamera's push request
+is used (see https://github.com/frantony/barebox/pull/1).
 
+Changes since picotcp.20140525:
 
-Example output after this patch:
+  * rebased over latest barebox;
+  * the latest picotcp is used (warnings and big-endian
+    tests fixed);
+  * add picotcp dhcp client support by Daniele Lacamera
+  * qemu mips malta defconfig is dropped as barebox qemu
+    malta has no network device support (you can rebase
+    over experimental pci branch but it is very different story ...)
+  * other small fixes.
 
-    Resources:
-      num: 0
-      start: 0x4c242000
-      size: 0x00300000
-    Available modes:
-      hsd100pxn1: 1024x768@0
-    Parameters:
-      enable: 0
-      mode_name: hsd100pxn1 ("hsd100pxn1")
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
