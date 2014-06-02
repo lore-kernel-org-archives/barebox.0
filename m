@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WrNlO-0008Un-OY
- for barebox@lists.infradead.org; Mon, 02 Jun 2014 08:38:39 +0000
-Date: Mon, 2 Jun 2014 10:38:13 +0200
+ Linux)) id 1WrNtD-0004Iq-Ud
+ for barebox@lists.infradead.org; Mon, 02 Jun 2014 08:46:44 +0000
+Date: Mon, 2 Jun 2014 10:46:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140602083813.GY15686@pengutronix.de>
-References: <1401441248-15034-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140602084621.GZ15686@pengutronix.de>
+References: <20140530131833.e6960587743c31fd85cd7788@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1401441248-15034-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <20140530131833.e6960587743c31fd85cd7788@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] net: picoping: try to make it asynchronious: fail
+Subject: Re: [RFC] picotcp.20140530
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org, Daniele Lacamera <daniele.lacamera@tass.be>
 
-On Fri, May 30, 2014 at 01:14:08PM +0400, Antony Pavlov wrote:
-> Picotcp tends to work in an asynchronious way.
+On Fri, May 30, 2014 at 01:18:33PM +0400, Antony Pavlov wrote:
+> Hi All!
 > 
-> E.g. for ping we have to use "pico_icmp4_ping()"
-> (to start ping task) and the special icmp4 handler
-> (callback function) "cb_ping()".
+> My new barebox with picotcp support brunch is pushed to github:
 > 
-> But the ping command in barebox works in very simple
-> way:
+>     https://github.com/frantony/barebox/tree/picotcp.20140530
 > 
->   * user types 'ping <IP>' in the barebox shell command line;
->   * the ping command takes all control until it gets the positive
->     or a negative result;
->   * the control is returned to the barebox shell.
+> For this version reworked content of Daniele Lacamera's push request
+> is used (see https://github.com/frantony/barebox/pull/1).
 > 
-> To use asynchronious-oriented picotcp functions in syncronious-oriented
-> barebox workflow we have to work out necessary picotcp usage template.
+> Changes since picotcp.20140525:
 > 
-> This patch propose simplest template. But this template has two major
-> disadvantages:
-> 
->   * user can't completely cancel ping using ctrl-c,
->     the ping request send task continue to work in the background:
-> 
->     barebox@barebox sandbox:/ picoping 10.0.0.2
->     48 bytes from 10.0.0.2: icmp_req=1 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=2 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=3 ttl=64 time=0 ms
->     <ctrl-c> pressed
->     barebox@barebox sandbox:/ picoping 10.0.0.2
->     48 bytes from 10.0.0.2: icmp_req=1 ttl=64 time=1 ms
->     48 bytes from 10.0.0.2: icmp_req=5 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=2 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=6 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=3 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=7 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=4 ttl=64 time=0 ms
->     48 bytes from 10.0.0.2: icmp_req=8 ttl=64 time=0 ms
-> 
->   * user has to press <ctrl-c> after the last ping response is received
->     to return to barebox shell.
-> 
-> Has anybody any ideas how to improve the situation?
+>   * rebased over latest barebox;
+>   * the latest picotcp is used (warnings and big-endian
+>     tests fixed);
+>   * add picotcp dhcp client support by Daniele Lacamera
+>   * qemu mips malta defconfig is dropped as barebox qemu
+>     malta has no network device support (you can rebase
+>     over experimental pci branch but it is very different story ...)
+>   * other small fixes.
 
-This must be solved in the pico_icmp4.c code. The counterpart of
-pico_tree_insert (pico_tree_delete?) must be called as an response to
-ctrlc().
+I tried this version. I still didn't get it working, but some
+improvements.
 
-How I see it pico_icmp4_ping should return the cookie so that a ping
-abort function can be implemented:
+What I changed is:
 
-void pico_icmp4_ping_abort(struct pico_icmp4_ping_cookie *cookie)
-{
-	pico_tree_delete(cookie);
+* call eth_send() instead of edev->send directly. This makes sure the
+  carrier is initialized correctly
+* implemented pico_zalloc as memalign(32, x); memset(ptr, 0 x); Some
+  drivers (such as fec_imx.c I tested with) need bigger alignment for
+  network packets to be able to do DMA transfers.
+* move picotcp_net_init from coredevice_initcall to device_initcall.
+  In my case the poller infrastructure is not available during
+  coredevice_initcall and barebox crashes. Maybe the poller
+  infrastructure could be made more robust here, but we don't want to
+  to networking in this early stage anyway, right?
+* select POLLER is missing
 
-	release_whatever_resources();
-}
+With this I get:
+
+barebox@Phytec phyCORE-i.MX27:/ ifconfig eth 192.168.23.67 255.255.0.0
+up
+Assigned ipv4 192.168.23.67 to device eth
+barebox@Phytec phyCORE-i.MX27:/ picoping 192.168.23.4
+eth0: 100Mbps full duplex link detected
+ARP: Destination Unreachable
+ARP: Destination Unreachable
+ARP: Destination Unreachable
+ARP: Destination Unreachable
+ARP: Destination Unreachable
+ ---- Ping timeout!!!
+
+I haven't investigated what's happening here.
 
 Sascha
 
