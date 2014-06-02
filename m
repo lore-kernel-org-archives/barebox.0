@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WrNtD-0004Iq-Ud
- for barebox@lists.infradead.org; Mon, 02 Jun 2014 08:46:44 +0000
-Date: Mon, 2 Jun 2014 10:46:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140602084621.GZ15686@pengutronix.de>
-References: <20140530131833.e6960587743c31fd85cd7788@gmail.com>
+Received: from mail-yk0-x22e.google.com ([2607:f8b0:4002:c07::22e])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WrOT8-0004eY-CG
+ for barebox@lists.infradead.org; Mon, 02 Jun 2014 09:23:50 +0000
+Received: by mail-yk0-f174.google.com with SMTP id 9so3415655ykp.33
+ for <barebox@lists.infradead.org>; Mon, 02 Jun 2014 02:23:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140530131833.e6960587743c31fd85cd7788@gmail.com>
+In-Reply-To: <201406021019.38119.jbe@pengutronix.de>
+References: <1401440856-6145-1-git-send-email-holgerschurig@gmail.com>
+ <1401440856-6145-4-git-send-email-holgerschurig@gmail.com>
+ <CAOpc7mHnKgzk4Usm0t21YZe3WT1WPRF47U8oEHfecbJyqoG90A@mail.gmail.com>
+ <201406021019.38119.jbe@pengutronix.de>
+Date: Mon, 2 Jun 2014 11:23:28 +0200
+Message-ID: <CAOpc7mF515rdLsmY7bB+UGhWUfQMr58qotUixjuqiXK-Mdribg@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,71 +26,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] picotcp.20140530
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Daniele Lacamera <daniele.lacamera@tass.be>
+Subject: Re: [PATCH 03/10] devinfo: make the output of "devinfo DEVICE" nicer
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, May 30, 2014 at 01:18:33PM +0400, Antony Pavlov wrote:
-> Hi All!
-> 
-> My new barebox with picotcp support brunch is pushed to github:
-> 
->     https://github.com/frantony/barebox/tree/picotcp.20140530
-> 
-> For this version reworked content of Daniele Lacamera's push request
-> is used (see https://github.com/frantony/barebox/pull/1).
-> 
-> Changes since picotcp.20140525:
-> 
->   * rebased over latest barebox;
->   * the latest picotcp is used (warnings and big-endian
->     tests fixed);
->   * add picotcp dhcp client support by Daniele Lacamera
->   * qemu mips malta defconfig is dropped as barebox qemu
->     malta has no network device support (you can rebase
->     over experimental pci branch but it is very different story ...)
->   * other small fixes.
+> But parameters can be changed by the user at run-time (e.g. "prompt>
+> enable=1"), while the remaining info is just readable. That is why we used
+> different characters.
 
-I tried this version. I still didn't get it working, but some
-improvements.
+I'm not getting you. Parameters are still changeable after this patch.
 
-What I changed is:
-
-* call eth_send() instead of edev->send directly. This makes sure the
-  carrier is initialized correctly
-* implemented pico_zalloc as memalign(32, x); memset(ptr, 0 x); Some
-  drivers (such as fec_imx.c I tested with) need bigger alignment for
-  network packets to be able to do DMA transfers.
-* move picotcp_net_init from coredevice_initcall to device_initcall.
-  In my case the poller infrastructure is not available during
-  coredevice_initcall and barebox crashes. Maybe the poller
-  infrastructure could be made more robust here, but we don't want to
-  to networking in this early stage anyway, right?
-* select POLLER is missing
-
-With this I get:
-
-barebox@Phytec phyCORE-i.MX27:/ ifconfig eth 192.168.23.67 255.255.0.0
-up
-Assigned ipv4 192.168.23.67 to device eth
-barebox@Phytec phyCORE-i.MX27:/ picoping 192.168.23.4
-eth0: 100Mbps full duplex link detected
-ARP: Destination Unreachable
-ARP: Destination Unreachable
-ARP: Destination Unreachable
-ARP: Destination Unreachable
-ARP: Destination Unreachable
- ---- Ping timeout!!!
-
-I haven't investigated what's happening here.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Or do you mean " = " vs. ":"?  Did you chose " = " by intent, i.e. so
+that you can cut&paste text with the mouse?
 
 _______________________________________________
 barebox mailing list
