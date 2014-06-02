@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WrNeU-0004g2-8q
- for barebox@lists.infradead.org; Mon, 02 Jun 2014 08:31:31 +0000
-Date: Mon, 2 Jun 2014 10:31:07 +0200
+ Linux)) id 1WrNlO-0008Un-OY
+ for barebox@lists.infradead.org; Mon, 02 Jun 2014 08:38:39 +0000
+Date: Mon, 2 Jun 2014 10:38:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140602083107.GX15686@pengutronix.de>
-References: <1400662482-23560-1-git-send-email-antonynpavlov@gmail.com>
- <CAOpc7mHG9eaRRWkYxazwRCeVrAXB_LPLuD2zPp8WLOj9yiTVnQ@mail.gmail.com>
- <20140521181123.22fa7c295a12523e27d6964b@gmail.com>
- <20140602072450.GW15686@pengutronix.de>
- <CAOpc7mGZGM7K3TxKQhBb1FesfazzViV5ujumPf8ihAjGNGJNwQ@mail.gmail.com>
+Message-ID: <20140602083813.GY15686@pengutronix.de>
+References: <1401441248-15034-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOpc7mGZGM7K3TxKQhBb1FesfazzViV5ujumPf8ihAjGNGJNwQ@mail.gmail.com>
+In-Reply-To: <1401441248-15034-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,19 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] [RFC] [WIP] commands: add tree view capable lsusb
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [RFC] net: picoping: try to make it asynchronious: fail
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Daniele Lacamera <daniele.lacamera@tass.be>
 
-On Mon, Jun 02, 2014 at 09:59:31AM +0200, Holger Schurig wrote:
-> Hmm, I like that it does a rescan, so that it always display the
-> currently connected USB device automatically.
+On Fri, May 30, 2014 at 01:14:08PM +0400, Antony Pavlov wrote:
+> Picotcp tends to work in an asynchronious way.
+> 
+> E.g. for ping we have to use "pico_icmp4_ping()"
+> (to start ping task) and the special icmp4 handler
+> (callback function) "cb_ping()".
+> 
+> But the ping command in barebox works in very simple
+> way:
+> 
+>   * user types 'ping <IP>' in the barebox shell command line;
+>   * the ping command takes all control until it gets the positive
+>     or a negative result;
+>   * the control is returned to the barebox shell.
+> 
+> To use asynchronious-oriented picotcp functions in syncronious-oriented
+> barebox workflow we have to work out necessary picotcp usage template.
+> 
+> This patch propose simplest template. But this template has two major
+> disadvantages:
+> 
+>   * user can't completely cancel ping using ctrl-c,
+>     the ping request send task continue to work in the background:
+> 
+>     barebox@barebox sandbox:/ picoping 10.0.0.2
+>     48 bytes from 10.0.0.2: icmp_req=1 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=2 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=3 ttl=64 time=0 ms
+>     <ctrl-c> pressed
+>     barebox@barebox sandbox:/ picoping 10.0.0.2
+>     48 bytes from 10.0.0.2: icmp_req=1 ttl=64 time=1 ms
+>     48 bytes from 10.0.0.2: icmp_req=5 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=2 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=6 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=3 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=7 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=4 ttl=64 time=0 ms
+>     48 bytes from 10.0.0.2: icmp_req=8 ttl=64 time=0 ms
+> 
+>   * user has to press <ctrl-c> after the last ping response is received
+>     to return to barebox shell.
+> 
+> Has anybody any ideas how to improve the situation?
 
-Note that we only scan scan the bus once during the lifetime of barebox
-unless the force parameter of usb_rescan is true. This is because
-we currently remove all existing USB devices and reinstantiate all
-USB devices found during scanning. The removal of devices is not very
-well implemented. USB only works properly when the tree is scanned once.
+This must be solved in the pico_icmp4.c code. The counterpart of
+pico_tree_insert (pico_tree_delete?) must be called as an response to
+ctrlc().
+
+How I see it pico_icmp4_ping should return the cookie so that a ping
+abort function can be implemented:
+
+void pico_icmp4_ping_abort(struct pico_icmp4_ping_cookie *cookie)
+{
+	pico_tree_delete(cookie);
+
+	release_whatever_resources();
+}
 
 Sascha
 
