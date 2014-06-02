@@ -1,20 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ve0-x232.google.com ([2607:f8b0:400c:c01::232])
+Received: from plane.gmane.org ([80.91.229.3])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WrPxn-0004Jx-6d
- for barebox@lists.infradead.org; Mon, 02 Jun 2014 10:59:35 +0000
-Received: by mail-ve0-f178.google.com with SMTP id sa20so5069305veb.9
- for <barebox@lists.infradead.org>; Mon, 02 Jun 2014 03:59:10 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140602072236.GV15686@pengutronix.de>
-References: <1400177676-2870-1-git-send-email-fabio.estevam@freescale.com>
- <20140515212125.GO5858@pengutronix.de>
- <CAOMZO5D=SHf19XuptdZTVvn6GGvUEvAcG9RbG9r_g_Z-DZfdsg@mail.gmail.com>
- <CAOMZO5DUtJu962JEbSBMRQMxVkZDD+rYVmr0Ajgfavx7+qgdww@mail.gmail.com>
- <20140602072236.GV15686@pengutronix.de>
-Date: Mon, 2 Jun 2014 07:59:10 -0300
-Message-ID: <CAOMZO5D-o7oRrvv=MF-fw46d7fcLFruTrUv-+Wkww4WrfX9x1g@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
+ id 1WrQgH-0002hT-BX
+ for barebox@lists.infradead.org; Mon, 02 Jun 2014 11:45:34 +0000
+Received: from list by plane.gmane.org with local (Exim 4.69)
+ (envelope-from <gcbb-barebox@m.gmane.org>) id 1WrQfo-00034M-3o
+ for barebox@lists.infradead.org; Mon, 02 Jun 2014 13:45:04 +0200
+Received: from proxy10.messagelabs.net ([194.106.220.19])
+ by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+ id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Mon, 02 Jun 2014 13:45:04 +0200
+Received: from embedded24 by proxy10.messagelabs.net with local (Gmexim 0.1
+ (Debian)) id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Mon, 02 Jun 2014 13:45:04 +0200
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Date: Mon, 2 Jun 2014 11:41:23 +0000 (UTC)
+Message-ID: <loom.20140602T130705-338@post.gmane.org>
+References: <1400147030-16936-1-git-send-email-s.hauer@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,21 +30,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial: imx: Fix buggy transmissions when baudrate
- mismatches
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Eric Nelson <eric.nelson@boundarydevices.com>
+Subject: Re: [PATCH] ARM: AM3xxx: Add support for building AM33xx spi images
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Dear Sascha and Jan,
 
-On Mon, Jun 2, 2014 at 4:22 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> Any comments, Sascha?
->
-> No, I assumed you resend the patch without the hunk above.
+Sascha Hauer <s.hauer@...> writes:
 
-The hunk was sent below the --- line, so it is not part of the original patch.
+> 
+> From: Jan Luebbe <jlu@...>
+> 
+> mk-am35xx-spi-image can only build AM35xx images. Rename
+> the tool to mk-am3xxx-spi-image and add support for the AM33xx.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@...>
+> ---
+>  arch/arm/Makefile                                  |  7 ++-
+>  scripts/Makefile                                   |  2 +-
+>  ...mk-am35xx-spi-image.c => mk-am3xxx-spi-image.c} | 52
 
-I put it below the --- line just for clarification.
+
+I tried to use the changes from this patch in order to create a SPI image.
+But I was not successful.
+
+1.a) When I set the CONFIG_OMAP_BUILD_SPI option to "yes" and the
+CONFIG_OMAP_BUILD_IFT option to "no", there is no SPI image built. These are
+the last line from barebox_mlo compilation:
+" (...)
+  CHK     include/generated/compile.h
+images built:
+finished target barebox_mlo.compile"
+It seems to me that the parameter "image-y" is never set.
+
+1.b) When I set both config options to "yes", there is an MLO image built,
+but no SPI image.
+
+How do I have to configure my project in order to get an SPI image?
+
+2.) Additionally, I'm not sure if we really need the changes in the
+mk-am35xx-spi-image.c file, since especially the am3358/am3359 are
+using the same format as the am35xx:
+ - 32 bit image size in big-endian
+ - 32 bit load address in big-endian
+ - binary image converted from little- to big-endian
+
+But it may be different for other am33xx SoCs.
+
+
+A couple of weeks ago I have been able to create a SPI image in
+barebox-2014.03 by modification of the file "images/Makefile.am33xx" only.
+Maybe, you can take a look into my patch as well (of course the
+"CONFIG_MACH_SPR" option and filenames have to match the name of your board
+accordingly):
+
+diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
+index dacc2d1..0a6c019 100644
+--- a/images/Makefile.am33xx
++++ b/images/Makefile.am33xx
+@@ -7,6 +7,12 @@ quiet_cmd_mlo_image = MLO     $@
+ $(obj)/%.mlo: $(obj)/% FORCE
+ 	$(call if_changed,mlo_image)
+ 
++quiet_cmd_spi_image = SPI     $@
++      cmd_spi_image = scripts/mk-am35xx-spi-image -a 0x402f0400 $< > $@
++
++$(obj)/%.spi: $(obj)/% FORCE
++	$(call if_changed,spi_image)
++
+ pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sdram
+ FILE_barebox-am33xx-phytec-phycore.img = start_am33xx_phytec_phycore_sdram.pblx
+ am33xx-barebox-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore.img
+@@ -23,8 +29,20 @@ pblx-$(CONFIG_MACH_BEAGLEBONE) +=
+start_am33xx_beaglebone_sram
+ FILE_barebox-am33xx-beaglebone-mlo.img = start_am33xx_beaglebone_sram.pblx.mlo
+ am33xx-mlo-$(CONFIG_MACH_BEAGLEBONE) += barebox-am33xx-beaglebone-mlo.img
+ 
++pblx-$(CONFIG_MACH_SPR) += start_am33xx_spr_sdram
++FILE_barebox-am33xx-spr.img = start_am33xx_spr_sdram.pblx
++am33xx-barebox-$(CONFIG_MACH_SPR) += barebox-am33xx-spr.img
++
++pblx-$(CONFIG_MACH_SPR) += start_am33xx_spr_sram
++FILE_barebox-am33xx-spr-spi.img = start_am33xx_spr_sram.pblx.spi
++am33xx-spi-$(CONFIG_MACH_SPR) += barebox-am33xx-spr-spi.img
++
+ ifdef CONFIG_OMAP_BUILD_IFT
+ image-y += $(am33xx-mlo-y)
+ else
++ifdef CONFIG_OMAP_BUILD_SPI
++image-y += $(am33xx-spi-y)
++else
+ image-y += $(am33xx-barebox-y)
+ endif
++endif
+
+Nevertheless I'd like to keep my code as close as possible to the
+barebox-mainline. Therefore I'm interested to find a common solution
+together with you.
+
+
+Kind regards,
+ Rolf
+
+
 
 _______________________________________________
 barebox mailing list
