@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WrMaC-0003rw-9z
- for barebox@lists.infradead.org; Mon, 02 Jun 2014 07:23:00 +0000
-Date: Mon, 2 Jun 2014 09:22:36 +0200
+ Linux)) id 1WrMcK-0004Jo-Pc
+ for barebox@lists.infradead.org; Mon, 02 Jun 2014 07:25:13 +0000
+Date: Mon, 2 Jun 2014 09:24:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140602072236.GV15686@pengutronix.de>
-References: <1400177676-2870-1-git-send-email-fabio.estevam@freescale.com>
- <20140515212125.GO5858@pengutronix.de>
- <CAOMZO5D=SHf19XuptdZTVvn6GGvUEvAcG9RbG9r_g_Z-DZfdsg@mail.gmail.com>
- <CAOMZO5DUtJu962JEbSBMRQMxVkZDD+rYVmr0Ajgfavx7+qgdww@mail.gmail.com>
+Message-ID: <20140602072450.GW15686@pengutronix.de>
+References: <1400662482-23560-1-git-send-email-antonynpavlov@gmail.com>
+ <CAOpc7mHG9eaRRWkYxazwRCeVrAXB_LPLuD2zPp8WLOj9yiTVnQ@mail.gmail.com>
+ <20140521181123.22fa7c295a12523e27d6964b@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOMZO5DUtJu962JEbSBMRQMxVkZDD+rYVmr0Ajgfavx7+qgdww@mail.gmail.com>
+In-Reply-To: <20140521181123.22fa7c295a12523e27d6964b@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,38 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial: imx: Fix buggy transmissions when baudrate
- mismatches
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Eric Nelson <eric.nelson@boundarydevices.com>
+Subject: Re: [PATCH] [RFC] [WIP] commands: add tree view capable lsusb
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, May 28, 2014 at 04:57:18PM -0300, Fabio Estevam wrote:
-> On Thu, May 15, 2014 at 7:05 PM, Fabio Estevam <festevam@gmail.com> wrote:
-> > Hi Sascha,
-> >
-> > On Thu, May 15, 2014 at 6:21 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> >
-> >>> --- a/drivers/serial/serial_imx.c
-> >>> +++ b/drivers/serial/serial_imx.c
-> >>> @@ -258,7 +258,8 @@ static int imx_serial_getc(struct console_device *cdev)
-> >>>         while (readl(priv->regs + priv->devtype->uts) & UTS_RXEMPTY);
-> >>>
-> >>>         ch = readl(priv->regs + URXD0);
-> >>> -
-> >>> +       if (ch >= 0x80)
-> >>> +               ch = '?';
-> >>
-> >> This is not part of the fix, right?
-> >
-> > Correct, this is not part of the fix.
-> >
-> > This code is just to help reproducing the issue in console, without
-> > the need of hooking an oscilloscope to the UART pins or inspecting
-> > directly the UART TX registers.
+On Wed, May 21, 2014 at 06:11:23PM +0400, Antony Pavlov wrote:
+> On Wed, 21 May 2014 15:20:21 +0200
+> Holger Schurig <holgerschurig@gmail.com> wrote:
 > 
-> Any comments, Sascha?
+> > Nice, I would just remove the extra empty lines. Linux' "lsusb -t" for
+> 
+> Good idea! I'll take a look on Linux' lsusb too.
+> 
+> > example produces this:
+> > 
+> > holger@desktop:~$ lsusb -t
+> > /:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/2p, 480M
+> >     |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/8p, 480M
+> >         |__ Port 1: Dev 27, If 0, Class=HID, Driver=usbhid, 1.5M
+> >         |__ Port 2: Dev 4, If 0, Class=HID, Driver=usbhid, 1.5M
+> >         |__ Port 6: Dev 126, If 0, Class=hub, Driver=hub/2p, 480M
+> > /:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=ehci-pci/2p, 480M
+> >     |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/6p, 480M
+> > 
+> > Also please add an entry into commands/Kconfig:
+> 
+> I'll separate lsusb code into independent lsusb.c file.
+> 
+> > And put it into the
+> > info group, lsusb just shows something, it doesn't manipulate any
+> > hardware.
+> 
+> Not exactly so. It invokes usb_rescan(0).
 
-No, I assumed you resend the patch without the hunk above.
+You could drop the usb_rescan(). Would that be too confusing?
 
 Sascha
 
