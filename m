@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WrVMV-0006pz-LL
- for barebox@lists.infradead.org; Mon, 02 Jun 2014 16:45:28 +0000
-Received: by mail-lb0-f170.google.com with SMTP id w7so2710036lbi.29
- for <barebox@lists.infradead.org>; Mon, 02 Jun 2014 09:45:05 -0700 (PDT)
-Date: Mon, 2 Jun 2014 20:56:28 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140602205628.afc8ae8e544db194bf20e4cc@gmail.com>
-In-Reply-To: <20140602084621.GZ15686@pengutronix.de>
-References: <20140530131833.e6960587743c31fd85cd7788@gmail.com>
- <20140602084621.GZ15686@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WriQl-0007Yr-LH
+ for barebox@lists.infradead.org; Tue, 03 Jun 2014 06:42:44 +0000
+Date: Tue, 3 Jun 2014 08:42:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140603064217.GA15686@pengutronix.de>
+References: <1401717999-10752-1-git-send-email-fabio.estevam@freescale.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1401717999-10752-1-git-send-email-fabio.estevam@freescale.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,99 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] picotcp.20140530
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Daniele Lacamera <daniele.lacamera@tass.be>
+Subject: Re: [PATCH v2] serial: imx: Fix buggy transmissions when baudrate
+ mismatches
+To: Fabio Estevam <fabio.estevam@freescale.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, 2 Jun 2014 10:46:21 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, Jun 02, 2014 at 11:06:39AM -0300, Fabio Estevam wrote:
+> Bit 7 of UCR3 is described in the i.MX reference manuals (with the exception
+> of i.MX1) as follows:
+> 
+> ADNIMP: Autobaud Detection Not Improved-. Disables new features of
+> 	autobaud detection (See Baud Rate Automatic Detection
+> 	Protocol, for more details).
+> 
+> 	0 Autobaud detection new features selected
+> 	1 Keep old autobaud detection mechanism
+> 
+> The "new features" mechanism occasionally causes the receiver to get out of sync 
+> and continuously produces received characters of '0xff'.
+> 
+> In order to reproduce the problem:
+> 
+> $ cs0.baudrate=19200
+> - Change the terminal baudrate to 19200
+> - Type in the console and it should look good
+> - Change the terminal baudrate back to 115200
+> - Type 'b' in the console, then a stream of '0xff' is transmitted in loop
+> 
+> Setting the ADNIMP bit avoids the transmission of '0xff' in loop.
+> 
+> Also rename the bit definition as per the reference manual.
+> 
+> Tested on mx6q.
+> 
+> Based on a patch from Eric Nelson for U-boot.
+> 
+> Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
 
-> On Fri, May 30, 2014 at 01:18:33PM +0400, Antony Pavlov wrote:
-> > Hi All!
-> > =
+Applied, thanks
 
-> > My new barebox with picotcp support brunch is pushed to github:
-> > =
+Sascha
 
-> >     https://github.com/frantony/barebox/tree/picotcp.20140530
-> > =
-
-> > For this version reworked content of Daniele Lacamera's push request
-> > is used (see https://github.com/frantony/barebox/pull/1).
-> > =
-
-> > Changes since picotcp.20140525:
-> > =
-
-> >   * rebased over latest barebox;
-> >   * the latest picotcp is used (warnings and big-endian
-> >     tests fixed);
-> >   * add picotcp dhcp client support by Daniele Lacamera
-> >   * qemu mips malta defconfig is dropped as barebox qemu
-> >     malta has no network device support (you can rebase
-> >     over experimental pci branch but it is very different story ...)
-> >   * other small fixes.
-> =
-
-> I tried this version. I still didn't get it working, but some
-> improvements.
-> =
-
-> What I changed is:
-> =
-
-> * call eth_send() instead of edev->send directly. This makes sure the
->   carrier is initialized correctly
-> * implemented pico_zalloc as memalign(32, x); memset(ptr, 0 x); Some
->   drivers (such as fec_imx.c I tested with) need bigger alignment for
->   network packets to be able to do DMA transfers.
-> * move picotcp_net_init from coredevice_initcall to device_initcall.
->   In my case the poller infrastructure is not available during
->   coredevice_initcall and barebox crashes. Maybe the poller
->   infrastructure could be made more robust here, but we don't want to
->   to networking in this early stage anyway, right?
-> * select POLLER is missing
-> =
-
-> With this I get:
-> =
-
-> barebox@Phytec phyCORE-i.MX27:/ ifconfig eth 192.168.23.67 255.255.0.0
-> up
-> Assigned ipv4 192.168.23.67 to device eth
-> barebox@Phytec phyCORE-i.MX27:/ picoping 192.168.23.4
-> eth0: 100Mbps full duplex link detected
-> ARP: Destination Unreachable
-> ARP: Destination Unreachable
-> ARP: Destination Unreachable
-> ARP: Destination Unreachable
-> ARP: Destination Unreachable
->  ---- Ping timeout!!!
-
-I have just used https://github.com/frantony/barebox/tree/picotcp.20140530 =
-on real MIPS big-endian hardware.
-I have not introduced any picotcp/network stack -related changes.
-
-picoping works fine for me.
-
-I have even used tcpdump to check that barebox (10.22.0.99) really pings my=
- x86 host (10.22.0.1) via real world Ethernet.
-
-Yes, it really does so:
-
-   20:36:28.583402 IP 10.22.0.99 > 10.22.0.1: ICMP echo request, id 37314, =
-seq 6, length 56
-
-There is a small problem: my network interface has 'eth0' name, but ifconfi=
-g sees only 'eth' interface.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
