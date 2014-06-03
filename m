@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WrvOR-0004Wd-Cx
- for barebox@lists.infradead.org; Tue, 03 Jun 2014 20:33:12 +0000
+ id 1WrvOS-0004Wc-UX
+ for barebox@lists.infradead.org; Tue, 03 Jun 2014 20:33:13 +0000
 Received: from tellur.localdomain (p57B5FCD3.dip0.t-ipconnect.de
- [87.181.252.211]) by lynxeye.de (Postfix) with ESMTPA id EFE3818B425A
- for <barebox@lists.infradead.org>; Tue,  3 Jun 2014 22:31:26 +0200 (CEST)
+ [87.181.252.211]) by lynxeye.de (Postfix) with ESMTPA id 75D2518B4278
+ for <barebox@lists.infradead.org>; Tue,  3 Jun 2014 22:31:32 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Jun 2014 22:34:56 +0200
-Message-Id: <1401827717-6420-10-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Jun 2014 22:35:11 +0200
+Message-Id: <1401827717-6420-25-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
 References: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,38 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/30] tegra: recognize Tegra124 in common initcalls
+Subject: [PATCH 24/30] clk: tegra: don't bug out on zero PLL postdiv
 To: barebox@lists.infradead.org
+
+As the real value is 2^p a input value of 0 is
+actually valid.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/tegra20.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/tegra/clk-pll.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
-index 0773972..752bbb0 100644
---- a/arch/arm/mach-tegra/tegra20.c
-+++ b/arch/arm/mach-tegra/tegra20.c
-@@ -30,7 +30,8 @@ static int tegra_add_debug_console(void)
- 	unsigned long base = 0;
+diff --git a/drivers/clk/tegra/clk-pll.c b/drivers/clk/tegra/clk-pll.c
+index f3257c4..c18c67f 100644
+--- a/drivers/clk/tegra/clk-pll.c
++++ b/drivers/clk/tegra/clk-pll.c
+@@ -196,8 +196,6 @@ static int _get_table_rate(struct clk *hw,
+ 	if (sel->input_rate == 0)
+ 		return -EINVAL;
  
- 	if (!of_machine_is_compatible("nvidia,tegra20") &&
--	    !of_machine_is_compatible("nvidia,tegra30"))
-+	    !of_machine_is_compatible("nvidia,tegra30") &&
-+	    !of_machine_is_compatible("nvidia,tegra124"))
- 		return 0;
- 
- 	/* figure out which UART to use */
-@@ -74,7 +75,8 @@ mem_initcall(tegra20_mem_init);
- 
- static int tegra30_mem_init(void)
- {
--	if (!of_machine_is_compatible("nvidia,tegra30"))
-+	if (!of_machine_is_compatible("nvidia,tegra30") &&
-+	    !of_machine_is_compatible("nvidia,tegra124"))
- 		return 0;
- 
- 	arm_add_mem_device("ram0", SZ_2G, tegra30_get_ramsize());
+-	BUG_ON(sel->p < 1);
+-
+ 	cfg->input_rate = sel->input_rate;
+ 	cfg->output_rate = sel->output_rate;
+ 	cfg->m = sel->m;
 -- 
 1.9.3
 
