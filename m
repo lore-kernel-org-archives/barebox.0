@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WrvOR-0004WI-Cz
- for barebox@lists.infradead.org; Tue, 03 Jun 2014 20:33:13 +0000
+ id 1WrvPG-00056v-LW
+ for barebox@lists.infradead.org; Tue, 03 Jun 2014 20:34:04 +0000
 Received: from tellur.localdomain (p57B5FCD3.dip0.t-ipconnect.de
- [87.181.252.211]) by lynxeye.de (Postfix) with ESMTPA id 9E75E18B4274
- for <barebox@lists.infradead.org>; Tue,  3 Jun 2014 22:31:26 +0200 (CEST)
+ [87.181.252.211]) by lynxeye.de (Postfix) with ESMTPA id 9652718B4274
+ for <barebox@lists.infradead.org>; Tue,  3 Jun 2014 22:31:33 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Jun 2014 22:34:55 +0200
-Message-Id: <1401827717-6420-9-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Jun 2014 22:35:14 +0200
+Message-Id: <1401827717-6420-28-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
 References: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,26 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/30] tegra: recognize Tegra124 in maincomplex startup
+Subject: [PATCH 27/30] tegra: pmc: add Tegra124 compatible
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/tegra_maincomplex_init.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-tegra/tegra20-pmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-tegra/tegra_maincomplex_init.c b/arch/arm/mach-tegra/tegra_maincomplex_init.c
-index 2a85f26..83ad33d 100644
---- a/arch/arm/mach-tegra/tegra_maincomplex_init.c
-+++ b/arch/arm/mach-tegra/tegra_maincomplex_init.c
-@@ -42,6 +42,7 @@ void tegra_maincomplex_entry(void)
- 		ramsize = tegra20_get_ramsize();
- 		break;
- 	case TEGRA30:
-+	case TEGRA124:
- 		rambase = SZ_2G;
- 		ramsize = tegra30_get_ramsize();
- 		break;
+diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
+index 37496ac..94167d6 100644
+--- a/arch/arm/mach-tegra/tegra20-pmc.c
++++ b/arch/arm/mach-tegra/tegra20-pmc.c
+@@ -62,6 +62,8 @@ static __maybe_unused struct of_device_id tegra20_pmc_dt_ids[] = {
+ 	}, {
+ 		.compatible = "nvidia,tegra30-pmc",
+ 	}, {
++		.compatible = "nvidia,tegra124-pmc",
++	}, {
+ 		/* sentinel */
+ 	}
+ };
 -- 
 1.9.3
 
