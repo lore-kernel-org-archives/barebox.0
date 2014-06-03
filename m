@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WrvOS-0004Wd-Ok
- for barebox@lists.infradead.org; Tue, 03 Jun 2014 20:33:14 +0000
+ id 1WrvPG-000563-LX
+ for barebox@lists.infradead.org; Tue, 03 Jun 2014 20:34:03 +0000
 Received: from tellur.localdomain (p57B5FCD3.dip0.t-ipconnect.de
- [87.181.252.211]) by lynxeye.de (Postfix) with ESMTPA id 9022C18B4280
- for <barebox@lists.infradead.org>; Tue,  3 Jun 2014 22:31:30 +0200 (CEST)
+ [87.181.252.211]) by lynxeye.de (Postfix) with ESMTPA id 5D6C618B4275
+ for <barebox@lists.infradead.org>; Tue,  3 Jun 2014 22:31:28 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Jun 2014 22:35:06 +0200
-Message-Id: <1401827717-6420-20-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Jun 2014 22:35:00 +0200
+Message-Id: <1401827717-6420-14-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
 References: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,110 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/30] tegra: add architectural timer init
+Subject: [PATCH 13/30] tegra: fix MESLECT clock enable
 To: barebox@lists.infradead.org
 
-If the bootloader doesn't init the architectural timer
-on Cortex A15 Linux falls over when trying to boot.
+Don't disable clk to unrelated devices in the process.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/iomap.h           |  3 +++
- arch/arm/mach-tegra/include/mach/tegra114-sysctr.h | 30 ++++++++++++++++++++++
- arch/arm/mach-tegra/tegra20.c                      | 25 ++++++++++++++++++
- 3 files changed, 58 insertions(+)
- create mode 100644 arch/arm/mach-tegra/include/mach/tegra114-sysctr.h
+ arch/arm/mach-tegra/include/mach/tegra30-car.h | 2 ++
+ arch/arm/mach-tegra/tegra_avp_init.c           | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-tegra/include/mach/iomap.h b/arch/arm/mach-tegra/include/mach/iomap.h
-index b74e5d2..cdaab6a 100644
---- a/arch/arm/mach-tegra/include/mach/iomap.h
-+++ b/arch/arm/mach-tegra/include/mach/iomap.h
-@@ -257,6 +257,9 @@
- #define TEGRA_CSITE_BASE		0x70040000
- #define TEGRA_CSITE_SIZE		SZ_256K
+diff --git a/arch/arm/mach-tegra/include/mach/tegra30-car.h b/arch/arm/mach-tegra/include/mach/tegra30-car.h
+index 286a2a6..c8f6c9f 100644
+--- a/arch/arm/mach-tegra/include/mach/tegra30-car.h
++++ b/arch/arm/mach-tegra/include/mach/tegra30-car.h
+@@ -31,3 +31,5 @@
+ #define CRC_RST_DEV_V_MSELECT		(1 << 3)
  
-+#define TEGRA_SYSCTR0_BASE		0x700F0000
-+#define TEGRA_SYSCTR0_SIZE		SZ_64K
+ #define CRC_RST_DEV_V_CLR		0x434
 +
- #define TEGRA_USB_BASE			0xC5000000
- #define TEGRA_USB_SIZE			SZ_16K
- 
-diff --git a/arch/arm/mach-tegra/include/mach/tegra114-sysctr.h b/arch/arm/mach-tegra/include/mach/tegra114-sysctr.h
-new file mode 100644
-index 0000000..45d17c4
---- /dev/null
-+++ b/arch/arm/mach-tegra/include/mach/tegra114-sysctr.h
-@@ -0,0 +1,30 @@
-+/*
-+ * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+/* Register definitions */
-+#define TEGRA_SYSCTR0_CNTCR		0x00
-+#define TEGRA_SYSCTR0_CNTCR_ENABLE	(1 << 0)
-+#define TEGRA_SYSCTR0_CNTCR_HDBG	(1 << 1)
-+
-+#define TEGRA_SYSCTR0_CNTSR		0x04
-+
-+#define TEGRA_SYSCTR0_CNTCV0		0x08
-+
-+#define TEGRA_SYSCTR0_CNTCV1		0x0c
-+
-+#define TEGRA_SYSCTR0_CNTFID0		0x20
-+
-+#define TEGRA_SYSCTR0_CNTFID1		0x24
-diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
-index 752bbb0..dcc55ae 100644
---- a/arch/arm/mach-tegra/tegra20.c
-+++ b/arch/arm/mach-tegra/tegra20.c
-@@ -20,6 +20,7 @@
- #include <asm/memory.h>
- #include <mach/iomap.h>
- #include <mach/lowlevel.h>
-+#include <mach/tegra114-sysctr.h>
- 
- static struct NS16550_plat debug_uart = {
- 	.shift = 2,
-@@ -84,3 +85,27 @@ static int tegra30_mem_init(void)
- 	return 0;
- }
- mem_initcall(tegra30_mem_init);
-+
-+static int tegra114_architected_timer_init(void)
-+{
-+	u32 freq, reg;
-+
-+	if (!of_machine_is_compatible("nvidia,tegra114") &&
-+	    !of_machine_is_compatible("nvidia,tegra124"))
-+		return 0;
-+
-+	freq = tegra_get_osc_clock();
-+
-+	/* ARM CNTFRQ */
-+	asm("mcr p15, 0, %0, c14, c0, 0\n" : : "r" (freq));
-+
-+	/* Tegra specific SYSCTR */
-+	writel(freq, TEGRA_SYSCTR0_BASE + TEGRA_SYSCTR0_CNTFID0);
-+
-+	reg = readl(TEGRA_SYSCTR0_BASE + TEGRA_SYSCTR0_CNTCR);
-+	reg |= TEGRA_SYSCTR0_CNTCR_ENABLE | TEGRA_SYSCTR0_CNTCR_HDBG;
-+	writel(reg, TEGRA_SYSCTR0_BASE + TEGRA_SYSCTR0_CNTCR);
-+
-+	return 0;
-+}
-+coredevice_initcall(tegra114_architected_timer_init);
++#define CRC_CLK_OUT_ENB_V_SET		0x440
+diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
+index 3d21963..d25c1dd 100644
+--- a/arch/arm/mach-tegra/tegra_avp_init.c
++++ b/arch/arm/mach-tegra/tegra_avp_init.c
+@@ -177,7 +177,7 @@ static void start_cpu0_clocks(void)
+ 		       CRC_CLK_SOURCE_MSEL_SRC_SHIFT),
+ 		       TEGRA_CLK_RESET_BASE + CRC_CLK_SOURCE_MSEL);
+ 		writel(CRC_CLK_OUT_ENB_V_MSELECT,
+-		       TEGRA_CLK_RESET_BASE + CRC_CLK_OUT_ENB_V);
++		       TEGRA_CLK_RESET_BASE + CRC_CLK_OUT_ENB_V_SET);
+ 		tegra_ll_delay_usec(3);
+ 		writel(CRC_RST_DEV_V_MSELECT,
+ 		       TEGRA_CLK_RESET_BASE + CRC_RST_DEV_V_CLR);
 -- 
 1.9.3
 
