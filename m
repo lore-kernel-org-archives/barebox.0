@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WriQl-0007Yr-LH
- for barebox@lists.infradead.org; Tue, 03 Jun 2014 06:42:44 +0000
-Date: Tue, 3 Jun 2014 08:42:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140603064217.GA15686@pengutronix.de>
-References: <1401717999-10752-1-git-send-email-fabio.estevam@freescale.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1401717999-10752-1-git-send-email-fabio.estevam@freescale.com>
+ Linux)) id 1WrpAZ-0006XO-N4
+ for barebox@lists.infradead.org; Tue, 03 Jun 2014 13:54:28 +0000
+Received: from weser.hi.pengutronix.de ([2001:6f8:1178:2:fa0f:41ff:fe58:4010])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1WrpAD-0008K3-Jp
+ for barebox@lists.infradead.org; Tue, 03 Jun 2014 15:54:05 +0200
+Message-ID: <1401803567.5422.5.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 03 Jun 2014 15:52:47 +0200
+In-Reply-To: <1397377196-31466-1-git-send-email-l.stach@pengutronix.de>
+References: <1397377196-31466-1-git-send-email-l.stach@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] serial: imx: Fix buggy transmissions when baudrate
- mismatches
-To: Fabio Estevam <fabio.estevam@freescale.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: hummingboard: add barebox update handler
+To: barebox@lists.infradead.org
 
-On Mon, Jun 02, 2014 at 11:06:39AM -0300, Fabio Estevam wrote:
-> Bit 7 of UCR3 is described in the i.MX reference manuals (with the exception
-> of i.MX1) as follows:
-> 
-> ADNIMP: Autobaud Detection Not Improved-. Disables new features of
-> 	autobaud detection (See Baud Rate Automatic Detection
-> 	Protocol, for more details).
-> 
-> 	0 Autobaud detection new features selected
-> 	1 Keep old autobaud detection mechanism
-> 
-> The "new features" mechanism occasionally causes the receiver to get out of sync 
-> and continuously produces received characters of '0xff'.
-> 
-> In order to reproduce the problem:
-> 
-> $ cs0.baudrate=19200
-> - Change the terminal baudrate to 19200
-> - Type in the console and it should look good
-> - Change the terminal baudrate back to 115200
-> - Type 'b' in the console, then a stream of '0xff' is transmitted in loop
-> 
-> Setting the ADNIMP bit avoids the transmission of '0xff' in loop.
-> 
-> Also rename the bit definition as per the reference manual.
-> 
-> Tested on mx6q.
-> 
-> Based on a patch from Eric Nelson for U-boot.
-> 
-> Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
+Ping.
 
-Applied, thanks
-
-Sascha
+Am Sonntag, den 13.04.2014, 10:19 +0200 schrieb Lucas Stach:
+> It wasn't hard to find the right spot to copy the image
+> to before, but this makes it a bit more explicit.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/boards/solidrun-hummingboard/board.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/arch/arm/boards/solidrun-hummingboard/board.c b/arch/arm/boards/solidrun-hummingboard/board.c
+> index afc5c867b25c..de848467451d 100644
+> --- a/arch/arm/boards/solidrun-hummingboard/board.c
+> +++ b/arch/arm/boards/solidrun-hummingboard/board.c
+> @@ -20,6 +20,7 @@
+>  #include <envfs.h>
+>  #include <gpio.h>
+>  #include <init.h>
+> +#include <mach/bbu.h>
+>  #include <mach/generic.h>
+>  #include <mach/imx6-regs.h>
+>  #include <mach/imx6.h>
+> @@ -75,6 +76,18 @@ static int hummingboard_device_init(void)
+>  }
+>  device_initcall(hummingboard_device_init);
+>  
+> +static int hummingboard_late_init(void)
+> +{
+> +	if (!of_machine_is_compatible("solidrun,hummingboard"))
+> +		return 0;
+> +
+> +	imx6_bbu_internal_mmc_register_handler("sdcard", "/dev/mmc1.barebox",
+> +		BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0x10000000);
+> +
+> +	return 0;
+> +}
+> +late_initcall(hummingboard_late_init);
+> +
+>  static int hummingboard_lwl_init(void)
+>  {
+>  	if (!of_machine_is_compatible("solidrun,hummingboard"))
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
+
 
 _______________________________________________
 barebox mailing list
