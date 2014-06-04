@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Ws3ed-0001u0-K3
- for barebox@lists.infradead.org; Wed, 04 Jun 2014 05:22:28 +0000
-Date: Wed, 4 Jun 2014 07:22:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140604052205.GE15686@pengutronix.de>
-References: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
+Received: from smtp3.infomaniak.ch ([2001:1600:2:5:92b1:1cff:fe01:147])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Ws7m9-0004Fk-UT
+ for barebox@lists.infradead.org; Wed, 04 Jun 2014 09:46:41 +0000
+Received: from [192.168.1.21] (LLagny-156-34-28-90.w193-253.abo.wanadoo.fr
+ [193.253.254.90]) (authenticated bits=0)
+ by smtp3.infomaniak.ch (8.14.5/8.14.5) with ESMTP id s549PVFM009647
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO)
+ for <barebox@lists.infradead.org>; Wed, 4 Jun 2014 11:25:37 +0200
+Message-ID: <538EE612.1050105@atysmedical.com>
+Date: Wed, 04 Jun 2014 11:25:38 +0200
+From: Thibaut Dambry <tdambry@atysmedical.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1401827717-6420-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,66 +20,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/30] Tegra K1 support
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: redirect stdout
+To: barebox@lists.infradead.org
 
-On Tue, Jun 03, 2014 at 10:34:47PM +0200, Lucas Stach wrote:
-> This is the next big round of Tegra updates, featuring
-> Tegra K1 support. The series is based on -next as it has
-> quite some dependencies on the earlier Tegra series.
-> 
-> The first 4 patches are some general useful additions,
-> all others are adding K1 aka Tegra124 support. I've
-> verified booting a Linux kernel to the rootfs panic.
-> 
-> The series is regression free on Tegra30.
-> 
-> Lucas Stach (30):
->   mci: implement non-removable property
->   tegra: lowlevel-dvc: use __always_inline macro
->   tegra: pmc: add Tegra30 compatible
->   tegra: pmc: add command to get into RCM
->   tegra: lowlevel: setup an early stack
->   tegra: add Tegra124 id to lowlevel functions
->   tegra: lowlevel: fix ODMdata fetch on Tegra124
->   tegra: recognize Tegra124 in maincomplex startup
->   tegra: recognize Tegra124 in common initcalls
->   tegra: add Tegra124 and AS3722 PMIC to lowlevel-dvc
->   tegra: disable IDDQ for PLL_X on Tegra124
->   tegra: power up additional partitions on Tegra124
->   tegra: fix MESLECT clock enable
->   tegra: change cpu internal reset layout for Tegra124
->   tegra: add Tegra124 PLL_X rate setup
->   tegra: apply cluster switch logic to all SoCs >=T30
->   tegra: hardcode entry address for main cluster
->   tegra: setup L2 cache on Tegra124
->   tegra: add architectural timer init
->   tegra: add Tegra124 Kconfig symbol
->   pinctrl: tegra30: introduce drvdata
->   pinctrl: tegra: add Tegra124 support
->   clk: tegra: allow variable sized muxes
->   clk: tegra: don't bug out on zero PLL postdiv
->   clk: tegra: add Tegra124 driver
->   mci: tegra: add Tegra124 compatible
->   tegra: pmc: add Tegra124 compatible
->   images: add Tegra124 image build rules
->   tegra: add NVIDIA Jetson-TK1 board support
->   tegra: refresh defconfig
+Hello
 
-Applied, thanks
+I'm sorry if it is a dummy question, but I don't find a answer.
+I would like do that in a barebox hush shell:
 
-Sascha
+value=`i2c_read -a 0x52 -b 0 -r 0x01 -c 1`
+
+But the shell don't interpret the ``.
+
+Is there a method to do that ?
+
+Thank you for this exciting software, I would contribute but I'm a 
+little intimidate by the great quality of hackers in this list.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+---------------------------------------------------------
+---------------------------------------------------------
+Thibaut DAMBRY
+
+ATYSMEDICAL			mailto:rd@atysmedical.com
+17 Parc d'Arbora
+69510 Soucieu en Jarrest
+FRANCE
+
+Phone:(33)4-78-05-69-69
+Fax:  (33)4-78-05-69-60
+
+---------------------------------------------------------
+
 
 _______________________________________________
 barebox mailing list
