@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WsSy0-0008SG-Nv
- for barebox@lists.infradead.org; Thu, 05 Jun 2014 08:24:10 +0000
+ Linux)) id 1WsSy0-0008S7-Nw
+ for barebox@lists.infradead.org; Thu, 05 Jun 2014 08:24:11 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WsSxd-0007gn-Rq
+ for barebox@lists.infradead.org; Thu, 05 Jun 2014 10:23:45 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim
+ 4.82_1-5b7a7c0-XX) (envelope-from <sha@pengutronix.de>)
+ id 1WsSxd-0006ls-QT
+ for barebox@lists.infradead.org; Thu, 05 Jun 2014 10:23:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jun 2014 10:23:38 +0200
-Message-Id: <1401956624-31802-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1401956624-31802-1-git-send-email-s.hauer@pengutronix.de>
-References: <1401956624-31802-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jun 2014 10:23:35 +0200
+Message-Id: <1401956624-31802-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,77 +27,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] ARM: friendlyarm_mini2440: refresh defconfig
+Subject: Fix Compiler warnings
 To: barebox@lists.infradead.org
 
-Fixes:
+The following are fixes for various compiler warnings
 
-arch/arm/configs/friendlyarm_mini2440_defconfig:38:warning: override: reassigning to symbol CMD_TFTP
-arch/arm/configs/friendlyarm_mini2440_defconfig:46:warning: override: reassigning to symbol FS_TFTP
+Sascha
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/friendlyarm_mini2440_defconfig | 31 +++++++++++--------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+----------------------------------------------------------------
+Sascha Hauer (9):
+      fix format specifiers
+      ARM: MXS: Remove unused variables
+      ARM: friendlyarm_mini2440: refresh defconfig
+      mips: dlink-dir-320: refresh defconfig
+      mips: ar9331: Add missing #address-cells/#size-cells properties
+      PPC: FSL DDR: Fix compiler warning
+      commands: drvinfo: Make locally used function static
+      gui: IMAGE_RENDERER does not depend on VIDEO
+      mips: Add builtin dtb to dtb-y
 
-diff --git a/arch/arm/configs/friendlyarm_mini2440_defconfig b/arch/arm/configs/friendlyarm_mini2440_defconfig
-index acd5e42..6cbafef 100644
---- a/arch/arm/configs/friendlyarm_mini2440_defconfig
-+++ b/arch/arm/configs/friendlyarm_mini2440_defconfig
-@@ -7,36 +7,33 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_TEXT_BASE=0x33e00000
- CONFIG_BROKEN=y
- CONFIG_PROMPT="mini2440:"
--CONFIG_LONGHELP=y
- CONFIG_GLOB=y
--CONFIG_HUSH_GETOPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/friendlyarm-mini2440/env"
- CONFIG_DEBUG_INFO=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_LOADENV=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_PARTITION=y
- CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
- CONFIG_CMD_GLOBAL=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_PING=y
- CONFIG_CMD_TFTP=y
--CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_CRC=y
- CONFIG_CMD_CRC_CMP=y
- CONFIG_CMD_FLASH=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_PARTITION=y
- CONFIG_CMD_GPIO=y
- CONFIG_NET=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_FS_TFTP=y
- CONFIG_DRIVER_NET_DM9K=y
- # CONFIG_SPI is not set
- CONFIG_USB=y
--- 
-2.0.0.rc2
-
+ arch/arm/boards/chumby_falconwing/falconwing.c     |  2 +-
+ arch/arm/boards/crystalfontz-cfa10036/cfa10036.c   |  2 +-
+ arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c |  3 +--
+ arch/arm/configs/friendlyarm_mini2440_defconfig    | 31 ++++++++++------------
+ arch/mips/configs/dlink-dir-320_defconfig          |  4 ---
+ arch/mips/dts/Makefile                             |  6 +++--
+ arch/mips/dts/ar9331.dtsi                          |  2 ++
+ arch/ppc/include/asm/fsl_ddr_sdram.h               |  2 +-
+ commands/drvinfo.c                                 |  2 +-
+ common/bootm.c                                     |  4 +--
+ common/uimage.c                                    |  4 ++-
+ drivers/eeprom/at25.c                              |  4 +--
+ lib/gui/Kconfig                                    |  1 -
+ 13 files changed, 32 insertions(+), 35 deletions(-)
 
 _______________________________________________
 barebox mailing list
