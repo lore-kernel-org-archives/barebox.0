@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WsSy0-0008SA-Ny
- for barebox@lists.infradead.org; Thu, 05 Jun 2014 08:24:11 +0000
+ Linux)) id 1WsSy0-0008SI-Nz
+ for barebox@lists.infradead.org; Thu, 05 Jun 2014 08:24:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Jun 2014 10:23:36 +0200
-Message-Id: <1401956624-31802-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Jun 2014 10:23:40 +0200
+Message-Id: <1401956624-31802-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1401956624-31802-1-git-send-email-s.hauer@pengutronix.de>
 References: <1401956624-31802-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] fix format specifiers
+Subject: [PATCH 5/9] mips: ar9331: Add missing #address-cells/#size-cells
+ properties
 To: barebox@lists.infradead.org
+
+SPI nodes need valid #address-cells/#size-cells properties.
+Fixes:
+
+Warning (reg_format): "reg" property in /soc/spi@bf000000/m25p80@0 has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
+Warning (avoid_default_addr_size): Relying on default #address-cells value for /soc/spi@bf000000/m25p80@0
+Warning (avoid_default_addr_size): Relying on default #size-cells value for /soc/spi@bf000000/m25p80@0
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootm.c        | 4 ++--
- common/uimage.c       | 4 +++-
- drivers/eeprom/at25.c | 4 ++--
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ arch/mips/dts/ar9331.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 871959c..71390cb 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -312,7 +312,7 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
- static void bootm_print_info(struct image_data *data)
- {
- 	if (data->os_res)
--		printf("OS image is at 0x%08x-0x%08x\n",
-+		printf("OS image is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
- 				data->os_res->start,
- 				data->os_res->end);
- 	else
-@@ -329,7 +329,7 @@ static void bootm_print_info(struct image_data *data)
- 			printf(", multifile image %d", data->initrd_num);
- 		printf("\n");
- 		if (data->initrd_res)
--			printf("initrd is at 0x%08x-0x%08x\n",
-+			printf("initrd is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
- 				data->initrd_res->start,
- 				data->initrd_res->end);
- 		else
-diff --git a/common/uimage.c b/common/uimage.c
-index 243dfb0..4ef0968 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -353,7 +353,9 @@ static int uimage_sdram_flush(void *buf, unsigned int len)
- 		uimage_resource = request_sdram_region("uimage",
- 				start, size);
- 		if (!uimage_resource) {
--			printf("unable to request SDRAM 0x%08x-0x%08x\n",
-+			printf("unable to request SDRAM "
-+					PRINTF_CONVERSION_RESOURCE "-"
-+					PRINTF_CONVERSION_RESOURCE "\n",
- 				start, start + size - 1);
- 			return -ENOMEM;
- 		}
-diff --git a/drivers/eeprom/at25.c b/drivers/eeprom/at25.c
-index 266f261..3e75b56 100644
---- a/drivers/eeprom/at25.c
-+++ b/drivers/eeprom/at25.c
-@@ -117,8 +117,8 @@ static ssize_t at25_ee_read(struct cdev *cdev,
- 	 */
- 	status = spi_sync(at25->spi, &m);
- 	dev_dbg(at25->cdev.dev,
--		"read %d bytes at %llu --> %d\n",
--		count, offset, (int) status);
-+		"read %zd bytes at %llu --> %zd\n",
-+		count, offset, status);
+diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
+index 9485fbf..8280588 100644
+--- a/arch/mips/dts/ar9331.dtsi
++++ b/arch/mips/dts/ar9331.dtsi
+@@ -24,6 +24,8 @@
+ 		};
  
- 	return status ? status : count;
- }
+ 		spi: spi@bf000000{
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 			compatible = "qca,ath79-spi";
+ 			reg = <0xbf000000 0x01000000>;
+ 			status = "disabled";
 -- 
 2.0.0.rc2
 
