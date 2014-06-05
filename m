@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WsQWh-0007Ol-4k
- for barebox@lists.infradead.org; Thu, 05 Jun 2014 05:47:48 +0000
-Date: Thu, 5 Jun 2014 07:47:21 +0200
+ Linux)) id 1WsSy0-0008SM-Nv
+ for barebox@lists.infradead.org; Thu, 05 Jun 2014 08:24:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140605054721.GI15686@pengutronix.de>
-References: <538EE612.1050105@atysmedical.com>
- <20140604101942.GF15686@pengutronix.de>
- <538F4514.7050501@atysmedical.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <538F4514.7050501@atysmedical.com>
+Date: Thu,  5 Jun 2014 10:23:43 +0200
+Message-Id: <1401956624-31802-9-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1401956624-31802-1-git-send-email-s.hauer@pengutronix.de>
+References: <1401956624-31802-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: redirect stdout
-To: Thibaut Dambry <tdambry@atysmedical.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 8/9] gui: IMAGE_RENDERER does not depend on VIDEO
+To: barebox@lists.infradead.org
 
-On Wed, Jun 04, 2014 at 06:11:00PM +0200, Thibaut Dambry wrote:
-> Thank you for your answer
-> 
-> I would use the eeprom to change linux bootargs parameters.
-> So the best way is to create a command isUsbDevice (where I read
-> eeprom value and return 0 if OK )
-> and add this in a boot shell script:
-> 
-> #!/bin/sh
-> isUsbDevice
-> if [ $? -ne 0 ]; then
->     bootargs="$bootargs pcm043_otg_mode=host"
-> else
->     bootargs="$bootargs pcm043_otg_mode=device"
-> fi
+Image renderer may not be particularly useful without framebuffer
+support, but technically it does not depend on VIDEO. Fixes:
 
-I would use a variable instead of a command. Then you don't have to
-create a new command for each piece of information from the EEPROM.
-See globalvar_add_simple() and friends.
+warning: (CMD_SPLASH) selects IMAGE_RENDERER which has unmet direct dependencies (VIDEO)
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/gui/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/lib/gui/Kconfig b/lib/gui/Kconfig
+index da71bae..eac9597 100644
+--- a/lib/gui/Kconfig
++++ b/lib/gui/Kconfig
+@@ -2,7 +2,6 @@ menu "Library gui routines"
+ 
+ config IMAGE_RENDERER
+ 	bool
+-	depends on VIDEO
+ 	select FILETYPE
+ 
+ if IMAGE_RENDERER
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.0.rc2
+
 
 _______________________________________________
 barebox mailing list
