@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x234.google.com ([2a00:1450:400c:c03::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wsdef-0002OZ-Ew
- for barebox@lists.infradead.org; Thu, 05 Jun 2014 19:48:54 +0000
-Received: by mail-we0-f180.google.com with SMTP id q58so1670747wes.25
- for <barebox@lists.infradead.org>; Thu, 05 Jun 2014 12:48:31 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Wslrh-0006mb-Ug
+ for barebox@lists.infradead.org; Fri, 06 Jun 2014 04:34:54 +0000
+Date: Fri, 6 Jun 2014 06:34:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140606043430.GN15686@pengutronix.de>
+References: <1401976003-30679-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
-In-Reply-To: <CAGF38FkaYSvUSYR=Lgo9S1R0+-jUL=NjwcVwUi=FU+-MDGu=Hw@mail.gmail.com>
-References: <CAGF38F=VxqD8L3EqZUneAvXHTtORDPXcOEynfbjaK_Zu2Zuh6w@mail.gmail.com>
- <20140605193040.GQ22169@pengutronix.de>
- <CAGF38FkaYSvUSYR=Lgo9S1R0+-jUL=NjwcVwUi=FU+-MDGu=Hw@mail.gmail.com>
-From: Frederik Van Slycken <frederik.van.slycken@gmail.com>
-Date: Thu, 5 Jun 2014 21:48:10 +0200
-Message-ID: <CAGF38Fk2OZ0pQURjJjKPHUdXsO27dx98HoACDDW5quSs+x7MqQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1401976003-30679-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picoTCP, barebox, and licenses
-To: Robert Schwebel <robert@schwebel.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] 2048: Reset score on startup
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-2014-06-05 21:36 GMT+02:00 Frederik Van Slycken
-<frederik.van.slycken@gmail.com>:
-> 2014-06-05 21:30 GMT+02:00 Robert Schwebel <robert@schwebel.de>:
->> Where is that in the wiki? IMHO it isn't correct, the toplevel COPYING
->> file says v2, which is also our intention.
->
-> http://wiki.barebox.org/doku.php#license
->
-> """
-> This program is free software; you can redistribute it and/or
-> modify it under the terms of the GNU General Public License as
-> published by the Free Software Foundation; either version 2 of
-> the License, or (at your option) any later version.
-> """
+On Thu, Jun 05, 2014 at 05:46:43PM +0400, Alexander Shiyan wrote:
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  commands/2048.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-A couple of other locations - I'm not sure if they're all up to date,
-but these are results 3 and 4 when I do a google search for "barebox
-license" :
-http://www.barebox.org/documentation/barebox-2011.05.0/
-http://www.barebox.org/documentation/barebox-2009.12.0/main.html
+Applied, thanks. I'm considering a stable release for this ;)
 
-Number 2 was the wiki, already mentioned, and number 1 is wikipedia,
-which does mention only gplv2 :)
+Sascha
+
+> 
+> diff --git a/commands/2048.c b/commands/2048.c
+> index 26c9e6c..5ceb5cf 100644
+> --- a/commands/2048.c
+> +++ b/commands/2048.c
+> @@ -337,6 +337,8 @@ static int do_2048(int argc, char *argv[])
+>  		return test();
+>  	}
+>  
+> +	score = 0;
+> +
+>  	printf("\033[?25l\033[2J\033[H");
+>  
+>  	memset(board,0,sizeof(board));
+> -- 
+> 1.8.5.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
