@@ -1,16 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f378.i.mail.ru ([185.5.136.49])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wsq8C-000189-TK
- for barebox@lists.infradead.org; Fri, 06 Jun 2014 09:08:19 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Fri, 06 Jun 2014 13:07:46 +0400
-Message-ID: <1402045666.285657111@f378.i.mail.ru>
-In-Reply-To: <20140606043430.GN15686@pengutronix.de>
-References: <1401976003-30679-1-git-send-email-shc_work@mail.ru>
- <20140606043430.GN15686@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from alcapone.vm.bytemark.co.uk ([89.16.173.107])
+ by casper.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WsqF8-0000La-FV
+ for barebox@lists.infradead.org; Fri, 06 Jun 2014 09:15:23 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+ by alcapone.vm.bytemark.co.uk (Postfix) with ESMTP id 5D391164598
+ for <barebox@lists.infradead.org>; Fri,  6 Jun 2014 10:14:34 +0100 (BST)
+Received: from alcapone.vm.bytemark.co.uk ([127.0.0.1])
+ by localhost (alcapone.vm.bytemark.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id tdJwZoMwWGdo for <barebox@lists.infradead.org>;
+ Fri,  6 Jun 2014 10:14:32 +0100 (BST)
+Received: from mail.sadel.it (2-228-226-244.ip193.fastwebnet.it
+ [2.228.226.244])
+ by alcapone.vm.bytemark.co.uk (Postfix) with ESMTP id 2E205164494
+ for <barebox@lists.infradead.org>; Fri,  6 Jun 2014 10:14:28 +0100 (BST)
+Received: from ASSP.nospam (localhost [127.0.0.1])
+ by mail.sadel.it (Postfix) with ESMTPA id 046C99D6AF
+ for <barebox@lists.infradead.org>; Fri,  6 Jun 2014 11:14:22 +0200 (CEST)
+From: Matteo Fortini <matteo.fortini@gmail.com>
+Date: Fri,  6 Jun 2014 11:12:14 +0200
+Message-Id: <assp.0234105137.1402045936-18733-1-git-send-email-matteo.fortini@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,22 +28,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gMjA0ODogUmVzZXQgc2NvcmUgb24gc3RhcnR1cA==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] sama5d3x HSMC NAND: MODE and TIMINGS registers
+To: barebox@lists.infradead.org
 
-RnJpLCA2IEp1biAyMDE0IDA2OjM0OjMwICswMjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVy
-QHBlbmd1dHJvbml4LmRlPjoKPiBPbiBUaHUsIEp1biAwNSwgMjAxNCBhdCAwNTo0Njo0M1BNICsw
-NDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVy
-IFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KPiA+IC0tLQo+ID4gIGNvbW1hbmRzLzIwNDguYyB8
-IDIgKysKPiA+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCj4gCj4gQXBwbGllZCwg
-dGhhbmtzLiBJJ20gY29uc2lkZXJpbmcgYSBzdGFibGUgcmVsZWFzZSBmb3IgdGhpcyA7KQoKUGxl
-YXNlIGRvIHRoaXMgb25seSBhZnRlciB3ZSBhZGQgdGhlIHdvcmxkIHRhYmxlIG9mIHJlY29yZHMg
-YW5kIHNvdW5kIHN1cHBvcnQgOikKCi0tLQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+As stated in section 29.19.35 of SAMA5D3 Series Datasheet,
+MODE register has offset 0x10 while at offset 0x0C there is
+a TIMINGS register.
+This patch series adds the register and configures it for 
+sama5d3xek using timings from U-Boot
+
+[PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add TIMINGS
+[PATCH 2/2] sama5d3x: HSMC NAND initialize TIMINGS and import values
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
