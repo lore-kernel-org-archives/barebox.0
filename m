@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from alcapone.vm.bytemark.co.uk ([89.16.173.107])
- by casper.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WsqF8-0000Lg-FT
- for barebox@lists.infradead.org; Fri, 06 Jun 2014 09:15:23 +0000
-From: Matteo Fortini <matteo.fortini@gmail.com>
-Date: Fri,  6 Jun 2014 11:12:15 +0200
-Message-Id: <assp.02348a4d47.1402045936-18733-2-git-send-email-matteo.fortini@gmail.com>
-In-Reply-To: <1402045936-18733-1-git-send-email-matteo.fortini@gmail.com>
-References: <1402045936-18733-1-git-send-email-matteo.fortini@gmail.com>
+Received: from f152.i.mail.ru ([94.100.178.201])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WssgE-0003t9-EA
+ for barebox@lists.infradead.org; Fri, 06 Jun 2014 11:51:31 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 06 Jun 2014 15:51:01 +0400
+Message-ID: <1402055461.188487416@f152.i.mail.ru>
+In-Reply-To: <20140606043650.GP15686@pengutronix.de>
+References: <1401989555-25532-1-git-send-email-shc_work@mail.ru>
+ <20140606043650.GP15686@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,121 +19,21 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add TIMINGS
- register
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gQVJNOiBkdHM6IFJlbW92ZSBvcnBoYW5lZCBpLk1YMjcg?=
+ =?UTF-8?B?RFQgdGVtcGxhdGU=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-As stated in section 29.19.35 of SAMA5D3 Series Datasheet,
-MODE register has offset 0x10 and at offset 0x0C there is
-a TIMINGS register.
-
-Signed-off-by: Matteo Fortini <matteo.fortini@gmail.com>
----
- arch/arm/mach-at91/include/mach/at91sam9_smc.h | 31 +++++++++++++++++++++++++-
- arch/arm/mach-at91/sam9_smc.c                  | 19 ++++++++++++++++
- 2 files changed, 49 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9_smc.h b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
-index d5cf5f7..6412664 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9_smc.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
-@@ -43,6 +43,16 @@ struct sam9_smc_config {
- 	/* Mode register */
- 	u32 mode;
- 	u8 tdf_cycles:4;
-+
-+	/* Timings register */
-+	u8 tclr;
-+	u8 tadl;
-+	u8 tar;
-+	u8 ocms;
-+	u8 trr;
-+	u8 twb;
-+	u8 rbnsel;
-+	u8 nfsel;
- };
- 
- extern void sam9_smc_configure(int id, int cs, struct sam9_smc_config *config);
-@@ -77,7 +87,25 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
- #define		AT91_SMC_NRDCYCLE	(0x1ff << 16)			/* Total Read Cycle Length */
- #define			AT91_SMC_NRDCYCLE_(x)	((x) << 16)
- 
--#define AT91_SMC_MODE		0x0c				/* Mode Register for CS n */
-+#define AT91_SMC_TIMINGS	0x0c				/* Timings register for CS n */
-+#define		AT91_SMC_TCLR		(0x0f  <<  0)			/* CLE to REN Low Delay */
-+#define			AT91_SMC_TCLR_(x)	((x) << 0)
-+#define		AT91_SMC_TADL		(0x0f  <<  4)			/* ALE to Data Start */
-+#define			AT91_SMC_TADL_(x)	((x) << 4)
-+#define		AT91_SMC_TAR		(0x0f  <<  8)			/* ALE to REN Low Delay */
-+#define			AT91_SMC_TAR_(x)	((x) << 8)
-+#define		AT91_SMC_OCMS		(0x1   << 12)			/* Off Chip Memory Scrambling Enable */
-+#define			AT91_SMC_OCMS_(x)	((x) << 12)
-+#define		AT91_SMC_TRR		(0x0f  << 16)			/* Ready to REN Low Delay */
-+#define			AT91_SMC_TRR_(x)        ((x) << 16)
-+#define		AT91_SMC_TWB		(0x0f  << 24)			/* WEN High to REN to Busy */
-+#define			AT91_SMC_TWB_(x)	((x) << 24)
-+#define		AT91_SMC_RBNSEL		(0x07  << 28)			/* Ready/Busy Line Selection */
-+#define			AT91_SMC_RBNSEL_(x)	((x) << 28)
-+#define		AT91_SMC_NFSEL		(0x01  << 31)			/* Nand Flash Selection */
-+#define			AT91_SMC_NFSEL_(x)	((x) << 31)
-+
-+#define AT91_SMC_MODE		((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? 0x10 : 0x0c)				/* Mode Register for CS n */
- #define		AT91_SMC_READMODE	(1 <<  0)			/* Read Mode */
- #define		AT91_SMC_WRITEMODE	(1 <<  1)			/* Write Mode */
- #define		AT91_SMC_EXNWMODE	(3 <<  4)			/* NWAIT Mode */
-@@ -101,4 +129,5 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
- #define			AT91_SMC_PS_16			(2 << 28)
- #define			AT91_SMC_PS_32			(3 << 28)
- 
-+
- #endif
-diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
-index c7bfdfd..89f73ef 100644
---- a/arch/arm/mach-at91/sam9_smc.c
-+++ b/arch/arm/mach-at91/sam9_smc.c
-@@ -30,6 +30,20 @@ static void sam9_smc_cs_write_mode(void __iomem *base,
- 		   base + AT91_SMC_MODE);
- }
- 
-+static void sam9_smc_cs_write_timings(void __iomem *base,
-+					struct sam9_smc_config *config)
-+{
-+	__raw_writel(AT91_SMC_TCLR_(config->tclr)
-+                   | AT91_SMC_TADL_(config->tadl)
-+                   | AT91_SMC_TAR_(config->tar)
-+                   | AT91_SMC_OCMS_(config->ocms)
-+                   | AT91_SMC_TRR_(config->trr)
-+                   | AT91_SMC_TWB_(config->twb)
-+                   | AT91_SMC_RBNSEL_(config->rbnsel)
-+                   | AT91_SMC_NFSEL_(config->nfsel),
-+		   base + AT91_SMC_TIMINGS);
-+}
-+
- void sam9_smc_write_mode(int id, int cs,
- 					struct sam9_smc_config *config)
- {
-@@ -61,6 +75,11 @@ static void sam9_smc_cs_configure(void __iomem *base,
- 
- 	/* Mode register */
- 	sam9_smc_cs_write_mode(base, config);
-+
-+	/* Timings register */
-+	if (at91_soc_initdata.type == AT91_SOC_SAMA5D3) {
-+		sam9_smc_cs_write_timings(base, config);
-+	}
- }
- 
- void sam9_smc_configure(int id, int cs,
--- 
-2.0.0.rc2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJpLCA2IEp1biAyMDE0IDA2OjM2OjUwICswMjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVy
+QHBlbmd1dHJvbml4LmRlPjoKPiBPbiBUaHUsIEp1biAwNSwgMjAxNCBhdCAwOTozMjozNVBNICsw
+NDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVy
+IFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KPiAKPiBBcHBsaWVkLCB0aGFua3MKClN1cHBsZW1l
+bnRhcnkgcXVlc3Rpb24uCldoYXQncyB0aGUgcGxhbiB0byB1cGRhdGUgZHRzIGJyYW5jaD8KQ2Fu
+IHlvdSB1cGRhdGUgdGhpcyBicmFuY2ggdG9nZXRoZXIgd2l0aCB0aGUgbmV3IHJlbGVhc2Ugb3Ig
+dGhlIHdheSBpdCBpcz8KCi0tLQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
