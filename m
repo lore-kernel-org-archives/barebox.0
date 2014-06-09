@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wt6z1-0007YB-JN
- for barebox@lists.infradead.org; Sat, 07 Jun 2014 03:07:52 +0000
-Received: by mail-la0-f44.google.com with SMTP id hr17so2005375lab.17
- for <barebox@lists.infradead.org>; Fri, 06 Jun 2014 20:07:28 -0700 (PDT)
-Date: Sat, 7 Jun 2014 07:18:58 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140607071858.df2bd6e45a2e856978845be4@gmail.com>
-In-Reply-To: <CAGF38Fk2OZ0pQURjJjKPHUdXsO27dx98HoACDDW5quSs+x7MqQ@mail.gmail.com>
-References: <CAGF38F=VxqD8L3EqZUneAvXHTtORDPXcOEynfbjaK_Zu2Zuh6w@mail.gmail.com>
- <20140605193040.GQ22169@pengutronix.de>
- <CAGF38FkaYSvUSYR=Lgo9S1R0+-jUL=NjwcVwUi=FU+-MDGu=Hw@mail.gmail.com>
- <CAGF38Fk2OZ0pQURjJjKPHUdXsO27dx98HoACDDW5quSs+x7MqQ@mail.gmail.com>
-Mime-Version: 1.0
+Received: from webmail.celad.com ([84.14.244.162])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wu1H9-0007BS-MP
+ for barebox@lists.infradead.org; Mon, 09 Jun 2014 15:14:20 +0000
+From: Herve Codina <Herve.CODINA@celad.com>
+Date: Mon, 9 Jun 2014 17:14:07 +0200
+Message-ID: <1402326848-16239-1-git-send-email-Herve.CODINA@celad.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +15,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picoTCP, barebox, and licenses
-To: Frederik Van Slycken <frederik.van.slycken@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>, Robert Schwebel <robert@schwebel.de>
+Subject: [PATCH 1/2] mtd: Fix writesize parameter value
+To: barebox@lists.infradead.org
+Cc: Herve Codina <Herve.CODINA@celad.com>
 
-On Thu, 5 Jun 2014 21:48:10 +0200
-Frederik Van Slycken <frederik.van.slycken@gmail.com> wrote:
+Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
+---
+ drivers/mtd/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 2014-06-05 21:36 GMT+02:00 Frederik Van Slycken
-> <frederik.van.slycken@gmail.com>:
-> > 2014-06-05 21:30 GMT+02:00 Robert Schwebel <robert@schwebel.de>:
-> >> Where is that in the wiki? IMHO it isn't correct, the toplevel COPYING
-> >> file says v2, which is also our intention.
-> >
-> > http://wiki.barebox.org/doku.php#license
-> >
-> > """
-> > This program is free software; you can redistribute it and/or
-> > modify it under the terms of the GNU General Public License as
-> > published by the Free Software Foundation; either version 2 of
-> > the License, or (at your option) any later version.
-> > """
-> =
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index d954f72..d3e7763 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -403,7 +403,7 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
+ 	if (IS_ENABLED(CONFIG_PARAMETER)) {
+ 		dev_add_param_int_ro(&mtd->class_dev, "size", mtd->size, "%llu");
+ 		dev_add_param_int_ro(&mtd->class_dev, "erasesize", mtd->erasesize, "%u");
+-		dev_add_param_int_ro(&mtd->class_dev, "writesize", mtd->oobsize, "%u");
++		dev_add_param_int_ro(&mtd->class_dev, "writesize", mtd->writesize, "%u");
+ 		dev_add_param_int_ro(&mtd->class_dev, "oobsize", mtd->oobsize, "%u");
+ 	}
+ 
+-- 
+1.7.9.5
 
-> A couple of other locations - I'm not sure if they're all up to date,
-> but these are results 3 and 4 when I do a google search for "barebox
-> license" :
-> http://www.barebox.org/documentation/barebox-2011.05.0/
-> http://www.barebox.org/documentation/barebox-2009.12.0/main.html
-> =
-
-> Number 2 was the wiki, already mentioned, and number 1 is wikipedia,
-> which does mention only gplv2 :)
-
-There is no need to use google to determine barebox license!
-
-Just see COPYING file in the top dir of barebox repo:
-  http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dblob;f=3DCOPYING;h=3Df13e9=
-04b5362b7f2e0bdfa9db74ed14b1dcfdfe7;hb=3DHEAD
-
-it is GNU GENERAL PUBLIC LICENSE Version 2, June 1991!
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
