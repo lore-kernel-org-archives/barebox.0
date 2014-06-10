@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WuGBc-0001ex-CY
- for barebox@lists.infradead.org; Tue, 10 Jun 2014 07:09:36 +0000
-Date: Tue, 10 Jun 2014 09:09:14 +0200
+ Linux)) id 1WuJar-0002Ra-Kz
+ for barebox@lists.infradead.org; Tue, 10 Jun 2014 10:47:54 +0000
+Date: Tue, 10 Jun 2014 12:47:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140610070914.GU15686@pengutronix.de>
-References: <1402081690-23986-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140610104731.GX15686@pengutronix.de>
+References: <1401989087-24755-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1402081690-23986-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1401989087-24755-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] make .gitignore files visible to git
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] ARM: PCM038: Switch to devicetree probe
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 06, 2014 at 11:08:09PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Thu, Jun 05, 2014 at 09:24:47PM +0400, Alexander Shiyan wrote:
+> This patch removes non-DT support for PCM-038/PCM-970 and switch
+> to devicetree probe for these targets.
 
-Applied both, thanks
+This patch disables some options like tftp/nfs and enabled pbl instead.
+I skipped those changes, see the result in -next.
 
 Sascha
-
-> ---
->  .gitignore | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/.gitignore b/.gitignore
-> index 5555e15..28f319a 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -52,6 +52,11 @@ Module.symvers
->  barebox_default_env*
->  
->  #
-> +# git files that we don't want to ignore even it they are dot-files
-> +#
-> +!.gitignore
-> +
-> +#
->  # Generated include files
->  #
->  include/asm
-> -- 
-> 1.9.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
