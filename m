@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
- helo=mo5.mail-out.ovh.net)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wu6QD-0005mc-Ky
- for barebox@lists.infradead.org; Mon, 09 Jun 2014 20:44:02 +0000
-Received: from mail616.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 15434FFB46F
- for <barebox@lists.infradead.org>; Mon,  9 Jun 2014 22:33:18 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.2\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20140606113723.88fac667196d249d600a49d4@gmail.com>
-Date: Tue, 10 Jun 2014 04:33:05 +0800
-Message-Id: <8D47C8AE-9C6D-4A95-8062-1563942B3984@jcrosoft.com>
-References: <CAGF38F=VxqD8L3EqZUneAvXHTtORDPXcOEynfbjaK_Zu2Zuh6w@mail.gmail.com>
- <20140605193040.GQ22169@pengutronix.de>
- <CAGF38FkaYSvUSYR=Lgo9S1R0+-jUL=NjwcVwUi=FU+-MDGu=Hw@mail.gmail.com>
- <CAGF38Fk2OZ0pQURjJjKPHUdXsO27dx98HoACDDW5quSs+x7MqQ@mail.gmail.com>
- <20140606113723.88fac667196d249d600a49d4@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WuFdO-0004QH-9m
+ for barebox@lists.infradead.org; Tue, 10 Jun 2014 06:34:15 +0000
+Date: Tue, 10 Jun 2014 08:33:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140610063346.GR15686@pengutronix.de>
+References: <1402045936-18733-1-git-send-email-matteo.fortini@gmail.com>
+ <assp.02348a4d47.1402045936-18733-2-git-send-email-matteo.fortini@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <assp.02348a4d47.1402045936-18733-2-git-send-email-matteo.fortini@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,73 +19,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picoTCP, barebox, and licenses
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>, Frederik Van Slycken <frederik.van.slycken@gmail.com>, Robert Schwebel <robert@schwebel.de>
+Subject: Re: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add
+ TIMINGS register
+To: Matteo Fortini <matteo.fortini@gmail.com>
+Cc: barebox@lists.infradead.org
 
+On Fri, Jun 06, 2014 at 11:12:15AM +0200, Matteo Fortini wrote:
+> As stated in section 29.19.35 of SAMA5D3 Series Datasheet,
+> MODE register has offset 0x10 and at offset 0x0C there is
+> a TIMINGS register.
+> 
+> Signed-off-by: Matteo Fortini <matteo.fortini@gmail.com>
+> ---
+>  arch/arm/mach-at91/include/mach/at91sam9_smc.h | 31 +++++++++++++++++++++++++-
+>  arch/arm/mach-at91/sam9_smc.c                  | 19 ++++++++++++++++
+>  2 files changed, 49 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-at91/include/mach/at91sam9_smc.h b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
+> index d5cf5f7..6412664 100644
+> --- a/arch/arm/mach-at91/include/mach/at91sam9_smc.h
+> +++ b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
+> @@ -43,6 +43,16 @@ struct sam9_smc_config {
+>  	/* Mode register */
+>  	u32 mode;
+>  	u8 tdf_cycles:4;
+> +
+> +	/* Timings register */
+> +	u8 tclr;
+> +	u8 tadl;
+> +	u8 tar;
+> +	u8 ocms;
+> +	u8 trr;
+> +	u8 twb;
+> +	u8 rbnsel;
+> +	u8 nfsel;
+>  };
+>  
+>  extern void sam9_smc_configure(int id, int cs, struct sam9_smc_config *config);
+> @@ -77,7 +87,25 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
+>  #define		AT91_SMC_NRDCYCLE	(0x1ff << 16)			/* Total Read Cycle Length */
+>  #define			AT91_SMC_NRDCYCLE_(x)	((x) << 16)
+>  
+> -#define AT91_SMC_MODE		0x0c				/* Mode Register for CS n */
+> +#define AT91_SMC_TIMINGS	0x0c				/* Timings register for CS n */
+> +#define		AT91_SMC_TCLR		(0x0f  <<  0)			/* CLE to REN Low Delay */
+> +#define			AT91_SMC_TCLR_(x)	((x) << 0)
+> +#define		AT91_SMC_TADL		(0x0f  <<  4)			/* ALE to Data Start */
+> +#define			AT91_SMC_TADL_(x)	((x) << 4)
+> +#define		AT91_SMC_TAR		(0x0f  <<  8)			/* ALE to REN Low Delay */
+> +#define			AT91_SMC_TAR_(x)	((x) << 8)
+> +#define		AT91_SMC_OCMS		(0x1   << 12)			/* Off Chip Memory Scrambling Enable */
+> +#define			AT91_SMC_OCMS_(x)	((x) << 12)
+> +#define		AT91_SMC_TRR		(0x0f  << 16)			/* Ready to REN Low Delay */
+> +#define			AT91_SMC_TRR_(x)        ((x) << 16)
+> +#define		AT91_SMC_TWB		(0x0f  << 24)			/* WEN High to REN to Busy */
+> +#define			AT91_SMC_TWB_(x)	((x) << 24)
+> +#define		AT91_SMC_RBNSEL		(0x07  << 28)			/* Ready/Busy Line Selection */
+> +#define			AT91_SMC_RBNSEL_(x)	((x) << 28)
+> +#define		AT91_SMC_NFSEL		(0x01  << 31)			/* Nand Flash Selection */
+> +#define			AT91_SMC_NFSEL_(x)	((x) << 31)
+> +
+> +#define AT91_SMC_MODE		((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? 0x10 : 0x0c)				/* Mode Register for CS n */
+>  #define		AT91_SMC_READMODE	(1 <<  0)			/* Read Mode */
+>  #define		AT91_SMC_WRITEMODE	(1 <<  1)			/* Write Mode */
+>  #define		AT91_SMC_EXNWMODE	(3 <<  4)			/* NWAIT Mode */
+> @@ -101,4 +129,5 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
+>  #define			AT91_SMC_PS_16			(2 << 28)
+>  #define			AT91_SMC_PS_32			(3 << 28)
+>  
+> +
+>  #endif
 
-On Jun 6, 2014, at 3:37 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+This hunk shouldn't be here.
 
-> =
+> diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
+> index c7bfdfd..89f73ef 100644
+> --- a/arch/arm/mach-at91/sam9_smc.c
+> +++ b/arch/arm/mach-at91/sam9_smc.c
+> @@ -30,6 +30,20 @@ static void sam9_smc_cs_write_mode(void __iomem *base,
+>  		   base + AT91_SMC_MODE);
+>  }
+>  
+> +static void sam9_smc_cs_write_timings(void __iomem *base,
+> +					struct sam9_smc_config *config)
+> +{
+> +	__raw_writel(AT91_SMC_TCLR_(config->tclr)
+> +                   | AT91_SMC_TADL_(config->tadl)
+> +                   | AT91_SMC_TAR_(config->tar)
+> +                   | AT91_SMC_OCMS_(config->ocms)
+> +                   | AT91_SMC_TRR_(config->trr)
+> +                   | AT91_SMC_TWB_(config->twb)
+> +                   | AT91_SMC_RBNSEL_(config->rbnsel)
+> +                   | AT91_SMC_NFSEL_(config->nfsel),
+> +		   base + AT91_SMC_TIMINGS);
+> +}
+> +
+>  void sam9_smc_write_mode(int id, int cs,
+>  					struct sam9_smc_config *config)
+>  {
+> @@ -61,6 +75,11 @@ static void sam9_smc_cs_configure(void __iomem *base,
+>  
+>  	/* Mode register */
+>  	sam9_smc_cs_write_mode(base, config);
+> +
+> +	/* Timings register */
+> +	if (at91_soc_initdata.type == AT91_SOC_SAMA5D3) {
+> +		sam9_smc_cs_write_timings(base, config);
+> +	}
 
-> On Thu, 5 Jun 2014 21:48:10 +0200
-> Frederik Van Slycken <frederik.van.slycken@gmail.com> wrote:
-> =
+I would pretty much prefer a
 
->> 2014-06-05 21:36 GMT+02:00 Frederik Van Slycken
->> <frederik.van.slycken@gmail.com>:
->>> 2014-06-05 21:30 GMT+02:00 Robert Schwebel <robert@schwebel.de>:
->>>> Where is that in the wiki? IMHO it isn't correct, the toplevel COPYING
->>>> file says v2, which is also our intention.
->>> =
+sama5d3_smc_cs_configure(int id, int cs, struct sama5d3_smc_config *config)
 
->>> http://wiki.barebox.org/doku.php#license
->>> =
+function so that the older SoCs do not have the overhead which the new
+SoC requires.
 
->>> """
->>> This program is free software; you can redistribute it and/or
->>> modify it under the terms of the GNU General Public License as
->>> published by the Free Software Foundation; either version 2 of
->>> the License, or (at your option) any later version.
->>> """
->> =
+Sascha
 
->> A couple of other locations - I'm not sure if they're all up to date,
->> but these are results 3 and 4 when I do a google search for "barebox
->> license" :
->> http://www.barebox.org/documentation/barebox-2011.05.0/
->> http://www.barebox.org/documentation/barebox-2009.12.0/main.html
->> =
-
->> Number 2 was the wiki, already mentioned, and number 1 is wikipedia,
->> which does mention only gplv2 :)
-> =
-
-> I think Sascha can clarify this question.
-> =
-
-> AFAIR barebox itself is gplv2-only software, but we can add gplv2-or-late=
-r components into it.
-
-For a legal point of view we do not care
-
-Barebox is GPLv2 ONLY as it does contain quite a lot of file GPLv2 ONLY
-
-and yes we DO can add GPLv2+ file into it
-
-IIRC we already had this conversation on the ML before with Sascha & I over=
- it and state that Barebox will be GPLv2 Only
-
-It=92s a statement for company that invest in Barebox that tomorrow the lic=
-ence will not evolve
-So they can have longterm plan with it (legal point of view)
-
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
