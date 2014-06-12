@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WuybE-0005CC-R6
- for barebox@lists.infradead.org; Thu, 12 Jun 2014 06:35:02 +0000
+ Linux)) id 1Wuyti-0005bn-Em
+ for barebox@lists.infradead.org; Thu, 12 Jun 2014 06:54:07 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WuytM-00075s-B1
+ for barebox@lists.infradead.org; Thu, 12 Jun 2014 08:53:44 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim
+ 4.82_1-5b7a7c0-XX) (envelope-from <sha@pengutronix.de>)
+ id 1WuytM-00017R-9i
+ for barebox@lists.infradead.org; Thu, 12 Jun 2014 08:53:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Jun 2014 08:34:31 +0200
-Message-Id: <1402554874-14055-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Jun 2014 08:53:38 +0200
+Message-Id: <1402556023-1811-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,111 +27,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM: i.MX6 sabresd: Drop board defconfig
+Subject: phyCORE-imx27 updates
 To: barebox@lists.infradead.org
 
-imx_v7_defconfig covers the sabresd, no need for a board defconfig.
+Based on Alexanders switch to devicetree this series:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- .../boards/freescale-mx6-sabresd/env/config-board  |  6 --
- arch/arm/configs/freescale-mx6-sabresd_defconfig   | 71 ----------------------
- 2 files changed, 77 deletions(-)
- delete mode 100644 arch/arm/boards/freescale-mx6-sabresd/env/config-board
- delete mode 100644 arch/arm/configs/freescale-mx6-sabresd_defconfig
+- Switches to multi image support and the generic imx_defconfig
+- Adds barebox_update handlers for NOR/NAND Flash
 
-diff --git a/arch/arm/boards/freescale-mx6-sabresd/env/config-board b/arch/arm/boards/freescale-mx6-sabresd/env/config-board
-deleted file mode 100644
-index e8e8378..0000000
---- a/arch/arm/boards/freescale-mx6-sabresd/env/config-board
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--
--# board defaults, do not change in running system. Change /env/config
--# instead
--
--global.linux.bootargs.base="console=ttymxc0,115200"
-diff --git a/arch/arm/configs/freescale-mx6-sabresd_defconfig b/arch/arm/configs/freescale-mx6-sabresd_defconfig
-deleted file mode 100644
-index 0ad7cc9..0000000
---- a/arch/arm/configs/freescale-mx6-sabresd_defconfig
-+++ /dev/null
-@@ -1,71 +0,0 @@
--CONFIG_ARCH_IMX=y
--CONFIG_IMX_MULTI_BOARDS=y
--CONFIG_MACH_SABRESD=y
--CONFIG_IMX_IIM=y
--CONFIG_IMX_IIM_FUSE_BLOW=y
--CONFIG_THUMB2_BAREBOX=y
--CONFIG_CMD_ARM_MMUINFO=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--CONFIG_MMU=y
--CONFIG_TEXT_BASE=0x08f80000
--CONFIG_MALLOC_SIZE=0x4000000
--CONFIG_MALLOC_TLSF=y
--CONFIG_KALLSYMS=y
--CONFIG_LONGHELP=y
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_MENU=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/freescale-mx6-sabresd/env"
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_MSLEEP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_TIME=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MD5SUM=y
--CONFIG_CMD_FLASH=y
--CONFIG_CMD_BOOTM_SHOW_TYPE=y
--CONFIG_CMD_BOOTM_VERBOSE=y
--CONFIG_CMD_BOOTM_INITRD=y
--CONFIG_CMD_BOOTM_OFTREE=y
--CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
--CONFIG_CMD_BOOTM_AIMAGE=y
--# CONFIG_CMD_BOOTU is not set
--CONFIG_CMD_RESET=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_MAGICVAR=y
--CONFIG_CMD_MAGICVAR_HELP=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_NET=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_PING=y
--CONFIG_NET_NETCONSOLE=y
--CONFIG_NET_RESOLV=y
--CONFIG_DRIVER_NET_FEC_IMX=y
--CONFIG_DRIVER_SPI_IMX=y
--CONFIG_MTD=y
--CONFIG_MTD_M25P80=y
--CONFIG_MTD_SST25L=y
--CONFIG_MCI=y
--CONFIG_MCI_STARTUP=y
--CONFIG_MCI_IMX_ESDHC=y
--CONFIG_FS_TFTP=y
--CONFIG_FS_NFS=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_LFN=y
--CONFIG_LZO_DECOMPRESS=y
--- 
-2.0.0.rc2
+Sascha
 
+----------------------------------------------------------------
+Sascha Hauer (5):
+      ARM: uncompress.c: copy executable to SDRAM if necessary
+      ARM: Phytec-phyCORE-imx27: Register board env during runtime
+      ARM: i.MX bbu: Add update handler for external NOR boot
+      ARM: Phytec-phyCORE-imx27: Register NOR/NAND update handlers
+      ARM: Phytec-phyCORE-imx27: Switch to multiimage support
+
+ arch/arm/boards/phytec-phycore-imx27/Makefile      |  1 +
+ .../{env => defaultenv-pcm038}/boot/nand-ubi       |  0
+ .../{env => defaultenv-pcm038}/boot/nor            |  0
+ arch/arm/boards/phytec-phycore-imx27/lowlevel.c    | 24 +++++--
+ arch/arm/boards/phytec-phycore-imx27/pcm038.c      | 13 +++-
+ arch/arm/configs/imx_defconfig                     | 72 ++++++++++---------
+ arch/arm/configs/phytec-phycore-imx27_defconfig    | 83 ----------------------
+ arch/arm/cpu/uncompress.c                          | 27 +++++--
+ arch/arm/dts/Makefile                              |  1 +
+ arch/arm/mach-imx/Kconfig                          | 17 ++---
+ arch/arm/mach-imx/imx-bbu-internal.c               | 46 +++++++++++-
+ arch/arm/mach-imx/include/mach/bbu.h               |  9 +++
+ images/Makefile.imx                                |  4 ++
+ 13 files changed, 156 insertions(+), 141 deletions(-)
+ rename arch/arm/boards/phytec-phycore-imx27/{env => defaultenv-pcm038}/boot/nand-ubi (100%)
+ rename arch/arm/boards/phytec-phycore-imx27/{env => defaultenv-pcm038}/boot/nor (100%)
+ delete mode 100644 arch/arm/configs/phytec-phycore-imx27_defconfig
 
 _______________________________________________
 barebox mailing list
