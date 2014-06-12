@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wuyti-0005bn-Em
- for barebox@lists.infradead.org; Thu, 12 Jun 2014 06:54:07 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1WuytM-00075s-B1
- for barebox@lists.infradead.org; Thu, 12 Jun 2014 08:53:44 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim
- 4.82_1-5b7a7c0-XX) (envelope-from <sha@pengutronix.de>)
- id 1WuytM-00017R-9i
- for barebox@lists.infradead.org; Thu, 12 Jun 2014 08:53:44 +0200
+ Linux)) id 1Wuyti-0005bw-Ek
+ for barebox@lists.infradead.org; Thu, 12 Jun 2014 06:54:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Jun 2014 08:53:38 +0200
-Message-Id: <1402556023-1811-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Jun 2014 08:53:41 +0200
+Message-Id: <1402556023-1811-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1402556023-1811-1-git-send-email-s.hauer@pengutronix.de>
+References: <1402556023-1811-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,41 +21,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: phyCORE-imx27 updates
+Subject: [PATCH 3/5] ARM: i.MX bbu: Add update handler for external NOR boot
 To: barebox@lists.infradead.org
 
-Based on Alexanders switch to devicetree this series:
+External NOR boot only requires copying the image to NOR Flash.
+This also adds (un)protecting the flash which is required for
+NOR Flash.
 
-- Switches to multi image support and the generic imx_defconfig
-- Adds barebox_update handlers for NOR/NAND Flash
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/imx-bbu-internal.c | 46 +++++++++++++++++++++++++++++++++++-
+ arch/arm/mach-imx/include/mach/bbu.h |  9 +++++++
+ 2 files changed, 54 insertions(+), 1 deletion(-)
 
-Sascha
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index c7cd5b8..125415e 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -59,7 +59,16 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 		return fd;
+ 
+ 	if (imx_handler->flags & IMX_INTERNAL_FLAG_ERASE) {
+-		debug("%s: eraseing %s from 0 to 0x%08x\n", __func__,
++		debug("%s: unprotecting %s from 0 to 0x%08x\n", __func__,
++				data->devicefile, image_len);
++		ret = protect(fd, image_len, 0, 0);
++		if (ret && ret != -ENOSYS) {
++			printf("unprotecting %s failed with %s\n", data->devicefile,
++					strerror(-ret));
++			goto err_close;
++		}
++
++		debug("%s: erasing %s from 0 to 0x%08x\n", __func__,
+ 				data->devicefile, image_len);
+ 		ret = erase(fd, image_len, 0);
+ 		if (ret) {
+@@ -92,6 +101,16 @@ static int imx_bbu_write_device(struct imx_internal_bbu_handler *imx_handler,
+ 	if (ret < 0)
+ 		goto err_close;
+ 
++	if (imx_handler->flags & IMX_INTERNAL_FLAG_ERASE) {
++		debug("%s: protecting %s from 0 to 0x%08x\n", __func__,
++				data->devicefile, image_len);
++		ret = protect(fd, image_len, 0, 1);
++		if (ret && ret != -ENOSYS) {
++			printf("protecting %s failed with %s\n", data->devicefile,
++					strerror(-ret));
++		}
++	}
++
+ 	ret = 0;
+ 
+ err_close:
+@@ -351,6 +370,19 @@ static int imx_bbu_internal_v2_update(struct bbu_handler *handler, struct bbu_da
+ 	return ret;
+ }
+ 
++static int imx_bbu_external_update(struct bbu_handler *handler, struct bbu_data *data)
++{
++	struct imx_internal_bbu_handler *imx_handler =
++		container_of(handler, struct imx_internal_bbu_handler, handler);
++	int ret;
++
++	ret = imx_bbu_check_prereq(data);
++	if (ret)
++		return ret;
++
++	return imx_bbu_write_device(imx_handler, data, data->image, data->len);
++}
++
+ static struct imx_internal_bbu_handler *__init_handler(const char *name, char *devicefile,
+ 		unsigned long flags)
+ {
+@@ -484,3 +516,15 @@ int imx6_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefil
+ 
+ 	return __register_handler(imx_handler);
+ }
++
++int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
++		unsigned long flags)
++{
++	struct imx_internal_bbu_handler *imx_handler;
++
++	imx_handler = __init_handler(name, devicefile, flags);
++	imx_handler->flags = IMX_INTERNAL_FLAG_ERASE;
++	imx_handler->handler.handler = imx_bbu_external_update;
++
++	return __register_handler(imx_handler);
++}
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index bf6c7dc..74c334a 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -29,6 +29,9 @@ int imx6_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefil
+ 
+ int imx6_bbu_nand_register_handler(const char *name, unsigned long flags);
+ 
++int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
++		unsigned long flags);
++
+ #else
+ 
+ static inline int imx51_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+@@ -71,6 +74,12 @@ static inline int imx6_bbu_nand_register_handler(const char *name, unsigned long
+ {
+ 	return -ENOSYS;
+ }
++
++static inline int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
++		unsigned long flags)
++{
++	return -ENOSYS;
++}
+ #endif
+ 
+ #if defined(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND)
+-- 
+2.0.0.rc2
 
-----------------------------------------------------------------
-Sascha Hauer (5):
-      ARM: uncompress.c: copy executable to SDRAM if necessary
-      ARM: Phytec-phyCORE-imx27: Register board env during runtime
-      ARM: i.MX bbu: Add update handler for external NOR boot
-      ARM: Phytec-phyCORE-imx27: Register NOR/NAND update handlers
-      ARM: Phytec-phyCORE-imx27: Switch to multiimage support
-
- arch/arm/boards/phytec-phycore-imx27/Makefile      |  1 +
- .../{env => defaultenv-pcm038}/boot/nand-ubi       |  0
- .../{env => defaultenv-pcm038}/boot/nor            |  0
- arch/arm/boards/phytec-phycore-imx27/lowlevel.c    | 24 +++++--
- arch/arm/boards/phytec-phycore-imx27/pcm038.c      | 13 +++-
- arch/arm/configs/imx_defconfig                     | 72 ++++++++++---------
- arch/arm/configs/phytec-phycore-imx27_defconfig    | 83 ----------------------
- arch/arm/cpu/uncompress.c                          | 27 +++++--
- arch/arm/dts/Makefile                              |  1 +
- arch/arm/mach-imx/Kconfig                          | 17 ++---
- arch/arm/mach-imx/imx-bbu-internal.c               | 46 +++++++++++-
- arch/arm/mach-imx/include/mach/bbu.h               |  9 +++
- images/Makefile.imx                                |  4 ++
- 13 files changed, 156 insertions(+), 141 deletions(-)
- rename arch/arm/boards/phytec-phycore-imx27/{env => defaultenv-pcm038}/boot/nand-ubi (100%)
- rename arch/arm/boards/phytec-phycore-imx27/{env => defaultenv-pcm038}/boot/nor (100%)
- delete mode 100644 arch/arm/configs/phytec-phycore-imx27_defconfig
 
 _______________________________________________
 barebox mailing list
