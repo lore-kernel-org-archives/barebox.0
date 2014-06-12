@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wuyti-0005bs-Eg
+ Linux)) id 1Wuyti-0005bx-El
  for barebox@lists.infradead.org; Thu, 12 Jun 2014 06:54:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Jun 2014 08:53:39 +0200
-Message-Id: <1402556023-1811-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Jun 2014 08:53:42 +0200
+Message-Id: <1402556023-1811-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1402556023-1811-1-git-send-email-s.hauer@pengutronix.de>
 References: <1402556023-1811-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,72 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ARM: uncompress.c: copy executable to SDRAM if necessary
+Subject: [PATCH 4/5] ARM: Phytec-phyCORE-imx27: Register NOR/NAND update
+ handlers
 To: barebox@lists.infradead.org
 
-We used to relocate the executable to the current address. This does
-not work when the executable runs from a readonly location like for
-example NOR Flash. Test if we run from inside the available memory and
-if we do, relocate to the current address as before. Otherwise copy
-the executable to the start of memory and relocate to that address.
-While at it add some comments to the code.
+To make barebox_update work on the board.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/uncompress.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ arch/arm/boards/phytec-phycore-imx27/pcm038.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 74a4286..d64706d 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -47,15 +47,27 @@ static void __noreturn noinline uncompress_start_payload(unsigned long membase,
- 	void __noreturn (*barebox)(unsigned long, unsigned long, void *);
- 	uint32_t endmem = membase + memsize;
- 	unsigned long barebox_base;
--	uint32_t *ptr;
-+	uint32_t *image_end;
- 	void *pg_start;
-+	unsigned long pc = get_pc();
+diff --git a/arch/arm/boards/phytec-phycore-imx27/pcm038.c b/arch/arm/boards/phytec-phycore-imx27/pcm038.c
+index 294f4ec..a4305f6 100644
+--- a/arch/arm/boards/phytec-phycore-imx27/pcm038.c
++++ b/arch/arm/boards/phytec-phycore-imx27/pcm038.c
+@@ -28,6 +28,7 @@
+ #include <mach/imxfb.h>
+ #include <mach/iomux-mx27.h>
+ #include <mfd/mc13xxx.h>
++#include <mach/bbu.h>
  
- 	arm_early_mmu_cache_invalidate();
+ #include "pll.h"
  
- 	endmem -= STACK_SIZE; /* stack */
+@@ -105,7 +106,7 @@ static int pcm038_init(void)
+ {
+ 	struct mc13xxx *mc13xxx = mc13xxx_get();
+ 	char *envdev;
+-	uint32_t i;
++	uint32_t i, bbu_nand_flags = 0, bbu_nor_flags = 0;
  
--	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE))
--		relocate_to_current_adr();
-+	image_end = (void *)ld_var(__image_end) - get_runtime_offset();
+ 	if (!of_machine_is_compatible("phytec,imx27-pcm038"))
+ 		return 0;
+@@ -123,10 +124,12 @@ static int pcm038_init(void)
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_NAND:
+ 		of_device_enable_path("/chosen/environment-nand");
++		bbu_nand_flags |= BBU_HANDLER_FLAG_DEFAULT;
+ 		envdev = "NAND";
+ 		break;
+ 	default:
+ 		of_device_enable_path("/chosen/environment-nor");
++		bbu_nor_flags |= BBU_HANDLER_FLAG_DEFAULT;
+ 		envdev = "NOR";
+ 		break;
+ 	}
+@@ -175,6 +178,11 @@ static int pcm038_init(void)
+ 	/* Clock gating enable */
+ 	writel(0x00050f08, MX27_SYSCTRL_BASE_ADDR + MX27_GPCR);
+ 
++	imx_bbu_external_nand_register_handler("nand", "/dev/nand0.boot",
++			bbu_nand_flags);
++	imx_bbu_external_nor_register_handler("nor", "/dev/nor0.boot",
++			bbu_nor_flags);
 +
-+	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE)) {
-+		/*
-+		 * If we run from inside the memory just relocate the binary
-+		 * to the current address. Otherwise it may be a readonly location.
-+		 * Copy and relocate to the start of the memory in this case.
-+		 */
-+		if (pc > membase && pc < membase + memsize)
-+			relocate_to_current_adr();
-+		else
-+			relocate_to_adr(membase);
-+	}
+ 	defaultenv_append_directory(defaultenv_pcm038);
  
- 	if (IS_ENABLED(CONFIG_RELOCATABLE))
- 		barebox_base = arm_barebox_image_place(membase + memsize);
-@@ -74,9 +86,12 @@ static void __noreturn noinline uncompress_start_payload(unsigned long membase,
- 	free_mem_ptr = endmem;
- 	free_mem_end_ptr = free_mem_ptr + SZ_128K;
- 
--	ptr = (void *)__image_end;
--	pg_start = ptr + 1;
--	pg_len = *(ptr);
-+	/*
-+	 * image_end is the first location after the executable. It contains
-+	 * the size of the appended compressed binary followed by the binary.
-+	 */
-+	pg_start = image_end + 1;
-+	pg_len = *(image_end);
- 
- 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
- 
+ 	return 0;
 -- 
 2.0.0.rc2
 
