@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webmail.celad.com ([84.14.244.162])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wv1SU-0007yV-Me
- for barebox@lists.infradead.org; Thu, 12 Jun 2014 09:38:11 +0000
-From: Herve Codina <Herve.CODINA@celad.com>
-Date: Thu, 12 Jun 2014 11:37:38 +0200
-Message-ID: <1402565858-7098-2-git-send-email-Herve.CODINA@celad.com>
-In-Reply-To: <1402565858-7098-1-git-send-email-Herve.CODINA@celad.com>
-References: <1402565858-7098-1-git-send-email-Herve.CODINA@celad.com>
+Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wv48R-0003MF-MP
+ for barebox@lists.infradead.org; Thu, 12 Jun 2014 12:29:40 +0000
+Received: by mail-we0-f177.google.com with SMTP id u56so1186260wes.22
+ for <barebox@lists.infradead.org>; Thu, 12 Jun 2014 05:29:16 -0700 (PDT)
 MIME-Version: 1.0
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
+Date: Thu, 12 Jun 2014 14:28:36 +0200
+Message-ID: <CACqcpZDTj-XaPOyH+Twhku26eSa-S3p3xDOWszAQC7JKfOyfsA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,37 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mtd: use long long dev param for size
+Subject: atmel_nand pmecc on 8k page
 To: barebox@lists.infradead.org
-Cc: Herve Codina <Herve.CODINA@celad.com>
 
-Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
----
- drivers/mtd/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index d3e7763..82fb5f7 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -401,7 +401,7 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
- 	mtd->cdev.mtd = mtd;
- 
- 	if (IS_ENABLED(CONFIG_PARAMETER)) {
--		dev_add_param_int_ro(&mtd->class_dev, "size", mtd->size, "%llu");
-+		dev_add_param_llint_ro(&mtd->class_dev, "size", mtd->size, "%llu");
- 		dev_add_param_int_ro(&mtd->class_dev, "erasesize", mtd->erasesize, "%u");
- 		dev_add_param_int_ro(&mtd->class_dev, "writesize", mtd->writesize, "%u");
- 		dev_add_param_int_ro(&mtd->class_dev, "oobsize", mtd->oobsize, "%u");
--- 
-1.7.9.5
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpJJ20gd29ya2luZyBvbiBhIHNlcmllcyBvZiBwYXRjaGVzLCB0byBzdXBwb3J0IDhrIG5h
+bmQgcGFnZSBpbgphdG1lbF9uYW5kIGRyaXZlci4KCkN1cnJlbnRseSwgSSBjYW4gZGV0ZWN0IHRo
+ZSBuYW5kIGFuZCBoYW5kbGUgYW4gb29iIHNpemUgb2YgNDQ4LiBCdXQgaQpoYXZlIGEgcHJvYmxl
+bSB3aXRoIHRoZSBwbWVjYywgd2hlbiBiYXJlYm94IHRyaWVkIHRvIHBlcmZvcm0gcG1lY2MKb3Bl
+cmF0aW9uLCBJIGdldCB0aGUgZm9sbG93aW5nIG1lc3NhZ2U6CgpQTUVDQzogVGltZW91dCB0byBj
+YWxjdWxhdGUgZXJyb3IgbG9jYXRpb24uCgpFeGFtcGxlIG9mIGxvZzoKCm5hbmQ6IE5BTkQgZGV2
+aWNlOiBNYW51ZmFjdHVyZXIgSUQ6IDB4MmMsIENoaXAgSUQ6IDB4NjggKE1pY3JvbgpNVDI5RjMy
+RzA4QUJBQUFXUCksIDQwOTZNaUIsIHBhZ2Ugc2l6ZTogODE5MiwgT09CIHNpemU6IDQ0OAphdG1l
+bF9uYW5kIGF0bWVsX25hbmQwOiBJbml0aWFsaXplIFBNRUNDIHBhcmFtcywgY2FwOiA4LCBzZWN0
+b3I6IDEwMjQKYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3Vs
+YXRlIGVycm9yIGxvY2F0aW9uLgphdG1lbF9uYW5kIGF0bWVsX25hbmQwOiBQTUVDQzogVGltZW91
+dCB0byBjYWxjdWxhdGUgZXJyb3IgbG9jYXRpb24uCmF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBN
+RUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KYXRtZWxfbmFuZCBhdG1l
+bF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9yIGxvY2F0aW9uLgpCYWQg
+YmxvY2sgdGFibGUgbm90IGZvdW5kIGZvciBjaGlwIDAKYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDog
+UE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9yIGxvY2F0aW9uLgphdG1lbF9uYW5kIGF0
+bWVsX25hbmQwOiBQTUVDQzogVGltZW91dCB0byBjYWxjdWxhdGUgZXJyb3IgbG9jYXRpb24uCmF0
+bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBs
+b2NhdGlvbi4KYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3Vs
+YXRlIGVycm9yIGxvY2F0aW9uLgpCYWQgYmxvY2sgdGFibGUgbm90IGZvdW5kIGZvciBjaGlwIDAK
+U2Nhbm5pbmcgZGV2aWNlIGZvciBiYWQgYmxvY2tzCkJhZCBlcmFzZWJsb2NrIDkwIGF0IDB4MDAw
+MDA1YTAwMDAwCkJhZCBlcmFzZWJsb2NrIDkxIGF0IDB4MDAwMDA1YjAwMDAwCmF0bWVsX25hbmQg
+YXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRvIGdldCBFQ0MgdmFsdWUuCm5hbmRfYmJ0OiBl
+cnJvciB3aGlsZSB3cml0aW5nIGJhZCBibG9jayB0YWJsZSAtMTEwCgoKSSBkb24ndCBrbm93L2Zp
+bmQgd2h5IGJhcmVib3ggZ2V0IGEgdGltZW91dC4uLgoKU29tZW9uZSBoYXZlIGFuIGlkZWEgPwoK
+QmVzdCByZWdhcmRzLApSYXBoYcOrbAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
