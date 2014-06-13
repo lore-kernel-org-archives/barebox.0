@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WvML4-00007P-Q3
- for barebox@lists.infradead.org; Fri, 13 Jun 2014 07:55:58 +0000
-Received: by mail-la0-f41.google.com with SMTP id hz20so1272007lab.0
- for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 00:55:32 -0700 (PDT)
-Received: from mars.ipredator.se (anon-32-73.vpn.ipredator.se. [46.246.32.73])
- by mx.google.com with ESMTPSA id
- fb6sm512523lac.40.2014.06.13.00.55.30
- for <barebox@lists.infradead.org>
- (version=TLSv1 cipher=RC4-SHA bits=128/128);
- Fri, 13 Jun 2014 00:55:31 -0700 (PDT)
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Fri, 13 Jun 2014 09:54:27 +0200
-Message-Id: <1402646075-22747-11-git-send-email-chf.fritz@googlemail.com>
-In-Reply-To: <1402646075-22747-1-git-send-email-chf.fritz@googlemail.com>
-References: <1402646075-22747-1-git-send-email-chf.fritz@googlemail.com>
+ id 1WvNB2-0003m2-Fh
+ for barebox@lists.infradead.org; Fri, 13 Jun 2014 08:49:37 +0000
+Received: by mail-wi0-f174.google.com with SMTP id bs8so459684wib.13
+ for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 01:49:14 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <539A5353.7090306@atmel.com>
+References: <CACqcpZDTj-XaPOyH+Twhku26eSa-S3p3xDOWszAQC7JKfOyfsA@mail.gmail.com>
+ <539A5353.7090306@atmel.com>
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
+Date: Fri, 13 Jun 2014 10:48:33 +0200
+Message-ID: <CACqcpZCNBZ6he2OnqQcdT3dPoeP0nFqSmteHAGYyLKAtAoT=nw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +20,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/18] arm: pcm051: enable musb in defconfig
-To: barebox@lists.infradead.org
+Subject: Re: atmel_nand pmecc on 8k page
+To: Bo Shen <voice.shen@atmel.com>
+Cc: barebox@lists.infradead.org
 
----
- arch/arm/configs/am335x_defconfig |    2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
-index 0c92c96..a9bf5e0 100644
---- a/arch/arm/configs/am335x_defconfig
-+++ b/arch/arm/configs/am335x_defconfig
-@@ -96,6 +96,8 @@ CONFIG_NAND=y
- CONFIG_NAND_OMAP_GPMC=y
- CONFIG_MTD_UBI=y
- CONFIG_USB=y
-+CONFIG_USB_MUSB_HOST=y
-+CONFIG_USB_STORAGE=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_OMAP_HSMMC=y
--- 
-1.7.10.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpJJ20gdGVzdGluZyB3aXRoIGEgY3VzdG9tIGJvYXJkLiBJIGhhdmUganVzdCB3aXRoIHRo
+ZSBhcHBsaWVkIHRlc3QgYW5kCml0J3Mgd29ya2luZyAhIEkgY2FuIHVzZSA4ayBwYWdlIG5hbmQg
+d2l0aCBhdG1lbF9uYW5kIGRyaXZlci4KCkRvIEkgaGF2ZSB0byB3YWl0IHVudGlsIE1hdHRlbydz
+IHBhdGNoZXMgYXJlIGFwcGxpZWQgb3IgY2FuIEkgc3VibWl0Cm1pbmUgcmlnaHQgbm93ID8KCkJl
+c3QgcmVnYXJkcywKUmFwaGHDq2wgUG9nZ2kKCjIwMTQtMDYtMTMgMzoyNiBHTVQrMDI6MDAgQm8g
+U2hlbiA8dm9pY2Uuc2hlbkBhdG1lbC5jb20+Ogo+IEhpIFJhcGhhw6tsLAo+Cj4KPiBPbiAwNi8x
+Mi8yMDE0IDA4OjI4IFBNLCBSYXBoYcOrbCBQb2dnaSB3cm90ZToKPj4KPj4gSGksCj4+Cj4+IEkn
+bSB3b3JraW5nIG9uIGEgc2VyaWVzIG9mIHBhdGNoZXMsIHRvIHN1cHBvcnQgOGsgbmFuZCBwYWdl
+IGluCj4+IGF0bWVsX25hbmQgZHJpdmVyLgo+Pgo+PiBDdXJyZW50bHksIEkgY2FuIGRldGVjdCB0
+aGUgbmFuZCBhbmQgaGFuZGxlIGFuIG9vYiBzaXplIG9mIDQ0OC4gQnV0IGkKPj4gaGF2ZSBhIHBy
+b2JsZW0gd2l0aCB0aGUgcG1lY2MsIHdoZW4gYmFyZWJveCB0cmllZCB0byBwZXJmb3JtIHBtZWNj
+Cj4+IG9wZXJhdGlvbiwgSSBnZXQgdGhlIGZvbGxvd2luZyBtZXNzYWdlOgo+Pgo+PiBQTUVDQzog
+VGltZW91dCB0byBjYWxjdWxhdGUgZXJyb3IgbG9jYXRpb24uCj4+Cj4+IEV4YW1wbGUgb2YgbG9n
+Ogo+Pgo+PiBuYW5kOiBOQU5EIGRldmljZTogTWFudWZhY3R1cmVyIElEOiAweDJjLCBDaGlwIElE
+OiAweDY4IChNaWNyb24KPj4gTVQyOUYzMkcwOEFCQUFBV1ApLCA0MDk2TWlCLCBwYWdlIHNpemU6
+IDgxOTIsIE9PQiBzaXplOiA0NDgKPj4gYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDogSW5pdGlhbGl6
+ZSBQTUVDQyBwYXJhbXMsIGNhcDogOCwgc2VjdG9yOiAxMDI0Cj4+IGF0bWVsX25hbmQgYXRtZWxf
+bmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPj4gYXRt
+ZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9yIGxv
+Y2F0aW9uLgo+PiBhdG1lbF9uYW5kIGF0bWVsX25hbmQwOiBQTUVDQzogVGltZW91dCB0byBjYWxj
+dWxhdGUgZXJyb3IgbG9jYXRpb24uCj4+IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBNRUNDOiBU
+aW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPj4gQmFkIGJsb2NrIHRhYmxlIG5v
+dCBmb3VuZCBmb3IgY2hpcCAwCj4+IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1l
+b3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPj4gYXRtZWxfbmFuZCBhdG1lbF9uYW5k
+MDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9yIGxvY2F0aW9uLgo+PiBhdG1lbF9u
+YW5kIGF0bWVsX25hbmQwOiBQTUVDQzogVGltZW91dCB0byBjYWxjdWxhdGUgZXJyb3IgbG9jYXRp
+b24uCj4+IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0
+ZSBlcnJvciBsb2NhdGlvbi4KPj4gQmFkIGJsb2NrIHRhYmxlIG5vdCBmb3VuZCBmb3IgY2hpcCAw
+Cj4+IFNjYW5uaW5nIGRldmljZSBmb3IgYmFkIGJsb2Nrcwo+PiBCYWQgZXJhc2VibG9jayA5MCBh
+dCAweDAwMDAwNWEwMDAwMAo+PiBCYWQgZXJhc2VibG9jayA5MSBhdCAweDAwMDAwNWIwMDAwMAo+
+PiBhdG1lbF9uYW5kIGF0bWVsX25hbmQwOiBQTUVDQzogVGltZW91dCB0byBnZXQgRUNDIHZhbHVl
+Lgo+PiBuYW5kX2JidDogZXJyb3Igd2hpbGUgd3JpdGluZyBiYWQgYmxvY2sgdGFibGUgLTExMAo+
+Pgo+Pgo+PiBJIGRvbid0IGtub3cvZmluZCB3aHkgYmFyZWJveCBnZXQgYSB0aW1lb3V0Li4uCj4+
+Cj4+IFNvbWVvbmUgaGF2ZSBhbiBpZGVhID8KPgo+Cj4gV2hpY2ggYm9hcmQgYXJlIHlvdSB0ZXN0
+IHRoaXM/Cj4gQ2FuIHlvdSB0cnkgdG8gYXBwbHkgdHdvIHBhdGNoZXMgZnJvbSBtYXR0ZW8uZm9y
+dGluaUBnbWFpbC5jb20gb24gMjAxNC0wNi0wNgo+IHdpdGggbmFtZQo+IFtQQVRDSCAxLzJdIHNh
+bWE1ZDN4OiBmaXggSFNNQyBNT0RFIHJlZ2lzdGVyIG9mZnNldCBhbmQgYWRkIFRJTUlOR1MKPiBb
+UEFUQ0ggMi8yXSBzYW1hNWQzeDogSFNNQyBOQU5EIGluaXRpYWxpemUgVElNSU5HUyBhbmQgaW1w
+b3J0IHZhbHVlcwo+Cj4+IEJlc3QgcmVnYXJkcywKPj4gUmFwaGHDq2wKPgo+Cj4gQmVzdCBSZWdh
+cmRzLAo+IEJvIFNoZW4KPgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
