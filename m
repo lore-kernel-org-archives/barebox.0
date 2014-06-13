@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eusmtp01.atmel.com ([212.144.249.243])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WvGHG-0003Lk-6O
- for barebox@lists.infradead.org; Fri, 13 Jun 2014 01:27:34 +0000
-Message-ID: <539A5353.7090306@atmel.com>
-Date: Fri, 13 Jun 2014 09:26:43 +0800
-From: Bo Shen <voice.shen@atmel.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WvJ69-0006C4-Gn
+ for barebox@lists.infradead.org; Fri, 13 Jun 2014 04:28:18 +0000
+Date: Fri, 13 Jun 2014 06:27:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140613042752.GD15686@pengutronix.de>
+References: <1402565858-7098-1-git-send-email-Herve.CODINA@celad.com>
 MIME-Version: 1.0
-References: <CACqcpZDTj-XaPOyH+Twhku26eSa-S3p3xDOWszAQC7JKfOyfsA@mail.gmail.com>
-In-Reply-To: <CACqcpZDTj-XaPOyH+Twhku26eSa-S3p3xDOWszAQC7JKfOyfsA@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1402565858-7098-1-git-send-email-Herve.CODINA@celad.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,47 +18,107 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: atmel_nand pmecc on 8k page
-To: =?UTF-8?B?UmFwaGHDq2wgUG9nZ2k=?= <raphio98@gmail.com>
+Subject: Re: [PATCH 1/2] param: Add support for long long read only dev param
+To: Herve Codina <Herve.CODINA@celad.com>
 Cc: barebox@lists.infradead.org
 
-SGkgUmFwaGHDq2wsCgpPbiAwNi8xMi8yMDE0IDA4OjI4IFBNLCBSYXBoYcOrbCBQb2dnaSB3cm90
-ZToKPiBIaSwKPgo+IEknbSB3b3JraW5nIG9uIGEgc2VyaWVzIG9mIHBhdGNoZXMsIHRvIHN1cHBv
-cnQgOGsgbmFuZCBwYWdlIGluCj4gYXRtZWxfbmFuZCBkcml2ZXIuCj4KPiBDdXJyZW50bHksIEkg
-Y2FuIGRldGVjdCB0aGUgbmFuZCBhbmQgaGFuZGxlIGFuIG9vYiBzaXplIG9mIDQ0OC4gQnV0IGkK
-PiBoYXZlIGEgcHJvYmxlbSB3aXRoIHRoZSBwbWVjYywgd2hlbiBiYXJlYm94IHRyaWVkIHRvIHBl
-cmZvcm0gcG1lY2MKPiBvcGVyYXRpb24sIEkgZ2V0IHRoZSBmb2xsb3dpbmcgbWVzc2FnZToKPgo+
-IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPgo+IEV4YW1wbGUg
-b2YgbG9nOgo+Cj4gbmFuZDogTkFORCBkZXZpY2U6IE1hbnVmYWN0dXJlciBJRDogMHgyYywgQ2hp
-cCBJRDogMHg2OCAoTWljcm9uCj4gTVQyOUYzMkcwOEFCQUFBV1ApLCA0MDk2TWlCLCBwYWdlIHNp
-emU6IDgxOTIsIE9PQiBzaXplOiA0NDgKPiBhdG1lbF9uYW5kIGF0bWVsX25hbmQwOiBJbml0aWFs
-aXplIFBNRUNDIHBhcmFtcywgY2FwOiA4LCBzZWN0b3I6IDEwMjQKPiBhdG1lbF9uYW5kIGF0bWVs
-X25hbmQwOiBQTUVDQzogVGltZW91dCB0byBjYWxjdWxhdGUgZXJyb3IgbG9jYXRpb24uCj4gYXRt
-ZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9yIGxv
-Y2F0aW9uLgo+IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1
-bGF0ZSBlcnJvciBsb2NhdGlvbi4KPiBhdG1lbF9uYW5kIGF0bWVsX25hbmQwOiBQTUVDQzogVGlt
-ZW91dCB0byBjYWxjdWxhdGUgZXJyb3IgbG9jYXRpb24uCj4gQmFkIGJsb2NrIHRhYmxlIG5vdCBm
-b3VuZCBmb3IgY2hpcCAwCj4gYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQg
-dG8gY2FsY3VsYXRlIGVycm9yIGxvY2F0aW9uLgo+IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBN
-RUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPiBhdG1lbF9uYW5kIGF0
-bWVsX25hbmQwOiBQTUVDQzogVGltZW91dCB0byBjYWxjdWxhdGUgZXJyb3IgbG9jYXRpb24uCj4g
-YXRtZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9y
-IGxvY2F0aW9uLgo+IEJhZCBibG9jayB0YWJsZSBub3QgZm91bmQgZm9yIGNoaXAgMAo+IFNjYW5u
-aW5nIGRldmljZSBmb3IgYmFkIGJsb2Nrcwo+IEJhZCBlcmFzZWJsb2NrIDkwIGF0IDB4MDAwMDA1
-YTAwMDAwCj4gQmFkIGVyYXNlYmxvY2sgOTEgYXQgMHgwMDAwMDViMDAwMDAKPiBhdG1lbF9uYW5k
-IGF0bWVsX25hbmQwOiBQTUVDQzogVGltZW91dCB0byBnZXQgRUNDIHZhbHVlLgo+IG5hbmRfYmJ0
-OiBlcnJvciB3aGlsZSB3cml0aW5nIGJhZCBibG9jayB0YWJsZSAtMTEwCj4KPgo+IEkgZG9uJ3Qg
-a25vdy9maW5kIHdoeSBiYXJlYm94IGdldCBhIHRpbWVvdXQuLi4KPgo+IFNvbWVvbmUgaGF2ZSBh
-biBpZGVhID8KCldoaWNoIGJvYXJkIGFyZSB5b3UgdGVzdCB0aGlzPwpDYW4geW91IHRyeSB0byBh
-cHBseSB0d28gcGF0Y2hlcyBmcm9tIG1hdHRlby5mb3J0aW5pQGdtYWlsLmNvbSBvbiAKMjAxNC0w
-Ni0wNiB3aXRoIG5hbWUKW1BBVENIIDEvMl0gc2FtYTVkM3g6IGZpeCBIU01DIE1PREUgcmVnaXN0
-ZXIgb2Zmc2V0IGFuZCBhZGQgVElNSU5HUwpbUEFUQ0ggMi8yXSBzYW1hNWQzeDogSFNNQyBOQU5E
-IGluaXRpYWxpemUgVElNSU5HUyBhbmQgaW1wb3J0IHZhbHVlcwoKPiBCZXN0IHJlZ2FyZHMsCj4g
-UmFwaGHDq2wKCkJlc3QgUmVnYXJkcywKQm8gU2hlbgoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+On Thu, Jun 12, 2014 at 11:37:37AM +0200, Herve Codina wrote:
+> Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
+
+Applied both, thanks
+
+Sascha
+
+> ---
+>  include/param.h |    9 +++++++++
+>  lib/parameter.c |   26 ++++++++++++++++++++++++++
+>  2 files changed, 35 insertions(+)
+> 
+> diff --git a/include/param.h b/include/param.h
+> index eac3372..24827c5 100644
+> --- a/include/param.h
+> +++ b/include/param.h
+> @@ -49,6 +49,9 @@ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+>  struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
+>  		int value, const char *format);
+>  
+> +struct param_d *dev_add_param_llint_ro(struct device_d *dev, const char *name,
+> +		long long value, const char *format);
+> +
+>  struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
+>  		int (*set)(struct param_d *p, void *priv),
+>  		int (*get)(struct param_d *p, void *priv),
+> @@ -123,6 +126,12 @@ static inline struct param_d *dev_add_param_int_ro(struct device_d *dev, const c
+>  	return NULL;
+>  }
+>  
+> +static inline struct param_d *dev_add_param_llint_ro(struct device_d *dev, const char *name,
+> +		long long value, const char *format)
+> +{
+> +	return NULL;
+> +}
+> +
+>  static inline struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
+>  		int (*set)(struct param_d *p, void *priv),
+>  		int (*get)(struct param_d *p, void *priv),
+> diff --git a/lib/parameter.c b/lib/parameter.c
+> index b1f9aa3..13062bc 100644
+> --- a/lib/parameter.c
+> +++ b/lib/parameter.c
+> @@ -468,6 +468,32 @@ struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
+>  	return &piro->param;
+>  }
+>  
+> +/**
+> + * dev_add_param_llint_ro - add a read only long long parameter to a device
+> + * @param dev	The device
+> + * @param name	The name of the parameter
+> + * @param value	The value of the parameter
+> + * @param format the printf format used to print the value
+> + */
+> +struct param_d *dev_add_param_llint_ro(struct device_d *dev, const char *name,
+> +		long long value, const char *format)
+> +{
+> +	struct param_int *piro;
+> +	int ret;
+> +
+> +	piro = xzalloc(sizeof(*piro));
+> +
+> +	ret = __dev_add_param(&piro->param, dev, name, NULL, NULL, 0);
+> +	if (ret) {
+> +		free(piro);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	piro->param.value = asprintf(format, value);
+> +
+> +	return &piro->param;
+> +}
+> +
+>  #ifdef CONFIG_NET
+>  struct param_ip {
+>  	struct param_d param;
+> -- 
+> 1.7.9.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
