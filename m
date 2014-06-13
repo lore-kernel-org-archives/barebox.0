@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f47.google.com ([209.85.215.47])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WvMKk-0008S4-P6
- for barebox@lists.infradead.org; Fri, 13 Jun 2014 07:55:35 +0000
-Received: by mail-la0-f47.google.com with SMTP id pn19so1244931lab.20
- for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 00:55:07 -0700 (PDT)
+ id 1WvMKi-0008Qq-3l
+ for barebox@lists.infradead.org; Fri, 13 Jun 2014 07:55:32 +0000
+Received: by mail-la0-f43.google.com with SMTP id e16so1255195lan.16
+ for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 00:55:08 -0700 (PDT)
 Received: from mars.ipredator.se (anon-32-73.vpn.ipredator.se. [46.246.32.73])
  by mx.google.com with ESMTPSA id
- fb6sm512523lac.40.2014.06.13.00.55.05
+ fb6sm512523lac.40.2014.06.13.00.55.07
  for <barebox@lists.infradead.org>
  (version=TLSv1 cipher=RC4-SHA bits=128/128);
- Fri, 13 Jun 2014 00:55:06 -0700 (PDT)
+ Fri, 13 Jun 2014 00:55:08 -0700 (PDT)
 From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Fri, 13 Jun 2014 09:54:18 +0200
-Message-Id: <1402646075-22747-2-git-send-email-chf.fritz@googlemail.com>
+Date: Fri, 13 Jun 2014 09:54:19 +0200
+Message-Id: <1402646075-22747-3-git-send-email-chf.fritz@googlemail.com>
 In-Reply-To: <1402646075-22747-1-git-send-email-chf.fritz@googlemail.com>
 References: <1402646075-22747-1-git-send-email-chf.fritz@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,53 +29,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/18] arm: am33xx: add USB clocks
+Subject: [PATCH 02/18] arm: am33xx: add pinmux config for USB
 To: barebox@lists.infradead.org
 
 Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
 ---
- arch/arm/mach-omap/am33xx_clock.c              |    7 +++++++
- arch/arm/mach-omap/include/mach/am33xx-clock.h |    2 ++
- 2 files changed, 9 insertions(+)
+ arch/arm/mach-omap/am33xx_mux.c              |   24 ++++++++++++++++++++++++
+ arch/arm/mach-omap/include/mach/am33xx-mux.h |    2 ++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
-index 9105ddc..f4b1f4e 100644
---- a/arch/arm/mach-omap/am33xx_clock.c
-+++ b/arch/arm/mach-omap/am33xx_clock.c
-@@ -26,6 +26,8 @@
- #define PLL_LOCK_MODE	0x7
- #define PLL_MULTIPLIER_SHIFT	 8
+diff --git a/arch/arm/mach-omap/am33xx_mux.c b/arch/arm/mach-omap/am33xx_mux.c
+index 8318713..8779f00 100644
+--- a/arch/arm/mach-omap/am33xx_mux.c
++++ b/arch/arm/mach-omap/am33xx_mux.c
+@@ -253,6 +253,20 @@ static const __maybe_unused struct module_pin_mux spi1_pin_mux[] = {
+ 	{-1},
+ };
  
-+#define DPLL_CLKDCOLDO_GATE_EN	(0x1 << 8)
++static const __maybe_unused struct module_pin_mux usb0_pin_mux[] = {
++	{OFFSET(usb0_drvvbus), MODE(0)},
++	/* MCASP0_AHCLKR gpio3_17  */
++	{OFFSET(mcasp0_ahclkr), MODE(7) | PULLUDEN | RXACTIVE | PULLUP_EN},
++	{-1},
++};
 +
- static void interface_clocks_enable(void)
++static const __maybe_unused struct module_pin_mux usb1_pin_mux[] = {
++	{OFFSET(usb1_drvvbus), MODE(0)},
++	/* MCASP0_ACLKR gpio3_18 */
++	{OFFSET(mcasp0_aclkr), MODE(7) | PULLUDEN | RXACTIVE | PULLUP_EN},
++	{-1},
++};
++
+ /*
+  * Configure the pin mux for the module
+  */
+@@ -321,3 +335,13 @@ void am33xx_enable_nand_pin_mux(void)
  {
- 	/* Enable all the Interconnect Modules */
-@@ -154,6 +156,11 @@ static void per_clocks_enable(void)
- 
- 	__raw_writel(PRCM_MOD_EN, CM_PER_SPI1_CLKCTRL);
- 	while (__raw_readl(CM_PER_SPI1_CLKCTRL) != PRCM_MOD_EN);
-+
-+	/* USB */
-+	__raw_writel(DPLL_CLKDCOLDO_GATE_EN, CM_CLKDCOLDO_DPLL_PER);
-+	__raw_writel(PRCM_MOD_EN, CM_PER_USB0_CLKCTRL);
-+	while (__raw_readl(CM_PER_USB0_CLKCTRL) != PRCM_MOD_EN);
+ 	configure_module_pin_mux(nand_pin_mux);
  }
++
++void am33xx_enable_usb0_pin_mux(void)
++{
++	configure_module_pin_mux(usb0_pin_mux);
++}
++
++void am33xx_enable_usb1_pin_mux(void)
++{
++	configure_module_pin_mux(usb1_pin_mux);
++}
+diff --git a/arch/arm/mach-omap/include/mach/am33xx-mux.h b/arch/arm/mach-omap/include/mach/am33xx-mux.h
+index fe3168b..64ad078 100644
+--- a/arch/arm/mach-omap/include/mach/am33xx-mux.h
++++ b/arch/arm/mach-omap/include/mach/am33xx-mux.h
+@@ -258,5 +258,7 @@ extern void am33xx_enable_uart2_pin_mux(void);
+ extern void am33xx_enable_mmc0_pin_mux(void);
+ extern void am33xx_enable_spi0_pin_mux(void);
+ extern void am33xx_enable_nand_pin_mux(void);
++extern void am33xx_enable_usb0_pin_mux(void);
++extern void am33xx_enable_usb1_pin_mux(void);
  
- static void mpu_pll_config(int mpupll_M, int osc)
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-index 65fbed6..996f531 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-@@ -120,6 +120,8 @@
- #define CM_PER_TIMER2_CLKCTRL           (CM_PER + 0x80) /* Timer2 */
- #define CM_WKUP_UART0_CLKCTRL           (CM_WKUP + 0xB4)/* UART0 */
- #define CM_WKUP_CONTROL_CLKCTRL         (CM_WKUP + 0x4) /* Control Module */
-+#define CM_PER_USB0_CLKCTRL             (CM_PER + 0x1C) /* USB */
-+#define CM_CLKDCOLDO_DPLL_PER           (CM_WKUP + 0x7C)/* USB phy */
- #define CM_PER_EMIF_CLKCTRL             (CM_PER + 0x28) /* EMIF */
- #define CM_PER_EMIF_FW_CLKCTRL          (CM_PER + 0xD0) /* EMIF FW */
- #define CM_PER_GPMC_CLKCTRL             (CM_PER + 0x30) /* GPMC */
+ #endif /*__AM33XX_MUX_H__ */
 -- 
 1.7.10.4
 
