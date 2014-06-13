@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
+Received: from mail-pd0-x235.google.com ([2607:f8b0:400e:c02::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WvQun-00031W-1K
- for barebox@lists.infradead.org; Fri, 13 Jun 2014 12:49:05 +0000
-Received: by mail-wi0-f176.google.com with SMTP id n3so817091wiv.9
- for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 05:48:41 -0700 (PDT)
-Message-ID: <539AF326.7010504@gmail.com>
-Date: Fri, 13 Jun 2014 14:48:38 +0200
-From: Matteo Fortini <matteo.fortini@gmail.com>
+ id 1WvWST-0003CQ-Tf
+ for barebox@lists.infradead.org; Fri, 13 Jun 2014 18:44:14 +0000
+Received: by mail-pd0-f181.google.com with SMTP id v10so1503236pde.12
+ for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 11:43:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <CACqcpZDTj-XaPOyH+Twhku26eSa-S3p3xDOWszAQC7JKfOyfsA@mail.gmail.com>
- <539A5353.7090306@atmel.com>
- <CACqcpZCNBZ6he2OnqQcdT3dPoeP0nFqSmteHAGYyLKAtAoT=nw@mail.gmail.com>
-In-Reply-To: <CACqcpZCNBZ6he2OnqQcdT3dPoeP0nFqSmteHAGYyLKAtAoT=nw@mail.gmail.com>
+In-Reply-To: <20140612054226.GC15686@pengutronix.de>
+References: <CAHQ1cqH8GnCCf_Y90cgQzy=s0YFy4hD65ni1tgQDQRz7dbxksQ@mail.gmail.com>
+ <20140612054226.GC15686@pengutronix.de>
+Date: Fri, 13 Jun 2014 11:43:52 -0700
+Message-ID: <CAHQ1cqFUQNropsFM59FXo1dPx3WGbBnVB5X4EH9kCG4g8x_P2w@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,80 +20,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: atmel_nand pmecc on 8k page [RFC]
-To: =?UTF-8?B?UmFwaGHDq2wgUG9nZ2k=?= <raphio98@gmail.com>, Bo Shen <voice.shen@atmel.com>
+Subject: Re: i.MX6Q SABRESD board and barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SGkgYWxsLApnbGFkIHlvdSBmb3VuZCBteSBwYXRjaCB1c2VmdWwuIFNhc2NoYSByZWplY3RlZCBp
-dCBiZWNhdXNlIGhlIHNlZXMgaXQgCm1vcmUgZml0IHRvIHNlcGFyYXRlIHRoZSBpbml0aWFsaXph
-dGlvbiBvZiBzYW1hNWQzIGFuZCBzYW05IHNpbmNlIHRoZXkgCmFyZSBxdWl0ZSBkaWZmZXJlbnQu
-CgpJIHN0YXJ0ZWQsIGFzIGFkdmlzZWQgYnkgU2FzY2hhLCB0byBjcmVhdGUgaW50byBzYW05X3Nt
-Yy5jIHRoZSBmdW5jdGlvbgoKdm9pZCBzYW1hNWQzX3NtY19jb25maWd1cmUoaW50IGlkLCBpbnQg
-Y3MsIHN0cnVjdCBzYW1hNWQzX3NtY19jb25maWcgCipjb25maWcpCgpidXQgdGhpcyBicmluZ3Mg
-b24gc29tZSBvdGhlciBjaGFuZ2VzIHRvIGtlZXAgdGhlIHNhbWUgc3RydWN0dXJlIG9mIApmdW5j
-dGlvbnMsICBpLmUuIHdlIHdvdWxkIG5lZWQgdG8gaW1wbGVtZW50CgpzdGF0aWMgdm9pZCBzYW1h
-NWQzX3NtY19jc19jb25maWd1cmUodm9pZCBfX2lvbWVtICpiYXNlLCBzdHJ1Y3QgCnNhbWE1ZDNf
-c21jX2NvbmZpZyAqY29uZmlnKQoKYW5kIGFsbCB0aGUgcmVsYXRlZCBmdW5jdGlvbnMsIHNpbmNl
-IHRoZSBhcmd1bWVudCBjaGFuZ2VzIGZyb20gc3RydWN0IApzYW05X3NtY19jb25maWcgKiB0byBz
-dHJ1Y3Qgc2FtYTVkM19zbWNfY29uZmlnICoKCk5vdyBJJ20gYXNraW5nIHlvdSBhbGwgZm9yIGEg
-Y29tbWVudDogc2hvdWxkIHdlIGdvIGFoZWFkIGFuZCBjcmVhdGUgYSAKbmV3IHNhbWE1ZDNfc21j
-LmMgZmlsZSB3aXRoIGFsbCB0aGUgZnVuY3Rpb25zIChzb21lIHdpbGwgdW5mb3J0dW5hdGVseSAK
-YmUgYSBkdXBsaWNhdGUgb2YgdGhvc2UgcHJlc2VudCBpbiBzYW05X3NtYy5jKSwgb3Igc2hvdWxk
-IEkgZG8gYSBwYXJ0aWFsIApoYWNrIHRvIGluc2VydCBzYW1hNWQzIHNwZWNpZmljIGZ1bmN0aW9u
-cyBpbnRvIHNhbTlfc21jLmMgKGxpa2UsIGZvciAKZXhhbXBsZSwgcGxheWluZyB3aXRoIGNvbmZp
-ZyBzdHJ1Y3R1cmVzIHNvIHRoYXQgdGhlIHNhbTkgb25lIGlzIGp1c3QgdGhlIApoZWFkIG9mIHRo
-ZSBzYW1hNWQzKT8KClRoYW5rIHlvdSBpbiBhZHZhbmNlIGZvciB5b3VyIGNvbW1lbnRzLCBJIGFz
-ayBSYXBoYcOrbCB0byB3YWl0IHVudGlsIHRoaXMgCnBhdGNoIGlzIHNldHRsZWQgdG8gc2VuZCBp
-biBoaXMgY2hhbmdlcy4gVGhleSB3aWxsIGJlIHZlcnkgdXNlZnVsIGZvciAKbWUsIHRvbyAoSSBo
-YWQgdG8gZGVhY3RpdmF0ZSBQTUVDQyB0byB1c2UgbXkgTkFORC4uLikKCk0KCklsIDEzLzA2LzIw
-MTQgMTA6NDgsIFJhcGhhw6tsIFBvZ2dpIGhhIHNjcml0dG86Cj4gSGksCj4KPiBJJ20gdGVzdGlu
-ZyB3aXRoIGEgY3VzdG9tIGJvYXJkLiBJIGhhdmUganVzdCB3aXRoIHRoZSBhcHBsaWVkIHRlc3Qg
-YW5kCj4gaXQncyB3b3JraW5nICEgSSBjYW4gdXNlIDhrIHBhZ2UgbmFuZCB3aXRoIGF0bWVsX25h
-bmQgZHJpdmVyLgo+Cj4gRG8gSSBoYXZlIHRvIHdhaXQgdW50aWwgTWF0dGVvJ3MgcGF0Y2hlcyBh
-cmUgYXBwbGllZCBvciBjYW4gSSBzdWJtaXQKPiBtaW5lIHJpZ2h0IG5vdyA/Cj4KPiBCZXN0IHJl
-Z2FyZHMsCj4gUmFwaGHDq2wgUG9nZ2kKPgo+IDIwMTQtMDYtMTMgMzoyNiBHTVQrMDI6MDAgQm8g
-U2hlbiA8dm9pY2Uuc2hlbkBhdG1lbC5jb20+Ogo+PiBIaSBSYXBoYcOrbCwKPj4KPj4KPj4gT24g
-MDYvMTIvMjAxNCAwODoyOCBQTSwgUmFwaGHDq2wgUG9nZ2kgd3JvdGU6Cj4+PiBIaSwKPj4+Cj4+
-PiBJJ20gd29ya2luZyBvbiBhIHNlcmllcyBvZiBwYXRjaGVzLCB0byBzdXBwb3J0IDhrIG5hbmQg
-cGFnZSBpbgo+Pj4gYXRtZWxfbmFuZCBkcml2ZXIuCj4+Pgo+Pj4gQ3VycmVudGx5LCBJIGNhbiBk
-ZXRlY3QgdGhlIG5hbmQgYW5kIGhhbmRsZSBhbiBvb2Igc2l6ZSBvZiA0NDguIEJ1dCBpCj4+PiBo
-YXZlIGEgcHJvYmxlbSB3aXRoIHRoZSBwbWVjYywgd2hlbiBiYXJlYm94IHRyaWVkIHRvIHBlcmZv
-cm0gcG1lY2MKPj4+IG9wZXJhdGlvbiwgSSBnZXQgdGhlIGZvbGxvd2luZyBtZXNzYWdlOgo+Pj4K
-Pj4+IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPj4+Cj4+PiBF
-eGFtcGxlIG9mIGxvZzoKPj4+Cj4+PiBuYW5kOiBOQU5EIGRldmljZTogTWFudWZhY3R1cmVyIElE
-OiAweDJjLCBDaGlwIElEOiAweDY4IChNaWNyb24KPj4+IE1UMjlGMzJHMDhBQkFBQVdQKSwgNDA5
-Nk1pQiwgcGFnZSBzaXplOiA4MTkyLCBPT0Igc2l6ZTogNDQ4Cj4+PiBhdG1lbF9uYW5kIGF0bWVs
-X25hbmQwOiBJbml0aWFsaXplIFBNRUNDIHBhcmFtcywgY2FwOiA4LCBzZWN0b3I6IDEwMjQKPj4+
-IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJv
-ciBsb2NhdGlvbi4KPj4+IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRv
-IGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPj4+IGF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IFBN
-RUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4KPj4+IGF0bWVsX25hbmQg
-YXRtZWxfbmFuZDA6IFBNRUNDOiBUaW1lb3V0IHRvIGNhbGN1bGF0ZSBlcnJvciBsb2NhdGlvbi4K
-Pj4+IEJhZCBibG9jayB0YWJsZSBub3QgZm91bmQgZm9yIGNoaXAgMAo+Pj4gYXRtZWxfbmFuZCBh
-dG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9yIGxvY2F0aW9uLgo+
-Pj4gYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVy
-cm9yIGxvY2F0aW9uLgo+Pj4gYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDogUE1FQ0M6IFRpbWVvdXQg
-dG8gY2FsY3VsYXRlIGVycm9yIGxvY2F0aW9uLgo+Pj4gYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDog
-UE1FQ0M6IFRpbWVvdXQgdG8gY2FsY3VsYXRlIGVycm9yIGxvY2F0aW9uLgo+Pj4gQmFkIGJsb2Nr
-IHRhYmxlIG5vdCBmb3VuZCBmb3IgY2hpcCAwCj4+PiBTY2FubmluZyBkZXZpY2UgZm9yIGJhZCBi
-bG9ja3MKPj4+IEJhZCBlcmFzZWJsb2NrIDkwIGF0IDB4MDAwMDA1YTAwMDAwCj4+PiBCYWQgZXJh
-c2VibG9jayA5MSBhdCAweDAwMDAwNWIwMDAwMAo+Pj4gYXRtZWxfbmFuZCBhdG1lbF9uYW5kMDog
-UE1FQ0M6IFRpbWVvdXQgdG8gZ2V0IEVDQyB2YWx1ZS4KPj4+IG5hbmRfYmJ0OiBlcnJvciB3aGls
-ZSB3cml0aW5nIGJhZCBibG9jayB0YWJsZSAtMTEwCj4+Pgo+Pj4KPj4+IEkgZG9uJ3Qga25vdy9m
-aW5kIHdoeSBiYXJlYm94IGdldCBhIHRpbWVvdXQuLi4KPj4+Cj4+PiBTb21lb25lIGhhdmUgYW4g
-aWRlYSA/Cj4+Cj4+IFdoaWNoIGJvYXJkIGFyZSB5b3UgdGVzdCB0aGlzPwo+PiBDYW4geW91IHRy
-eSB0byBhcHBseSB0d28gcGF0Y2hlcyBmcm9tIG1hdHRlby5mb3J0aW5pQGdtYWlsLmNvbSBvbiAy
-MDE0LTA2LTA2Cj4+IHdpdGggbmFtZQo+PiBbUEFUQ0ggMS8yXSBzYW1hNWQzeDogZml4IEhTTUMg
-TU9ERSByZWdpc3RlciBvZmZzZXQgYW5kIGFkZCBUSU1JTkdTCj4+IFtQQVRDSCAyLzJdIHNhbWE1
-ZDN4OiBIU01DIE5BTkQgaW5pdGlhbGl6ZSBUSU1JTkdTIGFuZCBpbXBvcnQgdmFsdWVzCj4+Cj4+
-PiBCZXN0IHJlZ2FyZHMsCj4+PiBSYXBoYcOrbAo+Pgo+PiBCZXN0IFJlZ2FyZHMsCj4+IEJvIFNo
-ZW4KPj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+
-IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Sascha,
+
+Thanks for the quick response! I tried imx_v7_defconfig but it seemed
+to be as ill-suited for what I am trying to do as
+freescale-mx6-sabresd_defconfig.
+What I am trying to get is an ELF file that I would be able to use
+with DS-5 debugger by uploading it directly into RAM and also an image
+that I would be able to supply to the build-in ROM bootloader.
+Imx_v7_defconfig specifies TEXT_BASE as 0x0 which isn't much better
+for the purpose of using DS-5 since that memory is mapped to boot ROM.
+
+For now I just ended up setting it up manually to 0x10000000 in menuconfig.
+
+Thanks,
+Andrey
+
+
+On Wed, Jun 11, 2014 at 10:42 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Andrey,
+>
+> On Wed, Jun 11, 2014 at 02:59:53PM -0700, Andrey Smirnov wrote:
+>> Hello everyone,
+>>
+>> I am trying to use barebox on a SabreSD board with i.MX6Q processor
+>> and seem to be running into problems. One odd thing that I noticed was
+>> that default configuration, freescale-mx6-sabresd_defconfig, specifies
+>> TEXT_BASE as 0x08f80000, which is the address mapped to external
+>> interface module(EIM). At the same time load address specified in
+>> arch/arm/boards/freescale-mx6-sabresd/lash-header-mx6-sabresd.imxcfg
+>> is 0x10000000, which is the start of DRAM. Is there some MMU setup
+>> that accounts for that, that I am missing?
+>
+> 0x08f80000 is plain wrong for TEXT_BASE. Probably noone noticed because
+> the sabresd can be built with imx_v7_defconfig. Please use this config
+> instead. The individual board configs will be removed soon for boards
+> which can be built with the imx_v7_defconfig.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
