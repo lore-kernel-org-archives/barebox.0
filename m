@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
+Received: from mail-yk0-x22f.google.com ([2607:f8b0:4002:c07::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WvWY9-000563-Et
- for barebox@lists.infradead.org; Fri, 13 Jun 2014 18:50:05 +0000
-Received: by mail-wi0-f176.google.com with SMTP id n3so1383182wiv.3
- for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 11:49:42 -0700 (PDT)
+ id 1WvXHY-0005HN-Jz
+ for barebox@lists.infradead.org; Fri, 13 Jun 2014 19:37:01 +0000
+Received: by mail-yk0-f175.google.com with SMTP id 9so2386381ykp.6
+ for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 12:36:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAJfOKBx4sQwC59SyZy7TD5+YAg+JCgQ1JeiJs1R8H9LNWy1SHA@mail.gmail.com>
-References: <CAJfOKBx4sQwC59SyZy7TD5+YAg+JCgQ1JeiJs1R8H9LNWy1SHA@mail.gmail.com>
-Date: Fri, 13 Jun 2014 20:49:42 +0200
-Message-ID: <CAJfOKBwGBOs3OwKsWQioziuDwW=dLoHQ+Mxo6P625m1V3SKm+Q@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+In-Reply-To: <CAHQ1cqFUQNropsFM59FXo1dPx3WGbBnVB5X4EH9kCG4g8x_P2w@mail.gmail.com>
+References: <CAHQ1cqH8GnCCf_Y90cgQzy=s0YFy4hD65ni1tgQDQRz7dbxksQ@mail.gmail.com>
+ <20140612054226.GC15686@pengutronix.de>
+ <CAHQ1cqFUQNropsFM59FXo1dPx3WGbBnVB5X4EH9kCG4g8x_P2w@mail.gmail.com>
+Date: Fri, 13 Jun 2014 21:36:38 +0200
+Message-ID: <CAOpc7mGwbUjn3_M0ey7ac=Ae_1_1Sp8AxSBAot_5buOOor=9Ng@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,26 +25,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: CFI FLash on a 8 bits bus working ?
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: i.MX6Q SABRESD board and barebox
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-2014-06-13 9:24 GMT+02:00 Franck Jullien <franck.jullien@gmail.com>:
-> Hi,
->
-> As I'm working on a emulated CFI flash device for or1ksim (Openrisc
-> simulator) I choose to implement a CFI flash with a 8 bits data bus
-> connected to a 8 bits host bus.
->
-> As far as I can see, barebox cfi flash driver is broken for 8 bits devices.
->
+Hi Andrey,
 
-Well I'm not sure now :)
+probably no one noticed because CONFIG_ARCH_TEXT_BASE is unused as
+soon as CONFIG_RELOCATABLE is set.
 
-> Am I wrong ?
->
-> Anyone as ever used a 8 bits CFI chip with barebox ?
->
-> Franck.
+However, I guess that you don't like a relocatable image to be used
+with your debugger. Maybe you shrink barebox down to what you need and
+put it into the static on-board SDRAM?
 
 _______________________________________________
 barebox mailing list
