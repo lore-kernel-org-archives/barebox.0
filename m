@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
+Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WvMKv-0008V4-21
- for barebox@lists.infradead.org; Fri, 13 Jun 2014 07:56:10 +0000
-Received: by mail-lb0-f180.google.com with SMTP id p9so1335696lbv.39
- for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 00:55:22 -0700 (PDT)
+ id 1WvMKz-00005C-VX
+ for barebox@lists.infradead.org; Fri, 13 Jun 2014 07:56:19 +0000
+Received: by mail-lb0-f178.google.com with SMTP id 10so216853lbg.37
+ for <barebox@lists.infradead.org>; Fri, 13 Jun 2014 00:55:27 -0700 (PDT)
 Received: from mars.ipredator.se (anon-32-73.vpn.ipredator.se. [46.246.32.73])
  by mx.google.com with ESMTPSA id
- fb6sm512523lac.40.2014.06.13.00.55.17
+ fb6sm512523lac.40.2014.06.13.00.55.24
  for <barebox@lists.infradead.org>
  (version=TLSv1 cipher=RC4-SHA bits=128/128);
- Fri, 13 Jun 2014 00:55:19 -0700 (PDT)
+ Fri, 13 Jun 2014 00:55:25 -0700 (PDT)
 From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Fri, 13 Jun 2014 09:54:22 +0200
-Message-Id: <1402646075-22747-6-git-send-email-chf.fritz@googlemail.com>
+Date: Fri, 13 Jun 2014 09:54:24 +0200
+Message-Id: <1402646075-22747-8-git-send-email-chf.fritz@googlemail.com>
 In-Reply-To: <1402646075-22747-1-git-send-email-chf.fritz@googlemail.com>
 References: <1402646075-22747-1-git-send-email-chf.fritz@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,2853 +29,5269 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/18] musb: delete unused include files
+Subject: [PATCH 07/18] musb: drop gadget support - remove appropriate files
 To: barebox@lists.infradead.org
 
 ---
- include/linux/usb/atmel_usba_udc.h |   26 -
- include/linux/usb/cdc.h            |  224 --------
- include/linux/usb/ch9.h            | 1005 ------------------------------------
- include/linux/usb/composite.h      |  338 ------------
- include/linux/usb/dwc3.h           |  188 -------
- include/linux/usb/gadget.h         |  864 -------------------------------
- include/linux/usb/xhci-omap.h      |  140 -----
- 7 files changed, 2785 deletions(-)
- delete mode 100644 include/linux/usb/atmel_usba_udc.h
- delete mode 100644 include/linux/usb/cdc.h
- delete mode 100644 include/linux/usb/ch9.h
- delete mode 100644 include/linux/usb/composite.h
- delete mode 100644 include/linux/usb/dwc3.h
- delete mode 100644 include/linux/usb/gadget.h
- delete mode 100644 include/linux/usb/xhci-omap.h
+ drivers/usb/musb/Makefile          |    6 +-
+ drivers/usb/musb/am35x.c           |  709 -----------
+ drivers/usb/musb/musb_gadget.c     | 2333 ------------------------------------
+ drivers/usb/musb/musb_gadget.h     |  130 --
+ drivers/usb/musb/musb_gadget_ep0.c | 1089 -----------------
+ drivers/usb/musb/musb_uboot.c      |  239 ----
+ drivers/usb/musb/omap2430.c        |  626 ----------
+ drivers/usb/musb/omap2430.h        |   56 -
+ 8 files changed, 1 insertion(+), 5187 deletions(-)
+ delete mode 100644 drivers/usb/musb/am35x.c
+ delete mode 100644 drivers/usb/musb/musb_gadget.c
+ delete mode 100644 drivers/usb/musb/musb_gadget.h
+ delete mode 100644 drivers/usb/musb/musb_gadget_ep0.c
+ delete mode 100644 drivers/usb/musb/musb_uboot.c
+ delete mode 100644 drivers/usb/musb/omap2430.c
+ delete mode 100644 drivers/usb/musb/omap2430.h
 
-diff --git a/include/linux/usb/atmel_usba_udc.h b/include/linux/usb/atmel_usba_udc.h
+diff --git a/drivers/usb/musb/Makefile b/drivers/usb/musb/Makefile
+index ba72348..64ebe06 100644
+--- a/drivers/usb/musb/Makefile
++++ b/drivers/usb/musb/Makefile
+@@ -2,12 +2,8 @@
+ # for USB OTG silicon based on Mentor Graphics INVENTRA designs
+ #
+ 
+-obj-$(CONFIG_MUSB_GADGET) += musb_gadget.o musb_gadget_ep0.o musb_core.o
+-obj-$(CONFIG_MUSB_GADGET) += musb_uboot.o
+-obj-$(CONFIG_MUSB_HOST) += musb_host.o musb_core.o musb_uboot.o
++obj-$(CONFIG_USB_MUSB_HOST) += musb_host.o musb_core.o
+ obj-$(CONFIG_USB_MUSB_DSPS) += musb_dsps.o
+-obj-$(CONFIG_USB_MUSB_AM35X) += am35x.o
+-obj-$(CONFIG_USB_MUSB_OMAP2PLUS) += omap2430.o
+ 
+ CFLAGS_NO_WARN := $(call cc-option,-Wno-unused-variable) \
+ 			$(call cc-option,-Wno-unused-but-set-variable) \
+diff --git a/drivers/usb/musb/am35x.c b/drivers/usb/musb/am35x.c
 deleted file mode 100644
-index be29ef0..0000000
---- a/include/linux/usb/atmel_usba_udc.h
+index 57c9bd3..0000000
+--- a/drivers/usb/musb/am35x.c
 +++ /dev/null
-@@ -1,26 +0,0 @@
+@@ -1,709 +0,0 @@
 -/*
-- * Platform data definitions for Atmel USBA gadget driver
-- * [Original from Linux kernel: include/linux/usb/atmel_usba_udc.h]
+- * Texas Instruments AM35x "glue layer"
 - *
-- * SPDX-License-Identifier:     GPL-2.0+
-- */
--#ifndef __LINUX_USB_USBA_H__
--#define __LINUX_USB_USBA_H__
--
--struct usba_ep_data {
--	char *name;
--	int index;
--	int fifo_size;
--	int nr_banks;
--	int can_dma;
--	int can_isoc;
--};
--
--struct usba_platform_data {
--	int			num_ep;
--	struct usba_ep_data	*ep;
--};
--
--extern int usba_udc_probe(struct usba_platform_data *pdata);
--
--#endif /* __LINUX_USB_USBA_H */
-diff --git a/include/linux/usb/cdc.h b/include/linux/usb/cdc.h
-deleted file mode 100644
-index c1d039c..0000000
---- a/include/linux/usb/cdc.h
-+++ /dev/null
-@@ -1,224 +0,0 @@
--/*
-- * USB Communications Device Class (CDC) definitions
+- * Copyright (c) 2010, by Texas Instruments
 - *
-- * CDC says how to talk to lots of different types of network adapters,
-- * notably ethernet adapters and various modems.  It's used mostly with
-- * firmware based USB peripherals.
+- * Based on the DA8xx "glue layer" code.
+- * Copyright (c) 2008-2009, MontaVista Software, Inc. <source@mvista.com>
 - *
-- * Ported to U-boot by: Thomas Smits <ts.smits@gmail.com> and
-- *                      Remy Bohmer <linux@bohmer.net>
-- */
--
--#define USB_CDC_SUBCLASS_ACM			0x02
--#define USB_CDC_SUBCLASS_ETHERNET		0x06
--#define USB_CDC_SUBCLASS_WHCM			0x08
--#define USB_CDC_SUBCLASS_DMM			0x09
--#define USB_CDC_SUBCLASS_MDLM			0x0a
--#define USB_CDC_SUBCLASS_OBEX			0x0b
--
--#define USB_CDC_PROTO_NONE			0
--
--#define USB_CDC_ACM_PROTO_AT_V25TER		1
--#define USB_CDC_ACM_PROTO_AT_PCCA101		2
--#define USB_CDC_ACM_PROTO_AT_PCCA101_WAKE	3
--#define USB_CDC_ACM_PROTO_AT_GSM		4
--#define USB_CDC_ACM_PROTO_AT_3G			5
--#define USB_CDC_ACM_PROTO_AT_CDMA		6
--#define USB_CDC_ACM_PROTO_VENDOR		0xff
--
--/*-------------------------------------------------------------------------*/
--
--/*
-- * Class-Specific descriptors ... there are a couple dozen of them
-- */
--
--#define USB_CDC_HEADER_TYPE		0x00	/* header_desc */
--#define USB_CDC_CALL_MANAGEMENT_TYPE	0x01	/* call_mgmt_descriptor */
--#define USB_CDC_ACM_TYPE		0x02	/* acm_descriptor */
--#define USB_CDC_UNION_TYPE		0x06	/* union_desc */
--#define USB_CDC_COUNTRY_TYPE		0x07
--#define USB_CDC_NETWORK_TERMINAL_TYPE	0x0a	/* network_terminal_desc */
--#define USB_CDC_ETHERNET_TYPE		0x0f	/* ether_desc */
--#define USB_CDC_WHCM_TYPE		0x11
--#define USB_CDC_MDLM_TYPE		0x12	/* mdlm_desc */
--#define USB_CDC_MDLM_DETAIL_TYPE	0x13	/* mdlm_detail_desc */
--#define USB_CDC_DMM_TYPE		0x14
--#define USB_CDC_OBEX_TYPE		0x15
--
--/* "Header Functional Descriptor" from CDC spec  5.2.3.1 */
--struct usb_cdc_header_desc {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__le16	bcdCDC;
--} __attribute__ ((packed));
--
--/* "Call Management Descriptor" from CDC spec  5.2.3.2 */
--struct usb_cdc_call_mgmt_descriptor {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__u8	bmCapabilities;
--#define USB_CDC_CALL_MGMT_CAP_CALL_MGMT		0x01
--#define USB_CDC_CALL_MGMT_CAP_DATA_INTF		0x02
--
--	__u8	bDataInterface;
--} __attribute__ ((packed));
--
--/* "Abstract Control Management Descriptor" from CDC spec  5.2.3.3 */
--struct usb_cdc_acm_descriptor {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__u8	bmCapabilities;
--} __attribute__ ((packed));
--
--/* capabilities from 5.2.3.3 */
--
--#define USB_CDC_COMM_FEATURE	0x01
--#define USB_CDC_CAP_LINE	0x02
--#define USB_CDC_CAP_BRK	0x04
--#define USB_CDC_CAP_NOTIFY	0x08
--
--/* "Union Functional Descriptor" from CDC spec 5.2.3.8 */
--struct usb_cdc_union_desc {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__u8	bMasterInterface0;
--	__u8	bSlaveInterface0;
--	/* ... and there could be other slave interfaces */
--} __attribute__ ((packed));
--
--/* "Country Selection Functional Descriptor" from CDC spec 5.2.3.9 */
--struct usb_cdc_country_functional_desc {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__u8	iCountryCodeRelDate;
--	__le16	wCountyCode0;
--	/* ... and there can be a lot of country codes */
--} __attribute__ ((packed));
--
--/* "Network Channel Terminal Functional Descriptor" from CDC spec 5.2.3.11 */
--struct usb_cdc_network_terminal_desc {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__u8	bEntityId;
--	__u8	iName;
--	__u8	bChannelIndex;
--	__u8	bPhysicalInterface;
--} __attribute__ ((packed));
--
--/* "Ethernet Networking Functional Descriptor" from CDC spec 5.2.3.16 */
--struct usb_cdc_ether_desc {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__u8	iMACAddress;
--	__le32	bmEthernetStatistics;
--	__le16	wMaxSegmentSize;
--	__le16	wNumberMCFilters;
--	__u8	bNumberPowerFilters;
--} __attribute__ ((packed));
--
--/* "MDLM Functional Descriptor" from CDC WMC spec 6.7.2.3 */
--struct usb_cdc_mdlm_desc {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	__le16	bcdVersion;
--	__u8	bGUID[16];
--} __attribute__ ((packed));
--
--/* "MDLM Detail Functional Descriptor" from CDC WMC spec 6.7.2.4 */
--struct usb_cdc_mdlm_detail_desc {
--	__u8	bLength;
--	__u8	bDescriptorType;
--	__u8	bDescriptorSubType;
--
--	/* type is associated with mdlm_desc.bGUID */
--	__u8	bGuidDescriptorType;
--	__u8	bDetailData[0];
--} __attribute__ ((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/*
-- * Class-Specific Control Requests (6.2)
+- * This file is part of the Inventra Controller Driver for Linux.
 - *
-- * section 3.6.2.1 table 4 has the ACM profile, for modems.
-- * section 3.8.2 table 10 has the ethernet profile.
+- * The Inventra Controller Driver for Linux is free software; you
+- * can redistribute it and/or modify it under the terms of the GNU
+- * General Public License version 2 as published by the Free Software
+- * Foundation.
 - *
-- * Microsoft's RNDIS stack for Ethernet is a vendor-specific CDC ACM variant,
-- * heavily dependent on the encapsulated (proprietary) command mechanism.
-- */
--
--#define USB_CDC_SEND_ENCAPSULATED_COMMAND	0x00
--#define USB_CDC_GET_ENCAPSULATED_RESPONSE	0x01
--#define USB_CDC_REQ_SET_LINE_CODING		0x20
--#define USB_CDC_REQ_GET_LINE_CODING		0x21
--#define USB_CDC_REQ_SET_CONTROL_LINE_STATE	0x22
--#define USB_CDC_REQ_SEND_BREAK			0x23
--#define USB_CDC_SET_ETHERNET_MULTICAST_FILTERS	0x40
--#define USB_CDC_SET_ETHERNET_PM_PATTERN_FILTER	0x41
--#define USB_CDC_GET_ETHERNET_PM_PATTERN_FILTER	0x42
--#define USB_CDC_SET_ETHERNET_PACKET_FILTER	0x43
--#define USB_CDC_GET_ETHERNET_STATISTIC		0x44
--
--/* Line Coding Structure from CDC spec 6.2.13 */
--struct usb_cdc_line_coding {
--	__le32	dwDTERate;
--	__u8	bCharFormat;
--#define USB_CDC_1_STOP_BITS			0
--#define USB_CDC_1_5_STOP_BITS			1
--#define USB_CDC_2_STOP_BITS			2
--
--	__u8	bParityType;
--#define USB_CDC_NO_PARITY			0
--#define USB_CDC_ODD_PARITY			1
--#define USB_CDC_EVEN_PARITY			2
--#define USB_CDC_MARK_PARITY			3
--#define USB_CDC_SPACE_PARITY			4
--
--	__u8	bDataBits;
--} __attribute__ ((packed));
--
--/* table 62; bits in multicast filter */
--#define	USB_CDC_PACKET_TYPE_PROMISCUOUS		(1 << 0)
--#define	USB_CDC_PACKET_TYPE_ALL_MULTICAST	(1 << 1) /* no filter */
--#define	USB_CDC_PACKET_TYPE_DIRECTED		(1 << 2)
--#define	USB_CDC_PACKET_TYPE_BROADCAST		(1 << 3)
--#define	USB_CDC_PACKET_TYPE_MULTICAST		(1 << 4) /* filtered */
--
--/*-------------------------------------------------------------------------*/
--
--/*
-- * Class-Specific Notifications (6.3) sent by interrupt transfers
+- * The Inventra Controller Driver for Linux is distributed in
+- * the hope that it will be useful, but WITHOUT ANY WARRANTY;
+- * without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+- * License for more details.
 - *
-- * section 3.8.2 table 11 of the CDC spec lists Ethernet notifications
-- * section 3.6.2.1 table 5 specifies ACM notifications, accepted by RNDIS
-- * RNDIS also defines its own bit-incompatible notifications
-- */
--
--#define USB_CDC_NOTIFY_NETWORK_CONNECTION	0x00
--#define USB_CDC_NOTIFY_RESPONSE_AVAILABLE	0x01
--#define USB_CDC_NOTIFY_SERIAL_STATE		0x20
--#define USB_CDC_NOTIFY_SPEED_CHANGE		0x2a
--
--struct usb_cdc_notification {
--	__u8	bmRequestType;
--	__u8	bNotificationType;
--	__le16	wValue;
--	__le16	wIndex;
--	__le16	wLength;
--} __attribute__ ((packed));
-diff --git a/include/linux/usb/ch9.h b/include/linux/usb/ch9.h
-deleted file mode 100644
-index bd48704..0000000
---- a/include/linux/usb/ch9.h
-+++ /dev/null
-@@ -1,1005 +0,0 @@
--/*
-- * This file holds USB constants and structures that are needed for
-- * USB device APIs.  These are used by the USB device model, which is
-- * defined in chapter 9 of the USB 2.0 specification and in the
-- * Wireless USB 1.0 (spread around).  Linux has several APIs in C that
-- * need these:
+- * You should have received a copy of the GNU General Public License
+- * along with The Inventra Controller Driver for Linux ; if not,
+- * write to the Free Software Foundation, Inc., 59 Temple Place,
+- * Suite 330, Boston, MA  02111-1307  USA
 - *
-- * - the master/host side Linux-USB kernel driver API;
-- * - the "usbfs" user space API; and
-- * - the Linux "gadget" slave/device/peripheral side driver API.
-- *
-- * USB 2.0 adds an additional "On The Go" (OTG) mode, which lets systems
-- * act either as a USB master/host or as a USB slave/device.  That means
-- * the master and slave side APIs benefit from working well together.
-- *
-- * There's also "Wireless USB", using low power short range radios for
-- * peripheral interconnection but otherwise building on the USB framework.
-- *
-- * Note all descriptors are declared '__attribute__((packed))' so that:
-- *
-- * [a] they never get padded, either internally (USB spec writers
-- *     probably handled that) or externally;
-- *
-- * [b] so that accessing bigger-than-a-bytes fields will never
-- *     generate bus errors on any platform, even when the location of
-- *     its descriptor inside a bundle isn't "naturally aligned", and
-- *
-- * [c] for consistency, removing all doubt even when it appears to
-- *     someone that the two other points are non-issues for that
-- *     particular descriptor type.
 - */
 -
--#ifndef __LINUX_USB_CH9_H
--#define __LINUX_USB_CH9_H
--
--#include <linux/types.h>	/* __u8 etc */
--#include <asm/byteorder.h>	/* le16_to_cpu */
--#include <asm/unaligned.h>	/* get_unaligned() */
--
--/*-------------------------------------------------------------------------*/
--
--/* CONTROL REQUEST SUPPORT */
--
--/*
-- * USB directions
-- *
-- * This bit flag is used in endpoint descriptors' bEndpointAddress field.
-- * It's also one of three fields in control requests bRequestType.
-- */
--#define USB_DIR_OUT			0		/* to device */
--#define USB_DIR_IN			0x80		/* to host */
--
--/*
-- * USB types, the second of three bRequestType fields
-- */
--#define USB_TYPE_MASK			(0x03 << 5)
--#define USB_TYPE_STANDARD		(0x00 << 5)
--#define USB_TYPE_CLASS			(0x01 << 5)
--#define USB_TYPE_VENDOR			(0x02 << 5)
--#define USB_TYPE_RESERVED		(0x03 << 5)
--
--/*
-- * USB recipients, the third of three bRequestType fields
-- */
--#define USB_RECIP_MASK			0x1f
--#define USB_RECIP_DEVICE		0x00
--#define USB_RECIP_INTERFACE		0x01
--#define USB_RECIP_ENDPOINT		0x02
--#define USB_RECIP_OTHER			0x03
--/* From Wireless USB 1.0 */
--#define USB_RECIP_PORT			0x04
--#define USB_RECIP_RPIPE		0x05
--
--/*
-- * Standard requests, for the bRequest field of a SETUP packet.
-- *
-- * These are qualified by the bRequestType field, so that for example
-- * TYPE_CLASS or TYPE_VENDOR specific feature flags could be retrieved
-- * by a GET_STATUS request.
-- */
--#define USB_REQ_GET_STATUS		0x00
--#define USB_REQ_CLEAR_FEATURE		0x01
--#define USB_REQ_SET_FEATURE		0x03
--#define USB_REQ_SET_ADDRESS		0x05
--#define USB_REQ_GET_DESCRIPTOR		0x06
--#define USB_REQ_SET_DESCRIPTOR		0x07
--#define USB_REQ_GET_CONFIGURATION	0x08
--#define USB_REQ_SET_CONFIGURATION	0x09
--#define USB_REQ_GET_INTERFACE		0x0A
--#define USB_REQ_SET_INTERFACE		0x0B
--#define USB_REQ_SYNCH_FRAME		0x0C
--#define USB_REQ_SET_SEL			0x30
--#define USB_REQ_SET_ISOCH_DELAY		0x31
--
--#define USB_REQ_SET_ENCRYPTION		0x0D	/* Wireless USB */
--#define USB_REQ_GET_ENCRYPTION		0x0E
--#define USB_REQ_RPIPE_ABORT		0x0E
--#define USB_REQ_SET_HANDSHAKE		0x0F
--#define USB_REQ_RPIPE_RESET		0x0F
--#define USB_REQ_GET_HANDSHAKE		0x10
--#define USB_REQ_SET_CONNECTION		0x11
--#define USB_REQ_SET_SECURITY_DATA	0x12
--#define USB_REQ_GET_SECURITY_DATA	0x13
--#define USB_REQ_SET_WUSB_DATA		0x14
--#define USB_REQ_LOOPBACK_DATA_WRITE	0x15
--#define USB_REQ_LOOPBACK_DATA_READ	0x16
--#define USB_REQ_SET_INTERFACE_DS	0x17
--
--/* The Link Power Management (LPM) ECN defines USB_REQ_TEST_AND_SET command,
-- * used by hubs to put ports into a new L1 suspend state, except that it
-- * forgot to define its number ...
-- */
--
--/*
-- * USB feature flags are written using USB_REQ_{CLEAR,SET}_FEATURE, and
-- * are read as a bit array returned by USB_REQ_GET_STATUS.  (So there
-- * are at most sixteen features of each type.)  Hubs may also support a
-- * new USB_REQ_TEST_AND_SET_FEATURE to put ports into L1 suspend.
-- */
--#define USB_DEVICE_SELF_POWERED		0	/* (read only) */
--#define USB_DEVICE_REMOTE_WAKEUP	1	/* dev may initiate wakeup */
--#define USB_DEVICE_TEST_MODE		2	/* (wired high speed only) */
--#define USB_DEVICE_BATTERY		2	/* (wireless) */
--#define USB_DEVICE_B_HNP_ENABLE		3	/* (otg) dev may initiate HNP */
--#define USB_DEVICE_WUSB_DEVICE		3	/* (wireless)*/
--#define USB_DEVICE_A_HNP_SUPPORT	4	/* (otg) RH port supports HNP */
--#define USB_DEVICE_A_ALT_HNP_SUPPORT	5	/* (otg) other RH port does */
--#define USB_DEVICE_DEBUG_MODE		6	/* (special devices only) */
--
--/*
-- * Test Mode Selectors
-- * See USB 2.0 spec Table 9-7
-- */
--#define	TEST_J		1
--#define	TEST_K		2
--#define	TEST_SE0_NAK	3
--#define	TEST_PACKET	4
--#define	TEST_FORCE_EN	5
--
--/*
-- * New Feature Selectors as added by USB 3.0
-- * See USB 3.0 spec Table 9-6
-- */
--#define USB_DEVICE_U1_ENABLE	48	/* dev may initiate U1 transition */
--#define USB_DEVICE_U2_ENABLE	49	/* dev may initiate U2 transition */
--#define USB_DEVICE_LTM_ENABLE	50	/* dev may send LTM */
--#define USB_INTRF_FUNC_SUSPEND	0	/* function suspend */
--
--#define USB_INTR_FUNC_SUSPEND_OPT_MASK	0xFF00
--/*
-- * Suspend Options, Table 9-7 USB 3.0 spec
-- */
--#define USB_INTRF_FUNC_SUSPEND_LP	(1 << (8 + 0))
--#define USB_INTRF_FUNC_SUSPEND_RW	(1 << (8 + 1))
--
--#define USB_ENDPOINT_HALT		0	/* IN/OUT will STALL */
--
--/* Bit array elements as returned by the USB_REQ_GET_STATUS request. */
--#define USB_DEV_STAT_U1_ENABLED		2	/* transition into U1 state */
--#define USB_DEV_STAT_U2_ENABLED		3	/* transition into U2 state */
--#define USB_DEV_STAT_LTM_ENABLED	4	/* Latency tolerance messages */
--
--/**
-- * struct usb_ctrlrequest - SETUP data for a USB device control request
-- * @bRequestType: matches the USB bmRequestType field
-- * @bRequest: matches the USB bRequest field
-- * @wValue: matches the USB wValue field (le16 byte order)
-- * @wIndex: matches the USB wIndex field (le16 byte order)
-- * @wLength: matches the USB wLength field (le16 byte order)
-- *
-- * This structure is used to send control requests to a USB device.  It matches
-- * the different fields of the USB 2.0 Spec section 9.3, table 9-2.  See the
-- * USB spec for a fuller description of the different fields, and what they are
-- * used for.
-- *
-- * Note that the driver for any interface can issue control requests.
-- * For most devices, interfaces don't coordinate with each other, so
-- * such requests may be made at any time.
-- */
--struct usb_ctrlrequest {
--	__u8 bRequestType;
--	__u8 bRequest;
--	__le16 wValue;
--	__le16 wIndex;
--	__le16 wLength;
--} __attribute__ ((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/*
-- * STANDARD DESCRIPTORS ... as returned by GET_DESCRIPTOR, or
-- * (rarely) accepted by SET_DESCRIPTOR.
-- *
-- * Note that all multi-byte values here are encoded in little endian
-- * byte order "on the wire".  Within the kernel and when exposed
-- * through the Linux-USB APIs, they are not converted to cpu byte
-- * order; it is the responsibility of the client code to do this.
-- * The single exception is when device and configuration descriptors (but
-- * not other descriptors) are read from usbfs (i.e. /proc/bus/usb/BBB/DDD);
-- * in this case the fields are converted to host endianness by the kernel.
-- */
--
--/*
-- * Descriptor types ... USB 2.0 spec table 9.5
-- */
--#define USB_DT_DEVICE			0x01
--#define USB_DT_CONFIG			0x02
--#define USB_DT_STRING			0x03
--#define USB_DT_INTERFACE		0x04
--#define USB_DT_ENDPOINT			0x05
--#define USB_DT_DEVICE_QUALIFIER		0x06
--#define USB_DT_OTHER_SPEED_CONFIG	0x07
--#define USB_DT_INTERFACE_POWER		0x08
--/* these are from a minor usb 2.0 revision (ECN) */
--#define USB_DT_OTG			0x09
--#define USB_DT_DEBUG			0x0a
--#define USB_DT_INTERFACE_ASSOCIATION	0x0b
--/* these are from the Wireless USB spec */
--#define USB_DT_SECURITY			0x0c
--#define USB_DT_KEY			0x0d
--#define USB_DT_ENCRYPTION_TYPE		0x0e
--#define USB_DT_BOS			0x0f
--#define USB_DT_DEVICE_CAPABILITY	0x10
--#define USB_DT_WIRELESS_ENDPOINT_COMP	0x11
--#define USB_DT_WIRE_ADAPTER		0x21
--#define USB_DT_RPIPE			0x22
--#define USB_DT_CS_RADIO_CONTROL		0x23
--/* From the T10 UAS specification */
--#define USB_DT_PIPE_USAGE		0x24
--/* From the USB 3.0 spec */
--#define	USB_DT_SS_ENDPOINT_COMP		0x30
--
--/* Conventional codes for class-specific descriptors.  The convention is
-- * defined in the USB "Common Class" Spec (3.11).  Individual class specs
-- * are authoritative for their usage, not the "common class" writeup.
-- */
--#define USB_DT_CS_DEVICE		(USB_TYPE_CLASS | USB_DT_DEVICE)
--#define USB_DT_CS_CONFIG		(USB_TYPE_CLASS | USB_DT_CONFIG)
--#define USB_DT_CS_STRING		(USB_TYPE_CLASS | USB_DT_STRING)
--#define USB_DT_CS_INTERFACE		(USB_TYPE_CLASS | USB_DT_INTERFACE)
--#define USB_DT_CS_ENDPOINT		(USB_TYPE_CLASS | USB_DT_ENDPOINT)
--
--/* All standard descriptors have these 2 fields at the beginning */
--struct usb_descriptor_header {
--	__u8  bLength;
--	__u8  bDescriptorType;
--} __attribute__ ((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEVICE: Device descriptor */
--struct usb_device_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 bcdUSB;
--	__u8  bDeviceClass;
--	__u8  bDeviceSubClass;
--	__u8  bDeviceProtocol;
--	__u8  bMaxPacketSize0;
--	__le16 idVendor;
--	__le16 idProduct;
--	__le16 bcdDevice;
--	__u8  iManufacturer;
--	__u8  iProduct;
--	__u8  iSerialNumber;
--	__u8  bNumConfigurations;
--} __attribute__ ((packed));
--
--#define USB_DT_DEVICE_SIZE		18
--
--
--/*
-- * Device and/or Interface Class codes
-- * as found in bDeviceClass or bInterfaceClass
-- * and defined by www.usb.org documents
-- */
--#define USB_CLASS_PER_INTERFACE		0	/* for DeviceClass */
--#define USB_CLASS_AUDIO			1
--#define USB_CLASS_COMM			2
--#define USB_CLASS_HID			3
--#define USB_CLASS_PHYSICAL		5
--#define USB_CLASS_STILL_IMAGE		6
--#define USB_CLASS_PRINTER		7
--#define USB_CLASS_MASS_STORAGE		8
--#define USB_CLASS_HUB			9
--#define USB_CLASS_CDC_DATA		0x0a
--#define USB_CLASS_CSCID			0x0b	/* chip+ smart card */
--#define USB_CLASS_CONTENT_SEC		0x0d	/* content security */
--#define USB_CLASS_VIDEO			0x0e
--#define USB_CLASS_WIRELESS_CONTROLLER	0xe0
--#define USB_CLASS_MISC			0xef
--#define USB_CLASS_APP_SPEC		0xfe
--#define USB_CLASS_VENDOR_SPEC		0xff
--
--#define USB_SUBCLASS_VENDOR_SPEC	0xff
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_CONFIG: Configuration descriptor information.
-- *
-- * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the
-- * descriptor type is different.  Highspeed-capable devices can look
-- * different depending on what speed they're currently running.  Only
-- * devices with a USB_DT_DEVICE_QUALIFIER have any OTHER_SPEED_CONFIG
-- * descriptors.
-- */
--struct usb_config_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wTotalLength;
--	__u8  bNumInterfaces;
--	__u8  bConfigurationValue;
--	__u8  iConfiguration;
--	__u8  bmAttributes;
--	__u8  bMaxPower;
--} __attribute__ ((packed));
--
--#define USB_DT_CONFIG_SIZE		9
--
--/* from config descriptor bmAttributes */
--#define USB_CONFIG_ATT_ONE		(1 << 7)	/* must be set */
--#define USB_CONFIG_ATT_SELFPOWER	(1 << 6)	/* self powered */
--#define USB_CONFIG_ATT_WAKEUP		(1 << 5)	/* can wakeup */
--#define USB_CONFIG_ATT_BATTERY		(1 << 4)	/* battery powered */
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_STRING: String descriptor */
--struct usb_string_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wData[1];		/* UTF-16LE encoded */
--} __attribute__ ((packed));
--
--/* note that "string" zero is special, it holds language codes that
-- * the device supports, not Unicode characters.
-- */
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_INTERFACE: Interface descriptor */
--struct usb_interface_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bInterfaceNumber;
--	__u8  bAlternateSetting;
--	__u8  bNumEndpoints;
--	__u8  bInterfaceClass;
--	__u8  bInterfaceSubClass;
--	__u8  bInterfaceProtocol;
--	__u8  iInterface;
--} __attribute__ ((packed));
--
--#define USB_DT_INTERFACE_SIZE		9
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_ENDPOINT: Endpoint descriptor */
--struct usb_endpoint_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bEndpointAddress;
--	__u8  bmAttributes;
--	__le16 wMaxPacketSize;
--	__u8  bInterval;
--
--	/* NOTE:  these two are _only_ in audio endpoints. */
--	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
--	__u8  bRefresh;
--	__u8  bSynchAddress;
--} __attribute__ ((packed));
--
--#define USB_DT_ENDPOINT_SIZE		7
--#define USB_DT_ENDPOINT_AUDIO_SIZE	9	/* Audio extension */
--
--
--/*
-- * Endpoints
-- */
--#define USB_ENDPOINT_NUMBER_MASK	0x0f	/* in bEndpointAddress */
--#define USB_ENDPOINT_DIR_MASK		0x80
--
--#define USB_ENDPOINT_XFERTYPE_MASK	0x03	/* in bmAttributes */
--#define USB_ENDPOINT_XFER_CONTROL	0
--#define USB_ENDPOINT_XFER_ISOC		1
--#define USB_ENDPOINT_XFER_BULK		2
--#define USB_ENDPOINT_XFER_INT		3
--#define USB_ENDPOINT_MAX_ADJUSTABLE	0x80
--
--/* The USB 3.0 spec redefines bits 5:4 of bmAttributes as interrupt ep type. */
--#define USB_ENDPOINT_INTRTYPE		0x30
--#define USB_ENDPOINT_INTR_PERIODIC	(0 << 4)
--#define USB_ENDPOINT_INTR_NOTIFICATION	(1 << 4)
--
--#define USB_ENDPOINT_SYNCTYPE		0x0c
--#define USB_ENDPOINT_SYNC_NONE		(0 << 2)
--#define USB_ENDPOINT_SYNC_ASYNC		(1 << 2)
--#define USB_ENDPOINT_SYNC_ADAPTIVE	(2 << 2)
--#define USB_ENDPOINT_SYNC_SYNC		(3 << 2)
--
--#define USB_ENDPOINT_USAGE_MASK		0x30
--#define USB_ENDPOINT_USAGE_DATA		0x00
--#define USB_ENDPOINT_USAGE_FEEDBACK	0x10
--#define USB_ENDPOINT_USAGE_IMPLICIT_FB	0x20	/* Implicit feedback Data endpoint */
--
--/*-------------------------------------------------------------------------*/
--
--/**
-- * usb_endpoint_num - get the endpoint's number
-- * @epd: endpoint to be checked
-- *
-- * Returns @epd's number: 0 to 15.
-- */
--static inline int usb_endpoint_num(const struct usb_endpoint_descriptor *epd)
--{
--	return epd->bEndpointAddress & USB_ENDPOINT_NUMBER_MASK;
--}
--
--/**
-- * usb_endpoint_type - get the endpoint's transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns one of USB_ENDPOINT_XFER_{CONTROL, ISOC, BULK, INT} according
-- * to @epd's transfer type.
-- */
--static inline int usb_endpoint_type(const struct usb_endpoint_descriptor *epd)
--{
--	return epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK;
--}
--
--/**
-- * usb_endpoint_dir_in - check if the endpoint has IN direction
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type IN, otherwise it returns false.
-- */
--static inline int usb_endpoint_dir_in(const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN);
--}
--
--/**
-- * usb_endpoint_dir_out - check if the endpoint has OUT direction
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type OUT, otherwise it returns false.
-- */
--static inline int usb_endpoint_dir_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT);
--}
--
--/**
-- * usb_endpoint_xfer_bulk - check if the endpoint has bulk transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type bulk, otherwise it returns false.
-- */
--static inline int usb_endpoint_xfer_bulk(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_BULK);
--}
--
--/**
-- * usb_endpoint_xfer_control - check if the endpoint has control transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type control, otherwise it returns false.
-- */
--static inline int usb_endpoint_xfer_control(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_CONTROL);
--}
--
--/**
-- * usb_endpoint_xfer_int - check if the endpoint has interrupt transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type interrupt, otherwise it returns
-- * false.
-- */
--static inline int usb_endpoint_xfer_int(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_INT);
--}
--
--/**
-- * usb_endpoint_xfer_isoc - check if the endpoint has isochronous transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type isochronous, otherwise it returns
-- * false.
-- */
--static inline int usb_endpoint_xfer_isoc(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_ISOC);
--}
--
--/**
-- * usb_endpoint_is_bulk_in - check if the endpoint is bulk IN
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has bulk transfer type and IN direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_bulk_in(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_in(epd);
--}
--
--/**
-- * usb_endpoint_is_bulk_out - check if the endpoint is bulk OUT
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has bulk transfer type and OUT direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_bulk_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_out(epd);
--}
--
--/**
-- * usb_endpoint_is_int_in - check if the endpoint is interrupt IN
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has interrupt transfer type and IN direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_int_in(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_in(epd);
--}
--
--/**
-- * usb_endpoint_is_int_out - check if the endpoint is interrupt OUT
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has interrupt transfer type and OUT direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_int_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_out(epd);
--}
--
--/**
-- * usb_endpoint_is_isoc_in - check if the endpoint is isochronous IN
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has isochronous transfer type and IN direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_isoc_in(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_in(epd);
--}
--
--/**
-- * usb_endpoint_is_isoc_out - check if the endpoint is isochronous OUT
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has isochronous transfer type and OUT direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_isoc_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_out(epd);
--}
--
--/**
-- * usb_endpoint_maxp - get endpoint's max packet size
-- * @epd: endpoint to be checked
-- *
-- * Returns @epd's max packet
-- */
--static inline int usb_endpoint_maxp(const struct usb_endpoint_descriptor *epd)
--{
--	return __le16_to_cpu(get_unaligned(&epd->wMaxPacketSize));
--}
--
--static inline int usb_endpoint_interrupt_type(
--		const struct usb_endpoint_descriptor *epd)
--{
--	return epd->bmAttributes & USB_ENDPOINT_INTRTYPE;
--}
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_SS_ENDPOINT_COMP: SuperSpeed Endpoint Companion descriptor */
--struct usb_ss_ep_comp_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bMaxBurst;
--	__u8  bmAttributes;
--	__le16 wBytesPerInterval;
--} __attribute__ ((packed));
--
--#define USB_DT_SS_EP_COMP_SIZE		6
--
--/* Bits 4:0 of bmAttributes if this is a bulk endpoint */
--static inline int
--usb_ss_max_streams(const struct usb_ss_ep_comp_descriptor *comp)
--{
--	int		max_streams;
--
--	if (!comp)
--		return 0;
--
--	max_streams = comp->bmAttributes & 0x1f;
--
--	if (!max_streams)
--		return 0;
--
--	max_streams = 1 << max_streams;
--
--	return max_streams;
--}
--
--/* Bits 1:0 of bmAttributes if this is an isoc endpoint */
--#define USB_SS_MULT(p)			(1 + ((p) & 0x3))
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEVICE_QUALIFIER: Device Qualifier descriptor */
--struct usb_qualifier_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 bcdUSB;
--	__u8  bDeviceClass;
--	__u8  bDeviceSubClass;
--	__u8  bDeviceProtocol;
--	__u8  bMaxPacketSize0;
--	__u8  bNumConfigurations;
--	__u8  bRESERVED;
--} __attribute__ ((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_OTG (from OTG 1.0a supplement) */
--struct usb_otg_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bmAttributes;	/* support for HNP, SRP, etc */
--} __attribute__ ((packed));
--
--/* from usb_otg_descriptor.bmAttributes */
--#define USB_OTG_SRP		(1 << 0)
--#define USB_OTG_HNP		(1 << 1)	/* swap host/device roles */
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEBUG:  for special highspeed devices, replacing serial console */
--struct usb_debug_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	/* bulk endpoints with 8 byte maxpacket */
--	__u8  bDebugInEndpoint;
--	__u8  bDebugOutEndpoint;
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_INTERFACE_ASSOCIATION: groups interfaces */
--struct usb_interface_assoc_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bFirstInterface;
--	__u8  bInterfaceCount;
--	__u8  bFunctionClass;
--	__u8  bFunctionSubClass;
--	__u8  bFunctionProtocol;
--	__u8  iFunction;
--} __attribute__ ((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_SECURITY:  group of wireless security descriptors, including
-- * encryption types available for setting up a CC/association.
-- */
--struct usb_security_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wTotalLength;
--	__u8  bNumEncryptionTypes;
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_KEY:  used with {GET,SET}_SECURITY_DATA; only public keys
-- * may be retrieved.
-- */
--struct usb_key_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  tTKID[3];
--	__u8  bReserved;
--	__u8  bKeyData[0];
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_ENCRYPTION_TYPE:  bundled in DT_SECURITY groups */
--struct usb_encryption_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bEncryptionType;
--#define	USB_ENC_TYPE_UNSECURE		0
--#define	USB_ENC_TYPE_WIRED		1	/* non-wireless mode */
--#define	USB_ENC_TYPE_CCM_1		2	/* aes128/cbc session */
--#define	USB_ENC_TYPE_RSA_1		3	/* rsa3072/sha1 auth */
--	__u8  bEncryptionValue;		/* use in SET_ENCRYPTION */
--	__u8  bAuthKeyIndex;
--} __attribute__((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_BOS:  group of device-level capabilities */
--struct usb_bos_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wTotalLength;
--	__u8  bNumDeviceCaps;
--} __attribute__((packed));
--
--#define USB_DT_BOS_SIZE		5
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEVICE_CAPABILITY:  grouped with BOS */
--struct usb_dev_cap_header {
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--} __attribute__((packed));
--
--#define	USB_CAP_TYPE_WIRELESS_USB	1
--
--struct usb_wireless_cap_descriptor {	/* Ultra Wide Band */
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--
--	__u8  bmAttributes;
--#define	USB_WIRELESS_P2P_DRD		(1 << 1)
--#define	USB_WIRELESS_BEACON_MASK	(3 << 2)
--#define	USB_WIRELESS_BEACON_SELF	(1 << 2)
--#define	USB_WIRELESS_BEACON_DIRECTED	(2 << 2)
--#define	USB_WIRELESS_BEACON_NONE	(3 << 2)
--	__le16 wPHYRates;	/* bit rates, Mbps */
--#define	USB_WIRELESS_PHY_53		(1 << 0)	/* always set */
--#define	USB_WIRELESS_PHY_80		(1 << 1)
--#define	USB_WIRELESS_PHY_107		(1 << 2)	/* always set */
--#define	USB_WIRELESS_PHY_160		(1 << 3)
--#define	USB_WIRELESS_PHY_200		(1 << 4)	/* always set */
--#define	USB_WIRELESS_PHY_320		(1 << 5)
--#define	USB_WIRELESS_PHY_400		(1 << 6)
--#define	USB_WIRELESS_PHY_480		(1 << 7)
--	__u8  bmTFITXPowerInfo;	/* TFI power levels */
--	__u8  bmFFITXPowerInfo;	/* FFI power levels */
--	__le16 bmBandGroup;
--	__u8  bReserved;
--} __attribute__((packed));
--
--/* USB 2.0 Extension descriptor */
--#define	USB_CAP_TYPE_EXT		2
--
--struct usb_ext_cap_descriptor {		/* Link Power Management */
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--	__le32 bmAttributes;
--#define USB_LPM_SUPPORT			(1 << 1)	/* supports LPM */
--#define USB_BESL_SUPPORT		(1 << 2)	/* supports BESL */
--#define USB_BESL_BASELINE_VALID		(1 << 3)	/* Baseline BESL valid*/
--#define USB_BESL_DEEP_VALID		(1 << 4)	/* Deep BESL valid */
--#define USB_GET_BESL_BASELINE(p)	(((p) & (0xf << 8)) >> 8)
--#define USB_GET_BESL_DEEP(p)		(((p) & (0xf << 12)) >> 12)
--} __attribute__((packed));
--
--#define USB_DT_USB_EXT_CAP_SIZE	7
--
--/*
-- * SuperSpeed USB Capability descriptor: Defines the set of SuperSpeed USB
-- * specific device level capabilities
-- */
--#define		USB_SS_CAP_TYPE		3
--struct usb_ss_cap_descriptor {		/* Link Power Management */
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--	__u8  bmAttributes;
--#define USB_LTM_SUPPORT			(1 << 1) /* supports LTM */
--	__le16 wSpeedSupported;
--#define USB_LOW_SPEED_OPERATION		(1)	 /* Low speed operation */
--#define USB_FULL_SPEED_OPERATION	(1 << 1) /* Full speed operation */
--#define USB_HIGH_SPEED_OPERATION	(1 << 2) /* High speed operation */
--#define USB_5GBPS_OPERATION		(1 << 3) /* Operation at 5Gbps */
--	__u8  bFunctionalitySupport;
--	__u8  bU1devExitLat;
--	__le16 bU2DevExitLat;
--} __attribute__((packed));
--
--#define USB_DT_USB_SS_CAP_SIZE	10
--
--/*
-- * Container ID Capability descriptor: Defines the instance unique ID used to
-- * identify the instance across all operating modes
-- */
--#define	CONTAINER_ID_TYPE	4
--struct usb_ss_container_id_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--	__u8  bReserved;
--	__u8  ContainerID[16]; /* 128-bit number */
--} __attribute__((packed));
--
--#define USB_DT_USB_SS_CONTN_ID_SIZE	20
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_WIRELESS_ENDPOINT_COMP:  companion descriptor associated with
-- * each endpoint descriptor for a wireless device
-- */
--struct usb_wireless_ep_comp_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bMaxBurst;
--	__u8  bMaxSequence;
--	__le16 wMaxStreamDelay;
--	__le16 wOverTheAirPacketSize;
--	__u8  bOverTheAirInterval;
--	__u8  bmCompAttributes;
--#define USB_ENDPOINT_SWITCH_MASK	0x03	/* in bmCompAttributes */
--#define USB_ENDPOINT_SWITCH_NO		0
--#define USB_ENDPOINT_SWITCH_SWITCH	1
--#define USB_ENDPOINT_SWITCH_SCALE	2
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_REQ_SET_HANDSHAKE is a four-way handshake used between a wireless
-- * host and a device for connection set up, mutual authentication, and
-- * exchanging short lived session keys.  The handshake depends on a CC.
-- */
--struct usb_handshake {
--	__u8 bMessageNumber;
--	__u8 bStatus;
--	__u8 tTKID[3];
--	__u8 bReserved;
--	__u8 CDID[16];
--	__u8 nonce[16];
--	__u8 MIC[8];
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_REQ_SET_CONNECTION modifies or revokes a connection context (CC).
-- * A CC may also be set up using non-wireless secure channels (including
-- * wired USB!), and some devices may support CCs with multiple hosts.
-- */
--struct usb_connection_context {
--	__u8 CHID[16];		/* persistent host id */
--	__u8 CDID[16];		/* device id (unique w/in host context) */
--	__u8 CK[16];		/* connection key */
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB 2.0 defines three speeds, here's how Linux identifies them */
--
--enum usb_device_speed {
--	USB_SPEED_UNKNOWN = 0,			/* enumerating */
--	USB_SPEED_LOW, USB_SPEED_FULL,		/* usb 1.1 */
--	USB_SPEED_HIGH,				/* usb 2.0 */
--	USB_SPEED_WIRELESS,			/* wireless (usb 2.5) */
--	USB_SPEED_SUPER,			/* usb 3.0 */
--};
--
--#ifdef __KERNEL__
--
--/**
-- * usb_speed_string() - Returns human readable-name of the speed.
-- * @speed: The speed to return human-readable name for.  If it's not
-- *   any of the speeds defined in usb_device_speed enum, string for
-- *   USB_SPEED_UNKNOWN will be returned.
-- */
--extern const char *usb_speed_string(enum usb_device_speed speed);
--
+-#define __UBOOT__
+-#ifndef __UBOOT__
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/clk.h>
+-#include <linux/err.h>
+-#include <linux/io.h>
+-#include <linux/platform_device.h>
+-#include <linux/dma-mapping.h>
+-
+-#include <plat/usb.h>
+-#else
+-#include <common.h>
+-#include <asm/omap_musb.h>
+-#include "linux-compat.h"
 -#endif
 -
--enum usb_device_state {
--	/* NOTATTACHED isn't in the USB spec, and this state acts
--	 * the same as ATTACHED ... but it's clearer this way.
+-#include "musb_core.h"
+-
+-/*
+- * AM35x specific definitions
+- */
+-/* USB 2.0 OTG module registers */
+-#define USB_REVISION_REG	0x00
+-#define USB_CTRL_REG		0x04
+-#define USB_STAT_REG		0x08
+-#define USB_EMULATION_REG	0x0c
+-/* 0x10 Reserved */
+-#define USB_AUTOREQ_REG		0x14
+-#define USB_SRP_FIX_TIME_REG	0x18
+-#define USB_TEARDOWN_REG	0x1c
+-#define EP_INTR_SRC_REG		0x20
+-#define EP_INTR_SRC_SET_REG	0x24
+-#define EP_INTR_SRC_CLEAR_REG	0x28
+-#define EP_INTR_MASK_REG	0x2c
+-#define EP_INTR_MASK_SET_REG	0x30
+-#define EP_INTR_MASK_CLEAR_REG	0x34
+-#define EP_INTR_SRC_MASKED_REG	0x38
+-#define CORE_INTR_SRC_REG	0x40
+-#define CORE_INTR_SRC_SET_REG	0x44
+-#define CORE_INTR_SRC_CLEAR_REG	0x48
+-#define CORE_INTR_MASK_REG	0x4c
+-#define CORE_INTR_MASK_SET_REG	0x50
+-#define CORE_INTR_MASK_CLEAR_REG 0x54
+-#define CORE_INTR_SRC_MASKED_REG 0x58
+-/* 0x5c Reserved */
+-#define USB_END_OF_INTR_REG	0x60
+-
+-/* Control register bits */
+-#define AM35X_SOFT_RESET_MASK	1
+-
+-/* USB interrupt register bits */
+-#define AM35X_INTR_USB_SHIFT	16
+-#define AM35X_INTR_USB_MASK	(0x1ff << AM35X_INTR_USB_SHIFT)
+-#define AM35X_INTR_DRVVBUS	0x100
+-#define AM35X_INTR_RX_SHIFT	16
+-#define AM35X_INTR_TX_SHIFT	0
+-#define AM35X_TX_EP_MASK	0xffff		/* EP0 + 15 Tx EPs */
+-#define AM35X_RX_EP_MASK	0xfffe		/* 15 Rx EPs */
+-#define AM35X_TX_INTR_MASK	(AM35X_TX_EP_MASK << AM35X_INTR_TX_SHIFT)
+-#define AM35X_RX_INTR_MASK	(AM35X_RX_EP_MASK << AM35X_INTR_RX_SHIFT)
+-
+-#define USB_MENTOR_CORE_OFFSET	0x400
+-
+-struct am35x_glue {
+-	struct device		*dev;
+-	struct platform_device	*musb;
+-	struct clk		*phy_clk;
+-	struct clk		*clk;
+-};
+-#define glue_to_musb(g)		platform_get_drvdata(g->musb)
+-
+-/*
+- * am35x_musb_enable - enable interrupts
+- */
+-static void am35x_musb_enable(struct musb *musb)
+-{
+-	void __iomem *reg_base = musb->ctrl_base;
+-	u32 epmask;
+-
+-	/* Workaround: setup IRQs through both register sets. */
+-	epmask = ((musb->epmask & AM35X_TX_EP_MASK) << AM35X_INTR_TX_SHIFT) |
+-	       ((musb->epmask & AM35X_RX_EP_MASK) << AM35X_INTR_RX_SHIFT);
+-
+-	musb_writel(reg_base, EP_INTR_MASK_SET_REG, epmask);
+-	musb_writel(reg_base, CORE_INTR_MASK_SET_REG, AM35X_INTR_USB_MASK);
+-
+-	/* Force the DRVVBUS IRQ so we can start polling for ID change. */
+-	if (is_otg_enabled(musb))
+-		musb_writel(reg_base, CORE_INTR_SRC_SET_REG,
+-			    AM35X_INTR_DRVVBUS << AM35X_INTR_USB_SHIFT);
+-}
+-
+-/*
+- * am35x_musb_disable - disable HDRC and flush interrupts
+- */
+-static void am35x_musb_disable(struct musb *musb)
+-{
+-	void __iomem *reg_base = musb->ctrl_base;
+-
+-	musb_writel(reg_base, CORE_INTR_MASK_CLEAR_REG, AM35X_INTR_USB_MASK);
+-	musb_writel(reg_base, EP_INTR_MASK_CLEAR_REG,
+-			 AM35X_TX_INTR_MASK | AM35X_RX_INTR_MASK);
+-	musb_writeb(musb->mregs, MUSB_DEVCTL, 0);
+-	musb_writel(reg_base, USB_END_OF_INTR_REG, 0);
+-}
+-
+-#ifndef __UBOOT__
+-#define portstate(stmt)		stmt
+-
+-static void am35x_musb_set_vbus(struct musb *musb, int is_on)
+-{
+-	WARN_ON(is_on && is_peripheral_active(musb));
+-}
+-
+-#define	POLL_SECONDS	2
+-
+-static struct timer_list otg_workaround;
+-
+-static void otg_timer(unsigned long _musb)
+-{
+-	struct musb		*musb = (void *)_musb;
+-	void __iomem		*mregs = musb->mregs;
+-	u8			devctl;
+-	unsigned long		flags;
+-
+-	/*
+-	 * We poll because AM35x's won't expose several OTG-critical
+-	 * status change events (from the transceiver) otherwise.
 -	 */
--	USB_STATE_NOTATTACHED = 0,
+-	devctl = musb_readb(mregs, MUSB_DEVCTL);
+-	dev_dbg(musb->controller, "Poll devctl %02x (%s)\n", devctl,
+-		otg_state_string(musb->xceiv->state));
 -
--	/* chapter 9 and authentication (wireless) device states */
--	USB_STATE_ATTACHED,
--	USB_STATE_POWERED,			/* wired */
--	USB_STATE_RECONNECTING,			/* auth */
--	USB_STATE_UNAUTHENTICATED,		/* auth */
--	USB_STATE_DEFAULT,			/* limited function */
--	USB_STATE_ADDRESS,
--	USB_STATE_CONFIGURED,			/* most functions */
+-	spin_lock_irqsave(&musb->lock, flags);
+-	switch (musb->xceiv->state) {
+-	case OTG_STATE_A_WAIT_BCON:
+-		devctl &= ~MUSB_DEVCTL_SESSION;
+-		musb_writeb(musb->mregs, MUSB_DEVCTL, devctl);
 -
--	USB_STATE_SUSPENDED
+-		devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
+-		if (devctl & MUSB_DEVCTL_BDEVICE) {
+-			musb->xceiv->state = OTG_STATE_B_IDLE;
+-			MUSB_DEV_MODE(musb);
+-		} else {
+-			musb->xceiv->state = OTG_STATE_A_IDLE;
+-			MUSB_HST_MODE(musb);
+-		}
+-		break;
+-	case OTG_STATE_A_WAIT_VFALL:
+-		musb->xceiv->state = OTG_STATE_A_WAIT_VRISE;
+-		musb_writel(musb->ctrl_base, CORE_INTR_SRC_SET_REG,
+-			    MUSB_INTR_VBUSERROR << AM35X_INTR_USB_SHIFT);
+-		break;
+-	case OTG_STATE_B_IDLE:
+-		if (!is_peripheral_enabled(musb))
+-			break;
 -
--	/* NOTE:  there are actually four different SUSPENDED
--	 * states, returning to POWERED, DEFAULT, ADDRESS, or
--	 * CONFIGURED respectively when SOF tokens flow again.
--	 * At this level there's no difference between L1 and L2
--	 * suspend states.  (L2 being original USB 1.1 suspend.)
+-		devctl = musb_readb(mregs, MUSB_DEVCTL);
+-		if (devctl & MUSB_DEVCTL_BDEVICE)
+-			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+-		else
+-			musb->xceiv->state = OTG_STATE_A_IDLE;
+-		break;
+-	default:
+-		break;
+-	}
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-}
+-
+-static void am35x_musb_try_idle(struct musb *musb, unsigned long timeout)
+-{
+-	static unsigned long last_timer;
+-
+-	if (!is_otg_enabled(musb))
+-		return;
+-
+-	if (timeout == 0)
+-		timeout = jiffies + msecs_to_jiffies(3);
+-
+-	/* Never idle if active, or when VBUS timeout is not set as host */
+-	if (musb->is_active || (musb->a_wait_bcon == 0 &&
+-				musb->xceiv->state == OTG_STATE_A_WAIT_BCON)) {
+-		dev_dbg(musb->controller, "%s active, deleting timer\n",
+-			otg_state_string(musb->xceiv->state));
+-		del_timer(&otg_workaround);
+-		last_timer = jiffies;
+-		return;
+-	}
+-
+-	if (time_after(last_timer, timeout) && timer_pending(&otg_workaround)) {
+-		dev_dbg(musb->controller, "Longer idle timer already pending, ignoring...\n");
+-		return;
+-	}
+-	last_timer = timeout;
+-
+-	dev_dbg(musb->controller, "%s inactive, starting idle timer for %u ms\n",
+-		otg_state_string(musb->xceiv->state),
+-		jiffies_to_msecs(timeout - jiffies));
+-	mod_timer(&otg_workaround, timeout);
+-}
+-#endif
+-
+-static irqreturn_t am35x_musb_interrupt(int irq, void *hci)
+-{
+-	struct musb  *musb = hci;
+-	void __iomem *reg_base = musb->ctrl_base;
+-#ifndef __UBOOT__
+-	struct device *dev = musb->controller;
+-	struct musb_hdrc_platform_data *plat = dev->platform_data;
+-	struct omap_musb_board_data *data = plat->board_data;
+-	struct usb_otg *otg = musb->xceiv->otg;
+-#else
+-	struct omap_musb_board_data *data =
+-		(struct omap_musb_board_data *)musb->controller;
+-#endif
+-	unsigned long flags;
+-	irqreturn_t ret = IRQ_NONE;
+-	u32 epintr, usbintr;
+-
+-#ifdef __UBOOT__
+-	/*
+-	 * It seems that on AM35X interrupt registers can be updated
+-	 * before core registers. This confuses the code.
+-	 * As a workaround add a small delay here.
 -	 */
+-	udelay(10);
+-#endif
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	/* Get endpoint interrupts */
+-	epintr = musb_readl(reg_base, EP_INTR_SRC_MASKED_REG);
+-
+-	if (epintr) {
+-		musb_writel(reg_base, EP_INTR_SRC_CLEAR_REG, epintr);
+-
+-		musb->int_rx =
+-			(epintr & AM35X_RX_INTR_MASK) >> AM35X_INTR_RX_SHIFT;
+-		musb->int_tx =
+-			(epintr & AM35X_TX_INTR_MASK) >> AM35X_INTR_TX_SHIFT;
+-	}
+-
+-	/* Get usb core interrupts */
+-	usbintr = musb_readl(reg_base, CORE_INTR_SRC_MASKED_REG);
+-	if (!usbintr && !epintr)
+-		goto eoi;
+-
+-	if (usbintr) {
+-		musb_writel(reg_base, CORE_INTR_SRC_CLEAR_REG, usbintr);
+-
+-		musb->int_usb =
+-			(usbintr & AM35X_INTR_USB_MASK) >> AM35X_INTR_USB_SHIFT;
+-	}
+-#ifndef __UBOOT__
+-	/*
+-	 * DRVVBUS IRQs are the only proxy we have (a very poor one!) for
+-	 * AM35x's missing ID change IRQ.  We need an ID change IRQ to
+-	 * switch appropriately between halves of the OTG state machine.
+-	 * Managing DEVCTL.SESSION per Mentor docs requires that we know its
+-	 * value but DEVCTL.BDEVICE is invalid without DEVCTL.SESSION set.
+-	 * Also, DRVVBUS pulses for SRP (but not at 5V) ...
+-	 */
+-	if (usbintr & (AM35X_INTR_DRVVBUS << AM35X_INTR_USB_SHIFT)) {
+-		int drvvbus = musb_readl(reg_base, USB_STAT_REG);
+-		void __iomem *mregs = musb->mregs;
+-		u8 devctl = musb_readb(mregs, MUSB_DEVCTL);
+-		int err;
+-
+-		err = is_host_enabled(musb) && (musb->int_usb &
+-						MUSB_INTR_VBUSERROR);
+-		if (err) {
+-			/*
+-			 * The Mentor core doesn't debounce VBUS as needed
+-			 * to cope with device connect current spikes. This
+-			 * means it's not uncommon for bus-powered devices
+-			 * to get VBUS errors during enumeration.
+-			 *
+-			 * This is a workaround, but newer RTL from Mentor
+-			 * seems to allow a better one: "re"-starting sessions
+-			 * without waiting for VBUS to stop registering in
+-			 * devctl.
+-			 */
+-			musb->int_usb &= ~MUSB_INTR_VBUSERROR;
+-			musb->xceiv->state = OTG_STATE_A_WAIT_VFALL;
+-			mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+-			WARNING("VBUS error workaround (delay coming)\n");
+-		} else if (is_host_enabled(musb) && drvvbus) {
+-			MUSB_HST_MODE(musb);
+-			otg->default_a = 1;
+-			musb->xceiv->state = OTG_STATE_A_WAIT_VRISE;
+-			portstate(musb->port1_status |= USB_PORT_STAT_POWER);
+-			del_timer(&otg_workaround);
+-		} else {
+-			musb->is_active = 0;
+-			MUSB_DEV_MODE(musb);
+-			otg->default_a = 0;
+-			musb->xceiv->state = OTG_STATE_B_IDLE;
+-			portstate(musb->port1_status &= ~USB_PORT_STAT_POWER);
+-		}
+-
+-		/* NOTE: this must complete power-on within 100 ms. */
+-		dev_dbg(musb->controller, "VBUS %s (%s)%s, devctl %02x\n",
+-				drvvbus ? "on" : "off",
+-				otg_state_string(musb->xceiv->state),
+-				err ? " ERROR" : "",
+-				devctl);
+-		ret = IRQ_HANDLED;
+-	}
+-#endif
+-
+-	if (musb->int_tx || musb->int_rx || musb->int_usb)
+-		ret |= musb_interrupt(musb);
+-
+-eoi:
+-	/* EOI needs to be written for the IRQ to be re-asserted. */
+-	if (ret == IRQ_HANDLED || epintr || usbintr) {
+-		/* clear level interrupt */
+-		if (data->clear_irq)
+-			data->clear_irq();
+-		/* write EOI */
+-		musb_writel(reg_base, USB_END_OF_INTR_REG, 0);
+-	}
+-
+-#ifndef __UBOOT__
+-	/* Poll for ID change */
+-	if (is_otg_enabled(musb) && musb->xceiv->state == OTG_STATE_B_IDLE)
+-		mod_timer(&otg_workaround, jiffies + POLL_SECONDS * HZ);
+-#endif
+-
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-
+-	return ret;
+-}
+-
+-#ifndef __UBOOT__
+-static int am35x_musb_set_mode(struct musb *musb, u8 musb_mode)
+-{
+-	struct device *dev = musb->controller;
+-	struct musb_hdrc_platform_data *plat = dev->platform_data;
+-	struct omap_musb_board_data *data = plat->board_data;
+-	int     retval = 0;
+-
+-	if (data->set_mode)
+-		data->set_mode(musb_mode);
+-	else
+-		retval = -EIO;
+-
+-	return retval;
+-}
+-#endif
+-
+-static int am35x_musb_init(struct musb *musb)
+-{
+-#ifndef __UBOOT__
+-	struct device *dev = musb->controller;
+-	struct musb_hdrc_platform_data *plat = dev->platform_data;
+-	struct omap_musb_board_data *data = plat->board_data;
+-#else
+-	struct omap_musb_board_data *data =
+-		(struct omap_musb_board_data *)musb->controller;
+-#endif
+-	void __iomem *reg_base = musb->ctrl_base;
+-	u32 rev;
+-
+-	musb->mregs += USB_MENTOR_CORE_OFFSET;
+-
+-	/* Returns zero if e.g. not clocked */
+-	rev = musb_readl(reg_base, USB_REVISION_REG);
+-	if (!rev)
+-		return -ENODEV;
+-
+-#ifndef __UBOOT__
+-	usb_nop_xceiv_register();
+-	musb->xceiv = usb_get_phy(USB_PHY_TYPE_USB2);
+-	if (IS_ERR_OR_NULL(musb->xceiv))
+-		return -ENODEV;
+-
+-	if (is_host_enabled(musb))
+-		setup_timer(&otg_workaround, otg_timer, (unsigned long) musb);
+-#endif
+-
+-	/* Reset the musb */
+-	if (data->reset)
+-		data->reset();
+-
+-	/* Reset the controller */
+-	musb_writel(reg_base, USB_CTRL_REG, AM35X_SOFT_RESET_MASK);
+-
+-	/* Start the on-chip PHY and its PLL. */
+-	if (data->set_phy_power)
+-		data->set_phy_power(1);
+-
+-	msleep(5);
+-
+-	musb->isr = am35x_musb_interrupt;
+-
+-	/* clear level interrupt */
+-	if (data->clear_irq)
+-		data->clear_irq();
+-
+-	return 0;
+-}
+-
+-static int am35x_musb_exit(struct musb *musb)
+-{
+-#ifndef __UBOOT__
+-	struct device *dev = musb->controller;
+-	struct musb_hdrc_platform_data *plat = dev->platform_data;
+-	struct omap_musb_board_data *data = plat->board_data;
+-#else
+-	struct omap_musb_board_data *data =
+-		(struct omap_musb_board_data *)musb->controller;
+-#endif
+-
+-#ifndef __UBOOT__
+-	if (is_host_enabled(musb))
+-		del_timer_sync(&otg_workaround);
+-#endif
+-
+-	/* Shutdown the on-chip PHY and its PLL. */
+-	if (data->set_phy_power)
+-		data->set_phy_power(0);
+-
+-#ifndef __UBOOT__
+-	usb_put_phy(musb->xceiv);
+-	usb_nop_xceiv_unregister();
+-#endif
+-
+-	return 0;
+-}
+-
+-/* AM35x supports only 32bit read operation */
+-void musb_read_fifo(struct musb_hw_ep *hw_ep, u16 len, u8 *dst)
+-{
+-	void __iomem *fifo = hw_ep->fifo;
+-	u32		val;
+-	int		i;
+-
+-	/* Read for 32bit-aligned destination address */
+-	if (likely((0x03 & (unsigned long) dst) == 0) && len >= 4) {
+-		readsl(fifo, dst, len >> 2);
+-		dst += len & ~0x03;
+-		len &= 0x03;
+-	}
+-	/*
+-	 * Now read the remaining 1 to 3 byte or complete length if
+-	 * unaligned address.
+-	 */
+-	if (len > 4) {
+-		for (i = 0; i < (len >> 2); i++) {
+-			*(u32 *) dst = musb_readl(fifo, 0);
+-			dst += 4;
+-		}
+-		len &= 0x03;
+-	}
+-	if (len > 0) {
+-		val = musb_readl(fifo, 0);
+-		memcpy(dst, &val, len);
+-	}
+-}
+-
+-#ifndef __UBOOT__
+-static const struct musb_platform_ops am35x_ops = {
+-#else
+-const struct musb_platform_ops am35x_ops = {
+-#endif
+-	.init		= am35x_musb_init,
+-	.exit		= am35x_musb_exit,
+-
+-	.enable		= am35x_musb_enable,
+-	.disable	= am35x_musb_disable,
+-
+-#ifndef __UBOOT__
+-	.set_mode	= am35x_musb_set_mode,
+-	.try_idle	= am35x_musb_try_idle,
+-
+-	.set_vbus	= am35x_musb_set_vbus,
+-#endif
 -};
 -
--enum usb3_link_state {
--	USB3_LPM_U0 = 0,
--	USB3_LPM_U1,
--	USB3_LPM_U2,
--	USB3_LPM_U3
+-#ifndef __UBOOT__
+-static u64 am35x_dmamask = DMA_BIT_MASK(32);
+-
+-static int __devinit am35x_probe(struct platform_device *pdev)
+-{
+-	struct musb_hdrc_platform_data	*pdata = pdev->dev.platform_data;
+-	struct platform_device		*musb;
+-	struct am35x_glue		*glue;
+-
+-	struct clk			*phy_clk;
+-	struct clk			*clk;
+-
+-	int				ret = -ENOMEM;
+-
+-	glue = kzalloc(sizeof(*glue), GFP_KERNEL);
+-	if (!glue) {
+-		dev_err(&pdev->dev, "failed to allocate glue context\n");
+-		goto err0;
+-	}
+-
+-	musb = platform_device_alloc("musb-hdrc", -1);
+-	if (!musb) {
+-		dev_err(&pdev->dev, "failed to allocate musb device\n");
+-		goto err1;
+-	}
+-
+-	phy_clk = clk_get(&pdev->dev, "fck");
+-	if (IS_ERR(phy_clk)) {
+-		dev_err(&pdev->dev, "failed to get PHY clock\n");
+-		ret = PTR_ERR(phy_clk);
+-		goto err2;
+-	}
+-
+-	clk = clk_get(&pdev->dev, "ick");
+-	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "failed to get clock\n");
+-		ret = PTR_ERR(clk);
+-		goto err3;
+-	}
+-
+-	ret = clk_enable(phy_clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to enable PHY clock\n");
+-		goto err4;
+-	}
+-
+-	ret = clk_enable(clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to enable clock\n");
+-		goto err5;
+-	}
+-
+-	musb->dev.parent		= &pdev->dev;
+-	musb->dev.dma_mask		= &am35x_dmamask;
+-	musb->dev.coherent_dma_mask	= am35x_dmamask;
+-
+-	glue->dev			= &pdev->dev;
+-	glue->musb			= musb;
+-	glue->phy_clk			= phy_clk;
+-	glue->clk			= clk;
+-
+-	pdata->platform_ops		= &am35x_ops;
+-
+-	platform_set_drvdata(pdev, glue);
+-
+-	ret = platform_device_add_resources(musb, pdev->resource,
+-			pdev->num_resources);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to add resources\n");
+-		goto err6;
+-	}
+-
+-	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to add platform_data\n");
+-		goto err6;
+-	}
+-
+-	ret = platform_device_add(musb);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to register musb device\n");
+-		goto err6;
+-	}
+-
+-	return 0;
+-
+-err6:
+-	clk_disable(clk);
+-
+-err5:
+-	clk_disable(phy_clk);
+-
+-err4:
+-	clk_put(clk);
+-
+-err3:
+-	clk_put(phy_clk);
+-
+-err2:
+-	platform_device_put(musb);
+-
+-err1:
+-	kfree(glue);
+-
+-err0:
+-	return ret;
+-}
+-
+-static int __devexit am35x_remove(struct platform_device *pdev)
+-{
+-	struct am35x_glue	*glue = platform_get_drvdata(pdev);
+-
+-	platform_device_del(glue->musb);
+-	platform_device_put(glue->musb);
+-	clk_disable(glue->clk);
+-	clk_disable(glue->phy_clk);
+-	clk_put(glue->clk);
+-	clk_put(glue->phy_clk);
+-	kfree(glue);
+-
+-	return 0;
+-}
+-
+-#ifdef CONFIG_PM
+-static int am35x_suspend(struct device *dev)
+-{
+-	struct am35x_glue	*glue = dev_get_drvdata(dev);
+-	struct musb_hdrc_platform_data *plat = dev->platform_data;
+-	struct omap_musb_board_data *data = plat->board_data;
+-
+-	/* Shutdown the on-chip PHY and its PLL. */
+-	if (data->set_phy_power)
+-		data->set_phy_power(0);
+-
+-	clk_disable(glue->phy_clk);
+-	clk_disable(glue->clk);
+-
+-	return 0;
+-}
+-
+-static int am35x_resume(struct device *dev)
+-{
+-	struct am35x_glue	*glue = dev_get_drvdata(dev);
+-	struct musb_hdrc_platform_data *plat = dev->platform_data;
+-	struct omap_musb_board_data *data = plat->board_data;
+-	int			ret;
+-
+-	/* Start the on-chip PHY and its PLL. */
+-	if (data->set_phy_power)
+-		data->set_phy_power(1);
+-
+-	ret = clk_enable(glue->phy_clk);
+-	if (ret) {
+-		dev_err(dev, "failed to enable PHY clock\n");
+-		return ret;
+-	}
+-
+-	ret = clk_enable(glue->clk);
+-	if (ret) {
+-		dev_err(dev, "failed to enable clock\n");
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-static struct dev_pm_ops am35x_pm_ops = {
+-	.suspend	= am35x_suspend,
+-	.resume		= am35x_resume,
 -};
 -
--/*
-- * A U1 timeout of 0x0 means the parent hub will reject any transitions to U1.
-- * 0xff means the parent hub will accept transitions to U1, but will not
-- * initiate a transition.
-- *
-- * A U1 timeout of 0x1 to 0x7F also causes the hub to initiate a transition to
-- * U1 after that many microseconds.  Timeouts of 0x80 to 0xFE are reserved
-- * values.
-- *
-- * A U2 timeout of 0x0 means the parent hub will reject any transitions to U2.
-- * 0xff means the parent hub will accept transitions to U2, but will not
-- * initiate a transition.
-- *
-- * A U2 timeout of 0x1 to 0xFE also causes the hub to initiate a transition to
-- * U2 after N*256 microseconds.  Therefore a U2 timeout value of 0x1 means a U2
-- * idle timer of 256 microseconds, 0x2 means 512 microseconds, 0xFE means
-- * 65.024ms.
-- */
--#define USB3_LPM_DISABLED		0x0
--#define USB3_LPM_U1_MAX_TIMEOUT		0x7F
--#define USB3_LPM_U2_MAX_TIMEOUT		0xFE
--#define USB3_LPM_DEVICE_INITIATED	0xFF
+-#define DEV_PM_OPS	&am35x_pm_ops
+-#else
+-#define DEV_PM_OPS	NULL
+-#endif
 -
--struct usb_set_sel_req {
--	__u8	u1_sel;
--	__u8	u1_pel;
--	__le16	u2_sel;
--	__le16	u2_pel;
--} __attribute__ ((packed));
+-static struct platform_driver am35x_driver = {
+-	.probe		= am35x_probe,
+-	.remove		= __devexit_p(am35x_remove),
+-	.driver		= {
+-		.name	= "musb-am35x",
+-		.pm	= DEV_PM_OPS,
+-	},
+-};
 -
--/*
-- * The Set System Exit Latency control transfer provides one byte each for
-- * U1 SEL and U1 PEL, so the max exit latency is 0xFF.  U2 SEL and U2 PEL each
-- * are two bytes long.
-- */
--#define USB3_LPM_MAX_U1_SEL_PEL		0xFF
--#define USB3_LPM_MAX_U2_SEL_PEL		0xFFFF
+-MODULE_DESCRIPTION("AM35x MUSB Glue Layer");
+-MODULE_AUTHOR("Ajay Kumar Gupta <ajay.gupta@ti.com>");
+-MODULE_LICENSE("GPL v2");
 -
--/*-------------------------------------------------------------------------*/
+-static int __init am35x_init(void)
+-{
+-	return platform_driver_register(&am35x_driver);
+-}
+-module_init(am35x_init);
 -
--/*
-- * As per USB compliance update, a device that is actively drawing
-- * more than 100mA from USB must report itself as bus-powered in
-- * the GetStatus(DEVICE) call.
-- * http://compliance.usb.org/index.asp?UpdateFile=Electrical&Format=Standard#34
-- */
--#define USB_SELF_POWER_VBUS_MAX_DRAW		100
--
--#endif /* __LINUX_USB_CH9_H */
-diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
+-static void __exit am35x_exit(void)
+-{
+-	platform_driver_unregister(&am35x_driver);
+-}
+-module_exit(am35x_exit);
+-#endif
+diff --git a/drivers/usb/musb/musb_gadget.c b/drivers/usb/musb/musb_gadget.c
 deleted file mode 100644
-index f833d10..0000000
---- a/include/linux/usb/composite.h
+index d2cb91a..0000000
+--- a/drivers/usb/musb/musb_gadget.c
 +++ /dev/null
-@@ -1,338 +0,0 @@
+@@ -1,2333 +0,0 @@
 -/*
-- * composite.h -- framework for usb gadgets which are composite devices
+- * MUSB OTG driver peripheral support
 - *
-- * Copyright (C) 2006-2008 David Brownell
+- * Copyright 2005 Mentor Graphics Corporation
+- * Copyright (C) 2005-2006 by Texas Instruments
+- * Copyright (C) 2006-2007 Nokia Corporation
+- * Copyright (C) 2009 MontaVista Software, Inc. <source@mvista.com>
 - *
-- * SPDX-License-Identifier:	GPL-2.0+
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * version 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful, but
+- * WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+- * 02110-1301 USA
+- *
+- * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- * NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
 - */
 -
--#ifndef	__LINUX_USB_COMPOSITE_H
--#define	__LINUX_USB_COMPOSITE_H
--
--/*
-- * This framework is an optional layer on top of the USB Gadget interface,
-- * making it easier to build (a) Composite devices, supporting multiple
-- * functions within any single configuration, and (b) Multi-configuration
-- * devices, also supporting multiple functions but without necessarily
-- * having more than one function per configuration.
-- *
-- * Example:  a device with a single configuration supporting both network
-- * link and mass storage functions is a composite device.  Those functions
-- * might alternatively be packaged in individual configurations, but in
-- * the composite model the host can use both functions at the same time.
-- */
--
+-#define __UBOOT__
+-#ifndef __UBOOT__
+-#include <linux/kernel.h>
+-#include <linux/list.h>
+-#include <linux/timer.h>
+-#include <linux/module.h>
+-#include <linux/smp.h>
+-#include <linux/spinlock.h>
+-#include <linux/delay.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/slab.h>
+-#else
 -#include <common.h>
 -#include <linux/usb/ch9.h>
--#include <linux/usb/gadget.h>
--#include <usb/lin_gadget_compat.h>
+-#include "linux-compat.h"
+-#endif
 -
--struct usb_configuration;
+-#include "musb_core.h"
 -
--/**
-- * struct usb_function - describes one function of a configuration
-- * @name: For diagnostics, identifies the function.
-- * @strings: tables of strings, keyed by identifiers assigned during bind()
-- *	and by language IDs provided in control requests
-- * @descriptors: Table of full (or low) speed descriptors, using interface and
-- *	string identifiers assigned during @bind().  If this pointer is null,
-- *	the function will not be available at full speed (or at low speed).
-- * @hs_descriptors: Table of high speed descriptors, using interface and
-- *	string identifiers assigned during @bind().  If this pointer is null,
-- *	the function will not be available at high speed.
-- * @config: assigned when @usb_add_function() is called; this is the
-- *	configuration with which this function is associated.
-- * @bind: Before the gadget can register, all of its functions bind() to the
-- *	available resources including string and interface identifiers used
-- *	in interface or class descriptors; endpoints; I/O buffers; and so on.
-- * @unbind: Reverses @bind; called as a side effect of unregistering the
-- *	driver which added this function.
-- * @set_alt: (REQUIRED) Reconfigures altsettings; function drivers may
-- *	initialize usb_ep.driver data at this time (when it is used).
-- *	Note that setting an interface to its current altsetting resets
-- *	interface state, and that all interfaces have a disabled state.
-- * @get_alt: Returns the active altsetting.  If this is not provided,
-- *	then only altsetting zero is supported.
-- * @disable: (REQUIRED) Indicates the function should be disabled.  Reasons
-- *	include host resetting or reconfiguring the gadget, and disconnection.
-- * @setup: Used for interface-specific control requests.
-- * @suspend: Notifies functions when the host stops sending USB traffic.
-- * @resume: Notifies functions when the host restarts USB traffic.
+-
+-/* MUSB PERIPHERAL status 3-mar-2006:
 - *
-- * A single USB function uses one or more interfaces, and should in most
-- * cases support operation at both full and high speeds.  Each function is
-- * associated by @usb_add_function() with a one configuration; that function
-- * causes @bind() to be called so resources can be allocated as part of
-- * setting up a gadget driver.  Those resources include endpoints, which
-- * should be allocated using @usb_ep_autoconfig().
+- * - EP0 seems solid.  It passes both USBCV and usbtest control cases.
+- *   Minor glitches:
 - *
-- * To support dual speed operation, a function driver provides descriptors
-- * for both high and full speed operation.  Except in rare cases that don't
-- * involve bulk endpoints, each speed needs different endpoint descriptors.
+- *     + remote wakeup to Linux hosts work, but saw USBCV failures;
+- *       in one test run (operator error?)
+- *     + endpoint halt tests -- in both usbtest and usbcv -- seem
+- *       to break when dma is enabled ... is something wrongly
+- *       clearing SENDSTALL?
 - *
-- * Function drivers choose their own strategies for managing instance data.
-- * The simplest strategy just declares it "static', which means the function
-- * can only be activated once.  If the function needs to be exposed in more
-- * than one configuration at a given speed, it needs to support multiple
-- * usb_function structures (one for each configuration).
+- * - Mass storage behaved ok when last tested.  Network traffic patterns
+- *   (with lots of short transfers etc) need retesting; they turn up the
+- *   worst cases of the DMA, since short packets are typical but are not
+- *   required.
 - *
-- * A more complex strategy might encapsulate a @usb_function structure inside
-- * a driver-specific instance structure to allows multiple activations.  An
-- * example of multiple activations might be a CDC ACM function that supports
-- * two or more distinct instances within the same configuration, providing
-- * several independent logical data links to a USB host.
+- * - TX/IN
+- *     + both pio and dma behave in with network and g_zero tests
+- *     + no cppi throughput issues other than no-hw-queueing
+- *     + failed with FLAT_REG (DaVinci)
+- *     + seems to behave with double buffering, PIO -and- CPPI
+- *     + with gadgetfs + AIO, requests got lost?
+- *
+- * - RX/OUT
+- *     + both pio and dma behave in with network and g_zero tests
+- *     + dma is slow in typical case (short_not_ok is clear)
+- *     + double buffering ok with PIO
+- *     + double buffering *FAILS* with CPPI, wrong data bytes sometimes
+- *     + request lossage observed with gadgetfs
+- *
+- * - ISO not tested ... might work, but only weakly isochronous
+- *
+- * - Gadget driver disabling of softconnect during bind() is ignored; so
+- *   drivers can't hold off host requests until userspace is ready.
+- *   (Workaround:  they can turn it off later.)
+- *
+- * - PORTABILITY (assumes PIO works):
+- *     + DaVinci, basically works with cppi dma
+- *     + OMAP 2430, ditto with mentor dma
+- *     + TUSB 6010, platform-specific dma in the works
 - */
--struct usb_function {
--	const char			*name;
--	struct usb_gadget_strings	**strings;
--	struct usb_descriptor_header	**descriptors;
--	struct usb_descriptor_header	**hs_descriptors;
 -
--	struct usb_configuration	*config;
+-/* ----------------------------------------------------------------------- */
 -
--	/* REVISIT:  bind() functions can be marked __init, which
--	 * makes trouble for section mismatch analysis.  See if
--	 * we can't restructure things to avoid mismatching.
--	 * Related:  unbind() may kfree() but bind() won't...
--	 */
+-#define is_buffer_mapped(req) (is_dma_capable() && \
+-					(req->map_state != UN_MAPPED))
 -
--	/* configuration management:  bind/unbind */
--	int			(*bind)(struct usb_configuration *,
--					struct usb_function *);
--	void			(*unbind)(struct usb_configuration *,
--					struct usb_function *);
+-#ifndef CONFIG_MUSB_PIO_ONLY
+-/* Maps the buffer to dma  */
 -
--	/* runtime state management */
--	int			(*set_alt)(struct usb_function *,
--					unsigned interface, unsigned alt);
--	int			(*get_alt)(struct usb_function *,
--					unsigned interface);
--	void			(*disable)(struct usb_function *);
--	int			(*setup)(struct usb_function *,
--					const struct usb_ctrlrequest *);
--	void			(*suspend)(struct usb_function *);
--	void			(*resume)(struct usb_function *);
--
--	/* private: */
--	/* internals */
--	struct list_head		list;
--	DECLARE_BITMAP(endpoints, 32);
--};
--
--int usb_add_function(struct usb_configuration *, struct usb_function *);
--
--int usb_function_deactivate(struct usb_function *);
--int usb_function_activate(struct usb_function *);
--
--int usb_interface_id(struct usb_configuration *, struct usb_function *);
--
--/**
-- * ep_choose - select descriptor endpoint at current device speed
-- * @g: gadget, connected and running at some speed
-- * @hs: descriptor to use for high speed operation
-- * @fs: descriptor to use for full or low speed operation
-- */
--static inline struct usb_endpoint_descriptor *
--ep_choose(struct usb_gadget *g, struct usb_endpoint_descriptor *hs,
--		struct usb_endpoint_descriptor *fs)
+-static inline void map_dma_buffer(struct musb_request *request,
+-			struct musb *musb, struct musb_ep *musb_ep)
 -{
--	if (gadget_is_dualspeed(g) && g->speed == USB_SPEED_HIGH)
--		return hs;
--	return fs;
+-	int compatible = true;
+-	struct dma_controller *dma = musb->dma_controller;
+-
+-	request->map_state = UN_MAPPED;
+-
+-	if (!is_dma_capable() || !musb_ep->dma)
+-		return;
+-
+-	/* Check if DMA engine can handle this request.
+-	 * DMA code must reject the USB request explicitly.
+-	 * Default behaviour is to map the request.
+-	 */
+-	if (dma->is_compatible)
+-		compatible = dma->is_compatible(musb_ep->dma,
+-				musb_ep->packet_sz, request->request.buf,
+-				request->request.length);
+-	if (!compatible)
+-		return;
+-
+-	if (request->request.dma == DMA_ADDR_INVALID) {
+-		request->request.dma = dma_map_single(
+-				musb->controller,
+-				request->request.buf,
+-				request->request.length,
+-				request->tx
+-					? DMA_TO_DEVICE
+-					: DMA_FROM_DEVICE);
+-		request->map_state = MUSB_MAPPED;
+-	} else {
+-		dma_sync_single_for_device(musb->controller,
+-			request->request.dma,
+-			request->request.length,
+-			request->tx
+-				? DMA_TO_DEVICE
+-				: DMA_FROM_DEVICE);
+-		request->map_state = PRE_MAPPED;
+-	}
 -}
 -
--#define	MAX_CONFIG_INTERFACES		16	/* arbitrary; max 255 */
+-/* Unmap the buffer from dma and maps it back to cpu */
+-static inline void unmap_dma_buffer(struct musb_request *request,
+-				struct musb *musb)
+-{
+-	if (!is_buffer_mapped(request))
+-		return;
 -
--/**
-- * struct usb_configuration - represents one gadget configuration
-- * @label: For diagnostics, describes the configuration.
-- * @strings: Tables of strings, keyed by identifiers assigned during @bind()
-- *	and by language IDs provided in control requests.
-- * @descriptors: Table of descriptors preceding all function descriptors.
-- *	Examples include OTG and vendor-specific descriptors.
-- * @bind: Called from @usb_add_config() to allocate resources unique to this
-- *	configuration and to call @usb_add_function() for each function used.
-- * @unbind: Reverses @bind; called as a side effect of unregistering the
-- *	driver which added this configuration.
-- * @setup: Used to delegate control requests that aren't handled by standard
-- *	device infrastructure or directed at a specific interface.
-- * @bConfigurationValue: Copied into configuration descriptor.
-- * @iConfiguration: Copied into configuration descriptor.
-- * @bmAttributes: Copied into configuration descriptor.
-- * @bMaxPower: Copied into configuration descriptor.
-- * @cdev: assigned by @usb_add_config() before calling @bind(); this is
-- *	the device associated with this configuration.
-- *
-- * Configurations are building blocks for gadget drivers structured around
-- * function drivers.  Simple USB gadgets require only one function and one
-- * configuration, and handle dual-speed hardware by always providing the same
-- * functionality.  Slightly more complex gadgets may have more than one
-- * single-function configuration at a given speed; or have configurations
-- * that only work at one speed.
-- *
-- * Composite devices are, by definition, ones with configurations which
-- * include more than one function.
-- *
-- * The lifecycle of a usb_configuration includes allocation, initialization
-- * of the fields described above, and calling @usb_add_config() to set up
-- * internal data and bind it to a specific device.  The configuration's
-- * @bind() method is then used to initialize all the functions and then
-- * call @usb_add_function() for them.
-- *
-- * Those functions would normally be independant of each other, but that's
-- * not mandatory.  CDC WMC devices are an example where functions often
-- * depend on other functions, with some functions subsidiary to others.
-- * Such interdependency may be managed in any way, so long as all of the
-- * descriptors complete by the time the composite driver returns from
-- * its bind() routine.
-- */
--struct usb_configuration {
--	const char			*label;
--	struct usb_gadget_strings	**strings;
--	const struct usb_descriptor_header **descriptors;
+-	if (request->request.dma == DMA_ADDR_INVALID) {
+-		dev_vdbg(musb->controller,
+-				"not unmapping a never mapped buffer\n");
+-		return;
+-	}
+-	if (request->map_state == MUSB_MAPPED) {
+-		dma_unmap_single(musb->controller,
+-			request->request.dma,
+-			request->request.length,
+-			request->tx
+-				? DMA_TO_DEVICE
+-				: DMA_FROM_DEVICE);
+-		request->request.dma = DMA_ADDR_INVALID;
+-	} else { /* PRE_MAPPED */
+-		dma_sync_single_for_cpu(musb->controller,
+-			request->request.dma,
+-			request->request.length,
+-			request->tx
+-				? DMA_TO_DEVICE
+-				: DMA_FROM_DEVICE);
+-	}
+-	request->map_state = UN_MAPPED;
+-}
+-#else
+-static inline void map_dma_buffer(struct musb_request *request,
+-			struct musb *musb, struct musb_ep *musb_ep)
+-{
+-}
 -
--	/* REVISIT:  bind() functions can be marked __init, which
--	 * makes trouble for section mismatch analysis.  See if
--	 * we can't restructure things to avoid mismatching...
--	 */
+-static inline void unmap_dma_buffer(struct musb_request *request,
+-				struct musb *musb)
+-{
+-}
+-#endif
 -
--	/* configuration management:  bind/unbind */
--	int			(*bind)(struct usb_configuration *);
--	void			(*unbind)(struct usb_configuration *);
--	int			(*setup)(struct usb_configuration *,
--					const struct usb_ctrlrequest *);
--
--	/* fields in the config descriptor */
--	u8			bConfigurationValue;
--	u8			iConfiguration;
--	u8			bmAttributes;
--	u8			bMaxPower;
--
--	struct usb_composite_dev	*cdev;
--
--	/* private: */
--	/* internals */
--	struct list_head	list;
--	struct list_head	functions;
--	u8			next_interface_id;
--	unsigned		highspeed:1;
--	unsigned		fullspeed:1;
--	struct usb_function	*interface[MAX_CONFIG_INTERFACES];
--};
--
--int usb_add_config(struct usb_composite_dev *,
--		struct usb_configuration *);
--
--/**
-- * struct usb_composite_driver - groups configurations into a gadget
-- * @name: For diagnostics, identifies the driver.
-- * @dev: Template descriptor for the device, including default device
-- *	identifiers.
-- * @strings: tables of strings, keyed by identifiers assigned during bind()
-- *	and language IDs provided in control requests
-- * @bind: (REQUIRED) Used to allocate resources that are shared across the
-- *	whole device, such as string IDs, and add its configurations using
-- *	@usb_add_config().  This may fail by returning a negative errno
-- *	value; it should return zero on successful initialization.
-- * @unbind: Reverses @bind(); called as a side effect of unregistering
-- *	this driver.
-- * @disconnect: optional driver disconnect method
-- * @suspend: Notifies when the host stops sending USB traffic,
-- *	after function notifications
-- * @resume: Notifies configuration when the host restarts USB traffic,
-- *	before function notifications
-- *
-- * Devices default to reporting self powered operation.  Devices which rely
-- * on bus powered operation should report this in their @bind() method.
-- *
-- * Before returning from @bind, various fields in the template descriptor
-- * may be overridden.  These include the idVendor/idProduct/bcdDevice values
-- * normally to bind the appropriate host side driver, and the three strings
-- * (iManufacturer, iProduct, iSerialNumber) normally used to provide user
-- * meaningful device identifiers.  (The strings will not be defined unless
-- * they are defined in @dev and @strings.)  The correct ep0 maxpacket size
-- * is also reported, as defined by the underlying controller driver.
-- */
--struct usb_composite_driver {
--	const char				*name;
--	const struct usb_device_descriptor	*dev;
--	struct usb_gadget_strings		**strings;
--
--	/* REVISIT:  bind() functions can be marked __init, which
--	 * makes trouble for section mismatch analysis.  See if
--	 * we can't restructure things to avoid mismatching...
--	 */
--
--	int			(*bind)(struct usb_composite_dev *);
--	int			(*unbind)(struct usb_composite_dev *);
--
--	void			(*disconnect)(struct usb_composite_dev *);
--
--	/* global suspend hooks */
--	void			(*suspend)(struct usb_composite_dev *);
--	void			(*resume)(struct usb_composite_dev *);
--};
--
--extern int usb_composite_register(struct usb_composite_driver *);
--extern void usb_composite_unregister(struct usb_composite_driver *);
--
--
--/**
-- * struct usb_composite_device - represents one composite usb gadget
-- * @gadget: read-only, abstracts the gadget's usb peripheral controller
-- * @req: used for control responses; buffer is pre-allocated
-- * @bufsiz: size of buffer pre-allocated in @req
-- * @config: the currently active configuration
-- *
-- * One of these devices is allocated and initialized before the
-- * associated device driver's bind() is called.
-- *
-- * OPEN ISSUE:  it appears that some WUSB devices will need to be
-- * built by combining a normal (wired) gadget with a wireless one.
-- * This revision of the gadget framework should probably try to make
-- * sure doing that won't hurt too much.
-- *
-- * One notion for how to handle Wireless USB devices involves:
-- * (a) a second gadget here, discovery mechanism TBD, but likely
-- *     needing separate "register/unregister WUSB gadget" calls;
-- * (b) updates to usb_gadget to include flags "is it wireless",
-- *     "is it wired", plus (presumably in a wrapper structure)
-- *     bandgroup and PHY info;
-- * (c) presumably a wireless_ep wrapping a usb_ep, and reporting
-- *     wireless-specific parameters like maxburst and maxsequence;
-- * (d) configurations that are specific to wireless links;
-- * (e) function drivers that understand wireless configs and will
-- *     support wireless for (additional) function instances;
-- * (f) a function to support association setup (like CBAF), not
-- *     necessarily requiring a wireless adapter;
-- * (g) composite device setup that can create one or more wireless
-- *     configs, including appropriate association setup support;
-- * (h) more, TBD.
-- */
--struct usb_composite_dev {
--	struct usb_gadget		*gadget;
--	struct usb_request		*req;
--	unsigned			bufsiz;
--
--	struct usb_configuration	*config;
--
--	/* private: */
--	/* internals */
--	unsigned int			suspended:1;
--	struct usb_device_descriptor __aligned(CONFIG_SYS_CACHELINE_SIZE) desc;
--	struct list_head		configs;
--	struct usb_composite_driver	*driver;
--	u8				next_string_id;
--
--	/* the gadget driver won't enable the data pullup
--	 * while the deactivation count is nonzero.
--	 */
--	unsigned			deactivations;
--};
--
--extern int usb_string_id(struct usb_composite_dev *c);
--extern int usb_string_ids_tab(struct usb_composite_dev *c,
--			      struct usb_string *str);
--extern int usb_string_ids_n(struct usb_composite_dev *c, unsigned n);
--
--#endif	/* __LINUX_USB_COMPOSITE_H */
-diff --git a/include/linux/usb/dwc3.h b/include/linux/usb/dwc3.h
-deleted file mode 100644
-index 97d179a..0000000
---- a/include/linux/usb/dwc3.h
-+++ /dev/null
-@@ -1,188 +0,0 @@
--/* include/linux/usb/dwc3.h
-- *
-- * Copyright (c) 2012 Samsung Electronics Co. Ltd
-- *
-- * Designware SuperSpeed USB 3.0 DRD Controller global and OTG registers
-- *
-- * SPDX-License-Identifier:	GPL-2.0+
-- */
--
--#ifndef __DWC3_H_
--#define __DWC3_H_
--
--/* Global constants */
--#define DWC3_ENDPOINTS_NUM			32
--
--#define DWC3_EVENT_BUFFERS_SIZE			PAGE_SIZE
--#define DWC3_EVENT_TYPE_MASK			0xfe
--
--#define DWC3_EVENT_TYPE_DEV			0
--#define DWC3_EVENT_TYPE_CARKIT			3
--#define DWC3_EVENT_TYPE_I2C			4
--
--#define DWC3_DEVICE_EVENT_DISCONNECT		0
--#define DWC3_DEVICE_EVENT_RESET			1
--#define DWC3_DEVICE_EVENT_CONNECT_DONE		2
--#define DWC3_DEVICE_EVENT_LINK_STATUS_CHANGE	3
--#define DWC3_DEVICE_EVENT_WAKEUP		4
--#define DWC3_DEVICE_EVENT_EOPF			6
--#define DWC3_DEVICE_EVENT_SOF			7
--#define DWC3_DEVICE_EVENT_ERRATIC_ERROR		9
--#define DWC3_DEVICE_EVENT_CMD_CMPL		10
--#define DWC3_DEVICE_EVENT_OVERFLOW		11
--
--#define DWC3_GEVNTCOUNT_MASK			0xfffc
--#define DWC3_GSNPSID_MASK			0xffff0000
--#define DWC3_GSNPSID_SHIFT			16
--#define DWC3_GSNPSREV_MASK			0xffff
--
--#define DWC3_REVISION_MASK			0xffff
--
--#define DWC3_REG_OFFSET				0xC100
--
--struct g_event_buffer {
--	u64 g_evntadr;
--	u32 g_evntsiz;
--	u32 g_evntcount;
--};
--
--struct d_physical_endpoint {
--	u32 d_depcmdpar2;
--	u32 d_depcmdpar1;
--	u32 d_depcmdpar0;
--	u32 d_depcmd;
--};
--
--struct dwc3 {					/* offset: 0xC100 */
--	u32 g_sbuscfg0;
--	u32 g_sbuscfg1;
--	u32 g_txthrcfg;
--	u32 g_rxthrcfg;
--	u32 g_ctl;
--
--	u32 reserved1;
--
--	u32 g_sts;
--
--	u32 reserved2;
--
--	u32 g_snpsid;
--	u32 g_gpio;
--	u32 g_uid;
--	u32 g_uctl;
--	u64 g_buserraddr;
--	u64 g_prtbimap;
--
--	u32 g_hwparams0;
--	u32 g_hwparams1;
--	u32 g_hwparams2;
--	u32 g_hwparams3;
--	u32 g_hwparams4;
--	u32 g_hwparams5;
--	u32 g_hwparams6;
--	u32 g_hwparams7;
--
--	u32 g_dbgfifospace;
--	u32 g_dbgltssm;
--	u32 g_dbglnmcc;
--	u32 g_dbgbmu;
--	u32 g_dbglspmux;
--	u32 g_dbglsp;
--	u32 g_dbgepinfo0;
--	u32 g_dbgepinfo1;
--
--	u64 g_prtbimap_hs;
--	u64 g_prtbimap_fs;
--
--	u32 reserved3[28];
--
--	u32 g_usb2phycfg[16];
--	u32 g_usb2i2cctl[16];
--	u32 g_usb2phyacc[16];
--	u32 g_usb3pipectl[16];
--
--	u32 g_txfifosiz[32];
--	u32 g_rxfifosiz[32];
--
--	struct g_event_buffer g_evnt_buf[32];
--
--	u32 g_hwparams8;
--
--	u32 reserved4[63];
--
--	u32 d_cfg;
--	u32 d_ctl;
--	u32 d_evten;
--	u32 d_sts;
--	u32 d_gcmdpar;
--	u32 d_gcmd;
--
--	u32 reserved5[2];
--
--	u32 d_alepena;
--
--	u32 reserved6[55];
--
--	struct d_physical_endpoint d_phy_ep_cmd[32];
--
--	u32 reserved7[128];
--
--	u32 o_cfg;
--	u32 o_ctl;
--	u32 o_evt;
--	u32 o_evten;
--	u32 o_sts;
--
--	u32 reserved8[3];
--
--	u32 adp_cfg;
--	u32 adp_ctl;
--	u32 adp_evt;
--	u32 adp_evten;
--
--	u32 bc_cfg;
--
--	u32 reserved9;
--
--	u32 bc_evt;
--	u32 bc_evten;
--};
--
--/* Global Configuration Register */
--#define DWC3_GCTL_PWRDNSCALE(n)			((n) << 19)
--#define DWC3_GCTL_U2RSTECN			(1 << 16)
--#define DWC3_GCTL_RAMCLKSEL(x)			\
--		(((x) & DWC3_GCTL_CLK_MASK) << 6)
--#define DWC3_GCTL_CLK_BUS			(0)
--#define DWC3_GCTL_CLK_PIPE			(1)
--#define DWC3_GCTL_CLK_PIPEHALF			(2)
--#define DWC3_GCTL_CLK_MASK			(3)
--#define DWC3_GCTL_PRTCAP(n)			(((n) & (3 << 12)) >> 12)
--#define DWC3_GCTL_PRTCAPDIR(n)			((n) << 12)
--#define DWC3_GCTL_PRTCAP_HOST			1
--#define DWC3_GCTL_PRTCAP_DEVICE			2
--#define DWC3_GCTL_PRTCAP_OTG			3
--#define DWC3_GCTL_CORESOFTRESET			(1 << 11)
--#define DWC3_GCTL_SCALEDOWN(n)			((n) << 4)
--#define DWC3_GCTL_SCALEDOWN_MASK		DWC3_GCTL_SCALEDOWN(3)
--#define DWC3_GCTL_DISSCRAMBLE			(1 << 3)
--#define DWC3_GCTL_DSBLCLKGTNG			(1 << 0)
--
--/* Global HWPARAMS1 Register */
--#define DWC3_GHWPARAMS1_EN_PWROPT(n)		(((n) & (3 << 24)) >> 24)
--#define DWC3_GHWPARAMS1_EN_PWROPT_NO		0
--#define DWC3_GHWPARAMS1_EN_PWROPT_CLK		1
--
--/* Global USB2 PHY Configuration Register */
--#define DWC3_GUSB2PHYCFG_PHYSOFTRST		(1 << 31)
--#define DWC3_GUSB2PHYCFG_SUSPHY			(1 << 6)
--
--/* Global USB3 PIPE Control Register */
--#define DWC3_GUSB3PIPECTL_PHYSOFTRST		(1 << 31)
--#define DWC3_GUSB3PIPECTL_SUSPHY		(1 << 17)
--
--/* Global TX Fifo Size Register */
--#define DWC3_GTXFIFOSIZ_TXFDEF(n)		((n) & 0xffff)
--#define DWC3_GTXFIFOSIZ_TXFSTADDR(n)		((n) & 0xffff0000)
--
--#endif /* __DWC3_H_ */
-diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
-deleted file mode 100644
-index a8a5763..0000000
---- a/include/linux/usb/gadget.h
-+++ /dev/null
-@@ -1,864 +0,0 @@
 -/*
-- * <linux/usb/gadget.h>
+- * Immediately complete a request.
 - *
-- * We call the USB code inside a Linux-based peripheral device a "gadget"
-- * driver, except for the hardware-specific bus glue.  One USB host can
-- * master many USB gadgets, but the gadgets are only slaved to one host.
-- *
-- *
-- * (C) Copyright 2002-2004 by David Brownell
-- * All Rights Reserved.
-- *
-- * This software is licensed under the GNU GPL version 2.
-- *
-- * Ported to U-boot by: Thomas Smits <ts.smits@gmail.com> and
-- *                      Remy Bohmer <linux@bohmer.net>
+- * @param request the request to complete
+- * @param status the status to complete the request with
+- * Context: controller locked, IRQs blocked.
 - */
--
--#ifndef __LINUX_USB_GADGET_H
--#define __LINUX_USB_GADGET_H
--
--#include <errno.h>
--#include <linux/list.h>
--
--struct usb_ep;
--
--/**
-- * struct usb_request - describes one i/o request
-- * @buf: Buffer used for data.  Always provide this; some controllers
-- *	only use PIO, or don't use DMA for some endpoints.
-- * @dma: DMA address corresponding to 'buf'.  If you don't set this
-- *	field, and the usb controller needs one, it is responsible
-- *	for mapping and unmapping the buffer.
-- * @length: Length of that data
-- * @no_interrupt: If true, hints that no completion irq is needed.
-- *	Helpful sometimes with deep request queues that are handled
-- *	directly by DMA controllers.
-- * @zero: If true, when writing data, makes the last packet be "short"
-- *     by adding a zero length packet as needed;
-- * @short_not_ok: When reading data, makes short packets be
-- *     treated as errors (queue stops advancing till cleanup).
-- * @complete: Function called when request completes, so this request and
-- *	its buffer may be re-used.
-- *	Reads terminate with a short packet, or when the buffer fills,
-- *	whichever comes first.  When writes terminate, some data bytes
-- *	will usually still be in flight (often in a hardware fifo).
-- *	Errors (for reads or writes) stop the queue from advancing
-- *	until the completion function returns, so that any transfers
-- *	invalidated by the error may first be dequeued.
-- * @context: For use by the completion callback
-- * @list: For use by the gadget driver.
-- * @status: Reports completion code, zero or a negative errno.
-- *	Normally, faults block the transfer queue from advancing until
-- *	the completion callback returns.
-- *	Code "-ESHUTDOWN" indicates completion caused by device disconnect,
-- *	or when the driver disabled the endpoint.
-- * @actual: Reports bytes transferred to/from the buffer.  For reads (OUT
-- *	transfers) this may be less than the requested length.  If the
-- *	short_not_ok flag is set, short reads are treated as errors
-- *	even when status otherwise indicates successful completion.
-- *	Note that for writes (IN transfers) some data bytes may still
-- *	reside in a device-side FIFO when the request is reported as
-- *	complete.
-- *
-- * These are allocated/freed through the endpoint they're used with.  The
-- * hardware's driver can add extra per-request data to the memory it returns,
-- * which often avoids separate memory allocations (potential failures),
-- * later when the request is queued.
-- *
-- * Request flags affect request handling, such as whether a zero length
-- * packet is written (the "zero" flag), whether a short read should be
-- * treated as an error (blocking request queue advance, the "short_not_ok"
-- * flag), or hinting that an interrupt is not required (the "no_interrupt"
-- * flag, for use with deep request queues).
-- *
-- * Bulk endpoints can use any size buffers, and can also be used for interrupt
-- * transfers. interrupt-only endpoints can be much less functional.
-- *
-- * NOTE:  this is analagous to 'struct urb' on the host side, except that
-- * it's thinner and promotes more pre-allocation.
-- */
--
--struct usb_request {
--	void			*buf;
--	unsigned		length;
--	dma_addr_t		dma;
--
--	unsigned		no_interrupt:1;
--	unsigned		zero:1;
--	unsigned		short_not_ok:1;
--
--	void			(*complete)(struct usb_ep *ep,
--					struct usb_request *req);
--	void			*context;
--	struct list_head	list;
--
--	int			status;
--	unsigned		actual;
--};
--
--/*-------------------------------------------------------------------------*/
--
--/* endpoint-specific parts of the api to the usb controller hardware.
-- * unlike the urb model, (de)multiplexing layers are not required.
-- * (so this api could slash overhead if used on the host side...)
-- *
-- * note that device side usb controllers commonly differ in how many
-- * endpoints they support, as well as their capabilities.
-- */
--struct usb_ep_ops {
--	int (*enable) (struct usb_ep *ep,
--		const struct usb_endpoint_descriptor *desc);
--	int (*disable) (struct usb_ep *ep);
--
--	struct usb_request *(*alloc_request) (struct usb_ep *ep,
--		gfp_t gfp_flags);
--	void (*free_request) (struct usb_ep *ep, struct usb_request *req);
--
--	int (*queue) (struct usb_ep *ep, struct usb_request *req,
--		gfp_t gfp_flags);
--	int (*dequeue) (struct usb_ep *ep, struct usb_request *req);
--
--	int (*set_halt) (struct usb_ep *ep, int value);
--	int (*fifo_status) (struct usb_ep *ep);
--	void (*fifo_flush) (struct usb_ep *ep);
--};
--
--/**
-- * struct usb_ep - device side representation of USB endpoint
-- * @name:identifier for the endpoint, such as "ep-a" or "ep9in-bulk"
-- * @ops: Function pointers used to access hardware-specific operations.
-- * @ep_list:the gadget's ep_list holds all of its endpoints
-- * @maxpacket:The maximum packet size used on this endpoint.  The initial
-- *	value can sometimes be reduced (hardware allowing), according to
-- *      the endpoint descriptor used to configure the endpoint.
-- * @driver_data:for use by the gadget driver.  all other fields are
-- *	read-only to gadget drivers.
-- *
-- * the bus controller driver lists all the general purpose endpoints in
-- * gadget->ep_list.  the control endpoint (gadget->ep0) is not in that list,
-- * and is accessed only in response to a driver setup() callback.
-- */
--struct usb_ep {
--	void			*driver_data;
--	const char		*name;
--	const struct usb_ep_ops	*ops;
--	struct list_head	ep_list;
--	unsigned		maxpacket:16;
--};
--
--/*-------------------------------------------------------------------------*/
--
--/**
-- * usb_ep_enable - configure endpoint, making it usable
-- * @ep:the endpoint being configured.  may not be the endpoint named "ep0".
-- *	drivers discover endpoints through the ep_list of a usb_gadget.
-- * @desc:descriptor for desired behavior.  caller guarantees this pointer
-- *	remains valid until the endpoint is disabled; the data byte order
-- *	is little-endian (usb-standard).
-- *
-- * when configurations are set, or when interface settings change, the driver
-- * will enable or disable the relevant endpoints.  while it is enabled, an
-- * endpoint may be used for i/o until the driver receives a disconnect() from
-- * the host or until the endpoint is disabled.
-- *
-- * the ep0 implementation (which calls this routine) must ensure that the
-- * hardware capabilities of each endpoint match the descriptor provided
-- * for it.  for example, an endpoint named "ep2in-bulk" would be usable
-- * for interrupt transfers as well as bulk, but it likely couldn't be used
-- * for iso transfers or for endpoint 14.  some endpoints are fully
-- * configurable, with more generic names like "ep-a".  (remember that for
-- * USB, "in" means "towards the USB master".)
-- *
-- * returns zero, or a negative error code.
-- */
--static inline int usb_ep_enable(struct usb_ep *ep,
--				const struct usb_endpoint_descriptor *desc)
+-void musb_g_giveback(
+-	struct musb_ep		*ep,
+-	struct usb_request	*request,
+-	int			status)
+-__releases(ep->musb->lock)
+-__acquires(ep->musb->lock)
 -{
--	return ep->ops->enable(ep, desc);
--}
+-	struct musb_request	*req;
+-	struct musb		*musb;
+-	int			busy = ep->busy;
 -
--/**
-- * usb_ep_disable - endpoint is no longer usable
-- * @ep:the endpoint being unconfigured.  may not be the endpoint named "ep0".
-- *
-- * no other task may be using this endpoint when this is called.
-- * any pending and uncompleted requests will complete with status
-- * indicating disconnect (-ESHUTDOWN) before this call returns.
-- * gadget drivers must call usb_ep_enable() again before queueing
-- * requests to the endpoint.
-- *
-- * returns zero, or a negative error code.
-- */
--static inline int usb_ep_disable(struct usb_ep *ep)
--{
--	return ep->ops->disable(ep);
--}
+-	req = to_musb_request(request);
 -
--/**
-- * usb_ep_alloc_request - allocate a request object to use with this endpoint
-- * @ep:the endpoint to be used with with the request
-- * @gfp_flags:GFP_* flags to use
-- *
-- * Request objects must be allocated with this call, since they normally
-- * need controller-specific setup and may even need endpoint-specific
-- * resources such as allocation of DMA descriptors.
-- * Requests may be submitted with usb_ep_queue(), and receive a single
-- * completion callback.  Free requests with usb_ep_free_request(), when
-- * they are no longer needed.
-- *
-- * Returns the request, or null if one could not be allocated.
-- */
--static inline struct usb_request *usb_ep_alloc_request(struct usb_ep *ep,
--						       gfp_t gfp_flags)
--{
--	return ep->ops->alloc_request(ep, gfp_flags);
--}
+-	list_del(&req->list);
+-	if (req->request.status == -EINPROGRESS)
+-		req->request.status = status;
+-	musb = req->musb;
 -
--/**
-- * usb_ep_free_request - frees a request object
-- * @ep:the endpoint associated with the request
-- * @req:the request being freed
-- *
-- * Reverses the effect of usb_ep_alloc_request().
-- * Caller guarantees the request is not queued, and that it will
-- * no longer be requeued (or otherwise used).
-- */
--static inline void usb_ep_free_request(struct usb_ep *ep,
--				       struct usb_request *req)
--{
--	ep->ops->free_request(ep, req);
--}
--
--/**
-- * usb_ep_queue - queues (submits) an I/O request to an endpoint.
-- * @ep:the endpoint associated with the request
-- * @req:the request being submitted
-- * @gfp_flags: GFP_* flags to use in case the lower level driver couldn't
-- *	pre-allocate all necessary memory with the request.
-- *
-- * This tells the device controller to perform the specified request through
-- * that endpoint (reading or writing a buffer).  When the request completes,
-- * including being canceled by usb_ep_dequeue(), the request's completion
-- * routine is called to return the request to the driver.  Any endpoint
-- * (except control endpoints like ep0) may have more than one transfer
-- * request queued; they complete in FIFO order.  Once a gadget driver
-- * submits a request, that request may not be examined or modified until it
-- * is given back to that driver through the completion callback.
-- *
-- * Each request is turned into one or more packets.  The controller driver
-- * never merges adjacent requests into the same packet.  OUT transfers
-- * will sometimes use data that's already buffered in the hardware.
-- * Drivers can rely on the fact that the first byte of the request's buffer
-- * always corresponds to the first byte of some USB packet, for both
-- * IN and OUT transfers.
-- *
-- * Bulk endpoints can queue any amount of data; the transfer is packetized
-- * automatically.  The last packet will be short if the request doesn't fill it
-- * out completely.  Zero length packets (ZLPs) should be avoided in portable
-- * protocols since not all usb hardware can successfully handle zero length
-- * packets.  (ZLPs may be explicitly written, and may be implicitly written if
-- * the request 'zero' flag is set.)  Bulk endpoints may also be used
-- * for interrupt transfers; but the reverse is not true, and some endpoints
-- * won't support every interrupt transfer.  (Such as 768 byte packets.)
-- *
-- * Interrupt-only endpoints are less functional than bulk endpoints, for
-- * example by not supporting queueing or not handling buffers that are
-- * larger than the endpoint's maxpacket size.  They may also treat data
-- * toggle differently.
-- *
-- * Control endpoints ... after getting a setup() callback, the driver queues
-- * one response (even if it would be zero length).  That enables the
-- * status ack, after transfering data as specified in the response.  Setup
-- * functions may return negative error codes to generate protocol stalls.
-- * (Note that some USB device controllers disallow protocol stall responses
-- * in some cases.)  When control responses are deferred (the response is
-- * written after the setup callback returns), then usb_ep_set_halt() may be
-- * used on ep0 to trigger protocol stalls.
-- *
-- * For periodic endpoints, like interrupt or isochronous ones, the usb host
-- * arranges to poll once per interval, and the gadget driver usually will
-- * have queued some data to transfer at that time.
-- *
-- * Returns zero, or a negative error code.  Endpoints that are not enabled
-- * report errors; errors will also be
-- * reported when the usb peripheral is disconnected.
-- */
--static inline int usb_ep_queue(struct usb_ep *ep,
--			       struct usb_request *req, gfp_t gfp_flags)
--{
--	return ep->ops->queue(ep, req, gfp_flags);
--}
--
--/**
-- * usb_ep_dequeue - dequeues (cancels, unlinks) an I/O request from an endpoint
-- * @ep:the endpoint associated with the request
-- * @req:the request being canceled
-- *
-- * if the request is still active on the endpoint, it is dequeued and its
-- * completion routine is called (with status -ECONNRESET); else a negative
-- * error code is returned.
-- *
-- * note that some hardware can't clear out write fifos (to unlink the request
-- * at the head of the queue) except as part of disconnecting from usb.  such
-- * restrictions prevent drivers from supporting configuration changes,
-- * even to configuration zero (a "chapter 9" requirement).
-- */
--static inline int usb_ep_dequeue(struct usb_ep *ep, struct usb_request *req)
--{
--	return ep->ops->dequeue(ep, req);
--}
--
--/**
-- * usb_ep_set_halt - sets the endpoint halt feature.
-- * @ep: the non-isochronous endpoint being stalled
-- *
-- * Use this to stall an endpoint, perhaps as an error report.
-- * Except for control endpoints,
-- * the endpoint stays halted (will not stream any data) until the host
-- * clears this feature; drivers may need to empty the endpoint's request
-- * queue first, to make sure no inappropriate transfers happen.
-- *
-- * Note that while an endpoint CLEAR_FEATURE will be invisible to the
-- * gadget driver, a SET_INTERFACE will not be.  To reset endpoints for the
-- * current altsetting, see usb_ep_clear_halt().  When switching altsettings,
-- * it's simplest to use usb_ep_enable() or usb_ep_disable() for the endpoints.
-- *
-- * Returns zero, or a negative error code.  On success, this call sets
-- * underlying hardware state that blocks data transfers.
-- * Attempts to halt IN endpoints will fail (returning -EAGAIN) if any
-- * transfer requests are still queued, or if the controller hardware
-- * (usually a FIFO) still holds bytes that the host hasn't collected.
-- */
--static inline int usb_ep_set_halt(struct usb_ep *ep)
--{
--	return ep->ops->set_halt(ep, 1);
--}
--
--/**
-- * usb_ep_clear_halt - clears endpoint halt, and resets toggle
-- * @ep:the bulk or interrupt endpoint being reset
-- *
-- * Use this when responding to the standard usb "set interface" request,
-- * for endpoints that aren't reconfigured, after clearing any other state
-- * in the endpoint's i/o queue.
-- *
-- * Returns zero, or a negative error code.  On success, this call clears
-- * the underlying hardware state reflecting endpoint halt and data toggle.
-- * Note that some hardware can't support this request (like pxa2xx_udc),
-- * and accordingly can't correctly implement interface altsettings.
-- */
--static inline int usb_ep_clear_halt(struct usb_ep *ep)
--{
--	return ep->ops->set_halt(ep, 0);
--}
--
--/**
-- * usb_ep_fifo_status - returns number of bytes in fifo, or error
-- * @ep: the endpoint whose fifo status is being checked.
-- *
-- * FIFO endpoints may have "unclaimed data" in them in certain cases,
-- * such as after aborted transfers.  Hosts may not have collected all
-- * the IN data written by the gadget driver (and reported by a request
-- * completion).  The gadget driver may not have collected all the data
-- * written OUT to it by the host.  Drivers that need precise handling for
-- * fault reporting or recovery may need to use this call.
-- *
-- * This returns the number of such bytes in the fifo, or a negative
-- * errno if the endpoint doesn't use a FIFO or doesn't support such
-- * precise handling.
-- */
--static inline int usb_ep_fifo_status(struct usb_ep *ep)
--{
--	if (ep->ops->fifo_status)
--		return ep->ops->fifo_status(ep);
+-	ep->busy = 1;
+-	spin_unlock(&musb->lock);
+-	unmap_dma_buffer(req, musb);
+-	if (request->status == 0)
+-		dev_dbg(musb->controller, "%s done request %p,  %d/%d\n",
+-				ep->end_point.name, request,
+-				req->request.actual, req->request.length);
 -	else
--		return -EOPNOTSUPP;
+-		dev_dbg(musb->controller, "%s request %p, %d/%d fault %d\n",
+-				ep->end_point.name, request,
+-				req->request.actual, req->request.length,
+-				request->status);
+-	req->request.complete(&req->ep->end_point, &req->request);
+-	spin_lock(&musb->lock);
+-	ep->busy = busy;
 -}
 -
--/**
-- * usb_ep_fifo_flush - flushes contents of a fifo
-- * @ep: the endpoint whose fifo is being flushed.
-- *
-- * This call may be used to flush the "unclaimed data" that may exist in
-- * an endpoint fifo after abnormal transaction terminations.  The call
-- * must never be used except when endpoint is not being used for any
-- * protocol translation.
+-/* ----------------------------------------------------------------------- */
+-
+-/*
+- * Abort requests queued to an endpoint using the status. Synchronous.
+- * caller locked controller and blocked irqs, and selected this ep.
 - */
--static inline void usb_ep_fifo_flush(struct usb_ep *ep)
+-static void nuke(struct musb_ep *ep, const int status)
 -{
--	if (ep->ops->fifo_flush)
--		ep->ops->fifo_flush(ep);
+-	struct musb		*musb = ep->musb;
+-	struct musb_request	*req = NULL;
+-	void __iomem *epio = ep->musb->endpoints[ep->current_epnum].regs;
+-
+-	ep->busy = 1;
+-
+-	if (is_dma_capable() && ep->dma) {
+-		struct dma_controller	*c = ep->musb->dma_controller;
+-		int value;
+-
+-		if (ep->is_in) {
+-			/*
+-			 * The programming guide says that we must not clear
+-			 * the DMAMODE bit before DMAENAB, so we only
+-			 * clear it in the second write...
+-			 */
+-			musb_writew(epio, MUSB_TXCSR,
+-				    MUSB_TXCSR_DMAMODE | MUSB_TXCSR_FLUSHFIFO);
+-			musb_writew(epio, MUSB_TXCSR,
+-					0 | MUSB_TXCSR_FLUSHFIFO);
+-		} else {
+-			musb_writew(epio, MUSB_RXCSR,
+-					0 | MUSB_RXCSR_FLUSHFIFO);
+-			musb_writew(epio, MUSB_RXCSR,
+-					0 | MUSB_RXCSR_FLUSHFIFO);
+-		}
+-
+-		value = c->channel_abort(ep->dma);
+-		dev_dbg(musb->controller, "%s: abort DMA --> %d\n",
+-				ep->name, value);
+-		c->channel_release(ep->dma);
+-		ep->dma = NULL;
+-	}
+-
+-	while (!list_empty(&ep->req_list)) {
+-		req = list_first_entry(&ep->req_list, struct musb_request, list);
+-		musb_g_giveback(ep, &req->request, status);
+-	}
 -}
 -
+-/* ----------------------------------------------------------------------- */
 -
--/*-------------------------------------------------------------------------*/
+-/* Data transfers - pure PIO, pure DMA, or mixed mode */
 -
--struct usb_gadget;
--
--/* the rest of the api to the controller hardware: device operations,
-- * which don't involve endpoints (or i/o).
+-/*
+- * This assumes the separate CPPI engine is responding to DMA requests
+- * from the usb core ... sequenced a bit differently from mentor dma.
 - */
--struct usb_gadget_ops {
--	int	(*get_frame)(struct usb_gadget *);
--	int	(*wakeup)(struct usb_gadget *);
--	int	(*set_selfpowered) (struct usb_gadget *, int is_selfpowered);
--	int	(*vbus_session) (struct usb_gadget *, int is_active);
--	int	(*vbus_draw) (struct usb_gadget *, unsigned mA);
--	int	(*pullup) (struct usb_gadget *, int is_on);
--	int	(*ioctl)(struct usb_gadget *,
--				unsigned code, unsigned long param);
--};
 -
--struct device {
--	void		*driver_data;	/* data private to the driver */
--	void            *device_data;   /* data private to the device */
--};
+-static inline int max_ep_writesize(struct musb *musb, struct musb_ep *ep)
+-{
+-	if (can_bulk_split(musb, ep->type))
+-		return ep->hw_ep->max_packet_sz_tx;
+-	else
+-		return ep->packet_sz;
+-}
 -
--/**
-- * struct usb_gadget - represents a usb slave device
-- * @ops: Function pointers used to access hardware-specific operations.
-- * @ep0: Endpoint zero, used when reading or writing responses to
-- *	driver setup() requests
-- * @ep_list: List of other endpoints supported by the device.
-- * @speed: Speed of current connection to USB host.
-- * @is_dualspeed: true if the controller supports both high and full speed
-- *	operation.  If it does, the gadget driver must also support both.
-- * @is_otg: true if the USB device port uses a Mini-AB jack, so that the
-- *	gadget driver must provide a USB OTG descriptor.
-- * @is_a_peripheral: false unless is_otg, the "A" end of a USB cable
-- *	is in the Mini-AB jack, and HNP has been used to switch roles
-- *	so that the "A" device currently acts as A-Peripheral, not A-Host.
-- * @a_hnp_support: OTG device feature flag, indicating that the A-Host
-- *	supports HNP at this port.
-- * @a_alt_hnp_support: OTG device feature flag, indicating that the A-Host
-- *	only supports HNP on a different root port.
-- * @b_hnp_enable: OTG device feature flag, indicating that the A-Host
-- *	enabled HNP support.
-- * @name: Identifies the controller hardware type.  Used in diagnostics
-- *	and sometimes configuration.
-- * @dev: Driver model state for this abstract device.
-- *
-- * Gadgets have a mostly-portable "gadget driver" implementing device
-- * functions, handling all usb configurations and interfaces.  Gadget
-- * drivers talk to hardware-specific code indirectly, through ops vectors.
-- * That insulates the gadget driver from hardware details, and packages
-- * the hardware endpoints through generic i/o queues.  The "usb_gadget"
-- * and "usb_ep" interfaces provide that insulation from the hardware.
-- *
-- * Except for the driver data, all fields in this structure are
-- * read-only to the gadget driver.  That driver data is part of the
-- * "driver model" infrastructure in 2.6 (and later) kernels, and for
-- * earlier systems is grouped in a similar structure that's not known
-- * to the rest of the kernel.
-- *
-- * Values of the three OTG device feature flags are updated before the
-- * setup() call corresponding to USB_REQ_SET_CONFIGURATION, and before
-- * driver suspend() calls.  They are valid only when is_otg, and when the
-- * device is acting as a B-Peripheral (so is_a_peripheral is false).
+-
+-#ifdef CONFIG_USB_INVENTRA_DMA
+-
+-/* Peripheral tx (IN) using Mentor DMA works as follows:
+-	Only mode 0 is used for transfers <= wPktSize,
+-	mode 1 is used for larger transfers,
+-
+-	One of the following happens:
+-	- Host sends IN token which causes an endpoint interrupt
+-		-> TxAvail
+-			-> if DMA is currently busy, exit.
+-			-> if queue is non-empty, txstate().
+-
+-	- Request is queued by the gadget driver.
+-		-> if queue was previously empty, txstate()
+-
+-	txstate()
+-		-> start
+-		  /\	-> setup DMA
+-		  |     (data is transferred to the FIFO, then sent out when
+-		  |	IN token(s) are recd from Host.
+-		  |		-> DMA interrupt on completion
+-		  |		   calls TxAvail.
+-		  |		      -> stop DMA, ~DMAENAB,
+-		  |		      -> set TxPktRdy for last short pkt or zlp
+-		  |		      -> Complete Request
+-		  |		      -> Continue next request (call txstate)
+-		  |___________________________________|
+-
+- * Non-Mentor DMA engines can of course work differently, such as by
+- * upleveling from irq-per-packet to irq-per-buffer.
 - */
--struct usb_gadget {
--	/* readonly to gadget driver */
--	const struct usb_gadget_ops	*ops;
--	struct usb_ep			*ep0;
--	struct list_head		ep_list;	/* of usb_ep */
--	enum usb_device_speed		speed;
--	unsigned			is_dualspeed:1;
--	unsigned			is_otg:1;
--	unsigned			is_a_peripheral:1;
--	unsigned			b_hnp_enable:1;
--	unsigned			a_hnp_support:1;
--	unsigned			a_alt_hnp_support:1;
--	const char			*name;
--	struct device			dev;
--};
 -
--static inline void set_gadget_data(struct usb_gadget *gadget, void *data)
--{
--	gadget->dev.driver_data = data;
--}
+-#endif
 -
--static inline void *get_gadget_data(struct usb_gadget *gadget)
--{
--	return gadget->dev.driver_data;
--}
--
--static inline struct usb_gadget *dev_to_usb_gadget(struct device *dev)
--{
--	return container_of(dev, struct usb_gadget, dev);
--}
--
--/* iterates the non-control endpoints; 'tmp' is a struct usb_ep pointer */
--#define gadget_for_each_ep(tmp, gadget) \
--	list_for_each_entry(tmp, &(gadget)->ep_list, ep_list)
--
--
--/**
-- * gadget_is_dualspeed - return true iff the hardware handles high speed
-- * @g: controller that might support both high and full speeds
+-/*
+- * An endpoint is transmitting data. This can be called either from
+- * the IRQ routine or from ep.queue() to kickstart a request on an
+- * endpoint.
+- *
+- * Context: controller locked, IRQs blocked, endpoint selected
 - */
--static inline int gadget_is_dualspeed(struct usb_gadget *g)
+-static void txstate(struct musb *musb, struct musb_request *req)
 -{
--#ifdef CONFIG_USB_GADGET_DUALSPEED
--	/* runtime test would check "g->is_dualspeed" ... that might be
--	 * useful to work around hardware bugs, but is mostly pointless
+-	u8			epnum = req->epnum;
+-	struct musb_ep		*musb_ep;
+-	void __iomem		*epio = musb->endpoints[epnum].regs;
+-	struct usb_request	*request;
+-	u16			fifo_count = 0, csr;
+-	int			use_dma = 0;
+-
+-	musb_ep = req->ep;
+-
+-	/* Check if EP is disabled */
+-	if (!musb_ep->desc) {
+-		dev_dbg(musb->controller, "ep:%s disabled - ignore request\n",
+-						musb_ep->end_point.name);
+-		return;
+-	}
+-
+-	/* we shouldn't get here while DMA is active ... but we do ... */
+-	if (dma_channel_status(musb_ep->dma) == MUSB_DMA_STATUS_BUSY) {
+-		dev_dbg(musb->controller, "dma pending...\n");
+-		return;
+-	}
+-
+-	/* read TXCSR before */
+-	csr = musb_readw(epio, MUSB_TXCSR);
+-
+-	request = &req->request;
+-	fifo_count = min(max_ep_writesize(musb, musb_ep),
+-			(int)(request->length - request->actual));
+-
+-	if (csr & MUSB_TXCSR_TXPKTRDY) {
+-		dev_dbg(musb->controller, "%s old packet still ready , txcsr %03x\n",
+-				musb_ep->end_point.name, csr);
+-		return;
+-	}
+-
+-	if (csr & MUSB_TXCSR_P_SENDSTALL) {
+-		dev_dbg(musb->controller, "%s stalling, txcsr %03x\n",
+-				musb_ep->end_point.name, csr);
+-		return;
+-	}
+-
+-	dev_dbg(musb->controller, "hw_ep%d, maxpacket %d, fifo count %d, txcsr %03x\n",
+-			epnum, musb_ep->packet_sz, fifo_count,
+-			csr);
+-
+-#ifndef	CONFIG_MUSB_PIO_ONLY
+-	if (is_buffer_mapped(req)) {
+-		struct dma_controller	*c = musb->dma_controller;
+-		size_t request_size;
+-
+-		/* setup DMA, then program endpoint CSR */
+-		request_size = min_t(size_t, request->length - request->actual,
+-					musb_ep->dma->max_len);
+-
+-		use_dma = (request->dma != DMA_ADDR_INVALID);
+-
+-		/* MUSB_TXCSR_P_ISO is still set correctly */
+-
+-#if defined(CONFIG_USB_INVENTRA_DMA) || defined(CONFIG_USB_UX500_DMA)
+-		{
+-			if (request_size < musb_ep->packet_sz)
+-				musb_ep->dma->desired_mode = 0;
+-			else
+-				musb_ep->dma->desired_mode = 1;
+-
+-			use_dma = use_dma && c->channel_program(
+-					musb_ep->dma, musb_ep->packet_sz,
+-					musb_ep->dma->desired_mode,
+-					request->dma + request->actual, request_size);
+-			if (use_dma) {
+-				if (musb_ep->dma->desired_mode == 0) {
+-					/*
+-					 * We must not clear the DMAMODE bit
+-					 * before the DMAENAB bit -- and the
+-					 * latter doesn't always get cleared
+-					 * before we get here...
+-					 */
+-					csr &= ~(MUSB_TXCSR_AUTOSET
+-						| MUSB_TXCSR_DMAENAB);
+-					musb_writew(epio, MUSB_TXCSR, csr
+-						| MUSB_TXCSR_P_WZC_BITS);
+-					csr &= ~MUSB_TXCSR_DMAMODE;
+-					csr |= (MUSB_TXCSR_DMAENAB |
+-							MUSB_TXCSR_MODE);
+-					/* against programming guide */
+-				} else {
+-					csr |= (MUSB_TXCSR_DMAENAB
+-							| MUSB_TXCSR_DMAMODE
+-							| MUSB_TXCSR_MODE);
+-					if (!musb_ep->hb_mult)
+-						csr |= MUSB_TXCSR_AUTOSET;
+-				}
+-				csr &= ~MUSB_TXCSR_P_UNDERRUN;
+-
+-				musb_writew(epio, MUSB_TXCSR, csr);
+-			}
+-		}
+-
+-#elif defined(CONFIG_USB_TI_CPPI_DMA)
+-		/* program endpoint CSR first, then setup DMA */
+-		csr &= ~(MUSB_TXCSR_P_UNDERRUN | MUSB_TXCSR_TXPKTRDY);
+-		csr |= MUSB_TXCSR_DMAENAB | MUSB_TXCSR_DMAMODE |
+-		       MUSB_TXCSR_MODE;
+-		musb_writew(epio, MUSB_TXCSR,
+-			(MUSB_TXCSR_P_WZC_BITS & ~MUSB_TXCSR_P_UNDERRUN)
+-				| csr);
+-
+-		/* ensure writebuffer is empty */
+-		csr = musb_readw(epio, MUSB_TXCSR);
+-
+-		/* NOTE host side sets DMAENAB later than this; both are
+-		 * OK since the transfer dma glue (between CPPI and Mentor
+-		 * fifos) just tells CPPI it could start.  Data only moves
+-		 * to the USB TX fifo when both fifos are ready.
+-		 */
+-
+-		/* "mode" is irrelevant here; handle terminating ZLPs like
+-		 * PIO does, since the hardware RNDIS mode seems unreliable
+-		 * except for the last-packet-is-already-short case.
+-		 */
+-		use_dma = use_dma && c->channel_program(
+-				musb_ep->dma, musb_ep->packet_sz,
+-				0,
+-				request->dma + request->actual,
+-				request_size);
+-		if (!use_dma) {
+-			c->channel_release(musb_ep->dma);
+-			musb_ep->dma = NULL;
+-			csr &= ~MUSB_TXCSR_DMAENAB;
+-			musb_writew(epio, MUSB_TXCSR, csr);
+-			/* invariant: prequest->buf is non-null */
+-		}
+-#elif defined(CONFIG_USB_TUSB_OMAP_DMA)
+-		use_dma = use_dma && c->channel_program(
+-				musb_ep->dma, musb_ep->packet_sz,
+-				request->zero,
+-				request->dma + request->actual,
+-				request_size);
+-#endif
+-	}
+-#endif
+-
+-	if (!use_dma) {
+-		/*
+-		 * Unmap the dma buffer back to cpu if dma channel
+-		 * programming fails
+-		 */
+-		unmap_dma_buffer(req, musb);
+-
+-		musb_write_fifo(musb_ep->hw_ep, fifo_count,
+-				(u8 *) (request->buf + request->actual));
+-		request->actual += fifo_count;
+-		csr |= MUSB_TXCSR_TXPKTRDY;
+-		csr &= ~MUSB_TXCSR_P_UNDERRUN;
+-		musb_writew(epio, MUSB_TXCSR, csr);
+-	}
+-
+-	/* host may already have the data when this message shows... */
+-	dev_dbg(musb->controller, "%s TX/IN %s len %d/%d, txcsr %04x, fifo %d/%d\n",
+-			musb_ep->end_point.name, use_dma ? "dma" : "pio",
+-			request->actual, request->length,
+-			musb_readw(epio, MUSB_TXCSR),
+-			fifo_count,
+-			musb_readw(epio, MUSB_TXMAXP));
+-}
+-
+-/*
+- * FIFO state update (e.g. data ready).
+- * Called from IRQ,  with controller locked.
+- */
+-void musb_g_tx(struct musb *musb, u8 epnum)
+-{
+-	u16			csr;
+-	struct musb_request	*req;
+-	struct usb_request	*request;
+-	u8 __iomem		*mbase = musb->mregs;
+-	struct musb_ep		*musb_ep = &musb->endpoints[epnum].ep_in;
+-	void __iomem		*epio = musb->endpoints[epnum].regs;
+-	struct dma_channel	*dma;
+-
+-	musb_ep_select(mbase, epnum);
+-	req = next_request(musb_ep);
+-	request = &req->request;
+-
+-	csr = musb_readw(epio, MUSB_TXCSR);
+-	dev_dbg(musb->controller, "<== %s, txcsr %04x\n", musb_ep->end_point.name, csr);
+-
+-	dma = is_dma_capable() ? musb_ep->dma : NULL;
+-
+-	/*
+-	 * REVISIT: for high bandwidth, MUSB_TXCSR_P_INCOMPTX
+-	 * probably rates reporting as a host error.
 -	 */
--	return 1;
+-	if (csr & MUSB_TXCSR_P_SENTSTALL) {
+-		csr |=	MUSB_TXCSR_P_WZC_BITS;
+-		csr &= ~MUSB_TXCSR_P_SENTSTALL;
+-		musb_writew(epio, MUSB_TXCSR, csr);
+-		return;
+-	}
+-
+-	if (csr & MUSB_TXCSR_P_UNDERRUN) {
+-		/* We NAKed, no big deal... little reason to care. */
+-		csr |=	 MUSB_TXCSR_P_WZC_BITS;
+-		csr &= ~(MUSB_TXCSR_P_UNDERRUN | MUSB_TXCSR_TXPKTRDY);
+-		musb_writew(epio, MUSB_TXCSR, csr);
+-		dev_vdbg(musb->controller, "underrun on ep%d, req %p\n",
+-				epnum, request);
+-	}
+-
+-	if (dma_channel_status(dma) == MUSB_DMA_STATUS_BUSY) {
+-		/*
+-		 * SHOULD NOT HAPPEN... has with CPPI though, after
+-		 * changing SENDSTALL (and other cases); harmless?
+-		 */
+-		dev_dbg(musb->controller, "%s dma still busy?\n", musb_ep->end_point.name);
+-		return;
+-	}
+-
+-	if (request) {
+-		u8	is_dma = 0;
+-
+-		if (dma && (csr & MUSB_TXCSR_DMAENAB)) {
+-			is_dma = 1;
+-			csr |= MUSB_TXCSR_P_WZC_BITS;
+-			csr &= ~(MUSB_TXCSR_DMAENAB | MUSB_TXCSR_P_UNDERRUN |
+-				 MUSB_TXCSR_TXPKTRDY | MUSB_TXCSR_AUTOSET);
+-			musb_writew(epio, MUSB_TXCSR, csr);
+-			/* Ensure writebuffer is empty. */
+-			csr = musb_readw(epio, MUSB_TXCSR);
+-			request->actual += musb_ep->dma->actual_len;
+-			dev_dbg(musb->controller, "TXCSR%d %04x, DMA off, len %zu, req %p\n",
+-				epnum, csr, musb_ep->dma->actual_len, request);
+-		}
+-
+-		/*
+-		 * First, maybe a terminating short packet. Some DMA
+-		 * engines might handle this by themselves.
+-		 */
+-		if ((request->zero && request->length
+-			&& (request->length % musb_ep->packet_sz == 0)
+-			&& (request->actual == request->length))
+-#if defined(CONFIG_USB_INVENTRA_DMA) || defined(CONFIG_USB_UX500_DMA)
+-			|| (is_dma && (!dma->desired_mode ||
+-				(request->actual &
+-					(musb_ep->packet_sz - 1))))
+-#endif
+-		) {
+-			/*
+-			 * On DMA completion, FIFO may not be
+-			 * available yet...
+-			 */
+-			if (csr & MUSB_TXCSR_TXPKTRDY)
+-				return;
+-
+-			dev_dbg(musb->controller, "sending zero pkt\n");
+-			musb_writew(epio, MUSB_TXCSR, MUSB_TXCSR_MODE
+-					| MUSB_TXCSR_TXPKTRDY);
+-			request->zero = 0;
+-		}
+-
+-		if (request->actual == request->length) {
+-			musb_g_giveback(musb_ep, request, 0);
+-			/*
+-			 * In the giveback function the MUSB lock is
+-			 * released and acquired after sometime. During
+-			 * this time period the INDEX register could get
+-			 * changed by the gadget_queue function especially
+-			 * on SMP systems. Reselect the INDEX to be sure
+-			 * we are reading/modifying the right registers
+-			 */
+-			musb_ep_select(mbase, epnum);
+-			req = musb_ep->desc ? next_request(musb_ep) : NULL;
+-			if (!req) {
+-				dev_dbg(musb->controller, "%s idle now\n",
+-					musb_ep->end_point.name);
+-				return;
+-			}
+-		}
+-
+-		txstate(musb, req);
+-	}
+-}
+-
+-/* ------------------------------------------------------------ */
+-
+-#ifdef CONFIG_USB_INVENTRA_DMA
+-
+-/* Peripheral rx (OUT) using Mentor DMA works as follows:
+-	- Only mode 0 is used.
+-
+-	- Request is queued by the gadget class driver.
+-		-> if queue was previously empty, rxstate()
+-
+-	- Host sends OUT token which causes an endpoint interrupt
+-	  /\      -> RxReady
+-	  |	      -> if request queued, call rxstate
+-	  |		/\	-> setup DMA
+-	  |		|	     -> DMA interrupt on completion
+-	  |		|		-> RxReady
+-	  |		|		      -> stop DMA
+-	  |		|		      -> ack the read
+-	  |		|		      -> if data recd = max expected
+-	  |		|				by the request, or host
+-	  |		|				sent a short packet,
+-	  |		|				complete the request,
+-	  |		|				and start the next one.
+-	  |		|_____________________________________|
+-	  |					 else just wait for the host
+-	  |					    to send the next OUT token.
+-	  |__________________________________________________|
+-
+- * Non-Mentor DMA engines can of course work differently.
+- */
+-
+-#endif
+-
+-/*
+- * Context: controller locked, IRQs blocked, endpoint selected
+- */
+-static void rxstate(struct musb *musb, struct musb_request *req)
+-{
+-	const u8		epnum = req->epnum;
+-	struct usb_request	*request = &req->request;
+-	struct musb_ep		*musb_ep;
+-	void __iomem		*epio = musb->endpoints[epnum].regs;
+-	unsigned		fifo_count = 0;
+-	u16			len;
+-	u16			csr = musb_readw(epio, MUSB_RXCSR);
+-	struct musb_hw_ep	*hw_ep = &musb->endpoints[epnum];
+-	u8			use_mode_1;
+-
+-	if (hw_ep->is_shared_fifo)
+-		musb_ep = &hw_ep->ep_in;
+-	else
+-		musb_ep = &hw_ep->ep_out;
+-
+-	len = musb_ep->packet_sz;
+-
+-	/* Check if EP is disabled */
+-	if (!musb_ep->desc) {
+-		dev_dbg(musb->controller, "ep:%s disabled - ignore request\n",
+-						musb_ep->end_point.name);
+-		return;
+-	}
+-
+-	/* We shouldn't get here while DMA is active, but we do... */
+-	if (dma_channel_status(musb_ep->dma) == MUSB_DMA_STATUS_BUSY) {
+-		dev_dbg(musb->controller, "DMA pending...\n");
+-		return;
+-	}
+-
+-	if (csr & MUSB_RXCSR_P_SENDSTALL) {
+-		dev_dbg(musb->controller, "%s stalling, RXCSR %04x\n",
+-		    musb_ep->end_point.name, csr);
+-		return;
+-	}
+-
+-	if (is_cppi_enabled() && is_buffer_mapped(req)) {
+-		struct dma_controller	*c = musb->dma_controller;
+-		struct dma_channel	*channel = musb_ep->dma;
+-
+-		/* NOTE:  CPPI won't actually stop advancing the DMA
+-		 * queue after short packet transfers, so this is almost
+-		 * always going to run as IRQ-per-packet DMA so that
+-		 * faults will be handled correctly.
+-		 */
+-		if (c->channel_program(channel,
+-				musb_ep->packet_sz,
+-				!request->short_not_ok,
+-				request->dma + request->actual,
+-				request->length - request->actual)) {
+-
+-			/* make sure that if an rxpkt arrived after the irq,
+-			 * the cppi engine will be ready to take it as soon
+-			 * as DMA is enabled
+-			 */
+-			csr &= ~(MUSB_RXCSR_AUTOCLEAR
+-					| MUSB_RXCSR_DMAMODE);
+-			csr |= MUSB_RXCSR_DMAENAB | MUSB_RXCSR_P_WZC_BITS;
+-			musb_writew(epio, MUSB_RXCSR, csr);
+-			return;
+-		}
+-	}
+-
+-	if (csr & MUSB_RXCSR_RXPKTRDY) {
+-		len = musb_readw(epio, MUSB_RXCOUNT);
+-
+-		/*
+-		 * Enable Mode 1 on RX transfers only when short_not_ok flag
+-		 * is set. Currently short_not_ok flag is set only from
+-		 * file_storage and f_mass_storage drivers
+-		 */
+-
+-		if (request->short_not_ok && len == musb_ep->packet_sz)
+-			use_mode_1 = 1;
+-		else
+-			use_mode_1 = 0;
+-
+-		if (request->actual < request->length) {
+-#ifdef CONFIG_USB_INVENTRA_DMA
+-			if (is_buffer_mapped(req)) {
+-				struct dma_controller	*c;
+-				struct dma_channel	*channel;
+-				int			use_dma = 0;
+-
+-				c = musb->dma_controller;
+-				channel = musb_ep->dma;
+-
+-	/* We use DMA Req mode 0 in rx_csr, and DMA controller operates in
+-	 * mode 0 only. So we do not get endpoint interrupts due to DMA
+-	 * completion. We only get interrupts from DMA controller.
+-	 *
+-	 * We could operate in DMA mode 1 if we knew the size of the tranfer
+-	 * in advance. For mass storage class, request->length = what the host
+-	 * sends, so that'd work.  But for pretty much everything else,
+-	 * request->length is routinely more than what the host sends. For
+-	 * most these gadgets, end of is signified either by a short packet,
+-	 * or filling the last byte of the buffer.  (Sending extra data in
+-	 * that last pckate should trigger an overflow fault.)  But in mode 1,
+-	 * we don't get DMA completion interrupt for short packets.
+-	 *
+-	 * Theoretically, we could enable DMAReq irq (MUSB_RXCSR_DMAMODE = 1),
+-	 * to get endpoint interrupt on every DMA req, but that didn't seem
+-	 * to work reliably.
+-	 *
+-	 * REVISIT an updated g_file_storage can set req->short_not_ok, which
+-	 * then becomes usable as a runtime "use mode 1" hint...
+-	 */
+-
+-				/* Experimental: Mode1 works with mass storage use cases */
+-				if (use_mode_1) {
+-					csr |= MUSB_RXCSR_AUTOCLEAR;
+-					musb_writew(epio, MUSB_RXCSR, csr);
+-					csr |= MUSB_RXCSR_DMAENAB;
+-					musb_writew(epio, MUSB_RXCSR, csr);
+-
+-					/*
+-					 * this special sequence (enabling and then
+-					 * disabling MUSB_RXCSR_DMAMODE) is required
+-					 * to get DMAReq to activate
+-					 */
+-					musb_writew(epio, MUSB_RXCSR,
+-						csr | MUSB_RXCSR_DMAMODE);
+-					musb_writew(epio, MUSB_RXCSR, csr);
+-
+-				} else {
+-					if (!musb_ep->hb_mult &&
+-						musb_ep->hw_ep->rx_double_buffered)
+-						csr |= MUSB_RXCSR_AUTOCLEAR;
+-					csr |= MUSB_RXCSR_DMAENAB;
+-					musb_writew(epio, MUSB_RXCSR, csr);
+-				}
+-
+-				if (request->actual < request->length) {
+-					int transfer_size = 0;
+-					if (use_mode_1) {
+-						transfer_size = min(request->length - request->actual,
+-								channel->max_len);
+-						musb_ep->dma->desired_mode = 1;
+-					} else {
+-						transfer_size = min(request->length - request->actual,
+-								(unsigned)len);
+-						musb_ep->dma->desired_mode = 0;
+-					}
+-
+-					use_dma = c->channel_program(
+-							channel,
+-							musb_ep->packet_sz,
+-							channel->desired_mode,
+-							request->dma
+-							+ request->actual,
+-							transfer_size);
+-				}
+-
+-				if (use_dma)
+-					return;
+-			}
+-#elif defined(CONFIG_USB_UX500_DMA)
+-			if ((is_buffer_mapped(req)) &&
+-				(request->actual < request->length)) {
+-
+-				struct dma_controller *c;
+-				struct dma_channel *channel;
+-				int transfer_size = 0;
+-
+-				c = musb->dma_controller;
+-				channel = musb_ep->dma;
+-
+-				/* In case first packet is short */
+-				if (len < musb_ep->packet_sz)
+-					transfer_size = len;
+-				else if (request->short_not_ok)
+-					transfer_size =	min(request->length -
+-							request->actual,
+-							channel->max_len);
+-				else
+-					transfer_size = min(request->length -
+-							request->actual,
+-							(unsigned)len);
+-
+-				csr &= ~MUSB_RXCSR_DMAMODE;
+-				csr |= (MUSB_RXCSR_DMAENAB |
+-					MUSB_RXCSR_AUTOCLEAR);
+-
+-				musb_writew(epio, MUSB_RXCSR, csr);
+-
+-				if (transfer_size <= musb_ep->packet_sz) {
+-					musb_ep->dma->desired_mode = 0;
+-				} else {
+-					musb_ep->dma->desired_mode = 1;
+-					/* Mode must be set after DMAENAB */
+-					csr |= MUSB_RXCSR_DMAMODE;
+-					musb_writew(epio, MUSB_RXCSR, csr);
+-				}
+-
+-				if (c->channel_program(channel,
+-							musb_ep->packet_sz,
+-							channel->desired_mode,
+-							request->dma
+-							+ request->actual,
+-							transfer_size))
+-
+-					return;
+-			}
+-#endif	/* Mentor's DMA */
+-
+-			fifo_count = request->length - request->actual;
+-			dev_dbg(musb->controller, "%s OUT/RX pio fifo %d/%d, maxpacket %d\n",
+-					musb_ep->end_point.name,
+-					len, fifo_count,
+-					musb_ep->packet_sz);
+-
+-			fifo_count = min_t(unsigned, len, fifo_count);
+-
+-#ifdef	CONFIG_USB_TUSB_OMAP_DMA
+-			if (tusb_dma_omap() && is_buffer_mapped(req)) {
+-				struct dma_controller *c = musb->dma_controller;
+-				struct dma_channel *channel = musb_ep->dma;
+-				u32 dma_addr = request->dma + request->actual;
+-				int ret;
+-
+-				ret = c->channel_program(channel,
+-						musb_ep->packet_sz,
+-						channel->desired_mode,
+-						dma_addr,
+-						fifo_count);
+-				if (ret)
+-					return;
+-			}
+-#endif
+-			/*
+-			 * Unmap the dma buffer back to cpu if dma channel
+-			 * programming fails. This buffer is mapped if the
+-			 * channel allocation is successful
+-			 */
+-			 if (is_buffer_mapped(req)) {
+-				unmap_dma_buffer(req, musb);
+-
+-				/*
+-				 * Clear DMAENAB and AUTOCLEAR for the
+-				 * PIO mode transfer
+-				 */
+-				csr &= ~(MUSB_RXCSR_DMAENAB | MUSB_RXCSR_AUTOCLEAR);
+-				musb_writew(epio, MUSB_RXCSR, csr);
+-			}
+-
+-			musb_read_fifo(musb_ep->hw_ep, fifo_count, (u8 *)
+-					(request->buf + request->actual));
+-			request->actual += fifo_count;
+-
+-			/* REVISIT if we left anything in the fifo, flush
+-			 * it and report -EOVERFLOW
+-			 */
+-
+-			/* ack the read! */
+-			csr |= MUSB_RXCSR_P_WZC_BITS;
+-			csr &= ~MUSB_RXCSR_RXPKTRDY;
+-			musb_writew(epio, MUSB_RXCSR, csr);
+-		}
+-	}
+-
+-	/* reach the end or short packet detected */
+-	if (request->actual == request->length || len < musb_ep->packet_sz)
+-		musb_g_giveback(musb_ep, request, 0);
+-}
+-
+-/*
+- * Data ready for a request; called from IRQ
+- */
+-void musb_g_rx(struct musb *musb, u8 epnum)
+-{
+-	u16			csr;
+-	struct musb_request	*req;
+-	struct usb_request	*request;
+-	void __iomem		*mbase = musb->mregs;
+-	struct musb_ep		*musb_ep;
+-	void __iomem		*epio = musb->endpoints[epnum].regs;
+-	struct dma_channel	*dma;
+-	struct musb_hw_ep	*hw_ep = &musb->endpoints[epnum];
+-
+-	if (hw_ep->is_shared_fifo)
+-		musb_ep = &hw_ep->ep_in;
+-	else
+-		musb_ep = &hw_ep->ep_out;
+-
+-	musb_ep_select(mbase, epnum);
+-
+-	req = next_request(musb_ep);
+-	if (!req)
+-		return;
+-
+-	request = &req->request;
+-
+-	csr = musb_readw(epio, MUSB_RXCSR);
+-	dma = is_dma_capable() ? musb_ep->dma : NULL;
+-
+-	dev_dbg(musb->controller, "<== %s, rxcsr %04x%s %p\n", musb_ep->end_point.name,
+-			csr, dma ? " (dma)" : "", request);
+-
+-	if (csr & MUSB_RXCSR_P_SENTSTALL) {
+-		csr |= MUSB_RXCSR_P_WZC_BITS;
+-		csr &= ~MUSB_RXCSR_P_SENTSTALL;
+-		musb_writew(epio, MUSB_RXCSR, csr);
+-		return;
+-	}
+-
+-	if (csr & MUSB_RXCSR_P_OVERRUN) {
+-		/* csr |= MUSB_RXCSR_P_WZC_BITS; */
+-		csr &= ~MUSB_RXCSR_P_OVERRUN;
+-		musb_writew(epio, MUSB_RXCSR, csr);
+-
+-		dev_dbg(musb->controller, "%s iso overrun on %p\n", musb_ep->name, request);
+-		if (request->status == -EINPROGRESS)
+-			request->status = -EOVERFLOW;
+-	}
+-	if (csr & MUSB_RXCSR_INCOMPRX) {
+-		/* REVISIT not necessarily an error */
+-		dev_dbg(musb->controller, "%s, incomprx\n", musb_ep->end_point.name);
+-	}
+-
+-	if (dma_channel_status(dma) == MUSB_DMA_STATUS_BUSY) {
+-		/* "should not happen"; likely RXPKTRDY pending for DMA */
+-		dev_dbg(musb->controller, "%s busy, csr %04x\n",
+-			musb_ep->end_point.name, csr);
+-		return;
+-	}
+-
+-	if (dma && (csr & MUSB_RXCSR_DMAENAB)) {
+-		csr &= ~(MUSB_RXCSR_AUTOCLEAR
+-				| MUSB_RXCSR_DMAENAB
+-				| MUSB_RXCSR_DMAMODE);
+-		musb_writew(epio, MUSB_RXCSR,
+-			MUSB_RXCSR_P_WZC_BITS | csr);
+-
+-		request->actual += musb_ep->dma->actual_len;
+-
+-		dev_dbg(musb->controller, "RXCSR%d %04x, dma off, %04x, len %zu, req %p\n",
+-			epnum, csr,
+-			musb_readw(epio, MUSB_RXCSR),
+-			musb_ep->dma->actual_len, request);
+-
+-#if defined(CONFIG_USB_INVENTRA_DMA) || defined(CONFIG_USB_TUSB_OMAP_DMA) || \
+-	defined(CONFIG_USB_UX500_DMA)
+-		/* Autoclear doesn't clear RxPktRdy for short packets */
+-		if ((dma->desired_mode == 0 && !hw_ep->rx_double_buffered)
+-				|| (dma->actual_len
+-					& (musb_ep->packet_sz - 1))) {
+-			/* ack the read! */
+-			csr &= ~MUSB_RXCSR_RXPKTRDY;
+-			musb_writew(epio, MUSB_RXCSR, csr);
+-		}
+-
+-		/* incomplete, and not short? wait for next IN packet */
+-		if ((request->actual < request->length)
+-				&& (musb_ep->dma->actual_len
+-					== musb_ep->packet_sz)) {
+-			/* In double buffer case, continue to unload fifo if
+- 			 * there is Rx packet in FIFO.
+- 			 **/
+-			csr = musb_readw(epio, MUSB_RXCSR);
+-			if ((csr & MUSB_RXCSR_RXPKTRDY) &&
+-				hw_ep->rx_double_buffered)
+-				goto exit;
+-			return;
+-		}
+-#endif
+-		musb_g_giveback(musb_ep, request, 0);
+-		/*
+-		 * In the giveback function the MUSB lock is
+-		 * released and acquired after sometime. During
+-		 * this time period the INDEX register could get
+-		 * changed by the gadget_queue function especially
+-		 * on SMP systems. Reselect the INDEX to be sure
+-		 * we are reading/modifying the right registers
+-		 */
+-		musb_ep_select(mbase, epnum);
+-
+-		req = next_request(musb_ep);
+-		if (!req)
+-			return;
+-	}
+-#if defined(CONFIG_USB_INVENTRA_DMA) || defined(CONFIG_USB_TUSB_OMAP_DMA) || \
+-	defined(CONFIG_USB_UX500_DMA)
+-exit:
+-#endif
+-	/* Analyze request */
+-	rxstate(musb, req);
+-}
+-
+-/* ------------------------------------------------------------ */
+-
+-static int musb_gadget_enable(struct usb_ep *ep,
+-			const struct usb_endpoint_descriptor *desc)
+-{
+-	unsigned long		flags;
+-	struct musb_ep		*musb_ep;
+-	struct musb_hw_ep	*hw_ep;
+-	void __iomem		*regs;
+-	struct musb		*musb;
+-	void __iomem	*mbase;
+-	u8		epnum;
+-	u16		csr;
+-	unsigned	tmp;
+-	int		status = -EINVAL;
+-
+-	if (!ep || !desc)
+-		return -EINVAL;
+-
+-	musb_ep = to_musb_ep(ep);
+-	hw_ep = musb_ep->hw_ep;
+-	regs = hw_ep->regs;
+-	musb = musb_ep->musb;
+-	mbase = musb->mregs;
+-	epnum = musb_ep->current_epnum;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	if (musb_ep->desc) {
+-		status = -EBUSY;
+-		goto fail;
+-	}
+-	musb_ep->type = usb_endpoint_type(desc);
+-
+-	/* check direction and (later) maxpacket size against endpoint */
+-	if (usb_endpoint_num(desc) != epnum)
+-		goto fail;
+-
+-	/* REVISIT this rules out high bandwidth periodic transfers */
+-	tmp = usb_endpoint_maxp(desc);
+-	if (tmp & ~0x07ff) {
+-		int ok;
+-
+-		if (usb_endpoint_dir_in(desc))
+-			ok = musb->hb_iso_tx;
+-		else
+-			ok = musb->hb_iso_rx;
+-
+-		if (!ok) {
+-			dev_dbg(musb->controller, "no support for high bandwidth ISO\n");
+-			goto fail;
+-		}
+-		musb_ep->hb_mult = (tmp >> 11) & 3;
+-	} else {
+-		musb_ep->hb_mult = 0;
+-	}
+-
+-	musb_ep->packet_sz = tmp & 0x7ff;
+-	tmp = musb_ep->packet_sz * (musb_ep->hb_mult + 1);
+-
+-	/* enable the interrupts for the endpoint, set the endpoint
+-	 * packet size (or fail), set the mode, clear the fifo
+-	 */
+-	musb_ep_select(mbase, epnum);
+-	if (usb_endpoint_dir_in(desc)) {
+-		u16 int_txe = musb_readw(mbase, MUSB_INTRTXE);
+-
+-		if (hw_ep->is_shared_fifo)
+-			musb_ep->is_in = 1;
+-		if (!musb_ep->is_in)
+-			goto fail;
+-
+-		if (tmp > hw_ep->max_packet_sz_tx) {
+-			dev_dbg(musb->controller, "packet size beyond hardware FIFO size\n");
+-			goto fail;
+-		}
+-
+-		int_txe |= (1 << epnum);
+-		musb_writew(mbase, MUSB_INTRTXE, int_txe);
+-
+-		/* REVISIT if can_bulk_split(), use by updating "tmp";
+-		 * likewise high bandwidth periodic tx
+-		 */
+-		/* Set TXMAXP with the FIFO size of the endpoint
+-		 * to disable double buffering mode.
+-		 */
+-		if (musb->double_buffer_not_ok)
+-			musb_writew(regs, MUSB_TXMAXP, hw_ep->max_packet_sz_tx);
+-		else
+-			musb_writew(regs, MUSB_TXMAXP, musb_ep->packet_sz
+-					| (musb_ep->hb_mult << 11));
+-
+-		csr = MUSB_TXCSR_MODE | MUSB_TXCSR_CLRDATATOG;
+-		if (musb_readw(regs, MUSB_TXCSR)
+-				& MUSB_TXCSR_FIFONOTEMPTY)
+-			csr |= MUSB_TXCSR_FLUSHFIFO;
+-		if (musb_ep->type == USB_ENDPOINT_XFER_ISOC)
+-			csr |= MUSB_TXCSR_P_ISO;
+-
+-		/* set twice in case of double buffering */
+-		musb_writew(regs, MUSB_TXCSR, csr);
+-		/* REVISIT may be inappropriate w/o FIFONOTEMPTY ... */
+-		musb_writew(regs, MUSB_TXCSR, csr);
+-
+-	} else {
+-		u16 int_rxe = musb_readw(mbase, MUSB_INTRRXE);
+-
+-		if (hw_ep->is_shared_fifo)
+-			musb_ep->is_in = 0;
+-		if (musb_ep->is_in)
+-			goto fail;
+-
+-		if (tmp > hw_ep->max_packet_sz_rx) {
+-			dev_dbg(musb->controller, "packet size beyond hardware FIFO size\n");
+-			goto fail;
+-		}
+-
+-		int_rxe |= (1 << epnum);
+-		musb_writew(mbase, MUSB_INTRRXE, int_rxe);
+-
+-		/* REVISIT if can_bulk_combine() use by updating "tmp"
+-		 * likewise high bandwidth periodic rx
+-		 */
+-		/* Set RXMAXP with the FIFO size of the endpoint
+-		 * to disable double buffering mode.
+-		 */
+-		if (musb->double_buffer_not_ok)
+-			musb_writew(regs, MUSB_RXMAXP, hw_ep->max_packet_sz_tx);
+-		else
+-			musb_writew(regs, MUSB_RXMAXP, musb_ep->packet_sz
+-					| (musb_ep->hb_mult << 11));
+-
+-		/* force shared fifo to OUT-only mode */
+-		if (hw_ep->is_shared_fifo) {
+-			csr = musb_readw(regs, MUSB_TXCSR);
+-			csr &= ~(MUSB_TXCSR_MODE | MUSB_TXCSR_TXPKTRDY);
+-			musb_writew(regs, MUSB_TXCSR, csr);
+-		}
+-
+-		csr = MUSB_RXCSR_FLUSHFIFO | MUSB_RXCSR_CLRDATATOG;
+-		if (musb_ep->type == USB_ENDPOINT_XFER_ISOC)
+-			csr |= MUSB_RXCSR_P_ISO;
+-		else if (musb_ep->type == USB_ENDPOINT_XFER_INT)
+-			csr |= MUSB_RXCSR_DISNYET;
+-
+-		/* set twice in case of double buffering */
+-		musb_writew(regs, MUSB_RXCSR, csr);
+-		musb_writew(regs, MUSB_RXCSR, csr);
+-	}
+-
+-	/* NOTE:  all the I/O code _should_ work fine without DMA, in case
+-	 * for some reason you run out of channels here.
+-	 */
+-	if (is_dma_capable() && musb->dma_controller) {
+-		struct dma_controller	*c = musb->dma_controller;
+-
+-		musb_ep->dma = c->channel_alloc(c, hw_ep,
+-				(desc->bEndpointAddress & USB_DIR_IN));
+-	} else
+-		musb_ep->dma = NULL;
+-
+-	musb_ep->desc = desc;
+-	musb_ep->busy = 0;
+-	musb_ep->wedged = 0;
+-	status = 0;
+-
+-	pr_debug("%s periph: enabled %s for %s %s, %smaxpacket %d\n",
+-			musb_driver_name, musb_ep->end_point.name,
+-			({ char *s; switch (musb_ep->type) {
+-			case USB_ENDPOINT_XFER_BULK:	s = "bulk"; break;
+-			case USB_ENDPOINT_XFER_INT:	s = "int"; break;
+-			default:			s = "iso"; break;
+-			}; s; }),
+-			musb_ep->is_in ? "IN" : "OUT",
+-			musb_ep->dma ? "dma, " : "",
+-			musb_ep->packet_sz);
+-
+-	schedule_work(&musb->irq_work);
+-
+-fail:
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-	return status;
+-}
+-
+-/*
+- * Disable an endpoint flushing all requests queued.
+- */
+-static int musb_gadget_disable(struct usb_ep *ep)
+-{
+-	unsigned long	flags;
+-	struct musb	*musb;
+-	u8		epnum;
+-	struct musb_ep	*musb_ep;
+-	void __iomem	*epio;
+-	int		status = 0;
+-
+-	musb_ep = to_musb_ep(ep);
+-	musb = musb_ep->musb;
+-	epnum = musb_ep->current_epnum;
+-	epio = musb->endpoints[epnum].regs;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-	musb_ep_select(musb->mregs, epnum);
+-
+-	/* zero the endpoint sizes */
+-	if (musb_ep->is_in) {
+-		u16 int_txe = musb_readw(musb->mregs, MUSB_INTRTXE);
+-		int_txe &= ~(1 << epnum);
+-		musb_writew(musb->mregs, MUSB_INTRTXE, int_txe);
+-		musb_writew(epio, MUSB_TXMAXP, 0);
+-	} else {
+-		u16 int_rxe = musb_readw(musb->mregs, MUSB_INTRRXE);
+-		int_rxe &= ~(1 << epnum);
+-		musb_writew(musb->mregs, MUSB_INTRRXE, int_rxe);
+-		musb_writew(epio, MUSB_RXMAXP, 0);
+-	}
+-
+-	musb_ep->desc = NULL;
+-#ifndef __UBOOT__
+-	musb_ep->end_point.desc = NULL;
+-#endif
+-
+-	/* abort all pending DMA and requests */
+-	nuke(musb_ep, -ESHUTDOWN);
+-
+-	schedule_work(&musb->irq_work);
+-
+-	spin_unlock_irqrestore(&(musb->lock), flags);
+-
+-	dev_dbg(musb->controller, "%s\n", musb_ep->end_point.name);
+-
+-	return status;
+-}
+-
+-/*
+- * Allocate a request for an endpoint.
+- * Reused by ep0 code.
+- */
+-struct usb_request *musb_alloc_request(struct usb_ep *ep, gfp_t gfp_flags)
+-{
+-	struct musb_ep		*musb_ep = to_musb_ep(ep);
+-	struct musb		*musb = musb_ep->musb;
+-	struct musb_request	*request = NULL;
+-
+-	request = kzalloc(sizeof *request, gfp_flags);
+-	if (!request) {
+-		dev_dbg(musb->controller, "not enough memory\n");
+-		return NULL;
+-	}
+-
+-	request->request.dma = DMA_ADDR_INVALID;
+-	request->epnum = musb_ep->current_epnum;
+-	request->ep = musb_ep;
+-
+-	return &request->request;
+-}
+-
+-/*
+- * Free a request
+- * Reused by ep0 code.
+- */
+-void musb_free_request(struct usb_ep *ep, struct usb_request *req)
+-{
+-	kfree(to_musb_request(req));
+-}
+-
+-static LIST_HEAD(buffers);
+-
+-struct free_record {
+-	struct list_head	list;
+-	struct device		*dev;
+-	unsigned		bytes;
+-	dma_addr_t		dma;
+-};
+-
+-/*
+- * Context: controller locked, IRQs blocked.
+- */
+-void musb_ep_restart(struct musb *musb, struct musb_request *req)
+-{
+-	dev_dbg(musb->controller, "<== %s request %p len %u on hw_ep%d\n",
+-		req->tx ? "TX/IN" : "RX/OUT",
+-		&req->request, req->request.length, req->epnum);
+-
+-	musb_ep_select(musb->mregs, req->epnum);
+-	if (req->tx)
+-		txstate(musb, req);
+-	else
+-		rxstate(musb, req);
+-}
+-
+-static int musb_gadget_queue(struct usb_ep *ep, struct usb_request *req,
+-			gfp_t gfp_flags)
+-{
+-	struct musb_ep		*musb_ep;
+-	struct musb_request	*request;
+-	struct musb		*musb;
+-	int			status = 0;
+-	unsigned long		lockflags;
+-
+-	if (!ep || !req)
+-		return -EINVAL;
+-	if (!req->buf)
+-		return -ENODATA;
+-
+-	musb_ep = to_musb_ep(ep);
+-	musb = musb_ep->musb;
+-
+-	request = to_musb_request(req);
+-	request->musb = musb;
+-
+-	if (request->ep != musb_ep)
+-		return -EINVAL;
+-
+-	dev_dbg(musb->controller, "<== to %s request=%p\n", ep->name, req);
+-
+-	/* request is mine now... */
+-	request->request.actual = 0;
+-	request->request.status = -EINPROGRESS;
+-	request->epnum = musb_ep->current_epnum;
+-	request->tx = musb_ep->is_in;
+-
+-	map_dma_buffer(request, musb, musb_ep);
+-
+-	spin_lock_irqsave(&musb->lock, lockflags);
+-
+-	/* don't queue if the ep is down */
+-	if (!musb_ep->desc) {
+-		dev_dbg(musb->controller, "req %p queued to %s while ep %s\n",
+-				req, ep->name, "disabled");
+-		status = -ESHUTDOWN;
+-		goto cleanup;
+-	}
+-
+-	/* add request to the list */
+-	list_add_tail(&request->list, &musb_ep->req_list);
+-
+-	/* it this is the head of the queue, start i/o ... */
+-	if (!musb_ep->busy && &request->list == musb_ep->req_list.next)
+-		musb_ep_restart(musb, request);
+-
+-cleanup:
+-	spin_unlock_irqrestore(&musb->lock, lockflags);
+-	return status;
+-}
+-
+-static int musb_gadget_dequeue(struct usb_ep *ep, struct usb_request *request)
+-{
+-	struct musb_ep		*musb_ep = to_musb_ep(ep);
+-	struct musb_request	*req = to_musb_request(request);
+-	struct musb_request	*r;
+-	unsigned long		flags;
+-	int			status = 0;
+-	struct musb		*musb = musb_ep->musb;
+-
+-	if (!ep || !request || to_musb_request(request)->ep != musb_ep)
+-		return -EINVAL;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	list_for_each_entry(r, &musb_ep->req_list, list) {
+-		if (r == req)
+-			break;
+-	}
+-	if (r != req) {
+-		dev_dbg(musb->controller, "request %p not queued to %s\n", request, ep->name);
+-		status = -EINVAL;
+-		goto done;
+-	}
+-
+-	/* if the hardware doesn't have the request, easy ... */
+-	if (musb_ep->req_list.next != &req->list || musb_ep->busy)
+-		musb_g_giveback(musb_ep, request, -ECONNRESET);
+-
+-	/* ... else abort the dma transfer ... */
+-	else if (is_dma_capable() && musb_ep->dma) {
+-		struct dma_controller	*c = musb->dma_controller;
+-
+-		musb_ep_select(musb->mregs, musb_ep->current_epnum);
+-		if (c->channel_abort)
+-			status = c->channel_abort(musb_ep->dma);
+-		else
+-			status = -EBUSY;
+-		if (status == 0)
+-			musb_g_giveback(musb_ep, request, -ECONNRESET);
+-	} else {
+-		/* NOTE: by sticking to easily tested hardware/driver states,
+-		 * we leave counting of in-flight packets imprecise.
+-		 */
+-		musb_g_giveback(musb_ep, request, -ECONNRESET);
+-	}
+-
+-done:
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-	return status;
+-}
+-
+-/*
+- * Set or clear the halt bit of an endpoint. A halted enpoint won't tx/rx any
+- * data but will queue requests.
+- *
+- * exported to ep0 code
+- */
+-static int musb_gadget_set_halt(struct usb_ep *ep, int value)
+-{
+-	struct musb_ep		*musb_ep = to_musb_ep(ep);
+-	u8			epnum = musb_ep->current_epnum;
+-	struct musb		*musb = musb_ep->musb;
+-	void __iomem		*epio = musb->endpoints[epnum].regs;
+-	void __iomem		*mbase;
+-	unsigned long		flags;
+-	u16			csr;
+-	struct musb_request	*request;
+-	int			status = 0;
+-
+-	if (!ep)
+-		return -EINVAL;
+-	mbase = musb->mregs;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	if ((USB_ENDPOINT_XFER_ISOC == musb_ep->type)) {
+-		status = -EINVAL;
+-		goto done;
+-	}
+-
+-	musb_ep_select(mbase, epnum);
+-
+-	request = next_request(musb_ep);
+-	if (value) {
+-		if (request) {
+-			dev_dbg(musb->controller, "request in progress, cannot halt %s\n",
+-			    ep->name);
+-			status = -EAGAIN;
+-			goto done;
+-		}
+-		/* Cannot portably stall with non-empty FIFO */
+-		if (musb_ep->is_in) {
+-			csr = musb_readw(epio, MUSB_TXCSR);
+-			if (csr & MUSB_TXCSR_FIFONOTEMPTY) {
+-				dev_dbg(musb->controller, "FIFO busy, cannot halt %s\n", ep->name);
+-				status = -EAGAIN;
+-				goto done;
+-			}
+-		}
+-	} else
+-		musb_ep->wedged = 0;
+-
+-	/* set/clear the stall and toggle bits */
+-	dev_dbg(musb->controller, "%s: %s stall\n", ep->name, value ? "set" : "clear");
+-	if (musb_ep->is_in) {
+-		csr = musb_readw(epio, MUSB_TXCSR);
+-		csr |= MUSB_TXCSR_P_WZC_BITS
+-			| MUSB_TXCSR_CLRDATATOG;
+-		if (value)
+-			csr |= MUSB_TXCSR_P_SENDSTALL;
+-		else
+-			csr &= ~(MUSB_TXCSR_P_SENDSTALL
+-				| MUSB_TXCSR_P_SENTSTALL);
+-		csr &= ~MUSB_TXCSR_TXPKTRDY;
+-		musb_writew(epio, MUSB_TXCSR, csr);
+-	} else {
+-		csr = musb_readw(epio, MUSB_RXCSR);
+-		csr |= MUSB_RXCSR_P_WZC_BITS
+-			| MUSB_RXCSR_FLUSHFIFO
+-			| MUSB_RXCSR_CLRDATATOG;
+-		if (value)
+-			csr |= MUSB_RXCSR_P_SENDSTALL;
+-		else
+-			csr &= ~(MUSB_RXCSR_P_SENDSTALL
+-				| MUSB_RXCSR_P_SENTSTALL);
+-		musb_writew(epio, MUSB_RXCSR, csr);
+-	}
+-
+-	/* maybe start the first request in the queue */
+-	if (!musb_ep->busy && !value && request) {
+-		dev_dbg(musb->controller, "restarting the request\n");
+-		musb_ep_restart(musb, request);
+-	}
+-
+-done:
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-	return status;
+-}
+-
+-#ifndef __UBOOT__
+-/*
+- * Sets the halt feature with the clear requests ignored
+- */
+-static int musb_gadget_set_wedge(struct usb_ep *ep)
+-{
+-	struct musb_ep		*musb_ep = to_musb_ep(ep);
+-
+-	if (!ep)
+-		return -EINVAL;
+-
+-	musb_ep->wedged = 1;
+-
+-	return usb_ep_set_halt(ep);
+-}
+-#endif
+-
+-static int musb_gadget_fifo_status(struct usb_ep *ep)
+-{
+-	struct musb_ep		*musb_ep = to_musb_ep(ep);
+-	void __iomem		*epio = musb_ep->hw_ep->regs;
+-	int			retval = -EINVAL;
+-
+-	if (musb_ep->desc && !musb_ep->is_in) {
+-		struct musb		*musb = musb_ep->musb;
+-		int			epnum = musb_ep->current_epnum;
+-		void __iomem		*mbase = musb->mregs;
+-		unsigned long		flags;
+-
+-		spin_lock_irqsave(&musb->lock, flags);
+-
+-		musb_ep_select(mbase, epnum);
+-		/* FIXME return zero unless RXPKTRDY is set */
+-		retval = musb_readw(epio, MUSB_RXCOUNT);
+-
+-		spin_unlock_irqrestore(&musb->lock, flags);
+-	}
+-	return retval;
+-}
+-
+-static void musb_gadget_fifo_flush(struct usb_ep *ep)
+-{
+-	struct musb_ep	*musb_ep = to_musb_ep(ep);
+-	struct musb	*musb = musb_ep->musb;
+-	u8		epnum = musb_ep->current_epnum;
+-	void __iomem	*epio = musb->endpoints[epnum].regs;
+-	void __iomem	*mbase;
+-	unsigned long	flags;
+-	u16		csr, int_txe;
+-
+-	mbase = musb->mregs;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-	musb_ep_select(mbase, (u8) epnum);
+-
+-	/* disable interrupts */
+-	int_txe = musb_readw(mbase, MUSB_INTRTXE);
+-	musb_writew(mbase, MUSB_INTRTXE, int_txe & ~(1 << epnum));
+-
+-	if (musb_ep->is_in) {
+-		csr = musb_readw(epio, MUSB_TXCSR);
+-		if (csr & MUSB_TXCSR_FIFONOTEMPTY) {
+-			csr |= MUSB_TXCSR_FLUSHFIFO | MUSB_TXCSR_P_WZC_BITS;
+-			/*
+-			 * Setting both TXPKTRDY and FLUSHFIFO makes controller
+-			 * to interrupt current FIFO loading, but not flushing
+-			 * the already loaded ones.
+-			 */
+-			csr &= ~MUSB_TXCSR_TXPKTRDY;
+-			musb_writew(epio, MUSB_TXCSR, csr);
+-			/* REVISIT may be inappropriate w/o FIFONOTEMPTY ... */
+-			musb_writew(epio, MUSB_TXCSR, csr);
+-		}
+-	} else {
+-		csr = musb_readw(epio, MUSB_RXCSR);
+-		csr |= MUSB_RXCSR_FLUSHFIFO | MUSB_RXCSR_P_WZC_BITS;
+-		musb_writew(epio, MUSB_RXCSR, csr);
+-		musb_writew(epio, MUSB_RXCSR, csr);
+-	}
+-
+-	/* re-enable interrupt */
+-	musb_writew(mbase, MUSB_INTRTXE, int_txe);
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-}
+-
+-static const struct usb_ep_ops musb_ep_ops = {
+-	.enable		= musb_gadget_enable,
+-	.disable	= musb_gadget_disable,
+-	.alloc_request	= musb_alloc_request,
+-	.free_request	= musb_free_request,
+-	.queue		= musb_gadget_queue,
+-	.dequeue	= musb_gadget_dequeue,
+-	.set_halt	= musb_gadget_set_halt,
+-#ifndef __UBOOT__
+-	.set_wedge	= musb_gadget_set_wedge,
+-#endif
+-	.fifo_status	= musb_gadget_fifo_status,
+-	.fifo_flush	= musb_gadget_fifo_flush
+-};
+-
+-/* ----------------------------------------------------------------------- */
+-
+-static int musb_gadget_get_frame(struct usb_gadget *gadget)
+-{
+-	struct musb	*musb = gadget_to_musb(gadget);
+-
+-	return (int)musb_readw(musb->mregs, MUSB_FRAME);
+-}
+-
+-static int musb_gadget_wakeup(struct usb_gadget *gadget)
+-{
+-#ifndef __UBOOT__
+-	struct musb	*musb = gadget_to_musb(gadget);
+-	void __iomem	*mregs = musb->mregs;
+-	unsigned long	flags;
+-	int		status = -EINVAL;
+-	u8		power, devctl;
+-	int		retries;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	switch (musb->xceiv->state) {
+-	case OTG_STATE_B_PERIPHERAL:
+-		/* NOTE:  OTG state machine doesn't include B_SUSPENDED;
+-		 * that's part of the standard usb 1.1 state machine, and
+-		 * doesn't affect OTG transitions.
+-		 */
+-		if (musb->may_wakeup && musb->is_suspended)
+-			break;
+-		goto done;
+-	case OTG_STATE_B_IDLE:
+-		/* Start SRP ... OTG not required. */
+-		devctl = musb_readb(mregs, MUSB_DEVCTL);
+-		dev_dbg(musb->controller, "Sending SRP: devctl: %02x\n", devctl);
+-		devctl |= MUSB_DEVCTL_SESSION;
+-		musb_writeb(mregs, MUSB_DEVCTL, devctl);
+-		devctl = musb_readb(mregs, MUSB_DEVCTL);
+-		retries = 100;
+-		while (!(devctl & MUSB_DEVCTL_SESSION)) {
+-			devctl = musb_readb(mregs, MUSB_DEVCTL);
+-			if (retries-- < 1)
+-				break;
+-		}
+-		retries = 10000;
+-		while (devctl & MUSB_DEVCTL_SESSION) {
+-			devctl = musb_readb(mregs, MUSB_DEVCTL);
+-			if (retries-- < 1)
+-				break;
+-		}
+-
+-		spin_unlock_irqrestore(&musb->lock, flags);
+-		otg_start_srp(musb->xceiv->otg);
+-		spin_lock_irqsave(&musb->lock, flags);
+-
+-		/* Block idling for at least 1s */
+-		musb_platform_try_idle(musb,
+-			jiffies + msecs_to_jiffies(1 * HZ));
+-
+-		status = 0;
+-		goto done;
+-	default:
+-		dev_dbg(musb->controller, "Unhandled wake: %s\n",
+-			otg_state_string(musb->xceiv->state));
+-		goto done;
+-	}
+-
+-	status = 0;
+-
+-	power = musb_readb(mregs, MUSB_POWER);
+-	power |= MUSB_POWER_RESUME;
+-	musb_writeb(mregs, MUSB_POWER, power);
+-	dev_dbg(musb->controller, "issue wakeup\n");
+-
+-	/* FIXME do this next chunk in a timer callback, no udelay */
+-	mdelay(2);
+-
+-	power = musb_readb(mregs, MUSB_POWER);
+-	power &= ~MUSB_POWER_RESUME;
+-	musb_writeb(mregs, MUSB_POWER, power);
+-done:
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-	return status;
 -#else
 -	return 0;
 -#endif
 -}
 -
--/**
-- * gadget_is_otg - return true iff the hardware is OTG-ready
-- * @g: controller that might have a Mini-AB connector
-- *
-- * This is a runtime test, since kernels with a USB-OTG stack sometimes
-- * run on boards which only have a Mini-B (or Mini-A) connector.
-- */
--static inline int gadget_is_otg(struct usb_gadget *g)
+-static int
+-musb_gadget_set_self_powered(struct usb_gadget *gadget, int is_selfpowered)
 -{
--#ifdef CONFIG_USB_OTG
--	return g->is_otg;
+-	struct musb	*musb = gadget_to_musb(gadget);
+-
+-	musb->is_self_powered = !!is_selfpowered;
+-	return 0;
+-}
+-
+-static void musb_pullup(struct musb *musb, int is_on)
+-{
+-	u8 power;
+-
+-	power = musb_readb(musb->mregs, MUSB_POWER);
+-	if (is_on)
+-		power |= MUSB_POWER_SOFTCONN;
+-	else
+-		power &= ~MUSB_POWER_SOFTCONN;
+-
+-	/* FIXME if on, HdrcStart; if off, HdrcStop */
+-
+-	dev_dbg(musb->controller, "gadget D+ pullup %s\n",
+-		is_on ? "on" : "off");
+-	musb_writeb(musb->mregs, MUSB_POWER, power);
+-}
+-
+-#if 0
+-static int musb_gadget_vbus_session(struct usb_gadget *gadget, int is_active)
+-{
+-	dev_dbg(musb->controller, "<= %s =>\n", __func__);
+-
+-	/*
+-	 * FIXME iff driver's softconnect flag is set (as it is during probe,
+-	 * though that can clear it), just musb_pullup().
+-	 */
+-
+-	return -EINVAL;
+-}
+-#endif
+-
+-static int musb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA)
+-{
+-#ifndef __UBOOT__
+-	struct musb	*musb = gadget_to_musb(gadget);
+-
+-	if (!musb->xceiv->set_power)
+-		return -EOPNOTSUPP;
+-	return usb_phy_set_power(musb->xceiv, mA);
 -#else
 -	return 0;
 -#endif
 -}
 -
--/**
-- * usb_gadget_frame_number - returns the current frame number
-- * @gadget: controller that reports the frame number
-- *
-- * Returns the usb frame number, normally eleven bits from a SOF packet,
-- * or negative errno if this device doesn't support this capability.
-- */
--static inline int usb_gadget_frame_number(struct usb_gadget *gadget)
+-static int musb_gadget_pullup(struct usb_gadget *gadget, int is_on)
 -{
--	return gadget->ops->get_frame(gadget);
+-	struct musb	*musb = gadget_to_musb(gadget);
+-	unsigned long	flags;
+-
+-	is_on = !!is_on;
+-
+-	pm_runtime_get_sync(musb->controller);
+-
+-	/* NOTE: this assumes we are sensing vbus; we'd rather
+-	 * not pullup unless the B-session is active.
+-	 */
+-	spin_lock_irqsave(&musb->lock, flags);
+-	if (is_on != musb->softconnect) {
+-		musb->softconnect = is_on;
+-		musb_pullup(musb, is_on);
+-	}
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-
+-	pm_runtime_put(musb->controller);
+-
+-	return 0;
 -}
 -
--/**
-- * usb_gadget_wakeup - tries to wake up the host connected to this gadget
-- * @gadget: controller used to wake up the host
-- *
-- * Returns zero on success, else negative error code if the hardware
-- * doesn't support such attempts, or its support has not been enabled
-- * by the usb host.  Drivers must return device descriptors that report
-- * their ability to support this, or hosts won't enable it.
-- *
-- * This may also try to use SRP to wake the host and start enumeration,
-- * even if OTG isn't otherwise in use.  OTG devices may also start
-- * remote wakeup even when hosts don't explicitly enable it.
-- */
--static inline int usb_gadget_wakeup(struct usb_gadget *gadget)
--{
--	if (!gadget->ops->wakeup)
--		return -EOPNOTSUPP;
--	return gadget->ops->wakeup(gadget);
--}
+-#ifndef __UBOOT__
+-static int musb_gadget_start(struct usb_gadget *g,
+-		struct usb_gadget_driver *driver);
+-static int musb_gadget_stop(struct usb_gadget *g,
+-		struct usb_gadget_driver *driver);
+-#endif
 -
--/**
-- * usb_gadget_set_selfpowered - sets the device selfpowered feature.
-- * @gadget:the device being declared as self-powered
-- *
-- * this affects the device status reported by the hardware driver
-- * to reflect that it now has a local power supply.
-- *
-- * returns zero on success, else negative errno.
-- */
--static inline int usb_gadget_set_selfpowered(struct usb_gadget *gadget)
--{
--	if (!gadget->ops->set_selfpowered)
--		return -EOPNOTSUPP;
--	return gadget->ops->set_selfpowered(gadget, 1);
--}
--
--/**
-- * usb_gadget_clear_selfpowered - clear the device selfpowered feature.
-- * @gadget:the device being declared as bus-powered
-- *
-- * this affects the device status reported by the hardware driver.
-- * some hardware may not support bus-powered operation, in which
-- * case this feature's value can never change.
-- *
-- * returns zero on success, else negative errno.
-- */
--static inline int usb_gadget_clear_selfpowered(struct usb_gadget *gadget)
--{
--	if (!gadget->ops->set_selfpowered)
--		return -EOPNOTSUPP;
--	return gadget->ops->set_selfpowered(gadget, 0);
--}
--
--/**
-- * usb_gadget_vbus_connect - Notify controller that VBUS is powered
-- * @gadget:The device which now has VBUS power.
-- *
-- * This call is used by a driver for an external transceiver (or GPIO)
-- * that detects a VBUS power session starting.  Common responses include
-- * resuming the controller, activating the D+ (or D-) pullup to let the
-- * host detect that a USB device is attached, and starting to draw power
-- * (8mA or possibly more, especially after SET_CONFIGURATION).
-- *
-- * Returns zero on success, else negative errno.
-- */
--static inline int usb_gadget_vbus_connect(struct usb_gadget *gadget)
--{
--	if (!gadget->ops->vbus_session)
--		return -EOPNOTSUPP;
--	return gadget->ops->vbus_session(gadget, 1);
--}
--
--/**
-- * usb_gadget_vbus_draw - constrain controller's VBUS power usage
-- * @gadget:The device whose VBUS usage is being described
-- * @mA:How much current to draw, in milliAmperes.  This should be twice
-- *	the value listed in the configuration descriptor bMaxPower field.
-- *
-- * This call is used by gadget drivers during SET_CONFIGURATION calls,
-- * reporting how much power the device may consume.  For example, this
-- * could affect how quickly batteries are recharged.
-- *
-- * Returns zero on success, else negative errno.
-- */
--static inline int usb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA)
--{
--	if (!gadget->ops->vbus_draw)
--		return -EOPNOTSUPP;
--	return gadget->ops->vbus_draw(gadget, mA);
--}
--
--/**
-- * usb_gadget_vbus_disconnect - notify controller about VBUS session end
-- * @gadget:the device whose VBUS supply is being described
-- *
-- * This call is used by a driver for an external transceiver (or GPIO)
-- * that detects a VBUS power session ending.  Common responses include
-- * reversing everything done in usb_gadget_vbus_connect().
-- *
-- * Returns zero on success, else negative errno.
-- */
--static inline int usb_gadget_vbus_disconnect(struct usb_gadget *gadget)
--{
--	if (!gadget->ops->vbus_session)
--		return -EOPNOTSUPP;
--	return gadget->ops->vbus_session(gadget, 0);
--}
--
--/**
-- * usb_gadget_connect - software-controlled connect to USB host
-- * @gadget:the peripheral being connected
-- *
-- * Enables the D+ (or potentially D-) pullup.  The host will start
-- * enumerating this gadget when the pullup is active and a VBUS session
-- * is active (the link is powered).  This pullup is always enabled unless
-- * usb_gadget_disconnect() has been used to disable it.
-- *
-- * Returns zero on success, else negative errno.
-- */
--static inline int usb_gadget_connect(struct usb_gadget *gadget)
--{
--	if (!gadget->ops->pullup)
--		return -EOPNOTSUPP;
--	return gadget->ops->pullup(gadget, 1);
--}
--
--/**
-- * usb_gadget_disconnect - software-controlled disconnect from USB host
-- * @gadget:the peripheral being disconnected
-- *
-- * Disables the D+ (or potentially D-) pullup, which the host may see
-- * as a disconnect (when a VBUS session is active).  Not all systems
-- * support software pullup controls.
-- *
-- * This routine may be used during the gadget driver bind() call to prevent
-- * the peripheral from ever being visible to the USB host, unless later
-- * usb_gadget_connect() is called.  For example, user mode components may
-- * need to be activated before the system can talk to hosts.
-- *
-- * Returns zero on success, else negative errno.
-- */
--static inline int usb_gadget_disconnect(struct usb_gadget *gadget)
--{
--	if (!gadget->ops->pullup)
--		return -EOPNOTSUPP;
--	return gadget->ops->pullup(gadget, 0);
--}
--
--
--/*-------------------------------------------------------------------------*/
--
--/**
-- * struct usb_gadget_driver - driver for usb 'slave' devices
-- * @speed: Highest speed the driver handles.
-- * @bind: Invoked when the driver is bound to a gadget, usually
-- *	after registering the driver.
-- *	At that point, ep0 is fully initialized, and ep_list holds
-- *	the currently-available endpoints.
-- *	Called in a context that permits sleeping.
-- * @setup: Invoked for ep0 control requests that aren't handled by
-- *	the hardware level driver. Most calls must be handled by
-- *	the gadget driver, including descriptor and configuration
-- *	management.  The 16 bit members of the setup data are in
-- *	USB byte order. Called in_interrupt; this may not sleep.  Driver
-- *	queues a response to ep0, or returns negative to stall.
-- * @disconnect: Invoked after all transfers have been stopped,
-- *	when the host is disconnected.  May be called in_interrupt; this
-- *	may not sleep.  Some devices can't detect disconnect, so this might
-- *	not be called except as part of controller shutdown.
-- * @unbind: Invoked when the driver is unbound from a gadget,
-- *	usually from rmmod (after a disconnect is reported).
-- *	Called in a context that permits sleeping.
-- * @suspend: Invoked on USB suspend.  May be called in_interrupt.
-- * @resume: Invoked on USB resume.  May be called in_interrupt.
-- *
-- * Devices are disabled till a gadget driver successfully bind()s, which
-- * means the driver will handle setup() requests needed to enumerate (and
-- * meet "chapter 9" requirements) then do some useful work.
-- *
-- * If gadget->is_otg is true, the gadget driver must provide an OTG
-- * descriptor during enumeration, or else fail the bind() call.  In such
-- * cases, no USB traffic may flow until both bind() returns without
-- * having called usb_gadget_disconnect(), and the USB host stack has
-- * initialized.
-- *
-- * Drivers use hardware-specific knowledge to configure the usb hardware.
-- * endpoint addressing is only one of several hardware characteristics that
-- * are in descriptors the ep0 implementation returns from setup() calls.
-- *
-- * Except for ep0 implementation, most driver code shouldn't need change to
-- * run on top of different usb controllers.  It'll use endpoints set up by
-- * that ep0 implementation.
-- *
-- * The usb controller driver handles a few standard usb requests.  Those
-- * include set_address, and feature flags for devices, interfaces, and
-- * endpoints (the get_status, set_feature, and clear_feature requests).
-- *
-- * Accordingly, the driver's setup() callback must always implement all
-- * get_descriptor requests, returning at least a device descriptor and
-- * a configuration descriptor.  Drivers must make sure the endpoint
-- * descriptors match any hardware constraints. Some hardware also constrains
-- * other descriptors. (The pxa250 allows only configurations 1, 2, or 3).
-- *
-- * The driver's setup() callback must also implement set_configuration,
-- * and should also implement set_interface, get_configuration, and
-- * get_interface.  Setting a configuration (or interface) is where
-- * endpoints should be activated or (config 0) shut down.
-- *
-- * (Note that only the default control endpoint is supported.  Neither
-- * hosts nor devices generally support control traffic except to ep0.)
-- *
-- * Most devices will ignore USB suspend/resume operations, and so will
-- * not provide those callbacks.  However, some may need to change modes
-- * when the host is not longer directing those activities.  For example,
-- * local controls (buttons, dials, etc) may need to be re-enabled since
-- * the (remote) host can't do that any longer; or an error state might
-- * be cleared, to make the device behave identically whether or not
-- * power is maintained.
-- */
--struct usb_gadget_driver {
--	enum usb_device_speed	speed;
--	int			(*bind)(struct usb_gadget *);
--	void			(*unbind)(struct usb_gadget *);
--	int			(*setup)(struct usb_gadget *,
--					const struct usb_ctrlrequest *);
--	void			(*disconnect)(struct usb_gadget *);
--	void			(*suspend)(struct usb_gadget *);
--	void			(*resume)(struct usb_gadget *);
+-static const struct usb_gadget_ops musb_gadget_operations = {
+-	.get_frame		= musb_gadget_get_frame,
+-	.wakeup			= musb_gadget_wakeup,
+-	.set_selfpowered	= musb_gadget_set_self_powered,
+-	/* .vbus_session		= musb_gadget_vbus_session, */
+-	.vbus_draw		= musb_gadget_vbus_draw,
+-	.pullup			= musb_gadget_pullup,
+-#ifndef __UBOOT__
+-	.udc_start		= musb_gadget_start,
+-	.udc_stop		= musb_gadget_stop,
+-#endif
 -};
 -
+-/* ----------------------------------------------------------------------- */
 -
--/*-------------------------------------------------------------------------*/
+-/* Registration */
 -
--/* driver modules register and unregister, as usual.
-- * these calls must be made in a context that can sleep.
-- *
-- * these will usually be implemented directly by the hardware-dependent
-- * usb bus interface driver, which will only support a single driver.
+-/* Only this registration code "knows" the rule (from USB standards)
+- * about there being only one external upstream port.  It assumes
+- * all peripheral ports are external...
 - */
 -
--/**
-- * usb_gadget_register_driver - register a gadget driver
-- * @driver:the driver being registered
-- *
-- * Call this in your gadget driver's module initialization function,
-- * to tell the underlying usb controller driver about your driver.
-- * The driver's bind() function will be called to bind it to a
-- * gadget before this registration call returns.  It's expected that
-- * the bind() functions will be in init sections.
-- * This function must be called in a context that can sleep.
+-#ifndef __UBOOT__
+-static void musb_gadget_release(struct device *dev)
+-{
+-	/* kref_put(WHAT) */
+-	dev_dbg(dev, "%s\n", __func__);
+-}
+-#endif
+-
+-
+-static void __devinit
+-init_peripheral_ep(struct musb *musb, struct musb_ep *ep, u8 epnum, int is_in)
+-{
+-	struct musb_hw_ep	*hw_ep = musb->endpoints + epnum;
+-
+-	memset(ep, 0, sizeof *ep);
+-
+-	ep->current_epnum = epnum;
+-	ep->musb = musb;
+-	ep->hw_ep = hw_ep;
+-	ep->is_in = is_in;
+-
+-	INIT_LIST_HEAD(&ep->req_list);
+-
+-	sprintf(ep->name, "ep%d%s", epnum,
+-			(!epnum || hw_ep->is_shared_fifo) ? "" : (
+-				is_in ? "in" : "out"));
+-	ep->end_point.name = ep->name;
+-	INIT_LIST_HEAD(&ep->end_point.ep_list);
+-	if (!epnum) {
+-		ep->end_point.maxpacket = 64;
+-		ep->end_point.ops = &musb_g_ep0_ops;
+-		musb->g.ep0 = &ep->end_point;
+-	} else {
+-		if (is_in)
+-			ep->end_point.maxpacket = hw_ep->max_packet_sz_tx;
+-		else
+-			ep->end_point.maxpacket = hw_ep->max_packet_sz_rx;
+-		ep->end_point.ops = &musb_ep_ops;
+-		list_add_tail(&ep->end_point.ep_list, &musb->g.ep_list);
+-	}
+-}
+-
+-/*
+- * Initialize the endpoints exposed to peripheral drivers, with backlinks
+- * to the rest of the driver state.
 - */
--int usb_gadget_register_driver(struct usb_gadget_driver *driver);
+-static inline void __devinit musb_g_init_endpoints(struct musb *musb)
+-{
+-	u8			epnum;
+-	struct musb_hw_ep	*hw_ep;
+-	unsigned		count = 0;
 -
--/**
-- * usb_gadget_unregister_driver - unregister a gadget driver
-- * @driver:the driver being unregistered
-- *
-- * Call this in your gadget driver's module cleanup function,
-- * to tell the underlying usb controller that your driver is
-- * going away.  If the controller is connected to a USB host,
-- * it will first disconnect().  The driver is also requested
-- * to unbind() and clean up any device state, before this procedure
-- * finally returns.  It's expected that the unbind() functions
-- * will in in exit sections, so may not be linked in some kernels.
-- * This function must be called in a context that can sleep.
+-	/* initialize endpoint list just once */
+-	INIT_LIST_HEAD(&(musb->g.ep_list));
+-
+-	for (epnum = 0, hw_ep = musb->endpoints;
+-			epnum < musb->nr_endpoints;
+-			epnum++, hw_ep++) {
+-		if (hw_ep->is_shared_fifo /* || !epnum */) {
+-			init_peripheral_ep(musb, &hw_ep->ep_in, epnum, 0);
+-			count++;
+-		} else {
+-			if (hw_ep->max_packet_sz_tx) {
+-				init_peripheral_ep(musb, &hw_ep->ep_in,
+-							epnum, 1);
+-				count++;
+-			}
+-			if (hw_ep->max_packet_sz_rx) {
+-				init_peripheral_ep(musb, &hw_ep->ep_out,
+-							epnum, 0);
+-				count++;
+-			}
+-		}
+-	}
+-}
+-
+-/* called once during driver setup to initialize and link into
+- * the driver model; memory is zeroed.
 - */
--int usb_gadget_unregister_driver(struct usb_gadget_driver *driver);
+-int __devinit musb_gadget_setup(struct musb *musb)
+-{
+-	int status;
 -
--/*-------------------------------------------------------------------------*/
+-	/* REVISIT minor race:  if (erroneously) setting up two
+-	 * musb peripherals at the same time, only the bus lock
+-	 * is probably held.
+-	 */
 -
--/* utility to simplify dealing with string descriptors */
+-	musb->g.ops = &musb_gadget_operations;
+-#ifndef __UBOOT__
+-	musb->g.max_speed = USB_SPEED_HIGH;
+-#endif
+-	musb->g.speed = USB_SPEED_UNKNOWN;
 -
--/**
-- * struct usb_string - wraps a C string and its USB id
-- * @id:the (nonzero) ID for this string
-- * @s:the string, in UTF-8 encoding
+-#ifndef __UBOOT__
+-	/* this "gadget" abstracts/virtualizes the controller */
+-	dev_set_name(&musb->g.dev, "gadget");
+-	musb->g.dev.parent = musb->controller;
+-	musb->g.dev.dma_mask = musb->controller->dma_mask;
+-	musb->g.dev.release = musb_gadget_release;
+-#endif
+-	musb->g.name = musb_driver_name;
+-
+-#ifndef __UBOOT__
+-	if (is_otg_enabled(musb))
+-		musb->g.is_otg = 1;
+-#endif
+-
+-	musb_g_init_endpoints(musb);
+-
+-	musb->is_active = 0;
+-	musb_platform_try_idle(musb, 0);
+-
+-#ifndef __UBOOT__
+-	status = device_register(&musb->g.dev);
+-	if (status != 0) {
+-		put_device(&musb->g.dev);
+-		return status;
+-	}
+-	status = usb_add_gadget_udc(musb->controller, &musb->g);
+-	if (status)
+-		goto err;
+-#endif
+-
+-	return 0;
+-#ifndef __UBOOT__
+-err:
+-	musb->g.dev.parent = NULL;
+-	device_unregister(&musb->g.dev);
+-	return status;
+-#endif
+-}
+-
+-void musb_gadget_cleanup(struct musb *musb)
+-{
+-#ifndef __UBOOT__
+-	usb_del_gadget_udc(&musb->g);
+-	if (musb->g.dev.parent)
+-		device_unregister(&musb->g.dev);
+-#endif
+-}
+-
+-/*
+- * Register the gadget driver. Used by gadget drivers when
+- * registering themselves with the controller.
 - *
-- * If you're using usb_gadget_get_string(), use this to wrap a string
-- * together with its ID.
-- */
--struct usb_string {
--	u8			id;
--	const char		*s;
--};
--
--/**
-- * struct usb_gadget_strings - a set of USB strings in a given language
-- * @language:identifies the strings' language (0x0409 for en-us)
-- * @strings:array of strings with their ids
+- * -EINVAL something went wrong (not driver)
+- * -EBUSY another gadget is already using the controller
+- * -ENOMEM no memory to perform the operation
 - *
-- * If you're using usb_gadget_get_string(), use this to wrap all the
-- * strings for a given language.
+- * @param driver the gadget driver
+- * @return <0 if error, 0 if everything is fine
 - */
--struct usb_gadget_strings {
--	u16			language;	/* 0x0409 for en-us */
--	struct usb_string	*strings;
--};
+-#ifndef __UBOOT__
+-static int musb_gadget_start(struct usb_gadget *g,
+-		struct usb_gadget_driver *driver)
+-#else
+-int musb_gadget_start(struct usb_gadget *g,
+-		struct usb_gadget_driver *driver)
+-#endif
+-{
+-	struct musb		*musb = gadget_to_musb(g);
+-#ifndef __UBOOT__
+-	struct usb_otg		*otg = musb->xceiv->otg;
+-#endif
+-	unsigned long		flags;
+-	int			retval = -EINVAL;
 -
--/* put descriptor for string with that id into buf (buflen >= 256) */
--int usb_gadget_get_string(struct usb_gadget_strings *table, int id, u8 *buf);
+-#ifndef __UBOOT__
+-	if (driver->max_speed < USB_SPEED_HIGH)
+-		goto err0;
+-#endif
 -
--/*-------------------------------------------------------------------------*/
+-	pm_runtime_get_sync(musb->controller);
 -
--/* utility to simplify managing config descriptors */
+-#ifndef __UBOOT__
+-	dev_dbg(musb->controller, "registering driver %s\n", driver->function);
+-#endif
 -
--/* write vector of descriptors into buffer */
--int usb_descriptor_fillbuf(void *, unsigned,
--		const struct usb_descriptor_header **);
+-	musb->softconnect = 0;
+-	musb->gadget_driver = driver;
 -
--/* build config descriptor from single descriptor vector */
--int usb_gadget_config_buf(const struct usb_config_descriptor *config,
--	void *buf, unsigned buflen, const struct usb_descriptor_header **desc);
+-	spin_lock_irqsave(&musb->lock, flags);
+-	musb->is_active = 1;
 -
--/*-------------------------------------------------------------------------*/
+-#ifndef __UBOOT__
+-	otg_set_peripheral(otg, &musb->g);
+-	musb->xceiv->state = OTG_STATE_B_IDLE;
 -
--/* utility wrapping a simple endpoint selection policy */
+-	/*
+-	 * FIXME this ignores the softconnect flag.  Drivers are
+-	 * allowed hold the peripheral inactive until for example
+-	 * userspace hooks up printer hardware or DSP codecs, so
+-	 * hosts only see fully functional devices.
+-	 */
 -
--extern struct usb_ep *usb_ep_autoconfig(struct usb_gadget *,
--			struct usb_endpoint_descriptor *);
+-	if (!is_otg_enabled(musb))
+-#endif
+-		musb_start(musb);
 -
--extern void usb_ep_autoconfig_reset(struct usb_gadget *);
+-	spin_unlock_irqrestore(&musb->lock, flags);
 -
--extern int usb_gadget_handle_interrupts(void);
+-#ifndef __UBOOT__
+-	if (is_otg_enabled(musb)) {
+-		struct usb_hcd	*hcd = musb_to_hcd(musb);
 -
--#endif	/* __LINUX_USB_GADGET_H */
-diff --git a/include/linux/usb/xhci-omap.h b/include/linux/usb/xhci-omap.h
+-		dev_dbg(musb->controller, "OTG startup...\n");
+-
+-		/* REVISIT:  funcall to other code, which also
+-		 * handles power budgeting ... this way also
+-		 * ensures HdrcStart is indirectly called.
+-		 */
+-		retval = usb_add_hcd(musb_to_hcd(musb), 0, 0);
+-		if (retval < 0) {
+-			dev_dbg(musb->controller, "add_hcd failed, %d\n", retval);
+-			goto err2;
+-		}
+-
+-		if ((musb->xceiv->last_event == USB_EVENT_ID)
+-					&& otg->set_vbus)
+-			otg_set_vbus(otg, 1);
+-
+-		hcd->self.uses_pio_for_control = 1;
+-	}
+-	if (musb->xceiv->last_event == USB_EVENT_NONE)
+-		pm_runtime_put(musb->controller);
+-#endif
+-
+-	return 0;
+-
+-#ifndef __UBOOT__
+-err2:
+-	if (!is_otg_enabled(musb))
+-		musb_stop(musb);
+-err0:
+-	return retval;
+-#endif
+-}
+-
+-#ifndef __UBOOT__
+-static void stop_activity(struct musb *musb, struct usb_gadget_driver *driver)
+-{
+-	int			i;
+-	struct musb_hw_ep	*hw_ep;
+-
+-	/* don't disconnect if it's not connected */
+-	if (musb->g.speed == USB_SPEED_UNKNOWN)
+-		driver = NULL;
+-	else
+-		musb->g.speed = USB_SPEED_UNKNOWN;
+-
+-	/* deactivate the hardware */
+-	if (musb->softconnect) {
+-		musb->softconnect = 0;
+-		musb_pullup(musb, 0);
+-	}
+-	musb_stop(musb);
+-
+-	/* killing any outstanding requests will quiesce the driver;
+-	 * then report disconnect
+-	 */
+-	if (driver) {
+-		for (i = 0, hw_ep = musb->endpoints;
+-				i < musb->nr_endpoints;
+-				i++, hw_ep++) {
+-			musb_ep_select(musb->mregs, i);
+-			if (hw_ep->is_shared_fifo /* || !epnum */) {
+-				nuke(&hw_ep->ep_in, -ESHUTDOWN);
+-			} else {
+-				if (hw_ep->max_packet_sz_tx)
+-					nuke(&hw_ep->ep_in, -ESHUTDOWN);
+-				if (hw_ep->max_packet_sz_rx)
+-					nuke(&hw_ep->ep_out, -ESHUTDOWN);
+-			}
+-		}
+-	}
+-}
+-
+-/*
+- * Unregister the gadget driver. Used by gadget drivers when
+- * unregistering themselves from the controller.
+- *
+- * @param driver the gadget driver to unregister
+- */
+-static int musb_gadget_stop(struct usb_gadget *g,
+-		struct usb_gadget_driver *driver)
+-{
+-	struct musb	*musb = gadget_to_musb(g);
+-	unsigned long	flags;
+-
+-	if (musb->xceiv->last_event == USB_EVENT_NONE)
+-		pm_runtime_get_sync(musb->controller);
+-
+-	/*
+-	 * REVISIT always use otg_set_peripheral() here too;
+-	 * this needs to shut down the OTG engine.
+-	 */
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	musb_hnp_stop(musb);
+-
+-	(void) musb_gadget_vbus_draw(&musb->g, 0);
+-
+-	musb->xceiv->state = OTG_STATE_UNDEFINED;
+-	stop_activity(musb, driver);
+-	otg_set_peripheral(musb->xceiv->otg, NULL);
+-
+-	dev_dbg(musb->controller, "unregistering driver %s\n", driver->function);
+-
+-	musb->is_active = 0;
+-	musb_platform_try_idle(musb, 0);
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-
+-	if (is_otg_enabled(musb)) {
+-		usb_remove_hcd(musb_to_hcd(musb));
+-		/* FIXME we need to be able to register another
+-		 * gadget driver here and have everything work;
+-		 * that currently misbehaves.
+-		 */
+-	}
+-
+-	if (!is_otg_enabled(musb))
+-		musb_stop(musb);
+-
+-	pm_runtime_put(musb->controller);
+-
+-	return 0;
+-}
+-#endif
+-
+-/* ----------------------------------------------------------------------- */
+-
+-/* lifecycle operations called through plat_uds.c */
+-
+-void musb_g_resume(struct musb *musb)
+-{
+-#ifndef __UBOOT__
+-	musb->is_suspended = 0;
+-	switch (musb->xceiv->state) {
+-	case OTG_STATE_B_IDLE:
+-		break;
+-	case OTG_STATE_B_WAIT_ACON:
+-	case OTG_STATE_B_PERIPHERAL:
+-		musb->is_active = 1;
+-		if (musb->gadget_driver && musb->gadget_driver->resume) {
+-			spin_unlock(&musb->lock);
+-			musb->gadget_driver->resume(&musb->g);
+-			spin_lock(&musb->lock);
+-		}
+-		break;
+-	default:
+-		WARNING("unhandled RESUME transition (%s)\n",
+-				otg_state_string(musb->xceiv->state));
+-	}
+-#endif
+-}
+-
+-/* called when SOF packets stop for 3+ msec */
+-void musb_g_suspend(struct musb *musb)
+-{
+-#ifndef __UBOOT__
+-	u8	devctl;
+-
+-	devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
+-	dev_dbg(musb->controller, "devctl %02x\n", devctl);
+-
+-	switch (musb->xceiv->state) {
+-	case OTG_STATE_B_IDLE:
+-		if ((devctl & MUSB_DEVCTL_VBUS) == MUSB_DEVCTL_VBUS)
+-			musb->xceiv->state = OTG_STATE_B_PERIPHERAL;
+-		break;
+-	case OTG_STATE_B_PERIPHERAL:
+-		musb->is_suspended = 1;
+-		if (musb->gadget_driver && musb->gadget_driver->suspend) {
+-			spin_unlock(&musb->lock);
+-			musb->gadget_driver->suspend(&musb->g);
+-			spin_lock(&musb->lock);
+-		}
+-		break;
+-	default:
+-		/* REVISIT if B_HOST, clear DEVCTL.HOSTREQ;
+-		 * A_PERIPHERAL may need care too
+-		 */
+-		WARNING("unhandled SUSPEND transition (%s)\n",
+-				otg_state_string(musb->xceiv->state));
+-	}
+-#endif
+-}
+-
+-/* Called during SRP */
+-void musb_g_wakeup(struct musb *musb)
+-{
+-	musb_gadget_wakeup(&musb->g);
+-}
+-
+-/* called when VBUS drops below session threshold, and in other cases */
+-void musb_g_disconnect(struct musb *musb)
+-{
+-	void __iomem	*mregs = musb->mregs;
+-	u8	devctl = musb_readb(mregs, MUSB_DEVCTL);
+-
+-	dev_dbg(musb->controller, "devctl %02x\n", devctl);
+-
+-	/* clear HR */
+-	musb_writeb(mregs, MUSB_DEVCTL, devctl & MUSB_DEVCTL_SESSION);
+-
+-	/* don't draw vbus until new b-default session */
+-	(void) musb_gadget_vbus_draw(&musb->g, 0);
+-
+-	musb->g.speed = USB_SPEED_UNKNOWN;
+-	if (musb->gadget_driver && musb->gadget_driver->disconnect) {
+-		spin_unlock(&musb->lock);
+-		musb->gadget_driver->disconnect(&musb->g);
+-		spin_lock(&musb->lock);
+-	}
+-
+-#ifndef __UBOOT__
+-	switch (musb->xceiv->state) {
+-	default:
+-		dev_dbg(musb->controller, "Unhandled disconnect %s, setting a_idle\n",
+-			otg_state_string(musb->xceiv->state));
+-		musb->xceiv->state = OTG_STATE_A_IDLE;
+-		MUSB_HST_MODE(musb);
+-		break;
+-	case OTG_STATE_A_PERIPHERAL:
+-		musb->xceiv->state = OTG_STATE_A_WAIT_BCON;
+-		MUSB_HST_MODE(musb);
+-		break;
+-	case OTG_STATE_B_WAIT_ACON:
+-	case OTG_STATE_B_HOST:
+-	case OTG_STATE_B_PERIPHERAL:
+-	case OTG_STATE_B_IDLE:
+-		musb->xceiv->state = OTG_STATE_B_IDLE;
+-		break;
+-	case OTG_STATE_B_SRP_INIT:
+-		break;
+-	}
+-#endif
+-
+-	musb->is_active = 0;
+-}
+-
+-void musb_g_reset(struct musb *musb)
+-__releases(musb->lock)
+-__acquires(musb->lock)
+-{
+-	void __iomem	*mbase = musb->mregs;
+-	u8		devctl = musb_readb(mbase, MUSB_DEVCTL);
+-	u8		power;
+-
+-#ifndef __UBOOT__
+-	dev_dbg(musb->controller, "<== %s addr=%x driver '%s'\n",
+-			(devctl & MUSB_DEVCTL_BDEVICE)
+-				? "B-Device" : "A-Device",
+-			musb_readb(mbase, MUSB_FADDR),
+-			musb->gadget_driver
+-				? musb->gadget_driver->driver.name
+-				: NULL
+-			);
+-#endif
+-
+-	/* report disconnect, if we didn't already (flushing EP state) */
+-	if (musb->g.speed != USB_SPEED_UNKNOWN)
+-		musb_g_disconnect(musb);
+-
+-	/* clear HR */
+-	else if (devctl & MUSB_DEVCTL_HR)
+-		musb_writeb(mbase, MUSB_DEVCTL, MUSB_DEVCTL_SESSION);
+-
+-
+-	/* what speed did we negotiate? */
+-	power = musb_readb(mbase, MUSB_POWER);
+-	musb->g.speed = (power & MUSB_POWER_HSMODE)
+-			? USB_SPEED_HIGH : USB_SPEED_FULL;
+-
+-	/* start in USB_STATE_DEFAULT */
+-	musb->is_active = 1;
+-	musb->is_suspended = 0;
+-	MUSB_DEV_MODE(musb);
+-	musb->address = 0;
+-	musb->ep0_state = MUSB_EP0_STAGE_SETUP;
+-
+-	musb->may_wakeup = 0;
+-	musb->g.b_hnp_enable = 0;
+-	musb->g.a_alt_hnp_support = 0;
+-	musb->g.a_hnp_support = 0;
+-
+-#ifndef __UBOOT__
+-	/* Normal reset, as B-Device;
+-	 * or else after HNP, as A-Device
+-	 */
+-	if (devctl & MUSB_DEVCTL_BDEVICE) {
+-		musb->xceiv->state = OTG_STATE_B_PERIPHERAL;
+-		musb->g.is_a_peripheral = 0;
+-	} else if (is_otg_enabled(musb)) {
+-		musb->xceiv->state = OTG_STATE_A_PERIPHERAL;
+-		musb->g.is_a_peripheral = 1;
+-	} else
+-		WARN_ON(1);
+-
+-	/* start with default limits on VBUS power draw */
+-	(void) musb_gadget_vbus_draw(&musb->g,
+-			is_otg_enabled(musb) ? 8 : 100);
+-#endif
+-}
+diff --git a/drivers/usb/musb/musb_gadget.h b/drivers/usb/musb/musb_gadget.h
 deleted file mode 100644
-index 82630ad..0000000
---- a/include/linux/usb/xhci-omap.h
+index 392f701..0000000
+--- a/drivers/usb/musb/musb_gadget.h
 +++ /dev/null
-@@ -1,140 +0,0 @@
+@@ -1,130 +0,0 @@
 -/*
-- * (C) Copyright 2013
-- * Texas Instruments Inc, <www.ti.com>
+- * MUSB OTG driver peripheral defines
 - *
-- * Author: Dan Murphy <dmurphy@ti.com>
+- * Copyright 2005 Mentor Graphics Corporation
+- * Copyright (C) 2005-2006 by Texas Instruments
+- * Copyright (C) 2006-2007 Nokia Corporation
 - *
-- * SPDX-License-Identifier:	GPL-2.0+
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * version 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful, but
+- * WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+- * 02110-1301 USA
+- *
+- * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- * NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
 - */
 -
--#ifndef _ASM_ARCH_XHCI_OMAP_H_
--#define _ASM_ARCH_XHCI_OMAP_H_
+-#ifndef __MUSB_GADGET_H
+-#define __MUSB_GADGET_H
 -
--#ifdef CONFIG_DRA7XX
--#define OMAP_XHCI_BASE 0x488d0000
--#define OMAP_OCP1_SCP_BASE 0x4A081000
--#define OMAP_OTG_WRAPPER_BASE 0x488c0000
--#elif defined CONFIG_AM43XX
--#define OMAP_XHCI_BASE 0x483d0000
--#define OMAP_OCP1_SCP_BASE 0x483E8000
--#define OMAP_OTG_WRAPPER_BASE 0x483dc100
--#else
--/* Default to the OMAP5 XHCI defines */
--#define OMAP_XHCI_BASE 0x4a030000
--#define OMAP_OCP1_SCP_BASE 0x4a084c00
--#define OMAP_OTG_WRAPPER_BASE 0x4A020000
+-#include <linux/list.h>
+-#ifdef __UBOOT__
+-#include <asm/byteorder.h>
+-#include <asm/errno.h>
+-#include <linux/usb/ch9.h>
+-#include <linux/usb/gadget.h>
 -#endif
 -
--/* Phy register MACRO definitions */
--#define	PLL_REGM_MASK		0x001FFE00
--#define	PLL_REGM_SHIFT		0x9
--#define	PLL_REGM_F_MASK		0x0003FFFF
--#define	PLL_REGM_F_SHIFT	0x0
--#define	PLL_REGN_MASK		0x000001FE
--#define	PLL_REGN_SHIFT		0x1
--#define	PLL_SELFREQDCO_MASK	0x0000000E
--#define	PLL_SELFREQDCO_SHIFT	0x1
--#define	PLL_SD_MASK		0x0003FC00
--#define	PLL_SD_SHIFT		0x9
--#define	SET_PLL_GO		0x1
--#define	PLL_TICOPWDN		0x10000
--#define	PLL_LOCK		0x2
--#define	PLL_IDLE		0x1
+-enum buffer_map_state {
+-	UN_MAPPED = 0,
+-	PRE_MAPPED,
+-	MUSB_MAPPED
+-};
 -
--#define USB3_PWRCTL_CLK_CMD_MASK	0x3FE000
--#define USB3_PWRCTL_CLK_FREQ_MASK	0xFFC
--#define USB3_PHY_PARTIAL_RX_POWERON     (1 << 6)
--#define USB3_PHY_RX_POWERON		(1 << 14)
--#define USB3_PHY_TX_POWERON		(1 << 15)
--#define USB3_PHY_TX_RX_POWERON	(USB3_PHY_RX_POWERON | USB3_PHY_TX_POWERON)
--#define USB3_PWRCTL_CLK_CMD_SHIFT   14
--#define USB3_PWRCTL_CLK_FREQ_SHIFT	22
+-struct musb_request {
+-	struct usb_request	request;
+-	struct list_head	list;
+-	struct musb_ep		*ep;
+-	struct musb		*musb;
+-	u8 tx;			/* endpoint direction */
+-	u8 epnum;
+-	enum buffer_map_state map_state;
+-};
 -
--/* USBOTGSS_WRAPPER definitions */
--#define USBOTGSS_WRAPRESET	(1 << 17)
--#define USBOTGSS_DMADISABLE (1 << 16)
--#define USBOTGSS_STANDBYMODE_NO_STANDBY (1 << 4)
--#define USBOTGSS_STANDBYMODE_SMRT		(1 << 5)
--#define USBOTGSS_STANDBYMODE_SMRT_WKUP (0x3 << 4)
--#define USBOTGSS_IDLEMODE_NOIDLE (1 << 2)
--#define USBOTGSS_IDLEMODE_SMRT (1 << 3)
--#define USBOTGSS_IDLEMODE_SMRT_WKUP (0x3 << 2)
+-static inline struct musb_request *to_musb_request(struct usb_request *req)
+-{
+-	return req ? container_of(req, struct musb_request, request) : NULL;
+-}
 -
--/* USBOTGSS_IRQENABLE_SET_0 bit */
--#define USBOTGSS_COREIRQ_EN	(1 << 0)
+-extern struct usb_request *
+-musb_alloc_request(struct usb_ep *ep, gfp_t gfp_flags);
+-extern void musb_free_request(struct usb_ep *ep, struct usb_request *req);
 -
--/* USBOTGSS_IRQENABLE_SET_1 bits */
--#define USBOTGSS_IRQ_SET_1_IDPULLUP_FALL_EN	(1 << 0)
--#define USBOTGSS_IRQ_SET_1_DISCHRGVBUS_FALL_EN	(1 << 3)
--#define USBOTGSS_IRQ_SET_1_CHRGVBUS_FALL_EN	(1 << 4)
--#define USBOTGSS_IRQ_SET_1_DRVVBUS_FALL_EN	(1 << 5)
--#define USBOTGSS_IRQ_SET_1_IDPULLUP_RISE_EN	(1 << 8)
--#define USBOTGSS_IRQ_SET_1_DISCHRGVBUS_RISE_EN	(1 << 11)
--#define USBOTGSS_IRQ_SET_1_CHRGVBUS_RISE_EN	(1 << 12)
--#define USBOTGSS_IRQ_SET_1_DRVVBUS_RISE_EN	(1 << 13)
--#define USBOTGSS_IRQ_SET_1_OEVT_EN	(1 << 16)
--#define USBOTGSS_IRQ_SET_1_DMADISABLECLR_EN	(1 << 17)
 -
 -/*
-- * USBOTGSS_WRAPPER registers
+- * struct musb_ep - peripheral side view of endpoint rx or tx side
 - */
--struct omap_dwc_wrapper {
--	u32 revision;
+-struct musb_ep {
+-	/* stuff towards the head is basically write-once. */
+-	struct usb_ep			end_point;
+-	char				name[12];
+-	struct musb_hw_ep		*hw_ep;
+-	struct musb			*musb;
+-	u8				current_epnum;
 -
--	u32 reserve_1[3];
+-	/* ... when enabled/disabled ... */
+-	u8				type;
+-	u8				is_in;
+-	u16				packet_sz;
+-	const struct usb_endpoint_descriptor	*desc;
+-	struct dma_channel		*dma;
 -
--	u32 sysconfig; /* offset of 0x10 */
+-	/* later things are modified based on usage */
+-	struct list_head		req_list;
 -
--	u32 reserve_2[3];
--	u16 reserve_3;
+-	u8				wedged;
 -
--	u32 irqstatus_raw_0; /* offset of 0x24 */
--	u32 irqstatus_0;
--	u32 irqenable_set_0;
--	u32 irqenable_clr_0;
+-	/* true if lock must be dropped but req_list may not be advanced */
+-	u8				busy;
 -
--	u32 irqstatus_raw_1; /* offset of 0x34 */
--	u32 irqstatus_1;
--	u32 irqenable_set_1;
--	u32 irqenable_clr_1;
--
--	u32 reserve_4[15];
--
--	u32 utmi_otg_ctrl; /* offset of 0x80 */
--	u32 utmi_otg_status;
--
--	u32 reserve_5[30];
--
--	u32 mram_offset; /* offset of 0x100 */
--	u32 fladj;
--	u32 dbg_config;
--	u32 dbg_data;
--	u32 dev_ebc_en;
+-	u8				hb_mult;
 -};
 -
--/* XHCI PHY register structure */
--struct omap_usb3_phy {
--	u32 reserve1;
--	u32 pll_status;
--	u32 pll_go;
--	u32 pll_config_1;
--	u32 pll_config_2;
--	u32 pll_config_3;
--	u32 pll_ssc_config_1;
--	u32 pll_ssc_config_2;
--	u32 pll_config_4;
+-static inline struct musb_ep *to_musb_ep(struct usb_ep *ep)
+-{
+-	return ep ? container_of(ep, struct musb_ep, end_point) : NULL;
+-}
+-
+-static inline struct musb_request *next_request(struct musb_ep *ep)
+-{
+-	struct list_head	*queue = &ep->req_list;
+-
+-	if (list_empty(queue))
+-		return NULL;
+-	return container_of(queue->next, struct musb_request, list);
+-}
+-
+-extern void musb_g_tx(struct musb *musb, u8 epnum);
+-extern void musb_g_rx(struct musb *musb, u8 epnum);
+-
+-extern const struct usb_ep_ops musb_g_ep0_ops;
+-
+-extern int musb_gadget_setup(struct musb *);
+-extern void musb_gadget_cleanup(struct musb *);
+-
+-extern void musb_g_giveback(struct musb_ep *, struct usb_request *, int);
+-
+-extern void musb_ep_restart(struct musb *, struct musb_request *);
+-
+-#ifdef __UBOOT__
+-int musb_gadget_start(struct usb_gadget *g, struct usb_gadget_driver *driver);
+-#endif
+-#endif		/* __MUSB_GADGET_H */
+diff --git a/drivers/usb/musb/musb_gadget_ep0.c b/drivers/usb/musb/musb_gadget_ep0.c
+deleted file mode 100644
+index 6599d38..0000000
+--- a/drivers/usb/musb/musb_gadget_ep0.c
++++ /dev/null
+@@ -1,1089 +0,0 @@
+-/*
+- * MUSB OTG peripheral driver ep0 handling
+- *
+- * Copyright 2005 Mentor Graphics Corporation
+- * Copyright (C) 2005-2006 by Texas Instruments
+- * Copyright (C) 2006-2007 Nokia Corporation
+- * Copyright (C) 2008-2009 MontaVista Software, Inc. <source@mvista.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * version 2 as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful, but
+- * WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+- * 02110-1301 USA
+- *
+- * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- * NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+- * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- */
+-
+-#define __UBOOT__
+-#ifndef __UBOOT__
+-#include <linux/kernel.h>
+-#include <linux/list.h>
+-#include <linux/timer.h>
+-#include <linux/spinlock.h>
+-#include <linux/device.h>
+-#include <linux/interrupt.h>
+-#else
+-#include <common.h>
+-#include "linux-compat.h"
+-#endif
+-
+-#include "musb_core.h"
+-
+-/* ep0 is always musb->endpoints[0].ep_in */
+-#define	next_ep0_request(musb)	next_in_request(&(musb)->endpoints[0])
+-
+-/*
+- * locking note:  we use only the controller lock, for simpler correctness.
+- * It's always held with IRQs blocked.
+- *
+- * It protects the ep0 request queue as well as ep0_state, not just the
+- * controller and indexed registers.  And that lock stays held unless it
+- * needs to be dropped to allow reentering this driver ... like upcalls to
+- * the gadget driver, or adjusting endpoint halt status.
+- */
+-
+-static char *decode_ep0stage(u8 stage)
+-{
+-	switch (stage) {
+-	case MUSB_EP0_STAGE_IDLE:	return "idle";
+-	case MUSB_EP0_STAGE_SETUP:	return "setup";
+-	case MUSB_EP0_STAGE_TX:		return "in";
+-	case MUSB_EP0_STAGE_RX:		return "out";
+-	case MUSB_EP0_STAGE_ACKWAIT:	return "wait";
+-	case MUSB_EP0_STAGE_STATUSIN:	return "in/status";
+-	case MUSB_EP0_STAGE_STATUSOUT:	return "out/status";
+-	default:			return "?";
+-	}
+-}
+-
+-/* handle a standard GET_STATUS request
+- * Context:  caller holds controller lock
+- */
+-static int service_tx_status_request(
+-	struct musb *musb,
+-	const struct usb_ctrlrequest *ctrlrequest)
+-{
+-	void __iomem	*mbase = musb->mregs;
+-	int handled = 1;
+-	u8 result[2], epnum = 0;
+-	const u8 recip = ctrlrequest->bRequestType & USB_RECIP_MASK;
+-
+-	result[1] = 0;
+-
+-	switch (recip) {
+-	case USB_RECIP_DEVICE:
+-		result[0] = musb->is_self_powered << USB_DEVICE_SELF_POWERED;
+-		result[0] |= musb->may_wakeup << USB_DEVICE_REMOTE_WAKEUP;
+-		if (musb->g.is_otg) {
+-			result[0] |= musb->g.b_hnp_enable
+-				<< USB_DEVICE_B_HNP_ENABLE;
+-			result[0] |= musb->g.a_alt_hnp_support
+-				<< USB_DEVICE_A_ALT_HNP_SUPPORT;
+-			result[0] |= musb->g.a_hnp_support
+-				<< USB_DEVICE_A_HNP_SUPPORT;
+-		}
+-		break;
+-
+-	case USB_RECIP_INTERFACE:
+-		result[0] = 0;
+-		break;
+-
+-	case USB_RECIP_ENDPOINT: {
+-		int		is_in;
+-		struct musb_ep	*ep;
+-		u16		tmp;
+-		void __iomem	*regs;
+-
+-		epnum = (u8) ctrlrequest->wIndex;
+-		if (!epnum) {
+-			result[0] = 0;
+-			break;
+-		}
+-
+-		is_in = epnum & USB_DIR_IN;
+-		if (is_in) {
+-			epnum &= 0x0f;
+-			ep = &musb->endpoints[epnum].ep_in;
+-		} else {
+-			ep = &musb->endpoints[epnum].ep_out;
+-		}
+-		regs = musb->endpoints[epnum].regs;
+-
+-		if (epnum >= MUSB_C_NUM_EPS || !ep->desc) {
+-			handled = -EINVAL;
+-			break;
+-		}
+-
+-		musb_ep_select(mbase, epnum);
+-		if (is_in)
+-			tmp = musb_readw(regs, MUSB_TXCSR)
+-						& MUSB_TXCSR_P_SENDSTALL;
+-		else
+-			tmp = musb_readw(regs, MUSB_RXCSR)
+-						& MUSB_RXCSR_P_SENDSTALL;
+-		musb_ep_select(mbase, 0);
+-
+-		result[0] = tmp ? 1 : 0;
+-		} break;
+-
+-	default:
+-		/* class, vendor, etc ... delegate */
+-		handled = 0;
+-		break;
+-	}
+-
+-	/* fill up the fifo; caller updates csr0 */
+-	if (handled > 0) {
+-		u16	len = le16_to_cpu(ctrlrequest->wLength);
+-
+-		if (len > 2)
+-			len = 2;
+-		musb_write_fifo(&musb->endpoints[0], len, result);
+-	}
+-
+-	return handled;
+-}
+-
+-/*
+- * handle a control-IN request, the end0 buffer contains the current request
+- * that is supposed to be a standard control request. Assumes the fifo to
+- * be at least 2 bytes long.
+- *
+- * @return 0 if the request was NOT HANDLED,
+- * < 0 when error
+- * > 0 when the request is processed
+- *
+- * Context:  caller holds controller lock
+- */
+-static int
+-service_in_request(struct musb *musb, const struct usb_ctrlrequest *ctrlrequest)
+-{
+-	int handled = 0;	/* not handled */
+-
+-	if ((ctrlrequest->bRequestType & USB_TYPE_MASK)
+-			== USB_TYPE_STANDARD) {
+-		switch (ctrlrequest->bRequest) {
+-		case USB_REQ_GET_STATUS:
+-			handled = service_tx_status_request(musb,
+-					ctrlrequest);
+-			break;
+-
+-		/* case USB_REQ_SYNC_FRAME: */
+-
+-		default:
+-			break;
+-		}
+-	}
+-	return handled;
+-}
+-
+-/*
+- * Context:  caller holds controller lock
+- */
+-static void musb_g_ep0_giveback(struct musb *musb, struct usb_request *req)
+-{
+-	musb_g_giveback(&musb->endpoints[0].ep_in, req, 0);
+-}
+-
+-/*
+- * Tries to start B-device HNP negotiation if enabled via sysfs
+- */
+-static inline void musb_try_b_hnp_enable(struct musb *musb)
+-{
+-	void __iomem	*mbase = musb->mregs;
+-	u8		devctl;
+-
+-	dev_dbg(musb->controller, "HNP: Setting HR\n");
+-	devctl = musb_readb(mbase, MUSB_DEVCTL);
+-	musb_writeb(mbase, MUSB_DEVCTL, devctl | MUSB_DEVCTL_HR);
+-}
+-
+-/*
+- * Handle all control requests with no DATA stage, including standard
+- * requests such as:
+- * USB_REQ_SET_CONFIGURATION, USB_REQ_SET_INTERFACE, unrecognized
+- *	always delegated to the gadget driver
+- * USB_REQ_SET_ADDRESS, USB_REQ_CLEAR_FEATURE, USB_REQ_SET_FEATURE
+- *	always handled here, except for class/vendor/... features
+- *
+- * Context:  caller holds controller lock
+- */
+-static int
+-service_zero_data_request(struct musb *musb,
+-		struct usb_ctrlrequest *ctrlrequest)
+-__releases(musb->lock)
+-__acquires(musb->lock)
+-{
+-	int handled = -EINVAL;
+-	void __iomem *mbase = musb->mregs;
+-	const u8 recip = ctrlrequest->bRequestType & USB_RECIP_MASK;
+-
+-	/* the gadget driver handles everything except what we MUST handle */
+-	if ((ctrlrequest->bRequestType & USB_TYPE_MASK)
+-			== USB_TYPE_STANDARD) {
+-		switch (ctrlrequest->bRequest) {
+-		case USB_REQ_SET_ADDRESS:
+-			/* change it after the status stage */
+-			musb->set_address = true;
+-			musb->address = (u8) (ctrlrequest->wValue & 0x7f);
+-			handled = 1;
+-			break;
+-
+-		case USB_REQ_CLEAR_FEATURE:
+-			switch (recip) {
+-			case USB_RECIP_DEVICE:
+-				if (ctrlrequest->wValue
+-						!= USB_DEVICE_REMOTE_WAKEUP)
+-					break;
+-				musb->may_wakeup = 0;
+-				handled = 1;
+-				break;
+-			case USB_RECIP_INTERFACE:
+-				break;
+-			case USB_RECIP_ENDPOINT:{
+-				const u8		epnum =
+-					ctrlrequest->wIndex & 0x0f;
+-				struct musb_ep		*musb_ep;
+-				struct musb_hw_ep	*ep;
+-				struct musb_request	*request;
+-				void __iomem		*regs;
+-				int			is_in;
+-				u16			csr;
+-
+-				if (epnum == 0 || epnum >= MUSB_C_NUM_EPS ||
+-				    ctrlrequest->wValue != USB_ENDPOINT_HALT)
+-					break;
+-
+-				ep = musb->endpoints + epnum;
+-				regs = ep->regs;
+-				is_in = ctrlrequest->wIndex & USB_DIR_IN;
+-				if (is_in)
+-					musb_ep = &ep->ep_in;
+-				else
+-					musb_ep = &ep->ep_out;
+-				if (!musb_ep->desc)
+-					break;
+-
+-				handled = 1;
+-				/* Ignore request if endpoint is wedged */
+-				if (musb_ep->wedged)
+-					break;
+-
+-				musb_ep_select(mbase, epnum);
+-				if (is_in) {
+-					csr  = musb_readw(regs, MUSB_TXCSR);
+-					csr |= MUSB_TXCSR_CLRDATATOG |
+-					       MUSB_TXCSR_P_WZC_BITS;
+-					csr &= ~(MUSB_TXCSR_P_SENDSTALL |
+-						 MUSB_TXCSR_P_SENTSTALL |
+-						 MUSB_TXCSR_TXPKTRDY);
+-					musb_writew(regs, MUSB_TXCSR, csr);
+-				} else {
+-					csr  = musb_readw(regs, MUSB_RXCSR);
+-					csr |= MUSB_RXCSR_CLRDATATOG |
+-					       MUSB_RXCSR_P_WZC_BITS;
+-					csr &= ~(MUSB_RXCSR_P_SENDSTALL |
+-						 MUSB_RXCSR_P_SENTSTALL);
+-					musb_writew(regs, MUSB_RXCSR, csr);
+-				}
+-
+-				/* Maybe start the first request in the queue */
+-				request = next_request(musb_ep);
+-				if (!musb_ep->busy && request) {
+-					dev_dbg(musb->controller, "restarting the request\n");
+-					musb_ep_restart(musb, request);
+-				}
+-
+-				/* select ep0 again */
+-				musb_ep_select(mbase, 0);
+-				} break;
+-			default:
+-				/* class, vendor, etc ... delegate */
+-				handled = 0;
+-				break;
+-			}
+-			break;
+-
+-		case USB_REQ_SET_FEATURE:
+-			switch (recip) {
+-			case USB_RECIP_DEVICE:
+-				handled = 1;
+-				switch (ctrlrequest->wValue) {
+-				case USB_DEVICE_REMOTE_WAKEUP:
+-					musb->may_wakeup = 1;
+-					break;
+-				case USB_DEVICE_TEST_MODE:
+-					if (musb->g.speed != USB_SPEED_HIGH)
+-						goto stall;
+-					if (ctrlrequest->wIndex & 0xff)
+-						goto stall;
+-
+-					switch (ctrlrequest->wIndex >> 8) {
+-					case 1:
+-						pr_debug("TEST_J\n");
+-						/* TEST_J */
+-						musb->test_mode_nr =
+-							MUSB_TEST_J;
+-						break;
+-					case 2:
+-						/* TEST_K */
+-						pr_debug("TEST_K\n");
+-						musb->test_mode_nr =
+-							MUSB_TEST_K;
+-						break;
+-					case 3:
+-						/* TEST_SE0_NAK */
+-						pr_debug("TEST_SE0_NAK\n");
+-						musb->test_mode_nr =
+-							MUSB_TEST_SE0_NAK;
+-						break;
+-					case 4:
+-						/* TEST_PACKET */
+-						pr_debug("TEST_PACKET\n");
+-						musb->test_mode_nr =
+-							MUSB_TEST_PACKET;
+-						break;
+-
+-					case 0xc0:
+-						/* TEST_FORCE_HS */
+-						pr_debug("TEST_FORCE_HS\n");
+-						musb->test_mode_nr =
+-							MUSB_TEST_FORCE_HS;
+-						break;
+-					case 0xc1:
+-						/* TEST_FORCE_FS */
+-						pr_debug("TEST_FORCE_FS\n");
+-						musb->test_mode_nr =
+-							MUSB_TEST_FORCE_FS;
+-						break;
+-					case 0xc2:
+-						/* TEST_FIFO_ACCESS */
+-						pr_debug("TEST_FIFO_ACCESS\n");
+-						musb->test_mode_nr =
+-							MUSB_TEST_FIFO_ACCESS;
+-						break;
+-					case 0xc3:
+-						/* TEST_FORCE_HOST */
+-						pr_debug("TEST_FORCE_HOST\n");
+-						musb->test_mode_nr =
+-							MUSB_TEST_FORCE_HOST;
+-						break;
+-					default:
+-						goto stall;
+-					}
+-
+-					/* enter test mode after irq */
+-					if (handled > 0)
+-						musb->test_mode = true;
+-					break;
+-				case USB_DEVICE_B_HNP_ENABLE:
+-					if (!musb->g.is_otg)
+-						goto stall;
+-					musb->g.b_hnp_enable = 1;
+-					musb_try_b_hnp_enable(musb);
+-					break;
+-				case USB_DEVICE_A_HNP_SUPPORT:
+-					if (!musb->g.is_otg)
+-						goto stall;
+-					musb->g.a_hnp_support = 1;
+-					break;
+-				case USB_DEVICE_A_ALT_HNP_SUPPORT:
+-					if (!musb->g.is_otg)
+-						goto stall;
+-					musb->g.a_alt_hnp_support = 1;
+-					break;
+-				case USB_DEVICE_DEBUG_MODE:
+-					handled = 0;
+-					break;
+-stall:
+-				default:
+-					handled = -EINVAL;
+-					break;
+-				}
+-				break;
+-
+-			case USB_RECIP_INTERFACE:
+-				break;
+-
+-			case USB_RECIP_ENDPOINT:{
+-				const u8		epnum =
+-					ctrlrequest->wIndex & 0x0f;
+-				struct musb_ep		*musb_ep;
+-				struct musb_hw_ep	*ep;
+-				void __iomem		*regs;
+-				int			is_in;
+-				u16			csr;
+-
+-				if (epnum == 0 || epnum >= MUSB_C_NUM_EPS ||
+-				    ctrlrequest->wValue	!= USB_ENDPOINT_HALT)
+-					break;
+-
+-				ep = musb->endpoints + epnum;
+-				regs = ep->regs;
+-				is_in = ctrlrequest->wIndex & USB_DIR_IN;
+-				if (is_in)
+-					musb_ep = &ep->ep_in;
+-				else
+-					musb_ep = &ep->ep_out;
+-				if (!musb_ep->desc)
+-					break;
+-
+-				musb_ep_select(mbase, epnum);
+-				if (is_in) {
+-					csr = musb_readw(regs, MUSB_TXCSR);
+-					if (csr & MUSB_TXCSR_FIFONOTEMPTY)
+-						csr |= MUSB_TXCSR_FLUSHFIFO;
+-					csr |= MUSB_TXCSR_P_SENDSTALL
+-						| MUSB_TXCSR_CLRDATATOG
+-						| MUSB_TXCSR_P_WZC_BITS;
+-					musb_writew(regs, MUSB_TXCSR, csr);
+-				} else {
+-					csr = musb_readw(regs, MUSB_RXCSR);
+-					csr |= MUSB_RXCSR_P_SENDSTALL
+-						| MUSB_RXCSR_FLUSHFIFO
+-						| MUSB_RXCSR_CLRDATATOG
+-						| MUSB_RXCSR_P_WZC_BITS;
+-					musb_writew(regs, MUSB_RXCSR, csr);
+-				}
+-
+-				/* select ep0 again */
+-				musb_ep_select(mbase, 0);
+-				handled = 1;
+-				} break;
+-
+-			default:
+-				/* class, vendor, etc ... delegate */
+-				handled = 0;
+-				break;
+-			}
+-			break;
+-		default:
+-			/* delegate SET_CONFIGURATION, etc */
+-			handled = 0;
+-		}
+-	} else
+-		handled = 0;
+-	return handled;
+-}
+-
+-/* we have an ep0out data packet
+- * Context:  caller holds controller lock
+- */
+-static void ep0_rxstate(struct musb *musb)
+-{
+-	void __iomem		*regs = musb->control_ep->regs;
+-	struct musb_request	*request;
+-	struct usb_request	*req;
+-	u16			count, csr;
+-
+-	request = next_ep0_request(musb);
+-	req = &request->request;
+-
+-	/* read packet and ack; or stall because of gadget driver bug:
+-	 * should have provided the rx buffer before setup() returned.
+-	 */
+-	if (req) {
+-		void		*buf = req->buf + req->actual;
+-		unsigned	len = req->length - req->actual;
+-
+-		/* read the buffer */
+-		count = musb_readb(regs, MUSB_COUNT0);
+-		if (count > len) {
+-			req->status = -EOVERFLOW;
+-			count = len;
+-		}
+-		musb_read_fifo(&musb->endpoints[0], count, buf);
+-		req->actual += count;
+-		csr = MUSB_CSR0_P_SVDRXPKTRDY;
+-		if (count < 64 || req->actual == req->length) {
+-			musb->ep0_state = MUSB_EP0_STAGE_STATUSIN;
+-			csr |= MUSB_CSR0_P_DATAEND;
+-		} else
+-			req = NULL;
+-	} else
+-		csr = MUSB_CSR0_P_SVDRXPKTRDY | MUSB_CSR0_P_SENDSTALL;
+-
+-
+-	/* Completion handler may choose to stall, e.g. because the
+-	 * message just received holds invalid data.
+-	 */
+-	if (req) {
+-		musb->ackpend = csr;
+-		musb_g_ep0_giveback(musb, req);
+-		if (!musb->ackpend)
+-			return;
+-		musb->ackpend = 0;
+-	}
+-	musb_ep_select(musb->mregs, 0);
+-	musb_writew(regs, MUSB_CSR0, csr);
+-}
+-
+-/*
+- * transmitting to the host (IN), this code might be called from IRQ
+- * and from kernel thread.
+- *
+- * Context:  caller holds controller lock
+- */
+-static void ep0_txstate(struct musb *musb)
+-{
+-	void __iomem		*regs = musb->control_ep->regs;
+-	struct musb_request	*req = next_ep0_request(musb);
+-	struct usb_request	*request;
+-	u16			csr = MUSB_CSR0_TXPKTRDY;
+-	u8			*fifo_src;
+-	u8			fifo_count;
+-
+-	if (!req) {
+-		/* WARN_ON(1); */
+-		dev_dbg(musb->controller, "odd; csr0 %04x\n", musb_readw(regs, MUSB_CSR0));
+-		return;
+-	}
+-
+-	request = &req->request;
+-
+-	/* load the data */
+-	fifo_src = (u8 *) request->buf + request->actual;
+-	fifo_count = min((unsigned) MUSB_EP0_FIFOSIZE,
+-		request->length - request->actual);
+-	musb_write_fifo(&musb->endpoints[0], fifo_count, fifo_src);
+-	request->actual += fifo_count;
+-
+-	/* update the flags */
+-	if (fifo_count < MUSB_MAX_END0_PACKET
+-			|| (request->actual == request->length
+-				&& !request->zero)) {
+-		musb->ep0_state = MUSB_EP0_STAGE_STATUSOUT;
+-		csr |= MUSB_CSR0_P_DATAEND;
+-	} else
+-		request = NULL;
+-
+-	/* report completions as soon as the fifo's loaded; there's no
+-	 * win in waiting till this last packet gets acked.  (other than
+-	 * very precise fault reporting, needed by USB TMC; possible with
+-	 * this hardware, but not usable from portable gadget drivers.)
+-	 */
+-	if (request) {
+-		musb->ackpend = csr;
+-		musb_g_ep0_giveback(musb, request);
+-		if (!musb->ackpend)
+-			return;
+-		musb->ackpend = 0;
+-	}
+-
+-	/* send it out, triggering a "txpktrdy cleared" irq */
+-	musb_ep_select(musb->mregs, 0);
+-	musb_writew(regs, MUSB_CSR0, csr);
+-}
+-
+-/*
+- * Read a SETUP packet (struct usb_ctrlrequest) from the hardware.
+- * Fields are left in USB byte-order.
+- *
+- * Context:  caller holds controller lock.
+- */
+-static void
+-musb_read_setup(struct musb *musb, struct usb_ctrlrequest *req)
+-{
+-	struct musb_request	*r;
+-	void __iomem		*regs = musb->control_ep->regs;
+-
+-	musb_read_fifo(&musb->endpoints[0], sizeof *req, (u8 *)req);
+-
+-	/* NOTE:  earlier 2.6 versions changed setup packets to host
+-	 * order, but now USB packets always stay in USB byte order.
+-	 */
+-	dev_dbg(musb->controller, "SETUP req%02x.%02x v%04x i%04x l%d\n",
+-		req->bRequestType,
+-		req->bRequest,
+-		le16_to_cpu(req->wValue),
+-		le16_to_cpu(req->wIndex),
+-		le16_to_cpu(req->wLength));
+-
+-	/* clean up any leftover transfers */
+-	r = next_ep0_request(musb);
+-	if (r)
+-		musb_g_ep0_giveback(musb, &r->request);
+-
+-	/* For zero-data requests we want to delay the STATUS stage to
+-	 * avoid SETUPEND errors.  If we read data (OUT), delay accepting
+-	 * packets until there's a buffer to store them in.
+-	 *
+-	 * If we write data, the controller acts happier if we enable
+-	 * the TX FIFO right away, and give the controller a moment
+-	 * to switch modes...
+-	 */
+-	musb->set_address = false;
+-	musb->ackpend = MUSB_CSR0_P_SVDRXPKTRDY;
+-	if (req->wLength == 0) {
+-		if (req->bRequestType & USB_DIR_IN)
+-			musb->ackpend |= MUSB_CSR0_TXPKTRDY;
+-		musb->ep0_state = MUSB_EP0_STAGE_ACKWAIT;
+-	} else if (req->bRequestType & USB_DIR_IN) {
+-		musb->ep0_state = MUSB_EP0_STAGE_TX;
+-		musb_writew(regs, MUSB_CSR0, MUSB_CSR0_P_SVDRXPKTRDY);
+-		while ((musb_readw(regs, MUSB_CSR0)
+-				& MUSB_CSR0_RXPKTRDY) != 0)
+-			cpu_relax();
+-		musb->ackpend = 0;
+-	} else
+-		musb->ep0_state = MUSB_EP0_STAGE_RX;
+-}
+-
+-static int
+-forward_to_driver(struct musb *musb, const struct usb_ctrlrequest *ctrlrequest)
+-__releases(musb->lock)
+-__acquires(musb->lock)
+-{
+-	int retval;
+-	if (!musb->gadget_driver)
+-		return -EOPNOTSUPP;
+-	spin_unlock(&musb->lock);
+-	retval = musb->gadget_driver->setup(&musb->g, ctrlrequest);
+-	spin_lock(&musb->lock);
+-	return retval;
+-}
+-
+-/*
+- * Handle peripheral ep0 interrupt
+- *
+- * Context: irq handler; we won't re-enter the driver that way.
+- */
+-irqreturn_t musb_g_ep0_irq(struct musb *musb)
+-{
+-	u16		csr;
+-	u16		len;
+-	void __iomem	*mbase = musb->mregs;
+-	void __iomem	*regs = musb->endpoints[0].regs;
+-	irqreturn_t	retval = IRQ_NONE;
+-
+-	musb_ep_select(mbase, 0);	/* select ep0 */
+-	csr = musb_readw(regs, MUSB_CSR0);
+-	len = musb_readb(regs, MUSB_COUNT0);
+-
+-	dev_dbg(musb->controller, "csr %04x, count %d, myaddr %d, ep0stage %s\n",
+-			csr, len,
+-			musb_readb(mbase, MUSB_FADDR),
+-			decode_ep0stage(musb->ep0_state));
+-
+-	if (csr & MUSB_CSR0_P_DATAEND) {
+-		/*
+-		 * If DATAEND is set we should not call the callback,
+-		 * hence the status stage is not complete.
+-		 */
+-		return IRQ_HANDLED;
+-	}
+-
+-	/* I sent a stall.. need to acknowledge it now.. */
+-	if (csr & MUSB_CSR0_P_SENTSTALL) {
+-		musb_writew(regs, MUSB_CSR0,
+-				csr & ~MUSB_CSR0_P_SENTSTALL);
+-		retval = IRQ_HANDLED;
+-		musb->ep0_state = MUSB_EP0_STAGE_IDLE;
+-		csr = musb_readw(regs, MUSB_CSR0);
+-	}
+-
+-	/* request ended "early" */
+-	if (csr & MUSB_CSR0_P_SETUPEND) {
+-		musb_writew(regs, MUSB_CSR0, MUSB_CSR0_P_SVDSETUPEND);
+-		retval = IRQ_HANDLED;
+-		/* Transition into the early status phase */
+-		switch (musb->ep0_state) {
+-		case MUSB_EP0_STAGE_TX:
+-			musb->ep0_state = MUSB_EP0_STAGE_STATUSOUT;
+-			break;
+-		case MUSB_EP0_STAGE_RX:
+-			musb->ep0_state = MUSB_EP0_STAGE_STATUSIN;
+-			break;
+-		default:
+-			ERR("SetupEnd came in a wrong ep0stage %s\n",
+-			    decode_ep0stage(musb->ep0_state));
+-		}
+-		csr = musb_readw(regs, MUSB_CSR0);
+-		/* NOTE:  request may need completion */
+-	}
+-
+-	/* docs from Mentor only describe tx, rx, and idle/setup states.
+-	 * we need to handle nuances around status stages, and also the
+-	 * case where status and setup stages come back-to-back ...
+-	 */
+-	switch (musb->ep0_state) {
+-
+-	case MUSB_EP0_STAGE_TX:
+-		/* irq on clearing txpktrdy */
+-		if ((csr & MUSB_CSR0_TXPKTRDY) == 0) {
+-			ep0_txstate(musb);
+-			retval = IRQ_HANDLED;
+-		}
+-		break;
+-
+-	case MUSB_EP0_STAGE_RX:
+-		/* irq on set rxpktrdy */
+-		if (csr & MUSB_CSR0_RXPKTRDY) {
+-			ep0_rxstate(musb);
+-			retval = IRQ_HANDLED;
+-		}
+-		break;
+-
+-	case MUSB_EP0_STAGE_STATUSIN:
+-		/* end of sequence #2 (OUT/RX state) or #3 (no data) */
+-
+-		/* update address (if needed) only @ the end of the
+-		 * status phase per usb spec, which also guarantees
+-		 * we get 10 msec to receive this irq... until this
+-		 * is done we won't see the next packet.
+-		 */
+-		if (musb->set_address) {
+-			musb->set_address = false;
+-			musb_writeb(mbase, MUSB_FADDR, musb->address);
+-		}
+-
+-		/* enter test mode if needed (exit by reset) */
+-		else if (musb->test_mode) {
+-			dev_dbg(musb->controller, "entering TESTMODE\n");
+-
+-			if (MUSB_TEST_PACKET == musb->test_mode_nr)
+-				musb_load_testpacket(musb);
+-
+-			musb_writeb(mbase, MUSB_TESTMODE,
+-					musb->test_mode_nr);
+-		}
+-		/* FALLTHROUGH */
+-
+-	case MUSB_EP0_STAGE_STATUSOUT:
+-		/* end of sequence #1: write to host (TX state) */
+-		{
+-			struct musb_request	*req;
+-
+-			req = next_ep0_request(musb);
+-			if (req)
+-				musb_g_ep0_giveback(musb, &req->request);
+-		}
+-
+-		/*
+-		 * In case when several interrupts can get coalesced,
+-		 * check to see if we've already received a SETUP packet...
+-		 */
+-		if (csr & MUSB_CSR0_RXPKTRDY)
+-			goto setup;
+-
+-		retval = IRQ_HANDLED;
+-		musb->ep0_state = MUSB_EP0_STAGE_IDLE;
+-		break;
+-
+-	case MUSB_EP0_STAGE_IDLE:
+-		/*
+-		 * This state is typically (but not always) indiscernible
+-		 * from the status states since the corresponding interrupts
+-		 * tend to happen within too little period of time (with only
+-		 * a zero-length packet in between) and so get coalesced...
+-		 */
+-		retval = IRQ_HANDLED;
+-		musb->ep0_state = MUSB_EP0_STAGE_SETUP;
+-		/* FALLTHROUGH */
+-
+-	case MUSB_EP0_STAGE_SETUP:
+-setup:
+-		if (csr & MUSB_CSR0_RXPKTRDY) {
+-			struct usb_ctrlrequest	setup;
+-			int			handled = 0;
+-
+-			if (len != 8) {
+-				ERR("SETUP packet len %d != 8 ?\n", len);
+-				break;
+-			}
+-			musb_read_setup(musb, &setup);
+-			retval = IRQ_HANDLED;
+-
+-			/* sometimes the RESET won't be reported */
+-			if (unlikely(musb->g.speed == USB_SPEED_UNKNOWN)) {
+-				u8	power;
+-
+-				printk(KERN_NOTICE "%s: peripheral reset "
+-						"irq lost!\n",
+-						musb_driver_name);
+-				power = musb_readb(mbase, MUSB_POWER);
+-				musb->g.speed = (power & MUSB_POWER_HSMODE)
+-					? USB_SPEED_HIGH : USB_SPEED_FULL;
+-
+-			}
+-
+-			switch (musb->ep0_state) {
+-
+-			/* sequence #3 (no data stage), includes requests
+-			 * we can't forward (notably SET_ADDRESS and the
+-			 * device/endpoint feature set/clear operations)
+-			 * plus SET_CONFIGURATION and others we must
+-			 */
+-			case MUSB_EP0_STAGE_ACKWAIT:
+-				handled = service_zero_data_request(
+-						musb, &setup);
+-
+-				/*
+-				 * We're expecting no data in any case, so
+-				 * always set the DATAEND bit -- doing this
+-				 * here helps avoid SetupEnd interrupt coming
+-				 * in the idle stage when we're stalling...
+-				 */
+-				musb->ackpend |= MUSB_CSR0_P_DATAEND;
+-
+-				/* status stage might be immediate */
+-				if (handled > 0)
+-					musb->ep0_state =
+-						MUSB_EP0_STAGE_STATUSIN;
+-				break;
+-
+-			/* sequence #1 (IN to host), includes GET_STATUS
+-			 * requests that we can't forward, GET_DESCRIPTOR
+-			 * and others that we must
+-			 */
+-			case MUSB_EP0_STAGE_TX:
+-				handled = service_in_request(musb, &setup);
+-				if (handled > 0) {
+-					musb->ackpend = MUSB_CSR0_TXPKTRDY
+-						| MUSB_CSR0_P_DATAEND;
+-					musb->ep0_state =
+-						MUSB_EP0_STAGE_STATUSOUT;
+-				}
+-				break;
+-
+-			/* sequence #2 (OUT from host), always forward */
+-			default:		/* MUSB_EP0_STAGE_RX */
+-				break;
+-			}
+-
+-			dev_dbg(musb->controller, "handled %d, csr %04x, ep0stage %s\n",
+-				handled, csr,
+-				decode_ep0stage(musb->ep0_state));
+-
+-			/* unless we need to delegate this to the gadget
+-			 * driver, we know how to wrap this up:  csr0 has
+-			 * not yet been written.
+-			 */
+-			if (handled < 0)
+-				goto stall;
+-			else if (handled > 0)
+-				goto finish;
+-
+-			handled = forward_to_driver(musb, &setup);
+-			if (handled < 0) {
+-				musb_ep_select(mbase, 0);
+-stall:
+-				dev_dbg(musb->controller, "stall (%d)\n", handled);
+-				musb->ackpend |= MUSB_CSR0_P_SENDSTALL;
+-				musb->ep0_state = MUSB_EP0_STAGE_IDLE;
+-finish:
+-				musb_writew(regs, MUSB_CSR0,
+-						musb->ackpend);
+-				musb->ackpend = 0;
+-			}
+-		}
+-		break;
+-
+-	case MUSB_EP0_STAGE_ACKWAIT:
+-		/* This should not happen. But happens with tusb6010 with
+-		 * g_file_storage and high speed. Do nothing.
+-		 */
+-		retval = IRQ_HANDLED;
+-		break;
+-
+-	default:
+-		/* "can't happen" */
+-		WARN_ON(1);
+-		musb_writew(regs, MUSB_CSR0, MUSB_CSR0_P_SENDSTALL);
+-		musb->ep0_state = MUSB_EP0_STAGE_IDLE;
+-		break;
+-	}
+-
+-	return retval;
+-}
+-
+-
+-static int
+-musb_g_ep0_enable(struct usb_ep *ep, const struct usb_endpoint_descriptor *desc)
+-{
+-	/* always enabled */
+-	return -EINVAL;
+-}
+-
+-static int musb_g_ep0_disable(struct usb_ep *e)
+-{
+-	/* always enabled */
+-	return -EINVAL;
+-}
+-
+-static int
+-musb_g_ep0_queue(struct usb_ep *e, struct usb_request *r, gfp_t gfp_flags)
+-{
+-	struct musb_ep		*ep;
+-	struct musb_request	*req;
+-	struct musb		*musb;
+-	int			status;
+-	unsigned long		lockflags;
+-	void __iomem		*regs;
+-
+-	if (!e || !r)
+-		return -EINVAL;
+-
+-	ep = to_musb_ep(e);
+-	musb = ep->musb;
+-	regs = musb->control_ep->regs;
+-
+-	req = to_musb_request(r);
+-	req->musb = musb;
+-	req->request.actual = 0;
+-	req->request.status = -EINPROGRESS;
+-	req->tx = ep->is_in;
+-
+-	spin_lock_irqsave(&musb->lock, lockflags);
+-
+-	if (!list_empty(&ep->req_list)) {
+-		status = -EBUSY;
+-		goto cleanup;
+-	}
+-
+-	switch (musb->ep0_state) {
+-	case MUSB_EP0_STAGE_RX:		/* control-OUT data */
+-	case MUSB_EP0_STAGE_TX:		/* control-IN data */
+-	case MUSB_EP0_STAGE_ACKWAIT:	/* zero-length data */
+-		status = 0;
+-		break;
+-	default:
+-		dev_dbg(musb->controller, "ep0 request queued in state %d\n",
+-				musb->ep0_state);
+-		status = -EINVAL;
+-		goto cleanup;
+-	}
+-
+-	/* add request to the list */
+-	list_add_tail(&req->list, &ep->req_list);
+-
+-	dev_dbg(musb->controller, "queue to %s (%s), length=%d\n",
+-			ep->name, ep->is_in ? "IN/TX" : "OUT/RX",
+-			req->request.length);
+-
+-	musb_ep_select(musb->mregs, 0);
+-
+-	/* sequence #1, IN ... start writing the data */
+-	if (musb->ep0_state == MUSB_EP0_STAGE_TX)
+-		ep0_txstate(musb);
+-
+-	/* sequence #3, no-data ... issue IN status */
+-	else if (musb->ep0_state == MUSB_EP0_STAGE_ACKWAIT) {
+-		if (req->request.length)
+-			status = -EINVAL;
+-		else {
+-			musb->ep0_state = MUSB_EP0_STAGE_STATUSIN;
+-			musb_writew(regs, MUSB_CSR0,
+-					musb->ackpend | MUSB_CSR0_P_DATAEND);
+-			musb->ackpend = 0;
+-			musb_g_ep0_giveback(ep->musb, r);
+-		}
+-
+-	/* else for sequence #2 (OUT), caller provides a buffer
+-	 * before the next packet arrives.  deferred responses
+-	 * (after SETUP is acked) are racey.
+-	 */
+-	} else if (musb->ackpend) {
+-		musb_writew(regs, MUSB_CSR0, musb->ackpend);
+-		musb->ackpend = 0;
+-	}
+-
+-cleanup:
+-	spin_unlock_irqrestore(&musb->lock, lockflags);
+-	return status;
+-}
+-
+-static int musb_g_ep0_dequeue(struct usb_ep *ep, struct usb_request *req)
+-{
+-	/* we just won't support this */
+-	return -EINVAL;
+-}
+-
+-static int musb_g_ep0_halt(struct usb_ep *e, int value)
+-{
+-	struct musb_ep		*ep;
+-	struct musb		*musb;
+-	void __iomem		*base, *regs;
+-	unsigned long		flags;
+-	int			status;
+-	u16			csr;
+-
+-	if (!e || !value)
+-		return -EINVAL;
+-
+-	ep = to_musb_ep(e);
+-	musb = ep->musb;
+-	base = musb->mregs;
+-	regs = musb->control_ep->regs;
+-	status = 0;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	if (!list_empty(&ep->req_list)) {
+-		status = -EBUSY;
+-		goto cleanup;
+-	}
+-
+-	musb_ep_select(base, 0);
+-	csr = musb->ackpend;
+-
+-	switch (musb->ep0_state) {
+-
+-	/* Stalls are usually issued after parsing SETUP packet, either
+-	 * directly in irq context from setup() or else later.
+-	 */
+-	case MUSB_EP0_STAGE_TX:		/* control-IN data */
+-	case MUSB_EP0_STAGE_ACKWAIT:	/* STALL for zero-length data */
+-	case MUSB_EP0_STAGE_RX:		/* control-OUT data */
+-		csr = musb_readw(regs, MUSB_CSR0);
+-		/* FALLTHROUGH */
+-
+-	/* It's also OK to issue stalls during callbacks when a non-empty
+-	 * DATA stage buffer has been read (or even written).
+-	 */
+-	case MUSB_EP0_STAGE_STATUSIN:	/* control-OUT status */
+-	case MUSB_EP0_STAGE_STATUSOUT:	/* control-IN status */
+-
+-		csr |= MUSB_CSR0_P_SENDSTALL;
+-		musb_writew(regs, MUSB_CSR0, csr);
+-		musb->ep0_state = MUSB_EP0_STAGE_IDLE;
+-		musb->ackpend = 0;
+-		break;
+-	default:
+-		dev_dbg(musb->controller, "ep0 can't halt in state %d\n", musb->ep0_state);
+-		status = -EINVAL;
+-	}
+-
+-cleanup:
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-	return status;
+-}
+-
+-const struct usb_ep_ops musb_g_ep0_ops = {
+-	.enable		= musb_g_ep0_enable,
+-	.disable	= musb_g_ep0_disable,
+-	.alloc_request	= musb_alloc_request,
+-	.free_request	= musb_free_request,
+-	.queue		= musb_g_ep0_queue,
+-	.dequeue	= musb_g_ep0_dequeue,
+-	.set_halt	= musb_g_ep0_halt,
+-};
+diff --git a/drivers/usb/musb/musb_uboot.c b/drivers/usb/musb/musb_uboot.c
+deleted file mode 100644
+index 0512680..0000000
+--- a/drivers/usb/musb/musb_uboot.c
++++ /dev/null
+@@ -1,239 +0,0 @@
+-#include <common.h>
+-#include <watchdog.h>
+-#include <asm/errno.h>
+-#include <linux/usb/ch9.h>
+-#include <linux/usb/gadget.h>
+-
+-#define __UBOOT__
+-#include <usb.h>
+-#include "linux-compat.h"
+-#include "usb-compat.h"
+-#include "musb_core.h"
+-#include "musb_host.h"
+-#include "musb_gadget.h"
+-
+-#ifdef CONFIG_MUSB_HOST
+-static struct musb *host;
+-static struct usb_hcd hcd;
+-static enum usb_device_speed host_speed;
+-
+-static void musb_host_complete_urb(struct urb *urb)
+-{
+-	urb->dev->status &= ~USB_ST_NOT_PROC;
+-	urb->dev->act_len = urb->actual_length;
+-}
+-
+-static struct usb_host_endpoint hep;
+-static struct urb urb;
+-
+-static struct urb *construct_urb(struct usb_device *dev, int endpoint_type,
+-				unsigned long pipe, void *buffer, int len,
+-				struct devrequest *setup, int interval)
+-{
+-	int epnum = usb_pipeendpoint(pipe);
+-	int is_in = usb_pipein(pipe);
+-
+-	memset(&urb, 0, sizeof(struct urb));
+-	memset(&hep, 0, sizeof(struct usb_host_endpoint));
+-	INIT_LIST_HEAD(&hep.urb_list);
+-	INIT_LIST_HEAD(&urb.urb_list);
+-	urb.ep = &hep;
+-	urb.complete = musb_host_complete_urb;
+-	urb.status = -EINPROGRESS;
+-	urb.dev = dev;
+-	urb.pipe = pipe;
+-	urb.transfer_buffer = buffer;
+-	urb.transfer_dma = (unsigned long)buffer;
+-	urb.transfer_buffer_length = len;
+-	urb.setup_packet = (unsigned char *)setup;
+-
+-	urb.ep->desc.wMaxPacketSize =
+-		__cpu_to_le16(is_in ? dev->epmaxpacketin[epnum] :
+-				dev->epmaxpacketout[epnum]);
+-	urb.ep->desc.bmAttributes = endpoint_type;
+-	urb.ep->desc.bEndpointAddress =
+-		(is_in ? USB_DIR_IN : USB_DIR_OUT) | epnum;
+-	urb.ep->desc.bInterval = interval;
+-
+-	return &urb;
+-}
+-
+-#define MUSB_HOST_TIMEOUT	0x3ffffff
+-
+-static int submit_urb(struct usb_hcd *hcd, struct urb *urb)
+-{
+-	struct musb *host = hcd->hcd_priv;
+-	int ret;
+-	int timeout;
+-
+-	ret = musb_urb_enqueue(hcd, urb, 0);
+-	if (ret < 0) {
+-		printf("Failed to enqueue URB to controller\n");
+-		return ret;
+-	}
+-
+-	timeout = MUSB_HOST_TIMEOUT;
+-	do {
+-		if (ctrlc())
+-			return -EIO;
+-		host->isr(0, host);
+-	} while ((urb->dev->status & USB_ST_NOT_PROC) && --timeout);
+-
+-	return urb->status;
+-}
+-
+-int submit_control_msg(struct usb_device *dev, unsigned long pipe,
+-			void *buffer, int len, struct devrequest *setup)
+-{
+-	struct urb *urb = construct_urb(dev, USB_ENDPOINT_XFER_CONTROL, pipe,
+-					buffer, len, setup, 0);
+-
+-	/* Fix speed for non hub-attached devices */
+-	if (!dev->parent)
+-		dev->speed = host_speed;
+-
+-	return submit_urb(&hcd, urb);
+-}
+-
+-
+-int submit_bulk_msg(struct usb_device *dev, unsigned long pipe,
+-					void *buffer, int len)
+-{
+-	struct urb *urb = construct_urb(dev, USB_ENDPOINT_XFER_BULK, pipe,
+-					buffer, len, NULL, 0);
+-	return submit_urb(&hcd, urb);
+-}
+-
+-int submit_int_msg(struct usb_device *dev, unsigned long pipe,
+-				void *buffer, int len, int interval)
+-{
+-	struct urb *urb = construct_urb(dev, USB_ENDPOINT_XFER_INT, pipe,
+-					buffer, len, NULL, interval);
+-	return submit_urb(&hcd, urb);
+-}
+-
+-int usb_lowlevel_init(int index, enum usb_init_type init, void **controller)
+-{
+-	u8 power;
+-	void *mbase;
+-	int timeout = MUSB_HOST_TIMEOUT;
+-
+-	if (!host) {
+-		printf("MUSB host is not registered\n");
+-		return -ENODEV;
+-	}
+-
+-	musb_start(host);
+-	mbase = host->mregs;
+-	do {
+-		if (musb_readb(mbase, MUSB_DEVCTL) & MUSB_DEVCTL_HM)
+-			break;
+-	} while (--timeout);
+-	if (!timeout)
+-		return -ENODEV;
+-
+-	power = musb_readb(mbase, MUSB_POWER);
+-	musb_writeb(mbase, MUSB_POWER, MUSB_POWER_RESET | power);
+-	udelay(30000);
+-	power = musb_readb(mbase, MUSB_POWER);
+-	musb_writeb(mbase, MUSB_POWER, ~MUSB_POWER_RESET & power);
+-	host->isr(0, host);
+-	host_speed = (musb_readb(mbase, MUSB_POWER) & MUSB_POWER_HSMODE) ?
+-			USB_SPEED_HIGH :
+-			(musb_readb(mbase, MUSB_DEVCTL) & MUSB_DEVCTL_FSDEV) ?
+-			USB_SPEED_FULL : USB_SPEED_LOW;
+-	host->is_active = 1;
+-	hcd.hcd_priv = host;
+-
+-	return 0;
+-}
+-
+-int usb_lowlevel_stop(int index)
+-{
+-	if (!host) {
+-		printf("MUSB host is not registered\n");
+-		return -ENODEV;
+-	}
+-
+-	musb_stop(host);
+-	return 0;
+-}
+-#endif /* CONFIG_MUSB_HOST */
+-
+-#ifdef CONFIG_MUSB_GADGET
+-static struct musb *gadget;
+-
+-int usb_gadget_handle_interrupts(void)
+-{
+-	WATCHDOG_RESET();
+-	if (!gadget || !gadget->isr)
+-		return -EINVAL;
+-
+-	return gadget->isr(0, gadget);
+-}
+-
+-int usb_gadget_register_driver(struct usb_gadget_driver *driver)
+-{
+-	int ret;
+-
+-	if (!driver || driver->speed < USB_SPEED_FULL || !driver->bind ||
+-	    !driver->setup) {
+-		printf("bad parameter.\n");
+-		return -EINVAL;
+-	}
+-
+-	if (!gadget) {
+-		printf("Controller uninitialized\n");
+-		return -ENXIO;
+-	}
+-
+-	ret = musb_gadget_start(&gadget->g, driver);
+-	if (ret < 0) {
+-		printf("gadget_start failed with %d\n", ret);
+-		return ret;
+-	}
+-
+-	ret = driver->bind(&gadget->g);
+-	if (ret < 0) {
+-		printf("bind failed with %d\n", ret);
+-		return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
+-{
+-	/* TODO: implement me */
+-	return 0;
+-}
+-#endif /* CONFIG_MUSB_GADGET */
+-
+-int musb_register(struct musb_hdrc_platform_data *plat, void *bdata,
+-			void *ctl_regs)
+-{
+-	struct musb **musbp;
+-
+-	switch (plat->mode) {
+-#ifdef CONFIG_MUSB_HOST
+-	case MUSB_HOST:
+-		musbp = &host;
+-		break;
+-#endif
+-#ifdef CONFIG_MUSB_GADGET
+-	case MUSB_PERIPHERAL:
+-		musbp = &gadget;
+-		break;
+-#endif
+-	default:
+-		return -EINVAL;
+-	}
+-
+-	*musbp = musb_init_controller(plat, (struct device *)bdata, ctl_regs);
+-	if (!musbp) {
+-		printf("Failed to init the controller\n");
+-		return -EIO;
+-	}
+-
+-	return 0;
+-}
+diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
+deleted file mode 100644
+index b1c4dc7..0000000
+--- a/drivers/usb/musb/omap2430.c
++++ /dev/null
+@@ -1,626 +0,0 @@
+-/*
+- * Copyright (C) 2005-2007 by Texas Instruments
+- * Some code has been taken from tusb6010.c
+- * Copyrights for that are attributable to:
+- * Copyright (C) 2006 Nokia Corporation
+- * Tony Lindgren <tony@atomide.com>
+- *
+- * This file is part of the Inventra Controller Driver for Linux.
+- *
+- * The Inventra Controller Driver for Linux is free software; you
+- * can redistribute it and/or modify it under the terms of the GNU
+- * General Public License version 2 as published by the Free Software
+- * Foundation.
+- *
+- * The Inventra Controller Driver for Linux is distributed in
+- * the hope that it will be useful, but WITHOUT ANY WARRANTY;
+- * without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+- * License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with The Inventra Controller Driver for Linux ; if not,
+- * write to the Free Software Foundation, Inc., 59 Temple Place,
+- * Suite 330, Boston, MA  02111-1307  USA
+- *
+- */
+-#define __UBOOT__
+-#ifndef __UBOOT__
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/sched.h>
+-#include <linux/init.h>
+-#include <linux/list.h>
+-#include <linux/io.h>
+-#include <linux/platform_device.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/pm_runtime.h>
+-#include <linux/err.h>
+-#include <linux/usb/musb-omap.h>
+-#else
+-#include <common.h>
+-#include <asm/omap_musb.h>
+-#include <twl4030.h>
+-#include "linux-compat.h"
+-#endif
+-
+-#include "musb_core.h"
+-#include "omap2430.h"
+-
+-#ifndef __UBOOT__
+-struct omap2430_glue {
+-	struct device		*dev;
+-	struct platform_device	*musb;
+-	enum omap_musb_vbus_id_status status;
+-	struct work_struct	omap_musb_mailbox_work;
+-};
+-#define glue_to_musb(g)		platform_get_drvdata(g->musb)
+-
+-struct omap2430_glue		*_glue;
+-
+-static struct timer_list musb_idle_timer;
+-
+-static void musb_do_idle(unsigned long _musb)
+-{
+-	struct musb	*musb = (void *)_musb;
+-	unsigned long	flags;
+-	u8	power;
+-	u8	devctl;
+-
+-	spin_lock_irqsave(&musb->lock, flags);
+-
+-	switch (musb->xceiv->state) {
+-	case OTG_STATE_A_WAIT_BCON:
+-
+-		devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
+-		if (devctl & MUSB_DEVCTL_BDEVICE) {
+-			musb->xceiv->state = OTG_STATE_B_IDLE;
+-			MUSB_DEV_MODE(musb);
+-		} else {
+-			musb->xceiv->state = OTG_STATE_A_IDLE;
+-			MUSB_HST_MODE(musb);
+-		}
+-		break;
+-	case OTG_STATE_A_SUSPEND:
+-		/* finish RESUME signaling? */
+-		if (musb->port1_status & MUSB_PORT_STAT_RESUME) {
+-			power = musb_readb(musb->mregs, MUSB_POWER);
+-			power &= ~MUSB_POWER_RESUME;
+-			dev_dbg(musb->controller, "root port resume stopped, power %02x\n", power);
+-			musb_writeb(musb->mregs, MUSB_POWER, power);
+-			musb->is_active = 1;
+-			musb->port1_status &= ~(USB_PORT_STAT_SUSPEND
+-						| MUSB_PORT_STAT_RESUME);
+-			musb->port1_status |= USB_PORT_STAT_C_SUSPEND << 16;
+-			usb_hcd_poll_rh_status(musb_to_hcd(musb));
+-			/* NOTE: it might really be A_WAIT_BCON ... */
+-			musb->xceiv->state = OTG_STATE_A_HOST;
+-		}
+-		break;
+-	case OTG_STATE_A_HOST:
+-		devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
+-		if (devctl &  MUSB_DEVCTL_BDEVICE)
+-			musb->xceiv->state = OTG_STATE_B_IDLE;
+-		else
+-			musb->xceiv->state = OTG_STATE_A_WAIT_BCON;
+-	default:
+-		break;
+-	}
+-	spin_unlock_irqrestore(&musb->lock, flags);
+-}
+-
+-
+-static void omap2430_musb_try_idle(struct musb *musb, unsigned long timeout)
+-{
+-	unsigned long		default_timeout = jiffies + msecs_to_jiffies(3);
+-	static unsigned long	last_timer;
+-
+-	if (timeout == 0)
+-		timeout = default_timeout;
+-
+-	/* Never idle if active, or when VBUS timeout is not set as host */
+-	if (musb->is_active || ((musb->a_wait_bcon == 0)
+-			&& (musb->xceiv->state == OTG_STATE_A_WAIT_BCON))) {
+-		dev_dbg(musb->controller, "%s active, deleting timer\n",
+-			otg_state_string(musb->xceiv->state));
+-		del_timer(&musb_idle_timer);
+-		last_timer = jiffies;
+-		return;
+-	}
+-
+-	if (time_after(last_timer, timeout)) {
+-		if (!timer_pending(&musb_idle_timer))
+-			last_timer = timeout;
+-		else {
+-			dev_dbg(musb->controller, "Longer idle timer already pending, ignoring\n");
+-			return;
+-		}
+-	}
+-	last_timer = timeout;
+-
+-	dev_dbg(musb->controller, "%s inactive, for idle timer for %lu ms\n",
+-		otg_state_string(musb->xceiv->state),
+-		(unsigned long)jiffies_to_msecs(timeout - jiffies));
+-	mod_timer(&musb_idle_timer, timeout);
+-}
+-
+-static void omap2430_musb_set_vbus(struct musb *musb, int is_on)
+-{
+-	struct usb_otg	*otg = musb->xceiv->otg;
+-	u8		devctl;
+-	unsigned long timeout = jiffies + msecs_to_jiffies(1000);
+-	int ret = 1;
+-	/* HDRC controls CPEN, but beware current surges during device
+-	 * connect.  They can trigger transient overcurrent conditions
+-	 * that must be ignored.
+-	 */
+-
+-	devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
+-
+-	if (is_on) {
+-		if (musb->xceiv->state == OTG_STATE_A_IDLE) {
+-			/* start the session */
+-			devctl |= MUSB_DEVCTL_SESSION;
+-			musb_writeb(musb->mregs, MUSB_DEVCTL, devctl);
+-			/*
+-			 * Wait for the musb to set as A device to enable the
+-			 * VBUS
+-			 */
+-			while (musb_readb(musb->mregs, MUSB_DEVCTL) & 0x80) {
+-
+-				cpu_relax();
+-
+-				if (time_after(jiffies, timeout)) {
+-					dev_err(musb->controller,
+-					"configured as A device timeout");
+-					ret = -EINVAL;
+-					break;
+-				}
+-			}
+-
+-			if (ret && otg->set_vbus)
+-				otg_set_vbus(otg, 1);
+-		} else {
+-			musb->is_active = 1;
+-			otg->default_a = 1;
+-			musb->xceiv->state = OTG_STATE_A_WAIT_VRISE;
+-			devctl |= MUSB_DEVCTL_SESSION;
+-			MUSB_HST_MODE(musb);
+-		}
+-	} else {
+-		musb->is_active = 0;
+-
+-		/* NOTE:  we're skipping A_WAIT_VFALL -> A_IDLE and
+-		 * jumping right to B_IDLE...
+-		 */
+-
+-		otg->default_a = 0;
+-		musb->xceiv->state = OTG_STATE_B_IDLE;
+-		devctl &= ~MUSB_DEVCTL_SESSION;
+-
+-		MUSB_DEV_MODE(musb);
+-	}
+-	musb_writeb(musb->mregs, MUSB_DEVCTL, devctl);
+-
+-	dev_dbg(musb->controller, "VBUS %s, devctl %02x "
+-		/* otg %3x conf %08x prcm %08x */ "\n",
+-		otg_state_string(musb->xceiv->state),
+-		musb_readb(musb->mregs, MUSB_DEVCTL));
+-}
+-
+-static int omap2430_musb_set_mode(struct musb *musb, u8 musb_mode)
+-{
+-	u8	devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
+-
+-	devctl |= MUSB_DEVCTL_SESSION;
+-	musb_writeb(musb->mregs, MUSB_DEVCTL, devctl);
+-
+-	return 0;
+-}
+-#endif
+-
+-static inline void omap2430_low_level_exit(struct musb *musb)
+-{
+-	u32 l;
+-
+-	/* in any role */
+-	l = musb_readl(musb->mregs, OTG_FORCESTDBY);
+-	l |= ENABLEFORCE;	/* enable MSTANDBY */
+-	musb_writel(musb->mregs, OTG_FORCESTDBY, l);
+-}
+-
+-static inline void omap2430_low_level_init(struct musb *musb)
+-{
+-	u32 l;
+-
+-	l = musb_readl(musb->mregs, OTG_FORCESTDBY);
+-	l &= ~ENABLEFORCE;	/* disable MSTANDBY */
+-	musb_writel(musb->mregs, OTG_FORCESTDBY, l);
+-}
+-
+-#ifndef __UBOOT__
+-void omap_musb_mailbox(enum omap_musb_vbus_id_status status)
+-{
+-	struct omap2430_glue	*glue = _glue;
+-	struct musb		*musb = glue_to_musb(glue);
+-
+-	glue->status = status;
+-	if (!musb) {
+-		dev_err(glue->dev, "musb core is not yet ready\n");
+-		return;
+-	}
+-
+-	schedule_work(&glue->omap_musb_mailbox_work);
+-}
+-EXPORT_SYMBOL_GPL(omap_musb_mailbox);
+-
+-static void omap_musb_set_mailbox(struct omap2430_glue *glue)
+-{
+-	struct musb *musb = glue_to_musb(glue);
+-	struct device *dev = musb->controller;
+-	struct musb_hdrc_platform_data *pdata = dev->platform_data;
+-	struct omap_musb_board_data *data = pdata->board_data;
+-	struct usb_otg *otg = musb->xceiv->otg;
+-
+-	switch (glue->status) {
+-	case OMAP_MUSB_ID_GROUND:
+-		dev_dbg(dev, "ID GND\n");
+-
+-		otg->default_a = true;
+-		musb->xceiv->state = OTG_STATE_A_IDLE;
+-		musb->xceiv->last_event = USB_EVENT_ID;
+-		if (!is_otg_enabled(musb) || musb->gadget_driver) {
+-			pm_runtime_get_sync(dev);
+-			usb_phy_init(musb->xceiv);
+-			omap2430_musb_set_vbus(musb, 1);
+-		}
+-		break;
+-
+-	case OMAP_MUSB_VBUS_VALID:
+-		dev_dbg(dev, "VBUS Connect\n");
+-
+-		otg->default_a = false;
+-		musb->xceiv->state = OTG_STATE_B_IDLE;
+-		musb->xceiv->last_event = USB_EVENT_VBUS;
+-		if (musb->gadget_driver)
+-			pm_runtime_get_sync(dev);
+-		usb_phy_init(musb->xceiv);
+-		break;
+-
+-	case OMAP_MUSB_ID_FLOAT:
+-	case OMAP_MUSB_VBUS_OFF:
+-		dev_dbg(dev, "VBUS Disconnect\n");
+-
+-		musb->xceiv->last_event = USB_EVENT_NONE;
+-		if (is_otg_enabled(musb) || is_peripheral_enabled(musb))
+-			if (musb->gadget_driver) {
+-				pm_runtime_mark_last_busy(dev);
+-				pm_runtime_put_autosuspend(dev);
+-			}
+-
+-		if (data->interface_type == MUSB_INTERFACE_UTMI) {
+-			if (musb->xceiv->otg->set_vbus)
+-				otg_set_vbus(musb->xceiv->otg, 0);
+-		}
+-		usb_phy_shutdown(musb->xceiv);
+-		break;
+-	default:
+-		dev_dbg(dev, "ID float\n");
+-	}
+-}
+-
+-
+-static void omap_musb_mailbox_work(struct work_struct *mailbox_work)
+-{
+-	struct omap2430_glue *glue = container_of(mailbox_work,
+-				struct omap2430_glue, omap_musb_mailbox_work);
+-	omap_musb_set_mailbox(glue);
+-}
+-#endif
+-
+-static int omap2430_musb_init(struct musb *musb)
+-{
+-	u32 l;
+-	int status = 0;
+-#ifndef __UBOOT__
+-	struct device *dev = musb->controller;
+-	struct omap2430_glue *glue = dev_get_drvdata(dev->parent);
+-	struct musb_hdrc_platform_data *plat = dev->platform_data;
+-	struct omap_musb_board_data *data = plat->board_data;
+-#else
+-	struct omap_musb_board_data *data =
+-		(struct omap_musb_board_data *)musb->controller;
+-#endif
+-
+-
+-#ifndef __UBOOT__
+-	/* We require some kind of external transceiver, hooked
+-	 * up through ULPI.  TWL4030-family PMICs include one,
+-	 * which needs a driver, drivers aren't always needed.
+-	 */
+-	musb->xceiv = devm_usb_get_phy(dev, USB_PHY_TYPE_USB2);
+-	if (IS_ERR_OR_NULL(musb->xceiv)) {
+-		pr_err("HS USB OTG: no transceiver configured\n");
+-		return -ENODEV;
+-	}
+-
+-	status = pm_runtime_get_sync(dev);
+-	if (status < 0) {
+-		dev_err(dev, "pm_runtime_get_sync FAILED %d\n", status);
+-		goto err1;
+-	}
+-#endif
+-
+-	l = musb_readl(musb->mregs, OTG_INTERFSEL);
+-
+-	if (data->interface_type == MUSB_INTERFACE_UTMI) {
+-		/* OMAP4 uses Internal PHY GS70 which uses UTMI interface */
+-		l &= ~ULPI_12PIN;       /* Disable ULPI */
+-		l |= UTMI_8BIT;         /* Enable UTMI  */
+-	} else {
+-		l |= ULPI_12PIN;
+-	}
+-
+-	musb_writel(musb->mregs, OTG_INTERFSEL, l);
+-
+-	pr_debug("HS USB OTG: revision 0x%x, sysconfig 0x%02x, "
+-			"sysstatus 0x%x, intrfsel 0x%x, simenable  0x%x\n",
+-			musb_readl(musb->mregs, OTG_REVISION),
+-			musb_readl(musb->mregs, OTG_SYSCONFIG),
+-			musb_readl(musb->mregs, OTG_SYSSTATUS),
+-			musb_readl(musb->mregs, OTG_INTERFSEL),
+-			musb_readl(musb->mregs, OTG_SIMENABLE));
+-
+-#ifndef __UBOOT__
+-	setup_timer(&musb_idle_timer, musb_do_idle, (unsigned long) musb);
+-
+-	if (glue->status != OMAP_MUSB_UNKNOWN)
+-		omap_musb_set_mailbox(glue);
+-
+-	pm_runtime_put_noidle(musb->controller);
+-#endif
+-	return 0;
+-
+-err1:
+-	return status;
+-}
+-
+-static void omap2430_musb_enable(struct musb *musb)
+-{
+-#ifndef __UBOOT__
+-	u8		devctl;
+-	unsigned long timeout = jiffies + msecs_to_jiffies(1000);
+-	struct device *dev = musb->controller;
+-	struct omap2430_glue *glue = dev_get_drvdata(dev->parent);
+-	struct musb_hdrc_platform_data *pdata = dev->platform_data;
+-	struct omap_musb_board_data *data = pdata->board_data;
+-
+-	switch (glue->status) {
+-
+-	case OMAP_MUSB_ID_GROUND:
+-		usb_phy_init(musb->xceiv);
+-		if (data->interface_type != MUSB_INTERFACE_UTMI)
+-			break;
+-		devctl = musb_readb(musb->mregs, MUSB_DEVCTL);
+-		/* start the session */
+-		devctl |= MUSB_DEVCTL_SESSION;
+-		musb_writeb(musb->mregs, MUSB_DEVCTL, devctl);
+-		while (musb_readb(musb->mregs, MUSB_DEVCTL) &
+-				MUSB_DEVCTL_BDEVICE) {
+-			cpu_relax();
+-
+-			if (time_after(jiffies, timeout)) {
+-				dev_err(dev, "configured as A device timeout");
+-				break;
+-			}
+-		}
+-		break;
+-
+-	case OMAP_MUSB_VBUS_VALID:
+-		usb_phy_init(musb->xceiv);
+-		break;
+-
+-	default:
+-		break;
+-	}
+-#else
+-#ifdef CONFIG_TWL4030_USB
+-	if (twl4030_usb_ulpi_init()) {
+-		serial_printf("ERROR: %s Could not initialize PHY\n",
+-				__PRETTY_FUNCTION__);
+-	}
+-#endif
+-#endif
+-}
+-
+-static void omap2430_musb_disable(struct musb *musb)
+-{
+-#ifndef __UBOOT__
+-	struct device *dev = musb->controller;
+-	struct omap2430_glue *glue = dev_get_drvdata(dev->parent);
+-
+-	if (glue->status != OMAP_MUSB_UNKNOWN)
+-		usb_phy_shutdown(musb->xceiv);
+-#endif
+-}
+-
+-static int omap2430_musb_exit(struct musb *musb)
+-{
+-	del_timer_sync(&musb_idle_timer);
+-
+-	omap2430_low_level_exit(musb);
+-
+-	return 0;
+-}
+-
+-#ifndef __UBOOT__
+-static const struct musb_platform_ops omap2430_ops = {
+-#else
+-const struct musb_platform_ops omap2430_ops = {
+-#endif
+-	.init		= omap2430_musb_init,
+-	.exit		= omap2430_musb_exit,
+-
+-#ifndef __UBOOT__
+-	.set_mode	= omap2430_musb_set_mode,
+-	.try_idle	= omap2430_musb_try_idle,
+-
+-	.set_vbus	= omap2430_musb_set_vbus,
+-#endif
+-
+-	.enable		= omap2430_musb_enable,
+-	.disable	= omap2430_musb_disable,
 -};
 -
--struct omap_xhci {
--	struct omap_dwc_wrapper *otg_wrapper;
--	struct omap_usb3_phy *usb3_phy;
--	struct xhci_hccr *hcd;
--	struct dwc3 *dwc3_reg;
+-#ifndef __UBOOT__
+-static u64 omap2430_dmamask = DMA_BIT_MASK(32);
+-
+-static int __devinit omap2430_probe(struct platform_device *pdev)
+-{
+-	struct musb_hdrc_platform_data	*pdata = pdev->dev.platform_data;
+-	struct platform_device		*musb;
+-	struct omap2430_glue		*glue;
+-	int				ret = -ENOMEM;
+-
+-	glue = devm_kzalloc(&pdev->dev, sizeof(*glue), GFP_KERNEL);
+-	if (!glue) {
+-		dev_err(&pdev->dev, "failed to allocate glue context\n");
+-		goto err0;
+-	}
+-
+-	musb = platform_device_alloc("musb-hdrc", -1);
+-	if (!musb) {
+-		dev_err(&pdev->dev, "failed to allocate musb device\n");
+-		goto err0;
+-	}
+-
+-	musb->dev.parent		= &pdev->dev;
+-	musb->dev.dma_mask		= &omap2430_dmamask;
+-	musb->dev.coherent_dma_mask	= omap2430_dmamask;
+-
+-	glue->dev			= &pdev->dev;
+-	glue->musb			= musb;
+-	glue->status			= OMAP_MUSB_UNKNOWN;
+-
+-	pdata->platform_ops		= &omap2430_ops;
+-
+-	platform_set_drvdata(pdev, glue);
+-
+-	/*
+-	 * REVISIT if we ever have two instances of the wrapper, we will be
+-	 * in big trouble
+-	 */
+-	_glue	= glue;
+-
+-	INIT_WORK(&glue->omap_musb_mailbox_work, omap_musb_mailbox_work);
+-
+-	ret = platform_device_add_resources(musb, pdev->resource,
+-			pdev->num_resources);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to add resources\n");
+-		goto err1;
+-	}
+-
+-	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to add platform_data\n");
+-		goto err1;
+-	}
+-
+-	pm_runtime_enable(&pdev->dev);
+-
+-	ret = platform_device_add(musb);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to register musb device\n");
+-		goto err1;
+-	}
+-
+-	return 0;
+-
+-err1:
+-	platform_device_put(musb);
+-
+-err0:
+-	return ret;
+-}
+-
+-static int __devexit omap2430_remove(struct platform_device *pdev)
+-{
+-	struct omap2430_glue		*glue = platform_get_drvdata(pdev);
+-
+-	cancel_work_sync(&glue->omap_musb_mailbox_work);
+-	platform_device_del(glue->musb);
+-	platform_device_put(glue->musb);
+-
+-	return 0;
+-}
+-
+-#ifdef CONFIG_PM
+-
+-static int omap2430_runtime_suspend(struct device *dev)
+-{
+-	struct omap2430_glue		*glue = dev_get_drvdata(dev);
+-	struct musb			*musb = glue_to_musb(glue);
+-
+-	if (musb) {
+-		musb->context.otg_interfsel = musb_readl(musb->mregs,
+-				OTG_INTERFSEL);
+-
+-		omap2430_low_level_exit(musb);
+-		usb_phy_set_suspend(musb->xceiv, 1);
+-	}
+-
+-	return 0;
+-}
+-
+-static int omap2430_runtime_resume(struct device *dev)
+-{
+-	struct omap2430_glue		*glue = dev_get_drvdata(dev);
+-	struct musb			*musb = glue_to_musb(glue);
+-
+-	if (musb) {
+-		omap2430_low_level_init(musb);
+-		musb_writel(musb->mregs, OTG_INTERFSEL,
+-				musb->context.otg_interfsel);
+-
+-		usb_phy_set_suspend(musb->xceiv, 0);
+-	}
+-
+-	return 0;
+-}
+-
+-static struct dev_pm_ops omap2430_pm_ops = {
+-	.runtime_suspend = omap2430_runtime_suspend,
+-	.runtime_resume = omap2430_runtime_resume,
 -};
 -
--/* USB PHY functions */
--void omap_enable_phy(struct omap_xhci *omap);
--void omap_reset_usb_phy(struct dwc3 *dwc3_reg);
--void usb_phy_power(int on);
+-#define DEV_PM_OPS	(&omap2430_pm_ops)
+-#else
+-#define DEV_PM_OPS	NULL
+-#endif
 -
--#endif /* _ASM_ARCH_XHCI_OMAP_H_ */
+-static struct platform_driver omap2430_driver = {
+-	.probe		= omap2430_probe,
+-	.remove		= __devexit_p(omap2430_remove),
+-	.driver		= {
+-		.name	= "musb-omap2430",
+-		.pm	= DEV_PM_OPS,
+-	},
+-};
+-
+-MODULE_DESCRIPTION("OMAP2PLUS MUSB Glue Layer");
+-MODULE_AUTHOR("Felipe Balbi <balbi@ti.com>");
+-MODULE_LICENSE("GPL v2");
+-
+-static int __init omap2430_init(void)
+-{
+-	return platform_driver_register(&omap2430_driver);
+-}
+-subsys_initcall(omap2430_init);
+-
+-static void __exit omap2430_exit(void)
+-{
+-	platform_driver_unregister(&omap2430_driver);
+-}
+-module_exit(omap2430_exit);
+-#endif
+diff --git a/drivers/usb/musb/omap2430.h b/drivers/usb/musb/omap2430.h
+deleted file mode 100644
+index 3b795c2..0000000
+--- a/drivers/usb/musb/omap2430.h
++++ /dev/null
+@@ -1,56 +0,0 @@
+-/*
+- * Copyright (C) 2005-2006 by Texas Instruments
+- *
+- * The Inventra Controller Driver for Linux is free software; you
+- * can redistribute it and/or modify it under the terms of the GNU
+- * General Public License version 2 as published by the Free Software
+- * Foundation.
+- */
+-
+-#ifndef __MUSB_OMAP243X_H__
+-#define __MUSB_OMAP243X_H__
+-
+-#ifndef __UBOOT__
+-#include <plat/usb.h>
+-#else
+-#undef RESETDONE
+-#endif
+-
+-/*
+- * OMAP2430-specific definitions
+- */
+-
+-#define OTG_REVISION		0x400
+-
+-#define OTG_SYSCONFIG		0x404
+-#	define	MIDLEMODE	12	/* bit position */
+-#	define	FORCESTDBY		(0 << MIDLEMODE)
+-#	define	NOSTDBY			(1 << MIDLEMODE)
+-#	define	SMARTSTDBY		(2 << MIDLEMODE)
+-
+-#	define	SIDLEMODE		3	/* bit position */
+-#	define	FORCEIDLE		(0 << SIDLEMODE)
+-#	define	NOIDLE			(1 << SIDLEMODE)
+-#	define	SMARTIDLE		(2 << SIDLEMODE)
+-
+-#	define	ENABLEWAKEUP		(1 << 2)
+-#	define	SOFTRST			(1 << 1)
+-#	define	AUTOIDLE		(1 << 0)
+-
+-#define OTG_SYSSTATUS		0x408
+-#	define	RESETDONE		(1 << 0)
+-
+-#define OTG_INTERFSEL		0x40c
+-#	define	EXTCP			(1 << 2)
+-#	define	PHYSEL			0	/* bit position */
+-#	define	UTMI_8BIT		(0 << PHYSEL)
+-#	define	ULPI_12PIN		(1 << PHYSEL)
+-#	define	ULPI_8PIN		(2 << PHYSEL)
+-
+-#define OTG_SIMENABLE		0x410
+-#	define	TM1			(1 << 0)
+-
+-#define OTG_FORCESTDBY		0x414
+-#	define	ENABLEFORCE		(1 << 0)
+-
+-#endif	/* __MUSB_OMAP243X_H__ */
 -- 
 1.7.10.4
 
