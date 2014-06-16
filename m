@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WwRqN-00049D-47
- for barebox@lists.infradead.org; Mon, 16 Jun 2014 08:00:46 +0000
-Received: by mail-la0-f52.google.com with SMTP id ty20so368384lab.39
- for <barebox@lists.infradead.org>; Mon, 16 Jun 2014 01:00:20 -0700 (PDT)
+ id 1WwRqL-00047v-Ir
+ for barebox@lists.infradead.org; Mon, 16 Jun 2014 08:00:43 +0000
+Received: by mail-la0-f54.google.com with SMTP id mc6so2168898lab.41
+ for <barebox@lists.infradead.org>; Mon, 16 Jun 2014 01:00:18 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 16 Jun 2014 12:00:13 +0400
-Message-Id: <1402905613-7411-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1402905613-7411-1-git-send-email-antonynpavlov@gmail.com>
-References: <1402905613-7411-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 16 Jun 2014 12:00:12 +0400
+Message-Id: <1402905613-7411-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,615 +21,471 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 2/2] [WIP] gpio: add driver for PCA95[357]x, PCA9698, TCA64xx,
- and MAX7310 SMBus I/O expanders
+Subject: [RFC 1/2] [WIP] i2c: import SMBus stuff from linux
 To: barebox@lists.infradead.org
 
-TODOs:
-
-  * can we drop depricated device-tree properties?
+can we move it to drivers/i2c/i2c-smbus.c?
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/gpio/Kconfig            |  20 ++
- drivers/gpio/Makefile           |   1 +
- drivers/gpio/gpio-pca953x.c     | 511 ++++++++++++++++++++++++++++++++++++++++
- include/platform_data/pca953x.h |  27 +++
- 4 files changed, 559 insertions(+)
+ drivers/i2c/i2c.c | 368 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/i2c/i2c.h |  64 ++++++++++
+ 2 files changed, 432 insertions(+)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 7302955..b821682 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -48,6 +48,26 @@ config GPIO_ORION
- 	  found on Marvell Orion and MVEBU SoCs (Armada 370/XP,
- 	  Dove, Kirkwood, MV78x00, Orion5x).
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 9873957..167a5e4 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -159,6 +159,374 @@ int i2c_master_recv(struct i2c_client *client, char *buf, int count)
+ }
+ EXPORT_SYMBOL(i2c_master_recv);
  
-+config GPIO_PCA953X
-+	bool "PCA95[357]x, PCA9698, TCA64xx, and MAX7310 I/O ports"
-+	depends on I2C
-+	help
-+	  Say yes here to provide access to several register-oriented
-+	  SMBus I/O expanders, made mostly by NXP or TI.  Compatible
-+	  models include:
++/* The SMBus parts */
 +
-+	  4 bits:	pca9536, pca9537
++#define POLY    (0x1070U << 3)
++static u8 crc8(u16 data)
++{
++	int i;
 +
-+	  8 bits:	max7310, max7315, pca6107, pca9534, pca9538, pca9554,
-+			pca9556, pca9557, pca9574, tca6408, xra1202
++	for (i = 0; i < 8; i++) {
++		if (data & 0x8000)
++			data = data ^ POLY;
++		data = data << 1;
++	}
++	return (u8)(data >> 8);
++}
 +
-+	  16 bits:	max7312, max7313, pca9535, pca9539, pca9555, pca9575,
-+			tca6416
++/* Incremental CRC8 over count bytes in the array pointed to by p */
++static u8 i2c_smbus_pec(u8 crc, u8 *p, size_t count)
++{
++	int i;
 +
-+	  24 bits:	tca6424
++	for (i = 0; i < count; i++)
++		crc = crc8((crc ^ p[i]) << 8);
++	return crc;
++}
 +
-+	  40 bits:	pca9505, pca9698
++/* Assume a 7-bit address, which is reasonable for SMBus */
++static u8 i2c_smbus_msg_pec(u8 pec, struct i2c_msg *msg)
++{
++	/* The address will be sent first */
++	u8 addr = (msg->addr << 1) | !!(msg->flags & I2C_M_RD);
++	pec = i2c_smbus_pec(pec, &addr, 1);
 +
- config GPIO_PL061
- 	bool "PrimeCell PL061 GPIO support"
- 	depends on ARM_AMBA
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 68a76a3..4768dfe 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -7,6 +7,7 @@ obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
- obj-$(CONFIG_GPIO_IMX)		+= gpio-imx.o
- obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
- obj-$(CONFIG_GPIO_OMAP)		+= gpio-omap.o
-+obj-$(CONFIG_GPIO_PCA953X)	+= gpio-pca953x.o
- obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
- obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
- obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-new file mode 100644
-index 0000000..f55b313
---- /dev/null
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -0,0 +1,511 @@
-+/*
-+ *  PCA953x 4/8/16/24/40 bit I/O ports
++	/* The data buffer follows */
++	return i2c_smbus_pec(pec, msg->buf, msg->len);
++}
++
++/* Used for write only transactions */
++static inline void i2c_smbus_add_pec(struct i2c_msg *msg)
++{
++	msg->buf[msg->len] = i2c_smbus_msg_pec(0, msg);
++	msg->len++;
++}
++
++/* Return <0 on CRC error
++   If there was a write before this read (most cases) we need to take the
++   partial CRC from the write part into account.
++   Note that this function does modify the message (we need to decrease the
++   message length to hide the CRC byte from the caller). */
++static int i2c_smbus_check_pec(u8 cpec, struct i2c_msg *msg)
++{
++	u8 rpec = msg->buf[--msg->len];
++	cpec = i2c_smbus_msg_pec(cpec, msg);
++
++	if (rpec != cpec) {
++		pr_debug("i2c-core: Bad PEC 0x%02x vs. 0x%02x\n",
++			rpec, cpec);
++		return -EBADMSG;
++	}
++	return 0;
++}
++
++/**
++ * i2c_smbus_read_byte - SMBus "receive byte" protocol
++ * @client: Handle to slave device
 + *
-+ *  This code was ported from linux-3.15 kernel by Antony Pavlov.
-+ *
-+ *  Copyright (C) 2005 Ben Gardner <bgardner@wabtec.com>
-+ *  Copyright (C) 2007 Marvell International Ltd.
-+ *
-+ *  Derived from drivers/i2c/chips/pca9539.c
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; version 2 of the License.
++ * This executes the SMBus "receive byte" protocol, returning negative errno
++ * else the byte received from the device.
 + */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <driver.h>
-+#include <xfuncs.h>
-+#include <errno.h>
-+#include <i2c/i2c.h>
-+
-+#include <gpio.h>
-+#include <platform_data/pca953x.h>
-+
-+#define PCA953X_INPUT		0
-+#define PCA953X_OUTPUT		1
-+#define PCA953X_INVERT		2
-+#define PCA953X_DIRECTION	3
-+
-+#define REG_ADDR_AI		0x80
-+
-+#define PCA957X_IN		0
-+#define PCA957X_INVRT		1
-+#define PCA957X_BKEN		2
-+#define PCA957X_PUPD		3
-+#define PCA957X_CFG		4
-+#define PCA957X_OUT		5
-+#define PCA957X_MSK		6
-+#define PCA957X_INTS		7
-+
-+#define PCA_GPIO_MASK		0x00FF
-+#define PCA_INT			0x0100
-+#define PCA953X_TYPE		0x1000
-+#define PCA957X_TYPE		0x2000
-+
-+static struct platform_device_id pca953x_id[] = {
-+	{ "pca9505", 40 | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9534", 8  | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9535", 16 | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9536", 4  | PCA953X_TYPE, },
-+	{ "pca9537", 4  | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9538", 8  | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9539", 16 | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9554", 8  | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9555", 16 | PCA953X_TYPE | PCA_INT, },
-+	{ "pca9556", 8  | PCA953X_TYPE, },
-+	{ "pca9557", 8  | PCA953X_TYPE, },
-+	{ "pca9574", 8  | PCA957X_TYPE | PCA_INT, },
-+	{ "pca9575", 16 | PCA957X_TYPE | PCA_INT, },
-+	{ "pca9698", 40 | PCA953X_TYPE, },
-+
-+	{ "max7310", 8  | PCA953X_TYPE, },
-+	{ "max7312", 16 | PCA953X_TYPE | PCA_INT, },
-+	{ "max7313", 16 | PCA953X_TYPE | PCA_INT, },
-+	{ "max7315", 8  | PCA953X_TYPE | PCA_INT, },
-+	{ "pca6107", 8  | PCA953X_TYPE | PCA_INT, },
-+	{ "tca6408", 8  | PCA953X_TYPE | PCA_INT, },
-+	{ "tca6416", 16 | PCA953X_TYPE | PCA_INT, },
-+	{ "tca6424", 24 | PCA953X_TYPE | PCA_INT, },
-+	{ "xra1202", 8  | PCA953X_TYPE },
-+	{ }
-+};
-+
-+#define MAX_BANK 5
-+#define BANK_SZ 8
-+
-+#define NBANK(chip) (chip->gpio_chip.ngpio / BANK_SZ)
-+
-+struct pca953x_chip {
-+	unsigned gpio_start;
-+	u8 reg_output[MAX_BANK];
-+	u8 reg_direction[MAX_BANK];
-+	struct i2c_client *client;
-+	struct gpio_chip gpio_chip;
-+	const char *const *names;
-+	int	chip_type;
-+};
-+
-+static inline struct pca953x_chip *to_pca(struct gpio_chip *gc)
++s32 i2c_smbus_read_byte(const struct i2c_client *client)
 +{
-+	return container_of(gc, struct pca953x_chip, gpio_chip);
++	union i2c_smbus_data data;
++	int status;
++
++	status = i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++				I2C_SMBUS_READ, 0,
++				I2C_SMBUS_BYTE, &data);
++	return (status < 0) ? status : data.byte;
 +}
++EXPORT_SYMBOL(i2c_smbus_read_byte);
 +
-+static int pca953x_read_single(struct pca953x_chip *chip, int reg, u32 *val,
-+				int off)
++/**
++ * i2c_smbus_write_byte - SMBus "send byte" protocol
++ * @client: Handle to slave device
++ * @value: Byte to be sent
++ *
++ * This executes the SMBus "send byte" protocol, returning negative errno
++ * else zero on success.
++ */
++s32 i2c_smbus_write_byte(const struct i2c_client *client, u8 value)
 +{
-+	int ret;
-+	int bank_shift = fls((chip->gpio_chip.ngpio - 1) / BANK_SZ);
-+	int offset = off / BANK_SZ;
++	return i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++	                      I2C_SMBUS_WRITE, value, I2C_SMBUS_BYTE, NULL);
++}
++EXPORT_SYMBOL(i2c_smbus_write_byte);
 +
-+	ret = i2c_smbus_read_byte_data(chip->client,
-+				(reg << bank_shift) + offset);
-+	*val = ret;
++/**
++ * i2c_smbus_read_byte_data - SMBus "read byte" protocol
++ * @client: Handle to slave device
++ * @command: Byte interpreted by slave
++ *
++ * This executes the SMBus "read byte" protocol, returning negative errno
++ * else a data byte received from the device.
++ */
++s32 i2c_smbus_read_byte_data(const struct i2c_client *client, u8 command)
++{
++	union i2c_smbus_data data;
++	int status;
 +
-+	if (ret < 0) {
-+		dev_err(&chip->client->dev, "failed reading register\n");
-+		return ret;
++	status = i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++				I2C_SMBUS_READ, command,
++				I2C_SMBUS_BYTE_DATA, &data);
++	return (status < 0) ? status : data.byte;
++}
++EXPORT_SYMBOL(i2c_smbus_read_byte_data);
++
++/**
++ * i2c_smbus_write_byte_data - SMBus "write byte" protocol
++ * @client: Handle to slave device
++ * @command: Byte interpreted by slave
++ * @value: Byte being written
++ *
++ * This executes the SMBus "write byte" protocol, returning negative errno
++ * else zero on success.
++ */
++s32 i2c_smbus_write_byte_data(const struct i2c_client *client, u8 command,
++			      u8 value)
++{
++	union i2c_smbus_data data;
++	data.byte = value;
++	return i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++			      I2C_SMBUS_WRITE, command,
++			      I2C_SMBUS_BYTE_DATA, &data);
++}
++EXPORT_SYMBOL(i2c_smbus_write_byte_data);
++
++/**
++ * i2c_smbus_read_word_data - SMBus "read word" protocol
++ * @client: Handle to slave device
++ * @command: Byte interpreted by slave
++ *
++ * This executes the SMBus "read word" protocol, returning negative errno
++ * else a 16-bit unsigned "word" received from the device.
++ */
++s32 i2c_smbus_read_word_data(const struct i2c_client *client, u8 command)
++{
++	union i2c_smbus_data data;
++	int status;
++
++	status = i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++				I2C_SMBUS_READ, command,
++				I2C_SMBUS_WORD_DATA, &data);
++	return (status < 0) ? status : data.word;
++}
++EXPORT_SYMBOL(i2c_smbus_read_word_data);
++
++/**
++ * i2c_smbus_write_word_data - SMBus "write word" protocol
++ * @client: Handle to slave device
++ * @command: Byte interpreted by slave
++ * @value: 16-bit "word" being written
++ *
++ * This executes the SMBus "write word" protocol, returning negative errno
++ * else zero on success.
++ */
++s32 i2c_smbus_write_word_data(const struct i2c_client *client, u8 command,
++			      u16 value)
++{
++	union i2c_smbus_data data;
++	data.word = value;
++	return i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++			      I2C_SMBUS_WRITE, command,
++			      I2C_SMBUS_WORD_DATA, &data);
++}
++EXPORT_SYMBOL(i2c_smbus_write_word_data);
++
++/* Returns the number of read bytes */
++s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client, u8 command,
++				  u8 length, u8 *values)
++{
++	union i2c_smbus_data data;
++	int status;
++
++	if (length > I2C_SMBUS_BLOCK_MAX)
++		length = I2C_SMBUS_BLOCK_MAX;
++	data.block[0] = length;
++	status = i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++				I2C_SMBUS_READ, command,
++				I2C_SMBUS_I2C_BLOCK_DATA, &data);
++	if (status < 0)
++		return status;
++
++	memcpy(values, &data.block[1], data.block[0]);
++	return data.block[0];
++}
++EXPORT_SYMBOL(i2c_smbus_read_i2c_block_data);
++
++s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client, u8 command,
++				   u8 length, const u8 *values)
++{
++	union i2c_smbus_data data;
++
++	if (length > I2C_SMBUS_BLOCK_MAX)
++		length = I2C_SMBUS_BLOCK_MAX;
++	data.block[0] = length;
++	memcpy(data.block + 1, values, length);
++	return i2c_smbus_xfer(client->adapter, client->addr, 0 /* client->flags */,
++			      I2C_SMBUS_WRITE, command,
++			      I2C_SMBUS_I2C_BLOCK_DATA, &data);
++}
++EXPORT_SYMBOL(i2c_smbus_write_i2c_block_data);
++
++/* Simulate a SMBus command using the i2c protocol
++   No checking of parameters is done!  */
++static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
++				   unsigned short flags,
++				   char read_write, u8 command, int size,
++				   union i2c_smbus_data *data)
++{
++	/* So we need to generate a series of msgs. In the case of writing, we
++	  need to use only one message; when reading, we need two. We initialize
++	  most things with sane defaults, to keep the code below somewhat
++	  simpler. */
++	unsigned char msgbuf0[I2C_SMBUS_BLOCK_MAX+3];
++	unsigned char msgbuf1[I2C_SMBUS_BLOCK_MAX+2];
++	int num = read_write == I2C_SMBUS_READ ? 2 : 1;
++	int i;
++	u8 partial_pec = 0;
++	int status;
++	struct i2c_msg msg[2] = {
++		{
++			.addr = addr,
++			.flags = flags,
++			.len = 1,
++			.buf = msgbuf0,
++		}, {
++			.addr = addr,
++			.flags = flags | I2C_M_RD,
++			.len = 0,
++			.buf = msgbuf1,
++		},
++	};
++
++	msgbuf0[0] = command;
++	switch (size) {
++	case I2C_SMBUS_QUICK:
++		msg[0].len = 0;
++		/* Special case: The read/write field is used as data */
++		msg[0].flags = flags | (read_write == I2C_SMBUS_READ ?
++					I2C_M_RD : 0);
++		num = 1;
++		break;
++	case I2C_SMBUS_BYTE:
++		if (read_write == I2C_SMBUS_READ) {
++			/* Special case: only a read! */
++			msg[0].flags = I2C_M_RD | flags;
++			num = 1;
++		}
++		break;
++	case I2C_SMBUS_BYTE_DATA:
++		if (read_write == I2C_SMBUS_READ)
++			msg[1].len = 1;
++		else {
++			msg[0].len = 2;
++			msgbuf0[1] = data->byte;
++		}
++		break;
++	case I2C_SMBUS_WORD_DATA:
++		if (read_write == I2C_SMBUS_READ)
++			msg[1].len = 2;
++		else {
++			msg[0].len = 3;
++			msgbuf0[1] = data->word & 0xff;
++			msgbuf0[2] = data->word >> 8;
++		}
++		break;
++	case I2C_SMBUS_I2C_BLOCK_DATA:
++		if (read_write == I2C_SMBUS_READ) {
++			msg[1].len = data->block[0];
++		} else {
++			msg[0].len = data->block[0] + 1;
++			if (msg[0].len > I2C_SMBUS_BLOCK_MAX + 1) {
++				dev_err(&adapter->dev,
++					"Invalid block write size %d\n",
++					data->block[0]);
++				return -EINVAL;
++			}
++			for (i = 1; i <= data->block[0]; i++)
++				msgbuf0[i] = data->block[i];
++		}
++		break;
++	default:
++		dev_err(&adapter->dev, "Unsupported transaction %d\n", size);
++		return -EOPNOTSUPP;
 +	}
 +
-+	return 0;
-+}
-+
-+static int pca953x_write_single(struct pca953x_chip *chip, int reg, u32 val,
-+				int off)
-+{
-+	int ret = 0;
-+	int bank_shift = fls((chip->gpio_chip.ngpio - 1) / BANK_SZ);
-+	int offset = off / BANK_SZ;
-+
-+	ret = i2c_smbus_write_byte_data(chip->client,
-+					(reg << bank_shift) + offset, val);
-+
-+	if (ret < 0) {
-+		dev_err(&chip->client->dev, "failed writing register\n");
-+		return ret;
++	i = ((flags & I2C_CLIENT_PEC) && size != I2C_SMBUS_QUICK
++				      && size != I2C_SMBUS_I2C_BLOCK_DATA);
++	if (i) {
++		/* Compute PEC if first message is a write */
++		if (!(msg[0].flags & I2C_M_RD)) {
++			if (num == 1) /* Write only */
++				i2c_smbus_add_pec(&msg[0]);
++			else /* Write followed by read */
++				partial_pec = i2c_smbus_msg_pec(0, &msg[0]);
++		}
++		/* Ask for PEC if last message is a read */
++		if (msg[num-1].flags & I2C_M_RD)
++			msg[num-1].len++;
 +	}
 +
-+	return 0;
-+}
++	status = i2c_transfer(adapter, msg, num);
++	if (status < 0)
++		return status;
 +
-+static int pca953x_write_regs(struct pca953x_chip *chip, int reg, u8 *val)
-+{
-+	int ret = 0;
++	/* Check PEC if last message is a read */
++	if (i && (msg[num-1].flags & I2C_M_RD)) {
++		status = i2c_smbus_check_pec(partial_pec, &msg[num-1]);
++		if (status < 0)
++			return status;
++	}
 +
-+	if (chip->gpio_chip.ngpio <= 8)
-+		ret = i2c_smbus_write_byte_data(chip->client, reg, *val);
-+	else if (chip->gpio_chip.ngpio >= 24) {
-+		int bank_shift = fls((chip->gpio_chip.ngpio - 1) / BANK_SZ);
-+		ret = i2c_smbus_write_i2c_block_data(chip->client,
-+					(reg << bank_shift) | REG_ADDR_AI,
-+					NBANK(chip), val);
-+	} else {
-+		switch (chip->chip_type) {
-+		case PCA953X_TYPE:
-+			ret = i2c_smbus_write_word_data(chip->client,
-+							reg << 1, (u16) *val);
++	if (read_write == I2C_SMBUS_READ)
++		switch (size) {
++		case I2C_SMBUS_BYTE:
++			data->byte = msgbuf0[0];
 +			break;
-+		case PCA957X_TYPE:
-+			ret = i2c_smbus_write_byte_data(chip->client, reg << 1,
-+							val[0]);
-+			if (ret < 0)
-+				break;
-+			ret = i2c_smbus_write_byte_data(chip->client,
-+							(reg << 1) + 1,
-+							val[1]);
++		case I2C_SMBUS_BYTE_DATA:
++			data->byte = msgbuf1[0];
++			break;
++		case I2C_SMBUS_WORD_DATA:
++			data->word = msgbuf1[0] | (msgbuf1[1] << 8);
++			break;
++		case I2C_SMBUS_I2C_BLOCK_DATA:
++			for (i = 0; i < data->block[0]; i++)
++				data->block[i+1] = msgbuf1[i];
 +			break;
 +		}
-+	}
-+
-+	if (ret < 0) {
-+		dev_err(&chip->client->dev, "failed writing register\n");
-+		return ret;
-+	}
-+
 +	return 0;
 +}
 +
-+static int pca953x_read_regs(struct pca953x_chip *chip, int reg, u8 *val)
++/**
++ * i2c_smbus_xfer - execute SMBus protocol operations
++ * @adapter: Handle to I2C bus
++ * @addr: Address of SMBus slave on that bus
++ * @flags: I2C_CLIENT_* flags (usually zero or I2C_CLIENT_PEC)
++ * @read_write: I2C_SMBUS_READ or I2C_SMBUS_WRITE
++ * @command: Byte interpreted by slave, for protocols which use such bytes
++ * @protocol: SMBus protocol operation to execute, such as I2C_SMBUS_PROC_CALL
++ * @data: Data to be read or written
++ *
++ * This executes an SMBus protocol operation, and returns a negative
++ * errno code else zero on success.
++ */
++s32 i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr, unsigned short flags,
++		   char read_write, u8 command, int protocol,
++		   union i2c_smbus_data *data)
 +{
-+	int ret;
++	s32 res;
 +
-+	if (chip->gpio_chip.ngpio <= 8) {
-+		ret = i2c_smbus_read_byte_data(chip->client, reg);
-+		*val = ret;
-+	} else if (chip->gpio_chip.ngpio >= 24) {
-+		int bank_shift = fls((chip->gpio_chip.ngpio - 1) / BANK_SZ);
++	flags &= I2C_M_TEN | I2C_CLIENT_PEC | I2C_CLIENT_SCCB;
 +
-+		ret = i2c_smbus_read_i2c_block_data(chip->client,
-+					(reg << bank_shift) | REG_ADDR_AI,
-+					NBANK(chip), val);
-+	} else {
-+		ret = i2c_smbus_read_word_data(chip->client, reg << 1);
-+		val[0] = (u16)ret & 0xFF;
-+		val[1] = (u16)ret >> 8;
-+	}
-+	if (ret < 0) {
-+		dev_err(&chip->client->dev, "failed reading register\n");
-+		return ret;
-+	}
++	res = i2c_smbus_xfer_emulated(adapter, addr, flags, read_write,
++				      command, protocol, data);
 +
-+	return 0;
++	return res;
 +}
++EXPORT_SYMBOL(i2c_smbus_xfer);
 +
-+static int pca953x_gpio_direction_input(struct gpio_chip *gc, unsigned off)
-+{
-+	struct pca953x_chip *chip = to_pca(gc);
-+	u8 reg_val;
-+	int ret, offset = 0;
-+
-+	reg_val = chip->reg_direction[off / BANK_SZ] | (1u << (off % BANK_SZ));
-+
-+	switch (chip->chip_type) {
-+	case PCA953X_TYPE:
-+		offset = PCA953X_DIRECTION;
-+		break;
-+	case PCA957X_TYPE:
-+		offset = PCA957X_CFG;
-+		break;
-+	}
-+	ret = pca953x_write_single(chip, offset, reg_val, off);
-+	if (ret)
-+		goto exit;
-+
-+	chip->reg_direction[off / BANK_SZ] = reg_val;
-+	ret = 0;
-+exit:
-+	return ret;
-+}
-+
-+static int pca953x_gpio_direction_output(struct gpio_chip *gc,
-+		unsigned off, int val)
-+{
-+	struct pca953x_chip *chip = to_pca(gc);
-+	u8 reg_val;
-+	int ret, offset = 0;
-+
-+	/* set output level */
-+	if (val)
-+		reg_val = chip->reg_output[off / BANK_SZ]
-+			| (1u << (off % BANK_SZ));
-+	else
-+		reg_val = chip->reg_output[off / BANK_SZ]
-+			& ~(1u << (off % BANK_SZ));
-+
-+	switch (chip->chip_type) {
-+	case PCA953X_TYPE:
-+		offset = PCA953X_OUTPUT;
-+		break;
-+	case PCA957X_TYPE:
-+		offset = PCA957X_OUT;
-+		break;
-+	}
-+	ret = pca953x_write_single(chip, offset, reg_val, off);
-+	if (ret)
-+		goto exit;
-+
-+	chip->reg_output[off / BANK_SZ] = reg_val;
-+
-+	/* then direction */
-+	reg_val = chip->reg_direction[off / BANK_SZ] & ~(1u << (off % BANK_SZ));
-+	switch (chip->chip_type) {
-+	case PCA953X_TYPE:
-+		offset = PCA953X_DIRECTION;
-+		break;
-+	case PCA957X_TYPE:
-+		offset = PCA957X_CFG;
-+		break;
-+	}
-+	ret = pca953x_write_single(chip, offset, reg_val, off);
-+	if (ret)
-+		goto exit;
-+
-+	chip->reg_direction[off / BANK_SZ] = reg_val;
-+	ret = 0;
-+exit:
-+	return ret;
-+}
-+
-+static int pca953x_gpio_get_value(struct gpio_chip *gc, unsigned off)
-+{
-+	struct pca953x_chip *chip = to_pca(gc);
-+	u32 reg_val;
-+	int ret, offset = 0;
-+
-+	switch (chip->chip_type) {
-+	case PCA953X_TYPE:
-+		offset = PCA953X_INPUT;
-+		break;
-+	case PCA957X_TYPE:
-+		offset = PCA957X_IN;
-+		break;
-+	}
-+	ret = pca953x_read_single(chip, offset, &reg_val, off);
-+	if (ret < 0) {
-+		/* NOTE:  diagnostic already emitted; that's all we should
-+		 * do unless gpio_*_value_cansleep() calls become different
-+		 * from their nonsleeping siblings (and report faults).
-+		 */
-+		return 0;
-+	}
-+
-+	return (reg_val & (1u << (off % BANK_SZ))) ? 1 : 0;
-+}
-+
-+static void pca953x_gpio_set_value(struct gpio_chip *gc, unsigned off, int val)
-+{
-+	struct pca953x_chip *chip = to_pca(gc);
-+	u8 reg_val;
-+	int ret, offset = 0;
-+
-+	if (val)
-+		reg_val = chip->reg_output[off / BANK_SZ]
-+			| (1u << (off % BANK_SZ));
-+	else
-+		reg_val = chip->reg_output[off / BANK_SZ]
-+			& ~(1u << (off % BANK_SZ));
-+
-+	switch (chip->chip_type) {
-+	case PCA953X_TYPE:
-+		offset = PCA953X_OUTPUT;
-+		break;
-+	case PCA957X_TYPE:
-+		offset = PCA957X_OUT;
-+		break;
-+	}
-+	ret = pca953x_write_single(chip, offset, reg_val, off);
-+	if (ret)
-+		goto exit;
-+
-+	chip->reg_output[off / BANK_SZ] = reg_val;
-+exit:
-+	return;
-+}
-+
-+static struct gpio_ops pca953x_gpio_ops = {
-+	.direction_input  = pca953x_gpio_direction_input,
-+	.direction_output = pca953x_gpio_direction_output,
-+	.get = pca953x_gpio_get_value,
-+	.set = pca953x_gpio_set_value,
-+};
-+
-+static void pca953x_setup_gpio(struct pca953x_chip *chip, int gpios)
-+{
-+	struct gpio_chip *gc;
-+
-+	gc = &chip->gpio_chip;
-+
-+	gc->ops = &pca953x_gpio_ops;
-+
-+	gc->base = chip->gpio_start;
-+	gc->ngpio = gpios;
-+	gc->dev = &chip->client->dev;
-+}
+ int i2c_read_reg(struct i2c_client *client, u32 addr, u8 *buf, u16 count)
+ {
+ 	u8 msgbuf[2];
+diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
+index f89fefb..72a38b2 100644
+--- a/include/i2c/i2c.h
++++ b/include/i2c/i2c.h
+@@ -87,6 +87,70 @@ struct i2c_client {
+ 
+ #define to_i2c_client(a)	container_of(a, struct i2c_client, dev)
+ 
++/*flags for the client struct: */
++#define I2C_CLIENT_PEC	0x04		/* Use Packet Error Checking */
++#define I2C_CLIENT_TEN	0x10		/* we have a ten bit chip address */
++					/* Must equal I2C_M_TEN below */
++#define I2C_CLIENT_WAKE	0x80		/* for board_info; true iff can wake */
++#define I2C_CLIENT_SCCB	0x9000		/* Use Omnivision SCCB protocol */
++					/* Must match I2C_M_STOP|IGNORE_NAK */
 +
 +/*
-+ * Handlers for alternative sources of platform_data
++ * Data for SMBus Messages
 + */
-+#ifdef CONFIG_OF_GPIO
-+/*
-+ * Translate OpenFirmware node properties into platform_data
-+ * WARNING: This is DEPRECATED and will be removed eventually!
-+ */
-+static void
-+pca953x_get_alt_pdata(struct i2c_client *client, int *gpio_base, u32 *invert)
-+{
-+	struct device_node *node;
-+	const __be32 *val;
-+	int size;
-+
-+	*gpio_base = -1;
-+
-+	node = client->dev.device_node;
-+	if (node == NULL)
-+		return;
-+
-+	val = of_get_property(node, "linux,gpio-base", &size);
-+	WARN(val, "%s: device-tree property 'linux,gpio-base' is deprecated!", __func__);
-+	if (val) {
-+		if (size != sizeof(*val))
-+			dev_warn(&client->dev, "%s: wrong linux,gpio-base\n",
-+				 node->full_name);
-+		else
-+			*gpio_base = be32_to_cpup(val);
-+	}
-+
-+	val = of_get_property(node, "polarity", NULL);
-+	WARN(val, "%s: device-tree property 'polarity' is deprecated!", __func__);
-+	if (val)
-+		*invert = *val;
-+}
-+#else
-+static void
-+pca953x_get_alt_pdata(struct i2c_client *client, int *gpio_base, u32 *invert)
-+{
-+	*gpio_base = -1;
-+}
-+#endif
-+
-+static int device_pca953x_init(struct pca953x_chip *chip, u32 invert)
-+{
-+	int ret;
-+	u8 val[MAX_BANK];
-+
-+	ret = pca953x_read_regs(chip, PCA953X_OUTPUT, chip->reg_output);
-+	if (ret)
-+		goto out;
-+
-+	ret = pca953x_read_regs(chip, PCA953X_DIRECTION,
-+			       chip->reg_direction);
-+	if (ret)
-+		goto out;
-+
-+	/* set platform specific polarity inversion */
-+	if (invert)
-+		memset(val, 0xFF, NBANK(chip));
-+	else
-+		memset(val, 0, NBANK(chip));
-+
-+	ret = pca953x_write_regs(chip, PCA953X_INVERT, val);
-+out:
-+	return ret;
-+}
-+
-+static int device_pca957x_init(struct pca953x_chip *chip, u32 invert)
-+{
-+	int ret;
-+	u8 val[MAX_BANK];
-+
-+	ret = pca953x_read_regs(chip, PCA957X_OUT, chip->reg_output);
-+	if (ret)
-+		goto out;
-+	ret = pca953x_read_regs(chip, PCA957X_CFG, chip->reg_direction);
-+	if (ret)
-+		goto out;
-+
-+	/* set platform specific polarity inversion */
-+	if (invert)
-+		memset(val, 0xFF, NBANK(chip));
-+	else
-+		memset(val, 0, NBANK(chip));
-+	pca953x_write_regs(chip, PCA957X_INVRT, val);
-+
-+	/* To enable register 6, 7 to controll pull up and pull down */
-+	memset(val, 0x02, NBANK(chip));
-+	pca953x_write_regs(chip, PCA957X_BKEN, val);
-+
-+	return 0;
-+out:
-+	return ret;
-+}
-+
-+static int pca953x_probe(struct device_d *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	unsigned long driver_data;
-+	struct pca953x_platform_data *pdata;
-+	struct pca953x_chip *chip;
-+	int ret;
-+	u32 invert = 0;
-+
-+	chip = xzalloc(sizeof(struct pca953x_chip));
-+
-+	driver_data = 0;
-+	pdata = dev->platform_data;
-+	if (pdata) {
-+		chip->gpio_start = pdata->gpio_base;
-+		invert = pdata->invert;
-+		chip->names = pdata->names;
-+	} else {
-+		int err;
-+
-+		err = dev_get_drvdata(dev, &driver_data);
-+		if (err)
-+			return err;
-+
-+		pca953x_get_alt_pdata(client, &chip->gpio_start, &invert);
-+	}
-+
-+	chip->client = client;
-+
-+	chip->chip_type = driver_data & (PCA953X_TYPE | PCA957X_TYPE);
-+
-+	/* initialize cached registers from their original values.
-+	 * we can't share this chip with another i2c master.
-+	 */
-+	pca953x_setup_gpio(chip, driver_data & PCA_GPIO_MASK);
-+
-+	if (chip->chip_type == PCA953X_TYPE)
-+		ret = device_pca953x_init(chip, invert);
-+	else
-+		ret = device_pca957x_init(chip, invert);
-+	if (ret)
-+		return ret;
-+
-+	ret = gpiochip_add(&chip->gpio_chip);
-+	if (ret)
-+		return ret;
-+
-+	if (pdata && pdata->setup) {
-+		ret = pdata->setup(client, chip->gpio_chip.base,
-+				chip->gpio_chip.ngpio, pdata->context);
-+		if (ret < 0)
-+			dev_warn(&client->dev, "setup failed, %d\n", ret);
-+	}
-+
-+	return 0;
-+}
-+
-+static struct driver_d pca953x_driver = {
-+	.name	= "pca953x",
-+	.probe		= pca953x_probe,
-+	.id_table	= pca953x_id,
++#define I2C_SMBUS_BLOCK_MAX	32	/* As specified in SMBus standard */
++union i2c_smbus_data {
++	__u8 byte;
++	__u16 word;
++	__u8 block[I2C_SMBUS_BLOCK_MAX + 2]; /* block[0] is used for length */
++			       /* and one more for user-space compatibility */
 +};
 +
-+static int __init pca953x_init(void)
-+{
-+	return i2c_driver_register(&pca953x_driver);
-+}
-+device_initcall(pca953x_init);
-diff --git a/include/platform_data/pca953x.h b/include/platform_data/pca953x.h
-new file mode 100644
-index 0000000..cfd253e
---- /dev/null
-+++ b/include/platform_data/pca953x.h
-@@ -0,0 +1,27 @@
-+#ifndef _LINUX_PCA953X_H
-+#define _LINUX_PCA953X_H
++/* i2c_smbus_xfer read or write markers */
++#define I2C_SMBUS_READ	1
++#define I2C_SMBUS_WRITE	0
 +
-+#include <linux/types.h>
-+#include <i2c/i2c.h>
++/* SMBus transaction types (size parameter in the above functions)
++   Note: these no longer correspond to the (arbitrary) PIIX4 internal codes! */
++#define I2C_SMBUS_QUICK		    0
++#define I2C_SMBUS_BYTE		    1
++#define I2C_SMBUS_BYTE_DATA	    2
++#define I2C_SMBUS_WORD_DATA	    3
++#define I2C_SMBUS_PROC_CALL	    4
++#define I2C_SMBUS_BLOCK_DATA	    5
++#define I2C_SMBUS_I2C_BLOCK_BROKEN  6
++#define I2C_SMBUS_BLOCK_PROC_CALL   7		/* SMBus 2.0 */
++#define I2C_SMBUS_I2C_BLOCK_DATA    8
 +
-+/* platform data for the PCA9539 16-bit I/O expander driver */
++/* This is the very generalized SMBus access routine. You probably do not
++   want to use this, though; one of the functions below may be much easier,
++   and probably just as fast.
++   Note that we use i2c_adapter here, because you do not need a specific
++   smbus adapter to call this function. */
++extern s32 i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
++			  unsigned short flags, char read_write, u8 command,
++			  int size, union i2c_smbus_data *data);
 +
-+struct pca953x_platform_data {
-+	/* number of the first GPIO */
-+	unsigned	gpio_base;
++/* Now follow the 'nice' access routines. These also document the calling
++   conventions of i2c_smbus_xfer. */
 +
-+	/* initial polarity inversion setting */
-+	u32		invert;
++extern s32 i2c_smbus_read_byte(const struct i2c_client *client);
++extern s32 i2c_smbus_write_byte(const struct i2c_client *client, u8 value);
++extern s32 i2c_smbus_read_byte_data(const struct i2c_client *client,
++				    u8 command);
++extern s32 i2c_smbus_write_byte_data(const struct i2c_client *client,
++				     u8 command, u8 value);
++extern s32 i2c_smbus_read_word_data(const struct i2c_client *client,
++				    u8 command);
++extern s32 i2c_smbus_write_word_data(const struct i2c_client *client,
++				     u8 command, u16 value);
 +
-+	void		*context;	/* param to setup/teardown */
-+
-+	int		(*setup)(struct i2c_client *client,
-+				unsigned gpio, unsigned ngpio,
-+				void *context);
-+	int		(*teardown)(struct i2c_client *client,
-+				unsigned gpio, unsigned ngpio,
-+				void *context);
-+	const char	*const *names;
-+};
-+
-+#endif /* _LINUX_PCA953X_H */
++/* Returns the number of read bytes */
++extern s32 i2c_smbus_read_i2c_block_data(const struct i2c_client *client,
++					 u8 command, u8 length, u8 *values);
++extern s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client,
++					  u8 command, u8 length,
++					  const u8 *values);
+ 
+ /**
+  * struct i2c_board_info - template for device creation
 -- 
 1.9.2
 
