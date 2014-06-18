@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from mail-yk0-x22a.google.com ([2607:f8b0:4002:c07::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WxBFK-0003pQ-0d
- for barebox@lists.infradead.org; Wed, 18 Jun 2014 08:29:30 +0000
-Received: by mail-lb0-f176.google.com with SMTP id w7so290993lbi.35
- for <barebox@lists.infradead.org>; Wed, 18 Jun 2014 01:29:05 -0700 (PDT)
-Date: Wed, 18 Jun 2014 12:40:49 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140618124049.5b9c7ba6d41cda84dc51ee4e@gmail.com>
-In-Reply-To: <20140617183040.GH15686@pengutronix.de>
-References: <1402931635-18830-1-git-send-email-p.zabel@pengutronix.de>
- <20140616210859.bc53e769b34765c933c93867@gmail.com>
- <20140616213513.GG15686@pengutronix.de>
- <20140617093517.865365da210ba4675eb3789b@gmail.com>
- <20140617183040.GH15686@pengutronix.de>
-Mime-Version: 1.0
+ id 1WxGpT-00047l-9k
+ for barebox@lists.infradead.org; Wed, 18 Jun 2014 14:27:11 +0000
+Received: by mail-yk0-f170.google.com with SMTP id q9so623411ykb.15
+ for <barebox@lists.infradead.org>; Wed, 18 Jun 2014 07:26:49 -0700 (PDT)
+MIME-Version: 1.0
+Date: Wed, 18 Jun 2014 16:26:48 +0200
+Message-ID: <CAOpc7mFqu1ov94naTWtCiJMXxNk5RLa=mSL-eh3SwFXNoP1UGg@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,108 +17,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: AM335x: Beaglebone: Fix memory setup for
- Beaglebone black
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: i.MX6 frame buffer inside barebox?
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, 17 Jun 2014 20:30:40 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hi, I'm a bit puzzled. I compiled my barebox with
 
-> On Tue, Jun 17, 2014 at 09:35:17AM +0400, Antony Pavlov wrote:
-> > On Mon, 16 Jun 2014 23:35:13 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+CONFIG_CMD_SPLASH=y
+CONFIG_VIDEO=y
+CONFIG_DRIVER_VIDEO_IMX_IPUV3=y
+CONFIG_DRIVER_VIDEO_IMX_IPUV3_LVDS=y
+CONFIG_DRIVER_VIDEO_SIMPLEFB=y
 
-> > > Hi Antony,
-> > > =
+and some entries in the device tree about it (see below). And when I
+boot barebox, I see /dev/fb0.
 
-> > > On Mon, Jun 16, 2014 at 09:08:59PM +0400, Antony Pavlov wrote:
-> > > > On Mon, 16 Jun 2014 17:13:54 +0200
-> > > > Philipp Zabel <p.zabel@pengutronix.de> wrote:
-> > > > =
+However, the LVDS signals don't come out of the CPU, e.g. LVDS_CLK0_P
+/ LVDS_CLK0_N is silent. Do I need something to enable the drive as
+well?  Simply writing to /dev/fb0, e.g. with the "splash" or "mw -d
+/dev/fdb0" command, doesn't seem to do the magic.
 
-> > > > Question to Sascha.
-> > > > =
+As soon as I boot Linux, the LVDS signals come to live. That I cannot
+yet see if it's correct because of an backlight issue is some entirely
+different issue :-)
 
-> > > > Can we preserve the 'memory' dts record in situations like this?
-> > > > =
 
-> > > > Is it possible just alter dts in early init code?
-> > > > Or something else?
-> > > =
+Also, what I noticed is that some clocks with "ipu" in their name are
+on, others are off:
 
-> > > For what do you want to preserve it? barebox never uses the memory no=
-de
-> > > directly to pass it to the kernel. The barebox memory banks are
-> > > initialized from the code and from the dts. When starting Linux the
-> > > memory node is (re)populated with the barebox memory banks
-> > > =
+barebox:/ clk_dump
+...
+                    ipu1_sel (rate 528000000, enabled)
+                        ipu1_podf (rate 264000000, enabled)
+                            2400000.ipu_di0_pixel (rate 264000000, enabled)
+                            2400000.ipu_di1_pixel (rate 264000000, enabled)
+                    ipu2_sel (rate 528000000, enabled)
+                        ipu2_podf (rate 264000000, enabled)
+                            2800000.ipu_di0_pixel (rate 264000000, enabled)
+                            2800000.ipu_di1_pixel (rate 264000000, enabled)
 
-> > > I may misunderstand what you are trying to archieve.
-> > =
+...
+    pll5_video (rate 288000000, disabled)
+        pll5_post_div (rate 72000000, disabled)
+            pll5_video_div (rate 72000000, disabled)
+                ldb_di0_sel (rate 72000000, disabled)
+                    ldb_di0_div_3_5 (rate 20571428, disabled)
+                        ldb_di0_podf (rate 10285714, disabled)
+                ldb_di1_sel (rate 72000000, disabled)
+                    ldb_di1_div_3_5 (rate 20571428, disabled)
+                        ldb_di1_podf (rate 10285714, disabled)
+                ipu1_di0_pre_sel (rate 72000000, disabled)
+                    ipu1_di0_pre (rate 24000000, disabled)
+                        ipu1_di0_sel (rate 24000000, disabled)
+                ipu1_di1_pre_sel (rate 72000000, disabled)
+                    ipu1_di1_pre (rate 24000000, disabled)
+                        ipu1_di1_sel (rate 24000000, disabled)
+                ipu2_di0_pre_sel (rate 72000000, disabled)
+                    ipu2_di0_pre (rate 24000000, disabled)
+                        ipu2_di0_sel (rate 24000000, disabled)
+                ipu2_di1_pre_sel (rate 72000000, disabled)
+                    ipu2_di1_pre (rate 24000000, disabled)
+                        ipu2_di1_sel (rate 24000000, disabled)
+...
 
-> > Imagine a family of boards. The RAM size can vary from board to board
-> > (for simplicity suppose that all over conditions are the same).
-> > Suppose I have a reliable RAM size detection routine and I want to run
-> > just the same barebox image on different boards.
-> > I want to run dts enabled Linux on all boards.
-> =
+What part of barebox is responsible to enable the needed clocks?
 
-> In this case don't specify the memory size in the devicetree. In a
-> mem_initcall detect the actual RAM size you have and call
-> arm_add_mem_device() accordingly. That's all. The rest will be handled
-> automatically. See of_memory_fixup(), this will iterate over the memory
-> banks and set the memory node to the correct values.
-> =
 
-> > =
 
-> > How can I handle this situation correctly?
-> > =
+&ldb {
+        status = "okay";
 
-> > Also note that on MIPS boards barebox uses no more than 256 MiB of RAM
-> > (even if a board has more than 256 MiB of RAM). It's a measure to make
-> > mips barebox simplier.
-> > I want to pass information on all available RAM to linux via dts.
-> > Can you describe reasonable barebox behaviour in this situation please?
-> =
+        lvds-channel@0 {
+                status = "okay";
+                fsl,data-mapping = "spwg";
+                fsl,data-width = <18>;
 
-> Hmm, not easy. I assumed barebox knows all available memory. What
-> prevents you from registering all memory? I remember MIPS has a cached
-> mapping of the SDRAM. Is this the reason?
-
-But MIPS32 has 4 GB virtual address space.
-There are two 512 MiB windows in this VIRTUAL space for direct cached (kseg=
-0)
-and uncached (kseg1) access to the first 512 MiB of PHYSICAL space.
-As a rule the first 256 MiB piece of PHYSICAL spaces used for RAM and the s=
-econd
-256 MiB piece is used for i/o devices.
-So if you use only kseg0 and kseg1 to memory access you can't use more than=
- 256 MiB of RAM.
-You can access rest of RAM using another windows (kseg2 and kuseg),
-but this windows use MMU.
-
-I don't want to add MMU bussiness to barebox --- 256 MiB of RAM is more tha=
-n enough.
-Of course barebox can know all available memory (even if barebox use only 2=
-56 MiB of RAM).
-
-The real problem with mips barebox device tree code is that it operates wit=
-h VIRTUAL addresses
-for memory ranges representation, but linux device tree uses PHYSICAL addre=
-sses.
-
-It is my fault and I have to fix it.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+                display-timings {
+                        timing0: 800x600 {
+                                clock-frequency = <35338240>;
+                                hactive = <800>;
+                                vactive = <600>;
+                                hfront-porch = <46>;
+                                hback-porch = <100>;
+                                hsync-len = <20>;
+                                hsync-active = <1>;
+                                vfront-porch = <12>;
+                                vback-porch = <23>;
+                                vsync-len = <10>;
+                                vsync-active = <1>;
+                        };
+                };
+        };
+};
 
 _______________________________________________
 barebox mailing list
