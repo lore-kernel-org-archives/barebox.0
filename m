@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
+Received: from mail-wg0-x22e.google.com ([2a00:1450:400c:c00::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzAZy-00012p-Ck
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:07 +0000
-Received: by mail-wi0-f176.google.com with SMTP id n3so4768070wiv.9
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:10:39 -0700 (PDT)
+ id 1WzAfM-0004Lk-S6
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:16:37 +0000
+Received: by mail-wg0-f46.google.com with SMTP id y10so7034931wgg.5
+ for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:16:14 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 23 Jun 2014 22:10:31 +0200
-Message-Id: <1403554235-12674-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 23 Jun 2014 22:10:29 +0200
+Message-Id: <1403554235-12674-2-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1403554235-12674-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1403554235-12674-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,48 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] ARM: mvebu: delete unused mach/mvebu.h
+Subject: [PATCH 1/7] ARM: mvebu: set model and default hostname for Dove
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This removes the stale mach/mvebu.h include as there is no user of it.
+Set default model and hostname based on SoC name.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/mach-mvebu/include/mach/mvebu.h | 22 ----------------------
- 1 file changed, 22 deletions(-)
- delete mode 100644 arch/arm/mach-mvebu/include/mach/mvebu.h
+ arch/arm/mach-mvebu/dove.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/mach-mvebu/include/mach/mvebu.h b/arch/arm/mach-mvebu/include/mach/mvebu.h
-deleted file mode 100644
-index e13a446fca0e..000000000000
---- a/arch/arm/mach-mvebu/include/mach/mvebu.h
-+++ /dev/null
-@@ -1,22 +0,0 @@
--/*
-- * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#ifndef __MACH_MVEBU_H
--#define __MACH_MVEBU_H
--
--int mvebu_add_uart0(void);
--void __naked __noreturn mvebu_barebox_entry(void);
--
--#endif /* __MACH_MVEBU_H */
+diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+index f081e50e7bf1..bcbf4b8ad7bd 100644
+--- a/arch/arm/mach-mvebu/dove.c
++++ b/arch/arm/mach-mvebu/dove.c
+@@ -71,6 +71,9 @@ static int dove_init_soc(void)
+ {
+ 	unsigned long phys_base, phys_size;
+ 
++	barebox_set_model("Marvell Dove");
++	barebox_set_hostname("dove");
++
+ 	dove_remap_mc_regs();
+ 	dove_memory_find(&phys_base, &phys_size);
+ 	arm_add_mem_device("ram0", phys_base, phys_size);
 -- 
 2.0.0
 
