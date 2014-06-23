@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x233.google.com ([2a00:1450:400c:c03::233])
+Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzAZy-000131-Dl
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:10 +0000
-Received: by mail-we0-f179.google.com with SMTP id w62so7594774wes.38
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:10:40 -0700 (PDT)
+ id 1WzAaM-000170-D5
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:27 +0000
+Received: by mail-wi0-f169.google.com with SMTP id hi2so4840808wib.0
+ for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:11:04 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 23 Jun 2014 22:10:32 +0200
-Message-Id: <1403554235-12674-5-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1403554235-12674-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1403554235-12674-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 23 Jun 2014 22:10:51 +0200
+Message-Id: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,137 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] ARM: mvebu: move lowlevel code to lowlevel.c
+Subject: [PATCH 00/11] Convert MVEBU SoCs to DT and PBL_MULTI_IMAGE
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-mach-mvebu has two files containing lowlevel code. Consolidate both into
-mach-mvebu/lowlevel.c. Also put the now empty mach-mvebu/common.c into
-non-lowlevel obj-y as it will be used for common non-lowlevel code later.
+This patch set converts Kirkwood and Armada 370/XP to DT and provides
+PBL_MULTI_IMAGE support as we already have for Dove.
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Patch 1 resorts pbl entries in arch/arm/dts/Makefile back to alphabetical
+order.
+
+Patch 2 reworks mvebu pbl image Makefile to ease integration of other SoCs.
+
+Patches 3 and 4 convert Kirkwood and Armada 370/XP SoC init to DT probing.
+
+Patches 5-9 convert existing Kirkwood and Armada 370/XP boards to
+PBL_MULTI_IMAGES.
+
+Patch 10 then reworks MVEBU related Kconfig to allow multiple board selection
+per-SoC.
+
+Patch 11 removes now redundant dtb Makefile targets.
+
+The patches are based on today's next with previously sent cleanup patches
+applied. They have been tested on Guruplug (Kirkwood) and Mirabox (Armada 370).
+
+A branch based on *unstable* next with cleanup applied is available at:
+https://github.com/shesselba/barebox-dove.git mvebu/soc
+
+Sebastian Hesselbarth (11):
+  ARM: dts: sort pbl entries by alphabet
+  ARM: mvebu: sort pbl image target by board
+  ARM: mvebu: convert Kirkwood devices to be probed from DT
+  ARM: mvebu: convert Armada 370/XP devices to be probed from DT
+  ARM: mvebu: convert Globalscale Guruplug to PBL_MULTI_IMAGES
+  ARM: mvebu: convert USI Topkick to PBL_MULTI_IMAGES
+  ARM: mvebu: convert Globalscale Mirabox to PBL_MULTI_IMAGES
+  ARM: mvebu: convert Marvell Armada XP GP to PBL_MULTI_IMAGES
+  ARM: mvebu: convert PlatHome Openblocks AX3-4 to PBL_MULTI_IMAGES
+  ARM: mvebu: convert to multiple board selection
+  ARM: mvebu: remove dtb Makefile entries
+
+ arch/arm/Kconfig                                   |  1 +
+ arch/arm/Makefile                                  |  6 --
+ arch/arm/boards/Makefile                           |  6 ++
+ arch/arm/boards/globalscale-guruplug/Makefile      |  1 +
+ arch/arm/boards/globalscale-guruplug/lowlevel.c    | 35 +++++++++++
+ arch/arm/boards/globalscale-mirabox/Makefile       |  1 +
+ arch/arm/boards/globalscale-mirabox/kwbimage.cfg   |  2 +-
+ arch/arm/boards/globalscale-mirabox/lowlevel.c     | 35 +++++++++++
+ arch/arm/boards/marvell-armada-xp-gp/Makefile      |  1 +
+ arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg  |  2 +-
+ arch/arm/boards/marvell-armada-xp-gp/lowlevel.c    | 34 ++++++++++
+ arch/arm/boards/plathome-openblocks-ax3/Makefile   |  1 +
+ .../boards/plathome-openblocks-ax3/kwbimage.cfg    |  2 +-
+ arch/arm/boards/plathome-openblocks-ax3/lowlevel.c | 35 +++++++++++
+ arch/arm/boards/usi-topkick/Makefile               |  1 +
+ arch/arm/boards/usi-topkick/lowlevel.c             | 34 ++++++++++
+ arch/arm/dts/Makefile                              | 32 +++++-----
+ arch/arm/dts/armada-370-mirabox-bb.dts             | 25 ++++++++
+ arch/arm/dts/armada-xp-gp-bb.dts                   | 12 ++++
+ arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts     | 26 ++++++++
+ arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts  | 14 +++++
+ arch/arm/dts/kirkwood-topkick-bb.dts               | 14 +++++
+ arch/arm/mach-mvebu/Kconfig                        | 21 -------
+ arch/arm/mach-mvebu/armada-370-xp.c                | 66 +-------------------
+ arch/arm/mach-mvebu/kirkwood.c                     | 46 --------------
+ images/Makefile.mvebu                              | 72 +++++++++++++++++++---
+ 26 files changed, 363 insertions(+), 162 deletions(-)
+ create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
+ create mode 100644 arch/arm/boards/globalscale-mirabox/lowlevel.c
+ create mode 100644 arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
+ create mode 100644 arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
+ create mode 100644 arch/arm/boards/usi-topkick/lowlevel.c
+ create mode 100644 arch/arm/dts/armada-370-mirabox-bb.dts
+ create mode 100644 arch/arm/dts/armada-xp-gp-bb.dts
+ create mode 100644 arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts
+ create mode 100644 arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts
+ create mode 100644 arch/arm/dts/kirkwood-topkick-bb.dts
+
 ---
 Cc: barebox@lists.infradead.org
----
- arch/arm/mach-mvebu/Makefile   |  2 +-
- arch/arm/mach-mvebu/common.c   | 40 ----------------------------------------
- arch/arm/mach-mvebu/lowlevel.c | 37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+), 41 deletions(-)
-
-diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-index 6e303663ca89..80b3947cc866 100644
---- a/arch/arm/mach-mvebu/Makefile
-+++ b/arch/arm/mach-mvebu/Makefile
-@@ -1,5 +1,5 @@
- lwl-y				+= lowlevel.o
--lwl-y				+= common.o
-+obj-y				+= common.o
- obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_DOVE)		+= dove.o
-diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-index d52b88d71318..4a78a0f37ec5 100644
---- a/arch/arm/mach-mvebu/common.c
-+++ b/arch/arm/mach-mvebu/common.c
-@@ -15,43 +15,3 @@
-  *
-  */
- 
--#include <common.h>
--#include <io.h>
--#include <sizes.h>
--#include <asm/barebox-arm.h>
--#include <mach/common.h>
--
--/*
-- * All MVEBU SoCs start with internal registers at 0xd0000000.
-- * To get more contiguous address space and as Linux expects them
-- * there, we remap them early to 0xf1000000.
-- *
-- * There is no way to determine internal registers base address
-- * safely later on, as the remap register itself is within the
-- * internal registers.
-- */
--#define MVEBU_BOOTUP_INT_REG_BASE	0xd0000000
--#define MVEBU_BRIDGE_REG_BASE		0x20000
--#define DEVICE_INTERNAL_BASE_ADDR	(MVEBU_BRIDGE_REG_BASE + 0x80)
--
--static void mvebu_remap_registers(void)
--{
--	writel(MVEBU_REMAP_INT_REG_BASE,
--	       IOMEM(MVEBU_BOOTUP_INT_REG_BASE) + DEVICE_INTERNAL_BASE_ADDR);
--}
--
--/*
-- * Determining the actual memory size is highly SoC dependent,
-- * but for all SoCs RAM starts at 0x00000000. Therefore, we start
-- * with a minimal memory setup of 64M and probe correct memory size
-- * later.
-- */
--#define MVEBU_BOOTUP_MEMORY_BASE	0x00000000
--#define MVEBU_BOOTUP_MEMORY_SIZE	SZ_64M
--
--void __naked __noreturn mvebu_barebox_entry(void *boarddata)
--{
--	mvebu_remap_registers();
--	barebox_arm_entry(MVEBU_BOOTUP_MEMORY_BASE,
--			  MVEBU_BOOTUP_MEMORY_SIZE, boarddata);
--}
-diff --git a/arch/arm/mach-mvebu/lowlevel.c b/arch/arm/mach-mvebu/lowlevel.c
-index 147a717ad9f3..7c4facfa1c00 100644
---- a/arch/arm/mach-mvebu/lowlevel.c
-+++ b/arch/arm/mach-mvebu/lowlevel.c
-@@ -16,9 +16,11 @@
-  */
- 
- #include <common.h>
-+#include <io.h>
- #include <sizes.h>
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
-+#include <mach/common.h>
- #include <mach/lowlevel.h>
- 
- void __naked barebox_arm_reset_vector(void)
-@@ -26,3 +28,38 @@ void __naked barebox_arm_reset_vector(void)
- 	arm_cpu_lowlevel_init();
- 	mvebu_barebox_entry(NULL);
- }
-+
-+/*
-+ * All MVEBU SoCs start with internal registers at 0xd0000000.
-+ * To get more contiguous address space and as Linux expects them
-+ * there, we remap them early to 0xf1000000.
-+ *
-+ * There is no way to determine internal registers base address
-+ * safely later on, as the remap register itself is within the
-+ * internal registers.
-+ */
-+#define MVEBU_BOOTUP_INT_REG_BASE	0xd0000000
-+#define MVEBU_BRIDGE_REG_BASE		0x20000
-+#define DEVICE_INTERNAL_BASE_ADDR	(MVEBU_BRIDGE_REG_BASE + 0x80)
-+
-+static void mvebu_remap_registers(void)
-+{
-+	writel(MVEBU_REMAP_INT_REG_BASE,
-+	       IOMEM(MVEBU_BOOTUP_INT_REG_BASE) + DEVICE_INTERNAL_BASE_ADDR);
-+}
-+
-+/*
-+ * Determining the actual memory size is highly SoC dependent,
-+ * but for all SoCs RAM starts at 0x00000000. Therefore, we start
-+ * with a minimal memory setup of 64M and probe correct memory size
-+ * later.
-+ */
-+#define MVEBU_BOOTUP_MEMORY_BASE	0x00000000
-+#define MVEBU_BOOTUP_MEMORY_SIZE	SZ_64M
-+
-+void __naked __noreturn mvebu_barebox_entry(void *boarddata)
-+{
-+	mvebu_remap_registers();
-+	barebox_arm_entry(MVEBU_BOOTUP_MEMORY_BASE,
-+			  MVEBU_BOOTUP_MEMORY_SIZE, boarddata);
-+}
 -- 
 2.0.0
 
