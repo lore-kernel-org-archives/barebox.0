@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wz16J-0006kC-K3
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 10:03:52 +0000
-Date: Mon, 23 Jun 2014 12:03:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140623100325.GX15686@pengutronix.de>
+ Linux)) id 1Wz7ZT-0002SM-I6
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 16:58:23 +0000
+Date: Mon, 23 Jun 2014 18:57:54 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20140623165754.GA27898@pengutronix.de>
 References: <CAOpc7mFqu1ov94naTWtCiJMXxNk5RLa=mSL-eh3SwFXNoP1UGg@mail.gmail.com>
  <20140618195849.GL15686@pengutronix.de>
  <CAOpc7mFo8jdw24V=2wZW=dCMMbiBW87R7ZGKSqRR7SO4StB79g@mail.gmail.com>
@@ -44,11 +44,13 @@ On Mon, Jun 23, 2014 at 10:42:55AM +0200, Holger Schurig wrote:
 > Oh, one more question: do you have any idea if a simplefb would be
 > fast enought for X11 ?
 
-Yes, I think so. The (mainline) IPU drivers alone wouldn't help you
-anyway. You'll need the FSL EXA drivers to get anything faster I guess.
+The idea is to have the splash ready in < 1 s after power-good, fully
+from userspace, and all that with systemd + wayland.
 
-Sascha
+We have some plans how to do that ... awaiting more customer projects
+that have splash screen needs.
 
+rsc
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
