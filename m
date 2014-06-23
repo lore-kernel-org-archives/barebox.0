@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-x234.google.com ([2607:f8b0:4002:c01::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wz0YA-0005gf-Vs
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 09:28:31 +0000
-Received: by mail-yh0-f52.google.com with SMTP id a41so4791904yho.39
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 02:28:09 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Wz12a-0004YI-5D
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 10:00:00 +0000
+Date: Mon, 23 Jun 2014 11:59:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140623095931.GW15686@pengutronix.de>
+References: <CAOpc7mF_bAvNVebmS7F2ow4fj6peFgjxyY=1F-NQyvfb88XqHg@mail.gmail.com>
 MIME-Version: 1.0
-Date: Mon, 23 Jun 2014 11:28:09 +0200
-Message-ID: <CAOpc7mF_bAvNVebmS7F2ow4fj6peFgjxyY=1F-NQyvfb88XqHg@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAOpc7mF_bAvNVebmS7F2ow4fj6peFgjxyY=1F-NQyvfb88XqHg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: SFI NOR sizes totally off ?!?
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: SFI NOR sizes totally off ?!?
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Seems like "ls -l" is right, but "devinfo" is wrong:
+On Mon, Jun 23, 2014 at 11:28:09AM +0200, Holger Schurig wrote:
+> Seems like "ls -l" is right, but "devinfo" is wrong:
+> 
+> barebox:/ ls -l /dev/m25p0
+> crw-------   67108864 /dev/m25p0
+> barebox:/ devinfo m25p0
+> Parameters:
+>   size: 5468012149590870304
+>   erasesize: 4096
+>   writesize: 1
+>   oobsize: 0
 
-barebox:/ ls -l /dev/m25p0
-crw-------   67108864 /dev/m25p0
-barebox:/ devinfo m25p0
-Parameters:
-  size: 5468012149590870304
-  erasesize: 4096
-  writesize: 1
-  oobsize: 0
-barebox:/ of_dump /soc/aips-bus@02000000/spba-bus@02000000/ecspi@02010000
-ecspi@02010000 {
-        #address-cells = <0x1>;
-        #size-cells = <0x0>;
-        compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
-        reg = <0x2010000 0x4000>;
-        interrupts = <0x0 0x21 0x4>;
-        clocks = <0x2 0x72 0x2 0x72>;
-        clock-names = "ipg", "per";
-        dmas = <0x4 0x7 0x7 0x1 0x4 0x8 0x7 0x2>;
-        dma-names = "rx", "tx";
-        status = "okay";
-        pinctrl-names = "default";
-        pinctrl-0 = <0x5>;
-        fsl,spi-num-chipselects = <0x3>;
-        cs-gpios = <0x6 0x18 0x0 0x6 0x19 0x0 0x6 0x1a 0x0>;
-        spiflash@0 {
-                #address-cells = <0x1>;
-                #size-cells = <0x1>;
-                compatible = "n25q512ax3", "m25p80";
-                spi-max-frequency = <0x989680>;
-                reg = <0x0>;
-        };
-};
+This should be fixed with the following Commit.
+
+Grumpf. We really need some stable strategy.
+
+Sascha
+
+commit 3ee907d89eaeaee5f75bd73eb89d2b4b3d05f6d4
+Author: Herve Codina <Herve.CODINA@celad.com>
+Date:   Thu Jun 12 11:37:38 2014 +0200
+
+    mtd: use long long dev param for size
+    
+    Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index d3e7763..82fb5f7 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -401,7 +401,7 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
+        mtd->cdev.mtd = mtd;
+ 
+        if (IS_ENABLED(CONFIG_PARAMETER)) {
+-               dev_add_param_int_ro(&mtd->class_dev, "size", mtd->size, "%llu");
++               dev_add_param_llint_ro(&mtd->class_dev, "size", mtd->size, "%llu");
+                dev_add_param_int_ro(&mtd->class_dev, "erasesize", mtd->erasesize, "%u");
+                dev_add_param_int_ro(&mtd->class_dev, "writesize", mtd->writesize, "%u");
+                dev_add_param_int_ro(&mtd->class_dev, "oobsize", mtd->oobsize, "%u");
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
