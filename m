@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzBgQ-0006wC-RC
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 21:21:48 +0000
-Received: by mail-lb0-f181.google.com with SMTP id p9so5429834lbv.12
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 14:21:24 -0700 (PDT)
+ id 1WzBgc-00078C-9x
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 21:21:59 +0000
+Received: by mail-lb0-f180.google.com with SMTP id w7so5316442lbi.39
+ for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 14:21:39 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 24 Jun 2014 01:21:07 +0400
-Message-Id: <1403558473-26199-2-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 24 Jun 2014 01:21:11 +0400
+Message-Id: <1403558473-26199-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1403558473-26199-1-git-send-email-antonynpavlov@gmail.com>
 References: <1403558473-26199-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,247 +23,219 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] gpio: add Malta CBUS FPGA I2C driver
+Subject: [PATCH 5/7] i2c: i2c_gpio: add devicetree support
 To: barebox@lists.infradead.org
-
-This driver provides common support for accessing
-the CBUS FPGA I2C lines through the gpio library.
-
-Additional i2c bitbang driver must be enabled
-in order to use the functionality of the i2c controller.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/gpio/Kconfig               |  10 ++
- drivers/gpio/Makefile              |   1 +
- drivers/gpio/gpio-malta-fpga-i2c.c | 186 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 197 insertions(+)
+ .../devicetree/bindings/gpio/gpio_i2c.txt          | 32 +++++++++++++
+ drivers/i2c/busses/i2c-gpio.c                      | 54 +++++++++++++++++++--
+ include/of_gpio.h                                  | 55 ++++++++++++++++++++++
+ 3 files changed, 138 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 7302955..45b8c53 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -37,6 +37,16 @@ config GPIO_GENERIC_PLATFORM
- config GPIO_IMX
- 	def_bool ARCH_IMX
- 
-+config GPIO_MALTA_FPGA_I2C
-+	bool "Malta CBUS FPGA I2C GPIO"
-+	depends on MACH_MIPS_MALTA
-+	help
-+	  Support access to the CBUS FPGA I2C lines through the gpio library.
-+
-+	  This driver provides common support for accessing the device,
-+	  additional drivers must be enabled in order to use the
-+	  functionality of the device.
-+
- config GPIO_OMAP
- 	def_bool ARCH_OMAP
- 
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 68a76a3..add6ffc 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -5,6 +5,7 @@ obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
- obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
- obj-$(CONFIG_GPIO_IMX)		+= gpio-imx.o
-+obj-$(CONFIG_GPIO_MALTA_FPGA_I2C) += gpio-malta-fpga-i2c.o
- obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
- obj-$(CONFIG_GPIO_OMAP)		+= gpio-omap.o
- obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
-diff --git a/drivers/gpio/gpio-malta-fpga-i2c.c b/drivers/gpio/gpio-malta-fpga-i2c.c
+diff --git a/Documentation/devicetree/bindings/gpio/gpio_i2c.txt b/Documentation/devicetree/bindings/gpio/gpio_i2c.txt
 new file mode 100644
-index 0000000..d6995aa
+index 0000000..4f8ec94
 --- /dev/null
-+++ b/drivers/gpio/gpio-malta-fpga-i2c.c
-@@ -0,0 +1,186 @@
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++++ b/Documentation/devicetree/bindings/gpio/gpio_i2c.txt
+@@ -0,0 +1,32 @@
++Device-Tree bindings for i2c gpio driver
 +
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <gpio.h>
-+#include <linux/err.h>
-+#include <malloc.h>
++Required properties:
++	- compatible = "i2c-gpio";
++	- gpios: sda and scl gpio
 +
-+struct malta_i2c_gpio {
-+	void __iomem *base;
-+	struct gpio_chip chip;
++
++Optional properties:
++	- i2c-gpio,sda-open-drain: sda as open drain
++	- i2c-gpio,scl-open-drain: scl as open drain
++	- i2c-gpio,scl-output-only: scl as output only
++	- i2c-gpio,delay-us: delay between GPIO operations (may depend on each platform)
++	- i2c-gpio,timeout-ms: timeout to get data
++
++Example nodes:
++
++i2c@0 {
++	compatible = "i2c-gpio";
++	gpios = <&pioA 23 0 /* sda */
++		 &pioA 24 0 /* scl */
++		>;
++	i2c-gpio,sda-open-drain;
++	i2c-gpio,scl-open-drain;
++	i2c-gpio,delay-us = <2>;	/* ~100 kHz */
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	rv3029c2@56 {
++		compatible = "rv3029c2";
++		reg = <0x56>;
++	};
 +};
-+
-+#define MALTA_I2CINP 0
-+#define MALTA_I2COE  0x8
-+#define MALTA_I2COUT 0x10
-+#define MALTA_I2CSEL 0x18
-+
-+static inline struct malta_i2c_gpio *chip_to_malta_i2c_gpio(struct gpio_chip *c)
+diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
+index 8b49c2c..29dc3d2 100644
+--- a/drivers/i2c/busses/i2c-gpio.c
++++ b/drivers/i2c/busses/i2c-gpio.c
+@@ -15,6 +15,7 @@
+ #include <i2c/i2c-gpio.h>
+ #include <init.h>
+ #include <gpio.h>
++#include <of_gpio.h>
+ 
+ struct i2c_gpio_private_data {
+ 	struct i2c_adapter adap;
+@@ -83,6 +84,38 @@ static int i2c_gpio_getscl(void *data)
+ 	return gpio_get_value(pdata->scl_pin);
+ }
+ 
++static int of_i2c_gpio_probe(struct device_node *np,
++			     struct i2c_gpio_platform_data *pdata)
 +{
-+	return container_of(c, struct malta_i2c_gpio, chip);
-+}
++	u32 reg;
 +
-+static inline void malta_i2c_gpio_write(struct malta_i2c_gpio *sc,
-+					u32 v, int reg)
-+{
-+	__raw_writel(v, sc->base + reg);
-+}
++	if (of_gpio_count(np) < 2)
++		return -ENODEV;
 +
-+static inline u32 malta_i2c_gpio_read(struct malta_i2c_gpio *sc, int reg)
-+{
-+	return __raw_readl(sc->base + reg);
-+}
++	pdata->sda_pin = of_get_gpio(np, 0);
++	pdata->scl_pin = of_get_gpio(np, 1);
 +
-+static inline int malta_i2c_gpio_get_bit(struct malta_i2c_gpio *sc,
-+						int reg, int bit)
-+{
-+	return !!(malta_i2c_gpio_read(sc, reg) & BIT(bit));
-+}
-+
-+static inline void malta_i2c_gpio_set_bit(struct malta_i2c_gpio *sc,
-+						int reg, int bit, int v)
-+{
-+	u32 t;
-+
-+	t = malta_i2c_gpio_read(sc, reg);
-+	if (v)
-+		t |= BIT(bit);
-+	else
-+		t &= ~BIT(bit);
-+
-+	malta_i2c_gpio_write(sc, t, reg);
-+}
-+
-+static int malta_i2c_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
-+{
-+	struct malta_i2c_gpio *sc = chip_to_malta_i2c_gpio(chip);
-+
-+	malta_i2c_gpio_set_bit(sc, MALTA_I2COE, gpio, 0);
-+
-+	return 0;
-+}
-+
-+static int malta_i2c_gpio_direction_output(struct gpio_chip *chip,
-+					unsigned gpio, int v)
-+{
-+	struct malta_i2c_gpio *sc = chip_to_malta_i2c_gpio(chip);
-+
-+	malta_i2c_gpio_set_bit(sc, MALTA_I2COUT, gpio, v);
-+	malta_i2c_gpio_set_bit(sc, MALTA_I2COE, gpio, 1);
-+
-+	return 0;
-+}
-+
-+static int malta_i2c_gpio_get_direction(struct gpio_chip *chip, unsigned gpio)
-+{
-+	struct malta_i2c_gpio *sc = chip_to_malta_i2c_gpio(chip);
-+
-+	if (malta_i2c_gpio_get_bit(sc, MALTA_I2COE, gpio))
-+		return GPIOF_DIR_OUT;
-+
-+	return GPIOF_DIR_IN;
-+}
-+
-+static int malta_i2c_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
-+{
-+	struct malta_i2c_gpio *sc = chip_to_malta_i2c_gpio(chip);
-+	int v;
-+
-+	v = malta_i2c_gpio_get_bit(sc, MALTA_I2CINP, gpio);
-+
-+	pr_debug("%s: gpio_chip=%p gpio=%d value=%d\n",
-+			__func__, chip, gpio, v);
-+
-+	return v;
-+}
-+
-+static void malta_i2c_gpio_set_value(struct gpio_chip *chip,
-+					unsigned gpio, int v)
-+{
-+	struct malta_i2c_gpio *sc = chip_to_malta_i2c_gpio(chip);
-+
-+	pr_debug("%s: gpio_chip=%p gpio=%d value=%d\n",
-+			__func__, chip, gpio, v);
-+
-+	malta_i2c_gpio_set_bit(sc, MALTA_I2COUT, gpio, v);
-+}
-+
-+static struct gpio_ops malta_i2c_gpio_ops = {
-+	.direction_input = malta_i2c_gpio_direction_input,
-+	.direction_output = malta_i2c_gpio_direction_output,
-+	.get_direction = malta_i2c_gpio_get_direction,
-+	.get = malta_i2c_gpio_get_value,
-+	.set = malta_i2c_gpio_set_value,
-+};
-+
-+static int malta_i2c_gpio_probe(struct device_d *dev)
-+{
-+	void __iomem *gpio_base;
-+	struct malta_i2c_gpio *sc;
-+	int ret;
-+
-+	gpio_base = dev_request_mem_region(dev, 0);
-+	if (!gpio_base) {
-+		dev_err(dev, "could not get memory region\n");
++	if (!gpio_is_valid(pdata->sda_pin) || !gpio_is_valid(pdata->scl_pin)) {
++		pr_err("%s: invalid GPIO pins, sda=%d/scl=%d\n",
++		       np->full_name, pdata->sda_pin, pdata->scl_pin);
 +		return -ENODEV;
 +	}
 +
-+	sc = xzalloc(sizeof(*sc));
-+	sc->base = gpio_base;
-+	sc->chip.ops = &malta_i2c_gpio_ops;
-+	sc->chip.base = -1;
-+	sc->chip.ngpio = 2;
-+	sc->chip.dev = dev;
++	of_property_read_u32(np, "i2c-gpio,delay-us", &pdata->udelay);
 +
-+	ret = gpiochip_add(&sc->chip);
-+	if (ret) {
-+		dev_err(dev, "couldn't add gpiochip\n");
-+		free(sc);
-+		return ret;
-+	}
++	if (!of_property_read_u32(np, "i2c-gpio,timeout-ms", &reg))
++		pdata->timeout_ms = reg;
 +
-+	malta_i2c_gpio_write(sc, 1, MALTA_I2CSEL);
-+
-+	dev_info(dev, "probed gpiochip%d with base %d\n",
-+		dev->id, sc->chip.base);
++	pdata->sda_is_open_drain =
++		of_property_read_bool(np, "i2c-gpio,sda-open-drain");
++	pdata->scl_is_open_drain =
++		of_property_read_bool(np, "i2c-gpio,scl-open-drain");
++	pdata->scl_is_output_only =
++		of_property_read_bool(np, "i2c-gpio,scl-output-only");
 +
 +	return 0;
 +}
 +
-+static __maybe_unused struct of_device_id malta_i2c_gpio_dt_ids[] = {
-+	{
-+		.compatible = "mti,malta-fpga-i2c-gpio",
-+	}, {
-+		/* sentinel */
-+	},
+ static int i2c_gpio_probe(struct device_d *dev)
+ {
+ 	struct i2c_gpio_private_data *priv;
+@@ -97,9 +130,15 @@ static int i2c_gpio_probe(struct device_d *dev)
+ 	bit_data = &priv->bit_data;
+ 	pdata = &priv->pdata;
+ 
+-	if (!dev->platform_data)
+-		return -ENXIO;
+-	memcpy(pdata, dev->platform_data, sizeof(*pdata));
++	if (dev->device_node) {
++		ret = of_i2c_gpio_probe(dev->device_node, pdata);
++		if (ret)
++			return ret;
++	} else {
++		if (!dev->platform_data)
++			return -ENXIO;
++		memcpy(pdata, dev->platform_data, sizeof(*pdata));
++	}
+ 
+ 	ret = gpio_request(pdata->sda_pin, "sda");
+ 	if (ret)
+@@ -144,6 +183,7 @@ static int i2c_gpio_probe(struct device_d *dev)
+ 
+ 	adap->algo_data = bit_data;
+ 	adap->dev.parent = dev;
++	adap->dev.device_node = dev->device_node;
+ 
+ 	adap->nr = dev->id;
+ 	ret = i2c_bit_add_numbered_bus(adap);
+@@ -165,8 +205,16 @@ err_request_sda:
+ 	return ret;
+ }
+ 
++#if defined(CONFIG_OFDEVICE)
++static struct of_device_id i2c_gpio_dt_ids[] = {
++	{ .compatible = "i2c-gpio", },
++	{ /* sentinel */ }
 +};
++#endif
 +
-+static struct driver_d malta_i2c_gpio_driver = {
-+	.name  = "malta-fpga-i2c-gpio",
-+	.probe = malta_i2c_gpio_probe,
-+	.of_compatible	= DRV_OF_COMPAT(malta_i2c_gpio_dt_ids),
-+};
-+
-+static int malta_i2c_gpio_driver_init(void)
+ static struct driver_d i2c_gpio_driver = {
+ 	.name	= "i2c-gpio",
+ 	.probe	= i2c_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(i2c_gpio_dt_ids),
+ };
+ device_platform_driver(i2c_gpio_driver);
+diff --git a/include/of_gpio.h b/include/of_gpio.h
+index d42b18e..95a454c 100644
+--- a/include/of_gpio.h
++++ b/include/of_gpio.h
+@@ -35,10 +35,65 @@ static inline int of_get_named_gpio_flags(struct device_node *np,
+ 
+ #endif /* CONFIG_OF_GPIO */
+ 
++/**
++ * of_gpio_named_count() - Count GPIOs for a device
++ * @np:		device node to count GPIOs for
++ * @propname:	property name containing gpio specifier(s)
++ *
++ * The function returns the count of GPIOs specified for a node.
++ * Note that the empty GPIO specifiers count too. Returns either
++ *   Number of gpios defined in property,
++ *   -EINVAL for an incorrectly formed gpios property, or
++ *   -ENOENT for a missing gpios property
++ *
++ * Example:
++ * gpios = <0
++ *          &gpio1 1 2
++ *          0
++ *          &gpio2 3 4>;
++ *
++ * The above example defines four GPIOs, two of which are not specified.
++ * This function will return '4'
++ */
++static inline int of_gpio_named_count(struct device_node *np, const char* propname)
 +{
-+	return platform_driver_register(&malta_i2c_gpio_driver);
++	return of_count_phandle_with_args(np, propname, "#gpio-cells");
 +}
-+coredevice_initcall(malta_i2c_gpio_driver_init);
++
++/**
++ * of_gpio_count() - Count GPIOs for a device
++ * @np:		device node to count GPIOs for
++ *
++ * Same as of_gpio_named_count, but hard coded to use the 'gpios' property
++ */
++static inline int of_gpio_count(struct device_node *np)
++{
++	return of_gpio_named_count(np, "gpios");
++}
++
++static inline int of_get_gpio_flags(struct device_node *np, int index,
++		      enum of_gpio_flags *flags)
++{
++	return of_get_named_gpio_flags(np, "gpios", index, flags);
++}
++
+ static inline int of_get_named_gpio(struct device_node *np,
+ 				const char *list_name, int index)
+ {
+ 	return of_get_named_gpio_flags(np, list_name, index, NULL);
+ }
+ 
++/**
++ * of_get_gpio() - Get a GPIO number to use with GPIO API
++ * @np:		device node to get GPIO from
++ * @index:	index of the GPIO
++ *
++ * Returns GPIO number to use with Linux generic GPIO API, or one of the errno
++ * value on the error condition.
++ */
++static inline int of_get_gpio(struct device_node *np, int index)
++{
++	return of_get_gpio_flags(np, index, NULL);
++}
++
+ #endif
 -- 
 1.9.2
 
