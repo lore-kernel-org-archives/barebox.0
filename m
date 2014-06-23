@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22b.google.com ([2a00:1450:400c:c05::22b])
+Received: from mail-we0-x230.google.com ([2a00:1450:400c:c03::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzAaV-00016y-UH
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:37 +0000
-Received: by mail-wi0-f171.google.com with SMTP id n15so4866599wiw.16
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:11:04 -0700 (PDT)
+ id 1WzAaP-00017i-Gd
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:31 +0000
+Received: by mail-we0-f176.google.com with SMTP id u56so7586506wes.7
+ for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:11:07 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 23 Jun 2014 22:10:52 +0200
-Message-Id: <1403554262-12777-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 23 Jun 2014 22:10:57 +0200
+Message-Id: <1403554262-12777-7-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,74 +23,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] ARM: dts: sort pbl entries by alphabet
+Subject: [PATCH 06/11] ARM: mvebu: convert USI Topkick to PBL_MULTI_IMAGES
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Clean up pbl Makefile entries, that are out of alphabetical order.
+This converts Marvell Kirkwood based USI Topkick to
+PBL_MULTI_IMAGES.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/dts/Makefile | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/arm/boards/usi-topkick/Makefile   |  1 +
+ arch/arm/boards/usi-topkick/lowlevel.c | 34 ++++++++++++++++++++++++++++++++++
+ arch/arm/dts/Makefile                  |  1 +
+ images/Makefile.mvebu                  | 11 +++++++++++
+ 4 files changed, 47 insertions(+)
+ create mode 100644 arch/arm/boards/usi-topkick/lowlevel.c
 
+diff --git a/arch/arm/boards/usi-topkick/Makefile b/arch/arm/boards/usi-topkick/Makefile
+index dcfc2937d325..01c7a259e9a5 100644
+--- a/arch/arm/boards/usi-topkick/Makefile
++++ b/arch/arm/boards/usi-topkick/Makefile
+@@ -1 +1,2 @@
+ obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/usi-topkick/lowlevel.c b/arch/arm/boards/usi-topkick/lowlevel.c
+new file mode 100644
+index 000000000000..df661564dac4
+--- /dev/null
++++ b/arch/arm/boards/usi-topkick/lowlevel.c
+@@ -0,0 +1,34 @@
++/*
++ * Copyright (C) 2014
++ *  Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/lowlevel.h>
++
++extern char __dtb_kirkwood_topkick_bb_start[];
++
++ENTRY_FUNCTION(start_usi_topkick, r0, r1, r2)
++{
++	void *fdt;
++
++	arm_cpu_lowlevel_init();
++
++	fdt = __dtb_kirkwood_topkick_bb_start - get_runtime_offset();
++
++	mvebu_barebox_entry(fdt);
++}
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 6bbb4dcbed05..a5e6fd29c39e 100644
+index b747c59c460f..1b369100a537 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -46,37 +46,37 @@ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
- obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
- 
- pbl-$(CONFIG_MACH_BEAGLEBONE) += am335x-bone.dtb.o am335x-boneblack.dtb.o am335x-bone-common.dtb.o
-+pbl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
- pbl-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK) += imx51-genesi-efika-sb.dtb.o
- pbl-$(CONFIG_MACH_EMBEST_RIOTBOARD) += imx6s-riotboard.dtb.o
- pbl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
- pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o imx53-qsrb.dtb.o
- pbl-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
--pbl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
-+pbl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
-+pbl-$(CONFIG_MACH_GUF_SANTARO) += imx6q-guf-santaro.dtb.o
-+pbl-$(CONFIG_MACH_NITROGEN6X) += imx6q-nitrogen6x.dtb.o imx6dl-nitrogen6x.dtb.o
- pbl-$(CONFIG_MACH_NVIDIA_BEAVER) += tegra30-beaver.dtb.o
- pbl-$(CONFIG_MACH_NVIDIA_JETSON) += tegra124-jetson-tk1.dtb.o
-+pbl-$(CONFIG_MACH_PCA100) += imx27-phytec-phycard-s-rdk-bb.dtb.o
-+pbl-$(CONFIG_MACH_PCAAXL3) += imx6q-phytec-pbaa03.dtb.o
-+pbl-$(CONFIG_MACH_PCM038) += imx27-phytec-phycore-rdk.dtb.o
- pbl-$(CONFIG_MACH_PCM051) += am335x-phytec-phycore.dtb.o
- pbl-$(CONFIG_MACH_PHYTEC_PFLA02) += imx6s-phytec-pbab01.dtb.o imx6dl-phytec-pbab01.dtb.o imx6q-phytec-pbab01.dtb.o
-+pbl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
- pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
-+pbl-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
-+pbl-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o
-+pbl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
-+pbl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
- pbl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox-bb.dtb.o
--pbl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
--pbl-$(CONFIG_MACH_PCA100) += imx27-phytec-phycard-s-rdk-bb.dtb.o
--pbl-$(CONFIG_MACH_PCM038) += imx27-phytec-phycore-rdk.dtb.o
-+pbl-$(CONFIG_MACH_SOLIDRUN_HUMMINGBOARD) += imx6dl-hummingboard.dtb.o
- pbl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
- pbl-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
- pbl-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
+@@ -82,6 +82,7 @@ pbl-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
  pbl-$(CONFIG_MACH_TQMA6X) += imx6dl-mba6x.dtb.o imx6q-mba6x.dtb.o
  pbl-$(CONFIG_MACH_TX25) += imx25-karo-tx25.dtb.o
--pbl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
--pbl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
--pbl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
--pbl-$(CONFIG_MACH_SOLIDRUN_HUMMINGBOARD) += imx6dl-hummingboard.dtb.o
--pbl-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
--pbl-$(CONFIG_MACH_SABRESD) += imx6q-sabresd.dtb.o
--pbl-$(CONFIG_MACH_GUF_SANTARO) += imx6q-guf-santaro.dtb.o
--pbl-$(CONFIG_MACH_NITROGEN6X) += imx6q-nitrogen6x.dtb.o imx6dl-nitrogen6x.dtb.o
  pbl-$(CONFIG_MACH_UDOO) += imx6q-udoo.dtb.o
++pbl-$(CONFIG_MACH_USI_TOPKICK) += kirkwood-topkick-bb.dtb.o
  pbl-$(CONFIG_MACH_VARISCITE_MX6) += imx6q-var-custom.dtb.o
--pbl-$(CONFIG_MACH_PCAAXL3) += imx6q-phytec-pbaa03.dtb.o
  
  .SECONDARY: $(obj)/$(BUILTIN_DTB).dtb.S
- .SECONDARY: $(patsubst %,$(obj)/%.S,$(dtb-y))
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index c09a77d1473c..fdc6822bd968 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -36,3 +36,14 @@ pblx-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += start_globalscale_guruplug
+ image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug.img
+ image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug-uart.img
+ image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug-2nd.img
++
++USI_TOPKICK_KWBOPTS = ${KWBOPTS} -i $(board)/usi-topkick/kwbimage.cfg
++OPTS_start_usi_topkick.pblx.kwbimg = $(USI_TOPKICK_KWBOPTS)
++OPTS_start_usi_topkick.pblx.kwbuartimg = -m uart $(USI_TOPKICK_KWBOPTS)
++FILE_barebox-usi-topkick.img	= start_usi_topkick.pblx.kwbimg
++FILE_barebox-usi-topkick-uart.img = start_usi_topkick.pblx.kwbuartimg
++FILE_barebox-usi-topkick-2nd.img = start_usi_topkick.pblx
++pblx-$(CONFIG_MACH_USI_TOPKICK) += start_usi_topkick
++image-$(CONFIG_MACH_USI_TOPKICK) += barebox-usi-topkick.img
++image-$(CONFIG_MACH_USI_TOPKICK) += barebox-usi-topkick-uart.img
++image-$(CONFIG_MACH_USI_TOPKICK) += barebox-usi-topkick-2nd.img
 -- 
 2.0.0
 
