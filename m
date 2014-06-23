@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x233.google.com ([2a00:1450:400c:c00::233])
+Received: from mail-yk0-x235.google.com ([2607:f8b0:4002:c07::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WyzDd-0004yu-7y
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 08:03:15 +0000
-Received: by mail-wg0-f51.google.com with SMTP id x12so6247398wgg.10
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 01:02:47 -0700 (PDT)
-Date: Mon, 23 Jun 2014 10:02:40 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140623080238.GA10970@omega>
-References: <1403120463-24005-1-git-send-email-jlu@pengutronix.de>
- <20140623064217.GQ15686@pengutronix.de>
- <CAOpc7mH-CxrSjuY9vsLdcVEWdYw7-4FJXx+SJKV+zOWGJYji9g@mail.gmail.com>
- <20140623074428.GV15686@pengutronix.de>
+ id 1WyzqQ-0003n8-0h
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 08:43:19 +0000
+Received: by mail-yk0-f181.google.com with SMTP id 9so4547541ykp.12
+ for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 01:42:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140623074428.GV15686@pengutronix.de>
+In-Reply-To: <20140623074308.GU15686@pengutronix.de>
+References: <CAOpc7mFqu1ov94naTWtCiJMXxNk5RLa=mSL-eh3SwFXNoP1UGg@mail.gmail.com>
+ <20140618195849.GL15686@pengutronix.de>
+ <CAOpc7mFo8jdw24V=2wZW=dCMMbiBW87R7ZGKSqRR7SO4StB79g@mail.gmail.com>
+ <20140623074308.GU15686@pengutronix.de>
+Date: Mon, 23 Jun 2014 10:42:55 +0200
+Message-ID: <CAOpc7mEtWpacJ1Q7nqBmYzHYEWdQBw7hrCgqLP-9bijpP9qsXw@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,22 +26,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: ls: add ll as an alias for ls -l
+Subject: Re: i.MX6 frame buffer inside barebox?
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Jun 23, 2014 at 09:44:28AM +0200, Sascha Hauer wrote:
-> On Mon, Jun 23, 2014 at 09:20:40AM +0200, Holger Schurig wrote:
-> > Wouldn't it be better if barebox's shell gets the "alias" command?
-> > This would solve a problem like this, and we also could get rid of one
-> > of "edit"/"sedit" commands ...
-> 
-> Why not? Send patches ;)
+> My preferred solution is to be fast enough in the bootloader
+> and show a splash screen under Linux only.
 
-I had the same idea some time ago... nobody replies. I never implement
-anything. Sorry! :-)
+Hmm, I'd like to not do that. Splash screen from Linux usually means
+that I need an initrd. And an initrd is seldom needed on an embedded
+device (i.e. no complicated RAID or DM setup). And it just slows down
+the overall boot ...
 
-- Alex
+But thanks for the info anyway.
+
+Oh, one more question: do you have any idea if a simplefb would be
+fast enought for X11 ?
 
 _______________________________________________
 barebox mailing list
