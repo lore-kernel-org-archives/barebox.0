@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22c.google.com ([2a00:1450:400c:c00::22c])
+Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzAaR-000187-SD
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:33 +0000
-Received: by mail-wg0-f44.google.com with SMTP id x13so6924549wgg.3
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:11:08 -0700 (PDT)
+ id 1WzAaM-00017v-D3
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:28 +0000
+Received: by mail-wi0-f169.google.com with SMTP id hi2so4840867wib.0
+ for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:11:07 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 23 Jun 2014 22:10:56 +0200
-Message-Id: <1403554262-12777-6-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 23 Jun 2014 22:11:01 +0200
+Message-Id: <1403554262-12777-11-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,105 +23,173 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] ARM: mvebu: convert Globalscale Guruplug to
- PBL_MULTI_IMAGES
+Subject: [PATCH 10/11] ARM: mvebu: convert to multiple board selection
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This converts Marvell Kirkwood based Globalscale Guruplug to
-PBL_MULTI_IMAGES.
+With all SoCs converted to DT based probing, select
+PBL_MULTI_IMAGES support and get rid of SoCs Kconfig
+choice to allow multiple boards to be selected.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/boards/globalscale-guruplug/Makefile   |  1 +
- arch/arm/boards/globalscale-guruplug/lowlevel.c | 35 +++++++++++++++++++++++++
- arch/arm/dts/Makefile                           |  1 +
- images/Makefile.mvebu                           | 12 +++++++++
- 4 files changed, 49 insertions(+)
- create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
+ arch/arm/Kconfig            |  1 +
+ arch/arm/Makefile           |  6 ------
+ arch/arm/boards/Makefile    |  6 ++++++
+ arch/arm/mach-mvebu/Kconfig | 21 ---------------------
+ 4 files changed, 7 insertions(+), 27 deletions(-)
 
-diff --git a/arch/arm/boards/globalscale-guruplug/Makefile b/arch/arm/boards/globalscale-guruplug/Makefile
-index dcfc2937d325..01c7a259e9a5 100644
---- a/arch/arm/boards/globalscale-guruplug/Makefile
-+++ b/arch/arm/boards/globalscale-guruplug/Makefile
-@@ -1 +1,2 @@
- obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/globalscale-guruplug/lowlevel.c b/arch/arm/boards/globalscale-guruplug/lowlevel.c
-new file mode 100644
-index 000000000000..508746a06f81
---- /dev/null
-+++ b/arch/arm/boards/globalscale-guruplug/lowlevel.c
-@@ -0,0 +1,35 @@
-+/*
-+ * Copyright (C) 2014
-+ *  Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/lowlevel.h>
-+
-+extern char __dtb_kirkwood_guruplug_server_plus_bb_start[];
-+
-+ENTRY_FUNCTION(start_globalscale_guruplug, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	arm_cpu_lowlevel_init();
-+
-+	fdt = __dtb_kirkwood_guruplug_server_plus_bb_start -
-+		get_runtime_offset();
-+
-+	mvebu_barebox_entry(fdt);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 4642f979f6d5..b747c59c460f 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -58,6 +58,7 @@ pbl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
- pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o imx53-qsrb.dtb.o
- pbl-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
- pbl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
-+pbl-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += kirkwood-guruplug-server-plus-bb.dtb.o
- pbl-$(CONFIG_MACH_GUF_SANTARO) += imx6q-guf-santaro.dtb.o
- pbl-$(CONFIG_MACH_NITROGEN6X) += imx6q-nitrogen6x.dtb.o imx6dl-nitrogen6x.dtb.o
- pbl-$(CONFIG_MACH_NVIDIA_BEAVER) += tegra30-beaver.dtb.o
-diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
-index 8559556e203c..c09a77d1473c 100644
---- a/images/Makefile.mvebu
-+++ b/images/Makefile.mvebu
-@@ -24,3 +24,15 @@ pblx-$(CONFIG_MACH_SOLIDRUN_CUBOX) += start_solidrun_cubox
- image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox.img
- image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox-uart.img
- image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox-2nd.img
-+
-+# ----------------------- Kirkwood based boards ---------------------------
-+GLOBALSCALE_GURUPLUG_KWBOPTS = ${KWBOPTS} -i $(board)/globalscale-guruplug/kwbimage.cfg
-+OPTS_start_globalscale_guruplug.pblx.kwbimg = $(GLOBALSCALE_GURUPLUG_KWBOPTS)
-+OPTS_start_globalscale_guruplug.pblx.kwbuartimg = -m uart $(GLOBALSCALE_GURUPLUG_KWBOPTS)
-+FILE_barebox-globalscale-guruplug.img	= start_globalscale_guruplug.pblx.kwbimg
-+FILE_barebox-globalscale-guruplug-uart.img = start_globalscale_guruplug.pblx.kwbuartimg
-+FILE_barebox-globalscale-guruplug-2nd.img = start_globalscale_guruplug.pblx
-+pblx-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += start_globalscale_guruplug
-+image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug.img
-+image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug-uart.img
-+image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug-2nd.img
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 8674a2d17cf2..3b8a2a2207e4 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -92,6 +92,7 @@ config ARCH_MVEBU
+ 	select CLKDEV_LOOKUP
+ 	select GPIOLIB
+ 	select HAS_DEBUG_LL
++	select HAVE_PBL_MULTI_IMAGES
+ 	select MVEBU_MBUS
+ 	select OFTREE
+ 
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 64db73c62e35..983f7f57cd26 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -86,17 +86,11 @@ machine-$(CONFIG_ARCH_ZYNQ)		:= zynq
+ board-$(CONFIG_MACH_A9M2410)			+= a9m2410
+ board-$(CONFIG_MACH_A9M2440)			+= a9m2440
+ board-$(CONFIG_MACH_AT91RM9200EK)		+= at91rm9200ek
+-board-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)	+= globalscale-guruplug
+-board-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)	+= globalscale-mirabox
+-board-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP)	+= marvell-armada-xp-gp
+ board-$(CONFIG_MACH_MINI2440)			+= friendlyarm-mini2440
+ board-$(CONFIG_MACH_MINI6410)			+= friendlyarm-mini6410
+ board-$(CONFIG_MACH_PCM027)			+= phytec-phycore-pxa270
+-board-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
+-board-$(CONFIG_MACH_SOLIDRUN_CUBOX)		+= solidrun-cubox
+ board-$(CONFIG_MACH_TINY210)			+= friendlyarm-tiny210
+ board-$(CONFIG_MACH_TINY6410)			+= friendlyarm-tiny6410
+-board-$(CONFIG_MACH_USI_TOPKICK)		+= usi-topkick
+ 
+ machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
+ 
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 4eccc92930ad..f85ddccc550a 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -41,6 +41,8 @@ obj-$(CONFIG_MACH_FREESCALE_MX53_SMD)		+= freescale-mx53-smd/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_VMX53)		+= freescale-mx53-vmx53/
+ obj-$(CONFIG_MACH_GE863)			+= telit-evk-pro3/
+ obj-$(CONFIG_MACH_GK802)			+= gk802/
++obj-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)		+= globalscale-guruplug/
++obj-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)		+= globalscale-mirabox/
+ obj-$(CONFIG_MACH_GUF_CUPID)			+= guf-cupid/
+ obj-$(CONFIG_MACH_GUF_SANTARO)			+= guf-santaro/
+ obj-$(CONFIG_MACH_GUF_VINCELL)			+= guf-vincell/
+@@ -48,6 +50,7 @@ obj-$(CONFIG_MACH_HIGHBANK)			+= highbank/
+ obj-$(CONFIG_MACH_IMX21ADS)			+= freescale-mx21-ads/
+ obj-$(CONFIG_MACH_IMX233_OLINUXINO)		+= imx233-olinuxino/
+ obj-$(CONFIG_MACH_IMX27ADS)			+= freescale-mx27-ads/
++obj-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP)		+= marvell-armada-xp-gp/
+ obj-$(CONFIG_MACH_MB7707)			+= module-mb7707/
+ obj-$(CONFIG_MACH_MIOA701)			+= mioa701/
+ obj-$(CONFIG_MACH_MMCCPU)			+= mmccpu/
+@@ -73,6 +76,7 @@ obj-$(CONFIG_MACH_PCM043)			+= phytec-phycore-imx35/
+ obj-$(CONFIG_MACH_PCM049)			+= phytec-phycore-omap4460/
+ obj-$(CONFIG_MACH_PCM051)			+= phytec-phycore-am335x/
+ obj-$(CONFIG_MACH_PHYTEC_PFLA02)		+= phytec-phyflex-imx6/
++obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
+ obj-$(CONFIG_MACH_PM9261)			+= pm9261/
+ obj-$(CONFIG_MACH_PM9263)			+= pm9263/
+ obj-$(CONFIG_MACH_PM9G45)			+= pm9g45/
+@@ -88,6 +92,7 @@ obj-$(CONFIG_MACH_SAMA5D3_XPLAINED)		+= sama5d3_xplained/
+ obj-$(CONFIG_MACH_SCB9328)			+= scb9328/
+ obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
+ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
++obj-$(CONFIG_MACH_SOLIDRUN_CUBOX)		+= solidrun-cubox/
+ obj-$(CONFIG_MACH_SOLIDRUN_HUMMINGBOARD)	+= solidrun-hummingboard/
+ obj-$(CONFIG_MACH_TNY_A9260)			+= tny-a926x/
+ obj-$(CONFIG_MACH_TNY_A9263)			+= tny-a926x/
+@@ -104,6 +109,7 @@ obj-$(CONFIG_MACH_UDOO)				+= udoo/
+ obj-$(CONFIG_MACH_USB_A9260)			+= usb-a926x/
+ obj-$(CONFIG_MACH_USB_A9263)			+= usb-a926x/
+ obj-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x/
++obj-$(CONFIG_MACH_USI_TOPKICK)			+= usi-topkick/
+ obj-$(CONFIG_MACH_VERSATILEPB)			+= versatile/
+ obj-$(CONFIG_MACH_VEXPRESS)			+= vexpress/
+ obj-$(CONFIG_MACH_VIRT2REAL)			+= virt2real/
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index 80e8687916df..9b790a3a908f 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -38,14 +38,9 @@ endchoice
+ 
+ if ARCH_ARMADA_370
+ 
+-choice
+-	prompt "Armada 370 Board Type"
+-
+ config MACH_GLOBALSCALE_MIRABOX
+ 	bool "Globalscale Mirabox"
+ 
+-endchoice
+-
+ endif # ARCH_ARMADA_370
+ 
+ #
+@@ -54,17 +49,12 @@ endif # ARCH_ARMADA_370
+ 
+ if ARCH_ARMADA_XP
+ 
+-choice
+-	prompt "Armada XP Board Type"
+-
+ config MACH_PLATHOME_OPENBLOCKS_AX3
+ 	bool "PlatHome OpenBlocks AX3"
+ 
+ config MACH_MARVELL_ARMADA_XP_GP
+ 	bool "Marvell Armada XP GP"
+ 
+-endchoice
+-
+ endif # ARCH_ARMADA_XP
+ 
+ #
+@@ -73,14 +63,8 @@ endif # ARCH_ARMADA_XP
+ 
+ if ARCH_DOVE
+ 
+-choice
+-	prompt "Dove 88AP510 Board Type"
+-
+ config MACH_SOLIDRUN_CUBOX
+ 	bool "SolidRun CuBox"
+-	select HAVE_PBL_MULTI_IMAGES
+-
+-endchoice
+ 
+ endif # ARCH_DOVE
+ 
+@@ -90,17 +74,12 @@ endif # ARCH_DOVE
+ 
+ if ARCH_KIRKWOOD
+ 
+-choice
+-	prompt "Kirkwood Board Type"
+-
+ config MACH_GLOBALSCALE_GURUPLUG
+ 	bool "Guruplug"
+ 
+ config MACH_USI_TOPKICK
+ 	bool "Topkick"
+ 
+-endchoice
+-
+ endif # ARCH_KIRKWOOD
+ 
+ #
 -- 
 2.0.0
 
