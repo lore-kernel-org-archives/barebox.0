@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wz12a-0004YI-5D
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 10:00:00 +0000
-Date: Mon, 23 Jun 2014 11:59:32 +0200
+ Linux)) id 1Wz16J-0006kC-K3
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 10:03:52 +0000
+Date: Mon, 23 Jun 2014 12:03:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140623095931.GW15686@pengutronix.de>
-References: <CAOpc7mF_bAvNVebmS7F2ow4fj6peFgjxyY=1F-NQyvfb88XqHg@mail.gmail.com>
+Message-ID: <20140623100325.GX15686@pengutronix.de>
+References: <CAOpc7mFqu1ov94naTWtCiJMXxNk5RLa=mSL-eh3SwFXNoP1UGg@mail.gmail.com>
+ <20140618195849.GL15686@pengutronix.de>
+ <CAOpc7mFo8jdw24V=2wZW=dCMMbiBW87R7ZGKSqRR7SO4StB79g@mail.gmail.com>
+ <20140623074308.GU15686@pengutronix.de>
+ <CAOpc7mEtWpacJ1Q7nqBmYzHYEWdQBw7hrCgqLP-9bijpP9qsXw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOpc7mF_bAvNVebmS7F2ow4fj6peFgjxyY=1F-NQyvfb88XqHg@mail.gmail.com>
+In-Reply-To: <CAOpc7mEtWpacJ1Q7nqBmYzHYEWdQBw7hrCgqLP-9bijpP9qsXw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: SFI NOR sizes totally off ?!?
+Subject: Re: i.MX6 frame buffer inside barebox?
 To: Holger Schurig <holgerschurig@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Jun 23, 2014 at 11:28:09AM +0200, Holger Schurig wrote:
-> Seems like "ls -l" is right, but "devinfo" is wrong:
+On Mon, Jun 23, 2014 at 10:42:55AM +0200, Holger Schurig wrote:
+> > My preferred solution is to be fast enough in the bootloader
+> > and show a splash screen under Linux only.
 > 
-> barebox:/ ls -l /dev/m25p0
-> crw-------   67108864 /dev/m25p0
-> barebox:/ devinfo m25p0
-> Parameters:
->   size: 5468012149590870304
->   erasesize: 4096
->   writesize: 1
->   oobsize: 0
+> Hmm, I'd like to not do that. Splash screen from Linux usually means
+> that I need an initrd. And an initrd is seldom needed on an embedded
+> device (i.e. no complicated RAID or DM setup). And it just slows down
+> the overall boot ...
+> 
+> But thanks for the info anyway.
+> 
+> Oh, one more question: do you have any idea if a simplefb would be
+> fast enought for X11 ?
 
-This should be fixed with the following Commit.
-
-Grumpf. We really need some stable strategy.
+Yes, I think so. The (mainline) IPU drivers alone wouldn't help you
+anyway. You'll need the FSL EXA drivers to get anything faster I guess.
 
 Sascha
-
-commit 3ee907d89eaeaee5f75bd73eb89d2b4b3d05f6d4
-Author: Herve Codina <Herve.CODINA@celad.com>
-Date:   Thu Jun 12 11:37:38 2014 +0200
-
-    mtd: use long long dev param for size
-    
-    Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index d3e7763..82fb5f7 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -401,7 +401,7 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
-        mtd->cdev.mtd = mtd;
- 
-        if (IS_ENABLED(CONFIG_PARAMETER)) {
--               dev_add_param_int_ro(&mtd->class_dev, "size", mtd->size, "%llu");
-+               dev_add_param_llint_ro(&mtd->class_dev, "size", mtd->size, "%llu");
-                dev_add_param_int_ro(&mtd->class_dev, "erasesize", mtd->erasesize, "%u");
-                dev_add_param_int_ro(&mtd->class_dev, "writesize", mtd->writesize, "%u");
-                dev_add_param_int_ro(&mtd->class_dev, "oobsize", mtd->oobsize, "%u");
-
 
 -- 
 Pengutronix e.K.                           |                             |
