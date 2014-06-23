@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
+Received: from mail-wg0-x234.google.com ([2a00:1450:400c:c00::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzAaM-000170-D5
- for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:27 +0000
-Received: by mail-wi0-f169.google.com with SMTP id hi2so4840808wib.0
- for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:11:04 -0700 (PDT)
+ id 1WzAaN-00017D-2k
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 20:11:29 +0000
+Received: by mail-wg0-f52.google.com with SMTP id b13so6969522wgh.35
+ for <barebox@lists.infradead.org>; Mon, 23 Jun 2014 13:11:05 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 23 Jun 2014 22:10:51 +0200
-Message-Id: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 23 Jun 2014 22:10:53 +0200
+Message-Id: <1403554262-12777-3-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1403554262-12777-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,87 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/11] Convert MVEBU SoCs to DT and PBL_MULTI_IMAGE
+Subject: [PATCH 02/11] ARM: mvebu: sort pbl image target by board
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This patch set converts Kirkwood and Armada 370/XP to DT and provides
-PBL_MULTI_IMAGE support as we already have for Dove.
+This reorders images/Makefile.mvebu targets by board to ease integration
+of new boards.
 
-Patch 1 resorts pbl entries in arch/arm/dts/Makefile back to alphabetical
-order.
-
-Patch 2 reworks mvebu pbl image Makefile to ease integration of other SoCs.
-
-Patches 3 and 4 convert Kirkwood and Armada 370/XP SoC init to DT probing.
-
-Patches 5-9 convert existing Kirkwood and Armada 370/XP boards to
-PBL_MULTI_IMAGES.
-
-Patch 10 then reworks MVEBU related Kconfig to allow multiple board selection
-per-SoC.
-
-Patch 11 removes now redundant dtb Makefile targets.
-
-The patches are based on today's next with previously sent cleanup patches
-applied. They have been tested on Guruplug (Kirkwood) and Mirabox (Armada 370).
-
-A branch based on *unstable* next with cleanup applied is available at:
-https://github.com/shesselba/barebox-dove.git mvebu/soc
-
-Sebastian Hesselbarth (11):
-  ARM: dts: sort pbl entries by alphabet
-  ARM: mvebu: sort pbl image target by board
-  ARM: mvebu: convert Kirkwood devices to be probed from DT
-  ARM: mvebu: convert Armada 370/XP devices to be probed from DT
-  ARM: mvebu: convert Globalscale Guruplug to PBL_MULTI_IMAGES
-  ARM: mvebu: convert USI Topkick to PBL_MULTI_IMAGES
-  ARM: mvebu: convert Globalscale Mirabox to PBL_MULTI_IMAGES
-  ARM: mvebu: convert Marvell Armada XP GP to PBL_MULTI_IMAGES
-  ARM: mvebu: convert PlatHome Openblocks AX3-4 to PBL_MULTI_IMAGES
-  ARM: mvebu: convert to multiple board selection
-  ARM: mvebu: remove dtb Makefile entries
-
- arch/arm/Kconfig                                   |  1 +
- arch/arm/Makefile                                  |  6 --
- arch/arm/boards/Makefile                           |  6 ++
- arch/arm/boards/globalscale-guruplug/Makefile      |  1 +
- arch/arm/boards/globalscale-guruplug/lowlevel.c    | 35 +++++++++++
- arch/arm/boards/globalscale-mirabox/Makefile       |  1 +
- arch/arm/boards/globalscale-mirabox/kwbimage.cfg   |  2 +-
- arch/arm/boards/globalscale-mirabox/lowlevel.c     | 35 +++++++++++
- arch/arm/boards/marvell-armada-xp-gp/Makefile      |  1 +
- arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg  |  2 +-
- arch/arm/boards/marvell-armada-xp-gp/lowlevel.c    | 34 ++++++++++
- arch/arm/boards/plathome-openblocks-ax3/Makefile   |  1 +
- .../boards/plathome-openblocks-ax3/kwbimage.cfg    |  2 +-
- arch/arm/boards/plathome-openblocks-ax3/lowlevel.c | 35 +++++++++++
- arch/arm/boards/usi-topkick/Makefile               |  1 +
- arch/arm/boards/usi-topkick/lowlevel.c             | 34 ++++++++++
- arch/arm/dts/Makefile                              | 32 +++++-----
- arch/arm/dts/armada-370-mirabox-bb.dts             | 25 ++++++++
- arch/arm/dts/armada-xp-gp-bb.dts                   | 12 ++++
- arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts     | 26 ++++++++
- arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts  | 14 +++++
- arch/arm/dts/kirkwood-topkick-bb.dts               | 14 +++++
- arch/arm/mach-mvebu/Kconfig                        | 21 -------
- arch/arm/mach-mvebu/armada-370-xp.c                | 66 +-------------------
- arch/arm/mach-mvebu/kirkwood.c                     | 46 --------------
- images/Makefile.mvebu                              | 72 +++++++++++++++++++---
- 26 files changed, 363 insertions(+), 162 deletions(-)
- create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
- create mode 100644 arch/arm/boards/globalscale-mirabox/lowlevel.c
- create mode 100644 arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
- create mode 100644 arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
- create mode 100644 arch/arm/boards/usi-topkick/lowlevel.c
- create mode 100644 arch/arm/dts/armada-370-mirabox-bb.dts
- create mode 100644 arch/arm/dts/armada-xp-gp-bb.dts
- create mode 100644 arch/arm/dts/armada-xp-openblocks-ax3-4-bb.dts
- create mode 100644 arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts
- create mode 100644 arch/arm/dts/kirkwood-topkick-bb.dts
-
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
+---
+ images/Makefile.mvebu | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index fe92cc2f5839..8559556e203c 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -11,16 +11,16 @@ $(obj)/%.kwbuartimg: $(obj)/% FORCE
+ 
+ board = $(srctree)/arch/$(ARCH)/boards
+ 
++KWBOPTS = -c -d 0x1000000 -e 0x1000000
++
+ # ----------------------- Dove 88AP510 based boards ---------------------------
+-SOLIDRUN_CUBOX_KWBOPTS = -c -i $(board)/solidrun-cubox/kwbimage.cfg -d 0x1000000 -e 0x1000000
+-pblx-$(CONFIG_MACH_SOLIDRUN_CUBOX) += start_solidrun_cubox
++SOLIDRUN_CUBOX_KWBOPTS = ${KWBOPTS} -i $(board)/solidrun-cubox/kwbimage.cfg
+ OPTS_start_solidrun_cubox.pblx.kwbimg = $(SOLIDRUN_CUBOX_KWBOPTS)
+-FILE_barebox-solidrun-cubox.img = start_solidrun_cubox.pblx.kwbimg
+-image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox.img
+-
+ OPTS_start_solidrun_cubox.pblx.kwbuartimg = -m uart $(SOLIDRUN_CUBOX_KWBOPTS)
++FILE_barebox-solidrun-cubox.img	= start_solidrun_cubox.pblx.kwbimg
+ FILE_barebox-solidrun-cubox-uart.img = start_solidrun_cubox.pblx.kwbuartimg
+-image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox-uart.img
+-
+ FILE_barebox-solidrun-cubox-2nd.img = start_solidrun_cubox.pblx
++pblx-$(CONFIG_MACH_SOLIDRUN_CUBOX) += start_solidrun_cubox
++image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox.img
++image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox-uart.img
+ image-$(CONFIG_MACH_SOLIDRUN_CUBOX) += barebox-solidrun-cubox-2nd.img
 -- 
 2.0.0
 
