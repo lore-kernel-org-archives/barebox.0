@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x230.google.com ([2a00:1450:400c:c00::230])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WypfV-0005se-Qo
- for barebox@lists.infradead.org; Sun, 22 Jun 2014 21:51:22 +0000
-Received: by mail-wg0-f48.google.com with SMTP id n12so5740312wgh.31
- for <barebox@lists.infradead.org>; Sun, 22 Jun 2014 14:50:59 -0700 (PDT)
-Message-ID: <53A74FC0.7080206@gmail.com>
-Date: Sun, 22 Jun 2014 23:50:56 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1403469255-9019-1-git-send-email-alex.aring@gmail.com>
- <1403469255-9019-2-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1403469255-9019-2-git-send-email-alex.aring@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WyxpW-0006LB-Vm
+ for barebox@lists.infradead.org; Mon, 23 Jun 2014 06:34:19 +0000
+Date: Mon, 23 Jun 2014 08:33:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140623063349.GN15686@pengutronix.de>
+References: <1402904480-6765-1-git-send-email-antonynpavlov@gmail.com>
+ <1402904480-6765-2-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1402904480-6765-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +19,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/2] dns325: initial support for D-Link DNS-325
-To: Alexander Aring <alex.aring@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [RFC v2 2/2] [WIP] net: add initial ENC28J60 support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On 06/22/2014 10:34 PM, Alexander Aring wrote:
-> This patch add a basic support for the D-Link DNS-325.
+On Mon, Jun 16, 2014 at 11:41:20AM +0400, Antony Pavlov wrote:
+> ENC28J60 is a stand-alone Ethernet controller with SPI Interface.
+> and integrated 10BASE-T PHY.
 > 
-> Currently only booting via uart with kwboot is supported. The barebox
-> kwboot utility doesn't work at the moment. Use kwboot utility from u-boot
-> instead.
+> This driver was ported from linux-3.15.
+> 
+> The most notable barebox driver version changes:
+>   * add device tree support;
+>   * use IF_ENABLED for checking CONFIG_ENC28J60_WRITEVERIFY;
+>   * add mii_bus support;
+>   * rename {nolock,locked}_regw_{read,write}() to enc28j60_*_{read,write}().
+> 
+> TODOs:
+>   * receive only one packet per enc28j60_eth_rx() call.
+>   * fix empty enc28j60_init_dev;
+>   * add parameter for changing debug loglevel on-the-run;
+>   * ENC28J60 supports only SPI mode 0 so we have to submit
+>     this information to the SPI controller explicitly.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> 
+> Changes since v1:
+>   * drop unused macros;
+>   * use random_ether_addr();
+>   * drop 'select CRC32' in Kconfig;
+>   * drop MAC address generation in driver's code;
+>   * rename {nolock,locked}_regw_{read,write}() to enc28j60_*_{read,write}();
+>   * add mii_bus support.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-Why does kwboot does not work? There is an issue with early Kirkwood's
-BootROM and UART boot mode. Just try over and over again. I also recall
-modifying the timeouts may help.
+...
 
-> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-> ---
-[...]
-> diff --git a/arch/arm/boards/dlink-dns325/dlink-dns325.dox b/arch/arm/boards/dlink-dns325/dlink-dns325.dox
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
 > new file mode 100644
-> index 0000000..414b2e7
-> --- /dev/null
-> +++ b/arch/arm/boards/dlink-dns325/dlink-dns325.dox
-> @@ -0,0 +1,37 @@
-> +/** @page dlink-dns325 D-Link DNS-325 NAS
-> +
-> +The NAS has
-> +@li Kirkwood 88F6281-A1 SoC
-> +@li 256 MB SDRAM
-> +@li 128 MB NAND type SAMSUNG 946 K9F1G08U0B PCB0
-> +@li 2 SATA interfaces
-> +@li RS232 serial interface
-> +@li 1 USB interface
-> +@li 1 Gigabit Ethernet interface
-> +@li 1 Temp Sensor G751-2f
-> +@li 1 MCU Holtek HT48C06E for Power Managment
-> +@li LEDs & buttons
-> +
-> +The NAS doesn't support NAND right now.
-> +Only boot via uart with kwboot is supported.
+> index 0000000..4884854
 
-Is it the NAS that doesn't support NAND or is it missing driver support
-for barebox instead?
+I don't really like the headerfile leaking in from Linux just to make
+this driver compile. Also I think such a fine grained network device
+debugging is not so useful for barebox. So can you drop this? Otherwise
+I'm fine with the driver.
 
-> +The kwboot utility of barebox doesn't work right now.
-> +Instead use the u-boot kwboot utility:
+Sascha
 
-See above, we should fix kwboot instead.
 
-Sebastian
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
