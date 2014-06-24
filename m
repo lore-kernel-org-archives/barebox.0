@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22f.google.com ([2a00:1450:400c:c03::22f])
+Received: from mail-we0-x234.google.com ([2a00:1450:400c:c03::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzO9B-0007PC-B6
- for barebox@lists.infradead.org; Tue, 24 Jun 2014 10:40:24 +0000
-Received: by mail-we0-f175.google.com with SMTP id k48so122253wev.34
- for <barebox@lists.infradead.org>; Tue, 24 Jun 2014 03:39:53 -0700 (PDT)
+ id 1WzODA-0004G2-TQ
+ for barebox@lists.infradead.org; Tue, 24 Jun 2014 10:44:30 +0000
+Received: by mail-we0-f180.google.com with SMTP id x48so116226wes.39
+ for <barebox@lists.infradead.org>; Tue, 24 Jun 2014 03:44:00 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 24 Jun 2014 12:39:39 +0200
-Message-Id: <1403606379-29608-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 24 Jun 2014 12:43:48 +0200
+Message-Id: <1403606628-30148-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pinctrl: mvebu: add pinctrl drivers for Dove and Kirkwood
+Subject: [PATCH v2] pinctrl: mvebu: add pinctrl drivers for Dove and Kirkwood
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
@@ -32,18 +32,22 @@ SoCs.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
+Changelog:
+v1->v2:
+- remove stale syscon Kconfig and include from Dove pinctrl driver
+
 Cc: barebox@lists.infradead.org
 ---
  arch/arm/mach-mvebu/Kconfig      |   2 +
  drivers/pinctrl/Kconfig          |   2 +
  drivers/pinctrl/Makefile         |   2 +
- drivers/pinctrl/mvebu/Kconfig    |   8 +
+ drivers/pinctrl/mvebu/Kconfig    |   7 +
  drivers/pinctrl/mvebu/Makefile   |   3 +
  drivers/pinctrl/mvebu/common.c   | 115 ++++++
  drivers/pinctrl/mvebu/common.h   | 146 ++++++++
- drivers/pinctrl/mvebu/dove.c     | 738 +++++++++++++++++++++++++++++++++++++++
+ drivers/pinctrl/mvebu/dove.c     | 737 +++++++++++++++++++++++++++++++++++++++
  drivers/pinctrl/mvebu/kirkwood.c | 454 ++++++++++++++++++++++++
- 9 files changed, 1470 insertions(+)
+ 9 files changed, 1468 insertions(+)
  create mode 100644 drivers/pinctrl/mvebu/Kconfig
  create mode 100644 drivers/pinctrl/mvebu/Makefile
  create mode 100644 drivers/pinctrl/mvebu/common.c
@@ -91,14 +95,13 @@ index 3978c5692ff3..566ba111d737 100644
 +obj-$(CONFIG_ARCH_MVEBU) += mvebu/
 diff --git a/drivers/pinctrl/mvebu/Kconfig b/drivers/pinctrl/mvebu/Kconfig
 new file mode 100644
-index 000000000000..af20c07d095a
+index 000000000000..f5cf60804cd2
 --- /dev/null
 +++ b/drivers/pinctrl/mvebu/Kconfig
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,7 @@
 +config PINCTRL_DOVE
 +	bool
 +	select PINCTRL
-+	select MFD_SYSCON
 +
 +config PINCTRL_KIRKWOOD
 +	bool
@@ -387,10 +390,10 @@ index 000000000000..8b3c74852de9
 +#endif
 diff --git a/drivers/pinctrl/mvebu/dove.c b/drivers/pinctrl/mvebu/dove.c
 new file mode 100644
-index 000000000000..3e8e6db152a1
+index 000000000000..420b573ad1b7
 --- /dev/null
 +++ b/drivers/pinctrl/mvebu/dove.c
-@@ -0,0 +1,738 @@
+@@ -0,0 +1,737 @@
 +/*
 + * Marvell Dove pinctrl driver based on mvebu pinctrl core
 + *
@@ -406,7 +409,6 @@ index 000000000000..3e8e6db152a1
 +#include <init.h>
 +#include <linux/clk.h>
 +#include <malloc.h>
-+#include <mfd/syscon.h>
 +#include <of.h>
 +#include <of_address.h>
 +#include <sizes.h>
