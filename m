@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
+Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzPJB-00061D-KE
- for barebox@lists.infradead.org; Tue, 24 Jun 2014 11:54:42 +0000
-Received: by mail-wg0-f47.google.com with SMTP id k14so217207wgh.6
- for <barebox@lists.infradead.org>; Tue, 24 Jun 2014 04:54:15 -0700 (PDT)
-Message-ID: <53A966DF.6050208@gmail.com>
-Date: Tue, 24 Jun 2014 13:54:07 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1403469255-9019-1-git-send-email-alex.aring@gmail.com>
- <1403469255-9019-2-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1403469255-9019-2-git-send-email-alex.aring@gmail.com>
+ id 1WzWhy-0005GG-Qd
+ for barebox@lists.infradead.org; Tue, 24 Jun 2014 19:48:49 +0000
+Received: by mail-we0-f177.google.com with SMTP id u56so892751wes.8
+ for <barebox@lists.infradead.org>; Tue, 24 Jun 2014 12:48:24 -0700 (PDT)
+From: Raphael Poggi <poggi.raph@gmail.com>
+Date: Tue, 24 Jun 2014 21:48:15 +0200
+Message-Id: <1403639295-60445-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +17,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/2] dns325: initial support for D-Link DNS-325
-To: Alexander Aring <alex.aring@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH] i2c: omap: fix typo in dt_ids
+To: barebox@lists.infradead.org
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-On 06/22/2014 10:34 PM, Alexander Aring wrote:
-> This patch add a basic support for the D-Link DNS-325.
->
-> Currently only booting via uart with kwboot is supported. The barebox
-> kwboot utility doesn't work at the moment. Use kwboot utility from u-boot
-> instead.
->
-> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-> ---
-> I got the kwbimage values from u-boot with change to work with the
-> barebox kwboot utility. There is also a bug in u-boot kwbimage file
-> which enables 256 MB on chip select 0 and 1. But the DNS-325 has 256
-> MB on chip select 0 only. This is fixed in this kwbimage file.
-
-Alexander,
-
-I posted a bunch of MVEBU related patches I had in my private branches.
-Can you respin your DNS-325 patch based on those?
-
-Sascha already applied
-  "Marvell MVEBU assorted fixes and cleanup" and
-  "Convert MVEBU SoCs to DT and PBL_MULTI_IMAGE"
-but they haven't appeared on barebox/next. You can wait a day or two
-or apply above series yourself. The other 3 pending patch sets are
-just more improvements but shouldn't (directly) influence your dns-325
-support patches.
-
-I also tried kwboot again on Kirkwood, Dove, and Armada 370 and wasn't
-able to reproduce any issues. Can you re-evaluate and report back any
-issues with details?
-
-Sebastian
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgotLS0K
+IGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtb21hcC5jIHwgNCArKy0tCiAxIGZpbGUgY2hhbmdlZCwg
+MiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvaTJj
+L2J1c3Nlcy9pMmMtb21hcC5jIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMKaW5kZXgg
+ZjcxMDhjMi4uYWRjOTUyYiAxMDA2NDQKLS0tIGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFw
+LmMKKysrIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMKQEAgLTExMzIsNyArMTEzMiw3
+IEBAIHN0YXRpYyBzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlX2lkIG9tYXBfaTJjX2lkc1tdID0gewog
+CX0sCiB9OwogCi1zdGF0aWMgX19tYXliZV91bnVzZWQgc3RydWN0IG9mX2RldmljZV9pZCBvbWFw
+X3NwaV9kdF9pZHNbXSA9IHsKK3N0YXRpYyBfX21heWJlX3VudXNlZCBzdHJ1Y3Qgb2ZfZGV2aWNl
+X2lkIG9tYXBfaTJjX2R0X2lkc1tdID0gewogCXsKIAkJLmNvbXBhdGlibGUgPSAidGksb21hcDMt
+aTJjIiwKIAkJLmRhdGEgPSAodW5zaWduZWQgbG9uZykmb21hcDNfZGF0YSwKQEAgLTExNDgsNyAr
+MTE0OCw3IEBAIHN0YXRpYyBzdHJ1Y3QgZHJpdmVyX2Qgb21hcF9pMmNfZHJpdmVyID0gewogCS5w
+cm9iZQkJPSBpMmNfb21hcF9wcm9iZSwKIAkubmFtZQkJPSBEUklWRVJfTkFNRSwKIAkuaWRfdGFi
+bGUJPSBvbWFwX2kyY19pZHMsCi0JLm9mX2NvbXBhdGlibGUgPSBEUlZfT0ZfQ09NUEFUKG9tYXBf
+c3BpX2R0X2lkcyksCisJLm9mX2NvbXBhdGlibGUgPSBEUlZfT0ZfQ09NUEFUKG9tYXBfaTJjX2R0
+X2lkcyksCiB9OwogZGV2aWNlX3BsYXRmb3JtX2RyaXZlcihvbWFwX2kyY19kcml2ZXIpOwogCi0t
+IAoxLjguMy4yCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
