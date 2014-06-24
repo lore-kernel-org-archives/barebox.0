@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f169.google.com ([209.85.217.169])
+Received: from mail-we0-x22b.google.com ([2a00:1450:400c:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzLHh-0006NH-Ts
- for barebox@lists.infradead.org; Tue, 24 Jun 2014 07:36:54 +0000
-Received: by mail-lb0-f169.google.com with SMTP id l4so6051640lbv.0
- for <barebox@lists.infradead.org>; Tue, 24 Jun 2014 00:36:29 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140624101809.3e4e5ed94246bea99f2d622c@gmail.com>
-References: <20140624101809.3e4e5ed94246bea99f2d622c@gmail.com>
-Date: Tue, 24 Jun 2014 09:36:29 +0200
-Message-ID: <CAOngqVX56ZS=KgWJs0x6yS_jxNewYaWaTX-Lqvmk-25xBs+d4g@mail.gmail.com>
-From: Daniele Lacamera <daniele.lacamera@tass.be>
+ id 1WzNoM-0006XR-2A
+ for barebox@lists.infradead.org; Tue, 24 Jun 2014 10:18:46 +0000
+Received: by mail-we0-f171.google.com with SMTP id q58so90171wes.30
+ for <barebox@lists.infradead.org>; Tue, 24 Jun 2014 03:18:23 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Tue, 24 Jun 2014 12:18:10 +0200
+Message-Id: <1403605091-26174-4-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1403605091-26174-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1403605091-26174-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] incorporate picotcp into barebox
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>, PicoTCP <picotcp@tass.be>, Frederik Van Slycken <frederik.van.slycken@gmail.com>
+Subject: [PATCH 3/4] net: orion-gbe: extend RGMII detection to delayed modes
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jun 24, 2014 at 8:18 AM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> Hi, Daniele!
->
-> Do you have any progress on introducing barebox-related ping and dhcp client
-> changes into picotcp?
->
-> --
-> Best regards,
->   Antony Pavlov
+RGMII PHY modes include delayed interface modes RGMII_ID, RGMII_TXID,
+and RGMII_RXID. Also check for those modes when setup RGMII mode in
+port serial ctrl register.
 
-Hello Antony,
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Cc: barebox@lists.infradead.org
+---
+ drivers/net/orion-gbe.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Yes, I've been working on the components themselves in order to comply
-with barebox's CLI requirements. I added a pico_dhcp_client_abort()
-function to cancel an ongoing dhcp negotiation, and a
-pico_icmp[4|6]_ping_abort() to cancel the ongoing ping operation. All
-changes are tested and the new APIs are documented in the user manual.
-It is now possible to interrupt ongoing operation (e.g. via CTRL+C
-from the barebox CLI).
-
-A fresh manual is created by jenkins after each commit from the .tex
-in the source tree and it is avaliable at:
-http://162.13.84.104/user_doc.pdf
-
-Additionally, the TFTP branch I created is almost finished: TFTP
-client and server are working except for the timeout feature. Due to
-our internal quality policy and implement the unit tests with at least
-80% coverage in order to qualify for a merge to the master, but
-meanwhile both client and server are tested against tftp(d)-hpa. You
-can already have a look at the new module:
-
-https://github.com/tass-belgium/picotcp/tree/tftp
-
-In particular, this is how I am testing client/server functionality:
-https://github.com/tass-belgium/picotcp/blob/tftp/test/picoapp.c#L2201
-
-Of course before merging there will be a new chapter in the manual
-describing the TFTP API.
-
-As usual, comments and suggestions are very welcome.
-
-Regards,
-
+diff --git a/drivers/net/orion-gbe.c b/drivers/net/orion-gbe.c
+index 23c8346ec58f..991c8a80de31 100644
+--- a/drivers/net/orion-gbe.c
++++ b/drivers/net/orion-gbe.c
+@@ -447,7 +447,10 @@ static int port_probe(struct device_d *parent, struct port_priv *port)
+ 
+ 	reg = SC1_RESERVED;
+ 	reg |= DEFAULT_COL_LIMIT | COL_ON_BACKPRESS | INBAND_ANEG_BYPASS;
+-	if (port->intf == PHY_INTERFACE_MODE_RGMII)
++	if (port->intf == PHY_INTERFACE_MODE_RGMII ||
++	    port->intf == PHY_INTERFACE_MODE_RGMII_ID ||
++	    port->intf == PHY_INTERFACE_MODE_RGMII_RXID ||
++	    port->intf == PHY_INTERFACE_MODE_RGMII_TXID)
+ 		reg |= RGMII_ENABLE;
+ 	writel(reg, port->regs + PORT_SC1);
+ 
 -- 
-Daniele Lacamera
+2.0.0
+
 
 _______________________________________________
 barebox mailing list
