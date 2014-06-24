@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WzKmA-0003b1-Nw
- for barebox@lists.infradead.org; Tue, 24 Jun 2014 07:04:19 +0000
-Date: Tue, 24 Jun 2014 09:03:56 +0200
+ Linux)) id 1WzKrN-0005M4-JY
+ for barebox@lists.infradead.org; Tue, 24 Jun 2014 07:09:42 +0000
+Date: Tue, 24 Jun 2014 09:09:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140624070356.GB15686@pengutronix.de>
+Message-ID: <20140624070918.GC15686@pengutronix.de>
 References: <1403558473-26199-1-git-send-email-antonynpavlov@gmail.com>
- <1403558473-26199-6-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1403558473-26199-6-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1403558473-26199-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,92 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] i2c: i2c_gpio: add devicetree support
+Subject: Re: [PATCH 0/7] MIPS: malta: enable gpio & i2c stuff
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 24, 2014 at 01:21:11AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  .../devicetree/bindings/gpio/gpio_i2c.txt          | 32 +++++++++++++
->  drivers/i2c/busses/i2c-gpio.c                      | 54 +++++++++++++++++++--
->  include/of_gpio.h                                  | 55 ++++++++++++++++++++++
->  3 files changed, 138 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio_i2c.txt b/Documentation/devicetree/bindings/gpio/gpio_i2c.txt
-> new file mode 100644
-> index 0000000..4f8ec94
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/gpio_i2c.txt
+On Tue, Jun 24, 2014 at 01:21:06AM +0400, Antony Pavlov wrote:
+> Antony Pavlov (7):
+>   gpio: add Malta CBUS FPGA I2C driver
+>   MIPS: add <asm/gpio.h> header file
+>   MIPS: malta: enable gpiolib
+>   MIPS: dts: qemu-malta.dts: enable CBUS FPGA I2C gpio driver
+>   i2c: i2c_gpio: add devicetree support
+>   MIPS: dts: qemu-malta.dts: use i2c-gpio for accessing CBUS FPGA I2C
+>     bus
+>   MIPS: qemu-malta_defconfig: enable gpio & i2c stuff
 
-We already have this binding in dts/Bindings/i2c/i2c-gpio.txt, no need
-to duplicate it here. Documentation/devicetree is only for barebox
-specific bindings.
-
-
-> @@ -0,0 +1,32 @@
-> +Device-Tree bindings for i2c gpio driver
-> +
-> +Required properties:
-> +	- compatible = "i2c-gpio";
-> +	- gpios: sda and scl gpio
-> +
-> +
-> +Optional properties:
-> +	- i2c-gpio,sda-open-drain: sda as open drain
-> +	- i2c-gpio,scl-open-drain: scl as open drain
-> +	- i2c-gpio,scl-output-only: scl as output only
-> +	- i2c-gpio,delay-us: delay between GPIO operations (may depend on each platform)
-> +	- i2c-gpio,timeout-ms: timeout to get data
-> +
-> +Example nodes:
-> +
-> +i2c@0 {
-> +	compatible = "i2c-gpio";
-> +	gpios = <&pioA 23 0 /* sda */
-> +		 &pioA 24 0 /* scl */
-> +		>;
-> +	i2c-gpio,sda-open-drain;
-> +	i2c-gpio,scl-open-drain;
-> +	i2c-gpio,delay-us = <2>;	/* ~100 kHz */
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +
-> +	rv3029c2@56 {
-> +		compatible = "rv3029c2";
-> +		reg = <0x56>;
-> +	};
-> +};
-> diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
-> index 8b49c2c..29dc3d2 100644
-> --- a/drivers/i2c/busses/i2c-gpio.c
-> +++ b/drivers/i2c/busses/i2c-gpio.c
-> @@ -15,6 +15,7 @@
->  #include <i2c/i2c-gpio.h>
->  #include <init.h>
->  #include <gpio.h>
-> +#include <of_gpio.h>
->  
->  struct i2c_gpio_private_data {
->  	struct i2c_adapter adap;
-> @@ -83,6 +84,38 @@ static int i2c_gpio_getscl(void *data)
->  	return gpio_get_value(pdata->scl_pin);
->  }
->  
-> +static int of_i2c_gpio_probe(struct device_node *np,
-> +			     struct i2c_gpio_platform_data *pdata)
-> +{
-> +	u32 reg;
-> +
-
-Consider adding a
-
-	is (!IS_ENABLED(CONFIG_OFDEVICE))
-		return -ENODEV;
-
-to allow the compiler to throw away the rest of this function.
+Just fixed up the patches myself and applied the series.
 
 Sascha
+
+> 
+>  .../devicetree/bindings/gpio/gpio_i2c.txt          |  32 ++++
+>  arch/mips/Kconfig                                  |   1 +
+>  arch/mips/configs/qemu-malta_defconfig             |  60 +++----
+>  arch/mips/dts/qemu-malta.dts                       |  23 +++
+>  arch/mips/include/asm/gpio.h                       |   6 +
+>  drivers/gpio/Kconfig                               |  10 ++
+>  drivers/gpio/Makefile                              |   1 +
+>  drivers/gpio/gpio-malta-fpga-i2c.c                 | 186 +++++++++++++++++++++
+>  drivers/i2c/busses/i2c-gpio.c                      |  54 +++++-
+>  include/of_gpio.h                                  |  55 ++++++
+>  10 files changed, 397 insertions(+), 31 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/gpio_i2c.txt
+>  create mode 100644 arch/mips/include/asm/gpio.h
+>  create mode 100644 drivers/gpio/gpio-malta-fpga-i2c.c
+> 
+> -- 
+> 1.9.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
