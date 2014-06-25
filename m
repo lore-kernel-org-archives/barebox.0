@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22d.google.com ([2a00:1450:400c:c05::22d])
+Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wznsv-00080W-Jx
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 14:09:14 +0000
-Received: by mail-wi0-f173.google.com with SMTP id cc10so8023495wib.0
- for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 07:08:49 -0700 (PDT)
+ id 1Wznsw-00081X-OB
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 14:09:17 +0000
+Received: by mail-wg0-f47.google.com with SMTP id k14so2070083wgh.6
+ for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 07:08:51 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 25 Jun 2014 16:08:47 +0200
-Message-Id: <1403705328-9924-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 25 Jun 2014 16:08:46 +0200
+Message-Id: <1403705328-9924-3-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,11 +23,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFC 3/4] ARM: dts: add new USB nodes to Dove CuBox
+Subject: [PATCH RFC 2/4] ARM: dts: add new USB nodes to Kirkwood Guruplug
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>
 
-Add new MVEBU usb controller nodes to CuBox dts overlay to show
+Add new MVEBU usb controller nodes to Guruplug dts overlay to show
 how it should be included upstream.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
@@ -39,57 +39,35 @@ Cc: Gregory Clement <gregory.clement@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- arch/arm/dts/dove-cubox-bb.dts | 42 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/arm/dts/dove-cubox-bb.dts b/arch/arm/dts/dove-cubox-bb.dts
-index f7ad55c4e794..65d19c057bab 100644
---- a/arch/arm/dts/dove-cubox-bb.dts
-+++ b/arch/arm/dts/dove-cubox-bb.dts
-@@ -15,4 +15,46 @@
+diff --git a/arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts b/arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts
+index aba7c06160d0..eaf9869e9483 100644
+--- a/arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts
++++ b/arch/arm/dts/kirkwood-guruplug-server-plus-bb.dts
+@@ -11,4 +11,24 @@
  			barebox,default-trigger = "heartbeat";
  		};
  	};
 +
-+	mbus {
-+		internal-regs {
-+			usb0: usb@50000 {
-+				compatible = "marvell,mvebu-usb";
-+				reg = <0x50000 0x400>;
-+				interrupts = <24>;
-+				clocks = <&gate_clk 0>;
-+				usb-phy = <&usb_phy0>;
-+				vbus-supply = <&usb_power>;
-+				dr_mode = "host";
-+				status = "okay";
-+			};
++	ocp@f1000000 {
++		musb0: usb@50000 {
++			compatible = "marvell,mvebu-usb";
++			reg = <0x50000 0x400>;
++			interrupts = <19>;
++			clocks = <&gate_clk 3>;
++			usb-phy = <&usb_phy0>;
++			dr_mode = "host";
++			status = "okay";
++		};
 +
-+			usb_phy0: phy@50400 {
-+				compatible = "marvell,mvebu-usb-phy-65nm";
-+				reg = <0x50400 0x100>;
-+				clocks = <&gate_clk 0>;
-+				#phy-cells = <0>;
-+				status = "okay";
-+			};
-+
-+			usb1: usb@51000 {
-+				compatible = "marvell,mvebu-usb";
-+				reg = <0x51000 0x400>;
-+				interrupts = <25>;
-+				clocks = <&gate_clk 1>;
-+				usb-phy = <&usb_phy1>;
-+				vbus-supply = <&usb_power>;
-+				dr_mode = "host";
-+				status = "okay";
-+			};
-+
-+			usb_phy1: phy@51400 {
-+				compatible = "marvell,mvebu-usb-phy-65nm";
-+				reg = <0x51400 0x100>;
-+				clocks = <&gate_clk 1>;
-+				#phy-cells = <0>;
-+				status = "okay";
-+			};
++		usb_phy0: phy@50400 {
++			compatible = "marvell,mvebu-usb-phy-65nm";
++			reg = <0x50400 0x100>;
++			clocks = <&gate_clk 3>;
++			#phy-cells = <0>;
++			status = "okay";
 +		};
 +	};
  };
