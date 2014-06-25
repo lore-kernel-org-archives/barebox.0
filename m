@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x232.google.com ([2a00:1450:400c:c03::232])
+Received: from mail-wi0-x22d.google.com ([2a00:1450:400c:c05::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wzncx-0008GV-L9
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 13:52:47 +0000
-Received: by mail-we0-f178.google.com with SMTP id x48so2049769wes.37
- for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 06:52:19 -0700 (PDT)
+ id 1Wznsv-00080W-Jx
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 14:09:14 +0000
+Received: by mail-wi0-f173.google.com with SMTP id cc10so8023495wib.0
+ for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 07:08:49 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 25 Jun 2014 15:52:16 +0200
-Message-Id: <1403704336-9314-1-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <20140625065615.GM15686@pengutronix.de>
-References: <20140625065615.GM15686@pengutronix.de>
+Date: Wed, 25 Jun 2014 16:08:47 +0200
+Message-Id: <1403705328-9924-4-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +23,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH FIXUP] pinctrl: mvebu: fixup mpp_base check
+Subject: [PATCH RFC 3/4] ARM: dts: add new USB nodes to Dove CuBox
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>
 
-Sascha,
-
-unfortunately, your dev_request_mem_region fixup introduced a typo
-(map_base instead of mpp_base). I took the chance to also add a
-corresponding check for dove's pinctrl stub.
-
-Please squash into commmit 8d3f0c2496afe397667e35ff6b94153bcecdb6ad
- ("pinctrl: mvebu: add pinctrl drivers for Dove and Kirkwood")
-
-Thanks!
+Add new MVEBU usb controller nodes to CuBox dts overlay to show
+how it should be included upstream.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
+Cc: Jason Cooper <jason@lakedaemon.net>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Gregory Clement <gregory.clement@free-electrons.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/pinctrl/mvebu/dove.c     | 2 ++
- drivers/pinctrl/mvebu/kirkwood.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/dts/dove-cubox-bb.dts | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/drivers/pinctrl/mvebu/dove.c b/drivers/pinctrl/mvebu/dove.c
-index 420b573ad1b7..bd0a632f1fd4 100644
---- a/drivers/pinctrl/mvebu/dove.c
-+++ b/drivers/pinctrl/mvebu/dove.c
-@@ -708,6 +708,8 @@ static int dove_pinctrl_probe(struct device_d *dev)
- 
- 	mpp_base = dev_request_mem_region(dev, 0);
- 	mpp4_base = dev_request_mem_region(dev, 1);
-+	if (!mpp_base || !mpp4_base)
-+		return -EBUSY;
- 
- 	/*
- 	 * Dove PMU does not have a stable binding, yet.
-diff --git a/drivers/pinctrl/mvebu/kirkwood.c b/drivers/pinctrl/mvebu/kirkwood.c
-index bde46acc0f4e..94ab10544279 100644
---- a/drivers/pinctrl/mvebu/kirkwood.c
-+++ b/drivers/pinctrl/mvebu/kirkwood.c
-@@ -437,7 +437,7 @@ static int kirkwood_pinctrl_probe(struct device_d *dev)
- 		(struct mvebu_pinctrl_soc_info *)match->data;
- 
- 	mpp_base = dev_request_mem_region(dev, 0);
--	if (!map_base)
-+	if (!mpp_base)
- 		return -EBUSY;
- 
- 	return mvebu_pinctrl_probe(dev, soc);
+diff --git a/arch/arm/dts/dove-cubox-bb.dts b/arch/arm/dts/dove-cubox-bb.dts
+index f7ad55c4e794..65d19c057bab 100644
+--- a/arch/arm/dts/dove-cubox-bb.dts
++++ b/arch/arm/dts/dove-cubox-bb.dts
+@@ -15,4 +15,46 @@
+ 			barebox,default-trigger = "heartbeat";
+ 		};
+ 	};
++
++	mbus {
++		internal-regs {
++			usb0: usb@50000 {
++				compatible = "marvell,mvebu-usb";
++				reg = <0x50000 0x400>;
++				interrupts = <24>;
++				clocks = <&gate_clk 0>;
++				usb-phy = <&usb_phy0>;
++				vbus-supply = <&usb_power>;
++				dr_mode = "host";
++				status = "okay";
++			};
++
++			usb_phy0: phy@50400 {
++				compatible = "marvell,mvebu-usb-phy-65nm";
++				reg = <0x50400 0x100>;
++				clocks = <&gate_clk 0>;
++				#phy-cells = <0>;
++				status = "okay";
++			};
++
++			usb1: usb@51000 {
++				compatible = "marvell,mvebu-usb";
++				reg = <0x51000 0x400>;
++				interrupts = <25>;
++				clocks = <&gate_clk 1>;
++				usb-phy = <&usb_phy1>;
++				vbus-supply = <&usb_power>;
++				dr_mode = "host";
++				status = "okay";
++			};
++
++			usb_phy1: phy@51400 {
++				compatible = "marvell,mvebu-usb-phy-65nm";
++				reg = <0x51400 0x100>;
++				clocks = <&gate_clk 1>;
++				#phy-cells = <0>;
++				status = "okay";
++			};
++		};
++	};
+ };
 -- 
 2.0.0
 
