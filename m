@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from top.free-electrons.com ([176.31.233.9]
- helo=mail.free-electrons.com)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wzt4P-0005Y2-TV
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 19:41:26 +0000
-Date: Wed, 25 Jun 2014 21:40:52 +0200
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20140625214052.077824ec@free-electrons.com>
-In-Reply-To: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
+Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WzvkV-0006xw-AP
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 22:33:04 +0000
+Received: by mail-la0-f41.google.com with SMTP id hz20so1263729lab.14
+ for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 15:32:40 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 26 Jun 2014 02:32:13 +0400
+Message-Id: <1403735538-25437-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +16,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFC 0/4] MVEBU SoC full USB support
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>
+Subject: [RFC v3 0/5] barebox PCI support
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Cl=C3=A9ment=20Leger?= <cleger@kalray.eu>
 
-Dear Sebastian Hesselbarth,
+This patchseries introduce simple PCI bus support for barebox.
 
-On Wed, 25 Jun 2014 16:08:44 +0200, Sebastian Hesselbarth wrote:
+Previous (RFC v2) version can be found here:
 
-> This *RFC* adds a driver stub for ChipIdea USB dual role controllers
-> found on Marvell MVEBU SoCs. Although, I consider this driver quite
-> finished, the corresponding DT binding is not. Also, we currently
-> have no corresponding driver in Linux for both MVEBU CI stub and
-> USB PHY.
+  http://lists.infradead.org/pipermail/barebox/2012-March/006327.html
 
-Very nice! Definitely great to see some work being done on the USB
-support, including the PHY initialization.
+TODOs for RFC v3:
 
-> The reason I send it here and now, is to get some input from the
-> (Linux) MVEBU guys on the binding and functional tests on Armada XP.
+  * no PCI bridges support;
+  * introduce dma_alloc_coherent();
+  * introduce pci_resource_start();
+  * introduce pci_iomap();
+  * introduce pci_set_master() & pci_clear_master();
+  * clean '#if 0'.
 
-I'll try to have a look when time permits.
+This patchseries can be found on github:
 
-> While we happily lived some years with ehci-orion ignoring usb-phys
-> and no usb device support at all on Linux, the situation for barebox
-> is different, of course. For a boot loader, we desperately need
-> usb-phy setup (and fixup) and proper DT bindings.
+  https://github.com/frantony/barebox/tree/pci.20140626
 
-Generally speaking, the Linux support for Armada 370/XP relies a lot on
-specific initialization done by the Marvell U-Boot, especially in terms
-of USB PHY, PCIe link initialization or SERDES configuration. One of my
-goal when starting Armada 370/XP support in Barebox was to start with a
-pristine state, and see what is missing in Linux.
+Antony Pavlov (5):
+  PCI: initial commit
+  commands: add 'lspci' command
+  net: add RealTek RTL-8139 PCI Ethernet driver
+  MIPS: add PCI support for GT64120-based Malta board
+  MIPS: qemu-malta_defconfig: enable PCI & network stuff
 
-> I decided to just add the new binding style to the three board dts
-> overlays we have for barebox. If we are all happy with it, I'd start
-> implementing the required Linux driver for usb-phy and CI stub with
-> mbus setup. As usual, binding docs are missing but I think it is
-> straight forward from what we know of other SoCs/PHYs already.
+ arch/mips/Kconfig                                |  22 +
+ arch/mips/configs/qemu-malta_defconfig           |   4 +
+ arch/mips/include/asm/gt64120.h                  |  53 ++
+ arch/mips/mach-malta/Makefile                    |   1 +
+ arch/mips/mach-malta/include/mach/mach-gt64120.h |   2 +
+ arch/mips/mach-malta/pci.c                       | 246 +++++++++
+ commands/Kconfig                                 |   8 +
+ commands/Makefile                                |   1 +
+ commands/lspci.c                                 |  49 ++
+ drivers/Makefile                                 |   1 +
+ drivers/net/Kconfig                              |   8 +
+ drivers/net/Makefile                             |   1 +
+ drivers/net/rtl8139.c                            | 621 +++++++++++++++++++++++
+ drivers/pci/Kconfig                              |  12 +
+ drivers/pci/Makefile                             |   8 +
+ drivers/pci/bus.c                                | 110 ++++
+ drivers/pci/pci.c                                | 282 ++++++++++
+ include/linux/mod_devicetable.h                  |  20 +
+ include/linux/pci.h                              | 241 +++++++++
+ include/linux/pci_ids.h                          | 141 +++++
+ include/linux/pci_regs.h                         | 118 +++++
+ 21 files changed, 1949 insertions(+)
+ create mode 100644 arch/mips/mach-malta/pci.c
+ create mode 100644 commands/lspci.c
+ create mode 100644 drivers/net/rtl8139.c
+ create mode 100644 drivers/pci/Kconfig
+ create mode 100644 drivers/pci/Makefile
+ create mode 100644 drivers/pci/bus.c
+ create mode 100644 drivers/pci/pci.c
+ create mode 100644 include/linux/mod_devicetable.h
+ create mode 100644 include/linux/pci.h
+ create mode 100644 include/linux/pci_ids.h
+ create mode 100644 include/linux/pci_regs.h
 
-Indeed, Linux support for the USB gadget side would be useful.
-
-> USB host has been tested on all three board obviously, I plan to
-> test USB device on Dove D3Plug which has an USB device jack, but
-> similar patches for Marvell Berlin (also CI) worked fine.
-
-I think I should be able to test USB device on some of the development
-boards, I'll have to check.
-
-Thanks!
-
-Thomas
 -- 
-Thomas Petazzoni, CTO, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
+1.9.2
+
 
 _______________________________________________
 barebox mailing list
