@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22e.google.com ([2a00:1450:400c:c00::22e])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WzsrB-0000PD-Lf
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 19:27:46 +0000
-Received: by mail-wg0-f46.google.com with SMTP id y10so2562793wgg.17
- for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 12:27:23 -0700 (PDT)
-Message-ID: <53AB229B.1010104@gmail.com>
-Date: Wed, 25 Jun 2014 21:27:23 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wzt4P-0005Y2-TV
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 19:41:26 +0000
+Date: Wed, 25 Jun 2014 21:40:52 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20140625214052.077824ec@free-electrons.com>
+In-Reply-To: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140625191836.GS10202@titan.lakedaemon.net>
-In-Reply-To: <20140625191836.GS10202@titan.lakedaemon.net>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH RFC 0/4] MVEBU SoC full USB support
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: barebox@lists.infradead.org, Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Andrew Lunn <andrew@lunn.ch>
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>
 
-On 06/25/2014 09:18 PM, Jason Cooper wrote:
-> On Wed, Jun 25, 2014 at 04:08:44PM +0200, Sebastian Hesselbarth wrote:
->> This *RFC* adds a driver stub for ChipIdea USB dual role controllers
->> found on Marvell MVEBU SoCs. Although, I consider this driver quite
->> finished, the corresponding DT binding is not. Also, we currently
->> have no corresponding driver in Linux for both MVEBU CI stub and
->> USB PHY.
->>
->> The reason I send it here and now, is to get some input from the
->> (Linux) MVEBU guys on the binding and functional tests on Armada XP.
-> 
-> My first thought is if this chipidea IP is used beyond the mvebu
-> ecosystem.  Shouldn't we name it and it's compatible strings with
-> 'chipidea' instead of 'marvell'?
+Dear Sebastian Hesselbarth,
 
-While the IP core is CI, you remember the mbus upstream registers?
-That registers are very special to MVEBU SoCs and make the IP itself
-"marvell".
+On Wed, 25 Jun 2014 16:08:44 +0200, Sebastian Hesselbarth wrote:
 
-But I agree, that we could add "chipidea", although spec itself names
-it "ARC" already. ARC aquired CI and was later bought by Synopsys, but
-at that time it must have been ARC.
+> This *RFC* adds a driver stub for ChipIdea USB dual role controllers
+> found on Marvell MVEBU SoCs. Although, I consider this driver quite
+> finished, the corresponding DT binding is not. Also, we currently
+> have no corresponding driver in Linux for both MVEBU CI stub and
+> USB PHY.
 
-> Also, is there any other way to differentiate between the two versions
-> other that manufacturing process resolution?  Perhaps the free-electrons
-> guys could get us some IP revision numbers?
+Very nice! Definitely great to see some work being done on the USB
+support, including the PHY initialization.
 
-I just followed how Marvell's BSP differentiates USB PHYs. In addition
-to 40nm and 65nm, there will be 90nm and 130nm for the older SoCs.
+> The reason I send it here and now, is to get some input from the
+> (Linux) MVEBU guys on the binding and functional tests on Armada XP.
 
-If there is a way for free-electron to get more information about a
-better naming, that would be nice.
+I'll try to have a look when time permits.
 
-Sebastian
+> While we happily lived some years with ehci-orion ignoring usb-phys
+> and no usb device support at all on Linux, the situation for barebox
+> is different, of course. For a boot loader, we desperately need
+> usb-phy setup (and fixup) and proper DT bindings.
 
+Generally speaking, the Linux support for Armada 370/XP relies a lot on
+specific initialization done by the Marvell U-Boot, especially in terms
+of USB PHY, PCIe link initialization or SERDES configuration. One of my
+goal when starting Armada 370/XP support in Barebox was to start with a
+pristine state, and see what is missing in Linux.
+
+> I decided to just add the new binding style to the three board dts
+> overlays we have for barebox. If we are all happy with it, I'd start
+> implementing the required Linux driver for usb-phy and CI stub with
+> mbus setup. As usual, binding docs are missing but I think it is
+> straight forward from what we know of other SoCs/PHYs already.
+
+Indeed, Linux support for the USB gadget side would be useful.
+
+> USB host has been tested on all three board obviously, I plan to
+> test USB device on Dove D3Plug which has an USB device jack, but
+> similar patches for Marvell Berlin (also CI) worked fine.
+
+I think I should be able to test USB device on some of the development
+boards, I'll have to check.
+
+Thanks!
+
+Thomas
+-- 
+Thomas Petazzoni, CTO, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
