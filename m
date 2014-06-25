@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wzvkb-0006y1-7J
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 22:33:10 +0000
-Received: by mail-lb0-f179.google.com with SMTP id z11so2355470lbi.10
- for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 15:32:46 -0700 (PDT)
+ id 1WzvkZ-0006y0-A8
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 22:33:09 +0000
+Received: by mail-lb0-f172.google.com with SMTP id c11so2351220lbj.31
+ for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 15:32:44 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 26 Jun 2014 02:32:17 +0400
-Message-Id: <1403735538-25437-5-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 26 Jun 2014 02:32:16 +0400
+Message-Id: <1403735538-25437-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1403735538-25437-1-git-send-email-antonynpavlov@gmail.com>
 References: <1403735538-25437-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,399 +23,693 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v3 4/5] MIPS: add PCI support for GT64120-based Malta board
+Subject: [RFC v3 3/5] net: add RealTek RTL-8139 PCI Ethernet driver
 To: barebox@lists.infradead.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Leger?= <cleger@kalray.eu>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/Kconfig                                |  22 ++
- arch/mips/include/asm/gt64120.h                  |  53 +++++
- arch/mips/mach-malta/Makefile                    |   1 +
- arch/mips/mach-malta/include/mach/mach-gt64120.h |   2 +
- arch/mips/mach-malta/pci.c                       | 246 +++++++++++++++++++++++
- 5 files changed, 324 insertions(+)
- create mode 100644 arch/mips/mach-malta/pci.c
+This driver is based on Linux 2.6.39 8139too driver.
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index f6b9765..603ce6e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -45,6 +45,7 @@ config MACH_MIPS_MALTA
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select HAS_DEBUG_LL
- 	select GPIOLIB
-+	select HW_HAS_PCI
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/net/Kconfig     |   8 +
+ drivers/net/Makefile    |   1 +
+ drivers/net/rtl8139.c   | 621 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/pci_ids.h |   5 +
+ 4 files changed, 635 insertions(+)
+ create mode 100644 drivers/net/rtl8139.c
+
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 7a0d5e1..975c927 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -130,6 +130,14 @@ config DRIVER_NET_ORION
+ 	select PHYLIB
+ 	select MDIO_MVEBU
  
- config MACH_MIPS_AR231X
- 	bool "Atheros ar231x-based boards"
-@@ -330,6 +331,27 @@ config NMON_HELP
- 
- endmenu
- 
-+menu "Bus options (PCI)"
-+
-+config HW_HAS_PCI
-+	bool
-+
-+config PCI
-+	bool "Support for PCI controller"
-+	depends on HW_HAS_PCI
-+	select PCI_DOMAINS
++config DRIVER_NET_RTL8139
++	bool "RealTek RTL-8139 PCI Ethernet driver"
++	depends on PCI
++	select PHYLIB
 +	help
-+	  Find out whether you have a PCI motherboard. PCI is the name of a
-+	  bus system, i.e. the way the CPU talks to the other stuff inside
-+	  your box. If you have PCI, say Y, otherwise N.
++	  This is a driver for the Fast Ethernet PCI network cards based on
++	  the RTL 8139 chips.
 +
-+config PCI_DOMAINS
-+	bool
+ config DRIVER_NET_SMC911X
+ 	bool "smc911x ethernet driver"
+ 	select PHYLIB
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 65f0d8b..d907061 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -20,6 +20,7 @@ obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
+ obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
+ obj-$(CONFIG_DRIVER_NET_NETX)		+= netx_eth.o
+ obj-$(CONFIG_DRIVER_NET_ORION)		+= orion-gbe.o
++obj-$(CONFIG_DRIVER_NET_RTL8139)	+= rtl8139.o
+ obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
+ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
+ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+diff --git a/drivers/net/rtl8139.c b/drivers/net/rtl8139.c
+new file mode 100644
+index 0000000..e5d1291
+--- /dev/null
++++ b/drivers/net/rtl8139.c
+@@ -0,0 +1,621 @@
++#include <common.h>
++#include <net.h>
++#include <malloc.h>
++#include <init.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <io.h>
++#include <linux/phy.h>
++#include <linux/pci.h>
 +
-+source "drivers/pci/Kconfig"
-+
-+endmenu
-+
- source common/Kconfig
- source commands/Kconfig
- source net/Kconfig
-diff --git a/arch/mips/include/asm/gt64120.h b/arch/mips/include/asm/gt64120.h
-index 6b2ad0f..7e783c8 100644
---- a/arch/mips/include/asm/gt64120.h
-+++ b/arch/mips/include/asm/gt64120.h
-@@ -18,6 +18,8 @@
- #ifndef _ASM_GT64120_H
- #define _ASM_GT64120_H
- 
-+#define MSK(n)			((1 << (n)) - 1)
-+
- #define GT_DEF_BASE		0x14000000
- 
- /*
-@@ -34,4 +36,55 @@
- #define GT_PCI0M1LD_OFS		0x080
- #define GT_PCI0M1HD_OFS		0x088
- 
-+#define GT_PCI0IOREMAP_OFS	0x0f0
-+#define GT_PCI0M0REMAP_OFS	0x0f8
-+#define GT_PCI0M1REMAP_OFS	0x100
-+
-+/* Interrupts.	*/
-+#define GT_INTRCAUSE_OFS	0xc18
-+
-+/* PCI Internal.  */
-+#define GT_PCI0_CMD_OFS		0xc00
-+#define GT_PCI0_CFGADDR_OFS	0xcf8
-+#define GT_PCI0_CFGDATA_OFS	0xcfc
-+
-+#define GT_PCI_DCRM_SHF		21
-+#define GT_PCI_LD_SHF		0
-+#define GT_PCI_LD_MSK		(MSK(15) << GT_PCI_LD_SHF)
-+#define GT_PCI_HD_SHF		0
-+#define GT_PCI_HD_MSK		(MSK(7) << GT_PCI_HD_SHF)
-+#define GT_PCI_REMAP_SHF	0
-+#define GT_PCI_REMAP_MSK	(MSK(11) << GT_PCI_REMAP_SHF)
-+
-+#define GT_INTRCAUSE_MASABORT0_SHF	18
-+#define GT_INTRCAUSE_MASABORT0_MSK	(MSK(1) << GT_INTRCAUSE_MASABORT0_SHF)
-+#define GT_INTRCAUSE_MASABORT0_BIT	GT_INTRCAUSE_MASABORT0_MSK
-+
-+#define GT_INTRCAUSE_TARABORT0_SHF	19
-+#define GT_INTRCAUSE_TARABORT0_MSK	(MSK(1) << GT_INTRCAUSE_TARABORT0_SHF)
-+#define GT_INTRCAUSE_TARABORT0_BIT	GT_INTRCAUSE_TARABORT0_MSK
-+
-+#define GT_PCI0_CFGADDR_REGNUM_SHF	2
-+#define GT_PCI0_CFGADDR_REGNUM_MSK	(MSK(6) << GT_PCI0_CFGADDR_REGNUM_SHF)
-+#define GT_PCI0_CFGADDR_FUNCTNUM_SHF	8
-+#define GT_PCI0_CFGADDR_FUNCTNUM_MSK	(MSK(3) << GT_PCI0_CFGADDR_FUNCTNUM_SHF)
-+#define GT_PCI0_CFGADDR_DEVNUM_SHF	11
-+#define GT_PCI0_CFGADDR_DEVNUM_MSK	(MSK(5) << GT_PCI0_CFGADDR_DEVNUM_SHF)
-+#define GT_PCI0_CFGADDR_BUSNUM_SHF	16
-+#define GT_PCI0_CFGADDR_BUSNUM_MSK	(MSK(8) << GT_PCI0_CFGADDR_BUSNUM_SHF)
-+#define GT_PCI0_CFGADDR_CONFIGEN_SHF	31
-+#define GT_PCI0_CFGADDR_CONFIGEN_MSK	(MSK(1) << GT_PCI0_CFGADDR_CONFIGEN_SHF)
-+#define GT_PCI0_CFGADDR_CONFIGEN_BIT	GT_PCI0_CFGADDR_CONFIGEN_MSK
++#define RTL8139_DEBUG
++#undef RTL8139_DEBUG
 +
 +/*
-+ * Because of an error/peculiarity in the Galileo chip, we need to swap the
-+ * bytes when running bigendian.  We also provide non-swapping versions.
++ * Receive ring size
++ * Warning: 64K ring has hardware issues and may lock up.
 + */
-+#define __GT_READ(ofs)							\
-+	(*(volatile u32 *)(GT64120_BASE+(ofs)))
-+#define __GT_WRITE(ofs, data)						\
-+	do { *(volatile u32 *)(GT64120_BASE+(ofs)) = (data); } while (0)
-+#define GT_READ(ofs)		le32_to_cpu(__GT_READ(ofs))
-+#define GT_WRITE(ofs, data)	__GT_WRITE(ofs, cpu_to_le32(data))
++#define RX_BUF_IDX	0	/* 8K ring */
++#define RX_BUF_LEN	(8192 << RX_BUF_IDX)
++#define RX_BUF_PAD	16
++#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of packet wrap */
 +
- #endif /* _ASM_GT64120_H */
-diff --git a/arch/mips/mach-malta/Makefile b/arch/mips/mach-malta/Makefile
-index f3cc668..0c5a701 100644
---- a/arch/mips/mach-malta/Makefile
-+++ b/arch/mips/mach-malta/Makefile
-@@ -1 +1,2 @@
- obj-y += reset.o
-+obj-$(CONFIG_PCI) += pci.o
-diff --git a/arch/mips/mach-malta/include/mach/mach-gt64120.h b/arch/mips/mach-malta/include/mach/mach-gt64120.h
-index ed1e23e..8f20fcf 100644
---- a/arch/mips/mach-malta/include/mach/mach-gt64120.h
-+++ b/arch/mips/mach-malta/include/mach/mach-gt64120.h
-@@ -10,4 +10,6 @@
- 
- #define MIPS_GT_BASE	0x1be00000
- 
-+#define GT64120_BASE    0xbbe00000
++#if RX_BUF_LEN == 65536
++#define RX_BUF_TOT_LEN	RX_BUF_LEN
++#else
++#define RX_BUF_TOT_LEN	(RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
++#endif
 +
- #endif /* _ASM_MACH_MIPS_MACH_GT64120_DEP_H */
-diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
-new file mode 100644
-index 0000000..15fd9ed
---- /dev/null
-+++ b/arch/mips/mach-malta/pci.c
-@@ -0,0 +1,246 @@
-+#include <common.h>
-+#include <types.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <mach/hardware.h>
-+#include <asm/io.h>
-+#include <asm/addrspace.h>
++/* Number of Tx descriptor registers. */
++#define NUM_TX_DESC	4
 +
-+#include <linux/pci.h>
-+#include <asm/gt64120.h>
++/* max supported ethernet frame size -- must be at least (dev->mtu+14+4).*/
++#define MAX_ETH_FRAME_SIZE	1536
 +
-+#include <mach/mach-gt64120.h>
++/* Size of the Tx bounce buffers -- must be at least (dev->mtu+14+4). */
++#define TX_BUF_SIZE	MAX_ETH_FRAME_SIZE
++#define TX_BUF_TOT_LEN	(TX_BUF_SIZE * NUM_TX_DESC)
 +
-+#define PCI_ACCESS_READ  0
-+#define PCI_ACCESS_WRITE 1
++/* PCI Tuning Parameters
++   Threshold is bytes transferred to chip before transmission starts. */
++#define TX_FIFO_THRESH 256	/* In bytes, rounded down to 32 byte units. */
 +
-+static struct resource gt64120_mem_resource = {
-+	.name	= "GT-64120 PCI MEM",
-+	.flags	= IORESOURCE_MEM,
++/* The following settings are log_2(bytes)-4:  0 == 16 bytes .. 6==1024, 7==end of packet. */
++#define RX_FIFO_THRESH	7	/* Rx buffer level before first PCI xfer.  */
++#define RX_DMA_BURST	7	/* Maximum PCI burst, '6' is 1024 */
++#define TX_DMA_BURST	6	/* Maximum PCI burst, '6' is 1024 */
++#define TX_RETRY	8	/* 0-15.  retries = 16 + (TX_RETRY * 16) */
++
++struct rtl8139_priv {
++	struct eth_device	edev;
++	void __iomem		*base;
++	struct pci_dev		*pci_dev;
++	unsigned char		*rx_ring;
++	unsigned int		cur_rx; /* RX buf index of next pkt */
++	dma_addr_t		rx_ring_dma;
++
++	u32			rx_config;
++	unsigned int		tx_flag;
++	unsigned long		cur_tx;
++	unsigned long		dirty_tx;
++	unsigned char		*tx_buf[NUM_TX_DESC];   /* Tx bounce buffers */
++	unsigned char		*tx_bufs;       /* Tx bounce buffer region. */
++	dma_addr_t		tx_bufs_dma;
++
++	struct mii_bus miibus;
 +};
 +
-+static struct resource gt64120_io_resource = {
-+	.name	= "GT-64120 PCI I/O",
-+	.flags	= IORESOURCE_IO,
++#define ETH_ZLEN        60              /* Min. octets in frame sans FCS */
++
++/* Registers */
++#define MAC0		0x00
++#define MAR0		0x08
++#define TxStatus0	0x10
++
++enum TxStatusBits {
++	TxHostOwns	= 0x2000,
++	TxUnderrun	= 0x4000,
++	TxStatOK	= 0x8000,
++	TxOutOfWindow	= 0x20000000,
++	TxAborted	= 0x40000000,
++	TxCarrierLost	= 0x80000000,
 +};
 +
-+static int gt64xxx_pci0_pcibios_config_access(unsigned char access_type,
-+		struct pci_bus *bus, unsigned int devfn, int where, u32 *data)
++#define TxAddr0		0x20
++#define RxBuf		0x30
++#define ChipCmd		0x37
++#define  CmdReset	0x10
++#define  CmdRxEnb	0x08
++#define  CmdTxEnb	0x04
++#define  RxBufEmpty	0x01
++#define RxBufPtr	0x38
++#define RxBufAddr	0x3A
++#define IntrMask	0x3C
++#define IntrStatus	0x3E
++#define  PCIErr		0x8000
++#define  PCSTimeout	0x4000
++#define  RxFIFOOver	0x0040
++#define  RxUnderrun	0x0020
++#define  RxOverflow	0x0010
++#define  TxErr		0x0008
++#define  TxOK		0x0004
++#define  RxErr		0x0002
++#define  RxOK		0x0001
++#define    RxAckBits	(RxFIFOOver | RxOverflow | RxOK)
++
++#define TxConfig	0x40
++/* Bits in TxConfig. */
++enum tx_config_bits {
++	/* Interframe Gap Time. Only TxIFG96 doesn't violate IEEE 802.3 */
++	TxIFGShift	= 24,
++	TxIFG84		= (0 << TxIFGShift), /* 8.4us / 840ns (10 / 100Mbps) */
++	TxIFG88		= (1 << TxIFGShift), /* 8.8us / 880ns (10 / 100Mbps) */
++	TxIFG92		= (2 << TxIFGShift), /* 9.2us / 920ns (10 / 100Mbps) */
++	TxIFG96		= (3 << TxIFGShift), /* 9.6us / 960ns (10 / 100Mbps) */
++
++	TxLoopBack	= (1 << 18) | (1 << 17), /* enable loopback test mode */
++	TxCRC		= (1 << 16),	/* DISABLE Tx pkt CRC append */
++	TxClearAbt	= (1 << 0),	/* Clear abort (WO) */
++	TxDMAShift	= 8, /* DMA burst value (0-7) is shifted X many bits */
++	TxRetryShift	= 4, /* TXRR value (0-15) is shifted X many bits */
++
++	TxVersionMask	= 0x7C800000, /* mask out version bits 30-26, 23 */
++};
++
++#define RxConfig	0x44
++	/* rx fifo threshold */
++#define  RxCfgFIFOShift	13
++#define	 RxCfgFIFONone	(7 << RxCfgFIFOShift)
++	/* Max DMA burst */
++#define	 RxCfgDMAShift	8
++#define	 RxCfgDMAUnlimited (7 << RxCfgDMAShift)
++	/* rx ring buffer length */
++#define	 RxCfgRcv8K	0
++#define	 RxCfgRcv16K	(1 << 11)
++#define	 RxCfgRcv32K	(1 << 12)
++#define	 RxCfgRcv64K	((1 << 11) | (1 << 12))
++	/* Disable packet wrap at end of Rx buffer. (not possible with 64k) */
++#define	 RxNoWrap	(1 << 7)
++#define	 AcceptErr		0x20
++#define	 AcceptRunt		0x10
++#define	 AcceptBroadcast	0x08
++#define	 AcceptMulticast	0x04
++#define	 AcceptMyPhys		0x02
++#define	 AcceptAllPhys		0x01
++
++#define RxMissed	0x4C
++#define Cfg9346		0x50
++#define  Cfg9346_Lock	0x00
++#define  Cfg9346_Unlock	0xC0
++#define BasicModeCtrl	0x62
++#define BasicModeStatus	0x64
++#define NWayAdvert	0x66
++#define NWayLPAR	0x68
++#define NWayExpansion	0x6a
++
++static const char mii_2_8139_map[8] = {
++	BasicModeCtrl,
++	BasicModeStatus,
++	0,
++	0,
++	NWayAdvert,
++	NWayLPAR,
++	NWayExpansion,
++	0
++};
++
++/* write MMIO register */
++#define RTL_W8(priv, reg, val)	writeb(val, ((char *)(priv->base) + reg))
++#define RTL_W16(priv, reg, val)	writew(val, ((char *)(priv->base) + reg))
++#define RTL_W32(priv, reg, val)	writel(val, ((char *)(priv->base) + reg))
++
++/* read MMIO register */
++#define RTL_R8(priv, reg)	readb(((char *)(priv->base) + reg))
++#define RTL_R16(priv, reg)	readw(((char *)(priv->base) + reg))
++#define RTL_R32(priv, reg)	readl(((char *)(priv->base) + reg))
++
++/* write MMIO register, with flush */
++/* Flush avoids rtl8139 bug w/ posted MMIO writes */
++static inline void RTL_W8_F(struct rtl8139_priv *priv, int reg, int val)
 +{
-+	unsigned char busnum = bus->number;
-+	u32 intr;
++	RTL_W8(priv, reg, val);
++	RTL_R8(priv, reg);
++}
 +
-+	if ((busnum == 0) && (devfn >= PCI_DEVFN(31, 0)))
-+		return -1;	/* Because of a bug in the galileo (for slot 31). */
++static inline void RTL_W16_F(struct rtl8139_priv *priv, int reg, int val)
++{
++	RTL_W16(priv, reg, val);
++	RTL_R16(priv, reg);
++}
 +
-+	/* Clear cause register bits */
-+	GT_WRITE(GT_INTRCAUSE_OFS, ~(GT_INTRCAUSE_MASABORT0_BIT |
-+					GT_INTRCAUSE_TARABORT0_BIT));
++static inline void RTL_W32_F(struct rtl8139_priv *priv, int reg, int val)
++{
++	RTL_W32(priv, reg, val);
++	RTL_R32(priv, reg);
++}
 +
-+	/* Setup address */
-+	GT_WRITE(GT_PCI0_CFGADDR_OFS,
-+		 (busnum << GT_PCI0_CFGADDR_BUSNUM_SHF) |
-+		 (devfn << GT_PCI0_CFGADDR_FUNCTNUM_SHF) |
-+		 ((where / 4) << GT_PCI0_CFGADDR_REGNUM_SHF) |
-+		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
++static const unsigned int rtl8139_rx_config =
++	RxCfgRcv8K | RxNoWrap |
++	(RX_FIFO_THRESH << RxCfgFIFOShift) |
++	(RX_DMA_BURST << RxCfgDMAShift);
 +
-+	if (access_type == PCI_ACCESS_WRITE) {
-+		if (busnum == 0 && PCI_SLOT(devfn) == 0) {
-+			/*
-+			 * The Galileo system controller is acting
-+			 * differently than other devices.
-+			 */
-+			GT_WRITE(GT_PCI0_CFGDATA_OFS, *data);
-+		} else
-+			__GT_WRITE(GT_PCI0_CFGDATA_OFS, *data);
-+	} else {
-+		if (busnum == 0 && PCI_SLOT(devfn) == 0) {
-+			/*
-+			 * The Galileo system controller is acting
-+			 * differently than other devices.
-+			 */
-+			*data = GT_READ(GT_PCI0_CFGDATA_OFS);
-+		} else
-+			*data = __GT_READ(GT_PCI0_CFGDATA_OFS);
++static const unsigned int rtl8139_tx_config =
++	TxIFG96 | (TX_DMA_BURST << TxDMAShift) | (TX_RETRY << TxRetryShift);
++
++static void rtl8139_chip_reset(struct rtl8139_priv *priv)
++{
++	int i;
++
++	/* Soft reset the chip. */
++	RTL_W8(priv, ChipCmd, CmdReset);
++
++	/* Check that the chip has finished the reset. */
++	for (i = 1000; i > 0; i--) {
++		if ((RTL_R8(priv, ChipCmd) & CmdReset) == 0)
++			break;
++		udelay(10);
++	}
++}
++
++static void __set_rx_mode(struct rtl8139_priv *priv)
++{
++	u32 mc_filter[2];	/* Multicast hash filter */
++	int rx_mode;
++	u32 tmp;
++
++	rx_mode =
++	    AcceptBroadcast | AcceptMulticast | AcceptMyPhys |
++	    AcceptAllPhys;
++	mc_filter[1] = mc_filter[0] = 0xffffffff;
++
++	/* We can safely update without stopping the chip. */
++	tmp = rtl8139_rx_config | rx_mode;
++	if (priv->rx_config != tmp) {
++		RTL_W32_F(priv, RxConfig, tmp);
++		priv->rx_config = tmp;
 +	}
 +
-+	/* Check for master or target abort */
-+	intr = GT_READ(GT_INTRCAUSE_OFS);
++	RTL_W32_F(priv, MAR0 + 0, mc_filter[0]);
++	RTL_W32_F(priv, MAR0 + 4, mc_filter[1]);
++}
 +
-+	if (intr & (GT_INTRCAUSE_MASABORT0_BIT | GT_INTRCAUSE_TARABORT0_BIT)) {
-+		/* Error occurred */
++/* Start the hardware at open or resume. */
++static void rtl8139_hw_start(struct rtl8139_priv *priv)
++{
++	u32 i;
++	u8 tmp;
 +
-+		/* Clear bits */
-+		GT_WRITE(GT_INTRCAUSE_OFS, ~(GT_INTRCAUSE_MASABORT0_BIT |
-+						GT_INTRCAUSE_TARABORT0_BIT));
++	rtl8139_chip_reset(priv);
 +
-+		return -1;
++	/* unlock Config[01234] and BMCR register writes */
++	RTL_W8_F(priv, Cfg9346, Cfg9346_Unlock);
++
++	/* FIXME */
++#if 0
++	/* Restore our idea of the MAC address. */
++	RTL_W32_F(priv, MAC0 + 0, *(__le32 *) (dev->dev_addr + 0));
++	RTL_W32_F(priv, MAC0 + 4, *(__le16 *) (dev->dev_addr + 4));
++#endif
++
++	priv->cur_rx = 0;
++
++	/* init Rx ring buffer DMA address */
++	RTL_W32_F(priv, RxBuf, priv->rx_ring_dma);
++
++	/* Must enable Tx/Rx before setting transfer thresholds! */
++	RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
++
++	priv->rx_config = rtl8139_rx_config | AcceptBroadcast | AcceptMyPhys;
++	RTL_W32(priv, RxConfig, priv->rx_config);
++	RTL_W32(priv, TxConfig, rtl8139_tx_config);
++
++	/* Lock Config[01234] and BMCR register writes */
++	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
++
++	/* init Tx buffer DMA addresses */
++	for (i = 0; i < NUM_TX_DESC; i++)
++		RTL_W32_F(priv, TxAddr0 + (i * 4), priv->tx_bufs_dma + (priv->tx_buf[i] - priv->tx_bufs));
++
++	RTL_W32(priv, RxMissed, 0);
++
++	__set_rx_mode(priv);
++
++	/* Disable interrupts by clearing the interrupt mask. */
++	RTL_W16(priv, IntrMask, 0);
++
++	/* make sure RxTx has started */
++	tmp = RTL_R8(priv, ChipCmd);
++	if ((!(tmp & CmdRxEnb)) || (!(tmp & CmdTxEnb)))
++		RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
++}
++
++static inline void rtl8139_tx_clear(struct rtl8139_priv *priv)
++{
++	priv->cur_tx = 0;
++	priv->dirty_tx = 0;
++
++	/* XXX account for unsent Tx packets in tp->stats.tx_dropped */
++}
++
++/* Initialize the Rx and Tx rings, along with various 'dev' bits. */
++static void rtl8139_init_ring(struct rtl8139_priv *priv)
++{
++	int i;
++
++	priv->cur_rx = 0;
++	priv->cur_tx = 0;
++	priv->dirty_tx = 0;
++
++	for (i = 0; i < NUM_TX_DESC; i++)
++		priv->tx_buf[i] = &priv->tx_bufs[i * TX_BUF_SIZE];
++}
++
++static int rtl8139_phy_read(struct mii_bus *bus, int phy_addr, int reg)
++{
++	struct rtl8139_priv *priv = bus->priv;
++	int val;
++
++	val = 0xffff;
++
++	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
++		val = reg < 8 && mii_2_8139_map[reg] ?
++				RTL_R16(priv, mii_2_8139_map[reg]) : 0;
++	}
++
++	return val;
++}
++
++static int rtl8139_phy_write(struct mii_bus *bus, int phy_addr,
++	int reg, u16 val)
++{
++	struct rtl8139_priv *priv = bus->priv;
++
++	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
++		if (reg == 0) {
++			RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++			RTL_W16(priv, BasicModeCtrl, val);
++			RTL_W8(priv, Cfg9346, Cfg9346_Lock);
++		} else if (reg < 8 && mii_2_8139_map[reg]) {
++			RTL_W16(priv, mii_2_8139_map[reg], val);
++		}
 +	}
 +
 +	return 0;
 +}
 +
-+/*
-+ * We can't address 8 and 16 bit words directly. Instead we have to
-+ * read/write a 32bit word and mask/modify the data we actually want.
-+ */
-+static int gt64xxx_pci0_pcibios_read(struct pci_bus *bus, unsigned int devfn,
-+		int where, int size, u32 *val)
++static int rtl8139_get_ethaddr(struct eth_device *edev, unsigned char *m)
 +{
-+	u32 data = 0;
++	struct rtl8139_priv *priv = edev->priv;
++	int i;
 +
-+	if (gt64xxx_pci0_pcibios_config_access(PCI_ACCESS_READ, bus, devfn,
-+						where, &data))
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	if (size == 1)
-+		*val = (data >> ((where & 3) << 3)) & 0xff;
-+	else if (size == 2)
-+		*val = (data >> ((where & 3) << 3)) & 0xffff;
-+	else
-+		*val = data;
-+
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+static int gt64xxx_pci0_pcibios_write(struct pci_bus *bus, unsigned int devfn,
-+		int where, int size, u32 val)
-+{
-+	u32 data = 0;
-+
-+	if (size == 4)
-+		data = val;
-+	else {
-+		if (gt64xxx_pci0_pcibios_config_access(PCI_ACCESS_READ, bus,
-+							devfn, where, &data))
-+			return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+		if (size == 1)
-+			data = (data & ~(0xff << ((where & 3) << 3))) |
-+				(val << ((where & 3) << 3));
-+		else if (size == 2)
-+			data = (data & ~(0xffff << ((where & 3) << 3))) |
-+				(val << ((where & 3) << 3));
++	for (i = 0; i < 6; i++) {
++		m[i] = RTL_R8(priv, (MAC0 + i));
 +	}
 +
-+	if (gt64xxx_pci0_pcibios_config_access(PCI_ACCESS_WRITE, bus, devfn,
-+						where, &data))
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	return PCIBIOS_SUCCESSFUL;
++	return 0;
 +}
 +
-+/* FIXME: it's HACK */
-+/* function returns memory address for begin of pci resource */
-+static int gt64xxx_res_start(struct pci_bus *bus, resource_size_t res_addr)
++static int rtl8139_set_ethaddr(struct eth_device *edev,
++					unsigned char *mac_addr)
 +{
-+	return res_addr | 0xa0000000;
++	struct rtl8139_priv *priv = edev->priv;
++	int i;
++
++	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++
++	for (i = 0; i < 6; i++) {
++		RTL_W8(priv, (MAC0 + i), mac_addr[i]);
++		RTL_R8(priv, mac_addr[i]);
++	}
++
++	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
++
++	return 0;
 +}
 +
-+struct pci_ops gt64xxx_pci0_ops = {
-+	.read	= gt64xxx_pci0_pcibios_read,
-+	.write	= gt64xxx_pci0_pcibios_write,
-+
-+	.res_start = gt64xxx_res_start,
-+};
-+
-+static struct pci_controller gt64120_controller = {
-+	.pci_ops	= &gt64xxx_pci0_ops,
-+	.io_resource	= &gt64120_io_resource,
-+	.mem_resource	= &gt64120_mem_resource,
-+};
-+
-+static int pcibios_init(void)
++static int rtl8139_init_dev(struct eth_device *edev)
 +{
-+	resource_size_t start, end, map, start1, end1, map1, mask, res_end;
++	struct rtl8139_priv *priv = edev->priv;
++
++	rtl8139_chip_reset(priv);
++
++	return 0;
++}
++
++static int rtl8139_eth_open(struct eth_device *edev)
++{
++	struct rtl8139_priv *priv = edev->priv;
++	int ret;
++
++	/* HACK: FIXME: use dma_alloc_coherent() */
++	priv->tx_bufs = (unsigned char *)0xa1000000;
++	priv->tx_bufs_dma = (dma_addr_t)0x01000000;
++
++	priv->rx_ring = (unsigned char *)0xa2000000;
++	priv->rx_ring_dma = (dma_addr_t)0x02000000;
++
++	priv->tx_flag = (TX_FIFO_THRESH << 11) & 0x003f0000;
++
++	rtl8139_init_ring(priv);
++	rtl8139_hw_start(priv);
++
++	ret = phy_device_connect(edev, &priv->miibus, 0, NULL, 0,
++				 PHY_INTERFACE_MODE_NA);
++
++	return ret;
++}
++
++static void rtl8139_eth_halt(struct eth_device *edev)
++{
++	struct rtl8139_priv *priv = edev->priv;
++
++	/* Stop the chip's Tx and Rx DMA processes. */
++	RTL_W8(priv, ChipCmd, 0);
++
++	/* Disable interrupts by clearing the interrupt mask. */
++	RTL_W16(priv, IntrMask, 0);
++
++	/* Green! Put the chip in low-power mode. */
++	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++}
++
++static void rtl8139_tx_interrupt(struct rtl8139_priv *priv)
++{
++	unsigned long dirty_tx, tx_left;
++
++	dirty_tx = priv->dirty_tx;
++	tx_left = priv->cur_tx - dirty_tx;
++	while (tx_left > 0) {
++		int entry = dirty_tx % NUM_TX_DESC;
++		int txstatus;
++
++		txstatus = RTL_R32(priv, TxStatus0 + (entry * sizeof(u32)));
++
++		if (!(txstatus & (TxStatOK | TxUnderrun | TxAborted)))
++			break;	/* It still hasn't been Txed */
++
++		/* Note: TxCarrierLost is always asserted at 100mbps. */
++		if (txstatus & (TxOutOfWindow | TxAborted)) {
++			/* There was an major error, log it. */
++			printk("Transmit error, Tx status %08x\n", txstatus);
++			if (txstatus & TxAborted) {
++				RTL_W32(priv, TxConfig, TxClearAbt);
++				RTL_W16(priv, IntrStatus, TxErr);
++			}
++		} else {
++			if (txstatus & TxUnderrun) {
++				/* Add 64 to the Tx FIFO threshold. */
++				if (priv->tx_flag < 0x00300000)
++					priv->tx_flag += 0x00020000;
++			}
++		}
++
++		dirty_tx++;
++		tx_left--;
++	}
++
++	if (priv->dirty_tx != dirty_tx) {
++		priv->dirty_tx = dirty_tx;
++	}
++}
++
++static int rtl8139_eth_send(struct eth_device *edev, void *packet,
++				int packet_length)
++{
++	struct rtl8139_priv *priv = edev->priv;
++
++	unsigned int entry;
++
++	rtl8139_tx_interrupt(priv);
++
++	/* Calculate the next Tx descriptor entry. */
++	entry = priv->cur_tx % NUM_TX_DESC;
++
++	/* Note: the chip doesn't have auto-pad! */
++	if (likely(packet_length < TX_BUF_SIZE)) {
++		if (packet_length < ETH_ZLEN)
++			memset(priv->tx_buf[entry], 0, ETH_ZLEN);
++		memcpy(priv->tx_buf[entry], packet, packet_length);
++	} else {
++		printk("packet too long\n");
++		return 0;
++	}
 +
 +	/*
-+	 * Due to a bug in the Galileo system controller, we need
-+	 * to setup the PCI BAR for the Galileo internal registers.
-+	 * This should be done in the bios/bootprom and will be
-+	 * fixed in a later revision of YAMON (the MIPS boards
-+	 * boot prom).
++	 * Writing to TxStatus triggers a DMA transfer of the data
++	 * copied to tp->tx_buf[entry] above.
 +	 */
-+	GT_WRITE(GT_PCI0_CFGADDR_OFS,
-+		 (0 << GT_PCI0_CFGADDR_BUSNUM_SHF) | /* Local bus */
-+		 (0 << GT_PCI0_CFGADDR_DEVNUM_SHF) | /* GT64120 dev */
-+		 (0 << GT_PCI0_CFGADDR_FUNCTNUM_SHF) | /* Function 0*/
-+		 ((0x20/4) << GT_PCI0_CFGADDR_REGNUM_SHF) | /* BAR 4*/
-+		 GT_PCI0_CFGADDR_CONFIGEN_BIT);
-+
-+	/* Perform the write */
-+	GT_WRITE(GT_PCI0_CFGDATA_OFS, CPHYSADDR(MIPS_GT_BASE));
-+
-+	/* Here is linux code. It assumes, that firmware
-+	(pbl in case of barebox) made the work... */
-+
-+	/* Set up resource ranges from the controller's registers. */
-+	start = GT_READ(GT_PCI0M0LD_OFS);
-+	end = GT_READ(GT_PCI0M0HD_OFS);
-+	map = GT_READ(GT_PCI0M0REMAP_OFS);
-+	end = (end & GT_PCI_HD_MSK) | (start & ~GT_PCI_HD_MSK);
-+	start1 = GT_READ(GT_PCI0M1LD_OFS);
-+	end1 = GT_READ(GT_PCI0M1HD_OFS);
-+	map1 = GT_READ(GT_PCI0M1REMAP_OFS);
-+	end1 = (end1 & GT_PCI_HD_MSK) | (start1 & ~GT_PCI_HD_MSK);
-+
-+#if 0
-+	/* Cannot support multiple windows, use the wider. */
-+	if (end1 - start1 > end - start) {
-+		start = start1;
-+		end = end1;
-+		map = map1;
++	if (packet_length < ETH_ZLEN) {
++		packet_length = ETH_ZLEN;
 +	}
-+#endif
++	RTL_W32_F(priv, (TxStatus0 + (entry * sizeof(u32))),
++			(priv->tx_flag | packet_length));
 +
-+	mask = ~(start ^ end);
-+
-+	/* We don't support remapping with a discontiguous mask. */
-+	BUG_ON((start & GT_PCI_HD_MSK) != (map & GT_PCI_HD_MSK) &&
-+		mask != ~((mask & -mask) - 1));
-+	gt64120_mem_resource.start = start;
-+	gt64120_mem_resource.end = end;
-+	gt64120_controller.mem_offset = (start & mask) - (map & mask);
-+	/* Addresses are 36-bit, so do shifts in the destinations. */
-+	gt64120_mem_resource.start <<= GT_PCI_DCRM_SHF;
-+	gt64120_mem_resource.end <<= GT_PCI_DCRM_SHF;
-+	gt64120_mem_resource.end |= (1 << GT_PCI_DCRM_SHF) - 1;
-+	gt64120_controller.mem_offset <<= GT_PCI_DCRM_SHF;
-+
-+	start = GT_READ(GT_PCI0IOLD_OFS);
-+	end = GT_READ(GT_PCI0IOHD_OFS);
-+	map = GT_READ(GT_PCI0IOREMAP_OFS);
-+	end = (end & GT_PCI_HD_MSK) | (start & ~GT_PCI_HD_MSK);
-+	mask = ~(start ^ end);
-+
-+	/* We don't support remapping with a discontiguous mask. */
-+	BUG_ON((start & GT_PCI_HD_MSK) != (map & GT_PCI_HD_MSK) &&
-+		mask != ~((mask & -mask) - 1));
-+	gt64120_io_resource.start = map & mask;
-+	res_end = (map & mask) | ~mask;
-+	gt64120_controller.io_offset = 0;
-+	/* Addresses are 36-bit, so do shifts in the destinations. */
-+	gt64120_io_resource.start <<= GT_PCI_DCRM_SHF;
-+	gt64120_io_resource.end <<= GT_PCI_DCRM_SHF;
-+	gt64120_io_resource.end |= (1 << GT_PCI_DCRM_SHF) - 1;
-+
-+#ifdef CONFIG_CPU_LITTLE_ENDIAN
-+	GT_WRITE(GT_PCI0_CMD_OFS, GT_PCI0_CMD_MBYTESWAP_BIT |
-+		GT_PCI0_CMD_SBYTESWAP_BIT);
-+#else
-+	GT_WRITE(GT_PCI0_CMD_OFS, 0);
-+#endif
-+
-+	/* Fix up PCI I/O mapping if necessary (for Atlas). */
-+	start = GT_READ(GT_PCI0IOLD_OFS);
-+	map = GT_READ(GT_PCI0IOREMAP_OFS);
-+	if ((start & map) != 0) {
-+		map &= ~start;
-+		GT_WRITE(GT_PCI0IOREMAP_OFS, map);
-+	}
-+
-+	register_pci_controller(&gt64120_controller);
++	priv->cur_tx++;
 +
 +	return 0;
 +}
-+postcore_initcall(pcibios_init);
++
++static const u16 rtl8139_intr_mask =
++		PCIErr | PCSTimeout | RxUnderrun | RxOverflow | RxFIFOOver |
++		TxErr | TxOK | RxErr | RxOK;
++
++static int rtl8139_eth_rx(struct eth_device *edev)
++{
++	struct rtl8139_priv *priv = edev->priv;
++	unsigned char *rx_ring = priv->rx_ring;
++	unsigned int cur_rx = priv->cur_rx;
++	unsigned int rx_size = 0;
++
++	u32 ring_offset = cur_rx % RX_BUF_LEN;
++	u32 rx_status;
++	unsigned int pkt_size;
++
++	rtl8139_tx_interrupt(priv);
++
++	if (RTL_R8(priv, ChipCmd) & RxBufEmpty) {
++		/* no data */
++		return 0;
++	}
++
++	rx_status = le32_to_cpu(*(__le32 *) (rx_ring + ring_offset));
++	rx_size = rx_status >> 16;
++	pkt_size = rx_size - 4;
++
++	net_receive(edev, &rx_ring[ring_offset + 4], pkt_size);
++
++	cur_rx = (cur_rx + rx_size + 4 + 3) & ~3;
++	cur_rx = cur_rx & (RX_BUF_LEN - 1); /* FIXME */
++	RTL_W16(priv, RxBufPtr, (u16) (cur_rx - 16));
++
++	priv->cur_rx = cur_rx;
++
++	return pkt_size /* size */;
++}
++
++static int rtl8139_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct eth_device *edev;
++	struct rtl8139_priv *priv;
++	int ret;
++	u32 bar;
++	struct pci_bus *bus = pdev->bus;
++	struct device_d *dev = &pdev->dev;
++
++	/* enable pci device */
++	/* FIXME: use pci_set_master(pdev); */
++	pci_read_config_dword(pdev, PCI_COMMAND, &bar);
++	pci_write_config_dword(pdev, PCI_COMMAND, bar
++				| PCI_COMMAND_IO
++				| PCI_COMMAND_MEMORY
++				| PCI_COMMAND_MASTER);
++
++	priv = xzalloc(sizeof(struct rtl8139_priv));
++
++	edev = &priv->edev;
++	dev->type_data = edev;
++	edev->priv = priv;
++
++	priv->pci_dev = pdev;
++
++	priv->miibus.read = rtl8139_phy_read;
++	priv->miibus.write = rtl8139_phy_write;
++	priv->miibus.priv = priv;
++	priv->miibus.parent = &edev->dev;
++
++	/* FIXME: pci_resource_start() */
++	pci_read_config_dword(pdev, PCI_BASE_ADDRESS_1, &bar);
++
++	/* FIXME: use pci_iomap() */
++	priv->base = (void *)bus->ops->res_start(bus, bar);
++
++	printk("found rtl8139 (rev %02x) at %02x: %04x (base=%p)\n",
++			pdev->revision,
++			pdev->devfn,
++			(pdev->class >> 8) & 0xffff,
++			priv->base);
++
++	edev->init = rtl8139_init_dev;
++	edev->open = rtl8139_eth_open;
++	edev->send = rtl8139_eth_send;
++	edev->recv = rtl8139_eth_rx;
++	edev->get_ethaddr = rtl8139_get_ethaddr;
++	edev->set_ethaddr = rtl8139_set_ethaddr;
++	edev->halt = rtl8139_eth_halt;
++	edev->parent = dev;
++
++	ret = eth_register(edev);
++	if (ret)
++		goto eth_err;
++
++	ret = mdiobus_register(&priv->miibus);
++	if (ret)
++		goto mdio_err;
++
++	return 0;
++
++mdio_err:
++	eth_unregister(edev);
++
++eth_err:
++	free(priv);
++
++	return ret;
++}
++
++static DEFINE_PCI_DEVICE_TABLE(rtl8139_pci_tbl) = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK,	PCI_DEVICE_ID_REALTEK_8139), },
++	{ },
++};
++
++static struct pci_driver rtl8139_eth_driver = {
++	.name = "rtl8139_eth",
++	.id_table = rtl8139_pci_tbl,
++	.probe = rtl8139_probe,
++};
++
++static int rtl8139_init(void)
++{
++	return pci_register_driver(&rtl8139_eth_driver);
++}
++device_initcall(rtl8139_init);
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 49e2954..17ac7fd 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -134,3 +134,8 @@
+ #define PCI_CLASS_SP_OTHER		0x1180
+ 
+ #define PCI_CLASS_OTHERS		0xff
++
++/* Vendors and devices.  Sort key: vendor first, device next. */
++
++#define PCI_VENDOR_ID_REALTEK		0x10ec
++#define PCI_DEVICE_ID_REALTEK_8139	0x8139
 -- 
 1.9.2
 
