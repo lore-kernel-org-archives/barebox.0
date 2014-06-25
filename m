@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x22b.google.com ([2607:f8b0:4002:c07::22b])
+Received: from mail-we0-x232.google.com ([2a00:1450:400c:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WznXH-00063G-0g
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 13:46:52 +0000
-Received: by mail-yk0-f171.google.com with SMTP id 200so1091395ykr.16
- for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 06:46:28 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140623165754.GA27898@pengutronix.de>
-References: <CAOpc7mFqu1ov94naTWtCiJMXxNk5RLa=mSL-eh3SwFXNoP1UGg@mail.gmail.com>
- <20140618195849.GL15686@pengutronix.de>
- <CAOpc7mFo8jdw24V=2wZW=dCMMbiBW87R7ZGKSqRR7SO4StB79g@mail.gmail.com>
- <20140623074308.GU15686@pengutronix.de>
- <CAOpc7mEtWpacJ1Q7nqBmYzHYEWdQBw7hrCgqLP-9bijpP9qsXw@mail.gmail.com>
- <20140623165754.GA27898@pengutronix.de>
-Date: Wed, 25 Jun 2014 15:46:28 +0200
-Message-ID: <CAOpc7mHHo9Fk4qzW9prc=oX2sBVvQBPL2CyH5q2uRqHgEH4gfg@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+ id 1Wzncx-0008GV-L9
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 13:52:47 +0000
+Received: by mail-we0-f178.google.com with SMTP id x48so2049769wes.37
+ for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 06:52:19 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Wed, 25 Jun 2014 15:52:16 +0200
+Message-Id: <1403704336-9314-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <20140625065615.GM15686@pengutronix.de>
+References: <20140625065615.GM15686@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +18,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX6 frame buffer inside barebox?
-To: Robert Schwebel <r.schwebel@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH FIXUP] pinctrl: mvebu: fixup mpp_base check
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-I just noticed that simplefb wouldn't work with i.MX6 anyway, even if
-I adapt it.
+Sascha,
 
-When I setup the framebuffer from barebox and display a splash and
-then boot into Linux, then my framebuffer vanishes. Even when I don't
-have simplefb or ipu enabled.
+unfortunately, your dev_request_mem_region fixup introduced a typo
+(map_base instead of mpp_base). I took the chance to also add a
+corresponding check for dove's pinctrl stub.
 
-I think (!) the reason is the clock framework.The clocks for the IPU
-are turned off, and so I don't see anything anymore (this is, however,
-a wild assumption, I haven't checked it yet).
+Please squash into commmit 8d3f0c2496afe397667e35ff6b94153bcecdb6ad
+ ("pinctrl: mvebu: add pinctrl drivers for Dove and Kirkwood")
 
-However, I checked with an Oscillioscope that if I setup the backlight
-PWM (pwm0 in Barebox) and start Linux without CONFIG_PWM /
-CONFIG_PWM_IMX, then the PWM is turned off as soon as Linux has been
-started. Memory 0x2080000 shows in bit 0 that the PWM is still turned
-on. But as nothing comes out, it must be the clock.
+Thanks!
+
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+---
+ drivers/pinctrl/mvebu/dove.c     | 2 ++
+ drivers/pinctrl/mvebu/kirkwood.c | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/mvebu/dove.c b/drivers/pinctrl/mvebu/dove.c
+index 420b573ad1b7..bd0a632f1fd4 100644
+--- a/drivers/pinctrl/mvebu/dove.c
++++ b/drivers/pinctrl/mvebu/dove.c
+@@ -708,6 +708,8 @@ static int dove_pinctrl_probe(struct device_d *dev)
+ 
+ 	mpp_base = dev_request_mem_region(dev, 0);
+ 	mpp4_base = dev_request_mem_region(dev, 1);
++	if (!mpp_base || !mpp4_base)
++		return -EBUSY;
+ 
+ 	/*
+ 	 * Dove PMU does not have a stable binding, yet.
+diff --git a/drivers/pinctrl/mvebu/kirkwood.c b/drivers/pinctrl/mvebu/kirkwood.c
+index bde46acc0f4e..94ab10544279 100644
+--- a/drivers/pinctrl/mvebu/kirkwood.c
++++ b/drivers/pinctrl/mvebu/kirkwood.c
+@@ -437,7 +437,7 @@ static int kirkwood_pinctrl_probe(struct device_d *dev)
+ 		(struct mvebu_pinctrl_soc_info *)match->data;
+ 
+ 	mpp_base = dev_request_mem_region(dev, 0);
+-	if (!map_base)
++	if (!mpp_base)
+ 		return -EBUSY;
+ 
+ 	return mvebu_pinctrl_probe(dev, soc);
+-- 
+2.0.0
+
 
 _______________________________________________
 barebox mailing list
