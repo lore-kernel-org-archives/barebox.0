@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-x22f.google.com ([2607:f8b0:4002:c01::22f])
+Received: from mho-03-ewr.mailhop.org ([204.13.248.66]
+ helo=mho-01-ewr.mailhop.org)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wzpxp-0003fi-UL
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 16:22:26 +0000
-Received: by mail-yh0-f47.google.com with SMTP id v1so1307119yhn.20
- for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 09:22:04 -0700 (PDT)
+ id 1Wzsik-0005DI-V7
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 19:19:04 +0000
+Date: Wed, 25 Jun 2014 15:18:36 -0400
+From: Jason Cooper <jason@lakedaemon.net>
+Message-ID: <20140625191836.GS10202@titan.lakedaemon.net>
+References: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
-Date: Wed, 25 Jun 2014 18:22:04 +0200
-Message-ID: <CAOpc7mEx4SW8gCjmxB8kTFypgAbm8GbfaMk9UcZRj5jF3y4uvg@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: How to disable console late?
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH RFC 0/4] MVEBU SoC full USB support
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org, Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Andrew Lunn <andrew@lunn.ch>
 
-On my i.MX6 I have CONFIG_CONSOLE_FULL and CONSOLE_ACTIVATE_NONE
-defined. But still my serial is automatically activated as a console.
+On Wed, Jun 25, 2014 at 04:08:44PM +0200, Sebastian Hesselbarth wrote:
+> This *RFC* adds a driver stub for ChipIdea USB dual role controllers
+> found on Marvell MVEBU SoCs. Although, I consider this driver quite
+> finished, the corresponding DT binding is not. Also, we currently
+> have no corresponding driver in Linux for both MVEBU CI stub and
+> USB PHY.
+> 
+> The reason I send it here and now, is to get some input from the
+> (Linux) MVEBU guys on the binding and functional tests on Armada XP.
 
-barebox:/ devinfo cs0
-Bus: platform
-Parameters:
-  baudrate: 115200
-  active: ioe
+My first thought is if this chipidea IP is used beyond the mvebu
+ecosystem.  Shouldn't we name it and it's compatible strings with
+'chipidea' instead of 'marvell'?
 
-I'd rather active the serial port as a console only if a key is
-pressed during power on. Based on the help text of
-CONFIG_ACTIVATE_NONE, I actually thought that this would happen.
+Also, is there any other way to differentiate between the two versions
+other that manufacturing process resolution?  Perhaps the free-electrons
+guys could get us some IP revision numbers?
 
-Any hints?
+thx,
 
-
-I could remove chosen/stdout-path from my DTS and put it in
-on-the-fly? This sounds a bit ugly ...
+Jason.
 
 _______________________________________________
 barebox mailing list
