@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wzh8H-0001Us-8D
- for barebox@lists.infradead.org; Wed, 25 Jun 2014 06:56:38 +0000
-Date: Wed, 25 Jun 2014 08:56:15 +0200
+ Linux)) id 1Wzh96-0001eU-TS
+ for barebox@lists.infradead.org; Wed, 25 Jun 2014 06:57:29 +0000
+Date: Wed, 25 Jun 2014 08:57:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140625065615.GM15686@pengutronix.de>
-References: <1403606628-30148-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20140625065706.GN15686@pengutronix.de>
+References: <1403469255-9019-1-git-send-email-alex.aring@gmail.com>
+ <1403469255-9019-2-git-send-email-alex.aring@gmail.com>
+ <53A966DF.6050208@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1403606628-30148-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <53A966DF.6050208@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +24,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] pinctrl: mvebu: add pinctrl drivers for Dove and
- Kirkwood
+Subject: Re: [RFC 2/2] dns325: initial support for D-Link DNS-325
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 24, 2014 at 12:43:48PM +0200, Sebastian Hesselbarth wrote:
-> This adds pinctrl drivers for Marvell Dove and Kirkwood SoCs based
-> on a common driver stub. This design is based on the corresponding
-> Linux driver and should ease additional drivers for Marvell Armada
-> SoCs.
+On Tue, Jun 24, 2014 at 01:54:07PM +0200, Sebastian Hesselbarth wrote:
+> On 06/22/2014 10:34 PM, Alexander Aring wrote:
+> >This patch add a basic support for the D-Link DNS-325.
+> >
+> >Currently only booting via uart with kwboot is supported. The barebox
+> >kwboot utility doesn't work at the moment. Use kwboot utility from u-boot
+> >instead.
+> >
+> >Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+> >---
+> >I got the kwbimage values from u-boot with change to work with the
+> >barebox kwboot utility. There is also a bug in u-boot kwbimage file
+> >which enables 256 MB on chip select 0 and 1. But the DNS-325 has 256
+> >MB on chip select 0 only. This is fixed in this kwbimage file.
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> Alexander,
+> 
+> I posted a bunch of MVEBU related patches I had in my private branches.
+> Can you respin your DNS-325 patch based on those?
+> 
+> Sascha already applied
+>  "Marvell MVEBU assorted fixes and cleanup" and
+>  "Convert MVEBU SoCs to DT and PBL_MULTI_IMAGE"
+> but they haven't appeared on barebox/next. You can wait a day or two
+> or apply above series yourself. The other 3 pending patch sets are
+> just more improvements but shouldn't (directly) influence your dns-325
+> support patches.
 
-Applied with a small change:
-
-> +static int kirkwood_pinctrl_probe(struct device_d *dev)
-> +{
-> +	const struct of_device_id *match =
-> +		of_match_node(kirkwood_pinctrl_of_match, dev->device_node);
-> +	struct mvebu_pinctrl_soc_info *soc =
-> +		(struct mvebu_pinctrl_soc_info *)match->data;
-> +
-> +	mpp_base = dev_request_mem_region(dev, 0);
-
-I added a return value check here. Not checking it means that the driver
-could do NULL pointer dereferences during runtime.
-
-I should really fix the places where the check is missing in the tree.
+All mvebu patches should now be in -next.
 
 Sascha
 
