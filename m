@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x234.google.com ([2a00:1450:400c:c00::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X05Ne-0004i6-Cy
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 08:50:07 +0000
-Received: by mail-wg0-f52.google.com with SMTP id b13so3245128wgh.35
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 01:49:42 -0700 (PDT)
-From: Holger Schurig <holgerschurig@gmail.com>
-Date: Thu, 26 Jun 2014 10:49:16 +0200
-Message-Id: <1403772557-28482-4-git-send-email-holgerschurig@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X05PW-0006po-Hj
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 08:52:07 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 26 Jun 2014 10:51:33 +0200
+Message-Id: <1403772698-10330-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
+References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] sandbox: add bit manipulation stuff
+Subject: [PATCH 2/7] automount: fix description typo
 To: barebox@lists.infradead.org
 
-The functions are already in the sandbox, just the #defines are
-missing.
+From: Jan Luebbe <jlu@pengutronix.de>
 
-Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- arch/sandbox/include/asm/bitops.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ commands/automount.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/include/asm/bitops.h b/arch/sandbox/include/asm/bitops.h
-index 94646d4..447023d 100644
---- a/arch/sandbox/include/asm/bitops.h
-+++ b/arch/sandbox/include/asm/bitops.h
-@@ -12,4 +12,11 @@
- #include <asm-generic/bitops/hweight.h>
- #include <asm-generic/bitops/ops.h>
+diff --git a/commands/automount.c b/commands/automount.c
+index 0afe4d2..a29f286 100644
+--- a/commands/automount.c
++++ b/commands/automount.c
+@@ -65,7 +65,7 @@ BAREBOX_CMD_HELP_END
  
-+#define set_bit(x, y)			__set_bit(x, y)
-+#define clear_bit(x, y)			__clear_bit(x, y)
-+#define change_bit(x, y)		__change_bit(x, y)
-+#define test_and_set_bit(x, y)		__test_and_set_bit(x, y)
-+#define test_and_clear_bit(x, y)	__test_and_clear_bit(x, y)
-+#define test_and_change_bit(x, y)	__test_and_change_bit(x, y)
-+
- #endif
+ BAREBOX_CMD_START(automount)
+ 	.cmd		= do_automount,
+-	BAREBOX_CMD_DESC("execute (mount) COMMAND when PATH ist first accessed")
++	BAREBOX_CMD_DESC("execute (mount) COMMAND when PATH is first accessed")
+ 	BAREBOX_CMD_OPTS("[-ldr] PATH [COMMAND]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+ 	BAREBOX_CMD_HELP(cmd_automount_help)
 -- 
-1.7.10.4
+2.0.0
 
 
 _______________________________________________
