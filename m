@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X06WS-0005Q6-Mt
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 10:03:17 +0000
-Message-ID: <1403776882.4254.7.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 26 Jun 2014 12:01:22 +0200
-In-Reply-To: <CAOpc7mHfA9VTobbpW8SecSorV5K0KrESn75T4ue-Y0iGs9j=qw@mail.gmail.com>
-References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
- <CAOpc7mHfA9VTobbpW8SecSorV5K0KrESn75T4ue-Y0iGs9j=qw@mail.gmail.com>
-Mime-Version: 1.0
+Received: from mail-yh0-x22b.google.com ([2607:f8b0:4002:c01::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X06Xw-0005XD-B2
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 10:04:48 +0000
+Received: by mail-yh0-f43.google.com with SMTP id a41so1966724yho.2
+ for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 03:04:25 -0700 (PDT)
+MIME-Version: 1.0
+Date: Thu, 26 Jun 2014 12:04:25 +0200
+Message-ID: <CAOpc7mENrjdk-caJh3QA=S5_hdf21SCt_JNToQkx4p9qBnTPrg@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +21,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New Documentation for barebox
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Booting barebox on i.MX6 from SDCARD?
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Am Donnerstag, den 26.06.2014, 11:54 +0200 schrieb Holger Schurig:
-> Oh, and I just noticed that two chapters "Getting barebox" are contained:
-> 
-> 1. Getting barebox
-> 3.1. Getting barebox
-> 
-> I'd also think that long-term the "user manual" thingy inside the
-> documention could vanish. Everything could/should/is the user manual,
-> or?
-> 
-No, we would like to clearly separate user docs as in how to get barebox
-running on a board and what to do in the shell from developer docs that
-explain some of the concepts and design decisions of the actual code.
+Hi all,
 
-Regards,
-Lucas
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+In the Freescale i.MX6Q Reference manual they say in "8. System Boot"
+near the end of "8.5.3.1 Expansion Device eFUSE configuration" that
+the processor can load from SDCARD, but only up to 32 MB.
 
+Did any one of you succeeded in booting barebox from SDCARD, maybe
+with a trampoline code?  Or can the PBL do that? AFAIK U-Boot can boot
+from sdcard, at least Boundary Devices have some web pages about this
+(for Nitrogen/SabreLite) on their web page. Anyone already found out
+how U-Boot does it?  I could think about whatever U-Boot uses to load
+the "real" Barebox instead :-)
 
 _______________________________________________
 barebox mailing list
