@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X0FIM-0005rt-2k
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 19:25:18 +0000
-Date: Thu, 26 Jun 2014 21:24:56 +0200
+ Linux)) id 1X0FVt-00035H-FF
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 19:39:20 +0000
+Date: Thu, 26 Jun 2014 21:38:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140626192456.GI14257@pengutronix.de>
-References: <1403772557-28482-4-git-send-email-holgerschurig@gmail.com>
+Message-ID: <20140626193854.GJ14257@pengutronix.de>
+References: <1403791757-11152-1-git-send-email-christian.hemp@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1403772557-28482-4-git-send-email-holgerschurig@gmail.com>
+In-Reply-To: <1403791757-11152-1-git-send-email-christian.hemp@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] sandbox: add bit manipulation stuff
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: [PATCH] imx6:phyFLEX: Fix ENTRY_FUNCTION
+To: Christian Hemp <christian.hemp@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 26, 2014 at 10:49:16AM +0200, Holger Schurig wrote:
-> The functions are already in the sandbox, just the #defines are
-> missing.
+On Thu, Jun 26, 2014 at 04:09:17PM +0200, Christian Hemp wrote:
+> For some phyFLEX-i.MX6 modules the call __barebox_arm_head() was not removed.
+> With this function the barebox does not start.
 > 
-> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+> Signed-off-by: Christian Hemp <christian.hemp@gmail.com>
 
-Applied this one, thanks
+Applied, thanks (and fixed the whitespaces while applying)
 
 Sascha
 
 > ---
->  arch/sandbox/include/asm/bitops.h |    7 +++++++
->  1 file changed, 7 insertions(+)
+>  arch/arm/boards/phytec-phyflex-imx6/lowlevel.c |    6 ------
+>  1 file changed, 6 deletions(-)
 > 
-> diff --git a/arch/sandbox/include/asm/bitops.h b/arch/sandbox/include/asm/bitops.h
-> index 94646d4..447023d 100644
-> --- a/arch/sandbox/include/asm/bitops.h
-> +++ b/arch/sandbox/include/asm/bitops.h
-> @@ -12,4 +12,11 @@
->  #include <asm-generic/bitops/hweight.h>
->  #include <asm-generic/bitops/ops.h>
+> diff --git a/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c b/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c
+> index 6c6f660..4350adb 100644
+> --- a/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c
+> +++ b/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c
+> @@ -93,8 +93,6 @@ ENTRY_FUNCTION(start_phytec_pbab01_4gib, r0, r1, r2)
+>  {
+>  	void *fdt;
 >  
-> +#define set_bit(x, y)			__set_bit(x, y)
-> +#define clear_bit(x, y)			__clear_bit(x, y)
-> +#define change_bit(x, y)		__change_bit(x, y)
-> +#define test_and_set_bit(x, y)		__test_and_set_bit(x, y)
-> +#define test_and_clear_bit(x, y)	__test_and_clear_bit(x, y)
-> +#define test_and_change_bit(x, y)	__test_and_change_bit(x, y)
-> +
->  #endif
+> -	__barebox_arm_head();
+> -
+>  	arm_cpu_lowlevel_init();
+>  
+>  	arm_setup_stack(0x00920000 - 8);
+> @@ -108,8 +106,6 @@ ENTRY_FUNCTION(start_phytec_pbab01dl_1gib, r0, r1, r2)
+>  {
+>  	void *fdt;
+>  
+> -        __barebox_arm_head();
+> -
+>          arm_cpu_lowlevel_init();
+>  
+>          arm_setup_stack(0x00920000 - 8);
+> @@ -123,8 +119,6 @@ ENTRY_FUNCTION(start_phytec_pbab01s_512mb, r0, r1, r2)
+>  {
+>  	void *fdt;
+>  
+> -	__barebox_arm_head();
+> -
+>  	arm_cpu_lowlevel_init();
+>  
+>  	arm_setup_stack(0x00920000 - 8);
 > -- 
-> 1.7.10.4
+> 1.7.9.5
 > 
 > 
 > _______________________________________________
