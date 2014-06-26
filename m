@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x235.google.com ([2a00:1450:400c:c05::235])
+Received: from mail-yh0-x22d.google.com ([2607:f8b0:4002:c01::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X05lJ-00020J-Kj
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 09:14:35 +0000
-Received: by mail-wi0-f181.google.com with SMTP id n3so626452wiv.8
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 02:14:10 -0700 (PDT)
-Date: Thu, 26 Jun 2014 11:14:04 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140626091402.GA9502@omega>
-References: <1403469255-9019-1-git-send-email-alex.aring@gmail.com>
- <1403469255-9019-2-git-send-email-alex.aring@gmail.com>
- <53A74FC0.7080206@gmail.com> <20140626042711.GA3858@omega>
- <53ABC34E.5040902@gmail.com>
+ id 1X066e-000814-SO
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 09:36:37 +0000
+Received: by mail-yh0-f45.google.com with SMTP id t59so1949831yho.32
+ for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 02:36:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <53ABC34E.5040902@gmail.com>
+In-Reply-To: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
+References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 26 Jun 2014 11:36:15 +0200
+Message-ID: <CAOpc7mEXX4GQh2oxGO1y7Y8bNsgf=DZzOwc9aBZwToftk=vv8w@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,81 +23,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/2] dns325: initial support for D-Link DNS-325
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: New Documentation for barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
+Some random annotations. Please comment, after feedback I'll provide a
+bunch of patches for this. I don't do the patches right away, because
+you may still work currently in that area, so it would only produce
+conflicts.
 
-On Thu, Jun 26, 2014 at 08:53:02AM +0200, Sebastian Hesselbarth wrote:
-> On 06/26/2014 06:27 AM, Alexander Aring wrote:
-> > On Sun, Jun 22, 2014 at 11:50:56PM +0200, Sebastian Hesselbarth wrote:
-> >> On 06/22/2014 10:34 PM, Alexander Aring wrote:
-> >>> This patch add a basic support for the D-Link DNS-325.
-> >>>
-> >>> Currently only booting via uart with kwboot is supported. The barebox
-> >>> kwboot utility doesn't work at the moment. Use kwboot utility from u-boot
-> >>> instead.
-> >>
-> >> Why does kwboot does not work? There is an issue with early Kirkwood's
-> >> BootROM and UART boot mode. Just try over and over again. I also recall
-> >> modifying the timeouts may help.
-> >>
-> > 
-> > I tried to change the timeouts and it works now. I take these timings from
-> > u-boot. Is there any reason why these timings differs?
-> 
-> IIRC, timings differ because barebox kwboot was mainly tested on Armada
-> 370 and that low timings break UART boot mode there. I remember some
-> discussion about it a while ago. I'll see if I can find the discussion
-> and if there are any hints for timeouts that suite both Kirkwood and
-> Armada 370/XP.
-> 
 
-ok.
+User manuel "2. System setup" should be in an appendix. Nothing here
+is really related to barebox itself. It contains just helpful hints.
 
-> > Datasheet says nothing about any delay while loop for sending bootmsg.
-> > 
-> > 
-> > Here is my diff with the very small change:
-> > 
-> > diff --git a/scripts/kwboot.c b/scripts/kwboot.c
-> > index e068660..bcb5972 100644
-> > --- a/scripts/kwboot.c
-> > +++ b/scripts/kwboot.c
-> > @@ -34,8 +34,8 @@ static unsigned char kwboot_msg_debug[] = {
-> >         0xDD, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77
-> >  };
-> >  
-> > -#define KWBOOT_MSG_REQ_DELAY   1000 /* ms */
-> > -#define KWBOOT_MSG_RSP_TIMEO   1000 /* ms */
-> > +#define KWBOOT_MSG_REQ_DELAY   10 /* ms */
-> > +#define KWBOOT_MSG_RSP_TIMEO   50 /* ms */
-> >  
-> >  /*
-> >   * Xmodem Transfers
-> > 
-> > 
-> > 
-> > btw.:
-> > 
-> > Now I see that the internal ROM bootloader could also boot from SATA
-> > device - this sounds interesting. I will try that next weekend.
-> 
-> Boot source is determined by bootstrap pins, i.e. some pull-up/pull-down
-> resistors on board. UART boot mode check was added to BootROM in some
-> later Kirkwoods and _additionally_ checks for UART boot source.
-> 
-> You cannot just change the default boot source without soldering.
-> 
+I would capitalize some headlines, e.g. in the user manual "3.
+Barebox", "4. Networking", "6. Memory areas" etc   The same for the
+two headlines starting in lower-case in the main index.html. Maybe "3.
+barebox" can stay lowercase, because barebox is an "Eigenname", dunno.
+It looks however a bit ugly when it's lowercase.
 
-... and I don't have any schematics. Okay, maybe I will reverse engineer
-the hardware layout one day. I know there are some other not soldered
-pin headers, maybe I have luck.
+After getting barebox there should be a brief mention of the branches,
+e.g. difference between next & master.
 
-Thanks for this information.
+Configuration: at "make menuconfig" also "make xconfig" should be mentioned.
 
-- Alex
+"3.3. Compilation", shouldn't it be "make ARCH=xxx" ?  Ha, maybe it's
+just an old habit of me ...
+
+"3.4 Starting Barebox" could get a link to the i.MX USB downloader.
+Very fine tool!
+
+"4.2. Network filesystems": hinting on automount for tftp-file system
+is a bit moot. Because at the "mount -t tftp AAA BBB" nothing happens,
+tftp is, so to say, an automount by itself. I haven't yet used NFS
+from barebox, but I guess it is the same there. So I'd remove the
+automount reference from this place completely.
+
+"5. Automount", the same, better use sdcard as an example,. not tftp.
+
+"7.2. Device parameters": Better write "HINT: barebox has ..." (e.g.
+with a colon). The same applies to the "NOTE" annotations.
+
+"8.1 Hush features" should "let X=$A/2" be there?  Many people (ok, it
+was just me) look there if they need to calculate in the shell after
+finding out that X=$(($A/2)) doesn't work ...
+
+"10. Configuration variable": this should be neared the device
+parameters. I'd add a hint that with "devinfo global" one can see all
+defined global variables.
+
+several places: the "barebox@Genesi Efika MX Smartbook:/" should be
+reduced to "barebox:/", as it is usually irrelevant if that example
+was done on an Efika board or not.
+
+"11. Updating barebox", it says that a board can register an update
+handler, but doesn't have an example or a link to where / how this
+could be done. Or even a link directly to the git tree with a working
+example.
+
+"13. Prebootloader": the sentence "Use the barebox-flash-image link
+which always points to the correct image" doesn't sound like proper
+english.
+
+
+Abbreviation should be capizalized as well, therefore headline "ram
+filesystem" -> "RAM filesystem"
+
+I think that in english one should write "file systems", not
+"filesystems". But i may be wrong. But I'm quite sure that the word
+"filesystemtype" (in the RAM file system chapter) is too long for any
+englishman :-)
 
 _______________________________________________
 barebox mailing list
