@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X0F3Y-0006Ns-6i
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 19:10:00 +0000
-Date: Thu, 26 Jun 2014 21:09:37 +0200
+ Linux)) id 1X0FHK-0005if-UP
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 19:24:19 +0000
+Date: Thu, 26 Jun 2014 21:23:52 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140626190937.GF14257@pengutronix.de>
-References: <alpine.LFD.2.11.1406261425060.31619@localhost>
+Message-ID: <20140626192352.GG14257@pengutronix.de>
+References: <1403772557-28482-5-git-send-email-holgerschurig@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1406261425060.31619@localhost>
+In-Reply-To: <1403772557-28482-5-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: a couple consistent misspellings that could be fixed
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 4/4] sandbox: allow "make ARCH=sandbox allyesconfig"
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Thu, Jun 26, 2014 at 02:28:21PM -0400, Robert P. J. Day wrote:
+On Thu, Jun 26, 2014 at 10:49:17AM +0200, Holger Schurig wrote:
+> Compiling the tree with allyesconfig is helpful because different
+> compilers (gcc, clang) or static checkers (e.g. clang's scan-build)
+> can then process and check more code.
 > 
->   being the pedant that i am, i notice the following widespread
-> misspellings in the barebox codebase:
+> This patch introduces two new configuration symbols that Kconfig files
+> can depend on. That way, code that is only working where a cache or DMA
+> implementation exists can be opted out.
 > 
-> * "existance" (should be existence)
+> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+> ---
+>  common/Kconfig                   |   21 +++++++++++++++++++++
+>  drivers/ata/Kconfig              |    1 +
+>  drivers/input/Kconfig            |    2 +-
+>  drivers/net/Kconfig              |    4 ++++
+>  drivers/regulator/Kconfig        |    1 +
+>  drivers/usb/host/Kconfig         |    1 +
+>  drivers/video/imx-ipu-v3/Kconfig |    1 +
+>  7 files changed, 30 insertions(+), 1 deletion(-)
 > 
->   actually, not that widespread, only three, all comments so easy to
-> fix
-> 
-> * "persistant" (should be persistent)
-> 
->   this one is much uglier -- a couple dozen, including its use in
-> runnable code itself. just run:
-> 
->   $ grep -r persistant *
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 1afee93..0bf5d2c 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -25,6 +25,26 @@ config ENV_HANDLING
+>  	select CRC32
+>  	bool
+>  
+> +config HAS_CACHE
+> +	bool
+> +	default n if SANDBOX
+> +	default y
+> +	help
+> +	  This allows you do run "make ARCH=sandbox allyesconfig".
+> +
+> +	  Drivers that depend on a cache implementation can depend on this
+> +	  config, so that you don't get a compilation error.
+> +
+> +config HAS_DMA
+> +	bool
+> +	default n if SANDBOX
+> +	default y
+> +	help
+> +	  This allows you do run "make ARCH=sandbox allyesconfig".
+> +
+> +	  Drivers that depend on a DMA implementation can depend on this
+> +	  config, so that you don't get a compilation error.
 
-Uh, quite a few.
+Only ARM implements the dma_* functions. Can we skip the 'default x'
+here and select HAS_DMA from the ARM Kconfig file?
 
-> 
-> to see what i mean.
-> 
->   what's the policy for fixing a spelling error that spills over from
-> the comments into compilable code itself?
-
-You can fix them all in a single patch, no need to split it up. At least
-not as long there's not a function which uses 'persistent' and
-'persistant' as two different variables ;)
+Same with HAS_CACHE. The functions are implemented by ppc, nios2 and
+openrisc.
 
 Sascha
 
