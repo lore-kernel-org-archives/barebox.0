@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
+Received: from mail-yk0-x22b.google.com ([2607:f8b0:4002:c07::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X05Zz-00041z-SR
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 09:02:52 +0000
-Received: by mail-wi0-f177.google.com with SMTP id r20so593024wiv.16
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 02:02:26 -0700 (PDT)
-Date: Thu, 26 Jun 2014 11:02:18 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140626090114.GA9064@omega>
-References: <1403763212-924-1-git-send-email-s.hauer@pengutronix.de>
+ id 1X05aQ-0004Fq-Lg
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 09:03:19 +0000
+Received: by mail-yk0-f171.google.com with SMTP id 200so1824442ykr.16
+ for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 02:02:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1403763212-924-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
+References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 26 Jun 2014 11:02:56 +0200
+Message-ID: <CAOpc7mFi+TRbnTgtoAdnHgGpQ5=aPUusADk1PfhH9p5qAyaCRQ@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,33 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kconfig: Fix compiler warning
+Subject: Re: New Documentation for barebox
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Sascha,
+Hi,
 
-I get this warning about 1 month and it makes me crazy and I am unsing
-"gcc (GCC) 4.9.0 20140604 (prerelease)".
+nice !
 
 
-Why I didn't sent any patches?
-Because you say it here it's a compiler bug and the linux world doesn't
-fix it this way. Look at [0].
+I merged remotes/origin/doc into my local checkout of
+remotes/origin/next and did "make docs". I got one warning:
 
-"... since we will still want to catch unitialised use in the future,
-should we were to changethe code." - which sounds useful.
+schurig@laptop:~/d/mkarm/barebox$ make docs
+Making output directory...
+Running Sphinx v1.1.2
+loading pickled environment... not yet created
+building [html]: targets for 204 source files that are out of date
+updating environment: 204 added, 0 changed, 0 removed
+reading sources... [100%] user/variables
+/home/schurig/d/mkarm/barebox/Documentation/devicetree/index.rst:6:
+WARNING: toctree glob pattern u'bindings/barebox/*' didn't match any
+documents
+looking for now-outdated files... none found
+pickling environment... done
+checking consistency... done
+preparing documents... done
+writing output... [100%] user/variables
+writing additional files... genindex search
+copying static files... done
+dumping search index... done
+dumping object inventory... done
+build succeeded, 1 warning.
 
-They already add a comment to this. I think otherwise they get much
-patches because this warning.
-
-When I look into the current mainline code [1]. Then this is currently
-not fixed in any way (comment or setting to NULL
-
-- Alex
-
-[0] http://www.spinics.net/lists/linux-kbuild/msg08898.html
-[1] https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git/tree/scripts/kconfig/menu.c?id=refs/tags/next-20140626
+and in fact, there is no Documentation/devicetree/bindings/barebox
 
 _______________________________________________
 barebox mailing list
