@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x235.google.com ([2607:f8b0:4002:c07::235])
+Received: from mail-we0-x232.google.com ([2a00:1450:400c:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X06DL-0003BV-JT
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 09:43:32 +0000
-Received: by mail-yk0-f181.google.com with SMTP id 9so1828896ykp.40
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 02:43:10 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140626093701.GA9619@omega>
+ id 1X06EC-0003Gl-Mg
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 09:44:25 +0000
+Received: by mail-we0-f178.google.com with SMTP id x48so3270497wes.9
+ for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 02:44:01 -0700 (PDT)
+Date: Thu, 26 Jun 2014 11:43:56 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140626094355.GA10359@omega>
 References: <1403772557-28482-3-git-send-email-holgerschurig@gmail.com>
  <20140626093701.GA9619@omega>
-Date: Thu, 26 Jun 2014 11:43:10 +0200
-Message-ID: <CAOpc7mFLUNHSdjhiuSqsxQTk1Pd4M_LJXy9Dgw0eK4G_3GzAZg@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140626093701.GA9619@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,14 +27,46 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/4] sandbox: only access of_add_memory_bank if it's
  defined
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Your patch alone isn't all that's needed, the definition must still be
-uncommented. Otherwise we'll get:
+On Thu, Jun 26, 2014 at 11:37:01AM +0200, Alexander Aring wrote:
+> Hi Holger,
+> 
+> can you please check if this is also a solution for this?
+> 
+> diff --git a/include/of.h b/include/of.h
+> index e6993fd..76845e7 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -227,7 +227,14 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node);
+>  int of_device_is_stdout_path(struct device_d *dev);
+>  const char *of_get_model(void);
+>  void *of_flatten_dtb(struct device_node *node);
+> +#ifdef CONFIG_OFTREE_MEM_GENERIC
+>  int of_add_memory(struct device_node *node, bool dump);
+> +#else
+> +static inline int of_add_memory(struct device_node *node, bool dump)
+> +{
+> +       return -EINVAL;
+> +}
+> +#endif
+>  void of_add_memory_bank(struct device_node *node, bool dump, int r,
+>                 u64 base, u64 size);
+>  struct device_d *of_find_device_by_node_path(const char *path);
+> 
+> 
+> 
 
-drivers/of/base.c:1700:5: error: redefinition of 'of_add_memory'
-include/of.h:233:50: note: previous definition of 'of_add_memory' was here
+Okay the implementation "#ifdef CONFIG_OFTREE_MEM_GENERIC" for function
+of_add_memory, need to be there.
+
+Other option would be to put this function in a separete file which
+depends on CONFIG_OFTREE_MEM_GENERIC and do in the header file the above
+solution one. Don't know if this is better. Then you could drop the
+#ifdef CONFIG_OFTREE_MEM_GENERIC from the implementation.
+
+- Alex
 
 _______________________________________________
 barebox mailing list
