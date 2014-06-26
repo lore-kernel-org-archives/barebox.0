@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X0Ew3-00035S-G4
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 19:02:16 +0000
-Date: Thu, 26 Jun 2014 21:01:52 +0200
+ Linux)) id 1X0F3Y-0006Ns-6i
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 19:10:00 +0000
+Date: Thu, 26 Jun 2014 21:09:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140626190152.GE14257@pengutronix.de>
-References: <1403606628-30148-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140625065615.GM15686@pengutronix.de>
- <20140625124006.GA25802@omega>
- <20140626055658.GW15686@pengutronix.de>
- <20140626143831.GA30025@omega>
+Message-ID: <20140626190937.GF14257@pengutronix.de>
+References: <alpine.LFD.2.11.1406261425060.31619@localhost>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140626143831.GA30025@omega>
+In-Reply-To: <alpine.LFD.2.11.1406261425060.31619@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,69 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] pinctrl: mvebu: add pinctrl drivers for Dove and
- Kirkwood
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: a couple consistent misspellings that could be fixed
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Thu, Jun 26, 2014 at 04:38:34PM +0200, Alexander Aring wrote:
-> Hi,
+On Thu, Jun 26, 2014 at 02:28:21PM -0400, Robert P. J. Day wrote:
 > 
-> > We could also return an error pointer instead of NULL. Given that not
-> > many drivers check the return value anyway this shouldn't be hard to
-> > change.
-> > 
+>   being the pedant that i am, i notice the following widespread
+> misspellings in the barebox codebase:
 > 
-> yeah, but a ERR_PTR(-ERRNO) is also some valid address which
-> dev_request_mem_region could return. Likely in power of two addresses.
-> But this is more unlikely than check on NULL. :-)
+> * "existance" (should be existence)
 > 
-> Anyway I would try to use the ERR_PTR solution.
+>   actually, not that widespread, only three, all comments so easy to
+> fix
+> 
+> * "persistant" (should be persistent)
+> 
+>   this one is much uglier -- a couple dozen, including its use in
+> runnable code itself. just run:
+> 
+>   $ grep -r persistant *
 
-So we can't use the last 524 bytes of the physical address space. I
-think that's a risk we can take.
+Uh, quite a few.
 
 > 
+> to see what i mean.
 > 
-> I also see now because we print warning on resource conflicts Holger
-> reports some resource conflict on his board. Maybe there is also some
-> others board with resource conflicts but we didn't saw that because the
-> debug print level.
-> 
-> I only add pr_warn for conflicts, but there are also some other debug
-> prints on error handling, maybe we should change it to:
-> 
-> diff --git a/common/resource.c b/common/resource.c
-> index 1ea2a75..e77805b 100644
-> --- a/common/resource.c
-> +++ b/common/resource.c
-> @@ -44,7 +44,7 @@ struct resource *__request_region(struct resource *parent,
->         struct resource *r, *new;
->  
->         if (end < start) {
-> -               debug("%s: request region 0x%08llx:0x%08llx: end < start\n",
-> +               pr_warn("%s: request region 0x%08llx:0x%08llx: end < start\n",
->                                 __func__,
->                                 (unsigned long long)start,
->                                 (unsigned long long)end);
-> @@ -53,7 +53,7 @@ struct resource *__request_region(struct resource *parent,
->  
->         /* outside parent resource? */
->         if (start < parent->start || end > parent->end) {
-> -               debug("%s: 0x%08llx:0x%08llx outside parent resource 0x%08llx:0x%08llx\n",
-> +               pr_warn("%s: 0x%08llx:0x%08llx outside parent resource 0x%08llx:0x%08llx\n",
->                                 __func__,
->                                 (unsigned long long)start,
->                                 (unsigned long long)end,
-> 
-> Should I prepare a patch for this? Maybe more users comes because there
-> os something wrong with device probing, etc...
+>   what's the policy for fixing a spelling error that spills over from
+> the comments into compilable code itself?
 
-I don't think that's necessary. These debug prints are more for
-debugging the resource code.
+You can fix them all in a single patch, no need to split it up. At least
+not as long there's not a function which uses 'persistent' and
+'persistant' as two different variables ;)
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
