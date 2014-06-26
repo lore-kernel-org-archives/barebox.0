@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X0IUY-00036h-Ew
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 22:50:07 +0000
-Received: by mail-lb0-f170.google.com with SMTP id 10so3457754lbg.1
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 15:49:43 -0700 (PDT)
+ id 1X0IUW-00036B-Cy
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 22:50:05 +0000
+Received: by mail-la0-f49.google.com with SMTP id gf5so2328728lab.8
+ for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 15:49:40 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 27 Jun 2014 02:49:31 +0400
-Message-Id: <1403822973-3151-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1403822973-3151-1-git-send-email-antonynpavlov@gmail.com>
-References: <1403822973-3151-1-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 27 Jun 2014 02:49:29 +0400
+Message-Id: <1403822973-3151-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,26 +21,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] MIPS: XBurst: use gpiolib
+Subject: [PATCH 0/4] MIPS: XBurst: add gpio support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Antony Pavlov (4):
+  gpio: add jz4740-gpio driver for Ingenic MIPS SoCs
+  MIPS: XBurst: use gpiolib
+  MIPS: dts: jz4755.dtsi: add gpio
+  MIPS: ritmix-rzx50_defconfig: enable gpio stuff
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 077586c..d4e9e1c 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -89,6 +89,7 @@ config MACH_MIPS_XBURST
- 	select HAVE_PBL_IMAGE
- 	select HAVE_IMAGE_COMPRESSION
- 	select HAS_NMON
-+	select GPIOLIB
- endchoice
- 
- source arch/mips/mach-malta/Kconfig
+ arch/mips/Kconfig                        |   1 +
+ arch/mips/configs/ritmix-rzx50_defconfig |  28 ++++---
+ arch/mips/dts/jz4755.dtsi                |  42 ++++++++++
+ drivers/gpio/Kconfig                     |   6 ++
+ drivers/gpio/Makefile                    |   1 +
+ drivers/gpio/gpio-jz4740.c               | 140 +++++++++++++++++++++++++++++++
+ 6 files changed, 205 insertions(+), 13 deletions(-)
+ create mode 100644 drivers/gpio/gpio-jz4740.c
+
 -- 
 1.9.2
 
