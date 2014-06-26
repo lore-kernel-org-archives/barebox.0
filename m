@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X08To-0004W1-DG
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 12:08:45 +0000
-Received: by mail-wg0-f45.google.com with SMTP id l18so3518464wgh.4
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 05:08:16 -0700 (PDT)
-Message-ID: <53AC0D2B.3090803@gmail.com>
-Date: Thu, 26 Jun 2014 14:08:11 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1403705328-9924-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140625191836.GS10202@titan.lakedaemon.net> <53AB229B.1010104@gmail.com>
-In-Reply-To: <53AB229B.1010104@gmail.com>
+ id 1X0ANJ-0004An-Mv
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 14:10:08 +0000
+Received: by mail-wg0-f47.google.com with SMTP id k14so3678209wgh.6
+ for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 07:09:40 -0700 (PDT)
+From: Christian Hemp <christian.hemp@gmail.com>
+Date: Thu, 26 Jun 2014 16:09:17 +0200
+Message-Id: <1403791757-11152-1-git-send-email-christian.hemp@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +17,55 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFC 0/4] MVEBU SoC full USB support
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: barebox@lists.infradead.org, Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH] imx6:phyFLEX: Fix ENTRY_FUNCTION
+To: barebox@lists.infradead.org
+Cc: Christian Hemp <christian.hemp@gmail.com>
 
-On 06/25/2014 09:27 PM, Sebastian Hesselbarth wrote:
-> On 06/25/2014 09:18 PM, Jason Cooper wrote:
->> On Wed, Jun 25, 2014 at 04:08:44PM +0200, Sebastian Hesselbarth wrote:
->>> This *RFC* adds a driver stub for ChipIdea USB dual role controllers
->>> found on Marvell MVEBU SoCs. Although, I consider this driver quite
->>> finished, the corresponding DT binding is not. Also, we currently
->>> have no corresponding driver in Linux for both MVEBU CI stub and
->>> USB PHY.
->>>
->>> The reason I send it here and now, is to get some input from the
->>> (Linux) MVEBU guys on the binding and functional tests on Armada XP.
->>
->> My first thought is if this chipidea IP is used beyond the mvebu
->> ecosystem.  Shouldn't we name it and it's compatible strings with
->> 'chipidea' instead of 'marvell'?
->
-> While the IP core is CI, you remember the mbus upstream registers?
-> That registers are very special to MVEBU SoCs and make the IP itself
-> "marvell".
+For some phyFLEX-i.MX6 modules the call __barebox_arm_head() was not removed.
+With this function the barebox does not start.
 
-While working with Dove's SDHCI, I thought about the upstream registers
-again. Dove's SDHCI shares those registers with Camera IP which makes
-it difficult to find a good DT representation again.
+Signed-off-by: Christian Hemp <christian.hemp@gmail.com>
+---
+ arch/arm/boards/phytec-phyflex-imx6/lowlevel.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-Maybe we should think about moving upstream register setup to mbus
-driver instead? That would also allow us to get rid of mvebu specific
-boiler plates from those standard (fooHCI) IP drivers.
-
-Sebastian
+diff --git a/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c b/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c
+index 6c6f660..4350adb 100644
+--- a/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c
++++ b/arch/arm/boards/phytec-phyflex-imx6/lowlevel.c
+@@ -93,8 +93,6 @@ ENTRY_FUNCTION(start_phytec_pbab01_4gib, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
+-	__barebox_arm_head();
+-
+ 	arm_cpu_lowlevel_init();
+ 
+ 	arm_setup_stack(0x00920000 - 8);
+@@ -108,8 +106,6 @@ ENTRY_FUNCTION(start_phytec_pbab01dl_1gib, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
+-        __barebox_arm_head();
+-
+         arm_cpu_lowlevel_init();
+ 
+         arm_setup_stack(0x00920000 - 8);
+@@ -123,8 +119,6 @@ ENTRY_FUNCTION(start_phytec_pbab01s_512mb, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
+-	__barebox_arm_head();
+-
+ 	arm_cpu_lowlevel_init();
+ 
+ 	arm_setup_stack(0x00920000 - 8);
+-- 
+1.7.9.5
 
 
 _______________________________________________
