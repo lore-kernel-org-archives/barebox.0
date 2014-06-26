@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+Received: from mail-we0-x22f.google.com ([2a00:1450:400c:c03::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X03Yl-0005bi-0g
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 06:53:27 +0000
-Received: by mail-wi0-f175.google.com with SMTP id r20so419268wiv.2
- for <barebox@lists.infradead.org>; Wed, 25 Jun 2014 23:53:04 -0700 (PDT)
-Message-ID: <53ABC34E.5040902@gmail.com>
-Date: Thu, 26 Jun 2014 08:53:02 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1403469255-9019-1-git-send-email-alex.aring@gmail.com>
- <1403469255-9019-2-git-send-email-alex.aring@gmail.com>
- <53A74FC0.7080206@gmail.com> <20140626042711.GA3858@omega>
-In-Reply-To: <20140626042711.GA3858@omega>
+ id 1X05NV-0004fD-5Z
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 08:49:58 +0000
+Received: by mail-we0-f175.google.com with SMTP id k48so3334846wev.20
+ for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 01:49:34 -0700 (PDT)
+From: Holger Schurig <holgerschurig@gmail.com>
+Date: Thu, 26 Jun 2014 10:49:13 +0200
+Message-Id: <1403772557-28482-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,68 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/2] dns325: initial support for D-Link DNS-325
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/4] sandbox: prepare for static checkers
+To: barebox@lists.infradead.org
 
-On 06/26/2014 06:27 AM, Alexander Aring wrote:
-> On Sun, Jun 22, 2014 at 11:50:56PM +0200, Sebastian Hesselbarth wrote:
->> On 06/22/2014 10:34 PM, Alexander Aring wrote:
->>> This patch add a basic support for the D-Link DNS-325.
->>>
->>> Currently only booting via uart with kwboot is supported. The barebox
->>> kwboot utility doesn't work at the moment. Use kwboot utility from u-boot
->>> instead.
->>
->> Why does kwboot does not work? There is an issue with early Kirkwood's
->> BootROM and UART boot mode. Just try over and over again. I also recall
->> modifying the timeouts may help.
->>
-> 
-> I tried to change the timeouts and it works now. I take these timings from
-> u-boot. Is there any reason why these timings differs?
+I want to use different compilers and static checkers (e.g. clang's
+scan-build) on Barebox.  As a preparatory step I want to maximize code
+coverage in an non-crosscompilation environment.
 
-IIRC, timings differ because barebox kwboot was mainly tested on Armada
-370 and that low timings break UART boot mode there. I remember some
-discussion about it a while ago. I'll see if I can find the discussion
-and if there are any hints for timeouts that suite both Kirkwood and
-Armada 370/XP.
+This patch set prepares the tree so that "make ARCH=sandbox allyesconfig"
+followed by "make ARCH=sandbox" works and compiles warning free, at least
+with Debian's gcc-4.6.
 
-> Datasheet says nothing about any delay while loop for sending bootmsg.
-> 
-> 
-> Here is my diff with the very small change:
-> 
-> diff --git a/scripts/kwboot.c b/scripts/kwboot.c
-> index e068660..bcb5972 100644
-> --- a/scripts/kwboot.c
-> +++ b/scripts/kwboot.c
-> @@ -34,8 +34,8 @@ static unsigned char kwboot_msg_debug[] = {
->         0xDD, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77
->  };
->  
-> -#define KWBOOT_MSG_REQ_DELAY   1000 /* ms */
-> -#define KWBOOT_MSG_RSP_TIMEO   1000 /* ms */
-> +#define KWBOOT_MSG_REQ_DELAY   10 /* ms */
-> +#define KWBOOT_MSG_RSP_TIMEO   50 /* ms */
->  
->  /*
->   * Xmodem Transfers
-> 
-> 
-> 
-> btw.:
-> 
-> Now I see that the internal ROM bootloader could also boot from SATA
-> device - this sounds interesting. I will try that next weekend.
+Holger Schurig (4):
+  commands: include missing header
+  sandbox: only access of_add_memory_bank if it's defined
+  sandbox: add bit manipulation stuff
+  sandbox: allow "make ARCH=sandbox allyesconfig"
 
-Boot source is determined by bootstrap pins, i.e. some pull-up/pull-down
-resistors on board. UART boot mode check was added to BootROM in some
-later Kirkwoods and _additionally_ checks for UART boot source.
+ arch/sandbox/include/asm/bitops.h |    7 +++++++
+ commands/linux_exec.c             |    1 +
+ common/Kconfig                    |   21 +++++++++++++++++++++
+ drivers/ata/Kconfig               |    1 +
+ drivers/input/Kconfig             |    2 +-
+ drivers/net/Kconfig               |    4 ++++
+ drivers/of/base.c                 |    6 ++++++
+ drivers/regulator/Kconfig         |    1 +
+ drivers/usb/host/Kconfig          |    1 +
+ drivers/video/imx-ipu-v3/Kconfig  |    1 +
+ 10 files changed, 44 insertions(+), 1 deletion(-)
 
-You cannot just change the default boot source without soldering.
-
-Sebastian
+-- 
+1.7.10.4
 
 
 _______________________________________________
