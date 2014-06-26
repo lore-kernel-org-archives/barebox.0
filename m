@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X05Pb-0006s7-C2
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 08:52:10 +0000
+ Linux)) id 1X05PW-0006pr-I4
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 08:52:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 26 Jun 2014 10:51:37 +0200
-Message-Id: <1403772698-10330-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 26 Jun 2014 10:51:34 +0200
+Message-Id: <1403772698-10330-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
 References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] Documentation: remove devicetree docs
+Subject: [PATCH 3/7] commands: addpart: Improve description
 To: barebox@lists.infradead.org
-
-Remove the barebox devicetree documentation. It will
-be replaced with sphinx based documentation later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/devicetree/bindings/README           |  6 ------
- Documentation/devicetree/bindings/barebox.txt      | 10 ---------
- .../bindings/barebox/barebox,environment.txt       | 25 ----------------------
- Documentation/devicetree/bindings/leds/common.txt  |  8 -------
- .../devicetree/bindings/misc/fsl,imx-iim.txt       | 20 -----------------
- .../devicetree/bindings/misc/fsl,imx-ocotp.txt     | 20 -----------------
- 6 files changed, 89 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/README
- delete mode 100644 Documentation/devicetree/bindings/barebox.txt
- delete mode 100644 Documentation/devicetree/bindings/barebox/barebox,environment.txt
- delete mode 100644 Documentation/devicetree/bindings/leds/common.txt
- delete mode 100644 Documentation/devicetree/bindings/misc/fsl,imx-iim.txt
- delete mode 100644 Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt
+ commands/partition.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/README b/Documentation/devicetree/bindings/README
-deleted file mode 100644
-index b818ee8..0000000
-diff --git a/Documentation/devicetree/bindings/barebox.txt b/Documentation/devicetree/bindings/barebox.txt
-deleted file mode 100644
-index 5e8d461..0000000
-diff --git a/Documentation/devicetree/bindings/barebox/barebox,environment.txt b/Documentation/devicetree/bindings/barebox/barebox,environment.txt
-deleted file mode 100644
-index 5a8bf9c..0000000
-diff --git a/Documentation/devicetree/bindings/leds/common.txt b/Documentation/devicetree/bindings/leds/common.txt
-deleted file mode 100644
-index db264b3..0000000
-diff --git a/Documentation/devicetree/bindings/misc/fsl,imx-iim.txt b/Documentation/devicetree/bindings/misc/fsl,imx-iim.txt
-deleted file mode 100644
-index 9759210..0000000
-diff --git a/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt b/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt
-deleted file mode 100644
-index b7a3ee5..0000000
+diff --git a/commands/partition.c b/commands/partition.c
+index 946cf2d..51988df 100644
+--- a/commands/partition.c
++++ b/commands/partition.c
+@@ -166,16 +166,18 @@ static int do_addpart(int argc, char *argv[])
+ 
+ BAREBOX_CMD_HELP_START(addpart)
+ 
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-n", "do not use the device name as prefix of the partition name")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Create partitions on device DEVICE using the partition description")
++BAREBOX_CMD_HELP_TEXT("from PART.")
++BAREBOX_CMD_HELP_TEXT("PART contains a partition description compatible to the Kernel mtd")
++BAREBOX_CMD_HELP_TEXT("commandline partition description:")
++BAREBOX_CMD_HELP_TEXT("SIZE1[@OFFSET1](NAME1)[RO],SIZE2[@OFFSET2](NAME2)[RO],...")
+ BAREBOX_CMD_HELP_TEXT("The size and the offset can be given in decimal (without any prefix) and")
+ BAREBOX_CMD_HELP_TEXT("in hex (prefixed with 0x). Both can have an optional suffix K, M or G.")
+ BAREBOX_CMD_HELP_TEXT("The size of the last partition can be specified as '-' for the remaining")
+-BAREBOX_CMD_HELP_TEXT("space on the device.  This format is the same as used by the Linux")
+-BAREBOX_CMD_HELP_TEXT("kernel or cmdline mtd partitions.")
+-BAREBOX_CMD_HELP_TEXT("")
+-BAREBOX_CMD_HELP_TEXT("Options:")
+-BAREBOX_CMD_HELP_OPT ("-n", "do not use the device name as prefix of the partition name")
+-BAREBOX_CMD_HELP_OPT ("DEVICE",    "device being worked on")
+-BAREBOX_CMD_HELP_OPT ("PART", "SIZE1[@OFFSET1](NAME1)[RO],SIZE2[@OFFSET2](NAME2)[RO],...")
++BAREBOX_CMD_HELP_TEXT("space on the device.")
+ BAREBOX_CMD_HELP_END
+ 
+ /**
 -- 
 2.0.0
 
