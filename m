@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-x235.google.com ([2607:f8b0:4002:c01::235])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X06O6-0001Mt-M5
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 09:54:39 +0000
-Received: by mail-yh0-f53.google.com with SMTP id b6so1949956yha.26
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 02:54:17 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X06WS-0005Q6-Mt
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 10:03:17 +0000
+Message-ID: <1403776882.4254.7.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 26 Jun 2014 12:01:22 +0200
+In-Reply-To: <CAOpc7mHfA9VTobbpW8SecSorV5K0KrESn75T4ue-Y0iGs9j=qw@mail.gmail.com>
 References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
-Date: Thu, 26 Jun 2014 11:54:17 +0200
-Message-ID: <CAOpc7mHfA9VTobbpW8SecSorV5K0KrESn75T4ue-Y0iGs9j=qw@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+ <CAOpc7mHfA9VTobbpW8SecSorV5K0KrESn75T4ue-Y0iGs9j=qw@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,17 +23,29 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: New Documentation for barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Holger Schurig <holgerschurig@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Oh, and I just noticed that two chapters "Getting barebox" are contained:
+Am Donnerstag, den 26.06.2014, 11:54 +0200 schrieb Holger Schurig:
+> Oh, and I just noticed that two chapters "Getting barebox" are contained:
+> 
+> 1. Getting barebox
+> 3.1. Getting barebox
+> 
+> I'd also think that long-term the "user manual" thingy inside the
+> documention could vanish. Everything could/should/is the user manual,
+> or?
+> 
+No, we would like to clearly separate user docs as in how to get barebox
+running on a board and what to do in the shell from developer docs that
+explain some of the concepts and design decisions of the actual code.
 
-1. Getting barebox
-3.1. Getting barebox
+Regards,
+Lucas
+-- 
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
 
-I'd also think that long-term the "user manual" thingy inside the
-documention could vanish. Everything could/should/is the user manual,
-or?
 
 _______________________________________________
 barebox mailing list
