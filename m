@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X0ETT-0004qg-Mo
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 18:32:47 +0000
-Received: from [99.240.204.5] (port=58848 helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
- (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
- id 1X0ET4-000673-Hh
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 14:32:18 -0400
-Date: Thu, 26 Jun 2014 14:28:21 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.11.1406261425060.31619@localhost>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X0Eqy-0001RJ-NW
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 18:57:01 +0000
+Date: Thu, 26 Jun 2014 20:56:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140626185637.GD14257@pengutronix.de>
+References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
+ <alpine.LFD.2.11.1406260622060.14712@localhost>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1406260622060.14712@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: a couple consistent misspellings that could be fixed
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: New Documentation for barebox
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: barebox@lists.infradead.org
 
+On Thu, Jun 26, 2014 at 06:31:10AM -0400, Robert P. J. Day wrote:
+> On Thu, 26 Jun 2014, Sascha Hauer wrote:
+> 
+> 
+>   ... snip ...
+> 
+>   couple quick observations before i put on my editor hat and go
+> through all this. first, on my fedora rawhide system, running "make
+> docs" generates quite a few warnings, although the HTML is eventually
+> built. is it worth digging into the doc generation warnings and trying
+> to clean them up? anyone else building the docs on fedora rawhide and
+> see what i'm talking about?
+> 
+>   and just from the main page, a couple very pedantic questions:
+> 
+> * should the name "Barebox" be italicized or not? it seems even that
+> single page bounces back and forth using and not using "@a" in front
+> of the word "Barebox".
+> 
+> * the "Directory layout" section inserts a space on either side of the
+> "/" in directory names, as in:
+> 
+>   arch / * /
+> 
+> that just looks ... weird.
+> 
+> * oh, final note regarding name "Barebox", i notice some pages (like
+> the x86_bootloader page) use the uncapitalized name "barebox" -- this
+> really should be consistent throughout all the docs.
 
-  being the pedant that i am, i notice the following widespread
-misspellings in the barebox codebase:
+It seems you are talking about the old doxygen docs. Please checkout
+the doc branch on:
 
-* "existance" (should be existence)
+git://git.pengutronix.de/git/barebox.git
 
-  actually, not that widespread, only three, all comments so easy to
-fix
+There should be only one match for Barebox with a capital 'B' in
 
-* "persistant" (should be persistent)
+Documentation/boards/omap.rst:36:exactly behaves like an external dongle. Barebox does not automatically detect
 
-  this one is much uglier -- a couple dozen, including its use in
-runnable code itself. just run:
+All others are lowercase.
 
-  $ grep -r persistant *
-
-to see what i mean.
-
-  what's the policy for fixing a spelling error that spills over from
-the comments into compilable code itself?
-
-rday
+Sascha
 
 -- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
