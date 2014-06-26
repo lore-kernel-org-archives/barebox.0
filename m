@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-x22d.google.com ([2607:f8b0:4002:c01::22d])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X06ey-0000ov-TD
- for barebox@lists.infradead.org; Thu, 26 Jun 2014 10:12:06 +0000
-Received: by mail-yh0-f45.google.com with SMTP id t59so1967683yho.32
- for <barebox@lists.infradead.org>; Thu, 26 Jun 2014 03:11:16 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1403776882.4254.7.camel@weser.hi.pengutronix.de>
-References: <1403772698-10330-1-git-send-email-s.hauer@pengutronix.de>
- <CAOpc7mHfA9VTobbpW8SecSorV5K0KrESn75T4ue-Y0iGs9j=qw@mail.gmail.com>
- <1403776882.4254.7.camel@weser.hi.pengutronix.de>
-Date: Thu, 26 Jun 2014 12:11:15 +0200
-Message-ID: <CAOpc7mHRhpOGesqi-K+8huVJbop+hEV=d1LK=-_-Q4OEDdn9MQ@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X06gG-0001t1-L8
+ for barebox@lists.infradead.org; Thu, 26 Jun 2014 10:13:26 +0000
+Message-ID: <1403777490.4254.11.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 26 Jun 2014 12:11:30 +0200
+In-Reply-To: <CAOpc7mENrjdk-caJh3QA=S5_hdf21SCt_JNToQkx4p9qBnTPrg@mail.gmail.com>
+References: <CAOpc7mENrjdk-caJh3QA=S5_hdf21SCt_JNToQkx4p9qBnTPrg@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New Documentation for barebox
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: Booting barebox on i.MX6 from SDCARD?
+To: Holger Schurig <holgerschurig@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-> No, we would like to clearly separate user docs
+Am Donnerstag, den 26.06.2014, 12:04 +0200 schrieb Holger Schurig:
+> Hi all,
+> 
+> In the Freescale i.MX6Q Reference manual they say in "8. System Boot"
+> near the end of "8.5.3.1 Expansion Device eFUSE configuration" that
+> the processor can load from SDCARD, but only up to 32 MB.
+> 
+> Did any one of you succeeded in booting barebox from SDCARD, maybe
+> with a trampoline code?  Or can the PBL do that? AFAIK U-Boot can boot
+> from sdcard, at least Boundary Devices have some web pages about this
+> (for Nitrogen/SabreLite) on their web page. Anyone already found out
+> how U-Boot does it?  I could think about whatever U-Boot uses to load
+> the "real" Barebox instead :-)
 
-But still it is unfortunate that two "Getting Barebox" chapters are
-there at all, and that they are very near to each.
+Um, we started barebox from SD-card on a lot of boards where the boot
+mode strapping allows this.
 
-Also, I think that (necessarily!) the design desicions are now mostly
-in the user manual, e.g. device parameters. In the non-user-manual
-parts there is hardly contents at all. And most, e.g. the file system
-descriptions or the glossary, could very well be moved into the user
-manual. Which will lead us to ... the user-manual containing all of
-the current HTML docs.
+Just dd the resulting *.img to an SD-card (you may skip the first 512
+byte to leave your MBR in place). If you got the boot mode selection
+right it should just work.
 
-So, let me rephrase it: I also think that long term the whole current
-(!) HTML documentation should be part of the user manual.
+Regards,
+Lucas
 
-Simply because there's no developer documentation in the current (!)
-HTML, e.g. "How to start a new board" type docs, or an introduction
-into the file system structure.
+-- 
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
 
-Maybe the PBL chapter is developer documentation, but that is (sic!)
-in the user manual ...
 
 _______________________________________________
 barebox mailing list
