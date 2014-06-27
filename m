@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
+Received: from mail-wg0-x22c.google.com ([2a00:1450:400c:c00::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X0Tnd-0004U2-Ma
- for barebox@lists.infradead.org; Fri, 27 Jun 2014 10:54:34 +0000
-Received: by mail-wi0-f180.google.com with SMTP id hi2so2581888wib.1
- for <barebox@lists.infradead.org>; Fri, 27 Jun 2014 03:54:11 -0700 (PDT)
+ id 1X0Tne-0004UE-Rl
+ for barebox@lists.infradead.org; Fri, 27 Jun 2014 10:54:36 +0000
+Received: by mail-wg0-f44.google.com with SMTP id x13so5062361wgg.27
+ for <barebox@lists.infradead.org>; Fri, 27 Jun 2014 03:54:12 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Fri, 27 Jun 2014 13:00:18 +0200
-Message-Id: <1403866821-4029-10-git-send-email-holgerschurig@gmail.com>
+Date: Fri, 27 Jun 2014 13:00:19 +0200
+Message-Id: <1403866821-4029-11-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1403866821-4029-1-git-send-email-holgerschurig@gmail.com>
 References: <1403866821-4029-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,100 +23,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] doc: remove board type from barebox prompt examples
+Subject: [PATCH 10/12] doc: reformat overly long lines
 To: barebox@lists.infradead.org
 
-I kept however the one example that directly demos the bootup on an
-Efika board.
----
- Documentation/user/driver-model.rst |   10 +++++-----
- Documentation/user/networking.rst   |    2 +-
- Documentation/user/updating.rst     |    2 +-
- Documentation/user/variables.rst    |    2 +-
- 4 files changed, 8 insertions(+), 8 deletions(-)
+Lines over 120 are just too long :-)
 
-diff --git a/Documentation/user/driver-model.rst b/Documentation/user/driver-model.rst
-index fae275e..ab7d292 100644
---- a/Documentation/user/driver-model.rst
-+++ b/Documentation/user/driver-model.rst
-@@ -34,7 +34,7 @@ handled with device detection. The user visible interface to device detection
- is the :ref:`command_detect` command. ``detect -l`` shows a list of detectable
- devices::
+Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+---
+ Documentation/boards/imx/Phytec-phyCORE-i.MX31.rst |    9 +++++---
+ Documentation/boards/mxs/Chumby-Falconwing.rst     |   11 +++++++---
+ Documentation/boards/mxs/KaRo-TX28.rst             |    3 ++-
+ Documentation/boards/x86.rst                       |   23 +++++++++++++++-----
+ Documentation/filesystems/ramfs.rst                |    4 +++-
+ 5 files changed, 37 insertions(+), 13 deletions(-)
+
+diff --git a/Documentation/boards/imx/Phytec-phyCORE-i.MX31.rst b/Documentation/boards/imx/Phytec-phyCORE-i.MX31.rst
+index 1ea008f..45fd6be 100644
+--- a/Documentation/boards/imx/Phytec-phyCORE-i.MX31.rst
++++ b/Documentation/boards/imx/Phytec-phyCORE-i.MX31.rst
+@@ -6,7 +6,8 @@ The CPU module
  
--  barebox@Genesi Efika MX Smartbook:/ detect -l
-+  barebox:/ detect -l
-   70004000.esdhc
-   70008000.esdhc
-   73f80000.usb
-@@ -48,7 +48,7 @@ devices::
+ http://www.phytec.eu/europe/products/modules-overview/phycore/produktdetails/p/phycore-imx31-2.html
  
- A particular device can be detected with ``detect <devname>``::
+-This CPU card is based on a Freescale i.MX31 CPU. The card in configuration -0000REU is shipped with:
++This CPU card is based on a Freescale i.MX31 CPU. The card in
++configuration -0000REU is shipped with:
  
--  barebox@Genesi Efika MX Smartbook:/ detect 73f80200.usb
-+  barebox:/ detect 73f80200.usb
-   Found SMSC USB331x ULPI transceiver (0x0424:0x0006).
-   Bus 002 Device 004: ID 13d3:3273 802.11 n WLAN
-   mdio_bus: miibus0: probed
-@@ -67,7 +67,7 @@ additional information for a device. The parameters can be listed with the
- :ref:`command_devinfo` command. A ``devinfo <devicename>`` will print the parameters
- of a device::
+   * 128 MiB synchronous dynamic RAM (DDR type)
+   * 64 MiB NAND flash
+@@ -33,6 +34,8 @@ Build the binary image::
  
--  barebox@Genesi Efika MX Smartbook:/ devinfo eth0
-+  barebox:/ devinfo eth0
-   Parameters:
-     ipaddr: 192.168.23.197
-     serverip: 192.168.23.1
-@@ -82,9 +82,9 @@ The parameters can be used as shell variables::
+   make ARCH=arm CROSS_COMPILE=armv5compiler
  
- device variables may have a type, so assigning wrong values may fail::
+-**NOTE:** replace ''armv5compiler'' with your ARM v5 cross compiler, e.g.: ''arm-1136jfs-linux-gnueabi-''
++**NOTE:** replace ''armv5compiler'' with your ARM v5 cross compiler,
++ e.g.: ''arm-1136jfs-linux-gnueabi-''
  
--  barebox@Genesi Efika MX Smartbook:/ eth0.ipaddr="This is not an IP"
-+  barebox:/ eth0.ipaddr="This is not an IP"
-   set parameter: Invalid argument
--  barebox@Genesi Efika MX Smartbook:/ echo $?
-+  barebox:/ echo $?
-   1
+-The resulting binary image to be flashed will be barebox.bin, whereas the file named just barebox is an ELF executable for ARM.
++The resulting binary image to be flashed will be barebox.bin, whereas
++the file named just barebox is an ELF executable for ARM.
+diff --git a/Documentation/boards/mxs/Chumby-Falconwing.rst b/Documentation/boards/mxs/Chumby-Falconwing.rst
+index 4cf4591..79bff70 100644
+--- a/Documentation/boards/mxs/Chumby-Falconwing.rst
++++ b/Documentation/boards/mxs/Chumby-Falconwing.rst
+@@ -37,10 +37,15 @@ How to prepare an MCI card to boot the "chumby one" with barebox
+     * the third one for the kernel (2 MiB ... 4 MiB in size)
+     * the 4th one for the root filesystem which can fill the rest of the available space
  
- **HINT:** barebox has tab completion for variables. Typing ``eth0.<TAB><TAB>``
-diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
-index c22685f..9c6eeb6 100644
---- a/Documentation/user/networking.rst
-+++ b/Documentation/user/networking.rst
-@@ -14,7 +14,7 @@ device is usually ``eth0``. The current configuration can be viewed with the
+-  * Mark the first partition with the partition ID "53" and copy the bootlets into this partition (currently not part of @b barebox!).
++  * Mark the first partition with the partition ID "53" and copy the
++    bootlets into this partition (currently not part of @b barebox!).
  
- .. code-block:: sh
+-  * Copy the default @b barebox environment into the second partition (no filesystem required).
++  * Copy the default @b barebox environment into the second partition
++    (no filesystem required).
  
--  barebox@Genesi Efika MX Smartbook:/ devinfo eth0
-+  barebox:/ devinfo eth0
-   Parameters:
-     ipaddr: 192.168.23.197
-     serverip: 192.168.23.1
-diff --git a/Documentation/user/updating.rst b/Documentation/user/updating.rst
-index 0503e7d..2a963b6 100644
---- a/Documentation/user/updating.rst
-+++ b/Documentation/user/updating.rst
-@@ -18,7 +18,7 @@ Updating barebox can be as easy as::
- Multiple handlers can be registered to the update mechanism. Usually the device
- barebox has been started from is registered as default (marked with a ``*``)::
+   * Copy the kernel into the third partition (no filesystem required).
  
--  barebox@Genesi Efika MX Smartbook:/ barebox_update -l
-+  barebox:/ barebox_update -l
-   registered update handlers:
-   * mmc         -> /dev/mmc1
-     spinor	-> /dev/m25p0
-diff --git a/Documentation/user/variables.rst b/Documentation/user/variables.rst
-index e349874..13477a0 100644
---- a/Documentation/user/variables.rst
-+++ b/Documentation/user/variables.rst
-@@ -33,7 +33,7 @@ Since it's hard to remember which variables these are and if the current
- barebox has support for them the :ref:`command_magicvar` command can print a list
- of all variables with special meaning along with a short description::
+-  * Create the root filesystem in the 4th partition. You may copy an image into this partition or you can do it in the classic way: mkfs on it, mount it and copy all required data and programs into it.
++  * Create the root filesystem in the 4th partition. You may copy an
++    image into this partition or you can do it in the classic way:
++    mkfs on it, mount it and copy all required data and programs into
++    it.
+diff --git a/Documentation/boards/mxs/KaRo-TX28.rst b/Documentation/boards/mxs/KaRo-TX28.rst
+index 85d200b..15984d7 100644
+--- a/Documentation/boards/mxs/KaRo-TX28.rst
++++ b/Documentation/boards/mxs/KaRo-TX28.rst
+@@ -36,7 +36,8 @@ Build the binary image::
+ **NOTE:** to use the result, you also need the following resources from Freescale:
+   * the 'bootlets' archive
+   * the 'elftosb2' encryption tool
+-  * in the case you want to start @b barebox from an attached SD card the 'sdimage' tool from Freescale's 'uuc' archive.
++  * in the case you want to start @b barebox from an attached SD card
++    the 'sdimage' tool from Freescale's 'uuc' archive.
  
--  barebox@Genesi Efika MX Smartbook:/ magicvar
-+  barebox:/ magicvar
-   OPTARG                           optarg for hush builtin getopt
-   PATH                             colon separated list of pathes to search for executables
-   PS1                              hush prompt
+ Memory layout when barebox is running
+ -------------------------------------
+diff --git a/Documentation/boards/x86.rst b/Documentation/boards/x86.rst
+index 4e7ccd8..ee5e869 100644
+--- a/Documentation/boards/x86.rst
++++ b/Documentation/boards/x86.rst
+@@ -16,11 +16,24 @@ Restrictions
+ Due to some BIOS and barebox restrictions the boot media must be
+ prepared in some special way:
+ 
+-  * barebox must be stored in the MBR (Master Boot Record) of the boot media. Currently its not possible to store and boot it in one of the partition sectors  to use it as a second stage loader). This is no eternal restriction. It only needs further effort to add this feature.
+-  * barebox currently cannot run a chained boot loader. Also, this is no external restriction, only further effort needed.
+-  * barebox comes with limited filesystem support. There is currently no support for the most common and popular filesystems used in the \*NIX world. This restricts locations where to store a kernel and other runtime information
+-  * barebox must be stored to the first n sectors of the boot media. To ensure this does not collide with partitions on the boot media, the first partition must start at a sector behind the ones barebox occupies.
+-  * barebox handles its runtime configuration in a special way: It stores it in a binary way into some reserved sectors ("persistant storage").
++  * barebox must be stored in the MBR (Master Boot Record) of the boot
++    media. Currently its not possible to store and boot it in one of
++    the partition sectors to use it as a second stage loader). This is
++    no eternal restriction. It only needs further effort to add this
++    feature.
++  * barebox currently cannot run a chained boot loader. Also, this is
++    no external restriction, only further effort needed.
++  * barebox comes with limited filesystem support. There is currently
++    no support for the most common and popular filesystems used in the
++    \*NIX world. This restricts locations where to store a kernel and
++    other runtime information
++  * barebox must be stored to the first n sectors of the boot media.
++    To ensure this does not collide with partitions on the boot media,
++    the first partition must start at a sector behind the ones barebox
++    occupies.
++  * barebox handles its runtime configuration in a special way: It
++    stores it in a binary way into some reserved sectors ("persistant
++    storage").
+ 
+ Boot Preparations
+ -----------------
+diff --git a/Documentation/filesystems/ramfs.rst b/Documentation/filesystems/ramfs.rst
+index 2921a35..70e7282 100644
+--- a/Documentation/filesystems/ramfs.rst
++++ b/Documentation/filesystems/ramfs.rst
+@@ -3,7 +3,9 @@
+ RAM filesystem
+ ==============
+ 
+-ramfs is a simple malloc based filesystem. An instance of ramfs is mounted during startup on /. The filesystem type passed to mount is 'ramfs'
++ramfs is a simple malloc based filesystem. An instance of ramfs is
++mounted during startup on /. The filesystem type passed to mount is
++'ramfs'
+ 
+ example::
+ 
 -- 
 1.7.10.4
 
