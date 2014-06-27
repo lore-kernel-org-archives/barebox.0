@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X0Vqx-0003F1-23
- for barebox@lists.infradead.org; Fri, 27 Jun 2014 13:06:07 +0000
-Date: Fri, 27 Jun 2014 09:01:34 -0400 (EDT)
+ id 1X0WE8-0001Oc-LU
+ for barebox@lists.infradead.org; Fri, 27 Jun 2014 13:30:05 +0000
+Received: from [69.196.158.250] (port=33375 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
+ (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
+ id 1X0WDl-00074v-1V
+ for barebox@lists.infradead.org; Fri, 27 Jun 2014 09:29:41 -0400
+Date: Fri, 27 Jun 2014 09:25:31 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <CAOpc7mE1Z120BKc3bc8XDg2TaYUw6p3aKCE+dvwYOrhGrvTepg@mail.gmail.com>
-Message-ID: <alpine.LFD.2.11.1406270858110.6308@localhost>
-References: <alpine.LFD.2.11.1406270830070.5167@localhost>
- <CAOpc7mE1Z120BKc3bc8XDg2TaYUw6p3aKCE+dvwYOrhGrvTepg@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1406270924150.7069@localhost>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,33 +24,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: why is some output placed under "srctree" even if i specify
- output dir?
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH] Documentation: Fix broken line in download.rst.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Fri, 27 Jun 2014, Holger Schurig wrote:
 
-> Oh, that's interesting. Because sphinx-build can only be taught
-> about one sourcedir. But in the srctree != objtree case we have two
-> source dirs: the in srctree/Documentation with the provided *.rst
-> files, and the objtree/Documentation/commands, with those files that
->
->    @$(srctree)/Documentation/gen_commands.py $(srctree)
-> $(objtree)/Documentation/commands
->
-> could generate.
->
-> Maybe gen_commands should also update the static *.rst files if
-> srctree != objtree?
+"::" should properly be "..".
 
-  ok, that's something that can be decided by those of you higher up
-the food chain; as i said, my only concern is that if i select an
-external build directory, nothing should really be generated in the
-source directory. but maybe i'm still unfamiliar with the build model
-here -- still reading the sphinx docs, starting to really like this.
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-rday
+---
+
+diff --git a/Documentation/download.rst b/Documentation/download.rst
+index 9e30efe..1c7e84f 100644
+--- a/Documentation/download.rst
++++ b/Documentation/download.rst
+@@ -1,4 +1,4 @@
+-:: _download:
++.. _download:
+
+ Getting barebox
+ ===============
 
 -- 
 
