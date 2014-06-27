@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x229.google.com ([2a00:1450:400c:c03::229])
+Received: from mail-wg0-x231.google.com ([2a00:1450:400c:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X0TnV-0004Se-9M
- for barebox@lists.infradead.org; Fri, 27 Jun 2014 10:54:26 +0000
-Received: by mail-we0-f169.google.com with SMTP id t60so5056213wes.14
- for <barebox@lists.infradead.org>; Fri, 27 Jun 2014 03:54:03 -0700 (PDT)
+ id 1X0TnZ-0004TO-2u
+ for barebox@lists.infradead.org; Fri, 27 Jun 2014 10:54:29 +0000
+Received: by mail-wg0-f49.google.com with SMTP id y10so5010373wgg.8
+ for <barebox@lists.infradead.org>; Fri, 27 Jun 2014 03:54:08 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Fri, 27 Jun 2014 13:00:11 +0200
-Message-Id: <1403866821-4029-3-git-send-email-holgerschurig@gmail.com>
+Date: Fri, 27 Jun 2014 13:00:15 +0200
+Message-Id: <1403866821-4029-7-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1403866821-4029-1-git-send-email-holgerschurig@gmail.com>
 References: <1403866821-4029-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,50 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] doc: make "System setup" an appendix
+Subject: [PATCH 06/12] doc: mention "make xconfig"
 To: barebox@lists.infradead.org
-
-Note that I used "Appendix: " as text, because it looks like
-python-sphinx doesn't know about appendices.
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
- Documentation/user/system-setup.rst |    4 ++--
- Documentation/user/user-manual.rst  |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ Documentation/user/barebox.rst |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/user/system-setup.rst b/Documentation/user/system-setup.rst
-index 35d6147..683da9e 100644
---- a/Documentation/user/system-setup.rst
-+++ b/Documentation/user/system-setup.rst
-@@ -1,5 +1,5 @@
--System Setup
--============
-+Appendix: System Setup
-+======================
+diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
+index bab0260..70bdedc 100644
+--- a/Documentation/user/barebox.rst
++++ b/Documentation/user/barebox.rst
+@@ -100,6 +100,9 @@ with the most popular being ``menuconfig``::
  
- Serial Console Access
- ---------------------
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index 4e2a250..fc97bac 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -10,7 +10,6 @@ Contents:
-    :maxdepth: 2
+   make menuconfig
  
-    introduction
--   system-setup
-    barebox
-    networking
-    automount
-@@ -27,6 +26,7 @@ Contents:
-    usb
-    ubi
-    booting-linux
-+   system-setup
++barebox used the same configuration system as Linux, so you can use
++all the things you know, e.g. ``make xconfig``, ``make allyesconfig`` etc.
++
+ Compilation
+ -----------
  
- * :ref:`search`
- * :ref:`genindex`
 -- 
 1.7.10.4
 
