@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X0UjW-0006kl-PG
- for barebox@lists.infradead.org; Fri, 27 Jun 2014 11:54:23 +0000
-Date: Fri, 27 Jun 2014 07:49:49 -0400 (EDT)
+ id 1X0VQN-0005l8-UC
+ for barebox@lists.infradead.org; Fri, 27 Jun 2014 12:38:40 +0000
+Received: from [69.196.158.250] (port=60939 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
+ (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
+ id 1X0VQ0-0004vP-RR
+ for barebox@lists.infradead.org; Fri, 27 Jun 2014 08:38:16 -0400
+Date: Fri, 27 Jun 2014 08:34:07 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <CAOpc7mHqg00i7-R4yfiPjVg9SudWYq7A_WiAtYfNctGr4_ZqEA@mail.gmail.com>
-Message-ID: <alpine.LFD.2.11.1406270745300.3483@localhost>
-References: <alpine.LFD.2.11.1406261725570.2448@localhost>
- <20140627045150.GN14257@pengutronix.de>
- <alpine.LFD.2.11.1406270502570.4443@localhost>
- <CAOpc7mHqg00i7-R4yfiPjVg9SudWYq7A_WiAtYfNctGr4_ZqEA@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1406270830070.5167@localhost>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,34 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: where is Documentation/parameters.txt?
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: why is some output placed under "srctree" even if i specify output
+ dir?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Fri, 27 Jun 2014, Holger Schurig wrote:
 
-> >   oh, sorry, i missed that doc *branch*, my fault.
->
-> It's totally new ... and awesome (compared to the old docs).
+  perhaps another silly question, but i typically like to build with
+all output generated in an external directory to keep my source
+directory clean, but if i do that building the docs for barebox on the
+"doc" branch:
 
-  ok, possibly a silly question but, as i now read it, if i want to
-work with the sphinx-based docs, i should be working off the "doc"
-branch and restrict my changes to just the files in the Documentation
-directory.
+  $ export KBUILD_OUTPUT=../barebox_build
+  $ make docs
 
-  but recently, i submitted a patch to correct the misspelling
-"persistant", and some of those changes were in Documentation/, while
-other examples of that were scattered elsewhere (arch/, scripts/).
+i still get the output files "Documentation/commands/*.rst" dumped in
+my source directory because of:
 
-  so what's the protocol for correcting "documentation" (eg., inline
-comments in source files) as opposed to the content under
-Documentation? should non-Documentation patches be submitted against
-the master branch? or does the "doc" branch track master closely
-enough that i can exclusively stay on the "doc" branch?
+docs: FORCE
+        @mkdir -p $(srctree)/Documentation/commands
+        @$(srctree)/Documentation/gen_commands.py $(srctree) $(srctree)/Documentation/commands
+        @$(SPHINXBUILD) -b html -d $(objtree)/doctrees $(srctree)/Documentation \
+                $(objtree)/Documentation/html
 
-  as in, should i resubmit that earlier patch broken into two parts?
-and if one submits a patch against the "doc" branch, should that be
-identified in the patch itself? the subject line?
+is this deliberate? it strikes me as inconsistent if i *explicitly*
+specify an external build directory.
 
 rday
 
@@ -64,8 +60,6 @@ Robert P. J. Day                                 Ottawa, Ontario, CANADA
 Twitter:                                       http://twitter.com/rpjday
 LinkedIn:                               http://ca.linkedin.com/in/rpjday
 ========================================================================
-
-
 
 _______________________________________________
 barebox mailing list
