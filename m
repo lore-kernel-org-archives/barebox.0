@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X0fcw-0002uI-Pc
- for barebox@lists.infradead.org; Fri, 27 Jun 2014 23:32:19 +0000
-Date: Sat, 28 Jun 2014 01:31:52 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140627233152.GU14257@pengutronix.de>
-References: <53AC8965.4020806@web.de>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X0pqq-0006p4-4B
+ for barebox@lists.infradead.org; Sat, 28 Jun 2014 10:27:20 +0000
+Received: from [99.240.204.5] (port=39457 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
+ (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
+ id 1X0pqH-0007vP-RV
+ for barebox@lists.infradead.org; Sat, 28 Jun 2014 06:26:45 -0400
+Date: Sat, 28 Jun 2014 06:22:39 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Message-ID: <alpine.LFD.2.11.1406280621410.30555@localhost>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <53AC8965.4020806@web.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +20,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AM335x NAND
-To: Stefan =?iso-8859-15?Q?M=FCller-Klieser?= <stefan.mueller-klieser@web.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Documentation: Minor editing changes to filesystems content.
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Hi Stefan,
 
-On Thu, Jun 26, 2014 at 10:58:13PM +0200, Stefan M=FCller-Klieser wrote:
-> Dear list,
-> =
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-> I am working on TI's AM335x SoCs and want to add support for the missing
-> NAND controller features in the driver. As the NAND interface of the
-> barebox is not in sync with the kernel, it is difficult for me to decide
-> which way to go. Is there already work going on to update the barebox
-> NAND driver? I suppose the barebox nand_omap_gpmc is a port of the
-> u-boot NAND driver. So, should I port the features from the u-boot
-> driver into barebox, e.g. ELM and HW BCH16 support, or are there
-> different plans from the maintainer?
+---
 
-I have no further plans with nand_omap_gpmc. Note the driver can switch
-the ecc correction type during runtime. We have to do this since the
-boot ROM needs a different ecc layout than the rest of the NAND does.
-I don't want to lose this feature. Other than that feel free to update
-the driver with new features.
+diff --git a/Documentation/filesystems/nfs.rst b/Documentation/filesystems/nfs.rst
+index b8ad4f3..f4eda5d 100644
+--- a/Documentation/filesystems/nfs.rst
++++ b/Documentation/filesystems/nfs.rst
+@@ -5,7 +5,7 @@
+ NFS Support
+ ===========
 
-Sascha
+-barebox has readonly support for NFSv3 un UDP mode.
++barebox has readonly support for NFSv3 in UDP mode.
 
--- =
+ Example::
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/Documentation/filesystems/ramfs.rst b/Documentation/filesystems/ramfs.rst
+index 70e7282..b7ece1a 100644
+--- a/Documentation/filesystems/ramfs.rst
++++ b/Documentation/filesystems/ramfs.rst
+@@ -3,10 +3,10 @@
+ RAM filesystem
+ ==============
+
+-ramfs is a simple malloc based filesystem. An instance of ramfs is
+-mounted during startup on /. The filesystem type passed to mount is
+-'ramfs'
++ramfs is a simple malloc-based filesystem. An instance of ramfs is
++mounted during startup on /. The filesystem type passed to ``mount``
++is ``ramfs``.
+
+-example::
++Example::
+
+   mount none ramfs /somedir
+diff --git a/Documentation/filesystems/tftp.rst b/Documentation/filesystems/tftp.rst
+index 273be5e..e0a1159 100644
+--- a/Documentation/filesystems/tftp.rst
++++ b/Documentation/filesystems/tftp.rst
+@@ -8,8 +8,8 @@ TFTP support
+ barebox has read/write support for the Trivial File Transfer Protocol.
+
+ TFTP is not designed as a filesystem. It does not have support for listing
+-directories. This means a :ref:`command_ls` to a TFTP mounted path will show an empty
+-directory. Nevertheless the files are there.
++directories. This means a :ref:`command_ls` to a TFTP-mounted path will show an empty
++directory. Nevertheless, the files are there.
+
+ Example::
+
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
