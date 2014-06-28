@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X0rIa-0004IW-M5
- for barebox@lists.infradead.org; Sat, 28 Jun 2014 12:00:05 +0000
-Date: Sat, 28 Jun 2014 07:55:35 -0400 (EDT)
+ id 1X0sPC-0003Rb-Cp
+ for barebox@lists.infradead.org; Sat, 28 Jun 2014 13:11:06 +0000
+Received: from [99.240.204.5] (port=41628 helo=crashcourse.ca)
+ by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
+ (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
+ id 1X0sOp-0004V2-3T
+ for barebox@lists.infradead.org; Sat, 28 Jun 2014 09:10:35 -0400
+Date: Sat, 28 Jun 2014 09:06:27 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <1403956647.2179.4.camel@tellur>
-Message-ID: <alpine.LFD.2.11.1406280754580.752@localhost>
-References: <alpine.LFD.2.11.1406280715120.32090@localhost>
- <1403956647.2179.4.camel@tellur>
+Message-ID: <alpine.LFD.2.11.1406280904330.2486@localhost>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,25 +24,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: and what is "i.MX1"?
-To: Lucas Stach <dev@lynxeye.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: in sphinx docs, what is "@b barebox" markup supposed to do?
+To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Sat, 28 Jun 2014, Lucas Stach wrote:
 
-> Am Samstag, den 28.06.2014, 07:16 -0400 schrieb Robert P. J. Day:
-> >   whoops, also noticed this for Synertronixx scb9328:
-> >
-> > "This CPU card is based on a Freescale i.MX1 CPU."
-> >
-> > Should that not say "i.MXL", not "i.MX1"? or am i just being clueless?
-> >
-> It's not an L but a 1, as in one.
->
-> http://www.freescale.com/webapp/sps/site/prod_summary.jsp?code=i.MX1
+  a number of places in the docs contain the markup "@b barebox". how
+is that supposed to render? it just shows up as, verbatim, "@b
+barebox" (see, for example, the board page for chumbyone).
 
-  ah, you're right, i got confused by the fact that there *is* a
-i.MXL.
+  thoughts?
 
 rday
 
