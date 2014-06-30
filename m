@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1ecK-0006Ve-Uh
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 16:39:46 +0000
-Date: Mon, 30 Jun 2014 12:34:35 -0400 (EDT)
+ id 1X1ezs-00010x-6P
+ for barebox@lists.infradead.org; Mon, 30 Jun 2014 17:04:05 +0000
+Date: Mon, 30 Jun 2014 12:59:17 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 In-Reply-To: <20140630160839.GL14257@pengutronix.de>
-Message-ID: <alpine.LFD.2.11.1406301230030.30890@localhost>
+Message-ID: <alpine.LFD.2.11.1406301257390.361@localhost>
 References: <alpine.LFD.2.11.1406301040190.13816@localhost>
  <20140630160839.GL14257@pengutronix.de>
 MIME-Version: 1.0
@@ -50,18 +50,16 @@ On Mon, 30 Jun 2014, Sascha Hauer wrote:
 >
 > I have no good idea how to solve this, other than copying all doc files
 > to $(objtree)/Documentation before calling sphinxs-build.
+> Sascha
 
-  hmmmmmm ... i seem to be able to generate the docs out of tree just
-fine. i'll check again and make sure. all i'm doing is setting:
+  ah, i see what you mean ... i was running
 
-  $ export KBUILD_OUTPUT=<dest dir>
+  $ git status -u
 
-and running
+to get a list of generated files in the source tree, but didn't notice
+that .rst files were set as being ignored, so i can see them now with:
 
-  $ make docs
-
-and the sphinx-based documentation appears to be created just fine in
-that output/build directory. am i misunderstanding something here?
+  $ git status -u --ignored
 
 rday
 
