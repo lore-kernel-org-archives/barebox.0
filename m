@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1hkg-00052f-44
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 20:00:36 +0000
-Received: by mail-la0-f43.google.com with SMTP id e16so5199305lan.2
- for <barebox@lists.infradead.org>; Mon, 30 Jun 2014 13:00:10 -0700 (PDT)
+ id 1X1hkb-00052D-DN
+ for barebox@lists.infradead.org; Mon, 30 Jun 2014 20:00:33 +0000
+Received: by mail-lb0-f181.google.com with SMTP id p9so6123979lbv.26
+ for <barebox@lists.infradead.org>; Mon, 30 Jun 2014 13:00:06 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 30 Jun 2014 23:59:47 +0400
-Message-Id: <1404158389-14632-5-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 30 Jun 2014 23:59:45 +0400
+Message-Id: <1404158389-14632-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1404158389-14632-1-git-send-email-antonynpavlov@gmail.com>
 References: <1404158389-14632-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,686 +23,1084 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v4 4/6] net: add RealTek RTL-8139 PCI Ethernet driver
+Subject: [RFC v4 2/6] PCI: initial commit
 To: barebox@lists.infradead.org
 
-This driver is based on Linux 2.6.39 8139too driver.
+used shorten version of linux-2.6.39 pci_ids.h
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/net/Kconfig     |   8 +
- drivers/net/Makefile    |   1 +
- drivers/net/rtl8139.c   | 616 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/pci_ids.h |   5 +
- 4 files changed, 630 insertions(+)
+ drivers/Kconfig                 |   1 +
+ drivers/Makefile                |   1 +
+ drivers/pci/Kconfig             |  29 ++++
+ drivers/pci/Makefile            |   8 ++
+ drivers/pci/bus.c               | 110 +++++++++++++++
+ drivers/pci/pci.c               | 285 +++++++++++++++++++++++++++++++++++++++
+ include/linux/mod_devicetable.h |  20 +++
+ include/linux/pci.h             | 292 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/pci_ids.h         | 136 +++++++++++++++++++
+ include/linux/pci_regs.h        | 110 +++++++++++++++
+ 10 files changed, 992 insertions(+)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 7a0d5e1..975c927 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -130,6 +130,14 @@ config DRIVER_NET_ORION
- 	select PHYLIB
- 	select MDIO_MVEBU
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 53e1e97..12a9d8c 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -27,5 +27,6 @@ source "drivers/pinctrl/Kconfig"
+ source "drivers/bus/Kconfig"
+ source "drivers/regulator/Kconfig"
+ source "drivers/reset/Kconfig"
++source "drivers/pci/Kconfig"
  
-+config DRIVER_NET_RTL8139
-+	bool "RealTek RTL-8139 PCI Ethernet driver"
-+	depends on PCI
-+	select PHYLIB
-+	help
-+	  This is a driver for the Fast Ethernet PCI network cards based on
-+	  the RTL 8139 chips.
-+
- config DRIVER_NET_SMC911X
- 	bool "smc911x ethernet driver"
- 	select PHYLIB
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 65f0d8b..d907061 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -20,6 +20,7 @@ obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
- obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
- obj-$(CONFIG_DRIVER_NET_NETX)		+= netx_eth.o
- obj-$(CONFIG_DRIVER_NET_ORION)		+= orion-gbe.o
-+obj-$(CONFIG_DRIVER_NET_RTL8139)	+= rtl8139.o
- obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
- obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
- obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
-diff --git a/drivers/net/rtl8139.c b/drivers/net/rtl8139.c
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index ef3604f..1990e86 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -26,3 +26,4 @@ obj-y += pinctrl/
+ obj-y += bus/
+ obj-$(CONFIG_REGULATOR) += regulator/
+ obj-$(CONFIG_RESET_CONTROLLER) += reset/
++obj-$(CONFIG_PCI) += pci/
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
 new file mode 100644
-index 0000000..82c3585
+index 0000000..9e46592
 --- /dev/null
-+++ b/drivers/net/rtl8139.c
-@@ -0,0 +1,616 @@
++++ b/drivers/pci/Kconfig
+@@ -0,0 +1,29 @@
++config HW_HAS_PCI
++	bool
++
++if HW_HAS_PCI
++
++menu "PCI bus options"
++
++config PCI
++	bool "Support for PCI controller"
++	depends on HW_HAS_PCI
++	help
++	  Find out whether you have a PCI motherboard. PCI is the name of a
++	  bus system, i.e. the way the CPU talks to the other stuff inside
++	  your box. If you have PCI, say Y, otherwise N.
++
++
++config PCI_DEBUG
++	bool "PCI Debugging"
++	depends on PCI
++	help
++	  Say Y here if you want the PCI core to produce a bunch of debug
++	  messages to the system log.  Select this if you are having a
++	  problem with PCI support and want to see more of what is going on.
++
++	  When in doubt, say N.
++
++endmenu
++
++endif
+diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
+new file mode 100644
+index 0000000..c7d43c3
+--- /dev/null
++++ b/drivers/pci/Makefile
+@@ -0,0 +1,8 @@
++#
++# Makefile for the PCI bus specific drivers.
++#
++obj-y		+= pci.o bus.o
++
++ccflags-$(CONFIG_PCI_DEBUG) := -DDEBUG
++
++CPPFLAGS += $(ccflags-y)
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+new file mode 100644
+index 0000000..8215ee5
+--- /dev/null
++++ b/drivers/pci/bus.c
+@@ -0,0 +1,110 @@
 +#include <common.h>
-+#include <net.h>
-+#include <malloc.h>
 +#include <init.h>
-+#include <xfuncs.h>
-+#include <errno.h>
-+#include <io.h>
-+#include <linux/phy.h>
++#include <driver.h>
 +#include <linux/pci.h>
 +
-+#include <asm/dma-mapping.h>
-+
-+#define RTL8139_DEBUG
-+#undef RTL8139_DEBUG
-+
-+/*
-+ * Receive ring size
-+ * Warning: 64K ring has hardware issues and may lock up.
++/**
++ * pci_match_one_device - Tell if a PCI device structure has a matching
++ *                        PCI device id structure
++ * @id: single PCI device id structure to match
++ * @dev: the PCI device structure to match against
++ *
++ * Returns the matching pci_device_id structure or %NULL if there is no match.
 + */
-+#define RX_BUF_IDX	0	/* 8K ring */
-+#define RX_BUF_LEN	(8192 << RX_BUF_IDX)
-+#define RX_BUF_PAD	16
-+#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of packet wrap */
-+
-+#if RX_BUF_LEN == 65536
-+#define RX_BUF_TOT_LEN	RX_BUF_LEN
-+#else
-+#define RX_BUF_TOT_LEN	(RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
-+#endif
-+
-+/* Number of Tx descriptor registers. */
-+#define NUM_TX_DESC	4
-+
-+/* max supported ethernet frame size -- must be at least (dev->mtu+14+4).*/
-+#define MAX_ETH_FRAME_SIZE	1536
-+
-+/* Size of the Tx bounce buffers -- must be at least (dev->mtu+14+4). */
-+#define TX_BUF_SIZE	MAX_ETH_FRAME_SIZE
-+#define TX_BUF_TOT_LEN	(TX_BUF_SIZE * NUM_TX_DESC)
-+
-+/* PCI Tuning Parameters
-+   Threshold is bytes transferred to chip before transmission starts. */
-+#define TX_FIFO_THRESH 256	/* In bytes, rounded down to 32 byte units. */
-+
-+/* The following settings are log_2(bytes)-4:  0 == 16 bytes .. 6==1024, 7==end of packet. */
-+#define RX_FIFO_THRESH	7	/* Rx buffer level before first PCI xfer.  */
-+#define RX_DMA_BURST	7	/* Maximum PCI burst, '6' is 1024 */
-+#define TX_DMA_BURST	6	/* Maximum PCI burst, '6' is 1024 */
-+#define TX_RETRY	8	/* 0-15.  retries = 16 + (TX_RETRY * 16) */
-+
-+struct rtl8139_priv {
-+	struct eth_device	edev;
-+	void __iomem		*base;
-+	struct pci_dev		*pci_dev;
-+	unsigned char		*rx_ring;
-+	unsigned int		cur_rx; /* RX buf index of next pkt */
-+	dma_addr_t		rx_ring_dma;
-+
-+	u32			rx_config;
-+	unsigned int		tx_flag;
-+	unsigned long		cur_tx;
-+	unsigned long		dirty_tx;
-+	unsigned char		*tx_buf[NUM_TX_DESC];   /* Tx bounce buffers */
-+	unsigned char		*tx_bufs;       /* Tx bounce buffer region. */
-+	dma_addr_t		tx_bufs_dma;
-+
-+	struct mii_bus miibus;
-+};
-+
-+#define ETH_ZLEN        60              /* Min. octets in frame sans FCS */
-+
-+/* Registers */
-+#define MAC0		0x00
-+#define MAR0		0x08
-+#define TxStatus0	0x10
-+
-+enum TxStatusBits {
-+	TxHostOwns	= 0x2000,
-+	TxUnderrun	= 0x4000,
-+	TxStatOK	= 0x8000,
-+	TxOutOfWindow	= 0x20000000,
-+	TxAborted	= 0x40000000,
-+	TxCarrierLost	= 0x80000000,
-+};
-+
-+#define TxAddr0		0x20
-+#define RxBuf		0x30
-+#define ChipCmd		0x37
-+#define  CmdReset	0x10
-+#define  CmdRxEnb	0x08
-+#define  CmdTxEnb	0x04
-+#define  RxBufEmpty	0x01
-+#define RxBufPtr	0x38
-+#define RxBufAddr	0x3A
-+#define IntrMask	0x3C
-+#define IntrStatus	0x3E
-+#define  PCIErr		0x8000
-+#define  PCSTimeout	0x4000
-+#define  RxFIFOOver	0x0040
-+#define  RxUnderrun	0x0020
-+#define  RxOverflow	0x0010
-+#define  TxErr		0x0008
-+#define  TxOK		0x0004
-+#define  RxErr		0x0002
-+#define  RxOK		0x0001
-+#define    RxAckBits	(RxFIFOOver | RxOverflow | RxOK)
-+
-+#define TxConfig	0x40
-+/* Bits in TxConfig. */
-+enum tx_config_bits {
-+	/* Interframe Gap Time. Only TxIFG96 doesn't violate IEEE 802.3 */
-+	TxIFGShift	= 24,
-+	TxIFG84		= (0 << TxIFGShift), /* 8.4us / 840ns (10 / 100Mbps) */
-+	TxIFG88		= (1 << TxIFGShift), /* 8.8us / 880ns (10 / 100Mbps) */
-+	TxIFG92		= (2 << TxIFGShift), /* 9.2us / 920ns (10 / 100Mbps) */
-+	TxIFG96		= (3 << TxIFGShift), /* 9.6us / 960ns (10 / 100Mbps) */
-+
-+	TxLoopBack	= (1 << 18) | (1 << 17), /* enable loopback test mode */
-+	TxCRC		= (1 << 16),	/* DISABLE Tx pkt CRC append */
-+	TxClearAbt	= (1 << 0),	/* Clear abort (WO) */
-+	TxDMAShift	= 8, /* DMA burst value (0-7) is shifted X many bits */
-+	TxRetryShift	= 4, /* TXRR value (0-15) is shifted X many bits */
-+
-+	TxVersionMask	= 0x7C800000, /* mask out version bits 30-26, 23 */
-+};
-+
-+#define RxConfig	0x44
-+	/* rx fifo threshold */
-+#define  RxCfgFIFOShift	13
-+#define	 RxCfgFIFONone	(7 << RxCfgFIFOShift)
-+	/* Max DMA burst */
-+#define	 RxCfgDMAShift	8
-+#define	 RxCfgDMAUnlimited (7 << RxCfgDMAShift)
-+	/* rx ring buffer length */
-+#define	 RxCfgRcv8K	0
-+#define	 RxCfgRcv16K	(1 << 11)
-+#define	 RxCfgRcv32K	(1 << 12)
-+#define	 RxCfgRcv64K	((1 << 11) | (1 << 12))
-+	/* Disable packet wrap at end of Rx buffer. (not possible with 64k) */
-+#define	 RxNoWrap	(1 << 7)
-+#define	 AcceptErr		0x20
-+#define	 AcceptRunt		0x10
-+#define	 AcceptBroadcast	0x08
-+#define	 AcceptMulticast	0x04
-+#define	 AcceptMyPhys		0x02
-+#define	 AcceptAllPhys		0x01
-+
-+#define RxMissed	0x4C
-+#define Cfg9346		0x50
-+#define  Cfg9346_Lock	0x00
-+#define  Cfg9346_Unlock	0xC0
-+#define BasicModeCtrl	0x62
-+#define BasicModeStatus	0x64
-+#define NWayAdvert	0x66
-+#define NWayLPAR	0x68
-+#define NWayExpansion	0x6a
-+
-+static const char mii_2_8139_map[8] = {
-+	BasicModeCtrl,
-+	BasicModeStatus,
-+	0,
-+	0,
-+	NWayAdvert,
-+	NWayLPAR,
-+	NWayExpansion,
-+	0
-+};
-+
-+/* write MMIO register */
-+#define RTL_W8(priv, reg, val)	writeb(val, ((char *)(priv->base) + reg))
-+#define RTL_W16(priv, reg, val)	writew(val, ((char *)(priv->base) + reg))
-+#define RTL_W32(priv, reg, val)	writel(val, ((char *)(priv->base) + reg))
-+
-+/* read MMIO register */
-+#define RTL_R8(priv, reg)	readb(((char *)(priv->base) + reg))
-+#define RTL_R16(priv, reg)	readw(((char *)(priv->base) + reg))
-+#define RTL_R32(priv, reg)	readl(((char *)(priv->base) + reg))
-+
-+/* write MMIO register, with flush */
-+/* Flush avoids rtl8139 bug w/ posted MMIO writes */
-+static inline void RTL_W8_F(struct rtl8139_priv *priv, int reg, int val)
++static inline const struct pci_device_id *
++pci_match_one_device(const struct pci_device_id *id, const struct pci_dev *dev)
 +{
-+	RTL_W8(priv, reg, val);
-+	RTL_R8(priv, reg);
++	if ((id->vendor == PCI_ANY_ID || id->vendor == dev->vendor) &&
++	    (id->device == PCI_ANY_ID || id->device == dev->device) &&
++	    (id->subvendor == PCI_ANY_ID || id->subvendor == dev->subsystem_vendor) &&
++	    (id->subdevice == PCI_ANY_ID || id->subdevice == dev->subsystem_device) &&
++	    !((id->class ^ dev->class) & id->class_mask))
++		return id;
++	return NULL;
 +}
 +
-+static inline void RTL_W16_F(struct rtl8139_priv *priv, int reg, int val)
++static int pci_match(struct device_d *dev, struct driver_d *drv)
 +{
-+	RTL_W16(priv, reg, val);
-+	RTL_R16(priv, reg);
-+}
++	struct pci_dev *pdev = to_pci_dev(dev);
++	struct pci_driver *pdrv = to_pci_driver(drv);
++	struct pci_device_id *id;
 +
-+static inline void RTL_W32_F(struct rtl8139_priv *priv, int reg, int val)
-+{
-+	RTL_W32(priv, reg, val);
-+	RTL_R32(priv, reg);
-+}
-+
-+static const unsigned int rtl8139_rx_config =
-+	RxCfgRcv8K | RxNoWrap |
-+	(RX_FIFO_THRESH << RxCfgFIFOShift) |
-+	(RX_DMA_BURST << RxCfgDMAShift);
-+
-+static const unsigned int rtl8139_tx_config =
-+	TxIFG96 | (TX_DMA_BURST << TxDMAShift) | (TX_RETRY << TxRetryShift);
-+
-+static void rtl8139_chip_reset(struct rtl8139_priv *priv)
-+{
-+	int i;
-+
-+	/* Soft reset the chip. */
-+	RTL_W8(priv, ChipCmd, CmdReset);
-+
-+	/* Check that the chip has finished the reset. */
-+	for (i = 1000; i > 0; i--) {
-+		if ((RTL_R8(priv, ChipCmd) & CmdReset) == 0)
-+			break;
-+		udelay(10);
-+	}
-+}
-+
-+static void __set_rx_mode(struct rtl8139_priv *priv)
-+{
-+	u32 mc_filter[2];	/* Multicast hash filter */
-+	int rx_mode;
-+	u32 tmp;
-+
-+	rx_mode =
-+	    AcceptBroadcast | AcceptMulticast | AcceptMyPhys |
-+	    AcceptAllPhys;
-+	mc_filter[1] = mc_filter[0] = 0xffffffff;
-+
-+	/* We can safely update without stopping the chip. */
-+	tmp = rtl8139_rx_config | rx_mode;
-+	if (priv->rx_config != tmp) {
-+		RTL_W32_F(priv, RxConfig, tmp);
-+		priv->rx_config = tmp;
-+	}
-+
-+	RTL_W32_F(priv, MAR0 + 0, mc_filter[0]);
-+	RTL_W32_F(priv, MAR0 + 4, mc_filter[1]);
-+}
-+
-+/* Start the hardware at open or resume. */
-+static void rtl8139_hw_start(struct rtl8139_priv *priv)
-+{
-+	u32 i;
-+	u8 tmp;
-+
-+	rtl8139_chip_reset(priv);
-+
-+	/* unlock Config[01234] and BMCR register writes */
-+	RTL_W8_F(priv, Cfg9346, Cfg9346_Unlock);
-+
-+	/* FIXME */
-+#if 0
-+	/* Restore our idea of the MAC address. */
-+	RTL_W32_F(priv, MAC0 + 0, *(__le32 *) (dev->dev_addr + 0));
-+	RTL_W32_F(priv, MAC0 + 4, *(__le16 *) (dev->dev_addr + 4));
-+#endif
-+
-+	priv->cur_rx = 0;
-+
-+	/* init Rx ring buffer DMA address */
-+	RTL_W32_F(priv, RxBuf, priv->rx_ring_dma);
-+
-+	/* Must enable Tx/Rx before setting transfer thresholds! */
-+	RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
-+
-+	priv->rx_config = rtl8139_rx_config | AcceptBroadcast | AcceptMyPhys;
-+	RTL_W32(priv, RxConfig, priv->rx_config);
-+	RTL_W32(priv, TxConfig, rtl8139_tx_config);
-+
-+	/* Lock Config[01234] and BMCR register writes */
-+	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
-+
-+	/* init Tx buffer DMA addresses */
-+	for (i = 0; i < NUM_TX_DESC; i++)
-+		RTL_W32_F(priv, TxAddr0 + (i * 4), priv->tx_bufs_dma + (priv->tx_buf[i] - priv->tx_bufs));
-+
-+	RTL_W32(priv, RxMissed, 0);
-+
-+	__set_rx_mode(priv);
-+
-+	/* Disable interrupts by clearing the interrupt mask. */
-+	RTL_W16(priv, IntrMask, 0);
-+
-+	/* make sure RxTx has started */
-+	tmp = RTL_R8(priv, ChipCmd);
-+	if ((!(tmp & CmdRxEnb)) || (!(tmp & CmdTxEnb)))
-+		RTL_W8(priv, ChipCmd, CmdRxEnb | CmdTxEnb);
-+}
-+
-+static inline void rtl8139_tx_clear(struct rtl8139_priv *priv)
-+{
-+	priv->cur_tx = 0;
-+	priv->dirty_tx = 0;
-+
-+	/* XXX account for unsent Tx packets in tp->stats.tx_dropped */
-+}
-+
-+/* Initialize the Rx and Tx rings, along with various 'dev' bits. */
-+static void rtl8139_init_ring(struct rtl8139_priv *priv)
-+{
-+	int i;
-+
-+	priv->cur_rx = 0;
-+	priv->cur_tx = 0;
-+	priv->dirty_tx = 0;
-+
-+	for (i = 0; i < NUM_TX_DESC; i++)
-+		priv->tx_buf[i] = &priv->tx_bufs[i * TX_BUF_SIZE];
-+}
-+
-+static int rtl8139_phy_read(struct mii_bus *bus, int phy_addr, int reg)
-+{
-+	struct rtl8139_priv *priv = bus->priv;
-+	int val;
-+
-+	val = 0xffff;
-+
-+	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
-+		val = reg < 8 && mii_2_8139_map[reg] ?
-+				RTL_R16(priv, mii_2_8139_map[reg]) : 0;
-+	}
-+
-+	return val;
-+}
-+
-+static int rtl8139_phy_write(struct mii_bus *bus, int phy_addr,
-+	int reg, u16 val)
-+{
-+	struct rtl8139_priv *priv = bus->priv;
-+
-+	if (phy_addr == 0) { /* Really a 8139. Use internal registers. */
-+		if (reg == 0) {
-+			RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
-+			RTL_W16(priv, BasicModeCtrl, val);
-+			RTL_W8(priv, Cfg9346, Cfg9346_Lock);
-+		} else if (reg < 8 && mii_2_8139_map[reg]) {
-+			RTL_W16(priv, mii_2_8139_map[reg], val);
++	for (id = (struct pci_device_id *)pdrv->id_table; id->vendor; id++)
++		if (pci_match_one_device(id, pdev)) {
++			dev->priv = id;
++			return 0;
 +		}
-+	}
 +
-+	return 0;
++	return -1;
 +}
 +
-+static int rtl8139_get_ethaddr(struct eth_device *edev, unsigned char *m)
++static int pci_probe(struct device_d *dev)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
-+	int i;
++	struct pci_dev *pdev = to_pci_dev(dev);
++	struct pci_driver *pdrv = to_pci_driver(dev->driver);
 +
-+	for (i = 0; i < 6; i++) {
-+		m[i] = RTL_R8(priv, (MAC0 + i));
-+	}
-+
-+	return 0;
++	return pdrv->probe(pdev, dev->priv);
 +}
 +
-+static int rtl8139_set_ethaddr(struct eth_device *edev,
-+					unsigned char *mac_addr)
++static void pci_remove(struct device_d *dev)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
-+	int i;
++	struct pci_dev *pdev = to_pci_dev(dev);
++	struct pci_driver *pdrv = to_pci_driver(dev->driver);
 +
-+	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
-+
-+	for (i = 0; i < 6; i++) {
-+		RTL_W8(priv, (MAC0 + i), mac_addr[i]);
-+		RTL_R8(priv, mac_addr[i]);
-+	}
-+
-+	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
-+
-+	return 0;
++	pdrv->remove(pdev);
 +}
 +
-+static int rtl8139_init_dev(struct eth_device *edev)
++struct bus_type pci_bus = {
++	.name = "pci",
++	.match = pci_match,
++	.probe = pci_probe,
++	.remove = pci_remove,
++};
++
++static int pci_bus_init(void)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
++	return bus_register(&pci_bus);
++}
++pure_initcall(pci_bus_init);
 +
-+	rtl8139_chip_reset(priv);
-+	pci_set_master(priv->pci_dev);
++int pci_register_driver(struct pci_driver *pdrv)
++{
++	struct driver_d *drv = &pdrv->driver;
 +
-+	return 0;
++	if (!pdrv->id_table)
++		return -EIO;
++
++	drv->name = pdrv->name;
++	drv->bus = &pci_bus;
++
++	return register_driver(drv);
 +}
 +
-+static int rtl8139_eth_open(struct eth_device *edev)
++int pci_register_device(struct pci_dev *pdev)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
++	char str[6];
++	struct device_d *dev = &pdev->dev;
 +	int ret;
 +
-+	priv->tx_bufs = dma_alloc_coherent(TX_BUF_TOT_LEN, &priv->tx_bufs_dma);
-+	priv->rx_ring = dma_alloc_coherent(RX_BUF_TOT_LEN, &priv->rx_ring_dma);
-+	priv->tx_flag = (TX_FIFO_THRESH << 11) & 0x003f0000;
++	strcpy(dev->name, "pci");
++	dev->bus = &pci_bus;
++	dev->id = DEVICE_ID_DYNAMIC;
 +
-+	rtl8139_init_ring(priv);
-+	rtl8139_hw_start(priv);
++	ret = register_device(dev);
 +
-+	ret = phy_device_connect(edev, &priv->miibus, 0, NULL, 0,
-+				 PHY_INTERFACE_MODE_NA);
++	if (ret)
++		return ret;
 +
-+	return ret;
++	sprintf(str, "%02x", pdev->devfn);
++	dev_add_param_fixed(dev, "devfn", str);
++	sprintf(str, "%04x", (pdev->class >> 8) & 0xffff);
++	dev_add_param_fixed(dev, "class", str);
++	sprintf(str, "%04x", pdev->vendor);
++	dev_add_param_fixed(dev, "vendor", str);
++	sprintf(str, "%04x", pdev->device);
++	dev_add_param_fixed(dev, "device", str);
++	sprintf(str, "%04x", pdev->revision);
++	dev_add_param_fixed(dev, "revision", str);
++
++	return 0;
++}
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+new file mode 100644
+index 0000000..554cf64
+--- /dev/null
++++ b/drivers/pci/pci.c
+@@ -0,0 +1,285 @@
++#include <common.h>
++#include <linux/pci.h>
++
++#ifdef DEBUG
++#define DBG(x...) printk(x)
++#else
++#define DBG(x...)
++#endif
++
++static struct pci_controller *hose_head, **hose_tail = &hose_head;
++
++LIST_HEAD(pci_root_buses);
++EXPORT_SYMBOL(pci_root_buses);
++
++static struct pci_bus *pci_alloc_bus(void)
++{
++	struct pci_bus *b;
++
++	b = kzalloc(sizeof(*b), GFP_KERNEL);
++	if (b) {
++		INIT_LIST_HEAD(&b->node);
++		INIT_LIST_HEAD(&b->children);
++		INIT_LIST_HEAD(&b->devices);
++		INIT_LIST_HEAD(&b->slots);
++		INIT_LIST_HEAD(&b->resources);
++	}
++	return b;
 +}
 +
-+static void rtl8139_eth_halt(struct eth_device *edev)
++void register_pci_controller(struct pci_controller *hose)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
++	struct pci_bus *bus;
 +
-+	/* Stop the chip's Tx and Rx DMA processes. */
-+	RTL_W8(priv, ChipCmd, 0);
++	*hose_tail = hose;
++	hose_tail = &hose->next;
 +
-+	/* Disable interrupts by clearing the interrupt mask. */
-+	RTL_W16(priv, IntrMask, 0);
++	bus = pci_alloc_bus();
++	hose->bus = bus;
++	bus->ops = hose->pci_ops;
++	bus->resource[0] = hose->mem_resource;
++	bus->resource[1] = hose->io_resource;
 +
-+	pci_clear_master(priv->pci_dev);
++	pci_scan_bus(bus);
 +
-+	/* Green! Put the chip in low-power mode. */
-+	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
++	list_add_tail(&bus->node, &pci_root_buses);
++
++	return;
 +}
 +
-+static void rtl8139_tx_interrupt(struct rtl8139_priv *priv)
++/*
++ *  Wrappers for all PCI configuration access functions.  They just check
++ *  alignment, do locking and call the low-level functions pointed to
++ *  by pci_dev->ops.
++ */
++
++#define PCI_byte_BAD 0
++#define PCI_word_BAD (pos & 1)
++#define PCI_dword_BAD (pos & 3)
++
++#define PCI_OP_READ(size,type,len) \
++int pci_bus_read_config_##size \
++	(struct pci_bus *bus, unsigned int devfn, int pos, type *value)	\
++{									\
++	int res;							\
++	u32 data = 0;							\
++	if (PCI_##size##_BAD) return PCIBIOS_BAD_REGISTER_NUMBER;	\
++	res = bus->ops->read(bus, devfn, pos, len, &data);		\
++	*value = (type)data;						\
++	return res;							\
++}
++
++#define PCI_OP_WRITE(size,type,len) \
++int pci_bus_write_config_##size \
++	(struct pci_bus *bus, unsigned int devfn, int pos, type value)	\
++{									\
++	int res;							\
++	if (PCI_##size##_BAD) return PCIBIOS_BAD_REGISTER_NUMBER;	\
++	res = bus->ops->write(bus, devfn, pos, len, value);		\
++	return res;							\
++}
++
++PCI_OP_READ(byte, u8, 1)
++PCI_OP_READ(word, u16, 2)
++PCI_OP_READ(dword, u32, 4)
++PCI_OP_WRITE(byte, u8, 1)
++PCI_OP_WRITE(word, u16, 2)
++PCI_OP_WRITE(dword, u32, 4)
++
++EXPORT_SYMBOL(pci_bus_read_config_byte);
++EXPORT_SYMBOL(pci_bus_read_config_word);
++EXPORT_SYMBOL(pci_bus_read_config_dword);
++EXPORT_SYMBOL(pci_bus_write_config_byte);
++EXPORT_SYMBOL(pci_bus_write_config_word);
++EXPORT_SYMBOL(pci_bus_write_config_dword);
++
++static struct pci_dev *alloc_pci_dev(void)
 +{
-+	unsigned long dirty_tx, tx_left;
++	struct pci_dev *dev;
 +
-+	dirty_tx = priv->dirty_tx;
-+	tx_left = priv->cur_tx - dirty_tx;
-+	while (tx_left > 0) {
-+		int entry = dirty_tx % NUM_TX_DESC;
-+		int txstatus;
++	dev = kzalloc(sizeof(struct pci_dev), GFP_KERNEL);
++	if (!dev)
++		return NULL;
 +
-+		txstatus = RTL_R32(priv, TxStatus0 + (entry * sizeof(u32)));
++	INIT_LIST_HEAD(&dev->bus_list);
 +
-+		if (!(txstatus & (TxStatOK | TxUnderrun | TxAborted)))
-+			break;	/* It still hasn't been Txed */
++	return dev;
++}
 +
-+		/* Note: TxCarrierLost is always asserted at 100mbps. */
-+		if (txstatus & (TxOutOfWindow | TxAborted)) {
-+			/* There was an major error, log it. */
-+			printk("Transmit error, Tx status %08x\n", txstatus);
-+			if (txstatus & TxAborted) {
-+				RTL_W32(priv, TxConfig, TxClearAbt);
-+				RTL_W16(priv, IntrStatus, TxErr);
-+			}
-+		} else {
-+			if (txstatus & TxUnderrun) {
-+				/* Add 64 to the Tx FIFO threshold. */
-+				if (priv->tx_flag < 0x00300000)
-+					priv->tx_flag += 0x00020000;
-+			}
++unsigned int pci_scan_bus(struct pci_bus *bus)
++{
++	unsigned int devfn, l, max, class;
++	unsigned char cmd, tmp, hdr_type, is_multi = 0;
++	struct pci_dev *dev;
++	resource_size_t last_mem;
++	resource_size_t last_io;
++
++	/* FIXME: use res_start() */
++	last_mem = bus->resource[0]->start;
++	last_io = bus->resource[1]->start;
++
++	DBG("pci_scan_bus for bus %d\n", bus->number);
++	DBG(" last_io = 0x%08x, last_mem = 0x%08x\n", last_io, last_mem);
++	max = bus->secondary;
++
++	for (devfn = 0; devfn < 0xff; ++devfn) {
++		int bar;
++		u32 old_bar, mask;
++		int size;
++
++		if (PCI_FUNC(devfn) && !is_multi) {
++			/* not a multi-function device */
++			continue;
++		}
++		if (pci_bus_read_config_byte(bus, devfn, PCI_HEADER_TYPE, &hdr_type))
++			continue;
++		if (!PCI_FUNC(devfn))
++			is_multi = hdr_type & 0x80;
++
++		if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &l) ||
++		    /* some broken boards return 0 if a slot is empty: */
++		    l == 0xffffffff || l == 0x00000000 || l == 0x0000ffff || l == 0xffff0000)
++			continue;
++
++		dev = alloc_pci_dev();
++		if (!dev)
++			return 0;
++
++		dev->bus = bus;
++		dev->devfn = devfn;
++		dev->vendor = l & 0xffff;
++		dev->device = (l >> 16) & 0xffff;
++
++		/* non-destructively determine if device can be a master: */
++		pci_read_config_byte(dev, PCI_COMMAND, &cmd);
++		pci_write_config_byte(dev, PCI_COMMAND, cmd | PCI_COMMAND_MASTER);
++		pci_read_config_byte(dev, PCI_COMMAND, &tmp);
++		pci_write_config_byte(dev, PCI_COMMAND, cmd);
++
++		pci_read_config_dword(dev, PCI_CLASS_REVISION, &class);
++		dev->revision = class & 0xff;
++		class >>= 8;				    /* upper 3 bytes */
++		dev->class = class;
++		class >>= 8;
++		dev->hdr_type = hdr_type;
++
++		DBG("PCI: class = %08x, hdr_type = %08x\n", class, hdr_type);
++
++		switch (hdr_type & 0x7f) {		    /* header type */
++		case PCI_HEADER_TYPE_NORMAL:		    /* standard header */
++			if (class == PCI_CLASS_BRIDGE_PCI)
++				goto bad;
++
++			/*
++			 * read base address registers, again pcibios_fixup() can
++			 * tweak these
++			 */
++			pci_read_config_dword(dev, PCI_ROM_ADDRESS, &l);
++			dev->rom_address = (l == 0xffffffff) ? 0 : l;
++			break;
++		default:				    /* unknown header */
++		bad:
++			printk(KERN_ERR "PCI: %02x:%02x [%04x/%04x/%06x] has unknown header type %02x, ignoring.\n",
++			       bus->number, dev->devfn, dev->vendor, dev->device, class, hdr_type);
++			continue;
 +		}
 +
-+		dirty_tx++;
-+		tx_left--;
-+	}
++		DBG("PCI: %02x:%02x [%04x/%04x]\n", bus->number, dev->devfn, dev->vendor, dev->device);
 +
-+	if (priv->dirty_tx != dirty_tx) {
-+		priv->dirty_tx = dirty_tx;
-+	}
-+}
++		list_add_tail(&dev->bus_list, &bus->devices);
++		pci_register_device(dev);
 +
-+static int rtl8139_eth_send(struct eth_device *edev, void *packet,
-+				int packet_length)
-+{
-+	struct rtl8139_priv *priv = edev->priv;
++		if (class == PCI_CLASS_BRIDGE_HOST) {
++			DBG("PCI: skip pci host bridge\n");
++			continue;
++		}
 +
-+	unsigned int entry;
++		for (bar = 0; bar < 6; bar++) {
++			pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &old_bar);
++			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, 0xfffffffe);
++			pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &mask);
++			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, old_bar);
 +
-+	rtl8139_tx_interrupt(priv);
++			if (mask == 0 || mask == 0xffffffff) {
++				DBG("  PCI: pbar%d set bad mask\n", bar);
++				continue;
++			}
 +
-+	/* Calculate the next Tx descriptor entry. */
-+	entry = priv->cur_tx % NUM_TX_DESC;
++			if (mask & 0x01) { /* IO */
++				size = -(mask & 0xfffffffe);
++				DBG("  PCI: pbar%d: mask=%08x io %d bytes\n", bar, mask, size);
++				pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_io);
++				last_io += size;
 +
-+	/* Note: the chip doesn't have auto-pad! */
-+	if (likely(packet_length < TX_BUF_SIZE)) {
-+		if (packet_length < ETH_ZLEN)
-+			memset(priv->tx_buf[entry], 0, ETH_ZLEN);
-+		memcpy(priv->tx_buf[entry], packet, packet_length);
-+	} else {
-+		printk("packet too long\n");
-+		return 0;
++			} else { /* MEM */
++				size = -(mask & 0xfffffff0);
++				DBG("  PCI: pbar%d: mask=%08x memory %d bytes\n", bar, mask, size);
++				pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
++				last_mem += size;
++			}
++		}
 +	}
 +
 +	/*
-+	 * Writing to TxStatus triggers a DMA transfer of the data
-+	 * copied to tp->tx_buf[entry] above.
++	 * We've scanned the bus and so we know all about what's on
++	 * the other side of any bridges that may be on this bus plus
++	 * any devices.
++	 *
++	 * Return how far we've got finding sub-buses.
 +	 */
-+	if (packet_length < ETH_ZLEN) {
-+		packet_length = ETH_ZLEN;
-+	}
-+	RTL_W32_F(priv, (TxStatus0 + (entry * sizeof(u32))),
-+			(priv->tx_flag | packet_length));
++	DBG("PCI: pci_scan_bus returning with max=%02x\n", max);
 +
-+	priv->cur_tx++;
-+
-+	return 0;
++	return max;
 +}
 +
-+static const u16 rtl8139_intr_mask =
-+		PCIErr | PCSTimeout | RxUnderrun | RxOverflow | RxFIFOOver |
-+		TxErr | TxOK | RxErr | RxOK;
-+
-+static int rtl8139_eth_rx(struct eth_device *edev)
++static void __pci_set_master(struct pci_dev *dev, bool enable)
 +{
-+	struct rtl8139_priv *priv = edev->priv;
-+	unsigned char *rx_ring = priv->rx_ring;
-+	unsigned int cur_rx = priv->cur_rx;
-+	unsigned int rx_size = 0;
++	u16 old_cmd, cmd;
 +
-+	u32 ring_offset = cur_rx % RX_BUF_LEN;
-+	u32 rx_status;
-+	unsigned int pkt_size;
-+
-+	rtl8139_tx_interrupt(priv);
-+
-+	if (RTL_R8(priv, ChipCmd) & RxBufEmpty) {
-+		/* no data */
-+		return 0;
++	pci_read_config_word(dev, PCI_COMMAND, &old_cmd);
++	if (enable)
++		cmd = old_cmd | PCI_COMMAND_MASTER;
++	else
++		cmd = old_cmd & ~PCI_COMMAND_MASTER;
++	if (cmd != old_cmd) {
++		dev_dbg(&dev->dev, "%s bus mastering\n",
++			enable ? "enabling" : "disabling");
++		pci_write_config_word(dev, PCI_COMMAND, cmd);
 +	}
-+
-+	rx_status = le32_to_cpu(*(__le32 *) (rx_ring + ring_offset));
-+	rx_size = rx_status >> 16;
-+	pkt_size = rx_size - 4;
-+
-+	net_receive(edev, &rx_ring[ring_offset + 4], pkt_size);
-+
-+	cur_rx = (cur_rx + rx_size + 4 + 3) & ~3;
-+	cur_rx = cur_rx & (RX_BUF_LEN - 1); /* FIXME */
-+	RTL_W16(priv, RxBufPtr, (u16) (cur_rx - 16));
-+
-+	priv->cur_rx = cur_rx;
-+
-+	return pkt_size /* size */;
 +}
 +
-+static int rtl8139_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++/**
++ * pci_set_master - enables bus-mastering for device dev
++ * @dev: the PCI device to enable
++ */
++void pci_set_master(struct pci_dev *dev)
 +{
-+	struct eth_device *edev;
-+	struct rtl8139_priv *priv;
-+	int ret;
-+	u32 bar;
-+	struct pci_bus *bus = pdev->bus;
-+	struct device_d *dev = &pdev->dev;
-+
-+	/* enable pci device */
-+	pci_enable_device(pdev);
-+
-+	priv = xzalloc(sizeof(struct rtl8139_priv));
-+
-+	edev = &priv->edev;
-+	dev->type_data = edev;
-+	edev->priv = priv;
-+
-+	priv->pci_dev = pdev;
-+
-+	priv->miibus.read = rtl8139_phy_read;
-+	priv->miibus.write = rtl8139_phy_write;
-+	priv->miibus.priv = priv;
-+	priv->miibus.parent = &edev->dev;
-+
-+	/* FIXME: pci_resource_start() */
-+	pci_read_config_dword(pdev, PCI_BASE_ADDRESS_1, &bar);
-+
-+	/* FIXME: use pci_iomap() */
-+	priv->base = (void *)bus->ops->res_start(bus, bar);
-+
-+	printk("found rtl8139 (rev %02x) at %02x: %04x (base=%p)\n",
-+			pdev->revision,
-+			pdev->devfn,
-+			(pdev->class >> 8) & 0xffff,
-+			priv->base);
-+
-+	edev->init = rtl8139_init_dev;
-+	edev->open = rtl8139_eth_open;
-+	edev->send = rtl8139_eth_send;
-+	edev->recv = rtl8139_eth_rx;
-+	edev->get_ethaddr = rtl8139_get_ethaddr;
-+	edev->set_ethaddr = rtl8139_set_ethaddr;
-+	edev->halt = rtl8139_eth_halt;
-+	edev->parent = dev;
-+
-+	ret = eth_register(edev);
-+	if (ret)
-+		goto eth_err;
-+
-+	ret = mdiobus_register(&priv->miibus);
-+	if (ret)
-+		goto mdio_err;
-+
-+	return 0;
-+
-+mdio_err:
-+	eth_unregister(edev);
-+
-+eth_err:
-+	free(priv);
-+
-+	return ret;
++	__pci_set_master(dev, true);
 +}
++EXPORT_SYMBOL(pci_set_master);
 +
-+static DEFINE_PCI_DEVICE_TABLE(rtl8139_pci_tbl) = {
-+	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK,	PCI_DEVICE_ID_REALTEK_8139), },
-+	{ },
++/**
++ * pci_clear_master - disables bus-mastering for device dev
++ * @dev: the PCI device to disable
++ */
++void pci_clear_master(struct pci_dev *dev)
++{
++	__pci_set_master(dev, false);
++}
++EXPORT_SYMBOL(pci_clear_master);
++
++/**
++ * pci_enable_device - Initialize device before it's used by a driver.
++ * @dev: PCI device to be initialized
++ */
++int pci_enable_device(struct pci_dev *dev)
++{
++	u32 t;
++
++	pci_read_config_dword(dev, PCI_COMMAND, &t);
++	return pci_write_config_dword(dev, PCI_COMMAND, t
++				| PCI_COMMAND_IO
++				| PCI_COMMAND_MEMORY
++				);
++}
++EXPORT_SYMBOL(pci_enable_device);
+diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+new file mode 100644
+index 0000000..c822075
+--- /dev/null
++++ b/include/linux/mod_devicetable.h
+@@ -0,0 +1,20 @@
++/*
++ * Device tables which are exported to userspace via
++ * scripts/mod/file2alias.c.  You must keep that file in sync with this
++ * header.
++ */
++
++#ifndef LINUX_MOD_DEVICETABLE_H
++#define LINUX_MOD_DEVICETABLE_H
++
++#include <linux/types.h>
++
++#define PCI_ANY_ID (~0)
++
++struct pci_device_id {
++	__u32 vendor, device;		/* Vendor and device ID or PCI_ANY_ID*/
++	__u32 subvendor, subdevice;	/* Subsystem ID's or PCI_ANY_ID */
++	__u32 class, class_mask;	/* (class,subclass,prog-if) triplet */
 +};
 +
-+static struct pci_driver rtl8139_eth_driver = {
-+	.name = "rtl8139_eth",
-+	.id_table = rtl8139_pci_tbl,
-+	.probe = rtl8139_probe,
++#endif /* LINUX_MOD_DEVICETABLE_H */
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+new file mode 100644
+index 0000000..759aea6
+--- /dev/null
++++ b/include/linux/pci.h
+@@ -0,0 +1,292 @@
++/*
++ *	pci.h
++ *
++ *	PCI defines and function prototypes
++ *	Copyright 1994, Drew Eckhardt
++ *	Copyright 1997--1999 Martin Mares <mj@ucw.cz>
++ *
++ *	For more information, please consult the following manuals (look at
++ *	http://www.pcisig.com/ for how to get them):
++ *
++ *	PCI BIOS Specification
++ *	PCI Local Bus Specification
++ *	PCI to PCI Bridge Specification
++ *	PCI System Design Guide
++ */
++#ifndef LINUX_PCI_H
++#define LINUX_PCI_H
++
++#include <linux/mod_devicetable.h>
++
++#include <linux/pci_regs.h>
++#include <linux/types.h>
++#include <linux/ioport.h>
++#include <linux/list.h>
++#include <linux/compiler.h>
++#include <errno.h>
++#include <io.h>
++
++#include <linux/pci_ids.h>
++
++
++/*
++ * The PCI interface treats multi-function devices as independent
++ * devices.  The slot/function address of each device is encoded
++ * in a single byte as follows:
++ *
++ *	7:3 = slot
++ *	2:0 = function
++ */
++#define PCI_DEVFN(slot, func)	((((slot) & 0x1f) << 3) | ((func) & 0x07))
++#define PCI_SLOT(devfn)		(((devfn) >> 3) & 0x1f)
++#define PCI_FUNC(devfn)		((devfn) & 0x07)
++
++/*
++ *  For PCI devices, the region numbers are assigned this way:
++ */
++enum {
++	/* #0-5: standard PCI resources */
++	PCI_STD_RESOURCES,
++	PCI_STD_RESOURCE_END = 5,
++
++	/* #6: expansion ROM resource */
++	PCI_ROM_RESOURCE,
++
++	/* device specific resources */
++#ifdef CONFIG_PCI_IOV
++	PCI_IOV_RESOURCES,
++	PCI_IOV_RESOURCE_END = PCI_IOV_RESOURCES + PCI_SRIOV_NUM_BARS - 1,
++#endif
++
++	/* resources assigned to buses behind the bridge */
++#define PCI_BRIDGE_RESOURCE_NUM 4
++
++	PCI_BRIDGE_RESOURCES,
++	PCI_BRIDGE_RESOURCE_END = PCI_BRIDGE_RESOURCES +
++				  PCI_BRIDGE_RESOURCE_NUM - 1,
++
++	/* total resources associated with a PCI device */
++	PCI_NUM_RESOURCES,
++
++	/* preserve this for compatibility */
++	DEVICE_COUNT_RESOURCE = PCI_NUM_RESOURCES,
 +};
 +
-+static int rtl8139_init(void)
++/*
++ * Error values that may be returned by PCI functions.
++ */
++#define PCIBIOS_SUCCESSFUL		0x00
++#define PCIBIOS_FUNC_NOT_SUPPORTED	0x81
++#define PCIBIOS_BAD_VENDOR_ID		0x83
++#define PCIBIOS_DEVICE_NOT_FOUND	0x86
++#define PCIBIOS_BAD_REGISTER_NUMBER	0x87
++#define PCIBIOS_SET_FAILED		0x88
++#define PCIBIOS_BUFFER_TOO_SMALL	0x89
++
++/*
++ * The pci_dev structure is used to describe PCI devices.
++ */
++struct pci_dev {
++	struct list_head bus_list;	/* node in per-bus list */
++	struct pci_bus	*bus;		/* bus this device is on */
++	struct pci_bus	*subordinate;	/* bus this device bridges to */
++
++	void		*sysdata;	/* hook for sys-specific extension */
++	struct proc_dir_entry *procent;	/* device entry in /proc/bus/pci */
++	struct pci_slot	*slot;		/* Physical slot this device is in */
++
++	struct device_d dev;
++
++	unsigned int	devfn;		/* encoded device & function index */
++	unsigned short	vendor;
++	unsigned short	device;
++	unsigned short	subsystem_vendor;
++	unsigned short	subsystem_device;
++	unsigned int	class;		/* 3 bytes: (base,sub,prog-if) */
++	u8		revision;	/* PCI revision, low byte of class word */
++	u8		hdr_type;	/* PCI header type (`multi' flag masked out) */
++
++	struct resource resource[DEVICE_COUNT_RESOURCE]; /* I/O and memory regions + expansion ROMs */
++
++	/* Base registers for this device, can be adjusted by
++	 * pcibios_fixup() as necessary.
++	 */
++	unsigned long	base_address[6];
++	unsigned long	rom_address;
++};
++#define	to_pci_dev(dev) container_of(dev, struct pci_dev, dev)
++
++struct pci_bus {
++	struct list_head node;		/* node in list of buses */
++	struct pci_bus	*parent;	/* parent bus this bridge is on */
++	struct list_head children;	/* list of child buses */
++	struct list_head devices;	/* list of devices on this bus */
++	struct pci_dev	*self;		/* bridge device as seen by parent */
++	struct list_head slots;		/* list of slots on this bus */
++	struct resource *resource[PCI_BRIDGE_RESOURCE_NUM];
++	struct list_head resources;	/* address space routed to this bus */
++
++	struct pci_ops	*ops;		/* configuration access functions */
++	void		*sysdata;	/* hook for sys-specific extension */
++	struct proc_dir_entry *procdir;	/* directory entry in /proc/bus/pci */
++
++	unsigned char	number;		/* bus number */
++	unsigned char	primary;	/* number of primary bridge */
++	unsigned char	secondary;	/* number of secondary bridge */
++	unsigned char	subordinate;	/* max number of subordinate buses */
++
++	char		name[48];
++};
++
++/* Low-level architecture-dependent routines */
++
++struct pci_ops {
++	int (*read)(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 *val);
++	int (*write)(struct pci_bus *bus, unsigned int devfn, int where, int size, u32 val);
++
++	/* return memory address for pci resource */
++	int (*res_start)(struct pci_bus *bus, resource_size_t res_addr);
++};
++
++extern struct pci_ops *pci_ops;
++
++/*
++ * Each pci channel is a top-level PCI bus seem by CPU.  A machine  with
++ * multiple PCI channels may have multiple PCI host controllers or a
++ * single controller supporting multiple channels.
++ */
++struct pci_controller {
++	struct pci_controller *next;
++	struct pci_bus *bus;
++
++	struct pci_ops *pci_ops;
++	struct resource *mem_resource;
++	unsigned long mem_offset;
++	struct resource *io_resource;
++	unsigned long io_offset;
++	unsigned long io_map_base;
++
++	unsigned int index;
++
++	/* Optional access methods for reading/writing the bus number
++	   of the PCI controller */
++	int (*get_busno)(void);
++	void (*set_busno)(int busno);
++};
++
++struct pci_driver {
++	struct list_head node;
++	const char *name;
++	const struct pci_device_id *id_table;	/* must be non-NULL for probe to be called */
++	int  (*probe)  (struct pci_dev *dev, const struct pci_device_id *id);	/* New device inserted */
++	void (*remove) (struct pci_dev *dev);	/* Device removed (NULL if not a hot-plug capable driver) */
++	struct driver_d	driver;
++};
++
++#define	to_pci_driver(drv) container_of(drv, struct pci_driver, driver)
++
++/**
++ * DEFINE_PCI_DEVICE_TABLE - macro used to describe a pci device table
++ * @_table: device table name
++ *
++ * This macro is used to create a struct pci_device_id array (a device table)
++ * in a generic manner.
++ */
++#define DEFINE_PCI_DEVICE_TABLE(_table) \
++	const struct pci_device_id _table[]
++
++/**
++ * PCI_DEVICE - macro used to describe a specific pci device
++ * @vend: the 16 bit PCI Vendor ID
++ * @dev: the 16 bit PCI Device ID
++ *
++ * This macro is used to create a struct pci_device_id that matches a
++ * specific device.  The subvendor and subdevice fields will be set to
++ * PCI_ANY_ID.
++ */
++#define PCI_DEVICE(vend, dev) \
++	.vendor = (vend), .device = (dev), \
++	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID
++
++/**
++ * PCI_DEVICE_CLASS - macro used to describe a specific pci device class
++ * @dev_class: the class, subclass, prog-if triple for this device
++ * @dev_class_mask: the class mask for this device
++ *
++ * This macro is used to create a struct pci_device_id that matches a
++ * specific PCI class.  The vendor, device, subvendor, and subdevice
++ * fields will be set to PCI_ANY_ID.
++ */
++#define PCI_DEVICE_CLASS(dev_class, dev_class_mask) \
++	.class = (dev_class), .class_mask = (dev_class_mask), \
++	.vendor = PCI_ANY_ID, .device = PCI_ANY_ID, \
++	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID
++
++/**
++ * PCI_VDEVICE - macro used to describe a specific pci device in short form
++ * @vend: the vendor name
++ * @dev: the 16 bit PCI Device ID
++ *
++ * This macro is used to create a struct pci_device_id that matches a
++ * specific PCI device.  The subvendor, and subdevice fields will be set
++ * to PCI_ANY_ID. The macro allows the next field to follow as the device
++ * private data.
++ */
++
++#define PCI_VDEVICE(vend, dev) \
++	.vendor = PCI_VENDOR_ID_##vend, .device = (dev), \
++	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0
++
++int pci_register_driver(struct pci_driver *pdrv);
++int pci_register_device(struct pci_dev *pdev);
++
++extern struct list_head pci_root_buses; /* list of all known PCI buses */
++
++extern unsigned int pci_scan_bus(struct pci_bus *bus);
++extern void register_pci_controller(struct pci_controller *hose);
++
++int pci_bus_read_config_byte(struct pci_bus *bus, unsigned int devfn,
++			     int where, u8 *val);
++int pci_bus_read_config_word(struct pci_bus *bus, unsigned int devfn,
++			     int where, u16 *val);
++int pci_bus_read_config_dword(struct pci_bus *bus, unsigned int devfn,
++			      int where, u32 *val);
++int pci_bus_write_config_byte(struct pci_bus *bus, unsigned int devfn,
++			      int where, u8 val);
++int pci_bus_write_config_word(struct pci_bus *bus, unsigned int devfn,
++			      int where, u16 val);
++int pci_bus_write_config_dword(struct pci_bus *bus, unsigned int devfn,
++			       int where, u32 val);
++
++static inline int pci_read_config_byte(const struct pci_dev *dev, int where, u8 *val)
 +{
-+	return pci_register_driver(&rtl8139_eth_driver);
++	return pci_bus_read_config_byte(dev->bus, dev->devfn, where, val);
 +}
-+device_initcall(rtl8139_init);
++static inline int pci_read_config_word(const struct pci_dev *dev, int where, u16 *val)
++{
++	return pci_bus_read_config_word(dev->bus, dev->devfn, where, val);
++}
++static inline int pci_read_config_dword(const struct pci_dev *dev, int where,
++					u32 *val)
++{
++	return pci_bus_read_config_dword(dev->bus, dev->devfn, where, val);
++}
++static inline int pci_write_config_byte(const struct pci_dev *dev, int where, u8 val)
++{
++	return pci_bus_write_config_byte(dev->bus, dev->devfn, where, val);
++}
++static inline int pci_write_config_word(const struct pci_dev *dev, int where, u16 val)
++{
++	return pci_bus_write_config_word(dev->bus, dev->devfn, where, val);
++}
++static inline int pci_write_config_dword(const struct pci_dev *dev, int where,
++					 u32 val)
++{
++	return pci_bus_write_config_dword(dev->bus, dev->devfn, where, val);
++}
++
++void pci_set_master(struct pci_dev *dev);
++void pci_clear_master(struct pci_dev *dev);
++int pci_enable_device(struct pci_dev *dev);
++
++#endif /* LINUX_PCI_H */
 diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 49e2954..17ac7fd 100644
---- a/include/linux/pci_ids.h
+new file mode 100644
+index 0000000..49e2954
+--- /dev/null
 +++ b/include/linux/pci_ids.h
-@@ -134,3 +134,8 @@
- #define PCI_CLASS_SP_OTHER		0x1180
- 
- #define PCI_CLASS_OTHERS		0xff
+@@ -0,0 +1,136 @@
++/*
++ *	PCI Class, Vendor and Device IDs
++ *
++ *	Please keep sorted.
++ *
++ *	Do not add new entries to this file unless the definitions
++ *	are shared between multiple drivers.
++ */
 +
-+/* Vendors and devices.  Sort key: vendor first, device next. */
++/* Device classes and subclasses */
 +
-+#define PCI_VENDOR_ID_REALTEK		0x10ec
-+#define PCI_DEVICE_ID_REALTEK_8139	0x8139
++#define PCI_CLASS_NOT_DEFINED		0x0000
++#define PCI_CLASS_NOT_DEFINED_VGA	0x0001
++
++#define PCI_BASE_CLASS_STORAGE		0x01
++#define PCI_CLASS_STORAGE_SCSI		0x0100
++#define PCI_CLASS_STORAGE_IDE		0x0101
++#define PCI_CLASS_STORAGE_FLOPPY	0x0102
++#define PCI_CLASS_STORAGE_IPI		0x0103
++#define PCI_CLASS_STORAGE_RAID		0x0104
++#define PCI_CLASS_STORAGE_SATA		0x0106
++#define PCI_CLASS_STORAGE_SATA_AHCI	0x010601
++#define PCI_CLASS_STORAGE_SAS		0x0107
++#define PCI_CLASS_STORAGE_OTHER		0x0180
++
++#define PCI_BASE_CLASS_NETWORK		0x02
++#define PCI_CLASS_NETWORK_ETHERNET	0x0200
++#define PCI_CLASS_NETWORK_TOKEN_RING	0x0201
++#define PCI_CLASS_NETWORK_FDDI		0x0202
++#define PCI_CLASS_NETWORK_ATM		0x0203
++#define PCI_CLASS_NETWORK_OTHER		0x0280
++
++#define PCI_BASE_CLASS_DISPLAY		0x03
++#define PCI_CLASS_DISPLAY_VGA		0x0300
++#define PCI_CLASS_DISPLAY_XGA		0x0301
++#define PCI_CLASS_DISPLAY_3D		0x0302
++#define PCI_CLASS_DISPLAY_OTHER		0x0380
++
++#define PCI_BASE_CLASS_MULTIMEDIA	0x04
++#define PCI_CLASS_MULTIMEDIA_VIDEO	0x0400
++#define PCI_CLASS_MULTIMEDIA_AUDIO	0x0401
++#define PCI_CLASS_MULTIMEDIA_PHONE	0x0402
++#define PCI_CLASS_MULTIMEDIA_OTHER	0x0480
++
++#define PCI_BASE_CLASS_MEMORY		0x05
++#define PCI_CLASS_MEMORY_RAM		0x0500
++#define PCI_CLASS_MEMORY_FLASH		0x0501
++#define PCI_CLASS_MEMORY_OTHER		0x0580
++
++#define PCI_BASE_CLASS_BRIDGE		0x06
++#define PCI_CLASS_BRIDGE_HOST		0x0600
++#define PCI_CLASS_BRIDGE_ISA		0x0601
++#define PCI_CLASS_BRIDGE_EISA		0x0602
++#define PCI_CLASS_BRIDGE_MC		0x0603
++#define PCI_CLASS_BRIDGE_PCI		0x0604
++#define PCI_CLASS_BRIDGE_PCMCIA		0x0605
++#define PCI_CLASS_BRIDGE_NUBUS		0x0606
++#define PCI_CLASS_BRIDGE_CARDBUS	0x0607
++#define PCI_CLASS_BRIDGE_RACEWAY	0x0608
++#define PCI_CLASS_BRIDGE_OTHER		0x0680
++
++#define PCI_BASE_CLASS_COMMUNICATION	0x07
++#define PCI_CLASS_COMMUNICATION_SERIAL	0x0700
++#define PCI_CLASS_COMMUNICATION_PARALLEL 0x0701
++#define PCI_CLASS_COMMUNICATION_MULTISERIAL 0x0702
++#define PCI_CLASS_COMMUNICATION_MODEM	0x0703
++#define PCI_CLASS_COMMUNICATION_OTHER	0x0780
++
++#define PCI_BASE_CLASS_SYSTEM		0x08
++#define PCI_CLASS_SYSTEM_PIC		0x0800
++#define PCI_CLASS_SYSTEM_PIC_IOAPIC	0x080010
++#define PCI_CLASS_SYSTEM_PIC_IOXAPIC	0x080020
++#define PCI_CLASS_SYSTEM_DMA		0x0801
++#define PCI_CLASS_SYSTEM_TIMER		0x0802
++#define PCI_CLASS_SYSTEM_RTC		0x0803
++#define PCI_CLASS_SYSTEM_PCI_HOTPLUG	0x0804
++#define PCI_CLASS_SYSTEM_SDHCI		0x0805
++#define PCI_CLASS_SYSTEM_OTHER		0x0880
++
++#define PCI_BASE_CLASS_INPUT		0x09
++#define PCI_CLASS_INPUT_KEYBOARD	0x0900
++#define PCI_CLASS_INPUT_PEN		0x0901
++#define PCI_CLASS_INPUT_MOUSE		0x0902
++#define PCI_CLASS_INPUT_SCANNER		0x0903
++#define PCI_CLASS_INPUT_GAMEPORT	0x0904
++#define PCI_CLASS_INPUT_OTHER		0x0980
++
++#define PCI_BASE_CLASS_DOCKING		0x0a
++#define PCI_CLASS_DOCKING_GENERIC	0x0a00
++#define PCI_CLASS_DOCKING_OTHER		0x0a80
++
++#define PCI_BASE_CLASS_PROCESSOR	0x0b
++#define PCI_CLASS_PROCESSOR_386		0x0b00
++#define PCI_CLASS_PROCESSOR_486		0x0b01
++#define PCI_CLASS_PROCESSOR_PENTIUM	0x0b02
++#define PCI_CLASS_PROCESSOR_ALPHA	0x0b10
++#define PCI_CLASS_PROCESSOR_POWERPC	0x0b20
++#define PCI_CLASS_PROCESSOR_MIPS	0x0b30
++#define PCI_CLASS_PROCESSOR_CO		0x0b40
++
++#define PCI_BASE_CLASS_SERIAL		0x0c
++#define PCI_CLASS_SERIAL_FIREWIRE	0x0c00
++#define PCI_CLASS_SERIAL_FIREWIRE_OHCI	0x0c0010
++#define PCI_CLASS_SERIAL_ACCESS		0x0c01
++#define PCI_CLASS_SERIAL_SSA		0x0c02
++#define PCI_CLASS_SERIAL_USB		0x0c03
++#define PCI_CLASS_SERIAL_USB_UHCI	0x0c0300
++#define PCI_CLASS_SERIAL_USB_OHCI	0x0c0310
++#define PCI_CLASS_SERIAL_USB_EHCI	0x0c0320
++#define PCI_CLASS_SERIAL_USB_XHCI	0x0c0330
++#define PCI_CLASS_SERIAL_FIBER		0x0c04
++#define PCI_CLASS_SERIAL_SMBUS		0x0c05
++
++#define PCI_BASE_CLASS_WIRELESS			0x0d
++#define PCI_CLASS_WIRELESS_RF_CONTROLLER	0x0d10
++#define PCI_CLASS_WIRELESS_WHCI			0x0d1010
++
++#define PCI_BASE_CLASS_INTELLIGENT	0x0e
++#define PCI_CLASS_INTELLIGENT_I2O	0x0e00
++
++#define PCI_BASE_CLASS_SATELLITE	0x0f
++#define PCI_CLASS_SATELLITE_TV		0x0f00
++#define PCI_CLASS_SATELLITE_AUDIO	0x0f01
++#define PCI_CLASS_SATELLITE_VOICE	0x0f03
++#define PCI_CLASS_SATELLITE_DATA	0x0f04
++
++#define PCI_BASE_CLASS_CRYPT		0x10
++#define PCI_CLASS_CRYPT_NETWORK		0x1000
++#define PCI_CLASS_CRYPT_ENTERTAINMENT	0x1001
++#define PCI_CLASS_CRYPT_OTHER		0x1080
++
++#define PCI_BASE_CLASS_SIGNAL_PROCESSING 0x11
++#define PCI_CLASS_SP_DPIO		0x1100
++#define PCI_CLASS_SP_OTHER		0x1180
++
++#define PCI_CLASS_OTHERS		0xff
+diff --git a/include/linux/pci_regs.h b/include/linux/pci_regs.h
+new file mode 100644
+index 0000000..14a3ed3
+--- /dev/null
++++ b/include/linux/pci_regs.h
+@@ -0,0 +1,110 @@
++/*
++ *	pci_regs.h
++ *
++ *	PCI standard defines
++ *	Copyright 1994, Drew Eckhardt
++ *	Copyright 1997--1999 Martin Mares <mj@ucw.cz>
++ *
++ *	For more information, please consult the following manuals (look at
++ *	http://www.pcisig.com/ for how to get them):
++ *
++ *	PCI BIOS Specification
++ *	PCI Local Bus Specification
++ *	PCI to PCI Bridge Specification
++ *	PCI System Design Guide
++ *
++ *	For HyperTransport information, please consult the following manuals
++ *	from http://www.hypertransport.org
++ *
++ *	The HyperTransport I/O Link Specification
++ */
++
++#ifndef LINUX_PCI_REGS_H
++#define LINUX_PCI_REGS_H
++
++/*
++ * Under PCI, each device has 256 bytes of configuration address space,
++ * of which the first 64 bytes are standardized as follows:
++ */
++#define PCI_VENDOR_ID		0x00	/* 16 bits */
++#define PCI_DEVICE_ID		0x02	/* 16 bits */
++#define PCI_COMMAND		0x04	/* 16 bits */
++#define  PCI_COMMAND_IO		0x1	/* Enable response in I/O space */
++#define  PCI_COMMAND_MEMORY	0x2	/* Enable response in Memory space */
++#define  PCI_COMMAND_MASTER	0x4	/* Enable bus mastering */
++#define  PCI_COMMAND_SPECIAL	0x8	/* Enable response to special cycles */
++#define  PCI_COMMAND_INVALIDATE	0x10	/* Use memory write and invalidate */
++#define  PCI_COMMAND_VGA_PALETTE 0x20	/* Enable palette snooping */
++#define  PCI_COMMAND_PARITY	0x40	/* Enable parity checking */
++#define  PCI_COMMAND_WAIT	0x80	/* Enable address/data stepping */
++#define  PCI_COMMAND_SERR	0x100	/* Enable SERR */
++#define  PCI_COMMAND_FAST_BACK	0x200	/* Enable back-to-back writes */
++#define  PCI_COMMAND_INTX_DISABLE 0x400 /* INTx Emulation Disable */
++
++#define PCI_STATUS		0x06	/* 16 bits */
++#define  PCI_STATUS_INTERRUPT	0x08	/* Interrupt status */
++#define  PCI_STATUS_CAP_LIST	0x10	/* Support Capability List */
++#define  PCI_STATUS_66MHZ	0x20	/* Support 66 MHz PCI 2.1 bus */
++#define  PCI_STATUS_UDF		0x40	/* Support User Definable Features [obsolete] */
++#define  PCI_STATUS_FAST_BACK	0x80	/* Accept fast-back to back */
++#define  PCI_STATUS_PARITY	0x100	/* Detected parity error */
++#define  PCI_STATUS_DEVSEL_MASK	0x600	/* DEVSEL timing */
++#define  PCI_STATUS_DEVSEL_FAST		0x000
++#define  PCI_STATUS_DEVSEL_MEDIUM	0x200
++#define  PCI_STATUS_DEVSEL_SLOW		0x400
++#define  PCI_STATUS_SIG_TARGET_ABORT	0x800 /* Set on target abort */
++#define  PCI_STATUS_REC_TARGET_ABORT	0x1000 /* Master ack of " */
++#define  PCI_STATUS_REC_MASTER_ABORT	0x2000 /* Set on master abort */
++#define  PCI_STATUS_SIG_SYSTEM_ERROR	0x4000 /* Set when we drive SERR */
++#define  PCI_STATUS_DETECTED_PARITY	0x8000 /* Set on parity error */
++
++#define PCI_CLASS_REVISION	0x08	/* High 24 bits are class, low 8 revision */
++#define PCI_REVISION_ID		0x08	/* Revision ID */
++#define PCI_CLASS_PROG		0x09	/* Reg. Level Programming Interface */
++#define PCI_CLASS_DEVICE	0x0a	/* Device class */
++
++#define PCI_CACHE_LINE_SIZE	0x0c	/* 8 bits */
++#define PCI_LATENCY_TIMER	0x0d	/* 8 bits */
++#define PCI_HEADER_TYPE		0x0e	/* 8 bits */
++#define  PCI_HEADER_TYPE_NORMAL		0
++#define  PCI_HEADER_TYPE_BRIDGE		1
++#define  PCI_HEADER_TYPE_CARDBUS	2
++
++#define PCI_BIST		0x0f	/* 8 bits */
++#define  PCI_BIST_CODE_MASK	0x0f	/* Return result */
++#define  PCI_BIST_START		0x40	/* 1 to start BIST, 2 secs or less */
++#define  PCI_BIST_CAPABLE	0x80	/* 1 if BIST capable */
++
++/*
++ * Base addresses specify locations in memory or I/O space.
++ * Decoded size can be determined by writing a value of
++ * 0xffffffff to the register, and reading it back.  Only
++ * 1 bits are decoded.
++ */
++#define PCI_BASE_ADDRESS_0	0x10	/* 32 bits */
++#define PCI_BASE_ADDRESS_1	0x14	/* 32 bits [htype 0,1 only] */
++#define PCI_BASE_ADDRESS_2	0x18	/* 32 bits [htype 0 only] */
++#define PCI_BASE_ADDRESS_3	0x1c	/* 32 bits */
++#define PCI_BASE_ADDRESS_4	0x20	/* 32 bits */
++#define PCI_BASE_ADDRESS_5	0x24	/* 32 bits */
++#define  PCI_BASE_ADDRESS_SPACE		0x01	/* 0 = memory, 1 = I/O */
++#define  PCI_BASE_ADDRESS_SPACE_IO	0x01
++#define  PCI_BASE_ADDRESS_SPACE_MEMORY	0x00
++#define  PCI_BASE_ADDRESS_MEM_TYPE_MASK	0x06
++#define  PCI_BASE_ADDRESS_MEM_TYPE_32	0x00	/* 32 bit address */
++#define  PCI_BASE_ADDRESS_MEM_TYPE_1M	0x02	/* Below 1M [obsolete] */
++#define  PCI_BASE_ADDRESS_MEM_TYPE_64	0x04	/* 64 bit address */
++#define  PCI_BASE_ADDRESS_MEM_PREFETCH	0x08	/* prefetchable? */
++#define  PCI_BASE_ADDRESS_MEM_MASK	(~0x0fUL)
++#define  PCI_BASE_ADDRESS_IO_MASK	(~0x03UL)
++/* bit 1 is reserved if address_space = 1 */
++
++/* Header type 0 (normal devices) */
++#define PCI_CARDBUS_CIS		0x28
++#define PCI_SUBSYSTEM_VENDOR_ID	0x2c
++#define PCI_SUBSYSTEM_ID	0x2e
++#define PCI_ROM_ADDRESS		0x30	/* Bits 31..11 are address, 10..1 reserved */
++#define  PCI_ROM_ADDRESS_ENABLE	0x01
++#define PCI_ROM_ADDRESS_MASK	(~0x7ffUL)
++
++#endif /* LINUX_PCI_REGS_H */
 -- 
 1.9.2
 
