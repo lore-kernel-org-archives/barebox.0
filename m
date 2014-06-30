@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X1WNz-0002CQ-FZ
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 07:52:24 +0000
+ Linux)) id 1X1WOS-0002M1-10
+ for barebox@lists.infradead.org; Mon, 30 Jun 2014 07:52:52 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 30 Jun 2014 09:51:56 +0200
-Message-Id: <1404114716-27533-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon, 30 Jun 2014 09:52:26 +0200
+Message-Id: <1404114746-7020-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +19,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] regulator: fixed: add always-on property
+Subject: [PATCH] usb: chipidea: imx: add vbus regulator support
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Support the "regulator-always-on" property for fixed regulators.
-The regulator gets enabled on probe and subsequent disable calls are
-ignored.
+The chipidea binding describes the optional property of a regulator
+for vbus named "vbus-supply".
+
+Add support for this property to the driver so it can be used on boards
+with a gpio-controlled regulator.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/regulator/fixed.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/imx/chipidea-imx.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index 7e64919..2515d3e 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -27,6 +27,7 @@
- struct regulator_fixed {
- 	int gpio;
- 	int active_low;
-+	int always_on;
- 	struct regulator_dev rdev;
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 9b6829b..84522dc 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -18,6 +18,7 @@
+ #include <of.h>
+ #include <errno.h>
+ #include <driver.h>
++#include <regulator.h>
+ #include <usb/usb.h>
+ #include <usb/ehci.h>
+ #include <usb/chipidea-imx.h>
+@@ -32,6 +33,7 @@ struct imx_chipidea {
+ 	struct ehci_data data;
+ 	unsigned long flags;
+ 	enum imx_usb_mode mode;
++	struct regulator *reg_vbus;
+ 	int portno;
+ 	enum usb_phy_interface phymode;
  };
+@@ -41,6 +43,12 @@ static int imx_chipidea_port_init(void *drvdata)
+ 	struct imx_chipidea *ci = drvdata;
+ 	int ret;
  
-@@ -44,6 +45,9 @@ static int regulator_fixed_disable(struct regulator_dev *rdev)
- {
- 	struct regulator_fixed *fix = container_of(rdev, struct regulator_fixed, rdev);
- 
-+	if (fix->always_on)
-+		return 0;
-+
- 	if (!gpio_is_valid(fix->gpio))
- 		return 0;
- 
-@@ -79,6 +83,11 @@ static int regulator_fixed_probe(struct device_d *dev)
- 
- 	fix->rdev.ops = &fixed_ops;
- 
-+	if (of_find_property(dev->device_node, "regulator-always-on", NULL)) {
-+		fix->always_on = 1;
-+		regulator_fixed_enable(&fix->rdev);
++	if (ci->reg_vbus) {
++		ret = regulator_enable(ci->reg_vbus);
++		if (ret < 0)
++			return ret;
 +	}
 +
- 	ret = of_regulator_register(&fix->rdev, dev->device_node);
- 	if (ret)
- 		return ret;
+ 	if ((ci->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_ULPI) {
+ 		dev_dbg(ci->dev, "using ULPI phy\n");
+ 		if (IS_ENABLED(CONFIG_USB_ULPI)) {
+@@ -54,8 +62,11 @@ static int imx_chipidea_port_init(void *drvdata)
+ 			ret = -ENODEV;
+ 		}
+ 
+-		if (ret)
++		if (ret) {
++			if (ci->reg_vbus)
++				regulator_disable(ci->reg_vbus);
+ 			return ret;
++		}
+ 	}
+ 
+ 	ret = imx_usbmisc_port_init(ci->portno, ci->flags);
+@@ -126,6 +137,8 @@ static int imx_chipidea_probe_dt(struct imx_chipidea *ci)
+ 				"disable-over-current", NULL))
+ 		ci->flags |= MXC_EHCI_DISABLE_OVERCURRENT;
+ 
++	ci->reg_vbus = regulator_get(ci->dev, "vbus");
++
+ 	return 0;
+ }
+ 
 -- 
 2.0.0
 
