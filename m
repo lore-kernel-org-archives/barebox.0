@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1UpM-0001CC-2S
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 06:12:33 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id AB12BBF155
- for <barebox@lists.infradead.org>; Mon, 30 Jun 2014 08:12:03 +0200 (CEST)
-From: Christian Hemp <c.hemp@phytec.de>
-Date: Mon, 30 Jun 2014 08:12:01 +0200
-Message-Id: <1404108721-25689-1-git-send-email-c.hemp@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X1Uqt-0001SB-6J
+ for barebox@lists.infradead.org; Mon, 30 Jun 2014 06:14:08 +0000
+Date: Mon, 30 Jun 2014 08:13:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140630061344.GA14257@pengutronix.de>
+References: <alpine.LFD.2.11.1406280621410.30555@localhost>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1406280621410.30555@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,62 +18,95 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx6: add new chip revisions
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Documentation: Minor editing changes to filesystems
+ content.
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Add new chip revisions for the new tap-out TO1.5 (i.MX6Q/D) and TO1.2
-(i.MX6DL/S)
+On Sat, Jun 28, 2014 at 06:22:39AM -0400, Robert P. J. Day wrote:
+> 
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
----
- arch/arm/mach-imx/imx6.c                  |   12 ++++++++++++
- arch/arm/mach-imx/include/mach/revision.h |    2 ++
- 2 files changed, 14 insertions(+), 0 deletions(-)
+Applied, thanks
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index e14ce90..fabc161 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -130,6 +130,18 @@ int imx6_init(void)
- 		mx6_silicon_revision = IMX_CHIP_REV_1_2;
- 		break;
- 
-+	case 0x03:
-+		mx6_silicon_revision = IMX_CHIP_REV_1_3;
-+		break;
-+
-+	case 0x04:
-+		mx6_silicon_revision = IMX_CHIP_REV_1_4;
-+		break;
-+
-+	case 0x05:
-+		mx6_silicon_revision = IMX_CHIP_REV_1_5;
-+		break;
-+
- 	default:
- 		mx6_silicon_revision = IMX_CHIP_REV_UNKNOWN;
- 	}
-diff --git a/arch/arm/mach-imx/include/mach/revision.h b/arch/arm/mach-imx/include/mach/revision.h
-index bc6f20a..908a0a1 100644
---- a/arch/arm/mach-imx/include/mach/revision.h
-+++ b/arch/arm/mach-imx/include/mach/revision.h
-@@ -6,6 +6,8 @@
- #define IMX_CHIP_REV_1_1	0x11
- #define IMX_CHIP_REV_1_2	0x12
- #define IMX_CHIP_REV_1_3	0x13
-+#define IMX_CHIP_REV_1_4	0x14
-+#define IMX_CHIP_REV_1_5	0x15
- #define IMX_CHIP_REV_2_0	0x20
- #define IMX_CHIP_REV_2_1	0x21
- #define IMX_CHIP_REV_2_2	0x22
+Sascha
+
+> 
+> ---
+> 
+> diff --git a/Documentation/filesystems/nfs.rst b/Documentation/filesystems/nfs.rst
+> index b8ad4f3..f4eda5d 100644
+> --- a/Documentation/filesystems/nfs.rst
+> +++ b/Documentation/filesystems/nfs.rst
+> @@ -5,7 +5,7 @@
+>  NFS Support
+>  ===========
+> 
+> -barebox has readonly support for NFSv3 un UDP mode.
+> +barebox has readonly support for NFSv3 in UDP mode.
+> 
+>  Example::
+> 
+> diff --git a/Documentation/filesystems/ramfs.rst b/Documentation/filesystems/ramfs.rst
+> index 70e7282..b7ece1a 100644
+> --- a/Documentation/filesystems/ramfs.rst
+> +++ b/Documentation/filesystems/ramfs.rst
+> @@ -3,10 +3,10 @@
+>  RAM filesystem
+>  ==============
+> 
+> -ramfs is a simple malloc based filesystem. An instance of ramfs is
+> -mounted during startup on /. The filesystem type passed to mount is
+> -'ramfs'
+> +ramfs is a simple malloc-based filesystem. An instance of ramfs is
+> +mounted during startup on /. The filesystem type passed to ``mount``
+> +is ``ramfs``.
+> 
+> -example::
+> +Example::
+> 
+>    mount none ramfs /somedir
+> diff --git a/Documentation/filesystems/tftp.rst b/Documentation/filesystems/tftp.rst
+> index 273be5e..e0a1159 100644
+> --- a/Documentation/filesystems/tftp.rst
+> +++ b/Documentation/filesystems/tftp.rst
+> @@ -8,8 +8,8 @@ TFTP support
+>  barebox has read/write support for the Trivial File Transfer Protocol.
+> 
+>  TFTP is not designed as a filesystem. It does not have support for listing
+> -directories. This means a :ref:`command_ls` to a TFTP mounted path will show an empty
+> -directory. Nevertheless the files are there.
+> +directories. This means a :ref:`command_ls` to a TFTP-mounted path will show an empty
+> +directory. Nevertheless, the files are there.
+> 
+>  Example::
+> 
+> 
+> -- 
+> 
+> ========================================================================
+> Robert P. J. Day                                 Ottawa, Ontario, CANADA
+>                         http://crashcourse.ca
+> 
+> Twitter:                                       http://twitter.com/rpjday
+> LinkedIn:                               http://ca.linkedin.com/in/rpjday
+> ========================================================================
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.7.0.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
