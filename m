@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x233.google.com ([2607:f8b0:4002:c07::233])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1Y35-0007LF-OC
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 09:38:56 +0000
-Received: by mail-yk0-f179.google.com with SMTP id 20so4456890yks.38
- for <barebox@lists.infradead.org>; Mon, 30 Jun 2014 02:38:33 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140630060112.GX14257@pengutronix.de>
+ id 1X1YOc-0004L4-Uw
+ for barebox@lists.infradead.org; Mon, 30 Jun 2014 10:01:11 +0000
+Date: Mon, 30 Jun 2014 05:56:37 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <CAOpc7mGu=VYE_9uRJ8-dKmDaqgQaok40u_2EFgSHQCRG=67oXQ@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1406300555100.18619@localhost>
 References: <alpine.LFD.2.11.1406280904330.2486@localhost>
  <20140630060112.GX14257@pengutronix.de>
-Date: Mon, 30 Jun 2014 11:38:33 +0200
-Message-ID: <CAOpc7mGu=VYE_9uRJ8-dKmDaqgQaok40u_2EFgSHQCRG=67oXQ@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+ <CAOpc7mGu=VYE_9uRJ8-dKmDaqgQaok40u_2EFgSHQCRG=67oXQ@mail.gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,14 +24,32 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: in sphinx docs, what is "@b barebox" markup supposed to do?
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Holger Schurig <holgerschurig@gmail.com>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-I found a Sphinx cheat sheet:
-http://openalea.gforge.inria.fr/doc/openalea/doc/_build/html/source/sphinx/rest_syntax.html
-(where you have all the important things on just one page).
+On Mon, 30 Jun 2014, Holger Schurig wrote:
 
-So you can convert "This is @b foo bar" to "This is **foo** bar".
+> I found a Sphinx cheat sheet:
+> http://openalea.gforge.inria.fr/doc/openalea/doc/_build/html/source/sphinx/rest_syntax.html
+> (where you have all the important things on just one page).
+>
+> So you can convert "This is @b foo bar" to "This is **foo** bar".
+
+  except the standard *seems* to be to not mark up the name "barebox"
+at all, so it would seem more appropriate to just remove the doxygen
+markup for the word "barebox" entirely.
+
+rday
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
