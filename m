@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1b0P-0007wy-Ey
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 12:48:22 +0000
-Received: from [69.196.158.250] (port=53516 helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
- (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
- id 1X1b03-0002AK-Fe
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 08:47:59 -0400
-Date: Mon, 30 Jun 2014 08:43:39 -0400 (EDT)
+ id 1X1b6s-0002wz-2n
+ for barebox@lists.infradead.org; Mon, 30 Jun 2014 12:55:02 +0000
+Date: Mon, 30 Jun 2014 08:50:17 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.11.1406300842390.3550@localhost>
+In-Reply-To: <CAOpc7mGu=VYE_9uRJ8-dKmDaqgQaok40u_2EFgSHQCRG=67oXQ@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1406300846400.3759@localhost>
+References: <alpine.LFD.2.11.1406280904330.2486@localhost>
+ <20140630060112.GX14257@pengutronix.de>
+ <CAOpc7mGu=VYE_9uRJ8-dKmDaqgQaok40u_2EFgSHQCRG=67oXQ@mail.gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,34 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] sdma.h: Typo, "interupt" -> "interrupt"
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: in sphinx docs, what is "@b barebox" markup supposed to do?
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
+On Mon, 30 Jun 2014, Holger Schurig wrote:
 
-Fix only two "interupt" misspellings in entire barebox codebase.
+> I found a Sphinx cheat sheet:
+> http://openalea.gforge.inria.fr/doc/openalea/doc/_build/html/source/sphinx/rest_syntax.html
+> (where you have all the important things on just one page).
+>
+> So you can convert "This is @b foo bar" to "This is **foo** bar".
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+  hmmmmm ... a handy page but i'm puzzled by one of the first things
+listed there; that is, that double backquotes are used to make a text
+"verbatim". it also appears to render it in courier, which is what i
+use to represent things like commands, filenames, etc.
 
----
+  other than that, that's a nice cheat sheet, thanks.
 
-diff --git a/arch/ppc/mach-mpc5xxx/include/mach/sdma.h b/arch/ppc/mach-mpc5xxx/include/mach/sdma.h
-index 5e7ff5f..6a25d79 100644
---- a/arch/ppc/mach-mpc5xxx/include/mach/sdma.h
-+++ b/arch/ppc/mach-mpc5xxx/include/mach/sdma.h
-@@ -82,11 +82,11 @@ ALL PARAMETERS ARE ALL LONGWORDS (FOUR BYTES EACH).
-     sdma->IntPend = (1 << tasknum);                    \
- }
-
--/* get interupt pending bit of a task */
-+/* get interrupt pending bit of a task */
- #define SDMA_GET_PENDINGBIT(tasknum)                   \
- 	((*(vu_long *)(MPC5XXX_SDMA + 0x14)) & (1<<(tasknum)))
-
--/* get interupt mask bit of a task */
-+/* get interrupt mask bit of a task */
- #define SDMA_GET_MASKBIT(tasknum)                      \
- 	((*(vu_long *)(MPC5XXX_SDMA + 0x18)) & (1<<(tasknum)))
-
+rday
 
 -- 
 
