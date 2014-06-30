@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X1Urw-0001ik-7G
- for barebox@lists.infradead.org; Mon, 30 Jun 2014 06:15:12 +0000
-Date: Mon, 30 Jun 2014 08:14:50 +0200
+ Linux)) id 1X1Uuc-0003Ky-7V
+ for barebox@lists.infradead.org; Mon, 30 Jun 2014 06:17:58 +0000
+Date: Mon, 30 Jun 2014 08:17:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140630061450.GB14257@pengutronix.de>
-References: <1404108721-25689-1-git-send-email-c.hemp@phytec.de>
+Message-ID: <20140630061735.GC14257@pengutronix.de>
+References: <alpine.LFD.2.11.1406261622080.1210@localhost>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1404108721-25689-1-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <alpine.LFD.2.11.1406261622080.1210@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx6: add new chip revisions
-To: Christian Hemp <c.hemp@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Fix misspellings of "persistant" -> "persistent" in
+ various places
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Mon, Jun 30, 2014 at 08:12:01AM +0200, Christian Hemp wrote:
-> Add new chip revisions for the new tap-out TO1.5 (i.MX6Q/D) and TO1.2
-> (i.MX6DL/S)
+On Thu, Jun 26, 2014 at 04:25:05PM -0400, Robert P. J. Day wrote:
 > 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> Fix misspellings of "persistent", including the renaming of a function
+> to "register_persistant_environment".
+> 
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 Applied, thanks
 
 Sascha
-
-> ---
->  arch/arm/mach-imx/imx6.c                  |   12 ++++++++++++
->  arch/arm/mach-imx/include/mach/revision.h |    2 ++
->  2 files changed, 14 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> index e14ce90..fabc161 100644
-> --- a/arch/arm/mach-imx/imx6.c
-> +++ b/arch/arm/mach-imx/imx6.c
-> @@ -130,6 +130,18 @@ int imx6_init(void)
->  		mx6_silicon_revision = IMX_CHIP_REV_1_2;
->  		break;
->  
-> +	case 0x03:
-> +		mx6_silicon_revision = IMX_CHIP_REV_1_3;
-> +		break;
-> +
-> +	case 0x04:
-> +		mx6_silicon_revision = IMX_CHIP_REV_1_4;
-> +		break;
-> +
-> +	case 0x05:
-> +		mx6_silicon_revision = IMX_CHIP_REV_1_5;
-> +		break;
-> +
->  	default:
->  		mx6_silicon_revision = IMX_CHIP_REV_UNKNOWN;
->  	}
-> diff --git a/arch/arm/mach-imx/include/mach/revision.h b/arch/arm/mach-imx/include/mach/revision.h
-> index bc6f20a..908a0a1 100644
-> --- a/arch/arm/mach-imx/include/mach/revision.h
-> +++ b/arch/arm/mach-imx/include/mach/revision.h
-> @@ -6,6 +6,8 @@
->  #define IMX_CHIP_REV_1_1	0x11
->  #define IMX_CHIP_REV_1_2	0x12
->  #define IMX_CHIP_REV_1_3	0x13
-> +#define IMX_CHIP_REV_1_4	0x14
-> +#define IMX_CHIP_REV_1_5	0x15
->  #define IMX_CHIP_REV_2_0	0x20
->  #define IMX_CHIP_REV_2_1	0x21
->  #define IMX_CHIP_REV_2_2	0x22
-> -- 
-> 1.7.0.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
