@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
+Received: from mout.kundenserver.de ([212.227.126.187])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1wCS-0007ks-Rt
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 11:26:13 +0000
-Received: from [99.240.204.5] (port=50151 helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
- (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
- id 1X1wC5-0000oV-Cd
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 07:25:49 -0400
-Date: Tue, 1 Jul 2014 07:21:31 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.11.1407010719440.25792@localhost>
+ id 1X1wtP-00015y-38
+ for barebox@lists.infradead.org; Tue, 01 Jul 2014 12:10:36 +0000
+Date: Tue, 1 Jul 2014 14:10:07 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+In-Reply-To: <20140701065409.GO14257@pengutronix.de>
+Message-ID: <alpine.DEB.2.10.1407011407550.7233@9VTHT2J-D520>
+References: <1502046103.916753.1404130899228.open-xchange@oxbsltgw09.schlund.de>
+ <20140701065409.GO14257@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="8323329-674531524-1404216612=:7233"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,136 +19,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: Fix remaining typoes "persistant", "existance".
-To: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] boot: show all boot sources
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Rolf Evers-Fischer <embedded24@evers-fischer.de>
+
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-674531524-1404216612=:7233
+Content-Type: TEXT/PLAIN; charset=iso-8859-15; format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
 
-Fix a couple typoes that occur only in Documentation/ or in comments,
-so no functional change.
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+On Tue, 1 Jul 2014, Sascha Hauer wrote:
 
----
+> On Mon, Jun 30, 2014 at 02:21:39PM +0200, Rolf Evers-Fischer wrote:
+>> This patch fixes the presentation of all bootsources with 'boot -m' and
+>> 'boot -l' command.
+>>
+>> Signed-off-by: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+>> ---
+>> =A0commands/boot.c |=A0 =A0 4 ++--
+>> =A01 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/commands/boot.c b/commands/boot.c
+>> index c8eae10..1a1856d 100644
+>> --- a/commands/boot.c
+>> +++ b/commands/boot.c
+>> @@ -433,12 +433,12 @@ static int do_boot(int argc, char *argv[])
+>> =A0 =A0 =A0 =A0 }
+>>
+>> =A0 =A0 =A0 =A0 if (do_list) {
+>> -=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bootsources_list(sources, num_sources);
+>> +=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bootsources_list(&argv[optind], argc - o=
+ptind);
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto out;
+>> =A0 =A0 =A0 =A0 }
+>>
+>> =A0 =A0 =A0 =A0 if (do_menu) {
+>> -=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bootsources_menu(sources, num_sources);
+>> +=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bootsources_menu(&argv[optind], argc - o=
+ptind);
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto out;
+>> =A0 =A0 =A0 =A0 }
+>
+> What exactly fixes this? Looking at the code we have:
+>
+> =09if (optind < argc) {
+> =09=09num_sources =3D argc - optind;
+> =09=09sources =3D xmemdup(&argv[optind], sizeof(char *) *num_sources);
+> =09} else {
+> =09=09...
+> =09}
+>
+> Which should do what you want.
 
-diff --git a/Documentation/boards/mxs/Chumby-Falconwing.rst b/Documentation/boards/mxs/Chumby-Falconwing.rst
-index 172d684..97b39f3 100644
---- a/Documentation/boards/mxs/Chumby-Falconwing.rst
-+++ b/Documentation/boards/mxs/Chumby-Falconwing.rst
-@@ -36,7 +36,7 @@ How to prepare an MCI card to boot the "chumby one" with barebox
-   * Create four primary partitions on the MCI card
+Unfortunately it doesn't do what I want. If I invoke "boot -l" on the bb
+shell, I get optind=3Dargc=3D2. Therefore barebox executes the "else" claus=
+e,
+which lists only the default bootsource.
 
-     * the first one for the bootlets (about 256 kiB)
--    * the second one for the persistant environment (size is up to you, at least 256k)
-+    * the second one for the persistent environment (size is up to you, at least 256k)
-     * the third one for the kernel (2 MiB ... 4 MiB in size)
-     * the fourth one for the root filesystem which can fill the rest of the available space
+But now I understand that replacing the "<" with "<=3D" might be a better
+fix for this problem:
 
-diff --git a/Documentation/boards/x86.rst b/Documentation/boards/x86.rst
-index ee5e869..ea13b91 100644
---- a/Documentation/boards/x86.rst
-+++ b/Documentation/boards/x86.rst
-@@ -32,7 +32,7 @@ prepared in some special way:
-     the first partition must start at a sector behind the ones barebox
-     occupies.
-   * barebox handles its runtime configuration in a special way: It
--    stores it in a binary way into some reserved sectors ("persistant
-+    stores it in a binary way into some reserved sectors ("persistent
-     storage").
+diff --git a/commands/boot.c b/commands/boot.c
+index ba26cac..9823538 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -395,7 +395,7 @@ static int do_boot(int argc, char *argv[])
+                 }
+         }
 
- Boot Preparations
-@@ -52,12 +52,12 @@ simple calulation::
- 	sectors = (\<size of barebox image\> + 511) / 512
+-       if (optind < argc) {
++       if (optind <=3D argc) {
+                 num_sources =3D argc - optind;
+                 sources =3D xmemdup(&argv[optind], sizeof(char *) *
+num_sources);
+         } else {
 
- To be able to store the runtime configuration, further free sectors are
--required. Its up to you and your requirements, how large this persistant
-+required. Its up to you and your requirements, how large this persistent
- storage must be. If you need 16 kiB for this purpose, you need to keep
- additional 32 sectors free.
+What is your opinion?
 
- For this example we are reserving 300 sectors for the barebox image and
--additionaly 32 sectors for the persistant storage. So, the first partition on
-+additionaly 32 sectors for the persistent storage. So, the first partition on
- the boot media must start at sector 333 or later.
 
- Run the  fdisk tool to setup such a partition table::
-@@ -116,18 +116,18 @@ In the next step, barebox gets installed to this boot media::
- This command writes the barebox image file './barebox' onto the device
-  /dev/sda.
+> On which barebox version are you?
+I'm using barebox-2014.06.0.
 
--The  -s option will keep the persistant storage sectors free and untouched
--and set flags in the MBR to forward its existance, size and location to
-+The  -s option will keep the persistent storage sectors free and untouched
-+and set flags in the MBR to forward its existence, size and location to
- barebox at runtime.  setupmbr also does not change the partition table.
-
- The barebox image gets stored on the boot media like this::
-
-   sector 0   1             33                              333
-          |---|-------------|--------------- ~~~ ------------|--------------
--        MBR    persistant              barebox                 first
-+        MBR    persistent              barebox                 first
-                 storage               main image              partition
-
--If the  -s option is omitted, the "persistant storage" part simply does
-+If the  -s option is omitted, the "persistent storage" part simply does
- not exist::
-
-   sector 0   1                              333
-diff --git a/arch/arm/boards/karo-tx28/tx28-stk5.c b/arch/arm/boards/karo-tx28/tx28-stk5.c
-index 2aaceb4..fe48610 100644
---- a/arch/arm/boards/karo-tx28/tx28-stk5.c
-+++ b/arch/arm/boards/karo-tx28/tx28-stk5.c
-@@ -311,7 +311,7 @@ static const uint32_t tx28_starterkit_pad_setup[] = {
-  * Try to register an environment storage on the attached MCI card
-  * @return 0 on success
-  *
-- * We rely on the existance of a usable SD card, already attached to
-+ * We rely on the existence of a usable SD card, already attached to
-  * our system, to get a persistent memory for our environment.
-  * If this SD card is also the boot medium, we can use the second partition
-  * for our environment purpose (if present!).
-diff --git a/drivers/mtd/nand/nomadik_nand.c b/drivers/mtd/nand/nomadik_nand.c
-index fbd8ecd..653b4f5 100644
---- a/drivers/mtd/nand/nomadik_nand.c
-+++ b/drivers/mtd/nand/nomadik_nand.c
-@@ -214,7 +214,7 @@ static int nomadik_nand_probe(struct device_d *dev)
- 	nand->options = pdata->options;
-
- 	/*
--	 * Scan to find existance of the device
-+	 * Scan to find existence of the device
- 	 */
- 	if (nand_scan(&host->mtd, 1)) {
- 		ret = -ENXIO;
-diff --git a/scripts/setupmbr/setupmbr.c b/scripts/setupmbr/setupmbr.c
-index 506ed19..b74b105 100644
---- a/scripts/setupmbr/setupmbr.c
-+++ b/scripts/setupmbr/setupmbr.c
-@@ -673,7 +673,7 @@ This command writes the @a barebox image file './barebox.bin' onto the device
- @p /dev/sda.
-
- The @p -s option will keep the persistent storage sectors free and untouched
--and set flags in the MBR to forward its existance, size and location to
-+and set flags in the MBR to forward its existence, size and location to
- @a barebox at runtime. @p setupmbr also does not change the partition table.
-
- The @a barebox image gets stored on the boot media like this:
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+Best regards,
+  Rolf
+--8323329-674531524-1404216612=:7233
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--8323329-674531524-1404216612=:7233--
