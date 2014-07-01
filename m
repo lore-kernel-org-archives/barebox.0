@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x22b.google.com ([2607:f8b0:4002:c07::22b])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1z1G-0001FQ-G9
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 14:26:51 +0000
-Received: by mail-yk0-f171.google.com with SMTP id 200so5740368ykr.16
- for <barebox@lists.infradead.org>; Tue, 01 Jul 2014 07:26:27 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <alpine.LFD.2.11.1407010832100.28138@localhost>
+ id 1X20WD-0006M8-Ow
+ for barebox@lists.infradead.org; Tue, 01 Jul 2014 16:02:54 +0000
+Date: Tue, 1 Jul 2014 11:58:08 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <CAOpc7mHhFazCDMQqq8w3hUkRjzovvtSBksYdjwDdkV+LEDb7bA@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1407011155220.30744@localhost>
 References: <alpine.LFD.2.11.1407010832100.28138@localhost>
-Date: Tue, 1 Jul 2014 16:26:27 +0200
-Message-ID: <CAOpc7mHhFazCDMQqq8w3hUkRjzovvtSBksYdjwDdkV+LEDb7bA@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+ <CAOpc7mHhFazCDMQqq8w3hUkRjzovvtSBksYdjwDdkV+LEDb7bA@mail.gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,15 +23,38 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: generated command references sometimes render a solid blob of text
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Holger Schurig <holgerschurig@gmail.com>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-The Kconfig help entries (the source of the generated command
-reference) have been written before python-sphinx have been selected.
+On Tue, 1 Jul 2014, Holger Schurig wrote:
 
-So basically we need to go over all of them and make sure that they
-render correctly. From my point of view, it doesn't harm if you see
-raw ReST formatting while inside "make xconfig".
+> The Kconfig help entries (the source of the generated command
+> reference) have been written before python-sphinx have been
+> selected.
+>
+> So basically we need to go over all of them and make sure that they
+> render correctly. From my point of view, it doesn't harm if you see
+> raw ReST formatting while inside "make xconfig".
+
+  normally, i wouldn't be a big fan of deliberately mangling help info
+for the sake of how it will *eventually* be rendered but, in this
+case, it seems reasonable.
+
+  and on that note, is it a ReST thing that renders two regular
+hyphens as a single, long hyphen? as far as i can tell, that is an
+issue only in the let.c command help.
+
+rday
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
