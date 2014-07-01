@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-x22a.google.com ([2607:f8b0:4002:c01::22a])
+Received: from mout.kundenserver.de ([212.227.126.130])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1s2z-0006dA-T6
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 07:00:10 +0000
-Received: by mail-yh0-f42.google.com with SMTP id i57so5744722yha.1
- for <barebox@lists.infradead.org>; Mon, 30 Jun 2014 23:59:48 -0700 (PDT)
+ id 1X1sSR-0002hB-Uv
+ for barebox@lists.infradead.org; Tue, 01 Jul 2014 07:26:28 +0000
+Date: Tue, 1 Jul 2014 09:26:03 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <349571337.927957.1404199563258.open-xchange@oxbsltgw05.schlund.de>
+In-Reply-To: <20140701064637.GN14257@pengutronix.de>
+References: <1856111166.917234.1404131250583.open-xchange@oxbsltgw09.schlund.de>
+ <20140701064637.GN14257@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <alpine.LFD.2.11.1406301135120.14954@localhost>
-References: <alpine.LFD.2.11.1406301135120.14954@localhost>
-Date: Tue, 1 Jul 2014 08:59:47 +0200
-Message-ID: <CAOpc7mFKJ-9diZS_=ziSeN24XHGJ4=7rTUxsKBv5jDXCqk_BsA@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +18,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: recommendation for ARM cross-compiler for building for beaglebone
- black?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] boot: fix typo
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I don't have a clue if that is the "best" toolchain, but I'm using this:
-
-#############################################################################
-##  Toolchain
-#############################################################################
-# http://www.linaro.org/downloads/#008
-
-GCC_LINARO_FILE=gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux.tar.xz
-GCC_LINARO_HTTP=http://releases.linaro.org/14.04/components/toolchain/binaries/
-GCC_LINARO_DIR=gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux
-CROSS_COMPILE=`pwd`/$(GCC_LINARO_DIR)/bin/arm-linux-gnueabihf-
-
-.PHONY:: toolchain
-toolchain all:: $(GCC_LINARO_DIR)/STAMP
-
-downloads:: downloads/$(GCC_LINARO_FILE)
-downloads/$(GCC_LINARO_FILE):
-        @test `id -u` != 0 || { echo "\n---> Not as root, dude!
-($@)\n"; exit 1; }
-        mkdir -p downloads
-        wget -q -c -P downloads $(GCC_LINARO_HTTP)/$(GCC_LINARO_FILE)
-
-$(GCC_LINARO_DIR)/STAMP: downloads/$(GCC_LINARO_FILE)
-        @test `id -u` != 0 || { echo "\n---> Not as root, dude!
-($@)\n"; exit 1; }
-        tar xaf $<
-        touch $@
-
-Works okay with barebox and Linux.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CkhpIFNhc2NoYSwKCj4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiBoYXQg
+YW0gMS4gSnVsaSAyMDE0IHVtIDA4OjQ2Cj4gZ2VzY2hyaWViZW46Cj4KPgo+IEhpIFJvbGYsCj4K
+PiBPbiBNb24sIEp1biAzMCwgMjAxNCBhdCAwMjoyNzozMFBNICswMjAwLCBSb2xmIEV2ZXJzLUZp
+c2NoZXIgd3JvdGU6Cj4gPiBTaWduZWQtb2ZmLWJ5OiBSb2xmIEV2ZXJzLUZpc2NoZXIgPHJvbGYu
+ZXZlcnMuZmlzY2hlckBkZWxwaGkuY29tPgo+ID4gLS0tCj4gPsKgIGNvbW1hbmRzL2Jvb3QuYyB8
+wqAgwqAgMiArLQo+ID7CoCAxIGZpbGVzIGNoYW5nZWQsIDEgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
+dGlvbnMoLSkKPgo+IEFwcGxpZWQsIHRoYW5rcy4KPgo+IEkgaGFkIHRvIGFwcGx5IGl0IG1hbnVh
+bGx5LiBZb3UgbWFpbGVyIGJyZWFrcyBsaW5lcyBhbmQgY29udmVydHMgdGFicwo+IGludG8gc3Bh
+Y2VzLiBQbGVhc2UgdHJ5IHRvIGZpeCB0aGlzIG5leHQgdGltZS4KPgpUaGFuayB5b3UuIEkgd2ls
+bCB0cnkgYW5vdGhlciBtYWlsZXIgbmV4dCB0aW1lLgoKQmVzdCByZWdhcmRzLArCoFJvbGYKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
