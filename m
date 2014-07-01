@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f54.google.com ([209.85.215.54])
+Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X21SU-0006Yc-Uf
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 17:03:07 +0000
-Received: by mail-la0-f54.google.com with SMTP id mc6so6189290lab.13
- for <barebox@lists.infradead.org>; Tue, 01 Jul 2014 10:02:41 -0700 (PDT)
-Date: Tue, 1 Jul 2014 21:14:47 +0400
+ id 1X24rh-00021p-CW
+ for barebox@lists.infradead.org; Tue, 01 Jul 2014 20:41:21 +0000
+Received: by mail-la0-f48.google.com with SMTP id el20so6237279lab.21
+ for <barebox@lists.infradead.org>; Tue, 01 Jul 2014 13:40:58 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140701211447.9e543b8e172d37c32d630091@gmail.com>
-Mime-Version: 1.0
+Date: Wed,  2 Jul 2014 00:40:50 +0400
+Message-Id: <1404247250-11605-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,54 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: md5sum arguments
+Subject: [PATCH] [FOR AMMEND] Documentation: loongson_ls1b: document RS232
+ speed
 To: barebox@lists.infradead.org
 
-Hi All!
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ Documentation/boards/mips/loongson_ls1b.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Current 'md5sum' command gets FILE|AREA argument, e.g.
+diff --git a/Documentation/boards/mips/loongson_ls1b.rst b/Documentation/boards/mips/loongson_ls1b.rst
+index a833a86..8f475e6 100644
+--- a/Documentation/boards/mips/loongson_ls1b.rst
++++ b/Documentation/boards/mips/loongson_ls1b.rst
+@@ -24,7 +24,7 @@ The board uses PMON2000 as bootloader.
+ Running barebox
+ ---------------
+ 
+-  1. Connect to the boards's UART2;
++  1. Connect to the boards's UART2 (115200 8N1);
+ 
+   2. Turn board's power on;
+ 
+-- 
+2.0.1
 
-
-  barebox:/ help md5sum =
-
-
-  md5sum - calculate MD5 checksum
-
-  Usage: md5sum FILE|AREA...
-
-  Calculate a MD5 digest over a FILE or a memory area.
-
-The *nix 'md5sum' gets [FILE]... argument.
-This behavour can be misleading. E.g. today I have tryed this command seque=
-nce on
-my qemu-malta machine:
-
-  barebox:/ memcpy -s /dev/zero -d 1M 0 0 0x100000
-  barebox:/ md5sum 1M
-
-md5sum just hangs!
-
-
-But this command sequence works fine:
-
-  barebox:/ memcpy -s /dev/zero -d zeros 0 0 0x100000
-  barebox:/ md5sum zeros                             =
-
-  b6d81b360a5672d80c27430f39153e2c  zeros 0x00000000 ... 0xffffffffffffffff
-
-
-Do we really need this?
-
-We can use 'addpart' on /dev/memory for creating partial memory device and =
-run md5sum on it.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
