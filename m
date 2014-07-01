@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X25Em-00030c-OP
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 21:05:13 +0000
-Received: by mail-la0-f42.google.com with SMTP id pn19so6368400lab.15
- for <barebox@lists.infradead.org>; Tue, 01 Jul 2014 14:04:50 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  2 Jul 2014 01:04:25 +0400
-Message-Id: <1404248665-15430-1-git-send-email-antonynpavlov@gmail.com>
+ id 1X25Vm-0001yU-1a
+ for barebox@lists.infradead.org; Tue, 01 Jul 2014 21:22:46 +0000
+Received: by mail-wi0-f174.google.com with SMTP id bs8so8561783wib.1
+ for <barebox@lists.infradead.org>; Tue, 01 Jul 2014 14:22:23 -0700 (PDT)
+From: Holger Schurig <holgerschurig@gmail.com>
+Date: Tue,  1 Jul 2014 23:22:05 +0200
+Message-Id: <1404249726-7663-2-git-send-email-holgerschurig@gmail.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,67 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mii-tool: make the 'No MII transceiver present!' message more
- clear
+Subject: [PATCH 2/3] lz4: ensure length does not wrap
 To: barebox@lists.infradead.org
+Cc: Holger Schurig <holgerschurig@gmail.de>
 
-Suppose you have two network controllers.
-The first one is ENC28J60 (it is in low power mode
-after start) the second one is always-enabled eth1.
+Note: this is the same as 206204a1162b995e2185275167b22468c00d6b36 in
+linux-git.
 
-As ENC28J60 is in low power mode before enc28j60_eth_open()
-is called. ENC28J60's mii traceiver is in low power mode too
-so the mii traceiver's register are inaccessable.
+Given some pathologically compressed data, lz4 could possibly decide to
+wrap a few internal variables, causing unknown things to happen.  Catch
+this before the wrapping happens and abort the decompression.
 
-Here is a sample log just after barebox start:
-
-  barebox:/ miitool
-  miibus0: registered phy as /dev/phy0
-    No MII transceiver present!.
-  miibus1: registered phy as /dev/phy1
-  phy1: eth1: negotiated 100baseTx-FD, link ok
-  barebox:/ miitool
-    No MII transceiver present!.
-  phy1: eth1: negotiated 100baseTx-FD, link ok
-
-The 'No MII transceiver present!.' message is confusing here.
-
-This patch fixes the problem so the miitool output
-looks like this:
-
-  barebox:/ miitool
-  phy0: spieth0:  No MII transceiver present!.
-  phy1: eth1: negotiated 100baseTx-FD, link ok
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Reported-by: "Don A. Bailey" <donb@securitymouse.com>
+Signed-off-by: Holger Schurig <holgerschurig@gmail.de>
 ---
- commands/miitool.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/lz4/lz4_decompress.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/commands/miitool.c b/commands/miitool.c
-index 40e34e9..c62e758 100644
---- a/commands/miitool.c
-+++ b/commands/miitool.c
-@@ -115,14 +115,14 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 	for (i = 0; i < 32; i++)
- 		mii_val[i] = mii->read(mii, phydev->addr, i);
+diff --git a/lib/lz4/lz4_decompress.c b/lib/lz4/lz4_decompress.c
+index 8e64ce6..75cf08b 100644
+--- a/lib/lz4/lz4_decompress.c
++++ b/lib/lz4/lz4_decompress.c
+@@ -73,6 +73,8 @@ static int lz4_uncompress(const char *source, char *dest, int osize)
+ 			len = *ip++;
+ 			for (; len == 255; length += 255)
+ 				len = *ip++;
++			if (unlikely(length > (size_t)(length + len)))
++				goto _output_error;
+ 			length += len;
+ 		}
  
-+	printf("%s: %s%d: ", phydev->cdev.name,
-+		mii->parent->name, mii->parent->id);
-+
- 	if (mii_val[MII_BMCR] == 0xffff || mii_val[MII_BMSR] == 0x0000) {
- 		fprintf(stderr, "  No MII transceiver present!.\n");
- 		return -1;
- 	}
- 
--	printf("%s: %s%d: ", phydev->cdev.name,
--		mii->parent->name, mii->parent->id);
--
- 	/* Descriptive rename. */
- 	bmcr = mii_val[MII_BMCR];
- 	bmsr = mii_val[MII_BMSR];
 -- 
-2.0.1
+1.8.5.2
 
 
 _______________________________________________
