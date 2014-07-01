@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22d.google.com ([2a00:1450:400c:c03::22d])
+Received: from mail-we0-x22c.google.com ([2a00:1450:400c:c03::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X1sx1-0002xr-9L
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 07:58:04 +0000
-Received: by mail-we0-f173.google.com with SMTP id t60so9319467wes.4
- for <barebox@lists.infradead.org>; Tue, 01 Jul 2014 00:57:40 -0700 (PDT)
+ id 1X1t0d-0005W1-VI
+ for barebox@lists.infradead.org; Tue, 01 Jul 2014 08:01:48 +0000
+Received: by mail-we0-f172.google.com with SMTP id u57so9289791wes.31
+ for <barebox@lists.infradead.org>; Tue, 01 Jul 2014 01:01:25 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue,  1 Jul 2014 10:04:18 +0200
-Message-Id: <1404201858-1626-1-git-send-email-holgerschurig@gmail.com>
+Date: Tue,  1 Jul 2014 10:08:06 +0200
+Message-Id: <1404202086-1775-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,19 +21,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] menutree: let it select GLOB and GLOB_SORT
+Subject: [PATCH v2] menutree: let it select GLOB and GLOB_SORT
 To: barebox@lists.infradead.org
 
-The menutree code depends on CONFIG_GLOB, without it will just hang. So
-let it select it automatically. Also remove the dependency on hush, because
-glob() will run with the simple shell as well.
+The menutree doesn't select CONFIG_GLOB, but it depends on it. Without
+it will just hang. So let it select it automatically. Also remove the
+dependency of CONFIG_GLOB on CONFIG_HUSH, because glob() will run with
+the simple shell as well.
 
-Also add a dependency on CONFIG_GLOB_SORT. While is not strictly
-needed, many people use menu/00-foo menu/10-bar menu/20-barf to sort
-their menu entries.
+Also let CONFIG_MENUTREE select on CONFIG_GLOB_SORT. While is not
+strictly needed, many people use menu/00-foo menu/10-bar menu/20-barf
+to sort their menu entries. So select it out of convenience.
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
+
+v2: just changed the commit text
+
  common/Kconfig |    8 ++++++--
  1 file changed, 6 insertions(+), 2 deletions(-)
 
