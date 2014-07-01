@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X1rh8-0006eV-Q2
- for barebox@lists.infradead.org; Tue, 01 Jul 2014 06:37:35 +0000
-Date: Tue, 1 Jul 2014 08:37:10 +0200
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20140701063710.GP22620@pengutronix.de>
-References: <alpine.LFD.2.11.1406301135120.14954@localhost>
+ Linux)) id 1X1rmC-0000fF-R0
+ for barebox@lists.infradead.org; Tue, 01 Jul 2014 06:42:49 +0000
+Date: Tue, 1 Jul 2014 08:42:25 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140701064225.GM14257@pengutronix.de>
+References: <1403591596-13955-1-git-send-email-dev@lynxeye.de>
+ <20140624071749.GD15686@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1406301135120.14954@localhost>
+In-Reply-To: <20140624071749.GD15686@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: recommendation for ARM cross-compiler for building for
- beaglebone black?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] arm: imx6: move imx6_init_lowlevel to single initcall
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jun 30, 2014 at 11:36:43AM -0400, Robert P. J. Day wrote:
->   been a while since i've build barebox for my BBB ... anyone here
-> doing that and can recommend a cross-compiler that's been working for
-> them? i know there are several out there, just curious what anyone
-> here is using for that particular board. thanks.
+On Tue, Jun 24, 2014 at 09:17:49AM +0200, Sascha Hauer wrote:
+> On Tue, Jun 24, 2014 at 08:33:14AM +0200, Lucas Stach wrote:
+> > Instead of repeating the same lowlevel init for every board
+> > move it to it's own initcall.
+> > 
+> > Avoids code bloat and shaves off almost 1.5kB of uncompressed
+> > barebox size for a default imx_v7_defconfig build.
+> > 
+> > For boards wherethe hostname setup was done in  the postcore
+> > initcall we move this to a device initcall to get it out of
+> > the way.
+> > 
+> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> 
+> You could also call imx6_init_lowlevel from imx6_init which is also
+> called at postcore_initcall time.
 
-We use OSELAS.Toolchain-2013.12.2 and its arm-v7a-linux-gnueabihf
-crosscompiler.
+Applied this series with this change.
 
-rsc
+Sascha
+
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
