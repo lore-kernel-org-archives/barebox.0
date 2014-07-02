@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2DNx-0002vu-4h
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:47:13 +0000
-Date: Wed, 2 Jul 2014 07:46:50 +0200
+ Linux)) id 1X2DPO-00033L-Lg
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:48:43 +0000
+Date: Wed, 2 Jul 2014 07:48:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140702054650.GT14257@pengutronix.de>
-References: <1404248665-15430-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140702054820.GU14257@pengutronix.de>
+References: <1404248604-15368-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1404248665-15430-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1404248604-15368-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mii-tool: make the 'No MII transceiver present!' message
- more clear
+Subject: Re: [PATCH v3 0/2] net: add ENC28J60 support
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 02, 2014 at 01:04:25AM +0400, Antony Pavlov wrote:
-> Suppose you have two network controllers.
-> The first one is ENC28J60 (it is in low power mode
-> after start) the second one is always-enabled eth1.
+On Wed, Jul 02, 2014 at 01:03:22AM +0400, Antony Pavlov wrote:
+> Changes since RFC v2:
 > 
-> As ENC28J60 is in low power mode before enc28j60_eth_open()
-> is called. ENC28J60's mii traceiver is in low power mode too
-> so the mii traceiver's register are inaccessable.
+>   * drop netif_msg_*() debug level checking and packet dump;
+>   * invoke eth_register() before enc28j60_hw_init()
+>     so dev_dbg() in enc28j60_hw_init() works properly;
+>   * free allocated resources on errors in enc28j60_probe()
 > 
-> Here is a sample log just after barebox start:
 > 
->   barebox:/ miitool
->   miibus0: registered phy as /dev/phy0
->     No MII transceiver present!.
->   miibus1: registered phy as /dev/phy1
->   phy1: eth1: negotiated 100baseTx-FD, link ok
->   barebox:/ miitool
->     No MII transceiver present!.
->   phy1: eth1: negotiated 100baseTx-FD, link ok
-> 
-> The 'No MII transceiver present!.' message is confusing here.
-> 
-> This patch fixes the problem so the miitool output
-> looks like this:
-> 
->   barebox:/ miitool
->   phy0: spieth0:  No MII transceiver present!.
->   phy1: eth1: negotiated 100baseTx-FD, link ok
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
+> Antony Pavlov (2):
+>   net.h: add ETH_ALEN constant; fix whitespaces
+>   net: add ENC28J60 support
 
 Applied, thanks
 
