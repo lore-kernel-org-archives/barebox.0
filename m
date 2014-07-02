@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2DJz-0001JB-RJ
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:43:08 +0000
-Date: Wed, 2 Jul 2014 07:42:44 +0200
+ Linux)) id 1X2DNx-0002vu-4h
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:47:13 +0000
+Date: Wed, 2 Jul 2014 07:46:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140702054244.GS14257@pengutronix.de>
-References: <20140701211447.9e543b8e172d37c32d630091@gmail.com>
+Message-ID: <20140702054650.GT14257@pengutronix.de>
+References: <1404248665-15430-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140701211447.9e543b8e172d37c32d630091@gmail.com>
+In-Reply-To: <1404248665-15430-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: md5sum arguments
+Subject: Re: [PATCH] mii-tool: make the 'No MII transceiver present!' message
+ more clear
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 01, 2014 at 09:14:47PM +0400, Antony Pavlov wrote:
-> Hi All!
+On Wed, Jul 02, 2014 at 01:04:25AM +0400, Antony Pavlov wrote:
+> Suppose you have two network controllers.
+> The first one is ENC28J60 (it is in low power mode
+> after start) the second one is always-enabled eth1.
 > 
-> Current 'md5sum' command gets FILE|AREA argument, e.g.
+> As ENC28J60 is in low power mode before enc28j60_eth_open()
+> is called. ENC28J60's mii traceiver is in low power mode too
+> so the mii traceiver's register are inaccessable.
 > 
+> Here is a sample log just after barebox start:
 > 
->   barebox:/ help md5sum 
+>   barebox:/ miitool
+>   miibus0: registered phy as /dev/phy0
+>     No MII transceiver present!.
+>   miibus1: registered phy as /dev/phy1
+>   phy1: eth1: negotiated 100baseTx-FD, link ok
+>   barebox:/ miitool
+>     No MII transceiver present!.
+>   phy1: eth1: negotiated 100baseTx-FD, link ok
 > 
->   md5sum - calculate MD5 checksum
+> The 'No MII transceiver present!.' message is confusing here.
 > 
->   Usage: md5sum FILE|AREA...
+> This patch fixes the problem so the miitool output
+> looks like this:
 > 
->   Calculate a MD5 digest over a FILE or a memory area.
+>   barebox:/ miitool
+>   phy0: spieth0:  No MII transceiver present!.
+>   phy1: eth1: negotiated 100baseTx-FD, link ok
 > 
-> The *nix 'md5sum' gets [FILE]... argument.
-> This behavour can be misleading. E.g. today I have tryed this command sequence on
-> my qemu-malta machine:
-> 
->   barebox:/ memcpy -s /dev/zero -d 1M 0 0 0x100000
->   barebox:/ md5sum 1M
-> 
-> md5sum just hangs!
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
 
-This is beacuse size is initialized with ~0 and thus the command will
-create a md5sum over the whole memory space.
-
-This works:
-
-md5sum 1M+0x100000
-
-> But this command sequence works fine:
-> 
->   barebox:/ memcpy -s /dev/zero -d zeros 0 0 0x100000
->   barebox:/ md5sum zeros                             
->   b6d81b360a5672d80c27430f39153e2c  zeros 0x00000000 ... 0xffffffffffffffff
-> 
-> 
-> Do we really need this?
-
-Personally I don't need this, but since we have this feature and it's
-not really expensive, why should we remove it?
+Applied, thanks
 
 Sascha
 
