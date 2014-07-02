@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2D4v-0003YR-2d
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:27:33 +0000
-Date: Wed, 2 Jul 2014 07:27:11 +0200
+ Linux)) id 1X2DJz-0001JB-RJ
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:43:08 +0000
+Date: Wed, 2 Jul 2014 07:42:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140702052711.GR14257@pengutronix.de>
-References: <1404202086-1775-1-git-send-email-holgerschurig@gmail.com>
+Message-ID: <20140702054244.GS14257@pengutronix.de>
+References: <20140701211447.9e543b8e172d37c32d630091@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1404202086-1775-1-git-send-email-holgerschurig@gmail.com>
+In-Reply-To: <20140701211447.9e543b8e172d37c32d630091@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,71 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] menutree: let it select GLOB and GLOB_SORT
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: md5sum arguments
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 01, 2014 at 10:08:06AM +0200, Holger Schurig wrote:
-> The menutree doesn't select CONFIG_GLOB, but it depends on it. Without
-> it will just hang. So let it select it automatically. Also remove the
-> dependency of CONFIG_GLOB on CONFIG_HUSH, because glob() will run with
-> the simple shell as well.
+On Tue, Jul 01, 2014 at 09:14:47PM +0400, Antony Pavlov wrote:
+> Hi All!
 > 
-> Also let CONFIG_MENUTREE select on CONFIG_GLOB_SORT. While is not
-> strictly needed, many people use menu/00-foo menu/10-bar menu/20-barf
-> to sort their menu entries. So select it out of convenience.
+> Current 'md5sum' command gets FILE|AREA argument, e.g.
 > 
-> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+> 
+>   barebox:/ help md5sum 
+> 
+>   md5sum - calculate MD5 checksum
+> 
+>   Usage: md5sum FILE|AREA...
+> 
+>   Calculate a MD5 digest over a FILE or a memory area.
+> 
+> The *nix 'md5sum' gets [FILE]... argument.
+> This behavour can be misleading. E.g. today I have tryed this command sequence on
+> my qemu-malta machine:
+> 
+>   barebox:/ memcpy -s /dev/zero -d 1M 0 0 0x100000
+>   barebox:/ md5sum 1M
+> 
+> md5sum just hangs!
 
-Took this one instead.
+This is beacuse size is initialized with ~0 and thus the command will
+create a md5sum over the whole memory space.
+
+This works:
+
+md5sum 1M+0x100000
+
+> But this command sequence works fine:
+> 
+>   barebox:/ memcpy -s /dev/zero -d zeros 0 0 0x100000
+>   barebox:/ md5sum zeros                             
+>   b6d81b360a5672d80c27430f39153e2c  zeros 0x00000000 ... 0xffffffffffffffff
+> 
+> 
+> Do we really need this?
+
+Personally I don't need this, but since we have this feature and it's
+not really expensive, why should we remove it?
 
 Sascha
-
-> ---
-> 
-> v2: just changed the commit text
-> 
->  common/Kconfig |    8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 1afee93..bba7f15 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -61,6 +61,8 @@ config BAREBOX_UPDATE
->  
->  config MENUTREE
->  	bool
-> +	select GLOB
-> +	select GLOB_SORT
->  
->  menu "General Settings"
->  
-> @@ -338,11 +340,13 @@ config MAXARGS
->  
->  config GLOB
->  	bool
-> -	prompt "hush globbing support"
-> -	depends on SHELL_HUSH
-> +	prompt "globbing support"
->  	help
->  	  If you want to use wildcards like * or ? say y here.
->  
-> +	  Globbing can be used in the HUSH shell, but is also used
-> +	  internally in the menutree command.
-> +
->  config GLOB_SORT
->  	select QSORT
->  	bool
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
