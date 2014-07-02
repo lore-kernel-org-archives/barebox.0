@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2D4E-0003TN-80
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:26:51 +0000
-Date: Wed, 2 Jul 2014 07:26:27 +0200
+ Linux)) id 1X2D4v-0003YR-2d
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 05:27:33 +0000
+Date: Wed, 2 Jul 2014 07:27:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140702052627.GQ14257@pengutronix.de>
-References: <1404201858-1626-1-git-send-email-holgerschurig@gmail.com>
+Message-ID: <20140702052711.GR14257@pengutronix.de>
+References: <1404202086-1775-1-git-send-email-holgerschurig@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1404201858-1626-1-git-send-email-holgerschurig@gmail.com>
+In-Reply-To: <1404202086-1775-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] menutree: let it select GLOB and GLOB_SORT
+Subject: Re: [PATCH v2] menutree: let it select GLOB and GLOB_SORT
 To: Holger Schurig <holgerschurig@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 01, 2014 at 10:04:18AM +0200, Holger Schurig wrote:
-> The menutree code depends on CONFIG_GLOB, without it will just hang. So
-> let it select it automatically. Also remove the dependency on hush, because
-> glob() will run with the simple shell as well.
+On Tue, Jul 01, 2014 at 10:08:06AM +0200, Holger Schurig wrote:
+> The menutree doesn't select CONFIG_GLOB, but it depends on it. Without
+> it will just hang. So let it select it automatically. Also remove the
+> dependency of CONFIG_GLOB on CONFIG_HUSH, because glob() will run with
+> the simple shell as well.
 > 
-> Also add a dependency on CONFIG_GLOB_SORT. While is not strictly
-> needed, many people use menu/00-foo menu/10-bar menu/20-barf to sort
-> their menu entries.
+> Also let CONFIG_MENUTREE select on CONFIG_GLOB_SORT. While is not
+> strictly needed, many people use menu/00-foo menu/10-bar menu/20-barf
+> to sort their menu entries. So select it out of convenience.
 > 
 > Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 
-Applied, thanks
+Took this one instead.
 
 Sascha
 
 > ---
+> 
+> v2: just changed the commit text
+> 
 >  common/Kconfig |    8 ++++++--
 >  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
