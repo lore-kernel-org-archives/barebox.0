@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x232.google.com ([2607:f8b0:4002:c07::232])
+Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2IzK-0006qB-0W
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 11:46:10 +0000
-Received: by mail-yk0-f178.google.com with SMTP id q9so6506783ykb.9
- for <barebox@lists.infradead.org>; Wed, 02 Jul 2014 04:45:48 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1404297715.5300.44.camel@coredoba.hi.pengutronix.de>
-References: <alpine.LFD.2.11.1407010832100.28138@localhost>
- <CAOpc7mHhFazCDMQqq8w3hUkRjzovvtSBksYdjwDdkV+LEDb7bA@mail.gmail.com>
- <1404297715.5300.44.camel@coredoba.hi.pengutronix.de>
-Date: Wed, 2 Jul 2014 13:45:48 +0200
-Message-ID: <CAOpc7mGjpe+EGtuHgvDOkWXW4Dvn1BXSrCeWznV9k_M_nNS69g@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+ id 1X2Msu-0000A7-7s
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 15:55:48 +0000
+Received: from pps.filterd (m0048300.ppops.net [127.0.0.1])
+ by m0048300.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id s62FsbJD013097
+ for <barebox@lists.infradead.org>; Wed, 2 Jul 2014 11:55:23 -0400
+Received: from cinmlip10.e2k.ad.ge.com (n165-156-000-000.static.ge.com
+ [165.156.4.1] (may be forged))
+ by m0048300.ppops.net-00176a03. with ESMTP id 1mvmunr3ae-1
+ (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+ for <barebox@lists.infradead.org>; Wed, 02 Jul 2014 11:55:23 -0400
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Wed,  2 Jul 2014 16:55:14 +0100
+Message-Id: <1404316514-23162-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +22,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: generated command references sometimes render a solid blob of text
-To: =?ISO-8859-1?Q?Jan_L=FCbbe?= <jlu@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] mtd: delete partition erase size initialisation
+To: barebox@lists.infradead.org
 
-> I don't think that the Kconfig entries need to contain the full command
-> documentation.
+Delete the partition erase size initialisation to let the code
+that follows determine the biggest partition erase size.
+---
+ drivers/mtd/partition.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Probably not.
+diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+index 5c0d46f..9b2b20e 100644
+--- a/drivers/mtd/partition.c
++++ b/drivers/mtd/partition.c
+@@ -108,7 +108,6 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
+ 	part->type = mtd->type;
+ 	part->flags = mtd->flags;
+ 	part->parent = &mtd->class_dev;
+-	part->erasesize = mtd->erasesize;
+ 	part->writesize = mtd->writesize;
+ 	part->writebufsize = mtd->writebufsize;
+ 	part->oobsize = mtd->oobsize;
+-- 
+1.8.3.1
 
-Currently, too many Kconfig options don't have help texts. When I was
-new to Barebox, I was puzzled about wether to select an option or not.
-Having the complete docs (manually done or auto-generated, doesn't
-matter) can be a good help for that.
-
-It's unfortunate that we have now actually 3 places for the help: via
-macros in the source, in the Kconfig, and in the *.rst files. The one
-in the source code also have an additional property: that options to
-commands can depend on Kconfig entries (e.g. "bootm" depends on
-CONFIG_CMD_BOOTM_INITRD, CONFIG_OFTREE and CONFIG_CMD_BOOTM_VERBOSE).
-That complicates matters even more. Sigh.
 
 _______________________________________________
 barebox mailing list
