@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2HXi-0003kp-73
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 10:13:35 +0000
-Received: by mail-we0-f177.google.com with SMTP id u56so10816521wes.8
- for <barebox@lists.infradead.org>; Wed, 02 Jul 2014 03:13:11 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140625064212.GK15686@pengutronix.de>
-References: <1403609192-5862-1-git-send-email-matteo.fortini@gmail.com>
- <assp.02522ea1fe.1403609192-5862-2-git-send-email-matteo.fortini@gmail.com>
- <53AA29CD.3040506@atmel.com> <20140625064212.GK15686@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Wed, 2 Jul 2014 12:12:31 +0200
-Message-ID: <CACqcpZA8Oi1tcCSO_j-jALUjWd7q+DkKrVM0qJR8Qv6QFYpCRA@mail.gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X2HzW-0005Dq-JF
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 10:42:19 +0000
+Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jlu@pengutronix.de>) id 1X2Hz9-0004rP-7t
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 12:41:55 +0200
+Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jlu@pengutronix.de>) id 1X2Hz9-00077s-4S
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 12:41:55 +0200
+Message-ID: <1404297715.5300.44.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Wed, 02 Jul 2014 12:41:55 +0200
+In-Reply-To: <CAOpc7mHhFazCDMQqq8w3hUkRjzovvtSBksYdjwDdkV+LEDb7bA@mail.gmail.com>
+References: <alpine.LFD.2.11.1407010832100.28138@localhost>
+ <CAOpc7mHhFazCDMQqq8w3hUkRjzovvtSBksYdjwDdkV+LEDb7bA@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,110 +25,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add
- TIMINGS register
+Subject: Re: generated command references sometimes render a solid blob of text
 To: barebox@lists.infradead.org
 
-SGkgYWxsICEKClNvIHdoYXQncyB0aGUgc3RhdHVzIG9mIHRoZXNlIHBhdGNoPyBNYXR0ZW8sIGFy
-ZSB5b3Ugd29ya2luZyBvbiBhIHYyCnBhdGNoIHNlcmllcyA/CgpSYXBoYcOrbAoKMjAxNC0wNi0y
-NSA4OjQyIEdNVCswMjowMCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+
-IE9uIFdlZCwgSnVuIDI1LCAyMDE0IGF0IDA5OjQ1OjQ5QU0gKzA4MDAsIEJvIFNoZW4gd3JvdGU6
-Cj4+IEhpIE1hdHRlbywKPj4gICBUaGFua3MgZm9yIHlvdXIgcGF0Y2guCj4+Cj4+IEhpIEplYW4t
-Q2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJELAo+PiAgIEZvciB0aGlzIHBhdGNoIHNlcmllcywg
-Y2FuIHlvdSBnaXZlIHNvbWUgY29tbWVudHMgKG1heWJlIHRoZQo+PiBxdWVzdGlvbiBmcm9tIEkg
-bmVlZCBtb3JlIGRpc2N1c3Npb24pPyBUaGFua3MuCj4+Cj4+IE9uIDA2LzI0LzIwMTQgMDc6MjYg
-UE0sIE1hdHRlbyBGb3J0aW5pIHdyb3RlOgo+PiA+QXMgc3RhdGVkIGluIHNlY3Rpb24gMjkuMTku
-MzUgb2YgU0FNQTVEMyBTZXJpZXMgRGF0YXNoZWV0LAo+PiA+TU9ERSByZWdpc3RlciBoYXMgb2Zm
-c2V0IDB4MTAgYW5kIGF0IG9mZnNldCAweDBDIHRoZXJlIGlzCj4+ID5hIFRJTUlOR1MgcmVnaXN0
-ZXIuCj4+ID4KPj4gPlNpZ25lZC1vZmYtYnk6IE1hdHRlbyBGb3J0aW5pIDxtYXR0ZW8uZm9ydGlu
-aUBnbWFpbC5jb20+Cj4+ID4tLS0KPj4gPiAgYXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUvbWFj
-aC9hdDkxc2FtOV9zbWMuaCB8IDM1ICsrKysrKysrKysrKysrKysrKysrKysrKystCj4+ID4gIGFy
-Y2gvYXJtL21hY2gtYXQ5MS9zYW05X3NtYy5jICAgICAgICAgICAgICAgICAgfCAyMSArKysrKysr
-KysrKysrKysrCj4+ID4gIDIgZmlsZXMgY2hhbmdlZCwgNTUgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
-dGlvbigtKQo+PiA+Cj4+ID5kaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1hdDkxL2luY2x1ZGUv
-bWFjaC9hdDkxc2FtOV9zbWMuaCBiL2FyY2gvYXJtL21hY2gtYXQ5MS9pbmNsdWRlL21hY2gvYXQ5
-MXNhbTlfc21jLmgKPj4gPmluZGV4IGQ1Y2Y1ZjcuLmU0ZjBmNTQgMTAwNjQ0Cj4+ID4tLS0gYS9h
-cmNoL2FybS9tYWNoLWF0OTEvaW5jbHVkZS9tYWNoL2F0OTFzYW05X3NtYy5oCj4+ID4rKysgYi9h
-cmNoL2FybS9tYWNoLWF0OTEvaW5jbHVkZS9tYWNoL2F0OTFzYW05X3NtYy5oCj4+ID5AQCAtNDUs
-MTAgKzQ1LDI0IEBAIHN0cnVjdCBzYW05X3NtY19jb25maWcgewo+PiA+ICAgICB1OCB0ZGZfY3lj
-bGVzOjQ7Cj4+ID4gIH07Cj4+ID4KPj4gPitzdHJ1Y3Qgc2FtOV9zbWNfc2FtYTVkM19leHRyYV9j
-b25maWcgewo+Pgo+PiBOaXRwaWNrOiBJIGFtIHRoaW5raW5nIGFub3RoZXIgbmFtZSwgbWF5YmU6
-IHNhbWE1ZDNfdGltaW5nX2NvbmZpZyAoPykKPj4KPj4gPisgICAgLyogVGltaW5ncyByZWdpc3Rl
-ciAqLwo+PiA+KyAgICB1OCB0Y2xyOwo+PiA+KyAgICB1OCB0YWRsOwo+PiA+KyAgICB1OCB0YXI7
-Cj4+ID4rICAgIHU4IG9jbXM7Cj4+ID4rICAgIHU4IHRycjsKPj4gPisgICAgdTggdHdiOwo+PiA+
-KyAgICB1OCByYm5zZWw7Cj4+ID4rICAgIHU4IG5mc2VsOwo+PiA+K307Cj4+ID4rCj4+ID4gIGV4
-dGVybiB2b2lkIHNhbTlfc21jX2NvbmZpZ3VyZShpbnQgaWQsIGludCBjcywgc3RydWN0IHNhbTlf
-c21jX2NvbmZpZyAqY29uZmlnKTsKPj4gPiAgZXh0ZXJuIHZvaWQgc2FtOV9zbWNfcmVhZChpbnQg
-aWQsIGludCBjcywgc3RydWN0IHNhbTlfc21jX2NvbmZpZyAqY29uZmlnKTsKPj4gPiAgZXh0ZXJu
-IHZvaWQgc2FtOV9zbWNfcmVhZF9tb2RlKGludCBpZCwgaW50IGNzLCBzdHJ1Y3Qgc2FtOV9zbWNf
-Y29uZmlnICpjb25maWcpOwo+PiA+ICBleHRlcm4gdm9pZCBzYW05X3NtY193cml0ZV9tb2RlKGlu
-dCBpZCwgaW50IGNzLCBzdHJ1Y3Qgc2FtOV9zbWNfY29uZmlnICpjb25maWcpOwo+PiA+Kwo+PiA+
-K2V4dGVybiB2b2lkIHNhbTlfc21jX3NhbWE1ZDNfY29uZmlndXJlKGludCBpZCwgaW50IGNzLCBz
-dHJ1Y3Qgc2FtOV9zbWNfY29uZmlnICpjb25maWcsIHN0cnVjdCBzYW05X3NtY19zYW1hNWQzX2V4
-dHJhX2NvbmZpZyAqc2FtYTVkM19leHRyYV9jb25maWcpOwo+Pgo+PiBEaXR0bwo+Pgo+PiA+ICAj
-ZW5kaWYKPj4gPgo+PiA+ICAjZGVmaW5lIEFUOTFfU01DX1NFVFVQICAgICAgICAgICAgIDB4MDAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgLyogU2V0dXAgUmVnaXN0ZXIgZm9yIENTIG4gKi8K
-Pj4gPkBAIC03Nyw3ICs5MSwyNSBAQCBleHRlcm4gdm9pZCBzYW05X3NtY193cml0ZV9tb2RlKGlu
-dCBpZCwgaW50IGNzLCBzdHJ1Y3Qgc2FtOV9zbWNfY29uZmlnICpjb25maWcpOwo+PiA+ICAjZGVm
-aW5lICAgICAgICAgICAgQVQ5MV9TTUNfTlJEQ1lDTEUgICAgICAgKDB4MWZmIDw8IDE2KSAgICAg
-ICAgICAgICAgICAgICAvKiBUb3RhbCBSZWFkIEN5Y2xlIExlbmd0aCAqLwo+PiA+ICAjZGVmaW5l
-ICAgICAgICAgICAgICAgICAgICBBVDkxX1NNQ19OUkRDWUNMRV8oeCkgICAoKHgpIDw8IDE2KQo+
-PiA+Cj4+ID4tI2RlZmluZSBBVDkxX1NNQ19NT0RFICAgICAgICAgICAgICAgMHgwYyAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAvKiBNb2RlIFJlZ2lzdGVyIGZvciBDUyBuICovCj4+ID4rI2Rl
-ZmluZSBBVDkxX1NNQ19USU1JTkdTICAgIDB4MGMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-LyogVGltaW5ncyByZWdpc3RlciBmb3IgQ1MgbiAqLwo+PiA+KyNkZWZpbmUgICAgICAgICAgICAg
-QVQ5MV9TTUNfVENMUiAgICAgICAgICAgKDB4MGYgIDw8ICAwKSAgICAgICAgICAgICAgICAgICAv
-KiBDTEUgdG8gUkVOIExvdyBEZWxheSAqLwo+PiA+KyNkZWZpbmUgICAgICAgICAgICAgICAgICAg
-ICBBVDkxX1NNQ19UQ0xSXyh4KSAgICAgICAoKHgpIDw8IDApCj4+ID4rI2RlZmluZSAgICAgICAg
-ICAgICBBVDkxX1NNQ19UQURMICAgICAgICAgICAoMHgwZiAgPDwgIDQpICAgICAgICAgICAgICAg
-ICAgIC8qIEFMRSB0byBEYXRhIFN0YXJ0ICovCj4+ID4rI2RlZmluZSAgICAgICAgICAgICAgICAg
-ICAgIEFUOTFfU01DX1RBRExfKHgpICAgICAgICgoeCkgPDwgNCkKPj4gPisjZGVmaW5lICAgICAg
-ICAgICAgIEFUOTFfU01DX1RBUiAgICAgICAgICAgICgweDBmICA8PCAgOCkgICAgICAgICAgICAg
-ICAgICAgLyogQUxFIHRvIFJFTiBMb3cgRGVsYXkgKi8KPj4gPisjZGVmaW5lICAgICAgICAgICAg
-ICAgICAgICAgQVQ5MV9TTUNfVEFSXyh4KSAgICAgICAgKCh4KSA8PCA4KQo+PiA+KyNkZWZpbmUg
-ICAgICAgICAgICAgQVQ5MV9TTUNfT0NNUyAgICAgICAgICAgKDB4MSAgIDw8IDEyKSAgICAgICAg
-ICAgICAgICAgICAvKiBPZmYgQ2hpcCBNZW1vcnkgU2NyYW1ibGluZyBFbmFibGUgKi8KPj4gPisj
-ZGVmaW5lICAgICAgICAgICAgICAgICAgICAgQVQ5MV9TTUNfT0NNU18oeCkgICAgICAgKCh4KSA8
-PCAxMikKPj4gPisjZGVmaW5lICAgICAgICAgICAgIEFUOTFfU01DX1RSUiAgICAgICAgICAgICgw
-eDBmICA8PCAxNikgICAgICAgICAgICAgICAgICAgLyogUmVhZHkgdG8gUkVOIExvdyBEZWxheSAq
-Lwo+PiA+KyNkZWZpbmUgICAgICAgICAgICAgICAgICAgICBBVDkxX1NNQ19UUlJfKHgpICAgICAg
-ICAoKHgpIDw8IDE2KQo+PiA+KyNkZWZpbmUgICAgICAgICAgICAgQVQ5MV9TTUNfVFdCICAgICAg
-ICAgICAgKDB4MGYgIDw8IDI0KSAgICAgICAgICAgICAgICAgICAvKiBXRU4gSGlnaCB0byBSRU4g
-dG8gQnVzeSAqLwo+PiA+KyNkZWZpbmUgICAgICAgICAgICAgICAgICAgICBBVDkxX1NNQ19UV0Jf
-KHgpICAgICAgICAoKHgpIDw8IDI0KQo+PiA+KyNkZWZpbmUgICAgICAgICAgICAgQVQ5MV9TTUNf
-UkJOU0VMICAgICAgICAgKDB4MDcgIDw8IDI4KSAgICAgICAgICAgICAgICAgICAvKiBSZWFkeS9C
-dXN5IExpbmUgU2VsZWN0aW9uICovCj4+ID4rI2RlZmluZSAgICAgICAgICAgICAgICAgICAgIEFU
-OTFfU01DX1JCTlNFTF8oeCkgICAgICgoeCkgPDwgMjgpCj4+ID4rI2RlZmluZSAgICAgICAgICAg
-ICBBVDkxX1NNQ19ORlNFTCAgICAgICAgICAoMHgwMSAgPDwgMzEpICAgICAgICAgICAgICAgICAg
-IC8qIE5hbmQgRmxhc2ggU2VsZWN0aW9uICovCj4+ID4rI2RlZmluZSAgICAgICAgICAgICAgICAg
-ICAgIEFUOTFfU01DX05GU0VMXyh4KSAgICAgICgoeCkgPDwgMzEpCj4+ID4rCj4+ID4rI2RlZmlu
-ZSBBVDkxX1NNQ19NT0RFICAgICAgICAgICAgICAgKChhdDkxX3NvY19pbml0ZGF0YS50eXBlID09
-IEFUOTFfU09DX1NBTUE1RDMpID8gMHgxMCA6IDB4MGMpICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIC8qIE1vZGUgUmVnaXN0ZXIgZm9yIENTIG4gKi8KPj4KPj4gSGVyZSBtYWtlIG1lIHRoaW5r
-aW5nIG1vcmUsIGlmIG5ldyBTb0MgYWRkZWQgYW5kIE1PREUgcmVnaXN0ZXIncwo+PiBvZmZzZXQg
-aXMgdGhlIHNhbWUgYXMgc2FtYTVkMywgdGhlbiBpdCB3aWxsIGJlOgo+PiAoYXQ5MV9zb2NfaW5p
-dGRhdGEudHlwZSA9PSBBVDkxX1NPQ19TQU1BNUQzKSB8fAo+PiAoYXQ5MV9zb2NfaW5pdGRhdGEu
-dHlwZSA9PSBBVDkxX1NPQ19ORVcxKSB8fCAoYXQ5MV9zb2NfaW5pdGRhdGEudHlwZQo+PiA9PSBB
-VDkxX1NPQ19ORVcyKQo+Pgo+PiBXaWxsIHRoaXMgYmUgYWNjZXB0YWJsZT8KPgo+IE5vLgo+Cj4g
-SSB0aGluayB0d28gU29DIHNwZWNpZmljIGRlZmluZXMsIGZvciBleGFtcGxlCj4KPiAjZGVmaW5l
-IEFUOTFfU01DX01PREUgMHhjCj4gI2RlZmluZSBBVDkxX1NBTUE1X1NNQ19NT0RFIDB4MTAKPgo+
-IGFuZCBoYW5kbGluZyB0aGUgZGlmZmVyZW5jZXMgaW4gdGhlIGNvZGUgd2lsbCBzY2FsZSBiZXR0
-ZXIuIEkgZG9uJ3QgbGlrZQo+IGhpZGluZyBTb0MgZGlmZmVyZW5jZXMgaW4gZGVmaW5lcyBsaWtl
-IGRvbmUgaW4gdGhpcyBwYXRjaC4gSWYgdGhlcmUgc2hvdwo+IHVwIGV2ZW4gbW9yZSBkaWZmZXJl
-bmNlcyBhIFNvQyBzcGVjaWZpYyBzdHJ1Y3Qgd2l0aCByZWdpc3RlciBvZmZzZXRzCj4gbWlnaHQg
-aGVscC4KPgo+IFNhc2NoYQo+Cj4gLS0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwg
-TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
-ZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhv
-bmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
-MjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAo+Cj4gX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxp
-bmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+On Tue, 2014-07-01 at 16:26 +0200, Holger Schurig wrote:
+> The Kconfig help entries (the source of the generated command
+> reference) have been written before python-sphinx have been selected.
+
+Actually, the command reference is generated by parsing the macros in
+the .c files. The Kconfig entries were changed by hand.
+
+> So basically we need to go over all of them and make sure that they
+> render correctly. From my point of view, it doesn't harm if you see
+> raw ReST formatting while inside "make xconfig".
+
+I don't think that the Kconfig entries need to contain the full command
+documentation.
+
+Regards,
+Jan
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
