@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webmail.celad.com ([84.14.244.162])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2EIZ-0006vT-OS
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 06:45:44 +0000
-Message-ID: <53B3AA88.10906@celad.com>
-Date: Wed, 2 Jul 2014 08:45:28 +0200
-From: Herve Codina <herve.codina@celad.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X2EXB-0005T3-CW
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 07:00:50 +0000
+Date: Wed, 2 Jul 2014 09:00:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140702070024.GC14257@pengutronix.de>
+References: <alpine.LFD.2.11.1407010832100.28138@localhost>
 MIME-Version: 1.0
-References: <1403168850-5995-1-git-send-email-Herve.CODINA@celad.com>
-In-Reply-To: <1403168850-5995-1-git-send-email-Herve.CODINA@celad.com>
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1407010832100.28138@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,87 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] passwd: Support passwd file custom directory
-To: barebox@lists.infradead.org
-Cc: =?ISO-8859-1?Q?Herv=E9_CODINA?= <Herve.CODINA@celad.com>
+Subject: Re: generated command references sometimes render a solid blob of text
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Hi,
-
-I haven't got any news about this patch.
-Has it been reviewed ?
-
-I hope it was not lost in the flow of other patches.
-If so, i can resend it.
-
-Best regards,
-Herve
-
-
-Le 19/06/2014 11:07, Herv=E9 CODINA a =E9crit :
-> Support custom directory for passwd file instead of hardcoded /env/etc/
-> This directory is set using CONFIG_PASSWORD_DIR.
-> =
-
-> Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
-> ---
->  common/Kconfig     |    8 ++++++++
->  include/password.h |   10 ++++++++--
->  2 files changed, 16 insertions(+), 2 deletions(-)
-> =
-
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 1afee93..d4cf61b 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -414,6 +414,14 @@ endchoice
->  =
-
->  endif
->  =
-
-> +config PASSWORD_DIR
-> +	string =
-
-> +	prompt "passwd directory"
-> +	default "/env/etc"
-> +	depends on PASSWORD
-> +	help
-> +	  Define directory for passwd file.
-> +
->  config DYNAMIC_CRC_TABLE
->  	bool
->  	depends on CRC32
-> diff --git a/include/password.h b/include/password.h
-> index 0dd1054..9d84685 100644
-> --- a/include/password.h
-> +++ b/include/password.h
-> @@ -18,8 +18,14 @@
->  #ifndef __PASSWORD_H__
->  #define __PASSWORD_H__
->  =
-
-> -#define PASSWD_FILE		"/env/etc/passwd"
-> -#define PASSWD_DIR		"/env/etc/"
-> +#ifdef CONFIG_PASSWORD_DIR
-> +#define PASSWD_DIR		CONFIG_PASSWORD_DIR
-> +#else
-> +#define PASSWD_DIR		"/env/etc"
-> +#endif
-> +
-> +#define PASSWD_FILE		PASSWD_DIR"/passwd"
-> +
->  =
-
->  #define HIDE	(0 << 0)
->  #define STAR	(1 << 1)
-> =
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBKdWwgMDEsIDIwMTQgYXQgMDg6NDM6MzRBTSAtMDQwMCwgUm9iZXJ0IFAuIEouIERh
+eSB3cm90ZToKPiAKPiAgIGknbSBzdXJlIGV2ZXJ5b25lIGVsc2UgYWxyZWFkeSBrbm93cyB0aGlz
+LCBidXQgc29tZSBvZiB0aGUgSFRNTAo+IGZpbGVzIGdlbmVyYXRlZCBmb3IgdGhlIGNvbW1hbmQg
+cmVmZXJlbmNlIGxpc3Qgc29tZXRpbWVzIHJlbmRlciB0aGUKPiBzeW5vcHNpcyBvciBkZXNjcmlw
+dGlvbiBhcyBhIHNpbmdsZSwgdW5icm9rZW4gYmxvYiBvZiB0ZXh0LiBmb3IKPiBleGFtcGxlLCB0
+aGUgcmVmZXJlbmNlIHBhZ2UgZm9yICJhZGRwYXJ0IiBoYXMgYSBzaW5nbGUgbGluZSBmb3IgdGhl
+Cj4gZW50aXJlIERlc2NyaXB0aW9uIGZpZWxkLiBhbm90aGVyIGV4YW1wbGU6IHRoZSBTeW5vcHNp
+cyBmaWVsZCBmb3IgdGhlCj4gImxldCIgY29tbWFuZC4gYW5kIHNvIG9uLgo+IAo+ICAgaXQncyBl
+YXN5IHRvIHNlZSB0aGF0IHRoZSAucnN0IGZpbGVzIHRoYXQgYXJlIGNyZWF0ZWQgZG9uJ3QgcHJv
+cGVybHkKPiBoYW5kbGUgcGFyYWdyYXBoIGJyZWFrcyBvciBsaXN0cy4gc28gaXMgdGhhdCBqdXN0
+IGEga25vd24gaXNzdWU/Cj4gCj4gICBvaCwgYW5kIG9uZSBtb3JlIG9kZGl0eS4gaWYgeW91IGxv
+b2sgYXQgdGhlIGdlbmVyYXRlZCBwYWdlIGZvciB0aGUKPiAibGV0IiBjb21tYW5kLCBpdCBhcHBl
+YXJzIHRoYXQgdGhlIHRoZSBkb3VibGUgaHlwaGVuIGlzIHJlcGxhY2VkIGJ5IGEKPiBsb25nZXIg
+ImVtIiBoeXBoZW4uIGhlcmUncyBwYXJ0IG9mIHRoZSBnZW5lcmF0ZWQgbGV0LnJzdCBmaWxlOgo+
+IAo+IFN5bm9wc2lzCj4gXl5eXl5eXl4KPiBTdXBwb3J0ZWQgb3BlcmF0aW9ucyBhcmUgaW4gb3Jk
+ZXIgb2YgZGVjcmVhc2luZyBwcmVjZWRlbmNlOgo+IFgrKywgWC0tCj4gKytYLCAtLVgKPiArWCwg
+LVgKPiAhWCwgflgKPiAuLi4KPiAKPiBidXQgbG9vayB3aGF0IHNob3dzIHVwIGluIHRoZSBnZW5l
+cmF0ZWQgSFRNTCBmaWxlOgo+IAo+ICAgWCsrLCBY4oCTICsrWCwg4oCTWCArWCwgLVgKPiAKPiBu
+b3RpY2UgaG93IG9jY3VycmVuY2VzIG9mICItLSIgaW4gdGhlIC5yc3QgZmlsZSBhcmUgcmVwbGFj
+ZWQgYnkgdGhlCj4gbG9uZ2VyIGh5cGhlbiBpbiB0aGUgSFRNTCBmaWxlLiBqdXN0IGFuIG9ic2Vy
+dmF0aW9uLgoKSSB0aGluayB3ZSBoYXZlIHRvIGxpdmUgd2l0aCB0aGlzIGZvciBhIHdoaWxlLiBP
+dXIgb3B0aW9ucyBhcmU6CgotIHJlZm9ybWF0IERvY3VtZW50YXRpb24vY29tbWFuZHMvKi5yc3Qg
+bWFudWFsbHkgYW5kIG5vIGxvbmdlcgogIGF1dG9nZW5lcmF0ZSB0aGVtLiBJdCB3b24ndCB0YWtl
+IGxvbmcgdW50aWwgdGhleSBnZXQgb3V0IG9mCiAgc3luYyB3aXRoIHRoZSBpbi1iaW5hcnkgaGVs
+cCB0ZXh0cy4gTm8gZ29vZCBvcHRpb24KLSBBZGQgc29tZSBhZGRpdGlvbmFsIEJBUkVCT1hfQ01E
+X0hFTFBfKiBNYWNyb3MgZm9yIHNwZWNpYWwKICBjYXNlcyBpbiBzb21lIGNvbW1hbmRzIGxpa2Ug
+dGhlICdsZXQnIGNvbW1hbmQuIENvdWxkIGJlIGEKICBpbnRlcmltIHNvbHV0aW9uCi0gSW5zdGVh
+ZCBvZiByZW5kZXJpbmcgRG9jdW1lbnRhdGlvbi9jb21tYW5kcy8qLnJzdCBmcm9tIHRoZQogIEMg
+c291cmNlIGZpbGVzIHdlIGNvdWxkIGRvIHRoZSBvdGhlciB3YXkgcm91bmQ6IHJlbmRlcgogIHRo
+ZSBpbi1iaW5hcnkgY29tbWFuZCBoZWxwIHRleHRzIGZyb20gRG9jdW1lbnRhdGlvbi9jb21tYW5k
+cy8qLnJzdC4KCkkgbGlrZSB0aGUgbGFzdCBvcHRpb24uIHNwaGlueCBoYXMgYSBwbGFpbiB0ZXh0
+IHJlbmRlcmVyLiBUaGlzCmNvdWxkIGJlIHVzZWQgdG8gZ2VuZXJhdGUgPGNvbW1hbmQ+LnR4dCBm
+aWxlcyB3aGljaCB0aGVuIGNvdWxkCmJlIGluY2x1ZGVkIGludG8gYW4gZW52aXJvbm1lbnQgc25p
+cHBldC4gaGVscCA8Y29tbWFuZD4gY291bGQKYmUgYSBzaG9ydGN1dCB0byBjYXQgL2RvYy9jb21t
+YW5kcy88Y29tbWFuZD4udHh0LgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0
+cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
+b25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwg
+UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJB
+IDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
