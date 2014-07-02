@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2E3k-0000Xy-RI
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 06:30:26 +0000
-Date: Wed, 2 Jul 2014 08:30:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140702063000.GB14257@pengutronix.de>
-References: <1502046103.916753.1404130899228.open-xchange@oxbsltgw09.schlund.de>
- <20140701065409.GO14257@pengutronix.de>
- <alpine.DEB.2.10.1407011407550.7233@9VTHT2J-D520>
+Received: from webmail.celad.com ([84.14.244.162])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X2EIZ-0006vT-OS
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 06:45:44 +0000
+Message-ID: <53B3AA88.10906@celad.com>
+Date: Wed, 2 Jul 2014 08:45:28 +0200
+From: Herve Codina <herve.codina@celad.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.10.1407011407550.7233@9VTHT2J-D520>
+References: <1403168850-5995-1-git-send-email-Herve.CODINA@celad.com>
+In-Reply-To: <1403168850-5995-1-git-send-email-Herve.CODINA@celad.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,54 +17,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] boot: show all boot sources
-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] passwd: Support passwd file custom directory
+To: barebox@lists.infradead.org
+Cc: =?ISO-8859-1?Q?Herv=E9_CODINA?= <Herve.CODINA@celad.com>
 
-On Tue, Jul 01, 2014 at 02:10:07PM +0200, Rolf Evers-Fischer wrote:
-> 
-> 
-> On Tue, 1 Jul 2014, Sascha Hauer wrote:
-> 
-> >What exactly fixes this? Looking at the code we have:
-> >
-> >	if (optind < argc) {
-> >		num_sources = argc - optind;
-> >		sources = xmemdup(&argv[optind], sizeof(char *) *num_sources);
-> >	} else {
-> >		...
-> >	}
-> >
-> >Which should do what you want.
-> 
-> Unfortunately it doesn't do what I want. If I invoke "boot -l" on the bb
-> shell, I get optind=argc=2. Therefore barebox executes the "else" clause,
-> which lists only the default bootsource.
+Hi,
 
-Right, but what else should the command list if you do not give
-additional arguments?
+I haven't got any news about this patch.
+Has it been reviewed ?
 
-I mean the intention is that
+I hope it was not lost in the flow of other patches.
+If so, i can resend it.
 
-boot -l <source1> <source2>
+Best regards,
+Herve
 
-lists all sources specified, whereas
 
-boot -l
+Le 19/06/2014 11:07, Herv=E9 CODINA a =E9crit :
+> Support custom directory for passwd file instead of hardcoded /env/etc/
+> This directory is set using CONFIG_PASSWORD_DIR.
+> =
 
-lists everything from $global.boot.default
+> Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
+> ---
+>  common/Kconfig     |    8 ++++++++
+>  include/password.h |   10 ++++++++--
+>  2 files changed, 16 insertions(+), 2 deletions(-)
+> =
 
-Sascha
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 1afee93..d4cf61b 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -414,6 +414,14 @@ endchoice
+>  =
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>  endif
+>  =
+
+> +config PASSWORD_DIR
+> +	string =
+
+> +	prompt "passwd directory"
+> +	default "/env/etc"
+> +	depends on PASSWORD
+> +	help
+> +	  Define directory for passwd file.
+> +
+>  config DYNAMIC_CRC_TABLE
+>  	bool
+>  	depends on CRC32
+> diff --git a/include/password.h b/include/password.h
+> index 0dd1054..9d84685 100644
+> --- a/include/password.h
+> +++ b/include/password.h
+> @@ -18,8 +18,14 @@
+>  #ifndef __PASSWORD_H__
+>  #define __PASSWORD_H__
+>  =
+
+> -#define PASSWD_FILE		"/env/etc/passwd"
+> -#define PASSWD_DIR		"/env/etc/"
+> +#ifdef CONFIG_PASSWORD_DIR
+> +#define PASSWD_DIR		CONFIG_PASSWORD_DIR
+> +#else
+> +#define PASSWD_DIR		"/env/etc"
+> +#endif
+> +
+> +#define PASSWD_FILE		PASSWD_DIR"/passwd"
+> +
+>  =
+
+>  #define HIDE	(0 << 0)
+>  #define STAR	(1 << 1)
+> =
+
 
 _______________________________________________
 barebox mailing list
