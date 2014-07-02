@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2Duj-0006ay-5a
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 06:21:05 +0000
-Date: Wed, 2 Jul 2014 08:20:42 +0200
+ Linux)) id 1X2E3k-0000Xy-RI
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 06:30:26 +0000
+Date: Wed, 2 Jul 2014 08:30:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140702062042.GA14257@pengutronix.de>
-References: <1404249726-7663-1-git-send-email-holgerschurig@gmail.de>
+Message-ID: <20140702063000.GB14257@pengutronix.de>
+References: <1502046103.916753.1404130899228.open-xchange@oxbsltgw09.schlund.de>
+ <20140701065409.GO14257@pengutronix.de>
+ <alpine.DEB.2.10.1407011407550.7233@9VTHT2J-D520>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1404249726-7663-1-git-send-email-holgerschurig@gmail.de>
+In-Reply-To: <alpine.DEB.2.10.1407011407550.7233@9VTHT2J-D520>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] lzo: properly check for overruns
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: barebox@lists.infradead.org, Holger Schurig <holgerschurig@gmail.de>
+Subject: Re: [PATCH] boot: show all boot sources
+To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jul 01, 2014 at 11:22:04PM +0200, Holger Schurig wrote:
-> Note: this is the same as 206a81c18401c0cde6e579164f752c4b147324ce in
-> linux-git.
+On Tue, Jul 01, 2014 at 02:10:07PM +0200, Rolf Evers-Fischer wrote:
 > 
-> The lzo decompressor can, if given some really crazy data, possibly
-> overrun some variable types.  Modify the checking logic to properly
-> detect overruns before they happen.
 > 
-> Reported-by: "Don A. Bailey" <donb@securitymouse.com>
-> Tested-by: "Don A. Bailey" <donb@securitymouse.com>
-> Signed-off-by: Holger Schurig <holgerschurig@gmail.de>
-> ---
->  lib/lzo/lzo1x_decompress_safe.c | 64 +++++++++++++++++++++++++++--------------
->  1 file changed, 42 insertions(+), 22 deletions(-)
+> On Tue, 1 Jul 2014, Sascha Hauer wrote:
 > 
-> diff --git a/lib/lzo/lzo1x_decompress_safe.c b/lib/lzo/lzo1x_decompress_safe.c
+> >What exactly fixes this? Looking at the code we have:
+> >
+> >	if (optind < argc) {
+> >		num_sources = argc - optind;
+> >		sources = xmemdup(&argv[optind], sizeof(char *) *num_sources);
+> >	} else {
+> >		...
+> >	}
+> >
+> >Which should do what you want.
+> 
+> Unfortunately it doesn't do what I want. If I invoke "boot -l" on the bb
+> shell, I get optind=argc=2. Therefore barebox executes the "else" clause,
+> which lists only the default bootsource.
 
-Applied all three lzx patches, thanks
+Right, but what else should the command list if you do not give
+additional arguments?
+
+I mean the intention is that
+
+boot -l <source1> <source2>
+
+lists all sources specified, whereas
+
+boot -l
+
+lists everything from $global.boot.default
 
 Sascha
 
