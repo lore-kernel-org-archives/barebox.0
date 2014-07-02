@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
+Received: from astoria.ccjclearline.com ([64.235.106.9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2Msu-0000A7-7s
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 15:55:48 +0000
-Received: from pps.filterd (m0048300.ppops.net [127.0.0.1])
- by m0048300.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id s62FsbJD013097
- for <barebox@lists.infradead.org>; Wed, 2 Jul 2014 11:55:23 -0400
-Received: from cinmlip10.e2k.ad.ge.com (n165-156-000-000.static.ge.com
- [165.156.4.1] (may be forged))
- by m0048300.ppops.net-00176a03. with ESMTP id 1mvmunr3ae-1
- (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
- for <barebox@lists.infradead.org>; Wed, 02 Jul 2014 11:55:23 -0400
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed,  2 Jul 2014 16:55:14 +0100
-Message-Id: <1404316514-23162-1-git-send-email-renaud.barbier@ge.com>
+ id 1X2PMp-0004vS-4t
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 18:34:51 +0000
+Date: Wed, 2 Jul 2014 14:34:23 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <CAOpc7mGjpe+EGtuHgvDOkWXW4Dvn1BXSrCeWznV9k_M_nNS69g@mail.gmail.com>
+Message-ID: <alpine.LFD.2.11.1407021427020.3327@localhost>
+References: <alpine.LFD.2.11.1407010832100.28138@localhost>
+ <CAOpc7mHhFazCDMQqq8w3hUkRjzovvtSBksYdjwDdkV+LEDb7bA@mail.gmail.com>
+ <1404297715.5300.44.camel@coredoba.hi.pengutronix.de>
+ <CAOpc7mGjpe+EGtuHgvDOkWXW4Dvn1BXSrCeWznV9k_M_nNS69g@mail.gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: delete partition erase size initialisation
-To: barebox@lists.infradead.org
+Subject: Re: generated command references sometimes render a solid blob of text
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Delete the partition erase size initialisation to let the code
-that follows determine the biggest partition erase size.
----
- drivers/mtd/partition.c | 1 -
- 1 file changed, 1 deletion(-)
+On Wed, 2 Jul 2014, Holger Schurig wrote:
 
-diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
-index 5c0d46f..9b2b20e 100644
---- a/drivers/mtd/partition.c
-+++ b/drivers/mtd/partition.c
-@@ -108,7 +108,6 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
- 	part->type = mtd->type;
- 	part->flags = mtd->flags;
- 	part->parent = &mtd->class_dev;
--	part->erasesize = mtd->erasesize;
- 	part->writesize = mtd->writesize;
- 	part->writebufsize = mtd->writebufsize;
- 	part->oobsize = mtd->oobsize;
+> > I don't think that the Kconfig entries need to contain the full command
+> > documentation.
+>
+> Probably not.
+>
+> Currently, too many Kconfig options don't have help texts. When I was
+> new to Barebox, I was puzzled about wether to select an option or not.
+> Having the complete docs (manually done or auto-generated, doesn't
+> matter) can be a good help for that.
+>
+> It's unfortunate that we have now actually 3 places for the help: via
+> macros in the source, in the Kconfig, and in the *.rst files. The one
+> in the source code also have an additional property: that options to
+> commands can depend on Kconfig entries (e.g. "bootm" depends on
+> CONFIG_CMD_BOOTM_INITRD, CONFIG_OFTREE and CONFIG_CMD_BOOTM_VERBOSE).
+> That complicates matters even more. Sigh.
+
+  gosh, i didn't mean to open quite this can of worms. i'll let those
+higher up the food chain decide how to deal with this. i have more
+patches to the user manual coming shortly.
+
+rday
+
 -- 
-1.8.3.1
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
