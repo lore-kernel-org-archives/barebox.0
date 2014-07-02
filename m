@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2EXB-0005T3-CW
- for barebox@lists.infradead.org; Wed, 02 Jul 2014 07:00:50 +0000
-Date: Wed, 2 Jul 2014 09:00:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140702070024.GC14257@pengutronix.de>
-References: <alpine.LFD.2.11.1407010832100.28138@localhost>
+Received: from mout.kundenserver.de ([212.227.126.131])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X2HMF-0006S3-J8
+ for barebox@lists.infradead.org; Wed, 02 Jul 2014 10:01:44 +0000
+Date: Wed, 2 Jul 2014 12:01:14 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+In-Reply-To: <20140702063000.GB14257@pengutronix.de>
+Message-ID: <alpine.DEB.2.10.1407021058460.8594@9VTHT2J-D520>
+References: <1502046103.916753.1404130899228.open-xchange@oxbsltgw09.schlund.de>
+ <20140701065409.GO14257@pengutronix.de>
+ <alpine.DEB.2.10.1407011407550.7233@9VTHT2J-D520>
+ <20140702063000.GB14257@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1407010832100.28138@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: generated command references sometimes render a solid blob of text
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] boot: show all boot sources
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Rolf Evers-Fischer <embedded24@evers-fischer.de>
 
-T24gVHVlLCBKdWwgMDEsIDIwMTQgYXQgMDg6NDM6MzRBTSAtMDQwMCwgUm9iZXJ0IFAuIEouIERh
-eSB3cm90ZToKPiAKPiAgIGknbSBzdXJlIGV2ZXJ5b25lIGVsc2UgYWxyZWFkeSBrbm93cyB0aGlz
-LCBidXQgc29tZSBvZiB0aGUgSFRNTAo+IGZpbGVzIGdlbmVyYXRlZCBmb3IgdGhlIGNvbW1hbmQg
-cmVmZXJlbmNlIGxpc3Qgc29tZXRpbWVzIHJlbmRlciB0aGUKPiBzeW5vcHNpcyBvciBkZXNjcmlw
-dGlvbiBhcyBhIHNpbmdsZSwgdW5icm9rZW4gYmxvYiBvZiB0ZXh0LiBmb3IKPiBleGFtcGxlLCB0
-aGUgcmVmZXJlbmNlIHBhZ2UgZm9yICJhZGRwYXJ0IiBoYXMgYSBzaW5nbGUgbGluZSBmb3IgdGhl
-Cj4gZW50aXJlIERlc2NyaXB0aW9uIGZpZWxkLiBhbm90aGVyIGV4YW1wbGU6IHRoZSBTeW5vcHNp
-cyBmaWVsZCBmb3IgdGhlCj4gImxldCIgY29tbWFuZC4gYW5kIHNvIG9uLgo+IAo+ICAgaXQncyBl
-YXN5IHRvIHNlZSB0aGF0IHRoZSAucnN0IGZpbGVzIHRoYXQgYXJlIGNyZWF0ZWQgZG9uJ3QgcHJv
-cGVybHkKPiBoYW5kbGUgcGFyYWdyYXBoIGJyZWFrcyBvciBsaXN0cy4gc28gaXMgdGhhdCBqdXN0
-IGEga25vd24gaXNzdWU/Cj4gCj4gICBvaCwgYW5kIG9uZSBtb3JlIG9kZGl0eS4gaWYgeW91IGxv
-b2sgYXQgdGhlIGdlbmVyYXRlZCBwYWdlIGZvciB0aGUKPiAibGV0IiBjb21tYW5kLCBpdCBhcHBl
-YXJzIHRoYXQgdGhlIHRoZSBkb3VibGUgaHlwaGVuIGlzIHJlcGxhY2VkIGJ5IGEKPiBsb25nZXIg
-ImVtIiBoeXBoZW4uIGhlcmUncyBwYXJ0IG9mIHRoZSBnZW5lcmF0ZWQgbGV0LnJzdCBmaWxlOgo+
-IAo+IFN5bm9wc2lzCj4gXl5eXl5eXl4KPiBTdXBwb3J0ZWQgb3BlcmF0aW9ucyBhcmUgaW4gb3Jk
-ZXIgb2YgZGVjcmVhc2luZyBwcmVjZWRlbmNlOgo+IFgrKywgWC0tCj4gKytYLCAtLVgKPiArWCwg
-LVgKPiAhWCwgflgKPiAuLi4KPiAKPiBidXQgbG9vayB3aGF0IHNob3dzIHVwIGluIHRoZSBnZW5l
-cmF0ZWQgSFRNTCBmaWxlOgo+IAo+ICAgWCsrLCBY4oCTICsrWCwg4oCTWCArWCwgLVgKPiAKPiBu
-b3RpY2UgaG93IG9jY3VycmVuY2VzIG9mICItLSIgaW4gdGhlIC5yc3QgZmlsZSBhcmUgcmVwbGFj
-ZWQgYnkgdGhlCj4gbG9uZ2VyIGh5cGhlbiBpbiB0aGUgSFRNTCBmaWxlLiBqdXN0IGFuIG9ic2Vy
-dmF0aW9uLgoKSSB0aGluayB3ZSBoYXZlIHRvIGxpdmUgd2l0aCB0aGlzIGZvciBhIHdoaWxlLiBP
-dXIgb3B0aW9ucyBhcmU6CgotIHJlZm9ybWF0IERvY3VtZW50YXRpb24vY29tbWFuZHMvKi5yc3Qg
-bWFudWFsbHkgYW5kIG5vIGxvbmdlcgogIGF1dG9nZW5lcmF0ZSB0aGVtLiBJdCB3b24ndCB0YWtl
-IGxvbmcgdW50aWwgdGhleSBnZXQgb3V0IG9mCiAgc3luYyB3aXRoIHRoZSBpbi1iaW5hcnkgaGVs
-cCB0ZXh0cy4gTm8gZ29vZCBvcHRpb24KLSBBZGQgc29tZSBhZGRpdGlvbmFsIEJBUkVCT1hfQ01E
-X0hFTFBfKiBNYWNyb3MgZm9yIHNwZWNpYWwKICBjYXNlcyBpbiBzb21lIGNvbW1hbmRzIGxpa2Ug
-dGhlICdsZXQnIGNvbW1hbmQuIENvdWxkIGJlIGEKICBpbnRlcmltIHNvbHV0aW9uCi0gSW5zdGVh
-ZCBvZiByZW5kZXJpbmcgRG9jdW1lbnRhdGlvbi9jb21tYW5kcy8qLnJzdCBmcm9tIHRoZQogIEMg
-c291cmNlIGZpbGVzIHdlIGNvdWxkIGRvIHRoZSBvdGhlciB3YXkgcm91bmQ6IHJlbmRlcgogIHRo
-ZSBpbi1iaW5hcnkgY29tbWFuZCBoZWxwIHRleHRzIGZyb20gRG9jdW1lbnRhdGlvbi9jb21tYW5k
-cy8qLnJzdC4KCkkgbGlrZSB0aGUgbGFzdCBvcHRpb24uIHNwaGlueCBoYXMgYSBwbGFpbiB0ZXh0
-IHJlbmRlcmVyLiBUaGlzCmNvdWxkIGJlIHVzZWQgdG8gZ2VuZXJhdGUgPGNvbW1hbmQ+LnR4dCBm
-aWxlcyB3aGljaCB0aGVuIGNvdWxkCmJlIGluY2x1ZGVkIGludG8gYW4gZW52aXJvbm1lbnQgc25p
-cHBldC4gaGVscCA8Y29tbWFuZD4gY291bGQKYmUgYSBzaG9ydGN1dCB0byBjYXQgL2RvYy9jb21t
-YW5kcy88Y29tbWFuZD4udHh0LgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0
-cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
-b25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwg
-UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJB
-IDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+
+
+On Wed, 2 Jul 2014, Sascha Hauer wrote:
+
+> I mean the intention is that
+> 
+> boot -l <source1> <source2>
+> 
+> lists all sources specified, whereas
+> 
+> boot -l
+> 
+> lists everything from $global.boot.default
+> 
+
+Thank you for this clarification. Now I know, how I can list more than one 
+bootsource in bootmenu: I simply have to change my $global.boot.default 
+entry from e.g.
+
+global.boot.default=sd
+
+to
+
+global.boot.default="sd usb net"
+
+I have just confirmed that it works! And it doesn't need any sourcecode 
+patch.
+
+
+Best regards,
+ Rolf
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
