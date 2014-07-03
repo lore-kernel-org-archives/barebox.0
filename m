@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2aur-00079L-2j
- for barebox@lists.infradead.org; Thu, 03 Jul 2014 06:54:45 +0000
-Date: Thu, 3 Jul 2014 08:54:22 +0200
+ Linux)) id 1X2b0p-0001pG-6U
+ for barebox@lists.infradead.org; Thu, 03 Jul 2014 07:00:56 +0000
+Date: Thu, 3 Jul 2014 09:00:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140703065422.GO14257@pengutronix.de>
-References: <1403168850-5995-1-git-send-email-Herve.CODINA@celad.com>
- <53B3AA88.10906@celad.com>
+Message-ID: <20140703070031.GP14257@pengutronix.de>
+References: <1404316514-23162-1-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <53B3AA88.10906@celad.com>
+In-Reply-To: <1404316514-23162-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,52 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] passwd: Support passwd file custom directory
-To: Herve Codina <herve.codina@celad.com>
+Subject: Re: [PATCH] mtd: delete partition erase size initialisation
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 02, 2014 at 08:45:28AM +0200, Herve Codina wrote:
-> Hi,
-> 
-> I haven't got any news about this patch.
-> Has it been reviewed ?
-> 
-> I hope it was not lost in the flow of other patches.
-> If so, i can resend it.
+On Wed, Jul 02, 2014 at 04:55:14PM +0100, Renaud Barbier wrote:
+> Delete the partition erase size initialisation to let the code
+> that follows determine the biggest partition erase size.
 
-Sorry, I have seen it but then forgot to write an answer.
-
-> > diff --git a/include/password.h b/include/password.h
-> > index 0dd1054..9d84685 100644
-> > --- a/include/password.h
-> > +++ b/include/password.h
-> > @@ -18,8 +18,14 @@
-> >  #ifndef __PASSWORD_H__
-> >  #define __PASSWORD_H__
-> >  
-> > -#define PASSWD_FILE		"/env/etc/passwd"
-> > -#define PASSWD_DIR		"/env/etc/"
-> > +#ifdef CONFIG_PASSWORD_DIR
-> > +#define PASSWD_DIR		CONFIG_PASSWORD_DIR
-> > +#else
-> > +#define PASSWD_DIR		"/env/etc"
-> > +#endif
-> > +
-> > +#define PASSWD_FILE		PASSWD_DIR"/passwd"
-
-I don't like this ifdeffery. If you want to have this configurable
-please make a
-
-static char *passwd_file = "/env/etc/passwd"
-
-int set_passwd_file(const char *file)
-{
-	passwd_file = file;
-}
-
-And call it from your board code.
+Applied, thanks
 
 Sascha
+
+> ---
+>  drivers/mtd/partition.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+> index 5c0d46f..9b2b20e 100644
+> --- a/drivers/mtd/partition.c
+> +++ b/drivers/mtd/partition.c
+> @@ -108,7 +108,6 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
+>  	part->type = mtd->type;
+>  	part->flags = mtd->flags;
+>  	part->parent = &mtd->class_dev;
+> -	part->erasesize = mtd->erasesize;
+>  	part->writesize = mtd->writesize;
+>  	part->writebufsize = mtd->writebufsize;
+>  	part->oobsize = mtd->oobsize;
+> -- 
+> 1.8.3.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
