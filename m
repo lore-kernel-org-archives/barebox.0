@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2acY-0001Jj-A9
- for barebox@lists.infradead.org; Thu, 03 Jul 2014 06:35:50 +0000
-Date: Thu, 3 Jul 2014 08:35:27 +0200
+ Linux)) id 1X2alu-0004tU-HX
+ for barebox@lists.infradead.org; Thu, 03 Jul 2014 06:45:31 +0000
+Date: Thu, 3 Jul 2014 08:45:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140703063527.GM14257@pengutronix.de>
-References: <alpine.LFD.2.11.1407021455390.4202@localhost>
+Message-ID: <20140703064504.GN14257@pengutronix.de>
+References: <alpine.LFD.2.11.1407021457320.4254@localhost>
+ <CAOpc7mEjkLo6Z12tVVH8PeY3Pv6JkoY0TXH_kz82jwbDjzW9tg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1407021455390.4202@localhost>
+In-Reply-To: <CAOpc7mEjkLo6Z12tVVH8PeY3Pv6JkoY0TXH_kz82jwbDjzW9tg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: Numerous typoes/fixes in first few
- chapters of user manual.
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Subject: Re: real pedantic whining: "devicetree" isn't really a single word
+To: Holger Schurig <holgerschurig@gmail.com>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Wed, Jul 02, 2014 at 02:57:01PM -0400, Robert P. J. Day wrote:
+On Wed, Jul 02, 2014 at 10:12:33PM +0200, Holger Schurig wrote:
+> Oh, please bear with us germans, indians, italians and whoever we are
+> with our limited pidgin-english knowledge.
 > 
-> Doc fixes such as:
+> No, to turn it the other way around: it's great that a native-english
+> speaker with knowledge and taste of the language goes over the
+> documentation.
 > 
->  * font changes
->  * spelling
->  * punctuation
->  * capitalization
-> 
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> And at least it's now called "device tree", and no longer just "of"
+> (from open firmware) :-)
 
-Applied, thanks.
+Yeah, naming functions of_* is one thing, but writing of in text
+looks just ugly and confusing. Writing OF is only slightly better.
+Speaking of "device tree" is surely better, but unfortunately this is such
+a generic term. What else do we have?
 
-D'oh, even me as a non native speaker should have found some of these.
+- Flat Device Tree (FDT), describes the binary format
+- Device Tree Blob (DTB), same as FDT
+- Device Tree Source (DTS)
+
+There's just no good name for this mechanism.
 
 Sascha
 
