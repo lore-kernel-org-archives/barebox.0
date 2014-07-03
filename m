@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2ZjP-0004CN-4N
- for barebox@lists.infradead.org; Thu, 03 Jul 2014 05:38:52 +0000
-Date: Thu, 3 Jul 2014 07:38:26 +0200
+ Linux)) id 1X2aP5-00037I-7o
+ for barebox@lists.infradead.org; Thu, 03 Jul 2014 06:21:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140703053825.GI14257@pengutronix.de>
-References: <alpine.LFD.2.11.1407021450110.4107@localhost>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1407021450110.4107@localhost>
+Date: Thu,  3 Jul 2014 08:21:30 +0200
+Message-Id: <1404368490-24902-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +14,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: any reason why sandbox (and other defconfigs) don't enable
- MAGICVAR?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH] automount: check for recursive automount
+To: barebox@lists.infradead.org
 
-On Wed, Jul 02, 2014 at 02:52:37PM -0400, Robert P. J. Day wrote:
-> 
->   was playing with a sandbox build and noticed that the default
-> sandbox config doesn't select MAGICVAR -- any reason why not? on a
-> larger scale, it seems odd that quite a number of defconfigs select
-> MAGICVAR (and MAGICVAR_HELP), while others don't.
-> 
->   is this a per-machine selection? it just seems that it should be
-> more consistent -- that fundamental features like MAGICVAR should
-> either be all on or all off by default. thoughts?
+automount_mount calls run_command which may trigger an automount
+again. This results in an endless loop. A simple way to trigger
+this is:
 
-Normally when a new feature is introduced it is by default disabled
-so existing configs do not grow unnecessarily in size. This means the
-configs do not have the feature until somebody overhauls a config file.
-So, patches welcome.
+mkdir /x; automount /x false; cd /x; something
 
-Sascha
+Use a static variable to detect if we are currently in automount_mount()
+and bail out if we are.
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/fs.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/fs/fs.c b/fs/fs.c
+index b0ac918..dd410b7 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -409,6 +409,12 @@ static void automount_mount(const char *path, int instat)
+ {
+ 	struct automount *am;
+ 	int ret;
++	static int in_automount;
++
++	if (in_automount)
++		return;
++
++	in_automount++;
+ 
+ 	list_for_each_entry(am, &automount_list, list) {
+ 		int len_path = strlen(path);
+@@ -444,8 +450,10 @@ static void automount_mount(const char *path, int instat)
+ 		else
+ 			automount_remove(am->path);
+ 
+-		return;
++		break;
+ 	}
++
++	in_automount--;
+ }
+ 
+ BAREBOX_MAGICVAR(automount_path, "mountpath passed to automount scripts");
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.0
+
 
 _______________________________________________
 barebox mailing list
