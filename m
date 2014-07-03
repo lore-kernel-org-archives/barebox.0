@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webmail.celad.com ([84.14.244.162])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2bZ8-0003DY-4v
- for barebox@lists.infradead.org; Thu, 03 Jul 2014 07:36:23 +0000
-Message-ID: <53B507E2.9010906@celad.com>
-Date: Thu, 3 Jul 2014 09:36:02 +0200
-From: Herve Codina <herve.codina@celad.com>
-MIME-Version: 1.0
-References: <1403168850-5995-1-git-send-email-Herve.CODINA@celad.com><53B3AA	88.10906@celad.com>
- <20140703065422.GO14257@pengutronix.de>
- <37EE4490-6AB3-4F6C-B2E5-999729B628AB@jcrosoft.com>
-In-Reply-To: <37EE4490-6AB3-4F6C-B2E5-999729B628AB@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X2bdl-0005X4-Kp
+ for barebox@lists.infradead.org; Thu, 03 Jul 2014 07:41:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  3 Jul 2014 09:40:45 +0200
+Message-Id: <1404373246-10075-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,107 +14,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] passwd: Support passwd file custom directory
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] string_list: Add string_list_for_each_entry macro
+To: barebox@lists.infradead.org
 
+To ease iterating over a string_list.
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/stringlist.h | 3 +++
+ lib/stringlist.c     | 6 +++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-Le 03/07/2014 08:57, Jean-Christophe PLAGNIOL-VILLARD a =E9crit :
-> =
-
-> On Jul 3, 2014, at 2:54 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> =
-
->>
->> On Wed, Jul 02, 2014 at 08:45:28AM +0200, Herve Codina wrote:
->>> Hi,
->>>
->>> I haven't got any news about this patch.
->>> Has it been reviewed ?
->>>
->>> I hope it was not lost in the flow of other patches.
->>> If so, i can resend it.
->>
->> Sorry, I have seen it but then forgot to write an answer.
->>
->>>> diff --git a/include/password.h b/include/password.h
->>>> index 0dd1054..9d84685 100644
->>>> --- a/include/password.h
->>>> +++ b/include/password.h
->>>> @@ -18,8 +18,14 @@
->>>> #ifndef __PASSWORD_H__
->>>> #define __PASSWORD_H__
->>>>
->>>> -#define PASSWD_FILE		"/env/etc/passwd"
->>>> -#define PASSWD_DIR		"/env/etc/"
->>>> +#ifdef CONFIG_PASSWORD_DIR
->>>> +#define PASSWD_DIR		CONFIG_PASSWORD_DIR
->>>> +#else
->>>> +#define PASSWD_DIR		"/env/etc"
->>>> +#endif
->>>> +
->>>> +#define PASSWD_FILE		PASSWD_DIR"/passwd"
->>
-> =
-
-> I don=92t like this idea to have the passwd file configurable
-> =
-
-> Why do we need thant?
-
-In my case i have multiple envfs images loaded with loadenv.
-and i need to have passwd file from one of these image.
-I have /env which is my barebox env and /user which is loaded from envfs
-image. I need passwd file in /user/passwd.
-
-In a more general case, the abilily to have passwd file from a directory
-other than /env can lead, in a very simple way, to the ability to have
-passwd file from a fat filesystem or an ubifs filesystem
-
-I use #define to set this passwd file because i want to set it at
-compile time and not at runtime.
-
-If you prefer runtime configuration, i can do the patch according to
-sasha suggestion.
-
-Herve
-
-
->> I don't like this ifdeffery. If you want to have this configurable
->> please make a
->>
->> static char *passwd_file =3D "/env/etc/passwd"
->>
->> int set_passwd_file(const char *file)
->> {
->> 	passwd_file =3D file;
->> }
->>
->> And call it from your board code.
->>
->> Sascha
->>
->> -- =
-
->> Pengutronix e.K.                           |                            =
- |
->> Industrial Linux Solutions                 | http://www.pengutronix.de/ =
- |
->> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0   =
- |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555=
- |
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
-> =
+diff --git a/include/stringlist.h b/include/stringlist.h
+index 8738137..127998c 100644
+--- a/include/stringlist.h
++++ b/include/stringlist.h
+@@ -29,4 +29,7 @@ static inline void string_list_free(struct string_list *sl)
+ 	}
+ }
+ 
++#define string_list_for_each_entry(entry, sl) \
++	list_for_each_entry(entry, &(sl)->list, list)
++
+ #endif /* __STRINGLIST_H */
+diff --git a/lib/stringlist.c b/lib/stringlist.c
+index a8af15d..cc84944 100644
+--- a/lib/stringlist.c
++++ b/lib/stringlist.c
+@@ -64,7 +64,7 @@ int string_list_contains(struct string_list *sl, char *str)
+ {
+ 	struct string_list *entry;
+ 
+-	list_for_each_entry(entry, &sl->list, list) {
++	string_list_for_each_entry(entry, sl) {
+ 		if (!strcmp(str, entry->str))
+ 			return 1;
+ 	}
+@@ -77,7 +77,7 @@ void string_list_print_by_column(struct string_list *sl)
+ 	int len = 0, num, i;
+ 	struct string_list *entry;
+ 
+-	list_for_each_entry(entry, &sl->list, list) {
++	string_list_for_each_entry(entry, sl) {
+ 		int l = strlen(entry->str) + 4;
+ 		if (l > len)
+ 			len = l;
+@@ -91,7 +91,7 @@ void string_list_print_by_column(struct string_list *sl)
+ 		num = 1;
+ 
+ 	i = 0;
+-	list_for_each_entry(entry, &sl->list, list) {
++	string_list_for_each_entry(entry, sl) {
+ 		if (!(++i % num))
+ 			printf("%s\n", entry->str);
+ 		else
+-- 
+2.0.0
 
 
 _______________________________________________
