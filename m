@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2alu-0004tU-HX
- for barebox@lists.infradead.org; Thu, 03 Jul 2014 06:45:31 +0000
-Date: Thu, 3 Jul 2014 08:45:04 +0200
+ Linux)) id 1X2aur-00079L-2j
+ for barebox@lists.infradead.org; Thu, 03 Jul 2014 06:54:45 +0000
+Date: Thu, 3 Jul 2014 08:54:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140703064504.GN14257@pengutronix.de>
-References: <alpine.LFD.2.11.1407021457320.4254@localhost>
- <CAOpc7mEjkLo6Z12tVVH8PeY3Pv6JkoY0TXH_kz82jwbDjzW9tg@mail.gmail.com>
+Message-ID: <20140703065422.GO14257@pengutronix.de>
+References: <1403168850-5995-1-git-send-email-Herve.CODINA@celad.com>
+ <53B3AA88.10906@celad.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOpc7mEjkLo6Z12tVVH8PeY3Pv6JkoY0TXH_kz82jwbDjzW9tg@mail.gmail.com>
+In-Reply-To: <53B3AA88.10906@celad.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: real pedantic whining: "devicetree" isn't really a single word
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/1] passwd: Support passwd file custom directory
+To: Herve Codina <herve.codina@celad.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, Jul 02, 2014 at 10:12:33PM +0200, Holger Schurig wrote:
-> Oh, please bear with us germans, indians, italians and whoever we are
-> with our limited pidgin-english knowledge.
+On Wed, Jul 02, 2014 at 08:45:28AM +0200, Herve Codina wrote:
+> Hi,
 > 
-> No, to turn it the other way around: it's great that a native-english
-> speaker with knowledge and taste of the language goes over the
-> documentation.
+> I haven't got any news about this patch.
+> Has it been reviewed ?
 > 
-> And at least it's now called "device tree", and no longer just "of"
-> (from open firmware) :-)
+> I hope it was not lost in the flow of other patches.
+> If so, i can resend it.
 
-Yeah, naming functions of_* is one thing, but writing of in text
-looks just ugly and confusing. Writing OF is only slightly better.
-Speaking of "device tree" is surely better, but unfortunately this is such
-a generic term. What else do we have?
+Sorry, I have seen it but then forgot to write an answer.
 
-- Flat Device Tree (FDT), describes the binary format
-- Device Tree Blob (DTB), same as FDT
-- Device Tree Source (DTS)
+> > diff --git a/include/password.h b/include/password.h
+> > index 0dd1054..9d84685 100644
+> > --- a/include/password.h
+> > +++ b/include/password.h
+> > @@ -18,8 +18,14 @@
+> >  #ifndef __PASSWORD_H__
+> >  #define __PASSWORD_H__
+> >  
+> > -#define PASSWD_FILE		"/env/etc/passwd"
+> > -#define PASSWD_DIR		"/env/etc/"
+> > +#ifdef CONFIG_PASSWORD_DIR
+> > +#define PASSWD_DIR		CONFIG_PASSWORD_DIR
+> > +#else
+> > +#define PASSWD_DIR		"/env/etc"
+> > +#endif
+> > +
+> > +#define PASSWD_FILE		PASSWD_DIR"/passwd"
 
-There's just no good name for this mechanism.
+I don't like this ifdeffery. If you want to have this configurable
+please make a
+
+static char *passwd_file = "/env/etc/passwd"
+
+int set_passwd_file(const char *file)
+{
+	passwd_file = file;
+}
+
+And call it from your board code.
 
 Sascha
 
