@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2w52-0003xP-V5
- for barebox@lists.infradead.org; Fri, 04 Jul 2014 05:30:42 +0000
-Date: Fri, 4 Jul 2014 07:30:14 +0200
+ Linux)) id 1X2w6l-0004HD-NM
+ for barebox@lists.infradead.org; Fri, 04 Jul 2014 05:32:29 +0000
+Date: Fri, 4 Jul 2014 07:32:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140704053014.GA26384@pengutronix.de>
-References: <alpine.LFD.2.11.1407021543560.7005@localhost>
- <20140703062643.GJ14257@pengutronix.de>
- <alpine.LFD.2.11.1407030722210.21206@localhost>
+Message-ID: <20140704053205.GB26384@pengutronix.de>
+References: <alpine.LFD.2.11.1407030733400.21495@localhost>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1407030722210.21206@localhost>
+In-Reply-To: <alpine.LFD.2.11.1407030733400.21495@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,50 +22,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: why would i get "Out of memory" error in a sandbox build?
+Subject: Re: [PATCH] Documentation: defaultenv chapter from user manual.
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Thu, Jul 03, 2014 at 07:23:07AM -0400, Robert P. J. Day wrote:
-> On Thu, 3 Jul 2014, Sascha Hauer wrote:
+On Thu, Jul 03, 2014 at 07:35:44AM -0400, Robert P. J. Day wrote:
 > 
-> > On Wed, Jul 02, 2014 at 03:50:36PM -0400, Robert P. J. Day wrote:
-> > >
-> > > barebox@barebox sandbox:/
-> > >
-> > >   i'm actually good with this, it's about what i expected since i set
-> > > no environment or networking, etc.  but just for fun, i "cd"ed down
-> > > into /mnt/tftp, knowing this shouldn't work, and here's what happened:
-> > >
-> > > barebox@barebox sandbox:/ cd /mnt/tftp
-> > > ifup: Cannot find device eth0
-> > > ifup: No such file or directory
-> > > running automount command 'ifup eth0 && mount -t tftp $eth0.serverip
-> > > /mnt/tftp' failed
-> > > barebox@barebox sandbox:/mnt/tftp cd /
-> > > ERROR: out of memory
-> > >
-> > > no stack data available
-> > > [rpjday@localhost barebox_build]$
-> > >
-> > >   in short, "cd"ing into /mnt/tftp failed as it should have, but just
-> > > trying to "cd" back to the root caused the "out of memory" error. it
-> > > seems entirely reproducible. should i have expected this?
-> >
-> > This is an interesting bug you triggered. by changing the cwd to an
-> > automount directory you found a way to trigger the automount function
-> > from the automount function resulting in an endless loop. This loop
-> > gets interrupted when we are out of memory.
-> >
-> > I sent a fix to the list which fixes this.
+> A number of grammar fixes, typoes, font changes from the defaultenv-2
+> chapter.
 > 
->   i *swear*, i'm not *trying* to find the most obscure bugs
-> imaginable. :-)
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> 
+> ---
+> 
+>   some personal taste stuff on my part, feel free to object or suggest
+> alternatives.
 
-Well I have no problem with that. Go out and find more bugs, it can only
-be good for the project ;)
+Looks good. Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/Documentation/user/defaultenv-2.rst b/Documentation/user/defaultenv-2.rst
+> index fc3723e..faeeb81 100644
+> --- a/Documentation/user/defaultenv-2.rst
+> +++ b/Documentation/user/defaultenv-2.rst
+> @@ -1,19 +1,21 @@
+>  Default environment version 2
+>  =============================
+> 
+> -barebox has its environment files under /env/. Most of the runtime configuration
+> -takes place under /env/. The environment is comparable to a tar archive which is
+> -unpacked from a storage medium during startup. If for whatever reason the environment
+> -cannot be loaded from a storage medium, a compiled-in default environment is used
+> -instead.
+> +barebox stores its environment files under the top-level ``/env/``
+> +directory, where most of the runtime configuration scripts are located.
+> +This environment is comparable to a tar archive which is unpacked from
+> +a storage medium during startup. If for whatever reason the environment
+> +cannot be loaded from a storage medium, a compiled-in default environment
+> +is used instead.
+> 
+>  The environment is not automatically stored on the storage medium when a file
+> -under /env/ is changed, instead this has to be done manually using the
+> +under ``/env/`` is changed; rather, this has to be done manually using the
+>  :ref:`command_saveenv` command.
+> 
+> -There are two sets of generic environment files which can be used. The older one
+> -should not be used for new boards and is not described here. New boards should use
+> -defaultenv-2 instead.
+> +There are two sets of generic environment files which can be used. The older
+> +version (version one) should not be used for new boards and is not described here
+> +(even though there are still numerous board definitions that use it).
+> +All new boards should use defaultenv-2 exclusively.
+> 
+>  The default environment is composed from different directories during compilation::
+> 
+> @@ -25,27 +27,45 @@ The default environment is composed from different directories during compilatio
+>  The content of the above directories is applied one after another. If the
+>  same file exists in a later overlay, it will overwrite the preceding one.
+> 
+> +Note that not all of the above directories will necessarily be
+> +included in your default environment, it depends on your barebox
+> +configuration settings. You can see the configuration variables
+> +and their respective included directories in ``defaultenv/Makefile``::
+> +
+> +  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
+> +  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
+> +  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
+> +  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
+> +
+>  /env/bin/init
+>  -------------
+> 
+>  This script is executed by the barebox startup code after initialization.
+> -In the defaultenv-2 it will add some global variables and executes the scripts
+> -in /env/init/. It is also responsible for printing the boot timeout prompt.
+> -Be careful with changes to this script: since it is executed before any user
+> +In defaultenv-2, this script will define and set a number of global
+> +variables, followed by sourcing all of the scripts in ``/env/init/`` with::
+> +
+> +  for i in /env/init/*; do
+> +          . $i
+> +  done
+> +
+> +This script is also responsible for defining the boot timeout value
+> +(by default, three seconds), then printing the timeout prompt for the user.
+> +Be careful making changes to this script: since it is executed before any user
+>  intervention, it might lock the system.
+> 
+>  /env/init/
+>  ----------
+> 
+> -/env/init/ is the place for startup scripts. The scripts in this directory
+> -will be executed in alphabetical order by the /env/bin/init script.
+> +The ``/env/init/`` directory is the location for startup scripts. The scripts
+> +in this directory will be executed in alphabetical order by the
+> +``/env/bin/init`` script described earlier.
+> 
+>  /env/boot/
+>  ----------
+> 
+> -/env/boot/ contains boot entry scripts. the :ref:`command_boot` command treats
+> -the files in this directory as possible boot targets. See :ref:`booting_linux`
+> -for more details.
+> +The ``/env/boot/`` directory contains boot entry scripts. The :ref:`command_boot`
+> +command treats the files in this directory as possible boot targets.
+> +See :ref:`booting_linux` for more details.
+> 
+>  /env/config
+>  -----------
+> 
+> -- 
+> 
+> ========================================================================
+> Robert P. J. Day                                 Ottawa, Ontario, CANADA
+>                         http://crashcourse.ca
+> 
+> Twitter:                                       http://twitter.com/rpjday
+> LinkedIn:                               http://ca.linkedin.com/in/rpjday
+> ========================================================================
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
