@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x236.google.com ([2a00:1450:400c:c03::236])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2yrX-0005YM-69
- for barebox@lists.infradead.org; Fri, 04 Jul 2014 08:28:56 +0000
-Received: by mail-we0-f182.google.com with SMTP id q59so1321807wes.13
- for <barebox@lists.infradead.org>; Fri, 04 Jul 2014 01:28:32 -0700 (PDT)
+Received: from v1423.vcdns.de ([88.80.200.154])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X30UP-00084G-UH
+ for barebox@lists.infradead.org; Fri, 04 Jul 2014 10:13:10 +0000
+Received: from [192.168.0.176] (p5DD065DD.dip0.t-ipconnect.de [93.208.101.221])
+ by v1423.vcdns.de (Postfix) with ESMTPSA id 5D7C41856951C
+ for <barebox@lists.infradead.org>; Fri,  4 Jul 2014 12:12:46 +0200 (CEST)
+Message-ID: <53B67E1D.6080607@ma-info.de>
+Date: Fri, 04 Jul 2014 12:12:45 +0200
+From: Frede Florian <florian.frede@ma-info.de>
 MIME-Version: 1.0
-In-Reply-To: <09A40395-E357-43DD-85C3-DF74415EE74F@jcrosoft.com>
-References: <1403609192-5862-1-git-send-email-matteo.fortini@gmail.com>
- <assp.02522ea1fe.1403609192-5862-2-git-send-email-matteo.fortini@gmail.com>
- <09A40395-E357-43DD-85C3-DF74415EE74F@jcrosoft.com>
-From: Matteo Fortini <matteo.fortini@gmail.com>
-Date: Fri, 4 Jul 2014 10:28:12 +0200
-Message-ID: <CAC_9p+-3bYZxcRD6Zv+vR+J3hwfF9x61FJ-g7SeBsJf4dN5FRQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,162 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add
- TIMINGS register
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Problems with pyhBoard-Wega-AM335x
+To: barebox@lists.infradead.org
 
-Ok guys, who calls the shots? My V1 of the patch had the big structure
-and ignored the timings part, and Sascha said he preferred not to
-incur in the overhead of managing the extra part. In V2 I split the
-structures and had some minor naming issues and I am currently
-preparing a V3 with the split structure and the names for the
-structure, the defines and the functions that were suggested by Bo and
-Sascha.
+Hello,
 
-I think we should move on with this patch, currently barebox is not
-able to properly use NAND memory on SAMA5D3 (besides smearing some
-other wrong registers in the meantime), and this is a major bug. For
-my board I already fixed it in some way, but it would be useful for
-everyone.
+I like to update from barebox 2013.11 to barebox 2014.06.0 with the =
 
-Thank you for your comments.
+phyBoard-Wega-AM335x. After reconfigure the barebox I get the error:
 
-Regards,
-Matteo
+      LD images/start_am33xx_phytec_phycore_sram.pbl
+    arch/arm/boards/built-in-pbl.o: In function `pcm051_board_init':
+    :(.text.pcm051_board_init+0x94): undefined reference to
+    `__dtb_am335x_phytec_phycore_start'
+    make[2]: *** [images/start_am33xx_phytec_phycore_sram.pbl] Error 1
+    make[1]: *** [images] Error 2
 
 
-2014-07-04 9:47 GMT+02:00 Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com>:
->
-> On Jun 24, 2014, at 7:26 PM, Matteo Fortini <matteo.fortini@gmail.com> wrote:
->
->>
->> As stated in section 29.19.35 of SAMA5D3 Series Datasheet,
->> MODE register has offset 0x10 and at offset 0x0C there is
->> a TIMINGS register.
->>
->> Signed-off-by: Matteo Fortini <matteo.fortini@gmail.com>
->> ---
->> arch/arm/mach-at91/include/mach/at91sam9_smc.h | 35 +++++++++++++++++++++++++-
->> arch/arm/mach-at91/sam9_smc.c                  | 21 ++++++++++++++++
->> 2 files changed, 55 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm/mach-at91/include/mach/at91sam9_smc.h b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
->> index d5cf5f7..e4f0f54 100644
->> --- a/arch/arm/mach-at91/include/mach/at91sam9_smc.h
->> +++ b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
->> @@ -45,10 +45,24 @@ struct sam9_smc_config {
->>       u8 tdf_cycles:4;
->> };
->>
->> +struct sam9_smc_sama5d3_extra_config {
->> +     /* Timings register */
->> +     u8 tclr;
->> +     u8 tadl;
->> +     u8 tar;
->> +     u8 ocms;
->> +     u8 trr;
->> +     u8 twb;
->> +     u8 rbnsel;
->> +     u8 nfsel;
->> +};
->> +
->> extern void sam9_smc_configure(int id, int cs, struct sam9_smc_config *config);
->> extern void sam9_smc_read(int id, int cs, struct sam9_smc_config *config);
->> extern void sam9_smc_read_mode(int id, int cs, struct sam9_smc_config *config);
->> extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
->> +
->> +extern void sam9_smc_sama5d3_configure(int id, int cs, struct sam9_smc_config *config, struct sam9_smc_sama5d3_extra_config *sama5d3_extra_config);
->> #endif
->>
->> #define AT91_SMC_SETUP                0x00                            /* Setup Register for CS n */
->> @@ -77,7 +91,25 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
->> #define               AT91_SMC_NRDCYCLE       (0x1ff << 16)                   /* Total Read Cycle Length */
->> #define                       AT91_SMC_NRDCYCLE_(x)   ((x) << 16)
->>
->> -#define AT91_SMC_MODE                0x0c                            /* Mode Register for CS n */
->> +#define AT91_SMC_TIMINGS     0x0c                            /* Timings register for CS n */
->> +#define              AT91_SMC_TCLR           (0x0f  <<  0)                   /* CLE to REN Low Delay */
->> +#define                      AT91_SMC_TCLR_(x)       ((x) << 0)
->> +#define              AT91_SMC_TADL           (0x0f  <<  4)                   /* ALE to Data Start */
->> +#define                      AT91_SMC_TADL_(x)       ((x) << 4)
->> +#define              AT91_SMC_TAR            (0x0f  <<  8)                   /* ALE to REN Low Delay */
->> +#define                      AT91_SMC_TAR_(x)        ((x) << 8)
->> +#define              AT91_SMC_OCMS           (0x1   << 12)                   /* Off Chip Memory Scrambling Enable */
->> +#define                      AT91_SMC_OCMS_(x)       ((x) << 12)
->> +#define              AT91_SMC_TRR            (0x0f  << 16)                   /* Ready to REN Low Delay */
->> +#define                      AT91_SMC_TRR_(x)        ((x) << 16)
->> +#define              AT91_SMC_TWB            (0x0f  << 24)                   /* WEN High to REN to Busy */
->> +#define                      AT91_SMC_TWB_(x)        ((x) << 24)
->> +#define              AT91_SMC_RBNSEL         (0x07  << 28)                   /* Ready/Busy Line Selection */
->> +#define                      AT91_SMC_RBNSEL_(x)     ((x) << 28)
->> +#define              AT91_SMC_NFSEL          (0x01  << 31)                   /* Nand Flash Selection */
->> +#define                      AT91_SMC_NFSEL_(x)      ((x) << 31)
->> +
->> +#define AT91_SMC_MODE                ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? 0x10 : 0x0c)                            /* Mode Register for CS n */
->> #define               AT91_SMC_READMODE       (1 <<  0)                       /* Read Mode */
->> #define               AT91_SMC_WRITEMODE      (1 <<  1)                       /* Write Mode */
->> #define               AT91_SMC_EXNWMODE       (3 <<  4)                       /* NWAIT Mode */
->> @@ -101,4 +133,5 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
->> #define                       AT91_SMC_PS_16                  (2 << 28)
->> #define                       AT91_SMC_PS_32                  (3 << 28)
->>
->> +
->> #endif
->> diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
->> index c7bfdfd..a068d89 100644
->> --- a/arch/arm/mach-at91/sam9_smc.c
->> +++ b/arch/arm/mach-at91/sam9_smc.c
->> @@ -30,6 +30,20 @@ static void sam9_smc_cs_write_mode(void __iomem *base,
->>                  base + AT91_SMC_MODE);
->> }
->>
->> +static void sam9_smc_cs_write_timings(void __iomem *base,
->> +                                     struct sam9_smc_sama5d3_extra_config *config)
->> +{
->> +     __raw_writel(AT91_SMC_TCLR_(config->tclr)
->> +                   | AT91_SMC_TADL_(config->tadl)
->> +                   | AT91_SMC_TAR_(config->tar)
->> +                   | AT91_SMC_OCMS_(config->ocms)
->> +                   | AT91_SMC_TRR_(config->trr)
->> +                   | AT91_SMC_TWB_(config->twb)
->> +                   | AT91_SMC_RBNSEL_(config->rbnsel)
->> +                   | AT91_SMC_NFSEL_(config->nfsel),
->> +                base + AT91_SMC_TIMINGS);
->> +}
->> +
->> void sam9_smc_write_mode(int id, int cs,
->>                                       struct sam9_smc_config *config)
->> {
->> @@ -120,6 +134,13 @@ void sam9_smc_read(int id, int cs, struct sam9_smc_config *config)
->>       sam9_smc_cs_read(AT91_SMC_CS(id, cs), config);
->> }
->>
->> +void sam9_smc_sama5d3_configure(int id, int cs, struct sam9_smc_config *config, struct sam9_smc_sama5d3_extra_config *sama5d3_extra_config)
-> 2 structures no
->
-> just extend the current one for sam9 we just ignore the additional config
->
-> Best Regards,
-> J.
->> +{
->> +        sam9_smc_configure(id, cs, config);
->> +
->> +        sam9_smc_cs_write_timings(AT91_SMC_CS(id, cs), sama5d3_extra_config);
->> +}
->> +
->> static int at91sam9_smc_probe(struct device_d *dev)
->> {
->>       int id = dev->id;
->> --
->> 2.0.0
->>
->
+Thanks for Helping
+
+Florian
+
+-- =
+
+Best regards / Mit freundlichen Gr=FC=DFen
+Florian Frede
+____________________________________________
+company name: Dr. Mergenthaler GmbH & Co. KG
+contact:      Dipl. Informatiker Florian Frede
+position:     Embedded Software Engineer
+street:       Lilienthalstra=DFe 14
+zip code:     89231
+city:         Neu-Ulm
+country:      Germany
+fon:          +49 (0)7 31 - 15 97 90 40
+fax:          +49 (0)7 31 - 15 97 90 46
+mailto:       florian.frede@ma-info.de
+internet:     www.ma-info.de
+____________________________________________
+Dr. Mergenthaler GmbH & Co. KG
+Sitz Neu-Ulm, Registergericht Memmingen, HRA12084
+Gesch=E4ftsf=FChrer: Dr. Detlev Mergenthaler
+pers=F6nlich haftende Gesellschafterin:
+Dr. Mergenthaler Verwaltungsgesellschaft mbH
+Sitz Neu-Ulm, Registergericht Memmingen, HRA14622
+Steuer-Nr. 151/156/03504
+Ust-Id-Nr. DE237130366
+____________________________________________
+Diese E-Mail einschlie=DFlich ihrer Anh=E4nge enth=E4lt vertrauliche und/od=
+er rechtlich gesch=FCtzte Informationen. Wenn Sie nicht der richtige Adress=
+at sind oder diese E-Mail irrt=FCmlich erhalten haben, informieren Sie bitt=
+e sofort den Absender und vernichten Sie diese E-Mail. Das unerlaubte Kopie=
+ren sowie die unbefugte Weitergabe dieser Mail oder von Teilen dieser Mail =
+ist nicht gestattet.
+---
+This e-mail including its attachments contains confidential and/or privileg=
+ed information. If you are not the intended recipient or have received this=
+ e-mail in error please, notify the sender immediately and destroy this e-m=
+ail. Any unauthorised copying, disclosure or distribution of  the material =
+in this e-mail or of parts hereof is strictly forbidden.
+
 
 _______________________________________________
 barebox mailing list
