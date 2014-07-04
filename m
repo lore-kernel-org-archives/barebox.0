@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X2w7O-0004Ky-JY
- for barebox@lists.infradead.org; Fri, 04 Jul 2014 05:33:07 +0000
-Date: Fri, 4 Jul 2014 07:32:44 +0200
+ Linux)) id 1X2w8V-0004Vg-TM
+ for barebox@lists.infradead.org; Fri, 04 Jul 2014 05:34:17 +0000
+Date: Fri, 4 Jul 2014 07:33:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140704053244.GC26384@pengutronix.de>
-References: <alpine.LFD.2.11.1407030759060.22279@localhost>
+Message-ID: <20140704053353.GD26384@pengutronix.de>
+References: <alpine.LFD.2.11.1407030848330.24495@localhost>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1407030759060.22279@localhost>
+In-Reply-To: <alpine.LFD.2.11.1407030848330.24495@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,14 +22,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: Various tweaks to user manual, device
- tree chapter.
+Subject: Re: [PATCH] Documentation: usb chapter of user manual
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Thu, Jul 03, 2014 at 08:00:07AM -0400, Robert P. J. Day wrote:
+On Thu, Jul 03, 2014 at 08:50:36AM -0400, Robert P. J. Day wrote:
 > 
-> Grammar, typoes, font, link fixes.
+> A number of minor fixes, and including the help output from the
+> "dfu-util" command for the benefit of the reader.
 > 
 > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
@@ -40,66 +40,112 @@ Sascha
 > 
 > ---
 > 
-> diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
-> index 856ff6a..17934d8 100644
-> --- a/Documentation/user/devicetree.rst
-> +++ b/Documentation/user/devicetree.rst
-> @@ -4,29 +4,29 @@ Devicetree support
->  ==================
+>   i added the output of "dfu-util -h" since it didn't seem onerously
+> long and i thought it would be useful for the reader.
 > 
->  Flattened Device Tree (FDT) is a data structure for describing the hardware on
-> -a system. On an increasing number of boards both barebox and the Linux Kernel can
-> +a system. On an increasing number of boards, both barebox and the Linux kernel can
->  probe their devices directly from devicetrees. barebox needs the devicetree compiled
-> -into the binary. The Kernel usually does not have a devicetree compiled in, instead
-> -the Kernel expects to be passed a devicetree from the bootloader.
-> +into the binary. The kernel usually does not have a devicetree compiled in; instead,
-> +the kernel expects to be passed a devicetree from the bootloader.
+> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+> index 9bbfcca..8b700d3 100644
+> --- a/Documentation/user/usb.rst
+> +++ b/Documentation/user/usb.rst
+> @@ -4,21 +4,21 @@ USB support
+>  USB host support
+>  ----------------
 > 
->  From a bootloader's point of view, using devicetrees has the advantage that the
-> -same devicetree is used to probe both the Kernel and the Bootloader; this
-> +same devicetree can be used by both the bootloader and the kernel; this
->  drastically reduces porting effort since the devicetree has to be written only
-> -once (and with luck somebody has already written a devicetree for the Kernel).
-> -Probing barebox from devicetree is highly recommended for new projects.
-> +once (and with luck somebody has already written a devicetree for the kernel).
-> +Having barebox consult a devicetree is highly recommended for new projects.
+> -barebox has support for USB host and USB device mode. USB devices
+> +barebox has support for both USB host and USB device mode. USB devices
+>  take a long time to probe, so they are not probed automatically. Probing
+>  has to be triggered using the :ref:`command_usb` or :ref:`command_detect` command.
+> -USB devices in barebox are not hotpluggable. It is expected that USB
+> +USB devices in barebox are not hot-pluggable. It is expected that USB
+>  devices are not disconnected while barebox is running.
 > 
->  .. _internal_devicetree:
+>  USB Networking
+>  ^^^^^^^^^^^^^^
 > 
->  The internal devicetree
->  -----------------------
+> -barebox supports ASIX compatible devices and the SMSC95xx. After
+> -detection the device shows up as eth0 and can be used like a regular network
+> +barebox supports ASIX-compatible devices and the SMSC95xx. After
+> +detection, the device shows up as eth0 and can be used like a regular network
+>  device.
 > 
-> -The devicetree barebox has been probed from plays a special role. It is referred to
-> -as the :ref:`internal_devicetree`. The barebox devicetree commands work on this
-> -devicetree. The devicetree source (DTS) files are kept in sync with the Kernel DTS
-> +The devicetree consulted by barebox plays a special role. It is referred to
-> +as the "internal devicetree." The barebox devicetree commands work on this
-> +devicetree. The devicetree source (DTS) files are kept in sync with the kernel DTS
->  files. As the FDT files are meant to be backward compatible, it should always be possible
-> -to start a Kernel with the barebox internal devicetree. However, since the barebox
-> +to start a kernel with the barebox internal devicetree. However, since the barebox
->  devicetree may not be complete or contain bugs it is always possible to start the
-> -Kernel with another devicetree than barebox has been started with.
-> +kernel with a devicetree different from the one used by barebox.
->  If a device has been probed from the devicetree then using the :ref:`command_devinfo`
->  command on it will show the corresponding devicetree node:
-> 
-> @@ -73,10 +73,11 @@ work on the internal devicetree. It is possible to add/remove nodes using the
-> 
->  It is important to know that these commands always work on the internal
->  devicetree. If you modify the internal devicetree to influence the behaviour of
-> -a Kernel booted later, make sure that you start the kernel with the internal
-> +a kernel booted later, make sure that you start the kernel with the internal
->  devicetree (i.e. don't pass a devicetree to the :ref:`command_bootm` command). If you
-> -wish to use another devicetree than the internal devicetree for starting the Kernel,
-> -you can exchange the internal devicetree during runtime:
-> +wish to use another devicetree than the internal devicetree for starting the kernel,
-> +you can exchange the internal devicetree during runtime using the
-> +:ref:`command_oftree` command:
+>  To use a USB network device together with the :ref:`command_ifup` command, add the
+> -following to /env/network/eth0-discover:
+> +following to ``/env/network/eth0-discover``:
 > 
 >  .. code-block:: sh
 > 
+> @@ -30,7 +30,7 @@ USB mass storage
+>  ^^^^^^^^^^^^^^^^
+> 
+>  barebox supports USB mass storage devices. After probing them with the :ref:`command_usb`
+> -they show up as ``/dev/diskx`` and can be used like any other device.
+> +command, they show up as ``/dev/diskx`` and can be used like any other device.
+> 
+>  USB device support
+>  ------------------
+> @@ -39,27 +39,52 @@ DFU
+>  ^^^
+> 
+>  USB Device Firmware Upgrade (DFU) is an official USB device class specification of the USB
+> -Implementers Forum. It provides a vendor independent way to update the firmware of embedded
+> +Implementers Forum. It provides a vendor-independent way to update the firmware of embedded
+>  devices. The current specification is version 1.1 and can be downloaded here:
+>  http://www.usb.org/developers/devclass_docs/DFU_1.1.pdf
+> 
+> -On barebox side the update is handled with the :ref:`command_dfu` command. It is passes a list
+> -of partitions to provide to the host. The partition list has the form ``<file>(<name>)<flags>``.
+> -``file`` is the path to the device or regular file which shall be updated. ``name`` is the
+> -name under which the partition shall be provided to the host. For the possible ``flags`` see
+> +On the barebox side, the update is handled with the :ref:`command_dfu` command.
+> +It is passed a list of partitions to provide to the host. The partition list
+> +has the form ``<file>(<name>)<flags>``.  ``file`` is the path to the device or
+> +regular file which shall be updated. ``name`` is the name under which the partition
+> +shall be provided to the host. For the possible ``flags`` see
+>  :ref:`command_dfu`. A typical ``dfu`` command could look like this:
+> 
+>  .. code-block:: sh
+> 
+>    dfu "/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.root.bb(root)r"
+> 
+> -On the host the tool `dfu-util <http://dfu-util.gnumonks.org/>`_ can be used to update the
+> -partitions. It is available for the most distributions. To update the Kernel for the above
+> -example the following can be used:
+> +On the host side, the tool `dfu-util <http://dfu-util.gnumonks.org/>`_ can be used
+> +to update the partitions. It is available for most distributions and typically
+> +supports the following options::
+> +
+> +  dfu-util -h
+> +  Usage: dfu-util [options] ...
+> +    -h --help                     Print this help message
+> +    -V --version                  Print the version number
+> +    -v --verbose                  Print verbose debug statements
+> +    -l --list                     List the currently attached DFU capable USB devices
+> +    -e --detach                   Detach the currently attached DFU capable USB devices
+> +    -d --device vendor:product    Specify Vendor/Product ID of DFU device
+> +    -p --path bus-port. ... .port Specify path to DFU device
+> +    -c --cfg config_nr            Specify the Configuration of DFU device
+> +    -i --intf intf_nr             Specify the DFU Interface number
+> +    -a --alt alt                  Specify the Altsetting of the DFU Interface
+> +                                  by name or by number
+> +    -t --transfer-size            Specify the number of bytes per USB Transfer
+> +    -U --upload file              Read firmware from device into <file>
+> +    -D --download file            Write firmware from <file> into device
+> +    -R --reset                    Issue USB Reset signalling once we're finished
+> +    -s --dfuse-address address    ST DfuSe mode, specify target address for
+> +                                  raw file download or upload. Not applicable for
+> +                                  DfuSe file (.dfu) downloads
+> +
+> +To update the kernel for the above example, you would use something like
+> +the following:
+> 
+>  .. code-block:: sh
+> 
+>    dfu-util -D arch/arm/boot/zImage -a kernel
+> 
+> -The dfu-util command automatically finds dfu capable devices. If there are multiple devices
+> -found it has to be specified with the ``-d``/``-p`` options.
+> +The ``dfu-util`` command automatically finds DFU-capable devices. If there are
+> +multiple devices found, you need to identify one with the ``-d``/``-p`` options.
 > 
 > -- 
 > 
