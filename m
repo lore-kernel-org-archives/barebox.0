@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
  helo=mo3.mail-out.ovh.net)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2yFj-0001Dh-Do
- for barebox@lists.infradead.org; Fri, 04 Jul 2014 07:49:52 +0000
+ id 1X2yG5-0001GS-53
+ for barebox@lists.infradead.org; Fri, 04 Jul 2014 07:50:14 +0000
 Received: from mail420.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 8CF34FF8F1A
- for <barebox@lists.infradead.org>; Fri,  4 Jul 2014 09:49:27 +0200 (CEST)
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id E557EFFA48F
+ for <barebox@lists.infradead.org>; Fri,  4 Jul 2014 09:49:50 +0200 (CEST)
 Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.2\))
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 In-Reply-To: <assp.02522ea1fe.1403609192-5862-2-git-send-email-matteo.fortini@gmail.com>
-Date: Fri, 4 Jul 2014 15:47:58 +0800
-Message-Id: <09A40395-E357-43DD-85C3-DF74415EE74F@jcrosoft.com>
+Date: Fri, 4 Jul 2014 15:49:12 +0800
+Message-Id: <31C34534-4C78-47B6-8574-016BDE7661C4@jcrosoft.com>
 References: <1403609192-5862-1-git-send-email-matteo.fortini@gmail.com>
  <assp.02522ea1fe.1403609192-5862-2-git-send-email-matteo.fortini@gmail.com>
 List-Id: <barebox.lists.infradead.org>
