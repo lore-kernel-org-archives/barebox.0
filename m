@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-x22e.google.com ([2607:f8b0:400d:c01::22e])
+Received: from mail-qg0-x236.google.com ([2607:f8b0:400d:c04::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X4G6d-0006XM-F9
- for barebox@lists.infradead.org; Mon, 07 Jul 2014 21:05:47 +0000
-Received: by mail-qc0-f174.google.com with SMTP id x13so4276041qcv.5
- for <barebox@lists.infradead.org>; Mon, 07 Jul 2014 14:05:23 -0700 (PDT)
+ id 1X4GBJ-0000AL-Nq
+ for barebox@lists.infradead.org; Mon, 07 Jul 2014 21:10:38 +0000
+Received: by mail-qg0-f54.google.com with SMTP id q107so4180036qgd.41
+ for <barebox@lists.infradead.org>; Mon, 07 Jul 2014 14:10:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20140707070610.GA11833@omega>
-References: <alpine.LFD.2.11.1407050643590.10085@localhost>
- <20140707065345.GI23235@pengutronix.de>
- <20140707070610.GA11833@omega>
-Date: Mon, 7 Jul 2014 23:05:23 +0200
-Message-ID: <CAOpc7mEzj84nhBaZ8426debg6b-rOzOXaWRunSrsHcx2U3257g@mail.gmail.com>
+In-Reply-To: <20140707180953.GF15426@ns203013.ovh.net>
+References: <alpine.LFD.2.11.1407041217080.16169@localhost>
+ <4DA026CE-D019-4CBB-B46B-834064F91333@jcrosoft.com>
+ <alpine.LFD.2.11.1407070505420.27781@localhost>
+ <20140707180953.GF15426@ns203013.ovh.net>
+Date: Mon, 7 Jul 2014 23:10:15 +0200
+Message-ID: <CAOpc7mHD57CXbedHveULyXuGQgA8aL8WZBrMgcRcPaDr6XGAuQ@mail.gmail.com>
 From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,19 +26,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: does beaglebone black device tree need to specify amount of eMMC
- flash?
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: [PATCH] Clean up Kconfig and source for a couple device tree
+ commands.
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-> Advantage
->  - maybe avoid some bad connections (never expired by using sd cards)
+> I tend to agree here. When Holger sent these patches recently I was very
+> pleased that he has put some love into the Kconfig files. Bit indeed it
+> is very hard (and unnecessary) work to keep them in sync. Holger, what's
+> your take on this? Is our new (and yet-to-be-uploaded-to-the-net)
+> Documentation prominent enough to drop the usage from Kconfig?
 
-This is the k.o. criteria in the company I work for SDCARDs. The
-devices run in high vibration / shock targets (e.g. mining), and you
-really wouldn't want to have an SDCARD there. You, you could probably
-glue the SDCARD with a tape, but this is only a kludge. And eventually
-the glue will corrode, or stop being glue ...
+In the long run, I'd like to put a help on all Kconfig entries.
+
+When I was new to Barebox, and started "make xconfig" and was
+partially pleased (because make xconfig worked), but also puzzled,
+because so many Kconfig entries did not contain any help text. It was
+not easy for me to decide if I need an option or not, or if that
+option would just be a nice-to-have one.
+
+From that point of view I like the helps on the commands. They give
+you all the info you need to immediately knoy if you want to put a
+check there --- or not.
+
+However, Kconfig files are relatively easy to parse (or to write). So
+we could declare one option as the "main" source and write a python
+program that reads the main source and generates the others out of it.
+It's probably me who should write that ...   grin.
 
 _______________________________________________
 barebox mailing list
