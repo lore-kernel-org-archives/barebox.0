@@ -1,21 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
+Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
  helo=mo3.mail-out.ovh.net)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X4DJ4-0006jD-89
- for barebox@lists.infradead.org; Mon, 07 Jul 2014 18:06:27 +0000
+ id 1X4DQf-0000Cv-Gu
+ for barebox@lists.infradead.org; Mon, 07 Jul 2014 18:14:17 +0000
 Received: from mail606.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 641DAFFA3A1
- for <barebox@lists.infradead.org>; Mon,  7 Jul 2014 20:06:02 +0200 (CEST)
-Date: Mon, 7 Jul 2014 20:09:53 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id A05C0FFAF32
+ for <barebox@lists.infradead.org>; Mon,  7 Jul 2014 20:13:52 +0200 (CEST)
+Date: Mon, 7 Jul 2014 20:17:44 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140707180953.GF15426@ns203013.ovh.net>
-References: <alpine.LFD.2.11.1407041217080.16169@localhost>
- <4DA026CE-D019-4CBB-B46B-834064F91333@jcrosoft.com>
- <alpine.LFD.2.11.1407070505420.27781@localhost>
+Message-ID: <20140707181744.GB19147@ns203013.ovh.net>
+References: <1403609192-5862-1-git-send-email-matteo.fortini@gmail.com>
+ <assp.02522ea1fe.1403609192-5862-2-git-send-email-matteo.fortini@gmail.com>
+ <09A40395-E357-43DD-85C3-DF74415EE74F@jcrosoft.com>
+ <20140707062020.GB23235@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1407070505420.27781@localhost>
+In-Reply-To: <20140707062020.GB23235@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,67 +25,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Clean up Kconfig and source for a couple device tree
- commands.
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add
+ TIMINGS register
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-T24gMDU6MTEgTW9uIDA3IEp1bCAgICAgLCBSb2JlcnQgUC4gSi4gRGF5IHdyb3RlOgo+IE9uIE1v
-biwgNyBKdWwgMjAxNCwgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgd3JvdGU6Cj4g
-Cj4gPgo+ID4gT24gSnVsIDUsIDIwMTQsIGF0IDEyOjE4IEFNLCBSb2JlcnQgUC4gSi4gRGF5IDxy
-cGpkYXlAY3Jhc2hjb3Vyc2UuY2E+IHdyb3RlOgo+ID4KPiA+ID4KPiA+ID4KPiA+ID4gQ29ycmVj
-dCBvcHRpb25zIGxpc3RpbmdzIGZvciBhIGNvdXBsZSBkZXZpY2UgdHJlZS1yZWxhdGVkIGNvbW1h
-bmRzLgo+ID4gPgo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBSb2JlcnQgUC4gSi4gRGF5IDxycGpkYXlA
-Y3Jhc2hjb3Vyc2UuY2E+Cj4gPiA+Cj4gPiA+IC0tLQo+ID4gPgo+ID4gPiAgaSAqdGhpbmsqIHRo
-ZSBmb2xsb3dpbmcgaXMgdmFsaWQuCj4gPiA+Cj4gPiA+IGRpZmYgLS1naXQgYS9jb21tYW5kcy9L
-Y29uZmlnIGIvY29tbWFuZHMvS2NvbmZpZwo+ID4gPiBpbmRleCBlZWQ2ZmJkLi4zMjQ4ZGU5IDEw
-MDY0NAo+ID4gPiAtLS0gYS9jb21tYW5kcy9LY29uZmlnCj4gPiA+ICsrKyBiL2NvbW1hbmRzL0tj
-b25maWcKPiA+ID4gQEAgLTE5NTAsMTAgKzE5NTAsMTEgQEAgY29uZmlnIENNRF9PRlRSRUUKPiA+
-ID4gCWhlbHAKPiA+ID4gCSAgb2Z0cmVlIC0gaGFuZGxlIGRldmljZSB0cmVlcwo+ID4gPgo+ID4g
-PiAtCSAgVXNhZ2U6IG9mdHJlZSBbLWxwZmRuXSBbRFRCXQo+ID4gPiArCSAgVXNhZ2U6IG9mdHJl
-ZSBbLWxzcGZdIFtEVEJdCj4gPiA+Cj4gPiA+IAkgIE9wdGlvbnM6Cj4gPiA+IAkJICAtbAkJTG9h
-ZCBEVEIgdG8gaW50ZXJuYWwgZGV2aWNlIHRyZWUKPiA+ID4gKwkJICAtcwkJc2F2ZSBpbnRlcm5h
-bCBkZXZpY2UgdHJlZSB0byBEVEIKPiA+ID4gCQkgIC1wCQlwcm9iZSBkZXZpY2VzIGZyb20gc3Rv
-cmVkIGRldmljZSB0cmVlCj4gPiA+IAkJICAtZgkJZnJlZSBzdG9yZWQgZGV2aWNlIHRyZWUKPiA+
-ID4KPiA+Cj4gPiBkbyB3ZSByZWFsbHkgbmVlZCB0aGUgaGVscCBoZXJlCj4gPgo+ID4gaXTigJlz
-IGEgcGFpbiBpbiB0aGUgYXNzIHRvIGtlZXAgaXQgc3luYwo+IAo+IC4uLiBzbmlwIC4uLgo+IAo+
-ICAgaSdkIGhhdmUgdG8gYWdyZWUgLi4uIHRoZXJlJ3MgcXVpdGUgYSBsb3Qgb2YgaGVscCBpbmZv
-IHRoYXQncyBvdXQgb2YKPiBzeW5jIGJldHdlZW4gdGhlIEtjb25maWcgZW50cmllcyBhbmQgdGhl
-IHNvdXJjZSBmaWxlIGVudHJpZXMuIGZvcgo+IGV4YW1wbGUsIGNoZWNrIG91dCB0aGUgS2NvbmZp
-ZyBlbnRyeSBmb3IgdGhlICJib290IiBjb21tYW5kOgo+IAo+IGNvbmZpZyBDTURfQk9PVAo+ICAg
-ICAgICAgdHJpc3RhdGUKPiAgICAgICAgIHNlbGVjdCBCT09UTQo+ICAgICAgICAgcHJvbXB0ICJi
-b290Igo+ICAgICAgICAgaGVscAo+ICAgICAgICAgLi4uIHNuaXAgLi4uCj4gICAgICAgICAgIE9w
-dGlvbnM6Cj4gICAgICAgICAgICAgICAtYyAgICAgICAgIGNyYyBjaGVjayB1SW1hZ2UgZGF0YQo+
-ICAgICAgICAgICAgICAgLWQgICAgICAgICBkcnlydW46IGNoZWNrIGRhdGEsIGJ1dCBkbyBub3Qg
-cnVuCj4gICAgICAgICAgICAgICAtZiAgICAgICAgIGxvYWQgaW1hZ2VzIGV2ZW4gaWYgdHlwZSBp
-cyB1bmRldGVjdGFibGUKPiAgICAgICAgICAgICAgIC1yIElOSVRSRCAgc3BlY2lmeSBhbiBpbml0
-cmQgaW1hZ2UKPiAgICAgICAgICAgICAgIC1MIEFERFIgICAgc3BlY2lmeSBpbml0cmQgbG9hZCBh
-ZGRyZXNzCj4gICAgICAgICAgICAgICAtYSBBRERSICAgIHNwZWNpZnkgb3MgbG9hZCBhZGRyZXNz
-Cj4gICAgICAgICAgICAgICAtZSBPRkZTICAgIGVudHJ5IHBvaW50IHRvIHRoZSBpbWFnZSByZWxh
-dGl2ZSB0byBzdGFydCAoMCkKPiAgICAgICAgICAgICAgIC1vIERUUyAgICAgc3BlY2lmeSBvcGVu
-IGZpcm13YXJlIGRldmljZSB0cmVlCj4gICAgICAgICAgICAgICAtdiAgICAgICAgIHZlcmJvc2UK
-PiAKPiB2ZXJzdXMgd2hhdCdzIGluIHRoZSBjb21tYW5kIHNvdXJjZSBmaWxlOgo+IAo+IEJBUkVC
-T1hfQ01EX0hFTFBfVEVYVCgiT3B0aW9uczoiKQo+IEJBUkVCT1hfQ01EX0hFTFBfT1BUICgiLXYi
-LCJJbmNyZWFzZSB2ZXJib3NpdHkiKQo+IEJBUkVCT1hfQ01EX0hFTFBfT1BUICgiLWQiLCJEcnly
-dW4uIFNlZSB3aGF0IGhhcHBlbnMgYnV0IGRvIG5vIGFjdHVhbGx5IGJvb3QiKQo+IEJBUkVCT1hf
-Q01EX0hFTFBfT1BUICgiLWwiLCJMaXN0IGF2YWlsYWJsZSBib290IHNvdXJjZXMiKQo+IEJBUkVC
-T1hfQ01EX0hFTFBfT1BUICgiLW0iLCJTaG93IGEgbWVudSB3aXRoIGJvb3Qgb3B0aW9ucyIpCj4g
-QkFSRUJPWF9DTURfSEVMUF9PUFQgKCItdCBTRUNTIiwic3BlY2lmeSB0aW1lb3V0IGluIFNFQ1Mi
-KQo+IEJBUkVCT1hfQ01EX0hFTFBfRU5ECj4gCj4gYW5kIHRoZXJlIGFyZSBxdWl0ZSBhIGZldyBv
-dGhlciBleGFtcGxlcyBvZiBtaXNtYXRjaGVzIGxpa2UgdGhhdC4KClNvIHdlIHNob3VsZCBzaW1w
-bHkgZHJvcCB0aGVtIGZyb20gS2NvbmZpZwoKQmVzdCBSZWdhcmRzLApKLgo+IAo+IHJkYXkKPiAK
-PiAtLSAKPiAKPiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT0KPiBSb2JlcnQgUC4gSi4gRGF5ICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgT3R0YXdhLCBPbnRhcmlvLCBDQU5BREEKPiAgICAgICAgICAg
-ICAgICAgICAgICAgICBodHRwOi8vY3Jhc2hjb3Vyc2UuY2EKPiAKPiBUd2l0dGVyOiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGh0dHA6Ly90d2l0dGVyLmNvbS9ycGpkYXkK
-PiBMaW5rZWRJbjogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaHR0cDovL2NhLmxpbmtl
-ZGluLmNvbS9pbi9ycGpkYXkKPiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+On 08:20 Mon 07 Jul     , Sascha Hauer wrote:
+> 
+> On Fri, Jul 04, 2014 at 03:47:58PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > 
+> > On Jun 24, 2014, at 7:26 PM, Matteo Fortini <matteo.fortini@gmail.com> wrote:
+> > 
+> > > 
+> > > +void sam9_smc_sama5d3_configure(int id, int cs, struct sam9_smc_config *config, struct sam9_smc_sama5d3_extra_config *sama5d3_extra_config)
+> > 2 structures no
+> > 
+> > just extend the current one for sam9 we just ignore the additional config
+> 
+> sam9_smc_sama5d3_configure() is called from code which knows it runs on
+
+I do agree to call sam9_smc_sama5d3_configure from sama5 directly
+
+or sama5_smc_configure(xx) will be better and shorter
+> sama5d3. IMO it doesn't make much sense to call a generic SoC function
+> from special board code when the generic SoC function has to
+> differentiate between SoCs in the next step.
+
+except you need both for the sama5 so no need to store on 2 struct
+one struct should be fine
+
+and few more bytes will not matter much on the current boards.
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
