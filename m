@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from webmail.celad.com ([84.14.244.162])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X44YY-0005Fl-Ua
- for barebox@lists.infradead.org; Mon, 07 Jul 2014 08:45:52 +0000
-From: Herve Codina <Herve.CODINA@celad.com>
-Date: Mon, 7 Jul 2014 10:45:08 +0200
-Message-ID: <1404722708-4623-1-git-send-email-Herve.CODINA@celad.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X44hl-000113-Rl
+ for barebox@lists.infradead.org; Mon, 07 Jul 2014 08:55:22 +0000
+Message-ID: <1404723200.4587.14.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 07 Jul 2014 10:53:20 +0200
+In-Reply-To: <20140707070610.GA11833@omega>
+References: <alpine.LFD.2.11.1407050643590.10085@localhost>
+ <20140707065345.GI23235@pengutronix.de> <20140707070610.GA11833@omega>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +22,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] hush: Fix error code returned value
-To: barebox@lists.infradead.org
-Cc: Herve Codina <Herve.CODINA@celad.com>
+Subject: Re: does beaglebone black device tree need to specify amount of
+ eMMC flash?
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-Just returns error code instead of 0 or 1.
+This has nothing to do with barebox, but I feel this needs an answer as
+a lot of misinformation is spread here.
 
-With this fix, $? is set to child exit code in all cases.
-Without this fix, /child $PATH;echo $? displays 1 even if
-child script calls exit with a specific non zero error code.
+Am Montag, den 07.07.2014, 09:06 +0200 schrieb Alexander Aring:
+[...]
+> 
+> btw.: that's why eMMC is evil.
+> 
+> Raw-Flash:
+> 
+> Disadvantage:
+>  - you can't replace it.
+> 
+> Advantage:
+>  - no mcu in the middle, access the raw Flash.
 
-Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
----
- common/hush.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This isn't an advantage. If your not working for the NAND flash
+manufacturer you will have an extremely hard time getting the wear
+leveling parameters right. Having this abstracted behind an MCU that
+actually know about the flash chip behind it is a good thing.
 
-diff --git a/common/hush.c b/common/hush.c
-index 6be43cf..f6aaa03 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -1724,7 +1724,7 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
- 		b_free(&temp);
- 	} while (rcode != -1 && !(flag & FLAG_EXIT_FROM_LOOP));   /* loop on syntax errors, return on EOF */
- 
--	return (code != 0) ? 1 : 0;
-+	return code;
- }
- 
- static int parse_string_outer(struct p_context *ctx, const char *s, int flag)
+> 
+> 
+> - MMC/SD:
+> 
+> Disadvantage:
+>  - mcu in the middle, abstract block device. OS doesn't know about this.
+
+No disadvantage, see above.
+
+> 
+> Advantage:
+>  - you can replace it.
+> 
+> 
+> Combines these Disadvantage and Advantage you will get:
+> 
+> Disadvantage:
+>  - mcu in the middle, abstract block device. OS doesn't know about this.
+>  - you can't replace it.
+> 
+> Advantage:
+>  - maybe a little bit cheaper...
+>  - maybe avoid some bad connections (never expired by using sd cards)
+> 
+You are neglecting the fact that the eMMC interface can be driven with a
+lot higher clock speeds compared to an SD card. Also most eMMCs have an
+interface width of 8 bits, which is double the SDs 4 bit.
+
+This amounts to a lot more raw speed on the interface side and most
+eMMCs are actually capable of supplying data at those rates.
+
+Also eMMC provides some really useful additional features like the boot
+partitions and health checks.
+
+While SD cards may be convenient for the casual hobbyist user when it
+comes to real embedded devices, where speed and reliability matters,
+eMMC has a huge lead.
+
+Raw NAND is only an option if your device manufacturing runs are big
+enough that the lower price for NAND stacks up enough to make up the
+additional development time (cost) you need to get things right. Note
+there is a big difference here between getting it working and getting it
+right.
+
+Regards,
+Lucas
 -- 
-1.7.9.5
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
 
 
 _______________________________________________
