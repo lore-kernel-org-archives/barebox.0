@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X45yq-0005v3-Bg
- for barebox@lists.infradead.org; Mon, 07 Jul 2014 10:17:04 +0000
-Date: Mon, 7 Jul 2014 06:16:38 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20140707073623.GJ23235@pengutronix.de>
-Message-ID: <alpine.LFD.2.11.1407070615570.3134@localhost>
-References: <alpine.LFD.2.11.1407051023580.17423@localhost>
- <20140707073623.GJ23235@pengutronix.de>
+Received: from v1423.vcdns.de ([88.80.200.154])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X46su-0005Lj-Sd
+ for barebox@lists.infradead.org; Mon, 07 Jul 2014 11:15:01 +0000
+Message-ID: <53BA811B.5080403@ma-info.de>
+Date: Mon, 07 Jul 2014 13:14:35 +0200
+From: Frede Florian <florian.frede@ma-info.de>
 MIME-Version: 1.0
+References: <alpine.DEB.2.10.1407041514390.20194@9VTHT2J-D520>
+ <53BA5442.6020708@ma-info.de>
+ <alpine.DEB.2.10.1407071202460.2284@9VTHT2J-D520>
+In-Reply-To: <alpine.DEB.2.10.1407071202460.2284@9VTHT2J-D520>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +19,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: device trees, dtc and beaglebone black
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: Re: Problems with pyhBoard-Wega-AM335x
+To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, 7 Jul 2014, Sascha Hauer wrote:
+Hello Rolf,
 
-> On Sat, Jul 05, 2014 at 10:45:25AM -0400, Robert P. J. Day wrote:
-> >
-> >   next, with the BBB, i realize there are two configs and builds that
-> > must be done:
-> >
-> >  $ make omap3530_beagle_xload_defconfig
-> >  $ make omap3530_beagle_defconfig
+thank you very much...
+after I selected the mentioned entry in the menu the problem was solved...
+but the board do not prompt any thing on the UART1... so I do not know 
+if barebox is loaded
+from the sd-card or not...
+
+Regards Florian
+
+Am 07.07.2014 12:05, schrieb Rolf Evers-Fischer:
+> Hello Florian,
 >
-> Nope. These configs are for the beaglebo*ard*, not the beaglebone. Maybe
-> we should rename the config files. At the time they were introduced
-> there was no beaglebone.
+> On Mon, 7 Jul 2014, Florian Frede wrote:
 >
-> The configs you need for the beaglebone are:
+>> [...]
+> thank you for the config files.
 >
-> am335x_mlo_defconfig
-> am335x_defconfig
+> Please enable in both configs (barebox and barebox_mlo):
+> "Drivers" -> "Enable probing of devices from the devicetree".
+>
+> Kind regards,
+>   Rolf
+>
 
-  yes, i should have known that ... i'll dig into the rest of your
-note later.
-
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
 
 _______________________________________________
 barebox mailing list
