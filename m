@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X44hl-000113-Rl
- for barebox@lists.infradead.org; Mon, 07 Jul 2014 08:55:22 +0000
-Message-ID: <1404723200.4587.14.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 07 Jul 2014 10:53:20 +0200
-In-Reply-To: <20140707070610.GA11833@omega>
-References: <alpine.LFD.2.11.1407050643590.10085@localhost>
- <20140707065345.GI23235@pengutronix.de> <20140707070610.GA11833@omega>
-Mime-Version: 1.0
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X44s3-0007Li-4y
+ for barebox@lists.infradead.org; Mon, 07 Jul 2014 09:05:59 +0000
+Date: Mon, 7 Jul 2014 05:05:31 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20140707080738.GM23235@pengutronix.de>
+Message-ID: <alpine.LFD.2.11.1407070503470.27781@localhost>
+References: <alpine.LFD.2.11.1407061455580.16512@localhost>
+ <20140707080738.GM23235@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="8323328-55432110-1404723934=:27781"
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,88 +19,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: does beaglebone black device tree need to specify amount of
- eMMC flash?
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: generated doc "Options" for dhcp command drops last line
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-This has nothing to do with barebox, but I feel this needs an answer as
-a lot of misinformation is spread here.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Am Montag, den 07.07.2014, 09:06 +0200 schrieb Alexander Aring:
-[...]
-> 
-> btw.: that's why eMMC is evil.
-> 
-> Raw-Flash:
-> 
-> Disadvantage:
->  - you can't replace it.
-> 
-> Advantage:
->  - no mcu in the middle, access the raw Flash.
+--8323328-55432110-1404723934=:27781
+Content-Type: TEXT/PLAIN; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-This isn't an advantage. If your not working for the NAND flash
-manufacturer you will have an extremely hard time getting the wear
-leveling parameters right. Having this abstracted behind an MCU that
-actually know about the flash chip behind it is a good thing.
+On Mon, 7 Jul 2014, Sascha Hauer wrote:
 
-> 
-> 
-> - MMC/SD:
-> 
-> Disadvantage:
->  - mcu in the middle, abstract block device. OS doesn't know about this.
+> On Sun, Jul 06, 2014 at 02:59:09PM -0400, Robert P. J. Day wrote:
+> >
+> >   just noticed that the sphinx-generated doc page for the "dhcp"
+> > command doesn't display the final line because of this in
+> > net/dhcp.c:
+> >
+> > BAREBOX_CMD_HELP_START(dhcp)
+> > BAREBOX_CMD_HELP_TEXT("Options:")
+> > BAREBOX_CMD_HELP_OPT ("-H HOSTNAME", "hostname to send to the DHCP server")
+> > BAREBOX_CMD_HELP_OPT ("-v ID\t", "DHCP Vendor ID (code 60) submitted in DHCP requests")
+> > BAREBOX_CMD_HELP_OPT ("-c ID\t", "DHCP Client ID (code 61) submitted in DHCP requests")
+> > BAREBOX_CMD_HELP_OPT ("-u UUID\t", "DHCP Client UUID (code 97) submitted in DHCP requests")
+> > BAREBOX_CMD_HELP_OPT ("-U CLASS", "DHCP User class (code 77) submitted in DHCP requests")
+> > BAREBOX_CMD_HELP_OPT ("-r RETRY", "retry limit (default "__stringify(DHCP_DEFAULT_RETRY)")");
+> > BAREBOX_CMD_HELP_END
+> >
+> >   it's that trailing semicolon on the second last line there,
+> > which i suspect shouldn't be there, but if i take it out, the
+> > generated line now literally includes
+> > "__stringify(DHCP_DEFAULT_RETRY)”, and i'm not sure what to do
+> > about that, so if someone wants to fix it, go wild.
+>
+> I assume that even with the semicolon the sphinx documentation
+> doesn't have the correct value for the retry limit, right?
 
-No disadvantage, see above.
+  right ... even after removing that semicolon so that the last line
+shows up, it literally contains that "__stringify" stuff.
 
-> 
-> Advantage:
->  - you can replace it.
-> 
-> 
-> Combines these Disadvantage and Advantage you will get:
-> 
-> Disadvantage:
->  - mcu in the middle, abstract block device. OS doesn't know about this.
->  - you can't replace it.
-> 
-> Advantage:
->  - maybe a little bit cheaper...
->  - maybe avoid some bad connections (never expired by using sd cards)
-> 
-You are neglecting the fact that the eMMC interface can be driven with a
-lot higher clock speeds compared to an SD card. Also most eMMCs have an
-interface width of 8 bits, which is double the SDs 4 bit.
+> We should remove these macro tricks from the command documentation
+> defines. In this special case DHCP_DEFAULT_RETRY isn't even
+> configurable.
 
-This amounts to a lot more raw speed on the interface side and most
-eMMCs are actually capable of supplying data at those rates.
+  i'll let someone higher up the food chain decide how to resolve
+that.
 
-Also eMMC provides some really useful additional features like the boot
-partitions and health checks.
+rday
 
-While SD cards may be convenient for the casual hobbyist user when it
-comes to real embedded devices, where speed and reliability matters,
-eMMC has a huge lead.
-
-Raw NAND is only an option if your device manufacturing runs are big
-enough that the lower price for NAND stacks up enough to make up the
-additional development time (cost) you need to get things right. Note
-there is a big difference here between getting it working and getting it
-right.
-
-Regards,
-Lucas
 -- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
+--8323328-55432110-1404723934=:27781
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--8323328-55432110-1404723934=:27781--
