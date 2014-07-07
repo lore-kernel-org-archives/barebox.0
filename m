@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X47fh-0003ZA-Ax
- for barebox@lists.infradead.org; Mon, 07 Jul 2014 12:05:25 +0000
-Date: Mon, 7 Jul 2014 08:04:55 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20140707120019.GN23235@pengutronix.de>
-Message-ID: <alpine.LFD.2.11.1407070803160.7478@localhost>
-References: <alpine.DEB.2.10.1407041514390.20194@9VTHT2J-D520>
- <53BA5442.6020708@ma-info.de>
- <alpine.DEB.2.10.1407071202460.2284@9VTHT2J-D520>
- <53BA811B.5080403@ma-info.de> <20140707120019.GN23235@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X47hg-0004an-W8
+ for barebox@lists.infradead.org; Mon, 07 Jul 2014 12:07:29 +0000
+Date: Mon, 7 Jul 2014 14:07:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140707120703.GO23235@pengutronix.de>
+References: <alpine.LFD.2.11.1407041217080.16169@localhost>
+ <4DA026CE-D019-4CBB-B46B-834064F91333@jcrosoft.com>
+ <alpine.LFD.2.11.1407070606100.3134@localhost>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.11.1407070606100.3134@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Problems with pyhBoard-Wega-AM335x
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Rolf Evers-Fischer <embedded24@evers-fischer.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH] Clean up Kconfig and source for a couple device tree
+ commands.
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Mon, 7 Jul 2014, Sascha Hauer wrote:
-
-> On Mon, Jul 07, 2014 at 01:14:35PM +0200, Frede Florian wrote:
-> > Hello Rolf,
-> >
-> > thank you very much...
-> > after I selected the mentioned entry in the menu the problem was solved...
-> > but the board do not prompt any thing on the UART1... so I do not
-> > know if barebox is loaded
->
-> When using mainline barebox please build the am335x_mlo_defconfig for
-> the MLO and the am335x_defconfig for the main binary. The images
-> are then found under:
-
-  from memory, i noticed earlier that when i configured for
-am335x_defconfig, then did "make menuconfig", i was asked whether i
-wanted to build the MLO file as well. does that mean i can generate
-both the MLO and second stage from a single build? or am i
-misunderstanding what i saw?
-
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBKdWwgMDcsIDIwMTQgYXQgMDY6MDc6NDdBTSAtMDQwMCwgUm9iZXJ0IFAuIEouIERh
+eSB3cm90ZToKPiBPbiBNb24sIDcgSnVsIDIwMTQsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
+SUxMQVJEIHdyb3RlOgo+IAo+ID4KPiA+IE9uIEp1bCA1LCAyMDE0LCBhdCAxMjoxOCBBTSwgUm9i
+ZXJ0IFAuIEouIERheSA8cnBqZGF5QGNyYXNoY291cnNlLmNhPiB3cm90ZToKPiA+Cj4gPiA+Cj4g
+PiA+Cj4gPiA+IENvcnJlY3Qgb3B0aW9ucyBsaXN0aW5ncyBmb3IgYSBjb3VwbGUgZGV2aWNlIHRy
+ZWUtcmVsYXRlZCBjb21tYW5kcy4KPiA+ID4KPiA+ID4gU2lnbmVkLW9mZi1ieTogUm9iZXJ0IFAu
+IEouIERheSA8cnBqZGF5QGNyYXNoY291cnNlLmNhPgo+ID4gPgo+ID4gPiAtLS0KPiA+ID4KPiA+
+ID4gIGkgKnRoaW5rKiB0aGUgZm9sbG93aW5nIGlzIHZhbGlkLgo+ID4gPgo+ID4gPiBkaWZmIC0t
+Z2l0IGEvY29tbWFuZHMvS2NvbmZpZyBiL2NvbW1hbmRzL0tjb25maWcKPiA+ID4gaW5kZXggZWVk
+NmZiZC4uMzI0OGRlOSAxMDA2NDQKPiA+ID4gLS0tIGEvY29tbWFuZHMvS2NvbmZpZwo+ID4gPiAr
+KysgYi9jb21tYW5kcy9LY29uZmlnCj4gPiA+IEBAIC0xOTUwLDEwICsxOTUwLDExIEBAIGNvbmZp
+ZyBDTURfT0ZUUkVFCj4gPiA+IAloZWxwCj4gPiA+IAkgIG9mdHJlZSAtIGhhbmRsZSBkZXZpY2Ug
+dHJlZXMKPiA+ID4KPiA+ID4gLQkgIFVzYWdlOiBvZnRyZWUgWy1scGZkbl0gW0RUQl0KPiA+ID4g
+KwkgIFVzYWdlOiBvZnRyZWUgWy1sc3BmXSBbRFRCXQo+ID4gPgo+ID4gPiAJICBPcHRpb25zOgo+
+ID4gPiAJCSAgLWwJCUxvYWQgRFRCIHRvIGludGVybmFsIGRldmljZSB0cmVlCj4gPiA+ICsJCSAg
+LXMJCXNhdmUgaW50ZXJuYWwgZGV2aWNlIHRyZWUgdG8gRFRCCj4gPiA+IAkJICAtcAkJcHJvYmUg
+ZGV2aWNlcyBmcm9tIHN0b3JlZCBkZXZpY2UgdHJlZQo+ID4gPiAJCSAgLWYJCWZyZWUgc3RvcmVk
+IGRldmljZSB0cmVlCj4gPiA+Cj4gPgo+ID4gZG8gd2UgcmVhbGx5IG5lZWQgdGhlIGhlbHAgaGVy
+ZQo+ID4KPiA+IGl04oCZcyBhIHBhaW4gaW4gdGhlIGFzcyB0byBrZWVwIGl0IHN5bmMKPiAKPiAg
+IGFzIGEgZm9sbG93dXAgdG8gbXkgcmVwbHksIGlmIGl0IHdlcmUgbWUsIGkgd291bGQganVzdCB0
+b3NzIGFsbCB0aGUKPiB1c2FnZS9zeW5vcHNpcyBpbmZvIGZyb20gdGhlIEtjb25maWcgaGVscCAt
+LSBhcyB0aGUgT1AgcXVpdGUKPiBjb3JyZWN0bHkgcG9pbnRzIG91dCwgaXQncyBhIHBhaW4gaW4g
+dGhlIGFzcyB0byBrZWVwIGl0IHN5bmMnZWQgd2l0aAo+IHRoZSBzb3VyY2UsIGFuZCBpJ3ZlIGFs
+cmVhZHkgcnVuIGFjcm9zcyBzZXZlcmFsIGNvbW1hbmRzIHdob3NlIEtjb25maWcKPiBoZWxwIGRv
+ZXNuJ3QgbWF0Y2ggdGhlIHNvdXJjZS4KCkkgdGVuZCB0byBhZ3JlZSBoZXJlLiBXaGVuIEhvbGdl
+ciBzZW50IHRoZXNlIHBhdGNoZXMgcmVjZW50bHkgSSB3YXMgdmVyeQpwbGVhc2VkIHRoYXQgaGUg
+aGFzIHB1dCBzb21lIGxvdmUgaW50byB0aGUgS2NvbmZpZyBmaWxlcy4gQml0IGluZGVlZCBpdApp
+cyB2ZXJ5IGhhcmQgKGFuZCB1bm5lY2Vzc2FyeSkgd29yayB0byBrZWVwIHRoZW0gaW4gc3luYy4g
+SG9sZ2VyLCB3aGF0J3MKeW91ciB0YWtlIG9uIHRoaXM/IElzIG91ciBuZXcgKGFuZCB5ZXQtdG8t
+YmUtdXBsb2FkZWQtdG8tdGhlLW5ldCkKRG9jdW1lbnRhdGlvbiBwcm9taW5lbnQgZW5vdWdoIHRv
+IGRyb3AgdGhlIHVzYWdlIGZyb20gS2NvbmZpZz8KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUu
+Sy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93
+d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwg
+R2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRl
+c2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
