@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X42IC-0004cF-Re
- for barebox@lists.infradead.org; Mon, 07 Jul 2014 06:20:50 +0000
-Date: Mon, 7 Jul 2014 08:20:20 +0200
+ Linux)) id 1X42Jk-0004iz-U5
+ for barebox@lists.infradead.org; Mon, 07 Jul 2014 06:22:25 +0000
+Date: Mon, 7 Jul 2014 08:22:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140707062020.GB23235@pengutronix.de>
-References: <1403609192-5862-1-git-send-email-matteo.fortini@gmail.com>
- <assp.02522ea1fe.1403609192-5862-2-git-send-email-matteo.fortini@gmail.com>
- <09A40395-E357-43DD-85C3-DF74415EE74F@jcrosoft.com>
+Message-ID: <20140707062202.GC23235@pengutronix.de>
+References: <1404379178-24417-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <09A40395-E357-43DD-85C3-DF74415EE74F@jcrosoft.com>
+In-Reply-To: <1404379178-24417-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add
- TIMINGS register
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] rtc.h: drop unused U-Boot stuff; fix whitespace
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 04, 2014 at 03:47:58PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> 
-> On Jun 24, 2014, at 7:26 PM, Matteo Fortini <matteo.fortini@gmail.com> wrote:
-> 
-> > 
-> > +void sam9_smc_sama5d3_configure(int id, int cs, struct sam9_smc_config *config, struct sam9_smc_sama5d3_extra_config *sama5d3_extra_config)
-> 2 structures no
-> 
-> just extend the current one for sam9 we just ignore the additional config
+On Thu, Jul 03, 2014 at 01:19:38PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-sam9_smc_sama5d3_configure() is called from code which knows it runs on
-sama5d3. IMO it doesn't make much sense to call a generic SoC function
-from special board code when the generic SoC function has to
-differentiate between SoCs in the next step.
-
-I'm ok with merging this patch or the original one, but if you are still
-interested in the AT91 port please not only complain about a patch
-two weeks later but also ACK a patch when you are fine with it.
+Applied, thanks
 
 Sascha
+
+> ---
+>  include/rtc.h | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/include/rtc.h b/include/rtc.h
+> index c71ec4d..c2d8bce 100644
+> --- a/include/rtc.h
+> +++ b/include/rtc.h
+> @@ -31,7 +31,7 @@
+>   * Note that there are small but significant differences to the
+>   * common "struct time":
+>   *
+> - * 		struct time:		struct rtc_time:
+> + *		struct time:		struct rtc_time:
+>   * tm_mon	0 ... 11		1 ... 12
+>   * tm_year	years since 1900	years since 0
+>   */
+> @@ -48,10 +48,6 @@ struct rtc_time {
+>  	int tm_isdst;
+>  };
+>  
+> -void rtc_get (struct rtc_time *);
+> -void rtc_set (struct rtc_time *);
+> -void rtc_reset (void);
+> -
+>  void GregorianDay (struct rtc_time *);
+>  void to_tm (int, struct rtc_time *);
+>  unsigned long mktime (unsigned int, unsigned int, unsigned int,
+> -- 
+> 2.0.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
