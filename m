@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4R6m-0006Ve-Uu
+ Linux)) id 1X4R6m-0006Va-Uq
  for barebox@lists.infradead.org; Tue, 08 Jul 2014 08:50:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Jul 2014 10:50:02 +0200
-Message-Id: <1404809417-21477-7-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  8 Jul 2014 10:49:59 +0200
+Message-Id: <1404809417-21477-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,88 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/21] console: Add puts callback to console devices
+Subject: [PATCH 03/21] fat: Use correct format specifier
 To: barebox@lists.infradead.org
 
-Some devices may have a much more efficient way to output strings
-rather than single characters. Let console devices implement a
-callback for this.
+Use %zd to print size_t arguments.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/console.c  | 29 +++++++++++++++++++++++++++++
- include/console.h |  1 +
- 2 files changed, 30 insertions(+)
+ fs/fat/fat.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index aa9e3ce..b319835 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -162,6 +162,22 @@ static void console_set_stdoutpath(struct console_device *cdev)
- 	free(str);
- }
+diff --git a/fs/fat/fat.c b/fs/fat/fat.c
+index e65ef58..f8094d0 100644
+--- a/fs/fat/fat.c
++++ b/fs/fat/fat.c
+@@ -167,7 +167,7 @@ static int fat_write(struct device_d *_dev, FILE *f, const void *buf, size_t ins
  
-+static int __console_puts(struct console_device *cdev, const char *s)
-+{
-+	int n = 0;
-+
-+	while (*s) {
-+		if (*s == '\n') {
-+			cdev->putc(cdev, '\r');
-+			n++;
-+		}
-+		cdev->putc(cdev, *s);
-+		n++;
-+		s++;
-+	}
-+	return n;
-+}
-+
- int console_register(struct console_device *newcdev)
- {
- 	struct device_d *dev = &newcdev->class_dev;
-@@ -182,6 +198,9 @@ int console_register(struct console_device *newcdev)
- 			NULL, &newcdev->baudrate, "%u", newcdev);
- 	}
+ 	ret = f_write(f_file, buf, insize, &outsize);
  
-+	if (newcdev->putc && !newcdev->puts)
-+		newcdev->puts = __console_puts;
-+
- 	dev_add_param(dev, "active", console_std_set, NULL, 0);
+-	debug("%s: %d %d %d %p\n", __func__, ret, insize, outsize, f_file);
++	debug("%s: %d %zd %d %p\n", __func__, ret, insize, outsize, f_file);
  
- 	if (IS_ENABLED(CONFIG_CONSOLE_ACTIVATE_FIRST)) {
-@@ -342,9 +361,19 @@ EXPORT_SYMBOL(console_putc);
+ 	if (ret)
+ 		return ret;
+@@ -260,7 +260,7 @@ static int fat_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
  
- int console_puts(unsigned int ch, const char *str)
- {
-+	struct console_device *cdev;
- 	const char *s = str;
- 	int n = 0;
+ 	ret = f_read(f_file, buf, insize, &outsize);
  
-+	if (initialized == CONSOLE_INIT_FULL) {
-+		for_each_console(cdev) {
-+			if (cdev->f_active & ch) {
-+				n = cdev->puts(cdev, str);
-+			}
-+		}
-+		return n;
-+	}
-+
- 	while (*s) {
- 		if (*s == '\n') {
- 			console_putc(ch, '\r');
-diff --git a/include/console.h b/include/console.h
-index 6da0199..6372cfe 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -39,6 +39,7 @@ struct console_device {
+-	debug("%s: %d %d %d %p\n", __func__, ret, insize, outsize, f_file);
++	debug("%s: %d %zd %d %p\n", __func__, ret, insize, outsize, f_file);
  
- 	int (*tstc)(struct console_device *cdev);
- 	void (*putc)(struct console_device *cdev, char c);
-+	int (*puts)(struct console_device *cdev, const char *s);
- 	int  (*getc)(struct console_device *cdev);
- 	int (*setbrg)(struct console_device *cdev, int baudrate);
- 	void (*flush)(struct console_device *cdev);
+ 	if (ret)
+ 		return ret;
 -- 
 2.0.0
 
