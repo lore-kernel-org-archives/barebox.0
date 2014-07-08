@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.data-modul.de ([212.184.205.171]
- helo=mailgw1.data-modul.com)
- by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X4Pyh-0004q7-Iw
- for barebox@lists.infradead.org; Tue, 08 Jul 2014 07:38:16 +0000
-From: Zahari Doychev <zahari.doychev@linux.com>
-Date: Tue,  8 Jul 2014 09:37:35 +0200
-Message-Id: <a2949dd62538a64ec5689b63d6ff531620ceb198.1404734020.git.zahari.doychev@linux.com>
-In-Reply-To: <cover.1404734020.git.zahari.doychev@linux.com>
-References: <cover.1404734020.git.zahari.doychev@linux.com>
-In-Reply-To: <cover.1404734020.git.zahari.doychev@linux.com>
-References: <cover.1404734020.git.zahari.doychev@linux.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X4R6m-0006Vd-Uu
+ for barebox@lists.infradead.org; Tue, 08 Jul 2014 08:50:43 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue,  8 Jul 2014 10:50:01 +0200
+Message-Id: <1404809417-21477-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
+References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,44 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/mtd: fix NULL pointer dereference in partition
- lock/unlock
+Subject: [PATCH 05/21] of: platform: Use PRINTF_CONVERSION_RESOURCE for
+ printing resources
 To: barebox@lists.infradead.org
 
-Some mtd device does not support lock and unlock functions. Adding this check
-avoids crashing when mtd_part_lock/unlock are called for such devices.
+Avoids compiler warnings about wrong format specifiers
 
-Signed-off-by: Zahari Doychev <zahari.doychev@linux.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/partition.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/of/platform.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
-index 5c0d46f..5a3d1ae 100644
---- a/drivers/mtd/partition.c
-+++ b/drivers/mtd/partition.c
-@@ -51,6 +51,9 @@ static int mtd_part_erase(struct mtd_info *mtd, struct erase_info *instr)
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 72e75cc..c417cfd 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -183,7 +183,8 @@ static struct device_d *of_platform_device_create(struct device_node *np,
+ 	dev->num_resources = num_reg;
+ 	of_device_make_bus_id(dev);
  
- static int mtd_part_lock(struct mtd_info *mtd, loff_t offset, size_t len)
- {
-+	if (!mtd->master->lock)
-+		return -ENOSYS;
-+
- 	if (!(mtd->flags & MTD_WRITEABLE))
- 		return -EROFS;
+-	debug("%s: register device %s, io=0x%08x\n", __func__, dev_name(dev),
++	debug("%s: register device %s, io=" PRINTF_CONVERSION_RESOURCE "\n",
++			__func__, dev_name(dev),
+ 		(num_reg) ? dev->resource[0].start : (-1));
  
-@@ -64,6 +67,9 @@ static int mtd_part_lock(struct mtd_info *mtd, loff_t offset, size_t len)
- 
- static int mtd_part_unlock(struct mtd_info *mtd, loff_t offset, size_t len)
- {
-+	if (!mtd->master->unlock)
-+		return -ENOSYS;
-+
- 	if (!(mtd->flags & MTD_WRITEABLE))
- 		return -EROFS;
- 
+ 	ret = platform_device_register(dev);
 -- 
-1.7.9.5
+2.0.0
 
 
 _______________________________________________
