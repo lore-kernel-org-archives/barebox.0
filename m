@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4R6m-0006Vb-Uw
+ Linux)) id 1X4R6m-0006VW-Us
  for barebox@lists.infradead.org; Tue, 08 Jul 2014 08:50:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Jul 2014 10:50:00 +0200
-Message-Id: <1404809417-21477-5-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  8 Jul 2014 10:49:58 +0200
+Message-Id: <1404809417-21477-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/21] readkey: keys are unsugned char
+Subject: [PATCH 02/21] oftree command: Use size_t for size
 To: barebox@lists.infradead.org
 
-We have keys with values > 127, so it must be an unsigned char.
+read_file takes a size_t argument as size, so use this type for the
+size variable.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- lib/readkey.c | 2 +-
+ commands/oftree.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/readkey.c b/lib/readkey.c
-index 7b38110..2073a73 100644
---- a/lib/readkey.c
-+++ b/lib/readkey.c
-@@ -25,7 +25,7 @@
- 
- struct esc_cmds {
- 	const char *seq;
--	char val;
-+	unsigned char val;
- };
- 
- static const struct esc_cmds esccmds[] = {
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 983a0a5..49976bc 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -42,7 +42,7 @@
+ static int do_oftree(int argc, char *argv[])
+ {
+ 	struct fdt_header *fdt = NULL;
+-	int size;
++	size_t size;
+ 	int opt;
+ 	int probe = 0;
+ 	char *load = NULL;
 -- 
 2.0.0
 
