@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo6.mail-out.ovh.net ([188.165.56.124]
- helo=mo6.mail-out.ovh.net)
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
+ helo=mo3.mail-out.ovh.net)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X4S6e-0001Sq-Gm
- for barebox@lists.infradead.org; Tue, 08 Jul 2014 09:54:37 +0000
-Received: from mail625.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 52753FF901C
- for <barebox@lists.infradead.org>; Tue,  8 Jul 2014 11:54:11 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.2\))
+ id 1X4SCV-0005wh-9D
+ for barebox@lists.infradead.org; Tue, 08 Jul 2014 10:00:46 +0000
+Received: from mail622.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 82FFCFFA3B8
+ for <barebox@lists.infradead.org>; Tue,  8 Jul 2014 12:00:17 +0200 (CEST)
+Date: Tue, 8 Jul 2014 12:04:07 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20140708135021.2841983f738ecc73ab185adf@gmail.com>
-Date: Tue, 8 Jul 2014 17:53:57 +0800
-Message-Id: <CD089837-2CB3-49D8-8F8A-965176D65247@jcrosoft.com>
-References: <1404422826-6589-1-git-send-email-antonynpavlov@gmail.com>
- <1404422826-6589-4-git-send-email-antonynpavlov@gmail.com>
- <20140707182210.GC19147@ns203013.ovh.net>
- <20140708135021.2841983f738ecc73ab185adf@gmail.com>
+Message-ID: <20140708100407.GE19147@ns203013.ovh.net>
+References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,122 +26,210 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5 3/7] PCI: initial commit
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: Initial EFI Support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+Hi,
 
-On Jul 8, 2014, at 5:50 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+	as tested with Sascha
 
-> 
-> On Mon, 7 Jul 2014 20:22:10 +0200
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> 
->> On 01:27 Fri 04 Jul     , Antony Pavlov wrote:
->>> 
->>> used shorten version of linux-2.6.39 pci_ids.h
->>> 
->>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->>> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
->>> ---
->>> drivers/Kconfig                 |   1 +
->>> drivers/Makefile                |   1 +
->>> drivers/pci/Kconfig             |  29 ++++
->>> drivers/pci/Makefile            |   8 ++
->>> drivers/pci/bus.c               | 110 +++++++++++++++
->>> drivers/pci/pci.c               | 292 +++++++++++++++++++++++++++++++++++++++
->>> drivers/pci/pci_iomap.c         |  29 ++++
->>> include/linux/mod_devicetable.h |  20 +++
->>> include/linux/pci.h             | 297 ++++++++++++++++++++++++++++++++++++++++
->>> include/linux/pci_ids.h         | 136 ++++++++++++++++++
->>> include/linux/pci_regs.h        | 110 +++++++++++++++
->>> 11 files changed, 1033 insertions(+)
->>> 
->>> diff --git a/drivers/Kconfig b/drivers/Kconfig
->>> index 53e1e97..12a9d8c 100644
->>> --- a/drivers/Kconfig
->>> +++ b/drivers/Kconfig
->>> @@ -27,5 +27,6 @@ source "drivers/pinctrl/Kconfig"
->>> source "drivers/bus/Kconfig"
->>> source "drivers/regulator/Kconfig"
->>> source "drivers/reset/Kconfig"
->>> +source "drivers/pci/Kconfig"
->>> 
->>> endmenu
->>> diff --git a/drivers/Makefile b/drivers/Makefile
->>> index ef3604f..1990e86 100644
->>> --- a/drivers/Makefile
->>> +++ b/drivers/Makefile
->>> @@ -26,3 +26,4 @@ obj-y += pinctrl/
->>> obj-y += bus/
->>> obj-$(CONFIG_REGULATOR) += regulator/
->>> obj-$(CONFIG_RESET_CONTROLLER) += reset/
->>> +obj-$(CONFIG_PCI) += pci/
->>> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
->>> new file mode 100644
->>> index 0000000..9e46592
->>> --- /dev/null
->>> +++ b/drivers/pci/Kconfig
->>> @@ -0,0 +1,29 @@
->>> +config HW_HAS_PCI
->>> +	bool
->>> +
->>> +if HW_HAS_PCI
->>> +
->>> +menu "PCI bus options"
->>> +
->>> +config PCI
->>> +	bool "Support for PCI controller"
->>> +	depends on HW_HAS_PCI
->>> +	help
->>> +	  Find out whether you have a PCI motherboard. PCI is the name of a
->>> +	  bus system, i.e. the way the CPU talks to the other stuff inside
->>> +	  your box. If you have PCI, say Y, otherwise N.
->>> +
->>> +
->>> +config PCI_DEBUG
->>> +	bool "PCI Debugging"
->>> +	depends on PCI
->>> +	help
->>> +	  Say Y here if you want the PCI core to produce a bunch of debug
->>> +	  messages to the system log.  Select this if you are having a
->>> +	  problem with PCI support and want to see more of what is going on.
->>> +
->>> +	  When in doubt, say N.
->>> +
->>> +endmenu
->>> +
->>> +endif
->>> diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
->>> new file mode 100644
->>> index 0000000..edac1a5
->>> --- /dev/null
->>> +++ b/drivers/pci/Makefile
->>> @@ -0,0 +1,8 @@
->>> +#
->>> +# Makefile for the PCI bus specific drivers.
->>> +#
->>> +obj-y		+= pci.o bus.o pci_iomap.o
->>> +
->>> +ccflags-$(CONFIG_PCI_DEBUG) := -DDEBUG
->>> +
->>> +CPPFLAGS += $(ccflags-y)
->>> diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
->>> new file mode 100644
->>> index 0000000..8215ee5
->>> --- /dev/null
->>> +++ b/drivers/pci/bus.c
->> missing copyright and licence
->> 
->> I do not remember who wrote it you, me or both
-> 
-> Should I use GPLv2-only or GPLv2-or-later license?
-> 
-I only wrote GPLv2-only
+	you can run it from qemu (more easy to debug)
 
+	first you will need an EFI binary
+	you can use this one
+	http://ufpr.dl.sourceforge.net/project/edk2/OVMF/OVMF-X64-r15214.zip
+
+	and then you need to create a vfat FS
+
+	dd if=/dev/zero bs=1M count=10 > dosfs; mkfs.vfat dosfs
+
+	in the dosfs mounted copy the barebox.efi in /EFI/BOOT/ as BOOTx64.efi
+
+	and finally the magic
+
+	qemu-system-x86_64 -pflash OVMF.fd -nographic dosfs
 
 Best Regards,
 J.
+On 10:49 Tue 08 Jul     , Sascha Hauer wrote:
+> 
+> The following adds initial support for running barebox as an EFI
+> payload on X86 PCs.
+> 
+> Several things are implemented already to make it useful and
+> to look around in an EFI system:
+> 
+> - Simple Network Protocol for networking
+> - Start applications for installing drivers and starting Linux
+> - Access EFI provided filesystems
+> - Block device access
+> 
+> The EFI Port still has some rough edges. The screen output is limited
+> to 80x25 and the keyboard driver doesn't recognize ctrl-C. I couldn't
+> get find a proper UEFI serial driver yet, so the serial port is accessed
+> via inb/outb on ioport 0x3f8 and not via UEFI.
+> 
+> For those interested in EFI and X86 hardware this port still offers
+> some interesting insights in EFI.
+> 
+> There's also even Documentation available, see Patch 16/21.
+> 
+> Sascha
+> 
+> ----------------------------------------------------------------
+> Sascha Hauer (21):
+>       Make IPaddr_t a 32bit type
+>       oftree command: Use size_t for size
+>       fat: Use correct format specifier
+>       readkey: keys are unsugned char
+>       of: platform: Use PRINTF_CONVERSION_RESOURCE for printing resources
+>       console: Add puts callback to console devices
+>       Add hex_byte_pack and hex_byte_pack_upper from kernel
+>       vsprintf: Support pU for printing UUIDs
+>       Add beginning wchar support
+>       block: Add flush callback
+>       Move efi.h to include/
+>       filetype: Add DOS EXE file detection support
+>       efi: Add more error codes
+>       serial: ns16550: Add mmiobase to private data
+>       serial: ns16550: Add register read/write function pointers to private data
+>       Documentation: Add EFI documentation
+>       Add initial EFI architecture support
+>       net: Add EFI Simple Network Protocol Driver
+>       serial: Add EFI stdio driver
+>       fs: implement EFI filesystem driver
+>       fs: implement EFI variable filesystem driver
+> 
+>  Documentation/boards/efi.rst               |  279 ++++++
+>  Documentation/glossary.rst                 |    3 +
+>  arch/efi/Kconfig                           |   47 +
+>  arch/efi/Makefile                          |   41 +
+>  arch/efi/configs/efi_defconfig             |   73 ++
+>  arch/efi/efi/Makefile                      |    2 +
+>  arch/efi/efi/clocksource.c                 |   60 ++
+>  arch/efi/efi/efi-block-io.c                |  174 ++++
+>  arch/efi/efi/efi-device.c                  |  348 +++++++
+>  arch/efi/efi/efi-image.c                   |  105 +++
+>  arch/efi/efi/efi.c                         |  342 +++++++
+>  arch/efi/efi/env-efi/network/eth0-discover |    5 +
+>  arch/efi/include/asm/barebox.h             |    1 +
+>  arch/efi/include/asm/bitops.h              |   15 +
+>  arch/efi/include/asm/byteorder.h           |    8 +
+>  arch/efi/include/asm/common.h              |    4 +
+>  arch/efi/include/asm/dma.h                 |   13 +
+>  arch/efi/include/asm/elf.h                 |   60 ++
+>  arch/efi/include/asm/io.h                  |   55 ++
+>  arch/efi/include/asm/posix_types.h         |   93 ++
+>  arch/efi/include/asm/sections.h            |    1 +
+>  arch/efi/include/asm/string.h              |    1 +
+>  arch/efi/include/asm/swab.h                |    6 +
+>  arch/efi/include/asm/types.h               |   73 ++
+>  arch/efi/include/asm/unaligned.h           |   19 +
+>  arch/efi/include/mach/debug_ll.h           |   20 +
+>  arch/efi/include/mach/efi-device.h         |   45 +
+>  arch/efi/include/mach/efi.h                |   24 +
+>  arch/efi/lib/.gitignore                    |    2 +
+>  arch/efi/lib/Makefile                      |    4 +
+>  arch/efi/lib/crt0-efi-ia32.S               |   76 ++
+>  arch/efi/lib/crt0-efi-x86_64.S             |   75 ++
+>  arch/efi/lib/elf_ia32_efi.lds.S            |  102 +++
+>  arch/efi/lib/elf_x86_64_efi.lds.S          |   93 ++
+>  arch/efi/lib/reloc_ia32.c                  |   97 ++
+>  arch/efi/lib/reloc_x86_64.c                |   96 ++
+>  commands/edit.c                            |   11 +-
+>  commands/oftree.c                          |    2 +-
+>  common/Kconfig                             |    8 +
+>  common/Makefile                            |    4 +-
+>  common/block.c                             |    3 +
+>  common/console.c                           |   29 +
+>  common/efi-devicepath.c                    | 1370 ++++++++++++++++++++++++++++
+>  common/efi-guid.c                          |   11 +
+>  common/filetype.c                          |    4 +
+>  common/memory.c                            |    2 +-
+>  common/partitions/efi.c                    |    2 +-
+>  common/partitions/efi.h                    |    2 +-
+>  drivers/net/Kconfig                        |    4 +
+>  drivers/net/Makefile                       |    1 +
+>  drivers/net/efi-snp.c                      |  296 ++++++
+>  drivers/of/Kconfig                         |    2 +-
+>  drivers/of/platform.c                      |    3 +-
+>  drivers/serial/Kconfig                     |    4 +
+>  drivers/serial/Makefile                    |    1 +
+>  drivers/serial/efi-stdio.c                 |  367 ++++++++
+>  drivers/serial/serial_ns16550.c            |  237 ++---
+>  fs/Kconfig                                 |   15 +
+>  fs/Makefile                                |    2 +
+>  fs/efi.c                                   |  559 ++++++++++++
+>  fs/efivarfs.c                              |  340 +++++++
+>  fs/fat/fat.c                               |    4 +-
+>  include/block.h                            |    1 +
+>  include/console.h                          |    1 +
+>  include/efi.h                              |  508 +++++++++++
+>  include/filetype.h                         |    1 +
+>  include/linux/efi.h                        |  547 -----------
+>  include/linux/kernel.h                     |   23 +-
+>  include/param.h                            |    2 +-
+>  include/wchar.h                            |   16 +
+>  lib/Kconfig                                |    3 +
+>  lib/Makefile                               |    1 +
+>  lib/misc.c                                 |    3 +
+>  lib/readkey.c                              |    2 +-
+>  lib/vsprintf.c                             |   62 ++
+>  lib/wchar.c                                |   80 ++
+>  76 files changed, 6319 insertions(+), 676 deletions(-)
+>  create mode 100644 Documentation/boards/efi.rst
+>  create mode 100644 arch/efi/Kconfig
+>  create mode 100644 arch/efi/Makefile
+>  create mode 100644 arch/efi/configs/efi_defconfig
+>  create mode 100644 arch/efi/efi/Makefile
+>  create mode 100644 arch/efi/efi/clocksource.c
+>  create mode 100644 arch/efi/efi/efi-block-io.c
+>  create mode 100644 arch/efi/efi/efi-device.c
+>  create mode 100644 arch/efi/efi/efi-image.c
+>  create mode 100644 arch/efi/efi/efi.c
+>  create mode 100644 arch/efi/efi/env-efi/network/eth0-discover
+>  create mode 100644 arch/efi/include/asm/barebox.h
+>  create mode 100644 arch/efi/include/asm/bitops.h
+>  create mode 100644 arch/efi/include/asm/byteorder.h
+>  create mode 100644 arch/efi/include/asm/common.h
+>  create mode 100644 arch/efi/include/asm/dma.h
+>  create mode 100644 arch/efi/include/asm/elf.h
+>  create mode 100644 arch/efi/include/asm/io.h
+>  create mode 100644 arch/efi/include/asm/posix_types.h
+>  create mode 100644 arch/efi/include/asm/sections.h
+>  create mode 100644 arch/efi/include/asm/string.h
+>  create mode 100644 arch/efi/include/asm/swab.h
+>  create mode 100644 arch/efi/include/asm/types.h
+>  create mode 100644 arch/efi/include/asm/unaligned.h
+>  create mode 100644 arch/efi/include/mach/debug_ll.h
+>  create mode 100644 arch/efi/include/mach/efi-device.h
+>  create mode 100644 arch/efi/include/mach/efi.h
+>  create mode 100644 arch/efi/lib/.gitignore
+>  create mode 100644 arch/efi/lib/Makefile
+>  create mode 100644 arch/efi/lib/crt0-efi-ia32.S
+>  create mode 100644 arch/efi/lib/crt0-efi-x86_64.S
+>  create mode 100644 arch/efi/lib/elf_ia32_efi.lds.S
+>  create mode 100644 arch/efi/lib/elf_x86_64_efi.lds.S
+>  create mode 100644 arch/efi/lib/reloc_ia32.c
+>  create mode 100644 arch/efi/lib/reloc_x86_64.c
+>  create mode 100644 common/efi-devicepath.c
+>  create mode 100644 common/efi-guid.c
+>  create mode 100644 drivers/net/efi-snp.c
+>  create mode 100644 drivers/serial/efi-stdio.c
+>  create mode 100644 fs/efi.c
+>  create mode 100644 fs/efivarfs.c
+>  create mode 100644 include/efi.h
+>  delete mode 100644 include/linux/efi.h
+>  create mode 100644 include/wchar.h
+>  create mode 100644 lib/wchar.c
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
