@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4O7r-0005Pf-0R
- for barebox@lists.infradead.org; Tue, 08 Jul 2014 05:39:35 +0000
-Date: Tue, 8 Jul 2014 07:39:05 +0200
+ Linux)) id 1X4ODp-0008Rz-Nm
+ for barebox@lists.infradead.org; Tue, 08 Jul 2014 05:45:46 +0000
+Date: Tue, 8 Jul 2014 07:45:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140708053905.GQ23235@pengutronix.de>
-References: <1403609192-5862-1-git-send-email-matteo.fortini@gmail.com>
- <assp.02522ea1fe.1403609192-5862-2-git-send-email-matteo.fortini@gmail.com>
- <09A40395-E357-43DD-85C3-DF74415EE74F@jcrosoft.com>
- <20140707062020.GB23235@pengutronix.de>
- <20140707181744.GB19147@ns203013.ovh.net>
+Message-ID: <20140708054522.GR23235@pengutronix.de>
+References: <1404722708-4623-1-git-send-email-Herve.CODINA@celad.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140707181744.GB19147@ns203013.ovh.net>
+In-Reply-To: <1404722708-4623-1-git-send-email-Herve.CODINA@celad.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,41 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add
- TIMINGS register
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/1] hush: Fix error code returned value
+To: Herve Codina <Herve.CODINA@celad.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 07, 2014 at 08:17:44PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:20 Mon 07 Jul     , Sascha Hauer wrote:
-> > 
-> > On Fri, Jul 04, 2014 at 03:47:58PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > 
-> > > On Jun 24, 2014, at 7:26 PM, Matteo Fortini <matteo.fortini@gmail.com> wrote:
-> > > 
-> > > > 
-> > > > +void sam9_smc_sama5d3_configure(int id, int cs, struct sam9_smc_config *config, struct sam9_smc_sama5d3_extra_config *sama5d3_extra_config)
-> > > 2 structures no
-> > > 
-> > > just extend the current one for sam9 we just ignore the additional config
-> > 
-> > sam9_smc_sama5d3_configure() is called from code which knows it runs on
+On Mon, Jul 07, 2014 at 10:45:08AM +0200, Herve Codina wrote:
+> Just returns error code instead of 0 or 1.
 > 
-> I do agree to call sam9_smc_sama5d3_configure from sama5 directly
+> With this fix, $? is set to child exit code in all cases.
+> Without this fix, /child $PATH;echo $? displays 1 even if
+> child script calls exit with a specific non zero error code.
 > 
-> or sama5_smc_configure(xx) will be better and shorter
-> > sama5d3. IMO it doesn't make much sense to call a generic SoC function
-> > from special board code when the generic SoC function has to
-> > differentiate between SoCs in the next step.
-> 
-> except you need both for the sama5 so no need to store on 2 struct
-> one struct should be fine
-> 
-> and few more bytes will not matter much on the current boards.
+> Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
 
-Ok, so we agree on two functions, but a single struct.
+Applied, thanks
 
 Sascha
+
+> ---
+>  common/hush.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/common/hush.c b/common/hush.c
+> index 6be43cf..f6aaa03 100644
+> --- a/common/hush.c
+> +++ b/common/hush.c
+> @@ -1724,7 +1724,7 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
+>  		b_free(&temp);
+>  	} while (rcode != -1 && !(flag & FLAG_EXIT_FROM_LOOP));   /* loop on syntax errors, return on EOF */
+>  
+> -	return (code != 0) ? 1 : 0;
+> +	return code;
+>  }
+>  
+>  static int parse_string_outer(struct p_context *ctx, const char *s, int flag)
+> -- 
+> 1.7.9.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
