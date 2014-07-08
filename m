@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4R6m-0006Vd-Uu
+ Linux)) id 1X4R6m-0006Vb-Uw
  for barebox@lists.infradead.org; Tue, 08 Jul 2014 08:50:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Jul 2014 10:50:01 +0200
-Message-Id: <1404809417-21477-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  8 Jul 2014 10:50:00 +0200
+Message-Id: <1404809417-21477-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/21] of: platform: Use PRINTF_CONVERSION_RESOURCE for
- printing resources
+Subject: [PATCH 04/21] readkey: keys are unsugned char
 To: barebox@lists.infradead.org
 
-Avoids compiler warnings about wrong format specifiers
+We have keys with values > 127, so it must be an unsigned char.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/platform.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/readkey.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 72e75cc..c417cfd 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -183,7 +183,8 @@ static struct device_d *of_platform_device_create(struct device_node *np,
- 	dev->num_resources = num_reg;
- 	of_device_make_bus_id(dev);
+diff --git a/lib/readkey.c b/lib/readkey.c
+index 7b38110..2073a73 100644
+--- a/lib/readkey.c
++++ b/lib/readkey.c
+@@ -25,7 +25,7 @@
  
--	debug("%s: register device %s, io=0x%08x\n", __func__, dev_name(dev),
-+	debug("%s: register device %s, io=" PRINTF_CONVERSION_RESOURCE "\n",
-+			__func__, dev_name(dev),
- 		(num_reg) ? dev->resource[0].start : (-1));
+ struct esc_cmds {
+ 	const char *seq;
+-	char val;
++	unsigned char val;
+ };
  
- 	ret = platform_device_register(dev);
+ static const struct esc_cmds esccmds[] = {
 -- 
 2.0.0
 
