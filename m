@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4R6o-0006Vt-1H
+ Linux)) id 1X4R6o-0006Vq-0U
  for barebox@lists.infradead.org; Tue, 08 Jul 2014 08:50:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Jul 2014 10:50:14 +0200
-Message-Id: <1404809417-21477-19-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  8 Jul 2014 10:50:11 +0200
+Message-Id: <1404809417-21477-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,346 +21,335 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/21] net: Add EFI Simple Network Protocol Driver
+Subject: [PATCH 15/21] serial: ns16550: Add register read/write function
+ pointers to private data
 To: barebox@lists.infradead.org
 
-This adds a network driver which uses the EFI Simple Network
-Protocol to implement networking for barebox.
+Makes the code a bit cleaner. This also avoids casting from a pointer
+to a 32bit integer which may produce compiler warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/Kconfig   |   4 +
- drivers/net/Makefile  |   1 +
- drivers/net/efi-snp.c | 296 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 301 insertions(+)
- create mode 100644 drivers/net/efi-snp.c
+ drivers/serial/serial_ns16550.c | 234 ++++++++++++++++++++--------------------
+ 1 file changed, 120 insertions(+), 114 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 5f0c41b..43409a8 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -170,6 +170,10 @@ config DRIVER_NET_TAP
- 	bool "tap Ethernet driver"
- 	depends on LINUX
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 27fae9b..09e6a6a 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -46,11 +46,17 @@
+ struct ns16550_priv {
+ 	struct console_device cdev;
+ 	struct NS16550_plat plat;
+-	int access_width;
+-	int mmio;
+ 	struct clk *clk;
+ 	uint32_t fcrval;
+ 	void __iomem *mmiobase;
++	unsigned iobase;
++	void (*write_reg)(struct ns16550_priv *, uint8_t val, unsigned offset);
++	uint8_t (*read_reg)(struct ns16550_priv *, unsigned offset);
++};
++
++struct ns16550_drvdata {
++        void (*init_port)(struct console_device *cdev);
++        const char *linux_console_name;
+ };
  
-+config DRIVER_NET_EFI_SNP
-+	bool "EFI SNP ethernet driver"
-+	depends on ARCH_EFI
-+
- config DRIVER_NET_TSE
- 	depends on NIOS2
- 	bool "Altera TSE ethernet driver"
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 33bb5c8..1b85778 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -26,3 +26,4 @@ obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
- obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
- obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
- obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
-+obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
-diff --git a/drivers/net/efi-snp.c b/drivers/net/efi-snp.c
-new file mode 100644
-index 0000000..5b96fbf
---- /dev/null
-+++ b/drivers/net/efi-snp.c
-@@ -0,0 +1,296 @@
-+/*
-+ * efi-snp.c - Simple Network Protocol driver for EFI
-+ *
-+ * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <net.h>
-+#include <init.h>
-+#include <efi.h>
-+#include <mach/efi.h>
-+#include <mach/efi-device.h>
-+
-+struct efi_network_statistics {
-+	uint64_t RxTotalFrames;
-+	uint64_t RxGoodFrames;
-+	uint64_t RxUndersizeFrames;
-+	uint64_t RxOversizeFrames;
-+	uint64_t RxDroppedFrames;
-+	uint64_t RxUnicastFrames;
-+	uint64_t RxBroadcastFrames;
-+	uint64_t RxMulticastFrames;
-+	uint64_t RxCrcErrorFrames;
-+	uint64_t RxTotalBytes;
-+	uint64_t TxTotalFrames;
-+	uint64_t TxGoodFrames;
-+	uint64_t TxUndersizeFrames;
-+	uint64_t TxOversizeFrames;
-+	uint64_t TxDroppedFrames;
-+	uint64_t TxUnicastFrames;
-+	uint64_t TxBroadcastFrames;
-+	uint64_t TxMulticastFrames;
-+	uint64_t TxCrcErrorFrames;
-+	uint64_t TxTotalBytes;
-+	uint64_t Collisions;
-+	uint64_t UnsupportedProtocol;
-+};
-+
-+enum efi_simple_network_state {
-+	EfiSimpleNetworkStopped,
-+	EfiSimpleNetworkStarted,
-+	EfiSimpleNetworkInitialized,
-+	EfiSimpleNetworkMaxState
-+};
-+
-+#define EFI_SIMPLE_NETWORK_RECEIVE_UNICAST               0x01
-+#define EFI_SIMPLE_NETWORK_RECEIVE_MULTICAST             0x02
-+#define EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST             0x04
-+#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS           0x08
-+#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS_MULTICAST 0x10
-+
-+#define EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT        0x01
-+#define EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT       0x02
-+#define EFI_SIMPLE_NETWORK_COMMAND_INTERRUPT        0x04
-+#define EFI_SIMPLE_NETWORK_SOFTWARE_INTERRUPT       0x08
-+
-+#define MAX_MCAST_FILTER_CNT    16
-+struct efi_simple_network_mode {
-+	uint32_t State;
-+	uint32_t HwAddressSize;
-+	uint32_t MediaHeaderSize;
-+	uint32_t MaxPacketSize;
-+	uint32_t NvRamSize;
-+	uint32_t NvRamAccessSize;
-+	uint32_t ReceiveFilterMask;
-+	uint32_t ReceiveFilterSetting;
-+	uint32_t MaxMCastFilterCount;
-+	uint32_t MCastFilterCount;
-+	efi_mac_address MCastFilter[MAX_MCAST_FILTER_CNT];
-+	efi_mac_address CurrentAddress;
-+	efi_mac_address BroadcastAddress;
-+	efi_mac_address PermanentAddress;
-+	uint8_t IfType;
-+        bool MacAddressChangeable;
-+	bool MultipleTxSupported;
-+	bool MediaPresentSupported;
-+	bool MediaPresent;
-+};
-+
-+#define EFI_SIMPLE_NETWORK_INTERFACE_REVISION   0x00010000
-+
-+struct efi_simple_network {
-+	uint64_t Revision;
-+	efi_status_t (EFIAPI *start) (struct efi_simple_network *This);
-+	efi_status_t (EFIAPI *stop) (struct efi_simple_network *This);
-+	efi_status_t (EFIAPI *initialize) (struct efi_simple_network *This,
-+			unsigned long ExtraRxBufferSize, unsigned long ExtraTxBufferSize);
-+	efi_status_t (EFIAPI *reset) (struct efi_simple_network *This, bool ExtendedVerification);
-+	efi_status_t (EFIAPI *shutdown) (struct efi_simple_network *This);
-+	efi_status_t (EFIAPI *receive_filters) (struct efi_simple_network *This,
-+			uint32_t Enable, uint32_t Disable, bool ResetMCastFilter,
-+			unsigned long MCastFilterCnt, efi_mac_address *MCastFilter);
-+	efi_status_t (EFIAPI *station_address) (struct efi_simple_network *This,
-+			bool Reset, efi_mac_address *New);
-+	efi_status_t (EFIAPI *statistics) (struct efi_simple_network *This,
-+			bool Reset, unsigned long *StatisticsSize,
-+			struct efi_network_statistics *StatisticsTable);
-+	efi_status_t (EFIAPI *mcast_ip_to_mac) (struct efi_simple_network *This,
-+			bool IPv6, efi_ip_address *IP, efi_mac_address *MAC);
-+	efi_status_t (EFIAPI *nvdata) (struct efi_simple_network *This,
-+			bool ReadWrite, unsigned long Offset, unsigned long BufferSize,
-+			void *Buffer);
-+	efi_status_t (EFIAPI *get_status) (struct efi_simple_network *This,
-+			uint32_t *InterruptStatus, void **TxBuf);
-+	efi_status_t (EFIAPI *transmit) (struct efi_simple_network *This,
-+			unsigned long HeaderSize, unsigned long BufferSize, void *Buffer,
-+			efi_mac_address *SrcAddr, efi_mac_address *DestAddr,
-+			uint16_t *Protocol);
-+	efi_status_t (EFIAPI *receive) (struct efi_simple_network *This,
-+			unsigned long *HeaderSize, unsigned long *BufferSize, void *Buffer,
-+			efi_mac_address *SrcAddr, efi_mac_address *DestAddr, uint16_t *Protocol);
-+	void *WaitForPacket;
-+	struct efi_simple_network_mode *Mode;
-+};
-+
-+struct efi_snp_priv {
-+	struct device_d *dev;
-+	struct eth_device edev;
-+	struct efi_simple_network *snp;
-+};
-+
-+static inline struct efi_snp_priv *to_priv(struct eth_device *edev)
+ static inline struct ns16550_priv *to_ns16550_priv(struct console_device *cdev)
+@@ -58,93 +64,64 @@ static inline struct ns16550_priv *to_ns16550_priv(struct console_device *cdev)
+ 	return container_of(cdev, struct ns16550_priv, cdev);
+ }
+ 
+-struct ns16550_drvdata {
+-	void (*init_port)(struct console_device *cdev);
+-	const char *linux_console_name;
+-};
++static uint8_t ns16550_read_reg_mmio_8(struct ns16550_priv *priv, unsigned offset)
 +{
-+	return container_of(edev, struct efi_snp_priv, edev);
++	return readb(priv->mmiobase + offset);
++}
+ 
+-/**
+- * @brief read system i/o (byte)
+- * @param[in] addr address to read
+- * @param[in] mmio memory i/o space or i/o port space
+- */
+-static inline uint8_t ns16550_sys_readb(void __iomem *addr, int mmio)
++static void ns16550_write_reg_mmio_8(struct ns16550_priv *priv, uint8_t val, unsigned offset)
+ {
+-	if (mmio)
+-		return readb(addr);
+-	else
+-		return (uint8_t) inb((int) addr);
++	writeb(val, priv->mmiobase + offset);
+ }
+ 
+-/**
+- * @brief read system i/o (word)
+- * @param[in] addr address to read
+- * @param[in] mmio memory i/o space or i/o port space
+- */
+-static inline uint16_t ns16550_sys_readw(void __iomem *addr, int mmio)
++static uint8_t ns16550_read_reg_mmio_16(struct ns16550_priv *priv, unsigned offset)
+ {
+-	if (mmio)
+-		return readw(addr);
+-	else
+-		return (uint16_t) inw((int) addr);
++	return readw(priv->mmiobase + offset);
+ }
+ 
+-/**
+- * @brief read system i/o (dword)
+- * @param[in] addr address to read
+- * @param[in] mmio memory i/o space or i/o port space
+- */
+-static inline uint32_t ns16550_sys_readl(void __iomem *addr, int mmio)
++static void ns16550_write_reg_mmio_16(struct ns16550_priv *priv, uint8_t val, unsigned offset)
+ {
+-	if (mmio)
+-		return readl(addr);
+-	else
+-		return (uint32_t) inl((int) addr);
++	writew(val, priv->mmiobase + offset);
+ }
+ 
+-/**
+- * @brief write system i/o (byte)
+- * @param[in] val data to write
+- * @param[in] addr address to write to
+- * @param[in] mmio memory i/o space or i/o port space
+- */
+-static inline void ns16550_sys_writeb(uint8_t val, void __iomem *addr,
+-				      int mmio)
++static uint8_t ns16550_read_reg_mmio_32(struct ns16550_priv *priv, unsigned offset)
+ {
+-	if (mmio)
+-		writeb(val, addr);
+-	else
+-		outb(val, (int) addr);
++	return readl(priv->mmiobase + offset);
+ }
+ 
+-/**
+- * @brief read system i/o (word)
+- * @param[in] val data to write
+- * @param[in] addr address to write to
+- * @param[in] mmio memory i/o space or i/o port space
+- */
+-static inline void ns16550_sys_writew(uint16_t val, void __iomem *addr,
+-				      int mmio)
++static void ns16550_write_reg_mmio_32(struct ns16550_priv *priv, uint8_t val, unsigned offset)
+ {
+-	if (mmio)
+-		writew(val, addr);
+-	else
+-		outw(val, (int) addr);
++	writel(val, priv->mmiobase + offset);
+ }
+ 
+-/**
+- * @brief read system i/o (dword)
+- * @param[in] val data to write
+- * @param[in] addr address to write to
+- * @param[in] mmio memory i/o space or i/o port space
+- */
+-static inline void ns16550_sys_writel(uint32_t val, void __iomem *addr,
+-				      int mmio)
++static uint8_t ns16550_read_reg_ioport_8(struct ns16550_priv *priv, unsigned offset)
+ {
+-	if (mmio)
+-		writel(val, addr);
+-	else
+-		outl(val, (int) addr);
++	return inb(priv->iobase + offset);
 +}
 +
-+static int efi_snp_eth_send(struct eth_device *edev, void *packet, int length)
++static void ns16550_write_reg_ioport_8(struct ns16550_priv *priv, uint8_t val, unsigned offset)
 +{
-+	struct efi_snp_priv *priv = to_priv(edev);
-+	efi_status_t efiret;
-+	void *txbuf;
-+	uint64_t start;
-+
-+	efiret = priv->snp->transmit(priv->snp, 0, length, packet, NULL, NULL, NULL);
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to send: %s\n", efi_strerror(efiret));
-+		return -efi_errno(efiret);
-+	}
-+
-+	start = get_time_ns();
-+
-+	while (!is_timeout(start, SECOND)) {
-+		uint32_t irq;
-+		priv->snp->get_status(priv->snp, &irq, &txbuf);
-+		if (txbuf)
-+			return 0;
-+	}
-+
-+	dev_err(priv->dev, "tx time out\n");
-+
-+	return -ETIMEDOUT;
++	outb(val, priv->iobase + offset);
 +}
 +
-+static int efi_snp_eth_rx(struct eth_device *edev)
++static uint8_t ns16550_read_reg_ioport_16(struct ns16550_priv *priv, unsigned offset)
 +{
-+	struct efi_snp_priv *priv = to_priv(edev);
-+	long bufsize = PKTSIZE;
-+	efi_status_t efiret;
-+
-+	efiret = priv->snp->receive(priv->snp, NULL, &bufsize, NetRxPackets[0], NULL, NULL, NULL);
-+	if (efiret == EFI_NOT_READY)
-+		return 0;
-+
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to receive: %s\n", efi_strerror(efiret));
-+		return -efi_errno(efiret);
-+	}
-+
-+	net_receive(edev, NetRxPackets[0], bufsize);
-+
-+	return 0;
++	return inw(priv->iobase + offset);
 +}
 +
-+static int efi_snp_eth_open(struct eth_device *edev)
++static void ns16550_write_reg_ioport_16(struct ns16550_priv *priv, uint8_t val, unsigned offset)
 +{
-+	struct efi_snp_priv *priv = to_priv(edev);
-+	uint32_t mask;
-+	efi_status_t efiret;
++	outw(val, priv->iobase + offset);
++}
 +
-+	priv->snp->shutdown(priv->snp);
-+	priv->snp->stop(priv->snp);
-+	priv->snp->start(priv->snp);
-+	efiret = priv->snp->initialize(priv->snp, 0, 0);
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "Initialize failed with: %s\n", efi_strerror(efiret));
-+		return -efi_errno(efiret);
-+	}
++static uint8_t ns16550_read_reg_ioport_32(struct ns16550_priv *priv, unsigned offset)
++{
++	return inl(priv->iobase + offset);
++}
 +
-+	efiret = priv->snp->station_address(priv->snp, false,
-+			(efi_mac_address *)priv->snp->Mode->PermanentAddress.Addr );
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to set MAC address: %s\n",
-+				efi_strerror(efiret));
-+		return -efi_errno(efiret);
-+	}
++static void ns16550_write_reg_ioport_32(struct ns16550_priv *priv, uint8_t val, unsigned offset)
++{
++	outl(val, priv->iobase + offset);
+ }
+ 
+ /**
+@@ -159,19 +136,8 @@ static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
+ {
+ 	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+ 	struct NS16550_plat *plat = &priv->plat;
+-	int width = priv->access_width;
+-
+-	off <<= plat->shift;
+ 
+-	switch (width) {
+-	case IORESOURCE_MEM_8BIT:
+-		return ns16550_sys_readb(priv->mmiobase + off, priv->mmio);
+-	case IORESOURCE_MEM_16BIT:
+-		return ns16550_sys_readw(priv->mmiobase + off, priv->mmio);
+-	case IORESOURCE_MEM_32BIT:
+-		return ns16550_sys_readl(priv->mmiobase + off, priv->mmio);
+-	}
+-	return -1;
++	return priv->read_reg(priv, off << plat->shift);
+ }
+ 
+ /**
+@@ -186,21 +152,8 @@ static void ns16550_write(struct console_device *cdev, uint32_t val,
+ {
+ 	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+ 	struct NS16550_plat *plat = &priv->plat;
+-	int width = priv->access_width;
+-
+-	off <<= plat->shift;
+ 
+-	switch (width) {
+-	case IORESOURCE_MEM_8BIT:
+-		ns16550_sys_writeb(val & 0xff, priv->mmiobase + off, priv->mmio);
+-		break;
+-	case IORESOURCE_MEM_16BIT:
+-		ns16550_sys_writew(val & 0xffff, priv->mmiobase + off, priv->mmio);
+-		break;
+-	case IORESOURCE_MEM_32BIT:
+-		ns16550_sys_writel(val, priv->mmiobase + off, priv->mmio);
+-		break;
+-	}
++	priv->write_reg(priv, val, off << plat->shift);
+ }
+ 
+ /**
+@@ -358,6 +311,70 @@ static __maybe_unused struct ns16550_drvdata jz_drvdata = {
+ 	.init_port = ns16550_jz_init_port,
+ };
+ 
++static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
++{
++	struct resource *res;
++	int width;
 +
-+	mask = EFI_SIMPLE_NETWORK_RECEIVE_UNICAST |
-+			EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST |
-+			EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS;
-+	efiret = priv->snp->receive_filters(priv->snp, mask, 0, 0, 0, 0);
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to set receive filters: %s\n",
-+				efi_strerror(efiret));
-+		return -efi_errno(efiret);
++	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -ENODEV;
++
++	priv->mmiobase = dev_request_mem_region(dev, 0);
++
++	width = res->flags & IORESOURCE_MEM_TYPE_MASK;
++	switch (width) {
++	case IORESOURCE_MEM_8BIT:
++		priv->read_reg = ns16550_read_reg_mmio_8;
++		priv->write_reg = ns16550_write_reg_mmio_8;
++		break;
++	case IORESOURCE_MEM_16BIT:
++		priv->read_reg = ns16550_read_reg_mmio_16;
++		priv->write_reg = ns16550_write_reg_mmio_16;
++		break;
++	case IORESOURCE_MEM_32BIT:
++		priv->read_reg = ns16550_read_reg_mmio_32;
++		priv->write_reg = ns16550_write_reg_mmio_32;
++		break;
 +	}
 +
 +	return 0;
 +}
 +
-+static void efi_snp_eth_halt(struct eth_device *edev)
++static int ns16550_init_ioport(struct device_d *dev, struct ns16550_priv *priv)
 +{
-+	struct efi_snp_priv *priv = to_priv(edev);
++	struct resource *res;
++	int width;
 +
-+	priv->snp->stop(priv->snp);
-+}
++	res = dev_get_resource(dev, IORESOURCE_IO, 0);
++	if (!res)
++		return -ENODEV;
 +
-+static int efi_snp_get_ethaddr(struct eth_device *edev, unsigned char *adr)
-+{
-+	struct efi_snp_priv *priv = to_priv(edev);
++	res = request_ioport_region(dev_name(dev), res->start, res->end);
++	if (!res)
++		return -ENODEV;
 +
-+	memcpy(adr, priv->snp->Mode->PermanentAddress.Addr, 6);
++	priv->iobase = res->start;
++
++	width = res->flags & IORESOURCE_MEM_TYPE_MASK;
++	switch (width) {
++	case IORESOURCE_MEM_8BIT:
++		priv->read_reg = ns16550_read_reg_ioport_8;
++		priv->write_reg = ns16550_write_reg_ioport_8;
++		break;
++	case IORESOURCE_MEM_16BIT:
++		priv->read_reg = ns16550_read_reg_ioport_16;
++		priv->write_reg = ns16550_write_reg_ioport_16;
++		break;
++	case IORESOURCE_MEM_32BIT:
++		priv->read_reg = ns16550_read_reg_ioport_32;
++		priv->write_reg = ns16550_write_reg_ioport_32;
++		break;
++	}
 +
 +	return 0;
 +}
 +
-+static int efi_snp_set_ethaddr(struct eth_device *edev, unsigned char *adr)
-+{
-+	return 0;
-+}
-+
-+int efi_snp_probe(struct efi_device *efidev)
-+{
-+	struct eth_device *edev;
-+	struct efi_snp_priv *priv;
-+	int ret;
-+
-+	dev_dbg(&efidev->dev, "efi_snp_probe\n");
-+
-+	priv = xzalloc(sizeof(struct efi_snp_priv));
-+	priv->snp = efidev->protocol;
-+	priv->dev = &efidev->dev;
-+
-+	dev_dbg(&efidev->dev, "perm: %02x:%02x:%02x:%02x:%02x:%02x\n",
-+			priv->snp->Mode->PermanentAddress.Addr[0],
-+			priv->snp->Mode->PermanentAddress.Addr[1],
-+			priv->snp->Mode->PermanentAddress.Addr[2],
-+			priv->snp->Mode->PermanentAddress.Addr[3],
-+			priv->snp->Mode->PermanentAddress.Addr[4],
-+			priv->snp->Mode->PermanentAddress.Addr[5]);
-+	dev_dbg(&efidev->dev, "curr: %02x:%02x:%02x:%02x:%02x:%02x\n",
-+			priv->snp->Mode->CurrentAddress.Addr[0],
-+			priv->snp->Mode->CurrentAddress.Addr[1],
-+			priv->snp->Mode->CurrentAddress.Addr[2],
-+			priv->snp->Mode->CurrentAddress.Addr[3],
-+			priv->snp->Mode->CurrentAddress.Addr[4],
-+			priv->snp->Mode->CurrentAddress.Addr[5]);
-+
-+	edev = &priv->edev;
-+	edev->priv = priv;
-+	edev->parent = &efidev->dev;
-+
-+	edev->open = efi_snp_eth_open;
-+	edev->send = efi_snp_eth_send;
-+	edev->recv = efi_snp_eth_rx;
-+	edev->halt = efi_snp_eth_halt;
-+	edev->get_ethaddr = efi_snp_get_ethaddr;
-+	edev->set_ethaddr = efi_snp_set_ethaddr;
-+
-+	ret = eth_register(edev);
-+
-+        return ret;
-+}
-+
-+static struct efi_driver efi_snp_driver = {
-+        .driver = {
-+		.name  = "efi-snp",
-+	},
-+        .probe = efi_snp_probe,
-+	.guid = EFI_SIMPLE_NETWORK_PROTOCOL_GUID,
-+};
-+device_efi_driver(efi_snp_driver);
+ /**
+  * @brief Probe entry point -called on the first match for device
+  *
+@@ -373,7 +390,6 @@ static int ns16550_probe(struct device_d *dev)
+ 	struct console_device *cdev;
+ 	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+ 	struct ns16550_drvdata *devtype;
+-	struct resource *res;
+ 	int ret;
+ 
+ 	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
+@@ -382,20 +398,12 @@ static int ns16550_probe(struct device_d *dev)
+ 
+ 	priv = xzalloc(sizeof(*priv));
+ 
+-	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
+-	priv->mmio = (res != NULL);
+-	if (res) {
+-		res = request_iomem_region(dev_name(dev), res->start, res->end);
+-	} else {
+-		res = dev_get_resource(dev, IORESOURCE_IO, 0);
+-		if (res)
+-			res = request_ioport_region(dev_name(dev), res->start,
+-						    res->end);
+-	}
+-	if (!res)
+-		goto err;
+-	priv->mmiobase = (void __force __iomem *) res->start;
++	ret = ns16550_init_iomem(dev, priv);
++	if (ret)
++		ret = ns16550_init_ioport(dev, priv);
+ 
++	if (ret)
++		return ret;
+ 
+ 	if (plat)
+ 		priv->plat = *plat;
+@@ -423,8 +431,6 @@ static int ns16550_probe(struct device_d *dev)
+ 		goto err;
+ 	}
+ 
+-	priv->access_width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+-
+ 	cdev = &priv->cdev;
+ 	cdev->dev = dev;
+ 	cdev->tstc = ns16550_tstc;
 -- 
 2.0.0
 
