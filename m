@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X4RFZ-0001gz-T2
- for barebox@lists.infradead.org; Tue, 08 Jul 2014 08:59:46 +0000
-Date: Tue, 8 Jul 2014 10:59:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140708085924.GT23235@pengutronix.de>
+Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36]
+ helo=mo3.mail-out.ovh.net)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X4RGj-0006Cv-NM
+ for barebox@lists.infradead.org; Tue, 08 Jul 2014 09:00:58 +0000
+Received: from mail622.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id E0772FFA10A
+ for <barebox@lists.infradead.org>; Tue,  8 Jul 2014 11:00:35 +0200 (CEST)
+Date: Tue, 8 Jul 2014 11:04:28 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140708090428.GD19147@ns203013.ovh.net>
 References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
- <28D3DE7A-9B10-4AE0-858F-4C211B9D71C1@jcrosoft.com>
+ <1404809417-21477-17-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <28D3DE7A-9B10-4AE0-858F-4C211B9D71C1@jcrosoft.com>
+In-Reply-To: <1404809417-21477-17-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +27,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Initial EFI Support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 16/21] Documentation: Add EFI documentation
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 08, 2014 at 04:53:30PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> +  diff --git a/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S b/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S
+> +  index 9783ec6..13fc06c 100644
+> +  --- a/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S
+> +  +++ b/MdeModulePkg/Universal/DebugSupportDxe/X64/AsmFuncs.S
+> +  @@ -280,7 +280,7 @@ ExtraPushDone:
+> +
+> +                   mov     %ds, %rax
+> +                   pushq   %rax
+> +  -                movw    %es, %rax
+> +  +                mov     %es, %rax^M
+horrible windows stuff ;-)
+> +                   pushq   %rax
+> +                   mov     %fs, %rax
+> +                   pushq   %rax
+> +
+> diff --git a/Documentation/glossary.rst b/Documentation/glossary.rst
+> index 8bad7dc..106dce9 100644
+> --- a/Documentation/glossary.rst
+> +++ b/Documentation/glossary.rst
+> @@ -16,3 +16,6 @@ Glossary
+>  
+>     PBL
+>        Pre BootLoader image
+> +
+> +   ESP
+> +      EFI System Partition
+> -- 
+> 2.0.0
 > 
-> On Jul 8, 2014, at 4:49 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> > 
-> > The following adds initial support for running barebox as an EFI
-> > payload on X86 PCs.
-> > 
-> > Several things are implemented already to make it useful and
-> > to look around in an EFI system:
-> > 
-> > - Simple Network Protocol for networking
-> > - Start applications for installing drivers and starting Linux
-> > - Access EFI provided filesystems
-> > - Block device access
-> > 
-> > The EFI Port still has some rough edges. The screen output is limited
-> > to 80x25 and the keyboard driver doesn't recognize ctrl-C. I couldn't
-> > get find a proper UEFI serial driver yet, so the serial port is accessed
-> > via inb/outb on ioport 0x3f8 and not via UEFI.
-> > 
-> > For those interested in EFI and X86 hardware this port still offers
-> > some interesting insights in EFI.
-> > 
-> > There's also even Documentation available, see Patch 16/21.
-> > 
-> > Sascha
-> 
-> can you put on a git somewhere
-
-Just did that:
-
-git://git.pengutronix.de/git efi
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
