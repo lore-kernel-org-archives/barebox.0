@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4kU4-0000U3-0S
- for barebox@lists.infradead.org; Wed, 09 Jul 2014 05:32:01 +0000
-Date: Wed, 9 Jul 2014 07:31:36 +0200
+ Linux)) id 1X4kV5-0000f0-7c
+ for barebox@lists.infradead.org; Wed, 09 Jul 2014 05:33:03 +0000
+Date: Wed, 9 Jul 2014 07:32:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140709053136.GZ23235@pengutronix.de>
-References: <cover.1404734020.git.zahari.doychev@linux.com>
- <a2949dd62538a64ec5689b63d6ff531620ceb198.1404734020.git.zahari.doychev@linux.com>
+Message-ID: <20140709053241.GA23235@pengutronix.de>
+References: <1404850991-28028-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <a2949dd62538a64ec5689b63d6ff531620ceb198.1404734020.git.zahari.doychev@linux.com>
+In-Reply-To: <1404850991-28028-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] drivers/mtd: fix NULL pointer dereference in partition
- lock/unlock
-To: Zahari Doychev <zahari.doychev@linux.com>
+Subject: Re: [PATCH] pci: pci_alloc_bus(): use xzalloc() instead of kzalloc()
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 08, 2014 at 09:37:35AM +0200, Zahari Doychev wrote:
-> Some mtd device does not support lock and unlock functions. Adding this check
-> avoids crashing when mtd_part_lock/unlock are called for such devices.
+On Wed, Jul 09, 2014 at 12:23:11AM +0400, Antony Pavlov wrote:
+> Also drop redundant xzalloc() result check
+> as xzalloc() does not return in case of memory allocation error.
 > 
-> Signed-off-by: Zahari Doychev <zahari.doychev@linux.com>
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  drivers/mtd/partition.c |    6 ++++++
->  1 file changed, 6 insertions(+)
+>  drivers/pci/pci.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
-> index 5c0d46f..5a3d1ae 100644
-> --- a/drivers/mtd/partition.c
-> +++ b/drivers/mtd/partition.c
-> @@ -51,6 +51,9 @@ static int mtd_part_erase(struct mtd_info *mtd, struct erase_info *instr)
->  
->  static int mtd_part_lock(struct mtd_info *mtd, loff_t offset, size_t len)
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index ad9350f..3d88b0f 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -16,14 +16,14 @@ static struct pci_bus *pci_alloc_bus(void)
 >  {
-> +	if (!mtd->master->lock)
-> +		return -ENOSYS;
-> +
->  	if (!(mtd->flags & MTD_WRITEABLE))
->  		return -EROFS;
+>  	struct pci_bus *b;
 >  
-> @@ -64,6 +67,9 @@ static int mtd_part_lock(struct mtd_info *mtd, loff_t offset, size_t len)
->  
->  static int mtd_part_unlock(struct mtd_info *mtd, loff_t offset, size_t len)
->  {
-> +	if (!mtd->master->unlock)
-> +		return -ENOSYS;
+> -	b = kzalloc(sizeof(*b), GFP_KERNEL);
+> -	if (b) {
+> -		INIT_LIST_HEAD(&b->node);
+> -		INIT_LIST_HEAD(&b->children);
+> -		INIT_LIST_HEAD(&b->devices);
+> -		INIT_LIST_HEAD(&b->slots);
+> -		INIT_LIST_HEAD(&b->resources);
+> -	}
+> +	b = xzalloc(sizeof(*b));
 > +
->  	if (!(mtd->flags & MTD_WRITEABLE))
->  		return -EROFS;
+> +	INIT_LIST_HEAD(&b->node);
+> +	INIT_LIST_HEAD(&b->children);
+> +	INIT_LIST_HEAD(&b->devices);
+> +	INIT_LIST_HEAD(&b->slots);
+> +	INIT_LIST_HEAD(&b->resources);
+> +
+>  	return b;
+>  }
 >  
 > -- 
-> 1.7.9.5
+> 2.0.1
 > 
 > 
 > _______________________________________________
