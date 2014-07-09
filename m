@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4kV5-0000f0-7c
- for barebox@lists.infradead.org; Wed, 09 Jul 2014 05:33:03 +0000
-Date: Wed, 9 Jul 2014 07:32:41 +0200
+ Linux)) id 1X4kW4-0000tQ-Ba
+ for barebox@lists.infradead.org; Wed, 09 Jul 2014 05:34:04 +0000
+Date: Wed, 9 Jul 2014 07:33:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140709053241.GA23235@pengutronix.de>
-References: <1404850991-28028-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140709053342.GB23235@pengutronix.de>
+References: <1404850976-27975-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1404850991-28028-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1404850976-27975-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,14 +22,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pci: pci_alloc_bus(): use xzalloc() instead of kzalloc()
+Subject: Re: [PATCH] Documentation: add uemd mb7707 barebox mini-howto
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 09, 2014 at 12:23:11AM +0400, Antony Pavlov wrote:
-> Also drop redundant xzalloc() result check
-> as xzalloc() does not return in case of memory allocation error.
-> 
+On Wed, Jul 09, 2014 at 12:22:56AM +0400, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 Applied, thanks
@@ -37,36 +34,56 @@ Applied, thanks
 Sascha
 
 > ---
->  drivers/pci/pci.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
+>  Documentation/boards/uemd.rst | 40 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+>  create mode 100644 Documentation/boards/uemd.rst
 > 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index ad9350f..3d88b0f 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -16,14 +16,14 @@ static struct pci_bus *pci_alloc_bus(void)
->  {
->  	struct pci_bus *b;
->  
-> -	b = kzalloc(sizeof(*b), GFP_KERNEL);
-> -	if (b) {
-> -		INIT_LIST_HEAD(&b->node);
-> -		INIT_LIST_HEAD(&b->children);
-> -		INIT_LIST_HEAD(&b->devices);
-> -		INIT_LIST_HEAD(&b->slots);
-> -		INIT_LIST_HEAD(&b->resources);
-> -	}
-> +	b = xzalloc(sizeof(*b));
+> diff --git a/Documentation/boards/uemd.rst b/Documentation/boards/uemd.rst
+> new file mode 100644
+> index 0000000..4fb30fa
+> --- /dev/null
+> +++ b/Documentation/boards/uemd.rst
+> @@ -0,0 +1,40 @@
+> +UEMD
+> +====
 > +
-> +	INIT_LIST_HEAD(&b->node);
-> +	INIT_LIST_HEAD(&b->children);
-> +	INIT_LIST_HEAD(&b->devices);
-> +	INIT_LIST_HEAD(&b->slots);
-> +	INIT_LIST_HEAD(&b->resources);
+> +MB 77.07
+> +--------
 > +
->  	return b;
->  }
->  
+> +MB 77.07 board uses MBOOT as bootloader.
+> +MBOOT is a U-Boot clone with reduced functionality.
+> +See https://github.com/RC-MODULE/mboot for details.
+> +
+> +Running barebox
+> +^^^^^^^^^^^^^^^
+> +
+> +  1. Connect to the boards's UART (38400 8N1);
+> +
+> +  2. Turn board's power on;
+> +
+> +  3. Wait ``Hit any key (in 2 sec) to skip autoload...`` prompt and press the space key;
+> +
+> +  4. Compile ``zbarebox.bin`` image and upload it to the board via tftp
+> +
+> +.. code-block:: none
+> +
+> +  MBOOT # tftpboot zbarebox.bin
+> +  greth: greth_halt
+> +  TFTP Using GRETH_10/100 device
+> +  TFTP params: server 192.168.0.1 our_ip 192.168.0.7
+> +  TFTP params: filename 'zbarebox.bin' load_address 0x40100000
+> +  TFTP Loading: ################
+> +  TFTP done
+> +
+> +..
+> +
+> +  5. Run barebox
+> +
+> +.. code-block:: none
+> +
+> +  MBOOT # go 0x40100000
+> +
+> +..
 > -- 
 > 2.0.1
 > 
