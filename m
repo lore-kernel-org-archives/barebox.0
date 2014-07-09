@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X4u8n-0003Ks-KJ
- for barebox@lists.infradead.org; Wed, 09 Jul 2014 15:50:42 +0000
-Message-ID: <1404921012.3612.15.camel@lws-gamez.phytec.de>
-From: Teresa Gamez <t.gamez@phytec.de>
-Date: Wed, 09 Jul 2014 17:50:12 +0200
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X4v1m-0003Zu-M7
+ for barebox@lists.infradead.org; Wed, 09 Jul 2014 16:47:31 +0000
+Date: Wed, 9 Jul 2014 18:47:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140709164707.GC23235@pengutronix.de>
+References: <1404921012.3612.15.camel@lws-gamez.phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1404921012.3612.15.camel@lws-gamez.phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: AM335x MLO images broken
-To: s.hauer@pengutronix.de
+Subject: Re: AM335x MLO images broken
+To: Teresa Gamez <t.gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hello Sascha,
+On Wed, Jul 09, 2014 at 05:50:12PM +0200, Teresa Gamez wrote:
+> Hello Sascha,
+> 
+> since 
+> 
+> commit d1ec6fb0c9bb66939e85964c2f5214b117c78ecf
+> Author: Sascha Hauer <s.hauer@pengutronix.de>
+> Date:   Mon Jul 7 14:13:14 2014 +0200
+> 
+>     ARM: OMAP: Do not show MLO/SPI image options with OMAP_MULTI_BOARDS
+> 
+> 
+> the creation of a proper MLO image is not working any more. When I run 
+> make am335x_mlo_defconfig && make I get:
+> ..
+> images built:
+> barebox-am33xx-phytec-phycore.img
+> barebox-am33xx-beaglebone.img
+> 
+> instead of the expected
+> 
+> barebox-am33xx-phytec-phycore-mlo.img
+> barebox-am33xx-beaglebone-mlo.img
+> 
+> and they also won't work.
 
-since 
+Looks like a side effect of:
 
-commit d1ec6fb0c9bb66939e85964c2f5214b117c78ecf
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Mon Jul 7 14:13:14 2014 +0200
+| commit d1ec6fb0c9bb66939e85964c2f5214b117c78ecf
+| Author: Sascha Hauer <s.hauer@pengutronix.de>
+| Date:   Mon Jul 7 14:13:14 2014 +0200
+| 
+|     ARM: OMAP: Do not show MLO/SPI image options with OMAP_MULTI_BOARDS
+|     
+|     The MLO/SPI image options have no effect with OMAP_MULTI_BOARDS
+|     enabled, so do not show them.
+|     
+|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-    ARM: OMAP: Do not show MLO/SPI image options with OMAP_MULTI_BOARDS
+I haven't looked whether there's a better solution than reverting the
+commit.
 
+Sascha
 
-the creation of a proper MLO image is not working any more. When I run 
-make am335x_mlo_defconfig && make I get:
-..
-images built:
-barebox-am33xx-phytec-phycore.img
-barebox-am33xx-beaglebone.img
-
-instead of the expected
-
-barebox-am33xx-phytec-phycore-mlo.img
-barebox-am33xx-beaglebone-mlo.img
-
-and they also won't work.
-
-Teresa
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
