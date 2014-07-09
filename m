@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X4kbY-0002aD-R4
- for barebox@lists.infradead.org; Wed, 09 Jul 2014 05:39:45 +0000
-Date: Wed, 9 Jul 2014 07:39:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140709053922.GD23282@pengutronix.de>
-References: <1402056115-1789-1-git-send-email-shc_work@mail.ru>
- <20140707062530.GD23235@pengutronix.de>
+Received: from mout.kundenserver.de ([212.227.17.10])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X4lfT-0003fN-Fb
+ for barebox@lists.infradead.org; Wed, 09 Jul 2014 06:47:52 +0000
+Date: Wed, 9 Jul 2014 08:47:19 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+In-Reply-To: <1404813679.8953.12.camel@lws-gamez.phytec.de>
+Message-ID: <alpine.DEB.2.10.1407090838160.10300@9VTHT2J-D520>
+References: <alpine.DEB.2.10.1407041514390.20194@9VTHT2J-D520>
+ <53BA5442.6020708@ma-info.de>
+ <alpine.DEB.2.10.1407071202460.2284@9VTHT2J-D520>
+ <53BA811B.5080403@ma-info.de> <20140707120019.GN23235@pengutronix.de>
+ <899032957.1340888.1404736162014.open-xchange@oxbsltgw04.schlund.de>
+ <53BBBA05.6090403@ma-info.de> <1404813679.8953.12.camel@lws-gamez.phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140707062530.GD23235@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +26,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: Remove skeleton.dtsi
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: Problems with pyhBoard-Wega-AM335x
+To: Teresa Gamez <t.gamez@phytec.de>
+Cc: Rolf Evers-Fischer <embedded24@evers-fischer.de>, barebox@lists.infradead.org
 
-On Mon, Jul 07, 2014 at 08:25:30AM +0200, Sascha Hauer wrote:
-> On Fri, Jun 06, 2014 at 04:01:55PM +0400, Alexander Shiyan wrote:
-> > Reuse basic "skeleton.dtsi" template for some DTS targets.
-> > 
-> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Hello Florian,
+
+On Tue, 8 Jul 2014, Teresa Gamez wrote:
+
+> Hello Florian,
 > 
-> Applied, thanks
+> I guess you having the default kit WEGA, which does have 256MB RAM. The mainline supported
+> phyCORE Kit does have 512MB. Thats probably why it does not start up.
+> 
+> I'll have a look at it.
+> 
+> Teresa
+> 
+I'm not 100% sure, but I can imagine that the ">" should also appear when 
+the SDRAM configuration is not correct. But nevertheless the correct 
+SDRAM setting is important. Maybe, you can check the SDRAM setting of your 
+previous barebox-2013.11. I assume, the old barebox was running properly, 
+wasn't it?
 
-And dropped it again. It breaks socfpga_defconfig:
+> > Sorry but I have no idea which information I can send you to help me 
+> > with my problem...
+> > 
 
-FATAL ERROR: Unable to parse input tree
-Error: arch/arm/dts/socfpga.dtsi:18.1-9 syntax error
-scripts/Makefile.lib:231: recipe for target 'arch/arm/dts/socfpga_cyclone5_sockit.dtb' failed
-make[1]: *** [arch/arm/dts/socfpga_cyclone5_sockit.dtb] Error 1
-make[1]: *** Waiting for unfinished jobs....
-FATAL ERROR: Unable to parse input tree
-Error: arch/arm/dts/socfpga.dtsi:18.1-9 syntax error
-scripts/Makefile.lib:231: recipe for target 'arch/arm/dts/socfpga_cyclone5_socrates.dtb' failed
-make[1]: *** [arch/arm/dts/socfpga_cyclone5_socrates.dtb] Error 1
-Makefile:769: recipe for target 'arch/arm/dts' failed
-make: *** [arch/arm/dts] Error 2
-make: *** Waiting for unfinished jobs....
+Florian, could you please check the size of your 1st stage bootloader 
+(MLO) binary? 
+It must not exceed 111616 byte! Otherwise it will not boot.
+You can shrink the size by removing all unnecessary stuff from the 
+barebox_mlo configuration.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+ Rolf
 
 _______________________________________________
 barebox mailing list
