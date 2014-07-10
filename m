@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5Ltm-0008Hr-Kz
- for barebox@lists.infradead.org; Thu, 10 Jul 2014 21:29:03 +0000
-Date: Thu, 10 Jul 2014 23:28:36 +0200
+ Linux)) id 1X5LzV-0001gQ-CQ
+ for barebox@lists.infradead.org; Thu, 10 Jul 2014 21:34:57 +0000
+Date: Thu, 10 Jul 2014 23:34:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140710212836.GF23235@pengutronix.de>
-References: <alpine.DEB.2.10.1407100925060.3269@9VTHT2J-D520>
+Message-ID: <20140710213435.GG23235@pengutronix.de>
+References: <1405022845-12402-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.10.1407100925060.3269@9VTHT2J-D520>
+In-Reply-To: <1405022845-12402-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AM335x MLO images broken
-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Subject: Re: [PATCH v2 0/2] add driver for PCA95[357]x, PCA9698, TCA64xx, and
+ MAX7310 SMBus I/O expanders
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 10, 2014 at 09:37:37AM +0200, Rolf Evers-Fischer wrote:
-> Hello Sascha,
+On Fri, Jul 11, 2014 at 12:07:23AM +0400, Antony Pavlov wrote:
+> changes since RFC v1 patchseries:
 > 
-> Sascha Hauer <s.hauer@...> writes:
+>   * gpio-pca953x.c: drop depricated devicetree parameters;
+>   * gpio-pca953x.c: add pca953x_gpio_get_direction();
+>   * move SMBus stuff from i2c.c to i2c-smbus.c, introduce CONFIG_I2C_SMBUS.
 > 
-> > Looks like a side effect of:
-> > 
-> > | commit d1ec6fb0c9bb66939e85964c2f5214b117c78ecf
-> > | Author: Sascha Hauer <s.hauer@...>
-> > | Date:   Mon Jul 7 14:13:14 2014 +0200
-> > | 
-> > |     ARM: OMAP: Do not show MLO/SPI image options with OMAP_MULTI_BOARDS
-> > |     
-> > |     The MLO/SPI image options have no effect with OMAP_MULTI_BOARDS
-> > |     enabled, so do not show them.
-> > |     
-> > |     Signed-off-by: Sascha Hauer <s.hauer@...>
-> > 
-> > I haven't looked whether there's a better solution than reverting the
-> > commit.
-> > 
-> 
-> your patch disables generation of MLO/SPI image, if OMAP_MULTI_BOARDS is 
-> enabled. But shouldn't it be vice versa? I mean, both boards 
-> (MACH_BEAGLEBONE and MACH_PCM051), which are dependend on 
-> OMAP_MULTI_BOARDS, need a working MLO image. From my point of view it 
-> makes sense to ENable the OMAP_BUILD_IFT along with OMAP_MULTI_BOARDS.
+> Antony Pavlov (2):
+>   i2c: import SMBus stuff from linux
+>   gpio: add driver for PCA95[357]x, PCA9698, TCA64xx, and MAX7310 SMBus
+>     I/O expanders
 
-Indeed. I'll just revert the patch.
+Applied, thanks
 
 Sascha
+
+> 
+>  drivers/gpio/Kconfig            |  21 ++
+>  drivers/gpio/Makefile           |   1 +
+>  drivers/gpio/gpio-pca953x.c     | 481 ++++++++++++++++++++++++++++++++++++++++
+>  drivers/i2c/Kconfig             |   3 +
+>  drivers/i2c/Makefile            |   1 +
+>  drivers/i2c/i2c-smbus.c         | 371 +++++++++++++++++++++++++++++++
+>  include/i2c/i2c.h               |  57 +++++
+>  include/platform_data/pca953x.h |  27 +++
+>  8 files changed, 962 insertions(+)
+>  create mode 100644 drivers/gpio/gpio-pca953x.c
+>  create mode 100644 drivers/i2c/i2c-smbus.c
+>  create mode 100644 include/platform_data/pca953x.h
+> 
+> -- 
+> 2.0.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
