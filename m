@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5Vmt-0004eJ-UL
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 08:02:36 +0000
+ Linux)) id 1X5Vmt-0004eG-UQ
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 08:02:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jul 2014 10:02:11 +0200
-Message-Id: <1405065733-31407-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Jul 2014 10:02:10 +0200
+Message-Id: <1405065733-31407-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405065733-31407-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405065733-31407-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] serial: imx: Determine device name from device tree
+Subject: [PATCH 1/4] console: Allow persistent device names
 To: barebox@lists.infradead.org
+
+Add a devname field to struct console_device so that the device
+name can be set by the driver. This makes it possible to have
+persistent device names.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/serial_imx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ common/console.c  | 10 ++++++++--
+ include/console.h |  2 ++
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index cb10627..474bfaf 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -313,6 +313,7 @@ static int imx_serial_probe(struct device_d *dev)
- 	uint32_t val;
- 	struct imx_serial_devtype_data *devtype;
- 	int ret;
-+	const char *devname;
+diff --git a/common/console.c b/common/console.c
+index aa9e3ce..f982366 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -170,8 +170,14 @@ int console_register(struct console_device *newcdev)
+ 	if (initialized == CONSOLE_UNINITIALIZED)
+ 		console_init_early();
  
- 	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
- 	if (ret)
-@@ -337,6 +338,9 @@ static int imx_serial_probe(struct device_d *dev)
- 	cdev->flush = imx_serial_flush;
- 	cdev->setbrg = imx_serial_setbaudrate;
- 	cdev->linux_console_name = "ttymxc";
-+	devname = of_alias_get(dev->device_node);
-+	if (devname)
-+		cdev->devname = xstrdup(devname);
+-	dev->id = DEVICE_ID_DYNAMIC;
+-	strcpy(dev->name, "cs");
++	if (newcdev->devname) {
++		dev->id = DEVICE_ID_SINGLE;
++		strcpy(dev->name, newcdev->devname);
++	} else {
++		dev->id = DEVICE_ID_DYNAMIC;
++		strcpy(dev->name, "cs");
++	}
++
+ 	if (newcdev->dev)
+ 		dev->parent = newcdev->dev;
+ 	platform_device_register(dev);
+diff --git a/include/console.h b/include/console.h
+index 6da0199..7535a56 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -44,6 +44,8 @@ struct console_device {
+ 	void (*flush)(struct console_device *cdev);
+ 	int (*set_mode)(struct console_device *cdev, enum console_mode mode);
  
- 	imx_serial_init_port(cdev);
++	char *devname;
++
+ 	struct list_head list;
  
+ 	unsigned char f_active;
 -- 
 2.0.0
 
