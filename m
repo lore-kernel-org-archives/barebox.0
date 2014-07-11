@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5USh-0004Dq-4m
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 06:37:39 +0000
-Date: Fri, 11 Jul 2014 08:37:16 +0200
+ Linux)) id 1X5VBb-0007xC-3t
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:24:03 +0000
+Date: Fri, 11 Jul 2014 09:23:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140711063716.GN23235@pengutronix.de>
-References: <1404981199-21293-1-git-send-email-antonynpavlov@gmail.com>
- <20140711053738.GJ23235@pengutronix.de>
- <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
- <20140711061026.GM23235@pengutronix.de>
- <20140711103257.b2d7c1267d42b9923da03453@gmail.com>
+Message-ID: <20140711072340.GE23282@pengutronix.de>
+References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
+ <1404837514-773-1-git-send-email-plagnioj@jcrosoft.com>
+ <1404837514-773-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140711103257.b2d7c1267d42b9923da03453@gmail.com>
+In-Reply-To: <1404837514-773-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +20,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/5] add rtc support
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 2/2] EFI: introduce efi_strguid to convert GUID to human
+ readable names
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBKdWwgMTEsIDIwMTQgYXQgMTA6MzI6NTdBTSArMDQwMCwgQW50b255IFBhdmxvdiB3
-cm90ZToKPiBPbiBGcmksIDExIEp1bCAyMDE0IDA4OjEwOjI2ICswMjAwCj4gU2FzY2hhIEhhdWVy
-IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPiAKPiA+ID4gSSBoYXZlIGFuIGlkZWEg
-dG8gcHV0IGVwb2NoIG9mZnNldCAobnVtYmVyIG9mIHllYXJzIGludG8gQUQgdG8gd2hpY2ggYSB6
-ZXJvIHllYXIgdmFsdWUKPiA+ID4gaW4gdGhlIEhhcmR3YXJlIENsb2NrIHJlZmVycykgaW50byAi
-Z2xvYmFsLmVwb2NoIiB2YXJpYWJsZSBhbmQgYWRkIGNvcnJlc3BvbmRpbmcKPiA+ID4gS2NvbmZp
-ZyBvcHRpb24gZm9yIGRlZmF1bHQgZXBvY2ggdmFsdWUuCj4gPiAKPiA+IERvZXMgTGludXggc3Vw
-cG9ydCBzdWNoIGEgbWVjaGFuaXNtIGFzd2VsbD8gSG93IGNhbiB3ZSBtYWtlIHN1cmUgTGludXgK
-PiA+IHVzZXMgdGhlIHNhbWUgZXBvY2ggb2Zmc2V0Pwo+IAo+IEhlcmUgaXMgYSBxdW90ZSBmcm9t
-IG15IGh3Y2xvY2soOCkgbWFucGFnZToKPiAKPiAgICAgICAgLS1nZXRlcG9jaAo+ICAgICAgICAg
-ICAgICAgUHJpbnQgIHRoZSAga2VybmVsJ3MgSGFyZHdhcmUgQ2xvY2sgZXBvY2ggdmFsdWUgdG8g
-c3RhbmRhcmQgb3V0cHV0LiAgVGhpcyBpcyB0aGUKPiAgICAgICAgICAgICAgIG51bWJlciBvZiB5
-ZWFycyBpbnRvIEFEIHRvIHdoaWNoIGEgemVybyB5ZWFyIHZhbHVlIGluIHRoZSBIYXJkd2FyZSBD
-bG9jayByZWZlcnMuCj4gICAgICAgICAgICAgICBGb3IgZXhhbXBsZSwgaWYgeW91IGFyZSB1c2lu
-ZyB0aGUgY29udmVudGlvbiB0aGF0IHRoZSB5ZWFyIGNvdW50ZXIgaW4geW91ciBIYXJk4oCQCj4g
-ICAgICAgICAgICAgICB3YXJlIENsb2NrIGNvbnRhaW5zIHRoZSBudW1iZXIgb2YgZnVsbCB5ZWFy
-cyBzaW5jZSAxOTUyLCB0aGVuIHRoZSBrZXJuZWwncyBIYXJk4oCQCj4gICAgICAgICAgICAgICB3
-YXJlIENsb2NrIGVwb2NoIHZhbHVlIG11c3QgYmUgMTk1Mi4KPiAKPiAgICAgICAgICAgICAgIFRo
-aXMgZXBvY2ggdmFsdWUgaXMgdXNlZCB3aGVuZXZlciBod2Nsb2NrIHJlYWRzIG9yIHNldHMgdGhl
-IEhhcmR3YXJlIENsb2NrLgo+IAo+ICAgICAgICAtLXNldGVwb2NoCj4gICAgICAgICAgICAgICBT
-ZXQgIHRoZSAga2VybmVsJ3MgIEhhcmR3YXJlICBDbG9jayAgZXBvY2ggIHZhbHVlICB0byB0aGUg
-dmFsdWUgc3BlY2lmaWVkIGJ5IHRoZQo+ICAgICAgICAgICAgICAgLS1lcG9jaCBvcHRpb24uICBT
-ZWUgdGhlIC0tZ2V0ZXBvY2ggb3B0aW9uIGZvciBkZXRhaWxzLgo+IAo+IEkgc3VwcG9zZSB0aGF0
-IEhhcmR3YXJlIENsb2NrIGVwb2NoIGRlcGVuZHMgb24gUlRDLWNoaXAuIEkgc2VlIG5vIGF1dG9t
-YXRpYyBtYWNoYW5pc20gdG8gZ3VhcmFudGVlIHRoZSBzYW1lIGVwb2NoCj4gZm9yIGxpbnV4IGFu
-ZCBiYXJlYm94LgoKSXMgdGhpcyB1c2VkIGFueXdoZXJlPyBSdW5uaW5nIGEgaHdjbG9jayAtLWdl
-dGVwb2NoIG9uIG15IGRlc2t0b3AgUEMKYW5zd2VycyB3aXRoOgoKfCBod2Nsb2NrOiBUaGUga2Vy
-bmVsIGtlZXBzIGFuIGVwb2NoIHZhbHVlIGZvciB0aGUgSGFyZHdhcmUgQ2xvY2sgb25seSBvbiBh
-biBBbHBoYSBtYWNoaW5lLgp8IFRoaXMgY29weSBvZiBod2Nsb2NrIHdhcyBidWlsdCBmb3IgYSBt
-YWNoaW5lIG90aGVyIHRoYW4gQWxwaGEKfCAoYW5kIHRodXMgaXMgcHJlc3VtYWJseSBub3QgcnVu
-bmluZyBvbiBhbiBBbHBoYSBub3cpLiAgTm8gYWN0aW9uIHRha2VuLgoKU2FzY2hhCgotLSAKUGVu
-Z3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAg
-IHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBI
-aWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dl
-cmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIw
-NjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Jul 08, 2014 at 06:38:34PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> use in devinfo Protocols
+> 
+> Tested today on qemu with all the GUID translated
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+I added this to my series with one change. I added the string conversion
+function to common/efi-guid.c since it can be used on other
+architectures aswell (for example should we ever decide to not only run
+on EFI, but also provide EFI functionality).
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
