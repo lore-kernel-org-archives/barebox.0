@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X5Ynj-0001dE-Mp
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 11:15:40 +0000
-Received: by mail-lb0-f181.google.com with SMTP id p9so780072lbv.12
- for <barebox@lists.infradead.org>; Fri, 11 Jul 2014 04:15:16 -0700 (PDT)
-Date: Fri, 11 Jul 2014 15:27:35 +0400
+ id 1X5ZrW-0007qy-Op
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 12:23:39 +0000
+Received: by mail-la0-f43.google.com with SMTP id hr17so364581lab.16
+ for <barebox@lists.infradead.org>; Fri, 11 Jul 2014 05:23:16 -0700 (PDT)
+Date: Fri, 11 Jul 2014 16:35:32 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140711152735.29bf0b30f5d286e05c09b6e4@gmail.com>
-In-Reply-To: <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
-References: <1404981199-21293-1-git-send-email-antonynpavlov@gmail.com>
- <20140711053738.GJ23235@pengutronix.de>
- <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
+Message-Id: <20140711163532.e156a8ec996a318d0b65c49d@gmail.com>
+In-Reply-To: <1404809417-21477-10-git-send-email-s.hauer@pengutronix.de>
+References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
+ <1404809417-21477-10-git-send-email-s.hauer@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,89 +24,180 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/5] add rtc support
+Subject: Re: [PATCH 09/21] Add beginning wchar support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, 11 Jul 2014 10:12:36 +0400
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+On Tue,  8 Jul 2014 10:50:05 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> On Fri, 11 Jul 2014 07:37:38 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+  CC      lib/wchar.o
+lib/wchar.c:24:8: warning: no previous prototype for 'wcslen' [-Wmissing-pr=
+ototypes]
+ size_t wcslen(const wchar_t *s)
+        ^
+
+> EFI uses 16 bit character strings. Add beginning support for this.
+> Since barebox uses 8 bit strings internally we need conversion functions
+> to convert between 16 bit and 8 bit strings.
 > =
 
-> > On Thu, Jul 10, 2014 at 12:33:14PM +0400, Antony Pavlov wrote:
-> > > This patchseries imports RTC support from linux-3.15.
-> > > =
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  include/wchar.h | 16 ++++++++++++
+>  lib/Makefile    |  1 +
+>  lib/misc.c      |  1 +
+>  lib/wchar.c     | 80 +++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  4 files changed, 98 insertions(+)
+>  create mode 100644 include/wchar.h
+>  create mode 100644 lib/wchar.c
+> =
 
-> > > User can use 'hwclock' command to see realtime clock readout.
-> > > =
+> diff --git a/include/wchar.h b/include/wchar.h
+> new file mode 100644
+> index 0000000..278a189
+> --- /dev/null
+> +++ b/include/wchar.h
+> @@ -0,0 +1,16 @@
+> +#ifndef __WCHAR_H
+> +#define __WCHAR_H
+> +
+> +#include <linux/types.h>
+> +
+> +typedef u16 wchar_t;
+> +
+> +char *strcpy_wchar_to_char(char *dst, const wchar_t *src);
+> +
+> +wchar_t *strcpy_char_to_wchar(wchar_t *dst, const char *src);
+> +
+> +wchar_t *strdup_char_to_wchar(const char *src);
+> +
+> +char *strdup_wchar_to_char(const wchar_t *src);
+> +
+> +#endif /* __WCHAR_H */
+> diff --git a/lib/Makefile b/lib/Makefile
+> index e8769a9..48c953d 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -44,3 +44,4 @@ obj-y			+=3D gui/
+>  obj-$(CONFIG_XYMODEM)	+=3D xymodem.o
+>  obj-y			+=3D unlink-recursive.o
+>  obj-$(CONFIG_STMP_DEVICE) +=3D stmp-device.o
+> +obj-y			+=3D wchar.o
+> diff --git a/lib/misc.c b/lib/misc.c
+> index 9f2067c..87626c1 100644
+> --- a/lib/misc.c
+> +++ b/lib/misc.c
+> @@ -21,6 +21,7 @@
+>  #include <malloc.h>
+>  #include <errno.h>
+>  #include <fs.h>
+> +#include <string.h>
+>  #include <linux/ctype.h>
+>  =
 
-> > > Tested with DS1307.
-> > > =
+>  /*
+> diff --git a/lib/wchar.c b/lib/wchar.c
+> new file mode 100644
+> index 0000000..6368a01
+> --- /dev/null
+> +++ b/lib/wchar.c
+> @@ -0,0 +1,80 @@
+> +/*
+> + * wchar.c - wide character support
+> + *
+> + * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#include <wchar.h>
+> +#include <malloc.h>
+> +#include <string.h>
+> +
+> +size_t wcslen(const wchar_t *s)
+> +{
+> +	size_t len =3D 0;
+> +
+> +	while (*s++)
+> +		len++;
+> +
+> +	return len;
+> +}
+> +
+> +char *strcpy_wchar_to_char(char *dst, const wchar_t *src)
+> +{
+> +	char *ret =3D dst;
+> +
+> +	while (*src)
+> +		*dst++ =3D *src++ & 0xff;
+> +
+> +	*dst =3D 0;
+> +
+> +	return ret;
+> +}
+> +
+> +wchar_t *strcpy_char_to_wchar(wchar_t *dst, const char *src)
+> +{
+> +	wchar_t *ret =3D dst;
+> +
+> +	while (*src)
+> +		*dst++ =3D *src++;
+> +
+> +	*dst =3D 0;
+> +
+> +	return ret;
+> +}
+> +
+> +wchar_t *strdup_char_to_wchar(const char *src)
+> +{
+> +	wchar_t *dst =3D malloc((strlen(src) + 1) * sizeof(wchar_t));
+> +
+> +	if (!dst)
+> +		return NULL;
+> +
+> +	strcpy_char_to_wchar(dst, src);
+> +
+> +	return dst;
+> +}
+> +
+> +char *strdup_wchar_to_char(const wchar_t *src)
+> +{
+> +	char *dst =3D malloc((wcslen(src) + 1));
+> +
+> +	if (!dst)
+> +		return NULL;
+> +
+> +	strcpy_wchar_to_char(dst, src);
+> +
+> +	return dst;
+> +}
+> -- =
 
-> > > TODOs:
-> > > =
+> 2.0.0
+> =
 
-> > >  * rtc_set_time() is not realized;
-> > >  * ds1307_set_time() is not tested;
-> > >  * bcd lib is compiled in even if rtc support is disabled (as linux d=
-oes);
-> > >    we can make it optional;
-> > =
+> =
 
-...
-> I have an idea to put epoch offset (number of years into AD to which a ze=
-ro year value
-> in the Hardware Clock refers) into "global.epoch" variable and add corres=
-ponding
-> Kconfig option for default epoch value.
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-I was wrong.
 
-Hmm hwclock receives time value in the 'struct tm'
-(e.g. see linux.git/include/linux/time.h)
-
-/*
- * Similar to the struct tm in userspace <time.h>, but it needs to be here =
-so
- * that the kernel source is self contained.
- */
-struct tm {
-	/*
-	 * the number of seconds after the minute, normally in the range
-	 * 0 to 59, but can be up to 60 to allow for leap seconds
-	 */
-	int tm_sec;
-	/* the number of minutes after the hour, in the range 0 to 59*/
-	int tm_min;
-	/* the number of hours past midnight, in the range 0 to 23 */
-	int tm_hour;
-	/* the day of the month, in the range 1 to 31 */
-	int tm_mday;
-	/* the number of months since January, in the range 0 to 11 */
-	int tm_mon;
-	/* the number of years since 1900 */
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^
-
-	long tm_year;
-	/* the number of days since Sunday, in the range 0 to 6 */
-	int tm_wday;
-	/* the number of days since January 1, in the range 0 to 365 */
-	int tm_yday;
-};
-
-Here is a quote from read_hardware_clock()
-(see util-linux-2.20.1/hwclock/hwclock.c)
-
-         printf(_
-             ("Hw clock time : %4d/%.2d/%.2d %.2d:%.2d:%.2d =3D "
-             "%ld seconds since 1969\n"), tm.tm_year + 1900,
-             tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min,
-             tm.tm_sec, (long)*systime_p);
-
-So in linux hardware clock epoch is always "1900".
+-- =
 
 --=A0
 Best regards,
