@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5VPC-0006cL-2u
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:08 +0000
+ Linux)) id 1X5VPC-0006cA-34
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jul 2014 09:36:29 +0200
-Message-Id: <1405064190-1977-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Jul 2014 09:36:26 +0200
+Message-Id: <1405064190-1977-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] fs: implement EFI variable filesystem driver
+Subject: [PATCH 3/7] net: Add EFI Simple Network Protocol Driver
 To: barebox@lists.infradead.org
 
-This implements a filesystem for accessing EFI variables.
-It is compatible to the Linux Kernel efivarfs filesystem.
-Currently the variables can only be accessed readonly.
+This adds a network driver which uses the EFI Simple Network
+Protocol to implement networking for barebox.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/Kconfig    |   7 ++
- fs/Makefile   |   1 +
- fs/efivarfs.c | 340 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 348 insertions(+)
- create mode 100644 fs/efivarfs.c
+ drivers/net/Kconfig   |   4 +
+ drivers/net/Makefile  |   1 +
+ drivers/net/efi-snp.c | 296 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 301 insertions(+)
+ create mode 100644 drivers/net/efi-snp.c
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 21690de..64fc117 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -49,6 +49,13 @@ config FS_EFI
- 	  This filesystem driver provides access to the filesystems provided
- 	  by the EFI Firmware via the EFI Simple File System Protocol.
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 5f0c41b..43409a8 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -170,6 +170,10 @@ config DRIVER_NET_TAP
+ 	bool "tap Ethernet driver"
+ 	depends on LINUX
  
-+config FS_EFIVARFS
++config DRIVER_NET_EFI_SNP
++	bool "EFI SNP ethernet driver"
 +	depends on ARCH_EFI
-+	bool
-+	prompt "EFI variable filesystem support (efivarfs)"
-+	help
-+	  This filesystem driver provides access to EFI variables.
 +
- source fs/fat/Kconfig
- source fs/ubifs/Kconfig
- 
-diff --git a/fs/Makefile b/fs/Makefile
-index f027851..f5aae91 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -12,3 +12,4 @@ obj-$(CONFIG_FS_NFS)	+= nfs.o parseopt.o
- obj-$(CONFIG_FS_BPKFS) += bpkfs.o
- obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
- obj-$(CONFIG_FS_EFI)	 += efi.o
-+obj-$(CONFIG_FS_EFIVARFS) += efivarfs.o
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
+ config DRIVER_NET_TSE
+ 	depends on NIOS2
+ 	bool "Altera TSE ethernet driver"
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 33bb5c8..1b85778 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -26,3 +26,4 @@ obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
+ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
+ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+ obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
++obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
+diff --git a/drivers/net/efi-snp.c b/drivers/net/efi-snp.c
 new file mode 100644
-index 0000000..58c637e
+index 0000000..5b96fbf
 --- /dev/null
-+++ b/fs/efivarfs.c
-@@ -0,0 +1,340 @@
++++ b/drivers/net/efi-snp.c
+@@ -0,0 +1,296 @@
 +/*
-+ * ramfs.c - a malloc based filesystem
++ * efi-snp.c - Simple Network Protocol driver for EFI
 + *
-+ * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
@@ -82,7 +78,7 @@ index 0000000..58c637e
 + * as published by the Free Software Foundation.
 + *
 + * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * but WITHANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
@@ -90,325 +86,281 @@ index 0000000..58c637e
 +
 +#include <common.h>
 +#include <driver.h>
-+#include <init.h>
 +#include <malloc.h>
-+#include <fs.h>
-+#include <string.h>
-+#include <errno.h>
-+#include <linux/stat.h>
-+#include <xfuncs.h>
-+#include <fcntl.h>
++#include <net.h>
++#include <init.h>
 +#include <efi.h>
-+#include <wchar.h>
-+#include <linux/err.h>
-+#include <linux/ctype.h>
 +#include <mach/efi.h>
 +#include <mach/efi-device.h>
 +
-+struct efivarfs_priv {
-+	struct efi_file_handle *root_dir;
-+	struct efi_file_io_interface *protocol;
++struct efi_network_statistics {
++	uint64_t RxTotalFrames;
++	uint64_t RxGoodFrames;
++	uint64_t RxUndersizeFrames;
++	uint64_t RxOversizeFrames;
++	uint64_t RxDroppedFrames;
++	uint64_t RxUnicastFrames;
++	uint64_t RxBroadcastFrames;
++	uint64_t RxMulticastFrames;
++	uint64_t RxCrcErrorFrames;
++	uint64_t RxTotalBytes;
++	uint64_t TxTotalFrames;
++	uint64_t TxGoodFrames;
++	uint64_t TxUndersizeFrames;
++	uint64_t TxOversizeFrames;
++	uint64_t TxDroppedFrames;
++	uint64_t TxUnicastFrames;
++	uint64_t TxBroadcastFrames;
++	uint64_t TxMulticastFrames;
++	uint64_t TxCrcErrorFrames;
++	uint64_t TxTotalBytes;
++	uint64_t Collisions;
++	uint64_t UnsupportedProtocol;
 +};
 +
-+static int char_to_nibble(char c)
-+{
-+	int ret = tolower(c);
-+
-+	return ret <= '9' ? ret - '0' : ret - 'a' + 10;
-+}
-+
-+static int read_byte_str(const char *str, u8 *out)
-+{
-+	if (!isxdigit(*str) || !isxdigit(*(str + 1)))
-+		return -EINVAL;
-+
-+	*out = (char_to_nibble(*str) << 4) | char_to_nibble(*(str + 1));
-+
-+	return 0;
-+}
-+
-+int efi_guid_parse(const char *str, efi_guid_t *guid)
-+{
-+	int i, ret;
-+	u8 idx[] = { 3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15 };
-+
-+	for (i = 0; i < 16; i++) {
-+		ret = read_byte_str(str, &guid->b[idx[i]]);
-+		if (ret)
-+			return ret;
-+		str += 2;
-+
-+		switch (i) {
-+		case 3:
-+		case 5:
-+		case 7:
-+		case 9:
-+			if (*str != '-')
-+				return -EINVAL;
-+			str++;
-+                        break;
-+                }
-+	}
-+
-+	return 0;
-+}
-+
-+static int efivarfs_parse_filename(const char *filename, efi_guid_t *vendor, s16 **name)
-+{
-+	int len, ret;
-+	const char *guidstr;
-+	s16 *varname;
-+	int i;
-+
-+	if (*filename == '/')
-+		filename++;
-+
-+	len = strlen(filename);
-+
-+	if (len < sizeof("-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"))
-+		return -EINVAL;
-+
-+	guidstr = filename + len - sizeof("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
-+	if (*guidstr != '-')
-+		return -EINVAL;
-+
-+	guidstr++;
-+
-+	ret = efi_guid_parse(guidstr, vendor);
-+
-+	varname = xzalloc((guidstr - filename) * sizeof(s16));
-+
-+	for (i = 0; i < guidstr - filename - 1; i++)
-+		varname[i] = filename[i];
-+
-+	*name = varname;
-+
-+	return 0;
-+}
-+
-+struct efivars_file {
-+	void *buf;
-+	unsigned long size;
-+	efi_guid_t vendor;
-+	s16 *name;
++enum efi_simple_network_state {
++	EfiSimpleNetworkStopped,
++	EfiSimpleNetworkStarted,
++	EfiSimpleNetworkInitialized,
++	EfiSimpleNetworkMaxState
 +};
 +
-+static int efivarfs_open(struct device_d *dev, FILE *f, const char *filename)
++#define EFI_SIMPLE_NETWORK_RECEIVE_UNICAST               0x01
++#define EFI_SIMPLE_NETWORK_RECEIVE_MULTICAST             0x02
++#define EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST             0x04
++#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS           0x08
++#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS_MULTICAST 0x10
++
++#define EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT        0x01
++#define EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT       0x02
++#define EFI_SIMPLE_NETWORK_COMMAND_INTERRUPT        0x04
++#define EFI_SIMPLE_NETWORK_SOFTWARE_INTERRUPT       0x08
++
++#define MAX_MCAST_FILTER_CNT    16
++struct efi_simple_network_mode {
++	uint32_t State;
++	uint32_t HwAddressSize;
++	uint32_t MediaHeaderSize;
++	uint32_t MaxPacketSize;
++	uint32_t NvRamSize;
++	uint32_t NvRamAccessSize;
++	uint32_t ReceiveFilterMask;
++	uint32_t ReceiveFilterSetting;
++	uint32_t MaxMCastFilterCount;
++	uint32_t MCastFilterCount;
++	efi_mac_address MCastFilter[MAX_MCAST_FILTER_CNT];
++	efi_mac_address CurrentAddress;
++	efi_mac_address BroadcastAddress;
++	efi_mac_address PermanentAddress;
++	uint8_t IfType;
++        bool MacAddressChangeable;
++	bool MultipleTxSupported;
++	bool MediaPresentSupported;
++	bool MediaPresent;
++};
++
++#define EFI_SIMPLE_NETWORK_INTERFACE_REVISION   0x00010000
++
++struct efi_simple_network {
++	uint64_t Revision;
++	efi_status_t (EFIAPI *start) (struct efi_simple_network *This);
++	efi_status_t (EFIAPI *stop) (struct efi_simple_network *This);
++	efi_status_t (EFIAPI *initialize) (struct efi_simple_network *This,
++			unsigned long ExtraRxBufferSize, unsigned long ExtraTxBufferSize);
++	efi_status_t (EFIAPI *reset) (struct efi_simple_network *This, bool ExtendedVerification);
++	efi_status_t (EFIAPI *shutdown) (struct efi_simple_network *This);
++	efi_status_t (EFIAPI *receive_filters) (struct efi_simple_network *This,
++			uint32_t Enable, uint32_t Disable, bool ResetMCastFilter,
++			unsigned long MCastFilterCnt, efi_mac_address *MCastFilter);
++	efi_status_t (EFIAPI *station_address) (struct efi_simple_network *This,
++			bool Reset, efi_mac_address *New);
++	efi_status_t (EFIAPI *statistics) (struct efi_simple_network *This,
++			bool Reset, unsigned long *StatisticsSize,
++			struct efi_network_statistics *StatisticsTable);
++	efi_status_t (EFIAPI *mcast_ip_to_mac) (struct efi_simple_network *This,
++			bool IPv6, efi_ip_address *IP, efi_mac_address *MAC);
++	efi_status_t (EFIAPI *nvdata) (struct efi_simple_network *This,
++			bool ReadWrite, unsigned long Offset, unsigned long BufferSize,
++			void *Buffer);
++	efi_status_t (EFIAPI *get_status) (struct efi_simple_network *This,
++			uint32_t *InterruptStatus, void **TxBuf);
++	efi_status_t (EFIAPI *transmit) (struct efi_simple_network *This,
++			unsigned long HeaderSize, unsigned long BufferSize, void *Buffer,
++			efi_mac_address *SrcAddr, efi_mac_address *DestAddr,
++			uint16_t *Protocol);
++	efi_status_t (EFIAPI *receive) (struct efi_simple_network *This,
++			unsigned long *HeaderSize, unsigned long *BufferSize, void *Buffer,
++			efi_mac_address *SrcAddr, efi_mac_address *DestAddr, uint16_t *Protocol);
++	void *WaitForPacket;
++	struct efi_simple_network_mode *Mode;
++};
++
++struct efi_snp_priv {
++	struct device_d *dev;
++	struct eth_device edev;
++	struct efi_simple_network *snp;
++};
++
++static inline struct efi_snp_priv *to_priv(struct eth_device *edev)
 +{
-+	struct efivars_file *efile;
++	return container_of(edev, struct efi_snp_priv, edev);
++}
++
++static int efi_snp_eth_send(struct eth_device *edev, void *packet, int length)
++{
++	struct efi_snp_priv *priv = to_priv(edev);
 +	efi_status_t efiret;
-+	int ret;
-+	uint32_t attributes;
++	void *txbuf;
++	uint64_t start;
 +
-+	efile = xzalloc(sizeof(*efile));
-+
-+	ret = efivarfs_parse_filename(filename, &efile->vendor, &efile->name);
-+	if (ret)
-+		return -ENOENT;
-+
-+	efiret = RT->get_variable(efile->name, &efile->vendor, &attributes, &efile->size, NULL);
-+	if (EFI_ERROR(efiret) && efiret != EFI_BUFFER_TOO_SMALL) {
-+		ret = -efi_errno(efiret);
-+		goto out;
-+	}
-+
-+	efile->buf = malloc(efile->size + sizeof(uint32_t));
-+	if (!efile->buf) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	efiret = RT->get_variable(efile->name, &efile->vendor, NULL, &efile->size,
-+			efile->buf + sizeof(uint32_t));
++	efiret = priv->snp->transmit(priv->snp, 0, length, packet, NULL, NULL, NULL);
 +	if (EFI_ERROR(efiret)) {
-+		ret = -efi_errno(efiret);
-+		goto out;
++		dev_err(priv->dev, "failed to send: %s\n", efi_strerror(efiret));
++		return -efi_errno(efiret);
 +	}
 +
-+	*(uint32_t *)efile->buf = attributes;
++	start = get_time_ns();
 +
-+	f->size = efile->size + sizeof(uint32_t);
-+	f->inode = efile;
++	while (!is_timeout(start, SECOND)) {
++		uint32_t irq;
++		priv->snp->get_status(priv->snp, &irq, &txbuf);
++		if (txbuf)
++			return 0;
++	}
 +
-+	return 0;
++	dev_err(priv->dev, "tx time out\n");
 +
-+out:
-+	free(efile->buf);
-+	free(efile);
-+
-+	return ret;
++	return -ETIMEDOUT;
 +}
 +
-+static int efivarfs_close(struct device_d *dev, FILE *f)
++static int efi_snp_eth_rx(struct eth_device *edev)
 +{
-+	struct efivars_file *efile = f->inode;
-+
-+	free(efile->buf);
-+	free(efile);
-+
-+	return 0;
-+}
-+
-+static int efivarfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
-+{
-+	struct efivars_file *efile = f->inode;
-+
-+	memcpy(buf, efile->buf + f->pos, insize);
-+
-+	return insize;
-+}
-+
-+static loff_t efivarfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
-+{
-+	f->pos = pos;
-+
-+	return f->pos;
-+}
-+
-+struct efivarfs_dir_entry {
-+	char *name;
-+	struct efivarfs_dir_entry *next;
-+};
-+
-+struct efivarfs_dir {
-+	struct efivarfs_dir_entry *first;
-+	struct efivarfs_dir_entry *current;
-+	DIR dir;
-+};
-+
-+static DIR *efivarfs_opendir(struct device_d *dev, const char *pathname)
-+{
++	struct efi_snp_priv *priv = to_priv(edev);
++	long bufsize = PKTSIZE;
 +	efi_status_t efiret;
-+	efi_guid_t vendor;
-+	s16 name[1024];
-+	struct efivarfs_dir *edir;
-+	unsigned long size;
-+	unsigned char *name8;
 +
-+	name[0] = 0;
++	efiret = priv->snp->receive(priv->snp, NULL, &bufsize, NetRxPackets[0], NULL, NULL, NULL);
++	if (efiret == EFI_NOT_READY)
++		return 0;
 +
-+	edir = xzalloc(sizeof(*edir));
-+
-+	while (1) {
-+		struct efivarfs_dir_entry *entry;
-+
-+		size = sizeof(name);
-+		efiret = RT->get_next_variable(&size, name, &vendor);
-+		if (EFI_ERROR(efiret))
-+			break;
-+
-+		entry = xzalloc(sizeof(*entry));
-+		name8 = strdup_wchar_to_char(name);
-+
-+		entry->name = asprintf("%s-%pUl", name8, &vendor);
-+
-+		free(name8);
-+
-+		if (!edir->first)
-+			edir->first = entry;
-+
-+		if (edir->current)
-+			edir->current->next = entry;
-+
-+		edir->current = entry;
++	if (EFI_ERROR(efiret)) {
++		dev_err(priv->dev, "failed to receive: %s\n", efi_strerror(efiret));
++		return -efi_errno(efiret);
 +	}
 +
-+	edir->current = edir->first;
-+
-+	return &edir->dir;
-+}
-+
-+static struct dirent *efivarfs_readdir(struct device_d *dev, DIR *dir)
-+{
-+	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
-+
-+	if (!edir->current)
-+		return NULL;
-+
-+	strcpy(dir->d.d_name, edir->current->name);
-+
-+	edir->current = edir->current->next;
-+
-+	return &dir->d;
-+}
-+
-+static int efivarfs_closedir(struct device_d *dev, DIR *dir)
-+{
-+	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
-+	struct efivarfs_dir_entry *entry;
-+
-+	entry = edir->first;
-+
-+	while (entry) {
-+		struct efivarfs_dir_entry *tmp;
-+		free(entry->name);
-+		tmp = entry->next;
-+		free(entry);
-+		entry = tmp;
-+	}
-+
-+	free(edir);
++	net_receive(edev, NetRxPackets[0], bufsize);
 +
 +	return 0;
 +}
 +
-+static int efivarfs_stat(struct device_d *dev, const char *filename, struct stat *s)
++static int efi_snp_eth_open(struct eth_device *edev)
 +{
-+	efi_guid_t vendor;
-+	s16 *name;
++	struct efi_snp_priv *priv = to_priv(edev);
++	uint32_t mask;
 +	efi_status_t efiret;
-+	unsigned long size = 0;
++
++	priv->snp->shutdown(priv->snp);
++	priv->snp->stop(priv->snp);
++	priv->snp->start(priv->snp);
++	efiret = priv->snp->initialize(priv->snp, 0, 0);
++	if (EFI_ERROR(efiret)) {
++		dev_err(priv->dev, "Initialize failed with: %s\n", efi_strerror(efiret));
++		return -efi_errno(efiret);
++	}
++
++	efiret = priv->snp->station_address(priv->snp, false,
++			(efi_mac_address *)priv->snp->Mode->PermanentAddress.Addr );
++	if (EFI_ERROR(efiret)) {
++		dev_err(priv->dev, "failed to set MAC address: %s\n",
++				efi_strerror(efiret));
++		return -efi_errno(efiret);
++	}
++
++	mask = EFI_SIMPLE_NETWORK_RECEIVE_UNICAST |
++			EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST |
++			EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS;
++	efiret = priv->snp->receive_filters(priv->snp, mask, 0, 0, 0, 0);
++	if (EFI_ERROR(efiret)) {
++		dev_err(priv->dev, "failed to set receive filters: %s\n",
++				efi_strerror(efiret));
++		return -efi_errno(efiret);
++	}
++
++	return 0;
++}
++
++static void efi_snp_eth_halt(struct eth_device *edev)
++{
++	struct efi_snp_priv *priv = to_priv(edev);
++
++	priv->snp->stop(priv->snp);
++}
++
++static int efi_snp_get_ethaddr(struct eth_device *edev, unsigned char *adr)
++{
++	struct efi_snp_priv *priv = to_priv(edev);
++
++	memcpy(adr, priv->snp->Mode->PermanentAddress.Addr, 6);
++
++	return 0;
++}
++
++static int efi_snp_set_ethaddr(struct eth_device *edev, unsigned char *adr)
++{
++	return 0;
++}
++
++int efi_snp_probe(struct efi_device *efidev)
++{
++	struct eth_device *edev;
++	struct efi_snp_priv *priv;
 +	int ret;
 +
-+	ret = efivarfs_parse_filename(filename, &vendor, &name);
-+	if (ret)
-+		return -ENOENT;
++	dev_dbg(&efidev->dev, "efi_snp_probe\n");
 +
-+	efiret = RT->get_variable(name, &vendor, NULL, &size, NULL);
++	priv = xzalloc(sizeof(struct efi_snp_priv));
++	priv->snp = efidev->protocol;
++	priv->dev = &efidev->dev;
 +
-+	free(name);
++	dev_dbg(&efidev->dev, "perm: %02x:%02x:%02x:%02x:%02x:%02x\n",
++			priv->snp->Mode->PermanentAddress.Addr[0],
++			priv->snp->Mode->PermanentAddress.Addr[1],
++			priv->snp->Mode->PermanentAddress.Addr[2],
++			priv->snp->Mode->PermanentAddress.Addr[3],
++			priv->snp->Mode->PermanentAddress.Addr[4],
++			priv->snp->Mode->PermanentAddress.Addr[5]);
++	dev_dbg(&efidev->dev, "curr: %02x:%02x:%02x:%02x:%02x:%02x\n",
++			priv->snp->Mode->CurrentAddress.Addr[0],
++			priv->snp->Mode->CurrentAddress.Addr[1],
++			priv->snp->Mode->CurrentAddress.Addr[2],
++			priv->snp->Mode->CurrentAddress.Addr[3],
++			priv->snp->Mode->CurrentAddress.Addr[4],
++			priv->snp->Mode->CurrentAddress.Addr[5]);
 +
-+	if (EFI_ERROR(efiret) && efiret != EFI_BUFFER_TOO_SMALL)
-+		return -efi_errno(efiret);
++	edev = &priv->edev;
++	edev->priv = priv;
++	edev->parent = &efidev->dev;
 +
-+	s->st_mode = 00666 | S_IFREG;
-+	s->st_size = size;
++	edev->open = efi_snp_eth_open;
++	edev->send = efi_snp_eth_send;
++	edev->recv = efi_snp_eth_rx;
++	edev->halt = efi_snp_eth_halt;
++	edev->get_ethaddr = efi_snp_get_ethaddr;
++	edev->set_ethaddr = efi_snp_set_ethaddr;
 +
-+	return 0;
++	ret = eth_register(edev);
++
++        return ret;
 +}
 +
-+static int efivarfs_probe(struct device_d *dev)
-+{
-+	return 0;
-+}
-+
-+static void efivarfs_remove(struct device_d *dev)
-+{
-+	free(dev->priv);
-+}
-+
-+static struct fs_driver_d efivarfs_driver = {
-+	.open      = efivarfs_open,
-+	.close     = efivarfs_close,
-+	.read      = efivarfs_read,
-+	.lseek     = efivarfs_lseek,
-+	.opendir   = efivarfs_opendir,
-+	.readdir   = efivarfs_readdir,
-+	.closedir  = efivarfs_closedir,
-+	.stat      = efivarfs_stat,
-+	.drv = {
-+		.probe  = efivarfs_probe,
-+		.remove = efivarfs_remove,
-+		.name = "efivarfs",
-+	}
++static struct efi_driver efi_snp_driver = {
++        .driver = {
++		.name  = "efi-snp",
++	},
++        .probe = efi_snp_probe,
++	.guid = EFI_SIMPLE_NETWORK_PROTOCOL_GUID,
 +};
-+
-+static int efivarfs_init(void)
-+{
-+	return register_fs_driver(&efivarfs_driver);
-+}
-+
-+coredevice_initcall(efivarfs_init);
++device_efi_driver(efi_snp_driver);
 -- 
 2.0.0
 
