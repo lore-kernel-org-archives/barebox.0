@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5VPC-0006cX-2s
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:09 +0000
+ Linux)) id 1X5VPG-0006zO-R3
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jul 2014 09:36:30 +0200
-Message-Id: <1405064190-1977-8-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Jul 2014 09:36:28 +0200
+Message-Id: <1405064190-1977-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,274 +21,617 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] EFI: introduce efi_strguid to convert GUID to human
- readable names
+Subject: [PATCH 5/7] fs: implement EFI filesystem driver
 To: barebox@lists.infradead.org
 
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+This implements a filesystem driver which uses the EFI Simple File
+System Protocol to provide files from EFI to barebox.
 
-use in devinfo Protocols
-
-Tested today on qemu with all the GUID translated
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/efi/efi/efi-device.c |   3 +-
- arch/efi/efi/efi.c        |   5 ++-
- common/efi-guid.c         |  73 +++++++++++++++++++++++++++++++
- include/efi.h             | 108 ++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 186 insertions(+), 3 deletions(-)
+ fs/Kconfig  |   8 +
+ fs/Makefile |   1 +
+ fs/efi.c    | 563 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 572 insertions(+)
+ create mode 100644 fs/efi.c
 
-diff --git a/arch/efi/efi/efi-device.c b/arch/efi/efi/efi-device.c
-index 71526b9..1c9553d 100644
---- a/arch/efi/efi/efi-device.c
-+++ b/arch/efi/efi/efi-device.c
-@@ -86,7 +86,8 @@ static void efi_devinfo(struct device_d *dev)
- 	printf("Protocols:\n");
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 3724b34..21690de 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -41,6 +41,14 @@ config FS_NFS
+ 	bool
+ 	prompt "nfs support"
  
- 	for (i = 0; i < efidev->num_guids; i++)
--		printf("  %d: %pUl\n", i, &efidev->guids[i]);
-+		printf("  %d: %pUl: %s\n", i, &efidev->guids[i],
-+					efi_guid_string(&efidev->guids[i]));
- }
++config FS_EFI
++	depends on ARCH_EFI
++	bool
++	prompt "EFI filesystem support"
++	help
++	  This filesystem driver provides access to the filesystems provided
++	  by the EFI Firmware via the EFI Simple File System Protocol.
++
+ source fs/fat/Kconfig
+ source fs/ubifs/Kconfig
  
- static efi_handle_t *efi_find_parent(efi_handle_t *handle)
-diff --git a/arch/efi/efi/efi.c b/arch/efi/efi/efi.c
-index 48b7d9a..ff97783 100644
---- a/arch/efi/efi/efi.c
-+++ b/arch/efi/efi/efi.c
-@@ -36,6 +36,7 @@
- #include <binfmt.h>
- #include <wchar.h>
- #include <envfs.h>
+diff --git a/fs/Makefile b/fs/Makefile
+index d3465ed..f027851 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -11,3 +11,4 @@ obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
+ obj-$(CONFIG_FS_NFS)	+= nfs.o parseopt.o
+ obj-$(CONFIG_FS_BPKFS) += bpkfs.o
+ obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
++obj-$(CONFIG_FS_EFI)	 += efi.o
+diff --git a/fs/efi.c b/fs/efi.c
+new file mode 100644
+index 0000000..f096f91
+--- /dev/null
++++ b/fs/efi.c
+@@ -0,0 +1,563 @@
++/*
++ * efi.c - EFI filesystem mirror driver
++ *
++ * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <malloc.h>
++#include <fs.h>
++#include <string.h>
++#include <command.h>
++#include <errno.h>
++#include <linux/stat.h>
++#include <xfuncs.h>
++#include <fcntl.h>
++#include <wchar.h>
 +#include <efi.h>
- #include <mach/efi.h>
- #include <mach/efi-device.h>
- 
-@@ -233,6 +234,8 @@ static struct NS16550_plat ns16550_plat = {
- 
- static int efi_console_init(void)
- {
-+	barebox_set_model("barebox EFI payload");
++#include <mach/efi.h>
++#include <mach/efi-device.h>
 +
- 	add_generic_device("efi-stdio", DEVICE_ID_SINGLE, NULL, 0 , 0, 0, NULL);
- 
- 	if (IS_ENABLED(CONFIG_ARCH_EFI_REGISTER_COM1))
-@@ -296,8 +299,6 @@ static void fixup_tables(void)
- 
- static int efi_init(void)
- {
--	barebox_set_model("barebox EFI payload");
--
- 	defaultenv_append_directory(env_efi);
- 
- 	return 0;
-diff --git a/common/efi-guid.c b/common/efi-guid.c
-index 5109b5d..f6b0404 100644
---- a/common/efi-guid.c
-+++ b/common/efi-guid.c
-@@ -9,3 +9,76 @@ efi_guid_t efi_unknown_device_guid = EFI_UNKNOWN_DEVICE_GUID;
- efi_guid_t efi_null_guid = EFI_NULL_GUID;
- efi_guid_t efi_global_variable_guid = EFI_GLOBAL_VARIABLE_GUID;
- efi_guid_t efi_block_io_protocol_guid = EFI_BLOCK_IO_PROTOCOL_GUID;
++/* Open modes */
++#define EFI_FILE_MODE_READ      0x0000000000000001
++#define EFI_FILE_MODE_WRITE     0x0000000000000002
++#define EFI_FILE_MODE_CREATE    0x8000000000000000
 +
-+#define EFI_GUID_STRING(guid, short, long) do {	\
-+	if (!efi_guidcmp(guid, *g))		\
-+		return long;			\
-+	} while(0)
++/* File attributes */
++#define EFI_FILE_READ_ONLY      0x0000000000000001
++#define EFI_FILE_HIDDEN         0x0000000000000002
++#define EFI_FILE_SYSTEM         0x0000000000000004
++#define EFI_FILE_RESERVIED      0x0000000000000008
++#define EFI_FILE_DIRECTORY      0x0000000000000010
++#define EFI_FILE_ARCHIVE        0x0000000000000020
++#define EFI_FILE_VALID_ATTR     0x0000000000000037
 +
-+const char *efi_guid_string(efi_guid_t *g)
++#define EFI_FILE_HANDLE_REVISION         0x00010000
++struct efi_file_handle {
++	uint64_t Revision;
++	efi_status_t(EFIAPI *open)(struct efi_file_handle *File,
++			struct efi_file_handle **NewHandle, s16 *FileName,
++			uint64_t OpenMode, uint64_t Attributes);
++	efi_status_t(EFIAPI *close)(struct efi_file_handle *File);
++	efi_status_t(EFIAPI *delete)(struct efi_file_handle *File);
++	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, unsigned long *BufferSize,
++			void *Buffer);
++	efi_status_t(EFIAPI *write)(struct efi_file_handle *File,
++			unsigned long *BufferSize, void *Buffer);
++	efi_status_t(EFIAPI *get_position)(struct efi_file_handle *File,
++			uint64_t *Position);
++	efi_status_t(EFIAPI *set_position)(struct efi_file_handle *File,
++			uint64_t Position);
++	efi_status_t(EFIAPI *get_info)(struct efi_file_handle *File,
++			efi_guid_t *InformationType, unsigned long *BufferSize,
++			void *Buffer);
++	efi_status_t(EFIAPI *set_info)(struct efi_file_handle *File,
++			efi_guid_t *InformationType, unsigned long BufferSize,
++			void *Buffer);
++	efi_status_t(EFIAPI *flush)(struct efi_file_handle *File);
++};
++
++#define EFI_FILE_IO_INTERFACE_REVISION   0x00010000
++
++struct efi_file_io_interface {
++	uint64_t Revision;
++	efi_status_t(EFIAPI *open_volume)(
++			struct efi_file_io_interface *This,
++			struct efi_file_handle **Root);
++};
++
++struct efi_file_info {
++	uint64_t Size;
++	uint64_t FileSize;
++	uint64_t PhysicalSize;
++	efi_time_t CreateTime;
++	efi_time_t LastAccessTime;
++	efi_time_t ModificationTime;
++	uint64_t Attribute;
++	s16 FileName[1];
++};
++
++typedef unsigned short wchar_t;
++
++struct efifs_priv {
++	struct efi_file_handle *root_dir;
++	struct efi_file_io_interface *protocol;
++};
++
++struct efifs_file {
++	struct efi_file_handle *entry;
++};
++
++struct efifs_dir {
++	DIR dir;
++	struct efi_file_handle *entries;
++};
++
++static wchar_t *path_to_efi(const char *path)
 +{
-+	EFI_GUID_STRING(EFI_NULL_GUID, "NULL", "NULL GUID");
-+	EFI_GUID_STRING(EFI_MPS_TABLE_GUID, "MPS Table", "MPS Table GUID in EFI System Table");
-+	EFI_GUID_STRING(EFI_ACPI_TABLE_GUID, "ACPI Table", "ACPI 1.0 Table GUID in EFI System Table");
-+	EFI_GUID_STRING(EFI_ACPI_20_TABLE_GUID, "ACPI 2.0 Table", "ACPI 2.0 Table GUID in EFI System Table");
-+	EFI_GUID_STRING(EFI_SMBIOS_TABLE_GUID, "SMBIOS Table", "SMBIOS Table GUID in EFI System Table");
-+	EFI_GUID_STRING(EFI_SAL_SYSTEM_TABLE_GUID, "SAL System Table", "SAL System Table GUID in EFI System Table");
-+	EFI_GUID_STRING(EFI_HCDP_TABLE_GUID, "HDCP Table", "HDCP Table GUID in EFI System Table");
-+	EFI_GUID_STRING(EFI_UGA_IO_PROTOCOL_GUID, "UGA Protocol", "EFI 1.1 UGA Protocol");
-+	EFI_GUID_STRING(EFI_GLOBAL_VARIABLE_GUID, "Efi", "Efi Variable GUID");
-+	EFI_GUID_STRING(EFI_UV_SYSTEM_TABLE_GUID, "SAL System Table", "SAL System Table GUID in EFI System Table");
-+	EFI_GUID_STRING(EFI_LINUX_EFI_CRASH_GUID, "Linux EFI Crash", "Linux EFI Crash GUID");
-+	EFI_GUID_STRING(EFI_LOADED_IMAGE_PROTOCOL_GUID, "LoadedImage Protocol", "EFI 1.0 Loaded Image Protocol");
-+	EFI_GUID_STRING(EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID, "EFI Graphics Output Protocol", "UEFI Graphics Output Protocol");
-+	EFI_GUID_STRING(EFI_UGA_PROTOCOL_GUID, "UGA Draw Protocol", "EFI 1.1 UGA Draw Protocol");
-+	EFI_GUID_STRING(EFI_UGA_IO_PROTOCOL_GUID, "UGA Protocol", "EFI 1.1 UGA Protocol");
-+	EFI_GUID_STRING(EFI_PCI_IO_PROTOCOL_GUID, "PCI IO Protocol", "EFI 1.1 PCI IO Protocol");
-+	EFI_GUID_STRING(EFI_FILE_INFO_GUID, "File Info", "EFI File Infom");
-+	EFI_GUID_STRING(EFI_SIMPLE_FILE_SYSTEM_GUID, "Filesystem", "EFI 1.0 Simple FileSystem");
-+	EFI_GUID_STRING(EFI_DEVICE_TREE_GUID, "Device Tree", "EFI Device Tree GUID");
-+	EFI_GUID_STRING(EFI_DEVICE_PATH_PROTOCOL_GUID, "Device Path Protocol", "EFI 1.0 Device Path protocol");
-+	EFI_GUID_STRING(EFI_SIMPLE_NETWORK_PROTOCOL_GUID, "Simple Network Protocol", "EFI 1.0 Simple Network Protocol");
-+	EFI_GUID_STRING(EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID, "Filesystem Protocol", "EFI 1.0 Simple FileSystem Protocol");
-+	EFI_GUID_STRING(EFI_UNKNOWN_DEVICE_GUID, "Efi Unknown Device", "Efi Unknown Device GUID");
-+	EFI_GUID_STRING(EFI_BLOCK_IO_PROTOCOL_GUID, "BlockIo Protocol", "EFI 1.0 Block IO protocol");
++	wchar_t *dst;
++	wchar_t *ret;
 +
-+	EFI_GUID_STRING(EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID, "FirmwareVolume2Protocol", "Efi FirmwareVolume2Protocol");
-+	EFI_GUID_STRING(EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL_GUID, "FirmwareVolumeBlock Protocol", "Firmware Volume Block protocol");
-+	EFI_GUID_STRING(EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID, "PciRootBridgeIo Protocol", "EFI 1.1 Pci Root Bridge IO Protocol");
-+	EFI_GUID_STRING(EFI_ISA_ACPI_PROTOCOL_GUID, "ISA Acpi Protocol", "ISA Acpi Protocol");
-+	EFI_GUID_STRING(EFI_ISA_IO_PROTOCOL_GUID, "ISA IO Protocol", "ISA IO Protocol");
-+	EFI_GUID_STRING(EFI_STANDARD_ERROR_DEVICE_GUID, "Standard Error Device Guid", "EFI Standard Error Device Guid");
-+	EFI_GUID_STRING(EFI_CONSOLE_OUT_DEVICE_GUID, "Console Out Device Guid", "EFI Console Out Device Guid");
-+	EFI_GUID_STRING(EFI_CONSOLE_IN_DEVICE_GUID, "Console In Device Guid", "EFI Conosle In Device Guid");
-+	EFI_GUID_STRING(EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID, "Simple Text Out Protocol", "EFI 1.0 Simple Text Out Protocol");
-+	EFI_GUID_STRING(EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID, "Simple Text Input Ex Protocol", "UEFI 2.1 Simple Text Input Ex Protocol");
-+	EFI_GUID_STRING(EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID, "Simple Text In Protocol", "EFI 1.0 Simple Text In Protocol");
-+	EFI_GUID_STRING(EFI_DISK_IO_PROTOCOL_GUID, "DiskIo Protocol", "EFI 1.0 Disk IO Protocol");
-+	EFI_GUID_STRING(EFI_IDE_CONTROLLER_INIT_PROTOCOL_GUID, "IDE Controller Init Protocol", "Platform IDE Init Protocol");
-+	EFI_GUID_STRING(EFI_DISK_INFO_PROTOCOL_GUID, "Disk Info Protocol", "Disk Info Protocol");
-+	EFI_GUID_STRING(EFI_SERIAL_IO_PROTOCOL_GUID, "SerialIo Protocol", "EFI 1.0 Serial IO Protocol");
-+	EFI_GUID_STRING(EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL_GUID, "Bus Specific Driver Override Protocol", "EFI 1.1 Bus Specific Driver Override Protocol");
-+	EFI_GUID_STRING(EFI_LOAD_FILE2_PROTOCOL_GUID, "LoadFile2 Protocol", "EFI Load File 2 Protocol");
-+	EFI_GUID_STRING(EFI_MTFTP4_SERVICE_BINDING_PROTOCOL_GUID, "MTFTP4 Service Binding Protocol", "MTFTP4 Service Binding Protocol");
-+	EFI_GUID_STRING(EFI_DHCP4_PROTOCOL_GUID, "DHCP4 Protocol", "DHCP4 Protocol");
-+	EFI_GUID_STRING(EFI_UDP4_SERVICE_BINDING_PROTOCOL_GUID, "UDP4 Service Binding Protocol", "UDP4 Service Binding Protocol");
-+	EFI_GUID_STRING(EFI_TCP4_SERVICE_BINDING_PROTOCOL_GUID, "TCP4 Service Binding Protocol", "TCP4 Service Binding Protocol");
-+	EFI_GUID_STRING(EFI_IP4_SERVICE_BINDING_PROTOCOL_GUID, "IP4 Service Binding Protocol", "IP4 Service Binding Protocol");
-+	EFI_GUID_STRING(EFI_IP4_CONFIG_PROTOCOL_GUID, "Ip4Config Protocol", "Ip4Config Protocol");
-+	EFI_GUID_STRING(EFI_ARP_SERVICE_BINDING_PROTOCOL_GUID, "ARP Service Binding Protocol", "ARP Service Binding Protocol");
-+	EFI_GUID_STRING(EFI_MANAGED_NETWORK_SERVICE_BINDING_PROTOCOL_GUID, "Managed Network Service Binding Protocol", "Managed Network Service Binding Protocol");
-+	EFI_GUID_STRING(EFI_VLAN_CONFIG_PROTOCOL_GUID, "VlanConfig Protocol", "VlanConfig Protocol");
-+	EFI_GUID_STRING(EFI_HII_CONFIG_ACCESS_PROTOCOL_GUID, "HII Config Access Protocol", "HII Config Access 2.1 protocol");
-+	EFI_GUID_STRING(LOAD_FILE_PROTOCOL_GUID, "LoadFile Protocol", "EFI 1.0 Load File Protocol");
-+	EFI_GUID_STRING(EFI_COMPONENT_NAME2_PROTOCOL_GUID, "Component Name2 Protocol", "UEFI 2.0 Component Name2 Protocol");
-+	EFI_GUID_STRING(EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID_31, "Network Interface Identifier Protocol_31",  "EFI1.1 Network Interface Identifier Protocol");
-+	EFI_GUID_STRING(EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID, "Network Interface Identifier Protocol", "EFI Network Interface Identifier Protocol");
++	if (!*path)
++		return strdup_char_to_wchar("\\");
 +
-+	/* File */
-+	EFI_GUID_STRING(EFI_IDEBUSDXE_INF_GUID, "IdeBusDxe.inf", "EFI IdeBusDxe.inf File GUID");
-+	EFI_GUID_STRING(EFI_TERMINALDXE_INF_GUID, "TerminalDxe.inf", "EFI TerminalDxe.inf File GUID");
-+	EFI_GUID_STRING(EFI_ISCSIDXE_INF_GUID, "IScsiDxe.inf", "EFI IScsiDxe.inf File GUID");
-+	EFI_GUID_STRING(EFI_VLANCONFIGDXE_INF_GUID, "VlanConfigDxe.inf", "EFI VlanConfigDxe.inf File GUID");
++	dst = strdup_char_to_wchar(path);
++	if (!dst)
++		return NULL;
 +
-+	return "unknown";
++	ret = dst;
++
++	while (*dst) {
++		if (*dst == '/')
++			*dst = '\\';
++		dst++;
++	}
++
++	return ret;
 +}
-diff --git a/include/efi.h b/include/efi.h
-index c624eb3..597dc74 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -354,6 +354,112 @@ extern efi_runtime_services_t *RT;
- #define EFI_BLOCK_IO_PROTOCOL_GUID \
- 	EFI_GUID(0x964e5b21, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
- 
-+/* additional GUID from EDK2 */
-+#define EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID \
-+	EFI_GUID(0x220e73b6, 0x6bdb, 0x4413, 0x84, 0x5, 0xb9, 0x74, 0xb1, 0x8, 0x61, 0x9a)
 +
-+#define EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL_GUID \
-+	EFI_GUID(0x8f644fa9, 0xe850, 0x4db1, 0x9c, 0xe2, 0xb, 0x44, 0x69, 0x8e, 0x8d, 0xa4)
++static int efifs_create(struct device_d *dev, const char *pathname, mode_t mode)
++{
++	struct efifs_priv *priv = dev->priv;
++	wchar_t *efi_path = path_to_efi(pathname);
++	struct efi_file_handle *entry;
++	efi_status_t efiret;
 +
-+#define EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID \
-+	EFI_GUID(0x2f707ebb, 0x4a1a, 0x11d4, 0x9a, 0x38, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++	efiret = priv->root_dir->open(priv->root_dir, &entry, efi_path,
++			EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE | EFI_FILE_MODE_CREATE,
++			0ULL);
 +
-+#define EFI_ISA_ACPI_PROTOCOL_GUID \
-+	EFI_GUID(0x64a892dc, 0x5561, 0x4536, 0x92, 0xc7, 0x79, 0x9b, 0xfc, 0x18, 0x33, 0x55)
++	free(efi_path);
 +
-+#define EFI_ISA_IO_PROTOCOL_GUID \
-+	EFI_GUID(0x7ee2bd44, 0x3da0, 0x11d4, 0x9a, 0x38, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++	if (EFI_ERROR(efiret)) {
++		printf("%s %s: %s\n", __func__, pathname, efi_strerror(efiret));
++		return -efi_errno(efiret);
++	}
 +
-+#define EFI_STANDARD_ERROR_DEVICE_GUID \
-+	EFI_GUID(0xd3b36f2d, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++	entry->close(entry);
 +
-+#define EFI_CONSOLE_OUT_DEVICE_GUID \
-+	EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++	return 0;
++}
 +
-+#define EFI_CONSOLE_IN_DEVICE_GUID \
-+	EFI_GUID(0xd3b36f2b, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++static int efifs_unlink(struct device_d *dev, const char *pathname)
++{
++	struct efifs_priv *priv = dev->priv;
++	wchar_t *efi_path = path_to_efi(pathname);
++	struct efi_file_handle *entry;
++	efi_status_t efiret;
 +
-+#define EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID \
-+	EFI_GUID(0x387477c2, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++	efiret = priv->root_dir->open(priv->root_dir, &entry, efi_path,
++			EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE, 0ULL);
 +
-+#define EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID \
-+	EFI_GUID(0xdd9e7534, 0x7762, 0x4698, 0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa)
++	free(efi_path);
 +
-+#define EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID \
-+	EFI_GUID(0x387477c1, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++	if (EFI_ERROR(efiret))
++		return -efi_errno(efiret);
 +
-+#define EFI_DISK_IO_PROTOCOL_GUID \
-+	EFI_GUID(0xce345171, 0xba0b, 0x11d2, 0x8e, 0x4f, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++	efiret = entry->delete(entry);
++	if (EFI_ERROR(efiret))
++		return -efi_errno(efiret);
 +
-+#define EFI_IDE_CONTROLLER_INIT_PROTOCOL_GUID \
-+	EFI_GUID(0xa1e37052, 0x80d9, 0x4e65, 0xa3, 0x17, 0x3e, 0x9a, 0x55, 0xc4, 0x3e, 0xc9)
++	return 0;
++}
 +
-+#define EFI_DISK_INFO_PROTOCOL_GUID \
-+	EFI_GUID(0xd432a67f, 0x14dc, 0x484b, 0xb3, 0xbb, 0x3f, 0x2, 0x91, 0x84, 0x93, 0x27)
++static int efifs_mkdir(struct device_d *dev, const char *pathname)
++{
++	struct efifs_priv *priv = dev->priv;
++	wchar_t *efi_path = path_to_efi(pathname);
++	struct efi_file_handle *entry;
++	efi_status_t efiret;
 +
-+#define EFI_SERIAL_IO_PROTOCOL_GUID \
-+	EFI_GUID(0xbb25cf6f, 0xf1d4, 0x11d2, 0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd)
++	efiret = priv->root_dir->open(priv->root_dir, &entry, efi_path,
++			EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE | EFI_FILE_MODE_CREATE,
++			EFI_FILE_DIRECTORY);
 +
-+#define EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL_GUID \
-+	EFI_GUID(0x3bc1b285, 0x8a15, 0x4a82, 0xaa, 0xbf, 0x4d, 0x7d, 0x13, 0xfb, 0x32, 0x65)
++	free(efi_path);
 +
-+#define EFI_LOAD_FILE2_PROTOCOL_GUID \
-+	EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e, 0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
++	if (EFI_ERROR(efiret)) {
++		printf("%s %s: %s\n", __func__, pathname, efi_strerror(efiret));
++		return -efi_errno(efiret);
++	}
 +
-+#define EFI_MTFTP4_SERVICE_BINDING_PROTOCOL_GUID \
-+	EFI_GUID(0x2fe800be, 0x8f01, 0x4aa6, 0x94, 0x6b, 0xd7, 0x13, 0x88, 0xe1, 0x83, 0x3f)
++	entry->close(entry);
 +
-+#define EFI_DHCP4_PROTOCOL_GUID \
-+	EFI_GUID(0x9d9a39d8, 0xbd42, 0x4a73, 0xa4, 0xd5, 0x8e, 0xe9, 0x4b, 0xe1, 0x13, 0x80)
++	return 0;
++}
 +
-+#define EFI_UDP4_SERVICE_BINDING_PROTOCOL_GUID \
-+	EFI_GUID(0x83f01464, 0x99bd, 0x45e5, 0xb3, 0x83, 0xaf, 0x63, 0x05, 0xd8, 0xe9, 0xe6)
++static int efifs_rmdir(struct device_d *dev, const char *pathname)
++{
++	return efifs_unlink(dev, pathname);
++}
 +
-+#define EFI_TCP4_SERVICE_BINDING_PROTOCOL_GUID \
-+	EFI_GUID(0x00720665, 0x67EB, 0x4a99, 0xBA, 0xF7, 0xD3, 0xC3, 0x3A, 0x1C, 0x7C, 0xC9)
++static int efifs_open(struct device_d *dev, FILE *f, const char *filename)
++{
++	struct efifs_priv *priv = dev->priv;
++	efi_status_t efiret;
++	struct efifs_file *ufile;
++	wchar_t *efi_path = path_to_efi(filename);
++	struct efi_file_info *info;
++	unsigned long bufsize = 1024;
++	uint64_t efimode = EFI_FILE_MODE_READ;
++	int ret;
 +
-+#define EFI_IP4_SERVICE_BINDING_PROTOCOL_GUID \
-+	EFI_GUID(0xc51711e7, 0xb4bf, 0x404a, 0xbf, 0xb8, 0x0a, 0x04, 0x8e, 0xf1, 0xff, 0xe4)
++	ufile = xzalloc(sizeof(*ufile));
 +
-+#define EFI_IP4_CONFIG_PROTOCOL_GUID \
-+	EFI_GUID(0x3b95aa31, 0x3793, 0x434b, 0x86, 0x67, 0xc8, 0x07, 0x08, 0x92, 0xe0, 0x5e)
++	if (f->flags & O_ACCMODE)
++		efimode |= EFI_FILE_MODE_WRITE;
 +
-+#define EFI_ARP_SERVICE_BINDING_PROTOCOL_GUID\
-+	EFI_GUID(0xf44c00ee, 0x1f2c, 0x4a00, 0xaa, 0x9, 0x1c, 0x9f, 0x3e, 0x8, 0x0, 0xa3)
++	efiret = priv->root_dir->open(priv->root_dir, &ufile->entry, efi_path,
++			efimode, 0ULL);
++	if (EFI_ERROR(efiret)) {
++		pr_err("%s: unable to Open %s: %s\n", __func__,
++				filename, efi_strerror(efiret));
++		free(ufile);
++		return -efi_errno(efiret);
++	}
 +
-+#define EFI_MANAGED_NETWORK_SERVICE_BINDING_PROTOCOL_GUID \
-+	EFI_GUID(0xf36ff770, 0xa7e1, 0x42cf, 0x9e, 0xd2, 0x56, 0xf0, 0xf2, 0x71, 0xf4, 0x4c)
++	free(efi_path);
 +
-+#define EFI_VLAN_CONFIG_PROTOCOL_GUID \
-+	EFI_GUID(0x9e23d768, 0xd2f3, 0x4366, 0x9f, 0xc3, 0x3a, 0x7a, 0xba, 0x86, 0x43, 0x74)
++	info = xzalloc(1024);
++	efiret = ufile->entry->get_info(ufile->entry, &efi_file_info_id, &bufsize, info);
++	if (EFI_ERROR(efiret)) {
++		pr_err("%s: unable to GetInfo %s: %s\n", __func__,
++				filename, efi_strerror(efiret));
++		ret = -efi_errno(efiret);
++		goto out;
++	}
 +
-+#define EFI_HII_CONFIG_ACCESS_PROTOCOL_GUID \
-+	EFI_GUID(0x330d4706, 0xf2a0, 0x4e4f, 0xa3, 0x69, 0xb6, 0x6f, 0xa8, 0xd5, 0x43, 0x85)
++	f->size = info->FileSize;
 +
-+#define LOAD_FILE_PROTOCOL_GUID \
-+	EFI_GUID(0x56ec3091, 0x954c, 0x11d2, 0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++	free(info);
++	f->inode = ufile;
 +
-+#define EFI_COMPONENT_NAME2_PROTOCOL_GUID \
-+	EFI_GUID(0x6a7a5cff, 0xe8d9, 0x4f70, 0xba, 0xda, 0x75, 0xab, 0x30, 0x25, 0xce, 0x14)
++	return 0;
++out:
++	free(info);
++	free(ufile);
++	return ret;
++}
 +
-+#define EFI_IDEBUSDXE_INF_GUID \
-+	EFI_GUID(0x69fd8e47, 0xa161, 0x4550, 0xb0, 0x1a, 0x55, 0x94, 0xce, 0xb2, 0xb2, 0xb2)
++static int efifs_close(struct device_d *dev, FILE *f)
++{
++	struct efifs_file *ufile = f->inode;
 +
-+#define EFI_TERMINALDXE_INF_GUID \
-+	EFI_GUID(0x9e863906, 0xa40f, 0x4875, 0x97, 0x7f, 0x5b, 0x93, 0xff, 0x23, 0x7f, 0xc6)
++	ufile->entry->close(ufile->entry);
 +
-+#define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID_31 \
-+	EFI_GUID(0x1aced566, 0x76ed, 0x4218, 0xbc, 0x81, 0x76, 0x7f, 0x1f, 0x97, 0x7a, 0x89)
++	free(ufile);
 +
-+#define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID \
-+	EFI_GUID(0xe18541cd, 0xf755, 0x4f73, 0x92, 0x8d, 0x64, 0x3c, 0x8a, 0x79, 0xb2, 0x29)
++	return 0;
++}
 +
-+#define EFI_ISCSIDXE_INF_GUID \
-+	EFI_GUID(0x4579b72d, 0x7ec4, 0x4dd4, 0x84, 0x86, 0x08, 0x3c, 0x86, 0xb1, 0x82, 0xa7)
++static int efifs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
++{
++	struct efifs_file *ufile = f->inode;
++	efi_status_t efiret;
++	unsigned long bufsize = insize;
 +
-+#define EFI_VLANCONFIGDXE_INF_GUID \
-+	EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
++	efiret = ufile->entry->read(ufile->entry, &bufsize, buf);
++	if (EFI_ERROR(efiret)) {
++		return -efi_errno(efiret);
++	}
 +
- extern efi_guid_t efi_file_info_id;
- extern efi_guid_t efi_simple_file_system_protocol_guid;
- extern efi_guid_t efi_device_path_protocol_guid;
-@@ -505,4 +611,6 @@ static inline int efi_compare_guid(efi_guid_t *a, efi_guid_t *b)
- 
- char *device_path_to_str(struct efi_device_path *dev_path);
- 
-+const char *efi_guid_string(efi_guid_t *g);
++	return bufsize;
++}
 +
- #endif /* _LINUX_EFI_H */
++static int efifs_write(struct device_d *_dev, FILE *f, const void *buf, size_t insize)
++{
++	struct efifs_file *ufile = f->inode;
++	efi_status_t efiret;
++	unsigned long bufsize = insize;
++
++	efiret = ufile->entry->write(ufile->entry, &bufsize, (void *)buf);
++	if (EFI_ERROR(efiret)) {
++		pr_err("%s: unable to write: %s\n", __func__, efi_strerror(efiret));
++		return -efi_errno(efiret);
++	}
++
++	return bufsize;
++}
++
++static loff_t efifs_lseek(struct device_d *dev, FILE *f, loff_t pos)
++{
++	struct efifs_file *ufile = f->inode;
++	efi_status_t efiret;
++
++	f->pos = pos;
++
++	efiret = ufile->entry->set_position(ufile->entry, pos);
++	if (EFI_ERROR(efiret)) {
++		return -efi_errno(efiret);
++	}
++
++	return f->pos;
++}
++
++static int efifs_truncate(struct device_d *dev, FILE *f, unsigned long size)
++{
++	struct efifs_file *ufile = f->inode;
++	efi_status_t efiret;
++	struct efi_file_info *info;
++	unsigned long bufsize = 1024;
++	int ret;
++
++	info = xzalloc(1024);
++
++	efiret = ufile->entry->get_info(ufile->entry, &efi_file_info_id, &bufsize, info);
++	if (EFI_ERROR(efiret)) {
++		pr_err("%s: unable to GetInfo: %s\n", __func__, efi_strerror(efiret));
++		ret = -efi_errno(efiret);
++		goto out;
++	}
++
++	if (size > info->FileSize)
++		return 0;
++
++	info->FileSize = size;
++
++	efiret = ufile->entry->set_info(ufile->entry, &efi_file_info_id, bufsize, info);
++	if (EFI_ERROR(efiret)) {
++		pr_err("%s: unable to SetInfo: %s\n", __func__, efi_strerror(efiret));
++		ret = -efi_errno(efiret);
++		goto out;
++	}
++
++	return 0;
++out:
++	return ret;
++}
++
++static DIR *efifs_opendir(struct device_d *dev, const char *pathname)
++{
++	struct efifs_priv *priv = dev->priv;
++	efi_status_t efiret;
++	struct efifs_dir *udir;
++	wchar_t *efi_path = path_to_efi(pathname);
++
++	udir = xzalloc(sizeof(*udir));
++
++	efiret = priv->root_dir->open(priv->root_dir, &udir->entries, efi_path, EFI_FILE_MODE_READ, 0ULL);
++	if (EFI_ERROR(efiret)) {
++		free(udir);
++		return NULL;
++	}
++
++	free(efi_path);
++
++	return &udir->dir;
++}
++
++static struct dirent *efifs_readdir(struct device_d *dev, DIR *dir)
++{
++	struct efifs_dir *udir = container_of(dir, struct efifs_dir, dir);
++	efi_status_t efiret;
++	unsigned long bufsize = 256;
++	s16 buf[256];
++	struct efi_file_info *f;
++
++	efiret = udir->entries->read(udir->entries, &bufsize, buf);
++	if (EFI_ERROR(efiret) || bufsize == 0)
++		return NULL;
++
++	f = (struct efi_file_info *)buf;
++
++	strcpy_wchar_to_char(dir->d.d_name, f->FileName);
++
++	return &dir->d;
++}
++
++static int efifs_closedir(struct device_d *dev, DIR *dir)
++{
++	struct efifs_dir *udir = container_of(dir, struct efifs_dir, dir);
++
++	udir->entries->close(udir->entries);
++
++	free(dir);
++
++	return 0;
++}
++
++static int efifs_stat(struct device_d *dev, const char *filename, struct stat *s)
++{
++	struct efifs_priv *priv = dev->priv;
++	wchar_t *efi_path;
++	efi_status_t efiret;
++	struct efi_file_handle *entry;
++	struct efi_file_info *info;
++	unsigned long bufsize = 1024;
++	int ret;
++
++	info = xzalloc(1024);
++
++	efi_path = path_to_efi(filename);
++
++	efiret = priv->root_dir->open(priv->root_dir, &entry, efi_path, EFI_FILE_MODE_READ, 0ULL);
++	if (EFI_ERROR(efiret)) {
++		pr_err("%s: unable to Open %s: %s\n", __func__, filename,
++				efi_strerror(efiret));
++		ret = -efi_errno(efiret);
++		goto out_free;
++	}
++
++	efiret = entry->get_info(entry, &efi_file_info_id, &bufsize, info);
++	if (EFI_ERROR(efiret)) {
++		pr_err("%s: unable to GetInfo %s: %s\n", __func__, filename,
++				efi_strerror(efiret));
++		ret = -efi_errno(efiret);
++		goto out;
++	}
++
++	s->st_size = info->FileSize;
++	s->st_mode = 00555;
++
++	if (!info->Attribute & EFI_FILE_READ_ONLY)
++		s->st_mode |= 00222;
++
++	if (info->Attribute & EFI_FILE_DIRECTORY)
++		s->st_mode |= S_IFDIR;
++	else
++		s->st_mode |= S_IFREG;
++
++	ret = 0;
++out:
++	entry->close(entry);
++out_free:
++	free(efi_path);
++	free(info);
++
++	return ret;
++}
++
++static int efifs_symlink(struct device_d *dev, const char *pathname,
++		       const char *newpath)
++{
++	return -EROFS;
++}
++
++static int efifs_readlink(struct device_d *dev, const char *pathname,
++			char *buf, size_t bufsiz)
++{
++	return -ENOENT;
++}
++
++static int efifs_probe(struct device_d *dev)
++{
++	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct efifs_priv *priv;
++	efi_status_t efiret;
++	struct efi_file_handle *file;
++	struct device_d *efi = get_device_by_name(fsdev->backingstore);
++	struct efi_device *udev = container_of(efi, struct efi_device, dev);
++
++	priv = xzalloc(sizeof(struct efifs_priv));
++	priv->protocol = udev->protocol;
++	dev->priv = priv;
++	dev->parent = &udev->dev;
++
++	efiret = priv->protocol->open_volume(priv->protocol, &file);
++	if (EFI_ERROR(efiret)) {
++		dev_err(dev, "failed to open volume: %s\n", efi_strerror(efiret));
++		return -efi_errno(efiret);
++	}
++
++	priv->root_dir = file;
++
++	return 0;
++}
++
++static void efifs_remove(struct device_d *dev)
++{
++	free(dev->priv);
++}
++
++static struct fs_driver_d efifs_driver = {
++	.create    = efifs_create,
++	.unlink    = efifs_unlink,
++	.open      = efifs_open,
++	.close     = efifs_close,
++	.truncate  = efifs_truncate,
++	.read      = efifs_read,
++	.write     = efifs_write,
++	.lseek     = efifs_lseek,
++	.mkdir     = efifs_mkdir,
++	.rmdir     = efifs_rmdir,
++	.opendir   = efifs_opendir,
++	.readdir   = efifs_readdir,
++	.closedir  = efifs_closedir,
++	.stat      = efifs_stat,
++	.symlink   = efifs_symlink,
++	.readlink  = efifs_readlink,
++	.drv = {
++		.probe  = efifs_probe,
++		.remove = efifs_remove,
++		.name = "efifs",
++	}
++};
++
++static int efifs_init(void)
++{
++	return register_fs_driver(&efifs_driver);
++}
++
++coredevice_initcall(efifs_init);
++
++static int index;
++
++int efi_fs_probe(struct efi_device *efidev)
++{
++	char *path, *device;
++	int ret;
++	struct efi_file_io_interface *volume;
++
++	if (efi_loaded_image)
++		BS->handle_protocol(efi_loaded_image->device_handle,
++				&efi_simple_file_system_protocol_guid, (void*)&volume);
++
++	if (efidev->protocol == volume)
++		path = xstrdup("/boot");
++	else
++		path = asprintf("/efi%d", index);
++	device = asprintf("%s", dev_name(&efidev->dev));
++
++	ret = make_directory(path);
++	if (ret)
++		goto out;
++
++	ret = mount(device, "efifs", path, NULL);
++	if (ret)
++		goto out;
++
++	index++;
++
++	dev_info(&efidev->dev, "mounted on %s\n", path);
++
++	ret = 0;
++out:
++	free(path);
++	free(device);
++
++	return ret;
++}
++
++static struct efi_driver efi_fs_driver = {
++        .driver = {
++		.name  = "efi-fs",
++	},
++        .probe = efi_fs_probe,
++	.guid = EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID,
++};
++device_efi_driver(efi_fs_driver);
 -- 
 2.0.0
 
