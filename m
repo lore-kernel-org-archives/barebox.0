@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5VPC-0006bt-2v
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:07 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1X5VOp-0006ST-Qj
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 09:37:43 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim
- 4.82_1-5b7a7c0-XX) (envelope-from <sha@pengutronix.de>)
- id 1X5VOp-0001WP-Op
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 09:37:43 +0200
+ Linux)) id 1X5VPC-0006cX-2s
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jul 2014 09:36:23 +0200
-Message-Id: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Jul 2014 09:36:30 +0200
+Message-Id: <1405064190-1977-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
+References: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,146 +21,277 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Initial EFI support
+Subject: [PATCH 7/7] EFI: introduce efi_strguid to convert GUID to human
+ readable names
 To: barebox@lists.infradead.org
 
-Second round of barebox on EFI patches. I merged the preparatory patches
-already to -next, so here are only the EFI patches again.
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Changes since v1:
+use in devinfo Protocols
 
-- Add documentation how to run this on qemu
-- The root directory on EFI filesystems now works on Tianocore (tested with qemu)
-- Made 64-bit mandatory since 32-bit doesn't compile and cannot be tested
-- Updated defconfig. For some reason the original defconfig had all relevant drivers
-  disabled
-- Add patch from Jean-Christophe to print GUIDs as strings
+Tested today on qemu with all the GUID translated
 
-Sascha
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/efi/efi/efi-device.c |   3 +-
+ arch/efi/efi/efi.c        |   5 ++-
+ common/efi-guid.c         |  73 +++++++++++++++++++++++++++++++
+ include/efi.h             | 108 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 186 insertions(+), 3 deletions(-)
 
-The following changes since commit b6a37cf0c3eb5dddf69a5067c1b1d629d48a2fa0:
+diff --git a/arch/efi/efi/efi-device.c b/arch/efi/efi/efi-device.c
+index 71526b9..1c9553d 100644
+--- a/arch/efi/efi/efi-device.c
++++ b/arch/efi/efi/efi-device.c
+@@ -86,7 +86,8 @@ static void efi_devinfo(struct device_d *dev)
+ 	printf("Protocols:\n");
+ 
+ 	for (i = 0; i < efidev->num_guids; i++)
+-		printf("  %d: %pUl\n", i, &efidev->guids[i]);
++		printf("  %d: %pUl: %s\n", i, &efidev->guids[i],
++					efi_guid_string(&efidev->guids[i]));
+ }
+ 
+ static efi_handle_t *efi_find_parent(efi_handle_t *handle)
+diff --git a/arch/efi/efi/efi.c b/arch/efi/efi/efi.c
+index 48b7d9a..ff97783 100644
+--- a/arch/efi/efi/efi.c
++++ b/arch/efi/efi/efi.c
+@@ -36,6 +36,7 @@
+ #include <binfmt.h>
+ #include <wchar.h>
+ #include <envfs.h>
++#include <efi.h>
+ #include <mach/efi.h>
+ #include <mach/efi-device.h>
+ 
+@@ -233,6 +234,8 @@ static struct NS16550_plat ns16550_plat = {
+ 
+ static int efi_console_init(void)
+ {
++	barebox_set_model("barebox EFI payload");
++
+ 	add_generic_device("efi-stdio", DEVICE_ID_SINGLE, NULL, 0 , 0, 0, NULL);
+ 
+ 	if (IS_ENABLED(CONFIG_ARCH_EFI_REGISTER_COM1))
+@@ -296,8 +299,6 @@ static void fixup_tables(void)
+ 
+ static int efi_init(void)
+ {
+-	barebox_set_model("barebox EFI payload");
+-
+ 	defaultenv_append_directory(env_efi);
+ 
+ 	return 0;
+diff --git a/common/efi-guid.c b/common/efi-guid.c
+index 5109b5d..f6b0404 100644
+--- a/common/efi-guid.c
++++ b/common/efi-guid.c
+@@ -9,3 +9,76 @@ efi_guid_t efi_unknown_device_guid = EFI_UNKNOWN_DEVICE_GUID;
+ efi_guid_t efi_null_guid = EFI_NULL_GUID;
+ efi_guid_t efi_global_variable_guid = EFI_GLOBAL_VARIABLE_GUID;
+ efi_guid_t efi_block_io_protocol_guid = EFI_BLOCK_IO_PROTOCOL_GUID;
++
++#define EFI_GUID_STRING(guid, short, long) do {	\
++	if (!efi_guidcmp(guid, *g))		\
++		return long;			\
++	} while(0)
++
++const char *efi_guid_string(efi_guid_t *g)
++{
++	EFI_GUID_STRING(EFI_NULL_GUID, "NULL", "NULL GUID");
++	EFI_GUID_STRING(EFI_MPS_TABLE_GUID, "MPS Table", "MPS Table GUID in EFI System Table");
++	EFI_GUID_STRING(EFI_ACPI_TABLE_GUID, "ACPI Table", "ACPI 1.0 Table GUID in EFI System Table");
++	EFI_GUID_STRING(EFI_ACPI_20_TABLE_GUID, "ACPI 2.0 Table", "ACPI 2.0 Table GUID in EFI System Table");
++	EFI_GUID_STRING(EFI_SMBIOS_TABLE_GUID, "SMBIOS Table", "SMBIOS Table GUID in EFI System Table");
++	EFI_GUID_STRING(EFI_SAL_SYSTEM_TABLE_GUID, "SAL System Table", "SAL System Table GUID in EFI System Table");
++	EFI_GUID_STRING(EFI_HCDP_TABLE_GUID, "HDCP Table", "HDCP Table GUID in EFI System Table");
++	EFI_GUID_STRING(EFI_UGA_IO_PROTOCOL_GUID, "UGA Protocol", "EFI 1.1 UGA Protocol");
++	EFI_GUID_STRING(EFI_GLOBAL_VARIABLE_GUID, "Efi", "Efi Variable GUID");
++	EFI_GUID_STRING(EFI_UV_SYSTEM_TABLE_GUID, "SAL System Table", "SAL System Table GUID in EFI System Table");
++	EFI_GUID_STRING(EFI_LINUX_EFI_CRASH_GUID, "Linux EFI Crash", "Linux EFI Crash GUID");
++	EFI_GUID_STRING(EFI_LOADED_IMAGE_PROTOCOL_GUID, "LoadedImage Protocol", "EFI 1.0 Loaded Image Protocol");
++	EFI_GUID_STRING(EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID, "EFI Graphics Output Protocol", "UEFI Graphics Output Protocol");
++	EFI_GUID_STRING(EFI_UGA_PROTOCOL_GUID, "UGA Draw Protocol", "EFI 1.1 UGA Draw Protocol");
++	EFI_GUID_STRING(EFI_UGA_IO_PROTOCOL_GUID, "UGA Protocol", "EFI 1.1 UGA Protocol");
++	EFI_GUID_STRING(EFI_PCI_IO_PROTOCOL_GUID, "PCI IO Protocol", "EFI 1.1 PCI IO Protocol");
++	EFI_GUID_STRING(EFI_FILE_INFO_GUID, "File Info", "EFI File Infom");
++	EFI_GUID_STRING(EFI_SIMPLE_FILE_SYSTEM_GUID, "Filesystem", "EFI 1.0 Simple FileSystem");
++	EFI_GUID_STRING(EFI_DEVICE_TREE_GUID, "Device Tree", "EFI Device Tree GUID");
++	EFI_GUID_STRING(EFI_DEVICE_PATH_PROTOCOL_GUID, "Device Path Protocol", "EFI 1.0 Device Path protocol");
++	EFI_GUID_STRING(EFI_SIMPLE_NETWORK_PROTOCOL_GUID, "Simple Network Protocol", "EFI 1.0 Simple Network Protocol");
++	EFI_GUID_STRING(EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID, "Filesystem Protocol", "EFI 1.0 Simple FileSystem Protocol");
++	EFI_GUID_STRING(EFI_UNKNOWN_DEVICE_GUID, "Efi Unknown Device", "Efi Unknown Device GUID");
++	EFI_GUID_STRING(EFI_BLOCK_IO_PROTOCOL_GUID, "BlockIo Protocol", "EFI 1.0 Block IO protocol");
++
++	EFI_GUID_STRING(EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID, "FirmwareVolume2Protocol", "Efi FirmwareVolume2Protocol");
++	EFI_GUID_STRING(EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL_GUID, "FirmwareVolumeBlock Protocol", "Firmware Volume Block protocol");
++	EFI_GUID_STRING(EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID, "PciRootBridgeIo Protocol", "EFI 1.1 Pci Root Bridge IO Protocol");
++	EFI_GUID_STRING(EFI_ISA_ACPI_PROTOCOL_GUID, "ISA Acpi Protocol", "ISA Acpi Protocol");
++	EFI_GUID_STRING(EFI_ISA_IO_PROTOCOL_GUID, "ISA IO Protocol", "ISA IO Protocol");
++	EFI_GUID_STRING(EFI_STANDARD_ERROR_DEVICE_GUID, "Standard Error Device Guid", "EFI Standard Error Device Guid");
++	EFI_GUID_STRING(EFI_CONSOLE_OUT_DEVICE_GUID, "Console Out Device Guid", "EFI Console Out Device Guid");
++	EFI_GUID_STRING(EFI_CONSOLE_IN_DEVICE_GUID, "Console In Device Guid", "EFI Conosle In Device Guid");
++	EFI_GUID_STRING(EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID, "Simple Text Out Protocol", "EFI 1.0 Simple Text Out Protocol");
++	EFI_GUID_STRING(EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID, "Simple Text Input Ex Protocol", "UEFI 2.1 Simple Text Input Ex Protocol");
++	EFI_GUID_STRING(EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID, "Simple Text In Protocol", "EFI 1.0 Simple Text In Protocol");
++	EFI_GUID_STRING(EFI_DISK_IO_PROTOCOL_GUID, "DiskIo Protocol", "EFI 1.0 Disk IO Protocol");
++	EFI_GUID_STRING(EFI_IDE_CONTROLLER_INIT_PROTOCOL_GUID, "IDE Controller Init Protocol", "Platform IDE Init Protocol");
++	EFI_GUID_STRING(EFI_DISK_INFO_PROTOCOL_GUID, "Disk Info Protocol", "Disk Info Protocol");
++	EFI_GUID_STRING(EFI_SERIAL_IO_PROTOCOL_GUID, "SerialIo Protocol", "EFI 1.0 Serial IO Protocol");
++	EFI_GUID_STRING(EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL_GUID, "Bus Specific Driver Override Protocol", "EFI 1.1 Bus Specific Driver Override Protocol");
++	EFI_GUID_STRING(EFI_LOAD_FILE2_PROTOCOL_GUID, "LoadFile2 Protocol", "EFI Load File 2 Protocol");
++	EFI_GUID_STRING(EFI_MTFTP4_SERVICE_BINDING_PROTOCOL_GUID, "MTFTP4 Service Binding Protocol", "MTFTP4 Service Binding Protocol");
++	EFI_GUID_STRING(EFI_DHCP4_PROTOCOL_GUID, "DHCP4 Protocol", "DHCP4 Protocol");
++	EFI_GUID_STRING(EFI_UDP4_SERVICE_BINDING_PROTOCOL_GUID, "UDP4 Service Binding Protocol", "UDP4 Service Binding Protocol");
++	EFI_GUID_STRING(EFI_TCP4_SERVICE_BINDING_PROTOCOL_GUID, "TCP4 Service Binding Protocol", "TCP4 Service Binding Protocol");
++	EFI_GUID_STRING(EFI_IP4_SERVICE_BINDING_PROTOCOL_GUID, "IP4 Service Binding Protocol", "IP4 Service Binding Protocol");
++	EFI_GUID_STRING(EFI_IP4_CONFIG_PROTOCOL_GUID, "Ip4Config Protocol", "Ip4Config Protocol");
++	EFI_GUID_STRING(EFI_ARP_SERVICE_BINDING_PROTOCOL_GUID, "ARP Service Binding Protocol", "ARP Service Binding Protocol");
++	EFI_GUID_STRING(EFI_MANAGED_NETWORK_SERVICE_BINDING_PROTOCOL_GUID, "Managed Network Service Binding Protocol", "Managed Network Service Binding Protocol");
++	EFI_GUID_STRING(EFI_VLAN_CONFIG_PROTOCOL_GUID, "VlanConfig Protocol", "VlanConfig Protocol");
++	EFI_GUID_STRING(EFI_HII_CONFIG_ACCESS_PROTOCOL_GUID, "HII Config Access Protocol", "HII Config Access 2.1 protocol");
++	EFI_GUID_STRING(LOAD_FILE_PROTOCOL_GUID, "LoadFile Protocol", "EFI 1.0 Load File Protocol");
++	EFI_GUID_STRING(EFI_COMPONENT_NAME2_PROTOCOL_GUID, "Component Name2 Protocol", "UEFI 2.0 Component Name2 Protocol");
++	EFI_GUID_STRING(EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID_31, "Network Interface Identifier Protocol_31",  "EFI1.1 Network Interface Identifier Protocol");
++	EFI_GUID_STRING(EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID, "Network Interface Identifier Protocol", "EFI Network Interface Identifier Protocol");
++
++	/* File */
++	EFI_GUID_STRING(EFI_IDEBUSDXE_INF_GUID, "IdeBusDxe.inf", "EFI IdeBusDxe.inf File GUID");
++	EFI_GUID_STRING(EFI_TERMINALDXE_INF_GUID, "TerminalDxe.inf", "EFI TerminalDxe.inf File GUID");
++	EFI_GUID_STRING(EFI_ISCSIDXE_INF_GUID, "IScsiDxe.inf", "EFI IScsiDxe.inf File GUID");
++	EFI_GUID_STRING(EFI_VLANCONFIGDXE_INF_GUID, "VlanConfigDxe.inf", "EFI VlanConfigDxe.inf File GUID");
++
++	return "unknown";
++}
+diff --git a/include/efi.h b/include/efi.h
+index c624eb3..597dc74 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -354,6 +354,112 @@ extern efi_runtime_services_t *RT;
+ #define EFI_BLOCK_IO_PROTOCOL_GUID \
+ 	EFI_GUID(0x964e5b21, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ 
++/* additional GUID from EDK2 */
++#define EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID \
++	EFI_GUID(0x220e73b6, 0x6bdb, 0x4413, 0x84, 0x5, 0xb9, 0x74, 0xb1, 0x8, 0x61, 0x9a)
++
++#define EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL_GUID \
++	EFI_GUID(0x8f644fa9, 0xe850, 0x4db1, 0x9c, 0xe2, 0xb, 0x44, 0x69, 0x8e, 0x8d, 0xa4)
++
++#define EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID \
++	EFI_GUID(0x2f707ebb, 0x4a1a, 0x11d4, 0x9a, 0x38, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++
++#define EFI_ISA_ACPI_PROTOCOL_GUID \
++	EFI_GUID(0x64a892dc, 0x5561, 0x4536, 0x92, 0xc7, 0x79, 0x9b, 0xfc, 0x18, 0x33, 0x55)
++
++#define EFI_ISA_IO_PROTOCOL_GUID \
++	EFI_GUID(0x7ee2bd44, 0x3da0, 0x11d4, 0x9a, 0x38, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++
++#define EFI_STANDARD_ERROR_DEVICE_GUID \
++	EFI_GUID(0xd3b36f2d, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++
++#define EFI_CONSOLE_OUT_DEVICE_GUID \
++	EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++
++#define EFI_CONSOLE_IN_DEVICE_GUID \
++	EFI_GUID(0xd3b36f2b, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++
++#define EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID \
++	EFI_GUID(0x387477c2, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++
++#define EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID \
++	EFI_GUID(0xdd9e7534, 0x7762, 0x4698, 0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa)
++
++#define EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID \
++	EFI_GUID(0x387477c1, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++
++#define EFI_DISK_IO_PROTOCOL_GUID \
++	EFI_GUID(0xce345171, 0xba0b, 0x11d2, 0x8e, 0x4f, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++
++#define EFI_IDE_CONTROLLER_INIT_PROTOCOL_GUID \
++	EFI_GUID(0xa1e37052, 0x80d9, 0x4e65, 0xa3, 0x17, 0x3e, 0x9a, 0x55, 0xc4, 0x3e, 0xc9)
++
++#define EFI_DISK_INFO_PROTOCOL_GUID \
++	EFI_GUID(0xd432a67f, 0x14dc, 0x484b, 0xb3, 0xbb, 0x3f, 0x2, 0x91, 0x84, 0x93, 0x27)
++
++#define EFI_SERIAL_IO_PROTOCOL_GUID \
++	EFI_GUID(0xbb25cf6f, 0xf1d4, 0x11d2, 0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd)
++
++#define EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL_GUID \
++	EFI_GUID(0x3bc1b285, 0x8a15, 0x4a82, 0xaa, 0xbf, 0x4d, 0x7d, 0x13, 0xfb, 0x32, 0x65)
++
++#define EFI_LOAD_FILE2_PROTOCOL_GUID \
++	EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e, 0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
++
++#define EFI_MTFTP4_SERVICE_BINDING_PROTOCOL_GUID \
++	EFI_GUID(0x2fe800be, 0x8f01, 0x4aa6, 0x94, 0x6b, 0xd7, 0x13, 0x88, 0xe1, 0x83, 0x3f)
++
++#define EFI_DHCP4_PROTOCOL_GUID \
++	EFI_GUID(0x9d9a39d8, 0xbd42, 0x4a73, 0xa4, 0xd5, 0x8e, 0xe9, 0x4b, 0xe1, 0x13, 0x80)
++
++#define EFI_UDP4_SERVICE_BINDING_PROTOCOL_GUID \
++	EFI_GUID(0x83f01464, 0x99bd, 0x45e5, 0xb3, 0x83, 0xaf, 0x63, 0x05, 0xd8, 0xe9, 0xe6)
++
++#define EFI_TCP4_SERVICE_BINDING_PROTOCOL_GUID \
++	EFI_GUID(0x00720665, 0x67EB, 0x4a99, 0xBA, 0xF7, 0xD3, 0xC3, 0x3A, 0x1C, 0x7C, 0xC9)
++
++#define EFI_IP4_SERVICE_BINDING_PROTOCOL_GUID \
++	EFI_GUID(0xc51711e7, 0xb4bf, 0x404a, 0xbf, 0xb8, 0x0a, 0x04, 0x8e, 0xf1, 0xff, 0xe4)
++
++#define EFI_IP4_CONFIG_PROTOCOL_GUID \
++	EFI_GUID(0x3b95aa31, 0x3793, 0x434b, 0x86, 0x67, 0xc8, 0x07, 0x08, 0x92, 0xe0, 0x5e)
++
++#define EFI_ARP_SERVICE_BINDING_PROTOCOL_GUID\
++	EFI_GUID(0xf44c00ee, 0x1f2c, 0x4a00, 0xaa, 0x9, 0x1c, 0x9f, 0x3e, 0x8, 0x0, 0xa3)
++
++#define EFI_MANAGED_NETWORK_SERVICE_BINDING_PROTOCOL_GUID \
++	EFI_GUID(0xf36ff770, 0xa7e1, 0x42cf, 0x9e, 0xd2, 0x56, 0xf0, 0xf2, 0x71, 0xf4, 0x4c)
++
++#define EFI_VLAN_CONFIG_PROTOCOL_GUID \
++	EFI_GUID(0x9e23d768, 0xd2f3, 0x4366, 0x9f, 0xc3, 0x3a, 0x7a, 0xba, 0x86, 0x43, 0x74)
++
++#define EFI_HII_CONFIG_ACCESS_PROTOCOL_GUID \
++	EFI_GUID(0x330d4706, 0xf2a0, 0x4e4f, 0xa3, 0x69, 0xb6, 0x6f, 0xa8, 0xd5, 0x43, 0x85)
++
++#define LOAD_FILE_PROTOCOL_GUID \
++	EFI_GUID(0x56ec3091, 0x954c, 0x11d2, 0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++
++#define EFI_COMPONENT_NAME2_PROTOCOL_GUID \
++	EFI_GUID(0x6a7a5cff, 0xe8d9, 0x4f70, 0xba, 0xda, 0x75, 0xab, 0x30, 0x25, 0xce, 0x14)
++
++#define EFI_IDEBUSDXE_INF_GUID \
++	EFI_GUID(0x69fd8e47, 0xa161, 0x4550, 0xb0, 0x1a, 0x55, 0x94, 0xce, 0xb2, 0xb2, 0xb2)
++
++#define EFI_TERMINALDXE_INF_GUID \
++	EFI_GUID(0x9e863906, 0xa40f, 0x4875, 0x97, 0x7f, 0x5b, 0x93, 0xff, 0x23, 0x7f, 0xc6)
++
++#define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID_31 \
++	EFI_GUID(0x1aced566, 0x76ed, 0x4218, 0xbc, 0x81, 0x76, 0x7f, 0x1f, 0x97, 0x7a, 0x89)
++
++#define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID \
++	EFI_GUID(0xe18541cd, 0xf755, 0x4f73, 0x92, 0x8d, 0x64, 0x3c, 0x8a, 0x79, 0xb2, 0x29)
++
++#define EFI_ISCSIDXE_INF_GUID \
++	EFI_GUID(0x4579b72d, 0x7ec4, 0x4dd4, 0x84, 0x86, 0x08, 0x3c, 0x86, 0xb1, 0x82, 0xa7)
++
++#define EFI_VLANCONFIGDXE_INF_GUID \
++	EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
++
+ extern efi_guid_t efi_file_info_id;
+ extern efi_guid_t efi_simple_file_system_protocol_guid;
+ extern efi_guid_t efi_device_path_protocol_guid;
+@@ -505,4 +611,6 @@ static inline int efi_compare_guid(efi_guid_t *a, efi_guid_t *b)
+ 
+ char *device_path_to_str(struct efi_device_path *dev_path);
+ 
++const char *efi_guid_string(efi_guid_t *g);
++
+ #endif /* _LINUX_EFI_H */
+-- 
+2.0.0
 
-  efi: Add more error codes (2014-07-11 09:27:18 +0200)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/barebox.git efi
-
-for you to fetch changes up to 873c978375a9a0b689c5bc73ac2281d748e0b809:
-
-  EFI: introduce efi_strguid to convert GUID to human readable names (2014-07-11 09:29:13 +0200)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (1):
-      EFI: introduce efi_strguid to convert GUID to human readable names
-
-Sascha Hauer (6):
-      Documentation: Add EFI documentation
-      Add initial EFI architecture support
-      net: Add EFI Simple Network Protocol Driver
-      serial: Add EFI stdio driver
-      fs: implement EFI filesystem driver
-      fs: implement EFI variable filesystem driver
-
- .gitignore                                 |    1 +
- Documentation/boards/efi.rst               |  298 ++++++
- Documentation/glossary.rst                 |    3 +
- Makefile                                   |    3 +-
- arch/efi/Kconfig                           |   51 ++
- arch/efi/Makefile                          |   41 +
- arch/efi/configs/efi_defconfig             |   78 ++
- arch/efi/efi/Makefile                      |    2 +
- arch/efi/efi/clocksource.c                 |   60 ++
- arch/efi/efi/efi-block-io.c                |  174 ++++
- arch/efi/efi/efi-device.c                  |  349 +++++++
- arch/efi/efi/efi-image.c                   |  105 +++
- arch/efi/efi/efi.c                         |  343 +++++++
- arch/efi/efi/env-efi/network/eth0-discover |    5 +
- arch/efi/include/asm/barebox.h             |    1 +
- arch/efi/include/asm/bitops.h              |   15 +
- arch/efi/include/asm/byteorder.h           |    8 +
- arch/efi/include/asm/common.h              |    4 +
- arch/efi/include/asm/dma.h                 |   13 +
- arch/efi/include/asm/elf.h                 |   60 ++
- arch/efi/include/asm/io.h                  |   55 ++
- arch/efi/include/asm/posix_types.h         |   93 ++
- arch/efi/include/asm/sections.h            |    1 +
- arch/efi/include/asm/string.h              |    1 +
- arch/efi/include/asm/swab.h                |    6 +
- arch/efi/include/asm/types.h               |   73 ++
- arch/efi/include/asm/unaligned.h           |   19 +
- arch/efi/include/mach/debug_ll.h           |   20 +
- arch/efi/include/mach/efi-device.h         |   45 +
- arch/efi/include/mach/efi.h                |   24 +
- arch/efi/lib/.gitignore                    |    2 +
- arch/efi/lib/Makefile                      |    4 +
- arch/efi/lib/crt0-efi-ia32.S               |   76 ++
- arch/efi/lib/crt0-efi-x86_64.S             |   75 ++
- arch/efi/lib/elf_ia32_efi.lds.S            |  102 +++
- arch/efi/lib/elf_x86_64_efi.lds.S          |   93 ++
- arch/efi/lib/reloc_ia32.c                  |   97 ++
- arch/efi/lib/reloc_x86_64.c                |   96 ++
- commands/edit.c                            |   11 +-
- common/Kconfig                             |    8 +
- common/Makefile                            |    4 +-
- common/efi-devicepath.c                    | 1370 ++++++++++++++++++++++++++++
- common/efi-guid.c                          |   84 ++
- common/memory.c                            |    2 +-
- common/partitions/efi.c                    |    2 +-
- drivers/net/Kconfig                        |    4 +
- drivers/net/Makefile                       |    1 +
- drivers/net/efi-snp.c                      |  296 ++++++
- drivers/of/Kconfig                         |    2 +-
- drivers/serial/Kconfig                     |    4 +
- drivers/serial/Makefile                    |    1 +
- drivers/serial/efi-stdio.c                 |  367 ++++++++
- fs/Kconfig                                 |   15 +
- fs/Makefile                                |    2 +
- fs/efi.c                                   |  563 ++++++++++++
- fs/efivarfs.c                              |  340 +++++++
- include/efi.h                              |  572 ++++++------
- 57 files changed, 5873 insertions(+), 271 deletions(-)
- create mode 100644 Documentation/boards/efi.rst
- create mode 100644 arch/efi/Kconfig
- create mode 100644 arch/efi/Makefile
- create mode 100644 arch/efi/configs/efi_defconfig
- create mode 100644 arch/efi/efi/Makefile
- create mode 100644 arch/efi/efi/clocksource.c
- create mode 100644 arch/efi/efi/efi-block-io.c
- create mode 100644 arch/efi/efi/efi-device.c
- create mode 100644 arch/efi/efi/efi-image.c
- create mode 100644 arch/efi/efi/efi.c
- create mode 100644 arch/efi/efi/env-efi/network/eth0-discover
- create mode 100644 arch/efi/include/asm/barebox.h
- create mode 100644 arch/efi/include/asm/bitops.h
- create mode 100644 arch/efi/include/asm/byteorder.h
- create mode 100644 arch/efi/include/asm/common.h
- create mode 100644 arch/efi/include/asm/dma.h
- create mode 100644 arch/efi/include/asm/elf.h
- create mode 100644 arch/efi/include/asm/io.h
- create mode 100644 arch/efi/include/asm/posix_types.h
- create mode 100644 arch/efi/include/asm/sections.h
- create mode 100644 arch/efi/include/asm/string.h
- create mode 100644 arch/efi/include/asm/swab.h
- create mode 100644 arch/efi/include/asm/types.h
- create mode 100644 arch/efi/include/asm/unaligned.h
- create mode 100644 arch/efi/include/mach/debug_ll.h
- create mode 100644 arch/efi/include/mach/efi-device.h
- create mode 100644 arch/efi/include/mach/efi.h
- create mode 100644 arch/efi/lib/.gitignore
- create mode 100644 arch/efi/lib/Makefile
- create mode 100644 arch/efi/lib/crt0-efi-ia32.S
- create mode 100644 arch/efi/lib/crt0-efi-x86_64.S
- create mode 100644 arch/efi/lib/elf_ia32_efi.lds.S
- create mode 100644 arch/efi/lib/elf_x86_64_efi.lds.S
- create mode 100644 arch/efi/lib/reloc_ia32.c
- create mode 100644 arch/efi/lib/reloc_x86_64.c
- create mode 100644 common/efi-devicepath.c
- create mode 100644 common/efi-guid.c
- create mode 100644 drivers/net/efi-snp.c
- create mode 100644 drivers/serial/efi-stdio.c
- create mode 100644 fs/efi.c
- create mode 100644 fs/efivarfs.c
 
 _______________________________________________
 barebox mailing list
