@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f46.google.com ([209.85.215.46])
+Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X5Zxf-0003PE-54
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 12:30:00 +0000
-Received: by mail-la0-f46.google.com with SMTP id el20so825654lab.19
- for <barebox@lists.infradead.org>; Fri, 11 Jul 2014 05:29:33 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 11 Jul 2014 16:29:18 +0400
-Message-Id: <1405081759-15028-1-git-send-email-antonynpavlov@gmail.com>
+ id 1X5bbC-0002a2-Ux
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 14:14:55 +0000
+Received: by mail-wg0-f47.google.com with SMTP id y10so1126540wgg.6
+ for <barebox@lists.infradead.org>; Fri, 11 Jul 2014 07:14:29 -0700 (PDT)
+MIME-Version: 1.0
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
+Date: Fri, 11 Jul 2014 16:13:47 +0200
+Message-ID: <CACqcpZCQsyPBZ+YK+ogu+xhgnjQpA2rW3+py+EOe6+ukfvpEYA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,36 +17,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] fixup! gpio: add driver for PCA95[357]x, PCA9698, TCA64xx,
- and MAX7310 SMBus I/O expanders
+Subject: Nand with 256 oob
 To: barebox@lists.infradead.org
 
----
- drivers/gpio/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 179c63d..6928fcb 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -67,7 +67,6 @@ config GPIO_ORION
- config GPIO_PCA953X
- 	bool "PCA95[357]x, PCA9698, TCA64xx, and MAX7310 I/O ports"
- 	depends on I2C
--	select I2C_SMBUS
- 	help
- 	  Say yes here to provide access to several register-oriented
- 	  SMBus I/O expanders, made mostly by NXP or TI.  Compatible
--- 
-2.0.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgYWxsICEKCkkgd2FudCB0byB1c2UgYmFyZWJveCB3aXRoIG5hbmQgc3VwcG9ydCAoU29mdCBF
+Q0MpIG9uIGEgY3VzdG9tIGJvYXJkCmJhc2VkIG9uIFNBTTlNMTAsIGJ1dCB0aGUgbmFuZCBoYXMg
+YSAyNTYgb29iIHNpemUgYW5kIGl0IGlzIG5vdApzdXBwb3J0ZWQgb24gYmFyZWJveC4KCkJhcmVi
+b3ggZmFpbHMsIGJlY2F1c2UgdGhlcmUgaXMgbm8gb29iIHNjaGVtZSBkZWZpbmVkIGZvciAyNTYg
+c2l6ZS4KCmlmICghY2hpcC0+ZWNjLmxheW91dCAmJiAoY2hpcC0+ZWNjLm1vZGUgIT0gTkFORF9F
+Q0NfU09GVF9CQ0gpKSB7CnN3aXRjaCAobXRkLT5vb2JzaXplKSB7CmNhc2UgODoKY2hpcC0+ZWNj
+LmxheW91dCA9ICZuYW5kX29vYl84OwpicmVhazsKY2FzZSAxNjoKY2hpcC0+ZWNjLmxheW91dCA9
+ICZuYW5kX29vYl8xNjsKYnJlYWs7CmNhc2UgNjQ6CmNoaXAtPmVjYy5sYXlvdXQgPSAmbmFuZF9v
+b2JfNjQ7CmJyZWFrOwpjYXNlIDEyODoKY2hpcC0+ZWNjLmxheW91dCA9ICZuYW5kX29vYl8xMjg7
+CmJyZWFrOwpkZWZhdWx0Ogpwcl93YXJuKCJObyBvb2Igc2NoZW1lIGRlZmluZWQgZm9yIG9vYnNp
+emUgJWRcbiIsCiAgbXRkLT5vb2JzaXplKTsKQlVHKCk7Cn0KfQoKCkkgaGF2ZSBmb3VuZCB0aGlz
+IG9vYl8yNTYgc2NoZW1lIGJ1dCBJIGRvbid0IGtub3cgaWYgaXQncyBjb3JyZWN0IG9yIG5vdC4K
+CnN0YXRpYyBzdHJ1Y3QgbmFuZF9lY2NsYXlvdXQgbmFuZF9vb2JfMjU2ID0gewouZWNjYnl0ZXMg
+PSA5NiwKLmVjY3BvcyA9IHsKMTYwLCAxNjEsIDE2MiwgMTYzLCAxNjQsIDE2NSwgMTY2LCAxNjcs
+CjE2OCwgMTY5LCAxNzAsIDE3MSwgMTcyLCAxNzMsIDE3NCwgMTc1LAogICAxNzYsIDE3NywgMTc4
+LCAxNzksIDE4MCwgMTgxLCAxODIsIDE4MywKICAgMTg0LCAxODUsIDE4NiwgMTg3LCAxODgsIDE4
+OSwgMTkwLCAxOTEsCiAgIDE5MiwgMTkzLCAxOTQsIDE5NSwgMTk2LCAxOTcsIDE5OCwgMTk5LAog
+ICAyMDAsIDIwMSwgMjAyLCAyMDMsIDIwNCwgMjA1LCAyMDYsIDIwNywKICAgMjA4LCAyMDksIDIx
+MCwgMjExLCAyMTIsIDIxMywgMjE0LCAyMTUsCiAgIDIxNiwgMjE3LCAyMTgsIDIxOSwgMjIwLCAy
+MjEsIDIyMiwgMjIzLAogICAyMjQsIDIyNSwgMjI2LCAyMjcsIDIyOCwgMjI5LCAyMzAsIDIzMSwK
+ICAgMjMyLCAyMzMsIDIzNCwgMjM1LCAyMzYsIDIzNywgMjM4LCAyMzksCiAgIDI0MCwgMjQxLCAy
+NDIsIDI0MywgMjQ0LCAyNDUsIDI0NiwgMjQ3LAogICAyNDgsIDI0OSwgMjUwLCAyNTEsIDI1Miwg
+MjUzLCAyNTQsIDI1NX0sCi5vb2JmcmVlID0gewp7Lm9mZnNldCA9IDIsCi5sZW5ndGggPSAxNTh9
+fQp9OwoKQ2FuIHdlIHVzZSB0aGlzIHNjaGVtZSA/IE9yIHRoZXJlIGlzIGFub3RoZXIgc29sdXRp
+b24gPwoKVGhhbmtzLApSYXBoYcOrbAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
