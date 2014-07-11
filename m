@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X5Tsv-0002Kd-TG
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 06:00:42 +0000
-Received: by mail-lb0-f173.google.com with SMTP id v6so217915lbi.4
- for <barebox@lists.infradead.org>; Thu, 10 Jul 2014 23:00:18 -0700 (PDT)
-Date: Fri, 11 Jul 2014 10:12:36 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
-In-Reply-To: <20140711053738.GJ23235@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X5TzX-0004bj-1M
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 06:07:31 +0000
+Date: Fri, 11 Jul 2014 08:07:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140711060707.GL23235@pengutronix.de>
 References: <1404981199-21293-1-git-send-email-antonynpavlov@gmail.com>
- <20140711053738.GJ23235@pengutronix.de>
-Mime-Version: 1.0
+ <1404981199-21293-6-git-send-email-antonynpavlov@gmail.com>
+ <20140710214547.GI23235@pengutronix.de>
+ <20140711095936.afd2e87610ee74eb2921309f@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140711095936.afd2e87610ee74eb2921309f@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,76 +21,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/5] add rtc support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [RFC 5/5] commands: add hwclock
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, 11 Jul 2014 07:37:38 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Fri, Jul 11, 2014 at 09:59:36AM +0400, Antony Pavlov wrote:
+> On Thu, 10 Jul 2014 23:45:47 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > > +BAREBOX_CMD_START(hwclock)
+> > > +	.cmd		= do_hwclock,
+> > > +	BAREBOX_CMD_DESC("query or set the hardware clock (RTC)")
+> > 
+> > This initial version doesn't allow to set the time.
+> 
+> I have no idea about simple and elegant solution for setting clock :(
+> 
+> My hwclock man page show me an example:
+> 
+>  hwclock --set --date="2011-08-14 16:45:05"
+> 
+> I'll try to find some ready-to-use strptime-like function (e.g. in uClibc).
 
-> On Thu, Jul 10, 2014 at 12:33:14PM +0400, Antony Pavlov wrote:
-> > This patchseries imports RTC support from linux-3.15.
-> > =
+The format which the date man page describes as "coordinated universal
+time" seems quite easy to parse. It's [MMDDhhmm[[CC]YY][.ss]], so
+071107572014 for now.
 
-> > User can use 'hwclock' command to see realtime clock readout.
-> > =
+> 
+> Also there is no epoch handling.
+> 
+> May be it's better to drop hwclock clock setting in the inital rtc support series?
 
-> > Tested with DS1307.
-> > =
+I think we should have set time support from the beginning. I mean
+setting the time is an important part of testing the drivers before
+merging them.
 
-> > TODOs:
-> > =
+Sascha
 
-> >  * rtc_set_time() is not realized;
-> >  * ds1307_set_time() is not tested;
-> >  * bcd lib is compiled in even if rtc support is disabled (as linux doe=
-s);
-> >    we can make it optional;
-> =
-
-> It's probably not worth it. The linker will throw it away anyway if
-> unused.
-
-Hmm, I have missed this.
-
-In this case can we drop I2C_SMBUS Kconfig stuff
-
-+config I2C_SMBUS
-+	bool
-+
-
-+obj-$(CONFIG_I2C_SMBUS) +=3D i2c-smbus.o
-
-from 'add driver for PCA95[357]x, ...' series?
-
-Anyway CONFIG_I2C_SMBUS has another meaning in linux.
-
-> =
-
-> >  * adjust include/linux/rtc.h and include/rtc.h;
-> >  * rtc_unregister() is not realized.
-> =
-
-> Maybe an environment variable which holds the seconds since epoch would
-> be useful. This way scripts could make use of the current RTC time.
-
-So you propose to add an option to hwclock command to store RTC readout int=
-o variable,
-isn't it?
-
-I have an idea to put epoch offset (number of years into AD to which a zero=
- year value
-in the Hardware Clock refers) into "global.epoch" variable and add correspo=
-nding
-Kconfig option for default epoch value.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
