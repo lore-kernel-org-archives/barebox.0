@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5TzX-0004bj-1M
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 06:07:31 +0000
-Date: Fri, 11 Jul 2014 08:07:07 +0200
+ Linux)) id 1X5U2i-0006KT-7s
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 06:10:49 +0000
+Date: Fri, 11 Jul 2014 08:10:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140711060707.GL23235@pengutronix.de>
+Message-ID: <20140711061026.GM23235@pengutronix.de>
 References: <1404981199-21293-1-git-send-email-antonynpavlov@gmail.com>
- <1404981199-21293-6-git-send-email-antonynpavlov@gmail.com>
- <20140710214547.GI23235@pengutronix.de>
- <20140711095936.afd2e87610ee74eb2921309f@gmail.com>
+ <20140711053738.GJ23235@pengutronix.de>
+ <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140711095936.afd2e87610ee74eb2921309f@gmail.com>
+In-Reply-To: <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +24,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 5/5] commands: add hwclock
+Subject: Re: [RFC 0/5] add rtc support
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 11, 2014 at 09:59:36AM +0400, Antony Pavlov wrote:
-> On Thu, 10 Jul 2014 23:45:47 +0200
+On Fri, Jul 11, 2014 at 10:12:36AM +0400, Antony Pavlov wrote:
+> On Fri, 11 Jul 2014 07:37:38 +0200
 > Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> > > +BAREBOX_CMD_START(hwclock)
-> > > +	.cmd		= do_hwclock,
-> > > +	BAREBOX_CMD_DESC("query or set the hardware clock (RTC)")
+> > On Thu, Jul 10, 2014 at 12:33:14PM +0400, Antony Pavlov wrote:
+> > > This patchseries imports RTC support from linux-3.15.
+> > > 
+> > > User can use 'hwclock' command to see realtime clock readout.
+> > > 
+> > > Tested with DS1307.
+> > > 
+> > > TODOs:
+> > > 
+> > >  * rtc_set_time() is not realized;
+> > >  * ds1307_set_time() is not tested;
+> > >  * bcd lib is compiled in even if rtc support is disabled (as linux does);
+> > >    we can make it optional;
 > > 
-> > This initial version doesn't allow to set the time.
+> > It's probably not worth it. The linker will throw it away anyway if
+> > unused.
 > 
-> I have no idea about simple and elegant solution for setting clock :(
+> Hmm, I have missed this.
 > 
-> My hwclock man page show me an example:
+> In this case can we drop I2C_SMBUS Kconfig stuff
 > 
->  hwclock --set --date="2011-08-14 16:45:05"
+> +config I2C_SMBUS
+> +	bool
+> +
 > 
-> I'll try to find some ready-to-use strptime-like function (e.g. in uClibc).
+> +obj-$(CONFIG_I2C_SMBUS) += i2c-smbus.o
+> 
+> from 'add driver for PCA95[357]x, ...' series?
+> 
+> Anyway CONFIG_I2C_SMBUS has another meaning in linux.
+> 
+> > 
+> > >  * adjust include/linux/rtc.h and include/rtc.h;
+> > >  * rtc_unregister() is not realized.
+> > 
+> > Maybe an environment variable which holds the seconds since epoch would
+> > be useful. This way scripts could make use of the current RTC time.
+> 
+> So you propose to add an option to hwclock command to store RTC readout into variable,
+> isn't it?
 
-The format which the date man page describes as "coordinated universal
-time" seems quite easy to parse. It's [MMDDhhmm[[CC]YY][.ss]], so
-071107572014 for now.
+Yes. This would allow scripts to compare times or to store the current
+time in some boot log.
 
 > 
-> Also there is no epoch handling.
-> 
-> May be it's better to drop hwclock clock setting in the inital rtc support series?
+> I have an idea to put epoch offset (number of years into AD to which a zero year value
+> in the Hardware Clock refers) into "global.epoch" variable and add corresponding
+> Kconfig option for default epoch value.
 
-I think we should have set time support from the beginning. I mean
-setting the time is an important part of testing the drivers before
-merging them.
+Does Linux support such a mechanism aswell? How can we make sure Linux
+uses the same epoch offset?
 
 Sascha
 
