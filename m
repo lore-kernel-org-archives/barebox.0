@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5VBb-0007xC-3t
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:24:03 +0000
-Date: Fri, 11 Jul 2014 09:23:40 +0200
+ Linux)) id 1X5VPC-0006cL-2u
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140711072340.GE23282@pengutronix.de>
-References: <1404809417-21477-1-git-send-email-s.hauer@pengutronix.de>
- <1404837514-773-1-git-send-email-plagnioj@jcrosoft.com>
- <1404837514-773-2-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1404837514-773-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 11 Jul 2014 09:36:29 +0200
+Message-Id: <1405064190-1977-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
+References: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,35 +16,402 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] EFI: introduce efi_strguid to convert GUID to human
- readable names
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 6/7] fs: implement EFI variable filesystem driver
+To: barebox@lists.infradead.org
 
-On Tue, Jul 08, 2014 at 06:38:34PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> use in devinfo Protocols
-> 
-> Tested today on qemu with all the GUID translated
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+This implements a filesystem for accessing EFI variables.
+It is compatible to the Linux Kernel efivarfs filesystem.
+Currently the variables can only be accessed readonly.
 
-I added this to my series with one change. I added the string conversion
-function to common/efi-guid.c since it can be used on other
-architectures aswell (for example should we ever decide to not only run
-on EFI, but also provide EFI functionality).
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/Kconfig    |   7 ++
+ fs/Makefile   |   1 +
+ fs/efivarfs.c | 340 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 348 insertions(+)
+ create mode 100644 fs/efivarfs.c
 
-Sascha
-
-
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 21690de..64fc117 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -49,6 +49,13 @@ config FS_EFI
+ 	  This filesystem driver provides access to the filesystems provided
+ 	  by the EFI Firmware via the EFI Simple File System Protocol.
+ 
++config FS_EFIVARFS
++	depends on ARCH_EFI
++	bool
++	prompt "EFI variable filesystem support (efivarfs)"
++	help
++	  This filesystem driver provides access to EFI variables.
++
+ source fs/fat/Kconfig
+ source fs/ubifs/Kconfig
+ 
+diff --git a/fs/Makefile b/fs/Makefile
+index f027851..f5aae91 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -12,3 +12,4 @@ obj-$(CONFIG_FS_NFS)	+= nfs.o parseopt.o
+ obj-$(CONFIG_FS_BPKFS) += bpkfs.o
+ obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
+ obj-$(CONFIG_FS_EFI)	 += efi.o
++obj-$(CONFIG_FS_EFIVARFS) += efivarfs.o
+diff --git a/fs/efivarfs.c b/fs/efivarfs.c
+new file mode 100644
+index 0000000..58c637e
+--- /dev/null
++++ b/fs/efivarfs.c
+@@ -0,0 +1,340 @@
++/*
++ * ramfs.c - a malloc based filesystem
++ *
++ * Copyright (c) 2007 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <malloc.h>
++#include <fs.h>
++#include <string.h>
++#include <errno.h>
++#include <linux/stat.h>
++#include <xfuncs.h>
++#include <fcntl.h>
++#include <efi.h>
++#include <wchar.h>
++#include <linux/err.h>
++#include <linux/ctype.h>
++#include <mach/efi.h>
++#include <mach/efi-device.h>
++
++struct efivarfs_priv {
++	struct efi_file_handle *root_dir;
++	struct efi_file_io_interface *protocol;
++};
++
++static int char_to_nibble(char c)
++{
++	int ret = tolower(c);
++
++	return ret <= '9' ? ret - '0' : ret - 'a' + 10;
++}
++
++static int read_byte_str(const char *str, u8 *out)
++{
++	if (!isxdigit(*str) || !isxdigit(*(str + 1)))
++		return -EINVAL;
++
++	*out = (char_to_nibble(*str) << 4) | char_to_nibble(*(str + 1));
++
++	return 0;
++}
++
++int efi_guid_parse(const char *str, efi_guid_t *guid)
++{
++	int i, ret;
++	u8 idx[] = { 3, 2, 1, 0, 5, 4, 7, 6, 8, 9, 10, 11, 12, 13, 14, 15 };
++
++	for (i = 0; i < 16; i++) {
++		ret = read_byte_str(str, &guid->b[idx[i]]);
++		if (ret)
++			return ret;
++		str += 2;
++
++		switch (i) {
++		case 3:
++		case 5:
++		case 7:
++		case 9:
++			if (*str != '-')
++				return -EINVAL;
++			str++;
++                        break;
++                }
++	}
++
++	return 0;
++}
++
++static int efivarfs_parse_filename(const char *filename, efi_guid_t *vendor, s16 **name)
++{
++	int len, ret;
++	const char *guidstr;
++	s16 *varname;
++	int i;
++
++	if (*filename == '/')
++		filename++;
++
++	len = strlen(filename);
++
++	if (len < sizeof("-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"))
++		return -EINVAL;
++
++	guidstr = filename + len - sizeof("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
++	if (*guidstr != '-')
++		return -EINVAL;
++
++	guidstr++;
++
++	ret = efi_guid_parse(guidstr, vendor);
++
++	varname = xzalloc((guidstr - filename) * sizeof(s16));
++
++	for (i = 0; i < guidstr - filename - 1; i++)
++		varname[i] = filename[i];
++
++	*name = varname;
++
++	return 0;
++}
++
++struct efivars_file {
++	void *buf;
++	unsigned long size;
++	efi_guid_t vendor;
++	s16 *name;
++};
++
++static int efivarfs_open(struct device_d *dev, FILE *f, const char *filename)
++{
++	struct efivars_file *efile;
++	efi_status_t efiret;
++	int ret;
++	uint32_t attributes;
++
++	efile = xzalloc(sizeof(*efile));
++
++	ret = efivarfs_parse_filename(filename, &efile->vendor, &efile->name);
++	if (ret)
++		return -ENOENT;
++
++	efiret = RT->get_variable(efile->name, &efile->vendor, &attributes, &efile->size, NULL);
++	if (EFI_ERROR(efiret) && efiret != EFI_BUFFER_TOO_SMALL) {
++		ret = -efi_errno(efiret);
++		goto out;
++	}
++
++	efile->buf = malloc(efile->size + sizeof(uint32_t));
++	if (!efile->buf) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	efiret = RT->get_variable(efile->name, &efile->vendor, NULL, &efile->size,
++			efile->buf + sizeof(uint32_t));
++	if (EFI_ERROR(efiret)) {
++		ret = -efi_errno(efiret);
++		goto out;
++	}
++
++	*(uint32_t *)efile->buf = attributes;
++
++	f->size = efile->size + sizeof(uint32_t);
++	f->inode = efile;
++
++	return 0;
++
++out:
++	free(efile->buf);
++	free(efile);
++
++	return ret;
++}
++
++static int efivarfs_close(struct device_d *dev, FILE *f)
++{
++	struct efivars_file *efile = f->inode;
++
++	free(efile->buf);
++	free(efile);
++
++	return 0;
++}
++
++static int efivarfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
++{
++	struct efivars_file *efile = f->inode;
++
++	memcpy(buf, efile->buf + f->pos, insize);
++
++	return insize;
++}
++
++static loff_t efivarfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
++{
++	f->pos = pos;
++
++	return f->pos;
++}
++
++struct efivarfs_dir_entry {
++	char *name;
++	struct efivarfs_dir_entry *next;
++};
++
++struct efivarfs_dir {
++	struct efivarfs_dir_entry *first;
++	struct efivarfs_dir_entry *current;
++	DIR dir;
++};
++
++static DIR *efivarfs_opendir(struct device_d *dev, const char *pathname)
++{
++	efi_status_t efiret;
++	efi_guid_t vendor;
++	s16 name[1024];
++	struct efivarfs_dir *edir;
++	unsigned long size;
++	unsigned char *name8;
++
++	name[0] = 0;
++
++	edir = xzalloc(sizeof(*edir));
++
++	while (1) {
++		struct efivarfs_dir_entry *entry;
++
++		size = sizeof(name);
++		efiret = RT->get_next_variable(&size, name, &vendor);
++		if (EFI_ERROR(efiret))
++			break;
++
++		entry = xzalloc(sizeof(*entry));
++		name8 = strdup_wchar_to_char(name);
++
++		entry->name = asprintf("%s-%pUl", name8, &vendor);
++
++		free(name8);
++
++		if (!edir->first)
++			edir->first = entry;
++
++		if (edir->current)
++			edir->current->next = entry;
++
++		edir->current = entry;
++	}
++
++	edir->current = edir->first;
++
++	return &edir->dir;
++}
++
++static struct dirent *efivarfs_readdir(struct device_d *dev, DIR *dir)
++{
++	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
++
++	if (!edir->current)
++		return NULL;
++
++	strcpy(dir->d.d_name, edir->current->name);
++
++	edir->current = edir->current->next;
++
++	return &dir->d;
++}
++
++static int efivarfs_closedir(struct device_d *dev, DIR *dir)
++{
++	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
++	struct efivarfs_dir_entry *entry;
++
++	entry = edir->first;
++
++	while (entry) {
++		struct efivarfs_dir_entry *tmp;
++		free(entry->name);
++		tmp = entry->next;
++		free(entry);
++		entry = tmp;
++	}
++
++	free(edir);
++
++	return 0;
++}
++
++static int efivarfs_stat(struct device_d *dev, const char *filename, struct stat *s)
++{
++	efi_guid_t vendor;
++	s16 *name;
++	efi_status_t efiret;
++	unsigned long size = 0;
++	int ret;
++
++	ret = efivarfs_parse_filename(filename, &vendor, &name);
++	if (ret)
++		return -ENOENT;
++
++	efiret = RT->get_variable(name, &vendor, NULL, &size, NULL);
++
++	free(name);
++
++	if (EFI_ERROR(efiret) && efiret != EFI_BUFFER_TOO_SMALL)
++		return -efi_errno(efiret);
++
++	s->st_mode = 00666 | S_IFREG;
++	s->st_size = size;
++
++	return 0;
++}
++
++static int efivarfs_probe(struct device_d *dev)
++{
++	return 0;
++}
++
++static void efivarfs_remove(struct device_d *dev)
++{
++	free(dev->priv);
++}
++
++static struct fs_driver_d efivarfs_driver = {
++	.open      = efivarfs_open,
++	.close     = efivarfs_close,
++	.read      = efivarfs_read,
++	.lseek     = efivarfs_lseek,
++	.opendir   = efivarfs_opendir,
++	.readdir   = efivarfs_readdir,
++	.closedir  = efivarfs_closedir,
++	.stat      = efivarfs_stat,
++	.drv = {
++		.probe  = efivarfs_probe,
++		.remove = efivarfs_remove,
++		.name = "efivarfs",
++	}
++};
++
++static int efivarfs_init(void)
++{
++	return register_fs_driver(&efivarfs_driver);
++}
++
++coredevice_initcall(efivarfs_init);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.0
+
 
 _______________________________________________
 barebox mailing list
