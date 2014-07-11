@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5VPC-0006cA-34
+ Linux)) id 1X5VPC-0006cD-2t
  for barebox@lists.infradead.org; Fri, 11 Jul 2014 07:38:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 11 Jul 2014 09:36:26 +0200
-Message-Id: <1405064190-1977-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 11 Jul 2014 09:36:27 +0200
+Message-Id: <1405064190-1977-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405064190-1977-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,52 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] net: Add EFI Simple Network Protocol Driver
+Subject: [PATCH 4/7] serial: Add EFI stdio driver
 To: barebox@lists.infradead.org
 
-This adds a network driver which uses the EFI Simple Network
-Protocol to implement networking for barebox.
+This adds a driver which uses the EFI stdin/stdout interfaces to
+implement a barebox console. Keyboard input should be fairly complete,
+but not all vt100 needed by barebox work properly. The clear-to-eol
+escape is missing causing garbled output in the editor.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/Kconfig   |   4 +
- drivers/net/Makefile  |   1 +
- drivers/net/efi-snp.c | 296 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 301 insertions(+)
- create mode 100644 drivers/net/efi-snp.c
+ commands/edit.c            |  11 +-
+ drivers/serial/Kconfig     |   4 +
+ drivers/serial/Makefile    |   1 +
+ drivers/serial/efi-stdio.c | 367 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 382 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/serial/efi-stdio.c
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 5f0c41b..43409a8 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -170,6 +170,10 @@ config DRIVER_NET_TAP
- 	bool "tap Ethernet driver"
- 	depends on LINUX
+diff --git a/commands/edit.c b/commands/edit.c
+index 5a2da7d..98af583 100644
+--- a/commands/edit.c
++++ b/commands/edit.c
+@@ -379,7 +379,16 @@ static int do_edit(int argc, char *argv[])
+ 		return COMMAND_ERROR_USAGE;
  
-+config DRIVER_NET_EFI_SNP
-+	bool "EFI SNP ethernet driver"
-+	depends on ARCH_EFI
+ 	screenwidth = 80;
+-	screenheight = 25;
 +
- config DRIVER_NET_TSE
- 	depends on NIOS2
- 	bool "Altera TSE ethernet driver"
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 33bb5c8..1b85778 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -26,3 +26,4 @@ obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
- obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
- obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
- obj-$(CONFIG_DRIVER_NET_TSE)		+= altera_tse.o
-+obj-$(CONFIG_DRIVER_NET_EFI_SNP)	+= efi-snp.o
-diff --git a/drivers/net/efi-snp.c b/drivers/net/efi-snp.c
++	/*
++	 * The EFI simple text output protocol wraps to the next line and scrolls
++	 * down when we write to the right bottom screen position. Reduce the number
++	 * of rows by one to work around this.
++	 */
++	if (IS_ENABLED(CONFIG_ARCH_EFI))
++		screenheight = 24;
++	else
++		screenheight = 25;
+ 
+ 	/* check if we are called as "sedit" instead of "edit" */
+ 	if (*argv[0] == 's') {
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index f51c6e6..5698c2f 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -45,6 +45,10 @@ config DRIVER_SERIAL_LINUX_CONSOLE
+ 	default y
+ 	bool "linux console driver"
+ 
++config DRIVER_SERIAL_EFI_STDIO
++	depends on ARCH_EFI
++	bool "EFI stdio driver"
++
+ config DRIVER_SERIAL_MPC5XXX
+ 	depends on MPC5200
+ 	default y
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index e1865f7..2c0176d 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -18,3 +18,4 @@ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+ obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
+ obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
+ obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
++obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
+diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
 new file mode 100644
-index 0000000..5b96fbf
+index 0000000..bf14c5e
 --- /dev/null
-+++ b/drivers/net/efi-snp.c
-@@ -0,0 +1,296 @@
++++ b/drivers/serial/efi-stdio.c
+@@ -0,0 +1,367 @@
 +/*
-+ * efi-snp.c - Simple Network Protocol driver for EFI
++ * efi_console.c - EFI console support
 + *
 + * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
 + *
@@ -78,289 +103,360 @@ index 0000000..5b96fbf
 + * as published by the Free Software Foundation.
 + *
 + * This program is distributed in the hope that it will be useful,
-+ * but WITHANY WARRANTY; without even the implied warranty of
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
 + */
-+
 +#include <common.h>
 +#include <driver.h>
-+#include <malloc.h>
-+#include <net.h>
 +#include <init.h>
++#include <malloc.h>
++#include <console.h>
++#include <xfuncs.h>
 +#include <efi.h>
++#include <readkey.h>
++#include <linux/ctype.h>
 +#include <mach/efi.h>
-+#include <mach/efi-device.h>
 +
-+struct efi_network_statistics {
-+	uint64_t RxTotalFrames;
-+	uint64_t RxGoodFrames;
-+	uint64_t RxUndersizeFrames;
-+	uint64_t RxOversizeFrames;
-+	uint64_t RxDroppedFrames;
-+	uint64_t RxUnicastFrames;
-+	uint64_t RxBroadcastFrames;
-+	uint64_t RxMulticastFrames;
-+	uint64_t RxCrcErrorFrames;
-+	uint64_t RxTotalBytes;
-+	uint64_t TxTotalFrames;
-+	uint64_t TxGoodFrames;
-+	uint64_t TxUndersizeFrames;
-+	uint64_t TxOversizeFrames;
-+	uint64_t TxDroppedFrames;
-+	uint64_t TxUnicastFrames;
-+	uint64_t TxBroadcastFrames;
-+	uint64_t TxMulticastFrames;
-+	uint64_t TxCrcErrorFrames;
-+	uint64_t TxTotalBytes;
-+	uint64_t Collisions;
-+	uint64_t UnsupportedProtocol;
++#define EFI_SHIFT_STATE_VALID           0x80000000
++#define EFI_RIGHT_CONTROL_PRESSED       0x00000004
++#define EFI_LEFT_CONTROL_PRESSED        0x00000008
++#define EFI_RIGHT_ALT_PRESSED           0x00000010
++#define EFI_LEFT_ALT_PRESSED            0x00000020
++
++#define EFI_CONTROL_PRESSED             (EFI_RIGHT_CONTROL_PRESSED | EFI_LEFT_CONTROL_PRESSED)
++#define EFI_ALT_PRESSED                 (EFI_RIGHT_ALT_PRESSED | EFI_LEFT_ALT_PRESSED)
++#define KEYPRESS(keys, scan, uni) ((((uint64_t)keys) << 32) | ((scan) << 16) | (uni))
++#define KEYCHAR(k) ((k) & 0xffff)
++#define CHAR_CTRL(c) ((c) - 'a' + 1)
++
++#define EFI_BLACK   0x00
++#define EFI_BLUE    0x01
++#define EFI_GREEN   0x02
++#define EFI_CYAN            (EFI_BLUE | EFI_GREEN)
++#define EFI_RED     0x04
++#define EFI_MAGENTA         (EFI_BLUE | EFI_RED)
++#define EFI_BROWN           (EFI_GREEN | EFI_RED)
++#define EFI_LIGHTGRAY       (EFI_BLUE | EFI_GREEN | EFI_RED)
++#define EFI_BRIGHT  0x08
++#define EFI_DARKGRAY        (EFI_BRIGHT)
++#define EFI_LIGHTBLUE       (EFI_BLUE | EFI_BRIGHT)
++#define EFI_LIGHTGREEN      (EFI_GREEN | EFI_BRIGHT)
++#define EFI_LIGHTCYAN       (EFI_CYAN | EFI_BRIGHT)
++#define EFI_LIGHTRED        (EFI_RED | EFI_BRIGHT)
++#define EFI_LIGHTMAGENTA    (EFI_MAGENTA | EFI_BRIGHT)
++#define EFI_YELLOW          (EFI_BROWN | EFI_BRIGHT)
++#define EFI_WHITE           (EFI_BLUE | EFI_GREEN | EFI_RED | EFI_BRIGHT)
++
++#define EFI_TEXT_ATTR(f,b)  ((f) | ((b) << 4))
++
++#define EFI_BACKGROUND_BLACK        0x00
++#define EFI_BACKGROUND_BLUE         0x10
++#define EFI_BACKGROUND_GREEN        0x20
++#define EFI_BACKGROUND_CYAN         (EFI_BACKGROUND_BLUE | EFI_BACKGROUND_GREEN)
++#define EFI_BACKGROUND_RED          0x40
++#define EFI_BACKGROUND_MAGENTA      (EFI_BACKGROUND_BLUE | EFI_BACKGROUND_RED)
++#define EFI_BACKGROUND_BROWN        (EFI_BACKGROUND_GREEN | EFI_BACKGROUND_RED)
++#define EFI_BACKGROUND_LIGHTGRAY    (EFI_BACKGROUND_BLUE | EFI_BACKGROUND_GREEN | EFI_BACKGROUND_RED)
++
++struct efi_console_priv {
++	struct efi_simple_text_output_protocol *out;
++	struct efi_simple_input_interface *in;
++	struct console_device cdev;
++	int lastkey;
++	u16 efi_console_buffer[CONFIG_CBSIZE];
++
++	unsigned long columns, rows;
++
++	int current_color;
++	s16 *blank_line;
 +};
 +
-+enum efi_simple_network_state {
-+	EfiSimpleNetworkStopped,
-+	EfiSimpleNetworkStarted,
-+	EfiSimpleNetworkInitialized,
-+	EfiSimpleNetworkMaxState
-+};
-+
-+#define EFI_SIMPLE_NETWORK_RECEIVE_UNICAST               0x01
-+#define EFI_SIMPLE_NETWORK_RECEIVE_MULTICAST             0x02
-+#define EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST             0x04
-+#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS           0x08
-+#define EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS_MULTICAST 0x10
-+
-+#define EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT        0x01
-+#define EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT       0x02
-+#define EFI_SIMPLE_NETWORK_COMMAND_INTERRUPT        0x04
-+#define EFI_SIMPLE_NETWORK_SOFTWARE_INTERRUPT       0x08
-+
-+#define MAX_MCAST_FILTER_CNT    16
-+struct efi_simple_network_mode {
-+	uint32_t State;
-+	uint32_t HwAddressSize;
-+	uint32_t MediaHeaderSize;
-+	uint32_t MaxPacketSize;
-+	uint32_t NvRamSize;
-+	uint32_t NvRamAccessSize;
-+	uint32_t ReceiveFilterMask;
-+	uint32_t ReceiveFilterSetting;
-+	uint32_t MaxMCastFilterCount;
-+	uint32_t MCastFilterCount;
-+	efi_mac_address MCastFilter[MAX_MCAST_FILTER_CNT];
-+	efi_mac_address CurrentAddress;
-+	efi_mac_address BroadcastAddress;
-+	efi_mac_address PermanentAddress;
-+	uint8_t IfType;
-+        bool MacAddressChangeable;
-+	bool MultipleTxSupported;
-+	bool MediaPresentSupported;
-+	bool MediaPresent;
-+};
-+
-+#define EFI_SIMPLE_NETWORK_INTERFACE_REVISION   0x00010000
-+
-+struct efi_simple_network {
-+	uint64_t Revision;
-+	efi_status_t (EFIAPI *start) (struct efi_simple_network *This);
-+	efi_status_t (EFIAPI *stop) (struct efi_simple_network *This);
-+	efi_status_t (EFIAPI *initialize) (struct efi_simple_network *This,
-+			unsigned long ExtraRxBufferSize, unsigned long ExtraTxBufferSize);
-+	efi_status_t (EFIAPI *reset) (struct efi_simple_network *This, bool ExtendedVerification);
-+	efi_status_t (EFIAPI *shutdown) (struct efi_simple_network *This);
-+	efi_status_t (EFIAPI *receive_filters) (struct efi_simple_network *This,
-+			uint32_t Enable, uint32_t Disable, bool ResetMCastFilter,
-+			unsigned long MCastFilterCnt, efi_mac_address *MCastFilter);
-+	efi_status_t (EFIAPI *station_address) (struct efi_simple_network *This,
-+			bool Reset, efi_mac_address *New);
-+	efi_status_t (EFIAPI *statistics) (struct efi_simple_network *This,
-+			bool Reset, unsigned long *StatisticsSize,
-+			struct efi_network_statistics *StatisticsTable);
-+	efi_status_t (EFIAPI *mcast_ip_to_mac) (struct efi_simple_network *This,
-+			bool IPv6, efi_ip_address *IP, efi_mac_address *MAC);
-+	efi_status_t (EFIAPI *nvdata) (struct efi_simple_network *This,
-+			bool ReadWrite, unsigned long Offset, unsigned long BufferSize,
-+			void *Buffer);
-+	efi_status_t (EFIAPI *get_status) (struct efi_simple_network *This,
-+			uint32_t *InterruptStatus, void **TxBuf);
-+	efi_status_t (EFIAPI *transmit) (struct efi_simple_network *This,
-+			unsigned long HeaderSize, unsigned long BufferSize, void *Buffer,
-+			efi_mac_address *SrcAddr, efi_mac_address *DestAddr,
-+			uint16_t *Protocol);
-+	efi_status_t (EFIAPI *receive) (struct efi_simple_network *This,
-+			unsigned long *HeaderSize, unsigned long *BufferSize, void *Buffer,
-+			efi_mac_address *SrcAddr, efi_mac_address *DestAddr, uint16_t *Protocol);
-+	void *WaitForPacket;
-+	struct efi_simple_network_mode *Mode;
-+};
-+
-+struct efi_snp_priv {
-+	struct device_d *dev;
-+	struct eth_device edev;
-+	struct efi_simple_network *snp;
-+};
-+
-+static inline struct efi_snp_priv *to_priv(struct eth_device *edev)
++static inline struct efi_console_priv *to_efi(struct console_device *cdev)
 +{
-+	return container_of(edev, struct efi_snp_priv, edev);
++	return container_of(cdev, struct efi_console_priv, cdev);
 +}
 +
-+static int efi_snp_eth_send(struct eth_device *edev, void *packet, int length)
-+{
-+	struct efi_snp_priv *priv = to_priv(edev);
-+	efi_status_t efiret;
-+	void *txbuf;
-+	uint64_t start;
++struct efi_ctrlkey {
++	u8 scan_code;
++	u8 bb_key;
++};
 +
-+	efiret = priv->snp->transmit(priv->snp, 0, length, packet, NULL, NULL, NULL);
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to send: %s\n", efi_strerror(efiret));
++static struct efi_ctrlkey ctrlkeys[] = {
++	{ 0x01, BB_KEY_UP },
++	{ 0x02, BB_KEY_DOWN },
++	{ 0x03, BB_KEY_RIGHT },
++	{ 0x04, BB_KEY_LEFT },
++	{ 0x05, BB_KEY_HOME },
++	{ 0x06, BB_KEY_END },
++	{ 0x07, BB_KEY_INSERT },
++	{ 0x08, BB_KEY_DEL },
++	{ 0x09, BB_KEY_PAGEUP },
++	{ 0x0a, BB_KEY_PAGEDOWN },
++};
++
++static int efi_read_key(struct efi_console_priv *priv, bool wait)
++{
++	unsigned long index;
++	efi_status_t efiret;
++	struct efi_input_key k;
++	int i;
++
++	/* wait until key is pressed */
++	if (wait)
++		BS->wait_for_event(1, priv->in->wait_for_key, &index);
++
++        efiret = priv->in->read_key_stroke(efi_sys_table->con_in, &k);
++        if (EFI_ERROR(efiret))
 +		return -efi_errno(efiret);
++
++	/* 32 bit modifier keys + 16 bit scan code + 16 bit unicode */
++	for (i = 0; i < ARRAY_SIZE(ctrlkeys); i++) {
++		if (ctrlkeys[i].scan_code == k.scan_code)
++			return ctrlkeys[i].bb_key;
++
 +	}
 +
-+	start = get_time_ns();
-+
-+	while (!is_timeout(start, SECOND)) {
-+		uint32_t irq;
-+		priv->snp->get_status(priv->snp, &irq, &txbuf);
-+		if (txbuf)
-+			return 0;
-+	}
-+
-+	dev_err(priv->dev, "tx time out\n");
-+
-+	return -ETIMEDOUT;
++	return k.unicode_char & 0xff;
 +}
 +
-+static int efi_snp_eth_rx(struct eth_device *edev)
++static void efi_console_putc(struct console_device *cdev, char c)
 +{
-+	struct efi_snp_priv *priv = to_priv(edev);
-+	long bufsize = PKTSIZE;
-+	efi_status_t efiret;
++	uint16_t str[2] = {};
++	struct efi_simple_text_output_protocol *con_out = efi_sys_table->con_out;
 +
-+	efiret = priv->snp->receive(priv->snp, NULL, &bufsize, NetRxPackets[0], NULL, NULL, NULL);
-+	if (efiret == EFI_NOT_READY)
++	str[0] = c;
++
++	con_out->output_string(con_out, str);
++}
++
++static void clear_to_eol(struct efi_console_priv *priv)
++{
++	int pos = priv->out->mode->cursor_column;
++
++	priv->out->output_string(priv->out, priv->blank_line + pos);
++}
++
++static int efi_process_square_bracket(struct efi_console_priv *priv, const char *inp)
++{
++	int x, y;
++	char *endp;
++
++	inp++;
++
++	switch (*inp) {
++	case 'A':
++		/* Cursor up */
++	case 'B':
++		/* Cursor down */
++	case 'C':
++		/* Cursor right */
++	case 'D':
++		/* Cursor left */
++	case 'H':
++		/* home */
++	case 'F':
++		/* end */
++		return 3;
++	case 'K':
++		clear_to_eol(priv);
++		return 3;
++	}
++
++	if (*inp == '2' && *(inp + 1) == 'J') {
++		priv->out->clear_screen(priv->out);
++		return 4;
++	}
++
++	if (*inp == '0' && *(inp + 1) == 'm') {
++		priv->out->set_attribute(priv->out,
++				EFI_TEXT_ATTR(EFI_WHITE, EFI_BLACK));
++		return 4;
++	}
++
++	if (*inp == '7' && *(inp + 1) == 'm') {
++		priv->out->set_attribute(priv->out,
++				EFI_TEXT_ATTR(EFI_BLACK, priv->current_color));
++		return 4;
++	}
++
++	if (*inp == '1' &&
++			*(inp + 1) == ';' &&
++			*(inp + 2) == '3' &&
++			*(inp + 3) &&
++			*(inp + 4) == 'm') {
++		int color;
++		switch (*(inp + 3)) {
++		case '1': color = EFI_RED; break;
++		case '4': color = EFI_BLUE; break;
++		case '2': color = EFI_GREEN; break;
++		case '6': color = EFI_CYAN; break;
++		case '3': color = EFI_YELLOW; break;
++		case '5': color = EFI_MAGENTA; break;
++		case '7': color = EFI_WHITE; break;
++		default: color = EFI_WHITE; break;
++		}
++
++		priv->current_color = color;
++
++		priv->out->set_attribute(priv->out,
++				EFI_TEXT_ATTR(color, EFI_BLACK));
++		return 7;
++	}
++
++	y = simple_strtoul(inp, &endp, 10);
++	if (*endp == ';') {
++		x = simple_strtoul(endp + 1, &endp, 10);
++		if (*endp == 'H') {
++			priv->out->set_cursor_position(priv->out, x - 1, y - 1);
++			return endp - inp + 3;
++		}
++	}
++
++	return 8;
++}
++
++static int efi_process_key(struct efi_console_priv *priv, const char *inp)
++{
++	char c;
++
++	c = *inp;
++
++	if (c != 27)
 +		return 0;
 +
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to receive: %s\n", efi_strerror(efiret));
-+		return -efi_errno(efiret);
-+	}
++	inp++;
 +
-+	net_receive(edev, NetRxPackets[0], bufsize);
++	if (*inp == '[')
++		return efi_process_square_bracket(priv, inp);
 +
-+	return 0;
++	return 1;
 +}
 +
-+static int efi_snp_eth_open(struct eth_device *edev)
++static int efi_console_puts(struct console_device *cdev, const char *s)
 +{
-+	struct efi_snp_priv *priv = to_priv(edev);
-+	uint32_t mask;
++	struct efi_console_priv *priv = to_efi(cdev);
++	int n = 0;
++
++	while (*s) {
++		if (*s == 27) {
++			priv->efi_console_buffer[n] = 0;
++			priv->out->output_string(priv->out,
++					priv->efi_console_buffer);
++			n = 0;
++			s += efi_process_key(priv, s);
++			continue;
++		}
++
++		if (*s == '\n')
++			priv->efi_console_buffer[n++] = '\r';
++		priv->efi_console_buffer[n] = *s;
++		s++;
++		n++;
++	}
++
++	priv->efi_console_buffer[n] = 0;
++
++	priv->out->output_string(priv->out, priv->efi_console_buffer);
++
++	return n;
++}
++
++static int efi_console_tstc(struct console_device *cdev)
++{
++	struct efi_console_priv *priv = to_efi(cdev);
++	int key;
++
++	if (priv->lastkey > 0)
++		return 1;
++
++	key = efi_read_key(priv, 0);
++	if (key < 0)
++		return 0;
++
++	priv->lastkey = key;
++
++	return 1;
++}
++
++static int efi_console_getc(struct console_device *cdev)
++{
++	struct efi_console_priv *priv = to_efi(cdev);
++	int key;
++
++	if (priv->lastkey > 0) {
++		key = priv->lastkey;
++		priv->lastkey = -1;
++		return key;
++	}
++
++	return efi_read_key(priv, 1);
++}
++
++static void efi_set_mode(struct efi_console_priv *priv)
++{
++#if 0
++	int i;
++	unsigned long rows, columns, best = 0, mode = 0;
 +	efi_status_t efiret;
 +
-+	priv->snp->shutdown(priv->snp);
-+	priv->snp->stop(priv->snp);
-+	priv->snp->start(priv->snp);
-+	efiret = priv->snp->initialize(priv->snp, 0, 0);
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "Initialize failed with: %s\n", efi_strerror(efiret));
-+		return -efi_errno(efiret);
++	for (i = 0; i < priv->out->mode->max_mode; i++) {
++		priv->out->query_mode(priv->out, i, &columns, &rows);
++		printf("%d: %ld %ld\n", i, columns, rows);
++		if (rows * columns > best) {
++			best = rows * columns;
++			mode = i;
++		}
 +	}
 +
-+	efiret = priv->snp->station_address(priv->snp, false,
-+			(efi_mac_address *)priv->snp->Mode->PermanentAddress.Addr );
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to set MAC address: %s\n",
-+				efi_strerror(efiret));
-+		return -efi_errno(efiret);
-+	}
-+
-+	mask = EFI_SIMPLE_NETWORK_RECEIVE_UNICAST |
-+			EFI_SIMPLE_NETWORK_RECEIVE_BROADCAST |
-+			EFI_SIMPLE_NETWORK_RECEIVE_PROMISCUOUS;
-+	efiret = priv->snp->receive_filters(priv->snp, mask, 0, 0, 0, 0);
-+	if (EFI_ERROR(efiret)) {
-+		dev_err(priv->dev, "failed to set receive filters: %s\n",
-+				efi_strerror(efiret));
-+		return -efi_errno(efiret);
-+	}
-+
-+	return 0;
++	/*
++	 * Setting the mode doesn't work as expected. set_mode succeeds, but
++	 * the graphics resolution is not changed.
++	 */
++	priv->out->set_mode(priv->out, mode);
++#endif
++	priv->out->query_mode(priv->out, priv->out->mode->mode, &priv->columns, &priv->rows);
 +}
 +
-+static void efi_snp_eth_halt(struct eth_device *edev)
++static int efi_console_probe(struct device_d *dev)
 +{
-+	struct efi_snp_priv *priv = to_priv(edev);
++	struct console_device *cdev;
++	struct efi_console_priv *priv;
++	int i;
 +
-+	priv->snp->stop(priv->snp);
++	priv = xzalloc(sizeof(*priv));
++
++	priv->out = efi_sys_table->con_out;
++	priv->in = efi_sys_table->con_in;
++
++	priv->current_color = EFI_WHITE;
++
++	efi_set_mode(priv);
++
++	priv->out->enable_cursor(priv->out, 1);
++
++	priv->blank_line = xzalloc((priv->columns + 1) * sizeof(s16));
++	for (i = 0; i < priv->columns; i++)
++		priv->blank_line[i] = ' ';
++
++	cdev = &priv->cdev;
++	cdev->dev = dev;
++	cdev->tstc = efi_console_tstc;
++	cdev->getc = efi_console_getc;
++	cdev->putc = efi_console_putc;
++	cdev->puts = efi_console_puts;
++
++	priv->lastkey = -1;
++
++	return console_register(cdev);
 +}
 +
-+static int efi_snp_get_ethaddr(struct eth_device *edev, unsigned char *adr)
-+{
-+	struct efi_snp_priv *priv = to_priv(edev);
-+
-+	memcpy(adr, priv->snp->Mode->PermanentAddress.Addr, 6);
-+
-+	return 0;
-+}
-+
-+static int efi_snp_set_ethaddr(struct eth_device *edev, unsigned char *adr)
-+{
-+	return 0;
-+}
-+
-+int efi_snp_probe(struct efi_device *efidev)
-+{
-+	struct eth_device *edev;
-+	struct efi_snp_priv *priv;
-+	int ret;
-+
-+	dev_dbg(&efidev->dev, "efi_snp_probe\n");
-+
-+	priv = xzalloc(sizeof(struct efi_snp_priv));
-+	priv->snp = efidev->protocol;
-+	priv->dev = &efidev->dev;
-+
-+	dev_dbg(&efidev->dev, "perm: %02x:%02x:%02x:%02x:%02x:%02x\n",
-+			priv->snp->Mode->PermanentAddress.Addr[0],
-+			priv->snp->Mode->PermanentAddress.Addr[1],
-+			priv->snp->Mode->PermanentAddress.Addr[2],
-+			priv->snp->Mode->PermanentAddress.Addr[3],
-+			priv->snp->Mode->PermanentAddress.Addr[4],
-+			priv->snp->Mode->PermanentAddress.Addr[5]);
-+	dev_dbg(&efidev->dev, "curr: %02x:%02x:%02x:%02x:%02x:%02x\n",
-+			priv->snp->Mode->CurrentAddress.Addr[0],
-+			priv->snp->Mode->CurrentAddress.Addr[1],
-+			priv->snp->Mode->CurrentAddress.Addr[2],
-+			priv->snp->Mode->CurrentAddress.Addr[3],
-+			priv->snp->Mode->CurrentAddress.Addr[4],
-+			priv->snp->Mode->CurrentAddress.Addr[5]);
-+
-+	edev = &priv->edev;
-+	edev->priv = priv;
-+	edev->parent = &efidev->dev;
-+
-+	edev->open = efi_snp_eth_open;
-+	edev->send = efi_snp_eth_send;
-+	edev->recv = efi_snp_eth_rx;
-+	edev->halt = efi_snp_eth_halt;
-+	edev->get_ethaddr = efi_snp_get_ethaddr;
-+	edev->set_ethaddr = efi_snp_set_ethaddr;
-+
-+	ret = eth_register(edev);
-+
-+        return ret;
-+}
-+
-+static struct efi_driver efi_snp_driver = {
-+        .driver = {
-+		.name  = "efi-snp",
-+	},
-+        .probe = efi_snp_probe,
-+	.guid = EFI_SIMPLE_NETWORK_PROTOCOL_GUID,
++static struct driver_d efi_console_driver = {
++        .name  = "efi-stdio",
++        .probe = efi_console_probe,
 +};
-+device_efi_driver(efi_snp_driver);
++console_platform_driver(efi_console_driver);
 -- 
 2.0.0
 
