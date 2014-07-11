@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X5U2i-0006KT-7s
- for barebox@lists.infradead.org; Fri, 11 Jul 2014 06:10:49 +0000
-Date: Fri, 11 Jul 2014 08:10:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140711061026.GM23235@pengutronix.de>
+Received: from mail-la0-f45.google.com ([209.85.215.45])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X5UCg-0003Oa-Nb
+ for barebox@lists.infradead.org; Fri, 11 Jul 2014 06:21:07 +0000
+Received: by mail-la0-f45.google.com with SMTP id ty20so400551lab.18
+ for <barebox@lists.infradead.org>; Thu, 10 Jul 2014 23:20:40 -0700 (PDT)
+Date: Fri, 11 Jul 2014 10:32:57 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140711103257.b2d7c1267d42b9923da03453@gmail.com>
+In-Reply-To: <20140711061026.GM23235@pengutronix.de>
 References: <1404981199-21293-1-git-send-email-antonynpavlov@gmail.com>
  <20140711053738.GJ23235@pengutronix.de>
  <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140711101236.5c332b13de1fe7c297237fc5@gmail.com>
+ <20140711061026.GM23235@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,79 +22,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC 0/5] add rtc support
-To: Antony Pavlov <antonynpavlov@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 11, 2014 at 10:12:36AM +0400, Antony Pavlov wrote:
-> On Fri, 11 Jul 2014 07:37:38 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Thu, Jul 10, 2014 at 12:33:14PM +0400, Antony Pavlov wrote:
-> > > This patchseries imports RTC support from linux-3.15.
-> > > 
-> > > User can use 'hwclock' command to see realtime clock readout.
-> > > 
-> > > Tested with DS1307.
-> > > 
-> > > TODOs:
-> > > 
-> > >  * rtc_set_time() is not realized;
-> > >  * ds1307_set_time() is not tested;
-> > >  * bcd lib is compiled in even if rtc support is disabled (as linux does);
-> > >    we can make it optional;
-> > 
-> > It's probably not worth it. The linker will throw it away anyway if
-> > unused.
-> 
-> Hmm, I have missed this.
-> 
-> In this case can we drop I2C_SMBUS Kconfig stuff
-> 
-> +config I2C_SMBUS
-> +	bool
-> +
-> 
-> +obj-$(CONFIG_I2C_SMBUS) += i2c-smbus.o
-> 
-> from 'add driver for PCA95[357]x, ...' series?
-> 
-> Anyway CONFIG_I2C_SMBUS has another meaning in linux.
-> 
-> > 
-> > >  * adjust include/linux/rtc.h and include/rtc.h;
-> > >  * rtc_unregister() is not realized.
-> > 
-> > Maybe an environment variable which holds the seconds since epoch would
-> > be useful. This way scripts could make use of the current RTC time.
-> 
-> So you propose to add an option to hwclock command to store RTC readout into variable,
-> isn't it?
-
-Yes. This would allow scripts to compare times or to store the current
-time in some boot log.
-
-> 
-> I have an idea to put epoch offset (number of years into AD to which a zero year value
-> in the Hardware Clock refers) into "global.epoch" variable and add corresponding
-> Kconfig option for default epoch value.
-
-Does Linux support such a mechanism aswell? How can we make sure Linux
-uses the same epoch offset?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCAxMSBKdWwgMjAxNCAwODoxMDoyNiArMDIwMApTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJA
+cGVuZ3V0cm9uaXguZGU+IHdyb3RlOgoKPiBPbiBGcmksIEp1bCAxMSwgMjAxNCBhdCAxMDoxMjoz
+NkFNICswNDAwLCBBbnRvbnkgUGF2bG92IHdyb3RlOgo+ID4gT24gRnJpLCAxMSBKdWwgMjAxNCAw
+NzozNzozOCArMDIwMAo+ID4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiB3
+cm90ZToKPiA+IAo+ID4gPiBPbiBUaHUsIEp1bCAxMCwgMjAxNCBhdCAxMjozMzoxNFBNICswNDAw
+LCBBbnRvbnkgUGF2bG92IHdyb3RlOgo+ID4gPiA+IFRoaXMgcGF0Y2hzZXJpZXMgaW1wb3J0cyBS
+VEMgc3VwcG9ydCBmcm9tIGxpbnV4LTMuMTUuCj4gPiA+ID4gCj4gPiA+ID4gVXNlciBjYW4gdXNl
+ICdod2Nsb2NrJyBjb21tYW5kIHRvIHNlZSByZWFsdGltZSBjbG9jayByZWFkb3V0Lgo+ID4gPiA+
+IAo+ID4gPiA+IFRlc3RlZCB3aXRoIERTMTMwNy4KPiA+ID4gPiAKPiA+ID4gPiBUT0RPczoKPiA+
+ID4gPiAKPiA+ID4gPiAgKiBydGNfc2V0X3RpbWUoKSBpcyBub3QgcmVhbGl6ZWQ7Cj4gPiA+ID4g
+ICogZHMxMzA3X3NldF90aW1lKCkgaXMgbm90IHRlc3RlZDsKPiA+ID4gPiAgKiBiY2QgbGliIGlz
+IGNvbXBpbGVkIGluIGV2ZW4gaWYgcnRjIHN1cHBvcnQgaXMgZGlzYWJsZWQgKGFzIGxpbnV4IGRv
+ZXMpOwo+ID4gPiA+ICAgIHdlIGNhbiBtYWtlIGl0IG9wdGlvbmFsOwo+ID4gPiAKPiA+ID4gSXQn
+cyBwcm9iYWJseSBub3Qgd29ydGggaXQuIFRoZSBsaW5rZXIgd2lsbCB0aHJvdyBpdCBhd2F5IGFu
+eXdheSBpZgo+ID4gPiB1bnVzZWQuCj4gPiAKPiA+IEhtbSwgSSBoYXZlIG1pc3NlZCB0aGlzLgo+
+ID4gCj4gPiBJbiB0aGlzIGNhc2UgY2FuIHdlIGRyb3AgSTJDX1NNQlVTIEtjb25maWcgc3R1ZmYK
+PiA+IAo+ID4gK2NvbmZpZyBJMkNfU01CVVMKPiA+ICsJYm9vbAo+ID4gKwo+ID4gCj4gPiArb2Jq
+LSQoQ09ORklHX0kyQ19TTUJVUykgKz0gaTJjLXNtYnVzLm8KPiA+IAo+ID4gZnJvbSAnYWRkIGRy
+aXZlciBmb3IgUENBOTVbMzU3XXgsIC4uLicgc2VyaWVzPwo+ID4gCj4gPiBBbnl3YXkgQ09ORklH
+X0kyQ19TTUJVUyBoYXMgYW5vdGhlciBtZWFuaW5nIGluIGxpbnV4Lgo+ID4gCj4gPiA+IAo+ID4g
+PiA+ICAqIGFkanVzdCBpbmNsdWRlL2xpbnV4L3J0Yy5oIGFuZCBpbmNsdWRlL3J0Yy5oOwo+ID4g
+PiA+ICAqIHJ0Y191bnJlZ2lzdGVyKCkgaXMgbm90IHJlYWxpemVkLgo+ID4gPiAKPiA+ID4gTWF5
+YmUgYW4gZW52aXJvbm1lbnQgdmFyaWFibGUgd2hpY2ggaG9sZHMgdGhlIHNlY29uZHMgc2luY2Ug
+ZXBvY2ggd291bGQKPiA+ID4gYmUgdXNlZnVsLiBUaGlzIHdheSBzY3JpcHRzIGNvdWxkIG1ha2Ug
+dXNlIG9mIHRoZSBjdXJyZW50IFJUQyB0aW1lLgo+ID4gCj4gPiBTbyB5b3UgcHJvcG9zZSB0byBh
+ZGQgYW4gb3B0aW9uIHRvIGh3Y2xvY2sgY29tbWFuZCB0byBzdG9yZSBSVEMgcmVhZG91dCBpbnRv
+IHZhcmlhYmxlLAo+ID4gaXNuJ3QgaXQ/Cj4gCj4gWWVzLiBUaGlzIHdvdWxkIGFsbG93IHNjcmlw
+dHMgdG8gY29tcGFyZSB0aW1lcyBvciB0byBzdG9yZSB0aGUgY3VycmVudAo+IHRpbWUgaW4gc29t
+ZSBib290IGxvZy4KPiAKPiA+IAo+ID4gSSBoYXZlIGFuIGlkZWEgdG8gcHV0IGVwb2NoIG9mZnNl
+dCAobnVtYmVyIG9mIHllYXJzIGludG8gQUQgdG8gd2hpY2ggYSB6ZXJvIHllYXIgdmFsdWUKPiA+
+IGluIHRoZSBIYXJkd2FyZSBDbG9jayByZWZlcnMpIGludG8gImdsb2JhbC5lcG9jaCIgdmFyaWFi
+bGUgYW5kIGFkZCBjb3JyZXNwb25kaW5nCj4gPiBLY29uZmlnIG9wdGlvbiBmb3IgZGVmYXVsdCBl
+cG9jaCB2YWx1ZS4KPiAKPiBEb2VzIExpbnV4IHN1cHBvcnQgc3VjaCBhIG1lY2hhbmlzbSBhc3dl
+bGw/IEhvdyBjYW4gd2UgbWFrZSBzdXJlIExpbnV4Cj4gdXNlcyB0aGUgc2FtZSBlcG9jaCBvZmZz
+ZXQ/CgpIZXJlIGlzIGEgcXVvdGUgZnJvbSBteSBod2Nsb2NrKDgpIG1hbnBhZ2U6CgogICAgICAg
+LS1nZXRlcG9jaAogICAgICAgICAgICAgIFByaW50ICB0aGUgIGtlcm5lbCdzIEhhcmR3YXJlIENs
+b2NrIGVwb2NoIHZhbHVlIHRvIHN0YW5kYXJkIG91dHB1dC4gIFRoaXMgaXMgdGhlCiAgICAgICAg
+ICAgICAgbnVtYmVyIG9mIHllYXJzIGludG8gQUQgdG8gd2hpY2ggYSB6ZXJvIHllYXIgdmFsdWUg
+aW4gdGhlIEhhcmR3YXJlIENsb2NrIHJlZmVycy4KICAgICAgICAgICAgICBGb3IgZXhhbXBsZSwg
+aWYgeW91IGFyZSB1c2luZyB0aGUgY29udmVudGlvbiB0aGF0IHRoZSB5ZWFyIGNvdW50ZXIgaW4g
+eW91ciBIYXJk4oCQCiAgICAgICAgICAgICAgd2FyZSBDbG9jayBjb250YWlucyB0aGUgbnVtYmVy
+IG9mIGZ1bGwgeWVhcnMgc2luY2UgMTk1MiwgdGhlbiB0aGUga2VybmVsJ3MgSGFyZOKAkAogICAg
+ICAgICAgICAgIHdhcmUgQ2xvY2sgZXBvY2ggdmFsdWUgbXVzdCBiZSAxOTUyLgoKICAgICAgICAg
+ICAgICBUaGlzIGVwb2NoIHZhbHVlIGlzIHVzZWQgd2hlbmV2ZXIgaHdjbG9jayByZWFkcyBvciBz
+ZXRzIHRoZSBIYXJkd2FyZSBDbG9jay4KCiAgICAgICAtLXNldGVwb2NoCiAgICAgICAgICAgICAg
+U2V0ICB0aGUgIGtlcm5lbCdzICBIYXJkd2FyZSAgQ2xvY2sgIGVwb2NoICB2YWx1ZSAgdG8gdGhl
+IHZhbHVlIHNwZWNpZmllZCBieSB0aGUKICAgICAgICAgICAgICAtLWVwb2NoIG9wdGlvbi4gIFNl
+ZSB0aGUgLS1nZXRlcG9jaCBvcHRpb24gZm9yIGRldGFpbHMuCgpJIHN1cHBvc2UgdGhhdCBIYXJk
+d2FyZSBDbG9jayBlcG9jaCBkZXBlbmRzIG9uIFJUQy1jaGlwLiBJIHNlZSBubyBhdXRvbWF0aWMg
+bWFjaGFuaXNtIHRvIGd1YXJhbnRlZSB0aGUgc2FtZSBlcG9jaApmb3IgbGludXggYW5kIGJhcmVi
+b3guCgoKLS3CoApCZXN0IHJlZ2FyZHMsCsKgIEFudG9ueSBQYXZsb3YKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
