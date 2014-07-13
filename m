@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qa0-x231.google.com ([2607:f8b0:400d:c00::231])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X6Gl7-0004dM-Kk
- for barebox@lists.infradead.org; Sun, 13 Jul 2014 10:11:54 +0000
-Received: by mail-qa0-f49.google.com with SMTP id dc16so2255130qab.22
- for <barebox@lists.infradead.org>; Sun, 13 Jul 2014 03:11:21 -0700 (PDT)
-Received: from ?IPv6:2a02:8070:c582:9100:d63d:7eff:fe31:d2fa?
- ([2a02:8070:c582:9100:d63d:7eff:fe31:d2fa])
- by mx.google.com with ESMTPSA id y4sm14322209qad.14.2014.07.13.03.11.19
- for <barebox@lists.infradead.org>
- (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Sun, 13 Jul 2014 03:11:20 -0700 (PDT)
-From: Colin Leitner <colin.leitner@googlemail.com>
-Message-ID: <53C25B45.7010101@gmail.com>
-Date: Sun, 13 Jul 2014 12:11:17 +0200
-MIME-Version: 1.0
+ id 1X6HFg-0004FR-NB
+ for barebox@lists.infradead.org; Sun, 13 Jul 2014 10:43:29 +0000
+Received: by mail-lb0-f176.google.com with SMTP id w7so2042873lbi.21
+ for <barebox@lists.infradead.org>; Sun, 13 Jul 2014 03:43:04 -0700 (PDT)
+Date: Sun, 13 Jul 2014 14:55:26 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140713145526.2cf6407fc9a17a4e8db89a50@gmail.com>
+In-Reply-To: <53C25B45.7010101@gmail.com>
+References: <53C25B45.7010101@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,19 +19,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Adding IPv4 multicast support
-To: barebox@lists.infradead.org
+Subject: Re: Adding IPv4 multicast support
+To: Colin Leitner <colin.leitner@googlemail.com>
+Cc: barebox@lists.infradead.org, Daniele Lacamera <daniele.lacamera@tass.be>
 
-Hello everyone,
+On Sun, 13 Jul 2014 12:11:17 +0200
+Colin Leitner <colin.leitner@googlemail.com> wrote:
 
-I'm working on adding multicast support to barebox (for device discovery) and wanted to know if there's interest in having that included in upstream.
+> Hello everyone,
+>
+> I'm working on adding multicast support to barebox (for device discovery)=
+ and wanted to know if there's interest in having that included in upstream.
 
-Cheers,
-	Colin
+There is an initiative on integrating picotcp into barebox.
+
+picotcp is a free TCP/IP stack implementation, see
+  https://github.com/tass-belgium/picotcp
+
+AFAIK latest picotcp-enbled barebox anounced here:
+  http://lists.infradead.org/pipermail/barebox/2014-June/019723.html
+
+Can be network device discovery realized using picotcp entities?
+
+To Daniele: how things stand with picotcp tftp support?
+
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
