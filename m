@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X6Ze7-0006qj-KA
- for barebox@lists.infradead.org; Mon, 14 Jul 2014 06:21:56 +0000
-Date: Mon, 14 Jul 2014 08:21:33 +0200
+ Linux)) id 1X6abi-0004zs-2y
+ for barebox@lists.infradead.org; Mon, 14 Jul 2014 07:23:32 +0000
+Date: Mon, 14 Jul 2014 09:23:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140714062132.GT23235@pengutronix.de>
-References: <CACqcpZCQsyPBZ+YK+ogu+xhgnjQpA2rW3+py+EOe6+ukfvpEYA@mail.gmail.com>
+Message-ID: <20140714072307.GV23235@pengutronix.de>
+References: <1405112170-29606-1-git-send-email-rockford@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CACqcpZCQsyPBZ+YK+ogu+xhgnjQpA2rW3+py+EOe6+ukfvpEYA@mail.gmail.com>
+In-Reply-To: <1405112170-29606-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,86 +18,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Nand with 256 oob
-To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Subject: Re: [PATCH v2] ARM: i.MX6Q: Add support for Embedsky E9 board.
+To: Andrey Panov <rockford@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 11, 2014 at 04:13:47PM +0200, Rapha=EBl Poggi wrote:
-> Hi all !
-> =
 
-> I want to use barebox with nand support (Soft ECC) on a custom board
-> based on SAM9M10, but the nand has a 256 oob size and it is not
-> supported on barebox.
-> =
+Hi Andrey,
 
-> Barebox fails, because there is no oob scheme defined for 256 size.
-> =
+Some comments inline, nothing huge. Most of the patch looks fine.
 
-> if (!chip->ecc.layout && (chip->ecc.mode !=3D NAND_ECC_SOFT_BCH)) {
-> switch (mtd->oobsize) {
-> case 8:
-> chip->ecc.layout =3D &nand_oob_8;
-> break;
-> case 16:
-> chip->ecc.layout =3D &nand_oob_16;
-> break;
-> case 64:
-> chip->ecc.layout =3D &nand_oob_64;
-> break;
-> case 128:
-> chip->ecc.layout =3D &nand_oob_128;
-> break;
-> default:
-> pr_warn("No oob scheme defined for oobsize %d\n",
->   mtd->oobsize);
-> BUG();
-> }
-> }
-> =
+On Sat, Jul 12, 2014 at 12:56:10AM +0400, Andrey Panov wrote:
+> This will add support for Embedsky E9 board.
+> It is a small board based on i.MX6 Quad with 2G of RAM.
+> 
+> http://en.embedsky.com/product_info.php?cateid=169&id=169
+> 
+> Signed-off-by: Andrey Panov <rockford@yandex.ru>
+> ---
+> diff --git a/arch/arm/boards/embedsky-e9/env/config-board b/arch/arm/boards/embedsky-e9/env/config-board
+> new file mode 100644
+> index 0000000..ee0472a
+> --- /dev/null
+> +++ b/arch/arm/boards/embedsky-e9/env/config-board
+> @@ -0,0 +1,6 @@
+> +#!/bin/sh
+> +
+> +# board defaults, do not change in running system. Change /env/config
+> +# instead
+> +
+> +global.linux.bootargs.base="earlyprintk loglevel=10 panic=10 rootwait root=/dev/mmcblk0p2"
 
-> =
+You shouldn't add earlyprintk to the default bootargs. earlyprintk
+only works when the Kernel is compiled exactly for your board which
+is not the case for many standard config Kernels. When your kernel
+doesn't boot you don't want to find earlyprintk being the culprit ;)
 
-> I have found this oob_256 scheme but I don't know if it's correct or not.
-> =
+The "root=/dev/mmcblk0p2" parameter should be in a /env/boot/flash (or
+similar) file. Putting it into the base bootargs means that network
+boot won't work properly anymore.
 
-> static struct nand_ecclayout nand_oob_256 =3D {
-> .eccbytes =3D 96,
-> .eccpos =3D {
-> 160, 161, 162, 163, 164, 165, 166, 167,
-> 168, 169, 170, 171, 172, 173, 174, 175,
->    176, 177, 178, 179, 180, 181, 182, 183,
->    184, 185, 186, 187, 188, 189, 190, 191,
->    192, 193, 194, 195, 196, 197, 198, 199,
->    200, 201, 202, 203, 204, 205, 206, 207,
->    208, 209, 210, 211, 212, 213, 214, 215,
->    216, 217, 218, 219, 220, 221, 222, 223,
->    224, 225, 226, 227, 228, 229, 230, 231,
->    232, 233, 234, 235, 236, 237, 238, 239,
->    240, 241, 242, 243, 244, 245, 246, 247,
->    248, 249, 250, 251, 252, 253, 254, 255},
-> .oobfree =3D {
-> {.offset =3D 2,
-> .length =3D 158}}
-> };
-> =
+> diff --git a/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg b/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg
+> +wm 32 0x021b001c 0x09408030
+> +wm 32 0x021b001c 0x04008040
+> +wm 32 0x021b0020 0x00005800
+> +wm 32 0x021b0818 0x00011117
+> +wm 32 0x021b4818 0x00011117
+> +wm 32 0x021b0004 0x00025576
+> +wm 32 0x021b0404 0x00011006
+> +wm 32 0x021b001c 0x00000000
+> +
+> +wm 32 0x021b0404 0x00011006
+> +
+> +/* set the default clock gate to save power */
+> +wm 32 0x020c4068 0x00C03F3F
+> +wm 32 0x020c406c 0x0030FC03
+> +wm 32 0x020c4070 0x0FFFC000
+> +wm 32 0x020c4074 0x3FF00000
+> +wm 32 0x020c4078 0x00FFF300
+> +wm 32 0x020c407c 0x0F0000C3
+> +wm 32 0x020c4080 0x000003FF
 
-> Can we use this scheme ? Or there is another solution ?
+Please remove these. The ROM Code first evaluates the DCD list and
+loads the rest of the image from the Boot medium afterwards. If you
+happen to disable the Clocks for the Boot medium above your board won't
+boot anymore. Finding this can take some time. Besides, the i.MX6 clock
+driver reenables all clocks anyway during initialisation to have
+the clocks in a known state.
 
-Please grep for nand_bch_init in both the kernel and barebox.
-This function automatically constructs a suitable ecc layout
-based on the NAND parameters. This code doesn't seem to have users
-in barebox, so I don't know whether it works correctly, but
-this is the way to go.
+> diff --git a/arch/arm/configs/embedsky-e9_defconfig b/arch/arm/configs/embedsky-e9_defconfig
+> new file mode 100644
+> index 0000000..96fb176
+> --- /dev/null
+> +++ b/arch/arm/configs/embedsky-e9_defconfig
+> @@ -0,0 +1,94 @@
+> +CONFIG_MMU=y
+> +CONFIG_MALLOC_SIZE=0x4000000
+> +CONFIG_BROKEN=y
+> +CONFIG_EXPERIMENTAL=y
+> +CONFIG_MALLOC_TLSF=y
+> +CONFIG_HUSH_FANCY_PROMPT=y
+> +CONFIG_CMDLINE_EDITING=y
+> +CONFIG_AUTO_COMPLETE=y
+> +CONFIG_MENU=y
+> +CONFIG_CONSOLE_ACTIVATE_ALL=y
+> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+> +CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/embedsky-e9/env"
+
+Rather than adding your own defconfig file please add your board to the
+existing imx_v7_defconfig. For your environment move the
+arch/arm/boards/embedsky-e9/env directory to a name specific for your
+board, maybe arch/arm/boards/embedsky-e9/defaultenv-e9. Then add this
+directory to the build system with: bbenv-y += defaultenv-e9. In the
+board startup code then add:
+
+defaultenv_append_directory(defaultenv_e9).
+
+See arch/arm/boards/phytec-phycore-am335x/ for an example.
+
+> +
+> +/ {
+> +	model = "Embedsky E9";
+> +	compatible = "embedsky,e9", "fsl,imx6q";
+> +
+> +	memory {
+> +		reg = <0x10000000 0x80000000>;
+> +	};
+
+Specifying the amount of memory here is not necessary. barebox will
+read back the SDRAM controller configuration and fill in the correct
+here. This makes sure you have the correct amount of SDRAM in the
+devicetree, even if you have different board versions.
+
+> +&fec {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_enet>;
+> +	phy-mode = "rgmii";
+> +//	local-mac-address = [00 04 9F 01 1B B8];
+
+Please remove this and other commented lines. from the devicetree.
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
