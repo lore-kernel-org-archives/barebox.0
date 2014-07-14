@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X6bqx-0006oJ-A4
- for barebox@lists.infradead.org; Mon, 14 Jul 2014 08:43:20 +0000
-Date: Mon, 14 Jul 2014 10:42:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140714084257.GY23235@pengutronix.de>
-References: <1405104718-15156-1-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1405104718-15156-1-git-send-email-jlu@pengutronix.de>
+Received: from mail-lb0-f181.google.com ([209.85.217.181])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X6dwC-0005tb-3u
+ for barebox@lists.infradead.org; Mon, 14 Jul 2014 10:56:52 +0000
+Received: by mail-lb0-f181.google.com with SMTP id p9so2661001lbv.40
+ for <barebox@lists.infradead.org>; Mon, 14 Jul 2014 03:56:26 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 14 Jul 2014 14:56:15 +0400
+Message-Id: <1405335380-17996-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,178 +16,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: use command groups
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC v2 0/5] add rtc support
+To: barebox@lists.infradead.org
 
-On Fri, Jul 11, 2014 at 08:51:58PM +0200, Jan Luebbe wrote:
-> The help definition already contained a group declaration.
-> This is now reused for the HTML documentation.
-> 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Chages since RFC v1:
 
-Good idea! Applied, thanks
+ * rebase over latest 'next';
+ * fix copy'n'paste side effects;
+ * add hwclock set time function;
+ * make hwclock options more close to util-linux hwclock;
+ * rtc-ds1307: add ds1338 chip support (used in versatile);
+ * use qemu-versatile for testing.
 
-Sascha
+TODOs:
+ * make it possible to read time into environment variable.
 
-> ---
->  Documentation/commands.rst    | 86 ++++++++++++++++++++++++++++++++++++++++++-
->  Documentation/gen_commands.py | 13 ++++++-
->  2 files changed, 95 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/commands.rst b/Documentation/commands.rst
-> index 55b04f6..0dc9e1b 100644
-> --- a/Documentation/commands.rst
-> +++ b/Documentation/commands.rst
-> @@ -1,9 +1,91 @@
->  Command reference
->  =================
->  
-> +Information
-> +-----------
->  .. toctree::
-> +   :titlesonly:
->     :glob:
-> -   :maxdepth: 1
->  
-> -   commands/*
-> +   commands/info/*
-> +
-> +Booting
-> +-------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/boot/*
-> +
-> +Partitions and Filesystems
-> +--------------------------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/part/*
-> +
-> +Environment
-> +-----------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/env/*
-> +
-> +Files
-> +-----
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/file/*
-> +
-> +Shell Scripting
-> +---------------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/script/*
-> +
-> +Console and Framebuffer
-> +-----------------------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/console/*
-> +
-> +Memory
-> +------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/mem/*
-> +
-> +Hardware Manipulation
-> +---------------------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/hwmanip/*
-> +
-> +Miscelleanous
-> +-------------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/misc/*
-> +
-> +Networking
-> +----------
-> +.. toctree::
-> +   :titlesonly:
-> +   :glob:
-> +
-> +   commands/net/*
->  
-> diff --git a/Documentation/gen_commands.py b/Documentation/gen_commands.py
-> index 4e33cca..d3db350 100755
-> --- a/Documentation/gen_commands.py
-> +++ b/Documentation/gen_commands.py
-> @@ -1,5 +1,6 @@
->  #!/usr/bin/python
->  
-> +import errno
->  import os
->  import re
->  import sys
-> @@ -76,7 +77,7 @@ def parse_c(name):
->      x = CMD_GROUP.match(line)
->      if x:
->        last = cmd['c_group']
-> -      last.append(x.group(1).decode("string_escape"))
-> +      last.append(x.group(1).split('_')[-1].lower())
->        continue
->      x = CONT.match(line)
->      if x:
-> @@ -159,6 +160,14 @@ for name in CMDS.keys():
->  for name, cmd in CMDS.items():
->    #pprint({name: cmd})
->    rst = gen_rst(name, cmd)
-> -  target = os.path.join(sys.argv[2], name+'.rst')
-> +  subdir = os.path.join(sys.argv[2], cmd['c_group'][0])
-> +  try:
-> +    os.makedirs(subdir)
-> +  except OSError as e:
-> +    if e.errno == errno.EEXIST and os.path.isdir(subdir):
-> +      pass
-> +    else:
-> +      raise
-> +  target = os.path.join(subdir, name+'.rst')
->    file(target, 'w').write(rst)
->  
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Antony Pavlov (5):
+  lib: import 'bcd' from linux-3.15
+  add rtc support
+  rtc: import ds1307 driver from linux-3.15
+  commands: add hwclock
+  ARM: versatilepb_defconfig: enable RTC support
+
+ arch/arm/configs/versatilepb_defconfig |   2 +
+ commands/Kconfig                       |   8 +
+ commands/Makefile                      |   1 +
+ commands/hwclock.c                     | 136 +++++++++++++
+ drivers/Kconfig                        |   1 +
+ drivers/Makefile                       |   1 +
+ drivers/rtc/Kconfig                    |  45 +++++
+ drivers/rtc/Makefile                   |  10 +
+ drivers/rtc/class.c                    |  53 +++++
+ drivers/rtc/rtc-ds1307.c               | 345 +++++++++++++++++++++++++++++++++
+ drivers/rtc/rtc-lib.c                  |  55 ++++++
+ include/linux/bcd.h                    |  22 +++
+ include/linux/rtc.h                    |  45 +++++
+ include/rtc.h                          |   2 +
+ lib/Makefile                           |   1 +
+ lib/bcd.c                              |  14 ++
+ 16 files changed, 741 insertions(+)
+ create mode 100644 commands/hwclock.c
+ create mode 100644 drivers/rtc/Kconfig
+ create mode 100644 drivers/rtc/Makefile
+ create mode 100644 drivers/rtc/class.c
+ create mode 100644 drivers/rtc/rtc-ds1307.c
+ create mode 100644 drivers/rtc/rtc-lib.c
+ create mode 100644 include/linux/bcd.h
+ create mode 100644 include/linux/rtc.h
+ create mode 100644 lib/bcd.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.1
+
 
 _______________________________________________
 barebox mailing list
