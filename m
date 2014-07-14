@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
+Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X6nBK-0005uS-72
- for barebox@lists.infradead.org; Mon, 14 Jul 2014 20:49:06 +0000
-Received: by mail-la0-f44.google.com with SMTP id e16so1777330lan.17
- for <barebox@lists.infradead.org>; Mon, 14 Jul 2014 13:48:43 -0700 (PDT)
+ id 1X6nBP-0005v2-Ib
+ for barebox@lists.infradead.org; Mon, 14 Jul 2014 20:49:12 +0000
+Received: by mail-la0-f41.google.com with SMTP id hz20so3309096lab.14
+ for <barebox@lists.infradead.org>; Mon, 14 Jul 2014 13:48:49 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 15 Jul 2014 00:48:32 +0400
-Message-Id: <1405370916-6828-2-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 15 Jul 2014 00:48:35 +0400
+Message-Id: <1405370916-6828-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1405370916-6828-1-git-send-email-antonynpavlov@gmail.com>
 References: <1405370916-6828-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,73 +23,203 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v3 1/5] lib: import 'bcd' from linux-3.15
+Subject: [RFC v3 4/5] commands: add hwclock
 To: barebox@lists.infradead.org
+
+The hwclock command allows to query or set the hardware clock (RTC).
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/linux/bcd.h | 22 ++++++++++++++++++++++
- lib/Makefile        |  1 +
- lib/bcd.c           | 14 ++++++++++++++
- 3 files changed, 37 insertions(+)
+ commands/Kconfig   |   8 +++
+ commands/Makefile  |   1 +
+ commands/hwclock.c | 151 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 160 insertions(+)
 
-diff --git a/include/linux/bcd.h b/include/linux/bcd.h
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 61816f5..6a75f85 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1691,6 +1691,14 @@ config CMD_GPIO
+ 
+ 	  Usage: gpio_set_value GPIO VALUE
+ 
++config CMD_HWCLOCK
++	bool
++	depends on RTC_CLASS
++	prompt "hwclock command"
++	default y
++	help
++	  The hwclock command allows to query or set the hardware clock (RTC).
++
+ config CMD_I2C
+ 	bool
+ 	depends on I2C
+diff --git a/commands/Makefile b/commands/Makefile
+index d42aca5..44dd9d4 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -100,3 +100,4 @@ obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
+ obj-$(CONFIG_CMD_2048)		+= 2048.o
+ obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
+ obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
++obj-$(CONFIG_CMD_HWCLOCK)	+= hwclock.o
+diff --git a/commands/hwclock.c b/commands/hwclock.c
 new file mode 100644
-index 0000000..18fff11
+index 0000000..511973a
 --- /dev/null
-+++ b/include/linux/bcd.h
-@@ -0,0 +1,22 @@
-+#ifndef _BCD_H
-+#define _BCD_H
++++ b/commands/hwclock.c
+@@ -0,0 +1,151 @@
++#include <common.h>
++#include <command.h>
++#include <getopt.h>
++#include <linux/err.h>
++#include <linux/ctype.h>
++#include <rtc.h>
++#include <linux/rtc.h>
++#include <string.h>
++#include <environment.h>
 +
-+#include <linux/compiler.h>
-+
-+#define bcd2bin(x)					\
-+		(__builtin_constant_p((u8 )(x)) ?	\
-+		const_bcd2bin(x) :			\
-+		_bcd2bin(x))
-+
-+#define bin2bcd(x)					\
-+		(__builtin_constant_p((u8 )(x)) ?	\
-+		const_bin2bcd(x) :			\
-+		_bin2bcd(x))
-+
-+#define const_bcd2bin(x)	(((x) & 0x0f) + ((x) >> 4) * 10)
-+#define const_bin2bcd(x)	((((x) / 10) << 4) + (x) % 10)
-+
-+unsigned _bcd2bin(unsigned char val) __attribute_const__;
-+unsigned char _bin2bcd(unsigned val) __attribute_const__;
-+
-+#endif /* _BCD_H */
-diff --git a/lib/Makefile b/lib/Makefile
-index 48c953d..18a99a7 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -1,3 +1,4 @@
-+obj-y			+= bcd.o
- obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
- obj-y			+= ctype.o
- obj-y			+= rbtree.o
-diff --git a/lib/bcd.c b/lib/bcd.c
-new file mode 100644
-index 0000000..b072d50
---- /dev/null
-+++ b/lib/bcd.c
-@@ -0,0 +1,14 @@
-+#include <linux/bcd.h>
-+#include <module.h>
-+
-+unsigned _bcd2bin(unsigned char val)
++static char *strchrnul(const char *s, int c)
 +{
-+	return (val & 0x0f) + (val >> 4) * 10;
-+}
-+EXPORT_SYMBOL(_bcd2bin);
++	while (*s != '\0' && *s != c)
++		s++;
 +
-+unsigned char _bin2bcd(unsigned val)
-+{
-+	return ((val / 10) << 4) + val % 10;
++	return (char *)s;
 +}
-+EXPORT_SYMBOL(_bin2bcd);
++
++static int sscanf_two_digits(char *s, int *res)
++{
++	char buf[3];
++	unsigned long t;
++
++	if (!isdigit(s[0]) || !isdigit(s[1])) {
++		return -EINVAL;
++	}
++
++	buf[0] = s[0];
++	buf[1] = s[1];
++	buf[2] = '\0';
++
++	t = simple_strtoul(buf, NULL, 10);
++	*res = t;
++
++	return 0;
++}
++
++static int parse_datestr(char *date_str, struct rtc_time *ptm)
++{
++	char end = '\0';
++	int len = strchrnul(date_str, '.') - date_str;
++	int year;
++
++	/* ccyymmddHHMM[.SS] */
++	if (len != 12) {
++		return -EINVAL;
++	}
++
++	if (sscanf_two_digits(date_str, &year) ||
++		sscanf_two_digits(&date_str[2], &ptm->tm_year)) {
++		return -EINVAL;
++	}
++
++	ptm->tm_year = year * 100 + ptm->tm_year;
++
++	/* Adjust years */
++	ptm->tm_year -= 1900;
++
++	if (sscanf_two_digits(&date_str[4], &ptm->tm_mon) ||
++		sscanf_two_digits(&date_str[6], &ptm->tm_mday) ||
++		sscanf_two_digits(&date_str[8], &ptm->tm_hour) ||
++		sscanf_two_digits(&date_str[10], &ptm->tm_min)) {
++		return -EINVAL;
++	}
++
++	/* Adjust month from 1-12 to 0-11 */
++	ptm->tm_mon -= 1;
++
++	end = date_str[12];
++
++	if (end == '.') {
++		/* xxx.SS */
++		if (!sscanf_two_digits(&date_str[13], &ptm->tm_sec)) {
++			end = '\0';
++		}
++		/* else end != NUL and we error out */
++	}
++
++	if (end != '\0') {
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int do_hwclock(int argc, char *argv[])
++{
++	struct rtc_device *r;
++	struct rtc_time tm;
++	struct rtc_time stm;
++	char rtc_name[16] = "rtc0";
++	char *env_name = NULL;
++	int opt;
++	int set = 0;
++
++	while ((opt = getopt(argc, argv, "f:s:e:")) > 0) {
++		switch (opt) {
++		case 'f':
++			strncpy(rtc_name, optarg, 16);
++			break;
++		case 's':
++			memset(&stm, 0, sizeof(stm));
++			parse_datestr(optarg, &stm);
++			set = 1;
++			break;
++		case 'e':
++			env_name = optarg;
++			break;
++		}
++	}
++
++	r = rtc_lookup(rtc_name);
++	if (IS_ERR(r))
++		return PTR_ERR(r);
++
++	if (set) {
++		rtc_set_time(r, &stm);
++		return 0;
++	}
++
++	rtc_read_time(r, &tm);
++
++	if (env_name) {
++		unsigned long time;
++		char t[12];
++
++		rtc_tm_to_time(&tm, &time);
++		snprintf(t, 12, "%lu", time);
++		setenv(env_name, t);
++	} else {
++		printf("%02d:%02d:%02d %02d-%02d-%04d\n",
++			tm.tm_hour, tm.tm_min, tm.tm_sec,
++			tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
++	}
++
++	return 0;
++}
++
++BAREBOX_CMD_HELP_START(hwclock)
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-f NAME\t\t\t", "RTC device name (default rtc0)")
++BAREBOX_CMD_HELP_OPT ("-e VARNAME\t\t", "store RTC readout into variable VARNAME")
++BAREBOX_CMD_HELP_OPT ("-s ccyymmddHHMM[.SS]\t", "set time")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(hwclock)
++	.cmd		= do_hwclock,
++	BAREBOX_CMD_DESC("query or set the hardware clock (RTC)")
++	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
++	BAREBOX_CMD_HELP(cmd_hwclock_help)
++BAREBOX_CMD_END
 -- 
 2.0.1
 
