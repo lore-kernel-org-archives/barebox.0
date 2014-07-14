@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X6abi-0004zs-2y
- for barebox@lists.infradead.org; Mon, 14 Jul 2014 07:23:32 +0000
-Date: Mon, 14 Jul 2014 09:23:07 +0200
+ Linux)) id 1X6bqL-0006gs-EL
+ for barebox@lists.infradead.org; Mon, 14 Jul 2014 08:42:43 +0000
+Date: Mon, 14 Jul 2014 10:42:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140714072307.GV23235@pengutronix.de>
-References: <1405112170-29606-1-git-send-email-rockford@yandex.ru>
+Message-ID: <20140714084218.GX23235@pengutronix.de>
+References: <1405110382-29843-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1405112170-29606-1-git-send-email-rockford@yandex.ru>
+In-Reply-To: <1405110382-29843-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,126 +22,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] ARM: i.MX6Q: Add support for Embedsky E9 board.
-To: Andrey Panov <rockford@yandex.ru>
+Subject: Re: [PATCH] Documentation: add virt2real barebox mini-howto
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
+On Sat, Jul 12, 2014 at 12:26:22AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-Hi Andrey,
-
-Some comments inline, nothing huge. Most of the patch looks fine.
-
-On Sat, Jul 12, 2014 at 12:56:10AM +0400, Andrey Panov wrote:
-> This will add support for Embedsky E9 board.
-> It is a small board based on i.MX6 Quad with 2G of RAM.
-> 
-> http://en.embedsky.com/product_info.php?cateid=169&id=169
-> 
-> Signed-off-by: Andrey Panov <rockford@yandex.ru>
-> ---
-> diff --git a/arch/arm/boards/embedsky-e9/env/config-board b/arch/arm/boards/embedsky-e9/env/config-board
-> new file mode 100644
-> index 0000000..ee0472a
-> --- /dev/null
-> +++ b/arch/arm/boards/embedsky-e9/env/config-board
-> @@ -0,0 +1,6 @@
-> +#!/bin/sh
-> +
-> +# board defaults, do not change in running system. Change /env/config
-> +# instead
-> +
-> +global.linux.bootargs.base="earlyprintk loglevel=10 panic=10 rootwait root=/dev/mmcblk0p2"
-
-You shouldn't add earlyprintk to the default bootargs. earlyprintk
-only works when the Kernel is compiled exactly for your board which
-is not the case for many standard config Kernels. When your kernel
-doesn't boot you don't want to find earlyprintk being the culprit ;)
-
-The "root=/dev/mmcblk0p2" parameter should be in a /env/boot/flash (or
-similar) file. Putting it into the base bootargs means that network
-boot won't work properly anymore.
-
-> diff --git a/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg b/arch/arm/boards/embedsky-e9/flash-header-e9.imxcfg
-> +wm 32 0x021b001c 0x09408030
-> +wm 32 0x021b001c 0x04008040
-> +wm 32 0x021b0020 0x00005800
-> +wm 32 0x021b0818 0x00011117
-> +wm 32 0x021b4818 0x00011117
-> +wm 32 0x021b0004 0x00025576
-> +wm 32 0x021b0404 0x00011006
-> +wm 32 0x021b001c 0x00000000
-> +
-> +wm 32 0x021b0404 0x00011006
-> +
-> +/* set the default clock gate to save power */
-> +wm 32 0x020c4068 0x00C03F3F
-> +wm 32 0x020c406c 0x0030FC03
-> +wm 32 0x020c4070 0x0FFFC000
-> +wm 32 0x020c4074 0x3FF00000
-> +wm 32 0x020c4078 0x00FFF300
-> +wm 32 0x020c407c 0x0F0000C3
-> +wm 32 0x020c4080 0x000003FF
-
-Please remove these. The ROM Code first evaluates the DCD list and
-loads the rest of the image from the Boot medium afterwards. If you
-happen to disable the Clocks for the Boot medium above your board won't
-boot anymore. Finding this can take some time. Besides, the i.MX6 clock
-driver reenables all clocks anyway during initialisation to have
-the clocks in a known state.
-
-> diff --git a/arch/arm/configs/embedsky-e9_defconfig b/arch/arm/configs/embedsky-e9_defconfig
-> new file mode 100644
-> index 0000000..96fb176
-> --- /dev/null
-> +++ b/arch/arm/configs/embedsky-e9_defconfig
-> @@ -0,0 +1,94 @@
-> +CONFIG_MMU=y
-> +CONFIG_MALLOC_SIZE=0x4000000
-> +CONFIG_BROKEN=y
-> +CONFIG_EXPERIMENTAL=y
-> +CONFIG_MALLOC_TLSF=y
-> +CONFIG_HUSH_FANCY_PROMPT=y
-> +CONFIG_CMDLINE_EDITING=y
-> +CONFIG_AUTO_COMPLETE=y
-> +CONFIG_MENU=y
-> +CONFIG_CONSOLE_ACTIVATE_ALL=y
-> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-> +CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/embedsky-e9/env"
-
-Rather than adding your own defconfig file please add your board to the
-existing imx_v7_defconfig. For your environment move the
-arch/arm/boards/embedsky-e9/env directory to a name specific for your
-board, maybe arch/arm/boards/embedsky-e9/defaultenv-e9. Then add this
-directory to the build system with: bbenv-y += defaultenv-e9. In the
-board startup code then add:
-
-defaultenv_append_directory(defaultenv_e9).
-
-See arch/arm/boards/phytec-phycore-am335x/ for an example.
-
-> +
-> +/ {
-> +	model = "Embedsky E9";
-> +	compatible = "embedsky,e9", "fsl,imx6q";
-> +
-> +	memory {
-> +		reg = <0x10000000 0x80000000>;
-> +	};
-
-Specifying the amount of memory here is not necessary. barebox will
-read back the SDRAM controller configuration and fill in the correct
-here. This makes sure you have the correct amount of SDRAM in the
-devicetree, even if you have different board versions.
-
-> +&fec {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_enet>;
-> +	phy-mode = "rgmii";
-> +//	local-mac-address = [00 04 9F 01 1B B8];
-
-Please remove this and other commented lines. from the devicetree.
+Applied, thanks
 
 Sascha
+
+> ---
+>  Documentation/boards/davinci.rst | 51 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/boards/davinci.rst
+> 
+> diff --git a/Documentation/boards/davinci.rst b/Documentation/boards/davinci.rst
+> new file mode 100644
+> index 0000000..a2ddc3c
+> --- /dev/null
+> +++ b/Documentation/boards/davinci.rst
+> @@ -0,0 +1,51 @@
+> +TI Davinci
+> +==========
+> +
+> +virt2real
+> +---------
+> +
+> +virt2real is a miniature board for creation of WiFi
+> +or Internet controllable smart devices.
+> +
+> +The board has
+> +
+> +  * TI DaVinchi DM365 running at 300 MHz;
+> +  * 128 MiB DDR2 SDRAM;
+> +  * 256 MiB NAND Flash Memory;
+> +  * 2 x UART serial interfaces;
+> +  * 1 x Ethernet interface (Micrel KS8851);
+> +  * 1 x USB interface;
+> +  * microSD card slot.
+> +
+> +The board uses U-Boot as bootloader.
+> +
+> +
+> +Running barebox
+> +^^^^^^^^^^^^^^^
+> +
+> +  1. Connect to the boards's UART0 (115200 8N1);
+> +     Use J2.2 (GND), J2.4 (UART0_TXD), J2.6 (UART0_RXD) pins.
+> +
+> +  2. Turn board's power on;
+> +
+> +  3. Wait for ``Hit any key to stop autoboot`` prompt and press the space key.
+> +
+> +  4. Upload ``barebox.bin`` via Ymodem
+> +
+> +.. code-block:: none
+> +    virt2real ># loady
+> +..
+> +
+> +  5. Run barebox
+> +
+> +.. code-block:: none
+> +    virt2real ># go 0x82000000
+> +..
+> +
+> +
+> +Links
+> +^^^^^
+> +
+> +  * http://virt2real.com/
+> +  * http://wiki.virt2real.ru/
+> +  * https://github.com/virt2real
+> -- 
+> 2.0.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
