@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X6dwG-0005uR-F5
- for barebox@lists.infradead.org; Mon, 14 Jul 2014 10:56:57 +0000
-Received: by mail-lb0-f179.google.com with SMTP id v6so301266lbi.24
- for <barebox@lists.infradead.org>; Mon, 14 Jul 2014 03:56:33 -0700 (PDT)
+ id 1X6dwD-0005u1-S3
+ for barebox@lists.infradead.org; Mon, 14 Jul 2014 10:56:55 +0000
+Received: by mail-la0-f49.google.com with SMTP id gf5so2641412lab.22
+ for <barebox@lists.infradead.org>; Mon, 14 Jul 2014 03:56:31 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 14 Jul 2014 14:56:19 +0400
-Message-Id: <1405335380-17996-5-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 14 Jul 2014 14:56:18 +0400
+Message-Id: <1405335380-17996-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1405335380-17996-1-git-send-email-antonynpavlov@gmail.com>
 References: <1405335380-17996-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,188 +23,419 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 4/5] commands: add hwclock
+Subject: [RFC v2 3/5] rtc: import ds1307 driver from linux-3.15
 To: barebox@lists.infradead.org
 
-The hwclock command allows to query or set the hardware clock (RTC).
+Current ds1307 rtc driver supports only ds1307 and ds1338 chips;
+it has no nvram support at the moment.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/Kconfig   |   8 ++++
- commands/Makefile  |   1 +
- commands/hwclock.c | 136 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 145 insertions(+)
+ drivers/rtc/Kconfig      |  29 ++++
+ drivers/rtc/Makefile     |   4 +
+ drivers/rtc/rtc-ds1307.c | 345 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 378 insertions(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 61816f5..6a75f85 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1691,6 +1691,14 @@ config CMD_GPIO
- 
- 	  Usage: gpio_set_value GPIO VALUE
- 
-+config CMD_HWCLOCK
-+	bool
-+	depends on RTC_CLASS
-+	prompt "hwclock command"
-+	default y
-+	help
-+	  The hwclock command allows to query or set the hardware clock (RTC).
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index f148266..8771933 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -14,3 +14,32 @@ menuconfig RTC_CLASS
+           Generic RTC class support. If you say yes here, you will
+           be allowed to plug one or more RTCs to your system. You will
+           probably want to enable one or more of the interfaces below.
 +
- config CMD_I2C
- 	bool
- 	depends on I2C
-diff --git a/commands/Makefile b/commands/Makefile
-index d42aca5..44dd9d4 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -100,3 +100,4 @@ obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
- obj-$(CONFIG_CMD_2048)		+= 2048.o
- obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
- obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
-+obj-$(CONFIG_CMD_HWCLOCK)	+= hwclock.o
-diff --git a/commands/hwclock.c b/commands/hwclock.c
++if RTC_CLASS
++
++comment "I2C RTC drivers"
++        depends on I2C
++
++if I2C
++
++config RTC_DRV_DS1307
++        tristate "Dallas/Maxim DS1307/37/38/39/40, ST M41T00, EPSON RX-8025"
++        help
++          If you say yes here you get support for various compatible RTC
++          chips (often with battery backup) connected with I2C. This driver
++          should handle DS1307, DS1337, DS1338, DS1339, DS1340, ST M41T00,
++          EPSON RX-8025 and probably other chips. In some cases the RTC
++          must already have been initialized (by manufacturing or a
++          bootloader).
++
++          The first seven registers on these chips hold an RTC, and other
++          registers may add features such as NVRAM, a trickle charger for
++          the RTC/NVRAM backup power, and alarms. NVRAM is visible in
++          sysfs, but other chip features may not be available.
++
++          This driver can also be built as a module. If so, the module
++          will be called rtc-ds1307.
++
++endif # I2C
++
++endif # RTC_CLASS
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 7d1b5bc..2c5a50e 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -4,3 +4,7 @@
+ 
+ obj-$(CONFIG_RTC_LIB)           += rtc-lib.o
+ obj-$(CONFIG_RTC_CLASS)         += class.o
++
++# Keep the list ordered.
++
++obj-$(CONFIG_RTC_DRV_DS1307)    += rtc-ds1307.o
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
 new file mode 100644
-index 0000000..a56b148
+index 0000000..acbb41e
 --- /dev/null
-+++ b/commands/hwclock.c
-@@ -0,0 +1,136 @@
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -0,0 +1,345 @@
++/*
++ * rtc-ds1307.c - RTC driver for some mostly-compatible I2C chips.
++ *
++ *  Copyright (C) 2005 James Chapman (ds1337 core)
++ *  Copyright (C) 2006 David Brownell
++ *  Copyright (C) 2009 Matthias Fuchs (rx8025 support)
++ *  Copyright (C) 2012 Bertrand Achard (nvram access fixes)
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
 +#include <common.h>
-+#include <command.h>
-+#include <getopt.h>
-+#include <linux/err.h>
-+#include <linux/ctype.h>
++#include <init.h>
++#include <driver.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <i2c/i2c.h>
 +#include <rtc.h>
 +#include <linux/rtc.h>
-+#include <string.h>
++#include <linux/bcd.h>
 +
-+static char *strchrnul(const char *s, int c)
++/*
++ * We can't determine type by probing, but if we expect pre-Linux code
++ * to have set the chip up as a clock (turning on the oscillator and
++ * setting the date and time), Linux can ignore the non-clock features.
++ * That's a natural job for a factory or repair bench.
++ */
++enum ds_type {
++	ds_1307,
++	ds_1338,
++	last_ds_type /* always last */
++};
++
++/* RTC registers don't differ much, except for the century flag */
++#define DS1307_REG_SECS		0x00	/* 00-59 */
++#	define DS1307_BIT_CH		0x80
++#	define DS1340_BIT_nEOSC		0x80
++#define DS1307_REG_MIN		0x01	/* 00-59 */
++#define DS1307_REG_HOUR		0x02	/* 00-23, or 1-12{am,pm} */
++#	define DS1307_BIT_12HR		0x40	/* in REG_HOUR */
++#	define DS1307_BIT_PM		0x20	/* in REG_HOUR */
++#	define DS1340_BIT_CENTURY_EN	0x80	/* in REG_HOUR */
++#	define DS1340_BIT_CENTURY	0x40	/* in REG_HOUR */
++#define DS1307_REG_WDAY		0x03	/* 01-07 */
++#define DS1307_REG_MDAY		0x04	/* 01-31 */
++#define DS1307_REG_MONTH	0x05	/* 01-12 */
++#	define DS1337_BIT_CENTURY	0x80	/* in REG_MONTH */
++#define DS1307_REG_YEAR		0x06	/* 00-99 */
++
++/*
++ * Other registers (control, status, alarms, trickle charge, NVRAM, etc)
++ * start at 7, and they differ a LOT. Only control and status matter for
++ * basic RTC date and time functionality; be careful using them.
++ */
++#define DS1307_REG_CONTROL	0x07		/* or ds1338 */
++#	define DS1307_BIT_OUT		0x80
++#	define DS1338_BIT_OSF		0x20
++#	define DS1307_BIT_SQWE		0x10
++#	define DS1307_BIT_RS1		0x02
++#	define DS1307_BIT_RS0		0x01
++
++struct ds1307 {
++	struct rtc_device	rtc;
++	u8			offset; /* register's offset */
++	u8			regs[11];
++	enum ds_type		type;
++	unsigned long		flags;
++	struct i2c_client	*client;
++	s32 (*read_block_data)(const struct i2c_client *client, u8 command,
++			       u8 length, u8 *values);
++	s32 (*write_block_data)(const struct i2c_client *client, u8 command,
++				u8 length, const u8 *values);
++};
++
++static struct platform_device_id ds1307_id[] = {
++	{ "ds1307", ds_1307 },
++	{ "ds1338", ds_1338 },
++	{ "pt7c4338", ds_1307 },
++	{ }
++};
++
++/*----------------------------------------------------------------------*/
++
++#define BLOCK_DATA_MAX_TRIES 10
++
++static s32 ds1307_read_block_data_once(const struct i2c_client *client,
++				       u8 command, u8 length, u8 *values)
 +{
-+	while (*s != '\0' && *s != c)
-+		s++;
++	s32 i, data;
 +
-+	return (char*) s;
++	for (i = 0; i < length; i++) {
++		data = i2c_smbus_read_byte_data(client, command + i);
++		if (data < 0)
++			return data;
++		values[i] = data;
++	}
++	return i;
 +}
 +
-+static int sscanf_two_digits(char *s, int *res)
++static s32 ds1307_read_block_data(const struct i2c_client *client, u8 command,
++				  u8 length, u8 *values)
 +{
-+	char buf[3];
-+	unsigned long t;
++	u8 oldvalues[255];
++	s32 ret;
++	int tries = 0;
 +
-+	if (!isdigit(s[0]) || !isdigit(s[1])) {
-+		return -EINVAL;
-+	}
-+
-+	buf[0] = s[0];
-+	buf[1] = s[1];
-+	buf[2] = '\0';
-+
-+	t = simple_strtoul(buf, NULL, 10);
-+	*res = t;
-+
-+	return 0;
-+}
-+
-+static int parse_datestr(char *date_str, struct rtc_time *ptm)
-+{
-+	char end = '\0';
-+	int len = strchrnul(date_str, '.') - date_str;
-+	int year;
-+
-+	/* ccyymmddHHMM[.SS] */
-+	if (len != 12) {
-+		return -EINVAL;
-+	}
-+
-+	if (sscanf_two_digits(date_str, &year) ||
-+		sscanf_two_digits(&date_str[2], &ptm->tm_year)) {
-+		return -EINVAL;
-+	}
-+
-+	ptm->tm_year = year * 100 + ptm->tm_year;
-+
-+	/* Adjust years */
-+	ptm->tm_year -= 1900;
-+
-+	if (sscanf_two_digits(&date_str[4], &ptm->tm_mon) ||
-+		sscanf_two_digits(&date_str[6], &ptm->tm_mday) ||
-+		sscanf_two_digits(&date_str[8], &ptm->tm_hour) ||
-+		sscanf_two_digits(&date_str[10], &ptm->tm_min)) {
-+		return -EINVAL;
-+	}
-+
-+	/* Adjust month from 1-12 to 0-11 */
-+	ptm->tm_mon -= 1;
-+
-+	end = date_str[12];
-+
-+	if (end == '.') {
-+		/* xxx.SS */
-+		if (!sscanf_two_digits(&date_str[13], &ptm->tm_sec)) {
-+			end = '\0';
++	dev_dbg(&client->dev, "ds1307_read_block_data (length=%d)\n", length);
++	ret = ds1307_read_block_data_once(client, command, length, values);
++	if (ret < 0)
++		return ret;
++	do {
++		if (++tries > BLOCK_DATA_MAX_TRIES) {
++			dev_err(&client->dev,
++				"ds1307_read_block_data failed\n");
++			return -EIO;
 +		}
-+		/* else end != NUL and we error out */
-+	}
-+
-+	if (end != '\0') {
-+		return -EINVAL;
-+	}
-+
-+	return 0;
++		memcpy(oldvalues, values, length);
++		ret = ds1307_read_block_data_once(client, command, length,
++						  values);
++		if (ret < 0)
++			return ret;
++	} while (memcmp(oldvalues, values, length));
++	return length;
 +}
 +
-+static int do_hwclock(int argc, char *argv[])
++static s32 ds1307_write_block_data(const struct i2c_client *client, u8 command,
++				   u8 length, const u8 *values)
 +{
-+	struct rtc_device *r;
-+	struct rtc_time tm;
-+	struct rtc_time stm;
-+	char rtc_name[16] = "rtc0";
-+	int opt;
-+	int set = 0;
++	u8 currvalues[255];
++	int tries = 0;
 +
-+	while ((opt = getopt(argc, argv, "f:s:")) > 0) {
-+		switch (opt) {
-+		case 'f':
-+			strncpy(rtc_name, optarg, 16);
-+			break;
-+		case 's':
-+			memset(&stm, 0, sizeof(stm));
-+			parse_datestr(optarg, &stm);
-+			set = 1;
-+			break;
++	dev_dbg(&client->dev, "ds1307_write_block_data (length=%d)\n", length);
++	do {
++		s32 i, ret;
++
++		if (++tries > BLOCK_DATA_MAX_TRIES) {
++			dev_err(&client->dev,
++				"ds1307_write_block_data failed\n");
++			return -EIO;
 +		}
++		for (i = 0; i < length; i++) {
++			ret = i2c_smbus_write_byte_data(client, command + i,
++							values[i]);
++			if (ret < 0)
++				return ret;
++		}
++		ret = ds1307_read_block_data_once(client, command, length,
++						  currvalues);
++		if (ret < 0)
++			return ret;
++	} while (memcmp(currvalues, values, length));
++	return length;
++}
++
++static inline struct ds1307 *to_ds1307_priv(struct rtc_device *rtcdev)
++{
++	return container_of(rtcdev, struct ds1307, rtc);
++}
++
++static int ds1307_get_time(struct rtc_device *rtcdev, struct rtc_time *t)
++{
++	struct device_d *dev = rtcdev->dev;
++	struct ds1307 *ds1307 = to_ds1307_priv(rtcdev);
++	int		tmp;
++
++	/* read the RTC date and time registers all at once */
++	tmp = ds1307->read_block_data(ds1307->client,
++		ds1307->offset, 7, ds1307->regs);
++	if (tmp != 7) {
++		dev_err(dev, "%s error %d\n", "read", tmp);
++		return -EIO;
 +	}
 +
-+	r = rtc_lookup(rtc_name);
-+	if (IS_ERR(r))
-+		return PTR_ERR(r);
++	dev_dbg(dev, "%s: %7ph\n", "read", ds1307->regs);
 +
-+	rtc_read_time(r, &tm);
++	t->tm_sec = bcd2bin(ds1307->regs[DS1307_REG_SECS] & 0x7f);
++	t->tm_min = bcd2bin(ds1307->regs[DS1307_REG_MIN] & 0x7f);
++	tmp = ds1307->regs[DS1307_REG_HOUR] & 0x3f;
++	t->tm_hour = bcd2bin(tmp);
++	t->tm_wday = bcd2bin(ds1307->regs[DS1307_REG_WDAY] & 0x07) - 1;
++	t->tm_mday = bcd2bin(ds1307->regs[DS1307_REG_MDAY] & 0x3f);
++	tmp = ds1307->regs[DS1307_REG_MONTH] & 0x1f;
++	t->tm_mon = bcd2bin(tmp) - 1;
 +
-+	if (set) {
-+		rtc_set_time(r, &stm);
-+		return 0;
++	/* assume 20YY not 19YY, and ignore DS1337_BIT_CENTURY */
++	t->tm_year = bcd2bin(ds1307->regs[DS1307_REG_YEAR]) + 100;
++
++	dev_dbg(dev, "%s secs=%d, mins=%d, "
++		"hours=%d, mday=%d, mon=%d, year=%d, wday=%d\n",
++		"read", t->tm_sec, t->tm_min,
++		t->tm_hour, t->tm_mday,
++		t->tm_mon, t->tm_year, t->tm_wday);
++
++	/* initial clock setting can be undefined */
++	return rtc_valid_tm(t);
++}
++
++static int ds1307_set_time(struct rtc_device *rtcdev, struct rtc_time *t)
++{
++	struct device_d *dev = rtcdev->dev;
++	struct ds1307 *ds1307 = to_ds1307_priv(rtcdev);
++	int		result;
++	int		tmp;
++	u8		*buf = ds1307->regs;
++
++	dev_dbg(dev, "%s secs=%d, mins=%d, "
++		"hours=%d, mday=%d, mon=%d, year=%d, wday=%d\n",
++		"write", t->tm_sec, t->tm_min,
++		t->tm_hour, t->tm_mday,
++		t->tm_mon, t->tm_year, t->tm_wday);
++
++	buf[DS1307_REG_SECS] = bin2bcd(t->tm_sec);
++	buf[DS1307_REG_MIN] = bin2bcd(t->tm_min);
++	buf[DS1307_REG_HOUR] = bin2bcd(t->tm_hour);
++	buf[DS1307_REG_WDAY] = bin2bcd(t->tm_wday + 1);
++	buf[DS1307_REG_MDAY] = bin2bcd(t->tm_mday);
++	buf[DS1307_REG_MONTH] = bin2bcd(t->tm_mon + 1);
++
++	/* assume 20YY not 19YY */
++	tmp = t->tm_year - 100;
++	buf[DS1307_REG_YEAR] = bin2bcd(tmp);
++
++	dev_dbg(dev, "%s: %7ph\n", "write", buf);
++
++	result = ds1307->write_block_data(ds1307->client,
++		ds1307->offset, 7, buf);
++	if (result < 0) {
++		dev_err(dev, "%s error %d\n", "write", result);
++		return result;
 +	}
-+
-+	printf("%02d:%02d:%02d %02d-%02d-%04d\n",
-+		tm.tm_hour, tm.tm_min, tm.tm_sec,
-+		tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-+
 +	return 0;
 +}
 +
-+BAREBOX_CMD_HELP_START(hwclock)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT ("-f NAME\t\t\t", "rtc device name (default rtc0)")
-+BAREBOX_CMD_HELP_OPT ("-s ccyymmddHHMM[.SS]\t", "set the hardware clock")
-+BAREBOX_CMD_HELP_END
++static const struct rtc_class_ops ds13xx_rtc_ops = {
++	.read_time	= ds1307_get_time,
++	.set_time	= ds1307_set_time,
++};
 +
-+BAREBOX_CMD_START(hwclock)
-+	.cmd		= do_hwclock,
-+	BAREBOX_CMD_DESC("query or set the hardware clock (RTC)")
-+	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-+	BAREBOX_CMD_HELP(cmd_hwclock_help)
-+BAREBOX_CMD_END
++static int ds1307_probe(struct device_d *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	struct ds1307		*ds1307;
++	int			err = -ENODEV;
++	int			tmp;
++	unsigned char		*buf;
++	unsigned long driver_data;
++
++	ds1307 = xzalloc(sizeof(struct ds1307));
++
++	err = dev_get_drvdata(dev, &driver_data);
++	if (err)
++		goto exit;
++
++	ds1307->client = client;
++	ds1307->type = driver_data;
++
++	buf = ds1307->regs;
++
++	ds1307->read_block_data = ds1307_read_block_data;
++	ds1307->write_block_data = ds1307_write_block_data;
++
++read_rtc:
++	/* read RTC registers */
++	tmp = ds1307->read_block_data(client, ds1307->offset, 8, buf);
++	if (tmp != 8) {
++		dev_dbg(&client->dev, "read error %d\n", tmp);
++		err = -EIO;
++		goto exit;
++	}
++
++	/*
++	 * minimal sanity checking; some chips (like DS1340) don't
++	 * specify the extra bits as must-be-zero, but there are
++	 * still a few values that are clearly out-of-range.
++	 */
++	tmp = ds1307->regs[DS1307_REG_SECS];
++	switch (ds1307->type) {
++	case ds_1307:
++		/* clock halted?  turn it on, so clock can tick. */
++		if (tmp & DS1307_BIT_CH) {
++			i2c_smbus_write_byte_data(client, DS1307_REG_SECS, 0);
++			dev_warn(&client->dev, "SET TIME!\n");
++			goto read_rtc;
++		}
++		break;
++	case ds_1338:
++		/* clock halted?  turn it on, so clock can tick. */
++		if (tmp & DS1307_BIT_CH)
++			i2c_smbus_write_byte_data(client, DS1307_REG_SECS, 0);
++
++		/* oscillator fault?  clear flag, and warn */
++		if (ds1307->regs[DS1307_REG_CONTROL] & DS1338_BIT_OSF) {
++			i2c_smbus_write_byte_data(client, DS1307_REG_CONTROL,
++					ds1307->regs[DS1307_REG_CONTROL]
++					& ~DS1338_BIT_OSF);
++			dev_warn(&client->dev, "SET TIME!\n");
++			goto read_rtc;
++		}
++		break;
++	default:
++		break;
++	}
++
++	tmp = ds1307->regs[DS1307_REG_HOUR];
++	switch (ds1307->type) {
++	default:
++		if (!(tmp & DS1307_BIT_12HR))
++			break;
++
++		/*
++		 * Be sure we're in 24 hour mode.  Multi-master systems
++		 * take note...
++		 */
++		tmp = bcd2bin(tmp & 0x1f);
++		if (tmp == 12)
++			tmp = 0;
++		if (ds1307->regs[DS1307_REG_HOUR] & DS1307_BIT_PM)
++			tmp += 12;
++		i2c_smbus_write_byte_data(client,
++				ds1307->offset + DS1307_REG_HOUR,
++				bin2bcd(tmp));
++	}
++
++	ds1307->rtc.ops = &ds13xx_rtc_ops;
++	ds1307->rtc.dev = dev;
++
++	err = rtc_register(&ds1307->rtc);
++
++exit:
++	return err;
++}
++
++static struct driver_d ds1307_driver = {
++	.name	= "rtc-ds1307",
++	.probe		= ds1307_probe,
++	.id_table	= ds1307_id,
++};
++
++static int __init ds1307_init(void)
++{
++	return i2c_driver_register(&ds1307_driver);
++}
++device_initcall(ds1307_init);
 -- 
 2.0.1
 
