@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X6bqL-0006gs-EL
- for barebox@lists.infradead.org; Mon, 14 Jul 2014 08:42:43 +0000
-Date: Mon, 14 Jul 2014 10:42:18 +0200
+ Linux)) id 1X6bqx-0006oJ-A4
+ for barebox@lists.infradead.org; Mon, 14 Jul 2014 08:43:20 +0000
+Date: Mon, 14 Jul 2014 10:42:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140714084218.GX23235@pengutronix.de>
-References: <1405110382-29843-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140714084257.GY23235@pengutronix.de>
+References: <1405104718-15156-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1405110382-29843-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1405104718-15156-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,81 +22,161 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: add virt2real barebox mini-howto
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] Documentation: use command groups
+To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jul 12, 2014 at 12:26:22AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Fri, Jul 11, 2014 at 08:51:58PM +0200, Jan Luebbe wrote:
+> The help definition already contained a group declaration.
+> This is now reused for the HTML documentation.
+> 
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 
-Applied, thanks
+Good idea! Applied, thanks
 
 Sascha
 
 > ---
->  Documentation/boards/davinci.rst | 51 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
->  create mode 100644 Documentation/boards/davinci.rst
+>  Documentation/commands.rst    | 86 ++++++++++++++++++++++++++++++++++++++++++-
+>  Documentation/gen_commands.py | 13 ++++++-
+>  2 files changed, 95 insertions(+), 4 deletions(-)
 > 
-> diff --git a/Documentation/boards/davinci.rst b/Documentation/boards/davinci.rst
-> new file mode 100644
-> index 0000000..a2ddc3c
-> --- /dev/null
-> +++ b/Documentation/boards/davinci.rst
-> @@ -0,0 +1,51 @@
-> +TI Davinci
-> +==========
+> diff --git a/Documentation/commands.rst b/Documentation/commands.rst
+> index 55b04f6..0dc9e1b 100644
+> --- a/Documentation/commands.rst
+> +++ b/Documentation/commands.rst
+> @@ -1,9 +1,91 @@
+>  Command reference
+>  =================
+>  
+> +Information
+> +-----------
+>  .. toctree::
+> +   :titlesonly:
+>     :glob:
+> -   :maxdepth: 1
+>  
+> -   commands/*
+> +   commands/info/*
 > +
-> +virt2real
-> +---------
+> +Booting
+> +-------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
-> +virt2real is a miniature board for creation of WiFi
-> +or Internet controllable smart devices.
+> +   commands/boot/*
 > +
-> +The board has
+> +Partitions and Filesystems
+> +--------------------------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
-> +  * TI DaVinchi DM365 running at 300 MHz;
-> +  * 128 MiB DDR2 SDRAM;
-> +  * 256 MiB NAND Flash Memory;
-> +  * 2 x UART serial interfaces;
-> +  * 1 x Ethernet interface (Micrel KS8851);
-> +  * 1 x USB interface;
-> +  * microSD card slot.
+> +   commands/part/*
 > +
-> +The board uses U-Boot as bootloader.
+> +Environment
+> +-----------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
+> +   commands/env/*
 > +
-> +Running barebox
-> +^^^^^^^^^^^^^^^
+> +Files
+> +-----
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
-> +  1. Connect to the boards's UART0 (115200 8N1);
-> +     Use J2.2 (GND), J2.4 (UART0_TXD), J2.6 (UART0_RXD) pins.
+> +   commands/file/*
 > +
-> +  2. Turn board's power on;
+> +Shell Scripting
+> +---------------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
-> +  3. Wait for ``Hit any key to stop autoboot`` prompt and press the space key.
+> +   commands/script/*
 > +
-> +  4. Upload ``barebox.bin`` via Ymodem
+> +Console and Framebuffer
+> +-----------------------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
-> +.. code-block:: none
-> +    virt2real ># loady
-> +..
+> +   commands/console/*
 > +
-> +  5. Run barebox
+> +Memory
+> +------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
-> +.. code-block:: none
-> +    virt2real ># go 0x82000000
-> +..
+> +   commands/mem/*
 > +
+> +Hardware Manipulation
+> +---------------------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
 > +
-> +Links
-> +^^^^^
+> +   commands/hwmanip/*
 > +
-> +  * http://virt2real.com/
-> +  * http://wiki.virt2real.ru/
-> +  * https://github.com/virt2real
+> +Miscelleanous
+> +-------------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
+> +
+> +   commands/misc/*
+> +
+> +Networking
+> +----------
+> +.. toctree::
+> +   :titlesonly:
+> +   :glob:
+> +
+> +   commands/net/*
+>  
+> diff --git a/Documentation/gen_commands.py b/Documentation/gen_commands.py
+> index 4e33cca..d3db350 100755
+> --- a/Documentation/gen_commands.py
+> +++ b/Documentation/gen_commands.py
+> @@ -1,5 +1,6 @@
+>  #!/usr/bin/python
+>  
+> +import errno
+>  import os
+>  import re
+>  import sys
+> @@ -76,7 +77,7 @@ def parse_c(name):
+>      x = CMD_GROUP.match(line)
+>      if x:
+>        last = cmd['c_group']
+> -      last.append(x.group(1).decode("string_escape"))
+> +      last.append(x.group(1).split('_')[-1].lower())
+>        continue
+>      x = CONT.match(line)
+>      if x:
+> @@ -159,6 +160,14 @@ for name in CMDS.keys():
+>  for name, cmd in CMDS.items():
+>    #pprint({name: cmd})
+>    rst = gen_rst(name, cmd)
+> -  target = os.path.join(sys.argv[2], name+'.rst')
+> +  subdir = os.path.join(sys.argv[2], cmd['c_group'][0])
+> +  try:
+> +    os.makedirs(subdir)
+> +  except OSError as e:
+> +    if e.errno == errno.EEXIST and os.path.isdir(subdir):
+> +      pass
+> +    else:
+> +      raise
+> +  target = os.path.join(subdir, name+'.rst')
+>    file(target, 'w').write(rst)
+>  
 > -- 
-> 2.0.1
+> 1.9.1
 > 
 > 
 > _______________________________________________
