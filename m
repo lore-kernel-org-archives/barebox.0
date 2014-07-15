@@ -1,22 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X727H-0003n9-N5
- for barebox@lists.infradead.org; Tue, 15 Jul 2014 12:45:58 +0000
-Received: by mail-la0-f47.google.com with SMTP id mc6so816722lab.34
- for <barebox@lists.infradead.org>; Tue, 15 Jul 2014 05:45:31 -0700 (PDT)
-Date: Tue, 15 Jul 2014 16:57:56 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140715165756.53acb0e50c0390dfefb63b6b@gmail.com>
-In-Reply-To: <CAOngqVXSRuHmPL_Z73AfLPCdzitS7=kkViy2rJMvX1vvsiOhbw@mail.gmail.com>
-References: <53C25B45.7010101@gmail.com>
- <20140713145526.2cf6407fc9a17a4e8db89a50@gmail.com>
- <CAOngqVV-PcbsowH9iOHXpxXNvJEb_k7KyWakQVVGT9FMm4iFLw@mail.gmail.com>
- <20140715110157.e505c7ad66ef5871b1ecf830@gmail.com>
- <CAOngqVVHG5+S68okE4kqU95FNtkxvJFtcZj0W2KmH=54XxdKTg@mail.gmail.com>
- <20140715142753.d2c6424ea6b2d1b810b0de73@gmail.com>
- <CAOngqVXSRuHmPL_Z73AfLPCdzitS7=kkViy2rJMvX1vvsiOhbw@mail.gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1X7330-0006K7-KP
+ for barebox@lists.infradead.org; Tue, 15 Jul 2014 13:45:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 15 Jul 2014 15:45:10 +0200
+Message-Id: <1405431910-15431-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,59 +14,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picotcp tftp support [was Adding IPv4 multicast support]
-To: Daniele Lacamera <daniele.lacamera@tass.be>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] introduce verbose debug
+To: barebox@lists.infradead.org
 
-On Tue, 15 Jul 2014 12:57:21 +0200
-Daniele Lacamera <daniele.lacamera@tass.be> wrote:
+During debugging it sometimes helps to me even more verbose. This
+adds an additional debug level for this.
 
-> On Tue, Jul 15, 2014 at 12:27 PM, Antony Pavlov <antonynpavlov@gmail.com>=
- wrote:
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/Kconfig   | 2 ++
+ include/printk.h | 8 +++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-> >> I will be able to provide such an interface by using a similar
-> >> approach to what you used for ping (so via net_poll() routine called
-> >> in a loop), assuming that your posix-like interface expects blocking
-> >> calls for read/write operations.
-> >
-> > Alas! We can't use this approach for tftp because tftp is a FILESYSTEM =
-in barebox.
-> =
+diff --git a/common/Kconfig b/common/Kconfig
+index bba7f15..e7c22e5 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -676,6 +676,7 @@ config COMPILE_LOGLEVEL
+ 	  5    normal but significant condition (notice)
+ 	  6    informational (info)
+ 	  7    debug-level messages (debug)
++	  8    verbose debug messages (vdebug)
+ 
+ config DEFAULT_LOGLEVEL
+ 	int "default loglevel"
+@@ -692,6 +693,7 @@ config DEFAULT_LOGLEVEL
+ 	  5    normal but significant condition (notice)
+ 	  6    informational (info)
+ 	  7    debug-level messages (debug)
++	  8    verbose debug messages (vdebug)
+ 
+ config DEBUG_INFO
+ 	bool
+diff --git a/include/printk.h b/include/printk.h
+index f550f07..4543156 100644
+--- a/include/printk.h
++++ b/include/printk.h
+@@ -9,8 +9,11 @@
+ #define MSG_NOTICE     5    /* normal but significant condition */
+ #define MSG_INFO       6    /* informational */
+ #define MSG_DEBUG      7    /* debug-level messages */
++#define MSG_VDEBUG     8    /* verbose debug messages */
+ 
+-#ifdef DEBUG
++#ifdef VERBOSE_DEBUG
++#define LOGLEVEL	MSG_VDEBUG
++#elif defined DEBUG
+ #define LOGLEVEL	MSG_DEBUG
+ #else
+ #define LOGLEVEL	CONFIG_COMPILE_LOGLEVEL
+@@ -46,6 +49,8 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
+ 	__dev_printf(6, (dev) , format , ## arg)
+ #define dev_dbg(dev, format, arg...)		\
+ 	__dev_printf(7, (dev) , format , ## arg)
++#define dev_vdbg(dev, format, arg...)		\
++	__dev_printf(8, (dev) , format , ## arg)
+ 
+ #define __pr_printk(level, format, args...) \
+ 	({	\
+@@ -65,5 +70,6 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
+ #define pr_info(fmt, arg...)	__pr_printk(6, pr_fmt(fmt), ##arg)
+ #define pr_debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
+ #define debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
++#define pr_vdebug(fmt, arg...)	__pr_printk(8, pr_fmt(fmt), ##arg)
+ 
+ #endif
+-- 
+2.0.1
 
-> Then again, I'd like to know if your FS implementation actually needs
-> blocking call, and in case, where is the code supposed to block. Does
-> barebox have some kind of support for multiple threads, or a default
-> event loop where background operations can be added? Or are the FS
-> calls non blocking?
-
-AFAIK barebox does not support threads.
-Also all filesystem calls are blocking.
-
-> Sorry for asking dumb questions, I am not a barebox developer and I am
-> just trying to figure out what is your execution model. There
-> certainly is a way to integrate my TFTP implementation as soon as I
-> realize what is your model: as for instance we have blocking POSIX
-> socket calls implemented with and without an OS infrastructure, and we
-> are able to realize blocking calls on any systems, being baremetal or
-> multithtreaded.
-> =
-
-> Thanks
-> =
-
-> /D
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
