@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x230.google.com ([2a00:1450:400c:c00::230])
+Received: from mail-la0-f42.google.com ([209.85.215.42])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X6yqg-0003i9-Rl
- for barebox@lists.infradead.org; Tue, 15 Jul 2014 09:16:35 +0000
-Received: by mail-wg0-f48.google.com with SMTP id x13so5309853wgg.19
- for <barebox@lists.infradead.org>; Tue, 15 Jul 2014 02:16:12 -0700 (PDT)
-From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Tue, 15 Jul 2014 11:16:40 +0200
-Message-Id: <1405415800-7846-1-git-send-email-poggi.raph@gmail.com>
+ id 1X6z5V-0002ZV-8x
+ for barebox@lists.infradead.org; Tue, 15 Jul 2014 09:31:54 +0000
+Received: by mail-la0-f42.google.com with SMTP id pn19so3763272lab.15
+ for <barebox@lists.infradead.org>; Tue, 15 Jul 2014 02:31:29 -0700 (PDT)
 MIME-Version: 1.0
+In-Reply-To: <20140715110157.e505c7ad66ef5871b1ecf830@gmail.com>
+References: <53C25B45.7010101@gmail.com>
+ <20140713145526.2cf6407fc9a17a4e8db89a50@gmail.com>
+ <CAOngqVV-PcbsowH9iOHXpxXNvJEb_k7KyWakQVVGT9FMm4iFLw@mail.gmail.com>
+ <20140715110157.e505c7ad66ef5871b1ecf830@gmail.com>
+Date: Tue, 15 Jul 2014 11:31:29 +0200
+Message-ID: <CAOngqVVHG5+S68okE4kqU95FNtkxvJFtcZj0W2KmH=54XxdKTg@mail.gmail.com>
+From: Daniele Lacamera <daniele.lacamera@tass.be>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,29 +22,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: atmel_nand: add SOFT_BCH support
-To: barebox@lists.infradead.org
-Cc: Raphael Poggi <poggi.raph@gmail.com>
+Subject: Re: picotcp tftp support [was Adding IPv4 multicast support]
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-VG8gdXNlIHNvZnQgZWNjIHdpdGggbmFuZCB3aXRoIDhrIHBhZ2UsIHdlIG5lZWQgdGhlIEJDSCBz
-dXBwb3J0LgpUaGlzIGNvbW1pdCBhZGRzIHRoZSBwb3NzaWJpbHR5IGZvciBhdG1lbF9uYW5kIHRv
-IGVuYWJsZSBTT0ZUX0JDSC4KClNpZ25lZC1vZmYtYnk6IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5y
-YXBoQGdtYWlsLmNvbT4KLS0tCiBkcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyB8ICAgIDUg
-KysrKysKIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9kcml2
-ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5j
-CmluZGV4IGU5YjJhZjcuLmQ1NDJhODMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25hbmQvYXRt
-ZWxfbmFuZC5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCkBAIC0xMTY0LDYg
-KzExNjQsMTEgQEAgc3RhdGljIGludCBfX2luaXQgYXRtZWxfbmFuZF9wcm9iZShzdHJ1Y3QgZGV2
-aWNlX2QgKmRldikKIAkJbmFuZF9jaGlwLT5lY2MubW9kZSA9IE5BTkRfRUNDX0hXOwogCX0KIAor
-CWlmIChJU19FTkFCTEVEKENPTkZJR19OQU5EX0VDQ19CQ0gpICYmCisJCXBkYXRhLT5lY2NfbW9k
-ZSA9PSBOQU5EX0VDQ19TT0ZUX0JDSCkgeworCQluYW5kX2NoaXAtPmVjYy5tb2RlID0gTkFORF9F
-Q0NfU09GVF9CQ0g7CisJfQorCiAJbmFuZF9jaGlwLT5jaGlwX2RlbGF5ID0gNDA7CQkvKiA0MHVz
-IGNvbW1hbmQgZGVsYXkgdGltZSAqLwogCiAJaWYgKGhvc3QtPmJvYXJkLT5idXNfd2lkdGhfMTYp
-IHsJLyogMTYtYml0IGJ1cyB3aWR0aCAqLwotLSAKMS43LjkuNQoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Jul 15, 2014 at 9:01 AM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+>
+> barebox uses POSIX file interface for working with tftp.
+>
+> We have to provide these basic functions (see fs/tftp.c):
+>
+> static struct fs_driver_d tftp_driver = {
+>         .open      = tftp_open,
+>         .read      = tftp_read,
+>         .write     = tftp_write,
+>         .close     = tftp_close,
+>         /* Other functions for unlink, truncate,
+>            mkdir, rmdir, stat, opendir, lseek, create
+>            are not so important. */
+> };
+>
+> So **fs/tftp.c code is driven** by user code that
+> uses file interface for accessing to the files
+> on tftp-server.
+>
+> AFAI understand picotcp tftp support uses event-driven interface
+> so **user code is driven** by picotcp tftp support code.
+>
+> How we can use picotcp tftp support for realization
+> of POSIX file interface?
+
+Hi Antony,
+
+I will be able to provide such an interface by using a similar
+approach to what you used for ping (so via net_poll() routine called
+in a loop), assuming that your posix-like interface expects blocking
+calls for read/write operations.
+
+The loop will also be interruptible via CTRL+C.
+
+I would like to know more about this approach though, are you
+implementing client only functionality (get/put) or do you want to be
+able to listen for client "connections" as well? How is the connection
+initiated (I see there is a tftp_probe function that's not included in
+the API group)?
+
+Thanks,
+
+/d
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
