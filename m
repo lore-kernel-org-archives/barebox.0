@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x22d.google.com ([2607:f8b0:400d:c04::22d])
+Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X77IX-0002sg-Sm
- for barebox@lists.infradead.org; Tue, 15 Jul 2014 18:17:55 +0000
-Received: by mail-qg0-f45.google.com with SMTP id f51so5073360qge.4
- for <barebox@lists.infradead.org>; Tue, 15 Jul 2014 11:17:29 -0700 (PDT)
-From: Colin Leitner <colin.leitner@googlemail.com>
-Message-ID: <53C57035.5090207@gmail.com>
-Date: Tue, 15 Jul 2014 20:17:25 +0200
-MIME-Version: 1.0
-References: <53C25B45.7010101@gmail.com>	<20140713145526.2cf6407fc9a17a4e8db89a50@gmail.com>
- <CAOngqVV-PcbsowH9iOHXpxXNvJEb_k7KyWakQVVGT9FMm4iFLw@mail.gmail.com>
-In-Reply-To: <CAOngqVV-PcbsowH9iOHXpxXNvJEb_k7KyWakQVVGT9FMm4iFLw@mail.gmail.com>
+ id 1X77UX-00083x-BL
+ for barebox@lists.infradead.org; Tue, 15 Jul 2014 18:30:18 +0000
+Received: by mail-lb0-f182.google.com with SMTP id z11so1480373lbi.13
+ for <barebox@lists.infradead.org>; Tue, 15 Jul 2014 11:29:54 -0700 (PDT)
+Date: Tue, 15 Jul 2014 22:42:19 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140715224219.19f604e6d856a3aff702f702@gmail.com>
+In-Reply-To: <1405432173-22448-1-git-send-email-s.hauer@pengutronix.de>
+References: <1405432173-22448-1-git-send-email-s.hauer@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,23 +19,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Adding IPv4 multicast support
-To: Daniele Lacamera <daniele.lacamera@tass.be>, Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Colin Leitner <colin.leitner@googlemail.com>, PicoTCP <picotcp@tass.be>, barebox <barebox@lists.infradead.org>
+Subject: Re: Update/include some functions from the Kernel
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-> What would you need for "network discovery"? Currently picotcp
-> - mDNS (at the moment over v4 only)
+On Tue, 15 Jul 2014 15:49:28 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-That's what you want (with DNS-SD over mDNS). Sounds great and would save me lots of work :)
+After rebasing over latest next I have got many warnings like this:
 
-Thanks for your effort!
+  CC      common/filetype.o
+In file included from include/common.h:26:0,
+                 from common/filetype.c:18:
+include/linux/bitops.h: In function 'hweight_long':
+include/linux/bitops.h:77:2: warning: implicit declaration of function 'hwe=
+ight32' [-Wimplicit-function-declaration]
+  return sizeof(w) =3D=3D 4 ? hweight32(w) : hweight64(w);
+  ^
+include/linux/bitops.h:77:2: warning: implicit declaration of function 'hwe=
+ight64' [-Wimplicit-function-declaration]
+include/linux/bitops.h: In function 'fls_long':
+include/linux/bitops.h:175:2: warning: implicit declaration of function 'fl=
+s64' [-Wimplicit-function-declaration]
+  return fls64(l);
+  ^
 
--Colin
 
+
+> This adds/updates some lowlevel bitmap/bitop stuff from the
+> Kernel. Needed by upcoming USB updates.
+> =
+
+> Sascha
+> =
+
+> ----------------------------------------------------------------
+> Sascha Hauer (5):
+>       include: Add DECLARE_BITMAP from kernel
+>       include: Add round_up/round_down macros from kernel
+>       include: Add foreign endianess adding functions from kernel
+>       lib: Add bitmap functions from kernel
+>       include: update bitop functions from kernel
+> =
+
+>  include/asm-generic/bitops/hweight.h |  15 +
+>  include/linux/bitmap.h               | 285 ++++++++++++
+>  include/linux/bitops.h               | 214 ++++++++-
+>  include/linux/byteorder/generic.h    |  29 ++
+>  include/linux/kernel.h               |  13 +
+>  include/linux/types.h                |   3 +
+>  lib/Makefile                         |   1 +
+>  lib/bitmap.c                         | 839 +++++++++++++++++++++++++++++=
+++++++
+>  8 files changed, 1398 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/bitmap.h
+>  create mode 100644 lib/bitmap.c
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
