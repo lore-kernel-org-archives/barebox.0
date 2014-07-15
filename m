@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X7330-0006K7-KP
- for barebox@lists.infradead.org; Tue, 15 Jul 2014 13:45:35 +0000
+ Linux)) id 1X737E-0006s4-Lc
+ for barebox@lists.infradead.org; Tue, 15 Jul 2014 13:49:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 15 Jul 2014 15:45:10 +0200
-Message-Id: <1405431910-15431-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 15 Jul 2014 15:49:30 +0200
+Message-Id: <1405432173-22448-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1405432173-22448-1-git-send-email-s.hauer@pengutronix.de>
+References: <1405432173-22448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,71 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] introduce verbose debug
+Subject: [PATCH 2/5] include: Add round_up/round_down macros from kernel
 To: barebox@lists.infradead.org
 
-During debugging it sometimes helps to me even more verbose. This
-adds an additional debug level for this.
+Yes, we already have roundup/rounddown. Unlike these macros
+round_up/round_down are optimized to (and only work with)
+power-of-2 arguments. It's a poor name, but kernel code needs
+it, so add it to barebox aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig   | 2 ++
- include/printk.h | 8 +++++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ include/linux/kernel.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index bba7f15..e7c22e5 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -676,6 +676,7 @@ config COMPILE_LOGLEVEL
- 	  5    normal but significant condition (notice)
- 	  6    informational (info)
- 	  7    debug-level messages (debug)
-+	  8    verbose debug messages (vdebug)
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index 4322f01..b90d8f7 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -5,6 +5,19 @@
+ #include <linux/barebox-wrapper.h>
  
- config DEFAULT_LOGLEVEL
- 	int "default loglevel"
-@@ -692,6 +693,7 @@ config DEFAULT_LOGLEVEL
- 	  5    normal but significant condition (notice)
- 	  6    informational (info)
- 	  7    debug-level messages (debug)
-+	  8    verbose debug messages (vdebug)
- 
- config DEBUG_INFO
- 	bool
-diff --git a/include/printk.h b/include/printk.h
-index f550f07..4543156 100644
---- a/include/printk.h
-+++ b/include/printk.h
-@@ -9,8 +9,11 @@
- #define MSG_NOTICE     5    /* normal but significant condition */
- #define MSG_INFO       6    /* informational */
- #define MSG_DEBUG      7    /* debug-level messages */
-+#define MSG_VDEBUG     8    /* verbose debug messages */
- 
--#ifdef DEBUG
-+#ifdef VERBOSE_DEBUG
-+#define LOGLEVEL	MSG_VDEBUG
-+#elif defined DEBUG
- #define LOGLEVEL	MSG_DEBUG
- #else
- #define LOGLEVEL	CONFIG_COMPILE_LOGLEVEL
-@@ -46,6 +49,8 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
- 	__dev_printf(6, (dev) , format , ## arg)
- #define dev_dbg(dev, format, arg...)		\
- 	__dev_printf(7, (dev) , format , ## arg)
-+#define dev_vdbg(dev, format, arg...)		\
-+	__dev_printf(8, (dev) , format , ## arg)
- 
- #define __pr_printk(level, format, args...) \
- 	({	\
-@@ -65,5 +70,6 @@ int dev_printf(int level, const struct device_d *dev, const char *format, ...)
- #define pr_info(fmt, arg...)	__pr_printk(6, pr_fmt(fmt), ##arg)
- #define pr_debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
- #define debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
-+#define pr_vdebug(fmt, arg...)	__pr_printk(8, pr_fmt(fmt), ##arg)
- 
- #endif
+ /*
++ * This looks more complex than it should be. But we need to
++ * get the type for the ~ right in round_down (it needs to be
++ * as wide as the result!), and we want to evaluate the macro
++ * arguments just once each.
++ *
++ * NOTE these functions only round to power-of-2 arguments. Use
++ * roundup/rounddown for non power-of-2-arguments.
++ */
++#define __round_mask(x, y) ((__typeof__(x))((y)-1))
++#define round_up(x, y) ((((x)-1) | __round_mask(x, y))+1)
++#define round_down(x, y) ((x) & ~__round_mask(x, y))
++
++/*
+  * min()/max()/clamp() macros that also do
+  * strict type-checking.. See the
+  * "unnecessary" pointer comparison.
 -- 
 2.0.1
 
