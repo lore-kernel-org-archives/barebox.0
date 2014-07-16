@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X7KZ2-0002cv-R7
- for barebox@lists.infradead.org; Wed, 16 Jul 2014 08:27:49 +0000
-Date: Wed, 16 Jul 2014 10:27:26 +0200
+ Linux)) id 1X7KjA-0000m2-NJ
+ for barebox@lists.infradead.org; Wed, 16 Jul 2014 08:38:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140716082726.GD23235@pengutronix.de>
-References: <1405432173-22448-1-git-send-email-s.hauer@pengutronix.de>
- <20140715224219.19f604e6d856a3aff702f702@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140715224219.19f604e6d856a3aff702f702@gmail.com>
+Date: Wed, 16 Jul 2014 10:37:53 +0200
+Message-Id: <1405499873-6385-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1405499873-6385-1-git-send-email-s.hauer@pengutronix.de>
+References: <1405499873-6385-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Update/include some functions from the Kernel
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 4/4] ppc: Add missing __ffs implementation
+To: barebox@lists.infradead.org
 
-On Tue, Jul 15, 2014 at 10:42:19PM +0400, Antony Pavlov wrote:
-> On Tue, 15 Jul 2014 15:49:28 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> After rebasing over latest next I have got many warnings like this:
-> 
->   CC      common/filetype.o
-> In file included from include/common.h:26:0,
->                  from common/filetype.c:18:
-> include/linux/bitops.h: In function 'hweight_long':
-> include/linux/bitops.h:77:2: warning: implicit declaration of function 'hweight32' [-Wimplicit-function-declaration]
->   return sizeof(w) == 4 ? hweight32(w) : hweight64(w);
->   ^
-> include/linux/bitops.h:77:2: warning: implicit declaration of function 'hweight64' [-Wimplicit-function-declaration]
-> include/linux/bitops.h: In function 'fls_long':
-> include/linux/bitops.h:175:2: warning: implicit declaration of function 'fls64' [-Wimplicit-function-declaration]
->   return fls64(l);
->   ^
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/ppc/include/asm/bitops.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Ouch. An update to this series is under way.
-
-Sascha
-
+diff --git a/arch/ppc/include/asm/bitops.h b/arch/ppc/include/asm/bitops.h
+index 74f7f6d..c4ed2de 100644
+--- a/arch/ppc/include/asm/bitops.h
++++ b/arch/ppc/include/asm/bitops.h
+@@ -153,6 +153,11 @@ extern __inline__ int ffz(unsigned int x)
+ 	return __ilog2(x & -x);
+ }
+ 
++static __inline__ int __ffs(unsigned long x)
++{
++	return __ilog2(x & -x);
++}
++
+ /*
+  * fls: find last (most-significant) bit set.
+  * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.1
+
 
 _______________________________________________
 barebox mailing list
