@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X7faa-0002S6-7U
- for barebox@lists.infradead.org; Thu, 17 Jul 2014 06:54:48 +0000
-Received: by mail-wg0-f45.google.com with SMTP id x12so1914776wgg.4
- for <barebox@lists.infradead.org>; Wed, 16 Jul 2014 23:54:21 -0700 (PDT)
+ id 1X7hPh-00040O-B3
+ for barebox@lists.infradead.org; Thu, 17 Jul 2014 08:51:41 +0000
+Received: by mail-wi0-f169.google.com with SMTP id n3so6992772wiv.0
+ for <barebox@lists.infradead.org>; Thu, 17 Jul 2014 01:51:14 -0700 (PDT)
+From: Raphael Poggi <poggi.raph@gmail.com>
+Date: Thu, 17 Jul 2014 10:51:34 +0200
+Message-Id: <1405587095-23308-2-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1405587095-23308-1-git-send-email-poggi.raph@gmail.com>
+References: <1405587095-23308-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20140717053050.GH23235@pengutronix.de>
-References: <1405415800-7846-1-git-send-email-poggi.raph@gmail.com>
- <20140717053050.GH23235@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
-Date: Thu, 17 Jul 2014 08:53:41 +0200
-Message-ID: <CACqcpZAN8dfmGMu0+G34a5j2+hhi2vju=Fm--eayTaKDqNkzzg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +23,23 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: atmel_nand: add SOFT_BCH support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] mtd: atmel_nand: increase chip_delay
+To: barebox@lists.infradead.org
+Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-SGksCgpUaGFua3MgZm9yIGFwcGxpZWQsIHllcyBJIGNoYW5nZWQgdGhlIDIwdXMgdG8gNDB1cyBm
-b3IgaGFuZGxlIDhrIHBhZ2UKTkFORC4gSSB3aWxsIHNlbmQgcGF0Y2hzIGFib3V0IHRoYXQuCgoy
-MDE0LTA3LTE3IDc6MzAgR01UKzAyOjAwIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25p
-eC5kZT46Cj4gT24gVHVlLCBKdWwgMTUsIDIwMTQgYXQgMTE6MTY6NDBBTSArMDIwMCwgUmFwaGFl
-bCBQb2dnaSB3cm90ZToKPj4gVG8gdXNlIHNvZnQgZWNjIHdpdGggbmFuZCB3aXRoIDhrIHBhZ2Us
-IHdlIG5lZWQgdGhlIEJDSCBzdXBwb3J0Lgo+PiBUaGlzIGNvbW1pdCBhZGRzIHRoZSBwb3NzaWJp
-bHR5IGZvciBhdG1lbF9uYW5kIHRvIGVuYWJsZSBTT0ZUX0JDSC4KPj4KPj4gU2lnbmVkLW9mZi1i
-eTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgo+PiAtLS0KPj4gIGRyaXZl
-cnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jIHwgICAgNSArKysrKwo+PiAgMSBmaWxlIGNoYW5nZWQs
-IDUgaW5zZXJ0aW9ucygrKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9hdG1l
-bF9uYW5kLmMgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+PiBpbmRleCBlOWIyYWY3
-Li5kNTQyYTgzIDEwMDY0NAo+PiAtLS0gYS9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+
-PiArKysgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+PiBAQCAtMTE2NCw2ICsxMTY0
-LDExIEBAIHN0YXRpYyBpbnQgX19pbml0IGF0bWVsX25hbmRfcHJvYmUoc3RydWN0IGRldmljZV9k
-ICpkZXYpCj4+ICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2MubW9kZSA9IE5BTkRfRUNDX0hX
-Owo+PiAgICAgICB9Cj4+Cj4+ICsgICAgIGlmIChJU19FTkFCTEVEKENPTkZJR19OQU5EX0VDQ19C
-Q0gpICYmCj4+ICsgICAgICAgICAgICAgcGRhdGEtPmVjY19tb2RlID09IE5BTkRfRUNDX1NPRlRf
-QkNIKSB7Cj4+ICsgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2MubW9kZSA9IE5BTkRfRUNDX1NP
-RlRfQkNIOwo+PiArICAgICB9Cj4+ICsKPj4gICAgICAgbmFuZF9jaGlwLT5jaGlwX2RlbGF5ID0g
-NDA7ICAgICAgICAgICAgIC8qIDQwdXMgY29tbWFuZCBkZWxheSB0aW1lICovCj4KPiBUaGUgbWFp
-bmxpbmUgY29kZSBoYXMgMjB1cyBoZXJlLiBEbyB5b3UgbmVlZCB0aGF0IGNoYW5nZT8KPgo+IEFu
-eXdheSwgYXBwbGllZCB0aGlzIHBhdGNoLgo+Cj4gU2FzY2hhCj4KPgo+IC0tCj4gUGVuZ3V0cm9u
-aXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBo
-dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dl
-cmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIw
-NjkxNy01NTU1IHwKPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+U29tZSBuYW5kIGxpa2UgTWljcm9uIE1UMjlGMzJHMDhBQkFBQVdQIG5lZWQgbW9yZSB0aGFuIDIw
+dXMuCgpTaWduZWQtb2ZmLWJ5OiBSYXBoYcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+
+Ci0tLQogZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5kLmMgfCAgICAyICstCiAxIGZpbGUgY2hh
+bmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJz
+L210ZC9uYW5kL2F0bWVsX25hbmQuYyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCmlu
+ZGV4IDMxNjFlODkuLmEwMmYzOGYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxf
+bmFuZC5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCkBAIC0xMTYyLDcgKzEx
+NjIsNyBAQCBzdGF0aWMgaW50IF9faW5pdCBhdG1lbF9uYW5kX3Byb2JlKHN0cnVjdCBkZXZpY2Vf
+ZCAqZGV2KQogCQluYW5kX2NoaXAtPmVjYy5tb2RlID0gTkFORF9FQ0NfSFc7CiAJfQogCi0JbmFu
+ZF9jaGlwLT5jaGlwX2RlbGF5ID0gMjA7CQkvKiAyMHVzIGNvbW1hbmQgZGVsYXkgdGltZSAqLwor
+CW5hbmRfY2hpcC0+Y2hpcF9kZWxheSA9IDQwOwkJLyogNDB1cyBjb21tYW5kIGRlbGF5IHRpbWUg
+Ki8KIAogCWlmIChJU19FTkFCTEVEKENPTkZJR19OQU5EX0VDQ19CQ0gpICYmCiAJCQlwZGF0YS0+
+ZWNjX21vZGUgPT0gTkFORF9FQ0NfU09GVF9CQ0gpIHsKLS0gCjEuNy45LjUKCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
