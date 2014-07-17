@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X7eHi-0003iH-BW
- for barebox@lists.infradead.org; Thu, 17 Jul 2014 05:31:14 +0000
-Date: Thu, 17 Jul 2014 07:30:50 +0200
+ Linux)) id 1X7eKg-0004AR-59
+ for barebox@lists.infradead.org; Thu, 17 Jul 2014 05:34:19 +0000
+Date: Thu, 17 Jul 2014 07:33:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140717053050.GH23235@pengutronix.de>
-References: <1405415800-7846-1-git-send-email-poggi.raph@gmail.com>
+Message-ID: <20140717053355.GI23235@pengutronix.de>
+References: <1405432173-22448-1-git-send-email-s.hauer@pengutronix.de>
+ <53C70795.5050308@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1405415800-7846-1-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <53C70795.5050308@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +19,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: atmel_nand: add SOFT_BCH support
-To: Raphael Poggi <poggi.raph@gmail.com>
+Subject: Re: Update/include some functions from the Kernel
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 15, 2014 at 11:16:40AM +0200, Raphael Poggi wrote:
-> To use soft ecc with nand with 8k page, we need the BCH support.
-> This commit adds the possibilty for atmel_nand to enable SOFT_BCH.
-> =
+On Thu, Jul 17, 2014 at 01:15:33AM +0200, Sebastian Hesselbarth wrote:
+> On 07/15/2014 03:49 PM, Sascha Hauer wrote:
+> > This adds/updates some lowlevel bitmap/bitop stuff from the
+> > Kernel. Needed by upcoming USB updates.
+> 
+> Sascha,
+> 
+> just curious what "USB updates" there are?
 
-> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
-> ---
->  drivers/mtd/nand/atmel_nand.c |    5 +++++
->  1 file changed, 5 insertions(+)
-> =
-
-> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-> index e9b2af7..d542a83 100644
-> --- a/drivers/mtd/nand/atmel_nand.c
-> +++ b/drivers/mtd/nand/atmel_nand.c
-> @@ -1164,6 +1164,11 @@ static int __init atmel_nand_probe(struct device_d=
- *dev)
->  		nand_chip->ecc.mode =3D NAND_ECC_HW;
->  	}
->  =
-
-> +	if (IS_ENABLED(CONFIG_NAND_ECC_BCH) &&
-> +		pdata->ecc_mode =3D=3D NAND_ECC_SOFT_BCH) {
-> +		nand_chip->ecc.mode =3D NAND_ECC_SOFT_BCH;
-> +	}
-> +
->  	nand_chip->chip_delay =3D 40;		/* 40us command delay time */
-
-The mainline code has 20us here. Do you need that change?
-
-Anyway, applied this patch.
+The updates are only USB core related, like turning the hub driver into
+a device and make fix up the USB device hierarchy. The other stuff is
+USB gadget specific: Update to v3.15 and composite gadget support
 
 Sascha
 
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
