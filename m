@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x235.google.com ([2a00:1450:400c:c03::235])
+Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X7k8W-0005jf-VY
- for barebox@lists.infradead.org; Thu, 17 Jul 2014 11:46:09 +0000
-Received: by mail-we0-f181.google.com with SMTP id k48so1361487wev.26
- for <barebox@lists.infradead.org>; Thu, 17 Jul 2014 04:45:45 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <53C79FDD.1070901@atmel.com>
-References: <1405587095-23308-1-git-send-email-poggi.raph@gmail.com>
- <1405587095-23308-3-git-send-email-poggi.raph@gmail.com>
- <53C79FDD.1070901@atmel.com>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
-Date: Thu, 17 Jul 2014 13:45:05 +0200
-Message-ID: <CACqcpZAPA6OQL=sZoz0pRosWT6=0yPwTZ8_a0aPYGrvYcNGNAQ@mail.gmail.com>
+ id 1X7k9Z-000630-2Z
+ for barebox@lists.infradead.org; Thu, 17 Jul 2014 11:47:14 +0000
+Received: by mail-lb0-f174.google.com with SMTP id c11so1614205lbj.19
+ for <barebox@lists.infradead.org>; Thu, 17 Jul 2014 04:46:48 -0700 (PDT)
+Date: Thu, 17 Jul 2014 15:59:16 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140717155916.64f4883aa00804098683c222@gmail.com>
+In-Reply-To: <53C79869.4010000@gmail.com>
+References: <1405545909-9855-1-git-send-email-antonynpavlov@gmail.com>
+ <1405545909-9855-2-git-send-email-antonynpavlov@gmail.com>
+ <53C79869.4010000@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +21,119 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] mtd: atmel_nand: enable PMECC for 8k page nand
-To: Bo Shen <voice.shen@atmel.com>
+Subject: Re: [PATCH v2] i2c: add Marvell 64xxx driver
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-VGhhbmtzIGZvciB5b3VyIEFja2VkLgoKWWVzIHlvdSdyZSByaWdodCwgc28gSSBzcGxpdCB0aGlz
-IGludG8gMiBjb21taXRzIGFuZCBzZW5kIGEgdjIuCgpCZXN0IHJlZ2FyZHMsClJhcGhhw6tsIFBv
-Z2dpCgoyMDE0LTA3LTE3IDEyOjA1IEdNVCswMjowMCBCbyBTaGVuIDx2b2ljZS5zaGVuQGF0bWVs
-LmNvbT46Cj4gSGkgUmFwaGFlbCwKPgo+Cj4gT24gMDcvMTcvMjAxNCAwNDo1MSBQTSwgUmFwaGFl
-bCBQb2dnaSB3cm90ZToKPj4KPj4gRW5hYmxlIHRoZSBQTUVDQyB0byBzdXBwb3J0IDhrIHBhZ2Uu
-Cj4+Cj4+IFNpZ25lZC1vZmYtYnk6IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNv
-bT4KPgo+Cj4gQWNrZWQtYnk6IEJvIFNoZW4gPHZvaWNlLnNoZW5AYXRtZWwuY29tPgo+Cj4KPj4g
-LS0tCj4+ICAgZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5kLmMgfCAgICA0ICsrKy0KPj4gICAx
-IGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4+Cj4+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyBiL2RyaXZlcnMvbXRkL25hbmQv
-YXRtZWxfbmFuZC5jCj4+IGluZGV4IGZhNTk2ZWQuLjM2YTYwZDEgMTAwNjQ0Cj4+IC0tLSBhL2Ry
-aXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCj4+ICsrKyBiL2RyaXZlcnMvbXRkL25hbmQvYXRt
-ZWxfbmFuZC5jCj4+IEBAIC03OTYsNyArNzk2LDkgQEAgc3RhdGljIGludCBfX2luaXQgYXRtZWxf
-cG1lY2NfbmFuZF9pbml0X3BhcmFtcyhzdHJ1Y3QKPj4gZGV2aWNlX2QgKmRldiwKPj4gICAgICAg
-ICBzd2l0Y2ggKG10ZC0+d3JpdGVzaXplKSB7Cj4+ICAgICAgICAgY2FzZSAyMDQ4Ogo+PiAgICAg
-ICAgIGNhc2UgNDA5NjoKPj4gLSAgICAgICAgICAgICAgIGhvc3QtPnBtZWNjX2RlZ3JlZSA9IFBN
-RUNDX0dGX0RJTUVOU0lPTl8xMzsKPj4gKyAgICAgICBjYXNlIDgxOTI6Cj4+ICsgICAgICAgICAg
-ICAgICBob3N0LT5wbWVjY19kZWdyZWUgPSAoc2VjdG9yX3NpemUgPT0gNTEyKSA/Cj4+ICsgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBQTUVDQ19HRl9ESU1FTlNJT05fMTMg
-Ogo+PiBQTUVDQ19HRl9ESU1FTlNJT05fMTQ7Cj4KPgo+IEFjdHVhbGx5LCB0aGlzIGlzIGEgZml4
-ICsgOEsgcGFnZSBzdXBwb3J0Lgo+IElmIHNvbWUgY29tbWl0IG1lc3NhZ2Ugb3Igc3BsaXQgaW50
-byB0d28gcGF0Y2hlcyB3aWxsIGJlIGJldHRlci4KPgo+Cj4+ICAgICAgICAgICAgICAgICBob3N0
-LT5wbWVjY19jd19sZW4gPSAoMSA8PCBob3N0LT5wbWVjY19kZWdyZWUpIC0gMTsKPj4gICAgICAg
-ICAgICAgICAgIGhvc3QtPnBtZWNjX3NlY3Rvcl9udW1iZXIgPSBtdGQtPndyaXRlc2l6ZSAvIHNl
-Y3Rvcl9zaXplOwo+PiAgICAgICAgICAgICAgICAgaG9zdC0+cG1lY2NfYnl0ZXNfcGVyX3NlY3Rv
-ciA9IHBtZWNjX2dldF9lY2NfYnl0ZXMoCj4+Cj4KPiBCZXN0IFJlZ2FyZHMsCj4gQm8gU2hlbgo+
-Cj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBiYXJl
-Ym94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, 17 Jul 2014 11:33:29 +0200
+Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> wrote:
+
+> On 07/16/2014 11:25 PM, Antony Pavlov wrote:
+> > This driver is also used for Allwinner SoCs I2C controllers.
+> >
+> > Ported from linux-3.15.
+> >
+> > The most notable barebox driver version changes:
+> >
+> >    * drop message offloading support;
+> >    * add reg-io-width parameter to use driver with byte-oriented
+> >      controller versions.
+> >
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> [...]
+> > diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-=
+mv64xxx.c
+> > new file mode 100644
+> > index 0000000..324796a
+> > --- /dev/null
+> > +++ b/drivers/i2c/busses/i2c-mv64xxx.c
+> > @@ -0,0 +1,687 @@
+> > +/*
+> > + * Driver for the i2c controller on the Marvell line of host bridges
+> > + * (e.g, gt642[46]0, mv643[46]0, mv644[46]0, and Orion SoC family).
+> > + *
+> > + * This code was ported from linux-3.15 kernel by Antony Pavlov.
+> > + *
+> > + * Author: Mark A. Greer <mgreer@mvista.com>
+> > + *
+> > + * 2005 (c) MontaVista, Software, Inc.  This file is licensed under
+> > + * the terms of the GNU General Public License version 2.  This program
+> > + * is licensed "as is" without any warranty of any kind, whether expre=
+ss
+> > + * or implied.
+> > + */
+> > +#include <common.h>
+> > +#include <driver.h>
+> > +#include <init.h>
+> > +#include <of.h>
+> > +#include <malloc.h>
+> > +#include <types.h>
+> > +#include <xfuncs.h>
+> > +#include <clock.h>
+> > +#include <linux/clk.h>
+> > +#include <linux/err.h>
+> > +
+> > +#include <io.h>
+> > +#include <i2c/i2c.h>
+> > +#include <printk.h>
+> > +
+> > +#define MV64XXX_I2C_ADDR_ADDR(val)			((val & 0x7f) << 1)
+> > +#define MV64XXX_I2C_BAUD_DIV_N(val)			(val & 0x7)
+> > +#define MV64XXX_I2C_BAUD_DIV_M(val)			((val & 0xf) << 3)
+> > +
+> > +#define	MV64XXX_I2C_REG_CONTROL_ACK			0x00000004
+> > +#define	MV64XXX_I2C_REG_CONTROL_IFLG			0x00000008
+> > +#define	MV64XXX_I2C_REG_CONTROL_STOP			0x00000010
+> > +#define	MV64XXX_I2C_REG_CONTROL_START			0x00000020
+> > +#define	MV64XXX_I2C_REG_CONTROL_TWSIEN			0x00000040
+> > +#define	MV64XXX_I2C_REG_CONTROL_INTEN			0x00000080
+> =
+
+> Antony,
+> =
+
+> I'll have a look at the driver itself later, but your patch is full
+> of superfluous tabs like above between '#define' and 'MV64XXX_foo'.
+
+I have kept original linux driver formatting.
+
+Please see it with any interactive two panels diff tool (e.g. vimdiff):
+
+   vimdiff barebox.git/drivers/i2c/busses/i2c-mv64xxx.c linux.git/drivers/i=
+2c/busses/i2c-mv64xxx.c
+
+> =
+
+> Isn't checkpatch.pl complaining about it?
+
+On the one hand I need to change all writel/readl to mv64xxx_write/mv64xxx_=
+read, so
+some lines become 'over 80 characters'.
+
+But on the other hand I'm trying to keep formatting compatibility with orig=
+inal linux driver;
+I decided to keep original formatting even if lines become 'over 80 charact=
+ers'.
+
+Moreover Sascha said that there is no problem with 'line over 80 characters=
+' warnings :)
+see http://lists.infradead.org/pipermail/barebox/2014-June/019484.html
+
+
+> Anyway, no need to resend before I have tested the driver itself.
+
+ Great! The driver needs addition tests.
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
