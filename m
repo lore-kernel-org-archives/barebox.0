@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X7hPh-00040O-B3
- for barebox@lists.infradead.org; Thu, 17 Jul 2014 08:51:41 +0000
-Received: by mail-wi0-f169.google.com with SMTP id n3so6992772wiv.0
- for <barebox@lists.infradead.org>; Thu, 17 Jul 2014 01:51:14 -0700 (PDT)
+ id 1X7hPi-000409-Gs
+ for barebox@lists.infradead.org; Thu, 17 Jul 2014 08:51:42 +0000
+Received: by mail-wi0-f174.google.com with SMTP id d1so7519843wiv.13
+ for <barebox@lists.infradead.org>; Thu, 17 Jul 2014 01:51:15 -0700 (PDT)
 From: Raphael Poggi <poggi.raph@gmail.com>
-Date: Thu, 17 Jul 2014 10:51:34 +0200
-Message-Id: <1405587095-23308-2-git-send-email-poggi.raph@gmail.com>
+Date: Thu, 17 Jul 2014 10:51:35 +0200
+Message-Id: <1405587095-23308-3-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1405587095-23308-1-git-send-email-poggi.raph@gmail.com>
 References: <1405587095-23308-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
@@ -23,23 +23,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: atmel_nand: increase chip_delay
+Subject: [PATCH 2/2] mtd: atmel_nand: enable PMECC for 8k page nand
 To: barebox@lists.infradead.org
 Cc: Raphael Poggi <poggi.raph@gmail.com>
 
-U29tZSBuYW5kIGxpa2UgTWljcm9uIE1UMjlGMzJHMDhBQkFBQVdQIG5lZWQgbW9yZSB0aGFuIDIw
-dXMuCgpTaWduZWQtb2ZmLWJ5OiBSYXBoYcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+
-Ci0tLQogZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5kLmMgfCAgICAyICstCiAxIGZpbGUgY2hh
-bmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJz
-L210ZC9uYW5kL2F0bWVsX25hbmQuYyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCmlu
-ZGV4IDMxNjFlODkuLmEwMmYzOGYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxf
-bmFuZC5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCkBAIC0xMTYyLDcgKzEx
-NjIsNyBAQCBzdGF0aWMgaW50IF9faW5pdCBhdG1lbF9uYW5kX3Byb2JlKHN0cnVjdCBkZXZpY2Vf
-ZCAqZGV2KQogCQluYW5kX2NoaXAtPmVjYy5tb2RlID0gTkFORF9FQ0NfSFc7CiAJfQogCi0JbmFu
-ZF9jaGlwLT5jaGlwX2RlbGF5ID0gMjA7CQkvKiAyMHVzIGNvbW1hbmQgZGVsYXkgdGltZSAqLwor
-CW5hbmRfY2hpcC0+Y2hpcF9kZWxheSA9IDQwOwkJLyogNDB1cyBjb21tYW5kIGRlbGF5IHRpbWUg
-Ki8KIAogCWlmIChJU19FTkFCTEVEKENPTkZJR19OQU5EX0VDQ19CQ0gpICYmCiAJCQlwZGF0YS0+
-ZWNjX21vZGUgPT0gTkFORF9FQ0NfU09GVF9CQ0gpIHsKLS0gCjEuNy45LjUKCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+RW5hYmxlIHRoZSBQTUVDQyB0byBzdXBwb3J0IDhrIHBhZ2UuCgpTaWduZWQtb2ZmLWJ5OiBSYXBo
+YcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+Ci0tLQogZHJpdmVycy9tdGQvbmFuZC9h
+dG1lbF9uYW5kLmMgfCAgICA0ICsrKy0KIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyks
+IDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQu
+YyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCmluZGV4IGZhNTk2ZWQuLjM2YTYwZDEg
+MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCisrKyBiL2RyaXZlcnMv
+bXRkL25hbmQvYXRtZWxfbmFuZC5jCkBAIC03OTYsNyArNzk2LDkgQEAgc3RhdGljIGludCBfX2lu
+aXQgYXRtZWxfcG1lY2NfbmFuZF9pbml0X3BhcmFtcyhzdHJ1Y3QgZGV2aWNlX2QgKmRldiwKIAlz
+d2l0Y2ggKG10ZC0+d3JpdGVzaXplKSB7CiAJY2FzZSAyMDQ4OgogCWNhc2UgNDA5NjoKLQkJaG9z
+dC0+cG1lY2NfZGVncmVlID0gUE1FQ0NfR0ZfRElNRU5TSU9OXzEzOworCWNhc2UgODE5MjoKKwkJ
+aG9zdC0+cG1lY2NfZGVncmVlID0gKHNlY3Rvcl9zaXplID09IDUxMikgPworCQkJCQlQTUVDQ19H
+Rl9ESU1FTlNJT05fMTMgOiBQTUVDQ19HRl9ESU1FTlNJT05fMTQ7CiAJCWhvc3QtPnBtZWNjX2N3
+X2xlbiA9ICgxIDw8IGhvc3QtPnBtZWNjX2RlZ3JlZSkgLSAxOwogCQlob3N0LT5wbWVjY19zZWN0
+b3JfbnVtYmVyID0gbXRkLT53cml0ZXNpemUgLyBzZWN0b3Jfc2l6ZTsKIAkJaG9zdC0+cG1lY2Nf
+Ynl0ZXNfcGVyX3NlY3RvciA9IHBtZWNjX2dldF9lY2NfYnl0ZXMoCi0tIAoxLjcuOS41CgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
