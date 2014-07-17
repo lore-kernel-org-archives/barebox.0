@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X7eKg-0004AR-59
- for barebox@lists.infradead.org; Thu, 17 Jul 2014 05:34:19 +0000
-Date: Thu, 17 Jul 2014 07:33:55 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140717053355.GI23235@pengutronix.de>
-References: <1405432173-22448-1-git-send-email-s.hauer@pengutronix.de>
- <53C70795.5050308@gmail.com>
+Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X7faa-0002S6-7U
+ for barebox@lists.infradead.org; Thu, 17 Jul 2014 06:54:48 +0000
+Received: by mail-wg0-f45.google.com with SMTP id x12so1914776wgg.4
+ for <barebox@lists.infradead.org>; Wed, 16 Jul 2014 23:54:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <53C70795.5050308@gmail.com>
+In-Reply-To: <20140717053050.GH23235@pengutronix.de>
+References: <1405415800-7846-1-git-send-email-poggi.raph@gmail.com>
+ <20140717053050.GH23235@pengutronix.de>
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
+Date: Thu, 17 Jul 2014 08:53:41 +0200
+Message-ID: <CACqcpZAN8dfmGMu0+G34a5j2+hhi2vju=Fm--eayTaKDqNkzzg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Update/include some functions from the Kernel
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH] mtd: atmel_nand: add SOFT_BCH support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 17, 2014 at 01:15:33AM +0200, Sebastian Hesselbarth wrote:
-> On 07/15/2014 03:49 PM, Sascha Hauer wrote:
-> > This adds/updates some lowlevel bitmap/bitop stuff from the
-> > Kernel. Needed by upcoming USB updates.
-> 
-> Sascha,
-> 
-> just curious what "USB updates" there are?
-
-The updates are only USB core related, like turning the hub driver into
-a device and make fix up the USB device hierarchy. The other stuff is
-USB gadget specific: Update to v3.15 and composite gadget support
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpUaGFua3MgZm9yIGFwcGxpZWQsIHllcyBJIGNoYW5nZWQgdGhlIDIwdXMgdG8gNDB1cyBm
+b3IgaGFuZGxlIDhrIHBhZ2UKTkFORC4gSSB3aWxsIHNlbmQgcGF0Y2hzIGFib3V0IHRoYXQuCgoy
+MDE0LTA3LTE3IDc6MzAgR01UKzAyOjAwIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25p
+eC5kZT46Cj4gT24gVHVlLCBKdWwgMTUsIDIwMTQgYXQgMTE6MTY6NDBBTSArMDIwMCwgUmFwaGFl
+bCBQb2dnaSB3cm90ZToKPj4gVG8gdXNlIHNvZnQgZWNjIHdpdGggbmFuZCB3aXRoIDhrIHBhZ2Us
+IHdlIG5lZWQgdGhlIEJDSCBzdXBwb3J0Lgo+PiBUaGlzIGNvbW1pdCBhZGRzIHRoZSBwb3NzaWJp
+bHR5IGZvciBhdG1lbF9uYW5kIHRvIGVuYWJsZSBTT0ZUX0JDSC4KPj4KPj4gU2lnbmVkLW9mZi1i
+eTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgo+PiAtLS0KPj4gIGRyaXZl
+cnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jIHwgICAgNSArKysrKwo+PiAgMSBmaWxlIGNoYW5nZWQs
+IDUgaW5zZXJ0aW9ucygrKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9hdG1l
+bF9uYW5kLmMgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+PiBpbmRleCBlOWIyYWY3
+Li5kNTQyYTgzIDEwMDY0NAo+PiAtLS0gYS9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+
+PiArKysgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwo+PiBAQCAtMTE2NCw2ICsxMTY0
+LDExIEBAIHN0YXRpYyBpbnQgX19pbml0IGF0bWVsX25hbmRfcHJvYmUoc3RydWN0IGRldmljZV9k
+ICpkZXYpCj4+ICAgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2MubW9kZSA9IE5BTkRfRUNDX0hX
+Owo+PiAgICAgICB9Cj4+Cj4+ICsgICAgIGlmIChJU19FTkFCTEVEKENPTkZJR19OQU5EX0VDQ19C
+Q0gpICYmCj4+ICsgICAgICAgICAgICAgcGRhdGEtPmVjY19tb2RlID09IE5BTkRfRUNDX1NPRlRf
+QkNIKSB7Cj4+ICsgICAgICAgICAgICAgbmFuZF9jaGlwLT5lY2MubW9kZSA9IE5BTkRfRUNDX1NP
+RlRfQkNIOwo+PiArICAgICB9Cj4+ICsKPj4gICAgICAgbmFuZF9jaGlwLT5jaGlwX2RlbGF5ID0g
+NDA7ICAgICAgICAgICAgIC8qIDQwdXMgY29tbWFuZCBkZWxheSB0aW1lICovCj4KPiBUaGUgbWFp
+bmxpbmUgY29kZSBoYXMgMjB1cyBoZXJlLiBEbyB5b3UgbmVlZCB0aGF0IGNoYW5nZT8KPgo+IEFu
+eXdheSwgYXBwbGllZCB0aGlzIHBhdGNoLgo+Cj4gU2FzY2hhCj4KPgo+IC0tCj4gUGVuZ3V0cm9u
+aXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBo
+dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
+ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dl
+cmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIw
+NjkxNy01NTU1IHwKPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
