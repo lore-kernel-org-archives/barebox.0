@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x236.google.com ([2a00:1450:400c:c05::236])
+Received: from eusmtp01.atmel.com ([212.144.249.242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X7i4a-00081B-56
- for barebox@lists.infradead.org; Thu, 17 Jul 2014 09:34:04 +0000
-Received: by mail-wi0-f182.google.com with SMTP id d1so2730515wiv.9
- for <barebox@lists.infradead.org>; Thu, 17 Jul 2014 02:33:33 -0700 (PDT)
-Message-ID: <53C79869.4010000@gmail.com>
-Date: Thu, 17 Jul 2014 11:33:29 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1405545909-9855-1-git-send-email-antonynpavlov@gmail.com>
- <1405545909-9855-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1405545909-9855-2-git-send-email-antonynpavlov@gmail.com>
+ id 1X7iXG-0005CU-GD
+ for barebox@lists.infradead.org; Thu, 17 Jul 2014 10:03:47 +0000
+Message-ID: <53C79F4A.2030407@atmel.com>
+Date: Thu, 17 Jul 2014 18:02:50 +0800
+From: Bo Shen <voice.shen@atmel.com>
+MIME-Version: 1.0
+References: <1405587095-23308-1-git-send-email-poggi.raph@gmail.com>
+ <1405587095-23308-2-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1405587095-23308-2-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +18,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] i2c: add Marvell 64xxx driver
-To: Antony Pavlov <antonynpavlov@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] mtd: atmel_nand: increase chip_delay
+To: Raphael Poggi <poggi.raph@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On 07/16/2014 11:25 PM, Antony Pavlov wrote:
-> This driver is also used for Allwinner SoCs I2C controllers.
->
-> Ported from linux-3.15.
->
-> The most notable barebox driver version changes:
->
->    * drop message offloading support;
->    * add reg-io-width parameter to use driver with byte-oriented
->      controller versions.
->
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
-[...]
-> diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
-> new file mode 100644
-> index 0000000..324796a
-> --- /dev/null
-> +++ b/drivers/i2c/busses/i2c-mv64xxx.c
-> @@ -0,0 +1,687 @@
-> +/*
-> + * Driver for the i2c controller on the Marvell line of host bridges
-> + * (e.g, gt642[46]0, mv643[46]0, mv644[46]0, and Orion SoC family).
-> + *
-> + * This code was ported from linux-3.15 kernel by Antony Pavlov.
-> + *
-> + * Author: Mark A. Greer <mgreer@mvista.com>
-> + *
-> + * 2005 (c) MontaVista, Software, Inc.  This file is licensed under
-> + * the terms of the GNU General Public License version 2.  This program
-> + * is licensed "as is" without any warranty of any kind, whether express
-> + * or implied.
-> + */
-> +#include <common.h>
-> +#include <driver.h>
-> +#include <init.h>
-> +#include <of.h>
-> +#include <malloc.h>
-> +#include <types.h>
-> +#include <xfuncs.h>
-> +#include <clock.h>
-> +#include <linux/clk.h>
-> +#include <linux/err.h>
-> +
-> +#include <io.h>
-> +#include <i2c/i2c.h>
-> +#include <printk.h>
-> +
-> +#define MV64XXX_I2C_ADDR_ADDR(val)			((val & 0x7f) << 1)
-> +#define MV64XXX_I2C_BAUD_DIV_N(val)			(val & 0x7)
-> +#define MV64XXX_I2C_BAUD_DIV_M(val)			((val & 0xf) << 3)
-> +
-> +#define	MV64XXX_I2C_REG_CONTROL_ACK			0x00000004
-> +#define	MV64XXX_I2C_REG_CONTROL_IFLG			0x00000008
-> +#define	MV64XXX_I2C_REG_CONTROL_STOP			0x00000010
-> +#define	MV64XXX_I2C_REG_CONTROL_START			0x00000020
-> +#define	MV64XXX_I2C_REG_CONTROL_TWSIEN			0x00000040
-> +#define	MV64XXX_I2C_REG_CONTROL_INTEN			0x00000080
-
-Antony,
-
-I'll have a look at the driver itself later, but your patch is full
-of superfluous tabs like above between '#define' and 'MV64XXX_foo'.
-
-Isn't checkpatch.pl complaining about it? Anyway, no need to resend
-before I have tested the driver itself.
-
-Sebastian
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgUmFwaGFlbCwKCk9uIDA3LzE3LzIwMTQgMDQ6NTEgUE0sIFJhcGhhZWwgUG9nZ2kgd3JvdGU6
+Cj4gU29tZSBuYW5kIGxpa2UgTWljcm9uIE1UMjlGMzJHMDhBQkFBQVdQIG5lZWQgbW9yZSB0aGFu
+IDIwdXMuCj4KPiBTaWduZWQtb2ZmLWJ5OiBSYXBoYcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFp
+bC5jb20+CgpBY2tlZC1ieTogQm8gU2hlbiA8dm9pY2Uuc2hlbkBhdG1lbC5jb20+Cgo+IC0tLQo+
+ICAgZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5kLmMgfCAgICAyICstCj4gICAxIGZpbGUgY2hh
+bmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPgo+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5j
+Cj4gaW5kZXggMzE2MWU4OS4uYTAyZjM4ZiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9uYW5k
+L2F0bWVsX25hbmQuYwo+ICsrKyBiL2RyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jCj4gQEAg
+LTExNjIsNyArMTE2Miw3IEBAIHN0YXRpYyBpbnQgX19pbml0IGF0bWVsX25hbmRfcHJvYmUoc3Ry
+dWN0IGRldmljZV9kICpkZXYpCj4gICAJCW5hbmRfY2hpcC0+ZWNjLm1vZGUgPSBOQU5EX0VDQ19I
+VzsKPiAgIAl9Cj4KPiAtCW5hbmRfY2hpcC0+Y2hpcF9kZWxheSA9IDIwOwkJLyogMjB1cyBjb21t
+YW5kIGRlbGF5IHRpbWUgKi8KPiArCW5hbmRfY2hpcC0+Y2hpcF9kZWxheSA9IDQwOwkJLyogNDB1
+cyBjb21tYW5kIGRlbGF5IHRpbWUgKi8KPgo+ICAgCWlmIChJU19FTkFCTEVEKENPTkZJR19OQU5E
+X0VDQ19CQ0gpICYmCj4gICAJCQlwZGF0YS0+ZWNjX21vZGUgPT0gTkFORF9FQ0NfU09GVF9CQ0gp
+IHsKPgoKQmVzdCBSZWdhcmRzLApCbyBTaGVuCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
