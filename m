@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X87X4-0006im-4b
- for barebox@lists.infradead.org; Fri, 18 Jul 2014 12:45:04 +0000
+ Linux)) id 1X87X4-0006il-4Y
+ for barebox@lists.infradead.org; Fri, 18 Jul 2014 12:45:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 18 Jul 2014 14:44:39 +0200
-Message-Id: <1405687479-3507-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 18 Jul 2014 14:44:38 +0200
+Message-Id: <1405687479-3507-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405687479-3507-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405687479-3507-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,101 +21,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] USB: Remove conflicting USB_SPEED_* definitions
+Subject: [PATCH 3/4] USB: Use descriptors from ch9.h
 To: barebox@lists.infradead.org
 
-We have USB_SPEED_* definitions as macros in usb_defs.h and as an enum
-in ch9.h. The defines in usb.h correspond to hardware bits in the
-ehci controller. Get rid of them and keep the hardware independent
-enums.
+Use the descriptors from ch9.h instead of duplicating them
+in usb.h
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/host/ehci-hcd.c | 17 +++++++++++++++--
- drivers/usb/host/ohci-hcd.c |  2 +-
- include/usb/usb.h           |  2 --
- include/usb/usb_defs.h      |  6 ------
- 4 files changed, 16 insertions(+), 11 deletions(-)
+ drivers/net/usb/usbnet.c |  5 ----
+ include/usb/usb.h        | 63 +-----------------------------------------------
+ 2 files changed, 1 insertion(+), 67 deletions(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 2da3edd..d30c3aa 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -229,16 +229,29 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index e9edf40..a51cfda 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -6,11 +6,6 @@
+ #include <malloc.h>
+ #include <linux/phy.h>
  
- 	qh = &ehci->qh_list[1];
- 	qh->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
--	c = (usb_pipespeed(pipe) != USB_SPEED_HIGH &&
-+	c = (dev->speed != USB_SPEED_HIGH &&
- 	     usb_pipeendpoint(pipe) == 0) ? 1 : 0;
- 	endpt = (8 << 28) |
- 	    (c << 27) |
- 	    (usb_maxpacket(dev, pipe) << 16) |
- 	    (0 << 15) |
- 	    (1 << 14) |
--	    (usb_pipespeed(pipe) << 12) |
- 	    (usb_pipeendpoint(pipe) << 8) |
- 	    (0 << 7) | (usb_pipedevice(pipe) << 0);
-+	switch (dev->speed) {
-+	case USB_SPEED_FULL:
-+		endpt |= 0 << 12;
-+		break;
-+	case USB_SPEED_LOW:
-+		endpt |= 1 << 12;
-+		break;
-+	case USB_SPEED_HIGH:
-+		endpt |= 2 << 12;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
- 	qh->qh_endpt1 = cpu_to_hc32(endpt);
- 	endpt = (1 << 30) |
- 	    (dev->portnr << 23) |
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 8bf20d0..3d18a73 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -794,7 +794,7 @@ static struct ed *ep_add_ed(struct usb_device *usb_dev, unsigned long pipe,
- 			| (usb_pipeisoc(pipe) ? 0x8000 : 0)
- 			| (usb_pipecontrol(pipe) ? 0 : \
- 					   (usb_pipeout(pipe) ? 0x800 : 0x1000))
--			| usb_pipeslow(pipe) << 13
-+			| (usb_dev->speed == USB_SPEED_LOW) << 13
- 			| usb_maxpacket(usb_dev, pipe) << 16);
- 
- 	if (ed->type == PIPE_INTERRUPT && ed->state == ED_UNLINK) {
+-static inline int usb_endpoint_dir_in(const struct usb_endpoint_descriptor *epd)
+-{
+-	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN);
+-}
+-
+ /* handles CDC Ethernet and many other network "bulk data" interfaces */
+ int usbnet_get_endpoints(struct usbnet *dev)
+ {
 diff --git a/include/usb/usb.h b/include/usb/usb.h
-index a0bc1d2..ff5242b 100644
+index 74b97a9..a0bc1d2 100644
 --- a/include/usb/usb.h
 +++ b/include/usb/usb.h
-@@ -301,8 +301,6 @@ void usb_rescan(int force);
- #define usb_pipe_endpdev(pipe)	(((pipe) >> 8) & 0x7ff)
- #define usb_pipeendpoint(pipe)	(((pipe) >> 15) & 0xf)
- #define usb_pipedata(pipe)	(((pipe) >> 19) & 1)
--#define usb_pipespeed(pipe)	(((pipe) >> 26) & 3)
--#define usb_pipeslow(pipe)	(usb_pipespeed(pipe) == USB_SPEED_LOW)
- #define usb_pipetype(pipe)	(((pipe) >> 30) & 3)
- #define usb_pipeisoc(pipe)	(usb_pipetype((pipe)) == PIPE_ISOCHRONOUS)
- #define usb_pipeint(pipe)	(usb_pipetype((pipe)) == PIPE_INTERRUPT)
-diff --git a/include/usb/usb_defs.h b/include/usb/usb_defs.h
-index 13eb330..ace20e4 100644
---- a/include/usb/usb_defs.h
-+++ b/include/usb/usb_defs.h
-@@ -76,12 +76,6 @@
- #define USB_DIR_OUT           0
- #define USB_DIR_IN            0x80
+@@ -23,6 +23,7 @@
+ #define _USB_H_
  
--/* USB device speeds */
--#define USB_SPEED_FULL		0x0	/* 12Mbps */
--#define USB_SPEED_LOW		0x1	/* 1.5Mbps */
--#define USB_SPEED_HIGH		0x2	/* 480Mbps */
--#define USB_SPEED_RESERVED	0x3
+ #include <driver.h>
++#include <usb/ch9.h>
+ #include <usb/usb_defs.h>
+ #include <asm/byteorder.h>
+ 
+@@ -48,68 +49,6 @@ struct devrequest {
+ 	unsigned short	length;
+ } __attribute__ ((packed));
+ 
+-/* All standard descriptors have these 2 fields in common */
+-struct usb_descriptor_header {
+-	unsigned char	bLength;
+-	unsigned char	bDescriptorType;
+-} __attribute__ ((packed));
 -
- /* Descriptor types */
- #define USB_DT_DEVICE        0x01
- #define USB_DT_CONFIG        0x02
+-/* Device descriptor */
+-struct usb_device_descriptor {
+-	unsigned char	bLength;
+-	unsigned char	bDescriptorType;
+-	unsigned short	bcdUSB;
+-	unsigned char	bDeviceClass;
+-	unsigned char	bDeviceSubClass;
+-	unsigned char	bDeviceProtocol;
+-	unsigned char	bMaxPacketSize0;
+-	unsigned short	idVendor;
+-	unsigned short	idProduct;
+-	unsigned short	bcdDevice;
+-	unsigned char	iManufacturer;
+-	unsigned char	iProduct;
+-	unsigned char	iSerialNumber;
+-	unsigned char	bNumConfigurations;
+-} __attribute__ ((packed));
+-
+-/* Endpoint descriptor */
+-struct usb_endpoint_descriptor {
+-	unsigned char	bLength;
+-	unsigned char	bDescriptorType;
+-	unsigned char	bEndpointAddress;
+-	unsigned char	bmAttributes;
+-	unsigned short	wMaxPacketSize;
+-	unsigned char	bInterval;
+-	unsigned char	bRefresh;
+-	unsigned char	bSynchAddress;
+-} __attribute__ ((packed)) __attribute__ ((aligned(2)));
+-
+-/* Interface descriptor */
+-struct usb_interface_descriptor {
+-	unsigned char	bLength;
+-	unsigned char	bDescriptorType;
+-	unsigned char	bInterfaceNumber;
+-	unsigned char	bAlternateSetting;
+-	unsigned char	bNumEndpoints;
+-	unsigned char	bInterfaceClass;
+-	unsigned char	bInterfaceSubClass;
+-	unsigned char	bInterfaceProtocol;
+-	unsigned char	iInterface;
+-} __attribute__ ((packed));
+-
+-
+-/* Configuration descriptor information.. */
+-struct usb_config_descriptor {
+-	unsigned char	bLength;
+-	unsigned char	bDescriptorType;
+-	unsigned short	wTotalLength;
+-	unsigned char	bNumInterfaces;
+-	unsigned char	bConfigurationValue;
+-	unsigned char	iConfiguration;
+-	unsigned char	bmAttributes;
+-	unsigned char	MaxPower;
+-} __attribute__ ((packed));
+-
+ enum {
+ 	/* Maximum packet size; encoded as 0,1,2,3 = 8,16,32,64 */
+ 	PACKET_SIZE_8   = 0,
 -- 
 2.0.1
 
