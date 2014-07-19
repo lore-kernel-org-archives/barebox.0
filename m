@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X8Qku-0003kz-59
- for barebox@lists.infradead.org; Sat, 19 Jul 2014 09:16:37 +0000
+ Linux)) id 1X8Qkr-0003it-Aj
+ for barebox@lists.infradead.org; Sat, 19 Jul 2014 09:16:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 19 Jul 2014 11:16:06 +0200
-Message-Id: <1405761367-23724-12-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 19 Jul 2014 11:15:58 +0200
+Message-Id: <1405761367-23724-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405761367-23724-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405761367-23724-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] USB: host: detect port change only once in
- usb_hub_configure_port
+Subject: [PATCH 03/12] USB: host: simplify usb_new_device
 To: barebox@lists.infradead.org
 
-Otherwise a device may be registered/unregistered multiple times
-during scanning the hub ports.
+usb_new_device tries to find the port number it is attached to
+by iterating over the parents children and using the loop counter
+index as port number. Instead, just use the portnr field in struct
+usb_device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/core/hub.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/usb/core/usb.c | 23 +++++------------------
+ 1 file changed, 5 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 144442a..f90a927 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -226,12 +226,14 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
- 		dev_dbg(&dev->dev, "hub: disabling port %d\n", port + 1);
- 		usb_clear_port_feature(dev, port + 1, USB_PORT_FEAT_ENABLE);
- 	}
-+	device_detect(&usb->dev);
- }
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 710f611..4f5c0ed 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -297,7 +297,6 @@ static int usb_new_device(struct usb_device *dev)
+ 	int tmp;
+ 	void *buf;
+ 	struct usb_device_descriptor *desc;
+-	int port = -1;
+ 	struct usb_device *parent = dev->parent;
+ 	unsigned short portstatus;
+ 	char str[16];
+@@ -338,24 +337,10 @@ static int usb_new_device(struct usb_device *dev)
  
- static int usb_hub_configure_port(struct usb_device *dev, int port)
- {
- 	struct usb_port_status portsts;
- 	unsigned short portstatus, portchange;
-+	int connect_change = 0;
- 
- 	if (usb_get_port_status(dev, port + 1, &portsts) < 0) {
- 		dev_dbg(&dev->dev, "get_port_status failed\n");
-@@ -245,7 +247,7 @@ static int usb_hub_configure_port(struct usb_device *dev, int port)
- 
- 	if (portchange & USB_PORT_STAT_C_CONNECTION) {
- 		dev_dbg(&dev->dev, "port %d connection change\n", port + 1);
--		usb_hub_port_connect_change(dev, port);
-+		connect_change = 1;
- 	}
- 	if (portchange & USB_PORT_STAT_C_ENABLE) {
- 		dev_dbg(&dev->dev, "port %d enable change, status %x\n",
-@@ -262,9 +264,13 @@ static int usb_hub_configure_port(struct usb_device *dev, int port)
- 			dev_dbg(&dev->dev, "already running port %i "  \
- 					"disabled by hub (EMI?), " \
- 					"re-enabling...\n", port + 1);
--				usb_hub_port_connect_change(dev, port);
-+				connect_change = 1;
+ 	/* find the port number we're at */
+ 	if (parent) {
+-		int j;
+-
+-		for (j = 0; j < parent->maxchild; j++) {
+-			if (parent->children[j] == dev) {
+-				port = j;
+-				break;
+-			}
+-		}
+-		if (port < 0) {
+-			printf("%s: cannot locate device's port.\n", __func__);
+-			err = -ENODEV;
+-			goto err_out;
+-		}
+-
+ 		/* reset the port for the second time */
+-		err = hub_port_reset(dev->parent, port, &portstatus);
++		err = hub_port_reset(dev->parent, dev->portnr - 1, &portstatus);
+ 		if (err < 0) {
+-			printf("\n     Couldn't reset port %i\n", port);
++			printf("\n     Couldn't reset port %i\n", dev->portnr);
+ 			goto err_out;
  		}
  	}
+@@ -433,7 +418,7 @@ static int usb_new_device(struct usb_device *dev)
+ 			   dev->serial, sizeof(dev->serial));
+ 
+ 	if (parent) {
+-		sprintf(dev->dev.name, "%s-%d", parent->dev.name, port);
++		sprintf(dev->dev.name, "%s-%d", parent->dev.name, dev->portnr - 1);
+ 	} else {
+ 		sprintf(dev->dev.name, "usb%d", dev->host->busnum);
+ 	}
+@@ -1108,6 +1093,8 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
+ 
+ 	dev->children[port] = usb;
+ 	usb->parent = dev;
++	usb->portnr = port + 1;
 +
-+	if (connect_change)
-+		usb_hub_port_connect_change(dev, port);
-+
- 	if (portstatus & USB_PORT_STAT_SUSPEND) {
- 		dev_dbg(&dev->dev, "port %d suspend change\n", port + 1);
- 		usb_clear_port_feature(dev, port + 1,
+ 	/* Run it through the hoops (find a driver, etc) */
+ 	if (usb_new_device(usb)) {
+ 		/* Woops, disable the port */
 -- 
 2.0.1
 
