@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X8Qkr-0003it-Aj
- for barebox@lists.infradead.org; Sat, 19 Jul 2014 09:16:35 +0000
+ Linux)) id 1X8Qkr-0003iz-Ap
+ for barebox@lists.infradead.org; Sat, 19 Jul 2014 09:16:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 19 Jul 2014 11:15:58 +0200
-Message-Id: <1405761367-23724-4-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 19 Jul 2014 11:16:03 +0200
+Message-Id: <1405761367-23724-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405761367-23724-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405761367-23724-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,76 +21,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/12] USB: host: simplify usb_new_device
+Subject: [PATCH 08/12] USB: host: factor out port configuration to separate
+ function
 To: barebox@lists.infradead.org
-
-usb_new_device tries to find the port number it is attached to
-by iterating over the parents children and using the loop counter
-index as port number. Instead, just use the portnr field in struct
-usb_device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/core/usb.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+ drivers/usb/core/hub.c | 125 +++++++++++++++++++++++++++++--------------------
+ 1 file changed, 74 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 710f611..4f5c0ed 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -297,7 +297,6 @@ static int usb_new_device(struct usb_device *dev)
- 	int tmp;
- 	void *buf;
- 	struct usb_device_descriptor *desc;
--	int port = -1;
- 	struct usb_device *parent = dev->parent;
- 	unsigned short portstatus;
- 	char str[16];
-@@ -338,24 +337,10 @@ static int usb_new_device(struct usb_device *dev)
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 9c87037..689a79c 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -227,6 +227,65 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
+ 	}
+ }
  
- 	/* find the port number we're at */
- 	if (parent) {
--		int j;
++static int usb_hub_configure_port(struct usb_device *dev, int port)
++{
++	struct usb_port_status portsts;
++	unsigned short portstatus, portchange;
++
++	if (usb_get_port_status(dev, port + 1, &portsts) < 0) {
++		dev_dbg(&dev->dev, "get_port_status failed\n");
++		return -EIO;
++	}
++
++	portstatus = le16_to_cpu(portsts.wPortStatus);
++	portchange = le16_to_cpu(portsts.wPortChange);
++	dev_dbg(&dev->dev, "Port %d Status %X Change %X\n",
++			port + 1, portstatus, portchange);
++
++	if (portchange & USB_PORT_STAT_C_CONNECTION) {
++		dev_dbg(&dev->dev, "port %d connection change\n", port + 1);
++		usb_hub_port_connect_change(dev, port);
++	}
++	if (portchange & USB_PORT_STAT_C_ENABLE) {
++		dev_dbg(&dev->dev, "port %d enable change, status %x\n",
++				port + 1, portstatus);
++		usb_clear_port_feature(dev, port + 1,
++					USB_PORT_FEAT_C_ENABLE);
++
++		/* EM interference sometimes causes bad shielded USB
++		 * devices to be shutdown by the hub, this hack enables
++		 * them again. Works at least with mouse driver */
++		if (!(portstatus & USB_PORT_STAT_ENABLE) &&
++		     (portstatus & USB_PORT_STAT_CONNECTION) &&
++		     ((dev->children[port]))) {
++			dev_dbg(&dev->dev, "already running port %i "  \
++					"disabled by hub (EMI?), " \
++					"re-enabling...\n", port + 1);
++				usb_hub_port_connect_change(dev, port);
++		}
++	}
++	if (portstatus & USB_PORT_STAT_SUSPEND) {
++		dev_dbg(&dev->dev, "port %d suspend change\n", port + 1);
++		usb_clear_port_feature(dev, port + 1,
++					USB_PORT_FEAT_SUSPEND);
++	}
++
++	if (portchange & USB_PORT_STAT_C_OVERCURRENT) {
++		dev_dbg(&dev->dev, "port %d over-current change\n", port + 1);
++		usb_clear_port_feature(dev, port + 1,
++					USB_PORT_FEAT_C_OVER_CURRENT);
++		usb_hub_power_on(dev->hub);
++	}
++
++	if (portchange & USB_PORT_STAT_C_RESET) {
++		dev_dbg(&dev->dev, "port %d reset change\n", port + 1);
++		usb_clear_port_feature(dev, port + 1,
++					USB_PORT_FEAT_C_RESET);
++	}
++
++	return 0;
++}
++
+ static int usb_hub_configure(struct usb_device *dev)
+ {
+ 	unsigned char buffer[USB_BUFSIZ], *bitmap;
+@@ -346,61 +405,23 @@ static int usb_hub_configure(struct usb_device *dev)
+ 		"" : "no ");
+ 	usb_hub_power_on(hub);
+ 
+-	for (i = 0; i < dev->maxchild; i++) {
+-		struct usb_port_status portsts;
+-		unsigned short portstatus, portchange;
 -
--		for (j = 0; j < parent->maxchild; j++) {
--			if (parent->children[j] == dev) {
--				port = j;
--				break;
+-		if (usb_get_port_status(dev, i + 1, &portsts) < 0) {
+-			dev_dbg(&dev->dev, "get_port_status failed\n");
+-			continue;
+-		}
++	for (i = 0; i < dev->maxchild; i++)
++		usb_hub_configure_port(dev, i);
+ 
+-		portstatus = le16_to_cpu(portsts.wPortStatus);
+-		portchange = le16_to_cpu(portsts.wPortChange);
+-		dev_dbg(&dev->dev, "Port %d Status %X Change %X\n",
+-				i + 1, portstatus, portchange);
++	return 0;
++}
+ 
+-		if (portchange & USB_PORT_STAT_C_CONNECTION) {
+-			dev_dbg(&dev->dev, "port %d connection change\n", i + 1);
+-			usb_hub_port_connect_change(dev, i);
+-		}
+-		if (portchange & USB_PORT_STAT_C_ENABLE) {
+-			dev_dbg(&dev->dev, "port %d enable change, status %x\n",
+-					i + 1, portstatus);
+-			usb_clear_port_feature(dev, i + 1,
+-						USB_PORT_FEAT_C_ENABLE);
+-
+-			/* EM interference sometimes causes bad shielded USB
+-			 * devices to be shutdown by the hub, this hack enables
+-			 * them again. Works at least with mouse driver */
+-			if (!(portstatus & USB_PORT_STAT_ENABLE) &&
+-			     (portstatus & USB_PORT_STAT_CONNECTION) &&
+-			     ((dev->children[i]))) {
+-				dev_dbg(&dev->dev, "already running port %i "  \
+-						"disabled by hub (EMI?), " \
+-						"re-enabling...\n", i + 1);
+-					usb_hub_port_connect_change(dev, i);
 -			}
 -		}
--		if (port < 0) {
--			printf("%s: cannot locate device's port.\n", __func__);
--			err = -ENODEV;
--			goto err_out;
+-		if (portstatus & USB_PORT_STAT_SUSPEND) {
+-			dev_dbg(&dev->dev, "port %d suspend change\n", i + 1);
+-			usb_clear_port_feature(dev, i + 1,
+-						USB_PORT_FEAT_SUSPEND);
 -		}
--
- 		/* reset the port for the second time */
--		err = hub_port_reset(dev->parent, port, &portstatus);
-+		err = hub_port_reset(dev->parent, dev->portnr - 1, &portstatus);
- 		if (err < 0) {
--			printf("\n     Couldn't reset port %i\n", port);
-+			printf("\n     Couldn't reset port %i\n", dev->portnr);
- 			goto err_out;
- 		}
- 	}
-@@ -433,7 +418,7 @@ static int usb_new_device(struct usb_device *dev)
- 			   dev->serial, sizeof(dev->serial));
++static int usb_hub_detect(struct device_d *dev)
++{
++	struct usb_device *usbdev = container_of(dev, struct usb_device, dev);
++	int i;
  
- 	if (parent) {
--		sprintf(dev->dev.name, "%s-%d", parent->dev.name, port);
-+		sprintf(dev->dev.name, "%s-%d", parent->dev.name, dev->portnr - 1);
- 	} else {
- 		sprintf(dev->dev.name, "usb%d", dev->host->busnum);
- 	}
-@@ -1108,6 +1093,8 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
+-		if (portchange & USB_PORT_STAT_C_OVERCURRENT) {
+-			dev_dbg(&dev->dev, "port %d over-current change\n", i + 1);
+-			usb_clear_port_feature(dev, i + 1,
+-						USB_PORT_FEAT_C_OVER_CURRENT);
+-			usb_hub_power_on(hub);
+-		}
++	usb_hub_configure(usbdev);
  
- 	dev->children[port] = usb;
- 	usb->parent = dev;
-+	usb->portnr = port + 1;
+-		if (portchange & USB_PORT_STAT_C_RESET) {
+-			dev_dbg(&dev->dev, "port %d reset change\n", i + 1);
+-			usb_clear_port_feature(dev, i + 1,
+-						USB_PORT_FEAT_C_RESET);
+-		}
+-	} /* end for i all ports */
++	for (i = 0; i < usbdev->maxchild; i++) {
++		if (usbdev->children[i])
++			device_detect(&usbdev->children[i]->dev);
++	}
+ 
+ 	return 0;
+ }
+@@ -408,6 +429,8 @@ static int usb_hub_configure(struct usb_device *dev)
+ static int usb_hub_probe(struct usb_device *usbdev,
+ 			 const struct usb_device_id *id)
+ {
++	usbdev->dev.detect = usb_hub_detect;
 +
- 	/* Run it through the hoops (find a driver, etc) */
- 	if (usb_new_device(usb)) {
- 		/* Woops, disable the port */
+ 	return usb_hub_configure(usbdev);
+ }
+ 
 -- 
 2.0.1
 
