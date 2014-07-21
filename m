@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X9FJ1-0003YE-BH
- for barebox@lists.infradead.org; Mon, 21 Jul 2014 15:15:16 +0000
+ Linux)) id 1X9FJ1-0003YT-FT
+ for barebox@lists.infradead.org; Mon, 21 Jul 2014 15:15:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 21 Jul 2014 17:14:31 +0200
-Message-Id: <1405955687-27433-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 21 Jul 2014 17:14:43 +0200
+Message-Id: <1405955687-27433-20-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1405955687-27433-1-git-send-email-s.hauer@pengutronix.de>
 References: <1405955687-27433-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,362 +21,820 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/23] USB: gadget: specify vendor/product id with device
- parameters
+Subject: [PATCH 19/23] USB: gadget: Add Android fastboot support
 To: barebox@lists.infradead.org
 
-This introduces the device parameters:
-
-usbgadget.product
-usbgadget.vendor
-usbgadget.manufacturer
-usbgadget.productname
-
-These variables are used to configure the USB vendor id, product id,
-manufacturer name and product name.
-
-Previously these were configured with arguments to the usbserial
-and dfu command. The parameters are device static, so it's nice to
-configure it somewhere in the environment instead of when calling
-dfu/usbserial. Also when other gadget drivers are added we do not
-have to duplicate the option parsing further.
+The Android fastboot protocol Can be used to update firmware and to
+issue other lowlevel commands to the bootloader. This adds a
+fastboot implementation based on the U-Boot fatboot code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/dfu.c                | 44 ++-----------------------------------------
- commands/usbserial.c          | 27 ++------------------------
- drivers/usb/gadget/dfu.c      | 16 ++++++++++++----
- drivers/usb/gadget/serial.c   | 27 ++++++++++++++------------
- drivers/usb/gadget/udc-core.c | 15 +++++++++++++--
- include/usb/dfu.h             |  5 -----
- include/usb/gadget.h          |  5 +++++
- include/usb/usbserial.h       |  4 ----
- 8 files changed, 49 insertions(+), 94 deletions(-)
+ drivers/usb/gadget/Kconfig      |   5 +-
+ drivers/usb/gadget/Makefile     |   1 +
+ drivers/usb/gadget/f_fastboot.c | 767 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 772 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/usb/gadget/f_fastboot.c
 
-diff --git a/commands/dfu.c b/commands/dfu.c
-index 3546252..a8948f1 100644
---- a/commands/dfu.c
-+++ b/commands/dfu.c
-@@ -97,47 +97,17 @@ static int dfu_do_parse_one(char *partstr, char **endstr, struct usb_dfu_dev *df
-  */
- static int do_dfu(int argc, char *argv[])
- {
--	int opt, n = 0;
-+	int n = 0;
- 	struct usb_dfu_pdata pdata;
- 	char *endptr, *argstr;
- 	struct usb_dfu_dev *dfu_alts = NULL;
--	char *manufacturer = "barebox";
--	const char *productname = barebox_get_model();
--	u16 idVendor = 0, idProduct = 0;
- 	int ret;
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index 94d3bce..883a19f 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -49,5 +49,8 @@ config USB_GADGET_SERIAL
+ 	depends on !CONSOLE_NONE
+ 	prompt "Serial Gadget"
  
--	while((opt = getopt(argc, argv, "m:p:V:P:")) > 0) {
--		switch(opt) {
--		case 'm':
--			manufacturer = optarg;
--			break;
--		case 'p':
--			productname = optarg;
--			break;
--		case 'V':
--			idVendor = simple_strtoul(optarg, NULL, 0);
--			break;
--		case 'P':
--			idProduct = simple_strtoul(optarg, NULL, 0);
--			break;
--		}
--	}
--
- 	if (argc != optind + 1)
- 		return COMMAND_ERROR_USAGE;
+-endif
++config USB_GADGET_FASTBOOT
++	bool
++	prompt "Android Fastboot support"
  
- 	argstr = argv[optind];
- 
--	if (!idProduct && !idVendor) {
--		idVendor = 0x1d50; /* Openmoko, Inc */
--		idProduct = 0x60a2; /* barebox bootloader USB DFU Mode */
--	}
--
--	if ((idProduct && !idVendor) || (!idProduct && idVendor)) {
--		printf("Only one of vendor id or product id given\n");
--		return -EINVAL;
--	}
--
- 	for (n = 0; *argstr; n++) {
- 		dfu_alts = xrealloc(dfu_alts, sizeof(*dfu_alts) * (n + 1));
- 		if (dfu_do_parse_one(argstr, &endptr, &dfu_alts[n])) {
-@@ -151,11 +121,6 @@ static int do_dfu(int argc, char *argv[])
- 	pdata.alts = dfu_alts;
- 	pdata.num_alts = n;
- 
--	pdata.manufacturer = manufacturer;
--	pdata.productname = productname;
--	pdata.idVendor = idVendor;
--	pdata.idProduct = idProduct;
--
- 	ret = usb_dfu_register(&pdata);
- 
- out:
-@@ -179,17 +144,12 @@ BAREBOX_CMD_HELP_TEXT("- 's' safe mode (download the complete image before flash
- BAREBOX_CMD_HELP_TEXT("- 'r' readback of the firmware is allowed")
- BAREBOX_CMD_HELP_TEXT("- 'c' the file will be created (for use with regular files)")
- BAREBOX_CMD_HELP_TEXT("")
--BAREBOX_CMD_HELP_TEXT("Options:")
--BAREBOX_CMD_HELP_OPT ("-m STR", "Manufacturer string (barebox)")
--BAREBOX_CMD_HELP_OPT ("-p STR", "product string")
--BAREBOX_CMD_HELP_OPT ("-V ID",  "vendor id")
--BAREBOX_CMD_HELP_OPT ("-P ID",  "product id")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(dfu)
- 	.cmd		= do_dfu,
- 	BAREBOX_CMD_DESC("device firmware update")
--	BAREBOX_CMD_OPTS("[-mpVP] DESC")
-+	BAREBOX_CMD_OPTS("DESC")
- 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
- 	BAREBOX_CMD_HELP(cmd_dfu_help)
- BAREBOX_CMD_END
-diff --git a/commands/usbserial.c b/commands/usbserial.c
-index 7e82112..e80b315 100644
---- a/commands/usbserial.c
-+++ b/commands/usbserial.c
-@@ -31,25 +31,10 @@ static int do_usbserial(int argc, char *argv[])
- {
- 	int opt;
- 	struct usb_serial_pdata pdata;
--	char *manufacturer = "barebox";
--	const char *productname = barebox_get_model();
--	u16 idVendor = 0, idProduct = 0;
- 	int acm = 1;
- 
--	while ((opt = getopt(argc, argv, "m:p:V:P:asd")) > 0) {
-+	while ((opt = getopt(argc, argv, "asd")) > 0) {
- 		switch (opt) {
--		case 'm':
--			manufacturer = optarg;
--			break;
--		case 'p':
--			productname = optarg;
--			break;
--		case 'V':
--			idVendor = simple_strtoul(optarg, NULL, 0);
--			break;
--		case 'P':
--			idProduct = simple_strtoul(optarg, NULL, 0);
--			break;
- 		case 'a':
- 			acm = 1;
- 			break;
-@@ -62,10 +47,6 @@ static int do_usbserial(int argc, char *argv[])
- 		}
- 	}
- 
--	pdata.manufacturer = manufacturer;
--	pdata.productname = productname;
--	pdata.idVendor = idVendor;
--	pdata.idProduct = idProduct;
- 	pdata.acm = acm;
- 
- 	return usb_serial_register(&pdata);
-@@ -75,10 +56,6 @@ BAREBOX_CMD_HELP_START(usbserial)
- BAREBOX_CMD_HELP_TEXT("Enable / disable a serial gadget on the USB device interface.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
--BAREBOX_CMD_HELP_OPT ("-m STR",  "Manufacturer string (barebox)")
--BAREBOX_CMD_HELP_OPT ("-p STR",  "product string")
--BAREBOX_CMD_HELP_OPT ("-V ID",   "vendor id")
--BAREBOX_CMD_HELP_OPT ("-P ID",   "product id")
- BAREBOX_CMD_HELP_OPT ("-a",   "CDC ACM (default)")
- BAREBOX_CMD_HELP_OPT ("-s",   "Generic Serial")
- BAREBOX_CMD_HELP_OPT ("-d",   "Disable the serial gadget")
-@@ -87,7 +64,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(usbserial)
- 	.cmd		= do_usbserial,
- 	BAREBOX_CMD_DESC("serial gadget enable/disable")
--	BAREBOX_CMD_OPTS("[-mpVPasd] <description>")
-+	BAREBOX_CMD_OPTS("[-asd] <description>")
- 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_usbserial_help)
- BAREBOX_CMD_END
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index a2b4c0d..85d99e9 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -655,8 +655,20 @@ static struct usb_device_descriptor dfu_dev_descriptor = {
- 
- static int dfu_driver_bind(struct usb_composite_dev *cdev)
- {
-+	struct usb_gadget *gadget = cdev->gadget;
- 	int status;
- 
-+	if (gadget->vendor_id && gadget->product_id) {
-+		dfu_dev_descriptor.idVendor = cpu_to_le16(gadget->vendor_id);
-+		dfu_dev_descriptor.idProduct = cpu_to_le16(gadget->product_id);
-+	} else {
-+		dfu_dev_descriptor.idVendor = cpu_to_le16(0x1d50); /* Openmoko, Inc */
-+		dfu_dev_descriptor.idProduct = cpu_to_le16(0x60a2); /* barebox bootloader USB DFU Mode */
++endif
+diff --git a/drivers/usb/gadget/Makefile b/drivers/usb/gadget/Makefile
+index 9bd28ec..fce979a 100644
+--- a/drivers/usb/gadget/Makefile
++++ b/drivers/usb/gadget/Makefile
+@@ -2,6 +2,7 @@
+ obj-$(CONFIG_USB_GADGET) += composite.o config.o usbstring.o epautoconf.o udc-core.o functions.o config.o
+ obj-$(CONFIG_USB_GADGET_SERIAL) += u_serial.o serial.o f_serial.o f_acm.o
+ obj-$(CONFIG_USB_GADGET_DFU) += dfu.o
++obj-$(CONFIG_USB_GADGET_FASTBOOT) += f_fastboot.o
+ obj-$(CONFIG_USB_GADGET_DRIVER_ARC) += fsl_udc.o
+ obj-$(CONFIG_USB_GADGET_DRIVER_AT91) += at91_udc.o
+ obj-$(CONFIG_USB_GADGET_DRIVER_PXA27X) += pxa27x_udc.o
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+new file mode 100644
+index 0000000..4e2318b
+--- /dev/null
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -0,0 +1,767 @@
++/*
++ * (C) Copyright 2008 - 2009
++ * Windriver, <www.windriver.com>
++ * Tom Rix <Tom.Rix@windriver.com>
++ *
++ * Copyright 2011 Sebastian Andrzej Siewior <bigeasy@linutronix.de>
++ *
++ * Copyright 2014 Linaro, Ltd.
++ * Rob Herring <robh@kernel.org>
++ *
++ * Copyright 2014 Sascha Hauer <s.hauer@pengutronix.de>
++ * Ported to barebox
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#define pr_fmt(fmt) "fastboot: " fmt
++
++#include <common.h>
++#include <errno.h>
++#include <malloc.h>
++#include <fcntl.h>
++#include <clock.h>
++#include <libbb.h>
++#include <boot.h>
++#include <dma.h>
++#include <fs.h>
++#include <file-list.h>
++#include <progress.h>
++#include <environment.h>
++#include <globalvar.h>
++#include <usb/ch9.h>
++#include <usb/gadget.h>
++#include <usb/fastboot.h>
++#include <usb/composite.h>
++#include <linux/err.h>
++#include <linux/compiler.h>
++#include <linux/stat.h>
++
++#define FASTBOOT_VERSION		"0.4"
++
++#define FASTBOOT_INTERFACE_CLASS	0xff
++#define FASTBOOT_INTERFACE_SUB_CLASS	0x42
++#define FASTBOOT_INTERFACE_PROTOCOL	0x03
++
++#define FASTBOOT_TMPFILE		"/.fastboot.img"
++
++#define EP_BUFFER_SIZE			4096
++
++struct fb_variable {
++	char *name;
++	char *value;
++	struct list_head list;
++};
++
++struct f_fastboot {
++	struct usb_function func;
++
++	/* IN/OUT EP's and correspoinding requests */
++	struct usb_ep *in_ep, *out_ep;
++	struct usb_request *in_req, *out_req;
++	struct file_list *files;
++	int download_fd;
++	size_t download_bytes;
++	size_t download_size;
++	struct list_head variables;
++};
++
++static inline struct f_fastboot *func_to_fastboot(struct usb_function *f)
++{
++	return container_of(f, struct f_fastboot, func);
++}
++
++static struct usb_endpoint_descriptor fs_ep_in = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_IN,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(64),
++	.bInterval		= 0x00,
++};
++
++static struct usb_endpoint_descriptor fs_ep_out = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_OUT,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(64),
++	.bInterval		= 0x00,
++};
++
++static struct usb_endpoint_descriptor hs_ep_in = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_IN,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(512),
++	.bInterval		= 0x00,
++};
++
++static struct usb_endpoint_descriptor hs_ep_out = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_OUT,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(512),
++	.bInterval		= 0x00,
++};
++
++static struct usb_interface_descriptor interface_desc = {
++	.bLength		= USB_DT_INTERFACE_SIZE,
++	.bDescriptorType	= USB_DT_INTERFACE,
++	.bInterfaceNumber	= 0x00,
++	.bAlternateSetting	= 0x00,
++	.bNumEndpoints		= 0x02,
++	.bInterfaceClass	= FASTBOOT_INTERFACE_CLASS,
++	.bInterfaceSubClass	= FASTBOOT_INTERFACE_SUB_CLASS,
++	.bInterfaceProtocol	= FASTBOOT_INTERFACE_PROTOCOL,
++};
++
++static struct usb_descriptor_header *fb_fs_descs[] = {
++	(struct usb_descriptor_header *)&interface_desc,
++	(struct usb_descriptor_header *)&fs_ep_in,
++	(struct usb_descriptor_header *)&fs_ep_out,
++	NULL,
++};
++
++static struct usb_descriptor_header *fb_hs_descs[] = {
++	(struct usb_descriptor_header *)&interface_desc,
++	(struct usb_descriptor_header *)&hs_ep_in,
++	(struct usb_descriptor_header *)&hs_ep_out,
++	NULL,
++};
++
++/*
++ * static strings, in UTF-8
++ */
++static const char fastboot_name[] = "Android Fastboot";
++
++static struct usb_string fastboot_string_defs[] = {
++	[0].s = fastboot_name,
++	{  }			/* end of list */
++};
++
++static struct usb_gadget_strings stringtab_fastboot = {
++	.language	= 0x0409,	/* en-us */
++	.strings	= fastboot_string_defs,
++};
++
++static struct usb_gadget_strings *fastboot_strings[] = {
++	&stringtab_fastboot,
++	NULL,
++};
++
++static void rx_handler_command(struct usb_ep *ep, struct usb_request *req);
++
++static int in_req_complete;
++
++static void fastboot_complete(struct usb_ep *ep, struct usb_request *req)
++{
++	int status = req->status;
++
++	in_req_complete = 1;
++
++	pr_debug("status: %d ep '%s' trans: %d\n", status, ep->name, req->actual);
++}
++
++static struct usb_request *fastboot_alloc_request(struct usb_ep *ep)
++{
++	struct usb_request *req;
++
++	req = usb_ep_alloc_request(ep);
++	if (!req)
++		return NULL;
++
++	req->length = EP_BUFFER_SIZE;
++	req->buf = dma_alloc(EP_BUFFER_SIZE);
++	if (!req->buf) {
++		usb_ep_free_request(ep, req);
++		return NULL;
 +	}
++	memset(req->buf, 0, EP_BUFFER_SIZE);
 +
-+	strings_dev[STRING_MANUFACTURER_IDX].s = gadget->manufacturer;
-+	strings_dev[STRING_PRODUCT_IDX].s = gadget->productname;
++	return req;
++}
 +
- 	status = usb_string_id(cdev);
- 	if (status < 0)
- 		goto fail;
-@@ -698,10 +710,6 @@ int usb_dfu_register(struct usb_dfu_pdata *pdata)
- 
- 	dfu_devs = pdata->alts;
- 	dfu_num_alt = pdata->num_alts;
--	dfu_dev_descriptor.idVendor = pdata->idVendor;
--	dfu_dev_descriptor.idProduct = pdata->idProduct;
--	strings_dev[STRING_MANUFACTURER_IDX].s = pdata->manufacturer;
--	strings_dev[STRING_PRODUCT_IDX].s = pdata->productname;
- 
- 	ret = usb_composite_probe(&dfu_driver);
- 	if (ret)
-diff --git a/drivers/usb/gadget/serial.c b/drivers/usb/gadget/serial.c
-index b3314a3..f1d98b7 100644
---- a/drivers/usb/gadget/serial.c
-+++ b/drivers/usb/gadget/serial.c
-@@ -75,7 +75,6 @@ static struct usb_device_descriptor device_desc = {
- 	.bDeviceSubClass =	0,
- 	.bDeviceProtocol =	0,
- 	/* .bMaxPacketSize0 = f(hardware) */
--	.idVendor =		cpu_to_le16(GS_VENDOR_ID),
- 	/* .idProduct =	f(use_acm) */
- 	.bcdDevice = cpu_to_le16(GS_VERSION_NUM),
- 	/* .iManufacturer = DYNAMIC */
-@@ -175,11 +174,26 @@ out:
- static int __init gs_bind(struct usb_composite_dev *cdev)
- {
- 	int			status;
-+	struct usb_gadget	*gadget = cdev->gadget;
- 
- 	/* Allocate string descriptor numbers ... note that string
- 	 * contents can be overridden by the composite_dev glue.
- 	 */
- 
-+	if (gadget->vendor_id && gadget->product_id) {
-+		device_desc.idVendor = cpu_to_le16(gadget->vendor_id);
-+		device_desc.idProduct = cpu_to_le16(gadget->product_id);
-+	} else {
-+		device_desc.idVendor = cpu_to_le16(GS_VENDOR_ID);
-+		if (use_acm)
-+			device_desc.idProduct = cpu_to_le16(GS_CDC_PRODUCT_ID);
++static void fb_setvar(struct fb_variable *var, const char *fmt, ...)
++{
++	va_list ap;
++
++	va_start(ap, fmt);
++	var->value = vasprintf(fmt, ap);
++	va_end(ap);
++}
++
++static struct fb_variable *fb_addvar(struct f_fastboot *f_fb, const char *fmt, ...)
++{
++	struct fb_variable *var = xzalloc(sizeof(*var));
++	va_list ap;
++
++	va_start(ap, fmt);
++	var->name = vasprintf(fmt, ap);
++	va_end(ap);
++
++	list_add_tail(&var->list, &f_fb->variables);
++
++	return var;
++}
++
++static int fastboot_bind(struct usb_configuration *c, struct usb_function *f)
++{
++	struct usb_composite_dev *cdev = c->cdev;
++	int id, ret;
++	struct usb_gadget *gadget = c->cdev->gadget;
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++	struct usb_string *us;
++	const struct usb_function_instance *fi = f->fi;
++	struct f_fastboot_opts *opts = container_of(fi, struct f_fastboot_opts, func_inst);
++	struct file_list_entry *fentry;
++	struct fb_variable *var;
++
++	f_fb->files = opts->files;
++
++	var = fb_addvar(f_fb, "version");
++	fb_setvar(var, "0.4");
++	var = fb_addvar(f_fb, "bootloader-version");
++	fb_setvar(var, release_string);
++
++	file_list_for_each_entry(f_fb->files, fentry) {
++		struct stat s;
++		size_t size;
++
++		ret = stat(fentry->filename, &s);
++		if (ret)
++			size = 0;
 +		else
-+			device_desc.idProduct = cpu_to_le16(GS_PRODUCT_ID);
++			size = s.st_size;
++
++		var = fb_addvar(f_fb, "partition-size:%s", fentry->name);
++		fb_setvar(var, "%08zx", size);
++		var = fb_addvar(f_fb, "partition-type:%s", fentry->name);
++		fb_setvar(var, "%s", "emmc");
++
 +	}
 +
-+	strings_dev[USB_GADGET_MANUFACTURER_IDX].s = gadget->manufacturer;
-+	strings_dev[USB_GADGET_PRODUCT_IDX].s = gadget->productname;
++	/* DYNAMIC interface numbers assignments */
++	id = usb_interface_id(c, f);
++	if (id < 0)
++		return id;
++	interface_desc.bInterfaceNumber = id;
 +
- 	status = usb_string_ids_tab(cdev, strings_dev);
- 	if (status < 0)
- 		goto fail;
-@@ -257,23 +271,12 @@ int usb_serial_register(struct usb_serial_pdata *pdata)
- 		serial_config_driver.label = "CDC ACM config";
- 		serial_config_driver.bConfigurationValue = 2;
- 		device_desc.bDeviceClass = USB_CLASS_COMM;
--		device_desc.idProduct =
--				cpu_to_le16(GS_CDC_PRODUCT_ID);
- 	} else {
- 		serial_config_driver.label = "Generic Serial config";
- 		serial_config_driver.bConfigurationValue = 1;
- 		device_desc.bDeviceClass = USB_CLASS_VENDOR_SPEC;
--		device_desc.idProduct =
--				cpu_to_le16(GS_PRODUCT_ID);
- 	}
- 
--	if (pdata->idVendor)
--		device_desc.idVendor = pdata->idVendor;
--	if (pdata->idProduct)
--		device_desc.idProduct = pdata->idProduct;
--	strings_dev[USB_GADGET_MANUFACTURER_IDX].s = pdata->manufacturer;
--	strings_dev[USB_GADGET_PRODUCT_IDX].s = pdata->productname;
--
- 	return usb_composite_probe(&gserial_driver);
- }
- 
-diff --git a/drivers/usb/gadget/udc-core.c b/drivers/usb/gadget/udc-core.c
-index fc931aa..95efd50 100644
---- a/drivers/usb/gadget/udc-core.c
-+++ b/drivers/usb/gadget/udc-core.c
-@@ -165,14 +165,25 @@ int usb_add_gadget_udc_release(struct device_d *parent, struct usb_gadget *gadge
- 	if (!udc)
- 		goto err1;
- 
--	strcpy(gadget->dev.name, "gadget");
--	gadget->dev.id = DEVICE_ID_DYNAMIC;
-+	strcpy(gadget->dev.name, "usbgadget");
-+	gadget->dev.id = DEVICE_ID_SINGLE;
- 	gadget->dev.parent = parent;
- 
- 	ret = register_device(&gadget->dev);
- 	if (ret)
- 		goto err2;
- 
-+	dev_add_param_int(&gadget->dev, "product", NULL, NULL,
-+			&gadget->product_id, "0x%04x", NULL);
-+	dev_add_param_int(&gadget->dev, "vendor", NULL, NULL,
-+			&gadget->vendor_id, "0x%04x", NULL);
-+	gadget->manufacturer = xstrdup("barebox");
-+	dev_add_param_string(&gadget->dev, "manufacturer", NULL, NULL,
-+			&gadget->manufacturer, NULL);
-+	gadget->productname = xstrdup(barebox_get_model());
-+	dev_add_param_string(&gadget->dev, "productname", NULL, NULL,
-+			&gadget->productname, NULL);
++	id = usb_string_id(c->cdev);
++	if (id < 0)
++		return id;
++	fastboot_string_defs[0].id = id;
++	interface_desc.iInterface = id;
 +
- 	strcpy(udc->dev.name, "udc");
- 	udc->dev.id = DEVICE_ID_DYNAMIC;
- 
-diff --git a/include/usb/dfu.h b/include/usb/dfu.h
-index df4f2fd..4617534 100644
---- a/include/usb/dfu.h
-+++ b/include/usb/dfu.h
-@@ -33,11 +33,6 @@ struct usb_dfu_dev {
- };
- 
- struct usb_dfu_pdata {
--	char			*manufacturer;
--	const char		*productname;
--	u16			idVendor;
--	u16			idProduct;
--
- 	struct usb_dfu_dev	*alts;
- 	int			num_alts;
- };
-diff --git a/include/usb/gadget.h b/include/usb/gadget.h
-index 8fd8b01..7106f9d 100644
---- a/include/usb/gadget.h
-+++ b/include/usb/gadget.h
-@@ -554,6 +554,11 @@ struct usb_gadget {
- 	unsigned			a_hnp_support:1;
- 	unsigned			a_alt_hnp_support:1;
- 	unsigned			quirk_ep_out_aligned_size:1;
++	us = usb_gstrings_attach(cdev, fastboot_strings, 1);
++	if (IS_ERR(us)) {
++		ret = PTR_ERR(us);
++		return ret;
++	}
 +
-+	uint32_t			vendor_id;
-+	uint32_t			product_id;
-+	char				*manufacturer;
-+	char				*productname;
- };
- #define work_to_gadget(w)	(container_of((w), struct usb_gadget, work))
- 
-diff --git a/include/usb/usbserial.h b/include/usb/usbserial.h
-index e047ca7..c537eba 100644
---- a/include/usb/usbserial.h
-+++ b/include/usb/usbserial.h
-@@ -2,10 +2,6 @@
- #define _USB_SERIAL_H
- 
- struct usb_serial_pdata {
--	char		*manufacturer;
--	const char		*productname;
--	u16			idVendor;
--	u16			idProduct;
- 	bool			acm;
- };
- 
++	f_fb->in_ep = usb_ep_autoconfig(gadget, &fs_ep_in);
++	if (!f_fb->in_ep)
++		return -ENODEV;
++	f_fb->in_ep->driver_data = c->cdev;
++
++	f_fb->out_ep = usb_ep_autoconfig(gadget, &fs_ep_out);
++	if (!f_fb->out_ep)
++		return -ENODEV;
++	f_fb->out_ep->driver_data = c->cdev;
++
++	hs_ep_out.bEndpointAddress = fs_ep_out.bEndpointAddress;
++	hs_ep_in.bEndpointAddress = fs_ep_in.bEndpointAddress;
++
++	f_fb->out_req = fastboot_alloc_request(f_fb->out_ep);
++	if (!f_fb->out_req) {
++		puts("failed to alloc out req\n");
++		ret = -EINVAL;
++		return ret;
++	}
++
++	f_fb->out_req->complete = rx_handler_command;
++	f_fb->out_req->context = f_fb;
++
++	f_fb->in_req = fastboot_alloc_request(f_fb->in_ep);
++	if (!f_fb->in_req) {
++		puts("failed alloc req in\n");
++		ret = -EINVAL;
++		return ret;
++	}
++	f_fb->in_req->complete = fastboot_complete;
++	f_fb->out_req->context = f_fb;
++
++	ret = usb_assign_descriptors(f, fb_fs_descs, fb_hs_descs, NULL);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static void fastboot_unbind(struct usb_configuration *c, struct usb_function *f)
++{
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++	struct fb_variable *var, *tmp;
++
++	usb_ep_dequeue(f_fb->in_ep, f_fb->in_req);
++	free(f_fb->in_req->buf);
++	usb_ep_free_request(f_fb->in_ep, f_fb->in_req);
++	f_fb->in_req = NULL;
++
++	usb_ep_dequeue(f_fb->out_ep, f_fb->out_req);
++	free(f_fb->out_req->buf);
++	usb_ep_free_request(f_fb->out_ep, f_fb->out_req);
++	f_fb->out_req = NULL;
++
++	list_for_each_entry_safe(var, tmp, &f_fb->variables, list) {
++		free(var->name);
++		free(var->value);
++		list_del(&var->list);
++		free(var);
++	}
++}
++
++static void fastboot_disable(struct usb_function *f)
++{
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++
++	usb_ep_disable(f_fb->out_ep);
++	usb_ep_disable(f_fb->in_ep);
++}
++
++static int fastboot_set_alt(struct usb_function *f,
++			    unsigned interface, unsigned alt)
++{
++	int ret;
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++
++	pr_debug("%s: func: %s intf: %d alt: %d\n",
++	      __func__, f->name, interface, alt);
++
++	ret = config_ep_by_speed(f->config->cdev->gadget, f,
++			f_fb->out_ep);
++	if (ret)
++		return ret;
++
++	ret = usb_ep_enable(f_fb->out_ep);
++	if (ret) {
++		pr_err("failed to enable out ep: %s\n", strerror(-ret));
++		return ret;
++	}
++
++	ret = config_ep_by_speed(f->config->cdev->gadget, f,
++			f_fb->in_ep);
++	if (ret)
++		return ret;
++
++	ret = usb_ep_enable(f_fb->in_ep);
++	if (ret) {
++		pr_err("failed to enable in ep: %s\n", strerror(-ret));
++		return ret;
++	}
++
++	memset(f_fb->out_req->buf, 0, EP_BUFFER_SIZE);
++	ret = usb_ep_queue(f_fb->out_ep, f_fb->out_req);
++	if (ret)
++		goto err;
++
++	return 0;
++err:
++	fastboot_disable(f);
++	return ret;
++}
++
++static void fastboot_free_func(struct usb_function *f)
++{
++	struct f_fastboot *f_fb = container_of(f, struct f_fastboot, func);
++
++	free(f_fb);
++}
++
++static struct usb_function *fastboot_alloc_func(struct usb_function_instance *fi)
++{
++	struct f_fastboot *f_fb;
++
++	f_fb = xzalloc(sizeof(*f_fb));
++
++	INIT_LIST_HEAD(&f_fb->variables);
++
++	f_fb->func.name = "fastboot";
++	f_fb->func.strings = fastboot_strings;
++	f_fb->func.bind = fastboot_bind;
++	f_fb->func.set_alt = fastboot_set_alt;
++	f_fb->func.disable = fastboot_disable;
++	f_fb->func.unbind = fastboot_unbind;
++	f_fb->func.free_func = fastboot_free_func;
++
++	return &f_fb->func;
++}
++
++static void fastboot_free_instance(struct usb_function_instance *fi)
++{
++	struct f_fastboot_opts *opts;
++
++	opts = container_of(fi, struct f_fastboot_opts, func_inst);
++	kfree(opts);
++}
++
++static struct usb_function_instance *fastboot_alloc_instance(void)
++{
++	struct f_fastboot_opts *opts;
++
++	opts = xzalloc(sizeof(*opts));
++	opts->func_inst.free_func_inst = fastboot_free_instance;
++
++	return &opts->func_inst;
++}
++
++DECLARE_USB_FUNCTION_INIT(fastboot, fastboot_alloc_instance, fastboot_alloc_func);
++
++static int fastboot_tx_write(struct f_fastboot *f_fb, const char *buffer, unsigned int buffer_size)
++{
++	struct usb_request *in_req = f_fb->in_req;
++	uint64_t start;
++	int ret;
++
++	memcpy(in_req->buf, buffer, buffer_size);
++	in_req->length = buffer_size;
++	in_req_complete = 0;
++	ret = usb_ep_queue(f_fb->in_ep, in_req);
++	if (ret)
++		pr_err("Error %d on queue\n", ret);
++
++	start = get_time_ns();
++
++	while (!in_req_complete) {
++		if (is_timeout(start, 2 * SECOND))
++			return -ETIMEDOUT;
++		usb_gadget_poll();
++	}
++
++	return 0;
++}
++
++static int fastboot_tx_print(struct f_fastboot *f_fb, const char *fmt, ...)
++{
++	char buf[64];
++	va_list ap;
++	int n;
++
++	va_start(ap, fmt);
++	n = vsnprintf(buf, 64, fmt, ap);
++	va_end(ap);
++
++	return fastboot_tx_write(f_fb, buf, n);
++}
++
++static void compl_do_reset(struct usb_ep *ep, struct usb_request *req)
++{
++	reset_cpu(0);
++}
++
++static void cb_reboot(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++
++	f_fb->in_req->complete = compl_do_reset;
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static int strcmp_l1(const char *s1, const char *s2)
++{
++	if (!s1 || !s2)
++		return -1;
++	return strncmp(s1, s2, strlen(s1));
++}
++
++static void cb_getvar(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	struct fb_variable *var;
++
++	pr_debug("getvar: \"%s\"\n", cmd);
++
++	if (!strcmp_l1(cmd, "all")) {
++		list_for_each_entry(var, &f_fb->variables, list) {
++			fastboot_tx_print(f_fb, "INFO%s: %s", var->name, var->value);
++		}
++		fastboot_tx_print(f_fb, "OKAY");
++		return;
++	}
++
++	list_for_each_entry(var, &f_fb->variables, list) {
++		if (!strcmp(cmd, var->name)) {
++			fastboot_tx_print(f_fb, "OKAY%s", var->value);
++			return;
++		}
++	}
++
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static void rx_handler_dl_image(struct usb_ep *ep, struct usb_request *req)
++{
++	struct f_fastboot *f_fb = req->context;
++	const unsigned char *buffer = req->buf;
++	int ret;
++
++	if (req->status != 0) {
++		pr_err("Bad status: %d\n", req->status);
++		return;
++	}
++
++	ret = write(f_fb->download_fd, buffer, req->actual);
++	if (ret < 0) {
++		fastboot_tx_print(f_fb, "FAIL%s", strerror(-ret));
++		return;
++	}
++
++	f_fb->download_bytes += req->actual;
++
++	req->length = f_fb->download_size - f_fb->download_bytes;
++	if (req->length > EP_BUFFER_SIZE)
++		req->length = EP_BUFFER_SIZE;
++
++	show_progress(f_fb->download_bytes);
++
++	/* Check if transfer is done */
++	if (f_fb->download_bytes >= f_fb->download_size) {
++		req->complete = rx_handler_command;
++		req->length = EP_BUFFER_SIZE;
++
++		fastboot_tx_print(f_fb, "OKAY");
++
++		printf("\n");
++
++		pr_info("downloading of %d bytes finished\n", f_fb->download_bytes);
++	}
++
++	req->actual = 0;
++	usb_ep_queue(ep, req);
++}
++
++static void cb_download(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++
++	f_fb->download_size = simple_strtoul(cmd, NULL, 16);
++	f_fb->download_bytes = 0;
++
++	pr_info("Starting download of %d bytes\n", f_fb->download_size);
++
++	init_progression_bar(f_fb->download_size);
++
++	f_fb->download_fd = open(FASTBOOT_TMPFILE, O_WRONLY | O_CREAT | O_TRUNC);
++	if (f_fb->download_fd < 0) {
++		fastboot_tx_print(f_fb, "FAILInternal Error");
++		return;
++	}
++
++	if (!f_fb->download_size) {
++		fastboot_tx_print(f_fb, "FAILdata invalid size");
++	} else {
++		fastboot_tx_print(f_fb, "DATA%08x", f_fb->download_size);
++		req->complete = rx_handler_dl_image;
++		req->length = EP_BUFFER_SIZE;
++		if (req->length < ep->maxpacket)
++			req->length = ep->maxpacket;
++	}
++}
++
++static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
++{
++	int ret;
++	struct bootm_data data = {
++		.initrd_address = UIMAGE_INVALID_ADDRESS,
++		.os_address = UIMAGE_SOME_ADDRESS,
++	};
++
++	pr_info("Booting kernel..\n");
++
++	globalvar_set_match("linux.bootargs.dyn.", "");
++	globalvar_set_match("bootm.", "");
++
++	data.os_file = xstrdup(FASTBOOT_TMPFILE);
++
++	ret = bootm_boot(&data);
++	if (ret)
++		pr_err("Booting failed\n");
++}
++
++static void cb_boot(struct usb_ep *ep, struct usb_request *req, const char *opt)
++{
++	struct f_fastboot *f_fb = req->context;
++
++	f_fb->in_req->complete = do_bootm_on_complete;
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	struct file_list_entry *fentry;
++	int ret;
++	const char *filename = NULL;
++
++	pr_info("Copying file to %s\n", cmd);
++
++	file_list_for_each_entry(f_fb->files, fentry) {
++		if (!strcmp(cmd, fentry->name)) {
++			filename = fentry->filename;
++			break;
++		}
++	}
++
++	if (!filename) {
++		fastboot_tx_print(f_fb, "FAILNo such partition: %s", cmd);
++		return;
++	}
++
++	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
++	if (ret)
++		fastboot_tx_print(f_fb, "FAILwrite partition: %s", strerror(-ret));
++	else
++		fastboot_tx_print(f_fb, "OKAY");
++}
++
++struct cmd_dispatch_info {
++	char *cmd;
++	void (*cb)(struct usb_ep *ep, struct usb_request *req, const char *opt);
++};
++
++static void fb_run_command(struct usb_ep *ep, struct usb_request *req, const char *cmd,
++		const struct cmd_dispatch_info *cmds, int num_commands)
++{
++	void (*func_cb)(struct usb_ep *ep, struct usb_request *req, const char *cmd) = NULL;
++	struct f_fastboot *f_fb = req->context;
++	int i;
++
++	for (i = 0; i < num_commands; i++) {
++		if (!strcmp_l1(cmds[i].cmd, cmd)) {
++			func_cb = cmds[i].cb;
++			cmd += strlen(cmds[i].cmd);
++			func_cb(ep, req, cmd);
++			return;
++		}
++	}
++
++	fastboot_tx_print(f_fb, "FAILunknown command %s", cmd);
++}
++
++static void cb_oem_getenv(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	const char *value;
++
++	pr_debug("%s: \"%s\"\n", __func__, cmd);
++
++	value = getenv(cmd);
++
++	fastboot_tx_print(f_fb, "INFO%s", value ? value : "");
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static void cb_oem_setenv(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	char *var = xstrdup(cmd);
++	char *value;
++	int ret;
++
++	pr_debug("%s: \"%s\"\n", __func__, cmd);
++
++	value = strchr(var, '=');
++	if (!value) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	*value++ = 0;
++
++	ret = setenv(var, value);
++	if (ret)
++		goto out;
++
++	fastboot_tx_print(f_fb, "OKAY");
++out:
++	free(var);
++
++	if (ret)
++		fastboot_tx_print(f_fb, "FAIL%s", strerror(-ret));
++}
++
++static void cb_oem_exec(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	int ret;
++
++	ret = run_command(cmd);
++	if (ret < 0)
++		fastboot_tx_print(f_fb, "FAIL%s", strerror(-ret));
++	else if (ret > 0)
++		fastboot_tx_print(f_fb, "FAIL");
++	else
++		fastboot_tx_print(f_fb, "OKAY");
++}
++
++static const struct cmd_dispatch_info cmd_oem_dispatch_info[] = {
++	{
++		.cmd = "getenv ",
++		.cb = cb_oem_getenv,
++	}, {
++		.cmd = "setenv ",
++		.cb = cb_oem_setenv,
++	}, {
++		.cmd = "exec ",
++		.cb = cb_oem_exec,
++	},
++};
++
++static void cb_oem(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	pr_debug("%s: \"%s\"\n", __func__, cmd);
++
++	fb_run_command(ep, req, cmd, cmd_oem_dispatch_info, ARRAY_SIZE(cmd_oem_dispatch_info));
++}
++
++static const struct cmd_dispatch_info cmd_dispatch_info[] = {
++	{
++		.cmd = "reboot",
++		.cb = cb_reboot,
++	}, {
++		.cmd = "getvar:",
++		.cb = cb_getvar,
++	}, {
++		.cmd = "download:",
++		.cb = cb_download,
++	}, {
++		.cmd = "boot",
++		.cb = cb_boot,
++	}, {
++		.cmd = "flash:",
++		.cb = cb_flash,
++	}, {
++		.cmd = "oem ",
++		.cb = cb_oem,
++	},
++};
++
++static void rx_handler_command(struct usb_ep *ep, struct usb_request *req)
++{
++	char *cmdbuf = req->buf;
++
++	if (req->status != 0)
++		return;
++
++	*(cmdbuf + req->actual) = 0;
++
++	fb_run_command(ep, req, cmdbuf, cmd_dispatch_info,
++				ARRAY_SIZE(cmd_dispatch_info));
++
++	*cmdbuf = '\0';
++	req->actual = 0;
++	memset(req->buf, 0, EP_BUFFER_SIZE);
++	usb_ep_queue(ep, req);
++}
 -- 
 2.0.1
 
