@@ -1,13 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from alcapone.vm.bytemark.co.uk ([89.16.173.107])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9GEX-00030D-5j
- for barebox@lists.infradead.org; Mon, 21 Jul 2014 16:14:38 +0000
-From: Matteo Fortini <matteo.fortini@gmail.com>
-Date: Mon, 21 Jul 2014 18:13:26 +0200
-Message-Id: <assp.027999675f.1405959207-21839-2-git-send-email-matteo.fortini@gmail.com>
-In-Reply-To: <1405959207-21839-1-git-send-email-matteo.fortini@gmail.com>
-References: <1405959207-21839-1-git-send-email-matteo.fortini@gmail.com>
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X9HHr-0004p8-Ui
+ for barebox@lists.infradead.org; Mon, 21 Jul 2014 17:22:08 +0000
+Received: by mail-lb0-f175.google.com with SMTP id 10so1811731lbg.6
+ for <barebox@lists.infradead.org>; Mon, 21 Jul 2014 10:21:45 -0700 (PDT)
+Date: Mon, 21 Jul 2014 21:34:16 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140721213416.f9800e212477dd3fd6e92a55@gmail.com>
+In-Reply-To: <20140721194150.1d5ea1f772f27fb02e267f42@gmail.com>
+References: <1405370916-6828-1-git-send-email-antonynpavlov@gmail.com>
+ <1405370916-6828-5-git-send-email-antonynpavlov@gmail.com>
+ <20140718054413.GL23235@pengutronix.de>
+ <20140718113626.19aba6e8e971f15944a6ff93@gmail.com>
+ <CAOpc7mEHJFktB5v=uRqLUWgEdzHA05KmFmC3_ix+gfooO-0MKw@mail.gmail.com>
+ <20140720095522.41f6874de19b368a29573cf7@gmail.com>
+ <20140721064106.GS23235@pengutronix.de>
+ <20140721111025.4a0d6d2c1ef5977e1d45f152@gmail.com>
+ <20140721081150.GT23235@pengutronix.de>
+ <20140721194150.1d5ea1f772f27fb02e267f42@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,163 +28,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] sama5d3x: fix HSMC MODE register offset and add TIMINGS
- register
-To: barebox@lists.infradead.org
+Subject: Re: [RFC v3 4/5] commands: add hwclock
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-As stated in section 29.19.35 of SAMA5D3 Series Datasheet,
-MODE register has offset 0x10 and at offset 0x0C there is
-a TIMINGS register.
+On Mon, 21 Jul 2014 19:41:50 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-Signed-off-by: Matteo Fortini <matteo.fortini@gmail.com>
----
- arch/arm/mach-at91/include/mach/at91sam9_smc.h | 34 ++++++++++++++++++++++-
- arch/arm/mach-at91/sam9_smc.c                  | 38 ++++++++++++++++++++++++--
- 2 files changed, 68 insertions(+), 4 deletions(-)
+> On Mon, 21 Jul 2014 10:11:50 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> =
 
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9_smc.h b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
-index d5cf5f7..29ae643 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9_smc.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9_smc.h
-@@ -43,12 +43,24 @@ struct sam9_smc_config {
- 	/* Mode register */
- 	u32 mode;
- 	u8 tdf_cycles:4;
-+
-+	/* Timings register */
-+	u8 tclr;
-+	u8 tadl;
-+	u8 tar;
-+	u8 ocms;
-+	u8 trr;
-+	u8 twb;
-+	u8 rbnsel;
-+	u8 nfsel;
- };
- 
- extern void sam9_smc_configure(int id, int cs, struct sam9_smc_config *config);
- extern void sam9_smc_read(int id, int cs, struct sam9_smc_config *config);
- extern void sam9_smc_read_mode(int id, int cs, struct sam9_smc_config *config);
- extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
-+
-+extern void sama5_smc_configure(int id, int cs, struct sam9_smc_config *config);
- #endif
- 
- #define AT91_SMC_SETUP		0x00				/* Setup Register for CS n */
-@@ -77,7 +89,26 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
- #define		AT91_SMC_NRDCYCLE	(0x1ff << 16)			/* Total Read Cycle Length */
- #define			AT91_SMC_NRDCYCLE_(x)	((x) << 16)
- 
--#define AT91_SMC_MODE		0x0c				/* Mode Register for CS n */
-+#define AT91_SAMA5_SMC_TIMINGS	0x0c				/* Timings register for CS n */
-+#define		AT91_SMC_TCLR		(0x0f  <<  0)			/* CLE to REN Low Delay */
-+#define			AT91_SMC_TCLR_(x)	((x) << 0)
-+#define		AT91_SMC_TADL		(0x0f  <<  4)			/* ALE to Data Start */
-+#define			AT91_SMC_TADL_(x)	((x) << 4)
-+#define		AT91_SMC_TAR		(0x0f  <<  8)			/* ALE to REN Low Delay */
-+#define			AT91_SMC_TAR_(x)	((x) << 8)
-+#define		AT91_SMC_OCMS		(0x1   << 12)			/* Off Chip Memory Scrambling Enable */
-+#define			AT91_SMC_OCMS_(x)	((x) << 12)
-+#define		AT91_SMC_TRR		(0x0f  << 16)			/* Ready to REN Low Delay */
-+#define			AT91_SMC_TRR_(x)        ((x) << 16)
-+#define		AT91_SMC_TWB		(0x0f  << 24)			/* WEN High to REN to Busy */
-+#define			AT91_SMC_TWB_(x)	((x) << 24)
-+#define		AT91_SMC_RBNSEL		(0x07  << 28)			/* Ready/Busy Line Selection */
-+#define			AT91_SMC_RBNSEL_(x)	((x) << 28)
-+#define		AT91_SMC_NFSEL		(0x01  << 31)			/* Nand Flash Selection */
-+#define			AT91_SMC_NFSEL_(x)	((x) << 31)
-+
-+#define AT91_SAM9_SMC_MODE 0xc
-+#define AT91_SAMA5_SMC_MODE 0x10
- #define		AT91_SMC_READMODE	(1 <<  0)			/* Read Mode */
- #define		AT91_SMC_WRITEMODE	(1 <<  1)			/* Write Mode */
- #define		AT91_SMC_EXNWMODE	(3 <<  4)			/* NWAIT Mode */
-@@ -101,4 +132,5 @@ extern void sam9_smc_write_mode(int id, int cs, struct sam9_smc_config *config);
- #define			AT91_SMC_PS_16			(2 << 28)
- #define			AT91_SMC_PS_32			(3 << 28)
- 
-+
- #endif
-diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
-index c7bfdfd..9f02807 100644
---- a/arch/arm/mach-at91/sam9_smc.c
-+++ b/arch/arm/mach-at91/sam9_smc.c
-@@ -17,7 +17,9 @@
- 
- #include <mach/at91sam9_smc.h>
- 
--#define AT91_SMC_CS_STRIDE      ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? 0x14 : 0x10)
-+#define AT91_SAM9_SMC_CS_STRIDE		0x10
-+#define AT91_SAMA5_SMC_CS_STRIDE	0x14
-+#define AT91_SMC_CS_STRIDE      ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? AT91_SAMA5_SMC_CS_STRIDE : AT91_SAM9_SMC_CS_STRIDE)
- #define AT91_SMC_CS(id, n)	(smc_base_addr[id] + ((n) * AT91_SMC_CS_STRIDE))
- 
- static void __iomem *smc_base_addr[2];
-@@ -25,9 +27,27 @@ static void __iomem *smc_base_addr[2];
- static void sam9_smc_cs_write_mode(void __iomem *base,
- 					struct sam9_smc_config *config)
- {
-+	void __iomem *mode_reg;
-+
-+	mode_reg = base + ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? AT91_SAMA5_SMC_MODE : AT91_SAM9_SMC_MODE);
-+
- 	__raw_writel(config->mode
- 		   | AT91_SMC_TDF_(config->tdf_cycles),
--		   base + AT91_SMC_MODE);
-+		   mode_reg);
-+}
-+
-+static void sam9_smc_cs_write_timings(void __iomem *base,
-+					struct sam9_smc_config *config)
-+{
-+	__raw_writel(AT91_SMC_TCLR_(config->tclr)
-+                   | AT91_SMC_TADL_(config->tadl)
-+                   | AT91_SMC_TAR_(config->tar)
-+                   | AT91_SMC_OCMS_(config->ocms)
-+                   | AT91_SMC_TRR_(config->trr)
-+                   | AT91_SMC_TWB_(config->twb)
-+                   | AT91_SMC_RBNSEL_(config->rbnsel)
-+                   | AT91_SMC_NFSEL_(config->nfsel),
-+		   base + AT91_SAMA5_SMC_TIMINGS);
- }
- 
- void sam9_smc_write_mode(int id, int cs,
-@@ -72,7 +92,12 @@ void sam9_smc_configure(int id, int cs,
- static void sam9_smc_cs_read_mode(void __iomem *base,
- 					struct sam9_smc_config *config)
- {
--	u32 val = __raw_readl(base + AT91_SMC_MODE);
-+	u32 val;
-+	void __iomem *mode_reg;
-+
-+	mode_reg = base + ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? AT91_SAMA5_SMC_MODE : AT91_SAM9_SMC_MODE);
-+
-+	val = __raw_readl(mode_reg);
- 
- 	config->mode = (val & ~AT91_SMC_NWECYCLE);
- 	config->tdf_cycles = (val & AT91_SMC_NWECYCLE) >> 16 ;
-@@ -120,6 +145,13 @@ void sam9_smc_read(int id, int cs, struct sam9_smc_config *config)
- 	sam9_smc_cs_read(AT91_SMC_CS(id, cs), config);
- }
- 
-+void sama5_smc_configure(int id, int cs, struct sam9_smc_config *config)
-+{
-+        sam9_smc_configure(id, cs, config);
-+
-+        sam9_smc_cs_write_timings(AT91_SMC_CS(id, cs), config);
-+}
-+
- static int at91sam9_smc_probe(struct device_d *dev)
- {
- 	int id = dev->id;
--- 
-2.0.1
+> > On Mon, Jul 21, 2014 at 11:10:25AM +0400, Antony Pavlov wrote:
+> > > On Mon, 21 Jul 2014 08:41:06 +0200
+> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > =
 
+> > > > On Sun, Jul 20, 2014 at 09:55:22AM +0400, Antony Pavlov wrote:
+> > > > > On Sat, 19 Jul 2014 21:02:22 +0200
+> > > > > Holger Schurig <holgerschurig@gmail.com> wrote:
+> > > > > =
+
+> > > > > > I'd prefer a more logical format (and that is also in the help).
+> > > > > > However, in this case I wouldn't name the command "hwclock", bu=
+t maybe
+> > > > > > "setclock".
+> > > > > =
+
+> > > > > hwclock allows to use a logical format!
+> > > > > =
+
+> > > > > e.g. here is a quote from hwclock manpage:
+> > > > > =
+
+> > > > >      --date=3Ddate_string
+> > > > >               You  need this option if you specify the --set or -=
+-predict functions, otherwise
+> > > > >               it is ignored.  It specifies the time to which to s=
+et the Hardware Clock, or the
+> > > > >               time  for which to predict the Hardware Clock readi=
+ng.  The value of this option
+> > > > >               is an argument to the date(1) program.  For example:
+> > > > > =
+
+> > > > >                   hwclock --set --date=3D"2011-08-14 16:45:05"
+> > > > =
+
+> > > > Is this format easy enough to parse? If yes, that sounds like a good
+> > > > format.
+> > > =
+
+> > > So you have no objections on using a logical format :)
+> > =
+
+> > No, not at all ;)
+> > =
+
+> > > =
+
+> > > I can make a small review on conventional date_string formats so we c=
+an discuss most appropriate one.
+> > =
+
+> > Nice, thanks.
+> > =
+
+> > I think we can always add additional formats using different command
+> > line switches, but the better we chose our default format the lesser
+> > need we'll have to add additional formats.
+> =
+
+> I know about at least two widespread date command realizations used with =
+linux:
+> =
+
+>   * coreutils realization;
+>   * busybox realization.
+> =
+
+> =
+
+> coreutils realization
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> =
+
+> I have looked inside parse_datetime() from coreutils-8.21/lib/parse-datet=
+ime.c.
+> =
+
+> It uses yyparse() for date string parsing! The corresponding yacc descrip=
+tion
+> is inside the lib/parse-datetime.y file. Can I easely steal this code for=
+ barebox? I suppose NO!
+> =
+
+> =
+
+> busybox realization
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> =
+
+> Here is parse_datestr() (barebox.git/libbb/time.c) date format list:
+                           ^^^^^^^^^^^
+                                    Sorry! I meant busybox.git. =
+
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
