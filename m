@@ -1,24 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9FX5-0007SA-Vm
- for barebox@lists.infradead.org; Mon, 21 Jul 2014 15:29:45 +0000
-Received: by mail-la0-f44.google.com with SMTP id e16so4923533lan.31
- for <barebox@lists.infradead.org>; Mon, 21 Jul 2014 08:29:19 -0700 (PDT)
-Date: Mon, 21 Jul 2014 19:41:50 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140721194150.1d5ea1f772f27fb02e267f42@gmail.com>
-In-Reply-To: <20140721081150.GT23235@pengutronix.de>
-References: <1405370916-6828-1-git-send-email-antonynpavlov@gmail.com>
- <1405370916-6828-5-git-send-email-antonynpavlov@gmail.com>
- <20140718054413.GL23235@pengutronix.de>
- <20140718113626.19aba6e8e971f15944a6ff93@gmail.com>
- <CAOpc7mEHJFktB5v=uRqLUWgEdzHA05KmFmC3_ix+gfooO-0MKw@mail.gmail.com>
- <20140720095522.41f6874de19b368a29573cf7@gmail.com>
- <20140721064106.GS23235@pengutronix.de>
- <20140721111025.4a0d6d2c1ef5977e1d45f152@gmail.com>
- <20140721081150.GT23235@pengutronix.de>
-Mime-Version: 1.0
+Received: from alcapone.vm.bytemark.co.uk ([89.16.173.107])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X9GEX-00030E-R5
+ for barebox@lists.infradead.org; Mon, 21 Jul 2014 16:14:38 +0000
+From: Matteo Fortini <matteo.fortini@gmail.com>
+Date: Mon, 21 Jul 2014 18:13:27 +0200
+Message-Id: <assp.02796fdd2a.1405959207-21839-3-git-send-email-matteo.fortini@gmail.com>
+In-Reply-To: <1405959207-21839-1-git-send-email-matteo.fortini@gmail.com>
+References: <1405959207-21839-1-git-send-email-matteo.fortini@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,124 +16,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v3 4/5] commands: add hwclock
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] sama5d3x: HSMC NAND initialize TIMINGS and import values
+ from U-Boot
+To: barebox@lists.infradead.org
 
-On Mon, 21 Jul 2014 10:11:50 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+The configuration for NAND has been aligned with values
+from U-Boot and completed with TIMINGS initialization
 
-> On Mon, Jul 21, 2014 at 11:10:25AM +0400, Antony Pavlov wrote:
-> > On Mon, 21 Jul 2014 08:41:06 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+Signed-off-by: Matteo Fortini <matteo.fortini@gmail.com>
+---
+ arch/arm/boards/sama5d3xek/init.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
-> > > On Sun, Jul 20, 2014 at 09:55:22AM +0400, Antony Pavlov wrote:
-> > > > On Sat, 19 Jul 2014 21:02:22 +0200
-> > > > Holger Schurig <holgerschurig@gmail.com> wrote:
-> > > > =
+diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+index e078642..743197f 100644
+--- a/arch/arm/boards/sama5d3xek/init.c
++++ b/arch/arm/boards/sama5d3xek/init.c
+@@ -72,21 +72,30 @@ static struct atmel_nand_data nand_pdata = {
+ };
+ 
+ static struct sam9_smc_config cm_nand_smc_config = {
+-	.ncs_read_setup		= 0,
+-	.nrd_setup		= 1,
+-	.ncs_write_setup	= 0,
+-	.nwe_setup		= 1,
++	.ncs_read_setup		= 1,
++	.nrd_setup		= 2,
++	.ncs_write_setup	= 1,
++	.nwe_setup		= 2,
+ 
+-	.ncs_read_pulse		= 6,
+-	.nrd_pulse		= 4,
++	.ncs_read_pulse		= 5,
++	.nrd_pulse		= 3,
+ 	.ncs_write_pulse	= 5,
+ 	.nwe_pulse		= 3,
+ 
+-	.read_cycle		= 6,
+-	.write_cycle		= 5,
++	.read_cycle		= 8,
++	.write_cycle		= 8,
+ 
+ 	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
+-	.tdf_cycles		= 1,
++	.tdf_cycles		= 3,
++
++	.tclr			= 3,
++	.tadl			= 10,
++	.tar			= 3,
++	.ocms			= 0,
++	.trr			= 4,
++	.twb			= 5,
++	.rbnsel			= 3,
++	.nfsel			= 1
+ };
+ 
+ static void ek_add_device_nand(void)
+@@ -102,7 +111,7 @@ static void ek_add_device_nand(void)
+ 		cm_nand_smc_config.mode |= AT91_SMC_DBW_8;
+ 
+ 	/* configure chip-select 3 (NAND) */
+-	sam9_smc_configure(0, 3, &cm_nand_smc_config);
++	sama5_smc_configure(0, 3, &cm_nand_smc_config);
+ 
+ 	at91_add_device_nand(&nand_pdata);
+ }
+-- 
+2.0.1
 
-> > > > > I'd prefer a more logical format (and that is also in the help).
-> > > > > However, in this case I wouldn't name the command "hwclock", but =
-maybe
-> > > > > "setclock".
-> > > > =
-
-> > > > hwclock allows to use a logical format!
-> > > > =
-
-> > > > e.g. here is a quote from hwclock manpage:
-> > > > =
-
-> > > >      --date=3Ddate_string
-> > > >               You  need this option if you specify the --set or --p=
-redict functions, otherwise
-> > > >               it is ignored.  It specifies the time to which to set=
- the Hardware Clock, or the
-> > > >               time  for which to predict the Hardware Clock reading=
-.  The value of this option
-> > > >               is an argument to the date(1) program.  For example:
-> > > > =
-
-> > > >                   hwclock --set --date=3D"2011-08-14 16:45:05"
-> > > =
-
-> > > Is this format easy enough to parse? If yes, that sounds like a good
-> > > format.
-> > =
-
-> > So you have no objections on using a logical format :)
-> =
-
-> No, not at all ;)
-> =
-
-> > =
-
-> > I can make a small review on conventional date_string formats so we can=
- discuss most appropriate one.
-> =
-
-> Nice, thanks.
-> =
-
-> I think we can always add additional formats using different command
-> line switches, but the better we chose our default format the lesser
-> need we'll have to add additional formats.
-
-I know about at least two widespread date command realizations used with li=
-nux:
-
-  * coreutils realization;
-  * busybox realization.
-
-
-coreutils realization
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-I have looked inside parse_datetime() from coreutils-8.21/lib/parse-datetim=
-e.c.
-
-It uses yyparse() for date string parsing! The corresponding yacc descripti=
-on
-is inside the lib/parse-datetime.y file. Can I easely steal this code for b=
-arebox? I suppose NO!
-
-
-busybox realization
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-Here is parse_datestr() (barebox.git/libbb/time.c) date format list:
-
-#if ENABLE_FEATURE_DATE_COMPAT =
-
-/* MMDDhhmm[[CC]YY][.ss] */  ---  weird 'date' format
-#endif
-
-/* HH:MM[:SS] */
-/* mm.dd-HH:MM[:SS] */
-/* yyyy.mm.dd-HH:MM[:SS] */
-/* yyyy-mm-dd HH:MM[:SS] */
-
-/* month_name d HH:MM:SS YYYY */ --- I suppose we don't want to mess with m=
-ount_name :)
-/* yyyy-mm-dd HH */
-/* yyyy-mm-dd */
-
-/* MM[.SS] */
-/* HHMM[.SS] */
-/* ddHHMM[.SS] */
-/* mmddHHMM[.SS] */
-/* yymmddHHMM[.SS] */
-/* ccyymmddHHMM[.SS] */ --- this format is used in RFCv3 patchseries.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
