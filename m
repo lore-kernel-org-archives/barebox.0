@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22a.google.com ([2a00:1450:400c:c03::22a])
+Received: from mail-wg0-x22b.google.com ([2a00:1450:400c:c00::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9Ux2-0006Cu-8k
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 07:57:32 +0000
-Received: by mail-we0-f170.google.com with SMTP id w62so8578866wes.1
- for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 00:57:08 -0700 (PDT)
+ id 1X9Uwy-0006Bv-9Y
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 07:57:28 +0000
+Received: by mail-wg0-f43.google.com with SMTP id l18so7462133wgh.26
+ for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 00:57:04 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 22 Jul 2014 09:56:45 +0200
-Message-Id: <1406015809-20711-2-git-send-email-holgerschurig@gmail.de>
+Date: Tue, 22 Jul 2014 09:56:44 +0200
+Message-Id: <1406015809-20711-1-git-send-email-holgerschurig@gmail.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] Documentation: remove "all all" in help's help text.
+Subject: [PATCH 0/5] misc documentation patches
 To: barebox@lists.infradead.org
 
 From: Holger Schurig <holgerschurig@gmail.com>
 
-Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
----
- commands/help.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This are some minor patches to the documention.
 
-diff --git a/commands/help.c b/commands/help.c
-index 9c33807..8985335 100644
---- a/commands/help.c
-+++ b/commands/help.c
-@@ -128,7 +128,7 @@ static int do_help(int argc, char *argv[])
- 
- 
- BAREBOX_CMD_HELP_START(help)
--BAREBOX_CMD_HELP_TEXT("Without arguments, lists all all commands. With an argument, print help")
-+BAREBOX_CMD_HELP_TEXT("Without arguments, lists all commands. With an argument, print help")
- BAREBOX_CMD_HELP_TEXT("about the specified command. If the argument is 'all', then output help")
- BAREBOX_CMD_HELP_TEXT("for all commands.")
- BAREBOX_CMD_HELP_TEXT("")
+Holger Schurig (5):
+  Documentation: remove "all all" in help's help text.
+  Documentation: lowercase help short texts
+  Documentation: only write changed *.rst files
+  Documentation: change generated help lines
+  Documentation: revamp dfu's help text
+
+ Documentation/gen_commands.py    | 16 +++++++++++++++-
+ commands/dfu.c                   | 15 +++++++++------
+ commands/help.c                  |  2 +-
+ commands/lspci.c                 |  2 +-
+ common/Kconfig                   | 17 +++++++++++++++++
+ drivers/ata/Kconfig              |  1 +
+ drivers/input/Kconfig            |  2 +-
+ drivers/net/Kconfig              |  4 ++++
+ drivers/of/base.c                |  2 ++
+ drivers/regulator/Kconfig        |  1 +
+ drivers/usb/host/Kconfig         |  1 +
+ drivers/video/imx-ipu-v3/Kconfig |  1 +
+
 -- 
 1.8.5.2
 
