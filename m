@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X9frK-0003Kx-Tk
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 19:36:26 +0000
-Date: Tue, 22 Jul 2014 21:36:00 +0200
+ Linux)) id 1X9g0V-0007Mp-HP
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 19:45:52 +0000
+Date: Tue, 22 Jul 2014 21:45:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140722193600.GB23235@pengutronix.de>
-References: <1406015842-20754-1-git-send-email-holgerschurig@gmail.de>
+Message-ID: <20140722194528.GC23235@pengutronix.de>
+References: <6b8c916b058b2ea98a40c6d701186608@linux-source.de>
+ <20140722053847.GV23235@pengutronix.de>
+ <94dc023fe4dffc56144a4d26532aff05@linux-source.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1406015842-20754-1-git-send-email-holgerschurig@gmail.de>
+In-Reply-To: <94dc023fe4dffc56144a4d26532aff05@linux-source.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] sandbox: prepare for static checkers
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: [PATCH] arch/arm/lib/bootm: fix length check of kernel image
+To: basti@linux-source.de
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 22, 2014 at 09:57:19AM +0200, Holger Schurig wrote:
-> From: Holger Schurig <holgerschurig@gmail.com>
-> 
-> I want to use different compilers and static checkers (e.g. clang's
-> scan-build) on Barebox.  As a preparatory step I want to maximize code
-> coverage in an non-crosscompilation environment.
-> 
-> This patch set prepares the tree so that "make ARCH=sandbox allyesconfig"
-> followed by "make ARCH=sandbox" works and compiles warning free (at least
-> with Debian's gcc-4.6).
-> 
-> Holger Schurig (3):
->   sandbox: disable bareboxcrc32 in sandbox mode
->   sandbox: allow "make ARCH=sandbox allyesconfig"
->   sandbox: work around missing of_add_memory_bank()
+On Tue, Jul 22, 2014 at 11:14:26AM +0200, basti@linux-source.de wrote:
+> Hi Sascha,
 
-Applied 1/3 and 2/3 for now.
+(Adding back the list to Cc)
+
+> 
+> >>Signed-off-by: Sebastian Block <basti@linux-source.de>
+> >>---
+> >> arch/arm/lib/bootm.c |    2 +-
+> >> 1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >>diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+> >>index 4896d01..d9b9111 100644
+> >>--- a/arch/arm/lib/bootm.c
+> >>+++ b/arch/arm/lib/bootm.c
+> >>@@ -314,7 +314,7 @@ static int do_bootz_linux(struct image_data *data)
+> >> 			image_size - sizeof(*header));
+> >> 	if (ret < 0)
+> >> 		goto err_out;
+> >>-	if (ret < end - sizeof(*header)) {
+> >>+	if (ret < image_size - sizeof(*header)) {
+> >
+> >Did this cause any real trouble? I was quite surprised when I saw that
+> >patch. After a test I saw that for me 'image_size' has the same
+> >value as
+> >'end'.
+> 
+> I run into trouble with it, caused by variable end contains memory
+> address of the image not the size as returned by read_full.
+
+Hm, this must have something to do with your kernel configuration. Maybe
+you have CONFIG_ARM_PATCH_PHYS_VIRT disabled in your kernel.
+
+Anyway, applied this patch to current master.
 
 Sascha
-
-> 
->  arch/arm/Kconfig                 |  2 ++
->  arch/nios2/Kconfig               |  1 +
->  arch/openrisc/Kconfig            |  1 +
->  arch/ppc/Kconfig                 |  1 +
->  common/Kconfig                   | 17 +++++++++++++++++
->  drivers/ata/Kconfig              |  1 +
->  drivers/input/Kconfig            |  2 +-
->  drivers/net/Kconfig              |  4 ++++
->  drivers/of/base.c                |  2 ++
->  drivers/regulator/Kconfig        |  1 +
->  drivers/usb/host/Kconfig         |  1 +
->  drivers/video/imx-ipu-v3/Kconfig |  1 +
->  12 files changed, 33 insertions(+), 1 deletion(-)
-> 
-> -- 
-> 1.8.5.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
