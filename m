@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22b.google.com ([2a00:1450:400c:c00::22b])
+Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9Uwy-0006Bv-9Y
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 07:57:28 +0000
-Received: by mail-wg0-f43.google.com with SMTP id l18so7462133wgh.26
- for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 00:57:04 -0700 (PDT)
+ id 1X9Ux5-0006E4-B7
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 07:57:35 +0000
+Received: by mail-wg0-f47.google.com with SMTP id b13so7479162wgh.6
+ for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 00:57:12 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 22 Jul 2014 09:56:44 +0200
-Message-Id: <1406015809-20711-1-git-send-email-holgerschurig@gmail.de>
+Date: Tue, 22 Jul 2014 09:56:48 +0200
+Message-Id: <1406015809-20711-5-git-send-email-holgerschurig@gmail.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] misc documentation patches
+Subject: [PATCH 4/5] Documentation: change generated help lines
 To: barebox@lists.infradead.org
 
 From: Holger Schurig <holgerschurig@gmail.com>
 
-This are some minor patches to the documention.
+Someone
 
-Holger Schurig (5):
-  Documentation: remove "all all" in help's help text.
-  Documentation: lowercase help short texts
-  Documentation: only write changed *.rst files
-  Documentation: change generated help lines
-  Documentation: revamp dfu's help text
+   loadx (load binary file over serial line (X-Modem))
 
- Documentation/gen_commands.py    | 16 +++++++++++++++-
- commands/dfu.c                   | 15 +++++++++------
- commands/help.c                  |  2 +-
- commands/lspci.c                 |  2 +-
- common/Kconfig                   | 17 +++++++++++++++++
- drivers/ata/Kconfig              |  1 +
- drivers/input/Kconfig            |  2 +-
- drivers/net/Kconfig              |  4 ++++
- drivers/of/base.c                |  2 ++
- drivers/regulator/Kconfig        |  1 +
- drivers/usb/host/Kconfig         |  1 +
- drivers/video/imx-ipu-v3/Kconfig |  1 +
+looked more silly than
 
+   loadx - load binary file over serial line (X-Modem)
+
+Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+---
+ Documentation/gen_commands.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/gen_commands.py b/Documentation/gen_commands.py
+index eadea9e..b85e2e3 100755
+--- a/Documentation/gen_commands.py
++++ b/Documentation/gen_commands.py
+@@ -103,7 +103,7 @@ def gen_rst(name, cmd):
+   out.append('.. _command_%s:' % name)
+   out.append('')
+   if 'c_desc' in cmd:
+-    out.append("%s (%s)" % (name, ''.join(cmd['c_desc']).strip()))
++    out.append("%s - %s" % (name, ''.join(cmd['c_desc']).strip()))
+   else:
+     out.append("%s" % (name,))
+   out.append('='*len(out[-1]))
 -- 
 1.8.5.2
 
