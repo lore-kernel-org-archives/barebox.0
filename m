@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
+Received: from mail-wi0-x22b.google.com ([2a00:1450:400c:c05::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9dKk-0005pO-6n
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 16:54:34 +0000
-Received: by mail-wi0-f172.google.com with SMTP id n3so6354465wiv.17
- for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 09:54:10 -0700 (PDT)
-Message-ID: <53CE9720.6050204@gmail.com>
-Date: Tue, 22 Jul 2014 18:53:52 +0200
+ id 1X9eXW-0008RJ-47
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 18:12:06 +0000
+Received: by mail-wi0-f171.google.com with SMTP id hi2so6472633wib.16
+ for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 11:11:08 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1405545909-9855-1-git-send-email-antonynpavlov@gmail.com>
- <1405545909-9855-2-git-send-email-antonynpavlov@gmail.com>
- <53CE25FE.9070903@gmail.com>
- <20140722202150.923eb98d9268383756226e99@gmail.com>
-In-Reply-To: <20140722202150.923eb98d9268383756226e99@gmail.com>
+Date: Tue, 22 Jul 2014 20:10:46 +0200
+Message-Id: <1406052648-8675-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,43 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] i2c: add Marvell 64xxx driver
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] Pinctrl drivers for Armada 370 and XP
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On 07/22/2014 06:21 PM, Antony Pavlov wrote:
-> On Tue, 22 Jul 2014 10:51:10 +0200
-> Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> wrote:
->> I finally finished work on xHCI and PCI on Armada 370. Now I come
-> 
-> Are you speaking about PCIe support for Armada 370 in barebox?
+We already have a common pinctrl driver for Marvell MVEBU SoCs but
+SoC specific stubs for Armada 370 and XP were missing. This patch
+set converts those over from Linux to Barebox to allow pin muxing.
 
-Yes, but not only on Armada 370 but Orion SoCs in general. I am about
-to clean the PCIe driver now and see if I can give it a go on Dove or
-Kirkwood easily.
-
-This is what I got today with both PCIe driver and xHCI PCI driver:
-
-barebox 2014.07.0-00181-g2d9d176ef3c7-dirty #1081 Tue Jul 22 09:20:08
-CEST 2014
-Board: Globalscale Mirabox
-xHCI PCI pci0: USB xHCI 0.96
-barebox:/ usb
-USB: scanning bus for devices...
-Using index 0 for the new disk
-Bus 001 Device 002: ID 0951:1653 DT 100 G2
-Bus 001 Device 001: ID 0000:0000 USB 3.0 Root Hub
-2 USB Device(s) found
-barebox:/ mount -a
-ext4 ext40: EXT2 rev 1, inode_size 256
-none on / type ramfs
-none on /dev type devfs
-/dev/disk0.0 on /mnt/disk0.0 type ext4
-barebox:/ ls /mnt/disk0.0/
-.             ..            lost+found
-
+The stubs were tested on Armada 370 and compile-tested for Armada XP.
 
 Sebastian
+
+Sebastian Hesselbarth (2):
+  pinctrl: mvebu: add pinctrl driver for Armada 370
+  pinctrl: mvebu: add pinctrl driver for Armada XP
+
+ arch/arm/mach-mvebu/Kconfig        |   2 +
+ drivers/pinctrl/mvebu/Kconfig      |   8 +
+ drivers/pinctrl/mvebu/Makefile     |   2 +
+ drivers/pinctrl/mvebu/armada-370.c | 416 +++++++++++++++++++++++++++++++++++++
+ drivers/pinctrl/mvebu/armada-xp.c  | 403 +++++++++++++++++++++++++++++++++++
+ 5 files changed, 831 insertions(+)
+ create mode 100644 drivers/pinctrl/mvebu/armada-370.c
+ create mode 100644 drivers/pinctrl/mvebu/armada-xp.c
+
+---
+Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+-- 
+2.0.0
+
 
 _______________________________________________
 barebox mailing list
