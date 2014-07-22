@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X9g0V-0007Mp-HP
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 19:45:52 +0000
-Date: Tue, 22 Jul 2014 21:45:28 +0200
+ Linux)) id 1X9gCV-0004Uu-Hf
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 19:58:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140722194528.GC23235@pengutronix.de>
-References: <6b8c916b058b2ea98a40c6d701186608@linux-source.de>
- <20140722053847.GV23235@pengutronix.de>
- <94dc023fe4dffc56144a4d26532aff05@linux-source.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <94dc023fe4dffc56144a4d26532aff05@linux-source.de>
+Date: Tue, 22 Jul 2014 21:57:51 +0200
+Message-Id: <1406059071-7770-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,56 +14,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arch/arm/lib/bootm: fix length check of kernel image
-To: basti@linux-source.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Revert "common: resource: print conflicts as warning"
+To: barebox@lists.infradead.org
 
-On Tue, Jul 22, 2014 at 11:14:26AM +0200, basti@linux-source.de wrote:
-> Hi Sascha,
+On several i.MX boards we register SDRAM with the values
+from the SDRAM controller and also with values from the
+device tree. This now issues a warning each time the board
+is started. Revert the commit for now.
 
-(Adding back the list to Cc)
+A better solution might be to check if the same SDRAM region
+already exists before trying to register it again.
 
-> 
-> >>Signed-off-by: Sebastian Block <basti@linux-source.de>
-> >>---
-> >> arch/arm/lib/bootm.c |    2 +-
-> >> 1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >>diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-> >>index 4896d01..d9b9111 100644
-> >>--- a/arch/arm/lib/bootm.c
-> >>+++ b/arch/arm/lib/bootm.c
-> >>@@ -314,7 +314,7 @@ static int do_bootz_linux(struct image_data *data)
-> >> 			image_size - sizeof(*header));
-> >> 	if (ret < 0)
-> >> 		goto err_out;
-> >>-	if (ret < end - sizeof(*header)) {
-> >>+	if (ret < image_size - sizeof(*header)) {
-> >
-> >Did this cause any real trouble? I was quite surprised when I saw that
-> >patch. After a test I saw that for me 'image_size' has the same
-> >value as
-> >'end'.
-> 
-> I run into trouble with it, caused by variable end contains memory
-> address of the image not the size as returned by read_full.
+This reverts commit c9e2e08edcdce4205821226817686e62dc349eab.
 
-Hm, this must have something to do with your kernel configuration. Maybe
-you have CONFIG_ARM_PATCH_PHYS_VIRT disabled in your kernel.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/resource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Anyway, applied this patch to current master.
-
-Sascha
-
+diff --git a/common/resource.c b/common/resource.c
+index 1ea2a75..fe4680e 100644
+--- a/common/resource.c
++++ b/common/resource.c
+@@ -71,7 +71,7 @@ struct resource *__request_region(struct resource *parent,
+ 			goto ok;
+ 		if (start > r->end)
+ 			continue;
+-		pr_warn("%s: 0x%08llx:0x%08llx conflicts with 0x%08llx:0x%08llx\n",
++		debug("%s: 0x%08llx:0x%08llx conflicts with 0x%08llx:0x%08llx\n",
+ 				__func__,
+ 				(unsigned long long)start,
+ 				(unsigned long long)end,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.1
+
 
 _______________________________________________
 barebox mailing list
