@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X9gM7-0000TI-BH
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 20:08:15 +0000
-Date: Tue, 22 Jul 2014 22:07:49 +0200
+ Linux)) id 1X9gU9-0003pO-SJ
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 20:16:30 +0000
+Date: Tue, 22 Jul 2014 22:16:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140722200749.GD23235@pengutronix.de>
-References: <1405598523-2835-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140722201606.GE23235@pengutronix.de>
+References: <1406023122-498-1-git-send-email-holgerschurig@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1405598523-2835-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1406023122-498-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/checkpatch.pl: don't search for Doxyfile when
- checking top_of_kernel_tree()
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] commands: fix memset command
+To: Holger Schurig <holgerschurig@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 17, 2014 at 04:02:03PM +0400, Antony Pavlov wrote:
-> Doxygen documentation is removed in the commit
+On Tue, Jul 22, 2014 at 11:58:42AM +0200, Holger Schurig wrote:
+> Before:
 > 
->   commit 98360be0fefd58bf27df03c47d887dd676a31d73
->   Author: Sascha Hauer <s.hauer@pengutronix.de>
->   Date:   Tue Jun 17 10:27:03 2014 +0200
+>   barebox:/ memset -d /dev/fb0 -l 0 10 0xdeadbeef
+>   write: No space left on device
+>   barebox:/ md -s /dev/fb0
+>   00000000: 0a0a0a0a 0a0a0a0a 0a0a0a0a 0a0a0a0a                ................
+>   ...
 > 
->       Documentation: remove doxygen documentation
+> After:
 > 
-> But checkpatch.pl still trying to check 'Doxyfile' presence.
-> There is not such 'Doxyfile' and checkpatch.pl exits with
-> 'Must be run from the top-level dir. of a kernel tree' message.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>   barebox:/ memset -d /dev/fb0 -l 0 10 0xdeadbeef
+>   barebox:/ md -s /dev/fb0
+>   00000000: deadbeef deadbeef deadbeef deadbeef                ................
+>   00000010: deadbeef deadbeef deadbeef deadbeef                ................
+>   00000020: deadbeef deadbeef 00ffffff 00ffffff                ................
+>   00000030: 00ffffff 00ffffff 00ffffff 00ffffff                ...............
 
-Applied, thanks
+Nice.
+
+The documentation still has:
+
+Fills the first COUNT bytes at offset ADDR with byte DATA
+
+Should probably be something like:
+
+Fills the first COUNT values at offset ADDR with DATA
 
 Sascha
 
+> 
+> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 > ---
->  scripts/checkpatch.pl | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  commands/memset.c |   14 ++------------
+>  1 file changed, 2 insertions(+), 12 deletions(-)
 > 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index e80926f..153af8d 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -329,7 +329,7 @@ sub top_of_kernel_tree {
+> diff --git a/commands/memset.c b/commands/memset.c
+> index f869306..4afe404 100644
+> --- a/commands/memset.c
+> +++ b/commands/memset.c
+> @@ -39,7 +39,6 @@ static int do_memset(int argc, char *argv[])
+>  {
+>  	loff_t	s, c, n;
+>  	int     fd;
+> -	char   *buf;
+>  	int	mode  = O_RWSIZE_1;
+>  	int     ret = 1;
+>  	char	*file = "/dev/mem";
+> @@ -59,28 +58,19 @@ static int do_memset(int argc, char *argv[])
+>  	if (fd < 0)
+>  		return 1;
 >  
->  	my @tree_check = (
->  		"arch", "commands", "common", "COPYING", "CREDITS", "defaultenv",  
-> -		"Documentation", "Doxyfile", "drivers", "fs", "include", "lib",
-> +		"Documentation", "drivers", "fs", "include", "lib",
->  		"MAKEALL", "Makefile", "net", "README", "scripts", "TODO"
->  	);
+> -	buf = xmalloc(RW_BUF_SIZE);
+> -	memset(buf, c, RW_BUF_SIZE);
 >  
+> -	while (n > 0) {
+> -		int now;
+> -
+> -		now = min((loff_t)RW_BUF_SIZE, n);
+> -
+> -		ret = write(fd, buf, now);
+> +	while (c--) {
+> +		ret = write(fd, &n, mode >> O_RWSIZE_SHIFT);
+>  		if (ret < 0) {
+>  			perror("write");
+>  			ret = 1;
+>  			goto out;
+>  		}
+> -
+> -		n -= now;
+>  	}
+>  
+>  	ret = 0;
+>  out:
+>  	close(fd);
+> -	free(buf);
+>  
+>  	return ret;
+>  }
 > -- 
-> 2.0.1
+> 1.7.10.4
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
