@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9YWG-0006QM-VO
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 11:46:09 +0000
-Received: by mail-lb0-f181.google.com with SMTP id 10so3860174lbg.12
- for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 04:45:46 -0700 (PDT)
-Date: Tue, 22 Jul 2014 15:58:22 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140722155822.3a49058937190951d1873f34@gmail.com>
-In-Reply-To: <53CE4594.7020601@gmail.com>
-References: <1405545909-9855-1-git-send-email-antonynpavlov@gmail.com>
- <1405545909-9855-2-git-send-email-antonynpavlov@gmail.com>
- <53CE25FE.9070903@gmail.com>
- <20140722135751.c888208fdea788c15cd5ff0b@gmail.com>
- <53CE4594.7020601@gmail.com>
-Mime-Version: 1.0
+ id 1X9as4-00040x-Kg
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 14:16:49 +0000
+Received: from pps.filterd (m0048299.ppops.net [127.0.0.1])
+ by m0048299.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id s6MEEQGt042964
+ for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 10:16:22 -0400
+Received: from cinmlip13.e2k.ad.ge.com (n165-156-000-000.static.ge.com
+ [165.156.4.1] (may be forged))
+ by m0048299.ppops.net-00176a03. with ESMTP id 1n9ruk88xa-1
+ (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+ for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 10:16:21 -0400
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Tue, 22 Jul 2014 15:16:18 +0100
+Message-Id: <1406038578-29583-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,67 +22,194 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] i2c: add Marvell 64xxx driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] gianfar: descriptors access with I/O accessors
+To: barebox@lists.infradead.org
 
-On Tue, 22 Jul 2014 13:05:56 +0200
-Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> wrote:
+As in U-Boot git-9c9141f, make read/write access to the TX/RX
+descriptors CPU agnostic.
 
-> On 07/22/2014 11:57 AM, Antony Pavlov wrote:
-> > On Tue, 22 Jul 2014 10:51:10 +0200
-> > Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> wrote:
-> >> On 07/16/2014 11:25 PM, Antony Pavlov wrote:
-> >>> This driver is also used for Allwinner SoCs I2C controllers.
-> >>>
-> >>> Ported from linux-3.15.
-> >>>
-> >>> The most notable barebox driver version changes:
-> >>>
-> >>>     * drop message offloading support;
-> >>>     * add reg-io-width parameter to use driver with byte-oriented
-> >>>       controller versions.
-> >>>
-> >>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> >>
-> >> Antony,
-> >>
-> >> I finally finished work on xHCI and PCI on Armada 370. Now I come
-> >> back with the promised review of the i2c driver.
-> >>
-> >> I gave this driver a quick test on Mirabox, i2c_probe just gives I2C b=
-us
-> >> errors. What SoC did you test the driver on?
-> >
-> > I test it on custom FPGA-based byte-oriented mv64xxx-style i2c controll=
-er.
-> >
-> > Linux 3.15 driver succesfully works with my controller. The only change=
- is adding
-> > mv64xxx_write/mv64xxx_read functions for enabling byte registers access.
-> >
-> > Have you probed your Mirabox i2c bus under linux?
-> =
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ drivers/net/gianfar.c | 70 +++++++++++++++++++++++++--------------------------
+ drivers/net/gianfar.h | 16 ++++++------
+ 2 files changed, 43 insertions(+), 43 deletions(-)
 
-> Actually, I switched to Dove CuBox after I realized that Mirabox has
-> nothing on i2c on-board but only externally connected ;)
->
-> Now you can add my
-> =
+diff --git a/drivers/net/gianfar.c b/drivers/net/gianfar.c
+index 3370b5c..a308035 100644
+--- a/drivers/net/gianfar.c
++++ b/drivers/net/gianfar.c
+@@ -199,19 +199,19 @@ static int gfar_open(struct eth_device *edev)
+ 
+ 	/* Initialize the Rx Buffer descriptors */
+ 	for (ix = 0; ix < RX_BUF_CNT; ix++) {
+-		priv->rxbd[ix].status = RXBD_EMPTY;
+-		priv->rxbd[ix].length = 0;
+-		priv->rxbd[ix].bufPtr = (uint) NetRxPackets[ix];
++		out_be16(&priv->rxbd[ix].status, RXBD_EMPTY);
++		out_be16(&priv->rxbd[ix].length, 0);
++		out_be32(&priv->rxbd[ix].bufPtr, (uint) NetRxPackets[ix]);
+ 	}
+-	priv->rxbd[RX_BUF_CNT - 1].status |= RXBD_WRAP;
++	out_be16(&priv->rxbd[RX_BUF_CNT - 1].status, RXBD_EMPTY | RXBD_WRAP);
+ 
+ 	/* Initialize the TX Buffer Descriptors */
+ 	for (ix = 0; ix < TX_BUF_CNT; ix++) {
+-		priv->txbd[ix].status = 0;
+-		priv->txbd[ix].length = 0;
+-		priv->txbd[ix].bufPtr = 0;
++		out_be16(&priv->txbd[ix].status, 0);
++		out_be16(&priv->txbd[ix].length, 0);
++		out_be32(&priv->txbd[ix].bufPtr, 0);
+ 	}
+-	priv->txbd[TX_BUF_CNT - 1].status |= TXBD_WRAP;
++	out_be16(&priv->txbd[TX_BUF_CNT - 1].status, TXBD_WRAP);
+ 
+ 	/* Enable Transmit and Receive */
+ 	setbits_be32(regs + GFAR_MACCFG1_OFFSET, GFAR_MACCFG1_RX_EN |
+@@ -366,30 +366,32 @@ static int gfar_send(struct eth_device *edev, void *packet, int length)
+ 	struct device_d *dev = edev->parent;
+ 	uint64_t start;
+ 	uint tidx;
++	uint16_t status;
+ 
+ 	tidx = priv->txidx;
+-	priv->txbd[tidx].bufPtr = (uint) packet;
+-	priv->txbd[tidx].length = length;
+-	priv->txbd[tidx].status |= (TXBD_READY | TXBD_LAST |
+-				TXBD_CRC | TXBD_INTERRUPT);
++	out_be32(&priv->txbd[tidx].bufPtr, (u32) packet);
++	out_be16(&priv->txbd[tidx].length, length);
++	out_be16(&priv->txbd[tidx].status,
++		in_be16(&priv->txbd[tidx].status) |
++		(TXBD_READY | TXBD_LAST | TXBD_CRC | TXBD_INTERRUPT));
+ 
+ 	/* Tell the DMA to go */
+ 	out_be32(regs + GFAR_TSTAT_OFFSET, GFAR_TSTAT_CLEAR_THALT);
+ 
+ 	/* Wait for buffer to be transmitted */
+ 	start = get_time_ns();
+-	while (priv->txbd[tidx].status & TXBD_READY) {
++	while (in_be16(&priv->txbd[tidx].status) & TXBD_READY) {
+ 		if (is_timeout(start, 5 * MSECOND)) {
+ 			break;
+ 		}
+ 	}
+ 
+-	if (priv->txbd[tidx].status & TXBD_READY) {
+-		dev_err(dev, "tx timeout: 0x%x\n", priv->txbd[tidx].status);
++	status = in_be16(&priv->txbd[tidx].status);
++	if (status & TXBD_READY) {
++		dev_err(dev, "tx timeout: 0x%x\n", status);
+ 		return -EBUSY;
+-	}
+-	else if (priv->txbd[tidx].status & TXBD_STATS) {
+-		dev_err(dev, "TX error: 0x%x\n", priv->txbd[tidx].status);
++	} else if (status & TXBD_STATS) {
++		dev_err(dev, "TX error: 0x%x\n", status);
+ 		return -EIO;
+ 	}
+ 
+@@ -403,31 +405,28 @@ static int gfar_recv(struct eth_device *edev)
+ 	struct gfar_private *priv = edev->priv;
+ 	struct device_d *dev = edev->parent;
+ 	void __iomem *regs = priv->regs;
+-	int length;
++	uint16_t status, length;
+ 
+-	if (priv->rxbd[priv->rxidx].status & RXBD_EMPTY) {
+-		return 0; /* no data */
+-	}
++	if (in_be16(&priv->rxbd[priv->rxidx].status) & RXBD_EMPTY)
++		return 0;
+ 
+-	length = priv->rxbd[priv->rxidx].length;
++	length = in_be16(&priv->rxbd[priv->rxidx].length);
+ 
+ 	/* Send the packet up if there were no errors */
+-	if (!(priv->rxbd[priv->rxidx].status & RXBD_STATS)) {
++	status = in_be16(&priv->rxbd[priv->rxidx].status);
++	if (!(status & RXBD_STATS))
+ 		net_receive(edev, NetRxPackets[priv->rxidx], length - 4);
+-	} else {
+-		dev_err(dev, "Got error %x\n",
+-		       (priv->rxbd[priv->rxidx].status & RXBD_STATS));
+-	}
++	else
++		dev_err(dev, "Got error %x\n", status & RXBD_STATS);
+ 
+-	priv->rxbd[priv->rxidx].length = 0;
++	out_be16(&priv->rxbd[priv->rxidx].length, 0);
+ 
++	status = RXBD_EMPTY;
+ 	/* Set the wrap bit if this is the last element in the list */
+ 	if ((priv->rxidx + 1) == RX_BUF_CNT)
+-		priv->rxbd[priv->rxidx].status = RXBD_WRAP;
+-	else
+-		priv->rxbd[priv->rxidx].status = 0;
++		status |= RXBD_WRAP;
+ 
+-	priv->rxbd[priv->rxidx].status |= RXBD_EMPTY;
++	out_be16(&priv->rxbd[priv->rxidx].status, status);
+ 	priv->rxidx = (priv->rxidx + 1) % RX_BUF_CNT;
+ 
+ 	if (in_be32(regs + GFAR_IEVENT_OFFSET) & GFAR_IEVENT_BSY) {
+@@ -517,8 +516,9 @@ static int gfar_probe(struct device_d *dev)
+ 	size = ((TX_BUF_CNT * sizeof(struct txbd8)) +
+ 		(RX_BUF_CNT * sizeof(struct rxbd8))) + BUF_ALIGN;
+ 	p = (char *)xmemalign(BUF_ALIGN, size);
+-	priv->txbd = (struct txbd8 *)p;
+-	priv->rxbd = (struct rxbd8 *)(p + (TX_BUF_CNT * sizeof(struct txbd8)));
++	priv->txbd = (struct txbd8 __iomem *)p;
++	priv->rxbd = (struct rxbd8 __iomem *)(p +
++			(TX_BUF_CNT * sizeof(struct txbd8)));
+ 
+ 	edev->priv = priv;
+ 	edev->init = gfar_init;
+diff --git a/drivers/net/gianfar.h b/drivers/net/gianfar.h
+index 1aac479..c0b9763 100644
+--- a/drivers/net/gianfar.h
++++ b/drivers/net/gianfar.h
+@@ -188,15 +188,15 @@
+ #define RXBD_STATS		0x003f
+ 
+ struct txbd8 {
+-	ushort	     status;	     /* Status Fields */
+-	ushort	     length;	     /* Buffer length */
+-	uint	     bufPtr;	     /* Buffer Pointer */
++	uint16_t     status;	     /* Status Fields */
++	uint16_t     length;	     /* Buffer length */
++	uint32_t     bufPtr;	     /* Buffer Pointer */
+ };
+ 
+ struct rxbd8 {
+-	ushort	     status;	     /* Status Fields */
+-	ushort	     length;	     /* Buffer Length */
+-	uint	     bufPtr;	     /* Buffer Pointer */
++	uint16_t     status;	     /* Status Fields */
++	uint16_t     length;	     /* Buffer Length */
++	uint32_t     bufPtr;	     /* Buffer Pointer */
+ };
+ 
+ /* eTSEC general control and status registers */
+@@ -275,8 +275,8 @@ struct gfar_private {
+ 	struct gfar_phy *gfar_mdio;
+ 	struct gfar_phy *gfar_tbi;
+ 	struct phy_info *phyinfo;
+-	volatile struct txbd8 *txbd;
+-	volatile struct rxbd8 *rxbd;
++	struct txbd8 __iomem *txbd;
++	struct rxbd8 __iomem *rxbd;
+ 	uint txidx;
+ 	uint rxidx;
+ 	uint phyaddr;
+-- 
+1.8.3.1
 
-> Tested-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-
-Very good!
-
-I'll send PATCH v3 in several days.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
