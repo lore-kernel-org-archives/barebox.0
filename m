@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1X9WdU-0005aI-9n
- for barebox@lists.infradead.org; Tue, 22 Jul 2014 09:45:30 +0000
-Message-ID: <1406022197.4667.39.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 22 Jul 2014 11:43:17 +0200
-In-Reply-To: <CAOpc7mF2QKiSmi2LYpumpBOPyfwg5mkKkHTi2PK2Z4Ehv46GzA@mail.gmail.com>
-References: <1406015842-20754-4-git-send-email-holgerschurig@gmail.de>
- <1406017939.4667.14.camel@weser.hi.pengutronix.de>
- <CAOpc7mGUTXhr6FaYvC54HgyvyT=UD=h8CrrwynKzVuSSiFE1pw@mail.gmail.com>
- <1406019042.4667.23.camel@weser.hi.pengutronix.de>
- <CAOpc7mEBJB=xNTbawAx3PyvquErCsQKHg39-mQzHHjU+YczcSA@mail.gmail.com>
- <CAOpc7mF2QKiSmi2LYpumpBOPyfwg5mkKkHTi2PK2Z4Ehv46GzA@mail.gmail.com>
-Mime-Version: 1.0
+Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1X9Wqp-0001xS-PM
+ for barebox@lists.infradead.org; Tue, 22 Jul 2014 09:59:16 +0000
+Received: by mail-wi0-f175.google.com with SMTP id ho1so5642762wib.8
+ for <barebox@lists.infradead.org>; Tue, 22 Jul 2014 02:58:53 -0700 (PDT)
+From: Holger Schurig <holgerschurig@gmail.com>
+Date: Tue, 22 Jul 2014 11:58:42 +0200
+Message-Id: <1406023122-498-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +16,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] sandbox: work around missing of_add_memory_bank()
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] commands: fix memset command
+To: barebox@lists.infradead.org
 
-Am Dienstag, den 22.07.2014, 11:09 +0200 schrieb Holger Schurig:
-> Okay, another post, with less heat.
-> 
-Yes, please let us keep the heat out of this argument.
+Before:
 
-> I asked you specifically if a proposed solution would be ok. You
-> didn't answer at all. That proposed solution would still not "work"
-> (it won't add a memory bank, because AFAIK in sandbox there are no
-> memory banks at all, it just uses the hosts memory). It might compile,
-> however and it might be a bit of unneeded code in the "make
-> ARCH=sandbox sandbox_defconfig && make all" case.
-> 
-I wasn't able to give any specific advice as I admitted I did not
-understand the problem yet. I'm aware that there are no memory banks in
-sandbox, but this doesn't explain a build failure. Your commit message
-unfortunately didn't explain this either, that's why I asked you to
-elaborate.
+  barebox:/ memset -d /dev/fb0 -l 0 10 0xdeadbeef
+  write: No space left on device
+  barebox:/ md -s /dev/fb0
+  00000000: 0a0a0a0a 0a0a0a0a 0a0a0a0a 0a0a0a0a                ................
+  ...
 
-Now I actually looked up the code and I think an easier solution would
-be to allow CONFIG_OFTREE_MEM_GENERIC to be enabled on sandbox. Would
-this work for you?
+After:
 
-> The tone of your mail made me think that I actually cannot convince
-> you, that you don't want this. Your reference to signal-to-noise made
-> me think this. I got the impression that you're dismissing the concept
-> of static checking and of code-massaging to make that easier.
-> 
+  barebox:/ memset -d /dev/fb0 -l 0 10 0xdeadbeef
+  barebox:/ md -s /dev/fb0
+  00000000: deadbeef deadbeef deadbeef deadbeef                ................
+  00000010: deadbeef deadbeef deadbeef deadbeef                ................
+  00000020: deadbeef deadbeef 00ffffff 00ffffff                ................
+  00000030: 00ffffff 00ffffff 00ffffff 00ffffff                ...............
 
-Sorry, if it seemed like I wanted to trash your contribution. This
-wasn't my intention at all. I'm absolutely in favor of static checking
-but found that clangs scan-build gives at lot of false positives on
-other projects and I'm not really keen on adding ifdefs just for this
-use-case. But as I said above there may be another solution.
+Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+---
+ commands/memset.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-Regards,
-Lucas
-
+diff --git a/commands/memset.c b/commands/memset.c
+index f869306..4afe404 100644
+--- a/commands/memset.c
++++ b/commands/memset.c
+@@ -39,7 +39,6 @@ static int do_memset(int argc, char *argv[])
+ {
+ 	loff_t	s, c, n;
+ 	int     fd;
+-	char   *buf;
+ 	int	mode  = O_RWSIZE_1;
+ 	int     ret = 1;
+ 	char	*file = "/dev/mem";
+@@ -59,28 +58,19 @@ static int do_memset(int argc, char *argv[])
+ 	if (fd < 0)
+ 		return 1;
+ 
+-	buf = xmalloc(RW_BUF_SIZE);
+-	memset(buf, c, RW_BUF_SIZE);
+ 
+-	while (n > 0) {
+-		int now;
+-
+-		now = min((loff_t)RW_BUF_SIZE, n);
+-
+-		ret = write(fd, buf, now);
++	while (c--) {
++		ret = write(fd, &n, mode >> O_RWSIZE_SHIFT);
+ 		if (ret < 0) {
+ 			perror("write");
+ 			ret = 1;
+ 			goto out;
+ 		}
+-
+-		n -= now;
+ 	}
+ 
+ 	ret = 0;
+ out:
+ 	close(fd);
+-	free(buf);
+ 
+ 	return ret;
+ }
 -- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+1.7.10.4
 
 
 _______________________________________________
