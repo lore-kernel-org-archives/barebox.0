@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
+Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9wxp-0006Ip-IN
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:16 +0000
-Received: by mail-wi0-f176.google.com with SMTP id bs8so7886009wib.3
- for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:51 -0700 (PDT)
+ id 1X9wxo-0006Hb-Qs
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:15 +0000
+Received: by mail-wi0-f180.google.com with SMTP id n3so2290103wiv.1
+ for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:50 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 15:51:50 +0200
-Message-Id: <1406123512-26489-10-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 15:51:51 +0200
+Message-Id: <1406123512-26489-11-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,119 +23,187 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] USB: Use descriptors from ch11.h
+Subject: [PATCH 10/10] USB: remove redundant defines from usb_defs.h
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Use the descriptors from ch11.h instead of duplicating them
-in usb.h. usb_hub_descriptor now contains a union .u to differentiate
-HS hub descriptor from SS hub descriptor.
+We imported a bunch of defines with ch9.h and ch11.h that are now
+duplicated in usb_defs.h. Get rid of each duplicate in usb_defs.h
+and prefer the ones from ch9.h and ch11.h.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 ---
- drivers/usb/core/hub.c      | 10 +++++-----
- drivers/usb/host/ehci-hcd.c |  4 ++--
- include/usb/usb.h           | 27 +--------------------------
- 3 files changed, 8 insertions(+), 33 deletions(-)
+ include/usb/usb_defs.h | 117 -------------------------------------------------
+ 1 file changed, 117 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 7553bcdd5ef3..c1f743cbed12 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -332,17 +332,17 @@ static int usb_hub_configure(struct usb_device *dev)
- 	hub->desc.wHubCharacteristics =
- 				le16_to_cpu(descriptor->wHubCharacteristics);
- 	/* set the bitmap */
--	bitmap = (unsigned char *)&hub->desc.DeviceRemovable[0];
-+	bitmap = (unsigned char *)&hub->desc.u.hs.DeviceRemovable[0];
- 	/* devices not removable by default */
- 	memset(bitmap, 0xff, (USB_MAXCHILDREN+1+7)/8);
--	bitmap = (unsigned char *)&hub->desc.PortPowerCtrlMask[0];
-+	bitmap = (unsigned char *)&hub->desc.u.hs.PortPwrCtrlMask[0];
- 	memset(bitmap, 0xff, (USB_MAXCHILDREN+1+7)/8); /* PowerMask = 1B */
+diff --git a/include/usb/usb_defs.h b/include/usb/usb_defs.h
+index 461f7dbf4e96..8e32379c63cd 100644
+--- a/include/usb/usb_defs.h
++++ b/include/usb/usb_defs.h
+@@ -24,17 +24,6 @@
  
- 	for (i = 0; i < ((hub->desc.bNbrPorts + 1 + 7)/8); i++)
--		hub->desc.DeviceRemovable[i] = descriptor->DeviceRemovable[i];
-+		hub->desc.u.hs.DeviceRemovable[i] = descriptor->u.hs.DeviceRemovable[i];
+ /* USB constants */
  
- 	for (i = 0; i < ((hub->desc.bNbrPorts + 1 + 7)/8); i++)
--		hub->desc.PortPowerCtrlMask[i] = descriptor->PortPowerCtrlMask[i];
-+		hub->desc.u.hs.PortPwrCtrlMask[i] = descriptor->u.hs.PortPwrCtrlMask[i];
+-/* Device and/or Interface Class codes */
+-#define USB_CLASS_PER_INTERFACE  0	/* for DeviceClass */
+-#define USB_CLASS_AUDIO          1
+-#define USB_CLASS_COMM           2
+-#define USB_CLASS_HID            3
+-#define USB_CLASS_PRINTER	       7
+-#define USB_CLASS_MASS_STORAGE   8
+-#define USB_CLASS_HUB            9
+-#define USB_CLASS_DATA           10
+-#define USB_CLASS_VENDOR_SPEC    0xff
+-
+ /* some HID sub classes */
+ #define USB_SUB_HID_NONE        0
+ #define USB_SUB_HID_BOOT        1
+@@ -60,53 +49,14 @@
+ #define US_PR_CBI              0		/* Control/Bulk/Interrupt */
+ #define US_PR_BULK             0x50		/* bulk only */
  
- 	dev->maxchild = descriptor->bNbrPorts;
- 	dev_dbg(&dev->dev, "%d ports detected\n", dev->maxchild);
-@@ -385,7 +385,7 @@ static int usb_hub_configure(struct usb_device *dev)
+-/* USB types */
+-#define USB_TYPE_STANDARD   (0x00 << 5)
+-#define USB_TYPE_CLASS      (0x01 << 5)
+-#define USB_TYPE_VENDOR     (0x02 << 5)
+-#define USB_TYPE_RESERVED   (0x03 << 5)
+-
+-/* USB recipients */
+-#define USB_RECIP_DEVICE      0x00
+-#define USB_RECIP_INTERFACE   0x01
+-#define USB_RECIP_ENDPOINT    0x02
+-#define USB_RECIP_OTHER       0x03
+-
+-/* USB directions */
+-#define USB_DIR_OUT           0
+-#define USB_DIR_IN            0x80
+-
+ /* Descriptor types */
+-#define USB_DT_DEVICE        0x01
+-#define USB_DT_CONFIG        0x02
+-#define USB_DT_STRING        0x03
+-#define USB_DT_INTERFACE     0x04
+-#define USB_DT_ENDPOINT      0x05
+-
+ #define USB_DT_HID          (USB_TYPE_CLASS | 0x01)
+ #define USB_DT_REPORT       (USB_TYPE_CLASS | 0x02)
+ #define USB_DT_PHYSICAL     (USB_TYPE_CLASS | 0x03)
+-#define USB_DT_HUB          (USB_TYPE_CLASS | 0x09)
  
- 	for (i = 0; i < dev->maxchild; i++)
- 		dev_dbg(&dev->dev, "port %d is%s removable\n", i + 1,
--			hub->desc.DeviceRemovable[(i + 1) / 8] & \
-+			hub->desc.u.hs.DeviceRemovable[(i + 1) / 8] & \
- 					   (1 << ((i + 1) % 8)) ? " not" : "");
+ /* Descriptor sizes per descriptor type */
+-#define USB_DT_DEVICE_SIZE      18
+-#define USB_DT_CONFIG_SIZE      9
+-#define USB_DT_INTERFACE_SIZE   9
+-#define USB_DT_ENDPOINT_SIZE    7
+-#define USB_DT_ENDPOINT_AUDIO_SIZE  9	/* Audio extension */
+-#define USB_DT_HUB_NONVAR_SIZE  7
+ #define USB_DT_HID_SIZE         9
  
- 	if (sizeof(struct usb_hub_status) > USB_BUFSIZ) {
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index ab1bc0331ba1..a76e06bd565f 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -69,8 +69,8 @@ static struct descriptor {
- 		.wHubCharacteristics	= 0,
- 		.bPwrOn2PwrGood		= 10,
- 		.bHubContrCurrent	= 0,
--		.DeviceRemovable	= {},
--		.PortPowerCtrlMask	= {}
-+		.u.hs.DeviceRemovable	= {},
-+		.u.hs.PortPwrCtrlMask	= {}
- 	},
- 	.device = {
- 		.bLength		= USB_DT_DEVICE_SIZE,
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index 41f92c2df0ce..82acf20b1298 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -24,6 +24,7 @@
+-/* Endpoints */
+-#define USB_ENDPOINT_NUMBER_MASK  0x0f	/* in bEndpointAddress */
+-#define USB_ENDPOINT_DIR_MASK     0x80
+-
+-#define USB_ENDPOINT_XFERTYPE_MASK 0x03	/* in bmAttributes */
+-#define USB_ENDPOINT_XFER_CONTROL  0
+-#define USB_ENDPOINT_XFER_ISOC     1
+-#define USB_ENDPOINT_XFER_BULK     2
+-#define USB_ENDPOINT_XFER_INT      3
+-
+ /* USB Packet IDs (PIDs) */
+ #define USB_PID_UNDEF_0             0xf0
+ #define USB_PID_OUT                 0xe1
+@@ -125,19 +75,6 @@
+ #define USB_PID_STALL               0x1e
+ #define USB_PID_UNDEF_F             0x0f
  
- #include <driver.h>
- #include <usb/ch9.h>
-+#include <usb/ch11.h>
- #include <usb/usb_defs.h>
- #include <asm/byteorder.h>
- 
-@@ -311,32 +312,6 @@ void usb_rescan(void);
- /*************************************************************************
-  * Hub Stuff
+-/* Standard requests */
+-#define USB_REQ_GET_STATUS          0x00
+-#define USB_REQ_CLEAR_FEATURE       0x01
+-#define USB_REQ_SET_FEATURE         0x03
+-#define USB_REQ_SET_ADDRESS         0x05
+-#define USB_REQ_GET_DESCRIPTOR      0x06
+-#define USB_REQ_SET_DESCRIPTOR      0x07
+-#define USB_REQ_GET_CONFIGURATION   0x08
+-#define USB_REQ_SET_CONFIGURATION   0x09
+-#define USB_REQ_GET_INTERFACE       0x0A
+-#define USB_REQ_SET_INTERFACE       0x0B
+-#define USB_REQ_SYNCH_FRAME         0x0C
+-
+ /* HID requests */
+ #define USB_REQ_GET_REPORT          0x01
+ #define USB_REQ_GET_IDLE            0x02
+@@ -176,68 +113,14 @@
   */
--struct usb_port_status {
--	unsigned short wPortStatus;
--	unsigned short wPortChange;
--} __attribute__ ((packed));
+ 
+ /*
+- * Hub request types
+- */
 -
--struct usb_hub_status {
--	unsigned short wHubStatus;
--	unsigned short wHubChange;
--} __attribute__ ((packed));
+-#define USB_RT_HUB	(USB_TYPE_CLASS | USB_RECIP_DEVICE)
+-#define USB_RT_PORT	(USB_TYPE_CLASS | USB_RECIP_OTHER)
 -
+-/*
+- * Hub Class feature numbers
+- */
+-#define C_HUB_LOCAL_POWER   0
+-#define C_HUB_OVER_CURRENT  1
 -
--/* Hub descriptor */
--struct usb_hub_descriptor {
--	unsigned char  bLength;
--	unsigned char  bDescriptorType;
--	unsigned char  bNbrPorts;
--	unsigned short wHubCharacteristics;
--	unsigned char  bPwrOn2PwrGood;
--	unsigned char  bHubContrCurrent;
--	unsigned char  DeviceRemovable[(USB_MAXCHILDREN+1+7)/8];
--	unsigned char  PortPowerCtrlMask[(USB_MAXCHILDREN+1+7)/8];
--	/* DeviceRemovable and PortPwrCtrlMask want to be variable-length
--	   bitmaps that hold max 255 entries. (bit0 is ignored) */
--} __attribute__ ((packed));
+-/*
+  * Port feature numbers
+  */
+-#define USB_PORT_FEAT_CONNECTION     0
+-#define USB_PORT_FEAT_ENABLE         1
+-#define USB_PORT_FEAT_SUSPEND        2
+-#define USB_PORT_FEAT_OVER_CURRENT   3
+-#define USB_PORT_FEAT_RESET          4
+-#define USB_PORT_FEAT_POWER          8
+-#define USB_PORT_FEAT_LOWSPEED       9
+ #define USB_PORT_FEAT_HIGHSPEED      10
+-#define USB_PORT_FEAT_C_CONNECTION   16
+-#define USB_PORT_FEAT_C_ENABLE       17
+-#define USB_PORT_FEAT_C_SUSPEND      18
+-#define USB_PORT_FEAT_C_OVER_CURRENT 19
+-#define USB_PORT_FEAT_C_RESET        20
+ 
+ /* wPortStatus bits */
+-#define USB_PORT_STAT_CONNECTION    0x0001
+-#define USB_PORT_STAT_ENABLE        0x0002
+-#define USB_PORT_STAT_SUSPEND       0x0004
+-#define USB_PORT_STAT_OVERCURRENT   0x0008
+-#define USB_PORT_STAT_RESET         0x0010
+-#define USB_PORT_STAT_POWER         0x0100
+-#define USB_PORT_STAT_LOW_SPEED     0x0200
+-#define USB_PORT_STAT_HIGH_SPEED    0x0400	/* support for EHCI */
+ #define USB_PORT_STAT_SPEED	\
+ 	(USB_PORT_STAT_LOW_SPEED | USB_PORT_STAT_HIGH_SPEED)
+ 
+-/* wPortChange bits */
+-#define USB_PORT_STAT_C_CONNECTION  0x0001
+-#define USB_PORT_STAT_C_ENABLE      0x0002
+-#define USB_PORT_STAT_C_SUSPEND     0x0004
+-#define USB_PORT_STAT_C_OVERCURRENT 0x0008
+-#define USB_PORT_STAT_C_RESET       0x0010
 -
+-/* wHubCharacteristics (masks) */
+-#define HUB_CHAR_LPSM               0x0003
+-#define HUB_CHAR_COMPOUND           0x0004
+-#define HUB_CHAR_OCPM               0x0018
 -
- struct usb_hub_device {
- 	struct usb_device *pusb_dev;
- 	struct usb_hub_descriptor desc;
+-/*
+- *Hub Status & Hub Change bit masks
+- */
+-#define HUB_STATUS_LOCAL_POWER	0x0001
+-#define HUB_STATUS_OVERCURRENT	0x0002
+-
+-#define HUB_CHANGE_LOCAL_POWER	0x0001
+-#define HUB_CHANGE_OVERCURRENT	0x0002
+-
+ /* (shifted) direction/type/recipient from the USB 2.0 spec, table 9.2 */
+ #define DeviceRequest \
+ 	((USB_DIR_IN | USB_TYPE_STANDARD | USB_RECIP_DEVICE) << 8)
 -- 
 2.0.0
 
