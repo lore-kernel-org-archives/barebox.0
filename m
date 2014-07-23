@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
+Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9soo-0000cw-Ow
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 09:26:39 +0000
-Received: by mail-wi0-f180.google.com with SMTP id n3so1840028wiv.13
- for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 02:26:16 -0700 (PDT)
+ id 1X9som-0000cj-RT
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 09:26:37 +0000
+Received: by mail-wg0-f45.google.com with SMTP id x12so854274wgg.28
+ for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 02:26:14 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 11:26:05 +0200
-Message-Id: <1406107568-8440-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 11:26:04 +0200
+Message-Id: <1406107568-8440-3-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,12 +23,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RESEND 3/6] pci: add host controller struct to sysdata
+Subject: [PATCH RESEND 2/6] pci: pci_scan_bus: respect 64b BARs
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-struct pci_bus allows to set some private sysdata. Assign the host
-controller struct to it by default.
+In PCI 64-bit BARs span two 32-bit BARs, therefore if BAR type
+indicates a 64-bit BAR we have to skip the next BAR register.
+Note that this does not add proper support for 64-bit BARs and
+64-bit addresses but still picks the lower 32-bit address.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -39,20 +41,44 @@ Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/pci/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e5cd8a33b2be..b30cdd96f8ca 100644
+index 3d88b0ff5fd0..e5cd8a33b2be 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -39,6 +39,7 @@ void register_pci_controller(struct pci_controller *hose)
- 	bus->ops = hose->pci_ops;
- 	bus->resource[0] = hose->mem_resource;
- 	bus->resource[1] = hose->io_resource;
-+	bus->sysdata = hose;
+@@ -196,6 +196,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
  
- 	pci_scan_bus(bus);
+ 		for (bar = 0; bar < 6; bar++) {
+ 			resource_size_t last_addr;
++			bool found_bar64 = false;
+ 
+ 			pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &old_bar);
+ 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, 0xfffffffe);
+@@ -213,17 +214,22 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 				pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_io);
+ 				last_addr = last_io;
+ 				last_io += size;
+-
+ 			} else { /* MEM */
+ 				size = -(mask & 0xfffffff0);
+ 				DBG("  PCI: pbar%d: mask=%08x memory %d bytes\n", bar, mask, size);
+ 				pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
+ 				last_addr = last_mem;
+ 				last_mem += size;
++
++				if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
++				    PCI_BASE_ADDRESS_MEM_TYPE_64)
++					found_bar64 = true;
+ 			}
+ 
+ 			dev->resource[bar].start = last_addr;
+ 			dev->resource[bar].end = last_addr + size - 1;
++			if (found_bar64)
++				bar++;
+ 		}
+ 	}
  
 -- 
 2.0.0
