@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
+Received: from mail-we0-x22e.google.com ([2a00:1450:400c:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9wxo-0006HX-RB
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:14 +0000
-Received: by mail-wi0-f180.google.com with SMTP id n3so2262137wiv.13
+ id 1X9wxq-0006J1-6g
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:16 +0000
+Received: by mail-we0-f174.google.com with SMTP id x48so1217499wes.19
  for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:50 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 15:51:47 +0200
-Message-Id: <1406123512-26489-7-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 15:51:49 +0200
+Message-Id: <1406123512-26489-9-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,74 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] USB: EHCI: reuse ch9.h config and interface descriptors
+Subject: [PATCH 08/10] USB: EHCI: use descriptor length fields
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Now that usb_config_descriptor and usb_interface_descriptor are clean
-of any additional fields, drop the duplication in EHCI code and use
-the default ones.
+Instead of hard-coding descriptor length, pick it from the
+corresponding descriptor.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 ---
- drivers/usb/host/ehci-hcd.c |  4 ++--
- drivers/usb/host/ehci.h     | 25 -------------------------
- 2 files changed, 2 insertions(+), 27 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 9e30deb419cc..7857576738d7 100644
+index a3063f988da0..ab1bc0331ba1 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -57,8 +57,8 @@ struct ehci_priv {
- static struct descriptor {
- 	struct usb_hub_descriptor hub;
- 	struct usb_device_descriptor device;
--	struct usb_linux_config_descriptor config;
--	struct usb_linux_interface_descriptor interface;
-+	struct usb_config_descriptor config;
-+	struct usb_interface_descriptor interface;
- 	struct usb_endpoint_descriptor endpoint;
- }  __attribute__ ((packed)) descriptor = {
- 	{
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index b1e768b49304..8cc477aa4ffe 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -68,31 +68,6 @@ struct ehci_hcor {
- #define USBMODE_CM_HC	(3 << 0)	/* host controller mode */
- #define USBMODE_CM_IDLE	(0 << 0)	/* idle state */
- 
--/* Interface descriptor */
--struct usb_linux_interface_descriptor {
--	unsigned char	bLength;
--	unsigned char	bDescriptorType;
--	unsigned char	bInterfaceNumber;
--	unsigned char	bAlternateSetting;
--	unsigned char	bNumEndpoints;
--	unsigned char	bInterfaceClass;
--	unsigned char	bInterfaceSubClass;
--	unsigned char	bInterfaceProtocol;
--	unsigned char	iInterface;
--} __attribute__ ((packed));
--
--/* Configuration descriptor information.. */
--struct usb_linux_config_descriptor {
--	unsigned char	bLength;
--	unsigned char	bDescriptorType;
--	unsigned short	wTotalLength;
--	unsigned char	bNumInterfaces;
--	unsigned char	bConfigurationValue;
--	unsigned char	iConfiguration;
--	unsigned char	bmAttributes;
--	unsigned char	MaxPower;
--} __attribute__ ((packed));
--
- #if defined CONFIG_EHCI_DESC_BIG_ENDIAN
- #define	ehci_readl(x)		(*((volatile u32 *)(x)))
- #define ehci_writel(a, b)	(*((volatile u32 *)(a)) = ((volatile u32)b))
+@@ -503,12 +503,12 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		case USB_DT_DEVICE:
+ 			dev_dbg(ehci->dev, "USB_DT_DEVICE request\n");
+ 			srcptr = &descriptor.device;
+-			srclen = 0x12;
++			srclen = descriptor.device.bLength;
+ 			break;
+ 		case USB_DT_CONFIG:
+ 			dev_dbg(ehci->dev, "USB_DT_CONFIG config\n");
+ 			srcptr = &descriptor.config;
+-			srclen = 0x19;
++			srclen = le16_to_cpu(descriptor.config.wTotalLength);
+ 			break;
+ 		case USB_DT_STRING:
+ 			dev_dbg(ehci->dev, "USB_DT_STRING config\n");
+@@ -543,7 +543,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		case USB_DT_HUB:
+ 			dev_dbg(ehci->dev, "USB_DT_HUB config\n");
+ 			srcptr = &descriptor.hub;
+-			srclen = 0x8;
++			srclen = descriptor.hub.bLength;
+ 			break;
+ 		default:
+ 			dev_dbg(ehci->dev, "unknown value %x\n", le16_to_cpu(req->value));
 -- 
 2.0.0
 
