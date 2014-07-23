@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x233.google.com ([2a00:1450:400c:c00::233])
+Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9wxn-0006H3-OV
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:12 +0000
-Received: by mail-wg0-f51.google.com with SMTP id b13so1180732wgh.10
+ id 1X9wxo-0006HM-76
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:13 +0000
+Received: by mail-wi0-f178.google.com with SMTP id hi2so2263248wib.5
  for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:47 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 15:51:41 +0200
-Message-Id: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 15:51:45 +0200
+Message-Id: <1406123512-26489-5-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/10] More USB cleanup and fixes
+Subject: [PATCH 04/10] USB: fix PowerPowerCtrlMask assignment
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Sascha,
+usb_hub_configure() gets the hub descriptor and copies its values
+over to a local descriptor.
 
-I have assembled a bunch of additional imports, cleanup, and fixes
-before actually rebasing xHCI HCD on top of your latest USB changes.
+While copying PortPowerCtrlMask it erroneously overwrites
+DeviceRemovable due to a copy-and-paste error. Fix it up.
 
-Patches 1-3 import ch11.h from Linux and prepare it for use in
-Barebox.
-
-Patch 4 fixes a copy-and-paste error in usb_hub_configure().
-
-Patches 5-8 clean up ehci-hcd and make it use ch9.h defines.
-
-Patch 9 installs ch11.h and removes the duplicates from usb.h.
-
-Patch 10 finally removes now redundant defines from usb_defs.h.
-
-I have only compile-tested this as far as I could, so at least a
-Tested-by on any EHCI driver would be good.
-
-Sebastian
-
-Sebastian Hesselbarth (10):
-  USB: import ch11.h from Linux
-  USB: reduce USB_MAXCHILDREN on imported ch11.h
-  USB: fixup usb_hub_descriptor length name
-  USB: fix PowerPowerCtrlMask assignment
-  USB: Move FooRequest defines and add class requests
-  USB: EHCI: reuse ch9.h config and interface descriptors
-  USB: EHCI: make use of defines for descriptors
-  USB: EHCI: use descriptor length fields
-  USB: Use descriptors from ch11.h
-  USB: remove redundant defines from usb_defs.h
-
- drivers/usb/core/hub.c      |  10 +-
- drivers/usb/host/ehci-hcd.c | 114 +++++++++---------
- drivers/usb/host/ehci.h     |  41 -------
- include/usb/ch11.h          | 279 ++++++++++++++++++++++++++++++++++++++++++++
- include/usb/usb.h           |  27 +----
- include/usb/usb_defs.h      | 135 ++++-----------------
- 6 files changed, 364 insertions(+), 242 deletions(-)
- create mode 100644 include/usb/ch11.h
-
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
+---
+ drivers/usb/core/hub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index f90a927eef66..7553bcdd5ef3 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -342,7 +342,7 @@ static int usb_hub_configure(struct usb_device *dev)
+ 		hub->desc.DeviceRemovable[i] = descriptor->DeviceRemovable[i];
+ 
+ 	for (i = 0; i < ((hub->desc.bNbrPorts + 1 + 7)/8); i++)
+-		hub->desc.DeviceRemovable[i] = descriptor->PortPowerCtrlMask[i];
++		hub->desc.PortPowerCtrlMask[i] = descriptor->PortPowerCtrlMask[i];
+ 
+ 	dev->maxchild = descriptor->bNbrPorts;
+ 	dev_dbg(&dev->dev, "%d ports detected\n", dev->maxchild);
 -- 
 2.0.0
 
