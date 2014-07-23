@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22c.google.com ([2a00:1450:400c:c00::22c])
+Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9wxn-0006HF-HH
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:12 +0000
-Received: by mail-wg0-f44.google.com with SMTP id m15so1204942wgh.3
- for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:49 -0700 (PDT)
+ id 1X9wxl-0006F7-NS
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:10 +0000
+Received: by mail-wg0-f50.google.com with SMTP id n12so1204440wgh.33
+ for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:46 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 15:51:44 +0200
-Message-Id: <1406123512-26489-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 15:51:43 +0200
+Message-Id: <1406123512-26489-3-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/10] USB: fixup usb_hub_descriptor length name
+Subject: [PATCH 02/10] USB: reduce USB_MAXCHILDREN on imported ch11.h
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-All other descriptors have their length field named bLength, except
-imported usb_hub_descriptor from Linux uses bDescLength. Adjust the
-name to match the others.
+Barebox supports up to 8 USB devices attached on a Hub, Linux does 31.
+Reduce the USB_MAXCHILDREN define in ch11.h to the Barebox one and
+put a comment above.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 ---
- include/usb/ch11.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/usb/ch11.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/include/usb/ch11.h b/include/usb/ch11.h
-index 924a9ea64c5e..93f891aea753 100644
+index 331499d597fa..924a9ea64c5e 100644
 --- a/include/usb/ch11.h
 +++ b/include/usb/ch11.h
-@@ -232,7 +232,7 @@ struct usb_hub_status {
- #define USB_HUB_PR_SS		3 /* Super speed hub */
+@@ -19,8 +19,10 @@
+  * up to 22 devices to connect. Upcoming hardware might raise that
+  * limit. Because the arrays need to add a bit for hub status data, we
+  * use 31, so plus one evens out to four bytes.
++ *
++ * Reduced to 8 max children for Barebox.
+  */
+-#define USB_MAXCHILDREN		31
++#define USB_MAXCHILDREN		8
  
- struct usb_hub_descriptor {
--	__u8  bDescLength;
-+	__u8  bLength;
- 	__u8  bDescriptorType;
- 	__u8  bNbrPorts;
- 	__le16 wHubCharacteristics;
+ /*
+  * Hub request types
 -- 
 2.0.0
 
