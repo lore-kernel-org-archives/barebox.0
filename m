@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9wxp-0006IQ-17
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:15 +0000
-Received: by mail-wi0-f175.google.com with SMTP id ho1so7828801wib.8
- for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:49 -0700 (PDT)
+ id 1X9wxo-0006HX-RB
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:14 +0000
+Received: by mail-wi0-f180.google.com with SMTP id n3so2262137wiv.13
+ for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:50 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 15:51:46 +0200
-Message-Id: <1406123512-26489-6-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 15:51:47 +0200
+Message-Id: <1406123512-26489-7-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,85 +23,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] USB: Move FooRequest defines and add class requests
+Subject: [PATCH 06/10] USB: EHCI: reuse ch9.h config and interface descriptors
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-{Device,Interface,Endpoint}Requests are currently defined in private
-ehci.h but are also useful for other drivers than ehci-hcd. Move them
-to usb/usb_defs.h and also add some more class requests.
+Now that usb_config_descriptor and usb_interface_descriptor are clean
+of any additional fields, drop the duplication in EHCI code and use
+the default ones.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 ---
- drivers/usb/host/ehci.h | 16 ----------------
- include/usb/usb_defs.h  | 26 ++++++++++++++++++++++++++
- 2 files changed, 26 insertions(+), 16 deletions(-)
+ drivers/usb/host/ehci-hcd.c |  4 ++--
+ drivers/usb/host/ehci.h     | 25 -------------------------
+ 2 files changed, 2 insertions(+), 27 deletions(-)
 
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 9e30deb419cc..7857576738d7 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -57,8 +57,8 @@ struct ehci_priv {
+ static struct descriptor {
+ 	struct usb_hub_descriptor hub;
+ 	struct usb_device_descriptor device;
+-	struct usb_linux_config_descriptor config;
+-	struct usb_linux_interface_descriptor interface;
++	struct usb_config_descriptor config;
++	struct usb_interface_descriptor interface;
+ 	struct usb_endpoint_descriptor endpoint;
+ }  __attribute__ ((packed)) descriptor = {
+ 	{
 diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index 5d899cc2ec08..b1e768b49304 100644
+index b1e768b49304..8cc477aa4ffe 100644
 --- a/drivers/usb/host/ehci.h
 +++ b/drivers/usb/host/ehci.h
-@@ -22,22 +22,6 @@
- #define CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS	16
- #endif
+@@ -68,31 +68,6 @@ struct ehci_hcor {
+ #define USBMODE_CM_HC	(3 << 0)	/* host controller mode */
+ #define USBMODE_CM_IDLE	(0 << 0)	/* idle state */
  
--/* (shifted) direction/type/recipient from the USB 2.0 spec, table 9.2 */
--#define DeviceRequest \
--	((USB_DIR_IN | USB_TYPE_STANDARD | USB_RECIP_DEVICE) << 8)
+-/* Interface descriptor */
+-struct usb_linux_interface_descriptor {
+-	unsigned char	bLength;
+-	unsigned char	bDescriptorType;
+-	unsigned char	bInterfaceNumber;
+-	unsigned char	bAlternateSetting;
+-	unsigned char	bNumEndpoints;
+-	unsigned char	bInterfaceClass;
+-	unsigned char	bInterfaceSubClass;
+-	unsigned char	bInterfaceProtocol;
+-	unsigned char	iInterface;
+-} __attribute__ ((packed));
 -
--#define DeviceOutRequest \
--	((USB_DIR_OUT | USB_TYPE_STANDARD | USB_RECIP_DEVICE) << 8)
+-/* Configuration descriptor information.. */
+-struct usb_linux_config_descriptor {
+-	unsigned char	bLength;
+-	unsigned char	bDescriptorType;
+-	unsigned short	wTotalLength;
+-	unsigned char	bNumInterfaces;
+-	unsigned char	bConfigurationValue;
+-	unsigned char	iConfiguration;
+-	unsigned char	bmAttributes;
+-	unsigned char	MaxPower;
+-} __attribute__ ((packed));
 -
--#define InterfaceRequest \
--	((USB_DIR_IN | USB_TYPE_STANDARD | USB_RECIP_INTERFACE) << 8)
--
--#define EndpointRequest \
--	((USB_DIR_IN | USB_TYPE_STANDARD | USB_RECIP_INTERFACE) << 8)
--
--#define EndpointOutRequest \
--	((USB_DIR_OUT | USB_TYPE_STANDARD | USB_RECIP_INTERFACE) << 8)
--
- /*
-  * Register Space.
-  */
-diff --git a/include/usb/usb_defs.h b/include/usb/usb_defs.h
-index ace20e430d14..461f7dbf4e96 100644
---- a/include/usb/usb_defs.h
-+++ b/include/usb/usb_defs.h
-@@ -238,4 +238,30 @@
- #define HUB_CHANGE_LOCAL_POWER	0x0001
- #define HUB_CHANGE_OVERCURRENT	0x0002
- 
-+/* (shifted) direction/type/recipient from the USB 2.0 spec, table 9.2 */
-+#define DeviceRequest \
-+	((USB_DIR_IN | USB_TYPE_STANDARD | USB_RECIP_DEVICE) << 8)
-+
-+#define DeviceOutRequest \
-+	((USB_DIR_OUT | USB_TYPE_STANDARD | USB_RECIP_DEVICE) << 8)
-+
-+#define InterfaceRequest \
-+	((USB_DIR_IN | USB_TYPE_STANDARD | USB_RECIP_INTERFACE) << 8)
-+
-+#define EndpointRequest \
-+	((USB_DIR_IN | USB_TYPE_STANDARD | USB_RECIP_INTERFACE) << 8)
-+
-+#define EndpointOutRequest \
-+	((USB_DIR_OUT | USB_TYPE_STANDARD | USB_RECIP_INTERFACE) << 8)
-+
-+/* class requests from the USB 2.0 hub spec, table 11-15 */
-+/* GetBusState and SetHubDescriptor are optional, omitted */
-+#define ClearHubFeature		(0x2000 | USB_REQ_CLEAR_FEATURE)
-+#define ClearPortFeature	(0x2300 | USB_REQ_CLEAR_FEATURE)
-+#define GetHubDescriptor	(0xa000 | USB_REQ_GET_DESCRIPTOR)
-+#define GetHubStatus		(0xa000 | USB_REQ_GET_STATUS)
-+#define GetPortStatus		(0xa300 | USB_REQ_GET_STATUS)
-+#define SetHubFeature		(0x2000 | USB_REQ_SET_FEATURE)
-+#define SetPortFeature		(0x2300 | USB_REQ_SET_FEATURE)
-+
- #endif /*_USB_DEFS_H_ */
+ #if defined CONFIG_EHCI_DESC_BIG_ENDIAN
+ #define	ehci_readl(x)		(*((volatile u32 *)(x)))
+ #define ehci_writel(a, b)	(*((volatile u32 *)(a)) = ((volatile u32)b))
 -- 
 2.0.0
 
