@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
+Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9wxn-0006HB-W7
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:15 +0000
-Received: by mail-wg0-f47.google.com with SMTP id b13so1202783wgh.6
- for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:47 -0700 (PDT)
+ id 1X9wxp-0006Ip-IN
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 13:52:16 +0000
+Received: by mail-wi0-f176.google.com with SMTP id bs8so7886009wib.3
+ for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 06:51:51 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 15:51:42 +0200
-Message-Id: <1406123512-26489-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 15:51:50 +0200
+Message-Id: <1406123512-26489-10-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406123512-26489-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,307 +23,119 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] USB: import ch11.h from Linux
+Subject: [PATCH 09/10] USB: Use descriptors from ch11.h
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Linux has an extra include for chapter 11 (Hub Specification) of USB 2.0
-spec. We already have a ch9.h, so import the one from Linux.
-
-Barebox specific changes will be patched up later.
+Use the descriptors from ch11.h instead of duplicating them
+in usb.h. usb_hub_descriptor now contains a union .u to differentiate
+HS hub descriptor from SS hub descriptor.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 ---
- include/usb/ch11.h | 277 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 277 insertions(+)
- create mode 100644 include/usb/ch11.h
+ drivers/usb/core/hub.c      | 10 +++++-----
+ drivers/usb/host/ehci-hcd.c |  4 ++--
+ include/usb/usb.h           | 27 +--------------------------
+ 3 files changed, 8 insertions(+), 33 deletions(-)
 
-diff --git a/include/usb/ch11.h b/include/usb/ch11.h
-new file mode 100644
-index 000000000000..331499d597fa
---- /dev/null
-+++ b/include/usb/ch11.h
-@@ -0,0 +1,277 @@
-+/*
-+ * This file holds Hub protocol constants and data structures that are
-+ * defined in chapter 11 (Hub Specification) of the USB 2.0 specification.
-+ *
-+ * It is used/shared between the USB core, the HCDs and couple of other USB
-+ * drivers.
-+ */
-+
-+#ifndef __LINUX_CH11_H
-+#define __LINUX_CH11_H
-+
-+#include <linux/types.h>	/* __u8 etc */
-+
-+/* This is arbitrary.
-+ * From USB 2.0 spec Table 11-13, offset 7, a hub can
-+ * have up to 255 ports. The most yet reported is 10.
-+ *
-+ * Current Wireless USB host hardware (Intel i1480 for example) allows
-+ * up to 22 devices to connect. Upcoming hardware might raise that
-+ * limit. Because the arrays need to add a bit for hub status data, we
-+ * use 31, so plus one evens out to four bytes.
-+ */
-+#define USB_MAXCHILDREN		31
-+
-+/*
-+ * Hub request types
-+ */
-+
-+#define USB_RT_HUB	(USB_TYPE_CLASS | USB_RECIP_DEVICE)
-+#define USB_RT_PORT	(USB_TYPE_CLASS | USB_RECIP_OTHER)
-+
-+/*
-+ * Hub class requests
-+ * See USB 2.0 spec Table 11-16
-+ */
-+#define HUB_CLEAR_TT_BUFFER	8
-+#define HUB_RESET_TT		9
-+#define HUB_GET_TT_STATE	10
-+#define HUB_STOP_TT		11
-+
-+/*
-+ * Hub class additional requests defined by USB 3.0 spec
-+ * See USB 3.0 spec Table 10-6
-+ */
-+#define HUB_SET_DEPTH		12
-+#define HUB_GET_PORT_ERR_COUNT	13
-+
-+/*
-+ * Hub Class feature numbers
-+ * See USB 2.0 spec Table 11-17
-+ */
-+#define C_HUB_LOCAL_POWER	0
-+#define C_HUB_OVER_CURRENT	1
-+
-+/*
-+ * Port feature numbers
-+ * See USB 2.0 spec Table 11-17
-+ */
-+#define USB_PORT_FEAT_CONNECTION	0
-+#define USB_PORT_FEAT_ENABLE		1
-+#define USB_PORT_FEAT_SUSPEND		2	/* L2 suspend */
-+#define USB_PORT_FEAT_OVER_CURRENT	3
-+#define USB_PORT_FEAT_RESET		4
-+#define USB_PORT_FEAT_L1		5	/* L1 suspend */
-+#define USB_PORT_FEAT_POWER		8
-+#define USB_PORT_FEAT_LOWSPEED		9	/* Should never be used */
-+#define USB_PORT_FEAT_C_CONNECTION	16
-+#define USB_PORT_FEAT_C_ENABLE		17
-+#define USB_PORT_FEAT_C_SUSPEND		18
-+#define USB_PORT_FEAT_C_OVER_CURRENT	19
-+#define USB_PORT_FEAT_C_RESET		20
-+#define USB_PORT_FEAT_TEST              21
-+#define USB_PORT_FEAT_INDICATOR         22
-+#define USB_PORT_FEAT_C_PORT_L1         23
-+
-+/*
-+ * Port feature selectors added by USB 3.0 spec.
-+ * See USB 3.0 spec Table 10-7
-+ */
-+#define USB_PORT_FEAT_LINK_STATE		5
-+#define USB_PORT_FEAT_U1_TIMEOUT		23
-+#define USB_PORT_FEAT_U2_TIMEOUT		24
-+#define USB_PORT_FEAT_C_PORT_LINK_STATE		25
-+#define USB_PORT_FEAT_C_PORT_CONFIG_ERROR	26
-+#define USB_PORT_FEAT_REMOTE_WAKE_MASK		27
-+#define USB_PORT_FEAT_BH_PORT_RESET		28
-+#define USB_PORT_FEAT_C_BH_PORT_RESET		29
-+#define USB_PORT_FEAT_FORCE_LINKPM_ACCEPT	30
-+
-+#define USB_PORT_LPM_TIMEOUT(p)			(((p) & 0xff) << 8)
-+
-+/* USB 3.0 hub remote wake mask bits, see table 10-14 */
-+#define USB_PORT_FEAT_REMOTE_WAKE_CONNECT	(1 << 8)
-+#define USB_PORT_FEAT_REMOTE_WAKE_DISCONNECT	(1 << 9)
-+#define USB_PORT_FEAT_REMOTE_WAKE_OVER_CURRENT	(1 << 10)
-+
-+/*
-+ * Hub Status and Hub Change results
-+ * See USB 2.0 spec Table 11-19 and Table 11-20
-+ */
-+struct usb_port_status {
-+	__le16 wPortStatus;
-+	__le16 wPortChange;
-+} __attribute__ ((packed));
-+
-+/*
-+ * wPortStatus bit field
-+ * See USB 2.0 spec Table 11-21
-+ */
-+#define USB_PORT_STAT_CONNECTION	0x0001
-+#define USB_PORT_STAT_ENABLE		0x0002
-+#define USB_PORT_STAT_SUSPEND		0x0004
-+#define USB_PORT_STAT_OVERCURRENT	0x0008
-+#define USB_PORT_STAT_RESET		0x0010
-+#define USB_PORT_STAT_L1		0x0020
-+/* bits 6 to 7 are reserved */
-+#define USB_PORT_STAT_POWER		0x0100
-+#define USB_PORT_STAT_LOW_SPEED		0x0200
-+#define USB_PORT_STAT_HIGH_SPEED        0x0400
-+#define USB_PORT_STAT_TEST              0x0800
-+#define USB_PORT_STAT_INDICATOR         0x1000
-+/* bits 13 to 15 are reserved */
-+
-+/*
-+ * Additions to wPortStatus bit field from USB 3.0
-+ * See USB 3.0 spec Table 10-10
-+ */
-+#define USB_PORT_STAT_LINK_STATE	0x01e0
-+#define USB_SS_PORT_STAT_POWER		0x0200
-+#define USB_SS_PORT_STAT_SPEED		0x1c00
-+#define USB_PORT_STAT_SPEED_5GBPS	0x0000
-+/* Valid only if port is enabled */
-+/* Bits that are the same from USB 2.0 */
-+#define USB_SS_PORT_STAT_MASK (USB_PORT_STAT_CONNECTION |	    \
-+				USB_PORT_STAT_ENABLE |	    \
-+				USB_PORT_STAT_OVERCURRENT | \
-+				USB_PORT_STAT_RESET)
-+
-+/*
-+ * Definitions for PORT_LINK_STATE values
-+ * (bits 5-8) in wPortStatus
-+ */
-+#define USB_SS_PORT_LS_U0		0x0000
-+#define USB_SS_PORT_LS_U1		0x0020
-+#define USB_SS_PORT_LS_U2		0x0040
-+#define USB_SS_PORT_LS_U3		0x0060
-+#define USB_SS_PORT_LS_SS_DISABLED	0x0080
-+#define USB_SS_PORT_LS_RX_DETECT	0x00a0
-+#define USB_SS_PORT_LS_SS_INACTIVE	0x00c0
-+#define USB_SS_PORT_LS_POLLING		0x00e0
-+#define USB_SS_PORT_LS_RECOVERY		0x0100
-+#define USB_SS_PORT_LS_HOT_RESET	0x0120
-+#define USB_SS_PORT_LS_COMP_MOD		0x0140
-+#define USB_SS_PORT_LS_LOOPBACK		0x0160
-+
-+/*
-+ * wPortChange bit field
-+ * See USB 2.0 spec Table 11-22 and USB 2.0 LPM ECN Table-4.10
-+ * Bits 0 to 5 shown, bits 6 to 15 are reserved
-+ */
-+#define USB_PORT_STAT_C_CONNECTION	0x0001
-+#define USB_PORT_STAT_C_ENABLE		0x0002
-+#define USB_PORT_STAT_C_SUSPEND		0x0004
-+#define USB_PORT_STAT_C_OVERCURRENT	0x0008
-+#define USB_PORT_STAT_C_RESET		0x0010
-+#define USB_PORT_STAT_C_L1		0x0020
-+/*
-+ * USB 3.0 wPortChange bit fields
-+ * See USB 3.0 spec Table 10-11
-+ */
-+#define USB_PORT_STAT_C_BH_RESET	0x0020
-+#define USB_PORT_STAT_C_LINK_STATE	0x0040
-+#define USB_PORT_STAT_C_CONFIG_ERROR	0x0080
-+
-+/*
-+ * wHubCharacteristics (masks)
-+ * See USB 2.0 spec Table 11-13, offset 3
-+ */
-+#define HUB_CHAR_LPSM		0x0003 /* Logical Power Switching Mode mask */
-+#define HUB_CHAR_COMMON_LPSM	0x0000 /* All ports power control at once */
-+#define HUB_CHAR_INDV_PORT_LPSM	0x0001 /* per-port power control */
-+#define HUB_CHAR_NO_LPSM	0x0002 /* no power switching */
-+
-+#define HUB_CHAR_COMPOUND	0x0004 /* hub is part of a compound device */
-+
-+#define HUB_CHAR_OCPM		0x0018 /* Over-Current Protection Mode mask */
-+#define HUB_CHAR_COMMON_OCPM	0x0000 /* All ports Over-Current reporting */
-+#define HUB_CHAR_INDV_PORT_OCPM	0x0008 /* per-port Over-current reporting */
-+#define HUB_CHAR_NO_OCPM	0x0010 /* No Over-current Protection support */
-+
-+#define HUB_CHAR_TTTT		0x0060 /* TT Think Time mask */
-+#define HUB_CHAR_PORTIND	0x0080 /* per-port indicators (LEDs) */
-+
-+struct usb_hub_status {
-+	__le16 wHubStatus;
-+	__le16 wHubChange;
-+} __attribute__ ((packed));
-+
-+/*
-+ * Hub Status & Hub Change bit masks
-+ * See USB 2.0 spec Table 11-19 and Table 11-20
-+ * Bits 0 and 1 for wHubStatus and wHubChange
-+ * Bits 2 to 15 are reserved for both
-+ */
-+#define HUB_STATUS_LOCAL_POWER	0x0001
-+#define HUB_STATUS_OVERCURRENT	0x0002
-+#define HUB_CHANGE_LOCAL_POWER	0x0001
-+#define HUB_CHANGE_OVERCURRENT	0x0002
-+
-+
-+/*
-+ * Hub descriptor
-+ * See USB 2.0 spec Table 11-13
-+ */
-+
-+#define USB_DT_HUB			(USB_TYPE_CLASS | 0x09)
-+#define USB_DT_SS_HUB			(USB_TYPE_CLASS | 0x0a)
-+#define USB_DT_HUB_NONVAR_SIZE		7
-+#define USB_DT_SS_HUB_SIZE              12
-+
-+/*
-+ * Hub Device descriptor
-+ * USB Hub class device protocols
-+ */
-+
-+#define USB_HUB_PR_FS		0 /* Full speed hub */
-+#define USB_HUB_PR_HS_NO_TT	0 /* Hi-speed hub without TT */
-+#define USB_HUB_PR_HS_SINGLE_TT	1 /* Hi-speed hub with single TT */
-+#define USB_HUB_PR_HS_MULTI_TT	2 /* Hi-speed hub with multiple TT */
-+#define USB_HUB_PR_SS		3 /* Super speed hub */
-+
-+struct usb_hub_descriptor {
-+	__u8  bDescLength;
-+	__u8  bDescriptorType;
-+	__u8  bNbrPorts;
-+	__le16 wHubCharacteristics;
-+	__u8  bPwrOn2PwrGood;
-+	__u8  bHubContrCurrent;
-+
-+	/* 2.0 and 3.0 hubs differ here */
-+	union {
-+		struct {
-+			/* add 1 bit for hub status change; round to bytes */
-+			__u8  DeviceRemovable[(USB_MAXCHILDREN + 1 + 7) / 8];
-+			__u8  PortPwrCtrlMask[(USB_MAXCHILDREN + 1 + 7) / 8];
-+		}  __attribute__ ((packed)) hs;
-+
-+		struct {
-+			__u8 bHubHdrDecLat;
-+			__le16 wHubDelay;
-+			__le16 DeviceRemovable;
-+		}  __attribute__ ((packed)) ss;
-+	} u;
-+} __attribute__ ((packed));
-+
-+/* port indicator status selectors, tables 11-7 and 11-25 */
-+#define HUB_LED_AUTO	0
-+#define HUB_LED_AMBER	1
-+#define HUB_LED_GREEN	2
-+#define HUB_LED_OFF	3
-+
-+enum hub_led_mode {
-+	INDICATOR_AUTO = 0,
-+	INDICATOR_CYCLE,
-+	/* software blinks for attention:  software, hardware, reserved */
-+	INDICATOR_GREEN_BLINK, INDICATOR_GREEN_BLINK_OFF,
-+	INDICATOR_AMBER_BLINK, INDICATOR_AMBER_BLINK_OFF,
-+	INDICATOR_ALT_BLINK, INDICATOR_ALT_BLINK_OFF
-+} __attribute__ ((packed));
-+
-+/* Transaction Translator Think Times, in bits */
-+#define HUB_TTTT_8_BITS		0x00
-+#define HUB_TTTT_16_BITS	0x20
-+#define HUB_TTTT_24_BITS	0x40
-+#define HUB_TTTT_32_BITS	0x60
-+
-+#endif /* __LINUX_CH11_H */
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 7553bcdd5ef3..c1f743cbed12 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -332,17 +332,17 @@ static int usb_hub_configure(struct usb_device *dev)
+ 	hub->desc.wHubCharacteristics =
+ 				le16_to_cpu(descriptor->wHubCharacteristics);
+ 	/* set the bitmap */
+-	bitmap = (unsigned char *)&hub->desc.DeviceRemovable[0];
++	bitmap = (unsigned char *)&hub->desc.u.hs.DeviceRemovable[0];
+ 	/* devices not removable by default */
+ 	memset(bitmap, 0xff, (USB_MAXCHILDREN+1+7)/8);
+-	bitmap = (unsigned char *)&hub->desc.PortPowerCtrlMask[0];
++	bitmap = (unsigned char *)&hub->desc.u.hs.PortPwrCtrlMask[0];
+ 	memset(bitmap, 0xff, (USB_MAXCHILDREN+1+7)/8); /* PowerMask = 1B */
+ 
+ 	for (i = 0; i < ((hub->desc.bNbrPorts + 1 + 7)/8); i++)
+-		hub->desc.DeviceRemovable[i] = descriptor->DeviceRemovable[i];
++		hub->desc.u.hs.DeviceRemovable[i] = descriptor->u.hs.DeviceRemovable[i];
+ 
+ 	for (i = 0; i < ((hub->desc.bNbrPorts + 1 + 7)/8); i++)
+-		hub->desc.PortPowerCtrlMask[i] = descriptor->PortPowerCtrlMask[i];
++		hub->desc.u.hs.PortPwrCtrlMask[i] = descriptor->u.hs.PortPwrCtrlMask[i];
+ 
+ 	dev->maxchild = descriptor->bNbrPorts;
+ 	dev_dbg(&dev->dev, "%d ports detected\n", dev->maxchild);
+@@ -385,7 +385,7 @@ static int usb_hub_configure(struct usb_device *dev)
+ 
+ 	for (i = 0; i < dev->maxchild; i++)
+ 		dev_dbg(&dev->dev, "port %d is%s removable\n", i + 1,
+-			hub->desc.DeviceRemovable[(i + 1) / 8] & \
++			hub->desc.u.hs.DeviceRemovable[(i + 1) / 8] & \
+ 					   (1 << ((i + 1) % 8)) ? " not" : "");
+ 
+ 	if (sizeof(struct usb_hub_status) > USB_BUFSIZ) {
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index ab1bc0331ba1..a76e06bd565f 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -69,8 +69,8 @@ static struct descriptor {
+ 		.wHubCharacteristics	= 0,
+ 		.bPwrOn2PwrGood		= 10,
+ 		.bHubContrCurrent	= 0,
+-		.DeviceRemovable	= {},
+-		.PortPowerCtrlMask	= {}
++		.u.hs.DeviceRemovable	= {},
++		.u.hs.PortPwrCtrlMask	= {}
+ 	},
+ 	.device = {
+ 		.bLength		= USB_DT_DEVICE_SIZE,
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index 41f92c2df0ce..82acf20b1298 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -24,6 +24,7 @@
+ 
+ #include <driver.h>
+ #include <usb/ch9.h>
++#include <usb/ch11.h>
+ #include <usb/usb_defs.h>
+ #include <asm/byteorder.h>
+ 
+@@ -311,32 +312,6 @@ void usb_rescan(void);
+ /*************************************************************************
+  * Hub Stuff
+  */
+-struct usb_port_status {
+-	unsigned short wPortStatus;
+-	unsigned short wPortChange;
+-} __attribute__ ((packed));
+-
+-struct usb_hub_status {
+-	unsigned short wHubStatus;
+-	unsigned short wHubChange;
+-} __attribute__ ((packed));
+-
+-
+-/* Hub descriptor */
+-struct usb_hub_descriptor {
+-	unsigned char  bLength;
+-	unsigned char  bDescriptorType;
+-	unsigned char  bNbrPorts;
+-	unsigned short wHubCharacteristics;
+-	unsigned char  bPwrOn2PwrGood;
+-	unsigned char  bHubContrCurrent;
+-	unsigned char  DeviceRemovable[(USB_MAXCHILDREN+1+7)/8];
+-	unsigned char  PortPowerCtrlMask[(USB_MAXCHILDREN+1+7)/8];
+-	/* DeviceRemovable and PortPwrCtrlMask want to be variable-length
+-	   bitmaps that hold max 255 entries. (bit0 is ignored) */
+-} __attribute__ ((packed));
+-
+-
+ struct usb_hub_device {
+ 	struct usb_device *pusb_dev;
+ 	struct usb_hub_descriptor desc;
 -- 
 2.0.0
 
