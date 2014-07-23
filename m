@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X9som-0000cj-RT
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 09:26:37 +0000
-Received: by mail-wg0-f45.google.com with SMTP id x12so854274wgg.28
- for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 02:26:14 -0700 (PDT)
+ id 1X9soo-0000cz-Sy
+ for barebox@lists.infradead.org; Wed, 23 Jul 2014 09:26:40 +0000
+Received: by mail-wi0-f169.google.com with SMTP id n3so7197681wiv.2
+ for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 02:26:15 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 23 Jul 2014 11:26:04 +0200
-Message-Id: <1406107568-8440-3-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 23 Jul 2014 11:26:03 +0200
+Message-Id: <1406107568-8440-2-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,63 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RESEND 2/6] pci: pci_scan_bus: respect 64b BARs
+Subject: [PATCH RESEND 1/6] bus: mvebu: fix resource size handling
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-In PCI 64-bit BARs span two 32-bit BARs, therefore if BAR type
-indicates a 64-bit BAR we have to skip the next BAR register.
-Note that this does not add proper support for 64-bit BARs and
-64-bit addresses but still picks the lower 32-bit address.
+A resource_size is defined as res->end - res->start + 1. Marvell
+MBUS driver gets some ranges from DT as start and size but mis-calculates
+end of range. This fixes 4 occurences of those mistakes.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 To: barebox@lists.infradead.org
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/pci/pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/bus/mvebu-mbus.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 3d88b0ff5fd0..e5cd8a33b2be 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -196,6 +196,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+index 11e3777a6094..c67646f61722 100644
+--- a/drivers/bus/mvebu-mbus.c
++++ b/drivers/bus/mvebu-mbus.c
+@@ -187,7 +187,7 @@ static int mvebu_mbus_window_conflicts(struct mvebu_mbus_state *mbus,
+ 				       phys_addr_t base, size_t size,
+ 				       u8 target, u8 attr)
+ {
+-	u64 end = (u64)base + size;
++	u64 end = (u64)base + size - 1;
+ 	int win;
  
- 		for (bar = 0; bar < 6; bar++) {
- 			resource_size_t last_addr;
-+			bool found_bar64 = false;
+ 	for (win = 0; win < mbus->soc->num_wins; win++) {
+@@ -203,7 +203,7 @@ static int mvebu_mbus_window_conflicts(struct mvebu_mbus_state *mbus,
+ 		if (!enabled)
+ 			continue;
  
- 			pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &old_bar);
- 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, 0xfffffffe);
-@@ -213,17 +214,22 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 				pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_io);
- 				last_addr = last_io;
- 				last_io += size;
--
- 			} else { /* MEM */
- 				size = -(mask & 0xfffffff0);
- 				DBG("  PCI: pbar%d: mask=%08x memory %d bytes\n", bar, mask, size);
- 				pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
- 				last_addr = last_mem;
- 				last_mem += size;
-+
-+				if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
-+				    PCI_BASE_ADDRESS_MEM_TYPE_64)
-+					found_bar64 = true;
- 			}
+-		wend = wbase + wsize;
++		wend = wbase + wsize - 1;
  
- 			dev->resource[bar].start = last_addr;
- 			dev->resource[bar].end = last_addr + size - 1;
-+			if (found_bar64)
-+				bar++;
- 		}
+ 		/*
+ 		 * Check if the current window overlaps with the
+@@ -661,7 +661,7 @@ static void mvebu_mbus_get_pcie_resources(struct device_node *np,
+ 					 reg, ARRAY_SIZE(reg));
+ 	if (!ret) {
+ 		mem->start = reg[0];
+-		mem->end = mem->start + reg[1];
++		mem->end = mem->start + reg[1] - 1;
+ 		mem->flags = IORESOURCE_MEM;
  	}
  
+@@ -669,7 +669,7 @@ static void mvebu_mbus_get_pcie_resources(struct device_node *np,
+ 					 reg, ARRAY_SIZE(reg));
+ 	if (!ret) {
+ 		io->start = reg[0];
+-		io->end = io->start + reg[1];
++		io->end = io->start + reg[1] - 1;
+ 		io->flags = IORESOURCE_IO;
+ 	}
+ }
 -- 
 2.0.0
 
