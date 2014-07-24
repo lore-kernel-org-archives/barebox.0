@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XALNL-0004c2-3j
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 15:56:11 +0000
-Received: by mail-lb0-f181.google.com with SMTP id 10so2383627lbg.40
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 08:55:48 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 24 Jul 2014 19:55:37 +0400
-Message-Id: <1406217337-17082-1-git-send-email-antonynpavlov@gmail.com>
+ id 1XALaF-0003dK-KV
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 16:09:34 +0000
+Received: by mail-wi0-f172.google.com with SMTP id n3so9885278wiv.11
+ for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 09:09:08 -0700 (PDT)
+Message-ID: <53D12FA0.70507@gmail.com>
+Date: Thu, 24 Jul 2014 18:09:04 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406208526-24261-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1406208526-24261-2-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,60 +20,50 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] usb: ehci: use linux-way ehci_readl and ehci_writel
+Subject: Re: [PATCH 1/6] USB: Fix stale usb devices in usb_device_list
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Also drop nowhere defined CONFIG_EHCI_DESC_BIG_ENDIAN.
+On 07/24/2014 03:28 PM, Sebastian Hesselbarth wrote:
+> New usb devices are added to a list of usb devices, but when removing
+> the corresponding usb_device it was not removed from that list. Fix it
+> by deleting it properly from the usb_device_list.
+>
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+> To: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+> Cc: barebox@lists.infradead.org
+> ---
+>   drivers/usb/core/usb.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+> index 351e783b6536..2cc338465539 100644
+> --- a/drivers/usb/core/usb.c
+> +++ b/drivers/usb/core/usb.c
+> @@ -472,6 +472,7 @@ void usb_remove_device(struct usb_device *usbdev)
+>   		dev_err(&usbdev->dev, "failed to unregister\n");
+>
+>   	usbdev->parent->children[usbdev->portnr - 1] = NULL;
+> +	list_del(&usbdev->list);
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/usb/host/ehci.h | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+Unfortunately, this breaks usb_remove_device when called on a
+device that has not yet gone through usb_new_device().
 
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index 8cc477a..d71d056 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -18,6 +18,8 @@
- #ifndef USB_EHCI_H
- #define USB_EHCI_H
- 
-+#include <io.h>
-+
- #if !defined(CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS)
- #define CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS	16
- #endif
-@@ -68,14 +70,15 @@ struct ehci_hcor {
- #define USBMODE_CM_HC	(3 << 0)	/* host controller mode */
- #define USBMODE_CM_IDLE	(0 << 0)	/* idle state */
- 
--#if defined CONFIG_EHCI_DESC_BIG_ENDIAN
--#define	ehci_readl(x)		(*((volatile u32 *)(x)))
--#define ehci_writel(a, b)	(*((volatile u32 *)(a)) = ((volatile u32)b))
--#else
--#define ehci_readl(x)		cpu_to_le32((*((volatile u32 *)(x))))
--#define ehci_writel(a, b)	(*((volatile u32 *)(a)) = \
--					cpu_to_le32(((volatile u32)b)))
--#endif
-+static inline void ehci_writel(__u32 __iomem *regs, const unsigned int val)
-+{
-+	writel(val, regs);
-+}
-+
-+static inline unsigned int ehci_readl(__u32 __iomem *regs)
-+{
-+	return readl(regs);
-+}
- 
- #if defined CONFIG_EHCI_MMIO_BIG_ENDIAN
- #define hc32_to_cpu(x)		be32_to_cpu((x))
--- 
-2.0.1
+I'll have a closer look at it.
+
+Sebastian
+
+>   	free(usbdev);
+>   }
+>
+>
 
 
 _______________________________________________
