@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XACpR-00055J-1y
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 06:48:38 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1XACp4-0006ms-Ex
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 08:48:14 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim
- 4.82_1-5b7a7c0-XX) (envelope-from <sha@pengutronix.de>)
- id 1XACp4-0007o6-DX
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 08:48:14 +0200
+ Linux)) id 1XACpR-00055M-1x
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 06:48:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 24 Jul 2014 08:48:09 +0200
-Message-Id: <1406184493-29225-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 24 Jul 2014 08:48:11 +0200
+Message-Id: <1406184493-29225-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1406184493-29225-1-git-send-email-s.hauer@pengutronix.de>
+References: <1406184493-29225-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,36 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX5 internal NAND update fixes/cleanup
+Subject: [PATCH 2/4] ARM: i.MX5: internal NAND update: Fix firmware start page
+ for internal nand boot
 To: barebox@lists.infradead.org
 
-The internal NAND update handler for i.MX5 is broken since:
+Documentation clearly states that the FCB at offset 0x68 has
+to contain the start page of the firmware. In our case this
+was set to 0x0. I don't know how this could ever work, but it
+did, at least until:
 
-| commit 15ee30138f59eac95379a4b94c538c1fcc338ed5
-| Author: Sascha Hauer <s.hauer@pengutronix.de>
-| Date:   Fri Jul 26 10:52:25 2013 +0200
-| 
-|     ARM: i.MX: bbu-internal: optionally use DCD data from image
-|     
-|     We used to pass the DCD data from the boards. This patch allows
-|     to optionally skip passing DCD data. In this case the DCD data
-|     from the flash image is used if present.
-|     
-|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+15ee301 ARM: i.MX: bbu-internal: optionally use DCD data from image
 
-This fixes it and also cleans up the code a bit.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/imx-bbu-internal.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Sascha
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index ae981e8..a5cb7e7 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -202,6 +202,9 @@ static int imx_bbu_internal_v2_write_nand_dbbt(struct imx_internal_bbu_handler *
+ 	*ptr++ = FCB_MAGIC;	/* FCB */
+ 	*ptr++ = 1;		/* FCB version */
+ 
++	ptr = image + 0x68; /* Firmware start page */
++	*ptr = 12;
++
+ 	ptr = image + 0x78; /* DBBT start page */
+ 	*ptr = 4;
+ 
+-- 
+2.0.1
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      ARM: i.MX5: internal NAND update: Use variable for pre_image_size
-      ARM: i.MX5: internal NAND update: Fix firmware start page for internal nand boot
-      ARM: i.MX5: internal NAND update: Use variables for some constants
-      ARM: i.MX5: internal NAND update: simplify code
-
- arch/arm/mach-imx/imx-bbu-internal.c | 63 +++++++++++++++++-------------------
- 1 file changed, 29 insertions(+), 34 deletions(-)
 
 _______________________________________________
 barebox mailing list
