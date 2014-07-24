@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x234.google.com ([2a00:1450:400c:c03::234])
+Received: from mail-wi0-x22b.google.com ([2a00:1450:400c:c05::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAJ4y-0004f3-Db
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 13:29:05 +0000
-Received: by mail-we0-f180.google.com with SMTP id w61so2779402wes.25
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 06:28:42 -0700 (PDT)
+ id 1XAJ50-0004fc-S1
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 13:29:07 +0000
+Received: by mail-wi0-f171.google.com with SMTP id hi2so9670728wib.4
+ for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 06:28:43 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Thu, 24 Jul 2014 15:28:43 +0200
-Message-Id: <1406208526-24261-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Thu, 24 Jul 2014 15:28:42 +0200
+Message-Id: <1406208526-24261-3-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,13 +23,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] USB: EHCI: use min3 from Linux
+Subject: [PATCH 2/6] USB: Count detected USB devices independent of dev_index
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-EHCI HCD has a private version of min3() determining the smallest
-number out of 3. We already have min()/max() imported from Linux,
-also get min3()/max3() and use it instead of EHCI's private one.
+Adding a usb device increases dev_index every time a new device is
+allocated. Removing a usb device does not decrease again, of course.
+As we print the number of detected usb devices after each usb bus
+scan based on dev_index, we cannot trust dev_index here. Keep track
+of the correct number of (currently) detected usb devices by
+introducing an independent dev_count that gets increased on alloc
+and decreased on remove.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -38,69 +42,46 @@ Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: barebox@lists.infradead.org
 ---
- drivers/usb/host/ehci-hcd.c | 12 +-----------
- include/linux/kernel.h      | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+), 11 deletions(-)
+ drivers/usb/core/usb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index a76e06bd565f..c0ea8d013a21 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -436,16 +436,6 @@ fail:
- 	return -1;
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 2cc338465539..d3bd19be706d 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -66,6 +66,7 @@
+ 
+ #define USB_BUFSIZ	512
+ 
++static int dev_count;
+ static int dev_index;
+ static int asynch_allowed;
+ 
+@@ -448,6 +449,7 @@ int usb_new_device(struct usb_device *dev)
+ 	dev_add_param_int_ro(&dev->dev, "idProduct",
+ 			le16_to_cpu(dev->descriptor->idProduct), "%04x");
+ 	list_add_tail(&dev->list, &usb_device_list);
++	dev_count++;
+ 
+ 	err = 0;
+ 
+@@ -474,6 +476,7 @@ void usb_remove_device(struct usb_device *usbdev)
+ 	usbdev->parent->children[usbdev->portnr - 1] = NULL;
+ 	list_del(&usbdev->list);
+ 	free(usbdev);
++	dev_count--;
  }
  
--static inline int min3(int a, int b, int c)
--{
--
--	if (b < a)
--		a = b;
--	if (c < a)
--		a = c;
--	return a;
--}
--
- #ifdef CONFIG_MACH_EFIKA_MX_SMARTBOOK
- #include <usb/ulpi.h>
- /*
-@@ -717,7 +707,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ struct usb_device *usb_alloc_new_device(void)
+@@ -527,7 +530,7 @@ void usb_rescan(void)
+ 			continue;
  	}
  
- 	wait_ms(1);
--	len = min3(srclen, le16_to_cpu(req->length), length);
-+	len = min3(srclen, (int)le16_to_cpu(req->length), length);
- 	if (srcptr != NULL && len > 0)
- 		memcpy(buffer, srcptr, len);
- 	else
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index d512adcea113..98f12e1b934f 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -34,6 +34,24 @@
- 	(void) (&_max1 == &_max2);		\
- 	_max1 > _max2 ? _max1 : _max2; })
+-	pr_info("%d USB Device(s) found\n", dev_index);
++	pr_info("%d USB Device(s) found\n", dev_count);
+ }
  
-+#define min3(x, y, z) ({			\
-+	typeof(x) _min1 = (x);			\
-+	typeof(y) _min2 = (y);			\
-+	typeof(z) _min3 = (z);			\
-+	(void) (&_min1 == &_min2);		\
-+	(void) (&_min1 == &_min3);		\
-+	_min1 < _min2 ? (_min1 < _min3 ? _min1 : _min3) :	\
-+		(_min2 < _min3 ? _min2 : _min3); })
-+
-+#define max3(x, y, z) ({			\
-+	typeof(x) _max1 = (x);			\
-+	typeof(y) _max2 = (y);			\
-+	typeof(z) _max3 = (z);			\
-+	(void) (&_max1 == &_max2);		\
-+	(void) (&_max1 == &_max3);		\
-+	_max1 > _max2 ? (_max1 > _max3 ? _max1 : _max3) :	\
-+		(_max2 > _max3 ? _max2 : _max3); })
-+
- /**
-  * clamp - return a value clamped to a given range with strict typechecking
-  * @val: current value
+ /*
 -- 
 2.0.0
 
