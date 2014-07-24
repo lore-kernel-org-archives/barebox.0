@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAJA9-0007ru-2d
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 13:34:25 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B53BABF08C
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 15:33:49 +0200 (CEST)
-Message-ID: <1406208824.10952.0.camel@lws-gamez.phytec.de>
-From: Teresa Gamez <t.gamez@phytec.de>
-Date: Thu, 24 Jul 2014 15:33:44 +0200
-In-Reply-To: <1404915308-23981-1-git-send-email-t.gamez@phytec.de>
-References: <1404915308-23981-1-git-send-email-t.gamez@phytec.de>
-Mime-Version: 1.0
+Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XAJMR-0006EN-LI
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 13:47:09 +0000
+Received: by mail-we0-f177.google.com with SMTP id w62so2803172wes.36
+ for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 06:46:41 -0700 (PDT)
+Message-ID: <53D10E3D.1030908@gmail.com>
+Date: Thu, 24 Jul 2014 15:46:37 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406208526-24261-6-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1406208526-24261-6-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,30 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: am335x Phytec phyCORE: Enable ethernet
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/6] USB: host: add xHCI HCD, Hub, and platform driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-UGluZz8KCkFtIE1pdHR3b2NoLCBkZW4gMDkuMDcuMjAxNCwgMTY6MTUgKzAyMDAgc2NocmllYiBU
-ZXJlc2EgR8OhbWV6Ogo+IFdpdGggYW4gdXBkYXRlIG9mIHRoZSBhbTMzeHguZHRzaSAoY29tbWl0
-IDkzMTM5MjBkZjYpIHRoZSBtZGlvIGFuZCBtYWMKPiBub2RlcyBhcmUgbm90IGVuYWJsZWQgb24g
-ZGVmYXVsdCBhbnkgbW9yZS4gRW5hYmxlIHRoZW0gZXhwbGljaXQKPiBpbiB0aGUgYm9hcmQgZHRz
-IG5vdy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5k
-ZT4KPiAtLS0KPiAgYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS5kdHMgfCAgICAy
-ICsrCj4gIDEgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQo+
-IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3JlLmR0cyBi
-L2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUuZHRzCj4gaW5kZXggNjE5NmViMy4u
-NjNkZWJkMiAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3Jl
-LmR0cwo+ICsrKyBiL2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUuZHRzCj4gQEAg
-LTIxNCw2ICsyMTQsNyBAQAo+ICAmZGF2aW5jaV9tZGlvIHsKPiAgCXBpbmN0cmwtbmFtZXMgPSAi
-ZGVmYXVsdCI7Cj4gIAlwaW5jdHJsLTAgPSA8JmRhdmluY2lfbWRpb19kZWZhdWx0PjsKPiArCXN0
-YXR1cyA9ICJva2F5IjsKPiAgfTsKPiAgCj4gICZwaHlfc2VsIHsKPiBAQCAtMjM2LDYgKzIzNyw3
-IEBACj4gIAlwaW5jdHJsLW5hbWVzID0gImRlZmF1bHQiOwo+ICAJcGluY3RybC0wID0gPCZlbWFj
-X3JtaWkxX3BpbnM+Owo+ICAJZHVhbF9lbWFjID0gPDE+Owo+ICsJc3RhdHVzID0gIm9rYXkiOwo+
-ICB9Owo+ICAKPiAgJmdwbWMgewoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+On 07/24/2014 03:28 PM, Sebastian Hesselbarth wrote:
+> This adds support for xHCI USB 3.0 host controllers found on various
+> SoCs and PCI devices. Currently, the driver only supports the virtual
+> USB 2.0 ports of the host controller, so if you plan to use USB 3.0
+> devices, put a USB 2.0 cable in between.
+>
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+[...]
+> diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+> new file mode 100644
+> index 000000000000..64d39dd53e5a
+> --- /dev/null
+> +++ b/drivers/usb/host/xhci-hub.c
+> @@ -0,0 +1,699 @@
+[...]
+> +static void xhci_setup_common_hub_descriptor(struct xhci_hcd *xhci,
+> +				     struct usb_hub_descriptor *desc, int ports)
+> +{
+> +	u16 val;
+> +
+> +	/* xhci section 5.4.9 says 20ms max */
+> +	desc->bPwrOn2PwrGood = 10;
+> +	desc->bHubContrCurrent = 0;
+> +
+> +//	desc->bNbrPorts = ports;
+> +	desc->bNbrPorts = xhci->num_usb3_ports + xhci->num_usb2_ports;
+
+Dammit. The commented line is correct, the one below is a left-over
+from USB 3.0 testing.
+
+Either fix it up or request a v2 please.
+
+Sebastian
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
