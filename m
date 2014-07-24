@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XALaF-0003dK-KV
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 16:09:34 +0000
-Received: by mail-wi0-f172.google.com with SMTP id n3so9885278wiv.11
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 09:09:08 -0700 (PDT)
-Message-ID: <53D12FA0.70507@gmail.com>
-Date: Thu, 24 Jul 2014 18:09:04 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1406208526-24261-2-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1406208526-24261-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XALbV-0005D6-Bq
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 16:10:53 +0000
+Message-ID: <1406218113.4590.26.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 24 Jul 2014 18:08:33 +0200
+In-Reply-To: <20140724200545.009a9c6c143abf1b344721a5@gmail.com>
+References: <20140724200545.009a9c6c143abf1b344721a5@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +17,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] USB: Fix stale usb devices in usb_device_list
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: Tegra2 USB issue
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On 07/24/2014 03:28 PM, Sebastian Hesselbarth wrote:
-> New usb devices are added to a list of usb devices, but when removing
-> the corresponding usb_device it was not removed from that list. Fix it
-> by deleting it properly from the usb_device_list.
->
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> ---
-> To: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-> Cc: barebox@lists.infradead.org
-> ---
->   drivers/usb/core/usb.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-> index 351e783b6536..2cc338465539 100644
-> --- a/drivers/usb/core/usb.c
-> +++ b/drivers/usb/core/usb.c
-> @@ -472,6 +472,7 @@ void usb_remove_device(struct usb_device *usbdev)
->   		dev_err(&usbdev->dev, "failed to unregister\n");
->
->   	usbdev->parent->children[usbdev->portnr - 1] = NULL;
-> +	list_del(&usbdev->list);
+Am Donnerstag, den 24.07.2014, 20:05 +0400 schrieb Antony Pavlov:
+> Hi!
+> 
+> I have just tested this commit
+> 
+> commit d8bdd537220dd83912949f19ba67029bd1f11c58
+> Author: Lucas Stach <dev@lynxeye.de>
+> Date:   Fri Apr 12 12:28:14 2013 +0200
+> 
+>     tegra: switch to proper CPU type
+>     
+>     Tegras main CPUs are all ARMv7.
+>     
+>     Signed-off-by: Lucas Stach <dev@lynxeye.de>
+>     Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
+>     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index bb9b47b..dfb7e24 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -137,7 +137,7 @@ config ARCH_VEXPRESS
+>  
+>  config ARCH_TEGRA
+>         bool "Nvidia Tegra-based boards"
+> -       select CPU_ARM926T
+> +       select CPU_V7
+>         select HAS_DEBUG_LL
+>  
+>  config ARCH_ZYNQ
+> 
+> This commit breaks 'usb' command --- it does not scan devices anymore, just hangs.
+> 
+> I have used codesourcery arm-2013.11 toolchain.
+> 
+I haven't tested USB myself, as I'm not using second stage barebox after
+u-boot and there's still things missing for USB to work on first stage.
+Currently only SDMMMC is fully supported.
 
-Unfortunately, this breaks usb_remove_device when called on a
-device that has not yet gone through usb_new_device().
+Are you testing exactly this commit? If so you might need to apply
+431d8a247dfa63f817cda137a81dbb2244d413dc "arm: properly init alignment
+trap bit", as USB might trigger an unaligned access.
 
-I'll have a closer look at it.
+> I'll try to check latest barebox from next, but just now I have no means to burn
+> barebox-tegra20-toshiba-ac100.img into AC100's ROM.
+> 
+You'll notice that a newer barebox won't build images for AC100 that are
+suitable to burn into a boot media, because there are no BCTs publicly
+available for this device. The resulting AC100 image is only useful for
+starting with TegraRCM.
 
-Sebastian
-
->   	free(usbdev);
->   }
->
->
+Regards,
+Lucas
+-- 
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
 
 
 _______________________________________________
