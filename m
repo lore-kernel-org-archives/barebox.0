@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x234.google.com ([2a00:1450:400c:c03::234])
+Received: from mail-wg0-x231.google.com ([2a00:1450:400c:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAMLM-00064c-PW
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 16:58:13 +0000
-Received: by mail-we0-f180.google.com with SMTP id w61so3091508wes.39
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 09:57:49 -0700 (PDT)
+ id 1XAMLP-00064z-Sj
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 16:58:16 +0000
+Received: by mail-wg0-f49.google.com with SMTP id k14so2986682wgh.32
+ for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 09:57:50 -0700 (PDT)
 From: Beniamino Galvani <b.galvani@gmail.com>
-Date: Thu, 24 Jul 2014 18:54:56 +0200
-Message-Id: <1406220898-10310-1-git-send-email-b.galvani@gmail.com>
+Date: Thu, 24 Jul 2014 18:54:57 +0200
+Message-Id: <1406220898-10310-2-git-send-email-b.galvani@gmail.com>
+In-Reply-To: <1406220898-10310-1-git-send-email-b.galvani@gmail.com>
+References: <1406220898-10310-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] Rockchip: adapt pinctrl driver to new dts
+Subject: [PATCH 1/2] mfd: syscon: add device tree support
 To: barebox@lists.infradead.org
 
-Hi,
+This patch defines a OF compatible property for the syscon driver to
+allow it to be probed from device tree.
 
-the dts for Rockchip rk3188 imported in commit 9313920df6d "dts:
-update to v3.16-rc1" contains a change in the bindings for the pinctrl
-node, which now uses syscons to obtain the address of memory mapped
-registers.
+Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+---
+ drivers/mfd/syscon.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-On barebox master branch the pinctrl driver fails during the probe
-with the new dts and thus some pin functions are not set properly; for
-this reason the ethernet port doesn't work at the moment on the Radxa
-Rock.
-
-The patches below fix the problem, adapting the driver to the new dts.
-
-Beniamino
-
-Beniamino Galvani (2):
-  mfd: syscon: add device tree support
-  pinctrl: rockchip: add support for new DT bindings
-
- drivers/mfd/syscon.c               |    6 ++++
- drivers/pinctrl/Kconfig            |    1 +
- drivers/pinctrl/pinctrl-rockchip.c |   53 ++++++++++++------------------------
- 3 files changed, 24 insertions(+), 36 deletions(-)
-
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index e6722e1..55cc34f 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -95,10 +95,16 @@ static struct platform_device_id syscon_ids[] = {
+ 	{ }
+ };
+ 
++static struct of_device_id of_syscon_match[] = {
++	{ .compatible = "syscon" },
++	{ },
++};
++
+ static struct driver_d syscon_driver = {
+ 	.name		= "syscon",
+ 	.probe		= syscon_probe,
+ 	.id_table	= syscon_ids,
++	.of_compatible	= DRV_OF_COMPAT(of_syscon_match),
+ };
+ 
+ static int __init syscon_init(void)
 -- 
 1.7.10.4
 
