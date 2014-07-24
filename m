@@ -1,18 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAOIN-0002um-N0
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 19:03:19 +0000
-Received: by mail-lb0-f176.google.com with SMTP id u10so2593507lbd.21
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 12:02:53 -0700 (PDT)
-Date: Thu, 24 Jul 2014 23:15:32 +0400
+ id 1XAOJo-0003FL-RC
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 19:04:45 +0000
+Received: by mail-lb0-f180.google.com with SMTP id v6so2580062lbi.25
+ for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 12:04:22 -0700 (PDT)
+Date: Thu, 24 Jul 2014 23:17:00 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140724231532.698d6010bea69b79920ead86@gmail.com>
-In-Reply-To: <1406219999.4590.31.camel@weser.hi.pengutronix.de>
-References: <20140724200545.009a9c6c143abf1b344721a5@gmail.com>
- <1406218113.4590.26.camel@weser.hi.pengutronix.de>
- <20140724204645.108a023a6a3047737e0a2b8a@gmail.com>
- <1406219999.4590.31.camel@weser.hi.pengutronix.de>
+Message-Id: <20140724231700.902518cb78ba1ba8e83e4dee@gmail.com>
+In-Reply-To: <20140721194150.1d5ea1f772f27fb02e267f42@gmail.com>
+References: <1405370916-6828-1-git-send-email-antonynpavlov@gmail.com>
+ <1405370916-6828-5-git-send-email-antonynpavlov@gmail.com>
+ <20140718054413.GL23235@pengutronix.de>
+ <20140718113626.19aba6e8e971f15944a6ff93@gmail.com>
+ <CAOpc7mEHJFktB5v=uRqLUWgEdzHA05KmFmC3_ix+gfooO-0MKw@mail.gmail.com>
+ <20140720095522.41f6874de19b368a29573cf7@gmail.com>
+ <20140721064106.GS23235@pengutronix.de>
+ <20140721111025.4a0d6d2c1ef5977e1d45f152@gmail.com>
+ <20140721081150.GT23235@pengutronix.de>
+ <20140721194150.1d5ea1f772f27fb02e267f42@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,125 +32,143 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Tegra2 USB issue
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [RFC v3 4/5] commands: add hwclock
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, 24 Jul 2014 18:39:59 +0200
-Lucas Stach <l.stach@pengutronix.de> wrote:
+On Mon, 21 Jul 2014 19:41:50 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-> Am Donnerstag, den 24.07.2014, 20:46 +0400 schrieb Antony Pavlov:
-> > On Thu, 24 Jul 2014 18:08:33 +0200
-> > Lucas Stach <l.stach@pengutronix.de> wrote:
-> > =
+ping!
 
-> > > Am Donnerstag, den 24.07.2014, 20:05 +0400 schrieb Antony Pavlov:
-> > > > Hi!
-> > > > =
-
-> > > > I have just tested this commit
-> > > > =
-
-> > > > commit d8bdd537220dd83912949f19ba67029bd1f11c58
-> > > > Author: Lucas Stach <dev@lynxeye.de>
-> > > > Date:   Fri Apr 12 12:28:14 2013 +0200
-> > > > =
-
-> > > >     tegra: switch to proper CPU type
-> > > >     =
-
-> > > >     Tegras main CPUs are all ARMv7.
-> > > >     =
-
-> > > >     Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> > > >     Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > =
-
-> > > > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> > > > index bb9b47b..dfb7e24 100644
-> > > > --- a/arch/arm/Kconfig
-> > > > +++ b/arch/arm/Kconfig
-> > > > @@ -137,7 +137,7 @@ config ARCH_VEXPRESS
-> > > >  =
-
-> > > >  config ARCH_TEGRA
-> > > >         bool "Nvidia Tegra-based boards"
-> > > > -       select CPU_ARM926T
-> > > > +       select CPU_V7
-> > > >         select HAS_DEBUG_LL
-> > > >  =
-
-> > > >  config ARCH_ZYNQ
-> > > > =
-
-> > > > This commit breaks 'usb' command --- it does not scan devices anymo=
-re, just hangs.
-> > > > =
-
-> > > > I have used codesourcery arm-2013.11 toolchain.
-> > > > =
-
-> > > I haven't tested USB myself, as I'm not using second stage barebox af=
-ter
-> > > u-boot and there's still things missing for USB to work on first stag=
-e.
-> > > Currently only SDMMMC is fully supported.
-> > =
-
-> > How I can run barebox from barebox (u-boot) on AC100?
-> > =
-
-> Um, how did you test things before? I personally haven't used second
-
-I have AC100 with u-boot burned into the flash.
-Here is my AC100 test seance:
-
- 1. reset AC100 (activate reset pin for 1 second and deactivate it;
-    i use USB-relay board for this task at the moment);
- 2. wait for u-boot prompt;
- 3. load barebox.bin via y-modem;
- 4. use 'go' commmand for running barebox.
-
-You can see that I always use barebox second stage image.
-
-> stage for a long time. For u-boot you need to copy the barebox image
-> into the right spot (0x108000 for T20) and issue 'go' command. For
-> barebox a 'bootm /path/to/image' should do, but I won't guarantee that I
-> didn't break anything for second stage.
+> On Mon, 21 Jul 2014 10:11:50 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > =
 
-> > > Are you testing exactly this commit? If so you might need to apply
-> > > 431d8a247dfa63f817cda137a81dbb2244d413dc "arm: properly init alignment
-> > > trap bit", as USB might trigger an unaligned access.
-> > =
+> > On Mon, Jul 21, 2014 at 11:10:25AM +0400, Antony Pavlov wrote:
+> > > On Mon, 21 Jul 2014 08:41:06 +0200
+> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > =
 
-> > Thanks!
-> > I'll try to apply 431d8a.. tomorrow.
-> > =
+> > > > On Sun, Jul 20, 2014 at 09:55:22AM +0400, Antony Pavlov wrote:
+> > > > > On Sat, 19 Jul 2014 21:02:22 +0200
+> > > > > Holger Schurig <holgerschurig@gmail.com> wrote:
+> > > > > =
 
-> > > > I'll try to check latest barebox from next, but just now I have no =
-means to burn
-> > > > barebox-tegra20-toshiba-ac100.img into AC100's ROM.
+> > > > > > I'd prefer a more logical format (and that is also in the help).
+> > > > > > However, in this case I wouldn't name the command "hwclock", bu=
+t maybe
+> > > > > > "setclock".
+> > > > > =
+
+> > > > > hwclock allows to use a logical format!
+> > > > > =
+
+> > > > > e.g. here is a quote from hwclock manpage:
+> > > > > =
+
+> > > > >      --date=3Ddate_string
+> > > > >               You  need this option if you specify the --set or -=
+-predict functions, otherwise
+> > > > >               it is ignored.  It specifies the time to which to s=
+et the Hardware Clock, or the
+> > > > >               time  for which to predict the Hardware Clock readi=
+ng.  The value of this option
+> > > > >               is an argument to the date(1) program.  For example:
+> > > > > =
+
+> > > > >                   hwclock --set --date=3D"2011-08-14 16:45:05"
 > > > > =
 
-> > > You'll notice that a newer barebox won't build images for AC100 that =
-are
-> > > suitable to burn into a boot media, because there are no BCTs publicly
-> > > available for this device. The resulting AC100 image is only useful f=
-or
-> > > starting with TegraRCM.
+> > > > Is this format easy enough to parse? If yes, that sounds like a good
+> > > > format.
+> > > =
+
+> > > So you have no objections on using a logical format :)
 > > =
 
-> > I work with my AC100 remotely so I can't press Ctrl-ESC on every boot f=
-or TegraRCM recovery mode.
-> > How I can run barebox from barebox (u-boot) on AC100?
+> > No, not at all ;)
 > > =
 
-> New barebox has a 'tegrarcm' command that will drop you right into
-> recovery mode, but obviously won't help if the machine is hanging.
+> > > =
 
-Hmm, I have to see it :)
+> > > I can make a small review on conventional date_string formats so we c=
+an discuss most appropriate one.
+> > =
+
+> > Nice, thanks.
+> > =
+
+> > I think we can always add additional formats using different command
+> > line switches, but the better we chose our default format the lesser
+> > need we'll have to add additional formats.
+> =
+
+> I know about at least two widespread date command realizations used with =
+linux:
+> =
+
+>   * coreutils realization;
+>   * busybox realization.
+> =
+
+> =
+
+> coreutils realization
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> =
+
+> I have looked inside parse_datetime() from coreutils-8.21/lib/parse-datet=
+ime.c.
+> =
+
+> It uses yyparse() for date string parsing! The corresponding yacc descrip=
+tion
+> is inside the lib/parse-datetime.y file. Can I easely steal this code for=
+ barebox? I suppose NO!
+> =
+
+> =
+
+> busybox realization
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> =
+
+> Here is parse_datestr() (barebox.git/libbb/time.c) date format list:
+> =
+
+> #if ENABLE_FEATURE_DATE_COMPAT =
+
+> /* MMDDhhmm[[CC]YY][.ss] */  ---  weird 'date' format
+> #endif
+> =
+
+> /* HH:MM[:SS] */
+> /* mm.dd-HH:MM[:SS] */
+> /* yyyy.mm.dd-HH:MM[:SS] */
+> /* yyyy-mm-dd HH:MM[:SS] */
+> =
+
+> /* month_name d HH:MM:SS YYYY */ --- I suppose we don't want to mess with=
+ mount_name :)
+> /* yyyy-mm-dd HH */
+> /* yyyy-mm-dd */
+> =
+
+> /* MM[.SS] */
+> /* HHMM[.SS] */
+> /* ddHHMM[.SS] */
+> /* mmddHHMM[.SS] */
+> /* yymmddHHMM[.SS] */
+> /* ccyymmddHHMM[.SS] */ --- this format is used in RFCv3 patchseries.
+> =
+
+> --=A0
+> Best regards,
+> =A0 Antony Pavlov
+
+
+-- =
 
 --=A0
 Best regards,
