@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAJMR-0006EN-LI
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 13:47:09 +0000
-Received: by mail-we0-f177.google.com with SMTP id w62so2803172wes.36
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 06:46:41 -0700 (PDT)
-Message-ID: <53D10E3D.1030908@gmail.com>
-Date: Thu, 24 Jul 2014 15:46:37 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1406208526-24261-6-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1406208526-24261-6-git-send-email-sebastian.hesselbarth@gmail.com>
+ id 1XALKj-0002mk-FJ
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 15:53:31 +0000
+Received: by mail-lb0-f181.google.com with SMTP id 10so2380512lbg.40
+ for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 08:53:06 -0700 (PDT)
+Date: Thu, 24 Jul 2014 20:05:45 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140724200545.009a9c6c143abf1b344721a5@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +17,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/6] USB: host: add xHCI HCD, Hub, and platform driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Tegra2 USB issue
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-On 07/24/2014 03:28 PM, Sebastian Hesselbarth wrote:
-> This adds support for xHCI USB 3.0 host controllers found on various
-> SoCs and PCI devices. Currently, the driver only supports the virtual
-> USB 2.0 ports of the host controller, so if you plan to use USB 3.0
-> devices, put a USB 2.0 cable in between.
->
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> ---
-[...]
-> diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-> new file mode 100644
-> index 000000000000..64d39dd53e5a
-> --- /dev/null
-> +++ b/drivers/usb/host/xhci-hub.c
-> @@ -0,0 +1,699 @@
-[...]
-> +static void xhci_setup_common_hub_descriptor(struct xhci_hcd *xhci,
-> +				     struct usb_hub_descriptor *desc, int ports)
-> +{
-> +	u16 val;
-> +
-> +	/* xhci section 5.4.9 says 20ms max */
-> +	desc->bPwrOn2PwrGood = 10;
-> +	desc->bHubContrCurrent = 0;
-> +
-> +//	desc->bNbrPorts = ports;
-> +	desc->bNbrPorts = xhci->num_usb3_ports + xhci->num_usb2_ports;
+Hi!
 
-Dammit. The commented line is correct, the one below is a left-over
-from USB 3.0 testing.
+I have just tested this commit
 
-Either fix it up or request a v2 please.
+commit d8bdd537220dd83912949f19ba67029bd1f11c58
+Author: Lucas Stach <dev@lynxeye.de>
+Date:   Fri Apr 12 12:28:14 2013 +0200
 
-Sebastian
+    tegra: switch to proper CPU type
+    =
 
+    Tegras main CPUs are all ARMv7.
+    =
+
+    Signed-off-by: Lucas Stach <dev@lynxeye.de>
+    Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index bb9b47b..dfb7e24 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -137,7 +137,7 @@ config ARCH_VEXPRESS
+ =
+
+ config ARCH_TEGRA
+        bool "Nvidia Tegra-based boards"
+-       select CPU_ARM926T
++       select CPU_V7
+        select HAS_DEBUG_LL
+ =
+
+ config ARCH_ZYNQ
+
+This commit breaks 'usb' command --- it does not scan devices anymore, just=
+ hangs.
+
+I have used codesourcery arm-2013.11 toolchain.
+
+I'll try to check latest barebox from next, but just now I have no means to=
+ burn
+barebox-tegra20-toshiba-ac100.img into AC100's ROM.
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
