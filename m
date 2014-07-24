@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XALKj-0002mk-FJ
- for barebox@lists.infradead.org; Thu, 24 Jul 2014 15:53:31 +0000
-Received: by mail-lb0-f181.google.com with SMTP id 10so2380512lbg.40
- for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 08:53:06 -0700 (PDT)
-Date: Thu, 24 Jul 2014 20:05:45 +0400
+ id 1XALNL-0004c2-3j
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 15:56:11 +0000
+Received: by mail-lb0-f181.google.com with SMTP id 10so2383627lbg.40
+ for <barebox@lists.infradead.org>; Thu, 24 Jul 2014 08:55:48 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140724200545.009a9c6c143abf1b344721a5@gmail.com>
-Mime-Version: 1.0
+Date: Thu, 24 Jul 2014 19:55:37 +0400
+Message-Id: <1406217337-17082-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,60 +16,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Tegra2 USB issue
-To: Lucas Stach <dev@lynxeye.de>
+Subject: [PATCH v2] usb: ehci: use linux-way ehci_readl and ehci_writel
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi!
+Also drop nowhere defined CONFIG_EHCI_DESC_BIG_ENDIAN.
 
-I have just tested this commit
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/usb/host/ehci.h | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-commit d8bdd537220dd83912949f19ba67029bd1f11c58
-Author: Lucas Stach <dev@lynxeye.de>
-Date:   Fri Apr 12 12:28:14 2013 +0200
+diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
+index 8cc477a..d71d056 100644
+--- a/drivers/usb/host/ehci.h
++++ b/drivers/usb/host/ehci.h
+@@ -18,6 +18,8 @@
+ #ifndef USB_EHCI_H
+ #define USB_EHCI_H
+ 
++#include <io.h>
++
+ #if !defined(CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS)
+ #define CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS	16
+ #endif
+@@ -68,14 +70,15 @@ struct ehci_hcor {
+ #define USBMODE_CM_HC	(3 << 0)	/* host controller mode */
+ #define USBMODE_CM_IDLE	(0 << 0)	/* idle state */
+ 
+-#if defined CONFIG_EHCI_DESC_BIG_ENDIAN
+-#define	ehci_readl(x)		(*((volatile u32 *)(x)))
+-#define ehci_writel(a, b)	(*((volatile u32 *)(a)) = ((volatile u32)b))
+-#else
+-#define ehci_readl(x)		cpu_to_le32((*((volatile u32 *)(x))))
+-#define ehci_writel(a, b)	(*((volatile u32 *)(a)) = \
+-					cpu_to_le32(((volatile u32)b)))
+-#endif
++static inline void ehci_writel(__u32 __iomem *regs, const unsigned int val)
++{
++	writel(val, regs);
++}
++
++static inline unsigned int ehci_readl(__u32 __iomem *regs)
++{
++	return readl(regs);
++}
+ 
+ #if defined CONFIG_EHCI_MMIO_BIG_ENDIAN
+ #define hc32_to_cpu(x)		be32_to_cpu((x))
+-- 
+2.0.1
 
-    tegra: switch to proper CPU type
-    =
-
-    Tegras main CPUs are all ARMv7.
-    =
-
-    Signed-off-by: Lucas Stach <dev@lynxeye.de>
-    Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index bb9b47b..dfb7e24 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -137,7 +137,7 @@ config ARCH_VEXPRESS
- =
-
- config ARCH_TEGRA
-        bool "Nvidia Tegra-based boards"
--       select CPU_ARM926T
-+       select CPU_V7
-        select HAS_DEBUG_LL
- =
-
- config ARCH_ZYNQ
-
-This commit breaks 'usb' command --- it does not scan devices anymore, just=
- hangs.
-
-I have used codesourcery arm-2013.11 toolchain.
-
-I'll try to check latest barebox from next, but just now I have no means to=
- burn
-barebox-tegra20-toshiba-ac100.img into AC100's ROM.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
