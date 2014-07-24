@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22d.google.com ([2a00:1450:400c:c05::22d])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XA1uw-0007Iq-Qn
- for barebox@lists.infradead.org; Wed, 23 Jul 2014 19:09:36 +0000
-Received: by mail-wi0-f173.google.com with SMTP id f8so8299987wiw.0
- for <barebox@lists.infradead.org>; Wed, 23 Jul 2014 12:09:11 -0700 (PDT)
-From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Wed, 23 Jul 2014 12:09:04 -0700
-Message-Id: <1406142544-10516-1-git-send-email-poggi.raph@gmail.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XACdF-0007o4-E5
+ for barebox@lists.infradead.org; Thu, 24 Jul 2014 06:36:04 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 24 Jul 2014 08:35:36 +0200
+Message-Id: <1406183736-21273-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,251 +14,983 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c: add Atmel AT91 driver
+Subject: [PATCH v2] USB: gadget: Add Android fastboot support
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-U2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgotLS0K
-IGRyaXZlcnMvaTJjL2J1c3Nlcy9LY29uZmlnICAgIHwgICA0ICsKIGRyaXZlcnMvaTJjL2J1c3Nl
-cy9NYWtlZmlsZSAgIHwgICAxICsKIGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jIHwgNDM4
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogMyBmaWxlcyBjaGFu
-Z2VkLCA0NDMgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvaTJjL2J1
-c3Nlcy9pMmMtYXQ5MS5jCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvYnVzc2VzL0tjb25maWcg
-Yi9kcml2ZXJzL2kyYy9idXNzZXMvS2NvbmZpZwppbmRleCAzNzBhYmIwLi41Yjc1NDQ5IDEwMDY0
-NAotLS0gYS9kcml2ZXJzL2kyYy9idXNzZXMvS2NvbmZpZworKysgYi9kcml2ZXJzL2kyYy9idXNz
-ZXMvS2NvbmZpZwpAQCAtMTIsNiArMTIsMTAgQEAgY29uZmlnIEkyQ19HUElPCiAJICBUaGlzIGlz
-IGEgdmVyeSBzaW1wbGUgYml0YmFuZ2luZyBJMkMgZHJpdmVyIHV0aWxpemluZyB0aGUKIAkgIGFy
-Y2gtbmV1dHJhbCBHUElPIEFQSSB0byBjb250cm9sIHRoZSBTQ0wgYW5kIFNEQSBsaW5lcy4KIAor
-Y29uZmlnIEkyQ19BVDkxCisJYm9vbCAiQVQ5MSBJMkMgTWFzdGVyIGRyaXZlciIKKwlkZXBlbmRz
-IG9uIEFSQ0hfQVQ5MQorCiBjb25maWcgSTJDX0lNWAogCWJvb2wgIk1QQzg1eHgvaS5NWCBJMkMg
-TWFzdGVyIGRyaXZlciIKIAlkZXBlbmRzIG9uIChBUkNIX0lNWCAmJiAhQVJDSF9JTVgxKSB8fCBB
-UkNIX01QQzg1WFgKZGlmZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9NYWtlZmlsZSBiL2Ry
-aXZlcnMvaTJjL2J1c3Nlcy9NYWtlZmlsZQppbmRleCA5ODIzZDFiLi5jYzcyYjdjIDEwMDY0NAot
-LS0gYS9kcml2ZXJzL2kyYy9idXNzZXMvTWFrZWZpbGUKKysrIGIvZHJpdmVycy9pMmMvYnVzc2Vz
-L01ha2VmaWxlCkBAIC0xLDMgKzEsNCBAQAorb2JqLSQoQ09ORklHX0kyQ19BVDkxKQkJKz0gaTJj
-LWF0OTEubwogb2JqLSQoQ09ORklHX0kyQ19HUElPKQkJKz0gaTJjLWdwaW8ubwogb2JqLSQoQ09O
-RklHX0kyQ19JTVgpICs9IGkyYy1pbXgubwogb2JqLSQoQ09ORklHX0kyQ19PTUFQKSArPSBpMmMt
-b21hcC5vCmRpZmYgLS1naXQgYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWF0OTEuYyBiL2RyaXZl
-cnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAw
-MDAuLmQ3NDM0NjkKLS0tIC9kZXYvbnVsbAorKysgYi9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWF0
-OTEuYwpAQCAtMCwwICsxLDQzOCBAQAorLyoKKyAqICBpMmMgU3VwcG9ydCBmb3IgQXRtZWwncyBB
-VDkxIFR3by1XaXJlIEludGVyZmFjZSAoVFdJKQorICoKKyAqICBDb3B5cmlnaHQgKEMpIDIwMTEg
-V2Vpbm1hbm4gTWVkaWNhbCBHbWJICisgKiAgQXV0aG9yOiBOaWtvbGF1cyBWb3NzIDxuLnZvc3NA
-d2Vpbm1hbm4uZGU+CisgKgorICogIEV2b2x2ZWQgZnJvbSBvcmlnaW5hbCB3b3JrIGJ5OgorICog
-IENvcHlyaWdodCAoQykgMjAwNCBSaWNrIEJyb25zb24KKyAqICBDb252ZXJ0ZWQgdG8gMi42IGJ5
-IEFuZHJldyBWaWN0b3IgPGFuZHJld0BzYW5wZW9wbGUuY29tPgorICoKKyAqICBCb3Jyb3dlZCBo
-ZWF2aWx5IGZyb20gb3JpZ2luYWwgd29yayBieToKKyAqICBDb3B5cmlnaHQgKEMpIDIwMDAgUGhp
-bGlwIEVkZWxicm9jayA8cGhpbEBzdGltcHkubmV0cm9lZGdlLmNvbT4KKyAqCisgKiAgVGhpcyBw
-cm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBt
-b2RpZnkKKyAqICBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
-aWNlbnNlIGFzIHB1Ymxpc2hlZCBieQorICogIHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247
-IGVpdGhlciB2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UsIG9yCisgKiAgKGF0IHlvdXIgb3B0aW9u
-KSBhbnkgbGF0ZXIgdmVyc2lvbi4KKyAqLworCisjaW5jbHVkZSA8Y29tbW9uLmg+CisjaW5jbHVk
-ZSA8Y2xvY2suaD4KKyNpbmNsdWRlIDxpMmMvaTJjLmg+CisjaW5jbHVkZSA8bWFsbG9jLmg+Cisj
-aW5jbHVkZSA8b2YuaD4KKyNpbmNsdWRlIDxpby5oPgorI2luY2x1ZGUgPGxpbnV4L2Nsay5oPgor
-I2luY2x1ZGUgPGxpbnV4L2Vyci5oPgorI2luY2x1ZGUgPGRyaXZlci5oPgorI2luY2x1ZGUgPGlu
-aXQuaD4KKworI2RlZmluZSBERUZBVUxUX1RXSV9DTEtfSFoJCTEwMDAwMAkJLyogbWF4IDQwMCBL
-Yml0cy9zICovCisjZGVmaW5lIEFUOTFfSTJDX1RJTUVPVVQJCSgxMDAgKiBNU0VDT05EKQkvKiB0
-cmFuc2ZlciB0aW1lb3V0ICovCisjZGVmaW5lIEFUOTFfSTJDX0RNQV9USFJFU0hPTEQJOAkJCS8q
-IGVuYWJsZSBETUEgaWYgdHJhbnNmZXIgc2l6ZSBpcyBiaWdnZXIgdGhhbiB0aGlzIHRocmVzaG9s
-ZCAqLworCisvKiBBVDkxIFRXSSByZWdpc3RlciBkZWZpbml0aW9ucyAqLworI2RlZmluZQlBVDkx
-X1RXSV9DUgkJMHgwMDAwCS8qIENvbnRyb2wgUmVnaXN0ZXIgKi8KKyNkZWZpbmUJQVQ5MV9UV0lf
-U1RBUlQJCTB4MDAwMQkvKiBTZW5kIGEgU3RhcnQgQ29uZGl0aW9uICovCisjZGVmaW5lCUFUOTFf
-VFdJX1NUT1AJCTB4MDAwMgkvKiBTZW5kIGEgU3RvcCBDb25kaXRpb24gKi8KKyNkZWZpbmUJQVQ5
-MV9UV0lfTVNFTgkJMHgwMDA0CS8qIE1hc3RlciBUcmFuc2ZlciBFbmFibGUgKi8KKyNkZWZpbmUJ
-QVQ5MV9UV0lfU1ZESVMJCTB4MDAyMAkvKiBTbGF2ZSBUcmFuc2ZlciBEaXNhYmxlICovCisjZGVm
-aW5lCUFUOTFfVFdJX1FVSUNLCQkweDAwNDAJLyogU01CdXMgcXVpY2sgY29tbWFuZCAqLworI2Rl
-ZmluZQlBVDkxX1RXSV9TV1JTVAkJMHgwMDgwCS8qIFNvZnR3YXJlIFJlc2V0ICovCisKKyNkZWZp
-bmUJQVQ5MV9UV0lfTU1SCQkweDAwMDQJLyogTWFzdGVyIE1vZGUgUmVnaXN0ZXIgKi8KKyNkZWZp
-bmUJQVQ5MV9UV0lfSUFEUlNaXzEJMHgwMTAwCS8qIEludGVybmFsIERldmljZSBBZGRyZXNzIFNp
-emUgKi8KKyNkZWZpbmUJQVQ5MV9UV0lfTVJFQUQJCTB4MTAwMAkvKiBNYXN0ZXIgUmVhZCBEaXJl
-Y3Rpb24gKi8KKworI2RlZmluZQlBVDkxX1RXSV9JQURSCQkweDAwMGMJLyogSW50ZXJuYWwgQWRk
-cmVzcyBSZWdpc3RlciAqLworCisjZGVmaW5lCUFUOTFfVFdJX0NXR1IJCTB4MDAxMAkvKiBDbG9j
-ayBXYXZlZm9ybSBHZW5lcmF0b3IgUmVnICovCisKKyNkZWZpbmUJQVQ5MV9UV0lfU1IJCTB4MDAy
-MAkvKiBTdGF0dXMgUmVnaXN0ZXIgKi8KKyNkZWZpbmUJQVQ5MV9UV0lfVFhDT01QCQkweDAwMDEJ
-LyogVHJhbnNtaXNzaW9uIENvbXBsZXRlICovCisjZGVmaW5lCUFUOTFfVFdJX1JYUkRZCQkweDAw
-MDIJLyogUmVjZWl2ZSBIb2xkaW5nIFJlZ2lzdGVyIFJlYWR5ICovCisjZGVmaW5lCUFUOTFfVFdJ
-X1RYUkRZCQkweDAwMDQJLyogVHJhbnNtaXQgSG9sZGluZyBSZWdpc3RlciBSZWFkeSAqLworCisj
-ZGVmaW5lCUFUOTFfVFdJX09WUkUJCTB4MDA0MAkvKiBPdmVycnVuIEVycm9yICovCisjZGVmaW5l
-CUFUOTFfVFdJX1VOUkUJCTB4MDA4MAkvKiBVbmRlcnJ1biBFcnJvciAqLworI2RlZmluZQlBVDkx
-X1RXSV9OQUNLCQkweDAxMDAJLyogTm90IEFja25vd2xlZGdlZCAqLworCisjZGVmaW5lCUFUOTFf
-VFdJX0lFUgkJMHgwMDI0CS8qIEludGVycnVwdCBFbmFibGUgUmVnaXN0ZXIgKi8KKyNkZWZpbmUJ
-QVQ5MV9UV0lfSURSCQkweDAwMjgJLyogSW50ZXJydXB0IERpc2FibGUgUmVnaXN0ZXIgKi8KKyNk
-ZWZpbmUJQVQ5MV9UV0lfSU1SCQkweDAwMmMJLyogSW50ZXJydXB0IE1hc2sgUmVnaXN0ZXIgKi8K
-KyNkZWZpbmUJQVQ5MV9UV0lfUkhSCQkweDAwMzAJLyogUmVjZWl2ZSBIb2xkaW5nIFJlZ2lzdGVy
-ICovCisjZGVmaW5lCUFUOTFfVFdJX1RIUgkJMHgwMDM0CS8qIFRyYW5zbWl0IEhvbGRpbmcgUmVn
-aXN0ZXIgKi8KKworc3RydWN0IGF0OTFfdHdpX3BkYXRhIHsKKwl1bnNpZ25lZCBjbGtfbWF4X2Rp
-djsKKwl1bnNpZ25lZCBjbGtfb2Zmc2V0OworCWJvb2wgaGFzX3VucmVfZmxhZzsKK307CisKK3N0
-cnVjdCBhdDkxX3R3aV9kZXYgeworCXN0cnVjdCBkZXZpY2UgKmRldjsKKwl2b2lkIF9faW9tZW0g
-KmJhc2U7CisJc3RydWN0IGNsayAqY2xrOworCXU4ICpidWY7CisJc2l6ZV90IGJ1Zl9sZW47CisJ
-c3RydWN0IGkyY19tc2cgKm1zZzsKKwl1bnNpZ25lZCBpbXI7CisJdW5zaWduZWQgdHJhbnNmZXJf
-c3RhdHVzOworCXN0cnVjdCBpMmNfYWRhcHRlciBhZGFwdGVyOworCXVuc2lnbmVkIHR3aV9jd2dy
-X3JlZzsKKwlzdHJ1Y3QgYXQ5MV90d2lfcGRhdGEgKnBkYXRhOworfTsKKworI2RlZmluZSB0b19h
-dDkxX3R3aV9kZXYoYSkgY29udGFpbmVyX29mKGEsIHN0cnVjdCBhdDkxX3R3aV9kZXYsIGFkYXB0
-ZXIpCisKK3N0YXRpYyB1bnNpZ25lZCBhdDkxX3R3aV9yZWFkKHN0cnVjdCBhdDkxX3R3aV9kZXYg
-KmRldiwgdW5zaWduZWQgcmVnKQoreworCXJldHVybiBfX3Jhd19yZWFkbChkZXYtPmJhc2UgKyBy
-ZWcpOworfQorCitzdGF0aWMgdm9pZCBhdDkxX3R3aV93cml0ZShzdHJ1Y3QgYXQ5MV90d2lfZGV2
-ICpkZXYsIHVuc2lnbmVkIHJlZywgdW5zaWduZWQgdmFsKQoreworCV9fcmF3X3dyaXRlbCh2YWws
-IGRldi0+YmFzZSArIHJlZyk7Cit9CisKK3N0YXRpYyB2b2lkIGF0OTFfZGlzYWJsZV90d2lfaW50
-ZXJydXB0cyhzdHJ1Y3QgYXQ5MV90d2lfZGV2ICpkZXYpCit7CisJYXQ5MV90d2lfd3JpdGUoZGV2
-LCBBVDkxX1RXSV9JRFIsCisJCSAgICAgICBBVDkxX1RXSV9UWENPTVAgfCBBVDkxX1RXSV9SWFJE
-WSB8IEFUOTFfVFdJX1RYUkRZKTsKK30KKworc3RhdGljIHZvaWQgYXQ5MV9pbml0X3R3aV9idXMo
-c3RydWN0IGF0OTFfdHdpX2RldiAqZGV2KQoreworCWF0OTFfZGlzYWJsZV90d2lfaW50ZXJydXB0
-cyhkZXYpOworCWF0OTFfdHdpX3dyaXRlKGRldiwgQVQ5MV9UV0lfQ1IsIEFUOTFfVFdJX1NXUlNU
-KTsKKwlhdDkxX3R3aV93cml0ZShkZXYsIEFUOTFfVFdJX0NSLCBBVDkxX1RXSV9NU0VOKTsKKwlh
-dDkxX3R3aV93cml0ZShkZXYsIEFUOTFfVFdJX0NSLCBBVDkxX1RXSV9TVkRJUyk7CisJYXQ5MV90
-d2lfd3JpdGUoZGV2LCBBVDkxX1RXSV9DV0dSLCBkZXYtPnR3aV9jd2dyX3JlZyk7Cit9CisKKy8q
-CisgKiBDYWxjdWxhdGUgc3ltbWV0cmljIGNsb2NrIGFzIHN0YXRlZCBpbiBkYXRhc2hlZXQ6Cisg
-KiB0d2lfY2xrID0gRl9NQUlOIC8gKDIgKiAoY2RpdiAqICgxIDw8IGNrZGl2KSArIG9mZnNldCkp
-CisgKi8KK3N0YXRpYyB2b2lkIGF0OTFfY2FsY190d2lfY2xvY2soc3RydWN0IGF0OTFfdHdpX2Rl
-diAqZGV2LCBpbnQgdHdpX2NsaykKK3sKKwlpbnQgY2tkaXYsIGNkaXYsIGRpdjsKKwlzdHJ1Y3Qg
-YXQ5MV90d2lfcGRhdGEgKnBkYXRhID0gZGV2LT5wZGF0YTsKKwlpbnQgb2Zmc2V0ID0gcGRhdGEt
-PmNsa19vZmZzZXQ7CisJaW50IG1heF9ja2RpdiA9IHBkYXRhLT5jbGtfbWF4X2RpdjsKKworCWRp
-diA9IG1heCgwLCAoaW50KURJVl9ST1VORF9VUChjbGtfZ2V0X3JhdGUoZGV2LT5jbGspLAorCQkJ
-CSAgICAgICAyICogdHdpX2NsaykgLSBvZmZzZXQpOworCWNrZGl2ID0gZmxzKGRpdiA+PiA4KTsK
-KwljZGl2ID0gZGl2ID4+IGNrZGl2OworCisJaWYgKGNrZGl2ID4gbWF4X2NrZGl2KSB7CisJCWRl
-dl93YXJuKCZkZXYtPmFkYXB0ZXIuZGV2LCAiJWQgZXhjZWVkcyBja2RpdiBtYXggdmFsdWUgd2hp
-Y2ggaXMgJWQuXG4iLAorCQkJIGNrZGl2LCBtYXhfY2tkaXYpOworCQlja2RpdiA9IG1heF9ja2Rp
-djsKKwkJY2RpdiA9IDI1NTsKKwl9CisKKwlkZXYtPnR3aV9jd2dyX3JlZyA9IChja2RpdiA8PCAx
-NikgfCAoY2RpdiA8PCA4KSB8IGNkaXY7CisJZGV2X2RiZygmZGV2LT5hZGFwdGVyLmRldiwgImNk
-aXYgJWQgY2tkaXYgJWRcbiIsIGNkaXYsIGNrZGl2KTsKK30KKworc3RhdGljIHZvaWQgYXQ5MV90
-d2lfd3JpdGVfbmV4dF9ieXRlKHN0cnVjdCBhdDkxX3R3aV9kZXYgKmRldikKK3sKKwlpZiAoZGV2
-LT5idWZfbGVuIDw9IDApCisJCXJldHVybjsKKworCWF0OTFfdHdpX3dyaXRlKGRldiwgQVQ5MV9U
-V0lfVEhSLCAqZGV2LT5idWYpOworCisJLyogc2VuZCBzdG9wIHdoZW4gbGFzdCBieXRlIGhhcyBi
-ZWVuIHdyaXR0ZW4gKi8KKwlpZiAoLS1kZXYtPmJ1Zl9sZW4gPT0gMCkKKwkJYXQ5MV90d2lfd3Jp
-dGUoZGV2LCBBVDkxX1RXSV9DUiwgQVQ5MV9UV0lfU1RPUCk7CisKKwlkZXZfZGJnKCZkZXYtPmFk
-YXB0ZXIuZGV2LCAid3JvdGUgMHgleCwgdG8gZ28gJWRcbiIsICpkZXYtPmJ1ZiwgZGV2LT5idWZf
-bGVuKTsKKworCSsrZGV2LT5idWY7Cit9CisKK3N0YXRpYyB2b2lkIGF0OTFfdHdpX3JlYWRfbmV4
-dF9ieXRlKHN0cnVjdCBhdDkxX3R3aV9kZXYgKmRldikKK3sKKwlpZiAoZGV2LT5idWZfbGVuIDw9
-IDApCisJCXJldHVybjsKKworCSpkZXYtPmJ1ZiA9IGF0OTFfdHdpX3JlYWQoZGV2LCBBVDkxX1RX
-SV9SSFIpICYgMHhmZjsKKwktLWRldi0+YnVmX2xlbjsKKworCS8qIHNlbmQgc3RvcCBpZiBzZWNv
-bmQgYnV0IGxhc3QgYnl0ZSBoYXMgYmVlbiByZWFkICovCisJaWYgKGRldi0+YnVmX2xlbiA9PSAx
-KQorCQlhdDkxX3R3aV93cml0ZShkZXYsIEFUOTFfVFdJX0NSLCBBVDkxX1RXSV9TVE9QKTsKKwor
-CWRldl9kYmcoJmRldi0+YWRhcHRlci5kZXYsICJyZWFkIDB4JXgsIHRvIGdvICVkXG4iLCAqZGV2
-LT5idWYsIGRldi0+YnVmX2xlbik7CisKKwkrK2Rldi0+YnVmOworfQorCitzdGF0aWMgaW50IGF0
-OTFfdHdpX3dhaXRfY29tcGxldGlvbihzdHJ1Y3QgYXQ5MV90d2lfZGV2ICpkZXYpCit7CisJdWlu
-dDY0X3Qgc3RhcnQgPSBnZXRfdGltZV9ucygpOworCXVuc2lnbmVkIGludCBzdGF0dXMgPSBhdDkx
-X3R3aV9yZWFkKGRldiwgQVQ5MV9UV0lfU1IpOworCXVuc2lnbmVkIGludCBpcnFzdGF0dXMgPSBh
-dDkxX3R3aV9yZWFkKGRldiwgQVQ5MV9UV0lfSU1SKTsKKworCWlmIChpcnFzdGF0dXMgJiBBVDkx
-X1RXSV9SWFJEWSkKKwkJYXQ5MV90d2lfcmVhZF9uZXh0X2J5dGUoZGV2KTsKKwllbHNlIGlmIChp
-cnFzdGF0dXMgJiBBVDkxX1RXSV9UWFJEWSkKKwkJYXQ5MV90d2lfd3JpdGVfbmV4dF9ieXRlKGRl
-dik7CisJZWxzZQorCQlkZXZfd2FybigmZGV2LT5hZGFwdGVyLmRldiwgIm5laXRoZXIgcnggYW5k
-IHR4IGFyZSByZWFkeVxuIik7CisKKwlkZXYtPnRyYW5zZmVyX3N0YXR1cyB8PSBzdGF0dXM7CisK
-Kwl3aGlsZSghKGF0OTFfdHdpX3JlYWQoZGV2LCBBVDkxX1RXSV9TUikgJiBBVDkxX1RXSV9UWENP
-TVApKSB7CisJCWlmKGlzX3RpbWVvdXQoc3RhcnQsIEFUOTFfSTJDX1RJTUVPVVQpKSB7CisJCQlk
-ZXZfd2FybigmZGV2LT5hZGFwdGVyLmRldiwgInRpbWVvdXQgd2FpdGluZyBmb3IgYnVzIHJlYWR5
-XG4iKTsKKwkJCXJldHVybiAtRVRJTUVET1VUOworCQl9CisJfQorCisJYXQ5MV9kaXNhYmxlX3R3
-aV9pbnRlcnJ1cHRzKGRldik7CisKKwlyZXR1cm4gMDsKK30KKworc3RhdGljIGludCBhdDkxX2Rv
-X3R3aV90cmFuc2ZlcihzdHJ1Y3QgYXQ5MV90d2lfZGV2ICpkZXYpCit7CisJaW50IHJldDsKKwli
-b29sIGhhc191bnJlX2ZsYWcgPSBkZXYtPnBkYXRhLT5oYXNfdW5yZV9mbGFnOworCisJZGV2X2Ri
-ZygmZGV2LT5hZGFwdGVyLmRldiwgInRyYW5zZmVyOiAlcyAlZCBieXRlcy5cbiIsCisJCShkZXYt
-Pm1zZy0+ZmxhZ3MgJiBJMkNfTV9SRCkgPyAicmVhZCIgOiAid3JpdGUiLCBkZXYtPmJ1Zl9sZW4p
-OworCisJZGV2LT50cmFuc2Zlcl9zdGF0dXMgPSAwOworCisJaWYgKCFkZXYtPmJ1Zl9sZW4pIHsK
-KwkJYXQ5MV90d2lfd3JpdGUoZGV2LCBBVDkxX1RXSV9DUiwgQVQ5MV9UV0lfUVVJQ0spOworCQlh
-dDkxX3R3aV93cml0ZShkZXYsIEFUOTFfVFdJX0lFUiwgQVQ5MV9UV0lfVFhDT01QKTsKKwl9IGVs
-c2UgaWYgKGRldi0+bXNnLT5mbGFncyAmIEkyQ19NX1JEKSB7CisJCXVuc2lnbmVkIHN0YXJ0X2Zs
-YWdzID0gQVQ5MV9UV0lfU1RBUlQ7CisKKwkJaWYgKGF0OTFfdHdpX3JlYWQoZGV2LCBBVDkxX1RX
-SV9TUikgJiBBVDkxX1RXSV9SWFJEWSkgeworCQkJZGV2X2VycigmZGV2LT5hZGFwdGVyLmRldiwg
-IlJYUkRZIHN0aWxsIHNldCEiKTsKKwkJCWF0OTFfdHdpX3JlYWQoZGV2LCBBVDkxX1RXSV9SSFIp
-OworCQl9CisKKwkJLyogaWYgb25seSBvbmUgYnl0ZSBpcyB0byBiZSByZWFkLCBpbW1lZGlhdGVs
-eSBzdG9wIHRyYW5zZmVyICovCisJCWlmIChkZXYtPmJ1Zl9sZW4gPD0gMSkKKwkJCXN0YXJ0X2Zs
-YWdzIHw9IEFUOTFfVFdJX1NUT1A7CisKKwkJYXQ5MV90d2lfd3JpdGUoZGV2LCBBVDkxX1RXSV9D
-Uiwgc3RhcnRfZmxhZ3MpOworCisJCWF0OTFfdHdpX3dyaXRlKGRldiwgQVQ5MV9UV0lfSUVSLAor
-CQkJICAgIEFUOTFfVFdJX1RYQ09NUCB8IEFUOTFfVFdJX1JYUkRZKTsKKwl9IGVsc2UgeworCQlh
-dDkxX3R3aV93cml0ZV9uZXh0X2J5dGUoZGV2KTsKKwkJYXQ5MV90d2lfd3JpdGUoZGV2LCBBVDkx
-X1RXSV9JRVIsCisJCQkgICAgQVQ5MV9UV0lfVFhDT01QIHwgQVQ5MV9UV0lfVFhSRFkpOworCX0K
-KworCXJldCA9IGF0OTFfdHdpX3dhaXRfY29tcGxldGlvbihkZXYpOworCWlmIChyZXQgPCAwKSB7
-CisJCWRldl9lcnIoJmRldi0+YWRhcHRlci5kZXYsICJjb250cm9sbGVyIHRpbWVkIG91dFxuIik7
-CisJCWF0OTFfaW5pdF90d2lfYnVzKGRldik7CisJCXJldCA9IC1FVElNRURPVVQ7CisJCWdvdG8g
-ZXJyb3I7CisJfQorCWlmIChkZXYtPnRyYW5zZmVyX3N0YXR1cyAmIEFUOTFfVFdJX05BQ0spIHsK
-KwkJZGV2X2RiZygmZGV2LT5hZGFwdGVyLmRldiwgInJlY2VpdmVkIG5hY2tcbiIpOworCQlyZXQg
-PSAtRVJFTU9URUlPOworCQlnb3RvIGVycm9yOworCX0KKwlpZiAoZGV2LT50cmFuc2Zlcl9zdGF0
-dXMgJiBBVDkxX1RXSV9PVlJFKSB7CisJCWRldl9lcnIoJmRldi0+YWRhcHRlci5kZXYsICJvdmVy
-cnVuIHdoaWxlIHJlYWRpbmdcbiIpOworCQlyZXQgPSAtRUlPOworCQlnb3RvIGVycm9yOworCX0K
-KwlpZiAoaGFzX3VucmVfZmxhZyAmJiBkZXYtPnRyYW5zZmVyX3N0YXR1cyAmIEFUOTFfVFdJX1VO
-UkUpIHsKKwkJZGV2X2VycigmZGV2LT5hZGFwdGVyLmRldiwgInVuZGVycnVuIHdoaWxlIHdyaXRp
-bmdcbiIpOworCQlyZXQgPSAtRUlPOworCQlnb3RvIGVycm9yOworCX0KKwlkZXZfZGJnKCZkZXYt
-PmFkYXB0ZXIuZGV2LCAidHJhbnNmZXIgY29tcGxldGVcbiIpOworCisJcmV0dXJuIDA7CisKK2Vy
-cm9yOgorCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyBpbnQgYXQ5MV90d2lfeGZlcihzdHJ1Y3Qg
-aTJjX2FkYXB0ZXIgKmFkYXAsIHN0cnVjdCBpMmNfbXNnICptc2csIGludCBudW0pCit7CisJc3Ry
-dWN0IGF0OTFfdHdpX2RldiAqZGV2ID0gdG9fYXQ5MV90d2lfZGV2KGFkYXApOworCWludCByZXQ7
-CisJdW5zaWduZWQgaW50X2FkZHJfZmxhZyA9IDA7CisJc3RydWN0IGkyY19tc2cgKm1fc3RhcnQg
-PSBtc2c7CisKKwlkZXZfZGJnKCZhZGFwLT5kZXYsICJhdDkxX3hmZXI6IHByb2Nlc3NpbmcgJWQg
-bWVzc2FnZXM6XG4iLCBudW0pOworCisJLyoKKwkgKiBUaGUgaGFyZHdhcmUgY2FuIGhhbmRsZSBh
-dCBtb3N0IHR3byBtZXNzYWdlcyBjb25jYXRlbmF0ZWQgYnkgYQorCSAqIHJlcGVhdGVkIHN0YXJ0
-IHZpYSBpdCdzIGludGVybmFsIGFkZHJlc3MgZmVhdHVyZS4KKwkgKi8KKwlpZiAobnVtID4gMikg
-eworCQlkZXZfZXJyKCZkZXYtPmFkYXB0ZXIuZGV2LAorCQkJImNhbm5vdCBoYW5kbGUgbW9yZSB0
-aGFuIHR3byBjb25jYXRlbmF0ZWQgbWVzc2FnZXMuXG4iKTsKKwkJcmV0dXJuIDA7CisJfSBlbHNl
-IGlmIChudW0gPT0gMikgeworCQlpbnQgaW50ZXJuYWxfYWRkcmVzcyA9IDA7CisJCWludCBpOwor
-CisJCWlmIChtc2ctPmZsYWdzICYgSTJDX01fUkQpIHsKKwkJCWRldl9lcnIoJmRldi0+YWRhcHRl
-ci5kZXYsICJmaXJzdCB0cmFuc2ZlciBtdXN0IGJlIHdyaXRlLlxuIik7CisJCQlyZXR1cm4gLUVJ
-TlZBTDsKKwkJfQorCQlpZiAobXNnLT5sZW4gPiAzKSB7CisJCQlkZXZfZXJyKCZkZXYtPmFkYXB0
-ZXIuZGV2LCAiZmlyc3QgbWVzc2FnZSBzaXplIG11c3QgYmUgPD0gMy5cbiIpOworCQkJcmV0dXJu
-IC1FSU5WQUw7CisJCX0KKworCQkvKiAxc3QgbXNnIGlzIHB1dCBpbnRvIHRoZSBpbnRlcm5hbCBh
-ZGRyZXNzLCBzdGFydCB3aXRoIDJuZCAqLworCQltX3N0YXJ0ID0gJm1zZ1sxXTsKKwkJZm9yIChp
-ID0gMDsgaSA8IG1zZy0+bGVuOyArK2kpIHsKKwkJCWNvbnN0IHVuc2lnbmVkIGFkZHIgPSBtc2ct
-PmJ1Zlttc2ctPmxlbiAtIDEgLSBpXTsKKworCQkJaW50ZXJuYWxfYWRkcmVzcyB8PSBhZGRyIDw8
-ICg4ICogaSk7CisJCQlpbnRfYWRkcl9mbGFnICs9IEFUOTFfVFdJX0lBRFJTWl8xOworCQl9CisJ
-CWF0OTFfdHdpX3dyaXRlKGRldiwgQVQ5MV9UV0lfSUFEUiwgaW50ZXJuYWxfYWRkcmVzcyk7CisJ
-fQorCisJYXQ5MV90d2lfd3JpdGUoZGV2LCBBVDkxX1RXSV9NTVIsIChtX3N0YXJ0LT5hZGRyIDw8
-IDE2KSB8IGludF9hZGRyX2ZsYWcKKwkJICAgICAgIHwgKChtX3N0YXJ0LT5mbGFncyAmIEkyQ19N
-X1JEKSA/IEFUOTFfVFdJX01SRUFEIDogMCkpOworCisJZGV2LT5idWZfbGVuID0gbV9zdGFydC0+
-bGVuOworCWRldi0+YnVmID0gbV9zdGFydC0+YnVmOworCWRldi0+bXNnID0gbV9zdGFydDsKKwor
-CXJldCA9IGF0OTFfZG9fdHdpX3RyYW5zZmVyKGRldik7CisKKwlyZXR1cm4gKHJldCA8IDApID8g
-cmV0IDogbnVtOworfQorCitzdGF0aWMgc3RydWN0IGF0OTFfdHdpX3BkYXRhIGF0OTFybTkyMDBf
-Y29uZmlnID0geworCS5jbGtfbWF4X2RpdiA9IDUsCisJLmNsa19vZmZzZXQgPSAzLAorCS5oYXNf
-dW5yZV9mbGFnID0gdHJ1ZSwKK307CisKK3N0YXRpYyBzdHJ1Y3QgYXQ5MV90d2lfcGRhdGEgYXQ5
-MXNhbTkyNjFfY29uZmlnID0geworCS5jbGtfbWF4X2RpdiA9IDUsCisJLmNsa19vZmZzZXQgPSA0
-LAorCS5oYXNfdW5yZV9mbGFnID0gZmFsc2UsCit9OworCitzdGF0aWMgc3RydWN0IGF0OTFfdHdp
-X3BkYXRhIGF0OTFzYW05MjYwX2NvbmZpZyA9IHsKKwkuY2xrX21heF9kaXYgPSA3LAorCS5jbGtf
-b2Zmc2V0ID0gNCwKKwkuaGFzX3VucmVfZmxhZyA9IGZhbHNlLAorfTsKKworc3RhdGljIHN0cnVj
-dCBhdDkxX3R3aV9wZGF0YSBhdDkxc2FtOWcyMF9jb25maWcgPSB7CisJLmNsa19tYXhfZGl2ID0g
-NywKKwkuY2xrX29mZnNldCA9IDQsCisJLmhhc191bnJlX2ZsYWcgPSBmYWxzZSwKK307CisKK3N0
-YXRpYyBzdHJ1Y3QgYXQ5MV90d2lfcGRhdGEgYXQ5MXNhbTlnMTBfY29uZmlnID0geworCS5jbGtf
-bWF4X2RpdiA9IDcsCisJLmNsa19vZmZzZXQgPSA0LAorCS5oYXNfdW5yZV9mbGFnID0gZmFsc2Us
-Cit9OworCitzdGF0aWMgc3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCBhdDkxX3R3aV9kZXZ0eXBl
-c1tdID0geworCXsKKwkJLm5hbWUgPSAiaTJjLWF0OTFybTkyMDAiLAorCQkuZHJpdmVyX2RhdGEg
-PSAodW5zaWduZWQgbG9uZykgJmF0OTFybTkyMDBfY29uZmlnLAorCX0sIHsKKwkJLm5hbWUgPSAi
-aTJjLWF0OTFzYW05MjYxIiwKKwkJLmRyaXZlcl9kYXRhID0gKHVuc2lnbmVkIGxvbmcpICZhdDkx
-c2FtOTI2MV9jb25maWcsCisJfSwgeworCQkubmFtZSA9ICJpMmMtYXQ5MXNhbTkyNjAiLAorCQku
-ZHJpdmVyX2RhdGEgPSAodW5zaWduZWQgbG9uZykgJmF0OTFzYW05MjYwX2NvbmZpZywKKwl9LCB7
-CisJCS5uYW1lID0gImkyYy1hdDkxc2FtOWcyMCIsCisJCS5kcml2ZXJfZGF0YSA9ICh1bnNpZ25l
-ZCBsb25nKSAmYXQ5MXNhbTlnMjBfY29uZmlnLAorCX0sIHsKKwkJLm5hbWUgPSAiaTJjLWF0OTFz
-YW05ZzEwIiwKKwkJLmRyaXZlcl9kYXRhID0gKHVuc2lnbmVkIGxvbmcpICZhdDkxc2FtOWcxMF9j
-b25maWcsCisJfSwgeworCQkvKiBzZW50aW5lbCAqLworCX0KK307CisKK3N0YXRpYyBpbnQgYXQ5
-MV90d2lfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCit7CisJc3RydWN0IGF0OTFfdHdpX2Rl
-diAqaTJjX2F0OTE7CisJc3RydWN0IGF0OTFfdHdpX3BkYXRhICppMmNfZGF0YTsKKwlpbnQgcmM7
-CisJdTMyIGJ1c19jbGtfcmF0ZTsKKworCWkyY19hdDkxID0ga3phbGxvYyhzaXplb2Yoc3RydWN0
-IGF0OTFfdHdpX2RldiksIEdGUF9LRVJORUwpOworCWlmICghaTJjX2F0OTEpIHsKKwkgICAgcmMg
-PSAtRU5PTUVNOworCSAgICBnb3RvIG91dF9mcmVlOworCX0KKworCXJjID0gZGV2X2dldF9kcnZk
-YXRhKGRldiwgKHVuc2lnbmVkIGxvbmcgKikmaTJjX2RhdGEpOworCWlmIChyYykKKwkJZ290byBv
-dXRfZnJlZTsKKworCWkyY19hdDkxLT5wZGF0YSA9IGkyY19kYXRhOworCisJaTJjX2F0OTEtPmJh
-c2UgPSBkZXZfcmVxdWVzdF9tZW1fcmVnaW9uKGRldiwgMCk7CisJaWYgKElTX0VSUihpMmNfYXQ5
-MS0+YmFzZSkpCisJCXJldHVybiBQVFJfRVJSKGkyY19hdDkxLT5iYXNlKTsKKworCWkyY19hdDkx
-LT5jbGsgPSBjbGtfZ2V0KGRldiwgInR3aV9jbGsiKTsKKwlpZiAoSVNfRVJSKGkyY19hdDkxLT5j
-bGspKSB7CisJCWRldl9lcnIoZGV2LCAibm8gY2xvY2sgZGVmaW5lZFxuIik7CisJCXJjID0gLUVO
-T0RFVjsKKwkJZ290byBvdXRfZnJlZTsKKwl9CisKKwljbGtfZW5hYmxlKGkyY19hdDkxLT5jbGsp
-OworCisJYnVzX2Nsa19yYXRlID0gREVGQVVMVF9UV0lfQ0xLX0haOworCisJYXQ5MV9jYWxjX3R3
-aV9jbG9jayhpMmNfYXQ5MSwgYnVzX2Nsa19yYXRlKTsKKwlhdDkxX2luaXRfdHdpX2J1cyhpMmNf
-YXQ5MSk7CisKKwlpMmNfYXQ5MS0+YWRhcHRlci5tYXN0ZXJfeGZlciA9IGF0OTFfdHdpX3hmZXI7
-CisJaTJjX2F0OTEtPmFkYXB0ZXIuZGV2LnBhcmVudCA9IGRldjsKKwlpMmNfYXQ5MS0+YWRhcHRl
-ci5uciA9IGRldi0+aWQ7CisJaTJjX2F0OTEtPmFkYXB0ZXIuZGV2LmRldmljZV9ub2RlID0gZGV2
-LT5kZXZpY2Vfbm9kZTsKKworCXJjID0gaTJjX2FkZF9udW1iZXJlZF9hZGFwdGVyKCZpMmNfYXQ5
-MS0+YWRhcHRlcik7CisJaWYgKHJjKSB7CisJCWRldl9lcnIoZGV2LCAiRmFpbGVkIHRvIGFkZCBJ
-MkMgYWRhcHRlclxuIik7CisJCWdvdG8gb3V0X2FkYXBfZmFpbDsKKwl9CisKKwlkZXZfaW5mbyhk
-ZXYsICJBVDkxIGkyYyBidXMgZHJpdmVyLlxuIik7CisJcmV0dXJuIDA7CisKK291dF9hZGFwX2Zh
-aWw6CisgICAgY2xrX2Rpc2FibGUoaTJjX2F0OTEtPmNsayk7CisgICAgY2xrX3B1dChpMmNfYXQ5
-MS0+Y2xrKTsKK291dF9mcmVlOgorICAgIGtmcmVlKGkyY19hdDkxKTsKKyAgICByZXR1cm4gcmM7
-Cit9CisKK3N0YXRpYyBzdHJ1Y3QgZHJpdmVyX2QgYXQ5MV90d2lfZHJpdmVyID0geworCS5uYW1l
-CQk9ICJhdDkxLXR3aSIsCisJLnByb2JlCQk9IGF0OTFfdHdpX3Byb2JlLAorCS5pZF90YWJsZQk9
-IGF0OTFfdHdpX2RldnR5cGVzLAorfTsKK2RldmljZV9wbGF0Zm9ybV9kcml2ZXIoYXQ5MV90d2lf
-ZHJpdmVyKTsKKworTU9EVUxFX0FVVEhPUigiTmlrb2xhdXMgVm9zcyA8bi52b3NzQHdlaW5tYW5u
-LmRlPiIpOworTU9EVUxFX0RFU0NSSVBUSU9OKCJJMkMgKFRXSSkgZHJpdmVyIGZvciBBdG1lbCBB
-VDkxIik7CitNT0RVTEVfTElDRU5TRSgiR1BMIik7Ci0tIAoxLjguMy4yCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+The Android fastboot protocol Can be used to update firmware and to
+issue other lowlevel commands to the bootloader. This adds a
+fastboot implementation based on the U-Boot fatboot code.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+
+Changes since v1:
+
+- Fill partition-type variables with the different flash types
+- Print more messages to the USB host instead of printing them on the
+  command line
+- implement flash erase command
+- detect UBI images and use ubiformat in this case
+
+ drivers/usb/gadget/Kconfig      |   5 +-
+ drivers/usb/gadget/Makefile     |   1 +
+ drivers/usb/gadget/f_fastboot.c | 890 ++++++++++++++++++++++++++++++++++++++++
+ include/usb/fastboot.h          |  13 +
+ 4 files changed, 908 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/usb/gadget/f_fastboot.c
+ create mode 100644 include/usb/fastboot.h
+
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index 94d3bce..883a19f 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -49,5 +49,8 @@ config USB_GADGET_SERIAL
+ 	depends on !CONSOLE_NONE
+ 	prompt "Serial Gadget"
+ 
+-endif
++config USB_GADGET_FASTBOOT
++	bool
++	prompt "Android Fastboot support"
+ 
++endif
+diff --git a/drivers/usb/gadget/Makefile b/drivers/usb/gadget/Makefile
+index 9bd28ec..fce979a 100644
+--- a/drivers/usb/gadget/Makefile
++++ b/drivers/usb/gadget/Makefile
+@@ -2,6 +2,7 @@
+ obj-$(CONFIG_USB_GADGET) += composite.o config.o usbstring.o epautoconf.o udc-core.o functions.o config.o
+ obj-$(CONFIG_USB_GADGET_SERIAL) += u_serial.o serial.o f_serial.o f_acm.o
+ obj-$(CONFIG_USB_GADGET_DFU) += dfu.o
++obj-$(CONFIG_USB_GADGET_FASTBOOT) += f_fastboot.o
+ obj-$(CONFIG_USB_GADGET_DRIVER_ARC) += fsl_udc.o
+ obj-$(CONFIG_USB_GADGET_DRIVER_AT91) += at91_udc.o
+ obj-$(CONFIG_USB_GADGET_DRIVER_PXA27X) += pxa27x_udc.o
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+new file mode 100644
+index 0000000..9aec6b1
+--- /dev/null
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -0,0 +1,890 @@
++/*
++ * (C) Copyright 2008 - 2009
++ * Windriver, <www.windriver.com>
++ * Tom Rix <Tom.Rix@windriver.com>
++ *
++ * Copyright 2011 Sebastian Andrzej Siewior <bigeasy@linutronix.de>
++ *
++ * Copyright 2014 Linaro, Ltd.
++ * Rob Herring <robh@kernel.org>
++ *
++ * Copyright 2014 Sascha Hauer <s.hauer@pengutronix.de>
++ * Ported to barebox
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#define pr_fmt(fmt) "fastboot: " fmt
++
++#include <common.h>
++#include <errno.h>
++#include <malloc.h>
++#include <fcntl.h>
++#include <clock.h>
++#include <ioctl.h>
++#include <libbb.h>
++#include <boot.h>
++#include <dma.h>
++#include <fs.h>
++#include <file-list.h>
++#include <progress.h>
++#include <environment.h>
++#include <globalvar.h>
++#include <usb/ch9.h>
++#include <usb/gadget.h>
++#include <usb/fastboot.h>
++#include <usb/composite.h>
++#include <linux/err.h>
++#include <linux/compiler.h>
++#include <linux/stat.h>
++#include <linux/mtd/mtd-abi.h>
++
++#define FASTBOOT_VERSION		"0.4"
++
++#define FASTBOOT_INTERFACE_CLASS	0xff
++#define FASTBOOT_INTERFACE_SUB_CLASS	0x42
++#define FASTBOOT_INTERFACE_PROTOCOL	0x03
++
++#define FASTBOOT_TMPFILE		"/.fastboot.img"
++
++#define EP_BUFFER_SIZE			4096
++
++struct fb_variable {
++	char *name;
++	char *value;
++	struct list_head list;
++};
++
++struct f_fastboot {
++	struct usb_function func;
++
++	/* IN/OUT EP's and correspoinding requests */
++	struct usb_ep *in_ep, *out_ep;
++	struct usb_request *in_req, *out_req;
++	struct file_list *files;
++	int download_fd;
++	size_t download_bytes;
++	size_t download_size;
++	struct list_head variables;
++};
++
++static inline struct f_fastboot *func_to_fastboot(struct usb_function *f)
++{
++	return container_of(f, struct f_fastboot, func);
++}
++
++static struct usb_endpoint_descriptor fs_ep_in = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_IN,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(64),
++	.bInterval		= 0x00,
++};
++
++static struct usb_endpoint_descriptor fs_ep_out = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_OUT,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(64),
++	.bInterval		= 0x00,
++};
++
++static struct usb_endpoint_descriptor hs_ep_in = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_IN,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(512),
++	.bInterval		= 0x00,
++};
++
++static struct usb_endpoint_descriptor hs_ep_out = {
++	.bLength		= USB_DT_ENDPOINT_SIZE,
++	.bDescriptorType	= USB_DT_ENDPOINT,
++	.bEndpointAddress	= USB_DIR_OUT,
++	.bmAttributes		= USB_ENDPOINT_XFER_BULK,
++	.wMaxPacketSize		= cpu_to_le16(512),
++	.bInterval		= 0x00,
++};
++
++static struct usb_interface_descriptor interface_desc = {
++	.bLength		= USB_DT_INTERFACE_SIZE,
++	.bDescriptorType	= USB_DT_INTERFACE,
++	.bInterfaceNumber	= 0x00,
++	.bAlternateSetting	= 0x00,
++	.bNumEndpoints		= 0x02,
++	.bInterfaceClass	= FASTBOOT_INTERFACE_CLASS,
++	.bInterfaceSubClass	= FASTBOOT_INTERFACE_SUB_CLASS,
++	.bInterfaceProtocol	= FASTBOOT_INTERFACE_PROTOCOL,
++};
++
++static struct usb_descriptor_header *fb_fs_descs[] = {
++	(struct usb_descriptor_header *)&interface_desc,
++	(struct usb_descriptor_header *)&fs_ep_in,
++	(struct usb_descriptor_header *)&fs_ep_out,
++	NULL,
++};
++
++static struct usb_descriptor_header *fb_hs_descs[] = {
++	(struct usb_descriptor_header *)&interface_desc,
++	(struct usb_descriptor_header *)&hs_ep_in,
++	(struct usb_descriptor_header *)&hs_ep_out,
++	NULL,
++};
++
++/*
++ * static strings, in UTF-8
++ */
++static const char fastboot_name[] = "Android Fastboot";
++
++static struct usb_string fastboot_string_defs[] = {
++	[0].s = fastboot_name,
++	{  }			/* end of list */
++};
++
++static struct usb_gadget_strings stringtab_fastboot = {
++	.language	= 0x0409,	/* en-us */
++	.strings	= fastboot_string_defs,
++};
++
++static struct usb_gadget_strings *fastboot_strings[] = {
++	&stringtab_fastboot,
++	NULL,
++};
++
++static void rx_handler_command(struct usb_ep *ep, struct usb_request *req);
++
++static int in_req_complete;
++
++static void fastboot_complete(struct usb_ep *ep, struct usb_request *req)
++{
++	int status = req->status;
++
++	in_req_complete = 1;
++
++	pr_debug("status: %d ep '%s' trans: %d\n", status, ep->name, req->actual);
++}
++
++static struct usb_request *fastboot_alloc_request(struct usb_ep *ep)
++{
++	struct usb_request *req;
++
++	req = usb_ep_alloc_request(ep);
++	if (!req)
++		return NULL;
++
++	req->length = EP_BUFFER_SIZE;
++	req->buf = dma_alloc(EP_BUFFER_SIZE);
++	if (!req->buf) {
++		usb_ep_free_request(ep, req);
++		return NULL;
++	}
++	memset(req->buf, 0, EP_BUFFER_SIZE);
++
++	return req;
++}
++
++static void fb_setvar(struct fb_variable *var, const char *fmt, ...)
++{
++	va_list ap;
++
++	va_start(ap, fmt);
++	var->value = vasprintf(fmt, ap);
++	va_end(ap);
++}
++
++static struct fb_variable *fb_addvar(struct f_fastboot *f_fb, const char *fmt, ...)
++{
++	struct fb_variable *var = xzalloc(sizeof(*var));
++	va_list ap;
++
++	va_start(ap, fmt);
++	var->name = vasprintf(fmt, ap);
++	va_end(ap);
++
++	list_add_tail(&var->list, &f_fb->variables);
++
++	return var;
++}
++
++static int fastboot_add_partition_variables(struct f_fastboot *f_fb,
++		struct file_list_entry *fentry)
++{
++	struct stat s;
++	size_t size = 0;
++	int fd, ret;
++	struct mtd_info_user mtdinfo;
++	char *type = NULL;
++	struct fb_variable *var;
++
++	ret = stat(fentry->filename, &s);
++	if (ret) {
++		if (fentry->flags & FILE_LIST_FLAG_CREATE) {
++			ret = 0;
++			type = "file";
++			goto out;
++		}
++
++		goto out;
++	}
++
++	fd = open(fentry->filename, O_RDWR);
++	if (fd < 0) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	size = s.st_size;
++
++	ret = ioctl(fd, MEMGETINFO, &mtdinfo);
++
++	close(fd);
++
++	if (!ret) {
++		switch (mtdinfo.type) {
++		case MTD_NANDFLASH:
++			type = "NAND-flash";
++			break;
++		case MTD_NORFLASH:
++			type = "NOR-flash";
++			break;
++		case MTD_UBIVOLUME:
++			type = "UBI";
++			break;
++		default:
++			type = "flash";
++			break;
++		}
++
++		goto out;
++	}
++
++	type = "basic";
++	ret = 0;
++
++out:
++	if (ret)
++		return ret;
++
++	var = fb_addvar(f_fb, "partition-size:%s", fentry->name);
++	fb_setvar(var, "%08zx", size);
++	var = fb_addvar(f_fb, "partition-type:%s", fentry->name);
++	fb_setvar(var, "%s", type);
++
++	return ret;
++}
++
++static int fastboot_bind(struct usb_configuration *c, struct usb_function *f)
++{
++	struct usb_composite_dev *cdev = c->cdev;
++	int id, ret;
++	struct usb_gadget *gadget = c->cdev->gadget;
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++	struct usb_string *us;
++	const struct usb_function_instance *fi = f->fi;
++	struct f_fastboot_opts *opts = container_of(fi, struct f_fastboot_opts, func_inst);
++	struct file_list_entry *fentry;
++	struct fb_variable *var;
++
++	f_fb->files = opts->files;
++
++	var = fb_addvar(f_fb, "version");
++	fb_setvar(var, "0.4");
++	var = fb_addvar(f_fb, "bootloader-version");
++	fb_setvar(var, release_string);
++
++	file_list_for_each_entry(f_fb->files, fentry) {
++		ret = fastboot_add_partition_variables(f_fb, fentry);
++		if (ret)
++			return ret;
++	}
++
++	/* DYNAMIC interface numbers assignments */
++	id = usb_interface_id(c, f);
++	if (id < 0)
++		return id;
++	interface_desc.bInterfaceNumber = id;
++
++	id = usb_string_id(c->cdev);
++	if (id < 0)
++		return id;
++	fastboot_string_defs[0].id = id;
++	interface_desc.iInterface = id;
++
++	us = usb_gstrings_attach(cdev, fastboot_strings, 1);
++	if (IS_ERR(us)) {
++		ret = PTR_ERR(us);
++		return ret;
++	}
++
++	f_fb->in_ep = usb_ep_autoconfig(gadget, &fs_ep_in);
++	if (!f_fb->in_ep)
++		return -ENODEV;
++	f_fb->in_ep->driver_data = c->cdev;
++
++	f_fb->out_ep = usb_ep_autoconfig(gadget, &fs_ep_out);
++	if (!f_fb->out_ep)
++		return -ENODEV;
++	f_fb->out_ep->driver_data = c->cdev;
++
++	hs_ep_out.bEndpointAddress = fs_ep_out.bEndpointAddress;
++	hs_ep_in.bEndpointAddress = fs_ep_in.bEndpointAddress;
++
++	f_fb->out_req = fastboot_alloc_request(f_fb->out_ep);
++	if (!f_fb->out_req) {
++		puts("failed to alloc out req\n");
++		ret = -EINVAL;
++		return ret;
++	}
++
++	f_fb->out_req->complete = rx_handler_command;
++	f_fb->out_req->context = f_fb;
++
++	f_fb->in_req = fastboot_alloc_request(f_fb->in_ep);
++	if (!f_fb->in_req) {
++		puts("failed alloc req in\n");
++		ret = -EINVAL;
++		return ret;
++	}
++	f_fb->in_req->complete = fastboot_complete;
++	f_fb->out_req->context = f_fb;
++
++	ret = usb_assign_descriptors(f, fb_fs_descs, fb_hs_descs, NULL);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static void fastboot_unbind(struct usb_configuration *c, struct usb_function *f)
++{
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++	struct fb_variable *var, *tmp;
++
++	usb_ep_dequeue(f_fb->in_ep, f_fb->in_req);
++	free(f_fb->in_req->buf);
++	usb_ep_free_request(f_fb->in_ep, f_fb->in_req);
++	f_fb->in_req = NULL;
++
++	usb_ep_dequeue(f_fb->out_ep, f_fb->out_req);
++	free(f_fb->out_req->buf);
++	usb_ep_free_request(f_fb->out_ep, f_fb->out_req);
++	f_fb->out_req = NULL;
++
++	list_for_each_entry_safe(var, tmp, &f_fb->variables, list) {
++		free(var->name);
++		free(var->value);
++		list_del(&var->list);
++		free(var);
++	}
++}
++
++static void fastboot_disable(struct usb_function *f)
++{
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++
++	usb_ep_disable(f_fb->out_ep);
++	usb_ep_disable(f_fb->in_ep);
++}
++
++static int fastboot_set_alt(struct usb_function *f,
++			    unsigned interface, unsigned alt)
++{
++	int ret;
++	struct f_fastboot *f_fb = func_to_fastboot(f);
++
++	pr_debug("%s: func: %s intf: %d alt: %d\n",
++	      __func__, f->name, interface, alt);
++
++	ret = config_ep_by_speed(f->config->cdev->gadget, f,
++			f_fb->out_ep);
++	if (ret)
++		return ret;
++
++	ret = usb_ep_enable(f_fb->out_ep);
++	if (ret) {
++		pr_err("failed to enable out ep: %s\n", strerror(-ret));
++		return ret;
++	}
++
++	ret = config_ep_by_speed(f->config->cdev->gadget, f,
++			f_fb->in_ep);
++	if (ret)
++		return ret;
++
++	ret = usb_ep_enable(f_fb->in_ep);
++	if (ret) {
++		pr_err("failed to enable in ep: %s\n", strerror(-ret));
++		return ret;
++	}
++
++	memset(f_fb->out_req->buf, 0, EP_BUFFER_SIZE);
++	ret = usb_ep_queue(f_fb->out_ep, f_fb->out_req);
++	if (ret)
++		goto err;
++
++	return 0;
++err:
++	fastboot_disable(f);
++	return ret;
++}
++
++static void fastboot_free_func(struct usb_function *f)
++{
++	struct f_fastboot *f_fb = container_of(f, struct f_fastboot, func);
++
++	free(f_fb);
++}
++
++static struct usb_function *fastboot_alloc_func(struct usb_function_instance *fi)
++{
++	struct f_fastboot *f_fb;
++
++	f_fb = xzalloc(sizeof(*f_fb));
++
++	INIT_LIST_HEAD(&f_fb->variables);
++
++	f_fb->func.name = "fastboot";
++	f_fb->func.strings = fastboot_strings;
++	f_fb->func.bind = fastboot_bind;
++	f_fb->func.set_alt = fastboot_set_alt;
++	f_fb->func.disable = fastboot_disable;
++	f_fb->func.unbind = fastboot_unbind;
++	f_fb->func.free_func = fastboot_free_func;
++
++	return &f_fb->func;
++}
++
++static void fastboot_free_instance(struct usb_function_instance *fi)
++{
++	struct f_fastboot_opts *opts;
++
++	opts = container_of(fi, struct f_fastboot_opts, func_inst);
++	kfree(opts);
++}
++
++static struct usb_function_instance *fastboot_alloc_instance(void)
++{
++	struct f_fastboot_opts *opts;
++
++	opts = xzalloc(sizeof(*opts));
++	opts->func_inst.free_func_inst = fastboot_free_instance;
++
++	return &opts->func_inst;
++}
++
++DECLARE_USB_FUNCTION_INIT(fastboot, fastboot_alloc_instance, fastboot_alloc_func);
++
++static int fastboot_tx_write(struct f_fastboot *f_fb, const char *buffer, unsigned int buffer_size)
++{
++	struct usb_request *in_req = f_fb->in_req;
++	uint64_t start;
++	int ret;
++
++	memcpy(in_req->buf, buffer, buffer_size);
++	in_req->length = buffer_size;
++	in_req_complete = 0;
++	ret = usb_ep_queue(f_fb->in_ep, in_req);
++	if (ret)
++		pr_err("Error %d on queue\n", ret);
++
++	start = get_time_ns();
++
++	while (!in_req_complete) {
++		if (is_timeout(start, 2 * SECOND))
++			return -ETIMEDOUT;
++		usb_gadget_poll();
++	}
++
++	return 0;
++}
++
++static int fastboot_tx_print(struct f_fastboot *f_fb, const char *fmt, ...)
++{
++	char buf[64];
++	va_list ap;
++	int n;
++
++	va_start(ap, fmt);
++	n = vsnprintf(buf, 64, fmt, ap);
++	va_end(ap);
++
++	if (n > 64)
++		n = 64;
++
++	return fastboot_tx_write(f_fb, buf, n);
++}
++
++static void compl_do_reset(struct usb_ep *ep, struct usb_request *req)
++{
++	reset_cpu(0);
++}
++
++static void cb_reboot(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++
++	f_fb->in_req->complete = compl_do_reset;
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static int strcmp_l1(const char *s1, const char *s2)
++{
++	if (!s1 || !s2)
++		return -1;
++	return strncmp(s1, s2, strlen(s1));
++}
++
++static void cb_getvar(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	struct fb_variable *var;
++
++	pr_debug("getvar: \"%s\"\n", cmd);
++
++	if (!strcmp_l1(cmd, "all")) {
++		list_for_each_entry(var, &f_fb->variables, list) {
++			fastboot_tx_print(f_fb, "INFO%s: %s", var->name, var->value);
++		}
++		fastboot_tx_print(f_fb, "OKAY");
++		return;
++	}
++
++	list_for_each_entry(var, &f_fb->variables, list) {
++		if (!strcmp(cmd, var->name)) {
++			fastboot_tx_print(f_fb, "OKAY%s", var->value);
++			return;
++		}
++	}
++
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static void rx_handler_dl_image(struct usb_ep *ep, struct usb_request *req)
++{
++	struct f_fastboot *f_fb = req->context;
++	const unsigned char *buffer = req->buf;
++	int ret;
++
++	if (req->status != 0) {
++		pr_err("Bad status: %d\n", req->status);
++		return;
++	}
++
++	ret = write(f_fb->download_fd, buffer, req->actual);
++	if (ret < 0) {
++		fastboot_tx_print(f_fb, "FAIL%s", strerror(-ret));
++		return;
++	}
++
++	f_fb->download_bytes += req->actual;
++
++	req->length = f_fb->download_size - f_fb->download_bytes;
++	if (req->length > EP_BUFFER_SIZE)
++		req->length = EP_BUFFER_SIZE;
++
++	show_progress(f_fb->download_bytes);
++
++	/* Check if transfer is done */
++	if (f_fb->download_bytes >= f_fb->download_size) {
++		req->complete = rx_handler_command;
++		req->length = EP_BUFFER_SIZE;
++
++		fastboot_tx_print(f_fb, "INFODownloading %d bytes finished",
++				f_fb->download_bytes);
++
++		fastboot_tx_print(f_fb, "OKAY");
++
++		printf("\n");
++	}
++
++	req->actual = 0;
++	usb_ep_queue(ep, req);
++}
++
++static void cb_download(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++
++	f_fb->download_size = simple_strtoul(cmd, NULL, 16);
++	f_fb->download_bytes = 0;
++
++	fastboot_tx_print(f_fb, "INFODownloading %d bytes...", f_fb->download_size);
++
++	init_progression_bar(f_fb->download_size);
++
++	f_fb->download_fd = open(FASTBOOT_TMPFILE, O_WRONLY | O_CREAT | O_TRUNC);
++	if (f_fb->download_fd < 0) {
++		fastboot_tx_print(f_fb, "FAILInternal Error");
++		return;
++	}
++
++	if (!f_fb->download_size) {
++		fastboot_tx_print(f_fb, "FAILdata invalid size");
++	} else {
++		fastboot_tx_print(f_fb, "DATA%08x", f_fb->download_size);
++		req->complete = rx_handler_dl_image;
++		req->length = EP_BUFFER_SIZE;
++		if (req->length < ep->maxpacket)
++			req->length = ep->maxpacket;
++	}
++}
++
++static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
++{
++	int ret;
++	struct bootm_data data = {
++		.initrd_address = UIMAGE_INVALID_ADDRESS,
++		.os_address = UIMAGE_SOME_ADDRESS,
++	};
++
++	pr_info("Booting kernel..\n");
++
++	globalvar_set_match("linux.bootargs.dyn.", "");
++	globalvar_set_match("bootm.", "");
++
++	data.os_file = xstrdup(FASTBOOT_TMPFILE);
++
++	ret = bootm_boot(&data);
++	if (ret)
++		pr_err("Booting failed\n");
++}
++
++static void cb_boot(struct usb_ep *ep, struct usb_request *req, const char *opt)
++{
++	struct f_fastboot *f_fb = req->context;
++
++	f_fb->in_req->complete = do_bootm_on_complete;
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static void cb_flash(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	struct file_list_entry *fentry;
++	int ret;
++	const char *filename = NULL;
++	enum filetype filetype = file_name_detect_type(FASTBOOT_TMPFILE);
++
++	fastboot_tx_print(f_fb, "INFOCopying file to %s...", cmd);
++
++	file_list_for_each_entry(f_fb->files, fentry) {
++		if (!strcmp(cmd, fentry->name)) {
++			filename = fentry->filename;
++			break;
++		}
++	}
++
++	if (!filename) {
++		fastboot_tx_print(f_fb, "FAILNo such partition: %s", cmd);
++		return;
++	}
++
++	if (filetype == filetype_ubi) {
++		char *cmd = asprintf("ubiformat -y -f %s %s", FASTBOOT_TMPFILE, filename);
++
++		fastboot_tx_print(f_fb, "INFOThis is an UBI image...");
++
++		ret = run_command(cmd);
++
++		free(cmd);
++
++		if (ret) {
++			fastboot_tx_print(f_fb, "FAILwrite partition: %s", strerror(-ret));
++			return;
++		}
++
++		goto out;
++	}
++
++	ret = copy_file(FASTBOOT_TMPFILE, filename, 1);
++	if (ret) {
++		fastboot_tx_print(f_fb, "FAILwrite partition: %s", strerror(-ret));
++		return;
++	}
++
++out:
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static void cb_erase(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	struct file_list_entry *fentry;
++	int ret;
++	const char *filename = NULL;
++	int fd;
++
++	fastboot_tx_print(f_fb, "INFOErasing %s...", cmd);
++
++	file_list_for_each_entry(f_fb->files, fentry) {
++		if (!strcmp(cmd, fentry->name)) {
++			filename = fentry->filename;
++			break;
++		}
++	}
++
++	if (!filename) {
++		fastboot_tx_print(f_fb, "FAILNo such partition: %s", cmd);
++		return;
++	}
++
++	fd = open(filename, O_RDWR);
++	if (fd < 0)
++		fastboot_tx_print(f_fb, "FAIL%s", strerror(-fd));
++
++	ret = erase(fd, ~0, 0);
++
++	close(fd);
++
++	if (ret)
++		fastboot_tx_print(f_fb, "FAILcannot erase partition %s: %s",
++				filename, strerror(-ret));
++	else
++		fastboot_tx_print(f_fb, "OKAY");
++}
++
++struct cmd_dispatch_info {
++	char *cmd;
++	void (*cb)(struct usb_ep *ep, struct usb_request *req, const char *opt);
++};
++
++static void fb_run_command(struct usb_ep *ep, struct usb_request *req, const char *cmd,
++		const struct cmd_dispatch_info *cmds, int num_commands)
++{
++	void (*func_cb)(struct usb_ep *ep, struct usb_request *req, const char *cmd) = NULL;
++	struct f_fastboot *f_fb = req->context;
++	int i;
++
++	for (i = 0; i < num_commands; i++) {
++		if (!strcmp_l1(cmds[i].cmd, cmd)) {
++			func_cb = cmds[i].cb;
++			cmd += strlen(cmds[i].cmd);
++			func_cb(ep, req, cmd);
++			return;
++		}
++	}
++
++	fastboot_tx_print(f_fb, "FAILunknown command %s", cmd);
++}
++
++static void cb_oem_getenv(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	const char *value;
++
++	pr_debug("%s: \"%s\"\n", __func__, cmd);
++
++	value = getenv(cmd);
++
++	fastboot_tx_print(f_fb, "INFO%s", value ? value : "");
++	fastboot_tx_print(f_fb, "OKAY");
++}
++
++static void cb_oem_setenv(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	char *var = xstrdup(cmd);
++	char *value;
++	int ret;
++
++	pr_debug("%s: \"%s\"\n", __func__, cmd);
++
++	value = strchr(var, '=');
++	if (!value) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	*value++ = 0;
++
++	ret = setenv(var, value);
++	if (ret)
++		goto out;
++
++	fastboot_tx_print(f_fb, "OKAY");
++out:
++	free(var);
++
++	if (ret)
++		fastboot_tx_print(f_fb, "FAIL%s", strerror(-ret));
++}
++
++static void cb_oem_exec(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	struct f_fastboot *f_fb = req->context;
++	int ret;
++
++	ret = run_command(cmd);
++	if (ret < 0)
++		fastboot_tx_print(f_fb, "FAIL%s", strerror(-ret));
++	else if (ret > 0)
++		fastboot_tx_print(f_fb, "FAIL");
++	else
++		fastboot_tx_print(f_fb, "OKAY");
++}
++
++static const struct cmd_dispatch_info cmd_oem_dispatch_info[] = {
++	{
++		.cmd = "getenv ",
++		.cb = cb_oem_getenv,
++	}, {
++		.cmd = "setenv ",
++		.cb = cb_oem_setenv,
++	}, {
++		.cmd = "exec ",
++		.cb = cb_oem_exec,
++	},
++};
++
++static void cb_oem(struct usb_ep *ep, struct usb_request *req, const char *cmd)
++{
++	pr_debug("%s: \"%s\"\n", __func__, cmd);
++
++	fb_run_command(ep, req, cmd, cmd_oem_dispatch_info, ARRAY_SIZE(cmd_oem_dispatch_info));
++}
++
++static const struct cmd_dispatch_info cmd_dispatch_info[] = {
++	{
++		.cmd = "reboot",
++		.cb = cb_reboot,
++	}, {
++		.cmd = "getvar:",
++		.cb = cb_getvar,
++	}, {
++		.cmd = "download:",
++		.cb = cb_download,
++	}, {
++		.cmd = "boot",
++		.cb = cb_boot,
++	}, {
++		.cmd = "flash:",
++		.cb = cb_flash,
++	}, {
++		.cmd = "erase:",
++		.cb = cb_erase,
++	}, {
++		.cmd = "oem ",
++		.cb = cb_oem,
++	},
++};
++
++static void rx_handler_command(struct usb_ep *ep, struct usb_request *req)
++{
++	char *cmdbuf = req->buf;
++
++	if (req->status != 0)
++		return;
++
++	*(cmdbuf + req->actual) = 0;
++
++	fb_run_command(ep, req, cmdbuf, cmd_dispatch_info,
++				ARRAY_SIZE(cmd_dispatch_info));
++
++	*cmdbuf = '\0';
++	req->actual = 0;
++	memset(req->buf, 0, EP_BUFFER_SIZE);
++	usb_ep_queue(ep, req);
++}
+diff --git a/include/usb/fastboot.h b/include/usb/fastboot.h
+new file mode 100644
+index 0000000..dab5a9a
+--- /dev/null
++++ b/include/usb/fastboot.h
+@@ -0,0 +1,13 @@
++#ifndef _USB_FASTBOOT_H
++#define _USB_FASTBOOT_H
++
++#include <linux/types.h>
++#include <file-list.h>
++#include <usb/composite.h>
++
++struct f_fastboot_opts {
++	struct usb_function_instance func_inst;
++	struct file_list *files;
++};
++
++#endif /* _USB_FASTBOOT_H */
+-- 
+2.0.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
