@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-x236.google.com ([2607:f8b0:4003:c02::236])
+Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAhWN-0002IB-3t
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 15:34:59 +0000
-Received: by mail-oa0-f54.google.com with SMTP id n16so5791810oag.27
- for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 08:34:37 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <CABJ1b_RgTF0eTSVWGy6H01bTVX8OCxwPtRpMQhsev=w53fcZLA@mail.gmail.com>
-References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140725073243.GP23235@pengutronix.de>
- <CABJ1b_RgTF0eTSVWGy6H01bTVX8OCxwPtRpMQhsev=w53fcZLA@mail.gmail.com>
-Date: Fri, 25 Jul 2014 17:34:37 +0200
-Message-ID: <CABJ1b_Qi4iSkHfdgLqH1kOcxiM06Xg0dSxzJUiKR1DyxQjDnUw@mail.gmail.com>
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+ id 1XAiMT-0007ri-J2
+ for barebox@lists.infradead.org; Fri, 25 Jul 2014 16:28:50 +0000
+Received: by mail-la0-f53.google.com with SMTP id gl10so3180071lab.26
+ for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 09:28:22 -0700 (PDT)
+Date: Fri, 25 Jul 2014 20:41:02 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140725204102.872c3eb81565a24df6f3b81b@gmail.com>
+In-Reply-To: <1406218113.4590.26.camel@weser.hi.pengutronix.de>
+References: <20140724200545.009a9c6c143abf1b344721a5@gmail.com>
+ <1406218113.4590.26.camel@weser.hi.pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,70 +20,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] Minor USB fixes and xHCI driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox <barebox@lists.infradead.org>
+Subject: Re: Tegra2 USB issue
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Jul 25, 2014 at 4:40 PM, Sebastian Hesselbarth
-<sebastian.hesselbarth@gmail.com> wrote:
-> On Fri, Jul 25, 2014 at 9:32 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> On Thu, Jul 24, 2014 at 03:28:40PM +0200, Sebastian Hesselbarth wrote:
->>> This patch set adds initial support for xHCI host controllers either
->>> as platform_device or PCI attached device. Compared to EHCI, the
->>> xHCI added even more SW stuff around the host controller interface
->>> we have to deal with. From a topology point-of-view each xHCI HC
->>> represents two virtual Root Hubs, one for USB 3.0 and one for USB
->>> 2.0 with TT.
->>>
->>> The xHCI driver currently only supports virtual USB 2.0 ports of the
->>> xHCI controller. If a USB 3.0 device is used, it has to be connected
->>> with a USB 2.0 cable, i.e. no SuperSpeed cable. Also, I haven't been
->>> able to test any USB 1.1 devices, yet. Anyway, I plan to have a look
->>> at both USB 1.1 and USB 3.0 but still I consider the driver in a
->>> quite good shape to be released.
->>
->> Do we have the chance to issue a warning when a device is connected
->> with a superspeed cable? If not maybe a general warning in the xhci
->> probe function is a good idea.
->
-> Sorry, I the reply is f*cked up, have to answer this through gmail.
->
-> I did some improvements and added missing pieces, now all non-SS
-> combinations I have tested are working, e.g LS/FS/HS on Root Hub,
-> on Single-TT HS Hub, and on Multi-TT HS Hub. I haven't tested any
-> Hub-Hub paths, but that is something that can wait IMHO.
+On Thu, 24 Jul 2014 18:08:33 +0200
+Lucas Stach <l.stach@pengutronix.de> wrote:
 
-I just tested SS (with SS cable) on Root Hub and it worked.. but just
-on one of the both ports Mirabox has. Now I am quite convinced that
-the inscription on the back of Mirabox above USB ports isn't a typo ;)
+> Am Donnerstag, den 24.07.2014, 20:05 +0400 schrieb Antony Pavlov:
+> > Hi!
+> > =
 
-Both ports are blue, i.e. they should be SS capable. The working one
-has "USB 3.0" printed above it, the one that does not work has "USB 2.0"
-printed over it. I thought it was just a typo, I guess it isn't.
+> > I have just tested this commit
+> > =
 
-> I am now going to look at SS issues and if I don't find a quick solution,
-> I'll put a warning that SS is not supported, yet. I will be quite easy to
-> catch, as there are distinct virtual USB 3.0 ports on each xHCI, i.e.
-> if the port reports a device, it is SS with SS-cable on USB 3.0 port.
+> > commit d8bdd537220dd83912949f19ba67029bd1f11c58
+> > Author: Lucas Stach <dev@lynxeye.de>
+> > Date:   Fri Apr 12 12:28:14 2013 +0200
+> > =
 
-Ok, I admit that error reporting capabilities of the driver could be improved
-a lot. OTOH, usb core itself isn't very noisy about errors too, it just silently
-fails.
+> >     tegra: switch to proper CPU type
+> >     =
 
-I'll send an updated v2 this weekend or beginning of next week.
+> >     Tegras main CPUs are all ARMv7.
+> >     =
 
-> BTW, the error path of usb core device detect is utterly broken.. not
-> that it is important for most cases, but for debugging failing device
-> connects it is ;) I'll fix it up anytime soon.
+> >     Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> >     Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
+> >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > =
 
-When I get back to above, I'll also add some more verbose error reporting
-to xHCI HCD.
+> > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> > index bb9b47b..dfb7e24 100644
+> > --- a/arch/arm/Kconfig
+> > +++ b/arch/arm/Kconfig
+> > @@ -137,7 +137,7 @@ config ARCH_VEXPRESS
+> >  =
 
-Sebastian
+> >  config ARCH_TEGRA
+> >         bool "Nvidia Tegra-based boards"
+> > -       select CPU_ARM926T
+> > +       select CPU_V7
+> >         select HAS_DEBUG_LL
+> >  =
+
+> >  config ARCH_ZYNQ
+> > =
+
+> > This commit breaks 'usb' command --- it does not scan devices anymore, =
+just hangs.
+> > =
+
+> > I have used codesourcery arm-2013.11 toolchain.
+> > =
+
+> I haven't tested USB myself, as I'm not using second stage barebox after
+> u-boot and there's still things missing for USB to work on first stage.
+> Currently only SDMMMC is fully supported.
+> =
+
+> Are you testing exactly this commit? If so you might need to apply
+> 431d8a247dfa63f817cda137a81dbb2244d413dc "arm: properly init alignment
+> trap bit", as USB might trigger an unaligned access.
+
+Alas! Appling of 431d8a24 does not help.
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
