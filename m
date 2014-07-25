@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x22a.google.com ([2607:f8b0:4003:c06::22a])
+Received: from mail-oi0-x22d.google.com ([2607:f8b0:4003:c06::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAgfn-0004mA-Iu
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 14:40:40 +0000
-Received: by mail-oi0-f42.google.com with SMTP id a3so3456049oib.1
- for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 07:40:16 -0700 (PDT)
+ id 1XAgir-0005Ag-8H
+ for barebox@lists.infradead.org; Fri, 25 Jul 2014 14:43:51 +0000
+Received: by mail-oi0-f45.google.com with SMTP id e131so3446296oig.18
+ for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 07:43:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20140725073243.GP23235@pengutronix.de>
-References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140725073243.GP23235@pengutronix.de>
-Date: Fri, 25 Jul 2014 16:40:16 +0200
-Message-ID: <CABJ1b_RgTF0eTSVWGy6H01bTVX8OCxwPtRpMQhsev=w53fcZLA@mail.gmail.com>
+In-Reply-To: <1406278266.4643.5.camel@weser.hi.pengutronix.de>
+References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406107568-8440-3-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406278266.4643.5.camel@weser.hi.pengutronix.de>
+Date: Fri, 25 Jul 2014 16:43:27 +0200
+Message-ID: <CABJ1b_RN48sP04xF5BZJKxCFowCt6TNXx_tZLecV88Ehna-UbA@mail.gmail.com>
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,45 +25,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] Minor USB fixes and xHCI driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH RESEND 2/6] pci: pci_scan_bus: respect 64b BARs
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox <barebox@lists.infradead.org>
 
-On Fri, Jul 25, 2014 at 9:32 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Thu, Jul 24, 2014 at 03:28:40PM +0200, Sebastian Hesselbarth wrote:
->> This patch set adds initial support for xHCI host controllers either
->> as platform_device or PCI attached device. Compared to EHCI, the
->> xHCI added even more SW stuff around the host controller interface
->> we have to deal with. From a topology point-of-view each xHCI HC
->> represents two virtual Root Hubs, one for USB 3.0 and one for USB
->> 2.0 with TT.
+On Fri, Jul 25, 2014 at 10:51 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
+> Am Mittwoch, den 23.07.2014, 11:26 +0200 schrieb Sebastian Hesselbarth:
+>> In PCI 64-bit BARs span two 32-bit BARs, therefore if BAR type
+>> indicates a 64-bit BAR we have to skip the next BAR register.
+>> Note that this does not add proper support for 64-bit BARs and
+>> 64-bit addresses but still picks the lower 32-bit address.
 >>
->> The xHCI driver currently only supports virtual USB 2.0 ports of the
->> xHCI controller. If a USB 3.0 device is used, it has to be connected
->> with a USB 2.0 cable, i.e. no SuperSpeed cable. Also, I haven't been
->> able to test any USB 1.1 devices, yet. Anyway, I plan to have a look
->> at both USB 1.1 and USB 3.0 but still I consider the driver in a
->> quite good shape to be released.
+>> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+>> ---
+>> To: barebox@lists.infradead.org
+>> To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+>> Cc: Antony Pavlov <antonynpavlov@gmail.com>
+>> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+>> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+>> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+>> ---
+>>  drivers/pci/pci.c | 8 +++++++-
+>>  1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>> index 3d88b0ff5fd0..e5cd8a33b2be 100644
+>> --- a/drivers/pci/pci.c
+>> +++ b/drivers/pci/pci.c
+>> @@ -196,6 +196,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+>>
+>>               for (bar = 0; bar < 6; bar++) {
+>>                       resource_size_t last_addr;
+>> +                     bool found_bar64 = false;
 >
-> Do we have the chance to issue a warning when a device is connected
-> with a superspeed cable? If not maybe a general warning in the xhci
-> probe function is a good idea.
+> I don't think we need this variable...
+>
+>>
+>>                       pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &old_bar);
+>>                       pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, 0xfffffffe);
+>> @@ -213,17 +214,22 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+>>                               pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_io);
+>>                               last_addr = last_io;
+>>                               last_io += size;
+>> -
+>>                       } else { /* MEM */
+>>                               size = -(mask & 0xfffffff0);
+>>                               DBG("  PCI: pbar%d: mask=%08x memory %d bytes\n", bar, mask, size);
+>>                               pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
+>>                               last_addr = last_mem;
+>>                               last_mem += size;
+>> +
+>> +                             if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
+>> +                                 PCI_BASE_ADDRESS_MEM_TYPE_64)
+>> +                                     found_bar64 = true;
+>
+> ... if we set the dev->resource.flags to IORESOURCE_MEM_64 (bonus points
+> for setting the flags in other cases properly also) here...
+>
+>>                       }
+>>
+>>                       dev->resource[bar].start = last_addr;
+>>                       dev->resource[bar].end = last_addr + size - 1;
+>> +                     if (found_bar64)
+>> +                             bar++;
+>
+> ... and check for this flag here.
 
-Sorry, I the reply is f*cked up, have to answer this through gmail.
-
-I did some improvements and added missing pieces, now all non-SS
-combinations I have tested are working, e.g LS/FS/HS on Root Hub,
-on Single-TT HS Hub, and on Multi-TT HS Hub. I haven't tested any
-Hub-Hub paths, but that is something that can wait IMHO.
-
-I am now going to look at SS issues and if I don't find a quick solution,
-I'll put a warning that SS is not supported, yet. I will be quite easy to
-catch, as there are distinct virtual USB 3.0 ports on each xHCI, i.e.
-if the port reports a device, it is SS with SS-cable on USB 3.0 port.
-
-BTW, the error path of usb core device detect is utterly broken.. not
-that it is important for most cases, but for debugging failing device
-connects it is ;) I'll fix it up anytime soon.
+Yup, sounds like a good plan. I'll consider this when I come back to it.
 
 Sebastian
 
