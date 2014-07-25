@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XAbeE-0001pF-Jn
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 09:18:43 +0000
-Message-ID: <1406279788.4643.17.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 25 Jul 2014 11:16:28 +0200
-In-Reply-To: <1406107568-8440-7-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1406107568-8440-7-git-send-email-sebastian.hesselbarth@gmail.com>
-Mime-Version: 1.0
+Received: from mail-oi0-x22a.google.com ([2607:f8b0:4003:c06::22a])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XAgfn-0004mA-Iu
+ for barebox@lists.infradead.org; Fri, 25 Jul 2014 14:40:40 +0000
+Received: by mail-oi0-f42.google.com with SMTP id a3so3456049oib.1
+ for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 07:40:16 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20140725073243.GP23235@pengutronix.de>
+References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20140725073243.GP23235@pengutronix.de>
+Date: Fri, 25 Jul 2014 16:40:16 +0200
+Message-ID: <CABJ1b_RgTF0eTSVWGy6H01bTVX8OCxwPtRpMQhsev=w53fcZLA@mail.gmail.com>
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +24,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RESEND 6/6] pci: mvebu: Add PCIe driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 0/6] Minor USB fixes and xHCI driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox <barebox@lists.infradead.org>
 
-Am Mittwoch, den 23.07.2014, 11:26 +0200 schrieb Sebastian Hesselbarth:
-> This adds a PCI driver for the controllers found on Marvell MVEBU SoCs.
-> Besides the functional driver itself, it also adds SoC specific PHY
-> setup required for PCIe. Currently, only Armada 370 is fully supported.
-> 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+On Fri, Jul 25, 2014 at 9:32 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Thu, Jul 24, 2014 at 03:28:40PM +0200, Sebastian Hesselbarth wrote:
+>> This patch set adds initial support for xHCI host controllers either
+>> as platform_device or PCI attached device. Compared to EHCI, the
+>> xHCI added even more SW stuff around the host controller interface
+>> we have to deal with. From a topology point-of-view each xHCI HC
+>> represents two virtual Root Hubs, one for USB 3.0 and one for USB
+>> 2.0 with TT.
+>>
+>> The xHCI driver currently only supports virtual USB 2.0 ports of the
+>> xHCI controller. If a USB 3.0 device is used, it has to be connected
+>> with a USB 2.0 cable, i.e. no SuperSpeed cable. Also, I haven't been
+>> able to test any USB 1.1 devices, yet. Anyway, I plan to have a look
+>> at both USB 1.1 and USB 3.0 but still I consider the driver in a
+>> quite good shape to be released.
+>
+> Do we have the chance to issue a warning when a device is connected
+> with a superspeed cable? If not maybe a general warning in the xhci
+> probe function is a good idea.
 
-I can't really comment about the details, as I have no knowledge about
-this hardware in particular, but aside from the sysdata thing and one
-nit below this looks reasonable, so:
+Sorry, I the reply is f*cked up, have to answer this through gmail.
 
-Acked-by: Lucas Stach <l.stach@pengutronix.de>
+I did some improvements and added missing pieces, now all non-SS
+combinations I have tested are working, e.g LS/FS/HS on Root Hub,
+on Single-TT HS Hub, and on Multi-TT HS Hub. I haven't tested any
+Hub-Hub paths, but that is something that can wait IMHO.
 
-> ---
-> To: barebox@lists.infradead.org
-> To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-> ---
->  arch/arm/Kconfig            |   1 +
->  drivers/pci/Kconfig         |   6 +
->  drivers/pci/Makefile        |   2 +
->  drivers/pci/pci-mvebu-phy.c | 102 +++++++++++
->  drivers/pci/pci-mvebu.c     | 436 ++++++++++++++++++++++++++++++++++++++++++++
->  drivers/pci/pci-mvebu.h     |  35 ++++
->  6 files changed, 582 insertions(+)
->  create mode 100644 drivers/pci/pci-mvebu-phy.c
->  create mode 100644 drivers/pci/pci-mvebu.c
->  create mode 100644 drivers/pci/pci-mvebu.h
-> 
-[...]
-> +
-> +static struct mvebu_pcie_ops armada_370_ops = {
-> +	.phy_setup = armada_370_phy_setup,
-> +};
-> +
-> +static struct of_device_id mvebu_pcie_dt_ids[] = {
-> +#if defined(CONFIG_ARCH_ARMADA_XP)
-> +	{ .compatible = "marvell,armada-xp-pcie", },
-> +#endif
-> +#if defined(CONFIG_ARCH_ARMADA_370)
-> +	{ .compatible = "marvell,armada-370-pcie", .data = (u32)&armada_370_ops, },
-> +#endif
-> +#if defined(CONFIG_ARCH_DOVE)
-> +	{ .compatible = "marvell,dove-pcie", },
-> +#endif
-> +#if defined(CONFIG_ARCH_KIRKWOOD)
-> +	{ .compatible = "marvell,kirkwood-pcie", },
-> +#endif
-> +	{ },
-> +};
-> +
+I am now going to look at SS issues and if I don't find a quick solution,
+I'll put a warning that SS is not supported, yet. I will be quite easy to
+catch, as there are distinct virtual USB 3.0 ports on each xHCI, i.e.
+if the port reports a device, it is SS with SS-cable on USB 3.0 port.
 
-Do those #if defined really buy us anything? I don't think they make a
-big difference on code size, so please get rid of those.
+BTW, the error path of usb core device detect is utterly broken.. not
+that it is important for most cases, but for debugging failing device
+connects it is ;) I'll fix it up anytime soon.
 
-Regards,
-Lucas
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
-
+Sebastian
 
 _______________________________________________
 barebox mailing list
