@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XAb59-00032I-J8
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 08:42:29 +0000
+ Linux)) id 1XAb59-00032J-JE
+ for barebox@lists.infradead.org; Fri, 25 Jul 2014 08:42:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 25 Jul 2014 10:42:03 +0200
-Message-Id: <1406277724-4370-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 25 Jul 2014 10:42:04 +0200
+Message-Id: <1406277724-4370-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1406277724-4370-1-git-send-email-s.hauer@pengutronix.de>
 References: <1406277724-4370-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,61 +17,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] fs: ext4: use EXT2_BLOCK_SIZE instead of fs->blksz
+Subject: [PATCH 3/3] fs: ext4: le32_to_cpu() used on a 16-bit field
 To: barebox@lists.infradead.org
 
-From U-Boot commit:
-
-| commit 470173274d9ceb18a7140ef93e20be6c2236e7d9
-| Author: Ionut Nicu <ioan.nicu.ext@nsn.com>
-| Date:   Mon Jan 13 11:59:24 2014 +0100
-|
-|     ext4fs: use EXT2_BLOCK_SIZE instead of fs->blksz
-|
-|     Using fs->blksz in ext4fs_get_extent_block() is not
-|     correct since fs->blksz is not initialized on the
-|     read path. Use EXT2_BLOCK_SIZE() instead which will
-|     produce the desired output.
-|
-|     Signed-off-by: Ionut Nicu <ioan.nicu.ext@nsn.com>
-|     Signed-off-by: Mathias Rulf <mathias.rulf@nsn.com>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/ext4/ext4_common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
-index 5bff868..1bd9215 100644
---- a/fs/ext4/ext4_common.c
-+++ b/fs/ext4/ext4_common.c
-@@ -45,6 +45,7 @@ static struct ext4_extent_header *ext4fs_get_extent_block(struct ext2_data *data
- 	struct ext4_extent_idx *index;
- 	unsigned long long block;
- 	struct ext_filesystem *fs = data->fs;
-+	int blksz = EXT2_BLOCK_SIZE(data);
- 	int i, ret;
- 
- 	while (1) {
-@@ -68,7 +69,7 @@ static struct ext4_extent_header *ext4fs_get_extent_block(struct ext2_data *data
- 		block = le32_to_cpu(index[i].ei_leaf_hi);
- 		block = (block << 32) + le32_to_cpu(index[i].ei_leaf_lo);
- 
--		ret = ext4fs_devread(fs, block << log2_blksz, 0, fs->blksz, buf);
-+		ret = ext4fs_devread(fs, block << log2_blksz, 0, blksz, buf);
- 		if (ret)
- 			return NULL;
- 		else
--- 
-2.0.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbSBVLUJvb3QgY29tbWl0OgoKfCBjb21taXQgOGI0MTVmNzAzZjg4ZDFkM2IwNDY2ODMwMDQ3
+YWZmYmJmN2YyNDkxMwp8IEF1dGhvcjogUm9tbWVsIEN1c3RvZGlvIDxzZXNzeWFyZ2MrdWJvb3RA
+Z21haWwuY29tPgp8IERhdGU6ICAgU3VuIEp1bCAyMSAxMDo1MzoyNSAyMDEzICswMjAwCnwKfCAg
+ICAgZXh0NGZzOiBsZTMyX3RvX2NwdSgpIHVzZWQgb24gYSAxNi1iaXQgZmllbGQKfAp8ICAgICBG
+aXggcmVhZGluZyBleHQ0X2V4dGVudF9oZWFkZXIgc3RydXR1cmUgb24gQkUgbWFjaGluZXMuICBT
+b21lIDE2IGJpdAp8ICAgICBmaWVsZHMgd2hlcmUgY29udmVydGVkIHRvIDMyIGJpdCBmaWVsZHMs
+IGR1ZSB0byB0aGUgYnl0ZSBzd2FwIG9uIEJFCnwgICAgIG1hY2hpbmVzIHRoZSBjb250YWluaW5n
+IHZhbHVlIHdhcyBjb3JydXB0ZWQuIFRoZXJlZm9yZSByZWFkaW5nIGV4dDQKfCAgICAgZmlsZXN5
+c3RlbXMgb24gQkUgbWFjaGluZXMgd2hlcmUgYnJva2VuIGJlZm9yZS4KfAp8ICAgICBTaWduZWQt
+b2ZmLWJ5OiBSb21tZWwgQ3VzdG9kaW8gPHNlc3N5YXJnYyt1Ym9vdEBnbWFpbC5jb20+CnwgICAg
+IFtzZW50IHZpYSBnaXQtc2VuZC1lbWFpbDsgcmV3b3JrIGNvbW1pdCBtZXNzYWdlXQp8ICAgICBT
+aWduZWQtb2ZmLWJ5OiBBbmRyZWFzIEJpZcOfbWFubiA8YW5kcmVhcy5kZXZlbEBnb29nbGVtYWls
+LmNvbT4KfCAgICAgUmV2aWV3ZWQtYnk6IFNpbW9uIEdsYXNzIDxzamdAY2hyb21pdW0ub3JnPgp8
+ICAgICBUZXN0ZWQtYnk6IFNpbW9uIEdsYXNzIDxzamdAY2hyb21pdW0ub3JnPgp8ICAgICBUZXN0
+ZWQtYnk6IEx1a2FzeiBNYWpld3NraSA8bC5tYWpld3NraUBzYW1zdW5nLmNvbT4KClNpZ25lZC1v
+ZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KLS0tCiBmcy9leHQ0
+L2V4dDRfY29tbW9uLmMgfCAxMiArKysrKystLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2Vy
+dGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZnMvZXh0NC9leHQ0X2NvbW1v
+bi5jIGIvZnMvZXh0NC9leHQ0X2NvbW1vbi5jCmluZGV4IDFiZDkyMTUuLmFiMGU2YjUgMTAwNjQ0
+Ci0tLSBhL2ZzL2V4dDQvZXh0NF9jb21tb24uYworKysgYi9mcy9leHQ0L2V4dDRfY29tbW9uLmMK
+QEAgLTUxLDcgKzUxLDcgQEAgc3RhdGljIHN0cnVjdCBleHQ0X2V4dGVudF9oZWFkZXIgKmV4dDRm
+c19nZXRfZXh0ZW50X2Jsb2NrKHN0cnVjdCBleHQyX2RhdGEgKmRhdGEKIAl3aGlsZSAoMSkgewog
+CQlpbmRleCA9IChzdHJ1Y3QgZXh0NF9leHRlbnRfaWR4ICopKGV4dF9ibG9jayArIDEpOwogCi0J
+CWlmIChsZTMyX3RvX2NwdShleHRfYmxvY2stPmVoX21hZ2ljKSAhPSBFWFQ0X0VYVF9NQUdJQykK
+KwkJaWYgKGxlMTZfdG9fY3B1KGV4dF9ibG9jay0+ZWhfbWFnaWMpICE9IEVYVDRfRVhUX01BR0lD
+KQogCQkJcmV0dXJuIDA7CiAKIAkJaWYgKGV4dF9ibG9jay0+ZWhfZGVwdGggPT0gMCkKQEAgLTU5
+LDE0ICs1OSwxNCBAQCBzdGF0aWMgc3RydWN0IGV4dDRfZXh0ZW50X2hlYWRlciAqZXh0NGZzX2dl
+dF9leHRlbnRfYmxvY2soc3RydWN0IGV4dDJfZGF0YSAqZGF0YQogCQlpID0gLTE7CiAJCWRvIHsK
+IAkJCWkrKzsKLQkJCWlmIChpID49IGxlMzJfdG9fY3B1KGV4dF9ibG9jay0+ZWhfZW50cmllcykp
+CisJCQlpZiAoaSA+PSBsZTE2X3RvX2NwdShleHRfYmxvY2stPmVoX2VudHJpZXMpKQogCQkJCWJy
+ZWFrOwogCQl9IHdoaWxlIChmaWxlYmxvY2sgPj0gbGUzMl90b19jcHUoaW5kZXhbaV0uZWlfYmxv
+Y2spKTsKIAogCQlpZiAoLS1pIDwgMCkKIAkJCXJldHVybiAwOwogCi0JCWJsb2NrID0gbGUzMl90
+b19jcHUoaW5kZXhbaV0uZWlfbGVhZl9oaSk7CisJCWJsb2NrID0gbGUxNl90b19jcHUoaW5kZXhb
+aV0uZWlfbGVhZl9oaSk7CiAJCWJsb2NrID0gKGJsb2NrIDw8IDMyKSArIGxlMzJfdG9fY3B1KGlu
+ZGV4W2ldLmVpX2xlYWZfbG8pOwogCiAJCXJldCA9IGV4dDRmc19kZXZyZWFkKGZzLCBibG9jayA8
+PCBsb2cyX2Jsa3N6LCAwLCBibGtzeiwgYnVmKTsKQEAgLTE4NywxOCArMTg3LDE4IEBAIGxvbmcg
+aW50IHJlYWRfYWxsb2NhdGVkX2Jsb2NrKHN0cnVjdCBleHQyZnNfbm9kZSAqbm9kZSwgaW50IGZp
+bGVibG9jaykKIAogCQlkbyB7CiAJCQlpKys7Ci0JCQlpZiAoaSA+PSBsZTMyX3RvX2NwdShleHRf
+YmxvY2stPmVoX2VudHJpZXMpKQorCQkJaWYgKGkgPj0gbGUxNl90b19jcHUoZXh0X2Jsb2NrLT5l
+aF9lbnRyaWVzKSkKIAkJCQlicmVhazsKIAkJfSB3aGlsZSAoZmlsZWJsb2NrID49IGxlMzJfdG9f
+Y3B1KGV4dGVudFtpXS5lZV9ibG9jaykpOwogCiAJCWlmICgtLWkgPj0gMCkgewogCQkJZmlsZWJs
+b2NrIC09IGxlMzJfdG9fY3B1KGV4dGVudFtpXS5lZV9ibG9jayk7Ci0JCQlpZiAoZmlsZWJsb2Nr
+ID49IGxlMzJfdG9fY3B1KGV4dGVudFtpXS5lZV9sZW4pKSB7CisJCQlpZiAoZmlsZWJsb2NrID49
+IGxlMTZfdG9fY3B1KGV4dGVudFtpXS5lZV9sZW4pKSB7CiAJCQkJZnJlZShidWYpOwogCQkJCXJl
+dHVybiAwOwogCQkJfQogCi0JCQlzdGFydCA9IGxlMzJfdG9fY3B1KGV4dGVudFtpXS5lZV9zdGFy
+dF9oaSk7CisJCQlzdGFydCA9IGxlMTZfdG9fY3B1KGV4dGVudFtpXS5lZV9zdGFydF9oaSk7CiAJ
+CQlzdGFydCA9IChzdGFydCA8PCAzMikgKwogCQkJCQlsZTMyX3RvX2NwdShleHRlbnRbaV0uZWVf
+c3RhcnRfbG8pOwogCQkJZnJlZShidWYpOwotLSAKMi4wLjEKCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
