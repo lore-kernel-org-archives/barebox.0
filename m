@@ -1,15 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XAa06-0004Cj-8X
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 07:33:10 +0000
-Date: Fri, 25 Jul 2014 09:32:43 +0200
+ Linux)) id 1XAa5i-0006BL-Hz
+ for barebox@lists.infradead.org; Fri, 25 Jul 2014 07:38:59 +0000
+Date: Fri, 25 Jul 2014 09:38:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140725073243.GP23235@pengutronix.de>
-References: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20140725073835.GI23282@pengutronix.de>
+References: <1405370916-6828-1-git-send-email-antonynpavlov@gmail.com>
+ <1405370916-6828-5-git-send-email-antonynpavlov@gmail.com>
+ <20140718054413.GL23235@pengutronix.de>
+ <20140718113626.19aba6e8e971f15944a6ff93@gmail.com>
+ <CAOpc7mEHJFktB5v=uRqLUWgEdzHA05KmFmC3_ix+gfooO-0MKw@mail.gmail.com>
+ <20140720095522.41f6874de19b368a29573cf7@gmail.com>
+ <20140721064106.GS23235@pengutronix.de>
+ <20140721111025.4a0d6d2c1ef5977e1d45f152@gmail.com>
+ <20140721081150.GT23235@pengutronix.de>
+ <20140721194150.1d5ea1f772f27fb02e267f42@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1406208526-24261-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <20140721194150.1d5ea1f772f27fb02e267f42@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +31,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] Minor USB fixes and xHCI driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [RFC v3 4/5] commands: add hwclock
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, Jul 24, 2014 at 03:28:40PM +0200, Sebastian Hesselbarth wrote:
-> This patch set adds initial support for xHCI host controllers either
-> as platform_device or PCI attached device. Compared to EHCI, the
-> xHCI added even more SW stuff around the host controller interface
-> we have to deal with. From a topology point-of-view each xHCI HC
-> represents two virtual Root Hubs, one for USB 3.0 and one for USB
-> 2.0 with TT.
+On Mon, Jul 21, 2014 at 07:41:50PM +0400, Antony Pavlov wrote:
+> On Mon, 21 Jul 2014 10:11:50 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> The xHCI driver currently only supports virtual USB 2.0 ports of the
-> xHCI controller. If a USB 3.0 device is used, it has to be connected
-> with a USB 2.0 cable, i.e. no SuperSpeed cable. Also, I haven't been
-> able to test any USB 1.1 devices, yet. Anyway, I plan to have a look
-> at both USB 1.1 and USB 3.0 but still I consider the driver in a
-> quite good shape to be released.
+> 
+> busybox realization
+> ===================
+> 
+> Here is parse_datestr() (barebox.git/libbb/time.c) date format list:
+> 
+> #if ENABLE_FEATURE_DATE_COMPAT 
+> /* MMDDhhmm[[CC]YY][.ss] */  ---  weird 'date' format
+> #endif
+> 
+> /* HH:MM[:SS] */
+> /* mm.dd-HH:MM[:SS] */
+> /* yyyy.mm.dd-HH:MM[:SS] */
+> /* yyyy-mm-dd HH:MM[:SS] */
+> 
+> /* month_name d HH:MM:SS YYYY */ --- I suppose we don't want to mess with mount_name :)
+> /* yyyy-mm-dd HH */
+> /* yyyy-mm-dd */
+> 
+> /* MM[.SS] */
+> /* HHMM[.SS] */
+> /* ddHHMM[.SS] */
+> /* mmddHHMM[.SS] */
+> /* yymmddHHMM[.SS] */
+> /* ccyymmddHHMM[.SS] */ --- this format is used in RFCv3 patchseries.
 
-Do we have the chance to issue a warning when a device is connected
-with a superspeed cable? If not maybe a general warning in the xhci
-probe function is a good idea.
+I am happy with this format. This is just what I would have typed if I
+had guessed the correct format.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
