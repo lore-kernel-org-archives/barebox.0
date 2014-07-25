@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XAbVF-00027L-FD
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 09:09:26 +0000
-Message-ID: <1406279230.4643.11.camel@weser.hi.pengutronix.de>
+ Linux)) id 1XAbeE-0001pF-Jn
+ for barebox@lists.infradead.org; Fri, 25 Jul 2014 09:18:43 +0000
+Message-ID: <1406279788.4643.17.camel@weser.hi.pengutronix.de>
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 25 Jul 2014 11:07:10 +0200
-In-Reply-To: <1406107568-8440-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 25 Jul 2014 11:16:28 +0200
+In-Reply-To: <1406107568-8440-7-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1406107568-8440-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406107568-8440-7-git-send-email-sebastian.hesselbarth@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,47 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RESEND 3/6] pci: add host controller struct to sysdata
+Subject: Re: [PATCH RESEND 6/6] pci: mvebu: Add PCIe driver
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
 Am Mittwoch, den 23.07.2014, 11:26 +0200 schrieb Sebastian Hesselbarth:
-> struct pci_bus allows to set some private sysdata. Assign the host
-> controller struct to it by default.
+> This adds a PCI driver for the controllers found on Marvell MVEBU SoCs.
+> Besides the functional driver itself, it also adds SoC specific PHY
+> setup required for PCIe. Currently, only Armada 370 is fully supported.
 > 
 > Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+
+I can't really comment about the details, as I have no knowledge about
+this hardware in particular, but aside from the sysdata thing and one
+nit below this looks reasonable, so:
+
+Acked-by: Lucas Stach <l.stach@pengutronix.de>
+
 > ---
 > To: barebox@lists.infradead.org
 > To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> Cc: Antony Pavlov <antonynpavlov@gmail.com>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 > Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 > ---
->  drivers/pci/pci.c | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm/Kconfig            |   1 +
+>  drivers/pci/Kconfig         |   6 +
+>  drivers/pci/Makefile        |   2 +
+>  drivers/pci/pci-mvebu-phy.c | 102 +++++++++++
+>  drivers/pci/pci-mvebu.c     | 436 ++++++++++++++++++++++++++++++++++++++++++++
+>  drivers/pci/pci-mvebu.h     |  35 ++++
+>  6 files changed, 582 insertions(+)
+>  create mode 100644 drivers/pci/pci-mvebu-phy.c
+>  create mode 100644 drivers/pci/pci-mvebu.c
+>  create mode 100644 drivers/pci/pci-mvebu.h
 > 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index e5cd8a33b2be..b30cdd96f8ca 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -39,6 +39,7 @@ void register_pci_controller(struct pci_controller *hose)
->  	bus->ops = hose->pci_ops;
->  	bus->resource[0] = hose->mem_resource;
->  	bus->resource[1] = hose->io_resource;
-> +	bus->sysdata = hose;
->  
-This doesn't seem right. You are not only assigning hose to sysdata by
-default, but make it the only option as there is no sane way to override
-this assignment before bus scanning happens.
+[...]
+> +
+> +static struct mvebu_pcie_ops armada_370_ops = {
+> +	.phy_setup = armada_370_phy_setup,
+> +};
+> +
+> +static struct of_device_id mvebu_pcie_dt_ids[] = {
+> +#if defined(CONFIG_ARCH_ARMADA_XP)
+> +	{ .compatible = "marvell,armada-xp-pcie", },
+> +#endif
+> +#if defined(CONFIG_ARCH_ARMADA_370)
+> +	{ .compatible = "marvell,armada-370-pcie", .data = (u32)&armada_370_ops, },
+> +#endif
+> +#if defined(CONFIG_ARCH_DOVE)
+> +	{ .compatible = "marvell,dove-pcie", },
+> +#endif
+> +#if defined(CONFIG_ARCH_KIRKWOOD)
+> +	{ .compatible = "marvell,kirkwood-pcie", },
+> +#endif
+> +	{ },
+> +};
+> +
 
-Either make this a parameter to this function, so pci host controller
-drivers can pass in whatever they want as the sysdata, or add an
-explicit backlink pointer from bus to controller. Hm, maybe even both.
+Do those #if defined really buy us anything? I don't think they make a
+big difference on code size, so please get rid of those.
 
 Regards,
 Lucas
-
 -- 
 Pengutronix e.K.             | Lucas Stach                 |
 Industrial Linux Solutions   | http://www.pengutronix.de/  |
