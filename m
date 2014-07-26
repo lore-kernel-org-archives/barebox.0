@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XAiMT-0007ri-J2
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 16:28:50 +0000
-Received: by mail-la0-f53.google.com with SMTP id gl10so3180071lab.26
- for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 09:28:22 -0700 (PDT)
-Date: Fri, 25 Jul 2014 20:41:02 +0400
+ id 1XApO7-0003yy-83
+ for barebox@lists.infradead.org; Fri, 25 Jul 2014 23:59:00 +0000
+Received: by mail-lb0-f169.google.com with SMTP id s7so3987812lbd.28
+ for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 16:58:35 -0700 (PDT)
+Date: Sat, 26 Jul 2014 04:11:16 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140725204102.872c3eb81565a24df6f3b81b@gmail.com>
-In-Reply-To: <1406218113.4590.26.camel@weser.hi.pengutronix.de>
-References: <20140724200545.009a9c6c143abf1b344721a5@gmail.com>
- <1406218113.4590.26.camel@weser.hi.pengutronix.de>
+Message-Id: <20140726041116.b5954ec1418ea412e97d8161@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,70 +21,47 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Tegra2 USB issue
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: led-gpio: do we really need xstrdup
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, 24 Jul 2014 18:08:33 +0200
-Lucas Stach <l.stach@pengutronix.de> wrote:
+Hi all!
 
-> Am Donnerstag, den 24.07.2014, 20:05 +0400 schrieb Antony Pavlov:
-> > Hi!
-> > =
+Do we really need xstrdup for led's name?
 
-> > I have just tested this commit
-> > =
+Please see drivers/led/led-gpio.c: led_gpio_of_probe()
 
-> > commit d8bdd537220dd83912949f19ba67029bd1f11c58
-> > Author: Lucas Stach <dev@lynxeye.de>
-> > Date:   Fri Apr 12 12:28:14 2013 +0200
-> > =
+for_each_child_of_node(dev->device_node, child) {
+                struct gpio_led *gled;
+                enum of_gpio_flags flags;
+                int gpio;
+                =
 
-> >     tegra: switch to proper CPU type
-> >     =
+                gpio =3D of_get_named_gpio_flags(child, "gpios", 0, &flags);
+                if (gpio < 0)
+                        continue;
+                =
 
-> >     Tegras main CPUs are all ARMv7.
-> >     =
+                gled =3D xzalloc(sizeof(*gled));
+                gled->led.name =3D xstrdup(child->name);
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^ ??????????????
 
-> >     Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> >     Tested-by: Antony Pavlov <antonynpavlov@gmail.com>
-> >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > =
+                gled->gpio =3D gpio;
+                gled->active_low =3D (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
+                =
 
-> > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> > index bb9b47b..dfb7e24 100644
-> > --- a/arch/arm/Kconfig
-> > +++ b/arch/arm/Kconfig
-> > @@ -137,7 +137,7 @@ config ARCH_VEXPRESS
-> >  =
+                dev_dbg(dev, "register led %s on gpio%d, active_low =3D %d\=
+n",    =
 
-> >  config ARCH_TEGRA
-> >         bool "Nvidia Tegra-based boards"
-> > -       select CPU_ARM926T
-> > +       select CPU_V7
-> >         select HAS_DEBUG_LL
-> >  =
+                        gled->led.name, gled->gpio, gled->active_low);     =
+     =
 
-> >  config ARCH_ZYNQ
-> > =
 
-> > This commit breaks 'usb' command --- it does not scan devices anymore, =
-just hangs.
-> > =
+                led_gpio_register(gled);
+                led_of_parse_trigger(&gled->led, child);
+        }
 
-> > I have used codesourcery arm-2013.11 toolchain.
-> > =
 
-> I haven't tested USB myself, as I'm not using second stage barebox after
-> u-boot and there's still things missing for USB to work on first stage.
-> Currently only SDMMMC is fully supported.
-> =
-
-> Are you testing exactly this commit? If so you might need to apply
-> 431d8a247dfa63f817cda137a81dbb2244d413dc "arm: properly init alignment
-> trap bit", as USB might trigger an unaligned access.
-
-Alas! Appling of 431d8a24 does not help.
 
 --=A0
 Best regards,
