@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x236.google.com ([2a00:1450:400c:c05::236])
+Received: from mail-we0-x234.google.com ([2a00:1450:400c:c03::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XB3qT-0000bE-Mg
- for barebox@lists.infradead.org; Sat, 26 Jul 2014 15:25:14 +0000
-Received: by mail-wi0-f182.google.com with SMTP id d1so2333824wiv.15
- for <barebox@lists.infradead.org>; Sat, 26 Jul 2014 08:24:51 -0700 (PDT)
+ id 1XB3qY-0000bc-6f
+ for barebox@lists.infradead.org; Sat, 26 Jul 2014 15:25:18 +0000
+Received: by mail-we0-f180.google.com with SMTP id w61so5447122wes.11
+ for <barebox@lists.infradead.org>; Sat, 26 Jul 2014 08:24:53 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Sat, 26 Jul 2014 17:24:41 +0200
-Message-Id: <1406388285-1666-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sat, 26 Jul 2014 17:24:45 +0200
+Message-Id: <1406388285-1666-8-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406388285-1666-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406388285-1666-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,22 +23,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/7] USB: improve error paths and tear-down
+Subject: [PATCH v2 7/7] USB: host: add xHCI PCI driver
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-USB core isn't too strict about allocation/deallocation and
-add/remove sequences of usb devices. Especially, error paths
-and device tear-down are kind of broken and cause hangs on
-failing usb device detect.
-
-This patch improves the situation by introducing a
-usb_free_device() that tears down allocated resources by
-usb_alloc_new_device(). usb_remove_device() now only deals
-with resources that have been added by usb_new_device().
-Also, error handling is fixed or improved to ensure that no
-devices are unregistered that have not been previously
-registered.
+This adds a driver for PCI-attached xHCI controllers.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -47,158 +36,87 @@ Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: barebox@lists.infradead.org
 ---
- drivers/usb/core/hub.c | 19 ++++++++++++-------
- drivers/usb/core/usb.c | 48 ++++++++++++++++++++++++++++--------------------
- drivers/usb/core/usb.h |  1 +
- 3 files changed, 41 insertions(+), 27 deletions(-)
+ drivers/usb/host/Kconfig    |  7 +++++++
+ drivers/usb/host/Makefile   |  1 +
+ drivers/usb/host/xhci-pci.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 53 insertions(+)
+ create mode 100644 drivers/usb/host/xhci-pci.c
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index c1f743cbed12..d42b47cbe0b8 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -186,19 +186,21 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
- 	usb_clear_port_feature(dev, port + 1, USB_PORT_FEAT_C_CONNECTION);
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 8c64a3b99c11..c5dc2ea532c4 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -33,3 +33,10 @@ config USB_XHCI
  
- 	/* Disconnect any existing devices under this port */
--	if (((!(portstatus & USB_PORT_STAT_CONNECTION)) &&
--	     (!(portstatus & USB_PORT_STAT_ENABLE))) || (dev->children[port])) {
--		dev_dbg(&dev->dev, "usb_disconnect(&hub->children[port]);\n");
-+	if (dev->children[port] && !(portstatus & USB_PORT_STAT_CONNECTION)) {
-+		dev_dbg(&dev->dev, "disconnect detected on port %d\n", port + 1);
- 		usb_remove_device(dev->children[port]);
--		/* Return now if nothing is connected */
--		if (!(portstatus & USB_PORT_STAT_CONNECTION))
--			return;
-+		return;
- 	}
+ 	  This driver currently only supports virtual USB 2.0 ports, if you
+ 	  plan to use USB 3.0 devices, use a USB 2.0 cable in between.
 +
-+	/* Remove disabled but connected devices */
-+	if (dev->children[port] && !(portstatus & USB_PORT_STAT_ENABLE))
-+		usb_remove_device(dev->children[port]);
++config USB_XHCI_PCI
++	depends on PCI
++	select USB_XHCI
++	bool "PCI xHCI driver"
++	help
++	  Enables support for PCI attached xHCI controllers.
+diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
+index a5c009ebd6a8..0478d342720d 100644
+--- a/drivers/usb/host/Makefile
++++ b/drivers/usb/host/Makefile
+@@ -4,3 +4,4 @@ obj-$(CONFIG_USB_EHCI_ATMEL)	+= ehci-atmel.o
+ obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
+ obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
+ obj-$(CONFIG_USB_XHCI)		+= xhci-hcd.o xhci-hub.o
++obj-$(CONFIG_USB_XHCI_PCI)	+= xhci-pci.o
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+new file mode 100644
+index 000000000000..a140b1dd07d3
+--- /dev/null
++++ b/drivers/usb/host/xhci-pci.c
+@@ -0,0 +1,45 @@
++/*
++ * PCI driver for xHCI controllers
++ *
++ * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2.  This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
 +
- 	wait_ms(200);
- 
- 	/* Reset the port */
- 	if (hub_port_reset(dev, port, &portstatus) < 0) {
--		printf("cannot reset port %i!?\n", port + 1);
-+		dev_warn(&dev->dev, "cannot reset port %i!?\n", port + 1);
- 		return;
- 	}
- 
-@@ -225,7 +227,10 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port)
- 		/* Woops, disable the port */
- 		dev_dbg(&dev->dev, "hub: disabling port %d\n", port + 1);
- 		usb_clear_port_feature(dev, port + 1, USB_PORT_FEAT_ENABLE);
-+		usb_free_device(usb);
-+		return;
- 	}
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <linux/pci.h>
++#include <usb/xhci.h>
 +
- 	device_detect(&usb->dev);
- }
- 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index d3bd19be706d..3f3d59577ca4 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -431,7 +431,7 @@ int usb_new_device(struct usb_device *dev)
- 	err = register_device(&dev->dev);
- 	if (err) {
- 		printf("Failed to register device: %s\n", strerror(-err));
--		return err;
-+		goto err_out;
- 	}
- 
- 	dev_add_param_int_ro(&dev->dev, "iManufacturer",
-@@ -458,42 +458,45 @@ err_out:
- 	return err;
- }
- 
-+void usb_free_device(struct usb_device *usbdev)
++static int xhci_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 +{
-+	dma_free(usbdev->descriptor);
-+	dma_free(usbdev->setup_packet);
-+	free(usbdev);
++	struct xhci_data data = {};
++
++	pci_enable_device(pdev);
++	pci_set_master(pdev);
++
++	data.regs = pci_iomap(pdev, 0);
++
++	return xhci_register(&pdev->dev, &data);
 +}
 +
- void usb_remove_device(struct usb_device *usbdev)
- {
--	int i, ret;
-+	int i;
- 
--	for (i = 0; i < usbdev->maxchild; i++) {
--		if (usbdev->children[i])
--			usb_remove_device(usbdev->children[i]);
--	}
-+	if (!usbdev)
-+		return;
- 
--	dev_info(&usbdev->dev, "removing\n");
-+	for (i = 0; i < usbdev->maxchild; i++)
-+		usb_remove_device(usbdev->children[i]);
-+	if (usbdev->parent && usbdev->portnr)
-+		usbdev->parent->children[usbdev->portnr - 1] = NULL;
-+	list_del(&usbdev->list);
-+	dev_count--;
- 
--	ret = unregister_device(&usbdev->dev);
--	if (ret)
-+	if (unregister_device(&usbdev->dev))
- 		dev_err(&usbdev->dev, "failed to unregister\n");
-+	else
-+		dev_info(&usbdev->dev, "removed\n");
- 
--	usbdev->parent->children[usbdev->portnr - 1] = NULL;
--	list_del(&usbdev->list);
--	free(usbdev);
--	dev_count--;
-+	usb_free_device(usbdev);
- }
- 
- struct usb_device *usb_alloc_new_device(void)
- {
- 	struct usb_device *usbdev = xzalloc(sizeof (*usbdev));
- 
--	if (!usbdev)
--		return NULL;
--
--	usbdev->devnum = dev_index + 1;
-+	usbdev->devnum = ++dev_index;
- 	usbdev->maxchild = 0;
- 	usbdev->dev.bus = &usb_bus_type;
- 	usbdev->setup_packet = dma_alloc(sizeof(*usbdev->setup_packet));
- 	usbdev->descriptor = dma_alloc(sizeof(*usbdev->descriptor));
- 
--	dev_index++;
--
- 	return usbdev;
- }
- 
-@@ -509,7 +512,12 @@ int usb_host_detect(struct usb_host *host)
- 		host->root_dev = usb_alloc_new_device();
- 		host->root_dev->dev.parent = host->hw_dev;
- 		host->root_dev->host = host;
--		usb_new_device(host->root_dev);
++static DEFINE_PCI_DEVICE_TABLE(xhci_pci_tbl) = {
++	/* handle any USB 3.0 xHCI controller */
++	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_XHCI, ~0), },
++	{ },
++};
 +
-+		ret = usb_new_device(host->root_dev);
-+		if (ret) {
-+			usb_free_device(host->root_dev);
-+			return ret;
-+		}
- 	}
- 
- 	device_detect(&host->root_dev->dev);
-diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
-index a0c05506dde8..a5bb255121b2 100644
---- a/drivers/usb/core/usb.h
-+++ b/drivers/usb/core/usb.h
-@@ -2,6 +2,7 @@
- #define __CORE_USB_H
- 
- struct usb_device *usb_alloc_new_device(void);
-+void usb_free_device(struct usb_device *dev);
- int usb_new_device(struct usb_device *dev);
- void usb_remove_device(struct usb_device *dev);
- 
++static struct pci_driver xhci_pci_driver = {
++	.name = "xHCI PCI",
++	.id_table = xhci_pci_tbl,
++	.probe = xhci_pci_probe,
++};
++
++static int xhci_pci_init(void)
++{
++	return pci_register_driver(&xhci_pci_driver);
++}
++device_initcall(xhci_pci_init);
 -- 
 2.0.0
 
