@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+Received: from mail-lb0-f179.google.com ([209.85.217.179])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XApO7-0003yy-83
- for barebox@lists.infradead.org; Fri, 25 Jul 2014 23:59:00 +0000
-Received: by mail-lb0-f169.google.com with SMTP id s7so3987812lbd.28
- for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 16:58:35 -0700 (PDT)
-Date: Sat, 26 Jul 2014 04:11:16 +0400
+ id 1XApaz-00082n-U9
+ for barebox@lists.infradead.org; Sat, 26 Jul 2014 00:12:26 +0000
+Received: by mail-lb0-f179.google.com with SMTP id v6so3860492lbi.24
+ for <barebox@lists.infradead.org>; Fri, 25 Jul 2014 17:11:11 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140726041116.b5954ec1418ea412e97d8161@gmail.com>
-Mime-Version: 1.0
+Date: Sat, 26 Jul 2014 04:11:04 +0400
+Message-Id: <1406333464-16863-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,55 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: led-gpio: do we really need xstrdup
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] led: try to get LED's label from the 'label' property
+To: barebox@lists.infradead.org
 
-Hi all!
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/led/led-gpio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Do we really need xstrdup for led's name?
+diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
+index 7bb3b49..31ae627 100644
+--- a/drivers/led/led-gpio.c
++++ b/drivers/led/led-gpio.c
+@@ -212,7 +212,9 @@ static int led_gpio_of_probe(struct device_d *dev)
+ 			continue;
+ 
+ 		gled = xzalloc(sizeof(*gled));
+-		gled->led.name = xstrdup(child->name);
++		gled->led.name = of_get_property(child, "label", NULL);
++		if (!gled->led.name)
++			gled->led.name = xstrdup(child->name);
+ 		gled->gpio = gpio;
+ 		gled->active_low = (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
+ 
+-- 
+2.0.1
 
-Please see drivers/led/led-gpio.c: led_gpio_of_probe()
-
-for_each_child_of_node(dev->device_node, child) {
-                struct gpio_led *gled;
-                enum of_gpio_flags flags;
-                int gpio;
-                =
-
-                gpio =3D of_get_named_gpio_flags(child, "gpios", 0, &flags);
-                if (gpio < 0)
-                        continue;
-                =
-
-                gled =3D xzalloc(sizeof(*gled));
-                gled->led.name =3D xstrdup(child->name);
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^ ??????????????
-
-                gled->gpio =3D gpio;
-                gled->active_low =3D (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
-                =
-
-                dev_dbg(dev, "register led %s on gpio%d, active_low =3D %d\=
-n",    =
-
-                        gled->led.name, gled->gpio, gled->active_low);     =
-     =
-
-
-                led_gpio_register(gled);
-                led_of_parse_trigger(&gled->led, child);
-        }
-
-
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
