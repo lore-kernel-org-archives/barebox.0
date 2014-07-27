@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBL3p-0006dt-Pv
- for barebox@lists.infradead.org; Sun, 27 Jul 2014 09:48:10 +0000
-Received: by mail-la0-f49.google.com with SMTP id hz20so4310317lab.8
- for <barebox@lists.infradead.org>; Sun, 27 Jul 2014 02:47:45 -0700 (PDT)
+ id 1XBLAp-0000El-Ba
+ for barebox@lists.infradead.org; Sun, 27 Jul 2014 09:55:24 +0000
+Received: by mail-la0-f52.google.com with SMTP id e16so4348711lan.25
+ for <barebox@lists.infradead.org>; Sun, 27 Jul 2014 02:54:58 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 27 Jul 2014 13:47:23 +0400
-Message-Id: <1406454448-10645-5-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1406454448-10645-1-git-send-email-antonynpavlov@gmail.com>
-References: <1406454448-10645-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 27 Jul 2014 13:47:19 +0400
+Message-Id: <1406454448-10645-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,176 +21,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] serial: add driver for Canon DIGIC UART
+Subject: [PATCH 0/9] ARM: add support for Canon DIGIC chips and Canon
+ PowerShot A1100 IS
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/serial/Kconfig        |   4 ++
- drivers/serial/Makefile       |   1 +
- drivers/serial/serial_digic.c | 132 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 137 insertions(+)
+DIGIC is Canon Inc.'s name for a family of SoC
+for digital cameras and camcorders.
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 5698c2f..146bf1e 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -133,4 +133,8 @@ config DRIVER_SERIAL_CADENCE
- 	help
- 	  Say Y here if you have a Cadence serial IP core.
- 
-+config DRIVER_SERIAL_DIGIC
-+	bool "Canon DIGIC serial driver"
-+	depends on ARCH_DIGIC
-+
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 2c0176d..189e777 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -19,3 +19,4 @@ obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
- obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
- obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
- obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
-+obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
-diff --git a/drivers/serial/serial_digic.c b/drivers/serial/serial_digic.c
-new file mode 100644
-index 0000000..235ea0f
---- /dev/null
-+++ b/drivers/serial/serial_digic.c
-@@ -0,0 +1,132 @@
-+/*
-+ * Copyright (C) 2013, 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <malloc.h>
-+#include <io.h>
-+
-+#include <mach/uart.h>
-+
-+/*
-+ * This driver is based on the "Serial terminal" docs here:
-+ *  http://magiclantern.wikia.com/wiki/Register_Map#Misc_Registers
-+ *
-+ * See also disassembler output for Canon A1100IS firmware
-+ * (version a1100_100c):
-+ *   * a outc-like function can be found at address 0xffff18f0;
-+ *   * a getc-like function can be found at address 0xffff192c.
-+ */
-+
-+static inline uint32_t digic_serial_readl(struct console_device *cdev,
-+						uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	return readl(base + offset);
-+}
-+
-+static inline void digic_serial_writel(struct console_device *cdev,
-+					uint32_t value, uint32_t offset)
-+{
-+	void __iomem *base = cdev->dev->priv;
-+
-+	writel(value, base + offset);
-+}
-+
-+static int digic_serial_setbaudrate(struct console_device *cdev, int baudrate)
-+{
-+	/* I don't know how to setup baudrate :( */
-+
-+	return 0;
-+}
-+
-+static void digic_serial_putc(struct console_device *cdev, char c)
-+{
-+	uint32_t status;
-+
-+	do {
-+		status = digic_serial_readl(cdev, DIGIC_UART_ST);
-+	} while (!(status & DIGIC_UART_ST_TX_RDY));
-+
-+	digic_serial_writel(cdev, 0x06, DIGIC_UART_ST);
-+	digic_serial_writel(cdev, c, DIGIC_UART_TX);
-+}
-+
-+static int digic_serial_getc(struct console_device *cdev)
-+{
-+	uint32_t status;
-+
-+	do {
-+		status = digic_serial_readl(cdev, DIGIC_UART_ST);
-+	} while (!(status & DIGIC_UART_ST_RX_RDY));
-+
-+	digic_serial_writel(cdev, 0x01, DIGIC_UART_ST);
-+
-+	return digic_serial_readl(cdev, DIGIC_UART_RX);
-+}
-+
-+static int digic_serial_tstc(struct console_device *cdev)
-+{
-+	uint32_t status = digic_serial_readl(cdev, DIGIC_UART_ST);
-+
-+	return ((status & DIGIC_UART_ST_RX_RDY) != 0);
-+
-+	/*
-+	 * Canon folks use additional check, something like this:
-+	 *
-+	 *	if (digic_serial_readl(cdev, DIGIC_UART_ST) & 0x38) {
-+	 *		digic_serial_writel(cdev, 0x38, DIGIC_UART_ST);
-+	 *		return 0;
-+	 *	}
-+	 *
-+	 * But I know nothing about these magic bits in the status register...
-+	 *
-+	*/
-+}
-+
-+static int digic_serial_probe(struct device_d *dev)
-+{
-+	struct console_device *cdev;
-+
-+	cdev = xzalloc(sizeof(struct console_device));
-+	dev->priv = dev_request_mem_region(dev, 0);
-+	cdev->dev = dev;
-+	cdev->tstc = &digic_serial_tstc;
-+	cdev->putc = &digic_serial_putc;
-+	cdev->getc = &digic_serial_getc;
-+	cdev->setbrg = &digic_serial_setbaudrate;
-+
-+	console_register(cdev);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id digic_serial_dt_ids[] = {
-+	{
-+		.compatible = "canon,digic-uart",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d digic_serial_driver = {
-+	.name  = "digic-uart",
-+	.probe = digic_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(digic_serial_dt_ids),
-+};
-+console_platform_driver(digic_serial_driver);
+See http://en.wikipedia.org/wiki/DIGIC for details.
+
+There is no publicly available specification for
+DIGIC chips. All information about DIGIC chip
+internals is based on reverse engineering efforts
+made by CHDK (http://chdk.wikia.com) and
+Magic Lantern (http://www.magiclantern.fm) projects
+contributors.
+
+Also this patch series adds initial support for Canon
+PowerShot A1100 IS compact camera (it is my only camera
+with connected UART interface). As the DIGIC-based cameras
+differences mostly are unsignificant (e.g. RAM-size,
+ROM type and size, GPIO usage) the other compact
+and DSLR cameras support can be easely added.
+
+One can easely run barebox for Canon A1100 using QEMU version 2.0
+or newer.
+
+This patchseries uses some patches already submitted to maillist:
+
+   * clean barebox.zynq
+   * treewide: drop Doxygen stuff
+
+
+Antony Pavlov (9):
+  ARM: add ARM946E-S CPU type
+  ARM: add very initial support for Canon DIGIC chips
+  clocksource: add driver for Canon DIGIC timer
+  serial: add driver for Canon DIGIC UART
+  gpio: add driver for Canon DIGIC
+  ARM: DIGIC: add Canon PowerShot A1100 IS support
+  ARM: add Canon A1100 ROM image generation
+  ARM: DIGIC: add canon-a1100_defconfig
+  Documentation: add QEMU Canon A1100 barebox mini-howto
+
+ .gitignore                                  |   1 +
+ Documentation/boards/digic.rst              |  16 +++
+ Makefile                                    |   2 +-
+ arch/arm/Kconfig                            |  10 ++
+ arch/arm/Makefile                           |  11 ++
+ arch/arm/boards/Makefile                    |   1 +
+ arch/arm/boards/canon-a1100/Makefile        |   1 +
+ arch/arm/boards/canon-a1100/lowlevel.c      |  23 ++++
+ arch/arm/configs/canon-a1100_defconfig      |  56 +++++++++
+ arch/arm/cpu/Kconfig                        |  13 ++
+ arch/arm/dts/canon-a1100.dts                |  35 ++++++
+ arch/arm/dts/digic4.dtsi                    |  42 +++++++
+ arch/arm/mach-digic/Kconfig                 |  15 +++
+ arch/arm/mach-digic/Makefile                |   1 +
+ arch/arm/mach-digic/core.c                  |  24 ++++
+ arch/arm/mach-digic/include/mach/debug_ll.h |  40 +++++++
+ arch/arm/mach-digic/include/mach/digic4.h   |  23 ++++
+ arch/arm/mach-digic/include/mach/uart.h     |  28 +++++
+ drivers/clocksource/Kconfig                 |   4 +
+ drivers/clocksource/Makefile                |   1 +
+ drivers/clocksource/digic.c                 |  93 ++++++++++++++
+ drivers/gpio/Kconfig                        |   4 +
+ drivers/gpio/Makefile                       |   1 +
+ drivers/gpio/gpio-digic.c                   | 180 ++++++++++++++++++++++++++++
+ drivers/serial/Kconfig                      |   4 +
+ drivers/serial/Makefile                     |   1 +
+ drivers/serial/serial_digic.c               | 132 ++++++++++++++++++++
+ scripts/canon-a1100-image                   |  10 ++
+ 28 files changed, 771 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/boards/digic.rst
+ create mode 100644 arch/arm/boards/canon-a1100/Makefile
+ create mode 100644 arch/arm/boards/canon-a1100/lowlevel.c
+ create mode 100644 arch/arm/configs/canon-a1100_defconfig
+ create mode 100644 arch/arm/dts/canon-a1100.dts
+ create mode 100644 arch/arm/dts/digic4.dtsi
+ create mode 100644 arch/arm/mach-digic/Kconfig
+ create mode 100644 arch/arm/mach-digic/Makefile
+ create mode 100644 arch/arm/mach-digic/core.c
+ create mode 100644 arch/arm/mach-digic/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-digic/include/mach/digic4.h
+ create mode 100644 arch/arm/mach-digic/include/mach/uart.h
+ create mode 100644 drivers/clocksource/digic.c
+ create mode 100644 drivers/gpio/gpio-digic.c
+ create mode 100644 drivers/serial/serial_digic.c
+ create mode 100755 scripts/canon-a1100-image
+
 -- 
 2.0.1
 
