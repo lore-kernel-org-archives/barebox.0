@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBsHG-0002Uv-Rp
+ id 1XBsHG-0002VQ-Kp
  for barebox@lists.infradead.org; Mon, 28 Jul 2014 21:16:16 +0000
-Received: by mail-lb0-f179.google.com with SMTP id v6so6278546lbi.10
- for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 14:15:52 -0700 (PDT)
+Received: by mail-la0-f44.google.com with SMTP id e16so6071987lan.3
+ for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 14:15:54 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 29 Jul 2014 01:15:22 +0400
-Message-Id: <1406582130-10116-4-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 29 Jul 2014 01:15:23 +0400
+Message-Id: <1406582130-10116-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
 References: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,49 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/11] clocksource: add driver for Canon DIGIC timer
+Subject: [PATCH v2 04/11] serial: add driver for Canon DIGIC UART
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/clocksource/Kconfig  |  4 ++
- drivers/clocksource/Makefile |  1 +
- drivers/clocksource/digic.c  | 93 ++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 98 insertions(+)
+ drivers/serial/Kconfig        |   4 ++
+ drivers/serial/Makefile       |   1 +
+ drivers/serial/serial_digic.c | 132 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 137 insertions(+)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index c1480ce..fc5a389 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -14,6 +14,10 @@ config CLOCKSOURCE_CLPS711X
- 	bool
- 	depends on ARCH_CLPS711X
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 5698c2f..146bf1e 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -133,4 +133,8 @@ config DRIVER_SERIAL_CADENCE
+ 	help
+ 	  Say Y here if you have a Cadence serial IP core.
  
-+config CLOCKSOURCE_DIGIC
-+	bool
++config DRIVER_SERIAL_DIGIC
++	bool "Canon DIGIC serial driver"
 +	depends on ARCH_DIGIC
 +
- config CLOCKSOURCE_DUMMY
- 	bool "Enable dummy software-only clocksource"
- 	help
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index 97c0288..b80df6b 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -2,6 +2,7 @@ obj-$(CONFIG_AMBA_SP804) += amba-sp804.o
- obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
- obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
- obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
-+obj-$(CONFIG_CLOCKSOURCE_DIGIC)   += digic.o
- obj-$(CONFIG_CLOCKSOURCE_DUMMY)   += dummy.o
- obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
- obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
-diff --git a/drivers/clocksource/digic.c b/drivers/clocksource/digic.c
+ endmenu
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 2c0176d..189e777 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -19,3 +19,4 @@ obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
+ obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
+ obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
+ obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
++obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
+diff --git a/drivers/serial/serial_digic.c b/drivers/serial/serial_digic.c
 new file mode 100644
-index 0000000..b80ef6f
+index 0000000..235ea0f
 --- /dev/null
-+++ b/drivers/clocksource/digic.c
-@@ -0,0 +1,93 @@
++++ b/drivers/serial/serial_digic.c
+@@ -0,0 +1,132 @@
 +/*
 + * Copyright (C) 2013, 2014 Antony Pavlov <antonynpavlov@gmail.com>
 + *
@@ -78,87 +73,126 @@ index 0000000..b80ef6f
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 + * GNU General Public License for more details.
 + *
 + */
 +
 +#include <common.h>
-+#include <io.h>
 +#include <init.h>
-+#include <clock.h>
++#include <malloc.h>
++#include <io.h>
 +
-+#define DIGIC_TIMER_CLOCK 1000000
++#include <mach/uart.h>
 +
-+#define DIGIC_TIMER_CONTROL 0x00
-+#define DIGIC_TIMER_VALUE 0x0c
++/*
++ * This driver is based on the "Serial terminal" docs here:
++ *  http://magiclantern.wikia.com/wiki/Register_Map#Misc_Registers
++ *
++ * See also disassembler output for Canon A1100IS firmware
++ * (version a1100_100c):
++ *   * a outc-like function can be found at address 0xffff18f0;
++ *   * a getc-like function can be found at address 0xffff192c.
++ */
 +
-+static void __iomem *timer_base;
-+
-+static uint64_t digic_cs_read(void)
++static inline uint32_t digic_serial_readl(struct console_device *cdev,
++						uint32_t offset)
 +{
-+	return (uint64_t)(0xffff - readl(timer_base + DIGIC_TIMER_VALUE));
++	void __iomem *base = cdev->dev->priv;
++
++	return readl(base + offset);
 +}
 +
-+static struct clocksource digic_cs = {
-+	.read	= digic_cs_read,
-+	.mask   = CLOCKSOURCE_MASK(16),
-+};
-+
-+static int digic_timer_probe(struct device_d *dev)
++static inline void digic_serial_writel(struct console_device *cdev,
++					uint32_t value, uint32_t offset)
 +{
-+	/* use only one timer */
-+	if (timer_base)
-+		return -EBUSY;
++	void __iomem *base = cdev->dev->priv;
 +
-+	timer_base = dev_request_mem_region(dev, 0);
-+	if (!timer_base) {
-+		dev_err(dev, "could not get memory region\n");
-+		return -ENODEV;
-+	}
++	writel(value, base + offset);
++}
 +
-+	clocks_calc_mult_shift(&digic_cs.mult, &digic_cs.shift,
-+		DIGIC_TIMER_CLOCK, NSEC_PER_SEC, 1);
-+
-+	/* disable timer */
-+	writel(0x80000000, timer_base + DIGIC_TIMER_CONTROL);
-+
-+	/* magic values... divider? */
-+	writel(0x00000002, timer_base + 0x04);
-+	writel(0x00000003, timer_base + 0x14);
-+
-+	/* max counter value */
-+	writel(0x0000ffff, timer_base + 0x08);
-+
-+	init_clock(&digic_cs);
-+
-+	/* enable timer */
-+	writel(0x00000001, timer_base + DIGIC_TIMER_CONTROL);
-+	/* start timer */
-+	writel(0x00000001, timer_base + 0x10);
++static int digic_serial_setbaudrate(struct console_device *cdev, int baudrate)
++{
++	/* I don't know how to setup baudrate :( */
 +
 +	return 0;
 +}
 +
-+static __maybe_unused struct of_device_id digic_timer_dt_ids[] = {
++static void digic_serial_putc(struct console_device *cdev, char c)
++{
++	uint32_t status;
++
++	do {
++		status = digic_serial_readl(cdev, DIGIC_UART_ST);
++	} while (!(status & DIGIC_UART_ST_TX_RDY));
++
++	digic_serial_writel(cdev, 0x06, DIGIC_UART_ST);
++	digic_serial_writel(cdev, c, DIGIC_UART_TX);
++}
++
++static int digic_serial_getc(struct console_device *cdev)
++{
++	uint32_t status;
++
++	do {
++		status = digic_serial_readl(cdev, DIGIC_UART_ST);
++	} while (!(status & DIGIC_UART_ST_RX_RDY));
++
++	digic_serial_writel(cdev, 0x01, DIGIC_UART_ST);
++
++	return digic_serial_readl(cdev, DIGIC_UART_RX);
++}
++
++static int digic_serial_tstc(struct console_device *cdev)
++{
++	uint32_t status = digic_serial_readl(cdev, DIGIC_UART_ST);
++
++	return ((status & DIGIC_UART_ST_RX_RDY) != 0);
++
++	/*
++	 * Canon folks use additional check, something like this:
++	 *
++	 *	if (digic_serial_readl(cdev, DIGIC_UART_ST) & 0x38) {
++	 *		digic_serial_writel(cdev, 0x38, DIGIC_UART_ST);
++	 *		return 0;
++	 *	}
++	 *
++	 * But I know nothing about these magic bits in the status register...
++	 *
++	*/
++}
++
++static int digic_serial_probe(struct device_d *dev)
++{
++	struct console_device *cdev;
++
++	cdev = xzalloc(sizeof(struct console_device));
++	dev->priv = dev_request_mem_region(dev, 0);
++	cdev->dev = dev;
++	cdev->tstc = &digic_serial_tstc;
++	cdev->putc = &digic_serial_putc;
++	cdev->getc = &digic_serial_getc;
++	cdev->setbrg = &digic_serial_setbaudrate;
++
++	console_register(cdev);
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id digic_serial_dt_ids[] = {
 +	{
-+		.compatible = "canon,digic-timer",
++		.compatible = "canon,digic-uart",
 +	}, {
 +		/* sentinel */
 +	}
 +};
 +
-+static struct driver_d digic_timer_driver = {
-+	.probe	= digic_timer_probe,
-+	.name	= "digic-timer",
-+	.of_compatible = DRV_OF_COMPAT(digic_timer_dt_ids),
++static struct driver_d digic_serial_driver = {
++	.name  = "digic-uart",
++	.probe = digic_serial_probe,
++	.of_compatible = DRV_OF_COMPAT(digic_serial_dt_ids),
 +};
-+
-+static int digic_timer_init(void)
-+{
-+	return platform_driver_register(&digic_timer_driver);
-+}
-+coredevice_initcall(digic_timer_init);
++console_platform_driver(digic_serial_driver);
 -- 
 2.0.1
 
