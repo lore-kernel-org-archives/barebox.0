@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
+Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBelE-00051P-7a
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 06:50:17 +0000
-Received: by mail-la0-f47.google.com with SMTP id mc6so5044049lab.20
- for <barebox@lists.infradead.org>; Sun, 27 Jul 2014 23:49:51 -0700 (PDT)
-Date: Mon, 28 Jul 2014 11:02:34 +0400
+ id 1XBjDi-0001vt-IL
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 11:35:59 +0000
+Received: by mail-la0-f51.google.com with SMTP id el20so5268843lab.38
+ for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 04:35:33 -0700 (PDT)
+Date: Mon, 28 Jul 2014 15:48:16 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140728110234.05f7c06e2ef6b36f15a212fa@gmail.com>
-In-Reply-To: <20140728062913.GY23235@pengutronix.de>
-References: <1406450152-23298-1-git-send-email-antonynpavlov@gmail.com>
- <20140728054917.GU23235@pengutronix.de>
- <20140728102243.4fa06426337415ec0cabc26c@gmail.com>
- <20140728062913.GY23235@pengutronix.de>
+Message-Id: <20140728154816.ffef1bd5c16236d0b518d5f8@gmail.com>
+In-Reply-To: <20140728061604.GX23235@pengutronix.de>
+References: <1406454448-10645-1-git-send-email-antonynpavlov@gmail.com>
+ <1406454448-10645-10-git-send-email-antonynpavlov@gmail.com>
+ <20140728061604.GX23235@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -26,126 +25,54 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] led: try to get LED's label from the 'label' property
+Subject: Re: [PATCH 9/9] Documentation: add QEMU Canon A1100 barebox mini-howto
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, 28 Jul 2014 08:29:13 +0200
+On Mon, 28 Jul 2014 08:16:04 +0200
 Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> On Mon, Jul 28, 2014 at 10:22:43AM +0400, Antony Pavlov wrote:
-> > On Mon, 28 Jul 2014 07:49:17 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Sun, Jul 27, 2014 at 01:47:28PM +0400, Antony Pavlov wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >  Documentation/boards/digic.rst | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
 > > =
 
-> > > On Sun, Jul 27, 2014 at 12:35:52PM +0400, Antony Pavlov wrote:
-> > > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > > ---
-> > > >  drivers/led/led-gpio.c | 4 +++-
-> > > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > > > =
-
-> > > > diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
-> > > > index 7bb3b49..cddac08 100644
-> > > > --- a/drivers/led/led-gpio.c
-> > > > +++ b/drivers/led/led-gpio.c
-> > > > @@ -212,7 +212,9 @@ static int led_gpio_of_probe(struct device_d *d=
-ev)
-> > > >  			continue;
-> > > >  =
-
-> > > >  		gled =3D xzalloc(sizeof(*gled));
-> > > > -		gled->led.name =3D xstrdup(child->name);
-> > > > +		gled->led.name =3D xstrdup(of_get_property(child, "label", NULL)=
-);
-> > > =
-
-> > > When the property doesn't exist you pass NULL to xstrdup. This will
-> > > crash.
-> > =
-
-> > My bad. I have seen barebox strdup() realization but missed xstrdup() r=
-ealization.
-> > =
-
-> > Barebox' strdup() can handle NULL argument:
-> > =
-
-> > char * strdup(const char *s)
-> > {
-> >         char *new;
-> > =
-
-> >         if ((s =3D=3D NULL) ||
-> >             ((new =3D malloc (strlen(s) + 1)) =3D=3D NULL) ) {         =
-                =
-
-> >                 return NULL;                                           =
-          =
-
-> >         }
-> > =
-
-> >         strcpy (new, s);
-> >         return new;
-> > }
-> > =
-
-> > But xstrdup() can't do so:
-> > =
-
-> > char *xstrdup(const char *s)
-> > {
-> >         char *p =3D strdup(s);
-> > =
-
-> >         if (!p)
-> >                 panic("ERROR: out of memory\n");
-> >         return p;
-> > }               =
-
-> > =
-
-> > Can I just change first xstrdup() to strdup() in my patch?
+> > diff --git a/Documentation/boards/digic.rst b/Documentation/boards/digi=
+c.rst
+> > new file mode 100644
+> > index 0000000..e2c49b6
+> > --- /dev/null
+> > +++ b/Documentation/boards/digic.rst
+> > @@ -0,0 +1,16 @@
+> > +Canon DIGIC
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +Canon PowerShot A1100 IS
+> > +------------------------
+> > +
+> > +Running barebox on QEMU
+> > +^^^^^^^^^^^^^^^^^^^^^^^
+> > +
+> > +QEMU supports Canon A1100 camera emulation since version 2.0.
+> > +
+> > +Usage::
+> > +
+> > +  $ qemu-system-arm -M canon-a1100 \
+> > +      -nographic -monitor null -serial stdio \
+> > +      -bios barebox.canon-a1100.bin
 > =
 
-> Why not add a NULL pointer check to xstrdup?
+> Is it possible to run it on a real camera? How?
 
-This will be duplication of code. strdup() inside xstrdup() check it too.
+We need the dancingbits utility from CHDK project for generation binary ima=
+ge for real camera
+(see https://github.com/c10ud/CHDK/blob/master/tools/dancingbits.c).
 
-> > =
+This utility is licensed GPLv3+.
 
-> > E.g.
-> > =
-
-> > -               gled->led.name =3D xstrdup(of_get_property(child, "labe=
-l", NULL));
-> > +               gled->led.name =3D strdup(of_get_property(child, "label=
-", NULL));
-> >                 if (!gled->led.name)
-> >                         gled->led.name =3D xstrdup(child->name);
-> =
-
-> I think this code will raise questions. When reading this code one could
-> easily ask why stdrup is used in the first place and xstrdup in the
-> second. A year ahead even we may not know the answer without thinking
-> about it ;)
-> =
-
-> Sascha
-> =
-
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
+Can I put it into barebox.git/scripts?
 
 --=A0
 Best regards,
