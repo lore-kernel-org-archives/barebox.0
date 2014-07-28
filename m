@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XBdoa-0008NS-7x
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 05:49:41 +0000
-Date: Mon, 28 Jul 2014 07:49:17 +0200
+ Linux)) id 1XBdy4-0002sT-9a
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 05:59:28 +0000
+Date: Mon, 28 Jul 2014 07:59:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140728054917.GU23235@pengutronix.de>
-References: <1406450152-23298-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140728055905.GV23235@pengutronix.de>
+References: <1406395031-8756-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1406450152-23298-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1406395031-8756-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] led: try to get LED's label from the 'label' property
+Subject: Re: [PATCH 1/2] treewide: drop Doxygen stuff
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jul 27, 2014 at 12:35:52PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/led/led-gpio.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+On Sat, Jul 26, 2014 at 09:17:10PM +0400, Antony Pavlov wrote:
+> Doxygen documentation is removed in the commit
 > 
-> diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
-> index 7bb3b49..cddac08 100644
-> --- a/drivers/led/led-gpio.c
-> +++ b/drivers/led/led-gpio.c
-> @@ -212,7 +212,9 @@ static int led_gpio_of_probe(struct device_d *dev)
->  			continue;
->  
->  		gled = xzalloc(sizeof(*gled));
-> -		gled->led.name = xstrdup(child->name);
-> +		gled->led.name = xstrdup(of_get_property(child, "label", NULL));
+>   commit 98360be0fefd58bf27df03c47d887dd676a31d73
+>   Author: Sascha Hauer <s.hauer@pengutronix.de>
+>   Date:   Tue Jun 17 10:27:03 2014 +0200
+> 
+>       Documentation: remove doxygen documentation
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-When the property doesn't exist you pass NULL to xstrdup. This will
-crash. You'll have to add a check or make xstrdup tolerate NULL
-pointers.
+Applied, thanks
 
 Sascha
 
-> +		if (!gled->led.name)
-> +			gled->led.name = xstrdup(child->name);
->  		gled->gpio = gpio;
->  		gled->active_low = (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
+> ---
+>  .gitignore | 1 -
+>  Makefile   | 6 +-----
+>  README     | 2 +-
+>  3 files changed, 2 insertions(+), 7 deletions(-)
+> 
+> diff --git a/.gitignore b/.gitignore
+> index 19534c9..ddeb7b1 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -67,7 +67,6 @@ include/linux/compile.h
+>  include/generated
 >  
+>  # Generated files
+> -Doxyfile.version
+>  Documentation/commands/*.rst
+>  doctrees/
+>  
+> diff --git a/Makefile b/Makefile
+> index 69320d8..0fde711 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -774,10 +774,6 @@ include/config/kernel.release: include/config/auto.conf FORCE
+>  	$(Q)rm -f $@
+>  	$(Q)echo $(KERNELVERSION)$(localversion) > $@
+>  
+> -Doxyfile.version: include/config/auto.conf FORCE
+> -	$(Q)rm -f $@
+> -	$(Q)echo "PROJECT_NUMBER = $(KERNELRELEASE)" > $@
+> -
+>  # Things we need to do before we recursively start building the kernel
+>  # or the modules are listed in "prepare".
+>  # A multi level approach is used. prepareN is processed before prepareN-1.
+> @@ -996,7 +992,7 @@ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+>                  .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
+>  		.tmp_kallsyms* common/barebox_default_env* barebox.ldr \
+>  		scripts/bareboxenv-target barebox-flash-image \
+> -		Doxyfile.version barebox.srec barebox.s5p barebox.ubl \
+> +		barebox.srec barebox.s5p barebox.ubl \
+>  		barebox.uimage barebox.spi barebox.kwb barebox.kwbuart \
+>  		barebox.efi
+>  
+> diff --git a/README b/README
+> index cec9ccb..3862f60 100644
+> --- a/README
+> +++ b/README
+> @@ -179,7 +179,7 @@ net/                  -> Networking stuff
+>  
+>  scripts/              -> Kconfig system
+>  
+> -Documentation/        -> Doxygen generated documentation
+> +Documentation/        -> Sphinx generated documentation
+>  
+>  
+>  Release Strategy
 > -- 
 > 2.0.1
 > 
