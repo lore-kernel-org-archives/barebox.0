@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
+Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBsHM-0002WN-MQ
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 21:16:22 +0000
-Received: by mail-la0-f54.google.com with SMTP id hz20so571196lab.13
- for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 14:15:58 -0700 (PDT)
+ id 1XBsHO-0002X0-AH
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 21:16:23 +0000
+Received: by mail-la0-f41.google.com with SMTP id s18so5976050lam.0
+ for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 14:15:59 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 29 Jul 2014 01:15:25 +0400
-Message-Id: <1406582130-10116-7-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 29 Jul 2014 01:15:26 +0400
+Message-Id: <1406582130-10116-8-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
 References: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,125 +23,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/11] ARM: DIGIC: add Canon PowerShot A1100 IS support
+Subject: [PATCH v2 07/11] ARM: add Canon A1100 ROM image generation
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/boards/Makefile               |  1 +
- arch/arm/boards/canon-a1100/Makefile   |  1 +
- arch/arm/boards/canon-a1100/lowlevel.c | 23 ++++++++++++++++++++++
- arch/arm/dts/canon-a1100.dts           | 35 ++++++++++++++++++++++++++++++++++
- arch/arm/mach-digic/Kconfig            |  7 +++++++
- 5 files changed, 67 insertions(+)
+ .gitignore                |  1 +
+ Makefile                  |  2 +-
+ arch/arm/Makefile         | 10 ++++++++++
+ scripts/canon-a1100-image | 10 ++++++++++
+ 4 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 2ed3730..c60da81 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_MACH_AT91SAM9N12EK)		+= at91sam9n12ek/
- obj-$(CONFIG_MACH_AT91SAM9X5EK)			+= at91sam9x5ek/
- obj-$(CONFIG_MACH_BEAGLE)			+= beagle/
- obj-$(CONFIG_MACH_BEAGLEBONE)			+= beaglebone/
-+obj-$(CONFIG_MACH_CANON_A1100)			+= canon-a1100/
- obj-$(CONFIG_MACH_NITROGEN6X)			+= boundarydevices-nitrogen6x/
- obj-$(CONFIG_MACH_CCMX51)			+= ccxmx51/
- obj-$(CONFIG_MACH_CFA10036)			+= crystalfontz-cfa10036/
-diff --git a/arch/arm/boards/canon-a1100/Makefile b/arch/arm/boards/canon-a1100/Makefile
-new file mode 100644
-index 0000000..b08c4a9
---- /dev/null
-+++ b/arch/arm/boards/canon-a1100/Makefile
-@@ -0,0 +1 @@
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/canon-a1100/lowlevel.c b/arch/arm/boards/canon-a1100/lowlevel.c
-new file mode 100644
-index 0000000..bbae825
---- /dev/null
-+++ b/arch/arm/boards/canon-a1100/lowlevel.c
-@@ -0,0 +1,23 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+void __naked barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+
-+	/* FIXME: can we determine RAM size using CP15 register?
-+	 *
-+	 * see http://chdk.setepontos.com/index.php?topic=5980.90
-+	 *
-+	 * http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0363e/Bgbcdeca.html
-+	 * 4.2.19. c6, MPU memory region programming registers
-+	 *
-+	 * But the 'cpuinfo' command says that the Protection
-+	 * unit is disabled.
-+	 * The Control Register value (mrc    p15, 0, %0, c0, c1, 4)
-+	 * is 0x00051078.
-+	 */
-+	barebox_arm_entry(0x0, SZ_64M, 0);
-+}
-diff --git a/arch/arm/dts/canon-a1100.dts b/arch/arm/dts/canon-a1100.dts
-new file mode 100644
-index 0000000..a88eacf
---- /dev/null
-+++ b/arch/arm/dts/canon-a1100.dts
-@@ -0,0 +1,35 @@
-+/dts-v1/;
-+
-+/include/ "digic4.dtsi"
-+
-+/ {
-+	model = "Canon PowerShot A1100 IS";
-+	compatible = "canon,a1100";
-+
-+	memory {
-+		reg = <0x00000000 0x04000000>;
-+	};
-+
-+	flash@f8000000 {
-+		compatible = "cfi-flash";
-+		reg = <0xf8000000 0x08000000>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		direct_print {
-+			label = "direct-print (blue)";
-+			gpios = <&gpio 51 0>;
-+		};
-+
-+		auto_focus {
-+			label = "auto-focus (red)";
-+			gpios = <&gpio 55 0>;
-+		};
-+	};
-+};
-+
-+&timer2 {
-+        status = "okay";
-+};
-diff --git a/arch/arm/mach-digic/Kconfig b/arch/arm/mach-digic/Kconfig
-index 49ce44a..d25c3b3 100644
---- a/arch/arm/mach-digic/Kconfig
-+++ b/arch/arm/mach-digic/Kconfig
-@@ -3,6 +3,13 @@ if ARCH_DIGIC
- choice
- 	prompt "camera type"
+diff --git a/.gitignore b/.gitignore
+index ddeb7b1..a62e08c 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -47,6 +47,7 @@ barebox.map
+ barebox.kwb
+ barebox.kwbuart
+ barebox.efi
++barebox.canon-a1100.bin
+ barebox-flash-image
+ System.map
+ Module.symvers
+diff --git a/Makefile b/Makefile
+index 3d08818..1ec0bfd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -994,7 +994,7 @@ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+ 		scripts/bareboxenv-target barebox-flash-image \
+ 		barebox.srec barebox.s5p barebox.ubl barebox.zynq \
+ 		barebox.uimage barebox.spi barebox.kwb barebox.kwbuart \
+-		barebox.efi
++		barebox.efi barebox.canon-a1100.bin
  
-+config MACH_CANON_A1100
-+	bool "Canon PowerShot A1100 IS"
-+
- endchoice
- 
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x00001900 if MACH_CANON_A1100
-+
+ # Directories & files removed with 'make mrproper'
+ MRPROPER_DIRS  += include/config include2 usr/include
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 1b0d7fe..337aef1 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -185,6 +185,16 @@ ifeq ($(machine-y),zynq)
+ KBUILD_IMAGE := barebox.zynq
  endif
+ 
++quiet_cmd_canon_a1100_image = DD      $@
++      cmd_canon_a1100_image = scripts/canon-a1100-image $< $@ || \
++	echo "WARNING: Couldn't create Canon A1100 image due to previous errors."
++barebox.canon-a1100.bin: $(KBUILD_BINARY) FORCE
++	$(call if_changed,canon_a1100_image)
++
++ifeq ($(CONFIG_MACH_CANON_A1100),y)
++KBUILD_IMAGE := barebox.canon-a1100.bin
++endif
++
+ KWBIMAGE_OPTS = \
+ 	-c -i $(srctree)/$(BOARD)/kwbimage.cfg -d $(TEXT_BASE) -e $(TEXT_BASE)
+ 
+diff --git a/scripts/canon-a1100-image b/scripts/canon-a1100-image
+new file mode 100755
+index 0000000..6c08d74
+--- /dev/null
++++ b/scripts/canon-a1100-image
+@@ -0,0 +1,10 @@
++#!/bin/bash -e
++
++IFILE=$1
++OFILE=$2
++
++dd if=/dev/zero bs=4M count=1 of=$OFILE 2>/dev/null
++dd if=$IFILE of=$OFILE conv=notrunc 2>/dev/null
++
++# 0xffff0000:  fe 3f f0 ea     b       0xffc00000
++echo -n -e "\xfe\x3f\xf0\xea" | dd of=$OFILE bs=64K seek=63 conv=notrunc 2>/dev/null
 -- 
 2.0.1
 
