@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBsHF-0002UW-NM
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 21:16:16 +0000
-Received: by mail-lb0-f180.google.com with SMTP id v6so6347068lbi.11
- for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 14:15:50 -0700 (PDT)
+ id 1XBsHM-0002WP-Nf
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 21:16:22 +0000
+Received: by mail-la0-f49.google.com with SMTP id hz20so5850952lab.22
+ for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 14:15:56 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 29 Jul 2014 01:15:21 +0400
-Message-Id: <1406582130-10116-3-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 29 Jul 2014 01:15:24 +0400
+Message-Id: <1406582130-10116-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
 References: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,137 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/11] ARM: add very initial support for Canon DIGIC chips
+Subject: [PATCH v2 05/11] gpio: add driver for Canon DIGIC
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/Kconfig                            | 10 +++++++
- arch/arm/Makefile                           |  1 +
- arch/arm/dts/digic4.dtsi                    | 42 +++++++++++++++++++++++++++++
- arch/arm/mach-digic/Kconfig                 |  8 ++++++
- arch/arm/mach-digic/Makefile                |  1 +
- arch/arm/mach-digic/core.c                  | 25 +++++++++++++++++
- arch/arm/mach-digic/include/mach/debug_ll.h | 40 +++++++++++++++++++++++++++
- arch/arm/mach-digic/include/mach/digic4.h   | 23 ++++++++++++++++
- arch/arm/mach-digic/include/mach/uart.h     | 28 +++++++++++++++++++
- 9 files changed, 178 insertions(+)
+ drivers/gpio/Kconfig      |   4 ++
+ drivers/gpio/Makefile     |   1 +
+ drivers/gpio/gpio-digic.c | 180 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 185 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 3af0197..ea0abcd 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -62,6 +62,15 @@ config ARCH_DAVINCI
- 	select HAS_DEBUG_LL
- 	select GPIOLIB
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 6928fcb..0ca7df4 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -9,6 +9,10 @@ menu "GPIO"
+ config GPIO_GENERIC
+ 	bool
  
-+config ARCH_DIGIC
-+	bool "Canon DIGIC-based cameras"
-+	select CPU_ARM946E
-+	select HAS_DEBUG_LL
-+	select CLOCKSOURCE_DIGIC
-+	select GPIOLIB
-+	help
-+	  Support for Canon's digital cameras that use the DIGIC4 chip.
++config GPIO_DIGIC
++	bool "GPIO support for Canon DIGIC"
++	depends on ARCH_DIGIC
 +
- config ARCH_EP93XX
- 	bool "Cirrus Logic EP93xx"
- 	select CPU_ARM920T
-@@ -220,6 +229,7 @@ source arch/arm/mach-at91/Kconfig
- source arch/arm/mach-bcm2835/Kconfig
- source arch/arm/mach-clps711x/Kconfig
- source arch/arm/mach-davinci/Kconfig
-+source arch/arm/mach-digic/Kconfig
- source arch/arm/mach-ep93xx/Kconfig
- source arch/arm/mach-highbank/Kconfig
- source arch/arm/mach-imx/Kconfig
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 983f7f5..1b0d7fe 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -55,6 +55,7 @@ machine-$(CONFIG_ARCH_AT91)		:= at91
- machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
- machine-$(CONFIG_ARCH_CLPS711X)		:= clps711x
- machine-$(CONFIG_ARCH_DAVINCI)		:= davinci
-+machine-$(CONFIG_ARCH_DIGIC)		:= digic
- machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
- machine-$(CONFIG_ARCH_HIGHBANK)		:= highbank
- machine-$(CONFIG_ARCH_IMX)		:= imx
-diff --git a/arch/arm/dts/digic4.dtsi b/arch/arm/dts/digic4.dtsi
+ config GPIO_BCM2835
+ 	bool "GPIO support for BCM2835"
+ 	depends on ARCH_BCM2835
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index ece5efd..510d146 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -3,6 +3,7 @@ obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
+ obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
+ obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
+ obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
++obj-$(CONFIG_GPIO_DIGIC)	+= gpio-digic.o
+ obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
+ obj-$(CONFIG_GPIO_IMX)		+= gpio-imx.o
+ obj-$(CONFIG_GPIO_JZ4740)	+= gpio-jz4740.o
+diff --git a/drivers/gpio/gpio-digic.c b/drivers/gpio/gpio-digic.c
 new file mode 100644
-index 0000000..21b004d
+index 0000000..468aaa7
 --- /dev/null
-+++ b/arch/arm/dts/digic4.dtsi
-@@ -0,0 +1,42 @@
-+/include/ "skeleton.dtsi"
-+
-+/ {
-+	compatible = "canon,digic4";
-+
-+	timer0: timer@c0210000 {
-+		compatible = "canon,digic-timer";
-+		reg = <0xc0210000 0x1c>;
-+		status = "disabled";
-+	};
-+
-+	timer1: timer@c0210100 {
-+		compatible = "canon,digic-timer";
-+		reg = <0xc0210100 0x1c>;
-+		status = "disabled";
-+	};
-+
-+	timer2: timer@c0210200 {
-+		compatible = "canon,digic-timer";
-+		reg = <0xc0210200 0x1c>;
-+		status = "disabled";
-+	};
-+
-+	/*
-+	 * I don't know real max GPIO number but this page
-+	 *   http://magiclantern.wikia.com/wiki/Register_Map#GPIO_Ports
-+	 * says about 93 pins on 5DMkIII.
-+	 * Assume that DIGIC4 has at least 96 pins.
-+	 * So resource size is 96 * 4 = 0x180.
-+	 */
-+	gpio: gpio {
-+		compatible = "canon,digic-gpio";
-+		reg = <0xc0220000 0x180>;
-+		#gpio-cells = <2>;
-+		gpio-controller;
-+	};
-+
-+	uart: uart {
-+		compatible = "canon,digic-uart";
-+		reg = <0xc0800000 0x1c>;
-+	};
-+};
-diff --git a/arch/arm/mach-digic/Kconfig b/arch/arm/mach-digic/Kconfig
-new file mode 100644
-index 0000000..49ce44a
---- /dev/null
-+++ b/arch/arm/mach-digic/Kconfig
-@@ -0,0 +1,8 @@
-+if ARCH_DIGIC
-+
-+choice
-+	prompt "camera type"
-+
-+endchoice
-+
-+endif
-diff --git a/arch/arm/mach-digic/Makefile b/arch/arm/mach-digic/Makefile
-new file mode 100644
-index 0000000..820eb10
---- /dev/null
-+++ b/arch/arm/mach-digic/Makefile
-@@ -0,0 +1 @@
-+obj-y += core.o
-diff --git a/arch/arm/mach-digic/core.c b/arch/arm/mach-digic/core.c
-new file mode 100644
-index 0000000..b1caec0
---- /dev/null
-+++ b/arch/arm/mach-digic/core.c
-@@ -0,0 +1,25 @@
++++ b/drivers/gpio/gpio-digic.c
+@@ -0,0 +1,180 @@
 +/*
 + * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
 + *
@@ -172,122 +84,168 @@ index 0000000..b1caec0
 + */
 +
 +#include <common.h>
-+
-+void __noreturn reset_cpu(unsigned long ignored)
-+{
-+	pr_err("%s: unimplemented\n", __func__);
-+	hang();
-+}
-+EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-digic/include/mach/debug_ll.h b/arch/arm/mach-digic/include/mach/debug_ll.h
-new file mode 100644
-index 0000000..721fd44
---- /dev/null
-+++ b/arch/arm/mach-digic/include/mach/debug_ll.h
-@@ -0,0 +1,40 @@
-+/*
-+ * Copyright (C) 2013, 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_DEBUG_LL_H__
-+#define __MACH_DEBUG_LL_H__
-+
++#include <malloc.h>
++#include <errno.h>
 +#include <io.h>
-+#include <mach/digic4.h>
-+#include <mach/uart.h>
++#include <gpio.h>
++#include <init.h>
 +
-+#define DEBUG_LL_UART         DIGIC4_UART
++/*
++ * See http://magiclantern.wikia.com/wiki/Register_Map#GPIO_Ports
++ */
 +
-+/* Serial interface registers */
-+#define DEBUG_LL_UART_TX         (DEBUG_LL_UART + DIGIC_UART_TX)
-+#define DEBUG_LL_UART_ST         (DEBUG_LL_UART + DIGIC_UART_ST)
++#define DIGIC_GPIO_IN_LVL	1
++#define DIGIC_GPIO_OUT_LVL	2
++#define DIGIC_GPIO_DIR	4
++#define DIGIC_GPIO_TRISTATE	8
 +
-+static inline void PUTC_LL(char ch)
++struct digic_gpio_chip {
++	void __iomem		*base;
++	struct gpio_chip	gc;
++};
++
++#define to_digic_gpio_chip(c) container_of(c, struct digic_gpio_chip, gc)
++
++static inline uint32_t digic_gpio_readl(struct digic_gpio_chip *chip,
++					uint32_t offset)
 +{
-+	while (!(readl(DEBUG_LL_UART_ST) & DIGIC_UART_ST_TX_RDY))
-+		; /* noop */
-+
-+	writel(0x06, DEBUG_LL_UART_ST);
-+	writel(ch, DEBUG_LL_UART_TX);
++	return readl(chip->base + 4 * offset);
 +}
 +
-+#endif /* __MACH_DEBUG_LL_H__ */
-diff --git a/arch/arm/mach-digic/include/mach/digic4.h b/arch/arm/mach-digic/include/mach/digic4.h
-new file mode 100644
-index 0000000..ffc7979
---- /dev/null
-+++ b/arch/arm/mach-digic/include/mach/digic4.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++static inline void digic_gpio_writel(struct digic_gpio_chip *chip,
++					uint32_t value, uint32_t offset)
++{
++	writel(value, chip->base + 4 * offset);
++}
 +
-+#ifndef __DIGIC4_H__
-+#define __DIGIC4_H__
++static int digic_gpio_get_value(struct gpio_chip *gc, unsigned offset)
++{
++	struct digic_gpio_chip *chip = to_digic_gpio_chip(gc);
 +
-+#define DIGIC4_UART	0xc0800000
++	if (offset >= gc->ngpio)
++		return -EINVAL;
 +
-+#endif /* __DIGIC4_H__ */
-diff --git a/arch/arm/mach-digic/include/mach/uart.h b/arch/arm/mach-digic/include/mach/uart.h
-new file mode 100644
-index 0000000..043f7cd
---- /dev/null
-+++ b/arch/arm/mach-digic/include/mach/uart.h
-@@ -0,0 +1,28 @@
-+/*
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++	return digic_gpio_readl(chip, offset) & DIGIC_GPIO_IN_LVL;
++}
 +
-+#ifndef __DIGIC_UART_H__
-+#define __DIGIC_UART_H__
++static void digic_gpio_set_value(struct gpio_chip *gc, unsigned offset,
++					int value)
++{
++	struct digic_gpio_chip *chip = to_digic_gpio_chip(gc);
++	uint32_t t;
 +
-+/* Serial interface registers offsets */
-+#define DIGIC_UART_TX	0x0
-+#define DIGIC_UART_RX	0x4
-+#define DIGIC_UART_ST	0x14
-+# define DIGIC_UART_ST_RX_RDY	1
-+# define DIGIC_UART_ST_TX_RDY	2
++	if (offset >= gc->ngpio)
++		return;
 +
-+#endif /* __DIGIC_UART_H__ */
++	t = digic_gpio_readl(chip, offset);
++	/* Port direction (1 = OUT, 0 = IN) */
++	if (value)
++		t |= DIGIC_GPIO_OUT_LVL;
++	else
++		t &= ~(DIGIC_GPIO_OUT_LVL);
++	digic_gpio_writel(chip, t, offset);
++}
++
++static int digic_gpio_direction_input(struct gpio_chip *gc, unsigned offset)
++{
++	struct digic_gpio_chip *chip = to_digic_gpio_chip(gc);
++	uint32_t t;
++
++	if (offset >= gc->ngpio)
++		return -EINVAL;
++
++	t = digic_gpio_readl(chip, offset);
++	/* Port direction (1 = OUT, 0 = IN) */
++	t &= ~(DIGIC_GPIO_DIR);
++	digic_gpio_writel(chip, t, offset);
++
++	return 0;
++}
++
++static int digic_gpio_direction_output(struct gpio_chip *gc, unsigned offset,
++		int value)
++{
++	struct digic_gpio_chip *chip = to_digic_gpio_chip(gc);
++	uint32_t t;
++
++	if (offset >= gc->ngpio)
++		return -EINVAL;
++
++	t = digic_gpio_readl(chip, offset);
++	/* Port direction (1 = OUT, 0 = IN) */
++	t |= DIGIC_GPIO_DIR;
++	digic_gpio_writel(chip, t, offset);
++
++	digic_gpio_set_value(gc, offset, value);
++
++	return 0;
++}
++
++static struct gpio_ops digic_gpio_ops = {
++	.direction_input = digic_gpio_direction_input,
++	.direction_output = digic_gpio_direction_output,
++	.get = digic_gpio_get_value,
++	.set = digic_gpio_set_value,
++};
++
++static int digic_gpio_probe(struct device_d *dev)
++{
++	struct digic_gpio_chip *chip;
++	struct resource *res;
++	resource_size_t rsize;
++	int ret = -EINVAL;
++
++	chip = xzalloc(sizeof(*chip));
++
++	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
++	if (!res)
++		goto err;
++
++	rsize = resource_size(res);
++	chip->gc.ngpio = rsize / sizeof(int32_t);
++
++	chip->base = dev_request_mem_region(dev, 0);
++	chip->gc.ops = &digic_gpio_ops;
++	chip->gc.base = 0;
++
++	chip->gc.dev = dev;
++
++	ret = gpiochip_add(&chip->gc);
++	if (ret) {
++		dev_err(dev, "couldn't add gpiochip, ret = %d\n", ret);
++		goto err;
++	}
++
++	dev_info(dev, "probed gpiochip%d with base %d\n",
++			dev->id, chip->gc.base);
++
++	return 0;
++
++err:
++	kfree(chip);
++
++	return ret;
++}
++
++static __maybe_unused struct of_device_id digic_gpio_dt_ids[] = {
++	{
++		.compatible = "canon,digic-gpio",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d digic_gpio_driver = {
++	.name = "digic-gpio",
++	.probe = digic_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(digic_gpio_dt_ids),
++};
++
++static int digic_gpio_init(void)
++{
++	return platform_driver_register(&digic_gpio_driver);
++}
++coredevice_initcall(digic_gpio_init);
 -- 
 2.0.1
 
