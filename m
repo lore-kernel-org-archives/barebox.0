@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBliX-0001gC-MR
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 14:15:58 +0000
-Received: by mail-la0-f47.google.com with SMTP id mc6so5432275lab.20
- for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 07:15:29 -0700 (PDT)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
- by mx.google.com with ESMTPSA id t7sm12422658lat.16.2014.07.28.07.15.27
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 28 Jul 2014 07:15:28 -0700 (PDT)
-Date: Mon, 28 Jul 2014 18:28:14 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140728182814.d80c510749ed1851aaddafb8@gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XBrSx-0000DH-I5
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 20:24:21 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Mon, 28 Jul 2014 22:23:01 +0200
+Message-Id: <1406578981-3761-2-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1406578981-3761-1-git-send-email-mpa@pengutronix.de>
+References: <1406578981-3761-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +16,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: NOR flash writing
+Subject: [PATCH 2/2] usb: imx-usb-misc: Use reasonable defaults to setup the
+ ports
 To: barebox@lists.infradead.org
 
-Hi All!
+This code is partly backported from the linux kernel which also uses
+some defaults to setup the USB ports.
 
-I have barebox running on a board with SPI flash chip.
-I can write to the SPI flash chip using /dev/nor0 interface.
-Before writing data to the /dev/nor0 device I have to erase it explicitly w=
-ith 'erase /dev/nor0' command.
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ drivers/usb/imx/imx-usb-misc.c | 44 +++++-------------------------------------
+ 1 file changed, 5 insertions(+), 39 deletions(-)
 
-How I can write to /dev/nor0 in a more transparent way. E.g. if I want to u=
-pdate only several bytes
-on /dev/nor0 then I use 'mw -d /dev/nor0 ...' command and barebox  automati=
-cally reads appropriate
-flash sector into RAM, modify it, erase NOR flash device sector and write n=
-ew sector content into NOR flash device.
+diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
+index ed44d78b0f7c..0a3d4ac6badb 100644
+--- a/drivers/usb/imx/imx-usb-misc.c
++++ b/drivers/usb/imx/imx-usb-misc.c
+@@ -51,47 +51,13 @@ static __maybe_unused int mx25_initialize_usb_hw(void __iomem *base, int port, u
+ 
+ 	switch (port) {
+ 	case 0:	/* OTG port */
+-		v &= ~(MX25_OTG_SIC_MASK | MX25_OTG_PM_BIT | MX25_OTG_PP_BIT |
+-			MX25_OTG_OCPOL_BIT);
+-		v |= (flags & MXC_EHCI_INTERFACE_MASK) << MX25_OTG_SIC_SHIFT;
+-
+-		if (!(flags & MXC_EHCI_POWER_PINS_ENABLED))
+-			v |= MX25_OTG_PM_BIT;
+-
+-		if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
+-			v |= MX25_OTG_PP_BIT;
+-
+-		if (!(flags & MXC_EHCI_OC_PIN_ACTIVE_LOW))
+-			v |= MX25_OTG_OCPOL_BIT;
+-
++		v &= ~(MX25_OTG_SIC_MASK | MX25_OTG_PP_BIT);
++		v |= (MX25_OTG_PM_BIT | MX25_OTG_OCPOL_BIT);
+ 		break;
+ 	case 1: /* H1 port */
+-		v &= ~(MX25_H1_SIC_MASK | MX25_H1_PM_BIT | MX25_H1_PP_BIT |
+-			MX25_H1_OCPOL_BIT | MX25_H1_TLL_BIT | MX25_H1_USBTE_BIT |
+-			MX25_H1_IPPUE_DOWN_BIT | MX25_H1_IPPUE_UP_BIT);
+-		v |= (flags & MXC_EHCI_INTERFACE_MASK) << MX25_H1_SIC_SHIFT;
+-
+-		if (!(flags & MXC_EHCI_POWER_PINS_ENABLED))
+-			v |= MX25_H1_PM_BIT;
+-
+-		if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
+-			v |= MX25_H1_PP_BIT;
+-
+-		if (!(flags & MXC_EHCI_OC_PIN_ACTIVE_LOW))
+-			v |= MX25_H1_OCPOL_BIT;
+-
+-		if (!(flags & MXC_EHCI_TLL_ENABLED))
+-			v |= MX25_H1_TLL_BIT;
+-
+-		if (flags & MXC_EHCI_INTERNAL_PHY)
+-			v |= MX25_H1_USBTE_BIT;
+-
+-		if (flags & MXC_EHCI_IPPUE_DOWN)
+-			v |= MX25_H1_IPPUE_DOWN_BIT;
+-
+-		if (flags & MXC_EHCI_IPPUE_UP)
+-			v |= MX25_H1_IPPUE_UP_BIT;
+-
++		v &= ~(MX25_H1_SIC_MASK | MX25_H1_PP_BIT |  MX25_H1_IPPUE_UP_BIT);
++		v |= (MX25_H1_PM_BIT | MX25_H1_OCPOL_BIT | MX25_H1_TLL_BIT |
++			MX25_H1_USBTE_BIT | MX25_H1_IPPUE_DOWN_BIT);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.0.1
 
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
