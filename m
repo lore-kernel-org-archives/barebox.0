@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XBdLZ-0003h2-0m
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 05:19:42 +0000
-Date: Mon, 28 Jul 2014 07:19:16 +0200
+ Linux)) id 1XBdSm-0006WT-Ds
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 05:27:09 +0000
+Date: Mon, 28 Jul 2014 07:26:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140728051916.GQ23235@pengutronix.de>
-References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1406107568-8440-7-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140725072749.GH23282@pengutronix.de>
- <CABJ1b_RZ1oc1PC0cja7H_NSg5jdqKP_b+zqY9z-SyPeaTxmL4A@mail.gmail.com>
+Message-ID: <20140728052644.GR23235@pengutronix.de>
+References: <1406302136-26747-1-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CABJ1b_RZ1oc1PC0cja7H_NSg5jdqKP_b+zqY9z-SyPeaTxmL4A@mail.gmail.com>
+In-Reply-To: <1406302136-26747-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +22,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RESEND 6/6] pci: mvebu: Add PCIe driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/4] Freescale P1010RDB board support
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, Jul 25, 2014 at 05:00:36PM +0200, Sebastian Hesselbarth wrote:
-> On Fri, Jul 25, 2014 at 9:27 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > On Wed, Jul 23, 2014 at 11:26:08AM +0200, Sebastian Hesselbarth wrote:
-> >> This adds a PCI driver for the controllers found on Marvell MVEBU SoCs.
-> >> Besides the functional driver itself, it also adds SoC specific PHY
-> >> setup required for PCIe. Currently, only Armada 370 is fully supported.
-> >>
-> >> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> >
-> > For now I applied 1/6 - 5/6. Are you happy enough with the driver so I
-> > can apply it?
+On Fri, Jul 25, 2014 at 04:28:52PM +0100, Renaud Barbier wrote:
+> This patch set adds support for the Freescale P1010RDB board.
+> The first patch 1/4 is a resend and fix an issue that prevented
+> the P1010 from booting. It has also been tested for regression
+> on other platforms. The remaining patches adds limited
+> SOC support for the P1010 platform with driver enabled for
+> the NOR storage device, serial, I2C and Ethernet port.
 > 
-> If you already took in the other patches, yes, then it is okay to pick up this
-> one, too. It would be nice, if you fixup the one devfn line when applying.
-> 
-> I can send follow-up patches on whatever is the result of discussion on
-> this and the other patches of this series.
+> Renaud Barbier (4):
+>   ppc: 85xx: CCSRBAR mapping moved to start-up code.
+>   ppc: Freescale P1010 headers
+>   ppc: Freescale P1010 SoC support
+>   ppc: minimal Freescale P1010RDB board support
 
-Please resend the whole series then. I'll replace the patches.
+Applied, thanks
 
 Sascha
+
+> 
+>  arch/ppc/Makefile                                  |   1 +
+>  arch/ppc/boards/freescale-p1010rdb/Makefile        |   4 +
+>  arch/ppc/boards/freescale-p1010rdb/config.h        |  58 +++++
+>  arch/ppc/boards/freescale-p1010rdb/ddr.c           |  60 +++++
+>  arch/ppc/boards/freescale-p1010rdb/env/bin/init    |   2 +
+>  arch/ppc/boards/freescale-p1010rdb/env/config      |   2 +
+>  arch/ppc/boards/freescale-p1010rdb/law.c           |  24 ++
+>  arch/ppc/boards/freescale-p1010rdb/p1010rdb.c      | 209 ++++++++++++++++
+>  arch/ppc/boards/freescale-p1010rdb/p1010rdb.h      |  14 ++
+>  arch/ppc/boards/freescale-p1010rdb/tlb.c           |  59 +++++
+>  arch/ppc/configs/p1010rdb_defconfig                |  55 +++++
+>  arch/ppc/cpu-85xx/start.S                          | 106 ++++++++
+>  arch/ppc/include/asm/fsl_ifc.h                     | 267 +++++++++++++++++++++
+>  arch/ppc/include/asm/fsl_law.h                     |   1 +
+>  arch/ppc/include/asm/processor.h                   |   3 +-
+>  arch/ppc/mach-mpc85xx/Kconfig                      |  69 ++++--
+>  arch/ppc/mach-mpc85xx/cpu_init.c                   | 134 +++++++++--
+>  arch/ppc/mach-mpc85xx/cpuid.c                      |   1 +
+>  arch/ppc/mach-mpc85xx/fsl_gpio.c                   |  19 ++
+>  .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |   9 +
+>  arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h    |  13 +-
+>  arch/ppc/mach-mpc85xx/speed.c                      |  38 ++-
+>  22 files changed, 1091 insertions(+), 57 deletions(-)
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/Makefile
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/config.h
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/ddr.c
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/env/bin/init
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/env/config
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/law.c
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/p1010rdb.c
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/p1010rdb.h
+>  create mode 100644 arch/ppc/boards/freescale-p1010rdb/tlb.c
+>  create mode 100644 arch/ppc/configs/p1010rdb_defconfig
+>  create mode 100644 arch/ppc/include/asm/fsl_ifc.h
+> 
+> --
+> 1.8.3.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
