@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x22b.google.com ([2607:f8b0:4002:c07::22b])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBjbW-0007uJ-JB
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 12:00:40 +0000
-Received: by mail-yk0-f171.google.com with SMTP id 19so4611489ykq.2
- for <barebox@lists.infradead.org>; Mon, 28 Jul 2014 05:00:07 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XBkBv-0007N3-H7
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 12:38:12 +0000
+Date: Mon, 28 Jul 2014 14:37:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140728123748.GB23235@pengutronix.de>
+References: <CACqcpZDdPLs3LRpg7X9u2E_z+824+vDC=c9vS6NRundiJUmTOA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1406543035.13346.11.camel@ted>
-References: <1406541304-18741-1-git-send-email-freesilicon@gmail.com>
- <1406543035.13346.11.camel@ted>
-Date: Mon, 28 Jul 2014 14:00:07 +0200
-Message-ID: <CAKRNOGwGr3BM8FTMoqjNQ+p0tFKUj55RdyL+0wemf_7f1r1UcQ@mail.gmail.com>
-From: David Vincent <freesilicon@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CACqcpZDdPLs3LRpg7X9u2E_z+824+vDC=c9vS6NRundiJUmTOA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,59 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [OE-core] [PATCH] barebox: Add recipe
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: Re: at91: device tree
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Sorry, the patch alone was maybe a little harsh, I should have
-submitted it as a RFC.
-For me, this recipe was needed because I don't use u-boot as the
-bootloader for my custom board but barebox. More generically, I know
-that the meta-fsl-arm has also a recipe for barebox and since my board
-was not based on a Freescale MPU but an Atmel one, I thought that the
-work could be shared by the two layers in oe-core or, at least, in
-meta-oe instead of being also redeveloped in meta-atmel or another BSP
-layer.
+Hi Rapha=EBl,
 
-Since barebox also supports many architectures like ARM, MIPS,
-Blackfin,... and many vendors like Atmel, Freescale, TI,... I think it
-provides a good alternative for the 'virtual/bootloader' task. People
-who want to use it should not put more effort than what they need to
-do for u-boot currently.
+On Sun, Jul 27, 2014 at 12:18:07PM +0200, Rapha=EBl Poggi wrote:
+> Hi all !
+> =
 
-I've cc'ed the barebox mailing list for more technical details if needed.
+> In barebox, atmel AT91 boards don't have device tree support(neither
+> atmel drivers like: atmel_nand).
+> I am currently working on adding device tree support especially on
+> at91sam9m10g45ek board (the only atmel board, I have for testing) and
+> corresponding drivers (i2c, nand, spi, etc...).
+> =
 
-Greetings,
+> I wonder if barebox community is interested to add device tree support
+> for atmel or if there is already somebody who works on it.
 
-David
+I'm not aware of anyone working on device tree support for AT91.
+Jean-Christophe sometimes mentioned that this is on his todo list, but
+AFAIK he hasn't started yet.
 
-2014-07-28 12:23 GMT+02:00 Richard Purdie <richard.purdie@linuxfoundation.org>:
-> On Mon, 2014-07-28 at 11:55 +0200, David Vincent wrote:
->> barebox (formerly known as u-boot-v2) is a bootloader that inherits the
->> best of U-Boot and the Linux kernel. This commit adds the possibility to
->> use it as a virtual/bootloader instead of U-Boot.
->>
->> Signed-off-by: David Vincent <freesilicon@gmail.com>
->> ---
->>  meta/recipes-bsp/barebox/barebox.inc          |   73 +++++++++++++++++++++++++
->>  meta/recipes-bsp/barebox/barebox_2014.07.0.bb |   15 +++++
->>  2 files changed, 88 insertions(+)
->>  create mode 100644 meta/recipes-bsp/barebox/barebox.inc
->>  create mode 100644 meta/recipes-bsp/barebox/barebox_2014.07.0.bb
->
-> I have to admit I don't know a lot about this. To make it into OE-Core
-> we need some kind of story about why its necessary and commonly used.
-> Are there a number of BSPs using this? Can you give some background to
-> why this is needed?
->
-> Cheers,
->
-> Richard
->
+Having device tree support for AT91 would be great, this would open the
+door for quite some cleanups in the AT91 port.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
