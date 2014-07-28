@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBe88-0006HZ-7k
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 06:09:52 +0000
-Received: by mail-wg0-f47.google.com with SMTP id b13so6750718wgh.18
- for <barebox@lists.infradead.org>; Sun, 27 Jul 2014 23:09:29 -0700 (PDT)
-Message-ID: <53D5E915.70502@gmail.com>
-Date: Mon, 28 Jul 2014 08:09:25 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1406388285-1666-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140728054112.GT23235@pengutronix.de>
-In-Reply-To: <20140728054112.GT23235@pengutronix.de>
+ id 1XBe8e-0006Vh-Gk
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 06:10:26 +0000
+Received: by mail-lb0-f179.google.com with SMTP id v6so5439539lbi.10
+ for <barebox@lists.infradead.org>; Sun, 27 Jul 2014 23:09:59 -0700 (PDT)
+Date: Mon, 28 Jul 2014 10:22:43 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140728102243.4fa06426337415ec0cabc26c@gmail.com>
+In-Reply-To: <20140728054917.GU23235@pengutronix.de>
+References: <1406450152-23298-1-git-send-email-antonynpavlov@gmail.com>
+ <20140728054917.GU23235@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +20,126 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] Minor USB fixes and xHCI driver
+Subject: Re: [PATCH] led: try to get LED's label from the 'label' property
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org
 
-On 07/28/2014 07:41 AM, Sascha Hauer wrote:
-> On Sat, Jul 26, 2014 at 05:24:38PM +0200, Sebastian Hesselbarth wrote:
->>
->> Sebastian Hesselbarth (7):
->>   USB: Fix stale usb devices in usb_device_list
->>   USB: Count detected USB devices independent of dev_index
->>   USB: improve error paths and tear-down
->>   USB: EHCI: use min3 from Linux
->>   include: import {lower,upper}_32_bits helpers
->>   USB: host: add xHCI HCD, Hub, and platform driver
->>   USB: host: add xHCI PCI driver
-> 
-> Applied, thanks.
-> 
-> You probably need the PCIe driver aswell to make use of this series,
-> but it shouldn't be needed to compile this series, right?
+On Mon, 28 Jul 2014 07:49:17 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Yep, no compile time dependency here.
+> On Sun, Jul 27, 2014 at 12:35:52PM +0400, Antony Pavlov wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >  drivers/led/led-gpio.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > =
 
-Thanks!
+> > diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
+> > index 7bb3b49..cddac08 100644
+> > --- a/drivers/led/led-gpio.c
+> > +++ b/drivers/led/led-gpio.c
+> > @@ -212,7 +212,9 @@ static int led_gpio_of_probe(struct device_d *dev)
+> >  			continue;
+> >  =
 
-Sebastian
+> >  		gled =3D xzalloc(sizeof(*gled));
+> > -		gled->led.name =3D xstrdup(child->name);
+> > +		gled->led.name =3D xstrdup(of_get_property(child, "label", NULL));
+> =
 
+> When the property doesn't exist you pass NULL to xstrdup. This will
+> crash.
+
+My bad. I have seen barebox strdup() realization but missed xstrdup() reali=
+zation.
+
+Barebox' strdup() can handle NULL argument:
+
+char * strdup(const char *s)
+{
+        char *new;
+
+        if ((s =3D=3D NULL) ||
+            ((new =3D malloc (strlen(s) + 1)) =3D=3D NULL) ) {             =
+            =
+
+                return NULL;                                               =
+      =
+
+        }
+
+        strcpy (new, s);
+        return new;
+}
+
+But xstrdup() can't do so:
+
+char *xstrdup(const char *s)
+{
+        char *p =3D strdup(s);
+
+        if (!p)
+                panic("ERROR: out of memory\n");
+        return p;
+}               =
+
+
+Can I just change first xstrdup() to strdup() in my patch?
+
+E.g.
+
+-               gled->led.name =3D xstrdup(of_get_property(child, "label", =
+NULL));
++               gled->led.name =3D strdup(of_get_property(child, "label", N=
+ULL));
+                if (!gled->led.name)
+                        gled->led.name =3D xstrdup(child->name);
+
+> You'll have to add a check or make xstrdup tolerate NULL
+> pointers.
+> =
+
+> Sascha
+> =
+
+> > +		if (!gled->led.name)
+> > +			gled->led.name =3D xstrdup(child->name);
+> >  		gled->gpio =3D gpio;
+> >  		gled->active_low =3D (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
+> >  =
+
+> > -- =
+
+> > 2.0.1
+> > =
+
+> > =
+
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > =
+
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
