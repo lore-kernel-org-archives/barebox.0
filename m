@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XBrSx-0000DG-I4
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 20:24:21 +0000
+ Linux)) id 1XBrTm-0000SF-Vr
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 20:25:07 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Mon, 28 Jul 2014 22:23:00 +0200
-Message-Id: <1406578981-3761-1-git-send-email-mpa@pengutronix.de>
+Date: Mon, 28 Jul 2014 22:24:27 +0200
+Message-Id: <1406579067-3866-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] usb: chipidea: Add DT vbus-supply parsing
+Subject: [PATCH] mfd: mc34704: Add DT support
 To: barebox@lists.infradead.org
 
-Add some code to parse and enable vbus supply when probing.
+Add a compatible to this driver so it can be added through devicetree.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- drivers/usb/imx/chipidea-imx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/mfd/mc34704.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index 9b6829b8f59f..a4cf4a1a5f3d 100644
---- a/drivers/usb/imx/chipidea-imx.c
-+++ b/drivers/usb/imx/chipidea-imx.c
-@@ -15,6 +15,7 @@
- #include <common.h>
- #include <init.h>
- #include <io.h>
-+#include <linux/err.h>
- #include <of.h>
- #include <errno.h>
- #include <driver.h>
-@@ -23,6 +24,7 @@
- #include <usb/chipidea-imx.h>
- #include <usb/ulpi.h>
- #include <usb/fsl_usb2.h>
-+#include <regulator.h>
+diff --git a/drivers/mfd/mc34704.c b/drivers/mfd/mc34704.c
+index 9afab07a2df5..3dc85f5474dd 100644
+--- a/drivers/mfd/mc34704.c
++++ b/drivers/mfd/mc34704.c
+@@ -123,9 +123,15 @@ static int mc34704_probe(struct device_d *dev)
+ 	return 0;
+ }
  
- #define MXC_EHCI_PORTSC_MASK ((0xf << 28) | (1 << 25))
- 
-@@ -187,6 +189,16 @@ static int imx_chipidea_probe(struct device_d *dev)
- 		ret = -ENODEV;
- 	}
- 
-+	if (ci->mode == IMX_USB_MODE_HOST) {
-+		struct regulator *vbus = regulator_get(dev, "vbus");
-+		if (!IS_ERR(vbus)) {
-+			regulator_enable(vbus);
-+		} else {
-+			dev_err(dev, "Failed to get vbus regulator %ld\n", PTR_ERR(vbus));
-+			ret = PTR_ERR(vbus);
-+		}
-+	}
++static __maybe_unused struct of_device_id mc34704_dt_ids[] = {
++	{ .compatible = "fsl,mc34704", },
++	{ }
++};
 +
- 	return ret;
+ static struct driver_d mc34704_driver = {
+ 	.name  = DRIVERNAME,
+ 	.probe = mc34704_probe,
++	.of_compatible = DRV_OF_COMPAT(mc34704_dt_ids),
  };
  
+ static int mc34704_init(void)
 -- 
 2.0.1
 
