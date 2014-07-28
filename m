@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-we0-x22a.google.com ([2a00:1450:400c:c03::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XBe8e-0006Vh-Gk
- for barebox@lists.infradead.org; Mon, 28 Jul 2014 06:10:26 +0000
-Received: by mail-lb0-f179.google.com with SMTP id v6so5439539lbi.10
- for <barebox@lists.infradead.org>; Sun, 27 Jul 2014 23:09:59 -0700 (PDT)
-Date: Mon, 28 Jul 2014 10:22:43 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140728102243.4fa06426337415ec0cabc26c@gmail.com>
-In-Reply-To: <20140728054917.GU23235@pengutronix.de>
-References: <1406450152-23298-1-git-send-email-antonynpavlov@gmail.com>
- <20140728054917.GU23235@pengutronix.de>
-Mime-Version: 1.0
+ id 1XBe9I-0007pN-IJ
+ for barebox@lists.infradead.org; Mon, 28 Jul 2014 06:11:05 +0000
+Received: by mail-we0-f170.google.com with SMTP id w62so6928171wes.15
+ for <barebox@lists.infradead.org>; Sun, 27 Jul 2014 23:10:41 -0700 (PDT)
+Message-ID: <53D5E95D.90005@gmail.com>
+Date: Mon, 28 Jul 2014 08:10:37 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406107568-8440-7-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20140725072749.GH23282@pengutronix.de>
+ <CABJ1b_RZ1oc1PC0cja7H_NSg5jdqKP_b+zqY9z-SyPeaTxmL4A@mail.gmail.com>
+ <20140728051916.GQ23235@pengutronix.de>
+In-Reply-To: <20140728051916.GQ23235@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,126 +22,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] led: try to get LED's label from the 'label' property
+Subject: Re: [PATCH RESEND 6/6] pci: mvebu: Add PCIe driver
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox <barebox@lists.infradead.org>
 
-On Mon, 28 Jul 2014 07:49:17 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On 07/28/2014 07:19 AM, Sascha Hauer wrote:
+> On Fri, Jul 25, 2014 at 05:00:36PM +0200, Sebastian Hesselbarth wrote:
+>> On Fri, Jul 25, 2014 at 9:27 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>>> On Wed, Jul 23, 2014 at 11:26:08AM +0200, Sebastian Hesselbarth wrote:
+>>>> This adds a PCI driver for the controllers found on Marvell MVEBU SoCs.
+>>>> Besides the functional driver itself, it also adds SoC specific PHY
+>>>> setup required for PCIe. Currently, only Armada 370 is fully supported.
+>>>>
+>>>> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+>>>
+>>> For now I applied 1/6 - 5/6. Are you happy enough with the driver so I
+>>> can apply it?
+>>
+>> If you already took in the other patches, yes, then it is okay to pick up this
+>> one, too. It would be nice, if you fixup the one devfn line when applying.
+>>
+>> I can send follow-up patches on whatever is the result of discussion on
+>> this and the other patches of this series.
+> 
+> Please resend the whole series then. I'll replace the patches.
 
-> On Sun, Jul 27, 2014 at 12:35:52PM +0400, Antony Pavlov wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  drivers/led/led-gpio.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > =
+Ok, fair enough. I'll rework and respect any of the comments made.
 
-> > diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
-> > index 7bb3b49..cddac08 100644
-> > --- a/drivers/led/led-gpio.c
-> > +++ b/drivers/led/led-gpio.c
-> > @@ -212,7 +212,9 @@ static int led_gpio_of_probe(struct device_d *dev)
-> >  			continue;
-> >  =
+Sebastian
 
-> >  		gled =3D xzalloc(sizeof(*gled));
-> > -		gled->led.name =3D xstrdup(child->name);
-> > +		gled->led.name =3D xstrdup(of_get_property(child, "label", NULL));
-> =
-
-> When the property doesn't exist you pass NULL to xstrdup. This will
-> crash.
-
-My bad. I have seen barebox strdup() realization but missed xstrdup() reali=
-zation.
-
-Barebox' strdup() can handle NULL argument:
-
-char * strdup(const char *s)
-{
-        char *new;
-
-        if ((s =3D=3D NULL) ||
-            ((new =3D malloc (strlen(s) + 1)) =3D=3D NULL) ) {             =
-            =
-
-                return NULL;                                               =
-      =
-
-        }
-
-        strcpy (new, s);
-        return new;
-}
-
-But xstrdup() can't do so:
-
-char *xstrdup(const char *s)
-{
-        char *p =3D strdup(s);
-
-        if (!p)
-                panic("ERROR: out of memory\n");
-        return p;
-}               =
-
-
-Can I just change first xstrdup() to strdup() in my patch?
-
-E.g.
-
--               gled->led.name =3D xstrdup(of_get_property(child, "label", =
-NULL));
-+               gled->led.name =3D strdup(of_get_property(child, "label", N=
-ULL));
-                if (!gled->led.name)
-                        gled->led.name =3D xstrdup(child->name);
-
-> You'll have to add a check or make xstrdup tolerate NULL
-> pointers.
-> =
-
-> Sascha
-> =
-
-> > +		if (!gled->led.name)
-> > +			gled->led.name =3D xstrdup(child->name);
-> >  		gled->gpio =3D gpio;
-> >  		gled->active_low =3D (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
-> >  =
-
-> > -- =
-
-> > 2.0.1
-> > =
-
-> > =
-
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > =
-
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
