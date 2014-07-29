@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCDju-0005Sb-5c
- for barebox@lists.infradead.org; Tue, 29 Jul 2014 20:11:18 +0000
-Received: by mail-la0-f51.google.com with SMTP id pn19so144031lab.10
- for <barebox@lists.infradead.org>; Tue, 29 Jul 2014 13:10:49 -0700 (PDT)
+ id 1XCDje-0005RJ-De
+ for barebox@lists.infradead.org; Tue, 29 Jul 2014 20:10:59 +0000
+Received: by mail-lb0-f180.google.com with SMTP id v6so134879lbi.39
+ for <barebox@lists.infradead.org>; Tue, 29 Jul 2014 13:10:35 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 30 Jul 2014 00:10:25 +0400
-Message-Id: <1406664625-19653-10-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 30 Jul 2014 00:10:17 +0400
+Message-Id: <1406664625-19653-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1406664625-19653-1-git-send-email-antonynpavlov@gmail.com>
 References: <1406664625-19653-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 9/9] MIPS: ritmix-rzx50_defconfig: enable RTC support
+Subject: [PATCH v4 1/9] lib: import 'bcd' from linux-3.15
 To: barebox@lists.infradead.org
-
-Also enable CONFIG_LONGHELP.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/configs/ritmix-rzx50_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/bcd.h | 22 ++++++++++++++++++++++
+ lib/Makefile        |  1 +
+ lib/bcd.c           | 14 ++++++++++++++
+ 3 files changed, 37 insertions(+)
 
-diff --git a/arch/mips/configs/ritmix-rzx50_defconfig b/arch/mips/configs/ritmix-rzx50_defconfig
-index e6f10fb..3a2cf54 100644
---- a/arch/mips/configs/ritmix-rzx50_defconfig
-+++ b/arch/mips/configs/ritmix-rzx50_defconfig
-@@ -10,6 +10,7 @@ CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- # CONFIG_DEFAULT_ENVIRONMENT is not set
- CONFIG_DEBUG_LL=y
-+CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
-@@ -36,6 +37,8 @@ CONFIG_CMD_OFTREE=y
- CONFIG_OFDEVICE=y
- # CONFIG_SPI is not set
- CONFIG_GPIO_JZ4740=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_JZ4740=y
- CONFIG_SHA1=y
- CONFIG_SHA224=y
- CONFIG_SHA256=y
+diff --git a/include/linux/bcd.h b/include/linux/bcd.h
+new file mode 100644
+index 0000000..18fff11
+--- /dev/null
++++ b/include/linux/bcd.h
+@@ -0,0 +1,22 @@
++#ifndef _BCD_H
++#define _BCD_H
++
++#include <linux/compiler.h>
++
++#define bcd2bin(x)					\
++		(__builtin_constant_p((u8 )(x)) ?	\
++		const_bcd2bin(x) :			\
++		_bcd2bin(x))
++
++#define bin2bcd(x)					\
++		(__builtin_constant_p((u8 )(x)) ?	\
++		const_bin2bcd(x) :			\
++		_bin2bcd(x))
++
++#define const_bcd2bin(x)	(((x) & 0x0f) + ((x) >> 4) * 10)
++#define const_bin2bcd(x)	((((x) / 10) << 4) + (x) % 10)
++
++unsigned _bcd2bin(unsigned char val) __attribute_const__;
++unsigned char _bin2bcd(unsigned val) __attribute_const__;
++
++#endif /* _BCD_H */
+diff --git a/lib/Makefile b/lib/Makefile
+index 60274c3..977977f 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -1,3 +1,4 @@
++obj-y			+= bcd.o
+ obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
+ obj-y			+= ctype.o
+ obj-y			+= rbtree.o
+diff --git a/lib/bcd.c b/lib/bcd.c
+new file mode 100644
+index 0000000..b072d50
+--- /dev/null
++++ b/lib/bcd.c
+@@ -0,0 +1,14 @@
++#include <linux/bcd.h>
++#include <module.h>
++
++unsigned _bcd2bin(unsigned char val)
++{
++	return (val & 0x0f) + (val >> 4) * 10;
++}
++EXPORT_SYMBOL(_bcd2bin);
++
++unsigned char _bin2bcd(unsigned val)
++{
++	return ((val / 10) << 4) + val % 10;
++}
++EXPORT_SYMBOL(_bin2bcd);
 -- 
 2.0.1
 
