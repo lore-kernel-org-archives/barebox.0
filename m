@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XC3S1-0006a2-TI
+ Linux)) id 1XC3S1-0006aI-TA
  for barebox@lists.infradead.org; Tue, 29 Jul 2014 09:12:15 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue, 29 Jul 2014 11:11:05 +0200
-Message-Id: <1406625065-20070-2-git-send-email-mpa@pengutronix.de>
-In-Reply-To: <1406625065-20070-1-git-send-email-mpa@pengutronix.de>
-References: <1406625065-20070-1-git-send-email-mpa@pengutronix.de>
+Date: Tue, 29 Jul 2014 11:11:04 +0200
+Message-Id: <1406625065-20070-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,75 +19,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] usb: imx-usb-misc: Use reasonable defaults to setup
- the ports
+Subject: [PATCH v2 1/2] usb: chipidea: Add DT vbus-supply parsing
 To: barebox@lists.infradead.org
 
-This code is partly backported from the linux kernel which also uses
-some defaults to setup the USB ports.
+Add some code to parse and enable vbus supply when probing.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- drivers/usb/imx/imx-usb-misc.c | 44 +++++-------------------------------------
- 1 file changed, 5 insertions(+), 39 deletions(-)
+ drivers/usb/imx/chipidea-imx.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
-index ed44d78b0f7c..0a3d4ac6badb 100644
---- a/drivers/usb/imx/imx-usb-misc.c
-+++ b/drivers/usb/imx/imx-usb-misc.c
-@@ -51,47 +51,13 @@ static __maybe_unused int mx25_initialize_usb_hw(void __iomem *base, int port, u
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 9b6829b8f59f..fd3a57145f4d 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -15,9 +15,11 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
++#include <linux/err.h>
+ #include <of.h>
+ #include <errno.h>
+ #include <driver.h>
++#include <regulator.h>
+ #include <usb/usb.h>
+ #include <usb/ehci.h>
+ #include <usb/chipidea-imx.h>
+@@ -136,6 +138,7 @@ static int imx_chipidea_probe(struct device_d *dev)
+ 	void __iomem *base;
+ 	struct imx_chipidea *ci;
+ 	uint32_t portsc;
++	struct regulator *vbus;
  
- 	switch (port) {
- 	case 0:	/* OTG port */
--		v &= ~(MX25_OTG_SIC_MASK | MX25_OTG_PM_BIT | MX25_OTG_PP_BIT |
--			MX25_OTG_OCPOL_BIT);
--		v |= (flags & MXC_EHCI_INTERFACE_MASK) << MX25_OTG_SIC_SHIFT;
--
--		if (!(flags & MXC_EHCI_POWER_PINS_ENABLED))
--			v |= MX25_OTG_PM_BIT;
--
--		if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
--			v |= MX25_OTG_PP_BIT;
--
--		if (!(flags & MXC_EHCI_OC_PIN_ACTIVE_LOW))
--			v |= MX25_OTG_OCPOL_BIT;
--
-+		v &= ~(MX25_OTG_SIC_MASK | MX25_OTG_PP_BIT);
-+		v |= (MX25_OTG_PM_BIT | MX25_OTG_OCPOL_BIT);
- 		break;
- 	case 1: /* H1 port */
--		v &= ~(MX25_H1_SIC_MASK | MX25_H1_PM_BIT | MX25_H1_PP_BIT |
--			MX25_H1_OCPOL_BIT | MX25_H1_TLL_BIT | MX25_H1_USBTE_BIT |
--			MX25_H1_IPPUE_DOWN_BIT | MX25_H1_IPPUE_UP_BIT);
--		v |= (flags & MXC_EHCI_INTERFACE_MASK) << MX25_H1_SIC_SHIFT;
--
--		if (!(flags & MXC_EHCI_POWER_PINS_ENABLED))
--			v |= MX25_H1_PM_BIT;
--
--		if (flags & MXC_EHCI_PWR_PIN_ACTIVE_HIGH)
--			v |= MX25_H1_PP_BIT;
--
--		if (!(flags & MXC_EHCI_OC_PIN_ACTIVE_LOW))
--			v |= MX25_H1_OCPOL_BIT;
--
--		if (!(flags & MXC_EHCI_TLL_ENABLED))
--			v |= MX25_H1_TLL_BIT;
--
--		if (flags & MXC_EHCI_INTERNAL_PHY)
--			v |= MX25_H1_USBTE_BIT;
--
--		if (flags & MXC_EHCI_IPPUE_DOWN)
--			v |= MX25_H1_IPPUE_DOWN_BIT;
--
--		if (flags & MXC_EHCI_IPPUE_UP)
--			v |= MX25_H1_IPPUE_UP_BIT;
--
-+		v &= ~(MX25_H1_SIC_MASK | MX25_H1_PP_BIT |  MX25_H1_IPPUE_UP_BIT);
-+		v |= (MX25_H1_PM_BIT | MX25_H1_OCPOL_BIT | MX25_H1_TLL_BIT |
-+			MX25_H1_USBTE_BIT | MX25_H1_IPPUE_DOWN_BIT);
- 		break;
- 	default:
- 		return -EINVAL;
+ 	ci = xzalloc(sizeof(*ci));
+ 	ci->dev = dev;
+@@ -184,9 +187,23 @@ static int imx_chipidea_probe(struct device_d *dev)
+ 		ret = ci_udc_register(dev, base);
+ 	} else {
+ 		dev_err(dev, "No supported role\n");
+-		ret = -ENODEV;
++		return -ENODEV;
++	}
++
++	if (ret)
++		return ret;
++
++	vbus = regulator_get(dev, "vbus");
++	if (IS_ERR(vbus)) {
++		dev_err(dev, "Failed to get vbus regulator %ld\n", PTR_ERR(vbus));
++		return PTR_ERR(vbus);
+ 	}
+ 
++	if (ci->mode == IMX_USB_MODE_HOST)
++		ret = regulator_enable(vbus);
++	else
++		ret = regulator_disable(vbus);
++
+ 	return ret;
+ };
+ 
 -- 
 2.0.1
 
