@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XC7L2-0003pM-3b
- for barebox@lists.infradead.org; Tue, 29 Jul 2014 13:21:12 +0000
-Date: Tue, 29 Jul 2014 15:20:45 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140729132045.GI23235@pengutronix.de>
-References: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1406582130-10116-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail-wi0-x22a.google.com ([2a00:1450:400c:c05::22a])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XCDXp-00012u-Dx
+ for barebox@lists.infradead.org; Tue, 29 Jul 2014 19:58:45 +0000
+Received: by mail-wi0-f170.google.com with SMTP id f8so6034809wiw.3
+ for <barebox@lists.infradead.org>; Tue, 29 Jul 2014 12:58:22 -0700 (PDT)
+Message-ID: <53D7FCD9.1010209@gmail.com>
+Date: Tue, 29 Jul 2014 21:58:17 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406553970-18157-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1406553970-18157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +19,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/11] ARM: add support for Canon DIGIC chips and
- Canon PowerShot A1100 IS
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/5] Marvell EBU PCIe driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Tue, Jul 29, 2014 at 01:15:19AM +0400, Antony Pavlov wrote:
-> Changes since v1:
+On 07/28/2014 03:26 PM, Sebastian Hesselbarth wrote:
+> Second round of the Marvell EBU PCIe driver patch set. Compared
+> to v1, I reworked pci_scan_bus to properly set IORESOURCE flags
+> for all resources, and added auto-incrementing pci bus numbering.
 > 
->   * fix reset_cpu();
->   * add real Canon A1100 camera support.
+> Patch 1 is unchanged and still fixes resource computation of mbus
+> driver. Patch 2 now properly sets IORESOURCE flags for I/O, 32b
+> MEM, and 64b MEM resources.
 > 
-> DIGIC is Canon Inc.'s name for a family of SoC
-> for digital cameras and camcorders.
+> Patch 3 is a squashed and reworked patch dealing with pci host
+> controller registration: bus number is now assigned from an auto-
+> incremented bus_index and already provided pci_controller's
+> set_busno is called right before pci_scan_bus to allow the
+> controller to update internal registers related with bus number.
+> This patch also sets a back-reference to the pci_controller of
+> a pci_bus and cleans up some unused left-overs from Linux import.
 > 
-> See http://en.wikipedia.org/wiki/DIGIC for details.
+> Patch 4 is unchanged import of of_pci_get_devfn() and Patch 5
+> finally adds the PCIe controller driver for Marvell MVEBU SoCs.
+> Individual changelogs are also at the corresponding patch mails.
 > 
-> There is no publicly available specification for
-> DIGIC chips. All information about DIGIC chip
-> internals is based on reverse engineering efforts
-> made by CHDK (http://chdk.wikia.com) and
-> Magic Lantern (http://www.magiclantern.fm) projects
-> contributors.
-> 
-> Also this patch series adds initial support for Canon
-> PowerShot A1100 IS compact camera (it is my only camera
-> with connected UART interface). As the DIGIC-based cameras
-> differences mostly are unsignificant (e.g. RAM-size,
-> ROM type and size, GPIO usage) the other compact
-> and DSLR cameras support can be easely added.
-> 
-> One can easely run barebox for Canon A1100 using QEMU version 2.0
-> or newer.
-> 
-> This patchseries uses some patches already submitted to maillist:
-> 
->    * clean barebox.zynq
->    * treewide: drop Doxygen stuff
+> Again, this has been tested on Armada 370 Mirabox.
 
-Applied this series up to 9/11 since I'm quite unsure if it's allowed
-to include a GPLv3+ tool into a GPLv2 project.
-There are some ways out of this situation:
+Sascha,
 
-- Ask the author to relicense it under GPLv2+
-- rewrite the tool
-- Use it as external tool
-- Convince me that it's allowed ;)
+before you consider applying this, I had the chance to test it
+on Armada XP, too. Both the driver and pci core need some more
+fixes, so please wait for v3.
 
-Sascha
+Sebastian
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
