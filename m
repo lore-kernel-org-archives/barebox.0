@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from top.free-electrons.com ([176.31.233.9]
  helo=mail.free-electrons.com)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCEIG-0004dr-Kd
- for barebox@lists.infradead.org; Tue, 29 Jul 2014 20:46:45 +0000
+ id 1XCEIZ-0004ha-Kl
+ for barebox@lists.infradead.org; Tue, 29 Jul 2014 20:47:04 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Tue, 29 Jul 2014 17:44:56 -0300
-Message-Id: <1406666701-15356-2-git-send-email-ezequiel.garcia@free-electrons.com>
+Date: Tue, 29 Jul 2014 17:45:01 -0300
+Message-Id: <1406666701-15356-7-git-send-email-ezequiel.garcia@free-electrons.com>
 In-Reply-To: <1406666701-15356-1-git-send-email-ezequiel.garcia@free-electrons.com>
 References: <1406666701-15356-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -22,35 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] net: phy: Add fallbacks for the obsoletes phy DT
- properties
+Subject: [PATCH 6/6] configs: Add network options to Armada 370/XP boards
 To: barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Jason Cooper <jason@lakedaemon.net>, Willy Tarreau <w@1wt.eu>
 
-In addition to the standard 'phy-handle' devicetree property, the binding
-specifies two properties, which are considered obsolete: 'phy' and 'phy-device'.
-This commit adds support for them in of_mdio_find_phy().
+Now that we have network support for Armada 370/XP SoC family, let's enable
+the boards configuration.
 
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/net/phy/phy.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/configs/globalscale_mirabox_defconfig     | 4 ++++
+ arch/arm/configs/marvell_armada_xp_gp_defconfig    | 4 ++++
+ arch/arm/configs/plathome_openblocks_ax3_defconfig | 4 ++++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 1a2fdf1..cad4cf5 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -275,6 +275,10 @@ static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
- 
- 	phy_node = of_parse_phandle(edev->parent->device_node, "phy-handle", 0);
- 	if (!phy_node)
-+		phy_node = of_parse_phandle(edev->parent->device_node, "phy", 0);
-+	if (!phy_node)
-+		phy_node = of_parse_phandle(edev->parent->device_node, "phy-device", 0);
-+	if (!phy_node)
- 		return NULL;
- 
- 	bus_for_each_device(&mdio_bus_type, dev) {
+diff --git a/arch/arm/configs/globalscale_mirabox_defconfig b/arch/arm/configs/globalscale_mirabox_defconfig
+index ed9d94d..a2a5f1f 100644
+--- a/arch/arm/configs/globalscale_mirabox_defconfig
++++ b/arch/arm/configs/globalscale_mirabox_defconfig
+@@ -5,4 +5,8 @@ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_LOADS=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_CLK=y
++CONFIG_NET=y
++CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_MVNETA=y
++CONFIG_MARVELL_PHY=y
+diff --git a/arch/arm/configs/marvell_armada_xp_gp_defconfig b/arch/arm/configs/marvell_armada_xp_gp_defconfig
+index 5a7ef52..59baebc 100644
+--- a/arch/arm/configs/marvell_armada_xp_gp_defconfig
++++ b/arch/arm/configs/marvell_armada_xp_gp_defconfig
+@@ -7,4 +7,8 @@ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_LOADS=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_CLK=y
++CONFIG_NET=y
++CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_MVNETA=y
++CONFIG_MARVELL_PHY=y
+diff --git a/arch/arm/configs/plathome_openblocks_ax3_defconfig b/arch/arm/configs/plathome_openblocks_ax3_defconfig
+index 95449c9..a5adf01 100644
+--- a/arch/arm/configs/plathome_openblocks_ax3_defconfig
++++ b/arch/arm/configs/plathome_openblocks_ax3_defconfig
+@@ -6,4 +6,8 @@ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_LOADS=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_CLK=y
++CONFIG_NET=y
++CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_MVNETA=y
++CONFIG_MARVELL_PHY=y
 -- 
 2.0.1
 
