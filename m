@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XC6Z9-0005dv-UB
- for barebox@lists.infradead.org; Tue, 29 Jul 2014 12:31:40 +0000
-Date: Tue, 29 Jul 2014 14:31:16 +0200
+ Linux)) id 1XC6ZY-0005j9-ED
+ for barebox@lists.infradead.org; Tue, 29 Jul 2014 12:32:06 +0000
+Date: Tue, 29 Jul 2014 14:31:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140729123116.GF23235@pengutronix.de>
-References: <1406620749-11756-1-git-send-email-voice.shen@atmel.com>
+Message-ID: <20140729123142.GG23235@pengutronix.de>
+References: <1406612196-15297-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1406620749-11756-1-git-send-email-voice.shen@atmel.com>
+In-Reply-To: <1406612196-15297-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: core: the sd1.0 card can work in 4 bits mode
-To: Bo Shen <voice.shen@atmel.com>
+Subject: Re: [PATCH v3] led: try to get LED's label from the 'label' property
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 29, 2014 at 03:59:09PM +0800, Bo Shen wrote:
-> The sd 1.0 card can work in 4 bits mode also.
-> 
-> Signed-off-by: Bo Shen <voice.shen@atmel.com>
+On Tue, Jul 29, 2014 at 09:36:36AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
+>  Documentation/devicetree/bindings/leds/common.rst | 2 ++
+>  drivers/led/led-gpio.c                            | 6 +++++-
+>  2 files changed, 7 insertions(+), 1 deletion(-)
 > 
->  drivers/mci/mci-core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index ce6e590..8221632 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -616,6 +616,9 @@ retry_scr:
->  		break;
->  	}
+> diff --git a/Documentation/devicetree/bindings/leds/common.rst b/Documentation/devicetree/bindings/leds/common.rst
+> index c1fd1ab..1f5ae42 100644
+> --- a/Documentation/devicetree/bindings/leds/common.rst
+> +++ b/Documentation/devicetree/bindings/leds/common.rst
+> @@ -8,3 +8,5 @@ Common leds properties
+>      * ``panic`` - LED turns on when barebox panics
+>      * ``net`` - LED indicates network activity
 >  
-> +	if (mci->scr[0] & SD_DATA_4BIT)
-> +		mci->card_caps |= MMC_CAP_4_BIT_DATA;
+> +* ``label``: The label for this LED. If omitted, the label is taken
+> +  from the node name (excluding the unit address).
+> diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
+> index 7bb3b49..a1a6617 100644
+> --- a/drivers/led/led-gpio.c
+> +++ b/drivers/led/led-gpio.c
+> @@ -206,13 +206,17 @@ static int led_gpio_of_probe(struct device_d *dev)
+>  		struct gpio_led *gled;
+>  		enum of_gpio_flags flags;
+>  		int gpio;
+> +		const char *label;
+>  
+>  		gpio = of_get_named_gpio_flags(child, "gpios", 0, &flags);
+>  		if (gpio < 0)
+>  			continue;
+>  
+>  		gled = xzalloc(sizeof(*gled));
+> -		gled->led.name = xstrdup(child->name);
+> +		if (of_property_read_string(child, "label", &label))
+> +			label = child->name;
+> +		gled->led.name = xstrdup(label);
 > +
->  	/* Version 1.0 doesn't support switching */
->  	if (mci->version == SD_VERSION_1_0)
->  		return 0;
-> @@ -634,9 +637,6 @@ retry_scr:
->  			break;
->  	}
+>  		gled->gpio = gpio;
+>  		gled->active_low = (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
 >  
-> -	if (mci->scr[0] & SD_DATA_4BIT)
-> -		mci->card_caps |= MMC_CAP_4_BIT_DATA;
-> -
->  	/* If high-speed isn't supported, we return */
->  	if (!(__be32_to_cpu(switch_status[3]) & SD_HIGHSPEED_SUPPORTED))
->  		return 0;
 > -- 
-> 1.8.5.2
+> 2.0.1
 > 
 > 
 
