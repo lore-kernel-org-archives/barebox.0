@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XC3S1-0006aI-TA
- for barebox@lists.infradead.org; Tue, 29 Jul 2014 09:12:15 +0000
-From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue, 29 Jul 2014 11:11:04 +0200
-Message-Id: <1406625065-20070-1-git-send-email-mpa@pengutronix.de>
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XC4Np-0001cy-A1
+ for barebox@lists.infradead.org; Tue, 29 Jul 2014 10:11:53 +0000
+From: Bo Shen <voice.shen@atmel.com>
+Date: Tue, 29 Jul 2014 18:10:53 +0800
+Message-ID: <1406628653-27214-1-git-send-email-voice.shen@atmel.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,72 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] usb: chipidea: Add DT vbus-supply parsing
-To: barebox@lists.infradead.org
+Subject: [PATCH] ARM: at91: clock: fix the pllb checking
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Add some code to parse and enable vbus supply when probing.
+On at91sam9n12 soc, it has pllb, while on sama5d3 soc,
+it doesn't has pllb.
 
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
 ---
- drivers/usb/imx/chipidea-imx.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ arch/arm/mach-at91/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index 9b6829b8f59f..fd3a57145f4d 100644
---- a/drivers/usb/imx/chipidea-imx.c
-+++ b/drivers/usb/imx/chipidea-imx.c
-@@ -15,9 +15,11 @@
- #include <common.h>
- #include <init.h>
- #include <io.h>
-+#include <linux/err.h>
- #include <of.h>
- #include <errno.h>
- #include <driver.h>
-+#include <regulator.h>
- #include <usb/usb.h>
- #include <usb/ehci.h>
- #include <usb/chipidea-imx.h>
-@@ -136,6 +138,7 @@ static int imx_chipidea_probe(struct device_d *dev)
- 	void __iomem *base;
- 	struct imx_chipidea *ci;
- 	uint32_t portsc;
-+	struct regulator *vbus;
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index 59c4d11..9d2a846 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -65,7 +65,7 @@
+ #define cpu_has_pllb()		(!(cpu_is_at91sam9rl() \
+ 				|| cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
+-				|| cpu_is_at91sam9n12()))
++				|| cpu_is_sama5d3()))
  
- 	ci = xzalloc(sizeof(*ci));
- 	ci->dev = dev;
-@@ -184,9 +187,23 @@ static int imx_chipidea_probe(struct device_d *dev)
- 		ret = ci_udc_register(dev, base);
- 	} else {
- 		dev_err(dev, "No supported role\n");
--		ret = -ENODEV;
-+		return -ENODEV;
-+	}
-+
-+	if (ret)
-+		return ret;
-+
-+	vbus = regulator_get(dev, "vbus");
-+	if (IS_ERR(vbus)) {
-+		dev_err(dev, "Failed to get vbus regulator %ld\n", PTR_ERR(vbus));
-+		return PTR_ERR(vbus);
- 	}
- 
-+	if (ci->mode == IMX_USB_MODE_HOST)
-+		ret = regulator_enable(vbus);
-+	else
-+		ret = regulator_disable(vbus);
-+
- 	return ret;
- };
- 
+ #define cpu_has_upll()		(cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
 -- 
-2.0.1
+1.8.5.2
 
 
 _______________________________________________
