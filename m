@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCXmQ-0005xL-FZ
- for barebox@lists.infradead.org; Wed, 30 Jul 2014 17:35:10 +0000
-Received: by mail-la0-f53.google.com with SMTP id gl10so1182928lab.12
- for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 10:34:48 -0700 (PDT)
+ id 1XCXmV-0005xy-Dp
+ for barebox@lists.infradead.org; Wed, 30 Jul 2014 17:35:15 +0000
+Received: by mail-lb0-f175.google.com with SMTP id 10so1172248lbg.34
+ for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 10:34:53 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 30 Jul 2014 21:34:33 +0400
-Message-Id: <1406741676-1641-3-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 30 Jul 2014 21:34:36 +0400
+Message-Id: <1406741676-1641-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1406741676-1641-1-git-send-email-antonynpavlov@gmail.com>
 References: <1406741676-1641-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,37 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] MIPS: ritmix-rzx50_defconfig: enable LED-related stuff
+Subject: [PATCH 5/5] led: triggers: fix "no previous prototype for
+ 'trigger_init'" warning
 To: barebox@lists.infradead.org
+
+Here is compiler's message:
+
+    drivers/led/led-triggers.c:148:5: warning: no previous prototype for 'trigger_init' [-Wmissing-prototypes]
+    int trigger_init(void)
+        ^
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/configs/ritmix-rzx50_defconfig | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/led/led-triggers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/configs/ritmix-rzx50_defconfig b/arch/mips/configs/ritmix-rzx50_defconfig
-index e6f10fb..232faa2 100644
---- a/arch/mips/configs/ritmix-rzx50_defconfig
-+++ b/arch/mips/configs/ritmix-rzx50_defconfig
-@@ -29,12 +29,18 @@ CONFIG_CMD_GETOPT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_GPIO=y
-+CONFIG_CMD_LED=y
- CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_LED_TRIGGER=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OFTREE=y
- CONFIG_OFDEVICE=y
- # CONFIG_SPI is not set
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
- CONFIG_GPIO_JZ4740=y
- CONFIG_SHA1=y
- CONFIG_SHA224=y
+diff --git a/drivers/led/led-triggers.c b/drivers/led/led-triggers.c
+index 1a5a09f..c5484d5 100644
+--- a/drivers/led/led-triggers.c
++++ b/drivers/led/led-triggers.c
+@@ -145,7 +145,7 @@ int led_get_trigger(enum led_trigger trigger)
+ 	return led_get_number(triggers[trigger].led);
+ }
+ 
+-int trigger_init(void)
++static int trigger_init(void)
+ {
+ 	return poller_register(&trigger_poller);
+ }
 -- 
 2.0.1
 
