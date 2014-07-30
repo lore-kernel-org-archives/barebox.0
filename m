@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCXmP-0005xH-1Q
- for barebox@lists.infradead.org; Wed, 30 Jul 2014 17:35:09 +0000
-Received: by mail-la0-f44.google.com with SMTP id e16so1169649lan.31
- for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 10:34:46 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 30 Jul 2014 21:34:32 +0400
-Message-Id: <1406741676-1641-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1406741676-1641-1-git-send-email-antonynpavlov@gmail.com>
-References: <1406741676-1641-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XCb81-0001xg-KQ
+ for barebox@lists.infradead.org; Wed, 30 Jul 2014 21:09:42 +0000
+Date: Wed, 30 Jul 2014 23:09:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140730210917.GL23235@pengutronix.de>
+References: <1406715606-6821-1-git-send-email-jbe@pengutronix.de>
+ <1406734093.22823.134.camel@coredoba.hi.pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1406734093.22823.134.camel@coredoba.hi.pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,43 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] MIPS: dts: rzx50.dts: add LCD backlight
-To: barebox@lists.infradead.org
+Subject: Re: envfs: provide an intentional way to ignore an existing external
+ environment
+To: Jan =?iso-8859-15?Q?L=FCbbe?= <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/dts/rzx50.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+On Wed, Jul 30, 2014 at 05:28:13PM +0200, Jan L=FCbbe wrote:
+> Hi J=FCrgen!
+> =
 
-diff --git a/arch/mips/dts/rzx50.dts b/arch/mips/dts/rzx50.dts
-index 360c1bf..7ec3352 100644
---- a/arch/mips/dts/rzx50.dts
-+++ b/arch/mips/dts/rzx50.dts
-@@ -9,6 +9,16 @@
- 	memory {
- 		reg = <0x00000000 0x4000000>;
- 	};
-+
-+	gpio-leds {
-+		compatible = "gpio-leds";
-+
-+		lcd-backlight-enable {
-+			label = "lcd backlight";
-+			gpios = <&gpio4 22 0>;
-+			linux,default-trigger = "default-on";
-+		};
-+	};
- };
- 
- &serial1 {
--- 
-2.0.1
+> This looks good so far.
+> =
 
+> On Wed, 2014-07-30 at 12:20 +0200, Juergen Borleis wrote:
+> > This change set adds a new option to the saveenv command which will
+> > write an empty environment without content. But it will be marked as a
+> > placeholder and thus should be "ignored" and barebox falls back to its
+> > built-in default environment.
+> =
+
+> I haven't found where the environment loading is changed to implement
+> this behavior. Is a patch missing?
+
+It's in the first patch. envfs_check_super is changed to return an error
+when the ENVFS_FLAGS_PLACEHOLDER flag is set. Then barebox will fall
+back to the default environment.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
