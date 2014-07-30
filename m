@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22a.google.com ([2a00:1450:400c:c03::22a])
+Received: from mail-wi0-x235.google.com ([2a00:1450:400c:c05::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCPYU-00079S-NY
- for barebox@lists.infradead.org; Wed, 30 Jul 2014 08:48:15 +0000
-Received: by mail-we0-f170.google.com with SMTP id w62so851897wes.1
- for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 01:47:49 -0700 (PDT)
+ id 1XCPYb-0007Ab-0Z
+ for barebox@lists.infradead.org; Wed, 30 Jul 2014 08:48:21 +0000
+Received: by mail-wi0-f181.google.com with SMTP id bs8so1891762wib.8
+ for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 01:47:58 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 30 Jul 2014 10:39:33 +0200
-Message-Id: <1406709580-5585-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 30 Jul 2014 10:39:34 +0200
+Message-Id: <1406709580-5585-3-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406709580-5585-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406709580-5585-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,22 +23,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/8] bus: mvebu: fix resource size handling
+Subject: [PATCH v3 2/8] ARM: mvebu: armada-370-xp: disable MBUS error
+ propagation
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-A resource_size is defined as res->end - res->start + 1. Marvell
-MBUS driver gets some ranges from DT as start and size but mis-calculates
-end of range. This fixes 4 occurences of those mistakes.
+Accessing MBUS windows not backed-up by e.g. PCIe devices will
+hang the SoC. Disable MBUS error propagation back to CPU allows
+to read 0xffffffff instead of hanging the SoC.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Acked-by: Lucas Stach <l.stach@pengutronix.de>
 ---
 Changelog:
 v2->v3:
-- still none
-v1->v2:
-- none
+- new patch
 
 Cc: barebox@lists.infradead.org
 Cc: Antony Pavlov <antonynpavlov@gmail.com>
@@ -47,49 +45,44 @@ Cc: Lucas Stach <l.stach@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/bus/mvebu-mbus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/mach-mvebu/armada-370-xp.c                   | 6 ++++++
+ arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
-index 11e3777a6094..c67646f61722 100644
---- a/drivers/bus/mvebu-mbus.c
-+++ b/drivers/bus/mvebu-mbus.c
-@@ -187,7 +187,7 @@ static int mvebu_mbus_window_conflicts(struct mvebu_mbus_state *mbus,
- 				       phys_addr_t base, size_t size,
- 				       u8 target, u8 attr)
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index e416a3876539..4eda6d539aab 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -46,10 +46,16 @@ static inline void armada_370_xp_memory_find(unsigned long *phys_base,
+ static int armada_370_xp_init_soc(void)
  {
--	u64 end = (u64)base + size;
-+	u64 end = (u64)base + size - 1;
- 	int win;
+ 	unsigned long phys_base, phys_size;
++	u32 reg;
  
- 	for (win = 0; win < mbus->soc->num_wins; win++) {
-@@ -203,7 +203,7 @@ static int mvebu_mbus_window_conflicts(struct mvebu_mbus_state *mbus,
- 		if (!enabled)
- 			continue;
+ 	barebox_set_model("Marvell Armada 370/XP");
+ 	barebox_set_hostname("armada");
  
--		wend = wbase + wsize;
-+		wend = wbase + wsize - 1;
++	/* Disable MBUS error propagation */
++	reg = readl(ARMADA_370_XP_FABRIC_BASE);
++	reg &= ~BIT(8);
++	writel(reg, ARMADA_370_XP_FABRIC_BASE);
++
+ 	armada_370_xp_memory_find(&phys_base, &phys_size);
+ 	arm_add_mem_device("ram0", phys_base, phys_size);
  
- 		/*
- 		 * Check if the current window overlaps with the
-@@ -661,7 +661,7 @@ static void mvebu_mbus_get_pcie_resources(struct device_node *np,
- 					 reg, ARRAY_SIZE(reg));
- 	if (!ret) {
- 		mem->start = reg[0];
--		mem->end = mem->start + reg[1];
-+		mem->end = mem->start + reg[1] - 1;
- 		mem->flags = IORESOURCE_MEM;
- 	}
+diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+index 5fd16e5733bb..ccc687c03b6e 100644
+--- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
++++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+@@ -42,6 +42,8 @@
+ #define  DDR_SIZE_CS_SHIFT		2
+ #define  DDR_SIZE_MASK			0xff000000
  
-@@ -669,7 +669,7 @@ static void mvebu_mbus_get_pcie_resources(struct device_node *np,
- 					 reg, ARRAY_SIZE(reg));
- 	if (!ret) {
- 		io->start = reg[0];
--		io->end = io->start + reg[1];
-+		io->end = io->start + reg[1] - 1;
- 		io->flags = IORESOURCE_IO;
- 	}
- }
++#define ARMADA_370_XP_FABRIC_BASE	(ARMADA_370_XP_INT_REGS_BASE + 0x20200)
++
+ #define ARMADA_370_XP_TIMER_BASE	(ARMADA_370_XP_INT_REGS_BASE + 0x20300)
+ 
+ #endif /* __MACH_MVEBU_DOVE_REGS_H */
 -- 
 2.0.0
 
