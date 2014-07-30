@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22b.google.com ([2a00:1450:400c:c03::22b])
+Received: from mail-we0-x229.google.com ([2a00:1450:400c:c03::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCNW9-00088z-9y
- for barebox@lists.infradead.org; Wed, 30 Jul 2014 06:37:42 +0000
-Received: by mail-we0-f171.google.com with SMTP id p10so683995wes.30
- for <barebox@lists.infradead.org>; Tue, 29 Jul 2014 23:37:18 -0700 (PDT)
-Message-ID: <53D8929A.8070400@gmail.com>
-Date: Wed, 30 Jul 2014 08:37:14 +0200
+ id 1XCPQi-0003QH-Gs
+ for barebox@lists.infradead.org; Wed, 30 Jul 2014 08:40:13 +0000
+Received: by mail-we0-f169.google.com with SMTP id u56so832504wes.28
+ for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 01:39:50 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1406638037-23026-1-git-send-email-antonynpavlov@gmail.com>
- <20140730063504.GK23235@pengutronix.de>
-In-Reply-To: <20140730063504.GK23235@pengutronix.de>
+Date: Wed, 30 Jul 2014 10:39:32 +0200
+Message-Id: <1406709580-5585-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,52 +17,73 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/2] i2c: add Marvell 64xxx driver;
- fix Makefile indentation
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 0/8] Marvell EBU PCIe driver
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On 30.07.2014 08:35, Sascha Hauer wrote:
-> I'm fine with the driver. Will you ack it once your fine with it aswell?
+Third and hopefully last round of the Marvell EBU PCIe driver patch
+set. Compared to v2, I disabled MBUS error propagation on Armada
+370/XP as it hangs the SoC on unanswered PCIe accesses. Also, 64b
+BARs are now properly handled. I added two more pci core fixes that
+move PCI device registration after BAR setup and temporarely disable
+PCI_COMMAND' IO and MEM bits during BAR setup.
 
-Yeah, let me give it a shot on the most obvious platforms again.
-Will send my Acked-by later today.
+The MVEBU PCIe driver now gained support for Armada XP PHY setup
+which is anticipating a minor DT binding tweak to allow more than
+one marvell,pcie-lane passed to the node. Also, PCI address space
+does now also start at where we see it on MBUS. Some devices were
+not so happy about starting at 0.
+
+The whole series has been tested on Armada 370 Mirabox and
+Armada XP Lenovo Iomega ix4-300d (not mainline yet).
 
 Sebastian
 
-> On Tue, Jul 29, 2014 at 04:47:15PM +0400, Antony Pavlov wrote:
->> Changes since v2:
->>
->>    * drop "allwinner,sun*" stuff;
->>    * make macros shorter (drop MV64XXX_I2C_ prefix);
->>    * rework mv64xxx_write/mv64xxx_read stuff;
->>    * drop mv64xxx_i2c_execute_msg().
->>    * drop unused variables.
->>
->> Antony Pavlov (2):
->>    i2c: add Marvell 64xxx driver
->>    i2c: busses/Makefile: fix indentation
->>
->>   drivers/i2c/busses/Kconfig       |   8 +
->>   drivers/i2c/busses/Makefile      |   5 +-
->>   drivers/i2c/busses/i2c-mv64xxx.c | 647 +++++++++++++++++++++++++++++++++++++++
->>   3 files changed, 658 insertions(+), 2 deletions(-)
->>   create mode 100644 drivers/i2c/busses/i2c-mv64xxx.c
->>
->> --
->> 2.0.1
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
+Sebastian Hesselbarth (8):
+  bus: mvebu: fix resource size handling
+  ARM: mvebu: armada-370-xp: disable MBUS error propagation
+  pci: pci_scan_bus: respect 64b BARs
+  pci: register device after BAR setup
+  pci: ensure device does ignore BAR mangling
+  pci: set auto-incremented bus number
+  of: pci: import of_pci_get_devfn()
+  pci: mvebu: Add PCIe driver
+
+ arch/arm/Kconfig                                   |   1 +
+ arch/arm/mach-mvebu/armada-370-xp.c                |   6 +
+ .../mach-mvebu/include/mach/armada-370-xp-regs.h   |   2 +
+ drivers/bus/mvebu-mbus.c                           |   8 +-
+ drivers/of/Kconfig                                 |   6 +
+ drivers/of/Makefile                                |   1 +
+ drivers/of/of_pci.c                                |  27 ++
+ drivers/pci/Kconfig                                |   6 +
+ drivers/pci/Makefile                               |   2 +
+ drivers/pci/pci-mvebu-phy.c                        | 208 ++++++++++
+ drivers/pci/pci-mvebu.c                            | 446 +++++++++++++++++++++
+ drivers/pci/pci-mvebu.h                            |  37 ++
+ drivers/pci/pci.c                                  |  28 +-
+ include/linux/pci.h                                |  12 +-
+ include/of_pci.h                                   |  17 +
+ 15 files changed, 790 insertions(+), 17 deletions(-)
+ create mode 100644 drivers/of/of_pci.c
+ create mode 100644 drivers/pci/pci-mvebu-phy.c
+ create mode 100644 drivers/pci/pci-mvebu.c
+ create mode 100644 drivers/pci/pci-mvebu.h
+ create mode 100644 include/of_pci.h
+
+---
+Cc: barebox@lists.infradead.org
+Cc: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Lucas Stach <l.stach@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+-- 
+2.0.0
 
 
 _______________________________________________
