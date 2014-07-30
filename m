@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XCNGn-0002qh-6E
- for barebox@lists.infradead.org; Wed, 30 Jul 2014 06:21:50 +0000
-Date: Wed, 30 Jul 2014 08:21:24 +0200
+ Linux)) id 1XCNU3-0007xY-6k
+ for barebox@lists.infradead.org; Wed, 30 Jul 2014 06:35:35 +0000
+Date: Wed, 30 Jul 2014 08:35:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140730062124.GJ23235@pengutronix.de>
-References: <1406107568-8440-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1406553970-18157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <53D7FCD9.1010209@gmail.com>
+Message-ID: <20140730063504.GK23235@pengutronix.de>
+References: <1406638037-23026-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <53D7FCD9.1010209@gmail.com>
+In-Reply-To: <1406638037-23026-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,44 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/5] Marvell EBU PCIe driver
+Subject: Re: [PATCH v3 0/2] i2c: add Marvell 64xxx driver; fix Makefile
+ indentation
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org
 
-On Tue, Jul 29, 2014 at 09:58:17PM +0200, Sebastian Hesselbarth wrote:
-> On 07/28/2014 03:26 PM, Sebastian Hesselbarth wrote:
-> > Second round of the Marvell EBU PCIe driver patch set. Compared
-> > to v1, I reworked pci_scan_bus to properly set IORESOURCE flags
-> > for all resources, and added auto-incrementing pci bus numbering.
-> > 
-> > Patch 1 is unchanged and still fixes resource computation of mbus
-> > driver. Patch 2 now properly sets IORESOURCE flags for I/O, 32b
-> > MEM, and 64b MEM resources.
-> > 
-> > Patch 3 is a squashed and reworked patch dealing with pci host
-> > controller registration: bus number is now assigned from an auto-
-> > incremented bus_index and already provided pci_controller's
-> > set_busno is called right before pci_scan_bus to allow the
-> > controller to update internal registers related with bus number.
-> > This patch also sets a back-reference to the pci_controller of
-> > a pci_bus and cleans up some unused left-overs from Linux import.
-> > 
-> > Patch 4 is unchanged import of of_pci_get_devfn() and Patch 5
-> > finally adds the PCIe controller driver for Marvell MVEBU SoCs.
-> > Individual changelogs are also at the corresponding patch mails.
-> > 
-> > Again, this has been tested on Armada 370 Mirabox.
-> 
-> Sascha,
-> 
-> before you consider applying this, I had the chance to test it
-> on Armada XP, too. Both the driver and pci core need some more
-> fixes, so please wait for v3.
+Sebastian,
 
-Ok, I removed all patches from -next. I'll wait for the next round of
-patches.
+I'm fine with the driver. Will you ack it once your fine with it aswell?
 
 Sascha
+
+On Tue, Jul 29, 2014 at 04:47:15PM +0400, Antony Pavlov wrote:
+> Changes since v2:
+> 
+>   * drop "allwinner,sun*" stuff;
+>   * make macros shorter (drop MV64XXX_I2C_ prefix);
+>   * rework mv64xxx_write/mv64xxx_read stuff;
+>   * drop mv64xxx_i2c_execute_msg().
+>   * drop unused variables.
+> 
+> Antony Pavlov (2):
+>   i2c: add Marvell 64xxx driver
+>   i2c: busses/Makefile: fix indentation
+> 
+>  drivers/i2c/busses/Kconfig       |   8 +
+>  drivers/i2c/busses/Makefile      |   5 +-
+>  drivers/i2c/busses/i2c-mv64xxx.c | 647 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 658 insertions(+), 2 deletions(-)
+>  create mode 100644 drivers/i2c/busses/i2c-mv64xxx.c
+> 
+> -- 
+> 2.0.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
