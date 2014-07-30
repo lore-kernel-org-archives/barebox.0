@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x229.google.com ([2a00:1450:400c:c00::229])
+Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCPQk-0003RB-2l
- for barebox@lists.infradead.org; Wed, 30 Jul 2014 08:40:14 +0000
-Received: by mail-wg0-f41.google.com with SMTP id z12so823858wgg.0
- for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 01:39:52 -0700 (PDT)
+ id 1XCPQn-0003Ri-AR
+ for barebox@lists.infradead.org; Wed, 30 Jul 2014 08:40:18 +0000
+Received: by mail-wg0-f50.google.com with SMTP id n12so815831wgh.33
+ for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 01:39:55 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 30 Jul 2014 10:39:36 +0200
-Message-Id: <1406709580-5585-5-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 30 Jul 2014 10:39:37 +0200
+Message-Id: <1406709580-5585-6-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1406709580-5585-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1406709580-5585-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,19 +23,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/8] pci: register device after BAR setup
+Subject: [PATCH v3 5/8] pci: ensure device does ignore BAR mangling
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-As soon as pci_register_device is called, a potential driver
-will access its registers. This requires BARs to be set up
-properly, so move pci_register_device after BAR setup.
+Disable access to PCI devices I/O and memory regions while
+mangling BAR registers.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Changelog:
 v2->v3:
-- new patch
+- new patch      
 
 Cc: barebox@lists.infradead.org
 Cc: Antony Pavlov <antonynpavlov@gmail.com>
@@ -44,33 +43,32 @@ Cc: Lucas Stach <l.stach@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/pci/pci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/pci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 83d44fc103f7..f58e2c98f185 100644
+index f58e2c98f185..b64f25d13282 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -186,9 +186,6 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 
- 		DBG("PCI: %02x:%02x [%04x/%04x]\n", bus->number, dev->devfn, dev->vendor, dev->device);
- 
--		list_add_tail(&dev->bus_list, &bus->devices);
--		pci_register_device(dev);
--
- 		if (class == PCI_CLASS_BRIDGE_HOST) {
- 			DBG("PCI: skip pci host bridge\n");
+@@ -191,6 +191,10 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
  			continue;
-@@ -235,6 +232,9 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 			if (dev->resource[bar].flags & IORESOURCE_MEM_64)
+ 		}
+ 
++		pci_read_config_byte(dev, PCI_COMMAND, &cmd);
++		pci_write_config_byte(dev, PCI_COMMAND,
++				      cmd & ~(PCI_COMMAND_IO | PCI_COMMAND_MEMORY));
++
+ 		for (bar = 0; bar < 6; bar++) {
+ 			resource_size_t last_addr;
+ 
+@@ -233,6 +237,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
  				bar++;
  		}
-+
-+		list_add_tail(&dev->bus_list, &bus->devices);
-+		pci_register_device(dev);
- 	}
  
- 	/*
++		pci_write_config_byte(dev, PCI_COMMAND, cmd);
+ 		list_add_tail(&dev->bus_list, &bus->devices);
+ 		pci_register_device(dev);
+ 	}
 -- 
 2.0.0
 
