@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCXmS-0005xZ-5z
- for barebox@lists.infradead.org; Wed, 30 Jul 2014 17:35:12 +0000
-Received: by mail-la0-f41.google.com with SMTP id s18so1183938lam.0
- for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 10:34:49 -0700 (PDT)
+ id 1XCXmT-0005xa-PJ
+ for barebox@lists.infradead.org; Wed, 30 Jul 2014 17:35:14 +0000
+Received: by mail-lb0-f181.google.com with SMTP id 10so1170572lbg.12
+ for <barebox@lists.infradead.org>; Wed, 30 Jul 2014 10:34:51 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 30 Jul 2014 21:34:34 +0400
-Message-Id: <1406741676-1641-4-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 30 Jul 2014 21:34:35 +0400
+Message-Id: <1406741676-1641-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1406741676-1641-1-git-send-email-antonynpavlov@gmail.com>
 References: <1406741676-1641-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] led: triggers: fix crash on disabling "default-on" trigger
+Subject: [PATCH 4/5] commands: trigger: check trigger disable return code too
 To: barebox@lists.infradead.org
-
-Here is a sample crash log on Ritmix RZX-50:
-
-    barebox:/ trigger
-    0: panic
-    1: heartbeat
-    2: net rx
-    3: net tx
-    4: net
-    5: default on (led 0)
-    barebox:/ trigger -d 5
-    ...
-    Ooops, TLB miss on store!
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/led/led-triggers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/trigger.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/led/led-triggers.c b/drivers/led/led-triggers.c
-index 5eaf732..1a5a09f 100644
---- a/drivers/led/led-triggers.c
-+++ b/drivers/led/led-triggers.c
-@@ -124,7 +124,7 @@ int led_set_trigger(enum led_trigger trigger, struct led *led)
+diff --git a/commands/trigger.c b/commands/trigger.c
+index 17c8411..b605448 100644
+--- a/commands/trigger.c
++++ b/commands/trigger.c
+@@ -68,8 +68,9 @@ static int do_trigger(int argc, char *argv[])
+ 		break;
  
- 	triggers[trigger].led = led;
- 
--	if (trigger == LED_TRIGGER_DEFAULT_ON)
-+	if (led && trigger == LED_TRIGGER_DEFAULT_ON)
- 		led_set(triggers[trigger].led, triggers[trigger].led->max_value);
- 
- 	return 0;
+ 	case LED_COMMAND_DISABLE_TRIGGER:
+-		led_set_trigger(trigger, NULL);
+-		return 0;
++		ret = led_set_trigger(trigger, NULL);
++		break;
++
+ 	case LED_COMMAND_SET_TRIGGER:
+ 		if (argc - optind != 1)
+ 			return COMMAND_ERROR_USAGE;
 -- 
 2.0.1
 
