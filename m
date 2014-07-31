@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XCpSj-0002yG-Qi
- for barebox@lists.infradead.org; Thu, 31 Jul 2014 12:28:03 +0000
+ Linux)) id 1XCpSj-0002yE-Qa
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 12:28:02 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1XCpSM-000133-N7
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 14:27:38 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim
+ 4.82_1-5b7a7c0-XX) (envelope-from <sha@pengutronix.de>)
+ id 1XCpSM-0004PK-M6
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 14:27:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 31 Jul 2014 14:27:33 +0200
-Message-Id: <1406809657-2489-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1406809657-2489-1-git-send-email-s.hauer@pengutronix.de>
-References: <1406809657-2489-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 31 Jul 2014 14:27:31 +0200
+Message-Id: <1406809657-2489-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,165 +27,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] read_file: introduce read_file_2
+Subject: [PATCH] Introduce barebox Image Metadata
 To: barebox@lists.infradead.org
 
-read_file has some limitations:
+This series introduces barebox Image Metadata which is a way to embed
+informations like the version or build timestamp into a barebox image.
 
-- It is not possible to check the error code since read_file returns
-  NULL for failure
-- It is not possible to limit the buffer size to sensible limits.
+The following is the text from the Documentation (Hurray, Documentation!;)
 
-This patch introduces read_file_2 which doesn't have these limitations.
-read_file becomes a wrapper around read_file_2.
+Sascha
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/libfile.h |  3 +++
- lib/libfile.c     | 71 ++++++++++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 60 insertions(+), 14 deletions(-)
+Image MedaData (IMD)
+====================
 
-diff --git a/include/libfile.h b/include/libfile.h
-index d47a111..4a25a91 100644
---- a/include/libfile.h
-+++ b/include/libfile.h
-@@ -8,6 +8,9 @@ char *read_file_line(const char *fmt, ...);
- 
- void *read_file(const char *filename, size_t *size);
- 
-+int read_file_2(const char *filename, size_t *size, void **outbuf,
-+		loff_t max_size);
-+
- int write_file(const char *filename, void *buf, size_t size);
- 
- int copy_file(const char *src, const char *dst, int verbose);
-diff --git a/lib/libfile.c b/lib/libfile.c
-index b36537f..c6fb6d7 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -116,55 +116,74 @@ out:
- EXPORT_SYMBOL_GPL(read_file_line);
- 
- /**
-- * read_file - read a file to an allocated buffer
-+ * read_file_2 - read a file to an allocated buffer
-  * @filename:  The filename to read
-  * @size:      After successful return contains the size of the file
-+ * @outbuf:    contains a pointer to the file data after successful return
-+ * @max_size:  The maximum size to read. Use FILESIZE_MAX for reading files
-+ *             of any size.
-  *
-- * This function reads a file to an allocated buffer.
-- * Some TFTP servers do not transfer the size of a file. In this case
-- * a the file is first read to a temporary file.
-+ * This function reads a file to an allocated buffer. At maximum @max_size
-+ * bytes are read. The actual read size is returned in @size. -EFBIG is
-+ * returned if the file is bigger than @max_size, but the buffer is read
-+ * anyway up to @max_size in this case. Free the buffer with free() after
-+ * usage.
-  *
-- * Return: The buffer conataining the file or NULL on failure
-+ * Return: 0 for success, or negative error code. -EFBIG is returned
-+ * when the file has been bigger than max_size.
-  */
--void *read_file(const char *filename, size_t *size)
-+int read_file_2(const char *filename, size_t *size, void **outbuf,
-+		loff_t max_size)
- {
- 	int fd;
- 	struct stat s;
- 	void *buf = NULL;
- 	const char *tmpfile = "/.read_file_tmp";
- 	int ret;
-+	loff_t read_size;
- 
- again:
--	if (stat(filename, &s))
--		return NULL;
-+	ret = stat(filename, &s);
-+	if (ret)
-+		return ret;
-+
-+	if (max_size == FILESIZE_MAX)
-+		read_size = s.st_size;
-+	else
-+		read_size = max_size;
- 
--	if (s.st_size == FILESIZE_MAX) {
-+	if (read_size == FILESIZE_MAX) {
- 		ret = copy_file(filename, tmpfile, 0);
- 		if (ret)
--			return NULL;
-+			return ret;
- 		filename = tmpfile;
- 		goto again;
- 	}
- 
--	buf = xzalloc(s.st_size + 1);
-+	buf = xzalloc(read_size + 1);
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0)
- 		goto err_out;
- 
--	ret = read_full(fd, buf, s.st_size);
-+	ret = read_full(fd, buf, read_size);
- 	if (ret < 0)
- 		goto err_out1;
- 
- 	close(fd);
- 
- 	if (size)
--		*size = s.st_size;
-+		*size = ret;
- 
- 	if (filename == tmpfile)
- 		unlink(tmpfile);
- 
--	return buf;
-+	*outbuf = buf;
-+
-+	if (read_size < s.st_size)
-+		return -EFBIG;
-+	else
-+		return 0;
- 
- err_out1:
- 	close(fd);
-@@ -174,6 +193,30 @@ err_out:
- 	if (filename == tmpfile)
- 		unlink(tmpfile);
- 
-+	return ret;
-+}
-+EXPORT_SYMBOL(read_file_2);
-+
-+/**
-+ * read_file - read a file to an allocated buffer
-+ * @filename:  The filename to read
-+ * @size:      After successful return contains the size of the file
-+ *
-+ * This function reads a file to an allocated buffer.
-+ * Some TFTP servers do not transfer the size of a file. In this case
-+ * a the file is first read to a temporary file.
-+ *
-+ * Return: The buffer conataining the file or NULL on failure
-+ */
-+void *read_file(const char *filename, size_t *size)
-+{
-+	int ret;
-+	void *buf;
-+
-+	ret = read_file_2(filename, size, &buf, FILESIZE_MAX);
-+	if (!ret)
-+		return buf;
-+
- 	return NULL;
- }
- EXPORT_SYMBOL(read_file);
--- 
-2.0.1
+barebox images can be enriched with metadata. This is useful to get information
+the board an image is compiled for and which barebox version an image contains.
 
+There are predefined tags for:
+
+- The build timestamp
+- The barebox release version
+- The model (board) the image is compiled for
+- The toplevel device tree compatible properties the image can handle
+
+Additionally there is a generic key/value tag to add information which does not
+fit into the above categories, for example the memory size for boards which come
+with different memory sizes which can't be automatically detected.
+
+The informations can be extracted with the ``bareboximd`` tool which lives under
+``scripts/`` in the barebox sourcecode. If enabled it is compiled for the compile
+host and also for the target architecture. barebox itself has the :ref:`command_imd`
+command to extract the informations. Here is an example output of the tool called
+without additional options::
+
+  # imd barebox-phytec-pbab01dl-1gib.img
+  build: #890 Wed Jul 30 16:15:24 CEST 2014
+  release: 2014.07.0-00167-ge6632a9-dirty
+  parameter: memsize=1024
+  of_compatible: phytec,imx6x-pbab01 phytec,imx6dl-pfla02 fsl,imx6dl
+  model: Phytec phyFLEX-i.MX6 Duallite Carrier-Board
+
+Single informations can be extracted with the ``-t <type>`` option::
+
+  # imd barebox-phytec-pbab01dl-1gib.img -t release
+  2014.07.0-00167-ge6632a9-dirty
+
+Since the barebox hush does not have output redirection the barebox too has the
+``-s <var>`` option to assign the output to a variable for later evaluation.
+
+Limitations
+-----------
+
+The IMD tags are generated in the barebox binary before a SoC specific image is
+generated. Some SoCs encrypt or otherwise manipulate the images in a way that the
+IMD information is lost. The IMD mechanism does not work on these SoCs. A known
+example is the Freescale i.MX28.
+
+IMD and barebox_update
+----------------------
+
+The IMD informations could well be used to check if an image is suitable for updating
+barebox for a particular board. Support for such a check is planned but not yet implemented.
+
+
+----------------------------------------------------------------
+Sascha Hauer (6):
+      move file helper functions to separate file
+      read_file: introduce read_file_2
+      make: build device trees with obj-dtb-y and pbl-dtb-y
+      dtc: compile fdtget
+      make: Use shell script to generate .dtb.S files
+      Add support for metadata in barebox images
+
+ Documentation/user/imd.rst                     |  54 ++++
+ Documentation/user/updating.rst                |   3 +
+ Documentation/user/user-manual.rst             |   1 +
+ arch/arm/boards/freescale-mx53-qsb/lowlevel.c  |   1 +
+ arch/arm/boards/phytec-phyflex-imx6/lowlevel.c |  16 ++
+ arch/arm/boards/tqma53/lowlevel.c              |   9 +
+ arch/arm/dts/Makefile                          | 126 +++-------
+ arch/arm/lib/barebox.lds.S                     |   2 +
+ arch/arm/lib/bootm.c                           |   1 +
+ arch/arm/lib/pbl.lds.S                         |   2 +
+ arch/arm/mach-at91/boot_test_cmd.c             |   1 +
+ arch/arm/mach-omap/omap_generic.c              |   1 +
+ arch/arm/mach-omap/xload.c                     |   1 +
+ arch/blackfin/boards/ipe337/cmd_alternate.c    |   1 +
+ arch/mips/dts/Makefile                         |  10 -
+ arch/mips/lib/bootm.c                          |   1 +
+ commands/Kconfig                               |   9 +
+ commands/Makefile                              |   1 +
+ commands/barebox-update.c                      |   1 +
+ commands/cp.c                                  |   1 +
+ commands/crc.c                                 |   1 +
+ commands/edit.c                                |   1 +
+ commands/exec.c                                |   1 +
+ commands/imd.c                                 |  60 +++++
+ commands/insmod.c                              |   1 +
+ commands/linux16.c                             |   1 +
+ commands/of_dump.c                             |   1 +
+ commands/oftree.c                              |   1 +
+ commands/readf.c                               |   1 +
+ commands/tftp.c                                |   1 +
+ commands/uimage.c                              |   1 +
+ common/Kconfig                                 |   3 +
+ common/Makefile                                |   4 +-
+ common/blspec.c                                |   1 +
+ common/bootm.c                                 |   1 +
+ common/hush.c                                  |   1 +
+ common/imd-barebox.c                           |  25 ++
+ common/imd.c                                   | 322 ++++++++++++++++++++++++
+ common/menutree.c                              |   1 +
+ common/uimage.c                                |   1 +
+ drivers/usb/gadget/dfu.c                       |   1 +
+ fs/fs.c                                        |  72 ------
+ fs/uimagefs.c                                  |   1 +
+ include/asm-generic/barebox.lds.h              |   6 +
+ include/fs.h                                   |  14 --
+ include/image-metadata.h                       | 115 +++++++++
+ include/libbb.h                                |   7 -
+ include/libfile.h                              |  18 ++
+ lib/Makefile                                   |   2 +-
+ lib/copy_file.c                                |  86 -------
+ lib/gui/image_renderer.c                       |   1 +
+ lib/libbb.c                                    |  93 -------
+ lib/libfile.c                                  | 331 +++++++++++++++++++++++++
+ scripts/Makefile                               |   2 +
+ scripts/Makefile.lib                           |  25 +-
+ scripts/bareboximd.c                           | 130 ++++++++++
+ scripts/dtc/Makefile                           |  17 +-
+ scripts/dtc/{libfdt => }/fdt.c                 |   0
+ scripts/dtc/{libfdt => }/fdt.h                 |   0
+ scripts/dtc/{libfdt => }/fdt_empty_tree.c      |   0
+ scripts/dtc/{libfdt => }/fdt_ro.c              |   0
+ scripts/dtc/{libfdt => }/fdt_rw.c              |   0
+ scripts/dtc/{libfdt => }/fdt_strerror.c        |   0
+ scripts/dtc/{libfdt => }/fdt_sw.c              |   0
+ scripts/dtc/{libfdt => }/fdt_wip.c             |   0
+ scripts/dtc/{libfdt => }/libfdt.h              |   0
+ scripts/dtc/{libfdt => }/libfdt_env.h          |   0
+ scripts/dtc/{libfdt => }/libfdt_internal.h     |   0
+ scripts/gen-dtb-s                              |  48 ++++
+ 69 files changed, 1251 insertions(+), 389 deletions(-)
+ create mode 100644 Documentation/user/imd.rst
+ create mode 100644 commands/imd.c
+ create mode 100644 common/imd-barebox.c
+ create mode 100644 common/imd.c
+ create mode 100644 include/image-metadata.h
+ create mode 100644 include/libfile.h
+ delete mode 100644 lib/copy_file.c
+ create mode 100644 lib/libfile.c
+ create mode 100644 scripts/bareboximd.c
+ rename scripts/dtc/{libfdt => }/fdt.c (100%)
+ rename scripts/dtc/{libfdt => }/fdt.h (100%)
+ rename scripts/dtc/{libfdt => }/fdt_empty_tree.c (100%)
+ rename scripts/dtc/{libfdt => }/fdt_ro.c (100%)
+ rename scripts/dtc/{libfdt => }/fdt_rw.c (100%)
+ rename scripts/dtc/{libfdt => }/fdt_strerror.c (100%)
+ rename scripts/dtc/{libfdt => }/fdt_sw.c (100%)
+ rename scripts/dtc/{libfdt => }/fdt_wip.c (100%)
+ rename scripts/dtc/{libfdt => }/libfdt.h (100%)
+ rename scripts/dtc/{libfdt => }/libfdt_env.h (100%)
+ rename scripts/dtc/{libfdt => }/libfdt_internal.h (100%)
+ create mode 100755 scripts/gen-dtb-s
 
 _______________________________________________
 barebox mailing list
