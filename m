@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1X2czl-0007fN-E3
- for barebox@lists.infradead.org; Thu, 03 Jul 2014 09:07:58 +0000
-Received: by mail-la0-f48.google.com with SMTP id el20so7768651lab.7
- for <barebox@lists.infradead.org>; Thu, 03 Jul 2014 02:07:34 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  3 Jul 2014 13:19:38 +0400
-Message-Id: <1404379178-24417-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XCl2V-0002uv-8n
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 07:44:39 +0000
+Date: Thu, 31 Jul 2014 09:44:16 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20140731074416.GR6146@pengutronix.de>
+References: <1406715606-6821-1-git-send-email-jbe@pengutronix.de>
+ <20140731071425.GQ6146@pengutronix.de>
+ <201407310933.02138.jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <201407310933.02138.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] rtc.h: drop unused U-Boot stuff; fix whitespace
-To: barebox@lists.infradead.org
+Subject: Re: envfs: provide an intentional way to ignore an existing external
+ environment
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- include/rtc.h | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+On Thu, Jul 31, 2014 at 09:33:02AM +0200, Juergen Borleis wrote:
+> Hi Uwe,
+> =
 
-diff --git a/include/rtc.h b/include/rtc.h
-index c71ec4d..c2d8bce 100644
---- a/include/rtc.h
-+++ b/include/rtc.h
-@@ -31,7 +31,7 @@
-  * Note that there are small but significant differences to the
-  * common "struct time":
-  *
-- * 		struct time:		struct rtc_time:
-+ *		struct time:		struct rtc_time:
-  * tm_mon	0 ... 11		1 ... 12
-  * tm_year	years since 1900	years since 0
-  */
-@@ -48,10 +48,6 @@ struct rtc_time {
- 	int tm_isdst;
- };
- 
--void rtc_get (struct rtc_time *);
--void rtc_set (struct rtc_time *);
--void rtc_reset (void);
--
- void GregorianDay (struct rtc_time *);
- void to_tm (int, struct rtc_time *);
- unsigned long mktime (unsigned int, unsigned int, unsigned int,
--- 
-2.0.1
+> On Thursday 31 July 2014 09:14:25 Uwe Kleine-K=F6nig wrote:
+> > [...]
+> > Compared with storing the default environment in the external store the
+> > only difference is that you don't need to modify it if you change the
+> > internal one, right?
+> =
 
+> This would also be an advantage of this new feature.
+The only one even?
+
+> > I wonder what the targeted use case is.
+> =
+
+> To use an external stored environment *only* for development purposes or =
+tests =
+
+> and to keep the possibility to do so.
+Doesn't make a warm and cosy feeling. Isn't it easier and more robust to
+just not tell barebox about the external storage at all and for the
+testing/development procedure do an explicit
+
+	loadenv /dev/tralala
+
+?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
