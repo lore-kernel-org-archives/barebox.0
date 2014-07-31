@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XClKp-0002lP-Fi
- for barebox@lists.infradead.org; Thu, 31 Jul 2014 08:03:36 +0000
+ Linux)) id 1XCnlh-0002aT-C4
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 10:39:30 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1XCnlJ-0001QK-3S
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 12:39:05 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim
+ 4.82_1-5b7a7c0-XX) (envelope-from <jbe@pengutronix.de>)
+ id 1XCnlJ-0005GJ-2F
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 12:39:05 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Thu, 31 Jul 2014 10:03:11 +0200
-References: <1406715606-6821-1-git-send-email-jbe@pengutronix.de>
- <201407310933.02138.jbe@pengutronix.de>
- <20140731074416.GR6146@pengutronix.de>
-In-Reply-To: <20140731074416.GR6146@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201407311003.11853.jbe@pengutronix.de>
+Date: Thu, 31 Jul 2014 12:38:59 +0200
+Message-Id: <1406803143-27630-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,60 +22,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: envfs: provide an intentional way to ignore an existing external
- environment
+Subject: [PATCH v2] envfs: provide an intentional way to ignore an existing
+ external environment
 To: barebox@lists.infradead.org
-Cc: Uwe =?iso-8859-1?q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-Hi Uwe,
+Some use cases are using the barebox's built-in environment only, but still
+provide an external environment store to save a modified environment (for
+development purposes for example).
+In this case barebox works as intended even if the external store is empty
+and thus invalid. But even if it is an intentional behavior, barebox emits an
+error message due to an invalid content in the external store (CRC error).
 
-On Thursday 31 July 2014 09:44:16 Uwe Kleine-K=F6nig wrote:
-> On Thu, Jul 31, 2014 at 09:33:02AM +0200, Juergen Borleis wrote:
-> > Hi Uwe,
-> >
-> > On Thursday 31 July 2014 09:14:25 Uwe Kleine-K=F6nig wrote:
-> > > [...]
-> > > Compared with storing the default environment in the external store t=
-he
-> > > only difference is that you don't need to modify it if you change the
-> > > internal one, right?
-> >
-> > This would also be an advantage of this new feature.
->
-> The only one even?
+Because this error message will confuse a new user (how to know if this error
+message is important or can be ignored?) and it is a bad style to ship
+intentionally working systems with error messages, the following change set
+adds an "empty environment" feature to barebox.
 
-No. Confusing error messages are gone and we can force the intended behavio=
-ur =
+This change set adds a new option to the saveenv command which will write an
+zeroed environment without content. But it will be marked as a placeholder and
+thus should be "ignored" and barebox falls back to its built-in default
+environment.
 
-as well.
+With this feature we now get:
 
-> > > I wonder what the targeted use case is.
-> >
-> > To use an external stored environment *only* for development purposes or
-> > tests and to keep the possibility to do so.
->
-> Doesn't make a warm and cosy feeling. Isn't it easier and more robust to
-> just not tell barebox about the external storage at all and for the
-> testing/development procedure do an explicit
->
-> 	loadenv /dev/tralala
+ - if the environment store is empty, we still see an error message and
+   barebox still falls back to its built-in default environment
+ - if the environment store contains the new zeroed environment, there
+   will be no error message but barebox falls back to its built-in default
+   environment as well ("intentional behaviour")
+ - if the environment store contains a regular environment (modified compared
+   to the built-in one) barebox will continue to use it and ignores its
+   built-in default environment instead.
 
-Developers are lazy... I'm sure they will not love you for this suggestion =
-;)
+This is v2 of this change set.
 
-Regards,
+ - using a forced built-in default environment is handled inside the
+   envfs_load() function. Suggested by Sascha.
+ - the new flag to force the built-in default environment uses a more
+   descriptive name. Suggested by Sascha.
+
+Comments are welcome.
+
 Juergen
 
--- =
-
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0| Juergen Borleis =A0 =A0 =A0 =A0 =A0 =A0 |
-Industrial Linux Solutions               =A0 =A0 =A0| http://www.pengutroni=
-x.de/  |
 
 _______________________________________________
 barebox mailing list
