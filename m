@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XCkZd-00085U-JX
- for barebox@lists.infradead.org; Thu, 31 Jul 2014 07:14:50 +0000
-Date: Thu, 31 Jul 2014 09:14:25 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20140731071425.GQ6146@pengutronix.de>
+ Linux)) id 1XClKp-0002lP-Fi
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 08:03:36 +0000
+From: Juergen Borleis <jbe@pengutronix.de>
+Date: Thu, 31 Jul 2014 10:03:11 +0200
 References: <1406715606-6821-1-git-send-email-jbe@pengutronix.de>
+ <201407310933.02138.jbe@pengutronix.de>
+ <20140731074416.GR6146@pengutronix.de>
+In-Reply-To: <20140731074416.GR6146@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1406715606-6821-1-git-send-email-jbe@pengutronix.de>
+Message-Id: <201407311003.11853.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,70 +26,54 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: envfs: provide an intentional way to ignore an existing external
  environment
-To: Juergen Borleis <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
+Cc: Uwe =?iso-8859-1?q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-Hello,
+Hi Uwe,
 
-On Wed, Jul 30, 2014 at 12:20:03PM +0200, Juergen Borleis wrote:
-> Some use cases are using the barebox's built-in environment only, but sti=
-ll
-> provide an external environment store to save a modified environment (for
-> development purposes for example).
-> In this case barebox works as intended even if the external store is empty
-> and thus invalid. But even if it is an intentional behavior, barebox emit=
-s an
-> error message due to an invalid content in the external store (CRC error).
-> =
+On Thursday 31 July 2014 09:44:16 Uwe Kleine-K=F6nig wrote:
+> On Thu, Jul 31, 2014 at 09:33:02AM +0200, Juergen Borleis wrote:
+> > Hi Uwe,
+> >
+> > On Thursday 31 July 2014 09:14:25 Uwe Kleine-K=F6nig wrote:
+> > > [...]
+> > > Compared with storing the default environment in the external store t=
+he
+> > > only difference is that you don't need to modify it if you change the
+> > > internal one, right?
+> >
+> > This would also be an advantage of this new feature.
+>
+> The only one even?
 
-> Because this error message will confuse a new user (how to know if this e=
-rror
-> message is important or can be ignored?) and it is a bad style to ship
-> intentionally working systems with error messages, the following change s=
-et
-> adds an "empty environment" feature to barebox.
-> =
+No. Confusing error messages are gone and we can force the intended behavio=
+ur =
 
-> This change set adds a new option to the saveenv command which will write=
- an
-> empty environment without content. But it will be marked as a placeholder=
- and
-> thus should be "ignored" and barebox falls back to its built-in default
-> environment.
-> =
+as well.
 
-> With this feature we now get:
-> =
+> > > I wonder what the targeted use case is.
+> >
+> > To use an external stored environment *only* for development purposes or
+> > tests and to keep the possibility to do so.
+>
+> Doesn't make a warm and cosy feeling. Isn't it easier and more robust to
+> just not tell barebox about the external storage at all and for the
+> testing/development procedure do an explicit
+>
+> 	loadenv /dev/tralala
 
->  - if the environment store is empty, we still see an error message and
->    barebox still falls back to its built-in default environment
->  - if the environment store contains the new placeholder environment, the=
-re
->    will be no error message but barebox falls back to its built-in default
->    environment as well ("intentional behaviour")
->  - if the environment store contains a regular environment (modified comp=
-ared
->    to the built-in one) barebox will continue to use it and ignores its
->    built-in default environment instead.
+Developers are lazy... I'm sure they will not love you for this suggestion =
+;)
 
-Compared with storing the default environment in the external store the
-only difference is that you don't need to modify it if you change the
-internal one, right?
-
-I wonder what the targeted use case is. A rescue barebox to repair a
-borken bootloader and/or environment? If so I'd implemented a different
-solution: To make the rescue barebox completely independant from the
-state of the hardware, introduce a config symbol (say NO_AUTOLOAD_ENV)
-that makes barebox only use the default environment. With this you could
-still explicitly load and save the external env.
-
-Best regards
-Uwe
+Regards,
+Juergen
 
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0| Juergen Borleis =A0 =A0 =A0 =A0 =A0 =A0 |
+Industrial Linux Solutions               =A0 =A0 =A0| http://www.pengutroni=
+x.de/  |
 
 _______________________________________________
 barebox mailing list
