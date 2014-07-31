@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0a-00176a03.pphosted.com ([67.231.149.52])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XCqML-0002yj-Oz
- for barebox@lists.infradead.org; Thu, 31 Jul 2014 13:25:32 +0000
-Received: from pps.filterd (m0048275.ppops.net [127.0.0.1])
- by m0048275.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id s6VDOY2Z046714
- for <barebox@lists.infradead.org>; Thu, 31 Jul 2014 09:25:04 -0400
-Received: from alpmlip10.e2k.ad.ge.com (n165-156-000-000.static.ge.com
- [165.156.5.1] (may be forged))
- by m0048275.ppops.net-00176a03. with ESMTP id 1nfp1g06u2-1
- (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
- for <barebox@lists.infradead.org>; Thu, 31 Jul 2014 09:25:04 -0400
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 31 Jul 2014 14:24:05 +0100
-Message-Id: <1406813045-5185-1-git-send-email-renaud.barbier@ge.com>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XCqfC-0004s3-Sn
+ for barebox@lists.infradead.org; Thu, 31 Jul 2014 13:44:59 +0000
+Date: Thu, 31 Jul 2014 10:43:39 -0300
+From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Message-ID: <20140731134339.GA2865@arch.cereza>
+References: <1406666701-15356-1-git-send-email-ezequiel.garcia@free-electrons.com>
+ <1406666701-15356-6-git-send-email-ezequiel.garcia@free-electrons.com>
+ <20140731054237.GP23235@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140731054237.GP23235@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +21,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ppc: DA923RC: 16-bit Product Data EEPROM read access
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/6] net: Add driver for Armada 370/XP 10/100/1000 Mbps
+ network controller
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Willy Tarreau <w@1wt.eu>
 
-Change Product Data validity checking to ensure that support can
-be provided for 8-bit and 16-bit EEPROM devices.
+On 31 Jul 07:42 AM, Sascha Hauer wrote:
+> On Tue, Jul 29, 2014 at 05:45:00PM -0300, Ezequiel Garcia wrote:
+> > +
+> > +static int mvneta_probe(struct device_d *dev)
+> > +{
+> > +	struct mvneta_port *priv;
+> > +	int ret;
+> > +
+> > +	priv =3D xzalloc(sizeof(*priv));
+> > +
+> > +	priv->reg =3D dev_get_mem_region(dev, 0);
+> =
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/boards/geip-da923rc/product_data.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+> Any special reason to use dev_get_mem_region() here? Normally you should
+> use dev_request_mem_region() which allocates the resource for exclusive
+> use. dev_get_mem_region() should only be used in very special cases.
+> =
 
-diff --git a/arch/ppc/boards/geip-da923rc/product_data.c b/arch/ppc/boards/geip-da923rc/product_data.c
-index 09cd84d..0c46006 100644
---- a/arch/ppc/boards/geip-da923rc/product_data.c
-+++ b/arch/ppc/boards/geip-da923rc/product_data.c
-@@ -20,12 +20,20 @@
- #include <mach/fsl_i2c.h>
- #include "product_data.h"
 
-+static int ge_pd_header_check(unsigned short header)
-+{
-+	if (header != 0xa5a5)
-+		return -1;
-+	else
-+		return 0;
-+}
-+
- static int ge_is_data_valid(struct ge_product_data *v)
- {
- 	int crc, ret = 0;
- 	const unsigned char *p = (const unsigned char *)v;
+Yes, there's a reason for it. The ethernet unit on these SoCs have a regist=
+er
+for the MDIO. Since it's the same for Kirkwood, Armada 370/XP and Armada 37=
+5,
+the MDIO is handled by a different driver (mvmdio), so it can be shared amo=
+ng
+the ethernet drivers.
 
--	if (v->v1.pdh.tag != 0xa5a5)
-+	if (ge_pd_header_check(v->v1.pdh.tag))
- 		return -1;
+This comes with a little price, though: we can't request the region on eith=
+er
+mvmdio or the ethernet driver, for the former is within the latter.
 
- 	switch (v->v1.pdh.version) {
-@@ -51,12 +59,20 @@ int ge_get_product_data(struct ge_product_data *productp)
- {
- 	struct i2c_adapter *adapter;
- 	struct i2c_client client;
-+	unsigned int width = 0;
- 	int ret;
+> Please check the return value.
+> =
 
- 	adapter = i2c_get_adapter(0);
- 	client.addr = 0x51;
- 	client.adapter = adapter;
- 	ret = i2c_read_reg(&client, 0, (uint8_t *) productp,
-+			   sizeof(unsigned short));
-+
-+	/* If there is no valid header, it may be a 16-bit eeprom. */
-+	if (ge_pd_header_check(productp->v1.pdh.tag))
-+		width = I2C_ADDR_16_BIT;
-+
-+	ret = i2c_read_reg(&client, width, (uint8_t *) productp,
- 			   sizeof(struct ge_product_data));
 
- 	if (ret == sizeof(struct ge_product_data))
---
-1.8.3.1
+Sure, I will.
+-- =
 
+Ezequiel Garc=EDa, Free Electrons
+Embedded Linux, Kernel and Android Engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
