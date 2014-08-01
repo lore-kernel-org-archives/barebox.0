@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x236.google.com ([2a00:1450:400c:c05::236])
+Received: from mail-we0-x22c.google.com ([2a00:1450:400c:c03::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XDCmS-0004Lk-Dm
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 13:21:57 +0000
-Received: by mail-wi0-f182.google.com with SMTP id d1so1341372wiv.15
- for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 06:21:34 -0700 (PDT)
-Received: from eROCCA26.vpn2.erocca.com
- (LNantes-156-76-15-113.w82-127.abo.wanadoo.fr. [82.127.166.113])
- by mx.google.com with ESMTPSA id t6sm8739224wib.4.2014.08.01.06.21.31
- for <barebox@lists.infradead.org>
- (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Fri, 01 Aug 2014 06:21:32 -0700 (PDT)
+ id 1XDCmV-0004MC-B7
+ for barebox@lists.infradead.org; Fri, 01 Aug 2014 13:21:59 +0000
+Received: by mail-we0-f172.google.com with SMTP id x48so4307061wes.17
+ for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 06:21:36 -0700 (PDT)
 From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Fri,  1 Aug 2014 15:22:29 +0200
-Message-Id: <1406899351-29047-1-git-send-email-poggi.raph@gmail.com>
+Date: Fri,  1 Aug 2014 15:22:31 +0200
+Message-Id: <1406899351-29047-3-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1406899351-29047-1-git-send-email-poggi.raph@gmail.com>
+References: <1406899351-29047-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,16 +23,28 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] Add device tree support of i2c Atmel driver
+Subject: [PATCH 2/2] at91sam9g45: clock: add i2c clocks
 To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-VGhpcyBwYXRjaGVzZXQgYWRkcyB0aGUgZGV2aWNlIHRyZWUgc3VwcG9ydCBmb3IgaTJjIEF0bWVs
-IGRyaXZlciBhbmQgdGhlIGNvcnJlc3BpbmcgY2xvY2tzCmZvciB0aGUgYXQ5MXNhbTlnNDUgZGV2
-aWNlLgoKUmFwaGHDq2wgUG9nZ2kgKDIpIDoKCSgxKSBpMmM6IGF0OTE6IGFkZCBzdXBwb3J0IG9m
-IGRldmljZSB0cmVlCgkoMikgYXQ5MXNhbTlnNDU6IGNsb2NrOiBhZGQgaTJjIGNsb2NrcwoKYXJj
-aC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMgfCAgICA0ICsrKwpkcml2ZXJzL2kyYy9idXNz
-ZXMvaTJjLWF0OTEuYyAgICB8ICAgNjAgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-LS0tLS0KMiBmaWxlcyBjaGFuZ2VkLCA1NiBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQoK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+QWRkIHRoZSBkZXZpY2UgdHJlZSBhbmQgbm9uIGRldmljZSB0cmVlIGF0OTEgaTJjIGNsb2Nrcy4K
+ClNpZ25lZC1vZmYtYnk6IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KLS0t
+CiBhcmNoL2FybS9tYWNoLWF0OTEvYXQ5MXNhbTlnNDUuYyB8ICAgIDQgKysrKwogMSBmaWxlIGNo
+YW5nZWQsIDQgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtYXQ5MS9h
+dDkxc2FtOWc0NS5jIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMKaW5kZXggZjYw
+MzFmMC4uZDBmOTUwYyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1
+LmMKKysrIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMKQEAgLTE5Miw2ICsxOTIs
+MTAgQEAgc3RhdGljIHN0cnVjdCBjbGtfbG9va3VwIHBlcmlwaF9jbG9ja3NfbG9va3Vwc1tdID0g
+ewogCUNMS0RFVl9DT05fREVWX0lEKCJtY2lfY2xrIiwgImF0bWVsX21jaTEiLCAmbW1jMV9jbGsp
+LAogCUNMS0RFVl9DT05fREVWX0lEKCJzcGlfY2xrIiwgImF0bWVsX3NwaTAiLCAmc3BpMF9jbGsp
+LAogCUNMS0RFVl9DT05fREVWX0lEKCJzcGlfY2xrIiwgImF0bWVsX3NwaTEiLCAmc3BpMV9jbGsp
+LAorCUNMS0RFVl9DT05fREVWX0lEKE5VTEwsICJhdDkxLXR3aTAiLCAmdHdpMF9jbGspLAorCUNM
+S0RFVl9DT05fREVWX0lEKE5VTEwsICJhdDkxLXR3aTEiLCAmdHdpMV9jbGspLAorCUNMS0RFVl9D
+T05fREVWX0lEKE5VTEwsICJmZmY4NDAwMC5pMmMiLCAmdHdpMF9jbGspLAorCUNMS0RFVl9DT05f
+REVWX0lEKE5VTEwsICJmZmY4ODAwMC5pMmMiLCAmdHdpMV9jbGspLAogCUNMS0RFVl9ERVZfSUQo
+ImF0OTFybTkyMDAtZ3BpbzAiLCAmcGlvQV9jbGspLAogCUNMS0RFVl9ERVZfSUQoImF0OTFybTky
+MDAtZ3BpbzEiLCAmcGlvQl9jbGspLAogCUNMS0RFVl9ERVZfSUQoImF0OTFybTkyMDAtZ3BpbzIi
+LCAmcGlvQ19jbGspLAotLSAKMS43LjkuNQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
