@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XD6qP-0005ii-CN
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 07:01:38 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B6989BF0E8
- for <barebox@lists.infradead.org>; Fri,  1 Aug 2014 09:01:05 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Fri, 1 Aug 2014 09:01:05 +0200
-Message-Id: <1406876465-27832-1-git-send-email-j.weitzel@phytec.de>
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XD7re-00069Z-DI
+ for barebox@lists.infradead.org; Fri, 01 Aug 2014 08:06:58 +0000
+From: Bo Shen <voice.shen@atmel.com>
+Date: Fri, 1 Aug 2014 16:06:36 +0800
+Message-ID: <1406880396-3577-1-git-send-email-voice.shen@atmel.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,77 +16,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] commands: of_dump switch to get fixed devictree
-To: barebox@lists.infradead.org
+Subject: [PATCH] ARM: atmel: sama5d3_xplained: import smc timing from U-Boot
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-Add a switch to get the devicetree processed by the registered fixups.
-This is also whats the kernel gets.
+From: Matteo Fortini <matteo.fortini@gmail.com>
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+The configuration for NAND has been aligned with values
+from U-Boot and completed with TIMINGS initialization
+
+Signed-off-by: Matteo Fortini <matteo.fortini@gmail.com>
+[voice.shen@atmel.com: apply this patch from Matteo Fortini for
+		       sama5d3xek to sama5d3_xplained board]
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
 ---
-v2:	fix CMD OPS
+ arch/arm/boards/sama5d3_xplained/init.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
- commands/of_dump.c |   12 ++++++++++--
- 1 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/commands/of_dump.c b/commands/of_dump.c
-index cafde07..1b487c7 100644
---- a/commands/of_dump.c
-+++ b/commands/of_dump.c
-@@ -34,16 +34,20 @@ static int do_of_dump(int argc, char *argv[])
- {
- 	int opt;
- 	int ret;
-+	int fix = 0;
- 	struct device_node *root = NULL, *node, *of_free = NULL;
- 	char *dtbfile = NULL;
- 	size_t size;
- 	const char *nodename;
+diff --git a/arch/arm/boards/sama5d3_xplained/init.c b/arch/arm/boards/sama5d3_xplained/init.c
+index ae18863..5674225 100644
+--- a/arch/arm/boards/sama5d3_xplained/init.c
++++ b/arch/arm/boards/sama5d3_xplained/init.c
+@@ -57,21 +57,30 @@ static struct atmel_nand_data nand_pdata = {
+ };
  
--	while ((opt = getopt(argc, argv, "f:")) > 0) {
-+	while ((opt = getopt(argc, argv, "Ff:")) > 0) {
- 		switch (opt) {
- 		case 'f':
- 			dtbfile = optarg;
- 			break;
-+		case 'F':
-+			fix = 1;
-+			break;
- 		default:
- 			return COMMAND_ERROR_USAGE;
- 		}
-@@ -77,6 +81,9 @@ static int do_of_dump(int argc, char *argv[])
- 		root = of_get_root_node();
- 	}
+ static struct sam9_smc_config sama5d3_xplained_nand_smc_config = {
+-	.ncs_read_setup		= 0,
+-	.nrd_setup		= 1,
+-	.ncs_write_setup	= 0,
+-	.nwe_setup		= 1,
++	.ncs_read_setup		= 1,
++	.nrd_setup		= 2,
++	.ncs_write_setup	= 1,
++	.nwe_setup		= 2,
  
-+	if (fix)
-+		of_get_fixed_tree(root);
+-	.ncs_read_pulse		= 6,
+-	.nrd_pulse		= 4,
++	.ncs_read_pulse		= 5,
++	.nrd_pulse		= 3,
+ 	.ncs_write_pulse	= 5,
+ 	.nwe_pulse		= 3,
+ 
+-	.read_cycle		= 6,
+-	.write_cycle		= 5,
++	.read_cycle		= 8,
++	.write_cycle		= 8,
+ 
+ 	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
+-	.tdf_cycles		= 1,
++	.tdf_cycles		= 3,
 +
- 	node = of_find_node_by_path_or_alias(root, nodename);
- 	if (!node) {
- 		printf("Cannot find nodepath %s\n", nodename);
-@@ -96,12 +103,13 @@ out:
- BAREBOX_CMD_HELP_START(of_dump)
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT  ("-f dtb",  "work on dtb instead of internal devicetree\n")
-+BAREBOX_CMD_HELP_OPT  ("-F",  "return fixed devicetree\n")
- BAREBOX_CMD_HELP_END
++	.tclr			= 3,
++	.tadl			= 10,
++	.tar			= 3,
++	.ocms			= 0,
++	.trr			= 4,
++	.twb			= 5,
++	.rbnsel			= 3,
++	.nfsel			= 1
+ };
  
- BAREBOX_CMD_START(of_dump)
- 	.cmd		= do_of_dump,
- 	BAREBOX_CMD_DESC("dump devicetree nodes")
--	BAREBOX_CMD_OPTS("[-f] [NODE]")
-+	BAREBOX_CMD_OPTS("[-fF] [NODE]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
- 	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
- 	BAREBOX_CMD_HELP(cmd_of_dump_help)
+ static void ek_add_device_nand(void)
+@@ -87,7 +96,7 @@ static void ek_add_device_nand(void)
+ 		sama5d3_xplained_nand_smc_config.mode |= AT91_SMC_DBW_8;
+ 
+ 	/* configure chip-select 3 (NAND) */
+-	sam9_smc_configure(0, 3, &sama5d3_xplained_nand_smc_config);
++	sama5_smc_configure(0, 3, &cm_nand_smc_config);
+ 
+ 	at91_add_device_nand(&nand_pdata);
+ }
 -- 
-1.7.0.4
+1.8.5.2
 
 
 _______________________________________________
