@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XDFhO-0003KT-Qr
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 16:28:55 +0000
-Date: Fri, 1 Aug 2014 18:28:30 +0200
+ Linux)) id 1XDFj6-00055n-Nt
+ for barebox@lists.infradead.org; Fri, 01 Aug 2014 16:30:41 +0000
+Date: Fri, 1 Aug 2014 18:30:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140801162830.GZ23235@pengutronix.de>
-References: <1406880396-3577-1-git-send-email-voice.shen@atmel.com>
+Message-ID: <20140801163018.GA23235@pengutronix.de>
+References: <1406895090-17287-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1406880396-3577-1-git-send-email-voice.shen@atmel.com>
+In-Reply-To: <1406895090-17287-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d3_xplained: import smc timing from
- U-Boot
-To: Bo Shen <voice.shen@atmel.com>
+Subject: Re: [PATCH] fixup! ARM: add Canon A1100 ROM image generation
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 01, 2014 at 04:06:36PM +0800, Bo Shen wrote:
-> From: Matteo Fortini <matteo.fortini@gmail.com>
+On Fri, Aug 01, 2014 at 04:11:30PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  scripts/canon-a1100-image | 0
+>  1 file changed, 0 insertions(+), 0 deletions(-)
+>  mode change 100644 => 100755 scripts/canon-a1100-image
 > 
-> The configuration for NAND has been aligned with values
-> from U-Boot and completed with TIMINGS initialization
-> 
-> Signed-off-by: Matteo Fortini <matteo.fortini@gmail.com>
-> [voice.shen@atmel.com: apply this patch from Matteo Fortini for
-> 		       sama5d3xek to sama5d3_xplained board]
-> Signed-off-by: Bo Shen <voice.shen@atmel.com>
+> diff --git a/scripts/canon-a1100-image b/scripts/canon-a1100-image
+> old mode 100644
+> new mode 100755
 
-Applied, thanks
+Squashed into the original commit.
 
 Sascha
 
