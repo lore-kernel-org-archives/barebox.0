@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XDBgo-0000Id-Vn
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 12:12:04 +0000
-Received: by mail-la0-f50.google.com with SMTP id gf5so3116766lab.37
- for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 05:11:38 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  1 Aug 2014 16:11:30 +0400
-Message-Id: <1406895090-17287-1-git-send-email-antonynpavlov@gmail.com>
+ id 1XDCmT-0004M2-MR
+ for barebox@lists.infradead.org; Fri, 01 Aug 2014 13:21:58 +0000
+Received: by mail-wg0-f45.google.com with SMTP id x12so4287123wgg.28
+ for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 06:21:35 -0700 (PDT)
+From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
+Date: Fri,  1 Aug 2014 15:22:30 +0200
+Message-Id: <1406899351-29047-2-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1406899351-29047-1-git-send-email-poggi.raph@gmail.com>
+References: <1406899351-29047-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,28 +19,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! ARM: add Canon A1100 ROM image generation
+Subject: [PATCH 1/2] i2c: at91: add support of device tree
 To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- scripts/canon-a1100-image | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- mode change 100644 => 100755 scripts/canon-a1100-image
-
-diff --git a/scripts/canon-a1100-image b/scripts/canon-a1100-image
-old mode 100644
-new mode 100755
--- 
-2.0.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgotLS0K
+IGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jIHwgICA2MCArKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKy0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDUyIGluc2VydGlvbnMoKyks
+IDggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkx
+LmMgYi9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWF0OTEuYwppbmRleCA0YWE0ZTRlLi45NDRhOGIz
+IDEwMDY0NAotLS0gYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWF0OTEuYworKysgYi9kcml2ZXJz
+L2kyYy9idXNzZXMvaTJjLWF0OTEuYwpAQCAtMzczLDIwICszNzMsNjMgQEAgc3RhdGljIHN0cnVj
+dCBwbGF0Zm9ybV9kZXZpY2VfaWQgYXQ5MV90d2lfZGV2dHlwZXNbXSA9IHsKIAl9CiB9OwogCitz
+dGF0aWMgc3RydWN0IG9mX2RldmljZV9pZCBhdDkxX3R3aV9kdF9pZHNbXSA9IHsKKwl7CisJCS5j
+b21wYXRpYmxlID0gImF0bWVsLGF0OTFybTkyMDAtaTJjIiwKKwkJLmRhdGEgPSAodW5zaWduZWQg
+bG9uZykgJmF0OTFybTkyMDBfY29uZmlnLAorCX0gLCB7CisJCS5jb21wYXRpYmxlID0gImF0bWVs
+LGF0OTFzYW05MjYwLWkyYyIsCisJCS5kYXRhID0gKHVuc2lnbmVkIGxvbmcpICZhdDkxc2FtOTI2
+MF9jb25maWcsCisJfSAsIHsKKwkJLmNvbXBhdGlibGUgPSAiYXRtZWwsYXQ5MXNhbTkyNjEtaTJj
+IiwKKwkJLmRhdGEgPSAodW5zaWduZWQgbG9uZykgJmF0OTFzYW05MjYxX2NvbmZpZywKKwl9ICwg
+eworCQkuY29tcGF0aWJsZSA9ICJhdG1lbCxhdDkxc2FtOWcyMC1pMmMiLAorCQkuZGF0YSA9ICh1
+bnNpZ25lZCBsb25nKSAmYXQ5MXNhbTlnMjBfY29uZmlnLAorCX0gLCB7CisJCS5jb21wYXRpYmxl
+ID0gImF0bWVsLGF0OTFzYW05ZzEwLWkyYyIsCisJCS5kYXRhID0gKHVuc2lnbmVkIGxvbmcpICZh
+dDkxc2FtOWcxMF9jb25maWcsCisJfSwgeworCQkuY29tcGF0aWJsZSA9ICJhdG1lbCxhdDkxc2Ft
+OXg1LWkyYyIsCisJCS5kYXRhID0gKHVuc2lnbmVkIGxvbmcpICZhdDkxc2FtOXg1X2NvbmZpZywK
+Kwl9LCB7CisJCS8qIHNlbnRpbmVsICovCisJfQorfTsKKworc3RhdGljIHN0cnVjdCBhdDkxX3R3
+aV9wZGF0YSAqYXQ5MV90d2lfZ2V0X2RyaXZlcl9kYXRhKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQor
+eworICAgIHN0cnVjdCBhdDkxX3R3aV9wZGF0YSAqaTJjX2RhdGEgPSBOVUxMOworICAgIGludCBy
+YzsKKworICAgIGlmIChkZXYtPmRldmljZV9ub2RlKSB7CisJY29uc3Qgc3RydWN0IG9mX2Rldmlj
+ZV9pZCAqbWF0Y2g7CisJbWF0Y2ggPSBvZl9tYXRjaF9ub2RlKGF0OTFfdHdpX2R0X2lkcywgZGV2
+LT5kZXZpY2Vfbm9kZSk7CisJaWYgKCFtYXRjaCkKKwkgICAgaTJjX2RhdGEgPSBOVUxMOworCWVs
+c2UKKwkgICAgaTJjX2RhdGEgPSAoc3RydWN0IGF0OTFfdHdpX3BkYXRhICopbWF0Y2gtPmRhdGE7
+CisgICAgfQorICAgIGVsc2UgeworCXJjID0gZGV2X2dldF9kcnZkYXRhKGRldiwgKHVuc2lnbmVk
+IGxvbmcgKikmaTJjX2RhdGEpOworCWlmIChyYykKKwkgICAgaTJjX2RhdGEgPSBOVUxMOworICAg
+IH0KKworICAgIHJldHVybiBpMmNfZGF0YTsKK30KKwogc3RhdGljIGludCBhdDkxX3R3aV9wcm9i
+ZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIHsKIAlzdHJ1Y3QgYXQ5MV90d2lfZGV2ICppMmNfYXQ5
+MTsKLQlzdHJ1Y3QgYXQ5MV90d2lfcGRhdGEgKmkyY19kYXRhOwotCWludCByYzsKKwlpbnQgcmMg
+PSAwOwogCXUzMiBidXNfY2xrX3JhdGU7CiAKIAlpMmNfYXQ5MSA9IHh6YWxsb2Moc2l6ZW9mKHN0
+cnVjdCBhdDkxX3R3aV9kZXYpKTsKIAotCXJjID0gZGV2X2dldF9kcnZkYXRhKGRldiwgKHVuc2ln
+bmVkIGxvbmcgKikmaTJjX2RhdGEpOwotCWlmIChyYykKLQkJZ290byBvdXRfZnJlZTsKLQotCWky
+Y19hdDkxLT5wZGF0YSA9IGkyY19kYXRhOworCWkyY19hdDkxLT5wZGF0YSA9IGF0OTFfdHdpX2dl
+dF9kcml2ZXJfZGF0YShkZXYpOworCWlmICghaTJjX2F0OTEtPnBkYXRhKQorCSAgICBnb3RvIG91
+dF9mcmVlOwogCiAJaTJjX2F0OTEtPmJhc2UgPSBkZXZfcmVxdWVzdF9tZW1fcmVnaW9uKGRldiwg
+MCk7CiAJaWYgKCFpMmNfYXQ5MS0+YmFzZSkgewpAQCAtMzk1LDcgKzQzOCw3IEBAIHN0YXRpYyBp
+bnQgYXQ5MV90d2lfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCiAJCWdvdG8gb3V0X2ZyZWU7
+CiAJfQogCi0JaTJjX2F0OTEtPmNsayA9IGNsa19nZXQoZGV2LCAidHdpX2NsayIpOworCWkyY19h
+dDkxLT5jbGsgPSBjbGtfZ2V0KGRldiwgTlVMTCk7CiAJaWYgKElTX0VSUihpMmNfYXQ5MS0+Y2xr
+KSkgewogCQlkZXZfZXJyKGRldiwgIm5vIGNsb2NrIGRlZmluZWRcbiIpOwogCQlyYyA9IC1FTk9E
+RVY7CkBAIC00MzUsNiArNDc4LDcgQEAgc3RhdGljIHN0cnVjdCBkcml2ZXJfZCBhdDkxX3R3aV9k
+cml2ZXIgPSB7CiAJLm5hbWUJCT0gImF0OTEtdHdpIiwKIAkucHJvYmUJCT0gYXQ5MV90d2lfcHJv
+YmUsCiAJLmlkX3RhYmxlCT0gYXQ5MV90d2lfZGV2dHlwZXMsCisJLm9mX2NvbXBhdGlibGUJPSBE
+UlZfT0ZfQ09NUEFUKGF0OTFfdHdpX2R0X2lkcyksCiB9OwogZGV2aWNlX3BsYXRmb3JtX2RyaXZl
+cihhdDkxX3R3aV9kcml2ZXIpOwogCi0tIAoxLjcuOS41CgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
+dGluZm8vYmFyZWJveAo=
