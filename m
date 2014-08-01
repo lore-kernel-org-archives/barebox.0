@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x231.google.com ([2a00:1450:400c:c00::231])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XD6aq-00008x-Rj
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 06:45:33 +0000
-Received: by mail-wg0-f49.google.com with SMTP id k14so3814146wgh.8
- for <barebox@lists.infradead.org>; Thu, 31 Jul 2014 23:45:09 -0700 (PDT)
-Date: Fri, 1 Aug 2014 08:45:04 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140801064502.GA27679@omega>
-References: <1406873830-17123-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1406873830-17123-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XD6qP-0005ii-CN
+ for barebox@lists.infradead.org; Fri, 01 Aug 2014 07:01:38 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id B6989BF0E8
+ for <barebox@lists.infradead.org>; Fri,  1 Aug 2014 09:01:05 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Fri, 1 Aug 2014 09:01:05 +0200
+Message-Id: <1406876465-27832-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +17,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: saveenv: Fix comment about directories in help
- text
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] commands: of_dump switch to get fixed devictree
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Add a switch to get the devicetree processed by the registered fixups.
+This is also whats the kernel gets.
 
-On Fri, Aug 01, 2014 at 08:17:10AM +0200, Sascha Hauer wrote:
-> envfs indeed handles directories, at least since 2007:
-> 
-> | commit 913691eccd13c1509470eb8b059aa0beecc6d8d8
-> | Author: Sascha Hauer <s.hauer@pengutronix.de>
-> | Date:   Tue Sep 25 12:58:52 2007 +0200
-> |
-> |     add directory handling for environment
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/saveenv.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/commands/saveenv.c b/commands/saveenv.c
-> index 31d6951..9da733e 100644
-> --- a/commands/saveenv.c
-> +++ b/commands/saveenv.c
-> @@ -60,8 +60,7 @@ BAREBOX_CMD_HELP_TEXT("Save the files in DIRECTORY to the persistent storage dev
->  BAREBOX_CMD_HELP_TEXT("")
->  BAREBOX_CMD_HELP_TEXT("ENVFS is usually a block in flash but can be any other file. If")
->  BAREBOX_CMD_HELP_TEXT("omitted, DIRECTORY defaults to /env and ENVFS defaults to")
-> -BAREBOX_CMD_HELP_TEXT("/dev/env0. Note that envfs can only handle files, directories are being")
-> -BAREBOX_CMD_HELP_TEXT("skipped silently.")
-> +BAREBOX_CMD_HELP_TEXT("/dev/env0.")
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+v2:	fix CMD OPS
 
-but envfs can't handle directories which are empty while saving? :-)
-Maybe we should add this as note or support empty directories.
+ commands/of_dump.c |   12 ++++++++++--
+ 1 files changed, 10 insertions(+), 2 deletions(-)
 
-- Alex
+diff --git a/commands/of_dump.c b/commands/of_dump.c
+index cafde07..1b487c7 100644
+--- a/commands/of_dump.c
++++ b/commands/of_dump.c
+@@ -34,16 +34,20 @@ static int do_of_dump(int argc, char *argv[])
+ {
+ 	int opt;
+ 	int ret;
++	int fix = 0;
+ 	struct device_node *root = NULL, *node, *of_free = NULL;
+ 	char *dtbfile = NULL;
+ 	size_t size;
+ 	const char *nodename;
+ 
+-	while ((opt = getopt(argc, argv, "f:")) > 0) {
++	while ((opt = getopt(argc, argv, "Ff:")) > 0) {
+ 		switch (opt) {
+ 		case 'f':
+ 			dtbfile = optarg;
+ 			break;
++		case 'F':
++			fix = 1;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -77,6 +81,9 @@ static int do_of_dump(int argc, char *argv[])
+ 		root = of_get_root_node();
+ 	}
+ 
++	if (fix)
++		of_get_fixed_tree(root);
++
+ 	node = of_find_node_by_path_or_alias(root, nodename);
+ 	if (!node) {
+ 		printf("Cannot find nodepath %s\n", nodename);
+@@ -96,12 +103,13 @@ out:
+ BAREBOX_CMD_HELP_START(of_dump)
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT  ("-f dtb",  "work on dtb instead of internal devicetree\n")
++BAREBOX_CMD_HELP_OPT  ("-F",  "return fixed devicetree\n")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(of_dump)
+ 	.cmd		= do_of_dump,
+ 	BAREBOX_CMD_DESC("dump devicetree nodes")
+-	BAREBOX_CMD_OPTS("[-f] [NODE]")
++	BAREBOX_CMD_OPTS("[-fF] [NODE]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_COMPLETE(devicetree_file_complete)
+ 	BAREBOX_CMD_HELP(cmd_of_dump_help)
+-- 
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
