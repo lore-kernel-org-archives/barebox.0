@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XDCtz-0007YS-2H
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 13:29:43 +0000
+ Linux)) id 1XDCu9-0007Zc-1t
+ for barebox@lists.infradead.org; Fri, 01 Aug 2014 13:29:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Aug 2014 15:29:11 +0200
-Message-Id: <1406899755-8288-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Aug 2014 15:29:15 +0200
+Message-Id: <1406899755-8288-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1406899755-8288-1-git-send-email-s.hauer@pengutronix.de>
 References: <1406899755-8288-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,203 +21,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] ARM: phyCORE-am335x: Add support for more SDRAM
- configurations
+Subject: [PATCH 7/7] ARM: AM3355x: Update defconfig
 To: barebox@lists.infradead.org
 
-This adds support for 256MB and 128MB RAM configurations of the
-phyCORE-AM335x. This is done as new images.
+Most diffstat comes from refreshing the config. The only real change
+is that the NAND xload update handler is enabled now.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/phytec-phycore-am335x/lowlevel.c | 109 ++++++++++++++++++-----
- images/Makefile.am33xx                           |  14 ++-
- 2 files changed, 100 insertions(+), 23 deletions(-)
+ arch/arm/configs/am335x_defconfig | 83 ++++++++++++++++++++-------------------
+ 1 file changed, 42 insertions(+), 41 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-phycore-am335x/lowlevel.c b/arch/arm/boards/phytec-phycore-am335x/lowlevel.c
-index 200cf57..ff1f04e 100644
---- a/arch/arm/boards/phytec-phycore-am335x/lowlevel.c
-+++ b/arch/arm/boards/phytec-phycore-am335x/lowlevel.c
-@@ -15,7 +15,7 @@
- #include <mach/wdt.h>
- #include <debug_ll.h>
- 
--static const struct am33xx_cmd_control MT41J256M16HA15EIT_1x512MB_cmd = {
-+static const struct am33xx_cmd_control pcm051_cmd = {
- 	.slave_ratio0 = 0x40,
- 	.dll_lock_diff0 = 0x0,
- 	.invert_clkout0 = 0x1,
-@@ -27,21 +27,74 @@ static const struct am33xx_cmd_control MT41J256M16HA15EIT_1x512MB_cmd = {
- 	.invert_clkout2 = 0x1,
- };
- 
--static const struct am33xx_emif_regs MT41J256M16HA15EIT_1x512MB_regs = {
--	.emif_read_latency	= 0x6,
--	.emif_tim1		= 0x0888A39B,
--	.emif_tim2		= 0x26517FDA,
--	.emif_tim3		= 0x501F84EF,
--	.sdram_config		= 0x61C04B32,
--	.zq_config		= 0x50074BE4,
--	.sdram_ref_ctrl		= 0x0000093B,
-+struct pcm051_sdram_timings {
-+	struct am33xx_emif_regs regs;
-+	struct am33xx_ddr_data data;
- };
- 
--static const struct am33xx_ddr_data MT41J256M16HA15EIT_1x512MB_data = {
--	.rd_slave_ratio0	= 0x3B,
--	.wr_dqs_slave_ratio0	= 0x3B,
--	.fifo_we_slave_ratio0	= 0x96,
--	.wr_slave_ratio0	= 0x76,
-+enum {
-+	MT41J128M16125IT_1x256M16,
-+	MT41J64M1615IT_1x128M16,
-+	MT41J256M16HA15EIT_1x512M16,
-+};
-+
-+struct pcm051_sdram_timings timings[] = {
-+	/* 1x256M16 */
-+	[MT41J128M16125IT_1x256M16] = {
-+		.regs = {
-+			.emif_read_latency	= 0x6,
-+			.emif_tim1		= 0x0888A39B,
-+			.emif_tim2		= 0x26337FDA,
-+			.emif_tim3		= 0x501F830F,
-+			.sdram_config		= 0x61C04AB2,
-+			.zq_config		= 0x50074BE4,
-+			.sdram_ref_ctrl		= 0x0000093B,
-+		},
-+		.data = {
-+			.rd_slave_ratio0	= 0x3B,
-+			.wr_dqs_slave_ratio0	= 0x3B,
-+			.fifo_we_slave_ratio0	= 0x97,
-+			.wr_slave_ratio0	= 0x76,
-+		},
-+	},
-+
-+	/* 1x128M16 */
-+	[MT41J64M1615IT_1x128M16] = {
-+		.regs =  {
-+			.emif_read_latency	= 0x6,
-+			.emif_tim1		= 0x0888A39B,
-+			.emif_tim2		= 0x26247FDA,
-+			.emif_tim3		= 0x501F821F,
-+			.sdram_config		= 0x61C04A32,
-+			.zq_config		= 0x50074BE4,
-+			.sdram_ref_ctrl		= 0x0000093B,
-+		},
-+		.data = {
-+			.rd_slave_ratio0	= 0x3A,
-+			.wr_dqs_slave_ratio0	= 0x36,
-+			.fifo_we_slave_ratio0	= 0xA2,
-+			.wr_slave_ratio0	= 0x74,
-+		},
-+	},
-+
-+	/* 1x512MB */
-+	[MT41J256M16HA15EIT_1x512M16] = {
-+		.regs = {
-+			.emif_read_latency	= 0x6,
-+			.emif_tim1		= 0x0888A39B,
-+			.emif_tim2		= 0x26517FDA,
-+			.emif_tim3		= 0x501F84EF,
-+			.sdram_config		= 0x61C04B32,
-+			.zq_config		= 0x50074BE4,
-+			.sdram_ref_ctrl		= 0x0000093B,
-+		},
-+		.data = {
-+			.rd_slave_ratio0	= 0x3B,
-+			.wr_dqs_slave_ratio0	= 0x3B,
-+			.fifo_we_slave_ratio0	= 0x96,
-+			.wr_slave_ratio0	= 0x76,
-+		},
-+	},
- };
- 
- extern char __dtb_am335x_phytec_phycore_start[];
-@@ -55,9 +108,10 @@ extern char __dtb_am335x_phytec_phycore_start[];
-  *
-  * @return void
-  */
--static noinline void pcm051_board_init(void)
-+static noinline void pcm051_board_init(int sdram)
- {
- 	void *fdt;
-+	struct pcm051_sdram_timings *timing = &timings[sdram];
- 
- 	/* WDT1 is already running when the bootloader gets control
- 	 * Disable it to avoid "random" resets
-@@ -70,9 +124,9 @@ static noinline void pcm051_board_init(void)
- 
- 	am33xx_pll_init(MPUPLL_M_600, 25, DDRPLL_M_303);
- 
--	am335x_sdram_init(0x18B, &MT41J256M16HA15EIT_1x512MB_cmd,
--			&MT41J256M16HA15EIT_1x512MB_regs,
--			&MT41J256M16HA15EIT_1x512MB_data);
-+	am335x_sdram_init(0x18B, &pcm051_cmd,
-+			&timing->regs,
-+			&timing->data);
- 
- 	am33xx_uart_soft_reset((void *)AM33XX_UART0_BASE);
- 	am33xx_enable_uart0_pin_mux();
-@@ -84,7 +138,7 @@ static noinline void pcm051_board_init(void)
- 	am335x_barebox_entry(fdt);
- }
- 
--ENTRY_FUNCTION(start_am33xx_phytec_phycore_sram, bootinfo, r1, r2)
-+static noinline void pcm051_board_entry(unsigned long bootinfo, int sdram)
- {
- 	am33xx_save_bootinfo((void *)bootinfo);
- 
-@@ -97,7 +151,22 @@ ENTRY_FUNCTION(start_am33xx_phytec_phycore_sram, bootinfo, r1, r2)
- 	relocate_to_current_adr();
- 	setup_c();
- 
--	pcm051_board_init();
-+	pcm051_board_init(sdram);
-+}
-+
-+ENTRY_FUNCTION(start_am33xx_phytec_phycore_sram_1x256m16, bootinfo, r1, r2)
-+{
-+	pcm051_board_entry(bootinfo, MT41J128M16125IT_1x256M16);
-+}
-+
-+ENTRY_FUNCTION(start_am33xx_phytec_phycore_sram_1x128m16, bootinfo, r1, r2)
-+{
-+	pcm051_board_entry(bootinfo, MT41J64M1615IT_1x128M16);
-+}
-+
-+ENTRY_FUNCTION(start_am33xx_phytec_phycore_sram_1x512m16, bootinfo, r1, r2)
-+{
-+	pcm051_board_entry(bootinfo, MT41J256M16HA15EIT_1x512M16);
- }
- 
- ENTRY_FUNCTION(start_am33xx_phytec_phycore_sdram, r0, r1, r2)
-diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
-index dacc2d1..fa1f848 100644
---- a/images/Makefile.am33xx
-+++ b/images/Makefile.am33xx
-@@ -11,9 +11,17 @@ pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sdram
- FILE_barebox-am33xx-phytec-phycore.img = start_am33xx_phytec_phycore_sdram.pblx
- am33xx-barebox-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore.img
- 
--pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sram
--FILE_barebox-am33xx-phytec-phycore-mlo.img = start_am33xx_phytec_phycore_sram.pblx.mlo
--am33xx-mlo-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore-mlo.img
-+pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sram_1x256m16
-+FILE_barebox-am33xx-phytec-phycore-mlo-1x256m16.img = start_am33xx_phytec_phycore_sram_1x256m16.pblx.mlo
-+am33xx-mlo-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore-mlo-1x256m16.img
-+
-+pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sram_1x128m16
-+FILE_barebox-am33xx-phytec-phycore-mlo-1x128m16.img = start_am33xx_phytec_phycore_sram_1x128m16.pblx.mlo
-+am33xx-mlo-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore-mlo-1x128m16.img
-+
-+pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sram_1x512m16
-+FILE_barebox-am33xx-phytec-phycore-mlo-1x512m16.img = start_am33xx_phytec_phycore_sram_1x512m16.pblx.mlo
-+am33xx-mlo-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore-mlo-1x512m16.img
- 
- pblx-$(CONFIG_MACH_BEAGLEBONE) += start_am33xx_beaglebone_sdram
- FILE_barebox-am33xx-beaglebone.img = start_am33xx_beaglebone_sdram.pblx
+diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
+index 0c92c96..d3feb10 100644
+--- a/arch/arm/configs/am335x_defconfig
++++ b/arch/arm/configs/am335x_defconfig
+@@ -1,11 +1,11 @@
+ CONFIG_ARCH_OMAP=y
+ CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
++CONFIG_BAREBOX_UPDATE_AM33XX_NAND_XLOADSLOTS=y
+ CONFIG_OMAP_MULTI_BOARDS=y
+ CONFIG_MACH_BEAGLEBONE=y
+ CONFIG_MACH_PCM051=y
+ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
+-CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ CONFIG_MMU=y
+@@ -15,7 +15,6 @@ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_RELOCATABLE=y
+ CONFIG_PROMPT="barebox> "
+-CONFIG_LONGHELP=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+@@ -25,61 +24,63 @@ CONFIG_BLSPEC=y
+ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEBUG_INFO=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_LOADENV=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_READF=y
+-CONFIG_CMD_LET=y
+-CONFIG_CMD_MENU=y
+-CONFIG_CMD_MENUTREE=y
+-CONFIG_CMD_TIME=y
+-CONFIG_CMD_LN=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_LOADB=y
+-CONFIG_CMD_MEMINFO=y
++CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MM=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_CMD_UBIFORMAT=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_BOOTM_VERBOSE=y
+ CONFIG_CMD_BOOTM_INITRD=y
+ CONFIG_CMD_BOOTM_OFTREE=y
+-CONFIG_CMD_UIMAGE=y
+-CONFIG_CMD_BOOTZ=y
+ # CONFIG_CMD_BOOTU is not set
+-CONFIG_CMD_RESET=y
++CONFIG_CMD_BOOTZ=y
+ CONFIG_CMD_GO=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_BAREBOX_UPDATE=y
+-CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_UBIFORMAT=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_GPIO=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
+ CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+-CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED=y
++CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED_TRIGGER=y
+-CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_DETECT=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+-CONFIG_CMD_DHCP=y
+ CONFIG_NET_NFS=y
+-CONFIG_CMD_PING=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_OFDEVICE=y
 -- 
 2.0.1
 
