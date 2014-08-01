@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XD69l-0003zp-QK
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 06:17:34 +0000
+ Linux)) id 1XD6QW-0002oy-IS
+ for barebox@lists.infradead.org; Fri, 01 Aug 2014 06:34:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  1 Aug 2014 08:17:10 +0200
-Message-Id: <1406873830-17123-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  1 Aug 2014 08:34:27 +0200
+Message-Id: <1406874867-17094-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: saveenv: Fix comment about directories in help text
+Subject: [PATCH] of_partition: devfs_add_partition returns an error pointer
 To: barebox@lists.infradead.org
 
-envfs indeed handles directories, at least since 2007:
-
-| commit 913691eccd13c1509470eb8b059aa0beecc6d8d8
-| Author: Sascha Hauer <s.hauer@pengutronix.de>
-| Date:   Tue Sep 25 12:58:52 2007 +0200
-|
-|     add directory handling for environment
+Check for the return value of devfs_add_partition with IS_ERR.
+Otherwise we dereference a NULL pointer when devfs_add_partition
+fails.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/saveenv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/of/partition.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/commands/saveenv.c b/commands/saveenv.c
-index 31d6951..9da733e 100644
---- a/commands/saveenv.c
-+++ b/commands/saveenv.c
-@@ -60,8 +60,7 @@ BAREBOX_CMD_HELP_TEXT("Save the files in DIRECTORY to the persistent storage dev
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("ENVFS is usually a block in flash but can be any other file. If")
- BAREBOX_CMD_HELP_TEXT("omitted, DIRECTORY defaults to /env and ENVFS defaults to")
--BAREBOX_CMD_HELP_TEXT("/dev/env0. Note that envfs can only handle files, directories are being")
--BAREBOX_CMD_HELP_TEXT("skipped silently.")
-+BAREBOX_CMD_HELP_TEXT("/dev/env0.")
- BAREBOX_CMD_HELP_OPT ("-z",  "force the built-in default environment at startup")
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+index e2ddec5..3dce844 100644
+--- a/drivers/of/partition.c
++++ b/drivers/of/partition.c
+@@ -21,6 +21,7 @@
+ #include <of.h>
+ #include <malloc.h>
+ #include <linux/mtd/mtd.h>
++#include <linux/err.h>
+ #include <nand.h>
  
- BAREBOX_CMD_HELP_END
+ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+@@ -60,6 +61,9 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+ 	filename = asprintf("%s.%s", cdev->name, partname);
+ 
+ 	new = devfs_add_partition(cdev->name, offset, size, flags, filename);
++	if (IS_ERR(new))
++		new = NULL;
++
+ 	if (new && new->dev)
+ 		new->dev->device_node = node;
+ 
 -- 
 2.0.1
 
