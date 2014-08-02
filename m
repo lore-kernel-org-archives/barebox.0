@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
+Received: from mail-wg0-x22e.google.com ([2a00:1450:400c:c00::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XDS97-0005FR-AJ
- for barebox@lists.infradead.org; Sat, 02 Aug 2014 05:46:21 +0000
-Received: by mail-lb0-f174.google.com with SMTP id c11so3839375lbj.19
- for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 22:45:59 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat,  2 Aug 2014 09:45:54 +0400
-Message-Id: <1406958354-12051-1-git-send-email-antonynpavlov@gmail.com>
+ id 1XDUw4-0001xP-L9
+ for barebox@lists.infradead.org; Sat, 02 Aug 2014 08:45:05 +0000
+Received: by mail-wg0-f46.google.com with SMTP id m15so5261053wgh.5
+ for <barebox@lists.infradead.org>; Sat, 02 Aug 2014 01:44:42 -0700 (PDT)
+Message-ID: <53DCA4F6.3060701@gmail.com>
+Date: Sat, 02 Aug 2014 10:44:38 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1406956372-7850-1-git-send-email-ezequiel.garcia@free-electrons.com>
+In-Reply-To: <1406956372-7850-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +23,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] gen-dtb-s: make metadata binary fields always little-endian
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] bus: mvebu: fix ranges fixup
+To: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- scripts/gen-dtb-s | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On 08/02/2014 07:12 AM, Ezequiel Garcia wrote:
+> The current fixup code is slightly wrong, and only works when the
+> root address cell number is one.
+> 
+> However, Armada XP has a root address cell number of two. In this case
+> we are currently applying the fixup on the child high base address,
+> while it should be applied on the child low base address.
+> 
+> Fix it and add some detailed explanation to avoid having to figure this
+> out each time.
+> 
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+> ---
+> Without this patch, the Plathome Openblocks AX3-4 board wouldn't
+> boot on -next. It should affect every Armada XP board that require this
+> fixup.
 
-diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
-index 3e4158f..0db70f1 100755
---- a/scripts/gen-dtb-s
-+++ b/scripts/gen-dtb-s
-@@ -17,8 +17,8 @@ if [ "$imd" = "y" ]; then
- 	if [ "$compat" != "notfound" ]; then
- 
- 		compatlen=$($FDTGET -t s "$dtb" / compatible | wc -c)
--		echo ".int 0x640c8005"
--		echo ".int " $compatlen
-+		echo ".byte 0x05, 0x80, 0x0c, 0x64"
-+		python -c "print(\".byte 0x%02x, 0x%02x, 0x%02x, 0x%02x\\n\" % ($compatlen & 0xff, ($compatlen >> 8) & 0xff, ($compatlen >> 16) & 0xff, ($compatlen >> 24) & 0xff))"
- 		echo ".byte " $compat
- 		echo ".balign 4"
- 	fi
-@@ -27,8 +27,8 @@ if [ "$imd" = "y" ]; then
- 
- 	if [ "$model" != "notfound" ]; then
- 		modellen=$($FDTGET -t s "$dtb" / model | wc -c)
--		echo ".int 0x640c8004"
--		echo ".int " $modellen
-+		echo ".byte 0x04, 0x80, 0x0c, 0x64"
-+		python -c "print(\".byte 0x%02x, 0x%02x, 0x%02x, 0x%02x\\n\" % ($modellen & 0xff, ($modellen >> 8) & 0xff, ($modellen >> 16) & 0xff, ($modellen >> 24) & 0xff))"
- 		echo ".byte " $model
- 		echo ".balign 4"
- 	fi
--- 
-2.0.1
+Ezequiel,
+
+great catch! TBH, dealing with ranges is a PITA..
+
+Acked-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+
+
+>  drivers/bus/mvebu-mbus.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+> index b1e407a..b7f7836 100644
+> --- a/drivers/bus/mvebu-mbus.c
+> +++ b/drivers/bus/mvebu-mbus.c
+> @@ -788,6 +788,21 @@ static int mvebu_mbus_of_fixup(struct device_node *root, void *context)
+>  		ranges = xzalloc(lenp);
+>  		of_property_read_u32_array(np, "ranges", ranges, lenp/4);
+>  
+> +		/*
+> +		 * Iterate through each ranges tuple and fixup the custom
+> +		 * window ranges low base address. Because Armada XP supports
+> +		 * LPAE, it has 2 cells for the parent address:
+> +		 *   <windowid child_base high_base low_base size>
+> +		 *
+> +		 * whereas for Armada 370, there's just one:
+> +		 *   <windowid child_base base size>
+> +		 *
+> +		 * For instance, the following tuple:
+> +		 *   <MBUS_ID(0xf0, 0x01) child_base {0} base 0x100000>
+> +		 *
+> +		 * would be fixed-up like:
+> +		 *   <MBUS_ID(0xf0, 0x01) child_base {0} remap 0x100000>
+> +		 */
+>  		for (n = 0; n < lenp/4; n += size) {
+>  			struct mbus_range *r;
+>  			u32 mbusid = ranges[n];
+> @@ -797,7 +812,7 @@ static int mvebu_mbus_of_fixup(struct device_node *root, void *context)
+>  
+>  			list_for_each_entry(r, &mbus_ranges, list) {
+>  				if (r->mbusid == mbusid)
+> -					ranges[n + na] = r->remap;
+> +					ranges[n + na + pa - 1] = r->remap;
+>  			}
+>  		}
+>  
+> 
 
 
 _______________________________________________
