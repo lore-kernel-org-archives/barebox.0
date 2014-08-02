@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XDH1H-0004Oe-I5
- for barebox@lists.infradead.org; Fri, 01 Aug 2014 17:53:36 +0000
-Received: by mail-lb0-f177.google.com with SMTP id s7so3454925lbd.36
- for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 10:52:29 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  1 Aug 2014 21:52:19 +0400
-Message-Id: <1406915539-5923-1-git-send-email-antonynpavlov@gmail.com>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XDPhD-0006fw-Fr
+ for barebox@lists.infradead.org; Sat, 02 Aug 2014 03:09:24 +0000
+Date: Sat, 2 Aug 2014 00:07:58 -0300
+From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Message-ID: <20140802030758.GA2581@arch.cereza>
+References: <1406107690-8605-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1406107690-8605-5-git-send-email-sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1406107690-8605-5-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,30 +20,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! dtc: compile fdtget
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/5] ARM: dts: mvebu: remove mbus ranges overwrite
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
----
- scripts/dtc/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+Sebastian,
 
-diff --git a/scripts/dtc/.gitignore b/scripts/dtc/.gitignore
-index cdabdc9..80f6b50 100644
---- a/scripts/dtc/.gitignore
-+++ b/scripts/dtc/.gitignore
-@@ -2,3 +2,4 @@ dtc
- dtc-lexer.lex.c
- dtc-parser.tab.c
- dtc-parser.tab.h
-+fdtget
--- 
-2.0.1
+While testing the mvneta I found that Openblocks AX3-4 is broken
+on next: barebox just silently hangs.
 
+Here's my config: http://sprunge.us/OiVM. Maybe there is something
+wrong in the config?
+
+On 23 Jul 11:28 AM, Sebastian Hesselbarth wrote:
+> With proper DT fixup in place, we can now remove the overwrite of
+> mbus ranges in Armada 370 Mirabox and Armada XP Openblocks AX3.
+> =
+
+
+Reverting this commit (c148e367a5) seems to solve the problem, so I'll
+review this whole series tonight and see if I can spot anything.
+
+I'll test Mirabox tomorrow.
+-- =
+
+Ezequiel Garc=EDa, Free Electrons
+Embedded Linux, Kernel and Android Engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
