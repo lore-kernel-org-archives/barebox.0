@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f46.google.com ([209.85.215.46])
+Received: from mail-lb0-f171.google.com ([209.85.217.171])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XDS6q-0003gW-4X
+ id 1XDS6p-0003gM-H4
  for barebox@lists.infradead.org; Sat, 02 Aug 2014 05:44:00 +0000
-Received: by mail-la0-f46.google.com with SMTP id b8so3817181lan.5
- for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 22:43:34 -0700 (PDT)
+Received: by mail-lb0-f171.google.com with SMTP id l4so3877118lbv.30
+ for <barebox@lists.infradead.org>; Fri, 01 Aug 2014 22:43:32 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat,  2 Aug 2014 09:43:22 +0400
-Message-Id: <1406958203-11984-3-git-send-email-antonynpavlov@gmail.com>
+Date: Sat,  2 Aug 2014 09:43:21 +0400
+Message-Id: <1406958203-11984-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1406958203-11984-1-git-send-email-antonynpavlov@gmail.com>
 References: <1406958203-11984-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] MIPS: add support for metadata in barebox images
+Subject: [PATCH 1/3] fixup! Add support for metadata in barebox images
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/lib/barebox.lds.S  | 2 ++
- arch/mips/pbl/zbarebox.lds.S | 2 ++
- 2 files changed, 4 insertions(+)
+ common/imd-barebox.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index 4ee4252..c690e71 100644
---- a/arch/mips/lib/barebox.lds.S
-+++ b/arch/mips/lib/barebox.lds.S
-@@ -49,6 +49,8 @@ SECTIONS
- 	. = ALIGN(4);
- 	.data : { *(.data*) }
+diff --git a/common/imd-barebox.c b/common/imd-barebox.c
+index 7122740..e9cd37d 100644
+--- a/common/imd-barebox.c
++++ b/common/imd-barebox.c
+@@ -13,12 +13,12 @@ void imd_used(const void *used)
  
-+	.barebox_imd : { BAREBOX_IMD }
-+
- 	. = ALIGN(4);
- 	.got : { *(.got*) }
+ struct imd_header imd_start_header
+ __BAREBOX_IMD_SECTION(.barebox_imd_start) = {
+-	.type = IMD_TYPE_START,
++	.type = cpu_to_le32(IMD_TYPE_START),
+ };
  
-diff --git a/arch/mips/pbl/zbarebox.lds.S b/arch/mips/pbl/zbarebox.lds.S
-index 3a26942..a883fdb 100644
---- a/arch/mips/pbl/zbarebox.lds.S
-+++ b/arch/mips/pbl/zbarebox.lds.S
-@@ -44,6 +44,8 @@ SECTIONS
- 	. = ALIGN(4);
- 	.rodata : { *(.rodata*) }
+ struct imd_header imd_end_header
+ __BAREBOX_IMD_SECTION(.barebox_imd_end) = {
+-	.type = IMD_TYPE_END,
++	.type = cpu_to_le32(IMD_TYPE_END),
+ };
  
-+	.barebox_imd : { BAREBOX_IMD }
-+
- 	_etext = .;			/* End of text and rodata section */
- 
- 	. = ALIGN(4);
+ BAREBOX_IMD_TAG_STRING(imd_build_tag, IMD_TYPE_BUILD, UTS_VERSION, 1);
 -- 
 2.0.1
 
