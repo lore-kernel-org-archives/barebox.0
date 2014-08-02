@@ -2,16 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from top.free-electrons.com ([176.31.233.9]
  helo=mail.free-electrons.com)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XDPhD-0006fw-Fr
- for barebox@lists.infradead.org; Sat, 02 Aug 2014 03:09:24 +0000
-Date: Sat, 2 Aug 2014 00:07:58 -0300
+ id 1XDRe8-0002ci-4t
+ for barebox@lists.infradead.org; Sat, 02 Aug 2014 05:14:20 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Message-ID: <20140802030758.GA2581@arch.cereza>
-References: <1406107690-8605-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1406107690-8605-5-git-send-email-sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1406107690-8605-5-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sat,  2 Aug 2014 02:12:52 -0300
+Message-Id: <1406956372-7850-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +15,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ARM: dts: mvebu: remove mbus ranges overwrite
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: [PATCH] bus: mvebu: fix ranges fixup
+To: barebox@lists.infradead.org
 
-Sebastian,
+The current fixup code is slightly wrong, and only works when the
+root address cell number is one.
 
-While testing the mvneta I found that Openblocks AX3-4 is broken
-on next: barebox just silently hangs.
+However, Armada XP has a root address cell number of two. In this case
+we are currently applying the fixup on the child high base address,
+while it should be applied on the child low base address.
 
-Here's my config: http://sprunge.us/OiVM. Maybe there is something
-wrong in the config?
+Fix it and add some detailed explanation to avoid having to figure this
+out each time.
 
-On 23 Jul 11:28 AM, Sebastian Hesselbarth wrote:
-> With proper DT fixup in place, we can now remove the overwrite of
-> mbus ranges in Armada 370 Mirabox and Armada XP Openblocks AX3.
-> =
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+---
+Without this patch, the Plathome Openblocks AX3-4 board wouldn't
+boot on -next. It should affect every Armada XP board that require this
+fixup.
 
+ drivers/bus/mvebu-mbus.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-Reverting this commit (c148e367a5) seems to solve the problem, so I'll
-review this whole series tonight and see if I can spot anything.
+diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+index b1e407a..b7f7836 100644
+--- a/drivers/bus/mvebu-mbus.c
++++ b/drivers/bus/mvebu-mbus.c
+@@ -788,6 +788,21 @@ static int mvebu_mbus_of_fixup(struct device_node *root, void *context)
+ 		ranges = xzalloc(lenp);
+ 		of_property_read_u32_array(np, "ranges", ranges, lenp/4);
+ 
++		/*
++		 * Iterate through each ranges tuple and fixup the custom
++		 * window ranges low base address. Because Armada XP supports
++		 * LPAE, it has 2 cells for the parent address:
++		 *   <windowid child_base high_base low_base size>
++		 *
++		 * whereas for Armada 370, there's just one:
++		 *   <windowid child_base base size>
++		 *
++		 * For instance, the following tuple:
++		 *   <MBUS_ID(0xf0, 0x01) child_base {0} base 0x100000>
++		 *
++		 * would be fixed-up like:
++		 *   <MBUS_ID(0xf0, 0x01) child_base {0} remap 0x100000>
++		 */
+ 		for (n = 0; n < lenp/4; n += size) {
+ 			struct mbus_range *r;
+ 			u32 mbusid = ranges[n];
+@@ -797,7 +812,7 @@ static int mvebu_mbus_of_fixup(struct device_node *root, void *context)
+ 
+ 			list_for_each_entry(r, &mbus_ranges, list) {
+ 				if (r->mbusid == mbusid)
+-					ranges[n + na] = r->remap;
++					ranges[n + na + pa - 1] = r->remap;
+ 			}
+ 		}
+ 
+-- 
+2.0.1
 
-I'll test Mirabox tomorrow.
--- =
-
-Ezequiel Garc=EDa, Free Electrons
-Embedded Linux, Kernel and Android Engineering
-http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
