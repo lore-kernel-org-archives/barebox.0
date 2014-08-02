@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from top.free-electrons.com ([176.31.233.9]
  helo=mail.free-electrons.com)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XDdJO-00009A-O5
- for barebox@lists.infradead.org; Sat, 02 Aug 2014 17:41:43 +0000
-Date: Sat, 2 Aug 2014 14:40:21 -0300
+ id 1XDdKr-0000HI-Uh
+ for barebox@lists.infradead.org; Sat, 02 Aug 2014 17:43:14 +0000
+Date: Sat, 2 Aug 2014 14:41:54 -0300
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Message-ID: <20140802174021.GA29743@arch.cereza>
+Message-ID: <20140802174154.GB29743@arch.cereza>
 References: <1406666701-15356-1-git-send-email-ezequiel.garcia@free-electrons.com>
- <1406666701-15356-5-git-send-email-ezequiel.garcia@free-electrons.com>
- <20140729213734.GA27654@arch.cereza> <53DA7C19.7000108@gmail.com>
+ <20140731054957.GQ23235@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <53DA7C19.7000108@gmail.com>
+In-Reply-To: <20140731054957.GQ23235@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,80 +24,78 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/6] net: phy: Support Marvell 88EE1545 PHY
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH 0/6] Add network support for Armada 370/XP
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 31 Jul 07:25 PM, Sebastian Hesselbarth wrote:
-> On 29.07.2014 23:37, Ezequiel Garcia wrote:
-> >On 29 Jul 05:44 PM, Ezequiel Garcia wrote:
-> >>This commit adds support for Marvell's 88E1545 PHY chip. In particular,=
- this
-> >>allows to support QSGMII interfaces.
-> >>
-> >>Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-> >>---
-> >>  drivers/net/phy/marvell.c | 59 ++++++++++++++++++++++++++++++++++++++=
-+++++++++
-> >>  1 file changed, 59 insertions(+)
-> >>
-> >>diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-> >>index 34f852e..ad8854d 100644
-> >>--- a/drivers/net/phy/marvell.c
-> >>+++ b/drivers/net/phy/marvell.c
-> >>@@ -23,6 +23,7 @@
-> >>  #define MARVELL_PHY_ID_88E1318S		0x01410e90
-> >>  #define MARVELL_PHY_ID_88E1116R		0x01410e40
-> >>  #define MARVELL_PHY_ID_88E1510		0x01410dd0
-> >>+#define MARVELL_PHY_ID_88E154x		0x01410eb1
-> >>
-> >>  /* Mask used for ID comparisons */
-> >>  #define MARVELL_PHY_ID_MASK		0xfffffff0
-> >
-> >Small erratum: given this mask, the ID for the new PHY device should be
-> >0x0x01410eb0 instead of 0x01410eb1.
-> >
-> >And by the way, Mirabox and Openblocks AX3 network support is not workin=
-g.
-> >The link is not detected, so it seems there's some more PHY work to be d=
-one.
-
-I've been doing some more tests and it seems that Openblocks AX3 works fine
-after all (last time I wasn't setting the parameters properly).
-
-I need to do some more tests for Mirabox, but we probably need to setup the
-pinctrl to make it work. Currently, the board hangs when trying to bring up
-the network interface.
-
+On 31 Jul 07:49 AM, Sascha Hauer wrote:
+> Hi Ezequiel,
 > =
 
-> I just confirmed that (after adding support for 88e1318), driver works
-> on Armada XP ix4-300d on both RGMII ports.
+> On Tue, Jul 29, 2014 at 05:44:55PM -0300, Ezequiel Garcia wrote:
+> > This patchset adds support for the network controller found on Marvell
+> > Armada 370/XP SoC.
+> > =
+
+> > The first patch is needed to parse the PHY property used in the current
+> > devicetree, which uses 'phy' instead of 'phy-handle'. While here, the p=
+atch
+> > adds support for the two obsolete DT PHY properties: 'phy' and 'phy-dev=
+ice'.
+> > =
+
+> > The second patch is actually an improvement. It makes the clock a requi=
+red
+> > property of the mvmdio driver, which makes the probing of the device mo=
+re
+> > robust, and prevents the annoying freezing when the clock is not provid=
+ed.
+> > =
+
+> > The third patch supports the QSGMII interface.
+> > =
+
+> > The fourth patch adds support for the Marvell 88E1545 PHY chip. There's=
+ not
+> > much work to do, except configuring the QSGMII interface. This chip is =
+present
+> > in Marvell's Armada XP GP board.
+> > =
+
+> > The fifth patch adds the mvneta driver. Most of the configuration part =
+is
+> > based on Linux's mvneta driver, while some of code organization is based
+> > on Barebox's orion-gbe driver.
+> > =
+
+> > The last patch adds network support in the defconfigs.
+> > =
+
+> > This has been tested on the Armada XP GP board only. I'll try to test
+> > Openblocks AX3 and Mirabox in the following days. However, we might need
+> > some special PHY support for each them, as the Openblocks AX3 has a
+> > 88E1543 PHY, and the Mirabox has a 88E1510 PHY.
+> > =
+
+> > Ezequiel Garcia (6):
+> >   net: phy: Add fallbacks for the obsoletes phy DT properties
+> >   net: phy: mdio-mvebu: Make the clock property required
+> >   net: phy: Add minimal support for QSGMII PHY
+> >   net: phy: Support Marvell 88EE1545 PHY
+> >   net: Add driver for Armada 370/XP 10/100/1000 Mbps network controller
+> >   configs: Add network options to Armada 370/XP boards
 > =
 
-> Armada XP requires some additional magic foo in some retarded register
-> to enable RGMII:
-> =
-
-> #define ARMADA_XP_PUP_ENABLE_BASE	(ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
-> /* Enable GBE0, GBE1, LCD and NFC PUP */
-> reg =3D readl(ARMADA_XP_PUP_ENABLE_BASE);
-> reg |=3D 0x17;
-> writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
-> =
-
-
-Thanks a lot for this test! Do you think it's OK to just add that
-initialization to armada_370_xp_init_soc() ?
-
-> I am not yet sure if that is also true for Armada 370 nor if it is also
-> true for SGMII/QSGMII ports. Took me a while to hunt this down, but
-> without above foo, there is no txclk on RGMII.
+> I applied up to 3/6 for now. The network driver needs a small fix.
+> Please let me know once you're happy enough with the phy support to
+> apply it.
 > =
 
 
-The register is documented only on Armada XP, and it seems it's not needed
-for SGMII/QSGMII.
+OK, thanks.
+
+I'll be pushing a new patchset on top of that with the PHY and the network
+driver.
 -- =
 
 Ezequiel Garc=EDa, Free Electrons
