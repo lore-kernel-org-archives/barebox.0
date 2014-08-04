@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XENIv-0006EM-Qe
- for barebox@lists.infradead.org; Mon, 04 Aug 2014 18:48:18 +0000
-Date: Mon, 4 Aug 2014 20:47:56 +0200
+ Linux)) id 1XENKN-0006N7-P3
+ for barebox@lists.infradead.org; Mon, 04 Aug 2014 18:49:48 +0000
+Date: Mon, 4 Aug 2014 20:49:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140804184756.GI23235@pengutronix.de>
-References: <1406915539-5923-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140804184925.GJ23235@pengutronix.de>
+References: <1406956372-7850-1-git-send-email-ezequiel.garcia@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1406915539-5923-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1406956372-7850-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! dtc: compile fdtget
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] bus: mvebu: fix ranges fixup
+To: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 01, 2014 at 09:52:19PM +0400, Antony Pavlov wrote:
-> ---
->  scripts/dtc/.gitignore | 1 +
->  1 file changed, 1 insertion(+)
+On Sat, Aug 02, 2014 at 02:12:52AM -0300, Ezequiel Garcia wrote:
+> The current fixup code is slightly wrong, and only works when the
+> root address cell number is one.
 > 
-> diff --git a/scripts/dtc/.gitignore b/scripts/dtc/.gitignore
-> index cdabdc9..80f6b50 100644
-> --- a/scripts/dtc/.gitignore
-> +++ b/scripts/dtc/.gitignore
-> @@ -2,3 +2,4 @@ dtc
->  dtc-lexer.lex.c
->  dtc-parser.tab.c
->  dtc-parser.tab.h
-> +fdtget
+> However, Armada XP has a root address cell number of two. In this case
+> we are currently applying the fixup on the child high base address,
+> while it should be applied on the child low base address.
+> 
+> Fix it and add some detailed explanation to avoid having to figure this
+> out each time.
+> 
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Squashed into the original commit. Thanks
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
