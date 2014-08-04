@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XEMAO-0007Zd-8V
- for barebox@lists.infradead.org; Mon, 04 Aug 2014 17:35:28 +0000
-Date: Mon, 4 Aug 2014 19:34:59 +0200
+ Linux)) id 1XEMIo-0002Y1-Rv
+ for barebox@lists.infradead.org; Mon, 04 Aug 2014 17:44:10 +0000
+Date: Mon, 4 Aug 2014 19:43:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140804173459.GC23235@pengutronix.de>
-References: <1406958354-12051-1-git-send-email-antonynpavlov@gmail.com>
- <1407082665.7251.1.camel@polaris.local>
- <20140803215338.3b436b58bf5d796c46dd23bd@gmail.com>
+Message-ID: <20140804174344.GD23235@pengutronix.de>
+References: <1406899404-29094-1-git-send-email-poggi.raph@gmail.com>
+ <1406899404-29094-2-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140803215338.3b436b58bf5d796c46dd23bd@gmail.com>
+In-Reply-To: <1406899404-29094-2-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,106 +23,192 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] gen-dtb-s: make metadata binary fields always little-endian
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 1/5] mtd: atmel_nand: add support for device tree
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Aug 03, 2014 at 09:53:38PM +0400, Antony Pavlov wrote:
-> On Sun, 03 Aug 2014 18:17:45 +0200
-> Jan L=FCbbe <jlu@pengutronix.de> wrote:
+On Fri, Aug 01, 2014 at 03:23:20PM +0200, Rapha=EBl Poggi wrote:
+> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
+> ---
+>  drivers/mtd/nand/atmel_nand.c |  108 +++++++++++++++++++++++++++++++++++=
++++++-
+>  1 file changed, 107 insertions(+), 1 deletion(-)
 > =
 
-> > Hi,
-> > =
+> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+> index 337e225..b7b0e3a 100644
+> --- a/drivers/mtd/nand/atmel_nand.c
+> +++ b/drivers/mtd/nand/atmel_nand.c
+> @@ -28,6 +28,10 @@
+>  #include <init.h>
+>  #include <gpio.h>
+>  =
 
-> > On Sat, 2014-08-02 at 09:45 +0400, Antony Pavlov wrote:
-> > >  =
+> +#include <of.h>
+> +#include <of_gpio.h>
+> +#include <of_mtd.h>
+> +
+>  #include <linux/mtd/mtd.h>
+>  #include <linux/mtd/nand.h>
+>  =
 
-> > >                 compatlen=3D$($FDTGET -t s "$dtb" / compatible | wc -=
-c)
-> > > -               echo ".int 0x640c8005"
-> > > -               echo ".int " $compatlen
-> > > +               echo ".byte 0x05, 0x80, 0x0c, 0x64"
-> > > +               python -c "print(\".byte 0x%02x, 0x%02x, 0x%02x, 0x%0=
-2x\\n\" % ($compatlen & 0xff, ($compatlen >> 8) & 0xff, ($compatlen >> 16) =
-& 0xff, ($compatlen >> 24) & 0xff))"
-> > =
+> @@ -1038,6 +1042,89 @@ static void atmel_nand_hwctl(struct mtd_info *mtd,=
+ int mode)
+>  #endif
+>  }
+>  =
 
-> > Rather than adding a build-time dependency on python, maybe we should
-> > just handle this in C?
-> =
+> +static int atmel_nand_of_init(struct atmel_nand_host *host, struct devic=
+e_node *np)
+> +{
+> +	u32 val;
+> +	u32 offset[2];
+> +	int ecc_mode;
+> +	struct atmel_nand_data *board =3D host->board;
+> +	enum of_gpio_flags flags =3D 0;
 
-> We use sphinx for documentation generation so we already have dependency =
-on python.
+Please add a:
 
-Yeah, but 'make docs' is a separate target. We shouldn't add it for the
-binary build without need.
+	if (!IS_ENABLED(CONFIG_OFDEVICE))
+		return -ENOSYS;
 
-How about this? It uses shell, is readable and uses a function to avoid
-duplicating the endianess conversion code.
+to this function. It will allow the compiler to throw it away when
+device tree support is disabled.
+
+> +
+> +	if (of_property_read_u32(np, "atmel,nand-addr-offset", &val) =3D=3D 0) {
+> +	   if (val >=3D 32) {
+
+Please fix the coding style. First indentation here is a tab, but the
+second is 4 spaces. Indentation should be tabs generally.
+
+> +		dev_err(host->dev, "invalid addr-offset %u\n", val);
+> +		return -EINVAL;
+> +	    }
+> +	    board->ale =3D val;
+> +	}
+> +
+> +	if (of_property_read_u32(np, "atmel,nand-cmd-offset", &val) =3D=3D 0) {
+> +	    if (val >=3D 32) {
+> +		dev_err(host->dev, "invalid cmd-offset %u\n", val);
+> +		return -EINVAL;
+> +	    }
+> +	    board->cle =3D val;
+> +	}
+> +
+> +	ecc_mode =3D of_get_nand_ecc_mode(np);
+> +
+> +	board->ecc_mode =3D ecc_mode < 0 ? NAND_ECC_SOFT : ecc_mode;
+> +
+> +	board->on_flash_bbt =3D of_get_nand_on_flash_bbt(np);
+> +
+> +	if (of_get_nand_bus_width(np) =3D=3D 16)
+> +	    board->bus_width_16 =3D 1;
+> +
+> +	board->rdy_pin =3D of_get_gpio_flags(np, 0, &flags);
+> +	board->enable_pin =3D of_get_gpio(np, 1);
+> +	board->det_pin =3D of_get_gpio(np, 2);
+> +
+> +	board->has_pmecc =3D of_property_read_bool(np, "atmel,has-pmecc");
+> +
+> +	if (!(board->ecc_mode =3D=3D NAND_ECC_HW) || !board->has_pmecc)
+> +	    return 0;	/* Not using PMECC */
+> +
+> +	/* use PMECC, get correction capability, sector size and lookup
+> +	* table offset.
+> +	* If correction bits and sector size are not specified, then
+> +	*   find
+> +	* them from NAND ONFI parameters.
+> +	*/
+> +	if (of_property_read_u32(np, "atmel,pmecc-cap", &val) =3D=3D 0) {
+> +	    if ((val !=3D 2) && (val !=3D 4) && (val !=3D 8) && (val !=3D 12) &=
+& (val !=3D 24)) {
+> +		dev_err(host->dev, "Unsupported PMECC correction capability: %d"
+> +				" should be 2, 4, 8, 12 or 24\n", val);
+> +		return -EINVAL;
+> +	    }
+> +
+> +	    board->pmecc_corr_cap =3D (u8)val;
+> +	}
+> +
+> +	if (of_property_read_u32(np, "atmel,pmecc-sector-size", &val) =3D=3D 0)=
+ {
+> +	    if ((val !=3D 512) && (val !=3D 1024)) {
+> +		dev_err(host->dev, "Unsupported PMECC sector size: %d"
+> +				" should be 512 or 1024 bytes\n", val);
+> +		return -EINVAL;
+> +	    }
+> +
+> +	    board->pmecc_sector_size =3D (u16)val;
+> +	}
+> +
+> +	if (of_property_read_u32_array(np, "atmel,pmecc-lookup-table-offset", o=
+ffset, 2) !=3D 0) {
+> +	    dev_err(host->dev, "Cannot get PMECC lookup table offset\n");
+> +	    return -EINVAL;
+> +	}
+> +
+> +	if (!offset[0] && !offset[1]) {
+> +	    dev_err(host->dev, "Invalid PMECC lookup table offset\n");
+> +	    return -EINVAL;
+> +	}
+> +
+> +	board->pmecc_lookup_table_offset =3D (board->pmecc_sector_size =3D=3D 5=
+12) ? offset[0] : offset[1];
+> +
+> +	return 0;
+> +}
+> +
+>  static int atmel_hw_nand_init_params(struct device_d *dev,
+>  					 struct atmel_nand_host *host)
+>  {
+> @@ -1093,7 +1180,7 @@ static int atmel_hw_nand_init_params(struct device_=
+d *dev,
+>   */
+>  static int __init atmel_nand_probe(struct device_d *dev)
+>  {
+> -	struct atmel_nand_data *pdata =3D dev->platform_data;
+> +	struct atmel_nand_data *pdata;
+>  	struct atmel_nand_host *host;
+>  	struct mtd_info *mtd;
+>  	struct nand_chip *nand_chip;
+> @@ -1104,6 +1191,10 @@ static int __init atmel_nand_probe(struct device_d=
+ *dev)
+>  	if (!host)
+>  		return -ENOMEM;
+>  =
+
+> +	pdata =3D kzalloc(sizeof(struct atmel_nand_data), GFP_KERNEL);
+> +	if (!pdata)
+> +		return -ENOMEM;
+
+You only use this memory...
+
+> +
+>  	host->io_base =3D dev_request_mem_region(dev, 0);
+>  =
+
+>  	mtd =3D &host->mtd;
+> @@ -1111,6 +1202,15 @@ static int __init atmel_nand_probe(struct device_d=
+ *dev)
+>  	host->board =3D pdata;
+>  	host->dev =3D dev;
+>  =
+
+> +	if (dev->device_node) {
+> +	    res =3D atmel_nand_of_init(host, dev->device_node);
+> +	    if (res)
+> +		goto err_no_card;
+
+...in this code path. Please add the memory allocation here then.
+
+> +	}
+> +	else {
+> +	    pdata =3D dev->platform_data;
+> +	}
+> +
 
 Sascha
-
-
-From 9c3aded9eac3ec563827b6ee562335ff4bce607a Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 4 Aug 2014 19:31:54 +0200
-Subject: [PATCH] gen-dtb-s: make metadata binary fields always little-endian
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- scripts/gen-dtb-s | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
-index 3e4158f..434612f 100755
---- a/scripts/gen-dtb-s
-+++ b/scripts/gen-dtb-s
-@@ -6,6 +6,14 @@ imd=3D$3
- =
-
- echo "#include <asm-generic/barebox.lds.h>"
- =
-
-+le32() {
-+	printf ".byte 0x%02x, 0x%02x, 0x%02x, 0x%02x\n" \
-+		$(($1 & 0xff))				\
-+		$((($1 >> 8) & 0xff))			\
-+		$((($1 >> 16) & 0xff))			\
-+		$((($1 >> 24) & 0xff))
-+}
-+
- FDTGET=3Dscripts/dtc/fdtget
- =
-
- if [ "$imd" =3D "y" ]; then
-@@ -17,8 +25,8 @@ if [ "$imd" =3D "y" ]; then
- 	if [ "$compat" !=3D "notfound" ]; then
- =
-
- 		compatlen=3D$($FDTGET -t s "$dtb" / compatible | wc -c)
--		echo ".int 0x640c8005"
--		echo ".int " $compatlen
-+		le32 0x640c8005
-+		le32 $compatlen
- 		echo ".byte " $compat
- 		echo ".balign 4"
- 	fi
-@@ -27,8 +35,8 @@ if [ "$imd" =3D "y" ]; then
- =
-
- 	if [ "$model" !=3D "notfound" ]; then
- 		modellen=3D$($FDTGET -t s "$dtb" / model | wc -c)
--		echo ".int 0x640c8004"
--		echo ".int " $modellen
-+		le32 0x640c8004
-+		le32 $compatlen
- 		echo ".byte " $model
- 		echo ".balign 4"
- 	fi
--- =
-
-2.0.1
 
 -- =
 
