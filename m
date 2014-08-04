@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f173.google.com ([209.85.212.173])
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEEaH-0002Q2-SP
- for barebox@lists.infradead.org; Mon, 04 Aug 2014 09:29:38 +0000
-Received: by mail-wi0-f173.google.com with SMTP id f8so4667983wiw.0
- for <barebox@lists.infradead.org>; Mon, 04 Aug 2014 02:29:10 -0700 (PDT)
+ id 1XEEb5-0003b9-Ju
+ for barebox@lists.infradead.org; Mon, 04 Aug 2014 09:30:31 +0000
+Message-ID: <53DF5293.2010305@atmel.com>
+Date: Mon, 4 Aug 2014 17:29:55 +0800
+From: Bo Shen <voice.shen@atmel.com>
 MIME-Version: 1.0
-In-Reply-To: <53DF4F9E.2070901@atmel.com>
 References: <1407141112-3868-1-git-send-email-poggi.raph@gmail.com>
- <1407141112-3868-3-git-send-email-poggi.raph@gmail.com>
- <53DF4F9E.2070901@atmel.com>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
-Date: Mon, 4 Aug 2014 11:28:30 +0200
-Message-ID: <CACqcpZDxxn1tA2XEviBwcLmD06=-kZ+8qxxqA05nwhepWpKXnA@mail.gmail.com>
+ <53DF4E49.3040501@atmel.com>
+ <CACqcpZDrqaMNRj5NVmLgvoP1UYwZf03iZsAX32qspwgeZiRhig@mail.gmail.com>
+In-Reply-To: <CACqcpZDrqaMNRj5NVmLgvoP1UYwZf03iZsAX32qspwgeZiRhig@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +20,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 2/2] at91sam9g45: clock: add i2c clocks
-To: Bo Shen <voice.shen@atmel.com>
+Subject: Re: [PATCH V2 0/2] Add device tree support of i2c Atmel driver
+To: =?UTF-8?B?UmFwaGHDq2wgUG9nZ2k=?= <raphio98@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SGksCgpJIGhhdmUgdXNlZCBDTEtERVZfQ09OX0RFVl9JRCBiZWNhdXNlIGl0IGlzIGxpa2UgdGhh
-dCBpbiBMaW51eCwgYnV0IG9rCkkgd2lsbCByZXBsYWNlIGl0IGJ5IENMS0RFVl9ERVZfSUQuCgpC
-dHcsIGNhbiB5b3UgZXhwbGFpbiBtZSB3aHkgaW4gTGludXggaXQncyBDTEtERVZfQ09OX0RFVl9J
-RCA/IChqdXN0IGJ5CmN1cmlvc2l0eSkKClRoYW5rcywKClJhcGhhw6tsIFBvZ2dpCgoyMDE0LTA4
-LTA0IDExOjE3IEdNVCswMjowMCBCbyBTaGVuIDx2b2ljZS5zaGVuQGF0bWVsLmNvbT46Cj4gSGkg
-UmFwaGHDq2wgUG9nZ2ksCj4KPgo+IE9uIDA4LzA0LzIwMTQgMDQ6MzEgUE0sIFJhcGhhw6tsIFBv
-Z2dpIHdyb3RlOgo+Pgo+PiBBZGQgdGhlIGRldmljZSB0cmVlIGFuZCBub24gZGV2aWNlIHRyZWUg
-YXQ5MSBpMmMgY2xvY2tzLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBSYXBoYcOrbCBQb2dnaSA8cG9n
-Z2kucmFwaEBnbWFpbC5jb20+Cj4+IC0tLQo+PiAgIGFyY2gvYXJtL21hY2gtYXQ5MS9hdDkxc2Ft
-OWc0NS5jIHwgICAgNCArKysrCj4+ICAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKQo+
-Pgo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMKPj4gYi9h
-cmNoL2FybS9tYWNoLWF0OTEvYXQ5MXNhbTlnNDUuYwo+PiBpbmRleCBmNjAzMWYwLi5kMGY5NTBj
-IDEwMDY0NAo+PiAtLS0gYS9hcmNoL2FybS9tYWNoLWF0OTEvYXQ5MXNhbTlnNDUuYwo+PiArKysg
-Yi9hcmNoL2FybS9tYWNoLWF0OTEvYXQ5MXNhbTlnNDUuYwo+PiBAQCAtMTkyLDYgKzE5MiwxMCBA
-QCBzdGF0aWMgc3RydWN0IGNsa19sb29rdXAgcGVyaXBoX2Nsb2Nrc19sb29rdXBzW10gPSB7Cj4+
-ICAgICAgICAgQ0xLREVWX0NPTl9ERVZfSUQoIm1jaV9jbGsiLCAiYXRtZWxfbWNpMSIsICZtbWMx
-X2NsayksCj4+ICAgICAgICAgQ0xLREVWX0NPTl9ERVZfSUQoInNwaV9jbGsiLCAiYXRtZWxfc3Bp
-MCIsICZzcGkwX2NsayksCj4+ICAgICAgICAgQ0xLREVWX0NPTl9ERVZfSUQoInNwaV9jbGsiLCAi
-YXRtZWxfc3BpMSIsICZzcGkxX2NsayksCj4+ICsgICAgICAgQ0xLREVWX0NPTl9ERVZfSUQoTlVM
-TCwgImF0OTEtdHdpMCIsICZ0d2kwX2NsayksCj4KPgo+IHMvQ0xLREVWX0NPTl9ERVZfSUQvQ0xL
-REVWX0RFVl9JRCAoYWxzbyBmb3IgdGhlIGZvbGxvd2luZykuCj4KPiB0aGUgREVWX0lEIHNob3Vs
-ZCBiZSBwcmVzZW50ZWQgaW4gdGhlIGlkX3RhYmxlIGluIHRoZSBkcml2ZXIuCj4KPgo+PiArICAg
-ICAgIENMS0RFVl9DT05fREVWX0lEKE5VTEwsICJhdDkxLXR3aTEiLCAmdHdpMV9jbGspLAo+PiAr
-ICAgICAgIENMS0RFVl9DT05fREVWX0lEKE5VTEwsICJmZmY4NDAwMC5pMmMiLCAmdHdpMF9jbGsp
-LAo+PiArICAgICAgIENMS0RFVl9DT05fREVWX0lEKE5VTEwsICJmZmY4ODAwMC5pMmMiLCAmdHdp
-MV9jbGspLAo+PiAgICAgICAgIENMS0RFVl9ERVZfSUQoImF0OTFybTkyMDAtZ3BpbzAiLCAmcGlv
-QV9jbGspLAo+PiAgICAgICAgIENMS0RFVl9ERVZfSUQoImF0OTFybTkyMDAtZ3BpbzEiLCAmcGlv
-Ql9jbGspLAo+PiAgICAgICAgIENMS0RFVl9ERVZfSUQoImF0OTFybTkyMDAtZ3BpbzIiLCAmcGlv
-Q19jbGspLAo+Pgo+Cj4gQmVzdCBSZWdhcmRzLAo+IEJvIFNoZW4KPgo+IF9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QK
-PiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+SGkgUmFwaGHDq2wgUG9nZ2ksCgpPbiAwOC8wNC8yMDE0IDA1OjIyIFBNLCBSYXBoYcOrbCBQb2dn
+aSB3cm90ZToKPiBIaSwKPgo+IEkgaGF2ZSB0ZXN0ZWQgaXQgb24gYSBjdXN0b20gYm9hcmQgd2hp
+Y2ggdXNlIGEgc2FtOW0xMCBhbmQgaXQKPiB3b3JrZWQuLi4gVGVsbCBtZSBtb3JlIHdoZW4gd2Ug
+aGF2ZSBmb3VuZCBzb21ldGhpbmcgc3VzcGljaW91cy4KCkkgdGVzdGVkIG9uIHNhbWE1ZDN4ZWsg
+d2l0aCBxdDEwNzAgY29ubmVjdCB0byBpMmMsIGFuZCB0aGUgaTJjIGhvc3QgCnJlZ2lzdGVyIHN1
+Y2Nlc3NmdWxseSwgaG93ZXZlciBjYW4gbm90IGFjY2VzcyBxdDEwNzAsIGlmIEkgdXNlIGkyYy1n
+cGlvIApkcml2ZXIsIGl0IHdvcmtzIHdlbGwuCgpJIGFtIHN0aWxsIHdvcmtpbmcgb24gaXQsIGlm
+IGFueSBuZXdzLCBJIHdpbGwgbGV0IHlvdSBrbm93LgoKQmVzdCBSZWdhcmRzLApCbyBTaGVuCgo+
+IFRoYW5rcyBmb3IgeW91ciB0ZXN0Lgo+Cj4gUmFwaGHDq2wgUG9nZ2kKPgo+IDIwMTQtMDgtMDQg
+MTE6MTEgR01UKzAyOjAwIEJvIFNoZW4gPHZvaWNlLnNoZW5AYXRtZWwuY29tPjoKPj4gSGkgUmFw
+aGHDq2wgUG9nZ2ksCj4+ICAgIEkgdHJ5IHRvIG1hbmFnZSB0byBtYWtlIHRoZSBpMmMgZHJpdmVy
+IHdvcmssIGhvd2V2ZXIsIGZhaWxlZCBmb3Igbm9uCj4+IGRldmljZSB0cmVlLgo+PiAgICBJIGFt
+IHN0aWxsIGNoZWNraW5nIGl0LiBIb3dldmVyLCBzb21lIGNvbW1lbnRzIGZvciB0aGUgcGF0Y2hl
+cy4KPj4KPj4gQmVzdCBSZWdhcmRzLAo+PiBCbyBTaGVuCj4+Cj4+Cj4+IE9uIDA4LzA0LzIwMTQg
+MDQ6MzEgUE0sIFJhcGhhw6tsIFBvZ2dpIHdyb3RlOgo+Pj4KPj4+IENoYW5nZSBzaW5jZSB2MToK
+Pj4+ICAgICAgICAgICAqIFNxdWFzaCB0aGUgY29tbWl0IFsxXSB3aGljaCBhZGRzIHRoZSBzYW05
+eDUgY29uZmlnLgo+Pj4KPj4+IFRoaXMgcGF0Y2hlc2V0IGFkZHMgdGhlIGRldmljZSB0cmVlIHN1
+cHBvcnQgZm9yIGkyYyBBdG1lbCBkcml2ZXIgYW5kIHRoZQo+Pj4gY29ycmVzcGluZyBjbG9ja3MK
+Pj4+IGZvciB0aGUgYXQ5MXNhbTlnNDUgZGV2aWNlLgo+Pj4KPj4+IFJhcGhhw6tsIFBvZ2dpICgy
+KSA6Cj4+PiAgICAgICAgICAgKDEpIGkyYzogYXQ5MTogYWRkIHN1cHBvcnQgb2YgZGV2aWNlIHRy
+ZWUKPj4+ICAgICAgICAgICAoMikgYXQ5MXNhbTlnNDU6IGNsb2NrOiBhZGQgaTJjIGNsb2Nrcwo+
+Pj4KPj4+IGFyY2gvYXJtL21hY2gtYXQ5MS9hdDkxc2FtOWc0NS5jIHwgICAgNCArKysKPj4+IGRy
+aXZlcnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jICAgIHwgICA2Ngo+Pj4gKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrLS0tLS0KPj4+IDIgZmlsZXMgY2hhbmdlZCwgNjIgaW5zZXJ0aW9u
+cygrKSwgOCBkZWxldGlvbnMoLSkKPj4+Cj4+PiBbMV06IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMTQtQXVndXN0LzAyMDQ5My5odG1sCj4+Cj4+Cj4+IEJl
+c3QgUmVnYXJkcywKPj4gQm8gU2hlbgo+Pgo+Pgo+Pgo+PiBfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwo+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+PiBiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKPj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cj4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
