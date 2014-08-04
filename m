@@ -2,14 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from nasmtp01.atmel.com ([192.199.1.245]
  helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XECnU-0000RZ-W5
- for barebox@lists.infradead.org; Mon, 04 Aug 2014 07:35:12 +0000
-Message-ID: <53DF3790.1050804@atmel.com>
-Date: Mon, 4 Aug 2014 15:34:40 +0800
+ id 1XECtO-0003gB-PB
+ for barebox@lists.infradead.org; Mon, 04 Aug 2014 07:41:18 +0000
+Message-ID: <53DF38F8.5050807@atmel.com>
+Date: Mon, 4 Aug 2014 15:40:40 +0800
 From: Bo Shen <voice.shen@atmel.com>
 MIME-Version: 1.0
 References: <1406899582-29230-1-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1406899582-29230-1-git-send-email-poggi.raph@gmail.com>
+ <53DF3790.1050804@atmel.com>
+In-Reply-To: <53DF3790.1050804@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,21 +26,25 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] i2c: at91: add at91sam9x5 config
 To: =?UTF-8?B?UmFwaGHDq2wgUG9nZ2k=?= <poggi.raph@gmail.com>, barebox@lists.infradead.org
 
-SGkgUmFwaGHDq2wgUG9nZ2ksCiAgIEFjdHVhbGx5LCB0aGlzIGlzIGEgYnVpbGQgZml4LgoKT24g
-MDgvMDEvMjAxNCAwOToyNiBQTSwgUmFwaGHDq2wgUG9nZ2kgd3JvdGU6Cj4gU2lnbmVkLW9mZi1i
-eTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgoKQWNrZWQtYnk6IEJvIFNo
-ZW4gPHZvaWNlLnNoZW5AYXRtZWwuY29tPgoKPiAtLS0KPiAgIGRyaXZlcnMvaTJjL2J1c3Nlcy9p
-MmMtYXQ5MS5jIHwgICAgNiArKysrKysKPiAgIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMo
-KykKPgo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWF0OTEuYyBiL2RyaXZl
-cnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jCj4gaW5kZXggMzk5ZjZhOS4uNGFhNGU0ZSAxMDA2NDQK
-PiAtLS0gYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLWF0OTEuYwo+ICsrKyBiL2RyaXZlcnMvaTJj
-L2J1c3Nlcy9pMmMtYXQ5MS5jCj4gQEAgLTM0Niw2ICszNDYsMTIgQEAgc3RhdGljIHN0cnVjdCBh
-dDkxX3R3aV9wZGF0YSBhdDkxc2FtOWcxMF9jb25maWcgPSB7Cj4gICAJLmhhc191bnJlX2ZsYWcg
-PSBmYWxzZSwKPiAgIH07Cj4KPiArc3RhdGljIHN0cnVjdCBhdDkxX3R3aV9wZGF0YSBhdDkxc2Ft
-OXg1X2NvbmZpZyA9IHsKPiArCS5jbGtfbWF4X2RpdiA9IDcsCj4gKwkuY2xrX29mZnNldCA9IDQs
-Cj4gKwkuaGFzX3VucmVfZmxhZyA9IGZhbHNlLAo+ICt9Owo+ICsKPiAgIHN0YXRpYyBzdHJ1Y3Qg
-cGxhdGZvcm1fZGV2aWNlX2lkIGF0OTFfdHdpX2RldnR5cGVzW10gPSB7Cj4gICAJewo+ICAgCQku
-bmFtZSA9ICJpMmMtYXQ5MXJtOTIwMCIsCj4KCkJlc3QgUmVnYXJkcywKQm8gU2hlbgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+SGkgUmFwaGHDq2wgUG9nZ2ksCgpPbiAwOC8wNC8yMDE0IDAzOjM0IFBNLCBCbyBTaGVuIHdyb3Rl
+Ogo+IEhpIFJhcGhhw6tsIFBvZ2dpLAo+ICAgIEFjdHVhbGx5LCB0aGlzIGlzIGEgYnVpbGQgZml4
+Lgo+Cj4gT24gMDgvMDEvMjAxNCAwOToyNiBQTSwgUmFwaGHDq2wgUG9nZ2kgd3JvdGU6Cj4+IFNp
+Z25lZC1vZmYtYnk6IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KPgo+IEFj
+a2VkLWJ5OiBCbyBTaGVuIDx2b2ljZS5zaGVuQGF0bWVsLmNvbT4KClNvcnJ5LCBjYW4geW91IHNx
+dWFzaCB0aGlzIHBhdGNoIGludG8gIltQQVRDSCAxLzJdIGkyYzogYXQ5MTogYWRkIApzdXBwb3J0
+IG9mIGRldmljZSB0cmVlIgoKPj4gLS0tCj4+ICAgZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkx
+LmMgfCAgICA2ICsrKysrKwo+PiAgIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKykKPj4K
+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jCj4+IGIvZHJpdmVy
+cy9pMmMvYnVzc2VzL2kyYy1hdDkxLmMKPj4gaW5kZXggMzk5ZjZhOS4uNGFhNGU0ZSAxMDA2NDQK
+Pj4gLS0tIGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkxLmMKPj4gKysrIGIvZHJpdmVycy9p
+MmMvYnVzc2VzL2kyYy1hdDkxLmMKPj4gQEAgLTM0Niw2ICszNDYsMTIgQEAgc3RhdGljIHN0cnVj
+dCBhdDkxX3R3aV9wZGF0YSBhdDkxc2FtOWcxMF9jb25maWcgPSB7Cj4+ICAgICAgIC5oYXNfdW5y
+ZV9mbGFnID0gZmFsc2UsCj4+ICAgfTsKPj4KPj4gK3N0YXRpYyBzdHJ1Y3QgYXQ5MV90d2lfcGRh
+dGEgYXQ5MXNhbTl4NV9jb25maWcgPSB7Cj4+ICsgICAgLmNsa19tYXhfZGl2ID0gNywKPj4gKyAg
+ICAuY2xrX29mZnNldCA9IDQsCj4+ICsgICAgLmhhc191bnJlX2ZsYWcgPSBmYWxzZSwKPj4gK307
+Cj4+ICsKPj4gICBzdGF0aWMgc3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCBhdDkxX3R3aV9kZXZ0
+eXBlc1tdID0gewo+PiAgICAgICB7Cj4+ICAgICAgICAgICAubmFtZSA9ICJpMmMtYXQ5MXJtOTIw
+MCIsCj4+Cj4KPiBCZXN0IFJlZ2FyZHMsCj4gQm8gU2hlbgoKQmVzdCBSZWdhcmRzLApCbyBTaGVu
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
