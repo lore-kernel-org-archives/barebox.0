@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22e.google.com ([2a00:1450:400c:c00::22e])
+Received: from mail-wg0-x231.google.com ([2a00:1450:400c:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEap5-0004Hn-8m
- for barebox@lists.infradead.org; Tue, 05 Aug 2014 09:14:23 +0000
-Received: by mail-wg0-f46.google.com with SMTP id m15so661088wgh.29
- for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 02:13:49 -0700 (PDT)
-From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Tue,  5 Aug 2014 11:14:46 +0200
-Message-Id: <1407230089-26948-3-git-send-email-poggi.raph@gmail.com>
+ id 1XEbFi-0004dc-4d
+ for barebox@lists.infradead.org; Tue, 05 Aug 2014 09:41:54 +0000
+Received: by mail-wg0-f49.google.com with SMTP id k14so694264wgh.8
+ for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 02:41:28 -0700 (PDT)
+MIME-Version: 1.0
 In-Reply-To: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
 References: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
+Date: Tue, 5 Aug 2014 11:40:48 +0200
+Message-ID: <CACqcpZC06Zo7bawuEM90OAi6bM9MZduzmjHVeHPUPRDjr3cUtg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +19,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] board: atmel: initialise the has_pmecc member
+Subject: Re: [PATCH v2 0/5] Add device tree support of Atmel NAND driver
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
----
- arch/arm/boards/at91sam9n12ek/init.c    |    1 +
- arch/arm/boards/at91sam9x5ek/init.c     |    1 +
- arch/arm/boards/sama5d3_xplained/init.c |    1 +
- arch/arm/boards/sama5d3xek/init.c       |    1 +
- 4 files changed, 4 insertions(+)
-
-diff --git a/arch/arm/boards/at91sam9n12ek/init.c b/arch/arm/boards/at91sam9n12ek/init.c
-index a206d6b..818a598 100644
---- a/arch/arm/boards/at91sam9n12ek/init.c
-+++ b/arch/arm/boards/at91sam9n12ek/init.c
-@@ -47,6 +47,7 @@ static struct atmel_nand_data nand_pdata = {
- 	.det_pin	= -EINVAL,
- 	.rdy_pin	= AT91_PIN_PD5,
- 	.enable_pin	= AT91_PIN_PD4,
-+	.has_pmecc	= 1,
- 	.ecc_mode	= NAND_ECC_HW,
- 	.pmecc_sector_size = 512,
- 	.pmecc_corr_cap = 2,
-diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
-index 62e5652..183ddc7 100644
---- a/arch/arm/boards/at91sam9x5ek/init.c
-+++ b/arch/arm/boards/at91sam9x5ek/init.c
-@@ -57,6 +57,7 @@ static struct atmel_nand_data nand_pdata = {
- 	.det_pin	= -EINVAL,
- 	.rdy_pin	= AT91_PIN_PD5,
- 	.enable_pin	= AT91_PIN_PD4,
-+	.has_pmecc	= 1,
- 	.ecc_mode	= NAND_ECC_HW,
- 	.pmecc_sector_size = 512,
- 	.pmecc_corr_cap = 2,
-diff --git a/arch/arm/boards/sama5d3_xplained/init.c b/arch/arm/boards/sama5d3_xplained/init.c
-index ae18863..b182802 100644
---- a/arch/arm/boards/sama5d3_xplained/init.c
-+++ b/arch/arm/boards/sama5d3_xplained/init.c
-@@ -48,6 +48,7 @@ static struct atmel_nand_data nand_pdata = {
- 	.rdy_pin	= -EINVAL,
- 	.enable_pin	= -EINVAL,
- 	.ecc_mode	= NAND_ECC_HW,
-+	.has_pmecc	= 1,
- 	.pmecc_sector_size = 512,
- 	.pmecc_corr_cap = 4,
- #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
-diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-index 743197f..49d2b37 100644
---- a/arch/arm/boards/sama5d3xek/init.c
-+++ b/arch/arm/boards/sama5d3xek/init.c
-@@ -63,6 +63,7 @@ static struct atmel_nand_data nand_pdata = {
- 	.rdy_pin	= -EINVAL,
- 	.enable_pin	= -EINVAL,
- 	.ecc_mode	= NAND_ECC_HW,
-+	.has_pmecc	= 1,
- 	.pmecc_sector_size = 512,
- 	.pmecc_corr_cap = 4,
- #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
--- 
-1.7.9.5
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SSBmb3JnZXQgdG8gYWRkIGEgInYyIiB0YWcgb24gdGhlIHBhdGNoZXMsIGRvIEkgbmVlZCB0byBy
+ZXNlbmQgYWxsIHRoZSBzZXJpZSA/CgpUaGFua3MsClJhcGhhw6tsIFBvZ2dpCgoyMDE0LTA4LTA1
+IDExOjE0IEdNVCswMjowMCBSYXBoYcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+Ogo+
+IENoYW5nZSBzaW5jZSB2MToKPiAgICAgICAgICogUmVvcmRlciBwYXRjaHMKPiAgICAgICAgICog
+Rml4IHNvbWUgY2xlYW4gc3R5bGUgaXNzdWUuCj4KPiBUaGlzIHBhdGNoc2V0IGFkZHMgdGhlIGRl
+dmljZSB0cmVlIHN1cHBvcnQgZm9yIHRoZSBBdG1lbCBOQU5EIGRyaXZlci4KPgo+IFRoZSBmaXJz
+dCBwYXRjaCByZW1vdmVzIHRoZSBOQU5EX0FUTUVMX1BNRUNDIGNvbmZpZy4gV2l0aCB0aGlzIHJl
+bW92YWwKPiB3ZSBjYW4gbWFuYWdlIGluIGEgYmV0dGVyIHdheSB0aGUgZGV2aWNlIHRyZWUgLyBu
+b24gZGV2aWNlIHRyZWUgcHJvYmluZyBvZiB0aGUgZHJpdmVyLCBiZWNhdXNlIHRoZSBwbGF0ZWZv
+cm0gZGF0YQo+IGFuZCBkZXZpY2UgdHJlZSBzaGFyZSB0aGUgc2FtZSBzdHJ1Y3R1cmUgbWVtYmVy
+IGFuZCBsb2dpY3MuCj4KPiBUaGUgc2Vjb25kIHBhdGNoIGFkZHMgdGhlIGhhc19wbWVjYyBvbiBi
+b2FyZHMgd2hpY2ggbmVlZCBpdC4KPgo+IFRoZSB0aGlyZCBwYXRjaCByZXRyaWV2ZXMgdGhlIGVj
+Y19tb2RlIGZyb20gdGhlIHBsYXRlZm9ybSBkYXRhIGFuZCByZW1vdmUgdGhpcyBjb2RlOgo+Cj4g
+ICAgICAgICBuYW5kX2NoaXAtPmVjYy5tb2RlID0gTkFORF9FQ0NfU09GVDsKPgo+IHdoaWNoIGFy
+Yml0cmFyeSBzZXRzIHRoZSBlY2MubW9kZSB0byBOQU5EX0VDQ19TT0ZUIGFuZCBjaGFuZ2VzIHRo
+ZSB2YWx1ZSBkZXBlbmRpbmcgb2YgdGhlIGNvbmZpZyBhbmQgcGxhdGVmb3JtIGRhdGEuCj4gV2l0
+aCB0aGlzLCB3ZSBjYW4gdXNlIHRoZSBzYW1lIGxvZ2ljcyBmb3IgZGV2aWNlIHRyZWUgYW5kIG5v
+biBkZXZpY2UgdHJlZSBwcm9iaW5nIG9mIHRoZSBkcml2ZXIuCj4KPiBUaGUgZm91cnRoIHBhdGNo
+IGFkZHMgdGhlIGVjY19tb2RlIG9uIGJvYXJkcyB3aGljaCBhcmUgbWlzc2luZyBpdCAoYm9hcmRz
+IHdoaWNoIHVzZSBOQU5EX0VDQ19TT0ZUKS4KPgo+IFRoZSBmaWZ0aCBwYXRjaCBhZGRzIHRoZSBk
+ZXZpY2UgdHJlZSBpbiB0aGUgYXRtZWxfbmFuZCBkcml2ZXIuCj4KPiBSYXBoYcOrbCBQb2dnaSAo
+NSkgOgo+ICAgICAgICAgKDEpIG10ZDogbmFuZDogcmVtb3ZlIE5BTkRfQVRNRUxfUE1FQ0MKPiAg
+ICAgICAgICgyKSBib2FyZDogYXRtZWw6IGluaXRpYWxpc2UgdGhlIGhhc19wbWVjYyBtZW1iZXIK
+PiAgICAgICAgICgzKSBtdGQ6IGF0bWVsX25hbmQ6IHJldHJpZXZlIGVjY19tb2RlIGZyb20gcGRh
+dGEKPiAgICAgICAgICg0KSBib2FyZDogYXRtZWw6IGluaXRpYWxpc2UgZWNjX21vZGUKPiAgICAg
+ICAgICg1KSBtdGQ6IGF0bWVsX25hbmQ6IGFkZCBzdXBwb3J0IGZvciBkZXZpY2UgdHJlZQo+Cj4g
+IGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOTI2MGVrL2luaXQuYyAgICB8ICAgIDEgKwo+ICBhcmNo
+L2FybS9ib2FyZHMvYXQ5MXNhbTkyNjFlay9pbml0LmMgICAgfCAgICAxICsKPiAgYXJjaC9hcm0v
+Ym9hcmRzL2F0OTFzYW05MjYzZWsvaW5pdC5jICAgIHwgICAgMSArCj4gIGFyY2gvYXJtL2JvYXJk
+cy9hdDkxc2FtOW0xMGc0NWVrL2luaXQuYyB8ICAgIDEgKwo+ICBhcmNoL2FybS9ib2FyZHMvYXQ5
+MXNhbTltMTBpaGQvaW5pdC5jICAgfCAgICAxICsKPiAgYXJjaC9hcm0vYm9hcmRzL2F0OTFzYW05
+bjEyZWsvaW5pdC5jICAgIHwgICAgMSArCj4gIGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOXg1ZWsv
+aW5pdC5jICAgICB8ICAgIDEgKwo+ICBhcmNoL2FybS9ib2FyZHMvc2FtYTVkM194cGxhaW5lZC9p
+bml0LmMgfCAgICAxICsKPiAgYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4ZWsvaW5pdC5jICAgICAg
+IHwgICAgMSArCj4gIGFyY2gvYXJtL21hY2gtYXQ5MS9pbmNsdWRlL21hY2gvYm9hcmQuaCB8ICAg
+IDEgKwo+ICBkcml2ZXJzL210ZC9uYW5kL0tjb25maWcgICAgICAgICAgICAgICAgfCAgICA4IC0t
+LQo+ICBkcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYyAgICAgICAgICAgfCAgMTE1ICsrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKy0KPiAgMTIgZmlsZXMgY2hhbmdlZCwgMTIyIGluc2Vy
+dGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQo+Cj4KPiBfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBs
+aXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
