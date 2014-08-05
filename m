@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x233.google.com ([2a00:1450:400c:c03::233])
+Received: from mail-wg0-x22e.google.com ([2a00:1450:400c:c00::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEap7-0004Hu-3o
- for barebox@lists.infradead.org; Tue, 05 Aug 2014 09:14:26 +0000
-Received: by mail-we0-f179.google.com with SMTP id u57so660531wes.24
- for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 02:13:50 -0700 (PDT)
+ id 1XEap5-0004Hn-8m
+ for barebox@lists.infradead.org; Tue, 05 Aug 2014 09:14:23 +0000
+Received: by mail-wg0-f46.google.com with SMTP id m15so661088wgh.29
+ for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 02:13:49 -0700 (PDT)
 From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Tue,  5 Aug 2014 11:14:48 +0200
-Message-Id: <1407230089-26948-5-git-send-email-poggi.raph@gmail.com>
+Date: Tue,  5 Aug 2014 11:14:46 +0200
+Message-Id: <1407230089-26948-3-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
 References: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +18,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] board: atmel: initialise ecc_mode
+Subject: [PATCH 2/5] board: atmel: initialise the has_pmecc member
 To: barebox@lists.infradead.org
 Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-VGhpcyBjb21taXQgaW5pdGlhbGlzZSB0aGUgZWNjX21vZGUgKE5BTkRfRUNDX1NPRlQpIG9uIGF0
-bWVsIGJvYXJkIGluaXQgd2hpY2ggbWlzc2luZyBpdC4KClNpZ25lZC1vZmYtYnk6IFJhcGhhw6ts
-IFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvYXQ5MXNh
-bTkyNjBlay9pbml0LmMgICAgfCAgICAxICsKIGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOTI2MWVr
-L2luaXQuYyAgICB8ICAgIDEgKwogYXJjaC9hcm0vYm9hcmRzL2F0OTFzYW05MjYzZWsvaW5pdC5j
-ICAgIHwgICAgMSArCiBhcmNoL2FybS9ib2FyZHMvYXQ5MXNhbTltMTBnNDVlay9pbml0LmMgfCAg
-ICAxICsKIGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOW0xMGloZC9pbml0LmMgICB8ICAgIDEgKwog
-NSBmaWxlcyBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9i
-b2FyZHMvYXQ5MXNhbTkyNjBlay9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvYXQ5MXNhbTkyNjBl
-ay9pbml0LmMKaW5kZXggMTI5OGRkZS4uNzZlMDE5NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9h
-cmRzL2F0OTFzYW05MjYwZWsvaW5pdC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOTI2
-MGVrL2luaXQuYwpAQCAtNTEsNiArNTEsNyBAQCBzdGF0aWMgc3RydWN0IGF0bWVsX25hbmRfZGF0
-YSBuYW5kX3BkYXRhID0gewogCS5kZXRfcGluCT0gLUVJTlZBTCwKIAkucmR5X3Bpbgk9IEFUOTFf
-UElOX1BDMTMsCiAJLmVuYWJsZV9waW4JPSBBVDkxX1BJTl9QQzE0LAorCS5lY2NfbW9kZQk9IE5B
-TkRfRUNDX1NPRlQsCiAJLm9uX2ZsYXNoX2JidAk9IDEsCiB9OwogCmRpZmYgLS1naXQgYS9hcmNo
-L2FybS9ib2FyZHMvYXQ5MXNhbTkyNjFlay9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvYXQ5MXNh
-bTkyNjFlay9pbml0LmMKaW5kZXggOWViYzE2YS4uN2I4Y2U5OCAxMDA2NDQKLS0tIGEvYXJjaC9h
-cm0vYm9hcmRzL2F0OTFzYW05MjYxZWsvaW5pdC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9hdDkx
-c2FtOTI2MWVrL2luaXQuYwpAQCAtNDYsNiArNDYsNyBAQCBzdGF0aWMgc3RydWN0IGF0bWVsX25h
-bmRfZGF0YSBuYW5kX3BkYXRhID0gewogCS5kZXRfcGluCT0gLUVJTlZBTCwKIAkucmR5X3Bpbgk9
-IEFUOTFfUElOX1BDMTUsCiAJLmVuYWJsZV9waW4JPSBBVDkxX1BJTl9QQzE0LAorCS5lY2NfbW9k
-ZQk9IE5BTkRfRUNDX1NPRlQsCiAjaWYgZGVmaW5lZChDT05GSUdfTVREX05BTkRfQVRNRUxfQlVT
-V0lEVEhfMTYpCiAJLmJ1c193aWR0aF8xNgk9IDEsCiAjZWxzZQpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vYm9hcmRzL2F0OTFzYW05MjYzZWsvaW5pdC5jIGIvYXJjaC9hcm0vYm9hcmRzL2F0OTFzYW05
-MjYzZWsvaW5pdC5jCmluZGV4IDg4OWI0YzIuLmM4YTlkNWMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
-L2JvYXJkcy9hdDkxc2FtOTI2M2VrL2luaXQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvYXQ5MXNh
-bTkyNjNlay9pbml0LmMKQEAgLTQzLDYgKzQzLDcgQEAgc3RhdGljIHN0cnVjdCBhdG1lbF9uYW5k
-X2RhdGEgbmFuZF9wZGF0YSA9IHsKIAkuZGV0X3Bpbgk9IC1FSU5WQUwsCiAJLnJkeV9waW4JPSBB
-VDkxX1BJTl9QQTIyLAogCS5lbmFibGVfcGluCT0gQVQ5MV9QSU5fUEQxNSwKKwkuZWNjX21vZGUJ
-PSBOQU5EX0VDQ19TT0ZULAogI2lmIGRlZmluZWQoQ09ORklHX01URF9OQU5EX0FUTUVMX0JVU1dJ
-RFRIXzE2KQogCS5idXNfd2lkdGhfMTYJPSAxLAogI2Vsc2UKZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L2JvYXJkcy9hdDkxc2FtOW0xMGc0NWVrL2luaXQuYyBiL2FyY2gvYXJtL2JvYXJkcy9hdDkxc2Ft
-OW0xMGc0NWVrL2luaXQuYwppbmRleCA2NTAzZWJiLi5jZGQ3ODA2IDEwMDY0NAotLS0gYS9hcmNo
-L2FybS9ib2FyZHMvYXQ5MXNhbTltMTBnNDVlay9pbml0LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRz
-L2F0OTFzYW05bTEwZzQ1ZWsvaW5pdC5jCkBAIC02Nyw2ICs2Nyw3IEBAIHN0YXRpYyBzdHJ1Y3Qg
-YXRtZWxfbmFuZF9kYXRhIG5hbmRfcGRhdGEgPSB7CiAJLmRldF9waW4JPSAtRUlOVkFMLAogCS5y
-ZHlfcGluCT0gQVQ5MV9QSU5fUEM4LAogCS5lbmFibGVfcGluCT0gQVQ5MV9QSU5fUEMxNCwKKwku
-ZWNjX21vZGUJPSBOQU5EX0VDQ19TT0ZULAogI2lmIGRlZmluZWQoQ09ORklHX01URF9OQU5EX0FU
-TUVMX0JVU1dJRFRIXzE2KQogCS5idXNfd2lkdGhfMTYJPSAxLAogI2Vsc2UKZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOW0xMGloZC9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMv
-YXQ5MXNhbTltMTBpaGQvaW5pdC5jCmluZGV4IGZjMzdhZjQuLmE0MzJlNWMgMTAwNjQ0Ci0tLSBh
-L2FyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOW0xMGloZC9pbml0LmMKKysrIGIvYXJjaC9hcm0vYm9h
-cmRzL2F0OTFzYW05bTEwaWhkL2luaXQuYwpAQCAtNDQsNiArNDQsNyBAQCBzdGF0aWMgc3RydWN0
-IGF0bWVsX25hbmRfZGF0YSBuYW5kX3BkYXRhID0gewogCS5kZXRfcGluCT0gLUVJTlZBTCwKIAku
-cmR5X3Bpbgk9IEFUOTFfUElOX1BDMTUsCiAJLmVuYWJsZV9waW4JPSBBVDkxX1BJTl9QQzE0LAor
-CS5lY2NfbW9kZQk9IE5BTkRfRUNDX1NPRlQsCiAJLmJ1c193aWR0aF8xNgk9IDAsCiAJLm9uX2Zs
-YXNoX2JidAk9IDEsCiB9OwotLSAKMS43LjkuNQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+---
+ arch/arm/boards/at91sam9n12ek/init.c    |    1 +
+ arch/arm/boards/at91sam9x5ek/init.c     |    1 +
+ arch/arm/boards/sama5d3_xplained/init.c |    1 +
+ arch/arm/boards/sama5d3xek/init.c       |    1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/arch/arm/boards/at91sam9n12ek/init.c b/arch/arm/boards/at91sam9n12ek/init.c
+index a206d6b..818a598 100644
+--- a/arch/arm/boards/at91sam9n12ek/init.c
++++ b/arch/arm/boards/at91sam9n12ek/init.c
+@@ -47,6 +47,7 @@ static struct atmel_nand_data nand_pdata = {
+ 	.det_pin	= -EINVAL,
+ 	.rdy_pin	= AT91_PIN_PD5,
+ 	.enable_pin	= AT91_PIN_PD4,
++	.has_pmecc	= 1,
+ 	.ecc_mode	= NAND_ECC_HW,
+ 	.pmecc_sector_size = 512,
+ 	.pmecc_corr_cap = 2,
+diff --git a/arch/arm/boards/at91sam9x5ek/init.c b/arch/arm/boards/at91sam9x5ek/init.c
+index 62e5652..183ddc7 100644
+--- a/arch/arm/boards/at91sam9x5ek/init.c
++++ b/arch/arm/boards/at91sam9x5ek/init.c
+@@ -57,6 +57,7 @@ static struct atmel_nand_data nand_pdata = {
+ 	.det_pin	= -EINVAL,
+ 	.rdy_pin	= AT91_PIN_PD5,
+ 	.enable_pin	= AT91_PIN_PD4,
++	.has_pmecc	= 1,
+ 	.ecc_mode	= NAND_ECC_HW,
+ 	.pmecc_sector_size = 512,
+ 	.pmecc_corr_cap = 2,
+diff --git a/arch/arm/boards/sama5d3_xplained/init.c b/arch/arm/boards/sama5d3_xplained/init.c
+index ae18863..b182802 100644
+--- a/arch/arm/boards/sama5d3_xplained/init.c
++++ b/arch/arm/boards/sama5d3_xplained/init.c
+@@ -48,6 +48,7 @@ static struct atmel_nand_data nand_pdata = {
+ 	.rdy_pin	= -EINVAL,
+ 	.enable_pin	= -EINVAL,
+ 	.ecc_mode	= NAND_ECC_HW,
++	.has_pmecc	= 1,
+ 	.pmecc_sector_size = 512,
+ 	.pmecc_corr_cap = 4,
+ #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
+diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+index 743197f..49d2b37 100644
+--- a/arch/arm/boards/sama5d3xek/init.c
++++ b/arch/arm/boards/sama5d3xek/init.c
+@@ -63,6 +63,7 @@ static struct atmel_nand_data nand_pdata = {
+ 	.rdy_pin	= -EINVAL,
+ 	.enable_pin	= -EINVAL,
+ 	.ecc_mode	= NAND_ECC_HW,
++	.has_pmecc	= 1,
+ 	.pmecc_sector_size = 512,
+ 	.pmecc_corr_cap = 4,
+ #if defined(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)
+-- 
+1.7.9.5
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
