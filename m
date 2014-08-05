@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo68.mail-out.ovh.net ([46.105.74.219]
- helo=mo68.mail-out.ovh.net)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEbyC-0005JO-SI
- for barebox@lists.infradead.org; Tue, 05 Aug 2014 10:28:00 +0000
-Received: from mail408.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 575F9FF8931
- for <barebox@lists.infradead.org>; Tue,  5 Aug 2014 12:27:24 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.6\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <CACqcpZAC77K-NgJYEATsoXKECa6ER0uHsU284D_qNOU7DecYiA@mail.gmail.com>
-Date: Tue, 5 Aug 2014 18:26:10 +0800
-Message-Id: <39BF03AA-21A6-4950-8208-DF26590A4304@jcrosoft.com>
+Received: from mail-we0-x22b.google.com ([2a00:1450:400c:c03::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XEd5w-0007DK-Of
+ for barebox@lists.infradead.org; Tue, 05 Aug 2014 11:39:58 +0000
+Received: by mail-we0-f171.google.com with SMTP id p10so850006wes.30
+ for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 04:39:28 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <39BF03AA-21A6-4950-8208-DF26590A4304@jcrosoft.com>
 References: <1406899464-29144-1-git-send-email-poggi.raph@gmail.com>
  <1406899464-29144-2-git-send-email-poggi.raph@gmail.com>
  <2F914EFB-7A29-4025-8D54-080D28CF9FA8@jcrosoft.com>
  <CACqcpZAC77K-NgJYEATsoXKECa6ER0uHsU284D_qNOU7DecYiA@mail.gmail.com>
+ <39BF03AA-21A6-4950-8208-DF26590A4304@jcrosoft.com>
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
+Date: Tue, 5 Aug 2014 13:38:48 +0200
+Message-ID: <CACqcpZBsibxDxvGTTyS8syhjVupOBoVUNbnROm9XZPu5D96aSQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,855 +23,491 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] pinctrl: at91: add pinctrl driver
-To: =?windows-1252?Q?Rapha=EBl_Poggi?= <raphio98@gmail.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-
-On Aug 5, 2014, at 2:37 AM, Rapha=EBl Poggi <raphio98@gmail.com> wrote:
-
-> =
-
-> I have planned to add device tree support for the AT91 port.
-> =
-
-> So I port the pinctrl driver from linux to barebox to be able to use
-> the pinctrl in device tree, but maybe I made a mistake and there is
-> another solution.
-> =
-
-
-I=92ve a version already that I need to update and send
-
-Best Regards,
-J.
-> Best Regards,
-> Rapha=EBl
-> =
-
-> 2014-08-04 20:26 GMT+02:00 Jean-Christophe PLAGNIOL-VILLARD
-> <plagnioj@jcrosoft.com>:
->> why do we need it on barebox?
->> =
-
->> this driver was design for dt-only in linux
->> =
-
->> Best Regards,
->> J.
->> On Aug 1, 2014, at 9:24 PM, Rapha=EBl Poggi <poggi.raph@gmail.com> wrote:
->> =
-
->>> This driver is based on mach-at91/gpio.c and linux pinctrl driver.
->>> The driver contains the gpio and pinctrl parts (like in linux) because =
-the two parts
->>> share some structures and logics.
->>> =
-
->>> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
->>> ---
->>> drivers/pinctrl/Kconfig        |    6 +
->>> drivers/pinctrl/Makefile       |    1 +
->>> drivers/pinctrl/pinctrl-at91.c |  529 +++++++++++++++++++++++++++++++++=
-+++++++
->>> drivers/pinctrl/pinctrl-at91.h |  148 +++++++++++
->>> 4 files changed, 684 insertions(+)
->>> create mode 100644 drivers/pinctrl/pinctrl-at91.c
->>> create mode 100644 drivers/pinctrl/pinctrl-at91.h
->>> =
-
->>> diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
->>> index dffaa4e..ce55c7b 100644
->>> --- a/drivers/pinctrl/Kconfig
->>> +++ b/drivers/pinctrl/Kconfig
->>> @@ -7,6 +7,12 @@ config PINCTRL
->>>        from the devicetree. Legacy drivers here may not need this core
->>>        support but instead provide their own SoC specific APIs
->>> =
-
->>> +config PINCTRL_AT91
->>> +     select PINCTRL
->>> +     bool
->>> +     help
->>> +         The pinmux controller found on AT91 SoCs.
->>> +
->>> config PINCTRL_IMX_IOMUX_V1
->>>      select PINCTRL if OFDEVICE
->>>      bool
->>> diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
->>> index 566ba11..3ea8649 100644
->>> --- a/drivers/pinctrl/Makefile
->>> +++ b/drivers/pinctrl/Makefile
->>> @@ -1,4 +1,5 @@
->>> obj-$(CONFIG_PINCTRL) +=3D pinctrl.o
->>> +obj-$(CONFIG_PINCTRL_AT91) +=3D pinctrl-at91.o
->>> obj-$(CONFIG_PINCTRL_IMX_IOMUX_V1) +=3D imx-iomux-v1.o
->>> obj-$(CONFIG_PINCTRL_IMX_IOMUX_V2) +=3D imx-iomux-v2.o
->>> obj-$(CONFIG_PINCTRL_IMX_IOMUX_V3) +=3D imx-iomux-v3.o
->>> diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-a=
-t91.c
->>> new file mode 100644
->>> index 0000000..a92a898
->>> --- /dev/null
->>> +++ b/drivers/pinctrl/pinctrl-at91.c
->>> @@ -0,0 +1,529 @@
->>> +/*
->>> + * Copyright (C) 2005 HP Labs
->>> + * Copyright (C) 2011-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@=
-jcrosoft.com>
->>> + * Copyright (C) 2014 Rapha=EBl Poggi
->>> + *
->>> + * See file CREDITS for list of people who contributed to this
->>> + * project.
->>> + *
->>> + * This program is free software; you can redistribute it and/or
->>> + * modify it under the terms of the GNU General Public License as
->>> + * published by the Free Software Foundation; either version 2 of
->>> + * the License, or (at your option) any later version.
->>> + *
->>> + * This program is distributed in the hope that it will be useful,
->>> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
->>> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
->>> + * GNU General Public License for more details.
->>> + *
->>> + */
->>> +
->>> +#include <common.h>
->>> +#include <command.h>
->>> +#include <complete.h>
->>> +#include <linux/clk.h>
->>> +#include <linux/err.h>
->>> +#include <errno.h>
->>> +#include <io.h>
->>> +#include <gpio.h>
->>> +#include <init.h>
->>> +#include <driver.h>
->>> +#include <getopt.h>
->>> +
->>> +#include <mach/at91_pio.h>
->>> +
->>> +#include <pinctrl.h>
->>> +
->>> +#include "pinctrl-at91.h"
->>> +
->>> +struct at91_pinctrl {
->>> +    struct pinctrl_device pctl;
->>> +    struct at91_pinctrl_mux_ops      *ops;
->>> +};
->>> +
->>> +struct at91_gpio_chip {
->>> +     struct gpio_chip        chip;
->>> +     void __iomem            *regbase;       /* PIO bank virtual addre=
-ss */
->>> +     struct at91_pinctrl_mux_ops *ops;       /* ops */
->>> +};
->>> +
->>> +enum at91_mux {
->>> +     AT91_MUX_GPIO =3D 0,
->>> +     AT91_MUX_PERIPH_A =3D 1,
->>> +     AT91_MUX_PERIPH_B =3D 2,
->>> +     AT91_MUX_PERIPH_C =3D 3,
->>> +     AT91_MUX_PERIPH_D =3D 4,
->>> +};
->>> +
->>> +#define MAX_GPIO_BANKS               5
->>> +#define to_at91_pinctrl(c) container_of(c, struct at91_pinctrl, pctl);
->>> +#define to_at91_gpio_chip(c) container_of(c, struct at91_gpio_chip, ch=
-ip)
->>> +
->>> +#define PULL_UP         (1 << 0)
->>> +#define MULTI_DRIVE     (1 << 1)
->>> +#define DEGLITCH        (1 << 2)
->>> +#define PULL_DOWN       (1 << 3)
->>> +#define DIS_SCHMIT      (1 << 4)
->>> +#define DEBOUNCE        (1 << 16)
->>> +#define DEBOUNCE_VAL_SHIFT      17
->>> +#define DEBOUNCE_VAL    (0x3fff << DEBOUNCE_VAL_SHIFT)
->>> +
->>> +static int gpio_banks =3D 0;
->>> +
->>> +static struct at91_gpio_chip gpio_chip[MAX_GPIO_BANKS];
->>> +
->>> +static inline void __iomem *pin_to_controller(struct at91_pinctrl *inf=
-o, unsigned pin)
->>> +{
->>> +     pin /=3D MAX_NB_GPIO_PER_BANK;
->>> +     if (likely(pin < gpio_banks))
->>> +             return gpio_chip[pin].regbase;
->>> +
->>> +     return NULL;
->>> +}
->>> +
->>> +/**
->>> + * struct at91_pinctrl_mux_ops - describes an At91 mux ops group
->>> + * on new IP with support for periph C and D the way to mux in
->>> + * periph A and B has changed
->>> + * So provide the right call back
->>> + * if not present means the IP does not support it
->>> + * @get_periph: return the periph mode configured
->>> + * @mux_A_periph: mux as periph A
->>> + * @mux_B_periph: mux as periph B
->>> + * @mux_C_periph: mux as periph C
->>> + * @mux_D_periph: mux as periph D
->>> + * @set_deglitch: enable/disable deglitch
->>> + * @set_debounce: enable/disable debounce
->>> + * @set_pulldown: enable/disable pulldown
->>> + * @disable_schmitt_trig: disable schmitt trigger
->>> + */
->>> +struct at91_pinctrl_mux_ops {
->>> +     enum at91_mux (*get_periph)(void __iomem *pio, unsigned mask);
->>> +     void (*mux_A_periph)(void __iomem *pio, unsigned mask);
->>> +     void (*mux_B_periph)(void __iomem *pio, unsigned mask);
->>> +     void (*mux_C_periph)(void __iomem *pio, unsigned mask);
->>> +     void (*mux_D_periph)(void __iomem *pio, unsigned mask);
->>> +     bool (*get_deglitch)(void __iomem *pio, unsigned pin);
->>> +     void (*set_deglitch)(void __iomem *pio, unsigned mask, bool in_on=
-);
->>> +     bool (*get_debounce)(void __iomem *pio, unsigned pin, u32 *div);
->>> +     void (*set_debounce)(void __iomem *pio, unsigned mask, bool in_on=
-, u32 div);
->>> +     bool (*get_pulldown)(void __iomem *pio, unsigned pin);
->>> +     void (*set_pulldown)(void __iomem *pio, unsigned mask, bool in_on=
-);
->>> +     bool (*get_schmitt_trig)(void __iomem *pio, unsigned pin);
->>> +     void (*disable_schmitt_trig)(void __iomem *pio, unsigned mask);
->>> +};
->>> +
->>> +static enum at91_mux at91_mux_pio3_get_periph(void __iomem *pio, unsig=
-ned mask)
->>> +{
->>> +     unsigned select;
->>> +
->>> +     if (__raw_readl(pio + PIO_PSR) & mask)
->>> +             return AT91_MUX_GPIO;
->>> +
->>> +     select =3D !!(__raw_readl(pio + PIO_ABCDSR1) & mask);
->>> +     select |=3D (!!(__raw_readl(pio + PIO_ABCDSR2) & mask) << 1);
->>> +
->>> +     return select + 1;
->>> +}
->>> +
->>> +static enum at91_mux at91_mux_get_periph(void __iomem *pio, unsigned m=
-ask)
->>> +{
->>> +     unsigned select;
->>> +
->>> +     if (__raw_readl(pio + PIO_PSR) & mask)
->>> +             return AT91_MUX_GPIO;
->>> +
->>> +     select =3D __raw_readl(pio + PIO_ABSR) & mask;
->>> +
->>> +     return select + 1;
->>> +}
->>> +
->>> +static bool at91_mux_get_deglitch(void __iomem *pio, unsigned pin)
->>> +{
->>> +     return (__raw_readl(pio + PIO_IFSR) >> pin) & 0x1;
->>> +}
->>> +
->>> +static bool at91_mux_pio3_get_debounce(void __iomem *pio, unsigned pin=
-, u32 *div)
->>> +{
->>> +     *div =3D __raw_readl(pio + PIO_SCDR);
->>> +
->>> +     return (__raw_readl(pio + PIO_IFSCSR) >> pin) & 0x1;
->>> +}
->>> +
->>> +static bool at91_mux_pio3_get_pulldown(void __iomem *pio, unsigned pin)
->>> +{
->>> +     return (__raw_readl(pio + PIO_PPDSR) >> pin) & 0x1;
->>> +}
->>> +
->>> +static bool at91_mux_pio3_get_schmitt_trig(void __iomem *pio, unsigned=
- pin)
->>> +{
->>> +     return (__raw_readl(pio + PIO_SCHMITT) >> pin) & 0x1;
->>> +}
->>> +
->>> +static struct at91_pinctrl_mux_ops at91rm9200_ops =3D {
->>> +     .get_periph     =3D at91_mux_get_periph,
->>> +     .mux_A_periph   =3D at91_mux_set_A_periph,
->>> +     .mux_B_periph   =3D at91_mux_set_B_periph,
->>> +     .get_deglitch   =3D at91_mux_get_deglitch,
->>> +     .set_deglitch   =3D at91_mux_set_deglitch,
->>> +};
->>> +
->>> +static struct at91_pinctrl_mux_ops at91sam9x5_ops =3D {
->>> +     .get_periph     =3D at91_mux_pio3_get_periph,
->>> +     .mux_A_periph   =3D at91_mux_pio3_set_A_periph,
->>> +     .mux_B_periph   =3D at91_mux_pio3_set_B_periph,
->>> +     .mux_C_periph   =3D at91_mux_pio3_set_C_periph,
->>> +     .mux_D_periph   =3D at91_mux_pio3_set_D_periph,
->>> +     .get_deglitch   =3D at91_mux_get_deglitch,
->>> +     .set_deglitch   =3D at91_mux_pio3_set_deglitch,
->>> +     .get_debounce   =3D at91_mux_pio3_get_debounce,
->>> +     .set_debounce   =3D at91_mux_pio3_set_debounce,
->>> +     .get_pulldown   =3D at91_mux_pio3_get_pulldown,
->>> +     .set_pulldown   =3D at91_mux_pio3_set_pulldown,
->>> +     .get_schmitt_trig =3D at91_mux_pio3_get_schmitt_trig,
->>> +     .disable_schmitt_trig =3D at91_mux_pio3_disable_schmitt_trig,
->>> +};
->>> +
->>> +static int at91_mux_pin(struct at91_pinctrl *info, unsigned pin, enum =
-at91_mux mux, int use_pullup)
->>> +{
->>> +     void __iomem    *pio =3D pin_to_controller(info, pin);
->>> +     unsigned mask =3D pin_to_mask(pin);
->>> +
->>> +     if (!info)
->>> +             return -EINVAL;
->>> +
->>> +     if (!pio)
->>> +             return -EINVAL;
->>> +
->>> +     at91_mux_disable_interrupt(pio, mask);
->>> +
->>> +     switch(mux) {
->>> +     case AT91_MUX_GPIO:
->>> +             at91_mux_gpio_enable(pio, mask);
->>> +             break;
->>> +     case AT91_MUX_PERIPH_A:
->>> +             info->ops->mux_A_periph(pio, mask);
->>> +             break;
->>> +     case AT91_MUX_PERIPH_B:
->>> +             info->ops->mux_B_periph(pio, mask);
->>> +             break;
->>> +     case AT91_MUX_PERIPH_C:
->>> +             if (!info->ops->mux_C_periph)
->>> +                     return -EINVAL;
->>> +             info->ops->mux_C_periph(pio, mask);
->>> +             break;
->>> +     case AT91_MUX_PERIPH_D:
->>> +             if (!info->ops->mux_D_periph)
->>> +                     return -EINVAL;
->>> +             info->ops->mux_D_periph(pio, mask);
->>> +             break;
->>> +     }
->>> +     if (mux)
->>> +             at91_mux_gpio_disable(pio, mask);
->>> +
->>> +     if (use_pullup >=3D 0)
->>> +             at91_mux_set_pullup(pio, mask, use_pullup);
->>> +
->>> +     return 0;
->>> +}
->>> +
->>> +static struct of_device_id at91_pinctrl_dt_ids[] =3D {
->>> +     {
->>> +             .compatible =3D "atmel,at91rm9200-pinctrl",
->>> +             .data =3D (unsigned long)&at91rm9200_ops,
->>> +     }, {
->>> +             .compatible =3D "atmel,at91sam9x5-pinctrl",
->>> +             .data =3D (unsigned long)&at91sam9x5_ops,
->>> +     }, {
->>> +             /* sentinel */
->>> +     }
->>> +};
->>> +
->>> +static struct at91_pinctrl_mux_ops *at91_pinctrl_get_driver_data(struc=
-t device_d *dev)
->>> +{
->>> +    struct at91_pinctrl_mux_ops *ops_data =3D NULL;
->>> +    int rc;
->>> +
->>> +    if (dev->device_node) {
->>> +         const struct of_device_id *match;
->>> +         match =3D of_match_node(at91_pinctrl_dt_ids, dev->device_node=
-);
->>> +         if (!match)
->>> +                     ops_data =3D NULL;
->>> +         else
->>> +                     ops_data =3D (struct at91_pinctrl_mux_ops *)match=
-->data;
->>> +    }
->>> +    else {
->>> +         rc =3D dev_get_drvdata(dev, (unsigned long *)&ops_data);
->>> +             if (rc)
->>> +             ops_data =3D NULL;
->>> +    }
->>> +
->>> +    return ops_data;
->>> +}
->>> +
->>> +static int at91_pinctrl_set_conf(struct at91_pinctrl *info, unsigned i=
-nt pin_num, unsigned int mux, unsigned int conf)
->>> +{
->>> +     unsigned int mask;
->>> +     void __iomem *pio;
->>> +
->>> +     pio =3D pin_to_controller(info, pin_num);
->>> +     mask =3D pin_to_mask(pin_num);
->>> +
->>> +     if (conf & PULL_UP && conf & PULL_DOWN)
->>> +             return -EINVAL;
->>> +
->>> +     at91_mux_set_pullup(pio, mask, conf & PULL_UP);
->>> +     at91_mux_set_multidrive(pio, mask, conf & MULTI_DRIVE);
->>> +     if (info->ops->set_deglitch)
->>> +             info->ops->set_deglitch(pio, mask, conf & DEGLITCH);
->>> +     if (info->ops->set_debounce)
->>> +             info->ops->set_debounce(pio, mask, conf & DEBOUNCE,
->>> +                     (conf & DEBOUNCE_VAL) >> DEBOUNCE_VAL_SHIFT);
->>> +     if (info->ops->set_pulldown)
->>> +             info->ops->set_pulldown(pio, mask, conf & PULL_DOWN);
->>> +     if (info->ops->disable_schmitt_trig && conf & DIS_SCHMIT)
->>> +             info->ops->disable_schmitt_trig(pio, mask);
->>> +
->>> +     return 0;
->>> +}
->>> +
->>> +static int at91_pinctrl_set_state(struct pinctrl_device *pdev, struct =
-device_node *np)
->>> +{
->>> +     struct at91_pinctrl *info;
->>> +     const __be32 *list;
->>> +     int i, size;
->>> +     int ret =3D 0;
->>> +     int bank_num, pin_num, mux, conf;
->>> +
->>> +     info =3D to_at91_pinctrl(pdev);
->>> +
->>> +     list =3D of_get_property(np, "atmel,pins", &size);
->>> +     size /=3D sizeof(*list);
->>> +
->>> +     if (!size || size % 4) {
->>> +             dev_err(pdev->dev, "wrong pins number or pins and configs=
- should be by 4\n");
->>> +             return -EINVAL;
->>> +     }
->>> +
->>> +     for (i =3D 0; i < size; i +=3D 4) {
->>> +             bank_num =3D be32_to_cpu(*list++);
->>> +             pin_num =3D be32_to_cpu(*list++);
->>> +             mux =3D be32_to_cpu(*list++);
->>> +             conf =3D be32_to_cpu(*list++);
->>> +
->>> +             ret =3D at91_mux_pin(info, pin_num, mux, conf & PULL_UP);
->>> +             if (ret) {
->>> +                     dev_err(pdev->dev, "failed to mux pin %d\n", pin_=
-num);
->>> +                     return ret;
->>> +             }
->>> +
->>> +             ret =3D at91_pinctrl_set_conf(info, pin_num, mux, conf);
->>> +             if (ret) {
->>> +                     dev_err(pdev->dev, "failed to set conf on pin %d\=
-n", pin_num);
->>> +                     return ret;
->>> +             }
->>> +     }
->>> +
->>> +     return ret;
->>> +}
->>> +
->>> +static struct pinctrl_ops at91_pinctrl_ops =3D {
->>> +     .set_state =3D at91_pinctrl_set_state,
->>> +};
->>> +
->>> +static int at91_pinctrl_probe(struct device_d *dev)
->>> +{
->>> +     struct at91_pinctrl *info;
->>> +     int ret;
->>> +
->>> +     info =3D xzalloc(sizeof(struct at91_pinctrl));
->>> +
->>> +     info->ops =3D at91_pinctrl_get_driver_data(dev);
->>> +     if (!info->ops) {
->>> +             dev_err(dev, "failed to retrieve driver data\n");
->>> +             return -ENODEV;
->>> +     }
->>> +
->>> +     info->pctl.dev =3D dev;
->>> +     info->pctl.ops =3D &at91_pinctrl_ops;
->>> +
->>> +     ret =3D pinctrl_register(&info->pctl);
->>> +     if (ret)
->>> +             return ret;
->>> +
->>> +     dev_info(dev, "AT91 pinctrl registred\n");
->>> +
->>> +     return 0;
->>> +}
->>> +
->>> +static struct platform_device_id at91_pinctrl_ids[] =3D {
->>> +     {
->>> +             .name =3D "at91rm9200-pinctrl",
->>> +             .driver_data =3D (unsigned long)&at91rm9200_ops,
->>> +     }, {
->>> +             .name =3D "at91sam9x5-pinctrl",
->>> +             .driver_data =3D (unsigned long)&at91sam9x5_ops,
->>> +     }, {
->>> +             /* sentinel */
->>> +     },
->>> +};
->>> +
->>> +static struct driver_d at91_pinctrl_driver =3D {
->>> +     .name =3D "pinctrl-at91",
->>> +     .probe =3D at91_pinctrl_probe,
->>> +     .id_table =3D at91_pinctrl_ids,
->>> +     .of_compatible =3D DRV_OF_COMPAT(at91_pinctrl_dt_ids),
->>> +};
->>> +
->>> +static int at91_pinctrl_init(void)
->>> +{
->>> +     return platform_driver_register(&at91_pinctrl_driver);
->>> +}
->>> +coredevice_initcall(at91_pinctrl_init);
->>> +
->>> +static int at91_gpio_get(struct gpio_chip *chip, unsigned offset)
->>> +{
->>> +     struct at91_gpio_chip *at91_gpio =3D to_at91_gpio_chip(chip);
->>> +     void __iomem *pio =3D at91_gpio->regbase;
->>> +     unsigned mask =3D 1 << offset;
->>> +
->>> +     return at91_mux_gpio_get(pio, mask);
->>> +}
->>> +
->>> +static void at91_gpio_set(struct gpio_chip *chip, unsigned offset, int=
- value)
->>> +{
->>> +     struct at91_gpio_chip *at91_gpio =3D to_at91_gpio_chip(chip);
->>> +     void __iomem *pio =3D at91_gpio->regbase;
->>> +     unsigned mask =3D 1 << offset;
->>> +
->>> +     at91_mux_gpio_set(pio, mask, value);
->>> +}
->>> +
->>> +static int at91_gpio_direction_output(struct gpio_chip *chip, unsigned=
- offset,
->>> +             int value)
->>> +{
->>> +     struct at91_gpio_chip *at91_gpio =3D to_at91_gpio_chip(chip);
->>> +     void __iomem *pio =3D at91_gpio->regbase;
->>> +     unsigned mask =3D 1 << offset;
->>> +
->>> +     at91_mux_gpio_set(pio, mask, value);
->>> +     __raw_writel(mask, pio + PIO_OER);
->>> +
->>> +     return 0;
->>> +}
->>> +
->>> +static int at91_gpio_direction_input(struct gpio_chip *chip, unsigned =
-offset)
->>> +{
->>> +     struct at91_gpio_chip *at91_gpio =3D to_at91_gpio_chip(chip);
->>> +     void __iomem *pio =3D at91_gpio->regbase;
->>> +     unsigned mask =3D 1 << offset;
->>> +
->>> +     __raw_writel(mask, pio + PIO_ODR);
->>> +
->>> +     return 0;
->>> +}
->>> +
->>> +static int at91_gpio_request(struct gpio_chip *chip, unsigned offset)
->>> +{
->>> +     struct at91_gpio_chip *at91_gpio =3D to_at91_gpio_chip(chip);
->>> +     void __iomem *pio =3D at91_gpio->regbase;
->>> +     unsigned mask =3D 1 << offset;
->>> +
->>> +     dev_dbg(chip->dev, "%s:%d pio%c%d(%d)\n", __func__, __LINE__,
->>> +              'A' + pin_to_bank(chip->base), offset, chip->base + offs=
-et);
->>> +     at91_mux_gpio_enable(pio, mask);
->>> +
->>> +     return 0;
->>> +}
->>> +
->>> +static void at91_gpio_free(struct gpio_chip *chip, unsigned offset)
->>> +{
->>> +     dev_dbg(chip->dev, "%s:%d pio%c%d(%d)\n", __func__, __LINE__,
->>> +              'A' + pin_to_bank(chip->base), offset, chip->base + offs=
-et);
->>> +}
->>> +
->>> +static struct gpio_ops at91_gpio_ops =3D {
->>> +     .request =3D at91_gpio_request,
->>> +     .free =3D at91_gpio_free,
->>> +     .direction_input =3D at91_gpio_direction_input,
->>> +     .direction_output =3D at91_gpio_direction_output,
->>> +     .get =3D at91_gpio_get,
->>> +     .set =3D at91_gpio_set,
->>> +};
->>> +
->>> +static struct of_device_id at91_gpio_dt_ids[] =3D {
->>> +     {
->>> +             .compatible =3D "atmel,at91rm9200-gpio",
->>> +     }, {
->>> +             .compatible =3D "atmel,at91sam9x5-gpio",
->>> +     }, {
->>> +             /* sentinel */
->>> +     },
->>> +};
->>> +
->>> +static int at91_gpio_probe(struct device_d *dev)
->>> +{
->>> +     struct at91_gpio_chip *at91_gpio;
->>> +     struct clk *clk;
->>> +     int ret;
->>> +     int alias_idx =3D of_alias_get_id(dev->device_node, "gpio");
->>> +
->>> +     BUG_ON(dev->id > MAX_GPIO_BANKS);
->>> +
->>> +     at91_gpio =3D &gpio_chip[alias_idx];
->>> +
->>> +     clk =3D clk_get(dev, NULL);
->>> +     if (IS_ERR(clk)) {
->>> +             ret =3D PTR_ERR(clk);
->>> +             dev_err(dev, "clock not found: %d\n", ret);
->>> +             return ret;
->>> +     }
->>> +
->>> +     ret =3D clk_enable(clk);
->>> +     if (ret < 0) {
->>> +             dev_err(dev, "clock failed to enable: %d\n", ret);
->>> +             clk_put(clk);
->>> +             return ret;
->>> +     }
->>> +
->>> +     gpio_banks =3D max(gpio_banks, alias_idx + 1);
->>> +     at91_gpio->regbase =3D dev_request_mem_region(dev, 0);
->>> +
->>> +     at91_gpio->chip.ops =3D &at91_gpio_ops;
->>> +     at91_gpio->chip.ngpio =3D MAX_NB_GPIO_PER_BANK;
->>> +     at91_gpio->chip.dev =3D dev;
->>> +     at91_gpio->chip.base =3D dev->id * MAX_NB_GPIO_PER_BANK;
->>> +
->>> +     ret =3D gpiochip_add(&at91_gpio->chip);
->>> +     if (ret) {
->>> +             dev_err(dev, "couldn't add gpiochip, ret =3D %d\n", ret);
->>> +             return ret;
->>> +     }
->>> +
->>> +     dev_info(dev, "AT91 gpio driver registred\n");
->>> +
->>> +     return 0;
->>> +}
->>> +
->>> +static struct platform_device_id at91_gpio_ids[] =3D {
->>> +     {
->>> +             .name =3D "at91rm9200-gpio",
->>> +     }, {
->>> +             .name =3D "at91sam9x5-gpio",
->>> +     }, {
->>> +             /* sentinel */
->>> +     },
->>> +};
->>> +
->>> +static struct driver_d at91_gpio_driver =3D {
->>> +     .name =3D "gpio-at91",
->>> +     .probe =3D at91_gpio_probe,
->>> +     .id_table =3D at91_gpio_ids,
->>> +     .of_compatible  =3D DRV_OF_COMPAT(at91_gpio_dt_ids),
->>> +};
->>> +
->>> +static int at91_gpio_init(void)
->>> +{
->>> +     return platform_driver_register(&at91_gpio_driver);
->>> +}
->>> +coredevice_initcall(at91_gpio_init);
->>> diff --git a/drivers/pinctrl/pinctrl-at91.h b/drivers/pinctrl/pinctrl-a=
-t91.h
->>> new file mode 100644
->>> index 0000000..e719fb8
->>> --- /dev/null
->>> +++ b/drivers/pinctrl/pinctrl-at91.h
->>> @@ -0,0 +1,148 @@
->>> +/*
->>> + * Copyright (C) 2011-2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@=
-jcrosoft.com>
->>> + *
->>> + * Under GPLv2 only
->>> + */
->>> +
->>> +#ifndef __AT91_GPIO_H__
->>> +#define __AT91_GPIO_H__
->>> +
->>> +#ifndef __gpio_init
->>> +#define __gpio_init
->>> +#endif
->>> +
->>> +#define MAX_NB_GPIO_PER_BANK 32
->>> +
->>> +static inline unsigned pin_to_bank(unsigned pin)
->>> +{
->>> +     return pin / MAX_NB_GPIO_PER_BANK;
->>> +}
->>> +
->>> +static inline unsigned pin_to_bank_offset(unsigned pin)
->>> +{
->>> +     return pin % MAX_NB_GPIO_PER_BANK;
->>> +}
->>> +
->>> +static inline unsigned pin_to_mask(unsigned pin)
->>> +{
->>> +     return 1 << pin_to_bank_offset(pin);
->>> +}
->>> +
->>> +static inline void at91_mux_disable_interrupt(void __iomem *pio, unsig=
-ned mask)
->>> +{
->>> +     __raw_writel(mask, pio + PIO_IDR);
->>> +}
->>> +
->>> +static inline void at91_mux_set_pullup(void __iomem *pio, unsigned mas=
-k, bool on)
->>> +{
->>> +     __raw_writel(mask, pio + (on ? PIO_PUER : PIO_PUDR));
->>> +}
->>> +
->>> +static inline void at91_mux_set_multidrive(void __iomem *pio, unsigned=
- mask, bool on)
->>> +{
->>> +     __raw_writel(mask, pio + (on ? PIO_MDER : PIO_MDDR));
->>> +}
->>> +
->>> +static inline void at91_mux_set_A_periph(void __iomem *pio, unsigned m=
-ask)
->>> +{
->>> +     __raw_writel(mask, pio + PIO_ASR);
->>> +}
->>> +
->>> +static inline void at91_mux_set_B_periph(void __iomem *pio, unsigned m=
-ask)
->>> +{
->>> +     __raw_writel(mask, pio + PIO_BSR);
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_set_A_periph(void __iomem *pio, unsig=
-ned mask)
->>> +{
->>> +
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR1) & ~mask,
->>> +                                             pio + PIO_ABCDSR1);
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR2) & ~mask,
->>> +                                             pio + PIO_ABCDSR2);
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_set_B_periph(void __iomem *pio, unsig=
-ned mask)
->>> +{
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR1) | mask,
->>> +                                             pio + PIO_ABCDSR1);
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR2) & ~mask,
->>> +                                             pio + PIO_ABCDSR2);
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_set_C_periph(void __iomem *pio, unsig=
-ned mask)
->>> +{
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR1) & ~mask, pio + PIO_AB=
-CDSR1);
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR2) | mask, pio + PIO_ABC=
-DSR2);
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_set_D_periph(void __iomem *pio, unsig=
-ned mask)
->>> +{
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR1) | mask, pio + PIO_ABC=
-DSR1);
->>> +     __raw_writel(__raw_readl(pio + PIO_ABCDSR2) | mask, pio + PIO_ABC=
-DSR2);
->>> +}
->>> +
->>> +static inline void at91_mux_set_deglitch(void __iomem *pio, unsigned m=
-ask, bool is_on)
->>> +{
->>> +     __raw_writel(mask, pio + (is_on ? PIO_IFER : PIO_IFDR));
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_set_deglitch(void __iomem *pio, unsig=
-ned mask, bool is_on)
->>> +{
->>> +     if (is_on)
->>> +             __raw_writel(mask, pio + PIO_IFSCDR);
->>> +     at91_mux_set_deglitch(pio, mask, is_on);
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_set_debounce(void __iomem *pio, unsig=
-ned mask,
->>> +                             bool is_on, u32 div)
->>> +{
->>> +     if (is_on) {
->>> +             __raw_writel(mask, pio + PIO_IFSCER);
->>> +             __raw_writel(div & PIO_SCDR_DIV, pio + PIO_SCDR);
->>> +             __raw_writel(mask, pio + PIO_IFER);
->>> +     } else {
->>> +             __raw_writel(mask, pio + PIO_IFDR);
->>> +     }
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_set_pulldown(void __iomem *pio, unsig=
-ned mask, bool is_on)
->>> +{
->>> +     __raw_writel(mask, pio + (is_on ? PIO_PPDER : PIO_PPDDR));
->>> +}
->>> +
->>> +static inline void at91_mux_pio3_disable_schmitt_trig(void __iomem *pi=
-o, unsigned mask)
->>> +{
->>> +     __raw_writel(__raw_readl(pio + PIO_SCHMITT) | mask, pio + PIO_SCH=
-MITT);
->>> +}
->>> +
->>> +static inline void at91_mux_gpio_disable(void __iomem *pio, unsigned m=
-ask)
->>> +{
->>> +     __raw_writel(mask, pio + PIO_PDR);
->>> +}
->>> +
->>> +static inline void at91_mux_gpio_enable(void __iomem *pio, unsigned ma=
-sk)
->>> +{
->>> +     __raw_writel(mask, pio + PIO_PER);
->>> +}
->>> +
->>> +static inline void at91_mux_gpio_input(void __iomem *pio, unsigned mas=
-k, bool input)
->>> +{
->>> +     __raw_writel(mask, pio + (input ? PIO_ODR : PIO_OER));
->>> +}
->>> +
->>> +static inline void at91_mux_gpio_set(void __iomem *pio, unsigned mask,
->>> +int value)
->>> +{
->>> +     __raw_writel(mask, pio + (value ? PIO_SODR : PIO_CODR));
->>> +}
->>> +
->>> +static inline int at91_mux_gpio_get(void __iomem *pio, unsigned mask)
->>> +{
->>> +       u32 pdsr;
->>> +
->>> +       pdsr =3D __raw_readl(pio + PIO_PDSR);
->>> +       return (pdsr & mask) !=3D 0;
->>> +}
->>> +
->>> +#endif /* __AT91_GPIO_H__ */
->>> --
->>> 1.7.9.5
->>> =
-
->>> =
-
->>> _______________________________________________
->>> barebox mailing list
->>> barebox@lists.infradead.org
->>> http://lists.infradead.org/mailman/listinfo/barebox
->> =
-
->> =
-
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T2ssIHNvIEkgZHJvcCBteSBwYXRjaCA/IE9yIHlvdXIgdmVyc2lvbiBpcyB2ZXJ5IHNpbWlsYXIg
+b2YgbXkgcGF0Y2gKYW5kIHlvdSBjYW4gcmV2aWV3IG1pbmUgdG8gaW1wcm92ZS9jbGVhbiBpdCA/
+CgpCZXN0IHJlZ2FyZHMsClJhcGhhw6tsIFBvZ2dpCgoyMDE0LTA4LTA1IDEyOjI2IEdNVCswMjow
+MCBKZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFSRAo8cGxhZ25pb2pAamNyb3NvZnQuY29t
+PjoKPgo+IE9uIEF1ZyA1LCAyMDE0LCBhdCAyOjM3IEFNLCBSYXBoYcOrbCBQb2dnaSA8cmFwaGlv
+OThAZ21haWwuY29tPiB3cm90ZToKPgo+Pgo+PiBJIGhhdmUgcGxhbm5lZCB0byBhZGQgZGV2aWNl
+IHRyZWUgc3VwcG9ydCBmb3IgdGhlIEFUOTEgcG9ydC4KPj4KPj4gU28gSSBwb3J0IHRoZSBwaW5j
+dHJsIGRyaXZlciBmcm9tIGxpbnV4IHRvIGJhcmVib3ggdG8gYmUgYWJsZSB0byB1c2UKPj4gdGhl
+IHBpbmN0cmwgaW4gZGV2aWNlIHRyZWUsIGJ1dCBtYXliZSBJIG1hZGUgYSBtaXN0YWtlIGFuZCB0
+aGVyZSBpcwo+PiBhbm90aGVyIHNvbHV0aW9uLgo+Pgo+Cj4gSeKAmXZlIGEgdmVyc2lvbiBhbHJl
+YWR5IHRoYXQgSSBuZWVkIHRvIHVwZGF0ZSBhbmQgc2VuZAo+Cj4gQmVzdCBSZWdhcmRzLAo+IEou
+Cj4+IEJlc3QgUmVnYXJkcywKPj4gUmFwaGHDq2wKPj4KPj4gMjAxNC0wOC0wNCAyMDoyNiBHTVQr
+MDI6MDAgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQKPj4gPHBsYWduaW9qQGpjcm9z
+b2Z0LmNvbT46Cj4+PiB3aHkgZG8gd2UgbmVlZCBpdCBvbiBiYXJlYm94Pwo+Pj4KPj4+IHRoaXMg
+ZHJpdmVyIHdhcyBkZXNpZ24gZm9yIGR0LW9ubHkgaW4gbGludXgKPj4+Cj4+PiBCZXN0IFJlZ2Fy
+ZHMsCj4+PiBKLgo+Pj4gT24gQXVnIDEsIDIwMTQsIGF0IDk6MjQgUE0sIFJhcGhhw6tsIFBvZ2dp
+IDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4gd3JvdGU6Cj4+Pgo+Pj4+IFRoaXMgZHJpdmVyIGlzIGJh
+c2VkIG9uIG1hY2gtYXQ5MS9ncGlvLmMgYW5kIGxpbnV4IHBpbmN0cmwgZHJpdmVyLgo+Pj4+IFRo
+ZSBkcml2ZXIgY29udGFpbnMgdGhlIGdwaW8gYW5kIHBpbmN0cmwgcGFydHMgKGxpa2UgaW4gbGlu
+dXgpIGJlY2F1c2UgdGhlIHR3byBwYXJ0cwo+Pj4+IHNoYXJlIHNvbWUgc3RydWN0dXJlcyBhbmQg
+bG9naWNzLgo+Pj4+Cj4+Pj4gU2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJh
+cGhAZ21haWwuY29tPgo+Pj4+IC0tLQo+Pj4+IGRyaXZlcnMvcGluY3RybC9LY29uZmlnICAgICAg
+ICB8ICAgIDYgKwo+Pj4+IGRyaXZlcnMvcGluY3RybC9NYWtlZmlsZSAgICAgICB8ICAgIDEgKwo+
+Pj4+IGRyaXZlcnMvcGluY3RybC9waW5jdHJsLWF0OTEuYyB8ICA1MjkgKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKwo+Pj4+IGRyaXZlcnMvcGluY3RybC9waW5jdHJsLWF0
+OTEuaCB8ICAxNDggKysrKysrKysrKysKPj4+PiA0IGZpbGVzIGNoYW5nZWQsIDY4NCBpbnNlcnRp
+b25zKCspCj4+Pj4gY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvcGluY3RybC9waW5jdHJsLWF0
+OTEuYwo+Pj4+IGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL3BpbmN0cmwvcGluY3RybC1hdDkx
+LmgKPj4+Pgo+Pj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3BpbmN0cmwvS2NvbmZpZyBiL2RyaXZl
+cnMvcGluY3RybC9LY29uZmlnCj4+Pj4gaW5kZXggZGZmYWE0ZS4uY2U1NWM3YiAxMDA2NDQKPj4+
+PiAtLS0gYS9kcml2ZXJzL3BpbmN0cmwvS2NvbmZpZwo+Pj4+ICsrKyBiL2RyaXZlcnMvcGluY3Ry
+bC9LY29uZmlnCj4+Pj4gQEAgLTcsNiArNywxMiBAQCBjb25maWcgUElOQ1RSTAo+Pj4+ICAgICAg
+ICBmcm9tIHRoZSBkZXZpY2V0cmVlLiBMZWdhY3kgZHJpdmVycyBoZXJlIG1heSBub3QgbmVlZCB0
+aGlzIGNvcmUKPj4+PiAgICAgICAgc3VwcG9ydCBidXQgaW5zdGVhZCBwcm92aWRlIHRoZWlyIG93
+biBTb0Mgc3BlY2lmaWMgQVBJcwo+Pj4+Cj4+Pj4gK2NvbmZpZyBQSU5DVFJMX0FUOTEKPj4+PiAr
+ICAgICBzZWxlY3QgUElOQ1RSTAo+Pj4+ICsgICAgIGJvb2wKPj4+PiArICAgICBoZWxwCj4+Pj4g
+KyAgICAgICAgIFRoZSBwaW5tdXggY29udHJvbGxlciBmb3VuZCBvbiBBVDkxIFNvQ3MuCj4+Pj4g
+Kwo+Pj4+IGNvbmZpZyBQSU5DVFJMX0lNWF9JT01VWF9WMQo+Pj4+ICAgICAgc2VsZWN0IFBJTkNU
+UkwgaWYgT0ZERVZJQ0UKPj4+PiAgICAgIGJvb2wKPj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9w
+aW5jdHJsL01ha2VmaWxlIGIvZHJpdmVycy9waW5jdHJsL01ha2VmaWxlCj4+Pj4gaW5kZXggNTY2
+YmExMS4uM2VhODY0OSAxMDA2NDQKPj4+PiAtLS0gYS9kcml2ZXJzL3BpbmN0cmwvTWFrZWZpbGUK
+Pj4+PiArKysgYi9kcml2ZXJzL3BpbmN0cmwvTWFrZWZpbGUKPj4+PiBAQCAtMSw0ICsxLDUgQEAK
+Pj4+PiBvYmotJChDT05GSUdfUElOQ1RSTCkgKz0gcGluY3RybC5vCj4+Pj4gK29iai0kKENPTkZJ
+R19QSU5DVFJMX0FUOTEpICs9IHBpbmN0cmwtYXQ5MS5vCj4+Pj4gb2JqLSQoQ09ORklHX1BJTkNU
+UkxfSU1YX0lPTVVYX1YxKSArPSBpbXgtaW9tdXgtdjEubwo+Pj4+IG9iai0kKENPTkZJR19QSU5D
+VFJMX0lNWF9JT01VWF9WMikgKz0gaW14LWlvbXV4LXYyLm8KPj4+PiBvYmotJChDT05GSUdfUElO
+Q1RSTF9JTVhfSU9NVVhfVjMpICs9IGlteC1pb211eC12My5vCj4+Pj4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvcGluY3RybC9waW5jdHJsLWF0OTEuYyBiL2RyaXZlcnMvcGluY3RybC9waW5jdHJsLWF0
+OTEuYwo+Pj4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4+Pj4gaW5kZXggMDAwMDAwMC4uYTkyYTg5
+OAo+Pj4+IC0tLSAvZGV2L251bGwKPj4+PiArKysgYi9kcml2ZXJzL3BpbmN0cmwvcGluY3RybC1h
+dDkxLmMKPj4+PiBAQCAtMCwwICsxLDUyOSBAQAo+Pj4+ICsvKgo+Pj4+ICsgKiBDb3B5cmlnaHQg
+KEMpIDIwMDUgSFAgTGFicwo+Pj4+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMTEtMjAxMiBKZWFuLUNo
+cmlzdG9waGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgo+Pj4+ICsg
+KiBDb3B5cmlnaHQgKEMpIDIwMTQgUmFwaGHDq2wgUG9nZ2kKPj4+PiArICoKPj4+PiArICogU2Vl
+IGZpbGUgQ1JFRElUUyBmb3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1dGVkIHRvIHRoaXMK
+Pj4+PiArICogcHJvamVjdC4KPj4+PiArICoKPj4+PiArICogVGhpcyBwcm9ncmFtIGlzIGZyZWUg
+c29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgo+Pj4+ICsgKiBtb2RpZnkg
+aXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwo+
+Pj4+ICsgKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVy
+IHZlcnNpb24gMiBvZgo+Pj4+ICsgKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBh
+bnkgbGF0ZXIgdmVyc2lvbi4KPj4+PiArICoKPj4+PiArICogVGhpcyBwcm9ncmFtIGlzIGRpc3Ry
+aWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCj4+Pj4gKyAqIGJ1dCBX
+SVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9m
+Cj4+Pj4gKyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVS
+UE9TRS4gIFNlZSB0aGUKPj4+PiArICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1v
+cmUgZGV0YWlscy4KPj4+PiArICoKPj4+PiArICovCj4+Pj4gKwo+Pj4+ICsjaW5jbHVkZSA8Y29t
+bW9uLmg+Cj4+Pj4gKyNpbmNsdWRlIDxjb21tYW5kLmg+Cj4+Pj4gKyNpbmNsdWRlIDxjb21wbGV0
+ZS5oPgo+Pj4+ICsjaW5jbHVkZSA8bGludXgvY2xrLmg+Cj4+Pj4gKyNpbmNsdWRlIDxsaW51eC9l
+cnIuaD4KPj4+PiArI2luY2x1ZGUgPGVycm5vLmg+Cj4+Pj4gKyNpbmNsdWRlIDxpby5oPgo+Pj4+
+ICsjaW5jbHVkZSA8Z3Bpby5oPgo+Pj4+ICsjaW5jbHVkZSA8aW5pdC5oPgo+Pj4+ICsjaW5jbHVk
+ZSA8ZHJpdmVyLmg+Cj4+Pj4gKyNpbmNsdWRlIDxnZXRvcHQuaD4KPj4+PiArCj4+Pj4gKyNpbmNs
+dWRlIDxtYWNoL2F0OTFfcGlvLmg+Cj4+Pj4gKwo+Pj4+ICsjaW5jbHVkZSA8cGluY3RybC5oPgo+
+Pj4+ICsKPj4+PiArI2luY2x1ZGUgInBpbmN0cmwtYXQ5MS5oIgo+Pj4+ICsKPj4+PiArc3RydWN0
+IGF0OTFfcGluY3RybCB7Cj4+Pj4gKyAgICBzdHJ1Y3QgcGluY3RybF9kZXZpY2UgcGN0bDsKPj4+
+PiArICAgIHN0cnVjdCBhdDkxX3BpbmN0cmxfbXV4X29wcyAgICAgICpvcHM7Cj4+Pj4gK307Cj4+
+Pj4gKwo+Pj4+ICtzdHJ1Y3QgYXQ5MV9ncGlvX2NoaXAgewo+Pj4+ICsgICAgIHN0cnVjdCBncGlv
+X2NoaXAgICAgICAgIGNoaXA7Cj4+Pj4gKyAgICAgdm9pZCBfX2lvbWVtICAgICAgICAgICAgKnJl
+Z2Jhc2U7ICAgICAgIC8qIFBJTyBiYW5rIHZpcnR1YWwgYWRkcmVzcyAqLwo+Pj4+ICsgICAgIHN0
+cnVjdCBhdDkxX3BpbmN0cmxfbXV4X29wcyAqb3BzOyAgICAgICAvKiBvcHMgKi8KPj4+PiArfTsK
+Pj4+PiArCj4+Pj4gK2VudW0gYXQ5MV9tdXggewo+Pj4+ICsgICAgIEFUOTFfTVVYX0dQSU8gPSAw
+LAo+Pj4+ICsgICAgIEFUOTFfTVVYX1BFUklQSF9BID0gMSwKPj4+PiArICAgICBBVDkxX01VWF9Q
+RVJJUEhfQiA9IDIsCj4+Pj4gKyAgICAgQVQ5MV9NVVhfUEVSSVBIX0MgPSAzLAo+Pj4+ICsgICAg
+IEFUOTFfTVVYX1BFUklQSF9EID0gNCwKPj4+PiArfTsKPj4+PiArCj4+Pj4gKyNkZWZpbmUgTUFY
+X0dQSU9fQkFOS1MgICAgICAgICAgICAgICA1Cj4+Pj4gKyNkZWZpbmUgdG9fYXQ5MV9waW5jdHJs
+KGMpIGNvbnRhaW5lcl9vZihjLCBzdHJ1Y3QgYXQ5MV9waW5jdHJsLCBwY3RsKTsKPj4+PiArI2Rl
+ZmluZSB0b19hdDkxX2dwaW9fY2hpcChjKSBjb250YWluZXJfb2YoYywgc3RydWN0IGF0OTFfZ3Bp
+b19jaGlwLCBjaGlwKQo+Pj4+ICsKPj4+PiArI2RlZmluZSBQVUxMX1VQICAgICAgICAgKDEgPDwg
+MCkKPj4+PiArI2RlZmluZSBNVUxUSV9EUklWRSAgICAgKDEgPDwgMSkKPj4+PiArI2RlZmluZSBE
+RUdMSVRDSCAgICAgICAgKDEgPDwgMikKPj4+PiArI2RlZmluZSBQVUxMX0RPV04gICAgICAgKDEg
+PDwgMykKPj4+PiArI2RlZmluZSBESVNfU0NITUlUICAgICAgKDEgPDwgNCkKPj4+PiArI2RlZmlu
+ZSBERUJPVU5DRSAgICAgICAgKDEgPDwgMTYpCj4+Pj4gKyNkZWZpbmUgREVCT1VOQ0VfVkFMX1NI
+SUZUICAgICAgMTcKPj4+PiArI2RlZmluZSBERUJPVU5DRV9WQUwgICAgKDB4M2ZmZiA8PCBERUJP
+VU5DRV9WQUxfU0hJRlQpCj4+Pj4gKwo+Pj4+ICtzdGF0aWMgaW50IGdwaW9fYmFua3MgPSAwOwo+
+Pj4+ICsKPj4+PiArc3RhdGljIHN0cnVjdCBhdDkxX2dwaW9fY2hpcCBncGlvX2NoaXBbTUFYX0dQ
+SU9fQkFOS1NdOwo+Pj4+ICsKPj4+PiArc3RhdGljIGlubGluZSB2b2lkIF9faW9tZW0gKnBpbl90
+b19jb250cm9sbGVyKHN0cnVjdCBhdDkxX3BpbmN0cmwgKmluZm8sIHVuc2lnbmVkIHBpbikKPj4+
+PiArewo+Pj4+ICsgICAgIHBpbiAvPSBNQVhfTkJfR1BJT19QRVJfQkFOSzsKPj4+PiArICAgICBp
+ZiAobGlrZWx5KHBpbiA8IGdwaW9fYmFua3MpKQo+Pj4+ICsgICAgICAgICAgICAgcmV0dXJuIGdw
+aW9fY2hpcFtwaW5dLnJlZ2Jhc2U7Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldHVybiBOVUxMOwo+Pj4+
+ICt9Cj4+Pj4gKwo+Pj4+ICsvKioKPj4+PiArICogc3RydWN0IGF0OTFfcGluY3RybF9tdXhfb3Bz
+IC0gZGVzY3JpYmVzIGFuIEF0OTEgbXV4IG9wcyBncm91cAo+Pj4+ICsgKiBvbiBuZXcgSVAgd2l0
+aCBzdXBwb3J0IGZvciBwZXJpcGggQyBhbmQgRCB0aGUgd2F5IHRvIG11eCBpbgo+Pj4+ICsgKiBw
+ZXJpcGggQSBhbmQgQiBoYXMgY2hhbmdlZAo+Pj4+ICsgKiBTbyBwcm92aWRlIHRoZSByaWdodCBj
+YWxsIGJhY2sKPj4+PiArICogaWYgbm90IHByZXNlbnQgbWVhbnMgdGhlIElQIGRvZXMgbm90IHN1
+cHBvcnQgaXQKPj4+PiArICogQGdldF9wZXJpcGg6IHJldHVybiB0aGUgcGVyaXBoIG1vZGUgY29u
+ZmlndXJlZAo+Pj4+ICsgKiBAbXV4X0FfcGVyaXBoOiBtdXggYXMgcGVyaXBoIEEKPj4+PiArICog
+QG11eF9CX3BlcmlwaDogbXV4IGFzIHBlcmlwaCBCCj4+Pj4gKyAqIEBtdXhfQ19wZXJpcGg6IG11
+eCBhcyBwZXJpcGggQwo+Pj4+ICsgKiBAbXV4X0RfcGVyaXBoOiBtdXggYXMgcGVyaXBoIEQKPj4+
+PiArICogQHNldF9kZWdsaXRjaDogZW5hYmxlL2Rpc2FibGUgZGVnbGl0Y2gKPj4+PiArICogQHNl
+dF9kZWJvdW5jZTogZW5hYmxlL2Rpc2FibGUgZGVib3VuY2UKPj4+PiArICogQHNldF9wdWxsZG93
+bjogZW5hYmxlL2Rpc2FibGUgcHVsbGRvd24KPj4+PiArICogQGRpc2FibGVfc2NobWl0dF90cmln
+OiBkaXNhYmxlIHNjaG1pdHQgdHJpZ2dlcgo+Pj4+ICsgKi8KPj4+PiArc3RydWN0IGF0OTFfcGlu
+Y3RybF9tdXhfb3BzIHsKPj4+PiArICAgICBlbnVtIGF0OTFfbXV4ICgqZ2V0X3BlcmlwaCkodm9p
+ZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIG1hc2spOwo+Pj4+ICsgICAgIHZvaWQgKCptdXhfQV9w
+ZXJpcGgpKHZvaWQgX19pb21lbSAqcGlvLCB1bnNpZ25lZCBtYXNrKTsKPj4+PiArICAgICB2b2lk
+ICgqbXV4X0JfcGVyaXBoKSh2b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgbWFzayk7Cj4+Pj4g
+KyAgICAgdm9pZCAoKm11eF9DX3BlcmlwaCkodm9pZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIG1h
+c2spOwo+Pj4+ICsgICAgIHZvaWQgKCptdXhfRF9wZXJpcGgpKHZvaWQgX19pb21lbSAqcGlvLCB1
+bnNpZ25lZCBtYXNrKTsKPj4+PiArICAgICBib29sICgqZ2V0X2RlZ2xpdGNoKSh2b2lkIF9faW9t
+ZW0gKnBpbywgdW5zaWduZWQgcGluKTsKPj4+PiArICAgICB2b2lkICgqc2V0X2RlZ2xpdGNoKSh2
+b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgbWFzaywgYm9vbCBpbl9vbik7Cj4+Pj4gKyAgICAg
+Ym9vbCAoKmdldF9kZWJvdW5jZSkodm9pZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIHBpbiwgdTMy
+ICpkaXYpOwo+Pj4+ICsgICAgIHZvaWQgKCpzZXRfZGVib3VuY2UpKHZvaWQgX19pb21lbSAqcGlv
+LCB1bnNpZ25lZCBtYXNrLCBib29sIGluX29uLCB1MzIgZGl2KTsKPj4+PiArICAgICBib29sICgq
+Z2V0X3B1bGxkb3duKSh2b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgcGluKTsKPj4+PiArICAg
+ICB2b2lkICgqc2V0X3B1bGxkb3duKSh2b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgbWFzaywg
+Ym9vbCBpbl9vbik7Cj4+Pj4gKyAgICAgYm9vbCAoKmdldF9zY2htaXR0X3RyaWcpKHZvaWQgX19p
+b21lbSAqcGlvLCB1bnNpZ25lZCBwaW4pOwo+Pj4+ICsgICAgIHZvaWQgKCpkaXNhYmxlX3NjaG1p
+dHRfdHJpZykodm9pZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIG1hc2spOwo+Pj4+ICt9Owo+Pj4+
+ICsKPj4+PiArc3RhdGljIGVudW0gYXQ5MV9tdXggYXQ5MV9tdXhfcGlvM19nZXRfcGVyaXBoKHZv
+aWQgX19pb21lbSAqcGlvLCB1bnNpZ25lZCBtYXNrKQo+Pj4+ICt7Cj4+Pj4gKyAgICAgdW5zaWdu
+ZWQgc2VsZWN0Owo+Pj4+ICsKPj4+PiArICAgICBpZiAoX19yYXdfcmVhZGwocGlvICsgUElPX1BT
+UikgJiBtYXNrKQo+Pj4+ICsgICAgICAgICAgICAgcmV0dXJuIEFUOTFfTVVYX0dQSU87Cj4+Pj4g
+Kwo+Pj4+ICsgICAgIHNlbGVjdCA9ICEhKF9fcmF3X3JlYWRsKHBpbyArIFBJT19BQkNEU1IxKSAm
+IG1hc2spOwo+Pj4+ICsgICAgIHNlbGVjdCB8PSAoISEoX19yYXdfcmVhZGwocGlvICsgUElPX0FC
+Q0RTUjIpICYgbWFzaykgPDwgMSk7Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldHVybiBzZWxlY3QgKyAx
+Owo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMgZW51bSBhdDkxX211eCBhdDkxX211eF9nZXRf
+cGVyaXBoKHZvaWQgX19pb21lbSAqcGlvLCB1bnNpZ25lZCBtYXNrKQo+Pj4+ICt7Cj4+Pj4gKyAg
+ICAgdW5zaWduZWQgc2VsZWN0Owo+Pj4+ICsKPj4+PiArICAgICBpZiAoX19yYXdfcmVhZGwocGlv
+ICsgUElPX1BTUikgJiBtYXNrKQo+Pj4+ICsgICAgICAgICAgICAgcmV0dXJuIEFUOTFfTVVYX0dQ
+SU87Cj4+Pj4gKwo+Pj4+ICsgICAgIHNlbGVjdCA9IF9fcmF3X3JlYWRsKHBpbyArIFBJT19BQlNS
+KSAmIG1hc2s7Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldHVybiBzZWxlY3QgKyAxOwo+Pj4+ICt9Cj4+
+Pj4gKwo+Pj4+ICtzdGF0aWMgYm9vbCBhdDkxX211eF9nZXRfZGVnbGl0Y2godm9pZCBfX2lvbWVt
+ICpwaW8sIHVuc2lnbmVkIHBpbikKPj4+PiArewo+Pj4+ICsgICAgIHJldHVybiAoX19yYXdfcmVh
+ZGwocGlvICsgUElPX0lGU1IpID4+IHBpbikgJiAweDE7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0
+YXRpYyBib29sIGF0OTFfbXV4X3BpbzNfZ2V0X2RlYm91bmNlKHZvaWQgX19pb21lbSAqcGlvLCB1
+bnNpZ25lZCBwaW4sIHUzMiAqZGl2KQo+Pj4+ICt7Cj4+Pj4gKyAgICAgKmRpdiA9IF9fcmF3X3Jl
+YWRsKHBpbyArIFBJT19TQ0RSKTsKPj4+PiArCj4+Pj4gKyAgICAgcmV0dXJuIChfX3Jhd19yZWFk
+bChwaW8gKyBQSU9fSUZTQ1NSKSA+PiBwaW4pICYgMHgxOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICtz
+dGF0aWMgYm9vbCBhdDkxX211eF9waW8zX2dldF9wdWxsZG93bih2b2lkIF9faW9tZW0gKnBpbywg
+dW5zaWduZWQgcGluKQo+Pj4+ICt7Cj4+Pj4gKyAgICAgcmV0dXJuIChfX3Jhd19yZWFkbChwaW8g
+KyBQSU9fUFBEU1IpID4+IHBpbikgJiAweDE7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBi
+b29sIGF0OTFfbXV4X3BpbzNfZ2V0X3NjaG1pdHRfdHJpZyh2b2lkIF9faW9tZW0gKnBpbywgdW5z
+aWduZWQgcGluKQo+Pj4+ICt7Cj4+Pj4gKyAgICAgcmV0dXJuIChfX3Jhd19yZWFkbChwaW8gKyBQ
+SU9fU0NITUlUVCkgPj4gcGluKSAmIDB4MTsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIHN0
+cnVjdCBhdDkxX3BpbmN0cmxfbXV4X29wcyBhdDkxcm05MjAwX29wcyA9IHsKPj4+PiArICAgICAu
+Z2V0X3BlcmlwaCAgICAgPSBhdDkxX211eF9nZXRfcGVyaXBoLAo+Pj4+ICsgICAgIC5tdXhfQV9w
+ZXJpcGggICA9IGF0OTFfbXV4X3NldF9BX3BlcmlwaCwKPj4+PiArICAgICAubXV4X0JfcGVyaXBo
+ICAgPSBhdDkxX211eF9zZXRfQl9wZXJpcGgsCj4+Pj4gKyAgICAgLmdldF9kZWdsaXRjaCAgID0g
+YXQ5MV9tdXhfZ2V0X2RlZ2xpdGNoLAo+Pj4+ICsgICAgIC5zZXRfZGVnbGl0Y2ggICA9IGF0OTFf
+bXV4X3NldF9kZWdsaXRjaCwKPj4+PiArfTsKPj4+PiArCj4+Pj4gK3N0YXRpYyBzdHJ1Y3QgYXQ5
+MV9waW5jdHJsX211eF9vcHMgYXQ5MXNhbTl4NV9vcHMgPSB7Cj4+Pj4gKyAgICAgLmdldF9wZXJp
+cGggICAgID0gYXQ5MV9tdXhfcGlvM19nZXRfcGVyaXBoLAo+Pj4+ICsgICAgIC5tdXhfQV9wZXJp
+cGggICA9IGF0OTFfbXV4X3BpbzNfc2V0X0FfcGVyaXBoLAo+Pj4+ICsgICAgIC5tdXhfQl9wZXJp
+cGggICA9IGF0OTFfbXV4X3BpbzNfc2V0X0JfcGVyaXBoLAo+Pj4+ICsgICAgIC5tdXhfQ19wZXJp
+cGggICA9IGF0OTFfbXV4X3BpbzNfc2V0X0NfcGVyaXBoLAo+Pj4+ICsgICAgIC5tdXhfRF9wZXJp
+cGggICA9IGF0OTFfbXV4X3BpbzNfc2V0X0RfcGVyaXBoLAo+Pj4+ICsgICAgIC5nZXRfZGVnbGl0
+Y2ggICA9IGF0OTFfbXV4X2dldF9kZWdsaXRjaCwKPj4+PiArICAgICAuc2V0X2RlZ2xpdGNoICAg
+PSBhdDkxX211eF9waW8zX3NldF9kZWdsaXRjaCwKPj4+PiArICAgICAuZ2V0X2RlYm91bmNlICAg
+PSBhdDkxX211eF9waW8zX2dldF9kZWJvdW5jZSwKPj4+PiArICAgICAuc2V0X2RlYm91bmNlICAg
+PSBhdDkxX211eF9waW8zX3NldF9kZWJvdW5jZSwKPj4+PiArICAgICAuZ2V0X3B1bGxkb3duICAg
+PSBhdDkxX211eF9waW8zX2dldF9wdWxsZG93biwKPj4+PiArICAgICAuc2V0X3B1bGxkb3duICAg
+PSBhdDkxX211eF9waW8zX3NldF9wdWxsZG93biwKPj4+PiArICAgICAuZ2V0X3NjaG1pdHRfdHJp
+ZyA9IGF0OTFfbXV4X3BpbzNfZ2V0X3NjaG1pdHRfdHJpZywKPj4+PiArICAgICAuZGlzYWJsZV9z
+Y2htaXR0X3RyaWcgPSBhdDkxX211eF9waW8zX2Rpc2FibGVfc2NobWl0dF90cmlnLAo+Pj4+ICt9
+Owo+Pj4+ICsKPj4+PiArc3RhdGljIGludCBhdDkxX211eF9waW4oc3RydWN0IGF0OTFfcGluY3Ry
+bCAqaW5mbywgdW5zaWduZWQgcGluLCBlbnVtIGF0OTFfbXV4IG11eCwgaW50IHVzZV9wdWxsdXAp
+Cj4+Pj4gK3sKPj4+PiArICAgICB2b2lkIF9faW9tZW0gICAgKnBpbyA9IHBpbl90b19jb250cm9s
+bGVyKGluZm8sIHBpbik7Cj4+Pj4gKyAgICAgdW5zaWduZWQgbWFzayA9IHBpbl90b19tYXNrKHBp
+bik7Cj4+Pj4gKwo+Pj4+ICsgICAgIGlmICghaW5mbykKPj4+PiArICAgICAgICAgICAgIHJldHVy
+biAtRUlOVkFMOwo+Pj4+ICsKPj4+PiArICAgICBpZiAoIXBpbykKPj4+PiArICAgICAgICAgICAg
+IHJldHVybiAtRUlOVkFMOwo+Pj4+ICsKPj4+PiArICAgICBhdDkxX211eF9kaXNhYmxlX2ludGVy
+cnVwdChwaW8sIG1hc2spOwo+Pj4+ICsKPj4+PiArICAgICBzd2l0Y2gobXV4KSB7Cj4+Pj4gKyAg
+ICAgY2FzZSBBVDkxX01VWF9HUElPOgo+Pj4+ICsgICAgICAgICAgICAgYXQ5MV9tdXhfZ3Bpb19l
+bmFibGUocGlvLCBtYXNrKTsKPj4+PiArICAgICAgICAgICAgIGJyZWFrOwo+Pj4+ICsgICAgIGNh
+c2UgQVQ5MV9NVVhfUEVSSVBIX0E6Cj4+Pj4gKyAgICAgICAgICAgICBpbmZvLT5vcHMtPm11eF9B
+X3BlcmlwaChwaW8sIG1hc2spOwo+Pj4+ICsgICAgICAgICAgICAgYnJlYWs7Cj4+Pj4gKyAgICAg
+Y2FzZSBBVDkxX01VWF9QRVJJUEhfQjoKPj4+PiArICAgICAgICAgICAgIGluZm8tPm9wcy0+bXV4
+X0JfcGVyaXBoKHBpbywgbWFzayk7Cj4+Pj4gKyAgICAgICAgICAgICBicmVhazsKPj4+PiArICAg
+ICBjYXNlIEFUOTFfTVVYX1BFUklQSF9DOgo+Pj4+ICsgICAgICAgICAgICAgaWYgKCFpbmZvLT5v
+cHMtPm11eF9DX3BlcmlwaCkKPj4+PiArICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIC1FSU5W
+QUw7Cj4+Pj4gKyAgICAgICAgICAgICBpbmZvLT5vcHMtPm11eF9DX3BlcmlwaChwaW8sIG1hc2sp
+Owo+Pj4+ICsgICAgICAgICAgICAgYnJlYWs7Cj4+Pj4gKyAgICAgY2FzZSBBVDkxX01VWF9QRVJJ
+UEhfRDoKPj4+PiArICAgICAgICAgICAgIGlmICghaW5mby0+b3BzLT5tdXhfRF9wZXJpcGgpCj4+
+Pj4gKyAgICAgICAgICAgICAgICAgICAgIHJldHVybiAtRUlOVkFMOwo+Pj4+ICsgICAgICAgICAg
+ICAgaW5mby0+b3BzLT5tdXhfRF9wZXJpcGgocGlvLCBtYXNrKTsKPj4+PiArICAgICAgICAgICAg
+IGJyZWFrOwo+Pj4+ICsgICAgIH0KPj4+PiArICAgICBpZiAobXV4KQo+Pj4+ICsgICAgICAgICAg
+ICAgYXQ5MV9tdXhfZ3Bpb19kaXNhYmxlKHBpbywgbWFzayk7Cj4+Pj4gKwo+Pj4+ICsgICAgIGlm
+ICh1c2VfcHVsbHVwID49IDApCj4+Pj4gKyAgICAgICAgICAgICBhdDkxX211eF9zZXRfcHVsbHVw
+KHBpbywgbWFzaywgdXNlX3B1bGx1cCk7Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldHVybiAwOwo+Pj4+
+ICt9Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMgc3RydWN0IG9mX2RldmljZV9pZCBhdDkxX3BpbmN0cmxf
+ZHRfaWRzW10gPSB7Cj4+Pj4gKyAgICAgewo+Pj4+ICsgICAgICAgICAgICAgLmNvbXBhdGlibGUg
+PSAiYXRtZWwsYXQ5MXJtOTIwMC1waW5jdHJsIiwKPj4+PiArICAgICAgICAgICAgIC5kYXRhID0g
+KHVuc2lnbmVkIGxvbmcpJmF0OTFybTkyMDBfb3BzLAo+Pj4+ICsgICAgIH0sIHsKPj4+PiArICAg
+ICAgICAgICAgIC5jb21wYXRpYmxlID0gImF0bWVsLGF0OTFzYW05eDUtcGluY3RybCIsCj4+Pj4g
+KyAgICAgICAgICAgICAuZGF0YSA9ICh1bnNpZ25lZCBsb25nKSZhdDkxc2FtOXg1X29wcywKPj4+
+PiArICAgICB9LCB7Cj4+Pj4gKyAgICAgICAgICAgICAvKiBzZW50aW5lbCAqLwo+Pj4+ICsgICAg
+IH0KPj4+PiArfTsKPj4+PiArCj4+Pj4gK3N0YXRpYyBzdHJ1Y3QgYXQ5MV9waW5jdHJsX211eF9v
+cHMgKmF0OTFfcGluY3RybF9nZXRfZHJpdmVyX2RhdGEoc3RydWN0IGRldmljZV9kICpkZXYpCj4+
+Pj4gK3sKPj4+PiArICAgIHN0cnVjdCBhdDkxX3BpbmN0cmxfbXV4X29wcyAqb3BzX2RhdGEgPSBO
+VUxMOwo+Pj4+ICsgICAgaW50IHJjOwo+Pj4+ICsKPj4+PiArICAgIGlmIChkZXYtPmRldmljZV9u
+b2RlKSB7Cj4+Pj4gKyAgICAgICAgIGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgKm1hdGNoOwo+
+Pj4+ICsgICAgICAgICBtYXRjaCA9IG9mX21hdGNoX25vZGUoYXQ5MV9waW5jdHJsX2R0X2lkcywg
+ZGV2LT5kZXZpY2Vfbm9kZSk7Cj4+Pj4gKyAgICAgICAgIGlmICghbWF0Y2gpCj4+Pj4gKyAgICAg
+ICAgICAgICAgICAgICAgIG9wc19kYXRhID0gTlVMTDsKPj4+PiArICAgICAgICAgZWxzZQo+Pj4+
+ICsgICAgICAgICAgICAgICAgICAgICBvcHNfZGF0YSA9IChzdHJ1Y3QgYXQ5MV9waW5jdHJsX211
+eF9vcHMgKiltYXRjaC0+ZGF0YTsKPj4+PiArICAgIH0KPj4+PiArICAgIGVsc2Ugewo+Pj4+ICsg
+ICAgICAgICByYyA9IGRldl9nZXRfZHJ2ZGF0YShkZXYsICh1bnNpZ25lZCBsb25nICopJm9wc19k
+YXRhKTsKPj4+PiArICAgICAgICAgICAgIGlmIChyYykKPj4+PiArICAgICAgICAgICAgIG9wc19k
+YXRhID0gTlVMTDsKPj4+PiArICAgIH0KPj4+PiArCj4+Pj4gKyAgICByZXR1cm4gb3BzX2RhdGE7
+Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbnQgYXQ5MV9waW5jdHJsX3NldF9jb25mKHN0
+cnVjdCBhdDkxX3BpbmN0cmwgKmluZm8sIHVuc2lnbmVkIGludCBwaW5fbnVtLCB1bnNpZ25lZCBp
+bnQgbXV4LCB1bnNpZ25lZCBpbnQgY29uZikKPj4+PiArewo+Pj4+ICsgICAgIHVuc2lnbmVkIGlu
+dCBtYXNrOwo+Pj4+ICsgICAgIHZvaWQgX19pb21lbSAqcGlvOwo+Pj4+ICsKPj4+PiArICAgICBw
+aW8gPSBwaW5fdG9fY29udHJvbGxlcihpbmZvLCBwaW5fbnVtKTsKPj4+PiArICAgICBtYXNrID0g
+cGluX3RvX21hc2socGluX251bSk7Cj4+Pj4gKwo+Pj4+ICsgICAgIGlmIChjb25mICYgUFVMTF9V
+UCAmJiBjb25mICYgUFVMTF9ET1dOKQo+Pj4+ICsgICAgICAgICAgICAgcmV0dXJuIC1FSU5WQUw7
+Cj4+Pj4gKwo+Pj4+ICsgICAgIGF0OTFfbXV4X3NldF9wdWxsdXAocGlvLCBtYXNrLCBjb25mICYg
+UFVMTF9VUCk7Cj4+Pj4gKyAgICAgYXQ5MV9tdXhfc2V0X211bHRpZHJpdmUocGlvLCBtYXNrLCBj
+b25mICYgTVVMVElfRFJJVkUpOwo+Pj4+ICsgICAgIGlmIChpbmZvLT5vcHMtPnNldF9kZWdsaXRj
+aCkKPj4+PiArICAgICAgICAgICAgIGluZm8tPm9wcy0+c2V0X2RlZ2xpdGNoKHBpbywgbWFzaywg
+Y29uZiAmIERFR0xJVENIKTsKPj4+PiArICAgICBpZiAoaW5mby0+b3BzLT5zZXRfZGVib3VuY2Up
+Cj4+Pj4gKyAgICAgICAgICAgICBpbmZvLT5vcHMtPnNldF9kZWJvdW5jZShwaW8sIG1hc2ssIGNv
+bmYgJiBERUJPVU5DRSwKPj4+PiArICAgICAgICAgICAgICAgICAgICAgKGNvbmYgJiBERUJPVU5D
+RV9WQUwpID4+IERFQk9VTkNFX1ZBTF9TSElGVCk7Cj4+Pj4gKyAgICAgaWYgKGluZm8tPm9wcy0+
+c2V0X3B1bGxkb3duKQo+Pj4+ICsgICAgICAgICAgICAgaW5mby0+b3BzLT5zZXRfcHVsbGRvd24o
+cGlvLCBtYXNrLCBjb25mICYgUFVMTF9ET1dOKTsKPj4+PiArICAgICBpZiAoaW5mby0+b3BzLT5k
+aXNhYmxlX3NjaG1pdHRfdHJpZyAmJiBjb25mICYgRElTX1NDSE1JVCkKPj4+PiArICAgICAgICAg
+ICAgIGluZm8tPm9wcy0+ZGlzYWJsZV9zY2htaXR0X3RyaWcocGlvLCBtYXNrKTsKPj4+PiArCj4+
+Pj4gKyAgICAgcmV0dXJuIDA7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbnQgYXQ5MV9w
+aW5jdHJsX3NldF9zdGF0ZShzdHJ1Y3QgcGluY3RybF9kZXZpY2UgKnBkZXYsIHN0cnVjdCBkZXZp
+Y2Vfbm9kZSAqbnApCj4+Pj4gK3sKPj4+PiArICAgICBzdHJ1Y3QgYXQ5MV9waW5jdHJsICppbmZv
+Owo+Pj4+ICsgICAgIGNvbnN0IF9fYmUzMiAqbGlzdDsKPj4+PiArICAgICBpbnQgaSwgc2l6ZTsK
+Pj4+PiArICAgICBpbnQgcmV0ID0gMDsKPj4+PiArICAgICBpbnQgYmFua19udW0sIHBpbl9udW0s
+IG11eCwgY29uZjsKPj4+PiArCj4+Pj4gKyAgICAgaW5mbyA9IHRvX2F0OTFfcGluY3RybChwZGV2
+KTsKPj4+PiArCj4+Pj4gKyAgICAgbGlzdCA9IG9mX2dldF9wcm9wZXJ0eShucCwgImF0bWVsLHBp
+bnMiLCAmc2l6ZSk7Cj4+Pj4gKyAgICAgc2l6ZSAvPSBzaXplb2YoKmxpc3QpOwo+Pj4+ICsKPj4+
+PiArICAgICBpZiAoIXNpemUgfHwgc2l6ZSAlIDQpIHsKPj4+PiArICAgICAgICAgICAgIGRldl9l
+cnIocGRldi0+ZGV2LCAid3JvbmcgcGlucyBudW1iZXIgb3IgcGlucyBhbmQgY29uZmlncyBzaG91
+bGQgYmUgYnkgNFxuIik7Cj4+Pj4gKyAgICAgICAgICAgICByZXR1cm4gLUVJTlZBTDsKPj4+PiAr
+ICAgICB9Cj4+Pj4gKwo+Pj4+ICsgICAgIGZvciAoaSA9IDA7IGkgPCBzaXplOyBpICs9IDQpIHsK
+Pj4+PiArICAgICAgICAgICAgIGJhbmtfbnVtID0gYmUzMl90b19jcHUoKmxpc3QrKyk7Cj4+Pj4g
+KyAgICAgICAgICAgICBwaW5fbnVtID0gYmUzMl90b19jcHUoKmxpc3QrKyk7Cj4+Pj4gKyAgICAg
+ICAgICAgICBtdXggPSBiZTMyX3RvX2NwdSgqbGlzdCsrKTsKPj4+PiArICAgICAgICAgICAgIGNv
+bmYgPSBiZTMyX3RvX2NwdSgqbGlzdCsrKTsKPj4+PiArCj4+Pj4gKyAgICAgICAgICAgICByZXQg
+PSBhdDkxX211eF9waW4oaW5mbywgcGluX251bSwgbXV4LCBjb25mICYgUFVMTF9VUCk7Cj4+Pj4g
+KyAgICAgICAgICAgICBpZiAocmV0KSB7Cj4+Pj4gKyAgICAgICAgICAgICAgICAgICAgIGRldl9l
+cnIocGRldi0+ZGV2LCAiZmFpbGVkIHRvIG11eCBwaW4gJWRcbiIsIHBpbl9udW0pOwo+Pj4+ICsg
+ICAgICAgICAgICAgICAgICAgICByZXR1cm4gcmV0Owo+Pj4+ICsgICAgICAgICAgICAgfQo+Pj4+
+ICsKPj4+PiArICAgICAgICAgICAgIHJldCA9IGF0OTFfcGluY3RybF9zZXRfY29uZihpbmZvLCBw
+aW5fbnVtLCBtdXgsIGNvbmYpOwo+Pj4+ICsgICAgICAgICAgICAgaWYgKHJldCkgewo+Pj4+ICsg
+ICAgICAgICAgICAgICAgICAgICBkZXZfZXJyKHBkZXYtPmRldiwgImZhaWxlZCB0byBzZXQgY29u
+ZiBvbiBwaW4gJWRcbiIsIHBpbl9udW0pOwo+Pj4+ICsgICAgICAgICAgICAgICAgICAgICByZXR1
+cm4gcmV0Owo+Pj4+ICsgICAgICAgICAgICAgfQo+Pj4+ICsgICAgIH0KPj4+PiArCj4+Pj4gKyAg
+ICAgcmV0dXJuIHJldDsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIHN0cnVjdCBwaW5jdHJs
+X29wcyBhdDkxX3BpbmN0cmxfb3BzID0gewo+Pj4+ICsgICAgIC5zZXRfc3RhdGUgPSBhdDkxX3Bp
+bmN0cmxfc2V0X3N0YXRlLAo+Pj4+ICt9Owo+Pj4+ICsKPj4+PiArc3RhdGljIGludCBhdDkxX3Bp
+bmN0cmxfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCj4+Pj4gK3sKPj4+PiArICAgICBzdHJ1
+Y3QgYXQ5MV9waW5jdHJsICppbmZvOwo+Pj4+ICsgICAgIGludCByZXQ7Cj4+Pj4gKwo+Pj4+ICsg
+ICAgIGluZm8gPSB4emFsbG9jKHNpemVvZihzdHJ1Y3QgYXQ5MV9waW5jdHJsKSk7Cj4+Pj4gKwo+
+Pj4+ICsgICAgIGluZm8tPm9wcyA9IGF0OTFfcGluY3RybF9nZXRfZHJpdmVyX2RhdGEoZGV2KTsK
+Pj4+PiArICAgICBpZiAoIWluZm8tPm9wcykgewo+Pj4+ICsgICAgICAgICAgICAgZGV2X2Vycihk
+ZXYsICJmYWlsZWQgdG8gcmV0cmlldmUgZHJpdmVyIGRhdGFcbiIpOwo+Pj4+ICsgICAgICAgICAg
+ICAgcmV0dXJuIC1FTk9ERVY7Cj4+Pj4gKyAgICAgfQo+Pj4+ICsKPj4+PiArICAgICBpbmZvLT5w
+Y3RsLmRldiA9IGRldjsKPj4+PiArICAgICBpbmZvLT5wY3RsLm9wcyA9ICZhdDkxX3BpbmN0cmxf
+b3BzOwo+Pj4+ICsKPj4+PiArICAgICByZXQgPSBwaW5jdHJsX3JlZ2lzdGVyKCZpbmZvLT5wY3Rs
+KTsKPj4+PiArICAgICBpZiAocmV0KQo+Pj4+ICsgICAgICAgICAgICAgcmV0dXJuIHJldDsKPj4+
+PiArCj4+Pj4gKyAgICAgZGV2X2luZm8oZGV2LCAiQVQ5MSBwaW5jdHJsIHJlZ2lzdHJlZFxuIik7
+Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldHVybiAwOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMg
+c3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCBhdDkxX3BpbmN0cmxfaWRzW10gPSB7Cj4+Pj4gKyAg
+ICAgewo+Pj4+ICsgICAgICAgICAgICAgLm5hbWUgPSAiYXQ5MXJtOTIwMC1waW5jdHJsIiwKPj4+
+PiArICAgICAgICAgICAgIC5kcml2ZXJfZGF0YSA9ICh1bnNpZ25lZCBsb25nKSZhdDkxcm05MjAw
+X29wcywKPj4+PiArICAgICB9LCB7Cj4+Pj4gKyAgICAgICAgICAgICAubmFtZSA9ICJhdDkxc2Ft
+OXg1LXBpbmN0cmwiLAo+Pj4+ICsgICAgICAgICAgICAgLmRyaXZlcl9kYXRhID0gKHVuc2lnbmVk
+IGxvbmcpJmF0OTFzYW05eDVfb3BzLAo+Pj4+ICsgICAgIH0sIHsKPj4+PiArICAgICAgICAgICAg
+IC8qIHNlbnRpbmVsICovCj4+Pj4gKyAgICAgfSwKPj4+PiArfTsKPj4+PiArCj4+Pj4gK3N0YXRp
+YyBzdHJ1Y3QgZHJpdmVyX2QgYXQ5MV9waW5jdHJsX2RyaXZlciA9IHsKPj4+PiArICAgICAubmFt
+ZSA9ICJwaW5jdHJsLWF0OTEiLAo+Pj4+ICsgICAgIC5wcm9iZSA9IGF0OTFfcGluY3RybF9wcm9i
+ZSwKPj4+PiArICAgICAuaWRfdGFibGUgPSBhdDkxX3BpbmN0cmxfaWRzLAo+Pj4+ICsgICAgIC5v
+Zl9jb21wYXRpYmxlID0gRFJWX09GX0NPTVBBVChhdDkxX3BpbmN0cmxfZHRfaWRzKSwKPj4+PiAr
+fTsKPj4+PiArCj4+Pj4gK3N0YXRpYyBpbnQgYXQ5MV9waW5jdHJsX2luaXQodm9pZCkKPj4+PiAr
+ewo+Pj4+ICsgICAgIHJldHVybiBwbGF0Zm9ybV9kcml2ZXJfcmVnaXN0ZXIoJmF0OTFfcGluY3Ry
+bF9kcml2ZXIpOwo+Pj4+ICt9Cj4+Pj4gK2NvcmVkZXZpY2VfaW5pdGNhbGwoYXQ5MV9waW5jdHJs
+X2luaXQpOwo+Pj4+ICsKPj4+PiArc3RhdGljIGludCBhdDkxX2dwaW9fZ2V0KHN0cnVjdCBncGlv
+X2NoaXAgKmNoaXAsIHVuc2lnbmVkIG9mZnNldCkKPj4+PiArewo+Pj4+ICsgICAgIHN0cnVjdCBh
+dDkxX2dwaW9fY2hpcCAqYXQ5MV9ncGlvID0gdG9fYXQ5MV9ncGlvX2NoaXAoY2hpcCk7Cj4+Pj4g
+KyAgICAgdm9pZCBfX2lvbWVtICpwaW8gPSBhdDkxX2dwaW8tPnJlZ2Jhc2U7Cj4+Pj4gKyAgICAg
+dW5zaWduZWQgbWFzayA9IDEgPDwgb2Zmc2V0Owo+Pj4+ICsKPj4+PiArICAgICByZXR1cm4gYXQ5
+MV9tdXhfZ3Bpb19nZXQocGlvLCBtYXNrKTsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIHZv
+aWQgYXQ5MV9ncGlvX3NldChzdHJ1Y3QgZ3Bpb19jaGlwICpjaGlwLCB1bnNpZ25lZCBvZmZzZXQs
+IGludCB2YWx1ZSkKPj4+PiArewo+Pj4+ICsgICAgIHN0cnVjdCBhdDkxX2dwaW9fY2hpcCAqYXQ5
+MV9ncGlvID0gdG9fYXQ5MV9ncGlvX2NoaXAoY2hpcCk7Cj4+Pj4gKyAgICAgdm9pZCBfX2lvbWVt
+ICpwaW8gPSBhdDkxX2dwaW8tPnJlZ2Jhc2U7Cj4+Pj4gKyAgICAgdW5zaWduZWQgbWFzayA9IDEg
+PDwgb2Zmc2V0Owo+Pj4+ICsKPj4+PiArICAgICBhdDkxX211eF9ncGlvX3NldChwaW8sIG1hc2ss
+IHZhbHVlKTsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIGludCBhdDkxX2dwaW9fZGlyZWN0
+aW9uX291dHB1dChzdHJ1Y3QgZ3Bpb19jaGlwICpjaGlwLCB1bnNpZ25lZCBvZmZzZXQsCj4+Pj4g
+KyAgICAgICAgICAgICBpbnQgdmFsdWUpCj4+Pj4gK3sKPj4+PiArICAgICBzdHJ1Y3QgYXQ5MV9n
+cGlvX2NoaXAgKmF0OTFfZ3BpbyA9IHRvX2F0OTFfZ3Bpb19jaGlwKGNoaXApOwo+Pj4+ICsgICAg
+IHZvaWQgX19pb21lbSAqcGlvID0gYXQ5MV9ncGlvLT5yZWdiYXNlOwo+Pj4+ICsgICAgIHVuc2ln
+bmVkIG1hc2sgPSAxIDw8IG9mZnNldDsKPj4+PiArCj4+Pj4gKyAgICAgYXQ5MV9tdXhfZ3Bpb19z
+ZXQocGlvLCBtYXNrLCB2YWx1ZSk7Cj4+Pj4gKyAgICAgX19yYXdfd3JpdGVsKG1hc2ssIHBpbyAr
+IFBJT19PRVIpOwo+Pj4+ICsKPj4+PiArICAgICByZXR1cm4gMDsKPj4+PiArfQo+Pj4+ICsKPj4+
+PiArc3RhdGljIGludCBhdDkxX2dwaW9fZGlyZWN0aW9uX2lucHV0KHN0cnVjdCBncGlvX2NoaXAg
+KmNoaXAsIHVuc2lnbmVkIG9mZnNldCkKPj4+PiArewo+Pj4+ICsgICAgIHN0cnVjdCBhdDkxX2dw
+aW9fY2hpcCAqYXQ5MV9ncGlvID0gdG9fYXQ5MV9ncGlvX2NoaXAoY2hpcCk7Cj4+Pj4gKyAgICAg
+dm9pZCBfX2lvbWVtICpwaW8gPSBhdDkxX2dwaW8tPnJlZ2Jhc2U7Cj4+Pj4gKyAgICAgdW5zaWdu
+ZWQgbWFzayA9IDEgPDwgb2Zmc2V0Owo+Pj4+ICsKPj4+PiArICAgICBfX3Jhd193cml0ZWwobWFz
+aywgcGlvICsgUElPX09EUik7Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldHVybiAwOwo+Pj4+ICt9Cj4+
+Pj4gKwo+Pj4+ICtzdGF0aWMgaW50IGF0OTFfZ3Bpb19yZXF1ZXN0KHN0cnVjdCBncGlvX2NoaXAg
+KmNoaXAsIHVuc2lnbmVkIG9mZnNldCkKPj4+PiArewo+Pj4+ICsgICAgIHN0cnVjdCBhdDkxX2dw
+aW9fY2hpcCAqYXQ5MV9ncGlvID0gdG9fYXQ5MV9ncGlvX2NoaXAoY2hpcCk7Cj4+Pj4gKyAgICAg
+dm9pZCBfX2lvbWVtICpwaW8gPSBhdDkxX2dwaW8tPnJlZ2Jhc2U7Cj4+Pj4gKyAgICAgdW5zaWdu
+ZWQgbWFzayA9IDEgPDwgb2Zmc2V0Owo+Pj4+ICsKPj4+PiArICAgICBkZXZfZGJnKGNoaXAtPmRl
+diwgIiVzOiVkIHBpbyVjJWQoJWQpXG4iLCBfX2Z1bmNfXywgX19MSU5FX18sCj4+Pj4gKyAgICAg
+ICAgICAgICAgJ0EnICsgcGluX3RvX2JhbmsoY2hpcC0+YmFzZSksIG9mZnNldCwgY2hpcC0+YmFz
+ZSArIG9mZnNldCk7Cj4+Pj4gKyAgICAgYXQ5MV9tdXhfZ3Bpb19lbmFibGUocGlvLCBtYXNrKTsK
+Pj4+PiArCj4+Pj4gKyAgICAgcmV0dXJuIDA7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyB2
+b2lkIGF0OTFfZ3Bpb19mcmVlKHN0cnVjdCBncGlvX2NoaXAgKmNoaXAsIHVuc2lnbmVkIG9mZnNl
+dCkKPj4+PiArewo+Pj4+ICsgICAgIGRldl9kYmcoY2hpcC0+ZGV2LCAiJXM6JWQgcGlvJWMlZCgl
+ZClcbiIsIF9fZnVuY19fLCBfX0xJTkVfXywKPj4+PiArICAgICAgICAgICAgICAnQScgKyBwaW5f
+dG9fYmFuayhjaGlwLT5iYXNlKSwgb2Zmc2V0LCBjaGlwLT5iYXNlICsgb2Zmc2V0KTsKPj4+PiAr
+fQo+Pj4+ICsKPj4+PiArc3RhdGljIHN0cnVjdCBncGlvX29wcyBhdDkxX2dwaW9fb3BzID0gewo+
+Pj4+ICsgICAgIC5yZXF1ZXN0ID0gYXQ5MV9ncGlvX3JlcXVlc3QsCj4+Pj4gKyAgICAgLmZyZWUg
+PSBhdDkxX2dwaW9fZnJlZSwKPj4+PiArICAgICAuZGlyZWN0aW9uX2lucHV0ID0gYXQ5MV9ncGlv
+X2RpcmVjdGlvbl9pbnB1dCwKPj4+PiArICAgICAuZGlyZWN0aW9uX291dHB1dCA9IGF0OTFfZ3Bp
+b19kaXJlY3Rpb25fb3V0cHV0LAo+Pj4+ICsgICAgIC5nZXQgPSBhdDkxX2dwaW9fZ2V0LAo+Pj4+
+ICsgICAgIC5zZXQgPSBhdDkxX2dwaW9fc2V0LAo+Pj4+ICt9Owo+Pj4+ICsKPj4+PiArc3RhdGlj
+IHN0cnVjdCBvZl9kZXZpY2VfaWQgYXQ5MV9ncGlvX2R0X2lkc1tdID0gewo+Pj4+ICsgICAgIHsK
+Pj4+PiArICAgICAgICAgICAgIC5jb21wYXRpYmxlID0gImF0bWVsLGF0OTFybTkyMDAtZ3BpbyIs
+Cj4+Pj4gKyAgICAgfSwgewo+Pj4+ICsgICAgICAgICAgICAgLmNvbXBhdGlibGUgPSAiYXRtZWws
+YXQ5MXNhbTl4NS1ncGlvIiwKPj4+PiArICAgICB9LCB7Cj4+Pj4gKyAgICAgICAgICAgICAvKiBz
+ZW50aW5lbCAqLwo+Pj4+ICsgICAgIH0sCj4+Pj4gK307Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMgaW50
+IGF0OTFfZ3Bpb19wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPj4+PiArewo+Pj4+ICsgICAg
+IHN0cnVjdCBhdDkxX2dwaW9fY2hpcCAqYXQ5MV9ncGlvOwo+Pj4+ICsgICAgIHN0cnVjdCBjbGsg
+KmNsazsKPj4+PiArICAgICBpbnQgcmV0Owo+Pj4+ICsgICAgIGludCBhbGlhc19pZHggPSBvZl9h
+bGlhc19nZXRfaWQoZGV2LT5kZXZpY2Vfbm9kZSwgImdwaW8iKTsKPj4+PiArCj4+Pj4gKyAgICAg
+QlVHX09OKGRldi0+aWQgPiBNQVhfR1BJT19CQU5LUyk7Cj4+Pj4gKwo+Pj4+ICsgICAgIGF0OTFf
+Z3BpbyA9ICZncGlvX2NoaXBbYWxpYXNfaWR4XTsKPj4+PiArCj4+Pj4gKyAgICAgY2xrID0gY2xr
+X2dldChkZXYsIE5VTEwpOwo+Pj4+ICsgICAgIGlmIChJU19FUlIoY2xrKSkgewo+Pj4+ICsgICAg
+ICAgICAgICAgcmV0ID0gUFRSX0VSUihjbGspOwo+Pj4+ICsgICAgICAgICAgICAgZGV2X2Vycihk
+ZXYsICJjbG9jayBub3QgZm91bmQ6ICVkXG4iLCByZXQpOwo+Pj4+ICsgICAgICAgICAgICAgcmV0
+dXJuIHJldDsKPj4+PiArICAgICB9Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldCA9IGNsa19lbmFibGUo
+Y2xrKTsKPj4+PiArICAgICBpZiAocmV0IDwgMCkgewo+Pj4+ICsgICAgICAgICAgICAgZGV2X2Vy
+cihkZXYsICJjbG9jayBmYWlsZWQgdG8gZW5hYmxlOiAlZFxuIiwgcmV0KTsKPj4+PiArICAgICAg
+ICAgICAgIGNsa19wdXQoY2xrKTsKPj4+PiArICAgICAgICAgICAgIHJldHVybiByZXQ7Cj4+Pj4g
+KyAgICAgfQo+Pj4+ICsKPj4+PiArICAgICBncGlvX2JhbmtzID0gbWF4KGdwaW9fYmFua3MsIGFs
+aWFzX2lkeCArIDEpOwo+Pj4+ICsgICAgIGF0OTFfZ3Bpby0+cmVnYmFzZSA9IGRldl9yZXF1ZXN0
+X21lbV9yZWdpb24oZGV2LCAwKTsKPj4+PiArCj4+Pj4gKyAgICAgYXQ5MV9ncGlvLT5jaGlwLm9w
+cyA9ICZhdDkxX2dwaW9fb3BzOwo+Pj4+ICsgICAgIGF0OTFfZ3Bpby0+Y2hpcC5uZ3BpbyA9IE1B
+WF9OQl9HUElPX1BFUl9CQU5LOwo+Pj4+ICsgICAgIGF0OTFfZ3Bpby0+Y2hpcC5kZXYgPSBkZXY7
+Cj4+Pj4gKyAgICAgYXQ5MV9ncGlvLT5jaGlwLmJhc2UgPSBkZXYtPmlkICogTUFYX05CX0dQSU9f
+UEVSX0JBTks7Cj4+Pj4gKwo+Pj4+ICsgICAgIHJldCA9IGdwaW9jaGlwX2FkZCgmYXQ5MV9ncGlv
+LT5jaGlwKTsKPj4+PiArICAgICBpZiAocmV0KSB7Cj4+Pj4gKyAgICAgICAgICAgICBkZXZfZXJy
+KGRldiwgImNvdWxkbid0IGFkZCBncGlvY2hpcCwgcmV0ID0gJWRcbiIsIHJldCk7Cj4+Pj4gKyAg
+ICAgICAgICAgICByZXR1cm4gcmV0Owo+Pj4+ICsgICAgIH0KPj4+PiArCj4+Pj4gKyAgICAgZGV2
+X2luZm8oZGV2LCAiQVQ5MSBncGlvIGRyaXZlciByZWdpc3RyZWRcbiIpOwo+Pj4+ICsKPj4+PiAr
+ICAgICByZXR1cm4gMDsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIHN0cnVjdCBwbGF0Zm9y
+bV9kZXZpY2VfaWQgYXQ5MV9ncGlvX2lkc1tdID0gewo+Pj4+ICsgICAgIHsKPj4+PiArICAgICAg
+ICAgICAgIC5uYW1lID0gImF0OTFybTkyMDAtZ3BpbyIsCj4+Pj4gKyAgICAgfSwgewo+Pj4+ICsg
+ICAgICAgICAgICAgLm5hbWUgPSAiYXQ5MXNhbTl4NS1ncGlvIiwKPj4+PiArICAgICB9LCB7Cj4+
+Pj4gKyAgICAgICAgICAgICAvKiBzZW50aW5lbCAqLwo+Pj4+ICsgICAgIH0sCj4+Pj4gK307Cj4+
+Pj4gKwo+Pj4+ICtzdGF0aWMgc3RydWN0IGRyaXZlcl9kIGF0OTFfZ3Bpb19kcml2ZXIgPSB7Cj4+
+Pj4gKyAgICAgLm5hbWUgPSAiZ3Bpby1hdDkxIiwKPj4+PiArICAgICAucHJvYmUgPSBhdDkxX2dw
+aW9fcHJvYmUsCj4+Pj4gKyAgICAgLmlkX3RhYmxlID0gYXQ5MV9ncGlvX2lkcywKPj4+PiArICAg
+ICAub2ZfY29tcGF0aWJsZSAgPSBEUlZfT0ZfQ09NUEFUKGF0OTFfZ3Bpb19kdF9pZHMpLAo+Pj4+
+ICt9Owo+Pj4+ICsKPj4+PiArc3RhdGljIGludCBhdDkxX2dwaW9faW5pdCh2b2lkKQo+Pj4+ICt7
+Cj4+Pj4gKyAgICAgcmV0dXJuIHBsYXRmb3JtX2RyaXZlcl9yZWdpc3RlcigmYXQ5MV9ncGlvX2Ry
+aXZlcik7Cj4+Pj4gK30KPj4+PiArY29yZWRldmljZV9pbml0Y2FsbChhdDkxX2dwaW9faW5pdCk7
+Cj4+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvcGluY3RybC9waW5jdHJsLWF0OTEuaCBiL2RyaXZl
+cnMvcGluY3RybC9waW5jdHJsLWF0OTEuaAo+Pj4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4+Pj4g
+aW5kZXggMDAwMDAwMC4uZTcxOWZiOAo+Pj4+IC0tLSAvZGV2L251bGwKPj4+PiArKysgYi9kcml2
+ZXJzL3BpbmN0cmwvcGluY3RybC1hdDkxLmgKPj4+PiBAQCAtMCwwICsxLDE0OCBAQAo+Pj4+ICsv
+Kgo+Pj4+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMTEtMjAxMiBKZWFuLUNocmlzdG9waGUgUExBR05J
+T0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgo+Pj4+ICsgKgo+Pj4+ICsgKiBVbmRl
+ciBHUEx2MiBvbmx5Cj4+Pj4gKyAqLwo+Pj4+ICsKPj4+PiArI2lmbmRlZiBfX0FUOTFfR1BJT19I
+X18KPj4+PiArI2RlZmluZSBfX0FUOTFfR1BJT19IX18KPj4+PiArCj4+Pj4gKyNpZm5kZWYgX19n
+cGlvX2luaXQKPj4+PiArI2RlZmluZSBfX2dwaW9faW5pdAo+Pj4+ICsjZW5kaWYKPj4+PiArCj4+
+Pj4gKyNkZWZpbmUgTUFYX05CX0dQSU9fUEVSX0JBTksgMzIKPj4+PiArCj4+Pj4gK3N0YXRpYyBp
+bmxpbmUgdW5zaWduZWQgcGluX3RvX2JhbmsodW5zaWduZWQgcGluKQo+Pj4+ICt7Cj4+Pj4gKyAg
+ICAgcmV0dXJuIHBpbiAvIE1BWF9OQl9HUElPX1BFUl9CQU5LOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+
+ICtzdGF0aWMgaW5saW5lIHVuc2lnbmVkIHBpbl90b19iYW5rX29mZnNldCh1bnNpZ25lZCBwaW4p
+Cj4+Pj4gK3sKPj4+PiArICAgICByZXR1cm4gcGluICUgTUFYX05CX0dQSU9fUEVSX0JBTks7Cj4+
+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbmxpbmUgdW5zaWduZWQgcGluX3RvX21hc2sodW5z
+aWduZWQgcGluKQo+Pj4+ICt7Cj4+Pj4gKyAgICAgcmV0dXJuIDEgPDwgcGluX3RvX2Jhbmtfb2Zm
+c2V0KHBpbik7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211
+eF9kaXNhYmxlX2ludGVycnVwdCh2b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgbWFzaykKPj4+
+PiArewo+Pj4+ICsgICAgIF9fcmF3X3dyaXRlbChtYXNrLCBwaW8gKyBQSU9fSURSKTsKPj4+PiAr
+fQo+Pj4+ICsKPj4+PiArc3RhdGljIGlubGluZSB2b2lkIGF0OTFfbXV4X3NldF9wdWxsdXAodm9p
+ZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIG1hc2ssIGJvb2wgb24pCj4+Pj4gK3sKPj4+PiArICAg
+ICBfX3Jhd193cml0ZWwobWFzaywgcGlvICsgKG9uID8gUElPX1BVRVIgOiBQSU9fUFVEUikpOwo+
+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMgaW5saW5lIHZvaWQgYXQ5MV9tdXhfc2V0X211bHRp
+ZHJpdmUodm9pZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIG1hc2ssIGJvb2wgb24pCj4+Pj4gK3sK
+Pj4+PiArICAgICBfX3Jhd193cml0ZWwobWFzaywgcGlvICsgKG9uID8gUElPX01ERVIgOiBQSU9f
+TUREUikpOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMgaW5saW5lIHZvaWQgYXQ5MV9tdXhf
+c2V0X0FfcGVyaXBoKHZvaWQgX19pb21lbSAqcGlvLCB1bnNpZ25lZCBtYXNrKQo+Pj4+ICt7Cj4+
+Pj4gKyAgICAgX19yYXdfd3JpdGVsKG1hc2ssIHBpbyArIFBJT19BU1IpOwo+Pj4+ICt9Cj4+Pj4g
+Kwo+Pj4+ICtzdGF0aWMgaW5saW5lIHZvaWQgYXQ5MV9tdXhfc2V0X0JfcGVyaXBoKHZvaWQgX19p
+b21lbSAqcGlvLCB1bnNpZ25lZCBtYXNrKQo+Pj4+ICt7Cj4+Pj4gKyAgICAgX19yYXdfd3JpdGVs
+KG1hc2ssIHBpbyArIFBJT19CU1IpOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMgaW5saW5l
+IHZvaWQgYXQ5MV9tdXhfcGlvM19zZXRfQV9wZXJpcGgodm9pZCBfX2lvbWVtICpwaW8sIHVuc2ln
+bmVkIG1hc2spCj4+Pj4gK3sKPj4+PiArCj4+Pj4gKyAgICAgX19yYXdfd3JpdGVsKF9fcmF3X3Jl
+YWRsKHBpbyArIFBJT19BQkNEU1IxKSAmIH5tYXNrLAo+Pj4+ICsgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBwaW8gKyBQSU9fQUJDRFNSMSk7Cj4+Pj4gKyAgICAg
+X19yYXdfd3JpdGVsKF9fcmF3X3JlYWRsKHBpbyArIFBJT19BQkNEU1IyKSAmIH5tYXNrLAo+Pj4+
+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwaW8gKyBQSU9f
+QUJDRFNSMik7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211
+eF9waW8zX3NldF9CX3BlcmlwaCh2b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgbWFzaykKPj4+
+PiArewo+Pj4+ICsgICAgIF9fcmF3X3dyaXRlbChfX3Jhd19yZWFkbChwaW8gKyBQSU9fQUJDRFNS
+MSkgfCBtYXNrLAo+Pj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICBwaW8gKyBQSU9fQUJDRFNSMSk7Cj4+Pj4gKyAgICAgX19yYXdfd3JpdGVsKF9fcmF3X3Jl
+YWRsKHBpbyArIFBJT19BQkNEU1IyKSAmIH5tYXNrLAo+Pj4+ICsgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBwaW8gKyBQSU9fQUJDRFNSMik7Cj4+Pj4gK30KPj4+
+PiArCj4+Pj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211eF9waW8zX3NldF9DX3BlcmlwaCh2
+b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgbWFzaykKPj4+PiArewo+Pj4+ICsgICAgIF9fcmF3
+X3dyaXRlbChfX3Jhd19yZWFkbChwaW8gKyBQSU9fQUJDRFNSMSkgJiB+bWFzaywgcGlvICsgUElP
+X0FCQ0RTUjEpOwo+Pj4+ICsgICAgIF9fcmF3X3dyaXRlbChfX3Jhd19yZWFkbChwaW8gKyBQSU9f
+QUJDRFNSMikgfCBtYXNrLCBwaW8gKyBQSU9fQUJDRFNSMik7Cj4+Pj4gK30KPj4+PiArCj4+Pj4g
+K3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211eF9waW8zX3NldF9EX3BlcmlwaCh2b2lkIF9faW9t
+ZW0gKnBpbywgdW5zaWduZWQgbWFzaykKPj4+PiArewo+Pj4+ICsgICAgIF9fcmF3X3dyaXRlbChf
+X3Jhd19yZWFkbChwaW8gKyBQSU9fQUJDRFNSMSkgfCBtYXNrLCBwaW8gKyBQSU9fQUJDRFNSMSk7
+Cj4+Pj4gKyAgICAgX19yYXdfd3JpdGVsKF9fcmF3X3JlYWRsKHBpbyArIFBJT19BQkNEU1IyKSB8
+IG1hc2ssIHBpbyArIFBJT19BQkNEU1IyKTsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIGlu
+bGluZSB2b2lkIGF0OTFfbXV4X3NldF9kZWdsaXRjaCh2b2lkIF9faW9tZW0gKnBpbywgdW5zaWdu
+ZWQgbWFzaywgYm9vbCBpc19vbikKPj4+PiArewo+Pj4+ICsgICAgIF9fcmF3X3dyaXRlbChtYXNr
+LCBwaW8gKyAoaXNfb24gPyBQSU9fSUZFUiA6IFBJT19JRkRSKSk7Cj4+Pj4gK30KPj4+PiArCj4+
+Pj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211eF9waW8zX3NldF9kZWdsaXRjaCh2b2lkIF9f
+aW9tZW0gKnBpbywgdW5zaWduZWQgbWFzaywgYm9vbCBpc19vbikKPj4+PiArewo+Pj4+ICsgICAg
+IGlmIChpc19vbikKPj4+PiArICAgICAgICAgICAgIF9fcmF3X3dyaXRlbChtYXNrLCBwaW8gKyBQ
+SU9fSUZTQ0RSKTsKPj4+PiArICAgICBhdDkxX211eF9zZXRfZGVnbGl0Y2gocGlvLCBtYXNrLCBp
+c19vbik7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211eF9w
+aW8zX3NldF9kZWJvdW5jZSh2b2lkIF9faW9tZW0gKnBpbywgdW5zaWduZWQgbWFzaywKPj4+PiAr
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBib29sIGlzX29uLCB1MzIgZGl2KQo+Pj4+ICt7
+Cj4+Pj4gKyAgICAgaWYgKGlzX29uKSB7Cj4+Pj4gKyAgICAgICAgICAgICBfX3Jhd193cml0ZWwo
+bWFzaywgcGlvICsgUElPX0lGU0NFUik7Cj4+Pj4gKyAgICAgICAgICAgICBfX3Jhd193cml0ZWwo
+ZGl2ICYgUElPX1NDRFJfRElWLCBwaW8gKyBQSU9fU0NEUik7Cj4+Pj4gKyAgICAgICAgICAgICBf
+X3Jhd193cml0ZWwobWFzaywgcGlvICsgUElPX0lGRVIpOwo+Pj4+ICsgICAgIH0gZWxzZSB7Cj4+
+Pj4gKyAgICAgICAgICAgICBfX3Jhd193cml0ZWwobWFzaywgcGlvICsgUElPX0lGRFIpOwo+Pj4+
+ICsgICAgIH0KPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIGlubGluZSB2b2lkIGF0OTFfbXV4
+X3BpbzNfc2V0X3B1bGxkb3duKHZvaWQgX19pb21lbSAqcGlvLCB1bnNpZ25lZCBtYXNrLCBib29s
+IGlzX29uKQo+Pj4+ICt7Cj4+Pj4gKyAgICAgX19yYXdfd3JpdGVsKG1hc2ssIHBpbyArIChpc19v
+biA/IFBJT19QUERFUiA6IFBJT19QUEREUikpOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+ICtzdGF0aWMg
+aW5saW5lIHZvaWQgYXQ5MV9tdXhfcGlvM19kaXNhYmxlX3NjaG1pdHRfdHJpZyh2b2lkIF9faW9t
+ZW0gKnBpbywgdW5zaWduZWQgbWFzaykKPj4+PiArewo+Pj4+ICsgICAgIF9fcmF3X3dyaXRlbChf
+X3Jhd19yZWFkbChwaW8gKyBQSU9fU0NITUlUVCkgfCBtYXNrLCBwaW8gKyBQSU9fU0NITUlUVCk7
+Cj4+Pj4gK30KPj4+PiArCj4+Pj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211eF9ncGlvX2Rp
+c2FibGUodm9pZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIG1hc2spCj4+Pj4gK3sKPj4+PiArICAg
+ICBfX3Jhd193cml0ZWwobWFzaywgcGlvICsgUElPX1BEUik7Cj4+Pj4gK30KPj4+PiArCj4+Pj4g
+K3N0YXRpYyBpbmxpbmUgdm9pZCBhdDkxX211eF9ncGlvX2VuYWJsZSh2b2lkIF9faW9tZW0gKnBp
+bywgdW5zaWduZWQgbWFzaykKPj4+PiArewo+Pj4+ICsgICAgIF9fcmF3X3dyaXRlbChtYXNrLCBw
+aW8gKyBQSU9fUEVSKTsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIGlubGluZSB2b2lkIGF0
+OTFfbXV4X2dwaW9faW5wdXQodm9pZCBfX2lvbWVtICpwaW8sIHVuc2lnbmVkIG1hc2ssIGJvb2wg
+aW5wdXQpCj4+Pj4gK3sKPj4+PiArICAgICBfX3Jhd193cml0ZWwobWFzaywgcGlvICsgKGlucHV0
+ID8gUElPX09EUiA6IFBJT19PRVIpKTsKPj4+PiArfQo+Pj4+ICsKPj4+PiArc3RhdGljIGlubGlu
+ZSB2b2lkIGF0OTFfbXV4X2dwaW9fc2V0KHZvaWQgX19pb21lbSAqcGlvLCB1bnNpZ25lZCBtYXNr
+LAo+Pj4+ICtpbnQgdmFsdWUpCj4+Pj4gK3sKPj4+PiArICAgICBfX3Jhd193cml0ZWwobWFzaywg
+cGlvICsgKHZhbHVlID8gUElPX1NPRFIgOiBQSU9fQ09EUikpOwo+Pj4+ICt9Cj4+Pj4gKwo+Pj4+
+ICtzdGF0aWMgaW5saW5lIGludCBhdDkxX211eF9ncGlvX2dldCh2b2lkIF9faW9tZW0gKnBpbywg
+dW5zaWduZWQgbWFzaykKPj4+PiArewo+Pj4+ICsgICAgICAgdTMyIHBkc3I7Cj4+Pj4gKwo+Pj4+
+ICsgICAgICAgcGRzciA9IF9fcmF3X3JlYWRsKHBpbyArIFBJT19QRFNSKTsKPj4+PiArICAgICAg
+IHJldHVybiAocGRzciAmIG1hc2spICE9IDA7Cj4+Pj4gK30KPj4+PiArCj4+Pj4gKyNlbmRpZiAv
+KiBfX0FUOTFfR1BJT19IX18gKi8KPj4+PiAtLQo+Pj4+IDEuNy45LjUKPj4+Pgo+Pj4+Cj4+Pj4g
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4+PiBiYXJl
+Ym94IG1haWxpbmcgbGlzdAo+Pj4+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+Pj4+IGh0
+dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+Pj4KPj4+
+Cj4+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+Pj4g
+YmFyZWJveCBtYWlsaW5nIGxpc3QKPj4+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+Pj4g
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cj4KCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
