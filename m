@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x236.google.com ([2a00:1450:400c:c03::236])
+Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEap1-0004H2-AZ
- for barebox@lists.infradead.org; Tue, 05 Aug 2014 09:14:23 +0000
-Received: by mail-we0-f182.google.com with SMTP id k48so661973wev.41
- for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 02:13:45 -0700 (PDT)
-Received: from eROCCA26.vpn2.erocca.com
- (LNantes-156-76-15-113.w82-127.abo.wanadoo.fr. [82.127.166.113])
- by mx.google.com with ESMTPSA id j6sm2800964wje.29.2014.08.05.02.13.43
- for <barebox@lists.infradead.org>
- (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Tue, 05 Aug 2014 02:13:44 -0700 (PDT)
+ id 1XEap3-0004Hb-AF
+ for barebox@lists.infradead.org; Tue, 05 Aug 2014 09:14:27 +0000
+Received: by mail-wg0-f45.google.com with SMTP id x12so654298wgg.28
+ for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 02:13:49 -0700 (PDT)
 From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Tue,  5 Aug 2014 11:14:44 +0200
-Message-Id: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
+Date: Tue,  5 Aug 2014 11:14:47 +0200
+Message-Id: <1407230089-26948-4-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
+References: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,43 +23,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/5] Add device tree support of Atmel NAND driver
+Subject: [PATCH 3/5] mtd: atmel_nand: retrieve ecc_mode from pdata
 To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-Q2hhbmdlIHNpbmNlIHYxOgoJKiBSZW9yZGVyIHBhdGNocwoJKiBGaXggc29tZSBjbGVhbiBzdHls
-ZSBpc3N1ZS4KClRoaXMgcGF0Y2hzZXQgYWRkcyB0aGUgZGV2aWNlIHRyZWUgc3VwcG9ydCBmb3Ig
-dGhlIEF0bWVsIE5BTkQgZHJpdmVyLgoKVGhlIGZpcnN0IHBhdGNoIHJlbW92ZXMgdGhlIE5BTkRf
-QVRNRUxfUE1FQ0MgY29uZmlnLiBXaXRoIHRoaXMgcmVtb3ZhbAp3ZSBjYW4gbWFuYWdlIGluIGEg
-YmV0dGVyIHdheSB0aGUgZGV2aWNlIHRyZWUgLyBub24gZGV2aWNlIHRyZWUgcHJvYmluZyBvZiB0
-aGUgZHJpdmVyLCBiZWNhdXNlIHRoZSBwbGF0ZWZvcm0gZGF0YQphbmQgZGV2aWNlIHRyZWUgc2hh
-cmUgdGhlIHNhbWUgc3RydWN0dXJlIG1lbWJlciBhbmQgbG9naWNzLgoKVGhlIHNlY29uZCBwYXRj
-aCBhZGRzIHRoZSBoYXNfcG1lY2Mgb24gYm9hcmRzIHdoaWNoIG5lZWQgaXQuCgpUaGUgdGhpcmQg
-cGF0Y2ggcmV0cmlldmVzIHRoZSBlY2NfbW9kZSBmcm9tIHRoZSBwbGF0ZWZvcm0gZGF0YSBhbmQg
-cmVtb3ZlIHRoaXMgY29kZToKCiAgICAgICAgbmFuZF9jaGlwLT5lY2MubW9kZSA9IE5BTkRfRUND
-X1NPRlQ7Cgp3aGljaCBhcmJpdHJhcnkgc2V0cyB0aGUgZWNjLm1vZGUgdG8gTkFORF9FQ0NfU09G
-VCBhbmQgY2hhbmdlcyB0aGUgdmFsdWUgZGVwZW5kaW5nIG9mIHRoZSBjb25maWcgYW5kIHBsYXRl
-Zm9ybSBkYXRhLgpXaXRoIHRoaXMsIHdlIGNhbiB1c2UgdGhlIHNhbWUgbG9naWNzIGZvciBkZXZp
-Y2UgdHJlZSBhbmQgbm9uIGRldmljZSB0cmVlIHByb2Jpbmcgb2YgdGhlIGRyaXZlci4KClRoZSBm
-b3VydGggcGF0Y2ggYWRkcyB0aGUgZWNjX21vZGUgb24gYm9hcmRzIHdoaWNoIGFyZSBtaXNzaW5n
-IGl0IChib2FyZHMgd2hpY2ggdXNlIE5BTkRfRUNDX1NPRlQpLgoKVGhlIGZpZnRoIHBhdGNoIGFk
-ZHMgdGhlIGRldmljZSB0cmVlIGluIHRoZSBhdG1lbF9uYW5kIGRyaXZlci4KClJhcGhhw6tsIFBv
-Z2dpICg1KSA6CiAgICAgICAgKDEpIG10ZDogbmFuZDogcmVtb3ZlIE5BTkRfQVRNRUxfUE1FQ0MK
-ICAgICAgICAoMikgYm9hcmQ6IGF0bWVsOiBpbml0aWFsaXNlIHRoZSBoYXNfcG1lY2MgbWVtYmVy
-CiAgICAgICAgKDMpIG10ZDogYXRtZWxfbmFuZDogcmV0cmlldmUgZWNjX21vZGUgZnJvbSBwZGF0
-YQogICAgICAgICg0KSBib2FyZDogYXRtZWw6IGluaXRpYWxpc2UgZWNjX21vZGUKICAgICAgICAo
-NSkgbXRkOiBhdG1lbF9uYW5kOiBhZGQgc3VwcG9ydCBmb3IgZGV2aWNlIHRyZWUKCiBhcmNoL2Fy
-bS9ib2FyZHMvYXQ5MXNhbTkyNjBlay9pbml0LmMgICAgfCAgICAxICsKIGFyY2gvYXJtL2JvYXJk
-cy9hdDkxc2FtOTI2MWVrL2luaXQuYyAgICB8ICAgIDEgKwogYXJjaC9hcm0vYm9hcmRzL2F0OTFz
-YW05MjYzZWsvaW5pdC5jICAgIHwgICAgMSArCiBhcmNoL2FybS9ib2FyZHMvYXQ5MXNhbTltMTBn
-NDVlay9pbml0LmMgfCAgICAxICsKIGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOW0xMGloZC9pbml0
-LmMgICB8ICAgIDEgKwogYXJjaC9hcm0vYm9hcmRzL2F0OTFzYW05bjEyZWsvaW5pdC5jICAgIHwg
-ICAgMSArCiBhcmNoL2FybS9ib2FyZHMvYXQ5MXNhbTl4NWVrL2luaXQuYyAgICAgfCAgICAxICsK
-IGFyY2gvYXJtL2JvYXJkcy9zYW1hNWQzX3hwbGFpbmVkL2luaXQuYyB8ICAgIDEgKwogYXJjaC9h
-cm0vYm9hcmRzL3NhbWE1ZDN4ZWsvaW5pdC5jICAgICAgIHwgICAgMSArCiBhcmNoL2FybS9tYWNo
-LWF0OTEvaW5jbHVkZS9tYWNoL2JvYXJkLmggfCAgICAxICsKIGRyaXZlcnMvbXRkL25hbmQvS2Nv
-bmZpZyAgICAgICAgICAgICAgICB8ICAgIDggLS0tCiBkcml2ZXJzL210ZC9uYW5kL2F0bWVsX25h
-bmQuYyAgICAgICAgICAgfCAgMTE1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0KIDEy
-IGZpbGVzIGNoYW5nZWQsIDEyMiBpbnNlcnRpb25zKCspLCAxMSBkZWxldGlvbnMoLSkKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+QnkgcmV0cmlldmluZyB0aGUgZWNjX21vZGUgZnJvbSBwZGF0YSB3ZSBjYW4gdXNlIHRoZSBzYW1l
+IGNvZGUgZm9yIGRldmljZSB0cmVlIGFuZApub24gZGV2aWNlIHRyZWUgcHJvYmluZy4gV2hpY2gg
+d2FzIG5vdCBwb3NzaWJsZSBiZWZvcmUsIGJlY2F1c2UgZWNjX21vZGUgd2FzIGFyYml0cmFyaWx5
+IHNldCB0bwpOQU5EX0VDQ19TT0ZULgoKU2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBv
+Z2dpLnJhcGhAZ21haWwuY29tPgotLS0KIGRyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jIHwg
+ICAgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5kLmMgYi9kcml2ZXJzL210ZC9u
+YW5kL2F0bWVsX25hbmQuYwppbmRleCAzZWM2NDUwLi43ODBkMjY2IDEwMDY0NAotLS0gYS9kcml2
+ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYworKysgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25h
+bmQuYwpAQCAtMTE1Nyw3ICsxMTU3LDcgQEAgc3RhdGljIGludCBfX2luaXQgYXRtZWxfbmFuZF9w
+cm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAkJfQogCX0KIAotCW5hbmRfY2hpcC0+ZWNjLm1v
+ZGUgPSBOQU5EX0VDQ19TT0ZUOworCW5hbmRfY2hpcC0+ZWNjLm1vZGUgPSBwZGF0YS0+ZWNjX21v
+ZGU7CiAKIAlpZiAoSVNfRU5BQkxFRChDT05GSUdfTkFORF9FQ0NfSFcpICYmCiAJICAgIHBkYXRh
+LT5lY2NfbW9kZSA9PSBOQU5EX0VDQ19IVykgewotLSAKMS43LjkuNQoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
