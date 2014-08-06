@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEu1c-0002ls-5r
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 05:44:36 +0000
-Received: by mail-la0-f50.google.com with SMTP id gf5so1528703lab.9
- for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 22:44:13 -0700 (PDT)
+ id 1XEu1g-0002ly-U3
+ for barebox@lists.infradead.org; Wed, 06 Aug 2014 05:44:41 +0000
+Received: by mail-lb0-f176.google.com with SMTP id u10so1486792lbd.21
+ for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 22:44:17 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  6 Aug 2014 09:44:03 +0400
-Message-Id: <1407303846-15550-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed,  6 Aug 2014 09:44:05 +0400
+Message-Id: <1407303846-15550-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1407303846-15550-1-git-send-email-antonynpavlov@gmail.com>
+References: <1407303846-15550-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,20 +23,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] misc .gitignore-related fixes
+Subject: [PATCH 2/3] scripts: add bareboximd{,-target} to .gitignore
 To: barebox@lists.infradead.org
 
-Antony Pavlov (3):
-  openrisc: add barebox.lds to .gitignore
-  scripts: add bareboximd{,-target} to .gitignore
-  fixup! dtc: compile fdtget
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ scripts/.gitignore | 2 ++
+ 1 file changed, 2 insertions(+)
 
- arch/openrisc/cpu/.gitignore | 1 +
- scripts/.gitignore           | 2 ++
- scripts/dtc/.gitignore       | 1 +
- 3 files changed, 4 insertions(+)
- create mode 100644 arch/openrisc/cpu/.gitignore
-
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index fddc04b..980c2be 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -15,3 +15,5 @@ zynq_mkimage
+ socfpga_mkimage
+ bareboxcrc32
+ bareboxcrc32-target
++bareboximd
++bareboximd-target
 -- 
 2.0.1
 
