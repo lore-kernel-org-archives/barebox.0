@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
  helo=mo4.mail-out.ovh.net)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEsL6-0004Vx-4U
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 03:56:36 +0000
+ id 1XEsTB-00061q-Dd
+ for barebox@lists.infradead.org; Wed, 06 Aug 2014 04:04:58 +0000
 Received: from mail186.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 26E3BFFA356
- for <barebox@lists.infradead.org>; Wed,  6 Aug 2014 05:56:15 +0200 (CEST)
-Date: Wed, 6 Aug 2014 06:00:33 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id AFEF0FF8F72
+ for <barebox@lists.infradead.org>; Wed,  6 Aug 2014 06:04:34 +0200 (CEST)
+Date: Wed, 6 Aug 2014 06:08:53 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140806040033.GG19147@ns203013.ovh.net>
-References: <1406958354-12051-1-git-send-email-antonynpavlov@gmail.com>
- <1407082665.7251.1.camel@polaris.local>
- <20140803215338.3b436b58bf5d796c46dd23bd@gmail.com>
+Message-ID: <20140806040853.GH19147@ns203013.ovh.net>
+References: <1407230089-26948-1-git-send-email-poggi.raph@gmail.com>
+ <1407230089-26948-2-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140803215338.3b436b58bf5d796c46dd23bd@gmail.com>
+In-Reply-To: <1407230089-26948-2-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,61 +27,90 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] gen-dtb-s: make metadata binary fields always little-endian
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 1/5] mtd: nand: remove NAND_ATMEL_PMECC
+To: Rapha??l Poggi <poggi.raph@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 21:53 Sun 03 Aug     , Antony Pavlov wrote:
-> =
+On 11:14 Tue 05 Aug     , Rapha??l Poggi wrote:
+> By removing this CONFIG_, we can use a structure member to retrieve the c=
+onfig,
+> either through the plateform data or through the device tree. So we can h=
+andle cases
+> when the driver is probed using device tree or not.
+NACK
 
-> On Sun, 03 Aug 2014 18:17:45 +0200
-> Jan L=FCbbe <jlu@pengutronix.de> wrote:
-> =
+this is use to reduce barebox size
 
-> > Hi,
-> > =
+keep the NAND_ATMEL_PMECC
 
-> > On Sat, 2014-08-02 at 09:45 +0400, Antony Pavlov wrote:
-> > >  =
-
-> > >                 compatlen=3D$($FDTGET -t s "$dtb" / compatible | wc -=
-c)
-> > > -               echo ".int 0x640c8005"
-> > > -               echo ".int " $compatlen
-> > > +               echo ".byte 0x05, 0x80, 0x0c, 0x64"
-> > > +               python -c "print(\".byte 0x%02x, 0x%02x, 0x%02x, 0x%0=
-2x\\n\" % ($compatlen & 0xff, ($compatlen >> 8) & 0xff, ($compatlen >> 16) =
-& 0xff, ($compatlen >> 24) & 0xff))"
-> > =
-
-> > Rather than adding a build-time dependency on python, maybe we should
-> > just handle this in C?
-> =
-
-> We use sphinx for documentation generation so we already have dependency =
-on python.
-
-not a fan of python and this will make it mandatory for build as it's only =
-for
-doc today
-
-for me no
+so we choose to enable it or not
 
 Best Regards,
 J.
 > =
 
-> Here is an another solution:
+> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
+> ---
+>  arch/arm/mach-at91/include/mach/board.h |    1 +
+>  drivers/mtd/nand/Kconfig                |    8 --------
+>  drivers/mtd/nand/atmel_nand.c           |    2 +-
+>  3 files changed, 2 insertions(+), 9 deletions(-)
 > =
 
-> -               echo ".int " $compatlen
-> +		echo ".byte " $(printf "%08x" $compatlen | sed "s/\(..\)/0x\1\n/g" | t=
-ac | xargs | sed "s/ /, /g")
+> diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91=
+/include/mach/board.h
+> index aa0fdae..e2307ed 100644
+> --- a/arch/arm/mach-at91/include/mach/board.h
+> +++ b/arch/arm/mach-at91/include/mach/board.h
+> @@ -63,6 +63,7 @@ struct atmel_nand_data {
+>  	u8		bus_width_16;	/* buswidth is 16 bit */
+>  	u8		ecc_mode;	/* NAND_ECC_* */
+>  	u8		on_flash_bbt;	/* Use flash based bbt */
+> +	u8		has_pmecc;	/* Use PMECC */
+>  	u8		bus_on_d0;
+>  =
+
+>  	u8		pmecc_corr_cap;
+> diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+> index 04fe3c8..d49eae3 100644
+> --- a/drivers/mtd/nand/Kconfig
+> +++ b/drivers/mtd/nand/Kconfig
+> @@ -95,14 +95,6 @@ config NAND_ATMEL
+>  	prompt "Atmel (AT91SAM9xxx) NAND driver"
+>  	depends on ARCH_AT91
+>  =
+
+> -config NAND_ATMEL_PMECC
+> -	bool
+> -	prompt "PMECC support"
+> -	depends on NAND_ATMEL
+> -	select NAND_ECC_HW
+> -	help
+> -	  Support for PMECC present on the SoC sam9x5 and sam9n12
+> -
+>  config NAND_S3C24XX
+>  	bool
+>  	prompt "Samsung S3C24XX NAND driver"
+> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+> index 337e225..3ec6450 100644
+> --- a/drivers/mtd/nand/atmel_nand.c
+> +++ b/drivers/mtd/nand/atmel_nand.c
+> @@ -1219,7 +1219,7 @@ static int __init atmel_nand_probe(struct device_d =
+*dev)
+>  =
+
+>  	if (IS_ENABLED(CONFIG_NAND_ECC_HW) &&
+>  	    nand_chip->ecc.mode =3D=3D NAND_ECC_HW) {
+> -		if (IS_ENABLED(CONFIG_NAND_ATMEL_PMECC))
+> +		if (pdata->has_pmecc)
+>  			res =3D atmel_pmecc_nand_init_params(dev, host);
+>  		else
+>  			res =3D atmel_hw_nand_init_params(dev, host);
+> -- =
+
+> 1.7.9.5
 > =
 
-> --=A0
-> Best regards,
-> =A0 Antony Pavlov
 > =
 
 > _______________________________________________
