@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEu1e-0002lu-0B
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 05:44:40 +0000
-Received: by mail-la0-f53.google.com with SMTP id gl10so1550736lab.12
- for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 22:44:15 -0700 (PDT)
+ id 1XEu1c-0002ls-5r
+ for barebox@lists.infradead.org; Wed, 06 Aug 2014 05:44:36 +0000
+Received: by mail-la0-f50.google.com with SMTP id gf5so1528703lab.9
+ for <barebox@lists.infradead.org>; Tue, 05 Aug 2014 22:44:13 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  6 Aug 2014 09:44:04 +0400
-Message-Id: <1407303846-15550-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1407303846-15550-1-git-send-email-antonynpavlov@gmail.com>
-References: <1407303846-15550-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed,  6 Aug 2014 09:44:03 +0400
+Message-Id: <1407303846-15550-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,21 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] openrisc: add barebox.lds to .gitignore
+Subject: [PATCH 0/3] misc .gitignore-related fixes
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/openrisc/cpu/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+Antony Pavlov (3):
+  openrisc: add barebox.lds to .gitignore
+  scripts: add bareboximd{,-target} to .gitignore
+  fixup! dtc: compile fdtget
 
-diff --git a/arch/openrisc/cpu/.gitignore b/arch/openrisc/cpu/.gitignore
-new file mode 100644
-index 0000000..d116578
---- /dev/null
-+++ b/arch/openrisc/cpu/.gitignore
-@@ -0,0 +1 @@
-+barebox.lds
+ arch/openrisc/cpu/.gitignore | 1 +
+ scripts/.gitignore           | 2 ++
+ scripts/dtc/.gitignore       | 1 +
+ 3 files changed, 4 insertions(+)
+ create mode 100644 arch/openrisc/cpu/.gitignore
+
 -- 
 2.0.1
 
