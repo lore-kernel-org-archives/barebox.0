@@ -1,26 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XEvex-0003Lz-LG
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 07:29:20 +0000
-Received: from ptx.hi.pengutronix.de ([2001:6f8:1178:2:5054:ff:fec0:8e10]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <ukl@pengutronix.de>) id 1XEvea-0001Jm-F5
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 09:28:56 +0200
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <ukl@pengutronix.de>) id 1XEvea-0004uA-AQ
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 09:28:56 +0200
-Date: Wed, 6 Aug 2014 09:28:56 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20140806072856.GJ1933@pengutronix.de>
-References: <1406715606-6821-1-git-send-email-jbe@pengutronix.de>
- <20140731071425.GQ6146@pengutronix.de>
- <201407310933.02138.jbe@pengutronix.de>
- <20140731074416.GR6146@pengutronix.de>
- <20140806070413.GA28454@pengutronix.de>
+ Linux)) id 1XEviV-00053a-DK
+ for barebox@lists.infradead.org; Wed, 06 Aug 2014 07:32:59 +0000
+Date: Wed, 6 Aug 2014 09:32:36 +0200
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20140806073236.GJ7098@pengutronix.de>
+References: <20140804191112.GN23235@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140806070413.GA28454@pengutronix.de>
+In-Reply-To: <20140804191112.GN23235@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,65 +18,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: envfs: provide an intentional way to ignore an existing external
- environment
-To: barebox@lists.infradead.org
+Subject: Re: v2014.08.0
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8gTWljaGFlbCwKCk9uIFdlZCwgQXVnIDA2LCAyMDE0IGF0IDA5OjA0OjEzQU0gKzAyMDAs
-IE1pY2hhZWwgT2xicmljaCB3cm90ZToKPiBPbiBUaHUsIEp1bCAzMSwgMjAxNCBhdCAwOTo0NDox
-NkFNICswMjAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90ZToKPiA+IE9uIFRodSwgSnVsIDMxLCAy
-MDE0IGF0IDA5OjMzOjAyQU0gKzAyMDAsIEp1ZXJnZW4gQm9ybGVpcyB3cm90ZToKPiA+ID4gT24g
-VGh1cnNkYXkgMzEgSnVseSAyMDE0IDA5OjE0OjI1IFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgo+
-ID4gPiA+IFsuLi5dCj4gPiA+ID4gQ29tcGFyZWQgd2l0aCBzdG9yaW5nIHRoZSBkZWZhdWx0IGVu
-dmlyb25tZW50IGluIHRoZSBleHRlcm5hbCBzdG9yZSB0aGUKPiA+ID4gPiBvbmx5IGRpZmZlcmVu
-Y2UgaXMgdGhhdCB5b3UgZG9uJ3QgbmVlZCB0byBtb2RpZnkgaXQgaWYgeW91IGNoYW5nZSB0aGUK
-PiA+ID4gPiBpbnRlcm5hbCBvbmUsIHJpZ2h0Pwo+ID4gPiAKPiA+ID4gVGhpcyB3b3VsZCBhbHNv
-IGJlIGFuIGFkdmFudGFnZSBvZiB0aGlzIG5ldyBmZWF0dXJlLgo+ID4gVGhlIG9ubHkgb25lIGV2
-ZW4/Cj4gPiAKPiA+ID4gPiBJIHdvbmRlciB3aGF0IHRoZSB0YXJnZXRlZCB1c2UgY2FzZSBpcy4K
-PiA+ID4gCj4gPiA+IFRvIHVzZSBhbiBleHRlcm5hbCBzdG9yZWQgZW52aXJvbm1lbnQgKm9ubHkq
-IGZvciBkZXZlbG9wbWVudCBwdXJwb3NlcyBvciB0ZXN0cyAKPiA+ID4gYW5kIHRvIGtlZXAgdGhl
-IHBvc3NpYmlsaXR5IHRvIGRvIHNvLgo+ID4gRG9lc24ndCBtYWtlIGEgd2FybSBhbmQgY29zeSBm
-ZWVsaW5nLiBJc24ndCBpdCBlYXNpZXIgYW5kIG1vcmUgcm9idXN0IHRvCj4gPiBqdXN0IG5vdCB0
-ZWxsIGJhcmVib3ggYWJvdXQgdGhlIGV4dGVybmFsIHN0b3JhZ2UgYXQgYWxsIGFuZCBmb3IgdGhl
-Cj4gPiB0ZXN0aW5nL2RldmVsb3BtZW50IHByb2NlZHVyZSBkbyBhbiBleHBsaWNpdAo+ID4gCj4g
-PiAJbG9hZGVudiAvZGV2L3RyYWxhbGEKPiAKPiBUaGF0IGRvZXNuJ3QgaGVscCBhdCBhbGwuIFRo
-ZXJlIGFyZSBzZXZlcmFsIGNoYW5nZXMgdGhhdCBJIHJlZ3VsYXJseSB1c2UKPiB0aGF0IGFyZSBy
-ZXF1aXJlZCB3aGVuIGluaXQgcnVucywgc28gYSBtYW51YWwgbG9hZGVudiBpcyB0b28gbGF0ZToK
-PiAtIGdsb2JhbC5hdXRvYm9vdF90aW1lb3V0PTMgKHRoZSBidWlsZC1pbiB2YWx1ZSBpcyAwIHRv
-IGJvb3QgZmFzdGVyIGJ5Cj4gICBkZWZhdWx0KS4KT2ssIHRoYXQgbWlnaHQgYmUgYW5ub3lpbmcs
-IGJ1dCBJJ2Qgc2F5IHRoaXMgZG9lc24ndCBqdXN0aWZ5IHRoZQpKw7xyZ2VuJ3MgY2hhbmdlcy4K
-Cj4gLSBuZnMgYXV0b21vdW50cyB0aGF0IGNvbnRhaW4gJyR1c2VyJwpEb24ndCBnZXQgdGhpcyBv
-bmUuIFRoZSBuaWNlIHRoaW5nIGFib3V0IGF1dG9tb3VudCBpcyB0aGF0IHRoZXkgYXJlIGRvbmUK
-b24gcmVxdWVzdCwgc28gaXNuJ3QgaXQgZWFybHkgZW5vdWdoIHRvIHNldCBnbG9iYWwudXNlciB3
-aGVuIGxvYWRpbmcgdGhlCmRlYnVnIGVudmlyb25tZW50IChwcm9iYWJseSByZXN1bHRpbmcgaW4g
-YW5vdGhlciBsaW5lIHRvIHR5cGUpPwoKRXZlbiB0aG91Z2ggSsO8cmdlbiBwcmVkaWN0ZWQgdGhh
-dCBkZXZlbG9wZXJzIHdvbid0IGxpa2UgbWUgZm9yIHRoZQpzdWdnZXN0aW9uLCBJIHN0aWxsIHRo
-aW5rIGl0J3Mgd3JvbmcgdG8gY2hhbmdlIGEgcHJvZHVjdGlvbiBzeXN0ZW0gZm9yCmRlYnVnIHB1
-cnBvc2VzLgoKSU1ITyBhIHJpZ2h0ZXIgdGhpbmcgd291bGQgYmUgdG8gaW1wbGVtZW50IGFuIGV4
-dGVuc2lvbiB0byBtaWNyb2NvbSB0aGF0CmNhdGNoZXMgdGhlIDBzIHByb21wdCwgaW50ZXJydXB0
-cyBpdCBhbmQgdHlwZXMKCglsb2FkZW52IC9kZXYvdHJhbGFsYQoJZ2xvYmFsLnVzZXI9bW9sCgpm
-b3IgeW91LiBJZiBJIGRpZG4ndCBtaXNzIGFueXRoaW5nIHRoYXQgd291bGQgY2F0Y2ggYWxsIHBy
-b2JsZW1zIHdpdGhvdXQKdGhlIG5lZWQgdG8gY2hhbmdlIGJhcmVib3guCgo+IEFsc28sIHRoaXMg
-cmVxdWlyZXMgbWUgdG8ga25vdyBfd2hlcmVfIHRoZSBlbnZpcm9ubWVudCBpcy4gQW5kIHRoYXQg
-aXMgbm90Ci9kZXYvdHJhbGFsYSBjb3VsZCBiZSB0aGUgc2FtZSBmb3IgYWxsIGNvbmZpZ3VyYXRp
-b25zIDotKSAKCj4gZWFzeSB0byByZW1lbWJlciB3aGVuIEkgbmVlZCB0byB3b3JrIHdpdGggbXVs
-dGlwbGUgZGV2aWNlcyBhIGRheSBhbmQgZ2V0cwo+IHdvcnNlLCB3aGVuIGl0IGNoYW5nZXMgd2l0
-aCB0aGUgYm9vdCBzb3VyY2UgKFNEL2VNTUMpLiBNaXN0YWtlcyBhcmUKPiBndWFyYW50ZWVkLgpJ
-J2Qgc2F5LCBlaXRoZXIgeW91IHdhbnQgYSkgYW4gZW52aXJvbm1lbnQgdGhhdCBpcyB1c2VkIGFs
-d2F5cywgb3IgYikKeW91IGRvbid0LgoKV2l0aCBhKSB5b3UgY2FuIGRvIHlvdXIgbW9kaWZpY2F0
-aW9ucyB0byBpbmNyZWFzZSBib290IHRpbWUgYW5kIHNldCB0aGUKdXNlcm5hbWUgYW5kIHNhdmUg
-aXQgZm9yIGRldmVsb3BtZW50LiBJZiB5b3Ugd2FudCB0byByZXNldCBpdCB0bwoicHJvZHVjdGlv
-biBtb2RlIiBqdXN0IGRvOiBsb2FkZW52IC9kZXYvZGVmYXVsdF9lbnY7IHNhdmVlbnY7CgpXaXRo
-IGIpIGVpdGhlciBsaXZlIHdpdGggdGhlIGRlY2lzaW9uIGFuZCBhZGFwdCB5b3VyICpkZXZlbG9w
-bWVudCoKd29ya2Zsb3cgdG8gaXQsIG9yIGNoYW5nZSB0byBhKS4KCkp1c3QgbXkgMC4wMuKCrCwg
-ZmVlbCBmcmVlIHRvIGlnbm9yZSB0aGVtLgoKQmVzdCByZWdhcmRzClV3ZQoKLS0gClBlbmd1dHJv
-bml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8IFV3ZSBLbGVpbmUtS8O2bmlnICAg
-ICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBo
-dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+On Mon, Aug 04, 2014 at 09:11:12PM +0200, Sascha Hauer wrote:
+> We have an August release.
+
+Could you upload the tarball?
+
+rsc
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
