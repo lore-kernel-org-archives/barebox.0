@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEyHR-0008Ib-AI
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 10:17:13 +0000
-Received: by mail-wi0-f175.google.com with SMTP id ho1so8538669wib.8
- for <barebox@lists.infradead.org>; Wed, 06 Aug 2014 03:16:50 -0700 (PDT)
+ id 1XEyHP-0008IT-2L
+ for barebox@lists.infradead.org; Wed, 06 Aug 2014 10:17:11 +0000
+Received: by mail-wi0-f180.google.com with SMTP id n3so2901315wiv.13
+ for <barebox@lists.infradead.org>; Wed, 06 Aug 2014 03:16:48 -0700 (PDT)
 From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Wed,  6 Aug 2014 12:17:49 +0200
-Message-Id: <1407320269-32368-4-git-send-email-poggi.raph@gmail.com>
+Date: Wed,  6 Aug 2014 12:17:48 +0200
+Message-Id: <1407320269-32368-3-git-send-email-poggi.raph@gmail.com>
 In-Reply-To: <1407320269-32368-1-git-send-email-poggi.raph@gmail.com>
 References: <1407320269-32368-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,81 +19,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/3] I2C: at91: fix the method for interrupt
+Subject: [PATCH v3 2/3] at91sam9g45: clock: add i2c clocks
 To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-From: Bo Shen <voice.shen@atmel.com>
-
-As the i2c-at91 driver won't work in the interrupt mode,
-so need to poll the interrupts.
-
-Signed-off-by: Bo Shen <voice.shen@atmel.com>
----
- drivers/i2c/busses/i2c-at91.c |   38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-at91.c b/drivers/i2c/busses/i2c-at91.c
-index 651cfc7..e62f1db 100644
---- a/drivers/i2c/busses/i2c-at91.c
-+++ b/drivers/i2c/busses/i2c-at91.c
-@@ -174,24 +174,32 @@ static void at91_twi_read_next_byte(struct at91_twi_dev *dev)
- static int at91_twi_wait_completion(struct at91_twi_dev *dev)
- {
- 	uint64_t start = get_time_ns();
--	unsigned int status = at91_twi_read(dev, AT91_TWI_SR);
--	unsigned int irqstatus = at91_twi_read(dev, AT91_TWI_IMR);
-+	unsigned int status;
-+	unsigned int irqstatus;
-+
-+	do {
-+		status = at91_twi_read(dev, AT91_TWI_SR);
-+		irqstatus = at91_twi_read(dev, AT91_TWI_IMR);
-+
-+		if (!(status & irqstatus)) {
-+			if (is_timeout(start, AT91_I2C_TIMEOUT)) {
-+				dev_warn(&dev->adapter.dev, "timeout waiting for bus ready\n");
-+				return -ETIMEDOUT;
-+			} else {
-+				continue;
-+			}
-+		}
- 
--	if (irqstatus & AT91_TWI_RXRDY)
--		at91_twi_read_next_byte(dev);
--	else if (irqstatus & AT91_TWI_TXRDY)
--		at91_twi_write_next_byte(dev);
--	else
--		dev_warn(&dev->adapter.dev, "neither rx and tx are ready\n");
-+		if (irqstatus & AT91_TWI_RXRDY)
-+			at91_twi_read_next_byte(dev);
-+		else if (irqstatus & AT91_TWI_TXRDY)
-+			at91_twi_write_next_byte(dev);
-+		else
-+			dev_warn(&dev->adapter.dev, "neither rx and tx are ready\n");
- 
--	dev->transfer_status |= status;
-+		dev->transfer_status |= status;
- 
--	while (!(at91_twi_read(dev, AT91_TWI_SR) & AT91_TWI_TXCOMP)) {
--		if (is_timeout(start, AT91_I2C_TIMEOUT)) {
--			dev_warn(&dev->adapter.dev, "timeout waiting for bus ready\n");
--			return -ETIMEDOUT;
--		}
--	}
-+	} while (!(at91_twi_read(dev, AT91_TWI_SR) & AT91_TWI_TXCOMP));
- 
- 	at91_disable_twi_interrupts(dev);
- 
--- 
-1.7.9.5
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkIHRoZSBkZXZpY2UgdHJlZSBhbmQgbm9uIGRldmljZSB0cmVlIGF0OTEgaTJjIGNsb2Nrcy4K
+ClNpZ25lZC1vZmYtYnk6IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KLS0t
+CiBhcmNoL2FybS9tYWNoLWF0OTEvYXQ5MXNhbTlnNDUuYyB8ICAgIDQgKysrKwogMSBmaWxlIGNo
+YW5nZWQsIDQgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtYXQ5MS9h
+dDkxc2FtOWc0NS5jIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMKaW5kZXggOWE1
+MGRlYi4uZDE5ZDI2YSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1
+LmMKKysrIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMKQEAgLTE5Miw2ICsxOTIs
+MTAgQEAgc3RhdGljIHN0cnVjdCBjbGtfbG9va3VwIHBlcmlwaF9jbG9ja3NfbG9va3Vwc1tdID0g
+ewogCUNMS0RFVl9DT05fREVWX0lEKCJtY2lfY2xrIiwgImF0bWVsX21jaTEiLCAmbW1jMV9jbGsp
+LAogCUNMS0RFVl9DT05fREVWX0lEKCJzcGlfY2xrIiwgImF0bWVsX3NwaTAiLCAmc3BpMF9jbGsp
+LAogCUNMS0RFVl9DT05fREVWX0lEKCJzcGlfY2xrIiwgImF0bWVsX3NwaTEiLCAmc3BpMV9jbGsp
+LAorCUNMS0RFVl9ERVZfSUQoImF0OTFzYW05ZzEwLWkyYzAiLCAmdHdpMF9jbGspLAorCUNMS0RF
+Vl9ERVZfSUQoImF0OTFzYW05ZzEwLWkyYzEiLCAmdHdpMV9jbGspLAorCUNMS0RFVl9ERVZfSUQo
+ImZmZjg0MDAwLmkyYyIsICZ0d2kwX2NsayksCisJQ0xLREVWX0RFVl9JRCgiZmZmODgwMDAuaTJj
+IiwgJnR3aTFfY2xrKSwKIAlDTEtERVZfREVWX0lEKCJhdDkxcm05MjAwLWdwaW8wIiwgJnBpb0Ff
+Y2xrKSwKIAlDTEtERVZfREVWX0lEKCJhdDkxcm05MjAwLWdwaW8xIiwgJnBpb0JfY2xrKSwKIAlD
+TEtERVZfREVWX0lEKCJhdDkxcm05MjAwLWdwaW8yIiwgJnBpb0NfY2xrKSwKLS0gCjEuNy45LjUK
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
