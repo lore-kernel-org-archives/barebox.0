@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eusmtp01.atmel.com ([212.144.249.243])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XEphQ-0003F3-Oj
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 01:07:29 +0000
-Message-ID: <53E17FAF.9010408@atmel.com>
-Date: Wed, 6 Aug 2014 09:06:55 +0800
-From: Bo Shen <voice.shen@atmel.com>
+Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+ helo=mo4.mail-out.ovh.net)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XEsGs-00037Y-RG
+ for barebox@lists.infradead.org; Wed, 06 Aug 2014 03:52:15 +0000
+Received: from mail186.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id A229EFFA21C
+ for <barebox@lists.infradead.org>; Wed,  6 Aug 2014 05:51:49 +0200 (CEST)
+Date: Wed, 6 Aug 2014 05:56:07 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140806035607.GF19147@ns203013.ovh.net>
+References: <1406715606-6821-1-git-send-email-jbe@pengutronix.de>
+ <20140731071425.GQ6146@pengutronix.de>
+ <201407310933.02138.jbe@pengutronix.de>
+ <20140731074416.GR6146@pengutronix.de>
 MIME-Version: 1.0
-References: <1407141112-3868-1-git-send-email-poggi.raph@gmail.com>
- <53DF4E49.3040501@atmel.com>
- <CACqcpZDrqaMNRj5NVmLgvoP1UYwZf03iZsAX32qspwgeZiRhig@mail.gmail.com>
- <53DF5293.2010305@atmel.com> <53E07FE4.6070107@atmel.com>
- <CACqcpZDNfpYJkadn7iFbXor=UUVE-f_+TkcdY647V+hRZsoFDg@mail.gmail.com>
- <CACqcpZBSryx6QP=f1MuSJn5QpQC68bMg48ScVY5Fjn3Mq8nupg@mail.gmail.com>
-In-Reply-To: <CACqcpZBSryx6QP=f1MuSJn5QpQC68bMg48ScVY5Fjn3Mq8nupg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20140731074416.GR6146@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +25,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2 0/2] Add device tree support of i2c Atmel driver
-To: =?UTF-8?B?UmFwaGHDq2wgUG9nZ2k=?= <poggi.raph@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: envfs: provide an intentional way to ignore an existing external
+ environment
+To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, Juergen Borleis <jbe@pengutronix.de>
 
-SGkgUmFwaGHDq2wgUG9nZ2ksCgpPbiAwOC8wNi8yMDE0IDA0OjA1IEFNLCBSYXBoYcOrbCBQb2dn
-aSB3cm90ZToKPiBJIGFtIHJlYWR5IHRvIHNlbmQgYSB2My4gQXJlIHlvdSBnb2luZyB0byBzZW5k
-IHlvdXIgZml4IG9yIHlvdSB3YW50IG1lCj4gdG8gc3F1YXNoIGl0IGluIHYzID8KClBsZWFzZSBz
-ZW5kIGl0IHRvZ2V0aGVyIHdpdGggeW91ciBwYXRjaC4KVGhhbmtzLgoKPiBCZXN0IFJlZ2FyZHMs
-Cj4gUmFwaGHDq2wgUG9nZ2kKCkJlc3QgUmVnYXJkcywKQm8gU2hlbgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On 09:44 Thu 31 Jul     , Uwe Kleine-K??nig wrote:
+> =
+
+> On Thu, Jul 31, 2014 at 09:33:02AM +0200, Juergen Borleis wrote:
+> > Hi Uwe,
+> > =
+
+> > On Thursday 31 July 2014 09:14:25 Uwe Kleine-K=F6nig wrote:
+> > > [...]
+> > > Compared with storing the default environment in the external store t=
+he
+> > > only difference is that you don't need to modify it if you change the
+> > > internal one, right?
+> > =
+
+> > This would also be an advantage of this new feature.
+> The only one even?
+> =
+
+> > > I wonder what the targeted use case is.
+> > =
+
+> > To use an external stored environment *only* for development purposes o=
+r tests =
+
+> > and to keep the possibility to do so.
+> Doesn't make a warm and cosy feeling. Isn't it easier and more robust to
+> just not tell barebox about the external storage at all and for the
+> testing/development procedure do an explicit
+> =
+
+> 	loadenv /dev/tralala
++1
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
