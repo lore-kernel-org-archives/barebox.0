@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
+Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XF8yy-0004JD-Hz
- for barebox@lists.infradead.org; Wed, 06 Aug 2014 21:42:53 +0000
-Received: by mail-lb0-f173.google.com with SMTP id u10so119753lbd.32
- for <barebox@lists.infradead.org>; Wed, 06 Aug 2014 14:42:29 -0700 (PDT)
+ id 1XF960-0007CF-4E
+ for barebox@lists.infradead.org; Wed, 06 Aug 2014 21:50:08 +0000
+Received: by mail-lb0-f182.google.com with SMTP id z11so2059848lbi.27
+ for <barebox@lists.infradead.org>; Wed, 06 Aug 2014 14:49:45 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  7 Aug 2014 01:42:13 +0400
-Message-Id: <1407361335-14875-5-git-send-email-antonynpavlov@gmail.com>
+Date: Thu,  7 Aug 2014 01:42:15 +0400
+Message-Id: <1407361335-14875-7-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1407361335-14875-1-git-send-email-antonynpavlov@gmail.com>
 References: <1407361335-14875-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] openrisc: dts: import or1ksim.dts from linux-3.16
+Subject: [PATCH 6/6] openrisc: generic_defconfig: enable device tree stuff
 To: barebox@lists.infradead.org
 
-There are some minor changes with original linux-3.16 file:
-
-  * the 'model' attribute is added (it used for barebox banner board name);
-  * all "opencores,*-rtlsvn*" 'compatible' attribute values are dropped;
-    these values are not actually used in the device drivers.
+Also enable iomem and miitool.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Franck Jullien <franck.jullien@gmail.com>
 ---
- arch/openrisc/dts/or1ksim.dts | 51 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ arch/openrisc/configs/generic_defconfig | 35 +++++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/arch/openrisc/dts/or1ksim.dts b/arch/openrisc/dts/or1ksim.dts
-new file mode 100644
-index 0000000..7316cc6
---- /dev/null
-+++ b/arch/openrisc/dts/or1ksim.dts
-@@ -0,0 +1,51 @@
-+/dts-v1/;
-+/ {
-+	model = "or1ksim";
-+	compatible = "opencores,or1ksim";
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	interrupt-parent = <&pic>;
-+
-+	chosen {
-+		bootargs = "console=uart,mmio,0x90000000,115200";
-+	};
-+
-+	memory {
-+		device_type = "memory";
-+		reg = <0x00000000 0x02000000>;
-+	};
-+
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		cpu@0 {
-+			compatible = "opencores,or1200-rtlsvn481";
-+			reg = <0>;
-+			clock-frequency = <20000000>;
-+		};
-+	};
-+
-+	/*
-+	 * OR1K PIC is built into CPU and accessed via special purpose
-+	 * registers.  It is not addressable and, hence, has no 'reg'
-+	 * property.
-+	 */
-+	pic: pic {
-+		compatible = "opencores,or1k-pic";
-+		#interrupt-cells = <1>;
-+		interrupt-controller;
-+	};
-+
-+	serial0: serial@90000000 {
-+		compatible = "ns16550a";
-+		reg = <0x90000000 0x100>;
-+		interrupts = <2>;
-+		clock-frequency = <50000000>;
-+	};
-+
-+	enet0: ethoc@92000000 {
-+		compatible = "opencores,ethoc";
-+		reg = <0x92000000 0x100>;
-+		interrupts = <4>;
-+	};
-+};
+diff --git a/arch/openrisc/configs/generic_defconfig b/arch/openrisc/configs/generic_defconfig
+index deaef2a..1f2d40e 100644
+--- a/arch/openrisc/configs/generic_defconfig
++++ b/arch/openrisc/configs/generic_defconfig
+@@ -1,26 +1,35 @@
+-CONFIG_LONGHELP=y
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="or1ksim"
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_PARTITION=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_TIME=y
+-CONFIG_CMD_ECHO_E=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_FLASH=y
+ # CONFIG_CMD_BOOTM is not set
+-CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+-CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_RESET=y
+ CONFIG_CMD_PARTITION=y
+-CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_NET=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_TFTP=y
+-CONFIG_FS_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_NET=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_NET_ETHOC=y
++CONFIG_FS_TFTP=y
 -- 
 2.0.1
 
