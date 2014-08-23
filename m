@@ -2,11 +2,13 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from top.free-electrons.com ([176.31.233.9]
  helo=mail.free-electrons.com)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XLKDG-0001C7-ST
- for barebox@lists.infradead.org; Sat, 23 Aug 2014 22:55:11 +0000
+ id 1XLKDL-0001jc-KU
+ for barebox@lists.infradead.org; Sat, 23 Aug 2014 22:55:16 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Sat, 23 Aug 2014 19:53:35 -0300
-Message-Id: <1408834420-899-1-git-send-email-ezequiel.garcia@free-electrons.com>
+Date: Sat, 23 Aug 2014 19:53:38 -0300
+Message-Id: <1408834420-899-4-git-send-email-ezequiel.garcia@free-electrons.com>
+In-Reply-To: <1408834420-899-1-git-send-email-ezequiel.garcia@free-electrons.com>
+References: <1408834420-899-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,48 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] mvebu: Add network support for Armada 370/XP
+Subject: [PATCH 3/5] net: phy: Support Marvell 88EE1543 PHY
 To: barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Here goes a new round of the support for the network controller present
-on Marvell Armada 370/XP SoC.
+This commit adds support for Marvell's 88E1543 PHY chip. This chip is
+almost identical to the 88EE1545, except the 88E1545 supports QSGMII
+and the 88EE1543 supports SGMII.
 
-The first patch enables the peripherals in a PUP register, which is required
-on RGMII ports.
+Therefore, the same configuration function is used for both PHYs. For now,
+the only initialization provided for the 88EE1543 is the LED setup.
 
-The second and third patches add support for Marvell's 88E1543 and 88E1545 PHY
-chips.
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+---
+ drivers/net/phy/marvell.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-The fourth patch adds the mvneta driver. Most of the configuration part is
-based on Linux's mvneta driver, while some of code organization is based
-on Barebox's orion-gbe driver.
-
-The last patch adds network support in the defconfigs.
-
-This has been tested on Armada XP GP, Armada XP Openblocks AX3 and
-Armada 370 Mirabox boards. Linux zImage loads and boots fine, and the
-network interfaces work from the kernel.
-
-Ezequiel Garcia (5):
-  ARM: mvebu: Enable PUP register
-  net: phy: Support Marvell 88EE1545 PHY
-  net: phy: Support Marvell 88EE1543 PHY
-  net: Add driver for Armada 370/XP 10/100/1000 Mbps network controller
-  configs: Add network options to Armada 370/XP boards
-
- arch/arm/configs/globalscale_mirabox_defconfig     |   4 +
- arch/arm/configs/marvell_armada_xp_gp_defconfig    |   4 +
- arch/arm/configs/plathome_openblocks_ax3_defconfig |   4 +
- arch/arm/mach-mvebu/armada-370-xp.c                |   5 +
- .../mach-mvebu/include/mach/armada-370-xp-regs.h   |   7 +
- drivers/net/Kconfig                                |   6 +
- drivers/net/Makefile                               |   1 +
- drivers/net/mvneta.c                               | 758 +++++++++++++++++++++
- drivers/net/phy/marvell.c                          |  69 ++
- 9 files changed, 858 insertions(+)
- create mode 100644 drivers/net/mvneta.c
-
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index fa8e1a9..6353077 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -24,6 +24,7 @@
+ #define MARVELL_PHY_ID_88E1116R		0x01410e40
+ #define MARVELL_PHY_ID_88E1510		0x01410dd0
+ #define MARVELL_PHY_ID_88E1545		0x01410eb0
++#define MARVELL_PHY_ID_88E1543		0x01410ea0
+ 
+ /* Mask used for ID comparisons */
+ #define MARVELL_PHY_ID_MASK		0xfffffff0
+@@ -249,6 +250,15 @@ static struct phy_driver marvell_phys[] = {
+ 	.config_aneg	= genphy_config_aneg,
+ 	.read_status	= marvell_read_status,
+ },
++{
++	.phy_id		= MARVELL_PHY_ID_88E1543,
++	.phy_id_mask	= MARVELL_PHY_ID_MASK,
++	.drv.name	= "Marvell 88E1543",
++	.features	= PHY_GBIT_FEATURES,
++	.config_init	= m88e1540_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= marvell_read_status,
++},
+ };
+ 
+ static int __init marvell_phy_init(void)
 -- 
 2.0.1
 
