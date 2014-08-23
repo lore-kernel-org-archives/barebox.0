@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from top.free-electrons.com ([176.31.233.9]
  helo=mail.free-electrons.com)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XLGwF-0007aj-Fs
- for barebox@lists.infradead.org; Sat, 23 Aug 2014 19:25:24 +0000
+ id 1XLHoi-0007p7-UF
+ for barebox@lists.infradead.org; Sat, 23 Aug 2014 20:21:41 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Sat, 23 Aug 2014 16:23:48 -0300
-Message-Id: <1408821828-4079-1-git-send-email-ezequiel.garcia@free-electrons.com>
+Date: Sat, 23 Aug 2014 17:19:21 -0300
+Message-Id: <1408825163-6135-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,36 +20,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ubiformat: Include missing header
+Subject: [PATCH 0/2] mvebu: Openblocks A6 board support
 To: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Currently this warning is found when compiling ubiformat.c
+Hello everyone,
 
-  CC      commands/ubiformat.o
-commands/ubiformat.c: In function 'flash_image':
-commands/ubiformat.c:368:3: warning: implicit declaration of function 'read_full' [-Wimplicit-function-declaration]
-   err = read_full(fd, buf, mtd->eb_size);
-   ^
-because ubiformat.c needs libfile.h for the read_full() function.
-This commit adds the missing header.
+This two-piece patchset adds support for Plat'home's Openblocks A6 board [1].
+To make it a little more interesting, NAND support (ported from Linux) is
+included.
 
-Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
----
- commands/ubiformat.c | 1 +
- 1 file changed, 1 insertion(+)
+Let's hope we can see USB and SATA soon!
 
-diff --git a/commands/ubiformat.c b/commands/ubiformat.c
-index 443d645..df0b801 100644
---- a/commands/ubiformat.c
-+++ b/commands/ubiformat.c
-@@ -40,6 +40,7 @@
- #include <malloc.h>
- #include <ioctl.h>
- #include <libbb.h>
-+#include <libfile.h>
- #include <linux/mtd/mtd.h>
- #include <linux/kernel.h>
- #include <linux/stat.h>
+[1] http://openblocks.plathome.com/products/a6/
+
+Ezequiel Garcia (2):
+  nand: Add Marvell Orion NAND driver
+  ARM: mvebu: Add Plathome Kirkwood Openblocks A6 board support
+
+ arch/arm/boards/Makefile                          |   1 +
+ arch/arm/boards/plathome-openblocks-a6/Makefile   |   2 +
+ arch/arm/boards/plathome-openblocks-a6/board.c    |   1 +
+ arch/arm/boards/plathome-openblocks-a6/lowlevel.c |  32 +++++
+ arch/arm/dts/Makefile                             |   1 +
+ arch/arm/dts/kirkwood-openblocks_a6-bb.dts        |  13 ++
+ arch/arm/mach-mvebu/Kconfig                       |   3 +
+ drivers/mtd/nand/Kconfig                          |   7 +
+ drivers/mtd/nand/Makefile                         |   1 +
+ drivers/mtd/nand/nand_orion.c                     | 162 ++++++++++++++++++++++
+ images/Makefile.mvebu                             |  11 ++
+ 11 files changed, 234 insertions(+)
+ create mode 100644 arch/arm/boards/plathome-openblocks-a6/Makefile
+ create mode 100644 arch/arm/boards/plathome-openblocks-a6/board.c
+ create mode 100644 arch/arm/boards/plathome-openblocks-a6/lowlevel.c
+ create mode 100644 arch/arm/dts/kirkwood-openblocks_a6-bb.dts
+ create mode 100644 drivers/mtd/nand/nand_orion.c
+
 -- 
 2.0.1
 
