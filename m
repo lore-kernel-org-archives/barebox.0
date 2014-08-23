@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from top.free-electrons.com ([176.31.233.9]
  helo=mail.free-electrons.com)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XLHoi-0007qD-UG
- for barebox@lists.infradead.org; Sat, 23 Aug 2014 20:21:42 +0000
+ id 1XLHoi-0007pT-UF
+ for barebox@lists.infradead.org; Sat, 23 Aug 2014 20:21:41 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Sat, 23 Aug 2014 17:19:23 -0300
-Message-Id: <1408825163-6135-3-git-send-email-ezequiel.garcia@free-electrons.com>
+Date: Sat, 23 Aug 2014 17:19:22 -0300
+Message-Id: <1408825163-6135-2-git-send-email-ezequiel.garcia@free-electrons.com>
 In-Reply-To: <1408825163-6135-1-git-send-email-ezequiel.garcia@free-electrons.com>
 References: <1408825163-6135-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -22,162 +22,218 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: mvebu: Add Plat'home's Kirkwood Openblocks A6 board
- support
+Subject: [PATCH 1/2] nand: Add Marvell Orion NAND driver
 To: barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-This commit adds a new Marvell Kirkwood-based board, by following the currently
-supported boards.
+This commit adds NAND support for the controller present in Kirkwood SoCs.
 
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- arch/arm/boards/Makefile                          |  1 +
- arch/arm/boards/plathome-openblocks-a6/Makefile   |  2 ++
- arch/arm/boards/plathome-openblocks-a6/board.c    |  1 +
- arch/arm/boards/plathome-openblocks-a6/lowlevel.c | 32 +++++++++++++++++++++++
- arch/arm/dts/Makefile                             |  1 +
- arch/arm/dts/kirkwood-openblocks_a6-bb.dts        | 13 +++++++++
- arch/arm/mach-mvebu/Kconfig                       |  3 +++
- images/Makefile.mvebu                             | 11 ++++++++
- 8 files changed, 64 insertions(+)
- create mode 100644 arch/arm/boards/plathome-openblocks-a6/Makefile
- create mode 100644 arch/arm/boards/plathome-openblocks-a6/board.c
- create mode 100644 arch/arm/boards/plathome-openblocks-a6/lowlevel.c
- create mode 100644 arch/arm/dts/kirkwood-openblocks_a6-bb.dts
+ drivers/mtd/nand/Kconfig      |   7 ++
+ drivers/mtd/nand/Makefile     |   1 +
+ drivers/mtd/nand/nand_orion.c | 162 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 170 insertions(+)
+ create mode 100644 drivers/mtd/nand/nand_orion.c
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index c60da81..122f5cd 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -79,6 +79,7 @@ obj-$(CONFIG_MACH_PCM049)			+= phytec-phycore-omap4460/
- obj-$(CONFIG_MACH_PCM051)			+= phytec-phycore-am335x/
- obj-$(CONFIG_MACH_PHYTEC_PFLA02)		+= phytec-phyflex-imx6/
- obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
-+obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
- obj-$(CONFIG_MACH_PM9261)			+= pm9261/
- obj-$(CONFIG_MACH_PM9263)			+= pm9263/
- obj-$(CONFIG_MACH_PM9G45)			+= pm9g45/
-diff --git a/arch/arm/boards/plathome-openblocks-a6/Makefile b/arch/arm/boards/plathome-openblocks-a6/Makefile
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 04fe3c8..ccf1f9c 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -90,6 +90,13 @@ config NAND_OMAP_GPMC
+ 	  Support for NAND flash using GPMC. GPMC is a common memory
+ 	  interface found on Texas Instrument's OMAP platforms
+ 
++config NAND_ORION
++	bool
++	prompt "Orion NAND driver"
++	depends on ARCH_MVEBU
++	help
++	  Support for the Orion NAND controller, present in Kirkwood SoCs.
++
+ config NAND_ATMEL
+ 	bool
+ 	prompt "Atmel (AT91SAM9xxx) NAND driver"
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index a1414e1..02dacde 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_MTD_NAND_NOMADIK)		+= nomadik_nand.o
+ obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
+ obj-$(CONFIG_NAND_IMX_BBM)		+= nand_imx_bbm.o
+ obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o nand_omap_bch_decoder.o
++obj-$(CONFIG_NAND_ORION)		+= nand_orion.o
+ obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
+ obj-$(CONFIG_NAND_S3C24XX)		+= nand_s3c24xx.o
+ pbl-$(CONFIG_NAND_S3C24XX)		+= nand_s3c24xx.o
+diff --git a/drivers/mtd/nand/nand_orion.c b/drivers/mtd/nand/nand_orion.c
 new file mode 100644
-index 0000000..01c7a25
+index 0000000..9bdd3b4
 --- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-a6/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/plathome-openblocks-a6/board.c b/arch/arm/boards/plathome-openblocks-a6/board.c
-new file mode 100644
-index 0000000..40a8c17
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-a6/board.c
-@@ -0,0 +1 @@
-+/* empty */
-diff --git a/arch/arm/boards/plathome-openblocks-a6/lowlevel.c b/arch/arm/boards/plathome-openblocks-a6/lowlevel.c
-new file mode 100644
-index 0000000..b37a3d6
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-a6/lowlevel.c
-@@ -0,0 +1,32 @@
++++ b/drivers/mtd/nand/nand_orion.c
+@@ -0,0 +1,162 @@
 +/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
++ * (C) Copyright 2014, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * Based on Orion NAND driver from Linux (drivers/mtd/nand/orion_nand.c):
++ * Author: Tzachi Perelstein <tzachi@marvell.com>
 + *
++ * This file is licensed under  the terms of the GNU General Public
++ * License version 2. This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
 + */
 +
 +#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/lowlevel.h>
++#include <driver.h>
++#include <malloc.h>
++#include <init.h>
++#include <io.h>
++#include <of_mtd.h>
++#include <errno.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
++#include <linux/clk.h>
 +
-+extern char __dtb_kirkwood_openblocks_a6_bb_start[];
++struct orion_nand {
++	struct mtd_info mtd;
++	struct nand_chip chip;
 +
-+ENTRY_FUNCTION(start_plathome_openblocks_a6, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	arm_cpu_lowlevel_init();
-+
-+	fdt = __dtb_kirkwood_openblocks_a6_bb_start -
-+		get_runtime_offset();
-+
-+	mvebu_barebox_entry(fdt);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 9bff8a0..4b8d58a 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -23,6 +23,7 @@ pbl-dtb-$(CONFIG_MACH_PCM038) += imx27-phytec-phycore-rdk.dtb.o
- pbl-dtb-$(CONFIG_MACH_PCM051) += am335x-phytec-phycore.dtb.o
- pbl-dtb-$(CONFIG_MACH_PHYTEC_PFLA02) += imx6s-phytec-pbab01.dtb.o imx6dl-phytec-pbab01.dtb.o imx6q-phytec-pbab01.dtb.o
- pbl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
-+pbl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
- pbl-dtb-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
- pbl-dtb-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
- pbl-dtb-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
-diff --git a/arch/arm/dts/kirkwood-openblocks_a6-bb.dts b/arch/arm/dts/kirkwood-openblocks_a6-bb.dts
-new file mode 100644
-index 0000000..42bfb07
---- /dev/null
-+++ b/arch/arm/dts/kirkwood-openblocks_a6-bb.dts
-@@ -0,0 +1,13 @@
-+/*
-+ * Barebox specific DT overlay for OpenBlocks A6 board
-+ */
-+
-+#include "arm/kirkwood-openblocks_a6.dts"
-+
-+/ {
-+	gpio-leds {
-+		led-green {
-+			barebox,default-trigger = "heartbeat";
-+		};
-+	};
++	u8 ale;         /* address line number connected to ALE */
++	u8 cle;         /* address line number connected to CLE */
 +};
-diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index 131f3a6..3270f92 100644
---- a/arch/arm/mach-mvebu/Kconfig
-+++ b/arch/arm/mach-mvebu/Kconfig
-@@ -81,6 +81,9 @@ if ARCH_KIRKWOOD
- config MACH_GLOBALSCALE_GURUPLUG
- 	bool "Guruplug"
- 
-+config MACH_PLATHOME_OPENBLOCKS_A6
-+	bool "PlatHome OpenBlocks A6"
 +
- config MACH_USI_TOPKICK
- 	bool "Topkick"
- 
-diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
-index 009807d..5e90855 100644
---- a/images/Makefile.mvebu
-+++ b/images/Makefile.mvebu
-@@ -72,6 +72,17 @@ image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug.img
- image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug-uart.img
- image-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += barebox-globalscale-guruplug-2nd.img
- 
-+PLATHOME_OPENBLOCKS_A6_KWBOPTS = ${KWBOPTS} -i $(board)/plathome-openblocks-a6/kwbimage.cfg
-+OPTS_start_plathome_openblocks_a6.pblx.kwbimg = $(PLATHOME_OPENBLOCKS_A6_KWBOPTS)
-+OPTS_start_plathome_openblocks_a6.pblx.kwbuartimg = -m uart $(PLATHOME_OPENBLOCKS_A6_KWBOPTS)
-+FILE_barebox-plathome-openblocks-a6.img   = start_plathome_openblocks_a6.pblx.kwbimg
-+FILE_barebox-plathome-openblocks-a6-uart.img = start_plathome_openblocks_a6.pblx.kwbuartimg
-+FILE_barebox-plathome-openblocks-a6-2nd.img = start_plathome_openblocks_a6.pblx
-+pblx-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += start_plathome_openblocks_a6
-+image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += barebox-plathome-openblocks-a6.img
-+image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += barebox-plathome-openblocks-a6-uart.img
-+image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += barebox-plathome-openblocks-a6-2nd.img
++static void orion_nand_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
++{
++	struct nand_chip *chip = mtd->priv;
++	struct orion_nand *priv = chip->priv;
++	u32 offs;
 +
- USI_TOPKICK_KWBOPTS = ${KWBOPTS} -i $(board)/usi-topkick/kwbimage.cfg
- OPTS_start_usi_topkick.pblx.kwbimg = $(USI_TOPKICK_KWBOPTS)
- OPTS_start_usi_topkick.pblx.kwbuartimg = -m uart $(USI_TOPKICK_KWBOPTS)
++	if (cmd == NAND_CMD_NONE)
++		return;
++
++	if (ctrl & NAND_CLE)
++		offs = (1 << priv->cle);
++	else if (ctrl & NAND_ALE)
++		offs = (1 << priv->ale);
++	else
++		return;
++
++	if (chip->options & NAND_BUSWIDTH_16)
++		offs <<= 1;
++
++	writeb(cmd, chip->IO_ADDR_W + offs);
++}
++
++static void orion_nand_read_buf(struct mtd_info *mtd, uint8_t *buf, int len)
++{
++	struct nand_chip *chip = mtd->priv;
++	void __iomem *io_base = chip->IO_ADDR_R;
++	uint64_t *buf64;
++	int i = 0;
++
++	while (len && (unsigned long)buf & 7) {
++		*buf++ = readb(io_base);
++		len--;
++	}
++	buf64 = (uint64_t *)buf;
++	while (i < len/8) {
++		/*
++		 * Since GCC has no proper constraint (PR 43518)
++		 * force x variable to r2/r3 registers as ldrd instruction
++		 * requires first register to be even.
++		 */
++		register uint64_t x asm ("r2");
++
++		asm volatile ("ldrd\t%0, [%1]" : "=&r" (x) : "r" (io_base));
++		buf64[i++] = x;
++	}
++	i *= 8;
++	while (i < len)
++		buf[i++] = readb(io_base);
++}
++
++static int orion_nand_probe(struct device_d *dev)
++{
++	struct device_node *dev_node = dev->device_node;
++	struct orion_nand *priv;
++	struct mtd_info *mtd;
++	struct nand_chip *chip;
++	struct clk *clk;
++	void __iomem *io_base;
++	int width, ret;
++	u32 val = 0;
++
++	priv = xzalloc(sizeof(struct orion_nand));
++	if (!priv) {
++		ret = -ENOMEM;
++		goto no_res;
++	}
++	mtd = &priv->mtd;
++	chip = &priv->chip;
++
++	io_base = dev_request_mem_region(dev, 0);
++
++	if (!of_property_read_u32(dev_node, "cle", &val))
++		priv->cle = (u8)val;
++	else
++		priv->cle = 0;
++
++	if (!of_property_read_u32(dev_node, "ale", &val))
++		priv->ale = (u8)val;
++	else
++		priv->ale = 1;
++
++	if (!of_property_read_u32(dev_node, "bank-width", &val))
++		width = (u8)val * 8;
++	else
++		width = 8;
++
++	if (!of_property_read_u32(dev_node, "chip-delay", &val))
++		chip->chip_delay = (u8)val;
++
++	mtd->parent = dev;
++	mtd->priv = chip;
++	chip->priv = priv;
++	chip->IO_ADDR_R = chip->IO_ADDR_W = io_base;
++	chip->cmd_ctrl = orion_nand_cmd_ctrl;
++	chip->read_buf = orion_nand_read_buf;
++	chip->ecc.mode = NAND_ECC_SOFT;
++
++	WARN(width > 16, "%d bit bus width out of range", width);
++	if (width == 16)
++		chip->options |= NAND_BUSWIDTH_16;
++
++	/* Not all platforms can gate the clock, so this is optional */
++	clk = clk_get(dev, 0);
++	if (!IS_ERR(clk))
++		clk_enable(clk);
++
++	if (nand_scan(mtd, 1)) {
++		ret = -ENXIO;
++		goto no_dev;
++	}
++
++	add_mtd_nand_device(mtd, "orion_nand");
++	return 0;
++no_dev:
++	if (!IS_ERR(clk))
++		clk_disable(clk);
++no_res:
++	free(priv);
++	return ret;
++}
++
++static __maybe_unused struct of_device_id orion_nand_compatible[] = {
++	{ .compatible = "marvell,orion-nand", },
++	{},
++};
++
++static struct driver_d orion_nand_driver = {
++	.name  = "orion_nand",
++	.probe = orion_nand_probe,
++	.of_compatible = DRV_OF_COMPAT(orion_nand_compatible),
++};
++device_platform_driver(orion_nand_driver);
 -- 
 2.0.1
 
