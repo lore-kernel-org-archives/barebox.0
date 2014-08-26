@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
+Received: from mail-we0-x22d.google.com ([2a00:1450:400c:c03::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XMHjl-000837-A5
- for barebox@lists.infradead.org; Tue, 26 Aug 2014 14:28:41 +0000
-Received: by mail-we0-f177.google.com with SMTP id w62so14515358wes.8
- for <barebox@lists.infradead.org>; Tue, 26 Aug 2014 07:28:18 -0700 (PDT)
-Date: Tue, 26 Aug 2014 16:28:13 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140826142811.GA12155@omega>
-References: <1408825163-6135-1-git-send-email-ezequiel.garcia@free-electrons.com>
- <1408825163-6135-2-git-send-email-ezequiel.garcia@free-electrons.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1408825163-6135-2-git-send-email-ezequiel.garcia@free-electrons.com>
+ id 1XMHkR-0000B0-JJ
+ for barebox@lists.infradead.org; Tue, 26 Aug 2014 14:29:24 +0000
+Received: by mail-we0-f173.google.com with SMTP id q58so14864594wes.18
+ for <barebox@lists.infradead.org>; Tue, 26 Aug 2014 07:29:01 -0700 (PDT)
+Message-ID: <53FC99A9.2020200@gmail.com>
+Date: Tue, 26 Aug 2014 16:28:57 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1408834420-899-1-git-send-email-ezequiel.garcia@free-electrons.com>
+ <1408834420-899-2-git-send-email-ezequiel.garcia@free-electrons.com>
+In-Reply-To: <1408834420-899-2-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,82 +19,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] nand: Add Marvell Orion NAND driver
-To: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 1/5] ARM: mvebu: Enable PUP register
+To: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Hi,
-
-On Sat, Aug 23, 2014 at 05:19:22PM -0300, Ezequiel Garcia wrote:
-> This commit adds NAND support for the controller present in Kirkwood SoCs.
-> 
-
-cool! I will test it on my DNS-325 platform, if I find some free time.
-
-Thanks for doing this.
-
+On 08/24/2014 12:53 AM, Ezequiel Garcia wrote:
+> As reported by Sebastian, we need to enable this explicitly for the
+> Tx clock on RGMII. While here, let's enable all the other peripherals.
+>
+> Although this is documented to be required only for Armada XP SoC,
+> it has been found to be harmless on Armada 370, so we do it unconditionally
+> to simplify the code.
+>
+> Reported-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 > Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 > ---
->  drivers/mtd/nand/Kconfig      |   7 ++
->  drivers/mtd/nand/Makefile     |   1 +
->  drivers/mtd/nand/nand_orion.c | 162 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 170 insertions(+)
->  create mode 100644 drivers/mtd/nand/nand_orion.c
-> 
-> diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
-> index 04fe3c8..ccf1f9c 100644
-> --- a/drivers/mtd/nand/Kconfig
-> +++ b/drivers/mtd/nand/Kconfig
-> @@ -90,6 +90,13 @@ config NAND_OMAP_GPMC
->  	  Support for NAND flash using GPMC. GPMC is a common memory
->  	  interface found on Texas Instrument's OMAP platforms
->  
-> +config NAND_ORION
-> +	bool
-> +	prompt "Orion NAND driver"
-> +	depends on ARCH_MVEBU
-> +	help
-> +	  Support for the Orion NAND controller, present in Kirkwood SoCs.
-> +
->  config NAND_ATMEL
->  	bool
->  	prompt "Atmel (AT91SAM9xxx) NAND driver"
-...
-> +
-> +static int orion_nand_probe(struct device_d *dev)
-> +{
-> +	struct device_node *dev_node = dev->device_node;
-> +	struct orion_nand *priv;
-> +	struct mtd_info *mtd;
-> +	struct nand_chip *chip;
-> +	struct clk *clk;
-> +	void __iomem *io_base;
-> +	int width, ret;
-> +	u32 val = 0;
-> +
-> +	priv = xzalloc(sizeof(struct orion_nand));
-> +	if (!priv) {
-> +		ret = -ENOMEM;
-> +		goto no_res;
-> +	}
+>   arch/arm/mach-mvebu/armada-370-xp.c                   | 5 +++++
+>   arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h | 7 +++++++
+>   2 files changed, 12 insertions(+)
+>
+> diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+> index f2b991e..96d5878 100644
+> --- a/arch/arm/mach-mvebu/armada-370-xp.c
+> +++ b/arch/arm/mach-mvebu/armada-370-xp.c
 
-checking on null with xzalloc isn't needed, if fails we run into panic.
+I thought about separating Armada 370 and XP init code into two separate
+files. But that can wait, of course.
 
-> +	mtd = &priv->mtd;
-> +	chip = &priv->chip;
+> @@ -62,6 +62,11 @@ static int armada_370_xp_init_soc(void)
+>   	mvebu_set_memory(phys_base, phys_size);
+>   	mvebu_mbus_add_range(0xf0, 0x01, MVEBU_REMAP_INT_REG_BASE);
+>
+> +	/* Enable GBE0, GBE1, LCD and NAND PUP */
+> +	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
+> +	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN;
+> +	writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
 > +
-> +	io_base = dev_request_mem_region(dev, 0);
+>   	return 0;
+>   }
+>   core_initcall(armada_370_xp_init_soc);
+> diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+> index ccc687c..f6db784 100644
+> --- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+> +++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+> @@ -30,6 +30,13 @@
+>   #define  SAR_TCLK_FREQ			BIT(20)
+>   #define  SAR_HIGH			0x04
+>
+> +#define ARMADA_XP_PUP_ENABLE_BASE       (ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
+> +#define  GE0_PUP_EN			BIT(0)
+> +#define  GE1_PUP_EN			BIT(1)
+> +#define  LCD_PUP_EN			BIT(2)
+> +#define  NAND_PUP_EN			BIT(4)
+
+Please add:
+
+#define SPI_PUP_EN	BIT(5)
+
+and also set it above.
+
+Besides that,
+
+Acked-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+
 > +
+> +
+>   #define ARMADA_370_XP_SDRAM_BASE	(ARMADA_370_XP_INT_REGS_BASE + 0x20000)
+>   #define  DDR_BASE_CS			0x180
+>   #define  DDR_BASE_CSn(n)		(DDR_BASE_CS + ((n) * 0x8))
+>
 
-here we should check the return value. I don't know what's now the
-behaviour on dev_request_mem_region if fail returns NULL or ERR_PTR.
-There was some discussion on the list.
-
-- Alex
 
 _______________________________________________
 barebox mailing list
