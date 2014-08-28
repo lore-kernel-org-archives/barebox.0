@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x234.google.com ([2a00:1450:400c:c00::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XMweA-0000Ez-1v
- for barebox@lists.infradead.org; Thu, 28 Aug 2014 10:09:38 +0000
-Received: by mail-wg0-f52.google.com with SMTP id m15so508290wgh.11
- for <barebox@lists.infradead.org>; Thu, 28 Aug 2014 03:09:15 -0700 (PDT)
-Date: Thu, 28 Aug 2014 12:08:56 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140828100855.GA26411@omega>
-References: <1409212205.4914.6.camel@lws-gamez.phytec.de>
- <20140828092542.GA20889@omega>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140828092542.GA20889@omega>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XMxT4-000889-6U
+ for barebox@lists.infradead.org; Thu, 28 Aug 2014 11:02:15 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <mgr@pengutronix.de>) id 1XMxSf-0004qX-6w
+ for barebox@lists.infradead.org; Thu, 28 Aug 2014 13:01:49 +0200
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.84_RC2)
+ (envelope-from <mgr@pengutronix.de>) id 1XMxSZ-0000J4-H7
+ for barebox@lists.infradead.org; Thu, 28 Aug 2014 13:01:43 +0200
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Thu, 28 Aug 2014 13:01:41 +0200
+Message-Id: <1409223701-1124-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,124 +21,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [BUG] readline history
-To: Teresa Gamez <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ubi: add setting devnum to ubiattach
+To: barebox@lists.infradead.org
 
-Hi,
+Sometimes we need to have a defined devicenumber for the ubi partitions.
+This patch adds the option to ubiattach.
 
-another possible solution which less of runtime decisions.
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ commands/ubi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
+diff --git a/commands/ubi.c b/commands/ubi.c
+index d593e71..94da799 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -65,9 +65,13 @@ static int do_ubiattach(int argc, char *argv[])
+ 	struct mtd_info_user user;
+ 	int fd, ret;
+ 	int vid_hdr_offset = 0;
++	int devnum = UBI_DEV_NUM_AUTO;
+ 
+-	while((opt = getopt(argc, argv, "O:")) > 0) {
++	while((opt = getopt(argc, argv, "d:O:")) > 0) {
+ 		switch(opt) {
++		case 'd':
++			devnum = simple_strtoul(optarg, NULL, 0);
++			break;
+ 		case 'O':
+ 			vid_hdr_offset = simple_strtoul(optarg, NULL, 0);
+ 			break;
+@@ -91,7 +95,7 @@ static int do_ubiattach(int argc, char *argv[])
+ 		goto err;
+ 	}
+ 
+-	ret = ubi_attach_mtd_dev(user.mtd, UBI_DEV_NUM_AUTO, vid_hdr_offset, 20);
++	ret = ubi_attach_mtd_dev(user.mtd, devnum, vid_hdr_offset, 20);
+ 	if (ret < 0)
+ 		printf("failed to attach: %s\n", strerror(-ret));
+ 	else
+@@ -104,13 +108,14 @@ err:
+ 
+ BAREBOX_CMD_HELP_START(ubiattach)
+ BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-d DEVNUM",  "device number")
+ BAREBOX_CMD_HELP_OPT ("-O OFFS",  "VID header offset")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(ubiattach)
+ 	.cmd		= do_ubiattach,
+ 	BAREBOX_CMD_DESC("attach mtd device to UBI")
+-	BAREBOX_CMD_OPTS("[-O] MTDDEV")
++	BAREBOX_CMD_OPTS("[-dO] MTDDEV")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+ 	BAREBOX_CMD_HELP(cmd_ubiattach_help)
+ BAREBOX_CMD_END
+-- 
+2.1.0.rc1
 
-
-diff --git a/lib/readline.c b/lib/readline.c
-index b70bca8..f9cfa4b 100644
---- a/lib/readline.c
-+++ b/lib/readline.c
-@@ -28,7 +28,9 @@ struct history {
-        struct list_head list;
- };
- 
--static LIST_HEAD(history_list);
-+static struct history history_list = {
-+       .list = LIST_HEAD_INIT(history_list.list),
-+};
- 
- static struct list_head *history_current;
- static int history_num_entries;
-@@ -38,8 +40,8 @@ static void cread_add_to_hist(char *line)
-        struct history *history;
-        char *newline;
- 
--       if (!list_empty(&history_list)) {
--               history = list_last_entry(&history_list, struct history, list);
-+       if (!list_empty(&history_list.list)) {
-+               history = list_last_entry(&history_list.list, struct history, list);
- 
-                if (!strcmp(line, history->line))
-                        return;
-@@ -53,21 +55,21 @@ static void cread_add_to_hist(char *line)
-                history = xzalloc(sizeof(*history));
-                history_num_entries++;
-        } else {
--               history = list_first_entry(&history_list, struct history, list);
-+               history = list_first_entry(&history_list.list, struct history, list);
-                free(history->line);
-                list_del(&history->list);
-        }
- 
-        history->line = newline;
- 
--       list_add_tail(&history->list, &history_list);
-+       list_add_tail(&history->list, &history_list.list);
- }
- 
- static const char *hist_prev(void)
- {
-        struct history *history;
- 
--       if (history_current->prev == &history_list) {
-+       if (history_current->prev == &history_list.list) {
-                history = list_entry(history_current, struct history, list);
-                getcmd_cbeep();
-                return history->line;
-@@ -84,12 +86,12 @@ static const char *hist_next(void)
- {
-        struct history *history;
- 
--       if (history_current->next == &history_list) {
--               history_current = &history_list;
-+       if (history_current->next == &history_list.list) {
-+               history_current = &history_list.list;
-                return "";
-        }
- 
--       if (history_current == &history_list) {
-+       if (history_current == &history_list.list) {
-                getcmd_cbeep();
-                return "";
-        }
-@@ -188,7 +190,7 @@ int readline(const char *prompt, char *buf, int len)
- 
-        complete_reset();
- #endif
--       history_current = &history_list;
-+       history_current = &history_list.list;
- 
-        puts (prompt);
- 
-@@ -296,10 +298,13 @@ int readline(const char *prompt, char *buf, int len)
-                {
-                        const char *hline;
- 
--                       if (ichar == BB_KEY_UP)
-+                       if (ichar == BB_KEY_UP) {
-                                hline = hist_prev();
--                       else
-+                               if (!hline)
-+                                       break;
-+                       } else {
-                                hline = hist_next();
-+                       }
- 
-                        /* nuke the current line */
-                        /* first, go home */
-
-
-
-
-Don't know what I actually did there, just experiment that history_list
-isn't a struct list. It has now space for the "char *line" pointer and
-it's init with null. Also move the null check only for hlist_prev();
-
-now list_entry on history_list works because it has a "char *line" which
-should always be NULL.
-
-- Alex
 
 _______________________________________________
 barebox mailing list
