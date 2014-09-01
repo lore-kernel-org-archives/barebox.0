@@ -1,10 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XOOfL-0000sJ-Jv
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 10:16:52 +0000
+Date: Mon, 1 Sep 2014 12:16:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140901101623.GT5352@pengutronix.de>
+References: <1407320269-32368-1-git-send-email-poggi.raph@gmail.com>
+ <1407320269-32368-3-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <54043FDA.4050707@gmail.com>
-References: <54043FDA.4050707@gmail.com>
-Date: Mon, 1 Sep 2014 12:13:34 +0200
-Message-ID: <CAMuHMdVB55rXpR7UpRH_y12gMx+1tH48yf0bCqXMaQLL3i-YdA@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Disposition: inline
+In-Reply-To: <1407320269-32368-3-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -13,51 +19,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] MTD m25p80 3-byte addressing and boot problem
-To: Matteo Fortini <matteo.fortini@gmail.com>
-Cc: barebox@lists.infradead.org, MTD Maling List <linux-mtd@lists.infradead.org>, mike@steroidmicros.com
+Subject: Re: [PATCH v3 2/3] at91sam9g45: clock: add i2c clocks
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Matteo,
+On Wed, Aug 06, 2014 at 12:17:48PM +0200, Rapha=EBl Poggi wrote:
+> Add the device tree and non device tree at91 i2c clocks.
+> =
 
-On Mon, Sep 1, 2014 at 11:43 AM, Matteo Fortini
-<matteo.fortini@gmail.com> wrote:
-> If a Linux/Barebox system is using an SPI flash of size >= 16 MB, the driver
-> is switching to 3-byte addressing to be able to use linear access to the
-> whole memory.
->
-> This leads to the impossibility to boot a board after a warm reset, because
-> all bootloaders use the standard 2-byte addressing (if the board doesn't
-> physically reset the flash or do something similar).
+> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
+> ---
+>  arch/arm/mach-at91/at91sam9g45.c |    4 ++++
+>  1 file changed, 4 insertions(+)
+> =
 
-> The solution proposed on freescale forums is not final: it involves
-> switching back to 2-byte addressing after every access, which still leaves a
-> small window in which a warm reset would be fatal.
+> diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sa=
+m9g45.c
+> index 9a50deb..d19d26a 100644
+> --- a/arch/arm/mach-at91/at91sam9g45.c
+> +++ b/arch/arm/mach-at91/at91sam9g45.c
+> @@ -192,6 +192,10 @@ static struct clk_lookup periph_clocks_lookups[] =3D=
+ {
+>  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
+>  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
+>  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
+> +	CLKDEV_DEV_ID("at91sam9g10-i2c0", &twi0_clk),
+> +	CLKDEV_DEV_ID("at91sam9g10-i2c1", &twi1_clk),
+> +	CLKDEV_DEV_ID("fff84000.i2c", &twi0_clk),
+> +	CLKDEV_DEV_ID("fff88000.i2c", &twi1_clk),
 
-Indeed. So the board won't boot anymore if that happens.
+Can you use clkdev_add_physbase()? This way you wouldn't have to
+register separate clocks for the device tree and non device tree case.
 
-> One solution would be to use the bank command in the flash, using each 16MB
-> bank linearly, and changing bank depending on the address. This would be
-> messy for accesses which are crossing the boundary, but it is doable.
+Sascha
 
-IMHO this is even more dangerous: what if the board is warm-resetted
-while a non-first bank is in use? The board may not boot anymore, but worse,
-if the boot loader would write to the FLASH, it would write to the wrong bank,
-overwriting innocent data.
+-- =
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
