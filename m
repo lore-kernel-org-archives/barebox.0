@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XOPDC-0000ea-8v
- for barebox@lists.infradead.org; Mon, 01 Sep 2014 10:51:50 +0000
-Date: Mon, 1 Sep 2014 12:51:21 +0200
+ Linux)) id 1XOPiF-0003F3-Sc
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 11:23:56 +0000
+Date: Mon, 1 Sep 2014 13:23:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140901105121.GW5352@pengutronix.de>
-References: <1406873830-17123-1-git-send-email-s.hauer@pengutronix.de>
- <20140801064502.GA27679@omega>
+Message-ID: <20140901112325.GA18691@pengutronix.de>
+References: <1406220898-10310-1-git-send-email-b.galvani@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140801064502.GA27679@omega>
+In-Reply-To: <1406220898-10310-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: saveenv: Fix comment about directories in help
- text
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: [PATCH 0/2] Rockchip: adapt pinctrl driver to new dts
+To: Beniamino Galvani <b.galvani@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 01, 2014 at 08:45:04AM +0200, Alexander Aring wrote:
-> Hi Sascha,
+On Thu, Jul 24, 2014 at 06:54:56PM +0200, Beniamino Galvani wrote:
+> Hi,
 > 
-> On Fri, Aug 01, 2014 at 08:17:10AM +0200, Sascha Hauer wrote:
-> > envfs indeed handles directories, at least since 2007:
-> > 
-> > | commit 913691eccd13c1509470eb8b059aa0beecc6d8d8
-> > | Author: Sascha Hauer <s.hauer@pengutronix.de>
-> > | Date:   Tue Sep 25 12:58:52 2007 +0200
-> > |
-> > |     add directory handling for environment
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  commands/saveenv.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/commands/saveenv.c b/commands/saveenv.c
-> > index 31d6951..9da733e 100644
-> > --- a/commands/saveenv.c
-> > +++ b/commands/saveenv.c
-> > @@ -60,8 +60,7 @@ BAREBOX_CMD_HELP_TEXT("Save the files in DIRECTORY to the persistent storage dev
-> >  BAREBOX_CMD_HELP_TEXT("")
-> >  BAREBOX_CMD_HELP_TEXT("ENVFS is usually a block in flash but can be any other file. If")
-> >  BAREBOX_CMD_HELP_TEXT("omitted, DIRECTORY defaults to /env and ENVFS defaults to")
-> > -BAREBOX_CMD_HELP_TEXT("/dev/env0. Note that envfs can only handle files, directories are being")
-> > -BAREBOX_CMD_HELP_TEXT("skipped silently.")
-> > +BAREBOX_CMD_HELP_TEXT("/dev/env0.")
+> the dts for Rockchip rk3188 imported in commit 9313920df6d "dts:
+> update to v3.16-rc1" contains a change in the bindings for the pinctrl
+> node, which now uses syscons to obtain the address of memory mapped
+> registers.
 > 
-> but envfs can't handle directories which are empty while saving? :-)
-> Maybe we should add this as note or support empty directories.
+> On barebox master branch the pinctrl driver fails during the probe
+> with the new dts and thus some pin functions are not set properly; for
+> this reason the ethernet port doesn't work at the moment on the Radxa
+> Rock.
+> 
+> The patches below fix the problem, adapting the driver to the new dts.
+> 
+> Beniamino
 
-I think we should add some more general docs how the environment works.
-That would be a more appropriate place to add this note. Otherwise we
-would have to add it to loadenv aswell.
+Applied, thanks.
+
+I missed this series in my inbox, otherwise the patches would have been
+in the last release. Sorry for that.
 
 Sascha
 
