@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x236.google.com ([2a00:1450:400c:c03::236])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XOQiD-0006sz-NV
- for barebox@lists.infradead.org; Mon, 01 Sep 2014 12:27:58 +0000
-Received: by mail-we0-f182.google.com with SMTP id w62so5414410wes.27
- for <barebox@lists.infradead.org>; Mon, 01 Sep 2014 05:27:35 -0700 (PDT)
-From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Mon,  1 Sep 2014 14:27:35 +0200
-Message-Id: <1409574455-15746-4-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1409574455-15746-1-git-send-email-poggi.raph@gmail.com>
-References: <1409574455-15746-1-git-send-email-poggi.raph@gmail.com>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XORfm-00051H-Dw
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 13:29:34 +0000
+Message-ID: <5404749A.7000708@phytec.de>
+Date: Mon, 01 Sep 2014 15:28:58 +0200
+From: Jan Weitzel <j.weitzel@phytec.de>
 MIME-Version: 1.0
+References: <20140804192141.GO23235@pengutronix.de>
+ <1408620379-9338-1-git-send-email-j.weitzel@phytec.de>
+ <20140901103833.GV5352@pengutronix.de>
+In-Reply-To: <20140901103833.GV5352@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,94 +19,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/3] mtd: atmel_nand: add support for device tree
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
+Subject: Re: [PATCH v3] commands: of_dump switch to get fixed devictree
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgotLS0K
-IGRyaXZlcnMvbXRkL25hbmQvYXRtZWxfbmFuZC5jIHwgIDExMSArKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrLQogMSBmaWxlIGNoYW5nZWQsIDExMCBpbnNlcnRpb25zKCsp
-LCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5k
-LmMgYi9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYwppbmRleCAyMjQ2NjAyLi45MTBlY2Mz
-IDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5kL2F0bWVsX25hbmQuYworKysgYi9kcml2ZXJz
-L210ZC9uYW5kL2F0bWVsX25hbmQuYwpAQCAtMjgsNiArMjgsMTAgQEAKICNpbmNsdWRlIDxpbml0
-Lmg+CiAjaW5jbHVkZSA8Z3Bpby5oPgogCisjaW5jbHVkZSA8b2YuaD4KKyNpbmNsdWRlIDxvZl9n
-cGlvLmg+CisjaW5jbHVkZSA8b2ZfbXRkLmg+CisKICNpbmNsdWRlIDxsaW51eC9tdGQvbXRkLmg+
-CiAjaW5jbHVkZSA8bGludXgvbXRkL25hbmQuaD4KIApAQCAtMTAzOCw2ICsxMDQyLDkyIEBAIHN0
-YXRpYyB2b2lkIGF0bWVsX25hbmRfaHdjdGwoc3RydWN0IG10ZF9pbmZvICptdGQsIGludCBtb2Rl
-KQogI2VuZGlmCiB9CiAKK3N0YXRpYyBpbnQgYXRtZWxfbmFuZF9vZl9pbml0KHN0cnVjdCBhdG1l
-bF9uYW5kX2hvc3QgKmhvc3QsIHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnApCit7CisJdTMyIHZhbDsK
-Kwl1MzIgb2Zmc2V0WzJdOworCWludCBlY2NfbW9kZTsKKwlzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRh
-ICpib2FyZCA9IGhvc3QtPmJvYXJkOworCWVudW0gb2ZfZ3Bpb19mbGFncyBmbGFncyA9IDA7CisK
-KwlpZiAoIUlTX0VOQUJMRUQoQ09ORklHX09GREVWSUNFKSkKKwkJcmV0dXJuIC1FTk9TWVM7CisK
-KwlpZiAob2ZfcHJvcGVydHlfcmVhZF91MzIobnAsICJhdG1lbCxuYW5kLWFkZHItb2Zmc2V0Iiwg
-JnZhbCkgPT0gMCkgeworCQlpZiAodmFsID49IDMyKSB7CisJCQlkZXZfZXJyKGhvc3QtPmRldiwg
-ImludmFsaWQgYWRkci1vZmZzZXQgJXVcbiIsIHZhbCk7CisJCQlyZXR1cm4gLUVJTlZBTDsKKwkJ
-fQorCQlib2FyZC0+YWxlID0gdmFsOworCX0KKworCWlmIChvZl9wcm9wZXJ0eV9yZWFkX3UzMihu
-cCwgImF0bWVsLG5hbmQtY21kLW9mZnNldCIsICZ2YWwpID09IDApIHsKKwkJaWYgKHZhbCA+PSAz
-MikgeworCQkJZGV2X2Vycihob3N0LT5kZXYsICJpbnZhbGlkIGNtZC1vZmZzZXQgJXVcbiIsIHZh
-bCk7CisJCQlyZXR1cm4gLUVJTlZBTDsKKwkJfQorCQlib2FyZC0+Y2xlID0gdmFsOworCX0KKwor
-CWVjY19tb2RlID0gb2ZfZ2V0X25hbmRfZWNjX21vZGUobnApOworCisJYm9hcmQtPmVjY19tb2Rl
-ID0gZWNjX21vZGUgPCAwID8gTkFORF9FQ0NfU09GVCA6IGVjY19tb2RlOworCisJYm9hcmQtPm9u
-X2ZsYXNoX2JidCA9IG9mX2dldF9uYW5kX29uX2ZsYXNoX2JidChucCk7CisKKwlpZiAob2ZfZ2V0
-X25hbmRfYnVzX3dpZHRoKG5wKSA9PSAxNikKKwkJYm9hcmQtPmJ1c193aWR0aF8xNiA9IDE7CisK
-Kwlib2FyZC0+cmR5X3BpbiA9IG9mX2dldF9ncGlvX2ZsYWdzKG5wLCAwLCAmZmxhZ3MpOworCWJv
-YXJkLT5lbmFibGVfcGluID0gb2ZfZ2V0X2dwaW8obnAsIDEpOworCWJvYXJkLT5kZXRfcGluID0g
-b2ZfZ2V0X2dwaW8obnAsIDIpOworCisJYm9hcmQtPmhhc19wbWVjYyA9IG9mX3Byb3BlcnR5X3Jl
-YWRfYm9vbChucCwgImF0bWVsLGhhcy1wbWVjYyIpOworCisJaWYgKCEoYm9hcmQtPmVjY19tb2Rl
-ID09IE5BTkRfRUNDX0hXKSB8fCAhYm9hcmQtPmhhc19wbWVjYykKKwkJcmV0dXJuIDA7CS8qIE5v
-dCB1c2luZyBQTUVDQyAqLworCisJLyogdXNlIFBNRUNDLCBnZXQgY29ycmVjdGlvbiBjYXBhYmls
-aXR5LCBzZWN0b3Igc2l6ZSBhbmQgbG9va3VwCisJKiB0YWJsZSBvZmZzZXQuCisJKiBJZiBjb3Jy
-ZWN0aW9uIGJpdHMgYW5kIHNlY3RvciBzaXplIGFyZSBub3Qgc3BlY2lmaWVkLCB0aGVuCisJKiAg
-IGZpbmQKKwkqIHRoZW0gZnJvbSBOQU5EIE9ORkkgcGFyYW1ldGVycy4KKwkqLworCWlmIChvZl9w
-cm9wZXJ0eV9yZWFkX3UzMihucCwgImF0bWVsLHBtZWNjLWNhcCIsICZ2YWwpID09IDApIHsKKwkJ
-aWYgKCh2YWwgIT0gMikgJiYgKHZhbCAhPSA0KSAmJiAodmFsICE9IDgpICYmICh2YWwgIT0gMTIp
-ICYmICh2YWwgIT0gMjQpKSB7CisJCQlkZXZfZXJyKGhvc3QtPmRldiwgIlVuc3VwcG9ydGVkIFBN
-RUNDIGNvcnJlY3Rpb24gY2FwYWJpbGl0eTogJWQiCisJCQkJCSIgc2hvdWxkIGJlIDIsIDQsIDgs
-IDEyIG9yIDI0XG4iLCB2YWwpOworCQkJcmV0dXJuIC1FSU5WQUw7CisJCX0KKworCQlib2FyZC0+
-cG1lY2NfY29ycl9jYXAgPSAodTgpdmFsOworCX0KKworCWlmIChvZl9wcm9wZXJ0eV9yZWFkX3Uz
-MihucCwgImF0bWVsLHBtZWNjLXNlY3Rvci1zaXplIiwgJnZhbCkgPT0gMCkgeworCQlpZiAoKHZh
-bCAhPSA1MTIpICYmICh2YWwgIT0gMTAyNCkpIHsKKwkJCQlkZXZfZXJyKGhvc3QtPmRldiwgIlVu
-c3VwcG9ydGVkIFBNRUNDIHNlY3RvciBzaXplOiAlZCIKKwkJCQkJIiBzaG91bGQgYmUgNTEyIG9y
-IDEwMjQgYnl0ZXNcbiIsIHZhbCk7CisJCQlyZXR1cm4gLUVJTlZBTDsKKwkJfQorCisJCWJvYXJk
-LT5wbWVjY19zZWN0b3Jfc2l6ZSA9ICh1MTYpdmFsOworCX0KKworCWlmIChvZl9wcm9wZXJ0eV9y
-ZWFkX3UzMl9hcnJheShucCwgImF0bWVsLHBtZWNjLWxvb2t1cC10YWJsZS1vZmZzZXQiLCBvZmZz
-ZXQsIDIpICE9IDApIHsKKwkJZGV2X2Vycihob3N0LT5kZXYsICJDYW5ub3QgZ2V0IFBNRUNDIGxv
-b2t1cCB0YWJsZSBvZmZzZXRcbiIpOworCQlyZXR1cm4gLUVJTlZBTDsKKwl9CisKKwlpZiAoIW9m
-ZnNldFswXSAmJiAhb2Zmc2V0WzFdKSB7CisJCWRldl9lcnIoaG9zdC0+ZGV2LCAiSW52YWxpZCBQ
-TUVDQyBsb29rdXAgdGFibGUgb2Zmc2V0XG4iKTsKKwkJcmV0dXJuIC1FSU5WQUw7CisJfQorCisJ
-Ym9hcmQtPnBtZWNjX2xvb2t1cF90YWJsZV9vZmZzZXQgPSAoYm9hcmQtPnBtZWNjX3NlY3Rvcl9z
-aXplID09IDUxMikgPyBvZmZzZXRbMF0gOiBvZmZzZXRbMV07CisKKwlyZXR1cm4gMDsKK30KKwog
-c3RhdGljIGludCBhdG1lbF9od19uYW5kX2luaXRfcGFyYW1zKHN0cnVjdCBkZXZpY2VfZCAqZGV2
-LAogCQkJCQkgc3RydWN0IGF0bWVsX25hbmRfaG9zdCAqaG9zdCkKIHsKQEAgLTEwOTMsNyArMTE4
-Myw3IEBAIHN0YXRpYyBpbnQgYXRtZWxfaHdfbmFuZF9pbml0X3BhcmFtcyhzdHJ1Y3QgZGV2aWNl
-X2QgKmRldiwKICAqLwogc3RhdGljIGludCBfX2luaXQgYXRtZWxfbmFuZF9wcm9iZShzdHJ1Y3Qg
-ZGV2aWNlX2QgKmRldikKIHsKLQlzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRhICpwZGF0YSA9IGRldi0+
-cGxhdGZvcm1fZGF0YTsKKwlzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRhICpwZGF0YSA9IE5VTEw7CiAJ
-c3RydWN0IGF0bWVsX25hbmRfaG9zdCAqaG9zdDsKIAlzdHJ1Y3QgbXRkX2luZm8gKm10ZDsKIAlz
-dHJ1Y3QgbmFuZF9jaGlwICpuYW5kX2NoaXA7CkBAIC0xMTExLDYgKzEyMDEsMTggQEAgc3RhdGlj
-IGludCBfX2luaXQgYXRtZWxfbmFuZF9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAlob3N0
-LT5ib2FyZCA9IHBkYXRhOwogCWhvc3QtPmRldiA9IGRldjsKIAorCWlmIChkZXYtPmRldmljZV9u
-b2RlKSB7CisJCXJlcyA9IGF0bWVsX25hbmRfb2ZfaW5pdChob3N0LCBkZXYtPmRldmljZV9ub2Rl
-KTsKKwkJaWYgKHJlcykKKwkJCWdvdG8gZXJyX25vX2NhcmQ7CisJfSBlbHNlIHsKKwkJcGRhdGEg
-PSBremFsbG9jKHNpemVvZihzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRhKSwgR0ZQX0tFUk5FTCk7CisJ
-CWlmICghcGRhdGEpCisJCQlyZXR1cm4gLUVOT01FTTsKKworCQltZW1jcHkoaG9zdC0+Ym9hcmQs
-IGRldi0+cGxhdGZvcm1fZGF0YSwgc2l6ZW9mKHN0cnVjdCBhdG1lbF9uYW5kX2RhdGEpKTsKKwl9
-CisKIAluYW5kX2NoaXAtPnByaXYgPSBob3N0OwkJLyogbGluayB0aGUgcHJpdmF0ZSBkYXRhIHN0
-cnVjdHVyZXMgKi8KIAltdGQtPnByaXYgPSBuYW5kX2NoaXA7CiAJbXRkLT5wYXJlbnQgPSBkZXY7
-CkBAIC0xMjQ1LDEzICsxMzQ3LDIwIEBAIGVycl9od19lY2M6CiBlcnJfc2Nhbl9pZGVudDoKIGVy
-cl9ub19jYXJkOgogCWF0bWVsX25hbmRfZGlzYWJsZShob3N0KTsKKwlrZnJlZShwZGF0YSk7CiAJ
-a2ZyZWUoaG9zdCk7CiAJcmV0dXJuIHJlczsKIH0KIAorc3RhdGljIHN0cnVjdCBvZl9kZXZpY2Vf
-aWQgYXRtZWxfbmFuZF9kdF9pZHNbXSA9IHsKKwl7IC5jb21wYXRpYmxlID0gImF0bWVsLGF0OTFy
-bTkyMDAtbmFuZCIgfSwKKwl7IC8qIHNlbnRpbmVsICovIH0KK307CisKIHN0YXRpYyBzdHJ1Y3Qg
-ZHJpdmVyX2QgYXRtZWxfbmFuZF9kcml2ZXIgPSB7CiAJLm5hbWUJPSAiYXRtZWxfbmFuZCIsCiAJ
-LnByb2JlCT0gYXRtZWxfbmFuZF9wcm9iZSwKKwkub2ZfY29tcGF0aWJsZQk9IERSVl9PRl9DT01Q
-QVQoYXRtZWxfbmFuZF9kdF9pZHMpLAogfTsKIGRldmljZV9wbGF0Zm9ybV9kcml2ZXIoYXRtZWxf
-bmFuZF9kcml2ZXIpOwogCi0tIAoxLjcuOS41CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+Am 01.09.2014 um 12:38 schrieb Sascha Hauer:
+> On Thu, Aug 21, 2014 at 01:26:19PM +0200, Jan Weitzel wrote:
+>> Add a switch to get the devicetree processed by the registered fixups.
+>> This is also whats the kernel gets.
+>>
+>> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+>> ---
+>> v3: create a copy of the internal devicetree before use of_fix_tree
+>>
+>>   commands/of_dump.c |   31 +++++++++++++++++++++++++++++--
+>>   1 files changed, 29 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/commands/of_dump.c b/commands/of_dump.c
+>> index cafde07..f82f0fd 100644
+>> --- a/commands/of_dump.c
+>> +++ b/commands/of_dump.c
+>> @@ -34,16 +34,20 @@ static int do_of_dump(int argc, char *argv[])
+>>   {
+>>   	int opt;
+>>   	int ret;
+>> +	int fix = 0;
+>>   	struct device_node *root = NULL, *node, *of_free = NULL;
+>>   	char *dtbfile = NULL;
+>>   	size_t size;
+>>   	const char *nodename;
+>>   
+>> -	while ((opt = getopt(argc, argv, "f:")) > 0) {
+>> +	while ((opt = getopt(argc, argv, "Ff:")) > 0) {
+>>   		switch (opt) {
+>>   		case 'f':
+>>   			dtbfile = optarg;
+>>   			break;
+>> +		case 'F':
+>> +			fix = 1;
+>> +			break;
+>>   		default:
+>>   			return COMMAND_ERROR_USAGE;
+>>   		}
+>> @@ -75,6 +79,28 @@ static int do_of_dump(int argc, char *argv[])
+>>   		of_free = root;
+>>   	} else {
+>>   		root = of_get_root_node();
+>> +
+>> +		if (fix) {
+>> +			/* create a copy of internal devicetree */
+>> +			void *fdt;
+>> +			fdt = of_flatten_dtb(root);
+>> +			root = of_unflatten_dtb(fdt);
+> That's really a creative way to make a copy of the device tree ;)
+
+And it use known good functions ;)
+
+Jan
+
+>
+> Ok, I'll close both eyes while applying it.
+>
+> Sascha
+>
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
