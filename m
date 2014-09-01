@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XOQg6-0006O0-7D
- for barebox@lists.infradead.org; Mon, 01 Sep 2014 12:25:47 +0000
-Date: Mon, 1 Sep 2014 14:25:16 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140901122516.GX5352@pengutronix.de>
-References: <1409212205.4914.6.camel@lws-gamez.phytec.de>
- <20140901083033.GF5352@pengutronix.de>
- <20140901084455.GA8561@omega>
+Received: from mail-wg0-x22c.google.com ([2a00:1450:400c:c00::22c])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XOQi9-0006sK-LR
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 12:27:54 +0000
+Received: by mail-wg0-f44.google.com with SMTP id m15so5313206wgh.27
+ for <barebox@lists.infradead.org>; Mon, 01 Sep 2014 05:27:31 -0700 (PDT)
+Received: from eROCCA26.VPN13.com
+ (LNantes-156-76-15-113.w82-127.abo.wanadoo.fr. [82.127.166.113])
+ by mx.google.com with ESMTPSA id mz16sm24230569wic.13.2014.09.01.05.27.30
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+ Mon, 01 Sep 2014 05:27:30 -0700 (PDT)
+From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
+Date: Mon,  1 Sep 2014 14:27:32 +0200
+Message-Id: <1409574455-15746-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140901084455.GA8561@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,99 +23,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [BUG] readline history
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 0/3] Add device tree support of Atmel NAND driver
+To: barebox@lists.infradead.org
 
-On Mon, Sep 01, 2014 at 10:44:57AM +0200, Alexander Aring wrote:
-> Hi Sascha,
-> 
-> On Mon, Sep 01, 2014 at 10:30:33AM +0200, Sascha Hauer wrote:
-> > Hi Teresa,
-> > 
-> > On Thu, Aug 28, 2014 at 09:50:05AM +0200, Teresa Gamez wrote:
-> > > Hello Sascha,
-> > > 
-> > > I noticed a bug on the latest master.
-> > > When no history is present and I hit the arrow up key, I get:
-> > > 
-> > > unable to handle NULL pointer dereference at address 0x00000001
-> > > pc : [<9fe243ba>]    lr : [<9fe268cf>]
-> > > sp : 9ffff9d0  ip : 00000016  fp : 00000002
-> > > r10: 00000001  r9 : 9fe549dc  r8 : 9fe65d08
-> > > r7 : 00000400  r6 : 00000001  r5 : 00000000  r4 : 9fe66258
-> > > r3 : 00000000  r2 : 00000000  r1 : 00000001  r0 : 9fe66258
-> > > Flags: nZCv  IRQs off  FIQs on  Mode SVC_32
-> > > [<9fe243ba>] (strcpy+0xa/0xe) from [<9fe268cf>] (readline+0x363/0x4e0)
-> > > [<9fe268cf>] (readline+0x363/0x4e0) from [<9fe05469>] (file_get
-> > > +0x49/0x110)
-> > > 
-> > > I could bisect it to this commit:
-> > > 
-> > > 
-> > > ada160a34a1ec8421d5bb7b9dd746294668a5130 is the first bad commit
-> > > commit ada160a34a1ec8421d5bb7b9dd746294668a5130
-> > > Author: Sascha Hauer <s.hauer@pengutronix.de>
-> > > Date:   Tue Jul 29 11:54:26 2014 +0200
-> > 
-> > Damned. While working on that patch I had exactly this problem and
-> > thought I tested this case. Apparantly I didn't :(
-> > 
-> > The following should fix this:
-> > 
-> > Sascha
-> > 
-> > From 7fd0d972f71610c25276ca387164b1fd71fb74be Mon Sep 17 00:00:00 2001
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Date: Mon, 1 Sep 2014 10:21:44 +0200
-> > Subject: [PATCH] readline: Fix history prev when history is empty
-> > 
-> > We cannot use list_entry() on an empty list. Without history
-> > we have to return an empty line. This fixes a crash when the
-> > cursor up button is pressed and no command has been entered
-> > previously. Broken since:
-> > 
-> > commit ada160a34a1ec8421d5bb7b9dd746294668a5130
-> > Author: Sascha Hauer <s.hauer@pengutronix.de>
-> > Date:   Tue Jul 29 11:54:26 2014 +0200
-> > 
-> >     readline: reimplement history functions
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > Reported-by: Teresa Gamez <t.gamez@phytec.de>
-> > ---
-> >  lib/readline.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/lib/readline.c b/lib/readline.c
-> > index b70bca8..e855abd 100644
-> > --- a/lib/readline.c
-> > +++ b/lib/readline.c
-> > @@ -68,6 +68,9 @@ static const char *hist_prev(void)
-> >  	struct history *history;
-> >  
-> >  	if (history_current->prev == &history_list) {
-> > +		if (list_empty(&history_list))
-> > +			return "";
-> > +
-> 
-> what's about to ring the terminal bell when this happen?
-
-I added a getcmd_cbeep() to add the beep.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Q2hhbmdlIHNpbmNlIHYyOgoJKiBDb21iaW5lIGluIG9uZSBwYXRjaCB0aGUgY3JlYXRpb24gYW5k
+IGluaXRpYWxpc2F0aW9uIG9mICJoYXNfcG1lY2MiIHN0cnVjdHVyZSBtZW1iZXIKCSogQ29tYmlu
+ZSBwYXRjaCAiW1BBVENIIDMvNV0gbXRkOiBhdG1lbF9uYW5kOiByZXRyaWV2ZSBlY2NfbW9kZSBm
+cm9tIHBkYXRhIiAKCQlhbmQgIltQQVRDSCA0LzVdIGJvYXJkOiBhdG1lbDogaW5pdGlhbGlzZSBl
+Y2NfbW9kZSIKCSogTGV0IE5BTkRfQVRNRUxfUE1FQ0MgY29uZmlnLCBidXQgY2hhbmdlIHRoZSB0
+ZXN0IGluIGF0bWVsX25hbmQKCkNoYW5nZSBzaW5jZSB2MToKICAgICAgICAqIFJlb3JkZXIgcGF0
+Y2hzCiAgICAgICAgKiBGaXggc29tZSBjbGVhbiBzdHlsZSBpc3N1ZS4KClRoaXMgcGF0Y2hzZXQg
+YWRkcyB0aGUgZGV2aWNlIHRyZWUgc3VwcG9ydCBmb3IgdGhlIEF0bWVsIE5BTkQgZHJpdmVyLgoK
+VGhlIGZpcnN0IHBhdGNoIGFkZCB0aGUgaGFzX3BtZWNjIHN0cnVjdHVyZSBtZW1iZXIgdG8gYmUg
+YWJsZSB0byByZXRyaWV2ZSBwbWVjYyBmcm9tIGRldmljZSB0cmVlCmFuZCBhZGRzIHRoZSBoYXNf
+cG1lY2Mgb24gYm9hcmRzIHdoaWNoIG5lZWQgaXQuCgpUaGUgc2Vjb25kIHBhdGNoIHJldHJpZXZl
+cyB0aGUgZWNjX21vZGUgZnJvbSB0aGUgcGxhdGVmb3JtIGRhdGEsIGFuZCByZW1vdmUgdGhpcyBj
+b2RlOgoKICAgICAgICBuYW5kX2NoaXAtPmVjYy5tb2RlID0gTkFORF9FQ0NfU09GVDsKCndoaWNo
+IGFyYml0cmFyeSBzZXRzIHRoZSBlY2MubW9kZSB0byBOQU5EX0VDQ19TT0ZUIGFuZCBjaGFuZ2Vz
+IHRoZSB2YWx1ZSBkZXBlbmRpbmcgb2YgdGhlIGNvbmZpZyBhbmQgcGxhdGVmb3JtIGRhdGEuCldp
+dGggdGhpcywgd2UgY2FuIHVzZSB0aGUgc2FtZSBsb2dpY3MgZm9yIGRldmljZSB0cmVlIGFuZCBu
+b24gZGV2aWNlIHRyZWUgcHJvYmluZyBvZiB0aGUgZHJpdmVyLiAKSXQgYWxzbyBhZGRzIHRoZSBl
+Y2NfbW9kZSBvbiBib2FyZHMgd2hpY2ggYXJlIG1pc3NpbmcgaXQgKGJvYXJkcyB3aGljaCB1c2Ug
+TkFORF9FQ0NfU09GVCkuCgpUaGUgdGhpcmQgcGF0Y2ggYWRkcyB0aGUgZGV2aWNlIHRyZWUgaW4g
+dGhlIGF0bWVsX25hbmQgZHJpdmVyLgoKUmFwaGHDq2wgUG9nZ2kgKDQpOgoJKDEpIG10ZDogbmFu
+ZDogYWRkIGhhc19wbWVjYyBtZW1iZXIKCSgyKSBtdGQ6IGF0bWVsX25hbmQ6IHJldHJpZXZlIGVj
+Y19tb2RlIGZyb20gcGRhdGEKCSgzKSBtdGQ6IGF0bWVsX25hbmQ6IGFkZCBzdXBwb3J0IGZvciBk
+ZXZpY2UgdHJlZQoKIGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOTI2MGVrL2luaXQuYyAgICB8ICAg
+IDEgKwogYXJjaC9hcm0vYm9hcmRzL2F0OTFzYW05MjYxZWsvaW5pdC5jICAgIHwgICAgMSArCiBh
+cmNoL2FybS9ib2FyZHMvYXQ5MXNhbTkyNjNlay9pbml0LmMgICAgfCAgICAxICsKIGFyY2gvYXJt
+L2JvYXJkcy9hdDkxc2FtOW0xMGc0NWVrL2luaXQuYyB8ICAgIDEgKwogYXJjaC9hcm0vYm9hcmRz
+L2F0OTFzYW05bTEwaWhkL2luaXQuYyAgIHwgICAgMSArCiBhcmNoL2FybS9ib2FyZHMvYXQ5MXNh
+bTluMTJlay9pbml0LmMgICAgfCAgICAxICsKIGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOXg1ZWsv
+aW5pdC5jICAgICB8ICAgIDEgKwogYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDNfeHBsYWluZWQvaW5p
+dC5jIHwgICAgMSArCiBhcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9pbml0LmMgICAgICAgfCAg
+ICAxICsKIGFyY2gvYXJtL21hY2gtYXQ5MS9pbmNsdWRlL21hY2gvYm9hcmQuaCB8ICAgIDEgKwog
+ZHJpdmVycy9tdGQvbmFuZC9hdG1lbF9uYW5kLmMgICAgICAgICAgIHwgIDExNSArKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKystCiAxMSBmaWxlcyBjaGFuZ2VkLCAxMjIgaW5zZXJ0aW9ucygr
+KSwgMyBkZWxldGlvbnMoLSkKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
