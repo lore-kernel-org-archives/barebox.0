@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XMyMP-0003OW-Qh
- for barebox@lists.infradead.org; Thu, 28 Aug 2014 11:59:26 +0000
-Received: by mail-wi0-f169.google.com with SMTP id n3so468894wiv.2
- for <barebox@lists.infradead.org>; Thu, 28 Aug 2014 04:59:02 -0700 (PDT)
-Date: Thu, 28 Aug 2014 13:58:59 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140828115857.GC1752@omega>
-References: <98034ceb4fe0a107abef0beb3fd1380c@linux-source.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XOMQY-0001kl-Vn
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 07:53:27 +0000
+Date: Mon, 1 Sep 2014 09:52:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140901075255.GD5352@pengutronix.de>
+References: <1409223701-1124-1-git-send-email-m.grzeschik@pengutronix.de>
+ <20140828152711.d56341d04ffec8f217b1f073@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <98034ceb4fe0a107abef0beb3fd1380c@linux-source.de>
+In-Reply-To: <20140828152711.d56341d04ffec8f217b1f073@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,17 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: add mtdram device (which build mtd over ram area -
- useful for FRAM oder MRAM)
-To: basti@linux-source.de
+Subject: Re: [PATCH] ubi: add setting devnum to ubiattach
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 28, 2014 at 10:59:51AM +0200, basti@linux-source.de wrote:
-> This adds support for MTD in RAM devices (like FRAM or MRAM).
+On Thu, Aug 28, 2014 at 03:27:11PM +0400, Antony Pavlov wrote:
+> >  BAREBOX_CMD_START(ubiattach)
+> >  	.cmd		= do_ubiattach,
+> >  	BAREBOX_CMD_DESC("attach mtd device to UBI")
+> > -	BAREBOX_CMD_OPTS("[-O] MTDDEV")
+> > +	BAREBOX_CMD_OPTS("[-dO] MTDDEV")
+> 
+> Can we use a more accurate variant? Something like this one:
 
-ah, non volatile memory. Okay. :-)
+BAREBOX_CMD_OPTS for other commands look like Michael did it. The full
+option semantics is still in the full help text.
 
-- Alex
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
