@@ -1,15 +1,8 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XOO8I-0008LO-MB
- for barebox@lists.infradead.org; Mon, 01 Sep 2014 09:42:43 +0000
-Date: Mon, 1 Sep 2014 11:42:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140901094210.GO5352@pengutronix.de>
-References: <1408061492-32718-1-git-send-email-apr@cn-eng.de>
+Message-ID: <54043FDA.4050707@gmail.com>
+Date: Mon, 01 Sep 2014 11:43:54 +0200
+From: Matteo Fortini <matteo.fortini@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1408061492-32718-1-git-send-email-apr@cn-eng.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,92 +11,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: gitignore: update based on Makefile
-To: Andreas Pretzsch <apr@cn-eng.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] MTD m25p80 3-byte addressing and boot problem
+To: linux-mtd@lists.infradead.org
+Cc: barebox@lists.infradead.org, mike@steroidmicros.com
 
-On Fri, Aug 15, 2014 at 02:11:32AM +0200, Andreas Pretzsch wrote:
-> Create up-to-date list of hostprogs and targetprogs based on Makefile.
-> Have this list sorted like the targets in the Makefile to ease maintenance.
-> Also move some leftovers from root .gitignore over here.
-> 
-> Signed-off-by: Andreas Pretzsch <apr@cn-eng.de>
+If a Linux/Barebox system is using an SPI flash of size >= 16 MB, the 
+driver is switching to 3-byte addressing to be able to use linear access 
+to the whole memory.
 
-Applied, thanks.
+This leads to the impossibility to boot a board after a warm reset, 
+because all bootloaders use the standard 2-byte addressing (if the board 
+doesn't physically reset the flash or do something similar).
 
-Sascha
+Some documentation in the following links:
+http://www.at91.com/discussions/viewtopic.php/f,30/t,22849.html
+https://community.freescale.com/docs/DOC-93632
 
-> ---
-> patch relative to master as of 07.08.2014 (45615e3)
-> 
->  .gitignore         |  3 ---
->  scripts/.gitignore | 20 ++++++++++++--------
->  2 files changed, 12 insertions(+), 11 deletions(-)
-> 
-> diff --git a/.gitignore b/.gitignore
-> index a62e08c..5d9157d 100644
-> --- a/.gitignore
-> +++ b/.gitignore
-> @@ -83,6 +83,3 @@ cscope.*
->  
->  # patches
->  *.patch
-> -scripts/gen_netx_image
-> -scripts/s5p_cksum
-> -scripts/bareboxenv-target
-> diff --git a/scripts/.gitignore b/scripts/.gitignore
-> index fddc04b..1df04ba 100644
-> --- a/scripts/.gitignore
-> +++ b/scripts/.gitignore
-> @@ -1,17 +1,21 @@
-> -bareboxenv
->  bin2c
-> +mkimage
->  fix_size
-> -gen_netx_image
-> -kallsyms
-> +bareboxenv
-> +bareboxcrc32
->  kernel-install
-> -kernel-install-target
-> +bareboximd
-> +kallsyms
->  kwbimage
->  kwboot
-> -mk-am35xx-spi-image
-> -mkimage
-> -mkublheader
-> +gen_netx_image
->  omap_signGP
-> +mk-am3xxx-spi-image
-> +s5p_cksum
-> +mkublheader
->  zynq_mkimage
->  socfpga_mkimage
-> -bareboxcrc32
-> +bareboxenv-target
-> +kernel-install-target
->  bareboxcrc32-target
-> +bareboximd-target
-> -- 
-> 2.0.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+The solution proposed on freescale forums is not final: it involves 
+switching back to 2-byte addressing after every access, which still 
+leaves a small window in which a warm reset would be fatal.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+One solution would be to use the bank command in the flash, using each 
+16MB bank linearly, and changing bank depending on the address. This 
+would be messy for accesses which are crossing the boundary, but it is 
+doable.
+
+I'm asking here for comments before I start patching the code. Right now 
+I resorted to stick to 2-byte addressing and leave half of my NOR (32MB) 
+unused.
+
+TIA,
+M
 
 _______________________________________________
 barebox mailing list
