@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XOP0n-0002NF-5n
- for barebox@lists.infradead.org; Mon, 01 Sep 2014 10:39:01 +0000
-Date: Mon, 1 Sep 2014 12:38:33 +0200
+ Linux)) id 1XOPDC-0000ea-8v
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 10:51:50 +0000
+Date: Mon, 1 Sep 2014 12:51:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140901103833.GV5352@pengutronix.de>
-References: <20140804192141.GO23235@pengutronix.de>
- <1408620379-9338-1-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20140901105121.GW5352@pengutronix.de>
+References: <1406873830-17123-1-git-send-email-s.hauer@pengutronix.de>
+ <20140801064502.GA27679@omega>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1408620379-9338-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <20140801064502.GA27679@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] commands: of_dump switch to get fixed devictree
-To: Jan Weitzel <j.weitzel@phytec.de>
+Subject: Re: [PATCH] commands: saveenv: Fix comment about directories in help
+ text
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 21, 2014 at 01:26:19PM +0200, Jan Weitzel wrote:
-> Add a switch to get the devicetree processed by the registered fixups.
-> This is also whats the kernel gets.
+On Fri, Aug 01, 2014 at 08:45:04AM +0200, Alexander Aring wrote:
+> Hi Sascha,
 > 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> ---
-> v3: create a copy of the internal devicetree before use of_fix_tree
+> On Fri, Aug 01, 2014 at 08:17:10AM +0200, Sascha Hauer wrote:
+> > envfs indeed handles directories, at least since 2007:
+> > 
+> > | commit 913691eccd13c1509470eb8b059aa0beecc6d8d8
+> > | Author: Sascha Hauer <s.hauer@pengutronix.de>
+> > | Date:   Tue Sep 25 12:58:52 2007 +0200
+> > |
+> > |     add directory handling for environment
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  commands/saveenv.c | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > 
+> > diff --git a/commands/saveenv.c b/commands/saveenv.c
+> > index 31d6951..9da733e 100644
+> > --- a/commands/saveenv.c
+> > +++ b/commands/saveenv.c
+> > @@ -60,8 +60,7 @@ BAREBOX_CMD_HELP_TEXT("Save the files in DIRECTORY to the persistent storage dev
+> >  BAREBOX_CMD_HELP_TEXT("")
+> >  BAREBOX_CMD_HELP_TEXT("ENVFS is usually a block in flash but can be any other file. If")
+> >  BAREBOX_CMD_HELP_TEXT("omitted, DIRECTORY defaults to /env and ENVFS defaults to")
+> > -BAREBOX_CMD_HELP_TEXT("/dev/env0. Note that envfs can only handle files, directories are being")
+> > -BAREBOX_CMD_HELP_TEXT("skipped silently.")
+> > +BAREBOX_CMD_HELP_TEXT("/dev/env0.")
 > 
->  commands/of_dump.c |   31 +++++++++++++++++++++++++++++--
->  1 files changed, 29 insertions(+), 2 deletions(-)
-> 
-> diff --git a/commands/of_dump.c b/commands/of_dump.c
-> index cafde07..f82f0fd 100644
-> --- a/commands/of_dump.c
-> +++ b/commands/of_dump.c
-> @@ -34,16 +34,20 @@ static int do_of_dump(int argc, char *argv[])
->  {
->  	int opt;
->  	int ret;
-> +	int fix = 0;
->  	struct device_node *root = NULL, *node, *of_free = NULL;
->  	char *dtbfile = NULL;
->  	size_t size;
->  	const char *nodename;
->  
-> -	while ((opt = getopt(argc, argv, "f:")) > 0) {
-> +	while ((opt = getopt(argc, argv, "Ff:")) > 0) {
->  		switch (opt) {
->  		case 'f':
->  			dtbfile = optarg;
->  			break;
-> +		case 'F':
-> +			fix = 1;
-> +			break;
->  		default:
->  			return COMMAND_ERROR_USAGE;
->  		}
-> @@ -75,6 +79,28 @@ static int do_of_dump(int argc, char *argv[])
->  		of_free = root;
->  	} else {
->  		root = of_get_root_node();
-> +
-> +		if (fix) {
-> +			/* create a copy of internal devicetree */
-> +			void *fdt;
-> +			fdt = of_flatten_dtb(root);
-> +			root = of_unflatten_dtb(fdt);
+> but envfs can't handle directories which are empty while saving? :-)
+> Maybe we should add this as note or support empty directories.
 
-That's really a creative way to make a copy of the device tree ;)
-
-Ok, I'll close both eyes while applying it.
+I think we should add some more general docs how the environment works.
+That would be a more appropriate place to add this note. Otherwise we
+would have to add it to loadenv aswell.
 
 Sascha
 
