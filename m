@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XOQg6-0006O0-7D
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 12:25:47 +0000
+Date: Mon, 1 Sep 2014 14:25:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140901122516.GX5352@pengutronix.de>
+References: <1409212205.4914.6.camel@lws-gamez.phytec.de>
+ <20140901083033.GF5352@pengutronix.de>
+ <20140901084455.GA8561@omega>
 MIME-Version: 1.0
-In-Reply-To: <54043FDA.4050707@gmail.com>
-References: <54043FDA.4050707@gmail.com>
-Date: Mon, 1 Sep 2014 13:48:25 +0200
-Message-ID: <CAD4b4WKsOkOsg74ktzKEYTzzEkeA=bQ2qUWHdJODHHU=acUGZQ@mail.gmail.com>
-From: Mark Marshall <markmarshall14@gmail.com>
-Content-Type: multipart/mixed; boundary=001a11c251dea88f110501ff94da
+Content-Disposition: inline
+In-Reply-To: <20140901084455.GA8561@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,213 +20,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] MTD m25p80 3-byte addressing and boot problem
-To: Matteo Fortini <matteo.fortini@gmail.com>
-Cc: barebox@lists.infradead.org, linux-mtd@lists.infradead.org, mike@steroidmicros.com
+Subject: Re: [BUG] readline history
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: barebox@lists.infradead.org
 
---001a11c251dea88f110501ff94da
-Content-Type: text/plain; charset=UTF-8
+On Mon, Sep 01, 2014 at 10:44:57AM +0200, Alexander Aring wrote:
+> Hi Sascha,
+> 
+> On Mon, Sep 01, 2014 at 10:30:33AM +0200, Sascha Hauer wrote:
+> > Hi Teresa,
+> > 
+> > On Thu, Aug 28, 2014 at 09:50:05AM +0200, Teresa Gamez wrote:
+> > > Hello Sascha,
+> > > 
+> > > I noticed a bug on the latest master.
+> > > When no history is present and I hit the arrow up key, I get:
+> > > 
+> > > unable to handle NULL pointer dereference at address 0x00000001
+> > > pc : [<9fe243ba>]    lr : [<9fe268cf>]
+> > > sp : 9ffff9d0  ip : 00000016  fp : 00000002
+> > > r10: 00000001  r9 : 9fe549dc  r8 : 9fe65d08
+> > > r7 : 00000400  r6 : 00000001  r5 : 00000000  r4 : 9fe66258
+> > > r3 : 00000000  r2 : 00000000  r1 : 00000001  r0 : 9fe66258
+> > > Flags: nZCv  IRQs off  FIQs on  Mode SVC_32
+> > > [<9fe243ba>] (strcpy+0xa/0xe) from [<9fe268cf>] (readline+0x363/0x4e0)
+> > > [<9fe268cf>] (readline+0x363/0x4e0) from [<9fe05469>] (file_get
+> > > +0x49/0x110)
+> > > 
+> > > I could bisect it to this commit:
+> > > 
+> > > 
+> > > ada160a34a1ec8421d5bb7b9dd746294668a5130 is the first bad commit
+> > > commit ada160a34a1ec8421d5bb7b9dd746294668a5130
+> > > Author: Sascha Hauer <s.hauer@pengutronix.de>
+> > > Date:   Tue Jul 29 11:54:26 2014 +0200
+> > 
+> > Damned. While working on that patch I had exactly this problem and
+> > thought I tested this case. Apparantly I didn't :(
+> > 
+> > The following should fix this:
+> > 
+> > Sascha
+> > 
+> > From 7fd0d972f71610c25276ca387164b1fd71fb74be Mon Sep 17 00:00:00 2001
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Date: Mon, 1 Sep 2014 10:21:44 +0200
+> > Subject: [PATCH] readline: Fix history prev when history is empty
+> > 
+> > We cannot use list_entry() on an empty list. Without history
+> > we have to return an empty line. This fixes a crash when the
+> > cursor up button is pressed and no command has been entered
+> > previously. Broken since:
+> > 
+> > commit ada160a34a1ec8421d5bb7b9dd746294668a5130
+> > Author: Sascha Hauer <s.hauer@pengutronix.de>
+> > Date:   Tue Jul 29 11:54:26 2014 +0200
+> > 
+> >     readline: reimplement history functions
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > Reported-by: Teresa Gamez <t.gamez@phytec.de>
+> > ---
+> >  lib/readline.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/lib/readline.c b/lib/readline.c
+> > index b70bca8..e855abd 100644
+> > --- a/lib/readline.c
+> > +++ b/lib/readline.c
+> > @@ -68,6 +68,9 @@ static const char *hist_prev(void)
+> >  	struct history *history;
+> >  
+> >  	if (history_current->prev == &history_list) {
+> > +		if (list_empty(&history_list))
+> > +			return "";
+> > +
+> 
+> what's about to ring the terminal bell when this happen?
 
-Hi.
+I added a getcmd_cbeep() to add the beep.
 
-We had the same problem here, but luckily our Flash also supported a
-different read command that took the larger address.  I made a (small)
-modification to the m25p80 driver to use this command when the flash
-supported it.
+Sascha
 
-I've attached the two patches that come from my tree that are
-relevant.  The first one (42)  just changes to the page size used to
-access the flash, and is only needed so that you don;t get conflicts
-wit the second.  The second patch (45) is the one of interest.  These
-patches are against v3.2.52-rt73 from the real-time tree, and there
-are (obviously) other patches either side of them, but they should
-show what I have done.  At some point (!) I'll try to push these
-up-stream, but as ou can see, we are well behind the curve at the
-moment, which makes this harder.
-
-Regards,
-
-Mark Marshall.
-
-PS.
-On our original prototype hardware we had no reset line connected to
-the flash, so even a hard reset wouldn't get things back to how they
-should be when Linux was changing the bank register!  I think that the
-longer commands should be used if the flash chip supports them in
-preference to either bank switching or "converting" the small commands
-to longer ones.
-
-
-On 1 September 2014 11:43, Matteo Fortini <matteo.fortini@gmail.com> wrote:
-> If a Linux/Barebox system is using an SPI flash of size >= 16 MB, the driver
-> is switching to 3-byte addressing to be able to use linear access to the
-> whole memory.
->
-> This leads to the impossibility to boot a board after a warm reset, because
-> all bootloaders use the standard 2-byte addressing (if the board doesn't
-> physically reset the flash or do something similar).
->
-> Some documentation in the following links:
-> http://www.at91.com/discussions/viewtopic.php/f,30/t,22849.html
-> https://community.freescale.com/docs/DOC-93632
->
-> The solution proposed on freescale forums is not final: it involves
-> switching back to 2-byte addressing after every access, which still leaves a
-> small window in which a warm reset would be fatal.
->
-> One solution would be to use the bank command in the flash, using each 16MB
-> bank linearly, and changing bank depending on the address. This would be
-> messy for accesses which are crossing the boundary, but it is doable.
->
-> I'm asking here for comments before I start patching the code. Right now I
-> resorted to stick to 2-byte addressing and leave half of my NOR (32MB)
-> unused.
->
-> TIA,
-> M
->
-> ______________________________________________________
-> Linux MTD discussion mailing list
-> http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
---001a11c251dea88f110501ff94da
-Content-Type: text/x-patch; charset=US-ASCII; 
-	name="0042-m25p80-Use-a-512-byte-page-size-for-Spansion-flash-s.patch"
-Content-Disposition: attachment; 
-	filename="0042-m25p80-Use-a-512-byte-page-size-for-Spansion-flash-s.patch"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_hzjqriyc0
-
-RnJvbSA5ZmU5NmY5ZmU4OTNlNGY4YTQyYzM3ZGY1ZGIxZTI5ZDViYWI3MzllIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBNYXJrIE1hcnNoYWxsIDxNYXJrLk1hcnNoYWxsQG9taWNyb24u
-YXQ+CkRhdGU6IFRodSwgMjUgQXByIDIwMTMgMTM6NTA6MzAgKzAyMDAKU3ViamVjdDogW1BBVENI
-IDQyLzk2XSBtMjVwODA6IFVzZSBhIDUxMiBieXRlIHBhZ2Ugc2l6ZSBmb3IgU3BhbnNpb24gZmxh
-c2gKIHMyNWZsNTEycwoKVGhlIHMyNWZsNTEycyBmbGFzaCBmcm9tIFNwbmFzaW9uIGhhcyBhIDUx
-MiBieXRlIHdyaXRlIHBhZ2Ugc2l6ZSwKd2hpY2ggbWVhbnMgdGhhdCB3ZSBjYW4gd3JpdGUgNTEy
-IGJ5dGVzIGF0IGEgdGltZSAoaW5zdGVhZCBvZiAyNTYpLgoKVGhpcyBzaW5nbGUgY2hhbmdlIG1h
-a2VzIHdyaXRpbmcgdG8gdGhlIGZsYXNoIGFib3V0IDJ4J3MgZmFzdGVyLgoKU2lnbmVkLW9mZi1i
-eTogTWFyayBNYXJzaGFsbCA8bWFyay5tYXJzaGFsbEBvbWljcm9uLmF0PgotLS0KIGRyaXZlcnMv
-bXRkL2RldmljZXMvbTI1cDgwLmMgfCAgIDEyICsrKysrKysrKysrLQogMSBmaWxlIGNoYW5nZWQs
-IDExIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL210
-ZC9kZXZpY2VzL20yNXA4MC5jIGIvZHJpdmVycy9tdGQvZGV2aWNlcy9tMjVwODAuYwppbmRleCBi
-Nzc3Njk3Li4zMjU4MTc5IDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5j
-CisrKyBiL2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgwLmMKQEAgLTYzNyw2ICs2MzcsMTYgQEAg
-c3RydWN0IGZsYXNoX2luZm8gewogCQkuZmxhZ3MgPSAoX2ZsYWdzKSwJCQkJCVwKIAl9KQogCisj
-ZGVmaW5lIElORk9QKF9qZWRlY19pZCwgX2V4dF9pZCwgX3NlY3Rvcl9zaXplLCBfbl9zZWN0b3Jz
-LCBfcGdfc3osIF9mbGFncykgXAorCSgoa2VybmVsX3Vsb25nX3QpJihzdHJ1Y3QgZmxhc2hfaW5m
-bykgewkJCQlcCisJCS5qZWRlY19pZCA9IChfamVkZWNfaWQpLAkJCQlcCisJCS5leHRfaWQgPSAo
-X2V4dF9pZCksCQkJCQlcCisJCS5zZWN0b3Jfc2l6ZSA9IChfc2VjdG9yX3NpemUpLAkJCQlcCisJ
-CS5uX3NlY3RvcnMgPSAoX25fc2VjdG9ycyksCQkJCVwKKwkJLnBhZ2Vfc2l6ZSA9IChfcGdfc3op
-LAkJCQkJXAorCQkuZmxhZ3MgPSAoX2ZsYWdzKSwJCQkJCVwKKwl9KQorCiAjZGVmaW5lIENBVDI1
-X0lORk8oX3NlY3Rvcl9zaXplLCBfbl9zZWN0b3JzLCBfcGFnZV9zaXplLCBfYWRkcl93aWR0aCkJ
-XAogCSgoa2VybmVsX3Vsb25nX3QpJihzdHJ1Y3QgZmxhc2hfaW5mbykgewkJCQlcCiAJCS5zZWN0
-b3Jfc2l6ZSA9IChfc2VjdG9yX3NpemUpLAkJCQlcCkBAIC02OTgsNyArNzA4LDcgQEAgc3RhdGlj
-IGNvbnN0IHN0cnVjdCBzcGlfZGV2aWNlX2lkIG0yNXBfaWRzW10gPSB7CiAJeyAiczI1c2wwNjRh
-IiwgIElORk8oMHgwMTAyMTYsICAgICAgMCwgIDY0ICogMTAyNCwgMTI4LCAwKSB9LAogCXsgInMy
-NWZsMjU2czAiLCBJTkZPKDB4MDEwMjE5LCAweDRkMDAsIDI1NiAqIDEwMjQsIDEyOCwgMCkgfSwK
-IAl7ICJzMjVmbDI1NnMxIiwgSU5GTygweDAxMDIxOSwgMHg0ZDAxLCAgNjQgKiAxMDI0LCA1MTIs
-IDApIH0sCi0JeyAiczI1Zmw1MTJzIiwgIElORk8oMHgwMTAyMjAsIDB4NGQwMCwgMjU2ICogMTAy
-NCwgMjU2LCAwKSB9LAorCXsgInMyNWZsNTEycyIsIElORk9QKDB4MDEwMjIwLCAweDRkMDAsIDI1
-NiAqIDEwMjQsIDI1NiwgNTEyLCAwKSB9LAogCXsgInM3MGZsMDFncyIsICBJTkZPKDB4MDEwMjIx
-LCAweDRkMDAsIDI1NiAqIDEwMjQsIDI1NiwgMCkgfSwKIAl7ICJzMjVzbDEyODAwIiwgSU5GTygw
-eDAxMjAxOCwgMHgwMzAwLCAyNTYgKiAxMDI0LCAgNjQsIDApIH0sCiAJeyAiczI1c2wxMjgwMSIs
-IElORk8oMHgwMTIwMTgsIDB4MDMwMSwgIDY0ICogMTAyNCwgMjU2LCAwKSB9LAotLSAKMS43Ljku
-NQoK
---001a11c251dea88f110501ff94da
-Content-Type: text/x-patch; charset=US-ASCII; 
-	name="0045-m25p80-Use-the-4-byte-address-read-command.patch"
-Content-Disposition: attachment; 
-	filename="0045-m25p80-Use-the-4-byte-address-read-command.patch"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_hzjqriys1
-
-RnJvbSA3YzE0Yjg5NGYxODg0YmY3OTE1NDE3Y2U4Yjc0N2IxMWI2ZjYwM2M2IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBNYXJrIE1hcnNoYWxsIDxNYXJrLk1hcnNoYWxsQG9taWNyb24u
-YXQ+CkRhdGU6IFdlZCwgMzEgSnVsIDIwMTMgMTU6MjY6MTIgKzAyMDAKU3ViamVjdDogW1BBVENI
-IDQ1Lzk2XSBtMjVwODA6IFVzZSB0aGUgNC1ieXRlIGFkZHJlc3MgcmVhZCBjb21tYW5kCgpJdCBp
-cyBiZXR0ZXIgZm9yIHNvbWUgaGFyZHdhcmUgcGxhdGZvcm1zIGlmIHdlIHVzZSB0aGUgZGVkaWNh
-dGVkCjQtYnl0ZSBhZGRyZXNzIFNQSSByZWFkIGNvbW1hbmQgd2hlbiByZWFkaW5nIGZyb20gU1BJ
-IEZsYXNoIGNoaXBzCj4gMTYgTUIgKHJhdGhlciB0aGFuIGNvbnZlcnRpbmcgdGhlIDMtYnl0ZSBh
-ZGRyZXNzIGNvbW1hbmQgdG8gdGFrZQo0IGFkZHJlc3MgYnl0ZXMpLgoKVGhlIHByb2JsZW0gdGhh
-dCB3ZSBoYWQgaXMgdGhhdCBvbiByZXNldCB0aGUgYm9vdCBsb2FkZXIgdHJpZXMgdG8KdXNlIHRo
-ZSAzLWJ5dGUgYWRkcmVzcyBjb21tYW5kIHdoaWNoLCBkb2Vzbid0IHdvcmsgaWYgdGhlIEZsYXNo
-IGhhcwpub3QgYmVlbiByZXNldCBhbmQgTGludXggaGFzIGNvbnZlcnRlZCBpdCB0byBhY2NlcHQg
-NC1ieXRlIGFkZHJlc3Nlcy4KLS0tCiBkcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jIHwgICAz
-NiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAy
-OSBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRk
-L2RldmljZXMvbTI1cDgwLmMgYi9kcml2ZXJzL210ZC9kZXZpY2VzL20yNXA4MC5jCmluZGV4IGZh
-MGYyYzAuLjJkODdhYWQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL2RldmljZXMvbTI1cDgwLmMK
-KysrIGIvZHJpdmVycy9tdGQvZGV2aWNlcy9tMjVwODAuYwpAQCAtNjIsNiArNjIsMTEgQEAKICNk
-ZWZpbmUgT1BDT0RFX09UUF9XUklURQkweDQyCS8qIFdyaXRlIHRvIHRoZSBPVFAgcmVnaW9uICov
-CiAjZGVmaW5lIE9QQ09ERV9PVFBfUkVBRAkJMHg0YgkvKiBSZWFkIGZyb20gdGhlIE9UUCByZWdp
-b24gKi8KIAorI2RlZmluZSBPUENPREVfRkFTVF9SRUFENEIgICAgICAweDBjCS8qIFJlYWQgZGF0
-YSwgNCBieXRlIGFkZHIgKGhpIGZyZXEuKSAqLworI2RlZmluZSBPUENPREVfTk9STV9SRUFENEIg
-ICAgICAweDEzCS8qIFJlYWQgZGF0YSwgNCBieXRlIGFkZHIgKGxvIGZyZXEuKSAqLworI2RlZmlu
-ZSBPUENPREVfUFA0QgkJMHgxMgkvKiBQYWdlIHByb2dyYW0gKHVwIHRvIDI1NiBieXRlcykgKi8K
-KyNkZWZpbmUgT1BDT0RFX1NFNEIJCTB4ZGMJLyogU2VjdG9yIGVyYXNlICh1c3VhbGx5IDI1Nktp
-QikgKi8KKwogLyogU3RhdHVzIFJlZ2lzdGVyIGJpdHMuICovCiAjZGVmaW5lCVNSX1dJUAkJCTEJ
-LyogV3JpdGUgaW4gcHJvZ3Jlc3MgKi8KICNkZWZpbmUJU1JfV0VMCQkJMgkvKiBXcml0ZSBlbmFi
-bGUgbGF0Y2ggKi8KQEAgLTc3LDkgKzgyLDExIEBACiAKICNpZmRlZiBDT05GSUdfTTI1UFhYX1VT
-RV9GQVNUX1JFQUQKICNkZWZpbmUgT1BDT0RFX1JFQUQgCU9QQ09ERV9GQVNUX1JFQUQKKyNkZWZp
-bmUgT1BDT0RFX1JFQUQ0QiAgIE9QQ09ERV9GQVNUX1JFQUQ0QgogI2RlZmluZSBGQVNUX1JFQURf
-RFVNTVlfQllURSAxCiAjZWxzZQogI2RlZmluZSBPUENPREVfUkVBRCAJT1BDT0RFX05PUk1fUkVB
-RAorI2RlZmluZSBPUENPREVfUkVBRDRCICAgT1BDT0RFX05PUk1fUkVBRDRCCiAjZGVmaW5lIEZB
-U1RfUkVBRF9EVU1NWV9CWVRFIDAKICNlbmRpZgogCkBAIC05NCw2ICsxMDEsOCBAQCBzdHJ1Y3Qg
-bTI1cCB7CiAJdTE2CQkJcGFnZV9zaXplOwogCXUxNgkJCWFkZHJfd2lkdGg7CiAJdTgJCQllcmFz
-ZV9vcGNvZGU7CisJdTgJCQlyZWFkX29wY29kZTsKKwl1OAkJCXdyaXRlX29wY29kZTsKIAl1OAkJ
-CSpjb21tYW5kOwogfTsKIApAQCAtMTczLDEwICsxODIsMjAgQEAgc3RhdGljIGlubGluZSBpbnQg
-c2V0XzRieXRlKHN0cnVjdCBtMjVwICpmbGFzaCwgdTMyIGplZGVjX2lkLCBpbnQgZW5hYmxlKQog
-CQlmbGFzaC0+Y29tbWFuZFswXSA9IGVuYWJsZSA/IE9QQ09ERV9FTjRCIDogT1BDT0RFX0VYNEI7
-CiAJCXJldHVybiBzcGlfd3JpdGUoZmxhc2gtPnNwaSwgZmxhc2gtPmNvbW1hbmQsIDEpOwogCWRl
-ZmF1bHQ6Ci0JCS8qIFNwYW5zaW9uIHN0eWxlICovCi0JCWZsYXNoLT5jb21tYW5kWzBdID0gT1BD
-T0RFX0JSV1I7Ci0JCWZsYXNoLT5jb21tYW5kWzFdID0gZW5hYmxlIDw8IDc7Ci0JCXJldHVybiBz
-cGlfd3JpdGUoZmxhc2gtPnNwaSwgZmxhc2gtPmNvbW1hbmQsIDIpOworCQlzd2l0Y2ggKGplZGVj
-X2lkKSB7CisJCWNhc2UgMHgwMTAyMTk6IC8qIHMyNWZsMjU2czAvczI1ZmwyNTZzMSAqLworCQlj
-YXNlIDB4MDEwMjIwOiAvKiBzMjVmbDUxMnMgKi8KKwkJY2FzZSAweDAxMDIyMTogLyogczcwZmww
-MWdzICovCisJCQlmbGFzaC0+cmVhZF9vcGNvZGUgPSBPUENPREVfUkVBRDRCOworCQkJZmxhc2gt
-PndyaXRlX29wY29kZSA9IE9QQ09ERV9QUDRCOworCQkJZmxhc2gtPmVyYXNlX29wY29kZSA9IE9Q
-Q09ERV9TRTRCOworCQkJcmV0dXJuIDA7CisJCWRlZmF1bHQ6CisJCQkvKiBTcGFuc2lvbiBzdHls
-ZSAqLworCQkJZmxhc2gtPmNvbW1hbmRbMF0gPSBPUENPREVfQlJXUjsKKwkJCWZsYXNoLT5jb21t
-YW5kWzFdID0gZW5hYmxlIDw8IDc7CisJCQlyZXR1cm4gc3BpX3dyaXRlKGZsYXNoLT5zcGksIGZs
-YXNoLT5jb21tYW5kLCAyKTsKKwkJfQogCX0KIH0KIApAQCAtNDAyLDcgKzQyMSw3IEBAIHN0YXRp
-YyBpbnQgbTI1cDgwX3JlYWQoc3RydWN0IG10ZF9pbmZvICptdGQsIGxvZmZfdCBmcm9tLCBzaXpl
-X3QgbGVuLAogCQkgKi8KIAogCQkvKiBTZXQgdXAgdGhlIHdyaXRlIGRhdGEgYnVmZmVyLiAqLwot
-CQlmbGFzaC0+Y29tbWFuZFswXSA9IE9QQ09ERV9SRUFEOworCQlmbGFzaC0+Y29tbWFuZFswXSA9
-IGZsYXNoLT5yZWFkX29wY29kZTsKIAkJbTI1cF9hZGRyMmNtZChmbGFzaCwgZnJvbSArIGRvbmUs
-IGZsYXNoLT5jb21tYW5kKTsKIAogCQlzcGlfc3luYyhmbGFzaC0+c3BpLCAmbSk7CkBAIC00NjIs
-NyArNDgxLDcgQEAgc3RhdGljIGludCBtMjVwODBfd3JpdGUoc3RydWN0IG10ZF9pbmZvICptdGQs
-IGxvZmZfdCB0bywgc2l6ZV90IGxlbiwKIAl3cml0ZV9lbmFibGUoZmxhc2gpOwogCiAJLyogU2V0
-IHVwIHRoZSBvcGNvZGUgaW4gdGhlIHdyaXRlIGJ1ZmZlci4gKi8KLQlmbGFzaC0+Y29tbWFuZFsw
-XSA9IE9QQ09ERV9QUDsKKwlmbGFzaC0+Y29tbWFuZFswXSA9IGZsYXNoLT53cml0ZV9vcGNvZGU7
-CiAJbTI1cF9hZGRyMmNtZChmbGFzaCwgdG8sIGZsYXNoLT5jb21tYW5kKTsKIAogCXBhZ2Vfb2Zm
-c2V0ID0gdG8gJiAoZmxhc2gtPnBhZ2Vfc2l6ZSAtIDEpOwpAQCAtOTQ0LDcgKzk2Myw3IEBAIHN0
-YXRpYyBjb25zdCBzdHJ1Y3Qgc3BpX2RldmljZV9pZCBtMjVwX2lkc1tdID0gewogCXsgInMyNWZs
-MjU2czAiLCBJTkZPKDB4MDEwMjE5LCAweDRkMDAsIDI1NiAqIDEwMjQsIDEyOCwgMCkgfSwKIAl7
-ICJzMjVmbDI1NnMxIiwgSU5GTygweDAxMDIxOSwgMHg0ZDAxLCAgNjQgKiAxMDI0LCA1MTIsIDAp
-IH0sCiAJeyAiczI1Zmw1MTJzIiwgSU5GT1AoMHgwMTAyMjAsIDB4NGQwMCwgMjU2ICogMTAyNCwg
-MjU2LCA1MTIsIE0yNVBfT1RQKSB9LAotCXsgInM3MGZsMDFncyIsICBJTkZPKDB4MDEwMjIxLCAw
-eDRkMDAsIDI1NiAqIDEwMjQsIDI1NiwgMCkgfSwKKwl7ICJzNzBmbDAxZ3MiLCBJTkZPUCgweDAx
-MDIyMSwgMHg0ZDAwLCAyNTYgKiAxMDI0LCAyNTYsIDUxMiwgMCkgfSwKIAl7ICJzMjVzbDEyODAw
-IiwgSU5GTygweDAxMjAxOCwgMHgwMzAwLCAyNTYgKiAxMDI0LCAgNjQsIDApIH0sCiAJeyAiczI1
-c2wxMjgwMSIsIElORk8oMHgwMTIwMTgsIDB4MDMwMSwgIDY0ICogMTAyNCwgMjU2LCAwKSB9LAog
-CXsgInMyNWZsMTI5cDAiLCBJTkZPKDB4MDEyMDE4LCAweDRkMDAsIDI1NiAqIDEwMjQsICA2NCwg
-MCkgfSwKQEAgLTExNzIsNiArMTE5MSw5IEBAIHN0YXRpYyBpbnQgX19kZXZpbml0IG0yNXBfcHJv
-YmUoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKIAkJZmxhc2gtPm10ZC5lcmFzZXNpemUgPSBpbmZv
-LT5zZWN0b3Jfc2l6ZTsKIAl9CiAKKwlmbGFzaC0+cmVhZF9vcGNvZGUgPSBPUENPREVfUkVBRDsK
-KwlmbGFzaC0+d3JpdGVfb3Bjb2RlID0gT1BDT0RFX1BQOworCiAJaWYgKGluZm8tPmZsYWdzICYg
-TTI1UF9OT19FUkFTRSkKIAkJZmxhc2gtPm10ZC5mbGFncyB8PSBNVERfTk9fRVJBU0U7CiAKLS0g
-CjEuNy45LjUKCg==
---001a11c251dea88f110501ff94da
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---001a11c251dea88f110501ff94da--
