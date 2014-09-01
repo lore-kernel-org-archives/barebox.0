@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XOMdL-0001xi-Pv
- for barebox@lists.infradead.org; Mon, 01 Sep 2014 08:06:41 +0000
-Date: Mon, 1 Sep 2014 10:06:11 +0200
+ Linux)) id 1XON0v-0004bO-Fz
+ for barebox@lists.infradead.org; Mon, 01 Sep 2014 08:31:02 +0000
+Date: Mon, 1 Sep 2014 10:30:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140901080611.GE5352@pengutronix.de>
-References: <98034ceb4fe0a107abef0beb3fd1380c@linux-source.de>
+Message-ID: <20140901083033.GF5352@pengutronix.de>
+References: <1409212205.4914.6.camel@lws-gamez.phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <98034ceb4fe0a107abef0beb3fd1380c@linux-source.de>
+In-Reply-To: <1409212205.4914.6.camel@lws-gamez.phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,140 +22,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: add mtdram device (which build mtd over ram area -
- useful for FRAM oder MRAM)
-To: basti@linux-source.de
+Subject: Re: [BUG] readline history
+To: Teresa Gamez <t.gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sebastian,
+Hi Teresa,
 
-On Thu, Aug 28, 2014 at 10:59:51AM +0200, basti@linux-source.de wrote:
-> This adds support for MTD in RAM devices (like FRAM or MRAM).
+On Thu, Aug 28, 2014 at 09:50:05AM +0200, Teresa Gamez wrote:
+> Hello Sascha,
 > 
-> Signed-off-by: Sebastian Block <basti@linux-source.de>
+> I noticed a bug on the latest master.
+> When no history is present and I hit the arrow up key, I get:
 > 
-> ---
->  drivers/mtd/devices/Kconfig  |    6 ++
->  drivers/mtd/devices/Makefile |    1 +
->  drivers/mtd/devices/mtdram.c |  132
-> ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 139 insertions(+)
->  create mode 100644 drivers/mtd/devices/mtdram.c
+> unable to handle NULL pointer dereference at address 0x00000001
+> pc : [<9fe243ba>]    lr : [<9fe268cf>]
+> sp : 9ffff9d0  ip : 00000016  fp : 00000002
+> r10: 00000001  r9 : 9fe549dc  r8 : 9fe65d08
+> r7 : 00000400  r6 : 00000001  r5 : 00000000  r4 : 9fe66258
+> r3 : 00000000  r2 : 00000000  r1 : 00000001  r0 : 9fe66258
+> Flags: nZCv  IRQs off  FIQs on  Mode SVC_32
+> [<9fe243ba>] (strcpy+0xa/0xe) from [<9fe268cf>] (readline+0x363/0x4e0)
+> [<9fe268cf>] (readline+0x363/0x4e0) from [<9fe05469>] (file_get
+> +0x49/0x110)
 > 
-> diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
-> index 94668a2..c512242 100644
-> --- a/drivers/mtd/devices/Kconfig
-> +++ b/drivers/mtd/devices/Kconfig
-> @@ -64,4 +64,10 @@ config MTD_DOCG3
->           M-Systems and now Sandisk. The support is very experimental,
->           and doesn't give access to any write operations.
+> I could bisect it to this commit:
 > 
-> +config MTD_MTDRAM
-> +       tristate "Provide test driver using RAM"
+> 
+> ada160a34a1ec8421d5bb7b9dd746294668a5130 is the first bad commit
+> commit ada160a34a1ec8421d5bb7b9dd746294668a5130
+> Author: Sascha Hauer <s.hauer@pengutronix.de>
+> Date:   Tue Jul 29 11:54:26 2014 +0200
 
-This description is probably directly takes from the Kernel. I think
-something like "driver for memory mapped MRAM/FRAM" would be more
-appropriate.
+Damned. While working on that patch I had exactly this problem and
+thought I tested this case. Apparantly I didn't :(
 
-> new file mode 100644
-> index 0000000..bd0bbb4
-> --- /dev/null
-> +++ b/drivers/mtd/devices/mtdram.c
-> @@ -0,0 +1,132 @@
-> +/*
-> + * MTD RAM driver - a mtd test device driver
-> + *
-> + * Author: Sebastian Block <basti@linux-source.de>
-> + * Copyright (c) 2014
-> + *
-> + * Some parts are based on mtdram.c found in Linux kernel
-> + * by   Alexander Larsson <alex@cendio.se>
-> + * and  Joern Engel <joern@wh.fh-wedel.de>.
-> + *
-> + * This code is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + *
-> + */
-> +#include <common.h>
-> +#include <environment.h>
-> +#include <errno.h>
-> +#include <init.h>
-> +#include <io.h>
-> +#include <linux/mtd/mtd.h>
-> +#include <malloc.h>
-> +#include <of.h>
-> +
-> +struct mtdram_priv_data {
-> +       struct mtd_info mtd;
-> +       void *base;
-> +};
-> +
-> +static int ram_erase(struct mtd_info *mtd, struct erase_info *instr) {
-
-The coding style is to have the opening brace separately on a new line.
-
-> +       memset((char *)mtd->priv + instr->addr, 0xff, instr->len);
-> +       instr->state = MTD_ERASE_DONE;
-> +       mtd_erase_callback(instr);
-> +       return 0;
-> +}
-> +
-> +static int ram_write(struct mtd_info *mtd, loff_t to, size_t len,
-> +                               size_t *retlen, const u_char *buf) {
-> +       memcpy((char*)mtd->priv + to, buf, len);
-> +       *retlen = len;
-> +       return 0;
-> +}
-> +
-> +static int ram_read(struct mtd_info *mtd, loff_t from, size_t len,
-> +               size_t *retlen, u_char *buf) {
-> +       memcpy(buf, mtd->priv + from, len);
-> +       *retlen = len;
-> +       return 0;
-> +}
-> +
-> +static int mtdram_probe(struct device_d *dev) {
-> +       void __iomem *base;
-> +       int device_id;
-> +       struct mtd_info *mtd;
-> +       struct resource *res;
-> +       loff_t size;
-> +       int ret = 0;
-> +
-> +
-> +       mtd = kzalloc(sizeof(struct mtd_info), GFP_KERNEL);
-> +       if (!mtd) {
-> +               ret = -ENOMEM;
-> +               goto nomem1;
-> +       }
-
-You could use xzalloc here and skip the return check.
-
-> +
-> +       device_id = DEVICE_ID_SINGLE;
-> +       if (dev->device_node) {
-> +               const char *alias = of_alias_get(dev->device_node);
-> +               dev_info (dev, "is alias for %s\n", alias);
-> +               if (alias)
-> +                       mtd->name = xstrdup(alias);
-> +       }
-> +
-> +       if (!mtd->name) {
-> +               device_id = DEVICE_ID_DYNAMIC;
-> +               mtd->name = "mtdram";
-> +       }
-> +
-> +       dev_info(dev, "MTDRAM: probe for %s (dev_name=%s)\n",
-> dev->name, mtd->name);
-
-Your mailer wraps the lines. Can you change that? I won't be able to
-apply this patch otherwise.
-
-The driver seems a bit verbose. Can you limit the information printed in
-the normal case to a single line?
+The following should fix this:
 
 Sascha
+
+From 7fd0d972f71610c25276ca387164b1fd71fb74be Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 1 Sep 2014 10:21:44 +0200
+Subject: [PATCH] readline: Fix history prev when history is empty
+
+We cannot use list_entry() on an empty list. Without history
+we have to return an empty line. This fixes a crash when the
+cursor up button is pressed and no command has been entered
+previously. Broken since:
+
+commit ada160a34a1ec8421d5bb7b9dd746294668a5130
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Tue Jul 29 11:54:26 2014 +0200
+
+    readline: reimplement history functions
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reported-by: Teresa Gamez <t.gamez@phytec.de>
+---
+ lib/readline.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/lib/readline.c b/lib/readline.c
+index b70bca8..e855abd 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -68,6 +68,9 @@ static const char *hist_prev(void)
+ 	struct history *history;
+ 
+ 	if (history_current->prev == &history_list) {
++		if (list_empty(&history_list))
++			return "";
++
+ 		history = list_entry(history_current, struct history, list);
+ 		getcmd_cbeep();
+ 		return history->line;
+-- 
+2.1.0
 
 -- 
 Pengutronix e.K.                           |                             |
