@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XOiNn-0003yT-Oy
- for barebox@lists.infradead.org; Tue, 02 Sep 2014 07:20:05 +0000
+ Linux)) id 1XOjxj-0004zq-AI
+ for barebox@lists.infradead.org; Tue, 02 Sep 2014 09:01:17 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  2 Sep 2014 09:19:28 +0200
-Message-Id: <1409642368-7398-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  2 Sep 2014 11:00:40 +0200
+Message-Id: <1409648440-30468-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,736 +19,837 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: Use local version of rk3188-clocks.dtsi
+Subject: [PATCH] ARM: dts: move imx6q-embedsky-e9.dtsi to arch/arm/dts/boot
 To: barebox@lists.infradead.org
 
-As of 3.17-rc1 the upstream dts sources for the rockchip rk3188 use
-incompatible clock bindings. We currently do not have the resources
-to update the clock driver to this new binding, so we use local copies
-of the Linux 3.16 dtsi files. Due to the incompatible change the
-internal device tree won't work with kernels newer than 3.17-rc1.
+dts/ is for upstream dts files only. Move barebox specific file
+to arch/arm/dts/ so that it doesn't get removed by the next
+dts update.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/rk3188-clocks.dtsi | 289 ++++++++++++++++++++++++++++++++++++++++
- arch/arm/dts/rk3188.dtsi        | 256 ++++++++++++++++++++++++++++++++++-
- arch/arm/dts/rk3xxx.dtsi        | 139 +++++++++++++++++++
- 3 files changed, 681 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/dts/rk3188-clocks.dtsi
- create mode 100644 arch/arm/dts/rk3xxx.dtsi
+ arch/arm/dts/imx6q-embedsky-e9.dts  |   2 +-
+ arch/arm/dts/imx6q-embedsky-e9.dtsi | 395 ++++++++++++++++++++++++++++++++++++
+ dts/src/arm/imx6q-embedsky-e9.dtsi  | 395 ------------------------------------
+ 3 files changed, 396 insertions(+), 396 deletions(-)
+ create mode 100644 arch/arm/dts/imx6q-embedsky-e9.dtsi
+ delete mode 100644 dts/src/arm/imx6q-embedsky-e9.dtsi
 
-diff --git a/arch/arm/dts/rk3188-clocks.dtsi b/arch/arm/dts/rk3188-clocks.dtsi
+diff --git a/arch/arm/dts/imx6q-embedsky-e9.dts b/arch/arm/dts/imx6q-embedsky-e9.dts
+index 14f6d5f..d8a606a 100644
+--- a/arch/arm/dts/imx6q-embedsky-e9.dts
++++ b/arch/arm/dts/imx6q-embedsky-e9.dts
+@@ -13,7 +13,7 @@
+ /dts-v1/;
+ 
+ #include "imx6q.dtsi"
+-#include <arm/imx6q-embedsky-e9.dtsi>
++#include "imx6q-embedsky-e9.dtsi"
+ 
+ / {
+ 	chosen {
+diff --git a/arch/arm/dts/imx6q-embedsky-e9.dtsi b/arch/arm/dts/imx6q-embedsky-e9.dtsi
 new file mode 100644
-index 0000000..b1b92dc
+index 0000000..a29de9f
 --- /dev/null
-+++ b/arch/arm/dts/rk3188-clocks.dtsi
-@@ -0,0 +1,289 @@
++++ b/arch/arm/dts/imx6q-embedsky-e9.dtsi
+@@ -0,0 +1,395 @@
 +/*
-+ * Copyright (c) 2013 MundoReader S.L.
-+ * Author: Heiko Stuebner <heiko@sntech.de>
++ * Copyright 2012 Freescale Semiconductor, Inc.
++ * Copyright 2011 Linaro Ltd.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
 + */
 +
-+/ {
-+	clocks {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		/*
-+		 * This is a dummy clock, to be used as placeholder on
-+		 * other mux clocks when a specific parent clock is not
-+		 * yet implemented. It should be dropped when the driver
-+		 * is complete.
-+		 */
-+		dummy: dummy {
-+			compatible = "fixed-clock";
-+			clock-frequency = <0>;
-+			#clock-cells = <0>;
-+		};
-+
-+		xin24m: xin24m {
-+			compatible = "fixed-clock";
-+			clock-frequency = <24000000>;
-+			#clock-cells = <0>;
-+		};
-+
-+		dummy48m: dummy48m {
-+			compatible = "fixed-clock";
-+			clock-frequency = <48000000>;
-+			#clock-cells = <0>;
-+		};
-+
-+		dummy150m: dummy150m {
-+			compatible = "fixed-clock";
-+			clock-frequency = <150000000>;
-+			#clock-cells = <0>;
-+		};
-+
-+		clk_gates0: gate-clk@200000d0 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000d0 0x4>;
-+			clocks = <&dummy150m>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>;
-+
-+			clock-output-names =
-+				"gate_core_periph", "gate_cpu_gpll",
-+				"gate_ddrphy", "gate_aclk_cpu",
-+				"gate_hclk_cpu", "gate_pclk_cpu",
-+				"gate_atclk_cpu", "gate_aclk_core",
-+				"reserved", "gate_i2s0",
-+				"gate_i2s0_frac", "reserved",
-+				"reserved", "gate_spdif",
-+				"gate_spdif_frac", "gate_testclk";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates1: gate-clk@200000d4 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000d4 0x4>;
-+			clocks = <&xin24m>, <&xin24m>,
-+				 <&xin24m>, <&dummy>,
-+				 <&dummy>, <&xin24m>,
-+				 <&xin24m>, <&dummy>,
-+				 <&xin24m>, <&dummy>,
-+				 <&xin24m>, <&dummy>,
-+				 <&xin24m>, <&dummy>,
-+				 <&xin24m>, <&dummy>;
-+
-+			clock-output-names =
-+				"gate_timer0", "gate_timer1",
-+				"gate_timer3", "gate_jtag",
-+				"gate_aclk_lcdc1_src", "gate_otgphy0",
-+				"gate_otgphy1", "gate_ddr_gpll",
-+				"gate_uart0", "gate_frac_uart0",
-+				"gate_uart1", "gate_frac_uart1",
-+				"gate_uart2", "gate_frac_uart2",
-+				"gate_uart3", "gate_frac_uart3";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates2: gate-clk@200000d8 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000d8 0x4>;
-+			clocks = <&clk_gates2 1>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&clk_gates2 3>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy48m>,
-+				 <&dummy>, <&dummy48m>,
-+				 <&dummy>, <&dummy>;
-+
-+			clock-output-names =
-+				"gate_periph_src", "gate_aclk_periph",
-+				"gate_hclk_periph", "gate_pclk_periph",
-+				"gate_smc", "gate_mac",
-+				"gate_hsadc", "gate_hsadc_frac",
-+				"gate_saradc", "gate_spi0",
-+				"gate_spi1", "gate_mmc0",
-+				"gate_mac_lbtest", "gate_mmc1",
-+				"gate_emmc", "reserved";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates3: gate-clk@200000dc {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000dc 0x4>;
-+			clocks = <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&xin24m>, <&xin24m>,
-+				 <&dummy>, <&dummy>,
-+				 <&xin24m>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&xin24m>, <&dummy>;
-+
-+			clock-output-names =
-+				"gate_aclk_lcdc0_src", "gate_dclk_lcdc0",
-+				"gate_dclk_lcdc1", "gate_pclkin_cif0",
-+				"gate_timer2", "gate_timer4",
-+				"gate_hsicphy", "gate_cif0_out",
-+				"gate_timer5", "gate_aclk_vepu",
-+				"gate_hclk_vepu", "gate_aclk_vdpu",
-+				"gate_hclk_vdpu", "reserved",
-+				"gate_timer6", "gate_aclk_gpu_src";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates4: gate-clk@200000e0 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000e0 0x4>;
-+			clocks = <&clk_gates2 2>, <&clk_gates2 3>,
-+				 <&clk_gates2 1>, <&clk_gates2 1>,
-+				 <&clk_gates2 1>, <&clk_gates2 2>,
-+				 <&clk_gates2 2>, <&clk_gates2 2>,
-+				 <&clk_gates0 4>, <&clk_gates0 4>,
-+				 <&clk_gates0 3>, <&dummy>,
-+				 <&clk_gates0 3>, <&dummy>,
-+				 <&dummy>, <&dummy>;
-+
-+			clock-output-names =
-+				"gate_hclk_peri_axi_matrix", "gate_pclk_peri_axi_matrix",
-+				"gate_aclk_cpu_peri", "gate_aclk_peri_axi_matrix",
-+				"gate_aclk_pei_niu", "gate_hclk_usb_peri",
-+				"gate_hclk_peri_ahb_arbi", "gate_hclk_emem_peri",
-+				"gate_hclk_cpubus", "gate_hclk_ahb2apb",
-+				"gate_aclk_strc_sys", "reserved",
-+				"gate_aclk_intmem", "reserved",
-+				"gate_hclk_imem1", "gate_hclk_imem0";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates5: gate-clk@200000e4 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000e4 0x4>;
-+			clocks = <&clk_gates0 3>, <&clk_gates2 1>,
-+				 <&clk_gates0 5>, <&clk_gates0 5>,
-+				 <&clk_gates0 5>, <&clk_gates0 5>,
-+				 <&clk_gates0 4>, <&clk_gates0 5>,
-+				 <&clk_gates2 1>, <&clk_gates2 2>,
-+				 <&clk_gates2 2>, <&clk_gates2 2>,
-+				 <&clk_gates2 2>, <&clk_gates4 5>;
-+
-+			clock-output-names =
-+				"gate_aclk_dmac1", "gate_aclk_dmac2",
-+				"gate_pclk_efuse", "gate_pclk_tzpc",
-+				"gate_pclk_grf", "gate_pclk_pmu",
-+				"gate_hclk_rom", "gate_pclk_ddrupctl",
-+				"gate_aclk_smc", "gate_hclk_nandc",
-+				"gate_hclk_mmc0", "gate_hclk_mmc1",
-+				"gate_hclk_emmc", "gate_hclk_otg0";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates6: gate-clk@200000e8 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000e8 0x4>;
-+			clocks = <&clk_gates3 0>, <&clk_gates0 4>,
-+				 <&clk_gates0 4>, <&clk_gates1 4>,
-+				 <&clk_gates0 4>, <&clk_gates3 0>,
-+				 <&dummy>, <&dummy>,
-+				 <&clk_gates3 0>, <&clk_gates0 4>,
-+				 <&clk_gates0 4>, <&clk_gates1 4>,
-+				 <&clk_gates0 4>, <&clk_gates3 0>;
-+
-+			clock-output-names =
-+				"gate_aclk_lcdc0", "gate_hclk_lcdc0",
-+				"gate_hclk_lcdc1", "gate_aclk_lcdc1",
-+				"gate_hclk_cif0", "gate_aclk_cif0",
-+				"reserved", "reserved",
-+				"gate_aclk_ipp", "gate_hclk_ipp",
-+				"gate_hclk_rga", "gate_aclk_rga",
-+				"gate_hclk_vio_bus", "gate_aclk_vio0";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates7: gate-clk@200000ec {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000ec 0x4>;
-+			clocks = <&clk_gates2 2>, <&clk_gates0 4>,
-+				 <&clk_gates0 4>, <&dummy>,
-+				 <&dummy>, <&clk_gates2 2>,
-+				 <&clk_gates2 2>, <&clk_gates0 5>,
-+				 <&dummy>, <&clk_gates0 5>,
-+				 <&clk_gates0 5>, <&clk_gates2 3>,
-+				 <&clk_gates2 3>, <&clk_gates2 3>,
-+				 <&clk_gates2 3>, <&clk_gates2 3>;
-+
-+			clock-output-names =
-+				"gate_hclk_emac", "gate_hclk_spdif",
-+				"gate_hclk_i2s0_2ch", "gate_hclk_otg1",
-+				"gate_hclk_hsic", "gate_hclk_hsadc",
-+				"gate_hclk_pidf", "gate_pclk_timer0",
-+				"reserved", "gate_pclk_timer2",
-+				"gate_pclk_pwm01", "gate_pclk_pwm23",
-+				"gate_pclk_spi0", "gate_pclk_spi1",
-+				"gate_pclk_saradc", "gate_pclk_wdt";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates8: gate-clk@200000f0 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000f0 0x4>;
-+			clocks = <&clk_gates0 5>, <&clk_gates0 5>,
-+				 <&clk_gates2 3>, <&clk_gates2 3>,
-+				 <&clk_gates0 5>, <&clk_gates0 5>,
-+				 <&clk_gates2 3>, <&clk_gates2 3>,
-+				 <&clk_gates2 3>, <&clk_gates0 5>,
-+				 <&clk_gates0 5>, <&clk_gates0 5>,
-+				 <&clk_gates2 3>, <&dummy>;
-+
-+			clock-output-names =
-+				"gate_pclk_uart0", "gate_pclk_uart1",
-+				"gate_pclk_uart2", "gate_pclk_uart3",
-+				"gate_pclk_i2c0", "gate_pclk_i2c1",
-+				"gate_pclk_i2c2", "gate_pclk_i2c3",
-+				"gate_pclk_i2c4", "gate_pclk_gpio0",
-+				"gate_pclk_gpio1", "gate_pclk_gpio2",
-+				"gate_pclk_gpio3", "gate_aclk_gps";
-+
-+			#clock-cells = <1>;
-+		};
-+
-+		clk_gates9: gate-clk@200000f4 {
-+			compatible = "rockchip,rk2928-gate-clk";
-+			reg = <0x200000f4 0x4>;
-+			clocks = <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>,
-+				 <&dummy>, <&dummy>;
-+
-+			clock-output-names =
-+				"gate_clk_core_dbg", "gate_pclk_dbg",
-+				"gate_clk_trace", "gate_atclk",
-+				"gate_clk_l2c", "gate_aclk_vio1",
-+				"gate_pclk_publ", "gate_aclk_gpu";
-+
-+			#clock-cells = <1>;
-+		};
-+	};
-+
-+};
-diff --git a/arch/arm/dts/rk3188.dtsi b/arch/arm/dts/rk3188.dtsi
-index e19ac09..277a915 100644
---- a/arch/arm/dts/rk3188.dtsi
-+++ b/arch/arm/dts/rk3188.dtsi
-@@ -13,10 +13,12 @@
-  * GNU General Public License for more details.
-  */
- 
--#include <arm/rk3xxx.dtsi>
--#include <arm/rk3188-clocks.dtsi>
--#include <arm/rk3188.dtsi>
 +#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/pinctrl/rockchip.h>
-+#include "rk3xxx.dtsi"
-+#include "rk3188-clocks.dtsi"
- 
-+/* barebox additions */
- / {
- 	soc {
- 		ethernet@10204000 {
-@@ -54,3 +56,251 @@
- 		};
- 	};
- };
++#include <dt-bindings/input/input.h>
 +
-+/* original rk3188.dtsi from Linux 3.16 */
 +/ {
-+	compatible = "rockchip,rk3188";
++	model = "Embedsky E9";
++	compatible = "embedsky,e9", "fsl,imx6q";
 +
-+	cpus {
++	regulators {
++		compatible = "simple-bus";
 +		#address-cells = <1>;
 +		#size-cells = <0>;
-+		enable-method = "rockchip,rk3066-smp";
 +
-+		cpu@0 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a9";
-+			next-level-cache = <&L2>;
-+			reg = <0x0>;
++		reg_2p5v: regulator@0 {
++			compatible = "regulator-fixed";
++			reg = <0>;
++			regulator-name = "2P5V";
++			regulator-min-microvolt = <2500000>;
++			regulator-max-microvolt = <2500000>;
++			regulator-always-on;
 +		};
-+		cpu@1 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a9";
-+			next-level-cache = <&L2>;
-+			reg = <0x1>;
++
++		reg_3p3v: regulator@1 {
++			compatible = "regulator-fixed";
++			reg = <1>;
++			regulator-name = "3P3V";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
 +		};
-+		cpu@2 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a9";
-+			next-level-cache = <&L2>;
-+			reg = <0x2>;
++
++		reg_usb_otg_vbus: regulator@2 {
++			compatible = "regulator-fixed";
++			reg = <2>;
++			regulator-name = "usb_otg_vbus";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			gpio = <&gpio3 22 0>;
++			enable-active-high;
 +		};
-+		cpu@3 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a9";
-+			next-level-cache = <&L2>;
-+			reg = <0x3>;
++
++		reg_usb_h1_vbus: regulator@3 {
++			compatible = "regulator-fixed";
++			reg = <3>;
++			regulator-name = "usb_h1_vbus";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			gpio = <&gpio1 29 0>;
++			enable-active-high;
++		};
++
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_keys>;
++
++		power {
++			label = "Power Button";
++			gpios = <&gpio6 31 GPIO_ACTIVE_LOW>;
++			gpio-key,wakeup;
++			linux,code = <KEY_POWER>;
++		};
++
++		volume-up {
++			label = "Volume Up";
++			gpios = <&gpio4 8 GPIO_ACTIVE_LOW>;
++			gpio-key,wakeup;
++			linux,code = <KEY_VOLUMEUP>;
++		};
++
++		volume-down {
++			label = "Volume Down";
++			gpios = <&gpio4 9 GPIO_ACTIVE_LOW>;
++			gpio-key,wakeup;
++			linux,code = <KEY_VOLUMEDOWN>;
 +		};
 +	};
 +
-+	soc {
-+		global-timer@1013c200 {
-+			interrupts = <GIC_PPI 11 0xf04>;
++};
++
++&audmux {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_audmux>;
++	status = "okay";
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_enet>;
++	phy-mode = "rgmii";
++	phy-supply=<&reg_3p3v>;
++	status = "okay";
++};
++
++&i2c1 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c1>;
++	status = "okay";
++
++};
++
++&i2c2 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	status = "okay";
++};
++
++&i2c3 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog>;
++
++	imx6qdl-embedsky-e9 {
++		pinctrl_hog: hoggrp {
++			fsl,pins = <
++				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000
++				MX6QDL_PAD_NANDF_D0__GPIO2_IO00		0x80000000
++				MX6QDL_PAD_NANDF_D1__GPIO2_IO01		0x80000000
++				MX6QDL_PAD_NANDF_D2__GPIO2_IO02		0x80000000
++				MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x80000000
++				MX6QDL_PAD_GPIO_0__CCM_CLKO1		0x130b0
++				MX6QDL_PAD_NANDF_CLE__GPIO6_IO07	0x80000000
++				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x80000000
++				MX6QDL_PAD_EIM_D22__GPIO3_IO22 		0x80000000
++			>;
 +		};
 +
-+		local-timer@1013c600 {
-+			interrupts = <GIC_PPI 13 0xf04>;
++		pinctrl_audmux: audmuxgrp {
++			fsl,pins = <
++				MX6QDL_PAD_CSI0_DAT7__AUD3_RXD		0x130b0
++				MX6QDL_PAD_CSI0_DAT4__AUD3_TXC		0x130b0
++				MX6QDL_PAD_CSI0_DAT5__AUD3_TXD		0x110b0
++				MX6QDL_PAD_CSI0_DAT6__AUD3_TXFS		0x130b0
++			>;
 +		};
 +
-+		sram: sram@10080000 {
-+			compatible = "mmio-sram";
-+			reg = <0x10080000 0x8000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0x10080000 0x8000>;
-+
-+			smp-sram@0 {
-+				compatible = "rockchip,rk3066-smp-sram";
-+				reg = <0x0 0x50>;
-+			};
++		pinctrl_ecspi1: ecspi1grp {
++			fsl,pins = <
++				MX6QDL_PAD_KEY_COL1__ECSPI1_MISO	0x100b1
++				MX6QDL_PAD_KEY_ROW0__ECSPI1_MOSI	0x100b1
++				MX6QDL_PAD_KEY_COL0__ECSPI1_SCLK	0x100b1
++			>;
 +		};
 +
-+		pinctrl@20008000 {
-+			compatible = "rockchip,rk3188-pinctrl";
-+			rockchip,grf = <&grf>;
-+			rockchip,pmu = <&pmu>;
++		pinctrl_enet: enetgrp {
++			fsl,pins = <
++				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
++				MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
++				MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0x1b0b0
++				MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0x1b0b0
++				MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0x1b0b0
++				MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0x1b0b0
++				MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0x1b0b0
++				MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0x1b0b0
++				MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
++				MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x1b0b0
++				MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b0b0
++				MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b0b0
++				MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b0b0
++				MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b0b0
++				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x1b0b0
++				MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25	0x4001b0a8
++				MX6QDL_PAD_GPIO_16__ENET_REF_CLK	0x4001b0a8
++				MX6QDL_PAD_ENET_RXD1__GPIO1_IO26	0x4001b0a8
++			>;
++		};
 +
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges;
++		pinctrl_gpio_keys: gpio_keysgrp {
++			fsl,pins = <
++				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000
++				MX6QDL_PAD_KEY_COL1__KEY_COL1		0x80000000
++				MX6QDL_PAD_KEY_ROW1__KEY_ROW1		0x80000000
++			>;
++		};
 +
-+			gpio0: gpio0@0x2000a000 {
-+				compatible = "rockchip,rk3188-gpio-bank0";
-+				reg = <0x2000a000 0x100>;
-+				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk_gates8 9>;
++		pinctrl_i2c1: i2c1grp {
++			fsl,pins = <
++				MX6QDL_PAD_CSI0_DAT8__I2C1_SDA		0x4001b8b1
++				MX6QDL_PAD_CSI0_DAT9__I2C1_SCL		0x4001b8b1
++			>;
++		};
 +
-+				gpio-controller;
-+				#gpio-cells = <2>;
++		pinctrl_i2c2: i2c2grp {
++			fsl,pins = <
++				MX6QDL_PAD_KEY_COL3__I2C2_SCL		0x4001b8b1
++				MX6QDL_PAD_KEY_ROW3__I2C2_SDA		0x4001b8b1
++			>;
++		};
 +
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
++		pinctrl_i2c3: i2c3grp {
++			fsl,pins = <
++				MX6QDL_PAD_GPIO_3__I2C3_SCL		0x4001b8b1
++				MX6QDL_PAD_GPIO_6__I2C3_SDA		0x4001b8b1
++			>;
++		};
 +
-+			gpio1: gpio1@0x2003c000 {
-+				compatible = "rockchip,gpio-bank";
-+				reg = <0x2003c000 0x100>;
-+				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk_gates8 10>;
++		pinctrl_uart1: uart1grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD3_DAT7__UART1_TX_DATA	0x1b0b1
++				MX6QDL_PAD_SD3_DAT6__UART1_RX_DATA	0x1b0b1
++			>;
++		};
 +
-+				gpio-controller;
-+				#gpio-cells = <2>;
++		pinctrl_uart2: uart2grp {
++			fsl,pins = <
++				MX6QDL_PAD_EIM_D26__UART2_RX_DATA	0x1b0b1
++				MX6QDL_PAD_EIM_D27__UART2_TX_DATA	0x1b0b1
++				MX6QDL_PAD_EIM_D28__UART2_DTE_CTS_B	0x1b0b1
++				MX6QDL_PAD_EIM_D29__UART2_DTE_RTS_B	0x1b0b1
++			>;
++		};
 +
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
++		pinctrl_uart3: uart3grp {
++			fsl,pins = <
++				MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
++				MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
++			>;
++		};
 +
-+			gpio2: gpio2@2003e000 {
-+				compatible = "rockchip,gpio-bank";
-+				reg = <0x2003e000 0x100>;
-+				interrupts = <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk_gates8 11>;
++		pinctrl_uart4: uart4grp {
++			fsl,pins = <
++				MX6QDL_PAD_KEY_COL0__UART4_TX_DATA	0x1b0b1
++				MX6QDL_PAD_KEY_ROW0__UART4_RX_DATA	0x1b0b1
++			>;
++		};
 +
-+				gpio-controller;
-+				#gpio-cells = <2>;
++		pinctrl_usbotg: usbotggrp {
++			fsl,pins = <
++				MX6QDL_PAD_ENET_RX_ER__USB_OTG_ID	0x17059
++			>;
++		};
 +
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
++		pinctrl_usdhc1: usdhc1grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x17059
++				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x10059
++				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x17059
++				MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x17059
++				MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x17059
++				MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x17059
++			>;
++		};
 +
-+			gpio3: gpio3@20080000 {
-+				compatible = "rockchip,gpio-bank";
-+				reg = <0x20080000 0x100>;
-+				interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk_gates8 12>;
++		pinctrl_usdhc2: usdhc2grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD2_CMD__SD2_CMD		0x17059
++				MX6QDL_PAD_SD2_CLK__SD2_CLK		0x10059
++				MX6QDL_PAD_SD2_DAT0__SD2_DATA0		0x17059
++				MX6QDL_PAD_SD2_DAT1__SD2_DATA1		0x17059
++				MX6QDL_PAD_SD2_DAT2__SD2_DATA2		0x17059
++				MX6QDL_PAD_SD2_DAT3__SD2_DATA3		0x17059
++				MX6QDL_PAD_GPIO_4__GPIO1_IO04		0x1f071
++			>;
++		};
 +
-+				gpio-controller;
-+				#gpio-cells = <2>;
++		pinctrl_usdhc3: usdhc3grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17059
++				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10059
++				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17059
++				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
++				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
++				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
++			>;
++		};
 +
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			pcfg_pull_up: pcfg_pull_up {
-+				bias-pull-up;
-+			};
-+
-+			pcfg_pull_down: pcfg_pull_down {
-+				bias-pull-down;
-+			};
-+
-+			pcfg_pull_none: pcfg_pull_none {
-+				bias-disable;
-+			};
-+
-+			uart0 {
-+				uart0_xfer: uart0-xfer {
-+					rockchip,pins = <RK_GPIO1 0 RK_FUNC_1 &pcfg_pull_up>,
-+							<RK_GPIO1 1 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				uart0_cts: uart0-cts {
-+					rockchip,pins = <RK_GPIO1 2 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				uart0_rts: uart0-rts {
-+					rockchip,pins = <RK_GPIO1 3 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+			};
-+
-+			uart1 {
-+				uart1_xfer: uart1-xfer {
-+					rockchip,pins = <RK_GPIO1 4 RK_FUNC_1 &pcfg_pull_up>,
-+							<RK_GPIO1 5 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				uart1_cts: uart1-cts {
-+					rockchip,pins = <RK_GPIO1 6 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				uart1_rts: uart1-rts {
-+					rockchip,pins = <RK_GPIO1 7 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+			};
-+
-+			uart2 {
-+				uart2_xfer: uart2-xfer {
-+					rockchip,pins = <RK_GPIO1 8 RK_FUNC_1 &pcfg_pull_up>,
-+							<RK_GPIO1 9 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+				/* no rts / cts for uart2 */
-+			};
-+
-+			uart3 {
-+				uart3_xfer: uart3-xfer {
-+					rockchip,pins = <RK_GPIO1 10 RK_FUNC_1 &pcfg_pull_up>,
-+							<RK_GPIO1 11 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				uart3_cts: uart3-cts {
-+					rockchip,pins = <RK_GPIO1 12 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				uart3_rts: uart3-rts {
-+					rockchip,pins = <RK_GPIO1 13 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+			};
-+
-+			sd0 {
-+				sd0_clk: sd0-clk {
-+					rockchip,pins = <RK_GPIO3 2 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd0_cmd: sd0-cmd {
-+					rockchip,pins = <RK_GPIO3 3 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd0_cd: sd0-cd {
-+					rockchip,pins = <RK_GPIO3 8 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd0_wp: sd0-wp {
-+					rockchip,pins = <RK_GPIO3 9 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd0_pwr: sd0-pwr {
-+					rockchip,pins = <RK_GPIO3 1 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd0_bus1: sd0-bus-width1 {
-+					rockchip,pins = <RK_GPIO3 4 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd0_bus4: sd0-bus-width4 {
-+					rockchip,pins = <RK_GPIO3 4 RK_FUNC_1 &pcfg_pull_none>,
-+							<RK_GPIO3 5 RK_FUNC_1 &pcfg_pull_none>,
-+							<RK_GPIO3 6 RK_FUNC_1 &pcfg_pull_none>,
-+							<RK_GPIO3 7 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+			};
-+
-+			sd1 {
-+				sd1_clk: sd1-clk {
-+					rockchip,pins = <RK_GPIO3 21 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd1_cmd: sd1-cmd {
-+					rockchip,pins = <RK_GPIO3 16 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd1_cd: sd1-cd {
-+					rockchip,pins = <RK_GPIO3 22 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd1_wp: sd1-wp {
-+					rockchip,pins = <RK_GPIO3 23 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd1_bus1: sd1-bus-width1 {
-+					rockchip,pins = <RK_GPIO3 17 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+
-+				sd1_bus4: sd1-bus-width4 {
-+					rockchip,pins = <RK_GPIO3 17 RK_FUNC_1 &pcfg_pull_none>,
-+							<RK_GPIO3 18 RK_FUNC_1 &pcfg_pull_none>,
-+							<RK_GPIO3 19 RK_FUNC_1 &pcfg_pull_none>,
-+							<RK_GPIO3 20 RK_FUNC_1 &pcfg_pull_none>;
-+				};
-+			};
++		pinctrl_usdhc4: usdhc4grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD4_CMD__SD4_CMD		0x17059
++				MX6QDL_PAD_SD4_CLK__SD4_CLK		0x10059
++				MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x17059
++				MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x17059
++				MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x17059
++				MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x17059
++				MX6QDL_PAD_SD4_DAT4__SD4_DATA4		0x17059
++				MX6QDL_PAD_SD4_DAT5__SD4_DATA5		0x17059
++				MX6QDL_PAD_SD4_DAT6__SD4_DATA6		0x17059
++				MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
++			>;
 +		};
 +	};
 +};
-diff --git a/arch/arm/dts/rk3xxx.dtsi b/arch/arm/dts/rk3xxx.dtsi
-new file mode 100644
-index 0000000..2adf1cc
---- /dev/null
-+++ b/arch/arm/dts/rk3xxx.dtsi
-@@ -0,0 +1,139 @@
-+/*
-+ * Copyright (c) 2013 MundoReader S.L.
-+ * Author: Heiko Stuebner <heiko@sntech.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
 +
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include "skeleton.dtsi"
-+
-+/ {
-+	interrupt-parent = <&gic>;
-+
-+	soc {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "simple-bus";
-+		ranges;
-+
-+		scu@1013c000 {
-+			compatible = "arm,cortex-a9-scu";
-+			reg = <0x1013c000 0x100>;
-+		};
-+
-+		pmu: pmu@20004000 {
-+			compatible = "rockchip,rk3066-pmu", "syscon";
-+			reg = <0x20004000 0x100>;
-+		};
-+
-+		grf: grf@20008000 {
-+			compatible = "syscon";
-+			reg = <0x20008000 0x200>;
-+		};
-+
-+		gic: interrupt-controller@1013d000 {
-+			compatible = "arm,cortex-a9-gic";
-+			interrupt-controller;
-+			#interrupt-cells = <3>;
-+			reg = <0x1013d000 0x1000>,
-+			      <0x1013c100 0x0100>;
-+		};
-+
-+		L2: l2-cache-controller@10138000 {
-+			compatible = "arm,pl310-cache";
-+			reg = <0x10138000 0x1000>;
-+			cache-unified;
-+			cache-level = <2>;
-+		};
-+
-+		global-timer@1013c200 {
-+			compatible = "arm,cortex-a9-global-timer";
-+			reg = <0x1013c200 0x20>;
-+			interrupts = <GIC_PPI 11 0x304>;
-+			clocks = <&dummy150m>;
-+		};
-+
-+		local-timer@1013c600 {
-+			compatible = "arm,cortex-a9-twd-timer";
-+			reg = <0x1013c600 0x20>;
-+			interrupts = <GIC_PPI 13 0x304>;
-+			clocks = <&dummy150m>;
-+		};
-+
-+		uart0: serial@10124000 {
-+			compatible = "snps,dw-apb-uart";
-+			reg = <0x10124000 0x400>;
-+			interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
-+			reg-shift = <2>;
-+			reg-io-width = <1>;
-+			clocks = <&clk_gates1 8>;
-+			status = "disabled";
-+		};
-+
-+		uart1: serial@10126000 {
-+			compatible = "snps,dw-apb-uart";
-+			reg = <0x10126000 0x400>;
-+			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
-+			reg-shift = <2>;
-+			reg-io-width = <1>;
-+			clocks = <&clk_gates1 10>;
-+			status = "disabled";
-+		};
-+
-+		uart2: serial@20064000 {
-+			compatible = "snps,dw-apb-uart";
-+			reg = <0x20064000 0x400>;
-+			interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
-+			reg-shift = <2>;
-+			reg-io-width = <1>;
-+			clocks = <&clk_gates1 12>;
-+			status = "disabled";
-+		};
-+
-+		uart3: serial@20068000 {
-+			compatible = "snps,dw-apb-uart";
-+			reg = <0x20068000 0x400>;
-+			interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
-+			reg-shift = <2>;
-+			reg-io-width = <1>;
-+			clocks = <&clk_gates1 14>;
-+			status = "disabled";
-+		};
-+
-+		dwmmc@10214000 {
-+			compatible = "rockchip,rk2928-dw-mshc";
-+			reg = <0x10214000 0x1000>;
-+			interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			clocks = <&clk_gates5 10>, <&clk_gates2 11>;
-+			clock-names = "biu", "ciu";
-+
-+			status = "disabled";
-+		};
-+
-+		dwmmc@10218000 {
-+			compatible = "rockchip,rk2928-dw-mshc";
-+			reg = <0x10218000 0x1000>;
-+			interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			clocks = <&clk_gates5 11>, <&clk_gates2 13>;
-+			clock-names = "biu", "ciu";
-+
-+			status = "disabled";
-+		};
-+	};
++&ldb {
++	status = "okay";
 +};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++&uart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	status = "okay";
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	status = "okay";
++};
++
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	status = "okay";
++};
++
++&usbh1 {
++	vbus-supply = <&reg_usb_h1_vbus>;
++	status = "okay";
++};
++
++&usbotg {
++	vbus-supply = <&reg_usb_otg_vbus>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usbotg>;
++	disable-over-current;
++	status = "okay";
++};
++
++&usdhc1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc1>;
++	vmmc-supply = <&reg_3p3v>;
++	status = "okay";
++};
++
++&usdhc2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc2>;
++	cd-gpios = <&gpio1 4 0>;
++	vmmc-supply = <&reg_3p3v>;
++	status = "okay";
++};
++
++&usdhc4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc4>;
++	vmmc-supply = <&reg_3p3v>;
++	non-removable;
++	status = "okay";
++};
++
++&ldb {
++	status = "okay";
++};
++
++&hdmi {
++	status = "okay";
++};
++
++&pcie {
++	status = "okay";
++};
++
++&can1 {
++	status = "okay";
++};
++
++&sata {
++	status = "okay";
++};
++
++&usdhc3 {
++	status = "disabled";
++};
++
++&ecspi1 {
++	status = "disabled";
++};
+diff --git a/dts/src/arm/imx6q-embedsky-e9.dtsi b/dts/src/arm/imx6q-embedsky-e9.dtsi
+deleted file mode 100644
+index a29de9f..0000000
+--- a/dts/src/arm/imx6q-embedsky-e9.dtsi
++++ /dev/null
+@@ -1,395 +0,0 @@
+-/*
+- * Copyright 2012 Freescale Semiconductor, Inc.
+- * Copyright 2011 Linaro Ltd.
+- *
+- * The code contained herein is licensed under the GNU General Public
+- * License. You may obtain a copy of the GNU General Public License
+- * Version 2 or later at the following locations:
+- *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
+- */
+-
+-#include <dt-bindings/gpio/gpio.h>
+-#include <dt-bindings/input/input.h>
+-
+-/ {
+-	model = "Embedsky E9";
+-	compatible = "embedsky,e9", "fsl,imx6q";
+-
+-	regulators {
+-		compatible = "simple-bus";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		reg_2p5v: regulator@0 {
+-			compatible = "regulator-fixed";
+-			reg = <0>;
+-			regulator-name = "2P5V";
+-			regulator-min-microvolt = <2500000>;
+-			regulator-max-microvolt = <2500000>;
+-			regulator-always-on;
+-		};
+-
+-		reg_3p3v: regulator@1 {
+-			compatible = "regulator-fixed";
+-			reg = <1>;
+-			regulator-name = "3P3V";
+-			regulator-min-microvolt = <3300000>;
+-			regulator-max-microvolt = <3300000>;
+-			regulator-always-on;
+-		};
+-
+-		reg_usb_otg_vbus: regulator@2 {
+-			compatible = "regulator-fixed";
+-			reg = <2>;
+-			regulator-name = "usb_otg_vbus";
+-			regulator-min-microvolt = <5000000>;
+-			regulator-max-microvolt = <5000000>;
+-			gpio = <&gpio3 22 0>;
+-			enable-active-high;
+-		};
+-
+-		reg_usb_h1_vbus: regulator@3 {
+-			compatible = "regulator-fixed";
+-			reg = <3>;
+-			regulator-name = "usb_h1_vbus";
+-			regulator-min-microvolt = <5000000>;
+-			regulator-max-microvolt = <5000000>;
+-			gpio = <&gpio1 29 0>;
+-			enable-active-high;
+-		};
+-
+-	};
+-
+-	gpio-keys {
+-		compatible = "gpio-keys";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_keys>;
+-
+-		power {
+-			label = "Power Button";
+-			gpios = <&gpio6 31 GPIO_ACTIVE_LOW>;
+-			gpio-key,wakeup;
+-			linux,code = <KEY_POWER>;
+-		};
+-
+-		volume-up {
+-			label = "Volume Up";
+-			gpios = <&gpio4 8 GPIO_ACTIVE_LOW>;
+-			gpio-key,wakeup;
+-			linux,code = <KEY_VOLUMEUP>;
+-		};
+-
+-		volume-down {
+-			label = "Volume Down";
+-			gpios = <&gpio4 9 GPIO_ACTIVE_LOW>;
+-			gpio-key,wakeup;
+-			linux,code = <KEY_VOLUMEDOWN>;
+-		};
+-	};
+-
+-};
+-
+-&audmux {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_audmux>;
+-	status = "okay";
+-};
+-
+-&fec {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_enet>;
+-	phy-mode = "rgmii";
+-	phy-supply=<&reg_3p3v>;
+-	status = "okay";
+-};
+-
+-&i2c1 {
+-	clock-frequency = <100000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c1>;
+-	status = "okay";
+-
+-};
+-
+-&i2c2 {
+-	clock-frequency = <100000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c2>;
+-	status = "okay";
+-};
+-
+-&i2c3 {
+-	clock-frequency = <100000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c3>;
+-	status = "okay";
+-};
+-
+-&iomuxc {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_hog>;
+-
+-	imx6qdl-embedsky-e9 {
+-		pinctrl_hog: hoggrp {
+-			fsl,pins = <
+-				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000
+-				MX6QDL_PAD_NANDF_D0__GPIO2_IO00		0x80000000
+-				MX6QDL_PAD_NANDF_D1__GPIO2_IO01		0x80000000
+-				MX6QDL_PAD_NANDF_D2__GPIO2_IO02		0x80000000
+-				MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x80000000
+-				MX6QDL_PAD_GPIO_0__CCM_CLKO1		0x130b0
+-				MX6QDL_PAD_NANDF_CLE__GPIO6_IO07	0x80000000
+-				MX6QDL_PAD_ENET_TXD1__GPIO1_IO29	0x80000000
+-				MX6QDL_PAD_EIM_D22__GPIO3_IO22 		0x80000000
+-			>;
+-		};
+-
+-		pinctrl_audmux: audmuxgrp {
+-			fsl,pins = <
+-				MX6QDL_PAD_CSI0_DAT7__AUD3_RXD		0x130b0
+-				MX6QDL_PAD_CSI0_DAT4__AUD3_TXC		0x130b0
+-				MX6QDL_PAD_CSI0_DAT5__AUD3_TXD		0x110b0
+-				MX6QDL_PAD_CSI0_DAT6__AUD3_TXFS		0x130b0
+-			>;
+-		};
+-
+-		pinctrl_ecspi1: ecspi1grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_KEY_COL1__ECSPI1_MISO	0x100b1
+-				MX6QDL_PAD_KEY_ROW0__ECSPI1_MOSI	0x100b1
+-				MX6QDL_PAD_KEY_COL0__ECSPI1_SCLK	0x100b1
+-			>;
+-		};
+-
+-		pinctrl_enet: enetgrp {
+-			fsl,pins = <
+-				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
+-				MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
+-				MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0x1b0b0
+-				MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0x1b0b0
+-				MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0x1b0b0
+-				MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0x1b0b0
+-				MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0x1b0b0
+-				MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0x1b0b0
+-				MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
+-				MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x1b0b0
+-				MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b0b0
+-				MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b0b0
+-				MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b0b0
+-				MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b0b0
+-				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x1b0b0
+-				MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25	0x4001b0a8
+-				MX6QDL_PAD_GPIO_16__ENET_REF_CLK	0x4001b0a8
+-				MX6QDL_PAD_ENET_RXD1__GPIO1_IO26	0x4001b0a8
+-			>;
+-		};
+-
+-		pinctrl_gpio_keys: gpio_keysgrp {
+-			fsl,pins = <
+-				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31		0x80000000
+-				MX6QDL_PAD_KEY_COL1__KEY_COL1		0x80000000
+-				MX6QDL_PAD_KEY_ROW1__KEY_ROW1		0x80000000
+-			>;
+-		};
+-
+-		pinctrl_i2c1: i2c1grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_CSI0_DAT8__I2C1_SDA		0x4001b8b1
+-				MX6QDL_PAD_CSI0_DAT9__I2C1_SCL		0x4001b8b1
+-			>;
+-		};
+-
+-		pinctrl_i2c2: i2c2grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_KEY_COL3__I2C2_SCL		0x4001b8b1
+-				MX6QDL_PAD_KEY_ROW3__I2C2_SDA		0x4001b8b1
+-			>;
+-		};
+-
+-		pinctrl_i2c3: i2c3grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_GPIO_3__I2C3_SCL		0x4001b8b1
+-				MX6QDL_PAD_GPIO_6__I2C3_SDA		0x4001b8b1
+-			>;
+-		};
+-
+-		pinctrl_uart1: uart1grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_SD3_DAT7__UART1_TX_DATA	0x1b0b1
+-				MX6QDL_PAD_SD3_DAT6__UART1_RX_DATA	0x1b0b1
+-			>;
+-		};
+-
+-		pinctrl_uart2: uart2grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_EIM_D26__UART2_RX_DATA	0x1b0b1
+-				MX6QDL_PAD_EIM_D27__UART2_TX_DATA	0x1b0b1
+-				MX6QDL_PAD_EIM_D28__UART2_DTE_CTS_B	0x1b0b1
+-				MX6QDL_PAD_EIM_D29__UART2_DTE_RTS_B	0x1b0b1
+-			>;
+-		};
+-
+-		pinctrl_uart3: uart3grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_EIM_D24__UART3_TX_DATA	0x1b0b1
+-				MX6QDL_PAD_EIM_D25__UART3_RX_DATA	0x1b0b1
+-			>;
+-		};
+-
+-		pinctrl_uart4: uart4grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_KEY_COL0__UART4_TX_DATA	0x1b0b1
+-				MX6QDL_PAD_KEY_ROW0__UART4_RX_DATA	0x1b0b1
+-			>;
+-		};
+-
+-		pinctrl_usbotg: usbotggrp {
+-			fsl,pins = <
+-				MX6QDL_PAD_ENET_RX_ER__USB_OTG_ID	0x17059
+-			>;
+-		};
+-
+-		pinctrl_usdhc1: usdhc1grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_SD1_CMD__SD1_CMD		0x17059
+-				MX6QDL_PAD_SD1_CLK__SD1_CLK		0x10059
+-				MX6QDL_PAD_SD1_DAT0__SD1_DATA0		0x17059
+-				MX6QDL_PAD_SD1_DAT1__SD1_DATA1		0x17059
+-				MX6QDL_PAD_SD1_DAT2__SD1_DATA2		0x17059
+-				MX6QDL_PAD_SD1_DAT3__SD1_DATA3		0x17059
+-			>;
+-		};
+-
+-		pinctrl_usdhc2: usdhc2grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_SD2_CMD__SD2_CMD		0x17059
+-				MX6QDL_PAD_SD2_CLK__SD2_CLK		0x10059
+-				MX6QDL_PAD_SD2_DAT0__SD2_DATA0		0x17059
+-				MX6QDL_PAD_SD2_DAT1__SD2_DATA1		0x17059
+-				MX6QDL_PAD_SD2_DAT2__SD2_DATA2		0x17059
+-				MX6QDL_PAD_SD2_DAT3__SD2_DATA3		0x17059
+-				MX6QDL_PAD_GPIO_4__GPIO1_IO04		0x1f071
+-			>;
+-		};
+-
+-		pinctrl_usdhc3: usdhc3grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x17059
+-				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x10059
+-				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x17059
+-				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
+-				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
+-				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
+-			>;
+-		};
+-
+-		pinctrl_usdhc4: usdhc4grp {
+-			fsl,pins = <
+-				MX6QDL_PAD_SD4_CMD__SD4_CMD		0x17059
+-				MX6QDL_PAD_SD4_CLK__SD4_CLK		0x10059
+-				MX6QDL_PAD_SD4_DAT0__SD4_DATA0		0x17059
+-				MX6QDL_PAD_SD4_DAT1__SD4_DATA1		0x17059
+-				MX6QDL_PAD_SD4_DAT2__SD4_DATA2		0x17059
+-				MX6QDL_PAD_SD4_DAT3__SD4_DATA3		0x17059
+-				MX6QDL_PAD_SD4_DAT4__SD4_DATA4		0x17059
+-				MX6QDL_PAD_SD4_DAT5__SD4_DATA5		0x17059
+-				MX6QDL_PAD_SD4_DAT6__SD4_DATA6		0x17059
+-				MX6QDL_PAD_SD4_DAT7__SD4_DATA7		0x17059
+-			>;
+-		};
+-	};
+-};
+-
+-&ldb {
+-	status = "okay";
+-};
+-
+-&uart1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart1>;
+-	status = "okay";
+-};
+-
+-&uart2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart2>;
+-	status = "okay";
+-};
+-
+-&uart3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart3>;
+-	status = "okay";
+-};
+-
+-&uart4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
+-	status = "okay";
+-};
+-
+-&usbh1 {
+-	vbus-supply = <&reg_usb_h1_vbus>;
+-	status = "okay";
+-};
+-
+-&usbotg {
+-	vbus-supply = <&reg_usb_otg_vbus>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_usbotg>;
+-	disable-over-current;
+-	status = "okay";
+-};
+-
+-&usdhc1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_usdhc1>;
+-	vmmc-supply = <&reg_3p3v>;
+-	status = "okay";
+-};
+-
+-&usdhc2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_usdhc2>;
+-	cd-gpios = <&gpio1 4 0>;
+-	vmmc-supply = <&reg_3p3v>;
+-	status = "okay";
+-};
+-
+-&usdhc4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_usdhc4>;
+-	vmmc-supply = <&reg_3p3v>;
+-	non-removable;
+-	status = "okay";
+-};
+-
+-&ldb {
+-	status = "okay";
+-};
+-
+-&hdmi {
+-	status = "okay";
+-};
+-
+-&pcie {
+-	status = "okay";
+-};
+-
+-&can1 {
+-	status = "okay";
+-};
+-
+-&sata {
+-	status = "okay";
+-};
+-
+-&usdhc3 {
+-	status = "disabled";
+-};
+-
+-&ecspi1 {
+-	status = "disabled";
+-};
 -- 
 2.1.0
 
