@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XP4YO-0003x6-9X
- for barebox@lists.infradead.org; Wed, 03 Sep 2014 07:00:28 +0000
-Date: Wed, 3 Sep 2014 09:00:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140903070005.GF5352@pengutronix.de>
-References: <1409656080-19280-1-git-send-email-poggi.raph@gmail.com>
- <1409656080-19280-2-git-send-email-poggi.raph@gmail.com>
+Received: from mail-wg0-x22a.google.com ([2a00:1450:400c:c00::22a])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XP8fh-0007Ce-0j
+ for barebox@lists.infradead.org; Wed, 03 Sep 2014 11:24:18 +0000
+Received: by mail-wg0-f42.google.com with SMTP id b13so8296334wgh.25
+ for <barebox@lists.infradead.org>; Wed, 03 Sep 2014 04:23:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1409656080-19280-2-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <20140903065649.GD5352@pengutronix.de>
+References: <1409656080-19280-1-git-send-email-poggi.raph@gmail.com>
+ <1409656080-19280-3-git-send-email-poggi.raph@gmail.com>
+ <20140903065649.GD5352@pengutronix.de>
+From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
+Date: Wed, 3 Sep 2014 13:23:14 +0200
+Message-ID: <CACqcpZDjqOVD3NuRBj7910TWhEO2XVLsBPx9wecCuyDVgsHdTA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/3] arm: mach-at91: move gpio.h to include folder
-To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Subject: Re: [PATCH v3 2/3] pinctrl: at91: add pinctrl driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 02, 2014 at 01:07:58PM +0200, Rapha=EBl Poggi wrote:
-> This commit add functions from mach-at91/gpio.h in include/mach/gpio.h.
-> This allow to use these functions outside the mach-at91 folder.
-> =
-
-> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
-
-Applied this one for now, thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U291bmRzIGdvb2QsIGJ1dCBmaWxlcyBsaWtlIGF0OTFzYW1YWFhfZGV2aWNlcy5jIG5lZWQgZ3Bp
+byBmdW5jdGlvbnMuCkkgdGhpbmsgdGhlIHByb2JsZW0gaXMgdGhhdCB0aGUgbWFjaC1hdDkxL2dw
+aW8uYyBmaWxlIGluY2x1ZGUgYSBncGlvCmRyaXZlciB3aGljaCBub3QgYmVsb25nIHRvIGJlIGhl
+cmUsIHRoZSByaWdodCBwbGFjZSBpcyBpbiB0aGUKZHJpdmVyL3BpbmN0cmwgKGxpa2UgbXkgcGF0
+Y2gpLiBCdXQgYWxsIGZpbGVzIGxpa2UKYXQ5MXNhbVhYWF9kZXZpY2VzLmMgYXJlIHVzaW5nIHRo
+ZSBmdW5jdGlvbnMgZnJvbSB0aGlzIGdwaW8gZHJpdmVyLgoKU28gSSB0aGluayB3ZSBoYXZlIHRv
+OgoKMS4gUmV3cml0ZSBtYWNoLWF0OTEvZ3Bpby5jIGFuZCBwb3B1bGF0ZSBpdCB3aXRoIGJhc2lj
+IGdwaW8gZnVuY3Rpb25zCihjZi4gaHR0cDovL2x4ci5mcmVlLWVsZWN0cm9ucy5jb20vc291cmNl
+L2FyY2gvYXJtL21hY2gtYXQ5MS9ncGlvLmMKZnJvbSBsaW5lIDEzMCB0byA0MjUpLgoyLiBSZXBs
+YWNlIGluIGF0OTFzYW1YWFhfZGV2aWNlcy5jIGZpbGVzLCByZWZlcmVuY2Ugb2YgZnVuY3Rpb25z
+IGZyb20KdGhlIGdwaW8gZHJpdmVyIGJ5IHRoZXNlIGJhc2ljIG5ldyBmdW5jdGlvbnMuCgpCeSB0
+aGlzIHdheSwgd2hlbiBBVDkxIGNvZGUgYXJlIHJlZ2lzdGVyaW5nIHRoZSBncGlvIHN1YnN5c3Rl
+bSwgd2UgdXNlCnRoZSBwaW5jdHJsL2dwaW8gZHJpdmVyIGFuZCBhbHNvIHdlIGF2b2lkIGR1cGxp
+Y2F0ZSBjb2RlLgoKTGV0IG1lIGtub3cgaWYgSSBhbSBvbiB0aGUgcmlnaHQgd2F5IG9yIG5vdC4K
+ClJhcGhhw6tsCgoyMDE0LTA5LTAzIDg6NTYgR01UKzAyOjAwIFNhc2NoYSBIYXVlciA8cy5oYXVl
+ckBwZW5ndXRyb25peC5kZT46Cj4gT24gVHVlLCBTZXAgMDIsIDIwMTQgYXQgMDE6MDc6NTlQTSAr
+MDIwMCwgUmFwaGHDq2wgUG9nZ2kgd3JvdGU6Cj4+ICtzdGF0aWMgaW50IGF0OTFfZ3Bpb19wcm9i
+ZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKPj4gK3sKPj4gKyAgICAgc3RydWN0IGF0OTFfZ3Bpb19j
+aGlwICphdDkxX2dwaW87Cj4+ICsgICAgIHN0cnVjdCBjbGsgKmNsazsKPj4gKyAgICAgaW50IHJl
+dDsKPj4gKyAgICAgaW50IGFsaWFzX2lkeCA9IG9mX2FsaWFzX2dldF9pZChkZXYtPmRldmljZV9u
+b2RlLCAiZ3BpbyIpOwo+PiArCj4+ICsgICAgIEJVR19PTihkZXYtPmlkID4gTUFYX0dQSU9fQkFO
+S1MpOwo+PiArCj4+ICsgICAgIGF0OTFfZ3BpbyA9ICZncGlvX2NoaXBbYWxpYXNfaWR4XTsKPj4g
+Kwo+PiArICAgICBjbGsgPSBjbGtfZ2V0KGRldiwgTlVMTCk7Cj4+ICsgICAgIGlmIChJU19FUlIo
+Y2xrKSkgewo+PiArICAgICAgICAgICAgIHJldCA9IFBUUl9FUlIoY2xrKTsKPj4gKyAgICAgICAg
+ICAgICBkZXZfZXJyKGRldiwgImNsb2NrIG5vdCBmb3VuZDogJWRcbiIsIHJldCk7Cj4+ICsgICAg
+ICAgICAgICAgcmV0dXJuIHJldDsKPj4gKyAgICAgfQo+PiArCj4+ICsgICAgIHJldCA9IGNsa19l
+bmFibGUoY2xrKTsKPj4gKyAgICAgaWYgKHJldCA8IDApIHsKPj4gKyAgICAgICAgICAgICBkZXZf
+ZXJyKGRldiwgImNsb2NrIGZhaWxlZCB0byBlbmFibGU6ICVkXG4iLCByZXQpOwo+PiArICAgICAg
+ICAgICAgIGNsa19wdXQoY2xrKTsKPj4gKyAgICAgICAgICAgICByZXR1cm4gcmV0Owo+PiArICAg
+ICB9Cj4+ICsKPj4gKyAgICAgZ3Bpb19iYW5rcyA9IG1heChncGlvX2JhbmtzLCBhbGlhc19pZHgg
+KyAxKTsKPj4gKyAgICAgYXQ5MV9ncGlvLT5yZWdiYXNlID0gZGV2X3JlcXVlc3RfbWVtX3JlZ2lv
+bihkZXYsIDApOwo+Cj4gUGxlYXNlIGNoZWNrIHRoZSByZXR1cm4gdmFsdWUuCj4KPiBUaGlzIGRy
+aXZlciBkdXBsaWNhdGVzIHRoZSBleGlzdGluZyBBdG1lbCBHUElPIGRyaXZlci4gU2hvdWxkbid0
+IHRoZQo+IGV4aXN0aW5nIGRyaXZlciBiZSBkcm9wcGVkPyBJZiB5ZXMsIHlvdSBzaG91bGQgYWxz
+byBtYWtlIHN1cmUgdGhhdCB0aGlzCj4gZHJpdmVyIGlzIGNvbXBpbGVkIHVuY29uZGl0aW9uYWxs
+eSBvbiBBdG1lbCBTb0NzIGFuZCBhZGQgYQo+Cj4gICAgICAgICBpZiAoIUlTX0VOQUJMRUQoQ09O
+RklHX1BJTkNUUkwpKQo+ICAgICAgICAgICAgICAgICByZXR1cm4gMDsKPgo+IHRvIGF0OTFfcGlu
+Y3RybF9pbml0KCkgdG8gcmVkdWNlIHRoZSBvdmVyaGVhZCB3aGVuIHBpbmN0cmwgaXMgZGlzYWJs
+ZWQuCj4KPiBTYXNjaGEKPgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3RyaWFsIExp
+bnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
+LyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25l
+OiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2
+ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKPgo+IF9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWlsaW5n
+IGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
