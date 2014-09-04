@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.246]
- helo=DVREDG02.corp.atmel.com)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XPMBR-0008Ek-2V
- for barebox@lists.infradead.org; Thu, 04 Sep 2014 01:49:57 +0000
-Message-ID: <5407C4D1.5050500@atmel.com>
-Date: Thu, 4 Sep 2014 09:48:01 +0800
-From: Bo Shen <voice.shen@atmel.com>
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XPQst-0006ct-4O
+ for barebox@lists.infradead.org; Thu, 04 Sep 2014 06:51:08 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 83FB9A003B7
+ for <barebox@lists.infradead.org>; Thu,  4 Sep 2014 08:50:45 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 4 Sep 2014 08:50:39 +0200
+Message-Id: <1409813440-9512-4-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1409813440-9512-1-git-send-email-t.gamez@phytec.de>
+References: <1409813440-9512-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-References: <1409795009-25395-1-git-send-email-voice.shen@atmel.com>
-In-Reply-To: <1409795009-25395-1-git-send-email-voice.shen@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Makefile: remove never reached code
+Subject: [PATCH 4/5] ARM: phyCORE-AM335x: Add support for 2x512MB RAM
 To: barebox@lists.infradead.org
 
-Hi,
-   Sorry for this noise, it goes wrong to the barebox ML.
-   Please ignore it.
-
-On 09/04/2014 09:43 AM, Bo Shen wrote:
-> Signed-off-by: Bo Shen <voice.shen@atmel.com>
-> ---
->   Makefile | 8 --------
->   1 file changed, 8 deletions(-)
->
-> diff --git a/Makefile b/Makefile
-> index 5cd0369..7a7ad38 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -180,14 +180,6 @@ endif
->   BOOT_NAME=$(BOARDNAME)-$(PROJECT)$(CARD_SUFFIX)boot-$(TARGET_NAME)$(BLOB)-$(VERSION)$(REV)
->   AT91BOOTSTRAP:=$(BINDIR)/$(BOOT_NAME).bin
->
-> -ifeq ($(IMAGE),)
-> -IMAGE=$(BOOT_NAME).bin
-> -endif
-> -
-> -ifeq ($(SYMLINK),)
-> -SYMLINK=at91bootstrap.bin
-> -endif
-> -
->   COBJS-y:= $(TOPDIR)/main.o $(TOPDIR)/board/$(BOARDNAME)/$(BOARDNAME).o
->   SOBJS-y:= $(TOPDIR)/crt0_gnu.o
->
->
-
-Best Regards,
-Bo Shen
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkZWQgc2V0dGluZ3MgZm9yIDFHQiBSQU0gb3B0aW9uLgoKU2lnbmVkLW9mZi1ieTogVGVyZXNh
+IEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1w
+aHljb3JlLWFtMzM1eC9sb3dsZXZlbC5jIHwgICAyNSArKysrKysrKysrKysrKysrKysrKysrCiBp
+bWFnZXMvTWFrZWZpbGUuYW0zM3h4ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICA0ICsr
+KwogMiBmaWxlcyBjaGFuZ2VkLCAyOSBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQoKZGlm
+ZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwu
+YyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwuYwppbmRl
+eCBhMTVlMTUxLi42NmJhZTgwIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBo
+eWNvcmUtYW0zMzV4L2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHlj
+b3JlLWFtMzM1eC9sb3dsZXZlbC5jCkBAIC0zNiw2ICszNiw3IEBAIGVudW0gewogCU1UNDFKMTI4
+TTE2MTI1SVRfMjU2TUIsCiAJTVQ0MUo2NE0xNjE1SVRfMTI4TUIsCiAJTVQ0MUoyNTZNMTZIQTE1
+RUlUXzUxMk1CLAorCU1UNDFKNTEyTTgxMjVJVF8yeDUxMk1CLAogfTsKIAogc3RydWN0IHBjbTA1
+MV9zZHJhbV90aW1pbmdzIHRpbWluZ3NbXSA9IHsKQEAgLTk1LDYgKzk2LDI1IEBAIHN0cnVjdCBw
+Y20wNTFfc2RyYW1fdGltaW5ncyB0aW1pbmdzW10gPSB7CiAJCQkud3Jfc2xhdmVfcmF0aW8wCT0g
+MHg3YiwKIAkJfSwKIAl9LAorCisJLyogMTAyNE1CICovCisJW01UNDFKNTEyTTgxMjVJVF8yeDUx
+Mk1CXSA9IHsKKwkJLnJlZ3MgPSB7CisJCQkuZW1pZl9yZWFkX2xhdGVuY3kJPSAweDcsCisJCQku
+ZW1pZl90aW0xCQk9IDB4MEFBQUU0REIsCisJCQkuZW1pZl90aW0yCQk9IDB4MjY2QjdGREEsCisJ
+CQkuZW1pZl90aW0zCQk9IDB4NTAxRjg2N0YsCisJCQkuc2RyYW1fY29uZmlnCQk9IDB4NjFDMDUz
+QjIsCisJCQkuenFfY29uZmlnCQk9IDB4NTAwNzRCRTQsCisJCQkuc2RyYW1fcmVmX2N0cmwJCT0g
+MHgwMDAwMEMzMAorCQl9LAorCQkuZGF0YSA9IHsKKwkJCS5yZF9zbGF2ZV9yYXRpbzAJPSAweDMy
+LAorCQkJLndyX2Rxc19zbGF2ZV9yYXRpbzAJPSAweDQ4LAorCQkJLmZpZm9fd2Vfc2xhdmVfcmF0
+aW8wCT0gMHg5OSwKKwkJCS53cl9zbGF2ZV9yYXRpbzAJPSAweDgwLAorCQl9LAorCX0sCiB9Owog
+CiBleHRlcm4gY2hhciBfX2R0Yl9hbTMzNXhfcGh5dGVjX3BoeWNvcmVfc3RhcnRbXTsKQEAgLTE2
+OSw2ICsxODksMTEgQEAgRU5UUllfRlVOQ1RJT04oc3RhcnRfYW0zM3h4X3BoeXRlY19waHljb3Jl
+X3NyYW1fNTEybWIsIGJvb3RpbmZvLCByMSwgcjIpCiAJcGNtMDUxX2JvYXJkX2VudHJ5KGJvb3Rp
+bmZvLCBNVDQxSjI1Nk0xNkhBMTVFSVRfNTEyTUIpOwogfQogCitFTlRSWV9GVU5DVElPTihzdGFy
+dF9hbTMzeHhfcGh5dGVjX3BoeWNvcmVfc3JhbV8yeDUxMm1iLCBib290aW5mbywgcjEsIHIyKQor
+eworCXBjbTA1MV9ib2FyZF9lbnRyeShib290aW5mbywgTVQ0MUo1MTJNODEyNUlUXzJ4NTEyTUIp
+OworfQorCiBFTlRSWV9GVU5DVElPTihzdGFydF9hbTMzeHhfcGh5dGVjX3BoeWNvcmVfc2RyYW0s
+IHIwLCByMSwgcjIpCiB7CiAJdm9pZCAqZmR0OwpkaWZmIC0tZ2l0IGEvaW1hZ2VzL01ha2VmaWxl
+LmFtMzN4eCBiL2ltYWdlcy9NYWtlZmlsZS5hbTMzeHgKaW5kZXggYzFmMTljMS4uZDI0MzM4ZSAx
+MDA2NDQKLS0tIGEvaW1hZ2VzL01ha2VmaWxlLmFtMzN4eAorKysgYi9pbWFnZXMvTWFrZWZpbGUu
+YW0zM3h4CkBAIC0yMyw2ICsyMywxMCBAQCBwYmx4LSQoQ09ORklHX01BQ0hfUENNMDUxKSArPSBz
+dGFydF9hbTMzeHhfcGh5dGVjX3BoeWNvcmVfc3JhbV81MTJtYgogRklMRV9iYXJlYm94LWFtMzN4
+eC1waHl0ZWMtcGh5Y29yZS1tbG8tNTEybWIuaW1nID0gc3RhcnRfYW0zM3h4X3BoeXRlY19waHlj
+b3JlX3NyYW1fNTEybWIucGJseC5tbG8KIGFtMzN4eC1tbG8tJChDT05GSUdfTUFDSF9QQ00wNTEp
+ICs9IGJhcmVib3gtYW0zM3h4LXBoeXRlYy1waHljb3JlLW1sby01MTJtYi5pbWcKIAorcGJseC0k
+KENPTkZJR19NQUNIX1BDTTA1MSkgKz0gc3RhcnRfYW0zM3h4X3BoeXRlY19waHljb3JlX3NyYW1f
+Mng1MTJtYgorRklMRV9iYXJlYm94LWFtMzN4eC1waHl0ZWMtcGh5Y29yZS1tbG8tMng1MTJtYi5p
+bWcgPSBzdGFydF9hbTMzeHhfcGh5dGVjX3BoeWNvcmVfc3JhbV8yeDUxMm1iLnBibHgubWxvCith
+bTMzeHgtbWxvLSQoQ09ORklHX01BQ0hfUENNMDUxKSArPSBiYXJlYm94LWFtMzN4eC1waHl0ZWMt
+cGh5Y29yZS1tbG8tMng1MTJtYi5pbWcKKwogcGJseC0kKENPTkZJR19NQUNIX0JFQUdMRUJPTkUp
+ICs9IHN0YXJ0X2FtMzN4eF9iZWFnbGVib25lX3NkcmFtCiBGSUxFX2JhcmVib3gtYW0zM3h4LWJl
+YWdsZWJvbmUuaW1nID0gc3RhcnRfYW0zM3h4X2JlYWdsZWJvbmVfc2RyYW0ucGJseAogYW0zM3h4
+LWJhcmVib3gtJChDT05GSUdfTUFDSF9CRUFHTEVCT05FKSArPSBiYXJlYm94LWFtMzN4eC1iZWFn
+bGVib25lLmltZwotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
+ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gK
