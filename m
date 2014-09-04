@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from nasmtp01.atmel.com ([192.199.1.246]
+ helo=DVREDG02.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XPCJC-0004RC-35
- for barebox@lists.infradead.org; Wed, 03 Sep 2014 15:17:18 +0000
-Received: by mail-la0-f49.google.com with SMTP id b17so9955734lan.22
- for <barebox@lists.infradead.org>; Wed, 03 Sep 2014 08:16:49 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  3 Sep 2014 19:16:39 +0400
-Message-Id: <1409757399-32489-1-git-send-email-antonynpavlov@gmail.com>
+ id 1XPM5e-0006FO-9T
+ for barebox@lists.infradead.org; Thu, 04 Sep 2014 01:43:58 +0000
+From: Bo Shen <voice.shen@atmel.com>
+Date: Thu, 4 Sep 2014 09:43:29 +0800
+Message-ID: <1409795009-25395-1-git-send-email-voice.shen@atmel.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,30 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: .gitignore: ignore 'commands/' generated
- directory
-To: barebox@lists.infradead.org
+Subject: [PATCH] Makefile: remove never reached code
+To: wenyou.yang@atmel.com
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
 ---
- Documentation/.gitignore | 1 +
- 1 file changed, 1 insertion(+)
+ Makefile | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/Documentation/.gitignore b/Documentation/.gitignore
-index 1454566..5c36dc3 100644
---- a/Documentation/.gitignore
-+++ b/Documentation/.gitignore
-@@ -1,2 +1,3 @@
- build
-+commands
- html
+diff --git a/Makefile b/Makefile
+index 5cd0369..7a7ad38 100644
+--- a/Makefile
++++ b/Makefile
+@@ -180,14 +180,6 @@ endif
+ BOOT_NAME=$(BOARDNAME)-$(PROJECT)$(CARD_SUFFIX)boot-$(TARGET_NAME)$(BLOB)-$(VERSION)$(REV)
+ AT91BOOTSTRAP:=$(BINDIR)/$(BOOT_NAME).bin
+ 
+-ifeq ($(IMAGE),)
+-IMAGE=$(BOOT_NAME).bin
+-endif
+-
+-ifeq ($(SYMLINK),)
+-SYMLINK=at91bootstrap.bin
+-endif
+-
+ COBJS-y:= $(TOPDIR)/main.o $(TOPDIR)/board/$(BOARDNAME)/$(BOARDNAME).o
+ SOBJS-y:= $(TOPDIR)/crt0_gnu.o
+ 
 -- 
-2.1.0
+2.1.0.24.g4109c28
 
 
 _______________________________________________
