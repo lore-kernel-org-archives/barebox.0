@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
+Received: from mail-we0-x22c.google.com ([2a00:1450:400c:c03::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XPZ2m-0003Rh-N8
- for barebox@lists.infradead.org; Thu, 04 Sep 2014 15:33:53 +0000
-Received: by mail-wg0-f50.google.com with SMTP id x12so10460289wgg.9
- for <barebox@lists.infradead.org>; Thu, 04 Sep 2014 08:33:24 -0700 (PDT)
+ id 1XPZDG-0008G3-Rx
+ for barebox@lists.infradead.org; Thu, 04 Sep 2014 15:44:43 +0000
+Received: by mail-we0-f172.google.com with SMTP id q59so10430570wes.17
+ for <barebox@lists.infradead.org>; Thu, 04 Sep 2014 08:44:18 -0700 (PDT)
 From: Rostislav Lisovy <lisovy@gmail.com>
-Date: Thu,  4 Sep 2014 17:33:19 +0200
-Message-Id: <1409844799-10338-1-git-send-email-lisovy@gmail.com>
+Date: Thu,  4 Sep 2014 17:44:11 +0200
+Message-Id: <1409845451-13238-1-git-send-email-lisovy@gmail.com>
+In-Reply-To: <1409844799-10338-1-git-send-email-lisovy@gmail.com>
+References: <1409844799-10338-1-git-send-email-lisovy@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,21 +23,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] ARM: dts: i.MX53: voipac: Provide NAND flash partition table
+Subject: [PATCH] ARM: dts: i.MX53: voipac: Provide NAND flash partition table
 To: barebox@lists.infradead.org
 Cc: Rostislav Lisovy <lisovy@gmail.com>, Pavel Pisa <pisa@cmp.felk.cvut.cz>
 
 Signed-off-by: Rostislav Lisovy <lisovy@gmail.com>
 ---
-When compiled and loaded with the "imx-usb-loader" to RAM, the command
-"saveenv" and "loadenv" do work properly (i.e. "loading environment
-from /dev/nand0.environment.bb"). When I flash the barebox to the NAND
-with the "barebox_update" command and reboot the device, the message
-"environment load /dev/env0: No such file or directory" is provided
-during boot. "saveenv" and "loadenv" do not know anything about
-"/dev/nand0.environment.bb" anymore and try to access the "/dev/env0".
-What am I doing wrong?
-
+This is a bit embarrassing but please ignore my previous email.
+Everything works just fine, I was constantly flashing the old binary
+without the partition table :-)
 
  arch/arm/dts/imx53-voipac-bsb.dts      |  1 +
  arch/arm/dts/imx53-voipac-dmm-668.dtsi | 33 +++++++++++++++++++++++++++++++++
