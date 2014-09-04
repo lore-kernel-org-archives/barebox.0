@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x233.google.com ([2a00:1450:400c:c03::233])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XPRGa-0001EY-Ta
- for barebox@lists.infradead.org; Thu, 04 Sep 2014 07:15:37 +0000
-Received: by mail-we0-f179.google.com with SMTP id t60so9634965wes.38
- for <barebox@lists.infradead.org>; Thu, 04 Sep 2014 00:15:14 -0700 (PDT)
-Date: Thu, 4 Sep 2014 09:15:12 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140904071511.GB13432@omega>
-References: <1409813440-9512-1-git-send-email-t.gamez@phytec.de>
- <1409813440-9512-5-git-send-email-t.gamez@phytec.de>
- <20140904071258.GA13432@omega>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XPTJK-00055u-2t
+ for barebox@lists.infradead.org; Thu, 04 Sep 2014 09:26:34 +0000
+Date: Thu, 4 Sep 2014 11:26:09 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140904092609.GO5352@pengutronix.de>
+References: <1409656080-19280-1-git-send-email-poggi.raph@gmail.com>
+ <1409656080-19280-3-git-send-email-poggi.raph@gmail.com>
+ <20140903065649.GD5352@pengutronix.de>
+ <CACqcpZDjqOVD3NuRBj7910TWhEO2XVLsBPx9wecCuyDVgsHdTA@mail.gmail.com>
+ <20140903135256.GK5352@pengutronix.de>
+ <CACqcpZACLkaPExXuhEgn0CER_sTvj8_6Lws06=oKZm-RJNZLtQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140904071258.GA13432@omega>
+In-Reply-To: <CACqcpZACLkaPExXuhEgn0CER_sTvj8_6Lws06=oKZm-RJNZLtQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +23,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] ARM: phyCORE-AM335x: Update partition table
-To: Teresa =?utf-8?B?R8OhbWV6?= <t.gamez@phytec.de>
+Subject: Re: [PATCH v3 2/3] pinctrl: at91: add pinctrl driver
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <raphio98@gmail.com>
 Cc: barebox@lists.infradead.org
 
-T24gVGh1LCBTZXAgMDQsIDIwMTQgYXQgMDk6MTI6NThBTSArMDIwMCwgQWxleGFuZGVyIEFyaW5n
-IHdyb3RlOgo+IEhpIFRlcmVzYSwKPiAKPiBPbiBUaHUsIFNlcCAwNCwgMjAxNCBhdCAwODo1MDo0
-MEFNICswMjAwLCBUZXJlc2EgR8OhbWV6IHdyb3RlOgo+ID4gQWRkZWQgZGV2aWNlIHRyZWUgcGFy
-dGl0aW9uIGFuZCBtYWRlIHJvb3RmcyBwYXJ0aXRpb24KPiA+IHZhcmlhYmxlIHNpemUgZGVwZW5k
-aW5nIG9uIG5hbmQgZmxhc2ggc2l6ZS4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfD
-oW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Cj4gPiAtLS0KPiA+ICBhcmNoL2FybS9kdHMvYW0zMzV4
-LXBoeXRlYy1waHljb3JlLmR0cyB8ICAgMjIgKysrKysrKysrKysrKysrKysrLS0tLQo+ID4gIDEg
-ZmlsZXMgY2hhbmdlZCwgMTggaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPiA+IAo+ID4g
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUuZHRzIGIvYXJj
-aC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS5kdHMKPiA+IGluZGV4IDE2ZmViZDMuLjA0
-N2RjMTUgMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3Jl
-LmR0cwo+ID4gKysrIGIvYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS5kdHMKPiA+
-IEBAIC0xOTQsOCArMTk0LDEzIEBACj4gPiAgCQl9Owo+ID4gIAo+ID4gIAkJcGFydGl0aW9uQDMg
-ewo+ID4gKwkJCWxhYmVsID0gIm9mdHJlZSI7Cj4gPiArCQkJcmVnID0gPDB4YzAwMDAgMHgyMDAw
-MD47Cj4gPiArCQl9Owo+ID4gKwo+ID4gKwkJcGFydGl0aW9uQDQgewo+ID4gIAkJCWxhYmVsID0g
-Imtlcm5lbCI7Cj4gPiAtCQkJcmVnID0gPDB4YzAwMDAgMHg0MDAwMDA+Owo+ID4gKwkJCXJlZyA9
-IDwweGUwMDAwIDB4NDAwMDAwPjsKPiA+ICAJCX07Cj4gPiAgCX07Cj4gPiAgfTsKPiA+IEBAIC0z
-MDUsMTMgKzMxMCwyMiBAQAo+ID4gIAkJfTsKPiA+ICAKPiA+ICAJCXBhcnRpdGlvbkA2IHsKPiA+
-IC0JCQlsYWJlbCA9ICJrZXJuZWwiOwo+ID4gLQkJCXJlZyA9IDwweDEyMDAwMCAweDgwMDAwMD47
-Cj4gPiArCQkJbGFiZWwgPSAib2Z0cmVlIjsKPiA+ICsJCQlyZWcgPSA8MHgxMjAwMDAgMHgyMDAw
-MD47Cj4gPiAgCQl9Owo+ID4gIAo+ID4gIAkJcGFydGl0aW9uQDcgewo+ID4gKwkJCWxhYmVsID0g
-Imtlcm5lbCI7Cj4gPiArCQkJcmVnID0gPDB4MTQwMDAwIDB4ODAwMDAwPjsKPiA+ICsJCX07Cj4g
-PiArCj4gPiArCQlwYXJ0aXRpb25AOCB7Cj4gPiAgCQkJbGFiZWwgPSAicm9vdCI7Cj4gPiAtCQkJ
-cmVnID0gPDB4OTIwMDAwIDB4MWY2ZTAwMDA+Owo+ID4gKwkJCS8qCj4gPiArCQkJICogU2l6ZSAw
-eDAgZXh0ZW5kcyBwYXJ0aXRpb24gdG8KPiA+ICsJCQkgKiBlbmQgb2YgbmFuZCBmbGFzaC4KPiA+
-ICsJCQkgKi8KPiA+ICsJCQlyZWcgPSA8MHg5MjAwMDAgMHgwPjsKPiAKPiBJIHRoaW5rIHRoaXMg
-c2hvdWxkIGJlIDB4OTQwMDAwIGluc2VhZCAweDkyMDAwMC4KPiAKPiBGcm9tIHBhcnRpdGlvbjcg
-NyAia2VybmVsIiB5b3UgaGF2ZSAweDE0MDAwMCArIDB4ODAwMDAwID0gMHg5NDAwMDAuCj4gCj4g
-SSBzaW1wbGUgdXNlIHRoZSBnbm9tZS1jYWxjdWxhdG9yIGluIGhleCBtb2RlIHRvIGNoZWNrIGl0
-Lgo+IAoKQnV0IGluIHRoaXMgY2FzZSBpdCB3YXMgdmVyeSBvYnZpb3VzbHkuIENhbid0IGhhdmUg
-YSB0d28gaW4gdGhpcwpwb3NpdGlvbi4gOi0pCgotIEFsZXgKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+On Wed, Sep 03, 2014 at 05:10:33PM +0200, Rapha=EBl Poggi wrote:
+> This patch is perfect :-). You just miss to check the return value in
+> at91_gpio_probe.
+> =
+
+> Do I have to integrate this patch in mine ? or you will apply it yourself=
+ ?
+
+I just added the return value check, squashed the patch into your
+pinctrl driver patch and applied to -next.
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
