@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XPXOP-0007Wu-O3
+ Linux)) id 1XPXOP-0007Ws-O4
  for barebox@lists.infradead.org; Thu, 04 Sep 2014 13:48:07 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu,  4 Sep 2014 15:47:17 +0200
-Message-Id: <1409838437-3625-5-git-send-email-s.trumtrar@pengutronix.de>
+Date: Thu,  4 Sep 2014 15:47:15 +0200
+Message-Id: <1409838437-3625-3-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1409838437-3625-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1409838437-3625-1-git-send-email-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,543 +17,191 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/4] Firmware: socfpga: Add SoCFPGA FPGA program support
+Subject: [PATCH v3 2/4] Firmware: provide a handler to program Altera FPGAs
 To: barebox@lists.infradead.org
+Cc: Juergen Beisert <jbe@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
-Changes since v2:
-	- be sure to clear nce bit to allow HPS configuration
-
- arch/arm/dts/socfpga.dtsi                         |   6 +
- arch/arm/mach-socfpga/Makefile                    |   1 +
- arch/arm/mach-socfpga/include/mach/socfpga-regs.h |   2 +
- drivers/firmware/Kconfig                          |   3 +
- drivers/firmware/Makefile                         |   1 +
- drivers/firmware/socfpga.c                        | 440 ++++++++++++++++++++++
- 6 files changed, 453 insertions(+)
- create mode 100644 drivers/firmware/socfpga.c
-
-diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
-index 3368b459d030..afac867c991d 100644
---- a/arch/arm/dts/socfpga.dtsi
-+++ b/arch/arm/dts/socfpga.dtsi
-@@ -465,6 +465,12 @@
- 			status = "disabled";
- 		};
- 
-+		fpgamgr@ff706000 {
-+			compatible = "altr,socfpga-fpga-mgr";
-+			reg = <0xff706000 0x1000>,
-+			      <0xffb90000 0x1000>;
-+		};
-+
- 		gpio0: gpio@ff708000 {
- 			compatible = "snps,dw-apb-gpio";
- 			reg = <0xff708000 0x1000>;
-diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
-index d8bf0674306e..12585c547673 100644
---- a/arch/arm/mach-socfpga/Makefile
-+++ b/arch/arm/mach-socfpga/Makefile
-@@ -2,3 +2,4 @@ obj-y += generic.o nic301.o bootsource.o reset-manager.o
- pbl-y += init.o freeze-controller.o scan-manager.o system-manager.o
- pbl-y += clock-manager.o iocsr-config-cyclone5.o
- obj-$(CONFIG_ARCH_SOCFPGA_XLOAD) += xload.o
-+obj-$(CONFIG_ARCH_SOCFPGA_FPGA) += fpga.o
-diff --git a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
-index 9d1e677cb736..b124ed675cfc 100644
---- a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
-+++ b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
-@@ -2,10 +2,12 @@
- #define __MACH_SOCFPGA_REGS_H
- 
- #define CYCLONE5_SDMMC_ADDRESS		0xff704000
-+#define CYCLONE5_FPGAMGRREGS_ADDRESS	0xff706000
- #define CYCLONE5_GPIO0_BASE		0xff708000
- #define CYCLONE5_GPIO1_BASE		0xff709000
- #define CYCLONE5_GPIO2_BASE		0xff70A000
- #define CYCLONE5_L3REGS_ADDRESS		0xff800000
-+#define CYCLONE5_FPGAMGRDATA_ADDRESS	0xffb90000
- #define CYCLONE5_UART0_ADDRESS		0xffc02000
- #define CYCLONE5_UART1_ADDRESS		0xffc03000
- #define CYCLONE5_SDR_ADDRESS		0xffc20000
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index 28a173b63f2a..58660632519e 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -8,4 +8,7 @@ config FIRMWARE_ALTERA_SERIAL
- 	  Programming an Altera FPGA via a few GPIOs for the control lines and
- 	  MOSI, MISO and clock from an SPI interface for the data lines
- 
-+config FIRMWARE_ALTERA_SOCFPGA
-+	bool "Altera SoCFPGA fpga loader"
-+
- endmenu
-diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-index ec6a5a17083d..c3a3c3400485 100644
---- a/drivers/firmware/Makefile
-+++ b/drivers/firmware/Makefile
-@@ -1 +1,2 @@
- obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
-+obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-new file mode 100644
-index 000000000000..a5dc6072aab4
---- /dev/null
-+++ b/drivers/firmware/socfpga.c
-@@ -0,0 +1,440 @@
-+/*
-+ *
-+ * Copyright (C) 2012 Altera Corporation <www.altera.com>
-+ * All rights reserved.
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions are met:
-+ *  - Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ *  - Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in the
-+ *    documentation and/or other materials provided with the distribution.
-+ *  - Neither the name of the Altera Corporation nor the
-+ *    names of its contributors may be used to endorse or promote products
-+ *    derived from this software without specific prior written permission.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
-+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ */
-+
-+#include <firmware.h>
-+#include <command.h>
-+#include <common.h>
-+#include <malloc.h>
-+#include <clock.h>
-+#include <fcntl.h>
-+#include <init.h>
-+#include <io.h>
-+#include <mach/system-manager.h>
-+#include <mach/reset-manager.h>
-+#include <mach/socfpga-regs.h>
-+#include <mach/sdram.h>
-+
-+#define FPGAMGRREGS_STAT			0x0
-+#define FPGAMGRREGS_CTRL			0x4
-+#define FPGAMGRREGS_DCLKCNT			0x8
-+#define FPGAMGRREGS_DCLKSTAT			0xc
-+
-+#define FPGAMGRREGS_MON_GPIO_PORTA_EOI_ADDRESS	0x84c
-+#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS	0x850
-+
-+#define FPGAMGRREGS_CTRL_CFGWDTH_MASK		0x200
-+#define FPGAMGRREGS_CTRL_AXICFGEN_MASK		0x100
-+#define FPGAMGRREGS_CTRL_NCONFIGPULL_MASK	0x4
-+#define FPGAMGRREGS_CTRL_NCE_MASK		0x2
-+#define FPGAMGRREGS_CTRL_EN_MASK		0x1
-+#define FPGAMGRREGS_CTRL_CDRATIO_LSB		6
-+
-+#define FPGAMGRREGS_STAT_MODE_MASK		0x7
-+#define FPGAMGRREGS_STAT_MSEL_MASK		0xf8
-+#define FPGAMGRREGS_STAT_MSEL_LSB		3
-+
-+#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_CRC_MASK	0x8
-+#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_ID_MASK	0x4
-+#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_CD_MASK	0x2
-+#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_NS_MASK	0x1
-+
-+/* FPGA Mode */
-+#define FPGAMGRREGS_MODE_FPGAOFF	0x0
-+#define FPGAMGRREGS_MODE_RESETPHASE	0x1
-+#define FPGAMGRREGS_MODE_CFGPHASE	0x2
-+#define FPGAMGRREGS_MODE_INITPHASE	0x3
-+#define FPGAMGRREGS_MODE_USERMODE	0x4
-+#define FPGAMGRREGS_MODE_UNKNOWN	0x5
-+
-+/* FPGA CD Ratio Value */
-+#define CDRATIO_x1	0x0
-+#define CDRATIO_x2	0x1
-+#define CDRATIO_x4	0x2
-+#define CDRATIO_x8	0x3
-+
-+struct fpgamgr {
-+	struct firmware_handler fh;
-+	struct device_d *dev;
-+	void __iomem *regs;
-+	void __iomem *regs_data;
-+};
-+
-+/* Get the FPGA mode */
-+static uint32_t fpgamgr_get_mode(struct fpgamgr *mgr)
-+{
-+	return readl(mgr->regs + FPGAMGRREGS_STAT) & FPGAMGRREGS_STAT_MODE_MASK;
-+}
-+
-+static int fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
-+{
-+	uint64_t start;
-+
-+	/* clear any existing done status */
-+	if (readl(mgr->regs + FPGAMGRREGS_DCLKSTAT))
-+		writel(0x1, mgr->regs + FPGAMGRREGS_DCLKSTAT);
-+
-+	writel(cnt, mgr->regs + FPGAMGRREGS_DCLKCNT);
-+
-+	/* wait till the dclkcnt done */
-+	start = get_time_ns();
-+	while (1) {
-+		if (readl(mgr->regs + FPGAMGRREGS_DCLKSTAT)) {
-+			writel(0x1, mgr->regs + FPGAMGRREGS_DCLKSTAT);
-+			return 0;
-+		}
-+
-+		if (is_timeout(start, 100 * MSECOND))
-+			return -ETIMEDOUT;
-+	}
-+}
-+
-+/* Start the FPGA programming by initialize the FPGA Manager */
-+static int fpgamgr_program_init(struct fpgamgr *mgr)
-+{
-+	unsigned long reg;
-+	uint32_t ctrl = 0, ratio;
-+	uint64_t start;
-+
-+	/* get the MSEL value */
-+	reg = readl(mgr->regs + FPGAMGRREGS_STAT);
-+	reg = ((reg & FPGAMGRREGS_STAT_MSEL_MASK) >> FPGAMGRREGS_STAT_MSEL_LSB);
-+
-+	if (reg & 0x8)
-+		ctrl |= FPGAMGRREGS_CTRL_CFGWDTH_MASK;
-+	else
-+		ctrl &= ~FPGAMGRREGS_CTRL_CFGWDTH_MASK;
-+
-+	switch (reg & 0xb) {
-+	case 0xa:
-+		ratio = CDRATIO_x8;
-+		break;
-+	case 0x2:
-+	case 0x9:
-+		ratio = CDRATIO_x4;
-+		break;
-+	case 0x1:
-+		ratio = CDRATIO_x2;
-+		break;
-+	case 0x8:
-+	case 0xb:
-+	default:
-+		ratio = CDRATIO_x1;
-+		break;
-+	}
-+
-+	ctrl |= ratio << FPGAMGRREGS_CTRL_CDRATIO_LSB;
-+
-+	/* clear nce bit to allow HPS configuration */
-+	ctrl &= ~FPGAMGRREGS_CTRL_NCE_MASK;
-+
-+	/* to enable FPGA Manager drive over configuration line */
-+	ctrl |= FPGAMGRREGS_CTRL_EN_MASK;
-+
-+	/* put FPGA into reset phase */
-+	ctrl |= FPGAMGRREGS_CTRL_NCONFIGPULL_MASK;
-+
-+	writel(ctrl, mgr->regs + FPGAMGRREGS_CTRL);
-+
-+	/* (1) wait until FPGA enter reset phase */
-+	start = get_time_ns();
-+	while (1) {
-+		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_RESETPHASE)
-+			break;
-+		if (is_timeout(start, 100 * MSECOND))
-+			return -ETIMEDOUT;
-+	}
-+
-+	/* release FPGA from reset phase */
-+	ctrl = readl(mgr->regs + FPGAMGRREGS_CTRL);
-+	ctrl &= ~FPGAMGRREGS_CTRL_NCONFIGPULL_MASK;
-+	writel(ctrl, mgr->regs + FPGAMGRREGS_CTRL);
-+
-+	/* (2) wait until FPGA enter configuration phase */
-+	start = get_time_ns();
-+	while (1) {
-+		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_CFGPHASE)
-+			break;
-+		if (is_timeout(start, 100 * MSECOND))
-+			return -ETIMEDOUT;
-+	}
-+
-+	/* clear all interrupt in CB Monitor */
-+	writel(0xFFF, (mgr->regs + FPGAMGRREGS_MON_GPIO_PORTA_EOI_ADDRESS));
-+
-+	/* enable AXI configuration */
-+	ctrl = readl(mgr->regs + FPGAMGRREGS_CTRL);
-+	ctrl |= FPGAMGRREGS_CTRL_AXICFGEN_MASK;
-+	writel(ctrl, mgr->regs + FPGAMGRREGS_CTRL);
-+
-+	return 0;
-+}
-+
-+/* Ensure the FPGA entering config done */
-+static int fpgamgr_program_poll_cd(struct fpgamgr *mgr)
-+{
-+	unsigned long reg;
-+	uint32_t val;
-+	uint64_t start;
-+
-+	/* (3) wait until full config done */
-+	start = get_time_ns();
-+	while (1) {
-+		reg = readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
-+
-+		/* config error */
-+		if (!(reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_NS_MASK) &&
-+			!(reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_CD_MASK))
-+			return -EIO;
-+
-+		/* config done without error */
-+		if ((reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_NS_MASK) &&
-+			(reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_CD_MASK))
-+			break;
-+
-+		if (is_timeout(start, 100 * MSECOND))
-+			return -ETIMEDOUT;
-+	}
-+
-+	/* disable AXI configuration */
-+	val = readl(mgr->regs + FPGAMGRREGS_CTRL);
-+	val &= ~FPGAMGRREGS_CTRL_AXICFGEN_MASK;
-+	writel(val, mgr->regs + FPGAMGRREGS_CTRL);
-+
-+	return 0;
-+}
-+
-+/* Ensure the FPGA entering init phase */
-+static int fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
-+{
-+	uint64_t start;
-+
-+	/* additional clocks for the CB to enter initialization phase */
-+	if (fpgamgr_dclkcnt_set(mgr, 0x4) != 0)
-+		return -5;
-+
-+	/* (4) wait until FPGA enter init phase or user mode */
-+	start = get_time_ns();
-+	while (1) {
-+		int mode = fpgamgr_get_mode(mgr);
-+
-+		if (mode == FPGAMGRREGS_MODE_INITPHASE ||
-+				mode == FPGAMGRREGS_MODE_USERMODE)
-+			break;
-+
-+		if (is_timeout(start, 100 * MSECOND))
-+			return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+/* Ensure the FPGA entering user mode */
-+static int fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
-+{
-+	uint32_t val;
-+	uint64_t start;
-+
-+	/* additional clocks for the CB to exit initialization phase */
-+	if (fpgamgr_dclkcnt_set(mgr, 0x5000) != 0)
-+		return -7;
-+
-+	/* (5) wait until FPGA enter user mode */
-+	start = get_time_ns();
-+	while (1) {
-+		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE)
-+			break;
-+		if (is_timeout(start, 100 * MSECOND))
-+			return -ETIMEDOUT;
-+	}
-+
-+	/* to release FPGA Manager drive over configuration line */
-+	val = readl(mgr->regs + FPGAMGRREGS_CTRL);
-+	val &= ~FPGAMGRREGS_CTRL_EN_MASK;
-+	writel(val, mgr->regs + FPGAMGRREGS_CTRL);
-+
-+	return 0;
-+}
-+
-+/*
-+ * Using FPGA Manager to program the FPGA
-+ * Return 0 for sucess
-+ */
-+static int fpgamgr_program_start(struct firmware_handler *fh)
-+{
-+	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-+	int status;
-+
-+	/* prior programming the FPGA, all bridges need to be shut off */
-+
-+	/* disable all signals from hps peripheral controller to fpga */
-+	writel(0, SYSMGR_FPGAINTF_MODULE);
-+
-+	/* disable all signals from fpga to hps sdram */
-+	writel(0, (CYCLONE5_SDR_ADDRESS + SDR_CTRLGRP_FPGAPORTRST_ADDRESS));
-+
-+	/* disable all axi bridge (hps2fpga, lwhps2fpga & fpga2hps) */
-+	writel(~0, CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_BRG_MOD_RESET_OFS);
-+
-+	/* unmap the bridges from NIC-301 */
-+	writel(0x1, CYCLONE5_L3REGS_ADDRESS);
-+
-+	dev_dbg(mgr->dev, "start programming...\n");
-+
-+	/* initialize the FPGA Manager */
-+	status = fpgamgr_program_init(mgr);
-+	if (status) {
-+		dev_err(mgr->dev, "program init failed with: %s\n",
-+				strerror(-status));
-+		return status;
-+	}
-+
-+	return 0;
-+}
-+
-+/* Write the RBF data to FPGA Manager */
-+static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *buf,
-+		size_t size)
-+{
-+	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-+	const uint32_t *buf32 = buf;
-+
-+	/* write to FPGA Manager AXI data */
-+	while (size) {
-+		writel(*buf32, mgr->regs_data);
-+		readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
-+		buf32++;
-+		size -= sizeof(uint32_t);
-+	}
-+
-+	return 0;
-+}
-+
-+static int fpgamgr_program_finish(struct firmware_handler *fh)
-+{
-+	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
-+	int status;
-+
-+	/* Ensure the FPGA entering config done */
-+	status = fpgamgr_program_poll_cd(mgr);
-+	if (status) {
-+		dev_err(mgr->dev, "poll for config done failed with: %s\n",
-+				strerror(-status));
-+		return status;
-+	}
-+
-+	dev_dbg(mgr->dev, "waiting for init phase...\n");
-+
-+	/* Ensure the FPGA entering init phase */
-+	status = fpgamgr_program_poll_initphase(mgr);
-+	if (status) {
-+		dev_err(mgr->dev, "poll for init phase failed with: %s\n",
-+				strerror(-status));
-+		return status;
-+	}
-+
-+	dev_dbg(mgr->dev, "waiting for user mode...\n");
-+
-+	/* Ensure the FPGA entering user mode */
-+	status = fpgamgr_program_poll_usermode(mgr);
-+	if (status) {
-+		dev_err(mgr->dev, "poll for user mode with: %s\n",
-+				strerror(-status));
-+		return status;
-+	}
-+
-+	return 0;
-+}
-+
-+static int fpgamgr_probe(struct device_d *dev)
-+{
-+	struct fpgamgr *mgr;
-+	struct firmware_handler *fh;
-+	const char *alias = of_alias_get(dev->device_node);
-+	const char *model = NULL;
-+	int ret;
-+
-+	dev_dbg(dev, "Probing FPGA firmware programmer\n");
-+
-+	mgr = xzalloc(sizeof(*mgr));
-+	fh = &mgr->fh;
-+
-+	mgr->regs = dev_request_mem_region(dev, 0);
-+	if (!mgr->regs) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	mgr->regs_data = dev_request_mem_region(dev, 1);
-+	if (!mgr->regs_data) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	if (alias)
-+		fh->id = xstrdup(alias);
-+	else
-+		fh->id = xstrdup("socfpga-fpga");
-+
-+	fh->open = fpgamgr_program_start;
-+	fh->write = fpgamgr_program_write_buf;
-+	fh->close = fpgamgr_program_finish;
-+	of_property_read_string(dev->device_node, "compatible", &model);
-+	if (model)
-+		fh->model = xstrdup(model);
-+	fh->dev = dev;
-+
-+	mgr->dev = dev;
-+
-+	dev_dbg(dev, "Registering FPGA firmware programmer\n");
-+
-+	ret = firmwaremgr_register(fh);
-+	if (ret != 0) {
-+		free(mgr);
-+		goto out;
-+	}
-+
-+	return 0;
-+out:
-+	free(fh->id);
-+	free(mgr);
-+
-+	return ret;
-+}
-+
-+static struct of_device_id fpgamgr_id_table[] = {
-+	{
-+		.compatible = "altr,socfpga-fpga-mgr",
-+	},
-+};
-+
-+static struct driver_d fpgamgr_driver = {
-+	.name = "socfpa-fpgamgr",
-+	.of_compatible = DRV_OF_COMPAT(fpgamgr_id_table),
-+	.probe = fpgamgr_probe,
-+};
-+device_platform_driver(fpgamgr_driver);
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXguZGU+CgpUaGlzIGhhbmRsZXIg
+dXNlcyBhIHJlZ3VsYXIgU1BJIG1hc3RlciBhbmQgYSBmZXcgR1BJT3MgdG8gcHJvZ3JhbSBhbgpB
+bHRlcmEgRlBHQSBpbiBzZXJpYWwgbW9kZS4KClNpZ25lZC1vZmYtYnk6IEp1ZXJnZW4gQmVpc2Vy
+dCA8amJlQHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1
+ZXJAcGVuZ3V0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IFN0ZWZmZW4gVHJ1bXRyYXIgPHMudHJ1
+bXRyYXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQpDaGFuZ2VzIHNpbmNlIHYyOgoJLSB1c2UgdWRlbGF5
+CgktIGNoZWNrIGdwaW9fc2V0XyogcmV0dXJuIHZhbHVlcwoKIGRyaXZlcnMvS2NvbmZpZyAgICAg
+ICAgICAgICAgICAgIHwgICAxICsKIGRyaXZlcnMvTWFrZWZpbGUgICAgICAgICAgICAgICAgIHwg
+ICAxICsKIGRyaXZlcnMvZmlybXdhcmUvS2NvbmZpZyAgICAgICAgIHwgIDExICsrCiBkcml2ZXJz
+L2Zpcm13YXJlL01ha2VmaWxlICAgICAgICB8ICAgMSArCiBkcml2ZXJzL2Zpcm13YXJlL2FsdGVy
+YV9zZXJpYWwuYyB8IDMxNSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysK
+IDUgZmlsZXMgY2hhbmdlZCwgMzI5IGluc2VydGlvbnMoKykKIGNyZWF0ZSBtb2RlIDEwMDY0NCBk
+cml2ZXJzL2Zpcm13YXJlL0tjb25maWcKIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2Zpcm13
+YXJlL01ha2VmaWxlCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9maXJtd2FyZS9hbHRlcmFf
+c2VyaWFsLmMKCmRpZmYgLS1naXQgYS9kcml2ZXJzL0tjb25maWcgYi9kcml2ZXJzL0tjb25maWcK
+aW5kZXggMTJhOWQ4YzdkODUzLi5kZWQ5ODBmYjE2YWUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvS2Nv
+bmZpZworKysgYi9kcml2ZXJzL0tjb25maWcKQEAgLTI4LDUgKzI4LDYgQEAgc291cmNlICJkcml2
+ZXJzL2J1cy9LY29uZmlnIgogc291cmNlICJkcml2ZXJzL3JlZ3VsYXRvci9LY29uZmlnIgogc291
+cmNlICJkcml2ZXJzL3Jlc2V0L0tjb25maWciCiBzb3VyY2UgImRyaXZlcnMvcGNpL0tjb25maWci
+Citzb3VyY2UgImRyaXZlcnMvZmlybXdhcmUvS2NvbmZpZyIKIAogZW5kbWVudQpkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9NYWtlZmlsZSBiL2RyaXZlcnMvTWFrZWZpbGUKaW5kZXggMTk5MGU4NmJkOWFm
+Li45YjI4NGM3NmY5MDQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvTWFrZWZpbGUKKysrIGIvZHJpdmVy
+cy9NYWtlZmlsZQpAQCAtMjcsMyArMjcsNCBAQCBvYmoteSArPSBidXMvCiBvYmotJChDT05GSUdf
+UkVHVUxBVE9SKSArPSByZWd1bGF0b3IvCiBvYmotJChDT05GSUdfUkVTRVRfQ09OVFJPTExFUikg
+Kz0gcmVzZXQvCiBvYmotJChDT05GSUdfUENJKSArPSBwY2kvCitvYmotJChDT05GSUdfRklSTVdB
+UkUpICs9IGZpcm13YXJlLwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9maXJtd2FyZS9LY29uZmlnIGIv
+ZHJpdmVycy9maXJtd2FyZS9LY29uZmlnCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAw
+MDAwMDAwMC4uMjhhMTczYjYzZjJhCi0tLSAvZGV2L251bGwKKysrIGIvZHJpdmVycy9maXJtd2Fy
+ZS9LY29uZmlnCkBAIC0wLDAgKzEsMTEgQEAKK21lbnUgIkZpcm13YXJlIERyaXZlcnMiCisKK2Nv
+bmZpZyBGSVJNV0FSRV9BTFRFUkFfU0VSSUFMCisJYm9vbCAiQWx0ZXJhIFNQSSBwcm9ncmFtbWlu
+ZyIKKwlkZXBlbmRzIG9uIE9GREVWSUNFCisJc2VsZWN0IEZJUk1XQVJFCisJaGVscAorCSAgUHJv
+Z3JhbW1pbmcgYW4gQWx0ZXJhIEZQR0EgdmlhIGEgZmV3IEdQSU9zIGZvciB0aGUgY29udHJvbCBs
+aW5lcyBhbmQKKwkgIE1PU0ksIE1JU08gYW5kIGNsb2NrIGZyb20gYW4gU1BJIGludGVyZmFjZSBm
+b3IgdGhlIGRhdGEgbGluZXMKKworZW5kbWVudQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9maXJtd2Fy
+ZS9NYWtlZmlsZSBiL2RyaXZlcnMvZmlybXdhcmUvTWFrZWZpbGUKbmV3IGZpbGUgbW9kZSAxMDA2
+NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5lYzZhNWExNzA4M2QKLS0tIC9kZXYvbnVsbAorKysgYi9k
+cml2ZXJzL2Zpcm13YXJlL01ha2VmaWxlCkBAIC0wLDAgKzEgQEAKK29iai0kKENPTkZJR19GSVJN
+V0FSRV9BTFRFUkFfU0VSSUFMKSArPSBhbHRlcmFfc2VyaWFsLm8KZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvZmlybXdhcmUvYWx0ZXJhX3NlcmlhbC5jIGIvZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2Vy
+aWFsLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5iMmExZTY4OTNm
+OTgKLS0tIC9kZXYvbnVsbAorKysgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwpA
+QCAtMCwwICsxLDMxNSBAQAorLyoKKyAqIENvcHlyaWdodCAoYykgMjAxMyBKdWVyZ2VuIEJlaXNl
+cnQgPGtlcm5lbEBwZW5ndXRyb25peC5kZT4sIFBlbmd1dHJvbml4CisgKgorICogVGhpcyBwcm9n
+cmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2Rp
+ZnkKKyAqIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vu
+c2UgdmVyc2lvbiAyCisgKiBhcyBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRh
+dGlvbi4KKyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhh
+dCBpdCB3aWxsIGJlIHVzZWZ1bCwKKyAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91
+dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCisgKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklU
+TkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCisgKiBHTlUgR2VuZXJhbCBQ
+dWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgorICovCisKKyNpbmNsdWRlIDxjb21tb24u
+aD4KKyNpbmNsdWRlIDxpbml0Lmg+CisjaW5jbHVkZSA8ZHJpdmVyLmg+CisjaW5jbHVkZSA8Zmly
+bXdhcmUuaD4KKyNpbmNsdWRlIDxvZl9ncGlvLmg+CisjaW5jbHVkZSA8eGZ1bmNzLmg+CisjaW5j
+bHVkZSA8bWFsbG9jLmg+CisjaW5jbHVkZSA8Z3Bpby5oPgorI2luY2x1ZGUgPGNsb2NrLmg+Cisj
+aW5jbHVkZSA8c3BpL3NwaS5oPgorCisjaW5jbHVkZSA8ZmNudGwuaD4KKyNpbmNsdWRlIDxmcy5o
+PgorCisvKgorICogUGh5c2ljYWwgcmVxdWlyZW1lbnRzOgorICogLSB0aHJlZSBmcmVlIEdQSU9z
+IGZvciB0aGUgc2lnbmFscyBuQ09ORklHLCBDT05GSUdVUkVfRE9ORSwgblNUQVRVUworICogLSAz
+MiBiaXQgcGVyIHdvcmQsIExTQiBmaXJzdCBjYXBhYmxlIFNQSSBtYXN0ZXIgKE1PU0kgKyBjbG9j
+aykKKyAqCisgKiBFeGFtcGxlIGhvdyB0byBjb25maWd1cmUgdGhpcyBkcml2ZXIgdmlhIGRldmlj
+ZSB0cmVlCisgKgorICoJZnBnYUAwIHsKKyAqCQljb21wYXRpYmxlID0gImFsdHIsZnBnYS1wYXNz
+aXZlLXNlcmlhbCI7CisgKgkJbnN0YXQtZ3BpbyA9IDwmZ3BpbzQgMTggMD47CisgKgkJY29uZmQt
+Z3BpbyA9IDwmZ3BpbzQgMTkgMD47CisgKgkJbmNvbmZpZy1ncGlvID0gPCZncGlvNCAyMCAwPjsK
+KyAqCQlzcGktbWF4LWZyZXF1ZW5jeSA9IDwxMDAwMDAwMD47CisgKgkJcmVnID0gPDA+OworICoJ
+fTsKKyAqLworCitzdHJ1Y3QgZnBnYV9zcGkgeworCXN0cnVjdCBmaXJtd2FyZV9oYW5kbGVyIGZo
+OworCWludCBuc3RhdF9ncGlvOyAvKiBpbnB1dCBHUElPIHRvIHJlYWQgdGhlIHN0YXR1cyBsaW5l
+ICovCisJaW50IGNvbmZkX2dwaW87IC8qIGlucHV0IEdQSU8gdG8gcmVhZCB0aGUgY29uZmlnIGRv
+bmUgbGluZSAqLworCWludCBuY29uZmlnX2dwaW87IC8qIG91dHB1dCBHUElPIHRvIHN0YXJ0IHRo
+ZSBGUEdBJ3MgY29uZmlnICovCisJc3RydWN0IGRldmljZV9kICpkZXY7CisJc3RydWN0IHNwaV9k
+ZXZpY2UgKnNwaTsKKwlib29sIHBhZGRpbmdfZG9uZTsKK307CisKK3N0YXRpYyBpbnQgYWx0ZXJh
+X3NwaV9vcGVuKHN0cnVjdCBmaXJtd2FyZV9oYW5kbGVyICpmaCkKK3sKKwlzdHJ1Y3QgZnBnYV9z
+cGkgKnRoaXMgPSBjb250YWluZXJfb2YoZmgsIHN0cnVjdCBmcGdhX3NwaSwgZmgpOworCXN0cnVj
+dCBkZXZpY2VfZCAqZGV2ID0gdGhpcy0+ZGV2OworCWludCByZXQ7CisKKwlkZXZfZGJnKGRldiwg
+IkluaXRpYXRpbmcgcHJvZ3JhbW1pbmdcbiIpOworCisJLyogaW5pdGlhdGUgYW4gRlBHQSBwcm9n
+cmFtbWluZyAqLworCWdwaW9fc2V0X3ZhbHVlKHRoaXMtPm5jb25maWdfZ3BpbywgMCk7CisKKwkv
+KgorCSAqIGFmdGVyIGFib3V0IDIgwrVzIHRoZSBGUEdBIG11c3QgYWNrbm93bGVkZ2Ugd2l0aAor
+CSAqIFNUQVRVUyBhbmQgQ09ORklHIERPTkUgbGluZXMgYXQgbG93IGxldmVsCisJICovCisJcmV0
+ID0gd2FpdF9vbl90aW1lb3V0KDIgKiAxMDAwLAorCQkJCShncGlvX2dldF92YWx1ZSh0aGlzLT5u
+c3RhdF9ncGlvKSA9PSAwKSAmJgorCQkJCShncGlvX2dldF92YWx1ZSh0aGlzLT5jb25mZF9ncGlv
+KSA9PSAwKSk7CisKKwlpZiAocmV0ICE9IDApIHsKKwkJZGV2X2VycihkZXYsICJGUEdBIGRvZXMg
+bm90IGFja25vd2xlZGdlIHRoZSBwcm9ncmFtbWluZyBpbml0aWF0aW9uXG4iKTsKKwkJaWYgKGdw
+aW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pKQorCQkJZGV2X2VycihkZXYsICJTVEFUVVMg
+aXMgc3RpbGwgaGlnaCFcbiIpOworCQlpZiAoZ3Bpb19nZXRfdmFsdWUodGhpcy0+Y29uZmRfZ3Bp
+bykpCisJCQlkZXZfZXJyKGRldiwgIkNPTkZJRyBET05FIGlzIHN0aWxsIGhpZ2ghXG4iKTsKKwkJ
+cmV0dXJuIHJldDsKKwl9CisKKwkvKiBhcm0gdGhlIEZQR0EgdG8gYXdhaXQgaXRzIG5ldyBmaXJt
+d2FyZSAqLworCXJldCA9IGdwaW9fc2V0X3ZhbHVlKHRoaXMtPm5jb25maWdfZ3BpbywgMSk7CisJ
+aWYgKHJldCkKKwkJcmV0dXJuIHJldDsKKworCS8qIG9uY2UgYWdhaW4sIHdlIG1pZ2h0IG5lZWQg
+cGFkZGluZyB0aGUgZGF0YSAqLworCXRoaXMtPnBhZGRpbmdfZG9uZSA9IGZhbHNlOworCisJLyoK
+KwkgKiBhZnRlciBhYm91dCAxNTA2IMK1cyB0aGUgRlBHQSBtdXN0IGFja25vd2xlZGdlIHRoaXMg
+c3RlcAorCSAqIHdpdGggdGhlIFNUQVRVUyBsaW5lIGF0IGhpZ2ggbGV2ZWwKKwkgKi8KKwlyZXQg
+PSB3YWl0X29uX3RpbWVvdXQoMTYwMCAqIDEwMDAsCisJCQkJZ3Bpb19nZXRfdmFsdWUodGhpcy0+
+bnN0YXRfZ3BpbykgPT0gMSk7CisJaWYgKHJldCAhPSAwKSB7CisJCWRldl9lcnIoZGV2LCAiRlBH
+QSBkb2VzIG5vdCBhY2tub3dsZWRnZSB0aGUgcHJvZ3JhbW1pbmcgc3RhcnRcbiIpOworCQlyZXR1
+cm4gcmV0OworCX0KKworCWRldl9kYmcoZGV2LCAiSW5pdGlhdGluZyBwYXNzZWRcbiIpOworCS8q
+IGF0IHRoZSBlbmQsIHdhaXQgYXQgbGVhc3QgMiDCtXMgcHJpb3IgYmVnaW5uaW5nIHdyaXRpbmcg
+ZGF0YSAqLworCXVkZWxheSgyKTsKKworCXJldHVybiAwOworfQorCitzdGF0aWMgaW50IGFsdGVy
+YV9zcGlfd3JpdGUoc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoLCBjb25zdCB2b2lkICpidWYs
+IHNpemVfdCBzeikKK3sKKwlzdHJ1Y3QgZnBnYV9zcGkgKnRoaXMgPSBjb250YWluZXJfb2YoZmgs
+IHN0cnVjdCBmcGdhX3NwaSwgZmgpOworCXN0cnVjdCBkZXZpY2VfZCAqZGV2ID0gdGhpcy0+ZGV2
+OworCXN0cnVjdCBzcGlfdHJhbnNmZXIgdFsyXTsKKwlzdHJ1Y3Qgc3BpX21lc3NhZ2UgbTsKKwl1
+MzIgZHVtbXk7CisJaW50IHJldDsKKworCXByaW50ZigiJXM6ICVkXG4iLCBfX2Z1bmNfXywgc3op
+OworCisJc3BpX21lc3NhZ2VfaW5pdCgmbSk7CisKKwlpZiAoc3ogPCBzaXplb2YodTMyKSkgewor
+CQkvKiBzaW1wbGUgcGFkZGluZyAqLworCQlkdW1teSA9IDA7CisJCW1lbWNweSgmZHVtbXksIGJ1
+Ziwgc3opOworCQlidWYgPSAmZHVtbXk7CisJCXN6ID0gc2l6ZW9mKHUzMik7CisJCXRoaXMtPnBh
+ZGRpbmdfZG9uZSA9IHRydWU7CisJfQorCisJdFswXS50eF9idWYgPSBidWY7CisJdFswXS5yeF9i
+dWYgPSBOVUxMOworCXRbMF0ubGVuID0gc3o7CisJc3BpX21lc3NhZ2VfYWRkX3RhaWwoJnRbMF0s
+ICZtKTsKKworCWlmIChzeiAmIDB4MykgeyAvKiBwYWRkaW5nIHJlcXVpcmVkPyAqLworCQl1MzIg
+KndvcmRfYnVmID0gKHUzMiAqKWJ1ZjsKKwkJZHVtbXkgPSAwOworCQltZW1jcHkoJmR1bW15LCAm
+d29yZF9idWZbc3ogPj4gMl0sIHN6ICYgMHgzKTsKKwkJdFswXS5sZW4gJj0gfjB4MDM7CisJCXRb
+MV0udHhfYnVmID0gJmR1bW15OworCQl0WzFdLnJ4X2J1ZiA9IE5VTEw7CisJCXRbMV0ubGVuID0g
+c2l6ZW9mKHUzMik7CisJCXNwaV9tZXNzYWdlX2FkZF90YWlsKCZ0WzFdLCAmbSk7CisJCXRoaXMt
+PnBhZGRpbmdfZG9uZSA9IHRydWU7CisJfQorCisJcmV0ID0gc3BpX3N5bmModGhpcy0+c3BpLCAm
+bSk7CisJaWYgKHJldCAhPSAwKQorCQlkZXZfZXJyKGRldiwgInByb2dyYW1taW5nIGZhaWx1cmVc
+biIpOworCisJcmV0dXJuIHJldDsKK30KKworc3RhdGljIGludCBhbHRlcmFfc3BpX2Nsb3NlKHN0
+cnVjdCBmaXJtd2FyZV9oYW5kbGVyICpmaCkKK3sKKwlzdHJ1Y3QgZnBnYV9zcGkgKnRoaXMgPSBj
+b250YWluZXJfb2YoZmgsIHN0cnVjdCBmcGdhX3NwaSwgZmgpOworCXN0cnVjdCBkZXZpY2VfZCAq
+ZGV2ID0gdGhpcy0+ZGV2OworCXN0cnVjdCBzcGlfdHJhbnNmZXIgdDsKKwlzdHJ1Y3Qgc3BpX21l
+c3NhZ2UgbTsKKwl1MzIgZHVtbXkgPSAwOworCWludCByZXQ7CisKKwlkZXZfZGJnKGRldiwgIkZp
+bmFsaXplIHByb2dyYW1taW5nXG4iKTsKKworCWlmICh0aGlzLT5wYWRkaW5nX2RvbmUgPT0gZmFs
+c2UpIHsKKwkJc3BpX21lc3NhZ2VfaW5pdCgmbSk7CisJCXQudHhfYnVmID0gJmR1bW15OworCQl0
+LnJ4X2J1ZiA9IE5VTEw7CisJCXQubGVuID0gc2l6ZW9mKGR1bW15KTsKKwkJc3BpX21lc3NhZ2Vf
+YWRkX3RhaWwoJnQsICZtKTsKKworCQlyZXQgPSBzcGlfc3luYyh0aGlzLT5zcGksICZtKTsKKwkJ
+aWYgKHJldCAhPSAwKQorCQkJZGV2X2VycihkZXYsICJwcm9ncmFtbWluZyBmYWlsdXJlXG4iKTsK
+Kwl9CisKKwkvKgorCSAqIHdoZW4gcHJvZ3JhbW1pbmcgd2FzIHN1Y2Nlc3NmdWxseSwKKwkgKiBi
+b3RoIHN0YXR1cyBsaW5lcyBzaG91bGQgYmUgYXQgaGlnaCBsZXZlbAorCSAqLworCXJldCA9IHdh
+aXRfb25fdGltZW91dCgxMCAqIDEwMDAsCisJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0
+X2dwaW8pID09IDEpICYmCisJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPmNvbmZkX2dwaW8pID09
+IDEpKTsKKwlpZiAocmV0ID09IDApIHsKKwkJZGV2X2RiZyhkZXYsICJQcm9ncmFtbWluZyBzdWNj
+ZXNzZnVsbFxuIik7CisJCXJldHVybiByZXQ7CisJfQorCisJZGV2X2VycihkZXYsICJQcm9ncmFt
+bWluZyBmYWlsZWQgZHVlIHRvIHRpbWUgb3V0XG4iKTsKKwlpZiAoZ3Bpb19nZXRfdmFsdWUodGhp
+cy0+bnN0YXRfZ3BpbykgPT0gMCkKKwkJZGV2X2VycihkZXYsICJTVEFUVVMgaXMgc3RpbGwgbG93
+IVxuIik7CisJaWYgKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPmNvbmZkX2dwaW8pID09IDApCisJCWRl
+dl9lcnIoZGV2LCAiQ09ORklHIERPTkUgaXMgc3RpbGwgbG93IVxuIik7CisKKwlyZXR1cm4gLUVJ
+TzsKK30KKworc3RhdGljIGludCBhbHRlcmFfc3BpX29mKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBz
+dHJ1Y3QgZnBnYV9zcGkgKnRoaXMpCit7CisJc3RydWN0IGRldmljZV9ub2RlICpuID0gZGV2LT5k
+ZXZpY2Vfbm9kZTsKKwljb25zdCBjaGFyICpuYW1lOworCWludCByZXQ7CisKKwluYW1lID0gIm5z
+dGF0LWdwaW8iOworCXRoaXMtPm5zdGF0X2dwaW8gPSBvZl9nZXRfbmFtZWRfZ3BpbyhuLCBuYW1l
+LCAwKTsKKwlpZiAodGhpcy0+bnN0YXRfZ3BpbyA8IDApIHsKKwkJcmV0ID0gdGhpcy0+bnN0YXRf
+Z3BpbzsKKwkJZ290byBvdXQ7CisJfQorCisJbmFtZSA9ICJjb25mZC1ncGlvIjsKKwl0aGlzLT5j
+b25mZF9ncGlvID0gb2ZfZ2V0X25hbWVkX2dwaW8obiwgbmFtZSwgMCk7CisJaWYgKHRoaXMtPmNv
+bmZkX2dwaW8gPCAwKSB7CisJCXJldCA9IHRoaXMtPmNvbmZkX2dwaW87CisJCWdvdG8gb3V0Owor
+CX0KKworCW5hbWUgPSAibmNvbmZpZy1ncGlvIjsKKwl0aGlzLT5uY29uZmlnX2dwaW8gPSBvZl9n
+ZXRfbmFtZWRfZ3BpbyhuLCBuYW1lLCAwKTsKKwlpZiAodGhpcy0+bmNvbmZpZ19ncGlvIDwgMCkg
+eworCQlyZXQgPSB0aGlzLT5uY29uZmlnX2dwaW87CisJCWdvdG8gb3V0OworCX0KKworCS8qIGlu
+aXQgdG8gcGFzc2l2ZSBhbmQgc2FuZSB2YWx1ZXMgKi8KKwlyZXQgPSBncGlvX2RpcmVjdGlvbl9v
+dXRwdXQodGhpcy0+bmNvbmZpZ19ncGlvLCAxKTsKKwlpZiAocmV0KQorCQlyZXR1cm4gcmV0Owor
+CXJldCA9IGdwaW9fZGlyZWN0aW9uX2lucHV0KHRoaXMtPm5zdGF0X2dwaW8pOworCWlmIChyZXQp
+CisJCXJldHVybiByZXQ7CisJcmV0ID0gZ3Bpb19kaXJlY3Rpb25faW5wdXQodGhpcy0+Y29uZmRf
+Z3Bpbyk7CisJaWYgKHJldCkKKwkJcmV0dXJuIHJldDsKKworCXJldHVybiAwOworCitvdXQ6CisJ
+ZGV2X2VycihkZXYsICJDYW5ub3QgcmVxdWVzdCBcIiVzXCIgZ3BpbzogJXNcbiIsIG5hbWUsIHN0
+cmVycm9yKC1yZXQpKTsKKworCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyB2b2lkIGFsdGVyYV9z
+cGlfaW5pdF9tb2RlKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpCit7CisJc3BpLT5iaXRzX3Blcl93
+b3JkID0gMzI7CisJLyoKKwkgKiBDUEhBID0gQ1BPTCA9IDAKKwkgKiB0aGUgRlBHQSBleHBlY3Rz
+IGl0cyBmaXJtd2FyZSBkYXRhIHdpdGggTFNCIGZpcnN0CisJICovCisJc3BpLT5tb2RlID0gU1BJ
+X01PREVfMCB8IFNQSV9MU0JfRklSU1Q7Cit9CisKK3N0YXRpYyBpbnQgYWx0ZXJhX3NwaV9wcm9i
+ZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKK3sKKwlpbnQgcmM7CisJc3RydWN0IGZwZ2Ffc3BpICp0
+aGlzOworCXN0cnVjdCBmaXJtd2FyZV9oYW5kbGVyICpmaDsKKwljb25zdCBjaGFyICphbGlhcyA9
+IG9mX2FsaWFzX2dldChkZXYtPmRldmljZV9ub2RlKTsKKwljb25zdCBjaGFyICptb2RlbCA9IE5V
+TEw7CisKKwlkZXZfZGJnKGRldiwgIlByb2JpbmcgRlBHQSBmaXJtd2FyZSBwcm9ncmFtbWVyXG4i
+KTsKKworCXRoaXMgPSB4emFsbG9jKHNpemVvZigqdGhpcykpOworCWZoID0gJnRoaXMtPmZoOwor
+CisJcmMgPSBhbHRlcmFfc3BpX29mKGRldiwgdGhpcyk7CisJaWYgKHJjICE9IDApCisJCWdvdG8g
+b3V0OworCisJaWYgKGFsaWFzKQorCQlmaC0+aWQgPSB4c3RyZHVwKGFsaWFzKTsKKwllbHNlCisJ
+CWZoLT5pZCA9IHhzdHJkdXAoImFsdGVyYS1mcGdhIik7CisKKwlmaC0+b3BlbiA9IGFsdGVyYV9z
+cGlfb3BlbjsKKwlmaC0+d3JpdGUgPSBhbHRlcmFfc3BpX3dyaXRlOworCWZoLT5jbG9zZSA9IGFs
+dGVyYV9zcGlfY2xvc2U7CisJb2ZfcHJvcGVydHlfcmVhZF9zdHJpbmcoZGV2LT5kZXZpY2Vfbm9k
+ZSwgImNvbXBhdGlibGUiLCAmbW9kZWwpOworCWlmIChtb2RlbCkKKwkJZmgtPm1vZGVsID0geHN0
+cmR1cChtb2RlbCk7CisJZmgtPmRldiA9IGRldjsKKworCXRoaXMtPnNwaSA9IChzdHJ1Y3Qgc3Bp
+X2RldmljZSAqKWRldi0+dHlwZV9kYXRhOworCWFsdGVyYV9zcGlfaW5pdF9tb2RlKHRoaXMtPnNw
+aSk7CisJdGhpcy0+ZGV2ID0gZGV2OworCisJZGV2X2RiZyhkZXYsICJSZWdpc3RlcmluZyBGUEdB
+IGZpcm13YXJlIHByb2dyYW1tZXJcbiIpOworCXJjID0gZmlybXdhcmVtZ3JfcmVnaXN0ZXIoZmgp
+OworCWlmIChyYyAhPSAwKSB7CisJCWZyZWUodGhpcyk7CisJCWdvdG8gb3V0OworCX0KKworCXJl
+dHVybiAwOworb3V0OgorCWZyZWUoZmgtPmlkKTsKKwlmcmVlKHRoaXMpOworCisJcmV0dXJuIHJj
+OworfQorCitzdGF0aWMgc3RydWN0IG9mX2RldmljZV9pZCBhbHRlcmFfc3BpX2lkX3RhYmxlW10g
+PSB7CisJeworCQkuY29tcGF0aWJsZSA9ICJhbHRyLHBhc3NpdmUtc2VyaWFsIiwKKwl9LAorfTsK
+Kworc3RhdGljIHN0cnVjdCBkcml2ZXJfZCBhbHRlcmFfc3BpX2RyaXZlciA9IHsKKwkubmFtZSA9
+ICJhbHRlcmEtZnBnYSIsCisJLm9mX2NvbXBhdGlibGUgPSBEUlZfT0ZfQ09NUEFUKGFsdGVyYV9z
+cGlfaWRfdGFibGUpLAorCS5wcm9iZSA9IGFsdGVyYV9zcGlfcHJvYmUsCit9OworZGV2aWNlX3Nw
+aV9kcml2ZXIoYWx0ZXJhX3NwaV9kcml2ZXIpOwotLSAKMi4xLjAKCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
