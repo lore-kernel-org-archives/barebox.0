@@ -1,25 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f46.google.com ([209.85.215.46])
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XPo5q-0002R7-Hv
- for barebox@lists.infradead.org; Fri, 05 Sep 2014 07:38:03 +0000
-Received: by mail-la0-f46.google.com with SMTP id pv20so13299079lab.19
- for <barebox@lists.infradead.org>; Fri, 05 Sep 2014 00:37:36 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140904211419.ea6eae69a1e96d2cb9d3e20e@gmail.com>
-References: <53C25B45.7010101@gmail.com>
- <20140713145526.2cf6407fc9a17a4e8db89a50@gmail.com>
- <CAOngqVV-PcbsowH9iOHXpxXNvJEb_k7KyWakQVVGT9FMm4iFLw@mail.gmail.com>
- <20140715110157.e505c7ad66ef5871b1ecf830@gmail.com>
- <CAOngqVVHG5+S68okE4kqU95FNtkxvJFtcZj0W2KmH=54XxdKTg@mail.gmail.com>
- <20140715142753.d2c6424ea6b2d1b810b0de73@gmail.com>
- <CAOngqVXSRuHmPL_Z73AfLPCdzitS7=kkViy2rJMvX1vvsiOhbw@mail.gmail.com>
- <20140716063002.GB23235@pengutronix.de>
- <CAOngqVUUZOeRToJp_6vvxqmB-x2D=VAHo=JntpfegQ03P5axgQ@mail.gmail.com>
- <20140904211419.ea6eae69a1e96d2cb9d3e20e@gmail.com>
-Date: Fri, 5 Sep 2014 09:37:36 +0200
-Message-ID: <CAOngqVXGDhTmDinue2=3d1ORtLjoXaJD_Lzo+ccoU2wADDjKDw@mail.gmail.com>
-From: Daniele Lacamera <daniele.lacamera@tass.be>
+ id 1XPqum-0007vJ-3T
+ for barebox@lists.infradead.org; Fri, 05 Sep 2014 10:38:48 +0000
+Received: by mail-lb0-f175.google.com with SMTP id u10so13042987lbd.6
+ for <barebox@lists.infradead.org>; Fri, 05 Sep 2014 03:38:25 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri,  5 Sep 2014 14:38:14 +0400
+Message-Id: <1409913494-17780-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,81 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picotcp tftp support [was Adding IPv4 multicast support]
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Serge Franchois <serge.franchois@tass.be>, barebox <barebox@lists.infradead.org>, Sarah Terryn <sarah.terryn@tass.be>
+Subject: [PATCH] Documentation: davinci.rst: fix code-block formatting
+To: barebox@lists.infradead.org
 
-Hi Antony, hello all,
+Wrong formatting leads to this error message during 'make docs':
 
-It's been a bit of slow-business here lately, due to the end of the
-summer holidays.
-We have put two people on the task since this week, we will keep you posted!
+  davinci.rst:35: ERROR: Error in "code-block" directive:
+                  maximum 1 argument(s) allowed, 4 supplied.
 
-Thanks for bearing with us!
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ Documentation/boards/davinci.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Greetings,
-
+diff --git a/Documentation/boards/davinci.rst b/Documentation/boards/davinci.rst
+index a2ddc3c..cf0c36e 100644
+--- a/Documentation/boards/davinci.rst
++++ b/Documentation/boards/davinci.rst
+@@ -33,12 +33,14 @@ Running barebox
+   4. Upload ``barebox.bin`` via Ymodem
+ 
+ .. code-block:: none
++
+     virt2real ># loady
+ ..
+ 
+   5. Run barebox
+ 
+ .. code-block:: none
++
+     virt2real ># go 0x82000000
+ ..
+ 
 -- 
-Daniele
+2.1.0
 
-On Thu, Sep 4, 2014 at 7:14 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> On Wed, 16 Jul 2014 08:48:18 +0200
-> Daniele Lacamera <daniele.lacamera@tass.be> wrote:
->
->> On Wed, Jul 16, 2014 at 8:30 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > Right now the network users register to a udp port and provide a handler
->> > which is called whenever a packet to this port is received. The
->> > prototype for this function is:
->> >
->> > struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
->> >                 rx_handler_f *handler, void *ctx);
->> >
->> > Then network users can send packets on this connection:
->> >
->> > int net_udp_send(struct net_connection *con, int len);
->> >
->> > The function returns after the packet has been sent.
->> >
->> > The network user has to keep the ball rolling by calling
->> >
->> > void net_poll(void);
->> >
->> > in a loop. This function will call into the network drivers receive
->> > function and dispatch the received packets. ARP packets are handled
->> > internally, the UDP packets are passed to the registered handlers.
->> >
->> > The handlers usually will send answers to received packets (so a tftp
->> > client will send an ack here or request the next packet).
->> >
->> > Usually the loop calling net_poll() also has some functionality to
->> > detect progress and will send the last packet again if it was lost.
->> >
->> > Hope that explains the networking model in barebox.
->> >
->>
->> Hi Sascha,
->>
->> Thanks a lot for this clarification. The mechanism you described is
->> the same as the native execution model of PicoTCP, and looking around
->> in the code it seems that looping around net_poll() was in fact the
->> way to go.
->>
->> to Antony: I will improve TFTP first, by allowing multiple sessions at
->> the same time. I will keep you posted on the progress.
->
-> I see a barebox-related publication with nice pictures on the picotcp website  :)
->
->   http://www.picotcp.com/barebox-on-top-of-picotcp
->
-> We are awaiting improved TFTP...
->
-> --
-> Best regards,
->   Antony Pavlov
 
 _______________________________________________
 barebox mailing list
