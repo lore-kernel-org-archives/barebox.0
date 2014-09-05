@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XPqum-0007vJ-3T
- for barebox@lists.infradead.org; Fri, 05 Sep 2014 10:38:48 +0000
-Received: by mail-lb0-f175.google.com with SMTP id u10so13042987lbd.6
- for <barebox@lists.infradead.org>; Fri, 05 Sep 2014 03:38:25 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  5 Sep 2014 14:38:14 +0400
-Message-Id: <1409913494-17780-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XPtmR-0002B1-0m
+ for barebox@lists.infradead.org; Fri, 05 Sep 2014 13:42:24 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 84AF1A003E6
+ for <barebox@lists.infradead.org>; Fri,  5 Sep 2014 15:42:03 +0200 (CEST)
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Fri, 5 Sep 2014 15:41:52 +0200
+Message-Id: <1409924512-20295-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,40 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Documentation: davinci.rst: fix code-block formatting
+Subject: [PATCH] dts:imx6:pfla02: Fix SPI NOR for phyFLEX-i.MX6
 To: barebox@lists.infradead.org
 
-Wrong formatting leads to this error message during 'make docs':
+Add chip-select property to pfla02 devicetree.
 
-  davinci.rst:35: ERROR: Error in "code-block" directive:
-                  maximum 1 argument(s) allowed, 4 supplied.
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- Documentation/boards/davinci.rst | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/Documentation/boards/davinci.rst b/Documentation/boards/davinci.rst
-index a2ddc3c..cf0c36e 100644
---- a/Documentation/boards/davinci.rst
-+++ b/Documentation/boards/davinci.rst
-@@ -33,12 +33,14 @@ Running barebox
-   4. Upload ``barebox.bin`` via Ymodem
- 
- .. code-block:: none
-+
-     virt2real ># loady
- ..
- 
-   5. Run barebox
- 
- .. code-block:: none
-+
-     virt2real ># go 0x82000000
- ..
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index 277573d..a981fd4 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -19,6 +19,7 @@
+ 	flash: m25p80@0 {
+ 		compatible = "m25p80";
+ 		spi-max-frequency = <20000000>;
++		reg = <0>;
+ 	};
+ };
  
 -- 
-2.1.0
+1.7.0.4
 
 
 _______________________________________________
