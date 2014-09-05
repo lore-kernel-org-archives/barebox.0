@@ -1,20 +1,25 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
+Received: from mail-la0-f46.google.com ([209.85.215.46])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XPnn6-0001fm-Fc
- for barebox@lists.infradead.org; Fri, 05 Sep 2014 07:18:41 +0000
-Received: by mail-we0-f177.google.com with SMTP id u56so11310006wes.36
- for <barebox@lists.infradead.org>; Fri, 05 Sep 2014 00:18:15 -0700 (PDT)
-Date: Fri, 5 Sep 2014 09:18:13 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140905071811.GB23258@omega>
-References: <1409813440-9512-1-git-send-email-t.gamez@phytec.de>
- <20140905053733.GW5352@pengutronix.de>
- <20140905063158.GA23258@omega>
- <20140905065122.GB5352@pengutronix.de>
+ id 1XPo5q-0002R7-Hv
+ for barebox@lists.infradead.org; Fri, 05 Sep 2014 07:38:03 +0000
+Received: by mail-la0-f46.google.com with SMTP id pv20so13299079lab.19
+ for <barebox@lists.infradead.org>; Fri, 05 Sep 2014 00:37:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140905065122.GB5352@pengutronix.de>
+In-Reply-To: <20140904211419.ea6eae69a1e96d2cb9d3e20e@gmail.com>
+References: <53C25B45.7010101@gmail.com>
+ <20140713145526.2cf6407fc9a17a4e8db89a50@gmail.com>
+ <CAOngqVV-PcbsowH9iOHXpxXNvJEb_k7KyWakQVVGT9FMm4iFLw@mail.gmail.com>
+ <20140715110157.e505c7ad66ef5871b1ecf830@gmail.com>
+ <CAOngqVVHG5+S68okE4kqU95FNtkxvJFtcZj0W2KmH=54XxdKTg@mail.gmail.com>
+ <20140715142753.d2c6424ea6b2d1b810b0de73@gmail.com>
+ <CAOngqVXSRuHmPL_Z73AfLPCdzitS7=kkViy2rJMvX1vvsiOhbw@mail.gmail.com>
+ <20140716063002.GB23235@pengutronix.de>
+ <CAOngqVUUZOeRToJp_6vvxqmB-x2D=VAHo=JntpfegQ03P5axgQ@mail.gmail.com>
+ <20140904211419.ea6eae69a1e96d2cb9d3e20e@gmail.com>
+Date: Fri, 5 Sep 2014 09:37:36 +0200
+Message-ID: <CAOngqVXGDhTmDinue2=3d1ORtLjoXaJD_Lzo+ccoU2wADDjKDw@mail.gmail.com>
+From: Daniele Lacamera <daniele.lacamera@tass.be>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,54 +28,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] ARM: phyCORE-AM335x: Updated SPI NOR dts entries
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: picotcp tftp support [was Adding IPv4 multicast support]
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Serge Franchois <serge.franchois@tass.be>, barebox <barebox@lists.infradead.org>, Sarah Terryn <sarah.terryn@tass.be>
 
-T24gRnJpLCBTZXAgMDUsIDIwMTQgYXQgMDg6NTE6MjJBTSArMDIwMCwgU2FzY2hhIEhhdWVyIHdy
-b3RlOgo+IE9uIEZyaSwgU2VwIDA1LCAyMDE0IGF0IDA4OjMyOjAwQU0gKzAyMDAsIEFsZXhhbmRl
-ciBBcmluZyB3cm90ZToKPiA+IEhpIFNhc2NoYSwKPiA+IAo+ID4gT24gRnJpLCBTZXAgMDUsIDIw
-MTQgYXQgMDc6Mzc6MzNBTSArMDIwMCwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+ID4gPiBIaSBUZXJl
-c2EsCj4gPiA+IAo+ID4gPiBPbiBUaHUsIFNlcCAwNCwgMjAxNCBhdCAwODo1MDozNkFNICswMjAw
-LCBUZXJlc2EgR8OhbWV6IHdyb3RlOgo+ID4gPiA+IFVwZGF0ZWQgdGhlIFNQSSBOT1IgZmxhc2gg
-ZW50cmllcy4gTk9SIGZsYXNoIGdvdAo+ID4gPiA+IGRldGVjdGVkIGJ1dCBkaWQgbm90IHdvcmsu
-Cj4gPiA+ID4gCj4gPiA+ID4gLSBVcGRhdGVkIG11eGluZwo+ID4gPiA+IC0gRml4ZWQgZnJlcXVl
-bmN5Cj4gPiA+ID4gLSBGaXhlZCBDUwo+ID4gPiA+IC0gUmVtb3ZlZCBmaXJzdCBjb21wYXRpYmxl
-IGVudHJ5ICh0aGUgZmxhc2hlcyB1c2VkIGlzIGNoYW5naW5nIGZyZXF1ZW50bHkpCj4gPiA+ID4g
-Cj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+
-Cj4gPiA+IAo+ID4gPiBBcHBsaWVkIHVwIHRvIDQvNS4gVGhlIFJvb3QgcGFydGl0aW9uIHN0YXJ0
-IHNlZW1zIGluZGVlZCB3cm9uZy4KPiA+ID4gCj4gPiAKPiA+IHllYS4gQnV0IHNvbWV0aW1lcyB5
-b3UgYWxzbyBkbyBhICJmaXhlZCB3aGlsZSBhcHBseWluZyIuIFdoeSBub3Qgbm93Pwo+ID4gT2th
-eSwgbWF5YmUgb24gdGhlICJnb29kIiBkYXlzLgo+IAo+IE1heWJlIGJlY2F1c2UgeW91IGRpZG4n
-dCB3cml0ZSB0aGUgY29ycmVjdCBzdGFydCBvZmZzZXQgYW5kIEkgZGlkbid0Cj4gZmVlbCBsaWtl
-IGRvaW5nIG1hdGhzIGJlZm9yZSB0aGUgZmlyc3QgY29mZmVlIDspCj4gCgpoZXksIEkgd3JvdGUg
-YSBjb3JyZWN0IHN0YXJ0IG9mZnNldCB3aXRoIGEgY2FsY3VsYXRpb24gZXhhbXBsZS4gSW4KbXkg
-bGFzdCBtYWlsIHRvIFRlcmVzYS4gSSBjYW4gYWxzbyBnaXZlIHlvdSB0aGUgYWR2aWNlLCB0byB1
-c2UgYSBjYWxjdWxhdG9yCndoZW4gaXQncyB0b28gZWFybHkgaW4gdGhlIG1vcm5pbmcuCgpNeSBw
-cm9ibGVtIGlzIHRvIHdyaXRlIHNvbWUgZW5nbGlzaCwgYnV0IEkgY2FuJ3QgdXNlIGdvb2dsZSB0
-cmFuc2xhdG9yCm9yIHNvbWV0aGluZyBsaWtlIHRoYXQgdG8gY2hlY2sgaXQuIChTb21ldGltZXMg
-dGhlIGF1dGhvciBvZiBsaWxvICJXZXJuZXIKQWxtZXNiZXJnZXIiIHJldmlldyBteSBiYWQgZW5n
-bGlzaCBhbmQgaGVscHMgbWUgdGhlcmUpLiA6LSkKCj4gPiAKPiA+IE5ldmVydGhlbGVzcywgaXNu
-J3QgdGhlcmUgYW55IG1lY2hhbmlzbSB0byBjaGVjayBvbiBjb25mbGljdHMgd2hpbGUKPiA+IGNy
-ZWF0aW5nIHBhcnRpdGlvbnMgbGlrZSByZXF1ZXN0IG1lbW9yeSBtYXBwZWQgcmVnaW9ucz8KPiAK
-PiBOby4gUmlnaHQgbm93IGNyZWF0aW5nIG11bHRpcGxlIGNvbmZsaWN0aW5nIHBhcnRpdGlvbnMg
-aXMgYSBmZWF0dXJlLCBzZWUKPiBmb3IgZXhhbXBsZSAvZGV2L2VudjAgYW5kIC9kZXYvbm9yMC5i
-YXJlYm94ZW52LiBUaG9zZSBhcmUgdHdvCj4gcGFydGl0aW9ucyB3aGljaCBib3RoIGNvbmZsaWN0
-IGJ1dCBtdXN0IGJvdGggZXhpc3QuCj4gCgpTb3VuZHMgZm9yIG1lIGxpa2UgZG9pbmcgc3ltbGlu
-ayBtYWdpYy4gQnV0IEkgZG9uJ3QgZmVlbCBsaWtlIHRvIGRvaW5nCm1hZ2ljIGluIHRoZSBtb3Ju
-aW5nLiBJIGRvbid0IGRyaW5rIGNvZmZlZSBzaW5jZSBJIHN0b3BwZWQgd29ya2luZyBhdApwaHl0
-ZWMuIERvZXMgZGV2ZnMgc3VwcG9ydCBzeW1saW5rcz8gLT4gRmlyc3QgbG9vazogIm5vIi4KCj4g
-SSBtdXN0IGFkbWl0IGl0J3MgYSBtaXNmZWF0dXJlIHRob3VnaCBhbmQgSSB3aXNoIHdlIGNvdWxk
-IGRvIHdpdGhvdXQgaXQKPiBhcyBpdCByZWFsbHkgY2FuIGhpZGUgcHJvYmxlbXMuCj4gCgpJZiBz
-eW1saW5rIG1hZ2ljIGRvZXNuJ3Qgd29yaywgbWF5YmUgYWRkIGEgZmxhZy90eXBlIHdoaWNoIGFs
-bG93IHRvIGhhdmUgYQpjb25mbGljdCBwYXJ0aXRpb24/IFRoaXMgc291bmRzIG1vcmUgbGlrZSBh
-IGZlYXR1cmUgd2hpY2ggZG9lc24ndCBoZWxwCnRvIGNoZWNrIG9uIG1pc2NvbmZpZ3VyZWQgcGFy
-dGl0aW9ucywgeW91IGNhbiBzaW1wbGUgc3dpdGNoIGl0IG9mZi4KCkkgd291bGQgcHJlZmVyIHRo
-ZSBzeW1saW5rIG1hZ2ljIGlkZWEuCgotIEFsZXgKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+Hi Antony, hello all,
+
+It's been a bit of slow-business here lately, due to the end of the
+summer holidays.
+We have put two people on the task since this week, we will keep you posted!
+
+Thanks for bearing with us!
+
+Greetings,
+
+-- 
+Daniele
+
+On Thu, Sep 4, 2014 at 7:14 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> On Wed, 16 Jul 2014 08:48:18 +0200
+> Daniele Lacamera <daniele.lacamera@tass.be> wrote:
+>
+>> On Wed, Jul 16, 2014 at 8:30 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> > Right now the network users register to a udp port and provide a handler
+>> > which is called whenever a packet to this port is received. The
+>> > prototype for this function is:
+>> >
+>> > struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
+>> >                 rx_handler_f *handler, void *ctx);
+>> >
+>> > Then network users can send packets on this connection:
+>> >
+>> > int net_udp_send(struct net_connection *con, int len);
+>> >
+>> > The function returns after the packet has been sent.
+>> >
+>> > The network user has to keep the ball rolling by calling
+>> >
+>> > void net_poll(void);
+>> >
+>> > in a loop. This function will call into the network drivers receive
+>> > function and dispatch the received packets. ARP packets are handled
+>> > internally, the UDP packets are passed to the registered handlers.
+>> >
+>> > The handlers usually will send answers to received packets (so a tftp
+>> > client will send an ack here or request the next packet).
+>> >
+>> > Usually the loop calling net_poll() also has some functionality to
+>> > detect progress and will send the last packet again if it was lost.
+>> >
+>> > Hope that explains the networking model in barebox.
+>> >
+>>
+>> Hi Sascha,
+>>
+>> Thanks a lot for this clarification. The mechanism you described is
+>> the same as the native execution model of PicoTCP, and looking around
+>> in the code it seems that looping around net_poll() was in fact the
+>> way to go.
+>>
+>> to Antony: I will improve TFTP first, by allowing multiple sessions at
+>> the same time. I will keep you posted on the progress.
+>
+> I see a barebox-related publication with nice pictures on the picotcp website  :)
+>
+>   http://www.picotcp.com/barebox-on-top-of-picotcp
+>
+> We are awaiting improved TFTP...
+>
+> --
+> Best regards,
+>   Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
