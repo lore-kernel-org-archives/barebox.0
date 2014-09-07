@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22c.google.com ([2a00:1450:400c:c03::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XQGE1-0000C5-TD
- for barebox@lists.infradead.org; Sat, 06 Sep 2014 13:40:22 +0000
-Received: by mail-we0-f172.google.com with SMTP id w62so493305wes.3
- for <barebox@lists.infradead.org>; Sat, 06 Sep 2014 06:39:59 -0700 (PDT)
-Date: Sat, 6 Sep 2014 15:39:56 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140906133954.GB27510@omega>
-References: <540AFD24.1000802@linux-source.de> <20140906123745.GA27510@omega>
- <540B060B.2070404@linux-source.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <540B060B.2070404@linux-source.de>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XQihF-00008y-Oa
+ for barebox@lists.infradead.org; Sun, 07 Sep 2014 20:04:26 +0000
+From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Date: Sun,  7 Sep 2014 17:02:45 -0300
+Message-Id: <1410120165-1760-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +15,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: add lodvar - load variable from file content
-To: Sebastian Block <basti@linux-source.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] nand: orion: Limit to Kirkwood platform
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-On Sat, Sep 06, 2014 at 03:03:07PM +0200, Sebastian Block wrote:
-> Hi Alex,
-> 
-> > On Sat, Sep 06, 2014 at 02:25:08PM +0200, Sebastian Block wrote:
-> >> This adds a command to load a variable from file content.
-> >> It is a work-a-round for "var=$(cat file)".
-> >>
-> > 
-> > doesn't commands/readf.c do similar things?
-> > 
-> 
-> you are right. Please forget this patch.
-> 
+This driver is only available on Kirkwood SoCs, so add proper dependency.
 
-Please don't interpret this as negative comment, you are always welcome
-to introduce new commands. :-)
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+---
+ drivers/mtd/nand/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- Alex
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index ccf1f9c..c345847 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -93,7 +93,7 @@ config NAND_OMAP_GPMC
+ config NAND_ORION
+ 	bool
+ 	prompt "Orion NAND driver"
+-	depends on ARCH_MVEBU
++	depends on ARCH_KIRKWOOD
+ 	help
+ 	  Support for the Orion NAND controller, present in Kirkwood SoCs.
+ 
+-- 
+2.0.1
+
 
 _______________________________________________
 barebox mailing list
