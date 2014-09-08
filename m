@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XQz8g-0004t8-Fi
- for barebox@lists.infradead.org; Mon, 08 Sep 2014 13:37:51 +0000
-Date: Mon, 8 Sep 2014 15:37:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140908133728.GO5352@pengutronix.de>
-References: <1410181677-17441-1-git-send-email-poggi.raph@gmail.com>
+Received: from mail-wg0-x234.google.com ([2a00:1450:400c:c00::234])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XQz8l-0004yH-NY
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 13:37:56 +0000
+Received: by mail-wg0-f52.google.com with SMTP id x13so1904914wgg.35
+ for <barebox@lists.infradead.org>; Mon, 08 Sep 2014 06:37:33 -0700 (PDT)
+From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
+Date: Mon,  8 Sep 2014 15:37:37 +0200
+Message-Id: <1410183458-19535-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1410181677-17441-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,70 +17,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mach-at91: declare device tree clock
-To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] mach-at91: declare device tree clock
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-On Mon, Sep 08, 2014 at 03:07:54PM +0200, Rapha=EBl Poggi wrote:
-> This commit use the clkdev_add_physbase function, to declare device tree =
-and non device tree gpio clocks.
-> =
-
-> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
-> ---
->  arch/arm/mach-at91/at91sam9g45.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
-> =
-
-> diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sa=
-m9g45.c
-> index 9a50deb..f8d069f 100644
-> --- a/arch/arm/mach-at91/at91sam9g45.c
-> +++ b/arch/arm/mach-at91/at91sam9g45.c
-> @@ -192,11 +192,6 @@ static struct clk_lookup periph_clocks_lookups[] =3D=
- {
->  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
->  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
->  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio0", &pioA_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio1", &pioB_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioC_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio3", &pioDE_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio4", &pioDE_clk),
->  	CLKDEV_DEV_ID("at91-pit", &mck),
->  	CLKDEV_CON_DEV_ID("hck1", "atmel_lcdfb", &lcdc_clk),
->  };
-> @@ -238,6 +233,14 @@ static void __init at91sam9g45_register_clocks(void)
->  	clkdev_add_table(usart_clocks_lookups,
->  			 ARRAY_SIZE(usart_clocks_lookups));
->  =
-
-> +	clkdev_add_physbase(&twi0_clk, 0xfff84000, NULL);
-> +	clkdev_add_physbase(&twi1_clk, 0xfff88000, NULL);
-> +        clkdev_add_physbase(&pioA_clk, 0xfffff200, NULL);
-> +        clkdev_add_physbase(&pioB_clk, 0xfffff400, NULL);
-> +        clkdev_add_physbase(&pioC_clk, 0xfffff600, NULL);
-> +        clkdev_add_physbase(&pioDE_clk, 0xfffff800, NULL);
-> +        clkdev_add_physbase(&pioDE_clk, 0xfffffa00, NULL);
-> +
-
-Indentation is done with tabs here, please fix. Also the other patches
-contain spaces for indentation.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBjb21taXQgdXNlIHRoZSBjbGtkZXZfYWRkX3BoeXNiYXNlIGZ1bmN0aW9uLCB0byBkZWNs
+YXJlIGRldmljZSB0cmVlIGFuZCBub24gZGV2aWNlIHRyZWUgZ3BpbyBjbG9ja3MuCgpTaWduZWQt
+b2ZmLWJ5OiBSYXBoYcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+Ci0tLQogYXJjaC9h
+cm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMgfCAxMyArKysrKysrKy0tLS0tCiAxIGZpbGUgY2hh
+bmdlZCwgOCBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gv
+YXJtL21hY2gtYXQ5MS9hdDkxc2FtOWc0NS5jIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05
+ZzQ1LmMKaW5kZXggOWE1MGRlYi4uNTg0ZWY5ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1h
+dDkxL2F0OTFzYW05ZzQ1LmMKKysrIGIvYXJjaC9hcm0vbWFjaC1hdDkxL2F0OTFzYW05ZzQ1LmMK
+QEAgLTE5MiwxMSArMTkyLDYgQEAgc3RhdGljIHN0cnVjdCBjbGtfbG9va3VwIHBlcmlwaF9jbG9j
+a3NfbG9va3Vwc1tdID0gewogCUNMS0RFVl9DT05fREVWX0lEKCJtY2lfY2xrIiwgImF0bWVsX21j
+aTEiLCAmbW1jMV9jbGspLAogCUNMS0RFVl9DT05fREVWX0lEKCJzcGlfY2xrIiwgImF0bWVsX3Nw
+aTAiLCAmc3BpMF9jbGspLAogCUNMS0RFVl9DT05fREVWX0lEKCJzcGlfY2xrIiwgImF0bWVsX3Nw
+aTEiLCAmc3BpMV9jbGspLAotCUNMS0RFVl9ERVZfSUQoImF0OTFybTkyMDAtZ3BpbzAiLCAmcGlv
+QV9jbGspLAotCUNMS0RFVl9ERVZfSUQoImF0OTFybTkyMDAtZ3BpbzEiLCAmcGlvQl9jbGspLAot
+CUNMS0RFVl9ERVZfSUQoImF0OTFybTkyMDAtZ3BpbzIiLCAmcGlvQ19jbGspLAotCUNMS0RFVl9E
+RVZfSUQoImF0OTFybTkyMDAtZ3BpbzMiLCAmcGlvREVfY2xrKSwKLQlDTEtERVZfREVWX0lEKCJh
+dDkxcm05MjAwLWdwaW80IiwgJnBpb0RFX2NsayksCiAJQ0xLREVWX0RFVl9JRCgiYXQ5MS1waXQi
+LCAmbWNrKSwKIAlDTEtERVZfQ09OX0RFVl9JRCgiaGNrMSIsICJhdG1lbF9sY2RmYiIsICZsY2Rj
+X2NsayksCiB9OwpAQCAtMjM4LDYgKzIzMywxNCBAQCBzdGF0aWMgdm9pZCBfX2luaXQgYXQ5MXNh
+bTlnNDVfcmVnaXN0ZXJfY2xvY2tzKHZvaWQpCiAJY2xrZGV2X2FkZF90YWJsZSh1c2FydF9jbG9j
+a3NfbG9va3VwcywKIAkJCSBBUlJBWV9TSVpFKHVzYXJ0X2Nsb2Nrc19sb29rdXBzKSk7CiAKKwlj
+bGtkZXZfYWRkX3BoeXNiYXNlKCZ0d2kwX2NsaywgMHhmZmY4NDAwMCwgTlVMTCk7CisJY2xrZGV2
+X2FkZF9waHlzYmFzZSgmdHdpMV9jbGssIDB4ZmZmODgwMDAsIE5VTEwpOworCWNsa2Rldl9hZGRf
+cGh5c2Jhc2UoJnBpb0FfY2xrLCAweGZmZmZmMjAwLCBOVUxMKTsKKwljbGtkZXZfYWRkX3BoeXNi
+YXNlKCZwaW9CX2NsaywgMHhmZmZmZjQwMCwgTlVMTCk7CisJY2xrZGV2X2FkZF9waHlzYmFzZSgm
+cGlvQ19jbGssIDB4ZmZmZmY2MDAsIE5VTEwpOworCWNsa2Rldl9hZGRfcGh5c2Jhc2UoJnBpb0RF
+X2NsaywgMHhmZmZmZjgwMCwgTlVMTCk7CisJY2xrZGV2X2FkZF9waHlzYmFzZSgmcGlvREVfY2xr
+LCAweGZmZmZmYTAwLCBOVUxMKTsKKwogCWlmIChjcHVfaXNfYXQ5MXNhbTltMTAoKSB8fCBjcHVf
+aXNfYXQ5MXNhbTltMTEoKSkKIAkJY2xrX3JlZ2lzdGVyKCZ2ZGVjX2Nsayk7CiAKLS0gCjIuMS4w
+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
