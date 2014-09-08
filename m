@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x236.google.com ([2a00:1450:400c:c03::236])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XQz8n-0004zi-BF
- for barebox@lists.infradead.org; Mon, 08 Sep 2014 13:37:58 +0000
-Received: by mail-we0-f182.google.com with SMTP id w62so15037610wes.41
- for <barebox@lists.infradead.org>; Mon, 08 Sep 2014 06:37:35 -0700 (PDT)
-From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Mon,  8 Sep 2014 15:37:38 +0200
-Message-Id: <1410183458-19535-2-git-send-email-poggi.raph@gmail.com>
-In-Reply-To: <1410183458-19535-1-git-send-email-poggi.raph@gmail.com>
-References: <1410183458-19535-1-git-send-email-poggi.raph@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XQzHl-0003Il-8h
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 13:47:13 +0000
+Date: Mon, 8 Sep 2014 15:46:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140908134650.GP5352@pengutronix.de>
+References: <1410181677-17441-1-git-send-email-poggi.raph@gmail.com>
+ <1410181677-17441-2-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1410181677-17441-2-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +19,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] pinctrl: at91: add driver data
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
+Subject: Re: [PATCH] pinctrl: at91: add driver data
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBjb21taXQgYWRkcyB0aGUgZHJpdmVyIGRhdGEgZm9yIHRoZSBncGlvLWF0OTEgZHJpdmVy
-LgoKU2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgot
-LS0KIGRyaXZlcnMvcGluY3RybC9waW5jdHJsLWF0OTEuYyB8IDEwICsrKysrKysrKysKIDEgZmls
-ZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9waW5jdHJs
-L3BpbmN0cmwtYXQ5MS5jIGIvZHJpdmVycy9waW5jdHJsL3BpbmN0cmwtYXQ5MS5jCmluZGV4IGQz
-NDIzZDAuLjNjNmIzOGMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvcGluY3RybC9waW5jdHJsLWF0OTEu
-YworKysgYi9kcml2ZXJzL3BpbmN0cmwvcGluY3RybC1hdDkxLmMKQEAgLTYwNiw4ICs2MDYsMTAg
-QEAgc3RhdGljIHN0cnVjdCBncGlvX29wcyBhdDkxX2dwaW9fb3BzID0gewogc3RhdGljIHN0cnVj
-dCBvZl9kZXZpY2VfaWQgYXQ5MV9ncGlvX2R0X2lkc1tdID0gewogCXsKIAkJLmNvbXBhdGlibGUg
-PSAiYXRtZWwsYXQ5MXJtOTIwMC1ncGlvIiwKKwkJLmRhdGEgPSAodW5zaWduZWQgbG9uZykmYXQ5
-MXJtOTIwMF9vcHMsCiAJfSwgewogCQkuY29tcGF0aWJsZSA9ICJhdG1lbCxhdDkxc2FtOXg1LWdw
-aW8iLAorCQkuZGF0YSA9ICh1bnNpZ25lZCBsb25nKSZhdDkxc2FtOXg1X29wcywKIAl9LCB7CiAJ
-CS8qIHNlbnRpbmVsICovCiAJfSwKQEAgLTYyOSw2ICs2MzEsMTIgQEAgc3RhdGljIGludCBhdDkx
-X2dwaW9fcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCiAKIAlhdDkxX2dwaW8gPSAmZ3Bpb19j
-aGlwW2FsaWFzX2lkeF07CiAKKwlyZXQgPSBkZXZfZ2V0X2RydmRhdGEoZGV2LCAodW5zaWduZWQg
-bG9uZyAqKSZhdDkxX2dwaW8tPm9wcyk7CisJaWYgKHJldCkgeworCQlkZXZfZXJyKGRldiwgImRl
-dl9nZXRfZHJ2ZGF0YSBmYWlsZWQ6ICVkXG4iLCByZXQpOworCQlyZXR1cm4gcmV0OworCX0KKwog
-CWNsayA9IGNsa19nZXQoZGV2LCBOVUxMKTsKIAlpZiAoSVNfRVJSKGNsaykpIHsKIAkJcmV0ID0g
-UFRSX0VSUihjbGspOwpAQCAtNjY3LDggKzY3NSwxMCBAQCBzdGF0aWMgaW50IGF0OTFfZ3Bpb19w
-cm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIHN0YXRpYyBzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNl
-X2lkIGF0OTFfZ3Bpb19pZHNbXSA9IHsKIAl7CiAJCS5uYW1lID0gImF0OTFybTkyMDAtZ3BpbyIs
-CisJCS5kcml2ZXJfZGF0YSA9ICh1bnNpZ25lZCBsb25nKSZhdDkxcm05MjAwX29wcywKIAl9LCB7
-CiAJCS5uYW1lID0gImF0OTFzYW05eDUtZ3BpbyIsCisJCS5kcml2ZXJfZGF0YSA9ICh1bnNpZ25l
-ZCBsb25nKSZhdDkxc2FtOXg1X29wcywKIAl9LCB7CiAJCS8qIHNlbnRpbmVsICovCiAJfSwKLS0g
-CjIuMS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Sep 08, 2014 at 03:07:55PM +0200, Rapha=EBl Poggi wrote:
+> This commit adds the driver data for the gpio-at91 driver.
+
+
+Could you explain what exactly this patch fixes? It seems without this
+patch the pinctrl part is non functional. Is this correct?
+
+Sascha
+
+> =
+
+> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
+> ---
+>  drivers/pinctrl/pinctrl-at91.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> =
+
+> diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at9=
+1.c
+> index d3423d0..29e54cf 100644
+> --- a/drivers/pinctrl/pinctrl-at91.c
+> +++ b/drivers/pinctrl/pinctrl-at91.c
+> @@ -606,8 +606,10 @@ static struct gpio_ops at91_gpio_ops =3D {
+>  static struct of_device_id at91_gpio_dt_ids[] =3D {
+>  	{
+>  		.compatible =3D "atmel,at91rm9200-gpio",
+> +                .data =3D (unsigned long)&at91rm9200_ops,
+>  	}, {
+>  		.compatible =3D "atmel,at91sam9x5-gpio",
+> +		.data =3D (unsigned long)&at91sam9x5_ops,
+>  	}, {
+>  		/* sentinel */
+>  	},
+> @@ -629,6 +631,12 @@ static int at91_gpio_probe(struct device_d *dev)
+>  =
+
+>  	at91_gpio =3D &gpio_chip[alias_idx];
+>  =
+
+> +	ret =3D dev_get_drvdata(dev, (unsigned long *)&at91_gpio->ops);
+> +        if (ret) {
+> +                dev_err(dev, "dev_get_drvdata failed: %d\n", ret);
+> +                return ret;
+> +        }
+> +
+>  	clk =3D clk_get(dev, NULL);
+>  	if (IS_ERR(clk)) {
+>  		ret =3D PTR_ERR(clk);
+> @@ -667,8 +675,10 @@ static int at91_gpio_probe(struct device_d *dev)
+>  static struct platform_device_id at91_gpio_ids[] =3D {
+>  	{
+>  		.name =3D "at91rm9200-gpio",
+> +                .driver_data =3D (unsigned long)&at91rm9200_ops,
+>  	}, {
+>  		.name =3D "at91sam9x5-gpio",
+> +		.driver_data =3D (unsigned long)&at91sam9x5_ops,
+>  	}, {
+>  		/* sentinel */
+>  	},
+> -- =
+
+> 2.1.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
