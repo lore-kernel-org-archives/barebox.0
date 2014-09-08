@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XQspl-0004mg-7w
- for barebox@lists.infradead.org; Mon, 08 Sep 2014 06:53:55 +0000
-Received: by mail-la0-f50.google.com with SMTP id ty20so2025886lab.23
- for <barebox@lists.infradead.org>; Sun, 07 Sep 2014 23:53:28 -0700 (PDT)
+ id 1XQspi-0004mS-Vz
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 06:53:51 +0000
+Received: by mail-lb0-f169.google.com with SMTP id p9so5463655lbv.14
+ for <barebox@lists.infradead.org>; Sun, 07 Sep 2014 23:53:27 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  8 Sep 2014 10:53:04 +0400
-Message-Id: <1410159189-17328-3-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  8 Sep 2014 10:53:03 +0400
+Message-Id: <1410159189-17328-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
 References: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,34 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/7] net: ethoc: add device tree support
+Subject: [PATCH v2 1/7] openrisc: generic board: reserve 512K for barebox
 To: barebox@lists.infradead.org
+
+Here is a linker's error message for some configurations:
+
+  or1k-elf-ld: barebox section `.eh_frame' will not fit in region `ram'
+  or1k-elf-ld: region `ram' overflowed by 16868 bytes
+
+This patch increases space reserved for barebox from 256K to 512K
+so the error's probability is dramatically decreased.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Franck Jullien <franck.jullien@gmail.com>
 ---
- drivers/net/ethoc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/openrisc/boards/generic/config.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethoc.c b/drivers/net/ethoc.c
-index 679e1e5..35d7d46 100644
---- a/drivers/net/ethoc.c
-+++ b/drivers/net/ethoc.c
-@@ -565,8 +565,14 @@ static int ethoc_probe(struct device_d *dev)
- 	return 0;
- }
+diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
+index 6ebab42..10c33a1 100644
+--- a/arch/openrisc/boards/generic/config.h
++++ b/arch/openrisc/boards/generic/config.h
+@@ -13,8 +13,8 @@
  
-+static struct of_device_id ethoc_dt_ids[] = {
-+	{ .compatible = "opencores,ethoc", },
-+	{ }
-+};
-+
- static struct driver_d ethoc_driver = {
- 	.name  = "ethoc",
- 	.probe = ethoc_probe,
-+	.of_compatible = DRV_OF_COMPAT(ethoc_dt_ids),
- };
- device_platform_driver(ethoc_driver);
+ #define OPENRISC_SOPC_ETHOC_BASE	0x92000000
+ 
+-/* We reserve 256K for barebox */
+-#define BAREBOX_RESERVED_SIZE		0x40000
++/* We reserve 512K for barebox */
++#define BAREBOX_RESERVED_SIZE		0x80000
+ 
+ /* Barebox will be at top of main memory */
+ #define OPENRISC_SOPC_TEXT_BASE		(OPENRISC_SOPC_MEMORY_BASE + OPENRISC_SOPC_MEMORY_SIZE - BAREBOX_RESERVED_SIZE)
 -- 
 2.1.0
 
