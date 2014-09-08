@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from top.free-electrons.com ([176.31.233.9]
- helo=mail.free-electrons.com)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XQihF-00008y-Oa
- for barebox@lists.infradead.org; Sun, 07 Sep 2014 20:04:26 +0000
-From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Sun,  7 Sep 2014 17:02:45 -0300
-Message-Id: <1410120165-1760-1-git-send-email-ezequiel.garcia@free-electrons.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XQrhj-000755-Rq
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 05:41:32 +0000
+Date: Mon, 8 Sep 2014 07:41:09 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140908054109.GG5352@pengutronix.de>
+References: <1409924512-20295-1-git-send-email-c.hemp@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1409924512-20295-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,37 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nand: orion: Limit to Kirkwood platform
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] dts:imx6:pfla02: Fix SPI NOR for phyFLEX-i.MX6
+To: Christian Hemp <c.hemp@phytec.de>
+Cc: barebox@lists.infradead.org
 
-This driver is only available on Kirkwood SoCs, so add proper dependency.
+On Fri, Sep 05, 2014 at 03:41:52PM +0200, Christian Hemp wrote:
+> Add chip-select property to pfla02 devicetree.
+> 
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 
-Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
----
- drivers/mtd/nand/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
-index ccf1f9c..c345847 100644
---- a/drivers/mtd/nand/Kconfig
-+++ b/drivers/mtd/nand/Kconfig
-@@ -93,7 +93,7 @@ config NAND_OMAP_GPMC
- config NAND_ORION
- 	bool
- 	prompt "Orion NAND driver"
--	depends on ARCH_MVEBU
-+	depends on ARCH_KIRKWOOD
- 	help
- 	  Support for the Orion NAND controller, present in Kirkwood SoCs.
- 
+Sascha
+
+> ---
+>  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> index 277573d..a981fd4 100644
+> --- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> +++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+> @@ -19,6 +19,7 @@
+>  	flash: m25p80@0 {
+>  		compatible = "m25p80";
+>  		spi-max-frequency = <20000000>;
+> +		reg = <0>;
+>  	};
+>  };
+>  
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.0.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
