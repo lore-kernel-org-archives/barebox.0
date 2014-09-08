@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
+Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XQspo-0004nK-3p
+ id 1XQspn-0004mv-AX
  for barebox@lists.infradead.org; Mon, 08 Sep 2014 06:53:56 +0000
-Received: by mail-lb0-f182.google.com with SMTP id v6so410333lbi.27
- for <barebox@lists.infradead.org>; Sun, 07 Sep 2014 23:53:32 -0700 (PDT)
+Received: by mail-lb0-f170.google.com with SMTP id s7so1931140lbd.1
+ for <barebox@lists.infradead.org>; Sun, 07 Sep 2014 23:53:31 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  8 Sep 2014 10:53:07 +0400
-Message-Id: <1410159189-17328-6-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  8 Sep 2014 10:53:06 +0400
+Message-Id: <1410159189-17328-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
 References: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,69 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/7] openrisc: generic board: reduce platform code
+Subject: [PATCH v2 4/7] openrisc: dts: import or1ksim.dts from linux-3.16
 To: barebox@lists.infradead.org
+
+There are some minor changes with original linux-3.16 file:
+
+  * the 'model' attribute is added (it used for barebox banner board name);
+  * all "opencores,*-rtlsvn*" 'compatible' attribute values are dropped;
+    these values are not actually used in the device drivers.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: Franck Jullien <franck.jullien@gmail.com>
 ---
- arch/openrisc/boards/generic/config.h  |  5 -----
- arch/openrisc/boards/generic/generic.c | 24 ++----------------------
- 2 files changed, 2 insertions(+), 27 deletions(-)
+ arch/openrisc/dts/or1ksim.dts | 51 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
-index 10c33a1..f6a054b 100644
---- a/arch/openrisc/boards/generic/config.h
-+++ b/arch/openrisc/boards/generic/config.h
-@@ -8,11 +8,6 @@
- #define OPENRISC_SOPC_MEMORY_BASE	0x00000000
- #define OPENRISC_SOPC_MEMORY_SIZE	0x02000000
- 
--#define OPENRISC_SOPC_UART_FREQ		CONFIG_SYS_CLK_FREQ
--#define OPENRISC_SOPC_UART_BASE		0x90000000
--
--#define OPENRISC_SOPC_ETHOC_BASE	0x92000000
--
- /* We reserve 512K for barebox */
- #define BAREBOX_RESERVED_SIZE		0x80000
- 
-diff --git a/arch/openrisc/boards/generic/generic.c b/arch/openrisc/boards/generic/generic.c
-index 9f68007..ff6f9f4 100644
---- a/arch/openrisc/boards/generic/generic.c
-+++ b/arch/openrisc/boards/generic/generic.c
-@@ -1,30 +1,10 @@
- #include <common.h>
- #include <init.h>
--#include <driver.h>
--#include <partition.h>
--#include <ns16550.h>
- 
--static struct NS16550_plat serial_plat = {
--	.clock = OPENRISC_SOPC_UART_FREQ,
--	.shift = 0,
--};
--
--static int openrisc_console_init(void)
-+static int openrisc_core_init(void)
- {
--	barebox_set_model("OpenRISC or1k");
- 	barebox_set_hostname("or1k");
- 
--	/* Register the serial port */
--	add_ns16550_device(DEVICE_ID_DYNAMIC, OPENRISC_SOPC_UART_BASE, 1024,
--			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
--
--#ifdef CONFIG_DRIVER_NET_ETHOC
--	add_generic_device("ethoc", DEVICE_ID_DYNAMIC, NULL,
--			   OPENRISC_SOPC_ETHOC_BASE, 0x1000,
--			   IORESOURCE_MEM, NULL);
--#endif
--
- 	return 0;
- }
--
--console_initcall(openrisc_console_init);
-+core_initcall(openrisc_core_init);
+diff --git a/arch/openrisc/dts/or1ksim.dts b/arch/openrisc/dts/or1ksim.dts
+new file mode 100644
+index 0000000..7316cc6
+--- /dev/null
++++ b/arch/openrisc/dts/or1ksim.dts
+@@ -0,0 +1,51 @@
++/dts-v1/;
++/ {
++	model = "or1ksim";
++	compatible = "opencores,or1ksim";
++	#address-cells = <1>;
++	#size-cells = <1>;
++	interrupt-parent = <&pic>;
++
++	chosen {
++		bootargs = "console=uart,mmio,0x90000000,115200";
++	};
++
++	memory {
++		device_type = "memory";
++		reg = <0x00000000 0x02000000>;
++	};
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		cpu@0 {
++			compatible = "opencores,or1200-rtlsvn481";
++			reg = <0>;
++			clock-frequency = <20000000>;
++		};
++	};
++
++	/*
++	 * OR1K PIC is built into CPU and accessed via special purpose
++	 * registers.  It is not addressable and, hence, has no 'reg'
++	 * property.
++	 */
++	pic: pic {
++		compatible = "opencores,or1k-pic";
++		#interrupt-cells = <1>;
++		interrupt-controller;
++	};
++
++	serial0: serial@90000000 {
++		compatible = "ns16550a";
++		reg = <0x90000000 0x100>;
++		interrupts = <2>;
++		clock-frequency = <50000000>;
++	};
++
++	enet0: ethoc@92000000 {
++		compatible = "opencores,ethoc";
++		reg = <0x92000000 0x100>;
++		interrupts = <4>;
++	};
++};
 -- 
 2.1.0
 
