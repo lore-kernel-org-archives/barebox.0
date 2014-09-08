@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22d.google.com ([2a00:1450:400c:c03::22d])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XQz8A-0004LQ-Ob
- for barebox@lists.infradead.org; Mon, 08 Sep 2014 13:37:20 +0000
-Received: by mail-we0-f173.google.com with SMTP id u56so1472455wes.18
- for <barebox@lists.infradead.org>; Mon, 08 Sep 2014 06:36:56 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XQz8g-0004t8-Fi
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 13:37:51 +0000
+Date: Mon, 8 Sep 2014 15:37:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140908133728.GO5352@pengutronix.de>
+References: <1410181677-17441-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1410182622-22876-1-git-send-email-s.hauer@pengutronix.de>
-References: <1410182622-22876-1-git-send-email-s.hauer@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <raphio98@gmail.com>
-Date: Mon, 8 Sep 2014 15:36:16 +0200
-Message-ID: <CACqcpZDxaimhw1zrc+6WDcPhipfqp0SRv2sBFor7a2wWzat+Ow@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1410181677-17441-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91 pinctrl/gpio fixes
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] mach-at91: declare device tree clock
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hello, I just send patchs, to fix all this issues.
+On Mon, Sep 08, 2014 at 03:07:54PM +0200, Rapha=EBl Poggi wrote:
+> This commit use the clkdev_add_physbase function, to declare device tree =
+and non device tree gpio clocks.
+> =
 
-2014-09-08 15:23 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> Unfortunately the transition to pinctrl for AT91 caused some damage.
-> The 926x do not compile anymore. Even when this is fixed the boards
-> won't work since the new pinctrl driver uses of_alias_get_id() even
-> for the platform case to translate the device into a gpio chip.
->
-> Sascha
->
-> ----------------------------------------------------------------
-> Sascha Hauer (4):
->       ARM: AT91: Add missing include
->       ARM: AT91: Make gpio mux functions inline
->       pinctrl: AT91: Only use of_alias_get_id when probed from devicetree
->       pinctrl: AT91: use alias_idx to calculate the base gpio number
->
->  arch/arm/mach-at91/at91sam926x_lowlevel_init.c |  2 +-
->  arch/arm/mach-at91/include/mach/gpio.h         | 42 ++++++++++++--------------
->  drivers/pinctrl/pinctrl-at91.c                 |  9 ++++--
->  3 files changed, 27 insertions(+), 26 deletions(-)
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
+> ---
+>  arch/arm/mach-at91/at91sam9g45.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> =
+
+> diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sa=
+m9g45.c
+> index 9a50deb..f8d069f 100644
+> --- a/arch/arm/mach-at91/at91sam9g45.c
+> +++ b/arch/arm/mach-at91/at91sam9g45.c
+> @@ -192,11 +192,6 @@ static struct clk_lookup periph_clocks_lookups[] =3D=
+ {
+>  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
+>  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
+>  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio0", &pioA_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio1", &pioB_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioC_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio3", &pioDE_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio4", &pioDE_clk),
+>  	CLKDEV_DEV_ID("at91-pit", &mck),
+>  	CLKDEV_CON_DEV_ID("hck1", "atmel_lcdfb", &lcdc_clk),
+>  };
+> @@ -238,6 +233,14 @@ static void __init at91sam9g45_register_clocks(void)
+>  	clkdev_add_table(usart_clocks_lookups,
+>  			 ARRAY_SIZE(usart_clocks_lookups));
+>  =
+
+> +	clkdev_add_physbase(&twi0_clk, 0xfff84000, NULL);
+> +	clkdev_add_physbase(&twi1_clk, 0xfff88000, NULL);
+> +        clkdev_add_physbase(&pioA_clk, 0xfffff200, NULL);
+> +        clkdev_add_physbase(&pioB_clk, 0xfffff400, NULL);
+> +        clkdev_add_physbase(&pioC_clk, 0xfffff600, NULL);
+> +        clkdev_add_physbase(&pioDE_clk, 0xfffff800, NULL);
+> +        clkdev_add_physbase(&pioDE_clk, 0xfffffa00, NULL);
+> +
+
+Indentation is done with tabs here, please fix. Also the other patches
+contain spaces for indentation.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
