@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XQvGU-0007Mo-Te
- for barebox@lists.infradead.org; Mon, 08 Sep 2014 09:29:40 +0000
+ Linux)) id 1XQvGU-0007Mj-Th
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 09:29:39 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon,  8 Sep 2014 11:29:09 +0200
-Message-Id: <1410168551-6588-4-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1410168551-6588-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1410168551-6588-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon,  8 Sep 2014 11:29:06 +0200
+Message-Id: <1410168551-6588-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +19,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 3/5] DT: Add binding for Altera FPGAs in passive-serial mode
+Subject: [PATCH v4 0/5] firmware programming interface
 To: barebox@lists.infradead.org
-Cc: devicetree@vger.kernel.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Hi!
 
-Altera FPGAs that are programmed via SPI use the passive serial protocol.
-Add a simple binding that describes the setup for this usecase.
+Changes since v3:
+	- minor clean up
+	- add binding documentation in 5/5
+	- rebase to v2014.09.0
 
-Cc: devicetree@vger.kernel.org
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- .../bindings/firmware/altr,passive-serial.txt      | 24 ++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+The interface was tested on a Socfpga SoCkit board with v2014.09.0.
+
+Regards,
+Steffen
+
+
+Juergen Beisert (2):
+  Add a Firmware programming framework
+  Firmware: provide a handler to program Altera FPGAs
+
+Sascha Hauer (2):
+  DT: Add binding for Altera FPGAs in passive-serial mode
+  Firmware: socfpga: Add SoCFPGA FPGA program support
+
+Steffen Trumtrar (1):
+  DT: Add binding for Altera SOCFPGA FPGA Manager
+
+ .../bindings/firmware/altr,passive-serial.txt      |  24 ++
+ .../bindings/firmware/altr,socfpga-fpga-mgr.txt    |  19 +
+ arch/arm/dts/socfpga.dtsi                          |   6 +
+ arch/arm/mach-socfpga/Makefile                     |   1 +
+ arch/arm/mach-socfpga/include/mach/socfpga-regs.h  |   2 +
+ commands/Kconfig                                   |   9 +
+ commands/Makefile                                  |   1 +
+ commands/firmwareload.c                            |  66 ++++
+ common/Kconfig                                     |   3 +
+ common/Makefile                                    |   1 +
+ common/firmware.c                                  | 211 ++++++++++
+ drivers/Kconfig                                    |   1 +
+ drivers/Makefile                                   |   1 +
+ drivers/firmware/Kconfig                           |  14 +
+ drivers/firmware/Makefile                          |   2 +
+ drivers/firmware/altera_serial.c                   | 315 +++++++++++++++
+ drivers/firmware/socfpga.c                         | 440 +++++++++++++++++++++
+ include/firmware.h                                 |  42 ++
+ 18 files changed, 1158 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
+ create mode 100644 Documentation/devicetree/bindings/firmware/altr,socfpga-fpga-mgr.txt
+ create mode 100644 commands/firmwareload.c
+ create mode 100644 common/firmware.c
+ create mode 100644 drivers/firmware/Kconfig
+ create mode 100644 drivers/firmware/Makefile
+ create mode 100644 drivers/firmware/altera_serial.c
+ create mode 100644 drivers/firmware/socfpga.c
+ create mode 100644 include/firmware.h
 
-diff --git a/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
-new file mode 100644
-index 000000000000..d357dd39cf67
---- /dev/null
-+++ b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
-@@ -0,0 +1,24 @@
-+Altera FPGAs in passive serial mode
-+-----------------------------------
-+
-+This binding defines the control interface to Altera FPGAs in
-+passive serial mode. This is used to upload the firmware and
-+to start the FPGA.
-+
-+Required properties:
-+- compatible: shall be "altr,fpga-passive-serial"
-+- reg: SPI chip select
-+- nstat-gpios: Specify GPIO for controlling the nstat pin
-+- confd-gpios: Specify GPIO for controlling the confd pin
-+- nconfig-gpios: Specify GPIO for controlling the nconfig pin
-+
-+Example:
-+
-+	fpga@0 {
-+		compatible = "altr,fpga-passive-serial";
-+		nstat-gpios = <&gpio4 18 0>;
-+		confd-gpios = <&gpio4 19 0>;
-+		nconfig-gpios = <&gpio4 20 0>;
-+		spi-max-frequency = <10000000>;
-+		reg = <0>;
-+	};
 -- 
 2.1.0
 
