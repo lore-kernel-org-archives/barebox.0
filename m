@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XQsMV-0002cQ-MU
- for barebox@lists.infradead.org; Mon, 08 Sep 2014 06:23:40 +0000
-Date: Mon, 8 Sep 2014 08:23:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140908062317.GM5352@pengutronix.de>
-References: <98034ceb4fe0a107abef0beb3fd1380c@linux-source.de>
- <20140901080611.GE5352@pengutronix.de>
- <540AEE1F.5030504@linux-source.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <540AEE1F.5030504@linux-source.de>
+Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XQspo-0004nK-3p
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 06:53:56 +0000
+Received: by mail-lb0-f182.google.com with SMTP id v6so410333lbi.27
+ for <barebox@lists.infradead.org>; Sun, 07 Sep 2014 23:53:32 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  8 Sep 2014 10:53:07 +0400
+Message-Id: <1410159189-17328-6-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
+References: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,63 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mtd: add mtdram device (which build mtd over ram area
- - useful for FRAM oder MRAM)
-To: Sebastian Block <basti@linux-source.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 5/7] openrisc: generic board: reduce platform code
+To: barebox@lists.infradead.org
 
-On Sat, Sep 06, 2014 at 01:21:03PM +0200, Sebastian Block wrote:
-> Change since v1 (Sascha, thanks for review):
-> 	* use xzalloc instead of kzalloc and control check
-> 	* correct help and names
-> 	* fix coding style issue
-> 	* remove verbose and unneeded messages
-> 
-> This adds support for MTD in RAM devices (like FRAM or MRAM). 
-> 
-> Signed-off-by: Sebastian Block <basti@linux-source.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Franck Jullien <franck.jullien@gmail.com>
+---
+ arch/openrisc/boards/generic/config.h  |  5 -----
+ arch/openrisc/boards/generic/generic.c | 24 ++----------------------
+ 2 files changed, 2 insertions(+), 27 deletions(-)
 
-Your patch has several trailing whitespaces. Please remove them next
-time.
-
-> diff --git a/drivers/mtd/devices/mtdram.c b/drivers/mtd/devices/mtdram.c
-> new file mode 100644
-> index 0000000..47c5ad7
-> --- /dev/null
-> +++ b/drivers/mtd/devices/mtdram.c
-> + *
-
-Strange. the initial '/' introducing the comment is missing here. Also
-git-am ended up creating an empty file. How did you generate/send this
-patch?
-
-> +static int mtdram_probe(struct device_d *dev) 
-> +{
-> +	void __iomem *base;
-> +	int device_id;
-> +	struct mtd_info *mtd;
-> +	struct resource *res;
-> +	loff_t size;
-> +	int ret = 0;
-> +	
-> +	mtd = xzalloc(sizeof(struct mtd_info), GFP_KERNEL);
-
-xzalloc takes only one argument. Please compile test your patches before
-sending them.
-
-Anyway, fixed this up this time and applied.
-
-Sascha
-
+diff --git a/arch/openrisc/boards/generic/config.h b/arch/openrisc/boards/generic/config.h
+index 10c33a1..f6a054b 100644
+--- a/arch/openrisc/boards/generic/config.h
++++ b/arch/openrisc/boards/generic/config.h
+@@ -8,11 +8,6 @@
+ #define OPENRISC_SOPC_MEMORY_BASE	0x00000000
+ #define OPENRISC_SOPC_MEMORY_SIZE	0x02000000
+ 
+-#define OPENRISC_SOPC_UART_FREQ		CONFIG_SYS_CLK_FREQ
+-#define OPENRISC_SOPC_UART_BASE		0x90000000
+-
+-#define OPENRISC_SOPC_ETHOC_BASE	0x92000000
+-
+ /* We reserve 512K for barebox */
+ #define BAREBOX_RESERVED_SIZE		0x80000
+ 
+diff --git a/arch/openrisc/boards/generic/generic.c b/arch/openrisc/boards/generic/generic.c
+index 9f68007..ff6f9f4 100644
+--- a/arch/openrisc/boards/generic/generic.c
++++ b/arch/openrisc/boards/generic/generic.c
+@@ -1,30 +1,10 @@
+ #include <common.h>
+ #include <init.h>
+-#include <driver.h>
+-#include <partition.h>
+-#include <ns16550.h>
+ 
+-static struct NS16550_plat serial_plat = {
+-	.clock = OPENRISC_SOPC_UART_FREQ,
+-	.shift = 0,
+-};
+-
+-static int openrisc_console_init(void)
++static int openrisc_core_init(void)
+ {
+-	barebox_set_model("OpenRISC or1k");
+ 	barebox_set_hostname("or1k");
+ 
+-	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OPENRISC_SOPC_UART_BASE, 1024,
+-			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
+-
+-#ifdef CONFIG_DRIVER_NET_ETHOC
+-	add_generic_device("ethoc", DEVICE_ID_DYNAMIC, NULL,
+-			   OPENRISC_SOPC_ETHOC_BASE, 0x1000,
+-			   IORESOURCE_MEM, NULL);
+-#endif
+-
+ 	return 0;
+ }
+-
+-console_initcall(openrisc_console_init);
++core_initcall(openrisc_core_init);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
