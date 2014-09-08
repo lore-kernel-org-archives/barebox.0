@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XQvGU-0007Mm-TZ
- for barebox@lists.infradead.org; Mon, 08 Sep 2014 09:29:41 +0000
+ Linux)) id 1XQvGU-0007Mp-Td
+ for barebox@lists.infradead.org; Mon, 08 Sep 2014 09:29:42 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon,  8 Sep 2014 11:29:07 +0200
-Message-Id: <1410168551-6588-2-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon,  8 Sep 2014 11:29:10 +0200
+Message-Id: <1410168551-6588-5-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1410168551-6588-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1410168551-6588-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,434 +21,530 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/5] Add a Firmware programming framework
+Subject: [PATCH v4 4/5] Firmware: socfpga: Add SoCFPGA FPGA program support
 To: barebox@lists.infradead.org
-Cc: Juergen Beisert <jbe@pengutronix.de>, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Juergen Beisert <jbe@pengutronix.de>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-This framework handles a list of registered Firmware programming handlers
-to unify a firmware programming interface by hiding the details how
-to program a specific Firmware in its handler. This is created with FPGAs
-in mind but should be usable for other devices aswell.
-A user has two possibilities to load a firmware. A device file is create
-under /dev/ which can be used to copy a firmware to. Additionally a
-firmwareload command is introduced which can list the registered firmware
-handlers and also to upload a firmware.
-
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
+ arch/arm/dts/socfpga.dtsi                         |   6 +
+ arch/arm/mach-socfpga/Makefile                    |   1 +
+ arch/arm/mach-socfpga/include/mach/socfpga-regs.h |   2 +
+ drivers/firmware/Kconfig                          |   3 +
+ drivers/firmware/Makefile                         |   1 +
+ drivers/firmware/socfpga.c                        | 440 ++++++++++++++++++++++
+ 6 files changed, 453 insertions(+)
+ create mode 100644 drivers/firmware/socfpga.c
 
-Notes:
-    Changes since v3:
-	- change list_handlers formatting
-
- commands/Kconfig        |   9 +++
- commands/Makefile       |   1 +
- commands/firmwareload.c |  66 +++++++++++++++
- common/Kconfig          |   3 +
- common/Makefile         |   1 +
- common/firmware.c       | 211 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/firmware.h      |  42 ++++++++++
- 7 files changed, 333 insertions(+)
- create mode 100644 commands/firmwareload.c
- create mode 100644 common/firmware.c
- create mode 100644 include/firmware.h
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 3a49bafd27a7..0b1939ef5718 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1905,6 +1905,15 @@ config CMD_BAREBOX_UPDATE
- 		  -y		autom. use 'yes' when asking confirmations
- 		  -f LEVEL	set force level
+diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
+index 3368b459d030..afac867c991d 100644
+--- a/arch/arm/dts/socfpga.dtsi
++++ b/arch/arm/dts/socfpga.dtsi
+@@ -465,6 +465,12 @@
+ 			status = "disabled";
+ 		};
  
-+config CMD_FIRMWARELOAD
-+	bool
-+	select FIRMWARE
-+	prompt "firmwareload"
-+	help
-+	  Provides the "firmwareload" command which deals with devices which need
-+	  firmware to work. It is also used to upload firmware to FPGA devices.
++		fpgamgr@ff706000 {
++			compatible = "altr,socfpga-fpga-mgr";
++			reg = <0xff706000 0x1000>,
++			      <0xffb90000 0x1000>;
++		};
 +
+ 		gpio0: gpio@ff708000 {
+ 			compatible = "snps,dw-apb-gpio";
+ 			reg = <0xff708000 0x1000>;
+diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
+index d8bf0674306e..12585c547673 100644
+--- a/arch/arm/mach-socfpga/Makefile
++++ b/arch/arm/mach-socfpga/Makefile
+@@ -2,3 +2,4 @@ obj-y += generic.o nic301.o bootsource.o reset-manager.o
+ pbl-y += init.o freeze-controller.o scan-manager.o system-manager.o
+ pbl-y += clock-manager.o iocsr-config-cyclone5.o
+ obj-$(CONFIG_ARCH_SOCFPGA_XLOAD) += xload.o
++obj-$(CONFIG_ARCH_SOCFPGA_FPGA) += fpga.o
+diff --git a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
+index 9d1e677cb736..b124ed675cfc 100644
+--- a/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
++++ b/arch/arm/mach-socfpga/include/mach/socfpga-regs.h
+@@ -2,10 +2,12 @@
+ #define __MACH_SOCFPGA_REGS_H
+ 
+ #define CYCLONE5_SDMMC_ADDRESS		0xff704000
++#define CYCLONE5_FPGAMGRREGS_ADDRESS	0xff706000
+ #define CYCLONE5_GPIO0_BASE		0xff708000
+ #define CYCLONE5_GPIO1_BASE		0xff709000
+ #define CYCLONE5_GPIO2_BASE		0xff70A000
+ #define CYCLONE5_L3REGS_ADDRESS		0xff800000
++#define CYCLONE5_FPGAMGRDATA_ADDRESS	0xffb90000
+ #define CYCLONE5_UART0_ADDRESS		0xffc02000
+ #define CYCLONE5_UART1_ADDRESS		0xffc03000
+ #define CYCLONE5_SDR_ADDRESS		0xffc20000
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 28a173b63f2a..58660632519e 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -8,4 +8,7 @@ config FIRMWARE_ALTERA_SERIAL
+ 	  Programming an Altera FPGA via a few GPIOs for the control lines and
+ 	  MOSI, MISO and clock from an SPI interface for the data lines
+ 
++config FIRMWARE_ALTERA_SOCFPGA
++	bool "Altera SoCFPGA fpga loader"
 +
- config CMD_LINUX_EXEC
- 	bool "linux exec"
- 	depends on LINUX
-diff --git a/commands/Makefile b/commands/Makefile
-index 52b6137c01ab..d6a6f822a8da 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -103,3 +103,4 @@ obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
- obj-$(CONFIG_CMD_IMD)		+= imd.o
- obj-$(CONFIG_CMD_HWCLOCK)	+= hwclock.o
- obj-$(CONFIG_CMD_USBGADGET)	+= usbgadget.o
-+obj-$(CONFIG_CMD_FIRMWARELOAD)	+= firmwareload.o
-diff --git a/commands/firmwareload.c b/commands/firmwareload.c
+ endmenu
+diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+index ec6a5a17083d..c3a3c3400485 100644
+--- a/drivers/firmware/Makefile
++++ b/drivers/firmware/Makefile
+@@ -1 +1,2 @@
+ obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
++obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o
+diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
 new file mode 100644
-index 000000000000..a2596951a795
+index 000000000000..a5dc6072aab4
 --- /dev/null
-+++ b/commands/firmwareload.c
-@@ -0,0 +1,66 @@
++++ b/drivers/firmware/socfpga.c
+@@ -0,0 +1,440 @@
 +/*
-+ * Copyright (c) 2013 Juergen Beisert <kernel@pengutronix.de>, Pengutronix
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ * Copyright (C) 2012 Altera Corporation <www.altera.com>
++ * All rights reserved.
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are met:
++ *  - Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *  - Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *  - Neither the name of the Altera Corporation nor the
++ *    names of its contributors may be used to endorse or promote products
++ *    derived from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE FOR ANY
++ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
 +
-+#include <common.h>
++#include <firmware.h>
 +#include <command.h>
-+#include <getopt.h>
-+#include <firmware.h>
-+
-+static int do_firmwareload(int argc, char *argv[])
-+{
-+	int ret, opt;
-+	const char *name = NULL, *firmware;
-+	struct firmware_mgr *mgr;
-+
-+	while ((opt = getopt(argc, argv, "t:l")) > 0) {
-+		switch (opt) {
-+		case 't':
-+			name = optarg;
-+			break;
-+		case 'l':
-+			firmwaremgr_list_handlers();
-+			return 0;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	if (!(argc - optind))
-+		return COMMAND_ERROR_USAGE;
-+
-+	firmware = argv[optind];
-+
-+	mgr = firmwaremgr_find(name);
-+
-+	if (!mgr) {
-+		printf("No such programming handler found: %s\n",
-+				name ? name : "default");
-+		return 1;
-+	}
-+
-+	ret = firmwaremgr_load_file(mgr, firmware);
-+
-+	return ret;
-+}
-+
-+BAREBOX_CMD_HELP_START(firmwareload)
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-t <target>", "define the firmware handler by name\n")
-+BAREBOX_CMD_HELP_OPT("-l\t", "list devices capable of firmware loading\n")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(firmwareload)
-+	.cmd = do_firmwareload,
-+	BAREBOX_CMD_DESC("Program a firmware file into a device")
-+	BAREBOX_CMD_HELP(cmd_firmwareload_help)
-+BAREBOX_CMD_END
-diff --git a/common/Kconfig b/common/Kconfig
-index 9cc96b776deb..8c8f840c23b9 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -328,6 +328,9 @@ config CBSIZE
- 	prompt "Buffer size for input from the Console"
- 	default 1024
- 
-+config FIRMWARE
-+	bool
-+
- choice
- 	prompt "Select your shell"
- 
-diff --git a/common/Makefile b/common/Makefile
-index 51b7d4ea85ad..282ddbca256d 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -49,6 +49,7 @@ obj-$(CONFIG_EFI_DEVICEPATH)	+= efi-devicepath.o
- lwl-$(CONFIG_IMD)		+= imd-barebox.o
- obj-$(CONFIG_IMD)		+= imd.o
- obj-$(CONFIG_FILE_LIST)		+= file-list.o
-+obj-$(CONFIG_FIRMWARE)		+= firmware.o
- 
- quiet_cmd_pwd_h = PWDH    $@
- ifdef CONFIG_PASSWORD
-diff --git a/common/firmware.c b/common/firmware.c
-new file mode 100644
-index 000000000000..2a62a81c7845
---- /dev/null
-+++ b/common/firmware.c
-@@ -0,0 +1,211 @@
-+/*
-+ * Copyright (c) 2013 Juergen Beisert <kernel@pengutronix.de>, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <firmware.h>
 +#include <common.h>
 +#include <malloc.h>
-+#include <xfuncs.h>
++#include <clock.h>
 +#include <fcntl.h>
-+#include <libbb.h>
-+#include <fs.h>
-+#include <linux/list.h>
-+#include <linux/stat.h>
-+#include <linux/err.h>
++#include <init.h>
++#include <io.h>
++#include <mach/system-manager.h>
++#include <mach/reset-manager.h>
++#include <mach/socfpga-regs.h>
++#include <mach/sdram.h>
 +
-+#define BUFSIZ 4096
++#define FPGAMGRREGS_STAT			0x0
++#define FPGAMGRREGS_CTRL			0x4
++#define FPGAMGRREGS_DCLKCNT			0x8
++#define FPGAMGRREGS_DCLKSTAT			0xc
 +
-+struct firmware_mgr {
-+	struct list_head list;
-+	struct firmware_handler *handler; /* the program handler */
-+	struct cdev cdev;
-+	u8 buf[BUFSIZ];
-+	int ofs;
++#define FPGAMGRREGS_MON_GPIO_PORTA_EOI_ADDRESS	0x84c
++#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS	0x850
++
++#define FPGAMGRREGS_CTRL_CFGWDTH_MASK		0x200
++#define FPGAMGRREGS_CTRL_AXICFGEN_MASK		0x100
++#define FPGAMGRREGS_CTRL_NCONFIGPULL_MASK	0x4
++#define FPGAMGRREGS_CTRL_NCE_MASK		0x2
++#define FPGAMGRREGS_CTRL_EN_MASK		0x1
++#define FPGAMGRREGS_CTRL_CDRATIO_LSB		6
++
++#define FPGAMGRREGS_STAT_MODE_MASK		0x7
++#define FPGAMGRREGS_STAT_MSEL_MASK		0xf8
++#define FPGAMGRREGS_STAT_MSEL_LSB		3
++
++#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_CRC_MASK	0x8
++#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_ID_MASK	0x4
++#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_CD_MASK	0x2
++#define FPGAMGRREGS_MON_GPIO_EXT_PORTA_NS_MASK	0x1
++
++/* FPGA Mode */
++#define FPGAMGRREGS_MODE_FPGAOFF	0x0
++#define FPGAMGRREGS_MODE_RESETPHASE	0x1
++#define FPGAMGRREGS_MODE_CFGPHASE	0x2
++#define FPGAMGRREGS_MODE_INITPHASE	0x3
++#define FPGAMGRREGS_MODE_USERMODE	0x4
++#define FPGAMGRREGS_MODE_UNKNOWN	0x5
++
++/* FPGA CD Ratio Value */
++#define CDRATIO_x1	0x0
++#define CDRATIO_x2	0x1
++#define CDRATIO_x4	0x2
++#define CDRATIO_x8	0x3
++
++struct fpgamgr {
++	struct firmware_handler fh;
++	struct device_d *dev;
++	void __iomem *regs;
++	void __iomem *regs_data;
 +};
 +
-+static LIST_HEAD(firmwaremgr_list);
-+
-+/*
-+ * firmwaremgr_find - find a firmware device handler
-+ *
-+ * Find a firmware device handler based on the unique id. If @id is
-+ * NULL this returns the single firmware device handler if only one
-+ * is registered. If multiple handlers are registered @id is mandatory
-+ *
-+ */
-+struct firmware_mgr *firmwaremgr_find(const char *id)
++/* Get the FPGA mode */
++static uint32_t fpgamgr_get_mode(struct fpgamgr *mgr)
 +{
-+	struct firmware_mgr *mgr;
-+
-+	if (!id) {
-+		if (list_is_singular(&firmwaremgr_list))
-+			return list_first_entry(&firmwaremgr_list,
-+					struct firmware_mgr, list);
-+		else
-+			return NULL;
-+	}
-+
-+	list_for_each_entry(mgr, &firmwaremgr_list, list)
-+		if (!strcmp(mgr->handler->id, id))
-+			return mgr;
-+
-+	return NULL;
++	return readl(mgr->regs + FPGAMGRREGS_STAT) & FPGAMGRREGS_STAT_MODE_MASK;
 +}
 +
-+/*
-+ * firmwaremgr_list_handlers - list registered firmware device handlers
-+ *                             in pretty format
-+ */
-+void firmwaremgr_list_handlers(void)
++static int fpgamgr_dclkcnt_set(struct fpgamgr *mgr, unsigned long cnt)
 +{
-+	struct firmware_mgr *mgr;
++	uint64_t start;
 +
-+	printf("firmware programming handlers:\n\n");
++	/* clear any existing done status */
++	if (readl(mgr->regs + FPGAMGRREGS_DCLKSTAT))
++		writel(0x1, mgr->regs + FPGAMGRREGS_DCLKSTAT);
 +
-+	if (list_empty(&firmwaremgr_list)) {
-+		printf("(none)\n");
-+		return;
-+	}
++	writel(cnt, mgr->regs + FPGAMGRREGS_DCLKCNT);
 +
-+	printf("%-11s%-11s\n", "name:", "model:");
-+
-+	list_for_each_entry(mgr, &firmwaremgr_list, list) {
-+		printf("%-11s", mgr->handler->id);
-+		if (mgr->handler->model)
-+			printf(" -> %-11s", mgr->handler->model);
-+		printf("\n");
-+	}
-+}
-+
-+static int firmware_open(struct cdev *cdev, unsigned long flags)
-+{
-+	struct firmware_mgr *mgr = cdev->priv;
-+	int ret;
-+
-+	mgr->ofs = 0;
-+
-+	ret = mgr->handler->open(mgr->handler);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static ssize_t firmware_write(struct cdev *cdev, const void *buf, size_t insize,
-+		loff_t offset, ulong flags)
-+{
-+	struct firmware_mgr *mgr = cdev->priv;
-+	int ret;
-+	size_t count = insize;
-+
-+	/*
-+	 * We guarantee the write handler of the firmware device that only the
-+	 * last write is a short write. All others are 4k in size.
-+	 */
-+
-+	while (count) {
-+		size_t space = BUFSIZ - mgr->ofs;
-+		size_t now = min(count, space);
-+
-+		memcpy(mgr->buf + mgr->ofs, buf, now);
-+
-+		buf += now;
-+		mgr->ofs += now;
-+		count -= now;
-+
-+		if (mgr->ofs == BUFSIZ) {
-+			ret = mgr->handler->write(mgr->handler, mgr->buf, BUFSIZ);
-+			if (ret < 0)
-+				return ret;
-+
-+			mgr->ofs = 0;
++	/* wait till the dclkcnt done */
++	start = get_time_ns();
++	while (1) {
++		if (readl(mgr->regs + FPGAMGRREGS_DCLKSTAT)) {
++			writel(0x1, mgr->regs + FPGAMGRREGS_DCLKSTAT);
++			return 0;
 +		}
-+	}
 +
-+	return insize;
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++	}
 +}
 +
-+static int firmware_close(struct cdev *cdev)
++/* Start the FPGA programming by initialize the FPGA Manager */
++static int fpgamgr_program_init(struct fpgamgr *mgr)
 +{
-+	struct firmware_mgr *mgr = cdev->priv;
-+	int ret;
++	unsigned long reg;
++	uint32_t ctrl = 0, ratio;
++	uint64_t start;
 +
-+	if (mgr->ofs) {
-+		ret = mgr->handler->write(mgr->handler, mgr->buf, mgr->ofs);
-+		if (ret)
-+			return ret;
++	/* get the MSEL value */
++	reg = readl(mgr->regs + FPGAMGRREGS_STAT);
++	reg = ((reg & FPGAMGRREGS_STAT_MSEL_MASK) >> FPGAMGRREGS_STAT_MSEL_LSB);
++
++	if (reg & 0x8)
++		ctrl |= FPGAMGRREGS_CTRL_CFGWDTH_MASK;
++	else
++		ctrl &= ~FPGAMGRREGS_CTRL_CFGWDTH_MASK;
++
++	switch (reg & 0xb) {
++	case 0xa:
++		ratio = CDRATIO_x8;
++		break;
++	case 0x2:
++	case 0x9:
++		ratio = CDRATIO_x4;
++		break;
++	case 0x1:
++		ratio = CDRATIO_x2;
++		break;
++	case 0x8:
++	case 0xb:
++	default:
++		ratio = CDRATIO_x1;
++		break;
 +	}
 +
-+	ret = mgr->handler->close(mgr->handler);
-+	if (ret)
-+		return ret;
++	ctrl |= ratio << FPGAMGRREGS_CTRL_CDRATIO_LSB;
++
++	/* clear nce bit to allow HPS configuration */
++	ctrl &= ~FPGAMGRREGS_CTRL_NCE_MASK;
++
++	/* to enable FPGA Manager drive over configuration line */
++	ctrl |= FPGAMGRREGS_CTRL_EN_MASK;
++
++	/* put FPGA into reset phase */
++	ctrl |= FPGAMGRREGS_CTRL_NCONFIGPULL_MASK;
++
++	writel(ctrl, mgr->regs + FPGAMGRREGS_CTRL);
++
++	/* (1) wait until FPGA enter reset phase */
++	start = get_time_ns();
++	while (1) {
++		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_RESETPHASE)
++			break;
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++	}
++
++	/* release FPGA from reset phase */
++	ctrl = readl(mgr->regs + FPGAMGRREGS_CTRL);
++	ctrl &= ~FPGAMGRREGS_CTRL_NCONFIGPULL_MASK;
++	writel(ctrl, mgr->regs + FPGAMGRREGS_CTRL);
++
++	/* (2) wait until FPGA enter configuration phase */
++	start = get_time_ns();
++	while (1) {
++		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_CFGPHASE)
++			break;
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++	}
++
++	/* clear all interrupt in CB Monitor */
++	writel(0xFFF, (mgr->regs + FPGAMGRREGS_MON_GPIO_PORTA_EOI_ADDRESS));
++
++	/* enable AXI configuration */
++	ctrl = readl(mgr->regs + FPGAMGRREGS_CTRL);
++	ctrl |= FPGAMGRREGS_CTRL_AXICFGEN_MASK;
++	writel(ctrl, mgr->regs + FPGAMGRREGS_CTRL);
 +
 +	return 0;
 +}
 +
-+static struct file_operations firmware_ops = {
-+	.open = firmware_open,
-+	.write = firmware_write,
-+	.close = firmware_close,
-+};
++/* Ensure the FPGA entering config done */
++static int fpgamgr_program_poll_cd(struct fpgamgr *mgr)
++{
++	unsigned long reg;
++	uint32_t val;
++	uint64_t start;
++
++	/* (3) wait until full config done */
++	start = get_time_ns();
++	while (1) {
++		reg = readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
++
++		/* config error */
++		if (!(reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_NS_MASK) &&
++			!(reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_CD_MASK))
++			return -EIO;
++
++		/* config done without error */
++		if ((reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_NS_MASK) &&
++			(reg & FPGAMGRREGS_MON_GPIO_EXT_PORTA_CD_MASK))
++			break;
++
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++	}
++
++	/* disable AXI configuration */
++	val = readl(mgr->regs + FPGAMGRREGS_CTRL);
++	val &= ~FPGAMGRREGS_CTRL_AXICFGEN_MASK;
++	writel(val, mgr->regs + FPGAMGRREGS_CTRL);
++
++	return 0;
++}
++
++/* Ensure the FPGA entering init phase */
++static int fpgamgr_program_poll_initphase(struct fpgamgr *mgr)
++{
++	uint64_t start;
++
++	/* additional clocks for the CB to enter initialization phase */
++	if (fpgamgr_dclkcnt_set(mgr, 0x4) != 0)
++		return -5;
++
++	/* (4) wait until FPGA enter init phase or user mode */
++	start = get_time_ns();
++	while (1) {
++		int mode = fpgamgr_get_mode(mgr);
++
++		if (mode == FPGAMGRREGS_MODE_INITPHASE ||
++				mode == FPGAMGRREGS_MODE_USERMODE)
++			break;
++
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++	}
++
++	return 0;
++}
++
++/* Ensure the FPGA entering user mode */
++static int fpgamgr_program_poll_usermode(struct fpgamgr *mgr)
++{
++	uint32_t val;
++	uint64_t start;
++
++	/* additional clocks for the CB to exit initialization phase */
++	if (fpgamgr_dclkcnt_set(mgr, 0x5000) != 0)
++		return -7;
++
++	/* (5) wait until FPGA enter user mode */
++	start = get_time_ns();
++	while (1) {
++		if (fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE)
++			break;
++		if (is_timeout(start, 100 * MSECOND))
++			return -ETIMEDOUT;
++	}
++
++	/* to release FPGA Manager drive over configuration line */
++	val = readl(mgr->regs + FPGAMGRREGS_CTRL);
++	val &= ~FPGAMGRREGS_CTRL_EN_MASK;
++	writel(val, mgr->regs + FPGAMGRREGS_CTRL);
++
++	return 0;
++}
 +
 +/*
-+ * firmwaremgr_register - register a device which needs firmware
++ * Using FPGA Manager to program the FPGA
++ * Return 0 for sucess
 + */
-+int firmwaremgr_register(struct firmware_handler *fh)
++static int fpgamgr_program_start(struct firmware_handler *fh)
 +{
-+	struct firmware_mgr *mgr;
++	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
++	int status;
++
++	/* prior programming the FPGA, all bridges need to be shut off */
++
++	/* disable all signals from hps peripheral controller to fpga */
++	writel(0, SYSMGR_FPGAINTF_MODULE);
++
++	/* disable all signals from fpga to hps sdram */
++	writel(0, (CYCLONE5_SDR_ADDRESS + SDR_CTRLGRP_FPGAPORTRST_ADDRESS));
++
++	/* disable all axi bridge (hps2fpga, lwhps2fpga & fpga2hps) */
++	writel(~0, CYCLONE5_RSTMGR_ADDRESS + RESET_MGR_BRG_MOD_RESET_OFS);
++
++	/* unmap the bridges from NIC-301 */
++	writel(0x1, CYCLONE5_L3REGS_ADDRESS);
++
++	dev_dbg(mgr->dev, "start programming...\n");
++
++	/* initialize the FPGA Manager */
++	status = fpgamgr_program_init(mgr);
++	if (status) {
++		dev_err(mgr->dev, "program init failed with: %s\n",
++				strerror(-status));
++		return status;
++	}
++
++	return 0;
++}
++
++/* Write the RBF data to FPGA Manager */
++static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *buf,
++		size_t size)
++{
++	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
++	const uint32_t *buf32 = buf;
++
++	/* write to FPGA Manager AXI data */
++	while (size) {
++		writel(*buf32, mgr->regs_data);
++		readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
++		buf32++;
++		size -= sizeof(uint32_t);
++	}
++
++	return 0;
++}
++
++static int fpgamgr_program_finish(struct firmware_handler *fh)
++{
++	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
++	int status;
++
++	/* Ensure the FPGA entering config done */
++	status = fpgamgr_program_poll_cd(mgr);
++	if (status) {
++		dev_err(mgr->dev, "poll for config done failed with: %s\n",
++				strerror(-status));
++		return status;
++	}
++
++	dev_dbg(mgr->dev, "waiting for init phase...\n");
++
++	/* Ensure the FPGA entering init phase */
++	status = fpgamgr_program_poll_initphase(mgr);
++	if (status) {
++		dev_err(mgr->dev, "poll for init phase failed with: %s\n",
++				strerror(-status));
++		return status;
++	}
++
++	dev_dbg(mgr->dev, "waiting for user mode...\n");
++
++	/* Ensure the FPGA entering user mode */
++	status = fpgamgr_program_poll_usermode(mgr);
++	if (status) {
++		dev_err(mgr->dev, "poll for user mode with: %s\n",
++				strerror(-status));
++		return status;
++	}
++
++	return 0;
++}
++
++static int fpgamgr_probe(struct device_d *dev)
++{
++	struct fpgamgr *mgr;
++	struct firmware_handler *fh;
++	const char *alias = of_alias_get(dev->device_node);
++	const char *model = NULL;
 +	int ret;
-+	struct cdev *cdev;
 +
-+	if (firmwaremgr_find(fh->id))
-+		return -EBUSY;
++	dev_dbg(dev, "Probing FPGA firmware programmer\n");
 +
-+	mgr = xzalloc(sizeof(struct firmware_mgr));
-+	mgr->handler = fh;
++	mgr = xzalloc(sizeof(*mgr));
++	fh = &mgr->fh;
 +
-+	cdev = &mgr->cdev;
-+
-+	cdev->name = xstrdup(fh->id);
-+	cdev->size = FILE_SIZE_STREAM;
-+	cdev->ops = &firmware_ops;
-+	cdev->priv = mgr;
-+	cdev->dev = fh->dev;
-+
-+	ret = devfs_create(cdev);
-+	if (ret)
++	mgr->regs = dev_request_mem_region(dev, 0);
++	if (!mgr->regs) {
++		ret = -EBUSY;
 +		goto out;
++	}
 +
-+	list_add_tail(&mgr->list, &firmwaremgr_list);
++	mgr->regs_data = dev_request_mem_region(dev, 1);
++	if (!mgr->regs_data) {
++		ret = -EBUSY;
++		goto out;
++	}
++
++	if (alias)
++		fh->id = xstrdup(alias);
++	else
++		fh->id = xstrdup("socfpga-fpga");
++
++	fh->open = fpgamgr_program_start;
++	fh->write = fpgamgr_program_write_buf;
++	fh->close = fpgamgr_program_finish;
++	of_property_read_string(dev->device_node, "compatible", &model);
++	if (model)
++		fh->model = xstrdup(model);
++	fh->dev = dev;
++
++	mgr->dev = dev;
++
++	dev_dbg(dev, "Registering FPGA firmware programmer\n");
++
++	ret = firmwaremgr_register(fh);
++	if (ret != 0) {
++		free(mgr);
++		goto out;
++	}
 +
 +	return 0;
 +out:
-+	free(cdev->name);
++	free(fh->id);
 +	free(mgr);
 +
 +	return ret;
 +}
 +
-+/*
-+ * firmware_load_file - load a firmware to a device
-+ */
-+int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
-+{
-+	int ret;
-+	char *name = asprintf("/dev/%s", mgr->handler->id);
-+
-+	ret = copy_file(firmware, name, 0);
-+
-+	free(name);
-+
-+	return ret;
-+}
-diff --git a/include/firmware.h b/include/firmware.h
-new file mode 100644
-index 000000000000..f6f78c840cac
---- /dev/null
-+++ b/include/firmware.h
-@@ -0,0 +1,42 @@
-+/*
-+ * Copyright (c) 2013 Juergen Beisert <kernel@pengutronix.de>, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#ifndef FIRMWARE_H
-+#define FIRMWARE_H
-+
-+#include <types.h>
-+#include <driver.h>
-+
-+struct firmware_handler {
-+	char *id; /* unique identifier for this firmware device */
-+	char *model; /* description for this device */
-+	struct device_d *dev;
-+	/* called once to prepare the firmware's programming cycle */
-+	int (*open)(struct firmware_handler*);
-+	/* called multiple times to program the firmware with the given data */
-+	int (*write)(struct firmware_handler*, const void*, size_t);
-+	/* called once to finish programming cycle */
-+	int (*close)(struct firmware_handler*);
++static struct of_device_id fpgamgr_id_table[] = {
++	{
++		.compatible = "altr,socfpga-fpga-mgr",
++	},
 +};
 +
-+struct firmware_mgr;
-+
-+int firmwaremgr_register(struct firmware_handler *);
-+
-+struct firmware_mgr *firmwaremgr_find(const char *);
-+
-+void firmwaremgr_list_handlers(void);
-+
-+int firmwaremgr_load_file(struct firmware_mgr *, const char *path);
-+
-+#endif /* FIRMWARE_H */
++static struct driver_d fpgamgr_driver = {
++	.name = "socfpa-fpgamgr",
++	.of_compatible = DRV_OF_COMPAT(fpgamgr_id_table),
++	.probe = fpgamgr_probe,
++};
++device_platform_driver(fpgamgr_driver);
 -- 
 2.1.0
 
