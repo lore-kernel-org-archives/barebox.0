@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XRGnZ-0001Q8-88
- for barebox@lists.infradead.org; Tue, 09 Sep 2014 08:29:13 +0000
-Date: Tue, 9 Sep 2014 10:28:51 +0200
+ Linux)) id 1XRGo8-0001gF-7U
+ for barebox@lists.infradead.org; Tue, 09 Sep 2014 08:29:48 +0000
+Date: Tue, 9 Sep 2014 10:29:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140909082851.GR5352@pengutronix.de>
+Message-ID: <20140909082925.GS5352@pengutronix.de>
 References: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
+ <1410159189-17328-8-git-send-email-antonynpavlov@gmail.com>
+ <CAJfOKBxf1qQ4zm12REacELYMCSqye-OcUM45ZULprPNREhVcGQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <CAJfOKBxf1qQ4zm12REacELYMCSqye-OcUM45ZULprPNREhVcGQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/7] openrisc: add device tree support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 7/7] Documentation: add OpenRISC or1ksim emulator
+ section
+To: Franck Jullien <franck.jullien@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Mon, Sep 08, 2014 at 10:53:02AM +0400, Antony Pavlov wrote:
-> This patch series adds device tree support for openrisc generic board.
-> The barebox mips device tree support is used as a sample.
+On Mon, Sep 08, 2014 at 09:12:06AM +0200, Franck Jullien wrote:
+> Hi Antony,
 > 
-> Changes since v1:
+> 2014-09-08 8:53 GMT+02:00 Antony Pavlov <antonynpavlov@gmail.com>:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Cc: Franck Jullien <franck.jullien@gmail.com>
+> > ---
+> >  Documentation/boards/openrisc.rst | 51 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 51 insertions(+)
+> >
+> > diff --git a/Documentation/boards/openrisc.rst b/Documentation/boards/openrisc.rst
+> > new file mode 100644
+> > index 0000000..0b36712
+> > --- /dev/null
+> > +++ b/Documentation/boards/openrisc.rst
+> > @@ -0,0 +1,51 @@
+> > +OpenRISC
+> > +========
+> > +
+> > +or1ksim
+> > +-------
+> > +
+> > +Compile or1ksim emulator::
+> > +
+> > + $ cd ~/
+> > + $ git clone https://github.com/fjullien/or1ksim
 > 
->   * rebase over latest next;
->   * add 'Documentation: add OpenRISC or1ksim emulator section'.
-> 
-> Antony Pavlov (7):
->   openrisc: generic board: reserve 512K for barebox
->   net: ethoc: add device tree support
->   openrisc: add initial device tree support
->   openrisc: dts: import or1ksim.dts from linux-3.16
->   openrisc: generic board: reduce platform code
->   openrisc: generic_defconfig: enable device tree stuff
->   Documentation: add OpenRISC or1ksim emulator section
+> You should use this repo: https://github.com/openrisc/or1ksim
 
-Applied, thanks.
+I changed while this applying.
 
 Sascha
 
