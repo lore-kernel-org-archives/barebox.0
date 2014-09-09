@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XRH5x-0001jV-6j
- for barebox@lists.infradead.org; Tue, 09 Sep 2014 08:48:13 +0000
-Received: by mail-wg0-f45.google.com with SMTP id z12so2357023wgg.16
- for <barebox@lists.infradead.org>; Tue, 09 Sep 2014 01:47:51 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140909081917.GQ5352@pengutronix.de>
-References: <1410182622-22876-1-git-send-email-s.hauer@pengutronix.de>
- <CACqcpZDxaimhw1zrc+6WDcPhipfqp0SRv2sBFor7a2wWzat+Ow@mail.gmail.com>
- <20140909081917.GQ5352@pengutronix.de>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Tue, 9 Sep 2014 10:47:10 +0200
-Message-ID: <CACqcpZCkZZsUBGnCM+Tmcep5XdYRZyRkJk_FEax5LST7RKb92g@mail.gmail.com>
+ id 1XRIcA-0001wX-Fq
+ for barebox@lists.infradead.org; Tue, 09 Sep 2014 10:25:35 +0000
+Received: by mail-lb0-f169.google.com with SMTP id p9so7636615lbv.0
+ for <barebox@lists.infradead.org>; Tue, 09 Sep 2014 03:25:10 -0700 (PDT)
+Date: Tue, 9 Sep 2014 14:38:54 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140909143854.dc0644ebbd7f6c655b636f1b@gmail.com>
+In-Reply-To: <20140909082925.GS5352@pengutronix.de>
+References: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
+ <1410159189-17328-8-git-send-email-antonynpavlov@gmail.com>
+ <CAJfOKBxf1qQ4zm12REacELYMCSqye-OcUM45ZULprPNREhVcGQ@mail.gmail.com>
+ <20140909082925.GS5352@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +22,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: AT91 pinctrl/gpio fixes
+Subject: Re: [PATCH v2 7/7] Documentation: add OpenRISC or1ksim emulator
+ section
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: barebox <barebox@lists.infradead.org>
 
-SSBhbSBvbmx5IGFibGUgdG8gdGVzdCB3aXRoIHRoZSBhdDkxc2FtOW0xMGc0NWVrIGJvYXJkLCBh
-bmQgdGhlCmNvbXBpbGUgKyBwaW5jdHJsL2dwaW8gYXJlIHdvcmtpbmcgd2VsbCwgaW4gZGV2aWNl
-IHRyZWUgYW5kIG5vbiBkZXZpY2UKdHJlZSBjYXNlLgoKSSBqdXN0IG5lZWRlZCB0byBhZGQgbXkg
-djIgcGF0Y2ggZm9yIHRoZSBncGlvIGNsb2NrcyByZWdpc3RyYXRpb24uCgpJJ20gc29ycnkgdG8g
-aGF2ZSBicm9rZW4gdGhlIGJ1aWxkIG9mIHRoZSBvdGhlcnMgQXRtZWwgYm9hcmRzLiBOZXh0CnRp
-bWUgSSB3aWxsIHRha2UgY2FyZSBvZiB0aGF0LgoKVGhhbmtzLAoKUmFwaGHDq2wKCjIwMTQtMDkt
-MDkgMTA6MTkgR01UKzAyOjAwIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46
-Cj4gT24gTW9uLCBTZXAgMDgsIDIwMTQgYXQgMDM6MzY6MTZQTSArMDIwMCwgUmFwaGHDq2wgUG9n
-Z2kgd3JvdGU6Cj4+IEhlbGxvLCBJIGp1c3Qgc2VuZCBwYXRjaHMsIHRvIGZpeCBhbGwgdGhpcyBp
-c3N1ZXMuCj4KPiBOb3QgcmVhbGx5IGFsbCwgdGhlcmUgYXJlIHN0aWxsIHNvbWUgY29tcGlsZSBl
-cnJvcnMgaW4gYSBib2FyZCB5b3UKPiBkb24ndCBjb21waWxlIHRlc3QuIEFzIGEgcmVzdWx0IEkg
-YXBwbGllZCBhIG1peHR1cmUgb2Ygb3VyIHBhdGNoZXMKPiB0byBtYXN0ZXI6Cj4KPiA1YTViYTVh
-IEFSTTogQVQ5MTogTWFrZSBncGlvIG11eCBmdW5jdGlvbnMgaW5saW5lCj4gYTkxOGRiZiBBUk06
-IEFUOTE6IEFkZCBtaXNzaW5nIGluY2x1ZGUKPiA1ZGM2Yzg5IHBpbmN0cmw6IGF0OTE6IHJldHJp
-ZXZlIGRldmljZSBpZCBpbiBub24gZHRiIHByb2JlCj4gOWM4ODVhMiBwaW5jdHJsOiBhdDkxOiBm
-aXggdGhlIHBpbl90b19jb250cm9sbGVyIGZ1bmN0aW9uCj4gOTczMjMwOCBwaW5jdHJsOiBhdDkx
-OiBhZGQgZHJpdmVyIGRhdGEKPgo+IEl0IG5vdyBidWlsZHMgZmluZS4gQ291bGQgeW91IGRvIHNv
-bWUgcnVudGltZSB0ZXN0cyB0byBzZWUgaWYgaXQKPiBhbHNvIHdvcmtzPwo+Cj4gU2FzY2hhCj4K
-Pgo+IC0tCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAg
-ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBlaW5lciBT
-dHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5
-MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwg
-RmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Tue, 9 Sep 2014 10:29:25 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+
+> On Mon, Sep 08, 2014 at 09:12:06AM +0200, Franck Jullien wrote:
+> > Hi Antony,
+> > =
+
+> > 2014-09-08 8:53 GMT+02:00 Antony Pavlov <antonynpavlov@gmail.com>:
+> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > > Cc: Franck Jullien <franck.jullien@gmail.com>
+> > > ---
+> > >  Documentation/boards/openrisc.rst | 51 +++++++++++++++++++++++++++++=
+++++++++++
+> > >  1 file changed, 51 insertions(+)
+> > >
+> > > diff --git a/Documentation/boards/openrisc.rst b/Documentation/boards=
+/openrisc.rst
+> > > new file mode 100644
+> > > index 0000000..0b36712
+> > > --- /dev/null
+> > > +++ b/Documentation/boards/openrisc.rst
+> > > @@ -0,0 +1,51 @@
+> > > +OpenRISC
+> > > +=3D=3D=3D=3D=3D=3D=3D=3D
+> > > +
+> > > +or1ksim
+> > > +-------
+> > > +
+> > > +Compile or1ksim emulator::
+> > > +
+> > > + $ cd ~/
+> > > + $ git clone https://github.com/fjullien/or1ksim
+> > =
+
+> > You should use this repo: https://github.com/openrisc/or1ksim
+> =
+
+> I changed while this applying.
+
+Thanks!
+
+Just in case I have tested barebox with https://github.com/openrisc/or1ksim=
+ repo emulator.
+It works fine.
+ =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
