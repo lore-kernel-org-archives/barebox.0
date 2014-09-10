@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f174.google.com ([209.85.217.174])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XRcYQ-0003wb-A1
- for barebox@lists.infradead.org; Wed, 10 Sep 2014 07:43:03 +0000
-Received: by mail-lb0-f174.google.com with SMTP id n15so10391207lbi.19
- for <barebox@lists.infradead.org>; Wed, 10 Sep 2014 00:42:36 -0700 (PDT)
+ id 1XRcYU-0003xO-NO
+ for barebox@lists.infradead.org; Wed, 10 Sep 2014 07:43:07 +0000
+Received: by mail-lb0-f176.google.com with SMTP id z11so6884417lbi.35
+ for <barebox@lists.infradead.org>; Wed, 10 Sep 2014 00:42:44 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 10 Sep 2014 11:42:17 +0400
-Message-Id: <1410334946-12922-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 10 Sep 2014 11:42:23 +0400
+Message-Id: <1410334946-12922-7-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1410334946-12922-1-git-send-email-antonynpavlov@gmail.com>
+References: <1410334946-12922-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,67 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] MIPS: xburst: add JZ4780 SoC and MIPS Creator CI20 board
- support
+Subject: [PATCH 6/9] MIPS: dts: add jz4780.dtsi
 To: barebox@lists.infradead.org
 
-The MIPS Creator CI20 board is a high performance, fully featured
-Linux and Android development platform.
+Based on file from https://github.com/MIPS/CI20_linux/tree/ci20-v3.16
 
-The Creator CI20 is supplied free of charge to certain approved projects
-under Imagination's ecosystem.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/dts/jz4780.dtsi | 56 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-Please see http://store.imgtec.com/product/mips-creator-ci20/ for details.
-
-Barebox CI20-related changes are available on github:
-  https://github.com/frantony/barebox/tree/next.ci20.20140910
-
-
-Antony Pavlov (9):
-  common.h: use special IOMEM() for MIPS
-  MIPS: dts: use physical addresses (as Linux does)
-  MIPS: xburst: add JZ4780 SoC support
-  MIPS: add (another) Ingenic vendor ID
-  MIPS: xburst: debug_ll: rework common code, add JZ4780 support
-  MIPS: dts: add jz4780.dtsi
-  MIPS: add MIPS Creator CI20 board support
-  MIPS: add img-ci20_defconfig
-  Documentation: add MIPS Creator CI20 board mini-howto
-
- Documentation/boards/mips/img-ci20.rst             | 42 ++++++++++++++++
- arch/mips/Kconfig                                  |  1 -
- arch/mips/Makefile                                 |  1 +
- arch/mips/boards/img-ci20/Makefile                 |  1 +
- arch/mips/boards/img-ci20/board.c                  | 27 +++++++++++
- .../img-ci20/include/board/board_pbl_start.h       | 43 +++++++++++++++++
- arch/mips/boards/img-ci20/include/board/debug_ll.h | 23 +++++++++
- arch/mips/configs/img-ci20_defconfig               | 42 ++++++++++++++++
- arch/mips/dts/ar9331.dtsi                          | 10 ++--
- arch/mips/dts/dlink-dir-320.dts                    |  4 +-
- arch/mips/dts/img-ci20.dts                         | 35 ++++++++++++++
- arch/mips/dts/jz4755.dtsi                          | 30 ++++++------
- arch/mips/dts/jz4780.dtsi                          | 56 ++++++++++++++++++++++
- arch/mips/dts/ls1b.dtsi                            | 16 +++----
- arch/mips/dts/qemu-malta.dts                       | 14 +++---
- arch/mips/include/asm/cpu.h                        |  1 +
- arch/mips/lib/cpu-probe.c                          |  1 +
- arch/mips/mach-xburst/Kconfig                      | 30 ++++++++++--
- .../mach-xburst/include/mach/debug_ll_jz4750d.h    |  6 +--
- .../mach-xburst/include/mach/debug_ll_jz4780.h     | 51 ++++++++++++++++++++
- arch/mips/mach-xburst/include/mach/jz4780.h        | 30 ++++++++++++
- include/common.h                                   |  6 +++
- 22 files changed, 424 insertions(+), 46 deletions(-)
- create mode 100644 Documentation/boards/mips/img-ci20.rst
- create mode 100644 arch/mips/boards/img-ci20/Makefile
- create mode 100644 arch/mips/boards/img-ci20/board.c
- create mode 100644 arch/mips/boards/img-ci20/include/board/board_pbl_start.h
- create mode 100644 arch/mips/boards/img-ci20/include/board/debug_ll.h
- create mode 100644 arch/mips/configs/img-ci20_defconfig
- create mode 100644 arch/mips/dts/img-ci20.dts
- create mode 100644 arch/mips/dts/jz4780.dtsi
- create mode 100644 arch/mips/mach-xburst/include/mach/debug_ll_jz4780.h
- create mode 100644 arch/mips/mach-xburst/include/mach/jz4780.h
-
+diff --git a/arch/mips/dts/jz4780.dtsi b/arch/mips/dts/jz4780.dtsi
+new file mode 100644
+index 0000000..9f0de5d
+--- /dev/null
++++ b/arch/mips/dts/jz4780.dtsi
+@@ -0,0 +1,56 @@
++#include "skeleton.dtsi"
++
++/ {
++	soc {
++		model = "Ingenic JZ4780";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "simple-bus";
++		ranges = <>;
++
++		wdt: wdt@10002000 {
++			compatible = "ingenic,jz4740-wdt";
++			reg = <0x10002000 0x10>;
++		};
++
++		uart0: serial@10030000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0x10030000 0x100>;
++			reg-shift = <2>;
++			clock-frequency = <48000000>;
++			status = "disabled";
++		};
++
++		uart1: serial@10031000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0x10031000 0x100>;
++			reg-shift = <2>;
++			clock-frequency = <48000000>;
++			status = "disabled";
++		};
++
++		uart2: serial@10032000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0x10032000 0x100>;
++			reg-shift = <2>;
++			clock-frequency = <48000000>;
++			status = "disabled";
++		};
++
++		uart3: serial@10033000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0x10033000 0x100>;
++			reg-shift = <2>;
++			clock-frequency = <48000000>;
++			status = "disabled";
++		};
++
++		uart4: serial@10034000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0x10034000 0x100>;
++			reg-shift = <2>;
++			clock-frequency = <48000000>;
++			status = "disabled";
++		};
++	};
++};
 -- 
 2.1.0
 
