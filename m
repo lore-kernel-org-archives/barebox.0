@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XRcYU-0003xO-NO
- for barebox@lists.infradead.org; Wed, 10 Sep 2014 07:43:07 +0000
-Received: by mail-lb0-f176.google.com with SMTP id z11so6884417lbi.35
- for <barebox@lists.infradead.org>; Wed, 10 Sep 2014 00:42:44 -0700 (PDT)
+ id 1XRcYT-0003xD-BT
+ for barebox@lists.infradead.org; Wed, 10 Sep 2014 07:43:06 +0000
+Received: by mail-la0-f54.google.com with SMTP id b17so20607852lan.41
+ for <barebox@lists.infradead.org>; Wed, 10 Sep 2014 00:42:42 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 10 Sep 2014 11:42:23 +0400
-Message-Id: <1410334946-12922-7-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 10 Sep 2014 11:42:22 +0400
+Message-Id: <1410334946-12922-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1410334946-12922-1-git-send-email-antonynpavlov@gmail.com>
 References: <1410334946-12922-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,174 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] MIPS: dts: add jz4780.dtsi
+Subject: [PATCH 5/9] MIPS: xburst: debug_ll: rework common code,
+ add JZ4780 support
 To: barebox@lists.infradead.org
-
-Based on file from https://github.com/MIPS/CI20_linux/tree/ci20-v3.16
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/dts/jz4780.dtsi | 56 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ arch/mips/mach-xburst/Kconfig                      | 19 +++++---
+ .../mach-xburst/include/mach/debug_ll_jz4750d.h    |  6 +--
+ .../mach-xburst/include/mach/debug_ll_jz4780.h     | 51 ++++++++++++++++++++++
+ arch/mips/mach-xburst/include/mach/jz4780.h        | 30 +++++++++++++
+ 4 files changed, 98 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/dts/jz4780.dtsi b/arch/mips/dts/jz4780.dtsi
+diff --git a/arch/mips/mach-xburst/Kconfig b/arch/mips/mach-xburst/Kconfig
+index 4d57015..e3db61e 100644
+--- a/arch/mips/mach-xburst/Kconfig
++++ b/arch/mips/mach-xburst/Kconfig
+@@ -27,21 +27,30 @@ config BOARD_RZX50
+ endchoice
+ 
+ if DEBUG_LL
+-if CPU_JZ4755
+ choice
+ 	prompt "DEBUG_LL port"
+ 
+-config JZ4750D_DEBUG_LL_UART0
++config JZ47XX_DEBUG_LL_UART0
++	depends on CPU_JZ4755 || CPU_JZ4780
+ 	bool "UART0"
+ 
+-config JZ4750D_DEBUG_LL_UART1
++config JZ47XX_DEBUG_LL_UART1
++	depends on CPU_JZ4755 || CPU_JZ4780
+ 	bool "UART1"
+ 
+-config JZ4750D_DEBUG_LL_UART2
++config JZ47XX_DEBUG_LL_UART2
++	depends on CPU_JZ4755 || CPU_JZ4780
+ 	bool "UART2"
+ 
++config JZ47XX_DEBUG_LL_UART3
++	depends on CPU_JZ4780
++	bool "UART3"
++
++config JZ47XX_DEBUG_LL_UART4
++	depends on CPU_JZ4780
++	bool "UART4"
++
+ endchoice
+-endif # CPU_JZ4755
+ endif # DEBUG_LL
+ 
+ endif
+diff --git a/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h b/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h
+index 2a55dea..6d18366 100644
+--- a/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h
++++ b/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h
+@@ -20,15 +20,15 @@
+ 
+ #include <mach/jz4750d_regs.h>
+ 
+-#ifdef CONFIG_JZ4750D_DEBUG_LL_UART0
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART0
+ #define DEBUG_LL_UART_ADDR	UART0_BASE
+ #endif
+ 
+-#ifdef CONFIG_JZ4750D_DEBUG_LL_UART1
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART1
+ #define DEBUG_LL_UART_ADDR	UART1_BASE
+ #endif
+ 
+-#ifdef CONFIG_JZ4750D_DEBUG_LL_UART2
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART2
+ #define DEBUG_LL_UART_ADDR	UART2_BASE
+ #endif
+ 
+diff --git a/arch/mips/mach-xburst/include/mach/debug_ll_jz4780.h b/arch/mips/mach-xburst/include/mach/debug_ll_jz4780.h
 new file mode 100644
-index 0000000..9f0de5d
+index 0000000..0bdc58c
 --- /dev/null
-+++ b/arch/mips/dts/jz4780.dtsi
-@@ -0,0 +1,56 @@
-+#include "skeleton.dtsi"
++++ b/arch/mips/mach-xburst/include/mach/debug_ll_jz4780.h
+@@ -0,0 +1,51 @@
++/*
++ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
-+/ {
-+	soc {
-+		model = "Ingenic JZ4780";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "simple-bus";
-+		ranges = <>;
++#ifndef __INCLUDE_DEBUG_LL_JZ4780_H__
++#define __INCLUDE_DEBUG_LL_JZ4780_H__
 +
-+		wdt: wdt@10002000 {
-+			compatible = "ingenic,jz4740-wdt";
-+			reg = <0x10002000 0x10>;
-+		};
++#include <mach/jz4780.h>
 +
-+		uart0: serial@10030000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10030000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <48000000>;
-+			status = "disabled";
-+		};
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART0
++#define DEBUG_LL_UART_ADDR	JZ4780_UART0_BASE
++#endif
 +
-+		uart1: serial@10031000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10031000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <48000000>;
-+			status = "disabled";
-+		};
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART1
++#define DEBUG_LL_UART_ADDR	JZ4780_UART1_BASE
++#endif
 +
-+		uart2: serial@10032000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10032000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <48000000>;
-+			status = "disabled";
-+		};
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART2
++#define DEBUG_LL_UART_ADDR	JZ4780_UART2_BASE
++#endif
 +
-+		uart3: serial@10033000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10033000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <48000000>;
-+			status = "disabled";
-+		};
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART3
++#define DEBUG_LL_UART_ADDR	JZ4780_UART3_BASE
++#endif
 +
-+		uart4: serial@10034000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10034000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <48000000>;
-+			status = "disabled";
-+		};
-+	};
-+};
++#ifdef CONFIG_JZ47XX_DEBUG_LL_UART4
++#define DEBUG_LL_UART_ADDR	JZ4780_UART4_BASE
++#endif
++
++#define DEBUG_LL_UART_SHIFT	2
++
++#ifndef DEBUG_LL_UART_CLK
++#define DEBUG_LL_UART_CLK	(48000000 / 16)
++#endif
++#define DEBUG_LL_UART_BPS	CONFIG_BAUDRATE
++#define DEBUG_LL_UART_DIVISOR	(DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
++
++#endif /* __INCLUDE_DEBUG_LL_JZ4780_H__ */
+diff --git a/arch/mips/mach-xburst/include/mach/jz4780.h b/arch/mips/mach-xburst/include/mach/jz4780.h
+new file mode 100644
+index 0000000..4503a93
+--- /dev/null
++++ b/arch/mips/mach-xburst/include/mach/jz4780.h
+@@ -0,0 +1,30 @@
++/*
++ * JZ4780 SoC definitions
++ *
++ * Copyright (c) 2013 Imagination Technologies
++ * Author: Paul Burton <paul.burton@imgtec.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __MIPS_ASM_MACH_JZ4780_JZ4780_H__
++#define __MIPS_ASM_MACH_JZ4780_JZ4780_H__
++
++/* APB bus devices */
++#define JZ4780_UART0_BASE	0xb0030000
++#define JZ4780_UART1_BASE	0xb0031000
++#define JZ4780_UART2_BASE	0xb0032000
++#define JZ4780_UART3_BASE	0xb0033000
++#define JZ4780_UART4_BASE	0xb0034000
++#define JZ4780_UARTn_BASE(n)	(JZ4780_UART0_BASE + (n * 0x1000))
++
++#endif /* __MIPS_ASM_MACH_JZ4780_JZ4780_H__ */
 -- 
 2.1.0
 
