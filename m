@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+Received: from [2001:67c:670:100:5054:ff:fe01:4dd6]
+ (helo=metis.ext.pengutronix.de)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XRIcA-0001wX-Fq
- for barebox@lists.infradead.org; Tue, 09 Sep 2014 10:25:35 +0000
-Received: by mail-lb0-f169.google.com with SMTP id p9so7636615lbv.0
- for <barebox@lists.infradead.org>; Tue, 09 Sep 2014 03:25:10 -0700 (PDT)
-Date: Tue, 9 Sep 2014 14:38:54 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140909143854.dc0644ebbd7f6c655b636f1b@gmail.com>
-In-Reply-To: <20140909082925.GS5352@pengutronix.de>
-References: <1410159189-17328-1-git-send-email-antonynpavlov@gmail.com>
- <1410159189-17328-8-git-send-email-antonynpavlov@gmail.com>
- <CAJfOKBxf1qQ4zm12REacELYMCSqye-OcUM45ZULprPNREhVcGQ@mail.gmail.com>
- <20140909082925.GS5352@pengutronix.de>
-Mime-Version: 1.0
+ id 1XRbI1-0001cx-RT
+ for barebox@lists.infradead.org; Wed, 10 Sep 2014 06:22:02 +0000
+Date: Wed, 10 Sep 2014 08:21:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140910062133.GY5352@pengutronix.de>
+References: <1410183458-19535-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1410183458-19535-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +19,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 7/7] Documentation: add OpenRISC or1ksim emulator
- section
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2] mach-at91: declare device tree clock
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, 9 Sep 2014 10:29:25 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Mon, Sep 08, 2014 at 09:12:06AM +0200, Franck Jullien wrote:
-> > Hi Antony,
-> > =
-
-> > 2014-09-08 8:53 GMT+02:00 Antony Pavlov <antonynpavlov@gmail.com>:
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > Cc: Franck Jullien <franck.jullien@gmail.com>
-> > > ---
-> > >  Documentation/boards/openrisc.rst | 51 +++++++++++++++++++++++++++++=
-++++++++++
-> > >  1 file changed, 51 insertions(+)
-> > >
-> > > diff --git a/Documentation/boards/openrisc.rst b/Documentation/boards=
-/openrisc.rst
-> > > new file mode 100644
-> > > index 0000000..0b36712
-> > > --- /dev/null
-> > > +++ b/Documentation/boards/openrisc.rst
-> > > @@ -0,0 +1,51 @@
-> > > +OpenRISC
-> > > +=3D=3D=3D=3D=3D=3D=3D=3D
-> > > +
-> > > +or1ksim
-> > > +-------
-> > > +
-> > > +Compile or1ksim emulator::
-> > > +
-> > > + $ cd ~/
-> > > + $ git clone https://github.com/fjullien/or1ksim
-> > =
-
-> > You should use this repo: https://github.com/openrisc/or1ksim
+On Mon, Sep 08, 2014 at 03:37:37PM +0200, Rapha=EBl Poggi wrote:
+> This commit use the clkdev_add_physbase function, to declare device tree =
+and non device tree gpio clocks.
 > =
 
-> I changed while this applying.
+> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
 
-Thanks!
+Applied, thanks
 
-Just in case I have tested barebox with https://github.com/openrisc/or1ksim=
- repo emulator.
-It works fine.
- =
+I replaced the hardcoded values with the existing defines whily
+applying.
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+Sascha
+
+> ---
+>  arch/arm/mach-at91/at91sam9g45.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> =
+
+> diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sa=
+m9g45.c
+> index 9a50deb..584ef9d 100644
+> --- a/arch/arm/mach-at91/at91sam9g45.c
+> +++ b/arch/arm/mach-at91/at91sam9g45.c
+> @@ -192,11 +192,6 @@ static struct clk_lookup periph_clocks_lookups[] =3D=
+ {
+>  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
+>  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
+>  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio0", &pioA_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio1", &pioB_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioC_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio3", &pioDE_clk),
+> -	CLKDEV_DEV_ID("at91rm9200-gpio4", &pioDE_clk),
+>  	CLKDEV_DEV_ID("at91-pit", &mck),
+>  	CLKDEV_CON_DEV_ID("hck1", "atmel_lcdfb", &lcdc_clk),
+>  };
+> @@ -238,6 +233,14 @@ static void __init at91sam9g45_register_clocks(void)
+>  	clkdev_add_table(usart_clocks_lookups,
+>  			 ARRAY_SIZE(usart_clocks_lookups));
+>  =
+
+> +	clkdev_add_physbase(&twi0_clk, 0xfff84000, NULL);
+> +	clkdev_add_physbase(&twi1_clk, 0xfff88000, NULL);
+> +	clkdev_add_physbase(&pioA_clk, 0xfffff200, NULL);
+> +	clkdev_add_physbase(&pioB_clk, 0xfffff400, NULL);
+> +	clkdev_add_physbase(&pioC_clk, 0xfffff600, NULL);
+> +	clkdev_add_physbase(&pioDE_clk, 0xfffff800, NULL);
+> +	clkdev_add_physbase(&pioDE_clk, 0xfffffa00, NULL);
+> +
+>  	if (cpu_is_at91sam9m10() || cpu_is_at91sam9m11())
+>  		clk_register(&vdec_clk);
+>  =
+
+> -- =
+
+> 2.1.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
