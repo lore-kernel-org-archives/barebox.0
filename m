@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:67c:670:100:5054:ff:fe01:4dd6]
- (helo=metis.ext.pengutronix.de)
+Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XRbI1-0001cx-RT
- for barebox@lists.infradead.org; Wed, 10 Sep 2014 06:22:02 +0000
-Date: Wed, 10 Sep 2014 08:21:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140910062133.GY5352@pengutronix.de>
-References: <1410183458-19535-1-git-send-email-poggi.raph@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1410183458-19535-1-git-send-email-poggi.raph@gmail.com>
+ id 1XRcYX-0003xl-1j
+ for barebox@lists.infradead.org; Wed, 10 Sep 2014 07:43:09 +0000
+Received: by mail-la0-f53.google.com with SMTP id ge10so3242254lab.26
+ for <barebox@lists.infradead.org>; Wed, 10 Sep 2014 00:42:46 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 10 Sep 2014 11:42:25 +0400
+Message-Id: <1410334946-12922-9-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1410334946-12922-1-git-send-email-antonynpavlov@gmail.com>
+References: <1410334946-12922-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,86 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] mach-at91: declare device tree clock
-To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 8/9] MIPS: add img-ci20_defconfig
+To: barebox@lists.infradead.org
 
-On Mon, Sep 08, 2014 at 03:37:37PM +0200, Rapha=EBl Poggi wrote:
-> This commit use the clkdev_add_physbase function, to declare device tree =
-and non device tree gpio clocks.
-> =
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/configs/img-ci20_defconfig | 42 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
+diff --git a/arch/mips/configs/img-ci20_defconfig b/arch/mips/configs/img-ci20_defconfig
+new file mode 100644
+index 0000000..56235c4
+--- /dev/null
++++ b/arch/mips/configs/img-ci20_defconfig
+@@ -0,0 +1,42 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="img-ci20"
++CONFIG_MACH_MIPS_XBURST=y
++CONFIG_BOARD_CI20=y
++CONFIG_PBL_IMAGE=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_POLLER=y
++CONFIG_DEBUG_LL=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_SAVES=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_GETOPT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_OFDEVICE=y
++# CONFIG_SPI is not set
++CONFIG_CLOCKSOURCE_DUMMY=y
++CONFIG_CLOCKSOURCE_DUMMY_RATE=3500
++CONFIG_SHA1=y
++CONFIG_SHA224=y
++CONFIG_SHA256=y
+-- 
+2.1.0
 
-Applied, thanks
-
-I replaced the hardcoded values with the existing defines whily
-applying.
-
-Sascha
-
-> ---
->  arch/arm/mach-at91/at91sam9g45.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
-> =
-
-> diff --git a/arch/arm/mach-at91/at91sam9g45.c b/arch/arm/mach-at91/at91sa=
-m9g45.c
-> index 9a50deb..584ef9d 100644
-> --- a/arch/arm/mach-at91/at91sam9g45.c
-> +++ b/arch/arm/mach-at91/at91sam9g45.c
-> @@ -192,11 +192,6 @@ static struct clk_lookup periph_clocks_lookups[] =3D=
- {
->  	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
->  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
->  	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi1", &spi1_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio0", &pioA_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio1", &pioB_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio2", &pioC_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio3", &pioDE_clk),
-> -	CLKDEV_DEV_ID("at91rm9200-gpio4", &pioDE_clk),
->  	CLKDEV_DEV_ID("at91-pit", &mck),
->  	CLKDEV_CON_DEV_ID("hck1", "atmel_lcdfb", &lcdc_clk),
->  };
-> @@ -238,6 +233,14 @@ static void __init at91sam9g45_register_clocks(void)
->  	clkdev_add_table(usart_clocks_lookups,
->  			 ARRAY_SIZE(usart_clocks_lookups));
->  =
-
-> +	clkdev_add_physbase(&twi0_clk, 0xfff84000, NULL);
-> +	clkdev_add_physbase(&twi1_clk, 0xfff88000, NULL);
-> +	clkdev_add_physbase(&pioA_clk, 0xfffff200, NULL);
-> +	clkdev_add_physbase(&pioB_clk, 0xfffff400, NULL);
-> +	clkdev_add_physbase(&pioC_clk, 0xfffff600, NULL);
-> +	clkdev_add_physbase(&pioDE_clk, 0xfffff800, NULL);
-> +	clkdev_add_physbase(&pioDE_clk, 0xfffffa00, NULL);
-> +
->  	if (cpu_is_at91sam9m10() || cpu_is_at91sam9m11())
->  		clk_register(&vdec_clk);
->  =
-
-> -- =
-
-> 2.1.0
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
