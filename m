@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XRykK-0007Ma-62
- for barebox@lists.infradead.org; Thu, 11 Sep 2014 07:24:48 +0000
-Date: Thu, 11 Sep 2014 09:24:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140911072425.GI4992@pengutronix.de>
-References: <1410360368-18808-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1410360368-18808-1-git-send-email-t.gamez@phytec.de>
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XS11J-0008Mj-5M
+ for barebox@lists.infradead.org; Thu, 11 Sep 2014 09:50:31 +0000
+Received: by mail-la0-f45.google.com with SMTP id b17so775843lan.32
+ for <barebox@lists.infradead.org>; Thu, 11 Sep 2014 02:50:04 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 11 Sep 2014 13:49:51 +0400
+Message-Id: <1410428991-7686-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv: Reorder overlay append order
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] checkpatch.pl: check for the FSF mailing address
+To: barebox@lists.infradead.org
 
-Hi Teresa,
+This check code is imported from Linux v3.16 checkpatch.pl.
 
-On Wed, Sep 10, 2014 at 04:46:08PM +0200, Teresa G=E1mez wrote:
-> The defaultenv_add_base() functions adds the enviroment coming from
-> CONFIG_DEFAULT_ENVIRONMENT_PATH. But this is not only for
-> traditional enviroments, but also for external enviroments in e.g. build
-> systems. The external enviroment should override the enviroment set
-> in the board file and not the other way around. Made sure that
-> external enviroment is always added last.
-> =
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ scripts/checkpatch.pl | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 153af8d..419436d 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -1425,6 +1425,16 @@ sub process {
+ 			$rpt_cleaners = 1;
+ 		}
+ 
++# Check for FSF mailing addresses.
++		if ($rawline =~ /\bwrite to the Free/i ||
++		    $rawline =~ /\b59\s+Temple\s+Pl/i ||
++		    $rawline =~ /\b51\s+Franklin\s+St/i) {
++			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
++			my $msg_type = \&ERROR;
++			$msg_type = \&CHK if ($file);
++			&{$msg_type}("Do not include the paragraph about writing to the Free Software Foundation's mailing address from the sample GPL notice. The FSF has changed addresses in the past, and may do so again. barebox already includes a copy of the GPL.\n" . $herevet)
++		}
++
+ # check for Kconfig help text having a real description
+ # Only applies when adding the entry originally, after that we do not have
+ # sufficient context to determine whether it is indeed long enough.
+-- 
+2.1.0
 
-So what happens is:
-
-At some point board code calls defaultenv_append() which calls
-defaultenv_add_base() which in turn registers all default env snippets
-including the one from CONFIG_DEFAULT_ENVIRONMENT_PATH. After this
-defaultenv_append adds the snippet passed to it.
-Instead you want CONFIG_DEFAULT_ENVIRONMENT_PATH to be the last instance
-and register it right before using the default environment in
-defaultenv_load().
-
-I had some trouble understanding what was wrong and how you solved
-it, the above is mainly for me. I hope I find it the next time I stumble
-upon this ;)
-Something tells me this is not the last time I think about this piece
-of code.
-
-Ok, applied.
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
