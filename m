@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XRjAK-00025i-NV
- for barebox@lists.infradead.org; Wed, 10 Sep 2014 14:46:37 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 10C62A005AD
- for <barebox@lists.infradead.org>; Wed, 10 Sep 2014 16:46:09 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Wed, 10 Sep 2014 16:46:08 +0200
-Message-Id: <1410360368-18808-1-git-send-email-t.gamez@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XRxTS-0001qH-CN
+ for barebox@lists.infradead.org; Thu, 11 Sep 2014 06:03:18 +0000
+Date: Thu, 11 Sep 2014 08:02:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140911060256.GE4992@pengutronix.de>
+References: <1410335392-13061-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1410335392-13061-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defaultenv: Reorder overlay append order
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] net: dm9k: fix copy-paste typo
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-VGhlIGRlZmF1bHRlbnZfYWRkX2Jhc2UoKSBmdW5jdGlvbnMgYWRkcyB0aGUgZW52aXJvbWVudCBj
-b21pbmcgZnJvbQpDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVF9QQVRILiBCdXQgdGhpcyBpcyBu
-b3Qgb25seSBmb3IKdHJhZGl0aW9uYWwgZW52aXJvbWVudHMsIGJ1dCBhbHNvIGZvciBleHRlcm5h
-bCBlbnZpcm9tZW50cyBpbiBlLmcuIGJ1aWxkCnN5c3RlbXMuIFRoZSBleHRlcm5hbCBlbnZpcm9t
-ZW50IHNob3VsZCBvdmVycmlkZSB0aGUgZW52aXJvbWVudCBzZXQKaW4gdGhlIGJvYXJkIGZpbGUg
-YW5kIG5vdCB0aGUgb3RoZXIgd2F5IGFyb3VuZC4gTWFkZSBzdXJlIHRoYXQKZXh0ZXJuYWwgZW52
-aXJvbWVudCBpcyBhbHdheXMgYWRkZWQgbGFzdC4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6Ft
-ZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGRlZmF1bHRlbnYvZGVmYXVsdGVudi5jIHwgICAx
-NiArKysrKysrKysrKysrKy0tCiAxIGZpbGVzIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDIg
-ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZGVmYXVsdGVudi9kZWZhdWx0ZW52LmMgYi9kZWZh
-dWx0ZW52L2RlZmF1bHRlbnYuYwppbmRleCBkYzBlNDg0Li4zYjRlZmNmIDEwMDY0NAotLS0gYS9k
-ZWZhdWx0ZW52L2RlZmF1bHRlbnYuYworKysgYi9kZWZhdWx0ZW52L2RlZmF1bHRlbnYuYwpAQCAt
-NTAsMTAgKzUwLDIwIEBAIHN0YXRpYyB2b2lkIGRlZmF1bHRlbnZfYWRkX2Jhc2Uodm9pZCkKIAkJ
-ZGVmYXVsdGVudl9hcHBlbmRfZGlyZWN0b3J5KGRlZmF1bHRlbnZfMl9kZnUpOwogCWlmIChJU19F
-TkFCTEVEKENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UX0dFTkVSSUMpKQogCQlkZWZhdWx0ZW52
-X2FwcGVuZF9kaXJlY3RvcnkoZGVmYXVsdGVudl8xKTsKK30KKworc3RhdGljIHZvaWQgZGVmYXVs
-dGVudl9hZGRfZXh0ZXJuYWwodm9pZCkKK3sKKwlzdGF0aWMgaW50IGV4dGVybmFsX2FkZGVkOwor
-CisJaWYgKGV4dGVybmFsX2FkZGVkKQorCQlyZXR1cm47CisKKwlleHRlcm5hbF9hZGRlZCA9IDE7
-CiAKIAkvKgotCSAqIFRoZSB0cmFkaXRpb25hbCBlbnZpcm9ubWVudCBnaXZlbiB3aXRoIENPTkZJ
-R19ERUZBVUxUX0VOVklST05NRU5UX1BBVEguCi0JICogT25jZSBhbGwgdXNlcnMgYXJlIGNvbnZl
-cnRlZCB0byBiYmVudi15IHRoaXMgY2FuIGdvLgorCSAqIFRoZSB0cmFkaXRpb25hbCBvciBleHRl
-cm5hbCBlbnZpcm9ubWVudCBnaXZlbiB3aXRoCisJICogQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1F
-TlRfUEFUSC4KIAkgKi8KIAlkZWZhdWx0ZW52X2FwcGVuZCgodm9pZCAqKWRlZmF1bHRfZW52aXJv
-bm1lbnQsCiAJCQlkZWZhdWx0X2Vudmlyb25tZW50X3NpemUsICJkZWZhdWx0ZW52Iik7CkBAIC0x
-NDEsNiArMTUxLDggQEAgaW50IGRlZmF1bHRlbnZfbG9hZChjb25zdCBjaGFyICpkaXIsIHVuc2ln
-bmVkIGZsYWdzKQogCiAJZGVmYXVsdGVudl9hZGRfYmFzZSgpOwogCisJZGVmYXVsdGVudl9hZGRf
-ZXh0ZXJuYWwoKTsKKwogCWxpc3RfZm9yX2VhY2hfZW50cnkoZGYsICZkZWZhdWx0ZW52X2xpc3Qs
-IGxpc3QpIHsKIAkJcmV0ID0gZGVmYXVsdGVudl9sb2FkX29uZShkZiwgZGlyLCBmbGFncyk7CiAJ
-CWlmIChyZXQpCi0tIAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+On Wed, Sep 10, 2014 at 11:49:52AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  drivers/net/dm9k.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/drivers/net/dm9k.c b/drivers/net/dm9k.c
+> index 950bdb3..e525a84 100644
+> --- a/drivers/net/dm9k.c
+> +++ b/drivers/net/dm9k.c
+> @@ -775,7 +775,7 @@ static int dm9k_probe(struct device_d *dev)
+>  		break;
+>  	case 2:
+>  		dev_dbg(dev, "8 bit data bus\n");
+> -		if (priv->buswidth != IORESOURCE_MEM_32BIT)
+> +		if (priv->buswidth != IORESOURCE_MEM_8BIT)
+>  			dev_err(dev,
+>  			"Wrong databus width defined at compile time\n");
+>  		break;
+> -- 
+> 2.1.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
