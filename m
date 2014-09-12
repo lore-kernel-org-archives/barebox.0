@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XSQzn-0003ze-RU
- for barebox@lists.infradead.org; Fri, 12 Sep 2014 13:34:41 +0000
+ id 1XSQzn-0003zw-RN
+ for barebox@lists.infradead.org; Fri, 12 Sep 2014 13:34:40 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id EC59CA0065A
- for <barebox@lists.infradead.org>; Fri, 12 Sep 2014 15:33:56 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 11BC2A0066A
+ for <barebox@lists.infradead.org>; Fri, 12 Sep 2014 15:33:57 +0200 (CEST)
 From: Christian Hemp <c.hemp@phytec.de>
-Date: Fri, 12 Sep 2014 15:33:41 +0200
-Message-Id: <1410528827-12722-4-git-send-email-c.hemp@phytec.de>
+Date: Fri, 12 Sep 2014 15:33:46 +0200
+Message-Id: <1410528827-12722-9-git-send-email-c.hemp@phytec.de>
 In-Reply-To: <1410528827-12722-1-git-send-email-c.hemp@phytec.de>
 References: <1410528827-12722-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,113 +24,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] ARM:imx6:phyflex: Add defaultenv
+Subject: [PATCH 09/10] dts:imx6:pfla02: Add env node for SPI-NOR and NAND
 To: barebox@lists.infradead.org
 
-Add defaultenv_append_directory to phyFLEX-i.MX6.
+Add environment node for NAND and SPI-NOR
+
+Move the environment property to the module file.
 
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- arch/arm/boards/phytec-phyflex-imx6/Makefile       |    1 +
- arch/arm/boards/phytec-phyflex-imx6/board.c        |    3 +++
- .../defaultenv-phyflex-imx6/boot/nand              |    6 ++++++
- .../defaultenv-phyflex-imx6/boot/sd-ext3           |    6 ++++++
- .../defaultenv-phyflex-imx6/config-board           |    9 +++++++++
- .../defaultenv-phyflex-imx6/init/automount         |   14 ++++++++++++++
- 6 files changed, 39 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/nand
- create mode 100644 arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/sd-ext3
- create mode 100644 arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/config-board
- create mode 100644 arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/init/automount
+ arch/arm/dts/imx6dl-phytec-pbab01.dts   |    5 ----
+ arch/arm/dts/imx6q-phytec-pbab01.dts    |    5 ----
+ arch/arm/dts/imx6qdl-phytec-pbab01.dtsi |    9 --------
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi |   34 +++++++++++++++++++++++++++++++
+ 4 files changed, 34 insertions(+), 19 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/Makefile b/arch/arm/boards/phytec-phyflex-imx6/Makefile
-index 01c7a25..11e1c7d 100644
---- a/arch/arm/boards/phytec-phyflex-imx6/Makefile
-+++ b/arch/arm/boards/phytec-phyflex-imx6/Makefile
-@@ -1,2 +1,3 @@
- obj-y += board.o
- lwl-y += lowlevel.o
-+bbenv-y += defaultenv-phyflex-imx6
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
-index 94e3f6f..843edac 100644
---- a/arch/arm/boards/phytec-phyflex-imx6/board.c
-+++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
-@@ -17,6 +17,7 @@
-  *
+diff --git a/arch/arm/dts/imx6dl-phytec-pbab01.dts b/arch/arm/dts/imx6dl-phytec-pbab01.dts
+index 0e90c47..4b77838 100644
+--- a/arch/arm/dts/imx6dl-phytec-pbab01.dts
++++ b/arch/arm/dts/imx6dl-phytec-pbab01.dts
+@@ -20,10 +20,5 @@
+ 
+ 	chosen {
+ 		linux,stdout-path = &uart4;
+-
+-		environment@0 {
+-			compatible = "barebox,environment";
+-			device-path = &flash, "partname:barebox-environment";
+-		};
+ 	};
+ };
+diff --git a/arch/arm/dts/imx6q-phytec-pbab01.dts b/arch/arm/dts/imx6q-phytec-pbab01.dts
+index 26046e0..580338d 100644
+--- a/arch/arm/dts/imx6q-phytec-pbab01.dts
++++ b/arch/arm/dts/imx6q-phytec-pbab01.dts
+@@ -19,10 +19,5 @@
+ 
+ 	chosen {
+ 		linux,stdout-path = &uart4;
+-
+-		environment@0 {
+-			compatible = "barebox,environment";
+-			device-path = &flash, "partname:barebox-environment";
+-		};
+ 	};
+ };
+diff --git a/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi b/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
+index 7d31123..157e130 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
+@@ -9,15 +9,6 @@
+  * http://www.gnu.org/copyleft/gpl.html
   */
  
-+#include <envfs.h>
- #include <common.h>
- #include <gpio.h>
- #include <init.h>
-@@ -102,6 +103,8 @@ static int phytec_pfla02_init(void)
+-/ {
+-	chosen {
+-		environment@0 {
+-			compatible = "barebox,environment";
+-			device-path = &flash, "partname:barebox-environment";
+-		};
+-	};
+-};
+-
+ &fec {
+ 	status = "okay";
+ };
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index 4b8e256..5c7bcee 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -9,6 +9,28 @@
+  * http://www.gnu.org/copyleft/gpl.html
+  */
  
- 	imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
- 
-+	defaultenv_append_directory(defaultenv_phyflex_imx6);
++/ {
++	chosen {
++		environment-nand {
++			compatible = "barebox,environment";
++			device-path = &gpmi, "partname:barebox-environment";
++			status = "disabled";
++		};
 +
- 	return 0;
- }
- device_initcall(phytec_pfla02_init);
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/nand b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/nand
-new file mode 100644
-index 0000000..79dc03c
---- /dev/null
-+++ b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/nand
-@@ -0,0 +1,6 @@
-+#!/bin/sh
++		environment-spinor {
++			compatible = "barebox,environment";
++			device-path = &flash, "partname:barebox-environment";
++			status = "disabled";
++		};
 +
-+global.bootm.image="/dev/nand0.kernel.bb"
-+global.bootm.oftree="/dev/nand0.oftree.bb"
-+bootargs-ip
-+global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=root rootfstype=ubifs rw"
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/sd-ext3 b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/sd-ext3
-new file mode 100644
-index 0000000..fd35fe0
---- /dev/null
-+++ b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/boot/sd-ext3
-@@ -0,0 +1,6 @@
-+#!/bin/sh
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &usdhc3, "partname:barebox-environment";
++			status = "disabled";
++		};
++	};
++};
 +
-+global.bootm.image="/mnt/mmc/linuximage"
-+global.bootm.oftree="/mnt/mmc/oftree"
-+bootargs-ip
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext3 rootwait rw"
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/config-board b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/config-board
-new file mode 100644
-index 0000000..b40a4de
---- /dev/null
-+++ b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/config-board
-@@ -0,0 +1,9 @@
-+#!/bin/sh
+ &ecspi3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_ecspi3>;
+@@ -214,4 +236,16 @@
+         cd-gpios = <&gpio1 27 0>;
+         wp-gpios = <&gpio1 29 0>;
+         status = "disabled";
 +
-+# board defaults, do not change in running system. Change /env/config
-+# instead
++	#address-cells = <1>;
++	#size-cells = <1>;
 +
-+global.boot.default=nand
-+
-+global.hostname=phyFLEX-i.MX6
-+global.linux.bootargs.base="console=ttymxc3,115200"
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/init/automount b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/init/automount
-new file mode 100644
-index 0000000..49d99bd
---- /dev/null
-+++ b/arch/arm/boards/phytec-phyflex-imx6/defaultenv-phyflex-imx6/init/automount
-@@ -0,0 +1,14 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "Automountpoints"
-+	exit
-+fi
-+
-+# automount tftp server based on $eth0.serverip
-+
-+mkdir -p /mnt/tftp
-+automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
-+
-+mkdir -p /mnt/mmc
-+automount -d /mnt/mmc 'mmc2.probe=1 && [ -e /dev/mmc2.0 ] && mount /dev/mmc2.0 /mnt/mmc'
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0x80000>;
++	};
++	partition@1 {
++		label = "barebox-environment";
++		reg = <0x80000 0x80000>;
++	};
+ };
 -- 
 1.7.0.4
 
