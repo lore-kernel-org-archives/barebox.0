@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XS66u-0003XW-NP
- for barebox@lists.infradead.org; Thu, 11 Sep 2014 15:16:40 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1XS66Y-00065p-FD
- for barebox@lists.infradead.org; Thu, 11 Sep 2014 17:16:14 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <sha@pengutronix.de>) id 1XS66Y-0001LM-DC
- for barebox@lists.infradead.org; Thu, 11 Sep 2014 17:16:14 +0200
+ Linux)) id 1XSJbv-0005WP-Ju
+ for barebox@lists.infradead.org; Fri, 12 Sep 2014 05:41:33 +0000
+Date: Fri, 12 Sep 2014 07:41:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 11 Sep 2014 17:16:00 +0200
-Message-Id: <1410448570-2054-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20140912054107.GQ4992@pengutronix.de>
+References: <1410428991-7686-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1410428991-7686-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: UBI patches
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] checkpatch.pl: check for the FSF mailing address
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-VGhlIGZvbGxvd2luZyBhcmUgdGhlIFVCSSBmaXhlcyBwb3J0ZWQgZnJvbSB0aGUgS2VybmVsLiBU
-aGlzIHVwZGF0ZXMKVUJJIGNvcnJlc3BvbmRpbmcgdG8gTGludXgtMy4xNy1yYzQuCgpTYXNjaGEK
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KQnJpYW4gTm9ycmlzICgxKToKICAgICAgVUJJOiBmYXN0bWFwOiBkbyBub3QgbWlz
-cyBiaXQtZmxpcHMKCkRhbiBDYXJwZW50ZXIgKDEpOgogICAgICBVQkk6IGZpeCBzb21lIHVzZSBh
-ZnRlciBmcmVlIGJ1Z3MKCkhlaWtvIFNjaG9jaGVyICgxKToKICAgICAgVUJJOiBmaXggdGhlIHZv
-bHVtZXMgdHJlZSBzb3J0aW5nIGNyaXRlcmlhCgpKdWxpYSBMYXdhbGwgKDEpOgogICAgICBVQkk6
-IGZpeCBlcnJvciByZXR1cm4gY29kZQoKTWlrZSBTbml0emVyICgxKToKICAgICAgVUJJOiBmaXgg
-cmJfdHJlZSBub2RlIGNvbXBhcmlzb24gaW4gYWRkX21hcAoKUWkgV2FuZyDnjovotbcgKHFpd2Fu
-ZykgKDEpOgogICAgICBVQkk6IGF2b2lkIHByb2dyYW0gb3BlcmF0aW9uIG9uIE5PUiBmbGFzaCBh
-ZnRlciBlcmFzdXJlIGludGVycnVwdGVkCgpSaWNoYXJkIFdlaW5iZXJnZXIgKDIpOgogICAgICBV
-Qkk6IGluaXRfdm9sdW1lczogSWdub3JlIHZvbHVtZXMgd2l0aCBubyBMRUJzCiAgICAgIFVCSTog
-YnVnZml4IGluIHViaV93bF9mbHVzaCgpCgpUYW55YSBCcm9raG1hbiAoMik6CiAgICAgIFVCSTog
-Zml4IGVycm9yIHBhdGggaW4gX193bF9nZXRfcGViCiAgICAgIFVCSTogZml4IHViaSBmcmVlIFBF
-QnMgY291bnQgY2FsY3VsYXRpb24KCiBkcml2ZXJzL210ZC91YmkvYXR0YWNoLmMgIHwgIDQgKysr
-LQogZHJpdmVycy9tdGQvdWJpL2Zhc3RtYXAuYyB8IDEyICsrKysrLS0tLS0tCiBkcml2ZXJzL210
-ZC91YmkvaW8uYyAgICAgIHwgNTQgKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KIGRyaXZlcnMvbXRkL3ViaS92dGJsLmMgICAgfCAgMiArLQogZHJpdmVycy9t
-dGQvdWJpL3dsLmMgICAgICB8IDEwICsrKysrKystLQogNSBmaWxlcyBjaGFuZ2VkLCA0MCBpbnNl
-cnRpb25zKCspLCA0MiBkZWxldGlvbnMoLSkKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+On Thu, Sep 11, 2014 at 01:49:51PM +0400, Antony Pavlov wrote:
+> This check code is imported from Linux v3.16 checkpatch.pl.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+
+Ah good move. I hope this helps not getting the address back into the
+tree every now and then.
+
+Applied, thanks.
+
+Sascha
+
+> ---
+>  scripts/checkpatch.pl | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index 153af8d..419436d 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -1425,6 +1425,16 @@ sub process {
+>  			$rpt_cleaners = 1;
+>  		}
+>  
+> +# Check for FSF mailing addresses.
+> +		if ($rawline =~ /\bwrite to the Free/i ||
+> +		    $rawline =~ /\b59\s+Temple\s+Pl/i ||
+> +		    $rawline =~ /\b51\s+Franklin\s+St/i) {
+> +			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
+> +			my $msg_type = \&ERROR;
+> +			$msg_type = \&CHK if ($file);
+> +			&{$msg_type}("Do not include the paragraph about writing to the Free Software Foundation's mailing address from the sample GPL notice. The FSF has changed addresses in the past, and may do so again. barebox already includes a copy of the GPL.\n" . $herevet)
+> +		}
+> +
+>  # check for Kconfig help text having a real description
+>  # Only applies when adding the entry originally, after that we do not have
+>  # sufficient context to determine whether it is indeed long enough.
+> -- 
+> 2.1.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
