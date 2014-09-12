@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XSNrr-00039r-Ef
- for barebox@lists.infradead.org; Fri, 12 Sep 2014 10:14:17 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1XSNrU-0006bM-Gb
- for barebox@lists.infradead.org; Fri, 12 Sep 2014 12:13:52 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <sha@pengutronix.de>) id 1XSNrU-0003Yr-FL
- for barebox@lists.infradead.org; Fri, 12 Sep 2014 12:13:52 +0200
+ Linux)) id 1XSNrr-0003A2-En
+ for barebox@lists.infradead.org; Fri, 12 Sep 2014 10:14:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 12 Sep 2014 12:13:40 +0200
-Message-Id: <1410516830-9403-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 12 Sep 2014 12:13:47 +0200
+Message-Id: <1410516830-9403-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1410516830-9403-1-git-send-email-s.hauer@pengutronix.de>
+References: <1410516830-9403-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,153 +21,200 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Return error pointers from resource handling functions
+Subject: [PATCH 07/10] resource: Let dev_get_mem_region return an error pointer
 To: barebox@lists.infradead.org
 
-Many many drivers do not check the return value of dev_request_mem_region(),
-so in case of an error here the drivers usually crash with a NULL pointer
-dereference later. This series adds the error checks to the drivers. While
-at it, this series lets the resource functions return an ERR_PTR instead
-of NULL to allow the users to just forward the error instead of inventing
-an error code.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/base/driver.c            |  7 ++++++-
+ drivers/bus/omap-gpmc.c          |  5 +++--
+ drivers/net/gianfar.c            | 11 +++++++----
+ drivers/net/orion-gbe.c          |  5 +++++
+ drivers/net/phy/mdio-mvebu.c     |  5 +++--
+ drivers/pinctrl/imx-iomux-v1.c   |  3 +++
+ drivers/serial/serial_clps711x.c |  2 ++
+ 7 files changed, 29 insertions(+), 9 deletions(-)
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (10):
-      ata: platform_ide: cleanup resource requesting
-      resource: Let dev_get_resource_by_name return an error pointer
-      resource: Let dev_get_mem_region_by_name return an error pointer
-      resource: Let __request_region return an error pointer
-      resource: Let request_iomem_region return an error pointer
-      resource: Let dev_get_resource return an error pointer
-      resource: Let dev_get_mem_region return an error pointer
-      resource: Let dev_request_mem_region_by_name return an error pointer
-      resource: Let dev_request_mem_region return an error pointer
-      resource: Let request_ioport_region return an error pointer
-
- arch/arm/mach-at91/at91sam926x_time.c |  2 ++
- arch/arm/mach-at91/sam9_smc.c         |  5 +--
- arch/arm/mach-imx/clk-imx1.c          |  2 ++
- arch/arm/mach-imx/clk-imx21.c         |  2 ++
- arch/arm/mach-imx/clk-imx25.c         |  2 ++
- arch/arm/mach-imx/clk-imx27.c         |  2 ++
- arch/arm/mach-imx/clk-imx31.c         |  2 ++
- arch/arm/mach-imx/clk-imx35.c         |  2 ++
- arch/arm/mach-imx/clk-imx5.c          |  2 ++
- arch/arm/mach-imx/clk-imx6.c          |  2 ++
- arch/arm/mach-imx/clocksource.c       |  2 ++
- arch/arm/mach-imx/esdctl.c            |  5 +--
- arch/arm/mach-imx/iim.c               |  4 +--
- arch/arm/mach-imx/ocotp.c             |  4 +--
- arch/arm/mach-mxs/ocotp.c             |  3 ++
- arch/arm/mach-tegra/tegra20-pmc.c     |  5 +--
- arch/arm/mach-tegra/tegra20-timer.c   |  5 +--
- arch/arm/mach-zynq/clk-zynq7000.c     |  4 +--
- arch/mips/mach-ar231x/ar231x_reset.c  |  5 +--
- common/memory.c                       |  7 ++--
- common/resource.c                     | 15 +++++---
- drivers/amba/bus.c                    |  5 +--
- drivers/ata/ahci.c                    |  3 ++
- drivers/ata/intf_platform_ide.c       | 53 ++++++++++++++--------------
- drivers/ata/pata-imx.c                |  2 ++
- drivers/ata/sata-imx.c                |  4 +--
- drivers/base/driver.c                 | 34 ++++++++++--------
- drivers/bus/imx-weim.c                |  5 +--
- drivers/bus/omap-gpmc.c               |  5 +--
- drivers/clk/clk-ar933x.c              |  4 +--
- drivers/clk/mvebu/common.c            |  5 +--
- drivers/clk/mxs/clk-imx23.c           |  2 ++
- drivers/clk/mxs/clk-imx28.c           |  2 ++
- drivers/clk/socfpga.c                 |  4 +--
- drivers/clk/tegra/clk-tegra124.c      |  4 +--
- drivers/clk/tegra/clk-tegra20.c       |  4 +--
- drivers/clk/tegra/clk-tegra30.c       |  4 +--
- drivers/clocksource/arm_smp_twd.c     |  2 ++
- drivers/clocksource/bcm2835.c         |  2 ++
- drivers/clocksource/clps711x.c        |  4 +--
- drivers/clocksource/digic.c           |  5 +--
- drivers/clocksource/mvebu.c           |  2 ++
- drivers/clocksource/nomadik.c         |  2 ++
- drivers/clocksource/orion.c           |  3 ++
- drivers/clocksource/uemd.c            |  5 +--
- drivers/dma/apbh_dma.c                |  5 +--
- drivers/gpio/gpio-clps711x.c          | 10 ++++--
- drivers/gpio/gpio-davinci.c           |  4 +--
- drivers/gpio/gpio-dw.c                |  5 +--
- drivers/gpio/gpio-generic.c           | 11 +++---
- drivers/gpio/gpio-jz4740.c            |  5 +--
- drivers/gpio/gpio-malta-fpga-i2c.c    |  4 +--
- drivers/gpio/gpio-omap.c              |  4 +++
- drivers/gpio/gpio-tegra.c             |  4 +--
- drivers/i2c/busses/i2c-imx.c          |  3 ++
- drivers/i2c/busses/i2c-omap.c         |  2 ++
- drivers/i2c/busses/i2c-versatile.c    |  5 +--
- drivers/input/imx_keypad.c            |  3 ++
- drivers/mci/atmel_mci.c               |  2 ++
- drivers/mci/dw_mmc.c                  |  4 +--
- drivers/mci/imx-esdhc.c               |  2 ++
- drivers/mci/imx.c                     |  2 ++
- drivers/mci/mci-bcm2835.c             |  5 +--
- drivers/mci/mxs.c                     |  2 ++
- drivers/mci/omap_hsmmc.c              |  3 ++
- drivers/mci/pxamci.c                  |  3 ++
- drivers/mci/s3c.c                     |  4 +++
- drivers/mci/tegra-sdmmc.c             |  5 +--
- drivers/mfd/syscon.c                  |  8 ++---
- drivers/misc/sram.c                   |  7 ++--
- drivers/mtd/nand/atmel_nand.c         |  3 ++
- drivers/mtd/nand/nand_mxs.c           |  5 +++
- drivers/mtd/nand/nand_orion.c         |  4 +--
- drivers/mtd/nand/nomadik_nand.c       |  7 ++++
- drivers/mtd/nor/cfi_flash.c           |  4 +++
- drivers/net/altera_tse.c              |  9 +++++
- drivers/net/ar231x.c                  |  9 ++---
- drivers/net/arc_emac.c                |  3 ++
- drivers/net/cpsw.c                    |  3 ++
- drivers/net/designware.c              |  4 +++
- drivers/net/ethoc.c                   |  3 ++
- drivers/net/fec_mpc5200.c             |  3 ++
- drivers/net/gianfar.c                 | 11 +++---
- drivers/net/ks8851_mll.c              |  6 ++++
- drivers/net/macb.c                    |  2 ++
- drivers/net/orion-gbe.c               |  5 +++
- drivers/net/phy/mdio-mvebu.c          |  5 +--
- drivers/net/smc91111.c                |  3 ++
- drivers/pinctrl/imx-iomux-v1.c        |  3 ++
- drivers/pinctrl/imx-iomux-v2.c        |  3 ++
- drivers/pinctrl/mvebu/armada-xp.c     |  4 +--
- drivers/pinctrl/mvebu/kirkwood.c      |  5 +--
- drivers/pinctrl/pinctrl-at91.c        |  4 +--
- drivers/pinctrl/pinctrl-rockchip.c    |  4 +--
- drivers/pinctrl/pinctrl-tegra20.c     |  5 +--
- drivers/pinctrl/pinctrl-tegra30.c     |  5 +--
- drivers/pwm/pwm-imx.c                 |  5 +--
- drivers/serial/atmel.c                |  3 ++
- drivers/serial/serial_ar933x.c        |  3 ++
- drivers/serial/serial_auart.c         |  2 ++
- drivers/serial/serial_cadence.c       |  4 +--
- drivers/serial/serial_clps711x.c      |  2 ++
- drivers/serial/serial_mpc5xxx.c       |  3 ++
- drivers/serial/serial_ns16550.c       | 14 ++++----
- drivers/serial/stm-serial.c           |  2 ++
- drivers/spi/altera_spi.c              |  3 ++
- drivers/spi/mvebu_spi.c               |  4 +--
- drivers/spi/mxs_spi.c                 |  3 ++
- drivers/usb/gadget/at91_udc.c         |  4 +--
- drivers/usb/gadget/fsl_udc.c          |  4 +++
- drivers/usb/host/ehci-hcd.c           |  4 +++
- drivers/usb/host/ohci-hcd.c           |  3 ++
- drivers/usb/imx/chipidea-imx.c        |  5 +--
- drivers/video/atmel_lcdfb_core.c      |  2 ++
- drivers/video/imx-ipu-fb.c            |  2 ++
- drivers/video/imx.c                   |  3 ++
- drivers/video/omap.c                  |  3 +-
- drivers/video/pxa.c                   |  3 ++
- drivers/watchdog/im28wd.c             |  3 ++
- zz                                    | 66 +++++++++++++++++++++++++++++++++++
- 120 files changed, 467 insertions(+), 164 deletions(-)
- create mode 100644 zz
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 524ed1c..23f31ce 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -265,7 +265,7 @@ void *dev_get_mem_region(struct device_d *dev, int num)
+ 
+ 	res = dev_get_resource(dev, IORESOURCE_MEM, num);
+ 	if (IS_ERR(res))
+-		return NULL;
++		return ERR_CAST(res);
+ 
+ 	return (void __force *)res->start;
+ }
+@@ -348,6 +348,8 @@ int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
+ 	if (flags & PROT_WRITE)
+ 		return -EACCES;
+ 	*map = dev_get_mem_region(cdev->dev, 0);
++	if (IS_ERR(*map))
++		return PTR_ERR(*map);
+ 	return 0;
+ }
+ 
+@@ -357,6 +359,9 @@ int generic_memmap_rw(struct cdev *cdev, void **map, int flags)
+ 		return -EINVAL;
+ 
+ 	*map = dev_get_mem_region(cdev->dev, 0);
++	if (IS_ERR(*map))
++		return PTR_ERR(*map);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/bus/omap-gpmc.c b/drivers/bus/omap-gpmc.c
+index d7b02cf..6cc3269 100644
+--- a/drivers/bus/omap-gpmc.c
++++ b/drivers/bus/omap-gpmc.c
+@@ -17,6 +17,7 @@
+ #include <of_address.h>
+ #include <of_mtd.h>
+ #include <linux/clk.h>
++#include <linux/err.h>
+ #include <mach/gpmc_nand.h>
+ #include <mach/gpmc.h>
+ 
+@@ -404,8 +405,8 @@ static int gpmc_probe_nand_child(struct device_d *dev,
+ 	}
+ 
+ 	gpmc_base = dev_get_mem_region(dev, 0);
+-	if (!gpmc_base)
+-		return -ENODEV;
++	if (IS_ERR(gpmc_base))
++		return PTR_ERR(gpmc_base);
+ 
+ 	gpmc_nand_data.cs = val;
+ 	gpmc_nand_data.of_node = child;
+diff --git a/drivers/net/gianfar.c b/drivers/net/gianfar.c
+index a308035..5e47c64 100644
+--- a/drivers/net/gianfar.c
++++ b/drivers/net/gianfar.c
+@@ -21,6 +21,7 @@
+ #include <errno.h>
+ #include <asm/io.h>
+ #include <linux/phy.h>
++#include <linux/err.h>
+ #include "gianfar.h"
+ 
+ /* 2 seems to be the minimum number of TX descriptors to make it work. */
+@@ -489,6 +490,8 @@ static int gfar_probe(struct device_d *dev)
+ 
+ 	priv->mdiobus_tbi = gfar_info->mdiobus_tbi;
+ 	priv->regs = dev_get_mem_region(dev, 0);
++	if (IS_ERR(priv->regs))
++		return PTR_ERR(priv->regs);
+ 	priv->phyaddr = gfar_info->phyaddr;
+ 	priv->tbicr = gfar_info->tbicr;
+ 	priv->tbiana = gfar_info->tbiana;
+@@ -553,8 +556,8 @@ static int gfar_phy_probe(struct device_d *dev)
+ 	phy = xzalloc(sizeof(*phy));
+ 	phy->dev = dev;
+ 	phy->regs = dev_get_mem_region(dev, 0);
+-	if (!phy->regs)
+-		return -ENOMEM;
++	if (IS_ERR(phy->regs))
++		return PTR_ERR(phy->regs);
+ 
+ 	phy->miibus.read = gfar_miiphy_read;
+ 	phy->miibus.write = gfar_miiphy_write;
+@@ -584,8 +587,8 @@ static int gfar_tbiphy_probe(struct device_d *dev)
+ 	phy = xzalloc(sizeof(*phy));
+ 	phy->dev = dev;
+ 	phy->regs = dev_get_mem_region(dev, 0);
+-	if (!phy->regs)
+-		return -ENOMEM;
++	if (IS_ERR(phy->regs))
++		return PTR_ERR(phy->regs);
+ 
+ 	phy->miibus.read = gfar_miiphy_read;
+ 	phy->miibus.write = gfar_miiphy_write;
+diff --git a/drivers/net/orion-gbe.c b/drivers/net/orion-gbe.c
+index 991c8a8..ab761ad 100644
+--- a/drivers/net/orion-gbe.c
++++ b/drivers/net/orion-gbe.c
+@@ -415,6 +415,8 @@ static int port_probe(struct device_d *parent, struct port_priv *port)
+ 		port->intf = PHY_INTERFACE_MODE_RGMII;
+ 
+ 	port->regs = dev_get_mem_region(parent, 0) + PORTn_REGS(port->portno);
++	if (IS_ERR(port->regs))
++		return PTR_ERR(port->regs);
+ 
+ 	/* allocate rx/tx descriptors and buffers */
+ 	port->txdesc = dma_alloc_coherent(ALIGN(sizeof(*port->txdesc), 16));
+@@ -490,6 +492,9 @@ static int orion_gbe_probe(struct device_d *dev)
+ 	dev->priv = gbe;
+ 
+ 	gbe->regs = dev_get_mem_region(dev, 0);
++	if (IS_ERR(gbe->regs))
++		return PTR_ERR(gbe->regs);
++
+ 	gbe->clk = clk_get(dev, 0);
+ 	if (!IS_ERR(gbe->clk))
+ 		clk_enable(gbe->clk);
+diff --git a/drivers/net/phy/mdio-mvebu.c b/drivers/net/phy/mdio-mvebu.c
+index b90e281..460e2b4 100644
+--- a/drivers/net/phy/mdio-mvebu.c
++++ b/drivers/net/phy/mdio-mvebu.c
+@@ -28,6 +28,7 @@
+ #include <io.h>
+ #include <of.h>
+ #include <linux/clk.h>
++#include <linux/err.h>
+ #include <linux/phy.h>
+ 
+ #define SMI_DATA_SHIFT          0
+@@ -113,8 +114,8 @@ static int mvebu_mdio_probe(struct device_d *dev)
+ 	dev->priv = priv;
+ 
+ 	priv->regs = dev_get_mem_region(dev, 0);
+-	if (!priv->regs)
+-		return -ENOMEM;
++	if (IS_ERR(priv->regs))
++		return PTR_ERR(priv->regs);
+ 
+ 	priv->clk = clk_get(dev, NULL);
+ 	if (IS_ERR(priv->clk))
+diff --git a/drivers/pinctrl/imx-iomux-v1.c b/drivers/pinctrl/imx-iomux-v1.c
+index 16415c2..a3f0480 100644
+--- a/drivers/pinctrl/imx-iomux-v1.c
++++ b/drivers/pinctrl/imx-iomux-v1.c
+@@ -4,6 +4,7 @@
+ #include <malloc.h>
+ #include <pinctrl.h>
+ #include <mach/iomux-v1.h>
++#include <linux/err.h>
+ 
+ /*
+  *  GPIO Module and I/O Multiplexer
+@@ -284,6 +285,8 @@ static int imx_iomux_v1_probe(struct device_d *dev)
+ 		return -EBUSY;
+ 
+ 	iomuxv1_base = dev_get_mem_region(dev, 0);
++	if (IS_ERR(iomuxv1_base))
++		return PTR_ERR(iomuxv1_base);
+ 
+ 	ret = of_platform_populate(dev->device_node, NULL, NULL);
+ 
+diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
+index a75547c..ad14373 100644
+--- a/drivers/serial/serial_clps711x.c
++++ b/drivers/serial/serial_clps711x.c
+@@ -147,6 +147,8 @@ static int clps711x_probe(struct device_d *dev)
+ 	}
+ 
+ 	s->base = dev_get_mem_region(dev, 0);
++	if (IS_ERR(s->base))
++		return PTR_ERR(s->base);
+ 
+ 	if (!dev->device_node) {
+ 		sprintf(syscon_dev, "syscon%i", id + 1);
+-- 
+2.1.0
 
 
 _______________________________________________
