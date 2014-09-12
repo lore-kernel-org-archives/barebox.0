@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XSNrr-0003A0-El
- for barebox@lists.infradead.org; Fri, 12 Sep 2014 10:14:17 +0000
+ Linux)) id 1XSNrr-00039x-Eh
+ for barebox@lists.infradead.org; Fri, 12 Sep 2014 10:14:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 12 Sep 2014 12:13:45 +0200
-Message-Id: <1410516830-9403-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 12 Sep 2014 12:13:44 +0200
+Message-Id: <1410516830-9403-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1410516830-9403-1-git-send-email-s.hauer@pengutronix.de>
 References: <1410516830-9403-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,169 +21,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] resource: Let request_iomem_region return an error
- pointer
+Subject: [PATCH 04/10] resource: Let __request_region return an error pointer
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/memory.c                    | 4 ++--
- common/resource.c                  | 8 +-------
- drivers/amba/bus.c                 | 5 +++--
- drivers/ata/intf_platform_ide.c    | 1 +
- drivers/base/driver.c              | 4 ++--
- drivers/gpio/gpio-generic.c        | 5 +++--
- drivers/mfd/syscon.c               | 4 ++--
- drivers/pinctrl/pinctrl-rockchip.c | 4 ++--
- 8 files changed, 16 insertions(+), 19 deletions(-)
+ common/memory.c   |  3 ++-
+ common/resource.c | 23 ++++++++++++++++++-----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
 diff --git a/common/memory.c b/common/memory.c
-index c564550..57c73ab 100644
+index 4a8fe28..c564550 100644
 --- a/common/memory.c
 +++ b/common/memory.c
-@@ -124,8 +124,8 @@ int barebox_add_memory_bank(const char *name, resource_size_t start,
- 	struct device_d *dev;
+@@ -22,6 +22,7 @@
+ #include <of.h>
+ #include <init.h>
+ #include <linux/ioport.h>
++#include <linux/err.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ #include <malloc.h>
+@@ -150,7 +151,7 @@ struct resource *request_sdram_region(const char *name, resource_size_t start,
  
- 	bank->res = request_iomem_region(name, start, start + size - 1);
--	if (!bank->res)
--		return -EBUSY;
-+	if (IS_ERR(bank->res))
-+		return PTR_ERR(bank->res);
- 
- 	dev = add_mem_device(name, start, size, IORESOURCE_MEM_WRITEABLE);
+ 		res = __request_region(bank->res, name, start,
+ 				       start + size - 1);
+-		if (res)
++		if (!IS_ERR(res))
+ 			return res;
+ 	}
  
 diff --git a/common/resource.c b/common/resource.c
-index 6e84bd8..fd04f26 100644
+index fe4680e..6e84bd8 100644
 --- a/common/resource.c
 +++ b/common/resource.c
-@@ -125,13 +125,7 @@ struct resource iomem_resource = {
+@@ -20,6 +20,7 @@
+ #include <errno.h>
+ #include <init.h>
+ #include <linux/ioport.h>
++#include <linux/err.h>
+ #include <asm/io.h>
+ 
+ static int init_resource(struct resource *res, const char *name)
+@@ -48,7 +49,7 @@ struct resource *__request_region(struct resource *parent,
+ 				__func__,
+ 				(unsigned long long)start,
+ 				(unsigned long long)end);
+-		return NULL;
++		return ERR_PTR(-EINVAL);
+ 	}
+ 
+ 	/* outside parent resource? */
+@@ -59,7 +60,7 @@ struct resource *__request_region(struct resource *parent,
+ 				(unsigned long long)end,
+ 				(unsigned long long)parent->start,
+ 				(unsigned long long)parent->end);
+-		return NULL;
++		return ERR_PTR(-EINVAL);
+ 	}
+ 
+ 	/*
+@@ -77,7 +78,7 @@ struct resource *__request_region(struct resource *parent,
+ 				(unsigned long long)end,
+ 				(unsigned long long)r->start,
+ 				(unsigned long long)r->end);
+-		return NULL;
++		return ERR_PTR(-EBUSY);
+ 	}
+ 
+ ok:
+@@ -124,7 +125,13 @@ struct resource iomem_resource = {
  struct resource *request_iomem_region(const char *name,
  		resource_size_t start, resource_size_t end)
  {
--	struct resource *res;
--
--	res = __request_region(&iomem_resource, name, start, end);
--	if (IS_ERR(res))
--		return NULL;
--
--	return res;
-+	return __request_region(&iomem_resource, name, start, end);
+-	return __request_region(&iomem_resource, name, start, end);
++	struct resource *res;
++
++	res = __request_region(&iomem_resource, name, start, end);
++	if (IS_ERR(res))
++		return NULL;
++
++	return res;
  }
  
  /* The root resource for the whole io-mapped io space */
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index 6106252..b934e11 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -7,6 +7,7 @@
- #include <common.h>
- #include <driver.h>
- #include <linux/clk.h>
-+#include <linux/err.h>
- #include <linux/amba/bus.h>
- #include <io.h>
- #include <init.h>
-@@ -115,8 +116,8 @@ int amba_device_add(struct amba_device *dev)
- 	 */
- 	size = resource_size(&dev->res);
- 	res = request_iomem_region("amba", dev->res.start, dev->res.end);
--	if (!res)
--		return -ENOMEM;
+@@ -141,5 +148,11 @@ struct resource ioport_resource = {
+ struct resource *request_ioport_region(const char *name,
+ 		resource_size_t start, resource_size_t end)
+ {
+-	return __request_region(&ioport_resource, name, start, end);
++	struct resource *res;
++
++	res = __request_region(&ioport_resource, name, start, end);
 +	if (IS_ERR(res))
-+		return PTR_ERR(res);
- 	dev->base = tmp = (void __force __iomem *)res->start;
- 	if (!tmp) {
- 		ret = -ENOMEM;
-diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
-index b3faf47..db4c356 100644
---- a/drivers/ata/intf_platform_ide.c
-+++ b/drivers/ata/intf_platform_ide.c
-@@ -28,6 +28,7 @@
- #include <errno.h>
- #include <ata_drive.h>
- #include <platform_ide.h>
-+#include <linux/err.h>
- 
- /**
-  * Setup the register specific addresses for an ATA like divice
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index e39a351..d90da42 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -311,7 +311,7 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
- 		return NULL;
- 
- 	res = request_iomem_region(dev_name(dev), res->start, res->end);
--	if (!res)
-+	if (IS_ERR(res))
- 		return NULL;
- 
- 	return (void __force __iomem *)res->start;
-@@ -327,7 +327,7 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
- 		return NULL;
- 
- 	res = request_iomem_region(dev_name(dev), res->start, res->end);
--	if (!res)
-+	if (IS_ERR(res))
- 		return NULL;
- 
- 	return (void __force __iomem *)res->start;
-diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-index 60c8b3a..a8b214c 100644
---- a/drivers/gpio/gpio-generic.c
-+++ b/drivers/gpio/gpio-generic.c
-@@ -14,6 +14,7 @@
- #include <init.h>
- #include <malloc.h>
- #include <linux/log2.h>
-+#include <linux/err.h>
- #include <linux/basic_mmio_gpio.h>
- 
- static void bgpio_write8(void __iomem *reg, unsigned int data)
-@@ -320,8 +321,8 @@ static void __iomem *bgpio_map(struct device_d *dev, const char *name,
- 	}
- 
- 	ret = request_iomem_region(dev_name(dev), r->start, r->end);
--	if (!ret) {
--		*err = -ENOMEM;
-+	if (IS_ERR(ret)) {
-+		*err = PTR_ERR(ret);
- 		return NULL;
- 	}
- 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 55cc34f..231f4fe 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -77,9 +77,9 @@ static int syscon_probe(struct device_d *dev)
- 	}
- 
- 	res = request_iomem_region(dev_name(dev), res->start, res->end);
--	if (!res) {
-+	if (IS_ERR(res)) {
- 		free(syscon);
--		return -EBUSY;
-+		return PTR_ERR(res);
- 	}
- 
- 	syscon->base = (void __iomem *)res->start;
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 56377ea..a5b52a8 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -341,10 +341,10 @@ static int rockchip_get_bank_data(struct rockchip_pin_bank *bank,
- 	}
- 
- 	res = request_iomem_region(dev_name(dev), node_res.start, node_res.end);
--	if (!res) {
-+	if (IS_ERR(res)) {
- 		dev_err(dev, "cannot request iomem region %08x\n",
- 			node_res.start);
--		return -ENOENT;
-+		return PTR_ERR(res);
- 	}
- 
- 	bank->reg_base = (void __iomem *)res->start;
++		return NULL;
++
++	return res;
+ }
 -- 
 2.1.0
 
