@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XSQLR-0003rW-Pn
- for barebox@lists.infradead.org; Fri, 12 Sep 2014 12:52:58 +0000
-Received: by mail-la0-f42.google.com with SMTP id hz20so881775lab.1
- for <barebox@lists.infradead.org>; Fri, 12 Sep 2014 05:52:33 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 12 Sep 2014 16:52:23 +0400
-Message-Id: <1410526344-21189-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1410526344-21189-1-git-send-email-antonynpavlov@gmail.com>
-References: <1410526344-21189-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XSQzS-0003uC-86
+ for barebox@lists.infradead.org; Fri, 12 Sep 2014 13:34:19 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id B5E6AA00484
+ for <barebox@lists.infradead.org>; Fri, 12 Sep 2014 15:33:56 +0200 (CEST)
+From: Christian Hemp <c.hemp@phytec.de>
+Date: Fri, 12 Sep 2014 15:33:39 +0200
+Message-Id: <1410528827-12722-2-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <1410528827-12722-1-git-send-email-c.hemp@phytec.de>
+References: <1410528827-12722-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,26 +24,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] MIPS: xburst: Kconfig: add comment
+Subject: [PATCH 02/10] dts:imx6q:pcaaxl3: Add oftree partition to nand
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/mach-xburst/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Add oftree partiton to nand.
 
-diff --git a/arch/mips/mach-xburst/Kconfig b/arch/mips/mach-xburst/Kconfig
-index df2539a..fd106fe 100644
---- a/arch/mips/mach-xburst/Kconfig
-+++ b/arch/mips/mach-xburst/Kconfig
-@@ -58,4 +58,4 @@ config JZ47XX_DEBUG_LL_UART4
- endchoice
- endif # DEBUG_LL
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+---
+ arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi |   11 ++++++++---
+ 1 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+index 45f3669..78c3334 100644
+--- a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
++++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+@@ -144,13 +144,18 @@
+ 	};
  
--endif
-+endif # MACH_MIPS_XBURST
+ 	partition@2 {
+-		label = "kernel";
+-		reg = <0x420000 0x800000>;
++		label = "oftree";
++		reg = <0x420000 0x20000>;
+ 	};
+ 
+ 	partition@3 {
++		label = "kernel";
++		reg = <0x440000 0x800000>;
++	};
++
++	partition@4 {
+ 		label = "root";
+-		reg = <0xC20000 0x0>;
++		reg = <0xC40000 0x0>;
+ 	};
+ };
+ 
 -- 
-2.1.0
+1.7.0.4
 
 
 _______________________________________________
