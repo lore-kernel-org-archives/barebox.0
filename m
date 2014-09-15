@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from top.free-electrons.com ([176.31.233.9]
- helo=mail.free-electrons.com)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XTRNE-0006HQ-Jx
- for barebox@lists.infradead.org; Mon, 15 Sep 2014 08:11:01 +0000
-Date: Mon, 15 Sep 2014 09:09:28 +0100
-From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Message-ID: <20140915080927.GA714@arch>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XTSM2-0006Rw-4O
+ for barebox@lists.infradead.org; Mon, 15 Sep 2014 09:13:50 +0000
+Date: Mon, 15 Sep 2014 11:13:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140915091324.GB4992@pengutronix.de>
 References: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
+ <1410766873-4393-5-git-send-email-s.hauer@pengutronix.de>
+ <54169CA8.5030003@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <54169CA8.5030003@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mvebu multi SoC support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 4/5] ARM: mvebu: Allow multiple SoCs
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 15 Sep 09:41 AM, Sascha Hauer wrote:
-> =
+On Mon, Sep 15, 2014 at 10:00:40AM +0200, Sebastian Hesselbarth wrote:
+> On 09/15/2014 09:41 AM, Sascha Hauer wrote:
+> >Now that the correct SoC specific memory fixup function is called
+> >we can allow to select multiple SoCs in Kconfig.
+> >
+> >Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> Sascha,
+> 
+> thanks for the patches, I'll give them a try later. FWIW, this
+> patch allows to build Kirkwood together with Dove and Armada ones,
+> which will not work at all. Kirkwood is armv5, while the others
+> are armv7. There is no way you run a multiv7 barebox on kirkwood,
+> right?
 
-> The following series allows to select multiple mvebu SoCs at once.
+Oh, I didn't realize that Kirkwood is armv5. It should work though.
+The only reason to additionally add a mvebu_v7_config is to make
+Thumb2 mode available to the SoCs that support it.
 
-Hm, that sounds really good!
+> >  #
+> >
+> >-if ARCH_KIRKWOOD
 
-> Additionally a mvebu_defconfig is added to collect all mvebu based
-> boards.
-> =
+Instead of removing this I could turn this into
 
-> I couldn't test this series. We have a cubox somewhere, but it seems
-> to have disappeared from our remotelab. Sebastian, could you give
-> this series a try?
-> =
+comment "Kirkwood based boards"
 
+Sascha
 
-FWIW: Right now I'm on a trip, so no access to my boards, but I shall
-test this as soon as I get back (i.e. in a few weeks).
-
-Thanks,
--- =
-
-Ezequiel Garc=EDa, Free Electrons
-Embedded Linux, Kernel and Android Engineering
-http://free-electrons.com
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
