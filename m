@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XTQv3-0000mt-Dn
- for barebox@lists.infradead.org; Mon, 15 Sep 2014 07:41:54 +0000
+ Linux)) id 1XTQv8-0000ys-Df
+ for barebox@lists.infradead.org; Mon, 15 Sep 2014 07:41:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Sep 2014 09:41:09 +0200
-Message-Id: <1410766873-4393-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 15 Sep 2014 09:41:13 +0200
+Message-Id: <1410766873-4393-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
 References: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,180 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ARM: mvebu: Add common reset_cpu function
+Subject: [PATCH 5/5] ARM: Add mvebu_defconfig
 To: barebox@lists.infradead.org
 
-mvebu has a reset_cpu function per SoC this does not work when multiple
-SoCs are selected, so add a common reset_cpu function which calls into
-the SoC specific ones.
+This adds a mvebu_defconfig which enables all mvebu based boards.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-mvebu/armada-370-xp.c       | 19 ++++++++++---------
- arch/arm/mach-mvebu/common.c              | 15 ++++++++++++++-
- arch/arm/mach-mvebu/dove.c                | 21 +++++++++++----------
- arch/arm/mach-mvebu/include/mach/common.h |  1 +
- arch/arm/mach-mvebu/kirkwood.c            | 19 ++++++++++---------
- 5 files changed, 46 insertions(+), 29 deletions(-)
+ arch/arm/configs/mvebu_defconfig | 108 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 108 insertions(+)
+ create mode 100644 arch/arm/configs/mvebu_defconfig
 
-diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-index f2b991e..6251100 100644
---- a/arch/arm/mach-mvebu/armada-370-xp.c
-+++ b/arch/arm/mach-mvebu/armada-370-xp.c
-@@ -44,11 +44,21 @@ static inline void armada_370_xp_memory_find(unsigned long *phys_base,
- 	}
- }
- 
-+static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
-+{
-+	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
-+	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
-+	while (1)
-+		;
-+}
-+
- static int armada_370_xp_init_soc(void)
- {
- 	unsigned long phys_base, phys_size;
- 	u32 reg;
- 
-+	mvebu_set_reset(armada_370_xp_reset_cpu);
-+
- 	barebox_set_model("Marvell Armada 370/XP");
- 	barebox_set_hostname("armada");
- 
-@@ -65,12 +75,3 @@ static int armada_370_xp_init_soc(void)
- 	return 0;
- }
- core_initcall(armada_370_xp_init_soc);
--
--void __noreturn reset_cpu(unsigned long addr)
--{
--	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
--	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
--	while (1)
--		;
--}
--EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-index ac4b332..5c3ac14 100644
---- a/arch/arm/mach-mvebu/common.c
-+++ b/arch/arm/mach-mvebu/common.c
-@@ -21,6 +21,7 @@
- #include <of.h>
- #include <of_address.h>
- #include <linux/clk.h>
-+#include <mach/common.h>
- 
- /*
-  * Marvell MVEBU SoC id and revision can be read from any PCIe
-@@ -137,4 +138,16 @@ static int mvebu_memory_of_fixup(struct device_node *root, void *context)
- static int mvebu_memory_fixup_register(void) {
- 	return of_register_fixup(mvebu_memory_of_fixup, NULL);
- }
--pure_initcall(mvebu_memory_fixup_register);
-+
-+static __noreturn void (*mvebu_reset_cpu)(unsigned long addr);
-+
-+void __noreturn reset_cpu(unsigned long addr)
-+{
-+	mvebu_reset_cpu(addr);
-+}
-+EXPORT_SYMBOL(reset_cpu);
-+
-+void mvebu_set_reset(void __noreturn (*reset)(unsigned long addr))
-+{
-+	mvebu_reset_cpu = reset;
-+}
-diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
-index 69c6436..17cee0b 100644
---- a/arch/arm/mach-mvebu/dove.c
-+++ b/arch/arm/mach-mvebu/dove.c
-@@ -68,10 +68,21 @@ static inline void dove_memory_find(unsigned long *phys_base,
- 	}
- }
- 
-+static void __noreturn dove_reset_cpu(unsigned long addr)
-+{
-+	/* enable and assert RSTOUTn */
-+	writel(SOFT_RESET_OUT_EN, DOVE_BRIDGE_BASE + BRIDGE_RSTOUT_MASK);
-+	writel(SOFT_RESET_EN, DOVE_BRIDGE_BASE + BRIDGE_SYS_SOFT_RESET);
-+	while (1)
-+		;
-+}
-+
- static int dove_init_soc(void)
- {
- 	unsigned long phys_base, phys_size;
- 
-+	mvebu_set_reset(dove_reset_cpu);
-+
- 	barebox_set_model("Marvell Dove");
- 	barebox_set_hostname("dove");
- 
-@@ -85,13 +96,3 @@ static int dove_init_soc(void)
- 	return 0;
- }
- core_initcall(dove_init_soc);
--
--void __noreturn reset_cpu(unsigned long addr)
--{
--	/* enable and assert RSTOUTn */
--	writel(SOFT_RESET_OUT_EN, DOVE_BRIDGE_BASE + BRIDGE_RSTOUT_MASK);
--	writel(SOFT_RESET_EN, DOVE_BRIDGE_BASE + BRIDGE_SYS_SOFT_RESET);
--	while (1)
--		;
--}
--EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-mvebu/include/mach/common.h b/arch/arm/mach-mvebu/include/mach/common.h
-index 9f6118e..30862e0 100644
---- a/arch/arm/mach-mvebu/include/mach/common.h
-+++ b/arch/arm/mach-mvebu/include/mach/common.h
-@@ -21,5 +21,6 @@
- #define MVEBU_REMAP_INT_REG_BASE	0xf1000000
- 
- void mvebu_set_memory(u64 phys_base, u64 phys_size);
-+void mvebu_set_reset(void __noreturn (*reset)(unsigned long addr));
- 
- #endif
-diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
-index c114bdb..7c0526b 100644
---- a/arch/arm/mach-mvebu/kirkwood.c
-+++ b/arch/arm/mach-mvebu/kirkwood.c
-@@ -43,10 +43,20 @@ static inline void kirkwood_memory_find(unsigned long *phys_base,
- 	}
- }
- 
-+static void __noreturn kirkwood_reset_cpu(unsigned long addr)
-+{
-+	writel(SOFT_RESET_OUT_EN, KIRKWOOD_BRIDGE_BASE + BRIDGE_RSTOUT_MASK);
-+	writel(SOFT_RESET_EN, KIRKWOOD_BRIDGE_BASE + BRIDGE_SYS_SOFT_RESET);
-+	for(;;)
-+		;
-+}
-+
- static int kirkwood_init_soc(void)
- {
- 	unsigned long phys_base, phys_size;
- 
-+	mvebu_set_reset(kirkwood_reset_cpu);
-+
- 	barebox_set_model("Marvell Kirkwood");
- 	barebox_set_hostname("kirkwood");
- 
-@@ -58,12 +68,3 @@ static int kirkwood_init_soc(void)
- 	return 0;
- }
- core_initcall(kirkwood_init_soc);
--
--void __noreturn reset_cpu(unsigned long addr)
--{
--	writel(SOFT_RESET_OUT_EN, KIRKWOOD_BRIDGE_BASE + BRIDGE_RSTOUT_MASK);
--	writel(SOFT_RESET_EN, KIRKWOOD_BRIDGE_BASE + BRIDGE_SYS_SOFT_RESET);
--	for(;;)
--		;
--}
--EXPORT_SYMBOL(reset_cpu);
+diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
+new file mode 100644
+index 0000000..87b35f0
+--- /dev/null
++++ b/arch/arm/configs/mvebu_defconfig
+@@ -0,0 +1,108 @@
++CONFIG_ARCH_MVEBU=y
++CONFIG_MACH_GLOBALSCALE_MIRABOX=y
++CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3=y
++CONFIG_MACH_MARVELL_ARMADA_XP_GP=y
++CONFIG_MACH_SOLIDRUN_CUBOX=y
++CONFIG_MACH_GLOBALSCALE_GURUPLUG=y
++CONFIG_MACH_PLATHOME_OPENBLOCKS_A6=y
++CONFIG_MACH_USI_TOPKICK=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0x0
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_BLSPEC=y
++CONFIG_IMD_TARGET=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_PARTITION_DISK_EFI=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_CMD_BOOT=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_AUTOMOUNT=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_GLOBAL=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_BASENAME=y
++CONFIG_CMD_DIRNAME=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_READLINK=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA224SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_GETOPT=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_WD=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_I2C=y
++CONFIG_MTD=y
++CONFIG_MTD_M25P80=y
++CONFIG_DISK_AHCI=y
++CONFIG_USB_HOST=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_STORAGE=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_LED=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_WATCHDOG=y
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_BZLIB=y
++CONFIG_LZO_DECOMPRESS=y
 -- 
 2.1.0
 
