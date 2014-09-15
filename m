@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XTVqA-00081J-CL
+ id 1XTVqA-00081K-CL
  for barebox@lists.infradead.org; Mon, 15 Sep 2014 12:57:11 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id A6EF4A003B7
+ by root.phytec.de (Postfix) with ESMTP id B0319A003F1
  for <barebox@lists.infradead.org>; Mon, 15 Sep 2014 14:56:42 +0200 (CEST)
 From: Christian Hemp <c.hemp@phytec.de>
-Date: Mon, 15 Sep 2014 14:56:28 +0200
-Message-Id: <1410785791-27053-1-git-send-email-c.hemp@phytec.de>
+Date: Mon, 15 Sep 2014 14:56:30 +0200
+Message-Id: <1410785791-27053-3-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <1410785791-27053-1-git-send-email-c.hemp@phytec.de>
+References: <1410785791-27053-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +24,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] phy/micrel: disable Asym_Pause support
+Subject: [PATCH 3/4] ARM:phyFLEX-iMX6: Remove mmd_write_reg from board
 To: barebox@lists.infradead.org
 
-From: Jan Weitzel <j.weitzel@phytec.de>
+Remove mmd_write_reg function from board file and use phy_write_mmd_indirect.
 
-With SUPPORTED_Asym_Pause enabled we need to hotplug the ethernet cable.
-So disable it like done with PHY_ID_KSZ9021.
-
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- drivers/net/phy/micrel.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boards/phytec-phyflex-imx6/board.c |   10 +---------
+ 1 files changed, 1 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 8aea653..88c64e5 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -254,11 +254,11 @@ static struct phy_driver ksphy_driver[] = {
- 	.config_aneg	= genphy_config_aneg,
- 	.read_status	= genphy_read_status,
- }, {
-+	/* I saw the same issue like PHY_ID_KSZ9021 for Asym_Pause */
- 	.phy_id		= PHY_ID_KSZ9031,
- 	.phy_id_mask	= 0x00fffff0,
- 	.drv.name	= "Micrel KSZ9031 Gigabit PHY",
--	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause
--				| SUPPORTED_Asym_Pause),
-+	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause),
- 	.config_init	= kszphy_config_init,
- 	.config_aneg	= genphy_config_aneg,
- 	.read_status	= genphy_read_status,
+diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
+index 131861d..09a5c79 100644
+--- a/arch/arm/boards/phytec-phyflex-imx6/board.c
++++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
+@@ -63,17 +63,9 @@ static void phyflex_err006282_workaround(void)
+ 	gpio_direction_input(MX6_PHYFLEX_ERR006282);
+ }
+ 
+-static void mmd_write_reg(struct phy_device *dev, int device, int reg, int val)
+-{
+-	phy_write(dev, 0x0d, device);
+-	phy_write(dev, 0x0e, reg);
+-	phy_write(dev, 0x0d, (1 << 14) | device);
+-	phy_write(dev, 0x0e, val);
+-}
+-
+ static int ksz9031rn_phy_fixup(struct phy_device *dev)
+ {
+-	mmd_write_reg(dev, 2, 8, 0x039F);
++	phy_write_mmd_indirect(dev, 8, 2, 0x039F);
+ 
+ 	return 0;
+ }
 -- 
 1.7.0.4
 
