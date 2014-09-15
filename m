@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
+Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XTdZV-0001ID-Ht
- for barebox@lists.infradead.org; Mon, 15 Sep 2014 21:12:30 +0000
-Received: by mail-wg0-f50.google.com with SMTP id x13so4565157wgg.9
- for <barebox@lists.infradead.org>; Mon, 15 Sep 2014 14:12:07 -0700 (PDT)
-Message-ID: <54175623.2090309@gmail.com>
-Date: Mon, 15 Sep 2014 23:12:03 +0200
+ id 1XTddC-00034j-6R
+ for barebox@lists.infradead.org; Mon, 15 Sep 2014 21:16:18 +0000
+Received: by mail-wg0-f45.google.com with SMTP id z12so4453207wgg.4
+ for <barebox@lists.infradead.org>; Mon, 15 Sep 2014 14:15:56 -0700 (PDT)
+Message-ID: <54175708.1090306@gmail.com>
+Date: Mon, 15 Sep 2014 23:15:52 +0200
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 References: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
- <1410766873-4393-5-git-send-email-s.hauer@pengutronix.de>
- <54169CA8.5030003@gmail.com> <20140915091324.GB4992@pengutronix.de>
-In-Reply-To: <20140915091324.GB4992@pengutronix.de>
+ <1410766873-4393-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1410766873-4393-6-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,105 +24,152 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ARM: mvebu: Allow multiple SoCs
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/5] ARM: Add mvebu_defconfig
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
-On 09/15/2014 11:13 AM, Sascha Hauer wrote:
-> On Mon, Sep 15, 2014 at 10:00:40AM +0200, Sebastian Hesselbarth wrote:
->> On 09/15/2014 09:41 AM, Sascha Hauer wrote:
->>> Now that the correct SoC specific memory fixup function is called
->>> we can allow to select multiple SoCs in Kconfig.
->>>
->>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->>
->> Sascha,
->>
->> thanks for the patches, I'll give them a try later. FWIW, this
->> patch allows to build Kirkwood together with Dove and Armada ones,
->> which will not work at all. Kirkwood is armv5, while the others
->> are armv7. There is no way you run a multiv7 barebox on kirkwood,
->> right?
+On 09/15/2014 09:41 AM, Sascha Hauer wrote:
+> This adds a mvebu_defconfig which enables all mvebu based boards.
 > 
-> Oh, I didn't realize that Kirkwood is armv5. It should work though.
-> The only reason to additionally add a mvebu_v7_config is to make
-> Thumb2 mode available to the SoCs that support it.
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-I did some initial testing on Kirkwood Guruplug. In mvebu_defconfig
-you select CONFIG_AEABI=y resulting in
+Sascha,
 
-$ readelf -h barebox | grep Flags
-  Flags:                             0x5000000, Version5 EABI
+we should also select
 
-And failing on Kirkwood at some places with
+CONFIG_DRIVER_NET_ORION=y
+CONFIG_MDIO_MVEBU=y
+CONFIG_MARVELL_PHY=y
 
-Board: Globalscale Technologies Guruplug Server Plus
-SoC: Marvell 6281 rev 3
-mdio_bus: miibus0: probed
-unable to handle paging request at address 0x01f0ebac
-pc : [<03e0de20>]    lr : [<03e0de08>]
-sp : 03fffeb0  ip : 03fffea8  fp : 00000001
-r10: 03ff4000  r9 : 01000e00  r8 : 01003a84
-r7 : 01f07324  r6 : 03e55f88  r5 : 01f0eaa4  r4 : 01f0eaa8
-r3 : 00000000  r2 : 00000040  r1 : 00000104  r0 : 01f11094
-Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32
-[<03e0de20>] (mdio_bus_probe+0x150/0x188) from [<03e0cb24>]
-(device_probe+0x1c/0x70)
-[<03e0cb24>] (device_probe+0x1c/0x70) from [<03e0cbbc>]
-(match.part.2+0x44/0x50)
-[<03e0cbbc>] (match.part.2+0x44/0x50) from [<03e0cda8>]
-(register_device+0x118/0x168)
-[<03e0cda8>] (register_device+0x118/0x168) from [<03e0d2e8>]
-(phy_register_device+0x2c/0x94)
-[<03e0d2e8>] (phy_register_device+0x2c/0x94) from [<03e0df9c>]
-(mdiobus_register+0x144/0x18c)
-[<03e0df9c>] (mdiobus_register+0x144/0x18c) from [<03e0ce8c>]
-(platform_probe+0x10/0x14)
-[<03e0ce8c>] (platform_probe+0x10/0x14) from [<03e0cb24>]
-(device_probe+0x1c/0x70)
-[<03e0cb24>] (device_probe+0x1c/0x70) from [<03e0cbbc>]
-(match.part.2+0x44/0x50)
-[<03e0cbbc>] (match.part.2+0x44/0x50) from [<03e0cc58>]
-(register_driver+0x90/0xc8)
-[<03e0cc58>] (register_driver+0x90/0xc8) from [<03e00ae8>]
-(start_barebox+0x28/0x130)
-[<03e00ae8>] (start_barebox+0x28/0x130) from [<03e3e3e8>]
-(__start+0xf8/0x10c)
-[<03e3e3e8>] (__start+0xf8/0x10c) from [<03e00004>]
-(__bare_init_start+0x0/0x10)
+and some NET commands would be helpful too.
 
-[<03e3dce0>] (unwind_backtrace+0x0/0xa0) from [<03e240a8>] (panic+0x28/0x48)
-[<03e240a8>] (panic+0x28/0x48) from [<03e3e220>] (do_exception+0x10/0x14)
-[<03e3e220>] (do_exception+0x10/0x14) from [<03e3e2ac>]
-(do_data_abort+0x2c/0x38)
-[<03e3e2ac>] (do_data_abort+0x2c/0x38) from [<03e3dee8>]
-(data_abort+0x48/0x60)
+Also,
 
-I first noticed that with orion-mdio disabled and on calling
-devinfo. Looks like u64 dereferencing is definitely causing
-this but I admit, I haven't looked at mdio.
+CONFIG_DRIVER_NET_MVNETA=y
 
-Disabling CONFIG_AEABI gives
-
-$ readelf -h barebox | grep Flags
-  Flags:                             0x600, GNU EABI, software FP, VFP
-
-which also works in a Multi-SoC image on Kirkwood.
-
->>>  #
->>>
->>> -if ARCH_KIRKWOOD
-> 
-> Instead of removing this I could turn this into
-> 
-> comment "Kirkwood based boards"
-
-I am not too much into v5/v7 differences (or EABI FWIW). If
-you say, a multi_v5+v7 image is fine, I am too.
-
-I'll continue testing on !KIRKWOOD tomorrow evening.
+_if_ Ezequiel reposts mvneta before this gets in.
 
 Sebastian
+
+> ---
+>  arch/arm/configs/mvebu_defconfig | 108 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 108 insertions(+)
+>  create mode 100644 arch/arm/configs/mvebu_defconfig
+> 
+> diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
+> new file mode 100644
+> index 0000000..87b35f0
+> --- /dev/null
+> +++ b/arch/arm/configs/mvebu_defconfig
+> @@ -0,0 +1,108 @@
+> +CONFIG_ARCH_MVEBU=y
+> +CONFIG_MACH_GLOBALSCALE_MIRABOX=y
+> +CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3=y
+> +CONFIG_MACH_MARVELL_ARMADA_XP_GP=y
+> +CONFIG_MACH_SOLIDRUN_CUBOX=y
+> +CONFIG_MACH_GLOBALSCALE_GURUPLUG=y
+> +CONFIG_MACH_PLATHOME_OPENBLOCKS_A6=y
+> +CONFIG_MACH_USI_TOPKICK=y
+> +CONFIG_AEABI=y
+> +CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+> +CONFIG_ARM_UNWIND=y
+> +CONFIG_MMU=y
+> +CONFIG_TEXT_BASE=0x0
+> +CONFIG_MALLOC_SIZE=0x0
+> +CONFIG_MALLOC_TLSF=y
+> +CONFIG_KALLSYMS=y
+> +CONFIG_RELOCATABLE=y
+> +CONFIG_HUSH_FANCY_PROMPT=y
+> +CONFIG_CMDLINE_EDITING=y
+> +CONFIG_AUTO_COMPLETE=y
+> +CONFIG_MENU=y
+> +CONFIG_BLSPEC=y
+> +CONFIG_IMD_TARGET=y
+> +CONFIG_CONSOLE_ACTIVATE_NONE=y
+> +CONFIG_PARTITION_DISK_EFI=y
+> +CONFIG_LONGHELP=y
+> +CONFIG_CMD_IOMEM=y
+> +CONFIG_CMD_IMD=y
+> +CONFIG_CMD_MEMINFO=y
+> +CONFIG_CMD_ARM_MMUINFO=y
+> +CONFIG_CMD_BOOT=y
+> +CONFIG_CMD_BOOTM_SHOW_TYPE=y
+> +CONFIG_CMD_BOOTM_VERBOSE=y
+> +CONFIG_CMD_BOOTM_INITRD=y
+> +CONFIG_CMD_BOOTM_OFTREE=y
+> +CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+> +CONFIG_CMD_GO=y
+> +CONFIG_CMD_LOADS=y
+> +CONFIG_CMD_LOADY=y
+> +CONFIG_CMD_RESET=y
+> +CONFIG_CMD_UIMAGE=y
+> +CONFIG_CMD_PARTITION=y
+> +CONFIG_CMD_AUTOMOUNT=y
+> +CONFIG_CMD_EXPORT=y
+> +CONFIG_CMD_GLOBAL=y
+> +CONFIG_CMD_LOADENV=y
+> +CONFIG_CMD_PRINTENV=y
+> +CONFIG_CMD_MAGICVAR=y
+> +CONFIG_CMD_MAGICVAR_HELP=y
+> +CONFIG_CMD_SAVEENV=y
+> +CONFIG_CMD_BASENAME=y
+> +CONFIG_CMD_DIRNAME=y
+> +CONFIG_CMD_FILETYPE=y
+> +CONFIG_CMD_LN=y
+> +CONFIG_CMD_MD5SUM=y
+> +CONFIG_CMD_READLINK=y
+> +CONFIG_CMD_SHA1SUM=y
+> +CONFIG_CMD_SHA224SUM=y
+> +CONFIG_CMD_SHA256SUM=y
+> +CONFIG_CMD_UNCOMPRESS=y
+> +CONFIG_CMD_GETOPT=y
+> +CONFIG_CMD_LET=y
+> +CONFIG_CMD_MSLEEP=y
+> +CONFIG_CMD_READF=y
+> +CONFIG_CMD_SLEEP=y
+> +CONFIG_CMD_ECHO_E=y
+> +CONFIG_CMD_EDIT=y
+> +CONFIG_CMD_MENU=y
+> +CONFIG_CMD_MENU_MANAGEMENT=y
+> +CONFIG_CMD_MENUTREE=y
+> +CONFIG_CMD_READLINE=y
+> +CONFIG_CMD_TIMEOUT=y
+> +CONFIG_CMD_CRC=y
+> +CONFIG_CMD_CRC_CMP=y
+> +CONFIG_CMD_CLK=y
+> +CONFIG_CMD_DETECT=y
+> +CONFIG_CMD_I2C=y
+> +CONFIG_CMD_LED=y
+> +CONFIG_CMD_SPI=y
+> +CONFIG_CMD_LED_TRIGGER=y
+> +CONFIG_CMD_WD=y
+> +CONFIG_CMD_OF_NODE=y
+> +CONFIG_CMD_OF_PROPERTY=y
+> +CONFIG_CMD_OFTREE=y
+> +CONFIG_CMD_TIME=y
+> +CONFIG_OFDEVICE=y
+> +CONFIG_OF_BAREBOX_DRIVERS=y
+> +CONFIG_DRIVER_SERIAL_NS16550=y
+> +CONFIG_I2C=y
+> +CONFIG_MTD=y
+> +CONFIG_MTD_M25P80=y
+> +CONFIG_DISK_AHCI=y
+> +CONFIG_USB_HOST=y
+> +CONFIG_USB_EHCI=y
+> +CONFIG_USB_STORAGE=y
+> +CONFIG_MCI=y
+> +CONFIG_MCI_STARTUP=y
+> +CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+> +CONFIG_LED=y
+> +CONFIG_LED_TRIGGERS=y
+> +CONFIG_WATCHDOG=y
+> +CONFIG_FS_CRAMFS=y
+> +CONFIG_FS_EXT4=y
+> +CONFIG_FS_FAT=y
+> +CONFIG_FS_FAT_WRITE=y
+> +CONFIG_FS_FAT_LFN=y
+> +CONFIG_BZLIB=y
+> +CONFIG_LZO_DECOMPRESS=y
+> 
 
 
 _______________________________________________
