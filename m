@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XTeCG-0000CU-D9
- for barebox@lists.infradead.org; Mon, 15 Sep 2014 21:52:32 +0000
-Received: from antimon.intern.lynxeye.de.Speedport_W_504V_Typ_A
- (p4FD7EF97.dip0.t-ipconnect.de [79.215.239.151])
- by lynxeye.de (Postfix) with ESMTPA id 3A25426C2001
- for <barebox@lists.infradead.org>; Mon, 15 Sep 2014 23:51:39 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 15 Sep 2014 23:51:35 +0200
-Message-Id: <1410817895-8184-1-git-send-email-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XTlp5-0002xi-Jd
+ for barebox@lists.infradead.org; Tue, 16 Sep 2014 06:01:09 +0000
+Date: Tue, 16 Sep 2014 08:00:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140916060043.GC4992@pengutronix.de>
+References: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
+ <1410766873-4393-5-git-send-email-s.hauer@pengutronix.de>
+ <54169CA8.5030003@gmail.com> <20140915091324.GB4992@pengutronix.de>
+ <54175623.2090309@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <54175623.2090309@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +21,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Makefile: enable Werror=implicit-function-declaration
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/5] ARM: mvebu: Allow multiple SoCs
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This should prevent us from ever again missing an
-failure similar to that one fixed in ee3254569dab
-(EFI: add missing include) by throwing a build error.
+On Mon, Sep 15, 2014 at 11:12:03PM +0200, Sebastian Hesselbarth wrote:
+> On 09/15/2014 11:13 AM, Sascha Hauer wrote:
+> > On Mon, Sep 15, 2014 at 10:00:40AM +0200, Sebastian Hesselbarth wrote:
+> >> On 09/15/2014 09:41 AM, Sascha Hauer wrote:
+> >>> Now that the correct SoC specific memory fixup function is called
+> >>> we can allow to select multiple SoCs in Kconfig.
+> >>>
+> >>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> >>
+> >> Sascha,
+> >>
+> >> thanks for the patches, I'll give them a try later. FWIW, this
+> >> patch allows to build Kirkwood together with Dove and Armada ones,
+> >> which will not work at all. Kirkwood is armv5, while the others
+> >> are armv7. There is no way you run a multiv7 barebox on kirkwood,
+> >> right?
+> > 
+> > Oh, I didn't realize that Kirkwood is armv5. It should work though.
+> > The only reason to additionally add a mvebu_v7_config is to make
+> > Thumb2 mode available to the SoCs that support it.
+> 
+> I did some initial testing on Kirkwood Guruplug. In mvebu_defconfig
+> you select CONFIG_AEABI=y resulting in
+> 
+> $ readelf -h barebox | grep Flags
+>   Flags:                             0x5000000, Version5 EABI
+> 
+> And failing on Kirkwood at some places with
+> 
+> Board: Globalscale Technologies Guruplug Server Plus
+> SoC: Marvell 6281 rev 3
+> mdio_bus: miibus0: probed
+> unable to handle paging request at address 0x01f0ebac
+> pc : [<03e0de20>]    lr : [<03e0de08>]
+> sp : 03fffeb0  ip : 03fffea8  fp : 00000001
+> r10: 03ff4000  r9 : 01000e00  r8 : 01003a84
+> r7 : 01f07324  r6 : 03e55f88  r5 : 01f0eaa4  r4 : 01f0eaa8
+> r3 : 00000000  r2 : 00000040  r1 : 00000104  r0 : 01f11094
+> Flags: Nzcv  IRQs off  FIQs off  Mode SVC_32
+> [<03e0de20>] (mdio_bus_probe+0x150/0x188) from [<03e0cb24>]
+> (device_probe+0x1c/0x70)
+> [<03e0cb24>] (device_probe+0x1c/0x70) from [<03e0cbbc>]
+> (match.part.2+0x44/0x50)
+> [<03e0cbbc>] (match.part.2+0x44/0x50) from [<03e0cda8>]
+> (register_device+0x118/0x168)
+> [<03e0cda8>] (register_device+0x118/0x168) from [<03e0d2e8>]
+> (phy_register_device+0x2c/0x94)
+> [<03e0d2e8>] (phy_register_device+0x2c/0x94) from [<03e0df9c>]
+> (mdiobus_register+0x144/0x18c)
+> [<03e0df9c>] (mdiobus_register+0x144/0x18c) from [<03e0ce8c>]
+> (platform_probe+0x10/0x14)
+> [<03e0ce8c>] (platform_probe+0x10/0x14) from [<03e0cb24>]
+> (device_probe+0x1c/0x70)
+> [<03e0cb24>] (device_probe+0x1c/0x70) from [<03e0cbbc>]
+> (match.part.2+0x44/0x50)
+> [<03e0cbbc>] (match.part.2+0x44/0x50) from [<03e0cc58>]
+> (register_driver+0x90/0xc8)
+> [<03e0cc58>] (register_driver+0x90/0xc8) from [<03e00ae8>]
+> (start_barebox+0x28/0x130)
+> [<03e00ae8>] (start_barebox+0x28/0x130) from [<03e3e3e8>]
+> (__start+0xf8/0x10c)
+> [<03e3e3e8>] (__start+0xf8/0x10c) from [<03e00004>]
+> (__bare_init_start+0x0/0x10)
+> 
+> [<03e3dce0>] (unwind_backtrace+0x0/0xa0) from [<03e240a8>] (panic+0x28/0x48)
+> [<03e240a8>] (panic+0x28/0x48) from [<03e3e220>] (do_exception+0x10/0x14)
+> [<03e3e220>] (do_exception+0x10/0x14) from [<03e3e2ac>]
+> (do_data_abort+0x2c/0x38)
+> [<03e3e2ac>] (do_data_abort+0x2c/0x38) from [<03e3dee8>]
+> (data_abort+0x48/0x60)
+> 
+> I first noticed that with orion-mdio disabled and on calling
+> devinfo. Looks like u64 dereferencing is definitely causing
+> this but I admit, I haven't looked at mdio.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+Uh, that's strange. I never had any problems with enabling/disabling this
+options.
 
-diff --git a/Makefile b/Makefile
-index b059c3a00eaa..90b2b6368554 100644
---- a/Makefile
-+++ b/Makefile
-@@ -300,6 +300,7 @@ LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
- CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffreestanding
- 
- CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-+                   -Werror=implicit-function-declaration \
-                    -fno-strict-aliasing -fno-common -Os -pipe
- AFLAGS          := -D__ASSEMBLY__
- 
+> 
+> Disabling CONFIG_AEABI gives
+> 
+> $ readelf -h barebox | grep Flags
+>   Flags:                             0x600, GNU EABI, software FP, VFP
+> 
+> which also works in a Multi-SoC image on Kirkwood.
+> 
+> >>>  #
+> >>>
+> >>> -if ARCH_KIRKWOOD
+> > 
+> > Instead of removing this I could turn this into
+> > 
+> > comment "Kirkwood based boards"
+> 
+> I am not too much into v5/v7 differences (or EABI FWIW). If
+> you say, a multi_v5+v7 image is fine, I am too.
+
+In the Kernel compiling for armv5 and armv7 is not possible due to
+changes in the spinlock implementations. Doing that would involve
+patching the Kernel binary during startup. We don't have locking
+in barebox. So until we introduce locking we don't have a problem ;)
+
+> 
+> I'll continue testing on !KIRKWOOD tomorrow evening.
+
+Thanks
+
+Sascha
+
 -- 
-1.9.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
