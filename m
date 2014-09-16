@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
+Received: from mail-wg0-x233.google.com ([2a00:1450:400c:c00::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XTyFl-0004Nn-6s
- for barebox@lists.infradead.org; Tue, 16 Sep 2014 19:17:29 +0000
-Received: by mail-we0-f177.google.com with SMTP id u57so319721wes.36
- for <barebox@lists.infradead.org>; Tue, 16 Sep 2014 12:17:06 -0700 (PDT)
-Message-ID: <54188CAF.40409@gmail.com>
-Date: Tue, 16 Sep 2014 21:17:03 +0200
+ id 1XTz0r-0002cj-PE
+ for barebox@lists.infradead.org; Tue, 16 Sep 2014 20:06:10 +0000
+Received: by mail-wg0-f51.google.com with SMTP id k14so374101wgh.10
+ for <barebox@lists.infradead.org>; Tue, 16 Sep 2014 13:05:47 -0700 (PDT)
+Message-ID: <54189818.6000300@gmail.com>
+Date: Tue, 16 Sep 2014 22:05:44 +0200
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 References: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
- <1410766873-4393-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1410766873-4393-2-git-send-email-s.hauer@pengutronix.de>
+ <1410766873-4393-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1410766873-4393-3-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,83 +24,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] ARM: mvebu: Add common reset_cpu function
+Subject: Re: [PATCH 2/5] ARM: mvebu: Simplify memory init order
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
 On 09/15/2014 09:41 AM, Sascha Hauer wrote:
-> mvebu has a reset_cpu function per SoC this does not work when multiple
-> SoCs are selected, so add a common reset_cpu function which calls into
-> the SoC specific ones.
+> The initialisation of the memory nodes on mvebu is a bit
+> compilcated:
+> 
+> pure_initcall(mvebu_memory_fixup_register)
+> 	of_register_fixup(mvebu_memory_of_fixup, NULL)
+> core_initcall(kirkwood_init_soc)
+> 	mvebu_set_memory()
+> core_initcall(of_arm_init)
+> 	of_fix_tree()
+> 		mvebu_memory_of_fixup()
+> 
+> First a mvebu common of_fixup function is registered, then the SoC
+> calls mvebu_set_memory which stores the memory base and size in global
+> variables. Afterwards the of_fixup is executed which fixes the memory
+> nodes according to the global variables.
+> 
+> Instead register a SoC specific fixup which directly calls mvebu_set_memory
+> with the memory base and size as arguments:
+> 
+> pure_initcall(kirkwood_register_soc_fixup);
+> 	of_register_fixup(kirkwood_init_soc, NULL);
+> core_initcall(of_arm_init)
+> 	of_fix_tree()
+> 		kirkwood_init_soc()
+> 			mvebu_set_memory(phys_base, phys_size);
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Hmm, this breaks Armada 370 and most likely also Armada XP. Actually,
+it breaks any SoC that has a DTB with internal regs set to 0xd0000000.
+
 > ---
->  arch/arm/mach-mvebu/armada-370-xp.c       | 19 ++++++++++---------
->  arch/arm/mach-mvebu/common.c              | 15 ++++++++++++++-
->  arch/arm/mach-mvebu/dove.c                | 21 +++++++++++----------
->  arch/arm/mach-mvebu/include/mach/common.h |  1 +
->  arch/arm/mach-mvebu/kirkwood.c            | 19 ++++++++++---------
->  5 files changed, 46 insertions(+), 29 deletions(-)
+>  arch/arm/mach-mvebu/armada-370-xp.c       |  9 ++++++--
+>  arch/arm/mach-mvebu/common.c              | 34 ++++++++++---------------------
+>  arch/arm/mach-mvebu/dove.c                |  9 ++++++--
+>  arch/arm/mach-mvebu/include/mach/common.h |  2 +-
+>  arch/arm/mach-mvebu/kirkwood.c            |  9 ++++++--
+>  5 files changed, 33 insertions(+), 30 deletions(-)
 > 
 > diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-> index f2b991e..6251100 100644
+> index 6251100..5c8499b 100644
 > --- a/arch/arm/mach-mvebu/armada-370-xp.c
 > +++ b/arch/arm/mach-mvebu/armada-370-xp.c
-> @@ -44,11 +44,21 @@ static inline void armada_370_xp_memory_find(unsigned long *phys_base,
->  	}
+> @@ -52,7 +52,7 @@ static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
+>  		;
 >  }
 >  
-> +static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
-> +{
-> +	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
-> +	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
-> +	while (1)
-> +		;
-> +}
-> +
->  static int armada_370_xp_init_soc(void)
+> -static int armada_370_xp_init_soc(void)
+> +static int armada_370_xp_init_soc(struct device_node *root, void *context)
 >  {
 >  	unsigned long phys_base, phys_size;
 >  	u32 reg;
+> @@ -74,4 +74,9 @@ static int armada_370_xp_init_soc(void)
+
+Because armada_370_xp_init_soc() does
+
+	mvebu_mbus_add_range(0xf0, 0x01, MVEBU_REMAP_INT_REG_BASE);
+
+right above, which will add the range(s) required for internal register
+of_fixup. Since this patch moved armada_370_xp_init_soc to the
+of_fixups, we don't fix this up for the initial DT tree.
+
 >  
-> +	mvebu_set_reset(armada_370_xp_reset_cpu);
-> +
->  	barebox_set_model("Marvell Armada 370/XP");
->  	barebox_set_hostname("armada");
->  
-> @@ -65,12 +75,3 @@ static int armada_370_xp_init_soc(void)
 >  	return 0;
 >  }
->  core_initcall(armada_370_xp_init_soc);
-> -
-> -void __noreturn reset_cpu(unsigned long addr)
-> -{
-> -	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
-> -	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
-> -	while (1)
-> -		;
-> -}
-> -EXPORT_SYMBOL(reset_cpu);
-> diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-> index ac4b332..5c3ac14 100644
-> --- a/arch/arm/mach-mvebu/common.c
-> +++ b/arch/arm/mach-mvebu/common.c
-> @@ -21,6 +21,7 @@
->  #include <of.h>
->  #include <of_address.h>
->  #include <linux/clk.h>
-> +#include <mach/common.h>
->  
->  /*
->   * Marvell MVEBU SoC id and revision can be read from any PCIe
-> @@ -137,4 +138,16 @@ static int mvebu_memory_of_fixup(struct device_node *root, void *context)
->  static int mvebu_memory_fixup_register(void) {
->  	return of_register_fixup(mvebu_memory_of_fixup, NULL);
->  }
-> -pure_initcall(mvebu_memory_fixup_register);
+> -core_initcall(armada_370_xp_init_soc);
+> +
+> +static int armada_370_register_soc_fixup(void)
+> +{
 
-Unrelated removal, this should move to the next patch.
+I guess moving mvebu_mbus_add_range() in here does not work, because
+it will add the armada_370_xp range also for dove and kirkwood.
+
+> +	return of_register_fixup(armada_370_xp_init_soc, NULL);
+> +}
+> +pure_initcall(armada_370_register_soc_fixup);
+
+nit: s/armada_370_/armada_370_xp_/
+
+I like the overall change, but haven't made my mind how this will work
+out..
 
 Sebastian
+
 
 _______________________________________________
 barebox mailing list
