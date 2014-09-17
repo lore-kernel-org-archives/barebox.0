@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from nasmtp01.atmel.com ([192.199.1.245]
  helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XUCNO-0007yN-IF
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:18 +0000
+ id 1XUCNM-0007yN-Gp
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:16 +0000
 From: Bo Shen <voice.shen@atmel.com>
-Date: Wed, 17 Sep 2014 18:21:31 +0800
-Message-ID: <1410949295-30296-6-git-send-email-voice.shen@atmel.com>
+Date: Wed, 17 Sep 2014 18:21:28 +0800
+Message-ID: <1410949295-30296-3-git-send-email-voice.shen@atmel.com>
 In-Reply-To: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
@@ -22,28 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] net: macb: using default value for FBLDO
+Subject: [PATCH 2/9] ARM: atmel: sama5d3 is a family member of sama5
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
+
+As the sama5d3 is a family member of sama5, so only check sama5
+family.
 
 Signed-off-by: Bo Shen <voice.shen@atmel.com>
 ---
 
- drivers/net/macb.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/mach-at91/include/mach/cpu.h | 2 +-
+ arch/arm/mach-at91/setup.c            | 2 +-
+ arch/arm/mach-at91/soc.h              | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 12a2a3c..ef49f74 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -304,7 +304,6 @@ static void macb_configure_dma(struct macb_device *bp)
- 	if (macb_is_gem(bp)) {
- 		dmacfg = gem_readl(bp, DMACFG) & ~GEM_BF(RXBS, -1L);
- 		dmacfg |= GEM_BF(RXBS, bp->rx_buffer_size / RX_BUFFER_MULTIPLE);
--		dmacfg |= GEM_BF(FBLDO, 16);
- 		dmacfg |= GEM_BIT(TXPBMS) | GEM_BF(RXBMS, -1L);
- 		dmacfg |= GEM_BIT(DDRP);
- 		dmacfg &= ~GEM_BIT(ENDIA);
+diff --git a/arch/arm/mach-at91/include/mach/cpu.h b/arch/arm/mach-at91/include/mach/cpu.h
+index 0e213ce..c38260f 100644
+--- a/arch/arm/mach-at91/include/mach/cpu.h
++++ b/arch/arm/mach-at91/include/mach/cpu.h
+@@ -26,7 +26,7 @@
+ #define ARCH_ID_AT91SAM9G45ES	0x819b05a1	/* 9G45-ES (Engineering Sample) */
+ #define ARCH_ID_AT91SAM9X5	0x819a05a0
+ #define ARCH_ID_AT91SAM9N12	0x819a07a0
+-#define ARCH_ID_SAMA5D3		0x8A5C07C0
++#define ARCH_ID_SAMA5		0x8A5C07C0
+ 
+ #define ARCH_ID_AT91SAM9XE128	0x329973a0
+ #define ARCH_ID_AT91SAM9XE256	0x329a93a0
+diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
+index 076d081..80dc277 100644
+--- a/arch/arm/mach-at91/setup.c
++++ b/arch/arm/mach-at91/setup.c
+@@ -89,7 +89,7 @@ static void __init soc_detect(u32 dbgu_base)
+ 		at91_boot_soc = at91sam9n12_soc;
+ 		break;
+ 
+-	case ARCH_ID_SAMA5D3:
++	case ARCH_ID_SAMA5:
+ 		at91_soc_initdata.type = AT91_SOC_SAMA5D3;
+ 		at91_boot_soc = at91sama5d3_soc;
+ 		break;
+diff --git a/arch/arm/mach-at91/soc.h b/arch/arm/mach-at91/soc.h
+index b2278a5..e548165 100644
+--- a/arch/arm/mach-at91/soc.h
++++ b/arch/arm/mach-at91/soc.h
+@@ -66,6 +66,6 @@ static inline int at91_soc_is_enabled(void)
+ #define at91sam9n12_soc	at91_boot_soc
+ #endif
+ 
+-#if !defined(CONFIG_SOC_SAMA5)
++#if !defined(CONFIG_ARCH_SAMA5D3)
+ #define at91sama5d3_soc	at91_boot_soc
+ #endif
 -- 
 2.1.0.24.g4109c28
 
