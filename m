@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x236.google.com ([2a00:1450:400c:c03::236])
+Received: from mail-wg0-x22e.google.com ([2a00:1450:400c:c00::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XULl0-00043Y-43
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 20:23:19 +0000
-Received: by mail-we0-f182.google.com with SMTP id k48so2004509wev.41
- for <barebox@lists.infradead.org>; Wed, 17 Sep 2014 13:22:55 -0700 (PDT)
+ id 1XULky-00042w-Oa
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 20:23:18 +0000
+Received: by mail-wg0-f46.google.com with SMTP id n12so1961071wgh.29
+ for <barebox@lists.infradead.org>; Wed, 17 Sep 2014 13:22:53 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 17 Sep 2014 22:22:44 +0200
-Message-Id: <1410985364-7105-7-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 17 Sep 2014 22:22:40 +0200
+Message-Id: <1410985364-7105-3-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1410985364-7105-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1410985364-7105-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,166 +23,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/6] ARM: Add mvebu_defconfig
+Subject: [PATCH v2 2/6] ARM: mvebu: Add machine compatible to mbus ranges
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Multi-SoC support for MVEBU will add mbus ranges for all compiled
+SoCs. To protect the mbus node of the SoC barebox is executed on
+from others ranges, pass machine's compatible to mvebu_mbus_add_range
+and check before applying the fixup.
 
-This adds a mvebu_defconfig which enables all mvebu based boards.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
-Changelog:
-v1->v2:
-- remove CONFIG_AEABI and CONFIG_ARM_UNWIND until someone confirms
-  it is working on ARMv5TE (Kirkwood)
-- add networking commands
-- add Orion ethernet and Marvell PHY drivers
-- add MVEBU SPI and AT25 driver
-- add MVEBU I2C driver
-- add Orion NAND driver
-- add Orion GPIO and LED GPIO drivers
-- add MVEBU PCI driver
-
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/configs/mvebu_defconfig | 123 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 123 insertions(+)
- create mode 100644 arch/arm/configs/mvebu_defconfig
+ arch/arm/mach-mvebu/armada-370-xp.c | 3 ++-
+ arch/arm/mach-mvebu/dove.c          | 6 ++++--
+ arch/arm/mach-mvebu/kirkwood.c      | 3 ++-
+ drivers/bus/mvebu-mbus.c            | 6 +++++-
+ include/linux/mbus.h                | 3 ++-
+ 5 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
-new file mode 100644
-index 000000000000..26be4ecfe022
---- /dev/null
-+++ b/arch/arm/configs/mvebu_defconfig
-@@ -0,0 +1,123 @@
-+CONFIG_ARCH_MVEBU=y
-+CONFIG_MACH_GLOBALSCALE_MIRABOX=y
-+CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3=y
-+CONFIG_MACH_MARVELL_ARMADA_XP_GP=y
-+CONFIG_MACH_SOLIDRUN_CUBOX=y
-+CONFIG_MACH_GLOBALSCALE_GURUPLUG=y
-+CONFIG_MACH_PLATHOME_OPENBLOCKS_A6=y
-+CONFIG_MACH_USI_TOPKICK=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_BLSPEC=y
-+CONFIG_IMD_TARGET=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_PARTITION_DISK_EFI=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_CMD_BOOT=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADS=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_AUTOMOUNT=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_GLOBAL=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_BASENAME=y
-+CONFIG_CMD_DIRNAME=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_READLINK=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA224SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_GETOPT=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_HOST=y
-+CONFIG_NET_CMD_IFUP=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_MENUTREE=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_WD=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_NET_ORION=y
-+CONFIG_MARVELL_PHY=y
-+CONFIG_DRIVER_SPI_MVEBU=y
-+CONFIG_I2C=y
-+CONFIG_I2C_MV64XXX=y
-+CONFIG_MTD=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_NAND=y
-+CONFIG_NAND_ORION=y
-+CONFIG_DISK_AHCI=y
-+CONFIG_USB_HOST=y
-+CONFIG_USB_EHCI=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_EEPROM_AT25=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_WATCHDOG=y
-+CONFIG_GPIO_ORION=y
-+CONFIG_PCI_MVEBU=y
-+CONFIG_FS_CRAMFS=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_BZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index 6251100e886d..92096fcccabe 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -70,7 +70,8 @@ static int armada_370_xp_init_soc(void)
+ 	armada_370_xp_memory_find(&phys_base, &phys_size);
+ 
+ 	mvebu_set_memory(phys_base, phys_size);
+-	mvebu_mbus_add_range(0xf0, 0x01, MVEBU_REMAP_INT_REG_BASE);
++	mvebu_mbus_add_range("marvell,armada-370-xp", 0xf0, 0x01,
++			     MVEBU_REMAP_INT_REG_BASE);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+index 17cee0b9017c..85fdbe41b55c 100644
+--- a/arch/arm/mach-mvebu/dove.c
++++ b/arch/arm/mach-mvebu/dove.c
+@@ -90,8 +90,10 @@ static int dove_init_soc(void)
+ 	dove_memory_find(&phys_base, &phys_size);
+ 
+ 	mvebu_set_memory(phys_base, phys_size);
+-	mvebu_mbus_add_range(0xf0, 0x01, MVEBU_REMAP_INT_REG_BASE);
+-	mvebu_mbus_add_range(0xf0, 0x02, DOVE_REMAP_MC_REGS);
++	mvebu_mbus_add_range("marvell,dove", 0xf0, 0x01,
++			     MVEBU_REMAP_INT_REG_BASE);
++	mvebu_mbus_add_range("marvell,dove", 0xf0, 0x02,
++			     DOVE_REMAP_MC_REGS);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
+index 7c0526b885a0..b6cbd02592a4 100644
+--- a/arch/arm/mach-mvebu/kirkwood.c
++++ b/arch/arm/mach-mvebu/kirkwood.c
+@@ -63,7 +63,8 @@ static int kirkwood_init_soc(void)
+ 	kirkwood_memory_find(&phys_base, &phys_size);
+ 
+ 	mvebu_set_memory(phys_base, phys_size);
+-	mvebu_mbus_add_range(0xf0, 0x01, MVEBU_REMAP_INT_REG_BASE);
++	mvebu_mbus_add_range("marvell,kirkwood", 0xf0, 0x01,
++			     MVEBU_REMAP_INT_REG_BASE);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+index b7f78367d4a7..9dc43011b964 100644
+--- a/drivers/bus/mvebu-mbus.c
++++ b/drivers/bus/mvebu-mbus.c
+@@ -744,6 +744,7 @@ static int mvebu_mbus_init(void)
+ postcore_initcall(mvebu_mbus_init);
+ 
+ struct mbus_range {
++	const char *compatible;
+ 	u32 mbusid;
+ 	u32 remap;
+ 	struct list_head list;
+@@ -752,10 +753,11 @@ struct mbus_range {
+ #define MBUS_ID(t,a)	(((t) << 24) | ((attr) << 16))
+ static LIST_HEAD(mbus_ranges);
+ 
+-void mvebu_mbus_add_range(u8 target, u8 attr, u32 remap)
++void mvebu_mbus_add_range(const char *compatible, u8 target, u8 attr, u32 remap)
+ {
+ 	struct mbus_range *r = xzalloc(sizeof(*r));
+ 
++	r->compatible = strdup(compatible);
+ 	r->mbusid = MBUS_ID(target, attr);
+ 	r->remap = remap;
+ 	list_add_tail(&r->list, &mbus_ranges);
+@@ -811,6 +813,8 @@ static int mvebu_mbus_of_fixup(struct device_node *root, void *context)
+ 				continue;
+ 
+ 			list_for_each_entry(r, &mbus_ranges, list) {
++				if (!of_machine_is_compatible(r->compatible))
++					continue;
+ 				if (r->mbusid == mbusid)
+ 					ranges[n + na + pa - 1] = r->remap;
+ 			}
+diff --git a/include/linux/mbus.h b/include/linux/mbus.h
+index ac149828757b..b90fabbfb7e5 100644
+--- a/include/linux/mbus.h
++++ b/include/linux/mbus.h
+@@ -58,6 +58,7 @@ int mvebu_mbus_add_window_by_id(unsigned int target, unsigned int attribute,
+ 				phys_addr_t base, size_t size);
+ int mvebu_mbus_del_window(phys_addr_t base, size_t size);
+ 
+-void mvebu_mbus_add_range(u8 target, u8 attr, u32 remap);
++void mvebu_mbus_add_range(const char *compatible,
++			  u8 target, u8 attr, u32 remap);
+ 
+ #endif /* __LINUX_MBUS_H */
 -- 
 2.0.0
 
