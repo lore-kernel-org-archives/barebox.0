@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.246]
- helo=DVREDG02.corp.atmel.com)
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XUCNY-0007yg-Il
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:29 +0000
+ id 1XUCNR-0007yN-8W
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:23 +0000
 From: Bo Shen <voice.shen@atmel.com>
-Date: Wed, 17 Sep 2014 18:21:35 +0800
-Message-ID: <1410949295-30296-10-git-send-email-voice.shen@atmel.com>
+Date: Wed, 17 Sep 2014 18:21:34 +0800
+Message-ID: <1410949295-30296-9-git-send-email-voice.shen@atmel.com>
 In-Reply-To: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
@@ -22,131 +22,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] ARM: at91: add sama5d4ek board support
+Subject: [PATCH 8/9] ARM: at91: add sama5d4 soc support #2
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
-
-Add Atmel sama5d4ek board support, which include following features:
-  - NAND flash support
-  - SPI flash support
-  - MMC card support (MCI1)
-  - LCD display support (with QT1070)
-  - Ethernet support
 
 Signed-off-by: Bo Shen <voice.shen@atmel.com>
 ---
 
- arch/arm/boards/Makefile                     |   1 +
- arch/arm/boards/sama5d4ek/Makefile           |   1 +
- arch/arm/boards/sama5d4ek/env/bin/init_board |  15 ++
- arch/arm/boards/sama5d4ek/env/config         |  42 ++++
- arch/arm/boards/sama5d4ek/init.c             | 311 +++++++++++++++++++++++++++
- arch/arm/configs/sama5d4ek_defconfig         |  85 ++++++++
- arch/arm/mach-at91/Kconfig                   |  26 +++
- arch/arm/mach-at91/Makefile                  |   2 +
- 8 files changed, 483 insertions(+)
- create mode 100644 arch/arm/boards/sama5d4ek/Makefile
- create mode 100644 arch/arm/boards/sama5d4ek/env/bin/init_board
- create mode 100644 arch/arm/boards/sama5d4ek/env/config
- create mode 100644 arch/arm/boards/sama5d4ek/init.c
- create mode 100644 arch/arm/configs/sama5d4ek_defconfig
+ arch/arm/mach-at91/include/mach/sama5d4.h | 134 ++++++++
+ arch/arm/mach-at91/sama5d4.c              | 303 ++++++++++++++++++
+ arch/arm/mach-at91/sama5d4_devices.c      | 495 ++++++++++++++++++++++++++++++
+ 3 files changed, 932 insertions(+)
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5d4.h
+ create mode 100644 arch/arm/mach-at91/sama5d4.c
+ create mode 100644 arch/arm/mach-at91/sama5d4_devices.c
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 122f5cd..beb70f6 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -92,6 +92,7 @@ obj-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite/
- obj-$(CONFIG_MACH_SABRESD)			+= freescale-mx6-sabresd/
- obj-$(CONFIG_MACH_SAMA5D3XEK)			+= sama5d3xek/
- obj-$(CONFIG_MACH_SAMA5D3_XPLAINED)		+= sama5d3_xplained/
-+obj-$(CONFIG_MACH_SAMA5D4EK)			+= sama5d4ek/
- obj-$(CONFIG_MACH_SCB9328)			+= scb9328/
- obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
- obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
-diff --git a/arch/arm/boards/sama5d4ek/Makefile b/arch/arm/boards/sama5d4ek/Makefile
+diff --git a/arch/arm/mach-at91/include/mach/sama5d4.h b/arch/arm/mach-at91/include/mach/sama5d4.h
 new file mode 100644
-index 0000000..eb072c0
+index 0000000..046fdb0
 --- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/Makefile
-@@ -0,0 +1 @@
-+obj-y += init.o
-diff --git a/arch/arm/boards/sama5d4ek/env/bin/init_board b/arch/arm/boards/sama5d4ek/env/bin/init_board
-new file mode 100644
-index 0000000..f3d417e
---- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/env/bin/init_board
-@@ -0,0 +1,15 @@
-+#!/bin/sh
-+
-+PATH=/env/bin
-+export PATH
-+
-+. /env/config
-+
-+splash=/env/splash.png
-+
-+if [ -f ${splash} -a -e /dev/fb0 ]; then
-+	splash -o ${splash}
-+	fb0.enable=1
-+fi
-+
-+exit 1
-diff --git a/arch/arm/boards/sama5d4ek/env/config b/arch/arm/boards/sama5d4ek/env/config
-new file mode 100644
-index 0000000..1007345
---- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/env/config
-@@ -0,0 +1,42 @@
-+#!/bin/sh
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+
-+# can be either 'nfs', 'tftp', 'nor' or 'nand'
-+kernel_loc=nfs
-+# can be either 'net', 'nor', 'nand' or 'initrd'
-+rootfs_loc=net
-+# can be either 'nfs', 'tftp', 'nand' or empty
-+oftree_loc=nfs
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root.$rootfs_type
-+ubiroot=rootfs
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+kernelimage=zImage
-+#kernelimage=uImage
-+#kernelimage=Image
-+#kernelimage=Image.lzo
-+
-+nand_device=atmel_nand
-+nand_parts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),-(rootfs)"
-+rootfs_mtdblock_nand=7
-+
-+m25p80_parts="64k(bootstrap),384k(barebox),256k(bareboxenv),256k(bareboxenv2),128k(oftree),-(updater)"
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttyS0,115200"
-+
-+# set a fancy prompt (if support is compiled in)
-+PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
-diff --git a/arch/arm/boards/sama5d4ek/init.c b/arch/arm/boards/sama5d4ek/init.c
-new file mode 100644
-index 0000000..1bb37d8
---- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/init.c
-@@ -0,0 +1,311 @@
++++ b/arch/arm/mach-at91/include/mach/sama5d4.h
+@@ -0,0 +1,134 @@
 +/*
-+ * SAMA5D4EK board configureation.
++ * Chip-specific header file for the SAMA5D4 family
++ *
++ * Copyright (C) 2014 Atmel Corporation,
++ *		      Bo Shen <voice.shen@atmel.com>
++ *
++ * Common definitions.
++ * Based on SAMA5D4 datasheet.
++ *
++ * Licensed under GPLv2 or later.
++ */
++
++#ifndef SAMA5D4_H
++#define SAMA5D4_H
++
++/*
++ * Peripheral identifiers/interrupts.
++ */
++#define SAMA5D4_ID_PIT		 3
++#define SAMA5D4_ID_WDT		 4
++#define SAMA5D4_ID_PIOD		 5
++#define SAMA5D4_ID_USART0	 6
++#define SAMA5D4_ID_USART1	 7
++#define SAMA5D4_ID_DMA0		 8
++#define SAMA5D4_ID_ICM		 9
++#define SAMA5D4_ID_PKCC		10
++#define SAMA5D4_ID_SCI		11
++#define SAMA5D4_ID_AES		12
++#define SAMA5D4_ID_AESB		13
++#define SAMA5D4_ID_TDES		14
++#define SAMA5D4_ID_SHA		15
++#define SAMA5D4_ID_MPDDRC	16
++#define SAMA5D4_ID_MATRIX1	17
++#define SAMA5D4_ID_MATRIX0	18
++#define SAMA5D4_ID_VDEC		19
++#define SAMA5D4_ID_SECUMOD	20
++#define SAMA5D4_ID_MSADCC	21
++#define SAMA5D4_ID_HSMC		22
++#define SAMA5D4_ID_PIOA		23
++#define SAMA5D4_ID_PIOB		24
++#define SAMA5D4_ID_PIOC		25
++#define SAMA5D4_ID_PIOE		26
++#define SAMA5D4_ID_UART0	27
++#define SAMA5D4_ID_UART1	28
++#define SAMA5D4_ID_USART2	29
++#define SAMA5D4_ID_USART3	30
++#define SAMA5D4_ID_USART4	31
++#define SAMA5D4_ID_TWI0		32
++#define SAMA5D4_ID_TWI1		33
++#define SAMA5D4_ID_TWI2		34
++#define SAMA5D4_ID_HSMCI0	35
++#define SAMA5D4_ID_HSMCI1	36
++#define SAMA5D4_ID_SPI0		37
++#define SAMA5D4_ID_SPI1		38
++#define SAMA5D4_ID_SPI2		39
++#define SAMA5D4_ID_TC0		40
++#define SAMA5D4_ID_TC1		41
++#define SAMA5D4_ID_TC2		42
++#define SAMA5D4_ID_PWM		43
++#define SAMA5D4_ID_ADC		44
++#define SAMA5D4_ID_DBGU		45
++#define SAMA5D4_ID_UHPHS	46
++#define SAMA5D4_ID_UDPHS	47
++#define SAMA5D4_ID_SSC0		48
++#define SAMA5D4_ID_SSC1		49
++#define SAMA5D4_ID_DMA1		50
++#define SAMA5D4_ID_LCDC		51
++#define SAMA5D4_ID_ISI		52
++#define SAMA5D4_ID_TRNG		53
++#define SAMA5D4_ID_GMAC0	54
++#define SAMA5D4_ID_IRQ		56
++#define SAMA5D4_ID_IRQ		56
++#define SAMA5D4_ID_SFC		57
++#define SAMA5D4_ID_SECURAM	59
++#define SAMA5D4_ID_CTB		60
++#define SAMA5D4_ID_SMD		61
++#define SAMA5D4_ID_TWI3		62
++#define SAMA5D4_ID_CATB		63
++#define SAMA5D4_ID_SFR		64
++#define SAMA5D4_ID_AIC		65
++#define SAMA5D4_ID_SAIC		66
++#define SAMA5D4_ID_L2CC		67
++
++/*
++ * User Peripheral physical base addresses.
++ */
++
++#define SAMA5D4_BASE_LCDC	0xf0000000 /* (HLCDC5) Base Address */
++#define SAMA5D4_BASE_MPDDRC	0xf0010000 /* (MPDDRC) Base Address */
++#define SAMA5D4_BASE_PMC	0xf0018000 /* (PMC) Base Address */
++#define SAMA5D4_BASE_HSMCI0	0xf8000000 /* (MMCI0) Base Address */
++#define SAMA5D4_BASE_UART0	0xf8004000 /* (UART0) Base Address */
++#define SAMA5D4_BASE_SPI0	0xf8010000 /* (SPI0) Base Address */
++#define SAMA5D4_BASE_TC0	0xf801c000 /* (TC0) Base Address */
++#define SAMA5D4_BASE_GMAC0	0xf8020000 /* (GMAC0) Base Address */
++#define SAMA5D4_BASE_USART0	0xf802c000 /* (USART0) Base Address */
++#define SAMA5D4_BASE_USART1	0xf8030000 /* (USART1) Base Address */
++#define SAMA5D4_BASE_HSMCI1	0xfc000000 /* (HSMCI1) Base Address */
++#define SAMA5D4_BASE_UART1	0xfc004000 /* (UART1) Base Address */
++#define SAMA5D4_BASE_USART2	0xfc008000 /* (USART2) Base Address */
++#define SAMA5D4_BASE_USART3	0xfc00c000 /* (USART3) Base Address */
++#define SAMA5D4_BASE_USART4	0xfc010000 /* (USART4) Base Address */
++#define SAMA5D4_BASE_SPI1	0xfc018000 /* (SPI1) Base Address */
++#define SAMA5D4_BASE_GMAC1	0xfc028000 /* (GMAC1) Base Address */
++#define SAMA5D4_BASE_HSMC	0xfc05c000 /* (HSMC) Base Address */
++#define SAMA5D4_BASE_PMECC	0xfc05c070 /* (PMECC) Base Address */
++#define SAMA5D4_BASE_PMERRLOC	0xfc05c500 /* (PMERRLOC) Base Address */
++#define SAMA5D4_BASE_PIOD	0xfc068000 /* (PIOD) Base Address */
++#define SAMA5D4_BASE_PIT	0xfc068630 /* (PIT) Base Address */
++#define SAMA5D4_BASE_DBGU	0xfc069000 /* (DBGU) Base Address */
++#define SAMA5D4_BASE_PIOA	0xfc06a000 /* (PIOA) Base Address */
++#define SAMA5D4_BASE_PIOB	0xfc06b000 /* (PIOB) Base Address */
++#define SAMA5D4_BASE_PIOC	0xfc06c000 /* (PIOC) Base Address */
++#define SAMA5D4_BASE_PIOE	0xfc06d000 /* (PIOE) Base Address */
++#define SAMA5D4_BASE_AIC	0xfc06e000 /* (AIC) Base Address */
++
++#define SAMA5D4_CHIPSELECT_3	0x80000000
++
++/*
++ * Internal Memory.
++ */
++#define SAMA5D4_SRAM_BASE	0x00200000	/* Internal SRAM base address */
++#define SAMA5D4_SRAM_SIZE	(128 * SZ_1K)	/* Internal SRAM size */
++
++#define AT91_NB_USART		7
++#define AT91_BASE_SYS		0xf0000000
++#define AT91_PMC		SAMA5D4_BASE_PMC
++#define AT91_DDRSDRC0		(0xf0010000 - AT91_BASE_SYS)
++#define AT91_RSTC		(0xfc068600 - AT91_BASE_SYS)
++#define SAMA5D3_BASE_MPDDRC	SAMA5D4_BASE_MPDDRC
++#define SAMA5D3_SRAM_BASE	SAMA5D4_SRAM_BASE
++#define SAMA5D3_SRAM_SIZE	SAMA5D4_SRAM_SIZE
++
++#endif
+diff --git a/arch/arm/mach-at91/sama5d4.c b/arch/arm/mach-at91/sama5d4.c
+new file mode 100644
+index 0000000..efab3a8
+--- /dev/null
++++ b/arch/arm/mach-at91/sama5d4.c
+@@ -0,0 +1,303 @@
++/*
++ * Chip-specific setup code for the SAMA5D4 family
 + *
 + * Copyright (C) 2014 Atmel Corporation,
 + *		      Bo Shen <voice.shen@atmel.com>
@@ -155,466 +193,800 @@ index 0000000..1bb37d8
 + */
 +
 +#include <common.h>
-+#include <net.h>
-+#include <init.h>
-+#include <environment.h>
-+#include <asm/armlinux.h>
-+#include <partition.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <io.h>
-+#include <mach/hardware.h>
-+#include <nand.h>
-+#include <sizes.h>
-+#include <linux/mtd/nand.h>
-+#include <mach/board.h>
-+#include <mach/at91sam9_smc.h>
 +#include <gpio.h>
-+#include <mach/iomux.h>
++#include <init.h>
++#include <mach/hardware.h>
 +#include <mach/at91_pmc.h>
-+#include <mach/at91_rstc.h>
-+#include <mach/at91sam9x5_matrix.h>
-+#include <input/qt1070.h>
-+#include <readkey.h>
-+#include <spi/spi.h>
++#include <mach/io.h>
++#include <mach/cpu.h>
 +#include <linux/clk.h>
 +
-+#if defined(CONFIG_NAND_ATMEL)
-+static struct atmel_nand_data nand_pdata = {
-+	.ale		= 21,
-+	.cle		= 22,
-+	.det_pin	= -EINVAL,
-+	.rdy_pin	= -EINVAL,
-+	.enable_pin	= -EINVAL,
-+	.ecc_mode	= NAND_ECC_HW,
-+	.pmecc_sector_size = 512,
-+	.pmecc_corr_cap = 8,
-+	.on_flash_bbt	= 1,
++#include "soc.h"
++#include "generic.h"
++#include "clock.h"
++
++/*
++ * The peripheral clocks.
++ */
++static struct clk pit_clk = {
++	.name		= "pit_clk",
++	.pid		= SAMA5D4_ID_PIT,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk smc_clk = {
++	.name		= "smc_clk",
++	.pid		= SAMA5D4_ID_HSMC,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk pioA_clk = {
++	.name		= "pioA_clk",
++	.pid		= SAMA5D4_ID_PIOA,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk pioB_clk = {
++	.name		= "pioB_clk",
++	.pid		= SAMA5D4_ID_PIOB,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk pioC_clk = {
++	.name		= "pioC_clk",
++	.pid		= SAMA5D4_ID_PIOC,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk pioD_clk = {
++	.name		= "pioD_clk",
++	.pid		= SAMA5D4_ID_PIOD,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk pioE_clk = {
++	.name		= "pioE_clk",
++	.pid		= SAMA5D4_ID_PIOE,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk usart0_clk = {
++	.name		= "usart0_clk",
++	.pid		= SAMA5D4_ID_USART0,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk usart2_clk = {
++	.name		= "usart2_clk",
++	.pid		= SAMA5D4_ID_USART2,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk usart3_clk = {
++	.name		= "usart3_clk",
++	.pid		= SAMA5D4_ID_USART3,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk usart4_clk = {
++	.name		= "usart4_clk",
++	.pid		= SAMA5D4_ID_USART4,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk mmc0_clk = {
++	.name		= "mci0_clk",
++	.pid		= SAMA5D4_ID_HSMCI0,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk mmc1_clk = {
++	.name		= "mci1_clk",
++	.pid		= SAMA5D4_ID_HSMCI1,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk tcb0_clk = {
++	.name		= "tcb0_clk",
++	.pid		= SAMA5D4_ID_TC0,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk tcb1_clk = {
++	.name		= "tcb1_clk",
++	.pid		= SAMA5D4_ID_TC1,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk adc_clk = {
++	.name		= "adc_clk",
++	.pid		= SAMA5D4_ID_ADC,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk dma0_clk = {
++	.name		= "dma0_clk",
++	.pid		= SAMA5D4_ID_DMA0,
++	.type		= CLK_TYPE_PERIPHERAL | CLK_TYPE_PERIPH_H64MX,
++};
++static struct clk dma1_clk = {
++	.name		= "dma1_clk",
++	.pid		= SAMA5D4_ID_DMA1,
++	.type		= CLK_TYPE_PERIPHERAL | CLK_TYPE_PERIPH_H64MX,
++};
++static struct clk uhphs_clk = {
++	.name		= "uhphs",
++	.pid		= SAMA5D4_ID_UHPHS,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk udphs_clk = {
++	.name		= "udphs_clk",
++	.pid		= SAMA5D4_ID_UDPHS,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk lcdc_clk = {
++	.name		= "lcdc_clk",
++	.pid		= SAMA5D4_ID_LCDC,
++	.type		= CLK_TYPE_PERIPHERAL | CLK_TYPE_PERIPH_H64MX,
++};
++static struct clk isi_clk = {
++	.name		= "isi_clk",
++	.pid		= SAMA5D4_ID_ISI,
++	.type		= CLK_TYPE_PERIPHERAL | CLK_TYPE_PERIPH_H64MX,
++};
++static struct clk macb0_clk = {
++	.name		= "macb0_clk",
++	.pid		= SAMA5D4_ID_GMAC0,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk twi0_clk = {
++	.name		= "twi0_clk",
++	.pid		= SAMA5D4_ID_TWI0,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk twi2_clk = {
++	.name		= "twi2_clk",
++	.pid		= SAMA5D4_ID_TWI2,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk spi0_clk = {
++	.name		= "spi0_clk",
++	.pid		= SAMA5D4_ID_SPI0,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk smd_clk = {
++	.name		= "smd_clk",
++	.pid		= SAMA5D4_ID_SMD,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk ssc0_clk = {
++	.name		= "ssc0_clk",
++	.pid		= SAMA5D4_ID_SSC0,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk ssc1_clk = {
++	.name		= "ssc1_clk",
++	.pid		= SAMA5D4_ID_SSC1,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk sha_clk = {
++	.name		= "sha_clk",
++	.pid		= SAMA5D4_ID_SHA,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk aes_clk = {
++	.name		= "aes_clk",
++	.pid		= SAMA5D4_ID_AES,
++	.type		= CLK_TYPE_PERIPHERAL,
++};
++static struct clk tdes_clk = {
++	.name		= "tdes_clk",
++	.pid		= SAMA5D4_ID_TDES,
++	.type		= CLK_TYPE_PERIPHERAL,
 +};
 +
-+static struct sam9_smc_config cm_nand_smc_config = {
-+	.ncs_read_setup		= 1,
-+	.nrd_setup		= 1,
-+	.ncs_write_setup	= 1,
-+	.nwe_setup		= 1,
-+
-+	.ncs_read_pulse		= 3,
-+	.nrd_pulse		= 2,
-+	.ncs_write_pulse	= 3,
-+	.nwe_pulse		= 2,
-+
-+	.read_cycle		= 5,
-+	.write_cycle		= 5,
-+
-+	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
-+	.tdf_cycles		= 3,
-+
-+	.tclr			= 2,
-+	.tadl			= 7,
-+	.tar			= 2,
-+	.ocms			= 0,
-+	.trr			= 3,
-+	.twb			= 7,
-+	.rbnsel			= 3,
-+	.nfsel			= 1,
++static struct clk *periph_clocks[] __initdata = {
++	&pit_clk,
++	&smc_clk,
++	&pioA_clk,
++	&pioB_clk,
++	&pioC_clk,
++	&pioD_clk,
++	&pioE_clk,
++	&usart0_clk,
++	&usart2_clk,
++	&usart3_clk,
++	&usart4_clk,
++	&mmc0_clk,
++	&mmc1_clk,
++	&tcb0_clk,
++	&tcb1_clk,
++	&adc_clk,
++	&dma0_clk,
++	&dma1_clk,
++	&uhphs_clk,
++	&udphs_clk,
++	&lcdc_clk,
++	&isi_clk,
++	&macb0_clk,
++	&twi0_clk,
++	&twi2_clk,
++	&spi0_clk,
++	&smd_clk,
++	&ssc0_clk,
++	&ssc1_clk,
++	&sha_clk,
++	&aes_clk,
++	&tdes_clk,
 +};
 +
-+static void ek_add_device_nand(void)
-+{
-+	struct clk *clk = clk_get(NULL, "smc_clk");
-+
-+	clk_enable(clk);
-+
-+	/* configure chip-select 3 (NAND) */
-+	sama5_smc_configure(0, 3, &cm_nand_smc_config);
-+
-+	at91_add_device_nand(&nand_pdata);
-+}
-+#else
-+static void ek_add_device_nand(void) {}
-+#endif
-+
-+#if defined(CONFIG_DRIVER_NET_MACB)
-+static struct macb_platform_data macb0_pdata = {
-+	.phy_interface = PHY_INTERFACE_MODE_RMII,
-+	.phy_addr = 0,
++static struct clk pck0 = {
++	.name		= "pck0",
++	.pmc_mask	= AT91_PMC_PCK0,
++	.type		= CLK_TYPE_PROGRAMMABLE,
++	.id		= 0,
 +};
 +
-+static void ek_add_device_eth(void)
-+{
-+	at91_add_device_eth(0, &macb0_pdata);
-+}
-+#else
-+static void ek_add_device_eth(void) {}
-+#endif
-+
-+#if defined(CONFIG_DRIVER_VIDEO_ATMEL_HLCD)
-+static struct fb_videomode at91_tft_vga_modes[] = {
-+	{
-+		.name		= "LG",
-+		.refresh	= 60,
-+		.xres		= 800,		.yres		= 480,
-+		.pixclock	= KHZ2PICOS(33260),
-+
-+		.left_margin	= 88,		.right_margin	= 168,
-+		.upper_margin	= 8,		.lower_margin	= 37,
-+		.hsync_len	= 128,		.vsync_len	= 2,
-+
-+		.sync		= 0,
-+		.vmode		= FB_VMODE_NONINTERLACED,
-+	},
++static struct clk pck1 = {
++	.name		= "pck1",
++	.pmc_mask	= AT91_PMC_PCK1,
++	.type		= CLK_TYPE_PROGRAMMABLE,
++	.id		= 1,
 +};
 +
-+/* Output mode is TFT 18 bits */
-+#define BPP_OUT_DEFAULT_LCDCFG5	(LCDC_LCDCFG5_MODE_OUTPUT_18BPP)
-+
-+static struct atmel_lcdfb_platform_data ek_lcdc_data = {
-+	.lcdcon_is_backlight		= true,
-+	.default_bpp			= 16,
-+	.default_dmacon			= ATMEL_LCDC_DMAEN,
-+	.default_lcdcon2		= BPP_OUT_DEFAULT_LCDCFG5,
-+	.guard_time			= 9,
-+	.lcd_wiring_mode		= ATMEL_LCDC_WIRING_RGB,
-+	.mode_list			= at91_tft_vga_modes,
-+	.num_modes			= ARRAY_SIZE(at91_tft_vga_modes),
++static struct clk pck2 = {
++	.name		= "pck2",
++	.pmc_mask	= AT91_PMC_PCK2,
++	.type		= CLK_TYPE_PROGRAMMABLE,
++	.id		= 2,
 +};
 +
-+static void ek_add_device_lcdc(void)
-+{
-+	at91_add_device_lcdc(&ek_lcdc_data);
-+}
-+#else
-+static void ek_add_device_lcdc(void) {}
-+#endif
-+
-+#if defined(CONFIG_MCI_ATMEL)
-+static struct atmel_mci_platform_data mci1_data = {
-+	.bus_width	= 4,
-+	.detect_pin	= AT91_PIN_PE6,
-+	.wp_pin		= -EINVAL,
++static struct clk_lookup periph_clocks_lookups[] = {
++	CLKDEV_CON_DEV_ID("macb_clk", "macb0", &macb0_clk),
++	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
++	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
++	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
++	CLKDEV_DEV_ID("at91sam9x5-gpio0", &pioA_clk),
++	CLKDEV_DEV_ID("at91sam9x5-gpio1", &pioB_clk),
++	CLKDEV_DEV_ID("at91sam9x5-gpio2", &pioC_clk),
++	CLKDEV_DEV_ID("at91sam9x5-gpio3", &pioD_clk),
++	CLKDEV_DEV_ID("at91sam9x5-gpio4", &pioE_clk),
++	CLKDEV_DEV_ID("at91-pit", &pit_clk),
++	CLKDEV_CON_DEV_ID("hck1", "atmel_hlcdfb", &lcdc_clk),
 +};
 +
-+static void ek_add_device_mci(void)
-+{
-+	/* MMC1 */
-+	at91_add_device_mci(1, &mci1_data);
-+
-+	/* power on MCI1 */
-+	at91_set_gpio_output(AT91_PIN_PE15, 0);
-+}
-+#else
-+static void ek_add_device_mci(void) {}
-+#endif
-+
-+#if defined(CONFIG_I2C_GPIO)
-+struct qt1070_platform_data qt1070_pdata = {
-+	.irq_pin	= AT91_PIN_PE25,
++static struct clk_lookup usart_clocks_lookups[] = {
++	CLKDEV_CON_DEV_ID("usart", "atmel_usart0", &mck),
++	CLKDEV_CON_DEV_ID("usart", "atmel_usart1", &usart0_clk),
++	CLKDEV_CON_DEV_ID("usart", "atmel_usart3", &usart2_clk),
++	CLKDEV_CON_DEV_ID("usart", "atmel_usart4", &usart3_clk),
 +};
 +
-+static struct i2c_board_info i2c_devices[] = {
-+	{
-+		.platform_data = &qt1070_pdata,
-+		I2C_BOARD_INFO("qt1070", 0x1b),
-+	},
-+};
-+
-+static void ek_add_device_i2c(void)
-+{
-+	at91_set_gpio_input(qt1070_pdata.irq_pin, 0);
-+	at91_set_deglitch(qt1070_pdata.irq_pin, 1);
-+	at91_add_device_i2c(0, i2c_devices, ARRAY_SIZE(i2c_devices));
-+}
-+#else
-+static void ek_add_device_i2c(void) {}
-+#endif
-+
-+#if defined(CONFIG_DRIVER_SPI_ATMEL)
-+static const struct spi_board_info ek_spi_devices[] = {
-+	{
-+		.name		= "m25p80",
-+		.chip_select	= 0,
-+		.max_speed_hz	= 30 * 1000 * 1000,
-+		.bus_num	= 0,
-+	}
-+};
-+
-+static unsigned spi0_standard_cs[] = { AT91_PIN_PC3 };
-+static struct at91_spi_platform_data spi_pdata = {
-+	.chipselect = spi0_standard_cs,
-+	.num_chipselect = ARRAY_SIZE(spi0_standard_cs),
-+};
-+
-+static void ek_add_device_spi(void)
-+{
-+	spi_register_board_info(ek_spi_devices, ARRAY_SIZE(ek_spi_devices));
-+	at91_add_device_spi(0, &spi_pdata);
-+}
-+#else
-+static void ek_add_device_spi(void) {}
-+#endif
-+
-+#ifdef CONFIG_LED_GPIO
-+struct gpio_led leds[] = {
-+	{
-+		.gpio	= AT91_PIN_PE28,
-+		.active_low	= 1,
-+		.led	= {
-+			.name = "d8",
-+		},
-+	}, {
-+		.gpio	= AT91_PIN_PE8,
-+		.active_low	= 1,
-+		.led	= {
-+			.name = "d10",
-+		},
-+	},
-+};
-+
-+static void ek_add_led(void)
++static void __init sama5d4_register_clocks(void)
 +{
 +	int i;
 +
-+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
-+		at91_set_gpio_output(leds[i].gpio, leds[i].active_low);
-+		led_gpio_register(&leds[i]);
-+	}
-+	led_set_trigger(LED_TRIGGER_HEARTBEAT, &leds[0].led);
++	for (i = 0; i < ARRAY_SIZE(periph_clocks); i++)
++		clk_register(periph_clocks[i]);
++
++	clkdev_add_table(periph_clocks_lookups,
++			 ARRAY_SIZE(periph_clocks_lookups));
++
++	clkdev_add_table(usart_clocks_lookups,
++			 ARRAY_SIZE(usart_clocks_lookups));
++
++	clk_register(&pck0);
++	clk_register(&pck1);
++	clk_register(&pck2);
++}
++
++/* --------------------------------------------------------------------
++ *  Processor initialization
++ * -------------------------------------------------------------------- */
++static void sama5d4_initialize(void)
++{
++	/* Register the processor-specific clocks */
++	sama5d4_register_clocks();
++
++	/* Register GPIO subsystem */
++	at91_add_sam9x5_gpio(0, SAMA5D4_BASE_PIOA);
++	at91_add_sam9x5_gpio(1, SAMA5D4_BASE_PIOB);
++	at91_add_sam9x5_gpio(2, SAMA5D4_BASE_PIOC);
++	at91_add_sam9x5_gpio(3, SAMA5D4_BASE_PIOD);
++	at91_add_sam9x5_gpio(4, SAMA5D4_BASE_PIOE);
++
++	at91_add_pit(SAMA5D4_BASE_PIT);
++	at91_add_sam9_smc(DEVICE_ID_SINGLE, SAMA5D4_BASE_HSMC + 0x600, 0xa0);
++}
++
++AT91_SOC_START(sama5d4)
++	.init = sama5d4_initialize,
++AT91_SOC_END
+diff --git a/arch/arm/mach-at91/sama5d4_devices.c b/arch/arm/mach-at91/sama5d4_devices.c
+new file mode 100644
+index 0000000..3806971
+--- /dev/null
++++ b/arch/arm/mach-at91/sama5d4_devices.c
+@@ -0,0 +1,495 @@
++/*
++ *  On-Chip devices setup code for the SAMA5D4 family
++ *
++ *  Copyright (C) 2014 Atmel Corporation.
++ *		       Bo Shen <voice.shen@atmel.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <sizes.h>
++#include <gpio.h>
++#include <asm/armlinux.h>
++#include <mach/hardware.h>
++#include <mach/board.h>
++#include <mach/at91_pmc.h>
++#include <mach/at91sam9x5_matrix.h>
++#include <mach/at91sam9_ddrsdr.h>
++#include <mach/iomux.h>
++#include <mach/io.h>
++#include <mach/cpu.h>
++#include <i2c/i2c-gpio.h>
++
++#include "generic.h"
++
++void at91_add_device_sdram(u32 size)
++{
++	if (!size)
++		size = at91sama5_get_ddram_size();
++
++	arm_add_mem_device("ram0", SAMA5_DDRCS, size);
++	add_mem_device("sram0", SAMA5D4_SRAM_BASE,
++		       SAMA5D4_SRAM_SIZE, IORESOURCE_MEM_WRITEABLE);
++}
++
++/* --------------------------------------------------------------------
++ *  NAND / SmartMedia
++ * -------------------------------------------------------------------- */
++#if defined(CONFIG_NAND_ATMEL)
++static struct resource nand_resources[] = {
++	[0] = {
++		.start	= SAMA5D4_CHIPSELECT_3,
++		.end	= SAMA5D4_CHIPSELECT_3 + SZ_128M - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= SAMA5D4_BASE_PMECC,
++		.end	= SAMA5D4_BASE_PMECC + 0x490 - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++	[2] = {
++		.start	= SAMA5D4_BASE_PMERRLOC,
++		.end	= SAMA5D4_BASE_PMERRLOC + 0x100 - 1,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++void __init at91_add_device_nand(struct atmel_nand_data *data)
++{
++	if (!data)
++		return;
++
++	at91_set_A_periph(AT91_PIN_PC5, 0);	/* D0 */
++	at91_set_A_periph(AT91_PIN_PC6, 0);	/* D1 */
++	at91_set_A_periph(AT91_PIN_PC7, 0);	/* D2 */
++	at91_set_A_periph(AT91_PIN_PC8, 0);	/* D3 */
++	at91_set_A_periph(AT91_PIN_PC9, 0);	/* D4 */
++	at91_set_A_periph(AT91_PIN_PC10, 0);	/* D5 */
++	at91_set_A_periph(AT91_PIN_PC11, 0);	/* D6 */
++	at91_set_A_periph(AT91_PIN_PC12, 0);	/* D7 */
++	at91_set_A_periph(AT91_PIN_PC13, 0);	/* RE */
++	at91_set_A_periph(AT91_PIN_PC14, 0);	/* WE */
++	at91_set_A_periph(AT91_PIN_PC15, 1);	/* NCS */
++	at91_set_A_periph(AT91_PIN_PC16, 1);	/* RDY */
++	at91_set_A_periph(AT91_PIN_PC17, 1);	/* ALE */
++	at91_set_A_periph(AT91_PIN_PC18, 1);	/* CLE */
++
++	/* enable pin */
++	if (gpio_is_valid(data->enable_pin))
++		at91_set_gpio_output(data->enable_pin, 1);
++
++	/* ready/busy pin */
++	if (gpio_is_valid(data->rdy_pin))
++		at91_set_gpio_input(data->rdy_pin, 1);
++
++	/* card detect pin */
++	if (gpio_is_valid(data->det_pin))
++		at91_set_gpio_input(data->det_pin, 1);
++
++	add_generic_device_res("atmel_nand", 0, nand_resources,
++			       ARRAY_SIZE(nand_resources), data);
 +}
 +#else
-+static void ek_add_led(void) {}
++void __init at91_add_device_nand(struct atmel_nand_data *data) {}
 +#endif
 +
-+static int sama5d4ek_mem_init(void)
++#if defined(CONFIG_DRIVER_NET_MACB)
++void at91_add_device_eth(int id, struct macb_platform_data *data)
 +{
-+	at91_add_device_sdram(0);
++	if (!data)
++		return;
 +
-+	return 0;
++	switch (id) {
++	case 0:
++		at91_set_A_periph(AT91_PIN_PB16, 0);	/* GMDC */
++		at91_set_A_periph(AT91_PIN_PB17, 0);	/* GMDIO */
++
++		at91_set_A_periph(AT91_PIN_PB0, 0);	/* GTXCK */
++		at91_set_A_periph(AT91_PIN_PB2, 0);	/* GTXEN */
++		at91_set_A_periph(AT91_PIN_PB6, 0);	/* GRXDV */
++		at91_set_A_periph(AT91_PIN_PB7, 0);	/* GRXER */
++
++		switch (data->phy_interface) {
++		case PHY_INTERFACE_MODE_MII:
++			at91_set_A_periph(AT91_PIN_PB4, 0);	/* GCRS */
++			at91_set_A_periph(AT91_PIN_PB5, 0);	/* GCOL */
++			at91_set_A_periph(AT91_PIN_PB14, 0);	/* GTX2 */
++			at91_set_A_periph(AT91_PIN_PB15, 0);	/* GTX3 */
++			at91_set_A_periph(AT91_PIN_PB3, 0);	/* GTXER */
++			at91_set_A_periph(AT91_PIN_PB1, 0);	/* GRXCK */
++			at91_set_A_periph(AT91_PIN_PB10, 0);	/* GRX2 */
++			at91_set_A_periph(AT91_PIN_PB11, 0);	/* GRX3 */
++		case PHY_INTERFACE_MODE_RMII:
++			at91_set_A_periph(AT91_PIN_PB12, 0);	/* GTX0 */
++			at91_set_A_periph(AT91_PIN_PB13, 0);	/* GTX1 */
++			at91_set_A_periph(AT91_PIN_PB8, 0);	/* GRX0 */
++			at91_set_A_periph(AT91_PIN_PB9, 0);	/* GRX1 */
++			break;
++		default:
++			return;
++		}
++
++		add_generic_device("macb", id, NULL, SAMA5D4_BASE_GMAC0, SZ_16K,
++			   IORESOURCE_MEM, data);
++		break;
++	case 1:
++		at91_set_B_periph(AT91_PIN_PA22, 0);	/* GMDC */
++		at91_set_B_periph(AT91_PIN_PA23, 0);	/* GMDIO */
++
++		at91_set_B_periph(AT91_PIN_PA2, 0);	/* GTXCK */
++		at91_set_B_periph(AT91_PIN_PA4, 0);	/* GTXEN */
++		at91_set_B_periph(AT91_PIN_PA10, 0);	/* GRXDV */
++		at91_set_B_periph(AT91_PIN_PA11, 0);	/* GRXER */
++
++		switch (data->phy_interface) {
++		case PHY_INTERFACE_MODE_MII:
++			at91_set_B_periph(AT91_PIN_PA6, 0);	/* GCRS */
++			at91_set_B_periph(AT91_PIN_PA9, 0);	/* GCOL */
++			at91_set_B_periph(AT91_PIN_PA20, 0);	/* GTX2 */
++			at91_set_B_periph(AT91_PIN_PA21, 0);	/* GTX3 */
++			at91_set_B_periph(AT91_PIN_PA5, 0);	/* GTXER */
++			at91_set_B_periph(AT91_PIN_PA3, 0);	/* GRXCK */
++			at91_set_B_periph(AT91_PIN_PA18, 0);	/* GRX2 */
++			at91_set_B_periph(AT91_PIN_PA19, 0);	/* GRX3 */
++		case PHY_INTERFACE_MODE_RMII:
++			at91_set_B_periph(AT91_PIN_PA12, 0);	/* GTX0 */
++			at91_set_B_periph(AT91_PIN_PA13, 0);	/* GTX1 */
++			at91_set_B_periph(AT91_PIN_PA8, 0);	/* GRX0 */
++			at91_set_B_periph(AT91_PIN_PA9, 0);	/* GRX1 */
++			break;
++		default:
++			return;
++		}
++
++		add_generic_device("macb", id, NULL, SAMA5D4_BASE_GMAC1, SZ_16K,
++			   IORESOURCE_MEM, data);
++		break;
++	default:
++		return;
++	}
++
 +}
-+mem_initcall(sama5d4ek_mem_init);
++#else
++void at91_add_device_eth(int id, struct macb_platform_data *data) {}
++#endif
 +
-+static const struct devfs_partition sama5d4ek_nand0_partitions[] = {
++#if defined(CONFIG_MCI_ATMEL)
++void __init at91_add_device_mci(short mmc_id,
++				struct atmel_mci_platform_data *data)
++{
++	resource_size_t start = ~0;
++
++	if (!data)
++		return;
++
++	/* Must have at least one usable slot */
++	if (!data->bus_width)
++		return;
++
++	/* input/irq */
++	if (gpio_is_valid(data->detect_pin)) {
++		at91_set_gpio_input(data->detect_pin, 1);
++		at91_set_deglitch(data->detect_pin, 1);
++	}
++
++	if (gpio_is_valid(data->wp_pin))
++		at91_set_gpio_input(data->wp_pin, 1);
++
++	switch (mmc_id) {
++	/* MCI0 */
++	case 0:
++		start = SAMA5D4_BASE_HSMCI0;
++
++		/* CLK */
++		at91_set_B_periph(AT91_PIN_PC4, 0);
++
++		/* CMD */
++		at91_set_B_periph(AT91_PIN_PC5, 1);
++
++		/* DAT0, maybe DAT1..DAT3 */
++		at91_set_B_periph(AT91_PIN_PC6, 1);
++		switch (data->bus_width) {
++		case 8:
++			at91_set_B_periph(AT91_PIN_PC10, 1);
++			at91_set_B_periph(AT91_PIN_PC11, 1);
++			at91_set_B_periph(AT91_PIN_PC12, 1);
++			at91_set_B_periph(AT91_PIN_PC13, 1);
++		case 4:
++			at91_set_B_periph(AT91_PIN_PC7, 1);
++			at91_set_B_periph(AT91_PIN_PC8, 1);
++			at91_set_B_periph(AT91_PIN_PC9, 1);
++		};
++
++		break;
++	/* MCI1 */
++	case 1:
++		start = SAMA5D4_BASE_HSMCI1;
++
++		/*
++		 * As the mci1 io internal pull down is to strong,
++		 * which cause external pull up doesn't work, so,
++		 * disable internal pull down.
++		 */
++
++		/* CLK */
++		at91_set_C_periph(AT91_PIN_PE18, 0);
++		at91_set_pulldown(AT91_PIN_PE18, 0);
++
++		/* CMD */
++		at91_set_C_periph(AT91_PIN_PE19, 1);
++		at91_set_pulldown(AT91_PIN_PE19, 0);
++
++		/* DAT0, maybe DAT1..DAT3 */
++		at91_set_C_periph(AT91_PIN_PE20, 1);
++		at91_set_pulldown(AT91_PIN_PE20, 0);
++		if (data->bus_width == 4) {
++			at91_set_C_periph(AT91_PIN_PE21, 1);
++			at91_set_pulldown(AT91_PIN_PE21, 0);
++			at91_set_C_periph(AT91_PIN_PE22, 1);
++			at91_set_pulldown(AT91_PIN_PE22, 0);
++			at91_set_C_periph(AT91_PIN_PE23, 1);
++			at91_set_pulldown(AT91_PIN_PE23, 0);
++		}
++
++		break;
++	}
++
++	add_generic_device("atmel_mci", mmc_id, NULL, start, SZ_16K,
++			   IORESOURCE_MEM, data);
++}
++#else
++void __init at91_add_device_mci(short mmc_id,
++				struct atmel_mci_platform_data *data) {}
++#endif
++
++#if defined(CONFIG_I2C_GPIO)
++static struct i2c_gpio_platform_data pdata_i2c[] = {
 +	{
-+		.offset = 0x00000,
-+		.size = SZ_256K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "at91bootstrap_raw",
-+		.bbname = "at91bootstrap",
++		.sda_pin		= AT91_PIN_PA30,
++		.sda_is_open_drain	= 1,
++		.scl_pin		= AT91_PIN_PA31,
++		.scl_is_open_drain	= 1,
++		.udelay			= 5,		/* ~100 kHz */
 +	}, {
-+		.offset = DEVFS_PARTITION_APPEND,
-+		.size = SZ_512K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "bootloader_raw",
-+		.bbname = "bootloader",
++		.sda_pin		= AT91_PIN_PE29,
++		.sda_is_open_drain	= 1,
++		.scl_pin		= AT91_PIN_PE30,
++		.scl_is_open_drain	= 1,
++		.udelay			= 5,		/* ~100 kHz */
 +	}, {
-+		.offset = DEVFS_PARTITION_APPEND,
-+		.size = SZ_256K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "env_raw",
-+		.bbname = "env0",
++		.sda_pin		= AT91_PIN_PB29,
++		.sda_is_open_drain	= 1,
++		.scl_pin		= AT91_PIN_PB30,
++		.scl_is_open_drain	= 1,
++		.udelay			= 5,		/* ~100 kHz */
 +	}, {
-+		.offset = DEVFS_PARTITION_APPEND,
-+		.size = SZ_256K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "env_raw1",
-+		.bbname = "env1",
-+	}, {
-+		/* sentinel */
++		.sda_pin		= AT91_PIN_PC25,
++		.sda_is_open_drain	= 1,
++		.scl_pin		= AT91_PIN_PC26,
++		.scl_is_open_drain	= 1,
++		.udelay			= 5,		/* ~100 kHz */
 +	}
 +};
 +
-+static int sama5d4ek_devices_init(void)
++void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices,
++			 int nr_devices)
 +{
-+	ek_add_device_i2c();
-+	ek_add_device_nand();
-+	ek_add_led();
-+	ek_add_device_eth();
-+	ek_add_device_spi();
-+	ek_add_device_mci();
-+	ek_add_device_lcdc();
++	struct i2c_gpio_platform_data *pdata;
 +
-+	devfs_create_partitions("nand0", sama5d4ek_nand0_partitions);
++	if (i2c_id > ARRAY_SIZE(pdata_i2c))
++		return;
 +
-+	return 0;
++	i2c_register_board_info(i2c_id, devices, nr_devices);
++
++	pdata = &pdata_i2c[i2c_id];
++
++	at91_set_GPIO_periph(pdata->sda_pin, 1);		/* TWD (SDA) */
++	at91_set_multi_drive(pdata->sda_pin, 1);
++
++	at91_set_GPIO_periph(pdata->scl_pin, 1);		/* TWCK (SCL) */
++	at91_set_multi_drive(pdata->scl_pin, 1);
++
++	add_generic_device_res("i2c-gpio", i2c_id, NULL, 0, pdata);
 +}
-+device_initcall(sama5d4ek_devices_init);
++#else
++void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices,
++			 int nr_devices) {}
++#endif
 +
-+static int sama5d4ek_console_init(void)
++/* --------------------------------------------------------------------
++ *  SPI
++ * -------------------------------------------------------------------- */
++#if defined(CONFIG_DRIVER_SPI_ATMEL)
++static unsigned spi0_standard_cs[2] = { AT91_PIN_PC3, AT91_PIN_PC4 };
++static unsigned spi1_standard_cs[2] = { AT91_PIN_PB21, AT91_PIN_PB22 };
++
++static struct at91_spi_platform_data spi_pdata[] = {
++	[0] = {
++		.chipselect = spi0_standard_cs,
++		.num_chipselect = ARRAY_SIZE(spi0_standard_cs),
++	},
++	[1] = {
++		.chipselect = spi1_standard_cs,
++		.num_chipselect = ARRAY_SIZE(spi1_standard_cs),
++	},
++};
++
++void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata)
 +{
-+	barebox_set_model("Atmel sama5d4ek");
-+	barebox_set_hostname("sama5d4ek");
++	int i;
++	int cs_pin;
++	resource_size_t start = ~0;
 +
-+	at91_register_uart(4, 0);
++	BUG_ON(spi_id > 1);
 +
-+	return 0;
++	if (!pdata)
++		pdata = &spi_pdata[spi_id];
++
++	for (i = 0; i < pdata->num_chipselect; i++) {
++		cs_pin = pdata->chipselect[i];
++
++		/* enable chip-select pin */
++		if (gpio_is_valid(cs_pin))
++			at91_set_gpio_output(cs_pin, 1);
++	}
++
++	/* Configure SPI bus(es) */
++	switch (spi_id) {
++	case 0:
++		start = SAMA5D4_BASE_SPI0;
++		at91_set_A_periph(AT91_PIN_PC0, 0);	/* SPI0_MISO */
++		at91_set_A_periph(AT91_PIN_PC1, 0);	/* SPI0_MOSI */
++		at91_set_A_periph(AT91_PIN_PC2, 0);	/* SPI0_SPCK */
++		break;
++	case 1:
++		start = SAMA5D4_BASE_SPI1;
++		at91_set_A_periph(AT91_PIN_PB18, 0);	/* SPI1_MISO */
++		at91_set_A_periph(AT91_PIN_PB19, 0);	/* SPI1_MOSI */
++		at91_set_A_periph(AT91_PIN_PB20, 0);	/* SPI1_SPCK */
++		break;
++	}
++
++	add_generic_device("atmel_spi", spi_id, NULL, start, SZ_16K,
++			   IORESOURCE_MEM, pdata);
 +}
-+console_initcall(sama5d4ek_console_init);
++#else
++void at91_add_device_spi(int spi_id, struct at91_spi_platform_data *pdata) {}
++#endif
 +
-+static int sama5d4ek_main_clock(void)
++/* --------------------------------------------------------------------
++ *  LCD Controller
++ * -------------------------------------------------------------------- */
++#if defined(CONFIG_DRIVER_VIDEO_ATMEL_HLCD)
++void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data)
 +{
-+	at91_set_main_clock(12000000);
++	BUG_ON(!data);
 +
-+	return 0;
++	at91_set_A_periph(AT91_PIN_PA24, 0);	/* LCDPWM */
++	at91_set_A_periph(AT91_PIN_PA25, 0);	/* LCDDISP */
++	at91_set_A_periph(AT91_PIN_PA26, 0);	/* LCDVSYNC */
++	at91_set_A_periph(AT91_PIN_PA27, 0);	/* LCDHSYNC */
++	at91_set_A_periph(AT91_PIN_PA28, 0);	/* LCDDOTCK */
++	at91_set_A_periph(AT91_PIN_PA29, 0);	/* LCDDEN */
++
++	at91_set_A_periph(AT91_PIN_PA2, 0);	/* LCDD2 */
++	at91_set_A_periph(AT91_PIN_PA3, 0);	/* LCDD3 */
++	at91_set_A_periph(AT91_PIN_PA4, 0);	/* LCDD4 */
++	at91_set_A_periph(AT91_PIN_PA5, 0);	/* LCDD5 */
++	at91_set_A_periph(AT91_PIN_PA6, 0);	/* LCDD6 */
++	at91_set_A_periph(AT91_PIN_PA7, 0);	/* LCDD7 */
++
++	at91_set_A_periph(AT91_PIN_PA10, 0);	/* LCDD10 */
++	at91_set_A_periph(AT91_PIN_PA11, 0);	/* LCDD11 */
++	at91_set_A_periph(AT91_PIN_PA12, 0);	/* LCDD12 */
++	at91_set_A_periph(AT91_PIN_PA13, 0);	/* LCDD13 */
++	at91_set_A_periph(AT91_PIN_PA14, 0);	/* LCDD14 */
++	at91_set_A_periph(AT91_PIN_PA15, 0);	/* LCDD15 */
++
++	at91_set_A_periph(AT91_PIN_PA18, 0);	/* LCDD18 */
++	at91_set_A_periph(AT91_PIN_PA19, 0);	/* LCDD19 */
++	at91_set_A_periph(AT91_PIN_PA20, 0);	/* LCDD20 */
++	at91_set_A_periph(AT91_PIN_PA21, 0);	/* LCDD21 */
++	at91_set_A_periph(AT91_PIN_PA22, 0);	/* LCDD22 */
++	at91_set_A_periph(AT91_PIN_PA23, 0);	/* LCDD23 */
++
++	add_generic_device("atmel_hlcdfb", DEVICE_ID_SINGLE, NULL,
++			   SAMA5D4_BASE_LCDC, SZ_4K, IORESOURCE_MEM, data);
 +}
-+pure_initcall(sama5d4ek_main_clock);
-diff --git a/arch/arm/configs/sama5d4ek_defconfig b/arch/arm/configs/sama5d4ek_defconfig
-new file mode 100644
-index 0000000..bbf254a
---- /dev/null
-+++ b/arch/arm/configs/sama5d4ek_defconfig
-@@ -0,0 +1,85 @@
-+CONFIG_ARCH_SAMA5D4=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x60000
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x26f00000
-+CONFIG_MALLOC_SIZE=0xA00000
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_PROMPT="A5D4EK:"
-+CONFIG_GLOB=y
-+CONFIG_PROMPT_HUSH_PS2="y"
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_CONSOLE_ACTIVATE_ALL=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/sama5d4ek/env"
-+CONFIG_DEBUG_INFO=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_NET=y
-+CONFIG_NET_NFS=y
-+CONFIG_OFDEVICE=y
-+CONFIG_DRIVER_NET_MACB=y
-+CONFIG_MICREL_PHY=y
-+CONFIG_DRIVER_SPI_ATMEL=y
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MTD=y
-+CONFIG_MTD_RAW_DEVICE=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_NAND=y
-+# CONFIG_NAND_ECC_SOFT is not set
-+# CONFIG_NAND_ECC_HW_SYNDROME is not set
-+CONFIG_NAND_ATMEL=y
-+CONFIG_NAND_ATMEL_PMECC=y
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_ATMEL_HLCD=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_ATMEL=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_KEYBOARD_QT1070=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_PNG=y
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 826917e..8c10c10 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -6,6 +6,9 @@ config HAVE_AT91_DBGU0
- config HAVE_AT91_DBGU1
- 	bool
- 
-+config HAVE_AT91_DBGU2
-+	bool
++#else
++void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data) {}
++#endif
 +
- config HAVE_AT91_LOWLEVEL_INIT
- 	bool
- 
-@@ -168,6 +171,13 @@ config ARCH_SAMA5D3
- 	select HAS_MACB
- 	select AT91SAM9G45_RESET
- 
-+config ARCH_SAMA5D4
-+	bool "SAMA5D4"
-+	select SOC_SAMA5
-+	select HAVE_AT91_DBGU2
-+	select HAS_MACB
-+	select AT91SAM9G45_RESET
++/* --------------------------------------------------------------------
++ *  UART
++ * -------------------------------------------------------------------- */
++#if defined(CONFIG_DRIVER_SERIAL_ATMEL)
++resource_size_t __init at91_configure_dbgu(void)
++{
++	at91_set_A_periph(AT91_PIN_PB25, 1);		/* TXD1 */
++	at91_set_A_periph(AT91_PIN_PB24, 0);		/* RXD1 */
 +
- endchoice
- 
- config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
-@@ -472,6 +482,22 @@ endif
- 
- # ----------------------------------------------------------
- 
-+if ARCH_SAMA5D4
++	return SAMA5D4_BASE_DBGU;
++}
 +
-+choice
-+	prompt "SAMA5D4 Board Type"
++resource_size_t __init at91_configure_usart0(unsigned pins)
++{
++	at91_set_A_periph(AT91_PIN_PD13, 1);		/* TXD1 */
++	at91_set_A_periph(AT91_PIN_PD12, 0);		/* RXD1 */
 +
-+config MACH_SAMA5D4EK
-+	bool "Atmel SAMA5D4 Evaluation Kit"
-+	help
-+	  Select this if you are using Atmel's SAMA5D4-EK Evaluation Kit.
++	return SAMA5D4_BASE_USART0;
++}
 +
-+endchoice
++resource_size_t __init at91_configure_usart1(unsigned pins)
++{
++	at91_set_A_periph(AT91_PIN_PD17, 1);		/* TXD1 */
++	at91_set_A_periph(AT91_PIN_PD16, 0);		/* RXD1 */
 +
-+endif
++	return SAMA5D4_BASE_USART1;
++}
 +
-+# ----------------------------------------------------------
 +
- comment "AT91 Board Options"
- 
- config MTD_AT91_DATAFLASH_CARD
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 8599f50..c2991b0 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -12,6 +12,7 @@ lowlevel_init-$(CONFIG_SOC_AT91SAM9X5) += at91sam9x5_lowlevel_init.o
- lowlevel_init-$(CONFIG_SOC_AT91SAM9N12) += at91sam9n12_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_SAMA5D3) += sama5d3_lowlevel_init.o
-+lowlevel_init-$(CONFIG_ARCH_SAMA5D4) += sama5d3_lowlevel_init.o
- lwl-y += $(lowlevel_init-y)
- 
- obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
-@@ -31,3 +32,4 @@ obj-$(CONFIG_ARCH_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
- obj-$(CONFIG_ARCH_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
-+obj-$(CONFIG_ARCH_SAMA5D4)	+= sama5d4.o sama5d4_devices.o
++resource_size_t __init at91_configure_usart2(unsigned pins)
++{
++	at91_set_B_periph(AT91_PIN_PB5, 1);		/* TXD1 */
++	at91_set_B_periph(AT91_PIN_PB4, 0);		/* RXD1 */
++
++	return SAMA5D4_BASE_USART2;
++}
++
++resource_size_t __init at91_configure_usart3(unsigned pins)
++{
++	at91_set_B_periph(AT91_PIN_PE17, 1);		/* TXD1 */
++	at91_set_B_periph(AT91_PIN_PE16, 0);		/* RXD1 */
++
++	return SAMA5D4_BASE_USART3;
++}
++
++resource_size_t __init at91_configure_usart4(unsigned pins)
++{
++	at91_set_B_periph(AT91_PIN_PE27, 1);		/* TXD1 */
++	at91_set_B_periph(AT91_PIN_PE26, 0);		/* RXD1 */
++
++	return SAMA5D4_BASE_USART4;
++}
++
++resource_size_t __init at91_configure_usart5(unsigned pins)
++{
++	at91_set_B_periph(AT91_PIN_PE30, 1);		/* TXD1 */
++	at91_set_B_periph(AT91_PIN_PE29, 0);		/* RXD1 */
++
++	return SAMA5D4_BASE_UART0;
++}
++
++resource_size_t __init at91_configure_usart6(unsigned pins)
++{
++	at91_set_C_periph(AT91_PIN_PC26, 1);		/* TXD1 */
++	at91_set_C_periph(AT91_PIN_PC25, 0);		/* RXD1 */
++
++	return SAMA5D4_BASE_UART1;
++}
++#endif
 -- 
 2.1.0.24.g4109c28
 
