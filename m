@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XUBNL-0006x7-9m
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 09:18:11 +0000
-Date: Wed, 17 Sep 2014 11:17:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140917091748.GV4992@pengutronix.de>
-References: <1410895322-29627-1-git-send-email-dev@lynxeye.de>
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XUCNP-0007yN-7d
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:19 +0000
+From: Bo Shen <voice.shen@atmel.com>
+Date: Wed, 17 Sep 2014 18:21:32 +0800
+Message-ID: <1410949295-30296-7-git-send-email-voice.shen@atmel.com>
+In-Reply-To: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
+References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1410895322-29627-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] phy: marvell: move IDs to own header
-To: Lucas Stach <dev@lynxeye.de>
+Subject: [PATCH 6/9] mci: atmel: add new ip version 0x600 support
+To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 16, 2014 at 09:22:01PM +0200, Lucas Stach wrote:
-> So they can be used in board files to register
-> fixups.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
+---
 
-Applied both, thanks
+ drivers/mci/atmel_mci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sascha
-
-
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index 36107a6..b36fbe3 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -511,6 +511,7 @@ static void atmci_get_cap(struct atmel_mci *host)
+ 	host->caps.need_reset_after_xfer = 1;
+ 
+ 	switch (version & 0xf00) {
++	case 0x600:
+ 	case 0x500:
+ 		host->caps.has_odd_clk_div = 1;
+ 	case 0x400:
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.0.24.g4109c28
+
 
 _______________________________________________
 barebox mailing list
