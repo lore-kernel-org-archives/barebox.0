@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XUCTD-0002dT-Kh
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:28:20 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Sep 2014 12:27:55 +0200
-Message-Id: <1410949675-14010-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XUGiU-0005nC-Pb
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 15:00:24 +0000
+Received: by mail-wi0-f175.google.com with SMTP id r20so450428wiv.14
+ for <barebox@lists.infradead.org>; Wed, 17 Sep 2014 07:59:59 -0700 (PDT)
+From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
+Date: Wed, 17 Sep 2014 17:00:18 +0200
+Message-Id: <1410966019-31054-1-git-send-email-poggi.raph@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,41 +17,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: Call edev->recv with correct eth_device
+Subject: [PATCH] i2c: at91: add support of device tree
 To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-edev->recv has to be called with edev as argument, not eth_current.
-This fixes networking when multiple network devices are used and the
-current one is switched during runtime.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- net/eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/eth.c b/net/eth.c
-index b830f79..89bddba 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -246,7 +246,7 @@ static int __eth_rx(struct eth_device *edev)
- 	if (ret)
- 		return ret;
- 
--	return edev->recv(eth_current);
-+	return edev->recv(edev);
- }
- 
- int eth_rx(void)
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgotLS0K
+IGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jIHwgOTEgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKy0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDczIGluc2VydGlvbnMoKyks
+IDE4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtYXQ5
+MS5jIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkxLmMKaW5kZXggMzk5ZjZhOS4uNjQ5NDQw
+MSAxMDA2NDQKLS0tIGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkxLmMKKysrIGIvZHJpdmVy
+cy9pMmMvYnVzc2VzL2kyYy1hdDkxLmMKQEAgLTE4Niw4ICsxODYsOCBAQCBzdGF0aWMgaW50IGF0
+OTFfdHdpX3dhaXRfY29tcGxldGlvbihzdHJ1Y3QgYXQ5MV90d2lfZGV2ICpkZXYpCiAKIAlkZXYt
+PnRyYW5zZmVyX3N0YXR1cyB8PSBzdGF0dXM7CiAKLQl3aGlsZSghKGF0OTFfdHdpX3JlYWQoZGV2
+LCBBVDkxX1RXSV9TUikgJiBBVDkxX1RXSV9UWENPTVApKSB7Ci0JCWlmKGlzX3RpbWVvdXQoc3Rh
+cnQsIEFUOTFfSTJDX1RJTUVPVVQpKSB7CisJd2hpbGUgKCEoYXQ5MV90d2lfcmVhZChkZXYsIEFU
+OTFfVFdJX1NSKSAmIEFUOTFfVFdJX1RYQ09NUCkpIHsKKwkJaWYgKGlzX3RpbWVvdXQoc3RhcnQs
+IEFUOTFfSTJDX1RJTUVPVVQpKSB7CiAJCQlkZXZfd2FybigmZGV2LT5hZGFwdGVyLmRldiwgInRp
+bWVvdXQgd2FpdGluZyBmb3IgYnVzIHJlYWR5XG4iKTsKIAkJCXJldHVybiAtRVRJTUVET1VUOwog
+CQl9CkBAIC0zNDYsNDEgKzM0Niw5NSBAQCBzdGF0aWMgc3RydWN0IGF0OTFfdHdpX3BkYXRhIGF0
+OTFzYW05ZzEwX2NvbmZpZyA9IHsKIAkuaGFzX3VucmVfZmxhZyA9IGZhbHNlLAogfTsKIAorc3Rh
+dGljIHN0cnVjdCBhdDkxX3R3aV9wZGF0YSBhdDkxc2FtOXg1X2NvbmZpZyA9IHsKKwkuY2xrX21h
+eF9kaXYgPSA3LAorCS5jbGtfb2Zmc2V0ID0gNCwKKwkuaGFzX3VucmVfZmxhZyA9IGZhbHNlLAor
+fTsKKwogc3RhdGljIHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2VfaWQgYXQ5MV90d2lfZGV2dHlwZXNb
+XSA9IHsKIAl7Ci0JCS5uYW1lID0gImkyYy1hdDkxcm05MjAwIiwKKwkJLm5hbWUgPSAiYXQ5MXJt
+OTIwMC1pMmMiLAogCQkuZHJpdmVyX2RhdGEgPSAodW5zaWduZWQgbG9uZykgJmF0OTFybTkyMDBf
+Y29uZmlnLAogCX0sIHsKLQkJLm5hbWUgPSAiaTJjLWF0OTFzYW05MjYxIiwKKwkJLm5hbWUgPSAi
+YXQ5MXNhbTkyNjEtaTJjIiwKIAkJLmRyaXZlcl9kYXRhID0gKHVuc2lnbmVkIGxvbmcpICZhdDkx
+c2FtOTI2MV9jb25maWcsCiAJfSwgewotCQkubmFtZSA9ICJpMmMtYXQ5MXNhbTkyNjAiLAorCQku
+bmFtZSA9ICJhdDkxc2FtOTI2MC1pMmMiLAogCQkuZHJpdmVyX2RhdGEgPSAodW5zaWduZWQgbG9u
+ZykgJmF0OTFzYW05MjYwX2NvbmZpZywKIAl9LCB7Ci0JCS5uYW1lID0gImkyYy1hdDkxc2FtOWcy
+MCIsCisJCS5uYW1lID0gImF0OTFzYW05ZzIwLWkyYyIsCiAJCS5kcml2ZXJfZGF0YSA9ICh1bnNp
+Z25lZCBsb25nKSAmYXQ5MXNhbTlnMjBfY29uZmlnLAogCX0sIHsKLQkJLm5hbWUgPSAiaTJjLWF0
+OTFzYW05ZzEwIiwKKwkJLm5hbWUgPSAiYXQ5MXNhbTlnMTAtaTJjIiwKIAkJLmRyaXZlcl9kYXRh
+ID0gKHVuc2lnbmVkIGxvbmcpICZhdDkxc2FtOWcxMF9jb25maWcsCiAJfSwgeworCQkubmFtZSA9
+ICJhdDkxc2FtOXg1LWkyYyIsCisJCS5kcml2ZXJfZGF0YSA9ICh1bnNpZ25lZCBsb25nKSAmYXQ5
+MXNhbTl4NV9jb25maWcsCisJfSwgeworCQkvKiBzZW50aW5lbCAqLworCX0KK307CisKK3N0YXRp
+YyBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIGF0OTFfdHdpX2R0X2lkc1tdID0geworCXsKKwkJLmNvbXBh
+dGlibGUgPSAiYXRtZWwsYXQ5MXJtOTIwMC1pMmMiLAorCQkuZGF0YSA9ICh1bnNpZ25lZCBsb25n
+KSAmYXQ5MXJtOTIwMF9jb25maWcsCisJfSAsIHsKKwkJLmNvbXBhdGlibGUgPSAiYXRtZWwsYXQ5
+MXNhbTkyNjAtaTJjIiwKKwkJLmRhdGEgPSAodW5zaWduZWQgbG9uZykgJmF0OTFzYW05MjYwX2Nv
+bmZpZywKKwl9ICwgeworCQkuY29tcGF0aWJsZSA9ICJhdG1lbCxhdDkxc2FtOTI2MS1pMmMiLAor
+CQkuZGF0YSA9ICh1bnNpZ25lZCBsb25nKSAmYXQ5MXNhbTkyNjFfY29uZmlnLAorCX0gLCB7CisJ
+CS5jb21wYXRpYmxlID0gImF0bWVsLGF0OTFzYW05ZzIwLWkyYyIsCisJCS5kYXRhID0gKHVuc2ln
+bmVkIGxvbmcpICZhdDkxc2FtOWcyMF9jb25maWcsCisJfSAsIHsKKwkJLmNvbXBhdGlibGUgPSAi
+YXRtZWwsYXQ5MXNhbTlnMTAtaTJjIiwKKwkJLmRhdGEgPSAodW5zaWduZWQgbG9uZykgJmF0OTFz
+YW05ZzEwX2NvbmZpZywKKwl9LCB7CisJCS5jb21wYXRpYmxlID0gImF0bWVsLGF0OTFzYW05eDUt
+aTJjIiwKKwkJLmRhdGEgPSAodW5zaWduZWQgbG9uZykgJmF0OTFzYW05eDVfY29uZmlnLAorCX0s
+IHsKIAkJLyogc2VudGluZWwgKi8KIAl9CiB9OwogCitzdGF0aWMgc3RydWN0IGF0OTFfdHdpX3Bk
+YXRhICphdDkxX3R3aV9nZXRfZHJpdmVyX2RhdGEoc3RydWN0IGRldmljZV9kICpkZXYpCit7CisJ
+c3RydWN0IGF0OTFfdHdpX3BkYXRhICppMmNfZGF0YSA9IE5VTEw7CisJaW50IHJjOworCisJaWYg
+KGRldi0+ZGV2aWNlX25vZGUpIHsKKwkJY29uc3Qgc3RydWN0IG9mX2RldmljZV9pZCAqbWF0Y2g7
+CisJCW1hdGNoID0gb2ZfbWF0Y2hfbm9kZShhdDkxX3R3aV9kdF9pZHMsIGRldi0+ZGV2aWNlX25v
+ZGUpOworCQlpZiAoIW1hdGNoKQorCQkJaTJjX2RhdGEgPSBOVUxMOworCQllbHNlCisJCQlpMmNf
+ZGF0YSA9IChzdHJ1Y3QgYXQ5MV90d2lfcGRhdGEgKiltYXRjaC0+ZGF0YTsKKwl9IGVsc2Ugewor
+CQlyYyA9IGRldl9nZXRfZHJ2ZGF0YShkZXYsICh1bnNpZ25lZCBsb25nICopJmkyY19kYXRhKTsK
+KwkJaWYgKHJjKQorCQkJaTJjX2RhdGEgPSBOVUxMOworCX0KKworCXJldHVybiBpMmNfZGF0YTsK
+K30KKwogc3RhdGljIGludCBhdDkxX3R3aV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIHsK
+IAlzdHJ1Y3QgYXQ5MV90d2lfZGV2ICppMmNfYXQ5MTsKLQlzdHJ1Y3QgYXQ5MV90d2lfcGRhdGEg
+KmkyY19kYXRhOwotCWludCByYzsKKwlpbnQgcmMgPSAwOwogCXUzMiBidXNfY2xrX3JhdGU7CiAK
+IAlpMmNfYXQ5MSA9IHh6YWxsb2Moc2l6ZW9mKHN0cnVjdCBhdDkxX3R3aV9kZXYpKTsKIAotCXJj
+ID0gZGV2X2dldF9kcnZkYXRhKGRldiwgKHVuc2lnbmVkIGxvbmcgKikmaTJjX2RhdGEpOwotCWlm
+IChyYykKKwlpMmNfYXQ5MS0+cGRhdGEgPSBhdDkxX3R3aV9nZXRfZHJpdmVyX2RhdGEoZGV2KTsK
+KwlpZiAoIWkyY19hdDkxLT5wZGF0YSkgeworCQlkZXZfZXJyKGRldiwgImZhaWxlZCB0byByZXRy
+aWV2ZSBkcml2ZXIgZGF0YVxuIik7CisJCXJjID0gLUVOT0RFVjsKIAkJZ290byBvdXRfZnJlZTsK
+LQotCWkyY19hdDkxLT5wZGF0YSA9IGkyY19kYXRhOworCX0KIAogCWkyY19hdDkxLT5iYXNlID0g
+ZGV2X3JlcXVlc3RfbWVtX3JlZ2lvbihkZXYsIDApOwogCWlmICghaTJjX2F0OTEtPmJhc2UpIHsK
+QEAgLTM4OSw3ICs0NDMsNyBAQCBzdGF0aWMgaW50IGF0OTFfdHdpX3Byb2JlKHN0cnVjdCBkZXZp
+Y2VfZCAqZGV2KQogCQlnb3RvIG91dF9mcmVlOwogCX0KIAotCWkyY19hdDkxLT5jbGsgPSBjbGtf
+Z2V0KGRldiwgInR3aV9jbGsiKTsKKwlpMmNfYXQ5MS0+Y2xrID0gY2xrX2dldChkZXYsIE5VTEwp
+OwogCWlmIChJU19FUlIoaTJjX2F0OTEtPmNsaykpIHsKIAkJZGV2X2VycihkZXYsICJubyBjbG9j
+ayBkZWZpbmVkXG4iKTsKIAkJcmMgPSAtRU5PREVWOwpAQCAtNDE4LDE3ICs0NzIsMTggQEAgc3Rh
+dGljIGludCBhdDkxX3R3aV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAlyZXR1cm4gMDsK
+IAogb3V0X2FkYXBfZmFpbDoKLSAgICBjbGtfZGlzYWJsZShpMmNfYXQ5MS0+Y2xrKTsKLSAgICBj
+bGtfcHV0KGkyY19hdDkxLT5jbGspOworCWNsa19kaXNhYmxlKGkyY19hdDkxLT5jbGspOworCWNs
+a19wdXQoaTJjX2F0OTEtPmNsayk7CiBvdXRfZnJlZToKLSAgICBrZnJlZShpMmNfYXQ5MSk7Ci0g
+ICAgcmV0dXJuIHJjOworCWtmcmVlKGkyY19hdDkxKTsKKwlyZXR1cm4gcmM7CiB9CiAKIHN0YXRp
+YyBzdHJ1Y3QgZHJpdmVyX2QgYXQ5MV90d2lfZHJpdmVyID0gewogCS5uYW1lCQk9ICJhdDkxLXR3
+aSIsCiAJLnByb2JlCQk9IGF0OTFfdHdpX3Byb2JlLAogCS5pZF90YWJsZQk9IGF0OTFfdHdpX2Rl
+dnR5cGVzLAorCS5vZl9jb21wYXRpYmxlCT0gRFJWX09GX0NPTVBBVChhdDkxX3R3aV9kdF9pZHMp
+LAogfTsKIGRldmljZV9wbGF0Zm9ybV9kcml2ZXIoYXQ5MV90d2lfZHJpdmVyKTsKIAotLSAKMi4x
+LjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
