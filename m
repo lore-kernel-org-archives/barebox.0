@@ -2,11 +2,13 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from nasmtp01.atmel.com ([192.199.1.245]
  helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XUCNK-0007yN-UG
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:15 +0000
+ id 1XUCNN-0007yN-QL
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:18 +0000
 From: Bo Shen <voice.shen@atmel.com>
-Date: Wed, 17 Sep 2014 18:21:26 +0800
-Message-ID: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
+Date: Wed, 17 Sep 2014 18:21:30 +0800
+Message-ID: <1410949295-30296-5-git-send-email-voice.shen@atmel.com>
+In-Reply-To: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
+References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,66 +22,165 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] ARM: at91: add sama5d4ek board support
+Subject: [PATCH 4/9] nand: atmel: runtime to generate galois table
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-This patch series add Atmel new SoC SAMA5D4 support, which embedded
-the Cortex-A5 core.
-This patch series also add the EK board base on SAMA5D4 SoC support.
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
+---
 
+ drivers/mtd/nand/atmel_nand.c | 121 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 117 insertions(+), 4 deletions(-)
 
-Bo Shen (9):
-  ARM: at91: move pmc base address into soc header
-  ARM: atmel: sama5d3 is a family member of sama5
-  ARM: at91: clock: use cpu_has_pcr for pcr1 checking
-  nand: atmel: runtime to generate galois table
-  net: macb: using default value for FBLDO
-  mci: atmel: add new ip version 0x600 support
-  ARM: at91: add sama5d4 soc support #1
-  ARM: at91: add sama5d4 soc support #2
-  ARM: at91: add sama5d4ek board support
-
- arch/arm/boards/Makefile                      |   1 +
- arch/arm/boards/sama5d4ek/Makefile            |   1 +
- arch/arm/boards/sama5d4ek/env/bin/init_board  |  15 +
- arch/arm/boards/sama5d4ek/env/config          |  42 +++
- arch/arm/boards/sama5d4ek/init.c              | 311 ++++++++++++++++
- arch/arm/configs/sama5d4ek_defconfig          |  85 +++++
- arch/arm/mach-at91/Kconfig                    |  26 ++
- arch/arm/mach-at91/Makefile                   |   2 +
- arch/arm/mach-at91/clock.c                    |  72 +++-
- arch/arm/mach-at91/clock.h                    |   2 +-
- arch/arm/mach-at91/include/mach/at91_pmc.h    |   1 +
- arch/arm/mach-at91/include/mach/at91rm9200.h  |   1 +
- arch/arm/mach-at91/include/mach/at91sam9260.h |   2 +
- arch/arm/mach-at91/include/mach/at91sam9261.h |   1 +
- arch/arm/mach-at91/include/mach/at91sam9263.h |   2 +
- arch/arm/mach-at91/include/mach/at91sam9g45.h |   2 +
- arch/arm/mach-at91/include/mach/at91sam9n12.h |   1 +
- arch/arm/mach-at91/include/mach/at91sam9x5.h  |   1 +
- arch/arm/mach-at91/include/mach/cpu.h         |  30 +-
- arch/arm/mach-at91/include/mach/hardware.h    |   6 +-
- arch/arm/mach-at91/include/mach/sama5d3.h     |   2 +
- arch/arm/mach-at91/include/mach/sama5d4.h     | 134 +++++++
- arch/arm/mach-at91/sam9_smc.c                 |   6 +-
- arch/arm/mach-at91/sama5d4.c                  | 303 ++++++++++++++++
- arch/arm/mach-at91/sama5d4_devices.c          | 495 ++++++++++++++++++++++++++
- arch/arm/mach-at91/setup.c                    |  43 ++-
- arch/arm/mach-at91/soc.h                      |   7 +-
- drivers/mci/atmel_mci.c                       |   1 +
- drivers/mtd/nand/atmel_nand.c                 | 121 ++++++-
- drivers/net/macb.c                            |   1 -
- 30 files changed, 1680 insertions(+), 37 deletions(-)
- create mode 100644 arch/arm/boards/sama5d4ek/Makefile
- create mode 100644 arch/arm/boards/sama5d4ek/env/bin/init_board
- create mode 100644 arch/arm/boards/sama5d4ek/env/config
- create mode 100644 arch/arm/boards/sama5d4ek/init.c
- create mode 100644 arch/arm/configs/sama5d4ek_defconfig
- create mode 100644 arch/arm/mach-at91/include/mach/sama5d4.h
- create mode 100644 arch/arm/mach-at91/sama5d4.c
- create mode 100644 arch/arm/mach-at91/sama5d4_devices.c
-
+diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+index 1e7c6c6..fa4fac2 100644
+--- a/drivers/mtd/nand/atmel_nand.c
++++ b/drivers/mtd/nand/atmel_nand.c
+@@ -766,12 +766,105 @@ static void atmel_pmecc_core_init(struct mtd_info *mtd)
+ 	pmecc_writel(host->ecc, CTRL, PMECC_CTRL_ENABLE);
+ }
+ 
++static uint16_t *pmecc_galois_table;
++static int pmecc_build_galois_table(unsigned int mm, int16_t *index_of,
++				    int16_t *alpha_to)
++{
++	unsigned int i, mask, nn;
++	unsigned int p[15];
++
++	nn = (1 << mm) - 1;
++	/* set default value */
++	for (i = 1; i < mm; i++)
++		p[i] = 0;
++
++	/* 1 + X^mm */
++	p[0]  = 1;
++	p[mm] = 1;
++
++	/* others  */
++	switch (mm) {
++	case 3:
++	case 4:
++	case 6:
++	case 15:
++		p[1] = 1;
++		break;
++	case 5:
++	case 11:
++		p[2] = 1;
++		break;
++	case 7:
++	case 10:
++		p[3] = 1;
++		break;
++	case 8:
++		p[2] = p[3] = p[4] = 1;
++		break;
++	case 9:
++		p[4] = 1;
++		break;
++	case 12:
++		p[1] = p[4] = p[6] = 1;
++		break;
++	case 13:
++		p[1] = p[3] = p[4] = 1;
++		break;
++	case 14:
++		p[1] = p[6] = p[10] = 1;
++		break;
++	default:
++		/* Error */
++		return -EINVAL;
++	}
++
++	/* Build alpha ^ mm it will help to generate the field (primitiv) */
++	alpha_to[mm] = 0;
++	for (i = 0; i < mm; i++)
++		if (p[i])
++			alpha_to[mm] |= 1 << i;
++
++	/*
++	 * Then build elements from 0 to mm - 1. As degree is less than mm
++	 * so it is just a logical shift.
++	 */
++	mask = 1;
++	for (i = 0; i < mm; i++) {
++		alpha_to[i] = mask;
++		index_of[alpha_to[i]] = i;
++		mask <<= 1;
++	}
++
++	index_of[alpha_to[mm]] = mm;
++
++	/* use a mask to select the MSB bit of the LFSR */
++	mask >>= 1;
++
++	/* then finish the building */
++	for (i = mm + 1; i <= nn; i++) {
++		/* check if the msb bit of the lfsr is set */
++		if (alpha_to[i - 1] & mask)
++			alpha_to[i] = alpha_to[mm] ^
++				((alpha_to[i - 1] ^ mask) << 1);
++		else
++			alpha_to[i] = alpha_to[i - 1] << 1;
++
++		index_of[alpha_to[i]] = i % nn;
++	}
++
++	/* index of 0 is undefined in a multiplicative field */
++	index_of[0] = -1;
++
++	return 0;
++}
++
+ static int __init atmel_pmecc_nand_init_params(struct device_d *dev,
+ 					 struct atmel_nand_host *host)
+ {
+ 	struct mtd_info *mtd = &host->mtd;
+ 	struct nand_chip *nand_chip = &host->nand_chip;
+ 	int cap, sector_size, err_no;
++	int ret;
+ 
+ 	cap = host->board->pmecc_corr_cap;
+ 	sector_size = host->board->pmecc_sector_size;
+@@ -785,14 +878,34 @@ static int __init atmel_pmecc_nand_init_params(struct device_d *dev,
+ 	}
+ 
+ 	host->pmerrloc_base = dev_request_mem_region(dev, 2);
+-	host->pmecc_rom_base = dev_request_mem_region(dev, 3);
+-
+-	if (!host->pmerrloc_base || !host->pmecc_rom_base) {
++	if (!host->pmerrloc_base) {
+ 		dev_err(host->dev,
+-			"Can not get I/O resource for PMECC ERRLOC controller or ROM!\n");
++			"Can not get I/O resource for PMECC ERRLOC controller!\n");
+ 		return -EIO;
+ 	}
+ 
++	host->pmecc_rom_base = dev_request_mem_region(dev, 3);
++	if (!host->pmecc_rom_base) {
++		/* Set pmecc_rom_base as the begin of gf table */
++		int size = sector_size == 512 ? 0x2000 : 0x4000;
++		pmecc_galois_table = xzalloc(2 * size * sizeof(uint16_t));
++		if (!pmecc_galois_table)
++			return -ENOMEM;
++		host->pmecc_rom_base = pmecc_galois_table;
++		ret = pmecc_build_galois_table((sector_size == 512) ?
++						PMECC_GF_DIMENSION_13 :
++						PMECC_GF_DIMENSION_14,
++						host->pmecc_rom_base,
++						host->pmecc_rom_base + (size * sizeof(int16_t)));
++		if (ret) {
++			dev_err(host->dev,
++				"Can not get I/O resource for ROM!\n");
++			return -EIO;
++		}
++
++		host->board->pmecc_lookup_table_offset = 0;
++	}
++
+ 	/* ECC is calculated for the whole page (1 step) */
+ 	nand_chip->ecc.size = mtd->writesize;
+ 
 -- 
 2.1.0.24.g4109c28
 
