@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XU8nF-00045c-VK
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 06:32:46 +0000
-Date: Wed, 17 Sep 2014 08:32:23 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140917063223.GL4992@pengutronix.de>
-References: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
- <1410766873-4393-2-git-send-email-s.hauer@pengutronix.de>
- <54188CAF.40409@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <54188CAF.40409@gmail.com>
+Received: from mail.data-modul.de ([212.184.205.171]
+ helo=mailgw1.data-modul.com)
+ by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XU8o6-0004GB-U5
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 06:33:39 +0000
+From: Silvio Fricke <silvio.fricke@gmail.com>
+Date: Wed, 17 Sep 2014 08:33:00 +0200
+Message-Id: <28681846d4cafdd034bcbb1b358b4e8c8501abb1.1410935206.git.silvio.fricke@gmail.com>
+In-Reply-To: <cover.1410935206.git.silvio.fricke@gmail.com>
+References: <cover.1410935206.git.silvio.fricke@gmail.com>
+In-Reply-To: <cover.1410935206.git.silvio.fricke@gmail.com>
+References: <0d3183ff039cb1eccb72299690544cb34299bf4e.1410868272.git.silvio.fricke@gmail.com>
+ <cover.1410935206.git.silvio.fricke@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,97 +20,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] ARM: mvebu: Add common reset_cpu function
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX: edmqmx6: free phy-reset gpio pin
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Silvio Fricke <silvio.fricke@gmail.com>
 
-On Tue, Sep 16, 2014 at 09:17:03PM +0200, Sebastian Hesselbarth wrote:
-> On 09/15/2014 09:41 AM, Sascha Hauer wrote:
-> > mvebu has a reset_cpu function per SoC this does not work when multiple
-> > SoCs are selected, so add a common reset_cpu function which calls into
-> > the SoC specific ones.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/mach-mvebu/armada-370-xp.c       | 19 ++++++++++---------
-> >  arch/arm/mach-mvebu/common.c              | 15 ++++++++++++++-
-> >  arch/arm/mach-mvebu/dove.c                | 21 +++++++++++----------
-> >  arch/arm/mach-mvebu/include/mach/common.h |  1 +
-> >  arch/arm/mach-mvebu/kirkwood.c            | 19 ++++++++++---------
-> >  5 files changed, 46 insertions(+), 29 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-> > index f2b991e..6251100 100644
-> > --- a/arch/arm/mach-mvebu/armada-370-xp.c
-> > +++ b/arch/arm/mach-mvebu/armada-370-xp.c
-> > @@ -44,11 +44,21 @@ static inline void armada_370_xp_memory_find(unsigned long *phys_base,
-> >  	}
-> >  }
-> >  
-> > +static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
-> > +{
-> > +	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
-> > +	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
-> > +	while (1)
-> > +		;
-> > +}
-> > +
-> >  static int armada_370_xp_init_soc(void)
-> >  {
-> >  	unsigned long phys_base, phys_size;
-> >  	u32 reg;
-> >  
-> > +	mvebu_set_reset(armada_370_xp_reset_cpu);
-> > +
-> >  	barebox_set_model("Marvell Armada 370/XP");
-> >  	barebox_set_hostname("armada");
-> >  
-> > @@ -65,12 +75,3 @@ static int armada_370_xp_init_soc(void)
-> >  	return 0;
-> >  }
-> >  core_initcall(armada_370_xp_init_soc);
-> > -
-> > -void __noreturn reset_cpu(unsigned long addr)
-> > -{
-> > -	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
-> > -	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
-> > -	while (1)
-> > -		;
-> > -}
-> > -EXPORT_SYMBOL(reset_cpu);
-> > diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-> > index ac4b332..5c3ac14 100644
-> > --- a/arch/arm/mach-mvebu/common.c
-> > +++ b/arch/arm/mach-mvebu/common.c
-> > @@ -21,6 +21,7 @@
-> >  #include <of.h>
-> >  #include <of_address.h>
-> >  #include <linux/clk.h>
-> > +#include <mach/common.h>
-> >  
-> >  /*
-> >   * Marvell MVEBU SoC id and revision can be read from any PCIe
-> > @@ -137,4 +138,16 @@ static int mvebu_memory_of_fixup(struct device_node *root, void *context)
-> >  static int mvebu_memory_fixup_register(void) {
-> >  	return of_register_fixup(mvebu_memory_of_fixup, NULL);
-> >  }
-> > -pure_initcall(mvebu_memory_fixup_register);
-> 
-> Unrelated removal, this should move to the next patch.
+Since 93a6c6a808("dts: update to v3.17-rc2") we have a correct gpio
+configuration. This results in a double gpio request what receipted in a
+error message like this one:
 
-Right, fixed this.
+	gpiolib: _gpio_request: gpio-25 (phy-reset) status -16
 
-Sascha
+Now with this patch the problem is gone.
 
+Signed-off-by: Silvio Fricke <silvio.fricke@gmail.com>
+---
+ arch/arm/boards/datamodul-edm-qmx6/board.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boards/datamodul-edm-qmx6/board.c b/arch/arm/boards/datamodul-edm-qmx6/board.c
+index e388e28..25f45df 100644
+--- a/arch/arm/boards/datamodul-edm-qmx6/board.c
++++ b/arch/arm/boards/datamodul-edm-qmx6/board.c
+@@ -49,6 +49,7 @@
+ #define RQ7_GPIO_ENET_MODE2	IMX_GPIO_NR(6, 28)
+ #define RQ7_GPIO_ENET_MODE3	IMX_GPIO_NR(6, 29)
+ #define RQ7_GPIO_ENET_EN_CLK125	IMX_GPIO_NR(6, 24)
++#define RQ7_GPIO_ENET_RESET     IMX_GPIO_NR(1, 25)
+ 
+ static iomux_v3_cfg_t realq7_pads_gpio[] = {
+ 	MX6Q_PAD_RGMII_RXC__GPIO_6_30,
+@@ -57,6 +58,7 @@ static iomux_v3_cfg_t realq7_pads_gpio[] = {
+ 	MX6Q_PAD_RGMII_RD2__GPIO_6_28,
+ 	MX6Q_PAD_RGMII_RD3__GPIO_6_29,
+ 	MX6Q_PAD_RGMII_RX_CTL__GPIO_6_24,
++	MX6Q_PAD_ENET_CRS_DV__GPIO_1_25,
+ };
+ 
+ static int ksz9031rn_phy_fixup(struct phy_device *dev)
+@@ -85,12 +87,14 @@ static int realq7_enet_init(void)
+ 	gpio_direction_output(RQ7_GPIO_ENET_MODE3, 1);
+ 	gpio_direction_output(RQ7_GPIO_ENET_EN_CLK125, 1);
+ 
+-	gpio_direction_output(25, 0);
++	gpio_direction_output(RQ7_GPIO_ENET_RESET, 0);
+ 	mdelay(50);
+ 
+-	gpio_direction_output(25, 1);
++	gpio_direction_output(RQ7_GPIO_ENET_RESET, 1);
+ 	mdelay(50);
+ 
++	gpio_free(RQ7_GPIO_ENET_RESET);
++
+ 	phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK,
+ 					   ksz9031rn_phy_fixup);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
