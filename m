@@ -2,13 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from nasmtp01.atmel.com ([192.199.1.245]
  helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XUCNL-0007yN-OR
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:16 +0000
+ id 1XUCNK-0007yN-UG
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 10:22:15 +0000
 From: Bo Shen <voice.shen@atmel.com>
-Date: Wed, 17 Sep 2014 18:21:27 +0800
-Message-ID: <1410949295-30296-2-git-send-email-voice.shen@atmel.com>
-In-Reply-To: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
-References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
+Date: Wed, 17 Sep 2014 18:21:26 +0800
+Message-ID: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,140 +20,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] ARM: at91: move pmc base address into soc header
+Subject: [PATCH 0/9] ARM: at91: add sama5d4ek board support
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-As the PMC base address may be different between each SoC,
-so move them to SoC header.
+This patch series add Atmel new SoC SAMA5D4 support, which embedded
+the Cortex-A5 core.
+This patch series also add the EK board base on SAMA5D4 SoC support.
 
-Signed-off-by: Bo Shen <voice.shen@atmel.com>
----
 
- arch/arm/mach-at91/include/mach/at91rm9200.h  | 1 +
- arch/arm/mach-at91/include/mach/at91sam9260.h | 2 ++
- arch/arm/mach-at91/include/mach/at91sam9261.h | 1 +
- arch/arm/mach-at91/include/mach/at91sam9263.h | 2 ++
- arch/arm/mach-at91/include/mach/at91sam9g45.h | 2 ++
- arch/arm/mach-at91/include/mach/at91sam9n12.h | 1 +
- arch/arm/mach-at91/include/mach/at91sam9x5.h  | 1 +
- arch/arm/mach-at91/include/mach/hardware.h    | 2 --
- arch/arm/mach-at91/include/mach/sama5d3.h     | 2 ++
- 9 files changed, 12 insertions(+), 2 deletions(-)
+Bo Shen (9):
+  ARM: at91: move pmc base address into soc header
+  ARM: atmel: sama5d3 is a family member of sama5
+  ARM: at91: clock: use cpu_has_pcr for pcr1 checking
+  nand: atmel: runtime to generate galois table
+  net: macb: using default value for FBLDO
+  mci: atmel: add new ip version 0x600 support
+  ARM: at91: add sama5d4 soc support #1
+  ARM: at91: add sama5d4 soc support #2
+  ARM: at91: add sama5d4ek board support
 
-diff --git a/arch/arm/mach-at91/include/mach/at91rm9200.h b/arch/arm/mach-at91/include/mach/at91rm9200.h
-index 36e940d..4fe8fd8 100644
---- a/arch/arm/mach-at91/include/mach/at91rm9200.h
-+++ b/arch/arm/mach-at91/include/mach/at91rm9200.h
-@@ -118,6 +118,7 @@
- 
- #define AT91_MATRIX	0	/* not supported */
- 
-+#define AT91_PMC	0xfffffc00
- 
- /*
-  * Internal Memory.
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9260.h b/arch/arm/mach-at91/include/mach/at91sam9260.h
-index 3f3a0e1..919901d 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9260.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9260.h
-@@ -125,6 +125,8 @@
- #define AT91_ID_UHP	AT91SAM9260_ID_UHP
- #define AT91_PMC_UHP	AT91SAM926x_PMC_UHP
- 
-+#define AT91_PMC	0xfffffc00
-+
- /*
-  * Internal Memory.
-  */
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9261.h b/arch/arm/mach-at91/include/mach/at91sam9261.h
-index 1b48e23..9124df5 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9261.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9261.h
-@@ -102,6 +102,7 @@
- #define AT91_USART2	AT91SAM9261_BASE_US2
- #define AT91_NB_USART	4
- 
-+#define AT91_PMC	0xfffffc00
- 
- /*
-  * Internal Memory.
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9263.h b/arch/arm/mach-at91/include/mach/at91sam9263.h
-index b42d191..e7ca8b6 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9263.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9263.h
-@@ -129,6 +129,8 @@
- #define AT91_ID_UHP	AT91SAM9263_ID_UHP
- #define AT91_PMC_UHP	AT91SAM926x_PMC_UHP
- 
-+#define AT91_PMC	0xfffffc00
-+
- /*
-  * Internal Memory.
-  */
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9g45.h b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-index c81bb80..ff12ce4 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9g45.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9g45.h
-@@ -134,6 +134,8 @@
- #define AT91_USART3	AT91SAM9G45_BASE_US3
- #define AT91_NB_USART	5
- 
-+#define AT91_PMC	0xfffffc00
-+
- /*
-  * Internal Memory.
-  */
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9n12.h b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-index 26bdd13..249bde4 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9n12.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9n12.h
-@@ -129,6 +129,7 @@
- #define AT91_USART3	AT91SAM9X5_BASE_US3
- #define AT91_NB_USART	5
- 
-+#define AT91_PMC	0xfffffc00
- 
- /*
-  * Internal Memory.
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9x5.h b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-index 13b4f44..7ba2e3b 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9x5.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-@@ -136,6 +136,7 @@
- #define AT91_USART3	AT91SAM9X5_BASE_US3
- #define AT91_NB_USART	5
- 
-+#define AT91_PMC	0xfffffc00
- 
- /*
-  * Internal Memory.
-diff --git a/arch/arm/mach-at91/include/mach/hardware.h b/arch/arm/mach-at91/include/mach/hardware.h
-index 8f004de..2ef1780 100644
---- a/arch/arm/mach-at91/include/mach/hardware.h
-+++ b/arch/arm/mach-at91/include/mach/hardware.h
-@@ -20,8 +20,6 @@
- /* 9263, 9g45 */
- #define AT91_BASE_DBGU1	0xffffee00
- 
--#define AT91_PMC	0xfffffc00
--
- #if defined(CONFIG_ARCH_AT91RM9200)
- #include <mach/at91rm9200.h>
- #elif defined(CONFIG_ARCH_AT91SAM9260) || defined(CONFIG_ARCH_AT91SAM9G20)
-diff --git a/arch/arm/mach-at91/include/mach/sama5d3.h b/arch/arm/mach-at91/include/mach/sama5d3.h
-index 6884ff6..e98b101 100644
---- a/arch/arm/mach-at91/include/mach/sama5d3.h
-+++ b/arch/arm/mach-at91/include/mach/sama5d3.h
-@@ -108,6 +108,8 @@
- 
- #define AT91_NB_USART	3
- 
-+#define AT91_PMC	0xfffffc00
-+
- /*
-  * Internal Memory.
-  */
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/sama5d4ek/Makefile            |   1 +
+ arch/arm/boards/sama5d4ek/env/bin/init_board  |  15 +
+ arch/arm/boards/sama5d4ek/env/config          |  42 +++
+ arch/arm/boards/sama5d4ek/init.c              | 311 ++++++++++++++++
+ arch/arm/configs/sama5d4ek_defconfig          |  85 +++++
+ arch/arm/mach-at91/Kconfig                    |  26 ++
+ arch/arm/mach-at91/Makefile                   |   2 +
+ arch/arm/mach-at91/clock.c                    |  72 +++-
+ arch/arm/mach-at91/clock.h                    |   2 +-
+ arch/arm/mach-at91/include/mach/at91_pmc.h    |   1 +
+ arch/arm/mach-at91/include/mach/at91rm9200.h  |   1 +
+ arch/arm/mach-at91/include/mach/at91sam9260.h |   2 +
+ arch/arm/mach-at91/include/mach/at91sam9261.h |   1 +
+ arch/arm/mach-at91/include/mach/at91sam9263.h |   2 +
+ arch/arm/mach-at91/include/mach/at91sam9g45.h |   2 +
+ arch/arm/mach-at91/include/mach/at91sam9n12.h |   1 +
+ arch/arm/mach-at91/include/mach/at91sam9x5.h  |   1 +
+ arch/arm/mach-at91/include/mach/cpu.h         |  30 +-
+ arch/arm/mach-at91/include/mach/hardware.h    |   6 +-
+ arch/arm/mach-at91/include/mach/sama5d3.h     |   2 +
+ arch/arm/mach-at91/include/mach/sama5d4.h     | 134 +++++++
+ arch/arm/mach-at91/sam9_smc.c                 |   6 +-
+ arch/arm/mach-at91/sama5d4.c                  | 303 ++++++++++++++++
+ arch/arm/mach-at91/sama5d4_devices.c          | 495 ++++++++++++++++++++++++++
+ arch/arm/mach-at91/setup.c                    |  43 ++-
+ arch/arm/mach-at91/soc.h                      |   7 +-
+ drivers/mci/atmel_mci.c                       |   1 +
+ drivers/mtd/nand/atmel_nand.c                 | 121 ++++++-
+ drivers/net/macb.c                            |   1 -
+ 30 files changed, 1680 insertions(+), 37 deletions(-)
+ create mode 100644 arch/arm/boards/sama5d4ek/Makefile
+ create mode 100644 arch/arm/boards/sama5d4ek/env/bin/init_board
+ create mode 100644 arch/arm/boards/sama5d4ek/env/config
+ create mode 100644 arch/arm/boards/sama5d4ek/init.c
+ create mode 100644 arch/arm/configs/sama5d4ek_defconfig
+ create mode 100644 arch/arm/mach-at91/include/mach/sama5d4.h
+ create mode 100644 arch/arm/mach-at91/sama5d4.c
+ create mode 100644 arch/arm/mach-at91/sama5d4_devices.c
+
 -- 
 2.1.0.24.g4109c28
 
