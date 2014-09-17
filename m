@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XU8XC-0007WD-FT
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 06:16:11 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 17 Sep 2014 08:15:28 +0200
-Message-Id: <1410934529-20576-3-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1410934529-20576-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1410934529-20576-1-git-send-email-s.trumtrar@pengutronix.de>
+ Linux)) id 1XU8nF-00045c-VK
+ for barebox@lists.infradead.org; Wed, 17 Sep 2014 06:32:46 +0000
+Date: Wed, 17 Sep 2014 08:32:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140917063223.GL4992@pengutronix.de>
+References: <1410766873-4393-1-git-send-email-s.hauer@pengutronix.de>
+ <1410766873-4393-2-git-send-email-s.hauer@pengutronix.de>
+ <54188CAF.40409@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <54188CAF.40409@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,91 +20,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] arm: mach-imx: add more ddr register defines
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 1/5] ARM: mvebu: Add common reset_cpu function
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- arch/arm/mach-imx/include/mach/imx6-ddr-regs.h   |  6 ++++++
- arch/arm/mach-imx/include/mach/imx6dl-ddr-regs.h | 20 ++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+On Tue, Sep 16, 2014 at 09:17:03PM +0200, Sebastian Hesselbarth wrote:
+> On 09/15/2014 09:41 AM, Sascha Hauer wrote:
+> > mvebu has a reset_cpu function per SoC this does not work when multiple
+> > SoCs are selected, so add a common reset_cpu function which calls into
+> > the SoC specific ones.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/mach-mvebu/armada-370-xp.c       | 19 ++++++++++---------
+> >  arch/arm/mach-mvebu/common.c              | 15 ++++++++++++++-
+> >  arch/arm/mach-mvebu/dove.c                | 21 +++++++++++----------
+> >  arch/arm/mach-mvebu/include/mach/common.h |  1 +
+> >  arch/arm/mach-mvebu/kirkwood.c            | 19 ++++++++++---------
+> >  5 files changed, 46 insertions(+), 29 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+> > index f2b991e..6251100 100644
+> > --- a/arch/arm/mach-mvebu/armada-370-xp.c
+> > +++ b/arch/arm/mach-mvebu/armada-370-xp.c
+> > @@ -44,11 +44,21 @@ static inline void armada_370_xp_memory_find(unsigned long *phys_base,
+> >  	}
+> >  }
+> >  
+> > +static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
+> > +{
+> > +	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
+> > +	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
+> > +	while (1)
+> > +		;
+> > +}
+> > +
+> >  static int armada_370_xp_init_soc(void)
+> >  {
+> >  	unsigned long phys_base, phys_size;
+> >  	u32 reg;
+> >  
+> > +	mvebu_set_reset(armada_370_xp_reset_cpu);
+> > +
+> >  	barebox_set_model("Marvell Armada 370/XP");
+> >  	barebox_set_hostname("armada");
+> >  
+> > @@ -65,12 +75,3 @@ static int armada_370_xp_init_soc(void)
+> >  	return 0;
+> >  }
+> >  core_initcall(armada_370_xp_init_soc);
+> > -
+> > -void __noreturn reset_cpu(unsigned long addr)
+> > -{
+> > -	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x60);
+> > -	writel(0x1, ARMADA_370_XP_SYSCTL_BASE + 0x64);
+> > -	while (1)
+> > -		;
+> > -}
+> > -EXPORT_SYMBOL(reset_cpu);
+> > diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
+> > index ac4b332..5c3ac14 100644
+> > --- a/arch/arm/mach-mvebu/common.c
+> > +++ b/arch/arm/mach-mvebu/common.c
+> > @@ -21,6 +21,7 @@
+> >  #include <of.h>
+> >  #include <of_address.h>
+> >  #include <linux/clk.h>
+> > +#include <mach/common.h>
+> >  
+> >  /*
+> >   * Marvell MVEBU SoC id and revision can be read from any PCIe
+> > @@ -137,4 +138,16 @@ static int mvebu_memory_of_fixup(struct device_node *root, void *context)
+> >  static int mvebu_memory_fixup_register(void) {
+> >  	return of_register_fixup(mvebu_memory_of_fixup, NULL);
+> >  }
+> > -pure_initcall(mvebu_memory_fixup_register);
+> 
+> Unrelated removal, this should move to the next patch.
 
-diff --git a/arch/arm/mach-imx/include/mach/imx6-ddr-regs.h b/arch/arm/mach-imx/include/mach/imx6-ddr-regs.h
-index 69707f0976bd..ac2764f1b6ef 100644
---- a/arch/arm/mach-imx/include/mach/imx6-ddr-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx6-ddr-regs.h
-@@ -37,6 +37,9 @@
- #define MX6_MMDC_P0_MPDGCTRL1		0x021b0840
- #define MX6_MMDC_P0_MPRDDLCTL		0x021b0848
- #define MX6_MMDC_P0_MPWRDLCTL		0x021b0850
-+#define MX6_MMDC_P0_MPRDDLHWCTL		0x021b0860
-+#define MX6_MMDC_P0_MPWRDLHWCTL		0x021b0864
-+#define MX6_MMDC_P0_MPPDCMPR2		0x021b0890
- #define MX6_MMDC_P0_MPMUR0		0x021b08b8
- 
- #define MX6_MMDC_P1_MDCTL		0x021b4000
-@@ -64,4 +67,7 @@
- #define MX6_MMDC_P1_MPDGCTRL1		0x021b4840
- #define MX6_MMDC_P1_MPRDDLCTL		0x021b4848
- #define MX6_MMDC_P1_MPWRDLCTL		0x021b4850
-+#define MX6_MMDC_P1_MPRDDLHWCTL		0x021b4860
-+#define MX6_MMDC_P1_MPWRDLHWCTL		0x021b4864
-+#define MX6_MMDC_P1_MPPDCMPR2		0x021b4890
- #define MX6_MMDC_P1_MPMUR0		0x021b48b8
-diff --git a/arch/arm/mach-imx/include/mach/imx6dl-ddr-regs.h b/arch/arm/mach-imx/include/mach/imx6dl-ddr-regs.h
-index 541d00e24489..a312e63a996d 100644
---- a/arch/arm/mach-imx/include/mach/imx6dl-ddr-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx6dl-ddr-regs.h
-@@ -12,6 +12,23 @@
-  * GNU General Public License for more details.
-  */
- 
-+#define MX6_IOM_DRAM_ADDR00	0x020e0424
-+#define MX6_IOM_DRAM_ADDR01	0x020e0428
-+#define MX6_IOM_DRAM_ADDR10	0x020e042c
-+#define MX6_IOM_DRAM_ADDR11	0x020e0430
-+#define MX6_IOM_DRAM_ADDR12	0x020e0434
-+#define MX6_IOM_DRAM_ADDR13	0x020e0438
-+#define MX6_IOM_DRAM_ADDR14	0x020e043c
-+#define MX6_IOM_DRAM_ADDR15	0x020e0440
-+#define MX6_IOM_DRAM_ADDR02	0x020e0444
-+#define MX6_IOM_DRAM_ADDR03	0x020e0448
-+#define MX6_IOM_DRAM_ADDR04	0x020e044c
-+#define MX6_IOM_DRAM_ADDR05	0x020e0450
-+#define MX6_IOM_DRAM_ADDR06	0x020e0454
-+#define MX6_IOM_DRAM_ADDR07	0x020e0458
-+#define MX6_IOM_DRAM_ADDR08	0x020e045c
-+#define MX6_IOM_DRAM_ADDR09	0x020e0460
-+
- #define MX6_IOM_DRAM_DQM0	0x020e0470
- #define MX6_IOM_DRAM_DQM1	0x020e0474
- #define MX6_IOM_DRAM_DQM2	0x020e0478
-@@ -24,6 +41,8 @@
- #define MX6_IOM_DRAM_CAS	0x020e0464
- #define MX6_IOM_DRAM_RAS	0x020e0490
- #define MX6_IOM_DRAM_RESET	0x020e0494
-+#define MX6_IOM_DRAM_SDBA0	0x020e0498
-+#define MX6_IOM_DRAM_SDBA1	0x020e049c
- #define MX6_IOM_DRAM_SDCLK_0	0x020e04ac
- #define MX6_IOM_DRAM_SDCLK_1	0x020e04b0
- #define MX6_IOM_DRAM_SDBA2	0x020e04a0
-@@ -52,6 +71,7 @@
- #define MX6_IOM_GRP_ADDDS	0x020e074c
- #define MX6_IOM_DDRMODE_CTL	0x020e0750
- #define MX6_IOM_GRP_DDRPKE	0x020e0754
-+#define MX6_IOM_GRP_DDRHYS	0x020e075c
- #define MX6_IOM_GRP_DDRMODE	0x020e0760
- #define MX6_IOM_GRP_CTLDS	0x020e076c
- #define MX6_IOM_GRP_DDR_TYPE	0x020e0774
+Right, fixed this.
+
+Sascha
+
 -- 
-2.1.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
