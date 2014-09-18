@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eusmtp01.atmel.com ([212.144.249.243])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XUQle-00042F-O2
- for barebox@lists.infradead.org; Thu, 18 Sep 2014 01:44:19 +0000
-Message-ID: <541A38B6.7000204@atmel.com>
-Date: Thu, 18 Sep 2014 09:43:18 +0800
-From: Bo Shen <voice.shen@atmel.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XUUve-0000Bb-7e
+ for barebox@lists.infradead.org; Thu, 18 Sep 2014 06:10:55 +0000
+Date: Thu, 18 Sep 2014 08:10:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140918061028.GY4992@pengutronix.de>
 References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
- <1410949295-30296-9-git-send-email-voice.shen@atmel.com>
- <20140913201231.GB22947@gmail.com>
-In-Reply-To: <20140913201231.GB22947@gmail.com>
+ <1410949295-30296-8-git-send-email-voice.shen@atmel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1410949295-30296-8-git-send-email-voice.shen@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +19,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] ARM: at91: add sama5d4 soc support #2
-To: =?windows-1252?Q?Rapha=EBl_Poggi?= <raphio98@gmail.com>
+Subject: Re: [PATCH 7/9] ARM: at91: add sama5d4 soc support #1
+To: Bo Shen <voice.shen@atmel.com>
 Cc: barebox@lists.infradead.org
 
-Hi Rapha=EBl Poggi,
+On Wed, Sep 17, 2014 at 06:21:33PM +0800, Bo Shen wrote:
+> Signed-off-by: Bo Shen <voice.shen@atmel.com>
+> ---
+> 
+> diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
+> index 9f02807..5df7109 100644
+> --- a/arch/arm/mach-at91/sam9_smc.c
+> +++ b/arch/arm/mach-at91/sam9_smc.c
+> @@ -19,7 +19,7 @@
+>  
+>  #define AT91_SAM9_SMC_CS_STRIDE		0x10
+>  #define AT91_SAMA5_SMC_CS_STRIDE	0x14
+> -#define AT91_SMC_CS_STRIDE      ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? AT91_SAMA5_SMC_CS_STRIDE : AT91_SAM9_SMC_CS_STRIDE)
+> +#define AT91_SMC_CS_STRIDE      ((at91_soc_initdata.type == AT91_SOC_SAMA5D3 || at91_soc_initdata.type == AT91_SOC_SAMA5D4) ? AT91_SAMA5_SMC_CS_STRIDE : AT91_SAM9_SMC_CS_STRIDE)
 
-On 09/14/2014 04:12 AM, Rapha=EBl Poggi wrote:
->> +static struct clk_lookup periph_clocks_lookups[] =3D {
->> >+	CLKDEV_CON_DEV_ID("macb_clk", "macb0", &macb0_clk),
->> >+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
->> >+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
->> >+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
->> >+	CLKDEV_DEV_ID("at91sam9x5-gpio0", &pioA_clk),
->> >+	CLKDEV_DEV_ID("at91sam9x5-gpio1", &pioB_clk),
->> >+	CLKDEV_DEV_ID("at91sam9x5-gpio2", &pioC_clk),
->> >+	CLKDEV_DEV_ID("at91sam9x5-gpio3", &pioD_clk),
->> >+	CLKDEV_DEV_ID("at91sam9x5-gpio4", &pioE_clk),
-> Why not using clkdev_add_physbase for the gpio clocks ?
-> This allow to use these clocks in device tree and non device context.
+I'm no fan of the 80 character limit, too, but this is really too long
+;)
 
-Thanks for remind this. I will fix it in v2.
-
->> +#else
->> >+void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices,
->> >+			 int nr_devices) {}
->> >+#endif
-> Maybe we can use the new atmel i2c driver, no ?
-
-Yes, we can. However, I think use the GPIO i2c first, after the i2c fix =
-
-has been applied, then switch to use atmel i2c driver. In this way, it =
-
-won't block the sama5d4ek board support go into mainline.
-
-Btw, if the i2c fix has been applied before I send the v2 patch, I will =
-
-switch to use atmel i2c driver.
-
-Best Regards,
-Bo Shen
+Sascha
 
 
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
