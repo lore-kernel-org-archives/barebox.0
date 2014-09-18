@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+Received: from eusmtp01.atmel.com ([212.144.249.243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XULky-000434-IC
- for barebox@lists.infradead.org; Wed, 17 Sep 2014 20:23:17 +0000
-Received: by mail-wg0-f45.google.com with SMTP id z12so1982810wgg.16
- for <barebox@lists.infradead.org>; Wed, 17 Sep 2014 13:22:53 -0700 (PDT)
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 17 Sep 2014 22:22:38 +0200
-Message-Id: <1410985364-7105-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ id 1XUQle-00042F-O2
+ for barebox@lists.infradead.org; Thu, 18 Sep 2014 01:44:19 +0000
+Message-ID: <541A38B6.7000204@atmel.com>
+Date: Thu, 18 Sep 2014 09:43:18 +0800
+From: Bo Shen <voice.shen@atmel.com>
+MIME-Version: 1.0
+References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
+ <1410949295-30296-9-git-send-email-voice.shen@atmel.com>
+ <20140913201231.GB22947@gmail.com>
+In-Reply-To: <20140913201231.GB22947@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,70 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="windows-1252"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/6] mvebu multi SoC support
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 8/9] ARM: at91: add sama5d4 soc support #2
+To: =?windows-1252?Q?Rapha=EBl_Poggi?= <raphio98@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This is v2 of the Multi-SoC series for MVEBU. It has been tested
-on Kirkwood (Guruplug), Dove (CuBox), and Armada 370 (Mirabox)
-with the very same non-EABI binary. It should also work on Armada
-XP but I cannot test right now.
+Hi Rapha=EBl Poggi,
 
-Overall changes:
-- Add mbus_range compatible check to allow to register mbus ranges
-  per SoC.
-- Remove CONFIG_AEABI from mvebu_defconfig since it fails on ARMv5TE
-  (Kirkwood) with my gcc 4.7.2 cross-compiler.
-- Add a bunch of new drivers to mvebu_defconfig.
+On 09/14/2014 04:12 AM, Rapha=EBl Poggi wrote:
+>> +static struct clk_lookup periph_clocks_lookups[] =3D {
+>> >+	CLKDEV_CON_DEV_ID("macb_clk", "macb0", &macb0_clk),
+>> >+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci0", &mmc0_clk),
+>> >+	CLKDEV_CON_DEV_ID("mci_clk", "atmel_mci1", &mmc1_clk),
+>> >+	CLKDEV_CON_DEV_ID("spi_clk", "atmel_spi0", &spi0_clk),
+>> >+	CLKDEV_DEV_ID("at91sam9x5-gpio0", &pioA_clk),
+>> >+	CLKDEV_DEV_ID("at91sam9x5-gpio1", &pioB_clk),
+>> >+	CLKDEV_DEV_ID("at91sam9x5-gpio2", &pioC_clk),
+>> >+	CLKDEV_DEV_ID("at91sam9x5-gpio3", &pioD_clk),
+>> >+	CLKDEV_DEV_ID("at91sam9x5-gpio4", &pioE_clk),
+> Why not using clkdev_add_physbase for the gpio clocks ?
+> This allow to use these clocks in device tree and non device context.
 
-Original cover letter from Sascha's v1:
+Thanks for remind this. I will fix it in v2.
 
-The following series allows to select multiple mvebu SoCs at once.
-Additionally a mvebu_defconfig is added to collect all mvebu based
-boards.
+>> +#else
+>> >+void at91_add_device_i2c(short i2c_id, struct i2c_board_info *devices,
+>> >+			 int nr_devices) {}
+>> >+#endif
+> Maybe we can use the new atmel i2c driver, no ?
 
-I couldn't test this series. We have a cubox somewhere, but it seems
-to have disappeared from our remotelab. Sebastian, could you give
-this series a try?
+Yes, we can. However, I think use the GPIO i2c first, after the i2c fix =
 
-The goal is to remove the board specific defconfigs in the next step,
-but I don't want to do this until the mvebu_defconfig is confirmed
-working. The defconfig files could use an overhaul anyway. We now
-have networking support for mvebu, but it's not enabled in the config.
+has been applied, then switch to use atmel i2c driver. In this way, it =
 
-Sascha Hauer (5):
-  ARM: mvebu: Add common reset_cpu function
-  ARM: mvebu: Simplify memory init order
-  ARM: mvebu: Check for correct SoC in of_fixup callback
-  ARM: mvebu: Allow multiple SoCs
-  ARM: Add mvebu_defconfig
+won't block the sama5d4ek board support go into mainline.
 
-Sebastian Hesselbarth (1):
-  ARM: mvebu: Add machine compatible to mbus ranges
+Btw, if the i2c fix has been applied before I send the v2 patch, I will =
 
- arch/arm/configs/mvebu_defconfig          | 123 ++++++++++++++++++++++++++++++
- arch/arm/mach-mvebu/Kconfig               |  37 ++++-----
- arch/arm/mach-mvebu/armada-370-xp.c       |  28 ++++---
- arch/arm/mach-mvebu/common.c              |  45 +++++------
- arch/arm/mach-mvebu/dove.c                |  33 +++++---
- arch/arm/mach-mvebu/include/mach/common.h |   3 +-
- arch/arm/mach-mvebu/kirkwood.c            |  28 ++++---
- drivers/bus/mvebu-mbus.c                  |   6 +-
- include/linux/mbus.h                      |   3 +-
- 9 files changed, 231 insertions(+), 75 deletions(-)
- create mode 100644 arch/arm/configs/mvebu_defconfig
+switch to use atmel i2c driver.
 
----
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Cc: barebox@lists.infradead.org
--- 
-2.0.0
+Best Regards,
+Bo Shen
+
+
+
 
 
 _______________________________________________
