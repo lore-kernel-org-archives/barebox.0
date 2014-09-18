@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XUVsZ-0001gm-SA
- for barebox@lists.infradead.org; Thu, 18 Sep 2014 07:11:48 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1XUVs4-0004kw-En
- for barebox@lists.infradead.org; Thu, 18 Sep 2014 09:11:16 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <sha@pengutronix.de>) id 1XUVs4-0000kF-Dv
- for barebox@lists.infradead.org; Thu, 18 Sep 2014 09:11:16 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Sep 2014 09:11:11 +0200
-Message-Id: <1411024275-31766-1-git-send-email-s.hauer@pengutronix.de>
+ Linux)) id 1XUZCu-0007i9-M5
+ for barebox@lists.infradead.org; Thu, 18 Sep 2014 10:45:01 +0000
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Thu, 18 Sep 2014 12:44:29 +0200
+Message-Id: <1411037069-1483-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,29 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: net: phy updates
+Subject: [PATCH] efi: use objcopy with CROSS_COMPILE prefix
 To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-This series gets direct phy register accesses out of the generic code
-path. This is necessary for phys which have a different register
-layout not handled correctly by the generic code. Also the phy link
-status check is moved to a poller callback. With this we get periodic
-link status updates printed on the console.
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ arch/efi/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
+diff --git a/arch/efi/Makefile b/arch/efi/Makefile
+index af28085..85cb655 100644
+--- a/arch/efi/Makefile
++++ b/arch/efi/Makefile
+@@ -24,7 +24,7 @@ cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@	\
+ 		$(filter-out $(barebox-lds) $(barebox-common) FORCE ,$^)
+ 
+ quiet_cmd_efi_image = EFI-IMG $@
+-      cmd_efi_image = objcopy -j .text -j .sdata -j .data -j .dynamic \
++      cmd_efi_image = $(OBJCOPY) -j .text -j .sdata -j .data -j .dynamic \
+ 		      -j .dynsym -j .rel -j .rela -j .reloc -j __barebox_initcalls \
+ 		      -j __barebox_cmd -j .barebox_magicvar -j .bbenv.* \
+ 		      --target=$(TARGET) $< $@
+-- 
+2.1.0
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      net: phy: introduce phy_aneg_done
-      net: phy: Use xzalloc for small allocations
-      net: phy: don't use 'dev' as name for variables of type struct phy_device
-      net: phy: Use poller for periodic link check
-
- drivers/net/Kconfig   |   1 +
- drivers/net/phy/phy.c | 189 +++++++++++++++++++++++++++++++++-----------------
- include/linux/phy.h   |   4 ++
- net/eth.c             |  23 ++----
- 4 files changed, 139 insertions(+), 78 deletions(-)
 
 _______________________________________________
 barebox mailing list
