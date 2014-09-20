@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XV2aL-0004gh-PF
- for barebox@lists.infradead.org; Fri, 19 Sep 2014 18:07:10 +0000
-Date: Fri, 19 Sep 2014 20:06:44 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140919180644.GI4992@pengutronix.de>
-References: <1411037069-1483-1-git-send-email-m.olbrich@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1411037069-1483-1-git-send-email-m.olbrich@pengutronix.de>
+Received: from mail-wg0-x233.google.com ([2a00:1450:400c:c00::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XVOOz-0002o3-UW
+ for barebox@lists.infradead.org; Sat, 20 Sep 2014 17:24:54 +0000
+Received: by mail-wg0-f51.google.com with SMTP id m15so985055wgh.10
+ for <barebox@lists.infradead.org>; Sat, 20 Sep 2014 10:24:32 -0700 (PDT)
+Message-ID: <541DB84C.2020805@gmail.com>
+Date: Sat, 20 Sep 2014 19:24:28 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1410985364-7105-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1410985364-7105-7-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1410985364-7105-7-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] efi: use objcopy with CROSS_COMPILE prefix
-To: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH v2 6/6] ARM: Add mvebu_defconfig
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 18, 2014 at 12:44:29PM +0200, Michael Olbrich wrote:
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+On 09/17/2014 10:22 PM, Sebastian Hesselbarth wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> This adds a mvebu_defconfig which enables all mvebu based boards.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Acked-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 > ---
->  arch/efi/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
+...
+> ---
+>  arch/arm/configs/mvebu_defconfig | 123 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 123 insertions(+)
+>  create mode 100644 arch/arm/configs/mvebu_defconfig
 > 
-> diff --git a/arch/efi/Makefile b/arch/efi/Makefile
-> index af28085..85cb655 100644
-> --- a/arch/efi/Makefile
-> +++ b/arch/efi/Makefile
-> @@ -24,7 +24,7 @@ cmd_barebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_barebox) -o $@	\
->  		$(filter-out $(barebox-lds) $(barebox-common) FORCE ,$^)
->  
->  quiet_cmd_efi_image = EFI-IMG $@
-> -      cmd_efi_image = objcopy -j .text -j .sdata -j .data -j .dynamic \
-> +      cmd_efi_image = $(OBJCOPY) -j .text -j .sdata -j .data -j .dynamic \
->  		      -j .dynsym -j .rel -j .rela -j .reloc -j __barebox_initcalls \
->  		      -j __barebox_cmd -j .barebox_magicvar -j .bbenv.* \
->  		      --target=$(TARGET) $< $@
-> -- 
-> 2.1.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
+> new file mode 100644
+> index 000000000000..26be4ecfe022
+> --- /dev/null
+> +++ b/arch/arm/configs/mvebu_defconfig
+> @@ -0,0 +1,123 @@
+[...]
+> +CONFIG_MMU=y
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha,
+
+can you please drop CONFIG_MMU for mvebu_defconfig for now? I did some
+more testing today and realized that Armada 370 and XP are CPU_V7 but
+have a different cache controller. We currently have no support for
+Marvell Aurora and therefore flush/inv ranges will not work and break
+any driver using dma_flush/inv_range.
+
+Sebastian
+
 
 _______________________________________________
 barebox mailing list
