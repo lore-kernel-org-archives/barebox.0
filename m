@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
+ helo=mo5.mail-out.ovh.net)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XWBry-00041R-Pz
- for barebox@lists.infradead.org; Mon, 22 Sep 2014 22:14:07 +0000
-Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp1-g21.free.fr (Postfix) with ESMTP id 3CCC294000A
- for <barebox@lists.infradead.org>; Tue, 23 Sep 2014 00:13:22 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 23 Sep 2014 00:13:35 +0200
-Message-Id: <1411424015-16466-2-git-send-email-eric@eukrea.com>
-In-Reply-To: <1411424015-16466-1-git-send-email-eric@eukrea.com>
-References: <1411424015-16466-1-git-send-email-eric@eukrea.com>
+ id 1XWC0O-00005H-PR
+ for barebox@lists.infradead.org; Mon, 22 Sep 2014 22:22:49 +0000
+Received: from mail243.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 103A5FFA381
+ for <barebox@lists.infradead.org>; Tue, 23 Sep 2014 00:22:23 +0200 (CEST)
+Date: Tue, 23 Sep 2014 00:22:15 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20140923002215.06ad3304@e6520eb>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,67 +19,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] eukrea-cpuimx35: refresh configuration
+Subject: imx-image & i.MX35
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vY29uZmlncy9ldWtyZWFfY3B1aW14MzVfZGVmY29uZmlnIHwgNjEgKysrKysrKysrKysrKysr
-KysrLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzYgaW5zZXJ0aW9ucygrKSwgMjUgZGVs
-ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9ldWtyZWFfY3B1aW14MzVf
-ZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9ldWtyZWFfY3B1aW14MzVfZGVmY29uZmlnCmlu
-ZGV4IDc1NjljZGUuLjRjODMxMDIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2NvbmZpZ3MvZXVrcmVh
-X2NwdWlteDM1X2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL2V1a3JlYV9jcHVpbXgz
-NV9kZWZjb25maWcKQEAgLTEsNzEgKzEsODEgQEAKIENPTkZJR19BUkNIX0lNWD15Ci1DT05GSUdf
-Q0FDSEVfTDJYMD15Ci1DT05GSUdfQVJDSF9JTVgzNT15CitDT05GSUdfQkFSRUJPWF9NQVhfSU1B
-R0VfU0laRT0weDQwMDAwCiBDT05GSUdfTUFDSF9FVUtSRUFfQ1BVSU1YMzU9eQogQ09ORklHX0lN
-WF9JSU09eQogQ09ORklHX0lNWF9JSU1fRlVTRV9CTE9XPXkKIENPTkZJR19BRUFCST15CiBDT05G
-SUdfQVJNX09QVElNWkVEX1NUUklOR19GVU5DVElPTlM9eQorQ09ORklHX1BCTF9JTUFHRT15CitD
-T05GSUdfUEJMX1JFTE9DQVRBQkxFPXkKIENPTkZJR19NTVU9eQotQ09ORklHX0JBUkVCT1hfTUFY
-X0lNQUdFX1NJWkU9MHg0MDAwMAogQ09ORklHX01BTExPQ19TSVpFPTB4ODAwMDAwCiBDT05GSUdf
-RVhQRVJJTUVOVEFMPXkKIENPTkZJR19NQUxMT0NfVExTRj15Ci1DT05GSUdfTE9OR0hFTFA9eQor
-Q09ORklHX1JFTE9DQVRBQkxFPXkKIENPTkZJR19HTE9CPXkKIENPTkZJR19IVVNIX0ZBTkNZX1BS
-T01QVD15CiBDT05GSUdfQ01ETElORV9FRElUSU5HPXkKIENPTkZJR19BVVRPX0NPTVBMRVRFPXkK
-LSMgQ09ORklHX0NPTlNPTEVfQUNUSVZBVEVfRklSU1QgaXMgbm90IHNldAogQ09ORklHX0NPTlNP
-TEVfQUNUSVZBVEVfQUxMPXkKK0NPTkZJR19ERUZBVUxUX0NPTVBSRVNTSU9OX0xaTz15CiBDT05G
-SUdfREVGQVVMVF9FTlZJUk9OTUVOVF9HRU5FUklDPXkKIENPTkZJR19ERUZBVUxUX0VOVklST05N
-RU5UX1BBVEg9ImFyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvZW52IgotQ09ORklHX0NN
-RF9FRElUPXkKLUNPTkZJR19DTURfU0xFRVA9eQotQ09ORklHX0NNRF9TQVZFRU5WPXkKLUNPTkZJ
-R19DTURfRVhQT1JUPXkKLUNPTkZJR19DTURfUFJJTlRFTlY9eQotQ09ORklHX0NNRF9SRUFETElO
-RT15Ci1DT05GSUdfQ01EX0FVVE9NT1VOVD15Ci1DT05GSUdfQ01EX0VDSE9fRT15Ci1DT05GSUdf
-Q01EX0xPQURCPXkKLUNPTkZJR19DTURfTUVNSU5GTz15CitDT05GSUdfTE9OR0hFTFA9eQogQ09O
-RklHX0NNRF9JT01FTT15Ci1DT05GSUdfQ01EX01URVNUPXkKLUNPTkZJR19DTURfRkxBU0g9eQor
-Q09ORklHX0NNRF9JTUQ9eQorQ09ORklHX0NNRF9NRU1JTkZPPXkKIENPTkZJR19DTURfQk9PVE1f
-U0hPV19UWVBFPXkKIENPTkZJR19DTURfQk9PVE1fVkVSQk9TRT15CiBDT05GSUdfQ01EX0JPT1RN
-X0lOSVRSRD15CiBDT05GSUdfQ01EX0JPT1RNX09GVFJFRT15CiBDT05GSUdfQ01EX0JPT1RNX09G
-VFJFRV9VSU1BR0U9eQotQ09ORklHX0NNRF9SRVNFVD15CiBDT05GSUdfQ01EX0dPPXkKLUNPTkZJ
-R19DTURfT0ZUUkVFPXkKLUNPTkZJR19DTURfVElNRU9VVD15CitDT05GSUdfQ01EX0xPQURCPXkK
-K0NPTkZJR19DTURfUkVTRVQ9eQogQ09ORklHX0NNRF9QQVJUSVRJT049eQorQ09ORklHX0NNRF9B
-VVRPTU9VTlQ9eQorQ09ORklHX0NNRF9FWFBPUlQ9eQorQ09ORklHX0NNRF9MT0FERU5WPXkKK0NP
-TkZJR19DTURfUFJJTlRFTlY9eQogQ09ORklHX0NNRF9NQUdJQ1ZBUj15CiBDT05GSUdfQ01EX01B
-R0lDVkFSX0hFTFA9eQorQ09ORklHX0NNRF9TQVZFRU5WPXkKK0NPTkZJR19DTURfVU5DT01QUkVT
-Uz15CitDT05GSUdfQ01EX1NMRUVQPXkKK0NPTkZJR19DTURfREhDUD15CitDT05GSUdfQ01EX01J
-SVRPT0w9eQorQ09ORklHX0NNRF9QSU5HPXkKK0NPTkZJR19DTURfVEZUUD15CitDT05GSUdfQ01E
-X0VDSE9fRT15CitDT05GSUdfQ01EX0VESVQ9eQogQ09ORklHX0NNRF9TUExBU0g9eQorQ09ORklH
-X0NNRF9SRUFETElORT15CitDT05GSUdfQ01EX1RJTUVPVVQ9eQorQ09ORklHX0NNRF9NRU1URVNU
-PXkKK0NPTkZJR19DTURfTU09eQorQ09ORklHX0NNRF9DTEs9eQorQ09ORklHX0NNRF9ERVRFQ1Q9
-eQorQ09ORklHX0NNRF9GTEFTSD15CiBDT05GSUdfQ01EX0dQSU89eQotQ09ORklHX0NNRF9VTkNP
-TVBSRVNTPXkKIENPTkZJR19DTURfSTJDPXkKIENPTkZJR19DTURfTEVEPXkKIENPTkZJR19DTURf
-TEVEX1RSSUdHRVI9eQorQ09ORklHX0NNRF9VU0JHQURHRVQ9eQorQ09ORklHX0NNRF9PRlRSRUU9
-eQogQ09ORklHX05FVD15Ci1DT05GSUdfQ01EX0RIQ1A9eQogQ09ORklHX05FVF9ORlM9eQotQ09O
-RklHX0NNRF9QSU5HPXkKLUNPTkZJR19DTURfVEZUUD15Ci1DT05GSUdfRlNfVEZUUD15CiBDT05G
-SUdfTkVUX05FVENPTlNPTEU9eQogQ09ORklHX0RSSVZFUl9ORVRfRkVDX0lNWD15CitDT05GSUdf
-U01TQ19QSFk9eQogIyBDT05GSUdfU1BJIGlzIG5vdCBzZXQKIENPTkZJR19JMkM9eQogQ09ORklH
-X0kyQ19JTVg9eQogQ09ORklHX01URD15CiBDT05GSUdfTVREX1JBV19ERVZJQ0U9eQogQ09ORklH
-X05BTkQ9eQorQ09ORklHX05BTkRfQUxMT1dfRVJBU0VfQkFEPXkKIENPTkZJR19OQU5EX0lNWD15
-CitDT05GSUdfTkFORF9JTVhfQkJNPXkKIENPTkZJR19VU0JfSE9TVD15CiBDT05GSUdfVVNCX0VI
-Q0k9eQogQ09ORklHX1VTQl9TVE9SQUdFPXkKQEAgLTc5LDYgKzg5LDcgQEAgQ09ORklHX01DSV9J
-TVhfRVNESEM9eQogQ09ORklHX0xFRD15CiBDT05GSUdfTEVEX0dQSU89eQogQ09ORklHX0xFRF9U
-UklHR0VSUz15CitDT05GSUdfRlNfVEZUUD15CiBDT05GSUdfRlNfRkFUPXkKIENPTkZJR19GU19G
-QVRfV1JJVEU9eQogQ09ORklHX0ZTX0ZBVF9MRk49eQotLSAKMS45LjMKCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+I didn't manage to get an image to boot on i.MX35 (internal boot on
+NAND) with current imx-image and 2014.09.0.
+
+From the i.MX35 user manual :
+Since MLC NAND Flash devices do not guarantee error-free boot blocks,
+the i.MX35 boot code requires that the first 4 Kbytes of boot code be
+duplicated in a subsequent block to serve as a second copy option.
+
+Actually imx-image puts the image at 4k but it seems that the i.MX35
+bootrom copies only from 8k as it expects that there is a copy of the
+first 0-4k in 4k-8k (and is supposed to use this copy if there is an
+ECC error in the first 4k) as we can see in the following lines :
+
+barebox@Eukrea CPUIMX35:/  md -s /dev/nand0 0x0   
+00000000: ea0003fe eafffffe eafffffe eafffffe                ................
+00000010: eafffffe eafffffe eafffffe eafffffe                ................
+00000020: 65726162 00786f62 00000000 00000000
+barebox.........
+
+=-> header is @ 0 in flash
+
+barebox@Eukrea CPUIMX35:/  md -s /dev/nand0 0x1000
+00001000: 56341200 00000000 0001eda1 00000000                ..4V............
+00001010: 00000000 00000000 00000000
+00000000                ................
+
+=-> so we have data @ 0x1000 in flash
+
+barebox@Eukrea CPUIMX35:/  md 0x87f00000
+87f00000: 00000000 00000000 00000000 00000000                ................
+87f00010: 00000000 00000000 00000000
+00000000                ................
+
+=-> but we don't find this data in RAM
+
+barebox@Eukrea CPUIMX35:/  md -s /dev/nand0 0x2000
+00002000: ea000012 eafffffe eafffffe eafffffe                ................
+00002010: eafffffe eafffffe eafffffe eafffffe                ................
+00002020: 65726162 00786f62 00000000 00034272
+barebox.....rB..
+
+=-> so we have the image @ 0x2000 in flash
+
+barebox@Eukrea CPUIMX35:/  md 0x87f01000          
+87f01000: ea000871 eafffffe eafffffe eafffffe                q...............
+87f01010: eafffffe eafffffe eafffffe eafffffe                ................
+87f01020: 65726162 00786f62 87f02000 0003b520                barebox.. .. ...
+
+=-> and we find it in RAM
+
+This patch fix the problem, how should this be hanled in imx-image ?
+
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 3a25c09..f908069 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -761,7 +761,7 @@ int main(int argc, char *argv[])
+                exit(1);
+        }
+ 
+-       ret = xwrite(outfd, buf, 4096);
++       ret = xwrite(outfd, buf, 8192);
+        if (ret < 0) {
+                perror("write");
+                exit(1);
+@@ -774,7 +774,7 @@ int main(int argc, char *argv[])
+        }
+ 
+        while (image_size) {
+-               int now = image_size < 4096 ? image_size : 4096;
++               int now = image_size < 8192 ? image_size : 8192;
+ 
+                ret = xread(infd, buf, now);
+                if (ret) {
+
+Eric
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
