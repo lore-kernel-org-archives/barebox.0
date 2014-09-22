@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XVviq-0006Dw-PT
- for barebox@lists.infradead.org; Mon, 22 Sep 2014 04:59:37 +0000
-Date: Mon, 22 Sep 2014 06:59:13 +0200
+ Linux)) id 1XVvld-0007Y1-Bc
+ for barebox@lists.infradead.org; Mon, 22 Sep 2014 05:02:29 +0000
+Date: Mon, 22 Sep 2014 07:02:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140922045913.GL4992@pengutronix.de>
+Message-ID: <20140922050206.GM4992@pengutronix.de>
 References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
- <1410949295-30296-6-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1410949295-30296-6-git-send-email-voice.shen@atmel.com>
+In-Reply-To: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/9] net: macb: using default value for FBLDO
+Subject: Re: [PATCH 0/9] ARM: at91: add sama5d4ek board support
 To: Bo Shen <voice.shen@atmel.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 17, 2014 at 06:21:31PM +0800, Bo Shen wrote:
-> Signed-off-by: Bo Shen <voice.shen@atmel.com>
-> ---
+On Wed, Sep 17, 2014 at 06:21:26PM +0800, Bo Shen wrote:
+> This patch series add Atmel new SoC SAMA5D4 support, which embedded
+> the Cortex-A5 core.
+> This patch series also add the EK board base on SAMA5D4 SoC support.
 > 
->  drivers/net/macb.c | 1 -
->  1 file changed, 1 deletion(-)
 > 
-> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-> index 12a2a3c..ef49f74 100644
-> --- a/drivers/net/macb.c
-> +++ b/drivers/net/macb.c
-> @@ -304,7 +304,6 @@ static void macb_configure_dma(struct macb_device *bp)
->  	if (macb_is_gem(bp)) {
->  		dmacfg = gem_readl(bp, DMACFG) & ~GEM_BF(RXBS, -1L);
->  		dmacfg |= GEM_BF(RXBS, bp->rx_buffer_size / RX_BUFFER_MULTIPLE);
-> -		dmacfg |= GEM_BF(FBLDO, 16);
+> Bo Shen (9):
+>   ARM: at91: move pmc base address into soc header
+>   ARM: atmel: sama5d3 is a family member of sama5
+>   ARM: at91: clock: use cpu_has_pcr for pcr1 checking
+>   nand: atmel: runtime to generate galois table
+>   net: macb: using default value for FBLDO
+>   mci: atmel: add new ip version 0x600 support
+>   ARM: at91: add sama5d4 soc support #1
+>   ARM: at91: add sama5d4 soc support #2
+>   ARM: at91: add sama5d4ek board support
 
-Why is this done? Does this still work on other SoCs?
+Applied 1-4 and 6 for now.
 
 Sascha
 
