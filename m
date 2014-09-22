@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XVvgn-0005Lb-I0
- for barebox@lists.infradead.org; Mon, 22 Sep 2014 04:57:30 +0000
-Date: Mon, 22 Sep 2014 06:57:07 +0200
+ Linux)) id 1XVviq-0006Dw-PT
+ for barebox@lists.infradead.org; Mon, 22 Sep 2014 04:59:37 +0000
+Date: Mon, 22 Sep 2014 06:59:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140922045707.GK4992@pengutronix.de>
-References: <0d3183ff039cb1eccb72299690544cb34299bf4e.1410868272.git.silvio.fricke@gmail.com>
- <cover.1410935206.git.silvio.fricke@gmail.com>
- <28681846d4cafdd034bcbb1b358b4e8c8501abb1.1410935206.git.silvio.fricke@gmail.com>
+Message-ID: <20140922045913.GL4992@pengutronix.de>
+References: <1410949295-30296-1-git-send-email-voice.shen@atmel.com>
+ <1410949295-30296-6-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <28681846d4cafdd034bcbb1b358b4e8c8501abb1.1410935206.git.silvio.fricke@gmail.com>
+In-Reply-To: <1410949295-30296-6-git-send-email-voice.shen@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,70 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: edmqmx6: free phy-reset gpio pin
-To: Silvio Fricke <silvio.fricke@gmail.com>
+Subject: Re: [PATCH 5/9] net: macb: using default value for FBLDO
+To: Bo Shen <voice.shen@atmel.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 17, 2014 at 08:33:00AM +0200, Silvio Fricke wrote:
-> Since 93a6c6a808("dts: update to v3.17-rc2") we have a correct gpio
-> configuration. This results in a double gpio request what receipted in a
-> error message like this one:
+On Wed, Sep 17, 2014 at 06:21:31PM +0800, Bo Shen wrote:
+> Signed-off-by: Bo Shen <voice.shen@atmel.com>
+> ---
 > 
-> 	gpiolib: _gpio_request: gpio-25 (phy-reset) status -16
+>  drivers/net/macb.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> Now with this patch the problem is gone.
-> 
-> Signed-off-by: Silvio Fricke <silvio.fricke@gmail.com>
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index 12a2a3c..ef49f74 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -304,7 +304,6 @@ static void macb_configure_dma(struct macb_device *bp)
+>  	if (macb_is_gem(bp)) {
+>  		dmacfg = gem_readl(bp, DMACFG) & ~GEM_BF(RXBS, -1L);
+>  		dmacfg |= GEM_BF(RXBS, bp->rx_buffer_size / RX_BUFFER_MULTIPLE);
+> -		dmacfg |= GEM_BF(FBLDO, 16);
 
-Applied, thanks
+Why is this done? Does this still work on other SoCs?
 
 Sascha
-
-> ---
->  arch/arm/boards/datamodul-edm-qmx6/board.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/boards/datamodul-edm-qmx6/board.c b/arch/arm/boards/datamodul-edm-qmx6/board.c
-> index e388e28..25f45df 100644
-> --- a/arch/arm/boards/datamodul-edm-qmx6/board.c
-> +++ b/arch/arm/boards/datamodul-edm-qmx6/board.c
-> @@ -49,6 +49,7 @@
->  #define RQ7_GPIO_ENET_MODE2	IMX_GPIO_NR(6, 28)
->  #define RQ7_GPIO_ENET_MODE3	IMX_GPIO_NR(6, 29)
->  #define RQ7_GPIO_ENET_EN_CLK125	IMX_GPIO_NR(6, 24)
-> +#define RQ7_GPIO_ENET_RESET     IMX_GPIO_NR(1, 25)
->  
->  static iomux_v3_cfg_t realq7_pads_gpio[] = {
->  	MX6Q_PAD_RGMII_RXC__GPIO_6_30,
-> @@ -57,6 +58,7 @@ static iomux_v3_cfg_t realq7_pads_gpio[] = {
->  	MX6Q_PAD_RGMII_RD2__GPIO_6_28,
->  	MX6Q_PAD_RGMII_RD3__GPIO_6_29,
->  	MX6Q_PAD_RGMII_RX_CTL__GPIO_6_24,
-> +	MX6Q_PAD_ENET_CRS_DV__GPIO_1_25,
->  };
->  
->  static int ksz9031rn_phy_fixup(struct phy_device *dev)
-> @@ -85,12 +87,14 @@ static int realq7_enet_init(void)
->  	gpio_direction_output(RQ7_GPIO_ENET_MODE3, 1);
->  	gpio_direction_output(RQ7_GPIO_ENET_EN_CLK125, 1);
->  
-> -	gpio_direction_output(25, 0);
-> +	gpio_direction_output(RQ7_GPIO_ENET_RESET, 0);
->  	mdelay(50);
->  
-> -	gpio_direction_output(25, 1);
-> +	gpio_direction_output(RQ7_GPIO_ENET_RESET, 1);
->  	mdelay(50);
->  
-> +	gpio_free(RQ7_GPIO_ENET_RESET);
-> +
->  	phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK,
->  					   ksz9031rn_phy_fixup);
->  
-> -- 
-> 2.1.0
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
