@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.245]
- helo=DVREDG01.corp.atmel.com)
+Received: from nasmtp01.atmel.com ([192.199.1.246]
+ helo=DVREDG02.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XWLTw-0005jm-Vx
- for barebox@lists.infradead.org; Tue, 23 Sep 2014 08:29:58 +0000
+ id 1XWLTt-0005is-D0
+ for barebox@lists.infradead.org; Tue, 23 Sep 2014 08:29:54 +0000
 From: Bo Shen <voice.shen@atmel.com>
-Date: Tue, 23 Sep 2014 16:29:18 +0800
-Message-ID: <1411460958-27491-5-git-send-email-voice.shen@atmel.com>
+Date: Tue, 23 Sep 2014 16:29:16 +0800
+Message-ID: <1411460958-27491-3-git-send-email-voice.shen@atmel.com>
 In-Reply-To: <1411460958-27491-1-git-send-email-voice.shen@atmel.com>
 References: <1411460958-27491-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
@@ -22,607 +22,448 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/4] ARM: at91: add sama5d4ek board support
+Subject: [PATCH v2 2/4] ARM: at91: add sama5d4 soc support #1
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
-
-Add Atmel sama5d4ek board support, which include following features:
-  - NAND flash support
-  - SPI flash support
-  - MMC card support (MCI1)
-  - LCD display support (with QT1070)
-  - Ethernet support
 
 Signed-off-by: Bo Shen <voice.shen@atmel.com>
 ---
 Changes in v2:
-  - Add new LED D9.
+  - Multi line the #define
 
- arch/arm/boards/Makefile                     |   1 +
- arch/arm/boards/sama5d4ek/Makefile           |   1 +
- arch/arm/boards/sama5d4ek/env/bin/init_board |  15 ++
- arch/arm/boards/sama5d4ek/env/config         |  42 ++++
- arch/arm/boards/sama5d4ek/sama5d4ek.c        | 317 +++++++++++++++++++++++++++
- arch/arm/configs/sama5d4ek_defconfig         |  85 +++++++
- arch/arm/mach-at91/Kconfig                   |  26 +++
- arch/arm/mach-at91/Makefile                  |   2 +
- 8 files changed, 489 insertions(+)
- create mode 100644 arch/arm/boards/sama5d4ek/Makefile
- create mode 100644 arch/arm/boards/sama5d4ek/env/bin/init_board
- create mode 100644 arch/arm/boards/sama5d4ek/env/config
- create mode 100644 arch/arm/boards/sama5d4ek/sama5d4ek.c
- create mode 100644 arch/arm/configs/sama5d4ek_defconfig
+ arch/arm/mach-at91/clock.c                 | 58 +++++++++++++++++++++++-------
+ arch/arm/mach-at91/clock.h                 |  2 +-
+ arch/arm/mach-at91/include/mach/at91_pmc.h |  1 +
+ arch/arm/mach-at91/include/mach/cpu.h      | 28 +++++++++++++++
+ arch/arm/mach-at91/include/mach/hardware.h |  4 +++
+ arch/arm/mach-at91/sam9_smc.c              | 24 +++++++++++--
+ arch/arm/mach-at91/setup.c                 | 41 ++++++++++++++++++---
+ arch/arm/mach-at91/soc.h                   |  5 +++
+ 8 files changed, 142 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 122f5cd..beb70f6 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -92,6 +92,7 @@ obj-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite/
- obj-$(CONFIG_MACH_SABRESD)			+= freescale-mx6-sabresd/
- obj-$(CONFIG_MACH_SAMA5D3XEK)			+= sama5d3xek/
- obj-$(CONFIG_MACH_SAMA5D3_XPLAINED)		+= sama5d3_xplained/
-+obj-$(CONFIG_MACH_SAMA5D4EK)			+= sama5d4ek/
- obj-$(CONFIG_MACH_SCB9328)			+= scb9328/
- obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
- obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
-diff --git a/arch/arm/boards/sama5d4ek/Makefile b/arch/arm/boards/sama5d4ek/Makefile
-new file mode 100644
-index 0000000..4363b39
---- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/Makefile
-@@ -0,0 +1 @@
-+obj-y += sama5d4ek.o
-diff --git a/arch/arm/boards/sama5d4ek/env/bin/init_board b/arch/arm/boards/sama5d4ek/env/bin/init_board
-new file mode 100644
-index 0000000..f3d417e
---- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/env/bin/init_board
-@@ -0,0 +1,15 @@
-+#!/bin/sh
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index 50450f5..7a4282e 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -37,6 +37,7 @@
+ #define clk_is_programmable(x)	((x)->type & CLK_TYPE_PROGRAMMABLE)
+ #define clk_is_peripheral(x)	((x)->type & CLK_TYPE_PERIPHERAL)
+ #define clk_is_sys(x)		((x)->type & CLK_TYPE_SYSTEM)
++#define clk_is_periph_h64mx(x)	((x)->type & CLK_TYPE_PERIPH_H64MX)
+ 
+ 
+ /*
+@@ -45,7 +46,10 @@
+ #define cpu_has_utmi()		(  cpu_is_at91sam9rl() \
+ 				|| cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
+-				|| cpu_is_sama5d3())
++				|| cpu_is_sama5d3() \
++				|| cpu_is_sama5d4())
 +
-+PATH=/env/bin
-+export PATH
++#define cpu_has_1200M_plla()	(cpu_is_sama5d4())
+ 
+ #define cpu_has_1056M_plla()	(cpu_is_sama5d3())
+ 
+@@ -65,11 +69,13 @@
+ #define cpu_has_pllb()		(!(cpu_is_at91sam9rl() \
+ 				|| cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
+-				|| cpu_is_sama5d3()))
++				|| cpu_is_sama5d3() \
++				|| cpu_is_sama5d4()))
+ 
+ #define cpu_has_upll()		(cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
+-				|| cpu_is_sama5d3())
++				|| cpu_is_sama5d3() \
++				|| cpu_is_sama5d4())
+ 
+ /* USB host HS & FS */
+ #define cpu_has_uhp()		(!cpu_is_at91sam9rl())
+@@ -78,23 +84,30 @@
+ #define cpu_has_udpfs()		(!(cpu_is_at91sam9rl() \
+ 				|| cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
+-				|| cpu_is_sama5d3()))
++				|| cpu_is_sama5d3() \
++				|| cpu_is_sama5d4()))
+ 
+ #define cpu_has_plladiv2()	(cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
+ 				|| cpu_is_at91sam9n12() \
+-				|| cpu_is_sama5d3())
++				|| cpu_is_sama5d3() \
++				|| cpu_is_sama5d4())
+ 
+ #define cpu_has_mdiv3()		(cpu_is_at91sam9g45() \
+ 				|| cpu_is_at91sam9x5() \
+ 				|| cpu_is_at91sam9n12() \
+-				|| cpu_is_sama5d3())
++				|| cpu_is_sama5d3() \
++				|| cpu_is_sama5d4())
+ 
+ #define cpu_has_alt_prescaler()	(cpu_is_at91sam9x5() \
+ 				|| cpu_is_at91sam9n12() \
+-				|| cpu_is_sama5d3())
++				|| cpu_is_sama5d3() \
++				|| cpu_is_sama5d4())
 +
-+. /env/config
-+
-+splash=/env/splash.png
-+
-+if [ -f ${splash} -a -e /dev/fb0 ]; then
-+	splash -o ${splash}
-+	fb0.enable=1
-+fi
-+
-+exit 1
-diff --git a/arch/arm/boards/sama5d4ek/env/config b/arch/arm/boards/sama5d4ek/env/config
-new file mode 100644
-index 0000000..1007345
---- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/env/config
-@@ -0,0 +1,42 @@
-+#!/bin/sh
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+
-+# can be either 'nfs', 'tftp', 'nor' or 'nand'
-+kernel_loc=nfs
-+# can be either 'net', 'nor', 'nand' or 'initrd'
-+rootfs_loc=net
-+# can be either 'nfs', 'tftp', 'nand' or empty
-+oftree_loc=nfs
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root.$rootfs_type
-+ubiroot=rootfs
-+
-+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
-+kernelimage=zImage
-+#kernelimage=uImage
-+#kernelimage=Image
-+#kernelimage=Image.lzo
-+
-+nand_device=atmel_nand
-+nand_parts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),-(rootfs)"
-+rootfs_mtdblock_nand=7
-+
-+m25p80_parts="64k(bootstrap),384k(barebox),256k(bareboxenv),256k(bareboxenv2),128k(oftree),-(updater)"
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttyS0,115200"
-+
-+# set a fancy prompt (if support is compiled in)
-+PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
-diff --git a/arch/arm/boards/sama5d4ek/sama5d4ek.c b/arch/arm/boards/sama5d4ek/sama5d4ek.c
-new file mode 100644
-index 0000000..91cffa3
---- /dev/null
-+++ b/arch/arm/boards/sama5d4ek/sama5d4ek.c
-@@ -0,0 +1,317 @@
-+/*
-+ * SAMA5D4EK board configureation.
-+ *
-+ * Copyright (C) 2014 Atmel Corporation,
-+ *		      Bo Shen <voice.shen@atmel.com>
-+ *
-+ * Licensed under GPLv2 or later.
-+ */
-+
-+#include <common.h>
-+#include <net.h>
-+#include <init.h>
-+#include <environment.h>
-+#include <asm/armlinux.h>
-+#include <partition.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <io.h>
-+#include <mach/hardware.h>
-+#include <nand.h>
-+#include <sizes.h>
-+#include <linux/mtd/nand.h>
-+#include <mach/board.h>
-+#include <mach/at91sam9_smc.h>
-+#include <gpio.h>
-+#include <mach/iomux.h>
-+#include <mach/at91_pmc.h>
-+#include <mach/at91_rstc.h>
-+#include <mach/at91sam9x5_matrix.h>
-+#include <input/qt1070.h>
-+#include <readkey.h>
-+#include <spi/spi.h>
-+#include <linux/clk.h>
-+
-+#if defined(CONFIG_NAND_ATMEL)
-+static struct atmel_nand_data nand_pdata = {
-+	.ale		= 21,
-+	.cle		= 22,
-+	.det_pin	= -EINVAL,
-+	.rdy_pin	= -EINVAL,
-+	.enable_pin	= -EINVAL,
-+	.ecc_mode	= NAND_ECC_HW,
-+	.pmecc_sector_size = 512,
-+	.pmecc_corr_cap = 8,
-+	.on_flash_bbt	= 1,
++#define cpu_has_pcr()		(cpu_is_sama5d3() \
++				|| cpu_is_sama5d4())
+ 
+-#define cpu_has_pcr()		(cpu_is_sama5d3())
++#define cpu_has_dual_matrix()	(cpu_is_sama5d4())
+ 
+ static LIST_HEAD(clocks);
+ 
+@@ -214,6 +227,12 @@ struct clk mck = {
+ 	.pmc_mask	= AT91_PMC_MCKRDY,	/* in PMC_SR */
+ };
+ 
++struct clk h32mx_clk = {
++	.name		= "h32mx",
++	.parent		= &mck,
++	.pmc_mask	= AT91_PMC_H32MXDIV,	/* in PMC_MCKR */
 +};
 +
-+static struct sam9_smc_config cm_nand_smc_config = {
-+	.ncs_read_setup		= 1,
-+	.nrd_setup		= 1,
-+	.ncs_write_setup	= 1,
-+	.nwe_setup		= 1,
-+
-+	.ncs_read_pulse		= 3,
-+	.nrd_pulse		= 2,
-+	.ncs_write_pulse	= 3,
-+	.nwe_pulse		= 2,
-+
-+	.read_cycle		= 5,
-+	.write_cycle		= 5,
-+
-+	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE | AT91_SMC_EXNWMODE_DISABLE,
-+	.tdf_cycles		= 3,
-+
-+	.tclr			= 2,
-+	.tadl			= 7,
-+	.tar			= 2,
-+	.ocms			= 0,
-+	.trr			= 3,
-+	.twb			= 7,
-+	.rbnsel			= 3,
-+	.nfsel			= 1,
-+};
-+
-+static void ek_add_device_nand(void)
-+{
-+	struct clk *clk = clk_get(NULL, "smc_clk");
-+
-+	clk_enable(clk);
-+
-+	/* configure chip-select 3 (NAND) */
-+	sama5_smc_configure(0, 3, &cm_nand_smc_config);
-+
-+	at91_add_device_nand(&nand_pdata);
-+}
-+#else
-+static void ek_add_device_nand(void) {}
-+#endif
-+
-+#if defined(CONFIG_DRIVER_NET_MACB)
-+static struct macb_platform_data macb0_pdata = {
-+	.phy_interface = PHY_INTERFACE_MODE_RMII,
-+	.phy_addr = 0,
-+};
-+
-+static void ek_add_device_eth(void)
-+{
-+	at91_add_device_eth(0, &macb0_pdata);
-+}
-+#else
-+static void ek_add_device_eth(void) {}
-+#endif
-+
-+#if defined(CONFIG_DRIVER_VIDEO_ATMEL_HLCD)
-+static struct fb_videomode at91_tft_vga_modes[] = {
-+	{
-+		.name		= "LG",
-+		.refresh	= 60,
-+		.xres		= 800,		.yres		= 480,
-+		.pixclock	= KHZ2PICOS(33260),
-+
-+		.left_margin	= 88,		.right_margin	= 168,
-+		.upper_margin	= 8,		.lower_margin	= 37,
-+		.hsync_len	= 128,		.vsync_len	= 2,
-+
-+		.sync		= 0,
-+		.vmode		= FB_VMODE_NONINTERLACED,
-+	},
-+};
-+
-+/* Output mode is TFT 18 bits */
-+#define BPP_OUT_DEFAULT_LCDCFG5	(LCDC_LCDCFG5_MODE_OUTPUT_18BPP)
-+
-+static struct atmel_lcdfb_platform_data ek_lcdc_data = {
-+	.lcdcon_is_backlight		= true,
-+	.default_bpp			= 16,
-+	.default_dmacon			= ATMEL_LCDC_DMAEN,
-+	.default_lcdcon2		= BPP_OUT_DEFAULT_LCDCFG5,
-+	.guard_time			= 9,
-+	.lcd_wiring_mode		= ATMEL_LCDC_WIRING_RGB,
-+	.mode_list			= at91_tft_vga_modes,
-+	.num_modes			= ARRAY_SIZE(at91_tft_vga_modes),
-+};
-+
-+static void ek_add_device_lcdc(void)
-+{
-+	at91_add_device_lcdc(&ek_lcdc_data);
-+}
-+#else
-+static void ek_add_device_lcdc(void) {}
-+#endif
-+
-+#if defined(CONFIG_MCI_ATMEL)
-+static struct atmel_mci_platform_data mci1_data = {
-+	.bus_width	= 4,
-+	.detect_pin	= AT91_PIN_PE6,
-+	.wp_pin		= -EINVAL,
-+};
-+
-+static void ek_add_device_mci(void)
-+{
-+	/* MMC1 */
-+	at91_add_device_mci(1, &mci1_data);
-+
-+	/* power on MCI1 */
-+	at91_set_gpio_output(AT91_PIN_PE15, 0);
-+}
-+#else
-+static void ek_add_device_mci(void) {}
-+#endif
-+
-+#if defined(CONFIG_I2C_GPIO)
-+struct qt1070_platform_data qt1070_pdata = {
-+	.irq_pin	= AT91_PIN_PE25,
-+};
-+
-+static struct i2c_board_info i2c_devices[] = {
-+	{
-+		.platform_data = &qt1070_pdata,
-+		I2C_BOARD_INFO("qt1070", 0x1b),
-+	},
-+};
-+
-+static void ek_add_device_i2c(void)
-+{
-+	at91_set_gpio_input(qt1070_pdata.irq_pin, 0);
-+	at91_set_deglitch(qt1070_pdata.irq_pin, 1);
-+	at91_add_device_i2c(0, i2c_devices, ARRAY_SIZE(i2c_devices));
-+}
-+#else
-+static void ek_add_device_i2c(void) {}
-+#endif
-+
-+#if defined(CONFIG_DRIVER_SPI_ATMEL)
-+static const struct spi_board_info ek_spi_devices[] = {
-+	{
-+		.name		= "m25p80",
-+		.chip_select	= 0,
-+		.max_speed_hz	= 30 * 1000 * 1000,
-+		.bus_num	= 0,
+ static void pmc_periph_mode(struct clk *clk, int is_on)
+ {
+ 	u32 regval = 0;
+@@ -455,8 +474,12 @@ static void __init at91_clk_add(struct clk *clk)
+ int clk_register(struct clk *clk)
+ {
+ 	if (clk_is_peripheral(clk)) {
+-		if (!clk->parent)
+-			clk->parent = &mck;
++		if (!clk->parent) {
++			if (!cpu_has_dual_matrix() || clk_is_periph_h64mx(clk))
++				clk->parent = &mck;
++			else
++				clk->parent = &h32mx_clk;
++		}
+ 		if (cpu_has_pcr())
+ 			clk->rate_hz = DIV_ROUND_UP(clk->parent->rate_hz, 1 << clk->div);
+ 		clk->mode = pmc_periph_mode;
+@@ -484,7 +507,7 @@ static u32 at91_pll_rate(struct clk *pll, u32 freq, u32 reg)
+ 	unsigned mul, div;
+ 
+ 	div = reg & 0xff;
+-	if (cpu_is_sama5d3())
++	if (cpu_is_sama5d3() || cpu_is_sama5d4())
+ 		mul = (reg >> 18) & 0x7ff;
+ 	else
+ 		mul = (reg >> 16) & 0x7ff;
+@@ -649,7 +672,10 @@ int at91_clock_init(void)
+ 
+ 	/* report if PLLA is more than mildly overclocked */
+ 	plla.rate_hz = at91_pll_rate(&plla, main_clock, at91_pmc_read(AT91_CKGR_PLLAR));
+-	if (cpu_has_1056M_plla()) {
++	if (cpu_has_1200M_plla()) {
++		if (plla.rate_hz > 1200000000)
++			pll_overclock = 1;
++	} else if (cpu_has_1056M_plla()) {
+ 		if (plla.rate_hz > 1056000000)
+ 			pll_overclock = 1;
+ 	} else if (cpu_has_300M_plla()) {
+@@ -736,6 +762,12 @@ int at91_clock_init(void)
+ 		mck.id = 4;
+ 	}
+ 
++	if (cpu_has_dual_matrix()) {
++		at91_clk_add(&h32mx_clk);
++		h32mx_clk.rate_hz = h32mx_clk.parent->rate_hz;
++		h32mx_clk.rate_hz /= (1 << ((mckr & AT91_PMC_H32MXDIV) >> 24));	/* H32MX divisor by 2 */
 +	}
-+};
 +
-+static unsigned spi0_standard_cs[] = { AT91_PIN_PC3 };
-+static struct at91_spi_platform_data spi_pdata = {
-+	.chipselect = spi0_standard_cs,
-+	.num_chipselect = ARRAY_SIZE(spi0_standard_cs),
-+};
+ 	cpu_freq = freq;
+ 
+ 	/* Register the PMC's standard clocks */
+@@ -756,6 +788,8 @@ int at91_clock_init(void)
+ 
+ 	/* MCK and CPU clock are "always on" */
+ 	clk_enable(&mck);
++	if (cpu_has_dual_matrix())
++		clk_enable(&h32mx_clk);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-at91/clock.h b/arch/arm/mach-at91/clock.h
+index 8af8d96..97a08fd 100644
+--- a/arch/arm/mach-at91/clock.h
++++ b/arch/arm/mach-at91/clock.h
+@@ -13,7 +13,7 @@
+ #define CLK_TYPE_PROGRAMMABLE	0x4
+ #define CLK_TYPE_PERIPHERAL	0x8
+ #define CLK_TYPE_SYSTEM		0x10
+-
++#define CLK_TYPE_PERIPH_H64MX   0x80
+ 
+ struct clk {
+ 	struct list_head node;
+diff --git a/arch/arm/mach-at91/include/mach/at91_pmc.h b/arch/arm/mach-at91/include/mach/at91_pmc.h
+index 6107871..d74c140 100644
+--- a/arch/arm/mach-at91/include/mach/at91_pmc.h
++++ b/arch/arm/mach-at91/include/mach/at91_pmc.h
+@@ -118,6 +118,7 @@
+ #define		AT91_PMC_PLLADIV2	(1 << 12)		/* PLLA divisor by 2 [some SAM9 only] */
+ #define			AT91_PMC_PLLADIV2_OFF		(0 << 12)
+ #define			AT91_PMC_PLLADIV2_ON		(1 << 12)
++#define		AT91_PMC_H32MXDIV	(1 << 24)		/* AHB 32-bit Matrix Divisor [some SAMA5 only] */
+ 
+ #define	AT91_PMC_USB		0x38			/* USB Clock Register [some SAM9 only] */
+ #define		AT91_PMC_USBS		(0x1 <<  0)		/* USB OHCI Input clock selection */
+diff --git a/arch/arm/mach-at91/include/mach/cpu.h b/arch/arm/mach-at91/include/mach/cpu.h
+index c38260f..f684d32 100644
+--- a/arch/arm/mach-at91/include/mach/cpu.h
++++ b/arch/arm/mach-at91/include/mach/cpu.h
+@@ -48,12 +48,19 @@
+ #define ARCH_EXID_AT91SAM9G25	0x00000003
+ #define ARCH_EXID_AT91SAM9X25	0x00000004
+ 
++#define ARCH_EXID_SAMA5D3	0x00004300
+ #define ARCH_EXID_SAMA5D31	0x00444300
+ #define ARCH_EXID_SAMA5D33	0x00414300
+ #define ARCH_EXID_SAMA5D34	0x00414301
+ #define ARCH_EXID_SAMA5D35	0x00584300
+ #define ARCH_EXID_SAMA5D36	0x00004301
+ 
++#define ARCH_EXID_SAMA5D4	0x00000007
++#define ARCH_EXID_SAMA5D41	0x00000001
++#define ARCH_EXID_SAMA5D42	0x00000002
++#define ARCH_EXID_SAMA5D43	0x00000003
++#define ARCH_EXID_SAMA5D44	0x00000004
 +
-+static void ek_add_device_spi(void)
-+{
-+	spi_register_board_info(ek_spi_devices, ARRAY_SIZE(ek_spi_devices));
-+	at91_add_device_spi(0, &spi_pdata);
-+}
+ #define ARCH_FAMILY_AT91X92	0x09200000
+ #define ARCH_FAMILY_AT91SAM9	0x01900000
+ #define ARCH_FAMILY_AT91SAM9XE	0x02900000
+@@ -85,6 +92,9 @@ enum at91_soc_type {
+ 	/* SAMA5D3 */
+ 	AT91_SOC_SAMA5D3,
+ 
++	/* SAMA5D4 */
++	AT91_SOC_SAMA5D4,
++
+ 	/* Unknown type */
+ 	AT91_SOC_NONE
+ };
+@@ -107,6 +117,10 @@ enum at91_soc_subtype {
+ 	AT91_SOC_SAMA5D31, AT91_SOC_SAMA5D33, AT91_SOC_SAMA5D34,
+ 	AT91_SOC_SAMA5D35, AT91_SOC_SAMA5D36,
+ 
++	/* SAMA5D4 */
++	AT91_SOC_SAMA5D41, AT91_SOC_SAMA5D42, AT91_SOC_SAMA5D43,
++	AT91_SOC_SAMA5D44,
++
+ 	/* Unknown subtype */
+ 	AT91_SOC_SUBTYPE_NONE
+ };
+@@ -217,6 +231,20 @@ static inline int at91_soc_is_detected(void)
+ #define cpu_is_sama5d36()	(0)
+ #endif
+ 
++#ifdef CONFIG_ARCH_SAMA5D4
++#define cpu_is_sama5d4()	(at91_soc_initdata.type == AT91_SOC_SAMA5D4)
++#define cpu_is_sama5d41()	(at91_soc_initdata.subtype == AT91_SOC_SAMA5D41)
++#define cpu_is_sama5d42()	(at91_soc_initdata.subtype == AT91_SOC_SAMA5D42)
++#define cpu_is_sama5d43()	(at91_soc_initdata.subtype == AT91_SOC_SAMA5D43)
++#define cpu_is_sama5d44()	(at91_soc_initdata.subtype == AT91_SOC_SAMA5D44)
 +#else
-+static void ek_add_device_spi(void) {}
++#define cpu_is_sama5d4()	(0)
++#define cpu_is_sama5d41()	(0)
++#define cpu_is_sama5d42()	(0)
++#define cpu_is_sama5d43()	(0)
++#define cpu_is_sama5d44()	(0)
 +#endif
 +
-+#ifdef CONFIG_LED_GPIO
-+struct gpio_led leds[] = {
-+	{
-+		.gpio	= AT91_PIN_PE28,
-+		.active_low	= 0,
-+		.led	= {
-+			.name = "d8",
-+		},
-+	}, {
-+		.gpio	= AT91_PIN_PE9,
-+		.active_low	= 1,
-+		.led	= {
-+			.name = "d9",
-+		},
-+	}, {
-+		.gpio	= AT91_PIN_PE8,
-+		.active_low	= 0,
-+		.led	= {
-+			.name = "d10",
-+		},
-+	},
-+};
-+
-+static void ek_add_led(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
-+		at91_set_gpio_output(leds[i].gpio, leds[i].active_low);
-+		led_gpio_register(&leds[i]);
+ /*
+  * Since this is ARM, we will never run on any AVR32 CPU. But these
+  * definitions may reduce clutter in common drivers.
+diff --git a/arch/arm/mach-at91/include/mach/hardware.h b/arch/arm/mach-at91/include/mach/hardware.h
+index 2ef1780..bbaad71 100644
+--- a/arch/arm/mach-at91/include/mach/hardware.h
++++ b/arch/arm/mach-at91/include/mach/hardware.h
+@@ -19,6 +19,8 @@
+ #define AT91_BASE_DBGU0	0xfffff200
+ /* 9263, 9g45 */
+ #define AT91_BASE_DBGU1	0xffffee00
++/* sama5d4 */
++#define AT91_BASE_DBGU2	0xfc069000
+ 
+ #if defined(CONFIG_ARCH_AT91RM9200)
+ #include <mach/at91rm9200.h>
+@@ -38,6 +40,8 @@
+ #include <mach/at91sam9x5.h>
+ #elif defined(CONFIG_ARCH_SAMA5D3)
+ #include <mach/sama5d3.h>
++#elif defined(CONFIG_ARCH_SAMA5D4)
++#include <mach/sama5d4.h>
+ #elif defined(CONFIG_ARCH_AT91CAP9)
+ #include <mach/at91cap9.h>
+ #elif defined(CONFIG_ARCH_AT91X40)
+diff --git a/arch/arm/mach-at91/sam9_smc.c b/arch/arm/mach-at91/sam9_smc.c
+index 9f02807..60c067d 100644
+--- a/arch/arm/mach-at91/sam9_smc.c
++++ b/arch/arm/mach-at91/sam9_smc.c
+@@ -19,7 +19,9 @@
+ 
+ #define AT91_SAM9_SMC_CS_STRIDE		0x10
+ #define AT91_SAMA5_SMC_CS_STRIDE	0x14
+-#define AT91_SMC_CS_STRIDE      ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? AT91_SAMA5_SMC_CS_STRIDE : AT91_SAM9_SMC_CS_STRIDE)
++#define AT91_SMC_CS_STRIDE	((at91_soc_initdata.type == AT91_SOC_SAMA5D3 \
++				 || at91_soc_initdata.type == AT91_SOC_SAMA5D4) \
++				 ? AT91_SAMA5_SMC_CS_STRIDE : AT91_SAM9_SMC_CS_STRIDE)
+ #define AT91_SMC_CS(id, n)	(smc_base_addr[id] + ((n) * AT91_SMC_CS_STRIDE))
+ 
+ static void __iomem *smc_base_addr[2];
+@@ -29,7 +31,15 @@ static void sam9_smc_cs_write_mode(void __iomem *base,
+ {
+ 	void __iomem *mode_reg;
+ 
+-	mode_reg = base + ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? AT91_SAMA5_SMC_MODE : AT91_SAM9_SMC_MODE);
++	switch (at91_soc_initdata.type) {
++	case AT91_SOC_SAMA5D3:
++	case AT91_SOC_SAMA5D4:
++		mode_reg = base + AT91_SAMA5_SMC_MODE;
++		break;
++	default:
++		mode_reg = base + AT91_SAM9_SMC_MODE;
++		break;
 +	}
-+	led_set_trigger(LED_TRIGGER_HEARTBEAT, &leds[0].led);
-+}
-+#else
-+static void ek_add_led(void) {}
+ 
+ 	__raw_writel(config->mode
+ 		   | AT91_SMC_TDF_(config->tdf_cycles),
+@@ -95,7 +105,15 @@ static void sam9_smc_cs_read_mode(void __iomem *base,
+ 	u32 val;
+ 	void __iomem *mode_reg;
+ 
+-	mode_reg = base + ((at91_soc_initdata.type == AT91_SOC_SAMA5D3) ? AT91_SAMA5_SMC_MODE : AT91_SAM9_SMC_MODE);
++	switch (at91_soc_initdata.type) {
++	case AT91_SOC_SAMA5D3:
++	case AT91_SOC_SAMA5D4:
++		mode_reg = base + AT91_SAMA5_SMC_MODE;
++		break;
++	default:
++		mode_reg = base + AT91_SAM9_SMC_MODE;
++		break;
++	}
+ 
+ 	val = __raw_readl(mode_reg);
+ 
+diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
+index 80dc277..030b8a2 100644
+--- a/arch/arm/mach-at91/setup.c
++++ b/arch/arm/mach-at91/setup.c
+@@ -39,6 +39,9 @@ static void __init soc_detect(u32 dbgu_base)
+ 	cidr = __raw_readl(dbgu_base + AT91_DBGU_CIDR);
+ 	socid = cidr & ~AT91_CIDR_VERSION;
+ 
++	/* sub version of soc */
++	at91_soc_initdata.exid = __raw_readl(dbgu_base + AT91_DBGU_EXID);
++
+ 	switch (socid) {
+ 	case ARCH_ID_AT91RM9200:
+ 		at91_soc_initdata.type = AT91_SOC_RM9200;
+@@ -90,8 +93,15 @@ static void __init soc_detect(u32 dbgu_base)
+ 		break;
+ 
+ 	case ARCH_ID_SAMA5:
+-		at91_soc_initdata.type = AT91_SOC_SAMA5D3;
+-		at91_boot_soc = at91sama5d3_soc;
++		if (at91_soc_initdata.exid & ARCH_EXID_SAMA5D3) {
++			at91_soc_initdata.type = AT91_SOC_SAMA5D3;
++			at91_boot_soc = at91sama5d3_soc;
++		} else {
++			if (at91_soc_initdata.exid & ARCH_EXID_SAMA5D4) {
++				at91_soc_initdata.type = AT91_SOC_SAMA5D4;
++				at91_boot_soc = at91sama5d4_soc;
++			}
++		}
+ 		break;
+ 	}
+ 
+@@ -112,9 +122,6 @@ static void __init soc_detect(u32 dbgu_base)
+ 
+ 	at91_soc_initdata.cidr = cidr;
+ 
+-	/* sub version of soc */
+-	at91_soc_initdata.exid = __raw_readl(dbgu_base + AT91_DBGU_EXID);
+-
+ 	if (at91_soc_initdata.type == AT91_SOC_SAM9G45) {
+ 		switch (at91_soc_initdata.exid) {
+ 		case ARCH_EXID_AT91SAM9M10:
+@@ -168,6 +175,23 @@ static void __init soc_detect(u32 dbgu_base)
+ 			break;
+ 		}
+ 	}
++
++	if (at91_soc_initdata.type == AT91_SOC_SAMA5D4) {
++		switch (at91_soc_initdata.exid) {
++		case ARCH_EXID_SAMA5D41:
++			at91_soc_initdata.subtype = AT91_SOC_SAMA5D41;
++			break;
++		case ARCH_EXID_SAMA5D42:
++			at91_soc_initdata.subtype = AT91_SOC_SAMA5D42;
++			break;
++		case ARCH_EXID_SAMA5D43:
++			at91_soc_initdata.subtype = AT91_SOC_SAMA5D43;
++			break;
++		case ARCH_EXID_SAMA5D44:
++			at91_soc_initdata.subtype = AT91_SOC_SAMA5D44;
++			break;
++		}
++	}
+ }
+ 
+ static const char *soc_name[] = {
+@@ -182,6 +206,7 @@ static const char *soc_name[] = {
+ 	[AT91_SOC_SAM9X5]	= "at91sam9x5",
+ 	[AT91_SOC_SAM9N12]	= "at91sam9n12",
+ 	[AT91_SOC_SAMA5D3]	= "sama5d3",
++	[AT91_SOC_SAMA5D4]	= "sama5d4",
+ 	[AT91_SOC_NONE]		= "Unknown"
+ };
+ 
+@@ -209,6 +234,10 @@ static const char *soc_subtype_name[] = {
+ 	[AT91_SOC_SAMA5D34]	= "sama5d34",
+ 	[AT91_SOC_SAMA5D35]	= "sama5d35",
+ 	[AT91_SOC_SAMA5D36]	= "sama5d36",
++	[AT91_SOC_SAMA5D41]	= "sama5d41",
++	[AT91_SOC_SAMA5D42]	= "sama5d42",
++	[AT91_SOC_SAMA5D43]	= "sama5d43",
++	[AT91_SOC_SAMA5D44]	= "sama5d44",
+ 	[AT91_SOC_SUBTYPE_NONE]	= "Unknown"
+ };
+ 
+@@ -226,6 +255,8 @@ static int at91_detect(void)
+ 	soc_detect(AT91_BASE_DBGU0);
+ 	if (!at91_soc_is_detected())
+ 		soc_detect(AT91_BASE_DBGU1);
++	if (!at91_soc_is_detected())
++		soc_detect(AT91_BASE_DBGU2);
+ 
+ 	if (!at91_soc_is_detected())
+ 		panic("AT91: Impossible to detect the SOC type");
+diff --git a/arch/arm/mach-at91/soc.h b/arch/arm/mach-at91/soc.h
+index e548165..76e4621 100644
+--- a/arch/arm/mach-at91/soc.h
++++ b/arch/arm/mach-at91/soc.h
+@@ -19,6 +19,7 @@ extern struct at91_init_soc at91sam9rl_soc;
+ extern struct at91_init_soc at91sam9x5_soc;
+ extern struct at91_init_soc at91sam9n12_soc;
+ extern struct at91_init_soc at91sama5d3_soc;
++extern struct at91_init_soc at91sama5d4_soc;
+ 
+ #define AT91_SOC_START(_name)				\
+ struct at91_init_soc __initdata at91##_name##_soc	\
+@@ -69,3 +70,7 @@ static inline int at91_soc_is_enabled(void)
+ #if !defined(CONFIG_ARCH_SAMA5D3)
+ #define at91sama5d3_soc	at91_boot_soc
+ #endif
++
++#if !defined(CONFIG_ARCH_SAMA5D4)
++#define at91sama5d4_soc	at91_boot_soc
 +#endif
-+
-+static int sama5d4ek_mem_init(void)
-+{
-+	at91_add_device_sdram(0);
-+
-+	return 0;
-+}
-+mem_initcall(sama5d4ek_mem_init);
-+
-+static const struct devfs_partition sama5d4ek_nand0_partitions[] = {
-+	{
-+		.offset = 0x00000,
-+		.size = SZ_256K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "at91bootstrap_raw",
-+		.bbname = "at91bootstrap",
-+	}, {
-+		.offset = DEVFS_PARTITION_APPEND,
-+		.size = SZ_512K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "bootloader_raw",
-+		.bbname = "bootloader",
-+	}, {
-+		.offset = DEVFS_PARTITION_APPEND,
-+		.size = SZ_256K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "env_raw",
-+		.bbname = "env0",
-+	}, {
-+		.offset = DEVFS_PARTITION_APPEND,
-+		.size = SZ_256K,
-+		.flags = DEVFS_PARTITION_FIXED,
-+		.name = "env_raw1",
-+		.bbname = "env1",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static int sama5d4ek_devices_init(void)
-+{
-+	ek_add_device_i2c();
-+	ek_add_device_nand();
-+	ek_add_led();
-+	ek_add_device_eth();
-+	ek_add_device_spi();
-+	ek_add_device_mci();
-+	ek_add_device_lcdc();
-+
-+	devfs_create_partitions("nand0", sama5d4ek_nand0_partitions);
-+
-+	return 0;
-+}
-+device_initcall(sama5d4ek_devices_init);
-+
-+static int sama5d4ek_console_init(void)
-+{
-+	barebox_set_model("Atmel sama5d4ek");
-+	barebox_set_hostname("sama5d4ek");
-+
-+	at91_register_uart(4, 0);
-+
-+	return 0;
-+}
-+console_initcall(sama5d4ek_console_init);
-+
-+static int sama5d4ek_main_clock(void)
-+{
-+	at91_set_main_clock(12000000);
-+
-+	return 0;
-+}
-+pure_initcall(sama5d4ek_main_clock);
-diff --git a/arch/arm/configs/sama5d4ek_defconfig b/arch/arm/configs/sama5d4ek_defconfig
-new file mode 100644
-index 0000000..bbf254a
---- /dev/null
-+++ b/arch/arm/configs/sama5d4ek_defconfig
-@@ -0,0 +1,85 @@
-+CONFIG_ARCH_SAMA5D4=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x60000
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_PBL_IMAGE=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x26f00000
-+CONFIG_MALLOC_SIZE=0xA00000
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_PROMPT="A5D4EK:"
-+CONFIG_GLOB=y
-+CONFIG_PROMPT_HUSH_PS2="y"
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_CONSOLE_ACTIVATE_ALL=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/sama5d4ek/env"
-+CONFIG_DEBUG_INFO=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_NET=y
-+CONFIG_NET_NFS=y
-+CONFIG_OFDEVICE=y
-+CONFIG_DRIVER_NET_MACB=y
-+CONFIG_MICREL_PHY=y
-+CONFIG_DRIVER_SPI_ATMEL=y
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MTD=y
-+CONFIG_MTD_RAW_DEVICE=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_NAND=y
-+# CONFIG_NAND_ECC_SOFT is not set
-+# CONFIG_NAND_ECC_HW_SYNDROME is not set
-+CONFIG_NAND_ATMEL=y
-+CONFIG_NAND_ATMEL_PMECC=y
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_ATMEL_HLCD=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_ATMEL=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_KEYBOARD_QT1070=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_PNG=y
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 826917e..8c10c10 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -6,6 +6,9 @@ config HAVE_AT91_DBGU0
- config HAVE_AT91_DBGU1
- 	bool
- 
-+config HAVE_AT91_DBGU2
-+	bool
-+
- config HAVE_AT91_LOWLEVEL_INIT
- 	bool
- 
-@@ -168,6 +171,13 @@ config ARCH_SAMA5D3
- 	select HAS_MACB
- 	select AT91SAM9G45_RESET
- 
-+config ARCH_SAMA5D4
-+	bool "SAMA5D4"
-+	select SOC_SAMA5
-+	select HAVE_AT91_DBGU2
-+	select HAS_MACB
-+	select AT91SAM9G45_RESET
-+
- endchoice
- 
- config ARCH_BAREBOX_MAX_BARE_INIT_SIZE
-@@ -472,6 +482,22 @@ endif
- 
- # ----------------------------------------------------------
- 
-+if ARCH_SAMA5D4
-+
-+choice
-+	prompt "SAMA5D4 Board Type"
-+
-+config MACH_SAMA5D4EK
-+	bool "Atmel SAMA5D4 Evaluation Kit"
-+	help
-+	  Select this if you are using Atmel's SAMA5D4-EK Evaluation Kit.
-+
-+endchoice
-+
-+endif
-+
-+# ----------------------------------------------------------
-+
- comment "AT91 Board Options"
- 
- config MTD_AT91_DATAFLASH_CARD
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 8599f50..c2991b0 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -12,6 +12,7 @@ lowlevel_init-$(CONFIG_SOC_AT91SAM9X5) += at91sam9x5_lowlevel_init.o
- lowlevel_init-$(CONFIG_SOC_AT91SAM9N12) += at91sam9n12_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_AT91RM9200) = at91rm9200_lowlevel_init.o
- lowlevel_init-$(CONFIG_ARCH_SAMA5D3) += sama5d3_lowlevel_init.o
-+lowlevel_init-$(CONFIG_ARCH_SAMA5D4) += sama5d3_lowlevel_init.o
- lwl-y += $(lowlevel_init-y)
- 
- obj-$(CONFIG_AT91SAM9_RESET) += at91sam9_reset.o
-@@ -31,3 +32,4 @@ obj-$(CONFIG_ARCH_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
- obj-$(CONFIG_ARCH_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
- obj-$(CONFIG_ARCH_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
-+obj-$(CONFIG_ARCH_SAMA5D4)	+= sama5d4.o sama5d4_devices.o
 -- 
 2.1.0.24.g4109c28
 
