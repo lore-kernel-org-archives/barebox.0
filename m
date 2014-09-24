@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([212.27.42.3])
+Received: from mail-pa0-f43.google.com ([209.85.220.43])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XWnms-00069m-Ei
- for barebox@lists.infradead.org; Wed, 24 Sep 2014 14:43:23 +0000
-Received: from e6520eb.local.eukrea.fr (unknown [88.170.243.169])
- by smtp3-g21.free.fr (Postfix) with ESMTP id 2C438A6338
- for <barebox@lists.infradead.org>; Wed, 24 Sep 2014 16:42:42 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed, 24 Sep 2014 16:42:59 +0200
-Message-Id: <1411569779-11968-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+ id 1XWsAd-0007He-3b
+ for barebox@lists.infradead.org; Wed, 24 Sep 2014 19:24:11 +0000
+Received: by mail-pa0-f43.google.com with SMTP id kx10so9343944pab.30
+ for <barebox@lists.infradead.org>; Wed, 24 Sep 2014 12:23:49 -0700 (PDT)
+From: Ryan Du Bois <rdub@kamama.com>
+Date: Wed, 24 Sep 2014 12:23:45 -0700
+Message-Id: <2F9C706F-8EBC-453B-8BA1-116680C7926A@kamama.com>
+Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.6\))
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +17,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============3190725126850031742=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx-image: handle i.MX35 special case
+Subject: nvidia jetson tk1 help
 To: barebox@lists.infradead.org
 
-RnJvbSB0aGUgaS5NWDM1IHVzZXIgbWFudWFsIDoKU2luY2UgTUxDIE5BTkQgRmxhc2ggZGV2aWNl
-cyBkbyBub3QgZ3VhcmFudGVlIGVycm9yLWZyZWUgYm9vdCBibG9ja3MsCnRoZSBpLk1YMzUgYm9v
-dCBjb2RlIHJlcXVpcmVzIHRoYXQgdGhlIGZpcnN0IDQgS2J5dGVzIG9mIGJvb3QgY29kZSBiZQpk
-dXBsaWNhdGVkIGluIGEgc3Vic2VxdWVudCBibG9jayB0byBzZXJ2ZSBhcyBhIHNlY29uZCBjb3B5
-IG9wdGlvbi4KCkFjdHVhbGx5IGlteC1pbWFnZSBwdXRzIHRoZSBpbWFnZSBhdCA0ayBidXQgaXQg
-c2VlbXMgdGhhdCB0aGUgaS5NWDM1CmJvb3Ryb20gY29waWVzIG9ubHkgZnJvbSA4ayBhcyBpdCBl
-eHBlY3RzIHRoYXQgdGhlcmUgaXMgYSBjb3B5IG9mIHRoZQpmaXJzdCAwLTRrIGluIDRrLThrIChh
-bmQgaXMgc3VwcG9zZWQgdG8gdXNlIHRoaXMgY29weSBpZiB0aGVyZSBpcyBhbgpFQ0MgZXJyb3Ig
-aW4gdGhlIGZpcnN0IDRrKSBhcyB3ZSBjYW4gc2VlIGluIHRoZSBmb2xsb3dpbmcgbGluZXMgOgoK
-YmFyZWJveEBFdWtyZWEgQ1BVSU1YMzU6LyAgbWQgLXMgL2Rldi9uYW5kMCAweDAKMDAwMDAwMDA6
-IGVhMDAwM2ZlIGVhZmZmZmZlIGVhZmZmZmZlIGVhZmZmZmZlICAgICAgICAgICAgICAgIC4uLi4u
-Li4uLi4uLi4uLi4KMDAwMDAwMTA6IGVhZmZmZmZlIGVhZmZmZmZlIGVhZmZmZmZlIGVhZmZmZmZl
-ICAgICAgICAgICAgICAgIC4uLi4uLi4uLi4uLi4uLi4KMDAwMDAwMjA6IDY1NzI2MTYyIDAwNzg2
-ZjYyIDAwMDAwMDAwIDAwMDAwMDAwCmJhcmVib3guLi4uLi4uLi4KCj0tPiBoZWFkZXIgaXMgQCAw
-IGluIGZsYXNoCgpiYXJlYm94QEV1a3JlYSBDUFVJTVgzNTovICBtZCAtcyAvZGV2L25hbmQwIDB4
-MTAwMAowMDAwMTAwMDogNTYzNDEyMDAgMDAwMDAwMDAgMDAwMWVkYTEgMDAwMDAwMDAgICAgICAg
-ICAgICAgICAgLi40Vi4uLi4uLi4uLi4uLgowMDAwMTAxMDogMDAwMDAwMDAgMDAwMDAwMDAgMDAw
-MDAwMDAKMDAwMDAwMDAgICAgICAgICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgoKPS0+IHNvIHdl
-IGhhdmUgZGF0YSBAIDB4MTAwMCBpbiBmbGFzaAoKYmFyZWJveEBFdWtyZWEgQ1BVSU1YMzU6LyAg
-bWQgMHg4N2YwMDAwMAo4N2YwMDAwMDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAw
-MDAgICAgICAgICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgo4N2YwMDAxMDogMDAwMDAwMDAgMDAw
-MDAwMDAgMDAwMDAwMDAKMDAwMDAwMDAgICAgICAgICAgICAgICAgLi4uLi4uLi4uLi4uLi4uLgoK
-PS0+IGJ1dCB3ZSBkb24ndCBmaW5kIHRoaXMgZGF0YSBpbiBSQU0KCmJhcmVib3hARXVrcmVhIENQ
-VUlNWDM1Oi8gIG1kIC1zIC9kZXYvbmFuZDAgMHgyMDAwCjAwMDAyMDAwOiBlYTAwMDAxMiBlYWZm
-ZmZmZSBlYWZmZmZmZSBlYWZmZmZmZSAgICAgICAgICAgICAgICAuLi4uLi4uLi4uLi4uLi4uCjAw
-MDAyMDEwOiBlYWZmZmZmZSBlYWZmZmZmZSBlYWZmZmZmZSBlYWZmZmZmZSAgICAgICAgICAgICAg
-ICAuLi4uLi4uLi4uLi4uLi4uCjAwMDAyMDIwOiA2NTcyNjE2MiAwMDc4NmY2MiAwMDAwMDAwMCAw
-MDAzNDI3MgpiYXJlYm94Li4uLi5yQi4uCgo9LT4gc28gd2UgaGF2ZSB0aGUgaW1hZ2UgQCAweDIw
-MDAgaW4gZmxhc2gKCmJhcmVib3hARXVrcmVhIENQVUlNWDM1Oi8gIG1kIDB4ODdmMDEwMDAKODdm
-MDEwMDA6IGVhMDAwODcxIGVhZmZmZmZlIGVhZmZmZmZlIGVhZmZmZmZlICAgICAgICAgICAgICAg
-IHEuLi4uLi4uLi4uLi4uLi4KODdmMDEwMTA6IGVhZmZmZmZlIGVhZmZmZmZlIGVhZmZmZmZlIGVh
-ZmZmZmZlICAgICAgICAgICAgICAgIC4uLi4uLi4uLi4uLi4uLi4KODdmMDEwMjA6IDY1NzI2MTYy
-IDAwNzg2ZjYyIDg3ZjAyMDAwIDAwMDNiNTIwICAgICAgICAgICAgICAgIGJhcmVib3guLiAuLiAu
-Li4KCj0tPiBhbmQgd2UgZmluZCBpdCBpbiBSQU0KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFy
-ZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIHNjcmlwdHMvaW14L2lteC1pbWFnZS5jIHwgMjEgKysr
-KysrKysrKysrKysrKy0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTYgaW5zZXJ0aW9ucygrKSwgNSBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9zY3JpcHRzL2lteC9pbXgtaW1hZ2UuYyBiL3Njcmlw
-dHMvaW14L2lteC1pbWFnZS5jCmluZGV4IDNhMjVjMDkuLjgwNzYyZTggMTAwNjQ0Ci0tLSBhL3Nj
-cmlwdHMvaW14L2lteC1pbWFnZS5jCisrKyBiL3NjcmlwdHMvaW14L2lteC1pbWFnZS5jCkBAIC0z
-Nyw2ICszNyw3IEBAIHN0YXRpYyB1aW50MzJfdCBpbWFnZV9kY2Rfb2Zmc2V0Owogc3RhdGljIHVp
-bnQzMl90IGRjZHRhYmxlW01BWF9EQ0RdOwogc3RhdGljIGludCBjdXJkY2Q7CiBzdGF0aWMgaW50
-IGhlYWRlcl92ZXJzaW9uOworc3RhdGljIGludCBjcHVfdHlwZTsKIHN0YXRpYyBpbnQgYWRkX2Jh
-cmVib3hfaGVhZGVyOwogCiAvKgpAQCAtNDU0LDE0ICs0NTUsMTUgQEAgc3RhdGljIGludCBkb19k
-Y2Rfb2Zmc2V0KGludCBhcmdjLCBjaGFyICphcmd2W10pCiBzdHJ1Y3Qgc29jX3R5cGUgewogCWNo
-YXIgKm5hbWU7CiAJaW50IGhlYWRlcl92ZXJzaW9uOworCWludCBjcHVfdHlwZTsKIH07CiAKIHN0
-YXRpYyBzdHJ1Y3Qgc29jX3R5cGUgc29jc1tdID0gewotCXsgLm5hbWUgPSAiaW14MjUiLCAuaGVh
-ZGVyX3ZlcnNpb24gPSAxLCB9LAotCXsgLm5hbWUgPSAiaW14MzUiLCAuaGVhZGVyX3ZlcnNpb24g
-PSAxLCB9LAotCXsgLm5hbWUgPSAiaW14NTEiLCAuaGVhZGVyX3ZlcnNpb24gPSAxLCB9LAotCXsg
-Lm5hbWUgPSAiaW14NTMiLCAuaGVhZGVyX3ZlcnNpb24gPSAyLCB9LAotCXsgLm5hbWUgPSAiaW14
-NiIsIC5oZWFkZXJfdmVyc2lvbiA9IDIsIH0sCisJeyAubmFtZSA9ICJpbXgyNSIsIC5oZWFkZXJf
-dmVyc2lvbiA9IDEsIC5jcHVfdHlwZSA9IDI1fSwKKwl7IC5uYW1lID0gImlteDM1IiwgLmhlYWRl
-cl92ZXJzaW9uID0gMSwgLmNwdV90eXBlID0gMzUgfSwKKwl7IC5uYW1lID0gImlteDUxIiwgLmhl
-YWRlcl92ZXJzaW9uID0gMSwgLmNwdV90eXBlID0gNTEgfSwKKwl7IC5uYW1lID0gImlteDUzIiwg
-LmhlYWRlcl92ZXJzaW9uID0gMiwgLmNwdV90eXBlID0gNTMgfSwKKwl7IC5uYW1lID0gImlteDYi
-LCAuaGVhZGVyX3ZlcnNpb24gPSAyLCAuY3B1X3R5cGUgPSA2IH0sCiB9OwogCiBzdGF0aWMgaW50
-IGRvX3NvYyhpbnQgYXJnYywgY2hhciAqYXJndltdKQpAQCAtNDc3LDYgKzQ3OSw3IEBAIHN0YXRp
-YyBpbnQgZG9fc29jKGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJZm9yIChpID0gMDsgaSA8IEFS
-UkFZX1NJWkUoc29jcyk7IGkrKykgewogCQlpZiAoIXN0cmNtcChzb2NzW2ldLm5hbWUsIHNvYykp
-IHsKIAkJCWhlYWRlcl92ZXJzaW9uID0gc29jc1tpXS5oZWFkZXJfdmVyc2lvbjsKKwkJCWNwdV90
-eXBlID0gc29jc1tpXS5jcHVfdHlwZTsKIAkJCXJldHVybiAwOwogCQl9CiAJfQpAQCAtNzY3LDYg
-Kzc3MCwxNCBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQogCQlleGl0KDEpOwog
-CX0KIAorCWlmIChjcHVfdHlwZSA9PSAzNSkgeworCQlyZXQgPSB4d3JpdGUob3V0ZmQsIGJ1Ziwg
-NDA5Nik7CisJCWlmIChyZXQgPCAwKSB7CisJCQlwZXJyb3IoIndyaXRlIik7CisJCQlleGl0KDEp
-OworCQl9CisJfQorCiAJaW5mZCA9IG9wZW4oaW1hZ2VuYW1lLCBPX1JET05MWSk7CiAJaWYgKGlu
-ZmQgPCAwKSB7CiAJCXBlcnJvcigib3BlbiIpOwotLSAKMS45LjMKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+
+--===============3190725126850031742==
+Content-Type: multipart/signed; boundary="Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E"; protocol="application/pgp-signature"; micalg=pgp-sha512
+
+
+--Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
+
+Hey There,
+
+I'm having trouble getting barebox to boot on an Nvidia Jetson TK1.  I'm =
+using the tegra-v7_defconfig, and trying to load it to the board via the =
+tegrarcm tool.
+
+Has anyone done this before who might have a recipe that works?
+
+Thanks!
+--
++Ryan Du Bois
+rdub@kamama.com
+
+
+--Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP using GPGMail
+
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - https://gpgtools.org
+
+iQEcBAEBCgAGBQJUIxpBAAoJEK4Z1vjpzDGStLcIANHFe2W6vZcrA8Vl0v3UpZ/6
+cNe+Psm8MPv9RCpPdxc3qN5DUeRA8MRvVYU4tponDlLG3JlAoYYk1irBZrygA/py
+2g5cWiU5ag+OkcCaHYE8TXTsc/7pD2+oZNVmZ7t3M0ZeTNMOBIYSG2IFiptz0cXp
+yvOcckCjQOlY7MJOFjgPnzPshi/dTG5FyEZpsVop9KNvV+AFeqxIaRHys+DzzCQP
+5M1gEsAjfubq111K8wJH5Mcw6U4OOwSTkrFtmsXwlNqxNCYqylwHzxURkUtVc0ep
+Jv46SY88yAi+CEgy+KECpuh7dx1SXdZWM/QLizluNFJA0ubFVv4SNzlHHib6ANA=
+=1Xjg
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E--
+
+
+--===============3190725126850031742==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============3190725126850031742==--
