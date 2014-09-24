@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x233.google.com ([2a00:1450:400c:c05::233])
+Received: from mail-wg0-x22c.google.com ([2a00:1450:400c:c00::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XWm7w-00070k-Gt
- for barebox@lists.infradead.org; Wed, 24 Sep 2014 12:57:01 +0000
-Received: by mail-wi0-f179.google.com with SMTP id d1so7197639wiv.12
- for <barebox@lists.infradead.org>; Wed, 24 Sep 2014 05:56:37 -0700 (PDT)
+ id 1XWm80-000717-9m
+ for barebox@lists.infradead.org; Wed, 24 Sep 2014 12:57:04 +0000
+Received: by mail-wg0-f44.google.com with SMTP id z12so2316820wgg.15
+ for <barebox@lists.infradead.org>; Wed, 24 Sep 2014 05:56:41 -0700 (PDT)
 From: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
-Date: Wed, 24 Sep 2014 14:57:02 +0200
-Message-Id: <1411563425-28463-1-git-send-email-poggi.raph@gmail.com>
-MIME-Version: 1.0
+Date: Wed, 24 Sep 2014 14:57:05 +0200
+Message-Id: <1411563425-28463-4-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1411563425-28463-1-git-send-email-poggi.raph@gmail.com>
+References: <1411563425-28463-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,28 +18,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c: at91: fix coding style issue
+Subject: [PATCH] I2C: at91: fix the method for interrupt
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-U2lnbmVkLW9mZi1ieTogUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29tPgotLS0K
-IGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtYXQ5MS5jIHwgNCArKy0tCiAxIGZpbGUgY2hhbmdlZCwg
-MiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvaTJj
-L2J1c3Nlcy9pMmMtYXQ5MS5jIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkxLmMKaW5kZXgg
-Mzk5ZjZhOS4uMmNlM2ZhMyAxMDA2NDQKLS0tIGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkx
-LmMKKysrIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1hdDkxLmMKQEAgLTE4Niw4ICsxODYsOCBA
-QCBzdGF0aWMgaW50IGF0OTFfdHdpX3dhaXRfY29tcGxldGlvbihzdHJ1Y3QgYXQ5MV90d2lfZGV2
-ICpkZXYpCiAKIAlkZXYtPnRyYW5zZmVyX3N0YXR1cyB8PSBzdGF0dXM7CiAKLQl3aGlsZSghKGF0
-OTFfdHdpX3JlYWQoZGV2LCBBVDkxX1RXSV9TUikgJiBBVDkxX1RXSV9UWENPTVApKSB7Ci0JCWlm
-KGlzX3RpbWVvdXQoc3RhcnQsIEFUOTFfSTJDX1RJTUVPVVQpKSB7CisJd2hpbGUgKCEoYXQ5MV90
-d2lfcmVhZChkZXYsIEFUOTFfVFdJX1NSKSAmIEFUOTFfVFdJX1RYQ09NUCkpIHsKKwkJaWYgKGlz
-X3RpbWVvdXQoc3RhcnQsIEFUOTFfSTJDX1RJTUVPVVQpKSB7CiAJCQlkZXZfd2FybigmZGV2LT5h
-ZGFwdGVyLmRldiwgInRpbWVvdXQgd2FpdGluZyBmb3IgYnVzIHJlYWR5XG4iKTsKIAkJCXJldHVy
-biAtRVRJTUVET1VUOwogCQl9Ci0tIAoyLjEuMAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+From: Bo Shen <voice.shen@atmel.com>
+
+As the i2c-at91 driver won't work in the interrupt mode,
+so need to poll the interrupts.
+
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
+---
+ drivers/i2c/busses/i2c-at91.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-at91.c b/drivers/i2c/busses/i2c-at91.c
+index a2236ed..deb4ea4 100644
+--- a/drivers/i2c/busses/i2c-at91.c
++++ b/drivers/i2c/busses/i2c-at91.c
+@@ -174,24 +174,32 @@ static void at91_twi_read_next_byte(struct at91_twi_dev *dev)
+ static int at91_twi_wait_completion(struct at91_twi_dev *dev)
+ {
+ 	uint64_t start = get_time_ns();
+-	unsigned int status = at91_twi_read(dev, AT91_TWI_SR);
+-	unsigned int irqstatus = at91_twi_read(dev, AT91_TWI_IMR);
++	unsigned int status;
++	unsigned int irqstatus;
++
++	do {
++		status = at91_twi_read(dev, AT91_TWI_SR);
++		irqstatus = at91_twi_read(dev, AT91_TWI_IMR);
++
++		if (!(status & irqstatus)) {
++			if (is_timeout(start, AT91_I2C_TIMEOUT)) {
++				dev_warn(&dev->adapter.dev, "timeout waiting for bus ready\n");
++				return -ETIMEDOUT;
++			} else {
++				continue;
++			}
++		}
+ 
+-	if (irqstatus & AT91_TWI_RXRDY)
+-		at91_twi_read_next_byte(dev);
+-	else if (irqstatus & AT91_TWI_TXRDY)
+-		at91_twi_write_next_byte(dev);
+-	else
+-		dev_warn(&dev->adapter.dev, "neither rx and tx are ready\n");
++		if (irqstatus & AT91_TWI_RXRDY)
++			at91_twi_read_next_byte(dev);
++		else if (irqstatus & AT91_TWI_TXRDY)
++			at91_twi_write_next_byte(dev);
++		else
++			dev_warn(&dev->adapter.dev, "neither rx and tx are ready\n");
+ 
+-	dev->transfer_status |= status;
++		dev->transfer_status |= status;
+ 
+-	while (!(at91_twi_read(dev, AT91_TWI_SR) & AT91_TWI_TXCOMP)) {
+-		if (is_timeout(start, AT91_I2C_TIMEOUT)) {
+-			dev_warn(&dev->adapter.dev, "timeout waiting for bus ready\n");
+-			return -ETIMEDOUT;
+-		}
+-	}
++	} while (!(at91_twi_read(dev, AT91_TWI_SR) & AT91_TWI_TXCOMP));
+ 
+ 	at91_disable_twi_interrupts(dev);
+ 
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
