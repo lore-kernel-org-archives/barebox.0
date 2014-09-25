@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XXCPD-00030l-PK
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:36 +0000
-Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
- [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 7607A26C2002
- for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 18:58:54 +0200 (CEST)
+ id 1XXCPD-00031I-PP
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:37 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Sep 2014 19:05:01 +0200
-Message-Id: <1411664709-13699-8-git-send-email-dev@lynxeye.de>
+Date: Thu, 25 Sep 2014 19:05:04 +0200
+Message-Id: <1411664709-13699-11-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,63 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/15] commands: lspci: go down into subordinate busses
+Subject: [PATCH 10/15] i2c: tegra: move to fs initcall
 To: barebox@lists.infradead.org
 
-This way we also list devices that are behind
-bridges.
+From: Lucas Stach <l.stach@pengutronix.de>
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+i2c is needed to enable voltage rails that are later
+needed by other drivers.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- commands/lspci.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ arch/arm/boards/nvidia-beaver/board.c | 2 +-
+ drivers/i2c/busses/i2c-tegra.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/commands/lspci.c b/commands/lspci.c
-index fdf0269..27edd5d 100644
---- a/commands/lspci.c
-+++ b/commands/lspci.c
-@@ -20,10 +20,24 @@
- #include <complete.h>
- #include <linux/pci.h>
- 
-+static void traverse_bus(struct pci_bus *bus)
-+{
-+	struct pci_dev *dev;
-+
-+	list_for_each_entry(dev, &bus->devices, bus_list) {
-+		printf("%02x:%02x.%1x %04x: %04x:%04x (rev %02x)\n",
-+		       dev->bus->number, PCI_SLOT(dev->devfn),
-+		       PCI_FUNC(dev->devfn), (dev->class >> 8) & 0xffff,
-+		       dev->vendor, dev->device, dev->revision);
-+
-+		if (dev->subordinate)
-+			traverse_bus(dev->subordinate);
-+	}
-+}
-+
- static int do_lspci(int argc, char *argv[])
- {
- 	struct pci_bus *root_bus;
--	struct pci_dev *dev;
- 
- 	if (list_empty(&pci_root_buses)) {
- 		printf("No PCI bus detected\n");
-@@ -31,14 +45,7 @@ static int do_lspci(int argc, char *argv[])
- 	}
- 
- 	list_for_each_entry(root_bus, &pci_root_buses, node) {
--		list_for_each_entry(dev, &root_bus->devices, bus_list) {
--			printf("%02x: %04x: %04x:%04x (rev %02x)\n",
--				      dev->devfn,
--				      (dev->class >> 8) & 0xffff,
--				      dev->vendor,
--				      dev->device,
--				      dev->revision);
--		}
-+		traverse_bus(root_bus);
- 	}
+diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
+index e87594d..e67d2aa 100644
+--- a/arch/arm/boards/nvidia-beaver/board.c
++++ b/arch/arm/boards/nvidia-beaver/board.c
+@@ -35,4 +35,4 @@ static int nvidia_beaver_devices_init(void)
  
  	return 0;
+ }
+-device_initcall(nvidia_beaver_devices_init);
++fs_initcall(nvidia_beaver_devices_init);
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index c52da18..f793cbe 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -696,4 +696,4 @@ static struct driver_d tegra_i2c_driver = {
+ 	.probe   = tegra_i2c_probe,
+ 	.of_compatible = DRV_OF_COMPAT(tegra_i2c_compatible),
+ };
+-device_platform_driver(tegra_i2c_driver);
++register_driver_macro(fs, platform, tegra_i2c_driver);
 -- 
 1.9.3
 
