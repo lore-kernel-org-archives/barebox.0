@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f53.google.com ([209.85.220.53])
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XXDH0-0002w0-AF
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:56:10 +0000
-Received: by mail-pa0-f53.google.com with SMTP id hz1so11471026pad.12
- for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 10:55:48 -0700 (PDT)
-Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.6\))
-From: Ryan Du Bois <rdub@kamama.com>
-In-Reply-To: <AE2FDA55-436B-4DF7-AE47-9B32D0CFFAC7@kamama.com>
-Date: Thu, 25 Sep 2014 10:55:44 -0700
-Message-Id: <4F988940-A208-4D81-95E0-BBD3FC3C48CF@kamama.com>
-References: <2F9C706F-8EBC-453B-8BA1-116680C7926A@kamama.com>
- <1411632866.2207.2.camel@tellur.intern.lynxeye.de>
- <AE2FDA55-436B-4DF7-AE47-9B32D0CFFAC7@kamama.com>
+ id 1XXE60-0002ba-Dg
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 18:48:53 +0000
+Received: by mail-lb0-f175.google.com with SMTP id w7so7643992lbi.34
+ for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 11:48:29 -0700 (PDT)
+Date: Thu, 25 Sep 2014 23:02:38 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140925230238.18b41a52be8f3d5cc45d9bc7@gmail.com>
+In-Reply-To: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
+References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,97 +19,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3075617372956086550=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: nvidia jetson tk1 help
+Subject: Re: [PATCH 00/15] PCI bridges and Tegra PCI stuff
 To: Lucas Stach <dev@lynxeye.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
+
+On Thu, 25 Sep 2014 19:04:54 +0200
+Lucas Stach <dev@lynxeye.de> wrote:
+
+> Ok, I'm sending this out before it gathers any more dust.
+> =
+
+> This still doesn't work on Tegra K1 and I also haven't got
+> around to finish the rtl8169 network driver, but it seems
+> this pile is already a worthwile improvement.
+> =
+
+> First 7 patches are general barebox PCI improvements for
+> better tracking of PCI resources and handling bridge setup.
+
+I have tryed this series.
+
+I have got several =
+
+  'BAR does not fit within bus IO res'
+messages on qemu-malta. So not all available pci devices were registered.
 
 
---===============3075617372956086550==
-Content-Type: multipart/signed; boundary="Apple-Mail=_1250F5AF-D9CB-4A96-8F92-F304BF654345"; protocol="application/pgp-signature"; micalg=pgp-sha512
+> Others are Tegra related and at least provide working
+> PCIe on the Tegra30 Beaver board.
+> =
+
+> More to come later...
+> =
+
+> Lucas Stach (15):
+>   pci: split out device init
+>   pci: add resource enum
+>   pci: properly populate prefetchable BARs
+>   pci: setup bridges and traverse buses behind them
+>   pci: prettyprint device names
+>   pci: track parent<->child relationship
+>   commands: lspci: go down into subordinate busses
+>   clk: tegra: add PLLE setup functions
+>   clk: tegra30: add PCIe clocks
+>   i2c: tegra: move to fs initcall
+>   ARM: tegra: beaver: enable PEX voltage rail
+>   tegra: pmc: add powerdomain handling
+>   of: import pci range parser from linux
+>   pci: add Tegra host controller driver
+>   ARM: tegra: advertise PCI support
+> =
+
+>  arch/arm/Kconfig                                   |    1 +
+>  arch/arm/boards/nvidia-beaver/board.c              |   13 +-
+>  arch/arm/configs/tegra_v7_defconfig                |    1 +
+>  arch/arm/mach-tegra/include/mach/tegra-powergate.h |   93 ++
+>  arch/arm/mach-tegra/include/mach/tegra20-car.h     |    2 +
+>  arch/arm/mach-tegra/include/mach/tegra30-car.h     |    2 +
+>  arch/arm/mach-tegra/tegra20-pmc.c                  |  139 ++-
+>  commands/lspci.c                                   |   25 +-
+>  drivers/clk/tegra/clk-pll.c                        |  116 ++
+>  drivers/clk/tegra/clk-tegra30.c                    |   31 +
+>  drivers/clk/tegra/clk.h                            |    6 +
+>  drivers/i2c/busses/i2c-tegra.c                     |    2 +-
+>  drivers/of/address.c                               |   68 ++
+>  drivers/pci/Kconfig                                |    7 +
+>  drivers/pci/Makefile                               |    1 +
+>  drivers/pci/bus.c                                  |    3 +-
+>  drivers/pci/pci-tegra.c                            | 1193 ++++++++++++++=
+++++++
+>  drivers/pci/pci.c                                  |  272 +++--
+>  include/linux/pci.h                                |    9 +
+>  include/linux/pci_regs.h                           |   28 +
+>  include/of_address.h                               |   51 +-
+>  21 files changed, 1977 insertions(+), 86 deletions(-)
+>  create mode 100644 arch/arm/mach-tegra/include/mach/tegra-powergate.h
+>  create mode 100644 drivers/pci/pci-tegra.c
+> =
+
+> -- =
+
+> 1.9.3
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
---Apple-Mail=_1250F5AF-D9CB-4A96-8F92-F304BF654345
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+-- =
 
-Okay, that worked, but I have to use the *-usbloader.img image.  The =
-emmc image doesn't output anything over UART. =20
-
-Is that expected?
-
-Thanks!
---
-+Ryan Du Bois
-Ministry of Black Magic
-408.974.0618
-rdub@kamama.com
-
-On Sep 25, 2014, at 8:43 AM, Ryan Du Bois <rdub@kamama.com> wrote:
-
-> Thanks Lucas, I'll check that out when I get into the office today.
->=20
-> Cheers!
->=20
->> On Sep 25, 2014, at 1:14, Lucas Stach <dev@lynxeye.de> wrote:
->>=20
->> Hi Ryan,
->>=20
->> Am Mittwoch, den 24.09.2014, 12:23 -0700 schrieb Ryan Du Bois:
->>> Hey There,
->>>=20
->>> I'm having trouble getting barebox to boot on an Nvidia Jetson TK1.  =
-I'm using the tegra-v7_defconfig, and trying to load it to the board via =
-the tegrarcm tool.
->>>=20
->>> Has anyone done this before who might have a recipe that works?
->>=20
->> Please just "make docs". In there you'll find a chapter on how to
->> bootstrap a Tegra board. The description is for the Beaver board, but
->> things work the same way on Jetson. If you have any other question, =
-feel
->> free to ask.
->>=20
->> Regards,
->> Lucas
->>=20
-
-
---Apple-Mail=_1250F5AF-D9CB-4A96-8F92-F304BF654345
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP using GPGMail
-
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - https://gpgtools.org
-
-iQEcBAEBCgAGBQJUJFcgAAoJEK4Z1vjpzDGSCv0IAIwkF41Hfr/Wu1gwOG0QzqPM
-Zu0t8oKnkUArHwiyiHPRlf43em79VUh0pfGKUSuEvoU8MOp8zuXdOpJF/0u2ODu2
-faWMBO+4UBXZUxsuEvYqQ88hPvrkDST6/Zp2+aYMuqYsTonMu4RXisvG5MWthP6y
-CMlEhRR8mrZ8tgK7mbuXF5jA97OFxPD8Z163rIqzy3S932pkc7Ep6FEIOx/XBnP7
-JAAnHbAXEFS4fSWcyyXzCEW1TsGa0bt/4TuFmLC/o0Dd3yZMuzAzAE3iaDxSnMJI
-f8xfuaB7FpMfBv92jOdzAJPxH1CIewL7wu7B54dN0oAYjUtiE3mgJJKpsb4ThZ4=
-=2crz
------END PGP SIGNATURE-----
-
---Apple-Mail=_1250F5AF-D9CB-4A96-8F92-F304BF654345--
-
-
---===============3075617372956086550==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3075617372956086550==--
