@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XXCPD-000311-PO
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:39 +0000
+ id 1XXCPD-000310-PH
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:38 +0000
+Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
+ [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id BF34A26C2005
+ for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 18:58:52 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Sep 2014 19:05:02 +0200
-Message-Id: <1411664709-13699-9-git-send-email-dev@lynxeye.de>
+Date: Thu, 25 Sep 2014 19:04:58 +0200
+Message-Id: <1411664709-13699-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,189 +24,179 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/15] clk: tegra: add PLLE setup functions
+Subject: [PATCH 04/15] pci: setup bridges and traverse buses behind them
 To: barebox@lists.infradead.org
 
-From: Lucas Stach <l.stach@pengutronix.de>
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/tegra30-car.h |   2 +
- drivers/clk/tegra/clk-pll.c                    | 116 +++++++++++++++++++++++++
- drivers/clk/tegra/clk.h                        |   6 ++
- 3 files changed, 124 insertions(+)
+ drivers/pci/pci.c        | 92 ++++++++++++++++++++++++++++++++++++++++++++++--
+ include/linux/pci_regs.h | 28 +++++++++++++++
+ 2 files changed, 117 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/include/mach/tegra30-car.h b/arch/arm/mach-tegra/include/mach/tegra30-car.h
-index c8f6c9f..7fb2238 100644
---- a/arch/arm/mach-tegra/include/mach/tegra30-car.h
-+++ b/arch/arm/mach-tegra/include/mach/tegra30-car.h
-@@ -33,3 +33,5 @@
- #define CRC_RST_DEV_V_CLR		0x434
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 115d8a3..59f942d 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -211,9 +211,73 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 	pci_register_device(dev);
+ }
  
- #define CRC_CLK_OUT_ENB_V_SET		0x440
-+
-+#define CRC_PLLE_AUX			0x48c
-diff --git a/drivers/clk/tegra/clk-pll.c b/drivers/clk/tegra/clk-pll.c
-index c18c67f..bff5651 100644
---- a/drivers/clk/tegra/clk-pll.c
-+++ b/drivers/clk/tegra/clk-pll.c
-@@ -17,12 +17,15 @@
-  */
- 
- #include <common.h>
-+#include <clock.h>
- #include <io.h>
- #include <malloc.h>
- #include <asm-generic/div64.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- 
-+#include <mach/iomap.h>
-+
- #include "clk.h"
- 
- #define PLL_BASE_BYPASS		BIT(31)
-@@ -393,6 +396,108 @@ const struct clk_ops tegra_clk_pll_ops = {
- 	.set_rate = clk_pll_set_rate,
- };
- 
-+static unsigned long clk_plle_recalc_rate(struct clk *hw,
-+					 unsigned long parent_rate)
++static void prescan_setup_bridge(struct pci_dev *dev)
 +{
-+	struct tegra_clk_pll *pll = to_clk_pll(hw);
-+	u32 val = pll_readl_base(pll);
-+	u32 divn = 0, divm = 0, divp = 0;
-+	u64 rate = parent_rate;
++	u16 cmdstat;
 +
-+	divp = (val >> 16) & 0x3f;
-+	divn = (val >> 8) & (0xff);
-+	divm = (val >> 0) & (0xff);
-+	divm *= divp;
++	pci_read_config_word(dev, PCI_COMMAND, &cmdstat);
 +
-+	rate *= divn;
-+	do_div(rate, divm);
-+	return rate;
-+}
++	/* Configure bus number registers */
++	pci_write_config_byte(dev, PCI_PRIMARY_BUS, dev->bus->number);
++	pci_write_config_byte(dev, PCI_SECONDARY_BUS, dev->subordinate->number);
++	pci_write_config_byte(dev, PCI_SUBORDINATE_BUS, 0xff);
 +
-+static int clk_plle_training(struct tegra_clk_pll *pll)
-+{
-+	u32 val;
-+
-+	/*
-+	 * PLLE is already disabled, and setup cleared;
-+	 * create falling edge on PLLE IDDQ input.
-+	 */
-+	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+	val |= PMC_SATA_PWRGT_PLLE_IDDQ_VALUE;
-+	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+
-+	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+	val |= PMC_SATA_PWRGT_PLLE_IDDQ_SWCTL;
-+	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+
-+	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+	val &= ~PMC_SATA_PWRGT_PLLE_IDDQ_VALUE;
-+	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+
-+	return wait_on_timeout(100 * MSECOND,
-+			(pll_readl_misc(pll) & PLLE_MISC_READY));
-+}
-+
-+static int clk_plle_enable(struct clk *hw)
-+{
-+	struct tegra_clk_pll *pll = to_clk_pll(hw);
-+	unsigned long input_rate = clk_get_rate(clk_get_parent(hw));
-+	struct tegra_clk_pll_freq_table sel;
-+	u32 val;
-+	int err;
-+
-+	if (_get_table_rate(hw, &sel, pll->fixed_rate, input_rate))
-+		return -EINVAL;
-+
-+	clk_pll_disable(hw);
-+
-+	val = pll_readl_misc(pll);
-+	val &= ~(PLLE_MISC_LOCK_ENABLE | PLLE_MISC_SETUP_MASK);
-+	pll_writel_misc(val, pll);
-+
-+	val = pll_readl_misc(pll);
-+	if (!(val & PLLE_MISC_READY)) {
-+		err = clk_plle_training(pll);
-+		if (err)
-+			return err;
++	if (last_mem) {
++		/* Set up memory and I/O filter limits, assume 32-bit I/O space */
++		pci_write_config_word(dev, PCI_MEMORY_BASE,
++				      (last_mem & 0xfff00000) >> 16);
++		cmdstat |= PCI_COMMAND_MEMORY;
 +	}
 +
-+	/* configure dividers */
-+	val = pll_readl_base(pll);
-+	val &= ~(0x3fffff);
-+	val &= ~(PLLE_BASE_DIVCML_WIDTH << PLLE_BASE_DIVCML_SHIFT);
-+	val |= sel.m << 0;
-+	val |= sel.n << 8;
-+	val |= sel.p << 16;
-+	val |= sel.cpcon << PLLE_BASE_DIVCML_SHIFT;
-+	pll_writel_base(val, pll);
++	if (last_mem_pref) {
++		/* Set up memory and I/O filter limits, assume 32-bit I/O space */
++		pci_write_config_word(dev, PCI_PREF_MEMORY_BASE,
++				      (last_mem_pref & 0xfff00000) >> 16);
++		cmdstat |= PCI_COMMAND_MEMORY;
++	} else {
 +
-+	val = pll_readl_misc(pll);
-+	val |= PLLE_MISC_SETUP_VALUE;
-+	val |= PLLE_MISC_LOCK_ENABLE;
-+	pll_writel_misc(val, pll);
++		/* We don't support prefetchable memory for now, so disable */
++		pci_write_config_word(dev, PCI_PREF_MEMORY_BASE, 0x1000);
++		pci_write_config_word(dev, PCI_PREF_MEMORY_LIMIT, 0x0);
++	}
 +
-+	val = readl(pll->clk_base + PLLE_SS_CTRL);
-+	val |= PLLE_SS_DISABLE;
-+	writel(val, pll->clk_base + PLLE_SS_CTRL);
++	if (last_io) {
++		pci_write_config_byte(dev, PCI_IO_BASE,
++				      (last_io & 0x0000f000) >> 8);
++		pci_write_config_word(dev, PCI_IO_BASE_UPPER16,
++				      (last_io & 0xffff0000) >> 16);
++		cmdstat |= PCI_COMMAND_IO;
++	}
 +
-+	val = pll_readl_base(pll);
-+	val |= (PLL_BASE_BYPASS | PLL_BASE_ENABLE);
-+	pll_writel_base(val, pll);
-+
-+	clk_pll_wait_for_lock(pll, pll->clk_base + pll->params->base_reg,
-+			      pll->params->lock_bit_idx);
-+
-+	return 0;
++	/* Enable memory and I/O accesses, enable bus master */
++	pci_write_config_word(dev, PCI_COMMAND, cmdstat | PCI_COMMAND_MASTER);
 +}
 +
-+const struct clk_ops tegra_clk_plle_ops = {
-+	.recalc_rate = clk_plle_recalc_rate,
-+	.is_enabled = clk_pll_is_enabled,
-+	.disable = clk_pll_disable,
-+	.enable = clk_plle_enable,
-+};
-+
- static struct clk *_tegra_clk_register_pll(const char *name,
- 		const char *parent_name, void __iomem *clk_base,
- 		unsigned long flags, unsigned long fixed_rate,
-@@ -447,3 +552,14 @@ struct clk *tegra_clk_register_pll(const char *name, const char *parent_name,
- 			flags, fixed_rate, pll_params, pll_flags, freq_table,
- 			&tegra_clk_pll_ops);
- }
-+
-+struct clk *tegra_clk_register_plle(const char *name, const char *parent_name,
-+		void __iomem *clk_base,
-+		unsigned long flags, unsigned long fixed_rate,
-+		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
-+		struct tegra_clk_pll_freq_table *freq_table)
++static void postscan_setup_bridge(struct pci_dev *dev)
 +{
-+	return _tegra_clk_register_pll(name, parent_name, clk_base,
-+			flags, fixed_rate, pll_params, pll_flags, freq_table,
-+			&tegra_clk_plle_ops);
-+}
-diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h
-index d5d0730..85777a8 100644
---- a/drivers/clk/tegra/clk.h
-+++ b/drivers/clk/tegra/clk.h
-@@ -101,6 +101,12 @@ struct clk *tegra_clk_register_pll(const char *name, const char *parent_name,
- 		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
- 		struct tegra_clk_pll_freq_table *freq_table);
- 
-+struct clk *tegra_clk_register_plle(const char *name, const char *parent_name,
-+		void __iomem *clk_base,
-+		unsigned long flags, unsigned long fixed_rate,
-+		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
-+		struct tegra_clk_pll_freq_table *freq_table);
++	/* limit subordinate to last used bus number */
++	pci_write_config_byte(dev, PCI_SUBORDINATE_BUS, bus_index - 1);
 +
- /* struct tegra_clk_pll_out - PLL output divider */
- struct tegra_clk_pll_out {
- 	struct clk	hw;
++	if (last_mem)
++		pci_write_config_word(dev, PCI_MEMORY_LIMIT,
++				      ((last_mem - 1) & 0xfff00000) >> 16);
++
++	if (last_mem_pref)
++		pci_write_config_word(dev, PCI_PREF_MEMORY_LIMIT,
++				      ((last_mem_pref - 1) & 0xfff00000) >> 16);
++
++	if (last_io) {
++		pci_write_config_byte(dev, PCI_IO_LIMIT,
++				((last_io - 1) & 0x0000f000) >> 8);
++		pci_write_config_word(dev, PCI_IO_LIMIT_UPPER16,
++				((last_io - 1) & 0xffff0000) >> 16);
++	}
++}
++
+ unsigned int pci_scan_bus(struct pci_bus *bus)
+ {
+ 	struct pci_dev *dev;
++	struct pci_bus *child_bus;
+ 	unsigned int devfn, l, max, class;
+ 	unsigned char cmd, tmp, hdr_type, is_multi = 0;
+ 
+@@ -264,8 +328,8 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 		DBG("PCI: %02x:%02x [%04x:%04x]\n", bus->number, dev->devfn,
+ 		    dev->vendor, dev->device);
+ 
+-		switch (hdr_type & 0x7f) {		    /* header type */
+-		case PCI_HEADER_TYPE_NORMAL:		    /* standard header */
++		switch (hdr_type & 0x7f) {
++		case PCI_HEADER_TYPE_NORMAL:
+ 			if (class == PCI_CLASS_BRIDGE_PCI)
+ 				goto bad;
+ 
+@@ -278,7 +342,28 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 
+ 			setup_device(dev, 6);
+ 			break;
+-		default:				    /* unknown header */
++		case PCI_HEADER_TYPE_BRIDGE:
++			setup_device(dev, 2);
++
++			child_bus = pci_alloc_bus();
++			/* inherit parent properties */
++			child_bus->host = bus->host;
++			child_bus->ops = bus->host->pci_ops;
++			child_bus->resource[PCI_BUS_RESOURCE_MEM] =
++				bus->resource[PCI_BUS_RESOURCE_MEM];
++			child_bus->resource[PCI_BUS_RESOURCE_MEM_PREF] =
++				bus->resource[PCI_BUS_RESOURCE_MEM_PREF];
++			child_bus->resource[PCI_BUS_RESOURCE_IO] =
++				bus->resource[PCI_BUS_RESOURCE_IO];
++			child_bus->number = bus_index++;
++			list_add_tail(&child_bus->node, &bus->children);
++			dev->subordinate = child_bus;
++
++			prescan_setup_bridge(dev);
++			pci_scan_bus(child_bus);
++			postscan_setup_bridge(dev);
++			break;
++		default:
+ 		bad:
+ 			printk(KERN_ERR "PCI: %02x:%02x [%04x/%04x/%06x] has unknown header type %02x, ignoring.\n",
+ 			       bus->number, dev->devfn, dev->vendor, dev->device, class, hdr_type);
+@@ -298,6 +383,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 	 *
+ 	 * Return how far we've got finding sub-buses.
+ 	 */
++	max = bus_index;
+ 	DBG("PCI: pci_scan_bus returning with max=%02x\n", max);
+ 
+ 	return max;
+diff --git a/include/linux/pci_regs.h b/include/linux/pci_regs.h
+index 14a3ed3..8669fc7 100644
+--- a/include/linux/pci_regs.h
++++ b/include/linux/pci_regs.h
+@@ -107,4 +107,32 @@
+ #define  PCI_ROM_ADDRESS_ENABLE	0x01
+ #define PCI_ROM_ADDRESS_MASK	(~0x7ffUL)
+ 
++/* Header type 1 (PCI-to-PCI bridges) */
++#define PCI_PRIMARY_BUS		0x18	/* Primary bus number */
++#define PCI_SECONDARY_BUS	0x19	/* Secondary bus number */
++#define PCI_SUBORDINATE_BUS	0x1a	/* Highest bus number behind the bridge */
++#define PCI_SEC_LATENCY_TIMER	0x1b	/* Latency timer for secondary interface */
++#define PCI_IO_BASE		0x1c	/* I/O range behind the bridge */
++#define PCI_IO_LIMIT		0x1d
++#define  PCI_IO_RANGE_TYPE_MASK	0x0fUL	/* I/O bridging type */
++#define  PCI_IO_RANGE_TYPE_16	0x00
++#define  PCI_IO_RANGE_TYPE_32	0x01
++#define  PCI_IO_RANGE_MASK	(~0x0fUL) /* Standard 4K I/O windows */
++#define  PCI_IO_1K_RANGE_MASK	(~0x03UL) /* Intel 1K I/O windows */
++#define PCI_SEC_STATUS		0x1e	/* Secondary status register, only bit 14 used */
++#define PCI_MEMORY_BASE		0x20	/* Memory range behind */
++#define PCI_MEMORY_LIMIT	0x22
++#define  PCI_MEMORY_RANGE_TYPE_MASK 0x0fUL
++#define  PCI_MEMORY_RANGE_MASK	(~0x0fUL)
++#define PCI_PREF_MEMORY_BASE	0x24	/* Prefetchable memory range behind */
++#define PCI_PREF_MEMORY_LIMIT	0x26
++#define  PCI_PREF_RANGE_TYPE_MASK 0x0fUL
++#define  PCI_PREF_RANGE_TYPE_32	0x00
++#define  PCI_PREF_RANGE_TYPE_64	0x01
++#define  PCI_PREF_RANGE_MASK	(~0x0fUL)
++#define PCI_PREF_BASE_UPPER32	0x28	/* Upper half of prefetchable memory range */
++#define PCI_PREF_LIMIT_UPPER32	0x2c
++#define PCI_IO_BASE_UPPER16	0x30	/* Upper half of I/O addresses */
++#define PCI_IO_LIMIT_UPPER16	0x32
++
+ #endif /* LINUX_PCI_REGS_H */
 -- 
 1.9.3
 
