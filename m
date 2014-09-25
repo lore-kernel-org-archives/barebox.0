@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XX785-0000m0-22
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 11:22:34 +0000
-Message-ID: <1411644123.5887.28.camel@lws-gamez.phytec.de>
-From: Teresa Gamez <t.gamez@phytec.de>
-Date: Thu, 25 Sep 2014 13:22:03 +0200
-In-Reply-To: <20140925060732.GE4992@pengutronix.de>
-References: <1411551191-27938-1-git-send-email-t.gamez@phytec.de>
- <1411551191-27938-2-git-send-email-t.gamez@phytec.de>
- <20140925060732.GE4992@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XX9zD-0001GJ-1s
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 14:25:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 25 Sep 2014 16:25:10 +0200
+Message-Id: <1411655110-2865-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,63 +14,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] commands: add of_display_timings
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] USB: gadget: fastboot: Add missing include
+To: barebox@lists.infradead.org
 
-SGVsbG8gU2FzY2hhLAoKQW0gRG9ubmVyc3RhZywgZGVuIDI1LjA5LjIwMTQsIDA4OjA3ICswMjAw
-IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+IEhpIFRlcmVzYSwKPiAKPiBPbiBXZWQsIFNlcCAyNCwg
-MjAxNCBhdCAxMTozMzoxMUFNICswMjAwLCBUZXJlc2EgR8OhbWV6IHdyb3RlOgo+ID4gQSBsb3Qg
-b2YgYm9hcmRzIHVzZSBkaXNwbGF5LXRpbWluZ3Mgbm9kZXMgdG8gZGVmaW5lIHRoZSB0aW1pbmdz
-IG9mIG9uZSBvciBtb3JlCj4gPiBkaXNwbGF5cy4gVGhpcyBjb21tYW5kIG1ha2VzIGl0IHBvc3Np
-YmxlIHRvIGxpc3QgYW5kIHNlbGVjdCBkaXNwbGF5cyB3aGljaCBhcmUKPiA+IGRlZmluZWQgaW4g
-YSBkZXZpY2UgdHJlZS4KPiAKPiBOaWNlIGlkZWEuCj4gCj4gPiArc3RhdGljIGludCBvZl9kaXNw
-bGF5X3RpbWluZyhzdHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3QsIHZvaWQgKnRpbWluZ3BhdGgpCj4g
-PiArewo+ID4gKwlpbnQgcmV0ID0gMDsKPiA+ICsJc3RydWN0IGRldmljZV9ub2RlICpkaXNwbGF5
-Owo+ID4gKwo+ID4gKwlkaXNwbGF5ID0gb2ZfZmluZF9ub2RlX2J5X3BhdGhfZnJvbShyb290LCAo
-Y2hhciAqKSB0aW1pbmdwYXRoKTsKPiAKPiBVbm5lY2Vzc2FyeSBjYXN0LgoKUmVtb3ZlZCBpdC4K
-PiAKPiA+ICtzdGF0aWMgaW50IGRvX29mX2Rpc3BsYXlfdGltaW5ncyhpbnQgYXJnYywgY2hhciAq
-YXJndltdKQo+ID4gK3sKPiA+ICsJaW50IG9wdDsKPiA+ICsJaW50IGxpc3QgPSAwOwo+ID4gKwlp
-bnQgc2VsZWN0ZWQgPSAwOwo+ID4gKwlpbnQgcmV0ID0gMDsKPiA+ICsJc3RydWN0IGRldmljZV9u
-b2RlICpyb290ID0gTlVMTDsKPiA+ICsJc3RydWN0IGRldmljZV9ub2RlICppbnRlcm5hbF9yb290
-ID0gTlVMTDsKPiA+ICsJc3RydWN0IGRldmljZV9ub2RlICpkaXNwbGF5ID0gTlVMTDsKPiA+ICsJ
-c3RydWN0IGRldmljZV9ub2RlICp0aW1pbmdzID0gTlVMTDsKPiA+ICsJY2hhciAqdGltaW5ncGF0
-aCA9IE5VTEw7Cj4gPiArCWNoYXIgKmR0YmZpbGUgPSBOVUxMOwo+ID4gKwo+ID4gKwl3aGlsZSAo
-KG9wdCA9IGdldG9wdChhcmdjLCBhcmd2LCAic1M6bGY6IikpID4gMCkgewo+ID4gKwkJc3dpdGNo
-IChvcHQpIHsKPiA+ICsJCWNhc2UgJ2wnOgo+ID4gKwkJCWxpc3QgPSAxOwo+ID4gKwkJCWJyZWFr
-Owo+ID4gKwkJY2FzZSAnZic6Cj4gPiArCQkJZHRiZmlsZSA9IG9wdGFyZzsKPiA+ICsJCQlicmVh
-azsKPiAKPiBEbyB3ZSByZWFsbHkgbmVlZCB0aGlzIG9wdGlvbj8gSXQgY2FuIG9ubHkgYmUgdXNl
-ZCBmb3Igc2hvd2luZyBkaXNwbGF5Cj4gdGltaW5ncyBpbiBhbiBleHRlcm5hbCBkdGIsIG5vdCBm
-b3IgbWFuaXB1bGF0aW5nIGl0LiBJZiBJIHBsYW4gdG8gdXNlCj4gdGhlIGV4dGVybmFsIHRyZWUg
-SSBjYW4gc3RpbGwgZG8gYSBvZnRyZWUgLWYgLyBvZnRyZWUgLWwgZHRiIHRvIGV4Y2hhbmdlCj4g
-dGhlIGludGVybmFsIHRyZWUuCgpXZWxsLCBpdCBqdXN0IGdpdmVzIHRoZSBzYW1lIGZlYXR1cmUg
-bGlrZSBvZl9kdW1wIGhhcy4gSXQgaXMgbm90IHRoYXQgCm5lY2Vzc2FyeSwgYnV0IGl0IG1ha2Vz
-IGl0IG1vcmUgaGFuZHkuIAoKPiAKPiA+ICsJCWNhc2UgJ3MnOgo+ID4gKwkJCXNlbGVjdGVkID0g
-MTsKPiA+ICsJCQlicmVhazsKPiA+ICsJCWNhc2UgJ1MnOgo+ID4gKwkJCXRpbWluZ3BhdGggPSB4
-emFsbG9jKHN0cmxlbihvcHRhcmcpICsgMSk7Cj4gPiArCQkJc3RyY3B5KHRpbWluZ3BhdGgsIG9w
-dGFyZyk7Cj4gCj4gWW91IG5ldmVyIGZyZWUgdGltaW5ncGF0aC4gQnV0IHdoeSBhcmUgeW91IG1h
-a2luZyBhIGNvcHkgb2YgdGhlIHN0cmluZz8KPiBUaGlzIHNob3VsZG4ndCBiZSBuZWNlc3Nhcnku
-CgpJIG5lZWQgdG8gc2F2ZSB0aGUgc3RyaW5nIGZvciBsYXRlciB1c2FnZSBpbiB0aGUgZml4dXAg
-ZnVuY3Rpb24uIFRoaXMgaXMKY2FsbGVkIGFmdGVyIHRoZSBjb21tYW5kIGhhcyBmaW5pc2hlZC4g
-SSB0aGluayB0aGUgb3B0YXJnIHBvaW50ZXIgdG8KYXJndiBpcyBub3QgbG9uZ2VyIHZhaWxkIHRo
-ZW4uCgpUaGUgZml4dXAgY2FuIGJlIGNhbGxlZCBtdWx0aXBsZSB0aW1lcyAoY2FuY2VsZWQgYm9v
-dCwgb2ZfZHVtcCAtRiwuLikuCkkgZG9uJ3Qgc2VlIGEgc2F2ZSBwbGFjZSB0byBmcmVlIHRpbWlu
-Z3BhdGguCgpUZXJlc2EKCj4gCj4gPiArCQkJYnJlYWs7Cj4gPiArCQlkZWZhdWx0Ogo+ID4gKwkJ
-CXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOwo+ID4gKwkJfQo+ID4gKwl9Cj4gPiArCj4gPiAr
-CS8qIENoZWNrIGlmIGV4dGVybmFsIGR0YiBnaXZlbiAqLwo+ID4gKwlpZiAoZHRiZmlsZSkgewo+
-ID4gKwkJdm9pZCAqZmR0Owo+ID4gKwkJc2l6ZV90IHNpemU7Cj4gPiArCj4gPiArCQlmZHQgPSBy
-ZWFkX2ZpbGUoZHRiZmlsZSwgJnNpemUpOwo+ID4gKwkJaWYgKCFmZHQpIHsKPiA+ICsJCQlwcl9l
-cnIoInVuYWJsZSB0byByZWFkICVzOiAlc1xuIiwgZHRiZmlsZSwKPiA+ICsJCQkJc3RyZXJyb3Io
-ZXJybm8pKTsKPiA+ICsJCQlyZXR1cm4gLWVycm5vOwo+ID4gKwkJfQo+ID4gKwo+ID4gKwkJaWYg
-KGZpbGVfZGV0ZWN0X3R5cGUoZmR0LCBzaXplKSAhPSBmaWxldHlwZV9vZnRyZWUpIHsKPiA+ICsJ
-CQlwcl9lcnIoIiVzIGlzIG5vdCBhIG9mdHJlZSBmaWxlLlxuIiwgZHRiZmlsZSk7Cj4gPiArCQkJ
-cmV0dXJuIC1FSU5WQUw7Cj4gCj4gSGVyZSB5b3UgbG9zZSBtZW1vcnkuCj4gCj4gPiArCQl9Cj4g
-PiArCj4gPiArCQlyb290ID0gb2ZfdW5mbGF0dGVuX2R0YihmZHQpOwo+IAo+IFRoaXMgbXVzdCBi
-ZSBmcmVlZCBhZnRlciB1c2Ugd2l0aCBvZl9kZWxldGVfbm9kZSgpLgo+IAo+IFNhc2NoYQo+IAo+
-IAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/gadget/f_fastboot.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+index 9aec6b1..92a1a21 100644
+--- a/drivers/usb/gadget/f_fastboot.c
++++ b/drivers/usb/gadget/f_fastboot.c
+@@ -26,6 +26,7 @@
+ #include <boot.h>
+ #include <dma.h>
+ #include <fs.h>
++#include <libfile.h>
+ #include <file-list.h>
+ #include <progress.h>
+ #include <environment.h>
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
