@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XXCPD-00030m-PQ
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:37 +0000
+ id 1XXCPD-00031p-PS
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:38 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
- [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 4525F26C2004
- for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 18:58:52 +0200 (CEST)
+ [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id F009626C2004
+ for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 18:58:57 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Sep 2014 19:04:57 +0200
-Message-Id: <1411664709-13699-4-git-send-email-dev@lynxeye.de>
+Date: Thu, 25 Sep 2014 19:05:07 +0200
+Message-Id: <1411664709-13699-14-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,142 +24,170 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/15] pci: properly populate prefetchable BARs
+Subject: [PATCH 13/15] of: import pci range parser from linux
 To: barebox@lists.infradead.org
-
-Some host controllers provide a prefetchable
-memory area and devices will prefer this for
-some of their BARs.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/pci/pci.c   | 59 ++++++++++++++++++++++++++++++++++++++++-------------
- include/linux/pci.h |  1 +
- 2 files changed, 46 insertions(+), 14 deletions(-)
+ drivers/of/address.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/of_address.h | 51 ++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 118 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e9f0cb5..115d8a3 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -13,6 +13,7 @@ LIST_HEAD(pci_root_buses);
- EXPORT_SYMBOL(pci_root_buses);
- static u8 bus_index;
- static resource_size_t last_mem;
-+static resource_size_t last_mem_pref;
- static resource_size_t last_io;
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index b3cbb15..15f3ade 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -179,6 +179,74 @@ static int of_bus_pci_translate(__be32 *addr, u64 offset, int na)
+ }
+ #endif /* CONFIG_OF_ADDRESS_PCI */
  
- static struct pci_bus *pci_alloc_bus(void)
-@@ -42,14 +43,27 @@ void register_pci_controller(struct pci_controller *hose)
- 	bus->host = hose;
- 	bus->ops = hose->pci_ops;
- 	bus->resource[PCI_BUS_RESOURCE_MEM] = hose->mem_resource;
-+	bus->resource[PCI_BUS_RESOURCE_MEM_PREF] = hose->mem_pref_resource;
- 	bus->resource[PCI_BUS_RESOURCE_IO] = hose->io_resource;
- 	bus->number = bus_index++;
- 
- 	if (hose->set_busno)
- 		hose->set_busno(hose, bus->number);
- 
--	last_mem = bus->resource[PCI_BUS_RESOURCE_MEM]->start;
--	last_io = bus->resource[PCI_BUS_RESOURCE_IO]->start;
-+	if (bus->resource[PCI_BUS_RESOURCE_MEM])
-+		last_mem = bus->resource[PCI_BUS_RESOURCE_MEM]->start;
-+	else
-+		last_mem = 0;
++#ifdef CONFIG_PCI
++int of_pci_range_parser_init(struct of_pci_range_parser *parser,
++				struct device_node *node)
++{
++	const int na = 3, ns = 2;
++	int rlen;
 +
-+	if (bus->resource[PCI_BUS_RESOURCE_MEM])
-+		last_mem_pref = bus->resource[PCI_BUS_RESOURCE_MEM_PREF]->start;
-+	else
-+		last_mem_pref = 0;
++	parser->node = node;
++	parser->pna = of_n_addr_cells(node);
++	parser->np = parser->pna + na + ns;
 +
-+	if (bus->resource[PCI_BUS_RESOURCE_IO])
-+		last_io = bus->resource[PCI_BUS_RESOURCE_IO]->start;
-+	else
-+		last_io = 0;
++	parser->range = of_get_property(node, "ranges", &rlen);
++	if (parser->range == NULL)
++		return -ENOENT;
++
++	parser->end = parser->range + rlen / sizeof(__be32);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(of_pci_range_parser_init);
++
++struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
++						struct of_pci_range *range)
++{
++	const int na = 3, ns = 2;
++
++	if (!range)
++		return NULL;
++
++	if (!parser->range || parser->range + parser->np > parser->end)
++		return NULL;
++
++	range->pci_space = parser->range[0];
++	range->flags = of_bus_pci_get_flags(parser->range);
++	range->pci_addr = of_read_number(parser->range + 1, ns);
++	range->cpu_addr = of_translate_address(parser->node,
++				parser->range + na);
++	range->size = of_read_number(parser->range + parser->pna + na, ns);
++
++	parser->range += parser->np;
++
++	/* Now consume following elements while they are contiguous */
++	while (parser->range + parser->np <= parser->end) {
++		u32 flags, pci_space;
++		u64 pci_addr, cpu_addr, size;
++
++		pci_space = be32_to_cpup(parser->range);
++		flags = of_bus_pci_get_flags(parser->range);
++		pci_addr = of_read_number(parser->range + 1, ns);
++		cpu_addr = of_translate_address(parser->node,
++				parser->range + na);
++		size = of_read_number(parser->range + parser->pna + na, ns);
++
++		if (flags != range->flags)
++			break;
++		if (pci_addr != range->pci_addr + range->size ||
++		    cpu_addr != range->cpu_addr + range->size)
++			break;
++
++		range->size += size;
++		parser->range += parser->np;
++	}
++
++	return range;
++}
++EXPORT_SYMBOL_GPL(of_pci_range_parser_one);
++#endif /* CONFIG_PCI */
++
+ /*
+  * Array of bus specific translators
+  */
+diff --git a/include/of_address.h b/include/of_address.h
+index 9022ab7..f9c3c0f 100644
+--- a/include/of_address.h
++++ b/include/of_address.h
+@@ -4,6 +4,38 @@
+ #include <common.h>
+ #include <of.h>
  
- 	pci_scan_bus(bus);
- 
-@@ -150,31 +164,46 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 			dev->resource[bar].flags = IORESOURCE_IO;
- 			last_addr = last_io;
- 			last_io += size;
--		} else { /* MEM */
-+		} else if ((mask & PCI_BASE_ADDRESS_MEM_PREFETCH) &&
-+		           last_mem_pref) /* prefetchable MEM */ {
- 			size = -(mask & 0xfffffff0);
--			DBG("  PCI: pbar%d: mask=%08x memory %d bytes\n", bar, mask, size);
-+			DBG("  PCI: pbar%d: mask=%08x P memory %d bytes\n",
-+			    bar, mask, size);
-+			if (last_mem_pref + size >
-+			    dev->bus->resource[PCI_BUS_RESOURCE_MEM_PREF]->end) {
-+				DBG("BAR does not fit within bus p-mem res\n");
-+				return;
-+			}
-+			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem_pref);
-+			dev->resource[bar].flags = IORESOURCE_MEM |
-+			                           IORESOURCE_PREFETCH;
-+			last_addr = last_mem_pref;
-+			last_mem_pref += size;
-+		} else { /* non-prefetch MEM */
-+			size = -(mask & 0xfffffff0);
-+			DBG("  PCI: pbar%d: mask=%08x NP memory %d bytes\n",
-+			    bar, mask, size);
- 			if (last_mem + size >
- 			    dev->bus->resource[PCI_BUS_RESOURCE_MEM]->end) {
--				DBG("BAR does not fit within bus mem res\n");
-+				DBG("BAR does not fit within bus np-mem res\n");
- 				return;
- 			}
- 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
- 			dev->resource[bar].flags = IORESOURCE_MEM;
- 			last_addr = last_mem;
- 			last_mem += size;
++struct of_pci_range_parser {
++	struct device_node *node;
++	const __be32 *range;
++	const __be32 *end;
++	int np;
++	int pna;
++};
++
++struct of_pci_range {
++	u32 pci_space;
++	u64 pci_addr;
++	u64 cpu_addr;
++	u64 size;
++	u32 flags;
++};
++
++#define for_each_of_pci_range(parser, range) \
++	for (; of_pci_range_parser_one(parser, range);)
++
++static inline void of_pci_range_to_resource(struct of_pci_range *range,
++					    struct device_node *np,
++					    struct resource *res)
++{
++	res->flags = range->flags;
++	res->start = range->cpu_addr;
++	res->end = range->cpu_addr + range->size - 1;
++	res->parent = NULL;
++	INIT_LIST_HEAD(&res->children);
++	INIT_LIST_HEAD(&res->sibling);
++	res->name = np->full_name;
++}
++
+ #ifndef pci_address_to_pio
+ static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
+ #endif
+@@ -23,7 +55,11 @@ extern struct device_node *of_find_matching_node_by_address(
+ 	struct device_node *from, const struct of_device_id *matches,
+ 	u64 base_address);
+ extern void __iomem *of_iomap(struct device_node *np, int index);
 -
--			if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
--			    PCI_BASE_ADDRESS_MEM_TYPE_64) {
--				dev->resource[bar].flags |= IORESOURCE_MEM_64;
--				pci_write_config_dword(dev,
--				       PCI_BASE_ADDRESS_1 + bar * 4, 0);
--			}
- 		}
++extern int of_pci_range_parser_init(struct of_pci_range_parser *parser,
++			struct device_node *node);
++extern struct of_pci_range *of_pci_range_parser_one(
++			struct of_pci_range_parser *parser,
++			struct of_pci_range *range);
+ #else /* CONFIG_OFTREE */
  
- 		dev->resource[bar].start = last_addr;
- 		dev->resource[bar].end = last_addr + size - 1;
--		if (dev->resource[bar].flags & IORESOURCE_MEM_64)
+ static inline u64 of_translate_address(struct device_node *dev,
+@@ -67,6 +103,19 @@ static inline void __iomem *of_iomap(struct device_node *np, int index)
+ 	return NULL;
+ }
+ 
++static inline int of_pci_range_parser_init(struct of_pci_range_parser *parser,
++			struct device_node *node)
++{
++	return -1;
++}
 +
-+		if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
-+		    PCI_BASE_ADDRESS_MEM_TYPE_64) {
-+			dev->resource[bar].flags |= IORESOURCE_MEM_64;
-+			pci_write_config_dword(dev,
-+			       PCI_BASE_ADDRESS_1 + bar * 4, 0);
- 			bar++;
-+		}
- 	}
- 
- 	pci_write_config_byte(dev, PCI_COMMAND, cmd);
-@@ -189,7 +218,9 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 	unsigned char cmd, tmp, hdr_type, is_multi = 0;
- 
- 	DBG("pci_scan_bus for bus %d\n", bus->number);
--	DBG(" last_io = 0x%08x, last_mem = 0x%08x\n", last_io, last_mem);
-+	DBG(" last_io = 0x%08x, last_mem = 0x%08x, last_mem_pref = 0x%08x\n",
-+	    last_io, last_mem, last_mem_pref);
++static inline struct of_pci_range *of_pci_range_parser_one(
++					struct of_pci_range_parser *parser,
++					struct of_pci_range *range)
++{
++	return NULL;
++}
 +
- 	max = bus->secondary;
+ #endif /* CONFIG_OFTREE */
  
- 	for (devfn = 0; devfn < 0xff; ++devfn) {
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index f5ef588..932acf0 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -162,6 +162,7 @@ struct pci_controller {
- 
- 	struct pci_ops *pci_ops;
- 	struct resource *mem_resource;
-+	struct resource *mem_pref_resource;
- 	unsigned long mem_offset;
- 	struct resource *io_resource;
- 	unsigned long io_offset;
+ #endif /* __OF_ADDRESS_H */
 -- 
 1.9.3
 
