@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f43.google.com ([209.85.220.43])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XWsAd-0007He-3b
- for barebox@lists.infradead.org; Wed, 24 Sep 2014 19:24:11 +0000
-Received: by mail-pa0-f43.google.com with SMTP id kx10so9343944pab.30
- for <barebox@lists.infradead.org>; Wed, 24 Sep 2014 12:23:49 -0700 (PDT)
-From: Ryan Du Bois <rdub@kamama.com>
-Date: Wed, 24 Sep 2014 12:23:45 -0700
-Message-Id: <2F9C706F-8EBC-453B-8BA1-116680C7926A@kamama.com>
-Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.6\))
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XX1rI-0007J1-68
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 05:44:53 +0000
+Date: Thu, 25 Sep 2014 07:44:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140925054428.GD4992@pengutronix.de>
+References: <1411541391-19948-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1411541391-19948-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,68 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3190725126850031742=="
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: nvidia jetson tk1 help
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] read_file_2: Fix return value
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
+On Wed, Sep 24, 2014 at 08:49:51AM +0200, Teresa G=E1mez wrote:
+> Set return value correct in error case.
+> This prevents barebox from crashing in some conditions.
+> =
 
---===============3190725126850031742==
-Content-Type: multipart/signed; boundary="Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E"; protocol="application/pgp-signature"; micalg=pgp-sha512
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 
+Applied, thanks
 
---Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
+Sascha
 
-Hey There,
+> ---
+>  lib/libfile.c |    4 +++-
+>  1 files changed, 3 insertions(+), 1 deletions(-)
+> =
 
-I'm having trouble getting barebox to boot on an Nvidia Jetson TK1.  I'm =
-using the tegra-v7_defconfig, and trying to load it to the board via the =
-tegrarcm tool.
+> diff --git a/lib/libfile.c b/lib/libfile.c
+> index c6fb6d7..c626e2f 100644
+> --- a/lib/libfile.c
+> +++ b/lib/libfile.c
+> @@ -163,8 +163,10 @@ again:
+>  	buf =3D xzalloc(read_size + 1);
+>  =
 
-Has anyone done this before who might have a recipe that works?
+>  	fd =3D open(filename, O_RDONLY);
+> -	if (fd < 0)
+> +	if (fd < 0) {
+> +		ret =3D fd;
+>  		goto err_out;
+> +	}
+>  =
 
-Thanks!
---
-+Ryan Du Bois
-rdub@kamama.com
+>  	ret =3D read_full(fd, buf, read_size);
+>  	if (ret < 0)
+> -- =
 
+> 1.7.0.4
+> =
 
---Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP using GPGMail
+> =
 
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - https://gpgtools.org
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-iQEcBAEBCgAGBQJUIxpBAAoJEK4Z1vjpzDGStLcIANHFe2W6vZcrA8Vl0v3UpZ/6
-cNe+Psm8MPv9RCpPdxc3qN5DUeRA8MRvVYU4tponDlLG3JlAoYYk1irBZrygA/py
-2g5cWiU5ag+OkcCaHYE8TXTsc/7pD2+oZNVmZ7t3M0ZeTNMOBIYSG2IFiptz0cXp
-yvOcckCjQOlY7MJOFjgPnzPshi/dTG5FyEZpsVop9KNvV+AFeqxIaRHys+DzzCQP
-5M1gEsAjfubq111K8wJH5Mcw6U4OOwSTkrFtmsXwlNqxNCYqylwHzxURkUtVc0ep
-Jv46SY88yAi+CEgy+KECpuh7dx1SXdZWM/QLizluNFJA0ubFVv4SNzlHHib6ANA=
-=1Xjg
------END PGP SIGNATURE-----
+-- =
 
---Apple-Mail=_1B0090EC-BEF2-4D92-8CE5-8C1491234E7E--
-
-
---===============3190725126850031742==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3190725126850031742==--
