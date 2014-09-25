@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XX46m-000764-My
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 08:09:01 +0000
-Message-ID: <1411632866.2207.2.camel@tellur.intern.lynxeye.de>
-From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Sep 2014 10:14:26 +0200
-In-Reply-To: <2F9C706F-8EBC-453B-8BA1-116680C7926A@kamama.com>
-References: <2F9C706F-8EBC-453B-8BA1-116680C7926A@kamama.com>
+ id 1XX785-0000m0-22
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 11:22:34 +0000
+Message-ID: <1411644123.5887.28.camel@lws-gamez.phytec.de>
+From: Teresa Gamez <t.gamez@phytec.de>
+Date: Thu, 25 Sep 2014 13:22:03 +0200
+In-Reply-To: <20140925060732.GE4992@pengutronix.de>
+References: <1411551191-27938-1-git-send-email-t.gamez@phytec.de>
+ <1411551191-27938-2-git-send-email-t.gamez@phytec.de>
+ <20140925060732.GE4992@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,34 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: nvidia jetson tk1 help
-To: Ryan Du Bois <rdub@kamama.com>
+Subject: Re: [PATCH 2/2] commands: add of_display_timings
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Ryan,
-
-Am Mittwoch, den 24.09.2014, 12:23 -0700 schrieb Ryan Du Bois:
-> Hey There,
-> 
-> I'm having trouble getting barebox to boot on an Nvidia Jetson TK1.  I'm using the tegra-v7_defconfig, and trying to load it to the board via the tegrarcm tool.
-> 
-> Has anyone done this before who might have a recipe that works?
-> 
-
-Please just "make docs". In there you'll find a chapter on how to
-bootstrap a Tegra board. The description is for the Beaver board, but
-things work the same way on Jetson. If you have any other question, feel
-free to ask.
-
-Regards,
-Lucas
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gRG9ubmVyc3RhZywgZGVuIDI1LjA5LjIwMTQsIDA4OjA3ICswMjAw
+IHNjaHJpZWIgU2FzY2hhIEhhdWVyOgo+IEhpIFRlcmVzYSwKPiAKPiBPbiBXZWQsIFNlcCAyNCwg
+MjAxNCBhdCAxMTozMzoxMUFNICswMjAwLCBUZXJlc2EgR8OhbWV6IHdyb3RlOgo+ID4gQSBsb3Qg
+b2YgYm9hcmRzIHVzZSBkaXNwbGF5LXRpbWluZ3Mgbm9kZXMgdG8gZGVmaW5lIHRoZSB0aW1pbmdz
+IG9mIG9uZSBvciBtb3JlCj4gPiBkaXNwbGF5cy4gVGhpcyBjb21tYW5kIG1ha2VzIGl0IHBvc3Np
+YmxlIHRvIGxpc3QgYW5kIHNlbGVjdCBkaXNwbGF5cyB3aGljaCBhcmUKPiA+IGRlZmluZWQgaW4g
+YSBkZXZpY2UgdHJlZS4KPiAKPiBOaWNlIGlkZWEuCj4gCj4gPiArc3RhdGljIGludCBvZl9kaXNw
+bGF5X3RpbWluZyhzdHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3QsIHZvaWQgKnRpbWluZ3BhdGgpCj4g
+PiArewo+ID4gKwlpbnQgcmV0ID0gMDsKPiA+ICsJc3RydWN0IGRldmljZV9ub2RlICpkaXNwbGF5
+Owo+ID4gKwo+ID4gKwlkaXNwbGF5ID0gb2ZfZmluZF9ub2RlX2J5X3BhdGhfZnJvbShyb290LCAo
+Y2hhciAqKSB0aW1pbmdwYXRoKTsKPiAKPiBVbm5lY2Vzc2FyeSBjYXN0LgoKUmVtb3ZlZCBpdC4K
+PiAKPiA+ICtzdGF0aWMgaW50IGRvX29mX2Rpc3BsYXlfdGltaW5ncyhpbnQgYXJnYywgY2hhciAq
+YXJndltdKQo+ID4gK3sKPiA+ICsJaW50IG9wdDsKPiA+ICsJaW50IGxpc3QgPSAwOwo+ID4gKwlp
+bnQgc2VsZWN0ZWQgPSAwOwo+ID4gKwlpbnQgcmV0ID0gMDsKPiA+ICsJc3RydWN0IGRldmljZV9u
+b2RlICpyb290ID0gTlVMTDsKPiA+ICsJc3RydWN0IGRldmljZV9ub2RlICppbnRlcm5hbF9yb290
+ID0gTlVMTDsKPiA+ICsJc3RydWN0IGRldmljZV9ub2RlICpkaXNwbGF5ID0gTlVMTDsKPiA+ICsJ
+c3RydWN0IGRldmljZV9ub2RlICp0aW1pbmdzID0gTlVMTDsKPiA+ICsJY2hhciAqdGltaW5ncGF0
+aCA9IE5VTEw7Cj4gPiArCWNoYXIgKmR0YmZpbGUgPSBOVUxMOwo+ID4gKwo+ID4gKwl3aGlsZSAo
+KG9wdCA9IGdldG9wdChhcmdjLCBhcmd2LCAic1M6bGY6IikpID4gMCkgewo+ID4gKwkJc3dpdGNo
+IChvcHQpIHsKPiA+ICsJCWNhc2UgJ2wnOgo+ID4gKwkJCWxpc3QgPSAxOwo+ID4gKwkJCWJyZWFr
+Owo+ID4gKwkJY2FzZSAnZic6Cj4gPiArCQkJZHRiZmlsZSA9IG9wdGFyZzsKPiA+ICsJCQlicmVh
+azsKPiAKPiBEbyB3ZSByZWFsbHkgbmVlZCB0aGlzIG9wdGlvbj8gSXQgY2FuIG9ubHkgYmUgdXNl
+ZCBmb3Igc2hvd2luZyBkaXNwbGF5Cj4gdGltaW5ncyBpbiBhbiBleHRlcm5hbCBkdGIsIG5vdCBm
+b3IgbWFuaXB1bGF0aW5nIGl0LiBJZiBJIHBsYW4gdG8gdXNlCj4gdGhlIGV4dGVybmFsIHRyZWUg
+SSBjYW4gc3RpbGwgZG8gYSBvZnRyZWUgLWYgLyBvZnRyZWUgLWwgZHRiIHRvIGV4Y2hhbmdlCj4g
+dGhlIGludGVybmFsIHRyZWUuCgpXZWxsLCBpdCBqdXN0IGdpdmVzIHRoZSBzYW1lIGZlYXR1cmUg
+bGlrZSBvZl9kdW1wIGhhcy4gSXQgaXMgbm90IHRoYXQgCm5lY2Vzc2FyeSwgYnV0IGl0IG1ha2Vz
+IGl0IG1vcmUgaGFuZHkuIAoKPiAKPiA+ICsJCWNhc2UgJ3MnOgo+ID4gKwkJCXNlbGVjdGVkID0g
+MTsKPiA+ICsJCQlicmVhazsKPiA+ICsJCWNhc2UgJ1MnOgo+ID4gKwkJCXRpbWluZ3BhdGggPSB4
+emFsbG9jKHN0cmxlbihvcHRhcmcpICsgMSk7Cj4gPiArCQkJc3RyY3B5KHRpbWluZ3BhdGgsIG9w
+dGFyZyk7Cj4gCj4gWW91IG5ldmVyIGZyZWUgdGltaW5ncGF0aC4gQnV0IHdoeSBhcmUgeW91IG1h
+a2luZyBhIGNvcHkgb2YgdGhlIHN0cmluZz8KPiBUaGlzIHNob3VsZG4ndCBiZSBuZWNlc3Nhcnku
+CgpJIG5lZWQgdG8gc2F2ZSB0aGUgc3RyaW5nIGZvciBsYXRlciB1c2FnZSBpbiB0aGUgZml4dXAg
+ZnVuY3Rpb24uIFRoaXMgaXMKY2FsbGVkIGFmdGVyIHRoZSBjb21tYW5kIGhhcyBmaW5pc2hlZC4g
+SSB0aGluayB0aGUgb3B0YXJnIHBvaW50ZXIgdG8KYXJndiBpcyBub3QgbG9uZ2VyIHZhaWxkIHRo
+ZW4uCgpUaGUgZml4dXAgY2FuIGJlIGNhbGxlZCBtdWx0aXBsZSB0aW1lcyAoY2FuY2VsZWQgYm9v
+dCwgb2ZfZHVtcCAtRiwuLikuCkkgZG9uJ3Qgc2VlIGEgc2F2ZSBwbGFjZSB0byBmcmVlIHRpbWlu
+Z3BhdGguCgpUZXJlc2EKCj4gCj4gPiArCQkJYnJlYWs7Cj4gPiArCQlkZWZhdWx0Ogo+ID4gKwkJ
+CXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdFOwo+ID4gKwkJfQo+ID4gKwl9Cj4gPiArCj4gPiAr
+CS8qIENoZWNrIGlmIGV4dGVybmFsIGR0YiBnaXZlbiAqLwo+ID4gKwlpZiAoZHRiZmlsZSkgewo+
+ID4gKwkJdm9pZCAqZmR0Owo+ID4gKwkJc2l6ZV90IHNpemU7Cj4gPiArCj4gPiArCQlmZHQgPSBy
+ZWFkX2ZpbGUoZHRiZmlsZSwgJnNpemUpOwo+ID4gKwkJaWYgKCFmZHQpIHsKPiA+ICsJCQlwcl9l
+cnIoInVuYWJsZSB0byByZWFkICVzOiAlc1xuIiwgZHRiZmlsZSwKPiA+ICsJCQkJc3RyZXJyb3Io
+ZXJybm8pKTsKPiA+ICsJCQlyZXR1cm4gLWVycm5vOwo+ID4gKwkJfQo+ID4gKwo+ID4gKwkJaWYg
+KGZpbGVfZGV0ZWN0X3R5cGUoZmR0LCBzaXplKSAhPSBmaWxldHlwZV9vZnRyZWUpIHsKPiA+ICsJ
+CQlwcl9lcnIoIiVzIGlzIG5vdCBhIG9mdHJlZSBmaWxlLlxuIiwgZHRiZmlsZSk7Cj4gPiArCQkJ
+cmV0dXJuIC1FSU5WQUw7Cj4gCj4gSGVyZSB5b3UgbG9zZSBtZW1vcnkuCj4gCj4gPiArCQl9Cj4g
+PiArCj4gPiArCQlyb290ID0gb2ZfdW5mbGF0dGVuX2R0YihmZHQpOwo+IAo+IFRoaXMgbXVzdCBi
+ZSBmcmVlZCBhZnRlciB1c2Ugd2l0aCBvZl9kZWxldGVfbm9kZSgpLgo+IAo+IFNhc2NoYQo+IAo+
+IAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
