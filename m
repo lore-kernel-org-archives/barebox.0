@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XX2Db-0001g6-7Z
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 06:07:55 +0000
-Date: Thu, 25 Sep 2014 08:07:32 +0200
+ Linux)) id 1XX2HE-0003eu-2C
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 06:11:41 +0000
+Date: Thu, 25 Sep 2014 08:11:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140925060732.GE4992@pengutronix.de>
-References: <1411551191-27938-1-git-send-email-t.gamez@phytec.de>
- <1411551191-27938-2-git-send-email-t.gamez@phytec.de>
+Message-ID: <20140925061117.GF4992@pengutronix.de>
+References: <1411563425-28463-1-git-send-email-poggi.raph@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1411551191-27938-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1411563425-28463-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,99 +22,53 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] commands: add of_display_timings
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: [PATCH] i2c: at91: fix coding style issue
+To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Teresa,
+Hi Rapha=EBl,
 
-On Wed, Sep 24, 2014 at 11:33:11AM +0200, Teresa G=E1mez wrote:
-> A lot of boards use display-timings nodes to define the timings of one or=
- more
-> displays. This command makes it possible to list and select displays whic=
-h are
-> defined in a device tree.
+On Wed, Sep 24, 2014 at 02:57:02PM +0200, Rapha=EBl Poggi wrote:
+> Signed-off-by: Rapha=EBl Poggi <poggi.raph@gmail.com>
+> ---
+>  drivers/i2c/busses/i2c-at91.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Nice idea.
-
-> +static int of_display_timing(struct device_node *root, void *timingpath)
-> +{
-> +	int ret =3D 0;
-> +	struct device_node *display;
-> +
-> +	display =3D of_find_node_by_path_from(root, (char *) timingpath);
-
-Unnecessary cast.
-
-> +static int do_of_display_timings(int argc, char *argv[])
-> +{
-> +	int opt;
-> +	int list =3D 0;
-> +	int selected =3D 0;
-> +	int ret =3D 0;
-> +	struct device_node *root =3D NULL;
-> +	struct device_node *internal_root =3D NULL;
-> +	struct device_node *display =3D NULL;
-> +	struct device_node *timings =3D NULL;
-> +	char *timingpath =3D NULL;
-> +	char *dtbfile =3D NULL;
-> +
-> +	while ((opt =3D getopt(argc, argv, "sS:lf:")) > 0) {
-> +		switch (opt) {
-> +		case 'l':
-> +			list =3D 1;
-> +			break;
-> +		case 'f':
-> +			dtbfile =3D optarg;
-> +			break;
-
-Do we really need this option? It can only be used for showing display
-timings in an external dtb, not for manipulating it. If I plan to use
-the external tree I can still do a oftree -f / oftree -l dtb to exchange
-the internal tree.
-
-> +		case 's':
-> +			selected =3D 1;
-> +			break;
-> +		case 'S':
-> +			timingpath =3D xzalloc(strlen(optarg) + 1);
-> +			strcpy(timingpath, optarg);
-
-You never free timingpath. But why are you making a copy of the string?
-This shouldn't be necessary.
-
-> +			break;
-> +		default:
-> +			return COMMAND_ERROR_USAGE;
-> +		}
-> +	}
-> +
-> +	/* Check if external dtb given */
-> +	if (dtbfile) {
-> +		void *fdt;
-> +		size_t size;
-> +
-> +		fdt =3D read_file(dtbfile, &size);
-> +		if (!fdt) {
-> +			pr_err("unable to read %s: %s\n", dtbfile,
-> +				strerror(errno));
-> +			return -errno;
-> +		}
-> +
-> +		if (file_detect_type(fdt, size) !=3D filetype_oftree) {
-> +			pr_err("%s is not a oftree file.\n", dtbfile);
-> +			return -EINVAL;
-
-Here you lose memory.
-
-> +		}
-> +
-> +		root =3D of_unflatten_dtb(fdt);
-
-This must be freed after use with of_delete_node().
+Applied all, thanks
 
 Sascha
 
+> =
+
+> diff --git a/drivers/i2c/busses/i2c-at91.c b/drivers/i2c/busses/i2c-at91.c
+> index 399f6a9..2ce3fa3 100644
+> --- a/drivers/i2c/busses/i2c-at91.c
+> +++ b/drivers/i2c/busses/i2c-at91.c
+> @@ -186,8 +186,8 @@ static int at91_twi_wait_completion(struct at91_twi_d=
+ev *dev)
+>  =
+
+>  	dev->transfer_status |=3D status;
+>  =
+
+> -	while(!(at91_twi_read(dev, AT91_TWI_SR) & AT91_TWI_TXCOMP)) {
+> -		if(is_timeout(start, AT91_I2C_TIMEOUT)) {
+> +	while (!(at91_twi_read(dev, AT91_TWI_SR) & AT91_TWI_TXCOMP)) {
+> +		if (is_timeout(start, AT91_I2C_TIMEOUT)) {
+>  			dev_warn(&dev->adapter.dev, "timeout waiting for bus ready\n");
+>  			return -ETIMEDOUT;
+>  		}
+> -- =
+
+> 2.1.0
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- =
 
