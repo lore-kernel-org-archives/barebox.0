@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XXCPD-00031T-PM
+ id 1XXCPD-00030l-PK
  for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:36 +0000
+Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
+ [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 7607A26C2002
+ for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 18:58:54 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Sep 2014 19:05:05 +0200
-Message-Id: <1411664709-13699-12-git-send-email-dev@lynxeye.de>
+Date: Thu, 25 Sep 2014 19:05:01 +0200
+Message-Id: <1411664709-13699-8-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,48 +24,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/15] ARM: tegra: beaver: enable PEX voltage rail
+Subject: [PATCH 07/15] commands: lspci: go down into subordinate busses
 To: barebox@lists.infradead.org
 
-From: Lucas Stach <l.stach@pengutronix.de>
+This way we also list devices that are behind
+bridges.
 
-Supply for the PCIe PLL.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/nvidia-beaver/board.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ commands/lspci.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
-index e67d2aa..20707d8 100644
---- a/arch/arm/boards/nvidia-beaver/board.c
-+++ b/arch/arm/boards/nvidia-beaver/board.c
-@@ -15,8 +15,10 @@
-  */
+diff --git a/commands/lspci.c b/commands/lspci.c
+index fdf0269..27edd5d 100644
+--- a/commands/lspci.c
++++ b/commands/lspci.c
+@@ -20,10 +20,24 @@
+ #include <complete.h>
+ #include <linux/pci.h>
  
- #include <common.h>
--#include <init.h>
-+#include <dt-bindings/gpio/tegra-gpio.h>
-+#include <gpio.h>
- #include <i2c/i2c.h>
-+#include <init.h>
- 
- static int nvidia_beaver_devices_init(void)
++static void traverse_bus(struct pci_bus *bus)
++{
++	struct pci_dev *dev;
++
++	list_for_each_entry(dev, &bus->devices, bus_list) {
++		printf("%02x:%02x.%1x %04x: %04x:%04x (rev %02x)\n",
++		       dev->bus->number, PCI_SLOT(dev->devfn),
++		       PCI_FUNC(dev->devfn), (dev->class >> 8) & 0xffff,
++		       dev->vendor, dev->device, dev->revision);
++
++		if (dev->subordinate)
++			traverse_bus(dev->subordinate);
++	}
++}
++
+ static int do_lspci(int argc, char *argv[])
  {
-@@ -33,6 +35,13 @@ static int nvidia_beaver_devices_init(void)
- 	data = 0x65;
- 	i2c_write_reg(&client, 0x32, &data, 1);
+ 	struct pci_bus *root_bus;
+-	struct pci_dev *dev;
  
-+	/* TPS659110: LDO1_REG = 1.05v, ACTIVE to PEX */
-+	data = 0x15;
-+	i2c_write_reg(&client, 0x30, &data, 1);
-+
-+	/* enable SYS_3V3_PEXS */
-+	gpio_direction_output(TEGRA_GPIO(L, 7), 1);
-+
+ 	if (list_empty(&pci_root_buses)) {
+ 		printf("No PCI bus detected\n");
+@@ -31,14 +45,7 @@ static int do_lspci(int argc, char *argv[])
+ 	}
+ 
+ 	list_for_each_entry(root_bus, &pci_root_buses, node) {
+-		list_for_each_entry(dev, &root_bus->devices, bus_list) {
+-			printf("%02x: %04x: %04x:%04x (rev %02x)\n",
+-				      dev->devfn,
+-				      (dev->class >> 8) & 0xffff,
+-				      dev->vendor,
+-				      dev->device,
+-				      dev->revision);
+-		}
++		traverse_bus(root_bus);
+ 	}
+ 
  	return 0;
- }
- fs_initcall(nvidia_beaver_devices_init);
 -- 
 1.9.3
 
