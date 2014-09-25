@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XXA0T-0001fL-4h
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 14:26:53 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 25 Sep 2014 16:26:30 +0200
-Message-Id: <1411655190-4430-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-pa0-f46.google.com ([209.85.220.46])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XXBCv-0005jQ-2w
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 15:43:49 +0000
+Received: by mail-pa0-f46.google.com with SMTP id kx10so11259179pab.33
+ for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 08:43:27 -0700 (PDT)
+References: <2F9C706F-8EBC-453B-8BA1-116680C7926A@kamama.com>
+ <1411632866.2207.2.camel@tellur.intern.lynxeye.de>
+Mime-Version: 1.0 (1.0)
+In-Reply-To: <1411632866.2207.2.camel@tellur.intern.lynxeye.de>
+Message-Id: <AE2FDA55-436B-4DF7-AE47-9B32D0CFFAC7@kamama.com>
+From: Ryan Du Bois <rdub@kamama.com>
+Date: Thu, 25 Sep 2014 08:43:25 -0700
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,37 +20,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] USB: gadget: dfu: Add max_speed to dfu_driver
-To: barebox@lists.infradead.org
+Subject: Re: nvidia jetson tk1 help
+To: Lucas Stach <dev@lynxeye.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-The MUSB driver checks for this field. If it doesn't contain
-something useful the driver bails out.
+Thanks Lucas, I'll check that out when I get into the office today.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/gadget/dfu.c | 1 +
- 1 file changed, 1 insertion(+)
+Cheers!
 
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index ddd765a..67a0703 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -722,6 +722,7 @@ static struct usb_composite_driver dfu_driver = {
- 	.name		= "g_dfu",
- 	.dev		= &dfu_dev_descriptor,
- 	.strings	= dev_strings,
-+	.max_speed	= USB_SPEED_HIGH,
- 	.bind		= dfu_driver_bind,
- 	.unbind		= dfu_driver_unbind,
- };
--- 
-2.1.0
-
+> On Sep 25, 2014, at 1:14, Lucas Stach <dev@lynxeye.de> wrote:
+> 
+> Hi Ryan,
+> 
+> Am Mittwoch, den 24.09.2014, 12:23 -0700 schrieb Ryan Du Bois:
+>> Hey There,
+>> 
+>> I'm having trouble getting barebox to boot on an Nvidia Jetson TK1.  I'm using the tegra-v7_defconfig, and trying to load it to the board via the tegrarcm tool.
+>> 
+>> Has anyone done this before who might have a recipe that works?
+> 
+> Please just "make docs". In there you'll find a chapter on how to
+> bootstrap a Tegra board. The description is for the Beaver board, but
+> things work the same way on Jetson. If you have any other question, feel
+> free to ask.
+> 
+> Regards,
+> Lucas
+> 
 
 _______________________________________________
 barebox mailing list
