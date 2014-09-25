@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XXCPD-00031o-PT
- for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:38 +0000
+ id 1XXCPD-000311-PO
+ for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:39 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Sep 2014 19:05:06 +0200
-Message-Id: <1411664709-13699-13-git-send-email-dev@lynxeye.de>
+Date: Thu, 25 Sep 2014 19:05:02 +0200
+Message-Id: <1411664709-13699-9-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,296 +21,189 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/15] tegra: pmc: add powerdomain handling
+Subject: [PATCH 08/15] clk: tegra: add PLLE setup functions
 To: barebox@lists.infradead.org
 
 From: Lucas Stach <l.stach@pengutronix.de>
 
-In order to use some devices we first have to power
-up their power domain. Add support to do this in a
-generic way.
-
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-tegra/include/mach/tegra-powergate.h |  93 ++++++++++++++
- arch/arm/mach-tegra/tegra20-pmc.c                  | 139 ++++++++++++++++++++-
- 2 files changed, 229 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/mach-tegra/include/mach/tegra-powergate.h
+ arch/arm/mach-tegra/include/mach/tegra30-car.h |   2 +
+ drivers/clk/tegra/clk-pll.c                    | 116 +++++++++++++++++++++++++
+ drivers/clk/tegra/clk.h                        |   6 ++
+ 3 files changed, 124 insertions(+)
 
-diff --git a/arch/arm/mach-tegra/include/mach/tegra-powergate.h b/arch/arm/mach-tegra/include/mach/tegra-powergate.h
-new file mode 100644
-index 0000000..e32250a
---- /dev/null
-+++ b/arch/arm/mach-tegra/include/mach/tegra-powergate.h
-@@ -0,0 +1,93 @@
-+/*
-+ * Copyright (c) 2010 Google, Inc
-+ *
-+ * Author:
-+ *	Colin Cross <ccross@google.com>
-+ *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
+diff --git a/arch/arm/mach-tegra/include/mach/tegra30-car.h b/arch/arm/mach-tegra/include/mach/tegra30-car.h
+index c8f6c9f..7fb2238 100644
+--- a/arch/arm/mach-tegra/include/mach/tegra30-car.h
++++ b/arch/arm/mach-tegra/include/mach/tegra30-car.h
+@@ -33,3 +33,5 @@
+ #define CRC_RST_DEV_V_CLR		0x434
+ 
+ #define CRC_CLK_OUT_ENB_V_SET		0x440
 +
-+#ifndef _MACH_TEGRA_POWERGATE_H_
-+#define _MACH_TEGRA_POWERGATE_H_
-+
-+struct clk;
-+struct reset_control;
-+
-+#define TEGRA_POWERGATE_CPU	0
-+#define TEGRA_POWERGATE_3D	1
-+#define TEGRA_POWERGATE_VENC	2
-+#define TEGRA_POWERGATE_PCIE	3
-+#define TEGRA_POWERGATE_VDEC	4
-+#define TEGRA_POWERGATE_L2	5
-+#define TEGRA_POWERGATE_MPE	6
-+#define TEGRA_POWERGATE_HEG	7
-+#define TEGRA_POWERGATE_SATA	8
-+#define TEGRA_POWERGATE_CPU1	9
-+#define TEGRA_POWERGATE_CPU2	10
-+#define TEGRA_POWERGATE_CPU3	11
-+#define TEGRA_POWERGATE_CELP	12
-+#define TEGRA_POWERGATE_3D1	13
-+#define TEGRA_POWERGATE_CPU0	14
-+#define TEGRA_POWERGATE_C0NC	15
-+#define TEGRA_POWERGATE_C1NC	16
-+#define TEGRA_POWERGATE_SOR	17
-+#define TEGRA_POWERGATE_DIS	18
-+#define TEGRA_POWERGATE_DISB	19
-+#define TEGRA_POWERGATE_XUSBA	20
-+#define TEGRA_POWERGATE_XUSBB	21
-+#define TEGRA_POWERGATE_XUSBC	22
-+#define TEGRA_POWERGATE_VIC	23
-+#define TEGRA_POWERGATE_IRAM	24
-+
-+#define TEGRA_POWERGATE_3D0	TEGRA_POWERGATE_3D
-+
-+#define TEGRA_IO_RAIL_CSIA	0
-+#define TEGRA_IO_RAIL_CSIB	1
-+#define TEGRA_IO_RAIL_DSI	2
-+#define TEGRA_IO_RAIL_MIPI_BIAS	3
-+#define TEGRA_IO_RAIL_PEX_BIAS	4
-+#define TEGRA_IO_RAIL_PEX_CLK1	5
-+#define TEGRA_IO_RAIL_PEX_CLK2	6
-+#define TEGRA_IO_RAIL_USB0	9
-+#define TEGRA_IO_RAIL_USB1	10
-+#define TEGRA_IO_RAIL_USB2	11
-+#define TEGRA_IO_RAIL_USB_BIAS	12
-+#define TEGRA_IO_RAIL_NAND	13
-+#define TEGRA_IO_RAIL_UART	14
-+#define TEGRA_IO_RAIL_BB	15
-+#define TEGRA_IO_RAIL_AUDIO	17
-+#define TEGRA_IO_RAIL_HSIC	19
-+#define TEGRA_IO_RAIL_COMP	22
-+#define TEGRA_IO_RAIL_HDMI	28
-+#define TEGRA_IO_RAIL_PEX_CNTRL	32
-+#define TEGRA_IO_RAIL_SDMMC1	33
-+#define TEGRA_IO_RAIL_SDMMC3	34
-+#define TEGRA_IO_RAIL_SDMMC4	35
-+#define TEGRA_IO_RAIL_CAM	36
-+#define TEGRA_IO_RAIL_RES	37
-+#define TEGRA_IO_RAIL_HV	38
-+#define TEGRA_IO_RAIL_DSIB	39
-+#define TEGRA_IO_RAIL_DSIC	40
-+#define TEGRA_IO_RAIL_DSID	41
-+#define TEGRA_IO_RAIL_CSIE	44
-+#define TEGRA_IO_RAIL_LVDS	57
-+#define TEGRA_IO_RAIL_SYS_DDC	58
-+
-+int tegra_powergate_is_powered(int id);
-+int tegra_powergate_power_on(int id);
-+int tegra_powergate_power_off(int id);
-+int tegra_powergate_remove_clamping(int id);
-+
-+/* Must be called with clk disabled, and returns with clk enabled */
-+int tegra_powergate_sequence_power_up(int id, struct clk *clk,
-+				      struct reset_control *rst);
-+
-+#endif /* _MACH_TEGRA_POWERGATE_H_ */
-diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
-index 94167d6..0c5042a 100644
---- a/arch/arm/mach-tegra/tegra20-pmc.c
-+++ b/arch/arm/mach-tegra/tegra20-pmc.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
-+ * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
-  *
-  * This program is free software; you can redistribute it and/or modify it
-  * under the terms and conditions of the GNU General Public License,
-@@ -19,14 +19,18 @@
-  * @brief Device driver for the Tegra 20 power management controller.
++#define CRC_PLLE_AUX			0x48c
+diff --git a/drivers/clk/tegra/clk-pll.c b/drivers/clk/tegra/clk-pll.c
+index c18c67f..bff5651 100644
+--- a/drivers/clk/tegra/clk-pll.c
++++ b/drivers/clk/tegra/clk-pll.c
+@@ -17,12 +17,15 @@
   */
  
--#include <common.h>
- #include <command.h>
-+#include <common.h>
- #include <init.h>
+ #include <common.h>
++#include <clock.h>
  #include <io.h>
--
-+#include <linux/clk.h>
-+#include <linux/reset.h>
-+#include <mach/lowlevel.h>
-+#include <mach/tegra-powergate.h>
- #include <mach/tegra20-pmc.h>
+ #include <malloc.h>
+ #include <asm-generic/div64.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
  
- static void __iomem *pmc_base;
-+static int tegra_num_powerdomains;
++#include <mach/iomap.h>
++
+ #include "clk.h"
  
- /* main SoC reset trigger */
- void __noreturn reset_cpu(ulong addr)
-@@ -37,6 +41,133 @@ void __noreturn reset_cpu(ulong addr)
- }
- EXPORT_SYMBOL(reset_cpu);
+ #define PLL_BASE_BYPASS		BIT(31)
+@@ -393,6 +396,108 @@ const struct clk_ops tegra_clk_pll_ops = {
+ 	.set_rate = clk_pll_set_rate,
+ };
  
-+static int tegra_powergate_set(int id, bool new_state)
++static unsigned long clk_plle_recalc_rate(struct clk *hw,
++					 unsigned long parent_rate)
 +{
-+	bool status;
++	struct tegra_clk_pll *pll = to_clk_pll(hw);
++	u32 val = pll_readl_base(pll);
++	u32 divn = 0, divm = 0, divp = 0;
++	u64 rate = parent_rate;
 +
-+	status = readl(pmc_base + PMC_PWRGATE_STATUS) & (1 << id);
++	divp = (val >> 16) & 0x3f;
++	divn = (val >> 8) & (0xff);
++	divm = (val >> 0) & (0xff);
++	divm *= divp;
 +
-+	if (status == new_state) {
-+		return 0;
-+	}
-+
-+	writel(PMC_PWRGATE_TOGGLE_START | id, pmc_base + PMC_PWRGATE_TOGGLE);
-+
-+	return 0;
++	rate *= divn;
++	do_div(rate, divm);
++	return rate;
 +}
 +
-+int tegra_powergate_power_on(int id)
++static int clk_plle_training(struct tegra_clk_pll *pll)
 +{
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
-+
-+	return tegra_powergate_set(id, true);
-+}
-+
-+int tegra_powergate_power_off(int id)
-+{
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
-+
-+	return tegra_powergate_set(id, false);
-+}
-+EXPORT_SYMBOL(tegra_powergate_power_off);
-+
-+int tegra_powergate_is_powered(int id)
-+{
-+	u32 status;
-+
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
-+
-+	status = readl(pmc_base + PMC_PWRGATE_STATUS) & (1 << id);
-+	return !!status;
-+}
-+
-+int tegra_powergate_remove_clamping(int id)
-+{
-+	u32 mask;
-+
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
++	u32 val;
 +
 +	/*
-+	 * Tegra 2 has a bug where PCIE and VDE clamping masks are
-+	 * swapped relatively to the partition ids
++	 * PLLE is already disabled, and setup cleared;
++	 * create falling edge on PLLE IDDQ input.
 +	 */
-+	if (id == TEGRA_POWERGATE_VDEC)
-+		mask = (1 << TEGRA_POWERGATE_PCIE);
-+	else if (id == TEGRA_POWERGATE_PCIE)
-+		mask = (1 << TEGRA_POWERGATE_VDEC);
-+	else
-+		mask = (1 << id);
++	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
++	val |= PMC_SATA_PWRGT_PLLE_IDDQ_VALUE;
++	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
 +
-+	writel(mask, pmc_base + PMC_REMOVE_CLAMPING_CMD);
++	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
++	val |= PMC_SATA_PWRGT_PLLE_IDDQ_SWCTL;
++	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
 +
-+	return 0;
++	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
++	val &= ~PMC_SATA_PWRGT_PLLE_IDDQ_VALUE;
++	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
++
++	return wait_on_timeout(100 * MSECOND,
++			(pll_readl_misc(pll) & PLLE_MISC_READY));
 +}
-+EXPORT_SYMBOL(tegra_powergate_remove_clamping);
 +
-+/* Must be called with clk disabled, and returns with clk enabled */
-+int tegra_powergate_sequence_power_up(int id, struct clk *clk,
-+					struct reset_control *rst)
++static int clk_plle_enable(struct clk *hw)
 +{
-+	int ret;
++	struct tegra_clk_pll *pll = to_clk_pll(hw);
++	unsigned long input_rate = clk_get_rate(clk_get_parent(hw));
++	struct tegra_clk_pll_freq_table sel;
++	u32 val;
++	int err;
 +
-+	reset_control_assert(rst);
++	if (_get_table_rate(hw, &sel, pll->fixed_rate, input_rate))
++		return -EINVAL;
 +
-+	ret = tegra_powergate_power_on(id);
-+	if (ret)
-+		goto err_power;
++	clk_pll_disable(hw);
 +
-+	ret = clk_enable(clk);
-+	if (ret)
-+		goto err_clk;
++	val = pll_readl_misc(pll);
++	val &= ~(PLLE_MISC_LOCK_ENABLE | PLLE_MISC_SETUP_MASK);
++	pll_writel_misc(val, pll);
 +
-+	udelay(10);
-+
-+	ret = tegra_powergate_remove_clamping(id);
-+	if (ret)
-+		goto err_clamp;
-+
-+	udelay(10);
-+	reset_control_deassert(rst);
-+
-+	return 0;
-+
-+err_clamp:
-+	clk_disable(clk);
-+err_clk:
-+	tegra_powergate_power_off(id);
-+err_power:
-+	return ret;
-+}
-+EXPORT_SYMBOL(tegra_powergate_sequence_power_up);
-+
-+static int tegra_powergate_init(void)
-+{
-+	switch (tegra_get_chiptype()) {
-+	case TEGRA20:
-+		tegra_num_powerdomains = 7;
-+		break;
-+	case TEGRA30:
-+		tegra_num_powerdomains = 14;
-+		break;
-+	case TEGRA114:
-+		tegra_num_powerdomains = 23;
-+		break;
-+	case TEGRA124:
-+		tegra_num_powerdomains = 25;
-+		break;
-+	default:
-+		/* Unknown Tegra variant. Disable powergating */
-+		tegra_num_powerdomains = 0;
-+		break;
++	val = pll_readl_misc(pll);
++	if (!(val & PLLE_MISC_READY)) {
++		err = clk_plle_training(pll);
++		if (err)
++			return err;
 +	}
 +
++	/* configure dividers */
++	val = pll_readl_base(pll);
++	val &= ~(0x3fffff);
++	val &= ~(PLLE_BASE_DIVCML_WIDTH << PLLE_BASE_DIVCML_SHIFT);
++	val |= sel.m << 0;
++	val |= sel.n << 8;
++	val |= sel.p << 16;
++	val |= sel.cpcon << PLLE_BASE_DIVCML_SHIFT;
++	pll_writel_base(val, pll);
++
++	val = pll_readl_misc(pll);
++	val |= PLLE_MISC_SETUP_VALUE;
++	val |= PLLE_MISC_LOCK_ENABLE;
++	pll_writel_misc(val, pll);
++
++	val = readl(pll->clk_base + PLLE_SS_CTRL);
++	val |= PLLE_SS_DISABLE;
++	writel(val, pll->clk_base + PLLE_SS_CTRL);
++
++	val = pll_readl_base(pll);
++	val |= (PLL_BASE_BYPASS | PLL_BASE_ENABLE);
++	pll_writel_base(val, pll);
++
++	clk_pll_wait_for_lock(pll, pll->clk_base + pll->params->base_reg,
++			      pll->params->lock_bit_idx);
++
 +	return 0;
 +}
 +
- static int tegra20_pmc_probe(struct device_d *dev)
- {
- 	pmc_base = dev_request_mem_region(dev, 0);
-@@ -45,6 +176,8 @@ static int tegra20_pmc_probe(struct device_d *dev)
- 		return -ENODEV;
- 	}
- 
-+	tegra_powergate_init();
++const struct clk_ops tegra_clk_plle_ops = {
++	.recalc_rate = clk_plle_recalc_rate,
++	.is_enabled = clk_pll_is_enabled,
++	.disable = clk_pll_disable,
++	.enable = clk_plle_enable,
++};
 +
- 	return 0;
+ static struct clk *_tegra_clk_register_pll(const char *name,
+ 		const char *parent_name, void __iomem *clk_base,
+ 		unsigned long flags, unsigned long fixed_rate,
+@@ -447,3 +552,14 @@ struct clk *tegra_clk_register_pll(const char *name, const char *parent_name,
+ 			flags, fixed_rate, pll_params, pll_flags, freq_table,
+ 			&tegra_clk_pll_ops);
  }
++
++struct clk *tegra_clk_register_plle(const char *name, const char *parent_name,
++		void __iomem *clk_base,
++		unsigned long flags, unsigned long fixed_rate,
++		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
++		struct tegra_clk_pll_freq_table *freq_table)
++{
++	return _tegra_clk_register_pll(name, parent_name, clk_base,
++			flags, fixed_rate, pll_params, pll_flags, freq_table,
++			&tegra_clk_plle_ops);
++}
+diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h
+index d5d0730..85777a8 100644
+--- a/drivers/clk/tegra/clk.h
++++ b/drivers/clk/tegra/clk.h
+@@ -101,6 +101,12 @@ struct clk *tegra_clk_register_pll(const char *name, const char *parent_name,
+ 		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
+ 		struct tegra_clk_pll_freq_table *freq_table);
  
++struct clk *tegra_clk_register_plle(const char *name, const char *parent_name,
++		void __iomem *clk_base,
++		unsigned long flags, unsigned long fixed_rate,
++		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
++		struct tegra_clk_pll_freq_table *freq_table);
++
+ /* struct tegra_clk_pll_out - PLL output divider */
+ struct tegra_clk_pll_out {
+ 	struct clk	hw;
 -- 
 1.9.3
 
