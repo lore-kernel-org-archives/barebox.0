@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XXCPD-00031p-PS
+ id 1XXCPD-00031o-PT
  for barebox@lists.infradead.org; Thu, 25 Sep 2014 17:00:38 +0000
-Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
- [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id F009626C2004
- for <barebox@lists.infradead.org>; Thu, 25 Sep 2014 18:58:57 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Sep 2014 19:05:07 +0200
-Message-Id: <1411664709-13699-14-git-send-email-dev@lynxeye.de>
+Date: Thu, 25 Sep 2014 19:05:06 +0200
+Message-Id: <1411664709-13699-13-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,170 +21,296 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/15] of: import pci range parser from linux
+Subject: [PATCH 12/15] tegra: pmc: add powerdomain handling
 To: barebox@lists.infradead.org
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- drivers/of/address.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/of_address.h | 51 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 118 insertions(+), 1 deletion(-)
+From: Lucas Stach <l.stach@pengutronix.de>
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index b3cbb15..15f3ade 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -179,6 +179,74 @@ static int of_bus_pci_translate(__be32 *addr, u64 offset, int na)
- }
- #endif /* CONFIG_OF_ADDRESS_PCI */
+In order to use some devices we first have to power
+up their power domain. Add support to do this in a
+generic way.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/mach-tegra/include/mach/tegra-powergate.h |  93 ++++++++++++++
+ arch/arm/mach-tegra/tegra20-pmc.c                  | 139 ++++++++++++++++++++-
+ 2 files changed, 229 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/mach-tegra/include/mach/tegra-powergate.h
+
+diff --git a/arch/arm/mach-tegra/include/mach/tegra-powergate.h b/arch/arm/mach-tegra/include/mach/tegra-powergate.h
+new file mode 100644
+index 0000000..e32250a
+--- /dev/null
++++ b/arch/arm/mach-tegra/include/mach/tegra-powergate.h
+@@ -0,0 +1,93 @@
++/*
++ * Copyright (c) 2010 Google, Inc
++ *
++ * Author:
++ *	Colin Cross <ccross@google.com>
++ *
++ * This software is licensed under the terms of the GNU General Public
++ * License version 2, as published by the Free Software Foundation, and
++ * may be copied, distributed, and modified under those terms.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef _MACH_TEGRA_POWERGATE_H_
++#define _MACH_TEGRA_POWERGATE_H_
++
++struct clk;
++struct reset_control;
++
++#define TEGRA_POWERGATE_CPU	0
++#define TEGRA_POWERGATE_3D	1
++#define TEGRA_POWERGATE_VENC	2
++#define TEGRA_POWERGATE_PCIE	3
++#define TEGRA_POWERGATE_VDEC	4
++#define TEGRA_POWERGATE_L2	5
++#define TEGRA_POWERGATE_MPE	6
++#define TEGRA_POWERGATE_HEG	7
++#define TEGRA_POWERGATE_SATA	8
++#define TEGRA_POWERGATE_CPU1	9
++#define TEGRA_POWERGATE_CPU2	10
++#define TEGRA_POWERGATE_CPU3	11
++#define TEGRA_POWERGATE_CELP	12
++#define TEGRA_POWERGATE_3D1	13
++#define TEGRA_POWERGATE_CPU0	14
++#define TEGRA_POWERGATE_C0NC	15
++#define TEGRA_POWERGATE_C1NC	16
++#define TEGRA_POWERGATE_SOR	17
++#define TEGRA_POWERGATE_DIS	18
++#define TEGRA_POWERGATE_DISB	19
++#define TEGRA_POWERGATE_XUSBA	20
++#define TEGRA_POWERGATE_XUSBB	21
++#define TEGRA_POWERGATE_XUSBC	22
++#define TEGRA_POWERGATE_VIC	23
++#define TEGRA_POWERGATE_IRAM	24
++
++#define TEGRA_POWERGATE_3D0	TEGRA_POWERGATE_3D
++
++#define TEGRA_IO_RAIL_CSIA	0
++#define TEGRA_IO_RAIL_CSIB	1
++#define TEGRA_IO_RAIL_DSI	2
++#define TEGRA_IO_RAIL_MIPI_BIAS	3
++#define TEGRA_IO_RAIL_PEX_BIAS	4
++#define TEGRA_IO_RAIL_PEX_CLK1	5
++#define TEGRA_IO_RAIL_PEX_CLK2	6
++#define TEGRA_IO_RAIL_USB0	9
++#define TEGRA_IO_RAIL_USB1	10
++#define TEGRA_IO_RAIL_USB2	11
++#define TEGRA_IO_RAIL_USB_BIAS	12
++#define TEGRA_IO_RAIL_NAND	13
++#define TEGRA_IO_RAIL_UART	14
++#define TEGRA_IO_RAIL_BB	15
++#define TEGRA_IO_RAIL_AUDIO	17
++#define TEGRA_IO_RAIL_HSIC	19
++#define TEGRA_IO_RAIL_COMP	22
++#define TEGRA_IO_RAIL_HDMI	28
++#define TEGRA_IO_RAIL_PEX_CNTRL	32
++#define TEGRA_IO_RAIL_SDMMC1	33
++#define TEGRA_IO_RAIL_SDMMC3	34
++#define TEGRA_IO_RAIL_SDMMC4	35
++#define TEGRA_IO_RAIL_CAM	36
++#define TEGRA_IO_RAIL_RES	37
++#define TEGRA_IO_RAIL_HV	38
++#define TEGRA_IO_RAIL_DSIB	39
++#define TEGRA_IO_RAIL_DSIC	40
++#define TEGRA_IO_RAIL_DSID	41
++#define TEGRA_IO_RAIL_CSIE	44
++#define TEGRA_IO_RAIL_LVDS	57
++#define TEGRA_IO_RAIL_SYS_DDC	58
++
++int tegra_powergate_is_powered(int id);
++int tegra_powergate_power_on(int id);
++int tegra_powergate_power_off(int id);
++int tegra_powergate_remove_clamping(int id);
++
++/* Must be called with clk disabled, and returns with clk enabled */
++int tegra_powergate_sequence_power_up(int id, struct clk *clk,
++				      struct reset_control *rst);
++
++#endif /* _MACH_TEGRA_POWERGATE_H_ */
+diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
+index 94167d6..0c5042a 100644
+--- a/arch/arm/mach-tegra/tegra20-pmc.c
++++ b/arch/arm/mach-tegra/tegra20-pmc.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
++ * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
+  *
+  * This program is free software; you can redistribute it and/or modify it
+  * under the terms and conditions of the GNU General Public License,
+@@ -19,14 +19,18 @@
+  * @brief Device driver for the Tegra 20 power management controller.
+  */
  
-+#ifdef CONFIG_PCI
-+int of_pci_range_parser_init(struct of_pci_range_parser *parser,
-+				struct device_node *node)
+-#include <common.h>
+ #include <command.h>
++#include <common.h>
+ #include <init.h>
+ #include <io.h>
+-
++#include <linux/clk.h>
++#include <linux/reset.h>
++#include <mach/lowlevel.h>
++#include <mach/tegra-powergate.h>
+ #include <mach/tegra20-pmc.h>
+ 
+ static void __iomem *pmc_base;
++static int tegra_num_powerdomains;
+ 
+ /* main SoC reset trigger */
+ void __noreturn reset_cpu(ulong addr)
+@@ -37,6 +41,133 @@ void __noreturn reset_cpu(ulong addr)
+ }
+ EXPORT_SYMBOL(reset_cpu);
+ 
++static int tegra_powergate_set(int id, bool new_state)
 +{
-+	const int na = 3, ns = 2;
-+	int rlen;
++	bool status;
 +
-+	parser->node = node;
-+	parser->pna = of_n_addr_cells(node);
-+	parser->np = parser->pna + na + ns;
++	status = readl(pmc_base + PMC_PWRGATE_STATUS) & (1 << id);
 +
-+	parser->range = of_get_property(node, "ranges", &rlen);
-+	if (parser->range == NULL)
-+		return -ENOENT;
++	if (status == new_state) {
++		return 0;
++	}
 +
-+	parser->end = parser->range + rlen / sizeof(__be32);
++	writel(PMC_PWRGATE_TOGGLE_START | id, pmc_base + PMC_PWRGATE_TOGGLE);
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(of_pci_range_parser_init);
 +
-+struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
-+						struct of_pci_range *range)
++int tegra_powergate_power_on(int id)
 +{
-+	const int na = 3, ns = 2;
++	if (id < 0 || id >= tegra_num_powerdomains)
++		return -EINVAL;
 +
-+	if (!range)
-+		return NULL;
++	return tegra_powergate_set(id, true);
++}
 +
-+	if (!parser->range || parser->range + parser->np > parser->end)
-+		return NULL;
++int tegra_powergate_power_off(int id)
++{
++	if (id < 0 || id >= tegra_num_powerdomains)
++		return -EINVAL;
 +
-+	range->pci_space = parser->range[0];
-+	range->flags = of_bus_pci_get_flags(parser->range);
-+	range->pci_addr = of_read_number(parser->range + 1, ns);
-+	range->cpu_addr = of_translate_address(parser->node,
-+				parser->range + na);
-+	range->size = of_read_number(parser->range + parser->pna + na, ns);
++	return tegra_powergate_set(id, false);
++}
++EXPORT_SYMBOL(tegra_powergate_power_off);
 +
-+	parser->range += parser->np;
++int tegra_powergate_is_powered(int id)
++{
++	u32 status;
 +
-+	/* Now consume following elements while they are contiguous */
-+	while (parser->range + parser->np <= parser->end) {
-+		u32 flags, pci_space;
-+		u64 pci_addr, cpu_addr, size;
++	if (id < 0 || id >= tegra_num_powerdomains)
++		return -EINVAL;
 +
-+		pci_space = be32_to_cpup(parser->range);
-+		flags = of_bus_pci_get_flags(parser->range);
-+		pci_addr = of_read_number(parser->range + 1, ns);
-+		cpu_addr = of_translate_address(parser->node,
-+				parser->range + na);
-+		size = of_read_number(parser->range + parser->pna + na, ns);
++	status = readl(pmc_base + PMC_PWRGATE_STATUS) & (1 << id);
++	return !!status;
++}
 +
-+		if (flags != range->flags)
-+			break;
-+		if (pci_addr != range->pci_addr + range->size ||
-+		    cpu_addr != range->cpu_addr + range->size)
-+			break;
++int tegra_powergate_remove_clamping(int id)
++{
++	u32 mask;
 +
-+		range->size += size;
-+		parser->range += parser->np;
++	if (id < 0 || id >= tegra_num_powerdomains)
++		return -EINVAL;
++
++	/*
++	 * Tegra 2 has a bug where PCIE and VDE clamping masks are
++	 * swapped relatively to the partition ids
++	 */
++	if (id == TEGRA_POWERGATE_VDEC)
++		mask = (1 << TEGRA_POWERGATE_PCIE);
++	else if (id == TEGRA_POWERGATE_PCIE)
++		mask = (1 << TEGRA_POWERGATE_VDEC);
++	else
++		mask = (1 << id);
++
++	writel(mask, pmc_base + PMC_REMOVE_CLAMPING_CMD);
++
++	return 0;
++}
++EXPORT_SYMBOL(tegra_powergate_remove_clamping);
++
++/* Must be called with clk disabled, and returns with clk enabled */
++int tegra_powergate_sequence_power_up(int id, struct clk *clk,
++					struct reset_control *rst)
++{
++	int ret;
++
++	reset_control_assert(rst);
++
++	ret = tegra_powergate_power_on(id);
++	if (ret)
++		goto err_power;
++
++	ret = clk_enable(clk);
++	if (ret)
++		goto err_clk;
++
++	udelay(10);
++
++	ret = tegra_powergate_remove_clamping(id);
++	if (ret)
++		goto err_clamp;
++
++	udelay(10);
++	reset_control_deassert(rst);
++
++	return 0;
++
++err_clamp:
++	clk_disable(clk);
++err_clk:
++	tegra_powergate_power_off(id);
++err_power:
++	return ret;
++}
++EXPORT_SYMBOL(tegra_powergate_sequence_power_up);
++
++static int tegra_powergate_init(void)
++{
++	switch (tegra_get_chiptype()) {
++	case TEGRA20:
++		tegra_num_powerdomains = 7;
++		break;
++	case TEGRA30:
++		tegra_num_powerdomains = 14;
++		break;
++	case TEGRA114:
++		tegra_num_powerdomains = 23;
++		break;
++	case TEGRA124:
++		tegra_num_powerdomains = 25;
++		break;
++	default:
++		/* Unknown Tegra variant. Disable powergating */
++		tegra_num_powerdomains = 0;
++		break;
 +	}
 +
-+	return range;
-+}
-+EXPORT_SYMBOL_GPL(of_pci_range_parser_one);
-+#endif /* CONFIG_PCI */
-+
- /*
-  * Array of bus specific translators
-  */
-diff --git a/include/of_address.h b/include/of_address.h
-index 9022ab7..f9c3c0f 100644
---- a/include/of_address.h
-+++ b/include/of_address.h
-@@ -4,6 +4,38 @@
- #include <common.h>
- #include <of.h>
- 
-+struct of_pci_range_parser {
-+	struct device_node *node;
-+	const __be32 *range;
-+	const __be32 *end;
-+	int np;
-+	int pna;
-+};
-+
-+struct of_pci_range {
-+	u32 pci_space;
-+	u64 pci_addr;
-+	u64 cpu_addr;
-+	u64 size;
-+	u32 flags;
-+};
-+
-+#define for_each_of_pci_range(parser, range) \
-+	for (; of_pci_range_parser_one(parser, range);)
-+
-+static inline void of_pci_range_to_resource(struct of_pci_range *range,
-+					    struct device_node *np,
-+					    struct resource *res)
-+{
-+	res->flags = range->flags;
-+	res->start = range->cpu_addr;
-+	res->end = range->cpu_addr + range->size - 1;
-+	res->parent = NULL;
-+	INIT_LIST_HEAD(&res->children);
-+	INIT_LIST_HEAD(&res->sibling);
-+	res->name = np->full_name;
++	return 0;
 +}
 +
- #ifndef pci_address_to_pio
- static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
- #endif
-@@ -23,7 +55,11 @@ extern struct device_node *of_find_matching_node_by_address(
- 	struct device_node *from, const struct of_device_id *matches,
- 	u64 base_address);
- extern void __iomem *of_iomap(struct device_node *np, int index);
--
-+extern int of_pci_range_parser_init(struct of_pci_range_parser *parser,
-+			struct device_node *node);
-+extern struct of_pci_range *of_pci_range_parser_one(
-+			struct of_pci_range_parser *parser,
-+			struct of_pci_range *range);
- #else /* CONFIG_OFTREE */
+ static int tegra20_pmc_probe(struct device_d *dev)
+ {
+ 	pmc_base = dev_request_mem_region(dev, 0);
+@@ -45,6 +176,8 @@ static int tegra20_pmc_probe(struct device_d *dev)
+ 		return -ENODEV;
+ 	}
  
- static inline u64 of_translate_address(struct device_node *dev,
-@@ -67,6 +103,19 @@ static inline void __iomem *of_iomap(struct device_node *np, int index)
- 	return NULL;
++	tegra_powergate_init();
++
+ 	return 0;
  }
  
-+static inline int of_pci_range_parser_init(struct of_pci_range_parser *parser,
-+			struct device_node *node)
-+{
-+	return -1;
-+}
-+
-+static inline struct of_pci_range *of_pci_range_parser_one(
-+					struct of_pci_range_parser *parser,
-+					struct of_pci_range *range)
-+{
-+	return NULL;
-+}
-+
- #endif /* CONFIG_OFTREE */
- 
- #endif /* __OF_ADDRESS_H */
 -- 
 1.9.3
 
