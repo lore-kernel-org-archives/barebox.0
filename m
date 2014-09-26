@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XXQnZ-0004hI-P9
- for barebox@lists.infradead.org; Fri, 26 Sep 2014 08:22:43 +0000
+ Linux)) id 1XXQno-0004rS-08
+ for barebox@lists.infradead.org; Fri, 26 Sep 2014 08:22:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Sep 2014 10:22:15 +0200
-Message-Id: <1411719735-30949-10-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 26 Sep 2014 10:22:13 +0200
+Message-Id: <1411719735-30949-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1411719735-30949-1-git-send-email-s.hauer@pengutronix.de>
 References: <1411719735-30949-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,52 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] ARM: am335x_defconfig: Enable USB support
+Subject: [PATCH 7/9] ARM: dts: Update am335x-bone-common.dtsi
 To: barebox@lists.infradead.org
+
+Update from current upstream dtsi. This enables the USB control
+module.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/am335x_defconfig | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/arm/dts/am335x-bone-common.dtsi | 38 ++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
-index 4dc6cbf..cca1ae1 100644
---- a/arch/arm/configs/am335x_defconfig
-+++ b/arch/arm/configs/am335x_defconfig
-@@ -74,6 +74,7 @@ CONFIG_CMD_I2C=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_SPI=y
- CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_USBGADGET=y
- CONFIG_CMD_BAREBOX_UPDATE=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
-@@ -88,6 +89,9 @@ CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
- CONFIG_DRIVER_NET_CPSW=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_ASIX=y
-+CONFIG_NET_USB_SMSC95XX=y
- CONFIG_DRIVER_SPI_OMAP3=y
- CONFIG_I2C=y
- CONFIG_I2C_OMAP=y
-@@ -97,6 +101,15 @@ CONFIG_NAND=y
- CONFIG_NAND_OMAP_GPMC=y
- CONFIG_MTD_UBI=y
- CONFIG_USB_HOST=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_USB_GADGET=y
-+CONFIG_USB_GADGET_DFU=y
-+CONFIG_USB_GADGET_SERIAL=y
-+CONFIG_USB_GADGET_FASTBOOT=y
-+CONFIG_USB_MUSB=y
-+CONFIG_USB_MUSB_AM335X=y
-+CONFIG_USB_MUSB_HOST=y
-+CONFIG_USB_MUSB_GADGET=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_OMAP_HSMMC=y
+diff --git a/arch/arm/dts/am335x-bone-common.dtsi b/arch/arm/dts/am335x-bone-common.dtsi
+index e1effac..ef97d90 100644
+--- a/arch/arm/dts/am335x-bone-common.dtsi
++++ b/arch/arm/dts/am335x-bone-common.dtsi
+@@ -178,31 +178,31 @@
+ 
+ &usb {
+ 	status = "okay";
++};
+ 
+-	control@44e10000 {
+-		status = "okay";
+-	};
++&usb_ctrl_mod {
++	status = "okay";
++};
+ 
+-	usb-phy@47401300 {
+-		status = "okay";
+-	};
++&usb0_phy {
++	status = "okay";
++};
+ 
+-	usb-phy@47401b00 {
+-		status = "okay";
+-	};
++&usb1_phy {
++	status = "okay";
++};
+ 
+-	usb@47401000 {
+-		status = "okay";
+-	};
++&usb0 {
++	status = "okay";
++};
+ 
+-	usb@47401800 {
+-		status = "okay";
+-		dr_mode = "host";
+-	};
++&usb1 {
++	status = "okay";
++	dr_mode = "host";
++};
+ 
+-	dma-controller@07402000  {
+-		status = "okay";
+-	};
++&cppi41dma  {
++	status = "okay";
+ };
+ 
+ &i2c0 {
 -- 
 2.1.0
 
