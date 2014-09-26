@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XXQnZ-0004hB-PC
- for barebox@lists.infradead.org; Fri, 26 Sep 2014 08:22:43 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1XXQnC-0007Nc-TI
- for barebox@lists.infradead.org; Fri, 26 Sep 2014 10:22:18 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <sha@pengutronix.de>) id 1XXQnC-00083v-MN
- for barebox@lists.infradead.org; Fri, 26 Sep 2014 10:22:18 +0200
+ Linux)) id 1XXQoI-0005KZ-0F
+ for barebox@lists.infradead.org; Fri, 26 Sep 2014 08:23:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Sep 2014 10:22:06 +0200
-Message-Id: <1411719735-30949-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 26 Sep 2014 10:22:07 +0200
+Message-Id: <1411719735-30949-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1411719735-30949-1-git-send-email-s.hauer@pengutronix.de>
+References: <1411719735-30949-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,126 +21,294 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: MUSB support
+Subject: [PATCH 1/9] USB: add usb phy header file
 To: barebox@lists.infradead.org
 
-This series adds MUSB support for AM33xx to barebox. The driver is
-based on the Linux driver and stripped down for barebox. This series
-is based on Rolf Evers Fischers work who unfortunately was not aware
-of Christoph Fritz work at that time. I used Rolfs driver to continue
-the work because his version already has device tree support.
+Mostly taken from the Linux Kernel to ease porting phy
+handling code.
 
-I decided to first add the necessary files of the MUSB driver
-without any changes and in a second patch add the barebox specific
-changes. This way we'll find the barebox changes in the repository.
-Instead of ifdeffing half of the driver away I removed the parts we
-don't need for barebox which keeps the driver in a readable state.
-Parts removed are: DMA, Host negotiation protocol and power management
-stuff.
-
-The driver has been tested in both host and device mode on the Beaglebone
-black and a custom board. On the Beaglebone the OTG port only works
-in device mode, I don't know why yet. The host port properly works
-in host mode though.
-
-The driver supports a poor mans otg mode. For device trees which specify
-dr_mode = "otg" the driver registers a otg device which has a 'mode'
-parameter which can be used to select host/peripheral mode during runtime.
-For example otg0.mode="host" specifies host mode. The same behaviour
-is implemented in the i.MX chipidea driver, the code for this should
-be merged at some point.
-
-Sascha
-
-
-The following changes since commit b1536a3298e25dfdd0136c0fc8d68d2a12cff63c:
-
-  USB: gadget: dfu: Add max_speed to dfu_driver (2014-09-25 16:25:46 +0200)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/barebox.git 
-
-for you to fetch changes up to f2368af41f5283a1b804c2cb2f62da56630c20f9:
-
-  ARM: am335x_defconfig: Enable USB support (2014-09-26 10:20:28 +0200)
-
-----------------------------------------------------------------
-Rolf Evers-Fischer (1):
-      ARM: AM33xx: Enable USB and USB phy clocks
-
-Sascha Hauer (8):
-      USB: add usb phy header file
-      USB: gadget: put poller into core
-      USB: gadget: allow multiple udc drivers
-      USB: Add MUSB driver from Linux
-      USB: MUSB: Add barebox specific changes
-      ARM: dts: Update am335x-bone-common.dtsi
-      Documentation: USB: Add description for OTG device
-      ARM: am335x_defconfig: Enable USB support
-
- Documentation/user/usb.rst                       |   21 +
- arch/arm/configs/am335x_defconfig                |   13 +
- arch/arm/dts/am335x-bone-common.dtsi             |   38 +-
- arch/arm/mach-omap/am33xx_clock.c                |   15 +-
- arch/arm/mach-omap/am33xx_generic.c              |    2 +
- arch/arm/mach-omap/include/mach/am33xx-clock.h   |    2 +
- arch/arm/mach-omap/include/mach/am33xx-generic.h |    1 +
- drivers/usb/Kconfig                              |    2 +
- drivers/usb/Makefile                             |    1 +
- drivers/usb/core/of.c                            |    1 +
- drivers/usb/gadget/Kconfig                       |   12 +-
- drivers/usb/gadget/at91_udc.c                    |   23 +-
- drivers/usb/gadget/fsl_udc.c                     |   44 +-
- drivers/usb/gadget/pxa27x_udc.c                  |   27 +-
- drivers/usb/gadget/udc-core.c                    |   34 +
- drivers/usb/imx/chipidea-imx.c                   |    1 +
- drivers/usb/musb/Kconfig                         |   29 +
- drivers/usb/musb/Makefile                        |   11 +
- drivers/usb/musb/am35x-phy-control.h             |   21 +
- drivers/usb/musb/musb_am335x.c                   |   29 +
- drivers/usb/musb/musb_barebox.c                  |  146 ++
- drivers/usb/musb/musb_core.c                     | 1156 ++++++++++++++
- drivers/usb/musb/musb_core.h                     |  585 ++++++++
- drivers/usb/musb/musb_dma.h                      |  194 +++
- drivers/usb/musb/musb_dsps.c                     |  464 ++++++
- drivers/usb/musb/musb_gadget.c                   | 1308 ++++++++++++++++
- drivers/usb/musb/musb_gadget.h                   |  147 ++
- drivers/usb/musb/musb_gadget_ep0.c               | 1079 +++++++++++++
- drivers/usb/musb/musb_host.c                     | 1749 ++++++++++++++++++++++
- drivers/usb/musb/musb_host.h                     |  258 ++++
- drivers/usb/musb/musb_io.h                       |  122 ++
- drivers/usb/musb/musb_regs.h                     |  652 ++++++++
- drivers/usb/musb/phy-am335x-control.c            |  168 +++
- drivers/usb/musb/phy-am335x.c                    |   86 ++
- drivers/usb/musb/phy-am335x.h                    |    6 +
- include/linux/barebox-wrapper.h                  |    7 +
- include/usb/gadget.h                             |    1 +
- include/usb/musb.h                               |  152 ++
- include/usb/phy.h                                |  220 +++
- include/usb/usb.h                                |    9 -
- 40 files changed, 8723 insertions(+), 113 deletions(-)
- create mode 100644 drivers/usb/musb/Kconfig
- create mode 100644 drivers/usb/musb/Makefile
- create mode 100644 drivers/usb/musb/am35x-phy-control.h
- create mode 100644 drivers/usb/musb/musb_am335x.c
- create mode 100644 drivers/usb/musb/musb_barebox.c
- create mode 100644 drivers/usb/musb/musb_core.c
- create mode 100644 drivers/usb/musb/musb_core.h
- create mode 100644 drivers/usb/musb/musb_dma.h
- create mode 100644 drivers/usb/musb/musb_dsps.c
- create mode 100644 drivers/usb/musb/musb_gadget.c
- create mode 100644 drivers/usb/musb/musb_gadget.h
- create mode 100644 drivers/usb/musb/musb_gadget_ep0.c
- create mode 100644 drivers/usb/musb/musb_host.c
- create mode 100644 drivers/usb/musb/musb_host.h
- create mode 100644 drivers/usb/musb/musb_io.h
- create mode 100644 drivers/usb/musb/musb_regs.h
- create mode 100644 drivers/usb/musb/phy-am335x-control.c
- create mode 100644 drivers/usb/musb/phy-am335x.c
- create mode 100644 drivers/usb/musb/phy-am335x.h
- create mode 100644 include/usb/musb.h
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/core/of.c          |   1 +
+ drivers/usb/imx/chipidea-imx.c |   1 +
+ include/usb/phy.h              | 220 +++++++++++++++++++++++++++++++++++++++++
+ include/usb/usb.h              |   9 --
+ 4 files changed, 222 insertions(+), 9 deletions(-)
  create mode 100644 include/usb/phy.h
+
+diff --git a/drivers/usb/core/of.c b/drivers/usb/core/of.c
+index 1ddbdaa..fd20368 100644
+--- a/drivers/usb/core/of.c
++++ b/drivers/usb/core/of.c
+@@ -16,6 +16,7 @@
+ 
+ #include <common.h>
+ #include <usb/usb.h>
++#include <usb/phy.h>
+ #include <of.h>
+ 
+ static const char *usb_dr_modes[] = {
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 62feae8..959f5ba 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -22,6 +22,7 @@
+ #include <usb/ehci.h>
+ #include <regulator.h>
+ #include <usb/chipidea-imx.h>
++#include <usb/phy.h>
+ #include <usb/ulpi.h>
+ #include <usb/fsl_usb2.h>
+ 
+diff --git a/include/usb/phy.h b/include/usb/phy.h
+new file mode 100644
+index 0000000..057ad1c
+--- /dev/null
++++ b/include/usb/phy.h
+@@ -0,0 +1,220 @@
++/* USB OTG (On The Go) defines */
++/*
++ *
++ * These APIs may be used between USB controllers.  USB device drivers
++ * (for either host or peripheral roles) don't use these calls; they
++ * continue to use just usb_device and usb_gadget.
++ */
++
++#ifndef __LINUX_USB_PHY_H
++#define __LINUX_USB_PHY_H
++
++#include <notifier.h>
++#include <usb/usb.h>
++#include <linux/err.h>
++
++enum usb_phy_interface {
++	USBPHY_INTERFACE_MODE_UNKNOWN,
++	USBPHY_INTERFACE_MODE_UTMI,
++	USBPHY_INTERFACE_MODE_UTMIW,
++	USBPHY_INTERFACE_MODE_ULPI,
++	USBPHY_INTERFACE_MODE_SERIAL,
++	USBPHY_INTERFACE_MODE_HSIC,
++};
++
++enum usb_phy_events {
++	USB_EVENT_NONE,         /* no events or cable disconnected */
++	USB_EVENT_VBUS,         /* vbus valid event */
++	USB_EVENT_ID,           /* id was grounded */
++	USB_EVENT_CHARGER,      /* usb dedicated charger */
++	USB_EVENT_ENUMERATED,   /* gadget driver enumerated */
++};
++
++/* associate a type with PHY */
++enum usb_phy_type {
++	USB_PHY_TYPE_UNDEFINED,
++	USB_PHY_TYPE_USB2,
++	USB_PHY_TYPE_USB3,
++};
++
++struct usb_phy;
++
++/* for transceivers connected thru an ULPI interface, the user must
++ * provide access ops
++ */
++struct usb_phy_io_ops {
++	int (*read)(struct usb_phy *x, u32 reg);
++	int (*write)(struct usb_phy *x, u32 val, u32 reg);
++};
++
++struct usb_phy {
++	struct device_d		*dev;
++	const char		*label;
++	unsigned int		 flags;
++
++	enum usb_phy_type	type;
++	enum usb_phy_events	last_event;
++
++	struct usb_phy_io_ops	*io_ops;
++	void __iomem		*io_priv;
++
++	/* to pass extra port status to the root hub */
++	u16			port_status;
++	u16			port_change;
++
++	/* to support controllers that have multiple transceivers */
++	struct list_head	head;
++
++	/* initialize/shutdown the OTG controller */
++	int	(*init)(struct usb_phy *x);
++	void	(*shutdown)(struct usb_phy *x);
++
++	/* enable/disable VBUS */
++	int	(*set_vbus)(struct usb_phy *x, int on);
++
++	/* effective for B devices, ignored for A-peripheral */
++	int	(*set_power)(struct usb_phy *x,
++				unsigned mA);
++
++	/* for non-OTG B devices: set transceiver into suspend mode */
++	int	(*set_suspend)(struct usb_phy *x,
++				int suspend);
++
++	/*
++	 * Set wakeup enable for PHY, in that case, the PHY can be
++	 * woken up from suspend status due to external events,
++	 * like vbus change, dp/dm change and id.
++	 */
++	int	(*set_wakeup)(struct usb_phy *x, bool enabled);
++
++	/* notify phy connect status change */
++	int	(*notify_connect)(struct usb_phy *x,
++			enum usb_device_speed speed);
++	int	(*notify_disconnect)(struct usb_phy *x,
++			enum usb_device_speed speed);
++};
++
++/**
++ * struct usb_phy_bind - represent the binding for the phy
++ * @dev_name: the device name of the device that will bind to the phy
++ * @phy_dev_name: the device name of the phy
++ * @index: used if a single controller uses multiple phys
++ * @phy: reference to the phy
++ * @list: to maintain a linked list of the binding information
++ */
++struct usb_phy_bind {
++	const char	*dev_name;
++	const char	*phy_dev_name;
++	u8		index;
++	struct usb_phy	*phy;
++	struct list_head list;
++};
++
++/* helpers for direct access thru low-level io interface */
++static inline int usb_phy_io_read(struct usb_phy *x, u32 reg)
++{
++	if (x && x->io_ops && x->io_ops->read)
++		return x->io_ops->read(x, reg);
++
++	return -EINVAL;
++}
++
++static inline int usb_phy_io_write(struct usb_phy *x, u32 val, u32 reg)
++{
++	if (x && x->io_ops && x->io_ops->write)
++		return x->io_ops->write(x, val, reg);
++
++	return -EINVAL;
++}
++
++static inline int
++usb_phy_init(struct usb_phy *x)
++{
++	if (x && x->init)
++		return x->init(x);
++
++	return 0;
++}
++
++static inline void
++usb_phy_shutdown(struct usb_phy *x)
++{
++	if (x && x->shutdown)
++		x->shutdown(x);
++}
++
++static inline int
++usb_phy_vbus_on(struct usb_phy *x)
++{
++	if (!x || !x->set_vbus)
++		return 0;
++
++	return x->set_vbus(x, true);
++}
++
++static inline int
++usb_phy_vbus_off(struct usb_phy *x)
++{
++	if (!x || !x->set_vbus)
++		return 0;
++
++	return x->set_vbus(x, false);
++}
++
++static inline int
++usb_phy_set_power(struct usb_phy *x, unsigned mA)
++{
++	if (x && x->set_power)
++		return x->set_power(x, mA);
++	return 0;
++}
++
++/* Context: can sleep */
++static inline int
++usb_phy_set_suspend(struct usb_phy *x, int suspend)
++{
++	if (x && x->set_suspend != NULL)
++		return x->set_suspend(x, suspend);
++	else
++		return 0;
++}
++
++static inline int
++usb_phy_set_wakeup(struct usb_phy *x, bool enabled)
++{
++	if (x && x->set_wakeup)
++		return x->set_wakeup(x, enabled);
++	else
++		return 0;
++}
++
++static inline int
++usb_phy_notify_connect(struct usb_phy *x, enum usb_device_speed speed)
++{
++	if (x && x->notify_connect)
++		return x->notify_connect(x, speed);
++	else
++		return 0;
++}
++
++static inline int
++usb_phy_notify_disconnect(struct usb_phy *x, enum usb_device_speed speed)
++{
++	if (x && x->notify_disconnect)
++		return x->notify_disconnect(x, speed);
++	else
++		return 0;
++}
++
++static inline const char *usb_phy_type_string(enum usb_phy_type type)
++{
++	switch (type) {
++	case USB_PHY_TYPE_USB2:
++		return "USB2 PHY";
++	case USB_PHY_TYPE_USB3:
++		return "USB3 PHY";
++	default:
++		return "UNKNOWN PHY TYPE";
++	}
++}
++#endif /* __LINUX_USB_PHY_H */
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index 82acf20..f02f1fb 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -440,15 +440,6 @@ enum usb_dr_mode {
+ enum usb_phy_interface of_usb_get_phy_mode(struct device_node *np,
+ 		const char *propname);
+ 
+-enum usb_phy_interface {
+-	USBPHY_INTERFACE_MODE_UNKNOWN,
+-	USBPHY_INTERFACE_MODE_UTMI,
+-	USBPHY_INTERFACE_MODE_UTMIW,
+-	USBPHY_INTERFACE_MODE_ULPI,
+-	USBPHY_INTERFACE_MODE_SERIAL,
+-	USBPHY_INTERFACE_MODE_HSIC,
+-};
+-
+ extern struct list_head usb_device_list;
+ 
+ #endif /*_USB_H_ */
+-- 
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
