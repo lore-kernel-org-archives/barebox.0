@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XXQne-0004mY-09
- for barebox@lists.infradead.org; Fri, 26 Sep 2014 08:22:46 +0000
+ Linux)) id 1XXQnt-0004wG-00
+ for barebox@lists.infradead.org; Fri, 26 Sep 2014 08:23:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Sep 2014 10:22:09 +0200
-Message-Id: <1411719735-30949-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 26 Sep 2014 10:22:14 +0200
+Message-Id: <1411719735-30949-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1411719735-30949-1-git-send-email-s.hauer@pengutronix.de>
 References: <1411719735-30949-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] USB: gadget: allow multiple udc drivers
+Subject: [PATCH 8/9] Documentation: USB: Add description for OTG device
 To: barebox@lists.infradead.org
-
-Since the MUSB driver will have it's own directory the Kconfig
-entries won't be in drivers/usb/gadget/Kconfig. This is incompatible
-with the current 'choice' approach for udc drivers. The udc drivers
-do not implement the global usb_gadget_poll() anymore, so we can
-drop the choice and allow multiple gadget drivers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/Kconfig | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ Documentation/user/usb.rst | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-index 883a19f..65315e6 100644
---- a/drivers/usb/gadget/Kconfig
-+++ b/drivers/usb/gadget/Kconfig
-@@ -1,9 +1,4 @@
--config USB_HAVE_GADGET_DRIVER
--	bool
--	default y if ARCH_IMX || ARCH_MXS || ARCH_AT91 || ARCH_PXA
--
- menuconfig USB_GADGET
--	depends on USB_HAVE_GADGET_DRIVER
- 	select USB
- 	bool "USB gadget support"
+diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+index 7cdd6ac..88be620 100644
+--- a/Documentation/user/usb.rst
++++ b/Documentation/user/usb.rst
+@@ -143,3 +143,24 @@ USB CDC ACM compliant serial device.
  
-@@ -12,13 +7,11 @@ if USB_GADGET
- config USB_GADGET_DUALSPEED
- 	bool
- 
--choice
--	prompt "USB Peripheral Controller"
--
- config USB_GADGET_DRIVER_ARC
- 	bool
- 	prompt "Arc OTG device core"
- 	depends on ARCH_IMX || ARCH_MXS
-+	default y
- 	select USB_GADGET_DUALSPEED
- 	select POLLER
- 
-@@ -26,6 +19,7 @@ config USB_GADGET_DRIVER_AT91
- 	bool
- 	prompt "at91 gadget driver"
- 	depends on ARCH_AT91
-+	default y
- 	select USB_GADGET_DUALSPEED
- 	select POLLER
- 
-@@ -33,9 +27,9 @@ config USB_GADGET_DRIVER_PXA27X
- 	bool
- 	prompt "PXA27x gadget driver"
- 	depends on ARCH_PXA
-+	default y
- 	select USB_GADGET_DUALSPEED
- 	select POLLER
--endchoice
- 
- comment "USB Gadget drivers"
- 
+ Unlike the :ref:`command_dfu` command the ``usbgadget`` command returns immediately
+ after creating the gadget. The gadget can be removed with ``usbgadget -d``.
++
++USB OTG support
++---------------
++
++barebox does not have USB OTG support. However, barebox supports some USB cores in
++both host and device mode. If these are specified for otg in the device tree
++(dr_mode = "otg";) barebox registers a OTG device which can be used to decide which
++mode shall be used. The device has a ``mode`` parameter which by default has the
++value ``otg``. setting this to ``host`` or ``device`` puts the device in the corresponding
++mode. Once a specific mode has been selected it can't be changed later anymore.
++
++.. code-block:: sh
++  barebox:/ devinfo otg0
++  Parameters:
++    mode: otg ("otg", "host", "peripheral")
++  barebox:/ otg0.mode=host
++  musb-hdrc: ConfigData=0xde (UTMI-8, dyn FIFOs, bulk combine, bulk split, HB-ISO Rx, HB-ISO Tx, SoftConn)
++  musb-hdrc: MHDRC RTL version 2.0
++  musb-hdrc: setup fifo_mode 4
++  musb-hdrc: 28/31 max ep, 16384/16384 memory
++  barebox:/
 -- 
 2.1.0
 
