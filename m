@@ -1,27 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XYY3a-0005Bk-QN
- for barebox@lists.infradead.org; Mon, 29 Sep 2014 10:19:51 +0000
-Received: by mail-la0-f47.google.com with SMTP id mc6so17954650lab.34
- for <barebox@lists.infradead.org>; Mon, 29 Sep 2014 03:19:26 -0700 (PDT)
-Date: Mon, 29 Sep 2014 14:19:22 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140929141922.b27fff3f144d14ce16b88e19@gmail.com>
-In-Reply-To: <CAOngqVXJgqckdj0QsN=s2bhAjUL4hyB3GHw2XjeENkXxehY_FQ@mail.gmail.com>
-References: <53C25B45.7010101@gmail.com>
- <20140713145526.2cf6407fc9a17a4e8db89a50@gmail.com>
- <CAOngqVV-PcbsowH9iOHXpxXNvJEb_k7KyWakQVVGT9FMm4iFLw@mail.gmail.com>
- <20140715110157.e505c7ad66ef5871b1ecf830@gmail.com>
- <CAOngqVVHG5+S68okE4kqU95FNtkxvJFtcZj0W2KmH=54XxdKTg@mail.gmail.com>
- <20140715142753.d2c6424ea6b2d1b810b0de73@gmail.com>
- <CAOngqVXSRuHmPL_Z73AfLPCdzitS7=kkViy2rJMvX1vvsiOhbw@mail.gmail.com>
- <20140716063002.GB23235@pengutronix.de>
- <CAOngqVUUZOeRToJp_6vvxqmB-x2D=VAHo=JntpfegQ03P5axgQ@mail.gmail.com>
- <20140904211419.ea6eae69a1e96d2cb9d3e20e@gmail.com>
- <CAOngqVV5qCVVOMrrfh705inrYAGz=b3+M7J+NSJ6_UY+4njpJA@mail.gmail.com>
- <20140928182200.11222332eea95ccc6c021bf4@gmail.com>
- <CAOngqVXJgqckdj0QsN=s2bhAjUL4hyB3GHw2XjeENkXxehY_FQ@mail.gmail.com>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XYaPh-0001hJ-Jv
+ for barebox@lists.infradead.org; Mon, 29 Sep 2014 12:50:50 +0000
+Message-ID: <1411995011.12138.8.camel@lws-gamez.phytec.de>
+From: Teresa Gamez <t.gamez@phytec.de>
+Date: Mon, 29 Sep 2014 14:50:11 +0200
+In-Reply-To: <20140929060525.GQ4992@pengutronix.de>
+References: <1411730551-26605-1-git-send-email-t.gamez@phytec.de>
+ <20140929060525.GQ4992@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -31,86 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picotcp tftp support [was Adding IPv4 multicast support]
-To: Daniele Lacamera <daniele.lacamera@tass.be>
-Cc: barebox <barebox@lists.infradead.org>, Michele Di Pede <michele.di.pede@tass.be>
+Subject: Re: [PATCHv2] commands: add of_display_timings
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, 29 Sep 2014 11:45:08 +0200
-Daniele Lacamera <daniele.lacamera@tass.be> wrote:
-
-> On Sun, Sep 28, 2014 at 4:22 PM, Antony Pavlov <antonynpavlov@gmail.com> =
-wrote:
-> >
-> > 1. Do we really need this '#ifdef PICO_SUPPORT_UDP' BEFORE (!)
-> > guard macro in pico_dhcp_client.h?
-> >
-> =
-
-> I moved these in latest PicoTCP commit. Thanks.
-> =
-
-> =
-
-> > 2. New pico_tftp_start_{r,t}x programming interface can be used for
-> > realization legacy standalone 'tftp' command.
-> > But I have no idea how to use this interface for filesystem-over-tftp
-> > (it's the modern barebox' tftp realization)!
-> >
-> > Barebox filesystem interface needs something like this programming
-> > interface:
-> >
-> >   struct pico_tftp_session *s;
-> >
-> >   s =3D pico_tftp_new_session_rx(addr, port, family, filename);
-> >   ...
-> >   filesize =3D pico_tftp_get_file_size(s);
-> >   ...
-> >   pico_tftp_receive(s, buf, len);
-> >   ...
-> >   pico_tftp_receive(s, buf, len);
-> >   ... ... ...
-> >   pico_tftp_receive(s, buf, len);
-> >   ...
-> >   pico_tftp_close(s);
-> >
-> >
-> > I mean that receiving process has to be controlled by barebox,
-> > not by picotcp. Because a new portion of data is received
-> > by filesystem user initiative, not by network stack initiative.
-> =
-
-> Thanks for the comments. A few from my side:
-> =
-
-> - pico_tftp_receive is non-blocking, and will return immediately if no
-> data is available. You always have to be bound to some RX event to be
-> sure that your next receive() call is successful, so in some way you
-> still want it network-bound.
-> =
-
-> - We can implement the get_file_size, but not all servers will support
-> it. Michele has a strategy for developing more advanced TFTP features,
-> he will post on it later
-
-  I want just to say that barebox tries to get file size if it's possible.
-  Please see tftp_parse_oack() function in fs/tftp.c:
-
-   if (!strcmp(opt, "tsize"))
-       priv->filesize =3D simple_strtoul(val, NULL, 10);
-
-  This priv->filesize is used in tftp filesystem stat() call realization.
-  So it's reasonable to give barebox a means to set priv->filesize
-  after switching to picotcp.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gU2FzY2hhLAoKQW0gTW9udGFnLCBkZW4gMjkuMDkuMjAxNCwgMDg6MDUgKzAyMDAgc2No
+cmllYiBTYXNjaGEgSGF1ZXI6Cj4gT24gRnJpLCBTZXAgMjYsIDIwMTQgYXQgMDE6MjI6MzFQTSAr
+MDIwMCwgVGVyZXNhIEfDoW1leiB3cm90ZToKPiA+IEEgbG90IG9mIGJvYXJkcyB1c2UgZGlzcGxh
+eS10aW1pbmdzIG5vZGVzIHRvIGRlZmluZSB0aGUgdGltaW5ncyBvZiBvbmUgb3IgbW9yZQo+ID4g
+ZGlzcGxheXMuIFRoaXMgY29tbWFuZCBtYWtlcyBpdCBwb3NzaWJsZSB0byBsaXN0IGFuZCBzZWxl
+Y3QgZGlzcGxheXMgd2hpY2ggYXJlCj4gPiBkZWZpbmVkIGluIGEgZGV2aWNlIHRyZWUuCj4gPiAK
+PiA+IFNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgo+ID4g
+LS0tCj4gPiBDaGFuZ2VzIHYyOgo+ID4gLSByZW1vdmVkIGNhc3QKPiA+IC0gYWRkZWQgZnJlZShm
+dGQpCj4gPiAtIGZyZWVkIHJvb3QKPiA+IAoKLi4uCj4gPiArCj4gPiArc3RhdGljIGludCBkb19v
+Zl9kaXNwbGF5X3RpbWluZ3MoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiA+ICt7Cj4gPiArCWlu
+dCBvcHQ7Cj4gPiArCWludCBsaXN0ID0gMDsKPiA+ICsJaW50IHNlbGVjdGVkID0gMDsKPiA+ICsJ
+aW50IHJldCA9IDA7Cj4gPiArCXN0cnVjdCBkZXZpY2Vfbm9kZSAqcm9vdCA9IE5VTEw7Cj4gPiAr
+CXN0cnVjdCBkZXZpY2Vfbm9kZSAqaW50ZXJuYWxfcm9vdCA9IE5VTEw7Cj4gPiArCXN0cnVjdCBk
+ZXZpY2Vfbm9kZSAqZGlzcGxheSA9IE5VTEw7Cj4gPiArCXN0cnVjdCBkZXZpY2Vfbm9kZSAqdGlt
+aW5ncyA9IE5VTEw7Cj4gPiArCWNoYXIgKnRpbWluZ3BhdGggPSBOVUxMOwo+ID4gKwljaGFyICpk
+dGJmaWxlID0gTlVMTDsKPiA+ICsKPiA+ICsJd2hpbGUgKChvcHQgPSBnZXRvcHQoYXJnYywgYXJn
+diwgInNTOmxmOiIpKSA+IDApIHsKPiA+ICsJCXN3aXRjaCAob3B0KSB7Cj4gPiArCQljYXNlICds
+JzoKPiA+ICsJCQlsaXN0ID0gMTsKPiA+ICsJCQlicmVhazsKPiA+ICsJCWNhc2UgJ2YnOgo+ID4g
+KwkJCWR0YmZpbGUgPSBvcHRhcmc7Cj4gPiArCQkJYnJlYWs7Cj4gPiArCQljYXNlICdzJzoKPiA+
+ICsJCQlzZWxlY3RlZCA9IDE7Cj4gPiArCQkJYnJlYWs7Cj4gPiArCQljYXNlICdTJzoKPiA+ICsJ
+CQl0aW1pbmdwYXRoID0geHphbGxvYyhzdHJsZW4ob3B0YXJnKSArIDEpOwo+ID4gKwkJCXN0cmNw
+eSh0aW1pbmdwYXRoLCBvcHRhcmcpOwo+ID4gKwkJCWJyZWFrOwo+IAo+IFlvdSdyZSByaWdodCwg
+dGhlcmUncyBubyBwbGFjZSB0byBmcmVlIHRoaXMgc3RyaW5nLgo+IAo+IEJUVyB3ZSBoYXZlIHhz
+dHJkdXAgZm9yIGR1cGxpY2F0aW5nIHN0cmluZ3MuCj4gCj4gCj4gPiArCQkvKgo+ID4gKwkJICog
+V2Ugc2V0IHRoZSBleHRlcm5hbCBub2RlIHRvIG91ciBpbnRlcm5hbCBub2RlIGFzCj4gPiArCQkg
+KiBsb25nIGFzIHRoZSBjb21tYW5kIHJ1bnMuIFRoaXMgbWFrZXMgbGlmZSBlYXNpZXIgdG8KPiA+
+ICsJCSAqIHVzZSBvZiB0cmVlIGZ1bmN0aW9ucy4gV2UgYmFja3VwIHRoZSBpbnRlcm5hbCByb290
+IG5vZGUKPiA+ICsJCSAqIGFuZCBzZXQgaXQgYmFjayBhdCB0aGUgZW5kLgo+ID4gKwkJICovCj4g
+PiArCQlpbnRlcm5hbF9yb290ID0gb2ZfZ2V0X3Jvb3Rfbm9kZSgpOwo+ID4gKwkJb2Zfc2V0X3Jv
+b3Rfbm9kZShOVUxMKTsKPiA+ICsJCW9mX3NldF9yb290X25vZGUocm9vdCk7Cj4gCj4gU2luY2Ug
+dGhlIG9ubHkgZGV2aWNlIHRyZWUgZnVuY3Rpb24geW91IGFyZSB1c2luZyBpcwo+IGZvcl9lYWNo
+X25vZGVfYnlfbmFtZSgpLCBjb3VsZCB5b3UgYWRkIGE6Cj4gCj4gI2RlZmluZSBmb3JfZWFjaF9u
+b2RlX2J5X25hbWVfZnJvbShkbiwgcm9vdCwgbmFtZSkgXAo+IAlmb3IgKGRuID0gb2ZfZmluZF9u
+b2RlX2J5X25hbWUocm9vdCwgbmFtZSk7IGRuOyBcCj4gCSAgICAgZG4gPSBvZl9maW5kX25vZGVf
+YnlfbmFtZShkbiwgbmFtZSkpCj4gCj4gdG8gaW5jbHVkZS9vZi5oIGFuZCByZW1vdmUgdGhlIHRl
+bXBvcmFyeSBvdmVyd3JpdGluZyBvZiB0aGUKPiBpbnRlcm5hbCBkZXZpY2UgdHJlZT8KCkknbSBh
+bHNvIHVzaW5nIG9mX3BhcnNlX3BoYW5kbGUoKSB3aGljaCBjYWxscyBvZl9maW5kX25vZGVfYnlf
+cGhhbmRsZSgpLgpBbmQgdGhpcyBpcyB1c2luZyB0aGUgcm9vdF9ub2RlIGFnYWluLgoKSSBjYW4g
+Y3JlYXRlICpfZnJvbSgpIGZ1bmN0aW9ucyBmb3IgYm90aCBvZiB0aGVtIGFzIG92ZXJ3cml0aW5n
+IHRoZSByb290Cm5vZGUgaXMgcmVhbGx5IG5vdCBwcmV0dHkuLgoKVGVyZXNhCgoKPiAKPiBTYXNj
+aGEKPiAKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
