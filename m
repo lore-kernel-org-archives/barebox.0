@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XYt7K-0004jZ-QT
- for barebox@lists.infradead.org; Tue, 30 Sep 2014 08:49:07 +0000
-Date: Tue, 30 Sep 2014 10:45:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140930084534.GY4992@pengutronix.de>
-References: <1412004776-18993-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XYvPb-0001UB-Ff
+ for barebox@lists.infradead.org; Tue, 30 Sep 2014 11:16:08 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 3741AA001F6
+ for <barebox@lists.infradead.org>; Tue, 30 Sep 2014 13:15:52 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 30 Sep 2014 13:15:28 +0200
+Message-Id: <1412075730-5946-3-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1412075730-5946-1-git-send-email-t.gamez@phytec.de>
+References: <1412075730-5946-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1412004776-18993-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,65 +20,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: usb: drop help for force rescan option
-To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCHv3 3/5] of: base: Add of_parse_phandle_from
+To: barebox@lists.infradead.org
 
-On Mon, Sep 29, 2014 at 05:32:56PM +0200, Wjatscheslaw Stoljarski (Slawa) wrote:
-> From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
-> 
-> Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-
-Applied, thanks
-
-Sascha
-
-> ---
->  commands/usb.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/commands/usb.c b/commands/usb.c
-> index a37d503..48c6619 100644
-> --- a/commands/usb.c
-> +++ b/commands/usb.c
-> @@ -138,7 +138,6 @@ BAREBOX_CMD_HELP_START(usb)
->  BAREBOX_CMD_HELP_TEXT("Scan for USB devices.")
->  BAREBOX_CMD_HELP_TEXT("")
->  BAREBOX_CMD_HELP_TEXT("Options:")
-> -BAREBOX_CMD_HELP_OPT("-f", "force rescan")
->  BAREBOX_CMD_HELP_OPT("-s", "show devices")
->  BAREBOX_CMD_HELP_OPT("-t", "show USB tree")
->  BAREBOX_CMD_HELP_END
-> @@ -146,7 +145,7 @@ BAREBOX_CMD_HELP_END
->  BAREBOX_CMD_START(usb)
->  	.cmd		= do_usb,
->  	BAREBOX_CMD_DESC("(re-)detect USB devices")
-> -	BAREBOX_CMD_OPTS("[-fts]")
-> +	BAREBOX_CMD_OPTS("[-ts]")
->  	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
->  	BAREBOX_CMD_HELP(cmd_usb_help)
->  	BAREBOX_CMD_COMPLETE(empty_complete)
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkZWQgb2ZfcGFyc2VfcGhhbmRsZV9mcm9tKCkgdG8gYmUgYWJsZSB0byB1c2UgZXh0ZXJuYWwg
+cm9vdCBub2Rlcy4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVj
+LmRlPgotLS0KIGRyaXZlcnMvb2YvYmFzZS5jIHwgMjggKysrKysrKysrKysrKysrKysrKysrKysr
+LS0tLQogaW5jbHVkZS9vZi5oICAgICAgfCAxMSArKysrKysrKysrKwogMiBmaWxlcyBjaGFuZ2Vk
+LCAzNSBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+b2YvYmFzZS5jIGIvZHJpdmVycy9vZi9iYXNlLmMKaW5kZXggMDYxZmM3OS4uZjM2M2NjMSAxMDA2
+NDQKLS0tIGEvZHJpdmVycy9vZi9iYXNlLmMKKysrIGIvZHJpdmVycy9vZi9iYXNlLmMKQEAgLTEx
+MzAsMTYgKzExMzAsMTkgQEAgaW50IG9mX3Byb3BlcnR5X3dyaXRlX3U2NF9hcnJheShzdHJ1Y3Qg
+ZGV2aWNlX25vZGUgKm5wLAogfQogCiAvKioKLSAqIG9mX3BhcnNlX3BoYW5kbGUgLSBSZXNvbHZl
+IGEgcGhhbmRsZSBwcm9wZXJ0eSB0byBhIGRldmljZV9ub2RlIHBvaW50ZXIKKyAqIG9mX3BhcnNl
+X3BoYW5kbGVfZnJvbSAtIFJlc29sdmUgYSBwaGFuZGxlIHByb3BlcnR5IHRvIGEgZGV2aWNlX25v
+ZGUgcG9pbnRlciBmcm9tCisgKiBhIGdpdmVuIHJvb3Qgbm9kZQogICogQG5wOiBQb2ludGVyIHRv
+IGRldmljZSBub2RlIGhvbGRpbmcgcGhhbmRsZSBwcm9wZXJ0eQorICogQHJvb3Q6IHJvb3Qgbm9k
+ZSBvZiB0aGUgdHJlZSB0byBzZWFyY2ggaW4uIElmIE5VTEwgdXNlIHRoZSBpbnRlcm5hbCB0cmVl
+LgogICogQHBoYW5kbGVfbmFtZTogTmFtZSBvZiBwcm9wZXJ0eSBob2xkaW5nIGEgcGhhbmRsZSB2
+YWx1ZQogICogQGluZGV4OiBGb3IgcHJvcGVydGllcyBob2xkaW5nIGEgdGFibGUgb2YgcGhhbmRs
+ZXMsIHRoaXMgaXMgdGhlIGluZGV4IGludG8KICAqICAgICAgICAgdGhlIHRhYmxlCiAgKgogICog
+UmV0dXJucyB0aGUgZGV2aWNlX25vZGUgcG9pbnRlciBmb3VuZCBvciBOVUxMLgogICovCi1zdHJ1
+Y3QgZGV2aWNlX25vZGUgKm9mX3BhcnNlX3BoYW5kbGUoY29uc3Qgc3RydWN0IGRldmljZV9ub2Rl
+ICpucCwKLQkJCQkgICAgIGNvbnN0IGNoYXIgKnBoYW5kbGVfbmFtZSwgaW50IGluZGV4KQorc3Ry
+dWN0IGRldmljZV9ub2RlICpvZl9wYXJzZV9waGFuZGxlX2Zyb20oY29uc3Qgc3RydWN0IGRldmlj
+ZV9ub2RlICpucCwKKwkJCQkJc3RydWN0IGRldmljZV9ub2RlICpyb290LAorCQkJCQljb25zdCBj
+aGFyICpwaGFuZGxlX25hbWUsIGludCBpbmRleCkKIHsKIAljb25zdCBfX2JlMzIgKnBoYW5kbGU7
+CiAJaW50IHNpemU7CkBAIC0xMTQ4LDcgKzExNTEsMjQgQEAgc3RydWN0IGRldmljZV9ub2RlICpv
+Zl9wYXJzZV9waGFuZGxlKGNvbnN0IHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAsCiAJaWYgKCghcGhh
+bmRsZSkgfHwgKHNpemUgPCBzaXplb2YoKnBoYW5kbGUpICogKGluZGV4ICsgMSkpKQogCQlyZXR1
+cm4gTlVMTDsKIAotCXJldHVybiBvZl9maW5kX25vZGVfYnlfcGhhbmRsZShiZTMyX3RvX2NwdXAo
+cGhhbmRsZSArIGluZGV4KSk7CisJcmV0dXJuIG9mX2ZpbmRfbm9kZV9ieV9waGFuZGxlX2Zyb20o
+YmUzMl90b19jcHVwKHBoYW5kbGUgKyBpbmRleCksCisJCQkJCXJvb3QpOworfQorRVhQT1JUX1NZ
+TUJPTChvZl9wYXJzZV9waGFuZGxlX2Zyb20pOworCisvKioKKyAqIG9mX3BhcnNlX3BoYW5kbGUg
+LSBSZXNvbHZlIGEgcGhhbmRsZSBwcm9wZXJ0eSB0byBhIGRldmljZV9ub2RlIHBvaW50ZXIKKyAq
+IEBucDogUG9pbnRlciB0byBkZXZpY2Ugbm9kZSBob2xkaW5nIHBoYW5kbGUgcHJvcGVydHkKKyAq
+IEBwaGFuZGxlX25hbWU6IE5hbWUgb2YgcHJvcGVydHkgaG9sZGluZyBhIHBoYW5kbGUgdmFsdWUK
+KyAqIEBpbmRleDogRm9yIHByb3BlcnRpZXMgaG9sZGluZyBhIHRhYmxlIG9mIHBoYW5kbGVzLCB0
+aGlzIGlzIHRoZSBpbmRleCBpbnRvCisgKiAgICAgICAgIHRoZSB0YWJsZQorICoKKyAqIFJldHVy
+bnMgdGhlIGRldmljZV9ub2RlIHBvaW50ZXIgZm91bmQgb3IgTlVMTC4KKyAqLworc3RydWN0IGRl
+dmljZV9ub2RlICpvZl9wYXJzZV9waGFuZGxlKGNvbnN0IHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAs
+CisJCQkJICAgICBjb25zdCBjaGFyICpwaGFuZGxlX25hbWUsIGludCBpbmRleCkKK3sKKwlyZXR1
+cm4gb2ZfcGFyc2VfcGhhbmRsZV9mcm9tKG5wLCByb290X25vZGUsIHBoYW5kbGVfbmFtZSwgaW5k
+ZXgpOwogfQogRVhQT1JUX1NZTUJPTChvZl9wYXJzZV9waGFuZGxlKTsKIApkaWZmIC0tZ2l0IGEv
+aW5jbHVkZS9vZi5oIGIvaW5jbHVkZS9vZi5oCmluZGV4IDQyODFjY2UuLmRlY2YxNTEgMTAwNjQ0
+Ci0tLSBhL2luY2x1ZGUvb2YuaAorKysgYi9pbmNsdWRlL29mLmgKQEAgLTIwNSw2ICsyMDUsMTAg
+QEAgZXh0ZXJuIGludCBvZl9wcm9wZXJ0eV93cml0ZV91NjRfYXJyYXkoc3RydWN0IGRldmljZV9u
+b2RlICpucCwKIGV4dGVybiBzdHJ1Y3QgZGV2aWNlX25vZGUgKm9mX3BhcnNlX3BoYW5kbGUoY29u
+c3Qgc3RydWN0IGRldmljZV9ub2RlICpucCwKIAkJCQkJICAgIGNvbnN0IGNoYXIgKnBoYW5kbGVf
+bmFtZSwKIAkJCQkJICAgIGludCBpbmRleCk7CitleHRlcm4gc3RydWN0IGRldmljZV9ub2RlICpv
+Zl9wYXJzZV9waGFuZGxlX2Zyb20oY29uc3Qgc3RydWN0IGRldmljZV9ub2RlICpucCwKKwkJCQkJ
+ICAgIHN0cnVjdCBkZXZpY2Vfbm9kZSAqcm9vdCwKKwkJCQkJICAgIGNvbnN0IGNoYXIgKnBoYW5k
+bGVfbmFtZSwKKwkJCQkJICAgIGludCBpbmRleCk7CiBleHRlcm4gaW50IG9mX3BhcnNlX3BoYW5k
+bGVfd2l0aF9hcmdzKGNvbnN0IHN0cnVjdCBkZXZpY2Vfbm9kZSAqbnAsCiAJY29uc3QgY2hhciAq
+bGlzdF9uYW1lLCBjb25zdCBjaGFyICpjZWxsc19uYW1lLCBpbnQgaW5kZXgsCiAJc3RydWN0IG9m
+X3BoYW5kbGVfYXJncyAqb3V0X2FyZ3MpOwpAQCAtNDM5LDYgKzQ0MywxMyBAQCBzdGF0aWMgaW5s
+aW5lIHN0cnVjdCBkZXZpY2Vfbm9kZSAqb2ZfcGFyc2VfcGhhbmRsZShjb25zdCBzdHJ1Y3QgZGV2
+aWNlX25vZGUgKm5wLAogCXJldHVybiBOVUxMOwogfQogCitzdGF0aWMgaW5saW5lIHN0cnVjdCBk
+ZXZpY2Vfbm9kZSAqb2ZfcGFyc2VfcGhhbmRsZV9mcm9tKGNvbnN0IHN0cnVjdCBkZXZpY2Vfbm9k
+ZSAqbnAsCisJCQkJCSAgICBzdHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3QsCisJCQkJCSAgICBjb25z
+dCBjaGFyICpwaGFuZGxlX25hbWUsIGludCBpbmRleCkKK3sKKwlyZXR1cm4gTlVMTDsKK30KKwog
+c3RhdGljIGlubGluZSBpbnQgb2ZfcGFyc2VfcGhhbmRsZV93aXRoX2FyZ3MoY29uc3Qgc3RydWN0
+IGRldmljZV9ub2RlICpucCwKIAkJY29uc3QgY2hhciAqbGlzdF9uYW1lLCBjb25zdCBjaGFyICpj
+ZWxsc19uYW1lLCBpbnQgaW5kZXgsCiAJCXN0cnVjdCBvZl9waGFuZGxlX2FyZ3MgKm91dF9hcmdz
+KQotLSAKMS45LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
