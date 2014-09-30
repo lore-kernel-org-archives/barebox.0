@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XYyPH-00048r-Sr
- for barebox@lists.infradead.org; Tue, 30 Sep 2014 14:28:00 +0000
+ id 1XYyP3-000454-3r
+ for barebox@lists.infradead.org; Tue, 30 Sep 2014 14:27:45 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1XYyJf-0002Zl-Ss
+ for barebox@lists.infradead.org; Tue, 30 Sep 2014 16:22:11 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
+ (envelope-from <sha@pengutronix.de>) id 1XYyJb-0002H3-7w
+ for barebox@lists.infradead.org; Tue, 30 Sep 2014 16:22:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 30 Sep 2014 16:22:03 +0200
-Message-Id: <1412086926-27167-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1412086926-27167-1-git-send-email-s.hauer@pengutronix.de>
-References: <1412086926-27167-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 30 Sep 2014 16:22:02 +0200
+Message-Id: <1412086926-27167-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +26,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] clock: Add a variable with the first timestamp after
- startup
+Subject: dmesg Support
 To: barebox@lists.infradead.org
 
-For measuring the startup time it's useful to save the first
-timestamp after the clocksource has been registered.
+Printing informations during startup is very useful, but due to slow serial
+printouts it adds to the startup time of barebox. This series adds logbuffer
+support and a 'dmesg' command, so it becomes possible to reduce the loglevel
+while the messages are still available later. As a bonus the timestamp for
+each message is recorded so that together with CONFIG_DEBUG_INITCALLS detailed
+timing information of the startup process can be collected.
+The dmesg support nearly compiles away when it's disabled.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/clock.c  | 8 ++++++++
- include/clock.h | 2 ++
- 2 files changed, 10 insertions(+)
+Sascha
 
-diff --git a/common/clock.c b/common/clock.c
-index 9c7c1ba..2dae9ff 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -29,6 +29,12 @@
- static struct clocksource *current_clock;
- static uint64_t time_ns;
- 
-+/*
-+ * The first timestamp when the clocksource is registered.
-+ * Useful for measuring the time spent in barebox.
-+ */
-+uint64_t time_beginning;
-+
- /**
-  * get_time_ns - get current timestamp in nanoseconds
-  */
-@@ -180,5 +186,7 @@ EXPORT_SYMBOL(mdelay);
- int init_clock(struct clocksource *cs)
- {
- 	current_clock = cs;
-+	time_beginning = get_time_ns();
-+
- 	return 0;
- }
-diff --git a/include/clock.h b/include/clock.h
-index a169790..691befc 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -43,6 +43,8 @@ void mdelay(unsigned long msecs);
- #define MSECOND ((uint64_t)(1000 * 1000))
- #define USECOND ((uint64_t)(1000))
- 
-+extern uint64_t time_beginning;
-+
- /*
-  * Convenience wrapper to implement a typical polling loop with
-  * timeout. returns 0 if the condition became true within the
--- 
-2.1.0
+----------------------------------------------------------------
+Sascha Hauer (4):
+      clock: Add a variable with the first timestamp after startup
+      clock: make get_time_ns() safe to be called without clocksource
+      startup: Don't print multiple lines with pr_info
+      Introduce message logging support
 
+ commands/Kconfig        |   7 +++
+ commands/Makefile       |   1 +
+ commands/dmesg.c        | 100 +++++++++++++++++++++++++++++++++++++
+ common/Kconfig          |   3 ++
+ common/clock.c          |  11 +++++
+ common/console_common.c | 129 ++++++++++++++++++++++++++++++++++++++++++++++--
+ common/version.c        |   4 +-
+ drivers/base/driver.c   |  22 ---------
+ include/clock.h         |   2 +
+ include/printk.h        |  17 +++++++
+ 10 files changed, 270 insertions(+), 26 deletions(-)
+ create mode 100644 commands/dmesg.c
 
 _______________________________________________
 barebox mailing list
