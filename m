@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XZL2W-0000V5-0L
- for barebox@lists.infradead.org; Wed, 01 Oct 2014 14:38:01 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id BAC02A00083
- for <barebox@lists.infradead.org>; Wed,  1 Oct 2014 16:37:40 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Wed, 1 Oct 2014 16:37:16 +0200
-Message-Id: <1412174236-45854-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+ id 1XZPGZ-00080J-I7
+ for barebox@lists.infradead.org; Wed, 01 Oct 2014 19:08:48 +0000
+From: Lucas Stach <dev@lynxeye.de>
+Date: Wed,  1 Oct 2014 21:14:15 +0200
+Message-Id: <1412190855-14289-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1412190855-14289-1-git-send-email-dev@lynxeye.de>
+References: <1412190855-14289-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +16,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i2c: omap: fix dts property "clock-frequency" usage
+Subject: [PATCH 2/2] MIPS: malta: fix pci IO resource assignment
 To: barebox@lists.infradead.org
 
-TG9va2luZyBhdCB0aGUgbGludXgga2VybmVsIHRoZSBjbG9jay1mcmVxdWVuY3kgcHJvcGVydHkg
-b2YKdGhlIGRldmljZSB0cmVlIGlzIHVzZWQgdG8gc2V0IHRoZSBidXMgc3BlZWQgYW5kIG5vdCB0
-aGUKZmNsa19yYXRlLiBBZGFwdGVkIHRoaXMgdG8gYmUgY29tcGxpYW50IHdpdGggbGludXgga2Vy
-bmVsLgoKU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0t
-LQogZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMgfCAyMCArKysrKysrKysrLS0tLS0tLS0t
-LQogMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtb21hcC5jIGIvZHJpdmVycy9pMmMvYnVz
-c2VzL2kyYy1vbWFwLmMKaW5kZXggYWRjOTUyYi4uNDhiZGZiZSAxMDA2NDQKLS0tIGEvZHJpdmVy
-cy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMKKysrIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFw
-LmMKQEAgLTE1MSw3ICsxNTEsNiBAQCBzdHJ1Y3Qgb21hcF9pMmNfc3RydWN0IHsKIAl1OAkJCXJl
-Z19zaGlmdDsKIAlzdHJ1Y3Qgb21hcF9pMmNfZHJpdmVyX2RhdGEJKmRhdGE7CiAJc3RydWN0IHJl
-c291cmNlCQkqaW9hcmVhOwotCXUzMgkJCWZjbGtfcmF0ZTsKIAl1MzIJCQlzcGVlZDsJCS8qIFNw
-ZWVkIG9mIGJ1cyBpbiBLaHogKi8KIAl1MTYJCQlzY2hlbWU7CiAJdTE2CQkJY21kX2VycjsKQEAg
-LTQyMSw3ICs0MjAsNyBAQCBzdGF0aWMgaW50IG9tYXBfaTJjX2luaXQoc3RydWN0IG9tYXBfaTJj
-X3N0cnVjdCAqaTJjX29tYXApCiAJCWludGVybmFsX2NsayA9IDQwMDA7CiAKIAkvKiBDb21wdXRl
-IHByZXNjYWxlciBkaXZpc29yICovCi0JcHNjID0gaTJjX29tYXAtPmZjbGtfcmF0ZSAvIGludGVy
-bmFsX2NsazsKKwlwc2MgPSBpMmNfZGF0YS0+ZmNsa19yYXRlIC8gaW50ZXJuYWxfY2xrOwogCXBz
-YyA9IHBzYyAtIDE7CiAKIAkvKiBJZiBjb25maWd1cmVkIGZvciBIaWdoIFNwZWVkICovCkBAIC0x
-MDE2LDkgKzEwMTUsMTYgQEAgaTJjX29tYXBfcHJvYmUoc3RydWN0IGRldmljZV9kICpwZGV2KQog
-CWkyY19vbWFwLT5yZWdfc2hpZnQgPSAoaTJjX2RhdGEtPmZsYWdzID4+CiAJCQkJCU9NQVBfSTJD
-X0ZMQUdfQlVTX1NISUZUX19TSElGVCkgJiAzOwogCi0JaWYgKHBkZXYtPnBsYXRmb3JtX2RhdGEg
-IT0gTlVMTCkKKwlpZiAocGRldi0+cGxhdGZvcm1fZGF0YSAhPSBOVUxMKSB7CiAJCXNwZWVkID0g
-Kih1MzIgKilwZGV2LT5wbGF0Zm9ybV9kYXRhOwotCWVsc2UKKwl9IGVsc2UgeworCQlvZl9wcm9w
-ZXJ0eV9yZWFkX3UzMihwZGV2LT5kZXZpY2Vfbm9kZSwgImNsb2NrLWZyZXF1ZW5jeSIsCisJCQkm
-c3BlZWQpOworCQkvKiBjb252ZXJ0IERUIGZyZXEgdmFsdWUgaW4gSHogaW50byBrSHogZm9yIHNw
-ZWVkICovCisJCXNwZWVkIC89IDEwMDA7CisJfQorCisJaWYgKCFzcGVlZCkKIAkJc3BlZWQgPSAx
-MDA7CS8qIERlZmF1bHQgc3BlZWQgKi8KIAogCWkyY19vbWFwLT5zcGVlZCA9IHNwZWVkOwpAQCAt
-MTA4MCwxMiArMTA4Niw2IEBAIGkyY19vbWFwX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqcGRldikK
-IAkJCWkyY19vbWFwLT5iX2h3ID0gMTsgLyogRW5hYmxlIGhhcmR3YXJlIGZpeGVzICovCiAJfQog
-Ci0JaTJjX29tYXAtPmZjbGtfcmF0ZSA9IGkyY19kYXRhLT5mY2xrX3JhdGU7Ci0KLQlpZiAoIWky
-Y19vbWFwLT5mY2xrX3JhdGUpCi0JCW9mX3Byb3BlcnR5X3JlYWRfdTMyKHBkZXYtPmRldmljZV9u
-b2RlLCAiY2xvY2stZnJlcXVlbmN5IiwKLQkJCQkmaTJjX29tYXAtPmZjbGtfcmF0ZSk7Ci0KIAkv
-KiByZXNldCBBU0FQLCBjbGVhcmluZyBhbnkgSVJRcyAqLwogCW9tYXBfaTJjX2luaXQoaTJjX29t
-YXApOwogCi0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Does the same thing as the Linux kernel now.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+I tested this with qemu-malta and at least barebox is now
+again able to enumerate all 4 PCI devices.
+---
+ arch/mips/mach-malta/pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
+index 9035175..47c0e22 100644
+--- a/arch/mips/mach-malta/pci.c
++++ b/arch/mips/mach-malta/pci.c
+@@ -151,7 +151,7 @@ static struct pci_controller gt64120_controller = {
+ 
+ static int pcibios_init(void)
+ {
+-	resource_size_t start, end, map, start1, end1, map1, mask, res_end;
++	resource_size_t start, end, map, start1, end1, map1, mask;
+ 
+ 	/*
+ 	 * Due to a bug in the Galileo system controller, we need
+@@ -207,7 +207,7 @@ static int pcibios_init(void)
+ 	BUG_ON((start & GT_PCI_HD_MSK) != (map & GT_PCI_HD_MSK) &&
+ 		mask != ~((mask & -mask) - 1));
+ 	gt64120_io_resource.start = map & mask;
+-	res_end = (map & mask) | ~mask;
++	gt64120_io_resource.end = (map & mask) | ~mask;
+ 	gt64120_controller.io_offset = 0;
+ 	/* Addresses are 36-bit, so do shifts in the destinations. */
+ 	gt64120_io_resource.start <<= GT_PCI_DCRM_SHF;
+-- 
+1.9.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
