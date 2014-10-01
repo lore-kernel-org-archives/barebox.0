@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XZIjc-0003lk-VK
- for barebox@lists.infradead.org; Wed, 01 Oct 2014 12:10:21 +0000
-Date: Wed, 1 Oct 2014 14:06:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141001120643.GH4992@pengutronix.de>
-References: <20141001193534.5A4B.AA925319@jp.panasonic.com>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XZL2W-0000V5-0L
+ for barebox@lists.infradead.org; Wed, 01 Oct 2014 14:38:01 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id BAC02A00083
+ for <barebox@lists.infradead.org>; Wed,  1 Oct 2014 16:37:40 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Wed, 1 Oct 2014 16:37:16 +0200
+Message-Id: <1412174236-45854-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20141001193534.5A4B.AA925319@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +18,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Newbie question
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] i2c: omap: fix dts property "clock-frequency" usage
+To: barebox@lists.infradead.org
 
-Hi,
-
-On Wed, Oct 01, 2014 at 07:35:34PM +0900, Masahiro Yamada wrote:
-> Hi.
-> 
-> 
-> Please forgive me if I am asking a silly newbie question.
-> 
-> I have some knowledge of U-Boot
-> but I have just started digging into barebox.
-> 
-> 
-> My simple question is, something like SPL
-> (secondary program loader) in U-boot is covered by barebox?
-
-Yes, it is, in barebox it's called PBL (PreBootLoader).
-
-If enabled the ROM will load the PBL from the boot device (Or sometimes
-the whole image, depends on the ROM). The PBL will then load the rest
-of the image from the device, uncompress it and jump to it.
-
-> [1] BootROM (hard-wired)
-> 
-> [2] Tiny boot program
->     for initializing SDRAM, etc.
-> 
-> [3] High-level boot loader
->     for loading the kernel, handling device tree etc.
-> 
-> [4] Linux
-> 
-> 
-> 
-> I guess [3] is covered by barebox.
-> 
-> Is [2] supported by barebox? Or is it like Do-It-Yourself thing?
-
-Well, there's infrastructure for it, but due to the limited space
-and restricted environment in the PBL there's still some DIY left ;)
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TG9va2luZyBhdCB0aGUgbGludXgga2VybmVsIHRoZSBjbG9jay1mcmVxdWVuY3kgcHJvcGVydHkg
+b2YKdGhlIGRldmljZSB0cmVlIGlzIHVzZWQgdG8gc2V0IHRoZSBidXMgc3BlZWQgYW5kIG5vdCB0
+aGUKZmNsa19yYXRlLiBBZGFwdGVkIHRoaXMgdG8gYmUgY29tcGxpYW50IHdpdGggbGludXgga2Vy
+bmVsLgoKU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0t
+LQogZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMgfCAyMCArKysrKysrKysrLS0tLS0tLS0t
+LQogMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtb21hcC5jIGIvZHJpdmVycy9pMmMvYnVz
+c2VzL2kyYy1vbWFwLmMKaW5kZXggYWRjOTUyYi4uNDhiZGZiZSAxMDA2NDQKLS0tIGEvZHJpdmVy
+cy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMKKysrIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFw
+LmMKQEAgLTE1MSw3ICsxNTEsNiBAQCBzdHJ1Y3Qgb21hcF9pMmNfc3RydWN0IHsKIAl1OAkJCXJl
+Z19zaGlmdDsKIAlzdHJ1Y3Qgb21hcF9pMmNfZHJpdmVyX2RhdGEJKmRhdGE7CiAJc3RydWN0IHJl
+c291cmNlCQkqaW9hcmVhOwotCXUzMgkJCWZjbGtfcmF0ZTsKIAl1MzIJCQlzcGVlZDsJCS8qIFNw
+ZWVkIG9mIGJ1cyBpbiBLaHogKi8KIAl1MTYJCQlzY2hlbWU7CiAJdTE2CQkJY21kX2VycjsKQEAg
+LTQyMSw3ICs0MjAsNyBAQCBzdGF0aWMgaW50IG9tYXBfaTJjX2luaXQoc3RydWN0IG9tYXBfaTJj
+X3N0cnVjdCAqaTJjX29tYXApCiAJCWludGVybmFsX2NsayA9IDQwMDA7CiAKIAkvKiBDb21wdXRl
+IHByZXNjYWxlciBkaXZpc29yICovCi0JcHNjID0gaTJjX29tYXAtPmZjbGtfcmF0ZSAvIGludGVy
+bmFsX2NsazsKKwlwc2MgPSBpMmNfZGF0YS0+ZmNsa19yYXRlIC8gaW50ZXJuYWxfY2xrOwogCXBz
+YyA9IHBzYyAtIDE7CiAKIAkvKiBJZiBjb25maWd1cmVkIGZvciBIaWdoIFNwZWVkICovCkBAIC0x
+MDE2LDkgKzEwMTUsMTYgQEAgaTJjX29tYXBfcHJvYmUoc3RydWN0IGRldmljZV9kICpwZGV2KQog
+CWkyY19vbWFwLT5yZWdfc2hpZnQgPSAoaTJjX2RhdGEtPmZsYWdzID4+CiAJCQkJCU9NQVBfSTJD
+X0ZMQUdfQlVTX1NISUZUX19TSElGVCkgJiAzOwogCi0JaWYgKHBkZXYtPnBsYXRmb3JtX2RhdGEg
+IT0gTlVMTCkKKwlpZiAocGRldi0+cGxhdGZvcm1fZGF0YSAhPSBOVUxMKSB7CiAJCXNwZWVkID0g
+Kih1MzIgKilwZGV2LT5wbGF0Zm9ybV9kYXRhOwotCWVsc2UKKwl9IGVsc2UgeworCQlvZl9wcm9w
+ZXJ0eV9yZWFkX3UzMihwZGV2LT5kZXZpY2Vfbm9kZSwgImNsb2NrLWZyZXF1ZW5jeSIsCisJCQkm
+c3BlZWQpOworCQkvKiBjb252ZXJ0IERUIGZyZXEgdmFsdWUgaW4gSHogaW50byBrSHogZm9yIHNw
+ZWVkICovCisJCXNwZWVkIC89IDEwMDA7CisJfQorCisJaWYgKCFzcGVlZCkKIAkJc3BlZWQgPSAx
+MDA7CS8qIERlZmF1bHQgc3BlZWQgKi8KIAogCWkyY19vbWFwLT5zcGVlZCA9IHNwZWVkOwpAQCAt
+MTA4MCwxMiArMTA4Niw2IEBAIGkyY19vbWFwX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqcGRldikK
+IAkJCWkyY19vbWFwLT5iX2h3ID0gMTsgLyogRW5hYmxlIGhhcmR3YXJlIGZpeGVzICovCiAJfQog
+Ci0JaTJjX29tYXAtPmZjbGtfcmF0ZSA9IGkyY19kYXRhLT5mY2xrX3JhdGU7Ci0KLQlpZiAoIWky
+Y19vbWFwLT5mY2xrX3JhdGUpCi0JCW9mX3Byb3BlcnR5X3JlYWRfdTMyKHBkZXYtPmRldmljZV9u
+b2RlLCAiY2xvY2stZnJlcXVlbmN5IiwKLQkJCQkmaTJjX29tYXAtPmZjbGtfcmF0ZSk7Ci0KIAkv
+KiByZXNldCBBU0FQLCBjbGVhcmluZyBhbnkgSVJRcyAqLwogCW9tYXBfaTJjX2luaXQoaTJjX29t
+YXApOwogCi0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
