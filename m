@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XZDAP-00041g-Qr
- for barebox@lists.infradead.org; Wed, 01 Oct 2014 06:13:38 +0000
-Date: Wed, 1 Oct 2014 08:13:15 +0200
+ id 1XZDEO-0005xs-N1
+ for barebox@lists.infradead.org; Wed, 01 Oct 2014 06:17:45 +0000
+Date: Wed, 1 Oct 2014 08:17:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141001061315.GA4992@pengutronix.de>
-References: <1412075730-5946-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20141001061721.GB4992@pengutronix.de>
+References: <1411664709-13699-1-git-send-email-dev@lynxeye.de>
+ <20140925230238.18b41a52be8f3d5cc45d9bc7@gmail.com>
+ <1411678015.2207.2.camel@tellur.intern.lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1412075730-5946-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1411678015.2207.2.camel@tellur.intern.lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv3 1/5] of: base: Add for_each_node_by_name_from
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: [PATCH 00/15] PCI bridges and Tegra PCI stuff
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 30, 2014 at 01:15:26PM +0200, Teresa G=E1mez wrote:
-> Added for_each_node_by_name_from() to be able to
-> pass external root node.
-> =
+On Thu, Sep 25, 2014 at 10:46:55PM +0200, Lucas Stach wrote:
+> Am Donnerstag, den 25.09.2014, 23:02 +0400 schrieb Antony Pavlov:
+> > On Thu, 25 Sep 2014 19:04:54 +0200
+> > Lucas Stach <dev@lynxeye.de> wrote:
+> > 
+> > > Ok, I'm sending this out before it gathers any more dust.
+> > > 
+> > > This still doesn't work on Tegra K1 and I also haven't got
+> > > around to finish the rtl8169 network driver, but it seems
+> > > this pile is already a worthwile improvement.
+> > > 
+> > > First 7 patches are general barebox PCI improvements for
+> > > better tracking of PCI resources and handling bridge setup.
+> > 
+> > I have tryed this series.
+> > 
+> > I have got several 
+> >   'BAR does not fit within bus IO res'
+> > messages on qemu-malta. So not all available pci devices were registered.
+> > 
+> I think that's because patch 2 fixes a problem where IO resources would
+> be populated from the host controllers MEM resource. IO resources are
+> now properly accounted.
+> 
+> From a quick look at the code it seems you aren't properly assigning the
+> resource.end for the IO region on malta. Can you please check this?
+> Otherwise please post the PCI debug messages.
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-
-Applied all, thanks
+How do we proceed with this series? Antony, could you help debugging
+this?
 
 Sascha
 
-> ---
->  include/of.h | 3 +++
->  1 file changed, 3 insertions(+)
-> =
-
-> diff --git a/include/of.h b/include/of.h
-> index e6993fd..cd2bfe0 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -568,6 +568,9 @@ static inline struct device_d *of_find_device_by_node=
-(struct device_node *np)
->  #define for_each_node_by_name(dn, name) \
->  	for (dn =3D of_find_node_by_name(NULL, name); dn; \
->  	     dn =3D of_find_node_by_name(dn, name))
-> +#define for_each_node_by_name_from(dn, root, name) \
-> +	for (dn =3D of_find_node_by_name(root, name); dn; \
-> +	     dn =3D of_find_node_by_name(dn, name))
->  #define for_each_compatible_node(dn, type, compatible) \
->  	for (dn =3D of_find_compatible_node(NULL, type, compatible); dn; \
->  	     dn =3D of_find_compatible_node(dn, type, compatible))
-> -- =
-
-> 1.9.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
