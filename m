@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xha6V-0004CL-DN
- for barebox@lists.infradead.org; Fri, 24 Oct 2014 08:20:12 +0000
-Date: Fri, 24 Oct 2014 10:19:49 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20141024081949.GO8316@pengutronix.de>
-References: <1414104361-15956-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1414104361-15956-3-git-send-email-u.kleine-koenig@pengutronix.de>
- <201410240950.21973.jbe@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XZD3M-0001rr-0T
+ for barebox@lists.infradead.org; Wed, 01 Oct 2014 06:06:20 +0000
+Date: Wed, 1 Oct 2014 08:02:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141001060247.GZ4992@pengutronix.de>
+References: <CACSabZ_nSs8L6yHn6Pz3quNvYQSDWiB0FWOYow1vyp9akRp0PA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201410240950.21973.jbe@pengutronix.de>
+In-Reply-To: <CACSabZ_nSs8L6yHn6Pz3quNvYQSDWiB0FWOYow1vyp9akRp0PA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,57 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] mxs: iomux-imx23/imx28: unify mode definition
-To: Juergen Borleis <jbe@pengutronix.de>
+Subject: Re: Little bug
+To: luigi origa <luigi.origa@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hello J=FCrgen,
+Hi Luigi,
 
-when going to bed yesterday^Wearlier today I remembered that I wantet do
-Cc: you for this series. Great you noticed it anyhow :-)
+On Tue, Sep 30, 2014 at 10:03:39PM +0200, luigi origa wrote:
+> I found a little bug in your code.
+> 
+> The structure "fb_videomode" contains a field "display_flags" but
+> selecting "video svga" or "video a70"  the code initialize the struct
+> using the field ".flag". Obviously the compiler in this case, exit
+> with an error.
 
-On Fri, Oct 24, 2014 at 09:50:21AM +0200, Juergen Borleis wrote:
-> Hi Uwe,
-> =
+Could you tell us which files exactly have this bug? barebox neither has
+a a70 nor a svga driver.
 
-> On Friday 24 October 2014 00:46:00 Uwe Kleine-K=F6nig wrote:
-> > [...]
-> >  #if defined CONFIG_ARCH_IMX23
-> > +/*
-> > + * The pin definition of i.MX23 are strange. Bank 0's pins 0 .. 15 are=
- defined
-> > + * using PORTF(0, 0) .. PORTF(0, 15). Its pins 16 .. 31 however use PO=
-RTF(1, 0)
-> > + * .. PORTF(1, 15). So the PORTF macro is more ugly than necessary.
-> > + */ =
+Sascha
 
-> > +# define PORTF(bank,bit)	(BANK((bank) / 2) | BANKPIN((((bank) & 1) << =
-4) | (bit)) | ERROR((bit) & ~15) | ERROR((bank) & ~7)
-> > +# define VE_2_5V		VOLTAGE(1)
-> >  # include <mach/iomux-imx23.h>
-> >  #endif
-> > +
-> =
-
-> Looks more like a strange implementation by myself. Did not remember why =
-I have
-> done it in this way...
-When Sascha is happy with the changes in this series we can clean that
-up.
-
-You didn't test that on an i.MX23 machine, do you?
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+-- 
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
