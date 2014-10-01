@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x233.google.com ([2607:f8b0:400d:c04::233])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XZIdb-0006Pr-PY
- for barebox@lists.infradead.org; Wed, 01 Oct 2014 12:04:08 +0000
-Received: by mail-qg0-f51.google.com with SMTP id z107so120002qgd.24
- for <barebox@lists.infradead.org>; Wed, 01 Oct 2014 05:03:46 -0700 (PDT)
+ id 1XZIjc-0003lk-VK
+ for barebox@lists.infradead.org; Wed, 01 Oct 2014 12:10:21 +0000
+Date: Wed, 1 Oct 2014 14:06:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141001120643.GH4992@pengutronix.de>
+References: <20141001193534.5A4B.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
-In-Reply-To: <CACSabZ8wCRJAE2Oc2ZrQGQg5=X=mRJ9OF14tiC981=zWRSaTiw@mail.gmail.com>
-References: <CACSabZ_nSs8L6yHn6Pz3quNvYQSDWiB0FWOYow1vyp9akRp0PA@mail.gmail.com>
- <20141001060247.GZ4992@pengutronix.de>
- <CACSabZ8wCRJAE2Oc2ZrQGQg5=X=mRJ9OF14tiC981=zWRSaTiw@mail.gmail.com>
-Date: Wed, 1 Oct 2014 14:03:45 +0200
-Message-ID: <CACSabZ99bES8dwb=LcxPGJY_bDTJEiQg-rNJihL6pYUxEwAJwQ@mail.gmail.com>
-From: luigi origa <luigi.origa@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20141001193534.5A4B.AA925319@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,56 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Little bug
-To: barebox@lists.infradead.org
+Subject: Re: Newbie question
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Cc: barebox@lists.infradead.org
 
-Few days ago i got the files using git but in this moment i'm out so i
-downloaded the file "barebox-2014.08.0.tar.bz2".
+Hi,
 
-Looking inside i found the same error.
+On Wed, Oct 01, 2014 at 07:35:34PM +0900, Masahiro Yamada wrote:
+> Hi.
+> 
+> 
+> Please forgive me if I am asking a silly newbie question.
+> 
+> I have some knowledge of U-Boot
+> but I have just started digging into barebox.
+> 
+> 
+> My simple question is, something like SPL
+> (secondary program loader) in U-boot is covered by barebox?
 
-Open the file "barebox-2014.08.0\arch\arm\boards\friendlyarm-mini2440\mini2440.c"
-and goto at line 84.
+Yes, it is, in barebox it's called PBL (PreBootLoader).
 
-#ifdef CONFIG_MINI2440_VIDEO_A70
-{
-.name = "A70",
-.refresh = 50,
-.xres = 800,
-.left_margin = 40,
-.right_margin = 40,
-.hsync_len = 48,
-.yres = 480,
-.upper_margin = 29,
-.lower_margin = 3,
-.vsync_len = 3,
-.pixclock = 41848,
-.sync = FB_SYNC_USE_PWREN | FB_SYNC_DE_HIGH_ACT,
-.vmode = FB_VMODE_NONINTERLACED,
-.flag = 0,    // <<<<<<<<<<<<<<<<<<<<<<<< mismatch
-},
-#endif
-#ifdef CONFIG_MINI2440_VIDEO_SVGA
-{
-.name = "SVGA",
-.refresh = 24,
-.xres = 1024,
-.left_margin = 1,
-.right_margin = 2,
-.hsync_len = 2,
-.yres = 768,
-.upper_margin = 200,
-.lower_margin = 16,
-.vsync_len = 16,
-.pixclock = 40492,
-.sync = FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT | FB_SYNC_DE_HIGH_ACT
-                                  /* | FB_SYNC_SWAP_HW */ /* FIXME maybe */ ,
-.vmode = FB_VMODE_NONINTERLACED,
-.flag = 0,    // <<<<<<<<<<<<<<<<<<<<<<<< mismatch
-},
-#endif
+If enabled the ROM will load the PBL from the boot device (Or sometimes
+the whole image, depends on the ROM). The PBL will then load the rest
+of the image from the device, uncompress it and jump to it.
 
-Luigi
+> [1] BootROM (hard-wired)
+> 
+> [2] Tiny boot program
+>     for initializing SDRAM, etc.
+> 
+> [3] High-level boot loader
+>     for loading the kernel, handling device tree etc.
+> 
+> [4] Linux
+> 
+> 
+> 
+> I guess [3] is covered by barebox.
+> 
+> Is [2] supported by barebox? Or is it like Do-It-Yourself thing?
+
+Well, there's infrastructure for it, but due to the limited space
+and restricted environment in the PBL there's still some DIY left ;)
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
