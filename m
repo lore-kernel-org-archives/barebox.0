@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XZZIw-0003C2-O2
- for barebox@lists.infradead.org; Thu, 02 Oct 2014 05:51:56 +0000
-Date: Thu, 2 Oct 2014 07:51:29 +0200
+ Linux)) id 1XZZi3-0002bp-Bz
+ for barebox@lists.infradead.org; Thu, 02 Oct 2014 06:17:51 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1XZZhh-00049A-48
+ for barebox@lists.infradead.org; Thu, 02 Oct 2014 08:17:29 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1XZZhh-0007X0-27
+ for barebox@lists.infradead.org; Thu, 02 Oct 2014 08:17:29 +0200
+Date: Thu, 2 Oct 2014 08:17:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141002055129.GI4992@pengutronix.de>
-References: <1412174236-45854-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20141002061729.GJ4992@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1412174236-45854-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,98 +27,79 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c: omap: fix dts property "clock-frequency" usage
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: v2014.10.0
+To: barebox@lists.infradead.org
 
-On Wed, Oct 01, 2014 at 04:37:16PM +0200, Teresa G=E1mez wrote:
-> Looking at the linux kernel the clock-frequency property of
-> the device tree is used to set the bus speed and not the
-> fclk_rate. Adapted this to be compliant with linux kernel.
-> =
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+Hi All,
 
-Applied, thanks
+Here's barebox-2014.10.0. Not very much has happened since the last
+release. Many of the patches are fixes so chances are good we fixed
+more bugs than we created new ones. Nice :)
 
 Sascha
 
-> ---
->  drivers/i2c/busses/i2c-omap.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
-> =
+----------------------------------------------------------------
+Antony Pavlov (2):
+      Documentation: davinci.rst: fix code-block formatting
+      net: dm9k: fix copy-paste typo
 
-> diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-> index adc952b..48bdfbe 100644
-> --- a/drivers/i2c/busses/i2c-omap.c
-> +++ b/drivers/i2c/busses/i2c-omap.c
-> @@ -151,7 +151,6 @@ struct omap_i2c_struct {
->  	u8			reg_shift;
->  	struct omap_i2c_driver_data	*data;
->  	struct resource		*ioarea;
-> -	u32			fclk_rate;
->  	u32			speed;		/* Speed of bus in Khz */
->  	u16			scheme;
->  	u16			cmd_err;
-> @@ -421,7 +420,7 @@ static int omap_i2c_init(struct omap_i2c_struct *i2c_=
-omap)
->  		internal_clk =3D 4000;
->  =
+Christian Hemp (1):
+      dts:imx6:pfla02: Fix SPI NOR for phyFLEX-i.MX6
 
->  	/* Compute prescaler divisor */
-> -	psc =3D i2c_omap->fclk_rate / internal_clk;
-> +	psc =3D i2c_data->fclk_rate / internal_clk;
->  	psc =3D psc - 1;
->  =
+Ezequiel Garcia (2):
+      nand: Add Marvell Orion NAND driver
+      ARM: mvebu: Add Plat'home's Kirkwood Openblocks A6 board support
 
->  	/* If configured for High Speed */
-> @@ -1016,9 +1015,16 @@ i2c_omap_probe(struct device_d *pdev)
->  	i2c_omap->reg_shift =3D (i2c_data->flags >>
->  					OMAP_I2C_FLAG_BUS_SHIFT__SHIFT) & 3;
->  =
+Jan Weitzel (1):
+      commands: of_dump switch to get fixed devictree
 
-> -	if (pdev->platform_data !=3D NULL)
-> +	if (pdev->platform_data !=3D NULL) {
->  		speed =3D *(u32 *)pdev->platform_data;
-> -	else
-> +	} else {
-> +		of_property_read_u32(pdev->device_node, "clock-frequency",
-> +			&speed);
-> +		/* convert DT freq value in Hz into kHz for speed */
-> +		speed /=3D 1000;
-> +	}
-> +
-> +	if (!speed)
->  		speed =3D 100;	/* Default speed */
->  =
+Michael Grzeschik (1):
+      ubi: add setting devnum to ubiattach
 
->  	i2c_omap->speed =3D speed;
-> @@ -1080,12 +1086,6 @@ i2c_omap_probe(struct device_d *pdev)
->  			i2c_omap->b_hw =3D 1; /* Enable hardware fixes */
->  	}
->  =
+Michael Olbrich (1):
+      efi: use objcopy with CROSS_COMPILE prefix
 
-> -	i2c_omap->fclk_rate =3D i2c_data->fclk_rate;
-> -
-> -	if (!i2c_omap->fclk_rate)
-> -		of_property_read_u32(pdev->device_node, "clock-frequency",
-> -				&i2c_omap->fclk_rate);
-> -
->  	/* reset ASAP, clearing any IRQs */
->  	omap_i2c_init(i2c_omap);
->  =
+Philipp Zabel (1):
+      serial: imx: Fix for non-devicetree boards
 
-> -- =
+Rapha=EBl Poggi (8):
+      mtd: nand: add has_pmecc member
+      mtd: atmel_nand: retrieve ecc_mode from pdata
+      mtd: atmel_nand: add support for device tree
+      arm: mach-at91: move gpio.h to include folder
+      pinctrl: at91: add pinctrl driver
+      pinctrl: at91: add driver data
+      pinctrl: at91: fix the pin_to_controller function
+      pinctrl: at91: retrieve device id in non dtb probe
 
-> 1.9.1
-> =
+Sascha Hauer (14):
+      ARM: dts: Use local version of rk3188-clocks.dtsi
+      ARM: dts: move imx6q-embedsky-e9.dtsi to arch/arm/dts/boot
+      dts: update to v3.17-rc1
+      dts: update to v3.17-rc2
+      Merge branch 'for-next/at91'
+      Merge branch 'for-next/dts'
+      Merge branch 'for-next/marvell'
+      Merge branch 'for-next/misc'
+      ARM: AT91: Add missing include
+      ARM: AT91: Make gpio mux functions inline
+      net: Call edev->recv with correct eth_device
+      USB: gadget: fastboot: Add missing include
+      USB: gadget: dfu: Add max_speed to dfu_driver
+      Release v2014.10.0
 
-> =
+Silvio Fricke (1):
+      ARM: i.MX: edmqmx6: free phy-reset gpio pin
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Teresa G=E1mez (4):
+      defaultenv: Reorder overlay append order
+      commands: of_dump: Fix return value
+      read_file_2: Fix return value
+      i2c: omap: fix dts property "clock-frequency" usage
+
+Wjatscheslaw Stoljarski (1):
+      commands: usb: drop help for force rescan option
 
 -- =
 
