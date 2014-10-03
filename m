@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XZjRx-0003ok-4a
- for barebox@lists.infradead.org; Thu, 02 Oct 2014 16:41:53 +0000
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Thu,  2 Oct 2014 18:40:44 +0200
-Message-Id: <1412268044-1360-1-git-send-email-r.schwebel@pengutronix.de>
+Received: from mo6-p00-ob.smtp.rzone.de ([2a01:238:20a:202:5300::11])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XZwvu-0000Oz-3g
+ for barebox@lists.infradead.org; Fri, 03 Oct 2014 07:05:42 +0000
+Received: from [IPv6:2a01:e35:8afd:40b0:908b:d83c:6cd7:ad62]
+ ([2a01:e35:8afd:40b0:908b:d83c:6cd7:ad62])
+ by smtp.strato.de (RZmta 35.9 AUTH) with ESMTPSA id D056a0q9375IICf
+ (using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (Client did not present a certificate)
+ for <barebox@lists.infradead.org>;
+ Fri, 3 Oct 2014 09:05:18 +0200 (CEST)
+Message-ID: <542E4AAD.7070703@calao-systems.com>
+Date: Fri, 03 Oct 2014 09:05:17 +0200
+From: =?UTF-8?B?R3LDqWdvcnkgSGVybWFudA==?= <gregory.hermant@calao-systems.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,39 +22,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: select FILE_LIST for usbgadget
+Subject: at91 usbserial issue
 To: barebox@lists.infradead.org
 
-Otherwhise we get this error message:
-
-commands/built-in.o: In function `do_usbgadget':
-barebox-2014.10.0/commands/usbgadget.c:77: undefined reference to `file_list_parse'
-
-Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
----
- commands/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 3a49baf..aafa80f 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1851,6 +1851,7 @@ config CMD_USB
- config CMD_USBGADGET
- 	bool
- 	depends on USB_GADGET
-+	select FILE_LIST
- 	prompt "usbgadget"
- 
- config CMD_WD
--- 
-2.1.0
-
+Hi all,
+The usbserial seems to be broken for board equipped with an Atmel sam9260/9g20 Soc.
+I ran the lastest version of barebox (v2014.10.0) on a USB_A9G20_LPW.
+Below the trace
+udc0: registering UDC driver [g_serial]
+g_serial usbgadget: acm/23ba9538: can't bind, err -19
+g_serial udc0: failed to start g_serial: -19
+usbserial: No such device
+I didn't yet investigate this issue but i was wondering if someone noticed the problem.
+Greg
 
 _______________________________________________
 barebox mailing list
