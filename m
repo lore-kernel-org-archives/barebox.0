@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XaTEE-0003pq-Jh
- for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:34:47 +0000
+ id 1XaTEH-0003ps-J4
+ for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:34:50 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
- [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 90AE826C2002
- for <barebox@lists.infradead.org>; Sat,  4 Oct 2014 19:33:55 +0200 (CEST)
+ [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 8E5DE26C2004
+ for <barebox@lists.infradead.org>; Sat,  4 Oct 2014 19:33:56 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  4 Oct 2014 19:40:07 +0200
-Message-Id: <1412444425-2569-2-git-send-email-dev@lynxeye.de>
+Date: Sat,  4 Oct 2014 19:40:09 +0200
+Message-Id: <1412444425-2569-4-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 References: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,41 +24,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/19] MIPS: malta: fix pci IO resource assignment
+Subject: [PATCH v2 03/19] pci: add resource enum
 To: barebox@lists.infradead.org
 
-Does the same thing as the Linux kernel now.
+Makes things way clearer than juggling numbers.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
-I tested this with qemu-malta and at least barebox is now
-again able to enumerate all 4 PCI devices.
----
- arch/mips/mach-malta/pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pci.c   | 14 ++++++++------
+ include/linux/pci.h |  6 ++++++
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
-index 9035175..47c0e22 100644
---- a/arch/mips/mach-malta/pci.c
-+++ b/arch/mips/mach-malta/pci.c
-@@ -151,7 +151,7 @@ static struct pci_controller gt64120_controller = {
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index ef998dc..e9f0cb5 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -41,15 +41,15 @@ void register_pci_controller(struct pci_controller *hose)
+ 	hose->bus = bus;
+ 	bus->host = hose;
+ 	bus->ops = hose->pci_ops;
+-	bus->resource[0] = hose->mem_resource;
+-	bus->resource[1] = hose->io_resource;
++	bus->resource[PCI_BUS_RESOURCE_MEM] = hose->mem_resource;
++	bus->resource[PCI_BUS_RESOURCE_IO] = hose->io_resource;
+ 	bus->number = bus_index++;
  
- static int pcibios_init(void)
- {
--	resource_size_t start, end, map, start1, end1, map1, mask, res_end;
-+	resource_size_t start, end, map, start1, end1, map1, mask;
+ 	if (hose->set_busno)
+ 		hose->set_busno(hose, bus->number);
  
- 	/*
- 	 * Due to a bug in the Galileo system controller, we need
-@@ -207,7 +207,7 @@ static int pcibios_init(void)
- 	BUG_ON((start & GT_PCI_HD_MSK) != (map & GT_PCI_HD_MSK) &&
- 		mask != ~((mask & -mask) - 1));
- 	gt64120_io_resource.start = map & mask;
--	res_end = (map & mask) | ~mask;
-+	gt64120_io_resource.end = (map & mask) | ~mask;
- 	gt64120_controller.io_offset = 0;
- 	/* Addresses are 36-bit, so do shifts in the destinations. */
- 	gt64120_io_resource.start <<= GT_PCI_DCRM_SHF;
+-	last_mem = bus->resource[0]->start;
+-	last_io = bus->resource[1]->start;
++	last_mem = bus->resource[PCI_BUS_RESOURCE_MEM]->start;
++	last_io = bus->resource[PCI_BUS_RESOURCE_IO]->start;
+ 
+ 	pci_scan_bus(bus);
+ 
+@@ -141,7 +141,8 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 		if (mask & 0x01) { /* IO */
+ 			size = -(mask & 0xfffffffe);
+ 			DBG("  PCI: pbar%d: mask=%08x io %d bytes\n", bar, mask, size);
+-			if (last_mem + size > dev->bus->resource[0]->end) {
++			if (last_io + size >
++			    dev->bus->resource[PCI_BUS_RESOURCE_IO]->end) {
+ 				DBG("BAR does not fit within bus IO res\n");
+ 				return;
+ 			}
+@@ -152,7 +153,8 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 		} else { /* MEM */
+ 			size = -(mask & 0xfffffff0);
+ 			DBG("  PCI: pbar%d: mask=%08x memory %d bytes\n", bar, mask, size);
+-			if (last_mem + size > dev->bus->resource[0]->end) {
++			if (last_mem + size >
++			    dev->bus->resource[PCI_BUS_RESOURCE_MEM]->end) {
+ 				DBG("BAR does not fit within bus mem res\n");
+ 				return;
+ 			}
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 0ec1320..f5ef588 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -114,6 +114,12 @@ struct pci_dev {
+ };
+ #define	to_pci_dev(dev) container_of(dev, struct pci_dev, dev)
+ 
++enum {
++	PCI_BUS_RESOURCE_IO = 0,
++	PCI_BUS_RESOURCE_MEM = 1,
++	PCI_BUS_RESOURCE_MEM_PREF = 2,
++	PCI_BUS_RESOURCE_BUSN = 3,
++};
+ struct pci_bus {
+ 	struct pci_controller *host;	/* associated host controller */
+ 	struct list_head node;		/* node in list of buses */
 -- 
 1.9.3
 
