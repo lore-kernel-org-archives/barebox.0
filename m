@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XaTF4-00055M-2n
+ id 1XaTF5-00055N-1V
  for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:35:41 +0000
+Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
+ [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id F006126C2009
+ for <barebox@lists.infradead.org>; Sat,  4 Oct 2014 19:34:04 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  4 Oct 2014 19:40:16 +0200
-Message-Id: <1412444425-2569-11-git-send-email-dev@lynxeye.de>
+Date: Sat,  4 Oct 2014 19:40:21 +0200
+Message-Id: <1412444425-2569-16-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 References: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,189 +24,180 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/19] clk: tegra: add PLLE setup functions
+Subject: [PATCH v2 15/19] of: import pci range parser from linux
 To: barebox@lists.infradead.org
 
-From: Lucas Stach <l.stach@pengutronix.de>
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/tegra30-car.h |   2 +
- drivers/clk/tegra/clk-pll.c                    | 116 +++++++++++++++++++++++++
- drivers/clk/tegra/clk.h                        |   6 ++
- 3 files changed, 124 insertions(+)
+ drivers/of/Kconfig   |  1 +
+ drivers/of/address.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/of_address.h | 57 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 126 insertions(+)
 
-diff --git a/arch/arm/mach-tegra/include/mach/tegra30-car.h b/arch/arm/mach-tegra/include/mach/tegra30-car.h
-index c8f6c9f..7fb2238 100644
---- a/arch/arm/mach-tegra/include/mach/tegra30-car.h
-+++ b/arch/arm/mach-tegra/include/mach/tegra30-car.h
-@@ -33,3 +33,5 @@
- #define CRC_RST_DEV_V_CLR		0x434
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 97a1d93..97378ab 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -30,6 +30,7 @@ config OF_GPIO
+ config OF_PCI
+ 	bool
+ 	depends on PCI
++	select OF_ADDRESS_PCI
+ 	help
+ 	  OpenFirmware PCI bus accessors
  
- #define CRC_CLK_OUT_ENB_V_SET		0x440
-+
-+#define CRC_PLLE_AUX			0x48c
-diff --git a/drivers/clk/tegra/clk-pll.c b/drivers/clk/tegra/clk-pll.c
-index c18c67f..bff5651 100644
---- a/drivers/clk/tegra/clk-pll.c
-+++ b/drivers/clk/tegra/clk-pll.c
-@@ -17,12 +17,15 @@
-  */
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index b3cbb15..8018d78 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -179,6 +179,74 @@ static int of_bus_pci_translate(__be32 *addr, u64 offset, int na)
+ }
+ #endif /* CONFIG_OF_ADDRESS_PCI */
  
- #include <common.h>
-+#include <clock.h>
- #include <io.h>
- #include <malloc.h>
- #include <asm-generic/div64.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- 
-+#include <mach/iomap.h>
-+
- #include "clk.h"
- 
- #define PLL_BASE_BYPASS		BIT(31)
-@@ -393,6 +396,108 @@ const struct clk_ops tegra_clk_pll_ops = {
- 	.set_rate = clk_pll_set_rate,
- };
- 
-+static unsigned long clk_plle_recalc_rate(struct clk *hw,
-+					 unsigned long parent_rate)
++#ifdef CONFIG_OF_PCI
++int of_pci_range_parser_init(struct of_pci_range_parser *parser,
++				struct device_node *node)
 +{
-+	struct tegra_clk_pll *pll = to_clk_pll(hw);
-+	u32 val = pll_readl_base(pll);
-+	u32 divn = 0, divm = 0, divp = 0;
-+	u64 rate = parent_rate;
++	const int na = 3, ns = 2;
++	int rlen;
 +
-+	divp = (val >> 16) & 0x3f;
-+	divn = (val >> 8) & (0xff);
-+	divm = (val >> 0) & (0xff);
-+	divm *= divp;
++	parser->node = node;
++	parser->pna = of_n_addr_cells(node);
++	parser->np = parser->pna + na + ns;
 +
-+	rate *= divn;
-+	do_div(rate, divm);
-+	return rate;
-+}
++	parser->range = of_get_property(node, "ranges", &rlen);
++	if (parser->range == NULL)
++		return -ENOENT;
 +
-+static int clk_plle_training(struct tegra_clk_pll *pll)
-+{
-+	u32 val;
-+
-+	/*
-+	 * PLLE is already disabled, and setup cleared;
-+	 * create falling edge on PLLE IDDQ input.
-+	 */
-+	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+	val |= PMC_SATA_PWRGT_PLLE_IDDQ_VALUE;
-+	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+
-+	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+	val |= PMC_SATA_PWRGT_PLLE_IDDQ_SWCTL;
-+	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+
-+	val = readl(TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+	val &= ~PMC_SATA_PWRGT_PLLE_IDDQ_VALUE;
-+	writel(val, TEGRA_PMC_BASE + PMC_SATA_PWRGT);
-+
-+	return wait_on_timeout(100 * MSECOND,
-+			(pll_readl_misc(pll) & PLLE_MISC_READY));
-+}
-+
-+static int clk_plle_enable(struct clk *hw)
-+{
-+	struct tegra_clk_pll *pll = to_clk_pll(hw);
-+	unsigned long input_rate = clk_get_rate(clk_get_parent(hw));
-+	struct tegra_clk_pll_freq_table sel;
-+	u32 val;
-+	int err;
-+
-+	if (_get_table_rate(hw, &sel, pll->fixed_rate, input_rate))
-+		return -EINVAL;
-+
-+	clk_pll_disable(hw);
-+
-+	val = pll_readl_misc(pll);
-+	val &= ~(PLLE_MISC_LOCK_ENABLE | PLLE_MISC_SETUP_MASK);
-+	pll_writel_misc(val, pll);
-+
-+	val = pll_readl_misc(pll);
-+	if (!(val & PLLE_MISC_READY)) {
-+		err = clk_plle_training(pll);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* configure dividers */
-+	val = pll_readl_base(pll);
-+	val &= ~(0x3fffff);
-+	val &= ~(PLLE_BASE_DIVCML_WIDTH << PLLE_BASE_DIVCML_SHIFT);
-+	val |= sel.m << 0;
-+	val |= sel.n << 8;
-+	val |= sel.p << 16;
-+	val |= sel.cpcon << PLLE_BASE_DIVCML_SHIFT;
-+	pll_writel_base(val, pll);
-+
-+	val = pll_readl_misc(pll);
-+	val |= PLLE_MISC_SETUP_VALUE;
-+	val |= PLLE_MISC_LOCK_ENABLE;
-+	pll_writel_misc(val, pll);
-+
-+	val = readl(pll->clk_base + PLLE_SS_CTRL);
-+	val |= PLLE_SS_DISABLE;
-+	writel(val, pll->clk_base + PLLE_SS_CTRL);
-+
-+	val = pll_readl_base(pll);
-+	val |= (PLL_BASE_BYPASS | PLL_BASE_ENABLE);
-+	pll_writel_base(val, pll);
-+
-+	clk_pll_wait_for_lock(pll, pll->clk_base + pll->params->base_reg,
-+			      pll->params->lock_bit_idx);
++	parser->end = parser->range + rlen / sizeof(__be32);
 +
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(of_pci_range_parser_init);
 +
-+const struct clk_ops tegra_clk_plle_ops = {
-+	.recalc_rate = clk_plle_recalc_rate,
-+	.is_enabled = clk_pll_is_enabled,
-+	.disable = clk_pll_disable,
-+	.enable = clk_plle_enable,
++struct of_pci_range *of_pci_range_parser_one(struct of_pci_range_parser *parser,
++						struct of_pci_range *range)
++{
++	const int na = 3, ns = 2;
++
++	if (!range)
++		return NULL;
++
++	if (!parser->range || parser->range + parser->np > parser->end)
++		return NULL;
++
++	range->pci_space = parser->range[0];
++	range->flags = of_bus_pci_get_flags(parser->range);
++	range->pci_addr = of_read_number(parser->range + 1, ns);
++	range->cpu_addr = of_translate_address(parser->node,
++				parser->range + na);
++	range->size = of_read_number(parser->range + parser->pna + na, ns);
++
++	parser->range += parser->np;
++
++	/* Now consume following elements while they are contiguous */
++	while (parser->range + parser->np <= parser->end) {
++		u32 flags, pci_space;
++		u64 pci_addr, cpu_addr, size;
++
++		pci_space = be32_to_cpup(parser->range);
++		flags = of_bus_pci_get_flags(parser->range);
++		pci_addr = of_read_number(parser->range + 1, ns);
++		cpu_addr = of_translate_address(parser->node,
++				parser->range + na);
++		size = of_read_number(parser->range + parser->pna + na, ns);
++
++		if (flags != range->flags)
++			break;
++		if (pci_addr != range->pci_addr + range->size ||
++		    cpu_addr != range->cpu_addr + range->size)
++			break;
++
++		range->size += size;
++		parser->range += parser->np;
++	}
++
++	return range;
++}
++EXPORT_SYMBOL_GPL(of_pci_range_parser_one);
++#endif /* CONFIG_OF_PCI */
++
+ /*
+  * Array of bus specific translators
+  */
+diff --git a/include/of_address.h b/include/of_address.h
+index 9022ab7..ebf3ec2 100644
+--- a/include/of_address.h
++++ b/include/of_address.h
+@@ -4,6 +4,38 @@
+ #include <common.h>
+ #include <of.h>
+ 
++struct of_pci_range_parser {
++	struct device_node *node;
++	const __be32 *range;
++	const __be32 *end;
++	int np;
++	int pna;
 +};
 +
- static struct clk *_tegra_clk_register_pll(const char *name,
- 		const char *parent_name, void __iomem *clk_base,
- 		unsigned long flags, unsigned long fixed_rate,
-@@ -447,3 +552,14 @@ struct clk *tegra_clk_register_pll(const char *name, const char *parent_name,
- 			flags, fixed_rate, pll_params, pll_flags, freq_table,
- 			&tegra_clk_pll_ops);
- }
++struct of_pci_range {
++	u32 pci_space;
++	u64 pci_addr;
++	u64 cpu_addr;
++	u64 size;
++	u32 flags;
++};
 +
-+struct clk *tegra_clk_register_plle(const char *name, const char *parent_name,
-+		void __iomem *clk_base,
-+		unsigned long flags, unsigned long fixed_rate,
-+		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
-+		struct tegra_clk_pll_freq_table *freq_table)
++#define for_each_of_pci_range(parser, range) \
++	for (; of_pci_range_parser_one(parser, range);)
++
++static inline void of_pci_range_to_resource(struct of_pci_range *range,
++					    struct device_node *np,
++					    struct resource *res)
 +{
-+	return _tegra_clk_register_pll(name, parent_name, clk_base,
-+			flags, fixed_rate, pll_params, pll_flags, freq_table,
-+			&tegra_clk_plle_ops);
++	res->flags = range->flags;
++	res->start = range->cpu_addr;
++	res->end = range->cpu_addr + range->size - 1;
++	res->parent = NULL;
++	INIT_LIST_HEAD(&res->children);
++	INIT_LIST_HEAD(&res->sibling);
++	res->name = np->full_name;
 +}
-diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h
-index d5d0730..85777a8 100644
---- a/drivers/clk/tegra/clk.h
-+++ b/drivers/clk/tegra/clk.h
-@@ -101,6 +101,12 @@ struct clk *tegra_clk_register_pll(const char *name, const char *parent_name,
- 		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
- 		struct tegra_clk_pll_freq_table *freq_table);
- 
-+struct clk *tegra_clk_register_plle(const char *name, const char *parent_name,
-+		void __iomem *clk_base,
-+		unsigned long flags, unsigned long fixed_rate,
-+		struct tegra_clk_pll_params *pll_params, u8 pll_flags,
-+		struct tegra_clk_pll_freq_table *freq_table);
 +
- /* struct tegra_clk_pll_out - PLL output divider */
- struct tegra_clk_pll_out {
- 	struct clk	hw;
+ #ifndef pci_address_to_pio
+ static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
+ #endif
+@@ -69,4 +101,29 @@ static inline void __iomem *of_iomap(struct device_node *np, int index)
+ 
+ #endif /* CONFIG_OFTREE */
+ 
++#ifdef CONFIG_OF_PCI
++
++extern int of_pci_range_parser_init(struct of_pci_range_parser *parser,
++			struct device_node *node);
++
++extern struct of_pci_range *of_pci_range_parser_one(
++			struct of_pci_range_parser *parser,
++			struct of_pci_range *range);
++
++#else
++
++static inline int of_pci_range_parser_init(struct of_pci_range_parser *parser,
++			struct device_node *node)
++{
++	return -1;
++}
++
++static inline struct of_pci_range *of_pci_range_parser_one(
++					struct of_pci_range_parser *parser,
++					struct of_pci_range *range)
++{
++	return NULL;
++}
++#endif /* CONFIG_OF_PCI */
++
+ #endif /* __OF_ADDRESS_H */
 -- 
 1.9.3
 
