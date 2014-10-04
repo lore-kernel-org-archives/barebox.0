@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XaTF4-00055a-2k
- for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:35:41 +0000
+ id 1XaTF4-00055I-W1
+ for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:35:40 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  4 Oct 2014 19:40:20 +0200
-Message-Id: <1412444425-2569-15-git-send-email-dev@lynxeye.de>
+Date: Sat,  4 Oct 2014 19:40:23 +0200
+Message-Id: <1412444425-2569-18-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 References: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,297 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/19] tegra: pmc: add powerdomain handling
+Subject: [PATCH v2 17/19] ARM: tegra: advertise PCI support
 To: barebox@lists.infradead.org
 
 From: Lucas Stach <l.stach@pengutronix.de>
 
-In order to use some devices we first have to power
-up their power domain. Add support to do this in a
-generic way.
-
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/mach-tegra/include/mach/tegra-powergate.h |  93 ++++++++++++++
- arch/arm/mach-tegra/tegra20-pmc.c                  | 139 ++++++++++++++++++++-
- 2 files changed, 229 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/mach-tegra/include/mach/tegra-powergate.h
+ arch/arm/Kconfig                    | 1 +
+ arch/arm/configs/tegra_v7_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-tegra/include/mach/tegra-powergate.h b/arch/arm/mach-tegra/include/mach/tegra-powergate.h
-new file mode 100644
-index 0000000..e32250a
---- /dev/null
-+++ b/arch/arm/mach-tegra/include/mach/tegra-powergate.h
-@@ -0,0 +1,93 @@
-+/*
-+ * Copyright (c) 2010 Google, Inc
-+ *
-+ * Author:
-+ *	Colin Cross <ccross@google.com>
-+ *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef _MACH_TEGRA_POWERGATE_H_
-+#define _MACH_TEGRA_POWERGATE_H_
-+
-+struct clk;
-+struct reset_control;
-+
-+#define TEGRA_POWERGATE_CPU	0
-+#define TEGRA_POWERGATE_3D	1
-+#define TEGRA_POWERGATE_VENC	2
-+#define TEGRA_POWERGATE_PCIE	3
-+#define TEGRA_POWERGATE_VDEC	4
-+#define TEGRA_POWERGATE_L2	5
-+#define TEGRA_POWERGATE_MPE	6
-+#define TEGRA_POWERGATE_HEG	7
-+#define TEGRA_POWERGATE_SATA	8
-+#define TEGRA_POWERGATE_CPU1	9
-+#define TEGRA_POWERGATE_CPU2	10
-+#define TEGRA_POWERGATE_CPU3	11
-+#define TEGRA_POWERGATE_CELP	12
-+#define TEGRA_POWERGATE_3D1	13
-+#define TEGRA_POWERGATE_CPU0	14
-+#define TEGRA_POWERGATE_C0NC	15
-+#define TEGRA_POWERGATE_C1NC	16
-+#define TEGRA_POWERGATE_SOR	17
-+#define TEGRA_POWERGATE_DIS	18
-+#define TEGRA_POWERGATE_DISB	19
-+#define TEGRA_POWERGATE_XUSBA	20
-+#define TEGRA_POWERGATE_XUSBB	21
-+#define TEGRA_POWERGATE_XUSBC	22
-+#define TEGRA_POWERGATE_VIC	23
-+#define TEGRA_POWERGATE_IRAM	24
-+
-+#define TEGRA_POWERGATE_3D0	TEGRA_POWERGATE_3D
-+
-+#define TEGRA_IO_RAIL_CSIA	0
-+#define TEGRA_IO_RAIL_CSIB	1
-+#define TEGRA_IO_RAIL_DSI	2
-+#define TEGRA_IO_RAIL_MIPI_BIAS	3
-+#define TEGRA_IO_RAIL_PEX_BIAS	4
-+#define TEGRA_IO_RAIL_PEX_CLK1	5
-+#define TEGRA_IO_RAIL_PEX_CLK2	6
-+#define TEGRA_IO_RAIL_USB0	9
-+#define TEGRA_IO_RAIL_USB1	10
-+#define TEGRA_IO_RAIL_USB2	11
-+#define TEGRA_IO_RAIL_USB_BIAS	12
-+#define TEGRA_IO_RAIL_NAND	13
-+#define TEGRA_IO_RAIL_UART	14
-+#define TEGRA_IO_RAIL_BB	15
-+#define TEGRA_IO_RAIL_AUDIO	17
-+#define TEGRA_IO_RAIL_HSIC	19
-+#define TEGRA_IO_RAIL_COMP	22
-+#define TEGRA_IO_RAIL_HDMI	28
-+#define TEGRA_IO_RAIL_PEX_CNTRL	32
-+#define TEGRA_IO_RAIL_SDMMC1	33
-+#define TEGRA_IO_RAIL_SDMMC3	34
-+#define TEGRA_IO_RAIL_SDMMC4	35
-+#define TEGRA_IO_RAIL_CAM	36
-+#define TEGRA_IO_RAIL_RES	37
-+#define TEGRA_IO_RAIL_HV	38
-+#define TEGRA_IO_RAIL_DSIB	39
-+#define TEGRA_IO_RAIL_DSIC	40
-+#define TEGRA_IO_RAIL_DSID	41
-+#define TEGRA_IO_RAIL_CSIE	44
-+#define TEGRA_IO_RAIL_LVDS	57
-+#define TEGRA_IO_RAIL_SYS_DDC	58
-+
-+int tegra_powergate_is_powered(int id);
-+int tegra_powergate_power_on(int id);
-+int tegra_powergate_power_off(int id);
-+int tegra_powergate_remove_clamping(int id);
-+
-+/* Must be called with clk disabled, and returns with clk enabled */
-+int tegra_powergate_sequence_power_up(int id, struct clk *clk,
-+				      struct reset_control *rst);
-+
-+#endif /* _MACH_TEGRA_POWERGATE_H_ */
-diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
-index d868094..4cd01ff 100644
---- a/arch/arm/mach-tegra/tegra20-pmc.c
-+++ b/arch/arm/mach-tegra/tegra20-pmc.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
-+ * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
-  *
-  * This program is free software; you can redistribute it and/or modify it
-  * under the terms and conditions of the GNU General Public License,
-@@ -19,15 +19,19 @@
-  * @brief Device driver for the Tegra 20 power management controller.
-  */
- 
--#include <common.h>
- #include <command.h>
-+#include <common.h>
- #include <init.h>
- #include <io.h>
- #include <linux/err.h>
--
-+#include <linux/clk.h>
-+#include <linux/reset.h>
-+#include <mach/lowlevel.h>
-+#include <mach/tegra-powergate.h>
- #include <mach/tegra20-pmc.h>
- 
- static void __iomem *pmc_base;
-+static int tegra_num_powerdomains;
- 
- /* main SoC reset trigger */
- void __noreturn reset_cpu(ulong addr)
-@@ -38,6 +42,133 @@ void __noreturn reset_cpu(ulong addr)
- }
- EXPORT_SYMBOL(reset_cpu);
- 
-+static int tegra_powergate_set(int id, bool new_state)
-+{
-+	bool status;
-+
-+	status = readl(pmc_base + PMC_PWRGATE_STATUS) & (1 << id);
-+
-+	if (status == new_state) {
-+		return 0;
-+	}
-+
-+	writel(PMC_PWRGATE_TOGGLE_START | id, pmc_base + PMC_PWRGATE_TOGGLE);
-+
-+	return 0;
-+}
-+
-+int tegra_powergate_power_on(int id)
-+{
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
-+
-+	return tegra_powergate_set(id, true);
-+}
-+
-+int tegra_powergate_power_off(int id)
-+{
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
-+
-+	return tegra_powergate_set(id, false);
-+}
-+EXPORT_SYMBOL(tegra_powergate_power_off);
-+
-+int tegra_powergate_is_powered(int id)
-+{
-+	u32 status;
-+
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
-+
-+	status = readl(pmc_base + PMC_PWRGATE_STATUS) & (1 << id);
-+	return !!status;
-+}
-+
-+int tegra_powergate_remove_clamping(int id)
-+{
-+	u32 mask;
-+
-+	if (id < 0 || id >= tegra_num_powerdomains)
-+		return -EINVAL;
-+
-+	/*
-+	 * Tegra 2 has a bug where PCIE and VDE clamping masks are
-+	 * swapped relatively to the partition ids
-+	 */
-+	if (id == TEGRA_POWERGATE_VDEC)
-+		mask = (1 << TEGRA_POWERGATE_PCIE);
-+	else if (id == TEGRA_POWERGATE_PCIE)
-+		mask = (1 << TEGRA_POWERGATE_VDEC);
-+	else
-+		mask = (1 << id);
-+
-+	writel(mask, pmc_base + PMC_REMOVE_CLAMPING_CMD);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(tegra_powergate_remove_clamping);
-+
-+/* Must be called with clk disabled, and returns with clk enabled */
-+int tegra_powergate_sequence_power_up(int id, struct clk *clk,
-+					struct reset_control *rst)
-+{
-+	int ret;
-+
-+	reset_control_assert(rst);
-+
-+	ret = tegra_powergate_power_on(id);
-+	if (ret)
-+		goto err_power;
-+
-+	ret = clk_enable(clk);
-+	if (ret)
-+		goto err_clk;
-+
-+	udelay(10);
-+
-+	ret = tegra_powergate_remove_clamping(id);
-+	if (ret)
-+		goto err_clamp;
-+
-+	udelay(10);
-+	reset_control_deassert(rst);
-+
-+	return 0;
-+
-+err_clamp:
-+	clk_disable(clk);
-+err_clk:
-+	tegra_powergate_power_off(id);
-+err_power:
-+	return ret;
-+}
-+EXPORT_SYMBOL(tegra_powergate_sequence_power_up);
-+
-+static int tegra_powergate_init(void)
-+{
-+	switch (tegra_get_chiptype()) {
-+	case TEGRA20:
-+		tegra_num_powerdomains = 7;
-+		break;
-+	case TEGRA30:
-+		tegra_num_powerdomains = 14;
-+		break;
-+	case TEGRA114:
-+		tegra_num_powerdomains = 23;
-+		break;
-+	case TEGRA124:
-+		tegra_num_powerdomains = 25;
-+		break;
-+	default:
-+		/* Unknown Tegra variant. Disable powergating */
-+		tegra_num_powerdomains = 0;
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
- static int tegra20_pmc_probe(struct device_d *dev)
- {
- 	pmc_base = dev_request_mem_region(dev, 0);
-@@ -46,6 +177,8 @@ static int tegra20_pmc_probe(struct device_d *dev)
- 		return PTR_ERR(pmc_base);
- 	}
- 
-+	tegra_powergate_init();
-+
- 	return 0;
- }
- 
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 3c9b81a..2a00e5e 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -198,6 +198,7 @@ config ARCH_TEGRA
+ 	bool "NVIDIA Tegra"
+ 	select CPU_V7
+ 	select HAS_DEBUG_LL
++	select HW_HAS_PCI
+ 	select COMMON_CLK
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select CLKDEV_LOOKUP
+diff --git a/arch/arm/configs/tegra_v7_defconfig b/arch/arm/configs/tegra_v7_defconfig
+index 22f5765..8f01b54 100644
+--- a/arch/arm/configs/tegra_v7_defconfig
++++ b/arch/arm/configs/tegra_v7_defconfig
+@@ -37,6 +37,7 @@ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_MCI=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+ CONFIG_MCI_TEGRA=y
++CONFIG_PCI_TEGRA=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_LFN=y
 -- 
 1.9.3
 
