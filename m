@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XaTF4-00055H-2m
- for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:35:39 +0000
+ id 1XaTF4-00054Q-2g
+ for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:35:40 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
- [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 65D8226C2009
- for <barebox@lists.infradead.org>; Sat,  4 Oct 2014 19:33:59 +0200 (CEST)
+ [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 144F626C2005
+ for <barebox@lists.infradead.org>; Sat,  4 Oct 2014 19:33:56 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  4 Oct 2014 19:40:14 +0200
-Message-Id: <1412444425-2569-9-git-send-email-dev@lynxeye.de>
+Date: Sat,  4 Oct 2014 19:40:10 +0200
+Message-Id: <1412444425-2569-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 References: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,68 +24,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/19] pci: track parent<->child relationship
+Subject: [PATCH v2 04/19] pci: properly populate prefetchable BARs
 To: barebox@lists.infradead.org
 
-So that PCI devices hang down from bridges and root
-bridges down from the PCI host controller when
-calling devinfo.
+Some host controllers provide a prefetchable
+memory area and devices will prefer this for
+some of their BARs.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/pci/pci.c   | 4 ++++
- include/linux/pci.h | 2 ++
- 2 files changed, 6 insertions(+)
+ drivers/pci/pci.c   | 59 ++++++++++++++++++++++++++++++++++++++++-------------
+ include/linux/pci.h |  1 +
+ 2 files changed, 46 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 943d0e8..ba9d097 100644
+index e9f0cb5..115d8a3 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -40,6 +40,7 @@ void register_pci_controller(struct pci_controller *hose)
+@@ -13,6 +13,7 @@ LIST_HEAD(pci_root_buses);
+ EXPORT_SYMBOL(pci_root_buses);
+ static u8 bus_index;
+ static resource_size_t last_mem;
++static resource_size_t last_mem_pref;
+ static resource_size_t last_io;
  
- 	bus = pci_alloc_bus();
- 	hose->bus = bus;
-+	bus->parent = hose->parent;
+ static struct pci_bus *pci_alloc_bus(void)
+@@ -42,14 +43,27 @@ void register_pci_controller(struct pci_controller *hose)
  	bus->host = hose;
  	bus->ops = hose->pci_ops;
  	bus->resource[PCI_BUS_RESOURCE_MEM] = hose->mem_resource;
-@@ -309,6 +310,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 		dev->devfn = devfn;
- 		dev->vendor = l & 0xffff;
- 		dev->device = (l >> 16) & 0xffff;
-+		dev->dev.parent = bus->parent;
++	bus->resource[PCI_BUS_RESOURCE_MEM_PREF] = hose->mem_pref_resource;
+ 	bus->resource[PCI_BUS_RESOURCE_IO] = hose->io_resource;
+ 	bus->number = bus_index++;
  
- 		/* non-destructively determine if device can be a master: */
- 		pci_read_config_byte(dev, PCI_COMMAND, &cmd);
-@@ -354,6 +356,8 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 				bus->resource[PCI_BUS_RESOURCE_MEM_PREF];
- 			child_bus->resource[PCI_BUS_RESOURCE_IO] =
- 				bus->resource[PCI_BUS_RESOURCE_IO];
+ 	if (hose->set_busno)
+ 		hose->set_busno(hose, bus->number);
+ 
+-	last_mem = bus->resource[PCI_BUS_RESOURCE_MEM]->start;
+-	last_io = bus->resource[PCI_BUS_RESOURCE_IO]->start;
++	if (bus->resource[PCI_BUS_RESOURCE_MEM])
++		last_mem = bus->resource[PCI_BUS_RESOURCE_MEM]->start;
++	else
++		last_mem = 0;
 +
-+			child_bus->parent = &dev->dev;
- 			child_bus->number = bus_index++;
- 			list_add_tail(&child_bus->node, &bus->children);
- 			dev->subordinate = child_bus;
++	if (bus->resource[PCI_BUS_RESOURCE_MEM])
++		last_mem_pref = bus->resource[PCI_BUS_RESOURCE_MEM_PREF]->start;
++	else
++		last_mem_pref = 0;
++
++	if (bus->resource[PCI_BUS_RESOURCE_IO])
++		last_io = bus->resource[PCI_BUS_RESOURCE_IO]->start;
++	else
++		last_io = 0;
+ 
+ 	pci_scan_bus(bus);
+ 
+@@ -150,31 +164,46 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+ 			dev->resource[bar].flags = IORESOURCE_IO;
+ 			last_addr = last_io;
+ 			last_io += size;
+-		} else { /* MEM */
++		} else if ((mask & PCI_BASE_ADDRESS_MEM_PREFETCH) &&
++		           last_mem_pref) /* prefetchable MEM */ {
+ 			size = -(mask & 0xfffffff0);
+-			DBG("  PCI: pbar%d: mask=%08x memory %d bytes\n", bar, mask, size);
++			DBG("  PCI: pbar%d: mask=%08x P memory %d bytes\n",
++			    bar, mask, size);
++			if (last_mem_pref + size >
++			    dev->bus->resource[PCI_BUS_RESOURCE_MEM_PREF]->end) {
++				DBG("BAR does not fit within bus p-mem res\n");
++				return;
++			}
++			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem_pref);
++			dev->resource[bar].flags = IORESOURCE_MEM |
++			                           IORESOURCE_PREFETCH;
++			last_addr = last_mem_pref;
++			last_mem_pref += size;
++		} else { /* non-prefetch MEM */
++			size = -(mask & 0xfffffff0);
++			DBG("  PCI: pbar%d: mask=%08x NP memory %d bytes\n",
++			    bar, mask, size);
+ 			if (last_mem + size >
+ 			    dev->bus->resource[PCI_BUS_RESOURCE_MEM]->end) {
+-				DBG("BAR does not fit within bus mem res\n");
++				DBG("BAR does not fit within bus np-mem res\n");
+ 				return;
+ 			}
+ 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
+ 			dev->resource[bar].flags = IORESOURCE_MEM;
+ 			last_addr = last_mem;
+ 			last_mem += size;
+-
+-			if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
+-			    PCI_BASE_ADDRESS_MEM_TYPE_64) {
+-				dev->resource[bar].flags |= IORESOURCE_MEM_64;
+-				pci_write_config_dword(dev,
+-				       PCI_BASE_ADDRESS_1 + bar * 4, 0);
+-			}
+ 		}
+ 
+ 		dev->resource[bar].start = last_addr;
+ 		dev->resource[bar].end = last_addr + size - 1;
+-		if (dev->resource[bar].flags & IORESOURCE_MEM_64)
++
++		if ((mask & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
++		    PCI_BASE_ADDRESS_MEM_TYPE_64) {
++			dev->resource[bar].flags |= IORESOURCE_MEM_64;
++			pci_write_config_dword(dev,
++			       PCI_BASE_ADDRESS_1 + bar * 4, 0);
+ 			bar++;
++		}
+ 	}
+ 
+ 	pci_write_config_byte(dev, PCI_COMMAND, cmd);
+@@ -189,7 +218,9 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 	unsigned char cmd, tmp, hdr_type, is_multi = 0;
+ 
+ 	DBG("pci_scan_bus for bus %d\n", bus->number);
+-	DBG(" last_io = 0x%08x, last_mem = 0x%08x\n", last_io, last_mem);
++	DBG(" last_io = 0x%08x, last_mem = 0x%08x, last_mem_pref = 0x%08x\n",
++	    last_io, last_mem, last_mem_pref);
++
+ 	max = bus->secondary;
+ 
+ 	for (devfn = 0; devfn < 0xff; ++devfn) {
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 932acf0..3d0e73b 100644
+index f5ef588..932acf0 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -122,6 +122,7 @@ enum {
- };
- struct pci_bus {
- 	struct pci_controller *host;	/* associated host controller */
-+	struct device_d *parent;
- 	struct list_head node;		/* node in list of buses */
- 	struct list_head children;	/* list of child buses */
- 	struct list_head devices;	/* list of devices on this bus */
-@@ -158,6 +159,7 @@ extern struct pci_ops *pci_ops;
-  */
- struct pci_controller {
- 	struct pci_controller *next;
-+	struct device_d *parent;
- 	struct pci_bus *bus;
+@@ -162,6 +162,7 @@ struct pci_controller {
  
  	struct pci_ops *pci_ops;
+ 	struct resource *mem_resource;
++	struct resource *mem_pref_resource;
+ 	unsigned long mem_offset;
+ 	struct resource *io_resource;
+ 	unsigned long io_offset;
 -- 
 1.9.3
 
