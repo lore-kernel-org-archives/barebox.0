@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XaTEH-0003pu-J2
- for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:34:50 +0000
-Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
- [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 144BE26C2007
- for <barebox@lists.infradead.org>; Sat,  4 Oct 2014 19:33:57 +0200 (CEST)
+ id 1XaTF4-00055I-2e
+ for barebox@lists.infradead.org; Sat, 04 Oct 2014 17:35:38 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  4 Oct 2014 19:40:12 +0200
-Message-Id: <1412444425-2569-7-git-send-email-dev@lynxeye.de>
+Date: Sat,  4 Oct 2014 19:40:18 +0200
+Message-Id: <1412444425-2569-13-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 References: <1412444425-2569-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,43 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/19] pci: defer device registration until after bridge
- setup
+Subject: [PATCH v2 12/19] i2c: tegra: move to fs initcall
 To: barebox@lists.infradead.org
 
-Otherwise the drivers for a device may probe before the
-devices parent bridge is fully configured, which leads
-to errors when accessing the BARs.
+From: Lucas Stach <l.stach@pengutronix.de>
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+i2c is needed to enable voltage rails that are later
+needed by other drivers.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/pci/pci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/boards/nvidia-beaver/board.c | 2 +-
+ drivers/i2c/busses/i2c-tegra.c        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 59f942d..943d0e8 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -208,7 +208,6 @@ static void setup_device(struct pci_dev *dev, int max_bar)
+diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
+index e87594d..e67d2aa 100644
+--- a/arch/arm/boards/nvidia-beaver/board.c
++++ b/arch/arm/boards/nvidia-beaver/board.c
+@@ -35,4 +35,4 @@ static int nvidia_beaver_devices_init(void)
  
- 	pci_write_config_byte(dev, PCI_COMMAND, cmd);
- 	list_add_tail(&dev->bus_list, &dev->bus->devices);
--	pci_register_device(dev);
+ 	return 0;
  }
- 
- static void prescan_setup_bridge(struct pci_dev *dev)
-@@ -362,6 +361,11 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 			prescan_setup_bridge(dev);
- 			pci_scan_bus(child_bus);
- 			postscan_setup_bridge(dev);
-+			/* first activate bridge then all devices on it's bus */
-+			pci_register_device(dev);
-+			list_for_each_entry(dev, &child_bus->devices, bus_list)
-+				if (!dev->subordinate)
-+					pci_register_device(dev);
- 			break;
- 		default:
- 		bad:
+-device_initcall(nvidia_beaver_devices_init);
++fs_initcall(nvidia_beaver_devices_init);
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index c52da18..f793cbe 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -696,4 +696,4 @@ static struct driver_d tegra_i2c_driver = {
+ 	.probe   = tegra_i2c_probe,
+ 	.of_compatible = DRV_OF_COMPAT(tegra_i2c_compatible),
+ };
+-device_platform_driver(tegra_i2c_driver);
++register_driver_macro(fs, platform, tegra_i2c_driver);
 -- 
 1.9.3
 
