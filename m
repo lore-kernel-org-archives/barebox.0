@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XbVf2-0008Hd-7D
- for barebox@lists.infradead.org; Tue, 07 Oct 2014 14:22:52 +0000
+ Linux)) id 1XbVf5-0008Hk-Pd
+ for barebox@lists.infradead.org; Tue, 07 Oct 2014 14:22:53 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1XbVee-0003Ob-Uu
- for barebox@lists.infradead.org; Tue, 07 Oct 2014 16:22:20 +0200
+ (envelope-from <jbe@pengutronix.de>) id 1XbVef-0003Ox-4M
+ for barebox@lists.infradead.org; Tue, 07 Oct 2014 16:22:21 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <jbe@pengutronix.de>) id 1XbVee-0004DA-Sp
- for barebox@lists.infradead.org; Tue, 07 Oct 2014 16:22:20 +0200
+ (envelope-from <jbe@pengutronix.de>) id 1XbVef-0004Dj-2x
+ for barebox@lists.infradead.org; Tue, 07 Oct 2014 16:22:21 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Tue,  7 Oct 2014 16:22:06 +0200
-Message-Id: <1412691738-11145-8-git-send-email-jbe@pengutronix.de>
+Date: Tue,  7 Oct 2014 16:22:13 +0200
+Message-Id: <1412691738-11145-15-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1412691738-11145-1-git-send-email-jbe@pengutronix.de>
 References: <1412691738-11145-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,36 +28,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/19] arch/MPC5xxx: separate architecture's main SoC header
- file
+Subject: [PATCH 14/19] arch/MPC5xxx: add MPC5125 SoC support
 To: barebox@lists.infradead.org
+
+The MPC5125 shares most of the internals with the MPC52000 but differs in
+many details. It also differs from the the MPC5121/MPC5123, so the latter
+SoCs are not supported yet.
 
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- arch/ppc/mach-mpc5xxx/include/mach/mpc5200.h | 794 +++++++++++++++++++++++++++
- arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h | 793 +-------------------------
- 2 files changed, 798 insertions(+), 789 deletions(-)
- create mode 100644 arch/ppc/mach-mpc5xxx/include/mach/mpc5200.h
+ arch/ppc/include/asm/processor.h                 |  11 +
+ arch/ppc/lib/Makefile                            |   2 +-
+ arch/ppc/lib/nor-bbu.c                           | 141 ++++++++++
+ arch/ppc/mach-mpc5xxx/cpu-mpc5125.c              | 174 ++++++++++++
+ arch/ppc/mach-mpc5xxx/include/mach/bbu.h         |  18 ++
+ arch/ppc/mach-mpc5xxx/include/mach/clocks.h      |   9 +
+ arch/ppc/mach-mpc5xxx/include/mach/mpc512x.h     | 321 +++++++++++++++++++++++
+ arch/ppc/mach-mpc5xxx/include/mach/mpc512x_fec.h |  46 ++++
+ arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h     |   6 +-
+ arch/ppc/mach-mpc5xxx/iomux-mpc5125.c            |  39 +++
+ arch/ppc/mach-mpc5xxx/lpc-mpc5125.c              |  73 ++++++
+ arch/ppc/mach-mpc5xxx/sdram-mpc5125.c            | 269 +++++++++++++++++++
+ arch/ppc/mach-mpc5xxx/speed-mpc5125.c            | 209 +++++++++++++++
+ arch/ppc/mach-mpc5xxx/start.S                    |  99 ++++++-
+ arch/ppc/mach-mpc5xxx/sys-mpc5125.c              | 136 ++++++++++
+ 15 files changed, 1549 insertions(+), 4 deletions(-)
+ create mode 100644 arch/ppc/lib/nor-bbu.c
+ create mode 100644 arch/ppc/mach-mpc5xxx/cpu-mpc5125.c
+ create mode 100644 arch/ppc/mach-mpc5xxx/include/mach/bbu.h
+ create mode 100644 arch/ppc/mach-mpc5xxx/include/mach/mpc512x.h
+ create mode 100644 arch/ppc/mach-mpc5xxx/include/mach/mpc512x_fec.h
+ create mode 100644 arch/ppc/mach-mpc5xxx/iomux-mpc5125.c
+ create mode 100644 arch/ppc/mach-mpc5xxx/lpc-mpc5125.c
+ create mode 100644 arch/ppc/mach-mpc5xxx/sdram-mpc5125.c
+ create mode 100644 arch/ppc/mach-mpc5xxx/speed-mpc5125.c
+ create mode 100644 arch/ppc/mach-mpc5xxx/sys-mpc5125.c
 
-diff --git a/arch/ppc/mach-mpc5xxx/include/mach/mpc5200.h b/arch/ppc/mach-mpc5xxx/include/mach/mpc5200.h
+diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
+index e8a9c14..4d5a10f 100644
+--- a/arch/ppc/include/asm/processor.h
++++ b/arch/ppc/include/asm/processor.h
+@@ -236,6 +236,16 @@
+ #define   HID1_ASTME    (1<<13)		/* Address bus streaming mode */
+ #define   HID1_ABE      (1<<12)		/* Address broadcast enable */
+ #define   HID1_MBDD     (1<<6)		/* optimized sync instruction */
++#define SPRN_HID2	0x3F3
++#define   HID2_LET      (1 << 27)
++#define   HID2_HBE      (1 << 18)
++#define   HID2_IWLCK_000 (0x0 << 13)	/* no ways locked */
++#define   HID2_IWLCK_001 (0x1 << 13)	/* way 0 locked */
++#define   HID2_IWLCK_010 (0x2 << 13)	/* way 0 through way 1 locked */
++#define   HID2_IWLCK_011 (0x3 << 13)	/* way 0 through way 2 locked */
++#define   HID2_IWLCK_100 (0x4 << 13)	/* way 0 through way 3 locked */
++#define   HID2_IWLCK_101 (0x5 << 13)	/* way 0 through way 4 locked */
++#define   HID2_IWLCK_110 (0x6 << 13)	/* way 0 through way 5 locked */
+ #define SPRN_IABR	0x3F2	/* Instruction Address Breakpoint Register */
+ #ifndef CONFIG_BOOKE
+ #define SPRN_IAC1	0x3F4	/* Instruction Address Compare 1 */
+@@ -509,6 +519,7 @@
+ #define HASH2	SPRN_HASH2	/* Secondary Hash Address Register */
+ #define HID0	SPRN_HID0	/* Hardware Implementation Register 0 */
+ #define HID1	SPRN_HID1	/* Hardware Implementation Register 1 */
++#define HID2	SPRN_HID2	/* Hardware Implementation Register 2 */
+ #define IABR	SPRN_IABR      	/* Instruction Address Breakpoint Register */
+ #define IAC1	SPRN_IAC1	/* Instruction Address Register 1 */
+ #define IAC2	SPRN_IAC2	/* Instruction Address Register 2 */
+diff --git a/arch/ppc/lib/Makefile b/arch/ppc/lib/Makefile
+index ba2f078..99d6225 100644
+--- a/arch/ppc/lib/Makefile
++++ b/arch/ppc/lib/Makefile
+@@ -9,4 +9,4 @@ obj-$(CONFIG_CMD_BOOTM) += ppclinux.o
+ obj-$(CONFIG_MODULES) += module.o
+ obj-y += crtsavres.o
+ obj-y += reloc.o
+-
++obj-$(CONFIG_BAREBOX_UPDATE) += nor-bbu.o
+diff --git a/arch/ppc/lib/nor-bbu.c b/arch/ppc/lib/nor-bbu.c
 new file mode 100644
-index 0000000..35762a1
+index 0000000..3bdd214
 --- /dev/null
-+++ b/arch/ppc/mach-mpc5xxx/include/mach/mpc5200.h
-@@ -0,0 +1,794 @@
++++ b/arch/ppc/lib/nor-bbu.c
+@@ -0,0 +1,141 @@
 +/*
-+ * arch/ppc/mach-mpc5xxx/include/mach/mpc5200.h
++ * nor-bbu.c - PowerPC generic functions to store barebox into a NOR flash
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
 + *
-+ * Prototypes, etc. for the Motorola MGT5xxx/MPC5xxx
-+ * embedded cpu chips
-+ *
-+ * 2003 (c) MontaVista, Software, Inc.
-+ * Author: Dale Farnsworth <dfarnsworth@mvista.com>
-+ *
-+ * 2003 (C) Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
++ * Based on imx-bbu-internal.c
++ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -68,1579 +125,1665 @@ index 0000000..35762a1
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
-+ *
 + */
-+#ifndef __ASMPPC_MPC5200_H
-+#define __ASMPPC_MPC5200_H
 +
-+/* Processor name */
-+#if defined(CONFIG_MPC5200)
-+#define CPU_ID_STR	"MPC5200"
-+#elif defined(CONFIG_MGT5100)
-+#define CPU_ID_STR	"MGT5100"
++#include <common.h>
++#include <malloc.h>
++#include <bbu.h>
++#include <mach/bbu.h>
++#include <fs.h>
++#include <linux/stat.h>
++#include <fcntl.h>
++
++#define BBU_FLAG_ERASE			(1 << 0)
++
++/* Actually write an image to NOR target device */
++static int ppc_bbu_write_device(struct bbu_handler *handler,
++		struct bbu_data *data, void *buf, int image_len)
++{
++	int fd, ret;
++
++	fd = open(data->devicefile, O_RDWR | O_CREAT);
++	if (fd < 0)
++		return fd;
++
++	if (handler->flags & BBU_FLAG_ERASE) {
++		debug("%s: unprotecting %s from 0 to 0x%08x\n", __func__,
++				data->devicefile, image_len);
++		ret = protect(fd, image_len, 0, 0);
++		if (ret && ret != -ENOSYS) {
++			printf("unprotecting %s failed with %s\n",
++				data->devicefile, strerror(-ret));
++			goto err_close;
++		}
++
++		debug("%s: erasing %s from 0 to 0x%08x\n", __func__,
++				data->devicefile, image_len);
++		ret = erase(fd, image_len, 0);
++		if (ret) {
++			printf("erasing %s failed with %s\n", data->devicefile,
++					strerror(-ret));
++			goto err_close;
++		}
++	}
++
++	ret = write(fd, buf, image_len);
++	if (ret < 0)
++		goto err_close;
++
++	if (handler->flags & BBU_FLAG_ERASE) {
++		debug("%s: protecting %s from 0 to 0x%08x\n", __func__,
++				data->devicefile, image_len);
++		ret = protect(fd, image_len, 0, 1);
++		if (ret && ret != -ENOSYS) {
++			printf("protecting %s failed with %s\n",
++				data->devicefile, strerror(-ret));
++		}
++	}
++
++	ret = 0;
++
++err_close:
++	close(fd);
++
++	return ret;
++}
++
++static int ppc_bbu_check_prereq(struct bbu_data *data)
++{
++	struct stat s;
++	int ret;
++
++	/*
++	 * Check if the given image is a valid one
++	 * FIXME: currently we have no real chance to detect if the image
++	 * we got is a valid image.
++	 */
++
++	ret = stat(data->devicefile, &s);
++	if (ret != 0) {
++		printf("Cannot stat '%s'. Failed with %s\n", data->devicefile,
++					strerror(-ret));
++		return ret;
++	}
++
++	if (data->len > s.st_size) {
++		printf("'%s' too large for '%s'\n", data->imagefile,
++				data->devicefile);
++		return -EINVAL;
++	}
++
++	ret = bbu_confirm(data);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++/* write a regular barebox image into an externally connected NOR flash */
++static int ppc_bbu_nor_update(struct bbu_handler *handler, struct bbu_data *data)
++{
++	int ret;
++
++	ret = ppc_bbu_check_prereq(data);
++	if (ret)
++		return ret;
++
++	return ppc_bbu_write_device(handler, data, data->image, data->len);
++}
++
++int ppc_bbu_nor_register_handler(const char *name, const char *devicefile,
++		unsigned long flags)
++{
++	struct bbu_handler *bbu;
++	int ret;
++
++	bbu = xzalloc(sizeof(*bbu));
++	bbu->devicefile = devicefile;
++	bbu->name = name;
++	bbu->flags = flags | BBU_FLAG_ERASE;
++	bbu->handler = ppc_bbu_nor_update;
++
++	ret = bbu_register_handler(bbu);
++	if (ret)
++		free(bbu);
++
++	return ret;
++}
+diff --git a/arch/ppc/mach-mpc5xxx/cpu-mpc5125.c b/arch/ppc/mach-mpc5xxx/cpu-mpc5125.c
+new file mode 100644
+index 0000000..512e2a5
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/cpu-mpc5125.c
+@@ -0,0 +1,174 @@
++/*
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
++ *
++ * This code bases partially on:
++ * (C) Copyright 2007-2010 DENX Software Engineering
++ * Copyright (C) 2004-2006 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <types.h>
++#include <driver.h>
++#include <reset_source.h>
++#include <asm/processor.h>
++#include <mach/mpc5xxx.h>
++#include <asm/io.h>
++
++/* Reset Module */
++struct resetc {
++	u32 rcwl;
++	u32 rcwh;
++	u8 res0[8];
++	u32 rsr;
++	u32 rmr;
++	u32 rpr;
++	u32 rcr;
++	u32 rcer;
++};
++
++/* RSR - Reset Status Register */
++#define MPC512X_RSR_SWSR (1 << 13) /* software soft reset */
++#define MPC512X_RSR_SWHR (1 << 12) /* software hard reset */
++#define MPC512X_RSR_JHRS (1 << 9) /* jtag hreset */
++#define MPC512X_RSR_JSRS (1 << 8) /* jtag sreset status */
++#define MPC512X_RSR_CSHR (1 << 4) /* checkstop reset status */
++#define MPC512X_RSR_SWRS (1 << 3) /* software watchdog reset status */
++#define MPC512X_RSR_BMRS (1 << 2) /* bus monitop reset status */
++#define MPC512X_RSR_SRS (1 << 1) /* soft reset status */
++#define MPC512X_RSR_HRS (1 << 0) /* hard reset status */
++
++/* RMR - Reset Mode Register */
++#define MPC512X_RMR_CSRE (1 << 0) /* checkstop reset enable */
++
++/* RCR - Reset Control Register */
++#define MPC512X_RCR_SWHR (1 << 1) /* software hard reset */
++#define MPC512X_RCR_SWSR (1 << 0) /* software soft reset */
++
++/* RCER - Reset Control Enable Register */
++#define MPC512X_RCER_CRE (1 << 0) /* software hard reset */
++
++static struct resetc * const resetc = (struct resetc *)MPC512X_RESET;
++
++/* called from assembler in start.S */
++int cpu_init(void)
++{
++	/* do it very early, because its required for any delay() */
++	mpc5125_enable_time_base_counter();
++
++	/* RMR - Reset Mode Register - enable checkstop reset */
++	out_be32(&resetc->rmr, MPC512X_RMR_CSRE);
++
++	/* system performance tweaking */
++#ifdef CONFIG_SYS_ACR_PIPE_DEP
++	/* Arbiter pipeline depth */
++	out_be32(&im->arbiter.acr,
++		(im->arbiter.acr & ~ACR_PIPE_DEP) |
++		(CONFIG_SYS_ACR_PIPE_DEP << ACR_PIPE_DEP_SHIFT)
++	);
 +#endif
 +
-+/* Exception offsets (PowerPC standard) */
++#ifdef CONFIG_SYS_ACR_RPTCNT
++	/* Arbiter repeat count */
++	out_be32(im->arbiter.acr,
++		(im->arbiter.acr & ~(ACR_RPTCNT)) |
++		(CONFIG_SYS_ACR_RPTCNT << ACR_RPTCNT_SHIFT)
++	);
++#endif
++
++#if 0
++	/* Set IPS-CSB divider: IPS = 1/2 CSB */
++	ips_div = in_be32(&im->clk.scfr[0]);
++	ips_div &= ~(SCFR1_IPS_DIV_MASK);
++	ips_div |= SCFR1_IPS_DIV << SCFR1_IPS_DIV_SHIFT;
++	out_be32(&im->clk.scfr[0], ips_div);
++#endif
++#ifdef SCFR1_LPC_DIV
++	clrsetbits_be32(&im->clk.scfr[0], SCFR1_LPC_DIV_MASK,
++			SCFR1_LPC_DIV << SCFR1_LPC_DIV_SHIFT);
++#endif
++	return 0;
++}
++
++void __noreturn reset_cpu(unsigned long addr)
++{
++	unsigned msr;
++
++	/* Interrupts and MMU off */
++	__asm__ __volatile__ ("mfmsr    %0":"=r" (msr):);
++
++	msr &= ~( MSR_EE | MSR_IR | MSR_DR);
++	__asm__ __volatile__ ("mtmsr    %0"::"r" (msr));
++
++	/* Enable Reset Control Reg - "RSTE" is the magic word that let us go */
++	out_be32(&resetc->rpr, 0x52535445);
++
++	/* Verify Reset Control Reg is enabled */
++	while (!(in_be32(&resetc->rcer) & MPC512X_RCER_CRE))
++		;
++
++	udelay(200);
++
++	/* Perform reset */
++	out_be32(&resetc->rcr, MPC512X_RCR_SWHR);
++
++	while(1)
++		;
++}
++
++/*
++ * the watchdog is always active after reset. To control it we can
++ * write to its 'control register' - but only once. So, after disabling it
++ * there is no way to re-enable it without a hard reset.
++ * If the user don't want to use the watchdog feature, disable it here
++ * forever. If the user wants to use it, start to pet it by registering
++ * the corresponding driver.
++ * The default timeout value after reset is about 130 seconds.
++ * This gives us the time to handle the watchdog at a reasonable
++ * point of initialization time.
++ */
++static int mpc5125_handle_watchdog(void)
++{
++	if (IS_ENABLED(CONFIG_WATCHDOG_MPC5125))
++		add_generic_device("mpc5125wd", 0, NULL, MPC512X_WDT,
++						0x10, IORESOURCE_MEM, NULL);
++	else
++		out_be32((void *)(MPC512X_WDT + 4), 0); /* disable it */
++
++	return 0;
++}
++device_initcall(mpc5125_handle_watchdog);
++
++/* detect the reset source after the framework is up and running */
++static int mpc5125_keep_reset_cause(void)
++{
++	u32 reg;
++
++	reg = in_be32(&resetc->rsr);
++	if (IS_ENABLED(CONFIG_RESET_SOURCE)) {
++		if (reg & MPC512X_RSR_HRS)
++			reset_source_set(RESET_POR);
++		else if (reg & MPC512X_RSR_SRS)
++			reset_source_set(RESET_RST);
++		else if (reg & MPC512X_RSR_SWRS)
++			reset_source_set(RESET_WDG);
++		else if (reg & (MPC512X_RSR_JSRS | MPC512X_RSR_JHRS))
++			reset_source_set(RESET_JTAG);
++		else
++			reset_source_set(RESET_UKWN);
++	}
++	out_be32(&resetc->rsr, reg);
++
++	return 0;
++}
++device_initcall(mpc5125_keep_reset_cause);
+diff --git a/arch/ppc/mach-mpc5xxx/include/mach/bbu.h b/arch/ppc/mach-mpc5xxx/include/mach/bbu.h
+new file mode 100644
+index 0000000..6727d42
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/include/mach/bbu.h
+@@ -0,0 +1,18 @@
++#ifndef __MACH_BBU_H
++#define __MACH_BBU_H
++
++#ifdef CONFIG_BAREBOX_UPDATE
++
++int ppc_bbu_nor_register_handler(const char *name, const char *devicefile,
++					unsigned long flags);
++
++#else /* CONFIG_BAREBOX_UPDATE */
++
++static inline int ppc_bbu_nor_register_handler(const char *name,
++				const char *devicefile, unsigned long flags)
++{
++	return -ENOSYS;
++}
++#endif
++
++#endif /* __MACH_BBU_H */
+diff --git a/arch/ppc/mach-mpc5xxx/include/mach/clocks.h b/arch/ppc/mach-mpc5xxx/include/mach/clocks.h
+index 717a85b..87fdbc6 100644
+--- a/arch/ppc/mach-mpc5xxx/include/mach/clocks.h
++++ b/arch/ppc/mach-mpc5xxx/include/mach/clocks.h
+@@ -4,6 +4,7 @@
+ /* common clocks */
+ unsigned long get_cpu_clock(void);
+ unsigned long get_timebase_clock(void);
++void mpc5xxx_enable_psc_clock(unsigned idx);
+ 
+ #if defined(CONFIG_MGT5100) || defined(CONFIG_MPC5200)
+ unsigned long get_bus_clock(void);
+@@ -11,4 +12,12 @@ unsigned long get_ipb_clock(void);
+ unsigned long get_pci_clock(void);
+ #endif
+ 
++#ifdef CONFIG_SOC_MPC5125
++unsigned long get_ips_clock(void);
++unsigned long get_psc_clock(unsigned);
++void mpc5125_enable_psc_fifo_clock(void);
++void mpc5xxx_enable_fec_clock(unsigned idx);
++unsigned long mpc5125_get_psc_clock(unsigned idx);
++#endif
++
+ #endif /* __ASM_ARCH_CLOCKS_H */
+diff --git a/arch/ppc/mach-mpc5xxx/include/mach/mpc512x.h b/arch/ppc/mach-mpc5xxx/include/mach/mpc512x.h
+new file mode 100644
+index 0000000..ed60f2a
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/include/mach/mpc512x.h
+@@ -0,0 +1,321 @@
++/*
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef __MPC512X_H__
++#define __MPC512X_H__
++
++#include <asm/types.h>
++#include <sizes.h>
++
++/* reset default */
++#define DEFAULT_MBAR	0xff400000
++
++/*
++ * Memory map after reset:
++ *
++ * 0x00000000 - 0x007fffff LPB-ROM (when BMS = 0)
++ * 0x10000000 - 0x13ffffff system main memory area
++ * 0x30000000 - 0x3001ffff SRAM
++ * 0x40000000 - 0x400fffff NFC
++ * 0xff400000 - 0xff4fffff MBAR + IO area
++ *
++ * Memory map after _start in start.S run:
++ *
++ * 0x00000000 ... 0x7fffffff  system main memory area
++ * 0xf0000000 ... 0xf00fffff  MBAR + IO area (1 MiB)
++ * 0xf0500000 ... 0xff53ffff  SRAM (256 kiB)
++ * 0xf0600000 ... 0xff6fffff  NFC (1 MiB)
++ * 0xfe000000 ... 0xffffffff  ROM (32 MiB)
++ */
++
++#define CFG_MBAR	0xf0000000
++#define CFG_ROM_LOC	0xfe000000
++#define CFG_ROM_SZ	SZ_8M
++#define CFG_SRAM_LOC	0xf0500000
++# define MPC5XXX_SRAM	CFG_SRAM_LOC
++#define CFG_SRAM_SZ	SZ_32K
++# define MPC5XXX_SRAM_SIZE CFG_SRAM_SZ
++#define CFG_NFC_LOC	0xf0600000
++
++#define DEFAULT_DRAM_BASE 0x00000000
++
++/* base address is IMMBAR */
++#define MPC512X_RESET	(CFG_MBAR + 0x00E00)
++#define MPC512X_CLKM	(CFG_MBAR + 0x00f00)
++#define MPC512X_WDT	(CFG_MBAR + 0x00900)
++#define MPC512X_FEC1	(CFG_MBAR + 0x02800)
++#define MPC512X_FEC2	(CFG_MBAR + 0x04800)
++#define MPC512X_DRAMC	(CFG_MBAR + 0x09000)
++#define MPC512X_IOC	(CFG_MBAR + 0x0A000)
++#define MPC512X_LPC	(CFG_MBAR + 0x10000)
++#define MPC512X_PSC0	(CFG_MBAR + 0x11000)
++#define MPC512X_PSC1	(CFG_MBAR + 0x11100)
++#define MPC512X_PSC2	(CFG_MBAR + 0x11200)
++#define MPC512X_PSC3	(CFG_MBAR + 0x11300)
++#define MPC512X_PSC4	(CFG_MBAR + 0x11400)
++#define MPC512X_PSC5	(CFG_MBAR + 0x11500)
++#define MPC512X_PSC6	(CFG_MBAR + 0x11600)
++#define MPC512X_PSC7	(CFG_MBAR + 0x11700)
++#define MPC512X_PSC8	(CFG_MBAR + 0x11800)
++#define MPC512X_PSC9	(CFG_MBAR + 0x11900)
++#define MPC512X_FIFOC	(CFG_MBAR + 0x11f00)
++
++/* System reset offset (PowerPC standard) */
 +#define EXC_OFF_SYS_RESET	0x0100
 +#define _START_OFFSET		EXC_OFF_SYS_RESET
 +
-+#define CFG_MBAR 0xf0000000
++/* some register offsets from the "Local Access Register Memory Map" */
++#define LPBAW_OFFSET		0x20
++#define LPCS0AW_OFFSET		0x24
++#define SRAMBAR_OFFSET		0xc4
++#define NFSCBAR_OFFSET		0xc8
++#define SWCRR_OFFSET		0x0904
++#define CS_CR_OFFSET		0x20
 +
-+/* useful macros for manipulating CSx_START/STOP */
-+#if defined(CONFIG_MGT5100)
-+#define START_REG(start)	((start) >> 15)
-+#define STOP_REG(start, size)	(((start) + (size) - 1) >> 15)
-+#elif defined(CONFIG_MPC5200)
-+#define START_REG(start)	((start) >> 16)
-+#define STOP_REG(start, size)	(((start) + (size) - 1) >> 16)
++#ifndef CFG_HID0_INIT
++# define CFG_HID0_INIT		HID0_ICE | HID0_ICFI
 +#endif
-+
-+/* Internal memory map */
-+
-+#define MPC5XXX_CS0_START	(CFG_MBAR + 0x0004)
-+#define MPC5XXX_CS0_STOP	(CFG_MBAR + 0x0008)
-+#define MPC5XXX_CS1_START	(CFG_MBAR + 0x000c)
-+#define MPC5XXX_CS1_STOP	(CFG_MBAR + 0x0010)
-+#define MPC5XXX_CS2_START	(CFG_MBAR + 0x0014)
-+#define MPC5XXX_CS2_STOP	(CFG_MBAR + 0x0018)
-+#define MPC5XXX_CS3_START	(CFG_MBAR + 0x001c)
-+#define MPC5XXX_CS3_STOP	(CFG_MBAR + 0x0020)
-+#define MPC5XXX_CS4_START	(CFG_MBAR + 0x0024)
-+#define MPC5XXX_CS4_STOP	(CFG_MBAR + 0x0028)
-+#define MPC5XXX_CS5_START	(CFG_MBAR + 0x002c)
-+#define MPC5XXX_CS5_STOP	(CFG_MBAR + 0x0030)
-+#define MPC5XXX_BOOTCS_START	(CFG_MBAR + 0x004c)
-+#define MPC5XXX_BOOTCS_STOP	(CFG_MBAR + 0x0050)
-+#define MPC5XXX_ADDECR		(CFG_MBAR + 0x0054)
-+
-+#if defined(CONFIG_MGT5100)
-+#define MPC5XXX_SDRAM_START	(CFG_MBAR + 0x0034)
-+#define MPC5XXX_SDRAM_STOP	(CFG_MBAR + 0x0038)
-+#define MPC5XXX_PCI1_START	(CFG_MBAR + 0x003c)
-+#define MPC5XXX_PCI1_STOP	(CFG_MBAR + 0x0040)
-+#define MPC5XXX_PCI2_START	(CFG_MBAR + 0x0044)
-+#define MPC5XXX_PCI2_STOP	(CFG_MBAR + 0x0048)
-+#elif defined(CONFIG_MPC5200)
-+#define MPC5XXX_CS6_START	(CFG_MBAR + 0x0058)
-+#define MPC5XXX_CS6_STOP	(CFG_MBAR + 0x005c)
-+#define MPC5XXX_CS7_START	(CFG_MBAR + 0x0060)
-+#define MPC5XXX_CS7_STOP	(CFG_MBAR + 0x0064)
-+#define MPC5XXX_SDRAM_CS0CFG	(CFG_MBAR + 0x0034)
-+#define MPC5XXX_SDRAM_CS1CFG	(CFG_MBAR + 0x0038)
++#ifndef CFG_HID0_FINAL
++# define CFG_HID0_FINAL		HID0_ICE
 +#endif
-+
-+#define MPC5XXX_SDRAM		(CFG_MBAR + 0x0100)
-+#define MPC5XXX_CDM		(CFG_MBAR + 0x0200)
-+#define MPC5XXX_LPB		(CFG_MBAR + 0x0300)
-+#define MPC5XXX_ICTL		(CFG_MBAR + 0x0500)
-+#define MPC5XXX_GPT		(CFG_MBAR + 0x0600)
-+#define MPC5XXX_GPIO		(CFG_MBAR + 0x0b00)
-+#define MPC5XXX_WU_GPIO         (CFG_MBAR + 0x0c00)
-+#define MPC5XXX_PCI		(CFG_MBAR + 0x0d00)
-+#define MPC5XXX_SPI		(CFG_MBAR + 0x0f00)
-+#define MPC5XXX_USB		(CFG_MBAR + 0x1000)
-+#define MPC5XXX_SDMA		(CFG_MBAR + 0x1200)
-+#define MPC5XXX_XLBARB		(CFG_MBAR + 0x1f00)
-+
-+#if defined(CONFIG_MGT5100)
-+#define	MPC5XXX_PSC1		(CFG_MBAR + 0x2000)
-+#define	MPC5XXX_PSC2		(CFG_MBAR + 0x2400)
-+#define	MPC5XXX_PSC3		(CFG_MBAR + 0x2800)
-+#elif defined(CONFIG_MPC5200)
-+#define	MPC5XXX_PSC1		(CFG_MBAR + 0x2000)
-+#define	MPC5XXX_PSC2		(CFG_MBAR + 0x2200)
-+#define	MPC5XXX_PSC3		(CFG_MBAR + 0x2400)
-+#define	MPC5XXX_PSC4		(CFG_MBAR + 0x2600)
-+#define	MPC5XXX_PSC5		(CFG_MBAR + 0x2800)
-+#define	MPC5XXX_PSC6		(CFG_MBAR + 0x2c00)
++#ifndef CFG_SYS_HID2
++# define CFG_SYS_HID2		HID2_HBE
 +#endif
-+
-+#define	MPC5XXX_FEC		(CFG_MBAR + 0x3000)
-+#define MPC5XXX_ATA             (CFG_MBAR + 0x3A00)
-+
-+#define MPC5XXX_I2C1		(CFG_MBAR + 0x3D00)
-+#define MPC5XXX_I2C2		(CFG_MBAR + 0x3D40)
-+
-+#if defined(CONFIG_MGT5100)
-+#define MPC5XXX_SRAM		(CFG_MBAR + 0x4000)
-+#define MPC5XXX_SRAM_SIZE	(8*1024)
-+#elif defined(CONFIG_MPC5200)
-+#define MPC5XXX_SRAM		(CFG_MBAR + 0x8000)
-+#define MPC5XXX_SRAM_SIZE	(16*1024)
-+#endif
-+
-+/* SDRAM Controller */
-+#define MPC5XXX_SDRAM_MODE	(MPC5XXX_SDRAM + 0x0000)
-+#define MPC5XXX_SDRAM_CTRL	(MPC5XXX_SDRAM + 0x0004)
-+#define MPC5XXX_SDRAM_CONFIG1	(MPC5XXX_SDRAM + 0x0008)
-+#define MPC5XXX_SDRAM_CONFIG2	(MPC5XXX_SDRAM + 0x000c)
-+#if defined(CONFIG_MGT5100)
-+#define MPC5XXX_SDRAM_XLBSEL	(MPC5XXX_SDRAM + 0x0010)
-+#endif
-+#define MPC5XXX_SDRAM_SDELAY	(MPC5XXX_SDRAM + 0x0090)
-+
-+/* Clock Distribution Module */
-+#define MPC5XXX_CDM_JTAGID	(MPC5XXX_CDM + 0x0000)
-+#define MPC5XXX_CDM_PORCFG	(MPC5XXX_CDM + 0x0004)
-+#define MPC5XXX_CDM_CFG		(MPC5XXX_CDM + 0x000c)
-+#define MPC5XXX_CDM_48_FDC	(MPC5XXX_CDM + 0x0010)
-+#define MPC5XXX_CDM_SRESET	(MPC5XXX_CDM + 0x0020)
-+
-+/* Local Plus Bus interface */
-+#define MPC5XXX_CS0_CFG		(MPC5XXX_LPB + 0x0000)
-+#define MPC5XXX_CS1_CFG		(MPC5XXX_LPB + 0x0004)
-+#define MPC5XXX_CS2_CFG		(MPC5XXX_LPB + 0x0008)
-+#define MPC5XXX_CS3_CFG		(MPC5XXX_LPB + 0x000c)
-+#define MPC5XXX_CS4_CFG		(MPC5XXX_LPB + 0x0010)
-+#define MPC5XXX_CS5_CFG		(MPC5XXX_LPB + 0x0014)
-+#define MPC5XXX_BOOTCS_CFG	MPC5XXX_CS0_CFG
-+#define MPC5XXX_CS_CTRL		(MPC5XXX_LPB + 0x0018)
-+#define MPC5XXX_CS_STATUS	(MPC5XXX_LPB + 0x001c)
-+#if defined(CONFIG_MPC5200)
-+#define MPC5XXX_CS6_CFG		(MPC5XXX_LPB + 0x0020)
-+#define MPC5XXX_CS7_CFG		(MPC5XXX_LPB + 0x0024)
-+#define MPC5XXX_CS_BURST	(MPC5XXX_LPB + 0x0028)
-+#define MPC5XXX_CS_DEADCYCLE	(MPC5XXX_LPB + 0x002c)
-+#endif
-+
-+#if defined(CONFIG_MPC5200)
-+/* XLB Arbiter registers */
-+#define MPC5XXX_XLBARB_CFG		(MPC5XXX_XLBARB + 0x40)
-+#define MPC5XXX_XLBARB_MPRIEN	(MPC5XXX_XLBARB + 0x64)
-+#define MPC5XXX_XLBARB_MPRIVAL	(MPC5XXX_XLBARB + 0x68)
-+#endif
-+
-+/* GPIO registers */
-+#define MPC5XXX_GPS_PORT_CONFIG	(MPC5XXX_GPIO + 0x0000)
-+
-+/* Standard GPIO registers (simple, output only and simple interrupt */
-+#define MPC5XXX_GPIO_ENABLE     (MPC5XXX_GPIO + 0x0004)
-+#define MPC5XXX_GPIO_ODE        (MPC5XXX_GPIO + 0x0008)
-+#define MPC5XXX_GPIO_DIR        (MPC5XXX_GPIO + 0x000c)
-+#define MPC5XXX_GPIO_DATA_O     (MPC5XXX_GPIO + 0x0010)
-+#define MPC5XXX_GPIO_DATA_I     (MPC5XXX_GPIO + 0x0014)
-+#define MPC5XXX_GPIO_OO_ENABLE  (MPC5XXX_GPIO + 0x0018)
-+#define MPC5XXX_GPIO_OO_DATA    (MPC5XXX_GPIO + 0x001C)
-+#define MPC5XXX_GPIO_SI_ENABLE  (MPC5XXX_GPIO + 0x0020)
-+#define MPC5XXX_GPIO_SI_ODE     (MPC5XXX_GPIO + 0x0024)
-+#define MPC5XXX_GPIO_SI_DIR     (MPC5XXX_GPIO + 0x0028)
-+#define MPC5XXX_GPIO_SI_DATA    (MPC5XXX_GPIO + 0x002C)
-+#define MPC5XXX_GPIO_SI_IEN     (MPC5XXX_GPIO + 0x0030)
-+#define MPC5XXX_GPIO_SI_ITYPE   (MPC5XXX_GPIO + 0x0034)
-+#define MPC5XXX_GPIO_SI_MEN     (MPC5XXX_GPIO + 0x0038)
-+#define MPC5XXX_GPIO_SI_STATUS  (MPC5XXX_GPIO + 0x003C)
-+
-+/* WakeUp GPIO registers */
-+#define MPC5XXX_WU_GPIO_ENABLE  (MPC5XXX_WU_GPIO + 0x0000)
-+#define MPC5XXX_WU_GPIO_ODE     (MPC5XXX_WU_GPIO + 0x0004)
-+#define MPC5XXX_WU_GPIO_DIR     (MPC5XXX_WU_GPIO + 0x0008)
-+#define MPC5XXX_WU_GPIO_DATA_O  (MPC5XXX_WU_GPIO + 0x000c)
-+#define MPC5XXX_WU_GPIO_DATA_I  (MPC5XXX_WU_GPIO + 0x0020)
-+
-+/* GPIO pins */
-+#define GPIO_WKUP_7		0x80000000UL
-+#define GPIO_PSC6_0		0x10000000UL
-+#define GPIO_PSC3_9		0x04000000UL
-+#define GPIO_PSC1_4		0x01000000UL
-+
-+/* PCI registers */
-+#define MPC5XXX_PCI_CMD		(MPC5XXX_PCI + 0x04)
-+#define MPC5XXX_PCI_CFG		(MPC5XXX_PCI + 0x0c)
-+#define MPC5XXX_PCI_BAR0	(MPC5XXX_PCI + 0x10)
-+#define MPC5XXX_PCI_BAR1	(MPC5XXX_PCI + 0x14)
-+#if defined(CONFIG_MGT5100)
-+#define MPC5XXX_PCI_CTRL	(MPC5XXX_PCI + 0x68)
-+#define MPC5XXX_PCI_VALMSKR	(MPC5XXX_PCI + 0x6c)
-+#define MPC5XXX_PCI_VALMSKW	(MPC5XXX_PCI + 0x70)
-+#define MPC5XXX_PCI_SUBW1	(MPC5XXX_PCI + 0x74)
-+#define MPC5XXX_PCI_SUBW2	(MPC5XXX_PCI + 0x78)
-+#define MPC5XXX_PCI_WINCOMMAND	(MPC5XXX_PCI + 0x7c)
-+#elif defined(CONFIG_MPC5200)
-+#define MPC5XXX_PCI_GSCR	(MPC5XXX_PCI + 0x60)
-+#define MPC5XXX_PCI_TBATR0	(MPC5XXX_PCI + 0x64)
-+#define MPC5XXX_PCI_TBATR1	(MPC5XXX_PCI + 0x68)
-+#define MPC5XXX_PCI_TCR		(MPC5XXX_PCI + 0x6c)
-+#define MPC5XXX_PCI_IW0BTAR	(MPC5XXX_PCI + 0x70)
-+#define MPC5XXX_PCI_IW1BTAR	(MPC5XXX_PCI + 0x74)
-+#define MPC5XXX_PCI_IW2BTAR	(MPC5XXX_PCI + 0x78)
-+#define MPC5XXX_PCI_IWCR	(MPC5XXX_PCI + 0x80)
-+#define MPC5XXX_PCI_ICR		(MPC5XXX_PCI + 0x84)
-+#define MPC5XXX_PCI_ISR		(MPC5XXX_PCI + 0x88)
-+#define MPC5XXX_PCI_ARB		(MPC5XXX_PCI + 0x8c)
-+#define MPC5XXX_PCI_CAR		(MPC5XXX_PCI + 0xf8)
-+#endif
-+
-+/* Interrupt Controller registers */
-+#define MPC5XXX_ICTL_PER_MASK	(MPC5XXX_ICTL + 0x0000)
-+#define MPC5XXX_ICTL_PER_PRIO1	(MPC5XXX_ICTL + 0x0004)
-+#define MPC5XXX_ICTL_PER_PRIO2	(MPC5XXX_ICTL + 0x0008)
-+#define MPC5XXX_ICTL_PER_PRIO3	(MPC5XXX_ICTL + 0x000c)
-+#define MPC5XXX_ICTL_EXT	(MPC5XXX_ICTL + 0x0010)
-+#define MPC5XXX_ICTL_CRIT	(MPC5XXX_ICTL + 0x0014)
-+#define MPC5XXX_ICTL_MAIN_PRIO1	(MPC5XXX_ICTL + 0x0018)
-+#define MPC5XXX_ICTL_MAIN_PRIO2	(MPC5XXX_ICTL + 0x001c)
-+#define MPC5XXX_ICTL_STS	(MPC5XXX_ICTL + 0x0024)
-+#define MPC5XXX_ICTL_CRIT_STS	(MPC5XXX_ICTL + 0x0028)
-+#define MPC5XXX_ICTL_MAIN_STS	(MPC5XXX_ICTL + 0x002c)
-+#define MPC5XXX_ICTL_PER_STS	(MPC5XXX_ICTL + 0x0030)
-+#define MPC5XXX_ICTL_BUS_STS	(MPC5XXX_ICTL + 0x0038)
-+
-+#define NR_IRQS			64
-+
-+/* IRQ mapping - these are our logical IRQ numbers */
-+#define MPC5XXX_CRIT_IRQ_NUM	4
-+#define MPC5XXX_MAIN_IRQ_NUM	17
-+#define MPC5XXX_SDMA_IRQ_NUM	17
-+#define MPC5XXX_PERP_IRQ_NUM	23
-+
-+#define MPC5XXX_CRIT_IRQ_BASE	1
-+#define MPC5XXX_MAIN_IRQ_BASE	(MPC5XXX_CRIT_IRQ_BASE + MPC5XXX_CRIT_IRQ_NUM)
-+#define MPC5XXX_SDMA_IRQ_BASE	(MPC5XXX_MAIN_IRQ_BASE + MPC5XXX_MAIN_IRQ_NUM)
-+#define MPC5XXX_PERP_IRQ_BASE	(MPC5XXX_SDMA_IRQ_BASE + MPC5XXX_SDMA_IRQ_NUM)
-+
-+#define MPC5XXX_IRQ0			(MPC5XXX_CRIT_IRQ_BASE + 0)
-+#define MPC5XXX_SLICE_TIMER_0_IRQ	(MPC5XXX_CRIT_IRQ_BASE + 1)
-+#define MPC5XXX_HI_INT_IRQ		(MPC5XXX_CRIT_IRQ_BASE + 2)
-+#define MPC5XXX_CCS_IRQ			(MPC5XXX_CRIT_IRQ_BASE + 3)
-+
-+#define MPC5XXX_IRQ1			(MPC5XXX_MAIN_IRQ_BASE + 1)
-+#define MPC5XXX_IRQ2			(MPC5XXX_MAIN_IRQ_BASE + 2)
-+#define MPC5XXX_IRQ3			(MPC5XXX_MAIN_IRQ_BASE + 3)
-+#define MPC5XXX_RTC_PINT_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 5)
-+#define MPC5XXX_RTC_SINT_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 6)
-+#define MPC5XXX_RTC_GPIO_STD_IRQ	(MPC5XXX_MAIN_IRQ_BASE + 7)
-+#define MPC5XXX_RTC_GPIO_WKUP_IRQ	(MPC5XXX_MAIN_IRQ_BASE + 8)
-+#define MPC5XXX_TMR0_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 9)
-+#define MPC5XXX_TMR1_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 10)
-+#define MPC5XXX_TMR2_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 11)
-+#define MPC5XXX_TMR3_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 12)
-+#define MPC5XXX_TMR4_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 13)
-+#define MPC5XXX_TMR5_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 14)
-+#define MPC5XXX_TMR6_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 15)
-+#define MPC5XXX_TMR7_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 16)
-+
-+#define MPC5XXX_SDMA_IRQ		(MPC5XXX_PERP_IRQ_BASE + 0)
-+#define MPC5XXX_PSC1_IRQ		(MPC5XXX_PERP_IRQ_BASE + 1)
-+#define MPC5XXX_PSC2_IRQ		(MPC5XXX_PERP_IRQ_BASE + 2)
-+#define MPC5XXX_PSC3_IRQ		(MPC5XXX_PERP_IRQ_BASE + 3)
-+#define MPC5XXX_PSC6_IRQ		(MPC5XXX_PERP_IRQ_BASE + 4)
-+#define MPC5XXX_IRDA_IRQ		(MPC5XXX_PERP_IRQ_BASE + 4)
-+#define MPC5XXX_FEC_IRQ			(MPC5XXX_PERP_IRQ_BASE + 5)
-+#define MPC5XXX_USB_IRQ			(MPC5XXX_PERP_IRQ_BASE + 6)
-+#define MPC5XXX_ATA_IRQ			(MPC5XXX_PERP_IRQ_BASE + 7)
-+#define MPC5XXX_PCI_CNTRL_IRQ		(MPC5XXX_PERP_IRQ_BASE + 8)
-+#define MPC5XXX_PCI_SCIRX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 9)
-+#define MPC5XXX_PCI_SCITX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 10)
-+#define MPC5XXX_PSC4_IRQ		(MPC5XXX_PERP_IRQ_BASE + 11)
-+#define MPC5XXX_PSC5_IRQ		(MPC5XXX_PERP_IRQ_BASE + 12)
-+#define MPC5XXX_SPI_MODF_IRQ		(MPC5XXX_PERP_IRQ_BASE + 13)
-+#define MPC5XXX_SPI_SPIF_IRQ		(MPC5XXX_PERP_IRQ_BASE + 14)
-+#define MPC5XXX_I2C1_IRQ		(MPC5XXX_PERP_IRQ_BASE + 15)
-+#define MPC5XXX_I2C2_IRQ		(MPC5XXX_PERP_IRQ_BASE + 16)
-+#define MPC5XXX_MSCAN1_IRQ		(MPC5XXX_PERP_IRQ_BASE + 17)
-+#define MPC5XXX_MSCAN2_IRQ		(MPC5XXX_PERP_IRQ_BASE + 18)
-+#define MPC5XXX_IR_RX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 19)
-+#define MPC5XXX_IR_TX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 20)
-+#define MPC5XXX_XLB_ARB_IRQ		(MPC5XXX_PERP_IRQ_BASE + 21)
-+#define MPC5XXX_BDLC_IRQ		(MPC5XXX_PERP_IRQ_BASE + 22)
-+
-+/* General Purpose Timers registers */
-+#define MPC5XXX_GPT0_ENABLE		(MPC5XXX_GPT + 0x0)
-+#define MPC5XXX_GPT0_COUNTER		(MPC5XXX_GPT + 0x4)
-+#define MPC5XXX_GPT0_STATUS		(MPC5XXX_GPT + 0x0C)
-+#define MPC5XXX_GPT1_ENABLE		(MPC5XXX_GPT + 0x10)
-+#define MPC5XXX_GPT1_COUNTER		(MPC5XXX_GPT + 0x14)
-+#define MPC5XXX_GPT1_STATUS		(MPC5XXX_GPT + 0x1C)
-+#define MPC5XXX_GPT2_ENABLE		(MPC5XXX_GPT + 0x20)
-+#define MPC5XXX_GPT2_COUNTER		(MPC5XXX_GPT + 0x24)
-+#define MPC5XXX_GPT2_STATUS		(MPC5XXX_GPT + 0x2C)
-+#define MPC5XXX_GPT3_ENABLE		(MPC5XXX_GPT + 0x30)
-+#define MPC5XXX_GPT3_COUNTER		(MPC5XXX_GPT + 0x34)
-+#define MPC5XXX_GPT3_STATUS		(MPC5XXX_GPT + 0x3C)
-+#define MPC5XXX_GPT4_ENABLE		(MPC5XXX_GPT + 0x40)
-+#define MPC5XXX_GPT4_COUNTER		(MPC5XXX_GPT + 0x44)
-+#define MPC5XXX_GPT4_STATUS		(MPC5XXX_GPT + 0x4C)
-+#define MPC5XXX_GPT5_ENABLE		(MPC5XXX_GPT + 0x50)
-+#define MPC5XXX_GPT5_STATUS		(MPC5XXX_GPT + 0x5C)
-+#define MPC5XXX_GPT5_COUNTER		(MPC5XXX_GPT + 0x54)
-+#define MPC5XXX_GPT6_ENABLE		(MPC5XXX_GPT + 0x60)
-+#define MPC5XXX_GPT6_COUNTER		(MPC5XXX_GPT + 0x64)
-+#define MPC5XXX_GPT6_STATUS		(MPC5XXX_GPT + 0x6C)
-+#define MPC5XXX_GPT7_ENABLE		(MPC5XXX_GPT + 0x70)
-+#define MPC5XXX_GPT7_COUNTER		(MPC5XXX_GPT + 0x74)
-+#define MPC5XXX_GPT7_STATUS		(MPC5XXX_GPT + 0x7C)
-+
-+#define MPC5XXX_GPT_GPIO_PIN(status)	((0x00000100 & (status)) >> 8)
-+
-+#define MPC5XXX_GPT7_PWMCFG		(MPC5XXX_GPT + 0x78)
-+
-+/* ATA registers */
-+#define MPC5XXX_ATA_HOST_CONFIG         (MPC5XXX_ATA + 0x0000)
-+#define MPC5XXX_ATA_PIO1                (MPC5XXX_ATA + 0x0008)
-+#define MPC5XXX_ATA_PIO2                (MPC5XXX_ATA + 0x000C)
-+#define MPC5XXX_ATA_SHARE_COUNT         (MPC5XXX_ATA + 0x002C)
-+
-+/* I2Cn control register bits */
-+#define I2C_EN		0x80
-+#define I2C_IEN		0x40
-+#define I2C_STA		0x20
-+#define I2C_TX		0x10
-+#define I2C_TXAK	0x08
-+#define I2C_RSTA	0x04
-+#define I2C_INIT_MASK	(I2C_EN | I2C_STA | I2C_TX | I2C_RSTA)
-+
-+/* I2Cn status register bits */
-+#define I2C_CF		0x80
-+#define I2C_AAS		0x40
-+#define I2C_BB		0x20
-+#define I2C_AL		0x10
-+#define I2C_SRW		0x04
-+#define I2C_IF		0x02
-+#define I2C_RXAK	0x01
-+
-+/* Programmable Serial Controller (PSC) status register bits */
-+#define PSC_SR_CDE		0x0080
-+#define PSC_SR_RXRDY		0x0100
-+#define PSC_SR_RXFULL		0x0200
-+#define PSC_SR_TXRDY		0x0400
-+#define PSC_SR_TXEMP		0x0800
-+#define PSC_SR_OE		0x1000
-+#define PSC_SR_PE		0x2000
-+#define PSC_SR_FE		0x4000
-+#define PSC_SR_RB		0x8000
-+
-+/* PSC Command values */
-+#define PSC_RX_ENABLE		0x0001
-+#define PSC_RX_DISABLE		0x0002
-+#define PSC_TX_ENABLE		0x0004
-+#define PSC_TX_DISABLE		0x0008
-+#define PSC_SEL_MODE_REG_1	0x0010
-+#define PSC_RST_RX		0x0020
-+#define PSC_RST_TX		0x0030
-+#define PSC_RST_ERR_STAT	0x0040
-+#define PSC_RST_BRK_CHG_INT	0x0050
-+#define PSC_START_BRK		0x0060
-+#define PSC_STOP_BRK		0x0070
-+
-+/* PSC Rx FIFO status bits */
-+#define PSC_RX_FIFO_ERR		0x0040
-+#define PSC_RX_FIFO_UF		0x0020
-+#define PSC_RX_FIFO_OF		0x0010
-+#define PSC_RX_FIFO_FR		0x0008
-+#define PSC_RX_FIFO_FULL	0x0004
-+#define PSC_RX_FIFO_ALARM	0x0002
-+#define PSC_RX_FIFO_EMPTY	0x0001
-+
-+/* PSC interrupt mask bits */
-+#define PSC_IMR_TXRDY		0x0100
-+#define PSC_IMR_RXRDY		0x0200
-+#define PSC_IMR_DB		0x0400
-+#define PSC_IMR_IPC		0x8000
-+
-+/* PSC input port change bits */
-+#define PSC_IPCR_CTS		0x01
-+#define PSC_IPCR_DCD		0x02
-+
-+/* PSC mode fields */
-+#define PSC_MODE_5_BITS		0x00
-+#define PSC_MODE_6_BITS		0x01
-+#define PSC_MODE_7_BITS		0x02
-+#define PSC_MODE_8_BITS		0x03
-+#define PSC_MODE_PAREVEN	0x00
-+#define PSC_MODE_PARODD		0x04
-+#define PSC_MODE_PARFORCE	0x08
-+#define PSC_MODE_PARNONE	0x10
-+#define PSC_MODE_ERR		0x20
-+#define PSC_MODE_FFULL		0x40
-+#define PSC_MODE_RXRTS		0x80
-+
-+#define PSC_MODE_ONE_STOP_5_BITS	0x00
-+#define PSC_MODE_ONE_STOP		0x07
-+#define PSC_MODE_TWO_STOP		0x0f
-+
-+
-+/* ATA config fields */
-+#define MPC5xxx_ATA_HOSTCONF_SMR	0x80000000UL	/* State machine
-+							   reset */
-+#define MPC5xxx_ATA_HOSTCONF_FR		0x40000000UL	/* FIFO Reset */
-+#define MPC5xxx_ATA_HOSTCONF_IE		0x02000000UL	/* Enable interrupt
-+							   in PIO */
-+#define MPC5xxx_ATA_HOSTCONF_IORDY	0x01000000UL	/* Drive supports
-+							   IORDY protocol */
 +
 +#ifndef __ASSEMBLY__
 +
-+#include <linux/types.h>
++void mpc5125_setup_access_window(unsigned cs, unsigned start, unsigned size);
++void mpc5125_setup_ram_memory_window(unsigned base, unsigned size);
++unsigned mpc5xxx_get_sdram_size(void);
++void mpc5125_enable_time_base_counter(void);
 +
-+struct mpc5xxx_psc {
-+	volatile u8	mode;		/* PSC + 0x00 */
-+	volatile u8	reserved0[3];
-+	union {				/* PSC + 0x04 */
-+		volatile u16	status;
-+		volatile u16	clock_select;
-+	} sr_csr;
-+#define psc_status	sr_csr.status
-+#define psc_clock_select sr_csr.clock_select
-+	volatile u16	reserved1;
-+	volatile u8	command;	/* PSC + 0x08 */
-+	volatile u8	reserved2[3];
-+	union {				/* PSC + 0x0c */
-+		volatile u8	buffer_8;
-+		volatile u16	buffer_16;
-+		volatile u32	buffer_32;
-+	} buffer;
-+#define psc_buffer_8	buffer.buffer_8
-+#define psc_buffer_16	buffer.buffer_16
-+#define psc_buffer_32	buffer.buffer_32
-+	union {				/* PSC + 0x10 */
-+		volatile u8	ipcr;
-+		volatile u8	acr;
-+	} ipcr_acr;
-+#define psc_ipcr	ipcr_acr.ipcr
-+#define psc_acr		ipcr_acr.acr
-+	volatile u8	reserved3[3];
-+	union {				/* PSC + 0x14 */
-+		volatile u16	isr;
-+		volatile u16	imr;
-+	} isr_imr;
-+#define psc_isr		isr_imr.isr
-+#define psc_imr		isr_imr.imr
-+	volatile u16	reserved4;
-+	volatile u8	ctur;		/* PSC + 0x18 */
-+	volatile u8	reserved5[3];
-+	volatile u8	ctlr;		/* PSC + 0x1c */
-+	volatile u8	reserved6[3];
-+	volatile u16	ccr;		/* PSC + 0x20 */
-+	volatile u8	reserved7[14];
-+	volatile u8	ivr;		/* PSC + 0x30 */
-+	volatile u8	reserved8[3];
-+	volatile u8	ip;		/* PSC + 0x34 */
-+	volatile u8	reserved9[3];
-+	volatile u8	op1;		/* PSC + 0x38 */
-+	volatile u8	reserved10[3];
-+	volatile u8	op0;		/* PSC + 0x3c */
-+	volatile u8	reserved11[3];
-+	volatile u32	sicr;		/* PSC + 0x40 */
-+	volatile u8	ircr1;		/* PSC + 0x44 */
-+	volatile u8	reserved12[3];
-+	volatile u8	ircr2;		/* PSC + 0x44 */
-+	volatile u8	reserved13[3];
-+	volatile u8	irsdr;		/* PSC + 0x4c */
-+	volatile u8	reserved14[3];
-+	volatile u8	irmdr;		/* PSC + 0x50 */
-+	volatile u8	reserved15[3];
-+	volatile u8	irfdr;		/* PSC + 0x54 */
-+	volatile u8	reserved16[3];
-+	volatile u16	rfnum;		/* PSC + 0x58 */
-+	volatile u16	reserved17;
-+	volatile u16	tfnum;		/* PSC + 0x5c */
-+	volatile u16	reserved18;
-+	volatile u32	rfdata;		/* PSC + 0x60 */
-+	volatile u16	rfstat;		/* PSC + 0x64 */
-+	volatile u16	reserved20;
-+	volatile u8	rfcntl;		/* PSC + 0x68 */
-+	volatile u8	reserved21[5];
-+	volatile u16	rfalarm;	/* PSC + 0x6e */
-+	volatile u16	reserved22;
-+	volatile u16	rfrptr;		/* PSC + 0x72 */
-+	volatile u16	reserved23;
-+	volatile u16	rfwptr;		/* PSC + 0x76 */
-+	volatile u16	reserved24;
-+	volatile u16	rflrfptr;	/* PSC + 0x7a */
-+	volatile u16	reserved25;
-+	volatile u16	rflwfptr;	/* PSC + 0x7e */
-+	volatile u32	tfdata;		/* PSC + 0x80 */
-+	volatile u16	tfstat;		/* PSC + 0x84 */
-+	volatile u16	reserved26;
-+	volatile u8	tfcntl;		/* PSC + 0x88 */
-+	volatile u8	reserved27[5];
-+	volatile u16	tfalarm;	/* PSC + 0x8e */
-+	volatile u16	reserved28;
-+	volatile u16	tfrptr;		/* PSC + 0x92 */
-+	volatile u16	reserved29;
-+	volatile u16	tfwptr;		/* PSC + 0x96 */
-+	volatile u16	reserved30;
-+	volatile u16	tflrfptr;	/* PSC + 0x9a */
-+	volatile u16	reserved31;
-+	volatile u16	tflwfptr;	/* PSC + 0x9e */
++void mpc5125_setup_ram_memory_window(unsigned base, unsigned size);
++
++enum mpc5125_pinmux_id {
++	io_control_mem = 0,
++	io_control_lpc_clk = 4,
++	io_control_lpc_oe,
++	io_control_lpc_rw,
++	io_control_lpc_cs0,
++	io_control_lpc_ack,
++	io_control_lpc_ax03 = 9,
++	io_control_emb_ax02,
++	io_control_emb_ax01,
++	io_control_emb_ax00 = 12,
++	io_control_emb_ad31 = 13,
++	io_control_emb_ad30,
++	io_control_emb_ad29,
++	io_control_emb_ad28,
++	io_control_emb_ad27,
++	io_control_emb_ad26,
++	io_control_emb_ad25,
++	io_control_emb_ad24,
++	io_control_emb_ad23,
++	io_control_emb_ad22,
++	io_control_emb_ad21,
++	io_control_emb_ad20,
++	io_control_emb_ad19,
++	io_control_emb_ad18,
++	io_control_emb_ad17,
++	io_control_emb_ad16,
++	io_control_emb_ad15,
++	io_control_emb_ad14,
++	io_control_emb_ad13,
++	io_control_emb_ad12,
++	io_control_emb_ad11,
++	io_control_emb_ad10 = 34,
++	io_control_emb_ad9,
++	io_control_emb_ad8,
++	io_control_emb_ad7,
++	io_control_emb_ad6,
++	io_control_emb_ad5,
++	io_control_emb_ad4,
++	io_control_emb_ad3,
++	io_control_emb_ad2,
++	io_control_emb_ad1,
++	io_control_emb_ad0 = 44,
++	io_control_nfc_ce0 = 45,
++	io_control_nfc_rb,
++	io_control_dui_clk,
++	io_control_dui_de,
++	io_control_dui_hsync = 49,
++	io_control_dui_vsync,
++	io_control_dui_ld0 = 51,
++	io_control_dui_ld1,
++	io_control_dui_ld2,
++	io_control_dui_ld3,
++	io_control_dui_ld4,
++	io_control_dui_ld5,
++	io_control_dui_ld6,
++	io_control_dui_ld7,
++	io_control_dui_ld8,
++	io_control_dui_ld9,
++	io_control_dui_ld10,
++	io_control_dui_ld11,
++	io_control_dui_ld12,
++	io_control_dui_ld13,
++	io_control_dui_ld14,
++	io_control_dui_ld15,
++	io_control_dui_ld16,
++	io_control_dui_ld17,
++	io_control_dui_ld18,
++	io_control_dui_ld19,
++	io_control_dui_ld20,
++	io_control_dui_ld21,
++	io_control_dui_ld22,
++	io_control_dui_ld23 = 74,
++	io_control_i2c2_scl = 75,
++	io_control_i2c2_sda = 76,
++	io_control_can1_tx = 77,
++	io_control_can2_tx = 78,
++	io_control_i2c1_scl = 79,
++	io_control_i2c1_sda = 80,
++/* No pin control register for can1_rx and can2_rx */
++	io_control_fec1_txd2 = 81,
++	io_control_fec1_txd3,
++	io_control_fec1_rxd2,
++	io_control_fec1_rxd3,
++	io_control_fec1_crs,
++	io_control_fec1_txerr,
++	io_control_fec1_rxd1,
++	io_control_fec1_txd1,
++	io_control_fec1_mdc,
++	io_control_fec1_rxerr,
++	io_control_fec1_mdio,
++	io_control_fec1_rxd0,
++	io_control_fec1_txd0,
++	io_control_fec1_txclk,
++	io_control_fec1_rxclk,
++	io_control_fec1_rxdv,
++	io_control_fec1_txen,
++	io_control_fec1_col,
++	io_control_usb1_data0 = 99,
++	io_control_usb1_data1,
++	io_control_usb1_data2,
++	io_control_usb1_data3,
++	io_control_usb1_data4,
++	io_control_usb1_data5,
++	io_control_usb1_data6,
++	io_control_usb1_data7,
++	io_control_usb1_stop,
++	io_control_usb1_clk,
++	io_control_usb1_next,
++	io_control_usb1_dir,
++	io_control_sdhc1_clk = 111,
++	io_control_sdhc1_cmd,
++	io_control_sdhc1_d0,
++	io_control_sdhc1_d1,
++	io_control_sdhc1_d2,
++	io_control_sdhc1_d3,
++	io_control_psc_mclk_in,
++	io_control_psc0_0 = 118,
++	io_control_psc0_1,
++	io_control_psc0_2,
++	io_control_psc0_3,
++	io_control_psc0_4,
++	io_control_psc1_0,
++	io_control_psc1_1,
++	io_control_psc1_2,
++	io_control_psc1_3,
++	io_control_psc1_4,
++	io_control_j1850_tx,
++	io_control_j1850_rx,
 +};
 +
-+struct mpc5xxx_intr {
-+	volatile u32	per_mask;	/* INTR + 0x00 */
-+	volatile u32	per_pri1;	/* INTR + 0x04 */
-+	volatile u32	per_pri2;	/* INTR + 0x08 */
-+	volatile u32	per_pri3;	/* INTR + 0x0c */
-+	volatile u32	ctrl;		/* INTR + 0x10 */
-+	volatile u32	main_mask;	/* INTR + 0x14 */
-+	volatile u32	main_pri1;	/* INTR + 0x18 */
-+	volatile u32	main_pri2;	/* INTR + 0x1c */
-+	volatile u32	reserved1;	/* INTR + 0x20 */
-+	volatile u32	enc_status;	/* INTR + 0x24 */
-+	volatile u32	crit_status;	/* INTR + 0x28 */
-+	volatile u32	main_status;	/* INTR + 0x2c */
-+	volatile u32	per_status;	/* INTR + 0x30 */
-+	volatile u32	reserved2;	/* INTR + 0x34 */
-+	volatile u32	per_error;	/* INTR + 0x38 */
++#define MPC5125_ALTF_0 (0x0 << 5)
++#define MPC5125_ALTF_1 (0x1 << 5)
++#define MPC5125_ALTF_2 (0x2 << 5)
++#define MPC5125_ALTF_3 (0x3 << 5)
++#define MPC5125_PULL_UP (1 << 4)
++#define MPC5125_PULL_DOWN (0 << 4)
++#define MPC5125_PUD_ENA (1 << 3)
++#define MPC5125_ST_ENA (1 << 2)
++
++/*
++ * from the MPC5125 revision 4 (09/2011) datasheet
++ * Slew rate definition for general IOs:
++ *  - configuration 0: 140/183 ns
++ *  - configuration 1: 19/24 ns
++ *  - configuration 2: 9.8/12 ns
++ *  - configuration 3: 1.4/1.6 ns
++ */
++#define MPC5125_SLEW_RATE(x) ((x) & 0x03)
++
++void mpc5125_mux_pin(enum mpc5125_pinmux_id idx, unsigned char mux);
++
++/* SDRAM commands */
++#define DRAM_CMD_NOP		0x01380000
++#define DRAM_CMD_PCHG_ALL	0x01100400
++#define DRAM_CMD_EM2		0x01020000
++#define DRAM_CMD_EM3		0x01030000
++#define DRAM_CMD_EN_DLL		0x01010000
++#define DRAM_CMD_RFSH		0x01080000
++
++#define DDR_COMMAND_CMD_REQ	(1 << 24)
++#define DDR_COMMAND_CMD_MSR	(0 << 16)
++#define DDR_COMMAND_CMD_EMR1	(1 << 16)
++#define DDR_COMMAND_CMD_EMR2	(2 << 16)
++#define DDR_COMMAND_CMD_EMR3	(3 << 16)
++#define DDR_COMMAND_RST_DLL	(1 << 8)
++
++struct sdram_prio {
++	unsigned prioman_config1;
++	unsigned prioman_config2;
++	unsigned hiprio_config;
++	unsigned lut_table0_main_upper;
++	unsigned lut_table0_main_lower;
++	unsigned lut_table1_main_upper;
++	unsigned lut_table1_main_lower;
++	unsigned lut_table2_main_upper;
++	unsigned lut_table2_main_lower;
++	unsigned lut_table3_main_upper;
++	unsigned lut_table3_main_lower;
++	unsigned lut_table4_main_upper;
++	unsigned lut_table4_main_lower;
++	unsigned lut_table0_alt_upper;
++	unsigned lut_table0_alt_lower;
++	unsigned lut_table1_alt_upper;
++	unsigned lut_table1_alt_lower;
++	unsigned lut_table2_alt_upper;
++	unsigned lut_table2_alt_lower;
++	unsigned lut_table3_alt_upper;
++	unsigned lut_table3_alt_lower;
++	unsigned lut_table4_alt_upper;
++	unsigned lut_table4_alt_lower;
 +};
 +
-+struct mpc5xxx_gpio {
-+	volatile u32 port_config;	/* GPIO + 0x00 */
-+	volatile u32 simple_gpioe;	/* GPIO + 0x04 */
-+	volatile u32 simple_ode;	/* GPIO + 0x08 */
-+	volatile u32 simple_ddr;	/* GPIO + 0x0c */
-+	volatile u32 simple_dvo;	/* GPIO + 0x10 */
-+	volatile u32 simple_ival;	/* GPIO + 0x14 */
-+	volatile u8 outo_gpioe;		/* GPIO + 0x18 */
-+	volatile u8 reserved1[3];	/* GPIO + 0x19 */
-+	volatile u8 outo_dvo;		/* GPIO + 0x1c */
-+	volatile u8 reserved2[3];	/* GPIO + 0x1d */
-+	volatile u8 sint_gpioe;		/* GPIO + 0x20 */
-+	volatile u8 reserved3[3];	/* GPIO + 0x21 */
-+	volatile u8 sint_ode;		/* GPIO + 0x24 */
-+	volatile u8 reserved4[3];	/* GPIO + 0x25 */
-+	volatile u8 sint_ddr;		/* GPIO + 0x28 */
-+	volatile u8 reserved5[3];	/* GPIO + 0x29 */
-+	volatile u8 sint_dvo;		/* GPIO + 0x2c */
-+	volatile u8 reserved6[3];	/* GPIO + 0x2d */
-+	volatile u8 sint_inten;		/* GPIO + 0x30 */
-+	volatile u8 reserved7[3];	/* GPIO + 0x31 */
-+	volatile u16 sint_itype;	/* GPIO + 0x34 */
-+	volatile u16 reserved8;		/* GPIO + 0x36 */
-+	volatile u8 gpio_control;	/* GPIO + 0x38 */
-+	volatile u8 reserved9[3];	/* GPIO + 0x39 */
-+	volatile u8 sint_istat;		/* GPIO + 0x3c */
-+	volatile u8 sint_ival;		/* GPIO + 0x3d */
-+	volatile u8 bus_errs;		/* GPIO + 0x3e */
-+	volatile u8 reserved10;		/* GPIO + 0x3f */
++struct sdram_conf {
++	struct sdram_prio prio;
++	unsigned mux_ddr;
++	unsigned sys_cfg;
++	unsigned tim_cfg0, tim_cfg1, tim_cfg2;
++	unsigned size;
++	const unsigned *cmds;
 +};
 +
-+struct mpc5xxx_sdma {
-+	volatile u32 taskBar;		/* SDMA + 0x00 */
-+	volatile u32 currentPointer;	/* SDMA + 0x04 */
-+	volatile u32 endPointer;	/* SDMA + 0x08 */
-+	volatile u32 variablePointer;	/* SDMA + 0x0c */
++void mpc5125_init_sdram(const struct sdram_conf *init_sequence);
 +
-+	volatile u8 IntVect1;		/* SDMA + 0x10 */
-+	volatile u8 IntVect2;		/* SDMA + 0x11 */
-+	volatile u16 PtdCntrl;		/* SDMA + 0x12 */
-+
-+	volatile u32 IntPend;		/* SDMA + 0x14 */
-+	volatile u32 IntMask;		/* SDMA + 0x18 */
-+
-+	volatile u16 tcr_0;		/* SDMA + 0x1c */
-+	volatile u16 tcr_1;		/* SDMA + 0x1e */
-+	volatile u16 tcr_2;		/* SDMA + 0x20 */
-+	volatile u16 tcr_3;		/* SDMA + 0x22 */
-+	volatile u16 tcr_4;		/* SDMA + 0x24 */
-+	volatile u16 tcr_5;		/* SDMA + 0x26 */
-+	volatile u16 tcr_6;		/* SDMA + 0x28 */
-+	volatile u16 tcr_7;		/* SDMA + 0x2a */
-+	volatile u16 tcr_8;		/* SDMA + 0x2c */
-+	volatile u16 tcr_9;		/* SDMA + 0x2e */
-+	volatile u16 tcr_a;		/* SDMA + 0x30 */
-+	volatile u16 tcr_b;		/* SDMA + 0x32 */
-+	volatile u16 tcr_c;		/* SDMA + 0x34 */
-+	volatile u16 tcr_d;		/* SDMA + 0x36 */
-+	volatile u16 tcr_e;		/* SDMA + 0x38 */
-+	volatile u16 tcr_f;		/* SDMA + 0x3a */
-+
-+	volatile u8 IPR0;		/* SDMA + 0x3c */
-+	volatile u8 IPR1;		/* SDMA + 0x3d */
-+	volatile u8 IPR2;		/* SDMA + 0x3e */
-+	volatile u8 IPR3;		/* SDMA + 0x3f */
-+	volatile u8 IPR4;		/* SDMA + 0x40 */
-+	volatile u8 IPR5;		/* SDMA + 0x41 */
-+	volatile u8 IPR6;		/* SDMA + 0x42 */
-+	volatile u8 IPR7;		/* SDMA + 0x43 */
-+	volatile u8 IPR8;		/* SDMA + 0x44 */
-+	volatile u8 IPR9;		/* SDMA + 0x45 */
-+	volatile u8 IPR10;		/* SDMA + 0x46 */
-+	volatile u8 IPR11;		/* SDMA + 0x47 */
-+	volatile u8 IPR12;		/* SDMA + 0x48 */
-+	volatile u8 IPR13;		/* SDMA + 0x49 */
-+	volatile u8 IPR14;		/* SDMA + 0x4a */
-+	volatile u8 IPR15;		/* SDMA + 0x4b */
-+	volatile u8 IPR16;		/* SDMA + 0x4c */
-+	volatile u8 IPR17;		/* SDMA + 0x4d */
-+	volatile u8 IPR18;		/* SDMA + 0x4e */
-+	volatile u8 IPR19;		/* SDMA + 0x4f */
-+	volatile u8 IPR20;		/* SDMA + 0x50 */
-+	volatile u8 IPR21;		/* SDMA + 0x51 */
-+	volatile u8 IPR22;		/* SDMA + 0x52 */
-+	volatile u8 IPR23;		/* SDMA + 0x53 */
-+	volatile u8 IPR24;		/* SDMA + 0x54 */
-+	volatile u8 IPR25;		/* SDMA + 0x55 */
-+	volatile u8 IPR26;		/* SDMA + 0x56 */
-+	volatile u8 IPR27;		/* SDMA + 0x57 */
-+	volatile u8 IPR28;		/* SDMA + 0x58 */
-+	volatile u8 IPR29;		/* SDMA + 0x59 */
-+	volatile u8 IPR30;		/* SDMA + 0x5a */
-+	volatile u8 IPR31;		/* SDMA + 0x5b */
-+
-+	volatile u32 res1;		/* SDMA + 0x5c */
-+	volatile u32 res2;		/* SDMA + 0x60 */
-+	volatile u32 res3;		/* SDMA + 0x64 */
-+	volatile u32 MDEDebug;		/* SDMA + 0x68 */
-+	volatile u32 ADSDebug;		/* SDMA + 0x6c */
-+	volatile u32 Value1;		/* SDMA + 0x70 */
-+	volatile u32 Value2;		/* SDMA + 0x74 */
-+	volatile u32 Control;		/* SDMA + 0x78 */
-+	volatile u32 Status;		/* SDMA + 0x7c */
-+	volatile u32 EU00;		/* SDMA + 0x80 */
-+	volatile u32 EU01;		/* SDMA + 0x84 */
-+	volatile u32 EU02;		/* SDMA + 0x88 */
-+	volatile u32 EU03;		/* SDMA + 0x8c */
-+	volatile u32 EU04;		/* SDMA + 0x90 */
-+	volatile u32 EU05;		/* SDMA + 0x94 */
-+	volatile u32 EU06;		/* SDMA + 0x98 */
-+	volatile u32 EU07;		/* SDMA + 0x9c */
-+	volatile u32 EU10;		/* SDMA + 0xa0 */
-+	volatile u32 EU11;		/* SDMA + 0xa4 */
-+	volatile u32 EU12;		/* SDMA + 0xa8 */
-+	volatile u32 EU13;		/* SDMA + 0xac */
-+	volatile u32 EU14;		/* SDMA + 0xb0 */
-+	volatile u32 EU15;		/* SDMA + 0xb4 */
-+	volatile u32 EU16;		/* SDMA + 0xb8 */
-+	volatile u32 EU17;		/* SDMA + 0xbc */
-+	volatile u32 EU20;		/* SDMA + 0xc0 */
-+	volatile u32 EU21;		/* SDMA + 0xc4 */
-+	volatile u32 EU22;		/* SDMA + 0xc8 */
-+	volatile u32 EU23;		/* SDMA + 0xcc */
-+	volatile u32 EU24;		/* SDMA + 0xd0 */
-+	volatile u32 EU25;		/* SDMA + 0xd4 */
-+	volatile u32 EU26;		/* SDMA + 0xd8 */
-+	volatile u32 EU27;		/* SDMA + 0xdc */
-+	volatile u32 EU30;		/* SDMA + 0xe0 */
-+	volatile u32 EU31;		/* SDMA + 0xe4 */
-+	volatile u32 EU32;		/* SDMA + 0xe8 */
-+	volatile u32 EU33;		/* SDMA + 0xec */
-+	volatile u32 EU34;		/* SDMA + 0xf0 */
-+	volatile u32 EU35;		/* SDMA + 0xf4 */
-+	volatile u32 EU36;		/* SDMA + 0xf8 */
-+	volatile u32 EU37;		/* SDMA + 0xfc */
++struct lpc_config {
++	unsigned cs_ale_timing;
++	unsigned cs_burst;
++	unsigned cs_dead_cyle;
++	unsigned cs_hold_cycle;
 +};
 +
-+struct mpc5xxx_i2c {
-+	volatile u32 madr;		/* I2Cn + 0x00 */
-+	volatile u32 mfdr;		/* I2Cn + 0x04 */
-+	volatile u32 mcr;		/* I2Cn + 0x08 */
-+	volatile u32 msr;		/* I2Cn + 0x0C */
-+	volatile u32 mdr;		/* I2Cn + 0x10 */
-+};
-+
-+struct mpc5xxx_spi {
-+	volatile u8 cr1;		/* SPI + 0x0F00 */
-+	volatile u8 cr2;		/* SPI + 0x0F01 */
-+	volatile u8 reserved1[2];
-+	volatile u8 brr;		/* SPI + 0x0F04 */
-+	volatile u8 sr;			/* SPI + 0x0F05 */
-+	volatile u8 reserved2[3];
-+	volatile u8 dr;			/* SPI + 0x0F09 */
-+	volatile u8 reserved3[3];
-+	volatile u8 pdr;		/* SPI + 0x0F0D */
-+	volatile u8 reserved4[2];
-+	volatile u8 ddr;		/* SPI + 0x0F10 */
-+};
-+
-+
-+struct mpc5xxx_gpt {
-+	volatile u32 emsr;		/* GPT + Timer# * 0x10 + 0x00 */
-+	volatile u32 cir;		/* GPT + Timer# * 0x10 + 0x04 */
-+	volatile u32 pwmcr;		/* GPT + Timer# * 0x10 + 0x08 */
-+	volatile u32 sr;		/* GPT + Timer# * 0x10 + 0x0c */
-+};
-+
-+struct mpc5xxx_gpt_0_7 {
-+	struct mpc5xxx_gpt gpt0;
-+	struct mpc5xxx_gpt gpt1;
-+	struct mpc5xxx_gpt gpt2;
-+	struct mpc5xxx_gpt gpt3;
-+	struct mpc5xxx_gpt gpt4;
-+	struct mpc5xxx_gpt gpt5;
-+	struct mpc5xxx_gpt gpt6;
-+	struct mpc5xxx_gpt gpt7;
-+};
-+
-+struct mscan_buffer {
-+	volatile u8  idr[0x8];          /* 0x00 */
-+	volatile u8  dsr[0x10];         /* 0x08 */
-+	volatile u8  dlr;               /* 0x18 */
-+	volatile u8  tbpr;              /* 0x19 */      /* This register is not applicable for receive buffers */
-+	volatile u16 rsrv1;             /* 0x1A */
-+	volatile u8  tsrh;              /* 0x1C */
-+	volatile u8  tsrl;              /* 0x1D */
-+	volatile u16 rsrv2;             /* 0x1E */
-+};
-+
-+struct mpc5xxx_mscan {
-+	volatile u8  canctl0;           /* MSCAN + 0x00 */
-+	volatile u8  canctl1;           /* MSCAN + 0x01 */
-+	volatile u16 rsrv1;             /* MSCAN + 0x02 */
-+	volatile u8  canbtr0;           /* MSCAN + 0x04 */
-+	volatile u8  canbtr1;           /* MSCAN + 0x05 */
-+	volatile u16 rsrv2;             /* MSCAN + 0x06 */
-+	volatile u8  canrflg;           /* MSCAN + 0x08 */
-+	volatile u8  canrier;           /* MSCAN + 0x09 */
-+	volatile u16 rsrv3;             /* MSCAN + 0x0A */
-+	volatile u8  cantflg;           /* MSCAN + 0x0C */
-+	volatile u8  cantier;           /* MSCAN + 0x0D */
-+	volatile u16 rsrv4;             /* MSCAN + 0x0E */
-+	volatile u8  cantarq;           /* MSCAN + 0x10 */
-+	volatile u8  cantaak;           /* MSCAN + 0x11 */
-+	volatile u16 rsrv5;             /* MSCAN + 0x12 */
-+	volatile u8  cantbsel;          /* MSCAN + 0x14 */
-+	volatile u8  canidac;           /* MSCAN + 0x15 */
-+	volatile u16 rsrv6[3];          /* MSCAN + 0x16 */
-+	volatile u8  canrxerr;          /* MSCAN + 0x1C */
-+	volatile u8  cantxerr;          /* MSCAN + 0x1D */
-+	volatile u16 rsrv7;             /* MSCAN + 0x1E */
-+	volatile u8  canidar0;          /* MSCAN + 0x20 */
-+	volatile u8  canidar1;          /* MSCAN + 0x21 */
-+	volatile u16 rsrv8;             /* MSCAN + 0x22 */
-+	volatile u8  canidar2;          /* MSCAN + 0x24 */
-+	volatile u8  canidar3;          /* MSCAN + 0x25 */
-+	volatile u16 rsrv9;             /* MSCAN + 0x26 */
-+	volatile u8  canidmr0;          /* MSCAN + 0x28 */
-+	volatile u8  canidmr1;          /* MSCAN + 0x29 */
-+	volatile u16 rsrv10;            /* MSCAN + 0x2A */
-+	volatile u8  canidmr2;          /* MSCAN + 0x2C */
-+	volatile u8  canidmr3;          /* MSCAN + 0x2D */
-+	volatile u16 rsrv11;            /* MSCAN + 0x2E */
-+	volatile u8  canidar4;          /* MSCAN + 0x30 */
-+	volatile u8  canidar5;          /* MSCAN + 0x31 */
-+	volatile u16 rsrv12;            /* MSCAN + 0x32 */
-+	volatile u8  canidar6;          /* MSCAN + 0x34 */
-+	volatile u8  canidar7;          /* MSCAN + 0x35 */
-+	volatile u16 rsrv13;            /* MSCAN + 0x36 */
-+	volatile u8  canidmr4;          /* MSCAN + 0x38 */
-+	volatile u8  canidmr5;          /* MSCAN + 0x39 */
-+	volatile u16 rsrv14;            /* MSCAN + 0x3A */
-+	volatile u8  canidmr6;          /* MSCAN + 0x3C */
-+	volatile u8  canidmr7;          /* MSCAN + 0x3D */
-+	volatile u16 rsrv15;            /* MSCAN + 0x3E */
-+
-+	struct mscan_buffer canrxfg;    /* MSCAN + 0x40 */    /* Foreground receive buffer */
-+	struct mscan_buffer cantxfg;    /* MSCAN + 0x60 */    /* Foreground transmit buffer */
-+	};
-+
-+/* function prototypes */
-+void loadtask(int basetask, int tasks);
-+
-+/* retrieve configured sdram size connected to a chipselect */
-+unsigned long mpc5200_get_sdram_size(unsigned int cs);
-+
-+/* configure a local plus bus chip select */
-+#define MPC5200_BOOTCS 8
-+void mpc5200_setup_cs(int cs, unsigned long start, unsigned long size, u32 cfg);
-+
-+/* configure bus speeds. Both dividers are relative to xlb clock */
-+int mpc5200_setup_bus_clocks(unsigned int ipbdiv, unsigned long pcidiv);
++void mpc5125_configure_lpc(const struct lpc_config *c);
++void mpc5125_setup_cs(unsigned, unsigned, unsigned, unsigned);
 +
 +#endif /* __ASSEMBLY__ */
 +
-+#endif /* __ASMPPC_MPC5200_H */
++#endif /* __MPC512X_H__ */
+diff --git a/arch/ppc/mach-mpc5xxx/include/mach/mpc512x_fec.h b/arch/ppc/mach-mpc5xxx/include/mach/mpc512x_fec.h
+new file mode 100644
+index 0000000..ddac8e5
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/include/mach/mpc512x_fec.h
+@@ -0,0 +1,46 @@
++#include <linux/types.h>
++
++/* FEC */
++struct fec {
++	u32 fec_id; /* FEC_ID register */
++	u32 ievent; /* Interrupt event register */
++	u32 imask; /* Interrupt mask register */
++	u32 reserved_01;
++	u32 r_des_active; /* Receive ring updated flag */
++	u32 x_des_active; /* Transmit ring updated flag */
++	u32 reserved_02[3];
++	u32 ecntrl; /* Ethernet control register */
++	u32 reserved_03[6];
++	u32 mii_data; /* MII data register */
++	u32 mii_speed; /* MII speed register */
++	u32 reserved_04[7];
++	u32 mib_control; /* MIB control/status register */
++	u32 reserved_05[7];
++	u32 r_cntrl; /* Receive control register */
++	u32 r_hash; /* Receive hash */
++	u32 reserved_06[14];
++	u32 x_cntrl; /* Transmit control register */
++	u32 reserved_07[7];
++	u32 paddr1; /* Physical address low */
++	u32 paddr2; /* Physical address high + type field */
++	u32 op_pause; /* Opcode + pause duration */
++	u32 reserved_08[10];
++	u32 iaddr1; /* Upper 32 bits of individual hash table */
++	u32 iaddr2; /* Lower 32 bits of individual hash table */
++	u32 gaddr1; /* Upper 32 bits of group hash table */
++	u32 gaddr2; /* Lower 32 bits of group hash table */
++	u32 reserved_09[7];
++	u32 x_wmrk; /* Transmit FIFO watermark */
++	u32 reserved_10;
++	u32 r_bound; /* End of RAM */
++	u32 r_fstart; /* Receive FIFO start address */
++	u32 reserved_11[11];
++	u32 r_des_start; /* Beginning of receive descriptor ring */
++	u32 x_des_start; /* Pointer to beginning of transmit descriptor ring */
++	u32 r_buff_size; /* Receive buffer size */
++	u32 reserved_12[26];
++	u32 dma_control; /* DMA control for IP bus, AMBA IF + DMA revision */
++	u32 reserved_13[2];
++	u32 mib[128]; /* MIB Block Counters */
++	u32 fifo[256]; /*  used by FEC, can only be accessed by DMA */
++};
 diff --git a/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h b/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h
-index f2cae90..2455484 100644
+index 2455484..f5f0a75 100644
 --- a/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h
 +++ b/arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h
-@@ -1,793 +1,8 @@
--/*
-- * arch/ppc/mach-mpc5xxx/include/mach/mpc5xxx.h
-- *
-- * Prototypes, etc. for the Motorola MGT5xxx/MPC5xxx
-- * embedded cpu chips
-- *
-- * 2003 (c) MontaVista, Software, Inc.
-- * Author: Dale Farnsworth <dfarnsworth@mvista.com>
-- *
-- * 2003 (C) Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
- #ifndef __ASMPPC_MPC5XXX_H
- #define __ASMPPC_MPC5XXX_H
+@@ -1,8 +1,10 @@
+-#ifndef __ASMPPC_MPC5XXX_H
+-#define __ASMPPC_MPC5XXX_H
++#ifndef __MACH_MPC5XXX_H
++#define __MACH_MPC5XXX_H
  
--/* Processor name */
--#if defined(CONFIG_MPC5200)
--#define CPU_ID_STR	"MPC5200"
--#elif defined(CONFIG_MGT5100)
--#define CPU_ID_STR	"MGT5100"
-+#if defined(CONFIG_MPC5200) || defined(CONFIG_MGT5100)
-+# include <mach/mpc5200.h>
-+#else
-+# error "Undefined Core CPU"
+ #if defined(CONFIG_MPC5200) || defined(CONFIG_MGT5100)
+ # include <mach/mpc5200.h>
+ #else
+ # error "Undefined Core CPU"
  #endif
--
--/* Exception offsets (PowerPC standard) */
--#define EXC_OFF_SYS_RESET	0x0100
--#define _START_OFFSET		EXC_OFF_SYS_RESET
--
--#define CFG_MBAR 0xf0000000
--
--/* useful macros for manipulating CSx_START/STOP */
--#if defined(CONFIG_MGT5100)
--#define START_REG(start)	((start) >> 15)
--#define STOP_REG(start, size)	(((start) + (size) - 1) >> 15)
--#elif defined(CONFIG_MPC5200)
--#define START_REG(start)	((start) >> 16)
--#define STOP_REG(start, size)	(((start) + (size) - 1) >> 16)
--#endif
--
--/* Internal memory map */
--
--#define MPC5XXX_CS0_START	(CFG_MBAR + 0x0004)
--#define MPC5XXX_CS0_STOP	(CFG_MBAR + 0x0008)
--#define MPC5XXX_CS1_START	(CFG_MBAR + 0x000c)
--#define MPC5XXX_CS1_STOP	(CFG_MBAR + 0x0010)
--#define MPC5XXX_CS2_START	(CFG_MBAR + 0x0014)
--#define MPC5XXX_CS2_STOP	(CFG_MBAR + 0x0018)
--#define MPC5XXX_CS3_START	(CFG_MBAR + 0x001c)
--#define MPC5XXX_CS3_STOP	(CFG_MBAR + 0x0020)
--#define MPC5XXX_CS4_START	(CFG_MBAR + 0x0024)
--#define MPC5XXX_CS4_STOP	(CFG_MBAR + 0x0028)
--#define MPC5XXX_CS5_START	(CFG_MBAR + 0x002c)
--#define MPC5XXX_CS5_STOP	(CFG_MBAR + 0x0030)
--#define MPC5XXX_BOOTCS_START	(CFG_MBAR + 0x004c)
--#define MPC5XXX_BOOTCS_STOP	(CFG_MBAR + 0x0050)
--#define MPC5XXX_ADDECR		(CFG_MBAR + 0x0054)
--
--#if defined(CONFIG_MGT5100)
--#define MPC5XXX_SDRAM_START	(CFG_MBAR + 0x0034)
--#define MPC5XXX_SDRAM_STOP	(CFG_MBAR + 0x0038)
--#define MPC5XXX_PCI1_START	(CFG_MBAR + 0x003c)
--#define MPC5XXX_PCI1_STOP	(CFG_MBAR + 0x0040)
--#define MPC5XXX_PCI2_START	(CFG_MBAR + 0x0044)
--#define MPC5XXX_PCI2_STOP	(CFG_MBAR + 0x0048)
--#elif defined(CONFIG_MPC5200)
--#define MPC5XXX_CS6_START	(CFG_MBAR + 0x0058)
--#define MPC5XXX_CS6_STOP	(CFG_MBAR + 0x005c)
--#define MPC5XXX_CS7_START	(CFG_MBAR + 0x0060)
--#define MPC5XXX_CS7_STOP	(CFG_MBAR + 0x0064)
--#define MPC5XXX_SDRAM_CS0CFG	(CFG_MBAR + 0x0034)
--#define MPC5XXX_SDRAM_CS1CFG	(CFG_MBAR + 0x0038)
--#endif
--
--#define MPC5XXX_SDRAM		(CFG_MBAR + 0x0100)
--#define MPC5XXX_CDM		(CFG_MBAR + 0x0200)
--#define MPC5XXX_LPB		(CFG_MBAR + 0x0300)
--#define MPC5XXX_ICTL		(CFG_MBAR + 0x0500)
--#define MPC5XXX_GPT		(CFG_MBAR + 0x0600)
--#define MPC5XXX_GPIO		(CFG_MBAR + 0x0b00)
--#define MPC5XXX_WU_GPIO         (CFG_MBAR + 0x0c00)
--#define MPC5XXX_PCI		(CFG_MBAR + 0x0d00)
--#define MPC5XXX_SPI		(CFG_MBAR + 0x0f00)
--#define MPC5XXX_USB		(CFG_MBAR + 0x1000)
--#define MPC5XXX_SDMA		(CFG_MBAR + 0x1200)
--#define MPC5XXX_XLBARB		(CFG_MBAR + 0x1f00)
--
--#if defined(CONFIG_MGT5100)
--#define	MPC5XXX_PSC1		(CFG_MBAR + 0x2000)
--#define	MPC5XXX_PSC2		(CFG_MBAR + 0x2400)
--#define	MPC5XXX_PSC3		(CFG_MBAR + 0x2800)
--#elif defined(CONFIG_MPC5200)
--#define	MPC5XXX_PSC1		(CFG_MBAR + 0x2000)
--#define	MPC5XXX_PSC2		(CFG_MBAR + 0x2200)
--#define	MPC5XXX_PSC3		(CFG_MBAR + 0x2400)
--#define	MPC5XXX_PSC4		(CFG_MBAR + 0x2600)
--#define	MPC5XXX_PSC5		(CFG_MBAR + 0x2800)
--#define	MPC5XXX_PSC6		(CFG_MBAR + 0x2c00)
--#endif
--
--#define	MPC5XXX_FEC		(CFG_MBAR + 0x3000)
--#define MPC5XXX_ATA             (CFG_MBAR + 0x3A00)
--
--#define MPC5XXX_I2C1		(CFG_MBAR + 0x3D00)
--#define MPC5XXX_I2C2		(CFG_MBAR + 0x3D40)
--
--#if defined(CONFIG_MGT5100)
--#define MPC5XXX_SRAM		(CFG_MBAR + 0x4000)
--#define MPC5XXX_SRAM_SIZE	(8*1024)
--#elif defined(CONFIG_MPC5200)
--#define MPC5XXX_SRAM		(CFG_MBAR + 0x8000)
--#define MPC5XXX_SRAM_SIZE	(16*1024)
--#endif
--
--/* SDRAM Controller */
--#define MPC5XXX_SDRAM_MODE	(MPC5XXX_SDRAM + 0x0000)
--#define MPC5XXX_SDRAM_CTRL	(MPC5XXX_SDRAM + 0x0004)
--#define MPC5XXX_SDRAM_CONFIG1	(MPC5XXX_SDRAM + 0x0008)
--#define MPC5XXX_SDRAM_CONFIG2	(MPC5XXX_SDRAM + 0x000c)
--#if defined(CONFIG_MGT5100)
--#define MPC5XXX_SDRAM_XLBSEL	(MPC5XXX_SDRAM + 0x0010)
--#endif
--#define MPC5XXX_SDRAM_SDELAY	(MPC5XXX_SDRAM + 0x0090)
--
--/* Clock Distribution Module */
--#define MPC5XXX_CDM_JTAGID	(MPC5XXX_CDM + 0x0000)
--#define MPC5XXX_CDM_PORCFG	(MPC5XXX_CDM + 0x0004)
--#define MPC5XXX_CDM_CFG		(MPC5XXX_CDM + 0x000c)
--#define MPC5XXX_CDM_48_FDC	(MPC5XXX_CDM + 0x0010)
--#define MPC5XXX_CDM_SRESET	(MPC5XXX_CDM + 0x0020)
--
--/* Local Plus Bus interface */
--#define MPC5XXX_CS0_CFG		(MPC5XXX_LPB + 0x0000)
--#define MPC5XXX_CS1_CFG		(MPC5XXX_LPB + 0x0004)
--#define MPC5XXX_CS2_CFG		(MPC5XXX_LPB + 0x0008)
--#define MPC5XXX_CS3_CFG		(MPC5XXX_LPB + 0x000c)
--#define MPC5XXX_CS4_CFG		(MPC5XXX_LPB + 0x0010)
--#define MPC5XXX_CS5_CFG		(MPC5XXX_LPB + 0x0014)
--#define MPC5XXX_BOOTCS_CFG	MPC5XXX_CS0_CFG
--#define MPC5XXX_CS_CTRL		(MPC5XXX_LPB + 0x0018)
--#define MPC5XXX_CS_STATUS	(MPC5XXX_LPB + 0x001c)
--#if defined(CONFIG_MPC5200)
--#define MPC5XXX_CS6_CFG		(MPC5XXX_LPB + 0x0020)
--#define MPC5XXX_CS7_CFG		(MPC5XXX_LPB + 0x0024)
--#define MPC5XXX_CS_BURST	(MPC5XXX_LPB + 0x0028)
--#define MPC5XXX_CS_DEADCYCLE	(MPC5XXX_LPB + 0x002c)
--#endif
--
--#if defined(CONFIG_MPC5200)
--/* XLB Arbiter registers */
--#define MPC5XXX_XLBARB_CFG		(MPC5XXX_XLBARB + 0x40)
--#define MPC5XXX_XLBARB_MPRIEN	(MPC5XXX_XLBARB + 0x64)
--#define MPC5XXX_XLBARB_MPRIVAL	(MPC5XXX_XLBARB + 0x68)
--#endif
--
--/* GPIO registers */
--#define MPC5XXX_GPS_PORT_CONFIG	(MPC5XXX_GPIO + 0x0000)
--
--/* Standard GPIO registers (simple, output only and simple interrupt */
--#define MPC5XXX_GPIO_ENABLE     (MPC5XXX_GPIO + 0x0004)
--#define MPC5XXX_GPIO_ODE        (MPC5XXX_GPIO + 0x0008)
--#define MPC5XXX_GPIO_DIR        (MPC5XXX_GPIO + 0x000c)
--#define MPC5XXX_GPIO_DATA_O     (MPC5XXX_GPIO + 0x0010)
--#define MPC5XXX_GPIO_DATA_I     (MPC5XXX_GPIO + 0x0014)
--#define MPC5XXX_GPIO_OO_ENABLE  (MPC5XXX_GPIO + 0x0018)
--#define MPC5XXX_GPIO_OO_DATA    (MPC5XXX_GPIO + 0x001C)
--#define MPC5XXX_GPIO_SI_ENABLE  (MPC5XXX_GPIO + 0x0020)
--#define MPC5XXX_GPIO_SI_ODE     (MPC5XXX_GPIO + 0x0024)
--#define MPC5XXX_GPIO_SI_DIR     (MPC5XXX_GPIO + 0x0028)
--#define MPC5XXX_GPIO_SI_DATA    (MPC5XXX_GPIO + 0x002C)
--#define MPC5XXX_GPIO_SI_IEN     (MPC5XXX_GPIO + 0x0030)
--#define MPC5XXX_GPIO_SI_ITYPE   (MPC5XXX_GPIO + 0x0034)
--#define MPC5XXX_GPIO_SI_MEN     (MPC5XXX_GPIO + 0x0038)
--#define MPC5XXX_GPIO_SI_STATUS  (MPC5XXX_GPIO + 0x003C)
--
--/* WakeUp GPIO registers */
--#define MPC5XXX_WU_GPIO_ENABLE  (MPC5XXX_WU_GPIO + 0x0000)
--#define MPC5XXX_WU_GPIO_ODE     (MPC5XXX_WU_GPIO + 0x0004)
--#define MPC5XXX_WU_GPIO_DIR     (MPC5XXX_WU_GPIO + 0x0008)
--#define MPC5XXX_WU_GPIO_DATA_O  (MPC5XXX_WU_GPIO + 0x000c)
--#define MPC5XXX_WU_GPIO_DATA_I  (MPC5XXX_WU_GPIO + 0x0020)
--
--/* GPIO pins */
--#define GPIO_WKUP_7		0x80000000UL
--#define GPIO_PSC6_0		0x10000000UL
--#define GPIO_PSC3_9		0x04000000UL
--#define GPIO_PSC1_4		0x01000000UL
--
--/* PCI registers */
--#define MPC5XXX_PCI_CMD		(MPC5XXX_PCI + 0x04)
--#define MPC5XXX_PCI_CFG		(MPC5XXX_PCI + 0x0c)
--#define MPC5XXX_PCI_BAR0	(MPC5XXX_PCI + 0x10)
--#define MPC5XXX_PCI_BAR1	(MPC5XXX_PCI + 0x14)
--#if defined(CONFIG_MGT5100)
--#define MPC5XXX_PCI_CTRL	(MPC5XXX_PCI + 0x68)
--#define MPC5XXX_PCI_VALMSKR	(MPC5XXX_PCI + 0x6c)
--#define MPC5XXX_PCI_VALMSKW	(MPC5XXX_PCI + 0x70)
--#define MPC5XXX_PCI_SUBW1	(MPC5XXX_PCI + 0x74)
--#define MPC5XXX_PCI_SUBW2	(MPC5XXX_PCI + 0x78)
--#define MPC5XXX_PCI_WINCOMMAND	(MPC5XXX_PCI + 0x7c)
--#elif defined(CONFIG_MPC5200)
--#define MPC5XXX_PCI_GSCR	(MPC5XXX_PCI + 0x60)
--#define MPC5XXX_PCI_TBATR0	(MPC5XXX_PCI + 0x64)
--#define MPC5XXX_PCI_TBATR1	(MPC5XXX_PCI + 0x68)
--#define MPC5XXX_PCI_TCR		(MPC5XXX_PCI + 0x6c)
--#define MPC5XXX_PCI_IW0BTAR	(MPC5XXX_PCI + 0x70)
--#define MPC5XXX_PCI_IW1BTAR	(MPC5XXX_PCI + 0x74)
--#define MPC5XXX_PCI_IW2BTAR	(MPC5XXX_PCI + 0x78)
--#define MPC5XXX_PCI_IWCR	(MPC5XXX_PCI + 0x80)
--#define MPC5XXX_PCI_ICR		(MPC5XXX_PCI + 0x84)
--#define MPC5XXX_PCI_ISR		(MPC5XXX_PCI + 0x88)
--#define MPC5XXX_PCI_ARB		(MPC5XXX_PCI + 0x8c)
--#define MPC5XXX_PCI_CAR		(MPC5XXX_PCI + 0xf8)
--#endif
--
--/* Interrupt Controller registers */
--#define MPC5XXX_ICTL_PER_MASK	(MPC5XXX_ICTL + 0x0000)
--#define MPC5XXX_ICTL_PER_PRIO1	(MPC5XXX_ICTL + 0x0004)
--#define MPC5XXX_ICTL_PER_PRIO2	(MPC5XXX_ICTL + 0x0008)
--#define MPC5XXX_ICTL_PER_PRIO3	(MPC5XXX_ICTL + 0x000c)
--#define MPC5XXX_ICTL_EXT	(MPC5XXX_ICTL + 0x0010)
--#define MPC5XXX_ICTL_CRIT	(MPC5XXX_ICTL + 0x0014)
--#define MPC5XXX_ICTL_MAIN_PRIO1	(MPC5XXX_ICTL + 0x0018)
--#define MPC5XXX_ICTL_MAIN_PRIO2	(MPC5XXX_ICTL + 0x001c)
--#define MPC5XXX_ICTL_STS	(MPC5XXX_ICTL + 0x0024)
--#define MPC5XXX_ICTL_CRIT_STS	(MPC5XXX_ICTL + 0x0028)
--#define MPC5XXX_ICTL_MAIN_STS	(MPC5XXX_ICTL + 0x002c)
--#define MPC5XXX_ICTL_PER_STS	(MPC5XXX_ICTL + 0x0030)
--#define MPC5XXX_ICTL_BUS_STS	(MPC5XXX_ICTL + 0x0038)
--
--#define NR_IRQS			64
--
--/* IRQ mapping - these are our logical IRQ numbers */
--#define MPC5XXX_CRIT_IRQ_NUM	4
--#define MPC5XXX_MAIN_IRQ_NUM	17
--#define MPC5XXX_SDMA_IRQ_NUM	17
--#define MPC5XXX_PERP_IRQ_NUM	23
--
--#define MPC5XXX_CRIT_IRQ_BASE	1
--#define MPC5XXX_MAIN_IRQ_BASE	(MPC5XXX_CRIT_IRQ_BASE + MPC5XXX_CRIT_IRQ_NUM)
--#define MPC5XXX_SDMA_IRQ_BASE	(MPC5XXX_MAIN_IRQ_BASE + MPC5XXX_MAIN_IRQ_NUM)
--#define MPC5XXX_PERP_IRQ_BASE	(MPC5XXX_SDMA_IRQ_BASE + MPC5XXX_SDMA_IRQ_NUM)
--
--#define MPC5XXX_IRQ0			(MPC5XXX_CRIT_IRQ_BASE + 0)
--#define MPC5XXX_SLICE_TIMER_0_IRQ	(MPC5XXX_CRIT_IRQ_BASE + 1)
--#define MPC5XXX_HI_INT_IRQ		(MPC5XXX_CRIT_IRQ_BASE + 2)
--#define MPC5XXX_CCS_IRQ			(MPC5XXX_CRIT_IRQ_BASE + 3)
--
--#define MPC5XXX_IRQ1			(MPC5XXX_MAIN_IRQ_BASE + 1)
--#define MPC5XXX_IRQ2			(MPC5XXX_MAIN_IRQ_BASE + 2)
--#define MPC5XXX_IRQ3			(MPC5XXX_MAIN_IRQ_BASE + 3)
--#define MPC5XXX_RTC_PINT_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 5)
--#define MPC5XXX_RTC_SINT_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 6)
--#define MPC5XXX_RTC_GPIO_STD_IRQ	(MPC5XXX_MAIN_IRQ_BASE + 7)
--#define MPC5XXX_RTC_GPIO_WKUP_IRQ	(MPC5XXX_MAIN_IRQ_BASE + 8)
--#define MPC5XXX_TMR0_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 9)
--#define MPC5XXX_TMR1_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 10)
--#define MPC5XXX_TMR2_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 11)
--#define MPC5XXX_TMR3_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 12)
--#define MPC5XXX_TMR4_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 13)
--#define MPC5XXX_TMR5_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 14)
--#define MPC5XXX_TMR6_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 15)
--#define MPC5XXX_TMR7_IRQ		(MPC5XXX_MAIN_IRQ_BASE + 16)
--
--#define MPC5XXX_SDMA_IRQ		(MPC5XXX_PERP_IRQ_BASE + 0)
--#define MPC5XXX_PSC1_IRQ		(MPC5XXX_PERP_IRQ_BASE + 1)
--#define MPC5XXX_PSC2_IRQ		(MPC5XXX_PERP_IRQ_BASE + 2)
--#define MPC5XXX_PSC3_IRQ		(MPC5XXX_PERP_IRQ_BASE + 3)
--#define MPC5XXX_PSC6_IRQ		(MPC5XXX_PERP_IRQ_BASE + 4)
--#define MPC5XXX_IRDA_IRQ		(MPC5XXX_PERP_IRQ_BASE + 4)
--#define MPC5XXX_FEC_IRQ			(MPC5XXX_PERP_IRQ_BASE + 5)
--#define MPC5XXX_USB_IRQ			(MPC5XXX_PERP_IRQ_BASE + 6)
--#define MPC5XXX_ATA_IRQ			(MPC5XXX_PERP_IRQ_BASE + 7)
--#define MPC5XXX_PCI_CNTRL_IRQ		(MPC5XXX_PERP_IRQ_BASE + 8)
--#define MPC5XXX_PCI_SCIRX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 9)
--#define MPC5XXX_PCI_SCITX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 10)
--#define MPC5XXX_PSC4_IRQ		(MPC5XXX_PERP_IRQ_BASE + 11)
--#define MPC5XXX_PSC5_IRQ		(MPC5XXX_PERP_IRQ_BASE + 12)
--#define MPC5XXX_SPI_MODF_IRQ		(MPC5XXX_PERP_IRQ_BASE + 13)
--#define MPC5XXX_SPI_SPIF_IRQ		(MPC5XXX_PERP_IRQ_BASE + 14)
--#define MPC5XXX_I2C1_IRQ		(MPC5XXX_PERP_IRQ_BASE + 15)
--#define MPC5XXX_I2C2_IRQ		(MPC5XXX_PERP_IRQ_BASE + 16)
--#define MPC5XXX_MSCAN1_IRQ		(MPC5XXX_PERP_IRQ_BASE + 17)
--#define MPC5XXX_MSCAN2_IRQ		(MPC5XXX_PERP_IRQ_BASE + 18)
--#define MPC5XXX_IR_RX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 19)
--#define MPC5XXX_IR_TX_IRQ		(MPC5XXX_PERP_IRQ_BASE + 20)
--#define MPC5XXX_XLB_ARB_IRQ		(MPC5XXX_PERP_IRQ_BASE + 21)
--#define MPC5XXX_BDLC_IRQ		(MPC5XXX_PERP_IRQ_BASE + 22)
--
--/* General Purpose Timers registers */
--#define MPC5XXX_GPT0_ENABLE		(MPC5XXX_GPT + 0x0)
--#define MPC5XXX_GPT0_COUNTER		(MPC5XXX_GPT + 0x4)
--#define MPC5XXX_GPT0_STATUS		(MPC5XXX_GPT + 0x0C)
--#define MPC5XXX_GPT1_ENABLE		(MPC5XXX_GPT + 0x10)
--#define MPC5XXX_GPT1_COUNTER		(MPC5XXX_GPT + 0x14)
--#define MPC5XXX_GPT1_STATUS		(MPC5XXX_GPT + 0x1C)
--#define MPC5XXX_GPT2_ENABLE		(MPC5XXX_GPT + 0x20)
--#define MPC5XXX_GPT2_COUNTER		(MPC5XXX_GPT + 0x24)
--#define MPC5XXX_GPT2_STATUS		(MPC5XXX_GPT + 0x2C)
--#define MPC5XXX_GPT3_ENABLE		(MPC5XXX_GPT + 0x30)
--#define MPC5XXX_GPT3_COUNTER		(MPC5XXX_GPT + 0x34)
--#define MPC5XXX_GPT3_STATUS		(MPC5XXX_GPT + 0x3C)
--#define MPC5XXX_GPT4_ENABLE		(MPC5XXX_GPT + 0x40)
--#define MPC5XXX_GPT4_COUNTER		(MPC5XXX_GPT + 0x44)
--#define MPC5XXX_GPT4_STATUS		(MPC5XXX_GPT + 0x4C)
--#define MPC5XXX_GPT5_ENABLE		(MPC5XXX_GPT + 0x50)
--#define MPC5XXX_GPT5_STATUS		(MPC5XXX_GPT + 0x5C)
--#define MPC5XXX_GPT5_COUNTER		(MPC5XXX_GPT + 0x54)
--#define MPC5XXX_GPT6_ENABLE		(MPC5XXX_GPT + 0x60)
--#define MPC5XXX_GPT6_COUNTER		(MPC5XXX_GPT + 0x64)
--#define MPC5XXX_GPT6_STATUS		(MPC5XXX_GPT + 0x6C)
--#define MPC5XXX_GPT7_ENABLE		(MPC5XXX_GPT + 0x70)
--#define MPC5XXX_GPT7_COUNTER		(MPC5XXX_GPT + 0x74)
--#define MPC5XXX_GPT7_STATUS		(MPC5XXX_GPT + 0x7C)
--
--#define MPC5XXX_GPT_GPIO_PIN(status)	((0x00000100 & (status)) >> 8)
--
--#define MPC5XXX_GPT7_PWMCFG		(MPC5XXX_GPT + 0x78)
--
--/* ATA registers */
--#define MPC5XXX_ATA_HOST_CONFIG         (MPC5XXX_ATA + 0x0000)
--#define MPC5XXX_ATA_PIO1                (MPC5XXX_ATA + 0x0008)
--#define MPC5XXX_ATA_PIO2                (MPC5XXX_ATA + 0x000C)
--#define MPC5XXX_ATA_SHARE_COUNT         (MPC5XXX_ATA + 0x002C)
--
--/* I2Cn control register bits */
--#define I2C_EN		0x80
--#define I2C_IEN		0x40
--#define I2C_STA		0x20
--#define I2C_TX		0x10
--#define I2C_TXAK	0x08
--#define I2C_RSTA	0x04
--#define I2C_INIT_MASK	(I2C_EN | I2C_STA | I2C_TX | I2C_RSTA)
--
--/* I2Cn status register bits */
--#define I2C_CF		0x80
--#define I2C_AAS		0x40
--#define I2C_BB		0x20
--#define I2C_AL		0x10
--#define I2C_SRW		0x04
--#define I2C_IF		0x02
--#define I2C_RXAK	0x01
--
--/* Programmable Serial Controller (PSC) status register bits */
--#define PSC_SR_CDE		0x0080
--#define PSC_SR_RXRDY		0x0100
--#define PSC_SR_RXFULL		0x0200
--#define PSC_SR_TXRDY		0x0400
--#define PSC_SR_TXEMP		0x0800
--#define PSC_SR_OE		0x1000
--#define PSC_SR_PE		0x2000
--#define PSC_SR_FE		0x4000
--#define PSC_SR_RB		0x8000
--
--/* PSC Command values */
--#define PSC_RX_ENABLE		0x0001
--#define PSC_RX_DISABLE		0x0002
--#define PSC_TX_ENABLE		0x0004
--#define PSC_TX_DISABLE		0x0008
--#define PSC_SEL_MODE_REG_1	0x0010
--#define PSC_RST_RX		0x0020
--#define PSC_RST_TX		0x0030
--#define PSC_RST_ERR_STAT	0x0040
--#define PSC_RST_BRK_CHG_INT	0x0050
--#define PSC_START_BRK		0x0060
--#define PSC_STOP_BRK		0x0070
--
--/* PSC Rx FIFO status bits */
--#define PSC_RX_FIFO_ERR		0x0040
--#define PSC_RX_FIFO_UF		0x0020
--#define PSC_RX_FIFO_OF		0x0010
--#define PSC_RX_FIFO_FR		0x0008
--#define PSC_RX_FIFO_FULL	0x0004
--#define PSC_RX_FIFO_ALARM	0x0002
--#define PSC_RX_FIFO_EMPTY	0x0001
--
--/* PSC interrupt mask bits */
--#define PSC_IMR_TXRDY		0x0100
--#define PSC_IMR_RXRDY		0x0200
--#define PSC_IMR_DB		0x0400
--#define PSC_IMR_IPC		0x8000
--
--/* PSC input port change bits */
--#define PSC_IPCR_CTS		0x01
--#define PSC_IPCR_DCD		0x02
--
--/* PSC mode fields */
--#define PSC_MODE_5_BITS		0x00
--#define PSC_MODE_6_BITS		0x01
--#define PSC_MODE_7_BITS		0x02
--#define PSC_MODE_8_BITS		0x03
--#define PSC_MODE_PAREVEN	0x00
--#define PSC_MODE_PARODD		0x04
--#define PSC_MODE_PARFORCE	0x08
--#define PSC_MODE_PARNONE	0x10
--#define PSC_MODE_ERR		0x20
--#define PSC_MODE_FFULL		0x40
--#define PSC_MODE_RXRTS		0x80
--
--#define PSC_MODE_ONE_STOP_5_BITS	0x00
--#define PSC_MODE_ONE_STOP		0x07
--#define PSC_MODE_TWO_STOP		0x0f
--
--/* ATA config fields */
--#define MPC5xxx_ATA_HOSTCONF_SMR	0x80000000UL	/* State machine
--							   reset */
--#define MPC5xxx_ATA_HOSTCONF_FR		0x40000000UL	/* FIFO Reset */
--#define MPC5xxx_ATA_HOSTCONF_IE		0x02000000UL	/* Enable interrupt
--							   in PIO */
--#define MPC5xxx_ATA_HOSTCONF_IORDY	0x01000000UL	/* Drive supports
--							   IORDY protocol */
--
--#ifndef __ASSEMBLY__
--
--#include <linux/types.h>
--
--struct mpc5xxx_psc {
--	volatile u8	mode;		/* PSC + 0x00 */
--	volatile u8	reserved0[3];
--	union {				/* PSC + 0x04 */
--		volatile u16	status;
--		volatile u16	clock_select;
--	} sr_csr;
--#define psc_status	sr_csr.status
--#define psc_clock_select sr_csr.clock_select
--	volatile u16	reserved1;
--	volatile u8	command;	/* PSC + 0x08 */
--	volatile u8	reserved2[3];
--	union {				/* PSC + 0x0c */
--		volatile u8	buffer_8;
--		volatile u16	buffer_16;
--		volatile u32	buffer_32;
--	} buffer;
--#define psc_buffer_8	buffer.buffer_8
--#define psc_buffer_16	buffer.buffer_16
--#define psc_buffer_32	buffer.buffer_32
--	union {				/* PSC + 0x10 */
--		volatile u8	ipcr;
--		volatile u8	acr;
--	} ipcr_acr;
--#define psc_ipcr	ipcr_acr.ipcr
--#define psc_acr		ipcr_acr.acr
--	volatile u8	reserved3[3];
--	union {				/* PSC + 0x14 */
--		volatile u16	isr;
--		volatile u16	imr;
--	} isr_imr;
--#define psc_isr		isr_imr.isr
--#define psc_imr		isr_imr.imr
--	volatile u16	reserved4;
--	volatile u8	ctur;		/* PSC + 0x18 */
--	volatile u8	reserved5[3];
--	volatile u8	ctlr;		/* PSC + 0x1c */
--	volatile u8	reserved6[3];
--	volatile u16	ccr;		/* PSC + 0x20 */
--	volatile u8	reserved7[14];
--	volatile u8	ivr;		/* PSC + 0x30 */
--	volatile u8	reserved8[3];
--	volatile u8	ip;		/* PSC + 0x34 */
--	volatile u8	reserved9[3];
--	volatile u8	op1;		/* PSC + 0x38 */
--	volatile u8	reserved10[3];
--	volatile u8	op0;		/* PSC + 0x3c */
--	volatile u8	reserved11[3];
--	volatile u32	sicr;		/* PSC + 0x40 */
--	volatile u8	ircr1;		/* PSC + 0x44 */
--	volatile u8	reserved12[3];
--	volatile u8	ircr2;		/* PSC + 0x44 */
--	volatile u8	reserved13[3];
--	volatile u8	irsdr;		/* PSC + 0x4c */
--	volatile u8	reserved14[3];
--	volatile u8	irmdr;		/* PSC + 0x50 */
--	volatile u8	reserved15[3];
--	volatile u8	irfdr;		/* PSC + 0x54 */
--	volatile u8	reserved16[3];
--	volatile u16	rfnum;		/* PSC + 0x58 */
--	volatile u16	reserved17;
--	volatile u16	tfnum;		/* PSC + 0x5c */
--	volatile u16	reserved18;
--	volatile u32	rfdata;		/* PSC + 0x60 */
--	volatile u16	rfstat;		/* PSC + 0x64 */
--	volatile u16	reserved20;
--	volatile u8	rfcntl;		/* PSC + 0x68 */
--	volatile u8	reserved21[5];
--	volatile u16	rfalarm;	/* PSC + 0x6e */
--	volatile u16	reserved22;
--	volatile u16	rfrptr;		/* PSC + 0x72 */
--	volatile u16	reserved23;
--	volatile u16	rfwptr;		/* PSC + 0x76 */
--	volatile u16	reserved24;
--	volatile u16	rflrfptr;	/* PSC + 0x7a */
--	volatile u16	reserved25;
--	volatile u16	rflwfptr;	/* PSC + 0x7e */
--	volatile u32	tfdata;		/* PSC + 0x80 */
--	volatile u16	tfstat;		/* PSC + 0x84 */
--	volatile u16	reserved26;
--	volatile u8	tfcntl;		/* PSC + 0x88 */
--	volatile u8	reserved27[5];
--	volatile u16	tfalarm;	/* PSC + 0x8e */
--	volatile u16	reserved28;
--	volatile u16	tfrptr;		/* PSC + 0x92 */
--	volatile u16	reserved29;
--	volatile u16	tfwptr;		/* PSC + 0x96 */
--	volatile u16	reserved30;
--	volatile u16	tflrfptr;	/* PSC + 0x9a */
--	volatile u16	reserved31;
--	volatile u16	tflwfptr;	/* PSC + 0x9e */
--};
--
--struct mpc5xxx_intr {
--	volatile u32	per_mask;	/* INTR + 0x00 */
--	volatile u32	per_pri1;	/* INTR + 0x04 */
--	volatile u32	per_pri2;	/* INTR + 0x08 */
--	volatile u32	per_pri3;	/* INTR + 0x0c */
--	volatile u32	ctrl;		/* INTR + 0x10 */
--	volatile u32	main_mask;	/* INTR + 0x14 */
--	volatile u32	main_pri1;	/* INTR + 0x18 */
--	volatile u32	main_pri2;	/* INTR + 0x1c */
--	volatile u32	reserved1;	/* INTR + 0x20 */
--	volatile u32	enc_status;	/* INTR + 0x24 */
--	volatile u32	crit_status;	/* INTR + 0x28 */
--	volatile u32	main_status;	/* INTR + 0x2c */
--	volatile u32	per_status;	/* INTR + 0x30 */
--	volatile u32	reserved2;	/* INTR + 0x34 */
--	volatile u32	per_error;	/* INTR + 0x38 */
--};
--
--struct mpc5xxx_gpio {
--	volatile u32 port_config;	/* GPIO + 0x00 */
--	volatile u32 simple_gpioe;	/* GPIO + 0x04 */
--	volatile u32 simple_ode;	/* GPIO + 0x08 */
--	volatile u32 simple_ddr;	/* GPIO + 0x0c */
--	volatile u32 simple_dvo;	/* GPIO + 0x10 */
--	volatile u32 simple_ival;	/* GPIO + 0x14 */
--	volatile u8 outo_gpioe;		/* GPIO + 0x18 */
--	volatile u8 reserved1[3];	/* GPIO + 0x19 */
--	volatile u8 outo_dvo;		/* GPIO + 0x1c */
--	volatile u8 reserved2[3];	/* GPIO + 0x1d */
--	volatile u8 sint_gpioe;		/* GPIO + 0x20 */
--	volatile u8 reserved3[3];	/* GPIO + 0x21 */
--	volatile u8 sint_ode;		/* GPIO + 0x24 */
--	volatile u8 reserved4[3];	/* GPIO + 0x25 */
--	volatile u8 sint_ddr;		/* GPIO + 0x28 */
--	volatile u8 reserved5[3];	/* GPIO + 0x29 */
--	volatile u8 sint_dvo;		/* GPIO + 0x2c */
--	volatile u8 reserved6[3];	/* GPIO + 0x2d */
--	volatile u8 sint_inten;		/* GPIO + 0x30 */
--	volatile u8 reserved7[3];	/* GPIO + 0x31 */
--	volatile u16 sint_itype;	/* GPIO + 0x34 */
--	volatile u16 reserved8;		/* GPIO + 0x36 */
--	volatile u8 gpio_control;	/* GPIO + 0x38 */
--	volatile u8 reserved9[3];	/* GPIO + 0x39 */
--	volatile u8 sint_istat;		/* GPIO + 0x3c */
--	volatile u8 sint_ival;		/* GPIO + 0x3d */
--	volatile u8 bus_errs;		/* GPIO + 0x3e */
--	volatile u8 reserved10;		/* GPIO + 0x3f */
--};
--
--struct mpc5xxx_sdma {
--	volatile u32 taskBar;		/* SDMA + 0x00 */
--	volatile u32 currentPointer;	/* SDMA + 0x04 */
--	volatile u32 endPointer;	/* SDMA + 0x08 */
--	volatile u32 variablePointer;	/* SDMA + 0x0c */
--
--	volatile u8 IntVect1;		/* SDMA + 0x10 */
--	volatile u8 IntVect2;		/* SDMA + 0x11 */
--	volatile u16 PtdCntrl;		/* SDMA + 0x12 */
--
--	volatile u32 IntPend;		/* SDMA + 0x14 */
--	volatile u32 IntMask;		/* SDMA + 0x18 */
--
--	volatile u16 tcr_0;		/* SDMA + 0x1c */
--	volatile u16 tcr_1;		/* SDMA + 0x1e */
--	volatile u16 tcr_2;		/* SDMA + 0x20 */
--	volatile u16 tcr_3;		/* SDMA + 0x22 */
--	volatile u16 tcr_4;		/* SDMA + 0x24 */
--	volatile u16 tcr_5;		/* SDMA + 0x26 */
--	volatile u16 tcr_6;		/* SDMA + 0x28 */
--	volatile u16 tcr_7;		/* SDMA + 0x2a */
--	volatile u16 tcr_8;		/* SDMA + 0x2c */
--	volatile u16 tcr_9;		/* SDMA + 0x2e */
--	volatile u16 tcr_a;		/* SDMA + 0x30 */
--	volatile u16 tcr_b;		/* SDMA + 0x32 */
--	volatile u16 tcr_c;		/* SDMA + 0x34 */
--	volatile u16 tcr_d;		/* SDMA + 0x36 */
--	volatile u16 tcr_e;		/* SDMA + 0x38 */
--	volatile u16 tcr_f;		/* SDMA + 0x3a */
--
--	volatile u8 IPR0;		/* SDMA + 0x3c */
--	volatile u8 IPR1;		/* SDMA + 0x3d */
--	volatile u8 IPR2;		/* SDMA + 0x3e */
--	volatile u8 IPR3;		/* SDMA + 0x3f */
--	volatile u8 IPR4;		/* SDMA + 0x40 */
--	volatile u8 IPR5;		/* SDMA + 0x41 */
--	volatile u8 IPR6;		/* SDMA + 0x42 */
--	volatile u8 IPR7;		/* SDMA + 0x43 */
--	volatile u8 IPR8;		/* SDMA + 0x44 */
--	volatile u8 IPR9;		/* SDMA + 0x45 */
--	volatile u8 IPR10;		/* SDMA + 0x46 */
--	volatile u8 IPR11;		/* SDMA + 0x47 */
--	volatile u8 IPR12;		/* SDMA + 0x48 */
--	volatile u8 IPR13;		/* SDMA + 0x49 */
--	volatile u8 IPR14;		/* SDMA + 0x4a */
--	volatile u8 IPR15;		/* SDMA + 0x4b */
--	volatile u8 IPR16;		/* SDMA + 0x4c */
--	volatile u8 IPR17;		/* SDMA + 0x4d */
--	volatile u8 IPR18;		/* SDMA + 0x4e */
--	volatile u8 IPR19;		/* SDMA + 0x4f */
--	volatile u8 IPR20;		/* SDMA + 0x50 */
--	volatile u8 IPR21;		/* SDMA + 0x51 */
--	volatile u8 IPR22;		/* SDMA + 0x52 */
--	volatile u8 IPR23;		/* SDMA + 0x53 */
--	volatile u8 IPR24;		/* SDMA + 0x54 */
--	volatile u8 IPR25;		/* SDMA + 0x55 */
--	volatile u8 IPR26;		/* SDMA + 0x56 */
--	volatile u8 IPR27;		/* SDMA + 0x57 */
--	volatile u8 IPR28;		/* SDMA + 0x58 */
--	volatile u8 IPR29;		/* SDMA + 0x59 */
--	volatile u8 IPR30;		/* SDMA + 0x5a */
--	volatile u8 IPR31;		/* SDMA + 0x5b */
--
--	volatile u32 res1;		/* SDMA + 0x5c */
--	volatile u32 res2;		/* SDMA + 0x60 */
--	volatile u32 res3;		/* SDMA + 0x64 */
--	volatile u32 MDEDebug;		/* SDMA + 0x68 */
--	volatile u32 ADSDebug;		/* SDMA + 0x6c */
--	volatile u32 Value1;		/* SDMA + 0x70 */
--	volatile u32 Value2;		/* SDMA + 0x74 */
--	volatile u32 Control;		/* SDMA + 0x78 */
--	volatile u32 Status;		/* SDMA + 0x7c */
--	volatile u32 EU00;		/* SDMA + 0x80 */
--	volatile u32 EU01;		/* SDMA + 0x84 */
--	volatile u32 EU02;		/* SDMA + 0x88 */
--	volatile u32 EU03;		/* SDMA + 0x8c */
--	volatile u32 EU04;		/* SDMA + 0x90 */
--	volatile u32 EU05;		/* SDMA + 0x94 */
--	volatile u32 EU06;		/* SDMA + 0x98 */
--	volatile u32 EU07;		/* SDMA + 0x9c */
--	volatile u32 EU10;		/* SDMA + 0xa0 */
--	volatile u32 EU11;		/* SDMA + 0xa4 */
--	volatile u32 EU12;		/* SDMA + 0xa8 */
--	volatile u32 EU13;		/* SDMA + 0xac */
--	volatile u32 EU14;		/* SDMA + 0xb0 */
--	volatile u32 EU15;		/* SDMA + 0xb4 */
--	volatile u32 EU16;		/* SDMA + 0xb8 */
--	volatile u32 EU17;		/* SDMA + 0xbc */
--	volatile u32 EU20;		/* SDMA + 0xc0 */
--	volatile u32 EU21;		/* SDMA + 0xc4 */
--	volatile u32 EU22;		/* SDMA + 0xc8 */
--	volatile u32 EU23;		/* SDMA + 0xcc */
--	volatile u32 EU24;		/* SDMA + 0xd0 */
--	volatile u32 EU25;		/* SDMA + 0xd4 */
--	volatile u32 EU26;		/* SDMA + 0xd8 */
--	volatile u32 EU27;		/* SDMA + 0xdc */
--	volatile u32 EU30;		/* SDMA + 0xe0 */
--	volatile u32 EU31;		/* SDMA + 0xe4 */
--	volatile u32 EU32;		/* SDMA + 0xe8 */
--	volatile u32 EU33;		/* SDMA + 0xec */
--	volatile u32 EU34;		/* SDMA + 0xf0 */
--	volatile u32 EU35;		/* SDMA + 0xf4 */
--	volatile u32 EU36;		/* SDMA + 0xf8 */
--	volatile u32 EU37;		/* SDMA + 0xfc */
--};
--
--struct mpc5xxx_i2c {
--	volatile u32 madr;		/* I2Cn + 0x00 */
--	volatile u32 mfdr;		/* I2Cn + 0x04 */
--	volatile u32 mcr;		/* I2Cn + 0x08 */
--	volatile u32 msr;		/* I2Cn + 0x0C */
--	volatile u32 mdr;		/* I2Cn + 0x10 */
--};
--
--struct mpc5xxx_spi {
--	volatile u8 cr1;		/* SPI + 0x0F00 */
--	volatile u8 cr2;		/* SPI + 0x0F01 */
--	volatile u8 reserved1[2];
--	volatile u8 brr;		/* SPI + 0x0F04 */
--	volatile u8 sr;			/* SPI + 0x0F05 */
--	volatile u8 reserved2[3];
--	volatile u8 dr;			/* SPI + 0x0F09 */
--	volatile u8 reserved3[3];
--	volatile u8 pdr;		/* SPI + 0x0F0D */
--	volatile u8 reserved4[2];
--	volatile u8 ddr;		/* SPI + 0x0F10 */
--};
--
--
--struct mpc5xxx_gpt {
--	volatile u32 emsr;		/* GPT + Timer# * 0x10 + 0x00 */
--	volatile u32 cir;		/* GPT + Timer# * 0x10 + 0x04 */
--	volatile u32 pwmcr;		/* GPT + Timer# * 0x10 + 0x08 */
--	volatile u32 sr;		/* GPT + Timer# * 0x10 + 0x0c */
--};
--
--struct mpc5xxx_gpt_0_7 {
--	struct mpc5xxx_gpt gpt0;
--	struct mpc5xxx_gpt gpt1;
--	struct mpc5xxx_gpt gpt2;
--	struct mpc5xxx_gpt gpt3;
--	struct mpc5xxx_gpt gpt4;
--	struct mpc5xxx_gpt gpt5;
--	struct mpc5xxx_gpt gpt6;
--	struct mpc5xxx_gpt gpt7;
--};
--
--struct mscan_buffer {
--	volatile u8  idr[0x8];          /* 0x00 */
--	volatile u8  dsr[0x10];         /* 0x08 */
--	volatile u8  dlr;               /* 0x18 */
--	volatile u8  tbpr;              /* 0x19 */      /* This register is not applicable for receive buffers */
--	volatile u16 rsrv1;             /* 0x1A */
--	volatile u8  tsrh;              /* 0x1C */
--	volatile u8  tsrl;              /* 0x1D */
--	volatile u16 rsrv2;             /* 0x1E */
--};
--
--struct mpc5xxx_mscan {
--	volatile u8  canctl0;           /* MSCAN + 0x00 */
--	volatile u8  canctl1;           /* MSCAN + 0x01 */
--	volatile u16 rsrv1;             /* MSCAN + 0x02 */
--	volatile u8  canbtr0;           /* MSCAN + 0x04 */
--	volatile u8  canbtr1;           /* MSCAN + 0x05 */
--	volatile u16 rsrv2;             /* MSCAN + 0x06 */
--	volatile u8  canrflg;           /* MSCAN + 0x08 */
--	volatile u8  canrier;           /* MSCAN + 0x09 */
--	volatile u16 rsrv3;             /* MSCAN + 0x0A */
--	volatile u8  cantflg;           /* MSCAN + 0x0C */
--	volatile u8  cantier;           /* MSCAN + 0x0D */
--	volatile u16 rsrv4;             /* MSCAN + 0x0E */
--	volatile u8  cantarq;           /* MSCAN + 0x10 */
--	volatile u8  cantaak;           /* MSCAN + 0x11 */
--	volatile u16 rsrv5;             /* MSCAN + 0x12 */
--	volatile u8  cantbsel;          /* MSCAN + 0x14 */
--	volatile u8  canidac;           /* MSCAN + 0x15 */
--	volatile u16 rsrv6[3];          /* MSCAN + 0x16 */
--	volatile u8  canrxerr;          /* MSCAN + 0x1C */
--	volatile u8  cantxerr;          /* MSCAN + 0x1D */
--	volatile u16 rsrv7;             /* MSCAN + 0x1E */
--	volatile u8  canidar0;          /* MSCAN + 0x20 */
--	volatile u8  canidar1;          /* MSCAN + 0x21 */
--	volatile u16 rsrv8;             /* MSCAN + 0x22 */
--	volatile u8  canidar2;          /* MSCAN + 0x24 */
--	volatile u8  canidar3;          /* MSCAN + 0x25 */
--	volatile u16 rsrv9;             /* MSCAN + 0x26 */
--	volatile u8  canidmr0;          /* MSCAN + 0x28 */
--	volatile u8  canidmr1;          /* MSCAN + 0x29 */
--	volatile u16 rsrv10;            /* MSCAN + 0x2A */
--	volatile u8  canidmr2;          /* MSCAN + 0x2C */
--	volatile u8  canidmr3;          /* MSCAN + 0x2D */
--	volatile u16 rsrv11;            /* MSCAN + 0x2E */
--	volatile u8  canidar4;          /* MSCAN + 0x30 */
--	volatile u8  canidar5;          /* MSCAN + 0x31 */
--	volatile u16 rsrv12;            /* MSCAN + 0x32 */
--	volatile u8  canidar6;          /* MSCAN + 0x34 */
--	volatile u8  canidar7;          /* MSCAN + 0x35 */
--	volatile u16 rsrv13;            /* MSCAN + 0x36 */
--	volatile u8  canidmr4;          /* MSCAN + 0x38 */
--	volatile u8  canidmr5;          /* MSCAN + 0x39 */
--	volatile u16 rsrv14;            /* MSCAN + 0x3A */
--	volatile u8  canidmr6;          /* MSCAN + 0x3C */
--	volatile u8  canidmr7;          /* MSCAN + 0x3D */
--	volatile u16 rsrv15;            /* MSCAN + 0x3E */
--
--	struct mscan_buffer canrxfg;    /* MSCAN + 0x40 */    /* Foreground receive buffer */
--	struct mscan_buffer cantxfg;    /* MSCAN + 0x60 */    /* Foreground transmit buffer */
--	};
--
--/* function prototypes */
--void loadtask(int basetask, int tasks);
--
--/* retrieve configured sdram size connected to a chipselect */
--unsigned long mpc5200_get_sdram_size(unsigned int cs);
--
--/* configure a local plus bus chip select */
--#define MPC5200_BOOTCS 8
--void mpc5200_setup_cs(int cs, unsigned long start, unsigned long size, u32 cfg);
--
--/* configure bus speeds. Both dividers are relative to xlb clock */
--int mpc5200_setup_bus_clocks(unsigned int ipbdiv, unsigned long pcidiv);
--
--#endif /* __ASSEMBLY__ */
--
--#endif /* __ASMPPC_MPC5XXX_H */
++
++#endif /* __MACH_MPC5XXX_H */
+diff --git a/arch/ppc/mach-mpc5xxx/iomux-mpc5125.c b/arch/ppc/mach-mpc5xxx/iomux-mpc5125.c
+new file mode 100644
+index 0000000..a52010e
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/iomux-mpc5125.c
+@@ -0,0 +1,39 @@
++/*
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <asm/io.h>
++#include <mach/mpc5xxx.h>
++
++static u8 * const ioc = (u8 * )MPC512X_IOC;
++
++void mpc5125_mux_pin(enum mpc5125_pinmux_id idx, unsigned char mux)
++{
++	out_8(&ioc[idx], mux);
++}
++
++#define IOC_GB_OBE (1 << 0)
++
++static int mpc5125_mux_init(void)
++{
++	/*
++	 * Note: all default muxed pins/features which are outputs are
++	 * *tristated* after reset. Enable them right now
++	 */
++	out_8(&ioc[1], IOC_GB_OBE);
++
++	return 0;
++}
++coredevice_initcall(mpc5125_mux_init);
+diff --git a/arch/ppc/mach-mpc5xxx/lpc-mpc5125.c b/arch/ppc/mach-mpc5xxx/lpc-mpc5125.c
+new file mode 100644
+index 0000000..0e602d5
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/lpc-mpc5125.c
+@@ -0,0 +1,73 @@
++/*
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <types.h>
++#include <mach/mpc5xxx.h>
++#include <asm/io.h>
++
++/* LPC */
++struct lpc {
++	u32	cs_cfg[8]; /* Chip Select N Configuration Registers
++				   No dedicated entry for CS Boot as == CS0 */
++	u32	cs_cr; /* Chip Select Control Register */
++	u32	cs_sr; /* Chip Select Status Register */
++	u32	cs_bcr; /* Chip Select Burst Control Register */
++	u32	cs_dccr; /* Chip Select Deadcycle Control Register */
++	u32	cs_hccr; /* Chip Select Holdcycle Control Register */
++	u32	altr; /* Address Latch Timing Register */
++	u8	res0[0xc8];
++	u32	sclpc_psr; /* SCLPC Packet Size Register */
++	u32	sclpc_sar; /* SCLPC Start Address Register */
++	u32	sclpc_cr; /* SCLPC Control Register */
++	u32	sclpc_er; /* SCLPC Enable Register */
++	u32	sclpc_nar; /* SCLPC NextAddress Register */
++	u32	sclpc_sr; /* SCLPC Status Register */
++	u32	sclpc_bdr; /* SCLPC Bytes Done Register */
++	u32	emb_scr; /* EMB Share Counter Register */
++	u32	emb_pcr; /* EMB Pause Control Register */
++	u8	res1[0x1c];
++	u32	lpc_fdwr; /* LPC RX/TX FIFO Data Word Register */
++	u32	lpc_fsr; /* LPC RX/TX FIFO Status Register */
++	u32	lpc_cr; /* LPC RX/TX FIFO Control Register */
++	u32	lpc_ar; /* LPC RX/TX FIFO Alarm Register */
++};
++
++static struct lpc * const lpc = (struct lpc *)MPC512X_LPC;
++
++void mpc5125_setup_access_window(unsigned cs, unsigned start, unsigned size);
++
++/* setup one CS line at the LPC bus */
++void mpc5125_setup_cs(unsigned cs, unsigned start, unsigned size, unsigned cfg)
++{
++	/* access window first */
++	mpc5125_setup_access_window(cs, start, size);
++
++	/* access method and timing */
++	out_be32(&lpc->cs_cfg[cs], cfg);
++}
++
++void mpc5125_configure_lpc(const struct lpc_config *c)
++{
++	/* enable the LPC feature */
++	setbits_be32(&lpc->cs_cr, 0x01000000);
++
++	if (c == NULL)
++		return; /* keep the defaults */
++
++	out_be32(&lpc->altr, c->cs_ale_timing);
++	out_be32(&lpc->cs_bcr, c->cs_burst);
++	out_be32(&lpc->cs_dccr, c->cs_dead_cyle);
++	out_be32(&lpc->cs_hccr, c->cs_hold_cycle);
++}
+diff --git a/arch/ppc/mach-mpc5xxx/sdram-mpc5125.c b/arch/ppc/mach-mpc5xxx/sdram-mpc5125.c
+new file mode 100644
+index 0000000..9fc3723
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/sdram-mpc5125.c
+@@ -0,0 +1,269 @@
++/*
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
++ *
++ * This code bases partially on:
++ * (C) Copyright 2007-2009 DENX Software Engineering
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <types.h>
++#include <mach/mpc5xxx.h>
++#include <asm/io.h>
++
++/* register description of the MPC5125 memory controller */
++struct mddrc {
++	u32 ddr_sys_config;
++	u32 ddr_time_config0;
++	u32 ddr_time_config1;
++	u32 ddr_time_config2;
++	u32 ddr_command;
++	u32 ddr_compact_command;
++	u32 self_refresh_cmd_0;
++	u32 self_refresh_cmd_1;
++	u32 self_refresh_cmd_2;
++	u32 self_refresh_cmd_3;
++	u32 self_refresh_cmd_4;
++	u32 self_refresh_cmd_5;
++	u32 self_refresh_cmd_6;
++	u32 self_refresh_cmd_7;
++	u32 dqs_config_offset_count;
++	u32 dqs_config_offset_time;
++	u32 DQS_delay_status;
++	u32 res0[0xF];
++	u32 prioman_config1;
++	u32 prioman_config2;
++	u32 hiprio_config;
++	u32 lut_table0_main_upper;
++	u32 lut_table1_main_upper;
++	u32 lut_table2_main_upper;
++	u32 lut_table3_main_upper;
++	u32 lut_table4_main_upper;
++	u32 lut_table0_main_lower;
++	u32 lut_table1_main_lower;
++	u32 lut_table2_main_lower;
++	u32 lut_table3_main_lower;
++	u32 lut_table4_main_lower;
++	u32 lut_table0_alt_upper;
++	u32 lut_table1_alt_upper;
++	u32 lut_table2_alt_upper;
++	u32 lut_table3_alt_upper;
++	u32 lut_table4_alt_upper;
++	u32 lut_table0_alt_lower;
++	u32 lut_table1_alt_lower;
++	u32 lut_table2_alt_lower;
++	u32 lut_table3_alt_lower;
++	u32 lut_table4_alt_lower;
++	u32 performance_monitor_config;
++	u32 event_time_counter;
++	u32 event_time_preset;
++	u32 performance_monitor1_address_low;
++	u32 performance_monitor2_address_low;
++	u32 performance_monitor1_address_hi;
++	u32 performance_monitor2_address_hi;
++	u32 res1[2];
++	u32 performance_monitor1_read_counter;
++	u32 performance_monitor2_read_counter;
++	u32 performance_monitor1_write_counter;
++	u32 performance_monitor2_write_counter;
++	u32 granted_ack_counter0;
++	u32 granted_ack_counter1;
++	u32 granted_ack_counter2;
++	u32 granted_ack_counter3;
++	u32 granted_ack_counter4;
++	u32 cumulative_wait_counter0;
++	u32 cumulative_wait_counter1;
++	u32 cumulative_wait_counter2;
++	u32 cumulative_wait_counter3;
++	u32 cumulative_wait_counter4;
++	u32 summed_priority_counter0;
++	u32 summed_priority_counter1;
++	u32 summed_priority_counter2;
++	u32 summed_priority_counter3;
++	u32 summed_priority_counter4;
++};
++
++/* MDDRC SYS CFG and Timing CFG0 Registers */
++#define MDDRC_SYS_CFG_EN	0xF0000000
++#define MDDRC_SYS_CFG_CKE_MASK	0x40000000
++#define MDDRC_SYS_CFG_CMD_MASK	0x10000000
++#define MDDRC_REFRESH_ZERO_MASK	0x0000FFFF
++
++#define DRAM_DSC_CMD_MODE (1 << 28)
++#define DRAM_DSC_CLK_ON (1 << 29)
++#define DRAM_DSC_CKE (1 << 30)
++#define DRAM_DSC_RST_B (1 << 31)
++
++static struct mddrc * const dramc = (struct mddrc *)MPC512X_DRAMC;
++
++static const unsigned char page_addr[16] = {
++	10, 11, 11, 12, 12, 13, 13, 14, 14, 24, 24, 25, 25, 26, 17, 28,
++};
++
++static const unsigned char bank_addr[16] = {
++	2, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3,
++};
++
++static const unsigned char row_addr[8] = {
++	16, 16, 16, 16, 16, 16, 15, 14,
++};
++
++/* note: don't call when already running from SDRAM */
++static unsigned detect_real_memory_size(unsigned slice_count, unsigned full_count)
++{
++	void *p;
++	unsigned u, cnt;
++
++	for (u = full_count - 1; u >= slice_count; u--) {
++		p = (void *)((1 << u) + DEFAULT_DRAM_BASE);
++		out_8(p, u);
++	}
++
++	cnt = in_8((void*)DEFAULT_DRAM_BASE);
++	return 1 << cnt;
++}
++
++/*static*/ const void *fix_main_address(const void *init_sequence)
++{
++	unsigned linked_address = (unsigned)init_sequence;
++	unsigned real_address;
++
++	/* FIXME use get_runtime_offset() instead */
++	real_address = linked_address - CONFIG_TEXT_BASE;
++	real_address += CFG_ROM_LOC;
++
++	return (const void *)real_address;
++}
++
++/*
++ * Note: this function depends on the possibility to map up to
++ * the full 2 GiB memory area (e.g. special mapping must exist)
++ */
++/*static*/ unsigned mpc5125_detect_sdram_size(void)
++{
++	size_t pagei, banki, rowi;
++	unsigned addr_cnt, slice_count, reg;
++	const unsigned char *p;
++
++	reg = in_be32(&dramc->ddr_sys_config);
++	pagei = banki = (reg >> 21) & 0xf;
++	rowi = (reg >> 25) & 0x7;
++
++	p = fix_main_address(&page_addr[pagei]);
++	addr_cnt = *p;
++	p = fix_main_address(&bank_addr[banki]);
++	addr_cnt += *p;
++	slice_count = addr_cnt;
++	p = fix_main_address(&row_addr[rowi]);
++	addr_cnt += *p;
++
++	/* enable up to the full possible SDRAM access window for size detection */
++	mpc5125_setup_ram_memory_window(DEFAULT_DRAM_BASE, 1 << addr_cnt);
++	return detect_real_memory_size(slice_count, addr_cnt);
++}
++
++/*static */void setup_priority_manager(const struct sdram_conf *init_sequence)
++{
++	out_be32(&dramc->prioman_config1, init_sequence->prio.prioman_config1);
++	out_be32(&dramc->prioman_config2, init_sequence->prio.prioman_config2);
++	out_be32(&dramc->hiprio_config, init_sequence->prio.hiprio_config);
++	out_be32(&dramc->lut_table0_main_upper, init_sequence->prio.lut_table0_main_upper);
++	out_be32(&dramc->lut_table0_main_lower, init_sequence->prio.lut_table0_main_lower);
++	out_be32(&dramc->lut_table1_main_upper, init_sequence->prio.lut_table1_main_upper);
++	out_be32(&dramc->lut_table1_main_lower, init_sequence->prio.lut_table1_main_lower);
++	out_be32(&dramc->lut_table2_main_upper, init_sequence->prio.lut_table2_main_upper);
++	out_be32(&dramc->lut_table2_main_lower, init_sequence->prio.lut_table2_main_lower);
++	out_be32(&dramc->lut_table3_main_upper, init_sequence->prio.lut_table3_main_upper);
++	out_be32(&dramc->lut_table3_main_lower, init_sequence->prio.lut_table3_main_lower);
++	out_be32(&dramc->lut_table4_main_upper, init_sequence->prio.lut_table4_main_upper);
++	out_be32(&dramc->lut_table4_main_lower, init_sequence->prio.lut_table4_main_lower);
++	out_be32(&dramc->lut_table0_alt_upper, init_sequence->prio.lut_table0_alt_upper);
++	out_be32(&dramc->lut_table0_alt_lower, init_sequence->prio.lut_table0_alt_lower);
++	out_be32(&dramc->lut_table1_alt_upper, init_sequence->prio.lut_table1_alt_upper);
++	out_be32(&dramc->lut_table1_alt_lower, init_sequence->prio.lut_table1_alt_lower);
++	out_be32(&dramc->lut_table2_alt_upper, init_sequence->prio.lut_table2_alt_upper);
++	out_be32(&dramc->lut_table2_alt_lower, init_sequence->prio.lut_table2_alt_lower);
++	out_be32(&dramc->lut_table3_alt_upper, init_sequence->prio.lut_table3_alt_upper);
++	out_be32(&dramc->lut_table3_alt_lower, init_sequence->prio.lut_table3_alt_lower);
++	out_be32(&dramc->lut_table4_alt_upper, init_sequence->prio.lut_table4_alt_upper);
++	out_be32(&dramc->lut_table4_alt_lower, init_sequence->prio.lut_table4_alt_lower);
++}
++
++/* depends on an enabled core internal timer ('TBEN' in 'SPCR') */
++void mpc5125_low_level_delay(unsigned ticks)
++{
++	uint64_t timeval = get_ticks();
++
++	while ((get_ticks() - timeval) < ticks)
++		;
++}
++
++#define TICKS_PER_US 50
++
++/*static */void startup_dram(const struct sdram_conf *init_sequence)
++{
++	unsigned reg = init_sequence->sys_cfg & ~DRAM_DSC_CKE;
++
++	/*
++	 * the "enable" combination: DRAM controller out of reset,
++	 * clock enabled, command mode -- BUT leave CKE low for now
++	 */
++	reg |= DRAM_DSC_RST_B | DRAM_DSC_CLK_ON | DRAM_DSC_CMD_MODE;
++	out_be32(&dramc->ddr_sys_config, reg);
++
++	/* maintain 500 microseconds of stable power and clock */
++	mpc5125_low_level_delay(500 * TICKS_PER_US);
++
++	/* apply a NOP, it shouldn't harm */
++	out_be32(&dramc->ddr_command, DRAM_CMD_NOP);
++
++	/* now assert CKE (high) */
++	reg |= DRAM_DSC_CKE;
++	out_be32(&dramc->ddr_sys_config, reg);
++}
++
++void mpc5125_init_sdram(const struct sdram_conf *init_sequence)
++{
++	unsigned msize;
++	const unsigned *cmds;
++	size_t u;
++
++	init_sequence = fix_main_address(init_sequence);
++
++	mpc5125_mux_pin(io_control_mem, init_sequence->mux_ddr);
++	startup_dram(init_sequence);
++	setup_priority_manager(init_sequence);
++
++	/* start to setup the external memory */
++	out_be32(&dramc->ddr_time_config0, init_sequence->tim_cfg0 &
++						MDDRC_REFRESH_ZERO_MASK);
++	out_be32(&dramc->ddr_time_config1, init_sequence->tim_cfg1);
++	out_be32(&dramc->ddr_time_config2, init_sequence->tim_cfg2);
++
++	cmds = fix_main_address(&init_sequence->cmds[0]);
++
++	/* Initialize memory with supplied init sequence */
++	for (u = 0; u < init_sequence->size; u++)
++		out_be32(&dramc->ddr_command, cmds[u]);
++
++	/* Start DDRC with final settings */
++	out_be32(&dramc->ddr_time_config0, init_sequence->tim_cfg0);
++	out_be32(&dramc->ddr_sys_config, init_sequence->sys_cfg);
++
++	/* Allow for the DLL to startup before accessing data */
++	mpc5125_low_level_delay(1000 * TICKS_PER_US);
++
++	msize = mpc5125_detect_sdram_size();
++
++	/* size and move the memory to its final destination */
++	mpc5125_setup_ram_memory_window(DEFAULT_DRAM_BASE, msize);
++}
+diff --git a/arch/ppc/mach-mpc5xxx/speed-mpc5125.c b/arch/ppc/mach-mpc5xxx/speed-mpc5125.c
+new file mode 100644
+index 0000000..66d0e88
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/speed-mpc5125.c
+@@ -0,0 +1,209 @@
++/*
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
++ *
++ * This code bases partially on:
++ * (C) Copyright 2000-2009
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ * Copyright (C) 2004-2006 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <types.h>
++#include <asm/io.h>
++#include <mach/mpc512x.h>
++
++/* Clock Module register description */
++struct clkm {
++	u32 spmr; /* System PLL Mode Register */
++	u32 sccr[2]; /* System Clock Control Registers */
++	u32 scfr[2]; /* System Clock Frequency Registers */
++	u8 res0[4];
++	u32 bcr; /* Bread Crumb Register */
++	u32 pscccr[12]; /* PSC0-11 Clock Control Registers */
++	u32 spccr; /* SPDIF Clock Control Register */
++	u32 cccr; /* CFM Clock Control Register */
++	u32 dccr; /* DIU Clock Control Register */
++	u32 msccr[4]; /* MSCAN1-4 Clock Control Registers */
++};
++
++#define SPMR_SPMF		0x0F000000
++#define SPMR_SPMF_SHIFT		24
++#define SPMR_CPMF		0x000F0000
++#define SPMR_CPMF_SHIFT		16
++
++#define SCFR1_IPS_DIV_MASK	0x03800000
++#define SCFR1_IPS_DIV_SHIFT	23
++
++#define SCFR2_SYS_DIV		0xFC000000
++#define SCFR2_SYS_DIV_SHIFT	26
++
++#define SCCR_EN_CLK_FEC1	(1 << 13)
++#define SCCR_EN_CLK_FEC2	(1 << 9)
++
++#define PSCCCR_MCLK_DIV_SHIFT	17
++#define PSCCCR_MCLK_DIV_MASK	(0xfffe << PSCCCR_MCLK_DIV_SHIFT)
++#define PSCCCR_MCLK_EN		(1 << 16)
++#define PSCCCR_MCLK_0_SRC_SHIFT	14
++#define PSCCCR_MCLK_0_SRC_MASK	(3 << PSCCCR_MCLK_0_SRC_SHIFT)
++
++static struct clkm * const clkm = (struct clkm *)MPC512X_CLKM;
++
++unsigned long get_timebase_clock(void)
++{
++	return CONFIG_SYS_MPC512X_CLKIN;
++}
++
++static const unsigned char spmf_mult[] = {
++	68, 1, 12, 16,
++	20, 24, 28, 32,
++	36, 40, 44, 48,
++	52, 56, 60, 64
++};
++
++unsigned long get_pll_clk(void)
++{
++	unsigned reg;
++	size_t spmf;
++
++	reg = in_be32(&clkm->spmr);
++	spmf = (reg & SPMR_SPMF) >> SPMR_SPMF_SHIFT;
++	return get_timebase_clock() * spmf_mult[spmf];
++}
++
++static const unsigned char sys_dividors[][2] = {
++	{2, 1}, {5, 2}, {3, 1}, {7, 2}, {4, 1},
++	{9, 2}, {5, 1}, {7, 1}, {6, 1}, {8, 1},
++	{9, 1}, {11, 1}, {10, 1}, {12, 1}, {13, 1},
++	{15, 1}, {14, 1}, {16, 1}, {17, 1}, {19, 1},
++	{18, 1}, {20, 1}, {21, 1}, {23, 1}, {22, 1},
++	{24, 1}, {25, 1}, {27, 1}, {26, 1}, {28, 1},
++	{29, 1}, {31, 1}, {30, 1}, {32, 1}, {33, 1}
++};
++
++unsigned long get_sys_clk(void)
++{
++	unsigned reg;
++	size_t sys_div;
++
++	reg = in_be32(&clkm->scfr[1]);
++	sys_div = (reg & SCFR2_SYS_DIV) >> SCFR2_SYS_DIV_SHIFT;
++	return (get_pll_clk() * sys_dividors[sys_div][1]) / sys_dividors[sys_div][0];
++}
++
++static const unsigned char cpmf_mult[][2] = {
++	{0, 1}, {0, 1}, /* 0 and 1 are not valid */
++	{1, 1}, {3, 2},
++	{2, 1}, {5, 2},
++	{3, 1}, {7, 2},
++	{0, 1}, {0, 1}, /* and all above 7 are not valid too */
++	{0, 1}, {0, 1},
++	{0, 1}, {0, 1},
++	{0, 1}, {0, 1}
++};
++
++unsigned long get_cpu_clk(void)
++{
++	unsigned reg;
++	size_t cpmf;
++
++	reg = in_be32(&clkm->spmr);
++	cpmf = (reg & SPMR_CPMF) >> SPMR_CPMF_SHIFT;
++	return ((get_sys_clk() / 2) * cpmf_mult[cpmf][0]) / cpmf_mult[cpmf][1];
++}
++
++unsigned long get_ips_clock(void)
++{
++	unsigned reg;
++	unsigned long ips_div;
++
++	reg = in_be32(&clkm->scfr[0]);
++	ips_div = (reg & SCFR1_IPS_DIV_MASK) >> SCFR1_IPS_DIV_SHIFT;
++	if (ips_div == 0) {
++		/* in case we cannot get a sane IPS divisor, fail gracefully */
++		pr_debug("IPS clock: invalid divider setting!\n");
++		return 0;
++	}
++
++	return get_sys_clk() / 2 / ips_div;
++}
++
++unsigned long get_psc_clock(unsigned idx)
++{
++	unsigned reg, clk;
++	unsigned long psc_div;
++
++	reg = in_be32(&clkm->pscccr[idx]);
++	if (!(reg & PSCCCR_MCLK_EN))
++		return 0;
++
++	psc_div = (reg & PSCCCR_MCLK_DIV_MASK) >> PSCCCR_MCLK_DIV_SHIFT;
++	if (psc_div == 0) {
++		/* in case we cannot get a sane IPS divisor, fail gracefully */
++		pr_debug("PSC clock: invalid divider setting!\n");
++		return 0;
++	}
++
++	switch (reg & PSCCCR_MCLK_0_SRC_MASK) {
++	case 0x0000:
++		clk = get_ips_clock();
++	case 0x4000:
++		clk = get_timebase_clock();
++	default:
++		pr_debug("PSC clock: unknown source configured: %u\n",
++						reg & PSCCCR_MCLK_0_SRC_MASK);
++		return 0;
++	}
++
++	return clk / (psc_div + 1);
++}
++
++void mpc5125_enable_psc_fifo_clock(void)
++{
++	setbits_be32(&clkm->sccr[0], 0x8000);
++}
++
++void mpc5xxx_enable_psc_clock(unsigned idx)
++{
++	/*
++	 * configure the clock for this unit, it
++	 * should run at full sysclock speed (brute force...)
++	 */
++	out_be32(&clkm->pscccr[idx], PSCCCR_MCLK_EN);
++	/* its now save to enable the clock */
++	setbits_be32(&clkm->sccr[0], 1 << (27 - idx));
++}
++
++void mpc5xxx_enable_fec_clock(unsigned idx)
++{
++	switch (idx) {
++	case 0:
++		setbits_be32(&clkm->sccr[0], SCCR_EN_CLK_FEC1);
++		break;
++	case 1:
++		setbits_be32(&clkm->sccr[0], SCCR_EN_CLK_FEC2);
++		break;
++	default:
++		pr_debug("Enabling clock: unknown FEC index: %u\n", idx);
++	}
++}
++
++static int mpc5125_clks(void)
++{
++	printf("PLL %lu MHz, CPU %lu MHz, Sys %lu MHz, IPS %lu MHz\n",
++		get_pll_clk() / 1000000, get_cpu_clk() / 1000000,
++		get_sys_clk() / 1000000, get_ips_clock() / 1000000);
++
++	return 0;
++}
++postconsole_initcall(mpc5125_clks);
+diff --git a/arch/ppc/mach-mpc5xxx/start.S b/arch/ppc/mach-mpc5xxx/start.S
+index 810a5bb..aadaa3f 100644
+--- a/arch/ppc/mach-mpc5xxx/start.S
++++ b/arch/ppc/mach-mpc5xxx/start.S
+@@ -28,6 +28,7 @@
+ 
+ #include <asm/cache.h>
+ #include <asm/mmu.h>
++#include <mach/mpc5xxx.h>
+ 
+ /* We don't want the  MMU yet.
+ */
+@@ -88,7 +89,9 @@ setup_mbar:
+ 	lis	r3, CFG_MBAR@h
+ 	ori	r3, r3, CFG_MBAR@l
+ 	mtspr	MBAR, r3
++#ifndef CONFIG_ARCH_MPC5125 /* MPC5200 only */
+ 	rlwinm	r3, r3, 16, 16, 31
++#endif
+ 	stw	r3, 0(r4)
+ 
+ 	/* Initialise the MPC5xxx processor core			*/
+@@ -98,7 +101,81 @@ setup_mbar:
+ 
+ 	/* initialize some things that are hard to access from C	*/
+ 	/*--------------------------------------------------------------*/
++#ifdef CONFIG_ARCH_MPC5125
++	lis	r3, CFG_MBAR@h
++	ori	r3, r3, CFG_MBAR@l
++
++	/* enable the LPC based ROM access in the upper address space */
++	lis	r0, CFG_ROM_LOC@h
++	ori	r0, r0, (CFG_ROM_LOC + CFG_ROM_SZ - 1)@h
++	stw	r0, LPCS0AW_OFFSET(r3)
++
++	/* just sync the hardware according to the manual */
++	lwz	r1, LPCS0AW_OFFSET(r3)
++	isync
++
++	/*
++	 * in order to make the CS0 (instead of the BOOTCS) work,
++	 * we must set the LPC master bit first
++	 */
++	lis	r1, MPC512X_IOC@h
++	ori	r1, r1, MPC512X_IOC@l
++	lwz	r0, CS_CR_OFFSET(r1)
++	oris	r0, r0, 0x01000000@h
++	stw	r0, CS_CR_OFFSET(r1)
++	isync
++
++	/*
++	 * when we still run from lower address space, its now time to jump to
++	 * the just enabled upper address space. We need this step in order
++	 * to move the lower ROM window out of the way.
++	 * (but only, if we not run from RAM)
++	 */
++	bl	1f
++1:	mflr	r0
++	lis	r1, CFG_ROM_LOC@h
++	cmplw	r0, r1
++	bgt	final_destination /* skip if already in upper address space */
++	/*
++	 * to detect if we already running from RAM we just check if the
++	 * BootCS setting is equal to the CS0 setting.
++	 */
++	lwz	r2, LPBAW_OFFSET(r3)
++	lwz	r1, LPCS0AW_OFFSET(r3)
++	cmplw	r1, r2
++	beq	final_destination /* stay in RAM */
++	/*
++	 * Jump into the upper flash memory area
++	 * destination = address of 'final_destination' - TEXT_BASE + CFG_ROM_LOC@h
++	 */
++	lis	r0, (final_destination - TEXT_BASE + CFG_ROM_LOC)@h
++	ori	r0, r0, (final_destination - TEXT_BASE + CFG_ROM_LOC)@l
++	mtlr	r0
++	blr
++
++final_destination:
++	/*
++	 * we are now running from the upper address space from flash or
++	 * from lower address space inside RAM.
++	 * Its save now to move away the flash memory access in the lower
++	 * address space. To do so sync both BOOTCS and CS0 settings.
++	 * For the 'inside RAM' case this should not harm.
++	 */
++	lwz	r1, LPCS0AW_OFFSET(r3)
++	stw	r1, LPBAW_OFFSET(r3)
+ 
++	/* move NFC out of the way */
++	lis	r0, CFG_NFC_LOC@h
++	stw	r0, NFSCBAR_OFFSET(r3)
++
++	/* move the on-chip SRAM out of the way */
++	lis	r0, CFG_SRAM_LOC@h
++	stw	r0, SRAMBAR_OFFSET(r3)
++
++	/* just sync the hardware according to the manual */
++	lwz	r1, SRAMBAR_OFFSET(r3)
++	isync
++#endif
+ 	/* set up stack in on-chip SRAM */
+ 	lis	r1, (MPC5XXX_SRAM + MPC5XXX_SRAM_SIZE)@h
+ 	ori	r1, r1, (MPC5XXX_SRAM + MPC5XXX_SRAM_SIZE)@l
+@@ -116,11 +193,24 @@ setup_mbar:
+ 	/* r3: IMMR */
+ 	bl	cpu_init	/* run low-level CPU init code (in Flash)*/
+ 
++#ifdef CONFIG_ARCH_MPC5125
++	bl	1f
++1:	mflr	r0
++	lis	r9, CFG_ROM_LOC@h
++	cmplw	r0, r9
++	blt	skip_dram_init /* skip if the RAM is already up and running */
+ 	mr	r3, r21
++#endif
+ 	/* r3: BOOTFLAG */
+ 	bl	initdram	/* initialize sdram */
+ 	/* r3: End of RAM */
+ 
++#ifdef CONFIG_ARCH_MPC5125
++skip_dram_init:
++	bl	mpc5xxx_get_sdram_size
++	subi	r3,r3,1
++	/* r3: End of RAM */
++#endif
+ 	b _continue_init
+ /*
+  * Vector Table
+@@ -501,7 +591,14 @@ init_5xxx_core:
+ 	ori	r3, r3, CFG_HID0_FINAL@l
+ 	SYNC
+ 	mtspr	HID0, r3
++#ifdef CONFIG_ARCH_MPC5125
++	lis	r3, CFG_SYS_HID2@h
++	ori	r3, r3, CFG_SYS_HID2@l
++	SYNC
++	mtspr	HID2, r3
++	sync
+ 
++#else
+ 	/* clear all BAT's						*/
+ 	/*--------------------------------------------------------------*/
+ 
+@@ -570,7 +667,7 @@ init_5xxx_core:
+ 
+ 	/* Done!							*/
+ 	/*--------------------------------------------------------------*/
+-
++#endif
+ 	blr
+ 
+ /* Cache functions.
+diff --git a/arch/ppc/mach-mpc5xxx/sys-mpc5125.c b/arch/ppc/mach-mpc5xxx/sys-mpc5125.c
+new file mode 100644
+index 0000000..c537669
+--- /dev/null
++++ b/arch/ppc/mach-mpc5xxx/sys-mpc5125.c
+@@ -0,0 +1,136 @@
++/*
++ * Copyright (C) 2014 Juergen Borleis, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <types.h>
++#include <asm/io.h>
++#include <mach/mpc5xxx.h>
++
++struct law {
++	u32 bar; /* Base Addr Register */
++	u32 ar; /* Attributes Register */
++};
++
++/* System configuration registers for MPC5125 */
++struct sysconf {
++	u32 immrbar;
++	u8 res0[0x1c];
++	u32 lpbaw;
++	u32 lpcsaw[8];
++	u8 res1[0x5c];
++	struct law ddrlaw;
++	u8 res3[0x1c];
++	u32 srambar;
++	u32 nfcbar;
++	u8 res4[0x34];
++	u32 spridr;
++	u32 spcr;
++};
++
++#define MPC512X_SYSCONF_LPCSAW_START(x) (x & 0xffff0000)
++#define MPC512X_SYSCONF_LPCSAW_STOP(x) ((x) >> 16)
++
++#define MPC512X_SPCR_TBEN 0x00400000      /* E300 core time base unit enable */
++
++#define MPC512X_SVR_PART(x) (((x) >> 16) & 0xFFFF) /* Part ID */
++#define MPC512X_SVR_REV(x) (((x) >>  0) & 0xFFFF) /* Revision ID */
++
++/* the MPC512x comes in two revisions. Note: these SoCs are not supported yet */
++#define MPC512x_PART_ID 0x8018
++# define MPC512X_5121E 0x0020
++# define MPC512X_5123 0x0030
++
++/* the MPC5125 comes in one revisions */
++#define MPC5125_PART_ID 0x8019
++# define MPC512X_SPR_5125 0x0010
++
++static struct sysconf * const sysconf = (struct sysconf *)CFG_MBAR;
++
++/*
++ * According to MPC5121e RM, configuring local access windows should
++ * be followed by a dummy read of the config register that was
++ * modified last and an isync.
++ */
++static void sync_law(void *addr)
++{
++        in_be32(addr);
++}
++
++void mpc5125_setup_access_window(unsigned cs, unsigned start, unsigned size)
++{
++	unsigned long long u = start;
++
++	u += size;
++	if (u > 0x100000000) {
++		pr_err("Size for LPC chipselect %d exceeds address space. Limited!\n", cs);
++		size = 0x100000000 - start;
++	}
++
++	out_be32(&sysconf->lpcsaw[cs],
++		MPC512X_SYSCONF_LPCSAW_START(start) |
++		MPC512X_SYSCONF_LPCSAW_STOP(start + size - 1));
++	sync_law(&sysconf->lpcsaw[cs]);
++}
++
++void mpc5125_setup_ram_memory_window(unsigned base, unsigned size)
++{
++	out_be32(&sysconf->ddrlaw.bar, base & 0xFFFFF000);
++	out_be32(&sysconf->ddrlaw.ar, __ilog2(size) - 1);
++	sync_law(&sysconf->ddrlaw.ar);
++}
++
++unsigned mpc5xxx_get_sdram_size(void)
++{
++	return 1 << (in_be32(&sysconf->ddrlaw.ar) + 1);
++}
++
++void mpc5125_enable_time_base_counter(void)
++{
++	setbits_be32(&sysconf->spcr, MPC512X_SPCR_TBEN);
++}
++
++static int mpc5125_check_cpu(void)
++{
++	unsigned svr;
++	unsigned pid, rid;
++
++	svr = in_be32(&sysconf->spridr);
++	pid = MPC512X_SVR_PART(svr);
++	rid = MPC512X_SVR_REV(svr);
++
++	puts("SoC type: ");
++	switch (pid) {
++	case MPC512x_PART_ID:
++		switch (rid) {
++		case MPC512X_5121E:
++			puts("MPC5121e\n");
++			break;
++		case MPC512X_5123:
++			puts ("MPC5123\n");
++			break;
++		default:
++			printf("Unknown MPC512x variant: %x\n", rid);
++		}
++		break;
++	case MPC5125_PART_ID:
++		puts("MPC5125\n");
++		break;
++	default:
++		printf("Unknown MPC51xx part/variant: %x/%x\n", pid, rid);
++	}
++
++	return 0;
++}
++postconsole_initcall(mpc5125_check_cpu);
 -- 
 2.1.0
 
