@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xb1E5-0004bF-Jh
- for barebox@lists.infradead.org; Mon, 06 Oct 2014 05:52:54 +0000
-Date: Mon, 6 Oct 2014 07:52:31 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141006055231.GM4992@pengutronix.de>
-References: <542E4AAD.7070703@calao-systems.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <542E4AAD.7070703@calao-systems.com>
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XbQKn-0005HF-TD
+ for barebox@lists.infradead.org; Tue, 07 Oct 2014 08:41:31 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 114BCA0048E
+ for <barebox@lists.infradead.org>; Tue,  7 Oct 2014 10:41:16 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 7 Oct 2014 10:40:34 +0200
+Message-Id: <1412671237-46551-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1412671237-46551-1-git-send-email-t.gamez@phytec.de>
+References: <1412671237-46551-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +19,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: at91 usbserial issue
-To: =?iso-8859-15?Q?Gr=E9gory?= Hermant <gregory.hermant@calao-systems.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] net: cpsw: Allow gigabit connection
+To: barebox@lists.infradead.org
 
-Hi Greg,
+From: Jan Weitzel <j.weitzel@phytec.de>
 
-On Fri, Oct 03, 2014 at 09:05:17AM +0200, Gr=E9gory Hermant wrote:
-> Hi all,
-> The usbserial seems to be broken for board equipped with an Atmel sam9260=
-/9g20 Soc.
-> I ran the lastest version of barebox (v2014.10.0) on a USB_A9G20_LPW.
-> Below the trace
-> udc0: registering UDC driver [g_serial]
-> g_serial usbgadget: acm/23ba9538: can't bind, err -19
-> g_serial udc0: failed to start g_serial: -19
-> usbserial: No such device
-> I didn't yet investigate this issue but i was wondering if someone notice=
-d the problem.
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ drivers/net/cpsw.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-There have been quite some changes in the USB gadget stuff. I know
-USB serial currently works with i.MX and MUSB. Does v2014.08.0 still
-work? That was before the changes. If yes, I think bisecting it is
-the fastest way to find the culprit.
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 167b2dd..50890c4 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -581,8 +581,7 @@ static void cpsw_slave_update_link(struct cpsw_slave *slave,
+ 		else if (phydev->speed == SPEED_100)
+ 			mac_control |= BIT(15);
+ 		else if (phydev->speed == SPEED_1000)
+-			mac_control &= ~BIT(7);	/* TODO: Do not enable
+-						 * gig support now */
++			mac_control |= BIT(7);
+ 		if (phydev->duplex == DUPLEX_FULL)
+ 			mac_control |= BIT(0);	/* FULLDUPLEXEN	*/
+ 	}
+-- 
+1.9.1
 
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
