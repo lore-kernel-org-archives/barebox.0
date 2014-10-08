@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x229.google.com ([2607:f8b0:4003:c06::229])
+Received: from mail-oi0-x232.google.com ([2607:f8b0:4003:c06::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xbk05-00088e-2F
- for barebox@lists.infradead.org; Wed, 08 Oct 2014 05:41:25 +0000
-Received: by mail-oi0-f41.google.com with SMTP id u20so6444246oif.14
- for <barebox@lists.infradead.org>; Tue, 07 Oct 2014 22:41:03 -0700 (PDT)
+ id 1Xbk1b-0008QU-Cv
+ for barebox@lists.infradead.org; Wed, 08 Oct 2014 05:42:59 +0000
+Received: by mail-oi0-f50.google.com with SMTP id i138so6501192oig.9
+ for <barebox@lists.infradead.org>; Tue, 07 Oct 2014 22:42:37 -0700 (PDT)
 MIME-Version: 1.0
-Date: Wed, 8 Oct 2014 13:41:03 +0800
-Message-ID: <CANvTkNYb_zj62mcuzTcY5WOiTU07HnSqkiz851wswY0eN59euw@mail.gmail.com>
+Date: Wed, 8 Oct 2014 13:42:36 +0800
+Message-ID: <CANvTkNYwuCuGQMY40VC=dJxzW8rhBjDA_HE_Mb8AuV9iep7sYw@mail.gmail.com>
 From: Kevin Du Huanpeng <u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,7 +21,8 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: 
+Subject: most xxx_defconfig stop linking when console support set to
+ CONSOLE_NONE
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 Hi,
