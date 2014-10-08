@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XbsAR-0008J5-0Q
+ Linux)) id 1XbsAR-0008J4-0H
  for barebox@lists.infradead.org; Wed, 08 Oct 2014 14:24:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  8 Oct 2014 16:24:15 +0200
-Message-Id: <1412778255-4153-6-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  8 Oct 2014 16:24:14 +0200
+Message-Id: <1412778255-4153-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1412778255-4153-1-git-send-email-s.hauer@pengutronix.de>
 References: <1412778255-4153-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,99 +21,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] commands: implement 'diff' command
+Subject: [PATCH 5/6] libfile: add diff_file function
 To: barebox@lists.infradead.org
-
-This command compares two files. It does not show the differences,
-it only returns successfully if both files are identical and with
-an error if they differ.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  | 10 ++++++++++
- commands/Makefile |  1 +
- commands/diff.c   | 42 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
- create mode 100644 commands/diff.c
+ include/libfile.h |  2 ++
+ lib/libfile.c     | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 73 insertions(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index d73a393..05d5426 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -811,6 +811,16 @@ config CMD_CP
- 	  Options:
- 		  -v	verbose
+diff --git a/include/libfile.h b/include/libfile.h
+index 4a25a91..315adb2 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -15,4 +15,6 @@ int write_file(const char *filename, void *buf, size_t size);
  
-+config CMD_DIFF
-+	tristate
-+	prompt "diff"
-+	help
-+	  compare two files
+ int copy_file(const char *src, const char *dst, int verbose);
+ 
++int diff_file(const char *f1, const char *f2);
 +
-+	  Usage: diff FILE1 FILE2
+ #endif /* __LIBFILE_H */
+diff --git a/lib/libfile.c b/lib/libfile.c
+index c626e2f..1d773e3 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -331,3 +331,74 @@ out:
+ 	return ret;
+ }
+ EXPORT_SYMBOL(copy_file);
 +
-+	  Returns successfully if the two files are the same, return with an error if not
-+
- config CMD_DIRNAME
- 	tristate
- 	prompt "dirname"
-diff --git a/commands/Makefile b/commands/Makefile
-index b1cdf33..e53bdde 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -106,3 +106,4 @@ obj-$(CONFIG_CMD_IMD)		+= imd.o
- obj-$(CONFIG_CMD_HWCLOCK)	+= hwclock.o
- obj-$(CONFIG_CMD_USBGADGET)	+= usbgadget.o
- obj-$(CONFIG_CMD_FIRMWARELOAD)	+= firmwareload.o
-+obj-$(CONFIG_CMD_DIFF)		+= diff.o
-diff --git a/commands/diff.c b/commands/diff.c
-new file mode 100644
-index 0000000..26eaf88
---- /dev/null
-+++ b/commands/diff.c
-@@ -0,0 +1,42 @@
-+/*
-+ * diff - determine if two files differ
++/**
++ * diff_file - Compare two files
++ * @f1:		The first file
++ * @f2:		The second file
 + *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
++ * Return: 0 if both files are identical, 1 if they differ,
++ *         a negative error code if some error occured
 + */
-+
-+#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+#include <libfile.h>
-+
-+static int do_diff(int argc, char *argv[])
++int diff_file(const char *f1, const char *f2)
 +{
-+	if (argc != 3)
-+		return COMMAND_ERROR_USAGE;
++	int fd1, fd2, ret;
++	struct stat s1, s2;
++	void *buf1, *buf2;
++	loff_t left;
 +
-+	return diff_file(argv[1], argv[2]);
++	fd1 = open(f1, O_RDONLY);
++	if (fd1 < 0)
++		return -errno;
++
++	fd2 = open(f2, O_RDONLY);
++	if (fd2 < 0) {
++		ret = -errno;
++		goto err_out1;
++	}
++
++	ret = fstat(fd1, &s1);
++	if (ret)
++		goto err_out2;
++
++	ret = fstat(fd2, &s2);
++	if (ret)
++		goto err_out2;
++
++	if (s1.st_size != s2.st_size)
++		return 1;
++
++	buf1 = xmalloc(RW_BUF_SIZE);
++	buf2 = xmalloc(RW_BUF_SIZE);
++
++	left = s1.st_size;
++	while (left) {
++		loff_t now = min(left, (loff_t)RW_BUF_SIZE);
++
++		ret = read_full(fd1, buf1, now);
++		if (ret < 0)
++			goto err_out3;
++
++		ret = read_full(fd2, buf2, now);
++		if (ret < 0)
++			goto err_out3;
++
++		if (memcmp(buf1, buf2, now)) {
++			ret = 1;
++			goto err_out3;
++		}
++
++		left -= now;
++	}
++
++	ret = 0;
++
++err_out3:
++	free(buf1);
++	free(buf2);
++err_out2:
++	close(fd2);
++err_out1:
++	close(fd1);
++	return ret;
 +}
-+
-+BAREBOX_CMD_HELP_START(diff)
-+BAREBOX_CMD_HELP_TEXT("Returns successfully if the two files are the same, return with an error if not")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(diff)
-+	.cmd		= do_diff,
-+	BAREBOX_CMD_DESC("compare two files")
-+	BAREBOX_CMD_OPTS("FILE1 FILE2")
-+	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
-+	BAREBOX_CMD_HELP(cmd_diff_help)
-+BAREBOX_CMD_END
 -- 
 2.1.0
 
