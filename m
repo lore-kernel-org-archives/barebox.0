@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xbrqt-0006Ei-5i
- for barebox@lists.infradead.org; Wed, 08 Oct 2014 14:04:30 +0000
+ Linux)) id 1XbrrC-0006JZ-UZ
+ for barebox@lists.infradead.org; Wed, 08 Oct 2014 14:04:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  8 Oct 2014 16:03:58 +0200
-Message-Id: <1412777041-23714-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  8 Oct 2014 16:04:01 +0200
+Message-Id: <1412777041-23714-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1412777041-23714-1-git-send-email-s.hauer@pengutronix.de>
 References: <1412777041-23714-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ARM: nitrogen6x: update 1066MHz 4x128M16 timing from
- U-Boot
+Subject: [PATCH 5/5] ARM: nitrogen6x: remove clock gate manipulation from DCD
 To: barebox@lists.infradead.org
+
+The clock driver will ungate all clocks anyway during startup, so
+manipulating them in the DCD has no effect.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- .../boundarydevices-nitrogen6x/1066mhz_4x128mx16.imxcfg   | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/arm/boards/boundarydevices-nitrogen6x/clocks.imxcfg           | 7 -------
+ .../boundarydevices-nitrogen6x/flash-header-nitrogen6dl-1g.imxcfg  | 1 -
+ .../boundarydevices-nitrogen6x/flash-header-nitrogen6q-1g.imxcfg   | 1 -
+ 3 files changed, 9 deletions(-)
+ delete mode 100644 arch/arm/boards/boundarydevices-nitrogen6x/clocks.imxcfg
 
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/1066mhz_4x128mx16.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/1066mhz_4x128mx16.imxcfg
-index 4aa7ec7..c5a286b 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6x/1066mhz_4x128mx16.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6x/1066mhz_4x128mx16.imxcfg
-@@ -1,5 +1,18 @@
-+/*
-+ * Copyright (C) 2013 Boundary Devices
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
- wm 32 MX6_MMDC_P0_MDPDC			0x00020036
--wm 32 MX6_MMDC_P0_MDSCR			0x00008000
- wm 32 MX6_MMDC_P0_MDCFG0		0x555A7974
- wm 32 MX6_MMDC_P0_MDCFG1		0xDB538F64
- wm 32 MX6_MMDC_P0_MDCFG2		0x01FF00DB
+diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/clocks.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/clocks.imxcfg
+deleted file mode 100644
+index 55adb60..0000000
+--- a/arch/arm/boards/boundarydevices-nitrogen6x/clocks.imxcfg
++++ /dev/null
+@@ -1,7 +0,0 @@
+-wm 32 MX6_CCM_CCGR0		0x00C03F3F
+-wm 32 MX6_CCM_CCGR1		0x0030FC03
+-wm 32 MX6_CCM_CCGR2		0x0FFFC000
+-wm 32 MX6_CCM_CCGR3		0x3FF00000
+-wm 32 MX6_CCM_CCGR4		0x00FFF300
+-wm 32 MX6_CCM_CCGR5		0x0F0000C3
+-wm 32 MX6_CCM_CCGR6		0x000003FF
+diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6dl-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6dl-1g.imxcfg
+index d077a65..0773f4d 100644
+--- a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6dl-1g.imxcfg
++++ b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6dl-1g.imxcfg
+@@ -8,4 +8,3 @@ dcdofs 0x400
+ 
+ #include "ram-base.imxcfg"
+ #include "800mhz_4x128mx16.imxcfg"
+-#include "clocks.imxcfg"
+diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6q-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6q-1g.imxcfg
+index ee3145b..bd4134f 100644
+--- a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6q-1g.imxcfg
++++ b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6q-1g.imxcfg
+@@ -8,4 +8,3 @@ dcdofs 0x400
+ 
+ #include "ram-base.imxcfg"
+ #include "1066mhz_4x128mx16.imxcfg"
+-#include "clocks.imxcfg"
 -- 
 2.1.0
 
