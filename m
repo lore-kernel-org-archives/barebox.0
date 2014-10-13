@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qa0-x22a.google.com ([2607:f8b0:400d:c00::22a])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xcb9D-0006cp-5N
- for barebox@lists.infradead.org; Fri, 10 Oct 2014 14:26:23 +0000
-Received: by mail-qa0-f42.google.com with SMTP id j7so1720050qaq.1
- for <barebox@lists.infradead.org>; Fri, 10 Oct 2014 07:25:54 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20141010064259.GM4992@pengutronix.de>
-References: <CACSabZ-OeOhLW5JC7Tk8OfryUfNx-9sZnGw16BK4kj+1AFts3g@mail.gmail.com>
- <20141010064259.GM4992@pengutronix.de>
-Date: Fri, 10 Oct 2014 16:25:54 +0200
-Message-ID: <CACSabZ957Z_uxOOb3dTaREPhKu+owTy9SHxjYHxTfyTuUMBchg@mail.gmail.com>
-From: luigi origa <luigi.origa@gmail.com>
+Received: from mout.kundenserver.de ([212.227.17.10])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XddnA-0006wy-AH
+ for barebox@lists.infradead.org; Mon, 13 Oct 2014 11:27:57 +0000
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Date: Mon, 13 Oct 2014 13:27:20 +0200
+Message-Id: <1413199640-6317-1-git-send-email-embedded24@evers-fischer.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,117 +14,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Wrong relocation with Mini2440
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] lib: parameter: fixed doku renamed ip -> ipaddr
+To: barebox@lists.infradead.org
+Cc: Rolf Evers-Fischer <embedded24@evers-fischer.de>
 
-I tried enabling pbl with the default values and it works. I tried
-also changing the address at 0x33c00000 (instead the default
-0x33e00000) with pbl disabled and works again.
+Long time ago all ".ip" parameters have been replaced with ".ipaddr".
 
-Thanks for the help.
+Signed-off-by: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+---
+ lib/parameter.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Luigi
+diff --git a/lib/parameter.c b/lib/parameter.c
+index 84a632c..c4c30ca 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -776,8 +776,8 @@ with device paramters. Device parameters are always strings, although there
+ are functions to interpret them as something else. 'hush' users can access
+ parameters as a local variable which have a dot (.) in them. So setting the
+ IP address of the first ethernet device is a matter of typing
+-'eth0.ip=192.168.0.7' on the console and can then be read back with
+-'echo $eth0.ip'. The @ref devinfo_command command shows a summary about all
++'eth0.ipaddr=192.168.0.7' on the console and can then be read back with
++'echo $eth0.ipaddr'. The @ref devinfo_command command shows a summary about all
+ devices currently present. If called with a device id as parameter it shows the
+ parameters available for a device.
+ 
+-- 
+1.9.1
 
-
-
-
-2014-10-10 8:42 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi Luigi,
->
-> On Fri, Oct 10, 2014 at 12:24:40AM +0200, luigi origa wrote:
->> I'm trying to have barebox working on my mini2440. After many test,
->> today i got a jtag interface and after some check i found this:
->>
->> - source s3c24x0_nand_boot -
->> 2: ldr sp, =(TEXT_BASE - SZ_2M) /* Setup a temporary stack in SDRAM */
->> /*
->>  * We still run at a location we are not linked to. But lets still running
->>  * from the internal SRAM, this may speed up the boot
->>  */
->> push {lr}
->> bl nand_boot
->> pop {lr}
->> /*
->>  * Adjust the return address to the correct address in SDRAM
->>  */
->> ldr r1, =(TEXT_BASE - SZ_2M)
->> add lr, lr, r1
->>
->> mov pc, lr
->>
->>
->> - compiled s3c24x0_nand_boot -
->> ROM:00000320 loc_320                                 ; CODE XREF:
->> s3c24x0_nand_boot+10 j
->> ROM:00000320                 MOV             SP, #0x33C00000
->> ROM:00000324                 STMFD           SP!, {LR}
->> ROM:00000328                 BL              nand_boot
->> ROM:0000032C                 LDMFD           SP!, {LR}
->> ROM:00000330                 MOV             R1, #0x33C00000
->> ROM:00000334                 ADD             LR, LR, R1
->>
->>
->> - source nand_boot -
->> void __nand_boot_init nand_boot(void)
->> {
->> void *dest = _text;
->> int size = ld_var(_barebox_image_size);
->> int page = 0;
->>
->> s3c24x0_nand_load_image(dest, size, page);
->> }
->>
->>
->> - compiled nand_boot-
->> ROM:000001E0                 MOV             R1, R0                  // size
->> ROM:000001E4                 LDR             R0, =0x33E00000 // *dest
->> ROM:000001E8                 MOV             R2, #0
->> ROM:000001EC                 LDMFD           SP!, {R4,LR}
->> ROM:000001F0                 B               s3c24x0_nand_load_image
->>
->>
->> 0x33c00000 is the sdram stack where the program should be copied from
->> nand. Unfortunately the function nand_boot copy from nand to sdram
->> @0x33e00000.
->>
->> When s3c24x0_nand_boot try to jump in sdram, use  a wrong address
->> (0x33c00220 instead 0x33e00220).
->>
->> I don't know if the problem is in "TEXT_BASE - SZ_2M" or "_text".
->
-> Do you have PBL enabled? Could you enable PBL if not? Additionally
-> could you revert:
->
-> commit 558d72dc5116fc6275ea77c783cc65d6d1a5b521
-> Author: Michael Olbrich <m.olbrich@pengutronix.de>
-> Date:   Sun May 18 16:46:29 2014 +0200
->
->     ARM Samsung: fix booting from NAND with pbl
->
->     The ARM pbl is linked at (TEXT_BASE - SZ_2M). This conflicts with the temporary
->     stack used in s3c24x0_nand_boot. Moving the stack to (TEXT_BASE - SZ_2M) fixes
->     this problem. With this patch a compressed barebox with pbl can boot on
->     mini2440 from NAND.
->
->     Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
->     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->
-> I suspect This patch fixed booting with PBL enabled but broke booting
-> without PBL.
->
-> Sascha
->
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
