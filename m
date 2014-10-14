@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx-relay38-dus.antispameurope.com ([94.100.134.238])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xdglt-0005Z9-Sz
- for barebox@lists.infradead.org; Mon, 13 Oct 2014 14:38:51 +0000
-From: "Gieseler, Christian" <CG@eks-engel.de>
-Date: Mon, 13 Oct 2014 14:36:28 +0000
-Message-ID: <C9183576C7342045BFDCAE863EB3C37A0B5CE431@EKS-Exchange.eks-engel.local>
-References: <198ac8c9.1cfe6ee.1a970f3.504c@kbs-gmbh.de>
-In-Reply-To: <198ac8c9.1cfe6ee.1a970f3.504c@kbs-gmbh.de>
-Content-Language: de-DE
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XdyKl-0006Oq-1n
+ for barebox@lists.infradead.org; Tue, 14 Oct 2014 09:24:00 +0000
+Date: Tue, 14 Oct 2014 11:23:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141014092332.GT4992@pengutronix.de>
+References: <1412932473-38216-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1412932473-38216-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +18,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: AM335x mehrere MMC-Bootquellen
-To: "'barebox@lists.infradead.org'" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/6] ARM: defconfig: Enable of_display_timings in
+ am335x_defconfig
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Hi Matthias,
 
-> -----Original Message-----
-> From: barebox [mailto:barebox-bounces@lists.infradead.org] On Behalf =
+Applied all, thanks
 
-> Of Matthias Feser
-> Sent: Monday, October 13, 2014 4:00 PM
-> To: 'barebox@lists.infradead.org'
-> Subject: AM335x mehrere MMC-Bootquellen
+Sascha
+
+On Fri, Oct 10, 2014 at 11:14:28AM +0200, Teresa G=E1mez wrote:
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+> ---
+>  arch/arm/configs/am335x_defconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > =
 
-> Hallo,
+> diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_=
+defconfig
+> index 6ef9c83..7dcfaed 100644
+> --- a/arch/arm/configs/am335x_defconfig
+> +++ b/arch/arm/configs/am335x_defconfig
+> @@ -79,6 +79,7 @@ CONFIG_CMD_USBGADGET=3Dy
+>  CONFIG_CMD_BAREBOX_UPDATE=3Dy
+>  CONFIG_CMD_OF_NODE=3Dy
+>  CONFIG_CMD_OF_PROPERTY=3Dy
+> +CONFIG_CMD_OF_DISPLAY_TIMINGS=3Dy
+>  CONFIG_CMD_OFTREE=3Dy
+>  CONFIG_CMD_TIME=3Dy
+>  CONFIG_NET=3Dy
+> -- =
+
+> 1.9.1
 > =
 
-> ich verwende barebox 2014.07 als Bootloader auf einem Custom-Board mit =
-
-> einer AM335x CPU. Auf dem Board ist per DIP-Schalter (angebunden an =
-
-> einen der SYSBOOT Pins) w=E4hlbar, ob von einem internen eMMC-Speicher =
-
-> oder einer uSD-Karte gebootet werden soll. Bootloader und Kernel =
-
-> werden zwar von der gew=E4hlten Quelle geladen, ich scheitere momentan =
-
-> jedoch daran den RootFs Kernelparameter automatisch je nach =
-
-> MMC-Instanz auszuw=E4hlen (entweder mmcblk0p2 oder mmcblk1p2). Ich =
-
-> m=F6chte es unbedingt vermeiden den Bootloader zweifach zu bauen. Meine =
-
-> erste Idee war, zwei boot Eintr=E4ge zu realisieren und dann den =
-
-> globalen Parameter global.boot.default im Boardinitialisierungscode entsp=
-rechend zu setzen.
-> Sicherlich gibt es eine bessere L=F6sung. Ich w=E4re sehr dankbar um eine=
-n =
-
-> Ansatz seitens der Entwickler.
 > =
 
-We use an initscript that does the choice for the kernel commandline entry.
-$bootsource_instance should help you:
-global linux.bootargs.root=3D"root=3D/dev/mmcblk${bootsource_instance}p3"
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
+-- =
 
-> Auch beim Beagleboneblack besteht die M=F6glichkeit =FCber einen =
-
-> Drucktaster die Bootquelle zu selektieren, hier gibt es jedoch =
-
-> lediglich einen boot Eintrag, der standardm=E4=DFig =FCber =
-
-> global.boot.default=3Dsd selektiert wird. Nach meinem Verst=E4ndnis d=FCr=
-fte =
-
-> dieses Board grunds=E4tzlich von der SD-Karte booten.
-> =
-
-I think you are right about booting always from sd card.
-As a sample the line from the same iniscript to make the entry depending on=
- the bootsource:
-global.boot.default=3D"mci${bootsource_instance}.2"
-
-Please observe that counting up partitions is different in barebox (startin=
-g with 0)and linux (starting with1).
-
-Best Regards
-Christian Gieseler
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
