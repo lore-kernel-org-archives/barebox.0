@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XdyKl-0006Oq-1n
- for barebox@lists.infradead.org; Tue, 14 Oct 2014 09:24:00 +0000
-Date: Tue, 14 Oct 2014 11:23:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141014092332.GT4992@pengutronix.de>
-References: <1412932473-38216-1-git-send-email-t.gamez@phytec.de>
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XeNvU-0000a6-O7
+ for barebox@lists.infradead.org; Wed, 15 Oct 2014 12:43:38 +0000
+Received: by mail-lb0-f175.google.com with SMTP id u10so935906lbd.6
+ for <barebox@lists.infradead.org>; Wed, 15 Oct 2014 05:43:12 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 15 Oct 2014 16:42:12 +0400
+Message-Id: <1413376935-2579-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1412932473-38216-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +17,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] ARM: defconfig: Enable of_display_timings in
- am335x_defconfig
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/3] Add .mailmap file and a tool to maintain it
+To: barebox@lists.infradead.org
+
+Base on original u-boot patchseries by Masahiro Yamada.
+
+See http://lists.denx.de/pipermail/u-boot/2014-July/183687.html
 
 
-Applied all, thanks
+Antony Pavlov (2):
+  add .mailmap for proper git-shortlog output
+  Update .mailmap using scripts/mailmapper
 
-Sascha
+Masahiro Yamada (1):
+  scripts: add mailmapper, a tool to create/update mailmap file
 
-On Fri, Oct 10, 2014 at 11:14:28AM +0200, Teresa G=E1mez wrote:
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-> ---
->  arch/arm/configs/am335x_defconfig | 1 +
->  1 file changed, 1 insertion(+)
-> =
+ .mailmap           |  16 ++++++
+ scripts/mailmapper | 160 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 176 insertions(+)
+ create mode 100644 .mailmap
+ create mode 100755 scripts/mailmapper
 
-> diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_=
-defconfig
-> index 6ef9c83..7dcfaed 100644
-> --- a/arch/arm/configs/am335x_defconfig
-> +++ b/arch/arm/configs/am335x_defconfig
-> @@ -79,6 +79,7 @@ CONFIG_CMD_USBGADGET=3Dy
->  CONFIG_CMD_BAREBOX_UPDATE=3Dy
->  CONFIG_CMD_OF_NODE=3Dy
->  CONFIG_CMD_OF_PROPERTY=3Dy
-> +CONFIG_CMD_OF_DISPLAY_TIMINGS=3Dy
->  CONFIG_CMD_OFTREE=3Dy
->  CONFIG_CMD_TIME=3Dy
->  CONFIG_NET=3Dy
-> -- =
+-- 
+2.1.1
 
-> 1.9.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
