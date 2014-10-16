@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
+Received: from mail-qa0-x235.google.com ([2607:f8b0:400d:c00::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xedc3-0007Bl-Pw
- for barebox@lists.infradead.org; Thu, 16 Oct 2014 05:28:38 +0000
-Received: by mail-lb0-f178.google.com with SMTP id w7so2191830lbi.37
- for <barebox@lists.infradead.org>; Wed, 15 Oct 2014 22:28:12 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 16 Oct 2014 09:28:05 +0400
-Message-Id: <1413437285-9300-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
+ id 1XekYC-0002aL-E6
+ for barebox@lists.infradead.org; Thu, 16 Oct 2014 12:53:05 +0000
+Received: by mail-qa0-f53.google.com with SMTP id v10so2261347qac.26
+ for <barebox@lists.infradead.org>; Thu, 16 Oct 2014 05:52:42 -0700 (PDT)
+From: Dmitry Voytik <voytikd@gmail.com>
+Date: Thu, 16 Oct 2014 16:52:20 +0400
+Message-Id: <1413463940-9651-1-git-send-email-voytikd@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,42 +16,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! Update .mailmap using scripts/mailmapper
-To: barebox@lists.infradead.org
+Subject: [PATCH] usb: ehci-hcd: Correct CLEAR_FEATURE code
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Dmitry Voytik <voytikd@gmail.com>, barebox@lists.infradead.org
 
-TUlOX0NPTU1JVFMgPSAxIGluIHNjcmlwdHMvbWFpbG1hcHBlciBnaXZlIHVzIGFkZGl0aW9uYWwK
-Lm1haWxtYW4gc3RyaW5nczoKCitGcmFuY2sgSnVsbGllbiA8ZnJhbmNrLmp1bGxpZW5AZ21haWwu
-Y29tPgorSmluIFpoZW5neGlvbmcgPEphc29uLkppbkBmcmVlc2NhbGUuY29tPgorTWFyYyBSZWls
-bHkgPG1hcmNAY3BkZXNpZ24uY29tLmF1PgorTmlzaGFudGggTWVub24gPHgwbmlzaGFuQHRpLmNv
-bT4KK1JhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KK1ZpY2VudGUgQmVyZ2Fz
-IDx2aWNlbmNiQGdtYWlsLmNvbT4KK1dqYXRzY2hlc2xhdyBTdG9samFyc2tpIDx3amF0c2NoZXNs
-YXcuc3RvbGphcnNraUBraXdpZ3JpZC5jb20+CitncmVnb3J5IGhlcm1hbnQgPGdyZWdvcnkuaGVy
-bWFudEBjYWxhby1zeXN0ZW1zLmNvbT4KK3NocmF2YW4gPHNocmF2YW4ua0BwaHl0ZWMuaW4+CgpJ
-IHN1cHBvc2UgdGhlc2UgOSBzdHJpbmdzIGNhbid0IG1ha2Ugb3VyIC5tYWlsbWFuIGZpbGUgdG9v
-IGJpZy4KCkFsc28gc29tZSAubWFpbG1hcCBsaW5lcyBhcmUgYWRkZWQgYnkgaGFuZDoKCitSb2Jl
-cnQgU2Nod2ViZWwgPHJzY0B0aGViZS4obm9uZSk+CitTaWx2aW8gRnJpY2tlIDxzZnJpY2tlQGRh
-dGEtbW9kdWwuY29tPgoKQWxhcyBJIGRvbid0IGtub3cgaG93IHRvIGZpeCBNYXJrdXMgS2xvdHpi
-dWVjaGVyJ3MKPE1hcmt1cyBLbG90emI8RkM+bWtAcG9sbHV4Lihub25lKT4gbWFpbCBhZGRyZXNz
-CndpdGggbGF0aW4tMSBjaGFyYWN0ZXIgaW5zaWRlIGl0LgoKU2lnbmVkLW9mZi1ieTogQW50b255
-IFBhdmxvdiA8YW50b255bnBhdmxvdkBnbWFpbC5jb20+Ci0tLQogLm1haWxtYXAgfCAxMSArKysr
-KysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDExIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS8u
-bWFpbG1hcCBiLy5tYWlsbWFwCmluZGV4IGU4ZTgxYTAuLjJlNTFjMzggMTAwNjQ0Ci0tLSBhLy5t
-YWlsbWFwCisrKyBiLy5tYWlsbWFwCkBAIC0xMCw3ICsxMCwxOCBAQAogCiBBbGV4YW5kZXIgU2hp
-eWFuIDxzaGNAbWlsYXMuc3BiLnJ1PgogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+CitG
-cmFuY2sgSnVsbGllbiA8ZnJhbmNrLmp1bGxpZW5AZ21haWwuY29tPgorSmluIFpoZW5neGlvbmcg
-PEphc29uLkppbkBmcmVlc2NhbGUuY29tPgogSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9u
-aXguZGU+CitNYXJjIFJlaWxseSA8bWFyY0BjcGRlc2lnbi5jb20uYXU+CitOaXNoYW50aCBNZW5v
-biA8eDBuaXNoYW5AdGkuY29tPgorUmFwaGHDq2wgUG9nZ2kgPHBvZ2dpLnJhcGhAZ21haWwuY29t
-PgorUm9iZXJ0IFNjaHdlYmVsIDxyc2NAdGhlYmUuKG5vbmUpPgogU2FzY2hhIEhhdWVyIDxzYXNj
-aGFAbm9tYWQubG9jYWxkb21haW4+CitTaWx2aW8gRnJpY2tlIDxzZnJpY2tlQGRhdGEtbW9kdWwu
-Y29tPgogU3RlZmFuIFJvZXNlIDxzdHJvZXNlPgorVmljZW50ZSBCZXJnYXMgPHZpY2VuY2JAZ21h
-aWwuY29tPgorV2phdHNjaGVzbGF3IFN0b2xqYXJza2kgPHdqYXRzY2hlc2xhdy5zdG9samFyc2tp
-QGtpd2lncmlkLmNvbT4KIFdvbGZnYW5nIERlbmsgPHdkZW5rPgorZ3JlZ29yeSBoZXJtYW50IDxn
-cmVnb3J5Lmhlcm1hbnRAY2FsYW8tc3lzdGVtcy5jb20+CitzaHJhdmFuIDxzaHJhdmFuLmtAcGh5
-dGVjLmluPgotLSAKMi4xLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This commit broke USB on olinuxino board:
+
+  87b9bea USB: host: hub: Use usb_hub_power_on from U-Boot
+
+This patch was ported from U-Boot with small changes. See discussion:
+http://lists.denx.de/pipermail/u-boot/2013-May/153920.html
+
+The root cause seems to be a missing mask and missing 'break' in
+ehci-hcd.c. Fix both.
+
+Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
+---
+ drivers/usb/host/ehci-hcd.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 5624552..d2e1296 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -675,21 +675,23 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		break;
+ 	case USB_REQ_CLEAR_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
+ 		reg = ehci_readl(status_reg);
++		reg &= ~EHCI_PS_CLEAR;
+ 		switch (le16_to_cpu(req->value)) {
+ 		case USB_PORT_FEAT_ENABLE:
+ 			reg &= ~EHCI_PS_PE;
+ 			break;
+ 		case USB_PORT_FEAT_C_ENABLE:
+-			reg = (reg & ~EHCI_PS_CLEAR) | EHCI_PS_PE;
++			reg |= EHCI_PS_PEC;
+ 			break;
+ 		case USB_PORT_FEAT_POWER:
+ 			if (HCS_PPC(ehci_readl(&ehci->hccr->cr_hcsparams)))
+-				reg = reg & ~(EHCI_PS_CLEAR | EHCI_PS_PP);
++				reg &= ~ EHCI_PS_PP;
++			break;
+ 		case USB_PORT_FEAT_C_CONNECTION:
+-			reg = (reg & ~EHCI_PS_CLEAR) | EHCI_PS_CSC;
++			reg |= EHCI_PS_CSC;
+ 			break;
+ 		case USB_PORT_FEAT_OVER_CURRENT:
+-			reg = (reg & ~EHCI_PS_CLEAR) | EHCI_PS_OCC;
++			reg |= EHCI_PS_OCC;
+ 			break;
+ 		case USB_PORT_FEAT_C_RESET:
+ 			ehci->portreset &= ~(1 << le16_to_cpu(req->index));
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
