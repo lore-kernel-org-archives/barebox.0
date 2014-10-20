@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XgHP8-0006si-1t
- for barebox@lists.infradead.org; Mon, 20 Oct 2014 18:10:02 +0000
+ id 1XgHPa-0007pt-0w
+ for barebox@lists.infradead.org; Mon, 20 Oct 2014 18:10:30 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E0B8.dip0.t-ipconnect.de
- [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id A6C9726C2004
- for <barebox@lists.infradead.org>; Mon, 20 Oct 2014 20:09:10 +0200 (CEST)
+ [87.181.224.184]) by lynxeye.de (Postfix) with ESMTPA id 2CB7A26C2004
+ for <barebox@lists.infradead.org>; Mon, 20 Oct 2014 20:09:12 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 20 Oct 2014 20:15:56 +0200
-Message-Id: <1413828961-12605-2-git-send-email-dev@lynxeye.de>
+Date: Mon, 20 Oct 2014 20:15:59 +0200
+Message-Id: <1413828961-12605-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1413828961-12605-1-git-send-email-dev@lynxeye.de>
 References: <1413828961-12605-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,29 +24,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] dfu: fix possible usage of uninitialized var
+Subject: [PATCH 5/7] sha2: fix invalid length check
 To: barebox@lists.infradead.org
 
-The error path would in fact use the status
-variable without it being initialized first.
+length is unsigned an thus can never be <0.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/usb/gadget/dfu.c | 1 +
- 1 file changed, 1 insertion(+)
+ crypto/sha2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index 67a0703..351b584 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -207,6 +207,7 @@ dfu_bind(struct usb_configuration *c, struct usb_function *f)
- 	dfu->dnreq = usb_ep_alloc_request(c->cdev->gadget->ep0);
- 	if (!dfu->dnreq) {
- 		printf("usb_ep_alloc_request failed\n");
-+		status = -ENOMEM;
- 		goto out;
- 	}
- 	dfu->dnreq->buf = dma_alloc(CONFIG_USBD_DFU_XFER_SIZE);
+diff --git a/crypto/sha2.c b/crypto/sha2.c
+index 26162e8..e495313 100644
+--- a/crypto/sha2.c
++++ b/crypto/sha2.c
+@@ -208,7 +208,7 @@ static void sha2_update(sha2_context * ctx, const uint8_t * input, size_t length
+ 	size_t fill;
+ 	uint32_t left;
+ 
+-	if (length <= 0)
++	if (length = 0)
+ 		return;
+ 
+ 	left = ctx->total[0] & 0x3F;
 -- 
 1.9.3
 
