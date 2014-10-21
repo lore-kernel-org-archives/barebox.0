@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XgKAh-00025i-IS
- for barebox@lists.infradead.org; Mon, 20 Oct 2014 21:07:20 +0000
-Received: by mail-wi0-f178.google.com with SMTP id r20so105608wiv.17
- for <barebox@lists.infradead.org>; Mon, 20 Oct 2014 14:06:56 -0700 (PDT)
-Date: Mon, 20 Oct 2014 23:06:49 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20141020210647.GA1676@omega>
-References: <1413828961-12605-1-git-send-email-dev@lynxeye.de>
- <1413828961-12605-5-git-send-email-dev@lynxeye.de>
+ id 1XgOjC-0002NU-Ss
+ for barebox@lists.infradead.org; Tue, 21 Oct 2014 01:59:15 +0000
+Message-ID: <5445BD66.5030603@atmel.com>
+Date: Tue, 21 Oct 2014 09:56:54 +0800
+From: Bo Shen <voice.shen@atmel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1413828961-12605-5-git-send-email-dev@lynxeye.de>
+References: <1413828961-12605-1-git-send-email-dev@lynxeye.de>
+ <1413828961-12605-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1413828961-12605-4-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] sha2: fix invalid length check
+Subject: Re: [PATCH 4/7] arm: at91: remove unused variable
 To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
 Hi Lucas,
 
-On Mon, Oct 20, 2014 at 08:15:59PM +0200, Lucas Stach wrote:
-> length is unsigned an thus can never be <0.
-> 
+On 10/21/2014 02:15 AM, Lucas Stach wrote:
 > Signed-off-by: Lucas Stach <dev@lynxeye.de>
+
+Acked-by: Bo Shen <voice.shen@atmel.com>
+
 > ---
->  crypto/sha2.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/crypto/sha2.c b/crypto/sha2.c
-> index 26162e8..e495313 100644
-> --- a/crypto/sha2.c
-> +++ b/crypto/sha2.c
-> @@ -208,7 +208,7 @@ static void sha2_update(sha2_context * ctx, const uint8_t * input, size_t length
->  	size_t fill;
->  	uint32_t left;
->  
-> -	if (length <= 0)
-> +	if (length = 0)
+>   arch/arm/mach-at91/clock.c | 4 ----
+>   1 file changed, 4 deletions(-)
+>
+> diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+> index 7a4282e..a7051c3 100644
+> --- a/arch/arm/mach-at91/clock.c
+> +++ b/arch/arm/mach-at91/clock.c
+> @@ -347,7 +347,6 @@ EXPORT_SYMBOL(clk_get_rate);
+>
+>   long clk_round_rate(struct clk *clk, unsigned long rate)
+>   {
+> -	unsigned long	flags;
+>   	unsigned	prescale;
+>   	unsigned long	actual;
+>   	unsigned long	prev = ULONG_MAX;
+> @@ -376,7 +375,6 @@ EXPORT_SYMBOL(clk_round_rate);
+>
+>   int clk_set_rate(struct clk *clk, unsigned long rate)
+>   {
+> -	unsigned long	flags;
+>   	unsigned	prescale;
+>   	unsigned long	prescale_offset, css_mask;
+>   	unsigned long	actual;
+> @@ -421,8 +419,6 @@ EXPORT_SYMBOL(clk_get_parent);
+>
+>   int clk_set_parent(struct clk *clk, struct clk *parent)
+>   {
+> -	unsigned long	flags;
+> -
+>   	if (clk->users)
+>   		return -EBUSY;
+>   	if (!clk_is_primary(parent) || !clk_is_programmable(clk))
+>
 
-should be (length == 0).
-
-- Alex
+Best Regards,
+Bo Shen
 
 _______________________________________________
 barebox mailing list
