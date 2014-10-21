@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eusmtp01.atmel.com ([212.144.249.242])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XgOpe-00050A-1k
- for barebox@lists.infradead.org; Tue, 21 Oct 2014 02:05:54 +0000
-Message-ID: <5445BE66.8020803@atmel.com>
-Date: Tue, 21 Oct 2014 10:01:10 +0800
-From: Bo Shen <voice.shen@atmel.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XgXA7-0002C4-3Y
+ for barebox@lists.infradead.org; Tue, 21 Oct 2014 10:59:35 +0000
+Date: Tue, 21 Oct 2014 12:59:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141021105910.GM14443@pengutronix.de>
+References: <1413463940-9651-1-git-send-email-voytikd@gmail.com>
 MIME-Version: 1.0
-References: <1413828961-12605-1-git-send-email-dev@lynxeye.de>
- <1413828961-12605-6-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1413828961-12605-6-git-send-email-dev@lynxeye.de>
+Content-Disposition: inline
+In-Reply-To: <1413463940-9651-1-git-send-email-voytikd@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,52 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] i2c: at91: fix invalid length check
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH] usb: ehci-hcd: Correct CLEAR_FEATURE code
+To: Dmitry Voytik <voytikd@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Lucas,
+On Thu, Oct 16, 2014 at 04:52:20PM +0400, Dmitry Voytik wrote:
+> This commit broke USB on olinuxino board:
+> 
+>   87b9bea USB: host: hub: Use usb_hub_power_on from U-Boot
+> 
+> This patch was ported from U-Boot with small changes. See discussion:
+> http://lists.denx.de/pipermail/u-boot/2013-May/153920.html
+> 
+> The root cause seems to be a missing mask and missing 'break' in
+> ehci-hcd.c. Fix both.
+> 
+> Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
 
-On 10/21/2014 02:16 AM, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Applied, thanks
 
-Acked-by: Bo Shen <voice.shen@atmel.com>
+Sascha
 
 > ---
->   drivers/i2c/busses/i2c-at91.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/i2c/busses/i2c-at91.c b/drivers/i2c/busses/i2c-at91.c
-> index deb4ea4..3a644cf 100644
-> --- a/drivers/i2c/busses/i2c-at91.c
-> +++ b/drivers/i2c/busses/i2c-at91.c
-> @@ -140,7 +140,7 @@ static void at91_calc_twi_clock(struct at91_twi_dev *dev, int twi_clk)
->
->   static void at91_twi_write_next_byte(struct at91_twi_dev *dev)
->   {
-> -	if (dev->buf_len <= 0)
-> +	if (!dev->buf_len)
->   		return;
->
->   	at91_twi_write(dev, AT91_TWI_THR, *dev->buf);
-> @@ -156,7 +156,7 @@ static void at91_twi_write_next_byte(struct at91_twi_dev *dev)
->
->   static void at91_twi_read_next_byte(struct at91_twi_dev *dev)
->   {
-> -	if (dev->buf_len <= 0)
-> +	if (!dev->buf_len)
->   		return;
->
->   	*dev->buf = at91_twi_read(dev, AT91_TWI_RHR) & 0xff;
->
+>  drivers/usb/host/ehci-hcd.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+> index 5624552..d2e1296 100644
+> --- a/drivers/usb/host/ehci-hcd.c
+> +++ b/drivers/usb/host/ehci-hcd.c
+> @@ -675,21 +675,23 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+>  		break;
+>  	case USB_REQ_CLEAR_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
+>  		reg = ehci_readl(status_reg);
+> +		reg &= ~EHCI_PS_CLEAR;
+>  		switch (le16_to_cpu(req->value)) {
+>  		case USB_PORT_FEAT_ENABLE:
+>  			reg &= ~EHCI_PS_PE;
+>  			break;
+>  		case USB_PORT_FEAT_C_ENABLE:
+> -			reg = (reg & ~EHCI_PS_CLEAR) | EHCI_PS_PE;
+> +			reg |= EHCI_PS_PEC;
+>  			break;
+>  		case USB_PORT_FEAT_POWER:
+>  			if (HCS_PPC(ehci_readl(&ehci->hccr->cr_hcsparams)))
+> -				reg = reg & ~(EHCI_PS_CLEAR | EHCI_PS_PP);
+> +				reg &= ~ EHCI_PS_PP;
+> +			break;
+>  		case USB_PORT_FEAT_C_CONNECTION:
+> -			reg = (reg & ~EHCI_PS_CLEAR) | EHCI_PS_CSC;
+> +			reg |= EHCI_PS_CSC;
+>  			break;
+>  		case USB_PORT_FEAT_OVER_CURRENT:
+> -			reg = (reg & ~EHCI_PS_CLEAR) | EHCI_PS_OCC;
+> +			reg |= EHCI_PS_OCC;
+>  			break;
+>  		case USB_PORT_FEAT_C_RESET:
+>  			ehci->portreset &= ~(1 << le16_to_cpu(req->index));
+> -- 
+> 1.9.1
+> 
+> 
 
-Best Regards,
-Bo Shen
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
