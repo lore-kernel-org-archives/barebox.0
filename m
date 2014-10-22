@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-x22d.google.com ([2607:f8b0:400d:c01::22d])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XZ3eW-0000xB-5E
- for barebox@lists.infradead.org; Tue, 30 Sep 2014 20:04:04 +0000
-Received: by mail-qc0-f173.google.com with SMTP id x13so1999128qcv.4
- for <barebox@lists.infradead.org>; Tue, 30 Sep 2014 13:03:39 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Xgpby-00005L-MB
+ for barebox@lists.infradead.org; Wed, 22 Oct 2014 06:41:35 +0000
+Date: Wed, 22 Oct 2014 08:41:09 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20141022064109.GH8316@pengutronix.de>
+References: <1413909243.628274148@f65.i.mail.ru>
 MIME-Version: 1.0
-Date: Tue, 30 Sep 2014 22:03:39 +0200
-Message-ID: <CACSabZ_nSs8L6yHn6Pz3quNvYQSDWiB0FWOYow1vyp9akRp0PA@mail.gmail.com>
-From: luigi origa <luigi.origa@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1413909243.628274148@f65.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,21 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Little bug
-To: barebox@lists.infradead.org
+Subject: Re: LPC43xx
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-I found a little bug in your code.
+Hello,
 
-The structure "fb_videomode" contains a field "display_flags" but
-selecting "video svga" or "video a70"  the code initialize the struct
-using the field ".flag". Obviously the compiler in this case, exit
-with an error.
+On Tue, Oct 21, 2014 at 08:34:03PM +0400, Alexander Shiyan wrote:
+> We started developing device which uses NXP LPC43xx CPU. I would like to =
+add
+> support for this CPU series into barebox.
+> The problem is that there is no support for this architecture in the Linu=
+x kernel,
+> and it would upset the current concept (the barebox tree is very similar =
+to Linux
+> tree and we not have any orphan arch-s).
+> What you recommend to do?
+The two obvious options are:
 
-Luigi
+ - place support for your CPU where it would be for Linux
+ - add support for your CPU to Linux
+
+I'm (obviously) not Sascha, but I guess both would be fine.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
