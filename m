@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-x22e.google.com ([2607:f8b0:400d:c01::22e])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XhJHC-00072i-48
- for barebox@lists.infradead.org; Thu, 23 Oct 2014 14:22:06 +0000
-Received: by mail-qc0-f174.google.com with SMTP id i8so803967qcq.19
- for <barebox@lists.infradead.org>; Thu, 23 Oct 2014 07:21:44 -0700 (PDT)
-From: Dmitry Voytik <voytikd@gmail.com>
-Date: Thu, 23 Oct 2014 18:21:38 +0400
-Message-Id: <1414074098-13717-1-git-send-email-voytikd@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XhPa5-0005Dj-7g
+ for barebox@lists.infradead.org; Thu, 23 Oct 2014 21:06:02 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 23 Oct 2014 23:05:34 +0200
+Message-Id: <1414098334-16957-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx23-olinuxino: discover usb before ifup
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Dmitry Voytik <voytikd@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH] saveenv: Fix saving to specified file
+To: barebox@lists.infradead.org
 
-i.MX233 in OLinuXino uses LAN9512 for Ethernet connection.
-LAN9512 is connected to USB. Execute usb command before bringing
-network up.
+Since e805b7d saveenv: provide a zeroed/empty/ignore environment
+barebox no longer honors the file argument when the directory
+argument is also givin. Fix this.
 
-This patch makes 'ifup eth0' workable.
-
-Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/imx233-olinuxino/env/network/eth0-discover | 6 ++++++
- 1 file changed, 6 insertions(+)
- create mode 100644 arch/arm/boards/imx233-olinuxino/env/network/eth0-discover
+ commands/saveenv.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boards/imx233-olinuxino/env/network/eth0-discover b/arch/arm/boards/imx233-olinuxino/env/network/eth0-discover
-new file mode 100644
-index 0000000..76494fe
---- /dev/null
-+++ b/arch/arm/boards/imx233-olinuxino/env/network/eth0-discover
-@@ -0,0 +1,6 @@
-+#!/bin/sh
-+
-+#  In OLinuXino board i.MX233 SoC uses LAN9512 (attached to USB) to connect
-+#  to an Ethernet LAN.
-+
-+usb
+diff --git a/commands/saveenv.c b/commands/saveenv.c
+index 9da733e..43f16dc 100644
+--- a/commands/saveenv.c
++++ b/commands/saveenv.c
+@@ -39,16 +39,16 @@ static int do_saveenv(int argc, char *argv[])
+ 	}
+ 
+ 	/* destination and source are given? */
+-	if (argc == optind + 2)
+-		dirname = argv[optind + 1];
+-	else
++	if (argc - optind < 2)
+ 		dirname = "/env";
++	else
++		dirname = argv[optind + 1];
+ 
+ 	/* destination only given? */
+-	if (argc == optind + 1)
+-		filename = argv[optind];
+-	else
++	if (argc - optind < 1)
+ 		filename = default_environment_path_get();
++	else
++		filename = argv[optind];
+ 
+ 	ret = envfs_save(filename, dirname, envfs_flags);
+ 
 -- 
-1.9.1
+2.1.1
 
 
 _______________________________________________
