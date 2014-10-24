@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XhZey-0007d2-AH
- for barebox@lists.infradead.org; Fri, 24 Oct 2014 07:51:44 +0000
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Fri, 24 Oct 2014 09:52:09 +0200
+ Linux)) id 1Xha6V-0004CL-DN
+ for barebox@lists.infradead.org; Fri, 24 Oct 2014 08:20:12 +0000
+Date: Fri, 24 Oct 2014 10:19:49 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20141024081949.GO8316@pengutronix.de>
 References: <1414104361-15956-1-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1414104361-15956-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1414104361-15956-3-git-send-email-u.kleine-koenig@pengutronix.de>
+ <201410240950.21973.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201410240952.09412.jbe@pengutronix.de>
+In-Reply-To: <201410240950.21973.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] fixes and sanity checks for mxs pinmuxing
-To: barebox@lists.infradead.org
-Cc: Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 2/3] mxs: iomux-imx23/imx28: unify mode definition
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-T24gRnJpZGF5IDI0IE9jdG9iZXIgMjAxNCAwMDo0NTo1OCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90
-ZToKPiB0aGlzIHNlcmllcyBoZWxwZWQgbWUgdG8gZmluZCBwaW5tdXhpbmcgcHJvYmxlbXMgb24g
-YW4gaS5NWDI4IG1hY2hpbmUuCj4KPiBUaGUgcGlucyBlaXRoZXIgaGF2ZSBhIHB1bGwgdXAsIGEg
-Yml0IGtlZXBlciBvciBuZWl0aGVyLiBGb3IgZXhhbXBsZSB0aGUKPiBwaW4gRU5FVDBfUlhEMiBo
-YXMgYSBiaXQga2VlcGVyLCBhbmQgc28gZG9pbmcKPgo+IAlpbXhfZ3Bpb19tb2RlKEVORVQwX1JY
-RDIgfCBWRV8zXzNWIHwgU1RSRU5HVEgoUzhNQSkgfCBQVUxMVVAoMSkpCj4KPiBvYnZpb3VzbHkg
-Y291bGRuJ3QgZW5hYmxlIHRoZSBwdWxsIHVwIGFzIHJlcXVlc3RlZC4gSW5zdGVhZCBpdCBlbmFi
-bGVkIHRoZQo+IGJpdCBrZWVwZXIuIFdpdGggdGhpcyBzZXJpZXMgdGhlIGFib3ZlIGNhbGwgcmVz
-dWx0cyBpbiBhIG1lc3NhZ2UgdGhhdCB0aGUKPiBtb2RlIGlzIGludmFsaWQgYW5kIHRoZSBwdWxs
-dXAgYW5kIGJpdGtlZXBlciByZWdpc3RlciBzZXR0aW5ncyBhcmUgbm90Cj4gdG91Y2hlZC4KPgo+
-IE5vdGUgdGhhdCBJIGRpZG4ndCB0ZXN0IG9uIGkuTVgyMyBldmVuIHRob3VnaCB0aGlzIFNvQyBp
-cyBhZmZlY3RlZCwgdG9vLiBJCj4gY3VycmVudGx5IGRvbid0IGhhdmUgYW4gaS5NWDIzIGhhbmR5
-LCBzbyBJIGNvdWxkbid0IHRlc3QgdGhpcyBwYXJ0LgoKTmljZSBjaGFuZ2Ugc2V0LgoKQWNrZWQt
-Ynk6IEp1ZXJnZW4gQm9ybGVpcyA8amJlQHBlbmd1dHJvbml4LmRlPgoKamJlCgotLSAKUGVuZ3V0
-cm9uaXggZS5LLiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoHwg
-SnVlcmdlbiBCb3JsZWlzIMKgIMKgIMKgIMKgIMKgIMKgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1
-dGlvbnMgICAgICAgICAgICAgICDCoCDCoCDCoHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
-IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hello J=FCrgen,
+
+when going to bed yesterday^Wearlier today I remembered that I wantet do
+Cc: you for this series. Great you noticed it anyhow :-)
+
+On Fri, Oct 24, 2014 at 09:50:21AM +0200, Juergen Borleis wrote:
+> Hi Uwe,
+> =
+
+> On Friday 24 October 2014 00:46:00 Uwe Kleine-K=F6nig wrote:
+> > [...]
+> >  #if defined CONFIG_ARCH_IMX23
+> > +/*
+> > + * The pin definition of i.MX23 are strange. Bank 0's pins 0 .. 15 are=
+ defined
+> > + * using PORTF(0, 0) .. PORTF(0, 15). Its pins 16 .. 31 however use PO=
+RTF(1, 0)
+> > + * .. PORTF(1, 15). So the PORTF macro is more ugly than necessary.
+> > + */ =
+
+> > +# define PORTF(bank,bit)	(BANK((bank) / 2) | BANKPIN((((bank) & 1) << =
+4) | (bit)) | ERROR((bit) & ~15) | ERROR((bank) & ~7)
+> > +# define VE_2_5V		VOLTAGE(1)
+> >  # include <mach/iomux-imx23.h>
+> >  #endif
+> > +
+> =
+
+> Looks more like a strange implementation by myself. Did not remember why =
+I have
+> done it in this way...
+When Sascha is happy with the changes in this series we can clean that
+up.
+
+You didn't test that on an i.MX23 machine, do you?
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
