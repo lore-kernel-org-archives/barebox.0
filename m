@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XiceG-0003FD-Cb
- for barebox@lists.infradead.org; Mon, 27 Oct 2014 05:15:21 +0000
-Date: Mon, 27 Oct 2014 06:14:53 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141027051453.GV14443@pengutronix.de>
-References: <1414104361-15956-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1414104361-15956-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Xj4Mg-0005nn-RE
+ for barebox@lists.infradead.org; Tue, 28 Oct 2014 10:51:03 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 1D017A00233
+ for <barebox@lists.infradead.org>; Tue, 28 Oct 2014 11:50:43 +0100 (CET)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Tue, 28 Oct 2014 11:50:35 +0100
+Message-Id: <1414493436-23693-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +17,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] fixes and sanity checks for mxs pinmuxing
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] net: phy: micrel: Add OF conf. support for ksz9031
+To: barebox@lists.infradead.org
 
-On Fri, Oct 24, 2014 at 12:45:58AM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
+Adds support for ksz9031 PAD skew configuration over devicetree.
+Based on a patch from the linux kernel.
 
-> this series helped me to find pinmuxing problems on an i.MX28 machine.
-> =
+Author: Hubert Chaumette <hchaumette@adeneo-embedded.com>
+Original commit: 6e4b82730c7525504fc485b370c7f09e594e2e96
 
-> The pins either have a pull up, a bit keeper or neither. For example the =
-pin
-> ENET0_RXD2 has a bit keeper, and so doing
-> =
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ drivers/net/phy/micrel.c |   86 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 85 insertions(+), 1 deletions(-)
 
-> 	imx_gpio_mode(ENET0_RXD2 | VE_3_3V | STRENGTH(S8MA) | PULLUP(1))
-> =
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 88c64e5..c9558da 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -146,6 +146,90 @@ static int ksz9021_config_init(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++#define KSZ9031_PS_TO_REG		60
++
++/* Extended registers */
++#define MII_KSZ9031RN_CONTROL_PAD_SKEW	4
++#define MII_KSZ9031RN_RX_DATA_PAD_SKEW	5
++#define MII_KSZ9031RN_TX_DATA_PAD_SKEW	6
++#define MII_KSZ9031RN_CLK_PAD_SKEW	8
++
++static int ksz9031_of_load_skew_values(struct phy_device *phydev,
++					struct device_node *of_node,
++					u16 reg, size_t field_sz,
++					char *field[], u8 numfields)
++{
++	int val[4] = {-1, -2, -3, -4};
++	int matches = 0;
++	u16 mask;
++	u16 maxval;
++	u16 newval;
++	int i;
++
++	for (i = 0; i < numfields; i++)
++		if (!of_property_read_u32(of_node, field[i], val + i))
++			matches++;
++
++	if (!matches)
++		return 0;
++
++	if (matches < numfields)
++		newval = phy_read_mmd_indirect(phydev, reg, 2);
++	else
++		newval = 0;
++
++	maxval = (field_sz == 4) ? 0xf : 0x1f;
++	for (i = 0; i < numfields; i++)
++		if (val[i] != -(i + 1)) {
++			mask = 0xffff;
++			mask ^= maxval << (field_sz * i);
++			newval = (newval & mask) |
++				(((val[i] / KSZ9031_PS_TO_REG) & maxval)
++				<< (field_sz * i));
++		}
++
++	phy_write_mmd_indirect(phydev, reg, 2, newval);
++	return 0;
++}
++
++static int ksz9031_config_init(struct phy_device *phydev)
++{
++	struct device_d *dev = &phydev->dev;
++	struct device_node *of_node = dev->device_node;
++	char *clk_skews[2] = {"rxc-skew-ps", "txc-skew-ps"};
++	char *rx_data_skews[4] = {
++		"rxd0-skew-ps", "rxd1-skew-ps",
++		"rxd2-skew-ps", "rxd3-skew-ps"
++	};
++	char *tx_data_skews[4] = {
++		"txd0-skew-ps", "txd1-skew-ps",
++		"txd2-skew-ps", "txd3-skew-ps"
++	};
++	char *control_skews[2] = {"txen-skew-ps", "rxdv-skew-ps"};
++
++	if (!of_node && dev->parent->device_node)
++		of_node = dev->parent->device_node;
++
++	if (of_node) {
++		ksz9031_of_load_skew_values(phydev, of_node,
++				MII_KSZ9031RN_CLK_PAD_SKEW, 5,
++				clk_skews, 2);
++
++		ksz9031_of_load_skew_values(phydev, of_node,
++				MII_KSZ9031RN_CONTROL_PAD_SKEW, 4,
++				control_skews, 2);
++
++		ksz9031_of_load_skew_values(phydev, of_node,
++				MII_KSZ9031RN_RX_DATA_PAD_SKEW, 4,
++				rx_data_skews, 4);
++
++		ksz9031_of_load_skew_values(phydev, of_node,
++				MII_KSZ9031RN_TX_DATA_PAD_SKEW, 4,
++				tx_data_skews, 4);
++	}
++	return 0;
++}
++
+ #define KSZ8873MLL_GLOBAL_CONTROL_4	0x06
+ #define KSZ8873MLL_GLOBAL_CONTROL_4_DUPLEX	(1 << 6)
+ #define KSZ8873MLL_GLOBAL_CONTROL_4_SPEED	(1 << 4)
+@@ -259,7 +343,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.phy_id_mask	= 0x00fffff0,
+ 	.drv.name	= "Micrel KSZ9031 Gigabit PHY",
+ 	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause),
+-	.config_init	= kszphy_config_init,
++	.config_init	= ksz9031_config_init,
+ 	.config_aneg	= genphy_config_aneg,
+ 	.read_status	= genphy_read_status,
+ }, {
+-- 
+1.7.0.4
 
-> obviously couldn't enable the pull up as requested. Instead it enabled th=
-e bit
-> keeper. With this series the above call results in a message that the mod=
-e is
-> invalid and the pullup and bitkeeper register settings are not touched.
-> =
-
-> Note that I didn't test on i.MX23 even though this SoC is affected, too. I
-> currently don't have an i.MX23 handy, so I couldn't test this part.
-> =
-
-> Uwe Kleine-K=F6nig (3):
->   mxs: iomux-imx28: Fix keeper/pullup/drive strength/voltage flags
->   mxs: iomux-imx23/imx28: unify mode definition
->   mxs: iomux-imx23/imx28: add additional checks on mode
-
-Applied, thanks
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
