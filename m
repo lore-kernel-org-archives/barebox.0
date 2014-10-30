@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XjoQT-0001Lc-Qg
- for barebox@lists.infradead.org; Thu, 30 Oct 2014 12:02:02 +0000
+ id 1XjoRe-0001rh-Hn
+ for barebox@lists.infradead.org; Thu, 30 Oct 2014 12:03:15 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 4091CA0030B
- for <barebox@lists.infradead.org>; Thu, 30 Oct 2014 13:01:44 +0100 (CET)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Thu, 30 Oct 2014 13:01:35 +0100
-Message-Id: <1414670496-25123-1-git-send-email-w.egorov@phytec.de>
+ by root.phytec.de (Postfix) with ESMTP id 4AD9BA004C9
+ for <barebox@lists.infradead.org>; Thu, 30 Oct 2014 13:03:00 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 30 Oct 2014 13:02:51 +0100
+Message-Id: <1414670572-43351-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1414670572-43351-1-git-send-email-t.gamez@phytec.de>
+References: <1414670572-43351-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,65 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For next PATCH 1/2] arm: am33xx: Add rmii2_crs_dv mux selection in
- SMA2 register
+Subject: [For next PATCH 2/3] ARM: am335x: Add register of boot devices
 To: barebox@lists.infradead.org
 
-"Silicon revision 1.0 devices only provide the MMC2_DAT7 signal when Mode3 is
-selected. Silicon revision 2.0 and newer devices implement another level of
-pin multiplexing which provides the original MMC2_DAT7 signal or RMII2_CRS_DV
-signal when Mode3 is selected. This new level of of pin multiplexing is
-selected with bit zero of the SMA2 register."
-
-See AM335x Sitara Processors Manual.
-
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- arch/arm/mach-omap/am33xx_generic.c              |   12 ++++++++++++
- arch/arm/mach-omap/include/mach/am33xx-generic.h |    1 +
- 2 files changed, 13 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
-index f293134..12764bc 100644
---- a/arch/arm/mach-omap/am33xx_generic.c
-+++ b/arch/arm/mach-omap/am33xx_generic.c
-@@ -428,3 +428,15 @@ void am335x_sdram_init(int ioctrl, const struct am33xx_cmd_control *cmd_ctrl,
- 
- 	am33xx_config_sdram(emif_regs);
- }
-+
-+#define AM33XX_CONTROL_SMA2_OFS	0x1320
-+
-+/**
-+ * am33xx_select_rmii2_crs_dv - Select RMII2_CRS_DV on GPMC_A9 pin in MODE3
-+ */
-+void am33xx_select_rmii2_crs_dv(void)
-+{
-+	uint32_t val = readl(AM33XX_CTRL_BASE + AM33XX_CONTROL_SMA2_OFS);
-+	val |= 0x00000001;
-+	writel(val, AM33XX_CTRL_BASE + AM33XX_CONTROL_SMA2_OFS);
-+}
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-generic.h b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-index 6c85d51..1264e7e 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-generic.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-@@ -33,5 +33,6 @@ void __noreturn am33xx_reset_cpu(unsigned long addr);
- void am33xx_enable_per_clocks(void);
- int am33xx_init(void);
- int am33xx_devices_init(void);
-+void am33xx_select_rmii2_crs_dv(void);
- 
- #endif /* __MACH_AM33XX_GENERIC_H */
--- 
-1.7.0.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QWRkIHN1cHBvcnQgZm9yIHJlZ2lzdGVyaW5nIGRpc2FibGVkIGJvb3QgZGV2aWNlcyBmcm9tIG9m
+dHJlZS4KQ3JlYXRpbmcgYSBkZXZpY2UgdHJlZSB3aXRoIGFsbCBib290YWJsZSBkZXZpY2VzIGRp
+c2FibGVkLCBtYWtlcwppdCBwb3NzaWJsZSB0byBvbmx5IGVuYWJsZSBhbmQgcmVnaXN0ZXIgdGhl
+IGRldmljZXMgbmVlZGVkIHRvCmxvYWQgdGhlIG5leHQgc3RhZ2UgYm9vdGxvYWRlci4KClNpZ25l
+ZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJt
+L21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jICAgICAgICAgICAgICB8IDMxICsrKysrKysrKysr
+KysrKysrKysrKysrKwogYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2Vu
+ZXJpYy5oIHwgIDEgKwogMiBmaWxlcyBjaGFuZ2VkLCAzMiBpbnNlcnRpb25zKCspCgpkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMgYi9hcmNoL2FybS9tYWNo
+LW9tYXAvYW0zM3h4X2dlbmVyaWMuYwppbmRleCBmMjkzMTM0Li5hMDRlOGM3IDEwMDY0NAotLS0g
+YS9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMuYworKysgYi9hcmNoL2FybS9tYWNo
+LW9tYXAvYW0zM3h4X2dlbmVyaWMuYwpAQCAtNDI4LDMgKzQyOCwzNCBAQCB2b2lkIGFtMzM1eF9z
+ZHJhbV9pbml0KGludCBpb2N0cmwsIGNvbnN0IHN0cnVjdCBhbTMzeHhfY21kX2NvbnRyb2wgKmNt
+ZF9jdHJsLAogCiAJYW0zM3h4X2NvbmZpZ19zZHJhbShlbWlmX3JlZ3MpOwogfQorCitpbnQgYW0z
+M3h4X29mX3JlZ2lzdGVyX2Jvb3RkZXZpY2Uodm9pZCkKK3sKKwlzdHJ1Y3QgZGV2aWNlX2QgKmRl
+djsKKworCXN3aXRjaCAoYm9vdHNvdXJjZV9nZXQoKSkgeworCWNhc2UgQk9PVFNPVVJDRV9NTUM6
+CisJCWlmIChib290c291cmNlX2dldF9pbnN0YW5jZSgpID09IDApCisJCQlkZXYgPSBvZl9yZWdp
+c3Rlcl9kaXNhYmxlZF9kZXZpY2VfYnlfbmFtZSgibW1jQDQ4MDYwMDAwIik7CisJCWVsc2UKKwkJ
+CWRldiA9IG9mX3JlZ2lzdGVyX2Rpc2FibGVkX2RldmljZV9ieV9uYW1lKCJtbWNANDgxZDgwMDAi
+KTsKKwkJYnJlYWs7CisJY2FzZSBCT09UU09VUkNFX05BTkQ6CisJCWRldiA9IG9mX3JlZ2lzdGVy
+X2Rpc2FibGVkX2RldmljZV9ieV9uYW1lKCJncG1jQDUwMDAwMDAwIik7CisJCWJyZWFrOworCWNh
+c2UgQk9PVFNPVVJDRV9TUEk6CisJCWRldiA9IG9mX3JlZ2lzdGVyX2Rpc2FibGVkX2RldmljZV9i
+eV9uYW1lKCJzcGlANDgwMzAwMDAiKTsKKwkJYnJlYWs7CisJZGVmYXVsdDoKKwkJLyogVXNlIG5h
+bmQgZmFsbGJhY2sgKi8KKwkJZGV2ID0gb2ZfcmVnaXN0ZXJfZGlzYWJsZWRfZGV2aWNlX2J5X25h
+bWUoImdwbWNANTAwMDAwMDAiKTsKKwkJYnJlYWs7CisJfQorCisJaWYgKCFkZXYpIHsKKwkJcHJp
+bnRmKCJVbmFibGUgdG8gcmVnaXN0ZXIgYm9vdCBkZXZpY2VcbiIpOworCQlyZXR1cm4gLUVOT0RF
+VjsKKwl9CisKKwlyZXR1cm4gMDsKK30KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9p
+bmNsdWRlL21hY2gvYW0zM3h4LWdlbmVyaWMuaCBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRl
+L21hY2gvYW0zM3h4LWdlbmVyaWMuaAppbmRleCA2Yzg1ZDUxLi43MzEyMDYxIDEwMDY0NAotLS0g
+YS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5lcmljLmgKKysrIGIv
+YXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2VuZXJpYy5oCkBAIC0zMyw1
+ICszMyw2IEBAIHZvaWQgX19ub3JldHVybiBhbTMzeHhfcmVzZXRfY3B1KHVuc2lnbmVkIGxvbmcg
+YWRkcik7CiB2b2lkIGFtMzN4eF9lbmFibGVfcGVyX2Nsb2Nrcyh2b2lkKTsKIGludCBhbTMzeHhf
+aW5pdCh2b2lkKTsKIGludCBhbTMzeHhfZGV2aWNlc19pbml0KHZvaWQpOworaW50IGFtMzN4eF9v
+Zl9yZWdpc3Rlcl9ib290ZGV2aWNlKHZvaWQpOwogCiAjZW5kaWYgLyogX19NQUNIX0FNMzNYWF9H
+RU5FUklDX0ggKi8KLS0gCjEuOS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
