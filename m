@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp35.i.mail.ru ([94.100.177.95])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xjn2H-0005Pt-8T
- for barebox@lists.infradead.org; Thu, 30 Oct 2014 10:32:58 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 30 Oct 2014 13:32:31 +0300
-Message-Id: <1414665151-7229-1-git-send-email-shc_work@mail.ru>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XjoQT-0001Ld-Qg
+ for barebox@lists.infradead.org; Thu, 30 Oct 2014 12:02:02 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 4863BA0040A
+ for <barebox@lists.infradead.org>; Thu, 30 Oct 2014 13:01:44 +0100 (CET)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Thu, 30 Oct 2014 13:01:36 +0100
+Message-Id: <1414670496-25123-2-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1414670496-25123-1-git-send-email-w.egorov@phytec.de>
+References: <1414670496-25123-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +24,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] serial: ns16550: Remove unused fields from NS16550_plat
- structure
+Subject: [For next PATCH 2/2] phyFLEX: Select RMII2_CRS_DV on GPMC_A9 pin
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 ---
- include/ns16550.h | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm/boards/phytec-phyflex-am335x/board.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/include/ns16550.h b/include/ns16550.h
-index 876bb04..ccf950b 100644
---- a/include/ns16550.h
-+++ b/include/ns16550.h
-@@ -34,9 +34,6 @@ struct NS16550_plat {
- 	/** Clock speed */
- 	unsigned int clock;
- 	int shift;
--	unsigned int flags;
--	int mmio;
--#define NS16650_FLAG_DISABLE_FIFO	1
- };
+diff --git a/arch/arm/boards/phytec-phyflex-am335x/board.c b/arch/arm/boards/phytec-phyflex-am335x/board.c
+index 12fad8f..cf7dd2e 100644
+--- a/arch/arm/boards/phytec-phyflex-am335x/board.c
++++ b/arch/arm/boards/phytec-phyflex-am335x/board.c
+@@ -89,6 +89,8 @@ static int pfla03_devices_init(void)
+ 	armlinux_set_architecture(MACH_TYPE_PFLA03);
+ 	defaultenv_append_directory(defaultenv_phyflex_am335x);
  
- #endif				/* __NS16650_PLATFORM_H_ */
++	am33xx_select_rmii2_crs_dv();
++
+ 	am33xx_bbu_spi_nor_mlo_register_handler("MLO.spi", "/dev/m25p0.xload");
+ 	am33xx_bbu_spi_nor_register_handler("spi", "/dev/m25p0.barebox");
+ 	am33xx_bbu_nand_xloadslots_register_handler("MLO.nand",
 -- 
-2.0.4
+1.7.0.4
 
 
 _______________________________________________
