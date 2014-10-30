@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XjoRe-0001rj-HL
- for barebox@lists.infradead.org; Thu, 30 Oct 2014 12:03:16 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 51184A004CA
- for <barebox@lists.infradead.org>; Thu, 30 Oct 2014 13:03:00 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Thu, 30 Oct 2014 13:02:52 +0100
-Message-Id: <1414670572-43351-3-git-send-email-t.gamez@phytec.de>
-In-Reply-To: <1414670572-43351-1-git-send-email-t.gamez@phytec.de>
-References: <1414670572-43351-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Xjorq-0002YJ-Gy
+ for barebox@lists.infradead.org; Thu, 30 Oct 2014 12:30:19 +0000
+Received: by mail-lb0-f179.google.com with SMTP id w7so4200249lbi.38
+ for <barebox@lists.infradead.org>; Thu, 30 Oct 2014 05:29:55 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 30 Oct 2014 15:30:39 +0300
+Message-Id: <1414672239-9998-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1414672239-9998-1-git-send-email-antonynpavlov@gmail.com>
+References: <1414672239-9998-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,80 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For next PATCH 3/3] ARM: am335x: phyCORE-AM335x: Create new dts for
- MLO
+Subject: [PATCH 2/2] Makefile: fix typos
 To: barebox@lists.infradead.org
 
-VXNlIGEgbWxvIGRldmljZSB0cmVlIHdpdGggYWxsIGJvb3RhYmxlIGRldmljZXMgZGlzYWJsZWQu
-ClRoZSBib290c291cmNlIGlzIGNoZWNrZWQgaW4gdGhlIGJvYXJkIGZpbGUgYW5kIG9ubHkgdGhl
-Cm5lZWRlZCBkZXZpY2UgaXMgZW5hYmxlZCBhbmQgcmVnaXN0ZXJlZC4KClNpZ25lZC1vZmYtYnk6
-IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9w
-aHl0ZWMtcGh5Y29yZS1hbTMzNXgvYm9hcmQuYyAgICB8ICAzICsrKwogYXJjaC9hcm0vYm9hcmRz
-L3BoeXRlYy1waHljb3JlLWFtMzM1eC9sb3dsZXZlbC5jIHwgIDMgKystCiBhcmNoL2FybS9kdHMv
-TWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMiArLQogYXJjaC9hcm0vZHRz
-L2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20tbWxvLmR0cyAgIHwgMjggKysrKysrKysrKysrKysr
-KysrKysrKysrCiA0IGZpbGVzIGNoYW5nZWQsIDM0IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25z
-KC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29y
-ZS1zb20tbWxvLmR0cwoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29y
-ZS1hbTMzNXgvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgv
-Ym9hcmQuYwppbmRleCA2NGUzOTA0Li5hNzJjZWJkIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2Fy
-ZHMvcGh5dGVjLXBoeWNvcmUtYW0zMzV4L2JvYXJkLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3Bo
-eXRlYy1waHljb3JlLWFtMzM1eC9ib2FyZC5jCkBAIC04Myw2ICs4Myw5IEBAIHN0YXRpYyBpbnQg
-cGNtMDUxX2RldmljZXNfaW5pdCh2b2lkKQogCQl4bG9hZHNsb3RzLCBBUlJBWV9TSVpFKHhsb2Fk
-c2xvdHMpKTsKIAlhbTMzeHhfYmJ1X25hbmRfcmVnaXN0ZXJfaGFuZGxlcigibmFuZCIsICIvZGV2
-L25hbmQwLmJhcmVib3guYmIiKTsKIAorCWlmIChJU19FTkFCTEVEKENPTkZJR19TSEVMTF9OT05F
-KSkKKwkJcmV0dXJuIGFtMzN4eF9vZl9yZWdpc3Rlcl9ib290ZGV2aWNlKCk7CisKIAlyZXR1cm4g
-MDsKIH0KIGRldmljZV9pbml0Y2FsbChwY20wNTFfZGV2aWNlc19pbml0KTsKZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwuYyBiL2FyY2gv
-YXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwuYwppbmRleCA1NWNjNjY3
-Li41YWI4YjViIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtYW0z
-MzV4L2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWFtMzM1
-eC9sb3dsZXZlbC5jCkBAIC0xMTgsNiArMTE4LDcgQEAgc3RydWN0IHBjbTA1MV9zZHJhbV90aW1p
-bmdzIHRpbWluZ3NbXSA9IHsKIH07CiAKIGV4dGVybiBjaGFyIF9fZHRiX2FtMzM1eF9waHl0ZWNf
-cGh5Y29yZV9zb21fc3RhcnRbXTsKK2V4dGVybiBjaGFyIF9fZHRiX2FtMzM1eF9waHl0ZWNfcGh5
-Y29yZV9zb21fbWxvX3N0YXJ0W107CiBleHRlcm4gY2hhciBfX2R0Yl9hbTMzNXhfcGh5dGVjX3Bo
-eWNvcmVfc29tX25vX3NwaV9zdGFydFtdOwogCiAvKioKQEAgLTE1NCw3ICsxNTUsNyBAQCBzdGF0
-aWMgbm9pbmxpbmUgdm9pZCBwY20wNTFfYm9hcmRfaW5pdChpbnQgc2RyYW0pCiAJb21hcF91YXJ0
-X2xvd2xldmVsX2luaXQoKHZvaWQgKilBTTMzWFhfVUFSVDBfQkFTRSk7CiAJcHV0Y19sbCgnPicp
-OwogCi0JZmR0ID0gX19kdGJfYW0zMzV4X3BoeXRlY19waHljb3JlX3NvbV9zdGFydCAtIGdldF9y
-dW50aW1lX29mZnNldCgpOworCWZkdCA9IF9fZHRiX2FtMzM1eF9waHl0ZWNfcGh5Y29yZV9zb21f
-bWxvX3N0YXJ0IC0gZ2V0X3J1bnRpbWVfb2Zmc2V0KCk7CiAKIAlhbTMzNXhfYmFyZWJveF9lbnRy
-eShmZHQpOwogfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL01ha2VmaWxlIGIvYXJjaC9hcm0v
-ZHRzL01ha2VmaWxlCmluZGV4IGE5ZTllZTcuLmQ4MTYwZmUgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
-L2R0cy9NYWtlZmlsZQorKysgYi9hcmNoL2FybS9kdHMvTWFrZWZpbGUKQEAgLTI2LDcgKzI2LDcg
-QEAgcGJsLWR0Yi0kKENPTkZJR19NQUNIX05WSURJQV9KRVRTT04pICs9IHRlZ3JhMTI0LWpldHNv
-bi10azEuZHRiLm8KIHBibC1kdGItJChDT05GSUdfTUFDSF9QQ0ExMDApICs9IGlteDI3LXBoeXRl
-Yy1waHljYXJkLXMtcmRrLWJiLmR0Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfUENBQVhMMykg
-Kz0gaW14NnEtcGh5dGVjLXBiYWEwMy5kdGIubwogcGJsLWR0Yi0kKENPTkZJR19NQUNIX1BDTTAz
-OCkgKz0gaW14MjctcGh5dGVjLXBoeWNvcmUtcmRrLmR0Yi5vCi1wYmwtZHRiLSQoQ09ORklHX01B
-Q0hfUENNMDUxKSArPSBhbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0Yi5vIGFtMzM1eC1waHl0
-ZWMtcGh5Y29yZS1zb20tbm8tc3BpLmR0Yi5vCitwYmwtZHRiLSQoQ09ORklHX01BQ0hfUENNMDUx
-KSArPSBhbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLmR0Yi5vIGFtMzM1eC1waHl0ZWMtcGh5Y29y
-ZS1zb20tbm8tc3BpLmR0Yi5vIGFtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20tbWxvLmR0Yi5vCiBw
-YmwtZHRiLSQoQ09ORklHX01BQ0hfUEZMQTAzKSArPSBhbTMzNXgtcGh5dGVjLXBoeWZsZXguZHRi
-Lm8KIHBibC1kdGItJChDT05GSUdfTUFDSF9QSFlURUNfUEZMQTAyKSArPSBpbXg2cy1waHl0ZWMt
-cGJhYjAxLmR0Yi5vIGlteDZkbC1waHl0ZWMtcGJhYjAxLmR0Yi5vIGlteDZxLXBoeXRlYy1wYmFi
-MDEuZHRiLm8KIHBibC1kdGItJChDT05GSUdfTUFDSF9QTEFUSE9NRV9PUEVOQkxPQ0tTX0FYMykg
-Kz0gYXJtYWRhLXhwLW9wZW5ibG9ja3MtYXgzLTQtYmIuZHRiLm8KZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLW1sby5kdHMgYi9hcmNoL2FybS9kdHMv
-YW0zMzV4LXBoeXRlYy1waHljb3JlLXNvbS1tbG8uZHRzCm5ldyBmaWxlIG1vZGUgMTAwNjQ0Cmlu
-ZGV4IDAwMDAwMDAuLjQxMTc0MzkKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9kdHMvYW0z
-MzV4LXBoeXRlYy1waHljb3JlLXNvbS1tbG8uZHRzCkBAIC0wLDAgKzEsMjggQEAKKy8qCisgKiBD
-b3B5cmlnaHQgKEMpIDIwMTQgVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+IFBIWVRF
-QyBNZXNzdGVjaG5payBHbWJICisgKgorICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7
-IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKKyAqIGl0IHVuZGVyIHRoZSB0
-ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyIGFzCisgKiBw
-dWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KKyAqLworL2R0cy12MS87
-CisKKyNpbmNsdWRlICJhbTMzeHguZHRzaSIKKyNpbmNsdWRlICJhbTMzNXgtcGh5dGVjLXBoeWNv
-cmUtc29tLmR0c2kiCisKKy8geworCW1vZGVsID0gIlBoeXRlYyBwaHlDT1JFIEFNMzM1eCI7CisJ
-Y29tcGF0aWJsZSA9ICJwaHl0ZWMscGh5Y29yZS1hbTMzNXgtc29tIiwgInRpLGFtMzN4eCI7Cit9
-OworCisvKiBLZWVwIGFsbCBib29zb3VyY2VzIGRpc2FibGVkLCB3ZSBlbmFibGUgYW5kIHJlZ2lz
-dGVyIHRoZW0KKyAqIGxhdGVyIHdoaWxlIGJvb3RpbmcuCisgKi8KKworJm1tYzEgeworCXN0YXR1
-cyA9ICJkaXNhYmxlZCI7Cit9OworCismZ3BtYyB7CisJc3RhdHVzID0gImRpc2FibGVkIjsKK307
-Ci0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This patch is based on these linux kernel commits:
+
+    commit d384e35a25445bb60457b7dab8cffe178c6b7ecb
+    Author: Linus Nilsson <lajnold@acc.umu.se>
+    Date:   Sun Jan 20 17:10:01 2008 +0100
+
+        Makefile: Change typoed 'behavour' to 'behaviour'
+
+    commit fe8d0a41081d6d0912386f3672ccc0bf1d675630
+    Author: Kirill Smelkov <kirr@mns.spb.ru>
+    Date:   Thu Apr 9 15:34:34 2009 +0400
+
+        kbuild: fix a few typos in top-level Makefile
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ Makefile | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index c5f965e..8eb50d4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -12,7 +12,7 @@ NAME = None
+ 
+ # Do not:
+ # o  use make's built-in rules and variables
+-#    (this increases performance and avoid hard-to-debug behavour);
++#    (this increases performance and avoids hard-to-debug behaviour);
+ # o  print "Entering directory ...";
+ MAKEFLAGS += -rR --no-print-directory
+ 
+@@ -1211,6 +1211,5 @@ FORCE:
+ Makefile: ;
+ 
+ # Declare the contents of the .PHONY variable as phony.  We keep that
+-# information in a variable se we can use it in if_changed and friends.
++# information in a variable so we can use it in if_changed and friends.
+ .PHONY: $(PHONY)
+-
+-- 
+2.1.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
