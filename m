@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xjoro-0002Wl-8P
- for barebox@lists.infradead.org; Thu, 30 Oct 2014 12:30:18 +0000
-Received: by mail-lb0-f177.google.com with SMTP id 10so4127334lbg.22
- for <barebox@lists.infradead.org>; Thu, 30 Oct 2014 05:29:53 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 30 Oct 2014 15:30:37 +0300
-Message-Id: <1414672239-9998-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Xk7H5-00086O-Rg
+ for barebox@lists.infradead.org; Fri, 31 Oct 2014 08:09:36 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 04E5DA002F6
+ for <barebox@lists.infradead.org>; Fri, 31 Oct 2014 09:09:20 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Fri, 31 Oct 2014 09:09:10 +0100
+Message-Id: <1414742950-32650-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,27 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] fix typos (import from linux kernel)
+Subject: [For next PATCH] boards: defaultenv: Fix nand bootargs for AM335x
+ boards.
 To: barebox@lists.infradead.org
 
-Antony Pavlov (2):
-  Typoes:  "whith" -> "with"
-  Makefile: fix typos
-
- Makefile          | 7 +++----
- drivers/mci/mxs.c | 2 +-
- 2 files changed, 4 insertions(+), 5 deletions(-)
-
--- 
-2.1.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXBkYXRlIG5hbmQgYm9vdGFyZ3MgZm9yIHBoeUZMRVgtQU0zMzV4IGFuZCBwaHlDT1JFLUFNMzM1
+eAp0byBzdXBwb3J0IG1vZGVybiBrZXJuZWxzLgoKU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1l
+eiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogLi4uL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMz
+NXgvZGVmYXVsdGVudi1waHljb3JlLWFtMzM1eC9ib290L25hbmQgICAgfCAyICstCiAuLi4vYm9h
+cmRzL3BoeXRlYy1waHlmbGV4LWFtMzM1eC9kZWZhdWx0ZW52LXBoeWZsZXgtYW0zMzV4L2Jvb3Qv
+bmFuZCAgICB8IDIgKy0KIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
+aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMz
+NXgvZGVmYXVsdGVudi1waHljb3JlLWFtMzM1eC9ib290L25hbmQgYi9hcmNoL2FybS9ib2FyZHMv
+cGh5dGVjLXBoeWNvcmUtYW0zMzV4L2RlZmF1bHRlbnYtcGh5Y29yZS1hbTMzNXgvYm9vdC9uYW5k
+CmluZGV4IGQ5ZWYxNDUuLjFkZmJlZjkgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9waHl0
+ZWMtcGh5Y29yZS1hbTMzNXgvZGVmYXVsdGVudi1waHljb3JlLWFtMzM1eC9ib290L25hbmQKKysr
+IGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWFtMzM1eC9kZWZhdWx0ZW52LXBoeWNv
+cmUtYW0zMzV4L2Jvb3QvbmFuZApAQCAtNSw0ICs1LDQgQEAgZ2xvYmFsLmJvb3RtLmltYWdlPSIv
+ZGV2L25hbmQwLmtlcm5lbC5iYiIKIAogYm9vdGFyZ3MtaXAKIAotZ2xvYmFsLmxpbnV4LmJvb3Rh
+cmdzLmR5bi5yb290PSJyb290PXViaTA6cm9vdCB1YmkubXRkPW5hbmQwLnJvb3QsMjA0OCBydyBy
+b290ZnN0eXBlPXViaWZzIgorZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PXVi
+aTA6cm9vdCB1YmkubXRkPXJvb3Qgcncgcm9vdGZzdHlwZT11YmlmcyIKZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5ZmxleC1hbTMzNXgvZGVmYXVsdGVudi1waHlmbGV4LWFt
+MzM1eC9ib290L25hbmQgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWZsZXgtYW0zMzV4L2Rl
+ZmF1bHRlbnYtcGh5ZmxleC1hbTMzNXgvYm9vdC9uYW5kCmluZGV4IGQ5ZWYxNDUuLjFkZmJlZjkg
+MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5ZmxleC1hbTMzNXgvZGVmYXVs
+dGVudi1waHlmbGV4LWFtMzM1eC9ib290L25hbmQKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRl
+Yy1waHlmbGV4LWFtMzM1eC9kZWZhdWx0ZW52LXBoeWZsZXgtYW0zMzV4L2Jvb3QvbmFuZApAQCAt
+NSw0ICs1LDQgQEAgZ2xvYmFsLmJvb3RtLmltYWdlPSIvZGV2L25hbmQwLmtlcm5lbC5iYiIKIAog
+Ym9vdGFyZ3MtaXAKIAotZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PXViaTA6
+cm9vdCB1YmkubXRkPW5hbmQwLnJvb3QsMjA0OCBydyByb290ZnN0eXBlPXViaWZzIgorZ2xvYmFs
+LmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PXViaTA6cm9vdCB1YmkubXRkPXJvb3Qgcncg
+cm9vdGZzdHlwZT11YmlmcyIKLS0gCjEuOS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
