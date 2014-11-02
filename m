@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xl1RB-0006hY-4z
+ id 1Xl1RB-0006hX-53
  for barebox@lists.infradead.org; Sun, 02 Nov 2014 20:07:46 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E6E1.dip0.t-ipconnect.de
- [87.181.230.225]) by lynxeye.de (Postfix) with ESMTPA id 8E5E226C2005
- for <barebox@lists.infradead.org>; Sun,  2 Nov 2014 21:06:48 +0100 (CET)
+ [87.181.230.225]) by lynxeye.de (Postfix) with ESMTPA id D79B526C2003
+ for <barebox@lists.infradead.org>; Sun,  2 Nov 2014 21:06:47 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  2 Nov 2014 21:13:46 +0100
-Message-Id: <1414959235-18095-5-git-send-email-dev@lynxeye.de>
+Date: Sun,  2 Nov 2014 21:13:44 +0100
+Message-Id: <1414959235-18095-3-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1414959235-18095-1-git-send-email-dev@lynxeye.de>
 References: <1414959235-18095-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,62 +24,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/13] pinctrl: tegra: try to select "boot" state
+Subject: [PATCH 02/13] net: rtl8169: clean receive buffer after net handler
 To: barebox@lists.infradead.org
 
-New DTs call the initial pinctrl state "boot" in
-order to avoid Linux reconfiguring the pinctrl
-by default. The bootloader should explicitly set
-this state.
+The processing of the buffer might change some data, which
+will eventually trigger a cache writeback later on, corrupting
+data written by the network chip. Clean the cache range
+to make sure there is no writeback pending.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/pinctrl/pinctrl-tegra20.c | 8 ++++++--
- drivers/pinctrl/pinctrl-tegra30.c | 8 ++++++--
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/rtl8169.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-tegra20.c b/drivers/pinctrl/pinctrl-tegra20.c
-index 3c11be6..be9d8a9 100644
---- a/drivers/pinctrl/pinctrl-tegra20.c
-+++ b/drivers/pinctrl/pinctrl-tegra20.c
-@@ -320,10 +320,14 @@ static int pinctrl_tegra20_probe(struct device_d *dev)
- 	ctrl->pinctrl.ops = &pinctrl_tegra20_ops;
+diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
+index 0cd5763..5702900 100644
+--- a/drivers/net/rtl8169.c
++++ b/drivers/net/rtl8169.c
+@@ -233,6 +233,8 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
+ 	priv->rx_desc = dma_alloc_coherent(NUM_RX_DESC *
+ 				sizeof(struct bufdesc));
+ 	priv->rx_buf = malloc(NUM_RX_DESC * PKT_BUF_SIZE);
++	dma_clean_range((unsigned long)priv->rx_buf,
++			(unsigned long)priv->rx_buf + NUM_RX_DESC * PKT_BUF_SIZE);
  
- 	ret = pinctrl_register(&ctrl->pinctrl);
--	if (ret)
-+	if (ret) {
- 		free(ctrl);
-+		return ret;
-+	}
+ 	memset(priv->tx_desc, 0, NUM_TX_DESC * sizeof(struct bufdesc));
+ 	memset(priv->rx_desc, 0, NUM_RX_DESC * sizeof(struct bufdesc));
+@@ -421,6 +423,15 @@ static int rtl8169_eth_rx(struct eth_device *edev)
+ 			net_receive(edev, priv->rx_buf + entry * PKT_BUF_SIZE,
+ 			            pkt_size);
+ 
++			/*
++			 * the buffer is going to be reused by HW, make sure to
++			 * clean out any potentially modified data
++			 */
++			dma_clean_range((unsigned long)priv->rx_buf
++			               + entry * PKT_BUF_SIZE,
++			              (unsigned long)priv->rx_buf
++			               + entry * PKT_BUF_SIZE + pkt_size);
 +
-+	of_pinctrl_select_state(dev->device_node, "boot");
- 
--	return ret;
-+	return 0;
- }
- 
- static __maybe_unused struct of_device_id pinctrl_tegra20_dt_ids[] = {
-diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctrl-tegra30.c
-index 8277218..aac6760 100644
---- a/drivers/pinctrl/pinctrl-tegra30.c
-+++ b/drivers/pinctrl/pinctrl-tegra30.c
-@@ -897,10 +897,14 @@ static int pinctrl_tegra30_probe(struct device_d *dev)
- 	ctrl->pinctrl.ops = &pinctrl_tegra30_ops;
- 
- 	ret = pinctrl_register(&ctrl->pinctrl);
--	if (ret)
-+	if (ret) {
- 		free(ctrl);
-+		return ret;
-+	}
-+
-+	of_pinctrl_select_state(dev->device_node, "boot");
- 
--	return ret;
-+	return 0;
- }
- 
- static __maybe_unused struct of_device_id pinctrl_tegra30_dt_ids[] = {
+ 			if (entry == NUM_RX_DESC - 1)
+ 				priv->rx_desc[entry].status = BD_STAT_OWN |
+ 					BD_STAT_EOR | PKT_BUF_SIZE;
 -- 
 1.9.3
 
