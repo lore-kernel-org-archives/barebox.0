@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xl1RB-0006hX-53
+ id 1Xl1RB-0006hV-5U
  for barebox@lists.infradead.org; Sun, 02 Nov 2014 20:07:46 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E6E1.dip0.t-ipconnect.de
- [87.181.230.225]) by lynxeye.de (Postfix) with ESMTPA id D79B526C2003
+ [87.181.230.225]) by lynxeye.de (Postfix) with ESMTPA id 4829926C2001
  for <barebox@lists.infradead.org>; Sun,  2 Nov 2014 21:06:47 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  2 Nov 2014 21:13:44 +0100
-Message-Id: <1414959235-18095-3-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1414959235-18095-1-git-send-email-dev@lynxeye.de>
-References: <1414959235-18095-1-git-send-email-dev@lynxeye.de>
+Date: Sun,  2 Nov 2014 21:13:42 +0100
+Message-Id: <1414959235-18095-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,48 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] net: rtl8169: clean receive buffer after net handler
+Subject: [PATCH 00/13] Tegra124 PCIe
 To: barebox@lists.infradead.org
 
-The processing of the buffer might change some data, which
-will eventually trigger a cache writeback later on, corrupting
-data written by the network chip. Clean the cache range
-to make sure there is no writeback pending.
+This series implements PCIe on Tegra124 aka K1. With
+this applied the Jetson-TK1 platform is finally useable
+for proper development, as the network is working now.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- drivers/net/rtl8169.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+The series is spun against -next, as it depends on the
+previous Tegra PCIe work found there. I hope Sascha can
+still squeeze this in before the next release.
 
-diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
-index 0cd5763..5702900 100644
---- a/drivers/net/rtl8169.c
-+++ b/drivers/net/rtl8169.c
-@@ -233,6 +233,8 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
- 	priv->rx_desc = dma_alloc_coherent(NUM_RX_DESC *
- 				sizeof(struct bufdesc));
- 	priv->rx_buf = malloc(NUM_RX_DESC * PKT_BUF_SIZE);
-+	dma_clean_range((unsigned long)priv->rx_buf,
-+			(unsigned long)priv->rx_buf + NUM_RX_DESC * PKT_BUF_SIZE);
- 
- 	memset(priv->tx_desc, 0, NUM_TX_DESC * sizeof(struct bufdesc));
- 	memset(priv->rx_desc, 0, NUM_RX_DESC * sizeof(struct bufdesc));
-@@ -421,6 +423,15 @@ static int rtl8169_eth_rx(struct eth_device *edev)
- 			net_receive(edev, priv->rx_buf + entry * PKT_BUF_SIZE,
- 			            pkt_size);
- 
-+			/*
-+			 * the buffer is going to be reused by HW, make sure to
-+			 * clean out any potentially modified data
-+			 */
-+			dma_clean_range((unsigned long)priv->rx_buf
-+			               + entry * PKT_BUF_SIZE,
-+			              (unsigned long)priv->rx_buf
-+			               + entry * PKT_BUF_SIZE + pkt_size);
-+
- 			if (entry == NUM_RX_DESC - 1)
- 				priv->rx_desc[entry].status = BD_STAT_OWN |
- 					BD_STAT_EOR | PKT_BUF_SIZE;
+Lucas Stach (13):
+  net: rtl8169: add support for RTL-8168/8111g
+  net: rtl8169: clean receive buffer after net handler
+  tegra: defconfig: enable barebox OF drivers
+  pinctrl: tegra: try to select "boot" state
+  arm: dts: jetson-tk1: switch to upstream DT
+  clk: tegra: slow down MSELECT to 102MHz
+  tegra: pmc: work around power domain failure
+  tegra: jetson-tk1: enable 1.05V_RUN
+  clk: tegra124: add PLLE setup functions
+  clk: tegra124: add PCIe clocks
+  add generic PHY framework
+  pinctrl: tegra: add XUSB pad controller
+  pci: tegra: add tegra124 support
+
+ arch/arm/boards/nvidia-jetson-tk1/Makefile |    2 +-
+ arch/arm/boards/nvidia-jetson-tk1/board.c  |   50 +
+ arch/arm/configs/tegra_v7_defconfig        |    1 +
+ arch/arm/dts/tegra124-jetson-tk1.dts       | 1823 +---------------------------
+ arch/arm/mach-tegra/tegra20-pmc.c          |    2 +
+ drivers/Kconfig                            |    1 +
+ drivers/Makefile                           |    1 +
+ drivers/clk/tegra/clk-pll.c                |  173 ++-
+ drivers/clk/tegra/clk-tegra124.c           |   37 +-
+ drivers/clk/tegra/clk-tegra30.c            |    2 +-
+ drivers/clk/tegra/clk.h                    |    7 +
+ drivers/net/rtl8169.c                      |   12 +
+ drivers/pci/pci-tegra.c                    |  156 ++-
+ drivers/phy/Kconfig                        |   18 +
+ drivers/phy/Makefile                       |    5 +
+ drivers/phy/phy-core.c                     |  318 +++++
+ drivers/pinctrl/Kconfig                    |    8 +
+ drivers/pinctrl/Makefile                   |    1 +
+ drivers/pinctrl/pinctrl-tegra-xusb.c       |  519 ++++++++
+ drivers/pinctrl/pinctrl-tegra20.c          |    8 +-
+ drivers/pinctrl/pinctrl-tegra30.c          |    8 +-
+ include/linux/phy/phy.h                    |  240 ++++
+ 22 files changed, 1538 insertions(+), 1854 deletions(-)
+ create mode 100644 arch/arm/boards/nvidia-jetson-tk1/board.c
+ create mode 100644 drivers/phy/Kconfig
+ create mode 100644 drivers/phy/Makefile
+ create mode 100644 drivers/phy/phy-core.c
+ create mode 100644 drivers/pinctrl/pinctrl-tegra-xusb.c
+ create mode 100644 include/linux/phy/phy.h
+
 -- 
 1.9.3
 
