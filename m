@@ -1,17 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XlGo6-0003X1-4f
- for barebox@lists.infradead.org; Mon, 03 Nov 2014 12:32:27 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id CEDCEA001F6
- for <barebox@lists.infradead.org>; Mon,  3 Nov 2014 13:32:11 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Mon, 3 Nov 2014 13:31:53 +0100
-Message-Id: <1415017914-43444-2-git-send-email-t.gamez@phytec.de>
-In-Reply-To: <1415017914-43444-1-git-send-email-t.gamez@phytec.de>
-References: <1415017914-43444-1-git-send-email-t.gamez@phytec.de>
+Received: from mail-wi0-f178.google.com ([209.85.212.178])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XlHPB-0004EB-Lk
+ for barebox@lists.infradead.org; Mon, 03 Nov 2014 13:10:48 +0000
+Received: by mail-wi0-f178.google.com with SMTP id q5so6326954wiv.11
+ for <barebox@lists.infradead.org>; Mon, 03 Nov 2014 05:10:20 -0800 (PST)
+Received: from gmail.com (p578a7230.dip0.t-ipconnect.de. [87.138.114.48])
+ by mx.google.com with ESMTPSA id r6sm8690519wif.0.2014.11.03.05.10.18
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+ Mon, 03 Nov 2014 05:10:19 -0800 (PST)
+Date: Mon, 3 Nov 2014 14:10:21 +0100
+From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
+Message-ID: <20141103131020.GA9797@gmail.com>
+References: <20141103105305.GA31019@gmail.com>
+ <20141103120138.GM14443@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20141103120138.GM14443@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +26,18 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 2/3] ARM: am335x: Add register of boot devices
+Subject: Re: phy-addr via dt
 To: barebox@lists.infradead.org
 
-QWRkIHN1cHBvcnQgZm9yIHJlZ2lzdGVyaW5nIGRpc2FibGVkIGJvb3QgZGV2aWNlcyBmcm9tIG9m
-dHJlZS4KQ3JlYXRpbmcgYSBkZXZpY2UgdHJlZSB3aXRoIGFsbCBib290YWJsZSBkZXZpY2VzIGRp
-c2FibGVkLCBtYWtlcwppdCBwb3NzaWJsZSB0byBvbmx5IGVuYWJsZSBhbmQgcmVnaXN0ZXIgdGhl
-IGRldmljZXMgbmVlZGVkIHRvCmxvYWQgdGhlIG5leHQgc3RhZ2UgYm9vdGxvYWRlci4KClNpZ25l
-ZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KdjI6Ci0gdXBk
-YXRlZCBvZiBmdW5jaW9uIG5hbWUKCiBhcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMu
-YyAgICAgICAgICAgICAgfCAzMSArKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL21h
-Y2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWdlbmVyaWMuaCB8ICAxICsKIDIgZmlsZXMgY2hh
-bmdlZCwgMzIgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9h
-bTMzeHhfZ2VuZXJpYy5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKaW5k
-ZXggZjI5MzEzNC4uYjU2MTU3NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4
-eF9nZW5lcmljLmMKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKQEAg
-LTQyOCwzICs0MjgsMzQgQEAgdm9pZCBhbTMzNXhfc2RyYW1faW5pdChpbnQgaW9jdHJsLCBjb25z
-dCBzdHJ1Y3QgYW0zM3h4X2NtZF9jb250cm9sICpjbWRfY3RybCwKIAogCWFtMzN4eF9jb25maWdf
-c2RyYW0oZW1pZl9yZWdzKTsKIH0KKworaW50IGFtMzN4eF9vZl9yZWdpc3Rlcl9ib290ZGV2aWNl
-KHZvaWQpCit7CisJc3RydWN0IGRldmljZV9kICpkZXY7CisKKwlzd2l0Y2ggKGJvb3Rzb3VyY2Vf
-Z2V0KCkpIHsKKwljYXNlIEJPT1RTT1VSQ0VfTU1DOgorCQlpZiAoYm9vdHNvdXJjZV9nZXRfaW5z
-dGFuY2UoKSA9PSAwKQorCQkJZGV2ID0gb2ZfZGV2aWNlX2VuYWJsZV9hbmRfcmVnaXN0ZXJfYnlf
-bmFtZSgibW1jQDQ4MDYwMDAwIik7CisJCWVsc2UKKwkJCWRldiA9IG9mX2RldmljZV9lbmFibGVf
-YW5kX3JlZ2lzdGVyX2J5X25hbWUoIm1tY0A0ODFkODAwMCIpOworCQlicmVhazsKKwljYXNlIEJP
-T1RTT1VSQ0VfTkFORDoKKwkJZGV2ID0gb2ZfZGV2aWNlX2VuYWJsZV9hbmRfcmVnaXN0ZXJfYnlf
-bmFtZSgiZ3BtY0A1MDAwMDAwMCIpOworCQlicmVhazsKKwljYXNlIEJPT1RTT1VSQ0VfU1BJOgor
-CQlkZXYgPSBvZl9kZXZpY2VfZW5hYmxlX2FuZF9yZWdpc3Rlcl9ieV9uYW1lKCJzcGlANDgwMzAw
-MDAiKTsKKwkJYnJlYWs7CisJZGVmYXVsdDoKKwkJLyogVXNlIG5hbmQgZmFsbGJhY2sgKi8KKwkJ
-ZGV2ID0gb2ZfZGV2aWNlX2VuYWJsZV9hbmRfcmVnaXN0ZXJfYnlfbmFtZSgiZ3BtY0A1MDAwMDAw
-MCIpOworCQlicmVhazsKKwl9CisKKwlpZiAoIWRldikgeworCQlwcmludGYoIlVuYWJsZSB0byBy
-ZWdpc3RlciBib290IGRldmljZVxuIik7CisJCXJldHVybiAtRU5PREVWOworCX0KKworCXJldHVy
-biAwOworfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMz
-eHgtZ2VuZXJpYy5oIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2Vu
-ZXJpYy5oCmluZGV4IDZjODVkNTEuLjczMTIwNjEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gt
-b21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWdlbmVyaWMuaAorKysgYi9hcmNoL2FybS9tYWNoLW9t
-YXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5lcmljLmgKQEAgLTMzLDUgKzMzLDYgQEAgdm9pZCBf
-X25vcmV0dXJuIGFtMzN4eF9yZXNldF9jcHUodW5zaWduZWQgbG9uZyBhZGRyKTsKIHZvaWQgYW0z
-M3h4X2VuYWJsZV9wZXJfY2xvY2tzKHZvaWQpOwogaW50IGFtMzN4eF9pbml0KHZvaWQpOwogaW50
-IGFtMzN4eF9kZXZpY2VzX2luaXQodm9pZCk7CitpbnQgYW0zM3h4X29mX3JlZ2lzdGVyX2Jvb3Rk
-ZXZpY2Uodm9pZCk7CiAKICNlbmRpZiAvKiBfX01BQ0hfQU0zM1hYX0dFTkVSSUNfSCAqLwotLSAK
-MS45LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Sascha,
+
+It works! Thanks!
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
