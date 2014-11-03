@@ -1,23 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f178.google.com ([209.85.212.178])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XlHPB-0004EB-Lk
- for barebox@lists.infradead.org; Mon, 03 Nov 2014 13:10:48 +0000
-Received: by mail-wi0-f178.google.com with SMTP id q5so6326954wiv.11
- for <barebox@lists.infradead.org>; Mon, 03 Nov 2014 05:10:20 -0800 (PST)
-Received: from gmail.com (p578a7230.dip0.t-ipconnect.de. [87.138.114.48])
- by mx.google.com with ESMTPSA id r6sm8690519wif.0.2014.11.03.05.10.18
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
- Mon, 03 Nov 2014 05:10:19 -0800 (PST)
-Date: Mon, 3 Nov 2014 14:10:21 +0100
-From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-Message-ID: <20141103131020.GA9797@gmail.com>
-References: <20141103105305.GA31019@gmail.com>
- <20141103120138.GM14443@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XlIpg-0007y4-8s
+ for barebox@lists.infradead.org; Mon, 03 Nov 2014 14:42:13 +0000
+Date: Mon, 3 Nov 2014 15:41:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141103144148.GQ14443@pengutronix.de>
+References: <1414074098-13717-1-git-send-email-voytikd@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20141103120138.GM14443@pengutronix.de>
+In-Reply-To: <1414074098-13717-1-git-send-email-voytikd@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,12 +22,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: phy-addr via dt
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: imx23-olinuxino: discover usb before ifup
+To: Dmitry Voytik <voytikd@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+On Thu, Oct 23, 2014 at 06:21:38PM +0400, Dmitry Voytik wrote:
+> i.MX233 in OLinuXino uses LAN9512 for Ethernet connection.
+> LAN9512 is connected to USB. Execute usb command before bringing
+> network up.
+> 
+> This patch makes 'ifup eth0' workable.
+> 
+> Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
 
-It works! Thanks!
+Applied, thanks
+
+Sascha
+
+> ---
+>  arch/arm/boards/imx233-olinuxino/env/network/eth0-discover | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>  create mode 100644 arch/arm/boards/imx233-olinuxino/env/network/eth0-discover
+> 
+> diff --git a/arch/arm/boards/imx233-olinuxino/env/network/eth0-discover b/arch/arm/boards/imx233-olinuxino/env/network/eth0-discover
+> new file mode 100644
+> index 0000000..76494fe
+> --- /dev/null
+> +++ b/arch/arm/boards/imx233-olinuxino/env/network/eth0-discover
+> @@ -0,0 +1,6 @@
+> +#!/bin/sh
+> +
+> +#  In OLinuXino board i.MX233 SoC uses LAN9512 (attached to USB) to connect
+> +#  to an Ethernet LAN.
+> +
+> +usb
+> -- 
+> 1.9.1
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
