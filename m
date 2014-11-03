@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XlQOn-0006J8-QW
- for barebox@lists.infradead.org; Mon, 03 Nov 2014 22:46:59 +0000
+ id 1XlQOn-0006J7-Qc
+ for barebox@lists.infradead.org; Mon, 03 Nov 2014 22:46:58 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E6E1.dip0.t-ipconnect.de
- [87.181.230.225]) by lynxeye.de (Postfix) with ESMTPA id 8E62326C2007
- for <barebox@lists.infradead.org>; Mon,  3 Nov 2014 23:45:16 +0100 (CET)
+ [87.181.230.225]) by lynxeye.de (Postfix) with ESMTPA id A6C9D26C200A
+ for <barebox@lists.infradead.org>; Mon,  3 Nov 2014 23:45:17 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon,  3 Nov 2014 23:52:19 +0100
-Message-Id: <1415055144-6119-7-git-send-email-dev@lynxeye.de>
+Date: Mon,  3 Nov 2014 23:52:22 +0100
+Message-Id: <1415055144-6119-10-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1415055144-6119-1-git-send-email-dev@lynxeye.de>
 References: <1415055144-6119-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,31 +24,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] tegra: tegra124: add serial alias nodes
+Subject: [PATCH 10/12] serial: ns16550: add Tegra support
 To: barebox@lists.infradead.org
-
-They are missing in the upstream DT. Add them
-locally for now.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/dts/tegra124.dtsi | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/serial/serial_ns16550.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/dts/tegra124.dtsi b/arch/arm/dts/tegra124.dtsi
-index 7d0fafa..c795811 100644
---- a/arch/arm/dts/tegra124.dtsi
-+++ b/arch/arm/dts/tegra124.dtsi
-@@ -1 +1,8 @@
--#include <arm/tegra124.dtsi>
-+/ {
-+	aliases {
-+		serial0 = "/serial@0,70006000/";
-+		serial1 = "/serial@0,70006040/";
-+		serial2 = "/serial@0,70006200/";
-+		serial3 = "/serial@0,70006300/";
-+	};
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 07dedf7..8f2e93f 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -311,6 +311,11 @@ static __maybe_unused struct ns16550_drvdata jz_drvdata = {
+ 	.init_port = ns16550_jz_init_port,
+ };
+ 
++static __maybe_unused struct ns16550_drvdata tegra_drvdata = {
++	.init_port = ns16550_serial_init_port,
++	.linux_console_name = "ttyS",
 +};
++
+ static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
+ {
+ 	struct resource *res;
+@@ -477,6 +482,12 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
+ 		.data = (unsigned long)&omap_drvdata,
+ 	},
+ #endif
++#if IS_ENABLED(CONFIG_ARCH_TEGRA)
++	{
++		.compatible = "nvidia,tegra20-uart",
++		.data = (unsigned long)&tegra_drvdata,
++	},
++#endif
+ #if IS_ENABLED(CONFIG_MACH_MIPS_XBURST)
+ 	{
+ 		.compatible = "ingenic,jz4740-uart",
 -- 
 1.9.3
 
