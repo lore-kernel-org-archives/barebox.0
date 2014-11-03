@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XlGiF-0001Qz-Sm
- for barebox@lists.infradead.org; Mon, 03 Nov 2014 12:26:24 +0000
-Date: Mon, 3 Nov 2014 13:26:01 +0100
+ Linux)) id 1XlGlN-0001zC-Q9
+ for barebox@lists.infradead.org; Mon, 03 Nov 2014 12:29:38 +0000
+Date: Mon, 3 Nov 2014 13:29:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141103122601.GF14482@pengutronix.de>
-References: <1414665151-7229-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20141103122914.GN14443@pengutronix.de>
+References: <1415009424-5889-1-git-send-email-w.egorov@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1414665151-7229-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1415009424-5889-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,65 +22,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] serial: ns16550: Remove unused fields from NS16550_plat
- structure
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [For next PATCH v2 1/2] arm: am33xx: Add rmii2_crs_dv mux
+ selection in SMA2 register
+To: Wadim Egorov <w.egorov@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Alexander,
-
-On Thu, Oct 30, 2014 at 01:32:31PM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  include/ns16550.h | 3 ---
->  1 file changed, 3 deletions(-)
+On Mon, Nov 03, 2014 at 11:10:23AM +0100, Wadim Egorov wrote:
+> "Silicon revision 1.0 devices only provide the MMC2_DAT7 signal when Mode3 is
+> selected. Silicon revision 2.0 and newer devices implement another level of
+> pin multiplexing which provides the original MMC2_DAT7 signal or RMII2_CRS_DV
+> signal when Mode3 is selected. This new level of of pin multiplexing is
+> selected with bit zero of the SMA2 register."
 > 
-> diff --git a/include/ns16550.h b/include/ns16550.h
-> index 876bb04..ccf950b 100644
-> --- a/include/ns16550.h
-> +++ b/include/ns16550.h
-> @@ -34,9 +34,6 @@ struct NS16550_plat {
->  	/** Clock speed */
->  	unsigned int clock;
->  	int shift;
-> -	unsigned int flags;
-> -	int mmio;
-> -#define NS16650_FLAG_DISABLE_FIFO	1
->  };
+> See AM335x Sitara Processors Manual.
+> 
+> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 
-This patch removes flags but not its usage in the driver itself.
+Applied, thanks
 
-Squashed this into the commit:
+Sascha
 
-
-From 668db8bea2c201c3cbdb096cac58287d7b38f396 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 3 Nov 2014 13:24:15 +0100
-Subject: [PATCH] fixup! serial: ns16550: Remove unused fields from
- NS16550_plat structure
-
----
- drivers/serial/serial_ns16550.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 4ca7444..53d48a0 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -441,10 +441,7 @@ static int ns16550_probe(struct device_d *dev)
- 	cdev->setbrg = ns16550_setbaudrate;
- 	cdev->linux_console_name = devtype->linux_console_name;
- 
--	if (plat && (plat->flags & NS16650_FLAG_DISABLE_FIFO))
--		priv->fcrval = FCRVAL & ~FCR_FIFO_EN;
--	else
--		priv->fcrval = FCRVAL;
-+	priv->fcrval = FCRVAL;
- 
- 	devtype->init_port(cdev);
- 
--- 
-2.1.1
+> ---
+> v2: Added silicon revision check. SMA2 register does not exist in revision 1.0
+> 
+>  arch/arm/mach-omap/am33xx_generic.c              |   17 +++++++++++++++++
+>  arch/arm/mach-omap/include/mach/am33xx-generic.h |    1 +
+>  2 files changed, 18 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+> index f293134..7fe8881 100644
+> --- a/arch/arm/mach-omap/am33xx_generic.c
+> +++ b/arch/arm/mach-omap/am33xx_generic.c
+> @@ -428,3 +428,20 @@ void am335x_sdram_init(int ioctrl, const struct am33xx_cmd_control *cmd_ctrl,
+>  
+>  	am33xx_config_sdram(emif_regs);
+>  }
+> +
+> +#define AM33XX_CONTROL_SMA2_OFS	0x1320
+> +
+> +/**
+> + * am33xx_select_rmii2_crs_dv - Select RMII2_CRS_DV on GPMC_A9 pin in MODE3
+> + */
+> +void am33xx_select_rmii2_crs_dv(void)
+> +{
+> +	uint32_t val;
+> +
+> +	if (am33xx_get_cpu_rev() == AM335X_ES1_0)
+> +		return;
+> +
+> +	val = readl(AM33XX_CTRL_BASE + AM33XX_CONTROL_SMA2_OFS);
+> +	val |= 0x00000001;
+> +	writel(val, AM33XX_CTRL_BASE + AM33XX_CONTROL_SMA2_OFS);
+> +}
+> diff --git a/arch/arm/mach-omap/include/mach/am33xx-generic.h b/arch/arm/mach-omap/include/mach/am33xx-generic.h
+> index 6c85d51..1264e7e 100644
+> --- a/arch/arm/mach-omap/include/mach/am33xx-generic.h
+> +++ b/arch/arm/mach-omap/include/mach/am33xx-generic.h
+> @@ -33,5 +33,6 @@ void __noreturn am33xx_reset_cpu(unsigned long addr);
+>  void am33xx_enable_per_clocks(void);
+>  int am33xx_init(void);
+>  int am33xx_devices_init(void);
+> +void am33xx_select_rmii2_crs_dv(void);
+>  
+>  #endif /* __MACH_AM33XX_GENERIC_H */
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
