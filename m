@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xladz-0003uQ-5M
+ Linux)) id 1Xladz-0003uU-5K
  for barebox@lists.infradead.org; Tue, 04 Nov 2014 09:43:21 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1Xladd-0002Wv-5p
+ (envelope-from <l.stach@pengutronix.de>) id 1Xladd-0002Wv-7M
  for barebox@lists.infradead.org; Tue, 04 Nov 2014 10:42:57 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue,  4 Nov 2014 10:42:50 +0100
-Message-Id: <1415094176-26435-4-git-send-email-l.stach@pengutronix.de>
+Date: Tue,  4 Nov 2014 10:42:53 +0100
+Message-Id: <1415094176-26435-7-git-send-email-l.stach@pengutronix.de>
 In-Reply-To: <1415094176-26435-1-git-send-email-l.stach@pengutronix.de>
 References: <1415094176-26435-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,103 +25,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] fs: efivar: switch to standard list implementation
+Subject: [PATCH 07/10] fs: efivar: preserve more info in inode
 To: barebox@lists.infradead.org
 
-Cleans the code a bit and will allow us to implement
-removing of vars quite a bit easier.
+Preserve info needed for easy manipulation of variables.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- fs/efivarfs.c | 34 +++++++++++++---------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ fs/efivarfs.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index 4e13c8365e0e..fda5d7449e4f 100644
+index aa66aa8dd99d..a36020d2d08e 100644
 --- a/fs/efivarfs.c
 +++ b/fs/efivarfs.c
-@@ -196,12 +196,12 @@ static loff_t efivarfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
+@@ -35,7 +35,9 @@
+ #include <mach/efi-device.h>
  
- struct efivarfs_dir_entry {
- 	char *name;
--	struct efivarfs_dir_entry *next;
-+	struct list_head node;
+ struct efivarfs_inode {
+-	char *name;
++	s16 *name;
++	efi_guid_t vendor;
++	char *full_name; /* name including vendor namespacing */
+ 	struct list_head node;
  };
  
- struct efivarfs_dir {
--	struct efivarfs_dir_entry *first;
--	struct efivarfs_dir_entry *current;
-+	struct list_head entries;
-+	struct list_head *current;
- 	DIR dir;
- };
+@@ -225,7 +227,7 @@ static struct dirent *efivarfs_readdir(struct device_d *dev, DIR *dir)
  
-@@ -217,6 +217,7 @@ static DIR *efivarfs_opendir(struct device_d *dev, const char *pathname)
- 	name[0] = 0;
+ 	inode = list_entry(edir->current, struct efivarfs_inode, node);
  
- 	edir = xzalloc(sizeof(*edir));
-+	INIT_LIST_HEAD(&edir->entries);
- 
- 	while (1) {
- 		struct efivarfs_dir_entry *entry;
-@@ -230,19 +231,12 @@ static DIR *efivarfs_opendir(struct device_d *dev, const char *pathname)
- 		name8 = strdup_wchar_to_char(name);
- 
- 		entry->name = asprintf("%s-%pUl", name8, &vendor);
--
- 		free(name8);
- 
--		if (!edir->first)
--			edir->first = entry;
--
--		if (edir->current)
--			edir->current->next = entry;
--
--		edir->current = entry;
-+		list_add_tail(&entry->node, &edir->entries);
- 	}
- 
--	edir->current = edir->first;
-+	edir->current = edir->entries.next;
- 
- 	return &edir->dir;
- }
-@@ -250,11 +244,14 @@ static DIR *efivarfs_opendir(struct device_d *dev, const char *pathname)
- static struct dirent *efivarfs_readdir(struct device_d *dev, DIR *dir)
- {
- 	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
-+	struct efivarfs_dir_entry *entry;
- 
--	if (!edir->current)
-+	if (edir->current == &edir->entries)
- 		return NULL;
- 
--	strcpy(dir->d.d_name, edir->current->name);
-+	entry = list_entry(edir->current, struct efivarfs_dir_entry, node);
-+
-+	strcpy(dir->d.d_name, entry->name);
+-	strcpy(dir->d.d_name, inode->name);
++	strcpy(dir->d.d_name, inode->full_name);
  
  	edir->current = edir->current->next;
  
-@@ -264,16 +261,11 @@ static struct dirent *efivarfs_readdir(struct device_d *dev, DIR *dir)
- static int efivarfs_closedir(struct device_d *dev, DIR *dir)
- {
- 	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
--	struct efivarfs_dir_entry *entry;
--
--	entry = edir->first;
-+	struct efivarfs_dir_entry *entry, *tmp;
+@@ -271,8 +273,8 @@ static int efivarfs_probe(struct device_d *dev)
+ 	efi_status_t efiret;
+ 	efi_guid_t vendor;
+ 	s16 name[1024];
++	char *name8;
+ 	unsigned long size;
+-	unsigned char *name8;
+ 	struct efivarfs_priv *priv;
  
--	while (entry) {
--		struct efivarfs_dir_entry *tmp;
-+	list_for_each_entry_safe(entry, tmp, &edir->entries, node) {
- 		free(entry->name);
--		tmp = entry->next;
- 		free(entry);
--		entry = tmp;
- 	}
+ 	name[0] = 0;
+@@ -289,9 +291,12 @@ static int efivarfs_probe(struct device_d *dev)
+ 			break;
  
- 	free(edir);
+ 		inode = xzalloc(sizeof(*inode));
+-		name8 = strdup_wchar_to_char(name);
++		inode->name = strdup_wchar(name);
++
++		inode->vendor = vendor;
+ 
+-		inode->name = asprintf("%s-%pUl", name8, &vendor);
++		name8 = strdup_wchar_to_char(inode->name);
++		inode->full_name = asprintf("%s-%pUl", name8, &vendor);
+ 		free(name8);
+ 
+ 		list_add_tail(&inode->node, &priv->inodes);
 -- 
 2.1.1
 
