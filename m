@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xladz-0003uS-5H
+ Linux)) id 1Xladz-0003uY-5E
  for barebox@lists.infradead.org; Tue, 04 Nov 2014 09:43:20 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1Xladd-0002Wv-6s
+ (envelope-from <l.stach@pengutronix.de>) id 1Xladd-0002Wv-8r
  for barebox@lists.infradead.org; Tue, 04 Nov 2014 10:42:57 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue,  4 Nov 2014 10:42:52 +0100
-Message-Id: <1415094176-26435-6-git-send-email-l.stach@pengutronix.de>
+Date: Tue,  4 Nov 2014 10:42:56 +0100
+Message-Id: <1415094176-26435-10-git-send-email-l.stach@pengutronix.de>
 In-Reply-To: <1415094176-26435-1-git-send-email-l.stach@pengutronix.de>
 References: <1415094176-26435-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,55 +25,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] lib: add wchar strdup
+Subject: [PATCH 10/10] efi: mount efivarfs by default if enabled
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- include/wchar.h |  2 ++
- lib/wchar.c     | 16 ++++++++++++++++
- 2 files changed, 18 insertions(+)
+ common/startup.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/wchar.h b/include/wchar.h
-index 80dcd81bf442..702d8e239a7c 100644
---- a/include/wchar.h
-+++ b/include/wchar.h
-@@ -5,6 +5,8 @@
- 
- typedef u16 wchar_t;
- 
-+wchar_t *strdup_wchar(const wchar_t *src);
+diff --git a/common/startup.c b/common/startup.c
+index ceb597b0ebba..14d669a4ff42 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -50,6 +50,12 @@ static int mount_root(void)
+ 	mount("none", "ramfs", "/", NULL);
+ 	mkdir("/dev", 0);
+ 	mount("none", "devfs", "/dev", NULL);
 +
- char *strcpy_wchar_to_char(char *dst, const wchar_t *src);
- 
- wchar_t *strcpy_char_to_wchar(wchar_t *dst, const char *src);
-diff --git a/lib/wchar.c b/lib/wchar.c
-index 6368a019941e..b2e9e7545b1f 100644
---- a/lib/wchar.c
-+++ b/lib/wchar.c
-@@ -31,6 +31,22 @@ size_t wcslen(const wchar_t *s)
- 	return len;
++	if (IS_ENABLED(CONFIG_FS_EFIVARFS)) {
++		mkdir("/efivars", 0);
++		mount("none", "efivarfs", "/efivars", NULL);
++	}
++
+ 	return 0;
  }
- 
-+wchar_t *strdup_wchar(const wchar_t *src)
-+{
-+	int len = wcslen(src);
-+	wchar_t *tmp, *dst;
-+
-+	if (!(dst = malloc((len + 1) * sizeof(wchar_t))))
-+		return NULL;
-+
-+	tmp = dst;
-+
-+	while ((*dst++ = *src++))
-+		/* nothing */;
-+
-+	return tmp;
-+}
-+
- char *strcpy_wchar_to_char(char *dst, const wchar_t *src)
- {
- 	char *ret = dst;
+ fs_initcall(mount_root);
 -- 
 2.1.1
 
