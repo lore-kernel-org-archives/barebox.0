@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xladz-0003uR-5M
- for barebox@lists.infradead.org; Tue, 04 Nov 2014 09:43:22 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1Xladd-0002Wv-6M
- for barebox@lists.infradead.org; Tue, 04 Nov 2014 10:42:57 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue,  4 Nov 2014 10:42:51 +0100
-Message-Id: <1415094176-26435-5-git-send-email-l.stach@pengutronix.de>
-In-Reply-To: <1415094176-26435-1-git-send-email-l.stach@pengutronix.de>
+ Linux)) id 1XluuC-0000OH-BY
+ for barebox@lists.infradead.org; Wed, 05 Nov 2014 07:21:25 +0000
+Date: Wed, 5 Nov 2014 08:21:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141105072100.GH30369@pengutronix.de>
 References: <1415094176-26435-1-git-send-email-l.stach@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1415094176-26435-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,187 +18,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] fs: efivar: move variable discovery into probe
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/10] efi: add proper reset hook
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-So we can manipulate things easier.
+On Tue, Nov 04, 2014 at 10:42:47AM +0100, Lucas Stach wrote:
+> This allows to actually reset the system from barebox
+> instead of dropping back into the EFI firmware.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- fs/efivarfs.c | 109 +++++++++++++++++++++++++++++++---------------------------
- 1 file changed, 58 insertions(+), 51 deletions(-)
+Now we can reset the system, but not go back into the EFI firmware
+anymore. Should we introduce a command to make that possible?
 
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index fda5d7449e4f..aa66aa8dd99d 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -34,9 +34,18 @@
- #include <mach/efi.h>
- #include <mach/efi-device.h>
- 
-+struct efivarfs_inode {
-+	char *name;
-+	struct list_head node;
-+};
-+
-+struct efivarfs_dir {
-+	struct list_head *current;
-+	DIR dir;
-+};
-+
- struct efivarfs_priv {
--	struct efi_file_handle *root_dir;
--	struct efi_file_io_interface *protocol;
-+	struct list_head inodes;
- };
- 
- static int char_to_nibble(char c)
-@@ -194,64 +203,29 @@ static loff_t efivarfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
- 	return f->pos;
- }
- 
--struct efivarfs_dir_entry {
--	char *name;
--	struct list_head node;
--};
--
--struct efivarfs_dir {
--	struct list_head entries;
--	struct list_head *current;
--	DIR dir;
--};
--
- static DIR *efivarfs_opendir(struct device_d *dev, const char *pathname)
- {
--	efi_status_t efiret;
--	efi_guid_t vendor;
--	s16 name[1024];
-+	struct efivarfs_priv *priv = dev->priv;
- 	struct efivarfs_dir *edir;
--	unsigned long size;
--	unsigned char *name8;
--
--	name[0] = 0;
- 
- 	edir = xzalloc(sizeof(*edir));
--	INIT_LIST_HEAD(&edir->entries);
--
--	while (1) {
--		struct efivarfs_dir_entry *entry;
--
--		size = sizeof(name);
--		efiret = RT->get_next_variable(&size, name, &vendor);
--		if (EFI_ERROR(efiret))
--			break;
--
--		entry = xzalloc(sizeof(*entry));
--		name8 = strdup_wchar_to_char(name);
--
--		entry->name = asprintf("%s-%pUl", name8, &vendor);
--		free(name8);
--
--		list_add_tail(&entry->node, &edir->entries);
--	}
--
--	edir->current = edir->entries.next;
-+	edir->current = priv->inodes.next;
- 
- 	return &edir->dir;
- }
- 
- static struct dirent *efivarfs_readdir(struct device_d *dev, DIR *dir)
- {
-+	struct efivarfs_priv *priv = dev->priv;
- 	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
--	struct efivarfs_dir_entry *entry;
-+	struct efivarfs_inode *inode;
- 
--	if (edir->current == &edir->entries)
-+	if (edir->current == &priv->inodes)
- 		return NULL;
- 
--	entry = list_entry(edir->current, struct efivarfs_dir_entry, node);
-+	inode = list_entry(edir->current, struct efivarfs_inode, node);
- 
--	strcpy(dir->d.d_name, entry->name);
-+	strcpy(dir->d.d_name, inode->name);
- 
- 	edir->current = edir->current->next;
- 
-@@ -261,12 +235,6 @@ static struct dirent *efivarfs_readdir(struct device_d *dev, DIR *dir)
- static int efivarfs_closedir(struct device_d *dev, DIR *dir)
- {
- 	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
--	struct efivarfs_dir_entry *entry, *tmp;
--
--	list_for_each_entry_safe(entry, tmp, &edir->entries, node) {
--		free(entry->name);
--		free(entry);
--	}
- 
- 	free(edir);
- 
-@@ -300,12 +268,51 @@ static int efivarfs_stat(struct device_d *dev, const char *filename, struct stat
- 
- static int efivarfs_probe(struct device_d *dev)
- {
-+	efi_status_t efiret;
-+	efi_guid_t vendor;
-+	s16 name[1024];
-+	unsigned long size;
-+	unsigned char *name8;
-+	struct efivarfs_priv *priv;
-+
-+	name[0] = 0;
-+
-+	priv = xzalloc(sizeof(*priv));
-+	INIT_LIST_HEAD(&priv->inodes);
-+
-+	while (1) {
-+		struct efivarfs_inode *inode;
-+
-+		size = sizeof(name);
-+		efiret = RT->get_next_variable(&size, name, &vendor);
-+		if (EFI_ERROR(efiret))
-+			break;
-+
-+		inode = xzalloc(sizeof(*inode));
-+		name8 = strdup_wchar_to_char(name);
-+
-+		inode->name = asprintf("%s-%pUl", name8, &vendor);
-+		free(name8);
-+
-+		list_add_tail(&inode->node, &priv->inodes);
-+	}
-+
-+	dev->priv = priv;
-+
- 	return 0;
- }
- 
- static void efivarfs_remove(struct device_d *dev)
- {
--	free(dev->priv);
-+	struct efivarfs_priv *priv = dev->priv;
-+	struct efivarfs_inode *inode, *tmp;
-+
-+	list_for_each_entry_safe(inode, tmp, &priv->inodes, node) {
-+		free(inode->name);
-+		free(inode);
-+	}
-+
-+	free(priv);
- }
- 
- static struct fs_driver_d efivarfs_driver = {
+Sascha
+
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/efi/efi/efi.c |  2 +-
+>  include/efi.h      | 11 +++++++----
+>  2 files changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/efi/efi/efi.c b/arch/efi/efi/efi.c
+> index 7de8ec82e8fa..af3fc4366ba1 100644
+> --- a/arch/efi/efi/efi.c
+> +++ b/arch/efi/efi/efi.c
+> @@ -248,7 +248,7 @@ console_initcall(efi_console_init);
+>  
+>  void reset_cpu(unsigned long addr)
+>  {
+> -	BS->exit(efi_parent_image, EFI_SUCCESS, 0, NULL);
+> +	RT->reset_system(EFI_RESET_WARM, EFI_SUCCESS, 0, NULL);
+>  
+>  	while(1);
+>  }
+> diff --git a/include/efi.h b/include/efi.h
+> index 4ad9f69237e7..70fe254dbafa 100644
+> --- a/include/efi.h
+> +++ b/include/efi.h
+> @@ -255,9 +255,11 @@ extern efi_boot_services_t *BS;
+>  /*
+>   * Types and defines for EFI ResetSystem
+>   */
+> -#define EFI_RESET_COLD 0
+> -#define EFI_RESET_WARM 1
+> -#define EFI_RESET_SHUTDOWN 2
+> +typedef enum {
+> +	EFI_RESET_COLD = 0,
+> +	EFI_RESET_WARM = 1,
+> +	EFI_RESET_SHUTDOWN = 2
+> +} efi_reset_type_t;
+>  
+>  /*
+>   * EFI Runtime Services table
+> @@ -279,7 +281,8 @@ typedef struct {
+>  			s16 *variable_name, efi_guid_t *vendor);
+>  	void *set_variable;
+>  	void *get_next_high_mono_count;
+> -	void *reset_system;
+> +	void (EFIAPI *reset_system)(efi_reset_type_t reset_type, efi_status_t reset_status,
+> +			unsigned long data_size, void *reset_data);
+>  	void *update_capsule;
+>  	void *query_capsule_caps;
+>  	void *query_variable_info;
+> -- 
+> 2.1.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.1.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
