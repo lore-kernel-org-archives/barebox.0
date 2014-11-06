@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo6.mail-out.ovh.net ([188.165.38.119]
- helo=mo6.mail-out.ovh.net)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XmMTC-00044T-Nd
- for barebox@lists.infradead.org; Thu, 06 Nov 2014 12:47:23 +0000
-Received: from mail439.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 8E413FFA89A
- for <barebox@lists.infradead.org>; Thu,  6 Nov 2014 13:46:54 +0100 (CET)
-Date: Thu, 6 Nov 2014 13:46:51 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20141106134651.6b71c379@e6520eb.localdomain>
-In-Reply-To: <CAOpc7mEqpkZo_7vM_fzK73wa-3OkcuWRvHKTB3hSy8gjQ6P2Kg@mail.gmail.com>
-References: <1415272993-29736-1-git-send-email-l.stach@pengutronix.de>
- <CAOpc7mEqpkZo_7vM_fzK73wa-3OkcuWRvHKTB3hSy8gjQ6P2Kg@mail.gmail.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XmMfX-00038W-FC
+ for barebox@lists.infradead.org; Thu, 06 Nov 2014 13:00:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  6 Nov 2014 13:59:35 +0100
+Message-Id: <1415278778-20826-9-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1415278778-20826-1-git-send-email-s.hauer@pengutronix.de>
+References: <1415278778-20826-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +16,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: implement recommended WAR for errata 709718
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 08/11] cp: Add recursive copy
+To: barebox@lists.infradead.org
 
-Hi Holger,
+This adds the -r option to the cp command.
 
-Le Thu, 6 Nov 2014 13:20:12 +0100,
-Holger Schurig <holgerschurig@gmail.com> a =E9crit :
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/cp.c | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
-> Hmm, you define the function in your patch, but where is it called?
-> =
+diff --git a/commands/cp.c b/commands/cp.c
+index af7a3d4..4f1c068 100644
+--- a/commands/cp.c
++++ b/commands/cp.c
+@@ -39,14 +39,17 @@ static int do_cp(int argc, char *argv[])
+ 	int last_is_dir = 0;
+ 	int i;
+ 	int opt;
+-	int verbose = 0;
++	int verbose = 0, recursive = 0;
+ 	int argc_min;
+ 
+-	while ((opt = getopt(argc, argv, "v")) > 0) {
++	while ((opt = getopt(argc, argv, "vr")) > 0) {
+ 		switch (opt) {
+ 		case 'v':
+ 			verbose = 1;
+ 			break;
++		case 'r':
++			recursive = 1;
++			break;
+ 		}
+ 	}
+ 
+@@ -60,24 +63,31 @@ static int do_cp(int argc, char *argv[])
+ 			last_is_dir = 1;
+ 	}
+ 
+-	if (argc > argc_min && !last_is_dir) {
++	if (((recursive && argc - optind > 2) || (argc > argc_min)) && !last_is_dir) {
+ 		printf("cp: target `%s' is not a directory\n", argv[argc - 1]);
+ 		return 1;
+ 	}
+ 
++	if (recursive && argc - optind == 2 && !last_is_dir) {
++		ret = make_directory(argv[argc - 1]);
++		if (ret)
++			goto out;
++	}
++
+ 	for (i = optind; i < argc - 1; i++) {
+-		if (last_is_dir) {
+-			char *dst;
+-			dst = concat_path_file(argv[argc - 1], basename(argv[i]));
++		char *dst;
++		dst = concat_path_file(argv[argc - 1], basename(argv[i]));
++
++		if (recursive)
++			ret = copy_recursive(argv[i], dst);
++		else if (last_is_dir)
+ 			ret = copy_file(argv[i], dst, verbose);
+-			free(dst);
+-			if (ret)
+-				goto out;
+-		} else {
++		else
+ 			ret = copy_file(argv[i], argv[argc - 1], verbose);
+-			if (ret)
+-				goto out;
+-		}
++
++		free(dst);
++		if (ret)
++			goto out;
+ 	}
+ 
+ 	ret = 0;
+-- 
+2.1.1
 
-check patch 2/2 ;-)
-
-Eric
 
 _______________________________________________
 barebox mailing list
