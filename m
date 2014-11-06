@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XmMzh-0007Mm-0t
+ Linux)) id 1XmMzh-0007NV-0l
  for barebox@lists.infradead.org; Thu, 06 Nov 2014 13:20:57 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu,  6 Nov 2014 14:20:27 +0100
-Message-Id: <1415280028-18240-1-git-send-email-jlu@pengutronix.de>
+Date: Thu,  6 Nov 2014 14:20:28 +0100
+Message-Id: <1415280028-18240-2-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1415280028-18240-1-git-send-email-jlu@pengutronix.de>
+References: <1415280028-18240-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] of: use OFTREE_MEM_GENERIC for the sandbox
+Subject: [PATCH 2/2] sandbox: avoid symbol conflict for fstat
 To: barebox@lists.infradead.org
+
+Recently, a fstat function was added to barebox. Redefine it as usual
+to avoid problems for the sandbox. This fixes loading files into the
+sandbox.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- drivers/of/Kconfig | 2 +-
+ arch/sandbox/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 97378ab59f41..90475cfbcae4 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -4,7 +4,7 @@ config OFTREE
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index 596c8f8309f0..ed5d3a3dab2f 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -20,7 +20,7 @@ CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
+ 		-Dfputs=barebox_fputs -Dsetenv=barebox_setenv \
+ 		-Dgetenv=barebox_getenv -Dprintf=barebox_printf \
+ 		-Dglob=barebox_glob -Dglobfree=barebox_globfree \
+-		-Dioctl=barebox_ioctl
++		-Dioctl=barebox_ioctl -Dfstat=barebox_fstat
  
- config OFTREE_MEM_GENERIC
- 	depends on OFTREE
--	depends on PPC || ARM || ARCH_EFI || OPENRISC
-+	depends on PPC || ARM || ARCH_EFI || OPENRISC || SANDBOX
- 	def_bool y
+ machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
  
- config DTC
 -- 
 2.1.1
 
