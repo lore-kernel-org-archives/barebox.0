@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XmLNl-0002fh-6M
- for barebox@lists.infradead.org; Thu, 06 Nov 2014 11:37:42 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  6 Nov 2014 12:37:10 +0100
-Message-Id: <1415273830-19706-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1415273830-19706-1-git-send-email-s.hauer@pengutronix.de>
-References: <1415273830-19706-1-git-send-email-s.hauer@pengutronix.de>
+ Linux)) id 1XmLRS-0007AJ-7Z
+ for barebox@lists.infradead.org; Thu, 06 Nov 2014 11:41:30 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1XmLR6-00011N-5V
+ for barebox@lists.infradead.org; Thu, 06 Nov 2014 12:41:08 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu,  6 Nov 2014 12:41:03 +0100
+Message-Id: <1415274063-1925-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Documentation: Add GuF Santaro documentation
+Subject: [PATCH] arm: mach-imx: fix Eukrea CPUIMX51 Kconfig string
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- Documentation/boards/garz-fricke.rst | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
- create mode 100644 Documentation/boards/garz-fricke.rst
+Was accidently preplaced by the Karo-TX 51 string,
+restore the previous state.
 
-diff --git a/Documentation/boards/garz-fricke.rst b/Documentation/boards/garz-fricke.rst
-new file mode 100644
-index 0000000..33d0dd3
---- /dev/null
-+++ b/Documentation/boards/garz-fricke.rst
-@@ -0,0 +1,33 @@
-+Garz & Fricke based boards
-+==========================
-+
-+Garz & Fricke have a variety of Freescale i.MX based boards. Most boards are
-+shipped with the redboot bootloader, newer boards are shipped with a combination
-+of a shim (U-Boot based) non interactive loader and a Linux based rescue system
-+called 'Flash-N-Go'.
-+
-+Santaro (i.MX6)
-+---------------
-+
-+This board comes with Flash-N-Go. It boots from the internal eMMC boot0 partition.
-+To put barebox on this board boot the system up in the Flash-N-Go system by holding
-+the user button pressed during startup. The barebox image can be transferred via
-+network or any other medium the Santaro supports. You can backup the original bootloader
-+with:
-+
-+.. code-block:: sh
-+  cat /dev/mmcblk0boot0 > /mnt/mmcblk0boot0.backup
-+  cat /dev/mmcblk0boot1 > /mnt/mmcblk0boot1.backup
-+
-+The original bootloader can be restored by copying the backup files back to the
-+device.
-+
-+To install barebox on the board do:
-+
-+.. code-block:: sh
-+  echo 0 > /sys/block/mmcblk0boot0/force_ro
-+  cat barebox-guf-santaro.img > /dev/mmcblk0boot0
-+
-+The board will come up with barebox after restart. Should you end up with a nonworking
-+barebox or otherwise brick your board this way write a mail to s.hauer@pengutronix.de.
-+There's a way to put the board into SD/USB boot mode, but this requires opening the case.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+This is broken pretty much since the introduction of
+imx multiimage, whatever this means for the popularity
+of this board support.
+---
+ arch/arm/mach-imx/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index ef7c0a196381..46d0f3d11af0 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -442,7 +442,7 @@ config MACH_GUF_CUPID
+ comment "i.MX51 Boards"
+ 
+ config MACH_EUKREA_CPUIMX51SD
+-	bool "Ka-Ro TX51"
++	bool "EUKREA CPUIMX51"
+ 	select ARCH_IMX51
+ 	help
+ 	  Say Y here if you are using Eukrea's CPUIMX51 equipped
 -- 
 2.1.1
 
