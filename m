@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XmLRS-0007AJ-7Z
- for barebox@lists.infradead.org; Thu, 06 Nov 2014 11:41:30 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XmLR6-00011N-5V
- for barebox@lists.infradead.org; Thu, 06 Nov 2014 12:41:08 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  6 Nov 2014 12:41:03 +0100
-Message-Id: <1415274063-1925-1-git-send-email-l.stach@pengutronix.de>
+Received: from mail-yk0-x22b.google.com ([2607:f8b0:4002:c07::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XmM3G-0000Zy-31
+ for barebox@lists.infradead.org; Thu, 06 Nov 2014 12:20:34 +0000
+Received: by mail-yk0-f171.google.com with SMTP id 200so1235143ykr.16
+ for <barebox@lists.infradead.org>; Thu, 06 Nov 2014 04:20:12 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1415272993-29736-1-git-send-email-l.stach@pengutronix.de>
+References: <1415272993-29736-1-git-send-email-l.stach@pengutronix.de>
+Date: Thu, 6 Nov 2014 13:20:12 +0100
+Message-ID: <CAOpc7mEqpkZo_7vM_fzK73wa-3OkcuWRvHKTB3hSy8gjQ6P2Kg@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +19,15 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: mach-imx: fix Eukrea CPUIMX51 Kconfig string
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: implement recommended WAR for errata 709718
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Was accidently preplaced by the Karo-TX 51 string,
-restore the previous state.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
-This is broken pretty much since the introduction of
-imx multiimage, whatever this means for the popularity
-of this board support.
----
- arch/arm/mach-imx/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index ef7c0a196381..46d0f3d11af0 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -442,7 +442,7 @@ config MACH_GUF_CUPID
- comment "i.MX51 Boards"
- 
- config MACH_EUKREA_CPUIMX51SD
--	bool "Ka-Ro TX51"
-+	bool "EUKREA CPUIMX51"
- 	select ARCH_IMX51
- 	help
- 	  Say Y here if you are using Eukrea's CPUIMX51 equipped
--- 
-2.1.1
-
+Hmm, you define the function in your patch, but where is it called?
 
 _______________________________________________
 barebox mailing list
