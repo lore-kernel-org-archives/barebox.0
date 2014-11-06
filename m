@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XmMzh-0007NV-0l
- for barebox@lists.infradead.org; Thu, 06 Nov 2014 13:20:57 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu,  6 Nov 2014 14:20:28 +0100
-Message-Id: <1415280028-18240-2-git-send-email-jlu@pengutronix.de>
-In-Reply-To: <1415280028-18240-1-git-send-email-jlu@pengutronix.de>
-References: <1415280028-18240-1-git-send-email-jlu@pengutronix.de>
+ Linux)) id 1XmNm9-0004qk-0w
+ for barebox@lists.infradead.org; Thu, 06 Nov 2014 14:11:09 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1XmNlm-0002AT-CB
+ for barebox@lists.infradead.org; Thu, 06 Nov 2014 15:10:38 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu,  6 Nov 2014 15:10:38 +0100
+Message-Id: <1415283038-5097-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] sandbox: avoid symbol conflict for fstat
+Subject: [PATCH] blspec: fix incompatible pointer type warning
 To: barebox@lists.infradead.org
 
-Recently, a fstat function was added to barebox. Redefine it as usual
-to avoid problems for the sandbox. This fixes loading files into the
-sandbox.
+The warning is correct in that we pass in size_t instead
+of int. As we are not interested in the size of the
+property at this point, just remove the assignment.
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/sandbox/Makefile | 2 +-
+ common/blspec.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index 596c8f8309f0..ed5d3a3dab2f 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -20,7 +20,7 @@ CFLAGS += -Dmalloc=barebox_malloc -Dcalloc=barebox_calloc \
- 		-Dfputs=barebox_fputs -Dsetenv=barebox_setenv \
- 		-Dgetenv=barebox_getenv -Dprintf=barebox_printf \
- 		-Dglob=barebox_glob -Dglobfree=barebox_globfree \
--		-Dioctl=barebox_ioctl
-+		-Dioctl=barebox_ioctl -Dfstat=barebox_fstat
+diff --git a/common/blspec.c b/common/blspec.c
+index a4adc48da967..f46a11d44c0e 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -294,7 +294,7 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
+ 	}
  
- machdirs := $(patsubst %,arch/sandbox/mach-%/,$(machine-y))
+ 	pr_info("ignoring entry with incompatible devicetree \"%s\"\n",
+-			(char *)of_get_property(root, "compatible", &size));
++			(char *)of_get_property(root, "compatible", NULL));
+ 
+ 	ret = false;
  
 -- 
 2.1.1
