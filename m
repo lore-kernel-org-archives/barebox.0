@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XmNm9-0004qk-0w
- for barebox@lists.infradead.org; Thu, 06 Nov 2014 14:11:09 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XmNlm-0002AT-CB
- for barebox@lists.infradead.org; Thu, 06 Nov 2014 15:10:38 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  6 Nov 2014 15:10:38 +0100
-Message-Id: <1415283038-5097-1-git-send-email-l.stach@pengutronix.de>
+ Linux)) id 1XmPjt-0002G1-2J
+ for barebox@lists.infradead.org; Thu, 06 Nov 2014 16:16:50 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  6 Nov 2014 17:16:24 +0100
+Message-Id: <1415290584-20203-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1415290584-20203-1-git-send-email-s.hauer@pengutronix.de>
+References: <1415290584-20203-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] blspec: fix incompatible pointer type warning
+Subject: [PATCH 2/2] ARM: i.MX6 GuF Santaro: Add simple-panel support
 To: barebox@lists.infradead.org
 
-The warning is correct in that we pass in size_t instead
-of int. As we are not interested in the size of the
-property at this point, just remove the assignment.
+We don't know the name and vendor of the panel and since the
+Kernel simple panel driver does not allow videomodes it's
+just "unknown,the-display-on-the-garz-fricke-santaro".
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/blspec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/dts/imx6q-guf-santaro.dts | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index a4adc48da967..f46a11d44c0e 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -294,7 +294,7 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
- 	}
+diff --git a/arch/arm/dts/imx6q-guf-santaro.dts b/arch/arm/dts/imx6q-guf-santaro.dts
+index 98fb78f..044a1c1 100644
+--- a/arch/arm/dts/imx6q-guf-santaro.dts
++++ b/arch/arm/dts/imx6q-guf-santaro.dts
+@@ -41,7 +41,7 @@
+ 		enable-active-high;
+ 	};
  
- 	pr_info("ignoring entry with incompatible devicetree \"%s\"\n",
--			(char *)of_get_property(root, "compatible", &size));
-+			(char *)of_get_property(root, "compatible", NULL));
+-	backlight {
++	backlight: backlight {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_backlight>;
+ 		compatible = "pwm-backlight";
+@@ -57,6 +57,18 @@
+ 		#clock-cells = <0>;
+ 		clock-frequency = <25000000>;
+ 	};
++
++	panel {
++		compatible = "unknown,the-display-on-the-garz-fricke-santaro";
++		backlight = <&backlight>;
++		enable-gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
++
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&lvds0_out>;
++			};
++		};
++	};
+ };
  
- 	ret = false;
- 
+ &fec {
+@@ -517,6 +529,12 @@
+ 				vback-porch = <5>;
+ 				vsync-len = <3>;
+ 				vsync-active = <1>;
++		};
++
++		port@4 {
++			reg = <4>;
++			lvds0_out: endpoint {
++				remote-endpoint = <&panel_in>;
+ 			};
+ 		};
+ 	};
 -- 
 2.1.1
 
