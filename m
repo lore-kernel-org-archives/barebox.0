@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XmdV2-0004je-U8
- for barebox@lists.infradead.org; Fri, 07 Nov 2014 06:58:25 +0000
-Date: Fri, 7 Nov 2014 07:58:02 +0100
+ Linux)) id 1XmdVp-0004mi-GM
+ for barebox@lists.infradead.org; Fri, 07 Nov 2014 06:59:14 +0000
+Date: Fri, 7 Nov 2014 07:58:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141107065802.GV30369@pengutronix.de>
-References: <1415206504-7140-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20141107065851.GW30369@pengutronix.de>
+References: <1415274063-1925-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1415206504-7140-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1415274063-1925-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: imx53-qsrb: fix initcalls on START-R board
+Subject: Re: [PATCH] arm: mach-imx: fix Eukrea CPUIMX51 Kconfig string
 To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 05, 2014 at 05:55:04PM +0100, Lucas Stach wrote:
-> The compatible changed when we switched to the upstream
-> DTs, so the initcalls would not be executed on the START-R
-> board.
+On Thu, Nov 06, 2014 at 12:41:03PM +0100, Lucas Stach wrote:
+> Was accidently preplaced by the Karo-TX 51 string,
+> restore the previous state.
 > 
 > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
-> Broken since 2014.06.0, maybe add to stable?
+> This is broken pretty much since the introduction of
+> imx multiimage, whatever this means for the popularity
+> of this board support.
 
-Did that.
+Applied, thanks
 
 Sascha
 
 > ---
->  arch/arm/boards/freescale-mx53-qsb/board.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  arch/arm/mach-imx/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/boards/freescale-mx53-qsb/board.c b/arch/arm/boards/freescale-mx53-qsb/board.c
-> index 9a9bffa2ef6d..1128e686bc03 100644
-> --- a/arch/arm/boards/freescale-mx53-qsb/board.c
-> +++ b/arch/arm/boards/freescale-mx53-qsb/board.c
-> @@ -81,7 +81,8 @@ static int loco_late_init(void)
->  	struct mc13xxx *mc34708;
->  	int rev;
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index ef7c0a196381..46d0f3d11af0 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -442,7 +442,7 @@ config MACH_GUF_CUPID
+>  comment "i.MX51 Boards"
 >  
-> -	if (!of_machine_is_compatible("fsl,imx53-qsb"))
-> +	if (!of_machine_is_compatible("fsl,imx53-qsb") &&
-> +	    !of_machine_is_compatible("fsl,imx53-qsrb"))
->  		return 0;
->  
->  	device_detect_by_name("mmc0");
-> @@ -167,7 +168,8 @@ late_initcall(loco_late_init);
->  
->  static int loco_postcore_init(void)
->  {
-> -	if (!of_machine_is_compatible("fsl,imx53-qsb"))
-> +	if (!of_machine_is_compatible("fsl,imx53-qsb") &&
-> +	    !of_machine_is_compatible("fsl,imx53-qsrb"))
->  		return 0;
->  
->  	imx53_init_lowlevel(1000);
+>  config MACH_EUKREA_CPUIMX51SD
+> -	bool "Ka-Ro TX51"
+> +	bool "EUKREA CPUIMX51"
+>  	select ARCH_IMX51
+>  	help
+>  	  Say Y here if you are using Eukrea's CPUIMX51 equipped
 > -- 
 > 2.1.1
 > 
