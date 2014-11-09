@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XmdYs-0006Ft-Rf
- for barebox@lists.infradead.org; Fri, 07 Nov 2014 07:02:23 +0000
-Date: Fri, 7 Nov 2014 08:02:01 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141107070201.GY30369@pengutronix.de>
-References: <1415280028-18240-1-git-send-email-jlu@pengutronix.de>
+ Linux)) id 1XnQOm-0003KU-Mp
+ for barebox@lists.infradead.org; Sun, 09 Nov 2014 11:11:23 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Date: Sun,  9 Nov 2014 12:10:32 +0100
+Message-Id: <1415531432-6402-2-git-send-email-uwe@kleine-koenig.org>
+In-Reply-To: <1415531432-6402-1-git-send-email-uwe@kleine-koenig.org>
+References: <1415531432-6402-1-git-send-email-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1415280028-18240-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +17,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] of: use OFTREE_MEM_GENERIC for the sandbox
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] pci: mvebu: Fix uninitialized variable in
+ mvebu_get_target_attr()
+To: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-On Thu, Nov 06, 2014 at 02:20:27PM +0100, Jan Luebbe wrote:
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-
-Applied both, thanks
-
-Sascha
-
-> ---
->  drivers/of/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-> index 97378ab59f41..90475cfbcae4 100644
-> --- a/drivers/of/Kconfig
-> +++ b/drivers/of/Kconfig
-> @@ -4,7 +4,7 @@ config OFTREE
->  
->  config OFTREE_MEM_GENERIC
->  	depends on OFTREE
-> -	depends on PPC || ARM || ARCH_EFI || OPENRISC
-> +	depends on PPC || ARM || ARCH_EFI || OPENRISC || SANDBOX
->  	def_bool y
->  
->  config DTC
-> -- 
-> 2.1.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVGhvbWFzIFBldGF6em9uaSA8dGhvbWFzLnBldGF6em9uaUBmcmVlLWVsZWN0cm9ucy5j
+b20+CgpUaGlzIGlzIHRoZSBzYW1lIGZpeCB0aGF0IHdhcyBhcHBsaWVkIHRvIHRoZSBMaW51eCBr
+ZXJuZWwgaW4gY29tbWl0CjU2ZmFiNmUxODk0NCAoUENJOiBtdmVidTogRml4IHVuaW5pdGlhbGl6
+ZWQgdmFyaWFibGUgaW4KbXZlYnVfZ2V0X3RndF9hdHRyKCkpLgoKRml4ZXM6IDVhOWJhOTggKCJw
+Y2k6IG12ZWJ1OiBBZGQgUENJZSBkcml2ZXIiKQpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvD
+tm5pZyA8dXdlQGtsZWluZS1rb2VuaWcub3JnPgotLS0KQ2M6IFRob21hcyBQZXRhenpvbmkgPHRo
+b21hcy5wZXRhenpvbmlAZnJlZS1lbGVjdHJvbnMuY29tPgpDYzogU2ViYXN0aWFuIEhlc3NlbGJh
+cnRoIDxzZWJhc3RpYW4uaGVzc2VsYmFydGhAZ21haWwuY29tPgotLS0KIGRyaXZlcnMvcGNpL3Bj
+aS1tdmVidS5jIHwgNiArKystLS0KIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDMg
+ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9wY2kvcGNpLW12ZWJ1LmMgYi9kcml2
+ZXJzL3BjaS9wY2ktbXZlYnUuYwppbmRleCA0NWJlZmJiLi5hMzE0YTY4IDEwMDY0NAotLS0gYS9k
+cml2ZXJzL3BjaS9wY2ktbXZlYnUuYworKysgYi9kcml2ZXJzL3BjaS9wY2ktbXZlYnUuYwpAQCAt
+MjQwLDcgKzI0MCw3IEBAIHN0YXRpYyBpbnQgbXZlYnVfZ2V0X3RhcmdldF9hdHRyKHN0cnVjdCBk
+ZXZpY2Vfbm9kZSAqbnAsIGludCBkZXZmbiwKIAlyYW5nZXN6ID0gcG5hICsgbmEgKyBuczsKIAlu
+cmFuZ2VzID0gcmxlbiAvIHNpemVvZihfX2JlMzIpIC8gcmFuZ2VzejsKIAotCWZvciAoaSA9IDA7
+IGkgPCBucmFuZ2VzOyBpKyspIHsKKwlmb3IgKGkgPSAwOyBpIDwgbnJhbmdlczsgaSsrLCByYW5n
+ZSArPSByYW5nZXN6KSB7CiAJCXUzMiBmbGFncyA9IG9mX3JlYWRfbnVtYmVyKHJhbmdlLCAxKTsK
+IAkJdTMyIHNsb3QgPSBvZl9yZWFkX251bWJlcihyYW5nZSArIDEsIDEpOwogCQl1NjQgY3B1YWRk
+ciA9IG9mX3JlYWRfbnVtYmVyKHJhbmdlICsgbmEsIHBuYSk7CkBAIC0yNTAsMTQgKzI1MCwxNCBA
+QCBzdGF0aWMgaW50IG12ZWJ1X2dldF90YXJnZXRfYXR0cihzdHJ1Y3QgZGV2aWNlX25vZGUgKm5w
+LCBpbnQgZGV2Zm4sCiAJCQlydHlwZSA9IElPUkVTT1VSQ0VfSU87CiAJCWVsc2UgaWYgKERUX0ZM
+QUdTX1RPX1RZUEUoZmxhZ3MpID09IERUX1RZUEVfTUVNMzIpCiAJCQlydHlwZSA9IElPUkVTT1VS
+Q0VfTUVNOworCQllbHNlCisJCQljb250aW51ZTsKIAogCQlpZiAoc2xvdCA9PSBQQ0lfU0xPVChk
+ZXZmbikgJiYgdHlwZSA9PSBydHlwZSkgewogCQkJKnRhcmdldCA9IERUX0NQVUFERFJfVE9fVEFS
+R0VUKGNwdWFkZHIpOwogCQkJKmF0dHIgPSBEVF9DUFVBRERSX1RPX0FUVFIoY3B1YWRkcik7CiAJ
+CQlyZXR1cm4gMDsKIAkJfQotCi0JCXJhbmdlICs9IHJhbmdlc3o7CiAJfQogCiAJcmV0dXJuIC1F
+Tk9FTlQ7Ci0tIAoyLjEuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
