@@ -2,13 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from down.free-electrons.com ([37.187.137.238]
  helo=mail.free-electrons.com)
  by casper.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XnTx1-0004gO-H5
+ id 1XnTx1-0004gN-H1
  for barebox@lists.infradead.org; Sun, 09 Nov 2014 14:58:47 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Sun,  9 Nov 2014 11:56:15 -0300
-Message-Id: <1415544978-22392-2-git-send-email-ezequiel.garcia@free-electrons.com>
-In-Reply-To: <1415544978-22392-1-git-send-email-ezequiel.garcia@free-electrons.com>
-References: <1415544978-22392-1-git-send-email-ezequiel.garcia@free-electrons.com>
+Date: Sun,  9 Nov 2014 11:56:14 -0300
+Message-Id: <1415544978-22392-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,59 +20,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/4] ARM: mvebu: Enable PUP register
+Subject: [PATCH v3 0/4] mvebu: Add network support for Armada 370/XP
 To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-As reported by Sebastian, we need to enable this explicitly for the
-Tx clock on RGMII. While here, let's enable all the other peripherals.
+Very delayed third round of the support for the network controller present
+on Marvell Armada 370/XP SoC.
 
-Although this is documented to be required only for Armada XP SoC,
-it has been found to be harmless on Armada 370, so we do it unconditionally
-to simplify the code.
+The first patch enables the peripherals in a PUP register, which is required
+on RGMII ports.
 
-Reported-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Acked-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
----
- arch/arm/mach-mvebu/armada-370-xp.c                   | 5 +++++
- arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h | 7 +++++++
- 2 files changed, 12 insertions(+)
+The second and third patches add support for Marvell's 88E1543 and 88E1545 PHY
+chips.
 
-diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-index 57f6a5f..244f8cd 100644
---- a/arch/arm/mach-mvebu/armada-370-xp.c
-+++ b/arch/arm/mach-mvebu/armada-370-xp.c
-@@ -74,6 +74,11 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
- 
- 	mvebu_set_memory(phys_base, phys_size);
- 
-+	/* Enable peripherals PUP */
-+	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
-+	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
-+	writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
-+
- 	return 0;
- }
- 
-diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
-index ccc687c..bac27e5 100644
---- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
-+++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
-@@ -30,6 +30,13 @@
- #define  SAR_TCLK_FREQ			BIT(20)
- #define  SAR_HIGH			0x04
- 
-+#define ARMADA_XP_PUP_ENABLE_BASE       (ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
-+#define  GE0_PUP_EN			BIT(0)
-+#define  GE1_PUP_EN			BIT(1)
-+#define  LCD_PUP_EN			BIT(2)
-+#define  NAND_PUP_EN			BIT(4)
-+#define  SPI_PUP_EN			BIT(5)
-+
- #define ARMADA_370_XP_SDRAM_BASE	(ARMADA_370_XP_INT_REGS_BASE + 0x20000)
- #define  DDR_BASE_CS			0x180
- #define  DDR_BASE_CSn(n)		(DDR_BASE_CS + ((n) * 0x8))
+The fourth patch adds the mvneta driver. Most of the configuration part is
+based on Linux's mvneta driver, while some of code organization is based
+on Barebox's orion-gbe driver.
+
+Changes from v2:
+
+  * Included SPI in the PUP register as noted by Sebastian.
+
+  * Added MAC flow control configuration. Added missing support
+    for TX-delayed RGMII (RGMII_TXID) and RX-delayed RGMII.
+    As per Sebastian's comments.
+
+  * Dropped the defconfig patch. mvebu_defconfig should work fine.
+
+Ezequiel Garcia (4):
+  ARM: mvebu: Enable PUP register
+  net: phy: Support Marvell 88EE1545 PHY
+  net: phy: Support Marvell 88EE1543 PHY
+  net: Add driver for Armada 370/XP 10/100/1000 Mbps network controller
+
+ arch/arm/mach-mvebu/armada-370-xp.c                |   5 +
+ .../mach-mvebu/include/mach/armada-370-xp-regs.h   |   7 +
+ drivers/net/Kconfig                                |   6 +
+ drivers/net/Makefile                               |   1 +
+ drivers/net/mvneta.c                               | 766 +++++++++++++++++++++
+ drivers/net/phy/marvell.c                          |  67 ++
+ include/linux/marvell_phy.h                        |   2 +
+ 7 files changed, 854 insertions(+)
+ create mode 100644 drivers/net/mvneta.c
+
 -- 
 2.1.0
 
