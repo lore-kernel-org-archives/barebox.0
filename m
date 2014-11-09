@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from down.free-electrons.com ([37.187.137.238]
  helo=mail.free-electrons.com)
  by casper.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XnTx1-0004gP-H3
- for barebox@lists.infradead.org; Sun, 09 Nov 2014 14:58:48 +0000
+ id 1XnTx1-0004gO-H5
+ for barebox@lists.infradead.org; Sun, 09 Nov 2014 14:58:47 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Sun,  9 Nov 2014 11:56:16 -0300
-Message-Id: <1415544978-22392-3-git-send-email-ezequiel.garcia@free-electrons.com>
+Date: Sun,  9 Nov 2014 11:56:15 -0300
+Message-Id: <1415544978-22392-2-git-send-email-ezequiel.garcia@free-electrons.com>
 In-Reply-To: <1415544978-22392-1-git-send-email-ezequiel.garcia@free-electrons.com>
 References: <1415544978-22392-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -22,114 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/4] net: phy: Support Marvell 88EE1545 PHY
+Subject: [PATCH v3 1/4] ARM: mvebu: Enable PUP register
 To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-This commit adds support for Marvell's 88E1545 PHY chip. In particular, this
-allows to support QSGMII interfaces.
+As reported by Sebastian, we need to enable this explicitly for the
+Tx clock on RGMII. While here, let's enable all the other peripherals.
 
+Although this is documented to be required only for Armada XP SoC,
+it has been found to be harmless on Armada 370, so we do it unconditionally
+to simplify the code.
+
+Reported-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Acked-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/net/phy/marvell.c   | 58 +++++++++++++++++++++++++++++++++++++++++++++
- include/linux/marvell_phy.h |  1 +
- 2 files changed, 59 insertions(+)
+ arch/arm/mach-mvebu/armada-370-xp.c                   | 5 +++++
+ arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h | 7 +++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index f2bc649..3ea72e2 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -35,6 +35,13 @@
- #define MII_88E1121_PHY_MSCR_DELAY_MASK	\
- 	(MII_88E1121_PHY_MSCR_RX_DELAY | MII_88E1121_PHY_MSCR_TX_DELAY)
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index 57f6a5f..244f8cd 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -74,6 +74,11 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
  
-+#define MII_88E1540_LED_PAGE		0x3
-+#define MII_88E1540_LED_CONTROL		0x10
+ 	mvebu_set_memory(phys_base, phys_size);
+ 
++	/* Enable peripherals PUP */
++	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
++	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
++	writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
 +
-+#define MII_88E1540_QSGMII_PAGE		0x4
-+#define MII_88E1540_QSGMII_CONTROL	0x0
-+#define MII_88E1540_QSGMII_AUTONEG_EN	BIT(12)
-+
- /*
-  * marvell_read_status
-  *
-@@ -123,6 +130,48 @@ static int marvell_read_status(struct phy_device *phydev)
  	return 0;
  }
  
-+static int m88e1540_config_init(struct phy_device *phydev)
-+{
-+	u16 reg;
-+	int ret;
-+
-+	/* Configure QSGMII auto-negotiation */
-+	if (phydev->interface == PHY_INTERFACE_MODE_QSGMII) {
-+		ret = phy_write(phydev, MII_MARVELL_PHY_PAGE,
-+				MII_88E1540_QSGMII_PAGE);
-+		if (ret < 0)
-+			return ret;
-+
-+		reg = phy_read(phydev, MII_88E1540_QSGMII_CONTROL);
-+		ret = phy_write(phydev, MII_88E1540_QSGMII_CONTROL,
-+					reg | MII_88E1540_QSGMII_AUTONEG_EN);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	/* Configure LED as:
-+	 * Activity: Blink
-+	 * Link:     On
-+	 * No Link:  Off
-+	 */
-+	phy_write(phydev, MII_MARVELL_PHY_PAGE, MII_88E1540_LED_PAGE);
-+	phy_write(phydev, MII_88E1540_LED_CONTROL, 0x1111);
-+
-+	/* Power-up the PHY. When going from power down to normal operation,
-+	 * software reset and auto-negotiation restart are also performed.
-+	 */
-+	ret = phy_write(phydev, MII_MARVELL_PHY_PAGE,
-+				MII_MARVELL_PHY_DEFAULT_PAGE);
-+	if (ret < 0)
-+		return ret;
-+	ret = phy_write(phydev, MII_BMCR,
-+			phy_read(phydev, MII_BMCR) & ~BMCR_PDOWN);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int m88e1121_config_init(struct phy_device *phydev)
- {
- 	u16 reg;
-@@ -175,6 +224,15 @@ static struct phy_driver marvell_phys[] = {
- 	.config_aneg	= genphy_config_aneg,
- 	.read_status	= marvell_read_status,
- },
-+{
-+	.phy_id		= MARVELL_PHY_ID_88E1545,
-+	.phy_id_mask	= MARVELL_PHY_ID_MASK,
-+	.drv.name	= "Marvell 88E1545",
-+	.features	= PHY_GBIT_FEATURES,
-+	.config_init	= m88e1540_config_init,
-+	.config_aneg	= genphy_config_aneg,
-+	.read_status	= marvell_read_status,
-+},
- };
+diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+index ccc687c..bac27e5 100644
+--- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
++++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+@@ -30,6 +30,13 @@
+ #define  SAR_TCLK_FREQ			BIT(20)
+ #define  SAR_HIGH			0x04
  
- static int __init marvell_phy_init(void)
-diff --git a/include/linux/marvell_phy.h b/include/linux/marvell_phy.h
-index bf2c66a..deb75bf 100644
---- a/include/linux/marvell_phy.h
-+++ b/include/linux/marvell_phy.h
-@@ -27,6 +27,7 @@
- #define MARVELL_PHY_ID_88E1318S		0x01410e90
- #define MARVELL_PHY_ID_88E1116R		0x01410e40
- #define MARVELL_PHY_ID_88E1510		0x01410dd0
-+#define MARVELL_PHY_ID_88E1545		0x01410eb0
- 
- /* Mask used for ID comparisons */
- #define MARVELL_PHY_ID_MASK		0xfffffff0
++#define ARMADA_XP_PUP_ENABLE_BASE       (ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
++#define  GE0_PUP_EN			BIT(0)
++#define  GE1_PUP_EN			BIT(1)
++#define  LCD_PUP_EN			BIT(2)
++#define  NAND_PUP_EN			BIT(4)
++#define  SPI_PUP_EN			BIT(5)
++
+ #define ARMADA_370_XP_SDRAM_BASE	(ARMADA_370_XP_INT_REGS_BASE + 0x20000)
+ #define  DDR_BASE_CS			0x180
+ #define  DDR_BASE_CSn(n)		(DDR_BASE_CS + ((n) * 0x8))
 -- 
 2.1.0
 
