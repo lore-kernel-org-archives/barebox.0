@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from down.free-electrons.com ([37.187.137.238]
  helo=mail.free-electrons.com)
- by casper.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XntbK-000220-U5
- for barebox@lists.infradead.org; Mon, 10 Nov 2014 18:22:07 +0000
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XntbM-0002gW-2Q
+ for barebox@lists.infradead.org; Mon, 10 Nov 2014 18:22:08 +0000
 From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Date: Mon, 10 Nov 2014 15:19:44 -0300
-Message-Id: <1415643587-12643-3-git-send-email-ezequiel.garcia@free-electrons.com>
+Date: Mon, 10 Nov 2014 15:19:43 -0300
+Message-Id: <1415643587-12643-2-git-send-email-ezequiel.garcia@free-electrons.com>
 In-Reply-To: <1415643587-12643-1-git-send-email-ezequiel.garcia@free-electrons.com>
 References: <1415643587-12643-1-git-send-email-ezequiel.garcia@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -22,47 +22,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 2/5] net: phy: marvell: Fix array identation
+Subject: [PATCH v4 1/5] ARM: mvebu: Enable PUP register
 To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Just a cosmetic clean-up to fix the indentation of the entries
-in the phys array.
+As reported by Sebastian, we need to enable this explicitly for the
+Tx clock on RGMII. While here, let's enable all the other peripherals.
 
+Although this is documented to be required only for Armada XP SoC,
+it has been found to be harmless on Armada 370, so we do it unconditionally
+to simplify the code.
+
+Reported-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Acked-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 ---
- drivers/net/phy/marvell.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/arm/mach-mvebu/armada-370-xp.c                   | 5 +++++
+ arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h | 7 +++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index f2bc649..2fb4ad2 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -166,15 +166,15 @@ static int m88e1121_config_init(struct phy_device *phydev)
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index 57f6a5f..244f8cd 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -74,6 +74,11 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
+ 
+ 	mvebu_set_memory(phys_base, phys_size);
+ 
++	/* Enable peripherals PUP */
++	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
++	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
++	writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
++
+ 	return 0;
  }
  
- static struct phy_driver marvell_phys[] = {
--{
--	.phy_id		= MARVELL_PHY_ID_88E1121R,
--	.phy_id_mask	= MARVELL_PHY_ID_MASK,
--	.drv.name	= "Marvell 88E1121R",
--	.features	= PHY_GBIT_FEATURES,
--	.config_init	= m88e1121_config_init,
--	.config_aneg	= genphy_config_aneg,
--	.read_status	= marvell_read_status,
--},
-+	{
-+		.phy_id		= MARVELL_PHY_ID_88E1121R,
-+		.phy_id_mask	= MARVELL_PHY_ID_MASK,
-+		.drv.name	= "Marvell 88E1121R",
-+		.features	= PHY_GBIT_FEATURES,
-+		.config_init	= m88e1121_config_init,
-+		.config_aneg	= genphy_config_aneg,
-+		.read_status	= marvell_read_status,
-+	},
- };
+diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+index ccc687c..bac27e5 100644
+--- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
++++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+@@ -30,6 +30,13 @@
+ #define  SAR_TCLK_FREQ			BIT(20)
+ #define  SAR_HIGH			0x04
  
- static int __init marvell_phy_init(void)
++#define ARMADA_XP_PUP_ENABLE_BASE       (ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
++#define  GE0_PUP_EN			BIT(0)
++#define  GE1_PUP_EN			BIT(1)
++#define  LCD_PUP_EN			BIT(2)
++#define  NAND_PUP_EN			BIT(4)
++#define  SPI_PUP_EN			BIT(5)
++
+ #define ARMADA_370_XP_SDRAM_BASE	(ARMADA_370_XP_INT_REGS_BASE + 0x20000)
+ #define  DDR_BASE_CS			0x180
+ #define  DDR_BASE_CSn(n)		(DDR_BASE_CS + ((n) * 0x8))
 -- 
 2.1.0
 
