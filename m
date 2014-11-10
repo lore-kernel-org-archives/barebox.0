@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x236.google.com ([2607:f8b0:400e:c03::236])
+Received: from mail-pd0-x231.google.com ([2607:f8b0:400e:c02::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xnt39-00050P-GW
- for barebox@lists.infradead.org; Mon, 10 Nov 2014 17:46:47 +0000
-Received: by mail-pa0-f54.google.com with SMTP id rd3so8620481pab.41
- for <barebox@lists.infradead.org>; Mon, 10 Nov 2014 09:46:25 -0800 (PST)
+ id 1Xnt1x-000403-IB
+ for barebox@lists.infradead.org; Mon, 10 Nov 2014 17:45:35 +0000
+Received: by mail-pd0-f177.google.com with SMTP id v10so8141104pde.8
+ for <barebox@lists.infradead.org>; Mon, 10 Nov 2014 09:45:12 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 10 Nov 2014 09:46:10 -0800
-Message-Id: <1415641570-19399-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 10 Nov 2014 09:45:04 -0800
+Message-Id: <1415641504-19358-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX6 Phytec phyFLEX: Fix imx6_bbu_nand_register_handler
- usage
+Subject: [PATCH] ARM: i.MX: Make NAND related Kconfig options depend on MTD
 To: barebox@lists.infradead.org
-Cc: andrew.smirnov@gmail.com, cconley@phytec.com
+Cc: andrew.smirnov@gmail.com
 
-imx6_bbu_nand_register_handler is not availible if
-CONFIG_BAREBOX_UPDATE_IMX6_NAND is not selected. Fix this by wrapping
-it's usage in preprocessor statements.
+ARCH_IMX_EXTERNAL_BOOT_NAND, BAREBOX_UPDATE_IMX_EXTERNAL_NAND and
+BAREBOX_UPDATE_IMX6_NAND all enable features that make use of API
+provided by MTD subsystem, so to prevent those features breaking the
+build when MTD is disabled make them dependent on it.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/phytec-phyflex-imx6/board.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
-index 09a5c79..9acbd7a 100644
---- a/arch/arm/boards/phytec-phyflex-imx6/board.c
-+++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
-@@ -81,8 +81,9 @@ static int phytec_pfla02_init(void)
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index ef7c0a1..8dce491 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -102,17 +102,20 @@ endchoice
  
- 	phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK,
- 					   ksz9031rn_phy_fixup);
--
-+#ifdef CONFIG_BAREBOX_UPDATE_IMX6_NAND
- 	imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
-+#endif
+ config ARCH_IMX_EXTERNAL_BOOT_NAND
+ 	bool
++	depends on MTD
+ 	depends on ARCH_IMX25 || ARCH_IMX27 || ARCH_IMX31 || ARCH_IMX35
+ 	prompt "Support Starting barebox from NAND in external bootmode"
  
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_MMC:
+ config BAREBOX_UPDATE_IMX_EXTERNAL_NAND
+ 	bool
++	depends on MTD
+ 	depends on ARCH_IMX_EXTERNAL_BOOT_NAND
+ 	depends on BAREBOX_UPDATE
+ 	default y
+ 
+ config BAREBOX_UPDATE_IMX6_NAND
+ 	bool
++	depends on MTD
+ 	depends on ARCH_IMX6
+ 	depends on BAREBOX_UPDATE
+ 	default y
 -- 
 1.9.3
 
