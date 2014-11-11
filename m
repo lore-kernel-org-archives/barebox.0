@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XoC0k-0001q3-Tc
+ Linux)) id 1XoC0k-0001q4-Td
  for barebox@lists.infradead.org; Tue, 11 Nov 2014 14:01:36 +0000
-Date: Tue, 11 Nov 2014 15:01:08 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141111140108.GU30369@pengutronix.de>
-References: <1415643587-12643-1-git-send-email-ezequiel.garcia@free-electrons.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1415643587-12643-1-git-send-email-ezequiel.garcia@free-electrons.com>
+Message-ID: <1415714470.2815.3.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 11 Nov 2014 15:01:10 +0100
+In-Reply-To: <1415713894.20385.20.camel@ws-apr.office.loc>
+References: <1415272993-29736-1-git-send-email-l.stach@pengutronix.de>
+ <1415272993-29736-2-git-send-email-l.stach@pengutronix.de>
+ <1415713894.20385.20.camel@ws-apr.office.loc>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 0/5] mvebu: Add network support for Armada 370/XP
-To: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] ARM: imx5: add imx5_cpu_lowlevel_init and use in
+ all boards
+To: Andreas Pretzsch <apr@cn-eng.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Nov 10, 2014 at 03:19:42PM -0300, Ezequiel Garcia wrote:
-> Changes from v3:
+Am Dienstag, den 11.11.2014, 14:51 +0100 schrieb Andreas Pretzsch:
+> On Do, 2014-11-06 at 12:23 +0100, Lucas Stach wrote:
+> > This is similar to what we do on imx6 and makes sure we
+> > apply the errata workarounds early.
 > 
->   * As requested by Sascha, added a patch to fix the indentation
->     in the marvell phys array.
+> Without checking, doesn't this also apply to other Cortex-A8, like the
+> TI AM335x and OMAP3 chips ?
 > 
-> Changes from v2:
+> Reading "ARM Cortex A8 errata" raises this thought...
 > 
->   * Included SPI in the PUP register as noted by Sebastian.
-> 
->   * Added MAC flow control configuration. Added missing support
->     for TX-delayed RGMII (RGMII_TXID) and RX-delayed RGMII.
->     As per Sebastian's comments.
-> 
->   * Dropped the defconfig patch. mvebu_defconfig should work fine.
-> 
-> Ezequiel Garcia (5):
->   ARM: mvebu: Enable PUP register
->   net: phy: marvell: Fix array identation
->   net: phy: Support Marvell 88EE1545 PHY
->   net: phy: Support Marvell 88EE1543 PHY
->   net: Add driver for Armada 370/XP 10/100/1000 Mbps network controller
+I don't know exactly for the OMAP3 chips, but at least AM335x production
+silicon has r3p2 of the Cortex-A8 where this errata is already fixed in
+hardware.
 
-Applied for now. I assume this works generally. I can fold in a fixup
-when Uwe has found the problem on his board.
-
-Sascha
-
+Regards,
+Lucas
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
+
 
 _______________________________________________
 barebox mailing list
