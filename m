@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XoC2w-00024e-Aq
- for barebox@lists.infradead.org; Tue, 11 Nov 2014 14:03:51 +0000
-Date: Tue, 11 Nov 2014 15:03:28 +0100
+ Linux)) id 1XoC5h-0004sA-Tb
+ for barebox@lists.infradead.org; Tue, 11 Nov 2014 14:06:42 +0000
+Date: Tue, 11 Nov 2014 15:06:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141111140328.GW30369@pengutronix.de>
-References: <1415641504-19358-1-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20141111140619.GX30369@pengutronix.de>
+References: <1415641570-19399-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1415641504-19358-1-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1415641570-19399-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,60 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX: Make NAND related Kconfig options depend on MTD
+Subject: Re: [PATCH] ARM: i.MX6 Phytec phyFLEX: Fix
+ imx6_bbu_nand_register_handler usage
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, cconley@phytec.com
 
-On Mon, Nov 10, 2014 at 09:45:04AM -0800, Andrey Smirnov wrote:
-> ARCH_IMX_EXTERNAL_BOOT_NAND, BAREBOX_UPDATE_IMX_EXTERNAL_NAND and
-> BAREBOX_UPDATE_IMX6_NAND all enable features that make use of API
-> provided by MTD subsystem, so to prevent those features breaking the
-> build when MTD is disabled make them dependent on it.
+On Mon, Nov 10, 2014 at 09:46:10AM -0800, Andrey Smirnov wrote:
+> imx6_bbu_nand_register_handler is not availible if
+> CONFIG_BAREBOX_UPDATE_IMX6_NAND is not selected. Fix this by wrapping
+> it's usage in preprocessor statements.
 > 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/boards/phytec-phyflex-imx6/board.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> index 09a5c79..9acbd7a 100644
+> --- a/arch/arm/boards/phytec-phyflex-imx6/board.c
+> +++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> @@ -81,8 +81,9 @@ static int phytec_pfla02_init(void)
+>  
+>  	phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK,
+>  					   ksz9031rn_phy_fixup);
+> -
+> +#ifdef CONFIG_BAREBOX_UPDATE_IMX6_NAND
+>  	imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
+> +#endif
 
-Applied, thanks
+the bbu handler register functions normally have a static inline wrapper
+if disabled. imx6_bbu_nand_register_handler is a static inline when
+CONFIG_BAREBOX_UPDATE is disabled. Maybe this should rather be under
+CONFIG_BAREBOX_UPDATE_IMX6_NAND instead. Could you update the patch
+accordingly?
 
 Sascha
 
-> ---
->  arch/arm/mach-imx/Kconfig | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index ef7c0a1..8dce491 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -102,17 +102,20 @@ endchoice
->  
->  config ARCH_IMX_EXTERNAL_BOOT_NAND
->  	bool
-> +	depends on MTD
->  	depends on ARCH_IMX25 || ARCH_IMX27 || ARCH_IMX31 || ARCH_IMX35
->  	prompt "Support Starting barebox from NAND in external bootmode"
->  
->  config BAREBOX_UPDATE_IMX_EXTERNAL_NAND
->  	bool
-> +	depends on MTD
->  	depends on ARCH_IMX_EXTERNAL_BOOT_NAND
->  	depends on BAREBOX_UPDATE
->  	default y
->  
->  config BAREBOX_UPDATE_IMX6_NAND
->  	bool
-> +	depends on MTD
->  	depends on ARCH_IMX6
->  	depends on BAREBOX_UPDATE
->  	default y
-> -- 
-> 1.9.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
