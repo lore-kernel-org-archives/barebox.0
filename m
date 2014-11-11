@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XoC2N-00020X-Kk
- for barebox@lists.infradead.org; Tue, 11 Nov 2014 14:03:16 +0000
-Date: Tue, 11 Nov 2014 15:02:53 +0100
+ Linux)) id 1XoC2w-00024e-Aq
+ for barebox@lists.infradead.org; Tue, 11 Nov 2014 14:03:51 +0000
+Date: Tue, 11 Nov 2014 15:03:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141111140253.GV30369@pengutronix.de>
-References: <1415641440-19318-1-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20141111140328.GW30369@pengutronix.de>
+References: <1415641504-19358-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1415641440-19318-1-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1415641504-19358-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] partitions/efi: Fix off-by-one error in 'last_lba'
+Subject: Re: [PATCH] ARM: i.MX: Make NAND related Kconfig options depend on MTD
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 10, 2014 at 09:44:00AM -0800, Andrey Smirnov wrote:
-> LBAs are numbered starting from zero so the last LBA # would be equal
-> to total number of blocks minus one.
+On Mon, Nov 10, 2014 at 09:45:04AM -0800, Andrey Smirnov wrote:
+> ARCH_IMX_EXTERNAL_BOOT_NAND, BAREBOX_UPDATE_IMX_EXTERNAL_NAND and
+> BAREBOX_UPDATE_IMX6_NAND all enable features that make use of API
+> provided by MTD subsystem, so to prevent those features breaking the
+> build when MTD is disabled make them dependent on it.
 > 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Applied, thanks.
-
-
-> ---
->  common/partitions/efi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-> index dcb9541..80dc3f3 100644
-> --- a/common/partitions/efi.c
-> +++ b/common/partitions/efi.c
-> @@ -51,11 +51,11 @@ efi_crc32(const void *buf, unsigned long len)
->   *  the part[0] entry for this disk, and is the number of
->   *  physical sectors available on the disk.
->   */
-> -static u64 last_lba(struct block_device *bdev)
-> +static u64  last_lba(struct block_device *bdev)
-
-Dropped this hunk while applying.
+Applied, thanks
 
 Sascha
 
->  {
->  	if (!bdev)
->  		return 0;
-> -	return bdev->num_blocks;
-> +	return bdev->num_blocks - 1;
->  }
+> ---
+>  arch/arm/mach-imx/Kconfig | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index ef7c0a1..8dce491 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -102,17 +102,20 @@ endchoice
 >  
->  /**
+>  config ARCH_IMX_EXTERNAL_BOOT_NAND
+>  	bool
+> +	depends on MTD
+>  	depends on ARCH_IMX25 || ARCH_IMX27 || ARCH_IMX31 || ARCH_IMX35
+>  	prompt "Support Starting barebox from NAND in external bootmode"
+>  
+>  config BAREBOX_UPDATE_IMX_EXTERNAL_NAND
+>  	bool
+> +	depends on MTD
+>  	depends on ARCH_IMX_EXTERNAL_BOOT_NAND
+>  	depends on BAREBOX_UPDATE
+>  	default y
+>  
+>  config BAREBOX_UPDATE_IMX6_NAND
+>  	bool
+> +	depends on MTD
+>  	depends on ARCH_IMX6
+>  	depends on BAREBOX_UPDATE
+>  	default y
 > -- 
 > 1.9.3
 > 
