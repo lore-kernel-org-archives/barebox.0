@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.morganschaffer.com ([207.115.108.90]
- helo=MSI-01-S01.MSI.Local)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XoIz2-0008TE-VK
- for barebox@lists.infradead.org; Tue, 11 Nov 2014 21:28:17 +0000
-From: "Balasa, Bogdan" <BBalasa@Morganschaffer.com>
-Date: Tue, 11 Nov 2014 21:27:54 +0000
-Message-ID: <4C598A31AEBE214FB619D7F2DC3BD8AB013B08AA97@MSI0E01.MSI.Local>
-Content-Language: fr-FR
-MIME-Version: 1.0
+Received: from mail-pd0-x233.google.com ([2607:f8b0:400e:c02::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XoJE5-000739-Hk
+ for barebox@lists.infradead.org; Tue, 11 Nov 2014 21:43:49 +0000
+Received: by mail-pd0-f179.google.com with SMTP id g10so10917959pdj.10
+ for <barebox@lists.infradead.org>; Tue, 11 Nov 2014 13:43:28 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 11 Nov 2014 13:43:04 -0800
+Message-Id: <1415742184-21334-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,39 +16,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: mtdparts phyFlex
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: i.MX6 Phytec phyFLEX: Fix imx6_bbu_nand_register_handler
+ prototype
+To: barebox@lists.infradead.org
+Cc: andrew.smirnov@gmail.com
 
-Hi,
+imx6_bbu_nand_register_handler is dependent on
+CONFIG_BAREBOX_UPDATE_IMX6_NAND. Change the protoype definition such
+that said function is stubbed-out when CONFIG_BAREBOX_UPDATE_IMX6_NAND
+is not defined.
 
-I am using barebox 2014.11.0 with phyFlex imx6 and when I add in '/env/init/mtdparts-nand'
-to specify the size of different partitions:
-----------------------------------------------------------------------------------------------
-#!/bin/sh
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/mach-imx/include/mach/bbu.h | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-if [ "$1" = menu ]; then
-               init-menu-add-entry "$0" "NAND partitions"
-               exit
-fi
-
-mtdparts="5M(nand0.oftree),10M(nand0.kernel),50M(nand0.root) "
-kernelname="gpmi-nand"
-mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
----------------------------------------------------------------------------------------------
-
-at next power-up I get an error:
-
-'cannot create nand0.oftree: File exists'
-
-It seems like barebox adds  'nand0.oftree' before is specified by mtdparts-nand?!
-
-Any help is appreciated.
-
-Bogdan
+diff --git a/arch/arm/mach-imx/include/mach/bbu.h b/arch/arm/mach-imx/include/mach/bbu.h
+index 74c334a..5eb9a47 100644
+--- a/arch/arm/mach-imx/include/mach/bbu.h
++++ b/arch/arm/mach-imx/include/mach/bbu.h
+@@ -27,8 +27,6 @@ int imx6_bbu_internal_mmc_register_handler(const char *name, char *devicefile,
+ int imx6_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefile,
+ 		unsigned long flags);
+ 
+-int imx6_bbu_nand_register_handler(const char *name, unsigned long flags);
+-
+ int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
+ 		unsigned long flags);
+ 
+@@ -70,13 +68,17 @@ static inline int imx6_bbu_internal_spi_i2c_register_handler(const char *name, c
+ 	return -ENOSYS;
+ }
+ 
+-static inline int imx6_bbu_nand_register_handler(const char *name, unsigned long flags)
++static inline int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
++		unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
++#endif
+ 
+-static inline int imx_bbu_external_nor_register_handler(const char *name, char *devicefile,
+-		unsigned long flags)
++#if defined(CONFIG_BAREBOX_UPDATE_IMX6_NAND)
++int imx6_bbu_nand_register_handler(const char *name, unsigned long flags);
++#else
++static inline int imx6_bbu_nand_register_handler(const char *name, unsigned long flags)
+ {
+ 	return -ENOSYS;
+ }
+-- 
+1.9.3
 
 
 _______________________________________________
