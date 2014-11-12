@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22a.google.com ([2a00:1450:400c:c05::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xor6S-0006qU-EK
- for barebox@lists.infradead.org; Thu, 13 Nov 2014 09:54:13 +0000
-Received: by mail-wi0-f170.google.com with SMTP id r20so1281114wiv.5
- for <barebox@lists.infradead.org>; Thu, 13 Nov 2014 01:53:50 -0800 (PST)
-Message-ID: <54647FAA.2090603@gmail.com>
-Date: Thu, 13 Nov 2014 10:53:46 +0100
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1415544978-22392-1-git-send-email-ezequiel.garcia@free-electrons.com>
- <20141110080657.GA18558@pengutronix.de> <5460FFB0.9080205@free-electrons.com>
- <20141110184345.GC27002@pengutronix.de> <546113A7.30500@gmail.com>
- <20141111090649.GE27002@pengutronix.de>
- <20141112105637.GN27002@pengutronix.de> <546342EE.20500@gmail.com>
- <20141113090938.GO27002@pengutronix.de>
-In-Reply-To: <20141113090938.GO27002@pengutronix.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XoeMo-0003ZF-Ux
+ for barebox@lists.infradead.org; Wed, 12 Nov 2014 20:18:15 +0000
+Received: from tellur.intern.lynxeye.de (p57B5F278.dip0.t-ipconnect.de
+ [87.181.242.120]) by lynxeye.de (Postfix) with ESMTPA id F008426C2002
+ for <barebox@lists.infradead.org>; Wed, 12 Nov 2014 21:17:16 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Wed, 12 Nov 2014 21:24:36 +0100
+Message-Id: <1415823877-7379-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1415823877-7379-1-git-send-email-dev@lynxeye.de>
+References: <1415823877-7379-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,50 +20,55 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 0/4] mvebu: Add network support for Armada 370/XP
-To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: [PATCH 2/3] pci: align bridge windows
+To: barebox@lists.infradead.org
 
-On 11/13/2014 10:09 AM, Uwe Kleine-K=F6nig wrote:
-> On Wed, Nov 12, 2014 at 12:22:22PM +0100, Sebastian Hesselbarth wrote:
->> On 11/12/2014 11:56 AM, Uwe Kleine-K=F6nig wrote:
->>> Hello again,
->>>
->>> here come the recent insights.
->> [...]
->>>
->>> It seems to be not possible to easily dump the register space in both
->>> U-Boot and barebox for comparison. md 0xf1074000+0x4000 just hangs
->>> somewhere in the middle.
->>>
->>> A difference between U-Boot and barebox is the location where the
->>> internal registers are mapped. Maybe something that depends on U-Boot's
->>> memory layout leaks into barebox because I do 2nd stage booting?
->>>
->>> Out of ideas at the moment. :-(
->>
->> Uwe,
->>
->> Nice comparison, but did you double check caches are disabled? There is
->> no support for Dcache on mvebu SoCs in barebox atm.
-> I would expect that U-Boot disables caches on go. But I remember there
-> was a bug in that area some time ago.
+The bridge filtering logic needs a minimum
+alignment of 1MB for mem and 4KB for io resources.
+Take this into account while assigning resources
+to devices in oredr to not produce overlapping
+windows between different bridges.
 
-Why should U-Boot do anything on go except jumping to that location?
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/pci/pci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> Now I saw a different behaviour:
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 87c2fca..7f8ebcf 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1,4 +1,5 @@
+ #include <common.h>
++#include <sizes.h>
+ #include <linux/pci.h>
+ 
+ #ifdef DEBUG
+@@ -259,14 +260,17 @@ static void postscan_setup_bridge(struct pci_dev *dev)
+ 	pci_write_config_byte(dev, PCI_SUBORDINATE_BUS, bus_index - 1);
+ 
+ 	if (last_mem)
++		last_mem = ALIGN(last_mem, SZ_1M);
+ 		pci_write_config_word(dev, PCI_MEMORY_LIMIT,
+ 				      ((last_mem - 1) & 0xfff00000) >> 16);
+ 
+ 	if (last_mem_pref)
++		last_mem_pref = ALIGN(last_mem_pref, SZ_1M);
+ 		pci_write_config_word(dev, PCI_PREF_MEMORY_LIMIT,
+ 				      ((last_mem_pref - 1) & 0xfff00000) >> 16);
+ 
+ 	if (last_io) {
++		last_io = ALIGN(last_io, SZ_4K);
+ 		pci_write_config_byte(dev, PCI_IO_LIMIT,
+ 				((last_io - 1) & 0x0000f000) >> 8);
+ 		pci_write_config_word(dev, PCI_IO_LIMIT_UPPER16,
+-- 
+1.9.3
 
-Let's start from scratch and change one thing at a time:
-
-Can you try to UART boot barebox directly and try both eth interfaces?
-
-If that already does not work we have to look at barebox only.
-
-Sebastian
 
 _______________________________________________
 barebox mailing list
