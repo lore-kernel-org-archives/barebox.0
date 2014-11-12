@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XoRm8-0002pq-Ro
- for barebox@lists.infradead.org; Wed, 12 Nov 2014 06:51:33 +0000
-Date: Wed, 12 Nov 2014 07:51:11 +0100
+ Linux)) id 1XoRl6-0002Xp-9V
+ for barebox@lists.infradead.org; Wed, 12 Nov 2014 06:50:29 +0000
+Date: Wed, 12 Nov 2014 07:50:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141112065111.GE30369@pengutronix.de>
-References: <1415716859-19077-1-git-send-email-c.hemp@phytec.de>
+Message-ID: <20141112065005.GD30369@pengutronix.de>
+References: <4C598A31AEBE214FB619D7F2DC3BD8AB013B08AA97@MSI0E01.MSI.Local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1415716859-19077-1-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <4C598A31AEBE214FB619D7F2DC3BD8AB013B08AA97@MSI0E01.MSI.Local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +22,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM: update imx_v7_defconfig
-To: Christian Hemp <c.hemp@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: mtdparts phyFlex
+To: "Balasa, Bogdan" <BBalasa@Morganschaffer.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Nov 11, 2014 at 03:40:56PM +0100, Christian Hemp wrote:
-> Enable micrel phy
+Hi Bogdan,
+
+On Tue, Nov 11, 2014 at 09:27:54PM +0000, Balasa, Bogdan wrote:
+> Hi,
 > 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> ---
->  arch/arm/configs/imx_v7_defconfig | 1 +
->  1 file changed, 1 insertion(+)
+> I am using barebox 2014.11.0 with phyFlex imx6 and when I add in '/env/init/mtdparts-nand'
+> to specify the size of different partitions:
+> ----------------------------------------------------------------------------------------------
+> #!/bin/sh
+> 
+> if [ "$1" = menu ]; then
+>                init-menu-add-entry "$0" "NAND partitions"
+>                exit
+> fi
+> 
+> mtdparts="5M(nand0.oftree),10M(nand0.kernel),50M(nand0.root) "
 
-Applied all, thanks
+You are not booting from NAND, are you? In that case you would overwrite
+the bootloader partition here.
+
+> kernelname="gpmi-nand"
+> mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
+> ---------------------------------------------------------------------------------------------
+> 
+> at next power-up I get an error:
+> 
+> 'cannot create nand0.oftree: File exists'
+> 
+> It seems like barebox adds  'nand0.oftree' before is specified by mtdparts-nand?!
+
+The partitions come from the device tree. You're best off changing them
+there and recompiling. This would be the gpmi node in
+arch/arm/dts/imx6qdl-phytec-pfla02.dtsi.
+
+There is a chance to do this from the commandline without recompiling,
+but actually trying it seems awkward. You first have to delete the
+partitions one by one:
+
+delpart nand0.barebox
+delpart nand0.barebox-environment
+delpart nand0.oftree
+delpart nand0.kernel
+delpart nand0.root
+
+Then add them again with the script you created. Note that the kernel
+also takes the partitions from the device tree, so depending which
+device tree you use you might end up with the original partitions.
 
 Sascha
 
-> 
-> diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-> index 2c8eb85..7076ecd 100644
-> --- a/arch/arm/configs/imx_v7_defconfig
-> +++ b/arch/arm/configs/imx_v7_defconfig
-> @@ -107,6 +107,7 @@ CONFIG_OFDEVICE=y
->  CONFIG_OF_BAREBOX_DRIVERS=y
->  CONFIG_DRIVER_NET_FEC_IMX=y
->  CONFIG_AT803X_PHY=y
-> +CONFIG_MICREL_PHY=y
->  CONFIG_NET_USB=y
->  CONFIG_NET_USB_ASIX=y
->  CONFIG_NET_USB_SMSC95XX=y
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
