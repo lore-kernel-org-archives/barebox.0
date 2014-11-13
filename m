@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XotbZ-0005wH-2E
- for barebox@lists.infradead.org; Thu, 13 Nov 2014 12:34:29 +0000
-Message-ID: <5464A53F.1030505@phytec.de>
-Date: Thu, 13 Nov 2014 13:34:07 +0100
-From: Jan Weitzel <j.weitzel@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XozNj-0005zv-0V
+ for barebox@lists.infradead.org; Thu, 13 Nov 2014 18:44:36 +0000
+Date: Thu, 13 Nov 2014 19:44:12 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20141113184412.GQ27002@pengutronix.de>
+References: <5460FFB0.9080205@free-electrons.com>
+ <20141110184345.GC27002@pengutronix.de> <546113A7.30500@gmail.com>
+ <20141111090649.GE27002@pengutronix.de>
+ <20141112105637.GN27002@pengutronix.de> <546342EE.20500@gmail.com>
+ <20141113090938.GO27002@pengutronix.de>
+ <54647FAA.2090603@gmail.com>
+ <20141113104642.GP27002@pengutronix.de>
+ <5464967C.2040006@gmail.com>
 MIME-Version: 1.0
-References: <1415778114-41864-1-git-send-email-j.weitzel@phytec.de>
- <1415778114-41864-2-git-send-email-j.weitzel@phytec.de>
- <20141112082217.GJ30369@pengutronix.de> <54632760.9050205@phytec.de>
- <20141113073732.GN30369@pengutronix.de>
-In-Reply-To: <20141113073732.GN30369@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <5464967C.2040006@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,56 +25,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: omap: Add bootsource serial to xload
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 0/4] mvebu: Add network support for Armada 370/XP
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
+Hallo Sebastian,
 
-Am 13.11.2014 um 08:37 schrieb Sascha Hauer:
-> On Wed, Nov 12, 2014 at 10:24:48AM +0100, Jan Weitzel wrote:
->> Am 12.11.2014 um 09:22 schrieb Sascha Hauer:
->>> Hi Jan,
->>>
->>> On Wed, Nov 12, 2014 at 08:41:54AM +0100, Jan Weitzel wrote:
->>>> If booted from serial via xmodem, also get barebox.bin per xmodem
->>>> For first stage you need the .pblx file instead of MLO.
->>>>
->>>> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
->>>> ---
->>>>   arch/arm/mach-omap/Kconfig |  7 +++++++
->>>>   arch/arm/mach-omap/xload.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->>>>   2 files changed, 53 insertions(+)
->>>>
->>>> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
->>>> index f9b5ec3..953dd8f 100644
->>>> --- a/arch/arm/mach-omap/Kconfig
->>>> +++ b/arch/arm/mach-omap/Kconfig
->>>> @@ -118,6 +118,13 @@ config OMAP4_USBBOOT
->>>>   	  You need the utility program omap4_usbboot to boot from USB.
->>>>   	  Please read omap4_usb_booting.txt for more information.
->>>> +config OMAP_SERIALBOOT
->>>> +	bool
->>>> +	default y
->>> No default y please. Better keep it disabled by default because the
->>> OMAP4 xload configs are quiet tight I think.
->> Is adding it to am335x_mlo_defconfig ok? Because of the size I added the
->> ARCH_AM33XX dependency.
-> I overlooked this dependency. So the dependency is only because of the
-> binary size and it's otherwise usable on Omap aswell? In this case I
-> suggest to drop the dependency. And yes, ok to add it to the
-> am335x_mlo_defconfig.
+On Thu, Nov 13, 2014 at 12:31:08PM +0100, Sebastian Hesselbarth wrote:
+> >I don't manage to boot via UART. The usual outcome is:
+> >
+> >Sending boot message. Please reboot the target...\
+> >Sending boot image...
+> >   0 % [................................................................=
+......]
+> >   2 % [................................................................=
+......]
+> >   5 % [................................................................=
+......]
+> >   7 % [................................................................=
+......]
+> >  10 % [................................................................=
+......]
+> >  13 % [..................................xmodem: Connection timed out
+> >
+> >If I try to boot a barebox-globalscale-mirabox.img (provided by
+> >ezequielg in #mvlinux), I get:
+> >
+> >$ scripts/kwboot -b ../barebox-globalscale-mirabox.img -t /dev/ttyUSB1
+> >Sending boot message. Please reboot the target...\
+> >Sending boot image...
+> >   0 % [................................................................=
+......]
+> >   5 % [................................................................=
+......]
+> >  10 % [................................................................=
+......]
+> >  14 % [................................................................=
+......]
+> >  19 % [................................................................=
+......]
+> >  24 % [.................................DDR3 Training Sequence - Ver 2.=
+1.6
+> >DDR3 Training Sequence - Number of DIMMs detected: 1
+> >+xmodem: Connection timed out
+> =
 
-Only AM335x set BOOTSOURCE_SERIAL by now
-Jan
+> That indeed is strange and indicates some general problem. Can you retry
+> with setting the baudrate to 115200 (-b 115200 IIRC).
+Doesn't change anything. In fact the tty is already configured for
+115200 Baud. And I would expect that on a mismatch it wouldn't always
+die just after the header is uploaded.
 
->
-> Sascha
->
+Just noticed that my binary.0 was corrupted as I extraced it from a nand
+dump that also included the oob area ...
 
+With a proper image I get barebox up now.
+
+> >And funny enough, during testing I added
+> >
+> >	select(fd + 1, &rfds, NULL, NULL, &tv);
+> >
+> >to kwboot_tty_recv after the read, this results reproduibly into a
+> >single NAK and "BootROM: Invalid header checksum".
+This is still not explained. I would have expected that this select
+doesn't do anything noticable on the remote end.
+
+> >When booting from nand (as shipped by Netgear) the output starts with:
+> =
+
+> You need to set boot source byte to UART (0x52 IIRC). Otherwise the NAND
+Just for the log: UART =3D 0x69.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
