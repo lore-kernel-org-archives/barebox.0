@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f47.google.com ([74.125.82.47])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xoq8n-00029E-3h
- for barebox@lists.infradead.org; Thu, 13 Nov 2014 08:52:36 +0000
-Received: by mail-wg0-f47.google.com with SMTP id a1so16058215wgh.6
- for <barebox@lists.infradead.org>; Thu, 13 Nov 2014 00:52:10 -0800 (PST)
-Received: from gmail.com (p578a7230.dip0.t-ipconnect.de. [87.138.114.48])
- by mx.google.com with ESMTPSA id l10sm24800603wif.20.2014.11.13.00.52.08
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
- Thu, 13 Nov 2014 00:52:09 -0800 (PST)
-Date: Thu, 13 Nov 2014 09:52:03 +0100
-From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-Message-ID: <20141113085159.GA8321@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XoqtQ-0000NN-6u
+ for barebox@lists.infradead.org; Thu, 13 Nov 2014 09:40:45 +0000
+Date: Thu, 13 Nov 2014 10:40:21 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141113094021.GQ30369@pengutronix.de>
+References: <20141113085159.GA8321@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20141113085159.GA8321@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,12 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Barebox with DT and kernel without DT support
-To: barebox@lists.infradead.org
+Subject: Re: Barebox with DT and kernel without DT support
+To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Thu, Nov 13, 2014 at 09:52:03AM +0100, Wjatscheslaw Stoljarski wrote:
+> Hi,
+> 
+> how to provide commandline to kernel without DT support from barebox with DT?
 
-how to provide commandline to kernel without DT support from barebox with DT?
+Call oftree -f before calling the kernel. This will free the internal
+devicetree and barebox will pass the ATAGS instead.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
