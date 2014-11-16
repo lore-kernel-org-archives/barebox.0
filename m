@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-f43.google.com ([209.85.192.43])
+Received: from s250.sam-solutions.net ([217.21.49.219])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xq7VY-000868-S3
- for barebox@lists.infradead.org; Sun, 16 Nov 2014 21:37:21 +0000
-Received: by mail-qg0-f43.google.com with SMTP id f51so14561967qge.30
- for <barebox@lists.infradead.org>; Sun, 16 Nov 2014 13:36:58 -0800 (PST)
-Message-ID: <5469189B.7010009@vanguardiasur.com.ar>
-Date: Sun, 16 Nov 2014 18:35:23 -0300
-From: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+ id 1Xq7qk-0007Jy-BN
+ for barebox@lists.infradead.org; Sun, 16 Nov 2014 21:59:15 +0000
+Received: from s326.sam-solutions.net ([217.21.35.11])
+ by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <D.Lavnikevich@sam-solutions.com>)
+ id 1Xq7qL-0001B5-D1
+ for barebox@lists.infradead.org; Mon, 17 Nov 2014 00:58:49 +0300
+From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
+Date: Mon, 17 Nov 2014 00:58:34 +0300
+Message-ID: <1416175114-3132-1-git-send-email-d.lavnikevich@sam-solutions.com>
 MIME-Version: 1.0
-References: <1413909243.628274148@f65.i.mail.ru>
-In-Reply-To: <1413909243.628274148@f65.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +24,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: LPC43xx
-To: Alexander Shiyan <shc_work@mail.ru>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] mtd: nand-mxs: Gate ENFC_CLK_ROOT clock off before changing
+ nand clock rate
+To: barebox@lists.infradead.org
+Cc: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 
-Hi Alexander,
+This fixes NAND initialization issue which appears occasionally on
+some i.MX6 SoCs (particulary was observed on phyCARD-i.MX6 with
+i.MX6Solo).
 
-On 10/21/2014 01:34 PM, Alexander Shiyan wrote:
-> Hello all.
-> 
-> We started developing device which uses NXP LPC43xx CPU. I would like to add
-> support for this CPU series into barebox.
-> The problem is that there is no support for this architecture in the Linux kernel,
-> and it would upset the current concept (the barebox tree is very similar to Linux
-> tree and we not have any orphan arch-s).
+Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
+---
+ arch/arm/mach-imx/include/mach/clock-imx6.h |  4 ++++
+ drivers/mtd/nand/nand_mxs.c                 | 12 ++++++++++++
+ 2 files changed, 16 insertions(+)
 
-I'm working on the upstream Linux port for LPC43xx SoCs. The obvious
-choice would be mach-lpc43xx. The problem is that LPC18xx are similar
-SoCs, and I think it would make sense to have them in the same mach-xxx.
-Haven't made up my mind on this issue, and I suspect we won't find out
-until we push some patches upstream.
-
-Anyway, if you make any progress with the barebox port, I'd be happy to
-take a look and help you test it.
-
-Regards,
+diff --git a/arch/arm/mach-imx/include/mach/clock-imx6.h b/arch/arm/mach-imx/include/mach/clock-imx6.h
+index 8e5e9d9..ffa889d 100644
+--- a/arch/arm/mach-imx/include/mach/clock-imx6.h
++++ b/arch/arm/mach-imx/include/mach/clock-imx6.h
+@@ -344,4 +344,8 @@
+ #define MXC_CCM_CGPR_MMDC_EXT_CLK_DIS			(1 << 2)
+ #define MXC_CCM_CGPR_PMIC_DELAY_SCALER			(1)
+ 
++/* Define the bits in register CCGR2 */
++#define MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_OFFSET		14
++#define MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_MASK		(3 << 14)
++
+ #endif				/* __ARCH_ARM_MACH_MX6_CRM_REGS_H__ */
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index d5428bc..9ebddb3 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -34,6 +34,8 @@
+ #include <stmp-device.h>
+ #include <asm/mmu.h>
+ #include <mach/generic.h>
++#include <mach/clock-imx6.h>
++#include <mach/imx6-regs.h>
+ 
+ #define	MX28_BLOCK_SFTRST				(1 << 31)
+ #define	MX28_BLOCK_CLKGATE				(1 << 30)
+@@ -1254,6 +1256,7 @@ static int mxs_nand_probe(struct device_d *dev)
+ 	struct nand_chip *nand;
+ 	struct mtd_info *mtd;
+ 	enum gpmi_type type;
++	u32 val;
+ 	int err;
+ 
+ 	err = dev_get_drvdata(dev, (unsigned long *)&type);
+@@ -1277,7 +1280,16 @@ static int mxs_nand_probe(struct device_d *dev)
+ 		return PTR_ERR(nand_info->clk);
+ 
+ 	if (mxs_nand_is_imx6(nand_info)) {
++		val = readl(MXC_CCM_CCGR2);
++		val &= ~MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_MASK;
++		writel(val, MXC_CCM_CCGR2);
++
+ 		clk_set_rate(nand_info->clk, 96000000);
++
++		val = readl(MXC_CCM_CCGR2);
++		val |= MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_MASK;
++		writel(val, MXC_CCM_CCGR2);
++
+ 		clk_enable(nand_info->clk);
+ 		nand_info->dma_channel_base = 0;
+ 	} else {
 -- 
-Ezequiel Garcia, VanguardiaSur
-www.vanguardiasur.com.ar
+2.1.3
+
 
 _______________________________________________
 barebox mailing list
