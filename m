@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XphYZ-0005kT-48
- for barebox@lists.infradead.org; Sat, 15 Nov 2014 17:54:44 +0000
-Date: Sat, 15 Nov 2014 18:54:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141115175417.GX30369@pengutronix.de>
-References: <4C598A31AEBE214FB619D7F2DC3BD8AB013B08B107@MSI0E01.MSI.Local>
+Received: from mail-qg0-f43.google.com ([209.85.192.43])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Xq7VY-000868-S3
+ for barebox@lists.infradead.org; Sun, 16 Nov 2014 21:37:21 +0000
+Received: by mail-qg0-f43.google.com with SMTP id f51so14561967qge.30
+ for <barebox@lists.infradead.org>; Sun, 16 Nov 2014 13:36:58 -0800 (PST)
+Message-ID: <5469189B.7010009@vanguardiasur.com.ar>
+Date: Sun, 16 Nov 2014 18:35:23 -0300
+From: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4C598A31AEBE214FB619D7F2DC3BD8AB013B08B107@MSI0E01.MSI.Local>
+References: <1413909243.628274148@f65.i.mail.ru>
+In-Reply-To: <1413909243.628274148@f65.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bareboxenv-target
-To: "Balasa, Bogdan" <BBalasa@Morganschaffer.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: LPC43xx
+To: Alexander Shiyan <shc_work@mail.ru>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Sascha Hauer <s.hauer@pengutronix.de>
 
-On Fri, Nov 14, 2014 at 06:44:30PM +0000, Balasa, Bogdan wrote:
-> Hi,
+Hi Alexander,
+
+On 10/21/2014 01:34 PM, Alexander Shiyan wrote:
+> Hello all.
 > 
-> I'm using barebox 2014.11.0, kernel 3.14 on phyFlex imx6 and when loading barebox environment from userspace I get a wrong magic:
-> -------
-> ./bareboxenv-target -l /mnt/bbox /dev/mtd1
-> envfs: wrong magic
-> -------
-> root@imx6q-pbab01:~# cat /proc/mtd
-> dev:    size   erasesize  name
-> mtd0: 00400000 00020000 "barebox"
-> mtd1: 00020000 00020000 "barebox-environment"
-> mtd2: 00800000 00020000 "kernel"
-> mtd3: 3f3e0000 00020000 "root"
+> We started developing device which uses NXP LPC43xx CPU. I would like to add
+> support for this CPU series into barebox.
+> The problem is that there is no support for this architecture in the Linux kernel,
+> and it would upset the current concept (the barebox tree is very similar to Linux
+> tree and we not have any orphan arch-s).
 
-This seems to be your Nand flash, so if you have your environment in NOR
-FLash,
+I'm working on the upstream Linux port for LPC43xx SoCs. The obvious
+choice would be mach-lpc43xx. The problem is that LPC18xx are similar
+SoCs, and I think it would make sense to have them in the same mach-xxx.
+Haven't made up my mind on this issue, and I suspect we won't find out
+until we push some patches upstream.
 
-> mtd4: 01000000 00010000 "spi2.0"
+Anyway, if you make any progress with the barebox port, I'd be happy to
+take a look and help you test it.
 
-it should be here. However, the NOR Flash is not partitioned, so the
-partitions get lost somewhere between barebox and the kernel.
-
-Sascha
-
-
+Regards,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Ezequiel Garcia, VanguardiaSur
+www.vanguardiasur.com.ar
 
 _______________________________________________
 barebox mailing list
