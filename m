@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from s250.sam-solutions.net ([217.21.49.219])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xq7qk-0007Jy-BN
- for barebox@lists.infradead.org; Sun, 16 Nov 2014 21:59:15 +0000
-Received: from s326.sam-solutions.net ([217.21.35.11])
- by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
- (Exim 4.77) (envelope-from <D.Lavnikevich@sam-solutions.com>)
- id 1Xq7qL-0001B5-D1
- for barebox@lists.infradead.org; Mon, 17 Nov 2014 00:58:49 +0300
-From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-Date: Mon, 17 Nov 2014 00:58:34 +0300
-Message-ID: <1416175114-3132-1-git-send-email-d.lavnikevich@sam-solutions.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XqGpk-0000t2-Uy
+ for barebox@lists.infradead.org; Mon, 17 Nov 2014 07:34:50 +0000
+Date: Mon, 17 Nov 2014 08:34:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141117073423.GY30369@pengutronix.de>
+References: <20141113073732.GN30369@pengutronix.de>
+ <1415881906-19004-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1415881906-19004-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,75 +23,167 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand-mxs: Gate ENFC_CLK_ROOT clock off before changing
- nand clock rate
-To: barebox@lists.infradead.org
-Cc: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
+Subject: Re: [PATCH v2] ARM: omap: Add bootsource serial to xload
+To: Jan Weitzel <j.weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-This fixes NAND initialization issue which appears occasionally on
-some i.MX6 SoCs (particulary was observed on phyCARD-i.MX6 with
-i.MX6Solo).
+On Thu, Nov 13, 2014 at 01:31:46PM +0100, Jan Weitzel wrote:
+> If booted from serial via xmodem, also get barebox.bin per xmodem
+> For first stage you need the .pblx file instead of MLO.
+> 
+> Add serial boot to am335x_mlo_defconfig introduce some cleanups
+> by savedefconfig
+> 
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
-Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
----
- arch/arm/mach-imx/include/mach/clock-imx6.h |  4 ++++
- drivers/mtd/nand/nand_mxs.c                 | 12 ++++++++++++
- 2 files changed, 16 insertions(+)
+Applied, thanks
 
-diff --git a/arch/arm/mach-imx/include/mach/clock-imx6.h b/arch/arm/mach-imx/include/mach/clock-imx6.h
-index 8e5e9d9..ffa889d 100644
---- a/arch/arm/mach-imx/include/mach/clock-imx6.h
-+++ b/arch/arm/mach-imx/include/mach/clock-imx6.h
-@@ -344,4 +344,8 @@
- #define MXC_CCM_CGPR_MMDC_EXT_CLK_DIS			(1 << 2)
- #define MXC_CCM_CGPR_PMIC_DELAY_SCALER			(1)
- 
-+/* Define the bits in register CCGR2 */
-+#define MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_OFFSET		14
-+#define MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_MASK		(3 << 14)
-+
- #endif				/* __ARCH_ARM_MACH_MX6_CRM_REGS_H__ */
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index d5428bc..9ebddb3 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -34,6 +34,8 @@
- #include <stmp-device.h>
- #include <asm/mmu.h>
- #include <mach/generic.h>
-+#include <mach/clock-imx6.h>
-+#include <mach/imx6-regs.h>
- 
- #define	MX28_BLOCK_SFTRST				(1 << 31)
- #define	MX28_BLOCK_CLKGATE				(1 << 30)
-@@ -1254,6 +1256,7 @@ static int mxs_nand_probe(struct device_d *dev)
- 	struct nand_chip *nand;
- 	struct mtd_info *mtd;
- 	enum gpmi_type type;
-+	u32 val;
- 	int err;
- 
- 	err = dev_get_drvdata(dev, (unsigned long *)&type);
-@@ -1277,7 +1280,16 @@ static int mxs_nand_probe(struct device_d *dev)
- 		return PTR_ERR(nand_info->clk);
- 
- 	if (mxs_nand_is_imx6(nand_info)) {
-+		val = readl(MXC_CCM_CCGR2);
-+		val &= ~MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_MASK;
-+		writel(val, MXC_CCM_CCGR2);
-+
- 		clk_set_rate(nand_info->clk, 96000000);
-+
-+		val = readl(MXC_CCM_CCGR2);
-+		val |= MXC_CCM_CCGR2_IOMUX_IPT_CLK_IO_MASK;
-+		writel(val, MXC_CCM_CCGR2);
-+
- 		clk_enable(nand_info->clk);
- 		nand_info->dma_channel_base = 0;
- 	} else {
+Sascha
+
+> ---
+> v2: make serialboot configurable
+>     select it in am335x_mlo_defconfig
+> 
+>  arch/arm/configs/am335x_mlo_defconfig |  4 +--
+>  arch/arm/mach-omap/Kconfig            |  9 +++++++
+>  arch/arm/mach-omap/xload.c            | 46 +++++++++++++++++++++++++++++++++++
+>  3 files changed, 56 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/configs/am335x_mlo_defconfig b/arch/arm/configs/am335x_mlo_defconfig
+> index d691570..9734da6 100644
+> --- a/arch/arm/configs/am335x_mlo_defconfig
+> +++ b/arch/arm/configs/am335x_mlo_defconfig
+> @@ -1,12 +1,12 @@
+>  CONFIG_ARCH_OMAP=y
+>  CONFIG_OMAP_BUILD_IFT=y
+> +CONFIG_OMAP_SERIALBOOT=y
+>  CONFIG_OMAP_MULTI_BOARDS=y
+>  CONFIG_MACH_AFI_GF=y
+>  CONFIG_MACH_BEAGLEBONE=y
+>  CONFIG_MACH_PCM051=y
+>  CONFIG_MACH_PFLA03=y
+>  CONFIG_THUMB2_BAREBOX=y
+> -# CONFIG_CMD_ARM_CPUINFO is not set
+>  # CONFIG_MEMINFO is not set
+>  CONFIG_MMU=y
+>  CONFIG_TEXT_BASE=0x0
+> @@ -37,10 +37,8 @@ CONFIG_NAND_OMAP_GPMC=y
+>  CONFIG_MCI=y
+>  # CONFIG_MCI_WRITE is not set
+>  CONFIG_MCI_OMAP_HSMMC=y
+> -CONFIG_PINCTRL=y
+>  CONFIG_PINCTRL_SINGLE=y
+>  CONFIG_BUS_OMAP_GPMC=y
+> -# CONFIG_FS_RAMFS is not set
+>  # CONFIG_FS_DEVFS is not set
+>  CONFIG_FS_FAT=y
+>  CONFIG_FS_FAT_LFN=y
+> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+> index f9b5ec3..0996ed9 100644
+> --- a/arch/arm/mach-omap/Kconfig
+> +++ b/arch/arm/mach-omap/Kconfig
+> @@ -118,6 +118,15 @@ config OMAP4_USBBOOT
+>  	  You need the utility program omap4_usbboot to boot from USB.
+>  	  Please read omap4_usb_booting.txt for more information.
+>  
+> +config OMAP_SERIALBOOT
+> +	bool "enable booting from serial"
+> +	select XYMODEM
+> +	select FS_RAMFS
+> +	depends on ARCH_AM33XX && SHELL_NONE
+> +	help
+> +	  Say Y here if you want to load the 2nd stage barebox.bin with
+> +	  xmodem after booting from serial line.
+> +
+>  config OMAP_MULTI_BOARDS
+>  	bool "Allow multiple boards to be selected"
+>  	select HAVE_DEFAULT_ENVIRONMENT_NEW
+> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+> index e9d7bbb..8d9d84c 100644
+> --- a/arch/arm/mach-omap/xload.c
+> +++ b/arch/arm/mach-omap/xload.c
+> @@ -11,6 +11,7 @@
+>  #include <sizes.h>
+>  #include <malloc.h>
+>  #include <filetype.h>
+> +#include <xymodem.h>
+>  #include <mach/generic.h>
+>  
+>  struct omap_barebox_part *barebox_part;
+> @@ -184,6 +185,45 @@ static void *omap4_xload_boot_usb(void){
+>  	return buf;
+>  }
+>  
+> +static void *omap_serial_boot(void){
+> +	struct console_device *cdev;
+> +	int ret;
+> +	void *buf;
+> +	int len;
+> +	int fd;
+> +
+> +	/* need temporary place to store file */
+> +	ret = mount("none", "ramfs", "/", NULL);
+> +	if (ret < 0) {
+> +		printf("failed to mount ramfs\n");
+> +		return NULL;
+> +	}
+> +
+> +	cdev = console_get_first_active();
+> +	if (!cdev) {
+> +		printf("failed to get console\n");
+> +		return NULL;
+> +	}
+> +
+> +	fd = open("/barebox.bin", O_WRONLY | O_CREAT);
+> +	if (fd < 0) {
+> +		printf("could not create barebox.bin\n");
+> +		return NULL;
+> +	}
+> +
+> +	ret = do_load_serial_xmodem(cdev, fd);
+> +	if (ret < 0) {
+> +		printf("loadx failed\n");
+> +		return NULL;
+> +	}
+> +
+> +	buf = read_file("/barebox.bin", &len);
+> +	if (!buf)
+> +		printf("could not read barebox.bin from serial\n");
+> +
+> +	return buf;
+> +}
+> +
+>  /*
+>   * Replaces the default shell in xload configuration
+>   */
+> @@ -218,6 +258,12 @@ static __noreturn int omap_xload(void)
+>  		func = omap_xload_boot_spi(barebox_part->nor_offset,
+>  					barebox_part->nor_size);
+>  		break;
+> +	case BOOTSOURCE_SERIAL:
+> +		if (IS_ENABLED(CONFIG_OMAP_SERIALBOOT)) {
+> +			printf("booting from serial\n");
+> +			func = omap_serial_boot();
+> +			break;
+> +		}
+>  	default:
+>  		printf("unknown boot source. Fall back to nand\n");
+>  		func = omap_xload_boot_nand(barebox_part->nand_offset,
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-2.1.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
