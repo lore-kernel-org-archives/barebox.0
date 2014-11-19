@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xr5P2-0005VM-VJ
- for barebox@lists.infradead.org; Wed, 19 Nov 2014 13:34:37 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed, 19 Nov 2014 14:34:08 +0100
-Message-Id: <1416404048-8469-1-git-send-email-jlu@pengutronix.de>
+Received: from s250.sam-solutions.net ([217.21.49.219])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Xr6LT-0003EV-CE
+ for barebox@lists.infradead.org; Wed, 19 Nov 2014 14:35:00 +0000
+From: Dmitry Lavnikevich <D.Lavnikevich@sam-solutions.com>
+Date: Wed, 19 Nov 2014 14:34:30 +0000
+Message-ID: <32E09793-6604-4967-8DEA-69673F966B1C@sam-solutions.com>
+References: <1416175114-3132-1-git-send-email-d.lavnikevich@sam-solutions.com>
+ <20141119064415.GJ14482@pengutronix.de>
+In-Reply-To: <20141119064415.GJ14482@pengutronix.de>
+Content-Language: en-US
+Content-ID: <2759C15AD79FE047BF0E397B9131B726@sam-solutions.net>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,105 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] dt: factor out common code
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd: nand-mxs: Gate ENFC_CLK_ROOT clock off before
+ changing nand clock rate
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Currently, dt_struct is always checked with the same code after
-dt_struct_advance(). Move the check after the switch statement.
-
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- drivers/of/fdt.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index cfe183350978..d465f9879751 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -120,18 +120,14 @@ struct device_node *of_unflatten_dtb(void *infdt)
- 				goto err;
- 			}
- 
--			dt_struct = dt_struct_advance(&f, dt_struct,
--					sizeof(struct fdt_node_header) + len + 1);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
- 			if (!node)
- 				node = root;
- 			else
- 				node = of_new_node(node, pathp);
- 
-+			dt_struct = dt_struct_advance(&f, dt_struct,
-+					sizeof(struct fdt_node_header) + len + 1);
-+
- 			break;
- 
- 		case FDT_END_NODE:
-@@ -144,10 +140,6 @@ struct device_node *of_unflatten_dtb(void *infdt)
- 			node = node->parent;
- 
- 			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
- 
- 			break;
- 
-@@ -162,25 +154,17 @@ struct device_node *of_unflatten_dtb(void *infdt)
- 				goto err;
- 			}
- 
--			dt_struct = dt_struct_advance(&f, dt_struct,
--					sizeof(struct fdt_property) + len);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
- 			p = of_new_property(node, name, nodep, len);
- 			if (!strcmp(name, "phandle") && len == 4)
- 				node->phandle = be32_to_cpup(p->value);
- 
-+			dt_struct = dt_struct_advance(&f, dt_struct,
-+					sizeof(struct fdt_property) + len);
-+
- 			break;
- 
- 		case FDT_NOP:
- 			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
- 
- 			break;
- 
-@@ -192,6 +176,11 @@ struct device_node *of_unflatten_dtb(void *infdt)
- 			ret = -EINVAL;
- 			goto err;
- 		}
-+
-+		if (!dt_struct) {
-+			ret = -ESPIPE;
-+			goto err;
-+		}
- 	}
- err:
- 	of_delete_node(root);
--- 
-2.1.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Pj4gCWlmIChteHNfbmFuZF9pc19pbXg2KG5hbmRfaW5mbykpIHsNCj4+ICsJCXZhbCA9IHJlYWRs
+KE1YQ19DQ01fQ0NHUjIpOw0KPj4gKwkJdmFsICY9IH5NWENfQ0NNX0NDR1IyX0lPTVVYX0lQVF9D
+TEtfSU9fTUFTSzsNCj4+ICsJCXdyaXRlbCh2YWwsIE1YQ19DQ01fQ0NHUjIpOw0KPj4gKw0KPj4g
+CQljbGtfc2V0X3JhdGUobmFuZF9pbmZvLT5jbGssIDk2MDAwMDAwKTsNCj4+ICsNCj4+ICsJCXZh
+bCA9IHJlYWRsKE1YQ19DQ01fQ0NHUjIpOw0KPj4gKwkJdmFsIHw9IE1YQ19DQ01fQ0NHUjJfSU9N
+VVhfSVBUX0NMS19JT19NQVNLOw0KPj4gKwkJd3JpdGVsKHZhbCwgTVhDX0NDTV9DQ0dSMik7DQo+
+PiArDQo+PiAJCWNsa19lbmFibGUobmFuZF9pbmZvLT5jbGspOw0KPiANCj4gRmlyc3Qgb2YgYWxs
+IHBsZWFzZSBsb29rIGF0IHRoZSBrZXJuZWwgZHJpdmVyLiBJdCB1c2VzIGEgY2xvY2sgb2YgMjJN
+SHoNCj4gbm9ybWFsbHkgYW5kIDEwMCBvciA4ME1IeiBmb3IgRURPIG1vZGUsIHdoaWNoIHNlZW1z
+IHRvIHJlcXVpcmUgc2V0dXAgb2YNCj4gb3RoZXIgcmVnaXN0ZXJzLiBTbyBpdCBtaWdodCBiZSB0
+aGF0IHRoZXJlJ3Mgc29tZXRoaW5nIGVsc2UgdGhhdCBtYWtlcw0KPiB0cm91YmxlIGhlcmUuDQoN
+CkkgaGF2ZSBsb29rZWQgaW4ga2VybmVsIGRyaXZlciBidXQgZGlkbuKAmXQgZm91bmQgYW55dGhp
+bmcgcmVsYXRlZCB0byB0aGlzIGlzc3VlLg0KVGhpcyBzb2x1dGlvbiB3YXMgcG9ydGVkIGZyb20g
+c2ltaWxhciBjbG9jayBpbml0aWFsaXNhdGlvbiBpbiB1LWJvb3QuDQoNCj4gVGhlIGNsayBBUEkg
+aXMgZm9yIGFic3RyYWN0aW5nIHRoZSBjbG9jayBwcm92aWRlcnMgZnJvbSBpdHMgY29uc3VtZXJz
+Lg0KPiBJdCdzIHVubmVjZXNzYXJ5IHRvIGRpcmVjdGx5IGZpZGRsZSB3aXRoIHRoZSBjbG9jayBy
+ZWdpc3RlcnMgaW4gdGhlIG5hbmQNCj4gZHJpdmVyLiBJbnN0ZWFkIG9mIHBhc3NpbmcgdGhlIGVu
+ZmNfcG9kZiB0byB0aGUgbmFuZCBjb250cm9sbGVyDQo+IGFyY2gvYXJtL21hY2gtaW14L2Nsay1p
+bXg2LmMgc2hvdWxkIGJlIGNoYW5nZWQgdG8gcGFzcyB0aGUgZ2F0ZSB0byB0aGUNCj4gY29udHJv
+bGxlciBhbmQgaGVyZS4gSW4gdGhlIGZpbmFsIGVuYWJsaW5nIG9mIGFsbCB0aGUgZ2F0ZXMgaW4N
+Cj4gY2xrLWlteDYuYyBjbGVhciBNWENfQ0NNX0NDR1IyWzE0Li4xNV0gYW5kIGVuYWJsZSB0aGUg
+Y2xvY2sgaGVyZSBhZnRlcg0KPiBzZXR0aW5nIHRoZSByYXRlLg0KDQpzbyBpZiBJIHVuZGVyc3Rv
+b2QgY29ycmVjdGx5DQoNCiogSSBzaG91bGQgYm90aCBzZXQgZW5mYyBjbG9jayByYXRlIGFuZCBl
+bmFibGUgaXQgaW4gY2xrLWlteDYuYyB3aGlsZQ0KY2xvY2sgaXMgZ2F0ZWQgb2ZmLiBGb3IgdGhp
+cyBJIHNob3VsZCBjcmVhdGUgZ2F0ZWQgY2xvY2sgbGlrZToNCg0KY2xrc1tlbmZjXSA9IGlteF9j
+bGtfZ2F0ZTIoImVuZmMiLCAiZW5mY19wcmVkIiwgYmFzZSArIDB4NzAsIDE0KTsNCg0KZm9yIHdo
+aWNoIEkgc2hvdWxkIGltcGxlbWVudCB0aGUgaW14X2Nsa19nYXRlMigpIGl0c2VsZiBmb3Igb3Bl
+cmF0aW5nIG9uIHR3by1iaXRzIGdhdGUNCmNsb2NrcyAoSSBzZWUgc3VjaCBmdW5jdGlvbiBpbiBr
+ZXJuZWwgY2xrIGNvZGUpLg0KDQoqIFNldHRpbmcgY2xvY2sgcmF0ZSBhbmQgZW5hYmxpbmcgaXQg
+aW4gbmFuZF9teHMuYyBiZWNvbWVzIHVubmVjZXNzYXJ5DQphbmQgY2FuIGJlIHJlbW92ZWQuDQoN
+CkFtIEkgcmlnaHQ/DQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
