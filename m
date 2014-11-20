@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XrSGD-0008AM-Eu
- for barebox@lists.infradead.org; Thu, 20 Nov 2014 13:59:02 +0000
-Date: Thu, 20 Nov 2014 14:58:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141120135839.GO30369@pengutronix.de>
-References: <1416388657-4428-1-git-send-email-c.hemp@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1416388657-4428-1-git-send-email-c.hemp@phytec.de>
+Received: from plane.gmane.org ([80.91.229.3])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XrZcS-0004HE-0x
+ for barebox@lists.infradead.org; Thu, 20 Nov 2014 21:50:29 +0000
+Received: from list by plane.gmane.org with local (Exim 4.69)
+ (envelope-from <gcbb-barebox@m.gmane.org>) id 1XrZc4-0000y2-0k
+ for barebox@lists.infradead.org; Thu, 20 Nov 2014 22:50:04 +0100
+Received: from ip5b41c286.dynamic.kabel-deutschland.de ([91.65.194.134])
+ by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+ id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Thu, 20 Nov 2014 22:50:04 +0100
+Received: from holger by ip5b41c286.dynamic.kabel-deutschland.de with local
+ (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Thu, 20 Nov 2014 22:50:04 +0100
+From: Holger Freyther <holger@freyther.de>
+Date: Thu, 20 Nov 2014 20:50:17 +0000 (UTC)
+Message-ID: <loom.20141120T214035-355@post.gmane.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +29,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM:imx6: Fix typo in name alcor
-To: Christian Hemp <c.hemp@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Activating network during start
+To: barebox@lists.infradead.org
 
-On Wed, Nov 19, 2014 at 10:17:37AM +0100, Christian Hemp wrote:
-> The phyBOARD-ALCOR is called ALCOR and not ALCORE.
-> 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> ---
-> 
-> Hello Sascha,
-> 
-> the phyBOARD-ALCOR is in the next branch and not in master. Can you please
-> squash this patch in:
-> 
-> commit c6f9f83e0c5da17506590be601f5bb3a730f99c9
-> Author: Christian Hemp <c.hemp@phytec.de>
-> Date:   Tue Nov 11 15:40:58 2014 +0100
+Good Evening,
 
-Did that.
+I wrote a small command to send a LLDP frame over the network. Then I
+tried to integrate this command into the start script but I noticed that
+while a message is printed on the console no actual packet is being
+sent on the wire.
 
-Thanks, Sascha
+I am using a Phytec AM335X SoM and I am not on the latest version of
+barebox either so this might be something that is already fixed.
 
+My assumption is that when I use eth_get_current/eth_send the network
+is being activated. I had a quick look at the return code of eth_send
+to see if I could see that my packet has been dropped but in both
+success/failure the method returns 0. Is this to be expected? My
+interim solution is to add a sleep after the first command invocation
+and then do it again?
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Any ideas on how to properly address it?
+
+holger
+
 
 _______________________________________________
 barebox mailing list
