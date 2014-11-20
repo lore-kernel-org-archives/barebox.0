@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xr6Wu-0001Aq-Hd
- for barebox@lists.infradead.org; Wed, 19 Nov 2014 14:46:49 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id E6617A00138
- for <barebox@lists.infradead.org>; Wed, 19 Nov 2014 15:46:38 +0100 (CET)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Wed, 19 Nov 2014 15:45:41 +0100
-Message-Id: <1416408341-31321-1-git-send-email-j.weitzel@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XrRux-00050X-Gu
+ for barebox@lists.infradead.org; Thu, 20 Nov 2014 13:37:04 +0000
+Date: Thu, 20 Nov 2014 14:36:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141120133640.GL30369@pengutronix.de>
+References: <1416404068-8526-1-git-send-email-jlu@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1416404068-8526-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,46 +18,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: ubi: get_bad_peb_limit from mtd master
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] stringlist: string_list_contains can use a const string
+To: Jan Luebbe <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Like mentioned in the coment we need the size of the entire flash chip.
-Check if a master exists and take his size.
+On Wed, Nov 19, 2014 at 02:34:28PM +0100, Jan Luebbe wrote:
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  include/stringlist.h | 2 +-
+>  lib/stringlist.c     | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Otherwise the limit will be too small and kernel prints:
-UBI warning: print_rsvd_warning: cannot reserve enough PEBs for \
-bad PEB handling, reserved 19, need 20
+Applied, thanks
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- drivers/mtd/ubi/build.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Sascha
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 7b1c332..b02880e 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -237,7 +237,11 @@ static int get_bad_peb_limit(const struct ubi_device *ubi, int max_beb_per1024)
- 	 * is that all the bad eraseblocks of the chip are in
- 	 * the MTD partition we are attaching (ubi->mtd).
- 	 */
--	device_size = ubi->mtd->size;
-+	if (ubi->mtd->master)
-+		device_size = ubi->mtd->master->size;
-+	else
-+		device_size = ubi->mtd->size;
-+
- 	device_pebs = mtd_div_by_eb(device_size, ubi->mtd);
- 	limit = mult_frac(device_pebs, max_beb_per1024, 1024);
- 
+> 
+> diff --git a/include/stringlist.h b/include/stringlist.h
+> index 127998cb6e21..2e2addf98f19 100644
+> --- a/include/stringlist.h
+> +++ b/include/stringlist.h
+> @@ -11,7 +11,7 @@ struct string_list {
+>  int string_list_add(struct string_list *sl, char *str);
+>  int string_list_add_asprintf(struct string_list *sl, const char *fmt, ...);
+>  int string_list_add_sorted(struct string_list *sl, char *str);
+> -int string_list_contains(struct string_list *sl, char *str);
+> +int string_list_contains(struct string_list *sl, const char *str);
+>  void string_list_print_by_column(struct string_list *sl);
+>  
+>  static inline void string_list_init(struct string_list *sl)
+> diff --git a/lib/stringlist.c b/lib/stringlist.c
+> index cc84944f73b3..57801b3bb04d 100644
+> --- a/lib/stringlist.c
+> +++ b/lib/stringlist.c
+> @@ -60,7 +60,7 @@ int string_list_add_sorted(struct string_list *sl, char *str)
+>  	return 0;
+>  }
+>  
+> -int string_list_contains(struct string_list *sl, char *str)
+> +int string_list_contains(struct string_list *sl, const char *str)
+>  {
+>  	struct string_list *entry;
+>  
+> -- 
+> 2.1.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
