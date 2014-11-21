@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XrkMe-0007pv-NC
- for barebox@lists.infradead.org; Fri, 21 Nov 2014 09:18:53 +0000
-Date: Fri, 21 Nov 2014 10:18:30 +0100
+ Linux)) id 1XrkO5-0000jw-W9
+ for barebox@lists.infradead.org; Fri, 21 Nov 2014 09:20:22 +0000
+Date: Fri, 21 Nov 2014 10:20:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141121091830.GV30369@pengutronix.de>
+Message-ID: <20141121092000.GW30369@pengutronix.de>
 References: <loom.20141120T214035-355@post.gmane.org>
  <20141121071116.GP30369@pengutronix.de>
  <20141121084001.GO4921@xiaoyu.lan>
@@ -25,7 +25,7 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Activating network during start
-To: Holger Hans Peter Freyther <holger@freyther.de>, h@pengutronix.de
+To: Holger Hans Peter Freyther <holger@freyther.de>
 Cc: barebox@lists.infradead.org
 
 On Fri, Nov 21, 2014 at 09:40:01AM +0100, Holger Hans Peter Freyther wrote:
