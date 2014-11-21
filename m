@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from s250.sam-solutions.net ([217.21.49.219])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XroNE-0007R4-5c
- for barebox@lists.infradead.org; Fri, 21 Nov 2014 13:35:45 +0000
+ id 1XroNL-0007VG-By
+ for barebox@lists.infradead.org; Fri, 21 Nov 2014 13:35:52 +0000
 Received: from s326.sam-solutions.net ([217.21.35.11])
  by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
  (Exim 4.77) (envelope-from <D.Lavnikevich@sam-solutions.com>)
- id 1XroMr-0008A7-Sz
- for barebox@lists.infradead.org; Fri, 21 Nov 2014 16:35:21 +0300
+ id 1XroN1-0008A7-V3
+ for barebox@lists.infradead.org; Fri, 21 Nov 2014 16:35:31 +0300
 From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-Date: Fri, 21 Nov 2014 16:35:06 +0300
-Message-ID: <1416576907-2302-2-git-send-email-d.lavnikevich@sam-solutions.com>
+Date: Fri, 21 Nov 2014 16:35:07 +0300
+Message-ID: <1416576907-2302-3-git-send-email-d.lavnikevich@sam-solutions.com>
 In-Reply-To: <1416576907-2302-1-git-send-email-d.lavnikevich@sam-solutions.com>
 References: <1416576907-2302-1-git-send-email-d.lavnikevich@sam-solutions.com>
 MIME-Version: 1.0
@@ -26,207 +26,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] ARM i.MX: add 2-bit gate clock support
+Subject: [PATCH v2 2/2] imx6: clk: Gate off ENFC clock before setting clock
+ rate
 To: barebox@lists.infradead.org
 
-Based on kernel clk-gate2 and barebox clk-gate implementations.
+This fixes NAND initialization issue which appears occasionally on
+some i.MX6 SoCs (particulary was observed on phyCARD-i.MX6 with
+i.MX6Solo).
 
 Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 ---
- arch/arm/mach-imx/Makefile    |   2 +-
- arch/arm/mach-imx/clk-gate2.c | 142 ++++++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-imx/clk.h       |   9 +++
- 3 files changed, 152 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-imx/clk-gate2.c
+ arch/arm/mach-imx/clk-imx6.c | 7 +++++--
+ drivers/mtd/nand/nand_mxs.c  | 1 +
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 1d311a4..b811c13 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -15,7 +15,7 @@ obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
- obj-$(CONFIG_NAND_IMX) += nand.o
- lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
--obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o
-+obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o clk-gate2.o
- obj-y += devices.o imx.o esdctl.o
- obj-y += boot.o
- obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
-diff --git a/arch/arm/mach-imx/clk-gate2.c b/arch/arm/mach-imx/clk-gate2.c
-new file mode 100644
-index 0000000..344c2fb
---- /dev/null
-+++ b/arch/arm/mach-imx/clk-gate2.c
-@@ -0,0 +1,142 @@
-+/*
-+ * clk-gate2.c - barebox 2-bit clock support. Based on Linux clk support
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+#include "clk.h"
-+
-+
-+struct clk_gate2 {
-+	struct clk clk;
-+	void __iomem *reg;
-+	int shift;
-+	const char *parent;
-+#define CLK_GATE_INVERTED	(1 << 0)
-+	unsigned flags;
-+};
-+
-+#define to_clk_gate2(_clk) container_of(_clk, struct clk_gate2, clk)
-+
-+static int clk_gate2_enable(struct clk *clk)
-+{
-+	struct clk_gate2 *g = to_clk_gate2(clk);
-+	u32 val;
-+
-+	val = readl(g->reg);
-+
-+	if (g->flags & CLK_GATE_INVERTED)
-+		val &= ~(3 << g->shift);
-+	else
-+		val |= 3 << g->shift;
-+
-+	writel(val, g->reg);
-+
-+	return 0;
-+}
-+
-+static void clk_gate2_disable(struct clk *clk)
-+{
-+	struct clk_gate2 *g = to_clk_gate2(clk);
-+	u32 val;
-+
-+	val = readl(g->reg);
-+
-+	if (g->flags & CLK_GATE_INVERTED)
-+		val |= 3 << g->shift;
-+	else
-+		val &= ~(3 << g->shift);
-+
-+	writel(val, g->reg);
-+}
-+
-+static int clk_gate2_is_enabled(struct clk *clk)
-+{
-+	struct clk_gate2 *g = to_clk_gate2(clk);
-+	u32 val;
-+
-+	val = readl(g->reg);
-+
-+	if (val & (1 << g->shift))
-+		return g->flags & CLK_GATE_INVERTED ? 0 : 1;
-+	else
-+		return g->flags & CLK_GATE_INVERTED ? 1 : 0;
-+}
-+
-+static struct clk_ops clk_gate2_ops = {
-+	.enable = clk_gate2_enable,
-+	.disable = clk_gate2_disable,
-+	.is_enabled = clk_gate2_is_enabled,
-+};
-+
-+struct clk *clk_gate2_alloc(const char *name, const char *parent,
-+		void __iomem *reg, u8 shift)
-+{
-+	struct clk_gate2 *g = xzalloc(sizeof(*g));
-+
-+	g->parent = parent;
-+	g->reg = reg;
-+	g->shift = shift;
-+	g->clk.ops = &clk_gate2_ops;
-+	g->clk.name = name;
-+	g->clk.parent_names = &g->parent;
-+	g->clk.num_parents = 1;
-+
-+	return &g->clk;
-+}
-+
-+void clk_gate2_free(struct clk *clk)
-+{
-+	struct clk_gate2 *g = to_clk_gate2(clk);
-+
-+	free(g);
-+}
-+
-+struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
-+		u8 shift)
-+{
-+	struct clk *g;
-+	int ret;
-+
-+	g = clk_gate2_alloc(name , parent, reg, shift);
-+
-+	ret = clk_register(g);
-+	if (ret) {
-+		free(to_clk_gate2(g));
-+		return ERR_PTR(ret);
-+	}
-+
-+	return g;
-+}
-+
-+struct clk *clk_gate2_inverted(const char *name, const char *parent,
-+		void __iomem *reg, u8 shift)
-+{
-+	struct clk *clk;
-+	struct clk_gate2 *g;
-+
-+	clk = clk_gate2(name, parent, reg, shift);
-+	if (IS_ERR(clk))
-+		return clk;
-+
-+	g = to_clk_gate2(clk);
-+
-+	g->flags = CLK_GATE_INVERTED;
-+
-+	return clk;
-+}
-diff --git a/arch/arm/mach-imx/clk.h b/arch/arm/mach-imx/clk.h
-index e2f4143..8ec3eb5 100644
---- a/arch/arm/mach-imx/clk.h
-+++ b/arch/arm/mach-imx/clk.h
-@@ -1,6 +1,9 @@
- #ifndef __IMX_CLK_H
- #define __IMX_CLK_H
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index c051876..579365e 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -89,7 +89,7 @@ enum mx6q_clks {
+ 	sata_ref, sata_ref_100m, pcie_ref, pcie_ref_125m, enet_ref, usbphy1_gate,
+ 	usbphy2_gate, pll4_post_div, pll5_post_div, pll5_video_div, eim_slow,
+ 	spdif, cko2_sel, cko2_podf, cko2, cko, vdoa, pll4_audio_div,
+-	lvds1_sel, lvds2_sel, lvds1_gate, lvds2_gate, clk_max
++	lvds1_sel, lvds2_sel, lvds1_gate, lvds2_gate, clk_max, enfc_gate
+ };
  
-+struct clk *clk_gate2(const char *name, const char *parent, void __iomem *reg,
-+		u8 shift);
+ static struct clk *clks[clk_max];
+@@ -398,6 +398,8 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[periph]  = imx_clk_busy_mux("periph",  base + 0x14, 25,  1,   base + 0x48, 5,  periph_sels,  ARRAY_SIZE(periph_sels));
+ 	clks[periph2] = imx_clk_busy_mux("periph2", base + 0x14, 26,  1,   base + 0x48, 3,  periph2_sels, ARRAY_SIZE(periph2_sels));
+ 
++	clks[enfc_gate] = imx_clk_gate2("enfc_gate", "enfc_sel", base + 0x70, 14);
 +
- static inline struct clk *imx_clk_divider(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift, u8 width)
- {
-@@ -39,6 +42,12 @@ static inline struct clk *imx_clk_gate(const char *name, const char *parent,
- 	return clk_gate(name, parent, reg, shift, CLK_SET_RATE_PARENT, 0);
+ 	/*                                      name                 parent_name               reg       shift width */
+ 	clks[periph_clk2]      = imx_clk_divider("periph_clk2",      "periph_clk2_sel",   base + 0x14, 27, 3);
+ 	clks[periph2_clk2]     = imx_clk_divider("periph2_clk2",     "periph2_clk2_sel",  base + 0x14, 0,  3);
+@@ -410,7 +412,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[usdhc2_podf]      = imx_clk_divider("usdhc2_podf",      "usdhc2_sel",        base + 0x24, 16, 3);
+ 	clks[usdhc3_podf]      = imx_clk_divider("usdhc3_podf",      "usdhc3_sel",        base + 0x24, 19, 3);
+ 	clks[usdhc4_podf]      = imx_clk_divider("usdhc4_podf",      "usdhc4_sel",        base + 0x24, 22, 3);
+-	clks[enfc_pred]        = imx_clk_divider("enfc_pred",        "enfc_sel",          base + 0x2c, 18, 3);
++	clks[enfc_pred]        = imx_clk_divider("enfc_pred",        "enfc_gate",         base + 0x2c, 18, 3);
+ 	clks[enfc_podf]        = imx_clk_divider("enfc_podf",        "enfc_pred",         base + 0x2c, 21, 6);
+ 	clks[emi_podf]         = imx_clk_divider("emi_podf",         "emi_sel",           base + 0x1c, 20, 3);
+ 	clks[emi_slow_podf]    = imx_clk_divider("emi_slow_podf",    "emi_slow_sel",      base + 0x1c, 23, 3);
+@@ -469,6 +471,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 
+ 	clk_enable(clks[pll6_enet]);
+ 	clk_enable(clks[sata_ref_100m]);
++	clk_enable(clks[enfc_podf]);
+ 
+ 	return 0;
  }
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 8989de0..94101a3 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -1266,6 +1266,7 @@ static int mxs_nand_probe(struct device_d *dev)
+ 		return PTR_ERR(nand_info->clk);
  
-+static inline struct clk *imx_clk_gate2(const char *name, const char *parent,
-+		void __iomem *reg, u8 shift)
-+{
-+	return clk_gate2(name, parent, reg, shift);
-+}
-+
- struct clk *imx_clk_pllv1(const char *name, const char *parent,
- 		void __iomem *base);
- 
+ 	if (mxs_nand_is_imx6(nand_info)) {
++		clk_disable(nand_info->clk);
+ 		clk_set_rate(nand_info->clk, 96000000);
+ 		clk_enable(nand_info->clk);
+ 		nand_info->dma_channel_base = 0;
 -- 
 2.1.3
 
