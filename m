@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xst82-0002gR-3b
- for barebox@lists.infradead.org; Mon, 24 Nov 2014 12:52:30 +0000
-Date: Mon, 24 Nov 2014 13:52:08 +0100
+ Linux)) id 1XstD3-0005dN-25
+ for barebox@lists.infradead.org; Mon, 24 Nov 2014 12:57:41 +0000
+Date: Mon, 24 Nov 2014 13:57:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141124125208.GF30369@pengutronix.de>
+Message-ID: <20141124125718.GG30369@pengutronix.de>
 References: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
- <1416827220-3103-12-git-send-email-l.stach@pengutronix.de>
+ <1416827220-3103-17-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1416827220-3103-12-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1416827220-3103-17-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,34 +23,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/20] arm: phyflex-imx6: move common.h before other
- includes
+Subject: Re: [PATCH 16/20] net: ethoc: depend on OPENRISC
 To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 24, 2014 at 12:06:51PM +0100, Lucas Stach wrote:
-> Fixes: include/envfs.h:124:10: error: 'ENOSYS' undeclared
+On Mon, Nov 24, 2014 at 12:06:56PM +0100, Lucas Stach wrote:
+> This driver currently only works on OpenRISC, as it uses
+> the cache flush/invalidate functions of this arch.
 > 
 > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  arch/arm/boards/phytec-phyflex-imx6/board.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
-> index 09a5c79a9ade..1d6602c0ef26 100644
-> --- a/arch/arm/boards/phytec-phyflex-imx6/board.c
-> +++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
-> @@ -17,10 +17,10 @@
->   *
->   */
->  
-> +#include <common.h>
->  #include <envfs.h>
->  #include <environment.h>
->  #include <bootsource.h>
-> -#include <common.h>
+> The situation with cache functions scatterd into different files
+> for the various arches is a mess currently. We should really aim
+> to unify this into a common dma-mapping.h, to make it easier for
+> driver writers.
 
-Isn't the correct fix to include <errno.h> from <envfs.h> then?
+Yeah, this is on my mental todo list for a while now. Unfortunately this
+is a task with a high risk of regressions and only little reward. Also
+it should be tested on a wide range of hardware.
 
 Sascha
 
