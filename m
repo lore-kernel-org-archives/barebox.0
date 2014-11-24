@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XsrUK-00011N-Uh
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XsrUL-00070V-0c
  for barebox@lists.infradead.org; Mon, 24 Nov 2014 11:07:26 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XsrTx-0000NZ-Dx
- for barebox@lists.infradead.org; Mon, 24 Nov 2014 12:07:01 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1XsrTw-0000NZ-IB
+ for barebox@lists.infradead.org; Mon, 24 Nov 2014 12:07:00 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 24 Nov 2014 12:06:58 +0100
-Message-Id: <1416827220-3103-19-git-send-email-l.stach@pengutronix.de>
+Date: Mon, 24 Nov 2014 12:06:41 +0100
+Message-Id: <1416827220-3103-2-git-send-email-l.stach@pengutronix.de>
 In-Reply-To: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
 References: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,26 +25,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/20] common: menu needs PROCESS_ESCAPE_SEQUENCE
+Subject: [PATCH 01/20] firmware: socfpga: depend on ARCH_SOCFPGA
 To: barebox@lists.infradead.org
+
+This driver uses a lot of arch specific functionality and
+fails to build on anything but SOCFPGA.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- common/Kconfig | 1 +
+ drivers/firmware/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 6583aabc44d9..562798063b81 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -414,6 +414,7 @@ config AUTO_COMPLETE
- config MENU
- 	bool
- 	prompt "Menu Framework"
-+	select PROCESS_ESCAPE_SEQUENCE
- 	help
- 	  a menu framework that allow us to create list menu to simplify
- 	  barebox and make it more user-frendly
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 58660632519e..a907eaf85457 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -10,5 +10,6 @@ config FIRMWARE_ALTERA_SERIAL
+ 
+ config FIRMWARE_ALTERA_SOCFPGA
+ 	bool "Altera SoCFPGA fpga loader"
++	depends on ARCH_SOCFPGA
+ 
+ endmenu
 -- 
 2.1.1
 
