@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XsrUO-0003Qu-Fm
+ id 1XsrUO-0003Qt-Er
  for barebox@lists.infradead.org; Mon, 24 Nov 2014 11:07:29 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XsrTx-0000NZ-AK
+ (envelope-from <l.stach@pengutronix.de>) id 1XsrTx-0000NZ-8V
  for barebox@lists.infradead.org; Mon, 24 Nov 2014 12:07:01 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 24 Nov 2014 12:06:56 +0100
-Message-Id: <1416827220-3103-17-git-send-email-l.stach@pengutronix.de>
+Date: Mon, 24 Nov 2014 12:06:55 +0100
+Message-Id: <1416827220-3103-16-git-send-email-l.stach@pengutronix.de>
 In-Reply-To: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
 References: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,34 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/20] net: ethoc: depend on OPENRISC
+Subject: [PATCH 15/20] arm: fill BUILTIN_DTB_NAME for boards that still use
+ this option
 To: barebox@lists.infradead.org
 
-This driver currently only works on OpenRISC, as it uses
-the cache flush/invalidate functions of this arch.
+There are only a few users of BUILTIN_DTB left, but those should
+alsways fill thr name properly. Avoids lots of failures in the
+randconfig builds.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
-The situation with cache functions scatterd into different files
-for the various arches is a mess currently. We should really aim
-to unify this into a common dma-mapping.h, to make it easier for
-driver writers.
----
- drivers/net/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/Kconfig | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 24b984462d15..0d32f952422c 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -97,6 +97,7 @@ config DRIVER_NET_EP93XX
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 48b29da7276b..6e9e7154339a 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -27,6 +27,11 @@ config BUILTIN_DTB
+ config BUILTIN_DTB_NAME
+ 	string "DTB to build into the barebox image"
+ 	depends on BUILTIN_DTB
++	default "canon-a1100" if MACH_CANON_A1100
++	default "imx51-genesi-efika-sb" if MACH_EFIKA_MX_SMARTBOOK
++	default "versatile-pb" if ARCH_VERSATILE_PB
++	default "virt2real" if MACH_VIRT2REAL
++	default "module-mb7707" if MACH_MB7707
  
- config DRIVER_NET_ETHOC
- 	bool "OpenCores ethernet MAC driver"
-+	depends on OPENRISC
- 	depends on HAS_CACHE
- 	select PHYLIB
- 	help
+ choice
+ 	prompt "ARM system type"
 -- 
 2.1.1
 
