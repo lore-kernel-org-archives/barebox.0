@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XsrUO-0003Qv-G8
- for barebox@lists.infradead.org; Mon, 24 Nov 2014 11:07:29 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XsrTx-0000NZ-C8
- for barebox@lists.infradead.org; Mon, 24 Nov 2014 12:07:01 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 24 Nov 2014 12:06:57 +0100
-Message-Id: <1416827220-3103-18-git-send-email-l.stach@pengutronix.de>
-In-Reply-To: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
-References: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Xssyz-0006uJ-7J
+ for barebox@lists.infradead.org; Mon, 24 Nov 2014 12:43:09 +0000
+Date: Mon, 24 Nov 2014 13:42:44 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141124124244.GB30369@pengutronix.de>
+References: <1416576907-2302-1-git-send-email-d.lavnikevich@sam-solutions.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1416576907-2302-1-git-send-email-d.lavnikevich@sam-solutions.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/20] blspec: depend on, not select flexible bootargs
-To: barebox@lists.infradead.org
+Subject: Re: Gate off ENFC clock before setting clock rate
+To: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
+Cc: barebox@lists.infradead.org
 
-Blspec is a consumer of the flexible bootargs mechanism, so it should
-depend on it rather than select it.
+On Fri, Nov 21, 2014 at 04:35:05PM +0300, Dmitry Lavnikevich wrote:
+> Since last revision hardcoded manipulations with clock registers was
+> replaced with clk_disable/clk_enable calls.
+> 
+> For this purpose 2-bit gate clocks support was implemented for imx platform
+> (like it is done in current mainline kernel code) and enfc_gate 2-bit gate
+> clock was added in clk-imx.
 
-Fixes:
-warning: (BLSPEC && DEFAULT_ENVIRONMENT_GENERIC_NEW) selects FLEXIBLE_BOOTARGS
-which has unmet direct dependencies (COMMAND_SUPPORT && CMD_GLOBAL)
+Applied, thanks
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- common/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/common/Kconfig b/common/Kconfig
-index a2cce391f461..6583aabc44d9 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -478,8 +478,8 @@ config TIMESTAMP
- 
- config BLSPEC
- 	depends on BLOCK
-+	depends on FLEXIBLE_BOOTARGS
- 	select OFTREE
--	select FLEXIBLE_BOOTARGS
- 	bool
- 	prompt "Support bootloader spec"
- 	help
 -- 
-2.1.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
