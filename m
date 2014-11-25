@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XtJUL-0001mp-NU
- for barebox@lists.infradead.org; Tue, 25 Nov 2014 17:01:18 +0000
-Message-ID: <1416934853.2741.7.camel@pengutronix.de>
+ Linux)) id 1XtJWC-0002PF-IM
+ for barebox@lists.infradead.org; Tue, 25 Nov 2014 17:03:13 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1XtJVq-0000RL-T6
+ for barebox@lists.infradead.org; Tue, 25 Nov 2014 18:02:50 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 25 Nov 2014 18:00:53 +0100
-In-Reply-To: <20141124125931.GH30369@pengutronix.de>
-References: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
- <1416827220-3103-18-git-send-email-l.stach@pengutronix.de>
- <20141124125931.GH30369@pengutronix.de>
-Mime-Version: 1.0
+Date: Tue, 25 Nov 2014 18:02:46 +0100
+Message-Id: <1416934970-24929-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,63 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 17/20] blspec: depend on, not select flexible bootargs
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 1/5] arm: imx: pca100: only try to enable USB if USB_ULPI
+ is configured
+To: barebox@lists.infradead.org
 
-Am Montag, den 24.11.2014, 13:59 +0100 schrieb Sascha Hauer:
-> On Mon, Nov 24, 2014 at 12:06:57PM +0100, Lucas Stach wrote:
-> > Blspec is a consumer of the flexible bootargs mechanism, so it should
-> > depend on it rather than select it.
-> > 
-> > Fixes:
-> > warning: (BLSPEC && DEFAULT_ENVIRONMENT_GENERIC_NEW) selects FLEXIBLE_BOOTARGS
-> > which has unmet direct dependencies (COMMAND_SUPPORT && CMD_GLOBAL)
-> > 
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> >  common/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/common/Kconfig b/common/Kconfig
-> > index a2cce391f461..6583aabc44d9 100644
-> > --- a/common/Kconfig
-> > +++ b/common/Kconfig
-> > @@ -478,8 +478,8 @@ config TIMESTAMP
-> >  
-> >  config BLSPEC
-> >  	depends on BLOCK
-> > +	depends on FLEXIBLE_BOOTARGS
-> >  	select OFTREE
-> > -	select FLEXIBLE_BOOTARGS
-> 
-> This effectively disables BLSPEC support in these configs:
-> 
-> arch/arm/configs/tegra_v7_defconfig:17:CONFIG_BLSPEC=y
-> arch/arm/configs/rpi_defconfig:14:CONFIG_BLSPEC=y
-> arch/arm/configs/imx_defconfig:22:CONFIG_BLSPEC=y
-> arch/arm/configs/imx_v7_defconfig:40:CONFIG_BLSPEC=y
-> arch/arm/configs/mvebu_defconfig:18:CONFIG_BLSPEC=y
-> arch/arm/configs/am335x_defconfig:25:CONFIG_BLSPEC=y
-> arch/arm/configs/tqma53_defconfig:19:CONFIG_BLSPEC=y
-> 
-> You have to add a CONFIG_FLEXIBLE_BOOTARGS=y in these files.
-> 
-Thanks for the pointer, I've looked into this and it seems this is only
-necessary for the mvebu defconfig.
+Avoids a build failure if the config does not include ULPI support.
 
-All other defconfigs include CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW
-which still selects CONFIG_FLEXIBLE_BOOTARGS. Will fix with v2.
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/phytec-phycard-imx27/pca100.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Regards,
-Lucas
+diff --git a/arch/arm/boards/phytec-phycard-imx27/pca100.c b/arch/arm/boards/phytec-phycard-imx27/pca100.c
+index 895a3a395777..9475bfafcaa7 100644
+--- a/arch/arm/boards/phytec-phycard-imx27/pca100.c
++++ b/arch/arm/boards/phytec-phycard-imx27/pca100.c
+@@ -41,6 +41,7 @@
+ #include <mach/iomux-mx27.h>
+ #include <mach/devices-imx27.h>
+ 
++#if defined(CONFIG_USB) && defined(CONFIG_USB_ULPI)
+ static void pca100_usb_register(void)
+ {
+ 	mdelay(10);
+@@ -55,6 +56,9 @@ static void pca100_usb_register(void)
+ 	ulpi_setup((void *)(MX27_USB_OTG_BASE_ADDR + 0x570), 1);
+ 	add_generic_usb_ehci_device(DEVICE_ID_DYNAMIC, MX27_USB_OTG_BASE_ADDR + 0x400, NULL);
+ }
++#else
++static void pca100_usb_register(void) { };
++#endif
+ 
+ static void pca100_usb_init(void)
+ {
+@@ -131,8 +135,7 @@ static int pca100_devices_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(mode); i++)
+ 		imx_gpio_mode(mode[i]);
+ 
+-	if (IS_ENABLED(CONFIG_USB))
+-		pca100_usb_register();
++	pca100_usb_register();
+ 
+ 	imx_bbu_external_nand_register_handler("nand", "/dev/nand0.boot",
+ 			BBU_HANDLER_FLAG_DEFAULT);
 -- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+2.1.3
 
 
 _______________________________________________
