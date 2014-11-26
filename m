@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XthE8-0001sM-ML
- for barebox@lists.infradead.org; Wed, 26 Nov 2014 18:22:09 +0000
-Date: Wed, 26 Nov 2014 19:21:46 +0100
+ Linux)) id 1XtilF-0000A9-IM
+ for barebox@lists.infradead.org; Wed, 26 Nov 2014 20:00:26 +0000
+Date: Wed, 26 Nov 2014 20:59:58 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141126182146.GN30369@pengutronix.de>
-References: <1416934970-24929-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20141126195958.GO14482@pengutronix.de>
+References: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1416934970-24929-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1416827220-3103-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,17 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/5] arm: imx: pca100: only try to enable USB if
- USB_ULPI is configured
+Subject: Re: [PATCH 00/20] First batch of randconfig fixes
 To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 25, 2014 at 06:02:46PM +0100, Lucas Stach wrote:
-> Avoids a build failure if the config does not include ULPI support.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Mon, Nov 24, 2014 at 12:06:40PM +0100, Lucas Stach wrote:
+> This series is the first batch of fixes for errors found by doing
+> some randconfig builds. Seems we have a good way to go, currently
+> *all* randconfig builds produced at least one error.
 
-Applied all, thanks
+For added fun I have a Kconfig update in the pu/kconfig branch. The
+kconfig version currently in barebox randconfig will always select
+the first item for choice values. With this also choice values will
+be randomized. I'm looking forward to the next ton of patches ;)
 
 Sascha
 
