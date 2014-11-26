@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XtfTx-0002cp-W8
- for barebox@lists.infradead.org; Wed, 26 Nov 2014 16:30:24 +0000
+ Linux)) id 1XtfTx-0002ch-Vp
+ for barebox@lists.infradead.org; Wed, 26 Nov 2014 16:30:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Nov 2014 17:29:48 +0100
-Message-Id: <1417019394-23683-6-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Nov 2014 17:29:44 +0100
+Message-Id: <1417019394-23683-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1417019394-23683-1-git-send-email-s.hauer@pengutronix.de>
 References: <1417019394-23683-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] imx-usb-loader: Add i.MX6sx support
+Subject: [PATCH 01/11] mci: imx-esdhc: Fix Interrupt enable register for
+ i.MX6sx
 To: barebox@lists.infradead.org
 
-Not much to do here, only add the Product ID.
+The reset default of this register has changed on i.MX6sx. Explicitly
+write the value we want to have to make it work on i.MX6sx.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-usb-loader.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mci/imx-esdhc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index c86260c..94b3763 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -103,6 +103,13 @@ struct mach_id imx_ids[] = {
- 		.header_type = HDR_MX53,
- 		.mode = MODE_HID,
- 		.max_transfer = 1024,
-+	},   {
-+		.vid = 0x15a2,
-+		.pid = 0x0071,
-+		.name = "i.MX6 SoloX",
-+		.header_type = HDR_MX53,
-+		.mode = MODE_HID,
-+		.max_transfer = 1024,
- 	}, {
- 		.vid = 0x15a2,
- 		.pid = 0x0041,
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 487cd41..5ac58c3 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -474,8 +474,9 @@ static int esdhc_init(struct mci_host *mci, struct device_d *dev)
+ 	/* Set the initial clock speed */
+ 	set_sysctl(mci, 400000);
+ 
+-	/* Disable the BRR and BWR bits in IRQSTAT */
+-	esdhc_clrbits32(regs + SDHCI_INT_ENABLE, IRQSTATEN_BRR | IRQSTATEN_BWR);
++	writel(IRQSTATEN_CC | IRQSTATEN_TC | IRQSTATEN_CINT | IRQSTATEN_CTOE |
++			IRQSTATEN_CCE | IRQSTATEN_CEBE | IRQSTATEN_CIE | IRQSTATEN_DTOE |
++			IRQSTATEN_DCE | IRQSTATEN_DEBE | IRQSTATEN_DINT, regs + SDHCI_INT_ENABLE);
+ 
+ 	/* Put the PROCTL reg back to the default */
+ 	esdhc_write32(regs + SDHCI_HOST_CONTROL__POWER_CONTROL__BLOCK_GAP_CONTROL,
 -- 
 2.1.3
 
