@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XtaHI-0005hC-OS
- for barebox@lists.infradead.org; Wed, 26 Nov 2014 10:56:57 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 8FCB5A0014D
- for <barebox@lists.infradead.org>; Wed, 26 Nov 2014 11:56:45 +0100 (CET)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Wed, 26 Nov 2014 11:56:28 +0100
-Message-Id: <1416999388-7767-1-git-send-email-w.egorov@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XtfTx-0002cp-W8
+ for barebox@lists.infradead.org; Wed, 26 Nov 2014 16:30:24 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 26 Nov 2014 17:29:48 +0100
+Message-Id: <1417019394-23683-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1417019394-23683-1-git-send-email-s.hauer@pengutronix.de>
+References: <1417019394-23683-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: phyCORE-AM335x: Remove unused pin in nandflash
- pinmuxing
+Subject: [PATCH 05/11] imx-usb-loader: Add i.MX6sx support
 To: barebox@lists.infradead.org
 
-Pin 0x74 (gpmc_wpn.gpio0_30) is not used on the phyCORE SOM.
+Not much to do here, only add the Product ID.
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/am335x-phytec-phycore-som.dtsi |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ scripts/imx/imx-usb-loader.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-index f1bcb8b..7e099a2 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-@@ -75,7 +75,6 @@
- 			0x18 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad6.gpmc_ad6 */
- 			0x1c (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad7.gpmc_ad7 */
- 			0x70 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_wait0.gpmc_wait0 */
--			0x74 (PIN_INPUT_PULLUP | MUX_MODE7)	/* gpmc_wpn.gpio0_30 */
- 			0x7c (PIN_OUTPUT | MUX_MODE0)		/* gpmc_csn0.gpmc_csn0  */
- 			0x90 (PIN_OUTPUT | MUX_MODE0)		/* gpmc_advn_ale.gpmc_advn_ale */
- 			0x94 (PIN_OUTPUT | MUX_MODE0)		/* gpmc_oen_ren.gpmc_oen_ren */
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index c86260c..94b3763 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -103,6 +103,13 @@ struct mach_id imx_ids[] = {
+ 		.header_type = HDR_MX53,
+ 		.mode = MODE_HID,
+ 		.max_transfer = 1024,
++	},   {
++		.vid = 0x15a2,
++		.pid = 0x0071,
++		.name = "i.MX6 SoloX",
++		.header_type = HDR_MX53,
++		.mode = MODE_HID,
++		.max_transfer = 1024,
+ 	}, {
+ 		.vid = 0x15a2,
+ 		.pid = 0x0041,
 -- 
-1.7.0.4
+2.1.3
 
 
 _______________________________________________
