@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xu1mk-0002An-SU
+ id 1Xu1mk-0002Al-Sa
  for barebox@lists.infradead.org; Thu, 27 Nov 2014 16:19:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Nov 2014 17:15:27 +0100
-Message-Id: <1417104932-13960-6-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 27 Nov 2014 17:15:25 +0100
+Message-Id: <1417104932-13960-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1417104932-13960-1-git-send-email-s.hauer@pengutronix.de>
 References: <1417104932-13960-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,26 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] video: EDID: depends on I2C
+Subject: [PATCH 04/11] net: fec_imx: remove unused includes
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/fec_imx.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 34177b3..f096a54 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -87,6 +87,7 @@ config DRIVER_VIDEO_SIMPLEFB
- 	  based on the active barebox framebuffer.
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 4ed5e8e..13f0dec 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -32,12 +32,6 @@
  
- config DRIVER_VIDEO_EDID
-+	depends on I2C
- 	bool "Add EDID support"
- 	help
- 	  This enabled support for reading and parsing EDID data from an attached
+ #include <asm/mmu.h>
+ 
+-#include <mach/generic.h>
+-#include <mach/clock.h>
+-#ifndef CONFIG_ARCH_MXS
+-# include <mach/iim.h>
+-#endif
+-
+ #include "fec_imx.h"
+ 
+ struct fec_frame {
 -- 
 2.1.3
 
