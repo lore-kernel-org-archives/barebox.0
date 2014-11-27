@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xu1mp-0002HA-Ns
- for barebox@lists.infradead.org; Thu, 27 Nov 2014 16:19:21 +0000
+ id 1Xu1mp-0002EK-Nc
+ for barebox@lists.infradead.org; Thu, 27 Nov 2014 16:19:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Nov 2014 17:15:28 +0100
-Message-Id: <1417104932-13960-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 27 Nov 2014 17:15:30 +0100
+Message-Id: <1417104932-13960-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1417104932-13960-1-git-send-email-s.hauer@pengutronix.de>
 References: <1417104932-13960-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] ARM: Don't allow Thumb2 on Tegra
+Subject: [PATCH 09/11] USB: Gadget: fastboot: depends on command support
 To: barebox@lists.infradead.org
-
-Tegra builts its initial code for the v4 CPU which is not
-Thumb2 capable.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig | 1 +
+ drivers/usb/gadget/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 6e9e715..941a5ec 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -273,6 +273,7 @@ config AEABI
- config THUMB2_BAREBOX
- 	select ARM_ASM_UNIFIED
- 	select AEABI
-+	depends on !ARCH_TEGRA
- 	depends on CPU_V7 && !CPU_32v4T && !CPU_32v5 && !CPU_32v6
- 	bool "Compile barebox in thumb-2 mode (read help)"
- 	help
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index cd21ba7..5d9158f 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -44,6 +44,7 @@ config USB_GADGET_SERIAL
+ config USB_GADGET_FASTBOOT
+ 	bool
+ 	select BANNER
++	depends on COMMAND_SUPPORT
+ 	prompt "Android Fastboot support"
+ 
+ endif
 -- 
 2.1.3
 
