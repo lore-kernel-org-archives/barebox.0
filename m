@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XuMY8-0000VC-3M
- for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:34 +0000
+ Linux)) id 1XuMY8-0000VF-3I
+ for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Nov 2014 15:28:53 +0100
-Message-Id: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Nov 2014 15:28:58 +0100
+Message-Id: <1417184946-16128-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
+References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/14] ARM: friendlyarm-mini2440: fix compilation for some
- displays
+Subject: [PATCH 06/14] mci: mxs-mci: add f_min/f_max fields unconditionally
 To: barebox@lists.infradead.org
 
-struct fb_videomode does not have a flag member, so do not initialize
-it.
+Parts of the driver need these regardless of whether CONFIG_MCI_INFO
+is set, so add these fields unconditionally.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/friendlyarm-mini2440/mini2440.c | 2 --
+ drivers/mci/mxs.c | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/boards/friendlyarm-mini2440/mini2440.c b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
-index 4034de5..2dcb7db 100644
---- a/arch/arm/boards/friendlyarm-mini2440/mini2440.c
-+++ b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
-@@ -96,7 +96,6 @@ static struct fb_videomode s3c24x0_fb_modes[] = {
- 		.pixclock	= 41848,
- 		.sync		= FB_SYNC_USE_PWREN | FB_SYNC_DE_HIGH_ACT,
- 		.vmode		= FB_VMODE_NONINTERLACED,
--		.flag		= 0,
- 	},
- #endif
- #ifdef CONFIG_MINI2440_VIDEO_SVGA
-@@ -115,7 +114,6 @@ static struct fb_videomode s3c24x0_fb_modes[] = {
- 		.sync		= FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT | FB_SYNC_DE_HIGH_ACT
-                                   /* | FB_SYNC_SWAP_HW */ /* FIXME maybe */ ,
- 		.vmode		= FB_VMODE_NONINTERLACED,
--		.flag		= 0,
- 	},
- #endif
+diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
+index 738bde9..d6565ca 100644
+--- a/drivers/mci/mxs.c
++++ b/drivers/mci/mxs.c
+@@ -53,10 +53,8 @@ struct mxs_mci_host {
+ 	void __iomem	*regs;
+ 	struct clk	*clk;
+ 	unsigned	clock;	/* current clock speed in Hz ("0" if disabled) */
+-#ifdef CONFIG_MCI_INFO
+ 	unsigned	f_min;
+ 	unsigned	f_max;
+-#endif
+ 	unsigned	bus_width:2; /* 0 = 1 bit, 1 = 4 bit, 2 = 8 bit */
  };
+ 
 -- 
 2.1.3
 
