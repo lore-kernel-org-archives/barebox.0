@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XuLFd-0001SV-RG
- for barebox@lists.infradead.org; Fri, 28 Nov 2014 13:06:22 +0000
-Received: by mail-lb0-f179.google.com with SMTP id z11so5512648lbi.38
- for <barebox@lists.infradead.org>; Fri, 28 Nov 2014 05:05:59 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 28 Nov 2014 16:07:32 +0300
-Message-Id: <1417180052-16824-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XuMY8-0000VL-3U
+ for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 28 Nov 2014 15:29:05 +0100
+Message-Id: <1417184946-16128-13-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
+References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] clocksource: dummy: don't show message on first cs read
+Subject: [PATCH 13/14] ARM: AM335x: Select OFTREE
 To: barebox@lists.infradead.org
 
-In the commit
+All AM335x boards are devicetree only, so select support for it.
 
-    commit 96cae61eba199b9c3f5451f293cf60db2b535164
-    Author: Sascha Hauer <s.hauer@pengutronix.de>
-    Date:   Tue Sep 30 08:25:55 2014 +0200
-
-        clock: Add a variable with the first timestamp after startup
-
-        For measuring the startup time it's useful to save the first
-        timestamp after the clocksource has been registered.
-
-the behaviour of clocksource subsystem is changed: every registered
-clocksource is called at least once. So the dummy clocksource (if enabled)
-_ALWAYS_ prints a confusing 'Using dummy clocksource' warning.
-
-This patch fixes the situation: now the 'Using dummy clocksource'
-warning is printed only if the dummy clocksource is called second time.
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clocksource/dummy.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm/mach-omap/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clocksource/dummy.c b/drivers/clocksource/dummy.c
-index 96f9b6e..9a42305 100644
---- a/drivers/clocksource/dummy.c
-+++ b/drivers/clocksource/dummy.c
-@@ -25,8 +25,11 @@ static uint64_t dummy_cs_read(void)
- {
- 	static int first;
- 
--	if (!first) {
-+	if (first == 1) {
- 		pr_warn("Warning: Using dummy clocksource\n");
-+		first = 2;
-+	}
-+	if (!first) {
- 		first = 1;
- 	}
- 
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index f9b5ec3..82d9800 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -42,6 +42,7 @@ config ARCH_AM33XX
+ 	bool
+ 	select CPU_V7
+ 	select GENERIC_GPIO
++	select OFTREE
+ 	select OMAP_CLOCK_SOURCE_DMTIMER0
+ 	help
+ 	  Say Y here if you are using Texas Instrument's AM33xx based platform
 -- 
-2.1.1
+2.1.3
 
 
 _______________________________________________
