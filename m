@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XuMY8-0000VM-3H
- for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:33 +0000
+ Linux)) id 1XuMY8-0000VD-3F
+ for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Nov 2014 15:29:06 +0100
-Message-Id: <1417184946-16128-14-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Nov 2014 15:28:54 +0100
+Message-Id: <1417184946-16128-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/14] Kconfig: make BROKEN invisible
+Subject: [PATCH 02/14] ARM: ep93xx: Fix typo
 To: barebox@lists.infradead.org
 
-BROKEN is a developer option to keep things in the tree we know
-are broken. Make this option invisible so that randconfig builds do
-not enable it.
+Initialize 4th RAM bank with CONFIG_EP93XX_SDRAM_BANK3_SIZE,
+not CONFIG_EP93XX_SDRAM_BANK2_SIZE.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/boards/edb93xx/edb93xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 21298c2..a5fa46b 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -248,7 +248,6 @@ endmenu
+diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
+index d83980d..c314320 100644
+--- a/arch/arm/boards/edb93xx/edb93xx.c
++++ b/arch/arm/boards/edb93xx/edb93xx.c
+@@ -45,7 +45,7 @@ static int ep93xx_mem_init(void)
+ #endif
+ #if (CONFIG_EP93XX_SDRAM_NUM_BANKS == 4)
+ 	arm_add_mem_device("ram3", CONFIG_EP93XX_SDRAM_BANK3_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK2_SIZE);
++				   CONFIG_EP93XX_SDRAM_BANK3_SIZE);
+ #endif
  
- config BROKEN
- 	bool
--	prompt "Prompt for broken or incomplete code"
- 
- config EXPERIMENTAL
- 	bool
+ 	return 0;
 -- 
 2.1.3
 
