@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XuMY8-0000VL-3U
- for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:35 +0000
+ Linux)) id 1XuMY8-0000VK-31
+ for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Nov 2014 15:29:05 +0100
-Message-Id: <1417184946-16128-13-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Nov 2014 15:29:02 +0100
+Message-Id: <1417184946-16128-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/14] ARM: AM335x: Select OFTREE
+Subject: [PATCH 10/14] spi: mxs-spi: Allow compilation on i.MX28 only
 To: barebox@lists.infradead.org
 
-All AM335x boards are devicetree only, so select support for it.
+The driver does not compile on i.MX23, so remove the i.MX23 from
+the dependency list.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index f9b5ec3..82d9800 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -42,6 +42,7 @@ config ARCH_AM33XX
- 	bool
- 	select CPU_V7
- 	select GENERIC_GPIO
-+	select OFTREE
- 	select OMAP_CLOCK_SOURCE_DMTIMER0
- 	help
- 	  Say Y here if you are using Texas Instrument's AM33xx based platform
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 8a9bbd7..e4fa6a2 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -39,7 +39,7 @@ config DRIVER_SPI_IMX_2_3
+ 
+ config DRIVER_SPI_MXS
+ 	bool "i.MX (23,28) SPI Master driver"
+-	depends on ARCH_IMX23 || ARCH_IMX28
++	depends on ARCH_IMX28
+ 	depends on SPI
+ 
+ config DRIVER_SPI_MVEBU
 -- 
 2.1.3
 
