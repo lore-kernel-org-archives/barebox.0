@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XuMY8-0000VK-31
+ Linux)) id 1XuMY8-0000VJ-2w
  for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Nov 2014 15:29:02 +0100
-Message-Id: <1417184946-16128-10-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Nov 2014 15:29:03 +0100
+Message-Id: <1417184946-16128-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/14] spi: mxs-spi: Allow compilation on i.MX28 only
+Subject: [PATCH 11/14] gpio: move gpio_is_valid to include/gpio.h
 To: barebox@lists.infradead.org
 
-The driver does not compile on i.MX23, so remove the i.MX23 from
-the dependency list.
+No architectue implements its own gpio_is_valid() function, so move
+the only existing implementation to include/gpio.h where it's available
+for all users.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/asm-generic/gpio.h | 11 -----------
+ include/gpio.h             | 11 +++++++++++
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 8a9bbd7..e4fa6a2 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -39,7 +39,7 @@ config DRIVER_SPI_IMX_2_3
+diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
+index 95fdd05..7674970 100644
+--- a/include/asm-generic/gpio.h
++++ b/include/asm-generic/gpio.h
+@@ -1,17 +1,6 @@
+ #ifndef __ASM_GENERIC_GPIO_H
+ #define __ASM_GENERIC_GPIO_H
  
- config DRIVER_SPI_MXS
- 	bool "i.MX (23,28) SPI Master driver"
--	depends on ARCH_IMX23 || ARCH_IMX28
-+	depends on ARCH_IMX28
- 	depends on SPI
+-#define ARCH_NR_GPIOS 256
+-
+-static inline int gpio_is_valid(int gpio)
+-{
+-	if (gpio < 0)
+-		return 0;
+-	if (gpio < ARCH_NR_GPIOS)
+-		return 1;
+-	return 0;
+-}
+-
+ void gpio_set_value(unsigned gpio, int value);
+ int gpio_get_value(unsigned gpio);
+ int gpio_direction_output(unsigned gpio, int value);
+diff --git a/include/gpio.h b/include/gpio.h
+index 4a97521..f116ea6 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -3,6 +3,17 @@
  
- config DRIVER_SPI_MVEBU
+ #include <asm/gpio.h>
+ 
++#define ARCH_NR_GPIOS 256
++
++static inline int gpio_is_valid(int gpio)
++{
++	if (gpio < 0)
++		return 0;
++	if (gpio < ARCH_NR_GPIOS)
++		return 1;
++	return 0;
++}
++
+ #define GPIOF_DIR_OUT	(0 << 0)
+ #define GPIOF_DIR_IN	(1 << 0)
+ 
 -- 
 2.1.3
 
