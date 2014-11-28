@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xu1mp-0002EM-OC
- for barebox@lists.infradead.org; Thu, 27 Nov 2014 16:19:21 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Nov 2014 17:15:29 +0100
-Message-Id: <1417104932-13960-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1417104932-13960-1-git-send-email-s.hauer@pengutronix.de>
-References: <1417104932-13960-1-git-send-email-s.hauer@pengutronix.de>
+ id 1XuLFd-0001SV-RG
+ for barebox@lists.infradead.org; Fri, 28 Nov 2014 13:06:22 +0000
+Received: by mail-lb0-f179.google.com with SMTP id z11so5512648lbi.38
+ for <barebox@lists.infradead.org>; Fri, 28 Nov 2014 05:05:59 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 28 Nov 2014 16:07:32 +0300
+Message-Id: <1417180052-16824-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,54 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] USB: Gadget: Select poller from USB_GADGET option
+Subject: [RFC] clocksource: dummy: don't show message on first cs read
 To: barebox@lists.infradead.org
 
-The poller has been merged to the gadget core, so
-now the core needs poller support, not the individual drivers.
+In the commit
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+    commit 96cae61eba199b9c3f5451f293cf60db2b535164
+    Author: Sascha Hauer <s.hauer@pengutronix.de>
+    Date:   Tue Sep 30 08:25:55 2014 +0200
+
+        clock: Add a variable with the first timestamp after startup
+
+        For measuring the startup time it's useful to save the first
+        timestamp after the clocksource has been registered.
+
+the behaviour of clocksource subsystem is changed: every registered
+clocksource is called at least once. So the dummy clocksource (if enabled)
+_ALWAYS_ prints a confusing 'Using dummy clocksource' warning.
+
+This patch fixes the situation: now the 'Using dummy clocksource'
+warning is printed only if the dummy clocksource is called second time.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/usb/gadget/Kconfig | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/clocksource/dummy.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-index d75f54e..cd21ba7 100644
---- a/drivers/usb/gadget/Kconfig
-+++ b/drivers/usb/gadget/Kconfig
-@@ -1,5 +1,6 @@
- menuconfig USB_GADGET
- 	select USB
-+	select POLLER
- 	bool "USB gadget support"
+diff --git a/drivers/clocksource/dummy.c b/drivers/clocksource/dummy.c
+index 96f9b6e..9a42305 100644
+--- a/drivers/clocksource/dummy.c
++++ b/drivers/clocksource/dummy.c
+@@ -25,8 +25,11 @@ static uint64_t dummy_cs_read(void)
+ {
+ 	static int first;
  
- if USB_GADGET
-@@ -13,7 +14,6 @@ config USB_GADGET_DRIVER_ARC
- 	depends on ARCH_IMX || ARCH_MXS
- 	default y
- 	select USB_GADGET_DUALSPEED
--	select POLLER
- 
- config USB_GADGET_DRIVER_AT91
- 	bool
-@@ -21,7 +21,6 @@ config USB_GADGET_DRIVER_AT91
- 	depends on ARCH_AT91
- 	default y
- 	select USB_GADGET_DUALSPEED
--	select POLLER
- 
- config USB_GADGET_DRIVER_PXA27X
- 	bool
-@@ -29,7 +28,6 @@ config USB_GADGET_DRIVER_PXA27X
- 	depends on ARCH_PXA
- 	default y
- 	select USB_GADGET_DUALSPEED
--	select POLLER
- 
- comment "USB Gadget drivers"
+-	if (!first) {
++	if (first == 1) {
+ 		pr_warn("Warning: Using dummy clocksource\n");
++		first = 2;
++	}
++	if (!first) {
+ 		first = 1;
+ 	}
  
 -- 
-2.1.3
+2.1.1
 
 
 _______________________________________________
