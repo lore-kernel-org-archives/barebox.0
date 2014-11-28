@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XuMY8-0000VH-3i
- for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:35 +0000
+ Linux)) id 1XuMY8-0000VC-3M
+ for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Nov 2014 15:29:00 +0100
-Message-Id: <1417184946-16128-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
-References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Nov 2014 15:28:53 +0100
+Message-Id: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,26 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/14] fs: bpkfs: select CRC32
+Subject: [PATCH 01/14] ARM: friendlyarm-mini2440: fix compilation for some
+ displays
 To: barebox@lists.infradead.org
+
+struct fb_videomode does not have a flag member, so do not initialize
+it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boards/friendlyarm-mini2440/mini2440.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 64fc117..cc3e334 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -61,6 +61,7 @@ source fs/ubifs/Kconfig
- 
- config FS_BPKFS
- 	bool
-+	select CRC32
- 	prompt "BPKFS support"
- 	help
- 	  Simple update file format developed for Somfy, tools and library are
+diff --git a/arch/arm/boards/friendlyarm-mini2440/mini2440.c b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
+index 4034de5..2dcb7db 100644
+--- a/arch/arm/boards/friendlyarm-mini2440/mini2440.c
++++ b/arch/arm/boards/friendlyarm-mini2440/mini2440.c
+@@ -96,7 +96,6 @@ static struct fb_videomode s3c24x0_fb_modes[] = {
+ 		.pixclock	= 41848,
+ 		.sync		= FB_SYNC_USE_PWREN | FB_SYNC_DE_HIGH_ACT,
+ 		.vmode		= FB_VMODE_NONINTERLACED,
+-		.flag		= 0,
+ 	},
+ #endif
+ #ifdef CONFIG_MINI2440_VIDEO_SVGA
+@@ -115,7 +114,6 @@ static struct fb_videomode s3c24x0_fb_modes[] = {
+ 		.sync		= FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT | FB_SYNC_DE_HIGH_ACT
+                                   /* | FB_SYNC_SWAP_HW */ /* FIXME maybe */ ,
+ 		.vmode		= FB_VMODE_NONINTERLACED,
+-		.flag		= 0,
+ 	},
+ #endif
+ };
 -- 
 2.1.3
 
