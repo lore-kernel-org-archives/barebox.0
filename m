@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XuMY8-0000VF-3I
- for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:33 +0000
+ Linux)) id 1XuMY8-0000VI-37
+ for barebox@lists.infradead.org; Fri, 28 Nov 2014 14:29:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Nov 2014 15:28:58 +0100
-Message-Id: <1417184946-16128-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Nov 2014 15:29:01 +0100
+Message-Id: <1417184946-16128-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/14] mci: mxs-mci: add f_min/f_max fields unconditionally
+Subject: [PATCH 09/14] firmware: altera serial: depend on GENERIC_GPIO
 To: barebox@lists.infradead.org
 
-Parts of the driver need these regardless of whether CONFIG_MCI_INFO
-is set, so add these fields unconditionally.
+The driver needs gpio support, so depend on GENERIC_GPIO
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mxs.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/firmware/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
-index 738bde9..d6565ca 100644
---- a/drivers/mci/mxs.c
-+++ b/drivers/mci/mxs.c
-@@ -53,10 +53,8 @@ struct mxs_mci_host {
- 	void __iomem	*regs;
- 	struct clk	*clk;
- 	unsigned	clock;	/* current clock speed in Hz ("0" if disabled) */
--#ifdef CONFIG_MCI_INFO
- 	unsigned	f_min;
- 	unsigned	f_max;
--#endif
- 	unsigned	bus_width:2; /* 0 = 1 bit, 1 = 4 bit, 2 = 8 bit */
- };
- 
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index ac96bc0..15465fe 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -3,6 +3,7 @@ menu "Firmware Drivers"
+ config FIRMWARE_ALTERA_SERIAL
+ 	bool "Altera SPI programming"
+ 	depends on OFDEVICE
++	depends on GENERIC_GPIO
+ 	depends on SPI
+ 	select FIRMWARE
+ 	help
 -- 
 2.1.3
 
