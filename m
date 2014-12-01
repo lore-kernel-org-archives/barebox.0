@@ -1,17 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XvNmf-0002qS-2R
- for barebox@lists.infradead.org; Mon, 01 Dec 2014 10:00:45 +0000
-Received: by mail-lb0-f176.google.com with SMTP id p9so8446852lbv.35
- for <barebox@lists.infradead.org>; Mon, 01 Dec 2014 02:00:22 -0800 (PST)
-Date: Mon, 1 Dec 2014 14:01:48 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20141201140148.4e8652b784b920d027a6d645@gmail.com>
-In-Reply-To: <20141201063140.GB30369@pengutronix.de>
-References: <1417180052-16824-1-git-send-email-antonynpavlov@gmail.com>
- <20141201063140.GB30369@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1XvOuI-0002gy-Or
+ for barebox@lists.infradead.org; Mon, 01 Dec 2014 11:12:43 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1XvOtv-0003VD-9E
+ for barebox@lists.infradead.org; Mon, 01 Dec 2014 12:12:19 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1XvOtv-0008EQ-7a
+ for barebox@lists.infradead.org; Mon, 01 Dec 2014 12:12:19 +0100
+Date: Mon, 1 Dec 2014 12:12:19 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141201111219.GH30369@pengutronix.de>
+References: <1417184946-16128-1-git-send-email-s.hauer@pengutronix.de>
+ <1417184946-16128-14-git-send-email-s.hauer@pengutronix.de>
+ <20141201090043.GL16478@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20141201090043.GL16478@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,68 +27,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] clocksource: dummy: don't show message on first cs read
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 14/14] Kconfig: make BROKEN invisible
+To: barebox@lists.infradead.org
 
-On Mon, 1 Dec 2014 07:31:40 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, Dec 01, 2014 at 10:00:43AM +0100, Michael Olbrich wrote:
+> On Fri, Nov 28, 2014 at 03:29:06PM +0100, Sascha Hauer wrote:
+> > BROKEN is a developer option to keep things in the tree we know
+> > are broken. Make this option invisible so that randconfig builds do
+> > not enable it.
+> 
+> I don't think this is needed. You can specify a partial config file when
+> running randconfig with KCONFIG_ALLCONFIG=some_config. Just disable BROKEN
+> there.
 
-> On Fri, Nov 28, 2014 at 04:07:32PM +0300, Antony Pavlov wrote:
-> > In the commit
-> > =
+Not since:
 
-> >     commit 96cae61eba199b9c3f5451f293cf60db2b535164
-> >     Author: Sascha Hauer <s.hauer@pengutronix.de>
-> >     Date:   Tue Sep 30 08:25:55 2014 +0200
-> > =
+| commit 490f16171119a16e05d670306c105f3b45c38837
+| Author: Yann E. MORIN <yann.morin.1998@free.fr>
+| Date:   Tue Jun 25 23:37:44 2013 +0200
+| 
+|     Revert "kconfig: fix randomising choice entries in presence of KCONFIG_ALLCONFIG"
+|     
+|     This reverts commit 8357b48549e17b3e4e402c7f977b65708922e60f.
+|     
+|     It breaks more stuff than it fixes.
 
-> >         clock: Add a variable with the first timestamp after startup
-> > =
+This renders KCONFIG_ALLCONFIG quite useless.
 
-> >         For measuring the startup time it's useful to save the first
-> >         timestamp after the clocksource has been registered.
-> > =
+But regardless of this I think not showing broken options to users is the
+right approach.
 
-> > the behaviour of clocksource subsystem is changed: every registered
-> > clocksource is called at least once. So the dummy clocksource (if enabl=
-ed)
-> > _ALWAYS_ prints a confusing 'Using dummy clocksource' warning.
-> > =
+/me grepping for BROKEN in arch/*/configs/:
 
-> > This patch fixes the situation: now the 'Using dummy clocksource'
-> > warning is printed only if the dummy clocksource is called second time.
-> =
+arch/arm/configs/friendlyarm_mini6410_defconfig:4:CONFIG_BROKEN=y
+arch/arm/configs/freescale-mx28-evk_defconfig:9:CONFIG_BROKEN=y
+arch/arm/configs/cfa10036_defconfig:9:CONFIG_BROKEN=y
+arch/arm/configs/imx233-olinuxino_defconfig:5:CONFIG_BROKEN=y
+arch/arm/configs/friendlyarm_mini2440_defconfig:8:CONFIG_BROKEN=y
+arch/arm/configs/freescale-mx23-evk_defconfig:4:CONFIG_BROKEN=y
+arch/arm/configs/netx_nxdb500_defconfig:3:CONFIG_BROKEN=y
+arch/arm/configs/a9m2410_defconfig:4:CONFIG_BROKEN=y
+arch/arm/configs/friendlyarm_tiny6410_defconfig:5:CONFIG_BROKEN=y
+arch/arm/configs/chumbyone_defconfig:7:CONFIG_BROKEN=y
+arch/arm/configs/a9m2440_defconfig:6:CONFIG_BROKEN=y
+arch/arm/configs/tx28stk5_defconfig:8:CONFIG_BROKEN=y
+arch/mips/configs/dlink-dir-320_defconfig:5:CONFIG_BROKEN=y
+arch/mips/configs/qemu-malta_defconfig:5:CONFIG_BROKEN=y
+arch/mips/configs/loongson-ls1b_defconfig:6:CONFIG_BROKEN=y
+arch/x86/configs/generic_defconfig:3:CONFIG_BROKEN=y
 
-> I don't like this very much. The dummy clocksource expects some certain
-> behaviour of the common clocksource code and works around this when it
-> changes. How about integrating the dummy clocksource into the core
-> instead, like
-> =
+So users starting from these defconfigs can just enable broken stuff
+without even realizing. Let's not bother users with stuff we already
+know it's broken.
 
-> uint64_t get_time_ns(void)
-> {
-> 	if (!current_clock)
-> 		return dummy_counter++;
-> =
+Sascha
 
-> 	...
-> }
-> =
-
-> Then add a initcall which warns later if we still don't have a valid
-> clocksource?
-
-Good plan! I'll try to realize it in several days.
- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
