@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XwB26-0006Ah-MA
+ Linux)) id 1XwB26-0006CW-ME
  for barebox@lists.infradead.org; Wed, 03 Dec 2014 14:35:59 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed,  3 Dec 2014 15:33:59 +0100
-Message-Id: <1417617240-16852-1-git-send-email-jlu@pengutronix.de>
+Date: Wed,  3 Dec 2014 15:34:00 +0100
+Message-Id: <1417617240-16852-2-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1417617240-16852-1-git-send-email-jlu@pengutronix.de>
+References: <1417617240-16852-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] stringlist: the string argument should be const
+Subject: [PATCH 2/2] fdt: of_unflatten_dtb can work on const data
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- include/stringlist.h | 4 ++--
- lib/stringlist.c     | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/of/fdt.c | 4 ++--
+ include/of.h     | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/stringlist.h b/include/stringlist.h
-index 2e2addf98f19..e85500a99485 100644
---- a/include/stringlist.h
-+++ b/include/stringlist.h
-@@ -8,9 +8,9 @@ struct string_list {
- 	char *str;
- };
- 
--int string_list_add(struct string_list *sl, char *str);
-+int string_list_add(struct string_list *sl, const char *str);
- int string_list_add_asprintf(struct string_list *sl, const char *fmt, ...);
--int string_list_add_sorted(struct string_list *sl, char *str);
-+int string_list_add_sorted(struct string_list *sl, const char *str);
- int string_list_contains(struct string_list *sl, const char *str);
- void string_list_print_by_column(struct string_list *sl);
- 
-diff --git a/lib/stringlist.c b/lib/stringlist.c
-index 57801b3bb04d..8a18366a96d5 100644
---- a/lib/stringlist.c
-+++ b/lib/stringlist.c
-@@ -13,7 +13,7 @@ static int string_list_compare(struct list_head *a, struct list_head *b)
- 	return strcmp(astr, bstr);
- }
- 
--int string_list_add(struct string_list *sl, char *str)
-+int string_list_add(struct string_list *sl, const char *str)
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index cfe183350978..89f291787962 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -54,7 +54,7 @@ static inline char *dt_string(struct fdt_header *f, char *strstart, uint32_t ofs
+  * Parse a flat device tree binary blob and return a pointer to the
+  * unflattened tree.
+  */
+-struct device_node *of_unflatten_dtb(void *infdt)
++struct device_node *of_unflatten_dtb(const void *infdt)
  {
- 	struct string_list *new;
+ 	const void *nodep;	/* property node pointer */
+ 	uint32_t tag;		/* tag */
+@@ -69,7 +69,7 @@ struct device_node *of_unflatten_dtb(void *infdt)
+ 	struct fdt_header f;
+ 	int ret;
+ 	unsigned int maxlen;
+-	struct fdt_header *fdt = infdt;
++	const struct fdt_header *fdt = infdt;
  
-@@ -48,7 +48,7 @@ int string_list_add_asprintf(struct string_list *sl, const char *fmt, ...)
- 	return 0;
- }
+ 	if (fdt->magic != cpu_to_fdt32(FDT_MAGIC)) {
+ 		pr_err("bad magic: 0x%08x\n", fdt32_to_cpu(fdt->magic));
+diff --git a/include/of.h b/include/of.h
+index 7b93c58474de..5273f87ebd1d 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -98,7 +98,7 @@ void of_print_cmdline(struct device_node *root);
+ void of_print_nodes(struct device_node *node, int indent);
+ int of_probe(void);
+ int of_parse_dtb(struct fdt_header *fdt);
+-struct device_node *of_unflatten_dtb(void *fdt);
++struct device_node *of_unflatten_dtb(const void *fdt);
  
--int string_list_add_sorted(struct string_list *sl, char *str)
-+int string_list_add_sorted(struct string_list *sl, const char *str)
- {
- 	struct string_list *new;
+ struct cdev;
  
 -- 
 2.1.3
