@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xxyae-0008Ju-7g
+ Linux)) id 1Xxyae-0008Js-7h
  for barebox@lists.infradead.org; Mon, 08 Dec 2014 13:43:06 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XxyaG-0004d9-4v
+ (envelope-from <l.stach@pengutronix.de>) id 1XxyaG-0004d9-38
  for barebox@lists.infradead.org; Mon, 08 Dec 2014 14:42:40 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon,  8 Dec 2014 14:42:31 +0100
-Message-Id: <1418046159-29843-4-git-send-email-l.stach@pengutronix.de>
+Date: Mon,  8 Dec 2014 14:42:30 +0100
+Message-Id: <1418046159-29843-3-git-send-email-l.stach@pengutronix.de>
 In-Reply-To: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
 References: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,32 +25,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] efi: add Barebox GUID
+Subject: [PATCH 03/12] efi: move exit to EFI into own command
 To: barebox@lists.infradead.org
 
-A proper GUID is needed to namespace all sorts of
-things, most prominently persistent variables.
+Adds a command to drop back into the calling EFI process.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- include/efi.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/efi/efi/efi.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/efi.h b/include/efi.h
-index 49b8bd44bc1e..4abb5d2e3683 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -468,6 +468,10 @@ extern efi_runtime_services_t *RT;
- #define EFI_VLANCONFIGDXE_INF_GUID \
- 	EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
+diff --git a/arch/efi/efi/efi.c b/arch/efi/efi/efi.c
+index bdb992fb9f15..7b954695f9e8 100644
+--- a/arch/efi/efi/efi.c
++++ b/arch/efi/efi/efi.c
+@@ -344,3 +344,19 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
  
-+/* barebox specific GUIDs */
-+#define EFI_BAREBOX_VENDOR_GUID \
-+	EFI_GUID(0x5b91f69c, 0x8b88, 0x4a2b, 0x92, 0x69, 0x5f, 0x1d, 0x80, 0x2b, 0x51, 0x75)
+ 	return EFI_SUCCESS;
+ }
 +
- extern efi_guid_t efi_file_info_id;
- extern efi_guid_t efi_simple_file_system_protocol_guid;
- extern efi_guid_t efi_device_path_protocol_guid;
++static int do_efiexit(int argc, char *argv[])
++{
++	return BS->exit(efi_parent_image, EFI_SUCCESS, 0, NULL);
++}
++
++BAREBOX_CMD_HELP_START(efiexit)
++BAREBOX_CMD_HELP_TEXT("Leave barebox and return to the calling EFI process\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(efiexit)
++	.cmd = do_efiexit,
++	BAREBOX_CMD_DESC("Usage: efiexit")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_efiexit_help)
++BAREBOX_CMD_END
 -- 
 2.1.3
 
