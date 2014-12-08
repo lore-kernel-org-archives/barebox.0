@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Xxv8L-0001EN-W6
- for barebox@lists.infradead.org; Mon, 08 Dec 2014 10:01:39 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id E016CA004FA
- for <barebox@lists.infradead.org>; Mon,  8 Dec 2014 11:01:34 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Mon, 8 Dec 2014 10:59:49 +0100
-Message-Id: <1418032791-35329-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Xxyae-0008K3-7f
+ for barebox@lists.infradead.org; Mon, 08 Dec 2014 13:43:06 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1XxyaG-0004d9-Cs
+ for barebox@lists.infradead.org; Mon, 08 Dec 2014 14:42:40 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon,  8 Dec 2014 14:42:39 +0100
+Message-Id: <1418046159-29843-12-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
+References: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,24 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: dts: am335x-phytec-phyflex: Increase kernel
- partition on SPI NOR
+Subject: [PATCH 12/12] efi: mount efivarfs by default if enabled
 To: barebox@lists.infradead.org
 
-SW5jcmVhc2Uga2VybmVsIHBhcnRpdGlvbiB0byBlbmQgb2YgU1BJIE5PUi4KClNpZ25lZC1vZmYt
-Ynk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL2R0cy9h
-bTMzNXgtcGh5dGVjLXBoeWZsZXguZHRzIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0
-aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2FtMzM1eC1w
-aHl0ZWMtcGh5ZmxleC5kdHMgYi9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHlmbGV4LmR0
-cwppbmRleCBjNDQ4MWY1Li4wZGU3ZTg3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvYW0zMzV4
-LXBoeXRlYy1waHlmbGV4LmR0cworKysgYi9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHlm
-bGV4LmR0cwpAQCAtMTg3LDcgKzE4Nyw3IEBACiAKIAkJcGFydGl0aW9uQDQgewogCQkJbGFiZWwg
-PSAia2VybmVsIjsKLQkJCXJlZyA9IDwweGUwMDAwIDB4NDAwMDAwPjsKKwkJCXJlZyA9IDwweGUw
-MDAwIDB4MD47CiAJCX07CiAJfTsKIH07Ci0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ common/startup.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/common/startup.c b/common/startup.c
+index 01718146ff69..0d62f16f32f6 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -50,6 +50,12 @@ static int mount_root(void)
+ 	mount("none", "ramfs", "/", NULL);
+ 	mkdir("/dev", 0);
+ 	mount("none", "devfs", "/dev", NULL);
++
++	if (IS_ENABLED(CONFIG_FS_EFIVARFS)) {
++		mkdir("/efivars", 0);
++		mount("none", "efivarfs", "/efivars", NULL);
++	}
++
+ 	return 0;
+ }
+ fs_initcall(mount_root);
+-- 
+2.1.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
