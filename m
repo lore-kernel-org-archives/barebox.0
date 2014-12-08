@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xxyae-0008K2-7l
- for barebox@lists.infradead.org; Mon, 08 Dec 2014 13:43:08 +0000
+ Linux)) id 1Xxyae-0008Jz-7x
+ for barebox@lists.infradead.org; Mon, 08 Dec 2014 13:43:06 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XxyaG-0004d9-BC
+ (envelope-from <l.stach@pengutronix.de>) id 1XxyaG-0004d9-9W
  for barebox@lists.infradead.org; Mon, 08 Dec 2014 14:42:40 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon,  8 Dec 2014 14:42:38 +0100
-Message-Id: <1418046159-29843-11-git-send-email-l.stach@pengutronix.de>
+Date: Mon,  8 Dec 2014 14:42:35 +0100
+Message-Id: <1418046159-29843-8-git-send-email-l.stach@pengutronix.de>
 In-Reply-To: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
 References: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,165 +25,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] fs: efivars: implement write support
+Subject: [PATCH 08/12] lib: add wchar strdup
 To: barebox@lists.infradead.org
-
-Implement the standard FS ops for writing/manipulating
-efivars.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- fs/efivarfs.c | 105 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/efi.h |   3 +-
- 2 files changed, 107 insertions(+), 1 deletion(-)
+ include/wchar.h |  2 ++
+ lib/wchar.c     | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index f54925133848..9a1503bd1387 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -126,6 +126,75 @@ static int efivarfs_parse_filename(const char *filename, efi_guid_t *vendor, s16
- 	return 0;
+diff --git a/include/wchar.h b/include/wchar.h
+index 80dcd81bf442..702d8e239a7c 100644
+--- a/include/wchar.h
++++ b/include/wchar.h
+@@ -5,6 +5,8 @@
+ 
+ typedef u16 wchar_t;
+ 
++wchar_t *strdup_wchar(const wchar_t *src);
++
+ char *strcpy_wchar_to_char(char *dst, const wchar_t *src);
+ 
+ wchar_t *strcpy_char_to_wchar(wchar_t *dst, const char *src);
+diff --git a/lib/wchar.c b/lib/wchar.c
+index 6368a019941e..b2e9e7545b1f 100644
+--- a/lib/wchar.c
++++ b/lib/wchar.c
+@@ -31,6 +31,22 @@ size_t wcslen(const wchar_t *s)
+ 	return len;
  }
  
-+static int efivars_create(struct device_d *dev, const char *pathname, mode_t mode)
++wchar_t *strdup_wchar(const wchar_t *src)
 +{
-+	struct efivarfs_priv *priv = dev->priv;
-+	struct efivarfs_inode *inode;
-+	efi_guid_t vendor;
-+	efi_status_t efiret;
-+	u8 dummydata;
-+	char *name8;
-+	s16 *name;
-+	int ret;
++	int len = wcslen(src);
++	wchar_t *tmp, *dst;
 +
-+	if (pathname[0] == '/')
-+		pathname++;
++	if (!(dst = malloc((len + 1) * sizeof(wchar_t))))
++		return NULL;
 +
-+	/* deny creating files with other vendor GUID than our own */
-+	ret = efivarfs_parse_filename(pathname, &vendor, &name);
-+	if (ret)
-+		return -ENOENT;
++	tmp = dst;
 +
-+	if (memcmp(&vendor, &EFI_BAREBOX_VENDOR_GUID, sizeof(efi_guid_t)))
-+		return -EPERM;
++	while ((*dst++ = *src++))
++		/* nothing */;
 +
-+	inode = xzalloc(sizeof(*inode));
-+	inode->name = name;
-+	inode->vendor = vendor;
-+
-+
-+	name8 = strdup_wchar_to_char(inode->name);
-+	inode->full_name = asprintf("%s-%pUl", name8, &inode->vendor);
-+	free(name8);
-+
-+	efiret = RT->set_variable(inode->name, &inode->vendor,
-+				  EFI_VARIABLE_NON_VOLATILE |
-+				  EFI_VARIABLE_BOOTSERVICE_ACCESS |
-+				  EFI_VARIABLE_RUNTIME_ACCESS,
-+				  1, &dummydata);
-+	if (EFI_ERROR(efiret)) {
-+		free(inode);
-+		return -efi_errno(efiret);
-+	}
-+
-+	list_add_tail(&inode->node, &priv->inodes);
-+
-+	return 0;
++	return tmp;
 +}
 +
-+static int efivars_unlink(struct device_d *dev, const char *pathname)
-+{
-+	struct efivarfs_priv *priv = dev->priv;
-+	struct efivarfs_inode *inode, *tmp;
-+	efi_status_t efiret;
-+
-+	if (pathname[0] == '/')
-+		pathname++;
-+
-+	list_for_each_entry_safe(inode, tmp, &priv->inodes, node) {
-+		if (!strcmp(inode->full_name, pathname)) {
-+			efiret = RT->set_variable(inode->name, &inode->vendor,
-+						  0, 0, NULL);
-+			if (EFI_ERROR(efiret))
-+				return -efi_errno(efiret);
-+			list_del(&inode->node);
-+			free(inode);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- struct efivars_file {
- 	void *buf;
- 	unsigned long size;
-@@ -197,6 +266,38 @@ static int efivarfs_read(struct device_d *_dev, FILE *f, void *buf, size_t insiz
- 	return insize;
- }
- 
-+static int efivarfs_write(struct device_d *_dev, FILE *f, const void *buf, size_t insize)
-+{
-+	struct efivars_file *efile = f->inode;
-+
-+	if (efile->size < f->pos + insize) {
-+		efile->buf = realloc(efile->buf, f->pos + insize);
-+		efile->size = f->pos + insize;
-+	}
-+
-+	memcpy(efile->buf + f->pos, buf, insize);
-+
-+	RT->set_variable(efile->name, &efile->vendor, efile->attributes,
-+			 efile->size ? efile->size : 1, efile->buf);
-+
-+	return insize;
-+}
-+
-+static int efivarfs_truncate(struct device_d *dev, FILE *f, ulong size)
-+{
-+	struct efivars_file *efile = f->inode;
-+
-+	efile->size = size;
-+	efile->buf = realloc(efile->buf, efile->size + sizeof(uint32_t));
-+
-+	RT->set_variable(efile->name, &efile->vendor, efile->attributes,
-+			 efile->size ? efile->size : 1, efile->buf);
-+
-+	f->size = efile->size;
-+
-+	return 0;
-+}
-+
- static loff_t efivarfs_lseek(struct device_d *dev, FILE *f, loff_t pos)
+ char *strcpy_wchar_to_char(char *dst, const wchar_t *src)
  {
- 	f->pos = pos;
-@@ -320,9 +421,13 @@ static void efivarfs_remove(struct device_d *dev)
- }
- 
- static struct fs_driver_d efivarfs_driver = {
-+	.create    = efivars_create,
-+	.unlink    = efivars_unlink,
- 	.open      = efivarfs_open,
- 	.close     = efivarfs_close,
- 	.read      = efivarfs_read,
-+	.write     = efivarfs_write,
-+	.truncate  = efivarfs_truncate,
- 	.lseek     = efivarfs_lseek,
- 	.opendir   = efivarfs_opendir,
- 	.readdir   = efivarfs_readdir,
-diff --git a/include/efi.h b/include/efi.h
-index 4abb5d2e3683..9b4f16bd9f54 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -279,7 +279,8 @@ typedef struct {
- 			u32 *Attributes, unsigned long *data_size, void *data);
- 	efi_status_t (EFIAPI *get_next_variable)(unsigned long *variable_name_size,
- 			s16 *variable_name, efi_guid_t *vendor);
--	void *set_variable;
-+	efi_status_t (EFIAPI *set_variable)(s16 *variable_name, efi_guid_t *vendor,
-+			u32 Attributes, unsigned long data_size, void *data);
- 	void *get_next_high_mono_count;
- 	void (EFIAPI *reset_system)(efi_reset_type_t reset_type, efi_status_t reset_status,
- 			unsigned long data_size, void *reset_data);
+ 	char *ret = dst;
 -- 
 2.1.3
 
