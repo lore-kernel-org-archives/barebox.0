@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xxyae-0008Jz-7x
- for barebox@lists.infradead.org; Mon, 08 Dec 2014 13:43:06 +0000
+ Linux)) id 1XxzZK-0008HG-MU
+ for barebox@lists.infradead.org; Mon, 08 Dec 2014 14:45:47 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XxyaG-0004d9-9W
- for barebox@lists.infradead.org; Mon, 08 Dec 2014 14:42:40 +0100
+ (envelope-from <l.stach@pengutronix.de>) id 1XxzYx-0006lo-CJ
+ for barebox@lists.infradead.org; Mon, 08 Dec 2014 15:45:23 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon,  8 Dec 2014 14:42:35 +0100
-Message-Id: <1418046159-29843-8-git-send-email-l.stach@pengutronix.de>
-In-Reply-To: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
-References: <1418046159-29843-1-git-send-email-l.stach@pengutronix.de>
+Date: Mon,  8 Dec 2014 15:45:23 +0100
+Message-Id: <1418049923-6176-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,55 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] lib: add wchar strdup
+Subject: [PATCH] doc: usb: add missing new line in codeblock
 To: barebox@lists.infradead.org
+
+Fixes an error during doc generation that leads to the
+code block being missing in the resulting docs.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- include/wchar.h |  2 ++
- lib/wchar.c     | 16 ++++++++++++++++
- 2 files changed, 18 insertions(+)
+ Documentation/user/usb.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/wchar.h b/include/wchar.h
-index 80dcd81bf442..702d8e239a7c 100644
---- a/include/wchar.h
-+++ b/include/wchar.h
-@@ -5,6 +5,8 @@
+diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+index 88be62053629..0ff982bac462 100644
+--- a/Documentation/user/usb.rst
++++ b/Documentation/user/usb.rst
+@@ -155,6 +155,7 @@ value ``otg``. setting this to ``host`` or ``device`` puts the device in the cor
+ mode. Once a specific mode has been selected it can't be changed later anymore.
  
- typedef u16 wchar_t;
- 
-+wchar_t *strdup_wchar(const wchar_t *src);
+ .. code-block:: sh
 +
- char *strcpy_wchar_to_char(char *dst, const wchar_t *src);
- 
- wchar_t *strcpy_char_to_wchar(wchar_t *dst, const char *src);
-diff --git a/lib/wchar.c b/lib/wchar.c
-index 6368a019941e..b2e9e7545b1f 100644
---- a/lib/wchar.c
-+++ b/lib/wchar.c
-@@ -31,6 +31,22 @@ size_t wcslen(const wchar_t *s)
- 	return len;
- }
- 
-+wchar_t *strdup_wchar(const wchar_t *src)
-+{
-+	int len = wcslen(src);
-+	wchar_t *tmp, *dst;
-+
-+	if (!(dst = malloc((len + 1) * sizeof(wchar_t))))
-+		return NULL;
-+
-+	tmp = dst;
-+
-+	while ((*dst++ = *src++))
-+		/* nothing */;
-+
-+	return tmp;
-+}
-+
- char *strcpy_wchar_to_char(char *dst, const wchar_t *src)
- {
- 	char *ret = dst;
+   barebox:/ devinfo otg0
+   Parameters:
+     mode: otg ("otg", "host", "peripheral")
 -- 
 2.1.3
 
