@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XxzZK-0008HG-MU
- for barebox@lists.infradead.org; Mon, 08 Dec 2014 14:45:47 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XxzYx-0006lo-CJ
- for barebox@lists.infradead.org; Mon, 08 Dec 2014 15:45:23 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon,  8 Dec 2014 15:45:23 +0100
-Message-Id: <1418049923-6176-1-git-send-email-l.stach@pengutronix.de>
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Xy0ZW-0006pZ-5N
+ for barebox@lists.infradead.org; Mon, 08 Dec 2014 15:50:03 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id F3B57A0055F
+ for <barebox@lists.infradead.org>; Mon,  8 Dec 2014 16:49:59 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Mon, 8 Dec 2014 16:48:16 +0100
+Message-Id: <1418053696-40848-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] doc: usb: add missing new line in codeblock
+Subject: [PATCHv2] ARM: phytec: am335x: Update enviroment comment
 To: barebox@lists.infradead.org
 
-Fixes an error during doc generation that leads to the
-code block being missing in the resulting docs.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- Documentation/user/usb.rst | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-index 88be62053629..0ff982bac462 100644
---- a/Documentation/user/usb.rst
-+++ b/Documentation/user/usb.rst
-@@ -155,6 +155,7 @@ value ``otg``. setting this to ``host`` or ``device`` puts the device in the cor
- mode. Once a specific mode has been selected it can't be changed later anymore.
- 
- .. code-block:: sh
-+
-   barebox:/ devinfo otg0
-   Parameters:
-     mode: otg ("otg", "host", "peripheral")
--- 
-2.1.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2UgZG8gbm90IGhhdmUgYSByb290IHBhcnRpdGlvbiBpbiBzcGkgZmxhc2ggYW55IG1vcmUuCkFk
+YXB0IGNvbW1lbnQuCgpTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRl
+Yy5kZT4KLS0tCnYyOiBGaXhlZCB0eXBvCgogLi4uL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUt
+YW0zMzV4L2RlZmF1bHRlbnYtcGh5Y29yZS1hbTMzNXgvYm9vdC9zcGkgfCAyICstCiAuLi4vYXJt
+L2JvYXJkcy9waHl0ZWMtcGh5ZmxleC1hbTMzNXgvZGVmYXVsdGVudi1waHlmbGV4LWFtMzM1eC9i
+b290L3NwaSB8IDIgKy0KIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
+aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMz
+NXgvZGVmYXVsdGVudi1waHljb3JlLWFtMzM1eC9ib290L3NwaSBiL2FyY2gvYXJtL2JvYXJkcy9w
+aHl0ZWMtcGh5Y29yZS1hbTMzNXgvZGVmYXVsdGVudi1waHljb3JlLWFtMzM1eC9ib290L3NwaQpp
+bmRleCBjODcyOTlhLi4yZjg1OGJkIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVj
+LXBoeWNvcmUtYW0zMzV4L2RlZmF1bHRlbnYtcGh5Y29yZS1hbTMzNXgvYm9vdC9zcGkKKysrIGIv
+YXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWFtMzM1eC9kZWZhdWx0ZW52LXBoeWNvcmUt
+YW0zMzV4L2Jvb3Qvc3BpCkBAIC00LDUgKzQsNSBAQCBnbG9iYWwuYm9vdG0uaW1hZ2U9Ii9kZXYv
+bTI1cDAua2VybmVsIgogCiBib290YXJncy1pcAogCi0jIFVzZSByb290ZnMgZm9ybSBOQU5EIGZv
+ciBub3cgYXMgcm9vdGZzIHBhcnRpdGlvbiA8IDRNQgorIyBVc2Ugcm9vdGZzIGZyb20gTkFORAog
+Z2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PXViaTA6cm9vdCB1YmkubXRkPW5h
+bmQwLnJvb3QsMjA0OCBydyByb290ZnN0eXBlPXViaWZzIgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
+Ym9hcmRzL3BoeXRlYy1waHlmbGV4LWFtMzM1eC9kZWZhdWx0ZW52LXBoeWZsZXgtYW0zMzV4L2Jv
+b3Qvc3BpIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHlmbGV4LWFtMzM1eC9kZWZhdWx0ZW52
+LXBoeWZsZXgtYW0zMzV4L2Jvb3Qvc3BpCmluZGV4IGM4NzI5OWEuLjJmODU4YmQgMTAwNjQ0Ci0t
+LSBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5ZmxleC1hbTMzNXgvZGVmYXVsdGVudi1waHlm
+bGV4LWFtMzM1eC9ib290L3NwaQorKysgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWZsZXgt
+YW0zMzV4L2RlZmF1bHRlbnYtcGh5ZmxleC1hbTMzNXgvYm9vdC9zcGkKQEAgLTQsNSArNCw1IEBA
+IGdsb2JhbC5ib290bS5pbWFnZT0iL2Rldi9tMjVwMC5rZXJuZWwiCiAKIGJvb3RhcmdzLWlwCiAK
+LSMgVXNlIHJvb3RmcyBmb3JtIE5BTkQgZm9yIG5vdyBhcyByb290ZnMgcGFydGl0aW9uIDwgNE1C
+CisjIFVzZSByb290ZnMgZnJvbSBOQU5ECiBnbG9iYWwubGludXguYm9vdGFyZ3MuZHluLnJvb3Q9
+InJvb3Q9dWJpMDpyb290IHViaS5tdGQ9bmFuZDAucm9vdCwyMDQ4IHJ3IHJvb3Rmc3R5cGU9dWJp
+ZnMiCi0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
