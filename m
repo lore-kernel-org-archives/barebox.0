@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyQ4o-00086I-5c
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:04 +0000
+ Linux)) id 1XyQ4o-00086G-4z
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 20:03:31 +0100
-Message-Id: <1418151816-24593-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 20:03:33 +0100
+Message-Id: <1418151816-24593-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,54 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] ARM: Add get_sp() and get_lr() functions
+Subject: [PATCH 10/13] ARM: MXS: Enable iomux support for pbl
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>
 
-In case it's needed for some early code.
+Upcoming lowlevel code for MXS needs the iomux setup functions
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/common.h | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/arm/mach-mxs/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/include/asm/common.h b/arch/arm/include/asm/common.h
-index 133bb8e..9ff3b19 100644
---- a/arch/arm/include/asm/common.h
-+++ b/arch/arm/include/asm/common.h
-@@ -16,6 +16,32 @@ static inline unsigned long get_pc(void)
- 	return pc;
- }
- 
-+static inline unsigned long get_lr(void)
-+{
-+	unsigned long lr;
-+
-+	__asm__ __volatile__(
-+                "mov    %0, lr\n"
-+                : "=r" (lr)
-+                :
-+                : "memory");
-+
-+	return lr;
-+}
-+
-+static inline unsigned long get_sp(void)
-+{
-+	unsigned long sp;
-+
-+	__asm__ __volatile__(
-+                "mov    %0, sp\n"
-+                : "=r" (sp)
-+                :
-+                : "memory");
-+
-+	return sp;
-+}
-+
- static inline void arm_setup_stack(unsigned long top)
- {
- 	__asm__ __volatile__("mov sp, %0" : : "r"(top));
+diff --git a/arch/arm/mach-mxs/Makefile b/arch/arm/mach-mxs/Makefile
+index bf949bc..e384336 100644
+--- a/arch/arm/mach-mxs/Makefile
++++ b/arch/arm/mach-mxs/Makefile
+@@ -1,4 +1,5 @@
+ obj-y += imx.o iomux-imx.o power.o
++pbl-y += iomux-imx.o
+ obj-$(CONFIG_ARCH_IMX23) += clocksource-imx23.o usb-imx23.o soc-imx23.o
+ obj-$(CONFIG_ARCH_IMX28) += clocksource-imx28.o usb-imx28.o soc-imx28.o
+ obj-$(CONFIG_MXS_OCOTP) += ocotp.o
 -- 
 2.1.3
 
