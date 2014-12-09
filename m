@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyQ4r-00088X-4E
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:06 +0000
+ Linux)) id 1XyQ51-0008AH-4o
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 20:03:26 +0100
-Message-Id: <1418151816-24593-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 20:03:28 +0100
+Message-Id: <1418151816-24593-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,294 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] scripts: Add mxs-usb-loader tool
+Subject: [PATCH 05/13] ARM: MXS: remove unnecessary mach/imx-regs.h include
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>
 
-This is directly taken from the rockbox projects sbloader tool,
-just renamed to mxs-usb-loader to avoid confusion with bareboxes
-several different image tools.
+And replace the ones needed with the SoC specific header.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-mxs/Kconfig |   7 ++
- scripts/Makefile          |   3 +
- scripts/mxs-usb-loader.c  | 236 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 246 insertions(+)
- create mode 100644 scripts/mxs-usb-loader.c
+ arch/arm/mach-mxs/clocksource-imx23.c | 2 +-
+ arch/arm/mach-mxs/clocksource-imx28.c | 2 +-
+ arch/arm/mach-mxs/ocotp.c             | 1 -
+ arch/arm/mach-mxs/soc-imx23.c         | 2 +-
+ arch/arm/mach-mxs/soc-imx28.c         | 2 +-
+ arch/arm/mach-mxs/usb-imx23.c         | 2 +-
+ arch/arm/mach-mxs/usb-imx28.c         | 2 +-
+ 7 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index 214f940..997e326 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -134,4 +134,11 @@ endif
+diff --git a/arch/arm/mach-mxs/clocksource-imx23.c b/arch/arm/mach-mxs/clocksource-imx23.c
+index d9b7c1a..8279ee2 100644
+--- a/arch/arm/mach-mxs/clocksource-imx23.c
++++ b/arch/arm/mach-mxs/clocksource-imx23.c
+@@ -17,7 +17,7 @@
+ #include <init.h>
+ #include <clock.h>
+ #include <notifier.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx23-regs.h>
+ #include <mach/clock.h>
+ #include <io.h>
  
- endmenu
+diff --git a/arch/arm/mach-mxs/clocksource-imx28.c b/arch/arm/mach-mxs/clocksource-imx28.c
+index d26aa93..4f38af6 100644
+--- a/arch/arm/mach-mxs/clocksource-imx28.c
++++ b/arch/arm/mach-mxs/clocksource-imx28.c
+@@ -16,7 +16,7 @@
+ #include <init.h>
+ #include <clock.h>
+ #include <notifier.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx28-regs.h>
+ #include <mach/clock.h>
+ #include <io.h>
  
-+config ARCH_MXS_USBLOADER
-+	bool "compile mxs-usb-loader"
-+	help
-+	  mxs-usb-loader is a tool to upload and start mxs bootstream images to an
-+	  i.MX SoC in ROM boot mode. It requires libusb, so make sure you have the libusb
-+	  devel package installed on your machine.
-+
- endif
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 442eba5..74c2213 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -21,6 +21,9 @@ hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
- hostprogs-$(CONFIG_ARCH_SOCFPGA) += socfpga_mkimage
- hostprogs-$(CONFIG_ARCH_MXS)     += mxsimage mxsboot
- HOSTLOADLIBES_mxsimage  = `pkg-config --libs openssl`
-+HOSTCFLAGS_mxs-usb-loader.o = `pkg-config --cflags libusb-1.0`
-+HOSTLOADLIBES_mxs-usb-loader  = `pkg-config --libs libusb-1.0`
-+hostprogs-$(CONFIG_ARCH_MXS_USBLOADER)  += mxs-usb-loader
+diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
+index c7c24e0..abdd445 100644
+--- a/arch/arm/mach-mxs/ocotp.c
++++ b/arch/arm/mach-mxs/ocotp.c
+@@ -27,7 +27,6 @@
  
- subdir-y			+= mod
- subdir-$(CONFIG_OMAP4_USBBOOT)	+= omap4_usbboot
-diff --git a/scripts/mxs-usb-loader.c b/scripts/mxs-usb-loader.c
-new file mode 100644
-index 0000000..8529274
---- /dev/null
-+++ b/scripts/mxs-usb-loader.c
-@@ -0,0 +1,236 @@
-+/***************************************************************************
-+ *             __________               __   ___.
-+ *   Open      \______   \ ____   ____ |  | _\_ |__   _______  ___
-+ *   Source     |       _//  _ \_/ ___\|  |/ /| __ \ /  _ \  \/  /
-+ *   Jukebox    |    |   (  <_> )  \___|    < | \_\ (  <_> > <  <
-+ *   Firmware   |____|_  /\____/ \___  >__|_ \|___  /\____/__/\_ \
-+ *                     \/            \/     \/    \/            \/
-+ * $Id$
-+ *
-+ * Copyright (C) 2010 Amaury Pouly
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
-+ *
-+ * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
-+ * KIND, either express or implied.
-+ *
-+ ****************************************************************************/
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <libusb.h>
-+#include <stdint.h>
-+
-+#ifndef MIN
-+#define MIN(a,b) ((a) < (b) ? (a) : (b))
-+#endif
-+
-+void put32le(uint8_t * buf, uint32_t i)
-+{
-+	*buf++ = i & 0xff;
-+	*buf++ = (i >> 8) & 0xff;
-+	*buf++ = (i >> 16) & 0xff;
-+	*buf++ = (i >> 24) & 0xff;
-+}
-+
-+void put32be(uint8_t * buf, uint32_t i)
-+{
-+	*buf++ = (i >> 24) & 0xff;
-+	*buf++ = (i >> 16) & 0xff;
-+	*buf++ = (i >> 8) & 0xff;
-+	*buf++ = i & 0xff;
-+}
-+
-+enum dev_type_t {
-+	HID_DEVICE,
-+	RECOVERY_DEVICE,
-+};
-+
-+struct dev_info_t {
-+	uint16_t vendor_id;
-+	uint16_t product_id;
-+	unsigned xfer_size;
-+	enum dev_type_t dev_type;
-+};
-+
-+struct dev_info_t g_dev_info[] = {
-+	{0x066f, 0x3780, 1024, HID_DEVICE},	/* i.MX233 / STMP3780 */
-+	{0x066f, 0x3770, 48, HID_DEVICE},	/* STMP3770 */
-+	{0x15A2, 0x004F, 1024, HID_DEVICE},	/* i.MX28 */
-+	{0x066f, 0x3600, 4096, RECOVERY_DEVICE},	/* STMP36xx */
-+};
-+
-+int send_hid(libusb_device_handle * dev, int xfer_size, uint8_t * data,
-+	     int size, int nr_xfers)
-+{
-+	int i;
-+
-+	libusb_detach_kernel_driver(dev, 0);
-+	libusb_detach_kernel_driver(dev, 4);
-+
-+	libusb_claim_interface(dev, 0);
-+	libusb_claim_interface(dev, 4);
-+
-+	uint8_t *xfer_buf = malloc(1 + xfer_size);
-+	uint8_t *p = xfer_buf;
-+
-+	*p++ = 0x01;		/* Report id */
-+
-+	/* Command block wrapper */
-+	*p++ = 'B';		/* Signature */
-+	*p++ = 'L';
-+	*p++ = 'T';
-+	*p++ = 'C';
-+	put32le(p, 0x1);	/* Tag */
-+	p += 4;
-+	put32le(p, size);	/* Payload size */
-+	p += 4;
-+	*p++ = 0;		/* Flags (host to device) */
-+	p += 2;			/* Reserved */
-+
-+	/* Command descriptor block */
-+	*p++ = 0x02;		/* Firmware download */
-+	put32be(p, size);	/* Download size */
-+
-+	int ret = libusb_control_transfer(dev,
-+					  LIBUSB_REQUEST_TYPE_CLASS |
-+					  LIBUSB_RECIPIENT_INTERFACE, 0x9,
-+					  0x201, 0,
-+					  xfer_buf, xfer_size + 1, 1000);
-+	if (ret < 0) {
-+		printf("transfer error at init step\n");
-+		return 1;
-+	}
-+
-+	for (i = 0; i < nr_xfers; i++) {
-+		xfer_buf[0] = 0x2;
-+		memcpy(&xfer_buf[1], &data[i * xfer_size], xfer_size);
-+
-+		ret = libusb_control_transfer(dev,
-+					      LIBUSB_REQUEST_TYPE_CLASS |
-+					      LIBUSB_RECIPIENT_INTERFACE, 0x9,
-+					      0x202, 0, xfer_buf, xfer_size + 1,
-+					      1000);
-+		if (ret < 0) {
-+			printf("transfer error at send step %d\n", i);
-+			return 1;
-+		}
-+	}
-+
-+	int recv_size;
-+	ret =
-+	    libusb_interrupt_transfer(dev, 0x81, xfer_buf, xfer_size,
-+				      &recv_size, 1000);
-+	if (ret < 0) {
-+		printf("transfer error at final stage\n");
-+		return 1;
-+	}
-+
-+	return ret;
-+}
-+
-+int send_recovery(libusb_device_handle * dev, int xfer_size, uint8_t * data,
-+		  int size, int nr_xfers)
-+{
-+	(void)nr_xfers;
-+	// there should be no kernel driver attached but in doubt...
-+	libusb_detach_kernel_driver(dev, 0);
-+	libusb_claim_interface(dev, 0);
-+
-+	int sent = 0;
-+	while (sent < size) {
-+		int xfered;
-+		int len = MIN(size - sent, xfer_size);
-+		int ret =
-+		    libusb_bulk_transfer(dev, 1, data + sent, len, &xfered,
-+					 1000);
-+		if (ret < 0) {
-+			printf("transfer error at send offset %d\n", sent);
-+			return 1;
-+		}
-+		if (xfered == 0) {
-+			printf("empty transfer at step offset %d\n", sent);
-+			return 2;
-+		}
-+		sent += xfered;
-+	}
-+	return 0;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	if (argc != 3) {
-+		printf("usage: %s <xfer size> <file>\n", argv[0]);
-+		printf
-+		    ("If <xfer size> is set to zero, the preferred one is used.\n");
-+		return 1;
-+	}
-+
-+	char *end;
-+	int xfer_size = strtol(argv[1], &end, 0);
-+	if (end != (argv[1] + strlen(argv[1]))) {
-+		printf("Invalid transfer size !\n");
-+		return 1;
-+	}
-+
-+	libusb_device_handle *dev;
-+
-+	libusb_init(NULL);
-+
-+	libusb_set_debug(NULL, 3);
-+
-+	unsigned i;
-+	for (i = 0; i < sizeof(g_dev_info) / sizeof(g_dev_info[0]); i++) {
-+		dev = libusb_open_device_with_vid_pid(NULL,
-+						      g_dev_info[i].vendor_id,
-+						      g_dev_info[i].product_id);
-+		if (dev == NULL)
-+			continue;
-+		if (xfer_size == 0)
-+			xfer_size = g_dev_info[i].xfer_size;
-+		printf("Found a match for %04x:%04x\n",
-+		       g_dev_info[i].vendor_id, g_dev_info[i].product_id);
-+		break;
-+	}
-+	if (dev == NULL) {
-+		printf("Cannot open device\n");
-+		return 1;
-+	}
-+
-+	FILE *f = fopen(argv[2], "r");
-+	if (f == NULL) {
-+		perror("cannot open file");
-+		return 1;
-+	}
-+	fseek(f, 0, SEEK_END);
-+	size_t size = ftell(f);
-+	fseek(f, 0, SEEK_SET);
-+
-+	printf("Transfer size: %d\n", xfer_size);
-+	int nr_xfers = (size + xfer_size - 1) / xfer_size;
-+	uint8_t *file_buf = malloc(nr_xfers * xfer_size);
-+	memset(file_buf, 0xff, nr_xfers * xfer_size);	// pad with 0xff
-+	if (fread(file_buf, size, 1, f) != 1) {
-+		perror("read error");
-+		fclose(f);
-+		return 1;
-+	}
-+	fclose(f);
-+
-+	switch (g_dev_info[i].dev_type) {
-+	case HID_DEVICE:
-+		send_hid(dev, xfer_size, file_buf, size, nr_xfers);
-+		break;
-+	case RECOVERY_DEVICE:
-+		send_recovery(dev, xfer_size, file_buf, size, nr_xfers);
-+		break;
-+	default:
-+		printf("unknown device type\n");
-+		break;
-+	}
-+
-+	return 0;
-+}
+ #include <mach/generic.h>
+ #include <mach/ocotp.h>
+-#include <mach/imx-regs.h>
+ #include <mach/power.h>
+ 
+ #define DRIVERNAME "ocotp"
+diff --git a/arch/arm/mach-mxs/soc-imx23.c b/arch/arm/mach-mxs/soc-imx23.c
+index 825ea20..b219865 100644
+--- a/arch/arm/mach-mxs/soc-imx23.c
++++ b/arch/arm/mach-mxs/soc-imx23.c
+@@ -16,7 +16,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx23-regs.h>
+ #include <io.h>
+ 
+ #define HW_CLKCTRL_RESET 0x120
+diff --git a/arch/arm/mach-mxs/soc-imx28.c b/arch/arm/mach-mxs/soc-imx28.c
+index 01bc20a..c7252f5 100644
+--- a/arch/arm/mach-mxs/soc-imx28.c
++++ b/arch/arm/mach-mxs/soc-imx28.c
+@@ -16,7 +16,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx28-regs.h>
+ #include <io.h>
+ 
+ #define HW_CLKCTRL_RESET 0x1e0
+diff --git a/arch/arm/mach-mxs/usb-imx23.c b/arch/arm/mach-mxs/usb-imx23.c
+index 8bed11d..e626396 100644
+--- a/arch/arm/mach-mxs/usb-imx23.c
++++ b/arch/arm/mach-mxs/usb-imx23.c
+@@ -15,7 +15,7 @@
+  */
+ #include <common.h>
+ #include <io.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx23-regs.h>
+ #include <mach/power.h>
+ 
+ #define USBPHY_PWD			(IMX_USBPHY_BASE + 0x0)
+diff --git a/arch/arm/mach-mxs/usb-imx28.c b/arch/arm/mach-mxs/usb-imx28.c
+index 1c982a0..a87d4f6 100644
+--- a/arch/arm/mach-mxs/usb-imx28.c
++++ b/arch/arm/mach-mxs/usb-imx28.c
+@@ -17,7 +17,7 @@
+ #include <common.h>
+ #include <io.h>
+ #include <errno.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx28-regs.h>
+ 
+ #define POWER_CTRL			(IMX_POWER_BASE + 0x0)
+ #define POWER_CTRL_CLKGATE		0x40000000
 -- 
 2.1.3
 
