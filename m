@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyQ4o-00086H-4y
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:02 +0000
+ Linux)) id 1XyQ4o-00086E-55
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 20:03:25 +0100
-Message-Id: <1418151816-24593-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
-References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 20:03:23 +0100
+Message-Id: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,83 +19,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] scripts: Add mxsboot tool
+Subject: MXS initialization support
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>
 
-Copied from U-Boot v2014.10 and changed to use getopt instead
-of handcrafted parsing.
+The following adds initialization support for Freescale MXS SoCs.
+With this the imfamous Freescale Bootlets can finally be replaced.
+The initialization code is based on the corresponding U-Boot code,
+thank you Marek for making this possible.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/karo-tx28/env/config | 41 ------------------------------------
- scripts/Makefile                     |  2 +-
- 2 files changed, 1 insertion(+), 42 deletions(-)
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (13):
+      scripts: add mxsimage tool
+      scripts: Add mxsboot tool
+      scripts: Add mxs-usb-loader tool
+      drivers: remove unnecessary mach/imx-regs.h include
+      ARM: MXS: remove unnecessary mach/imx-regs.h include
+      ARM: Add U-Boot specific io functions
+      ARM: mxs: Add lowlevel setup from U-Boot
+      ARM: Add get_sp() and get_lr() functions
+      ARM: MXS: Add more base address defines
+      ARM: MXS: Enable iomux support for pbl
+      ARM: MXS: Add multiimage support
+      ARM: MXS: Update Karo TX28 board support
+      Documentation: Add documentation for booting Freescale MXS SoCs
+
+ Documentation/boards/mxs.rst                       |  119 +
+ Documentation/boards/mxs/KaRo-TX28.rst             |   19 +-
+ arch/arm/boards/karo-tx28/env/config               |   41 -
+ arch/arm/boards/karo-tx28/lowlevel.c               |   58 +-
+ arch/arm/configs/tx28stk5_defconfig                |   84 +-
+ arch/arm/include/asm/common.h                      |   26 +
+ arch/arm/include/asm/io.h                          |   57 +
+ arch/arm/mach-mxs/Kconfig                          |    9 +
+ arch/arm/mach-mxs/Makefile                         |    2 +
+ arch/arm/mach-mxs/clocksource-imx23.c              |    2 +-
+ arch/arm/mach-mxs/clocksource-imx28.c              |    2 +-
+ arch/arm/mach-mxs/include/mach/imx23-regs.h        |    3 +
+ arch/arm/mach-mxs/include/mach/imx28-regs.h        |    3 +
+ arch/arm/mach-mxs/include/mach/init.h              |   30 +
+ arch/arm/mach-mxs/include/mach/regs-clkctrl-mx23.h |  208 ++
+ arch/arm/mach-mxs/include/mach/regs-clkctrl-mx28.h |  283 +++
+ arch/arm/mach-mxs/include/mach/regs-common.h       |   69 +
+ arch/arm/mach-mxs/include/mach/regs-lradc.h        |  387 +++
+ arch/arm/mach-mxs/include/mach/regs-power-mx28.h   |  408 ++++
+ arch/arm/mach-mxs/include/mach/regs-rtc.h          |  134 +
+ arch/arm/mach-mxs/lradc-init.c                     |   70 +
+ arch/arm/mach-mxs/mem-init.c                       |  292 +++
+ arch/arm/mach-mxs/ocotp.c                          |    1 -
+ arch/arm/mach-mxs/power-init.c                     | 1274 ++++++++++
+ arch/arm/mach-mxs/soc-imx23.c                      |    2 +-
+ arch/arm/mach-mxs/soc-imx28.c                      |    2 +-
+ arch/arm/mach-mxs/usb-imx23.c                      |    2 +-
+ arch/arm/mach-mxs/usb-imx28.c                      |    2 +-
+ drivers/clk/mxs/clk-imx23.c                        |    2 +-
+ drivers/clk/mxs/clk-imx28.c                        |    2 +-
+ drivers/mci/mxs.c                                  |    1 -
+ drivers/serial/serial_auart.c                      |    1 -
+ drivers/serial/stm-serial.c                        |    1 -
+ drivers/spi/mxs_spi.c                              |    1 -
+ drivers/video/stm.c                                |    1 -
+ images/.gitignore                                  |    2 +
+ images/Makefile                                    |    3 +-
+ images/Makefile.mxs                                |   38 +
+ scripts/.gitignore                                 |    1 +
+ scripts/Makefile                                   |    5 +
+ scripts/mxs-usb-loader.c                           |  236 ++
+ scripts/mxsimage.c                                 | 2561 ++++++++++++++++++++
+ 42 files changed, 6346 insertions(+), 98 deletions(-)
+ create mode 100644 Documentation/boards/mxs.rst
  delete mode 100644 arch/arm/boards/karo-tx28/env/config
-
-diff --git a/arch/arm/boards/karo-tx28/env/config b/arch/arm/boards/karo-tx28/env/config
-deleted file mode 100644
-index a6b1025..0000000
---- a/arch/arm/boards/karo-tx28/env/config
-+++ /dev/null
-@@ -1,41 +0,0 @@
--#
--#
--
--baseboard=tx28stk5
--
--# use 'dhcp' to do dhcp in barebox and in kernel
--# use 'none' if you want to skip kernel ip autoconfiguration
--ip=dhcp
--
--# or set your networking parameters here
--#eth0.ipaddr=a.b.c.d
--#eth0.ethaddr=de:ad:be:ef:00:00
--#eth0.netmask=a.b.c.d
--#eth0.serverip=a.b.c.d
--#eth0.gateway=a.b.c.d
--
--# can be either 'nfs' or 'tftp'
--kernel_loc=tftp
--# can be either 'net' or 'initrd'
--rootfs_loc=net
--
--# can be either 'jffs2' or 'ubifs'
--rootfs_type=ubifs
--rootfsimage=root-${global.hostname}.$rootfs_type
--
--kernelimage=zImage-${global.hostname}
--#kernelimage=uImage-${global.hostname}
--#kernelimage=Image-${global.hostname}
--#kernelimage=Image-${global.hostname}.lzo
--
--if [ -n $user ]; then
--	kernelimage="$user"-"$kernelimage"
--	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
--	rootfsimage="$user"-"$rootfsimage"
--else
--	nfsroot="$eth0.serverip:/path/to/nfs/root"
--fi
--
--autoboot_timeout=3
--
--bootargs="console=ttyAM0,115200 tx28_base=$baseboard"
-diff --git a/scripts/Makefile b/scripts/Makefile
-index f97fd0c..442eba5 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -19,7 +19,7 @@ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
- hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
- hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
- hostprogs-$(CONFIG_ARCH_SOCFPGA) += socfpga_mkimage
--hostprogs-$(CONFIG_ARCH_MXS)     += mxsimage
-+hostprogs-$(CONFIG_ARCH_MXS)     += mxsimage mxsboot
- HOSTLOADLIBES_mxsimage  = `pkg-config --libs openssl`
- 
- subdir-y			+= mod
--- 
-2.1.3
-
+ create mode 100644 arch/arm/mach-mxs/include/mach/init.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-clkctrl-mx23.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-clkctrl-mx28.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-common.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-lradc.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-power-mx28.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-rtc.h
+ create mode 100644 arch/arm/mach-mxs/lradc-init.c
+ create mode 100644 arch/arm/mach-mxs/mem-init.c
+ create mode 100644 arch/arm/mach-mxs/power-init.c
+ create mode 100644 images/Makefile.mxs
+ create mode 100644 scripts/mxs-usb-loader.c
+ create mode 100644 scripts/mxsimage.c
 
 _______________________________________________
 barebox mailing list
