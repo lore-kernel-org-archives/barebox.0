@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyQ51-0008AI-5O
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:23 +0000
+ Linux)) id 1XyQ5G-0008IC-3R
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 20:03:24 +0100
-Message-Id: <1418151816-24593-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 20:03:30 +0100
+Message-Id: <1418151816-24593-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,2615 +21,3267 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/13] scripts: add mxsimage tool
+Subject: [PATCH 07/13] ARM: mxs: Add lowlevel setup from U-Boot
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>
 
-This is copied from U-Boot v2014.10 and modified for use with
-barebox:
-
-- Add a main() function to make it a standalone tool
-- Add option to pass in the prepare stage and bootloader
-  image as options. If the config file contains @PREP@ or
-  @BOOTLOADER@ the string will be replaced with the actual
-  image file passed via the -p and -b options.
+U-Boot has code to replace the infamous Freescale bootlet code.
+This patch adds this for barebox with some changes:
+- Separate it more into mx23/mx28 functions instead of mxs functions
+  with #ifdefs for the actual SoC
+- Add mx2x_power_init_battery_input() power entry point for boards
+  which have a regulated input on the battery pin to supply the board.
+- Export more functions to be more flexible when boards need non standard
+  setup.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/.gitignore |    1 +
- scripts/Makefile   |    2 +
- scripts/mxsimage.c | 2561 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 2564 insertions(+)
- create mode 100644 scripts/mxsimage.c
+ arch/arm/mach-mxs/Makefile                         |    1 +
+ arch/arm/mach-mxs/include/mach/init.h              |   30 +
+ arch/arm/mach-mxs/include/mach/regs-clkctrl-mx23.h |  208 ++++
+ arch/arm/mach-mxs/include/mach/regs-clkctrl-mx28.h |  283 +++++
+ arch/arm/mach-mxs/include/mach/regs-common.h       |   69 ++
+ arch/arm/mach-mxs/include/mach/regs-lradc.h        |  387 ++++++
+ arch/arm/mach-mxs/include/mach/regs-power-mx28.h   |  408 +++++++
+ arch/arm/mach-mxs/include/mach/regs-rtc.h          |  134 ++
+ arch/arm/mach-mxs/lradc-init.c                     |   70 ++
+ arch/arm/mach-mxs/mem-init.c                       |  292 +++++
+ arch/arm/mach-mxs/power-init.c                     | 1274 ++++++++++++++++++++
+ 11 files changed, 3156 insertions(+)
+ create mode 100644 arch/arm/mach-mxs/include/mach/init.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-clkctrl-mx23.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-clkctrl-mx28.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-common.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-lradc.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-power-mx28.h
+ create mode 100644 arch/arm/mach-mxs/include/mach/regs-rtc.h
+ create mode 100644 arch/arm/mach-mxs/lradc-init.c
+ create mode 100644 arch/arm/mach-mxs/mem-init.c
+ create mode 100644 arch/arm/mach-mxs/power-init.c
 
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index b574b22..153b7d7 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -22,3 +22,4 @@ bareboximd-target
- bareboxstate
- bareboxstate-target
- mk-am35xx-spi-image
-+mxsimage
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 5483a64..f97fd0c 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -19,6 +19,8 @@ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
- hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
- hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
- hostprogs-$(CONFIG_ARCH_SOCFPGA) += socfpga_mkimage
-+hostprogs-$(CONFIG_ARCH_MXS)     += mxsimage
-+HOSTLOADLIBES_mxsimage  = `pkg-config --libs openssl`
- 
- subdir-y			+= mod
- subdir-$(CONFIG_OMAP4_USBBOOT)	+= omap4_usbboot
-diff --git a/scripts/mxsimage.c b/scripts/mxsimage.c
+diff --git a/arch/arm/mach-mxs/Makefile b/arch/arm/mach-mxs/Makefile
+index bd6892e..bf949bc 100644
+--- a/arch/arm/mach-mxs/Makefile
++++ b/arch/arm/mach-mxs/Makefile
+@@ -3,3 +3,4 @@ obj-$(CONFIG_ARCH_IMX23) += clocksource-imx23.o usb-imx23.o soc-imx23.o
+ obj-$(CONFIG_ARCH_IMX28) += clocksource-imx28.o usb-imx28.o soc-imx28.o
+ obj-$(CONFIG_MXS_OCOTP) += ocotp.o
+ obj-$(CONFIG_MXS_CMD_BCB) += bcb.o
++pbl-y += power-init.o mem-init.o lradc-init.o
+diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
 new file mode 100644
-index 0000000..0a5f6a0
+index 0000000..d1ac2e4
 --- /dev/null
-+++ b/scripts/mxsimage.c
-@@ -0,0 +1,2561 @@
++++ b/arch/arm/mach-mxs/include/mach/init.h
+@@ -0,0 +1,30 @@
 +/*
-+ * Freescale i.MX23/i.MX28 SB image generator
++ * Freescale i.MX28 SPL functions
 + *
-+ * Copyright (C) 2012-2013 Marek Vasut <marex@denx.de>
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
 + *
 + * SPDX-License-Identifier:	GPL-2.0+
 + */
 +
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <limits.h>
-+#include <openssl/evp.h>
-+#include <getopt.h>
-+#include <stdint.h>
-+#include <arpa/inet.h>
++#ifndef	__M28_INIT_H__
++#define	__M28_INIT_H__
 +
-+#define SB_BLOCK_SIZE		16
++void mxs_early_delay(int delay);
 +
-+#define roundup(x, y)		((((x) + ((y) - 1)) / (y)) * (y))
-+#define ARRAY_SIZE(x)		(sizeof(x) / sizeof((x)[0]))
++void mx23_power_init(void);
++void mx23_power_init_battery_input(void);
++void mx28_power_init(void);
++void mx28_power_init_battery_input(void);
++void mxs_power_wait_pswitch(void);
 +
-+static char *prepfile;
-+static char *bootloaderfile;
++void mx23_mem_init(void);
++void mx28_mem_init(void);
++void mxs_mem_setup_cpu_and_hbus(void);
++void mxs_mem_setup_vdda(void);
++void mxs_mem_init_clock(unsigned char divider);
 +
-+struct sb_boot_image_version {
-+	uint16_t	major;
-+	uint16_t	pad0;
-+	uint16_t	minor;
-+	uint16_t	pad1;
-+	uint16_t	revision;
-+	uint16_t	pad2;
++void mxs_lradc_init(void);
++void mxs_lradc_enable_batt_measurement(void);
++
++#endif	/* __M28_INIT_H__ */
+diff --git a/arch/arm/mach-mxs/include/mach/regs-clkctrl-mx23.h b/arch/arm/mach-mxs/include/mach/regs-clkctrl-mx23.h
+new file mode 100644
+index 0000000..289b159
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/regs-clkctrl-mx23.h
+@@ -0,0 +1,208 @@
++/*
++ * Freescale i.MX23 CLKCTRL Register Definitions
++ *
++ * Copyright (C) 2012 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * Based on code from LTIB:
++ * Copyright 2008-2010 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __MX23_REGS_CLKCTRL_H__
++#define __MX23_REGS_CLKCTRL_H__
++
++#include <mach/regs-common.h>
++
++#ifndef	__ASSEMBLY__
++struct mxs_clkctrl_regs {
++	mxs_reg_32(hw_clkctrl_pll0ctrl0)	/* 0x00 */
++	uint32_t	hw_clkctrl_pll0ctrl1;	/* 0x10 */
++	uint32_t	reserved_pll0ctrl1[3];	/* 0x14-0x1c */
++	mxs_reg_32(hw_clkctrl_cpu)		/* 0x20 */
++	mxs_reg_32(hw_clkctrl_hbus)		/* 0x30 */
++	mxs_reg_32(hw_clkctrl_xbus)		/* 0x40 */
++	mxs_reg_32(hw_clkctrl_xtal)		/* 0x50 */
++	mxs_reg_32(hw_clkctrl_pix)		/* 0x60 */
++	mxs_reg_32(hw_clkctrl_ssp0)		/* 0x70 */
++	mxs_reg_32(hw_clkctrl_gpmi)		/* 0x80 */
++	mxs_reg_32(hw_clkctrl_spdif)		/* 0x90 */
++	mxs_reg_32(hw_clkctrl_emi)		/* 0xa0 */
++
++	uint32_t	reserved1[4];
++
++	mxs_reg_32(hw_clkctrl_saif0)		/* 0xc0 */
++	mxs_reg_32(hw_clkctrl_tv)		/* 0xd0 */
++	mxs_reg_32(hw_clkctrl_etm)		/* 0xe0 */
++	mxs_reg_8(hw_clkctrl_frac0)		/* 0xf0 */
++	mxs_reg_8(hw_clkctrl_frac1)		/* 0x100 */
++	mxs_reg_32(hw_clkctrl_clkseq)		/* 0x110 */
++	mxs_reg_32(hw_clkctrl_reset)		/* 0x120 */
++	mxs_reg_32(hw_clkctrl_status)		/* 0x130 */
++	mxs_reg_32(hw_clkctrl_version)		/* 0x140 */
 +};
++#endif
 +
-+struct sb_boot_image_header {
-+	union {
-+		/* SHA1 of the header. */
-+		uint8_t	digest[20];
-+		struct {
-+			/* CBC-MAC initialization vector. */
-+			uint8_t iv[16];
-+			uint8_t extra[4];
-+		};
-+	};
-+	/* 'STMP' */
-+	uint8_t		signature1[4];
-+	/* Major version of the image format. */
-+	uint8_t		major_version;
-+	/* Minor version of the image format. */
-+	uint8_t		minor_version;
-+	/* Flags associated with the image. */
-+	uint16_t	flags;
-+	/* Size of the image in 16b blocks. */
-+	uint32_t	image_blocks;
-+	/* Offset of the first tag in 16b blocks. */
-+	uint32_t	first_boot_tag_block;
-+	/* ID of the section to boot from. */
-+	uint32_t	first_boot_section_id;
-+	/* Amount of crypto keys. */
-+	uint16_t	key_count;
-+	/* Offset to the key dictionary in 16b blocks. */
-+	uint16_t	key_dictionary_block;
-+	/* Size of this header in 16b blocks. */
-+	uint16_t	header_blocks;
-+	/* Amount of section headers. */
-+	uint16_t	section_count;
-+	/* Section header size in 16b blocks. */
-+	uint16_t	section_header_size;
-+	/* Padding to align timestamp to uint64_t. */
-+	uint8_t		padding0[2];
-+	/* 'sgtl' (since v1.1) */
-+	uint8_t		signature2[4];
-+	/* Image generation date, in microseconds since 1.1.2000 . */
-+	uint64_t	timestamp_us;
-+	/* Product version. */
-+	struct sb_boot_image_version
-+			product_version;
-+	/* Component version. */
-+	struct sb_boot_image_version
-+			component_version;
-+	/* Drive tag for the system drive. (since v1.1) */
-+	uint16_t	drive_tag;
-+	/* Padding. */
-+	uint8_t		padding1[6];
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_MASK		(0x3 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_OFFSET	28
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_DEFAULT	(0x0 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_TIMES_2	(0x1 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_TIMES_05	(0x2 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_UNDEFINED	(0x3 << 28)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_MASK		(0x3 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_OFFSET		24
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_DEFAULT	(0x0 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_TIMES_2	(0x1 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_TIMES_05	(0x2 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_UNDEFINED	(0x3 << 24)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_MASK		(0x3 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_OFFSET	20
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_DEFAULT	(0x0 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_LOWER		(0x1 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_LOWEST	(0x2 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_UNDEFINED	(0x3 << 20)
++#define	CLKCTRL_PLL0CTRL0_EN_USB_CLKS		(1 << 18)
++#define	CLKCTRL_PLL0CTRL0_POWER			(1 << 16)
++
++#define	CLKCTRL_PLL0CTRL1_LOCK			(1 << 31)
++#define	CLKCTRL_PLL0CTRL1_FORCE_LOCK		(1 << 30)
++#define	CLKCTRL_PLL0CTRL1_LOCK_COUNT_MASK	0xffff
++#define	CLKCTRL_PLL0CTRL1_LOCK_COUNT_OFFSET	0
++
++#define	CLKCTRL_CPU_BUSY_REF_XTAL		(1 << 29)
++#define	CLKCTRL_CPU_BUSY_REF_CPU		(1 << 28)
++#define	CLKCTRL_CPU_DIV_XTAL_FRAC_EN		(1 << 26)
++#define	CLKCTRL_CPU_DIV_XTAL_MASK		(0x3ff << 16)
++#define	CLKCTRL_CPU_DIV_XTAL_OFFSET		16
++#define	CLKCTRL_CPU_INTERRUPT_WAIT		(1 << 12)
++#define	CLKCTRL_CPU_DIV_CPU_FRAC_EN		(1 << 10)
++#define	CLKCTRL_CPU_DIV_CPU_MASK		0x3f
++#define	CLKCTRL_CPU_DIV_CPU_OFFSET		0
++
++#define	CLKCTRL_HBUS_BUSY			(1 << 29)
++#define	CLKCTRL_HBUS_DCP_AS_ENABLE		(1 << 28)
++#define	CLKCTRL_HBUS_PXP_AS_ENABLE		(1 << 27)
++#define	CLKCTRL_HBUS_APBHDMA_AS_ENABLE		(1 << 26)
++#define	CLKCTRL_HBUS_APBXDMA_AS_ENABLE		(1 << 25)
++#define	CLKCTRL_HBUS_TRAFFIC_JAM_AS_ENABLE	(1 << 24)
++#define	CLKCTRL_HBUS_TRAFFIC_AS_ENABLE		(1 << 23)
++#define	CLKCTRL_HBUS_CPU_DATA_AS_ENABLE		(1 << 22)
++#define	CLKCTRL_HBUS_CPU_INSTR_AS_ENABLE	(1 << 21)
++#define	CLKCTRL_HBUS_AUTO_SLOW_MODE		(1 << 20)
++#define	CLKCTRL_HBUS_SLOW_DIV_MASK		(0x7 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_OFFSET		16
++#define	CLKCTRL_HBUS_SLOW_DIV_BY1		(0x0 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY2		(0x1 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY4		(0x2 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY8		(0x3 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY16		(0x4 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY32		(0x5 << 16)
++#define	CLKCTRL_HBUS_DIV_FRAC_EN		(1 << 5)
++#define	CLKCTRL_HBUS_DIV_MASK			0x1f
++#define	CLKCTRL_HBUS_DIV_OFFSET			0
++
++#define	CLKCTRL_XBUS_BUSY			(1 << 31)
++#define	CLKCTRL_XBUS_DIV_FRAC_EN		(1 << 10)
++#define	CLKCTRL_XBUS_DIV_MASK			0x3ff
++#define	CLKCTRL_XBUS_DIV_OFFSET			0
++
++#define	CLKCTRL_XTAL_UART_CLK_GATE		(1 << 31)
++#define	CLKCTRL_XTAL_FILT_CLK24M_GATE		(1 << 30)
++#define	CLKCTRL_XTAL_PWM_CLK24M_GATE		(1 << 29)
++#define	CLKCTRL_XTAL_DRI_CLK24M_GATE		(1 << 28)
++#define	CLKCTRL_XTAL_DIGCTRL_CLK1M_GATE		(1 << 27)
++#define	CLKCTRL_XTAL_TIMROT_CLK32K_GATE		(1 << 26)
++#define	CLKCTRL_XTAL_DIV_UART_MASK		0x3
++#define	CLKCTRL_XTAL_DIV_UART_OFFSET		0
++
++#define	CLKCTRL_PIX_CLKGATE			(1 << 31)
++#define	CLKCTRL_PIX_BUSY			(1 << 29)
++#define	CLKCTRL_PIX_DIV_FRAC_EN			(1 << 12)
++#define	CLKCTRL_PIX_DIV_MASK			0xfff
++#define	CLKCTRL_PIX_DIV_OFFSET			0
++
++#define	CLKCTRL_SSP_CLKGATE			(1 << 31)
++#define	CLKCTRL_SSP_BUSY			(1 << 29)
++#define	CLKCTRL_SSP_DIV_FRAC_EN			(1 << 9)
++#define	CLKCTRL_SSP_DIV_MASK			0x1ff
++#define	CLKCTRL_SSP_DIV_OFFSET			0
++
++#define	CLKCTRL_GPMI_CLKGATE			(1 << 31)
++#define	CLKCTRL_GPMI_BUSY			(1 << 29)
++#define	CLKCTRL_GPMI_DIV_FRAC_EN		(1 << 10)
++#define	CLKCTRL_GPMI_DIV_MASK			0x3ff
++#define	CLKCTRL_GPMI_DIV_OFFSET			0
++
++#define	CLKCTRL_SPDIF_CLKGATE			(1 << 31)
++
++#define	CLKCTRL_EMI_CLKGATE			(1 << 31)
++#define	CLKCTRL_EMI_SYNC_MODE_EN		(1 << 30)
++#define	CLKCTRL_EMI_BUSY_REF_XTAL		(1 << 29)
++#define	CLKCTRL_EMI_BUSY_REF_EMI		(1 << 28)
++#define	CLKCTRL_EMI_BUSY_REF_CPU		(1 << 27)
++#define	CLKCTRL_EMI_BUSY_SYNC_MODE		(1 << 26)
++#define	CLKCTRL_EMI_BUSY_DCC_RESYNC		(1 << 17)
++#define	CLKCTRL_EMI_DCC_RESYNC_ENABLE		(1 << 16)
++#define	CLKCTRL_EMI_DIV_XTAL_MASK		(0xf << 8)
++#define	CLKCTRL_EMI_DIV_XTAL_OFFSET		8
++#define	CLKCTRL_EMI_DIV_EMI_MASK		0x3f
++#define	CLKCTRL_EMI_DIV_EMI_OFFSET		0
++
++#define	CLKCTRL_IR_CLKGATE			(1 << 31)
++#define	CLKCTRL_IR_AUTO_DIV			(1 << 29)
++#define	CLKCTRL_IR_IR_BUSY			(1 << 28)
++#define	CLKCTRL_IR_IROV_BUSY			(1 << 27)
++#define	CLKCTRL_IR_IROV_DIV_MASK		(0x1ff << 16)
++#define	CLKCTRL_IR_IROV_DIV_OFFSET		16
++#define	CLKCTRL_IR_IR_DIV_MASK			0x3ff
++#define	CLKCTRL_IR_IR_DIV_OFFSET		0
++
++#define	CLKCTRL_SAIF0_CLKGATE			(1 << 31)
++#define	CLKCTRL_SAIF0_BUSY			(1 << 29)
++#define	CLKCTRL_SAIF0_DIV_FRAC_EN		(1 << 16)
++#define	CLKCTRL_SAIF0_DIV_MASK			0xffff
++#define	CLKCTRL_SAIF0_DIV_OFFSET		0
++
++#define	CLKCTRL_TV_CLK_TV108M_GATE		(1 << 31)
++#define	CLKCTRL_TV_CLK_TV_GATE			(1 << 30)
++
++#define	CLKCTRL_ETM_CLKGATE			(1 << 31)
++#define	CLKCTRL_ETM_BUSY			(1 << 29)
++#define	CLKCTRL_ETM_DIV_FRAC_EN			(1 << 6)
++#define	CLKCTRL_ETM_DIV_MASK			0x3f
++#define	CLKCTRL_ETM_DIV_OFFSET			0
++
++#define	CLKCTRL_FRAC_CLKGATE			(1 << 7)
++#define	CLKCTRL_FRAC_STABLE			(1 << 6)
++#define	CLKCTRL_FRAC_FRAC_MASK			0x3f
++#define	CLKCTRL_FRAC_FRAC_OFFSET		0
++#define	CLKCTRL_FRAC0_CPU			0
++#define	CLKCTRL_FRAC0_EMI			1
++#define	CLKCTRL_FRAC0_PIX			2
++#define	CLKCTRL_FRAC0_IO0			3
++#define	CLKCTRL_FRAC1_VID			3
++
++#define	CLKCTRL_CLKSEQ_BYPASS_ETM		(1 << 8)
++#define	CLKCTRL_CLKSEQ_BYPASS_CPU		(1 << 7)
++#define	CLKCTRL_CLKSEQ_BYPASS_EMI		(1 << 6)
++#define	CLKCTRL_CLKSEQ_BYPASS_SSP0		(1 << 5)
++#define	CLKCTRL_CLKSEQ_BYPASS_GPMI		(1 << 4)
++#define	CLKCTRL_CLKSEQ_BYPASS_IR		(1 << 3)
++#define	CLKCTRL_CLKSEQ_BYPASS_PIX		(1 << 1)
++#define	CLKCTRL_CLKSEQ_BYPASS_SAIF		(1 << 0)
++
++#define	CLKCTRL_RESET_CHIP			(1 << 1)
++#define	CLKCTRL_RESET_DIG			(1 << 0)
++
++#define	CLKCTRL_STATUS_CPU_LIMIT_MASK		(0x3 << 30)
++#define	CLKCTRL_STATUS_CPU_LIMIT_OFFSET		30
++
++#define	CLKCTRL_VERSION_MAJOR_MASK		(0xff << 24)
++#define	CLKCTRL_VERSION_MAJOR_OFFSET		24
++#define	CLKCTRL_VERSION_MINOR_MASK		(0xff << 16)
++#define	CLKCTRL_VERSION_MINOR_OFFSET		16
++#define	CLKCTRL_VERSION_STEP_MASK		0xffff
++#define	CLKCTRL_VERSION_STEP_OFFSET		0
++
++#endif /* __MX23_REGS_CLKCTRL_H__ */
+diff --git a/arch/arm/mach-mxs/include/mach/regs-clkctrl-mx28.h b/arch/arm/mach-mxs/include/mach/regs-clkctrl-mx28.h
+new file mode 100644
+index 0000000..aebb489
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/regs-clkctrl-mx28.h
+@@ -0,0 +1,283 @@
++/*
++ * Freescale i.MX28 CLKCTRL Register Definitions
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * Based on code from LTIB:
++ * Copyright 2008-2010 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __MX28_REGS_CLKCTRL_H__
++#define __MX28_REGS_CLKCTRL_H__
++
++#include <mach/regs-common.h>
++
++#ifndef	__ASSEMBLY__
++struct mxs_clkctrl_regs {
++	mxs_reg_32(hw_clkctrl_pll0ctrl0)	/* 0x00 */
++	uint32_t	hw_clkctrl_pll0ctrl1;	/* 0x10 */
++	uint32_t	reserved_pll0ctrl1[3];	/* 0x14-0x1c */
++	mxs_reg_32(hw_clkctrl_pll1ctrl0)	/* 0x20 */
++	uint32_t	hw_clkctrl_pll1ctrl1;	/* 0x30 */
++	uint32_t	reserved_pll1ctrl1[3];	/* 0x34-0x3c */
++	mxs_reg_32(hw_clkctrl_pll2ctrl0)	/* 0x40 */
++	mxs_reg_32(hw_clkctrl_cpu)		/* 0x50 */
++	mxs_reg_32(hw_clkctrl_hbus)		/* 0x60 */
++	mxs_reg_32(hw_clkctrl_xbus)		/* 0x70 */
++	mxs_reg_32(hw_clkctrl_xtal)		/* 0x80 */
++	mxs_reg_32(hw_clkctrl_ssp0)		/* 0x90 */
++	mxs_reg_32(hw_clkctrl_ssp1)		/* 0xa0 */
++	mxs_reg_32(hw_clkctrl_ssp2)		/* 0xb0 */
++	mxs_reg_32(hw_clkctrl_ssp3)		/* 0xc0 */
++	mxs_reg_32(hw_clkctrl_gpmi)		/* 0xd0 */
++	mxs_reg_32(hw_clkctrl_spdif)		/* 0xe0 */
++	mxs_reg_32(hw_clkctrl_emi)		/* 0xf0 */
++	mxs_reg_32(hw_clkctrl_saif0)		/* 0x100 */
++	mxs_reg_32(hw_clkctrl_saif1)		/* 0x110 */
++	mxs_reg_32(hw_clkctrl_lcdif)		/* 0x120 */
++	mxs_reg_32(hw_clkctrl_etm)		/* 0x130 */
++	mxs_reg_32(hw_clkctrl_enet)		/* 0x140 */
++	mxs_reg_32(hw_clkctrl_hsadc)		/* 0x150 */
++	mxs_reg_32(hw_clkctrl_flexcan)		/* 0x160 */
++
++	uint32_t	reserved[16];
++
++	mxs_reg_8(hw_clkctrl_frac0)		/* 0x1b0 */
++	mxs_reg_8(hw_clkctrl_frac1)		/* 0x1c0 */
++	mxs_reg_32(hw_clkctrl_clkseq)		/* 0x1d0 */
++	mxs_reg_32(hw_clkctrl_reset)		/* 0x1e0 */
++	mxs_reg_32(hw_clkctrl_status)		/* 0x1f0 */
++	mxs_reg_32(hw_clkctrl_version)		/* 0x200 */
 +};
++#endif
 +
-+#define	SB_VERSION_MAJOR	1
-+#define	SB_VERSION_MINOR	1
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_MASK		(0x3 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_OFFSET	28
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_DEFAULT	(0x0 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_TIMES_2	(0x1 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_TIMES_05	(0x2 << 28)
++#define	CLKCTRL_PLL0CTRL0_LFR_SEL_UNDEFINED	(0x3 << 28)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_MASK		(0x3 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_OFFSET		24
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_DEFAULT	(0x0 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_TIMES_2	(0x1 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_TIMES_05	(0x2 << 24)
++#define	CLKCTRL_PLL0CTRL0_CP_SEL_UNDEFINED	(0x3 << 24)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_MASK		(0x3 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_OFFSET	20
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_DEFAULT	(0x0 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_LOWER		(0x1 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_LOWEST	(0x2 << 20)
++#define	CLKCTRL_PLL0CTRL0_DIV_SEL_UNDEFINED	(0x3 << 20)
++#define	CLKCTRL_PLL0CTRL0_EN_USB_CLKS		(1 << 18)
++#define	CLKCTRL_PLL0CTRL0_POWER			(1 << 17)
 +
-+/* Enable to HTLLC verbose boot report. */
-+#define SB_IMAGE_FLAG_VERBOSE	(1 << 0)
++#define	CLKCTRL_PLL0CTRL1_LOCK			(1 << 31)
++#define	CLKCTRL_PLL0CTRL1_FORCE_LOCK		(1 << 30)
++#define	CLKCTRL_PLL0CTRL1_LOCK_COUNT_MASK	0xffff
++#define	CLKCTRL_PLL0CTRL1_LOCK_COUNT_OFFSET	0
 +
-+struct sb_key_dictionary_key {
-+	/* The CBC-MAC of image and sections header. */
-+	uint8_t		cbc_mac[SB_BLOCK_SIZE];
-+	/* The AES key encrypted by image key (zero). */
-+	uint8_t		key[SB_BLOCK_SIZE];
-+};
++#define	CLKCTRL_PLL1CTRL0_CLKGATEEMI		(1 << 31)
++#define	CLKCTRL_PLL1CTRL0_LFR_SEL_MASK		(0x3 << 28)
++#define	CLKCTRL_PLL1CTRL0_LFR_SEL_OFFSET	28
++#define	CLKCTRL_PLL1CTRL0_LFR_SEL_DEFAULT	(0x0 << 28)
++#define	CLKCTRL_PLL1CTRL0_LFR_SEL_TIMES_2	(0x1 << 28)
++#define	CLKCTRL_PLL1CTRL0_LFR_SEL_TIMES_05	(0x2 << 28)
++#define	CLKCTRL_PLL1CTRL0_LFR_SEL_UNDEFINED	(0x3 << 28)
++#define	CLKCTRL_PLL1CTRL0_CP_SEL_MASK		(0x3 << 24)
++#define	CLKCTRL_PLL1CTRL0_CP_SEL_OFFSET		24
++#define	CLKCTRL_PLL1CTRL0_CP_SEL_DEFAULT	(0x0 << 24)
++#define	CLKCTRL_PLL1CTRL0_CP_SEL_TIMES_2	(0x1 << 24)
++#define	CLKCTRL_PLL1CTRL0_CP_SEL_TIMES_05	(0x2 << 24)
++#define	CLKCTRL_PLL1CTRL0_CP_SEL_UNDEFINED	(0x3 << 24)
++#define	CLKCTRL_PLL1CTRL0_DIV_SEL_MASK		(0x3 << 20)
++#define	CLKCTRL_PLL1CTRL0_DIV_SEL_OFFSET	20
++#define	CLKCTRL_PLL1CTRL0_DIV_SEL_DEFAULT	(0x0 << 20)
++#define	CLKCTRL_PLL1CTRL0_DIV_SEL_LOWER		(0x1 << 20)
++#define	CLKCTRL_PLL1CTRL0_DIV_SEL_LOWEST	(0x2 << 20)
++#define	CLKCTRL_PLL1CTRL0_DIV_SEL_UNDEFINED	(0x3 << 20)
++#define	CLKCTRL_PLL1CTRL0_EN_USB_CLKS		(1 << 18)
++#define	CLKCTRL_PLL1CTRL0_POWER			(1 << 17)
 +
-+struct sb_ivt_header {
-+	uint32_t	header;
-+	uint32_t	entry;
-+	uint32_t	reserved1;
-+	uint32_t	dcd;
-+	uint32_t	boot_data;
-+	uint32_t	self;
-+	uint32_t	csf;
-+	uint32_t	reserved2;
-+};
++#define	CLKCTRL_PLL1CTRL1_LOCK			(1 << 31)
++#define	CLKCTRL_PLL1CTRL1_FORCE_LOCK		(1 << 30)
++#define	CLKCTRL_PLL1CTRL1_LOCK_COUNT_MASK	0xffff
++#define	CLKCTRL_PLL1CTRL1_LOCK_COUNT_OFFSET	0
 +
-+#define	SB_HAB_IVT_TAG			0xd1UL
-+#define	SB_HAB_DCD_TAG			0xd2UL
++#define	CLKCTRL_PLL2CTRL0_CLKGATE		(1 << 31)
++#define	CLKCTRL_PLL2CTRL0_LFR_SEL_MASK		(0x3 << 28)
++#define	CLKCTRL_PLL2CTRL0_LFR_SEL_OFFSET	28
++#define	CLKCTRL_PLL2CTRL0_HOLD_RING_OFF_B	(1 << 26)
++#define	CLKCTRL_PLL2CTRL0_CP_SEL_MASK		(0x3 << 24)
++#define	CLKCTRL_PLL2CTRL0_CP_SEL_OFFSET		24
++#define	CLKCTRL_PLL2CTRL0_POWER			(1 << 23)
 +
-+#define	SB_HAB_VERSION			0x40UL
++#define	CLKCTRL_CPU_BUSY_REF_XTAL		(1 << 29)
++#define	CLKCTRL_CPU_BUSY_REF_CPU		(1 << 28)
++#define	CLKCTRL_CPU_DIV_XTAL_FRAC_EN		(1 << 26)
++#define	CLKCTRL_CPU_DIV_XTAL_MASK		(0x3ff << 16)
++#define	CLKCTRL_CPU_DIV_XTAL_OFFSET		16
++#define	CLKCTRL_CPU_INTERRUPT_WAIT		(1 << 12)
++#define	CLKCTRL_CPU_DIV_CPU_FRAC_EN		(1 << 10)
++#define	CLKCTRL_CPU_DIV_CPU_MASK		0x3f
++#define	CLKCTRL_CPU_DIV_CPU_OFFSET		0
++
++#define	CLKCTRL_HBUS_ASM_BUSY			(1 << 31)
++#define	CLKCTRL_HBUS_DCP_AS_ENABLE		(1 << 30)
++#define	CLKCTRL_HBUS_PXP_AS_ENABLE		(1 << 29)
++#define	CLKCTRL_HBUS_ASM_EMIPORT_AS_ENABLE	(1 << 27)
++#define	CLKCTRL_HBUS_APBHDMA_AS_ENABLE		(1 << 26)
++#define	CLKCTRL_HBUS_APBXDMA_AS_ENABLE		(1 << 25)
++#define	CLKCTRL_HBUS_TRAFFIC_JAM_AS_ENABLE	(1 << 24)
++#define	CLKCTRL_HBUS_TRAFFIC_AS_ENABLE		(1 << 23)
++#define	CLKCTRL_HBUS_CPU_DATA_AS_ENABLE		(1 << 22)
++#define	CLKCTRL_HBUS_CPU_INSTR_AS_ENABLE	(1 << 21)
++#define	CLKCTRL_HBUS_ASM_ENABLE			(1 << 20)
++#define	CLKCTRL_HBUS_AUTO_CLEAR_DIV_ENABLE	(1 << 19)
++#define	CLKCTRL_HBUS_SLOW_DIV_MASK		(0x7 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_OFFSET		16
++#define	CLKCTRL_HBUS_SLOW_DIV_BY1		(0x0 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY2		(0x1 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY4		(0x2 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY8		(0x3 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY16		(0x4 << 16)
++#define	CLKCTRL_HBUS_SLOW_DIV_BY32		(0x5 << 16)
++#define	CLKCTRL_HBUS_DIV_FRAC_EN		(1 << 5)
++#define	CLKCTRL_HBUS_DIV_MASK			0x1f
++#define	CLKCTRL_HBUS_DIV_OFFSET			0
++
++#define	CLKCTRL_XBUS_BUSY			(1 << 31)
++#define	CLKCTRL_XBUS_AUTO_CLEAR_DIV_ENABLE	(1 << 11)
++#define	CLKCTRL_XBUS_DIV_FRAC_EN		(1 << 10)
++#define	CLKCTRL_XBUS_DIV_MASK			0x3ff
++#define	CLKCTRL_XBUS_DIV_OFFSET			0
++
++#define	CLKCTRL_XTAL_UART_CLK_GATE		(1 << 31)
++#define	CLKCTRL_XTAL_PWM_CLK24M_GATE		(1 << 29)
++#define	CLKCTRL_XTAL_TIMROT_CLK32K_GATE		(1 << 26)
++#define	CLKCTRL_XTAL_DIV_UART_MASK		0x3
++#define	CLKCTRL_XTAL_DIV_UART_OFFSET		0
++
++#define	CLKCTRL_SSP_CLKGATE			(1 << 31)
++#define	CLKCTRL_SSP_BUSY			(1 << 29)
++#define	CLKCTRL_SSP_DIV_FRAC_EN			(1 << 9)
++#define	CLKCTRL_SSP_DIV_MASK			0x1ff
++#define	CLKCTRL_SSP_DIV_OFFSET			0
++
++#define	CLKCTRL_GPMI_CLKGATE			(1 << 31)
++#define	CLKCTRL_GPMI_BUSY			(1 << 29)
++#define	CLKCTRL_GPMI_DIV_FRAC_EN		(1 << 10)
++#define	CLKCTRL_GPMI_DIV_MASK			0x3ff
++#define	CLKCTRL_GPMI_DIV_OFFSET			0
++
++#define	CLKCTRL_SPDIF_CLKGATE			(1 << 31)
++
++#define	CLKCTRL_EMI_CLKGATE			(1 << 31)
++#define	CLKCTRL_EMI_SYNC_MODE_EN		(1 << 30)
++#define	CLKCTRL_EMI_BUSY_REF_XTAL		(1 << 29)
++#define	CLKCTRL_EMI_BUSY_REF_EMI		(1 << 28)
++#define	CLKCTRL_EMI_BUSY_REF_CPU		(1 << 27)
++#define	CLKCTRL_EMI_BUSY_SYNC_MODE		(1 << 26)
++#define	CLKCTRL_EMI_BUSY_DCC_RESYNC		(1 << 17)
++#define	CLKCTRL_EMI_DCC_RESYNC_ENABLE		(1 << 16)
++#define	CLKCTRL_EMI_DIV_XTAL_MASK		(0xf << 8)
++#define	CLKCTRL_EMI_DIV_XTAL_OFFSET		8
++#define	CLKCTRL_EMI_DIV_EMI_MASK		0x3f
++#define	CLKCTRL_EMI_DIV_EMI_OFFSET		0
++
++#define	CLKCTRL_SAIF0_CLKGATE			(1 << 31)
++#define	CLKCTRL_SAIF0_BUSY			(1 << 29)
++#define	CLKCTRL_SAIF0_DIV_FRAC_EN		(1 << 16)
++#define	CLKCTRL_SAIF0_DIV_MASK			0xffff
++#define	CLKCTRL_SAIF0_DIV_OFFSET		0
++
++#define	CLKCTRL_SAIF1_CLKGATE			(1 << 31)
++#define	CLKCTRL_SAIF1_BUSY			(1 << 29)
++#define	CLKCTRL_SAIF1_DIV_FRAC_EN		(1 << 16)
++#define	CLKCTRL_SAIF1_DIV_MASK			0xffff
++#define	CLKCTRL_SAIF1_DIV_OFFSET		0
++
++#define	CLKCTRL_DIS_LCDIF_CLKGATE		(1 << 31)
++#define	CLKCTRL_DIS_LCDIF_BUSY			(1 << 29)
++#define	CLKCTRL_DIS_LCDIF_DIV_FRAC_EN		(1 << 13)
++#define	CLKCTRL_DIS_LCDIF_DIV_MASK		0x1fff
++#define	CLKCTRL_DIS_LCDIF_DIV_OFFSET		0
++
++#define	CLKCTRL_ETM_CLKGATE			(1 << 31)
++#define	CLKCTRL_ETM_BUSY			(1 << 29)
++#define	CLKCTRL_ETM_DIV_FRAC_EN			(1 << 7)
++#define	CLKCTRL_ETM_DIV_MASK			0x7f
++#define	CLKCTRL_ETM_DIV_OFFSET			0
++
++#define	CLKCTRL_ENET_SLEEP			(1 << 31)
++#define	CLKCTRL_ENET_DISABLE			(1 << 30)
++#define	CLKCTRL_ENET_STATUS			(1 << 29)
++#define	CLKCTRL_ENET_BUSY_TIME			(1 << 27)
++#define	CLKCTRL_ENET_DIV_TIME_MASK		(0x3f << 21)
++#define	CLKCTRL_ENET_DIV_TIME_OFFSET		21
++#define	CLKCTRL_ENET_TIME_SEL_MASK		(0x3 << 19)
++#define	CLKCTRL_ENET_TIME_SEL_OFFSET		19
++#define	CLKCTRL_ENET_TIME_SEL_XTAL		(0x0 << 19)
++#define	CLKCTRL_ENET_TIME_SEL_PLL		(0x1 << 19)
++#define	CLKCTRL_ENET_TIME_SEL_RMII_CLK		(0x2 << 19)
++#define	CLKCTRL_ENET_TIME_SEL_UNDEFINED		(0x3 << 19)
++#define	CLKCTRL_ENET_CLK_OUT_EN			(1 << 18)
++#define	CLKCTRL_ENET_RESET_BY_SW_CHIP		(1 << 17)
++#define	CLKCTRL_ENET_RESET_BY_SW		(1 << 16)
++
++#define	CLKCTRL_HSADC_RESETB			(1 << 30)
++#define	CLKCTRL_HSADC_FREQDIV_MASK		(0x3 << 28)
++#define	CLKCTRL_HSADC_FREQDIV_OFFSET		28
++
++#define	CLKCTRL_FLEXCAN_STOP_CAN0		(1 << 30)
++#define	CLKCTRL_FLEXCAN_CAN0_STATUS		(1 << 29)
++#define	CLKCTRL_FLEXCAN_STOP_CAN1		(1 << 28)
++#define	CLKCTRL_FLEXCAN_CAN1_STATUS		(1 << 27)
++
++#define	CLKCTRL_FRAC_CLKGATE			(1 << 7)
++#define	CLKCTRL_FRAC_STABLE			(1 << 6)
++#define	CLKCTRL_FRAC_FRAC_MASK			0x3f
++#define	CLKCTRL_FRAC_FRAC_OFFSET		0
++#define	CLKCTRL_FRAC0_CPU			0
++#define	CLKCTRL_FRAC0_EMI			1
++#define	CLKCTRL_FRAC0_IO1			2
++#define	CLKCTRL_FRAC0_IO0			3
++#define	CLKCTRL_FRAC1_PIX			0
++#define	CLKCTRL_FRAC1_HSADC			1
++#define	CLKCTRL_FRAC1_GPMI			2
++
++#define	CLKCTRL_CLKSEQ_BYPASS_CPU		(1 << 18)
++#define	CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF		(1 << 14)
++#define	CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF_BYPASS	(0x1 << 14)
++#define	CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF_PFD	(0x0 << 14)
++#define	CLKCTRL_CLKSEQ_BYPASS_ETM		(1 << 8)
++#define	CLKCTRL_CLKSEQ_BYPASS_EMI		(1 << 7)
++#define	CLKCTRL_CLKSEQ_BYPASS_SSP3		(1 << 6)
++#define	CLKCTRL_CLKSEQ_BYPASS_SSP2		(1 << 5)
++#define	CLKCTRL_CLKSEQ_BYPASS_SSP1		(1 << 4)
++#define	CLKCTRL_CLKSEQ_BYPASS_SSP0		(1 << 3)
++#define	CLKCTRL_CLKSEQ_BYPASS_GPMI		(1 << 2)
++#define	CLKCTRL_CLKSEQ_BYPASS_SAIF1		(1 << 1)
++#define	CLKCTRL_CLKSEQ_BYPASS_SAIF0		(1 << 0)
++
++#define	CLKCTRL_RESET_WDOG_POR_DISABLE		(1 << 5)
++#define	CLKCTRL_RESET_EXTERNAL_RESET_ENABLE	(1 << 4)
++#define	CLKCTRL_RESET_THERMAL_RESET_ENABLE	(1 << 3)
++#define	CLKCTRL_RESET_THERMAL_RESET_DEFAULT	(1 << 2)
++#define	CLKCTRL_RESET_CHIP			(1 << 1)
++#define	CLKCTRL_RESET_DIG			(1 << 0)
++
++#define	CLKCTRL_STATUS_CPU_LIMIT_MASK		(0x3 << 30)
++#define	CLKCTRL_STATUS_CPU_LIMIT_OFFSET		30
++
++#define	CLKCTRL_VERSION_MAJOR_MASK		(0xff << 24)
++#define	CLKCTRL_VERSION_MAJOR_OFFSET		24
++#define	CLKCTRL_VERSION_MINOR_MASK		(0xff << 16)
++#define	CLKCTRL_VERSION_MINOR_OFFSET		16
++#define	CLKCTRL_VERSION_STEP_MASK		0xffff
++#define	CLKCTRL_VERSION_STEP_OFFSET		0
++
++#endif /* __MX28_REGS_CLKCTRL_H__ */
+diff --git a/arch/arm/mach-mxs/include/mach/regs-common.h b/arch/arm/mach-mxs/include/mach/regs-common.h
+new file mode 100644
+index 0000000..e54a220
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/regs-common.h
+@@ -0,0 +1,69 @@
++/*
++ * Freescale i.MXS Register Accessors
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __MXS_REGS_COMMON_H__
++#define __MXS_REGS_COMMON_H__
 +
 +/*
-+ * The "size" field in the IVT header is not naturally aligned,
-+ * use this macro to fill first 4 bytes of the IVT header without
-+ * causing issues on some systems (esp. M68k, PPC, MIPS-BE, ARM-BE).
++ * The i.MXS has interesting feature when it comes to register access. There
++ * are four kinds of access to one particular register. Those are:
++ *
++ * 1) Common read/write access. To use this mode, just write to the address of
++ *    the register.
++ * 2) Set bits only access. To set bits, write which bits you want to set to the
++ *    address of the register + 0x4.
++ * 3) Clear bits only access. To clear bits, write which bits you want to clear
++ *    to the address of the register + 0x8.
++ * 4) Toggle bits only access. To toggle bits, write which bits you want to
++ *    toggle to the address of the register + 0xc.
++ *
++ * IMPORTANT NOTE: Not all registers support accesses 2-4! Also, not all bits
++ * can be set/cleared by pure write as in access type 1, some need to be
++ * explicitly set/cleared by using access type 2-3.
++ *
++ * The following macros and structures allow the user to either access the
++ * register in all aforementioned modes (by accessing reg_name, reg_name_set,
++ * reg_name_clr, reg_name_tog) or pass the register structure further into
++ * various functions with correct type information (by accessing reg_name_reg).
++ *
 + */
-+static inline uint32_t sb_hab_ivt_header(void)
++
++#define	__mxs_reg_8(name)		\
++	uint8_t	name[4];		\
++	uint8_t	name##_set[4];		\
++	uint8_t	name##_clr[4];		\
++	uint8_t	name##_tog[4];		\
++
++#define	__mxs_reg_32(name)		\
++	uint32_t name;			\
++	uint32_t name##_set;		\
++	uint32_t name##_clr;		\
++	uint32_t name##_tog;
++
++struct mxs_register_8 {
++	__mxs_reg_8(reg)
++};
++
++struct mxs_register_32 {
++	__mxs_reg_32(reg)
++};
++
++#define	mxs_reg_8(name)				\
++	union {						\
++		struct { __mxs_reg_8(name) };		\
++		struct mxs_register_8 name##_reg;	\
++	};
++
++#define	mxs_reg_32(name)				\
++	union {						\
++		struct { __mxs_reg_32(name) };		\
++		struct mxs_register_32 name##_reg;	\
++	};
++
++#endif	/* __MXS_REGS_COMMON_H__ */
+diff --git a/arch/arm/mach-mxs/include/mach/regs-lradc.h b/arch/arm/mach-mxs/include/mach/regs-lradc.h
+new file mode 100644
+index 0000000..7f624be
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/regs-lradc.h
+@@ -0,0 +1,387 @@
++/*
++ * Freescale i.MX28 LRADC Register Definitions
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * Based on code from LTIB:
++ * Copyright 2008-2009 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __MX28_REGS_LRADC_H__
++#define __MX28_REGS_LRADC_H__
++
++#include <mach/regs-common.h>
++
++#ifndef	__ASSEMBLY__
++struct mxs_lradc_regs {
++	mxs_reg_32(hw_lradc_ctrl0);
++	mxs_reg_32(hw_lradc_ctrl1);
++	mxs_reg_32(hw_lradc_ctrl2);
++	mxs_reg_32(hw_lradc_ctrl3);
++	mxs_reg_32(hw_lradc_status);
++	mxs_reg_32(hw_lradc_ch0);
++	mxs_reg_32(hw_lradc_ch1);
++	mxs_reg_32(hw_lradc_ch2);
++	mxs_reg_32(hw_lradc_ch3);
++	mxs_reg_32(hw_lradc_ch4);
++	mxs_reg_32(hw_lradc_ch5);
++	mxs_reg_32(hw_lradc_ch6);
++	mxs_reg_32(hw_lradc_ch7);
++	mxs_reg_32(hw_lradc_delay0);
++	mxs_reg_32(hw_lradc_delay1);
++	mxs_reg_32(hw_lradc_delay2);
++	mxs_reg_32(hw_lradc_delay3);
++	mxs_reg_32(hw_lradc_debug0);
++	mxs_reg_32(hw_lradc_debug1);
++	mxs_reg_32(hw_lradc_conversion);
++	mxs_reg_32(hw_lradc_ctrl4);
++	mxs_reg_32(hw_lradc_treshold0);
++	mxs_reg_32(hw_lradc_treshold1);
++	mxs_reg_32(hw_lradc_version);
++};
++#endif
++
++#define	LRADC_CTRL0_SFTRST					(1 << 31)
++#define	LRADC_CTRL0_CLKGATE					(1 << 30)
++#define	LRADC_CTRL0_ONCHIP_GROUNDREF				(1 << 26)
++#define	LRADC_CTRL0_BUTTON1_DETECT_ENABLE			(1 << 25)
++#define	LRADC_CTRL0_BUTTON0_DETECT_ENABLE			(1 << 24)
++#define	LRADC_CTRL0_TOUCH_DETECT_ENABLE				(1 << 23)
++#define	LRADC_CTRL0_TOUCH_SCREEN_TYPE				(1 << 22)
++#define	LRADC_CTRL0_YNLRSW					(1 << 21)
++#define	LRADC_CTRL0_YPLLSW_MASK					(0x3 << 19)
++#define	LRADC_CTRL0_YPLLSW_OFFSET				19
++#define	LRADC_CTRL0_XNURSW_MASK					(0x3 << 17)
++#define	LRADC_CTRL0_XNURSW_OFFSET				17
++#define	LRADC_CTRL0_XPULSW					(1 << 16)
++#define	LRADC_CTRL0_SCHEDULE_MASK				0xff
++#define	LRADC_CTRL0_SCHEDULE_OFFSET				0
++
++#define	LRADC_CTRL1_BUTTON1_DETECT_IRQ_EN			(1 << 28)
++#define	LRADC_CTRL1_BUTTON0_DETECT_IRQ_EN			(1 << 27)
++#define	LRADC_CTRL1_THRESHOLD1_DETECT_IRQ_EN			(1 << 26)
++#define	LRADC_CTRL1_THRESHOLD0_DETECT_IRQ_EN			(1 << 25)
++#define	LRADC_CTRL1_TOUCH_DETECT_IRQ_EN				(1 << 24)
++#define	LRADC_CTRL1_LRADC7_IRQ_EN				(1 << 23)
++#define	LRADC_CTRL1_LRADC6_IRQ_EN				(1 << 22)
++#define	LRADC_CTRL1_LRADC5_IRQ_EN				(1 << 21)
++#define	LRADC_CTRL1_LRADC4_IRQ_EN				(1 << 20)
++#define	LRADC_CTRL1_LRADC3_IRQ_EN				(1 << 19)
++#define	LRADC_CTRL1_LRADC2_IRQ_EN				(1 << 18)
++#define	LRADC_CTRL1_LRADC1_IRQ_EN				(1 << 17)
++#define	LRADC_CTRL1_LRADC0_IRQ_EN				(1 << 16)
++#define	LRADC_CTRL1_BUTTON1_DETECT_IRQ				(1 << 12)
++#define	LRADC_CTRL1_BUTTON0_DETECT_IRQ				(1 << 11)
++#define	LRADC_CTRL1_THRESHOLD1_DETECT_IRQ			(1 << 10)
++#define	LRADC_CTRL1_THRESHOLD0_DETECT_IRQ			(1 << 9)
++#define	LRADC_CTRL1_TOUCH_DETECT_IRQ				(1 << 8)
++#define	LRADC_CTRL1_LRADC7_IRQ					(1 << 7)
++#define	LRADC_CTRL1_LRADC6_IRQ					(1 << 6)
++#define	LRADC_CTRL1_LRADC5_IRQ					(1 << 5)
++#define	LRADC_CTRL1_LRADC4_IRQ					(1 << 4)
++#define	LRADC_CTRL1_LRADC3_IRQ					(1 << 3)
++#define	LRADC_CTRL1_LRADC2_IRQ					(1 << 2)
++#define	LRADC_CTRL1_LRADC1_IRQ					(1 << 1)
++#define	LRADC_CTRL1_LRADC0_IRQ					(1 << 0)
++
++#define	LRADC_CTRL2_DIVIDE_BY_TWO_MASK				(0xff << 24)
++#define	LRADC_CTRL2_DIVIDE_BY_TWO_OFFSET			24
++#define	LRADC_CTRL2_TEMPSENSE_PWD				(1 << 15)
++#define	LRADC_CTRL2_VTHSENSE_MASK				(0x3 << 13)
++#define	LRADC_CTRL2_VTHSENSE_OFFSET				13
++#define	LRADC_CTRL2_DISABLE_MUXAMP_BYPASS			(1 << 12)
++#define	LRADC_CTRL2_TEMP_SENSOR_IENABLE1			(1 << 9)
++#define	LRADC_CTRL2_TEMP_SENSOR_IENABLE0			(1 << 8)
++#define	LRADC_CTRL2_TEMP_ISRC1_MASK				(0xf << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_OFFSET				4
++#define	LRADC_CTRL2_TEMP_ISRC1_300				(0xf << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_280				(0xe << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_260				(0xd << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_240				(0xc << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_220				(0xb << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_200				(0xa << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_180				(0x9 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_160				(0x8 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_140				(0x7 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_120				(0x6 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_100				(0x5 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_80				(0x4 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_60				(0x3 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_40				(0x2 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_20				(0x1 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC1_ZERO				(0x0 << 4)
++#define	LRADC_CTRL2_TEMP_ISRC0_MASK				(0xf << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_OFFSET				0
++#define	LRADC_CTRL2_TEMP_ISRC0_300				(0xf << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_280				(0xe << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_260				(0xd << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_240				(0xc << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_220				(0xb << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_200				(0xa << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_180				(0x9 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_160				(0x8 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_140				(0x7 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_120				(0x6 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_100				(0x5 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_80				(0x4 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_60				(0x3 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_40				(0x2 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_20				(0x1 << 0)
++#define	LRADC_CTRL2_TEMP_ISRC0_ZERO				(0x0 << 0)
++
++#define	LRADC_CTRL3_DISCARD_MASK				(0x3 << 24)
++#define	LRADC_CTRL3_DISCARD_OFFSET				24
++#define	LRADC_CTRL3_DISCARD_1_SAMPLE				(0x1 << 24)
++#define	LRADC_CTRL3_DISCARD_2_SAMPLES				(0x2 << 24)
++#define	LRADC_CTRL3_DISCARD_3_SAMPLES				(0x3 << 24)
++#define	LRADC_CTRL3_FORCE_ANALOG_PWUP				(1 << 23)
++#define	LRADC_CTRL3_FORCE_ANALOG_PWDN				(1 << 22)
++#define	LRADC_CTRL3_CYCLE_TIME_MASK				(0x3 << 8)
++#define	LRADC_CTRL3_CYCLE_TIME_OFFSET				8
++#define	LRADC_CTRL3_CYCLE_TIME_6MHZ				(0x0 << 8)
++#define	LRADC_CTRL3_CYCLE_TIME_4MHZ				(0x1 << 8)
++#define	LRADC_CTRL3_CYCLE_TIME_3MHZ				(0x2 << 8)
++#define	LRADC_CTRL3_CYCLE_TIME_2MHZ				(0x3 << 8)
++#define	LRADC_CTRL3_HIGH_TIME_MASK				(0x3 << 4)
++#define	LRADC_CTRL3_HIGH_TIME_OFFSET				4
++#define	LRADC_CTRL3_HIGH_TIME_42NS				(0x0 << 4)
++#define	LRADC_CTRL3_HIGH_TIME_83NS				(0x1 << 4)
++#define	LRADC_CTRL3_HIGH_TIME_125NS				(0x2 << 4)
++#define	LRADC_CTRL3_HIGH_TIME_250NS				(0x3 << 4)
++#define	LRADC_CTRL3_DELAY_CLOCK					(1 << 1)
++#define	LRADC_CTRL3_INVERT_CLOCK				(1 << 0)
++
++#define	LRADC_STATUS_BUTTON1_PRESENT				(1 << 28)
++#define	LRADC_STATUS_BUTTON0_PRESENT				(1 << 27)
++#define	LRADC_STATUS_TEMP1_PRESENT				(1 << 26)
++#define	LRADC_STATUS_TEMP0_PRESENT				(1 << 25)
++#define	LRADC_STATUS_TOUCH_PANEL_PRESENT			(1 << 24)
++#define	LRADC_STATUS_CHANNEL7_PRESENT				(1 << 23)
++#define	LRADC_STATUS_CHANNEL6_PRESENT				(1 << 22)
++#define	LRADC_STATUS_CHANNEL5_PRESENT				(1 << 21)
++#define	LRADC_STATUS_CHANNEL4_PRESENT				(1 << 20)
++#define	LRADC_STATUS_CHANNEL3_PRESENT				(1 << 19)
++#define	LRADC_STATUS_CHANNEL2_PRESENT				(1 << 18)
++#define	LRADC_STATUS_CHANNEL1_PRESENT				(1 << 17)
++#define	LRADC_STATUS_CHANNEL0_PRESENT				(1 << 16)
++#define	LRADC_STATUS_BUTTON1_DETECT_RAW				(1 << 2)
++#define	LRADC_STATUS_BUTTON0_DETECT_RAW				(1 << 1)
++#define	LRADC_STATUS_TOUCH_DETECT_RAW				(1 << 0)
++
++#define	LRADC_CH_TOGGLE						(1 << 31)
++#define	LRADC_CH7_TESTMODE_TOGGLE				(1 << 30)
++#define	LRADC_CH_ACCUMULATE					(1 << 29)
++#define	LRADC_CH_NUM_SAMPLES_MASK				(0x1f << 24)
++#define	LRADC_CH_NUM_SAMPLES_OFFSET				24
++#define	LRADC_CH_VALUE_MASK					0x3ffff
++#define	LRADC_CH_VALUE_OFFSET					0
++
++#define	LRADC_DELAY_TRIGGER_LRADCS_MASK				(0xff << 24)
++#define	LRADC_DELAY_TRIGGER_LRADCS_OFFSET			24
++#define	LRADC_DELAY_KICK					(1 << 20)
++#define	LRADC_DELAY_TRIGGER_DELAYS_MASK				(0xf << 16)
++#define	LRADC_DELAY_TRIGGER_DELAYS_OFFSET			16
++#define	LRADC_DELAY_LOOP_COUNT_MASK				(0x1f << 11)
++#define	LRADC_DELAY_LOOP_COUNT_OFFSET				11
++#define	LRADC_DELAY_DELAY_MASK					0x7ff
++#define	LRADC_DELAY_DELAY_OFFSET				0
++
++#define	LRADC_DEBUG0_READONLY_MASK				(0xffff << 16)
++#define	LRADC_DEBUG0_READONLY_OFFSET				16
++#define	LRADC_DEBUG0_STATE_MASK					(0xfff << 0)
++#define	LRADC_DEBUG0_STATE_OFFSET				0
++
++#define	LRADC_DEBUG1_REQUEST_MASK				(0xff << 16)
++#define	LRADC_DEBUG1_REQUEST_OFFSET				16
++#define	LRADC_DEBUG1_TESTMODE_COUNT_MASK			(0x1f << 8)
++#define	LRADC_DEBUG1_TESTMODE_COUNT_OFFSET			8
++#define	LRADC_DEBUG1_TESTMODE6					(1 << 2)
++#define	LRADC_DEBUG1_TESTMODE5					(1 << 1)
++#define	LRADC_DEBUG1_TESTMODE					(1 << 0)
++
++#define	LRADC_CONVERSION_AUTOMATIC				(1 << 20)
++#define	LRADC_CONVERSION_SCALE_FACTOR_MASK			(0x3 << 16)
++#define	LRADC_CONVERSION_SCALE_FACTOR_OFFSET			16
++#define	LRADC_CONVERSION_SCALE_FACTOR_NIMH			(0x0 << 16)
++#define	LRADC_CONVERSION_SCALE_FACTOR_DUAL_NIMH			(0x1 << 16)
++#define	LRADC_CONVERSION_SCALE_FACTOR_LI_ION			(0x2 << 16)
++#define	LRADC_CONVERSION_SCALE_FACTOR_ALT_LI_ION		(0x3 << 16)
++#define	LRADC_CONVERSION_SCALED_BATT_VOLTAGE_MASK		0x3ff
++#define	LRADC_CONVERSION_SCALED_BATT_VOLTAGE_OFFSET		0
++
++#define	LRADC_CTRL4_LRADC7SELECT_MASK				(0xf << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_OFFSET				28
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL0			(0x0 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL1			(0x1 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL2			(0x2 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL3			(0x3 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL4			(0x4 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL5			(0x5 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL6			(0x6 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL7			(0x7 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL8			(0x8 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL9			(0x9 << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL10			(0xa << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL11			(0xb << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL12			(0xc << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL13			(0xd << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL14			(0xe << 28)
++#define	LRADC_CTRL4_LRADC7SELECT_CHANNEL15			(0xf << 28)
++#define	LRADC_CTRL4_LRADC6SELECT_MASK				(0xf << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_OFFSET				24
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL0			(0x0 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL1			(0x1 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL2			(0x2 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL3			(0x3 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL4			(0x4 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL5			(0x5 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL6			(0x6 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL7			(0x7 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL8			(0x8 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL9			(0x9 << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL10			(0xa << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL11			(0xb << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL12			(0xc << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL13			(0xd << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL14			(0xe << 24)
++#define	LRADC_CTRL4_LRADC6SELECT_CHANNEL15			(0xf << 24)
++#define	LRADC_CTRL4_LRADC5SELECT_MASK				(0xf << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_OFFSET				20
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL0			(0x0 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL1			(0x1 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL2			(0x2 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL3			(0x3 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL4			(0x4 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL5			(0x5 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL6			(0x6 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL7			(0x7 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL8			(0x8 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL9			(0x9 << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL10			(0xa << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL11			(0xb << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL12			(0xc << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL13			(0xd << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL14			(0xe << 20)
++#define	LRADC_CTRL4_LRADC5SELECT_CHANNEL15			(0xf << 20)
++#define	LRADC_CTRL4_LRADC4SELECT_MASK				(0xf << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_OFFSET				16
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL0			(0x0 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL1			(0x1 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL2			(0x2 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL3			(0x3 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL4			(0x4 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL5			(0x5 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL6			(0x6 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL7			(0x7 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL8			(0x8 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL9			(0x9 << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL10			(0xa << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL11			(0xb << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL12			(0xc << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL13			(0xd << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL14			(0xe << 16)
++#define	LRADC_CTRL4_LRADC4SELECT_CHANNEL15			(0xf << 16)
++#define	LRADC_CTRL4_LRADC3SELECT_MASK				(0xf << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_OFFSET				12
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL0			(0x0 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL1			(0x1 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL2			(0x2 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL3			(0x3 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL4			(0x4 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL5			(0x5 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL6			(0x6 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL7			(0x7 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL8			(0x8 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL9			(0x9 << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL10			(0xa << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL11			(0xb << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL12			(0xc << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL13			(0xd << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL14			(0xe << 12)
++#define	LRADC_CTRL4_LRADC3SELECT_CHANNEL15			(0xf << 12)
++#define	LRADC_CTRL4_LRADC2SELECT_MASK				(0xf << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_OFFSET				8
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL0			(0x0 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL1			(0x1 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL2			(0x2 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL3			(0x3 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL4			(0x4 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL5			(0x5 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL6			(0x6 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL7			(0x7 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL8			(0x8 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL9			(0x9 << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL10			(0xa << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL11			(0xb << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL12			(0xc << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL13			(0xd << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL14			(0xe << 8)
++#define	LRADC_CTRL4_LRADC2SELECT_CHANNEL15			(0xf << 8)
++#define	LRADC_CTRL4_LRADC1SELECT_MASK				(0xf << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_OFFSET				4
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL0			(0x0 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL1			(0x1 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL2			(0x2 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL3			(0x3 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL4			(0x4 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL5			(0x5 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL6			(0x6 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL7			(0x7 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL8			(0x8 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL9			(0x9 << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL10			(0xa << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL11			(0xb << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL12			(0xc << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL13			(0xd << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL14			(0xe << 4)
++#define	LRADC_CTRL4_LRADC1SELECT_CHANNEL15			(0xf << 4)
++#define	LRADC_CTRL4_LRADC0SELECT_MASK				0xf
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL0			(0x0 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL1			(0x1 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL2			(0x2 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL3			(0x3 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL4			(0x4 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL5			(0x5 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL6			(0x6 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL7			(0x7 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL8			(0x8 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL9			(0x9 << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL10			(0xa << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL11			(0xb << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL12			(0xc << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL13			(0xd << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL14			(0xe << 0)
++#define	LRADC_CTRL4_LRADC0SELECT_CHANNEL15			(0xf << 0)
++
++#define	LRADC_THRESHOLD_ENABLE					(1 << 24)
++#define	LRADC_THRESHOLD_BATTCHRG_DISABLE			(1 << 23)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_MASK			(0x7 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_OFFSET			20
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL0			(0x0 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL1			(0x1 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL2			(0x2 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL3			(0x3 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL4			(0x4 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL5			(0x5 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL6			(0x6 << 20)
++#define	LRADC_THRESHOLD_CHANNEL_SEL_CHANNEL7			(0x7 << 20)
++#define	LRADC_THRESHOLD_SETTING_MASK				(0x3 << 18)
++#define	LRADC_THRESHOLD_SETTING_OFFSET				18
++#define	LRADC_THRESHOLD_SETTING_NO_COMPARE			(0x0 << 18)
++#define	LRADC_THRESHOLD_SETTING_DETECT_LOW			(0x1 << 18)
++#define	LRADC_THRESHOLD_SETTING_DETECT_HIGH			(0x2 << 18)
++#define	LRADC_THRESHOLD_SETTING_RESERVED			(0x3 << 18)
++#define	LRADC_THRESHOLD_VALUE_MASK				0x3ffff
++#define	LRADC_THRESHOLD_VALUE_OFFSET				0
++
++#define	LRADC_VERSION_MAJOR_MASK				(0xff << 24)
++#define	LRADC_VERSION_MAJOR_OFFSET				24
++#define	LRADC_VERSION_MINOR_MASK				(0xff << 16)
++#define	LRADC_VERSION_MINOR_OFFSET				16
++#define	LRADC_VERSION_STEP_MASK					0xffff
++#define	LRADC_VERSION_STEP_OFFSET				0
++
++#endif	/* __MX28_REGS_LRADC_H__ */
+diff --git a/arch/arm/mach-mxs/include/mach/regs-power-mx28.h b/arch/arm/mach-mxs/include/mach/regs-power-mx28.h
+new file mode 100644
+index 0000000..7b73496
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/regs-power-mx28.h
+@@ -0,0 +1,408 @@
++/*
++ * Freescale i.MX28 Power Controller Register Definitions
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __MX28_REGS_POWER_H__
++#define __MX28_REGS_POWER_H__
++
++#include <mach/regs-common.h>
++
++#ifndef	__ASSEMBLY__
++struct mxs_power_regs {
++	mxs_reg_32(hw_power_ctrl)
++	mxs_reg_32(hw_power_5vctrl)
++	mxs_reg_32(hw_power_minpwr)
++	mxs_reg_32(hw_power_charge)
++	uint32_t	hw_power_vdddctrl;
++	uint32_t	reserved_vddd[3];
++	uint32_t	hw_power_vddactrl;
++	uint32_t	reserved_vdda[3];
++	uint32_t	hw_power_vddioctrl;
++	uint32_t	reserved_vddio[3];
++	uint32_t	hw_power_vddmemctrl;
++	uint32_t	reserved_vddmem[3];
++	uint32_t	hw_power_dcdc4p2;
++	uint32_t	reserved_dcdc4p2[3];
++	uint32_t	hw_power_misc;
++	uint32_t	reserved_misc[3];
++	uint32_t	hw_power_dclimits;
++	uint32_t	reserved_dclimits[3];
++	mxs_reg_32(hw_power_loopctrl)
++	uint32_t	hw_power_sts;
++	uint32_t	reserved_sts[3];
++	mxs_reg_32(hw_power_speed)
++	uint32_t	hw_power_battmonitor;
++	uint32_t	reserved_battmonitor[3];
++
++	uint32_t	reserved[4];
++
++	mxs_reg_32(hw_power_reset)
++};
++#endif
++
++#define	MX23_POWER_CTRL_CLKGATE				(1 << 30)
++#define	POWER_CTRL_PSWITCH_MID_TRAN			(1 << 27)
++#define	POWER_CTRL_DCDC4P2_BO_IRQ			(1 << 24)
++#define	POWER_CTRL_ENIRQ_DCDC4P2_BO			(1 << 23)
++#define	POWER_CTRL_VDD5V_DROOP_IRQ			(1 << 22)
++#define	POWER_CTRL_ENIRQ_VDD5V_DROOP			(1 << 21)
++#define	POWER_CTRL_PSWITCH_IRQ				(1 << 20)
++#define	POWER_CTRL_PSWITCH_IRQ_SRC			(1 << 19)
++#define	POWER_CTRL_POLARITY_PSWITCH			(1 << 18)
++#define	POWER_CTRL_ENIRQ_PSWITCH			(1 << 17)
++#define	POWER_CTRL_POLARITY_DC_OK			(1 << 16)
++#define	POWER_CTRL_DC_OK_IRQ				(1 << 15)
++#define	POWER_CTRL_ENIRQ_DC_OK				(1 << 14)
++#define	POWER_CTRL_BATT_BO_IRQ				(1 << 13)
++#define	POWER_CTRL_ENIRQ_BATT_BO			(1 << 12)
++#define	POWER_CTRL_VDDIO_BO_IRQ				(1 << 11)
++#define	POWER_CTRL_ENIRQ_VDDIO_BO			(1 << 10)
++#define	POWER_CTRL_VDDA_BO_IRQ				(1 << 9)
++#define	POWER_CTRL_ENIRQ_VDDA_BO			(1 << 8)
++#define	POWER_CTRL_VDDD_BO_IRQ				(1 << 7)
++#define	POWER_CTRL_ENIRQ_VDDD_BO			(1 << 6)
++#define	POWER_CTRL_POLARITY_VBUSVALID			(1 << 5)
++#define	POWER_CTRL_VBUS_VALID_IRQ			(1 << 4)
++#define	POWER_CTRL_ENIRQ_VBUS_VALID			(1 << 3)
++#define	POWER_CTRL_POLARITY_VDD5V_GT_VDDIO		(1 << 2)
++#define	POWER_CTRL_VDD5V_GT_VDDIO_IRQ			(1 << 1)
++#define	POWER_CTRL_ENIRQ_VDD5V_GT_VDDIO			(1 << 0)
++
++#define	MX28_POWER_5VCTRL_VBUSDROOP_TRSH_MASK		(0x3 << 30)
++#define	MX28_POWER_5VCTRL_VBUSDROOP_TRSH_OFFSET		30
++#define	MX28_POWER_5VCTRL_VBUSDROOP_TRSH_4V3		(0x0 << 30)
++#define	MX28_POWER_5VCTRL_VBUSDROOP_TRSH_4V4		(0x1 << 30)
++#define	MX28_POWER_5VCTRL_VBUSDROOP_TRSH_4V5		(0x2 << 30)
++#define	MX28_POWER_5VCTRL_VBUSDROOP_TRSH_4V7		(0x3 << 30)
++
++#define	MX23_POWER_5VCTRL_VBUSDROOP_TRSH_MASK		(0x3 << 28)
++#define	MX23_POWER_5VCTRL_VBUSDROOP_TRSH_OFFSET		28
++#define	MX23_POWER_5VCTRL_VBUSDROOP_TRSH_4V3		(0x0 << 28)
++#define	MX23_POWER_5VCTRL_VBUSDROOP_TRSH_4V4		(0x1 << 28)
++#define	MX23_POWER_5VCTRL_VBUSDROOP_TRSH_4V5		(0x2 << 28)
++#define	MX23_POWER_5VCTRL_VBUSDROOP_TRSH_4V7		(0x3 << 28)
++
++#define	POWER_5VCTRL_HEADROOM_ADJ_MASK			(0x7 << 24)
++#define	POWER_5VCTRL_HEADROOM_ADJ_OFFSET		24
++#define	MX28_POWER_5VCTRL_PWD_CHARGE_4P2_MASK		(0x3 << 20)
++#define MX23_POWER_5VCTRL_PWD_CHARGE_4P2_MASK		(0x1 << 20)
++#define	POWER_5VCTRL_PWD_CHARGE_4P2_OFFSET		20
++#define	POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK		(0x3f << 12)
++#define	POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET		12
++#define	POWER_5VCTRL_VBUSVALID_TRSH_MASK		(0x7 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_OFFSET		8
++#define	POWER_5VCTRL_VBUSVALID_TRSH_2V9			(0x0 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_4V0			(0x1 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_4V1			(0x2 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_4V2			(0x3 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_4V3			(0x4 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_4V4			(0x5 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_4V5			(0x6 << 8)
++#define	POWER_5VCTRL_VBUSVALID_TRSH_4V6			(0x7 << 8)
++#define	POWER_5VCTRL_PWDN_5VBRNOUT			(1 << 7)
++#define	POWER_5VCTRL_ENABLE_LINREG_ILIMIT		(1 << 6)
++#define	POWER_5VCTRL_DCDC_XFER				(1 << 5)
++#define	POWER_5VCTRL_VBUSVALID_5VDETECT			(1 << 4)
++#define	POWER_5VCTRL_VBUSVALID_TO_B			(1 << 3)
++#define	POWER_5VCTRL_ILIMIT_EQ_ZERO			(1 << 2)
++#define	POWER_5VCTRL_PWRUP_VBUS_CMPS			(1 << 1)
++#define	POWER_5VCTRL_ENABLE_DCDC			(1 << 0)
++
++#define	POWER_MINPWR_LOWPWR_4P2				(1 << 14)
++#define	MX23_POWER_MINPWR_VDAC_DUMP_CTRL		(1 << 13)
++#define	POWER_MINPWR_PWD_BO				(1 << 12)
++#define	POWER_MINPWR_USE_VDDXTAL_VBG			(1 << 11)
++#define	POWER_MINPWR_PWD_ANA_CMPS			(1 << 10)
++#define	POWER_MINPWR_ENABLE_OSC				(1 << 9)
++#define	POWER_MINPWR_SELECT_OSC				(1 << 8)
++#define	POWER_MINPWR_VBG_OFF				(1 << 7)
++#define	POWER_MINPWR_DOUBLE_FETS			(1 << 6)
++#define	POWER_MINPWR_HALFFETS				(1 << 5)
++#define	POWER_MINPWR_LESSANA_I				(1 << 4)
++#define	POWER_MINPWR_PWD_XTAL24				(1 << 3)
++#define	POWER_MINPWR_DC_STOPCLK				(1 << 2)
++#define	POWER_MINPWR_EN_DC_PFM				(1 << 1)
++#define	POWER_MINPWR_DC_HALFCLK				(1 << 0)
++
++#define	POWER_CHARGE_ADJ_VOLT_MASK			(0x7 << 24)
++#define	POWER_CHARGE_ADJ_VOLT_OFFSET			24
++#define	POWER_CHARGE_ADJ_VOLT_M025P			(0x1 << 24)
++#define	POWER_CHARGE_ADJ_VOLT_P050P			(0x2 << 24)
++#define	POWER_CHARGE_ADJ_VOLT_M075P			(0x3 << 24)
++#define	POWER_CHARGE_ADJ_VOLT_P025P			(0x4 << 24)
++#define	POWER_CHARGE_ADJ_VOLT_M050P			(0x5 << 24)
++#define	POWER_CHARGE_ADJ_VOLT_P075P			(0x6 << 24)
++#define	POWER_CHARGE_ADJ_VOLT_M100P			(0x7 << 24)
++#define	POWER_CHARGE_ENABLE_LOAD			(1 << 22)
++#define MX23_POWER_CHARGE_ENABLE_CHARGER_RESISTORS	(1 << 21)
++#define	POWER_CHARGE_ENABLE_FAULT_DETECT		(1 << 20)
++#define	POWER_CHARGE_CHRG_STS_OFF			(1 << 19)
++#define	MX28_POWER_CHARGE_LIION_4P1			(1 << 18)
++#define	MX23_POWER_CHARGE_USE_EXTERN_R			(1 << 17)
++#define	POWER_CHARGE_PWD_BATTCHRG			(1 << 16)
++#define	MX28_POWER_CHARGE_ENABLE_CHARGER_USB1		(1 << 13)
++#define	MX28_POWER_CHARGE_ENABLE_CHARGER_USB0		(1 << 12)
++#define	POWER_CHARGE_STOP_ILIMIT_MASK			(0xf << 8)
++#define	POWER_CHARGE_STOP_ILIMIT_OFFSET			8
++#define	POWER_CHARGE_STOP_ILIMIT_10MA			(0x1 << 8)
++#define	POWER_CHARGE_STOP_ILIMIT_20MA			(0x2 << 8)
++#define	POWER_CHARGE_STOP_ILIMIT_50MA			(0x4 << 8)
++#define	POWER_CHARGE_STOP_ILIMIT_100MA			(0x8 << 8)
++#define	POWER_CHARGE_BATTCHRG_I_MASK			0x3f
++#define	POWER_CHARGE_BATTCHRG_I_OFFSET			0
++#define	POWER_CHARGE_BATTCHRG_I_10MA			0x01
++#define	POWER_CHARGE_BATTCHRG_I_20MA			0x02
++#define	POWER_CHARGE_BATTCHRG_I_50MA			0x04
++#define	POWER_CHARGE_BATTCHRG_I_100MA			0x08
++#define	POWER_CHARGE_BATTCHRG_I_200MA			0x10
++#define	POWER_CHARGE_BATTCHRG_I_400MA			0x20
++
++#define	POWER_VDDDCTRL_ADJTN_MASK			(0xf << 28)
++#define	POWER_VDDDCTRL_ADJTN_OFFSET			28
++#define	POWER_VDDDCTRL_PWDN_BRNOUT			(1 << 23)
++#define	POWER_VDDDCTRL_DISABLE_STEPPING			(1 << 22)
++#define	POWER_VDDDCTRL_ENABLE_LINREG			(1 << 21)
++#define	POWER_VDDDCTRL_DISABLE_FET			(1 << 20)
++#define	POWER_VDDDCTRL_LINREG_OFFSET_MASK		(0x3 << 16)
++#define	POWER_VDDDCTRL_LINREG_OFFSET_OFFSET		16
++#define	POWER_VDDDCTRL_LINREG_OFFSET_0STEPS		(0x0 << 16)
++#define	POWER_VDDDCTRL_LINREG_OFFSET_1STEPS_ABOVE	(0x1 << 16)
++#define	POWER_VDDDCTRL_LINREG_OFFSET_1STEPS_BELOW	(0x2 << 16)
++#define	POWER_VDDDCTRL_LINREG_OFFSET_2STEPS_BELOW	(0x3 << 16)
++#define	POWER_VDDDCTRL_BO_OFFSET_MASK			(0x7 << 8)
++#define	POWER_VDDDCTRL_BO_OFFSET_OFFSET			8
++#define	POWER_VDDDCTRL_TRG_MASK				0x1f
++#define	POWER_VDDDCTRL_TRG_OFFSET			0
++
++#define	POWER_VDDACTRL_PWDN_BRNOUT			(1 << 19)
++#define	POWER_VDDACTRL_DISABLE_STEPPING			(1 << 18)
++#define	POWER_VDDACTRL_ENABLE_LINREG			(1 << 17)
++#define	POWER_VDDACTRL_DISABLE_FET			(1 << 16)
++#define	POWER_VDDACTRL_LINREG_OFFSET_MASK		(0x3 << 12)
++#define	POWER_VDDACTRL_LINREG_OFFSET_OFFSET		12
++#define	POWER_VDDACTRL_LINREG_OFFSET_0STEPS		(0x0 << 12)
++#define	POWER_VDDACTRL_LINREG_OFFSET_1STEPS_ABOVE	(0x1 << 12)
++#define	POWER_VDDACTRL_LINREG_OFFSET_1STEPS_BELOW	(0x2 << 12)
++#define	POWER_VDDACTRL_LINREG_OFFSET_2STEPS_BELOW	(0x3 << 12)
++#define	POWER_VDDACTRL_BO_OFFSET_MASK			(0x7 << 8)
++#define	POWER_VDDACTRL_BO_OFFSET_OFFSET			8
++#define	POWER_VDDACTRL_TRG_MASK				0x1f
++#define	POWER_VDDACTRL_TRG_OFFSET			0
++
++#define	POWER_VDDIOCTRL_ADJTN_MASK			(0xf << 20)
++#define	POWER_VDDIOCTRL_ADJTN_OFFSET			20
++#define	POWER_VDDIOCTRL_PWDN_BRNOUT			(1 << 18)
++#define	POWER_VDDIOCTRL_DISABLE_STEPPING		(1 << 17)
++#define	POWER_VDDIOCTRL_DISABLE_FET			(1 << 16)
++#define	POWER_VDDIOCTRL_LINREG_OFFSET_MASK		(0x3 << 12)
++#define	POWER_VDDIOCTRL_LINREG_OFFSET_OFFSET		12
++#define	POWER_VDDIOCTRL_LINREG_OFFSET_0STEPS		(0x0 << 12)
++#define	POWER_VDDIOCTRL_LINREG_OFFSET_1STEPS_ABOVE	(0x1 << 12)
++#define	POWER_VDDIOCTRL_LINREG_OFFSET_1STEPS_BELOW	(0x2 << 12)
++#define	POWER_VDDIOCTRL_LINREG_OFFSET_2STEPS_BELOW	(0x3 << 12)
++#define	POWER_VDDIOCTRL_BO_OFFSET_MASK			(0x7 << 8)
++#define	POWER_VDDIOCTRL_BO_OFFSET_OFFSET		8
++#define	POWER_VDDIOCTRL_TRG_MASK			0x1f
++#define	POWER_VDDIOCTRL_TRG_OFFSET			0
++
++#define	POWER_VDDMEMCTRL_PULLDOWN_ACTIVE		(1 << 10)
++#define	POWER_VDDMEMCTRL_ENABLE_ILIMIT			(1 << 9)
++#define	POWER_VDDMEMCTRL_ENABLE_LINREG			(1 << 8)
++#define	MX28_POWER_VDDMEMCTRL_BO_OFFSET_MASK		(0x7 << 5)
++#define	MX28_POWER_VDDMEMCTRL_BO_OFFSET_OFFSET		5
++#define	POWER_VDDMEMCTRL_TRG_MASK			0x1f
++#define	POWER_VDDMEMCTRL_TRG_OFFSET			0
++
++#define	POWER_DCDC4P2_DROPOUT_CTRL_MASK			(0xf << 28)
++#define	POWER_DCDC4P2_DROPOUT_CTRL_OFFSET		28
++#define	POWER_DCDC4P2_DROPOUT_CTRL_200MV		(0x3 << 30)
++#define	POWER_DCDC4P2_DROPOUT_CTRL_100MV		(0x2 << 30)
++#define	POWER_DCDC4P2_DROPOUT_CTRL_50MV			(0x1 << 30)
++#define	POWER_DCDC4P2_DROPOUT_CTRL_25MV			(0x0 << 30)
++#define	POWER_DCDC4P2_DROPOUT_CTRL_SRC_4P2		(0x0 << 28)
++#define	POWER_DCDC4P2_DROPOUT_CTRL_SRC_4P2_LT_BATT	(0x1 << 28)
++#define	POWER_DCDC4P2_DROPOUT_CTRL_SRC_SEL		(0x2 << 28)
++#define	POWER_DCDC4P2_ISTEAL_THRESH_MASK		(0x3 << 24)
++#define	POWER_DCDC4P2_ISTEAL_THRESH_OFFSET		24
++#define	POWER_DCDC4P2_ENABLE_4P2			(1 << 23)
++#define	POWER_DCDC4P2_ENABLE_DCDC			(1 << 22)
++#define	POWER_DCDC4P2_HYST_DIR				(1 << 21)
++#define	POWER_DCDC4P2_HYST_THRESH			(1 << 20)
++#define	POWER_DCDC4P2_TRG_MASK				(0x7 << 16)
++#define	POWER_DCDC4P2_TRG_OFFSET			16
++#define	POWER_DCDC4P2_TRG_4V2				(0x0 << 16)
++#define	POWER_DCDC4P2_TRG_4V1				(0x1 << 16)
++#define	POWER_DCDC4P2_TRG_4V0				(0x2 << 16)
++#define	POWER_DCDC4P2_TRG_3V9				(0x3 << 16)
++#define	POWER_DCDC4P2_TRG_BATT				(0x4 << 16)
++#define	POWER_DCDC4P2_BO_MASK				(0x1f << 8)
++#define	POWER_DCDC4P2_BO_OFFSET				8
++#define	POWER_DCDC4P2_CMPTRIP_MASK			0x1f
++#define	POWER_DCDC4P2_CMPTRIP_OFFSET			0
++
++#define	POWER_MISC_FREQSEL_MASK				(0x7 << 4)
++#define	POWER_MISC_FREQSEL_OFFSET			4
++#define	POWER_MISC_FREQSEL_20MHZ			(0x1 << 4)
++#define	POWER_MISC_FREQSEL_24MHZ			(0x2 << 4)
++#define	POWER_MISC_FREQSEL_19MHZ			(0x3 << 4)
++#define	POWER_MISC_FREQSEL_14MHZ			(0x4 << 4)
++#define	POWER_MISC_FREQSEL_18MHZ			(0x5 << 4)
++#define	POWER_MISC_FREQSEL_21MHZ			(0x6 << 4)
++#define	POWER_MISC_FREQSEL_17MHZ			(0x7 << 4)
++#define	POWER_MISC_DISABLE_FET_BO_LOGIC			(1 << 3)
++#define	POWER_MISC_DELAY_TIMING				(1 << 2)
++#define	POWER_MISC_TEST					(1 << 1)
++#define	POWER_MISC_SEL_PLLCLK				(1 << 0)
++
++#define	POWER_DCLIMITS_POSLIMIT_BUCK_MASK		(0x7f << 8)
++#define	POWER_DCLIMITS_POSLIMIT_BUCK_OFFSET		8
++#define	POWER_DCLIMITS_NEGLIMIT_MASK			0x7f
++#define	POWER_DCLIMITS_NEGLIMIT_OFFSET			0
++
++#define	POWER_LOOPCTRL_TOGGLE_DIF			(1 << 20)
++#define	POWER_LOOPCTRL_HYST_SIGN			(1 << 19)
++#define	POWER_LOOPCTRL_EN_CM_HYST			(1 << 18)
++#define	POWER_LOOPCTRL_EN_DF_HYST			(1 << 17)
++#define	POWER_LOOPCTRL_CM_HYST_THRESH			(1 << 16)
++#define	POWER_LOOPCTRL_DF_HYST_THRESH			(1 << 15)
++#define	POWER_LOOPCTRL_RCSCALE_THRESH			(1 << 14)
++#define	POWER_LOOPCTRL_EN_RCSCALE_MASK			(0x3 << 12)
++#define	POWER_LOOPCTRL_EN_RCSCALE_OFFSET		12
++#define	POWER_LOOPCTRL_EN_RCSCALE_DIS			(0x0 << 12)
++#define	POWER_LOOPCTRL_EN_RCSCALE_2X			(0x1 << 12)
++#define	POWER_LOOPCTRL_EN_RCSCALE_4X			(0x2 << 12)
++#define	POWER_LOOPCTRL_EN_RCSCALE_8X			(0x3 << 12)
++#define	POWER_LOOPCTRL_DC_FF_MASK			(0x7 << 8)
++#define	POWER_LOOPCTRL_DC_FF_OFFSET			8
++#define	POWER_LOOPCTRL_DC_R_MASK			(0xf << 4)
++#define	POWER_LOOPCTRL_DC_R_OFFSET			4
++#define	POWER_LOOPCTRL_DC_C_MASK			0x3
++#define	POWER_LOOPCTRL_DC_C_OFFSET			0
++#define	POWER_LOOPCTRL_DC_C_MAX				0x0
++#define	POWER_LOOPCTRL_DC_C_2X				0x1
++#define	POWER_LOOPCTRL_DC_C_4X				0x2
++#define	POWER_LOOPCTRL_DC_C_MIN				0x3
++
++#define	POWER_STS_PWRUP_SOURCE_MASK			(0x3f << 24)
++#define	POWER_STS_PWRUP_SOURCE_OFFSET			24
++#define	POWER_STS_PWRUP_SOURCE_5V			(0x20 << 24)
++#define	POWER_STS_PWRUP_SOURCE_RTC			(0x10 << 24)
++#define	POWER_STS_PWRUP_SOURCE_PSWITCH_HIGH		(0x02 << 24)
++#define	POWER_STS_PWRUP_SOURCE_PSWITCH_MID		(0x01 << 24)
++#define	POWER_STS_PSWITCH_MASK				(0x3 << 20)
++#define	POWER_STS_PSWITCH_OFFSET			20
++#define	MX28_POWER_STS_THERMAL_WARNING			(1 << 19)
++#define	MX28_POWER_STS_VDDMEM_BO			(1 << 18)
++#define	POWER_STS_AVALID0_STATUS			(1 << 17)
++#define	POWER_STS_BVALID0_STATUS			(1 << 16)
++#define	POWER_STS_VBUSVALID0_STATUS			(1 << 15)
++#define	POWER_STS_SESSEND0_STATUS			(1 << 14)
++#define	POWER_STS_BATT_BO				(1 << 13)
++#define	POWER_STS_VDD5V_FAULT				(1 << 12)
++#define	POWER_STS_CHRGSTS				(1 << 11)
++#define	POWER_STS_DCDC_4P2_BO				(1 << 10)
++#define	POWER_STS_DC_OK					(1 << 9)
++#define	POWER_STS_VDDIO_BO				(1 << 8)
++#define	POWER_STS_VDDA_BO				(1 << 7)
++#define	POWER_STS_VDDD_BO				(1 << 6)
++#define	POWER_STS_VDD5V_GT_VDDIO			(1 << 5)
++#define	POWER_STS_VDD5V_DROOP				(1 << 4)
++#define	POWER_STS_AVALID0				(1 << 3)
++#define	POWER_STS_BVALID0				(1 << 2)
++#define	POWER_STS_VBUSVALID0				(1 << 1)
++#define	POWER_STS_SESSEND0				(1 << 0)
++
++#define	MX23_POWER_SPEED_STATUS_MASK			(0xff << 16)
++#define	MX23_POWER_SPEED_STATUS_OFFSET			16
++#define	MX28_POWER_SPEED_STATUS_MASK			(0xffff << 8)
++#define	MX28_POWER_SPEED_STATUS_OFFSET			8
++#define	MX28_POWER_SPEED_STATUS_SEL_MASK		(0x3 << 6)
++#define	MX28_POWER_SPEED_STATUS_SEL_OFFSET		6
++#define	MX28_POWER_SPEED_STATUS_SEL_DCDC_STAT		(0x0 << 6)
++#define	MX28_POWER_SPEED_STATUS_SEL_CORE_STAT		(0x1 << 6)
++#define	MX28_POWER_SPEED_STATUS_SEL_ARM_STAT		(0x2 << 6)
++#define	POWER_SPEED_CTRL_MASK				0x3
++#define	POWER_SPEED_CTRL_OFFSET				0
++#define	POWER_SPEED_CTRL_SS_OFF				0x0
++#define	POWER_SPEED_CTRL_SS_ON				0x1
++#define	POWER_SPEED_CTRL_SS_ENABLE			0x3
++
++#define	POWER_BATTMONITOR_BATT_VAL_MASK			(0x3ff << 16)
++#define	POWER_BATTMONITOR_BATT_VAL_OFFSET		16
++#define	MX28_POWER_BATTMONITOR_PWDN_BATTBRNOUT_5VDETECT_EN	(1 << 11)
++#define	POWER_BATTMONITOR_EN_BATADJ			(1 << 10)
++#define	POWER_BATTMONITOR_PWDN_BATTBRNOUT		(1 << 9)
++#define	POWER_BATTMONITOR_BRWNOUT_PWD			(1 << 8)
++#define	POWER_BATTMONITOR_BRWNOUT_LVL_MASK		0x1f
++#define	POWER_BATTMONITOR_BRWNOUT_LVL_OFFSET		0
++
++#define	POWER_RESET_UNLOCK_MASK				(0xffff << 16)
++#define	POWER_RESET_UNLOCK_OFFSET			16
++#define	POWER_RESET_UNLOCK_KEY				(0x3e77 << 16)
++#define	MX28_POWER_RESET_FASTFALL_PSWITCH_OFF		(1 << 2)
++#define	POWER_RESET_PWD_OFF				(1 << 1)
++#define	POWER_RESET_PWD					(1 << 0)
++
++#define	POWER_DEBUG_VBUSVALIDPIOLOCK			(1 << 3)
++#define	POWER_DEBUG_AVALIDPIOLOCK			(1 << 2)
++#define	POWER_DEBUG_BVALIDPIOLOCK			(1 << 1)
++#define	POWER_DEBUG_SESSENDPIOLOCK			(1 << 0)
++
++#define	MX28_POWER_THERMAL_TEST				(1 << 8)
++#define	MX28_POWER_THERMAL_PWD				(1 << 7)
++#define	MX28_POWER_THERMAL_LOW_POWER			(1 << 6)
++#define	MX28_POWER_THERMAL_OFFSET_ADJ_MASK		(0x3 << 4)
++#define	MX28_POWER_THERMAL_OFFSET_ADJ_OFFSET		4
++#define	MX28_POWER_THERMAL_OFFSET_ADJ_ENABLE		(1 << 3)
++#define	MX28_POWER_THERMAL_TEMP_THRESHOLD_MASK		0x7
++#define	MX28_POWER_THERMAL_TEMP_THRESHOLD_OFFSET	0
++
++#define	MX28_POWER_USB1CTRL_AVALID1			(1 << 3)
++#define	MX28_POWER_USB1CTRL_BVALID1			(1 << 2)
++#define	MX28_POWER_USB1CTRL_VBUSVALID1			(1 << 1)
++#define	MX28_POWER_USB1CTRL_SESSEND1			(1 << 0)
++
++#define	POWER_SPECIAL_TEST_MASK				0xffffffff
++#define	POWER_SPECIAL_TEST_OFFSET			0
++
++#define	POWER_VERSION_MAJOR_MASK			(0xff << 24)
++#define	POWER_VERSION_MAJOR_OFFSET			24
++#define	POWER_VERSION_MINOR_MASK			(0xff << 16)
++#define	POWER_VERSION_MINOR_OFFSET			16
++#define	POWER_VERSION_STEP_MASK				0xffff
++#define	POWER_VERSION_STEP_OFFSET			0
++
++#define	MX28_POWER_ANACLKCTRL_CLKGATE_0			(1 << 31)
++#define	MX28_POWER_ANACLKCTRL_OUTDIV_MASK		(0x7 << 28)
++#define	MX28_POWER_ANACLKCTRL_OUTDIV_OFFSET		28
++#define	MX28_POWER_ANACLKCTRL_INVERT_OUTCLK		(1 << 27)
++#define	MX28_POWER_ANACLKCTRL_CLKGATE_I			(1 << 26)
++#define	MX28_POWER_ANACLKCTRL_DITHER_OFF		(1 << 10)
++#define	MX28_POWER_ANACLKCTRL_SLOW_DITHER		(1 << 9)
++#define	MX28_POWER_ANACLKCTRL_INVERT_INCLK		(1 << 8)
++#define	MX28_POWER_ANACLKCTRL_INCLK_SHIFT_MASK		(0x3 << 4)
++#define	MX28_POWER_ANACLKCTRL_INCLK_SHIFT_OFFSET	4
++#define	MX28_POWER_ANACLKCTRL_INDIV_MASK		0x7
++#define	MX28_POWER_ANACLKCTRL_INDIV_OFFSET		0
++
++#define	MX28_POWER_REFCTRL_FASTSETTLING			(1 << 26)
++#define	MX28_POWER_REFCTRL_RAISE_REF			(1 << 25)
++#define	MX28_POWER_REFCTRL_XTAL_BGR_BIAS		(1 << 24)
++#define	MX28_POWER_REFCTRL_VBG_ADJ_MASK			(0x7 << 20)
++#define	MX28_POWER_REFCTRL_VBG_ADJ_OFFSET		20
++#define	MX28_POWER_REFCTRL_LOW_PWR			(1 << 19)
++#define	MX28_POWER_REFCTRL_BIAS_CTRL_MASK		(0x3 << 16)
++#define	MX28_POWER_REFCTRL_BIAS_CTRL_OFFSET		16
++#define	MX28_POWER_REFCTRL_VDDXTAL_TO_VDDD		(1 << 14)
++#define	MX28_POWER_REFCTRL_ADJ_ANA			(1 << 13)
++#define	MX28_POWER_REFCTRL_ADJ_VAG			(1 << 12)
++#define	MX28_POWER_REFCTRL_ANA_REFVAL_MASK		(0xf << 8)
++#define	MX28_POWER_REFCTRL_ANA_REFVAL_OFFSET		8
++#define	MX28_POWER_REFCTRL_VAG_VAL_MASK			(0xf << 4)
++#define	MX28_POWER_REFCTRL_VAG_VAL_OFFSET		4
++
++#endif	/* __MX28_REGS_POWER_H__ */
+diff --git a/arch/arm/mach-mxs/include/mach/regs-rtc.h b/arch/arm/mach-mxs/include/mach/regs-rtc.h
+new file mode 100644
+index 0000000..bd8fdad
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/regs-rtc.h
+@@ -0,0 +1,134 @@
++/*
++ * Freescale i.MX28 RTC Register Definitions
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __MX28_REGS_RTC_H__
++#define __MX28_REGS_RTC_H__
++
++#include <mach/regs-common.h>
++
++#ifndef	__ASSEMBLY__
++struct mxs_rtc_regs {
++	mxs_reg_32(hw_rtc_ctrl)
++	mxs_reg_32(hw_rtc_stat)
++	mxs_reg_32(hw_rtc_milliseconds)
++	mxs_reg_32(hw_rtc_seconds)
++	mxs_reg_32(hw_rtc_rtc_alarm)
++	mxs_reg_32(hw_rtc_watchdog)
++	mxs_reg_32(hw_rtc_persistent0)
++	mxs_reg_32(hw_rtc_persistent1)
++	mxs_reg_32(hw_rtc_persistent2)
++	mxs_reg_32(hw_rtc_persistent3)
++	mxs_reg_32(hw_rtc_persistent4)
++	mxs_reg_32(hw_rtc_persistent5)
++	mxs_reg_32(hw_rtc_debug)
++	mxs_reg_32(hw_rtc_version)
++};
++#endif
++
++#define	RTC_CTRL_SFTRST				(1 << 31)
++#define	RTC_CTRL_CLKGATE			(1 << 30)
++#define	RTC_CTRL_SUPPRESS_COPY2ANALOG		(1 << 6)
++#define	RTC_CTRL_FORCE_UPDATE			(1 << 5)
++#define	RTC_CTRL_WATCHDOGEN			(1 << 4)
++#define	RTC_CTRL_ONEMSEC_IRQ			(1 << 3)
++#define	RTC_CTRL_ALARM_IRQ			(1 << 2)
++#define	RTC_CTRL_ONEMSEC_IRQ_EN			(1 << 1)
++#define	RTC_CTRL_ALARM_IRQ_EN			(1 << 0)
++
++#define	RTC_STAT_RTC_PRESENT			(1 << 31)
++#define	RTC_STAT_ALARM_PRESENT			(1 << 30)
++#define	RTC_STAT_WATCHDOG_PRESENT		(1 << 29)
++#define	RTC_STAT_XTAL32000_PRESENT		(1 << 28)
++#define	RTC_STAT_XTAL32768_PRESENT		(1 << 27)
++#define	RTC_STAT_STALE_REGS_MASK		(0xff << 16)
++#define	RTC_STAT_STALE_REGS_OFFSET		16
++#define	RTC_STAT_NEW_REGS_MASK			(0xff << 8)
++#define	RTC_STAT_NEW_REGS_OFFSET		8
++
++#define	RTC_MILLISECONDS_COUNT_MASK		0xffffffff
++#define	RTC_MILLISECONDS_COUNT_OFFSET		0
++
++#define	RTC_SECONDS_COUNT_MASK			0xffffffff
++#define	RTC_SECONDS_COUNT_OFFSET		0
++
++#define	RTC_ALARM_VALUE_MASK			0xffffffff
++#define	RTC_ALARM_VALUE_OFFSET			0
++
++#define	RTC_WATCHDOG_COUNT_MASK			0xffffffff
++#define	RTC_WATCHDOG_COUNT_OFFSET		0
++
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_MASK	(0xf << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_OFFSET	28
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V83	(0x0 << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V78	(0x1 << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V73	(0x2 << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V68	(0x3 << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V62	(0x4 << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V57	(0x5 << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V52	(0x6 << 28)
++#define	RTC_PERSISTENT0_ADJ_POSLIMITBUCK_2V48	(0x7 << 28)
++#define	RTC_PERSISTENT0_EXTERNAL_RESET		(1 << 21)
++#define	RTC_PERSISTENT0_THERMAL_RESET		(1 << 20)
++#define	RTC_PERSISTENT0_ENABLE_LRADC_PWRUP	(1 << 18)
++#define	RTC_PERSISTENT0_AUTO_RESTART		(1 << 17)
++#define	RTC_PERSISTENT0_DISABLE_PSWITCH		(1 << 16)
++#define	RTC_PERSISTENT0_LOWERBIAS_MASK		(0xf << 14)
++#define	RTC_PERSISTENT0_LOWERBIAS_OFFSET	14
++#define	RTC_PERSISTENT0_LOWERBIAS_NOMINAL	(0x0 << 14)
++#define	RTC_PERSISTENT0_LOWERBIAS_M25P		(0x1 << 14)
++#define	RTC_PERSISTENT0_LOWERBIAS_M50P		(0x3 << 14)
++#define	RTC_PERSISTENT0_DISABLE_XTALOK		(1 << 13)
++#define	RTC_PERSISTENT0_MSEC_RES_MASK		(0x1f << 8)
++#define	RTC_PERSISTENT0_MSEC_RES_OFFSET		8
++#define	RTC_PERSISTENT0_MSEC_RES_1MS		(0x01 << 8)
++#define	RTC_PERSISTENT0_MSEC_RES_2MS		(0x02 << 8)
++#define	RTC_PERSISTENT0_MSEC_RES_4MS		(0x04 << 8)
++#define	RTC_PERSISTENT0_MSEC_RES_8MS		(0x08 << 8)
++#define	RTC_PERSISTENT0_MSEC_RES_16MS		(0x10 << 8)
++#define	RTC_PERSISTENT0_ALARM_WAKE		(1 << 7)
++#define	RTC_PERSISTENT0_XTAL32_FREQ		(1 << 6)
++#define	RTC_PERSISTENT0_XTAL32KHZ_PWRUP		(1 << 5)
++#define	RTC_PERSISTENT0_XTAL24KHZ_PWRUP		(1 << 4)
++#define	RTC_PERSISTENT0_LCK_SECS		(1 << 3)
++#define	RTC_PERSISTENT0_ALARM_EN		(1 << 2)
++#define	RTC_PERSISTENT0_ALARM_WAKE_EN		(1 << 1)
++#define	RTC_PERSISTENT0_CLOCKSOURCE		(1 << 0)
++
++#define	RTC_PERSISTENT1_GENERAL_MASK		0xffffffff
++#define	RTC_PERSISTENT1_GENERAL_OFFSET		0
++#define	RTC_PERSISTENT1_GENERAL_OTG_ALT_ROLE	0x0080
++#define	RTC_PERSISTENT1_GENERAL_OTG_HNP		0x0100
++#define	RTC_PERSISTENT1_GENERAL_USB_LPM		0x0200
++#define	RTC_PERSISTENT1_GENERAL_SKIP_CHECKDISK	0x0400
++#define	RTC_PERSISTENT1_GENERAL_USB_BOOT_PLAYER	0x0800
++#define	RTC_PERSISTENT1_GENERAL_ENUM_500MA_2X	0x1000
++
++#define	RTC_PERSISTENT2_GENERAL_MASK		0xffffffff
++#define	RTC_PERSISTENT2_GENERAL_OFFSET		0
++
++#define	RTC_PERSISTENT3_GENERAL_MASK		0xffffffff
++#define	RTC_PERSISTENT3_GENERAL_OFFSET		0
++
++#define	RTC_PERSISTENT4_GENERAL_MASK		0xffffffff
++#define	RTC_PERSISTENT4_GENERAL_OFFSET		0
++
++#define	RTC_PERSISTENT5_GENERAL_MASK		0xffffffff
++#define	RTC_PERSISTENT5_GENERAL_OFFSET		0
++
++#define	RTC_DEBUG_WATCHDOG_RESET_MASK		(1 << 1)
++#define	RTC_DEBUG_WATCHDOG_RESET		(1 << 0)
++
++#define	RTC_VERSION_MAJOR_MASK			(0xff << 24)
++#define	RTC_VERSION_MAJOR_OFFSET		24
++#define	RTC_VERSION_MINOR_MASK			(0xff << 16)
++#define	RTC_VERSION_MINOR_OFFSET		16
++#define	RTC_VERSION_STEP_MASK			0xffff
++#define	RTC_VERSION_STEP_OFFSET			0
++
++#endif	/* __MX28_REGS_RTC_H__ */
+diff --git a/arch/arm/mach-mxs/lradc-init.c b/arch/arm/mach-mxs/lradc-init.c
+new file mode 100644
+index 0000000..682a475
+--- /dev/null
++++ b/arch/arm/mach-mxs/lradc-init.c
+@@ -0,0 +1,70 @@
++/*
++ * Freescale i.MX28 Battery measurement init
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <common.h>
++#include <config.h>
++#include <asm/io.h>
++#include <mach/imx-regs.h>
++#include <mach/regs-lradc.h>
++#include <mach/init.h>
++
++void mxs_lradc_init(void)
 +{
-+	uint32_t ret = 0;
-+	ret |= SB_HAB_IVT_TAG << 24;
-+	ret |= sizeof(struct sb_ivt_header) << 16;
-+	ret |= SB_HAB_VERSION;
-+	return htonl(ret);
++	struct mxs_lradc_regs *regs = (struct mxs_lradc_regs *)IMX_LRADC_BASE;
++
++	writel(LRADC_CTRL0_SFTRST, &regs->hw_lradc_ctrl0_clr);
++	writel(LRADC_CTRL0_CLKGATE, &regs->hw_lradc_ctrl0_clr);
++	writel(LRADC_CTRL0_ONCHIP_GROUNDREF, &regs->hw_lradc_ctrl0_clr);
++
++	clrsetbits_le32(&regs->hw_lradc_ctrl3,
++			LRADC_CTRL3_CYCLE_TIME_MASK,
++			LRADC_CTRL3_CYCLE_TIME_6MHZ);
++
++	clrsetbits_le32(&regs->hw_lradc_ctrl4,
++			LRADC_CTRL4_LRADC7SELECT_MASK |
++			LRADC_CTRL4_LRADC6SELECT_MASK,
++			LRADC_CTRL4_LRADC7SELECT_CHANNEL7 |
++			LRADC_CTRL4_LRADC6SELECT_CHANNEL10);
 +}
 +
-+struct sb_sections_header {
-+	/* Section number. */
-+	uint32_t	section_number;
-+	/* Offset of this sections first instruction after "TAG". */
-+	uint32_t	section_offset;
-+	/* Size of the section in 16b blocks. */
-+	uint32_t	section_size;
-+	/* Section flags. */
-+	uint32_t	section_flags;
-+};
-+
-+#define	SB_SECTION_FLAG_BOOTABLE	(1 << 0)
-+
-+struct sb_command {
-+	struct {
-+		uint8_t		checksum;
-+		uint8_t		tag;
-+		uint16_t	flags;
-+#define ROM_TAG_CMD_FLAG_ROM_LAST_TAG	0x1
-+#define ROM_LOAD_CMD_FLAG_DCD_LOAD	0x1	/* MX28 only */
-+#define ROM_JUMP_CMD_FLAG_HAB		0x1	/* MX28 only */
-+#define ROM_CALL_CMD_FLAG_HAB		0x1	/* MX28 only */
-+	} header;
-+
-+	union {
-+	struct {
-+		uint32_t	reserved[3];
-+	} nop;
-+	struct {
-+		uint32_t	section_number;
-+		uint32_t	section_length;
-+		uint32_t	section_flags;
-+	} tag;
-+	struct {
-+		uint32_t	address;
-+		uint32_t	count;
-+		uint32_t	crc32;
-+	} load;
-+	struct {
-+		uint32_t	address;
-+		uint32_t	count;
-+		uint32_t	pattern;
-+	} fill;
-+	struct {
-+		uint32_t	address;
-+		uint32_t	reserved;
-+		/* Passed in register r0 before JUMP */
-+		uint32_t	argument;
-+	} jump;
-+	struct {
-+		uint32_t	address;
-+		uint32_t	reserved;
-+		/* Passed in register r0 before CALL */
-+		uint32_t	argument;
-+	} call;
-+	struct {
-+		uint32_t	reserved1;
-+		uint32_t	reserved2;
-+		uint32_t	mode;
-+	} mode;
-+
-+	};
-+};
-+
-+/*
-+ * Most of the mode names are same or at least similar
-+ * on i.MX23 and i.MX28, but some of the mode names
-+ * differ. The "name" field represents the mode name
-+ * on i.MX28 as seen in Table 12-2 of the datasheet.
-+ * The "altname" field represents the differently named
-+ * fields on i.MX23 as seen in Table 35-3 of the
-+ * datasheet.
-+ */
-+static const struct {
-+	const char	*name;
-+	const char	*altname;
-+	const uint8_t	mode;
-+} modetable[] = {
-+	{ "USB",		NULL,		0x00 },
-+	{ "I2C",		NULL,		0x01 },
-+	{ "SPI2_FLASH",		"SPI1_FLASH",	0x02 },
-+	{ "SPI3_FLASH",		"SPI2_FLASH",	0x03 },
-+	{ "NAND_BCH",		NULL,		0x04 },
-+	{ "JTAG",		NULL,		0x06 },
-+	{ "SPI3_EEPROM",	"SPI2_EEPROM",	0x08 },
-+	{ "SD_SSP0",		NULL,		0x09 },
-+	{ "SD_SSP1",		NULL,		0x0A }
-+};
-+
-+enum sb_tag {
-+	ROM_NOP_CMD	= 0x00,
-+	ROM_TAG_CMD	= 0x01,
-+	ROM_LOAD_CMD	= 0x02,
-+	ROM_FILL_CMD	= 0x03,
-+	ROM_JUMP_CMD	= 0x04,
-+	ROM_CALL_CMD	= 0x05,
-+	ROM_MODE_CMD	= 0x06
-+};
-+
-+struct sb_source_entry {
-+	uint8_t		tag;
-+	uint32_t	address;
-+	uint32_t	flags;
-+	char		*filename;
-+};
-+
-+/*
-+ * DCD block
-+ * |-Write to address command block
-+ * |  0xf00 == 0xf33d
-+ * |  0xba2 == 0xb33f
-+ * |-ORR address with mask command block
-+ * |  0xf00 |= 0x1337
-+ * |-Write to address command block
-+ * |  0xba2 == 0xd00d
-+ * :
-+ */
-+#define SB_HAB_DCD_WRITE	0xccUL
-+#define SB_HAB_DCD_CHECK	0xcfUL
-+#define SB_HAB_DCD_NOOP		0xc0UL
-+#define SB_HAB_DCD_MASK_BIT	(1 << 3)
-+#define SB_HAB_DCD_SET_BIT	(1 << 4)
-+
-+/* Addr.n = Value.n */
-+#define	SB_DCD_WRITE	\
-+	(SB_HAB_DCD_WRITE << 24)
-+/* Addr.n &= ~Value.n */
-+#define	SB_DCD_ANDC	\
-+	((SB_HAB_DCD_WRITE << 24) | SB_HAB_DCD_SET_BIT)
-+/* Addr.n |= Value.n */
-+#define	SB_DCD_ORR	\
-+	((SB_HAB_DCD_WRITE << 24) | SB_HAB_DCD_SET_BIT | SB_HAB_DCD_MASK_BIT)
-+/* (Addr.n & Value.n) == 0 */
-+#define	SB_DCD_CHK_EQZ	\
-+	(SB_HAB_DCD_CHECK << 24)
-+/* (Addr.n & Value.n) == Value.n */
-+#define	SB_DCD_CHK_EQ	\
-+	((SB_HAB_DCD_CHECK << 24) | SB_HAB_DCD_SET_BIT)
-+/* (Addr.n & Value.n) != Value.n */
-+#define	SB_DCD_CHK_NEQ	\
-+	((SB_HAB_DCD_CHECK << 24) | SB_HAB_DCD_MASK_BIT)
-+/* (Addr.n & Value.n) != 0 */
-+#define	SB_DCD_CHK_NEZ	\
-+	((SB_HAB_DCD_CHECK << 24) | SB_HAB_DCD_SET_BIT | SB_HAB_DCD_MASK_BIT)
-+/* NOP */
-+#define	SB_DCD_NOOP	\
-+	(SB_HAB_DCD_NOOP << 24)
-+
-+struct sb_dcd_ctx {
-+	struct sb_dcd_ctx		*dcd;
-+
-+	uint32_t			id;
-+
-+	/* The DCD block. */
-+	uint32_t			*payload;
-+	/* Size of the whole DCD block. */
-+	uint32_t			size;
-+
-+	/* Pointer to previous DCD command block. */
-+	uint32_t			*prev_dcd_head;
-+};
-+
-+/*
-+ * IMAGE
-+ *   |-SECTION
-+ *   |    |-CMD
-+ *   |    |-CMD
-+ *   |    `-CMD
-+ *   |-SECTION
-+ *   |    |-CMD
-+ *   :    :
-+ */
-+struct sb_cmd_list {
-+	char				*cmd;
-+	size_t				len;
-+	unsigned int			lineno;
-+};
-+
-+struct sb_cmd_ctx {
-+	uint32_t			size;
-+
-+	struct sb_cmd_ctx		*cmd;
-+
-+	uint8_t				*data;
-+	uint32_t			length;
-+
-+	struct sb_command		payload;
-+	struct sb_command		c_payload;
-+};
-+
-+struct sb_section_ctx {
-+	uint32_t			size;
-+
-+	/* Section flags */
-+	unsigned int			boot:1;
-+
-+	struct sb_section_ctx		*sect;
-+
-+	struct sb_cmd_ctx		*cmd_head;
-+	struct sb_cmd_ctx		*cmd_tail;
-+
-+	struct sb_sections_header	payload;
-+};
-+
-+struct sb_image_ctx {
-+	unsigned int			in_section:1;
-+	unsigned int			in_dcd:1;
-+	/* Image configuration */
-+	unsigned int			verbose_boot:1;
-+	unsigned int			silent_dump:1;
-+	const char			*input_filename;
-+	const char			*output_filename;
-+	const char			*cfg_filename;
-+	uint8_t				image_key[16];
-+
-+	/* Number of section in the image */
-+	unsigned int			sect_count;
-+	/* Bootable section */
-+	unsigned int			sect_boot;
-+	unsigned int			sect_boot_found:1;
-+
-+	struct sb_section_ctx		*sect_head;
-+	struct sb_section_ctx		*sect_tail;
-+
-+	struct sb_dcd_ctx		*dcd_head;
-+	struct sb_dcd_ctx		*dcd_tail;
-+
-+	EVP_CIPHER_CTX			cipher_ctx;
-+	EVP_MD_CTX			md_ctx;
-+	uint8_t				digest[32];
-+	struct sb_key_dictionary_key	sb_dict_key;
-+
-+	struct sb_boot_image_header	payload;
-+};
-+
-+/*
-+ * Instruction semantics:
-+ * NOOP
-+ * TAG [LAST]
-+ * LOAD       address file
-+ * LOAD  IVT  address IVT_entry_point
-+ * FILL address pattern length
-+ * JUMP [HAB] address [r0_arg]
-+ * CALL [HAB] address [r0_arg]
-+ * MODE mode
-+ *      For i.MX23, mode = USB/I2C/SPI1_FLASH/SPI2_FLASH/NAND_BCH
-+ *                         JTAG/SPI3_EEPROM/SD_SSP0/SD_SSP1
-+ *      For i.MX28, mode = USB/I2C/SPI2_FLASH/SPI3_FLASH/NAND_BCH
-+ *                         JTAG/SPI2_EEPROM/SD_SSP0/SD_SSP1
-+ */
-+
-+static uint32_t crc_table[256];
-+static int crc_table_valid;
-+
-+static void make_crc_table(void)
++void mxs_lradc_enable_batt_measurement(void)
 +{
-+	uint32_t mask;
-+	int i, j;
-+	uint32_t poly; /* polynomial exclusive-or pattern */
++	struct mxs_lradc_regs *regs = (struct mxs_lradc_regs *)IMX_LRADC_BASE;
 +
-+	if (crc_table_valid)
++	/* Check if the channel is present at all. */
++	if (!(readl(&regs->hw_lradc_status) & LRADC_STATUS_CHANNEL7_PRESENT))
 +		return;
 +
-+	/*
-+	 * the polynomial used by PBL is 1 + x1 + x2 + x4 + x5 + x7 + x8 + x10
-+	 * + x11 + x12 + x16 + x22 + x23 + x26 + x32.
-+	 */
-+	poly = 0x04c11db7;
++	writel(LRADC_CTRL1_LRADC7_IRQ_EN, &regs->hw_lradc_ctrl1_clr);
++	writel(LRADC_CTRL1_LRADC7_IRQ, &regs->hw_lradc_ctrl1_clr);
 +
-+	for (i = 0; i < 256; i++) {
-+		mask = i << 24;
-+		for (j = 0; j < 8; j++) {
-+			if (mask & 0x80000000)
-+				mask = (mask << 1) ^ poly;
-+			else
-+				mask <<= 1;
-+		}
-+		crc_table[i] = mask;
-+	}
++	clrsetbits_le32(&regs->hw_lradc_conversion,
++			LRADC_CONVERSION_SCALE_FACTOR_MASK,
++			LRADC_CONVERSION_SCALE_FACTOR_LI_ION);
++	writel(LRADC_CONVERSION_AUTOMATIC, &regs->hw_lradc_conversion_set);
 +
-+	crc_table_valid = 1;
++	/* Configure the channel. */
++	writel((1 << 7) << LRADC_CTRL2_DIVIDE_BY_TWO_OFFSET,
++		&regs->hw_lradc_ctrl2_clr);
++	writel(0xffffffff, &regs->hw_lradc_ch7_clr);
++	clrbits_le32(&regs->hw_lradc_ch7, LRADC_CH_NUM_SAMPLES_MASK);
++	writel(LRADC_CH_ACCUMULATE, &regs->hw_lradc_ch7_clr);
++
++	/* Schedule the channel. */
++	writel(1 << 7, &regs->hw_lradc_ctrl0_set);
++
++	/* Start the channel sampling. */
++	writel(((1 << 7) << LRADC_DELAY_TRIGGER_LRADCS_OFFSET) |
++		((1 << 3) << LRADC_DELAY_TRIGGER_DELAYS_OFFSET) |
++		100, &regs->hw_lradc_delay3);
++
++	writel(0xffffffff, &regs->hw_lradc_ch7_clr);
++
++	writel(LRADC_DELAY_KICK, &regs->hw_lradc_delay3_set);
 +}
+diff --git a/arch/arm/mach-mxs/mem-init.c b/arch/arm/mach-mxs/mem-init.c
+new file mode 100644
+index 0000000..f4328b7
+--- /dev/null
++++ b/arch/arm/mach-mxs/mem-init.c
+@@ -0,0 +1,292 @@
++/*
++ * Freescale i.MX28 RAM init
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
 +
-+uint32_t pbl_crc32(uint32_t in_crc, const char *buf, uint32_t len)
++#include <common.h>
++#include <config.h>
++#include <io.h>
++#include <mach/imx-regs.h>
++#include <linux/compiler.h>
++#include <stmp-device.h>
++
++#include <mach/init.h>
++#include <mach/regs-power-mx28.h>
++#include <mach/regs-clkctrl-mx28.h>
++
++static uint32_t mx28_dram_vals[] = {
++/*
++ * i.MX28 DDR2 at 200MHz
++ */
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000100, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00010101, 0x01010101,
++	0x000f0f01, 0x0f02020a, 0x00000000, 0x00010101,
++	0x00000100, 0x00000100, 0x00000000, 0x00000002,
++	0x01010000, 0x07080403, 0x06005003, 0x0a0000c8,
++	0x02009c40, 0x0002030c, 0x0036a609, 0x031a0612,
++	0x02030202, 0x00c8001c, 0x00000000, 0x00000000,
++	0x00012100, 0xffff0303, 0x00012100, 0xffff0303,
++	0x00012100, 0xffff0303, 0x00012100, 0xffff0303,
++	0x00000003, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000612, 0x01000F02,
++	0x06120612, 0x00000200, 0x00020007, 0xf4004a27,
++	0xf4004a27, 0xf4004a27, 0xf4004a27, 0x07000300,
++	0x07000300, 0x07400300, 0x07400300, 0x00000005,
++	0x00000000, 0x00000000, 0x01000000, 0x01020408,
++	0x08040201, 0x000f1133, 0x00000000, 0x00001f04,
++	0x00001f04, 0x00001f04, 0x00001f04, 0x00001f04,
++	0x00001f04, 0x00001f04, 0x00001f04, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00010000, 0x00030404,
++	0x00000003, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0x00000000, 0x00000000, 0x01010000,
++	0x01000000, 0x03030000, 0x00010303, 0x01020202,
++	0x00000000, 0x02040303, 0x21002103, 0x00061200,
++	0x06120612, 0x04420442, 0x04420442, 0x00040004,
++	0x00040004, 0x00000000, 0x00000000, 0x00000000,
++	0x00000000, 0xffffffff
++};
++
++/*
++ * i.MX23 DDR at 133MHz
++ */
++static uint32_t mx23_dram_vals[] = {
++	0x01010001, 0x00010100, 0x01000101, 0x00000001,
++	0x00000101, 0x00000000, 0x00010000, 0x01000001,
++	0x00000000, 0x00000001, 0x07000200, 0x00070202,
++	0x02020000, 0x04040a01, 0x00000201, 0x02040000,
++	0x02000000, 0x19000f08, 0x0d0d0000, 0x02021313,
++	0x02061521, 0x0000000a, 0x00080008, 0x00200020,
++	0x00200020, 0x00200020, 0x000003f7, 0x00000000,
++	0x00000000, 0x00000020, 0x00000020, 0x00c80000,
++	0x000a23cd, 0x000000c8, 0x00006665, 0x00000000,
++	0x00000101, 0x00040001, 0x00000000, 0x00000000,
++	0x00010000
++};
++
++static void mx28_initialize_dram_values(void)
 +{
-+	uint32_t crc32_val;
 +	int i;
 +
-+	make_crc_table();
-+
-+	crc32_val = ~in_crc;
-+
-+	for (i = 0; i < len; i++)
-+		crc32_val = (crc32_val << 8) ^
-+			crc_table[(crc32_val >> 24) ^ (*buf++ & 0xff)];
-+
-+	return crc32_val;
-+}
-+/*
-+ * AES libcrypto
-+ */
-+static int sb_aes_init(struct sb_image_ctx *ictx, uint8_t *iv, int enc)
-+{
-+	EVP_CIPHER_CTX *ctx = &ictx->cipher_ctx;
-+	int ret;
-+
-+	/* If there is no init vector, init vector is all zeroes. */
-+	if (!iv)
-+		iv = ictx->image_key;
-+
-+	EVP_CIPHER_CTX_init(ctx);
-+	ret = EVP_CipherInit(ctx, EVP_aes_128_cbc(), ictx->image_key, iv, enc);
-+	if (ret == 1)
-+		EVP_CIPHER_CTX_set_padding(ctx, 0);
-+	return ret;
++	for (i = 0; i < ARRAY_SIZE(mx28_dram_vals); i++)
++		writel(mx28_dram_vals[i], IMX_SDRAMC_BASE + (4 * i));
 +}
 +
-+static int sb_aes_crypt(struct sb_image_ctx *ictx, uint8_t *in_data,
-+			uint8_t *out_data, int in_len)
++static void mx23_initialize_dram_values(void)
 +{
-+	EVP_CIPHER_CTX *ctx = &ictx->cipher_ctx;
-+	int ret, outlen;
-+	uint8_t *outbuf;
++	int i;
 +
-+	outbuf = malloc(in_len);
-+	if (!outbuf)
-+		return -ENOMEM;
-+	memset(outbuf, 0, sizeof(in_len));
-+
-+	ret = EVP_CipherUpdate(ctx, outbuf, &outlen, in_data, in_len);
-+	if (!ret) {
-+		ret = -EINVAL;
-+		goto err;
++	/*
++	 * HW_DRAM_CTL27, HW_DRAM_CTL28 and HW_DRAM_CTL35 are not initialized as
++	 * per FSL bootlets code.
++	 *
++	 * mx23 Reference Manual marks HW_DRAM_CTL27 and HW_DRAM_CTL28 as
++	 * "reserved".
++	 * HW_DRAM_CTL8 is setup as the last element.
++	 * So skip the initialization of these HW_DRAM_CTL registers.
++	 */
++	for (i = 0; i < ARRAY_SIZE(mx23_dram_vals); i++) {
++		if (i == 8 || i == 27 || i == 28 || i == 35)
++			continue;
++		writel(mx23_dram_vals[i], IMX_SDRAMC_BASE + (4 * i));
 +	}
 +
-+	if (out_data)
-+		memcpy(out_data, outbuf, outlen);
-+
-+err:
-+	free(outbuf);
-+	return ret;
++	/*
++	 * Enable tRAS lockout in HW_DRAM_CTL08 ; it must be the last
++	 * element to be set
++	 */
++	writel((1 << 24), IMX_SDRAMC_BASE + (4 * 8));
 +}
 +
-+static int sb_aes_deinit(EVP_CIPHER_CTX *ctx)
++void mxs_mem_init_clock(unsigned char divider)
 +{
-+	return EVP_CIPHER_CTX_cleanup(ctx);
++	struct mxs_clkctrl_regs *clkctrl_regs =
++		(struct mxs_clkctrl_regs *)IMX_CCM_BASE;
++
++	/* Gate EMI clock */
++	writeb(CLKCTRL_FRAC_CLKGATE,
++		&clkctrl_regs->hw_clkctrl_frac0_set[CLKCTRL_FRAC0_EMI]);
++
++	/* Set fractional divider for ref_emi */
++	writeb(CLKCTRL_FRAC_CLKGATE | (divider & CLKCTRL_FRAC_FRAC_MASK),
++		&clkctrl_regs->hw_clkctrl_frac0[CLKCTRL_FRAC0_EMI]);
++
++	/* Ungate EMI clock */
++	writeb(CLKCTRL_FRAC_CLKGATE,
++		&clkctrl_regs->hw_clkctrl_frac0_clr[CLKCTRL_FRAC0_EMI]);
++
++	mxs_early_delay(11000);
++
++	/* Set EMI clock divider for EMI clock to 411 / 2 = 205MHz */
++	writel((2 << CLKCTRL_EMI_DIV_EMI_OFFSET) |
++		(1 << CLKCTRL_EMI_DIV_XTAL_OFFSET),
++		&clkctrl_regs->hw_clkctrl_emi);
++
++	/* Unbypass EMI */
++	writel(CLKCTRL_CLKSEQ_BYPASS_EMI,
++		&clkctrl_regs->hw_clkctrl_clkseq_clr);
++
++	mxs_early_delay(10000);
 +}
 +
-+static int sb_aes_reinit(struct sb_image_ctx *ictx, int enc)
++void mxs_mem_setup_cpu_and_hbus(void)
 +{
-+	int ret;
-+	EVP_CIPHER_CTX *ctx = &ictx->cipher_ctx;
-+	struct sb_boot_image_header *sb_header = &ictx->payload;
-+	uint8_t *iv = sb_header->iv;
++	struct mxs_clkctrl_regs *clkctrl_regs =
++		(struct mxs_clkctrl_regs *)IMX_CCM_BASE;
 +
-+	ret = sb_aes_deinit(ctx);
-+	if (!ret)
-+		return ret;
-+	return sb_aes_init(ictx, iv, enc);
++	/* Set fractional divider for ref_cpu to 480 * 18 / 19 = 454MHz
++	 * and ungate CPU clock */
++	writeb(19 & CLKCTRL_FRAC_FRAC_MASK,
++		(uint8_t *)&clkctrl_regs->hw_clkctrl_frac0[CLKCTRL_FRAC0_CPU]);
++
++	/* Set CPU bypass */
++	writel(CLKCTRL_CLKSEQ_BYPASS_CPU,
++		&clkctrl_regs->hw_clkctrl_clkseq_set);
++
++	/* HBUS = 151MHz */
++	writel(CLKCTRL_HBUS_DIV_MASK, &clkctrl_regs->hw_clkctrl_hbus_set);
++	writel(((~3) << CLKCTRL_HBUS_DIV_OFFSET) & CLKCTRL_HBUS_DIV_MASK,
++		&clkctrl_regs->hw_clkctrl_hbus_clr);
++
++	mxs_early_delay(10000);
++
++	/* CPU clock divider = 1 */
++	clrsetbits_le32(&clkctrl_regs->hw_clkctrl_cpu,
++			CLKCTRL_CPU_DIV_CPU_MASK, 1);
++
++	/* Disable CPU bypass */
++	writel(CLKCTRL_CLKSEQ_BYPASS_CPU,
++		&clkctrl_regs->hw_clkctrl_clkseq_clr);
++
++	mxs_early_delay(15000);
 +}
++
++void mxs_mem_setup_vdda(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	writel((0xc << POWER_VDDACTRL_TRG_OFFSET) |
++		(0x7 << POWER_VDDACTRL_BO_OFFSET_OFFSET) |
++		POWER_VDDACTRL_LINREG_OFFSET_1STEPS_BELOW,
++		&power_regs->hw_power_vddactrl);
++}
++
++static void mx23_mem_setup_vddmem(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	clrbits_le32(&power_regs->hw_power_vddmemctrl,
++		POWER_VDDMEMCTRL_ENABLE_ILIMIT);
++
++}
++
++void mx23_mem_init(void)
++{
++	mxs_early_delay(11000);
++
++	/* Fractional divider for ref_emi is 33 ; 480 * 18 / 33 = 266MHz */
++	mxs_mem_init_clock(33);
++
++	mxs_mem_setup_vdda();
++
++	/*
++	 * Reset/ungate the EMI block. This is essential, otherwise the system
++	 * suffers from memory instability. This thing is mx23 specific and is
++	 * no longer present on mx28.
++	 */
++	stmp_reset_block((struct mxs_register_32 *)IMX_EMI_BASE, 0);
++
++	mx23_mem_setup_vddmem();
++
++	/*
++	 * Configure the DRAM registers
++	 */
++
++	/* Clear START and SREFRESH bit from DRAM_CTL8 */
++	clrbits_le32(IMX_SDRAMC_BASE + 0x20, (1 << 16) | (1 << 8));
++
++	mx23_initialize_dram_values();
++
++	/* Set START bit in DRAM_CTL8 */
++	setbits_le32(IMX_SDRAMC_BASE + 0x20, 1 << 16);
++
++	clrbits_le32(IMX_SDRAMC_BASE + 0x40, 1 << 17);
++	mxs_early_delay(20000);
++
++	/* Adjust EMI port priority. */
++	clrsetbits_le32(0x80020000, 0x1f << 16, 0x2);
++	mxs_early_delay(20000);
++
++	setbits_le32(IMX_SDRAMC_BASE + 0x40, 1 << 19);
++	setbits_le32(IMX_SDRAMC_BASE + 0x40, 1 << 11);
++
++	mxs_early_delay(10000);
++
++	mxs_mem_setup_cpu_and_hbus();
++}
++
++#define PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2	(0x3 << 16)
++
++void mx28_mem_init(void)
++{
++	mxs_early_delay(11000);
++
++	/* Fractional divider for ref_emi is 21 ; 480 * 18 / 21 = 411MHz */
++	mxs_mem_init_clock(21);
++
++	mxs_mem_setup_vdda();
++
++	/* Set DDR2 mode */
++	writel(PINCTRL_EMI_DS_CTRL_DDR_MODE_DDR2,
++			IMX_IOMUXC_BASE + 0x1b80);
++
++	/*
++	 * Configure the DRAM registers
++	 */
++
++	/* Clear START bit from DRAM_CTL16 */
++	clrbits_le32(IMX_SDRAMC_BASE + 0x40, 1);
++
++	mx28_initialize_dram_values();
++
++	/* Clear SREFRESH bit from DRAM_CTL17 */
++	clrbits_le32(IMX_SDRAMC_BASE + 0x44, 1);
++
++	/* Set START bit in DRAM_CTL16 */
++	setbits_le32(IMX_SDRAMC_BASE + 0x40, 1);
++
++	/* Wait for bit 20 (DRAM init complete) in DRAM_CTL58 */
++	while (!(readl(IMX_SDRAMC_BASE + 0xe8) & (1 << 20)))
++		;
++
++	mxs_early_delay(10000);
++
++	mxs_mem_setup_cpu_and_hbus();
++}
+diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
+new file mode 100644
+index 0000000..b4431c4
+--- /dev/null
++++ b/arch/arm/mach-mxs/power-init.c
+@@ -0,0 +1,1274 @@
++/*
++ * Freescale i.MX28 Boot PMIC init
++ *
++ * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
++ * on behalf of DENX Software Engineering GmbH
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#include <common.h>
++#include <config.h>
++#include <io.h>
++#include <mach/imx-regs.h>
++
++#include <mach/generic.h>
++#include <mach/init.h>
++#ifdef CONFIG_ARCH_IMX23
++#include <mach/regs-clkctrl-mx23.h>
++#endif
++#ifdef CONFIG_ARCH_IMX28
++#include <mach/regs-clkctrl-mx28.h>
++#endif
++#include <mach/regs-power-mx28.h>
++#include <mach/regs-rtc.h>
++#include <mach/regs-lradc.h>
 +
 +/*
-+ * Debug
++ * This delay function is intended to be used only in early stage of boot, where
++ * clock are not set up yet. The timer used here is reset on every boot and
++ * takes a few seconds to roll. The boot doesn't take that long, so to keep the
++ * code simple, it doesn't take rolling into consideration.
 + */
-+static void soprintf(struct sb_image_ctx *ictx, const char *fmt, ...)
++void mxs_early_delay(int delay)
 +{
-+	va_list ap;
++	void __iomem *digctl_regs = IOMEM(IMX_DIGCTL_BASE);
++	uint32_t st = readl(digctl_regs + 0xc0);
 +
-+	if (ictx->silent_dump)
++	st += delay;
++
++	while (st > readl(digctl_regs + 0xc0));
++}
++
++static inline void charger_4p2_disable(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	if (cpu_is_mx28())
++		writel(MX28_POWER_5VCTRL_PWD_CHARGE_4P2_MASK,
++			&power_regs->hw_power_5vctrl_set);
++	else
++		writel(MX23_POWER_5VCTRL_PWD_CHARGE_4P2_MASK,
++			&power_regs->hw_power_5vctrl_set);
++}
++
++static inline void charger_4p2_enable(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	if (cpu_is_mx28())
++		writel(MX28_POWER_5VCTRL_PWD_CHARGE_4P2_MASK,
++			&power_regs->hw_power_5vctrl_clr);
++	else
++		writel(MX23_POWER_5VCTRL_PWD_CHARGE_4P2_MASK,
++			&power_regs->hw_power_5vctrl_clr);
++}
++
++/**
++ * mxs_power_clock2xtal() - Switch CPU core clock source to 24MHz XTAL
++ *
++ * This function switches the CPU core clock from PLL to 24MHz XTAL
++ * oscilator. This is necessary if the PLL is being reconfigured to
++ * prevent crash of the CPU core.
++ */
++static void mxs_power_clock2xtal(void)
++{
++	struct mxs_clkctrl_regs *clkctrl_regs =
++		(struct mxs_clkctrl_regs *)IMX_CCM_BASE;
++
++	/* Set XTAL as CPU reference clock */
++	writel(CLKCTRL_CLKSEQ_BYPASS_CPU,
++		&clkctrl_regs->hw_clkctrl_clkseq_set);
++}
++
++/**
++ * mxs_power_clock2pll() - Switch CPU core clock source to PLL
++ *
++ * This function switches the CPU core clock from 24MHz XTAL oscilator
++ * to PLL. This can only be called once the PLL has re-locked and once
++ * the PLL is stable after reconfiguration.
++ */
++static void mxs_power_clock2pll(void)
++{
++	struct mxs_clkctrl_regs *clkctrl_regs =
++		(struct mxs_clkctrl_regs *)IMX_CCM_BASE;
++
++	setbits_le32(&clkctrl_regs->hw_clkctrl_pll0ctrl0,
++			CLKCTRL_PLL0CTRL0_POWER);
++	mxs_early_delay(100);
++	setbits_le32(&clkctrl_regs->hw_clkctrl_clkseq,
++			CLKCTRL_CLKSEQ_BYPASS_CPU);
++}
++
++/**
++ * mxs_power_set_auto_restart() - Set the auto-restart bit
++ *
++ * This function ungates the RTC block and sets the AUTO_RESTART
++ * bit to work around a design bug on MX28EVK Rev. A .
++ */
++
++static void mxs_power_set_auto_restart(void)
++{
++	struct mxs_rtc_regs *rtc_regs =
++		(struct mxs_rtc_regs *)IMX_WDT_BASE;
++
++	writel(RTC_CTRL_SFTRST, &rtc_regs->hw_rtc_ctrl_clr);
++	while (readl(&rtc_regs->hw_rtc_ctrl) & RTC_CTRL_SFTRST)
++		;
++
++	writel(RTC_CTRL_CLKGATE, &rtc_regs->hw_rtc_ctrl_clr);
++	while (readl(&rtc_regs->hw_rtc_ctrl) & RTC_CTRL_CLKGATE)
++		;
++
++	/* Do nothing if flag already set */
++	if (readl(&rtc_regs->hw_rtc_persistent0) & RTC_PERSISTENT0_AUTO_RESTART)
 +		return;
 +
-+	va_start(ap, fmt);
-+	vfprintf(stdout, fmt, ap);
-+	va_end(ap);
++	while (readl(&rtc_regs->hw_rtc_stat) & RTC_STAT_NEW_REGS_MASK)
++		;
++
++	setbits_le32(&rtc_regs->hw_rtc_persistent0,
++			RTC_PERSISTENT0_AUTO_RESTART);
++	writel(RTC_CTRL_FORCE_UPDATE, &rtc_regs->hw_rtc_ctrl_set);
++	writel(RTC_CTRL_FORCE_UPDATE, &rtc_regs->hw_rtc_ctrl_clr);
++	while (readl(&rtc_regs->hw_rtc_stat) & RTC_STAT_NEW_REGS_MASK)
++		;
++	while (readl(&rtc_regs->hw_rtc_stat) & RTC_STAT_STALE_REGS_MASK)
++		;
 +}
 +
-+/*
-+ * Code
++/**
++ * mxs_power_set_linreg() - Set linear regulators 25mV below DC-DC converter
++ *
++ * This function configures the VDDIO, VDDA and VDDD linear regulators output
++ * to be 25mV below the VDDIO, VDDA and VDDD output from the DC-DC switching
++ * converter. This is the recommended setting for the case where we use both
++ * linear regulators and DC-DC converter to power the VDDIO rail.
 + */
-+static time_t sb_get_timestamp(void)
++static void mxs_power_set_linreg(void)
 +{
-+	struct tm time_2000 = {
-+		.tm_yday	= 1,	/* Jan. 1st */
-+		.tm_year	= 100,	/* 2000 */
-+	};
-+	time_t seconds_to_2000 = mktime(&time_2000);
-+	time_t seconds_to_now = time(NULL);
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	return seconds_to_now - seconds_to_2000;
++	/* Set linear regulator 25mV below switching converter */
++	clrsetbits_le32(&power_regs->hw_power_vdddctrl,
++			POWER_VDDDCTRL_LINREG_OFFSET_MASK,
++			POWER_VDDDCTRL_LINREG_OFFSET_1STEPS_BELOW);
++
++	clrsetbits_le32(&power_regs->hw_power_vddactrl,
++			POWER_VDDACTRL_LINREG_OFFSET_MASK,
++			POWER_VDDACTRL_LINREG_OFFSET_1STEPS_BELOW);
++
++	clrsetbits_le32(&power_regs->hw_power_vddioctrl,
++			POWER_VDDIOCTRL_LINREG_OFFSET_MASK,
++			POWER_VDDIOCTRL_LINREG_OFFSET_1STEPS_BELOW);
 +}
 +
-+static int sb_get_time(time_t time, struct tm *tm)
++/**
++ * mxs_get_batt_volt() - Measure battery input voltage
++ *
++ * This function retrieves the battery input voltage and returns it.
++ */
++static int mxs_get_batt_volt(void)
 +{
-+	struct tm time_2000 = {
-+		.tm_yday	= 1,	/* Jan. 1st */
-+		.tm_year	= 0,	/* 1900 */
-+	};
-+	const time_t seconds_to_2000 = mktime(&time_2000);
-+	const time_t seconds_to_now = seconds_to_2000 + time;
-+	struct tm *ret;
-+	ret = gmtime_r(&seconds_to_now, tm);
-+	return ret ? 0 : -EINVAL;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t volt = readl(&power_regs->hw_power_battmonitor);
++
++	volt &= POWER_BATTMONITOR_BATT_VAL_MASK;
++	volt >>= POWER_BATTMONITOR_BATT_VAL_OFFSET;
++	volt *= 8;
++
++	return volt;
 +}
 +
-+static void sb_encrypt_sb_header(struct sb_image_ctx *ictx)
++/**
++ * mxs_is_batt_ready() - Test if the battery provides enough voltage to boot
++ *
++ * This function checks if the battery input voltage is higher than 3.6V and
++ * therefore allows the system to successfully boot using this power source.
++ */
++static int mxs_is_batt_ready(void)
 +{
-+	EVP_MD_CTX *md_ctx = &ictx->md_ctx;
-+	struct sb_boot_image_header *sb_header = &ictx->payload;
-+	uint8_t *sb_header_ptr = (uint8_t *)sb_header;
-+
-+	/* Encrypt the header, compute the digest. */
-+	sb_aes_crypt(ictx, sb_header_ptr, NULL, sizeof(*sb_header));
-+	EVP_DigestUpdate(md_ctx, sb_header_ptr, sizeof(*sb_header));
++	return (mxs_get_batt_volt() >= 3600);
 +}
 +
-+static void sb_encrypt_sb_sections_header(struct sb_image_ctx *ictx)
++/**
++ * mxs_is_batt_good() - Test if battery is operational at all
++ *
++ * This function starts recharging the battery and tests if the input current
++ * provided by the 5V input recharging the battery is also sufficient to power
++ * the DC-DC converter.
++ */
++static int mxs_is_batt_good(void)
 +{
-+	EVP_MD_CTX *md_ctx = &ictx->md_ctx;
-+	struct sb_section_ctx *sctx = ictx->sect_head;
-+	struct sb_sections_header *shdr;
-+	uint8_t *sb_sections_header_ptr;
-+	const int size = sizeof(*shdr);
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t volt = mxs_get_batt_volt();
 +
-+	while (sctx) {
-+		shdr = &sctx->payload;
-+		sb_sections_header_ptr = (uint8_t *)shdr;
++	if ((volt >= 2400) && (volt <= 4300))
++		return 1;
 +
-+		sb_aes_crypt(ictx, sb_sections_header_ptr,
-+			     ictx->sb_dict_key.cbc_mac, size);
-+		EVP_DigestUpdate(md_ctx, sb_sections_header_ptr, size);
++	clrsetbits_le32(&power_regs->hw_power_5vctrl,
++		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
++		0x3 << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
++	charger_4p2_enable();
 +
-+		sctx = sctx->sect;
-+	};
-+}
++	clrsetbits_le32(&power_regs->hw_power_charge,
++		POWER_CHARGE_STOP_ILIMIT_MASK | POWER_CHARGE_BATTCHRG_I_MASK,
++		POWER_CHARGE_STOP_ILIMIT_10MA | 0x3);
 +
-+static void sb_encrypt_key_dictionary_key(struct sb_image_ctx *ictx)
-+{
-+	EVP_MD_CTX *md_ctx = &ictx->md_ctx;
++	writel(POWER_CHARGE_PWD_BATTCHRG, &power_regs->hw_power_charge_clr);
++	charger_4p2_enable();
 +
-+	sb_aes_crypt(ictx, ictx->image_key, ictx->sb_dict_key.key,
-+		     sizeof(ictx->sb_dict_key.key));
-+	EVP_DigestUpdate(md_ctx, &ictx->sb_dict_key, sizeof(ictx->sb_dict_key));
-+}
++	mxs_early_delay(500000);
 +
-+static void sb_decrypt_key_dictionary_key(struct sb_image_ctx *ictx)
-+{
-+	EVP_MD_CTX *md_ctx = &ictx->md_ctx;
++	volt = mxs_get_batt_volt();
 +
-+	EVP_DigestUpdate(md_ctx, &ictx->sb_dict_key, sizeof(ictx->sb_dict_key));
-+	sb_aes_crypt(ictx, ictx->sb_dict_key.key, ictx->image_key,
-+		     sizeof(ictx->sb_dict_key.key));
-+}
-+
-+static void sb_encrypt_tag(struct sb_image_ctx *ictx,
-+		struct sb_cmd_ctx *cctx)
-+{
-+	EVP_MD_CTX *md_ctx = &ictx->md_ctx;
-+	struct sb_command *cmd = &cctx->payload;
-+
-+	sb_aes_crypt(ictx, (uint8_t *)cmd,
-+		     (uint8_t *)&cctx->c_payload, sizeof(*cmd));
-+	EVP_DigestUpdate(md_ctx, &cctx->c_payload, sizeof(*cmd));
-+}
-+
-+static int sb_encrypt_image(struct sb_image_ctx *ictx)
-+{
-+	/* Start image-wide crypto. */
-+	EVP_MD_CTX_init(&ictx->md_ctx);
-+	EVP_DigestInit(&ictx->md_ctx, EVP_sha1());
-+
-+	/*
-+	 * SB image header.
-+	 */
-+	sb_aes_init(ictx, NULL, 1);
-+	sb_encrypt_sb_header(ictx);
-+
-+	/*
-+	 * SB sections header.
-+	 */
-+	sb_encrypt_sb_sections_header(ictx);
-+
-+	/*
-+	 * Key dictionary.
-+	 */
-+	sb_aes_reinit(ictx, 1);
-+	sb_encrypt_key_dictionary_key(ictx);
-+
-+	/*
-+	 * Section tags.
-+	 */
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	struct sb_section_ctx *sctx = ictx->sect_head;
-+
-+	while (sctx) {
-+		cctx = sctx->cmd_head;
-+
-+		sb_aes_reinit(ictx, 1);
-+
-+		while (cctx) {
-+			ccmd = &cctx->payload;
-+
-+			sb_encrypt_tag(ictx, cctx);
-+
-+			if (ccmd->header.tag == ROM_TAG_CMD) {
-+				sb_aes_reinit(ictx, 1);
-+			} else if (ccmd->header.tag == ROM_LOAD_CMD) {
-+				sb_aes_crypt(ictx, cctx->data, cctx->data,
-+					     cctx->length);
-+				EVP_DigestUpdate(&ictx->md_ctx, cctx->data,
-+						 cctx->length);
-+			}
-+
-+			cctx = cctx->cmd;
-+		}
-+
-+		sctx = sctx->sect;
-+	};
-+
-+	/*
-+	 * Dump the SHA1 of the whole image.
-+	 */
-+	sb_aes_reinit(ictx, 1);
-+
-+	EVP_DigestFinal(&ictx->md_ctx, ictx->digest, NULL);
-+	sb_aes_crypt(ictx, ictx->digest, ictx->digest, sizeof(ictx->digest));
-+
-+	/* Stop the encryption session. */
-+	sb_aes_deinit(&ictx->cipher_ctx);
-+
-+	return 0;
-+}
-+
-+static int sb_load_file(struct sb_cmd_ctx *cctx, const char *filename)
-+{
-+	long real_size, roundup_size;
-+	uint8_t *data;
-+	long ret;
-+	unsigned long size;
-+	FILE *fp;
-+
-+	if (!filename) {
-+		fprintf(stderr, "ERR: Missing filename!\n");
-+		return -EINVAL;
-+	}
-+
-+	fp = fopen(filename, "r");
-+	if (!fp)
-+		goto err_open;
-+
-+	ret = fseek(fp, 0, SEEK_END);
-+	if (ret < 0)
-+		goto err_file;
-+
-+	real_size = ftell(fp);
-+	if (real_size < 0)
-+		goto err_file;
-+
-+	ret = fseek(fp, 0, SEEK_SET);
-+	if (ret < 0)
-+		goto err_file;
-+
-+	roundup_size = roundup(real_size, SB_BLOCK_SIZE);
-+	data = calloc(1, roundup_size);
-+	if (!data)
-+		goto err_file;
-+
-+	size = fread(data, 1, real_size, fp);
-+	if (size != (unsigned long)real_size)
-+		goto err_alloc;
-+
-+	cctx->data = data;
-+	cctx->length = roundup_size;
-+
-+	fclose(fp);
-+	return 0;
-+
-+err_alloc:
-+	free(data);
-+err_file:
-+	fclose(fp);
-+err_open:
-+	fprintf(stderr, "ERR: Failed to load file \"%s\"\n", filename);
-+	return -EINVAL;
-+}
-+
-+static uint8_t sb_command_checksum(struct sb_command *inst)
-+{
-+	uint8_t *inst_ptr = (uint8_t *)inst;
-+	uint8_t csum = 0;
-+	unsigned int i;
-+
-+	for (i = 0; i < sizeof(struct sb_command); i++)
-+		csum += inst_ptr[i];
-+
-+	return csum;
-+}
-+
-+static int sb_token_to_long(char *tok, uint32_t *rid)
-+{
-+	char *endptr;
-+	unsigned long id;
-+
-+	if (tok[0] != '0' || tok[1] != 'x') {
-+		fprintf(stderr, "ERR: Invalid hexadecimal number!\n");
-+		return -EINVAL;
-+	}
-+
-+	tok += 2;
-+
-+	errno = 0;
-+	id = strtoul(tok, &endptr, 16);
-+	if ((errno == ERANGE && id == ULONG_MAX) || (errno != 0 && id == 0)) {
-+		fprintf(stderr, "ERR: Value can't be decoded!\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Check for 32-bit overflow. */
-+	if (id > 0xffffffff) {
-+		fprintf(stderr, "ERR: Value too big!\n");
-+		return -EINVAL;
-+	}
-+
-+	if (endptr == tok) {
-+		fprintf(stderr, "ERR: Deformed value!\n");
-+		return -EINVAL;
-+	}
-+
-+	*rid = (uint32_t)id;
-+	return 0;
-+}
-+
-+static int sb_grow_dcd(struct sb_dcd_ctx *dctx, unsigned int inc_size)
-+{
-+	uint32_t *tmp;
-+
-+	if (!inc_size)
++	if (volt >= 3500)
 +		return 0;
 +
-+	dctx->size += inc_size;
-+	tmp = realloc(dctx->payload, dctx->size);
-+	if (!tmp)
-+		return -ENOMEM;
++	if (volt >= 2400)
++		return 1;
 +
-+	dctx->payload = tmp;
-+
-+	/* Assemble and update the HAB DCD header. */
-+	dctx->payload[0] = htonl((SB_HAB_DCD_TAG << 24) |
-+				 (dctx->size << 8) |
-+				 SB_HAB_VERSION);
++	writel(POWER_CHARGE_STOP_ILIMIT_MASK | POWER_CHARGE_BATTCHRG_I_MASK,
++		&power_regs->hw_power_charge_clr);
++	writel(POWER_CHARGE_PWD_BATTCHRG, &power_regs->hw_power_charge_set);
 +
 +	return 0;
 +}
 +
-+static int sb_build_dcd(struct sb_image_ctx *ictx, struct sb_cmd_list *cmd)
++/**
++ * mxs_power_setup_5v_detect() - Start the 5V input detection comparator
++ *
++ * This function enables the 5V detection comparator and sets the 5V valid
++ * threshold to 4.4V . We use 4.4V threshold here to make sure that even
++ * under high load, the voltage drop on the 5V input won't be so critical
++ * to cause undervolt on the 4P2 linear regulator supplying the DC-DC
++ * converter and thus making the system crash.
++ */
++static void mxs_power_setup_5v_detect(void)
 +{
-+	struct sb_dcd_ctx *dctx;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	char *tok;
-+	uint32_t id;
-+	int ret;
++	/* Start 5V detection */
++	clrsetbits_le32(&power_regs->hw_power_5vctrl,
++			POWER_5VCTRL_VBUSVALID_TRSH_MASK,
++			POWER_5VCTRL_VBUSVALID_TRSH_4V4 |
++			POWER_5VCTRL_PWRUP_VBUS_CMPS);
++}
 +
-+	dctx = calloc(1, sizeof(*dctx));
-+	if (!dctx)
-+		return -ENOMEM;
++/**
++ * mxs_src_power_init() - Preconfigure the power block
++ *
++ * This function configures reasonable values for the DC-DC control loop
++ * and battery monitor.
++ */
++static void mxs_src_power_init(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	ret = sb_grow_dcd(dctx, 4);
-+	if (ret)
-+		goto err_dcd;
++	/* Improve efficieny and reduce transient ripple */
++	writel(POWER_LOOPCTRL_TOGGLE_DIF | POWER_LOOPCTRL_EN_CM_HYST |
++		POWER_LOOPCTRL_EN_DF_HYST, &power_regs->hw_power_loopctrl_set);
 +
-+	/* Read DCD block number. */
-+	tok = strtok(cmd->cmd, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: DCD block without number!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err_dcd;
++	clrsetbits_le32(&power_regs->hw_power_dclimits,
++			POWER_DCLIMITS_POSLIMIT_BUCK_MASK,
++			0x30 << POWER_DCLIMITS_POSLIMIT_BUCK_OFFSET);
++
++	setbits_le32(&power_regs->hw_power_battmonitor,
++			POWER_BATTMONITOR_EN_BATADJ);
++
++	/* Increase the RCSCALE level for quick DCDC response to dynamic load */
++	clrsetbits_le32(&power_regs->hw_power_loopctrl,
++			POWER_LOOPCTRL_EN_RCSCALE_MASK,
++			POWER_LOOPCTRL_RCSCALE_THRESH |
++			POWER_LOOPCTRL_EN_RCSCALE_8X);
++
++	clrsetbits_le32(&power_regs->hw_power_minpwr,
++			POWER_MINPWR_HALFFETS, POWER_MINPWR_DOUBLE_FETS);
++
++	/* 5V to battery handoff ... FIXME */
++	setbits_le32(&power_regs->hw_power_5vctrl, POWER_5VCTRL_DCDC_XFER);
++	mxs_early_delay(30);
++	clrbits_le32(&power_regs->hw_power_5vctrl, POWER_5VCTRL_DCDC_XFER);
++}
++
++/**
++ * mxs_power_init_4p2_params() - Configure the parameters of the 4P2 regulator
++ *
++ * This function configures the necessary parameters for the 4P2 linear
++ * regulator to supply the DC-DC converter from 5V input.
++ */
++static void mxs_power_init_4p2_params(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	/* Setup 4P2 parameters */
++	clrsetbits_le32(&power_regs->hw_power_dcdc4p2,
++		POWER_DCDC4P2_CMPTRIP_MASK | POWER_DCDC4P2_TRG_MASK,
++		POWER_DCDC4P2_TRG_4V2 | (31 << POWER_DCDC4P2_CMPTRIP_OFFSET));
++
++	clrsetbits_le32(&power_regs->hw_power_5vctrl,
++		POWER_5VCTRL_HEADROOM_ADJ_MASK,
++		0x4 << POWER_5VCTRL_HEADROOM_ADJ_OFFSET);
++
++	clrsetbits_le32(&power_regs->hw_power_dcdc4p2,
++		POWER_DCDC4P2_DROPOUT_CTRL_MASK,
++		POWER_DCDC4P2_DROPOUT_CTRL_100MV |
++		POWER_DCDC4P2_DROPOUT_CTRL_SRC_SEL);
++
++	clrsetbits_le32(&power_regs->hw_power_5vctrl,
++		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
++		0x3f << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
++}
++
++/**
++ * mxs_enable_4p2_dcdc_input() - Enable or disable the DCDC input from 4P2
++ * @xfer:	Select if the input shall be enabled or disabled
++ *
++ * This function enables or disables the 4P2 input into the DC-DC converter.
++ */
++static void mxs_enable_4p2_dcdc_input(int xfer)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t tmp, vbus_thresh, vbus_5vdetect, pwd_bo;
++	uint32_t prev_5v_brnout, prev_5v_droop;
++
++	prev_5v_brnout = readl(&power_regs->hw_power_5vctrl) &
++				POWER_5VCTRL_PWDN_5VBRNOUT;
++	prev_5v_droop = readl(&power_regs->hw_power_ctrl) &
++				POWER_CTRL_ENIRQ_VDD5V_DROOP;
++
++	clrbits_le32(&power_regs->hw_power_5vctrl, POWER_5VCTRL_PWDN_5VBRNOUT);
++	writel(POWER_RESET_UNLOCK_KEY | POWER_RESET_PWD_OFF,
++		&power_regs->hw_power_reset);
++
++	clrbits_le32(&power_regs->hw_power_ctrl, POWER_CTRL_ENIRQ_VDD5V_DROOP);
++
++	if (xfer && (readl(&power_regs->hw_power_5vctrl) &
++			POWER_5VCTRL_ENABLE_DCDC)) {
++		return;
 +	}
-+
-+	/* Parse the DCD block number. */
-+	ret = sb_token_to_long(tok, &id);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Malformed DCD block number!\n",
-+			cmd->lineno);
-+		goto err_dcd;
-+	}
-+
-+	dctx->id = id;
 +
 +	/*
-+	 * The DCD block is now constructed. Append it to the list.
-+	 * WARNING: The DCD size is still not computed and will be
-+	 * updated while parsing it's commands.
++	 * Recording orignal values that will be modified temporarlily
++	 * to handle a chip bug. See chip errata for CQ ENGR00115837
 +	 */
-+	if (!ictx->dcd_head) {
-+		ictx->dcd_head = dctx;
-+		ictx->dcd_tail = dctx;
++	tmp = readl(&power_regs->hw_power_5vctrl);
++	vbus_thresh = tmp & POWER_5VCTRL_VBUSVALID_TRSH_MASK;
++	vbus_5vdetect = tmp & POWER_5VCTRL_VBUSVALID_5VDETECT;
++
++	pwd_bo = readl(&power_regs->hw_power_minpwr) & POWER_MINPWR_PWD_BO;
++
++	/*
++	 * Disable mechanisms that get erroneously tripped by when setting
++	 * the DCDC4P2 EN_DCDC
++	 */
++	clrbits_le32(&power_regs->hw_power_5vctrl,
++		POWER_5VCTRL_VBUSVALID_5VDETECT |
++		POWER_5VCTRL_VBUSVALID_TRSH_MASK);
++
++	writel(POWER_MINPWR_PWD_BO, &power_regs->hw_power_minpwr_set);
++
++	if (xfer) {
++		setbits_le32(&power_regs->hw_power_5vctrl,
++				POWER_5VCTRL_DCDC_XFER);
++		mxs_early_delay(20);
++		clrbits_le32(&power_regs->hw_power_5vctrl,
++				POWER_5VCTRL_DCDC_XFER);
++
++		setbits_le32(&power_regs->hw_power_5vctrl,
++				POWER_5VCTRL_ENABLE_DCDC);
 +	} else {
-+		ictx->dcd_tail->dcd = dctx;
-+		ictx->dcd_tail = dctx;
++		setbits_le32(&power_regs->hw_power_dcdc4p2,
++				POWER_DCDC4P2_ENABLE_DCDC);
 +	}
 +
-+	return 0;
++	mxs_early_delay(25);
 +
-+err_dcd:
-+	free(dctx->payload);
-+	free(dctx);
-+	return ret;
++	clrsetbits_le32(&power_regs->hw_power_5vctrl,
++			POWER_5VCTRL_VBUSVALID_TRSH_MASK, vbus_thresh);
++
++	if (vbus_5vdetect)
++		writel(vbus_5vdetect, &power_regs->hw_power_5vctrl_set);
++
++	if (!pwd_bo)
++		clrbits_le32(&power_regs->hw_power_minpwr, POWER_MINPWR_PWD_BO);
++
++	while (readl(&power_regs->hw_power_ctrl) & POWER_CTRL_VBUS_VALID_IRQ)
++		writel(POWER_CTRL_VBUS_VALID_IRQ,
++			&power_regs->hw_power_ctrl_clr);
++
++	if (prev_5v_brnout) {
++		writel(POWER_5VCTRL_PWDN_5VBRNOUT,
++			&power_regs->hw_power_5vctrl_set);
++		writel(POWER_RESET_UNLOCK_KEY,
++			&power_regs->hw_power_reset);
++	} else {
++		writel(POWER_5VCTRL_PWDN_5VBRNOUT,
++			&power_regs->hw_power_5vctrl_clr);
++		writel(POWER_RESET_UNLOCK_KEY | POWER_RESET_PWD_OFF,
++			&power_regs->hw_power_reset);
++	}
++
++	while (readl(&power_regs->hw_power_ctrl) & POWER_CTRL_VDD5V_DROOP_IRQ)
++		writel(POWER_CTRL_VDD5V_DROOP_IRQ,
++			&power_regs->hw_power_ctrl_clr);
++
++	if (prev_5v_droop)
++		clrbits_le32(&power_regs->hw_power_ctrl,
++				POWER_CTRL_ENIRQ_VDD5V_DROOP);
++	else
++		setbits_le32(&power_regs->hw_power_ctrl,
++				POWER_CTRL_ENIRQ_VDD5V_DROOP);
 +}
 +
-+static int sb_build_dcd_block(struct sb_image_ctx *ictx,
-+			      struct sb_cmd_list *cmd,
-+			      uint32_t type)
++/**
++ * mxs_power_init_4p2_regulator() - Start the 4P2 regulator
++ *
++ * This function enables the 4P2 regulator and switches the DC-DC converter
++ * to use the 4P2 input.
++ */
++static void mxs_power_init_4p2_regulator(void)
 +{
-+	char *tok;
-+	uint32_t address, value, length;
-+	int ret;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t tmp, tmp2;
 +
-+	struct sb_dcd_ctx *dctx = ictx->dcd_tail;
-+	uint32_t *dcd;
++	setbits_le32(&power_regs->hw_power_dcdc4p2, POWER_DCDC4P2_ENABLE_4P2);
 +
-+	if (dctx->prev_dcd_head && (type != SB_DCD_NOOP) &&
-+	    ((dctx->prev_dcd_head[0] & 0xff0000ff) == type)) {
-+		/* Same instruction as before, just append it. */
-+		ret = sb_grow_dcd(dctx, 8);
-+		if (ret)
-+			return ret;
-+	} else if (type == SB_DCD_NOOP) {
-+		ret = sb_grow_dcd(dctx, 4);
-+		if (ret)
-+			return ret;
++	writel(POWER_CHARGE_ENABLE_LOAD, &power_regs->hw_power_charge_set);
 +
-+		/* Update DCD command block pointer. */
-+		dctx->prev_dcd_head = dctx->payload +
-+				dctx->size / sizeof(*dctx->payload) - 1;
++	writel(POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
++		&power_regs->hw_power_5vctrl_clr);
++	clrbits_le32(&power_regs->hw_power_dcdc4p2, POWER_DCDC4P2_TRG_MASK);
 +
-+		/* NOOP has only 4 bytes and no payload. */
-+		goto noop;
-+	} else {
++	/* Power up the 4p2 rail and logic/control */
++	charger_4p2_enable();
++
++	/*
++	 * Start charging up the 4p2 capacitor. We ramp of this charge
++	 * gradually to avoid large inrush current from the 5V cable which can
++	 * cause transients/problems
++	 */
++	mxs_enable_4p2_dcdc_input(0);
++
++	if (readl(&power_regs->hw_power_ctrl) & POWER_CTRL_VBUS_VALID_IRQ) {
 +		/*
-+		 * Either a different instruction block started now
-+		 * or this is the first instruction block.
++		 * If we arrived here, we were unable to recover from mx23 chip
++		 * errata 5837. 4P2 is disabled and sufficient battery power is
++		 * not present. Exiting to not enable DCDC power during 5V
++		 * connected state.
 +		 */
-+		ret = sb_grow_dcd(dctx, 12);
-+		if (ret)
-+			return ret;
-+
-+		/* Update DCD command block pointer. */
-+		dctx->prev_dcd_head = dctx->payload +
-+				dctx->size / sizeof(*dctx->payload) - 3;
++		clrbits_le32(&power_regs->hw_power_dcdc4p2,
++			POWER_DCDC4P2_ENABLE_DCDC);
++		charger_4p2_disable();
++		hang();
 +	}
-+
-+	dcd = dctx->payload + dctx->size / sizeof(*dctx->payload) - 2;
 +
 +	/*
-+	 * Prepare the command.
++	 * Here we set the 4p2 brownout level to something very close to 4.2V.
++	 * We then check the brownout status. If the brownout status is false,
++	 * the voltage is already close to the target voltage of 4.2V so we
++	 * can go ahead and set the 4P2 current limit to our max target limit.
++	 * If the brownout status is true, we need to ramp us the current limit
++	 * so that we don't cause large inrush current issues. We step up the
++	 * current limit until the brownout status is false or until we've
++	 * reached our maximum defined 4p2 current limit.
 +	 */
-+	tok = strtok(cmd->cmd, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Missing DCD address!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
++	clrsetbits_le32(&power_regs->hw_power_dcdc4p2,
++			POWER_DCDC4P2_BO_MASK,
++			22 << POWER_DCDC4P2_BO_OFFSET);	/* 4.15V */
 +
-+	/* Read DCD destination address. */
-+	ret = sb_token_to_long(tok, &address);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Incorrect DCD address!\n",
-+			cmd->lineno);
-+		goto err;
-+	}
-+
-+	tok = strtok(NULL, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Missing DCD value!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/* Read DCD operation value. */
-+	ret = sb_token_to_long(tok, &value);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Incorrect DCD value!\n",
-+			cmd->lineno);
-+		goto err;
-+	}
-+
-+	/* Fill in the new DCD entry. */
-+	dcd[0] = htonl(address);
-+	dcd[1] = htonl(value);
-+
-+noop:
-+	/* Update the DCD command block. */
-+	length = dctx->size -
-+		 ((dctx->prev_dcd_head - dctx->payload) *
-+		 sizeof(*dctx->payload));
-+	dctx->prev_dcd_head[0] = htonl(type | (length << 8));
-+
-+err:
-+	return ret;
-+}
-+
-+static int sb_build_section(struct sb_image_ctx *ictx, struct sb_cmd_list *cmd)
-+{
-+	struct sb_section_ctx *sctx;
-+	struct sb_sections_header *shdr;
-+	char *tok;
-+	uint32_t bootable = 0;
-+	uint32_t id;
-+	int ret;
-+
-+	sctx = calloc(1, sizeof(*sctx));
-+	if (!sctx)
-+		return -ENOMEM;
-+
-+	/* Read section number. */
-+	tok = strtok(cmd->cmd, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Section without number!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err_sect;
-+	}
-+
-+	/* Parse the section number. */
-+	ret = sb_token_to_long(tok, &id);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Malformed section number!\n",
-+			cmd->lineno);
-+		goto err_sect;
-+	}
-+
-+	/* Read section's BOOTABLE flag. */
-+	tok = strtok(NULL, " ");
-+	if (tok && (strlen(tok) == 8) && !strncmp(tok, "BOOTABLE", 8))
-+		bootable = SB_SECTION_FLAG_BOOTABLE;
-+
-+	sctx->boot = bootable;
-+
-+	shdr = &sctx->payload;
-+	shdr->section_number = id;
-+	shdr->section_flags = bootable;
-+
-+	/*
-+	 * The section is now constructed. Append it to the list.
-+	 * WARNING: The section size is still not computed and will
-+	 * be updated while parsing it's commands.
-+	 */
-+	ictx->sect_count++;
-+
-+	/* Mark that this section is bootable one. */
-+	if (bootable) {
-+		if (ictx->sect_boot_found) {
-+			fprintf(stderr,
-+				"#%i WARN: Multiple bootable section!\n",
-+				cmd->lineno);
-+		} else {
-+			ictx->sect_boot = id;
-+			ictx->sect_boot_found = 1;
-+		}
-+	}
-+
-+	if (!ictx->sect_head) {
-+		ictx->sect_head = sctx;
-+		ictx->sect_tail = sctx;
++	if (!(readl(&power_regs->hw_power_sts) & POWER_STS_DCDC_4P2_BO)) {
++		setbits_le32(&power_regs->hw_power_5vctrl,
++			0x3f << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
 +	} else {
-+		ictx->sect_tail->sect = sctx;
-+		ictx->sect_tail = sctx;
-+	}
-+
-+	return 0;
-+
-+err_sect:
-+	free(sctx);
-+	return ret;
-+}
-+
-+static int sb_build_command_nop(struct sb_image_ctx *ictx)
-+{
-+	struct sb_section_ctx *sctx = ictx->sect_tail;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+
-+	cctx = calloc(1, sizeof(*cctx));
-+	if (!cctx)
-+		return -ENOMEM;
-+
-+	ccmd = &cctx->payload;
-+
-+	/*
-+	 * Construct the command.
-+	 */
-+	ccmd->header.checksum	= 0x5a;
-+	ccmd->header.tag	= ROM_NOP_CMD;
-+
-+	cctx->size = sizeof(*ccmd);
-+
-+	/*
-+	 * Append the command to the last section.
-+	 */
-+	if (!sctx->cmd_head) {
-+		sctx->cmd_head = cctx;
-+		sctx->cmd_tail = cctx;
-+	} else {
-+		sctx->cmd_tail->cmd = cctx;
-+		sctx->cmd_tail = cctx;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sb_build_command_tag(struct sb_image_ctx *ictx,
-+				struct sb_cmd_list *cmd)
-+{
-+	struct sb_section_ctx *sctx = ictx->sect_tail;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	char *tok;
-+
-+	cctx = calloc(1, sizeof(*cctx));
-+	if (!cctx)
-+		return -ENOMEM;
-+
-+	ccmd = &cctx->payload;
-+
-+	/*
-+	 * Prepare the command.
-+	 */
-+	/* Check for the LAST keyword. */
-+	tok = strtok(cmd->cmd, " ");
-+	if (tok && !strcmp(tok, "LAST"))
-+		ccmd->header.flags = ROM_TAG_CMD_FLAG_ROM_LAST_TAG;
-+
-+	/*
-+	 * Construct the command.
-+	 */
-+	ccmd->header.checksum	= 0x5a;
-+	ccmd->header.tag	= ROM_TAG_CMD;
-+
-+	cctx->size = sizeof(*ccmd);
-+
-+	/*
-+	 * Append the command to the last section.
-+	 */
-+	if (!sctx->cmd_head) {
-+		sctx->cmd_head = cctx;
-+		sctx->cmd_tail = cctx;
-+	} else {
-+		sctx->cmd_tail->cmd = cctx;
-+		sctx->cmd_tail = cctx;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sb_build_command_load(struct sb_image_ctx *ictx,
-+				 struct sb_cmd_list *cmd)
-+{
-+	struct sb_section_ctx *sctx = ictx->sect_tail;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	char *tok;
-+	int ret, is_ivt = 0, is_dcd = 0;
-+	uint32_t dest, dcd = 0;
-+
-+	cctx = calloc(1, sizeof(*cctx));
-+	if (!cctx)
-+		return -ENOMEM;
-+
-+	ccmd = &cctx->payload;
-+
-+	/*
-+	 * Prepare the command.
-+	 */
-+	tok = strtok(cmd->cmd, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Missing LOAD address or 'IVT'!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/* Check for "IVT" flag. */
-+	if (!strcmp(tok, "IVT"))
-+		is_ivt = 1;
-+	if (!strcmp(tok, "DCD"))
-+		is_dcd = 1;
-+	if (is_ivt || is_dcd) {
-+		tok = strtok(NULL, " ");
-+		if (!tok) {
-+			fprintf(stderr, "#%i ERR: Missing LOAD address!\n",
-+				cmd->lineno);
-+			ret = -EINVAL;
-+			goto err;
-+		}
-+	}
-+
-+	/* Read load destination address. */
-+	ret = sb_token_to_long(tok, &dest);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Incorrect LOAD address!\n",
-+			cmd->lineno);
-+		goto err;
-+	}
-+
-+	/* Read filename or IVT entrypoint or DCD block ID. */
-+	tok = strtok(NULL, " ");
-+	if (!tok) {
-+		fprintf(stderr,
-+			"#%i ERR: Missing LOAD filename or IVT ep or DCD block ID!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	if (is_ivt) {
-+		/* Handle IVT. */
-+		struct sb_ivt_header *ivt;
-+		uint32_t ivtep;
-+		ret = sb_token_to_long(tok, &ivtep);
-+
-+		if (ret) {
-+			fprintf(stderr,
-+				"#%i ERR: Incorrect IVT entry point!\n",
-+				cmd->lineno);
-+			goto err;
-+		}
-+
-+		ivt = calloc(1, sizeof(*ivt));
-+		if (!ivt) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+
-+		ivt->header = sb_hab_ivt_header();
-+		ivt->entry = ivtep;
-+		ivt->self = dest;
-+
-+		cctx->data = (uint8_t *)ivt;
-+		cctx->length = sizeof(*ivt);
-+	} else if (is_dcd) {
-+		struct sb_dcd_ctx *dctx = ictx->dcd_head;
-+		uint32_t dcdid;
-+		uint8_t *payload;
-+		uint32_t asize;
-+		ret = sb_token_to_long(tok, &dcdid);
-+
-+		if (ret) {
-+			fprintf(stderr,
-+				"#%i ERR: Incorrect DCD block ID!\n",
-+				cmd->lineno);
-+			goto err;
-+		}
-+
-+		while (dctx) {
-+			if (dctx->id == dcdid)
++		tmp = (readl(&power_regs->hw_power_5vctrl) &
++			POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK) >>
++			POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET;
++		while (tmp < 0x3f) {
++			if (!(readl(&power_regs->hw_power_sts) &
++					POWER_STS_DCDC_4P2_BO)) {
++				tmp = readl(&power_regs->hw_power_5vctrl);
++				tmp |= POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK;
++				mxs_early_delay(100);
++				writel(tmp, &power_regs->hw_power_5vctrl);
 +				break;
-+			dctx = dctx->dcd;
-+		}
-+
-+		if (!dctx) {
-+			fprintf(stderr, "#%i ERR: DCD block %08x not found!\n",
-+				cmd->lineno, dcdid);
-+			goto err;
-+		}
-+
-+		asize = roundup(dctx->size, SB_BLOCK_SIZE);
-+		payload = calloc(1, asize);
-+		if (!payload) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+
-+		memcpy(payload, dctx->payload, dctx->size);
-+
-+		cctx->data = payload;
-+		cctx->length = asize;
-+
-+		/* Set the Load DCD flag. */
-+		dcd = ROM_LOAD_CMD_FLAG_DCD_LOAD;
-+	} else {
-+		const char *loadfile;
-+
-+		/* Regular LOAD of a file. */
-+		if (!strcmp(tok, "@PREP@"))
-+			loadfile = prepfile;
-+		else if (!strcmp(tok, "@BOOTLOADER@"))
-+			loadfile = bootloaderfile;
-+		else
-+			loadfile = tok;
-+
-+		ret = sb_load_file(cctx, loadfile);
-+		if (ret) {
-+			fprintf(stderr, "#%i ERR: Cannot load '%s'!\n",
-+				cmd->lineno, tok);
-+			goto err;
-+		}
-+	}
-+
-+	if (cctx->length & (SB_BLOCK_SIZE - 1)) {
-+		fprintf(stderr, "#%i ERR: Unaligned payload!\n",
-+			cmd->lineno);
-+	}
-+
-+	/*
-+	 * Construct the command.
-+	 */
-+	ccmd->header.checksum	= 0x5a;
-+	ccmd->header.tag	= ROM_LOAD_CMD;
-+	ccmd->header.flags	= dcd;
-+
-+	ccmd->load.address	= dest;
-+	ccmd->load.count	= cctx->length;
-+	ccmd->load.crc32	= pbl_crc32(0,
-+					    (const char *)cctx->data,
-+					    cctx->length);
-+
-+	cctx->size = sizeof(*ccmd) + cctx->length;
-+
-+	/*
-+	 * Append the command to the last section.
-+	 */
-+	if (!sctx->cmd_head) {
-+		sctx->cmd_head = cctx;
-+		sctx->cmd_tail = cctx;
-+	} else {
-+		sctx->cmd_tail->cmd = cctx;
-+		sctx->cmd_tail = cctx;
-+	}
-+
-+	return 0;
-+
-+err:
-+	free(cctx);
-+	return ret;
-+}
-+
-+static int sb_build_command_fill(struct sb_image_ctx *ictx,
-+				 struct sb_cmd_list *cmd)
-+{
-+	struct sb_section_ctx *sctx = ictx->sect_tail;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	char *tok;
-+	uint32_t address, pattern, length;
-+	int ret;
-+
-+	cctx = calloc(1, sizeof(*cctx));
-+	if (!cctx)
-+		return -ENOMEM;
-+
-+	ccmd = &cctx->payload;
-+
-+	/*
-+	 * Prepare the command.
-+	 */
-+	tok = strtok(cmd->cmd, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Missing FILL address!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/* Read fill destination address. */
-+	ret = sb_token_to_long(tok, &address);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Incorrect FILL address!\n",
-+			cmd->lineno);
-+		goto err;
-+	}
-+
-+	tok = strtok(NULL, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Missing FILL pattern!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/* Read fill pattern address. */
-+	ret = sb_token_to_long(tok, &pattern);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Incorrect FILL pattern!\n",
-+			cmd->lineno);
-+		goto err;
-+	}
-+
-+	tok = strtok(NULL, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Missing FILL length!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/* Read fill pattern address. */
-+	ret = sb_token_to_long(tok, &length);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Incorrect FILL length!\n",
-+			cmd->lineno);
-+		goto err;
-+	}
-+
-+	/*
-+	 * Construct the command.
-+	 */
-+	ccmd->header.checksum	= 0x5a;
-+	ccmd->header.tag	= ROM_FILL_CMD;
-+
-+	ccmd->fill.address	= address;
-+	ccmd->fill.count	= length;
-+	ccmd->fill.pattern	= pattern;
-+
-+	cctx->size = sizeof(*ccmd);
-+
-+	/*
-+	 * Append the command to the last section.
-+	 */
-+	if (!sctx->cmd_head) {
-+		sctx->cmd_head = cctx;
-+		sctx->cmd_tail = cctx;
-+	} else {
-+		sctx->cmd_tail->cmd = cctx;
-+		sctx->cmd_tail = cctx;
-+	}
-+
-+	return 0;
-+
-+err:
-+	free(cctx);
-+	return ret;
-+}
-+
-+static int sb_build_command_jump_call(struct sb_image_ctx *ictx,
-+				      struct sb_cmd_list *cmd,
-+				      unsigned int is_call)
-+{
-+	struct sb_section_ctx *sctx = ictx->sect_tail;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	char *tok;
-+	uint32_t dest, arg = 0x0;
-+	uint32_t hab = 0;
-+	int ret;
-+	const char *cmdname = is_call ? "CALL" : "JUMP";
-+
-+	cctx = calloc(1, sizeof(*cctx));
-+	if (!cctx)
-+		return -ENOMEM;
-+
-+	ccmd = &cctx->payload;
-+
-+	/*
-+	 * Prepare the command.
-+	 */
-+	tok = strtok(cmd->cmd, " ");
-+	if (!tok) {
-+		fprintf(stderr,
-+			"#%i ERR: Missing %s address or 'HAB'!\n",
-+			cmd->lineno, cmdname);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/* Check for "HAB" flag. */
-+	if (!strcmp(tok, "HAB")) {
-+		hab = is_call ? ROM_CALL_CMD_FLAG_HAB : ROM_JUMP_CMD_FLAG_HAB;
-+		tok = strtok(NULL, " ");
-+		if (!tok) {
-+			fprintf(stderr, "#%i ERR: Missing %s address!\n",
-+				cmd->lineno, cmdname);
-+			ret = -EINVAL;
-+			goto err;
-+		}
-+	}
-+	/* Read load destination address. */
-+	ret = sb_token_to_long(tok, &dest);
-+	if (ret) {
-+		fprintf(stderr, "#%i ERR: Incorrect %s address!\n",
-+			cmd->lineno, cmdname);
-+		goto err;
-+	}
-+
-+	tok = strtok(NULL, " ");
-+	if (tok) {
-+		ret = sb_token_to_long(tok, &arg);
-+		if (ret) {
-+			fprintf(stderr,
-+				"#%i ERR: Incorrect %s argument!\n",
-+				cmd->lineno, cmdname);
-+			goto err;
-+		}
-+	}
-+
-+	/*
-+	 * Construct the command.
-+	 */
-+	ccmd->header.checksum	= 0x5a;
-+	ccmd->header.tag	= is_call ? ROM_CALL_CMD : ROM_JUMP_CMD;
-+	ccmd->header.flags	= hab;
-+
-+	ccmd->call.address	= dest;
-+	ccmd->call.argument	= arg;
-+
-+	cctx->size = sizeof(*ccmd);
-+
-+	/*
-+	 * Append the command to the last section.
-+	 */
-+	if (!sctx->cmd_head) {
-+		sctx->cmd_head = cctx;
-+		sctx->cmd_tail = cctx;
-+	} else {
-+		sctx->cmd_tail->cmd = cctx;
-+		sctx->cmd_tail = cctx;
-+	}
-+
-+	return 0;
-+
-+err:
-+	free(cctx);
-+	return ret;
-+}
-+
-+static int sb_build_command_jump(struct sb_image_ctx *ictx,
-+				 struct sb_cmd_list *cmd)
-+{
-+	return sb_build_command_jump_call(ictx, cmd, 0);
-+}
-+
-+static int sb_build_command_call(struct sb_image_ctx *ictx,
-+				 struct sb_cmd_list *cmd)
-+{
-+	return sb_build_command_jump_call(ictx, cmd, 1);
-+}
-+
-+static int sb_build_command_mode(struct sb_image_ctx *ictx,
-+				 struct sb_cmd_list *cmd)
-+{
-+	struct sb_section_ctx *sctx = ictx->sect_tail;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	char *tok;
-+	int ret;
-+	unsigned int i;
-+	uint32_t mode = 0xffffffff;
-+
-+	cctx = calloc(1, sizeof(*cctx));
-+	if (!cctx)
-+		return -ENOMEM;
-+
-+	ccmd = &cctx->payload;
-+
-+	/*
-+	 * Prepare the command.
-+	 */
-+	tok = strtok(cmd->cmd, " ");
-+	if (!tok) {
-+		fprintf(stderr, "#%i ERR: Missing MODE boot mode argument!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(modetable); i++) {
-+		if (!strcmp(tok, modetable[i].name)) {
-+			mode = modetable[i].mode;
-+			break;
-+		}
-+
-+		if (!modetable[i].altname)
-+			continue;
-+
-+		if (!strcmp(tok, modetable[i].altname)) {
-+			mode = modetable[i].mode;
-+			break;
-+		}
-+	}
-+
-+	if (mode == 0xffffffff) {
-+		fprintf(stderr, "#%i ERR: Invalid MODE boot mode argument!\n",
-+			cmd->lineno);
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/*
-+	 * Construct the command.
-+	 */
-+	ccmd->header.checksum	= 0x5a;
-+	ccmd->header.tag	= ROM_MODE_CMD;
-+
-+	ccmd->mode.mode		= mode;
-+
-+	cctx->size = sizeof(*ccmd);
-+
-+	/*
-+	 * Append the command to the last section.
-+	 */
-+	if (!sctx->cmd_head) {
-+		sctx->cmd_head = cctx;
-+		sctx->cmd_tail = cctx;
-+	} else {
-+		sctx->cmd_tail->cmd = cctx;
-+		sctx->cmd_tail = cctx;
-+	}
-+
-+	return 0;
-+
-+err:
-+	free(cctx);
-+	return ret;
-+}
-+
-+static int sb_prefill_image_header(struct sb_image_ctx *ictx)
-+{
-+	struct sb_boot_image_header *hdr = &ictx->payload;
-+
-+	/* Fill signatures */
-+	memcpy(hdr->signature1, "STMP", 4);
-+	memcpy(hdr->signature2, "sgtl", 4);
-+
-+	/* SB Image version 1.1 */
-+	hdr->major_version = SB_VERSION_MAJOR;
-+	hdr->minor_version = SB_VERSION_MINOR;
-+
-+	/* Boot image major version */
-+	hdr->product_version.major = htons(0x999);
-+	hdr->product_version.minor = htons(0x999);
-+	hdr->product_version.revision = htons(0x999);
-+	/* Boot image major version */
-+	hdr->component_version.major = htons(0x999);
-+	hdr->component_version.minor = htons(0x999);
-+	hdr->component_version.revision = htons(0x999);
-+
-+	/* Drive tag must be 0x0 for i.MX23 */
-+	hdr->drive_tag = 0;
-+
-+	hdr->header_blocks =
-+		sizeof(struct sb_boot_image_header) / SB_BLOCK_SIZE;
-+	hdr->section_header_size =
-+		sizeof(struct sb_sections_header) / SB_BLOCK_SIZE;
-+	hdr->timestamp_us = sb_get_timestamp() * 1000000;
-+
-+	/* FIXME -- add proper config option */
-+	hdr->flags = ictx->verbose_boot ? SB_IMAGE_FLAG_VERBOSE : 0,
-+
-+	/* FIXME -- We support only default key */
-+	hdr->key_count = 1;
-+
-+	return 0;
-+}
-+
-+static int sb_postfill_image_header(struct sb_image_ctx *ictx)
-+{
-+	struct sb_boot_image_header *hdr = &ictx->payload;
-+	struct sb_section_ctx *sctx = ictx->sect_head;
-+	uint32_t kd_size, sections_blocks;
-+	EVP_MD_CTX md_ctx;
-+
-+	/* The main SB header size in blocks. */
-+	hdr->image_blocks = hdr->header_blocks;
-+
-+	/* Size of the key dictionary, which has single zero entry. */
-+	kd_size = hdr->key_count * sizeof(struct sb_key_dictionary_key);
-+	hdr->image_blocks += kd_size / SB_BLOCK_SIZE;
-+
-+	/* Now count the payloads. */
-+	hdr->section_count = ictx->sect_count;
-+	while (sctx) {
-+		hdr->image_blocks += sctx->size / SB_BLOCK_SIZE;
-+		sctx = sctx->sect;
-+	}
-+
-+	if (!ictx->sect_boot_found) {
-+		fprintf(stderr, "ERR: No bootable section selected!\n");
-+		return -EINVAL;
-+	}
-+	hdr->first_boot_section_id = ictx->sect_boot;
-+
-+	/* The n * SB section size in blocks. */
-+	sections_blocks = hdr->section_count * hdr->section_header_size;
-+	hdr->image_blocks += sections_blocks;
-+
-+	/* Key dictionary offset. */
-+	hdr->key_dictionary_block = hdr->header_blocks + sections_blocks;
-+
-+	/* Digest of the whole image. */
-+	hdr->image_blocks += 2;
-+
-+	/* Pointer past the dictionary. */
-+	hdr->first_boot_tag_block =
-+		hdr->key_dictionary_block + kd_size / SB_BLOCK_SIZE;
-+
-+	/* Compute header digest. */
-+	EVP_MD_CTX_init(&md_ctx);
-+
-+	EVP_DigestInit(&md_ctx, EVP_sha1());
-+	EVP_DigestUpdate(&md_ctx, hdr->signature1,
-+			 sizeof(struct sb_boot_image_header) -
-+			 sizeof(hdr->digest));
-+	EVP_DigestFinal(&md_ctx, hdr->digest, NULL);
-+
-+	return 0;
-+}
-+
-+static int sb_fixup_sections_and_tags(struct sb_image_ctx *ictx)
-+{
-+	/* Fixup the placement of sections. */
-+	struct sb_boot_image_header *ihdr = &ictx->payload;
-+	struct sb_section_ctx *sctx = ictx->sect_head;
-+	struct sb_sections_header *shdr;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	uint32_t offset = ihdr->first_boot_tag_block;
-+
-+	while (sctx) {
-+		shdr = &sctx->payload;
-+
-+		/* Fill in the section TAG offset. */
-+		shdr->section_offset = offset + 1;
-+		offset += shdr->section_size;
-+
-+		/* Section length is measured from the TAG block. */
-+		shdr->section_size--;
-+
-+		/* Fixup the TAG command. */
-+		cctx = sctx->cmd_head;
-+		while (cctx) {
-+			ccmd = &cctx->payload;
-+			if (ccmd->header.tag == ROM_TAG_CMD) {
-+				ccmd->tag.section_number = shdr->section_number;
-+				ccmd->tag.section_length = shdr->section_size;
-+				ccmd->tag.section_flags = shdr->section_flags;
++			} else {
++				tmp++;
++				tmp2 = readl(&power_regs->hw_power_5vctrl);
++				tmp2 &= ~POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK;
++				tmp2 |= tmp <<
++					POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET;
++				writel(tmp2, &power_regs->hw_power_5vctrl);
++				mxs_early_delay(100);
 +			}
-+
-+			/* Update the command checksum. */
-+			ccmd->header.checksum = sb_command_checksum(ccmd);
-+
-+			cctx = cctx->cmd;
 +		}
-+
-+		sctx = sctx->sect;
 +	}
 +
-+	return 0;
++	clrbits_le32(&power_regs->hw_power_dcdc4p2, POWER_DCDC4P2_BO_MASK);
++	writel(POWER_CTRL_DCDC4P2_BO_IRQ, &power_regs->hw_power_ctrl_clr);
 +}
 +
-+static int sb_parse_line(struct sb_image_ctx *ictx, struct sb_cmd_list *cmd)
++/**
++ * mxs_power_init_dcdc_4p2_source() - Switch DC-DC converter to 4P2 source
++ *
++ * This function configures the DC-DC converter to be supplied from the 4P2
++ * linear regulator.
++ */
++static void mxs_power_init_dcdc_4p2_source(void)
 +{
-+	char *tok;
-+	char *line = cmd->cmd;
-+	char *rptr = NULL;
-+	int ret;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	/* Analyze the identifier on this line first. */
-+	tok = strtok_r(line, " ", &rptr);
-+	if (!tok || (strlen(tok) == 0)) {
-+		fprintf(stderr, "#%i ERR: Invalid line!\n", cmd->lineno);
-+		return -EINVAL;
++	if (!(readl(&power_regs->hw_power_dcdc4p2) &
++		POWER_DCDC4P2_ENABLE_DCDC)) {
++		hang();
 +	}
 +
-+	cmd->cmd = rptr;
++	mxs_enable_4p2_dcdc_input(1);
 +
-+	/* DCD */
-+	if (!strcmp(tok, "DCD")) {
-+		ictx->in_section = 0;
-+		ictx->in_dcd = 1;
-+		sb_build_dcd(ictx, cmd);
-+		return 0;
++	if (readl(&power_regs->hw_power_ctrl) & POWER_CTRL_VBUS_VALID_IRQ) {
++		clrbits_le32(&power_regs->hw_power_dcdc4p2,
++			POWER_DCDC4P2_ENABLE_DCDC);
++		writel(POWER_5VCTRL_ENABLE_DCDC,
++			&power_regs->hw_power_5vctrl_clr);
++		charger_4p2_disable();
++	}
++}
++
++/**
++ * mxs_power_enable_4p2() - Power up the 4P2 regulator
++ *
++ * This function drives the process of powering up the 4P2 linear regulator
++ * and switching the DC-DC converter input over to the 4P2 linear regulator.
++ */
++static void mxs_power_enable_4p2(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t vdddctrl, vddactrl, vddioctrl;
++	uint32_t tmp;
++
++	vdddctrl = readl(&power_regs->hw_power_vdddctrl);
++	vddactrl = readl(&power_regs->hw_power_vddactrl);
++	vddioctrl = readl(&power_regs->hw_power_vddioctrl);
++
++	setbits_le32(&power_regs->hw_power_vdddctrl,
++		POWER_VDDDCTRL_DISABLE_FET | POWER_VDDDCTRL_ENABLE_LINREG |
++		POWER_VDDDCTRL_PWDN_BRNOUT);
++
++	setbits_le32(&power_regs->hw_power_vddactrl,
++		POWER_VDDACTRL_DISABLE_FET | POWER_VDDACTRL_ENABLE_LINREG |
++		POWER_VDDACTRL_PWDN_BRNOUT);
++
++	setbits_le32(&power_regs->hw_power_vddioctrl,
++		POWER_VDDIOCTRL_DISABLE_FET | POWER_VDDIOCTRL_PWDN_BRNOUT);
++
++	mxs_power_init_4p2_params();
++	mxs_power_init_4p2_regulator();
++
++	/* Shutdown battery (none present) */
++	if (!mxs_is_batt_ready()) {
++		clrbits_le32(&power_regs->hw_power_dcdc4p2,
++				POWER_DCDC4P2_BO_MASK);
++		writel(POWER_CTRL_DCDC4P2_BO_IRQ,
++				&power_regs->hw_power_ctrl_clr);
++		writel(POWER_CTRL_ENIRQ_DCDC4P2_BO,
++				&power_regs->hw_power_ctrl_clr);
 +	}
 +
-+	/* Section */
-+	if (!strcmp(tok, "SECTION")) {
-+		ictx->in_section = 1;
-+		ictx->in_dcd = 0;
-+		sb_build_section(ictx, cmd);
-+		return 0;
-+	}
++	mxs_power_init_dcdc_4p2_source();
 +
-+	if (!ictx->in_section && !ictx->in_dcd) {
-+		fprintf(stderr, "#%i ERR: Data outside of a section!\n",
-+			cmd->lineno);
-+		return -EINVAL;
-+	}
-+
-+	if (ictx->in_section) {
-+		/* Section commands */
-+		if (!strcmp(tok, "NOP")) {
-+			ret = sb_build_command_nop(ictx);
-+		} else if (!strcmp(tok, "TAG")) {
-+			ret = sb_build_command_tag(ictx, cmd);
-+		} else if (!strcmp(tok, "LOAD")) {
-+			ret = sb_build_command_load(ictx, cmd);
-+		} else if (!strcmp(tok, "FILL")) {
-+			ret = sb_build_command_fill(ictx, cmd);
-+		} else if (!strcmp(tok, "JUMP")) {
-+			ret = sb_build_command_jump(ictx, cmd);
-+		} else if (!strcmp(tok, "CALL")) {
-+			ret = sb_build_command_call(ictx, cmd);
-+		} else if (!strcmp(tok, "MODE")) {
-+			ret = sb_build_command_mode(ictx, cmd);
-+		} else {
-+			fprintf(stderr,
-+				"#%i ERR: Unsupported instruction '%s'!\n",
-+				cmd->lineno, tok);
-+			return -ENOTSUP;
-+		}
-+	} else if (ictx->in_dcd) {
-+		char *lptr;
-+		uint32_t ilen = '1';
-+
-+		tok = strtok_r(tok, ".", &lptr);
-+		if (!tok || (strlen(tok) == 0) || (lptr && strlen(lptr) != 1)) {
-+			fprintf(stderr, "#%i ERR: Invalid line!\n",
-+				cmd->lineno);
-+			return -EINVAL;
-+		}
-+
-+		if (lptr &&
-+		    (lptr[0] != '1' && lptr[0] != '2' && lptr[0] != '4')) {
-+			fprintf(stderr, "#%i ERR: Invalid instruction width!\n",
-+				cmd->lineno);
-+			return -EINVAL;
-+		}
-+
-+		if (lptr)
-+			ilen = lptr[0] - '1';
-+
-+		/* DCD commands */
-+		if (!strcmp(tok, "WRITE")) {
-+			ret = sb_build_dcd_block(ictx, cmd,
-+						 SB_DCD_WRITE | ilen);
-+		} else if (!strcmp(tok, "ANDC")) {
-+			ret = sb_build_dcd_block(ictx, cmd,
-+						 SB_DCD_ANDC | ilen);
-+		} else if (!strcmp(tok, "ORR")) {
-+			ret = sb_build_dcd_block(ictx, cmd,
-+						 SB_DCD_ORR | ilen);
-+		} else if (!strcmp(tok, "EQZ")) {
-+			ret = sb_build_dcd_block(ictx, cmd,
-+						 SB_DCD_CHK_EQZ | ilen);
-+		} else if (!strcmp(tok, "EQ")) {
-+			ret = sb_build_dcd_block(ictx, cmd,
-+						 SB_DCD_CHK_EQ | ilen);
-+		} else if (!strcmp(tok, "NEQ")) {
-+			ret = sb_build_dcd_block(ictx, cmd,
-+						 SB_DCD_CHK_NEQ | ilen);
-+		} else if (!strcmp(tok, "NEZ")) {
-+			ret = sb_build_dcd_block(ictx, cmd,
-+						 SB_DCD_CHK_NEZ | ilen);
-+		} else if (!strcmp(tok, "NOOP")) {
-+			ret = sb_build_dcd_block(ictx, cmd, SB_DCD_NOOP);
-+		} else {
-+			fprintf(stderr,
-+				"#%i ERR: Unsupported instruction '%s'!\n",
-+				cmd->lineno, tok);
-+			return -ENOTSUP;
-+		}
-+	} else {
-+		fprintf(stderr, "#%i ERR: Unsupported instruction '%s'!\n",
-+			cmd->lineno, tok);
-+		return -ENOTSUP;
-+	}
++	writel(vdddctrl, &power_regs->hw_power_vdddctrl);
++	mxs_early_delay(20);
++	writel(vddactrl, &power_regs->hw_power_vddactrl);
++	mxs_early_delay(20);
++	writel(vddioctrl, &power_regs->hw_power_vddioctrl);
 +
 +	/*
-+	 * Here we have at least one section with one command, otherwise we
-+	 * would have failed already higher above.
-+	 *
-+	 * FIXME -- should the updating happen here ?
++	 * Check if FET is enabled on either powerout and if so,
++	 * disable load.
 +	 */
-+	if (ictx->in_section && !ret) {
-+		ictx->sect_tail->size += ictx->sect_tail->cmd_tail->size;
-+		ictx->sect_tail->payload.section_size =
-+			ictx->sect_tail->size / SB_BLOCK_SIZE;
-+	}
-+
-+	return ret;
++	tmp = 0;
++	tmp |= !(readl(&power_regs->hw_power_vdddctrl) &
++			POWER_VDDDCTRL_DISABLE_FET);
++	tmp |= !(readl(&power_regs->hw_power_vddactrl) &
++			POWER_VDDACTRL_DISABLE_FET);
++	tmp |= !(readl(&power_regs->hw_power_vddioctrl) &
++			POWER_VDDIOCTRL_DISABLE_FET);
++	if (tmp)
++		writel(POWER_CHARGE_ENABLE_LOAD,
++			&power_regs->hw_power_charge_clr);
 +}
 +
-+static int sb_load_cmdfile(struct sb_image_ctx *ictx)
++/**
++ * mxs_boot_valid_5v() - Boot from 5V supply
++ *
++ * This function configures the power block to boot from valid 5V input.
++ * This is called only if the 5V is reliable and can properly supply the
++ * CPU. This function proceeds to configure the 4P2 converter to be supplied
++ * from the 5V input.
++ */
++static void mxs_boot_valid_5v(void)
 +{
-+	struct sb_cmd_list cmd;
-+	int lineno = 1, ret;
-+	FILE *fp;
-+	char *line = NULL;
-+	ssize_t rlen;
-+	size_t len;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	fp = fopen(ictx->cfg_filename, "r");
-+	if (!fp)
-+		goto err_file;
++	/*
++	 * Use VBUSVALID level instead of VDD5V_GT_VDDIO level to trigger a 5V
++	 * disconnect event. FIXME
++	 */
++	writel(POWER_5VCTRL_VBUSVALID_5VDETECT,
++		&power_regs->hw_power_5vctrl_set);
 +
-+	while ((rlen = getline(&line, &len, fp)) > 0) {
-+		memset(&cmd, 0, sizeof(cmd));
++	/* Configure polarity to check for 5V disconnection. */
++	writel(POWER_CTRL_POLARITY_VBUSVALID |
++		POWER_CTRL_POLARITY_VDD5V_GT_VDDIO,
++		&power_regs->hw_power_ctrl_clr);
 +
-+		/* Strip the trailing newline. */
-+		line[rlen - 1] = '\0';
++	writel(POWER_CTRL_VBUS_VALID_IRQ | POWER_CTRL_VDD5V_GT_VDDIO_IRQ,
++		&power_regs->hw_power_ctrl_clr);
 +
-+		cmd.cmd = line;
-+		cmd.len = rlen;
-+		cmd.lineno = lineno++;
-+
-+		ret = sb_parse_line(ictx, &cmd);
-+		if (ret)
-+			goto out;
-+	}
-+
-+	ret = 0;
-+out:
-+	free(line);
-+
-+	fclose(fp);
-+
-+	return ret;
-+
-+err_file:
-+	fprintf(stderr, "ERR: Failed to load file \"%s\"\n",
-+		ictx->cfg_filename);
-+	return -EINVAL;
++	mxs_power_enable_4p2();
 +}
 +
-+static int sb_build_tree_from_cfg(struct sb_image_ctx *ictx)
++/**
++ * mxs_powerdown() - Shut down the system
++ *
++ * This function powers down the CPU completely.
++ */
++static void mxs_powerdown(void)
 +{
-+	int ret;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	writel(POWER_RESET_UNLOCK_KEY, &power_regs->hw_power_reset);
++	writel(POWER_RESET_UNLOCK_KEY | POWER_RESET_PWD_OFF,
++		&power_regs->hw_power_reset);
++}
 +
-+	ret = sb_load_cmdfile(ictx);
-+	if (ret)
-+		return ret;
++/**
++ * mxs_enable_battery_input() - Configure the power block to boot from battery input
++ *
++ * This function configures the power block to boot from the battery voltage
++ * supply.
++ */
++static void mxs_enable_battery_input(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	ret = sb_prefill_image_header(ictx);
-+	if (ret)
-+		return ret;
++	clrbits_le32(&power_regs->hw_power_5vctrl, POWER_5VCTRL_PWDN_5VBRNOUT);
++	clrbits_le32(&power_regs->hw_power_5vctrl, POWER_5VCTRL_ENABLE_DCDC);
 +
-+	ret = sb_postfill_image_header(ictx);
-+	if (ret)
-+		return ret;
++	clrbits_le32(&power_regs->hw_power_dcdc4p2,
++			POWER_DCDC4P2_ENABLE_DCDC | POWER_DCDC4P2_ENABLE_4P2);
++	writel(POWER_CHARGE_ENABLE_LOAD, &power_regs->hw_power_charge_clr);
 +
-+	ret = sb_fixup_sections_and_tags(ictx);
-+	if (ret)
-+		return ret;
++	/* 5V to battery handoff. */
++	setbits_le32(&power_regs->hw_power_5vctrl, POWER_5VCTRL_DCDC_XFER);
++	mxs_early_delay(30);
++	clrbits_le32(&power_regs->hw_power_5vctrl, POWER_5VCTRL_DCDC_XFER);
++
++	writel(POWER_CTRL_ENIRQ_DCDC4P2_BO, &power_regs->hw_power_ctrl_clr);
++
++	clrsetbits_le32(&power_regs->hw_power_minpwr,
++			POWER_MINPWR_HALFFETS, POWER_MINPWR_DOUBLE_FETS);
++
++	mxs_power_set_linreg();
++
++	clrbits_le32(&power_regs->hw_power_vdddctrl,
++		POWER_VDDDCTRL_DISABLE_FET | POWER_VDDDCTRL_ENABLE_LINREG);
++
++	clrbits_le32(&power_regs->hw_power_vddactrl,
++		POWER_VDDACTRL_DISABLE_FET | POWER_VDDACTRL_ENABLE_LINREG);
++
++	clrbits_le32(&power_regs->hw_power_vddioctrl,
++		POWER_VDDIOCTRL_DISABLE_FET);
++
++	charger_4p2_disable();
++
++	setbits_le32(&power_regs->hw_power_5vctrl,
++		POWER_5VCTRL_ENABLE_DCDC);
++
++	clrsetbits_le32(&power_regs->hw_power_5vctrl,
++		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
++		0x8 << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
++
++	mxs_power_enable_4p2();
++}
++
++/**
++ * mxs_handle_5v_conflict() - Test if the 5V input is reliable
++ *
++ * This function tests if the 5V input can reliably supply the system. If it
++ * can, then proceed to configuring the system to boot from 5V source, otherwise
++ * try booting from battery supply. If we can not boot from battery supply
++ * either, shut down the system.
++ */
++static void mxs_handle_5v_conflict(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t tmp;
++
++	setbits_le32(&power_regs->hw_power_vddioctrl,
++			POWER_VDDIOCTRL_BO_OFFSET_MASK);
++
++	for (;;) {
++		tmp = readl(&power_regs->hw_power_sts);
++
++		if (tmp & POWER_STS_VDDIO_BO) {
++			/*
++			 * VDDIO has a brownout, then the VDD5V_GT_VDDIO becomes
++			 * unreliable
++			 */
++			mxs_powerdown();
++			break;
++		}
++
++		if (tmp & POWER_STS_VDD5V_GT_VDDIO) {
++			mxs_boot_valid_5v();
++			break;
++		} else {
++			mxs_powerdown();
++			break;
++		}
++
++		if (tmp & POWER_STS_PSWITCH_MASK) {
++			mxs_enable_battery_input();
++			break;
++		}
++	}
++}
++
++/**
++ * mxs_5v_boot() - Configure the power block to boot from 5V input
++ *
++ * This function handles configuration of the power block when supplied by
++ * a 5V input.
++ */
++static void mxs_5v_boot(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	/*
++	 * NOTE: In original IMX-Bootlets, this also checks for VBUSVALID,
++	 * but their implementation always returns 1 so we omit it here.
++	 */
++	if (readl(&power_regs->hw_power_sts) & POWER_STS_VDD5V_GT_VDDIO) {
++		mxs_boot_valid_5v();
++		return;
++	}
++
++	mxs_early_delay(1000);
++	if (readl(&power_regs->hw_power_sts) & POWER_STS_VDD5V_GT_VDDIO) {
++		mxs_boot_valid_5v();
++		return;
++	}
++
++	mxs_handle_5v_conflict();
++}
++
++/**
++ * mxs_init_batt_bo() - Configure battery brownout threshold
++ *
++ * This function configures the battery input brownout threshold. The value
++ * at which the battery brownout happens is configured to 3.0V in the code.
++ */
++static void mxs_init_batt_bo(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	/* Brownout at 3V */
++	clrsetbits_le32(&power_regs->hw_power_battmonitor,
++		POWER_BATTMONITOR_BRWNOUT_LVL_MASK,
++		15 << POWER_BATTMONITOR_BRWNOUT_LVL_OFFSET);
++
++	writel(POWER_CTRL_BATT_BO_IRQ, &power_regs->hw_power_ctrl_clr);
++	writel(POWER_CTRL_ENIRQ_BATT_BO, &power_regs->hw_power_ctrl_clr);
++}
++
++/**
++ * mxs_switch_vddd_to_dcdc_source() - Switch VDDD rail to DC-DC converter
++ *
++ * This function turns off the VDDD linear regulator and therefore makes
++ * the VDDD rail be supplied only by the DC-DC converter.
++ */
++static void mxs_switch_vddd_to_dcdc_source(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	clrsetbits_le32(&power_regs->hw_power_vdddctrl,
++		POWER_VDDDCTRL_LINREG_OFFSET_MASK,
++		POWER_VDDDCTRL_LINREG_OFFSET_1STEPS_BELOW);
++
++	clrbits_le32(&power_regs->hw_power_vdddctrl,
++		POWER_VDDDCTRL_DISABLE_FET | POWER_VDDDCTRL_ENABLE_LINREG |
++		POWER_VDDDCTRL_DISABLE_STEPPING);
++}
++
++/**
++ * mxs_power_configure_power_source() - Configure power block source
++ *
++ * This function is the core of the power configuration logic. The function
++ * selects the power block input source and configures the whole power block
++ * accordingly. After the configuration is complete and the system is stable
++ * again, the function switches the CPU clock source back to PLL. Finally,
++ * the function switches the voltage rails to DC-DC converter.
++ */
++static void mxs_power_configure_power_source(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	struct mxs_lradc_regs *lradc_regs =
++		(struct mxs_lradc_regs *)IMX_LRADC_BASE;
++
++	if (!(readl(&power_regs->hw_power_sts) & POWER_STS_VDD5V_GT_VDDIO)) {
++		/* 5V not detected, booting from battery. */
++		mxs_enable_battery_input();
++		return;
++	}
++
++	if (mxs_is_batt_ready()) {
++		/* 5V source detected, good battery detected. */
++		mxs_enable_battery_input();
++		return;
++	}
++
++	if (!mxs_is_batt_good()) {
++		/* 5V source detected, bad battery detected. */
++		writel(LRADC_CONVERSION_AUTOMATIC,
++			&lradc_regs->hw_lradc_conversion_clr);
++		clrbits_le32(&power_regs->hw_power_battmonitor,
++			POWER_BATTMONITOR_BATT_VAL_MASK);
++	}
++	mxs_5v_boot();
++}
++
++/**
++ * mxs_enable_output_rail_protection() - Enable power rail protection
++ *
++ * This function enables overload protection on the power rails. This is
++ * triggered if the power rails' voltage drops rapidly due to overload and
++ * in such case, the supply to the powerrail is cut-off, protecting the
++ * CPU from damage. Note that under such condition, the system will likely
++ * crash or misbehave.
++ */
++static void mxs_enable_output_rail_protection(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	writel(POWER_CTRL_VDDD_BO_IRQ | POWER_CTRL_VDDA_BO_IRQ |
++		POWER_CTRL_VDDIO_BO_IRQ, &power_regs->hw_power_ctrl_clr);
++
++	setbits_le32(&power_regs->hw_power_vdddctrl,
++			POWER_VDDDCTRL_PWDN_BRNOUT);
++
++	setbits_le32(&power_regs->hw_power_vddactrl,
++			POWER_VDDACTRL_PWDN_BRNOUT);
++
++	setbits_le32(&power_regs->hw_power_vddioctrl,
++			POWER_VDDIOCTRL_PWDN_BRNOUT);
++}
++
++/**
++ * mxs_get_vddio_power_source_off() - Get VDDIO rail power source
++ *
++ * This function tests if the VDDIO rail is supplied by linear regulator
++ * or by the DC-DC converter. Returns 1 if powered by linear regulator,
++ * returns 0 if powered by the DC-DC converter.
++ */
++static int mxs_get_vddio_power_source_off(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t tmp;
++
++	if (readl(&power_regs->hw_power_sts) & POWER_STS_VDD5V_GT_VDDIO) {
++		tmp = readl(&power_regs->hw_power_vddioctrl);
++		if (tmp & POWER_VDDIOCTRL_DISABLE_FET) {
++			if ((tmp & POWER_VDDIOCTRL_LINREG_OFFSET_MASK) ==
++				POWER_VDDIOCTRL_LINREG_OFFSET_0STEPS) {
++				return 1;
++			}
++		}
++
++		if (!(readl(&power_regs->hw_power_5vctrl) &
++			POWER_5VCTRL_ENABLE_DCDC)) {
++			if ((tmp & POWER_VDDIOCTRL_LINREG_OFFSET_MASK) ==
++				POWER_VDDIOCTRL_LINREG_OFFSET_0STEPS) {
++				return 1;
++			}
++		}
++	}
++
++	return 0;
++
++}
++
++/**
++ * mxs_get_vddd_power_source_off() - Get VDDD rail power source
++ *
++ * This function tests if the VDDD rail is supplied by linear regulator
++ * or by the DC-DC converter. Returns 1 if powered by linear regulator,
++ * returns 0 if powered by the DC-DC converter.
++ */
++static int mxs_get_vddd_power_source_off(void)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t tmp;
++
++	tmp = readl(&power_regs->hw_power_vdddctrl);
++	if (tmp & POWER_VDDDCTRL_DISABLE_FET) {
++		if ((tmp & POWER_VDDDCTRL_LINREG_OFFSET_MASK) ==
++			POWER_VDDDCTRL_LINREG_OFFSET_0STEPS) {
++			return 1;
++		}
++	}
++
++	if (readl(&power_regs->hw_power_sts) & POWER_STS_VDD5V_GT_VDDIO) {
++		if (!(readl(&power_regs->hw_power_5vctrl) &
++			POWER_5VCTRL_ENABLE_DCDC)) {
++			return 1;
++		}
++	}
++
++	if (!(tmp & POWER_VDDDCTRL_ENABLE_LINREG)) {
++		if ((tmp & POWER_VDDDCTRL_LINREG_OFFSET_MASK) ==
++			POWER_VDDDCTRL_LINREG_OFFSET_1STEPS_BELOW) {
++			return 1;
++		}
++	}
 +
 +	return 0;
 +}
 +
-+static int sb_verify_image_header(struct sb_image_ctx *ictx,
-+				  FILE *fp, long fsize)
++struct mxs_vddx_cfg {
++	uint32_t		*reg;
++	uint8_t			step_mV;
++	uint16_t		lowest_mV;
++	int			(*powered_by_linreg)(void);
++	uint32_t		trg_mask;
++	uint32_t		bo_irq;
++	uint32_t		bo_enirq;
++	uint32_t		bo_offset_mask;
++	uint32_t		bo_offset_offset;
++};
++
++static const struct mxs_vddx_cfg mx23_vddio_cfg = {
++	.reg			= &(((struct mxs_power_regs *)IMX_POWER_BASE)->
++					hw_power_vddioctrl),
++	.step_mV		= 25,
++	.lowest_mV		= 2800,
++	.powered_by_linreg	= mxs_get_vddio_power_source_off,
++	.trg_mask		= POWER_VDDIOCTRL_TRG_MASK,
++	.bo_irq			= POWER_CTRL_VDDIO_BO_IRQ,
++	.bo_enirq		= POWER_CTRL_ENIRQ_VDDIO_BO,
++	.bo_offset_mask		= POWER_VDDIOCTRL_BO_OFFSET_MASK,
++	.bo_offset_offset	= POWER_VDDIOCTRL_BO_OFFSET_OFFSET,
++};
++
++static const struct mxs_vddx_cfg mx28_vddio_cfg = {
++	.reg			= &(((struct mxs_power_regs *)IMX_POWER_BASE)->
++					hw_power_vddioctrl),
++	.step_mV		= 50,
++	.lowest_mV		= 2800,
++	.powered_by_linreg	= mxs_get_vddio_power_source_off,
++	.trg_mask		= POWER_VDDIOCTRL_TRG_MASK,
++	.bo_irq			= POWER_CTRL_VDDIO_BO_IRQ,
++	.bo_enirq		= POWER_CTRL_ENIRQ_VDDIO_BO,
++	.bo_offset_mask		= POWER_VDDIOCTRL_BO_OFFSET_MASK,
++	.bo_offset_offset	= POWER_VDDIOCTRL_BO_OFFSET_OFFSET,
++};
++
++static const struct mxs_vddx_cfg mxs_vddd_cfg = {
++	.reg			= &(((struct mxs_power_regs *)IMX_POWER_BASE)->
++					hw_power_vdddctrl),
++	.step_mV		= 25,
++	.lowest_mV		= 800,
++	.powered_by_linreg	= mxs_get_vddd_power_source_off,
++	.trg_mask		= POWER_VDDDCTRL_TRG_MASK,
++	.bo_irq			= POWER_CTRL_VDDD_BO_IRQ,
++	.bo_enirq		= POWER_CTRL_ENIRQ_VDDD_BO,
++	.bo_offset_mask		= POWER_VDDDCTRL_BO_OFFSET_MASK,
++	.bo_offset_offset	= POWER_VDDDCTRL_BO_OFFSET_OFFSET,
++};
++
++static const struct mxs_vddx_cfg mxs_vddmem_cfg = {
++	.reg			= &(((struct mxs_power_regs *)IMX_POWER_BASE)->
++					hw_power_vddmemctrl),
++	.step_mV		= 50,
++	.lowest_mV		= 1700,
++	.powered_by_linreg	= NULL,
++	.trg_mask		= POWER_VDDMEMCTRL_TRG_MASK,
++	.bo_irq			= 0,
++	.bo_enirq		= 0,
++	.bo_offset_mask		= 0,
++	.bo_offset_offset	= 0,
++};
++
++/**
++ * mxs_power_set_vddx() - Configure voltage on DC-DC converter rail
++ * @cfg:		Configuration data of the DC-DC converter rail
++ * @new_target:		New target voltage of the DC-DC converter rail
++ * @new_brownout:	New brownout trigger voltage
++ *
++ * This function configures the output voltage on the DC-DC converter rail.
++ * The rail is selected by the @cfg argument. The new voltage target is
++ * selected by the @new_target and the voltage is specified in mV. The
++ * new brownout value is selected by the @new_brownout argument and the
++ * value is also in mV.
++ */
++static void mxs_power_set_vddx(const struct mxs_vddx_cfg *cfg,
++				uint32_t new_target, uint32_t new_brownout)
 +{
-+	/* Verify static fields in the image header. */
-+	struct sb_boot_image_header *hdr = &ictx->payload;
-+	const char *stat[2] = { "[PASS]", "[FAIL]" };
-+	struct tm tm;
-+	int sz, ret = 0;
-+	unsigned char digest[20];
-+	EVP_MD_CTX md_ctx;
-+	unsigned long size;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++	uint32_t cur_target, diff, bo_int = 0;
++	uint32_t powered_by_linreg = 0;
++	int adjust_up, tmp;
 +
-+	/* Start image-wide crypto. */
-+	EVP_MD_CTX_init(&ictx->md_ctx);
-+	EVP_DigestInit(&ictx->md_ctx, EVP_sha1());
++	new_brownout = DIV_ROUND_CLOSEST(new_target - new_brownout, cfg->step_mV);
 +
-+	soprintf(ictx, "---------- Verifying SB Image Header ----------\n");
++	cur_target = readl(cfg->reg);
++	cur_target &= cfg->trg_mask;
++	cur_target *= cfg->step_mV;
++	cur_target += cfg->lowest_mV;
 +
-+	size = fread(&ictx->payload, 1, sizeof(ictx->payload), fp);
-+	if (size != sizeof(ictx->payload)) {
-+		fprintf(stderr, "ERR: SB image header too short!\n");
-+		return -EINVAL;
++	adjust_up = new_target > cur_target;
++	if (cfg->powered_by_linreg)
++		powered_by_linreg = cfg->powered_by_linreg();
++
++	if (adjust_up && cfg->bo_irq) {
++		if (powered_by_linreg) {
++			bo_int = readl(cfg->reg);
++			clrbits_le32(cfg->reg, cfg->bo_enirq);
++		}
++		setbits_le32(cfg->reg, cfg->bo_offset_mask);
 +	}
 +
-+	/* Compute header digest. */
-+	EVP_MD_CTX_init(&md_ctx);
-+	EVP_DigestInit(&md_ctx, EVP_sha1());
-+	EVP_DigestUpdate(&md_ctx, hdr->signature1,
-+			 sizeof(struct sb_boot_image_header) -
-+			 sizeof(hdr->digest));
-+	EVP_DigestFinal(&md_ctx, digest, NULL);
++	do {
++		if (abs(new_target - cur_target) > 100) {
++			if (adjust_up)
++				diff = cur_target + 100;
++			else
++				diff = cur_target - 100;
++		} else {
++			diff = new_target;
++		}
 +
-+	sb_aes_init(ictx, NULL, 1);
-+	sb_encrypt_sb_header(ictx);
++		diff -= cfg->lowest_mV;
++		diff /= cfg->step_mV;
 +
-+	if (memcmp(digest, hdr->digest, 20))
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Image header checksum:        %s\n", stat[!!ret],
-+		 ret ? "BAD" : "OK");
-+	if (ret)
-+		return ret;
++		clrsetbits_le32(cfg->reg, cfg->trg_mask, diff);
 +
-+	if (memcmp(hdr->signature1, "STMP", 4) ||
-+	    memcmp(hdr->signature2, "sgtl", 4))
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Signatures:                   '%.4s' '%.4s'\n",
-+		 stat[!!ret], hdr->signature1, hdr->signature2);
-+	if (ret)
-+		return ret;
++		if (powered_by_linreg ||
++			(readl(&power_regs->hw_power_sts) &
++				POWER_STS_VDD5V_GT_VDDIO))
++			mxs_early_delay(500);
++		else {
++			for (;;) {
++				tmp = readl(&power_regs->hw_power_sts);
++				if (tmp & POWER_STS_DC_OK)
++					break;
++			}
++		}
 +
-+	if ((hdr->major_version != SB_VERSION_MAJOR) ||
-+	    ((hdr->minor_version != 1) && (hdr->minor_version != 2)))
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Image version:                v%i.%i\n", stat[!!ret],
-+		 hdr->major_version, hdr->minor_version);
-+	if (ret)
-+		return ret;
++		cur_target = readl(cfg->reg);
++		cur_target &= cfg->trg_mask;
++		cur_target *= cfg->step_mV;
++		cur_target += cfg->lowest_mV;
++	} while (new_target > cur_target);
 +
-+	ret = sb_get_time(hdr->timestamp_us / 1000000, &tm);
-+	soprintf(ictx,
-+		 "%s Creation time:                %02i:%02i:%02i %02i/%02i/%04i\n",
-+		 stat[!!ret], tm.tm_hour, tm.tm_min, tm.tm_sec,
-+		 tm.tm_mday, tm.tm_mon, tm.tm_year + 2000);
-+	if (ret)
-+		return ret;
++	if (cfg->bo_irq) {
++		if (adjust_up && powered_by_linreg) {
++			writel(cfg->bo_irq, &power_regs->hw_power_ctrl_clr);
++			if (bo_int & cfg->bo_enirq)
++				setbits_le32(cfg->reg, cfg->bo_enirq);
++		}
 +
-+	soprintf(ictx, "%s Product version:              %x.%x.%x\n", stat[0],
-+		 ntohs(hdr->product_version.major),
-+		 ntohs(hdr->product_version.minor),
-+		 ntohs(hdr->product_version.revision));
-+	soprintf(ictx, "%s Component version:            %x.%x.%x\n", stat[0],
-+		 ntohs(hdr->component_version.major),
-+		 ntohs(hdr->component_version.minor),
-+		 ntohs(hdr->component_version.revision));
-+
-+	if (hdr->flags & ~SB_IMAGE_FLAG_VERBOSE)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Image flags:                  %s\n", stat[!!ret],
-+		 hdr->flags & SB_IMAGE_FLAG_VERBOSE ? "Verbose_boot" : "");
-+	if (ret)
-+		return ret;
-+
-+	if (hdr->drive_tag != 0)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Drive tag:                    %i\n", stat[!!ret],
-+		 hdr->drive_tag);
-+	if (ret)
-+		return ret;
-+
-+	sz = sizeof(struct sb_boot_image_header) / SB_BLOCK_SIZE;
-+	if (hdr->header_blocks != sz)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Image header size (blocks):   %i\n", stat[!!ret],
-+		 hdr->header_blocks);
-+	if (ret)
-+		return ret;
-+
-+	sz = sizeof(struct sb_sections_header) / SB_BLOCK_SIZE;
-+	if (hdr->section_header_size != sz)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Section header size (blocks): %i\n", stat[!!ret],
-+		 hdr->section_header_size);
-+	if (ret)
-+		return ret;
-+
-+	soprintf(ictx, "%s Sections count:               %i\n", stat[!!ret],
-+		 hdr->section_count);
-+	soprintf(ictx, "%s First bootable section        %i\n", stat[!!ret],
-+		 hdr->first_boot_section_id);
-+
-+	if (hdr->image_blocks != fsize / SB_BLOCK_SIZE)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Image size (blocks):          %i\n", stat[!!ret],
-+		 hdr->image_blocks);
-+	if (ret)
-+		return ret;
-+
-+	sz = hdr->header_blocks + hdr->section_header_size * hdr->section_count;
-+	if (hdr->key_dictionary_block != sz)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Key dict offset (blocks):     %i\n", stat[!!ret],
-+		 hdr->key_dictionary_block);
-+	if (ret)
-+		return ret;
-+
-+	if (hdr->key_count != 1)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s Number of encryption keys:    %i\n", stat[!!ret],
-+		 hdr->key_count);
-+	if (ret)
-+		return ret;
-+
-+	sz = hdr->header_blocks + hdr->section_header_size * hdr->section_count;
-+	sz += hdr->key_count *
-+		sizeof(struct sb_key_dictionary_key) / SB_BLOCK_SIZE;
-+	if (hdr->first_boot_tag_block != (unsigned)sz)
-+		ret = -EINVAL;
-+	soprintf(ictx, "%s First TAG block (blocks):     %i\n", stat[!!ret],
-+		 hdr->first_boot_tag_block);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
++		clrsetbits_le32(cfg->reg, cfg->bo_offset_mask,
++				new_brownout << cfg->bo_offset_offset);
++	}
 +}
 +
-+static void sb_decrypt_tag(struct sb_image_ctx *ictx,
-+		struct sb_cmd_ctx *cctx)
++/**
++ * mxs_setup_batt_detect() - Start the battery voltage measurement logic
++ *
++ * This function starts and configures the LRADC block. This allows the
++ * power initialization code to measure battery voltage and based on this
++ * knowledge, decide whether to boot at all, boot from battery or boot
++ * from 5V input.
++ */
++static void mxs_setup_batt_detect(void)
 +{
-+	EVP_MD_CTX *md_ctx = &ictx->md_ctx;
-+	struct sb_command *cmd = &cctx->payload;
-+
-+	sb_aes_crypt(ictx, (uint8_t *)&cctx->c_payload,
-+		     (uint8_t *)&cctx->payload, sizeof(*cmd));
-+	EVP_DigestUpdate(md_ctx, &cctx->c_payload, sizeof(*cmd));
++	mxs_lradc_init();
++	mxs_lradc_enable_batt_measurement();
++	mxs_early_delay(10);
 +}
 +
-+static int sb_verify_command(struct sb_image_ctx *ictx,
-+			     struct sb_cmd_ctx *cctx, FILE *fp,
-+			     unsigned long *tsize)
++/**
++ * mx23_ungate_power() - Ungate the POWER block
++ *
++ * This function ungates clock to the power block. In case the power block
++ * was still gated at this point, it will not be possible to configure the
++ * block and therefore the power initialization would fail. This function
++ * is only needed on i.MX233, on i.MX28 the power block is always ungated.
++ */
++static void mx23_ungate_power(void)
 +{
-+	struct sb_command *ccmd = &cctx->payload;
-+	unsigned long size, asize;
-+	char *csum, *flag = "";
-+	int ret;
-+	unsigned int i;
-+	uint8_t csn, csc = ccmd->header.checksum;
-+	ccmd->header.checksum = 0x5a;
-+	csn = sb_command_checksum(ccmd);
-+	ccmd->header.checksum = csc;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	if (csc == csn)
-+		ret = 0;
++	writel(MX23_POWER_CTRL_CLKGATE, &power_regs->hw_power_ctrl_clr);
++}
++
++/**
++ * mx23_power_init() - The power block init main function
++ *
++ * This function calls all the power block initialization functions in
++ * proper sequence to start the power block.
++ */
++static void __mx23_power_init(int has_battery)
++{
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
++
++	mx23_ungate_power();
++
++	mxs_power_clock2xtal();
++	mxs_power_set_auto_restart();
++	mxs_power_set_linreg();
++	mxs_power_setup_5v_detect();
++
++	mxs_setup_batt_detect();
++
++	mxs_src_power_init();
++
++	if (has_battery)
++		mxs_power_configure_power_source();
 +	else
-+		ret = -EINVAL;
-+	csum = ret ? "checksum BAD" : "checksum OK";
++		mxs_enable_battery_input();
 +
-+	switch (ccmd->header.tag) {
-+	case ROM_NOP_CMD:
-+		soprintf(ictx, " NOOP # %s\n", csum);
-+		return ret;
-+	case ROM_TAG_CMD:
-+		if (ccmd->header.flags & ROM_TAG_CMD_FLAG_ROM_LAST_TAG)
-+			flag = "LAST";
-+		soprintf(ictx, " TAG %s # %s\n", flag, csum);
-+		sb_aes_reinit(ictx, 0);
-+		return ret;
-+	case ROM_LOAD_CMD:
-+		soprintf(ictx, " LOAD addr=0x%08x length=0x%08x # %s\n",
-+			 ccmd->load.address, ccmd->load.count, csum);
++	mxs_power_clock2pll();
 +
-+		cctx->length = ccmd->load.count;
-+		asize = roundup(cctx->length, SB_BLOCK_SIZE);
-+		cctx->data = malloc(asize);
-+		if (!cctx->data)
-+			return -ENOMEM;
++	mxs_init_batt_bo();
 +
-+		size = fread(cctx->data, 1, asize, fp);
-+		if (size != asize) {
-+			fprintf(stderr,
-+				"ERR: SB LOAD command payload too short!\n");
-+			return -EINVAL;
-+		}
++	mxs_switch_vddd_to_dcdc_source();
 +
-+		*tsize += size;
++	/* Fire up the VDDMEM LinReg now that we're all set. */
++	writel(POWER_VDDMEMCTRL_ENABLE_LINREG | POWER_VDDMEMCTRL_ENABLE_ILIMIT,
++		&power_regs->hw_power_vddmemctrl);
 +
-+		EVP_DigestUpdate(&ictx->md_ctx, cctx->data, asize);
-+		sb_aes_crypt(ictx, cctx->data, cctx->data, asize);
++	mxs_enable_output_rail_protection();
 +
-+		if (ccmd->load.crc32 != pbl_crc32(0,
-+						  (const char *)cctx->data,
-+						  asize)) {
-+			fprintf(stderr,
-+				"ERR: SB LOAD command payload CRC32 invalid!\n");
-+			return -EINVAL;
-+		}
-+		return 0;
-+	case ROM_FILL_CMD:
-+		soprintf(ictx,
-+			 " FILL addr=0x%08x length=0x%08x pattern=0x%08x # %s\n",
-+			 ccmd->fill.address, ccmd->fill.count,
-+			 ccmd->fill.pattern, csum);
-+		return 0;
-+	case ROM_JUMP_CMD:
-+		if (ccmd->header.flags & ROM_JUMP_CMD_FLAG_HAB)
-+			flag = " HAB";
-+		soprintf(ictx,
-+			 " JUMP%s addr=0x%08x r0_arg=0x%08x # %s\n",
-+			 flag, ccmd->fill.address, ccmd->jump.argument, csum);
-+		return 0;
-+	case ROM_CALL_CMD:
-+		if (ccmd->header.flags & ROM_CALL_CMD_FLAG_HAB)
-+			flag = " HAB";
-+		soprintf(ictx,
-+			 " CALL%s addr=0x%08x r0_arg=0x%08x # %s\n",
-+			 flag, ccmd->fill.address, ccmd->jump.argument, csum);
-+		return 0;
-+	case ROM_MODE_CMD:
-+		for (i = 0; i < ARRAY_SIZE(modetable); i++) {
-+			if (ccmd->mode.mode == modetable[i].mode) {
-+				soprintf(ictx, " MODE %s # %s\n",
-+					 modetable[i].name, csum);
-+				break;
-+			}
-+		}
-+		fprintf(stderr, " MODE !INVALID! # %s\n", csum);
-+		return 0;
-+	}
++	mxs_power_set_vddx(&mx23_vddio_cfg, 3300, 3150);
++	mxs_power_set_vddx(&mxs_vddd_cfg, 1500, 1000);
++	mxs_power_set_vddx(&mxs_vddd_cfg, 1350, 1200);
++	mxs_power_set_vddx(&mxs_vddmem_cfg, 2500, 1700);
 +
-+	return ret;
++	writel(POWER_CTRL_VDDD_BO_IRQ | POWER_CTRL_VDDA_BO_IRQ |
++		POWER_CTRL_VDDIO_BO_IRQ | POWER_CTRL_VDD5V_DROOP_IRQ |
++		POWER_CTRL_VBUS_VALID_IRQ | POWER_CTRL_BATT_BO_IRQ |
++		POWER_CTRL_DCDC4P2_BO_IRQ, &power_regs->hw_power_ctrl_clr);
++
++	writel(POWER_5VCTRL_PWDN_5VBRNOUT, &power_regs->hw_power_5vctrl_set);
++
++	mxs_early_delay(1000);
 +}
 +
-+static int sb_verify_commands(struct sb_image_ctx *ictx,
-+			      struct sb_section_ctx *sctx, FILE *fp)
++void mx23_power_init(void)
 +{
-+	unsigned long size, tsize = 0;
-+	struct sb_cmd_ctx *cctx;
-+	int ret;
-+
-+	sb_aes_reinit(ictx, 0);
-+
-+	while (tsize < sctx->size) {
-+		cctx = calloc(1, sizeof(*cctx));
-+		if (!cctx)
-+			return -ENOMEM;
-+		if (!sctx->cmd_head) {
-+			sctx->cmd_head = cctx;
-+			sctx->cmd_tail = cctx;
-+		} else {
-+			sctx->cmd_tail->cmd = cctx;
-+			sctx->cmd_tail = cctx;
-+		}
-+
-+		size = fread(&cctx->c_payload, 1, sizeof(cctx->c_payload), fp);
-+		if (size != sizeof(cctx->c_payload)) {
-+			fprintf(stderr, "ERR: SB command header too short!\n");
-+			return -EINVAL;
-+		}
-+
-+		tsize += size;
-+
-+		sb_decrypt_tag(ictx, cctx);
-+
-+		ret = sb_verify_command(ictx, cctx, fp, &tsize);
-+		if (ret)
-+			return -EINVAL;
-+	}
-+
-+	return 0;
++	__mx23_power_init(1);
 +}
 +
-+static int sb_verify_sections_cmds(struct sb_image_ctx *ictx, FILE *fp)
++void mx23_power_init_battery_input(void)
 +{
-+	struct sb_boot_image_header *hdr = &ictx->payload;
-+	struct sb_sections_header *shdr;
-+	unsigned int i;
-+	int ret;
-+	struct sb_section_ctx *sctx;
-+	unsigned long size;
-+	char *bootable = "";
-+
-+	soprintf(ictx, "----- Verifying  SB Sections and Commands -----\n");
-+
-+	for (i = 0; i < hdr->section_count; i++) {
-+		sctx = calloc(1, sizeof(*sctx));
-+		if (!sctx)
-+			return -ENOMEM;
-+		if (!ictx->sect_head) {
-+			ictx->sect_head = sctx;
-+			ictx->sect_tail = sctx;
-+		} else {
-+			ictx->sect_tail->sect = sctx;
-+			ictx->sect_tail = sctx;
-+		}
-+
-+		size = fread(&sctx->payload, 1, sizeof(sctx->payload), fp);
-+		if (size != sizeof(sctx->payload)) {
-+			fprintf(stderr, "ERR: SB section header too short!\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	size = fread(&ictx->sb_dict_key, 1, sizeof(ictx->sb_dict_key), fp);
-+	if (size != sizeof(ictx->sb_dict_key)) {
-+		fprintf(stderr, "ERR: SB key dictionary too short!\n");
-+		return -EINVAL;
-+	}
-+
-+	sb_encrypt_sb_sections_header(ictx);
-+	sb_aes_reinit(ictx, 0);
-+	sb_decrypt_key_dictionary_key(ictx);
-+
-+	sb_aes_reinit(ictx, 0);
-+
-+	sctx = ictx->sect_head;
-+	while (sctx) {
-+		shdr = &sctx->payload;
-+
-+		if (shdr->section_flags & SB_SECTION_FLAG_BOOTABLE) {
-+			sctx->boot = 1;
-+			bootable = " BOOTABLE";
-+		}
-+
-+		sctx->size = (shdr->section_size * SB_BLOCK_SIZE) +
-+			     sizeof(struct sb_command);
-+		soprintf(ictx, "SECTION 0x%x%s # size = %i bytes\n",
-+			 shdr->section_number, bootable, sctx->size);
-+
-+		if (shdr->section_flags & ~SB_SECTION_FLAG_BOOTABLE)
-+			fprintf(stderr, " WARN: Unknown section flag(s) %08x\n",
-+				shdr->section_flags);
-+
-+		if ((shdr->section_flags & SB_SECTION_FLAG_BOOTABLE) &&
-+		    (hdr->first_boot_section_id != shdr->section_number)) {
-+			fprintf(stderr,
-+				" WARN: Bootable section does ID not match image header ID!\n");
-+		}
-+
-+		ret = sb_verify_commands(ictx, sctx, fp);
-+		if (ret)
-+			return ret;
-+
-+		sctx = sctx->sect;
-+	}
-+
-+	/*
-+	 * FIXME IDEA:
-+	 * check if the first TAG command is at sctx->section_offset
-+	 */
-+	return 0;
++	__mx23_power_init(0);
 +}
 +
-+static int sb_verify_image_end(struct sb_image_ctx *ictx,
-+			       FILE *fp, off_t filesz)
++/**
++ * mx28_power_init() - The power block init main function
++ *
++ * This function calls all the power block initialization functions in
++ * proper sequence to start the power block.
++ */
++static void __mx28_power_init(int has_battery)
 +{
-+	uint8_t digest[32];
-+	unsigned long size;
-+	off_t pos;
-+	int ret;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	soprintf(ictx, "------------- Verifying image end -------------\n");
++	mxs_power_clock2xtal();
++	mxs_power_set_auto_restart();
++	mxs_power_set_linreg();
++	mxs_power_setup_5v_detect();
 +
-+	size = fread(digest, 1, sizeof(digest), fp);
-+	if (size != sizeof(digest)) {
-+		fprintf(stderr, "ERR: SB key dictionary too short!\n");
-+		return -EINVAL;
-+	}
++	mxs_setup_batt_detect();
 +
-+	pos = ftell(fp);
-+	if (pos != filesz) {
-+		fprintf(stderr, "ERR: Trailing data past the image!\n");
-+		return -EINVAL;
-+	}
++	mxs_src_power_init();
 +
-+	/* Check the image digest. */
-+	EVP_DigestFinal(&ictx->md_ctx, ictx->digest, NULL);
-+
-+	/* Decrypt the image digest from the input image. */
-+	sb_aes_reinit(ictx, 0);
-+	sb_aes_crypt(ictx, digest, digest, sizeof(digest));
-+
-+	/* Check all of 20 bytes of the SHA1 hash. */
-+	ret = memcmp(digest, ictx->digest, 20) ? -EINVAL : 0;
-+
-+	if (ret)
-+		soprintf(ictx, "[FAIL] Full-image checksum:          BAD\n");
++	if (has_battery)
++		mxs_power_configure_power_source();
 +	else
-+		soprintf(ictx, "[PASS] Full-image checksum:          OK\n");
++		mxs_enable_battery_input();
 +
-+	return ret;
++	mxs_power_clock2pll();
++
++	mxs_init_batt_bo();
++
++	mxs_switch_vddd_to_dcdc_source();
++
++	mxs_enable_output_rail_protection();
++
++	mxs_power_set_vddx(&mx28_vddio_cfg, 3300, 3150);
++	mxs_power_set_vddx(&mxs_vddd_cfg, 1500, 1000);
++	mxs_power_set_vddx(&mxs_vddd_cfg, 1350, 1200);
++
++	writel(POWER_CTRL_VDDD_BO_IRQ | POWER_CTRL_VDDA_BO_IRQ |
++		POWER_CTRL_VDDIO_BO_IRQ | POWER_CTRL_VDD5V_DROOP_IRQ |
++		POWER_CTRL_VBUS_VALID_IRQ | POWER_CTRL_BATT_BO_IRQ |
++		POWER_CTRL_DCDC4P2_BO_IRQ, &power_regs->hw_power_ctrl_clr);
++
++	writel(POWER_5VCTRL_PWDN_5VBRNOUT, &power_regs->hw_power_5vctrl_set);
++
++	mxs_early_delay(1000);
 +}
 +
-+
-+static int sb_build_tree_from_img(struct sb_image_ctx *ictx)
++void mx28_power_init(void)
 +{
-+	long filesize;
-+	int ret;
-+	FILE *fp;
-+
-+	if (!ictx->input_filename) {
-+		fprintf(stderr, "ERR: Missing filename!\n");
-+		return -EINVAL;
-+	}
-+
-+	fp = fopen(ictx->input_filename, "r");
-+	if (!fp)
-+		goto err_open;
-+
-+	ret = fseek(fp, 0, SEEK_END);
-+	if (ret < 0)
-+		goto err_file;
-+
-+	filesize = ftell(fp);
-+	if (filesize < 0)
-+		goto err_file;
-+
-+	ret = fseek(fp, 0, SEEK_SET);
-+	if (ret < 0)
-+		goto err_file;
-+
-+	if (filesize < (signed)sizeof(ictx->payload)) {
-+		fprintf(stderr, "ERR: File too short!\n");
-+		goto err_file;
-+	}
-+
-+	/* Load and verify image header */
-+	ret = sb_verify_image_header(ictx, fp, filesize);
-+	if (ret)
-+		goto err_verify;
-+
-+	/* Load and verify sections and commands */
-+	ret = sb_verify_sections_cmds(ictx, fp);
-+	if (ret)
-+		goto err_verify;
-+
-+	ret = sb_verify_image_end(ictx, fp, filesize);
-+	if (ret)
-+		goto err_verify;
-+
-+	ret = 0;
-+
-+err_verify:
-+	soprintf(ictx, "-------------------- Result -------------------\n");
-+	soprintf(ictx, "Verification %s\n", ret ? "FAILED" : "PASSED");
-+
-+	/* Stop the encryption session. */
-+	sb_aes_deinit(&ictx->cipher_ctx);
-+
-+	fclose(fp);
-+	return ret;
-+
-+err_file:
-+	fclose(fp);
-+err_open:
-+	fprintf(stderr, "ERR: Failed to load file \"%s\"\n",
-+		ictx->input_filename);
-+	return -EINVAL;
++	__mx28_power_init(1);
 +}
 +
-+static void sb_free_image(struct sb_image_ctx *ictx)
++void mx28_power_init_battery_input(void)
 +{
-+	struct sb_section_ctx *sctx = ictx->sect_head, *s_head;
-+	struct sb_dcd_ctx *dctx = ictx->dcd_head, *d_head;
-+	struct sb_cmd_ctx *cctx, *c_head;
-+
-+	while (sctx) {
-+		s_head = sctx;
-+		c_head = sctx->cmd_head;
-+
-+		while (c_head) {
-+			cctx = c_head;
-+			c_head = c_head->cmd;
-+			if (cctx->data)
-+				free(cctx->data);
-+			free(cctx);
-+		}
-+
-+		sctx = sctx->sect;
-+		free(s_head);
-+	}
-+
-+	while (dctx) {
-+		d_head = dctx;
-+		dctx = dctx->dcd;
-+		free(d_head->payload);
-+		free(d_head);
-+	}
++	__mx28_power_init(0);
 +}
 +
-+static int mxsimage_verify_print_header(char *file, int silent)
++/**
++ * mxs_power_wait_pswitch() - Wait for power switch to be pressed
++ *
++ * This function waits until the power-switch was pressed to start booting
++ * the board.
++ */
++void mxs_power_wait_pswitch(void)
 +{
-+	int ret;
-+	struct sb_image_ctx ctx;
++	struct mxs_power_regs *power_regs =
++		(struct mxs_power_regs *)IMX_POWER_BASE;
 +
-+	memset(&ctx, 0, sizeof(ctx));
-+
-+	ctx.input_filename = file;
-+	ctx.silent_dump = silent;
-+
-+	ret = sb_build_tree_from_img(&ctx);
-+	sb_free_image(&ctx);
-+
-+	return ret;
-+}
-+
-+static int sb_build_image(struct sb_image_ctx *ictx)
-+{
-+	struct sb_boot_image_header *sb_header = &ictx->payload;
-+	struct sb_section_ctx *sctx;
-+	struct sb_cmd_ctx *cctx;
-+	struct sb_command *ccmd;
-+	struct sb_key_dictionary_key *sb_dict_key = &ictx->sb_dict_key;
-+	int fd;
-+	ssize_t now;
-+
-+	uint8_t *image, *iptr;
-+
-+	/* Calculate image size. */
-+	uint32_t size = sizeof(*sb_header) +
-+		ictx->sect_count * sizeof(struct sb_sections_header) +
-+		sizeof(*sb_dict_key) + sizeof(ictx->digest);
-+
-+	sctx = ictx->sect_head;
-+	while (sctx) {
-+		size += sctx->size;
-+		sctx = sctx->sect;
-+	};
-+
-+	image = malloc(size);
-+	if (!image)
-+		return -ENOMEM;
-+	iptr = image;
-+
-+	memcpy(iptr, sb_header, sizeof(*sb_header));
-+	iptr += sizeof(*sb_header);
-+
-+	sctx = ictx->sect_head;
-+	while (sctx) {
-+		memcpy(iptr, &sctx->payload, sizeof(struct sb_sections_header));
-+		iptr += sizeof(struct sb_sections_header);
-+		sctx = sctx->sect;
-+	};
-+
-+	memcpy(iptr, sb_dict_key, sizeof(*sb_dict_key));
-+	iptr += sizeof(*sb_dict_key);
-+
-+	sctx = ictx->sect_head;
-+	while (sctx) {
-+		cctx = sctx->cmd_head;
-+		while (cctx) {
-+			ccmd = &cctx->payload;
-+
-+			memcpy(iptr, &cctx->c_payload, sizeof(cctx->payload));
-+			iptr += sizeof(cctx->payload);
-+
-+			if (ccmd->header.tag == ROM_LOAD_CMD) {
-+				memcpy(iptr, cctx->data, cctx->length);
-+				iptr += cctx->length;
-+			}
-+
-+			cctx = cctx->cmd;
-+		}
-+
-+		sctx = sctx->sect;
-+	};
-+
-+	memcpy(iptr, ictx->digest, sizeof(ictx->digest));
-+	iptr += sizeof(ictx->digest);
-+
-+	fd = open(ictx->output_filename, O_WRONLY | O_CREAT, 0644);
-+	if (fd < 0)
-+		return -errno;
-+
-+	while (size) {
-+		now = write(fd, image, size);
-+		if (now < 0)
-+			return -errno;
-+		image += now;
-+		size -= now;
-+	}
-+
-+	close(fd);
-+
-+	return 0;
-+}
-+
-+static int mxsimage_generate(const char *configfile, const char *imagefile)
-+{
-+	int ret;
-+	struct sb_image_ctx ctx;
-+
-+	memset(&ctx, 0, sizeof(ctx));
-+
-+	ctx.cfg_filename = configfile;
-+	ctx.output_filename = imagefile;
-+	ctx.verbose_boot = 1;
-+
-+	ret = sb_build_tree_from_cfg(&ctx);
-+	if (ret)
-+		goto fail;
-+
-+	ret = sb_encrypt_image(&ctx);
-+	if (!ret)
-+		ret = sb_build_image(&ctx);
-+
-+fail:
-+	sb_free_image(&ctx);
-+
-+	return ret;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int ret;
-+	int opt;
-+	char *configfile = NULL, *outfile = NULL, *verify = NULL;
-+
-+	while ((opt = getopt(argc, argv, "p:b:c:o:v:")) != -1) {
-+		switch (opt) {
-+		case 'p':
-+			prepfile = optarg;
-+                        break;
-+		case 'b':
-+			bootloaderfile = optarg;
-+			break;
-+		case 'c':
-+			configfile = optarg;
-+			break;
-+		case 'o':
-+			outfile = optarg;
-+			break;
-+		case 'v':
-+			verify = optarg;
-+			break;
-+		default:
-+			exit(1);
-+		}
-+	}
-+
-+	if (verify) {
-+		ret = mxsimage_verify_print_header(verify, 0);
-+		if (ret)
-+			exit(1);
-+		else
-+			exit(0);
-+	}
-+
-+	if (!configfile) {
-+		fprintf(stderr, "Configfile missing\n");
-+		exit(1);
-+	}
-+
-+	if (!outfile) {
-+		fprintf(stderr, "outfile missing\n");
-+		exit(1);
-+	}
-+
-+	ret = mxsimage_generate(configfile, outfile);
-+	if (ret)
-+		exit(1);
-+
-+	return 0;
++	while (!(readl(&power_regs->hw_power_sts) & POWER_STS_PSWITCH_MASK))
++		;
 +}
 -- 
 2.1.3
