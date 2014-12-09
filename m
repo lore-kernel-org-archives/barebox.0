@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyPMO-0003fB-UB
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 18:18:11 +0000
+ Linux)) id 1XyPMT-0003hJ-2w
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 18:18:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 19:17:41 +0100
-Message-Id: <1418149064-26448-7-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 19:17:44 +0100
+Message-Id: <1418149064-26448-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1418149064-26448-1-git-send-email-s.hauer@pengutronix.de>
 References: <1418149064-26448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] malloc: Add a function to detect if malloc pool is
- already initialized
+Subject: [PATCH 9/9] ARM: uncompress.c: Add some debugging messages
 To: barebox@lists.infradead.org
+
+Now that we have printf support in the PBL we can use it right
+after setup_c(). Add some debug messages to the early PBL code
+to make it more clear what is happening there.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/memory.c  | 8 ++++++++
- include/malloc.h | 2 ++
- 2 files changed, 10 insertions(+)
+ arch/arm/cpu/uncompress.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/common/memory.c b/common/memory.c
-index 57c73ab..4725f6e 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -49,6 +49,13 @@ unsigned long mem_malloc_end(void)
- tlsf_pool tlsf_mem_pool;
- #endif
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index d64706d..03c73d5 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -17,6 +17,7 @@
+  * GNU General Public License for more details.
+  *
+  */
++#define pr_fmt(fmt) "uncompress.c: " fmt
  
-+int mem_malloc_initialized;
+ #include <common.h>
+ #include <init.h>
+@@ -76,9 +77,12 @@ static void __noreturn noinline uncompress_start_payload(unsigned long membase,
+ 
+ 	setup_c();
+ 
++	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
 +
-+int mem_malloc_is_initialized(void)
-+{
-+	return mem_malloc_initialized;
-+}
+ 	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
+ 		endmem &= ~0x3fff;
+ 		endmem -= SZ_16K; /* ttb */
++		pr_debug("enabling MMU, ttb @ 0x%08x\n", endmem);
+ 		mmu_early_enable(membase, memsize, endmem);
+ 	}
+ 
+@@ -93,6 +97,9 @@ static void __noreturn noinline uncompress_start_payload(unsigned long membase,
+ 	pg_start = image_end + 1;
+ 	pg_len = *(image_end);
+ 
++	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx\n",
++			pg_start, pg_len, barebox_base);
 +
- void mem_malloc_init(void *start, void *end)
- {
- 	malloc_start = (unsigned long)start;
-@@ -57,6 +64,7 @@ void mem_malloc_init(void *start, void *end)
- #ifdef CONFIG_MALLOC_TLSF
- 	tlsf_mem_pool = tlsf_create(start, end - start + 1);
- #endif
-+	mem_malloc_initialized = 1;
+ 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
+ 
+ 	arm_early_mmu_cache_flush();
+@@ -103,6 +110,8 @@ static void __noreturn noinline uncompress_start_payload(unsigned long membase,
+ 	else
+ 		barebox = (void *)barebox_base;
+ 
++	pr_debug("jumping to uncompressed image at 0x%p\n", barebox);
++
+ 	barebox(membase, memsize, boarddata);
  }
  
- #if !defined __SANDBOX__ && !defined CONFIG_ARCH_EFI
-diff --git a/include/malloc.h b/include/malloc.h
-index a36f3c0..0d3c9e9 100644
---- a/include/malloc.h
-+++ b/include/malloc.h
-@@ -11,4 +11,6 @@ void *calloc(size_t, size_t);
- void malloc_stats(void);
- void *sbrk(ptrdiff_t increment);
- 
-+int mem_malloc_is_initialized(void);
-+
- #endif /* __MALLOC_H */
 -- 
 2.1.3
 
