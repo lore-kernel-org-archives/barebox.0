@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyQ4w-00089C-3N
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:11 +0000
+ Linux)) id 1XyQ4r-00088X-4E
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 20:03:36 +0100
-Message-Id: <1418151816-24593-14-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 20:03:26 +0100
+Message-Id: <1418151816-24593-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,142 +21,294 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/13] Documentation: Add documentation for booting Freescale
- MXS SoCs
+Subject: [PATCH 03/13] scripts: Add mxs-usb-loader tool
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>
 
+This is directly taken from the rockbox projects sbloader tool,
+just renamed to mxs-usb-loader to avoid confusion with bareboxes
+several different image tools.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/boards/mxs.rst | 119 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 119 insertions(+)
- create mode 100644 Documentation/boards/mxs.rst
+ arch/arm/mach-mxs/Kconfig |   7 ++
+ scripts/Makefile          |   3 +
+ scripts/mxs-usb-loader.c  | 236 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 246 insertions(+)
+ create mode 100644 scripts/mxs-usb-loader.c
 
-diff --git a/Documentation/boards/mxs.rst b/Documentation/boards/mxs.rst
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index 214f940..997e326 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -134,4 +134,11 @@ endif
+ 
+ endmenu
+ 
++config ARCH_MXS_USBLOADER
++	bool "compile mxs-usb-loader"
++	help
++	  mxs-usb-loader is a tool to upload and start mxs bootstream images to an
++	  i.MX SoC in ROM boot mode. It requires libusb, so make sure you have the libusb
++	  devel package installed on your machine.
++
+ endif
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 442eba5..74c2213 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -21,6 +21,9 @@ hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
+ hostprogs-$(CONFIG_ARCH_SOCFPGA) += socfpga_mkimage
+ hostprogs-$(CONFIG_ARCH_MXS)     += mxsimage mxsboot
+ HOSTLOADLIBES_mxsimage  = `pkg-config --libs openssl`
++HOSTCFLAGS_mxs-usb-loader.o = `pkg-config --cflags libusb-1.0`
++HOSTLOADLIBES_mxs-usb-loader  = `pkg-config --libs libusb-1.0`
++hostprogs-$(CONFIG_ARCH_MXS_USBLOADER)  += mxs-usb-loader
+ 
+ subdir-y			+= mod
+ subdir-$(CONFIG_OMAP4_USBBOOT)	+= omap4_usbboot
+diff --git a/scripts/mxs-usb-loader.c b/scripts/mxs-usb-loader.c
 new file mode 100644
-index 0000000..6c8bdb5
+index 0000000..8529274
 --- /dev/null
-+++ b/Documentation/boards/mxs.rst
-@@ -0,0 +1,119 @@
-+Freescale i.MXs
-+===============
++++ b/scripts/mxs-usb-loader.c
+@@ -0,0 +1,236 @@
++/***************************************************************************
++ *             __________               __   ___.
++ *   Open      \______   \ ____   ____ |  | _\_ |__   _______  ___
++ *   Source     |       _//  _ \_/ ___\|  |/ /| __ \ /  _ \  \/  /
++ *   Jukebox    |    |   (  <_> )  \___|    < | \_\ (  <_> > <  <
++ *   Firmware   |____|_  /\____/ \___  >__|_ \|___  /\____/__/\_ \
++ *                     \/            \/     \/    \/            \/
++ * $Id$
++ *
++ * Copyright (C) 2010 Amaury Pouly
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
++ * KIND, either express or implied.
++ *
++ ****************************************************************************/
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <libusb.h>
++#include <stdint.h>
 +
-+Freescale i.MXs or MXS are a SoC family which consists of the i.MX23
-+and the i.MX28. These are quite different from the regular i.MX SoCs
-+and thus are represented by its own architecture in both the Kernel
-+and barebox.
++#ifndef MIN
++#define MIN(a,b) ((a) < (b) ? (a) : (b))
++#endif
 +
-+Bootlets
-+--------
++void put32le(uint8_t * buf, uint32_t i)
++{
++	*buf++ = i & 0xff;
++	*buf++ = (i >> 8) & 0xff;
++	*buf++ = (i >> 16) & 0xff;
++	*buf++ = (i >> 24) & 0xff;
++}
 +
-+Traditionally These SoCs need the Freescale bootlets source and the
-+elf2sb2 binary to build a bootable image out of the barebox binary.
-+Since the bootlets are board specific and the source code is only
-+hardly customisable each vendor usually has his own slightly different
-+version of the bootlets. Booting with the Freescale bootlets is not
-+described here, refer to the bootlet sourcecode or your vendors
-+documentation instead.
++void put32be(uint8_t * buf, uint32_t i)
++{
++	*buf++ = (i >> 24) & 0xff;
++	*buf++ = (i >> 16) & 0xff;
++	*buf++ = (i >> 8) & 0xff;
++	*buf++ = i & 0xff;
++}
 +
-+U-Boot and barebox have a port of the bootlets integrated into their
-+source. The barebox bootlet code is derived from the U-Boot bootlet
-+code written by Marek Vasut.
++enum dev_type_t {
++	HID_DEVICE,
++	RECOVERY_DEVICE,
++};
 +
-+Currently only the Karo TX28 is supported by the barebox bootlets,
-+but we recommend that this approach should be followed for new boards
-+and existing boards should be ported over.
++struct dev_info_t {
++	uint16_t vendor_id;
++	uint16_t product_id;
++	unsigned xfer_size;
++	enum dev_type_t dev_type;
++};
 +
-+Booting Freescale i.MXs
-+-----------------------
++struct dev_info_t g_dev_info[] = {
++	{0x066f, 0x3780, 1024, HID_DEVICE},	/* i.MX233 / STMP3780 */
++	{0x066f, 0x3770, 48, HID_DEVICE},	/* STMP3770 */
++	{0x15A2, 0x004F, 1024, HID_DEVICE},	/* i.MX28 */
++	{0x066f, 0x3600, 4096, RECOVERY_DEVICE},	/* STMP36xx */
++};
 +
-+The Freescale MXS SoCs have a multi staged boot process which needs
-+different images composed out of different binaries. The ROM executes
-+a so called bootstream which contains multiple executables. The first
-+one is executed in SRAM and the purpose of this binary is to setup
-+the internal PMIC and the SDRAM. The second image is usually the
-+bootloader itself. In case of barebox the bootstream is composed
-+out of the self extracting barebox image (pblx) and the prepare
-+stage for setting up the SDRAM.
-+    
-+The bootstream image itself is useful for USB boot, but for booting from
-+SD cards or NAND a BCB header has to be prepended to the image. In case
-+of SD boot the image has the .mxssd file extension in barebox.
-+    
-+Since the bootstream images are encrypted they are not suitable for
-+2nd stage execution. For this purpose the 2nd stage images are generated.
++int send_hid(libusb_device_handle * dev, int xfer_size, uint8_t * data,
++	     int size, int nr_xfers)
++{
++	int i;
 +
-+Booting from USB
-+----------------
++	libusb_detach_kernel_driver(dev, 0);
++	libusb_detach_kernel_driver(dev, 4);
 +
-+barebox has the mxs-usb-loader tool (derived from the sbloader tool from
-+the rockbox project). If the board is connected to the PC and started in
-+USB Boot mode it should show up in lsusb::
++	libusb_claim_interface(dev, 0);
++	libusb_claim_interface(dev, 4);
 +
-+  Bus 001 Device 098: ID 15a2:004f Freescale Semiconductor, Inc. i.MX28 SystemOnChip in RecoveryMode
++	uint8_t *xfer_buf = malloc(1 + xfer_size);
++	uint8_t *p = xfer_buf;
 +
-+The bootstream images can be directly booted with::
++	*p++ = 0x01;		/* Report id */
 +
-+  ./scripts/mxs-usb-loader 0 images/barebox-karo-tx28-bootstream.img
++	/* Command block wrapper */
++	*p++ = 'B';		/* Signature */
++	*p++ = 'L';
++	*p++ = 'T';
++	*p++ = 'C';
++	put32le(p, 0x1);	/* Tag */
++	p += 4;
++	put32le(p, size);	/* Payload size */
++	p += 4;
++	*p++ = 0;		/* Flags (host to device) */
++	p += 2;			/* Reserved */
 +
-+You might require appropriate udev rules or sudo to gain the rights to
-+access the USB device.
++	/* Command descriptor block */
++	*p++ = 0x02;		/* Firmware download */
++	put32be(p, size);	/* Download size */
 +
-+Booting from SD cards
-+---------------------
++	int ret = libusb_control_transfer(dev,
++					  LIBUSB_REQUEST_TYPE_CLASS |
++					  LIBUSB_RECIPIENT_INTERFACE, 0x9,
++					  0x201, 0,
++					  xfer_buf, xfer_size + 1, 1000);
++	if (ret < 0) {
++		printf("transfer error at init step\n");
++		return 1;
++	}
 +
-+The SD images are suitable for booting from SD cards. SD cards need a special
-+partitioning which can be created with the following fdisk sequence (using
-+/dev/sdg as example)::
++	for (i = 0; i < nr_xfers; i++) {
++		xfer_buf[0] = 0x2;
++		memcpy(&xfer_buf[1], &data[i * xfer_size], xfer_size);
 +
-+  fdisk /dev/sdg 
++		ret = libusb_control_transfer(dev,
++					      LIBUSB_REQUEST_TYPE_CLASS |
++					      LIBUSB_RECIPIENT_INTERFACE, 0x9,
++					      0x202, 0, xfer_buf, xfer_size + 1,
++					      1000);
++		if (ret < 0) {
++			printf("transfer error at send step %d\n", i);
++			return 1;
++		}
++	}
 +
-+  Welcome to fdisk (util-linux 2.25.1).
-+  Changes will remain in memory only, until you decide to write them.
-+  Be careful before using the write command.
++	int recv_size;
++	ret =
++	    libusb_interrupt_transfer(dev, 0x81, xfer_buf, xfer_size,
++				      &recv_size, 1000);
++	if (ret < 0) {
++		printf("transfer error at final stage\n");
++		return 1;
++	}
 +
++	return ret;
++}
 +
-+  Command (m for help): o
-+  Created a new DOS disklabel with disk identifier 0xd7e5d328.
++int send_recovery(libusb_device_handle * dev, int xfer_size, uint8_t * data,
++		  int size, int nr_xfers)
++{
++	(void)nr_xfers;
++	// there should be no kernel driver attached but in doubt...
++	libusb_detach_kernel_driver(dev, 0);
++	libusb_claim_interface(dev, 0);
 +
-+  Command (m for help): n
-+  Partition type
-+     p   primary (0 primary, 0 extended, 4 free)
-+     e   extended (container for logical partitions)
-+  Select (default p): p
-+  Partition number (1-4, default 1): 1
-+  First sector (2048-7829503, default 2048): 
-+  Last sector, +sectors or +size{K,M,G,T,P} (2048-7829503, default 7829503): +1M
++	int sent = 0;
++	while (sent < size) {
++		int xfered;
++		int len = MIN(size - sent, xfer_size);
++		int ret =
++		    libusb_bulk_transfer(dev, 1, data + sent, len, &xfered,
++					 1000);
++		if (ret < 0) {
++			printf("transfer error at send offset %d\n", sent);
++			return 1;
++		}
++		if (xfered == 0) {
++			printf("empty transfer at step offset %d\n", sent);
++			return 2;
++		}
++		sent += xfered;
++	}
++	return 0;
++}
 +
-+  Created a new partition 1 of type 'Linux' and of size 1 MiB.
++int main(int argc, char **argv)
++{
++	if (argc != 3) {
++		printf("usage: %s <xfer size> <file>\n", argv[0]);
++		printf
++		    ("If <xfer size> is set to zero, the preferred one is used.\n");
++		return 1;
++	}
 +
-+  Command (m for help): t 
-+  Selected partition 1
-+  Hex code (type L to list all codes): 53
-+  Changed type of partition 'Linux' to 'OnTrack DM6 Aux3'.
++	char *end;
++	int xfer_size = strtol(argv[1], &end, 0);
++	if (end != (argv[1] + strlen(argv[1]))) {
++		printf("Invalid transfer size !\n");
++		return 1;
++	}
 +
-+  Command (m for help): 
++	libusb_device_handle *dev;
 +
-+  Command (m for help): w
++	libusb_init(NULL);
 +
-+After writing the new partition table the image can be written directly to
-+the partition::
++	libusb_set_debug(NULL, 3);
 +
-+  cat images/barebox-karo-tx28-sd.img > /dev/sdg1
-+ 
-+** NOTE **
++	unsigned i;
++	for (i = 0; i < sizeof(g_dev_info) / sizeof(g_dev_info[0]); i++) {
++		dev = libusb_open_device_with_vid_pid(NULL,
++						      g_dev_info[i].vendor_id,
++						      g_dev_info[i].product_id);
++		if (dev == NULL)
++			continue;
++		if (xfer_size == 0)
++			xfer_size = g_dev_info[i].xfer_size;
++		printf("Found a match for %04x:%04x\n",
++		       g_dev_info[i].vendor_id, g_dev_info[i].product_id);
++		break;
++	}
++	if (dev == NULL) {
++		printf("Cannot open device\n");
++		return 1;
++	}
 +
-+The MXS SoCs require a special partition of type 0x53 (OnTrack DM6 Aux)
-+which contains the BCB header. For some unknown reason the BCB header is
-+inside a partition, but contains the sector number of the raw device from
-+which the rest of the image is read from. With standard settings booting
-+from SD card only works if the partition containing the bootloader starts
-+at sector 2048 (the standard for fdisk). See the -p parameter to the
-+mxsboot tool which changes this sector number in the image.
++	FILE *f = fopen(argv[2], "r");
++	if (f == NULL) {
++		perror("cannot open file");
++		return 1;
++	}
++	fseek(f, 0, SEEK_END);
++	size_t size = ftell(f);
++	fseek(f, 0, SEEK_SET);
 +
-+Booting second stage
-+--------------------
++	printf("Transfer size: %d\n", xfer_size);
++	int nr_xfers = (size + xfer_size - 1) / xfer_size;
++	uint8_t *file_buf = malloc(nr_xfers * xfer_size);
++	memset(file_buf, 0xff, nr_xfers * xfer_size);	// pad with 0xff
++	if (fread(file_buf, size, 1, f) != 1) {
++		perror("read error");
++		fclose(f);
++		return 1;
++	}
++	fclose(f);
 +
-+The second stage images can be started with the barebox bootm command or
-+just jumped into using the 'go' command.
++	switch (g_dev_info[i].dev_type) {
++	case HID_DEVICE:
++		send_hid(dev, xfer_size, file_buf, size, nr_xfers);
++		break;
++	case RECOVERY_DEVICE:
++		send_recovery(dev, xfer_size, file_buf, size, nr_xfers);
++		break;
++	default:
++		printf("unknown device type\n");
++		break;
++	}
++
++	return 0;
++}
 -- 
 2.1.3
 
