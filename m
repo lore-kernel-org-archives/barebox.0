@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyQ51-0008AH-4o
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:16 +0000
+ Linux)) id 1XyQ56-0008DJ-41
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 20:03:28 +0100
-Message-Id: <1418151816-24593-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 20:03:29 +0100
+Message-Id: <1418151816-24593-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,113 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/13] ARM: MXS: remove unnecessary mach/imx-regs.h include
+Subject: [PATCH 06/13] ARM: Add U-Boot specific io functions
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>
 
-And replace the ones needed with the SoC specific header.
+To make it easier to adopt code from U-Boot.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-mxs/clocksource-imx23.c | 2 +-
- arch/arm/mach-mxs/clocksource-imx28.c | 2 +-
- arch/arm/mach-mxs/ocotp.c             | 1 -
- arch/arm/mach-mxs/soc-imx23.c         | 2 +-
- arch/arm/mach-mxs/soc-imx28.c         | 2 +-
- arch/arm/mach-mxs/usb-imx23.c         | 2 +-
- arch/arm/mach-mxs/usb-imx28.c         | 2 +-
- 7 files changed, 6 insertions(+), 7 deletions(-)
+ arch/arm/include/asm/io.h | 57 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
-diff --git a/arch/arm/mach-mxs/clocksource-imx23.c b/arch/arm/mach-mxs/clocksource-imx23.c
-index d9b7c1a..8279ee2 100644
---- a/arch/arm/mach-mxs/clocksource-imx23.c
-+++ b/arch/arm/mach-mxs/clocksource-imx23.c
-@@ -17,7 +17,7 @@
- #include <init.h>
- #include <clock.h>
- #include <notifier.h>
--#include <mach/imx-regs.h>
-+#include <mach/imx23-regs.h>
- #include <mach/clock.h>
- #include <io.h>
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index ccf1f59..850a99c 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -12,4 +12,61 @@ extern void memcpy_fromio(void *, const volatile void __iomem *, size_t);
+ extern void memcpy_toio(volatile void __iomem *, const void *, size_t);
+ extern void memset_io(volatile void __iomem *, int, size_t);
  
-diff --git a/arch/arm/mach-mxs/clocksource-imx28.c b/arch/arm/mach-mxs/clocksource-imx28.c
-index d26aa93..4f38af6 100644
---- a/arch/arm/mach-mxs/clocksource-imx28.c
-+++ b/arch/arm/mach-mxs/clocksource-imx28.c
-@@ -16,7 +16,7 @@
- #include <init.h>
- #include <clock.h>
- #include <notifier.h>
--#include <mach/imx-regs.h>
-+#include <mach/imx28-regs.h>
- #include <mach/clock.h>
- #include <io.h>
- 
-diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
-index c7c24e0..abdd445 100644
---- a/arch/arm/mach-mxs/ocotp.c
-+++ b/arch/arm/mach-mxs/ocotp.c
-@@ -27,7 +27,6 @@
- 
- #include <mach/generic.h>
- #include <mach/ocotp.h>
--#include <mach/imx-regs.h>
- #include <mach/power.h>
- 
- #define DRIVERNAME "ocotp"
-diff --git a/arch/arm/mach-mxs/soc-imx23.c b/arch/arm/mach-mxs/soc-imx23.c
-index 825ea20..b219865 100644
---- a/arch/arm/mach-mxs/soc-imx23.c
-+++ b/arch/arm/mach-mxs/soc-imx23.c
-@@ -16,7 +16,7 @@
- 
- #include <common.h>
- #include <init.h>
--#include <mach/imx-regs.h>
-+#include <mach/imx23-regs.h>
- #include <io.h>
- 
- #define HW_CLKCTRL_RESET 0x120
-diff --git a/arch/arm/mach-mxs/soc-imx28.c b/arch/arm/mach-mxs/soc-imx28.c
-index 01bc20a..c7252f5 100644
---- a/arch/arm/mach-mxs/soc-imx28.c
-+++ b/arch/arm/mach-mxs/soc-imx28.c
-@@ -16,7 +16,7 @@
- 
- #include <common.h>
- #include <init.h>
--#include <mach/imx-regs.h>
-+#include <mach/imx28-regs.h>
- #include <io.h>
- 
- #define HW_CLKCTRL_RESET 0x1e0
-diff --git a/arch/arm/mach-mxs/usb-imx23.c b/arch/arm/mach-mxs/usb-imx23.c
-index 8bed11d..e626396 100644
---- a/arch/arm/mach-mxs/usb-imx23.c
-+++ b/arch/arm/mach-mxs/usb-imx23.c
-@@ -15,7 +15,7 @@
-  */
- #include <common.h>
- #include <io.h>
--#include <mach/imx-regs.h>
-+#include <mach/imx23-regs.h>
- #include <mach/power.h>
- 
- #define USBPHY_PWD			(IMX_USBPHY_BASE + 0x0)
-diff --git a/arch/arm/mach-mxs/usb-imx28.c b/arch/arm/mach-mxs/usb-imx28.c
-index 1c982a0..a87d4f6 100644
---- a/arch/arm/mach-mxs/usb-imx28.c
-+++ b/arch/arm/mach-mxs/usb-imx28.c
-@@ -17,7 +17,7 @@
- #include <common.h>
- #include <io.h>
- #include <errno.h>
--#include <mach/imx-regs.h>
-+#include <mach/imx28-regs.h>
- 
- #define POWER_CTRL			(IMX_POWER_BASE + 0x0)
- #define POWER_CTRL_CLKGATE		0x40000000
++/*
++ * Clear and set bits in one shot. These macros can be used to clear and
++ * set multiple bits in a register using a single call. These macros can
++ * also be used to set a multiple-bit bit pattern using a mask, by
++ * specifying the mask in the 'clear' parameter and the new bit pattern
++ * in the 'set' parameter.
++ */
++
++#define out_arch(type,endian,a,v)	__raw_write##type(cpu_to_##endian(v),a)
++#define in_arch(type,endian,a)		endian##_to_cpu(__raw_read##type(a))
++
++#define out_le64(a,v)	out_arch(q,le64,a,v)
++#define out_le32(a,v)	out_arch(l,le32,a,v)
++#define out_le16(a,v)	out_arch(w,le16,a,v)
++
++#define in_le64(a)	in_arch(q,le64,a)
++#define in_le32(a)	in_arch(l,le32,a)
++#define in_le16(a)	in_arch(w,le16,a)
++
++#define out_be32(a,v)	out_arch(l,be32,a,v)
++#define out_be16(a,v)	out_arch(w,be16,a,v)
++
++#define in_be32(a)	in_arch(l,be32,a)
++#define in_be16(a)	in_arch(w,be16,a)
++
++#define out_8(a,v)	__raw_writeb(v,a)
++#define in_8(a)		__raw_readb(a)
++
++#define clrbits(type, addr, clear) \
++	out_##type((addr), in_##type(addr) & ~(clear))
++
++#define setbits(type, addr, set) \
++	out_##type((addr), in_##type(addr) | (set))
++
++#define clrsetbits(type, addr, clear, set) \
++	out_##type((addr), (in_##type(addr) & ~(clear)) | (set))
++
++#define clrbits_be32(addr, clear) clrbits(be32, addr, clear)
++#define setbits_be32(addr, set) setbits(be32, addr, set)
++#define clrsetbits_be32(addr, clear, set) clrsetbits(be32, addr, clear, set)
++
++#define clrbits_le32(addr, clear) clrbits(le32, addr, clear)
++#define setbits_le32(addr, set) setbits(le32, addr, set)
++#define clrsetbits_le32(addr, clear, set) clrsetbits(le32, addr, clear, set)
++
++#define clrbits_be16(addr, clear) clrbits(be16, addr, clear)
++#define setbits_be16(addr, set) setbits(be16, addr, set)
++#define clrsetbits_be16(addr, clear, set) clrsetbits(be16, addr, clear, set)
++
++#define clrbits_le16(addr, clear) clrbits(le16, addr, clear)
++#define setbits_le16(addr, set) setbits(le16, addr, set)
++#define clrsetbits_le16(addr, clear, set) clrsetbits(le16, addr, clear, set)
++
++#define clrbits_8(addr, clear) clrbits(8, addr, clear)
++#define setbits_8(addr, set) setbits(8, addr, set)
++#define clrsetbits_8(addr, clear, set) clrsetbits(8, addr, clear, set)
++
+ #endif	/* __ASM_ARM_IO_H */
 -- 
 2.1.3
 
