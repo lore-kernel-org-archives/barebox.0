@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyGsG-0002Wl-Un
- for barebox@lists.infradead.org; Tue, 09 Dec 2014 09:14:29 +0000
-Date: Tue, 9 Dec 2014 10:14:07 +0100
+ Linux)) id 1XyH9Q-0004WI-3S
+ for barebox@lists.infradead.org; Tue, 09 Dec 2014 09:32:13 +0000
+Date: Tue, 9 Dec 2014 10:31:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141209091407.GQ30369@pengutronix.de>
-References: <1418053696-40848-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20141209093149.GS30369@pengutronix.de>
+References: <1418115716-5735-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1418053696-40848-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1418115716-5735-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,22 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2] ARM: phytec: am335x: Update enviroment comment
+Subject: Re: [PATCH 1/2] ARM: dts: Add missing gpmc setting for phyCORE-AM335x
 To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 08, 2014 at 04:48:16PM +0100, Teresa G=E1mez wrote:
-> We do not have a root partition in spi flash any more.
-> Adapt comment.
+On Tue, Dec 09, 2014 at 10:01:55AM +0100, Teresa G=E1mez wrote:
+> cycle2cycle-diffcsen needs to be enabled.
 > =
 
 > Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 > ---
-> v2: Fixed typo
+>  arch/arm/dts/am335x-phytec-phycore-som.dtsi | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied, thanks
+Applied both, thanks
 
 Sascha
-
 
 -- =
 
