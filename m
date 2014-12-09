@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XyQ4o-00087i-5Y
+ Linux)) id 1XyQ4o-00086J-5t
  for barebox@lists.infradead.org; Tue, 09 Dec 2014 19:04:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Dec 2014 20:03:34 +0100
-Message-Id: <1418151816-24593-12-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Dec 2014 20:03:27 +0100
+Message-Id: <1418151816-24593-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,94 +21,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/13] ARM: MXS: Add multiimage support
+Subject: [PATCH 04/13] drivers: remove unnecessary mach/imx-regs.h include
 To: barebox@lists.infradead.org
 Cc: Marek Vasut <marex@denx.de>
 
-The Freescale MXS SoCs have a multi staged boot process which needs
-different images composed out of different binaries. The ROM executes
-a so called bootstream which contains multiple executables. The first
-one is executed in SRAM and the purpose of this binary is to setup
-the internal PMIC and the SDRAM. The second image is usually the
-bootloader itself. In case of barebox the bootstream is composed
-out of the self extracting barebox image (pblx) and the prepare
-stage for setting up the SDRAM.
-
-The bootstream image itself is useful for USB boot, but for booting from
-SD cards or NAND a BCB header has to be prepended to the image. In case
-of SD boot the image has the .mxssd file extension in barebox.
-
-Since the bootstream images are encrypted they are not suitable for
-2nd stage execution. For this purpose the 2nd stage images are generated.
+And replace the ones needed with the SoC specific header.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- images/.gitignore   |  2 ++
- images/Makefile     |  3 ++-
- images/Makefile.mxs | 22 ++++++++++++++++++++++
- 3 files changed, 26 insertions(+), 1 deletion(-)
- create mode 100644 images/Makefile.mxs
+ drivers/clk/mxs/clk-imx23.c   | 2 +-
+ drivers/clk/mxs/clk-imx28.c   | 2 +-
+ drivers/mci/mxs.c             | 1 -
+ drivers/serial/serial_auart.c | 1 -
+ drivers/serial/stm-serial.c   | 1 -
+ drivers/spi/mxs_spi.c         | 1 -
+ drivers/video/stm.c           | 1 -
+ 7 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/images/.gitignore b/images/.gitignore
-index d27e71a..c5377d9 100644
---- a/images/.gitignore
-+++ b/images/.gitignore
-@@ -16,6 +16,8 @@
- *.t124img.cfg
- *.mlo
- *.mlospi
-+*.mxsbs
-+*.mxssd
- pbl.lds
- barebox.x
- barebox.z
-diff --git a/images/Makefile b/images/Makefile
-index c55cbdc..7c3aaf7 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -103,6 +103,7 @@ include $(srctree)/images/Makefile.mvebu
- include $(srctree)/images/Makefile.rockchip
- include $(srctree)/images/Makefile.socfpga
- include $(srctree)/images/Makefile.tegra
-+include $(srctree)/images/Makefile.mxs
+diff --git a/drivers/clk/mxs/clk-imx23.c b/drivers/clk/mxs/clk-imx23.c
+index 1f84e9f..8bf27c1 100644
+--- a/drivers/clk/mxs/clk-imx23.c
++++ b/drivers/clk/mxs/clk-imx23.c
+@@ -22,7 +22,7 @@
+ #include <io.h>
+ #include <linux/clkdev.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx23-regs.h>
  
- targets += $(image-y) pbl.lds barebox.x barebox.z
- targets += $(patsubst %,%.pblx,$(pblx-y))
-@@ -119,5 +120,5 @@ images: $(addprefix $(obj)/, $(image-y)) FORCE
+ #include "clk.h"
  
- clean-files := *.pbl *.pblb *.pblx *.map start_*.imximg *.img barebox.z start_*.kwbimg \
- 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
--	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo
-+	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd
- clean-files += pbl.lds
-diff --git a/images/Makefile.mxs b/images/Makefile.mxs
-new file mode 100644
-index 0000000..c6056e6
---- /dev/null
-+++ b/images/Makefile.mxs
-@@ -0,0 +1,22 @@
-+#
-+# barebox image generation Makefile for MXS images
-+#
-+
-+# %.mxsbs - convert into MXS BootStream image
-+# ----------------------------------------------------------------
-+quiet_cmd_mxs_bootstream = MXS-BOOTSTREAM $@
-+      cmd_mxs_bootstream = $(objtree)/scripts/mxsimage -c $(CFG_$(@F)) -b $< -o $@ -p $(word 2,$^)
-+
-+$(obj)/%.mxsbs: $(obj)/%.pblx $(obj)/prep_%.pblb FORCE
-+	$(call if_changed,mxs_bootstream)
-+
-+# %.mxssd - convert into MXS SD card image
-+# ----------------------------------------------------------------
-+quiet_cmd_mxs_sd = MXS-SD $@
-+      cmd_mxs_sd = $(objtree)/scripts/mxsboot sd $< $@
-+
-+$(obj)/%.mxssd: $(obj)/%
-+	$(call if_changed,mxs_sd)
-+
-+board = $(srctree)/arch/$(ARCH)/boards
-+mxscfg = $(srctree)/arch/arm/mach-mxs/mxsimg.cfg
+diff --git a/drivers/clk/mxs/clk-imx28.c b/drivers/clk/mxs/clk-imx28.c
+index aa2924c..77a13bc 100644
+--- a/drivers/clk/mxs/clk-imx28.c
++++ b/drivers/clk/mxs/clk-imx28.c
+@@ -22,7 +22,7 @@
+ #include <io.h>
+ #include <linux/clkdev.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
++#include <mach/imx28-regs.h>
+ 
+ #include "clk.h"
+ 
+diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
+index d6565ca..367964c 100644
+--- a/drivers/mci/mxs.c
++++ b/drivers/mci/mxs.c
+@@ -40,7 +40,6 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <asm/bitops.h>
+-#include <mach/imx-regs.h>
+ #include <mach/mci.h>
+ #include <mach/clock.h>
+ #include <mach/ssp.h>
+diff --git a/drivers/serial/serial_auart.c b/drivers/serial/serial_auart.c
+index ae6c5b8..87b2e33 100644
+--- a/drivers/serial/serial_auart.c
++++ b/drivers/serial/serial_auart.c
+@@ -47,7 +47,6 @@
+ #include <linux/err.h>
+ 
+ #include <mach/clock.h>
+-#include <mach/imx-regs.h>
+ 
+ #define HW_UARTAPP_CTRL0		(0x00000000)
+ 
+diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
+index 39ff7ae..e5f57dc 100644
+--- a/drivers/serial/stm-serial.c
++++ b/drivers/serial/stm-serial.c
+@@ -31,7 +31,6 @@
+ #include <malloc.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
+ #include <mach/clock.h>
+ 
+ #define UARTDBGDR 0x00
+diff --git a/drivers/spi/mxs_spi.c b/drivers/spi/mxs_spi.c
+index 9a35e09..8932103 100644
+--- a/drivers/spi/mxs_spi.c
++++ b/drivers/spi/mxs_spi.c
+@@ -25,7 +25,6 @@
+ #include <linux/err.h>
+ #include <asm/mmu.h>
+ #include <mach/generic.h>
+-#include <mach/imx-regs.h>
+ #include <mach/clock.h>
+ #include <mach/ssp.h>
+ 
+diff --git a/drivers/video/stm.c b/drivers/video/stm.c
+index 175e4b6..3c90c0d 100644
+--- a/drivers/video/stm.c
++++ b/drivers/video/stm.c
+@@ -27,7 +27,6 @@
+ #include <stmp-device.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+-#include <mach/imx-regs.h>
+ #include <mach/fb.h>
+ 
+ #define HW_LCDIF_CTRL 0x00
 -- 
 2.1.3
 
