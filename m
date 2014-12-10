@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-out.m-online.net ([2001:a60:0:28:0:1:25:1])
+Received: from mail.orpheo.org ([176.31.189.100] helo=orpheo.org)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1XyiLK-0003ap-Px
- for barebox@lists.infradead.org; Wed, 10 Dec 2014 14:34:19 +0000
-From: Marek Vasut <marex@denx.de>
-Date: Wed, 10 Dec 2014 13:28:05 +0100
-References: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1418151816-24593-1-git-send-email-s.hauer@pengutronix.de>
+ id 1Xyk1M-0006ss-Hp
+ for barebox@lists.infradead.org; Wed, 10 Dec 2014 16:21:49 +0000
+Received: from [192.168.1.40] (dra38-6-88-164-121-33.fbx.proxad.net
+ [88.164.121.33]) by orpheo.org (Postfix) with ESMTPSA id AD6C91121C04
+ for <barebox@lists.infradead.org>; Wed, 10 Dec 2014 17:21:18 +0100 (CET)
+Message-ID: <548872F5.6090704@ophrys.net>
+Date: Wed, 10 Dec 2014 17:21:09 +0100
+From: Victorien Vedrine <victorien.vedrine@ophrys.net>
 MIME-Version: 1.0
-Message-Id: <201412101328.05165.marex@denx.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,29 +18,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MXS initialization support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Logical partition on barebox
+To: barebox@lists.infradead.org
 
-On Tuesday, December 09, 2014 at 08:03:23 PM, Sascha Hauer wrote:
-> The following adds initialization support for Freescale MXS SoCs.
-> With this the imfamous Freescale Bootlets can finally be replaced.
-> The initialization code is based on the corresponding U-Boot code,
-> thank you Marek for making this possible.
+Hi,
+I'm developping a board with barebox and Linux. For my application, I 
+need 5 partition on my SD card (3 primary and 2 logical).
+On barebox prompt, I just see the 3 primary partitions (/dev/disk0.0, 
+/dev/disk0.1, /dev/disk0.2) and 1 extended partition (/dev/disk0.3). Is 
+there a way to see the 2 logical partitions ?
 
-Woohoo, another slab of code in barebox :)
+Best regards
 
-Would you by any chance be able to synchronise bugfixes between the two (uboot 
-and barebox) codebases please ? That'd be really helpful.
-
-Thanks!
-
-Best regards,
-Marek Vasut
+Victorien
 
 _______________________________________________
 barebox mailing list
