@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XydD8-0006QT-JV
- for barebox@lists.infradead.org; Wed, 10 Dec 2014 09:05:31 +0000
-Received: from weser.hi.pengutronix.de ([2001:67c:670:100:fa0f:41ff:fe58:4010])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1XydCl-0003TT-2N
- for barebox@lists.infradead.org; Wed, 10 Dec 2014 10:05:07 +0100
-Message-ID: <1418202307.7616.1.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 10 Dec 2014 10:05:07 +0100
-In-Reply-To: <1418123146-13235-3-git-send-email-l.stach@pengutronix.de>
-References: <1418123146-13235-1-git-send-email-l.stach@pengutronix.de>
- <1418123146-13235-3-git-send-email-l.stach@pengutronix.de>
-Mime-Version: 1.0
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1XyfzD-0002vb-NP
+ for barebox@lists.infradead.org; Wed, 10 Dec 2014 12:03:20 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 84330A003A6
+ for <barebox@lists.infradead.org>; Wed, 10 Dec 2014 13:03:14 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Wed, 10 Dec 2014 13:01:26 +0100
+Message-Id: <1418212886-43770-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] imd: provide dummy imd_command_setenv
+Subject: [PATCH] ARM: AM335x: Fix typo in Phytec boards
 To: barebox@lists.infradead.org
 
-Am Dienstag, den 09.12.2014, 12:05 +0100 schrieb Lucas Stach:
-> If CONFIG_CMD_IMD is not set there is no imd_command_setenv in the
-> barebox binary that can be linked to. Although the whole imd infrastructure
-> will be removed by the linker later in the build process as soon as it
-> figures out that nothing inside barebox is using it, we still have to
-> provide a dummy function to keep the build going.
-> 
-> Fixes:
-> In function `imd_command': undefined reference to `imd_command_setenv'
-
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-
-Please don't apply this patch, it seems to cause some breakage.
-
-Regards,
-Lucas
-> ---
->  include/image-metadata.h | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/include/image-metadata.h b/include/image-metadata.h
-> index 34dae5ce3454..00aae6c98449 100644
-> --- a/include/image-metadata.h
-> +++ b/include/image-metadata.h
-> @@ -112,6 +112,13 @@ static inline void imd_used(const void *unused)
->  #define IMD_USED(_name) \
->  	imd_used(&__barebox_imd_##_name)
->  
-> +#ifndef CONFIG_CMD_IMD
-> +int imd_command_setenv(const char *variable_name, const char *value)
-> +{
-> +	return -ENOSYS;
-> +}
-> +#endif
-> +
->  #endif /* __BAREBOX__ */
->  
->  #endif /* __INCLUDE_IMAGE_METADTA_H */
-
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGFzIHRvIGJlIGJvb3Rzb3VyY2Ugbm90IGJvb3NvdXJjZS4KClNpZ25lZC1vZmYtYnk6IFRlcmVz
+YSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIC4uLi9waHl0ZWMtcGh5Y29yZS1hbTMz
+NXgvZGVmYXVsdGVudi1waHljb3JlLWFtMzM1eC9pbml0L2Jvb3Rzb3VyY2UgfCA2ICsrKy0tLQog
+Li4uL3BoeXRlYy1waHlmbGV4LWFtMzM1eC9kZWZhdWx0ZW52LXBoeWZsZXgtYW0zMzV4L2luaXQv
+Ym9vdHNvdXJjZSB8IDYgKysrLS0tCiBhcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3Jl
+LXNvbS1tbG8uZHRzICAgICAgICAgICAgICAgICAgICAgIHwgMiArLQogMyBmaWxlcyBjaGFuZ2Vk
+LCA3IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
+Ym9hcmRzL3BoeXRlYy1waHljb3JlLWFtMzM1eC9kZWZhdWx0ZW52LXBoeWNvcmUtYW0zMzV4L2lu
+aXQvYm9vdHNvdXJjZSBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvZGVm
+YXVsdGVudi1waHljb3JlLWFtMzM1eC9pbml0L2Jvb3Rzb3VyY2UKaW5kZXggNzZkMWY5Yi4uM2Yy
+ZmY0YiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWFtMzM1eC9k
+ZWZhdWx0ZW52LXBoeWNvcmUtYW0zMzV4L2luaXQvYm9vdHNvdXJjZQorKysgYi9hcmNoL2FybS9i
+b2FyZHMvcGh5dGVjLXBoeWNvcmUtYW0zMzV4L2RlZmF1bHRlbnYtcGh5Y29yZS1hbTMzNXgvaW5p
+dC9ib290c291cmNlCkBAIC02LDEwICs2LDEwIEBAIGZpCiAKIGlmIFsgJGJvb3Rzb3VyY2UgPSBt
+bWMgXTsgdGhlbgogCWdsb2JhbC5ib290LmRlZmF1bHQ9Im1tYyBuYW5kIHNwaSBuZXQiCi1lbGlm
+IFsgJGJvb3NvdXJjZSA9IG5hbmQgXTsgdGhlbgorZWxpZiBbICRib290c291cmNlID0gbmFuZCBd
+OyB0aGVuCiAJZ2xvYmFsLmJvb3QuZGVmYXVsdD0ibmFuZCBzcGkgbW1jIG5ldCIKLWVsaWYgWyAk
+Ym9vc291cmNlID0gc3BpIF07IHRoZW4KK2VsaWYgWyAkYm9vdHNvdXJjZSA9IHNwaSBdOyB0aGVu
+CiAJZ2xvYmFsLmJvb3QuZGVmYXVsdD0ic3BpIG5hbmQgbW1jIG5ldCIKLWVsaWYgWyAkYm9vc291
+cmNlID0gbmV0IF07IHRoZW4KK2VsaWYgWyAkYm9vdHNvdXJjZSA9IG5ldCBdOyB0aGVuCiAJZ2xv
+YmFsLmJvb3QuZGVmYXVsdD0ibmV0IG5hbmQgc3BpIG1tYyIKIGZpCmRpZmYgLS1naXQgYS9hcmNo
+L2FybS9ib2FyZHMvcGh5dGVjLXBoeWZsZXgtYW0zMzV4L2RlZmF1bHRlbnYtcGh5ZmxleC1hbTMz
+NXgvaW5pdC9ib290c291cmNlIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHlmbGV4LWFtMzM1
+eC9kZWZhdWx0ZW52LXBoeWZsZXgtYW0zMzV4L2luaXQvYm9vdHNvdXJjZQppbmRleCA3NmQxZjli
+Li4zZjJmZjRiIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWZsZXgtYW0z
+MzV4L2RlZmF1bHRlbnYtcGh5ZmxleC1hbTMzNXgvaW5pdC9ib290c291cmNlCisrKyBiL2FyY2gv
+YXJtL2JvYXJkcy9waHl0ZWMtcGh5ZmxleC1hbTMzNXgvZGVmYXVsdGVudi1waHlmbGV4LWFtMzM1
+eC9pbml0L2Jvb3Rzb3VyY2UKQEAgLTYsMTAgKzYsMTAgQEAgZmkKIAogaWYgWyAkYm9vdHNvdXJj
+ZSA9IG1tYyBdOyB0aGVuCiAJZ2xvYmFsLmJvb3QuZGVmYXVsdD0ibW1jIG5hbmQgc3BpIG5ldCIK
+LWVsaWYgWyAkYm9vc291cmNlID0gbmFuZCBdOyB0aGVuCitlbGlmIFsgJGJvb3Rzb3VyY2UgPSBu
+YW5kIF07IHRoZW4KIAlnbG9iYWwuYm9vdC5kZWZhdWx0PSJuYW5kIHNwaSBtbWMgbmV0IgotZWxp
+ZiBbICRib29zb3VyY2UgPSBzcGkgXTsgdGhlbgorZWxpZiBbICRib290c291cmNlID0gc3BpIF07
+IHRoZW4KIAlnbG9iYWwuYm9vdC5kZWZhdWx0PSJzcGkgbmFuZCBtbWMgbmV0IgotZWxpZiBbICRi
+b29zb3VyY2UgPSBuZXQgXTsgdGhlbgorZWxpZiBbICRib290c291cmNlID0gbmV0IF07IHRoZW4K
+IAlnbG9iYWwuYm9vdC5kZWZhdWx0PSJuZXQgbmFuZCBzcGkgbW1jIgogZmkKZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLW1sby5kdHMgYi9hcmNoL2Fy
+bS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3JlLXNvbS1tbG8uZHRzCmluZGV4IDQxMTc0MzkuLmQ4
+ZmNlZmYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29t
+LW1sby5kdHMKKysrIGIvYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20tbWxv
+LmR0cwpAQCAtMTUsNyArMTUsNyBAQAogCWNvbXBhdGlibGUgPSAicGh5dGVjLHBoeWNvcmUtYW0z
+MzV4LXNvbSIsICJ0aSxhbTMzeHgiOwogfTsKIAotLyogS2VlcCBhbGwgYm9vc291cmNlcyBkaXNh
+YmxlZCwgd2UgZW5hYmxlIGFuZCByZWdpc3RlciB0aGVtCisvKiBLZWVwIGFsbCBib290c291cmNl
+cyBkaXNhYmxlZCwgd2UgZW5hYmxlIGFuZCByZWdpc3RlciB0aGVtCiAgKiBsYXRlciB3aGlsZSBi
+b290aW5nLgogICovCiAKLS0gCjEuOS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
