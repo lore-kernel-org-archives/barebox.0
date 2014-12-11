@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Xyzqk-0006Nm-IA
- for barebox@lists.infradead.org; Thu, 11 Dec 2014 09:15:55 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 11 Dec 2014 10:15:27 +0100
-Message-Id: <1418289327-28310-5-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1418289327-28310-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1418289327-28310-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Xz0Nc-0005hq-7D
+ for barebox@lists.infradead.org; Thu, 11 Dec 2014 09:49:53 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 773D6A003A6
+ for <barebox@lists.infradead.org>; Thu, 11 Dec 2014 10:49:49 +0100 (CET)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Thu, 11 Dec 2014 10:47:59 +0100
+Message-Id: <1418291279-3610-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <20141211075948.GD30369@pengutronix.de>
+References: <20141211075948.GD30369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,43 +19,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] arm/cpu/lowlevel: invalidate i-cache before enabling
+Subject: [PATCH v2] i2c: omap: fix fclk_rate for ti,omap4-i2c
 To: barebox@lists.infradead.org
 
-QXJjaGl0ZWN0dXJhbGx5IHRoZSBjYWNoZSBjb250ZW50cyBhcmUgdW5kZWZpbmVkIHNvIGl0IG1p
-Z2h0IHdlbGwKY29udGFpbiBzdGFsZSBkYXRhIGF0IHJlc2V0LiBTbyBiZXR0ZXIgYmUgc2F2ZSB0
-aGFuIHNvcnJ5LgoKSSB2ZXJpZnllZCB0aGF0IHRoZSBhZGRlZCBpbnN0cnVjdGlvbnMgYXJlIGRl
-ZmluZWQgZm9yIGJvdGgsIEFSTXY2IGFuZApBUk12NywgdXNpbmcgdGhlIEFSTSBBcmNoaXRlY3R1
-cmUgUmVmZXJlbmNlIE1hbnVhbCwgQVJNdjctQSBhbmQgQVJNdjctUgplZGl0aW9uIChBUk0gRERJ
-IDA0MDZDLmMpLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
-ZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9jcHUvbG93bGV2ZWwuUyB8IDE0ICsr
-KysrKysrKysrKystCiAxIGZpbGUgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlv
-bigtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9sb3dsZXZlbC5TIGIvYXJjaC9hcm0vY3B1
-L2xvd2xldmVsLlMKaW5kZXggZGQwZjc1YTg4MDJhLi5hZjJiMGE4YWM5M2EgMTAwNjQ0Ci0tLSBh
-L2FyY2gvYXJtL2NwdS9sb3dsZXZlbC5TCisrKyBiL2FyY2gvYXJtL2NwdS9sb3dsZXZlbC5TCkBA
-IC0xMSw3ICsxMSwxOSBAQCBFTlRSWShhcm1fY3B1X2xvd2xldmVsX2luaXQpCiAJbXNyCWNwc3Is
-IHIxMgogCiAjaWYgX19MSU5VWF9BUk1fQVJDSF9fID49IDYKKy8qCisgKiBJbnZhbGlkYXRlIGlu
-c3RydWN0aW9uIGNhY2hlIGFuZCBicmFuY2ggcHJlZGljdG9yLiBFdmVuIGlmIHRoZQorICogaS1j
-YWNoZSBpcyBvZmYgaXQgbWlnaHQgY29udGFpbiBzdGFsZSBlbnRyaWVzIHRoYXQgYXJlIGJldHRl
-cgorICogZGlzY2FyZGVkIGJlZm9yZSBlbmFibGluZyB0aGUgY2FjaGUuCisgKi8KKwkvKiBJQ0lB
-TExVOiBJbnZhbGlkYXRlIGFsbCBpbnN0cnVjdGlvbiBjYWNoZXMgdG8gUG9VICovCisJbWNyCXAx
-NSwgMCwgcjEyLCBjNywgYzUsIDAKKwkvKiBCUElBTEw6IEludmFsaWRhdGUgYWxsIGJyYW5jaCBw
-cmVkaWN0b3JzICovCisJbWNyCXAxNSwgMCwgcjEyLCBjNywgYzUsIDYKKwkvKiBEU0IsIGVuc3Vy
-ZSBjb21wbGV0aW9uIG9mIHRoZSBpbnZhbGlkYXRpb24gKi8KKwltY3IJcDE1LCAwLCByMTIsIGM3
-LCBjMTAsIDQKIAkvKgorCSAqIElTQiwgZW5zdXJlIGluc3RydWN0aW9uIGZldGNoIHBhdGggaXMg
-aW4gc3luYy4KIAkgKiBOb3RlIHRoYXQgdGhlIEFSTSBBcmNoaXRlY3R1cmUgUmVmZXJlbmNlIE1h
-bnVhbCwgQVJNdjctQSBhbmQgQVJNdjctUgogCSAqIGVkaXRpb24gKEFSTSBEREkgMDQwNkMuYykg
-ZG9lc24ndCBkZWZpbmUgdGhpcyBpbnN0cnVjdGlvbiBpbiB0aGUKIAkgKiBBUk12NiBwYXJ0IChE
-MTIuNy4xMCkuIEl0IG9ubHkgaGFzOiAiU3VwcG9ydCBvZiBhZGRpdGlvbmFsCkBAIC0xOSw3ICsz
-MSw3IEBAIEVOVFJZKGFybV9jcHVfbG93bGV2ZWxfaW5pdCkKIAkgKiBCdXQgYW4gZWFybGllciB2
-ZXJzaW9uIG9mIHRoZSBBUk1BUk0gKEFSTSBEREkgMDEwMEkpIGRvZXMgZGVmaW5lIGl0CiAJICog
-YXMgIkZsdXNoIHByZWZldGNoIGJ1ZmZlciAoUHJlZmV0Y2hGbHVzaCkiLgogCSAqLwotCW1jcglw
-MTUsIDAsIHIxMiwgYzcsIGM1LCA0CQkvKiBJU0IgKi8KKwltY3IJcDE1LCAwLCByMTIsIGM3LCBj
-NSwgNAogI2VuZGlmCiAKIAkvKiBkaXNhYmxlIE1NVSBzdHVmZiBhbmQgZGF0YS91bmlmaWVkIGNh
-Y2hlcyAqLwotLSAKMi4xLjMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+The compatible "ti,omap4-i2c" don't help to get fclk_rate. So set it acording to
+cpu compatible: "ti,am33xx" and "ti,omap4"
+
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+v2: set i2c_data directly
+
+ drivers/i2c/busses/i2c-omap.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 094f591..96c3c2b 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -271,11 +271,6 @@ static struct omap_i2c_driver_data am33xx_data = {
+ 	.fclk_rate =	48000,
+ };
+ 
+-static struct omap_i2c_driver_data omap4_of_data = {
+-	.flags =	OMAP_I2C_FLAG_BUS_SHIFT_NONE,
+-	.fclk_rate =	0,
+-};
+-
+ static inline void omap_i2c_write_reg(struct omap_i2c_struct *i2c_omap,
+ 				      int reg, u16 val)
+ {
+@@ -1011,6 +1006,11 @@ i2c_omap_probe(struct device_d *pdev)
+ 	if (r)
+ 		return r;
+ 
++	if (of_machine_is_compatible("ti,am33xx"))
++		i2c_data = &am33xx_data;
++	if (of_machine_is_compatible("ti,omap4"))
++		i2c_data = &omap4_data;
++
+ 	i2c_omap->data = i2c_data;
+ 	i2c_omap->reg_shift = (i2c_data->flags >>
+ 					OMAP_I2C_FLAG_BUS_SHIFT__SHIFT) & 3;
+@@ -1140,7 +1140,6 @@ static __maybe_unused struct of_device_id omap_i2c_dt_ids[] = {
+ 		.data = (unsigned long)&omap3_data,
+ 	}, {
+ 		.compatible = "ti,omap4-i2c",
+-		.data = (unsigned long)&omap4_of_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
