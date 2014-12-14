@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.orpheo.org ([176.31.189.100] helo=orpheo.org)
+Received: from smtp9.mail.ru ([94.100.181.97])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y2yhl-0006Oo-6p
- for barebox@lists.infradead.org; Mon, 22 Dec 2014 08:51:06 +0000
-Message-ID: <5497DB5B.2020505@ophrys.net>
-Date: Mon, 22 Dec 2014 09:50:35 +0100
-From: Victorien Vedrine <victorien.vedrine@ophrys.net>
-MIME-Version: 1.0
-References: <1418832597-3932-1-git-send-email-victorien.vedrine@ophrys.net>
- <20141219185901.GG10857@pengutronix.de>
-In-Reply-To: <20141219185901.GG10857@pengutronix.de>
+ id 1Y07mL-0007A9-2v
+ for barebox@lists.infradead.org; Sun, 14 Dec 2014 11:56:02 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun, 14 Dec 2014 14:55:28 +0300
+Message-Id: <1418558130-420-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +14,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] partitions: dos: Fix support of extended partition type
- 0x05
-To: =?windows-1252?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] usb: ohci: Clear control register at driver startup
+To: barebox@lists.infradead.org
 
-Hi,
-Ok, I'll change that.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/usb/host/ohci-at91.c | 7 -------
+ drivers/usb/host/ohci-hcd.c  | 7 ++++---
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-Best regards
-Victorien
-
-Le 19/12/2014 19:59, Uwe Kleine-K=F6nig a =E9crit :
-> Hallo,
->
-> On Wed, Dec 17, 2014 at 05:09:57PM +0100, victorien wrote:
->> ---
->>   common/partitions/dos.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
->> index 37addfd..8a3c5c3 100644
->> --- a/common/partitions/dos.c
->> +++ b/common/partitions/dos.c
->> @@ -209,7 +209,7 @@ static void dos_partition(void *buf, struct block_de=
-vice *blk,
->>   			 * here as this is the easiest to parse and common
->>   			 * enough.
->>   			 */
->> -			if (pentry.dos_partition_type =3D=3D 0x0f) {
->> +			if ((pentry.dos_partition_type =3D=3D 0x0f)||(pentry.dos_partition_t=
-ype =3D=3D 0x05)) {
-> apart from what Sascha said, also add spaces around ||. Also break lines
-> at or before column 80 (with tabs accounting for 8 columns).
->
-> Best regards
-> Uwe
->
+diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
+index 0f5c8f1..0a6e5ca 100644
+--- a/drivers/usb/host/ohci-at91.c
++++ b/drivers/usb/host/ohci-at91.c
+@@ -44,8 +44,6 @@ static void at91_stop_clock(void)
+ 
+ static int at91_ohci_probe(struct device_d *dev)
+ {
+-	struct ohci_regs __iomem *regs = (struct ohci_regs __iomem *)dev->resource[0].start;
+-
+ 	iclk = clk_get(NULL, "ohci_clk");
+ 	fclk = clk_get(NULL, "uhpck");
+ 
+@@ -54,11 +52,6 @@ static int at91_ohci_probe(struct device_d *dev)
+ 	 */
+ 	at91_start_clock();
+ 
+-	/*
+-	 * The USB host controller must remain in reset.
+-	 */
+-	writel(0, &regs->control);
+-
+ 	add_generic_device("ohci", DEVICE_ID_DYNAMIC, NULL, dev->resource[0].start,
+ 			   resource_size(&dev->resource[0]), IORESOURCE_MEM, NULL);
+ 
+diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+index 622f5c3..e806c64 100644
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -1810,13 +1810,14 @@ static int ohci_probe(struct device_d *dev)
+ 		return -ENOMEM;
+ 	memset(ohci->ohci_dev, 0, sizeof(*ohci->ohci_dev));
+ 
+-	usb_register_host(host);
+-
+ 	ohci->regs = dev_request_mem_region(dev, 0);
+ 	if (IS_ERR(ohci->regs))
+ 		return PTR_ERR(ohci->regs);
+ 
+-	return 0;
++	/* Put the USB host controller into reset */
++	writel(0, &ohci->regs->control);
++
++	return usb_register_host(host);
+ }
+ 
+ static struct driver_d ohci_driver = {
+-- 
+2.0.4
 
 
 _______________________________________________
