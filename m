@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp9.mail.ru ([94.100.181.97])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y07mL-0007AN-2w
- for barebox@lists.infradead.org; Sun, 14 Dec 2014 11:56:03 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 14 Dec 2014 14:55:29 +0300
-Message-Id: <1418558130-420-2-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1418558130-420-1-git-send-email-shc_work@mail.ru>
-References: <1418558130-420-1-git-send-email-shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Y0S75-00076H-2n
+ for barebox@lists.infradead.org; Mon, 15 Dec 2014 09:38:49 +0000
+Date: Mon, 15 Dec 2014 10:38:17 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141215093817.GA30369@pengutronix.de>
+References: <548872F5.6090704@ophrys.net>
+ <20141211070458.GZ30369@pengutronix.de>
+ <54895E46.5040109@ophrys.net>
+ <20141211113246.GH30369@pengutronix.de>
+ <548988BA.3080700@ophrys.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <548988BA.3080700@ophrys.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,113 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] usb: ohci: Add generic platform driver
-To: barebox@lists.infradead.org
+Subject: Re: Logical partition on barebox
+To: Victorien Vedrine <victorien.vedrine@ophrys.net>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- drivers/usb/host/Kconfig         |  3 +++
- drivers/usb/host/Makefile        |  1 +
- drivers/usb/host/ohci-platform.c | 57 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+)
- create mode 100644 drivers/usb/host/ohci-platform.c
+On Thu, Dec 11, 2014 at 01:06:18PM +0100, Victorien Vedrine wrote:
+> Thanks,
+> 
+> I debug common/partitions/dos.c and the problem is
+> "dos_extended_partition() is not executed. I found why :
+> On dos_partition function there is a test to know the type of
+> partition (line 212). The comment says "partition type 0x05 or 0x0f
+> can be extended and just 0x0f is tested. The type extended partition
+> on my SD card is 0x05 and then it doesn't work.
+> I modify the source code of common/partitions/dos.c with
+>             if ((pentry.dos_partition_type ==
+> 0x0f)||(pentry.dos_partition_type == 0x05)) {
+> and now it's work.
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 12a090c..91af3cd 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -22,6 +22,9 @@ config USB_OHCI_AT91
- 	depends on ARCH_AT91
- 	bool "AT91 OHCI driver"
- 
-+config USB_OHCI_PLATFORM
-+	bool "Platform OHCI driver"
-+
- endif
- 
- config USB_XHCI
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-index 0478d34..1b5319d 100644
---- a/drivers/usb/host/Makefile
-+++ b/drivers/usb/host/Makefile
-@@ -3,5 +3,6 @@ obj-$(CONFIG_USB_EHCI_OMAP)	+= ehci-omap.o
- obj-$(CONFIG_USB_EHCI_ATMEL)	+= ehci-atmel.o
- obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
- obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
-+obj-$(CONFIG_USB_OHCI_PLATFORM)	+= ohci-platform.o
- obj-$(CONFIG_USB_XHCI)		+= xhci-hcd.o xhci-hub.o
- obj-$(CONFIG_USB_XHCI_PCI)	+= xhci-pci.o
-diff --git a/drivers/usb/host/ohci-platform.c b/drivers/usb/host/ohci-platform.c
-new file mode 100644
-index 0000000..4c97330
---- /dev/null
-+++ b/drivers/usb/host/ohci-platform.c
-@@ -0,0 +1,57 @@
-+/*
-+ * Copyright (C) 2014 Alexander Shiyan <shc_work@mail.ru>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+
-+struct ohci_platform_data {
-+	int (*probe)(struct device_d *, struct resource *);
-+};
-+
-+static struct platform_device_id ohci_platform_ids[] = {
-+	{ }
-+};
-+
-+static int ohci_platform_probe(struct device_d *dev)
-+{
-+	struct ohci_platform_data *data;
-+	struct resource *res;
-+	int ret;
-+
-+	ret = dev_get_drvdata(dev, (unsigned long *)&data);
-+	if (ret)
-+		return ret;
-+
-+	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (IS_ERR(res))
-+		return PTR_ERR(res);
-+
-+	dev->priv = data;
-+
-+	if (data->probe) {
-+		ret = data->probe(dev, res);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	add_generic_device_res("ohci", DEVICE_ID_SINGLE, res, 1, NULL);
-+
-+	return 0;
-+}
-+
-+static struct driver_d ohci_platform_driver = {
-+	.name		= "ohci-platform",
-+	.id_table	= ohci_platform_ids,
-+	.probe		= ohci_platform_probe,
-+};
-+device_platform_driver(ohci_platform_driver);
+Nice. Care to send a patch to fix this upstream?
+
+Sascha
+
 -- 
-2.0.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
