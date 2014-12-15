@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y39Ej-0001XG-Er
- for barebox@lists.infradead.org; Mon, 22 Dec 2014 20:05:50 +0000
-Date: Mon, 22 Dec 2014 21:05:23 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20141222200523.GB28003@pengutronix.de>
-References: <1419268822-30204-1-git-send-email-victorien.vedrine@ophrys.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1419268822-30204-1-git-send-email-victorien.vedrine@ophrys.net>
+ Linux)) id 1Y0TwD-0005Rx-JZ
+ for barebox@lists.infradead.org; Mon, 15 Dec 2014 11:35:43 +0000
+Message-ID: <1418643316.2274.1.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 15 Dec 2014 12:35:16 +0100
+In-Reply-To: <20141211073614.GB30369@pengutronix.de>
+References: <1418123146-13235-1-git-send-email-l.stach@pengutronix.de>
+ <20141211073614.GB30369@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +18,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] partitions: dos: Fix support of extended partition
- type 0x05
-To: Victorien Vedrine <victorien.vedrine@ophrys.net>
+Subject: Re: [PATCH 1/5] usb: gadget: fastboot: allow to build without BOOTM
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 22, 2014 at 06:20:22PM +0100, Victorien Vedrine wrote:
-> From: victorien <victorien.vedrine@ophrys.net>
-> =
+Am Donnerstag, den 11.12.2014, 08:36 +0100 schrieb Sascha Hauer:
+> On Tue, Dec 09, 2014 at 12:05:42PM +0100, Lucas Stach wrote:
+> > This will disable the capability to boot an uploaded image directly,
+> > but keeps other fastboot functionality. This seems like a valid config.
+> > 
+> > Fixes:
+> > In function `do_bootm_on_complete': undefined reference to `bootm_boot'
+> > 
+> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> > ---
+> >  drivers/usb/gadget/f_fastboot.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
+> > index 92a1a218c643..76879db1f15d 100644
+> > --- a/drivers/usb/gadget/f_fastboot.c
+> > +++ b/drivers/usb/gadget/f_fastboot.c
+> > @@ -653,7 +653,8 @@ static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
+> >  		pr_err("Booting failed\n");
+> >  }
+> >  
+> > -static void cb_boot(struct usb_ep *ep, struct usb_request *req, const char *opt)
+> > +static void __maybe_unused cb_boot(struct usb_ep *ep, struct usb_request *req,
+> > +				   const char *opt)
+> >  {
+> >  	struct f_fastboot *f_fb = req->context;
+> >  
+> > @@ -857,9 +858,11 @@ static const struct cmd_dispatch_info cmd_dispatch_info[] = {
+> >  	}, {
+> >  		.cmd = "download:",
+> >  		.cb = cb_download,
+> > +#if defined(CONFIG_BOOTM)
+> >  	}, {
+> >  		.cmd = "boot",
+> >  		.cb = cb_boot,
+> > +#endif
+> 
+> Instead of the #ifdef can we do a:
+> 
+> 	if (!IS_ENABLED(CONFIG_BOOTM)) {
+> 		fastboot_tx_print(f_fb, "FAILCommand not supported");
+> 		return;
+> 	}
+> 
+> in cb_boot?
+> 
+Actually I like they way I did it in this patch better, as it is
+explicit about why something is not available. Chasing through the code
+just to find out why cb_boot returned early with an error seems like
+obfuscation to me. Also it spreads the same error path through 2
+functions which isn't nice if we ever have to change something there.
 
-> Signed-off-by: Victorien Vedrine <victorien.vedrine@ophrys.net>
-> ---
->  common/partitions/dos.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> =
+Regards,
+Lucas
 
-> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
-> index 37addfd..f02c822 100644
-> --- a/common/partitions/dos.c
-> +++ b/common/partitions/dos.c
-> @@ -205,11 +205,11 @@ static void dos_partition(void *buf, struct block_d=
-evice *blk,
->  			pd->used_entries++;
->  			/*
->  			 * Partitions of type 0x05 and 0x0f (and some more)
-> -			 * contain extended partitions. Only check for type 0x0f
-> -			 * here as this is the easiest to parse and common
-> -			 * enough.
-> +			 * contain extended partitions. Only check for type
-> +			 * 0x05 and 0x0f.
-the now removed comment implies that partitions of type 0x05 and 0x0f
-are to be handled differently. With your change however they are handled
-identically. Is this correct? Might be worth to explain in the commit
-log.
+-- 
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
 
->  			 */
-> -			if (pentry.dos_partition_type =3D=3D 0x0f) {
-> +			if (pentry.dos_partition_type =3D=3D 0x0f ||
-> +				pentry.dos_partition_type =3D=3D 0x05) {
-There are two schools for indention in this case. Either use two tabs
-more than the line above, or align the continuation at the opening
-brace.
-
-Are you using vim? Then add "filetype indent on" to your .vimrc and
-depending on the way you want to handle the above case also add
-
-	set cinoptions=3D(,:
-
-for aligning with the opening brace, or
-
-	set cinoptions=3D:
-
-for the two tab preference.
-
-Best regards
-Uwe
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
