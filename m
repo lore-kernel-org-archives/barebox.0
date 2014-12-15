@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XzAiR-0003J9-8p
- for barebox@lists.infradead.org; Thu, 11 Dec 2014 20:52:03 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 11 Dec 2014 21:51:30 +0100
-Message-Id: <1418331093-18640-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ Linux)) id 1Y0SQo-0000OI-Ur
+ for barebox@lists.infradead.org; Mon, 15 Dec 2014 09:59:11 +0000
+Date: Mon, 15 Dec 2014 10:58:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141215095848.GC30369@pengutronix.de>
+References: <1418331093-18640-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1418331093-18640-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,24 +18,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/3] arm/cpu/lowlevel cleanups
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/3] arm/cpu/lowlevel cleanups
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgpjb21wYXJlZCB0byAoaW1wbGljaXQpIHYxIHRoaXMgY2hhbmdlcyB0aGUgb3JkZXIg
-dG8gbWFrZSB0aGUgaS1jYWNoZSBmaXggdGhlCmZpcnN0IHBhdGNoIHRvIGFkZHJlc3MgU2FzY2hh
-J3MgcmV2aWV3IHJlbWFya3MuIEkgYWxzbyByZW1vdmVkIHRoZSBleHBsaWNpdApkcm9wcGluZyBv
-ZiBicmFuY2ggcHJlZGljdG9yIGVudHJpZXMgd2hpY2ggTHVjYXMgcG9pbnRlZCBvdXQgdG8gYmUg
-dW5uZWNlc3NhcnkuCgpVd2UgS2xlaW5lLUvDtm5pZyAoMyk6CiAgYXJtL2NwdS9sb3dsZXZlbDog
-aW52YWxpZGF0ZSBpLWNhY2hlIGJlZm9yZSBlbmFibGluZwogIGFybS9jcHUvbG93bGV2ZWw6IGFk
-ZCBhbmQgZml4IGNvbW1lbnRzIGZvciBDUFNSIGFuZCBTQ1RMUiBhY2Nlc3NlcwogIGFybS9jcHUv
-bG93bGV2ZWw6IERvbid0IHNhdmUgdGhlIHJldHVybiBhZGRyZXNzIGluIGFub3RoZXIgcmVnaXN0
-ZXIKCiBhcmNoL2FybS9jcHUvbG93bGV2ZWwuUyB8IDM4ICsrKysrKysrKysrKysrKysrKysrKysr
-KysrKystLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMjggaW5zZXJ0aW9ucygrKSwgMTAgZGVs
-ZXRpb25zKC0pCgotLSAKMi4xLjMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
-Cg==
+On Thu, Dec 11, 2014 at 09:51:30PM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello,
+> =
+
+> compared to (implicit) v1 this changes the order to make the i-cache fix =
+the
+> first patch to address Sascha's review remarks. I also removed the explic=
+it
+> dropping of branch predictor entries which Lucas pointed out to be unnece=
+ssary.
+> =
+
+> Uwe Kleine-K=F6nig (3):
+>   arm/cpu/lowlevel: invalidate i-cache before enabling
+>   arm/cpu/lowlevel: add and fix comments for CPSR and SCTLR accesses
+>   arm/cpu/lowlevel: Don't save the return address in another register
+> =
+
+>  arch/arm/cpu/lowlevel.S | 38 ++++++++++++++++++++++++++++----------
+>  1 file changed, 28 insertions(+), 10 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
