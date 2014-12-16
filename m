@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y0TwD-0005Rx-JZ
- for barebox@lists.infradead.org; Mon, 15 Dec 2014 11:35:43 +0000
-Message-ID: <1418643316.2274.1.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 15 Dec 2014 12:35:16 +0100
-In-Reply-To: <20141211073614.GB30369@pengutronix.de>
-References: <1418123146-13235-1-git-send-email-l.stach@pengutronix.de>
- <20141211073614.GB30369@pengutronix.de>
-Mime-Version: 1.0
+ Linux)) id 1Y0sCk-0001yH-JB
+ for barebox@lists.infradead.org; Tue, 16 Dec 2014 13:30:23 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 16 Dec 2014 14:29:58 +0100
+Message-Id: <1418736598-18154-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +14,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] usb: gadget: fastboot: allow to build without BOOTM
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] blspec: print error when devicetree not found
+To: barebox@lists.infradead.org
 
-Am Donnerstag, den 11.12.2014, 08:36 +0100 schrieb Sascha Hauer:
-> On Tue, Dec 09, 2014 at 12:05:42PM +0100, Lucas Stach wrote:
-> > This will disable the capability to boot an uploaded image directly,
-> > but keeps other fastboot functionality. This seems like a valid config.
-> > 
-> > Fixes:
-> > In function `do_bootm_on_complete': undefined reference to `bootm_boot'
-> > 
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> >  drivers/usb/gadget/f_fastboot.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/usb/gadget/f_fastboot.c b/drivers/usb/gadget/f_fastboot.c
-> > index 92a1a218c643..76879db1f15d 100644
-> > --- a/drivers/usb/gadget/f_fastboot.c
-> > +++ b/drivers/usb/gadget/f_fastboot.c
-> > @@ -653,7 +653,8 @@ static void do_bootm_on_complete(struct usb_ep *ep, struct usb_request *req)
-> >  		pr_err("Booting failed\n");
-> >  }
-> >  
-> > -static void cb_boot(struct usb_ep *ep, struct usb_request *req, const char *opt)
-> > +static void __maybe_unused cb_boot(struct usb_ep *ep, struct usb_request *req,
-> > +				   const char *opt)
-> >  {
-> >  	struct f_fastboot *f_fb = req->context;
-> >  
-> > @@ -857,9 +858,11 @@ static const struct cmd_dispatch_info cmd_dispatch_info[] = {
-> >  	}, {
-> >  		.cmd = "download:",
-> >  		.cb = cb_download,
-> > +#if defined(CONFIG_BOOTM)
-> >  	}, {
-> >  		.cmd = "boot",
-> >  		.cb = cb_boot,
-> > +#endif
-> 
-> Instead of the #ifdef can we do a:
-> 
-> 	if (!IS_ENABLED(CONFIG_BOOTM)) {
-> 		fastboot_tx_print(f_fb, "FAILCommand not supported");
-> 		return;
-> 	}
-> 
-> in cb_boot?
-> 
-Actually I like they way I did it in this patch better, as it is
-explicit about why something is not available. Chasing through the code
-just to find out why cb_boot returned early with an error seems like
-obfuscation to me. Also it spreads the same error path through 2
-functions which isn't nice if we ever have to change something there.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/blspec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Regards,
-Lucas
-
+diff --git a/common/blspec.c b/common/blspec.c
+index f46a11d..b9342d5 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -278,6 +278,7 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
+ 
+ 	fdt = read_file(filename, &size);
+ 	if (!fdt) {
++		pr_err("Cannot read: %s\n", filename);
+ 		ret = false;
+ 		goto out;
+ 	}
 -- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+2.1.3
 
 
 _______________________________________________
