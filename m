@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.orpheo.org ([176.31.189.100] helo=orpheo.org)
+Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y3PQu-0001hh-4m
- for barebox@lists.infradead.org; Tue, 23 Dec 2014 13:23:29 +0000
-Message-ID: <54996CB8.6070302@ophrys.net>
-Date: Tue, 23 Dec 2014 14:23:04 +0100
-From: Victorien Vedrine <victorien.vedrine@ophrys.net>
-MIME-Version: 1.0
-References: <1419268822-30204-1-git-send-email-victorien.vedrine@ophrys.net>
- <20141222200523.GB28003@pengutronix.de>
-In-Reply-To: <20141222200523.GB28003@pengutronix.de>
+ id 1Y1jb0-0001ba-Jg
+ for barebox@lists.infradead.org; Thu, 18 Dec 2014 22:31:00 +0000
+Received: by mail-lb0-f174.google.com with SMTP id 10so1742916lbg.5
+ for <barebox@lists.infradead.org>; Thu, 18 Dec 2014 14:30:35 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 19 Dec 2014 01:32:37 +0300
+Message-Id: <1418941957-6950-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,128 +16,161 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] partitions: dos: Fix support of extended partition
- type 0x05
-To: =?windows-1252?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] introduce ioremap() and dev_ioremap_resource()
+To: barebox@lists.infradead.org
 
+The commit
 
-photo resizedforemaillogo_zpsa47b7a0d.jpg <http://orpheogroup.com>
-*Victorien Vedrine - R&D engineer*
-OPHRYS Syst=E8mes
-6, rue Val=E9rien Perrin
-F-38170 SEYSSINET-PARISET
-Tel +33 (0)4 38 12 40 66
-Fax +33 (0)4 76 96 22 34
-victorien.vedrine@ophrys.net <mailto:victorien.vedrine@ophrys.net>
-http://www.orpheogroup.com <http://orpheogroup.com>
-Le 22/12/2014 21:05, Uwe Kleine-K=F6nig a =E9crit :
-> On Mon, Dec 22, 2014 at 06:20:22PM +0100, Victorien Vedrine wrote:
->> From: victorien<victorien.vedrine@ophrys.net>
->>
->> Signed-off-by: Victorien Vedrine<victorien.vedrine@ophrys.net>
->> ---
->>   common/partitions/dos.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
->> index 37addfd..f02c822 100644
->> --- a/common/partitions/dos.c
->> +++ b/common/partitions/dos.c
->> @@ -205,11 +205,11 @@ static void dos_partition(void *buf, struct block_=
-device *blk,
->>   			pd->used_entries++;
->>   			/*
->>   			 * Partitions of type 0x05 and 0x0f (and some more)
->> -			 * contain extended partitions. Only check for type 0x0f
->> -			 * here as this is the easiest to parse and common
->> -			 * enough.
->> +			 * contain extended partitions. Only check for type
->> +			 * 0x05 and 0x0f.
-> the now removed comment implies that partitions of type 0x05 and 0x0f
-> are to be handled differently. With your change however they are handled
-> identically. Is this correct? Might be worth to explain in the commit
-> log.
-I made some research and the difference is that 0x0f partition is LBA =
+    commit 0d7a21334536cb36b3c9b64d868acc55aec41332
+    Author: Antony Pavlov <antonynpavlov@gmail.com>
+    Date:   Wed Sep 10 11:42:19 2014 +0400
 
-and can start after the cylinder 1023.
-I check on linux source code (3.14), and they consider that the 2 kinds =
+        MIPS: dts: use physical addresses (as Linux does)
 
-of partition is identical :
-On /include/linux/genhd.h file :
+        With IOMEM() adapted for MIPS we can use physical addresses
+        in device tree reg property.
 
-    enum {
-    /* These three have identical behaviour; use the second one if DOS
-    FDISK gets
-        confused about extended/logical partitions starting past
-    cylinder 1023. */
-         DOS_EXTENDED_PARTITION =3D 5,
-         LINUX_EXTENDED_PARTITION =3D 0x85,
-         WIN98_EXTENDED_PARTITION =3D 0x0f,
+is premature. Current device tree files unusable on real hardware.
+                          I'M SO SORRY!
+The patch was tested on qemu, but qemu malta board is tolerant
+of using physical addresses for accesing to device. Real hardware
+can throw an exception in this situation.
 
-         SUN_WHOLE_DISK =3D DOS_EXTENDED_PARTITION,
+Additional physical address to virtual address translation on MIPS is needed.
 
-         LINUX_SWAP_PARTITION =3D 0x82,
-         LINUX_DATA_PARTITION =3D 0x83,
-         LINUX_LVM_PARTITION =3D 0x8e,
-         LINUX_RAID_PARTITION =3D 0xfd,    /* autodetect RAID partition */
+This commit demonstrate a possible (but not very good) solution.
+This solution is copied-and-pasted from linux kernel.
+In linux drivers use devm_ioremap_resource() function, so
+the patch just replicates similar dev_ioremap_resource() function.
 
-         SOLARIS_X86_PARTITION =3D    LINUX_SWAP_PARTITION,
-         NEW_SOLARIS_X86_PARTITION =3D 0xbf,
+Changing dev_request_mem_region() to dev_ioremap_resource()
+is not a very good idea because there are too many dev_request_mem_region()
+in barebox sources
 
-         DM6_AUX1PARTITION =3D 0x51,    /* no DDO:  use xlated geom */
-         DM6_AUX3PARTITION =3D 0x53,    /* no DDO:  use xlated geom */
-         DM6_PARTITION =3D    0x54,        /* has DDO: use xlated geom &
-    offset */
-         EZD_PARTITION =3D    0x55,        /* EZ-DRIVE */
+    barebox$ git grep dev_request_mem_region | wc -l
+    197
 
-         FREEBSD_PARTITION =3D 0xa5,    /* FreeBSD Partition ID */
-         OPENBSD_PARTITION =3D 0xa6,    /* OpenBSD Partition ID */
-         NETBSD_PARTITION =3D 0xa9,    /* NetBSD Partition ID */
-         BSDI_PARTITION =3D 0xb7,        /* BSDI Partition ID */
-         MINIX_PARTITION =3D 0x81,        /* Minix Partition ID */
-         UNIXWARE_PARTITION =3D 0x63,    /* Same as GNU_HURD and SCO Unix */
-    };
+moreover dev_ioremap_resource() has the second 'struct resource *res'
+argument, so additional dev_get_resource() is needed.
 
-I did some test with different SD Card size and table of partition and I =
+Can we insert ioremap() into dev_request_mem_region() directly?
+(we also can use already existion IOMEM() macro instead of linux' ioremap()).
 
-don't see problem.
-Now I'm in holidays but when I'm back I'll continue to check this point =
+E.g.
 
-to determine if more modifications are necessary.
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -330,7 +330,7 @@ void __iomem *dev_request_mem_region(struct device_d
+*dev, int num)
+        if (IS_ERR(res))
+                return ERR_CAST(res);
 
->>   			 */
->> -			if (pentry.dos_partition_type =3D=3D 0x0f) {
->> +			if (pentry.dos_partition_type =3D=3D 0x0f ||
->> +				pentry.dos_partition_type =3D=3D 0x05) {
-> There are two schools for indention in this case. Either use two tabs
-> more than the line above, or align the continuation at the opening
-> brace.
->
-> Are you using vim? Then add "filetype indent on" to your .vimrc and
-> depending on the way you want to handle the above case also add
->
-> 	set cinoptions=3D(,:
->
-> for aligning with the opening brace, or
->
-> 	set cinoptions=3D:
->
-> for the two tab preference.
-Sorry, It's the first time I'm contribute to a project and I don't take =
+-       return (void __force __iomem *)res->start;
++       return ioremap((phys_t)res->start);
+ }
+ EXPORT_SYMBOL(dev_request_mem_region);
 
-enough car about that. I'll modify that.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/include/asm/io.h       |  5 +++++
+ arch/mips/include/asm/io.h      |  7 +++++++
+ common/resource.c               | 11 +++++++++++
+ drivers/serial/serial_ns16550.c |  2 +-
+ include/driver.h                |  2 ++
+ 5 files changed, 26 insertions(+), 1 deletion(-)
 
-Thanks for your help
-Best regards
-
-Victorien
-> Best regards
-> Uwe
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index ccf1f59..ffe05b6 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -5,6 +5,11 @@
+ 
+ #define	IO_SPACE_LIMIT	0
+ 
++static inline void __iomem *ioremap(phys_addr_t phys_addr)
++{
++        return (void __iomem *)phys_addr;
++}
++
+ /*
+  * String version of IO memory access ops:
+  */
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 4832be6..fa0b2d0 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -13,9 +13,16 @@
+ #include <linux/compiler.h>
+ #include <asm/types.h>
+ #include <asm/byteorder.h>
++#include <asm/addrspace.h>
+ 
+ #define	IO_SPACE_LIMIT	0
+ 
++static inline void __iomem *ioremap(phys_t phys_addr)
++{
++	return (void __iomem *)
++                               (unsigned long)CKSEG1ADDR(phys_addr);
++}
++
+ /*****************************************************************************/
+ /*
+  * readX/writeX() are used to access memory mapped devices. On some
+diff --git a/common/resource.c b/common/resource.c
+index e4bbe15..79960fd 100644
+--- a/common/resource.c
++++ b/common/resource.c
+@@ -128,6 +128,17 @@ struct resource *request_iomem_region(const char *name,
+ 	return __request_region(&iomem_resource, name, start, end);
+ }
+ 
++void __iomem *dev_ioremap_resource(struct device_d *dev, struct resource *res)
++{
++	struct resource *r;
++
++	r = request_iomem_region(dev_name(dev), res->start, res->end);
++	if (IS_ERR(r))
++		return ERR_CAST(r);
++
++	return ioremap(res->start);
++}
++
+ /* The root resource for the whole io-mapped io space */
+ struct resource ioport_resource = {
+ 	.start = 0,
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 8f2e93f..0e9e0f3 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -325,7 +325,7 @@ static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
+ 	if (IS_ERR(res))
+ 		return PTR_ERR(res);
+ 
+-	priv->mmiobase = dev_request_mem_region(dev, 0);
++	priv->mmiobase = dev_ioremap_resource(dev, res);
+ 	if (IS_ERR(priv->mmiobase))
+ 		return PTR_ERR(priv->mmiobase);
+ 
+diff --git a/include/driver.h b/include/driver.h
+index 53e1000..4fc1b63 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -206,6 +206,8 @@ void *dev_get_mem_region(struct device_d *dev, int num);
+  */
+ void __iomem *dev_request_mem_region(struct device_d *dev, int num);
+ 
++void __iomem *dev_ioremap_resource(struct device_d *dev, struct resource *res);
++
+ struct device_d *device_alloc(const char *devname, int id);
+ 
+ int device_add_resources(struct device_d *dev, const struct resource *res, int num);
+-- 
+2.1.3
 
 
 _______________________________________________
