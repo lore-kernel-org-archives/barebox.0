@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ig0-x232.google.com ([2607:f8b0:4001:c05::232])
+Received: from f395.i.mail.ru ([185.5.136.66])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y1KrW-0006Js-4T
- for barebox@lists.infradead.org; Wed, 17 Dec 2014 20:06:23 +0000
-Received: by mail-ig0-f178.google.com with SMTP id hl2so9608774igb.17
- for <barebox@lists.infradead.org>; Wed, 17 Dec 2014 12:05:58 -0800 (PST)
+ id 1Y1Wfr-0001gN-Dt
+ for barebox@lists.infradead.org; Thu, 18 Dec 2014 08:43:08 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 MIME-Version: 1.0
-Date: Wed, 17 Dec 2014 15:05:58 -0500
-Message-ID: <CAO6XYUuZuSt7dNUq_EH_nc8_E9-o=fMu702sJSQcvBn4O83Fdg@mail.gmail.com>
-From: "Michael D. Burkey" <mdburkey@gmail.com>
+Date: Thu, 18 Dec 2014 11:42:37 +0300
+Message-ID: <1418892157.191927242@f395.i.mail.ru>
+In-Reply-To: <1418558130-420-1-git-send-email-shc_work@mail.ru>
+References: <1418558130-420-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,47 +17,21 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: imx6: Nand flash BB erase issue/question...
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCAxLzNdIHVzYjogb2hjaTogQ2xlYXIgY29udHJvbCByZWdp?=
+ =?UTF-8?B?c3RlciBhdCBkcml2ZXIgc3RhcnR1cA==?=
+To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-I have run into an issue that I wonder if anyone else has seen.
-
-We have our kernel stored in NAND flash and have it partition and have
-the nand0.kernel and nand0.kernel.bb entries.
-
-As I understand it, the nand0.kernel.bb entry is the correct one to
-use for day to day operations as it handles bad blocks.
-
-The issue comes when I try erasing the kernel prior to updating it on
-a SOM with a known bad block inside the kernel area.
-
-Doing an erase of nand0.kernel works fine and skips the bad block.
-
-Doing an erase of nand0.kernel.bb however generates an error message:
-
-nand: nand_erase_nand: attempt to erase a bad block at page
-0x00000bc0
-
-It then exits with an "erase: I/O error".
-
-Specifically, it looks like an attempt to erase a .bb device calls
-nand_erase_nand() (in nand_base.c) which then uses
-nand_block_checkbad() to determine if the block is bad and then just
-generates an error exit rather than attempting to skip the bad block.
-
-To me, this seems wrong.
-
-Shouldn't an attempt to erase a .bb NAND device actually HANDLE the
-bad blocks by skipping them rather than simply erroring out?
-
-Thanks,
-Michael Burkey
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U3VuLCAxNCBEZWMgMjAxNCAxNDo1NToyOCArMDMwMCDQvtGCIEFsZXhhbmRlciBTaGl5YW4gPHNo
+Y193b3JrQG1haWwucnU+Ogo+IFNpZ25lZC1vZmYtYnk6IEFsZXhhbmRlciBTaGl5YW4gPHNoY193
+b3JrQG1haWwucnU+Cj4gLS0tCj4gIGRyaXZlcnMvdXNiL2hvc3Qvb2hjaS1hdDkxLmMgfCA3IC0t
+LS0tLS0KPiAgZHJpdmVycy91c2IvaG9zdC9vaGNpLWhjZC5jICB8IDcgKysrKy0tLQo+ICAyIGZp
+bGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0pCgpQaW5nLgoKLS0t
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
