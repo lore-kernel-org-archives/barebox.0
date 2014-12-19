@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y1jb0-0001ba-Jg
- for barebox@lists.infradead.org; Thu, 18 Dec 2014 22:31:00 +0000
-Received: by mail-lb0-f174.google.com with SMTP id 10so1742916lbg.5
- for <barebox@lists.infradead.org>; Thu, 18 Dec 2014 14:30:35 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 19 Dec 2014 01:32:37 +0300
-Message-Id: <1418941957-6950-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Y1r30-0003Wc-4C
+ for barebox@lists.infradead.org; Fri, 19 Dec 2014 06:28:23 +0000
+Date: Fri, 19 Dec 2014 07:27:56 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20141219062756.GW30369@pengutronix.de>
+References: <CAO6XYUuZuSt7dNUq_EH_nc8_E9-o=fMu702sJSQcvBn4O83Fdg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAO6XYUuZuSt7dNUq_EH_nc8_E9-o=fMu702sJSQcvBn4O83Fdg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,162 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] introduce ioremap() and dev_ioremap_resource()
-To: barebox@lists.infradead.org
+Subject: Re: imx6: Nand flash BB erase issue/question...
+To: "Michael D. Burkey" <mdburkey@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The commit
+On Wed, Dec 17, 2014 at 03:05:58PM -0500, Michael D. Burkey wrote:
+> I have run into an issue that I wonder if anyone else has seen.
+> 
+> We have our kernel stored in NAND flash and have it partition and have
+> the nand0.kernel and nand0.kernel.bb entries.
+> 
+> As I understand it, the nand0.kernel.bb entry is the correct one to
+> use for day to day operations as it handles bad blocks.
+> 
+> The issue comes when I try erasing the kernel prior to updating it on
+> a SOM with a known bad block inside the kernel area.
+> 
+> Doing an erase of nand0.kernel works fine and skips the bad block.
+> 
+> Doing an erase of nand0.kernel.bb however generates an error message:
+> 
+> nand: nand_erase_nand: attempt to erase a bad block at page
+> 0x00000bc0
+> 
+> It then exits with an "erase: I/O error".
+> 
+> Specifically, it looks like an attempt to erase a .bb device calls
+> nand_erase_nand() (in nand_base.c) which then uses
+> nand_block_checkbad() to determine if the block is bad and then just
+> generates an error exit rather than attempting to skip the bad block.
+> 
+> To me, this seems wrong.
+> 
+> Shouldn't an attempt to erase a .bb NAND device actually HANDLE the
+> bad blocks by skipping them rather than simply erroring out?
 
-    commit 0d7a21334536cb36b3c9b64d868acc55aec41332
-    Author: Antony Pavlov <antonynpavlov@gmail.com>
-    Date:   Wed Sep 10 11:42:19 2014 +0400
+You are absolutely right. This must be a bug.
 
-        MIPS: dts: use physical addresses (as Linux does)
+Sascha
 
-        With IOMEM() adapted for MIPS we can use physical addresses
-        in device tree reg property.
-
-is premature. Current device tree files unusable on real hardware.
-                          I'M SO SORRY!
-The patch was tested on qemu, but qemu malta board is tolerant
-of using physical addresses for accesing to device. Real hardware
-can throw an exception in this situation.
-
-Additional physical address to virtual address translation on MIPS is needed.
-
-This commit demonstrate a possible (but not very good) solution.
-This solution is copied-and-pasted from linux kernel.
-In linux drivers use devm_ioremap_resource() function, so
-the patch just replicates similar dev_ioremap_resource() function.
-
-Changing dev_request_mem_region() to dev_ioremap_resource()
-is not a very good idea because there are too many dev_request_mem_region()
-in barebox sources
-
-    barebox$ git grep dev_request_mem_region | wc -l
-    197
-
-moreover dev_ioremap_resource() has the second 'struct resource *res'
-argument, so additional dev_get_resource() is needed.
-
-Can we insert ioremap() into dev_request_mem_region() directly?
-(we also can use already existion IOMEM() macro instead of linux' ioremap()).
-
-E.g.
-
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -330,7 +330,7 @@ void __iomem *dev_request_mem_region(struct device_d
-*dev, int num)
-        if (IS_ERR(res))
-                return ERR_CAST(res);
-
--       return (void __force __iomem *)res->start;
-+       return ioremap((phys_t)res->start);
- }
- EXPORT_SYMBOL(dev_request_mem_region);
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/include/asm/io.h       |  5 +++++
- arch/mips/include/asm/io.h      |  7 +++++++
- common/resource.c               | 11 +++++++++++
- drivers/serial/serial_ns16550.c |  2 +-
- include/driver.h                |  2 ++
- 5 files changed, 26 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index ccf1f59..ffe05b6 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -5,6 +5,11 @@
- 
- #define	IO_SPACE_LIMIT	0
- 
-+static inline void __iomem *ioremap(phys_addr_t phys_addr)
-+{
-+        return (void __iomem *)phys_addr;
-+}
-+
- /*
-  * String version of IO memory access ops:
-  */
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 4832be6..fa0b2d0 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -13,9 +13,16 @@
- #include <linux/compiler.h>
- #include <asm/types.h>
- #include <asm/byteorder.h>
-+#include <asm/addrspace.h>
- 
- #define	IO_SPACE_LIMIT	0
- 
-+static inline void __iomem *ioremap(phys_t phys_addr)
-+{
-+	return (void __iomem *)
-+                               (unsigned long)CKSEG1ADDR(phys_addr);
-+}
-+
- /*****************************************************************************/
- /*
-  * readX/writeX() are used to access memory mapped devices. On some
-diff --git a/common/resource.c b/common/resource.c
-index e4bbe15..79960fd 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -128,6 +128,17 @@ struct resource *request_iomem_region(const char *name,
- 	return __request_region(&iomem_resource, name, start, end);
- }
- 
-+void __iomem *dev_ioremap_resource(struct device_d *dev, struct resource *res)
-+{
-+	struct resource *r;
-+
-+	r = request_iomem_region(dev_name(dev), res->start, res->end);
-+	if (IS_ERR(r))
-+		return ERR_CAST(r);
-+
-+	return ioremap(res->start);
-+}
-+
- /* The root resource for the whole io-mapped io space */
- struct resource ioport_resource = {
- 	.start = 0,
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 8f2e93f..0e9e0f3 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -325,7 +325,7 @@ static int ns16550_init_iomem(struct device_d *dev, struct ns16550_priv *priv)
- 	if (IS_ERR(res))
- 		return PTR_ERR(res);
- 
--	priv->mmiobase = dev_request_mem_region(dev, 0);
-+	priv->mmiobase = dev_ioremap_resource(dev, res);
- 	if (IS_ERR(priv->mmiobase))
- 		return PTR_ERR(priv->mmiobase);
- 
-diff --git a/include/driver.h b/include/driver.h
-index 53e1000..4fc1b63 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -206,6 +206,8 @@ void *dev_get_mem_region(struct device_d *dev, int num);
-  */
- void __iomem *dev_request_mem_region(struct device_d *dev, int num);
- 
-+void __iomem *dev_ioremap_resource(struct device_d *dev, struct resource *res);
-+
- struct device_d *device_alloc(const char *devname, int id);
- 
- int device_add_resources(struct device_d *dev, const struct resource *res, int num);
 -- 
-2.1.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
