@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y2E75-00036k-RK
- for barebox@lists.infradead.org; Sat, 20 Dec 2014 07:06:08 +0000
-Date: Sat, 20 Dec 2014 08:05:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141220070542.GC30369@pengutronix.de>
-References: <1418941957-6950-1-git-send-email-antonynpavlov@gmail.com>
- <20141219064542.GY30369@pengutronix.de>
- <20141219171219.b672ff943c851cbe6adf5006@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20141219171219.b672ff943c851cbe6adf5006@gmail.com>
+Received: from smtp2-g21.free.fr ([212.27.42.2])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y36f5-0007D2-EE
+ for barebox@lists.infradead.org; Mon, 22 Dec 2014 17:20:52 +0000
+From: Victorien Vedrine <victorien.vedrine@ophrys.net>
+Date: Mon, 22 Dec 2014 18:20:22 +0100
+Message-Id: <1419268822-30204-1-git-send-email-victorien.vedrine@ophrys.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,61 +14,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] introduce ioremap() and dev_ioremap_resource()
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3] partitions: dos: Fix support of extended partition type
+ 0x05
+To: barebox@lists.infradead.org
+Cc: victorien <victorien.vedrine@ophrys.net>
 
-On Fri, Dec 19, 2014 at 05:12:19PM +0400, Antony Pavlov wrote:
-> On Fri, 19 Dec 2014 07:45:42 +0100
-> > > moreover dev_ioremap_resource() has the second 'struct resource *res'
-> > > argument, so additional dev_get_resource() is needed.
-> > > 
-> > > Can we insert ioremap() into dev_request_mem_region() directly?
-> > > (we also can use already existion IOMEM() macro instead of linux' ioremap()).
-> > 
-> > I'm not sure if it's a good idea to put that behind some standard
-> > lookingioremap() call, because its behaviour is not standard.
-> > 
-> > I'm also fine with adding some
-> > 
-> > #ifdef CONFIG_MIPS
-> > 	return mips_iomem(res->start);
-> > #else
-> > 	return (void __force __iomem *)res->start;
-> > #endif
-> > 
-> > At least this makes explicit that MIPS has a very special handling.
-> 
-> We already have this in include/common.h
-> 
-> #if defined(CONFIG_MIPS)
-> #include <asm/addrspace.h>
-> 
-> #define IOMEM(addr) ((void __force __iomem *)CKSEG1ADDR(addr))
-> #else
-> #define IOMEM(addr) ((void __force __iomem *)(addr))
-> #endif
-> 
-> So can I use just
-> 
->     return IOMEM(res->start);
-> 
-> in dev_request_mem_region()?
+From: victorien <victorien.vedrine@ophrys.net>
 
-Yes, nice. That's the right solution then.
+Signed-off-by: Victorien Vedrine <victorien.vedrine@ophrys.net>
+---
+ common/partitions/dos.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Sascha
-
-
+diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+index 37addfd..f02c822 100644
+--- a/common/partitions/dos.c
++++ b/common/partitions/dos.c
+@@ -205,11 +205,11 @@ static void dos_partition(void *buf, struct block_device *blk,
+ 			pd->used_entries++;
+ 			/*
+ 			 * Partitions of type 0x05 and 0x0f (and some more)
+-			 * contain extended partitions. Only check for type 0x0f
+-			 * here as this is the easiest to parse and common
+-			 * enough.
++			 * contain extended partitions. Only check for type
++			 * 0x05 and 0x0f.
+ 			 */
+-			if (pentry.dos_partition_type == 0x0f) {
++			if (pentry.dos_partition_type == 0x0f ||
++				pentry.dos_partition_type == 0x05) {
+ 				if (!extended_partition)
+ 					extended_partition = &pd->parts[n];
+ 				else
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
