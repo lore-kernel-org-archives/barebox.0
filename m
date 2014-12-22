@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y0S75-00076H-2n
- for barebox@lists.infradead.org; Mon, 15 Dec 2014 09:38:49 +0000
-Date: Mon, 15 Dec 2014 10:38:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20141215093817.GA30369@pengutronix.de>
-References: <548872F5.6090704@ophrys.net>
- <20141211070458.GZ30369@pengutronix.de>
- <54895E46.5040109@ophrys.net>
- <20141211113246.GH30369@pengutronix.de>
- <548988BA.3080700@ophrys.net>
+ Linux)) id 1Y39Ej-0001XG-Er
+ for barebox@lists.infradead.org; Mon, 22 Dec 2014 20:05:50 +0000
+Date: Mon, 22 Dec 2014 21:05:23 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20141222200523.GB28003@pengutronix.de>
+References: <1419268822-30204-1-git-send-email-victorien.vedrine@ophrys.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <548988BA.3080700@ophrys.net>
+In-Reply-To: <1419268822-30204-1-git-send-email-victorien.vedrine@ophrys.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +18,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Logical partition on barebox
+Subject: Re: [PATCH v3] partitions: dos: Fix support of extended partition
+ type 0x05
 To: Victorien Vedrine <victorien.vedrine@ophrys.net>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 11, 2014 at 01:06:18PM +0100, Victorien Vedrine wrote:
-> Thanks,
-> 
-> I debug common/partitions/dos.c and the problem is
-> "dos_extended_partition() is not executed. I found why :
-> On dos_partition function there is a test to know the type of
-> partition (line 212). The comment says "partition type 0x05 or 0x0f
-> can be extended and just 0x0f is tested. The type extended partition
-> on my SD card is 0x05 and then it doesn't work.
-> I modify the source code of common/partitions/dos.c with
->             if ((pentry.dos_partition_type ==
-> 0x0f)||(pentry.dos_partition_type == 0x05)) {
-> and now it's work.
+On Mon, Dec 22, 2014 at 06:20:22PM +0100, Victorien Vedrine wrote:
+> From: victorien <victorien.vedrine@ophrys.net>
+> =
 
-Nice. Care to send a patch to fix this upstream?
+> Signed-off-by: Victorien Vedrine <victorien.vedrine@ophrys.net>
+> ---
+>  common/partitions/dos.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> =
 
-Sascha
+> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+> index 37addfd..f02c822 100644
+> --- a/common/partitions/dos.c
+> +++ b/common/partitions/dos.c
+> @@ -205,11 +205,11 @@ static void dos_partition(void *buf, struct block_d=
+evice *blk,
+>  			pd->used_entries++;
+>  			/*
+>  			 * Partitions of type 0x05 and 0x0f (and some more)
+> -			 * contain extended partitions. Only check for type 0x0f
+> -			 * here as this is the easiest to parse and common
+> -			 * enough.
+> +			 * contain extended partitions. Only check for type
+> +			 * 0x05 and 0x0f.
+the now removed comment implies that partitions of type 0x05 and 0x0f
+are to be handled differently. With your change however they are handled
+identically. Is this correct? Might be worth to explain in the commit
+log.
 
--- 
-Pengutronix e.K.                           |                             |
+>  			 */
+> -			if (pentry.dos_partition_type =3D=3D 0x0f) {
+> +			if (pentry.dos_partition_type =3D=3D 0x0f ||
+> +				pentry.dos_partition_type =3D=3D 0x05) {
+There are two schools for indention in this case. Either use two tabs
+more than the line above, or align the continuation at the opening
+brace.
+
+Are you using vim? Then add "filetype indent on" to your .vimrc and
+depending on the way you want to handle the above case also add
+
+	set cinoptions=3D(,:
+
+for aligning with the opening brace, or
+
+	set cinoptions=3D:
+
+for the two tab preference.
+
+Best regards
+Uwe
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
