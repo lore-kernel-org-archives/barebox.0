@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1XzAiM-0003Hx-GY
- for barebox@lists.infradead.org; Thu, 11 Dec 2014 20:51:59 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 11 Dec 2014 21:51:31 +0100
-Message-Id: <1418331093-18640-2-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1418331093-18640-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1418331093-18640-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from mail.orpheo.org ([176.31.189.100] helo=orpheo.org)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y2yhl-0006Oo-6p
+ for barebox@lists.infradead.org; Mon, 22 Dec 2014 08:51:06 +0000
+Message-ID: <5497DB5B.2020505@ophrys.net>
+Date: Mon, 22 Dec 2014 09:50:35 +0100
+From: Victorien Vedrine <victorien.vedrine@ophrys.net>
 MIME-Version: 1.0
+References: <1418832597-3932-1-git-send-email-victorien.vedrine@ophrys.net>
+ <20141219185901.GG10857@pengutronix.de>
+In-Reply-To: <20141219185901.GG10857@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,47 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="windows-1252"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] arm/cpu/lowlevel: invalidate i-cache before enabling
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] partitions: dos: Fix support of extended partition type
+ 0x05
+To: =?windows-1252?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-QXJjaGl0ZWN0dXJhbGx5IHRoZSBjYWNoZSBjb250ZW50cyBhcmUgdW5kZWZpbmVkIHNvIGl0IG1p
-Z2h0IHdlbGwKY29udGFpbiBzdGFsZSBkYXRhIGF0IHJlc2V0LiBTbyBiZXR0ZXIgYmUgc2F2ZSB0
-aGFuIHNvcnJ5LgoKSSB2ZXJpZnllZCB0aGF0IHRoZSBhZGRlZCBpbnN0cnVjdGlvbnMgYXJlIGRl
-ZmluZWQgZm9yIGJvdGgsIEFSTXY2IGFuZApBUk12NywgdXNpbmcgdGhlIEFSTSBBcmNoaXRlY3R1
-cmUgUmVmZXJlbmNlIE1hbnVhbCwgQVJNdjctQSBhbmQgQVJNdjctUgplZGl0aW9uIChBUk0gRERJ
-IDA0MDZDLmMpLiBGb3IgdGhlIGFscmVhZHkgZXhpc3RpbmcgbWNyIGluc3RydWN0aW9uIHNlZQp0
-aGUgbmV3bHkgYWRkZWQgY29tbWVudC4KClRoaXMgcGF0Y2ggYWxzbyB1bmlmaWVzIGhhbmRsaW5n
-IG9mIEFSTXY2IGFuZCBBUk12NywgdGhlIGlzYiBpbnN0cnVjdGlvbgpjYW4gYWxzbyBiZSBkb25l
-IG9uIHRoZSBsYXR0ZXIgdmlhIG1jciB3aGljaCBzaW1wbGlmaWVzIHRoZSBjb2RlIGEgYml0LgoK
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9jcHUvbG93bGV2ZWwuUyB8IDIzICsrKysrKysrKysrKysr
-KysrKysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgMjAgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMo
-LSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jcHUvbG93bGV2ZWwuUyBiL2FyY2gvYXJtL2NwdS9s
-b3dsZXZlbC5TCmluZGV4IGM2MTVkNWI1ODE2MC4uZTAwMGNkOGVhZTRjIDEwMDY0NAotLS0gYS9h
-cmNoL2FybS9jcHUvbG93bGV2ZWwuUworKysgYi9hcmNoL2FybS9jcHUvbG93bGV2ZWwuUwpAQCAt
-MTEsOSArMTEsMjYgQEAgRU5UUlkoYXJtX2NwdV9sb3dsZXZlbF9pbml0KQogCW9ycglyMTIsIHIx
-MiwgIzB4ZDMKIAltc3IJY3BzciwgcjEyCiAKLSNpZiBfX0xJTlVYX0FSTV9BUkNIX18gPj0gNwot
-CWlzYgotI2VsaWYgX19MSU5VWF9BUk1fQVJDSF9fID09IDYKKyNpZiBfX0xJTlVYX0FSTV9BUkNI
-X18gPj0gNgorCS8qCisJICogSUNJQUxMVTogSW52YWxpZGF0ZSBhbGwgaW5zdHJ1Y3Rpb24gY2Fj
-aGVzIHRvIFBvVSwKKwkgKiBpbmNsdWRlcyBmbHVzaGluZyBvZiBicmFuY2ggcHJlZGljdG9ycy4K
-KwkgKiBFdmVuIGlmIHRoZSBpLWNhY2hlIGlzIG9mZiBpdCBtaWdodCBjb250YWluIHN0YWxlIGVu
-dHJpZXMKKwkgKiB0aGF0IGFyZSBiZXR0ZXIgZGlzY2FyZGVkIGJlZm9yZSBlbmFibGluZyB0aGUg
-Y2FjaGUuCisJICogQXJjaGl0ZWN0dWFsbHkgdGhpcyBpcyBldmVuIHBvc3NpYmxlIGFmdGVyIGEg
-Y29sZCByZXNldC4KKwkgKi8KKwltY3IJcDE1LCAwLCByMTIsIGM3LCBjNSwgMAorCS8qIERTQiwg
-ZW5zdXJlIGNvbXBsZXRpb24gb2YgdGhlIGludmFsaWRhdGlvbiAqLworCW1jcglwMTUsIDAsIHIx
-MiwgYzcsIGMxMCwgNAorCS8qCisJICogSVNCLCBlbnN1cmUgaW5zdHJ1Y3Rpb24gZmV0Y2ggcGF0
-aCBpcyBpbiBzeW5jLgorCSAqIE5vdGUgdGhhdCB0aGUgQVJNIEFyY2hpdGVjdHVyZSBSZWZlcmVu
-Y2UgTWFudWFsLCBBUk12Ny1BIGFuZCBBUk12Ny1SCisJICogZWRpdGlvbiAoQVJNIERESSAwNDA2
-Qy5jKSBkb2Vzbid0IGRlZmluZSB0aGlzIGluc3RydWN0aW9uIGluIHRoZQorCSAqIEFSTXY2IHBh
-cnQgKEQxMi43LjEwKS4gSXQgb25seSBoYXM6ICJTdXBwb3J0IG9mIGFkZGl0aW9uYWwKKwkgKiBv
-cGVyYXRpb25zIGlzIElNUExFTUVOVEFUSU9OIERFRklORUQiLgorCSAqIEJ1dCBhbiBlYXJsaWVy
-IHZlcnNpb24gb2YgdGhlIEFSTUFSTSAoQVJNIERESSAwMTAwSSkgZG9lcyBkZWZpbmUgaXQKKwkg
-KiBhcyAiRmx1c2ggcHJlZmV0Y2ggYnVmZmVyIChQcmVmZXRjaEZsdXNoKSIuCisJICovCiAJbWNy
-CXAxNSwgMCwgcjEyLCBjNywgYzUsIDQKICNlbmRpZgogCi0tIAoyLjEuMwoKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+Ok, I'll change that.
+
+Best regards
+Victorien
+
+Le 19/12/2014 19:59, Uwe Kleine-K=F6nig a =E9crit :
+> Hallo,
+>
+> On Wed, Dec 17, 2014 at 05:09:57PM +0100, victorien wrote:
+>> ---
+>>   common/partitions/dos.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+>> index 37addfd..8a3c5c3 100644
+>> --- a/common/partitions/dos.c
+>> +++ b/common/partitions/dos.c
+>> @@ -209,7 +209,7 @@ static void dos_partition(void *buf, struct block_de=
+vice *blk,
+>>   			 * here as this is the easiest to parse and common
+>>   			 * enough.
+>>   			 */
+>> -			if (pentry.dos_partition_type =3D=3D 0x0f) {
+>> +			if ((pentry.dos_partition_type =3D=3D 0x0f)||(pentry.dos_partition_t=
+ype =3D=3D 0x05)) {
+> apart from what Sascha said, also add spaces around ||. Also break lines
+> at or before column 80 (with tabs accounting for 8 columns).
+>
+> Best regards
+> Uwe
+>
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
