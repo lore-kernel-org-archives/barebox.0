@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo6.mail-out.ovh.net ([87.98.171.146])
+Received: from 2.mo6.mail-out.ovh.net ([46.105.76.65])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y3U6J-0004PA-5t
+ id 1Y3U6J-0004PB-5w
  for barebox@lists.infradead.org; Tue, 23 Dec 2014 18:22:33 +0000
 Received: from mail179.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 95F79FFA69C
- for <barebox@lists.infradead.org>; Tue, 23 Dec 2014 19:22:06 +0100 (CET)
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 960F2FFA6A6
+ for <barebox@lists.infradead.org>; Tue, 23 Dec 2014 19:22:07 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 23 Dec 2014 19:21:50 +0100
-Message-Id: <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20141223170709.GA15818@ns203013.ovh.net>
+Date: Tue, 23 Dec 2014 19:21:51 +0100
+Message-Id: <1419358918-25569-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20141223170709.GA15818@ns203013.ovh.net>
+ <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,29 +25,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] kfifo: allow to pass a null point on kfifo_free
+Subject: [PATCH 2/9] efika-mx-smartbook: enable led hearbeat on mail
 To: barebox@lists.infradead.org
-
-as free allow to pass a NULL pointer
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- lib/kfifo.c | 2 ++
+ arch/arm/boards/efika-mx-smartbook/board.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/lib/kfifo.c b/lib/kfifo.c
-index 307dae1..601202d 100644
---- a/lib/kfifo.c
-+++ b/lib/kfifo.c
-@@ -70,6 +70,8 @@ struct kfifo *kfifo_alloc(unsigned int size)
-  */
- void kfifo_free(struct kfifo *fifo)
- {
-+	if (!fifo)
-+		return;
- 	free(fifo->buffer);
- 	free(fifo);
- }
+diff --git a/arch/arm/boards/efika-mx-smartbook/board.c b/arch/arm/boards/efika-mx-smartbook/board.c
+index 99efd66..4a38afd 100644
+--- a/arch/arm/boards/efika-mx-smartbook/board.c
++++ b/arch/arm/boards/efika-mx-smartbook/board.c
+@@ -246,6 +246,8 @@ static int efikamx_late_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(leds); i++)
+ 		led_gpio_register(&leds[i]);
+ 
++	led_set_trigger(LED_TRIGGER_HEARTBEAT, &leds[0].led);
++
+ 	writew(0x0, MX51_WDOG_BASE_ADDR + 0x8);
+ 
+ 	imx51_bbu_internal_mmc_register_handler("mmc", "/dev/mmc1",
 -- 
 2.1.3
 
