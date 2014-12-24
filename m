@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail2.eaton.com ([192.104.67.3] helo=ddcbw2.etn.com)
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y3mxZ-0000fb-AD
- for barebox@lists.infradead.org; Wed, 24 Dec 2014 14:30:45 +0000
-Received: from SIMTCSGWY02.napa.ad.etn.com (simtcsgwy02.napa.ad.etn.com
- [151.110.126.185])
- (using TLSv1 with cipher AES256-SHA (256/256 bits))
- (No client certificate requested)
- by ddcbw2.etn.com (Eaton Corp) with ESMTPS id 1FB3EB6E479D22E9
- for <barebox@lists.infradead.org>; Wed, 24 Dec 2014 09:30:23 -0500 (EST)
-From: <ManuelCurcio@Eaton.com>
-Date: Wed, 24 Dec 2014 14:30:21 +0000
-Message-ID: <1419435020.3502.27.camel@eaton.com>
-Content-Language: en-US
-Content-ID: <FEF742C77D28E0439F7BA38C73AE7B3E@Eaton.com>
-MIME-Version: 1.0
+ id 1Y3umj-0004C9-K3
+ for barebox@lists.infradead.org; Wed, 24 Dec 2014 22:52:06 +0000
+Received: by mail-la0-f50.google.com with SMTP id pn19so7484934lab.37
+ for <barebox@lists.infradead.org>; Wed, 24 Dec 2014 14:51:42 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 25 Dec 2014 01:53:42 +0300
+Message-Id: <1419461623-16349-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,69 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: ManuelCurcio@Eaton.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Beagleboard: crash during the boot time
+Subject: [PATCH 1/2] Documentation: add Raspberry Pi barebox mini-howto
 To: barebox@lists.infradead.org
 
-77u/SGksDQoNCkkgdHJ5IHRvIHJ1biBiYXJlYm94IG9uIHRoZSBiZWFnbGVib2FyZCB3aXRoIHRo
-ZSBkZWZhdWx0IGNvbmZpZ3VyYXRpb24NCihhbTMzNXhfZGVmY29uZmlnICYgYW0zMzV4X21sb19k
-ZWZjb25maWcpLCBob3dldmVyIHRoZSBib2FyZCBjcmFzaGVzDQp3aXRoIHRoZSBmb2xsb3dpbmcg
-dHJhY2UgOiANCg0KDQpiYXJlYm94IDIwMTQuMTIuMC0wMDExNy1nNjMxYmU4ZSAjNjEgV2VkIERl
-YyAyNCAxNDo1ODowOSBHTVQgMjAxNA0KDQoNCkJvYXJkOiBUSSBBTTMzNXggQmVhZ2xlQm9uZQ0K
-ZGV0ZWN0ZWQgJ0JlYWdsZUJvbmUgV2hpdGUnDQpvbWFwLWhzbW1jIDQ4MDYwMDAwLm1tYzogcmVn
-aXN0ZXJlZCBhcyA0ODA2MDAwMC5tbWMNCmJvb3RpbmcgZnJvbSBNTUMNCm1tYzA6IGRldGVjdGVk
-IFNEIGNhcmQgdmVyc2lvbiAyLjANCm1tYzA6IHJlZ2lzdGVyZWQgbW1jMA0KDQoNCmJhcmVib3gg
-MjAxNC4xMi4wLTAwMTE3LWc2MzFiZThlICM2MCBXZWQgRGVjIDI0IDE0OjU4OjAyIEdNVCAyMDE0
-DQoNCg0KQm9hcmQ6IFRJIEFNMzM1eCBCZWFnbGVCb25lDQpkZXRlY3RlZCAnQmVhZ2xlQm9uZSBX
-aGl0ZScNCmNwc3cgNGExMDAwMDAuZXRoZXJuZXQ6IGRldGVjdGVkIHBoeSBtYXNrIDB4MQ0KbWRp
-b19idXM6IG1paWJ1czA6IHByb2JlZA0KZXRoMDogZ290IHByZXNldCBNQUMgYWRkcmVzczogMDA6
-MTg6MzE6OGU6NjE6NzENCmNwc3cgNGExMDAwMDAuZXRoZXJuZXQ6IHByb2JlIGZhaWxlZDogSS9P
-IGVycm9yDQp1bmFibGUgdG8gaGFuZGxlIHBhZ2luZyByZXF1ZXN0IGF0IGFkZHJlc3MgMHg2ZTZm
-NjJmMg0KcGMgOiBbPDhmZTJlMjllPl0gICAgbHIgOiBbPDhmZTA3NjRkPl0NCnNwIDogOGZmZmZl
-NjggIGlwIDogODdmMWYwNjggIGZwIDogOGZlNjJhNDANCnIxMDogODdmMWYwNDAgIHI5IDogODdm
-MTIwNzggIHI4IDogODdmMWYwZmMNCnI3IDogZmZmZmZmZmYgIHI2IDogODdmMWYwNjggIHI1IDog
-OGZlNjJhNDAgIHI0IDogNmU2ZjYyZjINCnIzIDogMDAwMDAwMDAgIHIyIDogMDAwMDAwMDAgIHIx
-IDogODdmMWYwNjggIHIwIDogNmU2ZjYyZjINCkZsYWdzOiBuWkNWICBJUlFzIG9mZiAgRklRcyBv
-biAgTW9kZSBTVkNfMzINCls8OGZlMmUyOWU+XSAoc3RyY21wKzB4Yy8weDFhKSBmcm9tIFs8OGZl
-MDc2NGQ+XSAoZ2V0X2RldmljZV9ieV9uYW1lX2lkDQorMHgxOS8weDM4KQ0KWzw4ZmUwNzY0ZD5d
-IChnZXRfZGV2aWNlX2J5X25hbWVfaWQrMHgxOS8weDM4KSBmcm9tIFs8OGZlMDc5Njc+XQ0KKHJl
-Z2lzdGVyX2RldmljZSsweDE3LzB4Y2MpDQpbPDhmZTA3OTY3Pl0gKHJlZ2lzdGVyX2RldmljZSsw
-eDE3LzB4Y2MpIGZyb20gWzw4ZmUyNWQ2Zj5dDQoob2ZfcGxhdGZvcm1fZGV2aWNlX2NyZWF0ZSsw
-eDE4My8weDFiMCkNCls8OGZlMjVkNmY+XSAob2ZfcGxhdGZvcm1fZGV2aWNlX2NyZWF0ZSsweDE4
-My8weDFiMCkgZnJvbSBbPDhmZTI1ZGM3Pl0NCihvZl9wbGF0Zm9ybV9idXNfY3JlYXRlKzB4MmIv
-MHg2OCkNCls8OGZlMjVkYzc+XSAob2ZfcGxhdGZvcm1fYnVzX2NyZWF0ZSsweDJiLzB4NjgpIGZy
-b20gWzw4ZmUyNWU0Zj5dDQoob2ZfcGxhdGZvcm1fcG9wdWxhdGUrMHgyMy8weDQwKQ0KWzw4ZmUy
-NWU0Zj5dIChvZl9wbGF0Zm9ybV9wb3B1bGF0ZSsweDIzLzB4NDApIGZyb20gWzw4ZmUwN2E5Zj5d
-DQoocGxhdGZvcm1fcHJvYmUrMHg5LzB4YSkNCls8OGZlMDdhOWY+XSAocGxhdGZvcm1fcHJvYmUr
-MHg5LzB4YSkgZnJvbSBbPDhmZTA3Njk1Pl0gKGRldmljZV9wcm9iZQ0KKzB4MTEvMHg0NCkNCls8
-OGZlMDc2OTU+XSAoZGV2aWNlX3Byb2JlKzB4MTEvMHg0NCkgZnJvbSBbPDhmZTA3NmVkPl0gKG1h
-dGNoLnBhcnQuMQ0KKzB4MjUvMHgyYSkNCls8OGZlMDc2ZWQ+XSAobWF0Y2gucGFydC4xKzB4MjUv
-MHgyYSkgZnJvbSBbPDhmZTA3N2Y5Pl0gKHJlZ2lzdGVyX2RyaXZlcg0KKzB4NGQvMHg3NCkNCls8
-OGZlMDc3Zjk+XSAocmVnaXN0ZXJfZHJpdmVyKzB4NGQvMHg3NCkgZnJvbSBbPDhmZTAwODBiPl0N
-CihzdGFydF9iYXJlYm94KzB4MTcvMHhiYykNCls8OGZlMDA4MGI+XSAoc3RhcnRfYmFyZWJveCsw
-eDE3LzB4YmMpIGZyb20gWzw4ZmUzY2QwMz5dIChfX3N0YXJ0DQorMHhhNy8weGJjKQ0KWzw4ZmUz
-Y2QwMz5dIChfX3N0YXJ0KzB4YTcvMHhiYykgZnJvbSBbPDhmZTAwMDA1Pl0gKF9fYmFyZV9pbml0
-X3N0YXJ0DQorMHgxLzB4YykNCg0KWzw4ZmUzYzcyOT5dICh1bndpbmRfYmFja3RyYWNlKzB4MS8w
-eDU4KSBmcm9tIFs8OGZlMmVkNGQ+XSAocGFuaWMNCisweDFkLzB4MzQpDQpbPDhmZTJlZDRkPl0g
-KHBhbmljKzB4MWQvMHgzNCkgZnJvbSBbPDhmZTNjYmMxPl0gKGRvX2V4Y2VwdGlvbisweGQvMHgx
-MCkNCls8OGZlM2NiYzE+XSAoZG9fZXhjZXB0aW9uKzB4ZC8weDEwKSBmcm9tIFs8OGZlM2NjMjk+
-XSAoZG9fZGF0YV9hYm9ydA0KKzB4MjEvMHgyYykNCls8OGZlM2NjMjk+XSAoZG9fZGF0YV9hYm9y
-dCsweDIxLzB4MmMpIGZyb20gWzw4ZmUzYzhlOD5dIChkYXRhX2Fib3J0DQorMHg0OC8weDYwKQ0K
-DQoNCklmIEkgcmVtb3ZlIHRoZSBldGhlcm5ldCBkcml2ZXIgb2YgdGhlIGNvbmZpZ3VyYXRpb24s
-IGJhcmVib3ggZG9lc24ndA0KY3Jhc2guIA0KU29tZSBvbmUga25vd3MgdGhpcyBpc3N1ZSA/IFNv
-bWUgb25lIGhhdmUgYSBzb2x1dGlvbiBvciBjYW4gaGVscCBtZSB0bw0KZmluZCBhIHNvbHV0aW9u
-ICA/DQoNClRoYW5rcyB5b3UgISAmIE1lcnJ5IENocmlzdG1hcyAhDQoNCkJlc3QgcmVnYXJkcw0K
-DQpNYW51ZWwgDQoNCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCkVhdG9uIEluZHVz
-dHJpZXMgKEZyYW5jZSkgUy5BLlMgfiBTacOoZ2Ugc29jaWFsOiAxMTAgUnVlIEJsYWlzZSBQYXNj
-YWwsIEltbWV1YmxlIExlIFZpc8OpbyAtIELDonRpbWVudCBBIElubm92YWxsw6llLCAzODMzMCwg
-TW9udGJvbm5vdC1TdC4tTWFydGluLCBGcmFuY2UgfiBMaWV1IGQnZW5yZWdpc3RyZW1lbnQgYXUg
-cmVnaXN0cmUgZHUgY29tbWVyY2U6IEdyZW5vYmxlIH4gTnVtw6lybyBkJ2VucmVnaXN0cmVtZW50
-OiA1MDkgNjUzIDE3NiB+IENhcGl0YWwgc29jaWFsIHNvdXNjcml0IGV0IGxpYmVyw6k64oKsIDE2
-MjE1NDQxIH4gTnVtw6lybyBkZSBUVkE6IEZSNDc1MDk2NTMxNzYNCg0KLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0NCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ Documentation/boards/bcm2835.rst | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+ create mode 100644 Documentation/boards/bcm2835.rst
+
+diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
+new file mode 100644
+index 0000000..13cebb0
+--- /dev/null
++++ b/Documentation/boards/bcm2835.rst
+@@ -0,0 +1,17 @@
++Broadcom BCM2835
++================
++
++Raspberry Pi
++------------
++
++  1. Prepare a card with a FAT filesystem. Download a tiny NOOBS LITE
++     zip archive and unpack it into FAT partition.
++     See http://www.raspberrypi.org/help/noobs-setup/ for details.
++
++  2. Compile ``barebox.bin`` image (use ``rpi_defconfig``).
++     Copy it to the SD/microSD card and name it ``recovery.img``.
++
++  3. Connect to board's UART (115200 8N1);
++     Use PIN6 (GND), PIN8 (UART_TX), PIN10 (UART_RX) pins.
++
++  4. Turn board's power on.
+-- 
+2.1.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
