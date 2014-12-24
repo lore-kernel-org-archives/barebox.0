@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y3dUP-0001VE-1y
- for barebox@lists.infradead.org; Wed, 24 Dec 2014 04:24:01 +0000
+ id 1Y3dUP-0001VG-1x
+ for barebox@lists.infradead.org; Wed, 24 Dec 2014 04:24:02 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
- sBO4NijC027096
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
+ sBO4NiEv014266
  for <barebox@lists.infradead.org>; Wed, 24 Dec 2014 13:23:44 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili17) with ESMTP id sBO4NiA10304
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili17) with ESMTP id sBO4NiA10331
  for <barebox@lists.infradead.org>; Wed, 24 Dec 2014 13:23:44 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Wed, 24 Dec 2014 13:23:26 +0900
-Message-Id: <1419395007-31582-2-git-send-email-yamada.m@jp.panasonic.com>
+Date: Wed, 24 Dec 2014 13:23:27 +0900
+Message-Id: <1419395007-31582-3-git-send-email-yamada.m@jp.panasonic.com>
 In-Reply-To: <1419395007-31582-1-git-send-email-yamada.m@jp.panasonic.com>
 References: <1419395007-31582-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,57 +28,315 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] kbuild: add ./Kbuild file to fix "make clean"
+Subject: [PATCH 2/2] kbuild: move asm-offsets.h rule to ./Kbuild
 To: barebox@lists.infradead.org
 
-"make clean/mrproper/distclean" has not been working correctly.
+Currently, MIPS is the only architecture that needs
+include/generated/asm-offsets.h, but we have got ./Kbuild file now.
 
-When "make clean" is run, Kbuild descends into the directories
-that are listed in "clean-dirs" variable, which includes $(srctree).
+It is a good reason to move asm-offsets.h rule from arch/mips/Makefile
+to ./Kbuild and add dummy asm-offsets.c for the other architectures.
+asm-offsets.h would be useful for all the architectures.
 
-It intends descending into "./Kbuild", not "./Makefile".
-(Note "Kbuild" takes precedence over "Makefile" in each directory.)
-
-If Kbuild descends into "./Makefile", Kconfig is invoked via
-"make silentoldconfig", which is not our intention.
-
-Let's add "Kbuild" file at the top directory like Linux.
-
-Update TODO list too.
+This commit does not implement include/generated/bounds.h,
+but if necessary, it is easy to implement it.
 
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
- Kbuild | 2 ++
- TODO   | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
- create mode 100644 Kbuild
+ Kbuild                          | 45 +++++++++++++++++++++++++++++++++++++++--
+ arch/arm/lib/asm-offsets.c      | 16 +++++++++++++++
+ arch/blackfin/lib/asm-offsets.c | 12 +++++++++++
+ arch/efi/lib/asm-offsets.c      | 12 +++++++++++
+ arch/mips/Makefile              | 43 ---------------------------------------
+ arch/nios2/lib/asm-offset.c     | 22 ++++++++++++++++++++
+ arch/openrisc/lib/asm-offsets.c | 18 +++++++++++++++++
+ arch/ppc/lib/asm-offsets.c      | 21 +++++++++++++++++++
+ arch/sandbox/lib/asm-offsets.c  | 12 +++++++++++
+ arch/x86/lib/asm-offsets.c      | 11 ++++++++++
+ 10 files changed, 167 insertions(+), 45 deletions(-)
+ create mode 100644 arch/arm/lib/asm-offsets.c
+ create mode 100644 arch/blackfin/lib/asm-offsets.c
+ create mode 100644 arch/efi/lib/asm-offsets.c
+ create mode 100644 arch/nios2/lib/asm-offset.c
+ create mode 100644 arch/openrisc/lib/asm-offsets.c
+ create mode 100644 arch/ppc/lib/asm-offsets.c
+ create mode 100644 arch/sandbox/lib/asm-offsets.c
+ create mode 100644 arch/x86/lib/asm-offsets.c
 
 diff --git a/Kbuild b/Kbuild
-new file mode 100644
-index 0000000..0c3f408
---- /dev/null
+index 0c3f408..3296096 100644
+--- a/Kbuild
 +++ b/Kbuild
-@@ -0,0 +1,2 @@
-+# This does nothing, but some (dummy) comments here.
-+# If this file gets empty, it is removed by "make distclean".
-diff --git a/TODO b/TODO
-index 6350799..8527e57 100644
---- a/TODO
-+++ b/TODO
-@@ -4,7 +4,6 @@ TODO
- [ ] ask jbe about:
-     ./commands/Makefile:40:obj-$(CONFIG_SIMPLE_PARSER)      += setenv.o
- [ ] bark on partition not ending on flash sector boundaries
--[ ] distclean doesn't work without a config
- [ ] Every driver should have a remove function.
-     (It must have. Currently there is no provision to given to remove my
-     interrupt handlers and to reset all hardware in use, before the target
-@@ -108,3 +107,4 @@ DONE
-     countdown -m msg -t timeout -x [ctrl-c|anykey|string]
-     If done, remove the corresponding stuff from common/main.c
- [X] Board support should go to arch/*/boards/*
-+[X] distclean doesn't work without a config
+@@ -1,2 +1,43 @@
+-# This does nothing, but some (dummy) comments here.
+-# If this file gets empty, it is removed by "make distclean".
++#####
++# 1) Generate asm-offsets.h
++#
++
++offsets-file := include/generated/asm-offsets.h
++
++always  += $(offsets-file)
++targets += $(offsets-file)
++targets += arch/$(SRCARCH)/lib/asm-offsets.s
++
++
++# Default sed regexp - multiline due to syntax constraints
++define sed-y
++	"/^->/{s:->#\(.*\):/* \1 */:; \
++	s:^->\([^ ]*\) [\$$#]*\([-0-9]*\) \(.*\):#define \1 \2 /* \3 */:; \
++	s:^->\([^ ]*\) [\$$#]*\([^ ]*\) \(.*\):#define \1 \2 /* \3 */:; \
++	s:->::; p;}"
++endef
++
++quiet_cmd_offsets = GEN     $@
++define cmd_offsets
++	(set -e; \
++	 echo "#ifndef __ASM_OFFSETS_H__"; \
++	 echo "#define __ASM_OFFSETS_H__"; \
++	 echo "/*"; \
++	 echo " * DO NOT MODIFY."; \
++	 echo " *"; \
++	 echo " * This file was generated by Kbuild"; \
++	 echo " *"; \
++	 echo " */"; \
++	 echo ""; \
++	 sed -ne $(sed-y) $<; \
++	 echo ""; \
++	 echo "#endif" ) > $@
++endef
++
++# We use internal kbuild rules to avoid the "is up to date" message from make
++arch/$(SRCARCH)/lib/asm-offsets.s: arch/$(SRCARCH)/lib/asm-offsets.c FORCE
++	$(Q)mkdir -p $(dir $@)
++	$(call if_changed_dep,cc_s_c)
++
++$(obj)/$(offsets-file): arch/$(SRCARCH)/lib/asm-offsets.s Kbuild
++	$(call cmd,offsets)
+diff --git a/arch/arm/lib/asm-offsets.c b/arch/arm/lib/asm-offsets.c
+new file mode 100644
+index 0000000..7bf6d12
+--- /dev/null
++++ b/arch/arm/lib/asm-offsets.c
+@@ -0,0 +1,16 @@
++/*
++ * Generate definitions needed by assembly language modules.
++ * This code generates raw asm output which is post-processed to extract
++ * and format the required data.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/kbuild.h>
++
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/blackfin/lib/asm-offsets.c b/arch/blackfin/lib/asm-offsets.c
+new file mode 100644
+index 0000000..9003c73
+--- /dev/null
++++ b/arch/blackfin/lib/asm-offsets.c
+@@ -0,0 +1,12 @@
++/*
++ * generate definitions needed by assembly language modules
++ *
++ * Licensed under the GPL-2 or later
++ */
++
++#include <linux/kbuild.h>
++
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/efi/lib/asm-offsets.c b/arch/efi/lib/asm-offsets.c
+new file mode 100644
+index 0000000..22f382b
+--- /dev/null
++++ b/arch/efi/lib/asm-offsets.c
+@@ -0,0 +1,12 @@
++/*
++ * Generate definitions needed by assembly language modules.
++ * This code generates raw asm output which is post-processed to extract
++ * and format the required data.
++ */
++
++#include <linux/kbuild.h>
++
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index f3f4f67..6ef2bf7 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -148,46 +148,3 @@ dts := arch/mips/dts
+ 	$(Q)$(MAKE) $(build)=$(dts) $(dts)/$@
+ 
+ KBUILD_IMAGE ?= $(KBUILD_BINARY)
+-
+-#####
+-# Generate asm-offsets.h
+-#
+-
+-offsets-file := include/generated/asm-offsets.h
+-
+-always  += $(offsets-file)
+-targets += $(offsets-file)
+-targets += arch/$(SRCARCH)/lib/asm-offsets.s
+-
+-# Default sed regexp - multiline due to syntax constraints
+-define sed-y
+-	"/^->/{s:->#\(.*\):/* \1 */:; \
+-	s:^->\([^ ]*\) [\$$#]*\([-0-9]*\) \(.*\):#define \1 \2 /* \3 */:; \
+-	s:^->\([^ ]*\) [\$$#]*\([^ ]*\) \(.*\):#define \1 \2 /* \3 */:; \
+-	s:->::; p;}"
+-endef
+-
+-quiet_cmd_offsets = GEN     $@
+-define cmd_offsets
+-	(set -e; \
+-	 echo "#ifndef __ASM_OFFSETS_H__"; \
+-	 echo "#define __ASM_OFFSETS_H__"; \
+-	 echo "/*"; \
+-	 echo " * DO NOT MODIFY."; \
+-	 echo " *"; \
+-	 echo " * This file was generated by Kbuild"; \
+-	 echo " *"; \
+-	 echo " */"; \
+-	 echo ""; \
+-	 sed -ne $(sed-y) $<; \
+-	 echo ""; \
+-	 echo "#endif" ) > $@
+-endef
+-
+-# We use internal kbuild rules to avoid the "is up to date" message from make
+-arch/$(SRCARCH)/lib/asm-offsets.s: arch/$(SRCARCH)/lib/asm-offsets.c FORCE
+-	$(Q)mkdir -p $(dir $@)
+-	$(call if_changed_dep,cc_s_c)
+-
+-$(obj)/$(offsets-file): arch/$(SRCARCH)/lib/asm-offsets.s Makefile
+-	$(call cmd,offsets)
+diff --git a/arch/nios2/lib/asm-offset.c b/arch/nios2/lib/asm-offset.c
+new file mode 100644
+index 0000000..21e4771
+--- /dev/null
++++ b/arch/nios2/lib/asm-offset.c
+@@ -0,0 +1,22 @@
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#include <linux/kbuild.h>
++
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/openrisc/lib/asm-offsets.c b/arch/openrisc/lib/asm-offsets.c
+new file mode 100644
+index 0000000..8cee8e0
+--- /dev/null
++++ b/arch/openrisc/lib/asm-offsets.c
+@@ -0,0 +1,18 @@
++/*
++ * OpenRISC asm-offsets.c
++ *
++ * This program is used to generate definitions needed by
++ * assembly language modules.
++ *
++ * We use the technique used in the OSF Mach kernel code:
++ * generate asm statements containing #defines,
++ * compile this file to assembler, and then extract the
++ * #defines from the assembly-language output.
++ */
++
++#include <linux/kbuild.h>
++
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/ppc/lib/asm-offsets.c b/arch/ppc/lib/asm-offsets.c
+new file mode 100644
+index 0000000..bef280e
+--- /dev/null
++++ b/arch/ppc/lib/asm-offsets.c
+@@ -0,0 +1,21 @@
++/*
++ * This program is used to generate definitions needed by
++ * assembly language modules.
++ *
++ * We use the technique used in the OSF Mach kernel code:
++ * generate asm statements containing #defines,
++ * compile this file to assembler, and then extract the
++ * #defines from the assembly-language output.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version
++ * 2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/kbuild.h>
++
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/sandbox/lib/asm-offsets.c b/arch/sandbox/lib/asm-offsets.c
+new file mode 100644
+index 0000000..22f382b
+--- /dev/null
++++ b/arch/sandbox/lib/asm-offsets.c
+@@ -0,0 +1,12 @@
++/*
++ * Generate definitions needed by assembly language modules.
++ * This code generates raw asm output which is post-processed to extract
++ * and format the required data.
++ */
++
++#include <linux/kbuild.h>
++
++int main(void)
++{
++	return 0;
++}
+diff --git a/arch/x86/lib/asm-offsets.c b/arch/x86/lib/asm-offsets.c
+new file mode 100644
+index 0000000..b1be3e5
+--- /dev/null
++++ b/arch/x86/lib/asm-offsets.c
+@@ -0,0 +1,11 @@
++/*
++ * Generate definitions needed by assembly language modules.
++ * This code generates raw asm output which is post-processed to extract
++ * and format the required data.
++ */
++
++#include <linux/kbuild.h>
++
++void common(void)
++{
++}
 -- 
 1.9.1
 
