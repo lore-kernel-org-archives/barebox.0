@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.mei.co.jp ([133.183.100.20])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y3dgN-0006NP-Gs
- for barebox@lists.infradead.org; Wed, 24 Dec 2014 04:36:24 +0000
-From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Wed, 24 Dec 2014 13:35:55 +0900
-Message-Id: <1419395755-2773-1-git-send-email-yamada.m@jp.panasonic.com>
+Received: from mail2.eaton.com ([192.104.67.3] helo=ddcbw2.etn.com)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y3mxZ-0000fb-AD
+ for barebox@lists.infradead.org; Wed, 24 Dec 2014 14:30:45 +0000
+Received: from SIMTCSGWY02.napa.ad.etn.com (simtcsgwy02.napa.ad.etn.com
+ [151.110.126.185])
+ (using TLSv1 with cipher AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by ddcbw2.etn.com (Eaton Corp) with ESMTPS id 1FB3EB6E479D22E9
+ for <barebox@lists.infradead.org>; Wed, 24 Dec 2014 09:30:23 -0500 (EST)
+From: <ManuelCurcio@Eaton.com>
+Date: Wed, 24 Dec 2014 14:30:21 +0000
+Message-ID: <1419435020.3502.27.camel@eaton.com>
+Content-Language: en-US
+Content-ID: <FEF742C77D28E0439F7BA38C73AE7B3E@Eaton.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +23,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: ManuelCurcio@Eaton.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] kbuild: create a build directory automatically for
- out-of-tree build
+Subject: Beagleboard: crash during the boot time
 To: barebox@lists.infradead.org
-Cc: Michal Marek <mmarek@suse.cz>
 
-Kbuild supports saving output files in a separate directory.
-But the build directory must be created beforehand. For example,
-
-  $ mkdir -p dir/to/store/output/files
-  $ make O=dir/to/store/output/files defconfig
-
-Creating a build directory automatically would be useful.
-
-[ imported from Linux Kernel, commit 1c9e70a55b08 ]
-Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Michal Marek <mmarek@suse.cz>
----
-
- Makefile | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 5676b29..92889b3 100644
---- a/Makefile
-+++ b/Makefile
-@@ -112,9 +112,10 @@ ifneq ($(KBUILD_OUTPUT),)
- # Invoke a second make in the output directory, passing relevant variables
- # check that the output directory actually exists
- saved-output := $(KBUILD_OUTPUT)
--KBUILD_OUTPUT := $(shell cd $(KBUILD_OUTPUT) && /bin/pwd)
-+KBUILD_OUTPUT := $(shell mkdir -p $(KBUILD_OUTPUT) && cd $(KBUILD_OUTPUT) \
-+								&& /bin/pwd)
- $(if $(KBUILD_OUTPUT),, \
--     $(error output directory "$(saved-output)" does not exist))
-+     $(error failed to create output directory "$(saved-output)"))
- 
- PHONY += $(MAKECMDGOALS)
- 
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+77u/SGksDQoNCkkgdHJ5IHRvIHJ1biBiYXJlYm94IG9uIHRoZSBiZWFnbGVib2FyZCB3aXRoIHRo
+ZSBkZWZhdWx0IGNvbmZpZ3VyYXRpb24NCihhbTMzNXhfZGVmY29uZmlnICYgYW0zMzV4X21sb19k
+ZWZjb25maWcpLCBob3dldmVyIHRoZSBib2FyZCBjcmFzaGVzDQp3aXRoIHRoZSBmb2xsb3dpbmcg
+dHJhY2UgOiANCg0KDQpiYXJlYm94IDIwMTQuMTIuMC0wMDExNy1nNjMxYmU4ZSAjNjEgV2VkIERl
+YyAyNCAxNDo1ODowOSBHTVQgMjAxNA0KDQoNCkJvYXJkOiBUSSBBTTMzNXggQmVhZ2xlQm9uZQ0K
+ZGV0ZWN0ZWQgJ0JlYWdsZUJvbmUgV2hpdGUnDQpvbWFwLWhzbW1jIDQ4MDYwMDAwLm1tYzogcmVn
+aXN0ZXJlZCBhcyA0ODA2MDAwMC5tbWMNCmJvb3RpbmcgZnJvbSBNTUMNCm1tYzA6IGRldGVjdGVk
+IFNEIGNhcmQgdmVyc2lvbiAyLjANCm1tYzA6IHJlZ2lzdGVyZWQgbW1jMA0KDQoNCmJhcmVib3gg
+MjAxNC4xMi4wLTAwMTE3LWc2MzFiZThlICM2MCBXZWQgRGVjIDI0IDE0OjU4OjAyIEdNVCAyMDE0
+DQoNCg0KQm9hcmQ6IFRJIEFNMzM1eCBCZWFnbGVCb25lDQpkZXRlY3RlZCAnQmVhZ2xlQm9uZSBX
+aGl0ZScNCmNwc3cgNGExMDAwMDAuZXRoZXJuZXQ6IGRldGVjdGVkIHBoeSBtYXNrIDB4MQ0KbWRp
+b19idXM6IG1paWJ1czA6IHByb2JlZA0KZXRoMDogZ290IHByZXNldCBNQUMgYWRkcmVzczogMDA6
+MTg6MzE6OGU6NjE6NzENCmNwc3cgNGExMDAwMDAuZXRoZXJuZXQ6IHByb2JlIGZhaWxlZDogSS9P
+IGVycm9yDQp1bmFibGUgdG8gaGFuZGxlIHBhZ2luZyByZXF1ZXN0IGF0IGFkZHJlc3MgMHg2ZTZm
+NjJmMg0KcGMgOiBbPDhmZTJlMjllPl0gICAgbHIgOiBbPDhmZTA3NjRkPl0NCnNwIDogOGZmZmZl
+NjggIGlwIDogODdmMWYwNjggIGZwIDogOGZlNjJhNDANCnIxMDogODdmMWYwNDAgIHI5IDogODdm
+MTIwNzggIHI4IDogODdmMWYwZmMNCnI3IDogZmZmZmZmZmYgIHI2IDogODdmMWYwNjggIHI1IDog
+OGZlNjJhNDAgIHI0IDogNmU2ZjYyZjINCnIzIDogMDAwMDAwMDAgIHIyIDogMDAwMDAwMDAgIHIx
+IDogODdmMWYwNjggIHIwIDogNmU2ZjYyZjINCkZsYWdzOiBuWkNWICBJUlFzIG9mZiAgRklRcyBv
+biAgTW9kZSBTVkNfMzINCls8OGZlMmUyOWU+XSAoc3RyY21wKzB4Yy8weDFhKSBmcm9tIFs8OGZl
+MDc2NGQ+XSAoZ2V0X2RldmljZV9ieV9uYW1lX2lkDQorMHgxOS8weDM4KQ0KWzw4ZmUwNzY0ZD5d
+IChnZXRfZGV2aWNlX2J5X25hbWVfaWQrMHgxOS8weDM4KSBmcm9tIFs8OGZlMDc5Njc+XQ0KKHJl
+Z2lzdGVyX2RldmljZSsweDE3LzB4Y2MpDQpbPDhmZTA3OTY3Pl0gKHJlZ2lzdGVyX2RldmljZSsw
+eDE3LzB4Y2MpIGZyb20gWzw4ZmUyNWQ2Zj5dDQoob2ZfcGxhdGZvcm1fZGV2aWNlX2NyZWF0ZSsw
+eDE4My8weDFiMCkNCls8OGZlMjVkNmY+XSAob2ZfcGxhdGZvcm1fZGV2aWNlX2NyZWF0ZSsweDE4
+My8weDFiMCkgZnJvbSBbPDhmZTI1ZGM3Pl0NCihvZl9wbGF0Zm9ybV9idXNfY3JlYXRlKzB4MmIv
+MHg2OCkNCls8OGZlMjVkYzc+XSAob2ZfcGxhdGZvcm1fYnVzX2NyZWF0ZSsweDJiLzB4NjgpIGZy
+b20gWzw4ZmUyNWU0Zj5dDQoob2ZfcGxhdGZvcm1fcG9wdWxhdGUrMHgyMy8weDQwKQ0KWzw4ZmUy
+NWU0Zj5dIChvZl9wbGF0Zm9ybV9wb3B1bGF0ZSsweDIzLzB4NDApIGZyb20gWzw4ZmUwN2E5Zj5d
+DQoocGxhdGZvcm1fcHJvYmUrMHg5LzB4YSkNCls8OGZlMDdhOWY+XSAocGxhdGZvcm1fcHJvYmUr
+MHg5LzB4YSkgZnJvbSBbPDhmZTA3Njk1Pl0gKGRldmljZV9wcm9iZQ0KKzB4MTEvMHg0NCkNCls8
+OGZlMDc2OTU+XSAoZGV2aWNlX3Byb2JlKzB4MTEvMHg0NCkgZnJvbSBbPDhmZTA3NmVkPl0gKG1h
+dGNoLnBhcnQuMQ0KKzB4MjUvMHgyYSkNCls8OGZlMDc2ZWQ+XSAobWF0Y2gucGFydC4xKzB4MjUv
+MHgyYSkgZnJvbSBbPDhmZTA3N2Y5Pl0gKHJlZ2lzdGVyX2RyaXZlcg0KKzB4NGQvMHg3NCkNCls8
+OGZlMDc3Zjk+XSAocmVnaXN0ZXJfZHJpdmVyKzB4NGQvMHg3NCkgZnJvbSBbPDhmZTAwODBiPl0N
+CihzdGFydF9iYXJlYm94KzB4MTcvMHhiYykNCls8OGZlMDA4MGI+XSAoc3RhcnRfYmFyZWJveCsw
+eDE3LzB4YmMpIGZyb20gWzw4ZmUzY2QwMz5dIChfX3N0YXJ0DQorMHhhNy8weGJjKQ0KWzw4ZmUz
+Y2QwMz5dIChfX3N0YXJ0KzB4YTcvMHhiYykgZnJvbSBbPDhmZTAwMDA1Pl0gKF9fYmFyZV9pbml0
+X3N0YXJ0DQorMHgxLzB4YykNCg0KWzw4ZmUzYzcyOT5dICh1bndpbmRfYmFja3RyYWNlKzB4MS8w
+eDU4KSBmcm9tIFs8OGZlMmVkNGQ+XSAocGFuaWMNCisweDFkLzB4MzQpDQpbPDhmZTJlZDRkPl0g
+KHBhbmljKzB4MWQvMHgzNCkgZnJvbSBbPDhmZTNjYmMxPl0gKGRvX2V4Y2VwdGlvbisweGQvMHgx
+MCkNCls8OGZlM2NiYzE+XSAoZG9fZXhjZXB0aW9uKzB4ZC8weDEwKSBmcm9tIFs8OGZlM2NjMjk+
+XSAoZG9fZGF0YV9hYm9ydA0KKzB4MjEvMHgyYykNCls8OGZlM2NjMjk+XSAoZG9fZGF0YV9hYm9y
+dCsweDIxLzB4MmMpIGZyb20gWzw4ZmUzYzhlOD5dIChkYXRhX2Fib3J0DQorMHg0OC8weDYwKQ0K
+DQoNCklmIEkgcmVtb3ZlIHRoZSBldGhlcm5ldCBkcml2ZXIgb2YgdGhlIGNvbmZpZ3VyYXRpb24s
+IGJhcmVib3ggZG9lc24ndA0KY3Jhc2guIA0KU29tZSBvbmUga25vd3MgdGhpcyBpc3N1ZSA/IFNv
+bWUgb25lIGhhdmUgYSBzb2x1dGlvbiBvciBjYW4gaGVscCBtZSB0bw0KZmluZCBhIHNvbHV0aW9u
+ICA/DQoNClRoYW5rcyB5b3UgISAmIE1lcnJ5IENocmlzdG1hcyAhDQoNCkJlc3QgcmVnYXJkcw0K
+DQpNYW51ZWwgDQoNCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCkVhdG9uIEluZHVz
+dHJpZXMgKEZyYW5jZSkgUy5BLlMgfiBTacOoZ2Ugc29jaWFsOiAxMTAgUnVlIEJsYWlzZSBQYXNj
+YWwsIEltbWV1YmxlIExlIFZpc8OpbyAtIELDonRpbWVudCBBIElubm92YWxsw6llLCAzODMzMCwg
+TW9udGJvbm5vdC1TdC4tTWFydGluLCBGcmFuY2UgfiBMaWV1IGQnZW5yZWdpc3RyZW1lbnQgYXUg
+cmVnaXN0cmUgZHUgY29tbWVyY2U6IEdyZW5vYmxlIH4gTnVtw6lybyBkJ2VucmVnaXN0cmVtZW50
+OiA1MDkgNjUzIDE3NiB+IENhcGl0YWwgc29jaWFsIHNvdXNjcml0IGV0IGxpYmVyw6k64oKsIDE2
+MjE1NDQxIH4gTnVtw6lybyBkZSBUVkE6IEZSNDc1MDk2NTMxNzYNCg0KLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0NCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
