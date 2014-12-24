@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo6.mail-out.ovh.net ([46.105.56.113])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y3U6N-0004Po-8v
- for barebox@lists.infradead.org; Tue, 23 Dec 2014 18:22:37 +0000
-Received: from mail179.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 811A2FF8554
- for <barebox@lists.infradead.org>; Tue, 23 Dec 2014 19:22:12 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 23 Dec 2014 19:21:58 +0100
-Message-Id: <1419358918-25569-9-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20141223170709.GA15818@ns203013.ovh.net>
- <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y3dS5-0000uP-Ln
+ for barebox@lists.infradead.org; Wed, 24 Dec 2014 04:21:38 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile13) with ESMTP id
+ sBO4LA9T027626
+ for <barebox@lists.infradead.org>; Wed, 24 Dec 2014 13:21:10 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili12) with ESMTP id sBO4L9o07964
+ for <barebox@lists.infradead.org>; Wed, 24 Dec 2014 13:21:09 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Date: Wed, 24 Dec 2014 13:21:01 +0900
+Message-Id: <1419394862-31457-3-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1419394862-31457-1-git-send-email-yamada.m@jp.panasonic.com>
+References: <1419394862-31457-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,95 +28,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] defaultenv-2: create a specific defaultenv for splash
+Subject: [PATCH 2/3] kbuild: do not create symbolic link include/asm
 To: barebox@lists.infradead.org
 
-This will allow to factorize splash init
+There does not exist include/asm-$(SRCARCH) any more, so no point
+to create a symbolic link to an empty directory.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
- common/Kconfig                             |  5 +++++
- defaultenv/Makefile                        |  1 +
- defaultenv/defaultenv-2-splash/bin/splash  | 15 +++++++++++++++
- defaultenv/defaultenv-2-splash/init/splash |  3 +++
- defaultenv/defaultenv.c                    |  2 ++
- 5 files changed, 26 insertions(+)
- create mode 100644 defaultenv/defaultenv-2-splash/bin/splash
- create mode 100644 defaultenv/defaultenv-2-splash/init/splash
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 05f76ae..3f1ef6f 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -653,6 +653,11 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU
- 	depends on USB_GADGET_DFU
- 	default y
+ .gitignore |  1 -
+ Makefile   | 35 +----------------------------------
+ 2 files changed, 1 insertion(+), 35 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 5d9157d..03c5e20 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -61,7 +61,6 @@ barebox_default_env*
+ #
+ # Generated include files
+ #
+-include/asm
+ include/asm-*/asm-offsets.h
+ include/config
+ include/linux/compile.h
+diff --git a/Makefile b/Makefile
+index f1dcec2..2978439 100644
+--- a/Makefile
++++ b/Makefile
+@@ -808,7 +808,7 @@ endif
+ prepare2: prepare3 outputmakefile
  
-+config DEFAULT_ENVIRONMENT_GENERIC_NEW_SPLASH
-+	bool
-+	depends on CMD_SPLASH
-+	default y
-+
- config DEFAULT_ENVIRONMENT_GENERIC
- 	bool
- 	depends on !HAVE_DEFAULT_ENVIRONMENT_NEW
-diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-index fc679eb..03d241c 100644
---- a/defaultenv/Makefile
-+++ b/defaultenv/Makefile
-@@ -1,6 +1,7 @@
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
-+bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SPLASH) += defaultenv-2-splash
- bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
- obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
- extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX)
-diff --git a/defaultenv/defaultenv-2-splash/bin/splash b/defaultenv/defaultenv-2-splash/bin/splash
-new file mode 100644
-index 0000000..352439d
---- /dev/null
-+++ b/defaultenv/defaultenv-2-splash/bin/splash
-@@ -0,0 +1,15 @@
-+#!/bin/sh
-+
-+splash="/env/splash.png"
-+
-+if [ ! -f ${splash} ]; then
-+	return
-+fi
-+
-+splash ${splash}
-+
-+if [ $? = 0 ]; then
-+	fb0.enable=1
-+else
-+	echo "Cannot show splash image"
-+fi
-diff --git a/defaultenv/defaultenv-2-splash/init/splash b/defaultenv/defaultenv-2-splash/init/splash
-new file mode 100644
-index 0000000..04fdc8e
---- /dev/null
-+++ b/defaultenv/defaultenv-2-splash/init/splash
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+
-+/env/bin/splash
-diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
-index 3b4efcf..712502d 100644
---- a/defaultenv/defaultenv.c
-+++ b/defaultenv/defaultenv.c
-@@ -48,6 +48,8 @@ static void defaultenv_add_base(void)
- 		defaultenv_append_directory(defaultenv_2_menu);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU))
- 		defaultenv_append_directory(defaultenv_2_dfu);
-+	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SPLASH))
-+		defaultenv_append_directory(defaultenv_2_splash);
- 	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
- 		defaultenv_append_directory(defaultenv_1);
- }
+ prepare1: prepare2 include/generated/version.h include/generated/utsrelease.h \
+-                   include/asm include/config.h include/config/auto.conf
++                   include/config.h include/config/auto.conf
+ 
+ ifneq ($(KBUILD_MODULES),)
+ 	$(Q)mkdir -p $(MODVERDIR)
+@@ -828,39 +828,6 @@ prepare prepare-all: prepare0
+ 
+ export CPPFLAGS_barebox.lds += -C -U$(ARCH)
+ 
+-# FIXME: The asm symlink changes when $(ARCH) changes. That's
+-# hard to detect, but I suppose "make mrproper" is a good idea
+-# before switching between archs anyway.
+-
+-define check-symlink
+-	set -e;								\
+-	if [ -L include/asm ]; then					\
+-		asmlink=`readlink include/asm | cut -d '-' -f 2`;	\
+-		if [ "$$asmlink" != "$(SRCARCH)" ]; then		\
+-			echo "ERROR: the symlink $@ points to asm-$$asmlink but asm-$(SRCARCH) was expected";	\
+-			echo "       set ARCH or save .config and run 'make mrproper' to fix it";		\
+-			exit 1;						\
+-		fi;							\
+-	fi
+-endef
+-
+-# We create the target directory of the symlink if it does
+-# not exist so the test in chack-symlink works and we have a
+-# directory for generated filesas used by some architectures.
+-define create-symlink
+-	if [ ! -L include/asm ]; then					\
+-			$(kecho) '  SYMLINK $@ -> include/asm-$(SRCARCH)';	\
+-			if [ ! -d include/asm-$(SRCARCH) ]; then	\
+-				mkdir -p include/asm-$(SRCARCH);	\
+-			fi;						\
+-			ln -fsn asm-$(SRCARCH) $@;			\
+-	fi
+-endef
+-
+-include/asm:
+-	$(Q)$(check-symlink)
+-	$(Q)$(create-symlink)
+-
+ define symlink-config-h
+ 	if [ -f $(srctree)/$(BOARD)/config.h ]; then		\
+ 		$(kecho) '  SYMLINK $@ -> $(BOARD)/config.h';	\
 -- 
-2.1.3
+1.9.1
 
 
 _______________________________________________
