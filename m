@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y4ej3-0005Rq-PW
- for barebox@lists.infradead.org; Fri, 26 Dec 2014 23:55:22 +0000
-Received: by mail-la0-f49.google.com with SMTP id hs14so8962416lab.8
- for <barebox@lists.infradead.org>; Fri, 26 Dec 2014 15:54:59 -0800 (PST)
+ id 1Y4ej6-0005b0-1c
+ for barebox@lists.infradead.org; Fri, 26 Dec 2014 23:55:24 +0000
+Received: by mail-lb0-f173.google.com with SMTP id z12so8984877lbi.18
+ for <barebox@lists.infradead.org>; Fri, 26 Dec 2014 15:55:02 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 27 Dec 2014 02:56:26 +0300
-Message-Id: <1419638189-5678-4-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 27 Dec 2014 02:56:28 +0300
+Message-Id: <1419638189-5678-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1419638189-5678-1-git-send-email-antonynpavlov@gmail.com>
 References: <1419638189-5678-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] ARM: highbank: debug_ll.h: switch to debug_ll_pl011.h
+Subject: [PATCH 5/6] ARM: versatile: debug_ll.h: switch to debug_ll_pl011.h
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/mach-highbank/include/mach/debug_ll.h | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ arch/arm/mach-versatile/include/mach/debug_ll.h | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/mach-highbank/include/mach/debug_ll.h b/arch/arm/mach-highbank/include/mach/debug_ll.h
-index 4cdbb3c..1820eb1 100644
---- a/arch/arm/mach-highbank/include/mach/debug_ll.h
-+++ b/arch/arm/mach-highbank/include/mach/debug_ll.h
-@@ -7,20 +7,8 @@
+diff --git a/arch/arm/mach-versatile/include/mach/debug_ll.h b/arch/arm/mach-versatile/include/mach/debug_ll.h
+index f91812b..e6ee877 100644
+--- a/arch/arm/mach-versatile/include/mach/debug_ll.h
++++ b/arch/arm/mach-versatile/include/mach/debug_ll.h
+@@ -16,19 +16,8 @@
  #ifndef __MACH_DEBUG_LL_H__
  #define   __MACH_DEBUG_LL_H__
  
 -#include <linux/amba/serial.h>
 -#include <io.h>
-+#define DEBUG_LL_UART_ADDR 0xfff36000
- 
--#define UART_BASE 0xfff36000
-+#include <asm/debug_ll_pl011.h>
++#define DEBUG_LL_UART_ADDR 0x101F1000
  
 -static inline void PUTC_LL(char c)
 -{
 -	/* Wait until there is space in the FIFO */
--	while (readl(UART_BASE + UART01x_FR) & UART01x_FR_TXFF);
+-	while (readl(0x101F1000 + UART01x_FR) & UART01x_FR_TXFF);
 -
 -	/* Send the character */
--	writel(c, UART_BASE + UART01x_DR);
+-	writel(c, 0x101F1000 + UART01x_DR);
 -
 -	/* Wait to make sure it hits the line, in case we die too soon. */
--	while (readl(UART_BASE + UART01x_FR) & UART01x_FR_TXFF);
+-	while (readl(0x101F1000 + UART01x_FR) & UART01x_FR_TXFF);
 -}
++#include <asm/debug_ll_pl011.h>
+ 
  #endif
 -- 
 2.1.3
