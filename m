@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo68.mail-out.ovh.net ([46.105.59.63])
+Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y4RZ8-0000pZ-IC
- for barebox@lists.infradead.org; Fri, 26 Dec 2014 09:52:16 +0000
-Received: from mail96.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 270A8FFA5CE
- for <barebox@lists.infradead.org>; Fri, 26 Dec 2014 10:51:46 +0100 (CET)
-Date: Fri, 26 Dec 2014 10:51:43 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20141226095143.GB15818@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1Y4ej1-0005RD-VZ
+ for barebox@lists.infradead.org; Fri, 26 Dec 2014 23:55:20 +0000
+Received: by mail-la0-f48.google.com with SMTP id gf13so9015145lab.7
+ for <barebox@lists.infradead.org>; Fri, 26 Dec 2014 15:54:56 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sat, 27 Dec 2014 02:56:24 +0300
+Message-Id: <1419638189-5678-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1419638189-5678-1-git-send-email-antonynpavlov@gmail.com>
+References: <1419638189-5678-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +18,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [REGRESSION BUG] at91 is broken on barebox
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 1/6] ARM: introduce debug_ll_pl011.h
+To: barebox@lists.infradead.org
 
-HI,
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/include/asm/debug_ll_pl011.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-	since the switch to ERR_PTR & co
+diff --git a/arch/arm/include/asm/debug_ll_pl011.h b/arch/arm/include/asm/debug_ll_pl011.h
+new file mode 100644
+index 0000000..db015a3
+--- /dev/null
++++ b/arch/arm/include/asm/debug_ll_pl011.h
+@@ -0,0 +1,25 @@
++#ifndef __INCLUDE_ARM_ASM_DEBUG_LL_PL011_H__
++#define __INCLUDE_ARM_ASM_DEBUG_LL_PL011_H__
++
++#ifndef DEBUG_LL_UART_ADDR
++#error DEBUG_LL_UART_ADDR is undefined!
++#endif
++
++#include <io.h>
++#include <linux/amba/serial.h>
++
++static inline void PUTC_LL(char c)
++{
++	/* Wait until there is space in the FIFO */
++	while (readl(DEBUG_LL_UART_ADDR + UART01x_FR) & UART01x_FR_TXFF)
++		;
++
++	/* Send the character */
++	writel(c, DEBUG_LL_UART_ADDR + UART01x_DR);
++
++	/* Wait to make sure it hits the line, in case we die too soon. */
++	while (readl(DEBUG_LL_UART_ADDR + UART01x_FR) & UART01x_FR_TXFF)
++		;
++}
++
++#endif /* __INCLUDE_ARM_ASM_DEBUG_LL_PL011_H__ */
+-- 
+2.1.3
 
-	for dev_get_resource_by_name & others the at91 is broken
-
-	as on barebox we use a 1:1 mapping and the check of the IS_ERR is
-	((unsigned long)-MAX_ERRNO)
-
-	but on at91 the PIT and so on are at 0xfffffd30 so on always seen as
-	an error
-
-	so can we revert the commit on 
-
-	ommit 92cc1b1f9e3363046583962859a3a8c054f4b94d
-
-	& co
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
