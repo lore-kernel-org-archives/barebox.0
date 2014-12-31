@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x22f.google.com ([2607:f8b0:400e:c02::22f])
+Received: from mail-pd0-x22b.google.com ([2607:f8b0:400e:c02::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y6KvM-0001xX-OM
- for barebox@lists.infradead.org; Wed, 31 Dec 2014 15:11:01 +0000
-Received: by mail-pd0-f175.google.com with SMTP id g10so20953022pdj.6
- for <barebox@lists.infradead.org>; Wed, 31 Dec 2014 07:10:39 -0800 (PST)
+ id 1Y6Kvf-00023q-W5
+ for barebox@lists.infradead.org; Wed, 31 Dec 2014 15:11:20 +0000
+Received: by mail-pd0-f171.google.com with SMTP id y13so21023977pdi.16
+ for <barebox@lists.infradead.org>; Wed, 31 Dec 2014 07:10:59 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 31 Dec 2014 07:10:31 -0800
-Message-Id: <1420038631-8795-1-git-send-email-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
+Date: Wed, 31 Dec 2014 07:10:55 -0800
+Message-Id: <1420038655-8856-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,87 +16,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] firmware: altera: Make nSTAT GPIO optional
+Subject: [PATCH] i.MX: SPI: Respect SPI_LSB_FIRST flag in mode settings
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, kernel@pengutronix.de
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-QnkgdGFraW5nIHBhcnRzIG9mIHRoZSBwcm9ncmFtbWluZyBoYW5kc2hha2luZyBwcm90b2NvbCBv
-biBmYWl0aCBpdCBpcwpwb3NzaWJsZSB0byBtYWtlIGR1ZSB3aXRoIG9ubHkgdHdvIEdQSU8gZm9y
-IHByb2dyYW1taW5nIEFsdGVyYQpGUEdBcy4gVGhpcyBpcyBub3QgYSB2ZXJ5IGFkdmlzYWJsZSBw
-cmFjdGljZSwgYnV0IHNvbWV0aW1lIHVuYXZvaWRhYmxlCmluIEdQSU8gY29uc3RyYWluZWQgZGVz
-aWducy4KClNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBnbWFp
-bC5jb20+Ci0tLQogZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2VyaWFsLmMgfCA1OSArKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNDQgaW5z
-ZXJ0aW9ucygrKSwgMTUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9maXJtd2Fy
-ZS9hbHRlcmFfc2VyaWFsLmMgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwppbmRl
-eCBjNWZmYmI2Li40NTI3ZDI3IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9z
-ZXJpYWwuYworKysgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwpAQCAtMjUsNiAr
-MjUsNyBAQAogI2luY2x1ZGUgPGZjbnRsLmg+CiAjaW5jbHVkZSA8ZnMuaD4KIAorCiAvKgogICog
-UGh5c2ljYWwgcmVxdWlyZW1lbnRzOgogICogLSB0aHJlZSBmcmVlIEdQSU9zIGZvciB0aGUgc2ln
-bmFscyBuQ09ORklHLCBDT05GSUdVUkVfRE9ORSwgblNUQVRVUwpAQCAtNjcsMTMgKzY4LDE5IEBA
-IHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9vcGVuKHN0cnVjdCBmaXJtd2FyZV9oYW5kbGVyICpmaCkK
-IAkgKiBhZnRlciBhYm91dCAyIMK1cyB0aGUgRlBHQSBtdXN0IGFja25vd2xlZGdlIHdpdGgKIAkg
-KiBTVEFUVVMgYW5kIENPTkZJRyBET05FIGxpbmVzIGF0IGxvdyBsZXZlbAogCSAqLwotCXJldCA9
-IHdhaXRfb25fdGltZW91dCgyICogVVNFQ09ORCwKKwlpZiAoZ3Bpb19pc192YWxpZCh0aGlzLT5u
-c3RhdF9ncGlvKSkgeworCQlyZXQgPSB3YWl0X29uX3RpbWVvdXQoMiAqIFVTRUNPTkQsCiAJCQkJ
-KGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDApICYmCiAJCQkJKGdwaW9fZ2V0
-X3ZhbHVlKHRoaXMtPmNvbmZkX2dwaW8pID09IDApKTsKKwl9IGVsc2UgeworCQlyZXQgPSB3YWl0
-X29uX3RpbWVvdXQoMiAqIFVTRUNPTkQsCisJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPmNvbmZk
-X2dwaW8pID09IDApKTsKKwl9CisKIAogCWlmIChyZXQgIT0gMCkgewogCQlkZXZfZXJyKGRldiwg
-IkZQR0EgZG9lcyBub3QgYWNrbm93bGVkZ2UgdGhlIHByb2dyYW1taW5nIGluaXRpYXRpb25cbiIp
-OwotCQlpZiAoZ3Bpb19nZXRfdmFsdWUodGhpcy0+bnN0YXRfZ3BpbykpCisJCWlmIChncGlvX2lz
-X3ZhbGlkKHRoaXMtPm5zdGF0X2dwaW8pICYmIGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dw
-aW8pKQogCQkJZGV2X2VycihkZXYsICJTVEFUVVMgaXMgc3RpbGwgaGlnaCFcbiIpOwogCQlpZiAo
-Z3Bpb19nZXRfdmFsdWUodGhpcy0+Y29uZmRfZ3BpbykpCiAJCQlkZXZfZXJyKGRldiwgIkNPTkZJ
-RyBET05FIGlzIHN0aWxsIGhpZ2ghXG4iKTsKQEAgLTkwLDExICs5NywxNiBAQCBzdGF0aWMgaW50
-IGFsdGVyYV9zcGlfb3BlbihzdHJ1Y3QgZmlybXdhcmVfaGFuZGxlciAqZmgpCiAJICogYWZ0ZXIg
-YWJvdXQgMTUwNiDCtXMgdGhlIEZQR0EgbXVzdCBhY2tub3dsZWRnZSB0aGlzIHN0ZXAKIAkgKiB3
-aXRoIHRoZSBTVEFUVVMgbGluZSBhdCBoaWdoIGxldmVsCiAJICovCi0JcmV0ID0gd2FpdF9vbl90
-aW1lb3V0KDE2MDAgKiBVU0VDT05ELAorCisJaWYgKGdwaW9faXNfdmFsaWQodGhpcy0+bnN0YXRf
-Z3BpbykpIHsKKwkJcmV0ID0gd2FpdF9vbl90aW1lb3V0KDE2MDAgKiBVU0VDT05ELAogCQkJCWdw
-aW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDEpOwotCWlmIChyZXQgIT0gMCkgewot
-CQlkZXZfZXJyKGRldiwgIkZQR0EgZG9lcyBub3QgYWNrbm93bGVkZ2UgdGhlIHByb2dyYW1taW5n
-IHN0YXJ0XG4iKTsKLQkJcmV0dXJuIHJldDsKKwkJaWYgKHJldCAhPSAwKSB7CisJCQlkZXZfZXJy
-KGRldiwgIkZQR0EgZG9lcyBub3QgYWNrbm93bGVkZ2UgdGhlIHByb2dyYW1taW5nIHN0YXJ0XG4i
-KTsKKwkJCXJldHVybiByZXQ7CisJCX0KKwl9IGVsc2UgeworCQl1ZGVsYXkoMTYwMCk7CiAJfQog
-CiAJZGV2X2RiZyhkZXYsICJJbml0aWF0aW5nIHBhc3NlZFxuIik7CkBAIC0xNzcsMTYgKzE4OSwy
-NCBAQCBzdGF0aWMgaW50IGFsdGVyYV9zcGlfY2xvc2Uoc3RydWN0IGZpcm13YXJlX2hhbmRsZXIg
-KmZoKQogCSAqIHdoZW4gcHJvZ3JhbW1pbmcgd2FzIHN1Y2Nlc3NmdWwsCiAJICogYm90aCBzdGF0
-dXMgbGluZXMgc2hvdWxkIGJlIGF0IGhpZ2ggbGV2ZWwKIAkgKi8KLQlyZXQgPSB3YWl0X29uX3Rp
-bWVvdXQoMTAgKiBVU0VDT05ELAorCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5zdGF0X2dwaW8p
-KSB7CisJCXJldCA9IHdhaXRfb25fdGltZW91dCgxMCAqIFVTRUNPTkQsCiAJCQkJKGdwaW9fZ2V0
-X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDEpICYmCiAJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRo
-aXMtPmNvbmZkX2dwaW8pID09IDEpKTsKKwl9IGVsc2UgeworCQlyZXQgPSB3YWl0X29uX3RpbWVv
-dXQoMTAgKiBVU0VDT05ELAorCQkJCShncGlvX2dldF92YWx1ZSh0aGlzLT5jb25mZF9ncGlvKSA9
-PSAxKSk7CisKKwl9CisKIAlpZiAocmV0ID09IDApIHsKIAkJZGV2X2RiZyhkZXYsICJQcm9ncmFt
-bWluZyBzdWNjZXNzZnVsXG4iKTsKIAkJcmV0dXJuIHJldDsKIAl9CiAKIAlkZXZfZXJyKGRldiwg
-IlByb2dyYW1taW5nIGZhaWxlZCBkdWUgdG8gdGltZSBvdXRcbiIpOwotCWlmIChncGlvX2dldF92
-YWx1ZSh0aGlzLT5uc3RhdF9ncGlvKSA9PSAwKQorCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5z
-dGF0X2dwaW8pICYmCisJCWdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDApCiAJ
-CWRldl9lcnIoZGV2LCAiU1RBVFVTIGlzIHN0aWxsIGxvdyFcbiIpOwogCWlmIChncGlvX2dldF92
-YWx1ZSh0aGlzLT5jb25mZF9ncGlvKSA9PSAwKQogCQlkZXZfZXJyKGRldiwgIkNPTkZJRyBET05F
-IGlzIHN0aWxsIGxvdyFcbiIpOwpAQCAtMjAxLDEwICsyMjEsMTUgQEAgc3RhdGljIGludCBhbHRl
-cmFfc3BpX29mKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBzdHJ1Y3QgZnBnYV9zcGkgKnRoaXMpCiAJ
-aW50IHJldDsKIAogCW5hbWUgPSAibnN0YXQtZ3BpbyI7Ci0JdGhpcy0+bnN0YXRfZ3BpbyA9IG9m
-X2dldF9uYW1lZF9ncGlvKG4sIG5hbWUsIDApOwotCWlmICh0aGlzLT5uc3RhdF9ncGlvIDwgMCkg
-ewotCQlyZXQgPSB0aGlzLT5uc3RhdF9ncGlvOwotCQlnb3RvIG91dDsKKwlpZiAoIW9mX2dldF9w
-cm9wZXJ0eShuLCBuYW1lLCBOVUxMKSkgeworCQlkZXZfaW5mbyhkZXYsICJuc3RhdC1ncGlvIGlz
-IG5vdCBzcGVjaWZpZWQsIGFzc3VtaW5nIGl0IGlzIG5vdCBjb25uZWN0ZWRcbiIpOworCQl0aGlz
-LT5uc3RhdF9ncGlvID0gLTE7CisJfSBlbHNlIHsKKwkJdGhpcy0+bnN0YXRfZ3BpbyA9IG9mX2dl
-dF9uYW1lZF9ncGlvKG4sIG5hbWUsIDApOworCQlpZiAodGhpcy0+bnN0YXRfZ3BpbyA8IDApIHsK
-KwkJCXJldCA9IHRoaXMtPm5zdGF0X2dwaW87CisJCQlnb3RvIG91dDsKKwkJfQogCX0KIAogCW5h
-bWUgPSAiY29uZmQtZ3BpbyI7CkBAIC0yMjUsOSArMjUwLDEzIEBAIHN0YXRpYyBpbnQgYWx0ZXJh
-X3NwaV9vZihzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0IGZwZ2Ffc3BpICp0aGlzKQogCXJl
-dCA9IGdwaW9fZGlyZWN0aW9uX291dHB1dCh0aGlzLT5uY29uZmlnX2dwaW8sIDEpOwogCWlmIChy
-ZXQpCiAJCXJldHVybiByZXQ7Ci0JcmV0ID0gZ3Bpb19kaXJlY3Rpb25faW5wdXQodGhpcy0+bnN0
-YXRfZ3Bpbyk7Ci0JaWYgKHJldCkKLQkJcmV0dXJuIHJldDsKKworCWlmIChncGlvX2lzX3ZhbGlk
-KHRoaXMtPm5zdGF0X2dwaW8pKSB7CisJCXJldCA9IGdwaW9fZGlyZWN0aW9uX2lucHV0KHRoaXMt
-Pm5zdGF0X2dwaW8pOworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKwl9CisKIAlyZXQgPSBn
-cGlvX2RpcmVjdGlvbl9pbnB1dCh0aGlzLT5jb25mZF9ncGlvKTsKIAlpZiAocmV0KQogCQlyZXR1
-cm4gcmV0OwotLSAKMi4xLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Add code to support SPI transfers that have data shifted out least
+significant bit first. This is useful in many cases, but specifically
+it is needed for drivers/firmware/altera_serial.c to work on i.MX
+platform.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ drivers/spi/imx_spi.c | 50 ++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 44 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 3146339..efbbb08 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -137,6 +137,25 @@ static int imx_spi_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
++static unsigned int imx_spi_maybe_reverse_bits(struct spi_device *spi, unsigned int word)
++{
++	unsigned int result = word;
++
++	if (spi->mode & SPI_LSB_FIRST) {
++		size_t bits_left = spi->bits_per_word - 1;
++
++		for (word >>= 1; word; word >>= 1) {
++			result <<= 1;
++			result |= word & 1;
++			bits_left--;
++		}
++
++		result <<= bits_left;
++	}
++
++	return result;
++}
++
+ static unsigned int cspi_0_0_xchg_single(struct imx_spi *imx, unsigned int data)
+ {
+ 	void __iomem *base = imx->regs;
+@@ -386,6 +405,7 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
+ 	unsigned i;
++	u32 tx_val;
+ 
+ 	if (spi->bits_per_word <= 8) {
+ 		const u8	*tx_buf = t->tx_buf;
+@@ -393,9 +413,15 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		u8		rx_val;
+ 
+ 		for (i = 0; i < t->len; i++) {
+-			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
++			if (tx_buf)
++				tx_val = imx_spi_maybe_reverse_bits(spi, tx_buf[i]);
++			else
++				tx_val = 0;
++
++			rx_val = imx->xchg_single(imx, tx_val);
++
+ 			if (rx_buf)
+-				rx_buf[i] = rx_val;
++				rx_buf[i] = (u8)imx_spi_maybe_reverse_bits(spi, rx_val);
+ 		}
+ 	} else if (spi->bits_per_word <= 16) {
+ 		const u16	*tx_buf = t->tx_buf;
+@@ -403,9 +429,15 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		u16		rx_val;
+ 
+ 		for (i = 0; i < t->len >> 1; i++) {
+-			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
++			if (tx_buf)
++				tx_val = imx_spi_maybe_reverse_bits(spi, tx_buf[i]);
++			else
++				tx_val = 0;
++
++			rx_val = imx->xchg_single(imx, tx_val);
++
+ 			if (rx_buf)
+-				rx_buf[i] = rx_val;
++				rx_buf[i] = (u16)imx_spi_maybe_reverse_bits(spi, rx_val);
+ 		}
+ 	} else if (spi->bits_per_word <= 32) {
+ 		const u32	*tx_buf = t->tx_buf;
+@@ -413,9 +445,15 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		u32		rx_val;
+ 
+ 		for (i = 0; i < t->len >> 2; i++) {
+-			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
++			if (tx_buf)
++				tx_val = imx_spi_maybe_reverse_bits(spi, tx_buf[i]);
++			else
++				tx_val = 0;
++
++			rx_val = imx->xchg_single(imx, tx_val);
++
+ 			if (rx_buf)
+-				rx_buf[i] = rx_val;
++				rx_buf[i] = imx_spi_maybe_reverse_bits(spi, rx_val);
+ 		}
+ 	}
+ }
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
