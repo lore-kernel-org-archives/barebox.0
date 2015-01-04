@@ -2,11 +2,13 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from smtp10.smtpout.orange.fr ([80.12.242.132]
  helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y7hgr-0005Hv-7B
- for barebox@lists.infradead.org; Sun, 04 Jan 2015 09:41:45 +0000
+ id 1Y7hgr-0005I0-71
+ for barebox@lists.infradead.org; Sun, 04 Jan 2015 09:41:43 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Sun,  4 Jan 2015 10:41:05 +0100
-Message-Id: <1420364466-22400-1-git-send-email-robert.jarzmik@free.fr>
+Date: Sun,  4 Jan 2015 10:41:06 +0100
+Message-Id: <1420364466-22400-2-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1420364466-22400-1-git-send-email-robert.jarzmik@free.fr>
+References: <1420364466-22400-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,954 +22,426 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] ARM: pxa: add pxa3xx architecture
+Subject: [PATCH v2 2/2] ARM: pxa: add the zylonite board
 To: barebox@lists.infradead.org
 
-Add the pxa3xx architecture, for pxa300, pxa310 and pxa320 SoCs.
-This includes :
- - the registers
- - the cpu type
- - the reset source handling
- - a minimal set of clocks
- - pin control definitions
-   In this last case, the big mfp-pxaxxx.h files were dropped, forcing
-   board developers to use MFP_LPM_* macros cunningly.
+Add the first pxa3xx board, zylonite. Zylonite is the Marvell System
+Development Platform.
+
+Several version are available, based on either :
+ - PXA300
+ - PXA310
+ - PXA320
+
+This version was only tested on a PXA310 based board, and uses :
+ - the ethernet controller
+ - the nand controller
+
+These drivers seem to be common to all zylonite boards.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- arch/arm/cpu/Kconfig                         |   6 +
- arch/arm/mach-pxa/Kconfig                    |  19 ++
- arch/arm/mach-pxa/Makefile                   |   1 +
- arch/arm/mach-pxa/common.c                   |  12 +-
- arch/arm/mach-pxa/include/mach/clock.h       |   1 +
- arch/arm/mach-pxa/include/mach/hardware.h    |  18 +-
- arch/arm/mach-pxa/include/mach/mfp-pxa3xx.h  |  25 ++
- arch/arm/mach-pxa/include/mach/pxa-regs.h    |   4 +-
- arch/arm/mach-pxa/include/mach/pxa3xx-regs.h | 224 ++++++++++++++++++
- arch/arm/mach-pxa/include/plat/mfp.h         |   7 +-
- arch/arm/mach-pxa/mfp.c                      | 338 +++++++++++++++++++++++++++
- arch/arm/mach-pxa/reset_source.c             |  36 +++
- arch/arm/mach-pxa/sleep.S                    |   9 +
- arch/arm/mach-pxa/speed-pxa3xx.c             |  33 +++
- 14 files changed, 725 insertions(+), 8 deletions(-)
- create mode 100644 arch/arm/mach-pxa/include/mach/mfp-pxa3xx.h
- create mode 100644 arch/arm/mach-pxa/include/mach/pxa3xx-regs.h
- create mode 100644 arch/arm/mach-pxa/mfp.c
- create mode 100644 arch/arm/mach-pxa/speed-pxa3xx.c
+Since v1: fix pinctrl for UART
+          fix typos
+---
+ arch/arm/boards/Makefile                          |   1 +
+ arch/arm/boards/zylonite/Makefile                 |   2 +
+ arch/arm/boards/zylonite/board.c                  | 101 +++++++++++++++++++
+ arch/arm/boards/zylonite/env/bin/init             |  25 +++++
+ arch/arm/boards/zylonite/env/bin/mtd_env_override |   4 +
+ arch/arm/boards/zylonite/env/config               |   6 ++
+ arch/arm/boards/zylonite/lowlevel.c               |  10 ++
+ arch/arm/boards/zylonite/zylonite.h               |  22 ++++
+ arch/arm/configs/zylonite310_defconfig            | 117 ++++++++++++++++++++++
+ arch/arm/mach-pxa/Kconfig                         |  13 ++-
+ 10 files changed, 300 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/zylonite/Makefile
+ create mode 100644 arch/arm/boards/zylonite/board.c
+ create mode 100644 arch/arm/boards/zylonite/env/bin/init
+ create mode 100644 arch/arm/boards/zylonite/env/bin/mtd_env_override
+ create mode 100644 arch/arm/boards/zylonite/env/config
+ create mode 100644 arch/arm/boards/zylonite/lowlevel.c
+ create mode 100644 arch/arm/boards/zylonite/zylonite.h
+ create mode 100644 arch/arm/configs/zylonite310_defconfig
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index 8934df0..4f5d9b6 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -69,6 +69,12 @@ config CPU_V7
- 	bool
- 	select CPU_32v7
- 
-+config CPU_XSC3
-+        bool
-+        select CPU_32v4T
-+        help
-+          Select code specific to PXA3xx variants
-+
- # Xscale PXA25x, PXA27x
- config CPU_XSCALE
- 	bool
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index cdec1b7..3a728ed 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -11,6 +11,10 @@ config ARCH_PXA2XX
- 	bool
- 	select CPU_XSCALE
- 
-+config ARCH_PXA3XX
-+       bool
-+       select CPU_XSC3
-+
- choice
- 	prompt "Intel/Marvell PXA Processor"
- 
-@@ -18,6 +22,9 @@ config ARCH_PXA27X
- 	bool "PXA27x"
- 	select ARCH_PXA2XX
- 
-+config ARCH_PXA3XX
-+	bool "PXA3xx"
-+
- endchoice
- 
- # ----------------------------------------------------------
-@@ -55,4 +62,16 @@ endif
- 
- # ----------------------------------------------------------
- 
-+if ARCH_PXA3XX
-+
-+choice
-+	prompt "PXA3xx Board Type"
-+	bool
-+
-+endchoice
-+
-+endif
-+
-+# ----------------------------------------------------------
-+
- endif
-diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
-index 6ddb6e5..6489601 100644
---- a/arch/arm/mach-pxa/Makefile
-+++ b/arch/arm/mach-pxa/Makefile
-@@ -6,4 +6,5 @@ obj-y += sleep.o
- 
- obj-$(CONFIG_ARCH_PXA2XX) += mfp-pxa2xx.o
- obj-$(CONFIG_ARCH_PXA27X) += speed-pxa27x.o
-+obj-$(CONFIG_ARCH_PXA3XX) += speed-pxa3xx.o mfp.o
- obj-$(CONFIG_RESET_SOURCE) += reset_source.o
-diff --git a/arch/arm/mach-pxa/common.c b/arch/arm/mach-pxa/common.c
-index 0c114ed..2259a2d 100644
---- a/arch/arm/mach-pxa/common.c
-+++ b/arch/arm/mach-pxa/common.c
-@@ -28,11 +28,13 @@
- #define OSSR_M3		(1 << 3)	/* Match status channel 3 */
- 
- extern void pxa_suspend(int mode);
-+extern void pxa3xx_suspend(int mode);
-+extern void pxa_clear_reset_source(void);
- 
- void reset_cpu(ulong addr)
- {
- 	/* Clear last reset source */
--	RCSR = RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR;
-+	pxa_clear_reset_source();
- 
- 	/* Initialize the watchdog and let it fire */
- 	writel(OWER_WME, OWER);
-@@ -47,8 +49,12 @@ void __noreturn poweroff()
- 	shutdown_barebox();
- 
- 	/* Clear last reset source */
--	RCSR = RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR;
--
-+	pxa_clear_reset_source();
-+#ifdef CONFIG_ARCH_PXA2XX
- 	pxa_suspend(PWRMODE_DEEPSLEEP);
-+#endif
-+#ifdef CONFIG_ARCH_PXA3XX
-+	pxa3xx_suspend(PXA3xx_PM_S3D4C4);
-+#endif
- 	unreachable();
- }
-diff --git a/arch/arm/mach-pxa/include/mach/clock.h b/arch/arm/mach-pxa/include/mach/clock.h
-index f86152f..40f6223 100644
---- a/arch/arm/mach-pxa/include/mach/clock.h
-+++ b/arch/arm/mach-pxa/include/mach/clock.h
-@@ -14,6 +14,7 @@
- unsigned long pxa_get_uartclk(void);
- unsigned long pxa_get_mmcclk(void);
- unsigned long pxa_get_lcdclk(void);
-+unsigned long pxa_get_nandclk(void);
- unsigned long pxa_get_pwmclk(void);
- 
- #endif	/* !__MACH_CLOCK_H */
-diff --git a/arch/arm/mach-pxa/include/mach/hardware.h b/arch/arm/mach-pxa/include/mach/hardware.h
-index c5f40d7..902d11d 100644
---- a/arch/arm/mach-pxa/include/mach/hardware.h
-+++ b/arch/arm/mach-pxa/include/mach/hardware.h
-@@ -13,7 +13,7 @@
- #ifdef CONFIG_ARCH_PXA2XX
- #define cpu_is_pxa2xx()	(1)
- #else
--#define cpi_is_pxa2xx()	(0)
-+#define cpu_is_pxa2xx()	(0)
- #endif
- 
- #ifdef CONFIG_ARCH_PXA25X
-@@ -28,6 +28,22 @@
- #define cpu_is_pxa27x()	(0)
- #endif
- 
-+#ifdef CONFIG_ARCH_PXA3XX
-+#define cpu_is_pxa3xx()	(1)
-+# ifdef CONFIG_ARCH_PXA320
-+# define cpu_is_pxa320() (1)
-+# else
-+# define cpu_is_pxa320() (0)
-+# endif
-+# ifdef CONFIG_ARCH_PXA310
-+# define cpu_is_pxa310() (1)
-+# else
-+# define cpu_is_pxa310() (0)
-+# endif
-+#else
-+#define cpu_is_pxa3xx()	(0)
-+#endif
-+
- #ifdef __ASSEMBLY__
- #define __REG(x) (x)
- #endif
-diff --git a/arch/arm/mach-pxa/include/mach/mfp-pxa3xx.h b/arch/arm/mach-pxa/include/mach/mfp-pxa3xx.h
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 9961ca8..4111059 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -124,4 +124,5 @@ obj-$(CONFIG_MACH_VERSATILEPB)			+= versatile/
+ obj-$(CONFIG_MACH_VEXPRESS)			+= vexpress/
+ obj-$(CONFIG_MACH_VIRT2REAL)			+= virt2real/
+ obj-$(CONFIG_MACH_ZEDBOARD)			+= avnet-zedboard/
++obj-$(CONFIG_MACH_ZYLONITE)			+= zylonite/
+ obj-$(CONFIG_MACH_VARISCITE_MX6)		+= variscite-mx6/
+diff --git a/arch/arm/boards/zylonite/Makefile b/arch/arm/boards/zylonite/Makefile
 new file mode 100644
-index 0000000..7bdd44d
+index 0000000..01c7a25
 --- /dev/null
-+++ b/arch/arm/mach-pxa/include/mach/mfp-pxa3xx.h
-@@ -0,0 +1,25 @@
-+#ifndef __ASM_ARCH_MFP_PXA3XX_H
-+#define __ASM_ARCH_MFP_PXA3XX_H
-+
-+#include <plat/mfp.h>
-+
-+#define MFPR_BASE	(0x40e10000)
-+
-+/* NOTE: usage of these two functions is not recommended,
-+ * use pxa3xx_mfp_config() instead.
-+ */
-+static inline unsigned long pxa3xx_mfp_read(int mfp)
-+{
-+	return mfp_read(mfp);
-+}
-+
-+static inline void pxa3xx_mfp_write(int mfp, unsigned long val)
-+{
-+	mfp_write(mfp, val);
-+}
-+
-+static inline void pxa3xx_mfp_config(unsigned long *mfp_cfg, int num)
-+{
-+	mfp_config(mfp_cfg, num);
-+}
-+#endif /* __ASM_ARCH_MFP_PXA3XX_H */
-diff --git a/arch/arm/mach-pxa/include/mach/pxa-regs.h b/arch/arm/mach-pxa/include/mach/pxa-regs.h
-index c32d2ae..5203d88 100644
---- a/arch/arm/mach-pxa/include/mach/pxa-regs.h
-+++ b/arch/arm/mach-pxa/include/mach/pxa-regs.h
-@@ -24,8 +24,10 @@
- # include <mach/pxa2xx-regs.h>
- #endif
- 
--#ifdef CONFIG_ARCH_PXA27X
-+#if defined(CONFIG_ARCH_PXA27X)
- # include <mach/pxa27x-regs.h>
-+#elif defined(CONFIG_ARCH_PXA3XX)
-+# include <mach/pxa3xx-regs.h>
- #else
- # error "unknown PXA soc type"
- #endif
-diff --git a/arch/arm/mach-pxa/include/mach/pxa3xx-regs.h b/arch/arm/mach-pxa/include/mach/pxa3xx-regs.h
++++ b/arch/arm/boards/zylonite/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/zylonite/board.c b/arch/arm/boards/zylonite/board.c
 new file mode 100644
-index 0000000..373711d
+index 0000000..2f0486d
 --- /dev/null
-+++ b/arch/arm/mach-pxa/include/mach/pxa3xx-regs.h
-@@ -0,0 +1,224 @@
++++ b/arch/arm/boards/zylonite/board.c
+@@ -0,0 +1,101 @@
 +/*
-+ * arch/arm/mach-pxa/include/mach/pxa3xx-regs.h
++ * (C) 2014 Robert Jarzmik <robert.jarzmik@free.fr>
 + *
-+ * PXA3xx specific register definitions
++ * See file CREDITS for list of people who contributed to this
++ * project.
 + *
-+ * Copyright (C) 2007 Marvell International Ltd.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#ifndef __MACH_PXA3XX_REGS
-+#define __MACH_PXA3XX_REGS
-+
-+#include <mach/hardware.h>
-+
-+/*
-+ * Oscillator Configuration Register (OSCC)
-+ */
-+#define OSCC           __REG(0x41350000)  /* Oscillator Configuration Register */
-+
-+#define OSCC_PEN       (1 << 11)       /* 13MHz POUT */
-+
-+
-+/*
-+ * Service Power Management Unit (MPMU)
-+ */
-+#define PMCR		__REG(0x40F50000)	/* Power Manager Control Register */
-+#define PSR		__REG(0x40F50004)	/* Power Manager S2 Status Register */
-+#define PSPR		__REG(0x40F50008)	/* Power Manager Scratch Pad Register */
-+#define PCFR		__REG(0x40F5000C)	/* Power Manager General Configuration Register */
-+#define PWER		__REG(0x40F50010)	/* Power Manager Wake-up Enable Register */
-+#define PWSR		__REG(0x40F50014)	/* Power Manager Wake-up Status Register */
-+#define PECR		__REG(0x40F50018)	/* Power Manager EXT_WAKEUP[1:0] Control Register */
-+#define DCDCSR		__REG(0x40F50080)	/* DC-DC Controller Status Register */
-+#define PVCR		__REG(0x40F50100)	/* Power Manager Voltage Change Control Register */
-+#define PCMD(x)		__REG(0x40F50110 + ((x) << 2))
-+
-+/*
-+ * Slave Power Management Unit
-+ */
-+#define ASCR		__REG(0x40f40000)	/* Application Subsystem Power Status/Configuration */
-+#define ARSR		__REG(0x40f40004)	/* Application Subsystem Reset Status */
-+#define AD3ER		__REG(0x40f40008)	/* Application Subsystem Wake-Up from D3 Enable */
-+#define AD3SR		__REG(0x40f4000c)	/* Application Subsystem Wake-Up from D3 Status */
-+#define AD2D0ER		__REG(0x40f40010)	/* Application Subsystem Wake-Up from D2 to D0 Enable */
-+#define AD2D0SR		__REG(0x40f40014)	/* Application Subsystem Wake-Up from D2 to D0 Status */
-+#define AD2D1ER		__REG(0x40f40018)	/* Application Subsystem Wake-Up from D2 to D1 Enable */
-+#define AD2D1SR		__REG(0x40f4001c)	/* Application Subsystem Wake-Up from D2 to D1 Status */
-+#define AD1D0ER		__REG(0x40f40020)	/* Application Subsystem Wake-Up from D1 to D0 Enable */
-+#define AD1D0SR		__REG(0x40f40024)	/* Application Subsystem Wake-Up from D1 to D0 Status */
-+#define AGENP		__REG(0x40f4002c)	/* Application Subsystem General Purpose */
-+#define AD3R		__REG(0x40f40030)	/* Application Subsystem D3 Configuration */
-+#define AD2R		__REG(0x40f40034)	/* Application Subsystem D2 Configuration */
-+#define AD1R		__REG(0x40f40038)	/* Application Subsystem D1 Configuration */
-+
-+/*
-+ * Application Subsystem Configuration bits.
-+ */
-+#define ASCR_RDH		(1 << 31)
-+#define ASCR_D1S		(1 << 2)
-+#define ASCR_D2S		(1 << 1)
-+#define ASCR_D3S		(1 << 0)
-+
-+/*
-+ * Application Reset Status bits.
-+ */
-+#define ARSR_GPR		(1 << 3)
-+#define ARSR_LPMR		(1 << 2)
-+#define ARSR_WDT		(1 << 1)
-+#define ARSR_HWR		(1 << 0)
-+
-+/*
-+ * Application Subsystem Wake-Up bits.
-+ */
-+#define ADXER_WRTC		(1 << 31)	/* RTC */
-+#define ADXER_WOST		(1 << 30)	/* OS Timer */
-+#define ADXER_WTSI		(1 << 29)	/* Touchscreen */
-+#define ADXER_WUSBH		(1 << 28)	/* USB host */
-+#define ADXER_WUSB2		(1 << 26)	/* USB client 2.0 */
-+#define ADXER_WMSL0		(1 << 24)	/* MSL port 0*/
-+#define ADXER_WDMUX3		(1 << 23)	/* USB EDMUX3 */
-+#define ADXER_WDMUX2		(1 << 22)	/* USB EDMUX2 */
-+#define ADXER_WKP		(1 << 21)	/* Keypad */
-+#define ADXER_WUSIM1		(1 << 20)	/* USIM Port 1 */
-+#define ADXER_WUSIM0		(1 << 19)	/* USIM Port 0 */
-+#define ADXER_WOTG		(1 << 16)	/* USBOTG input */
-+#define ADXER_MFP_WFLASH	(1 << 15)	/* MFP: Data flash busy */
-+#define ADXER_MFP_GEN12		(1 << 14)	/* MFP: MMC3/GPIO/OST inputs */
-+#define ADXER_MFP_WMMC2		(1 << 13)	/* MFP: MMC2 */
-+#define ADXER_MFP_WMMC1		(1 << 12)	/* MFP: MMC1 */
-+#define ADXER_MFP_WI2C		(1 << 11)	/* MFP: I2C */
-+#define ADXER_MFP_WSSP4		(1 << 10)	/* MFP: SSP4 */
-+#define ADXER_MFP_WSSP3		(1 << 9)	/* MFP: SSP3 */
-+#define ADXER_MFP_WMAXTRIX	(1 << 8)	/* MFP: matrix keypad */
-+#define ADXER_MFP_WUART3	(1 << 7)	/* MFP: UART3 */
-+#define ADXER_MFP_WUART2	(1 << 6)	/* MFP: UART2 */
-+#define ADXER_MFP_WUART1	(1 << 5)	/* MFP: UART1 */
-+#define ADXER_MFP_WSSP2		(1 << 4)	/* MFP: SSP2 */
-+#define ADXER_MFP_WSSP1		(1 << 3)	/* MFP: SSP1 */
-+#define ADXER_MFP_WAC97		(1 << 2)	/* MFP: AC97 */
-+#define ADXER_WEXTWAKE1		(1 << 1)	/* External Wake 1 */
-+#define ADXER_WEXTWAKE0		(1 << 0)	/* External Wake 0 */
-+
-+/*
-+ * AD3R/AD2R/AD1R bits.  R2-R5 are only defined for PXA320.
-+ */
-+#define ADXR_L2			(1 << 8)
-+#define ADXR_R5			(1 << 5)
-+#define ADXR_R4			(1 << 4)
-+#define ADXR_R3			(1 << 3)
-+#define ADXR_R2			(1 << 2)
-+#define ADXR_R1			(1 << 1)
-+#define ADXR_R0			(1 << 0)
-+
-+/*
-+ * Values for PWRMODE CP15 register
-+ */
-+#define PXA3xx_PM_S3D4C4	0x07	/* aka deep sleep */
-+#define PXA3xx_PM_S2D3C4	0x06	/* aka sleep */
-+#define PXA3xx_PM_S0D2C2	0x03	/* aka standby */
-+#define PXA3xx_PM_S0D1C2	0x02	/* aka LCD refresh */
-+#define PXA3xx_PM_S0D0C1	0x01
-+
-+/*
-+ * Application Subsystem Clock
-+ */
-+#define ACCR		__REG(0x41340000)	/* Application Subsystem Clock Configuration Register */
-+#define ACSR		__REG(0x41340004)	/* Application Subsystem Clock Status Register */
-+#define AICSR		__REG(0x41340008)	/* Application Subsystem Interrupt Control/Status Register */
-+#define CKENA		__REG(0x4134000C)	/* A Clock Enable Register */
-+#define CKENB		__REG(0x41340010)	/* B Clock Enable Register */
-+#define CKENC		__REG(0x41340024)	/* C Clock Enable Register */
-+#define AC97_DIV	__REG(0x41340014)	/* AC97 clock divisor value register */
-+
-+#define ACCR_XPDIS		(1 << 31)	/* Core PLL Output Disable */
-+#define ACCR_SPDIS		(1 << 30)	/* System PLL Output Disable */
-+#define ACCR_D0CS		(1 << 26)	/* D0 Mode Clock Select */
-+#define ACCR_PCCE		(1 << 11)	/* Power Mode Change Clock Enable */
-+#define ACCR_DDR_D0CS		(1 << 7)	/* DDR SDRAM clock frequency in D0CS (PXA31x only) */
-+
-+#define ACCR_SMCFS_MASK		(0x7 << 23)	/* Static Memory Controller Frequency Select */
-+#define ACCR_SFLFS_MASK		(0x3 << 18)	/* Frequency Select for Internal Memory Controller */
-+#define ACCR_XSPCLK_MASK	(0x3 << 16)	/* Core Frequency during Frequency Change */
-+#define ACCR_HSS_MASK		(0x3 << 14)	/* System Bus-Clock Frequency Select */
-+#define ACCR_DMCFS_MASK		(0x3 << 12)	/* Dynamic Memory Controller Clock Frequency Select */
-+#define ACCR_XN_MASK		(0x7 << 8)	/* Core PLL Turbo-Mode-to-Run-Mode Ratio */
-+#define ACCR_XL_MASK		(0x1f)		/* Core PLL Run-Mode-to-Oscillator Ratio */
-+
-+#define ACCR_SMCFS(x)		(((x) & 0x7) << 23)
-+#define ACCR_SFLFS(x)		(((x) & 0x3) << 18)
-+#define ACCR_XSPCLK(x)		(((x) & 0x3) << 16)
-+#define ACCR_HSS(x)		(((x) & 0x3) << 14)
-+#define ACCR_DMCFS(x)		(((x) & 0x3) << 12)
-+#define ACCR_XN(x)		(((x) & 0x7) << 8)
-+#define ACCR_XL(x)		((x) & 0x1f)
-+
-+/*
-+ * Clock Enable Bit
-+ */
-+#define CKEN_LCD	1	/* < LCD Clock Enable */
-+#define CKEN_USBH	2	/* < USB host clock enable */
-+#define CKEN_CAMERA	3	/* < Camera interface clock enable */
-+#define CKEN_NAND	4	/* < NAND Flash Controller Clock Enable */
-+#define CKEN_USB2	6	/* < USB 2.0 client clock enable. */
-+#define CKEN_DMC	8	/* < Dynamic Memory Controller clock enable */
-+#define CKEN_SMC	9	/* < Static Memory Controller clock enable */
-+#define CKEN_ISC	10	/* < Internal SRAM Controller clock enable */
-+#define CKEN_BOOT	11	/* < Boot rom clock enable */
-+#define CKEN_MMC1	12	/* < MMC1 Clock enable */
-+#define CKEN_MMC2	13	/* < MMC2 clock enable */
-+#define CKEN_KEYPAD	14	/* < Keypand Controller Clock Enable */
-+#define CKEN_CIR	15	/* < Consumer IR Clock Enable */
-+#define CKEN_USIM0	17	/* < USIM[0] Clock Enable */
-+#define CKEN_USIM1	18	/* < USIM[1] Clock Enable */
-+#define CKEN_TPM	19	/* < TPM clock enable */
-+#define CKEN_UDC	20	/* < UDC clock enable */
-+#define CKEN_BTUART	21	/* < BTUART clock enable */
-+#define CKEN_FFUART	22	/* < FFUART clock enable */
-+#define CKEN_STUART	23	/* < STUART clock enable */
-+#define CKEN_AC97	24	/* < AC97 clock enable */
-+#define CKEN_TOUCH	25	/* < Touch screen Interface Clock Enable */
-+#define CKEN_SSP1	26	/* < SSP1 clock enable */
-+#define CKEN_SSP2	27	/* < SSP2 clock enable */
-+#define CKEN_SSP3	28	/* < SSP3 clock enable */
-+#define CKEN_SSP4	29	/* < SSP4 clock enable */
-+#define CKEN_MSL0	30	/* < MSL0 clock enable */
-+#define CKEN_PWM0	32	/* < PWM[0] clock enable */
-+#define CKEN_PWM1	33	/* < PWM[1] clock enable */
-+#define CKEN_I2C	36	/* < I2C clock enable */
-+#define CKEN_INTC	38	/* < Interrupt controller clock enable */
-+#define CKEN_GPIO	39	/* < GPIO clock enable */
-+#define CKEN_1WIRE	40	/* < 1-wire clock enable */
-+#define CKEN_HSIO2	41	/* < HSIO2 clock enable */
-+#define CKEN_MINI_IM	48	/* < Mini-IM */
-+#define CKEN_MINI_LCD	49	/* < Mini LCD */
-+
-+#define CKEN_MMC3	5	/* < MMC3 Clock Enable */
-+#define CKEN_MVED	43	/* < MVED clock enable */
-+
-+/* Note: GCU clock enable bit differs on PXA300/PXA310 and PXA320 */
-+#define CKEN_PXA300_GCU		42	/* Graphics controller clock enable */
-+#define CKEN_PXA320_GCU		7	/* Graphics controller clock enable */
-+
-+/*
-+ * Static Memory Controller
-+ */
-+#define MSC0		__REG(0x4a000008)	/* Static Memory Control 0 */
-+#define MSC1		__REG(0x4a00000c)	/* Static Memory Control 1 */
-+#define MECR		__REG(0x4a000014)	/* Expansion Memory Configuration */
-+#define SXCNFG		__REG(0x4a00001c)	/* Synchronous Static Memory Control */
-+#define MCMEM0		__REG(0x4a000028)	/* Expansion Memory Timing */
-+#define MCATT0		__REG(0x4a000030)	/* Expansion Memory Timing */
-+#define MCIO0		__REG(0x4a000038)	/* Expansion Memory Timing */
-+#define MEMCLKCFG	__REG(0x4a000068)	/* Clock configuration */
-+#define CSADRCFG0	__REG(0x4a000080)	/* CS0 address configuration */
-+#define CSADRCFG1	__REG(0x4a000084)	/* CS1 address configuration */
-+#define CSADRCFG2	__REG(0x4a000088)	/* CS2 address configuration */
-+#define CSADRCFG3	__REG(0x4a00008c)	/* CS3 address configuration */
-+#define CSADRCFGP	__REG(0x4a000090)	/* CSP address configuration */
-+#define CSMSADRCFG	__REG(0x4a0000a0)	/* CSP address configuration */
-+
-+#endif	/* !__MACH_PXA3XX_REGS */
-diff --git a/arch/arm/mach-pxa/include/plat/mfp.h b/arch/arm/mach-pxa/include/plat/mfp.h
-index 755b020..aedb956 100644
---- a/arch/arm/mach-pxa/include/plat/mfp.h
-+++ b/arch/arm/mach-pxa/include/plat/mfp.h
-@@ -416,7 +416,7 @@ typedef unsigned long mfp_cfg_t;
- 	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DS_MASK | MFP_LPM_STATE_MASK)) |\
- 	 (MFP_PIN(MFP_PIN_##pin) | MFP_##af | MFP_##drv | MFP_LPM_##lpm))
- 
--#if defined(CONFIG_PXA3xx) || defined(CONFIG_ARCH_MMP)
-+#if defined(CONFIG_ARCH_PXA3XX)
- /*
-  * each MFP pin will have a MFPR register, since the offset of the
-  * register varies between processors, the processor specific code
-@@ -449,7 +449,7 @@ struct mfp_addr_map {
- 
- #define MFP_ADDR_END	{ MFP_PIN_INVALID, 0 }
- 
--void __init mfp_init_base(unsigned long mfpr_base);
-+void __init mfp_init_base(void __iomem *mfpr_base);
- void __init mfp_init_addr(struct mfp_addr_map *map);
- 
- /*
-@@ -463,6 +463,7 @@ void mfp_write(int mfp, unsigned long mfpr_val);
- void mfp_config(unsigned long *mfp_cfgs, int num);
- void mfp_config_run(void);
- void mfp_config_lpm(void);
--#endif /* CONFIG_PXA3xx || CONFIG_ARCH_MMP */
-+void mfp_init(void);
-+#endif /* CONFIG_ARCH_PXA3XX */
- 
- #endif /* __ASM_PLAT_MFP_H */
-diff --git a/arch/arm/mach-pxa/mfp.c b/arch/arm/mach-pxa/mfp.c
-new file mode 100644
-index 0000000..df49224
---- /dev/null
-+++ b/arch/arm/mach-pxa/mfp.c
-@@ -0,0 +1,338 @@
-+/*
-+ * linux/arch/arm/plat-pxa/mfp.c
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
-+ *   Multi-Function Pin Support
-+ *
-+ * Copyright (C) 2007 Marvell Internation Ltd.
-+ *
-+ * 2007-08-21: eric miao <eric.miao@marvell.com>
-+ *             initial version
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License version 2 as
-+ *  published by the Free Software Foundation.
 + */
 +
 +#include <common.h>
++
++#include <driver.h>
++#include <environment.h>
++#include <fs.h>
++#include <gpio.h>
 +#include <init.h>
-+#include <io.h>
-+#include <mach/hardware.h>
++#include <partition.h>
++#include <led.h>
++#include <net/smc91111.h>
++#include <platform_data/mtd-nand-pxa3xx.h>
++#include <pwm.h>
++
++#include <mach/devices.h>
 +#include <mach/mfp-pxa3xx.h>
-+#include <plat/mfp.h>
++#include <mach/pxa-regs.h>
 +
-+#define MFPR_SIZE	(PAGE_SIZE)
++#include <asm/armlinux.h>
++#include <asm/io.h>
++#include <asm/mmu.h>
++#include <generated/mach-types.h>
 +
-+/* MFPR register bit definitions */
-+#define MFPR_PULL_SEL		(0x1 << 15)
-+#define MFPR_PULLUP_EN		(0x1 << 14)
-+#define MFPR_PULLDOWN_EN	(0x1 << 13)
-+#define MFPR_SLEEP_SEL		(0x1 << 9)
-+#define MFPR_SLEEP_OE_N		(0x1 << 7)
-+#define MFPR_EDGE_CLEAR		(0x1 << 6)
-+#define MFPR_EDGE_FALL_EN	(0x1 << 5)
-+#define MFPR_EDGE_RISE_EN	(0x1 << 4)
++#include "zylonite.h"
 +
-+#define MFPR_SLEEP_DATA(x)	((x) << 8)
-+#define MFPR_DRIVE(x)		(((x) & 0x7) << 10)
-+#define MFPR_AF_SEL(x)		(((x) & 0x7) << 0)
-+
-+#define MFPR_EDGE_NONE		(0)
-+#define MFPR_EDGE_RISE		(MFPR_EDGE_RISE_EN)
-+#define MFPR_EDGE_FALL		(MFPR_EDGE_FALL_EN)
-+#define MFPR_EDGE_BOTH		(MFPR_EDGE_RISE | MFPR_EDGE_FALL)
-+
-+/*
-+ * Table that determines the low power modes outputs, with actual settings
-+ * used in parentheses for don't-care values. Except for the float output,
-+ * the configured driven and pulled levels match, so if there is a need for
-+ * non-LPM pulled output, the same configuration could probably be used.
-+ *
-+ * Output value  sleep_oe_n  sleep_data  pullup_en  pulldown_en  pull_sel
-+ *                 (bit 7)    (bit 8)    (bit 14)     (bit 13)   (bit 15)
-+ *
-+ * Input            0          X(0)        X(0)        X(0)       0
-+ * Drive 0          0          0           0           X(1)       0
-+ * Drive 1          0          1           X(1)        0	  0
-+ * Pull hi (1)      1          X(1)        1           0	  0
-+ * Pull lo (0)      1          X(0)        0           1	  0
-+ * Z (float)        1          X(0)        0           0	  0
-+ */
-+#define MFPR_LPM_INPUT		(0)
-+#define MFPR_LPM_DRIVE_LOW	(MFPR_SLEEP_DATA(0) | MFPR_PULLDOWN_EN)
-+#define MFPR_LPM_DRIVE_HIGH	(MFPR_SLEEP_DATA(1) | MFPR_PULLUP_EN)
-+#define MFPR_LPM_PULL_LOW	(MFPR_LPM_DRIVE_LOW  | MFPR_SLEEP_OE_N)
-+#define MFPR_LPM_PULL_HIGH	(MFPR_LPM_DRIVE_HIGH | MFPR_SLEEP_OE_N)
-+#define MFPR_LPM_FLOAT		(MFPR_SLEEP_OE_N)
-+#define MFPR_LPM_MASK		(0xe080)
-+
-+/*
-+ * The pullup and pulldown state of the MFP pin at run mode is by default
-+ * determined by the selected alternate function. In case that some buggy
-+ * devices need to override this default behavior,  the definitions below
-+ * indicates the setting of corresponding MFPR bits
-+ *
-+ * Definition       pull_sel  pullup_en  pulldown_en
-+ * MFPR_PULL_NONE       0         0        0
-+ * MFPR_PULL_LOW        1         0        1
-+ * MFPR_PULL_HIGH       1         1        0
-+ * MFPR_PULL_BOTH       1         1        1
-+ * MFPR_PULL_FLOAT	1         0        0
-+ */
-+#define MFPR_PULL_NONE		(0)
-+#define MFPR_PULL_LOW		(MFPR_PULL_SEL | MFPR_PULLDOWN_EN)
-+#define MFPR_PULL_BOTH		(MFPR_PULL_LOW | MFPR_PULLUP_EN)
-+#define MFPR_PULL_HIGH		(MFPR_PULL_SEL | MFPR_PULLUP_EN)
-+#define MFPR_PULL_FLOAT		(MFPR_PULL_SEL)
-+
-+/* mfp_spin_lock is used to ensure that MFP register configuration
-+ * (most likely a read-modify-write operation) is atomic, and that
-+ * mfp_table[] is consistent
-+ */
-+static void __iomem *mfpr_mmio_base;
-+
-+struct mfp_pin {
-+	unsigned long	config;		/* -1 for not configured */
-+	unsigned long	mfpr_off;	/* MFPRxx Register offset */
-+	unsigned long	mfpr_run;	/* Run-Mode Register Value */
-+	unsigned long	mfpr_lpm;	/* Low Power Mode Register Value */
++static struct smc91c111_pdata smsc91x_pdata;
++static struct pxa3xx_nand_platform_data nand_pdata = {
++	.keep_config = 0,
++	.flash_bbt = 1,
 +};
 +
-+static struct mfp_pin mfp_table[MFP_PIN_MAX];
++static mfp_cfg_t pxa310_mfp_cfg[] = {
++	/* FFUART */
++	MFP_CFG_LPM(GPIO99,  AF1, FLOAT),	/* GPIO99_UART1_RXD */
++	MFP_CFG_LPM(GPIO100, AF1, FLOAT),	/* GPIO100_UART1_RXD */
++	MFP_CFG_LPM(GPIO101, AF1, FLOAT),	/* GPIO101_UART1_CTS */
++	MFP_CFG_LPM(GPIO106, AF1, FLOAT),	/* GPIO106_UART1_CTS */
 +
-+/* mapping of MFP_LPM_* definitions to MFPR_LPM_* register bits */
-+static const unsigned long mfpr_lpm[] = {
-+	MFPR_LPM_INPUT,
-+	MFPR_LPM_DRIVE_LOW,
-+	MFPR_LPM_DRIVE_HIGH,
-+	MFPR_LPM_PULL_LOW,
-+	MFPR_LPM_PULL_HIGH,
-+	MFPR_LPM_FLOAT,
-+	MFPR_LPM_INPUT,
++	/* Ethernet */
++	MFP_CFG(GPIO2,  AF1),			/* GPIO2_nCS3 */
 +};
 +
-+/* mapping of MFP_PULL_* definitions to MFPR_PULL_* register bits */
-+static const unsigned long mfpr_pull[] = {
-+	MFPR_PULL_NONE,
-+	MFPR_PULL_LOW,
-+	MFPR_PULL_HIGH,
-+	MFPR_PULL_BOTH,
-+	MFPR_PULL_FLOAT,
-+};
-+
-+/* mapping of MFP_LPM_EDGE_* definitions to MFPR_EDGE_* register bits */
-+static const unsigned long mfpr_edge[] = {
-+	MFPR_EDGE_NONE,
-+	MFPR_EDGE_RISE,
-+	MFPR_EDGE_FALL,
-+	MFPR_EDGE_BOTH,
-+};
-+
-+#define mfpr_readl(off)			\
-+	__raw_readl(mfpr_mmio_base + (off))
-+
-+#define mfpr_writel(off, val)		\
-+	__raw_writel(val, mfpr_mmio_base + (off))
-+
-+#define mfp_configured(p)	((p)->config != -1)
-+
-+/*
-+ * perform a read-back of any valid MFPR register to make sure the
-+ * previous writings are finished
-+ */
-+static unsigned long mfpr_off_readback;
-+#define mfpr_sync()	(void)__raw_readl(mfpr_mmio_base + mfpr_off_readback)
-+
-+static inline void __mfp_config_run(struct mfp_pin *p)
++static int zylonite_devices_init(void)
 +{
-+	if (mfp_configured(p))
-+		mfpr_writel(p->mfpr_off, p->mfpr_run);
++	armlinux_set_architecture(MACH_TYPE_ZYLONITE);
++	pxa_add_uart((void *)0x40100000, 0);
++	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL,
++			   0x14000300, 0x100000, IORESOURCE_MEM,
++			   &smsc91x_pdata);
++	add_generic_device("pxa3xx_nand", DEVICE_ID_DYNAMIC, NULL,
++			   0x43100000, 0x1000, IORESOURCE_MEM, &nand_pdata);
++	return 0;
 +}
++device_initcall(zylonite_devices_init);
 +
-+static inline void __mfp_config_lpm(struct mfp_pin *p)
++static int zylonite_coredevice_init(void)
 +{
-+	if (mfp_configured(p)) {
-+		unsigned long mfpr_clr =
-+			(p->mfpr_run & ~MFPR_EDGE_BOTH) | MFPR_EDGE_CLEAR;
++	barebox_set_model("Zylonite");
++	barebox_set_hostname("zylonite");
 +
-+		if (mfpr_clr != p->mfpr_run)
-+			mfpr_writel(p->mfpr_off, mfpr_clr);
-+		if (p->mfpr_lpm != mfpr_clr)
-+			mfpr_writel(p->mfpr_off, p->mfpr_lpm);
-+	}
-+}
-+
-+void mfp_config(unsigned long *mfp_cfgs, int num)
-+{
-+	int i;
-+
-+	for (i = 0; i < num; i++, mfp_cfgs++) {
-+		unsigned long tmp, c = *mfp_cfgs;
-+		struct mfp_pin *p;
-+		int pin, af, drv, lpm, edge, pull;
-+
-+		pin = MFP_PIN(c);
-+		BUG_ON(pin >= MFP_PIN_MAX);
-+		p = &mfp_table[pin];
-+
-+		af  = MFP_AF(c);
-+		drv = MFP_DS(c);
-+		lpm = MFP_LPM_STATE(c);
-+		edge = MFP_LPM_EDGE(c);
-+		pull = MFP_PULL(c);
-+
-+		/* run-mode pull settings will conflict with MFPR bits of
-+		 * low power mode state,  calculate mfpr_run and mfpr_lpm
-+		 * individually if pull != MFP_PULL_NONE
-+		 */
-+		tmp = MFPR_AF_SEL(af) | MFPR_DRIVE(drv);
-+
-+		if (likely(pull == MFP_PULL_NONE)) {
-+			p->mfpr_run = tmp | mfpr_lpm[lpm] | mfpr_edge[edge];
-+			p->mfpr_lpm = p->mfpr_run;
-+		} else {
-+			p->mfpr_lpm = tmp | mfpr_lpm[lpm] | mfpr_edge[edge];
-+			p->mfpr_run = tmp | mfpr_pull[pull];
-+		}
-+
-+		p->config = c; __mfp_config_run(p);
-+	}
-+
-+	mfpr_sync();
-+}
-+
-+unsigned long mfp_read(int mfp)
-+{
-+	unsigned long val;
-+
-+	BUG_ON(mfp < 0 || mfp >= MFP_PIN_MAX);
-+
-+	val = mfpr_readl(mfp_table[mfp].mfpr_off);
-+	return val;
-+}
-+
-+void mfp_write(int mfp, unsigned long val)
-+{
-+	BUG_ON(mfp < 0 || mfp >= MFP_PIN_MAX);
-+
-+	mfpr_writel(mfp_table[mfp].mfpr_off, val);
-+	mfpr_sync();
-+}
-+
-+void __init mfp_init_base(void __iomem *mfpr_base)
-+{
-+	int i;
-+
-+	/* initialize the table with default - unconfigured */
-+	for (i = 0; i < ARRAY_SIZE(mfp_table); i++)
-+		mfp_table[i].config = -1;
-+
-+	mfpr_mmio_base = mfpr_base;
-+}
-+
-+void __init mfp_init_addr(struct mfp_addr_map *map)
-+{
-+	struct mfp_addr_map *p;
-+	unsigned long offset;
-+	int i;
-+
-+	/* mfp offset for readback */
-+	mfpr_off_readback = map[0].offset;
-+
-+	for (p = map; p->start != MFP_PIN_INVALID; p++) {
-+		offset = p->offset;
-+		i = p->start;
-+
-+		do {
-+			mfp_table[i].mfpr_off = offset;
-+			mfp_table[i].mfpr_run = 0;
-+			mfp_table[i].mfpr_lpm = 0;
-+			offset += 4; i++;
-+		} while ((i <= p->end) && (p->end != -1));
-+	}
-+}
-+
-+void mfp_config_lpm(void)
-+{
-+	struct mfp_pin *p = &mfp_table[0];
-+	int pin;
-+
-+	for (pin = 0; pin < ARRAY_SIZE(mfp_table); pin++, p++)
-+		__mfp_config_lpm(p);
-+}
-+
-+void mfp_config_run(void)
-+{
-+	struct mfp_pin *p = &mfp_table[0];
-+	int pin;
-+
-+	for (pin = 0; pin < ARRAY_SIZE(mfp_table); pin++, p++)
-+		__mfp_config_run(p);
-+}
-+
-+static struct mfp_addr_map pxa300_mfp_addr_map[] __initdata = {
-+
-+	MFP_ADDR_X(GPIO0,   GPIO2,   0x00b4),
-+	MFP_ADDR_X(GPIO3,   GPIO26,  0x027c),
-+	MFP_ADDR_X(GPIO27,  GPIO98,  0x0400),
-+	MFP_ADDR_X(GPIO99,  GPIO127, 0x0600),
-+	MFP_ADDR_X(GPIO0_2, GPIO1_2, 0x0674),
-+	MFP_ADDR_X(GPIO2_2, GPIO6_2, 0x02dc),
-+
-+	MFP_ADDR(nBE0, 0x0204),
-+	MFP_ADDR(nBE1, 0x0208),
-+
-+	MFP_ADDR(nLUA, 0x0244),
-+	MFP_ADDR(nLLA, 0x0254),
-+
-+	MFP_ADDR(DF_CLE_nOE, 0x0240),
-+	MFP_ADDR(DF_nRE_nOE, 0x0200),
-+	MFP_ADDR(DF_ALE_nWE, 0x020C),
-+	MFP_ADDR(DF_INT_RnB, 0x00C8),
-+	MFP_ADDR(DF_nCS0, 0x0248),
-+	MFP_ADDR(DF_nCS1, 0x0278),
-+	MFP_ADDR(DF_nWE, 0x00CC),
-+
-+	MFP_ADDR(DF_ADDR0, 0x0210),
-+	MFP_ADDR(DF_ADDR1, 0x0214),
-+	MFP_ADDR(DF_ADDR2, 0x0218),
-+	MFP_ADDR(DF_ADDR3, 0x021C),
-+
-+	MFP_ADDR(DF_IO0, 0x0220),
-+	MFP_ADDR(DF_IO1, 0x0228),
-+	MFP_ADDR(DF_IO2, 0x0230),
-+	MFP_ADDR(DF_IO3, 0x0238),
-+	MFP_ADDR(DF_IO4, 0x0258),
-+	MFP_ADDR(DF_IO5, 0x0260),
-+	MFP_ADDR(DF_IO6, 0x0268),
-+	MFP_ADDR(DF_IO7, 0x0270),
-+	MFP_ADDR(DF_IO8, 0x0224),
-+	MFP_ADDR(DF_IO9, 0x022C),
-+	MFP_ADDR(DF_IO10, 0x0234),
-+	MFP_ADDR(DF_IO11, 0x023C),
-+	MFP_ADDR(DF_IO12, 0x025C),
-+	MFP_ADDR(DF_IO13, 0x0264),
-+	MFP_ADDR(DF_IO14, 0x026C),
-+	MFP_ADDR(DF_IO15, 0x0274),
-+
-+	MFP_ADDR_END,
-+};
-+
-+/* override pxa300 MFP register addresses */
-+static struct mfp_addr_map pxa310_mfp_addr_map[] __initdata = {
-+	MFP_ADDR_X(GPIO30,  GPIO98,   0x0418),
-+	MFP_ADDR_X(GPIO7_2, GPIO12_2, 0x052C),
-+
-+	MFP_ADDR(ULPI_STP, 0x040C),
-+	MFP_ADDR(ULPI_NXT, 0x0410),
-+	MFP_ADDR(ULPI_DIR, 0x0414),
-+
-+	MFP_ADDR_END,
-+};
-+
-+void mfp_init(void)
-+{
-+	mfp_init_base((void __iomem *)MFPR_BASE);
-+	mfp_init_addr(pxa300_mfp_addr_map);
++	mfp_init();
 +	if (cpu_is_pxa310())
-+		mfp_init_addr(pxa310_mfp_addr_map);
-+}
-diff --git a/arch/arm/mach-pxa/reset_source.c b/arch/arm/mach-pxa/reset_source.c
-index a90584b..0730e02 100644
---- a/arch/arm/mach-pxa/reset_source.c
-+++ b/arch/arm/mach-pxa/reset_source.c
-@@ -15,8 +15,10 @@
- #include <common.h>
- #include <init.h>
- #include <reset_source.h>
-+#include <mach/hardware.h>
- #include <mach/pxa-regs.h>
- 
-+#ifdef CONFIG_ARCH_PXA2XX
- static int pxa_detect_reset_source(void)
- {
- 	u32 reg = RCSR;
-@@ -38,4 +40,38 @@ static int pxa_detect_reset_source(void)
- 	return 0;
- }
- 
-+void pxa_reset_reset_source(void)
-+{
-+	RCSR = RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR;
-+}
-+#endif
-+
-+#ifdef CONFIG_ARCH_PXA3XX
-+static int pxa_detect_reset_source(void)
-+{
-+	u32 reg = ARSR;
-+
++		pxa3xx_mfp_config(pxa310_mfp_cfg, ARRAY_SIZE(pxa310_mfp_cfg));
++	CKENA |= CKEN_NAND | CKEN_SMC | CKEN_FFUART | CKEN_GPIO;
 +	/*
-+	 * Order is important, as many bits can be set together
++	 * Configure Ethernet controller :
++	 * MCS1: setup VLIO on nCS3, with 15 DF_SCLK cycles (max) for hold,
++	 *       setup and assertion times
++	 * CSADRCFG3: DFI AA/D multiplexing VLIO, addr split at bit <16>, full
++	 * latched mode, 7 DF_SCLK cycles (max) for nLUA and nLLA.
 +	 */
-+	if (reg & ARSR_GPR)
-+		reset_source_set(RESET_RST);
-+	else if (reg & ARSR_WDT)
-+		reset_source_set(RESET_WDG);
-+	else if (reg & ARSR_HWR)
-+		reset_source_set(RESET_POR);
-+	else if (reg & ARSR_LPMR)
-+		reset_source_set(RESET_WKE);
-+	else
-+		reset_source_set(RESET_UKWN);
++	MSC1 = 0x7ffc0000 | (MSC1 & 0x0000ffff);
++	CSADRCFG3 = 0x003e080b;
 +
 +	return 0;
 +}
++coredevice_initcall(zylonite_coredevice_init);
 +
-+void pxa_clear_reset_source(void)
++static int zylonite_mem_init(void)
 +{
-+	ARSR = ARSR_GPR | ARSR_LPMR | ARSR_WDT | ARSR_HWR;
++	arm_add_mem_device("ram0", 0x80000000, 128 * 1024 * 1024);
++	return 0;
 +}
-+#endif
-+
- device_initcall(pxa_detect_reset_source);
-diff --git a/arch/arm/mach-pxa/sleep.S b/arch/arm/mach-pxa/sleep.S
-index 881033d..9acd38d 100644
---- a/arch/arm/mach-pxa/sleep.S
-+++ b/arch/arm/mach-pxa/sleep.S
-@@ -79,3 +79,12 @@ pxa_cpu_do_suspend:
- 	@ enter sleep mode
- 	mcr	p14, 0, r1, c7, c0, 0		@ PWRMODE
- 20:	b	20b				@ loop waiting for sleep
-+
-+#if (defined CONFIG_ARCH_PXA3XX)
-+	/*
-+	 * pxa3xx_finish_suspend() - forces CPU into sleep state
-+	*/
-+ENTRY(pxa3xx_suspend)
-+	mcr     p14, 0, r0, c7, c0, 0   @ enter sleep
-+20:	b       20b                     @ waiting for sleep
-+#endif /* CONFIG_PXA3xx */
-diff --git a/arch/arm/mach-pxa/speed-pxa3xx.c b/arch/arm/mach-pxa/speed-pxa3xx.c
++mem_initcall(zylonite_mem_init);
+diff --git a/arch/arm/boards/zylonite/env/bin/init b/arch/arm/boards/zylonite/env/bin/init
 new file mode 100644
-index 0000000..6a08ea7
+index 0000000..a6bc087
 --- /dev/null
-+++ b/arch/arm/mach-pxa/speed-pxa3xx.c
-@@ -0,0 +1,33 @@
++++ b/arch/arm/boards/zylonite/env/bin/init
+@@ -0,0 +1,25 @@
++#!/bin/sh
++
++PATH=/env/bin
++export PATH
++
++. /env/config
++addpart /dev/nand0 $mtdparts
++usbserial -s "Zylonite usb gadget"
++
++# Phase1: check for MTD override
++mtd_env_override
++if [ $? = 0 ]; then
++    echo "Switching to custom environment"
++    /env/init
++    exit
++fi
++
++# Phase2: initiate network
++dhcp -H zylonite
++
++# Phase3: activate netconsole, broadcast everywhere
++netconsole.ip=255.255.255.255
++netconsole.active=ioe
++netconsole.port=6666
++
+diff --git a/arch/arm/boards/zylonite/env/bin/mtd_env_override b/arch/arm/boards/zylonite/env/bin/mtd_env_override
+new file mode 100644
+index 0000000..6ea253a
+--- /dev/null
++++ b/arch/arm/boards/zylonite/env/bin/mtd_env_override
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++loadenv /dev/nand0.barebox-env
++exit $?
+diff --git a/arch/arm/boards/zylonite/env/config b/arch/arm/boards/zylonite/env/config
+new file mode 100644
+index 0000000..56ee90f
+--- /dev/null
++++ b/arch/arm/boards/zylonite/env/config
+@@ -0,0 +1,6 @@
++#!/bin/sh
++
++autoboot_timeout=3
++
++mtdparts="128k@0(TIMH)ro,128k@128k(OBMI)ro,768k@256k(barebox),256k@1024k(barebox-env),12M@1280k(kernel),38016k@13568k(root)"
++bootargs="$bootargs mtdparts=pxa3xx-nand.0:$mtdparts ubi.mtd=6 rootfstype=ubifs root=ubi0:linux_root ro"
+diff --git a/arch/arm/boards/zylonite/lowlevel.c b/arch/arm/boards/zylonite/lowlevel.c
+new file mode 100644
+index 0000000..ce22a79
+--- /dev/null
++++ b/arch/arm/boards/zylonite/lowlevel.c
+@@ -0,0 +1,10 @@
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++
++void __naked barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++	barebox_arm_entry(0x80000000, SZ_128M, NULL);
++}
+diff --git a/arch/arm/boards/zylonite/zylonite.h b/arch/arm/boards/zylonite/zylonite.h
+new file mode 100644
+index 0000000..d39ab72
+--- /dev/null
++++ b/arch/arm/boards/zylonite/zylonite.h
+@@ -0,0 +1,22 @@
 +/*
-+ * clock.h - implementation of the PXA clock functions
++ * (C) 2011 Robert Jarzmik <robert.jarzmik@free.fr>
 + *
-+ * Copyright (C) 2014 by Robert Jarzmik <robert.jarzmik@free.fr>
++ * See file CREDITS for list of people who contributed to this
++ * project.
 + *
-+ * This file is released under the GPLv2
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
 + */
++#ifndef _ZYLONITE_H_
++#define _ZYLONITE_H_
 +
-+#include <common.h>
-+#include <mach/clock.h>
-+#include <mach/pxa-regs.h>
 +
-+/* Crystal clock: 13MHz */
-+#define BASE_CLK	13000000
++#endif /* _ZYLONITE_H */
+diff --git a/arch/arm/configs/zylonite310_defconfig b/arch/arm/configs/zylonite310_defconfig
+new file mode 100644
+index 0000000..3449862
+--- /dev/null
++++ b/arch/arm/configs/zylonite310_defconfig
+@@ -0,0 +1,117 @@
++CONFIG_ARCH_PXA=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x100000
++CONFIG_ARCH_PXA3XX=y
++CONFIG_AEABI=y
++CONFIG_ARM_BOARD_APPEND_ATAG=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++# CONFIG_BANNER is not set
++CONFIG_MMU=y
++CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
++CONFIG_MALLOC_SIZE=0x1000000
++CONFIG_EXPERIMENTAL=y
++CONFIG_MODULES=y
++CONFIG_KALLSYMS=y
++CONFIG_PROMPT="zylonite-barebox:"
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/zylonite/env"
++CONFIG_RESET_SOURCE=y
++CONFIG_DEFAULT_LOGLEVEL=8
++CONFIG_DEBUG_INFO=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_FLEXIBLE_BOOTARGS=y
++CONFIG_CMD_BOOT=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_SAVES=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_AUTOMOUNT=y
++CONFIG_CMD_UBIFORMAT=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_GLOBAL=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_BASENAME=y
++CONFIG_CMD_CMP=y
++CONFIG_CMD_DIRNAME=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_READLINK=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
++CONFIG_NET_CMD_IFUP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_LOGIN=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_SPLASH=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_POWEROFF=y
++CONFIG_CMD_2048=y
++CONFIG_CMD_LSMOD=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_NET=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_PXA=y
++CONFIG_DRIVER_NET_SMC91111=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++CONFIG_NAND=y
++CONFIG_NAND_PXA3XX=y
++CONFIG_MTD_UBI=y
++CONFIG_MCI=y
++CONFIG_KEYBOARD_GPIO=y
++CONFIG_PWM=y
++# CONFIG_PINCTRL is not set
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_FS_UBIFS=y
++CONFIG_FS_UBIFS_COMPRESSION_LZO=y
++CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
++CONFIG_BZLIB=y
++CONFIG_BMP=y
++CONFIG_PNG=y
++CONFIG_SHA256=y
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index 3a728ed..63f148b 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -4,6 +4,7 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0xa0000000 if MACH_MIOA701
+ 	default 0xa3f00000 if MACH_PCM027
++	default 0x81000000 if MACH_ZYLONITE
+ 
+ # ----------------------------------------------------------
+ 
+@@ -64,9 +65,19 @@ endif
+ 
+ if ARCH_PXA3XX
+ 
++config MACH_ZYLONITE
++       bool
 +
-+unsigned long pxa_get_uartclk(void)
-+{
-+	return 14857000;
-+}
+ choice
+ 	prompt "PXA3xx Board Type"
+-	bool
 +
-+unsigned long pxa_get_pwmclk(void)
-+{
-+	return BASE_CLK;
-+}
-+
-+unsigned long pxa_get_nandclk(void)
-+{
-+	if (cpu_is_pxa320())
-+		return 104000000;
-+	else
-+		return 156000000;
-+}
++config MACH_ZYLONITE_PXA310
++	bool "Zylonite board based on a PXA310 pxa SoC"
++	help
++	  Say Y here if you are using a Zylonite board, based
++	  on a PXA31x SoC.
++	select ARCH_PXA310
++	select MACH_ZYLONITE
+ 
+ endchoice
+ 
 -- 
 2.1.0
 
