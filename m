@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from down.free-electrons.com ([37.187.137.238]
- helo=mail.free-electrons.com)
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]
+ helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y8ENC-0006MC-PG
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 20:35:35 +0000
-Message-ID: <54AAF506.4020501@free-electrons.com>
-Date: Mon, 05 Jan 2015 17:33:10 -0300
-From: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+ id 1Y8ENt-0006dY-N7
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 20:36:18 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1420364466-22400-1-git-send-email-robert.jarzmik@free.fr>
+ <20150105131245.GG4544@pengutronix.de>
+Date: Mon, 05 Jan 2015 21:35:55 +0100
+In-Reply-To: <20150105131245.GG4544@pengutronix.de> (Sascha Hauer's message of
+ "Mon, 5 Jan 2015 14:12:45 +0100")
+Message-ID: <87zj9x3qz8.fsf@free.fr>
 MIME-Version: 1.0
-References: <54A98B8F.2040405@free-electrons.com>	<1511697250.362148406.1420454678099.JavaMail.root@zimbra1-e1.priv.proxad.net>	<20150105120322.GB4544@pengutronix.de>
- <874ms555pb.fsf@free.fr>
-In-Reply-To: <874ms555pb.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +20,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: add pxa3xx-nand driver
-To: Robert Jarzmik <robert.jarzmik@free.fr>, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 1/2] ARM: pxa: add pxa3xx architecture
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 01/05/2015 05:32 PM, Robert Jarzmik wrote:
-> I have an idea here : as barebox is not performance oriented, and as the =
-timings
-> are minimum guaranteed times between signal swaps, let me try to hard enc=
-ode all
-> timing with their maximum value.
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Sounds a good plan to me.
--- =
+> On Sun, Jan 04, 2015 at 10:41:05AM +0100, Robert Jarzmik wrote:
+>> +#ifdef CONFIG_ARCH_PXA2XX
+>>  	pxa_suspend(PWRMODE_DEEPSLEEP);
+>> +#endif
+>> +#ifdef CONFIG_ARCH_PXA3XX
+>> +	pxa3xx_suspend(PXA3xx_PM_S3D4C4);
+>> +#endif
+>
+> 	if (cpu_is_*())
+>
+> instead of ifdefs?
+That was my first try, but compilation did fail. Yet your other suggestion
+(separate by SoC type) could take care of it.
 
-Ezequiel Garc=EDa, Free Electrons
-Embedded Linux, Kernel and Android Engineering
-http://free-electrons.com
+>
+>>  	unreachable();
+>>  }
+>> diff --git a/arch/arm/mach-pxa/mfp.c b/arch/arm/mach-pxa/mfp.c
+>
+> Better mfp-pxa3xx.c analog to mfp-pxa2xx.c?
+Definitely, for v2.
+
+> Instead of separating the source files by functionality you could
+> separate them by SoC type. This would reduce the need for ifdefs.
+Yes, good idea.
+
+I'll create pxa3xx.c and pxa2xx.c, and stuff them with poweroff(),
+reset_source(), etc ..., each with its own variant.
+
+Cheers.
+
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
