@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y83d7-0008QX-1V
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 09:07:18 +0000
-Date: Mon, 5 Jan 2015 10:06:52 +0100
+ Linux)) id 1Y841J-00059u-4g
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 09:32:17 +0000
+Date: Mon, 5 Jan 2015 10:31:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150105090651.GD30369@pengutronix.de>
-References: <1420044590-26343-1-git-send-email-andrew.smirnov@gmail.com>
+Message-ID: <20150105093154.GE30369@pengutronix.de>
+References: <1420038655-8856-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1420044590-26343-1-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1420038655-8856-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,76 +22,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC, PATCH] i.MX6: phytec: Do not hardcode default environment
+Subject: Re: [PATCH] i.MX: SPI: Respect SPI_LSB_FIRST flag in mode settings
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
 Hi Andrey,
 
-On Wed, Dec 31, 2014 at 08:49:50AM -0800, Andrey Smirnov wrote:
-> By default i.MX6 phytec image hardcodes its default environment in
-> initialization code. Define phytec specific defonfig and use
-> CONFIG_DEFAULT_ENVIRONMENT_PATH instead.
+On Wed, Dec 31, 2014 at 07:10:55AM -0800, Andrey Smirnov wrote:
+> Add code to support SPI transfers that have data shifted out least
+> significant bit first. This is useful in many cases, but specifically
+> it is needed for drivers/firmware/altera_serial.c to work on i.MX
+> platform.
 > 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
+>  drivers/spi/imx_spi.c | 50 ++++++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 44 insertions(+), 6 deletions(-)
 > 
-> Not sure how much of a faux pas adding a new defconfig file is, but I
-> couldn't think of a better alternative. What I was trying to achive is
-> being able to build an image for a custom Phytec SoM based platform
-> that would have a completely custom envirnoment and would not pull in
-> default phytec stuff.
-> 
-> Let me know if this is a right approach.
-> 
-> Thank you.
-> 
->  arch/arm/boards/phytec-phyflex-imx6/Makefile   |   1 -
->  arch/arm/boards/phytec-phyflex-imx6/board.c    |   2 -
->  arch/arm/configs/phytec_phyflex_imx6_defconfig | 705 +++++++++++++++++++++++++
->  3 files changed, 705 insertions(+), 3 deletions(-)
->  create mode 100644 arch/arm/configs/phytec_phyflex_imx6_defconfig
-> 
-> diff --git a/arch/arm/boards/phytec-phyflex-imx6/Makefile b/arch/arm/boards/phytec-phyflex-imx6/Makefile
-> index 11e1c7d..01c7a25 100644
-> --- a/arch/arm/boards/phytec-phyflex-imx6/Makefile
-> +++ b/arch/arm/boards/phytec-phyflex-imx6/Makefile
-> @@ -1,3 +1,2 @@
->  obj-y += board.o
->  lwl-y += lowlevel.o
-> -bbenv-y += defaultenv-phyflex-imx6
-> diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
-> index 1551460..3f52680 100644
-> --- a/arch/arm/boards/phytec-phyflex-imx6/board.c
-> +++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
-> @@ -87,8 +87,6 @@ static int phytec_pfla02_init(void)
->  		break;
->  	}
+> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+> index 3146339..efbbb08 100644
+> --- a/drivers/spi/imx_spi.c
+> +++ b/drivers/spi/imx_spi.c
+> @@ -137,6 +137,25 @@ static int imx_spi_setup(struct spi_device *spi)
+>  	return 0;
+>  }
 >  
-> -	defaultenv_append_directory(defaultenv_phyflex_imx6);
-> -
+> +static unsigned int imx_spi_maybe_reverse_bits(struct spi_device *spi, unsigned int word)
+> +{
+> +	unsigned int result = word;
+> +
+> +	if (spi->mode & SPI_LSB_FIRST) {
+> +		size_t bits_left = spi->bits_per_word - 1;
+> +
+> +		for (word >>= 1; word; word >>= 1) {
+> +			result <<= 1;
+> +			result |= word & 1;
+> +			bits_left--;
+> +		}
+> +
+> +		result <<= bits_left;
+> +	}
+> +
+> +	return result;
+> +}
+> +
+>  static unsigned int cspi_0_0_xchg_single(struct imx_spi *imx, unsigned int data)
+>  {
+>  	void __iomem *base = imx->regs;
+> @@ -386,6 +405,7 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+>  {
+>  	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
+>  	unsigned i;
+> +	u32 tx_val;
+>  
+>  	if (spi->bits_per_word <= 8) {
+>  		const u8	*tx_buf = t->tx_buf;
+> @@ -393,9 +413,15 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+>  		u8		rx_val;
+>  
+>  		for (i = 0; i < t->len; i++) {
+> -			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
+> +			if (tx_buf)
+> +				tx_val = imx_spi_maybe_reverse_bits(spi, tx_buf[i]);
+> +			else
+> +				tx_val = 0;
+> +
+> +			rx_val = imx->xchg_single(imx, tx_val);
+> +
 
-Looking at it you should rather replace the compatible checks in
-phytec_pfla02_init with their baseboards, so instead of:
-
-	if (!of_machine_is_compatible("phytec,imx6q-pfla02") &&
-                        !of_machine_is_compatible("phytec,imx6dl-pfla02") &&
-                        !of_machine_is_compatible("phytec,imx6s-pfla02"))
-                return 0;
-
-do a:
-
-	if (!of_machine_is_compatible("phytec,imx6x-pbab01") &&
-                        !of_machine_is_compatible("phytec,imx6dl-pbab05") &&
-                        !of_machine_is_compatible("phytec,imx6q-pbab02"))
-                return 0;
-
-Then the phytec default env will only be added for the phytec baseboards
-and not for your custom one. Note phyflex_err006282_workaround() won't
-be called either then, you may need your own version of this then.
+Better introduce a imx_xchg_single which does the necessary bit
+reversing and calls imx->xchg_single. This avoids duplicating the code
+for all three bits_per_word settings.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
