@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y841J-00059u-4g
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 09:32:17 +0000
-Date: Mon, 5 Jan 2015 10:31:54 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150105093154.GE30369@pengutronix.de>
-References: <1420038655-8856-1-git-send-email-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1420038655-8856-1-git-send-email-andrew.smirnov@gmail.com>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y84B2-0002kZ-BI
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 09:42:21 +0000
+Message-ID: <1420450912.6731.16.camel@lws-gamez.phytec.de>
+From: Teresa =?ISO-8859-1?Q?G=E1mez?= <t.gamez@phytec.de>
+Date: Mon, 05 Jan 2015 10:41:52 +0100
+In-Reply-To: <1420041155.29284.24.camel@eaton.com>
+References: <1420041155.29284.24.camel@eaton.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,91 +17,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX: SPI: Respect SPI_LSB_FIRST flag in mode settings
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: beagle bone black: problem of boot from eMMC
+To: ManuelCurcio@Eaton.com
 Cc: barebox@lists.infradead.org
 
-Hi Andrey,
-
-On Wed, Dec 31, 2014 at 07:10:55AM -0800, Andrey Smirnov wrote:
-> Add code to support SPI transfers that have data shifted out least
-> significant bit first. This is useful in many cases, but specifically
-> it is needed for drivers/firmware/altera_serial.c to work on i.MX
-> platform.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  drivers/spi/imx_spi.c | 50 ++++++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 44 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index 3146339..efbbb08 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -137,6 +137,25 @@ static int imx_spi_setup(struct spi_device *spi)
->  	return 0;
->  }
->  
-> +static unsigned int imx_spi_maybe_reverse_bits(struct spi_device *spi, unsigned int word)
-> +{
-> +	unsigned int result = word;
-> +
-> +	if (spi->mode & SPI_LSB_FIRST) {
-> +		size_t bits_left = spi->bits_per_word - 1;
-> +
-> +		for (word >>= 1; word; word >>= 1) {
-> +			result <<= 1;
-> +			result |= word & 1;
-> +			bits_left--;
-> +		}
-> +
-> +		result <<= bits_left;
-> +	}
-> +
-> +	return result;
-> +}
-> +
->  static unsigned int cspi_0_0_xchg_single(struct imx_spi *imx, unsigned int data)
->  {
->  	void __iomem *base = imx->regs;
-> @@ -386,6 +405,7 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
->  {
->  	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
->  	unsigned i;
-> +	u32 tx_val;
->  
->  	if (spi->bits_per_word <= 8) {
->  		const u8	*tx_buf = t->tx_buf;
-> @@ -393,9 +413,15 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
->  		u8		rx_val;
->  
->  		for (i = 0; i < t->len; i++) {
-> -			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
-> +			if (tx_buf)
-> +				tx_val = imx_spi_maybe_reverse_bits(spi, tx_buf[i]);
-> +			else
-> +				tx_val = 0;
-> +
-> +			rx_val = imx->xchg_single(imx, tx_val);
-> +
-
-Better introduce a imx_xchg_single which does the necessary bit
-reversing and calls imx->xchg_single. This avoids duplicating the code
-for all three bits_per_word settings.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8gTWFudWVsLAoKQW0gTWl0dHdvY2gsIGRlbiAzMS4xMi4yMDE0LCAxNDo1MiArMDAwMCBz
+Y2hyaWViIE1hbnVlbEN1cmNpb0BFYXRvbi5jb206Cj4gCj4gQWZ0ZXIsIEkgd2FudGVkIHRvIGJv
+b3QgZnJvbSB0aGUgdGhlIGludGVybmFsIGVNTUMuIAo+IFNvIGFmdGVyIGJvb3QgZnJvbSBzZCBj
+YXJkLCBJIG1vdW50ZWQgdGhlIGVNTUMgKG1vdW50IC9kZXYvbW1jMS4wKSBhbmQKPiBjb3BpZWQg
+dGhlIE1MTyBhbmQgYmFyZWJveC5iaW4gaW4gdGhlIC9tbnQvbW1jMS4wIGZvbGRlci4KPiAKPiBX
+aGVuIEkgdHJ5IHRvIGJvb3QgZnJvbSB0aGUgaW50ZXJuYWwgZU1NQyAsSSBoYXZlIHRoZSBmb2xs
+b3dpbmcgZXJyb3I6IAo+IC0tLS0tLS0tLT4KPiBiYXJlYm94IDIwMTQuMTIuMCAjMiBXZWQgRGVj
+IDMxIDE1OjI5OjE2IEdNVCAyMDE0Cj4gCj4gCj4gQm9hcmQ6IFRJIEFNMzM1eCBCZWFnbGVCb25l
+Cj4gZGV0ZWN0ZWQgJ0JlYWdsZUJvbmUgQmxhY2snCj4gb21hcC1oc21tYyA0ODA2MDAwMC5tbWM6
+IHJlZ2lzdGVyZWQgYXMgNDgwNjAwMDAubW1jCj4gYm9vdGluZyBmcm9tIE1NQwo+IGZhdCBmYXQw
+OiBwcm9iZSBmYWlsZWQ6IGVycm9yIDIyCj4gVW5hYmxlIHRvIG1vdW50ICAoLTIyKQo+IGJvb3Rp
+bmcgZmFpbGVkCj4gPC0tLS0tLS0tLQoKVGhpcyBpc3N1ZSBjb21lcyBmcm9tIGNvbW1pdDoKCmNv
+bW1pdCAwZDYzOTJkZTRhZDgyNGE2NTUzYzBlM2UzZTE4ZWRlZjY4OWE3Yzg1CkF1dGhvcjogU2Fz
+Y2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpEYXRlOiAgIFRodSBKdW4gNSAxMjow
+OTowNyAyMDE0ICswMjAwCgogICAgQVJNOiBBTTMzNXg6IEJlYWdsZWJvbmU6IFVzZSBzdHJpcHBl
+ZCBkb3duIGRldmljZXRyZWUgZm9yIE1MTwoKRm9yIHRoZSBNTE8gb25seSB0aGUgYW0zMzV4LWJv
+bmUtY29tbW9uLmR0c2kgaXMgdXNlZCB0byBjcmVhdGUgdGhlCmRldmljZSB0cmVlLiBCdXQgdGhp
+cyBkb2VzIG5vdCBoYXZlIHRoZSBlbW1jIHN1cHBvcnQgaW5jbHVkZWQuCgo+IAo+IEkgdHJpZWQg
+bXlzZWxmIHRvIGZpbmQgYSAnY29ycmVjdGlvbicgYnkgYWRkZWQgdGhlIGNhbGwgb2YKPiBhbTMz
+eHhfb2ZfcmVnaXN0ZXJfYm9vdGRldmljZSh2b2lkKSBmdW5jdGlvbiBhdCB0aGUgZW5kIG9mIHRo
+ZSBzdGF0aWMKPiBpbnQgYmVhZ2xlYm9uZV9kZXZpY2VzX2luaXQodm9pZCkgZnVuY3Rpb24uIFdp
+dGggdGhpcyBtb2RpZmljYXRpb24sCj4gc29tZXRpbWUgKGRlcGVuZGluZyBvZiB0aGUgbGFzdCBi
+b290OiBmcm9tIFNEIENhcmQgb3IgZnJvbSBlTU1DKSAgSSBjYW4KPiBib290LCBzb21ldGluZyBu
+b3QuIAoKV2hhdCB5b3UgYXJlIGFsc28gbWlzc2luZyBpcyBhIGRpc2FibGVkIGVtbWMgbm9kZSBm
+cm9tIHRoZQphbTMzNXgtYm9uZWJsYWNrLmR0cyBpbiB0aGUgYW0zMzV4LWJvbmUtY29tbW9uLmR0
+c2kuCgpUaGlzIG1heSBoZWxwLgoKUmVnYXJkcywKVGVyZXNhCgo+IFNvIG15IGNvcnJlY3Rpb24s
+YWx0aG91Z2ggaW1wcm92aW5nIHRoZSBzaXR1YXRpb24sIGlzIG5vdCBleGFjdGx5IHRoZQo+IGNv
+cnJlY3Rpb24gdG8gZG8uIFNvbWUgb25lIGNhbiBoZWxwIG1lID8gCj4gCj4gVGhhbmtzIHZlcnkg
+bXVjaCAhCj4gIAo+IAo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gRWF0b24g
+SW5kdXN0cmllcyAoRnJhbmNlKSBTLkEuUyB+IFNpw6hnZSBzb2NpYWw6IDExMCBSdWUgQmxhaXNl
+IFBhc2NhbCwgSW1tZXVibGUgTGUgVmlzw6lvIC0gQsOidGltZW50IEEgSW5ub3ZhbGzDqWUsIDM4
+MzMwLCBNb250Ym9ubm90LVN0Li1NYXJ0aW4sIEZyYW5jZSB+IExpZXUgZCdlbnJlZ2lzdHJlbWVu
+dCBhdSByZWdpc3RyZSBkdSBjb21tZXJjZTogR3Jlbm9ibGUgfiBOdW3DqXJvIGQnZW5yZWdpc3Ry
+ZW1lbnQ6IDUwOSA2NTMgMTc2IH4gQ2FwaXRhbCBzb2NpYWwgc291c2NyaXQgZXQgbGliZXLDqTri
+gqwgMTYyMTU0NDEgfiBOdW3DqXJvIGRlIFRWQTogRlI0NzUwOTY1MzE3Ngo+IAo+IC0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
