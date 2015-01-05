@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y85t1-0005uH-LE
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 11:31:52 +0000
-Date: Mon, 5 Jan 2015 12:31:22 +0100
+ Linux)) id 1Y85vc-000742-KN
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 11:34:33 +0000
+Date: Mon, 5 Jan 2015 12:34:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150105113122.GR30369@pengutronix.de>
-References: <1419394862-31457-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150105113410.GT30369@pengutronix.de>
+References: <1419638189-5678-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1419394862-31457-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1419638189-5678-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] kbuild: drop redundant code
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Subject: Re: [PATCH 0/6] ARM: introduce debug_ll_pl011.h
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Masahiro,
+On Sat, Dec 27, 2014 at 02:56:23AM +0300, Antony Pavlov wrote:
+> Antony Pavlov (6):
+>   ARM: introduce debug_ll_pl011.h
+>   ARM: vexpress: debug_ll.h: switch to debug_ll_pl011.h
+>   ARM: highbank: debug_ll.h: switch to debug_ll_pl011.h
+>   ARM: versatile: enable missed HAS_DEBUG_LL
+>   ARM: versatile: debug_ll.h: switch to debug_ll_pl011.h
+>   ARM: bcm2835: add DEBUG_LL support
 
-On Wed, Dec 24, 2014 at 01:20:59PM +0900, Masahiro Yamada wrote:
-> 
-> 
-> 
-> Masahiro Yamada (3):
->   kbuild: remove redundant -include include/generated/autoconf.h
->   kbuild: do not create symbolic link include/asm
->   kbuild: do not create include2 directory
-
-Very nice stuff. It has some fixes in areas people (including me)
-normally don't want to touch. Thanks for doing this. Applied all,
-also the other kbuild patches you sent.
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
