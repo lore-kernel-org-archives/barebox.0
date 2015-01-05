@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo69.mail-out.ovh.net ([46.105.42.102])
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y87nU-0003v9-TM
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 13:34:17 +0000
-Received: from mail174.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id 77099FFB23B
- for <barebox@lists.infradead.org>; Mon,  5 Jan 2015 14:24:57 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon,  5 Jan 2015 14:24:37 +0100
-Message-Id: <1420464278-18451-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1Y8AL9-0007NK-Np
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 16:17:12 +0000
+Date: Mon, 5 Jan 2015 17:16:48 +0100 (CET)
+From: robert.jarzmik@free.fr
+Message-ID: <1822252708.362857815.1420474608722.JavaMail.root@zimbra1-e1.priv.proxad.net>
+In-Reply-To: <20150105121150.GC4544@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,39 +16,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] arm: system_info fix CPU_IS_ARM1176
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] net: smc1111: fix memory congestions
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-we need to apply the mask
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/include/asm/system_info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
-index 6182860..0761848 100644
---- a/arch/arm/include/asm/system_info.h
-+++ b/arch/arm/include/asm/system_info.h
-@@ -23,7 +23,7 @@
- #define CPU_IS_ARM926		0x41069260
- #define CPU_IS_ARM926_MASK	0xff0ffff0
- 
--#define CPU_IS_ARM1176		0x410fb767
-+#define CPU_IS_ARM1176		0x410fb760
- #define CPU_IS_ARM1176_MASK	0xff0ffff0
- 
- #define CPU_IS_CORTEX_A8	0x410fc080
--- 
-2.1.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Ci0tLS0tIE1haWwgb3JpZ2luYWwgLS0tLS0KRGU6ICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPgrDgDogIlJvYmVydCBKYXJ6bWlrIiA8cm9iZXJ0LmphcnptaWtAZnJlZS5m
+cj4KQ2M6IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpFbnZvecOpOiBMdW5kaSA1IEphbnZp
+ZXIgMjAxNSAxMzoxMTo1MApPYmpldDogUmU6IFtQQVRDSF0gbmV0OiBzbWMxMTExOiBmaXggbWVt
+b3J5IGNvbmdlc3Rpb25zCgo+IEkgZG9uJ3Qga25vdyB0aGUgaGFyZHdhcmUgKG5vdCBhbnltb3Jl
+LCBmb3J0dW5hdGVseSA7KSwgYnV0IGlzbid0IGl0Cj4gcG9zc2libGUgdG8gZGVkaWNhdGUgb25l
+IGJ1Y2tldCBmb3IgdHJhbnNtaXR0aW5nIG9ubHksIHNvIHRoYXQgaXQgd2lsbAo+IG5ldmVyIGJl
+IG9jY3VwaWVkIGJ5IGEgcmVjZWl2ZWQgcGFja2V0PwpOb25lIEknbSBhd2FyZSBvZi4KSSd2ZSBi
+ZWVuIHRocm91Z2ggdGhlIHNwZWNpZmljYXRpb24gbWFueSB0aW1lcywgYW5kIG15IHVuZGVyc3Rh
+bmRpbmcgaXMKdGhhdCA6CiAtIHRoZSBNTVUgYWxsb2NhdGlvbiBpcyBzeW1tZXRyaWMgKGVpdGhl
+ciBmcm9tIENQVSBmb3IgVFggb3IgZnJvbSBOSUMKICAgZm9yIFJYKQogLSB0aGVyZSBpcyBubyBj
+b25maWd1cmFibGUgdGhyZXNob2xkIG9yIGxpbWl0CiAtIGZpcnN0IGN1c3RvbWVyIGlzIGZpcnN0
+IHNlcnZlZCBmcm9tIHRoZSBNTVUgcG9pbnQgb2YgdmlldwoKQ2hlZXJzLgoKLS0KUm9iZXJ0Cgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
