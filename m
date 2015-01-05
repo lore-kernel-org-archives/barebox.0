@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y8543-0000Nz-TL
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 10:39:12 +0000
-Date: Mon, 5 Jan 2015 11:38:50 +0100
+ Linux)) id 1Y8581-0002c9-M9
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 10:43:18 +0000
+Date: Mon, 5 Jan 2015 11:42:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150105103850.GM30369@pengutronix.de>
+Message-ID: <20150105104255.GN30369@pengutronix.de>
 References: <20141223170709.GA15818@ns203013.ovh.net>
  <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
- <1419358918-25569-5-git-send-email-plagnioj@jcrosoft.com>
+ <1419358918-25569-7-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1419358918-25569-5-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1419358918-25569-7-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,48 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/9] versatilepb: switch to defaultenv-2
+Subject: Re: [PATCH 7/9] poller: allow to restrict the poller frequency
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 23, 2014 at 07:21:54PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
->  - Boot from NOR
->  - enable UBI
->  - use PBL
+On Tue, Dec 23, 2014 at 07:21:56PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so we do not slow down barebox on too much polling
+> specialy on USB drivers
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  arch/arm/boards/versatile/env/boot.d/001-nor       |  1 +
->  .../arm/boards/versatile/env/boot.d/101-nor-update |  1 +
->  arch/arm/boards/versatile/env/boot/nor             | 15 +++++++++
->  arch/arm/boards/versatile/env/boot/nor-update      | 14 ++++++++
->  arch/arm/boards/versatile/env/config               | 38 ----------------------
->  arch/arm/boards/versatile/env/init/automount       | 11 +++++++
->  arch/arm/boards/versatile/env/init/mtdparts-nor    | 11 +++++++
->  arch/arm/boards/versatile/env/init/ps1             |  7 ++++
->  arch/arm/boards/versatile/env/nv/boot.default      |  1 +
->  arch/arm/boards/versatile/env/nv/hostname          |  1 +
->  .../boards/versatile/env/nv/linux.bootargs.base    |  1 +
->  arch/arm/boards/versatile/versatilepb.c            |  4 +--
->  arch/arm/configs/versatilepb_defconfig             | 31 ++++++++++++++++--
->  arch/arm/mach-versatile/Kconfig                    |  1 +
->  14 files changed, 94 insertions(+), 43 deletions(-)
->  create mode 120000 arch/arm/boards/versatile/env/boot.d/001-nor
->  create mode 120000 arch/arm/boards/versatile/env/boot.d/101-nor-update
->  create mode 100644 arch/arm/boards/versatile/env/boot/nor
->  create mode 100644 arch/arm/boards/versatile/env/boot/nor-update
->  delete mode 100644 arch/arm/boards/versatile/env/config
->  create mode 100644 arch/arm/boards/versatile/env/init/automount
->  create mode 100644 arch/arm/boards/versatile/env/init/mtdparts-nor
->  create mode 100644 arch/arm/boards/versatile/env/init/ps1
->  create mode 100644 arch/arm/boards/versatile/env/nv/boot.default
->  create mode 100644 arch/arm/boards/versatile/env/nv/hostname
->  create mode 100644 arch/arm/boards/versatile/env/nv/linux.bootargs.base
+>  common/poller.c  | 11 ++++++++++-
+>  include/poller.h |  3 +++
+>  2 files changed, 13 insertions(+), 1 deletion(-)
 
-Applied, thanks
+Could you repost this along with the first user?
+
+> 
+> diff --git a/common/poller.c b/common/poller.c
+> index 496636d..58b105d 100644
+> --- a/common/poller.c
+> +++ b/common/poller.c
+> @@ -24,6 +24,9 @@ int poller_register(struct poller_struct *poller)
+>  	list_add_tail(&poller->list, &poller_list);
+>  	poller->registered = 1;
+>  
+> +	if (poller->frequency)
+> +		poller->poll_next = get_time_ns();
+> +
+>  	return 0;
+>  }
+>  
+> @@ -96,8 +99,14 @@ void poller_call(void)
+>  
+>  	poller_active = 1;
+>  
+> -	list_for_each_entry_safe(poller, tmp, &poller_list, list)
+> +	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
+> +
+> +		if (poller->frequency && get_time_ns() < poller->poll_next)
+> +			continue;
+>  		poller->func(poller);
+> +		if (poller->frequency)
+> +			poller->poll_next += poller->frequency;
+> +	}
+>  
+>  	poller_active = 0;
+>  }
+> diff --git a/include/poller.h b/include/poller.h
+> index cda5b57..3568a80 100644
+> --- a/include/poller.h
+> +++ b/include/poller.h
+> @@ -14,6 +14,9 @@ struct poller_struct {
+>  	void (*func)(struct poller_struct *poller);
+>  	int registered;
+>  	struct list_head list;
+> +
+> +	uint64_t frequency;
+> +	uint64_t poll_next;
+>  };
+
+Could you reorder the fields in struct poller_struct by fields which
+should be initialized by users and internal fields? This was not exactly
+clear before this patch, but this patch introduces another two fields,
+from which one must be initialized by the user and the other one not.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
