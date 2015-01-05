@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y859j-0002sq-AD
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 10:45:05 +0000
-Date: Mon, 5 Jan 2015 11:44:38 +0100 (CET)
-From: robert.jarzmik@free.fr
-Message-ID: <1511697250.362148406.1420454678099.JavaMail.root@zimbra1-e1.priv.proxad.net>
-In-Reply-To: <54A98B8F.2040405@free-electrons.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Y85BN-0004Fl-GW
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 10:46:46 +0000
+Date: Mon, 5 Jan 2015 11:46:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150105104623.GO30369@pengutronix.de>
+References: <20141223170709.GA15818@ns203013.ovh.net>
+ <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
+ <1419358918-25569-8-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1419358918-25569-8-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +20,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: add pxa3xx-nand driver
-To: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: Re: [PATCH 8/9] console: allow to specify the device id
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-LS0tLS0gTWFpbCBvcmlnaW5hbCAtLS0tLQpEZTogIkV6ZXF1aWVsIEdhcmNpYSIgPGV6ZXF1aWVs
-LmdhcmNpYUBmcmVlLWVsZWN0cm9ucy5jb20+CsOAOiAiUm9iZXJ0IEphcnptaWsiIDxyb2JlcnQu
-amFyem1pa0BmcmVlLmZyPiwgYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCkVudm95w6k6IERp
-bWFuY2hlIDQgSmFudmllciAyMDE1IDE5OjUwOjU1Ck9iamV0OiBSZTogW1BBVENIXSBtdGQ6IG5h
-bmQ6IGFkZCBweGEzeHgtbmFuZCBkcml2ZXIKCkhpIFJvYmVydCwKCj4gSWYgbXkgbWVtb3J5IGRv
-ZXNuJ3QgZmFpbCBtZSwgdGhlIE5BTkQgY29udHJvbGxlciBpcyBjYWxsZWQgTkZDIHYxIG9uCj4g
-cHhhM3h4LCBhbmQgTkZDIHYyIG9uIG12ZWJ1IFNvQ3MuCj4gSSdtIHdvbmRlcmluZyBpZiB3ZSBj
-YW4gcGljayBhIGJldHRlciBuYW1lIGZvciB0aGlzIGRyaXZlciBpbiBiYXJlYm94Lgo+IE1heWJl
-IHNvbWV0aGluZyBsaWtlICdtdl9uZmNfbmFuZCcgPwpBcyBhbGwgZHJpdmVycyBhcmUgY2FsbGVk
-ICJuYW5kX1hYWCIsIEknZCByYXRoZXIgaGF2ZSBpdCBuYW5kX21ydmxfbmZjIHRoZW4uCkRvZXMg
-dGhhdCBzb3VuZCBnb29kIHRvIHlvdSA/Cgo+IEFsc28sIEkgdGhpbmsgeW91IGNhbiBnZXQgcmlk
-IG9mIHRoZSAnYnVpbHRpbl9mbGFzaF90eXBlcycgc3RydWN0IGFuZAo+IGFsbCB0aGUgZGV2aWNl
-IGRldGVjdGlvbiByb3V0aW5lcywgd2hpY2ggYXJlIHJlYWxseSBkdXBsaWNhdGluZyB0aGUKPiBN
-VEQncyBsb3dlciBsZXZlbCBqb2IuCldlbGwsIG5vdCByZWFsbHkuIElmIEkgZ2V0IHJpZCBvZiB0
-aGVtLCBob3cgd2lsbCBJIGdldCB0aGUgZm9sbG93aW5nCmluZm9ybWF0aW9uIDoKIC0gcGFnZSBz
-aXplCiAtIG5hbmQgdGltaW5ncyAodEhQLCAuLi4pCiAtIGNvbnRyb2xsZXIgd2lkdGggdG8gdXNl
-CiAtIC4uLgoKPiBJIG5ldmVyIHJlbW92ZWQgaXQgZnJvbSB0aGUgTGludXggZHJpdmVyLCBiZWNh
-dXNlIEkgd2FzIGFmcmFpZCBvZgo+IHJlZ3Jlc3Npb25zIGFuZCB0aGVyZSBhcmUgbGl0dGxlIHRl
-c3RlcnMgYXJvdW5kLiBIb3dldmVyLCBvbiBCYXJlYm94IHdlCj4gY2FuIGJlbmVmaXQgZnJvbSBy
-ZW1vdmluZyB0aGF0LCBhbmQgc3RhcnRpbmcgd2l0aCBhIGNsZWFuZXIgZHJpdmVyLgpJZiB5b3Ug
-Y29udmluY2UgbWUgYWxsIHRoZSBpbmZvcm1hdGlvbiBjYW4gYmUgZm91bmQgYmFjaywgSSdsbCBn
-bGFkbHkKcmVtb3ZlIHRoZW0uCgpDaGVlcnMuCgotLQpSb2JlcnQKCi0tIApFemVxdWllbCBHYXJj
-w61hLCBGcmVlIEVsZWN0cm9ucwpFbWJlZGRlZCBMaW51eCwgS2VybmVsIGFuZCBBbmRyb2lkIEVu
-Z2luZWVyaW5nCmh0dHA6Ly9mcmVlLWVsZWN0cm9ucy5jb20KCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+On Tue, Dec 23, 2014 at 07:21:57PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so we can use dynamic number id with specific devname
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  common/console.c              | 2 +-
+>  drivers/usb/gadget/u_serial.c | 1 +
+>  include/console.h             | 1 +
+>  3 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/console.c b/common/console.c
+> index bba13a5..602ab2e 100644
+> --- a/common/console.c
+> +++ b/common/console.c
+> @@ -188,7 +188,7 @@ int console_register(struct console_device *newcdev)
+>  		console_init_early();
+>  
+>  	if (newcdev->devname) {
+> -		dev->id = DEVICE_ID_SINGLE;
+> +		dev->id = newcdev->devid;
+>  		strcpy(dev->name, newcdev->devname);
+>  	} else {
+>  		dev->id = DEVICE_ID_DYNAMIC;
+> diff --git a/drivers/usb/gadget/u_serial.c b/drivers/usb/gadget/u_serial.c
+> index 8c58746..1e5e809 100644
+> --- a/drivers/usb/gadget/u_serial.c
+> +++ b/drivers/usb/gadget/u_serial.c
+> @@ -530,6 +530,7 @@ int gserial_connect(struct gserial *gser, u8 port_num)
+>  	cdev->flush = serial_flush;
+>  	cdev->setbrg = serial_setbaudrate;
+>  	cdev->devname = "usbserial";
+> +	cdev->devid = DEVICE_ID_SINGLE;
+
+The same is needed in drivers/serial/serial_imx.c
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
