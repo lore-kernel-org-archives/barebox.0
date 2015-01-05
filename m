@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y7sQz-0002TN-DH
- for barebox@lists.infradead.org; Sun, 04 Jan 2015 21:10:02 +0000
-Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 3F96926C2001
- for <barebox@lists.infradead.org>; Sun,  4 Jan 2015 22:09:09 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  4 Jan 2015 22:09:05 +0100
-Message-Id: <1420405745-4408-1-git-send-email-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Y83d7-0008QX-1V
+ for barebox@lists.infradead.org; Mon, 05 Jan 2015 09:07:18 +0000
+Date: Mon, 5 Jan 2015 10:06:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150105090651.GD30369@pengutronix.de>
+References: <1420044590-26343-1-git-send-email-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1420044590-26343-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,93 +18,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: rtl8169: remove unnecessary cache maintenance
-To: barebox@lists.infradead.org
+Subject: Re: [RFC, PATCH] i.MX6: phytec: Do not hardcode default environment
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The buffer descriptors are allocated from coherent memory, so there
-is no cache maintenance needed. Only tell the compiler that the descriptors
-can be modified by the hardware.
+Hi Andrey,
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- drivers/net/rtl8169.c | 24 +++++-------------------
- 1 file changed, 5 insertions(+), 19 deletions(-)
+On Wed, Dec 31, 2014 at 08:49:50AM -0800, Andrey Smirnov wrote:
+> By default i.MX6 phytec image hardcodes its default environment in
+> initialization code. Define phytec specific defonfig and use
+> CONFIG_DEFAULT_ENVIRONMENT_PATH instead.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+> 
+> Not sure how much of a faux pas adding a new defconfig file is, but I
+> couldn't think of a better alternative. What I was trying to achive is
+> being able to build an image for a custom Phytec SoM based platform
+> that would have a completely custom envirnoment and would not pull in
+> default phytec stuff.
+> 
+> Let me know if this is a right approach.
+> 
+> Thank you.
+> 
+>  arch/arm/boards/phytec-phyflex-imx6/Makefile   |   1 -
+>  arch/arm/boards/phytec-phyflex-imx6/board.c    |   2 -
+>  arch/arm/configs/phytec_phyflex_imx6_defconfig | 705 +++++++++++++++++++++++++
+>  3 files changed, 705 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/arm/configs/phytec_phyflex_imx6_defconfig
+> 
+> diff --git a/arch/arm/boards/phytec-phyflex-imx6/Makefile b/arch/arm/boards/phytec-phyflex-imx6/Makefile
+> index 11e1c7d..01c7a25 100644
+> --- a/arch/arm/boards/phytec-phyflex-imx6/Makefile
+> +++ b/arch/arm/boards/phytec-phyflex-imx6/Makefile
+> @@ -1,3 +1,2 @@
+>  obj-y += board.o
+>  lwl-y += lowlevel.o
+> -bbenv-y += defaultenv-phyflex-imx6
+> diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> index 1551460..3f52680 100644
+> --- a/arch/arm/boards/phytec-phyflex-imx6/board.c
+> +++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> @@ -87,8 +87,6 @@ static int phytec_pfla02_init(void)
+>  		break;
+>  	}
+>  
+> -	defaultenv_append_directory(defaultenv_phyflex_imx6);
+> -
 
-diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
-index 5702900..19f5763 100644
---- a/drivers/net/rtl8169.c
-+++ b/drivers/net/rtl8169.c
-@@ -50,11 +50,11 @@ struct rtl8169_priv {
- 	struct pci_dev		*pci_dev;
- 	int			chipset;
- 
--	struct bufdesc		*tx_desc;
-+	volatile struct bufdesc	*tx_desc;
- 	void			*tx_buf;
- 	unsigned int		cur_tx;
- 
--	struct bufdesc		*rx_desc;
-+	volatile struct bufdesc	*rx_desc;
- 	void			*rx_buf;
- 	unsigned int		cur_rx;
- 
-@@ -250,10 +250,6 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
- 		priv->rx_desc[i].buf_addr =
- 				virt_to_phys(priv->rx_buf + i * PKT_BUF_SIZE);
- 	}
--
--	dma_flush_range((unsigned long)priv->rx_desc,
--			(unsigned long)priv->rx_desc +
--			NUM_RX_DESC * sizeof(struct bufdesc));
- }
- 
- static void rtl8169_hw_start(struct rtl8169_priv *priv)
-@@ -386,14 +382,10 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
- 			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN);
- 	}
- 
--	dma_flush_range((unsigned long)&priv->tx_desc[entry],
--			(unsigned long)&priv->tx_desc[entry + 1]);
--
- 	RTL_W8(priv, TxPoll, 0x40);
--	do {
--		dma_inv_range((unsigned long)&priv->tx_desc[entry],
--		              (unsigned long)&priv->tx_desc[entry + 1]);
--	} while (priv->tx_desc[entry].status & BD_STAT_OWN);
-+
-+	while (priv->tx_desc[entry].status & BD_STAT_OWN)
-+		;
- 
- 	priv->cur_tx++;
- 
-@@ -408,9 +400,6 @@ static int rtl8169_eth_rx(struct eth_device *edev)
- 
- 	entry = priv->cur_rx % NUM_RX_DESC;
- 
--	dma_inv_range((unsigned long)&priv->rx_desc[entry],
--	              (unsigned long)&priv->rx_desc[entry + 1]);
--
- 	if ((priv->rx_desc[entry].status & BD_STAT_OWN) == 0) {
- 		if (!(priv->rx_desc[entry].status & BD_STAT_RX_RES)) {
- 			pkt_size = (priv->rx_desc[entry].status & 0x1fff) - 4;
-@@ -441,9 +430,6 @@ static int rtl8169_eth_rx(struct eth_device *edev)
- 			priv->rx_desc[entry].buf_addr =
- 				virt_to_phys(priv->rx_buf +
- 				             entry * PKT_BUF_SIZE);
--
--			dma_flush_range((unsigned long)&priv->rx_desc[entry],
--			                (unsigned long)&priv->rx_desc[entry + 1]);
- 		} else {
- 			dev_err(&edev->dev, "rx error\n");
- 		}
+Looking at it you should rather replace the compatible checks in
+phytec_pfla02_init with their baseboards, so instead of:
+
+	if (!of_machine_is_compatible("phytec,imx6q-pfla02") &&
+                        !of_machine_is_compatible("phytec,imx6dl-pfla02") &&
+                        !of_machine_is_compatible("phytec,imx6s-pfla02"))
+                return 0;
+
+do a:
+
+	if (!of_machine_is_compatible("phytec,imx6x-pbab01") &&
+                        !of_machine_is_compatible("phytec,imx6dl-pbab05") &&
+                        !of_machine_is_compatible("phytec,imx6q-pbab02"))
+                return 0;
+
+Then the phytec default env will only be added for the phytec baseboards
+and not for your custom one. Note phyflex_err006282_workaround() won't
+be called either then, you may need your own version of this then.
+
+Sascha
+
+
 -- 
-2.1.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
