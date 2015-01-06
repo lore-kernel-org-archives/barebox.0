@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y8S3K-0005Nr-Qr
- for barebox@lists.infradead.org; Tue, 06 Jan 2015 11:12:05 +0000
-Message-ID: <1420542694.2333.11.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 06 Jan 2015 12:11:34 +0100
-In-Reply-To: <20150106135611.e7d20dffcf2f94ee0ccfbdaa@gmail.com>
-References: <1420405745-4408-1-git-send-email-dev@lynxeye.de>
- <20150105201933.75e448ef02ad9e9e31ac6663@gmail.com>
- <1420479449.2221.3.camel@lynxeye.de>
- <20150106135611.e7d20dffcf2f94ee0ccfbdaa@gmail.com>
-Mime-Version: 1.0
+Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y8SNZ-0001w1-Ri
+ for barebox@lists.infradead.org; Tue, 06 Jan 2015 11:32:55 +0000
+Received: from mail137.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 5006DFF95DD
+ for <barebox@lists.infradead.org>; Tue,  6 Jan 2015 12:32:29 +0100 (CET)
+Date: Tue, 6 Jan 2015 12:32:27 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150106113227.GC4563@ns203013.ovh.net>
+References: <20141226095143.GB15818@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20141226095143.GB15818@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,46 +25,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: rtl8169: remove unnecessary cache maintenance
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] FIX AT91 support
+To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 
-Am Dienstag, den 06.01.2015, 13:56 +0300 schrieb Antony Pavlov:
-> On Mon, 05 Jan 2015 18:37:29 +0100
-> Lucas Stach <dev@lynxeye.de> wrote:
-> 
-> > Am Montag, den 05.01.2015, 20:19 +0300 schrieb Antony Pavlov:
-> > > On Sun,  4 Jan 2015 22:09:05 +0100
-> > > Lucas Stach <dev@lynxeye.de> wrote:
-> > > 
-> > > I suppose that this patch can make problems on MIPS with explicid cache handling.
-> > > 
-> > How would it?
-> > This driver is ARM only for now (as we are using ARM MMU functions to
-> > flush buffers) until someone gets around to properly implement generic
-> > dma sync ops.
-> 
-> Anyway it is reasonable to add 'depends on ARM' to 'config DRIVER_NET_RTL8169'
-> record in drivers/net/Kconfig.
-> 
-Yes, will do.
+Hi,
 
-> > But even then MIPS knows about uncached memory types which is exactly
-> > what should be returned for a dma coherent memory allocation.
-> 
-> Alas! We can't just add 'volatile' modifier to make pointer uncached on MIPS in general case.
+	This patch series fix at91 support that is broken for more than 3 months
 
-This is not how it works. The memory for the buffer descriptors isn't
-general malloc memory, but allocated with dma_alloc_coherent, which
-makes sure the memory is uncached. This works on both ARM and MIPS.
+	please apply this on fix releases
 
-Regards,
-Lucas
+	Not even tested by Atmel when adding now SoC and Board
 
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+The following changes since commit 631be8e6cbe003f469a7e6b54046a743b710d989:
 
+  blspec: print error when devicetree not found (2014-12-16 14:29:23 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/at91_fix
+
+for you to fetch changes up to 8f48b25818d29d406b3eba170910c6c24bd3a347:
+
+  driver: workarroud resource request that conflist with errno PTR (2015-01-05 17:46:38 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      arm: at91: fix ecc_mode on non atmel boards
+      driver: workarroud resource request that conflist with errno PTR
+
+ arch/arm/boards/animeo_ip/init.c      |  1 +
+ arch/arm/boards/pm9261/init.c         |  1 +
+ arch/arm/boards/pm9263/init.c         |  1 +
+ arch/arm/boards/pm9g45/init.c         |  1 +
+ arch/arm/boards/qil-a926x/init.c      |  1 +
+ arch/arm/boards/telit-evk-pro3/init.c |  2 ++
+ arch/arm/boards/tny-a926x/init.c      |  1 +
+ arch/arm/boards/usb-a926x/init.c      |  1 +
+ arch/arm/mach-at91/at91sam926x_time.c |  6 +++---
+ drivers/base/driver.c                 | 31 +++++++++++++++++++++++++++++--
+ drivers/pinctrl/pinctrl-at91.c        |  6 +++---
+ drivers/serial/atmel.c                |  6 +++---
+ include/driver.h                      |  8 ++++++++
+ 13 files changed, 55 insertions(+), 11 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
