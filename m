@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y8TNo-0007Tq-TW
- for barebox@lists.infradead.org; Tue, 06 Jan 2015 12:37:13 +0000
-Received: by mail-lb0-f181.google.com with SMTP id l4so18907686lbv.40
- for <barebox@lists.infradead.org>; Tue, 06 Jan 2015 04:36:49 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Y8TV9-0000cU-KW
+ for barebox@lists.infradead.org; Tue, 06 Jan 2015 12:44:49 +0000
+Date: Tue, 6 Jan 2015 13:44:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150106124423.GB17225@pengutronix.de>
 References: <20150106113227.GC4563@ns203013.ovh.net>
  <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
-From: =?UTF-8?Q?Rapha=C3=ABl_Poggi?= <poggi.raph@gmail.com>
-Date: Tue, 6 Jan 2015 13:36:09 +0100
-Message-ID: <CACqcpZAs1bB9KQ7qkLwLg_wmE21Q3=Cj0JNP9XPVyqDNqFD8+Q@mail.gmail.com>
+ <1420544226-30497-2-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1420544226-30497-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,105 +20,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] arm: at91: fix ecc_mode on non atmel boards
+Subject: Re: [PATCH 2/2] driver: workarroud resource request that conflist
+ with errno PTR
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-R29vZCBjYXRjaCwgSSBBQ0sgdGhpcyBwYXRjaC4KCjIwMTUtMDEtMDYgMTI6MzcgR01UKzAxOjAw
-IEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJECjxwbGFnbmlvakBqY3Jvc29mdC5jb20+
-Ogo+IHNpbmNlCj4gY29tbWl0IDU0YmNjYWRkZGQ1MmNiNGNiYmVjZDE0MDNiOTA5MWZlNjUxYmQw
-ZmQKPiBBdXRob3I6IFJhcGhhw6tsIFBvZ2dpIDxwb2dnaS5yYXBoQGdtYWlsLmNvbT4KPgo+ICAg
-ICBtdGQ6IGF0bWVsX25hbmQ6IHJldHJpZXZlIGVjY19tb2RlIGZyb20gcGRhdGEKPgo+IGJyZWFr
-IG1vc3Qgb2YgdGhlIG5vbiBhdG1lbCBBVDkxIGJvYXJkcyB0aGF0IGRpZCBub3QgcHJvdmlkZSBh
-IGVjY19tb2RlCj4gcGFyYW1zIGluIHRoZSBuYW5kIHBkYXRhCj4KPiBTaWduZWQtb2ZmLWJ5OiBK
-ZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgo+
-IENjOiBSYXBoYcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+Cj4gLS0tCj4gIGFyY2gv
-YXJtL2JvYXJkcy9hbmltZW9faXAvaW5pdC5jICAgICAgfCAxICsKPiAgYXJjaC9hcm0vYm9hcmRz
-L3BtOTI2MS9pbml0LmMgICAgICAgICB8IDEgKwo+ICBhcmNoL2FybS9ib2FyZHMvcG05MjYzL2lu
-aXQuYyAgICAgICAgIHwgMSArCj4gIGFyY2gvYXJtL2JvYXJkcy9wbTlnNDUvaW5pdC5jICAgICAg
-ICAgfCAxICsKPiAgYXJjaC9hcm0vYm9hcmRzL3FpbC1hOTI2eC9pbml0LmMgICAgICB8IDEgKwo+
-ICBhcmNoL2FybS9ib2FyZHMvdGVsaXQtZXZrLXBybzMvaW5pdC5jIHwgMiArKwo+ICBhcmNoL2Fy
-bS9ib2FyZHMvdG55LWE5MjZ4L2luaXQuYyAgICAgIHwgMSArCj4gIGFyY2gvYXJtL2JvYXJkcy91
-c2ItYTkyNngvaW5pdC5jICAgICAgfCAxICsKPiAgOCBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlv
-bnMoKykKPgo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvYW5pbWVvX2lwL2luaXQuYyBi
-L2FyY2gvYXJtL2JvYXJkcy9hbmltZW9faXAvaW5pdC5jCj4gaW5kZXggY2E2NGQ2ZC4uNDk1ZGMx
-OCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvYW5pbWVvX2lwL2luaXQuYwo+ICsrKyBi
-L2FyY2gvYXJtL2JvYXJkcy9hbmltZW9faXAvaW5pdC5jCj4gQEAgLTkzLDYgKzkzLDcgQEAgc3Rh
-dGljIHN0cnVjdCBhdG1lbF9uYW5kX2RhdGEgbmFuZF9wZGF0YSA9IHsKPiAgICAgICAgIC5kZXRf
-cGluICAgICAgICA9IC1FSU5WQUwsCj4gICAgICAgICAucmR5X3BpbiAgICAgICAgPSBBVDkxX1BJ
-Tl9QQzEzLAo+ICAgICAgICAgLmVuYWJsZV9waW4gICAgID0gQVQ5MV9QSU5fUEMxNCwKPiArICAg
-ICAgIC5lY2NfbW9kZSAgICAgICA9IE5BTkRfRUNDX1NPRlQsCj4gICAgICAgICAuYnVzX3dpZHRo
-XzE2ICAgPSAwLAo+ICAgICAgICAgLm9uX2ZsYXNoX2JidCAgID0gMSwKPiAgfTsKPiBkaWZmIC0t
-Z2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BtOTI2MS9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvcG05
-MjYxL2luaXQuYwo+IGluZGV4IDA5ZDdmODAuLjYzZjRmMTkgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9h
-cm0vYm9hcmRzL3BtOTI2MS9pbml0LmMKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvcG05MjYxL2lu
-aXQuYwo+IEBAIC01MCw2ICs1MCw3IEBAIHN0YXRpYyBzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRhIG5h
-bmRfcGRhdGEgPSB7Cj4gICAgICAgICAuZGV0X3BpbiAgICAgICAgPSAtRUlOVkFMLAo+ICAgICAg
-ICAgLnJkeV9waW4gICAgICAgID0gQVQ5MV9QSU5fUEExNiwKPiAgICAgICAgIC5lbmFibGVfcGlu
-ICAgICA9IEFUOTFfUElOX1BDMTQsCj4gKyAgICAgICAuZWNjX21vZGUgICAgICAgPSBOQU5EX0VD
-Q19TT0ZULAo+ICAjaWYgZGVmaW5lZChDT05GSUdfTVREX05BTkRfQVRNRUxfQlVTV0lEVEhfMTYp
-Cj4gICAgICAgICAuYnVzX3dpZHRoXzE2ICAgPSAxLAo+ICAjZWxzZQo+IGRpZmYgLS1naXQgYS9h
-cmNoL2FybS9ib2FyZHMvcG05MjYzL2luaXQuYyBiL2FyY2gvYXJtL2JvYXJkcy9wbTkyNjMvaW5p
-dC5jCj4gaW5kZXggM2RjYTllNC4uMmI2YjA4OSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2Fy
-ZHMvcG05MjYzL2luaXQuYwo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9wbTkyNjMvaW5pdC5jCj4g
-QEAgLTUwLDYgKzUwLDcgQEAgc3RhdGljIHN0cnVjdCBhdG1lbF9uYW5kX2RhdGEgbmFuZF9wZGF0
-YSA9IHsKPiAgICAgICAgIC5kZXRfcGluICAgICAgICA9IC1FSU5WQUwsCj4gICAgICAgICAucmR5
-X3BpbiAgICAgICAgPSBBVDkxX1BJTl9QQjMwLAo+ICAgICAgICAgLmVuYWJsZV9waW4gICAgID0g
-QVQ5MV9QSU5fUEQxNSwKPiArICAgICAgIC5lY2NfbW9kZSAgICAgICA9IE5BTkRfRUNDX1NPRlQs
-Cj4gICNpZiBkZWZpbmVkKENPTkZJR19NVERfTkFORF9BVE1FTF9CVVNXSURUSF8xNikKPiAgICAg
-ICAgIC5idXNfd2lkdGhfMTYgICA9IDEsCj4gICNlbHNlCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L2JvYXJkcy9wbTlnNDUvaW5pdC5jIGIvYXJjaC9hcm0vYm9hcmRzL3BtOWc0NS9pbml0LmMKPiBp
-bmRleCAxZTQzYmU1Li41MjRmZTUzIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9wbTln
-NDUvaW5pdC5jCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BtOWc0NS9pbml0LmMKPiBAQCAtNDks
-NiArNDksNyBAQCBzdGF0aWMgc3RydWN0IGF0bWVsX25hbmRfZGF0YSBuYW5kX3BkYXRhID0gewo+
-ICAgICAgICAgLmRldF9waW4gICAgICAgID0gLUVJTlZBTCwKPiAgICAgICAgIC5yZHlfcGluICAg
-ICAgICA9IEFUOTFfUElOX1BEMywKPiAgICAgICAgIC5lbmFibGVfcGluICAgICA9IEFUOTFfUElO
-X1BDMTQsCj4gKyAgICAgICAuZWNjX21vZGUgICAgICAgPSBOQU5EX0VDQ19TT0ZULAo+ICAgICAg
-ICAgLmJ1c193aWR0aF8xNiAgID0gMCwKPiAgICAgICAgIC5vbl9mbGFzaF9iYnQgICA9IDEsCj4g
-IH07Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9xaWwtYTkyNngvaW5pdC5jIGIvYXJj
-aC9hcm0vYm9hcmRzL3FpbC1hOTI2eC9pbml0LmMKPiBpbmRleCA5OWE5NjA0Li40ZjAxZTJkIDEw
-MDY0NAo+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9xaWwtYTkyNngvaW5pdC5jCj4gKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL3FpbC1hOTI2eC9pbml0LmMKPiBAQCAtNDMsNiArNDMsNyBAQCBzdGF0aWMg
-c3RydWN0IGF0bWVsX25hbmRfZGF0YSBuYW5kX3BkYXRhID0gewo+ICAgICAgICAgLmRldF9waW4g
-ICAgICAgID0gLUVJTlZBTCwKPiAgICAgICAgIC5yZHlfcGluICAgICAgICA9IEFUOTFfUElOX1BD
-MTMsCj4gICAgICAgICAuZW5hYmxlX3BpbiAgICAgPSBBVDkxX1BJTl9QQzE0LAo+ICsgICAgICAg
-LmVjY19tb2RlICAgICAgID0gTkFORF9FQ0NfU09GVCwKPiAgICAgICAgIC5vbl9mbGFzaF9iYnQg
-ICA9IDEsCj4gIH07Cj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3RlbGl0LWV2ay1w
-cm8zL2luaXQuYyBiL2FyY2gvYXJtL2JvYXJkcy90ZWxpdC1ldmstcHJvMy9pbml0LmMKPiBpbmRl
-eCBlMDk0ZWE3Li5lYTYzYjFhIDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy90ZWxpdC1l
-dmstcHJvMy9pbml0LmMKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvdGVsaXQtZXZrLXBybzMvaW5p
-dC5jCj4gQEAgLTE4LDYgKzE4LDcgQEAKPiAgI2luY2x1ZGUgPGdwaW8uaD4KPiAgI2luY2x1ZGUg
-PGluaXQuaD4KPiAgI2luY2x1ZGUgPGxpbnV4L2Nsay5oPgo+ICsjaW5jbHVkZSA8bGludXgvbXRk
-L25hbmQuaD4KPiAgI2luY2x1ZGUgPG1hY2gvYXQ5MV9yc3RjLmg+Cj4gICNpbmNsdWRlIDxtYWNo
-L2F0OTFzYW05X3NtYy5oPgo+ICAjaW5jbHVkZSA8bWFjaC9ib2FyZC5oPgo+IEBAIC0zMyw2ICsz
-NCw3IEBAIHN0YXRpYyBzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRhIG5hbmRfcGRhdGEgPSB7Cj4gICAg
-ICAgICAuZGV0X3BpbiAgICAgICAgPSAtRUlOVkFMLAo+ICAgICAgICAgLnJkeV9waW4gICAgICAg
-ID0gQVQ5MV9QSU5fUEMxMywKPiAgICAgICAgIC5lbmFibGVfcGluICAgICA9IEFUOTFfUElOX1BD
-MTQsCj4gKyAgICAgICAuZWNjX21vZGUgICAgICAgPSBOQU5EX0VDQ19TT0ZULAo+ICAgICAgICAg
-Lm9uX2ZsYXNoX2JidCAgID0gMSwKPiAgfTsKPgo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2Fy
-ZHMvdG55LWE5MjZ4L2luaXQuYyBiL2FyY2gvYXJtL2JvYXJkcy90bnktYTkyNngvaW5pdC5jCj4g
-aW5kZXggYWM4NjQ1Ny4uMjU2ZjhiYSAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvdG55
-LWE5MjZ4L2luaXQuYwo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy90bnktYTkyNngvaW5pdC5jCj4g
-QEAgLTU1LDYgKzU1LDcgQEAgc3RhdGljIHN0cnVjdCBhdG1lbF9uYW5kX2RhdGEgbmFuZF9wZGF0
-YSA9IHsKPiAgICAgICAgIC5kZXRfcGluICAgICAgICA9IC1FSU5WQUwsCj4gICAgICAgICAucmR5
-X3BpbiAgICAgICAgPSBBVDkxX1BJTl9QQzEzLAo+ICAgICAgICAgLmVuYWJsZV9waW4gICAgID0g
-QVQ5MV9QSU5fUEMxNCwKPiArICAgICAgIC5lY2NfbW9kZSAgICAgICA9IE5BTkRfRUNDX1NPRlQs
-Cj4gICAgICAgICAub25fZmxhc2hfYmJ0ICAgPSAxLAo+ICB9Owo+Cj4gZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL2JvYXJkcy91c2ItYTkyNngvaW5pdC5jIGIvYXJjaC9hcm0vYm9hcmRzL3VzYi1hOTI2
-eC9pbml0LmMKPiBpbmRleCA0YTI4YWYwLi5mMGUxMTU3IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJt
-L2JvYXJkcy91c2ItYTkyNngvaW5pdC5jCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3VzYi1hOTI2
-eC9pbml0LmMKPiBAQCAtNTksNiArNTksNyBAQCBzdGF0aWMgc3RydWN0IGF0bWVsX25hbmRfZGF0
-YSBuYW5kX3BkYXRhID0gewo+ICAgICAgICAgLmRldF9waW4gICAgICAgID0gLUVJTlZBTCwKPiAg
-ICAgICAgIC5yZHlfcGluICAgICAgICA9IEFUOTFfUElOX1BDMTMsCj4gICAgICAgICAuZW5hYmxl
-X3BpbiAgICAgPSBBVDkxX1BJTl9QQzE0LAo+ICsgICAgICAgLmVjY19tb2RlICAgICAgID0gTkFO
-RF9FQ0NfU09GVCwKPiAgICAgICAgIC5vbl9mbGFzaF9iYnQgICA9IDEsCj4gIH07Cj4KPiAtLQo+
-IDIuMS4zCj4KPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCj4gYmFyZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-PiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Jan 06, 2015 at 12:37:06PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> broken since
+> 
+> commit ed6e965824303255cacc1c1a195d3684caa26bce
+> Author:     Sascha Hauer <s.hauer@pengutronix.de>
+> resource: Let dev_request_mem_region return an error pointer
+> 
+> Introduce dev_request_mem_region_err_null
+> 
+> only used on platform like at91 where the Ressource address collision with
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/mach-at91/at91sam926x_time.c |  6 +++---
+>  drivers/base/driver.c                 | 31 +++++++++++++++++++++++++++++--
+>  drivers/pinctrl/pinctrl-at91.c        |  6 +++---
+>  drivers/serial/atmel.c                |  6 +++---
+>  include/driver.h                      |  8 ++++++++
+>  5 files changed, 46 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/arch/arm/mach-at91/at91sam926x_time.c
+> index 789e1ec..cc7ad2f 100644
+> --- a/arch/arm/mach-at91/at91sam926x_time.c
+> +++ b/arch/arm/mach-at91/at91sam926x_time.c
+> @@ -89,9 +89,9 @@ static int at91_pit_probe(struct device_d *dev)
+>  		return ret;
+>  	}
+>  
+> -	pit_base = dev_request_mem_region(dev, 0);
+> -	if (IS_ERR(pit_base))
+> -		return PTR_ERR(pit_base);
+> +	pit_base = dev_request_mem_region_err_null(dev, 0);
+> +	if (!pit_base)
+> +		return -ENOENT;
+>  
+>  	pit_rate = clk_get_rate(clk) / 16;
+>  
+> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> index e0125a1..2375004 100644
+> --- a/drivers/base/driver.c
+> +++ b/drivers/base/driver.c
+> @@ -242,8 +242,8 @@ int register_driver(struct driver_d *drv)
+>  }
+>  EXPORT_SYMBOL(register_driver);
+>  
+> -struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
+> -				  int num)
+> +static struct resource *__dev_get_resource(struct device_d *dev,
+> +		unsigned long type, int num)
+>  {
+>  	int i, n = 0;
+>  
+> @@ -256,6 +256,17 @@ struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
+>  		}
+>  	}
+>  
+> +	return NULL;
+> +}
+> +
+> +struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
+> +				  int num)
+> +{
+> +	struct resource *res = __dev_get_resource(dev, type, num);
+> +
+> +	if (res)
+> +		return res;
+> +
+>  	return ERR_PTR(-ENOENT);
+>  }
+
+No need to change dev_get_resource(), it returns a struct resource *
+which will never conflict with an err ptr.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
