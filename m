@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]
- helo=smtp.smtpout.orange.fr)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y8GMA-0003Up-Ji
- for barebox@lists.infradead.org; Mon, 05 Jan 2015 22:42:39 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <54A98B8F.2040405@free-electrons.com>
- <1511697250.362148406.1420454678099.JavaMail.root@zimbra1-e1.priv.proxad.net>
- <20150105120322.GB4544@pengutronix.de> <874ms555pb.fsf@free.fr>
- <54AAF506.4020501@free-electrons.com>
-Date: Mon, 05 Jan 2015 23:42:09 +0100
-In-Reply-To: <54AAF506.4020501@free-electrons.com> (Ezequiel Garcia's message
- of "Mon, 05 Jan 2015 17:33:10 -0300")
-Message-ID: <87vbkk4zpa.fsf@free.fr>
+Received: from 2.mo69.mail-out.ovh.net ([178.33.251.80])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y8IFX-0002YH-HH
+ for barebox@lists.infradead.org; Tue, 06 Jan 2015 00:43:56 +0000
+Received: from mail643.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id C36F4FFA805
+ for <barebox@lists.infradead.org>; Tue,  6 Jan 2015 01:43:30 +0100 (CET)
+Date: Tue, 6 Jan 2015 01:43:28 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150106004328.GA4563@ns203013.ovh.net>
+References: <20141223170709.GA15818@ns203013.ovh.net>
+ <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
+ <1419358918-25569-9-git-send-email-plagnioj@jcrosoft.com>
+ <20150105105028.GP30369@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150105105028.GP30369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +28,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: add pxa3xx-nand driver
-To: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: Re: [PATCH 9/9] defaultenv-2: create a specific defaultenv for splash
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Ezequiel Garcia <ezequiel.garcia@free-electrons.com> writes:
+On 11:50 Mon 05 Jan     , Sascha Hauer wrote:
+> On Tue, Dec 23, 2014 at 07:21:58PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > This will allow to factorize splash init
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  common/Kconfig                             |  5 +++++
+> >  defaultenv/Makefile                        |  1 +
+> >  defaultenv/defaultenv-2-splash/bin/splash  | 15 +++++++++++++++
+> >  defaultenv/defaultenv-2-splash/init/splash |  3 +++
+> >  defaultenv/defaultenv.c                    |  2 ++
+> >  5 files changed, 26 insertions(+)
+> >  create mode 100644 defaultenv/defaultenv-2-splash/bin/splash
+> >  create mode 100644 defaultenv/defaultenv-2-splash/init/splash
+> > 
+> > diff --git a/common/Kconfig b/common/Kconfig
+> > index 05f76ae..3f1ef6f 100644
+> > --- a/common/Kconfig
+> > +++ b/common/Kconfig
+> > @@ -653,6 +653,11 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU
+> >  	depends on USB_GADGET_DFU
+> >  	default y
+> >  
+> > +config DEFAULT_ENVIRONMENT_GENERIC_NEW_SPLASH
+> > +	bool
+> > +	depends on CMD_SPLASH
+> > +	default y
+> > +
+> >  config DEFAULT_ENVIRONMENT_GENERIC
+> >  	bool
+> >  	depends on !HAVE_DEFAULT_ENVIRONMENT_NEW
+> > diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+> > index fc679eb..03d241c 100644
+> > --- a/defaultenv/Makefile
+> > +++ b/defaultenv/Makefile
+> > @@ -1,6 +1,7 @@
+> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
+> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
+> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
+> > +bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SPLASH) += defaultenv-2-splash
+> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
+> >  obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
+> >  extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX)
+> > diff --git a/defaultenv/defaultenv-2-splash/bin/splash b/defaultenv/defaultenv-2-splash/bin/splash
+> > new file mode 100644
+> > index 0000000..352439d
+> > --- /dev/null
+> > +++ b/defaultenv/defaultenv-2-splash/bin/splash
+> > @@ -0,0 +1,15 @@
+> > +#!/bin/sh
+> > +
+> > +splash="/env/splash.png"
+> > +
+> > +if [ ! -f ${splash} ]; then
+> > +	return
+> > +fi
+> > +
+> > +splash ${splash}
+> > +
+> > +if [ $? = 0 ]; then
+> > +	fb0.enable=1
+> > +else
+> > +	echo "Cannot show splash image"
+> > +fi
+> > diff --git a/defaultenv/defaultenv-2-splash/init/splash b/defaultenv/defaultenv-2-splash/init/splash
+> > new file mode 100644
+> > index 0000000..04fdc8e
+> > --- /dev/null
+> > +++ b/defaultenv/defaultenv-2-splash/init/splash
+> > @@ -0,0 +1,3 @@
+> > +#!/bin/sh
+> > +
+> > +/env/bin/splash
+> 
+> Why do you need a separate /env/bin/splash here? Can't you add its
+> content here directly?
+> If we keep it, it should have the same name as the 'splash' command.
 
-> On 01/05/2015 05:32 PM, Robert Jarzmik wrote:
->> I have an idea here : as barebox is not performance oriented, and as the timings
->> are minimum guaranteed times between signal swaps, let me try to hard encode all
->> timing with their maximum value.
->
-> Sounds a good plan to me.
+The problem today is that the generic init is not ordered (such as rc.{0-9})
+on linux so if we need specific init before the splash we can not ensure it
+buy adding an init file that will be added to be run before
 
-And unfortunately it doesn't work. Too relaxed timings imply "fake" bytes
-returned by the flash NAND to the NAND controler.
+The only way is to overwrite the init
 
-So I have to keep a table of timings at least.
+or we do introduct a rc.d style buy starting the init with 000-xxx style file
+name or link
 
-Cheers.
+Best Regards,
+J.
 
--- 
-Robert
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
