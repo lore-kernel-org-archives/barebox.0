@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo69.mail-out.ovh.net ([178.33.251.80])
+Received: from 9.mo69.mail-out.ovh.net ([46.105.56.78])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y8IFX-0002YH-HH
- for barebox@lists.infradead.org; Tue, 06 Jan 2015 00:43:56 +0000
+ id 1Y8IIE-00047H-D7
+ for barebox@lists.infradead.org; Tue, 06 Jan 2015 00:46:43 +0000
 Received: from mail643.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id C36F4FFA805
- for <barebox@lists.infradead.org>; Tue,  6 Jan 2015 01:43:30 +0100 (CET)
-Date: Tue, 6 Jan 2015 01:43:28 +0100
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id 7D377FF9F3A
+ for <barebox@lists.infradead.org>; Tue,  6 Jan 2015 01:46:19 +0100 (CET)
+Date: Tue, 6 Jan 2015 01:46:19 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150106004328.GA4563@ns203013.ovh.net>
+Message-ID: <20150106004619.GB4563@ns203013.ovh.net>
 References: <20141223170709.GA15818@ns203013.ovh.net>
  <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
- <1419358918-25569-9-git-send-email-plagnioj@jcrosoft.com>
- <20150105105028.GP30369@pengutronix.de>
+ <1419358918-25569-7-git-send-email-plagnioj@jcrosoft.com>
+ <20150105104255.GN30369@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150105105028.GP30369@pengutronix.de>
+In-Reply-To: <20150105104255.GN30369@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,100 +28,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] defaultenv-2: create a specific defaultenv for splash
+Subject: Re: [PATCH 7/9] poller: allow to restrict the poller frequency
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 11:50 Mon 05 Jan     , Sascha Hauer wrote:
-> On Tue, Dec 23, 2014 at 07:21:58PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > This will allow to factorize splash init
+On 11:42 Mon 05 Jan     , Sascha Hauer wrote:
+> On Tue, Dec 23, 2014 at 07:21:56PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > so we do not slow down barebox on too much polling
+> > specialy on USB drivers
 > > 
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> >  common/Kconfig                             |  5 +++++
-> >  defaultenv/Makefile                        |  1 +
-> >  defaultenv/defaultenv-2-splash/bin/splash  | 15 +++++++++++++++
-> >  defaultenv/defaultenv-2-splash/init/splash |  3 +++
-> >  defaultenv/defaultenv.c                    |  2 ++
-> >  5 files changed, 26 insertions(+)
-> >  create mode 100644 defaultenv/defaultenv-2-splash/bin/splash
-> >  create mode 100644 defaultenv/defaultenv-2-splash/init/splash
-> > 
-> > diff --git a/common/Kconfig b/common/Kconfig
-> > index 05f76ae..3f1ef6f 100644
-> > --- a/common/Kconfig
-> > +++ b/common/Kconfig
-> > @@ -653,6 +653,11 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU
-> >  	depends on USB_GADGET_DFU
-> >  	default y
-> >  
-> > +config DEFAULT_ENVIRONMENT_GENERIC_NEW_SPLASH
-> > +	bool
-> > +	depends on CMD_SPLASH
-> > +	default y
-> > +
-> >  config DEFAULT_ENVIRONMENT_GENERIC
-> >  	bool
-> >  	depends on !HAVE_DEFAULT_ENVIRONMENT_NEW
-> > diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-> > index fc679eb..03d241c 100644
-> > --- a/defaultenv/Makefile
-> > +++ b/defaultenv/Makefile
-> > @@ -1,6 +1,7 @@
-> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW) += defaultenv-2-base
-> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
-> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
-> > +bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_SPLASH) += defaultenv-2-splash
-> >  bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
-> >  obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
-> >  extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX)
-> > diff --git a/defaultenv/defaultenv-2-splash/bin/splash b/defaultenv/defaultenv-2-splash/bin/splash
-> > new file mode 100644
-> > index 0000000..352439d
-> > --- /dev/null
-> > +++ b/defaultenv/defaultenv-2-splash/bin/splash
-> > @@ -0,0 +1,15 @@
-> > +#!/bin/sh
-> > +
-> > +splash="/env/splash.png"
-> > +
-> > +if [ ! -f ${splash} ]; then
-> > +	return
-> > +fi
-> > +
-> > +splash ${splash}
-> > +
-> > +if [ $? = 0 ]; then
-> > +	fb0.enable=1
-> > +else
-> > +	echo "Cannot show splash image"
-> > +fi
-> > diff --git a/defaultenv/defaultenv-2-splash/init/splash b/defaultenv/defaultenv-2-splash/init/splash
-> > new file mode 100644
-> > index 0000000..04fdc8e
-> > --- /dev/null
-> > +++ b/defaultenv/defaultenv-2-splash/init/splash
-> > @@ -0,0 +1,3 @@
-> > +#!/bin/sh
-> > +
-> > +/env/bin/splash
+> >  common/poller.c  | 11 ++++++++++-
+> >  include/poller.h |  3 +++
+> >  2 files changed, 13 insertions(+), 1 deletion(-)
 > 
-> Why do you need a separate /env/bin/splash here? Can't you add its
-> content here directly?
-> If we keep it, it should have the same name as the 'splash' command.
+> Could you repost this along with the first user?
 
-The problem today is that the generic init is not ordered (such as rc.{0-9})
-on linux so if we need specific init before the splash we can not ensure it
-buy adding an init file that will be added to be run before
-
-The only way is to overwrite the init
-
-or we do introduct a rc.d style buy starting the init with 000-xxx style file
-name or link
+I'm finishing to clean the USB HID driver that will use it
 
 Best Regards,
 J.
-
+> 
+> > 
+> > diff --git a/common/poller.c b/common/poller.c
+> > index 496636d..58b105d 100644
+> > --- a/common/poller.c
+> > +++ b/common/poller.c
+> > @@ -24,6 +24,9 @@ int poller_register(struct poller_struct *poller)
+> >  	list_add_tail(&poller->list, &poller_list);
+> >  	poller->registered = 1;
+> >  
+> > +	if (poller->frequency)
+> > +		poller->poll_next = get_time_ns();
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > @@ -96,8 +99,14 @@ void poller_call(void)
+> >  
+> >  	poller_active = 1;
+> >  
+> > -	list_for_each_entry_safe(poller, tmp, &poller_list, list)
+> > +	list_for_each_entry_safe(poller, tmp, &poller_list, list) {
+> > +
+> > +		if (poller->frequency && get_time_ns() < poller->poll_next)
+> > +			continue;
+> >  		poller->func(poller);
+> > +		if (poller->frequency)
+> > +			poller->poll_next += poller->frequency;
+> > +	}
+> >  
+> >  	poller_active = 0;
+> >  }
+> > diff --git a/include/poller.h b/include/poller.h
+> > index cda5b57..3568a80 100644
+> > --- a/include/poller.h
+> > +++ b/include/poller.h
+> > @@ -14,6 +14,9 @@ struct poller_struct {
+> >  	void (*func)(struct poller_struct *poller);
+> >  	int registered;
+> >  	struct list_head list;
+> > +
+> > +	uint64_t frequency;
+> > +	uint64_t poll_next;
+> >  };
+> 
+> Could you reorder the fields in struct poller_struct by fields which
+> should be initialized by users and internal fields? This was not exactly
+> clear before this patch, but this patch introduces another two fields,
+> from which one must be initialized by the user and the other one not.
 > 
 > Sascha
 > 
