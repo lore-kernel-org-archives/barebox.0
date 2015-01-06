@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36])
+Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y8SS8-0004TV-Nh
+ id 1Y8SS8-0004Te-T4
  for barebox@lists.infradead.org; Tue, 06 Jan 2015 11:37:38 +0000
 Received: from mail137.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 831DEFF9322
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 9D16FFF9302
  for <barebox@lists.infradead.org>; Tue,  6 Jan 2015 12:37:13 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue,  6 Jan 2015 12:37:05 +0100
-Message-Id: <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20150106113227.GC4563@ns203013.ovh.net>
+Date: Tue,  6 Jan 2015 12:37:06 +0100
+Message-Id: <1420544226-30497-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150106113227.GC4563@ns203013.ovh.net>
-MIME-Version: 1.0
+ <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,88 +20,165 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] arm: at91: fix ecc_mode on non atmel boards
+Subject: [PATCH 2/2] driver: workarroud resource request that conflist with
+ errno PTR
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Rapha=C3=ABl=20Poggi?= <poggi.raph@gmail.com>
 
-c2luY2UKY29tbWl0IDU0YmNjYWRkZGQ1MmNiNGNiYmVjZDE0MDNiOTA5MWZlNjUxYmQwZmQKQXV0
-aG9yOiBSYXBoYcOrbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFpbC5jb20+CgogICAgbXRkOiBhdG1l
-bF9uYW5kOiByZXRyaWV2ZSBlY2NfbW9kZSBmcm9tIHBkYXRhCgpicmVhayBtb3N0IG9mIHRoZSBu
-b24gYXRtZWwgQVQ5MSBib2FyZHMgdGhhdCBkaWQgbm90IHByb3ZpZGUgYSBlY2NfbW9kZQpwYXJh
-bXMgaW4gdGhlIG5hbmQgcGRhdGEKClNpZ25lZC1vZmYtYnk6IEplYW4tQ2hyaXN0b3BoZSBQTEFH
-TklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+CkNjOiBSYXBoYcOrbCBQb2dnaSA8
-cG9nZ2kucmFwaEBnbWFpbC5jb20+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL2FuaW1lb19pcC9pbml0
-LmMgICAgICB8IDEgKwogYXJjaC9hcm0vYm9hcmRzL3BtOTI2MS9pbml0LmMgICAgICAgICB8IDEg
-KwogYXJjaC9hcm0vYm9hcmRzL3BtOTI2My9pbml0LmMgICAgICAgICB8IDEgKwogYXJjaC9hcm0v
-Ym9hcmRzL3BtOWc0NS9pbml0LmMgICAgICAgICB8IDEgKwogYXJjaC9hcm0vYm9hcmRzL3FpbC1h
-OTI2eC9pbml0LmMgICAgICB8IDEgKwogYXJjaC9hcm0vYm9hcmRzL3RlbGl0LWV2ay1wcm8zL2lu
-aXQuYyB8IDIgKysKIGFyY2gvYXJtL2JvYXJkcy90bnktYTkyNngvaW5pdC5jICAgICAgfCAxICsK
-IGFyY2gvYXJtL2JvYXJkcy91c2ItYTkyNngvaW5pdC5jICAgICAgfCAxICsKIDggZmlsZXMgY2hh
-bmdlZCwgOSBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2FuaW1l
-b19pcC9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvYW5pbWVvX2lwL2luaXQuYwppbmRleCBjYTY0
-ZDZkLi40OTVkYzE4IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvYW5pbWVvX2lwL2luaXQu
-YworKysgYi9hcmNoL2FybS9ib2FyZHMvYW5pbWVvX2lwL2luaXQuYwpAQCAtOTMsNiArOTMsNyBA
-QCBzdGF0aWMgc3RydWN0IGF0bWVsX25hbmRfZGF0YSBuYW5kX3BkYXRhID0gewogCS5kZXRfcGlu
-CT0gLUVJTlZBTCwKIAkucmR5X3Bpbgk9IEFUOTFfUElOX1BDMTMsCiAJLmVuYWJsZV9waW4JPSBB
-VDkxX1BJTl9QQzE0LAorCS5lY2NfbW9kZQk9IE5BTkRfRUNDX1NPRlQsCiAJLmJ1c193aWR0aF8x
-Ngk9IDAsCiAJLm9uX2ZsYXNoX2JidAk9IDEsCiB9OwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9h
-cmRzL3BtOTI2MS9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvcG05MjYxL2luaXQuYwppbmRleCAw
-OWQ3ZjgwLi42M2Y0ZjE5IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcG05MjYxL2luaXQu
-YworKysgYi9hcmNoL2FybS9ib2FyZHMvcG05MjYxL2luaXQuYwpAQCAtNTAsNiArNTAsNyBAQCBz
-dGF0aWMgc3RydWN0IGF0bWVsX25hbmRfZGF0YSBuYW5kX3BkYXRhID0gewogCS5kZXRfcGluCT0g
-LUVJTlZBTCwKIAkucmR5X3Bpbgk9IEFUOTFfUElOX1BBMTYsCiAJLmVuYWJsZV9waW4JPSBBVDkx
-X1BJTl9QQzE0LAorCS5lY2NfbW9kZQk9IE5BTkRfRUNDX1NPRlQsCiAjaWYgZGVmaW5lZChDT05G
-SUdfTVREX05BTkRfQVRNRUxfQlVTV0lEVEhfMTYpCiAJLmJ1c193aWR0aF8xNgk9IDEsCiAjZWxz
-ZQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BtOTI2My9pbml0LmMgYi9hcmNoL2FybS9i
-b2FyZHMvcG05MjYzL2luaXQuYwppbmRleCAzZGNhOWU0Li4yYjZiMDg5IDEwMDY0NAotLS0gYS9h
-cmNoL2FybS9ib2FyZHMvcG05MjYzL2luaXQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvcG05MjYz
-L2luaXQuYwpAQCAtNTAsNiArNTAsNyBAQCBzdGF0aWMgc3RydWN0IGF0bWVsX25hbmRfZGF0YSBu
-YW5kX3BkYXRhID0gewogCS5kZXRfcGluCT0gLUVJTlZBTCwKIAkucmR5X3Bpbgk9IEFUOTFfUElO
-X1BCMzAsCiAJLmVuYWJsZV9waW4JPSBBVDkxX1BJTl9QRDE1LAorCS5lY2NfbW9kZQk9IE5BTkRf
-RUNDX1NPRlQsCiAjaWYgZGVmaW5lZChDT05GSUdfTVREX05BTkRfQVRNRUxfQlVTV0lEVEhfMTYp
-CiAJLmJ1c193aWR0aF8xNgk9IDEsCiAjZWxzZQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRz
-L3BtOWc0NS9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvcG05ZzQ1L2luaXQuYwppbmRleCAxZTQz
-YmU1Li41MjRmZTUzIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcG05ZzQ1L2luaXQuYwor
-KysgYi9hcmNoL2FybS9ib2FyZHMvcG05ZzQ1L2luaXQuYwpAQCAtNDksNiArNDksNyBAQCBzdGF0
-aWMgc3RydWN0IGF0bWVsX25hbmRfZGF0YSBuYW5kX3BkYXRhID0gewogCS5kZXRfcGluCT0gLUVJ
-TlZBTCwKIAkucmR5X3Bpbgk9IEFUOTFfUElOX1BEMywKIAkuZW5hYmxlX3Bpbgk9IEFUOTFfUElO
-X1BDMTQsCisJLmVjY19tb2RlCT0gTkFORF9FQ0NfU09GVCwKIAkuYnVzX3dpZHRoXzE2CT0gMCwK
-IAkub25fZmxhc2hfYmJ0CT0gMSwKIH07CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcWls
-LWE5MjZ4L2luaXQuYyBiL2FyY2gvYXJtL2JvYXJkcy9xaWwtYTkyNngvaW5pdC5jCmluZGV4IDk5
-YTk2MDQuLjRmMDFlMmQgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9xaWwtYTkyNngvaW5p
-dC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9xaWwtYTkyNngvaW5pdC5jCkBAIC00Myw2ICs0Myw3
-IEBAIHN0YXRpYyBzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRhIG5hbmRfcGRhdGEgPSB7CiAJLmRldF9w
-aW4JPSAtRUlOVkFMLAogCS5yZHlfcGluCT0gQVQ5MV9QSU5fUEMxMywKIAkuZW5hYmxlX3Bpbgk9
-IEFUOTFfUElOX1BDMTQsCisJLmVjY19tb2RlCT0gTkFORF9FQ0NfU09GVCwKIAkub25fZmxhc2hf
-YmJ0CT0gMSwKIH07CiAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy90ZWxpdC1ldmstcHJv
-My9pbml0LmMgYi9hcmNoL2FybS9ib2FyZHMvdGVsaXQtZXZrLXBybzMvaW5pdC5jCmluZGV4IGUw
-OTRlYTcuLmVhNjNiMWEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy90ZWxpdC1ldmstcHJv
-My9pbml0LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3RlbGl0LWV2ay1wcm8zL2luaXQuYwpAQCAt
-MTgsNiArMTgsNyBAQAogI2luY2x1ZGUgPGdwaW8uaD4KICNpbmNsdWRlIDxpbml0Lmg+CiAjaW5j
-bHVkZSA8bGludXgvY2xrLmg+CisjaW5jbHVkZSA8bGludXgvbXRkL25hbmQuaD4KICNpbmNsdWRl
-IDxtYWNoL2F0OTFfcnN0Yy5oPgogI2luY2x1ZGUgPG1hY2gvYXQ5MXNhbTlfc21jLmg+CiAjaW5j
-bHVkZSA8bWFjaC9ib2FyZC5oPgpAQCAtMzMsNiArMzQsNyBAQCBzdGF0aWMgc3RydWN0IGF0bWVs
-X25hbmRfZGF0YSBuYW5kX3BkYXRhID0gewogCS5kZXRfcGluCT0gLUVJTlZBTCwKIAkucmR5X3Bp
-bgk9IEFUOTFfUElOX1BDMTMsCiAJLmVuYWJsZV9waW4JPSBBVDkxX1BJTl9QQzE0LAorCS5lY2Nf
-bW9kZQk9IE5BTkRfRUNDX1NPRlQsCiAJLm9uX2ZsYXNoX2JidAk9IDEsCiB9OwogCmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9ib2FyZHMvdG55LWE5MjZ4L2luaXQuYyBiL2FyY2gvYXJtL2JvYXJkcy90
-bnktYTkyNngvaW5pdC5jCmluZGV4IGFjODY0NTcuLjI1NmY4YmEgMTAwNjQ0Ci0tLSBhL2FyY2gv
-YXJtL2JvYXJkcy90bnktYTkyNngvaW5pdC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy90bnktYTky
-NngvaW5pdC5jCkBAIC01NSw2ICs1NSw3IEBAIHN0YXRpYyBzdHJ1Y3QgYXRtZWxfbmFuZF9kYXRh
-IG5hbmRfcGRhdGEgPSB7CiAJLmRldF9waW4JPSAtRUlOVkFMLAogCS5yZHlfcGluCT0gQVQ5MV9Q
-SU5fUEMxMywKIAkuZW5hYmxlX3Bpbgk9IEFUOTFfUElOX1BDMTQsCisJLmVjY19tb2RlCT0gTkFO
-RF9FQ0NfU09GVCwKIAkub25fZmxhc2hfYmJ0CT0gMSwKIH07CiAKZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2JvYXJkcy91c2ItYTkyNngvaW5pdC5jIGIvYXJjaC9hcm0vYm9hcmRzL3VzYi1hOTI2eC9p
-bml0LmMKaW5kZXggNGEyOGFmMC4uZjBlMTE1NyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRz
-L3VzYi1hOTI2eC9pbml0LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3VzYi1hOTI2eC9pbml0LmMK
-QEAgLTU5LDYgKzU5LDcgQEAgc3RhdGljIHN0cnVjdCBhdG1lbF9uYW5kX2RhdGEgbmFuZF9wZGF0
-YSA9IHsKIAkuZGV0X3Bpbgk9IC1FSU5WQUwsCiAJLnJkeV9waW4JPSBBVDkxX1BJTl9QQzEzLAog
-CS5lbmFibGVfcGluCT0gQVQ5MV9QSU5fUEMxNCwKKwkuZWNjX21vZGUJPSBOQU5EX0VDQ19TT0ZU
-LAogCS5vbl9mbGFzaF9iYnQJPSAxLAogfTsKIAotLSAKMi4xLjMKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+broken since
+
+commit ed6e965824303255cacc1c1a195d3684caa26bce
+Author:     Sascha Hauer <s.hauer@pengutronix.de>
+resource: Let dev_request_mem_region return an error pointer
+
+Introduce dev_request_mem_region_err_null
+
+only used on platform like at91 where the Ressource address collision with
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-at91/at91sam926x_time.c |  6 +++---
+ drivers/base/driver.c                 | 31 +++++++++++++++++++++++++++++--
+ drivers/pinctrl/pinctrl-at91.c        |  6 +++---
+ drivers/serial/atmel.c                |  6 +++---
+ include/driver.h                      |  8 ++++++++
+ 5 files changed, 46 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/arch/arm/mach-at91/at91sam926x_time.c
+index 789e1ec..cc7ad2f 100644
+--- a/arch/arm/mach-at91/at91sam926x_time.c
++++ b/arch/arm/mach-at91/at91sam926x_time.c
+@@ -89,9 +89,9 @@ static int at91_pit_probe(struct device_d *dev)
+ 		return ret;
+ 	}
+ 
+-	pit_base = dev_request_mem_region(dev, 0);
+-	if (IS_ERR(pit_base))
+-		return PTR_ERR(pit_base);
++	pit_base = dev_request_mem_region_err_null(dev, 0);
++	if (!pit_base)
++		return -ENOENT;
+ 
+ 	pit_rate = clk_get_rate(clk) / 16;
+ 
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index e0125a1..2375004 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -242,8 +242,8 @@ int register_driver(struct driver_d *drv)
+ }
+ EXPORT_SYMBOL(register_driver);
+ 
+-struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
+-				  int num)
++static struct resource *__dev_get_resource(struct device_d *dev,
++		unsigned long type, int num)
+ {
+ 	int i, n = 0;
+ 
+@@ -256,6 +256,17 @@ struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
+ 		}
+ 	}
+ 
++	return NULL;
++}
++
++struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
++				  int num)
++{
++	struct resource *res = __dev_get_resource(dev, type, num);
++
++	if (res)
++		return res;
++
+ 	return ERR_PTR(-ENOENT);
+ }
+ 
+@@ -318,6 +329,22 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
+ }
+ EXPORT_SYMBOL(dev_request_mem_region_by_name);
+ 
++void __iomem *dev_request_mem_region_err_null(struct device_d *dev, int num)
++{
++	struct resource *res;
++
++	res = __dev_get_resource(dev, IORESOURCE_MEM, num);
++	if (!res)
++		return res;
++
++	res = request_iomem_region(dev_name(dev), res->start, res->end);
++	if (IS_ERR(res))
++		return ERR_CAST(res);
++
++	return (void __force __iomem *)res->start;
++}
++EXPORT_SYMBOL(dev_request_mem_region_err_null);
++
+ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+ {
+ 	struct resource *res;
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 0d6d2e7..b803f89 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -652,9 +652,9 @@ static int at91_gpio_probe(struct device_d *dev)
+ 	}
+ 
+ 	gpio_banks = max(gpio_banks, alias_idx + 1);
+-	at91_gpio->regbase = dev_request_mem_region(dev, 0);
+-	if (IS_ERR(at91_gpio->regbase))
+-		return PTR_ERR(at91_gpio->regbase);
++	at91_gpio->regbase = dev_request_mem_region_err_null(dev, 0);
++	if (!at91_gpio->regbase)
++		return -ENOENT;
+ 
+ 	at91_gpio->chip.ops = &at91_gpio_ops;
+ 	at91_gpio->chip.ngpio = MAX_NB_GPIO_PER_BANK;
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index 1f40692..4e4624e 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -398,9 +398,9 @@ static int atmel_serial_init_port(struct console_device *cdev)
+ 	struct device_d *dev = cdev->dev;
+ 	struct atmel_uart_port *uart = to_atmel_uart_port(cdev);
+ 
+-	uart->base = dev_request_mem_region(dev, 0);
+-	if (IS_ERR(uart->base))
+-		return PTR_ERR(uart->base);
++	uart->base = dev_request_mem_region_err_null(dev, 0);
++	if (!uart->base)
++		return -ENOENT;
+ 
+ 	uart->clk = clk_get(dev, "usart");
+ 	clk_enable(uart->clk);
+diff --git a/include/driver.h b/include/driver.h
+index 53e1000..46aae4f 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -206,6 +206,14 @@ void *dev_get_mem_region(struct device_d *dev, int num);
+  */
+ void __iomem *dev_request_mem_region(struct device_d *dev, int num);
+ 
++/*
++ * exlusively request register base 'num' for a device
++ * will return NULL on error
++ * only used on platform like at91 where the Ressource address collision with
++ * PTR errno
++ */
++void __iomem *dev_request_mem_region_err_null(struct device_d *dev, int num);
++
+ struct device_d *device_alloc(const char *devname, int id);
+ 
+ int device_add_resources(struct device_d *dev, const struct resource *res, int num);
+-- 
+2.1.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
