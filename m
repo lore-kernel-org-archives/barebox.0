@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y8TV9-0000cU-KW
- for barebox@lists.infradead.org; Tue, 06 Jan 2015 12:44:49 +0000
-Date: Tue, 6 Jan 2015 13:44:23 +0100
+ Linux)) id 1Y8Thw-00089v-0d
+ for barebox@lists.infradead.org; Tue, 06 Jan 2015 12:58:01 +0000
+Date: Tue, 6 Jan 2015 13:57:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150106124423.GB17225@pengutronix.de>
-References: <20150106113227.GC4563@ns203013.ovh.net>
- <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
- <1420544226-30497-2-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20150106125737.GD17225@pengutronix.de>
+References: <20141223170709.GA15818@ns203013.ovh.net>
+ <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
+ <1419358918-25569-9-git-send-email-plagnioj@jcrosoft.com>
+ <20150105105028.GP30369@pengutronix.de>
+ <20150106004328.GA4563@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1420544226-30497-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20150106004328.GA4563@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,85 +26,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] driver: workarroud resource request that conflist
- with errno PTR
+Subject: Re: [PATCH 9/9] defaultenv-2: create a specific defaultenv for splash
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 06, 2015 at 12:37:06PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> broken since
+On Tue, Jan 06, 2015 at 01:43:28AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > diff --git a/defaultenv/defaultenv-2-splash/init/splash b/defaultenv/defaultenv-2-splash/init/splash
+> > > new file mode 100644
+> > > index 0000000..04fdc8e
+> > > --- /dev/null
+> > > +++ b/defaultenv/defaultenv-2-splash/init/splash
+> > > @@ -0,0 +1,3 @@
+> > > +#!/bin/sh
+> > > +
+> > > +/env/bin/splash
+> > 
+> > Why do you need a separate /env/bin/splash here? Can't you add its
+> > content here directly?
+> > If we keep it, it should have the same name as the 'splash' command.
 > 
-> commit ed6e965824303255cacc1c1a195d3684caa26bce
-> Author:     Sascha Hauer <s.hauer@pengutronix.de>
-> resource: Let dev_request_mem_region return an error pointer
+> The problem today is that the generic init is not ordered (such as rc.{0-9})
+> on linux so if we need specific init before the splash we can not ensure it
+> buy adding an init file that will be added to be run before
 > 
-> Introduce dev_request_mem_region_err_null
+> The only way is to overwrite the init
 > 
-> only used on platform like at91 where the Ressource address collision with
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/mach-at91/at91sam926x_time.c |  6 +++---
->  drivers/base/driver.c                 | 31 +++++++++++++++++++++++++++++--
->  drivers/pinctrl/pinctrl-at91.c        |  6 +++---
->  drivers/serial/atmel.c                |  6 +++---
->  include/driver.h                      |  8 ++++++++
->  5 files changed, 46 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/arm/mach-at91/at91sam926x_time.c b/arch/arm/mach-at91/at91sam926x_time.c
-> index 789e1ec..cc7ad2f 100644
-> --- a/arch/arm/mach-at91/at91sam926x_time.c
-> +++ b/arch/arm/mach-at91/at91sam926x_time.c
-> @@ -89,9 +89,9 @@ static int at91_pit_probe(struct device_d *dev)
->  		return ret;
->  	}
->  
-> -	pit_base = dev_request_mem_region(dev, 0);
-> -	if (IS_ERR(pit_base))
-> -		return PTR_ERR(pit_base);
-> +	pit_base = dev_request_mem_region_err_null(dev, 0);
-> +	if (!pit_base)
-> +		return -ENOENT;
->  
->  	pit_rate = clk_get_rate(clk) / 16;
->  
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index e0125a1..2375004 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -242,8 +242,8 @@ int register_driver(struct driver_d *drv)
->  }
->  EXPORT_SYMBOL(register_driver);
->  
-> -struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
-> -				  int num)
-> +static struct resource *__dev_get_resource(struct device_d *dev,
-> +		unsigned long type, int num)
->  {
->  	int i, n = 0;
->  
-> @@ -256,6 +256,17 @@ struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
->  		}
->  	}
->  
-> +	return NULL;
-> +}
-> +
-> +struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
-> +				  int num)
-> +{
-> +	struct resource *res = __dev_get_resource(dev, type, num);
-> +
-> +	if (res)
-> +		return res;
-> +
->  	return ERR_PTR(-ENOENT);
->  }
+> or we do introduct a rc.d style buy starting the init with 000-xxx style file
+> name or link
 
-No need to change dev_get_resource(), it returns a struct resource *
-which will never conflict with an err ptr.
+Then I'm much more in favor for using 000-xxx style. This makes the
+intention clear how things should be ordered.
+
+Besides, if you need board specific init you can still overwrite
+/env/init/splash instead of /env/bin/splash.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
