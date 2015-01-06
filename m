@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y8Thw-00089v-0d
- for barebox@lists.infradead.org; Tue, 06 Jan 2015 12:58:01 +0000
-Date: Tue, 6 Jan 2015 13:57:37 +0100
+ Linux)) id 1Y8TkD-0008Tc-Ns
+ for barebox@lists.infradead.org; Tue, 06 Jan 2015 13:00:22 +0000
+Date: Tue, 6 Jan 2015 13:59:59 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150106125737.GD17225@pengutronix.de>
-References: <20141223170709.GA15818@ns203013.ovh.net>
- <1419358918-25569-1-git-send-email-plagnioj@jcrosoft.com>
- <1419358918-25569-9-git-send-email-plagnioj@jcrosoft.com>
- <20150105105028.GP30369@pengutronix.de>
- <20150106004328.GA4563@ns203013.ovh.net>
+Message-ID: <20150106125959.GE17225@pengutronix.de>
+References: <20150106113227.GC4563@ns203013.ovh.net>
+ <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150106004328.GA4563@ns203013.ovh.net>
+In-Reply-To: <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] defaultenv-2: create a specific defaultenv for splash
+Subject: Re: [PATCH 1/2] arm: at91: fix ecc_mode on non atmel boards
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
 
-On Tue, Jan 06, 2015 at 01:43:28AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > diff --git a/defaultenv/defaultenv-2-splash/init/splash b/defaultenv/defaultenv-2-splash/init/splash
-> > > new file mode 100644
-> > > index 0000000..04fdc8e
-> > > --- /dev/null
-> > > +++ b/defaultenv/defaultenv-2-splash/init/splash
-> > > @@ -0,0 +1,3 @@
-> > > +#!/bin/sh
-> > > +
-> > > +/env/bin/splash
-> > 
-> > Why do you need a separate /env/bin/splash here? Can't you add its
-> > content here directly?
-> > If we keep it, it should have the same name as the 'splash' command.
-> 
-> The problem today is that the generic init is not ordered (such as rc.{0-9})
-> on linux so if we need specific init before the splash we can not ensure it
-> buy adding an init file that will be added to be run before
-> 
-> The only way is to overwrite the init
-> 
-> or we do introduct a rc.d style buy starting the init with 000-xxx style file
-> name or link
+On Tue, Jan 06, 2015 at 12:37:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> since
+> commit 54bccadddd52cb4cbbecd1403b9091fe651bd0fd
+> Author: Rapha=EBl Poggi <poggi.raph@gmail.com>
+> =
 
-Then I'm much more in favor for using 000-xxx style. This makes the
-intention clear how things should be ordered.
+>     mtd: atmel_nand: retrieve ecc_mode from pdata
+> =
 
-Besides, if you need board specific init you can still overwrite
-/env/init/splash instead of /env/bin/splash.
+> break most of the non atmel AT91 boards that did not provide a ecc_mode
+> params in the nand pdata
+> =
+
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> Cc: Rapha=EBl Poggi <poggi.raph@gmail.com>
+
+Applied, thanks
 
 Sascha
 
+-- =
 
--- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
