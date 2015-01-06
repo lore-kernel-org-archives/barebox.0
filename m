@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y8TkD-0008Tc-Ns
- for barebox@lists.infradead.org; Tue, 06 Jan 2015 13:00:22 +0000
-Date: Tue, 6 Jan 2015 13:59:59 +0100
+ Linux)) id 1Y8UTv-0001x0-TF
+ for barebox@lists.infradead.org; Tue, 06 Jan 2015 13:47:36 +0000
+Date: Tue, 6 Jan 2015 14:47:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150106125959.GE17225@pengutronix.de>
-References: <20150106113227.GC4563@ns203013.ovh.net>
- <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20150106134713.GF17225@pengutronix.de>
+References: <20141211075948.GD30369@pengutronix.de>
+ <1418291279-3610-1-git-send-email-j.weitzel@phytec.de>
+ <20150105122203.GA5603@lws-weitzel2@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1420544226-30497-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20150105122203.GA5603@lws-weitzel2@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] arm: at91: fix ecc_mode on non atmel boards
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Subject: Re: [PATCH v2] i2c: omap: fix fclk_rate for ti,omap4-i2c
+To: Jan Weitzel <J.Weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jan 06, 2015 at 12:37:05PM +0100, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> since
-> commit 54bccadddd52cb4cbbecd1403b9091fe651bd0fd
-> Author: Rapha=EBl Poggi <poggi.raph@gmail.com>
-> =
+On Mon, Jan 05, 2015 at 01:22:04PM +0100, Jan Weitzel wrote:
+> On Thu, Dec 11, 2014 at 10:47:59AM +0100, Jan Weitzel wrote:
+> > The compatible "ti,omap4-i2c" don't help to get fclk_rate. So set it acording to
+> > cpu compatible: "ti,am33xx" and "ti,omap4"
+> > 
+> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> > ---
+> > v2: set i2c_data directly
+> >-9.0.1.i586.deb  
+> 
+> ping
 
->     mtd: atmel_nand: retrieve ecc_mode from pdata
-> =
-
-> break most of the non atmel AT91 boards that did not provide a ecc_mode
-> params in the nand pdata
-> =
-
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Cc: Rapha=EBl Poggi <poggi.raph@gmail.com>
-
-Applied, thanks
+Applied now.
 
 Sascha
 
--- =
 
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
