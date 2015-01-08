@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y9BYP-0004Ux-Jg
- for barebox@lists.infradead.org; Thu, 08 Jan 2015 11:47:06 +0000
+ Linux)) id 1Y9BYP-0004Us-L6
+ for barebox@lists.infradead.org; Thu, 08 Jan 2015 11:47:08 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu,  8 Jan 2015 12:46:16 +0100
-Message-Id: <1420717584-15766-2-git-send-email-s.trumtrar@pengutronix.de>
+Date: Thu,  8 Jan 2015 12:46:20 +0100
+Message-Id: <1420717584-15766-6-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] ARM: sockit: Define inst_rom_init static
+Subject: [PATCH 5/9] ARM: socfpga: clock-manager: set mainnandsdmmcclk
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Markus Pargmann <mpa@pengutronix.de>
-
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-socfpga/clock-manager.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c b/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
-index fc83721ea217..09bdc582d10e 100644
---- a/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
-+++ b/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
-@@ -28,8 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
- 
- #include <common.h>
--const uint32_t inst_rom_init_size = 127;
--const uint32_t inst_rom_init[127] =
-+static const uint32_t inst_rom_init_size = 127;
-+static const uint32_t inst_rom_init[127] =
- {
- 	0x80000,
- 	0x80680,
+diff --git a/arch/arm/mach-socfpga/clock-manager.c b/arch/arm/mach-socfpga/clock-manager.c
+index 5196f08b09af..f17371365fe4 100644
+--- a/arch/arm/mach-socfpga/clock-manager.c
++++ b/arch/arm/mach-socfpga/clock-manager.c
+@@ -174,6 +174,7 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg)
+ 	writel(cfg->emac1clk, cm + CLKMGR_PERPLLGRP_EMAC1CLK_ADDRESS);
+ 	writel(cfg->mainqspiclk, cm + CLKMGR_MAINPLLGRP_MAINQSPICLK_ADDRESS);
+ 	writel(cfg->perqspiclk, cm + CLKMGR_PERPLLGRP_PERQSPICLK_ADDRESS);
++	writel(cfg->mainnandsdmmcclk, cm + CLKMGR_MAINPLLGRP_MAINNANDSDMMCCLK_ADDRESS);
+ 	writel(cfg->pernandsdmmcclk, cm + CLKMGR_PERPLLGRP_PERNANDSDMMCCLK_ADDRESS);
+ 	writel(cfg->perbaseclk, cm + CLKMGR_PERPLLGRP_PERBASECLK_ADDRESS);
+ 	writel(cfg->s2fuser1clk, cm + CLKMGR_PERPLLGRP_S2FUSER1CLK_ADDRESS);
 -- 
 2.1.4
 
