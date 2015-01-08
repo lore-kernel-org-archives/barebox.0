@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y9BYP-0004Up-M0
- for barebox@lists.infradead.org; Thu, 08 Jan 2015 11:47:10 +0000
+ Linux)) id 1Y9BYP-0004Ul-LP
+ for barebox@lists.infradead.org; Thu, 08 Jan 2015 11:47:09 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu,  8 Jan 2015 12:46:17 +0100
-Message-Id: <1420717584-15766-3-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Thu,  8 Jan 2015 12:46:15 +0100
+Message-Id: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,75 +19,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] ARM: socfpga: avoid using external regulator for PLL
+Subject: [PATCH 0/9] Socfpga: Sequencer updates
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From Altera U-Boot:
-	FogBugz #210587: Fixing PLL HW configuration issue
+Hi,
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- arch/arm/mach-socfpga/clock-manager.c              | 20 +++++++++++++-------
- arch/arm/mach-socfpga/include/mach/clock-manager.h |  5 +++++
- 2 files changed, 18 insertions(+), 7 deletions(-)
+this series updates the sequencer files for Socfpga (again).
+The sequencer.c/h are now just grabbed from the Altera generated code and
+transformed via the scripts/socfpga_get_sequencer script into a format that
+barebox can understand and compile.
+This way we can easier integrate updates to this file in the future.
 
-diff --git a/arch/arm/mach-socfpga/clock-manager.c b/arch/arm/mach-socfpga/clock-manager.c
-index 13ca69b977a0..dc81301efd01 100644
---- a/arch/arm/mach-socfpga/clock-manager.c
-+++ b/arch/arm/mach-socfpga/clock-manager.c
-@@ -123,11 +123,14 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg)
- 	 * Put all plls VCO registers back to reset value.
- 	 * Some code might have messed with them.
- 	 */
--	writel(CLKMGR_MAINPLLGRP_VCO_RESET_VALUE,
-+	writel(CLKMGR_MAINPLLGRP_VCO_RESET_VALUE &
-+		~CLKMGR_MAINPLLGRP_VCO_REGEXTSEL_MASK,
- 		cm + CLKMGR_MAINPLLGRP_VCO_ADDRESS);
--	writel(CLKMGR_PERPLLGRP_VCO_RESET_VALUE,
-+	writel(CLKMGR_PERPLLGRP_VCO_RESET_VALUE &
-+		~CLKMGR_PERPLLGRP_VCO_REGEXTSEL_MASK,
- 		cm + CLKMGR_PERPLLGRP_VCO_ADDRESS);
--	writel(CLKMGR_SDRPLLGRP_VCO_RESET_VALUE,
-+	writel(CLKMGR_SDRPLLGRP_VCO_RESET_VALUE &
-+		~CLKMGR_SDRPLLGRP_VCO_REGEXTSEL_MASK,
- 		cm + CLKMGR_SDRPLLGRP_VCO_ADDRESS);
- 
- 	/*
-@@ -151,12 +154,15 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg)
- 	 * We made sure bgpwr down was assert for 5 us. Now deassert BG PWR DN
- 	 * with numerator and denominator.
- 	 */
--	writel(cfg->main_vco_base | CLKMGR_MAINPLLGRP_VCO_REGEXTSEL_MASK,
-+	writel(cfg->main_vco_base | CLEAR_BGP_EN_PWRDN,
- 		cm + CLKMGR_MAINPLLGRP_VCO_ADDRESS);
--	writel(cfg->peri_vco_base | CLKMGR_PERPLLGRP_VCO_REGEXTSEL_MASK,
-+	writel(cfg->peri_vco_base | CLEAR_BGP_EN_PWRDN,
- 		cm + CLKMGR_PERPLLGRP_VCO_ADDRESS);
--	writel(cfg->sdram_vco_base | CLKMGR_SDRPLLGRP_VCO_REGEXTSEL_MASK,
--		cm + CLKMGR_SDRPLLGRP_VCO_ADDRESS);
-+	writel(cfg->sdram_vco_base |
-+	       CLKMGR_SDRPLLGRP_VCO_OUTRESET_SET(0) |
-+	       CLKMGR_SDRPLLGRP_VCO_OUTRESETALL_SET(0) |
-+	       CLEAR_BGP_EN_PWRDN,
-+	       cm + CLKMGR_SDRPLLGRP_VCO_ADDRESS);
- 
- 	writel(cfg->mpuclk, cm + CLKMGR_MAINPLLGRP_MPUCLK_ADDRESS);
- 	writel(cfg->mainclk, cm + CLKMGR_MAINPLLGRP_MAINCLK_ADDRESS);
-diff --git a/arch/arm/mach-socfpga/include/mach/clock-manager.h b/arch/arm/mach-socfpga/include/mach/clock-manager.h
-index a2b697561aeb..b67f256091d4 100644
---- a/arch/arm/mach-socfpga/include/mach/clock-manager.h
-+++ b/arch/arm/mach-socfpga/include/mach/clock-manager.h
-@@ -185,4 +185,9 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg);
- #define CLKMGR_SDRPLLGRP_DDRDQCLK_CNT_MASK 0x000001ff
- #define CLKMGR_SDRPLLGRP_S2FUSER2CLK_CNT_MASK 0x000001ff
- 
-+#define CLEAR_BGP_EN_PWRDN \
-+	(CLKMGR_MAINPLLGRP_VCO_PWRDN_SET(0)| \
-+	CLKMGR_MAINPLLGRP_VCO_EN_SET(0)| \
-+	CLKMGR_MAINPLLGRP_VCO_BGPWRDN_SET(0))
-+
- #endif /* _CLOCK_MANAGER_H_ */
+Also, some changes to the clkmgr from the Altera u-boot code are added.
+
+The series sits an the next-branch and was tested on a customer board and the
+Terasic Sockit.
+
+Regards,
+Steffen
+
+Markus Pargmann (4):
+  ARM: sockit: Define inst_rom_init static
+  scripts: socfpga sequencer extraction tool
+  ARM: boards: socfpga new mem calibration function
+  ARM: socfpga: Import sequencer code from generated uboot
+
+Steffen Trumtrar (5):
+  ARM: socfpga: avoid using external regulator for PLL
+  ARM: socfpga: clkmgr: set alteragrp clocks
+  ARM: socfpga: clkmgr: bypass debug root clock
+  ARM: socfpga: clock-manager: set mainnandsdmmcclk
+  ARM: socfpga: cleanup sequencer warnings
+
+ Documentation/boards/socfpga.rst                   |   26 +-
+ arch/arm/boards/ebv-socrates/lowlevel.c            |    5 +-
+ arch/arm/boards/terasic-sockit/lowlevel.c          |    5 +-
+ .../terasic-sockit/sequencer_auto_inst_init.c      |    4 +-
+ arch/arm/mach-socfpga/clock-manager.c              |   27 +-
+ arch/arm/mach-socfpga/include/mach/clock-manager.h |   12 +
+ arch/arm/mach-socfpga/include/mach/pll_config.h    |    3 +
+ arch/arm/mach-socfpga/include/mach/sdram_io.h      |   58 +
+ arch/arm/mach-socfpga/include/mach/sequencer.c     | 5978 ++++++++++++--------
+ arch/arm/mach-socfpga/include/mach/sequencer.h     |  389 +-
+ .../mach-socfpga/include/mach/sequencer_defines.h  |    6 +
+ arch/arm/mach-socfpga/include/mach/system.h        |   37 +
+ arch/arm/mach-socfpga/include/mach/tclrpt.h        |   38 +
+ scripts/socfpga_get_sequencer                      |   78 +
+ scripts/socfpga_sequencer_defines_defaults         |  144 +
+ 15 files changed, 4162 insertions(+), 2648 deletions(-)
+ create mode 100755 arch/arm/mach-socfpga/include/mach/sdram_io.h
+ create mode 100644 arch/arm/mach-socfpga/include/mach/sequencer_defines.h
+ create mode 100755 arch/arm/mach-socfpga/include/mach/system.h
+ create mode 100755 arch/arm/mach-socfpga/include/mach/tclrpt.h
+ create mode 100755 scripts/socfpga_get_sequencer
+ create mode 100755 scripts/socfpga_sequencer_defines_defaults
+
 -- 
 2.1.4
 
