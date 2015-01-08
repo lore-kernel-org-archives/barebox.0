@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y9BYP-0004Us-L6
- for barebox@lists.infradead.org; Thu, 08 Jan 2015 11:47:08 +0000
+ Linux)) id 1Y9BYP-0004Ur-L4
+ for barebox@lists.infradead.org; Thu, 08 Jan 2015 11:47:07 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu,  8 Jan 2015 12:46:20 +0100
-Message-Id: <1420717584-15766-6-git-send-email-s.trumtrar@pengutronix.de>
+Date: Thu,  8 Jan 2015 12:46:19 +0100
+Message-Id: <1420717584-15766-5-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] ARM: socfpga: clock-manager: set mainnandsdmmcclk
+Subject: [PATCH 4/9] ARM: socfpga: clkmgr: bypass debug root clock
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/mach-socfpga/clock-manager.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-socfpga/clock-manager.c              | 4 ++++
+ arch/arm/mach-socfpga/include/mach/clock-manager.h | 1 +
+ 2 files changed, 5 insertions(+)
 
 diff --git a/arch/arm/mach-socfpga/clock-manager.c b/arch/arm/mach-socfpga/clock-manager.c
-index 5196f08b09af..f17371365fe4 100644
+index 4cffb49f7cea..5196f08b09af 100644
 --- a/arch/arm/mach-socfpga/clock-manager.c
 +++ b/arch/arm/mach-socfpga/clock-manager.c
-@@ -174,6 +174,7 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg)
- 	writel(cfg->emac1clk, cm + CLKMGR_PERPLLGRP_EMAC1CLK_ADDRESS);
- 	writel(cfg->mainqspiclk, cm + CLKMGR_MAINPLLGRP_MAINQSPICLK_ADDRESS);
- 	writel(cfg->perqspiclk, cm + CLKMGR_PERPLLGRP_PERQSPICLK_ADDRESS);
-+	writel(cfg->mainnandsdmmcclk, cm + CLKMGR_MAINPLLGRP_MAINNANDSDMMCCLK_ADDRESS);
- 	writel(cfg->pernandsdmmcclk, cm + CLKMGR_PERPLLGRP_PERNANDSDMMCCLK_ADDRESS);
- 	writel(cfg->perbaseclk, cm + CLKMGR_PERPLLGRP_PERBASECLK_ADDRESS);
- 	writel(cfg->s2fuser1clk, cm + CLKMGR_PERPLLGRP_S2FUSER1CLK_ADDRESS);
+@@ -290,4 +290,8 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg)
+ 	writel(~0, cm + CLKMGR_MAINPLLGRP_EN_ADDRESS);
+ 	writel(~0, cm + CLKMGR_PERPLLGRP_EN_ADDRESS);
+ 	writel(~0, cm + CLKMGR_SDRPLLGRP_EN_ADDRESS);
++
++	val = readl(cm + CLKMGR_DBCTRL_ADDRESS);
++	val |= CLKMGR_DBCTRL_STAYOSC1_MASK;
++	writel(val, cm + CLKMGR_DBCTRL_ADDRESS);
+ }
+diff --git a/arch/arm/mach-socfpga/include/mach/clock-manager.h b/arch/arm/mach-socfpga/include/mach/clock-manager.h
+index 649cf96ae846..45800de79a7a 100644
+--- a/arch/arm/mach-socfpga/include/mach/clock-manager.h
++++ b/arch/arm/mach-socfpga/include/mach/clock-manager.h
+@@ -102,6 +102,7 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg);
+ #define CLKMGR_ALTERAGRP_MPUCLK 0xe0
+ #define CLKMGR_ALTERAGRP_MAINCLK 0xe4
+ 
++#define CLKMGR_DBCTRL_STAYOSC1_MASK 0x00000001
+ #define CLKMGR_MAINPLLGRP_EN_S2FUSER0CLK_MASK 0x00000200
+ #define CLKMGR_MAINPLLGRP_EN_DBGTIMERCLK_MASK 0x00000080
+ #define CLKMGR_MAINPLLGRP_EN_DBGTRACECLK_MASK 0x00000040
 -- 
 2.1.4
 
