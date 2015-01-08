@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay0200.hostedemail.com ([216.40.44.200]
- helo=smtprelay.hostedemail.com)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y9Al4-0005aS-9Q
- for barebox@lists.infradead.org; Thu, 08 Jan 2015 10:56:07 +0000
-Received: from filter.hostedemail.com (unknown [216.40.38.60])
- by smtprelay03.hostedemail.com (Postfix) with ESMTP id 9389E6B52B
- for <barebox@lists.infradead.org>; Thu,  8 Jan 2015 10:55:42 +0000 (UTC)
-Received: from sdcapont (176-227-142-86.ip.skylogicnet.com [176.227.142.86])
- (Authenticated sender: andy.pont@sdcsystems.com)
- by omf13.hostedemail.com (Postfix) with ESMTPA
- for <barebox@lists.infradead.org>; Thu,  8 Jan 2015 10:55:39 +0000 (UTC)
-From: "Andy Pont" <andy.pont@sdcsystems.com>
-Date: Thu, 8 Jan 2015 10:55:30 -0000
-Message-ID: <007401d02b31$a3c409b0$eb4c1d10$@pont@sdcsystems.com>
-MIME-Version: 1.0
-Content-Language: en-gb
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Y9BYP-0004Ux-Jg
+ for barebox@lists.infradead.org; Thu, 08 Jan 2015 11:47:06 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Thu,  8 Jan 2015 12:46:16 +0100
+Message-Id: <1420717584-15766-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1420717584-15766-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,33 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: andy.pont@sdcsystems.com
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Boot speed on 600MHz AM3354
+Subject: [PATCH 1/9] ARM: sockit: Define inst_rom_init static
 To: barebox@lists.infradead.org
 
-Hello,
+From: Markus Pargmann <mpa@pengutronix.de>
 
-We have a custom hardware platform that uses a 600MHz TI AM3354 and stores
-U-Boot-SPL, U-Boot and the Linux kernel in an SPI NOR flash device with the
-intent of using Falcon mode to boot the kernel directly.
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I have found that the performance is very poor when it comes to the system
-boot and in particular reading the kernel from the SPI flash device.  We are
-currently investigating that but we are also looking at whether Barebox may
-be a better alternative based on comments made by Michael Opdenacker in a
-presentation at ELC2014.
-
-Does anyone have a feel, or actual figures, on how much faster Barebox would
-be over U-Boot for this kind of platform?
-
-Thanks,
-
-Andy.
-
+diff --git a/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c b/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
+index fc83721ea217..09bdc582d10e 100644
+--- a/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
++++ b/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
+@@ -28,8 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+ #include <common.h>
+-const uint32_t inst_rom_init_size = 127;
+-const uint32_t inst_rom_init[127] =
++static const uint32_t inst_rom_init_size = 127;
++static const uint32_t inst_rom_init[127] =
+ {
+ 	0x80000,
+ 	0x80680,
+-- 
+2.1.4
 
 
 _______________________________________________
