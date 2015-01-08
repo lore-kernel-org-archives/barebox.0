@@ -1,20 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Y97Th-0003c7-TZ
- for barebox@lists.infradead.org; Thu, 08 Jan 2015 07:25:59 +0000
-Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
- t087PdQB013253
- for <barebox@lists.infradead.org>; Thu, 8 Jan 2015 16:25:39 +0900 (JST)
-Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili15) with ESMTP id t087PdB23450
- for <barebox@lists.infradead.org>; Thu, 8 Jan 2015 16:25:39 +0900
+ id 1Y9Acx-0007TX-5I
+ for barebox@lists.infradead.org; Thu, 08 Jan 2015 10:47:44 +0000
+Date: Thu, 08 Jan 2015 19:47:16 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Thu,  8 Jan 2015 16:25:25 +0900
-Message-Id: <1420701925-11177-3-git-send-email-yamada.m@jp.panasonic.com>
-In-Reply-To: <1420701925-11177-1-git-send-email-yamada.m@jp.panasonic.com>
-References: <1420701925-11177-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-Id: <20150108194716.6CF6.AA925319@jp.panasonic.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,38 +15,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] kbuild: drop include/asm from MRPROPER_FILES
-To: barebox@lists.infradead.org
+Subject: [Question] How was zedboard lowlevel written?
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Since commit a1a9665113e4 (kbuild: do not create symbolic link
-include/asm), the symbolic link include/asm is not created.
+Hello Steffen Trumtrar,
 
-Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
----
+I am seeing arch/arm/boards/avnet-zedboard/board.c
+written by you.
 
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Is this file equivalent to ps7_init.c spit by Xilinx tool?
+Or did you write it by hand from scratch ? (I doubt it.)
 
-diff --git a/Makefile b/Makefile
-index 5f73a47..9606765 100644
---- a/Makefile
-+++ b/Makefile
-@@ -961,7 +961,7 @@ CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
- 
- # Directories & files removed with 'make mrproper'
- MRPROPER_DIRS  += include/config usr/include include/generated
--MRPROPER_FILES += .config .config.old include/asm .version .old_version \
-+MRPROPER_FILES += .config .config.old .version .old_version \
-                   include/config.h           \
- 		  Module.symvers tags TAGS cscope*
- 
--- 
-1.9.1
+
+I have ZC706, another Zynq board.
+If I could port barebox to this board, that would be great!
+But I am just worndering whether I could get your advice about
+how to create the lowlevel file.
+
+
+Best Regards
+Masahiro Yamada
 
 
 _______________________________________________
