@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Y9VYO-00089d-Va
- for barebox@lists.infradead.org; Fri, 09 Jan 2015 09:08:25 +0000
-References: <20150108194716.6CF6.AA925319@jp.panasonic.com>
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-reply-to: <20150108194716.6CF6.AA925319@jp.panasonic.com>
-Date: Fri, 09 Jan 2015 10:07:54 +0100
-Message-ID: <73d26o7251.fsf@dude.hi.pengutronix.de>
-MIME-Version: 1.0
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Y9W2p-0005YU-UZ
+ for barebox@lists.infradead.org; Fri, 09 Jan 2015 09:39:52 +0000
+Received: by mail-la0-f45.google.com with SMTP id gq15so13634531lab.4
+ for <barebox@lists.infradead.org>; Fri, 09 Jan 2015 01:39:29 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri,  9 Jan 2015 12:41:37 +0300
+Message-Id: <1420796497-28360-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,53 +16,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [Question] How was zedboard lowlevel written?
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] resource: dev_request_mem_region: fix return value for MIPS
+To: barebox@lists.infradead.org
 
+The commit
 
-Hi!
+    commit 0d7a21334536cb36b3c9b64d868acc55aec41332
+    Author: Antony Pavlov <antonynpavlov at gmail.com>
+    Date:   Wed Sep 10 11:42:19 2014 +0400
 
-Masahiro Yamada writes:
-> Hello Steffen Trumtrar,
->
-> I am seeing arch/arm/boards/avnet-zedboard/board.c
-> written by you.
->
+        MIPS: dts: use physical addresses (as Linux does)
 
-Sadly it's been a while since I touched this :(
+        With IOMEM() adapted for MIPS we can use physical addresses
+        in device tree reg property.
 
-> Is this file equivalent to ps7_init.c spit by Xilinx tool?
-> Or did you write it by hand from scratch ? (I doubt it.)
->
->
-> I have ZC706, another Zynq board.
-> If I could port barebox to this board, that would be great!
-> But I am just worndering whether I could get your advice about
-> how to create the lowlevel file.
->
+has switched MIPS dts files to physical addresses usage.
 
-The lowlevel.c/flash_header.c are adapted from the ps7_init code IIRC.
-Xilinx uses a prebootloader and a bootloader for the Zynq, barebox does
-not. So you would have to put all values into the respective two files.
-And you need to run scripts/zynq_mkimage for the checksum (but I think
-the Makefile already does that).
+The patch was tested on qemu, but qemu malta board is tolerant
+of using physical addresses for accesing to device
+(Ingenic JZ4755 and JZ4780 processors are tolerant too!).
+But other CPUs (e.g. Loongson LS1B) can throw an exception
+in this situation.
 
-I wish I could be of more help here, but I can't really remember the
-actual steps necessary and I don't have a ps7_init handy at the moment.
+Additional physical address to virtual address translation
+on MIPS is needed.
 
-Regards,
-Steffen
+We already have this in include/common.h
 
+    #if defined(CONFIG_MIPS)
+    #include <asm/addrspace.h>
+
+    #define IOMEM(addr) ((void __force __iomem *)CKSEG1ADDR(addr))
+    #else
+    #define IOMEM(addr) ((void __force __iomem *)(addr))
+    #endif
+
+So use IOMEM() to fix dev_request_mem_region() return value.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/base/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index e0125a1..0423f28 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -330,7 +330,7 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
+ 	if (IS_ERR(res))
+ 		return ERR_CAST(res);
+ 
+-	return (void __force __iomem *)res->start;
++	return IOMEM(res->start);
+ }
+ EXPORT_SYMBOL(dev_request_mem_region);
+ 
 -- 
-Pengutronix e.K.                           | Steffen Trumtrar            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
