@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YAbcV-0005uD-KR
- for barebox@lists.infradead.org; Mon, 12 Jan 2015 09:49:14 +0000
+ Linux)) id 1YAbcV-0005uI-Kw
+ for barebox@lists.infradead.org; Mon, 12 Jan 2015 09:49:15 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 12 Jan 2015 10:48:36 +0100
-Message-Id: <1421056125-17142-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon, 12 Jan 2015 10:48:39 +0100
+Message-Id: <1421056125-17142-4-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1421056125-17142-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1421056125-17142-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/9] Socfpga: Sequencer updates
+Subject: [PATCH v2 3/9] ARM: socfpga: clkmgr: set alteragrp clocks
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-this series updates the sequencer files for Socfpga (again).
-The sequencer.c/h are now just grabbed from the Altera generated code and
-transformed via the scripts/socfpga_get_sequencer script into a format that
-barebox can understand and compile.
-This way we can easier integrate updates to this file in the future.
+Altera's U-Boot tree has following commit
 
-Also, some changes to the clkmgr from the Altera u-boot code are added.
+	FogBugz #159721: Enhance Arria V MPU clock to 1050MHz
 
-The series sits on v2015.01.0 and was tested on a customer board and the
-Terasic Sockit.
+It writes to the two undocumented registers
+	CLKMGR_ALTERAGRP_MPUCLK
+and
+	CLKMGR_ALTERAGRP_MAINCLK
 
-Changes since v1:
+to setup the SoC for higher clocks.
 
-	- even more warning fixes, i.e. no more warnings
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/mach-socfpga/clock-manager.c              | 2 ++
+ arch/arm/mach-socfpga/include/mach/clock-manager.h | 6 ++++++
+ arch/arm/mach-socfpga/include/mach/pll_config.h    | 3 +++
+ 3 files changed, 11 insertions(+)
 
-Regards,
-Steffen
-
-
-Markus Pargmann (4):
-  ARM: sockit: Define inst_rom_init static
-  scripts: socfpga sequencer extraction tool
-  ARM: boards: socfpga new mem calibration function
-  ARM: socfpga: Import sequencer code from generated uboot
-
-Steffen Trumtrar (5):
-  ARM: socfpga: avoid using external regulator for PLL
-  ARM: socfpga: clkmgr: set alteragrp clocks
-  ARM: socfpga: clkmgr: bypass debug root clock
-  ARM: socfpga: clock-manager: set mainnandsdmmcclk
-  ARM: socfpga: cleanup sequencer warnings
-
- Documentation/boards/socfpga.rst                   |   26 +-
- arch/arm/boards/ebv-socrates/lowlevel.c            |    5 +-
- arch/arm/boards/terasic-sockit/lowlevel.c          |    5 +-
- .../terasic-sockit/sequencer_auto_inst_init.c      |    4 +-
- arch/arm/mach-socfpga/clock-manager.c              |   27 +-
- arch/arm/mach-socfpga/include/mach/clock-manager.h |   12 +
- arch/arm/mach-socfpga/include/mach/pll_config.h    |    3 +
- arch/arm/mach-socfpga/include/mach/sdram_io.h      |   58 +
- arch/arm/mach-socfpga/include/mach/sequencer.c     | 5876 ++++++++++++--------
- arch/arm/mach-socfpga/include/mach/sequencer.h     |  389 +-
- .../mach-socfpga/include/mach/sequencer_defines.h  |    6 +
- arch/arm/mach-socfpga/include/mach/system.h        |   37 +
- arch/arm/mach-socfpga/include/mach/tclrpt.h        |   38 +
- scripts/socfpga_get_sequencer                      |   78 +
- scripts/socfpga_sequencer_defines_defaults         |  144 +
- 15 files changed, 4052 insertions(+), 2656 deletions(-)
- create mode 100755 arch/arm/mach-socfpga/include/mach/sdram_io.h
- create mode 100644 arch/arm/mach-socfpga/include/mach/sequencer_defines.h
- create mode 100755 arch/arm/mach-socfpga/include/mach/system.h
- create mode 100755 arch/arm/mach-socfpga/include/mach/tclrpt.h
- create mode 100755 scripts/socfpga_get_sequencer
- create mode 100755 scripts/socfpga_sequencer_defines_defaults
-
+diff --git a/arch/arm/mach-socfpga/clock-manager.c b/arch/arm/mach-socfpga/clock-manager.c
+index dc81301efd01..4cffb49f7cea 100644
+--- a/arch/arm/mach-socfpga/clock-manager.c
++++ b/arch/arm/mach-socfpga/clock-manager.c
+@@ -166,7 +166,9 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg)
+ 
+ 	writel(cfg->mpuclk, cm + CLKMGR_MAINPLLGRP_MPUCLK_ADDRESS);
+ 	writel(cfg->mainclk, cm + CLKMGR_MAINPLLGRP_MAINCLK_ADDRESS);
++	writel(cfg->alteragrp_mpu, cm + CLKMGR_ALTERAGRP_MPUCLK);
+ 	writel(cfg->dbgatclk, cm + CLKMGR_MAINPLLGRP_DBGATCLK_ADDRESS);
++	writel(cfg->alteregrp_main, cm + CLKMGR_ALTERAGRP_MAINCLK);
+ 	writel(cfg->cfg2fuser0clk, cm + CLKMGR_MAINPLLGRP_CFGS2FUSER0CLK_ADDRESS);
+ 	writel(cfg->emac0clk, cm + CLKMGR_PERPLLGRP_EMAC0CLK_ADDRESS);
+ 	writel(cfg->emac1clk, cm + CLKMGR_PERPLLGRP_EMAC1CLK_ADDRESS);
+diff --git a/arch/arm/mach-socfpga/include/mach/clock-manager.h b/arch/arm/mach-socfpga/include/mach/clock-manager.h
+index b67f256091d4..649cf96ae846 100644
+--- a/arch/arm/mach-socfpga/include/mach/clock-manager.h
++++ b/arch/arm/mach-socfpga/include/mach/clock-manager.h
+@@ -50,6 +50,10 @@ struct socfpga_cm_config {
+ 	uint32_t ddr2xdqsclk;
+ 	uint32_t ddrdqclk;
+ 	uint32_t s2fuser2clk;
++
++	/* altera group */
++	uint32_t alteragrp_mpu;
++	uint32_t alteregrp_main;
+ };
+ 
+ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg);
+@@ -95,6 +99,8 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg);
+ #define CLKMGR_SDRPLLGRP_DDRDQCLK_ADDRESS 0xd0
+ #define CLKMGR_SDRPLLGRP_S2FUSER2CLK_ADDRESS 0xd4
+ #define CLKMGR_SDRPLLGRP_EN_ADDRESS 0xd8
++#define CLKMGR_ALTERAGRP_MPUCLK 0xe0
++#define CLKMGR_ALTERAGRP_MAINCLK 0xe4
+ 
+ #define CLKMGR_MAINPLLGRP_EN_S2FUSER0CLK_MASK 0x00000200
+ #define CLKMGR_MAINPLLGRP_EN_DBGTIMERCLK_MASK 0x00000080
+diff --git a/arch/arm/mach-socfpga/include/mach/pll_config.h b/arch/arm/mach-socfpga/include/mach/pll_config.h
+index d25f5cfdc672..bb491d82f12c 100644
+--- a/arch/arm/mach-socfpga/include/mach/pll_config.h
++++ b/arch/arm/mach-socfpga/include/mach/pll_config.h
+@@ -50,4 +50,7 @@ static struct socfpga_cm_config cm_default_cfg = {
+ 		CLKMGR_SDRPLLGRP_DDRDQCLK_CNT_SET(CONFIG_HPS_SDRPLLGRP_DDRDQCLK_CNT),
+ 	.s2fuser2clk = CLKMGR_SDRPLLGRP_S2FUSER2CLK_PHASE_SET(CONFIG_HPS_SDRPLLGRP_S2FUSER2CLK_PHASE) |
+ 		CLKMGR_SDRPLLGRP_S2FUSER2CLK_CNT_SET(CONFIG_HPS_SDRPLLGRP_S2FUSER2CLK_CNT),
++	/* undocumented alteragrp */
++	.alteragrp_mpu = CONFIG_HPS_ALTERAGRP_MPUCLK,
++	.alteregrp_main = CONFIG_HPS_ALTERAGRP_MAINCLK,
+ };
 -- 
 2.1.4
 
