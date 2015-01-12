@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YAbcV-0005uJ-Kx
- for barebox@lists.infradead.org; Mon, 12 Jan 2015 09:49:15 +0000
+ Linux)) id 1YAbcV-0005uD-KR
+ for barebox@lists.infradead.org; Mon, 12 Jan 2015 09:49:14 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 12 Jan 2015 10:48:41 +0100
-Message-Id: <1421056125-17142-6-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1421056125-17142-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1421056125-17142-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon, 12 Jan 2015 10:48:36 +0100
+Message-Id: <1421056125-17142-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +19,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/9] ARM: socfpga: clock-manager: set mainnandsdmmcclk
+Subject: [PATCH v2 0/9] Socfpga: Sequencer updates
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- arch/arm/mach-socfpga/clock-manager.c | 1 +
- 1 file changed, 1 insertion(+)
+this series updates the sequencer files for Socfpga (again).
+The sequencer.c/h are now just grabbed from the Altera generated code and
+transformed via the scripts/socfpga_get_sequencer script into a format that
+barebox can understand and compile.
+This way we can easier integrate updates to this file in the future.
 
-diff --git a/arch/arm/mach-socfpga/clock-manager.c b/arch/arm/mach-socfpga/clock-manager.c
-index 5196f08b09af..f17371365fe4 100644
---- a/arch/arm/mach-socfpga/clock-manager.c
-+++ b/arch/arm/mach-socfpga/clock-manager.c
-@@ -174,6 +174,7 @@ void socfpga_cm_basic_init(const struct socfpga_cm_config *cfg)
- 	writel(cfg->emac1clk, cm + CLKMGR_PERPLLGRP_EMAC1CLK_ADDRESS);
- 	writel(cfg->mainqspiclk, cm + CLKMGR_MAINPLLGRP_MAINQSPICLK_ADDRESS);
- 	writel(cfg->perqspiclk, cm + CLKMGR_PERPLLGRP_PERQSPICLK_ADDRESS);
-+	writel(cfg->mainnandsdmmcclk, cm + CLKMGR_MAINPLLGRP_MAINNANDSDMMCCLK_ADDRESS);
- 	writel(cfg->pernandsdmmcclk, cm + CLKMGR_PERPLLGRP_PERNANDSDMMCCLK_ADDRESS);
- 	writel(cfg->perbaseclk, cm + CLKMGR_PERPLLGRP_PERBASECLK_ADDRESS);
- 	writel(cfg->s2fuser1clk, cm + CLKMGR_PERPLLGRP_S2FUSER1CLK_ADDRESS);
+Also, some changes to the clkmgr from the Altera u-boot code are added.
+
+The series sits on v2015.01.0 and was tested on a customer board and the
+Terasic Sockit.
+
+Changes since v1:
+
+	- even more warning fixes, i.e. no more warnings
+
+Regards,
+Steffen
+
+
+Markus Pargmann (4):
+  ARM: sockit: Define inst_rom_init static
+  scripts: socfpga sequencer extraction tool
+  ARM: boards: socfpga new mem calibration function
+  ARM: socfpga: Import sequencer code from generated uboot
+
+Steffen Trumtrar (5):
+  ARM: socfpga: avoid using external regulator for PLL
+  ARM: socfpga: clkmgr: set alteragrp clocks
+  ARM: socfpga: clkmgr: bypass debug root clock
+  ARM: socfpga: clock-manager: set mainnandsdmmcclk
+  ARM: socfpga: cleanup sequencer warnings
+
+ Documentation/boards/socfpga.rst                   |   26 +-
+ arch/arm/boards/ebv-socrates/lowlevel.c            |    5 +-
+ arch/arm/boards/terasic-sockit/lowlevel.c          |    5 +-
+ .../terasic-sockit/sequencer_auto_inst_init.c      |    4 +-
+ arch/arm/mach-socfpga/clock-manager.c              |   27 +-
+ arch/arm/mach-socfpga/include/mach/clock-manager.h |   12 +
+ arch/arm/mach-socfpga/include/mach/pll_config.h    |    3 +
+ arch/arm/mach-socfpga/include/mach/sdram_io.h      |   58 +
+ arch/arm/mach-socfpga/include/mach/sequencer.c     | 5876 ++++++++++++--------
+ arch/arm/mach-socfpga/include/mach/sequencer.h     |  389 +-
+ .../mach-socfpga/include/mach/sequencer_defines.h  |    6 +
+ arch/arm/mach-socfpga/include/mach/system.h        |   37 +
+ arch/arm/mach-socfpga/include/mach/tclrpt.h        |   38 +
+ scripts/socfpga_get_sequencer                      |   78 +
+ scripts/socfpga_sequencer_defines_defaults         |  144 +
+ 15 files changed, 4052 insertions(+), 2656 deletions(-)
+ create mode 100755 arch/arm/mach-socfpga/include/mach/sdram_io.h
+ create mode 100644 arch/arm/mach-socfpga/include/mach/sequencer_defines.h
+ create mode 100755 arch/arm/mach-socfpga/include/mach/system.h
+ create mode 100755 arch/arm/mach-socfpga/include/mach/tclrpt.h
+ create mode 100755 scripts/socfpga_get_sequencer
+ create mode 100755 scripts/socfpga_sequencer_defines_defaults
+
 -- 
 2.1.4
 
