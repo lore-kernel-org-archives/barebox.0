@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.mei.co.jp ([133.183.100.20])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAwgv-0002wG-Dt
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 08:19:11 +0000
-Date: Tue, 13 Jan 2015 17:16:12 +0900
-From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-In-Reply-To: <20150113080258.GX23940@pengutronix.de>
-References: <20150113165447.CACE.AA925319@jp.panasonic.com>
- <20150113080258.GX23940@pengutronix.de>
-Message-Id: <20150113171612.6AC6.AA925319@jp.panasonic.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YAwng-00082O-CL
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 08:26:09 +0000
+Date: Tue, 13 Jan 2015 09:25:46 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150113082546.GC23940@pengutronix.de>
+References: <20150113061940.GA30554@ns203013.ovh.net>
+ <1421130070-31704-1-git-send-email-plagnioj@jcrosoft.com>
+ <1421130070-31704-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1421130070-31704-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,77 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: add KBUILD_DEFCONFIG
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/3] defaultenv-2: introduce /env/rc.d
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-
-On Tue, 13 Jan 2015 09:02:58 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Tue, Jan 13, 2015 at 04:54:47PM +0900, Masahiro Yamada wrote:
-> > Hi Jean-Christophe,
-> > 
-> > On Tue, 13 Jan 2015 14:53:19 +0800
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> > 
-> > > 
-> > > > On Jan 13, 2015, at 2:46 PM, Masahiro Yamada <yamada.m@jp.panasonic.com> wrote:
-> > > > 
-> > > > This allows "make ARCH=... defconfig".
-> > > > 
-> > > > Fox example, you can type "make defconfig" instead of
-> > > > "make sandbox_defconfig".
-> > > > 
-> > > > Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
-> > > > ---
-> > > > 
-> > > > arch/arm/Makefile      | 1 +
-> > > > arch/blackfin/Makefile | 1 +
-> > > > arch/efi/Makefile      | 2 ++
-> > > > arch/nios2/Makefile    | 2 ++
-> > > > arch/openrisc/Makefile | 2 ++
-> > > > arch/sandbox/Makefile  | 1 +
-> > > > arch/x86/Makefile      | 2 ++
-> > > > 7 files changed, 11 insertions(+)
-> > > > 
-> > > > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> > > > index f06e2a0..9dd983b 100644
-> > > > --- a/arch/arm/Makefile
-> > > > +++ b/arch/arm/Makefile
-> > > > @@ -1,3 +1,4 @@
-> > > > +KBUILD_DEFCONFIG := versatilepb_defconfig
-> > > 
-> > > no sure we need a default config on arm and some other
-> > > 
-> > > I known we use them on the kernel but here it could result in a broken board
-> > > if use not carefully
-> > > 
-> > > for arch that only have 1 defconfig and will only have one maybe
-> > > 
-> > 
-> > Why could it result in a broken board?  (It seems harmless to me.)
-> > 
-> > I think it is useful at least for Sandbox and some other arches that
-> > have only "generic_defconfig".
-> > 
-> > It is true that KBUILD_DEFCONFIG is not so useful for ARM.
-> > If it is not desired for ARM (and Blackfin), we can drop it, of course.
+On Tue, Jan 13, 2015 at 07:21:09AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> as we now will use symlink on /env/rc.d to specify init order
 > 
-> I think it makes sense on EFI, x86 and sandbox. On the other
-> architectures one must know which board to build, so let's do not
-> get others the impression that the generic defconfig produces something
-> useful. This also includes nios2 and openrisc. For these two only
-> one defconfig exists but I think this is more because these
-> architectures have very limited usage.
+> the script will be store in /env/init
 > 
+> so any board can overwrite them or add script that need to run before a
+> default one
 
-OK, I have posted v2 where only EFI, x86 and sandbox is changed.
+Boards can overwrite scripts without links. Numbering the files seems
+good because it makes the execution order more predictable and easier to
+put a script between two other scripts.
 
-Best Regards
-Masahiro Yamada
+But why links? On Linux PCs this allows to separate distribution
+provided scripts from their actual (site specific) execution. Also
+the same scripts can be executed from different runlevels.
+On barebox I see no good reason for links. There is only one runlevel
+in barebox and if I don't want to execute a script I can just remove it.
+
+Sascha
 
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
