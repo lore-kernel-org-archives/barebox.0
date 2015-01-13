@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAtrs-0004i8-MG
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 05:18:17 +0000
-Date: Tue, 13 Jan 2015 14:17:49 +0900
+ id 1YAu0w-0000gU-94
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 05:27:41 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
+ t0D5RFtw009776
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 14:27:15 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili11) with ESMTP id t0D5RGR27846
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 14:27:16 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-In-Reply-To: <73d26o7251.fsf@dude.hi.pengutronix.de>
-References: <20150108194716.6CF6.AA925319@jp.panasonic.com>
- <73d26o7251.fsf@dude.hi.pengutronix.de>
-Message-Id: <20150113141749.CAC9.AA925319@jp.panasonic.com>
+Date: Tue, 13 Jan 2015 14:27:07 +0900
+Message-Id: <1421126827-29629-1-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -18,66 +22,521 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============4605074631582175314=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [Question] How was zedboard lowlevel written?
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Remove the CREDITS file
+To: barebox@lists.infradead.org
 
-Hi Steffen,
+--===============4605074631582175314==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+This file, which originates in U-Boot, has not been maintained
+for a long time.
+
+It was removed from U-Boot by commit 548b310c68ac.
+Let's remove it from barebox, too.
+
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+---
+
+ CREDITS | 472 ----------------------------------------------------------------
+ 1 file changed, 472 deletions(-)
+ delete mode 100644 CREDITS
+
+diff --git a/CREDITS b/CREDITS
+deleted file mode 100644
+index bd5a542..0000000
+--- a/CREDITS
++++ /dev/null
+@@ -1,472 +0,0 @@
+-#
+-#   Parts of the development effort for this project have been
+-#   sponsored by SIEMENS AG, Austria. Thanks to SIEMENS for
+-#   supporting an Open Source project!
+-#
+-#
+-#   This is at least a partial credits-file of individual people that
+-#   have contributed to the barebox project. It is sorted by name and
+-#   formatted to allow easy grepping and beautification by scripts.
+-#   The fields are: name (N), email (E), web-address (W), PGP key ID
+-#   and fingerprint (P), description (D), and snail-mail address (S).
+-#   Thanks,
+-#
+-#                       Wolfgang Denk
+-#----------
+-
+-N: Dr. Bruno Achauer
+-E: bruno@exet-ag.de
+-D: Support for NetBSD (both as host and target system)
+-
+-N: Guillaume Alexandre
+-E: guillaume.alexandre@gespac.ch
+-D: Add PCIPPC6 configuration
+-
+-N: Swen Anderson
+-E: sand@peppercon.de
+-D: ERIC Support
+-
+-N: Pantelis Antoniou
+-E: panto@intracom.gr
+-D: NETVIA & NETPHONE board support, ARTOS support.
+-D: Support for Silicon Turnkey eXpress XTc
+-
+-N: Pierre Aubert
+-E: <p.aubert@staubli.com>
+-D: Support for RPXClassic board
+-
+-N: Yuli Barcohen
+-E: yuli@arabellasw.com
+-D: Unified support for Motorola MPC826xADS/MPC8272ADS/PQ2FADS boards.
+-D: Support for Zephyr Engineering ZPC.1900 board.
+-D: Support for Interphase iSPAN boards.
+-D: Support for Analogue&Micro Adder boards.
+-D: Support for Analogue&Micro Rattler boards.
+-W: http://www.arabellasw.com
+-
+-N: Jerry van Baren
+-E: <vanbaren@cideas.com>
+-D: BedBug port to 603e core (MPC82xx). Code for enhanced memory test.
+-
+-N: Pavel Bartusek
+-E: <pba@sysgo.com>
+-D: Reiserfs support
+-W: http://www.elinos.com
+-
+-N: Andre Beaudin
+-E: <andre.beaudin@colubris.com>
+-D: PCMCIA, Ethernet, TFTP
+-
+-N: Jon Benediktsson
+-E: jonb@marel.is
+-D: Support for Marel V37 board
+-
+-N: Raphael Bossek
+-E: raphael.bossek@solutions4linux.de
+-D: 8xxrom-0.3.0
+-
+-N: Cliff Brake
+-E: cliff.brake@gmail.com
+-D: Port to Vibren PXA255 IDP platform
+-W: http://www.vibren.com
+-W: http://bec-systems.com
+-
+-N: Rick Bronson
+-E: rick@efn.org
+-D: Atmel AT91RM9200DK and NAND support
+-
+-N: David Brown
+-E: DBrown03@harris.com
+-D: Extensions to 8xxrom-0.3.0
+-
+-N: Oliver Brown
+-E: obrown@adventnetworks.com
+-D: Port to the gw8260 board
+-
+-N: Curt Brune
+-E: curt@cucy.com
+-D: Added support for Samsung S3C4510B CPU (ARM7tdmi based SoC)
+-D: Added support for ESPD-Inc. EVB4510 Board
+-W: http://www.cucy.com
+-
+-N: Jonathan De Bruyne
+-E: jonathan.debruyne@siemens.atea.be
+-D: Port to Siemens IAD210 board
+-
+-N: Ken Chou
+-E: kchou@ieee.org
+-D: Support for A3000 SBC board
+-
+-N: Conn Clark
+-E: clark@esteem.com
+-D: ESTEEM192E support
+-
+-N: Magnus Damm
+-E: damm@opensource.se
+-D: 8xxrom
+-
+-N: Richard Danter
+-E: richard.danter@windriver.com
+-D: Support for Wind River PPMC 7xx/74xx boards
+-
+-N: George G. Davis
+-E: gdavis@mvista.com
+-D: Board ports for ADS GraphicsClient+ and Intel Assabet
+-
+-N: Arun Dharankar
+-E: ADharankar@ATTBI.Com
+-D: threads / scheduler example code
+-
+-N: K�ri Dav��sson
+-E: kd@flaga.is
+-D: FLAGA DM Support
+-
+-N: Wolfgang Denk
+-E: wd@denx.de
+-D: barebox initial version, continuing maintenance, ARMBoot merge
+-W: http://www.denx.de
+-
+-N: Dan A. Dickey
+-E: ddickey@charter.net
+-D: FADS Support
+-
+-N: James F. Dougherty
+-E: jfd@GigabitNetworks.COM
+-D: Port to the MOUSSE board
+-
+-N: Dave Ellis
+-E: DGE@sixnetio.com
+-D: EEPROM Speedup, SXNI855T port
+-
+-N: Thomas Elste
+-E: info@elste.org
+-D: Port for the ModNET50 Board, NET+50 CPU Port
+-W: http://www.imms.de
+-
+-N: Daniel Engstr�m
+-E: daniel@omicron.se
+-D: x86 port, Support for sc520_cdp board
+-
+-N: Dr. Wolfgang Grandegger
+-E: wg@denx.de
+-D: Support for Interphase 4539 T1/E1/J1 PMC, PN62, CCM, SCM boards
+-W: www.denx.de
+-
+-N: Peter Figuli
+-E: peposh@etc.sk
+-D: Support for WEP EP250 (PXA) board
+-
+-N: Thomas Frieden
+-E: ThomasF@hyperion-entertainment.com
+-D: Support for AmigaOne
+-
+-N: Frank Gottschling
+-E: fgottschling@eltec.de
+-D: Support for ELTEC MHPC/BAB7xx/ELPPC boards, cfb-console, i8042, SMI LynxEM
+-W: www.eltec.de
+-
+-N: Marius Groeger
+-E: mgroeger@sysgo.de
+-D: MBX Support, board specific function interface, EST SBC8260 support; initial support for StrongARM (LART), ARM720TDMI (implementa A7)
+-W: www.elinos.com
+-
+-N: Kirk Haderlie
+-E: khaderlie@vividimage.com
+-D: Added TFTP to 8xxrom (-> 0.3.1)
+-
+-N: Chris Hallinan
+-E: clh@net1plus.com
+-D: DHCP Support
+-
+-N: Anne-Sophie Harnois
+-E: Anne-Sophie.Harnois@nextream.fr
+-D: Port to Walnut405 board
+-
+-N: Andreas Heppel
+-E: aheppel@sysgo.de
+-D: CPU Support for MPC 75x; board support for Eltec BAB750 [obsolete!]
+-
+-N: August Hoeraendl
+-E: august.hoerandl@gmx.at
+-D: Support for the logodl board (PXA2xx)
+-
+-N: Josh Huber
+-E: huber@alum.wpi.edu
+-D: Port to the Galileo Evaluation Board, and the MPC74xx cpu series.
+-W: http://www.mclx.com/
+-
+-H: Stuart Hughes
+-E: stuarth@lineo.com
+-D: Port to MPC8260ADS board
+-
+-H: Rich Ireland
+-E: r.ireland@computer.org
+-D: FPGA device configuration driver
+-
+-N: Gary Jennejohn
+-E: garyj@jennejohn.org, gj@denx.de
+-D: Support for Samsung ARM920T S3C2400X, ARM920T "TRAB"
+-W: www.denx.de
+-
+-N: Murray Jensen
+-E: Murray.Jensen@csiro.au
+-D: Initial 8260 support; GDB support
+-D: Port to Cogent+Hymod boards; Hymod Board Database
+-
+-N: Yoo. Jonghoon
+-E: yooth@ipone.co.kr
+-D: Added port to the RPXlite board
+-
+-N: Mark Jonas
+-E: mark.jonas@freescale.com
+-D: Support for Freescale Total5200 platform
+-W: http://www.mobilegt.com/
+-
+-N: Sam Song
+-E: samsongshu@yahoo.com.cn
+-D: Port to the RPXlite_DW board
+-
+-N: Brad Kemp
+-E: Brad.Kemp@seranoa.com
+-D: Port to Windriver ppmc8260 board
+-
+-N: Sangmoon Kim
+-E: dogoil@etinsys.com
+-D: Support for debris board
+-D: Support for KVME080 board
+-
+-N: Frederick W. Klatt
+-E: fred.klatt@windriver.com
+-D: Support for Wind River SBC8540/SBC8560 boards
+-
+-N: Thomas Koeller
+-E: tkoeller@gmx.net
+-D: Port to Motorola Sandpoint 3 (MPC8240)
+-
+-N: Raghu Krishnaprasad
+-E: Raghu.Krishnaprasad@fci.com
+-D: Support for Adder-II MPC852T evaluation board
+-W: http://www.forcecomputers.com
+-
+-N: Bernhard Kuhn
+-E: bkuhn@metrowerks.com
+-D Support for Coldfire CPU; Support for Motorola M5272C3 and M5282EVB boards
+-
+-N: Prakash Kumar
+-E: prakash@embedx.com
+-D  Support for Intrinsyc CERF PXA250 board.
+-
+-N: Thomas Lange
+-E: thomas@corelatus.se
+-D: Support for GTH, GTH2 and dbau1x00 boards; lots of PCMCIA fixes
+-
+-N: Marc Leeman
+-E: marc.leeman@barco.com
+-D: Support for Barco Streaming Video Card (SVC) and Sample Compress Network (SCN)
+-W: www.barco.com
+-
+-N: The LEOX team
+-E: team@leox.org
+-D: Support for LEOX boards, DS164x RTC
+-W: http://www.leox.org
+-
+-N: Leif Lindholm
+-E: leif.lindholm@i3micro.com
+-D: Support for AMD dbau1550 board.
+-
+-N: Stephan Linz
+-E: linz@li-pro.net
+-D: Support for Nios Stratix Development Kit (DK-1S10)
+-D: Support for SSV ADNP/ESC1 (Nios Cyclone)
+-W: http://www.li-pro.net
+-
+-N: Raymond Lo
+-E: lo@routefree.com
+-D: Support for DOS partitions
+-
+-N: Dan Malek
+-E: dan@embeddedalley.com
+-D: FADSROM, the grandfather of all of this
+-D: Support for Silicon Turnkey eXpress XTc
+-
+-N: Andrea "llandre" Marson
+-E: andrea.marson@dave-tech.it
+-D: Port to PPChameleonEVB board
+-W: www.dave-tech.it
+-
+-N: Reinhard Meyer
+-E: r.meyer@emk-elektronik.de
+-D: Port to EMK TOP860 Module
+-
+-N: Jay Monkman
+-E: jtm@smoothsmoothie.com
+-D: EST SBC8260 support
+-
+-N: Frank Morauf
+-E: frank.morauf@salzbrenner.com
+-D: Support for Embedded Planet RPX Super Board
+-
+-N: David M�ller
+-E: d.mueller@elsoft.ch
+-D: Support for Samsung ARM920T SMDK2410 eval board
+-
+-N: Scott McNutt
+-E: smcnutt@psyent.com
+-D: Support for Altera Nios-32 CPU
+-D: Support for Altera Nios-II CPU
+-D: Support for Nios Cyclone Development Kit (DK-1C20)
+-W: http://www.psyent.com
+-
+-N: Rolf Offermanns
+-E: rof@sysgo.de
+-D: Initial support for SSV-DNP1110, SMC91111 driver
+-W: www.elinos.com
+-
+-N: John Otken
+-E: jotken@softadvances.com
+-D: Support for AMCC Luan 440SP board
+-
+-N: Tolunay Orkun
+-E: torkun@nextio.com
+-D: Support for Cogent CSB272 & CSB472 boards
+-
+-N: Keith Outwater
+-E: keith_outwater@mvis.com
+-D: Support for generic/custom MPC860T boards (GEN860T, GEN860T_SC)
+-
+-N: Frank Panno
+-E: fpanno@delphintech.com
+-D: Support for Embedded Planet EP8260 Board
+-
+-N: Denis Peter
+-E: d.peter@mpl.ch
+-D: Support for 4xx SCSI, floppy, CDROM, CT69000 video, ...
+-D: Support for PIP405 board
+-D: Support for MIP405 board
+-
+-N: Dave Peverley
+-E: dpeverley@mpc-data.co.uk
+-W: http://www.mpc-data.co.uk
+-D: OMAP730 P2 board support
+-
+-N: Bill Pitts
+-E: wlp@mindspring.com
+-D: BedBug embedded debugger code
+-
+-N: Daniel Poirot
+-E: dan.poirot@windriver.com
+-D: Support for the Wind River sbc405, sbc8240 board
+-W: http://www.windriver.com
+-
+-N: Stefan Roese
+-E: stefan.roese@esd-electronics.com
+-D: AMCC PPC401/403/405GP Support; Windows environment support
+-
+-N: Erwin Rol
+-E: erwin@muffin.org
+-D: boot support for RTEMS
+-
+-N: Paul Ruhland
+-E: pruhland@rochester.rr.com
+-D: Port to Logic Zoom LH7A40x SDK board(s)
+-
+-N: Neil Russell
+-E: caret@c-side.com
+-D: Author of LiMon-1.4.2, which contributed some ideas
+-
+-N: Travis B. Sawyer
+-E: travis.sawyer@sandburst.com
+-D: Support for AMCC PPC440GX, XES XPedite1000 440GX PrPMC board.  AMCC 440gx Ref Platform (Ocotea)
+-
+-N: Paolo Scaffardi
+-E: arsenio@tin.it
+-D: FADS823 configuration, MPC823 video support, I2C, wireless keyboard, lots more
+-
+-N: Robert Schwebel
+-E: r.schwebel@pengutronix.de
+-D: Support for csb226, logodl and innokom boards (PXA2xx)
+-
+-N: Aaron Sells
+-E: sellsa@embeddedplanet.com
+-D: Support for EP82xxM
+-
+-N: Art Shipkowski
+-E: art@videon-central.com
+-D: Support for NetSilicon NS7520
+-
+-N: Yasushi Shoji
+-E: yashi@atmark-techno.com
+-D: Support for Xilinx MicroBlaze, for Atmark Techno SUZAKU FPGA board
+-
+-N: Kurt Stremerch
+-E: kurt@exys.be
+-D: Support for Exys XSEngine board
+-
+-N: Andrea Scian
+-E: andrea.scian@dave-tech.it
+-D: Port to B2 board
+-W: www.dave-tech.it
+-
+-N: Rob Taylor
+-E: robt@flyingpig.com
+-D: Port to MBX860T and Sandpoint8240
+-
+-N: Erik Theisen
+-E: etheisen@mindspring.com
+-D: MBX8xx and many other patches
+-
+-N: Jim Thompson
+-E: jim@musenki.com
+-D: Support for MUSENKI board
+-
+-N: Rune Torgersen
+-E: <runet@innovsys.com>
+-D: Support for Motorola MPC8266ADS board
+-
+-N: Greg Ungerer
+-E: greg.ungerer@opengear.com
+-D: Support for ks8695 CPU, and OpenGear cmXXXX boards
+-
+-N: David Updegraff
+-E: dave@cray.com
+-D: Port to Cray L1 board; DHCP vendor extensions
+-
+-N: Christian Vejlbo
+-E: christian.vejlbo@tellabs.com
+-D: FADS860T ethernet support
+-
+-N: Robert Whaley
+-E: rwhaley@applieddata.net
+-D: Port to ARM PXA27x adsvix SBC
+-
+-N: Martin Winistoerfer
+-E: martinwinistoerfer@gmx.ch
+-D: Port to MPC555/556 microcontrollers and support for cmi board
+-
+-N: Ming-Len Wu
+-E: minglen_wu@techware.com.tw
+-D: Motorola MX1ADS board support
+-W: http://www.techware.com.tw/
+-
+-N: Xianghua Xiao
+-E: x.xiao@motorola.com
+-D: Support for Motorola 85xx(PowerQUICC III) chip, MPC8540ADS and MPC8560ADS boards.
+-
+-N: John Zhan
+-E: zhanz@sinovee.com
+-D: Support for SinoVee Microsystems SC8xx SBC
+-
+-N: Alex Zuepke
+-E: azu@sysgo.de
+-D: Overall improvements on StrongARM, ARM720TDMI; Support for Tuxscreen; initial PCMCIA support for ARM
+-W: www.elinos.com
+-
+-N: James MacAulay
+-E: james.macaulay@amirix.com
+-D: Suppport for Amirix AP1000
+-W: www.amirix.com
+-
+-N: Timur Tabi
+-E: timur@freescale.com
+-D: Support for MPC8349E-mITX
+-W: www.freescale.com
+-- 
+1.9.1
 
 
-On Fri, 09 Jan 2015 10:07:54 +0100
-Steffen Trumtrar <s.trumtrar@pengutronix.de> wrote:
 
-> 
-> Hi!
-> 
-> Masahiro Yamada writes:
-> > Hello Steffen Trumtrar,
-> >
-> > I am seeing arch/arm/boards/avnet-zedboard/board.c
-> > written by you.
-> >
-> 
-> Sadly it's been a while since I touched this :(
-> 
-> > Is this file equivalent to ps7_init.c spit by Xilinx tool?
-> > Or did you write it by hand from scratch ? (I doubt it.)
-> >
-> >
-> > I have ZC706, another Zynq board.
-> > If I could port barebox to this board, that would be great!
-> > But I am just worndering whether I could get your advice about
-> > how to create the lowlevel file.
-> >
-> 
-> The lowlevel.c/flash_header.c are adapted from the ps7_init code IIRC.
-> Xilinx uses a prebootloader and a bootloader for the Zynq, barebox does
-> not. So you would have to put all values into the respective two files.
-> And you need to run scripts/zynq_mkimage for the checksum (but I think
-> the Makefile already does that).
-> 
-> I wish I could be of more help here, but I can't really remember the
-> actual steps necessary and I don't have a ps7_init handy at the moment.
-> 
-
-OK, thanks.
-
-I just wanted to be sure in case there were some tools or tips etc.
-that would save my time.
-
-Anyway, I will give it a try.
-
-
-
-Best Regards
-Masahiro Yamada
-
+--===============4605074631582175314==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============4605074631582175314==--
