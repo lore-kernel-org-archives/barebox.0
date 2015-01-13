@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248])
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAweB-0002FQ-RL
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 08:16:21 +0000
+ id 1YAweY-0002N8-UP
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 08:16:44 +0000
 Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 6A2DE10010F2
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 09:15:57 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id ADF5C1001105
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 09:16:19 +0100 (CET)
 Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20150113115840.3309f5fa5a331549eac9d028@gmail.com>
-Date: Tue, 13 Jan 2015 16:15:45 +0800
-Message-Id: <EDB01981-1B68-4C5C-88A8-65EB511944D0@jcrosoft.com>
-References: <20150113062416.GB30554@ns203013.ovh.net>
- <1421130376-32428-1-git-send-email-plagnioj@jcrosoft.com>
- <1421130376-32428-2-git-send-email-plagnioj@jcrosoft.com>
- <20150113115840.3309f5fa5a331549eac9d028@gmail.com>
+In-Reply-To: <1421136876-1688-1-git-send-email-yamada.m@jp.panasonic.com>
+Date: Tue, 13 Jan 2015 16:16:12 +0800
+Message-Id: <1B1999BE-E95F-469C-B2BF-6C9D71A66C01@jcrosoft.com>
+References: <1421136876-1688-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,170 +20,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/6] raspberry-pi: add leds support
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v2] kbuild: add KBUILD_DEFCONFIG
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
 
-> On Jan 13, 2015, at 3:58 PM, Antony Pavlov <antonynpavlov@gmail.com> wrot=
-e:
-> =
-
-> On Tue, 13 Jan 2015 07:26:12 +0100
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> =
-
-> I have planned to switch raspberry pi to device tree support as Linux doe=
-s.
-
-but as I do not want to build multi binary switch (leds & co) those to DT m=
-ake no sense except if we can
-chose the DT at runtime
-
-> =
-
-> IMHO POWER LED is not GPIO controlable, please see these schematics
-
-yes it is does, I have a B+ and it=92s controllable
-
-Best Regards,
-J.
-> =
-
->   http://www.raspberrypi.org/wp-content/uploads/2012/04/Raspberry-Pi-Sche=
-matics-R1.0.pdf
->   http://www.raspberrypi.org/documentation/hardware/raspberrypi/schematic=
-s/Raspberry-Pi-B-Plus-V1.2-Schematics.pdf
-> =
-
-> =
-
->> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
->> ---
->> arch/arm/boards/raspberry-pi/rpi.c | 55 ++++++++++++++++++++++++++++++++=
-++++++
->> 1 file changed, 55 insertions(+)
->> =
-
->> diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspbe=
-rry-pi/rpi.c
->> index ae1e92a..7d866cc 100644
->> --- a/arch/arm/boards/raspberry-pi/rpi.c
->> +++ b/arch/arm/boards/raspberry-pi/rpi.c
->> @@ -21,6 +21,8 @@
->> #include <linux/clkdev.h>
->> #include <envfs.h>
->> #include <malloc.h>
->> +#include <gpio.h>
->> +#include <led.h>
->> #include <asm/armlinux.h>
->> #include <generated/mach-types.h>
->> =
-
->> @@ -87,6 +89,49 @@ static int rpi_register_clkdev(u32 clock_id, const ch=
-ar *name)
->> }
->> =
-
->> =
-
->> +static struct gpio_led leds[] =3D {
->> +	{
->> +		.gpio	=3D -EINVAL,
->> +		.led	=3D {
->> +			.name =3D "ACT",
->> +		},
->> +	}, {
->> +		.gpio	=3D -EINVAL,
->> +		.led	=3D {
->> +			.name =3D "PWR",
->> +		},
->> +	},
->> +};
->> +
->> +static void rpi_add_led(void)
->> +{
->> +	int i;
->> +	struct gpio_led *l;
->> +
->> +	for (i =3D 0; i < ARRAY_SIZE(leds); i++) {
->> +		l =3D &leds[i];
->> +
->> +		if (gpio_is_valid(l->gpio))
->> +			led_gpio_register(l);
->> +	}
->> +
->> +	l =3D &leds[0];
->> +	if (gpio_is_valid(l->gpio))
->> +		led_set_trigger(LED_TRIGGER_HEARTBEAT, &l->led);
->> +}
->> +
->> +static void rpi_b_plus_init(void)
->> +{
->> +	leds[0].gpio =3D 47;
->> +	leds[1].gpio =3D 35;
->> +}
->> +
->> +static void rpi_b_init(void)
->> +{
->> +	leds[0].gpio =3D 16;
->> +	leds[0].active_low =3D 1;
->> +}
->> +
->> #define RPI_MODEL(_id, _name, _init)	\
->> 	[_id] =3D {				\
->> 		.name			=3D _name,\
->> @@ -160,6 +205,15 @@ unknown_rev:
->> 	barebox_set_model("RaspberryPi (BCM2835/ARM1176JZF-S)");
->> }
->> =
-
->> +static void rpi_model_init(void)
->> +{
->> +	rpi_set_usbethaddr();
->> +	if (models[rpi_board_rev].init) {
->> +		models[rpi_board_rev].init();
->> +		rpi_add_led();
->> +	}
->> +}
->> +
->> static int rpi_mem_init(void)
->> {
->> 	u32 size =3D 0;
->> @@ -220,6 +274,7 @@ static int rpi_env_init(void)
->> =
-
->> static int rpi_devices_init(void)
->> {
->> +	rpi_model_init();
->> 	bcm2835_register_mci();
->> 	bcm2835_register_fb();
->> 	armlinux_set_architecture(MACH_TYPE_BCM2708);
->> -- =
-
->> 2.1.3
->> =
-
->> =
-
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
-> =
-
-> =
-
-> -- =
-
-> -- =
-
-> Best regards,
->   Antony Pavlov
+> On Jan 13, 2015, at 4:14 PM, Masahiro Yamada <yamada.m@jp.panasonic.com> wrote:
+> 
+> This allows "make ARCH=... defconfig".
+> 
+> Fox example, you can type "make defconfig" instead of
+> "make sandbox_defconfig".
+> 
+> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Ack
+> ---
+> 
+> Changes in v2:
+>  - Add it only to sandbox, x86, efi.
+> 
+> arch/efi/Makefile     | 2 ++
+> arch/sandbox/Makefile | 1 +
+> arch/x86/Makefile     | 2 ++
+> 3 files changed, 5 insertions(+)
+> 
+> diff --git a/arch/efi/Makefile b/arch/efi/Makefile
+> index 85cb655..b078bd0 100644
+> --- a/arch/efi/Makefile
+> +++ b/arch/efi/Makefile
+> @@ -1,3 +1,5 @@
+> +KBUILD_DEFCONFIG := efi_defconfig
+> +
+> CFLAGS += -fpic -fshort-wchar -mno-sse -mno-mmx
+> 
+> ifeq ($(CONFIG_X86_32),y)
+> diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+> index ed5d3a3..e3fb039 100644
+> --- a/arch/sandbox/Makefile
+> +++ b/arch/sandbox/Makefile
+> @@ -1,3 +1,4 @@
+> +KBUILD_DEFCONFIG := sandbox_defconfig
+> 
+> CPPFLAGS += -D__SANDBOX__ -fno-strict-aliasing
+> 
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index a78fa22..da17d70 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -1,3 +1,5 @@
+> +KBUILD_DEFCONFIG := generic_defconfig
+> +
+> CPPFLAGS += -D__X86__ -fno-strict-aliasing
+> 
+> board-y := x86_generic
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
 _______________________________________________
