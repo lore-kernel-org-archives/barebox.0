@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAv2n-0004Y0-UE
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:33:38 +0000
+ id 1YAv2o-0004Y3-D4
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:33:40 +0000
 Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E654A1008758
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 07:33:15 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 63ECF100875B
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 07:33:16 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 13 Jan 2015 07:33:06 +0100
-Message-Id: <1421130790-1164-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 13 Jan 2015 07:33:07 +0100
+Message-Id: <1421130790-1164-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1421130790-1164-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150113063128.GC30554@ns203013.ovh.net>
  <1421130790-1164-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,101 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] raspberry-pi: add leds support
+Subject: [PATCH 3/6] amba: pl011: add support for regulator
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/raspberry-pi/rpi.c | 55 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ drivers/serial/amba-pl011.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
-index ae1e92a..81b485e 100644
---- a/arch/arm/boards/raspberry-pi/rpi.c
-+++ b/arch/arm/boards/raspberry-pi/rpi.c
-@@ -21,6 +21,8 @@
- #include <linux/clkdev.h>
- #include <envfs.h>
+diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+index fc7723e..4c4067d 100644
+--- a/drivers/serial/amba-pl011.c
++++ b/drivers/serial/amba-pl011.c
+@@ -28,6 +28,7 @@
+ #include <init.h>
  #include <malloc.h>
-+#include <gpio.h>
-+#include <led.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
- 
-@@ -87,6 +89,49 @@ static int rpi_register_clkdev(u32 clock_id, const char *name)
- }
- 
- 
-+static struct gpio_led leds[] = {
-+	{
-+		.gpio	= -EINVAL,
-+		.led	= {
-+			.name = "ACT",
-+		},
-+	}, {
-+		.gpio	= -EINVAL,
-+		.led	= {
-+			.name = "PWR",
-+		},
-+	},
-+};
+ #include <io.h>
++#include <regulator.h>
+ #include <linux/amba/serial.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+@@ -181,6 +182,16 @@ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+ {
+ 	struct amba_uart_port *uart;
+ 	struct console_device *cdev;
++	struct regulator *r;
 +
-+static void rpi_add_led(void)
-+{
-+	int i;
-+	struct gpio_led *l;
++	r = regulator_get(&dev->dev, NULL);
++	if (r) {
++		int ret;
 +
-+	for (i = 0; i < ARRAY_SIZE(leds); i++) {
-+		l = &leds[i];
-+
-+		if (gpio_is_valid(l->gpio))
-+			led_gpio_register(l);
++		ret = regulator_enable(r);
++		if (ret)
++			return ret;
 +	}
-+
-+	l = &leds[0];
-+	if (gpio_is_valid(l->gpio))
-+		led_set_trigger(LED_TRIGGER_HEARTBEAT, &l->led);
-+}
-+
-+static void rpi_b_plus_init(void)
-+{
-+	leds[0].gpio = 47;
-+	leds[1].gpio = 35;
-+}
-+
-+static void rpi_b_init(void)
-+{
-+	leds[0].gpio = 16;
-+	leds[0].active_low = 1;
-+}
-+
- #define RPI_MODEL(_id, _name, _init)	\
- 	[_id] = {				\
- 		.name			= _name,\
-@@ -160,6 +205,15 @@ unknown_rev:
- 	barebox_set_model("RaspberryPi (BCM2835/ARM1176JZF-S)");
- }
  
-+static void rpi_model_init(void)
-+{
-+	if (!models[rpi_board_rev].init)
-+		return;
-+
-+	models[rpi_board_rev].init();
-+	rpi_add_led();
-+}
-+
- static int rpi_mem_init(void)
- {
- 	u32 size = 0;
-@@ -220,6 +274,7 @@ static int rpi_env_init(void)
- 
- static int rpi_devices_init(void)
- {
-+	rpi_model_init();
- 	bcm2835_register_mci();
- 	bcm2835_register_fb();
- 	armlinux_set_architecture(MACH_TYPE_BCM2708);
+ 	uart = xzalloc(sizeof(struct amba_uart_port));
+ 	uart->clk = clk_get(&dev->dev, NULL);
 -- 
 2.1.3
 
