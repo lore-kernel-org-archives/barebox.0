@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAvmy-0000T1-De
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:21:20 +0000
+ id 1YAvof-0000ed-2V
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:23:06 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
  by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
- t0D7KuAU007860
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 16:20:56 +0900 (JST)
+ t0D7Mheu011117
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 16:22:44 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili15) with ESMTP id t0D7KuB20381
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 16:20:56 +0900
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili14) with ESMTP id t0D7MiL07024
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 16:22:44 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Tue, 13 Jan 2015 16:20:41 +0900
-Message-Id: <1421133646-17418-1-git-send-email-yamada.m@jp.panasonic.com>
+Date: Tue, 13 Jan 2015 16:22:43 +0900
+Message-Id: <1421133763-17506-5-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1421133763-17506-1-git-send-email-yamada.m@jp.panasonic.com>
+References: <1421133763-17506-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +28,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] .gitignore fixes
+Subject: [PATCH 5/5] gitignore: remove bogus ignore patterns
 To: barebox@lists.infradead.org
 
+asm-offsets.h and compile.h are generated under include/generated/
+directory now.
+The directory include/generated/ is already ignored.
 
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+---
 
+ .gitignore | 2 --
+ 1 file changed, 2 deletions(-)
 
-Borislav Petkov (1):
-  gitignore: add all.config
-
-Jani Nikula (1):
-  gitignore: Add GNU GLOBAL files to top .gitignore
-
-Jike Song (1):
-  .gitignore: match ncscope.out
-
-Masahiro Yamada (2):
-  gitignore: do not ignore .mailmap
-  gitignore: remove bogus ignore patterns
-
- .gitignore | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
+diff --git a/.gitignore b/.gitignore
+index 34e74a1..74d24ea 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -62,9 +62,7 @@ barebox_default_env*
+ #
+ # Generated include files
+ #
+-include/asm-*/asm-offsets.h
+ include/config
+-include/linux/compile.h
+ include/generated
+ 
+ # Generated files
 -- 
 1.9.1
 
