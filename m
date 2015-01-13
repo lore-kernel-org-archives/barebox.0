@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YAw9v-0000ax-Rb
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:45:04 +0000
-Date: Tue, 13 Jan 2015 08:44:41 +0100
+ Linux)) id 1YAwBa-0002FW-Ji
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:46:47 +0000
+Date: Tue, 13 Jan 2015 08:46:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150113074441.GS23940@pengutronix.de>
-References: <1420927449-31748-1-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20150113074621.GT23940@pengutronix.de>
+References: <1421126827-29629-1-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1420927449-31748-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1421126827-29629-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] mtd: nand: add mrvl-nand driver
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] Remove the CREDITS file
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jan 10, 2015 at 11:04:09PM +0100, Robert Jarzmik wrote:
-> The driver is taken from the Linux kernel, with the following changes :
->  - all DMA removed
->  - all asynchronous handling removed, including the interrupt handler,
->    and the asynchronous state handling
->  - pxa armada support removed
+On Tue, Jan 13, 2015 at 02:27:07PM +0900, Masahiro Yamada wrote:
+> This file, which originates in U-Boot, has not been maintained
+> for a long time.
 > 
-> Most the kernel structure was kept, to ease up future fixes integration
-> from the kernel driver.
+> It was removed from U-Boot by commit 548b310c68ac.
+> Let's remove it from barebox, too.
 > 
-> The driver is tested on a pxa3xx system development
-> board (aka. zylonite), and reading, writing, erasing, and bad block
-> management were tested.
-> 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+
+Oh, when even U-Boot does not have that file anymore it's good
+to remove it.
 
 Applied, thanks
 
