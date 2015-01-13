@@ -1,11 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAvof-0000ep-2T
+ id 1YAvof-0000ee-2X
  for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:23:06 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
+ t0D7Mit7011142
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 16:22:44 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili11) with ESMTP id t0D7MiR04098
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 16:22:44 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Tue, 13 Jan 2015 16:22:39 +0900
-Message-Id: <1421133763-17506-1-git-send-email-yamada.m@jp.panasonic.com>
+Date: Tue, 13 Jan 2015 16:22:42 +0900
+Message-Id: <1421133763-17506-4-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1421133763-17506-1-git-send-email-yamada.m@jp.panasonic.com>
+References: <1421133763-17506-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +28,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] .gitignore: match ncscope.out
+Subject: [PATCH 4/5] gitignore: do not ignore .mailmap
 To: barebox@lists.infradead.org
-Cc: Jike Song <albcamus@gmail.com>
 
-From: Jike Song <albcamus@gmail.com>
+Commit eb4b20d20631 (add .mailmap for proper git-shortlog output)
+introduced .mailmap file.  It should not be ignored.
 
-Sometimes I got this:
-
-    $ git-status
-    {snip}
-    # On branch master
-    # Untracked files:
-    #   (use "git add <file>..." to include in what will be committed)
-    #
-    #       ncscope.out
-    nothing added to commit but untracked files present (use "git add"
-to track)
-
-Fix it.
-
-Signed-off-by: Jike Song <albcamus@gmail.com>
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-[ imported from Linux Kernel, commit 9723c046bd59 ]
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
@@ -49,17 +41,17 @@ Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/.gitignore b/.gitignore
-index 03c5e20..b6d1b67 100644
+index 029520c..34e74a1 100644
 --- a/.gitignore
 +++ b/.gitignore
-@@ -79,6 +79,7 @@ series
+@@ -57,6 +57,7 @@ barebox_default_env*
+ # git files that we don't want to ignore even it they are dot-files
+ #
+ !.gitignore
++!.mailmap
  
- # cscope files
- cscope.*
-+ncscope.*
- 
- # patches
- *.patch
+ #
+ # Generated include files
 -- 
 1.9.1
 
