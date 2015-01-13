@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YAwZg-00084s-DX
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 08:11:40 +0000
-Date: Tue, 13 Jan 2015 09:11:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150113081118.GB23940@pengutronix.de>
-References: <20150113061940.GA30554@ns203013.ovh.net>
- <1421130070-31704-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1421130070-31704-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YAwcw-0000lp-Ig
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 08:15:03 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
+ t0D8Ee3m029533
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 17:14:40 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili16) with ESMTP id t0D8EfM14404
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 17:14:41 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Date: Tue, 13 Jan 2015 17:14:36 +0900
+Message-Id: <1421136876-1688-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,26 +21,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] defaultenv-2: fix misplace NV dir in env
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] kbuild: add KBUILD_DEFCONFIG
+To: barebox@lists.infradead.org
 
-On Tue, Jan 13, 2015 at 07:21:08AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+This allows "make ARCH=... defconfig".
 
-Applied this one to master
+Fox example, you can type "make defconfig" instead of
+"make sandbox_defconfig".
 
-Sascha
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+---
 
+Changes in v2:
+  - Add it only to sandbox, x86, efi.
+
+ arch/efi/Makefile     | 2 ++
+ arch/sandbox/Makefile | 1 +
+ arch/x86/Makefile     | 2 ++
+ 3 files changed, 5 insertions(+)
+
+diff --git a/arch/efi/Makefile b/arch/efi/Makefile
+index 85cb655..b078bd0 100644
+--- a/arch/efi/Makefile
++++ b/arch/efi/Makefile
+@@ -1,3 +1,5 @@
++KBUILD_DEFCONFIG := efi_defconfig
++
+ CFLAGS += -fpic -fshort-wchar -mno-sse -mno-mmx
+ 
+ ifeq ($(CONFIG_X86_32),y)
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index ed5d3a3..e3fb039 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -1,3 +1,4 @@
++KBUILD_DEFCONFIG := sandbox_defconfig
+ 
+ CPPFLAGS += -D__SANDBOX__ -fno-strict-aliasing
+ 
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index a78fa22..da17d70 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -1,3 +1,5 @@
++KBUILD_DEFCONFIG := generic_defconfig
++
+ CPPFLAGS += -D__X86__ -fno-strict-aliasing
+ 
+ board-y := x86_generic
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
