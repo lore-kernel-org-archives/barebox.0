@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAuuF-00014d-VH
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:24:48 +0000
-Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 3C82B1001077
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 07:24:25 +0100 (CET)
-Date: Tue, 13 Jan 2015 07:24:16 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150113062416.GB30554@ns203013.ovh.net>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YAuuQ-00014t-Uq
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:24:59 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
+ t0D6OaLU018047
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 15:24:36 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili12) with ESMTP id t0D6Oao19742
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 15:24:36 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Date: Tue, 13 Jan 2015 15:24:33 +0900
+Message-Id: <1421130273-6507-1-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +22,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6] raspberry-pi: updates
+Subject: [PATCH] commands: fix a warning in help.c
 To: barebox@lists.infradead.org
 
-Hi,
-
-	The following patch serie prepare the raspberry for USB support
-
-The following changes since commit 9cd14d260aa22ae089f81a07be2c0e5dea2ffc94:
-
-  Merge branch 'for-next/pbl-console' (2015-01-09 17:38:27 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/rpi
-
-for you to fetch changes up to eebb138c29d100ced23dd7ffc6cd3f0c0a6930be:
-
-  regulator: add bcm2835 driver (2015-01-11 18:17:39 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (6):
-      raspberry-pi: add board model detection
-      raspberry-pi: add leds support
-      amba: pl011: add support for regulator
-      driver: add postcore_platform_driver
-      regulator: allow to use it with non DT device
-      regulator: add bcm2835 driver
-
- arch/arm/boards/raspberry-pi/env/init/ps1 |   7 +++++++
- arch/arm/boards/raspberry-pi/rpi.c        | 138 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- arch/arm/mach-bcm2835/include/mach/mbox.h |  83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/regulator/Kconfig                 |   7 ++++++-
- drivers/regulator/Makefile                |   1 +
- drivers/regulator/bcm2835.c               | 149 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/regulator/core.c                  |  98 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------
- drivers/serial/amba-pl011.c               |  11 +++++++++++
- include/driver.h                          |   2 ++
- include/regulator.h                       |  10 ++++++++++
- 10 files changed, 488 insertions(+), 18 deletions(-)
- create mode 100644 arch/arm/boards/raspberry-pi/env/init/ps1
- create mode 100644 drivers/regulator/bcm2835.c
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Rml4IHRoZSBmb2xsb3dpbmcgd2FybmluZzoKCmNvbW1hbmRzL2hlbHAuYzogSW4gZnVuY3Rpb24g
+4oCYbGlzdF9ncm91cOKAmToKY29tbWFuZHMvaGVscC5jOjU3OjQ6IHdhcm5pbmc6IGZvcm1hdCBu
+b3QgYSBzdHJpbmcgbGl0ZXJhbCBhbmQKbm8gZm9ybWF0IGFyZ3VtZW50cyBbLVdmb3JtYXQtc2Vj
+dXJpdHldCiAgICBwcmludGYoY21kdHAtPm5hbWUpOwogICAgXgoKU2lnbmVkLW9mZi1ieTogTWFz
+YWhpcm8gWWFtYWRhIDx5YW1hZGEubUBqcC5wYW5hc29uaWMuY29tPgotLS0KCiBjb21tYW5kcy9o
+ZWxwLmMgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
+LSkKCmRpZmYgLS1naXQgYS9jb21tYW5kcy9oZWxwLmMgYi9jb21tYW5kcy9oZWxwLmMKaW5kZXgg
+ODk4NTMzNS4uNmU2MWJkZSAxMDA2NDQKLS0tIGEvY29tbWFuZHMvaGVscC5jCisrKyBiL2NvbW1h
+bmRzL2hlbHAuYwpAQCAtNTQsNyArNTQsNyBAQCBzdGF0aWMgdm9pZCBsaXN0X2dyb3VwKGludCB2
+ZXJib3NlLCBjb25zdCBjaGFyICpncnBuYW1lLCB1aW50MzJfdCBncm91cCkKIAkJCQlwcmludGYo
+IiwgIik7CiAJCQkJcG9zICs9IDI7CiAJCQl9Ci0JCQlwcmludGYoY21kdHAtPm5hbWUpOworCQkJ
+cHV0cyhjbWR0cC0+bmFtZSk7CiAJCQlwb3MgKz0gbGVuOwogCQl9CiAJfQotLSAKMS45LjEKCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
