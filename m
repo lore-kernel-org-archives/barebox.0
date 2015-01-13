@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.mei.co.jp ([133.183.100.20])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAvof-0000ef-2Y
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:23:07 +0000
-From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Tue, 13 Jan 2015 16:22:41 +0900
-Message-Id: <1421133763-17506-3-git-send-email-yamada.m@jp.panasonic.com>
-In-Reply-To: <1421133763-17506-1-git-send-email-yamada.m@jp.panasonic.com>
-References: <1421133763-17506-1-git-send-email-yamada.m@jp.panasonic.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YAw9R-0000Tr-8y
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:44:34 +0000
+Date: Tue, 13 Jan 2015 08:44:09 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150113074409.GR23940@pengutronix.de>
+References: <1420789003-17409-1-git-send-email-robert.jarzmik@free.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1420789003-17409-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] gitignore: add all.config
-To: barebox@lists.infradead.org
-Cc: Michal Marek <mmarek@suse.cz>, Borislav Petkov <bp@suse.de>
+Subject: Re: [PATCH v2 1/3] ARM: pxa: move pxa2xx functionality to SoC
+ specific file
+To: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: barebox@lists.infradead.org
 
-From: Borislav Petkov <bp@suse.de>
+On Fri, Jan 09, 2015 at 08:36:41AM +0100, Robert Jarzmik wrote:
+> Move reset_source detection and poweroff to pxa2xx.c, to prepare the
+> incoming pxa3xx reset_source detection.
+> 
+> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
-This is used by kbuild to load preset Kconfig options.  We need to
-ignore it, otherwise git clean kills it.
+Applied, thanks
 
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Michal Marek <mmarek@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-[ imported from Linux Kernel, commit 25fba9bebeb7 ]
-Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Sascha
 
----
 
- .gitignore | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/.gitignore b/.gitignore
-index fe29da5..029520c 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -89,3 +89,6 @@ GTAGS
- 
- # patches
- *.patch
-+
-+# Kconfig presets
-+all.config
 -- 
-1.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
