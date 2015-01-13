@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226])
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAuTD-0003WG-4w
+ id 1YAuTD-0003WH-6Z
  for barebox@lists.infradead.org; Tue, 13 Jan 2015 05:56:52 +0000
 Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 16EA21004FEA
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 173B31004FF0
  for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 06:47:36 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 13 Jan 2015 06:47:31 +0100
-Message-Id: <1421128051-6505-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1421128051-6505-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1421128051-6505-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 13 Jan 2015 06:47:30 +0100
+Message-Id: <1421128051-6505-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] command/splash: fix return value
+Subject: [PATCH 1/2] =?UTF-8?q?kconfig/menu.c:590:=20fix=20warning:=20?=
+ =?UTF-8?q?=E2=80=98jump=E2=80=99=20may=20be=20used=20uninitialized=20in?=
+ =?UTF-8?q?=20this=20function=20[-Wmaybe-uninitialized]?=
 To: barebox@lists.infradead.org
-
-return errno when possible
-
-otherwise return 0 for ok or 1 for error
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/splash.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ scripts/kconfig/menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/commands/splash.c b/commands/splash.c
-index 2ce1bdd..9bd84fb 100644
---- a/commands/splash.c
-+++ b/commands/splash.c
-@@ -11,7 +11,8 @@ static int do_splash(int argc, char *argv[])
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index a26cc5d..584e0fc 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -548,7 +548,7 @@ static void get_prompt_str(struct gstr *r, struct property *prop,
  {
- 	struct surface s;
- 	struct screen sc;
--	int ret, opt, fd;
-+	int ret = 0;
-+	int opt, fd;
- 	char *fbdev = "/dev/fb0";
- 	char *image_file;
- 	int offscreen = 0;
-@@ -54,7 +55,7 @@ static int do_splash(int argc, char *argv[])
- 	fd = fb_open(fbdev, &sc, offscreen);
- 	if (fd < 0) {
- 		perror("fd_open");
--		return 1;
-+		return fd;
- 	}
+ 	int i, j;
+ 	struct menu *submenu[8], *menu, *location = NULL;
+-	struct jump_key *jump;
++	struct jump_key *jump = NULL;
  
- 	if (sc.offscreenbuf) {
-@@ -67,8 +68,9 @@ static int do_splash(int argc, char *argv[])
- 		memset_pixel(&sc.info, sc.fb, bg_color, sc.s.width * sc.s.height);
- 	}
- 
--	if (image_renderer_file(&sc, &s, image_file) < 0)
--		ret = 1;
-+	ret = image_renderer_file(&sc, &s, image_file);
-+	if (ret > 0)
-+		ret = 0;
- 
- 	screen_blit(&sc);
- 
+ 	str_printf(r, _("Prompt: %s\n"), _(prop->text));
+ 	menu = prop->menu->parent;
 -- 
 2.1.3
 
