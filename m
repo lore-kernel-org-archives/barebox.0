@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAv2o-0004YB-D0
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:33:41 +0000
-Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 1C5211008757
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 07:33:17 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 13 Jan 2015 07:33:10 +0100
-Message-Id: <1421130790-1164-6-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1421130790-1164-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20150113063128.GC30554@ns203013.ovh.net>
- <1421130790-1164-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YAvFO-0002Jn-GS
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:46:39 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
+ t0D6kF77002605
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 15:46:15 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili14) with ESMTP id t0D6kFL30852
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 15:46:15 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Date: Tue, 13 Jan 2015 15:46:10 +0900
+Message-Id: <1421131570-7450-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,263 +26,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] regulator: add bcm2835 driver
+Subject: [PATCH] kbuild: add KBUILD_DEFCONFIG
 To: barebox@lists.infradead.org
 
-this will allow to handle IP power automatically and not at board level
+This allows "make ARCH=... defconfig".
 
-Mainline kernel need this as they do not have the regulator driver support
+Fox example, you can type "make defconfig" instead of
+"make sandbox_defconfig".
 
-as some IP such as USB are not power on at boot
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
- arch/arm/mach-bcm2835/include/mach/mbox.h |  49 ++++++++++
- drivers/regulator/Kconfig                 |   5 +
- drivers/regulator/Makefile                |   1 +
- drivers/regulator/bcm2835.c               | 149 ++++++++++++++++++++++++++++++
- 4 files changed, 204 insertions(+)
- create mode 100644 drivers/regulator/bcm2835.c
 
-diff --git a/arch/arm/mach-bcm2835/include/mach/mbox.h b/arch/arm/mach-bcm2835/include/mach/mbox.h
-index e5f6bfa..d991ba7 100644
---- a/arch/arm/mach-bcm2835/include/mach/mbox.h
-+++ b/arch/arm/mach-bcm2835/include/mach/mbox.h
-@@ -172,6 +172,55 @@ struct bcm2835_mbox_tag_get_arm_mem {
- 	} body;
- };
+ arch/arm/Makefile      | 1 +
+ arch/blackfin/Makefile | 1 +
+ arch/efi/Makefile      | 2 ++
+ arch/nios2/Makefile    | 2 ++
+ arch/openrisc/Makefile | 2 ++
+ arch/sandbox/Makefile  | 1 +
+ arch/x86/Makefile      | 2 ++
+ 7 files changed, 11 insertions(+)
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index f06e2a0..9dd983b 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -1,3 +1,4 @@
++KBUILD_DEFCONFIG := versatilepb_defconfig
  
-+#define BCM2835_MBOX_POWER_DEVID_SDHCI		0
-+#define BCM2835_MBOX_POWER_DEVID_UART0		1
-+#define BCM2835_MBOX_POWER_DEVID_UART1		2
-+#define BCM2835_MBOX_POWER_DEVID_USB_HCD	3
-+#define BCM2835_MBOX_POWER_DEVID_I2C0		4
-+#define BCM2835_MBOX_POWER_DEVID_I2C1		5
-+#define BCM2835_MBOX_POWER_DEVID_I2C2		6
-+#define BCM2835_MBOX_POWER_DEVID_SPI		7
-+#define BCM2835_MBOX_POWER_DEVID_CCP2TX		8
-+
-+#define BCM2835_MBOX_POWER_STATE_RESP_ON	(1 << 0)
-+/* Device doesn't exist */
-+#define BCM2835_MBOX_POWER_STATE_RESP_NODEV	(1 << 1)
-+
-+#define BCM2835_MBOX_TAG_GET_POWER_STATE	0x00020001
-+
-+struct bcm2835_mbox_tag_get_power_state {
-+	struct bcm2835_mbox_tag_hdr tag_hdr;
-+	union {
-+		struct {
-+			u32 device_id;
-+		} req;
-+		struct {
-+			u32 device_id;
-+			u32 state;
-+		} resp;
-+	} body;
-+};
-+
-+#define BCM2835_MBOX_TAG_SET_POWER_STATE	0x00028001
-+
-+#define BCM2835_MBOX_SET_POWER_STATE_REQ_OFF	(0 << 0)
-+#define BCM2835_MBOX_SET_POWER_STATE_REQ_ON	(1 << 0)
-+#define BCM2835_MBOX_SET_POWER_STATE_REQ_WAIT	(1 << 1)
-+
-+struct bcm2835_mbox_tag_set_power_state {
-+	struct bcm2835_mbox_tag_hdr tag_hdr;
-+	union {
-+		struct {
-+			u32 device_id;
-+			u32 state;
-+		} req;
-+		struct {
-+			u32 device_id;
-+			u32 state;
-+		} resp;
-+	} body;
-+};
-+
- #define BCM2835_MBOX_TAG_GET_CLOCK_RATE	0x00030002
+ CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
+ # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
+diff --git a/arch/blackfin/Makefile b/arch/blackfin/Makefile
+index 381c6a9..5c43bf7 100644
+--- a/arch/blackfin/Makefile
++++ b/arch/blackfin/Makefile
+@@ -1,3 +1,4 @@
++KBUILD_DEFCONFIG := ipe337_defconfig
  
- #define BCM2835_MBOX_CLOCK_ID_EMMC	1
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 4085b3f..05c3f48 100644
---- a/drivers/regulator/Kconfig
-+++ b/drivers/regulator/Kconfig
-@@ -11,4 +11,9 @@ config REGULATOR_FIXED
- 	  This enables a simple fixed regulator. It is used for regulators
- 	  which are not software controllable or controllable via gpio.
+ CPPFLAGS += -fno-strict-aliasing
  
-+config REGULATOR_BCM2835
-+	bool
-+	depends on ARCH_BCM2835
-+	default y
+diff --git a/arch/efi/Makefile b/arch/efi/Makefile
+index 85cb655..b078bd0 100644
+--- a/arch/efi/Makefile
++++ b/arch/efi/Makefile
+@@ -1,3 +1,5 @@
++KBUILD_DEFCONFIG := efi_defconfig
 +
- endif
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 65e65d8..d663c16 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -1,2 +1,3 @@
- obj-$(CONFIG_REGULATOR) += core.o
- obj-$(CONFIG_REGULATOR_FIXED) += fixed.o
-+obj-$(CONFIG_REGULATOR_BCM2835) += bcm2835.o
-diff --git a/drivers/regulator/bcm2835.c b/drivers/regulator/bcm2835.c
-new file mode 100644
-index 0000000..5195210
---- /dev/null
-+++ b/drivers/regulator/bcm2835.c
-@@ -0,0 +1,149 @@
-+/*
-+ * bcm2835 regulator support
-+ *
-+ * Copyright (c) 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPLv2 Only
-+ */
-+#include <common.h>
-+#include <malloc.h>
-+#include <init.h>
-+#include <regulator.h>
+ CFLAGS += -fpic -fshort-wchar -mno-sse -mno-mmx
+ 
+ ifeq ($(CONFIG_X86_32),y)
+diff --git a/arch/nios2/Makefile b/arch/nios2/Makefile
+index 681944f..d079190 100644
+--- a/arch/nios2/Makefile
++++ b/arch/nios2/Makefile
+@@ -1,3 +1,5 @@
++KBUILD_DEFCONFIG := generic_defconfig
 +
-+#include <mach/mbox.h>
+ CPPFLAGS += -fno-strict-aliasing -mno-hw-mul
+ 
+ board-$(CONFIG_GENERIC) := generic
+diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
+index b0c8566..5394afb 100644
+--- a/arch/openrisc/Makefile
++++ b/arch/openrisc/Makefile
+@@ -1,3 +1,5 @@
++KBUILD_DEFCONFIG := generic_defconfig
 +
-+#define REG_DEV(_id, _name)		\
-+	{				\
-+		.id 		= _id,	\
-+		.devname	= _name,\
-+	}
+ CPPFLAGS += -D__OR1K__ -ffixed-r10 -mhard-mul -mhard-div
+ 
+ board-$(CONFIG_GENERIC) := generic
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index ed5d3a3..e3fb039 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -1,3 +1,4 @@
++KBUILD_DEFCONFIG := sandbox_defconfig
+ 
+ CPPFLAGS += -D__SANDBOX__ -fno-strict-aliasing
+ 
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index a78fa22..da17d70 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -1,3 +1,5 @@
++KBUILD_DEFCONFIG := generic_defconfig
 +
-+static struct regulator_bcm2835 {
-+	int id;
-+	char *devname;
-+
-+	struct device_d *dev;
-+	struct regulator_dev rdev;
-+} regs[] = {
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_SDHCI, "bcm2835_mci0"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_UART0, "uart0-pl0110"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_UART1, "uart0-pl0111"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_USB_HCD, "bcm2835_usb"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_I2C0, "bcm2835_i2c0"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_I2C1, "bcm2835_i2c1"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_I2C2, "bcm2835_i2c2"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_SPI, "bcm2835_spi"),
-+	REG_DEV(BCM2835_MBOX_POWER_DEVID_CCP2TX, "bcm2835_ccp2tx"),
-+};
-+
-+struct msg_set_power_state {
-+	struct bcm2835_mbox_hdr hdr;
-+	struct bcm2835_mbox_tag_set_power_state set_power_state;
-+	u32 end_tag;
-+};
-+
-+static int regulator_bcm2835_set(struct regulator_bcm2835 *rb, int state)
-+{
-+	BCM2835_MBOX_STACK_ALIGN(struct msg_set_power_state, msg_pwr);
-+	int ret;
-+
-+	BCM2835_MBOX_INIT_HDR(msg_pwr);
-+	BCM2835_MBOX_INIT_TAG(&msg_pwr->set_power_state,
-+			      SET_POWER_STATE);
-+	msg_pwr->set_power_state.body.req.device_id = rb->id;
-+	msg_pwr->set_power_state.body.req.state =
-+		state |
-+		BCM2835_MBOX_SET_POWER_STATE_REQ_WAIT;
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN,
-+				     &msg_pwr->hdr);
-+	if (ret) {
-+		dev_err(rb->dev ,"bcm2835: Could not set module %u power state\n",
-+		       rb->id);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int regulator_bcm2835_enable(struct regulator_dev *rdev)
-+{
-+	struct regulator_bcm2835 *rb = container_of(rdev, struct regulator_bcm2835, rdev);
-+	
-+	return regulator_bcm2835_set(rb, BCM2835_MBOX_SET_POWER_STATE_REQ_ON);
-+}
-+
-+static int regulator_bcm2835_disable(struct regulator_dev *rdev)
-+{
-+	struct regulator_bcm2835 *rb = container_of(rdev, struct regulator_bcm2835, rdev);
-+
-+	return regulator_bcm2835_set(rb, BCM2835_MBOX_SET_POWER_STATE_REQ_OFF);
-+}
-+
-+struct msg_get_power_state {
-+	struct bcm2835_mbox_hdr hdr;
-+	struct bcm2835_mbox_tag_get_power_state get_power_state;
-+	u32 end_tag;
-+};
-+
-+static int regulator_bcm2835_is_enabled(struct regulator_dev *rdev)
-+{
-+	struct regulator_bcm2835 *rb = container_of(rdev, struct regulator_bcm2835, rdev);
-+	BCM2835_MBOX_STACK_ALIGN(struct msg_get_power_state, msg_pwr);
-+	int ret;
-+
-+	BCM2835_MBOX_INIT_HDR(msg_pwr);
-+	BCM2835_MBOX_INIT_TAG(&msg_pwr->get_power_state,
-+			      GET_POWER_STATE);
-+	msg_pwr->get_power_state.body.req.device_id = rb->id;
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN,
-+				     &msg_pwr->hdr);
-+	if (ret) {
-+		dev_err(rb->dev ,"bcm2835: Could not get module %u power state\n",
-+		       rb->id);
-+		return ret;
-+	}
-+
-+	return msg_pwr->get_power_state.body.resp.state;
-+}
-+
-+static struct regulator_ops bcm2835_ops = {
-+	.enable = regulator_bcm2835_enable,
-+	.disable = regulator_bcm2835_disable,
-+	.is_enabled = regulator_bcm2835_is_enabled,
-+};
-+
-+static int regulator_bcm2835_probe(struct device_d *dev)
-+{
-+	struct regulator_bcm2835 *rb;
-+	int ret, i;
-+
-+	for (i = 0; i < ARRAY_SIZE(regs); i++) {
-+		rb = &regs[i];
-+
-+		rb->rdev.ops = &bcm2835_ops;
-+		rb->dev = dev;
-+
-+		ret = dev_regulator_register(&rb->rdev, rb->devname, NULL);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static struct driver_d regulator_bcm2835_driver = {
-+	.name  = "regulator-bcm2835",
-+	.probe = regulator_bcm2835_probe,
-+};
-+postcore_platform_driver(regulator_bcm2835_driver);
-+
-+static int regulator_bcm2835_init(void)
-+{
-+	add_generic_device("regulator-bcm2835", DEVICE_ID_SINGLE, NULL,
-+			   0, 0, 0, NULL);
-+
-+	return 0;
-+}
-+postcore_initcall(regulator_bcm2835_init);
+ CPPFLAGS += -D__X86__ -fno-strict-aliasing
+ 
+ board-y := x86_generic
 -- 
-2.1.3
+1.9.1
 
 
 _______________________________________________
