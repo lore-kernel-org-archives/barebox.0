@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YAwKw-0006kx-IJ
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:56:27 +0000
-Date: Tue, 13 Jan 2015 08:56:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150113075604.GW23940@pengutronix.de>
-References: <1421130273-6507-1-git-send-email-yamada.m@jp.panasonic.com>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YAwMF-0006yC-8E
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 07:57:48 +0000
+Date: Tue, 13 Jan 2015 16:54:47 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+In-Reply-To: <29573FD6-1527-4C63-ACBE-85847B0F1277@jcrosoft.com>
+References: <1421131570-7450-1-git-send-email-yamada.m@jp.panasonic.com>
+ <29573FD6-1527-4C63-ACBE-85847B0F1277@jcrosoft.com>
+Message-Id: <20150113165447.CACE.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1421130273-6507-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,26 +18,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: fix a warning in help.c
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Subject: Re: [PATCH] kbuild: add KBUILD_DEFCONFIG
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCBKYW4gMTMsIDIwMTUgYXQgMDM6MjQ6MzNQTSArMDkwMCwgTWFzYWhpcm8gWWFtYWRh
-IHdyb3RlOgo+IEZpeCB0aGUgZm9sbG93aW5nIHdhcm5pbmc6Cj4gCj4gY29tbWFuZHMvaGVscC5j
-OiBJbiBmdW5jdGlvbiDigJhsaXN0X2dyb3Vw4oCZOgo+IGNvbW1hbmRzL2hlbHAuYzo1Nzo0OiB3
-YXJuaW5nOiBmb3JtYXQgbm90IGEgc3RyaW5nIGxpdGVyYWwgYW5kCj4gbm8gZm9ybWF0IGFyZ3Vt
-ZW50cyBbLVdmb3JtYXQtc2VjdXJpdHldCj4gICAgIHByaW50ZihjbWR0cC0+bmFtZSk7Cj4gICAg
-IF4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBNYXNhaGlybyBZYW1hZGEgPHlhbWFkYS5tQGpwLnBhbmFz
-b25pYy5jb20+CgpBcHBsaWVkLCB0aGFua3MKClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
-bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Jean-Christophe,
+
+On Tue, 13 Jan 2015 14:53:19 +0800
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+
+> 
+> > On Jan 13, 2015, at 2:46 PM, Masahiro Yamada <yamada.m@jp.panasonic.com> wrote:
+> > 
+> > This allows "make ARCH=... defconfig".
+> > 
+> > Fox example, you can type "make defconfig" instead of
+> > "make sandbox_defconfig".
+> > 
+> > Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+> > ---
+> > 
+> > arch/arm/Makefile      | 1 +
+> > arch/blackfin/Makefile | 1 +
+> > arch/efi/Makefile      | 2 ++
+> > arch/nios2/Makefile    | 2 ++
+> > arch/openrisc/Makefile | 2 ++
+> > arch/sandbox/Makefile  | 1 +
+> > arch/x86/Makefile      | 2 ++
+> > 7 files changed, 11 insertions(+)
+> > 
+> > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> > index f06e2a0..9dd983b 100644
+> > --- a/arch/arm/Makefile
+> > +++ b/arch/arm/Makefile
+> > @@ -1,3 +1,4 @@
+> > +KBUILD_DEFCONFIG := versatilepb_defconfig
+> 
+> no sure we need a default config on arm and some other
+> 
+> I known we use them on the kernel but here it could result in a broken board
+> if use not carefully
+> 
+> for arch that only have 1 defconfig and will only have one maybe
+> 
+
+Why could it result in a broken board?  (It seems harmless to me.)
+
+I think it is useful at least for Sandbox and some other arches that
+have only "generic_defconfig".
+
+It is true that KBUILD_DEFCONFIG is not so useful for ARM.
+If it is not desired for ARM (and Blackfin), we can drop it, of course.
+
+
+
+Best Regards
+Masahiro Yamada
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
