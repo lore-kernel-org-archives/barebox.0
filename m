@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226])
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAv1H-0004OK-L9
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:32:04 +0000
+ id 1YAv2n-0004Y0-UE
+ for barebox@lists.infradead.org; Tue, 13 Jan 2015 06:33:38 +0000
 Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 478AB1008581
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 07:31:41 +0100 (CET)
-Date: Tue, 13 Jan 2015 07:31:28 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id E654A1008758
+ for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 07:33:15 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150113063128.GC30554@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Tue, 13 Jan 2015 07:33:06 +0100
+Message-Id: <1421130790-1164-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1421130790-1164-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20150113063128.GC30554@ns203013.ovh.net>
+ <1421130790-1164-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +20,109 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6 v2] raspberry-pi: updates
+Subject: [PATCH 2/6] raspberry-pi: add leds support
 To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/raspberry-pi/rpi.c | 55 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-	v2:
+diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+index ae1e92a..81b485e 100644
+--- a/arch/arm/boards/raspberry-pi/rpi.c
++++ b/arch/arm/boards/raspberry-pi/rpi.c
+@@ -21,6 +21,8 @@
+ #include <linux/clkdev.h>
+ #include <envfs.h>
+ #include <malloc.h>
++#include <gpio.h>
++#include <led.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ 
+@@ -87,6 +89,49 @@ static int rpi_register_clkdev(u32 clock_id, const char *name)
+ }
+ 
+ 
++static struct gpio_led leds[] = {
++	{
++		.gpio	= -EINVAL,
++		.led	= {
++			.name = "ACT",
++		},
++	}, {
++		.gpio	= -EINVAL,
++		.led	= {
++			.name = "PWR",
++		},
++	},
++};
++
++static void rpi_add_led(void)
++{
++	int i;
++	struct gpio_led *l;
++
++	for (i = 0; i < ARRAY_SIZE(leds); i++) {
++		l = &leds[i];
++
++		if (gpio_is_valid(l->gpio))
++			led_gpio_register(l);
++	}
++
++	l = &leds[0];
++	if (gpio_is_valid(l->gpio))
++		led_set_trigger(LED_TRIGGER_HEARTBEAT, &l->led);
++}
++
++static void rpi_b_plus_init(void)
++{
++	leds[0].gpio = 47;
++	leds[1].gpio = 35;
++}
++
++static void rpi_b_init(void)
++{
++	leds[0].gpio = 16;
++	leds[0].active_low = 1;
++}
++
+ #define RPI_MODEL(_id, _name, _init)	\
+ 	[_id] = {				\
+ 		.name			= _name,\
+@@ -160,6 +205,15 @@ unknown_rev:
+ 	barebox_set_model("RaspberryPi (BCM2835/ARM1176JZF-S)");
+ }
+ 
++static void rpi_model_init(void)
++{
++	if (!models[rpi_board_rev].init)
++		return;
++
++	models[rpi_board_rev].init();
++	rpi_add_led();
++}
++
+ static int rpi_mem_init(void)
+ {
+ 	u32 size = 0;
+@@ -220,6 +274,7 @@ static int rpi_env_init(void)
+ 
+ static int rpi_devices_init(void)
+ {
++	rpi_model_init();
+ 	bcm2835_register_mci();
+ 	bcm2835_register_fb();
+ 	armlinux_set_architecture(MACH_TYPE_BCM2708);
+-- 
+2.1.3
 
-		send correct leds patch
-
-	The following patch serie prepare the raspberry for USB support
-
-The following changes since commit 9cd14d260aa22ae089f81a07be2c0e5dea2ffc94:
-
-  Merge branch 'for-next/pbl-console' (2015-01-09 17:38:27 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/rpi
-
-for you to fetch changes up to 70d2d564af770d99c0e8a4fbfa314e6d55d58629:
-
-  regulator: add bcm2835 driver (2015-01-11 19:04:06 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (6):
-      raspberry-pi: add board model detection
-      raspberry-pi: add leds support
-      amba: pl011: add support for regulator
-      driver: add postcore_platform_driver
-      regulator: allow to use it with non DT device
-      regulator: add bcm2835 driver
-
- arch/arm/boards/raspberry-pi/env/init/ps1 |   7 +++++++
- arch/arm/boards/raspberry-pi/rpi.c        | 138 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- arch/arm/mach-bcm2835/include/mach/mbox.h |  83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/regulator/Kconfig                 |   7 ++++++-
- drivers/regulator/Makefile                |   1 +
- drivers/regulator/bcm2835.c               | 149 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/regulator/core.c                  |  98 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------
- drivers/serial/amba-pl011.c               |  11 +++++++++++
- include/driver.h                          |   2 ++
- include/regulator.h                       |  10 ++++++++++
- 10 files changed, 488 insertions(+), 18 deletions(-)
- create mode 100644 arch/arm/boards/raspberry-pi/env/init/ps1
- create mode 100644 drivers/regulator/bcm2835.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
