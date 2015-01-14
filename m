@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YAyPW-0008J3-NF
- for barebox@lists.infradead.org; Tue, 13 Jan 2015 10:09:20 +0000
-Received: by mail-lb0-f175.google.com with SMTP id z11so1726034lbi.6
- for <barebox@lists.infradead.org>; Tue, 13 Jan 2015 02:08:55 -0800 (PST)
-Date: Tue, 13 Jan 2015 13:11:38 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150113131138.04775a3a0c2f7689bb35a398@gmail.com>
-In-Reply-To: <EDB01981-1B68-4C5C-88A8-65EB511944D0@jcrosoft.com>
-References: <20150113062416.GB30554@ns203013.ovh.net>
- <1421130376-32428-1-git-send-email-plagnioj@jcrosoft.com>
- <1421130376-32428-2-git-send-email-plagnioj@jcrosoft.com>
- <20150113115840.3309f5fa5a331549eac9d028@gmail.com>
- <EDB01981-1B68-4C5C-88A8-65EB511944D0@jcrosoft.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YBHEg-00012j-If
+ for barebox@lists.infradead.org; Wed, 14 Jan 2015 06:15:23 +0000
+Date: Wed, 14 Jan 2015 07:14:53 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150114061453.GG23940@pengutronix.de>
+References: <1421136876-1688-1-git-send-email-yamada.m@jp.panasonic.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1421136876-1688-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/6] raspberry-pi: add leds support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH v2] kbuild: add KBUILD_DEFCONFIG
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCAxMyBKYW4gMjAxNSAxNjoxNTo0NSArMDgwMApKZWFuLUNocmlzdG9waGUgUExBR05J
-T0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPiB3cm90ZToKCj4gCj4gPiBPbiBKYW4g
-MTMsIDIwMTUsIGF0IDM6NTggUE0sIEFudG9ueSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwu
-Y29tPiB3cm90ZToKPiA+IAo+ID4gT24gVHVlLCAxMyBKYW4gMjAxNSAwNzoyNjoxMiArMDEwMAo+
-ID4gSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNv
-bT4gd3JvdGU6Cj4gPiAKPiA+IEkgaGF2ZSBwbGFubmVkIHRvIHN3aXRjaCByYXNwYmVycnkgcGkg
-dG8gZGV2aWNlIHRyZWUgc3VwcG9ydCBhcyBMaW51eCBkb2VzLgo+IAo+IGJ1dCBhcyBJIGRvIG5v
-dCB3YW50IHRvIGJ1aWxkIG11bHRpIGJpbmFyeSBzd2l0Y2ggKGxlZHMgJiBjbykgdGhvc2UgdG8g
-RFQgbWFrZSBubyBzZW5zZSBleGNlcHQgaWYgd2UgY2FuCj4gY2hvc2UgdGhlIERUIGF0IHJ1bnRp
-bWUKPiAKPiA+IAo+ID4gSU1ITyBQT1dFUiBMRUQgaXMgbm90IEdQSU8gY29udHJvbGFibGUsIHBs
-ZWFzZSBzZWUgdGhlc2Ugc2NoZW1hdGljcwo+IAo+IHllcyBpdCBpcyBkb2VzLCBJIGhhdmUgYSBC
-KyBhbmQgaXTigJlzIGNvbnRyb2xsYWJsZQoKSSdsbCBjaGVjayB5b3VyIHNlcmllcyBvbiBteSBC
-KyBpbiBhIGZldyBkYXlzLgoKCj4gPiAgIGh0dHA6Ly93d3cucmFzcGJlcnJ5cGkub3JnL3dwLWNv
-bnRlbnQvdXBsb2Fkcy8yMDEyLzA0L1Jhc3BiZXJyeS1QaS1TY2hlbWF0aWNzLVIxLjAucGRmCj4g
-PiAgIGh0dHA6Ly93d3cucmFzcGJlcnJ5cGkub3JnL2RvY3VtZW50YXRpb24vaGFyZHdhcmUvcmFz
-cGJlcnJ5cGkvc2NoZW1hdGljcy9SYXNwYmVycnktUGktQi1QbHVzLVYxLjItU2NoZW1hdGljcy5w
-ZGYKPiA+IAo+ID4gCj4gPj4gU2lnbmVkLW9mZi1ieTogSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9M
-LVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4KPiA+PiAtLS0KPiA+PiBhcmNoL2FybS9i
-b2FyZHMvcmFzcGJlcnJ5LXBpL3JwaS5jIHwgNTUgKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysKPiA+PiAxIGZpbGUgY2hhbmdlZCwgNTUgaW5zZXJ0aW9ucygrKQo+ID4+IAo+
-ID4+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcmFzcGJlcnJ5LXBpL3JwaS5jIGIvYXJj
-aC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9ycGkuYwo+ID4+IGluZGV4IGFlMWU5MmEuLjdkODY2
-Y2MgMTAwNjQ0Cj4gPj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9ycGkuYwo+
-ID4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9yYXNwYmVycnktcGkvcnBpLmMKPiA+PiBAQCAtMjEs
-NiArMjEsOCBAQAo+ID4+ICNpbmNsdWRlIDxsaW51eC9jbGtkZXYuaD4KPiA+PiAjaW5jbHVkZSA8
-ZW52ZnMuaD4KPiA+PiAjaW5jbHVkZSA8bWFsbG9jLmg+Cj4gPj4gKyNpbmNsdWRlIDxncGlvLmg+
-Cj4gPj4gKyNpbmNsdWRlIDxsZWQuaD4KPiA+PiAjaW5jbHVkZSA8YXNtL2FybWxpbnV4Lmg+Cj4g
-Pj4gI2luY2x1ZGUgPGdlbmVyYXRlZC9tYWNoLXR5cGVzLmg+Cj4gPj4gCj4gPj4gQEAgLTg3LDYg
-Kzg5LDQ5IEBAIHN0YXRpYyBpbnQgcnBpX3JlZ2lzdGVyX2Nsa2Rldih1MzIgY2xvY2tfaWQsIGNv
-bnN0IGNoYXIgKm5hbWUpCj4gPj4gfQo+ID4+IAo+ID4+IAo+ID4+ICtzdGF0aWMgc3RydWN0IGdw
-aW9fbGVkIGxlZHNbXSA9IHsKPiA+PiArCXsKPiA+PiArCQkuZ3Bpbwk9IC1FSU5WQUwsCj4gPj4g
-KwkJLmxlZAk9IHsKPiA+PiArCQkJLm5hbWUgPSAiQUNUIiwKPiA+PiArCQl9LAo+ID4+ICsJfSwg
-ewo+ID4+ICsJCS5ncGlvCT0gLUVJTlZBTCwKPiA+PiArCQkubGVkCT0gewo+ID4+ICsJCQkubmFt
-ZSA9ICJQV1IiLAo+ID4+ICsJCX0sCj4gPj4gKwl9LAo+ID4+ICt9Owo+ID4+ICsKPiA+PiArc3Rh
-dGljIHZvaWQgcnBpX2FkZF9sZWQodm9pZCkKPiA+PiArewo+ID4+ICsJaW50IGk7Cj4gPj4gKwlz
-dHJ1Y3QgZ3Bpb19sZWQgKmw7Cj4gPj4gKwo+ID4+ICsJZm9yIChpID0gMDsgaSA8IEFSUkFZX1NJ
-WkUobGVkcyk7IGkrKykgewo+ID4+ICsJCWwgPSAmbGVkc1tpXTsKPiA+PiArCj4gPj4gKwkJaWYg
-KGdwaW9faXNfdmFsaWQobC0+Z3BpbykpCj4gPj4gKwkJCWxlZF9ncGlvX3JlZ2lzdGVyKGwpOwo+
-ID4+ICsJfQo+ID4+ICsKPiA+PiArCWwgPSAmbGVkc1swXTsKPiA+PiArCWlmIChncGlvX2lzX3Zh
-bGlkKGwtPmdwaW8pKQo+ID4+ICsJCWxlZF9zZXRfdHJpZ2dlcihMRURfVFJJR0dFUl9IRUFSVEJF
-QVQsICZsLT5sZWQpOwo+ID4+ICt9Cj4gPj4gKwo+ID4+ICtzdGF0aWMgdm9pZCBycGlfYl9wbHVz
-X2luaXQodm9pZCkKPiA+PiArewo+ID4+ICsJbGVkc1swXS5ncGlvID0gNDc7Cj4gPj4gKwlsZWRz
-WzFdLmdwaW8gPSAzNTsKPiA+PiArfQo+ID4+ICsKPiA+PiArc3RhdGljIHZvaWQgcnBpX2JfaW5p
-dCh2b2lkKQo+ID4+ICt7Cj4gPj4gKwlsZWRzWzBdLmdwaW8gPSAxNjsKPiA+PiArCWxlZHNbMF0u
-YWN0aXZlX2xvdyA9IDE7Cj4gPj4gK30KPiA+PiArCj4gPj4gI2RlZmluZSBSUElfTU9ERUwoX2lk
-LCBfbmFtZSwgX2luaXQpCVwKPiA+PiAJW19pZF0gPSB7CQkJCVwKPiA+PiAJCS5uYW1lCQkJPSBf
-bmFtZSxcCj4gPj4gQEAgLTE2MCw2ICsyMDUsMTUgQEAgdW5rbm93bl9yZXY6Cj4gPj4gCWJhcmVi
-b3hfc2V0X21vZGVsKCJSYXNwYmVycnlQaSAoQkNNMjgzNS9BUk0xMTc2SlpGLVMpIik7Cj4gPj4g
-fQo+ID4+IAo+ID4+ICtzdGF0aWMgdm9pZCBycGlfbW9kZWxfaW5pdCh2b2lkKQo+ID4+ICt7Cj4g
-Pj4gKwlycGlfc2V0X3VzYmV0aGFkZHIoKTsKPiA+PiArCWlmIChtb2RlbHNbcnBpX2JvYXJkX3Jl
-dl0uaW5pdCkgewo+ID4+ICsJCW1vZGVsc1tycGlfYm9hcmRfcmV2XS5pbml0KCk7Cj4gPj4gKwkJ
-cnBpX2FkZF9sZWQoKTsKPiA+PiArCX0KPiA+PiArfQo+ID4+ICsKPiA+PiBzdGF0aWMgaW50IHJw
-aV9tZW1faW5pdCh2b2lkKQo+ID4+IHsKPiA+PiAJdTMyIHNpemUgPSAwOwo+ID4+IEBAIC0yMjAs
-NiArMjc0LDcgQEAgc3RhdGljIGludCBycGlfZW52X2luaXQodm9pZCkKPiA+PiAKPiA+PiBzdGF0
-aWMgaW50IHJwaV9kZXZpY2VzX2luaXQodm9pZCkKPiA+PiB7Cj4gPj4gKwlycGlfbW9kZWxfaW5p
-dCgpOwo+ID4+IAliY20yODM1X3JlZ2lzdGVyX21jaSgpOwo+ID4+IAliY20yODM1X3JlZ2lzdGVy
-X2ZiKCk7Cj4gPj4gCWFybWxpbnV4X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9UWVBFX0JDTTI3MDgp
-Owo+ID4+IC0tIAo+ID4+IDIuMS4zCj4gPj4gCj4gPj4gCj4gPj4gX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiA+PiBiYXJlYm94IG1haWxpbmcgbGlzdAo+
-ID4+IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwo+ID4+IGh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+ID4gCj4gPiAKPiA+IC0tIAo+ID4gLS0g
-Cj4gPiBCZXN0IHJlZ2FyZHMsCj4gPiAgIEFudG9ueSBQYXZsb3YKPiAKCgotLSAKLS3CoApCZXN0
-IHJlZ2FyZHMsCsKgIEFudG9ueSBQYXZsb3YKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+On Tue, Jan 13, 2015 at 05:14:36PM +0900, Masahiro Yamada wrote:
+> This allows "make ARCH=... defconfig".
+> 
+> Fox example, you can type "make defconfig" instead of
+> "make sandbox_defconfig".
+> 
+> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
