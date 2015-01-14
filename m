@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YBHFv-0002JC-1l
- for barebox@lists.infradead.org; Wed, 14 Jan 2015 06:16:39 +0000
-Date: Wed, 14 Jan 2015 07:16:17 +0100
+ Linux)) id 1YBHOC-00057t-RA
+ for barebox@lists.infradead.org; Wed, 14 Jan 2015 06:25:13 +0000
+Date: Wed, 14 Jan 2015 07:24:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150114061617.GH23940@pengutronix.de>
-References: <1421141815-12618-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150114062450.GI23940@pengutronix.de>
+References: <20150113063128.GC30554@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1421141815-12618-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <20150113063128.GC30554@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: include some headers from barebox-arm.h
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Subject: Re: [PATCH 0/6 v2] raspberry-pi: updates
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 13, 2015 at 06:36:54PM +0900, Masahiro Yamada wrote:
-> ENTRY_FUNCTION() references __barebox_arm_head(),
-> so <asm/barebox-arm-head.h> should be included from barebox-arm.h
-> to avoid implicit declaration warning/error.
+On Tue, Jan 13, 2015 at 07:31:28AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> ENTRY_FUNCTION() uses __naked, so <linux/compiler.h> should also be
-> included.
+> 	v2:
 > 
-> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+> 		send correct leds patch
+> 
+> 	The following patch serie prepare the raspberry for USB support
+> 
+> The following changes since commit 9cd14d260aa22ae089f81a07be2c0e5dea2ffc94:
+> 
+>   Merge branch 'for-next/pbl-console' (2015-01-09 17:38:27 +0100)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/rpi
+> 
+> for you to fetch changes up to 70d2d564af770d99c0e8a4fbfa314e6d55d58629:
+> 
+>   regulator: add bcm2835 driver (2015-01-11 19:04:06 +0800)
 
 Applied, thanks
 
