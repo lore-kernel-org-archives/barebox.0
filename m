@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.eaton.com ([192.104.67.6] helo=tccbw1.etn.com)
+Received: from mout.kundenserver.de ([212.227.126.187])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YBJYK-0004ZA-Ek
- for barebox@lists.infradead.org; Wed, 14 Jan 2015 08:43:49 +0000
-From: <ManuelCurcio@Eaton.com>
-Date: Wed, 14 Jan 2015 08:43:10 +0000
-Message-ID: <12FD643A737A924986A2B203248C6CD6858DDF6B@LOUTCSMB02.napa.ad.etn.com>
-References: <1420041155.29284.24.camel@eaton.com>
- <1420450912.6731.16.camel@lws-gamez.phytec.de>
- <20150106090624.GH4544@pengutronix.de>
-In-Reply-To: <20150106090624.GH4544@pengutronix.de>
-Content-Language: en-US
+ id 1YBJk9-0007pi-70
+ for barebox@lists.infradead.org; Wed, 14 Jan 2015 08:56:02 +0000
+Date: Wed, 14 Jan 2015 09:55:32 +0100 (CET)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <805818852.49418.1421225733074.JavaMail.open-xchange@oxbaltgw09.schlund.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,62 +15,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: beagle bone black: problem of boot from eMMC
-To: s.hauer@pengutronix.de, t.gamez@phytec.de
-Cc: barebox@lists.infradead.org
+Subject: Re: Boot speed on 600MHz AM3354
+To: barebox@lists.infradead.org, andy.pont@sdcsystems.com
 
-77u/SGksCgpJIGp1c3Qgc2VlIHlvdXIgZW1haWxzIChzb21lIHByb2JsZW0gd2l0aCBteSBzcGFt
-IGZvbGRlciBjb25maWd1cmF0aW9uID8uLikuCkkgc2VlbiBhbHNvIHRoZSBwYXRjaCwgaXQgd29y
-a3MgZmluZS4KVGhhbmsgeW91IQoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFYXRv
-biBJbmR1c3RyaWVzIChGcmFuY2UpIFMuQS5TIH4gU2nDqGdlIHNvY2lhbDogMTEwIFJ1ZSBCbGFp
-c2UgUGFzY2FsLCBJbW1ldWJsZSBMZSBWaXPDqW8gLSBCw6J0aW1lbnQgQSBJbm5vdmFsbMOpZSwg
-MzgzMzAsIE1vbnRib25ub3QtU3QuLU1hcnRpbiwgRnJhbmNlIH4gTGlldSBkJ2VucmVnaXN0cmVt
-ZW50IGF1IHJlZ2lzdHJlIGR1IGNvbW1lcmNlOiBHcmVub2JsZSB+IE51bcOpcm8gZCdlbnJlZ2lz
-dHJlbWVudDogNTA5IDY1MyAxNzYgfiBDYXBpdGFsIHNvY2lhbCBzb3VzY3JpdCBldCBsaWJlcsOp
-OuKCrCAxNjIxNTQ0MSB+IE51bcOpcm8gZGUgVFZBOiBGUjQ3NTA5NjUzMTc2CgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQoKLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0KRnJvbTogU2Fz
-Y2hhIEhhdWVyIFttYWlsdG86cy5oYXVlckBwZW5ndXRyb25peC5kZV0gClNlbnQ6IG1hcmRpIDYg
-amFudmllciAyMDE1IDEwOjA2ClRvOiBUZXJlc2EgR8OhbWV6CkNjOiBDdXJjaW8sIE1hbnVlbDsg
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnClN1YmplY3Q6IFJlOiBiZWFnbGUgYm9uZSBibGFj
-azogcHJvYmxlbSBvZiBib290IGZyb20gZU1NQwoKT24gTW9uLCBKYW4gMDUsIDIwMTUgYXQgMTA6
-NDE6NTJBTSArMDEwMCwgVGVyZXNhIEfDoW1leiB3cm90ZToKPiBIZWxsbyBNYW51ZWwsCj4gCj4g
-QW0gTWl0dHdvY2gsIGRlbiAzMS4xMi4yMDE0LCAxNDo1MiArMDAwMCBzY2hyaWViIE1hbnVlbEN1
-cmNpb0BFYXRvbi5jb206Cj4gPiAKPiA+IEFmdGVyLCBJIHdhbnRlZCB0byBib290IGZyb20gdGhl
-IHRoZSBpbnRlcm5hbCBlTU1DLiAKPiA+IFNvIGFmdGVyIGJvb3QgZnJvbSBzZCBjYXJkLCBJIG1v
-dW50ZWQgdGhlIGVNTUMgKG1vdW50IC9kZXYvbW1jMS4wKSAKPiA+IGFuZCBjb3BpZWQgdGhlIE1M
-TyBhbmQgYmFyZWJveC5iaW4gaW4gdGhlIC9tbnQvbW1jMS4wIGZvbGRlci4KPiA+IAo+ID4gV2hl
-biBJIHRyeSB0byBib290IGZyb20gdGhlIGludGVybmFsIGVNTUMgLEkgaGF2ZSB0aGUgZm9sbG93
-aW5nIGVycm9yOiAKPiA+IC0tLS0tLS0tLT4KPiA+IGJhcmVib3ggMjAxNC4xMi4wICMyIFdlZCBE
-ZWMgMzEgMTU6Mjk6MTYgR01UIDIwMTQKPiA+IAo+ID4gCj4gPiBCb2FyZDogVEkgQU0zMzV4IEJl
-YWdsZUJvbmUKPiA+IGRldGVjdGVkICdCZWFnbGVCb25lIEJsYWNrJwo+ID4gb21hcC1oc21tYyA0
-ODA2MDAwMC5tbWM6IHJlZ2lzdGVyZWQgYXMgNDgwNjAwMDAubW1jIGJvb3RpbmcgZnJvbSBNTUMg
-Cj4gPiBmYXQgZmF0MDogcHJvYmUgZmFpbGVkOiBlcnJvciAyMiBVbmFibGUgdG8gbW91bnQgICgt
-MjIpIGJvb3RpbmcgCj4gPiBmYWlsZWQKPiA+IDwtLS0tLS0tLS0KPiAKPiBUaGlzIGlzc3VlIGNv
-bWVzIGZyb20gY29tbWl0Ogo+IAo+IGNvbW1pdCAwZDYzOTJkZTRhZDgyNGE2NTUzYzBlM2UzZTE4
-ZWRlZjY4OWE3Yzg1Cj4gQXV0aG9yOiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
-ZGU+Cj4gRGF0ZTogICBUaHUgSnVuIDUgMTI6MDk6MDcgMjAxNCArMDIwMAo+IAo+ICAgICBBUk06
-IEFNMzM1eDogQmVhZ2xlYm9uZTogVXNlIHN0cmlwcGVkIGRvd24gZGV2aWNldHJlZSBmb3IgTUxP
-Cj4gCj4gRm9yIHRoZSBNTE8gb25seSB0aGUgYW0zMzV4LWJvbmUtY29tbW9uLmR0c2kgaXMgdXNl
-ZCB0byBjcmVhdGUgdGhlIAo+IGRldmljZSB0cmVlLiBCdXQgdGhpcyBkb2VzIG5vdCBoYXZlIHRo
-ZSBlbW1jIHN1cHBvcnQgaW5jbHVkZWQuCgpEYW1uLiBTb21laG93IEkga25ldyBJIHdhcyBndWls
-dHkgOigKCj4gCj4gPiAKPiA+IEkgdHJpZWQgbXlzZWxmIHRvIGZpbmQgYSAnY29ycmVjdGlvbicg
-YnkgYWRkZWQgdGhlIGNhbGwgb2YKPiA+IGFtMzN4eF9vZl9yZWdpc3Rlcl9ib290ZGV2aWNlKHZv
-aWQpIGZ1bmN0aW9uIGF0IHRoZSBlbmQgb2YgdGhlIAo+ID4gc3RhdGljIGludCBiZWFnbGVib25l
-X2RldmljZXNfaW5pdCh2b2lkKSBmdW5jdGlvbi4gV2l0aCB0aGlzIAo+ID4gbW9kaWZpY2F0aW9u
-LCBzb21ldGltZSAoZGVwZW5kaW5nIG9mIHRoZSBsYXN0IGJvb3Q6IGZyb20gU0QgQ2FyZCBvciAK
-PiA+IGZyb20gZU1NQykgIEkgY2FuIGJvb3QsIHNvbWV0aW5nIG5vdC4KPiAKPiBXaGF0IHlvdSBh
-cmUgYWxzbyBtaXNzaW5nIGlzIGEgZGlzYWJsZWQgZW1tYyBub2RlIGZyb20gdGhlIAo+IGFtMzM1
-eC1ib25lYmxhY2suZHRzIGluIHRoZSBhbTMzNXgtYm9uZS1jb21tb24uZHRzaS4KCkkganVzdCBz
-ZW50IGEgcGF0Y2ggd2hpY2ggZml4ZXMgdGhpcy4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUu
-Sy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93
-d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwg
-R2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRl
-c2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Dear Andy,
+we have another custom hardware platform that uses a 800MHz TI AM3359. Currently
+we store only barebox-MLO and the barebox itself in SPI NOR. The kernel is
+loaded over USB.
+
+When I checked the SPI bus during boot, I found that the ROM Code loads the
+first part of the barebox in chunks of 4 byte with a break of 1.7us between each
+4-byte-packet, while the first part of the barebox (called "barebox_MLO") loads
+the second part "byte by byte" with a break of 500ns between the bytes. Adding
+the transfer time of 320ns per byte will result in a transfer rate of 1000/820 =
+1,2MByte/s.
+This means that, if we would ever boot our 2,7MByte kernel from the SPI NOR, it
+would take at least 2.3 seconds to load it from the flash into the RAM.
+
+I don't have so much experience with U-Boot, but I'd expect similar figures
+there.
+
+Kind regards,
+ Rolf
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
