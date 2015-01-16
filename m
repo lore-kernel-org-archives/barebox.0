@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22e.google.com ([2607:f8b0:400e:c03::22e])
+Received: from mail-pd0-x235.google.com ([2607:f8b0:400e:c02::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YBwig-000313-7Y
- for barebox@lists.infradead.org; Fri, 16 Jan 2015 02:33:07 +0000
-Received: by mail-pa0-f46.google.com with SMTP id lf10so21284889pab.5
- for <barebox@lists.infradead.org>; Thu, 15 Jan 2015 18:32:44 -0800 (PST)
+ id 1YBwig-000314-J7
+ for barebox@lists.infradead.org; Fri, 16 Jan 2015 02:33:08 +0000
+Received: by mail-pd0-f181.google.com with SMTP id z10so8388631pdj.12
+ for <barebox@lists.infradead.org>; Thu, 15 Jan 2015 18:32:45 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 15 Jan 2015 18:32:33 -0800
-Message-Id: <1421375556-21715-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Thu, 15 Jan 2015 18:32:34 -0800
+Message-Id: <1421375556-21715-2-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1421375556-21715-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1421375556-21715-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,47 +23,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] i.MX6: phytec: Separate SoM specific code
+Subject: [PATCH v2] i.MX: SPI: Respect SPI_LSB_FIRST flag in mode settings
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Separate SoM(designator PFLA02) specific and base board(designator
-PBAB0x) code into two distinct functions. PHYTEC default environment
-for PHYFLEX references peripherals that may or may not be used on
-custom baseboards used with SoMs. Move the code appending it into a
-separate function that would have effect only for boards explicitly
-claiming compatibility with PHYTEC baseboards.
+Add code to support SPI transfers that have data shifted out least
+significant bit first. This is useful in many cases, but specifically
+it is needed for drivers/firmware/altera_serial.c to work on i.MX
+platform.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/phytec-phyflex-imx6/board.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/spi/imx_spi.c | 41 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 37 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
-index 1551460..7ac7928 100644
---- a/arch/arm/boards/phytec-phyflex-imx6/board.c
-+++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
-@@ -87,8 +87,19 @@ static int phytec_pfla02_init(void)
- 		break;
- 	}
- 
-+	return 0;
-+}
-+device_initcall(phytec_pfla02_init);
-+
-+static int phytec_pbab0x_init(void)
-+{
-+	if (!of_machine_is_compatible("phytec,imx6x-pbab01") &&
-+		!of_machine_is_compatible("phytec,imx6dl-pbab05") &&
-+		!of_machine_is_compatible("phytec,imx6q-pbab02"))
-+		return 0;
-+
- 	defaultenv_append_directory(defaultenv_phyflex_imx6);
- 
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 3146339..a1f19eb 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -137,6 +137,25 @@ static int imx_spi_setup(struct spi_device *spi)
  	return 0;
  }
--device_initcall(phytec_pfla02_init);
-+device_initcall(phytec_pbab0x_init);
+ 
++static unsigned int imx_spi_maybe_reverse_bits(struct spi_device *spi, unsigned int word)
++{
++	unsigned int result = word;
++
++	if (spi->mode & SPI_LSB_FIRST) {
++		size_t bits_left = spi->bits_per_word - 1;
++
++		for (word >>= 1; word; word >>= 1) {
++			result <<= 1;
++			result |= word & 1;
++			bits_left--;
++		}
++
++		result <<= bits_left;
++	}
++
++	return result;
++}
++
+ static unsigned int cspi_0_0_xchg_single(struct imx_spi *imx, unsigned int data)
+ {
+ 	void __iomem *base = imx->regs;
+@@ -382,9 +401,20 @@ static void cspi_2_3_chipselect(struct spi_device *spi, int is_active)
+ 		gpio_set_value(gpio, gpio_cs);
+ }
+ 
+-static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
++static u32 imx_xchg_single(struct spi_device *spi, u32 tx_val)
+ {
++	u32 rx_val;
+ 	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
++
++
++	tx_val = imx_spi_maybe_reverse_bits(spi, tx_val);
++	rx_val = imx->xchg_single(imx, tx_val);
++
++	return imx_spi_maybe_reverse_bits(spi, rx_val);
++}
++
++static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
++{
+ 	unsigned i;
+ 
+ 	if (spi->bits_per_word <= 8) {
+@@ -393,7 +423,8 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		u8		rx_val;
+ 
+ 		for (i = 0; i < t->len; i++) {
+-			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
++			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
++
+ 			if (rx_buf)
+ 				rx_buf[i] = rx_val;
+ 		}
+@@ -403,7 +434,8 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		u16		rx_val;
+ 
+ 		for (i = 0; i < t->len >> 1; i++) {
+-			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
++			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
++
+ 			if (rx_buf)
+ 				rx_buf[i] = rx_val;
+ 		}
+@@ -413,7 +445,8 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		u32		rx_val;
+ 
+ 		for (i = 0; i < t->len >> 2; i++) {
+-			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
++			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
++
+ 			if (rx_buf)
+ 				rx_buf[i] = rx_val;
+ 		}
 -- 
 2.1.0
 
