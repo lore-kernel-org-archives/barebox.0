@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x235.google.com ([2607:f8b0:400e:c02::235])
+Received: from mail-pd0-x233.google.com ([2607:f8b0:400e:c02::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YBwig-000314-J7
+ id 1YBwih-00031D-CC
  for barebox@lists.infradead.org; Fri, 16 Jan 2015 02:33:08 +0000
-Received: by mail-pd0-f181.google.com with SMTP id z10so8388631pdj.12
- for <barebox@lists.infradead.org>; Thu, 15 Jan 2015 18:32:45 -0800 (PST)
+Received: by mail-pd0-f179.google.com with SMTP id v10so1714232pde.10
+ for <barebox@lists.infradead.org>; Thu, 15 Jan 2015 18:32:46 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 15 Jan 2015 18:32:34 -0800
-Message-Id: <1421375556-21715-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Thu, 15 Jan 2015 18:32:35 -0800
+Message-Id: <1421375556-21715-3-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1421375556-21715-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1421375556-21715-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,102 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] i.MX: SPI: Respect SPI_LSB_FIRST flag in mode settings
+Subject: [PATCH 2/3] i.MX6: phytec: Check environment path selection for errors
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code to support SPI transfers that have data shifted out least
-significant bit first. This is useful in many cases, but specifically
-it is needed for drivers/firmware/altera_serial.c to work on i.MX
-platform.
+Add code to explicitly check for success of of_device_enable_path()
+when selecting which media is expected to contain barebox environment.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/spi/imx_spi.c | 41 +++++++++++++++++++++++++++++++++++++----
- 1 file changed, 37 insertions(+), 4 deletions(-)
+ arch/arm/boards/phytec-phyflex-imx6/board.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 3146339..a1f19eb 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -137,6 +137,25 @@ static int imx_spi_setup(struct spi_device *spi)
+diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
+index 7ac7928..c731faf 100644
+--- a/arch/arm/boards/phytec-phyflex-imx6/board.c
++++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
+@@ -65,6 +65,9 @@ static void phyflex_err006282_workaround(void)
+ 
+ static int phytec_pfla02_init(void)
+ {
++	int ret;
++	char *environment_path;
++
+ 	if (!of_machine_is_compatible("phytec,imx6q-pfla02") &&
+ 			!of_machine_is_compatible("phytec,imx6dl-pfla02") &&
+ 			!of_machine_is_compatible("phytec,imx6s-pfla02"))
+@@ -76,17 +79,22 @@ static int phytec_pfla02_init(void)
+ 
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_MMC:
+-		of_device_enable_path("/chosen/environment-sd");
++		environment_path = "/chosen/environment-sd";
+ 		break;
+ 	case BOOTSOURCE_NAND:
+-		of_device_enable_path("/chosen/environment-nand");
++		environment_path = "/chosen/environment-nand";
+ 		break;
+ 	default:
+ 	case BOOTSOURCE_SPI:
+-		of_device_enable_path("/chosen/environment-spinor");
++		environment_path = "/chosen/environment-spinor";
+ 		break;
+ 	}
+ 
++	ret = of_device_enable_path(environment_path);
++	if (ret < 0)
++		pr_warn("Failed to enable environment partition '%s' (%d)\n",
++			environment_path, ret);
++
  	return 0;
  }
- 
-+static unsigned int imx_spi_maybe_reverse_bits(struct spi_device *spi, unsigned int word)
-+{
-+	unsigned int result = word;
-+
-+	if (spi->mode & SPI_LSB_FIRST) {
-+		size_t bits_left = spi->bits_per_word - 1;
-+
-+		for (word >>= 1; word; word >>= 1) {
-+			result <<= 1;
-+			result |= word & 1;
-+			bits_left--;
-+		}
-+
-+		result <<= bits_left;
-+	}
-+
-+	return result;
-+}
-+
- static unsigned int cspi_0_0_xchg_single(struct imx_spi *imx, unsigned int data)
- {
- 	void __iomem *base = imx->regs;
-@@ -382,9 +401,20 @@ static void cspi_2_3_chipselect(struct spi_device *spi, int is_active)
- 		gpio_set_value(gpio, gpio_cs);
- }
- 
--static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
-+static u32 imx_xchg_single(struct spi_device *spi, u32 tx_val)
- {
-+	u32 rx_val;
- 	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
-+
-+
-+	tx_val = imx_spi_maybe_reverse_bits(spi, tx_val);
-+	rx_val = imx->xchg_single(imx, tx_val);
-+
-+	return imx_spi_maybe_reverse_bits(spi, rx_val);
-+}
-+
-+static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
-+{
- 	unsigned i;
- 
- 	if (spi->bits_per_word <= 8) {
-@@ -393,7 +423,8 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
- 		u8		rx_val;
- 
- 		for (i = 0; i < t->len; i++) {
--			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
-+			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
-+
- 			if (rx_buf)
- 				rx_buf[i] = rx_val;
- 		}
-@@ -403,7 +434,8 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
- 		u16		rx_val;
- 
- 		for (i = 0; i < t->len >> 1; i++) {
--			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
-+			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
-+
- 			if (rx_buf)
- 				rx_buf[i] = rx_val;
- 		}
-@@ -413,7 +445,8 @@ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
- 		u32		rx_val;
- 
- 		for (i = 0; i < t->len >> 2; i++) {
--			rx_val = imx->xchg_single(imx, tx_buf ? tx_buf[i] : 0);
-+			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
-+
- 			if (rx_buf)
- 				rx_buf[i] = rx_val;
- 		}
+ device_initcall(phytec_pfla02_init);
 -- 
 2.1.0
 
