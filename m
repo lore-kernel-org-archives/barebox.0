@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YCvh2-0001yY-Rc
+ id 1YCvh2-0001yZ-RW
  for barebox@lists.infradead.org; Sun, 18 Jan 2015 19:39:29 +0000
 Received: from antimon.intern.lynxeye.de.Speedport_W_504V_Typ_A
  (p4FD7DEA0.dip0.t-ipconnect.de [79.215.222.160])
- by lynxeye.de (Postfix) with ESMTPA id 8358726C2001
- for <barebox@lists.infradead.org>; Sun, 18 Jan 2015 20:38:29 +0100 (CET)
+ by lynxeye.de (Postfix) with ESMTPA id 2CB6326C2002
+ for <barebox@lists.infradead.org>; Sun, 18 Jan 2015 20:38:30 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 18 Jan 2015 20:38:23 +0100
-Message-Id: <1421609904-14161-1-git-send-email-dev@lynxeye.de>
+Date: Sun, 18 Jan 2015 20:38:24 +0100
+Message-Id: <1421609904-14161-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1421609904-14161-1-git-send-email-dev@lynxeye.de>
+References: <1421609904-14161-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +25,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] docs: fix missing newlines in codeblocks
+Subject: [PATCH 2/2] docs: fix broken reference
 To: barebox@lists.infradead.org
-
-Those cause a warning while generating the docs
-as well as misrendering of the generated docs.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- Documentation/boards/garz-fricke.rst | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/user/variables.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/boards/garz-fricke.rst b/Documentation/boards/garz-fricke.rst
-index 33d0dd3e3920..27acf5ad3c78 100644
---- a/Documentation/boards/garz-fricke.rst
-+++ b/Documentation/boards/garz-fricke.rst
-@@ -16,6 +16,7 @@ network or any other medium the Santaro supports. You can backup the original bo
- with:
+diff --git a/Documentation/user/variables.rst b/Documentation/user/variables.rst
+index 974ab8822195..ea99eb61137e 100644
+--- a/Documentation/user/variables.rst
++++ b/Documentation/user/variables.rst
+@@ -43,8 +43,8 @@ behaviour persistently over reboots.
  
- .. code-block:: sh
-+
-   cat /dev/mmcblk0boot0 > /mnt/mmcblk0boot0.backup
-   cat /dev/mmcblk0boot1 > /mnt/mmcblk0boot1.backup
+ nv variables can be created or removed with the :ref:`command_nv`
+ command. The nv variables are made persistent using the environment
+-facilities of barebox, so a :ref:`saveenv` must be issued to store the actual
+-values.
++facilities of barebox, so a :ref:`command_saveenv` must be issued to store the
++actual values.
  
-@@ -25,6 +26,7 @@ device.
- To install barebox on the board do:
- 
- .. code-block:: sh
-+
-   echo 0 > /sys/block/mmcblk0boot0/force_ro
-   cat barebox-guf-santaro.img > /dev/mmcblk0boot0
+ examples:
  
 -- 
 2.1.0
