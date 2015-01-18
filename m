@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YCwv5-0002SK-Bt
+ id 1YCwv5-0002SL-Bu
  for barebox@lists.infradead.org; Sun, 18 Jan 2015 20:58:04 +0000
 Received: from antimon.intern.lynxeye.de.Speedport_W_504V_Typ_A
  (p4FD7DEA0.dip0.t-ipconnect.de [79.215.222.160])
- by lynxeye.de (Postfix) with ESMTPA id 65B0826C2001
+ by lynxeye.de (Postfix) with ESMTPA id F225026C2002
  for <barebox@lists.infradead.org>; Sun, 18 Jan 2015 21:57:09 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 18 Jan 2015 21:57:02 +0100
-Message-Id: <1421614624-14656-1-git-send-email-dev@lynxeye.de>
+Date: Sun, 18 Jan 2015 21:57:03 +0100
+Message-Id: <1421614624-14656-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1421614624-14656-1-git-send-email-dev@lynxeye.de>
+References: <1421614624-14656-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,104 +25,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] common: console_console: put functions under correct ifdef
+Subject: [PATCH 2/3] usb: musb-dsps: select OFDEVICE
 To: barebox@lists.infradead.org
 
-So they aren't build when no console support is selected.
-
 Fixes:
-In function `console_get_by_dev': undefined reference to `console_list'
+In function `dsps_probe': undefined reference to `of_usb_get_dr_mode'
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- common/console_common.c | 70 ++++++++++++++++++++++++-------------------------
- 1 file changed, 35 insertions(+), 35 deletions(-)
+ drivers/usb/musb/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/console_common.c b/common/console_common.c
-index df1b085982ad..d88e678aadb5 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -247,6 +247,41 @@ int vprintf(const char *fmt, va_list args)
- }
- EXPORT_SYMBOL(vprintf);
+diff --git a/drivers/usb/musb/Kconfig b/drivers/usb/musb/Kconfig
+index e0a1139bc0d0..b795f30275cf 100644
+--- a/drivers/usb/musb/Kconfig
++++ b/drivers/usb/musb/Kconfig
+@@ -5,6 +5,7 @@ if USB_MUSB
  
-+struct console_device *console_get_by_dev(struct device_d *dev)
-+{
-+	struct console_device *cdev;
-+
-+	for_each_console(cdev) {
-+		if (cdev->dev == dev)
-+			return cdev;
-+	}
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL(console_get_by_dev);
-+
-+/*
-+ * @brief returns current used console device
-+ *
-+ * @return console device which is registered with CONSOLE_STDIN and
-+ * CONSOLE_STDOUT
-+ */
-+struct console_device *console_get_first_active(void)
-+{
-+	struct console_device *cdev;
-+	/*
-+	 * Assumption to have BOTH CONSOLE_STDIN AND STDOUT in the
-+	 * same output console
-+	 */
-+	for_each_console(cdev) {
-+		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT)))
-+			return cdev;
-+	}
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL(console_get_first_active);
-+
- #endif /* !CONFIG_CONSOLE_NONE */
+ config USB_MUSB_DSPS
+ 	tristate
++	select OFDEVICE
  
- int fprintf(int file, const char *fmt, ...)
-@@ -291,38 +326,3 @@ int fputc(int fd, char c)
- 	return 0;
- }
- EXPORT_SYMBOL(fputc);
--
--struct console_device *console_get_by_dev(struct device_d *dev)
--{
--	struct console_device *cdev;
--
--	for_each_console(cdev) {
--		if (cdev->dev == dev)
--			return cdev;
--	}
--
--	return NULL;
--}
--EXPORT_SYMBOL(console_get_by_dev);
--
--/*
-- * @brief returns current used console device
-- *
-- * @return console device which is registered with CONSOLE_STDIN and
-- * CONSOLE_STDOUT
-- */
--struct console_device *console_get_first_active(void)
--{
--	struct console_device *cdev;
--	/*
--	 * Assumption to have BOTH CONSOLE_STDIN AND STDOUT in the
--	 * same output console
--	 */
--	for_each_console(cdev) {
--		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT)))
--			return cdev;
--	}
--
--	return NULL;
--}
--EXPORT_SYMBOL(console_get_first_active);
+ config USB_MUSB_AM335X
+ 	tristate "AM335x USB support"
 -- 
 2.1.0
 
