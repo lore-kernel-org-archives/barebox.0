@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YD7In-000359-VI
- for barebox@lists.infradead.org; Mon, 19 Jan 2015 08:03:14 +0000
-Date: Mon, 19 Jan 2015 09:02:51 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150119080251.GR18220@pengutronix.de>
-References: <1421506801-1506-1-git-send-email-robert.jarzmik@free.fr>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YD7YW-0002Mt-Oy
+ for barebox@lists.infradead.org; Mon, 19 Jan 2015 08:19:29 +0000
+Date: Mon, 19 Jan 2015 17:19:02 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+In-Reply-To: <1421141134-8295-1-git-send-email-yamada.m@jp.panasonic.com>
+References: <1421141134-8295-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-Id: <20150119171902.9430.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1421506801-1506-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: fix marvell nand driver
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] gitignore: remove obsolete link method for arch
+ specification
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jan 17, 2015 at 04:00:01PM +0100, Robert Jarzmik wrote:
-> This fixes 4 small bugs :
+Hi Sascha,
+
+How about this patch?
+
+
+On Tue, 13 Jan 2015 18:25:34 +0900
+Masahiro Yamada <yamada.m@jp.panasonic.com> wrote:
+
+> The cross_arch and cross_compile links method is obsolete and not
+> available any more, so we remove it from the .gitignore.
 > 
->  - too small timings
->    The calculated timings should be rounded up, ie. a minimum timing of
->    3.2 nand clock cycles should be programmed as a 4 cycles timing, and
->    not as 3 nand clock cycles
-> 
->  - the interrupts should be masked all the time
->    Writing 0 to NDCR unmasked interrupts, which is unnecessary and fools
->    the linux kernel pxa3xx driver which is not yet hardened enough.
-> 
->  - the command should only be launched once the controller is ready
->    This fixes transient bugs where a command is not actually
->    launched. The WRCMDREQ bit is asserted after setting NDCR_ND_RUN bit
->    once the NFC is ready to acquire a command.
-> 
->  - column calculation
->    Column number was divided by 2 in 16 bits flash devices. Even if this
->    is correct for NAND array addressing, it is incorrect for READID, and
->    prevents an ONFI scan identification (as address is 0x10 instead of
->    the 0x20 required by ONFI).
-> 
-> All these bugs except the second are drained from the linux kernel driver.
-> 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 > ---
->  drivers/mtd/nand/nand_mrvl_nfc.c | 57 ++++++++++++++++++++++++++--------------
->  1 file changed, 37 insertions(+), 20 deletions(-)
+> 
+>  .gitignore | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/.gitignore b/.gitignore
+> index 74d24ea..0456bfd 100644
+> --- a/.gitignore
+> +++ b/.gitignore
+> @@ -31,8 +31,6 @@
+>  #
+>  tags
+>  TAGS
+> -cross_arch
+> -cross_compile
+>  barebox
+>  barebox.S
+>  barebox.bin
+> -- 
+> 1.9.1
 
-Squashed into the original commit.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
