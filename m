@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDJPk-0002h6-4B
- for barebox@lists.infradead.org; Mon, 19 Jan 2015 20:59:13 +0000
-Received: by mail-lb0-f172.google.com with SMTP id l4so17457297lbv.3
- for <barebox@lists.infradead.org>; Mon, 19 Jan 2015 12:58:49 -0800 (PST)
+ id 1YDJQ6-0002nc-KX
+ for barebox@lists.infradead.org; Mon, 19 Jan 2015 20:59:35 +0000
+Received: by mail-la0-f49.google.com with SMTP id hs14so31031963lab.8
+ for <barebox@lists.infradead.org>; Mon, 19 Jan 2015 12:59:12 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 19 Jan 2015 23:55:40 +0300
-Message-Id: <1421700940-703-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 19 Jan 2015 23:56:08 +0300
+Message-Id: <1421700968-758-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: bcm2835: fix checkpatch warning
+Subject: [PATCH] scripts/checkpatch.pl: don't search for CREDITS when checking
+ top_of_kernel_tree()
 To: barebox@lists.infradead.org
 
-Here is checkpatch.pl log:
+The CREDITS file is removed in the commit
 
-    WARNING: space prohibited between function name and open parenthesis '('
-    #134: FILE: arch/arm/mach-bcm2835/core.c:75:
-    +void __noreturn reset_cpu (unsigned long addr)
+    commit 6570288f2d97d3a3dceb3e631b4e4f4305352dc8
+    Author: Masahiro Yamada <yamada.m@jp.panasonic.com>
+    Date:   Tue Jan 13 14:27:07 2015 +0900
+
+        Remove the CREDITS file
+
+But checkpatch.pl still trying to check it presence.
+There is not such CREDITS file and checkpatch.pl exits with
+'Must be run from the top-level dir. of a kernel tree' message.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/mach-bcm2835/core.c | 2 +-
+ scripts/checkpatch.pl | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-bcm2835/core.c b/arch/arm/mach-bcm2835/core.c
-index 7f3d7e7..5d08012 100644
---- a/arch/arm/mach-bcm2835/core.c
-+++ b/arch/arm/mach-bcm2835/core.c
-@@ -72,7 +72,7 @@ void bcm2835_add_device_sdram(u32 size)
- }
- #define RESET_TIMEOUT 10
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 419436d..a40d32c 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -328,7 +328,7 @@ sub top_of_kernel_tree {
+ 	my ($root) = @_;
  
--void __noreturn reset_cpu (unsigned long addr)
-+void __noreturn reset_cpu(unsigned long addr)
- {
- 	uint32_t rstc;
- 
+ 	my @tree_check = (
+-		"arch", "commands", "common", "COPYING", "CREDITS", "defaultenv",  
++		"arch", "commands", "common", "COPYING", "defaultenv",
+ 		"Documentation", "drivers", "fs", "include", "lib",
+ 		"MAKEALL", "Makefile", "net", "README", "scripts", "TODO"
+ 	);
 -- 
 2.1.1
 
