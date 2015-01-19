@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDBYd-0001n2-4V
- for barebox@lists.infradead.org; Mon, 19 Jan 2015 12:35:52 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 6724AA0033C
- for <barebox@lists.infradead.org>; Mon, 19 Jan 2015 13:36:02 +0100 (CET)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Mon, 19 Jan 2015 13:34:38 +0100
-Message-Id: <1421670878-23133-2-git-send-email-w.egorov@phytec.de>
-In-Reply-To: <1421670878-23133-1-git-send-email-w.egorov@phytec.de>
-References: <1421670878-23133-1-git-send-email-w.egorov@phytec.de>
+Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YDDBw-0006QW-W3
+ for barebox@lists.infradead.org; Mon, 19 Jan 2015 14:20:33 +0000
+Received: by mail-la0-f47.google.com with SMTP id hv19so1592415lab.6
+ for <barebox@lists.infradead.org>; Mon, 19 Jan 2015 06:20:11 -0800 (PST)
+Date: Mon, 19 Jan 2015 18:22:46 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150119182246.9b8de2e026a0d0b436ff9421@gmail.com>
+In-Reply-To: <1421670584-24287-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1421670584-24287-1-git-send-email-plagnioj@jcrosoft.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,73 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: am335x-phytec-phyflex: Add USB host support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] raspberry-pi: mac address detection support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Add USB host support for the phyflex-som.
+On Mon, 19 Jan 2015 13:29:44 +0100
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- arch/arm/dts/am335x-phytec-phyflex.dts | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+> increase the mbox timeout as it take more time to retreive the mac
+> =
 
-diff --git a/arch/arm/dts/am335x-phytec-phyflex.dts b/arch/arm/dts/am335x-phytec-phyflex.dts
-index 6c49567..5459cd2 100644
---- a/arch/arm/dts/am335x-phytec-phyflex.dts
-+++ b/arch/arm/dts/am335x-phytec-phyflex.dts
-@@ -39,6 +39,13 @@
- };
- 
- &am33xx_pinmux {
-+	usb_pins: pinmux_usb {
-+		pinctrl-single,pins = <
-+			0x21c (PIN_OUTPUT_PULLDOWN | MUX_MODE0) /* usb0_drvvbus.usb0_drvvbus */
-+			0x234 (PIN_OUTPUT_PULLDOWN | MUX_MODE0) /* usb1_drvvbus.usb1_drvvbus */
-+		>;
-+	};
-+
- 	i2c0_pins: pinmux_i2c0_pins {
- 			pinctrl-single,pins = <
- 			0x188 (PIN_INPUT_PULLUP | MUX_MODE0)    /* i2c0_sda */
-@@ -129,6 +136,30 @@
- 	};
- };
- 
-+&cppi41dma {
-+        status = "okay";
-+};
-+
-+
-+&usb_ctrl_mod {
-+        status = "okay";
-+};
-+
-+&usb {
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&usb_pins>;
-+        status = "okay";
-+};
-+
-+&usb1 {
-+        dr_mode = "host";
-+        status = "okay";
-+};
-+
-+&usb1_phy {
-+        status = "okay";
-+};
-+
- &i2c0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&i2c0_pins>;
--- 
-1.9.1
+> fix led register too
+> =
 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+...
+> diff --git a/arch/arm/mach-bcm2835/mbox.c b/arch/arm/mach-bcm2835/mbox.c
+> index 2bca567..0e51f08 100644
+> --- a/arch/arm/mach-bcm2835/mbox.c
+> +++ b/arch/arm/mach-bcm2835/mbox.c
+> @@ -13,7 +13,7 @@
+>  =
+
+>  #include <mach/mbox.h>
+>  =
+
+> -#define TIMEOUT (MSECOND * 100) /* 100mS */
+> +#define TIMEOUT (MSECOND * 1000) /* 100mS */
+>  =
+
+
++#define TIMEOUT (MSECOND * 1000) /* 1000mS */
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
