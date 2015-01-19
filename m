@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.245]
- helo=DVREDG01.corp.atmel.com)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YD93P-0005Bp-3e
- for barebox@lists.infradead.org; Mon, 19 Jan 2015 09:55:30 +0000
-From: Bo Shen <voice.shen@atmel.com>
-Date: Mon, 19 Jan 2015 17:54:54 +0800
-Message-ID: <1421661294-23345-1-git-send-email-voice.shen@atmel.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YDAFm-0005tl-7r
+ for barebox@lists.infradead.org; Mon, 19 Jan 2015 11:12:19 +0000
+Date: Mon, 19 Jan 2015 12:11:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150119111152.GW18220@pengutronix.de>
+References: <1421141134-8295-1-git-send-email-yamada.m@jp.panasonic.com>
+ <20150119171902.9430.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150119171902.9430.AA925319@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,36 +23,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: atmel: sama5d3xek: let gmac auto detect phy id
-To: s.hauer@pengutronix.de, plagnioj@jcrosoft.com
+Subject: Re: [PATCH] gitignore: remove obsolete link method for arch
+ specification
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-On the SAMA5D33 and SAMA5D35 the GMAC PHY ID is 1 while not 7.
-So, let the GMAC auto detect phy id, or else hard code to 7,
-it can not work on these two boards.
+Hi Masahiro,
 
-Signed-off-by: Bo Shen <voice.shen@atmel.com>
----
+On Mon, Jan 19, 2015 at 05:19:02PM +0900, Masahiro Yamada wrote:
+> Hi Sascha,
+> 
+> How about this patch?
 
- arch/arm/boards/sama5d3xek/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sorry, missed this one. Applied now.
 
-diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-index 49d2b37..0b83147 100644
---- a/arch/arm/boards/sama5d3xek/init.c
-+++ b/arch/arm/boards/sama5d3xek/init.c
-@@ -123,7 +123,7 @@ static void ek_add_device_nand(void) {}
- #if defined(CONFIG_DRIVER_NET_MACB)
- static struct macb_platform_data gmac_pdata = {
- 	.phy_interface = PHY_INTERFACE_MODE_RGMII,
--	.phy_addr = 7,
-+	.phy_addr = -1,
- };
- 
- static struct macb_platform_data macb_pdata = {
+Sascha
+
 -- 
-2.3.0.rc0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
