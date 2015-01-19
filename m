@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YD740-00036m-Ru
- for barebox@lists.infradead.org; Mon, 19 Jan 2015 07:47:57 +0000
-Date: Mon, 19 Jan 2015 08:47:35 +0100
+ Linux)) id 1YD783-0005oM-Fn
+ for barebox@lists.infradead.org; Mon, 19 Jan 2015 07:52:08 +0000
+Date: Mon, 19 Jan 2015 08:51:44 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150119074735.GN18220@pengutronix.de>
-References: <1421614624-14656-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20150119075144.GO18220@pengutronix.de>
+References: <20150113063128.GC30554@ns203013.ovh.net>
+ <1421130790-1164-1-git-send-email-plagnioj@jcrosoft.com>
+ <1421130790-1164-2-git-send-email-plagnioj@jcrosoft.com>
+ <20150119020858.8ba6db8d84cb7e795078ba99@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1421614624-14656-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <20150119020858.8ba6db8d84cb7e795078ba99@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +25,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] common: console_console: put functions under correct
- ifdef
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 2/6] raspberry-pi: add leds support
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jan 18, 2015 at 09:57:02PM +0100, Lucas Stach wrote:
-> So they aren't build when no console support is selected.
+On Mon, Jan 19, 2015 at 02:08:58AM +0400, Antony Pavlov wrote:
+> On Tue, 13 Jan 2015 07:33:06 +0100
+> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
 > 
-> Fixes:
-> In function `console_get_by_dev': undefined reference to `console_list'
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/boards/raspberry-pi/rpi.c | 55 ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 55 insertions(+)
+> > 
+> > diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+> > index ae1e92a..81b485e 100644
+> > --- a/arch/arm/boards/raspberry-pi/rpi.c
+> > +++ b/arch/arm/boards/raspberry-pi/rpi.c
+> ...
+> > @@ -160,6 +205,15 @@ unknown_rev:
+> >  	barebox_set_model("RaspberryPi (BCM2835/ARM1176JZF-S)");
+> >  }
+> >  
+> > +static void rpi_model_init(void)
+> > +{
+> > +	if (!models[rpi_board_rev].init)
+> > +		return;
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> Houston, we have a problem here.
+> Please see current arch/arm/boards/raspberry-pi/rpi.c:
+> 
+> /* See comments in mbox.h for data source */
+> static const struct {
+> 	const char *name;
+> 	bool has_onboard_eth;
+> 	void (*init)(void);
+> } models[] = {
+> 	RPI_MODEL(0, "Unknown model", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_I2C0_2, "Model B (no P5)", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_I2C0_3, "Model B (no P5)", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_I2C1_4, "Model B", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_I2C1_5, "Model B", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_I2C1_6, "Model B", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_A_7, "Model A", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_A_8, "Model A", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_A_9, "Model A", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_REV2_d, "Model B rev2", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_REV2_e, "Model B rev2", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_REV2_f, "Model B rev2", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_B_PLUS, "Model B+", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_CM, "Compute Module", NULL),
+> 	RPI_MODEL(BCM2835_BOARD_REV_A_PLUS, "Model A+", NULL),
+> };
+> 
+> All inits are NULLs!
+> 
+> Have we any chance to run rpi_add_led()?
 
-Applied all, thanks
+Hm, no, this is never called. Maybe rpi_model_init() should look like
+this instead?
+
+static void rpi_model_init(void)
+{
+	if (!models[rpi_board_rev].init)
+		models[rpi_board_rev].init();
+
+	rpi_add_led();
+}
+
+But then again, why is rpi_add_led called from rpi_model_init()?
 
 Sascha
 
