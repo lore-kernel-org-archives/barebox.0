@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDTKF-0008Jn-Ir
- for barebox@lists.infradead.org; Tue, 20 Jan 2015 07:34:12 +0000
-Message-ID: <54BE04DA.7080702@phytec.de>
-Date: Tue, 20 Jan 2015 08:33:46 +0100
-From: Wadim Egorov <w.egorov@phytec.de>
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YDTOs-0004N0-Oi
+ for barebox@lists.infradead.org; Tue, 20 Jan 2015 07:39:00 +0000
+Received: from mail630.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 06C94FFA2A5
+ for <barebox@lists.infradead.org>; Tue, 20 Jan 2015 08:31:54 +0100 (CET)
+Date: Tue, 20 Jan 2015 08:31:52 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150120073152.GG30554@ns203013.ovh.net>
+References: <1421670584-24287-1-git-send-email-plagnioj@jcrosoft.com>
+ <20150119182246.9b8de2e026a0d0b436ff9421@gmail.com>
 MIME-Version: 1.0
-References: <1421670878-23133-1-git-send-email-w.egorov@phytec.de>
- <20150120070005.GH18220@pengutronix.de>
-In-Reply-To: <20150120070005.GH18220@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <20150119182246.9b8de2e026a0d0b436ff9421@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +22,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: dts: am335x-phytec-phycore-som: Add USB host
- support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/1] raspberry-pi: mac address detection support
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Yes, I have tested this on Linux (3.12).
-On 20.01.2015 08:00, Sascha Hauer wrote:
-> On Mon, Jan 19, 2015 at 01:34:37PM +0100, Wadim Egorov wrote:
->> Add USB host support for all phycore-som based boards.
->>
->> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
->> ---
->>   arch/arm/dts/am335x-phytec-phycore-som.dtsi | 30 +++++++++++++++++++++++++++++
->>   1 file changed, 30 insertions(+)
-> Applied, thanks.
->
-> I assume this has been tested on Linux aswell, right?
->
-> Sascha
->
+On 18:22 Mon 19 Jan     , Antony Pavlov wrote:
+> On Mon, 19 Jan 2015 13:29:44 +0100
+> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+> =
 
+> > increase the mbox timeout as it take more time to retreive the mac
+> > =
+
+> > fix led register too
+> > =
+
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ...
+> > diff --git a/arch/arm/mach-bcm2835/mbox.c b/arch/arm/mach-bcm2835/mbox.c
+> > index 2bca567..0e51f08 100644
+> > --- a/arch/arm/mach-bcm2835/mbox.c
+> > +++ b/arch/arm/mach-bcm2835/mbox.c
+> > @@ -13,7 +13,7 @@
+> >  =
+
+> >  #include <mach/mbox.h>
+> >  =
+
+> > -#define TIMEOUT (MSECOND * 100) /* 100mS */
+> > +#define TIMEOUT (MSECOND * 1000) /* 100mS */
+> >  =
+
+> =
+
+> +#define TIMEOUT (MSECOND * 1000) /* 1000mS */
+should simply drop the comment useless
+
+Best Regards,
+J.
+> =
+
+> --=A0
+> Best regards,
+> =A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
