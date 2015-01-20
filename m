@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YDZUj-0002JH-Uj
- for barebox@lists.infradead.org; Tue, 20 Jan 2015 14:09:28 +0000
+ Linux)) id 1YDZUn-0002NU-Rw
+ for barebox@lists.infradead.org; Tue, 20 Jan 2015 14:09:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 20 Jan 2015 15:09:02 +0100
-Message-Id: <1421762942-9789-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1421762942-9789-1-git-send-email-s.hauer@pengutronix.de>
-References: <1421762942-9789-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 20 Jan 2015 15:09:01 +0100
+Message-Id: <1421762942-9789-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,188 +19,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: MXS: imx28evk: Update environment and config
+Subject: [PATCH 1/2] ARM: MXS: imx28evk: Add lowlevel support
 To: Barebox List <barebox@lists.infradead.org>
 
-This switches the imx28evk to new environment and updates the
-defconfig file for tons of new features.
+This switches the imx28evk to multiimage support and adds the
+lowlevel initialization to make the bootlets unnecessary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx28-evk/env/config | 50 -------------------
- arch/arm/configs/freescale-mx28-evk_defconfig | 71 ++++++++++++++++++++-------
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c | 58 ++++++++++++++++++++++++++-
  arch/arm/mach-mxs/Kconfig                     |  1 +
- 3 files changed, 54 insertions(+), 68 deletions(-)
- delete mode 100644 arch/arm/boards/freescale-mx28-evk/env/config
+ images/Makefile.mxs                           | 10 +++++
+ 3 files changed, 67 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx28-evk/env/config b/arch/arm/boards/freescale-mx28-evk/env/config
-deleted file mode 100644
-index adbe7f4..0000000
---- a/arch/arm/boards/freescale-mx28-evk/env/config
-+++ /dev/null
-@@ -1,50 +0,0 @@
--#!/bin/sh
--
--#user=
--
--# use 'dhcp' to do dhcp in barebox and in kernel
--# use 'none' if you want to skip kernel ip autoconfiguration
--ip=dhcp
--
--# or set your networking parameters here
--#eth0.ipaddr=a.b.c.d
--#eth0.netmask=a.b.c.d
--#eth0.serverip=a.b.c.d
--#eth0.gateway=a.b.c.d
--#eth0.ethaddr=de:ad:be:ef:00:00
--
--# can be either 'tftp', 'nfs', 'nand', 'nor' or 'disk'
--kernel_loc=tftp
--# can be either 'net', 'nand', 'nor', 'disk' or 'initrd'
--rootfs_loc=net
--
--# for flash based rootfs: 'jffs2' or 'ubifs'
--# in case of disk any regular filesystem like 'ext2', 'ext3', 'reiserfs'
--rootfs_type=ext2
--# where is the rootfs in case of 'rootfs_loc=disk' (linux name)
--rootfs_part_linux_dev=mmcblk0p4
--rootfsimage=rootfs-${global.hostname}.$rootfs_type
--
--# where is the kernel image in case of 'kernel_loc=disk'
--kernel_part=disk0.2
--
--kernelimage=zImage-${global.hostname}
--bareboximage=barebox-${global.hostname}.bin
--bareboxenvimage=barebox-${global.hostname}.bin
--
--if [ -n $user ]; then
--	bareboximage="$user"-"$bareboximage"
--	bareboxenvimage="$user"-"$bareboxenvimage"
--	kernelimage="$user"-"$kernelimage"
--	rootfsimage="$user"-"$rootfsimage"
--	nfsroot="/home/$user/nfsroot/${global.hostname}"
--else
--	nfsroot="/path/to/nfs/root"
--fi
--
--autoboot_timeout=3
--
--bootargs="console=ttyAMA0,115200"
--
--# set a fancy prompt (if support is compiled in)
--PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-diff --git a/arch/arm/configs/freescale-mx28-evk_defconfig b/arch/arm/configs/freescale-mx28-evk_defconfig
-index b6a6320..22ed7bc 100644
---- a/arch/arm/configs/freescale-mx28-evk_defconfig
-+++ b/arch/arm/configs/freescale-mx28-evk_defconfig
-@@ -3,37 +3,71 @@ CONFIG_ARCH_IMX28=y
- CONFIG_MACH_MX28EVK=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
- CONFIG_MMU=y
--CONFIG_TEXT_BASE=0x43000000
--CONFIG_MALLOC_SIZE=0x800000
--CONFIG_BROKEN=y
--CONFIG_LONGHELP=y
--CONFIG_GLOB=y
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/freescale-mx28-evk/env"
-+CONFIG_MENU=y
-+CONFIG_BLSPEC=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_RESET_SOURCE=y
- CONFIG_DEBUG_INFO=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_PARTITION=y
- CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_LOADENV=y
- CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_CMP=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_HOST=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
- CONFIG_CMD_TFTP=y
- CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_BOOTM_SHOW_TYPE=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_GO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENUTREE=y
- CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
- CONFIG_CMD_GPIO=y
-+CONFIG_CMD_NANDTEST=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
- CONFIG_NET=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_PING=y
--CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_SERIAL_AUART=y
- CONFIG_DRIVER_NET_FEC_IMX=y
- CONFIG_DRIVER_SPI_MXS=y
-@@ -48,4 +82,5 @@ CONFIG_MCI_MXS=y
- CONFIG_MXS_APBH_DMA=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+index 3c7248e..a46a080 100644
+--- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -1,11 +1,65 @@
++#define pr_fmt(fmt) "Freescale MX28evk: " fmt
++#define DEBUG
++
+ #include <common.h>
+ #include <linux/sizes.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
+ #include <mach/imx28-regs.h>
++#include <mach/init.h>
++#include <io.h>
++#include <debug_ll.h>
++#include <mach/iomux.h>
++#include <stmp-device.h>
+ 
+-void __naked barebox_arm_reset_vector(void)
++ENTRY_FUNCTION(start_barebox_freescale_mx28evk, r0, r1, r2)
+ {
+-	arm_cpu_lowlevel_init();
+ 	barebox_arm_entry(IMX_MEMORY_BASE, SZ_128M, NULL);
+ }
++
++static const uint32_t iomux_pads[] = {
++	/* EMI */
++	EMI_DATA0, EMI_DATA1, EMI_DATA2, EMI_DATA3, EMI_DATA4, EMI_DATA5,
++	EMI_DATA6, EMI_DATA7, EMI_DATA8, EMI_DATA9, EMI_DATA10, EMI_DATA11,
++	EMI_DATA12, EMI_DATA13, EMI_DATA14, EMI_DATA15, EMI_ODT0, EMI_DQM0,
++	EMI_ODT1, EMI_DQM1, EMI_DDR_OPEN_FB, EMI_CLK, EMI_DSQ0, EMI_DSQ1,
++	EMI_DDR_OPEN, EMI_A0, EMI_A1, EMI_A2, EMI_A3, EMI_A4, EMI_A5,
++	EMI_A6, EMI_A7, EMI_A8, EMI_A9, EMI_A10, EMI_A11, EMI_A12, EMI_A13,
++	EMI_A14, EMI_BA0, EMI_BA1, EMI_BA2, EMI_CASN, EMI_RASN, EMI_WEN,
++	EMI_CE0N, EMI_CE1N, EMI_CKE,
++
++	/* Debug UART */
++	PWM0_DUART_RX | VE_3_3V,
++	PWM1_DUART_TX | VE_3_3V,
++};
++
++static noinline void freescale_mx28evk_init(void)
++{
++	int i;
++
++	/* initialize muxing */
++	for (i = 0; i < ARRAY_SIZE(iomux_pads); i++)
++		imx_gpio_mode(iomux_pads[i]);
++
++	pr_debug("initializing power...\n");
++
++	mx28_power_init_battery_input();
++
++	pr_debug("initializing SDRAM...\n");
++
++	mx28_mem_init();
++
++	pr_debug("DONE\n");
++}
++
++ENTRY_FUNCTION(prep_start_barebox_freescale_mx28evk, r0, r1, r2)
++{
++	void (*back)(unsigned long) = (void *)get_lr();
++
++	relocate_to_current_adr();
++	setup_c();
++
++	freescale_mx28evk_init();
++
++	back(0);
++}
 diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index ef5d223..5b50e82 100644
+index 4022710..ef5d223 100644
 --- a/arch/arm/mach-mxs/Kconfig
 +++ b/arch/arm/mach-mxs/Kconfig
-@@ -68,6 +68,7 @@ config MACH_TX28
- 
+@@ -69,6 +69,7 @@ config MACH_TX28
  config MACH_MX28EVK
  	bool "mx28-evk"
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
  	select MXS_OCOTP
- 	select HAVE_PBL_MULTI_IMAGES
++	select HAVE_PBL_MULTI_IMAGES
  	help
+ 	  Say Y here if you are using the Freescale i.MX28-EVK board
+ 
+diff --git a/images/Makefile.mxs b/images/Makefile.mxs
+index abff255..e2cdbd2 100644
+--- a/images/Makefile.mxs
++++ b/images/Makefile.mxs
+@@ -32,6 +32,16 @@ image-$(CONFIG_MACH_TX28) += barebox-karo-tx28-sd.img
+ FILE_barebox-karo-tx28-2nd.img = start_barebox_karo_tx28.pblx
+ image-$(CONFIG_MACH_TX28) += barebox-karo-tx28-2nd.img
+ 
++pblx-$(CONFIG_MACH_MX28EVK) += start_barebox_freescale_mx28evk prep_start_barebox_freescale_mx28evk
++PREP_start_barebox_freescale_mx28evk.pblx.mxsbs = start_barebox_freescale_mx28evk_prep
++CFG_start_barebox_freescale_mx28evk.mxsbs = $(mxs28cfg)
++FILE_barebox-freescale-mx28evk-bootstream.img = start_barebox_freescale_mx28evk.mxsbs
++image-$(CONFIG_MACH_MX28EVK) += barebox-freescale-mx28evk-bootstream.img
++FILE_barebox-freescale-mx28evk-sd.img = start_barebox_freescale_mx28evk.mxsbs.mxssd
++image-$(CONFIG_MACH_MX28EVK) += barebox-freescale-mx28evk-sd.img
++FILE_barebox-freescale-mx28evk-2nd.img = start_barebox_freescale_mx28evk.pblx
++image-$(CONFIG_MACH_MX28EVK) += barebox-freescale-mx28evk-2nd.img
++
+ pblx-$(CONFIG_MACH_IMX233_OLINUXINO) += start_barebox_olinuxino_imx23 prep_start_barebox_olinuxino_imx23
+ PREP_start_barebox_olinuxino_imx23.pblx.mxsbs = start_barebox_olinuxino_imx23_prep;
+ CFG_start_barebox_olinuxino_imx23.mxsbs = $(mxs23cfg)
 -- 
 2.1.4
 
