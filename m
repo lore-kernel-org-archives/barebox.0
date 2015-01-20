@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YDSlH-00067D-3U
- for barebox@lists.infradead.org; Tue, 20 Jan 2015 06:58:04 +0000
-Date: Tue, 20 Jan 2015 07:57:41 +0100
+ Linux)) id 1YDSlj-0006Kk-CC
+ for barebox@lists.infradead.org; Tue, 20 Jan 2015 06:58:32 +0000
+Date: Tue, 20 Jan 2015 07:58:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150120065741.GF18220@pengutronix.de>
-References: <1421700968-758-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20150120065809.GG18220@pengutronix.de>
+References: <1421700940-703-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1421700968-758-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1421700940-703-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/checkpatch.pl: don't search for CREDITS when
- checking top_of_kernel_tree()
+Subject: Re: [PATCH] ARM: bcm2835: fix checkpatch warning
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 19, 2015 at 11:56:08PM +0300, Antony Pavlov wrote:
-> The CREDITS file is removed in the commit
+On Mon, Jan 19, 2015 at 11:55:40PM +0300, Antony Pavlov wrote:
+> Here is checkpatch.pl log:
 > 
->     commit 6570288f2d97d3a3dceb3e631b4e4f4305352dc8
->     Author: Masahiro Yamada <yamada.m@jp.panasonic.com>
->     Date:   Tue Jan 13 14:27:07 2015 +0900
-> 
->         Remove the CREDITS file
-> 
-> But checkpatch.pl still trying to check it presence.
-> There is not such CREDITS file and checkpatch.pl exits with
-> 'Must be run from the top-level dir. of a kernel tree' message.
+>     WARNING: space prohibited between function name and open parenthesis '('
+>     #134: FILE: arch/arm/mach-bcm2835/core.c:75:
+>     +void __noreturn reset_cpu (unsigned long addr)
 > 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/arm/mach-bcm2835/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
