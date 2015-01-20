@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YDSiU-0004Hi-D0
- for barebox@lists.infradead.org; Tue, 20 Jan 2015 06:55:11 +0000
-Date: Tue, 20 Jan 2015 07:54:45 +0100
+ Linux)) id 1YDSlH-00067D-3U
+ for barebox@lists.infradead.org; Tue, 20 Jan 2015 06:58:04 +0000
+Date: Tue, 20 Jan 2015 07:57:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150120065445.GE18220@pengutronix.de>
-References: <1421670584-24287-1-git-send-email-plagnioj@jcrosoft.com>
- <20150119182246.9b8de2e026a0d0b436ff9421@gmail.com>
+Message-ID: <20150120065741.GF18220@pengutronix.de>
+References: <1421700968-758-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150119182246.9b8de2e026a0d0b436ff9421@gmail.com>
+In-Reply-To: <1421700968-758-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] raspberry-pi: mac address detection support
+Subject: Re: [PATCH] scripts/checkpatch.pl: don't search for CREDITS when
+ checking top_of_kernel_tree()
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 19, 2015 at 06:22:46PM +0400, Antony Pavlov wrote:
-> On Mon, 19 Jan 2015 13:29:44 +0100
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+On Mon, Jan 19, 2015 at 11:56:08PM +0300, Antony Pavlov wrote:
+> The CREDITS file is removed in the commit
 > 
-> > increase the mbox timeout as it take more time to retreive the mac
-> > 
-> > fix led register too
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ...
-> > diff --git a/arch/arm/mach-bcm2835/mbox.c b/arch/arm/mach-bcm2835/mbox.c
-> > index 2bca567..0e51f08 100644
-> > --- a/arch/arm/mach-bcm2835/mbox.c
-> > +++ b/arch/arm/mach-bcm2835/mbox.c
-> > @@ -13,7 +13,7 @@
-> >  
-> >  #include <mach/mbox.h>
-> >  
-> > -#define TIMEOUT (MSECOND * 100) /* 100mS */
-> > +#define TIMEOUT (MSECOND * 1000) /* 100mS */
-> >  
+>     commit 6570288f2d97d3a3dceb3e631b4e4f4305352dc8
+>     Author: Masahiro Yamada <yamada.m@jp.panasonic.com>
+>     Date:   Tue Jan 13 14:27:07 2015 +0900
 > 
-> +#define TIMEOUT (MSECOND * 1000) /* 1000mS */
+>         Remove the CREDITS file
+> 
+> But checkpatch.pl still trying to check it presence.
+> There is not such CREDITS file and checkpatch.pl exits with
+> 'Must be run from the top-level dir. of a kernel tree' message.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-I removed the comment while applying. No need to state the obvious.
+Applied, thanks
 
 Sascha
 
