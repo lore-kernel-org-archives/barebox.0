@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.245]
- helo=DVREDG01.corp.atmel.com)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDTI5-000721-LV
- for barebox@lists.infradead.org; Tue, 20 Jan 2015 07:31:58 +0000
-From: Bo Shen <voice.shen@atmel.com>
-Date: Tue, 20 Jan 2015 15:31:25 +0800
-Message-ID: <1421739085-21150-1-git-send-email-voice.shen@atmel.com>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YDTKF-0008Jn-Ir
+ for barebox@lists.infradead.org; Tue, 20 Jan 2015 07:34:12 +0000
+Message-ID: <54BE04DA.7080702@phytec.de>
+Date: Tue, 20 Jan 2015 08:33:46 +0100
+From: Wadim Egorov <w.egorov@phytec.de>
 MIME-Version: 1.0
+References: <1421670878-23133-1-git-send-email-w.egorov@phytec.de>
+ <20150120070005.GH18220@pengutronix.de>
+In-Reply-To: <20150120070005.GH18220@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,75 +18,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: atmel: sama5d3xek: fix conflict between w1 and led
-To: s.hauer@pengutronix.de, plagnioj@jcrosoft.com
+Subject: Re: [PATCH 1/2] ARM: dts: am335x-phytec-phycore-som: Add USB host
+ support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-As the 1-wire and LED d2 use the same pin (PE25) on the EK board.
-So, make LED enable only when the 1-wire is disabled.
-
-Signed-off-by: Bo Shen <voice.shen@atmel.com>
----
-
- arch/arm/boards/sama5d3xek/init.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
-index 0b83147..ce05108 100644
---- a/arch/arm/boards/sama5d3xek/init.c
-+++ b/arch/arm/boards/sama5d3xek/init.c
-@@ -49,11 +49,13 @@
- 
- #include "hw_version.h"
- 
-+#ifdef CONFIG_W1_MASTER_GPIO
- struct w1_gpio_platform_data w1_pdata = {
- 	.pin = AT91_PIN_PE25,
- 	.ext_pullup_enable_pin = -EINVAL,
- 	.is_open_drain = 0,
- };
-+#endif
- 
- #if defined(CONFIG_NAND_ATMEL)
- static struct atmel_nand_data nand_pdata = {
-@@ -323,11 +325,13 @@ struct gpio_led leds[] = {
- 			.name = "d1",
- 		},
- 	}, {
-+#ifndef CONFIG_W1_MASTER_GPIO
- 		.gpio	= AT91_PIN_PE25,
- 		.active_low	= 1,
- 		.led	= {
- 			.name = "d2",
- 		},
-+#endif
- 	},
- };
- 
-@@ -353,6 +357,7 @@ static int at91sama5d3xek_mem_init(void)
- }
- mem_initcall(at91sama5d3xek_mem_init);
- 
-+#ifdef CONFIG_W1_MASTER_GPIO
- static void ek_add_device_w1(void)
- {
- 	at91_set_gpio_input(w1_pdata.pin, 0);
-@@ -361,6 +366,9 @@ static void ek_add_device_w1(void)
- 
- 	at91sama5d3xek_devices_detect_hw();
- }
-+#else
-+static void ek_add_device_w1(void) {}
-+#endif
- 
- #ifdef CONFIG_POLLER
- /*
--- 
-2.3.0.rc0
+Yes, I have tested this on Linux (3.12).
+On 20.01.2015 08:00, Sascha Hauer wrote:
+> On Mon, Jan 19, 2015 at 01:34:37PM +0100, Wadim Egorov wrote:
+>> Add USB host support for all phycore-som based boards.
+>>
+>> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+>> ---
+>>   arch/arm/dts/am335x-phytec-phycore-som.dtsi | 30 +++++++++++++++++++++++++++++
+>>   1 file changed, 30 insertions(+)
+> Applied, thanks.
+>
+> I assume this has been tested on Linux aswell, right?
+>
+> Sascha
+>
 
 
 _______________________________________________
