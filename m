@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eusmtp01.atmel.com ([212.144.249.242])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDN9V-0007b0-GT
- for barebox@lists.infradead.org; Tue, 20 Jan 2015 00:58:42 +0000
-Message-ID: <54BDA7C4.5030906@atmel.com>
-Date: Tue, 20 Jan 2015 08:56:36 +0800
-From: Bo Shen <voice.shen@atmel.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YDSiU-0004Hi-D0
+ for barebox@lists.infradead.org; Tue, 20 Jan 2015 06:55:11 +0000
+Date: Tue, 20 Jan 2015 07:54:45 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150120065445.GE18220@pengutronix.de>
+References: <1421670584-24287-1-git-send-email-plagnioj@jcrosoft.com>
+ <20150119182246.9b8de2e026a0d0b436ff9421@gmail.com>
 MIME-Version: 1.0
-References: <1421661294-23345-1-git-send-email-voice.shen@atmel.com>
- <20150119113939.GD30554@ns203013.ovh.net>
-In-Reply-To: <20150119113939.GD30554@ns203013.ovh.net>
+Content-Disposition: inline
+In-Reply-To: <20150119182246.9b8de2e026a0d0b436ff9421@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d3xek: let gmac auto detect phy id
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/1] raspberry-pi: mac address detection support
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi J,
+On Mon, Jan 19, 2015 at 06:22:46PM +0400, Antony Pavlov wrote:
+> On Mon, 19 Jan 2015 13:29:44 +0100
+> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+> 
+> > increase the mbox timeout as it take more time to retreive the mac
+> > 
+> > fix led register too
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ...
+> > diff --git a/arch/arm/mach-bcm2835/mbox.c b/arch/arm/mach-bcm2835/mbox.c
+> > index 2bca567..0e51f08 100644
+> > --- a/arch/arm/mach-bcm2835/mbox.c
+> > +++ b/arch/arm/mach-bcm2835/mbox.c
+> > @@ -13,7 +13,7 @@
+> >  
+> >  #include <mach/mbox.h>
+> >  
+> > -#define TIMEOUT (MSECOND * 100) /* 100mS */
+> > +#define TIMEOUT (MSECOND * 1000) /* 100mS */
+> >  
+> 
+> +#define TIMEOUT (MSECOND * 1000) /* 1000mS */
 
-On 01/19/2015 07:39 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 17:54 Mon 19 Jan     , Bo Shen wrote:
->> On the SAMA5D33 and SAMA5D35 the GMAC PHY ID is 1 while not 7.
->> So, let the GMAC auto detect phy id, or else hard code to 7,
->> it can not work on these two boards.
->>
->> Signed-off-by: Bo Shen <voice.shen@atmel.com>
->> ---
->>
->>   arch/arm/boards/sama5d3xek/init.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
->> index 49d2b37..0b83147 100644
->> --- a/arch/arm/boards/sama5d3xek/init.c
->> +++ b/arch/arm/boards/sama5d3xek/init.c
->> @@ -123,7 +123,7 @@ static void ek_add_device_nand(void) {}
->>   #if defined(CONFIG_DRIVER_NET_MACB)
->>   static struct macb_platform_data gmac_pdata = {
->>   	.phy_interface = PHY_INTERFACE_MODE_RGMII,
->> -	.phy_addr = 7,
->> +	.phy_addr = -1,
-> IIRC the auto detect do not work on all board
+I removed the comment while applying. No need to state the obvious.
 
-On which board? Can you be more detail?
-Thanks.
+Sascha
 
-> NACK
->
-> Best Regards,
-> J.
->>   };
->>
->>   static struct macb_platform_data macb_pdata = {
->> --
->> 2.3.0.rc0
->>
-
-Best Regards,
-Bo Shen
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
