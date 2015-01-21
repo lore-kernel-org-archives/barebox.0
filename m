@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDnY0-00053B-22
+ id 1YDnY0-00052h-25
  for barebox@lists.infradead.org; Wed, 21 Jan 2015 05:09:48 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
- t0L59PMn008934
- for <barebox@lists.infradead.org>; Wed, 21 Jan 2015 14:09:25 +0900 (JST)
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
+ t0L59Mu2000860
+ for <barebox@lists.infradead.org>; Wed, 21 Jan 2015 14:09:22 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili12) with ESMTP id t0L59Po06754
- for <barebox@lists.infradead.org>; Wed, 21 Jan 2015 14:09:25 +0900
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili13) with ESMTP id t0L59MJ20842
+ for <barebox@lists.infradead.org>; Wed, 21 Jan 2015 14:09:22 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Wed, 21 Jan 2015 14:09:15 +0900
-Message-Id: <1421816959-19004-2-git-send-email-yamada.m@jp.panasonic.com>
+Date: Wed, 21 Jan 2015 14:09:16 +0900
+Message-Id: <1421816959-19004-3-git-send-email-yamada.m@jp.panasonic.com>
 In-Reply-To: <1421816959-19004-1-git-send-email-yamada.m@jp.panasonic.com>
 References: <1421816959-19004-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,35 +28,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] fs: ubifs: remove redundant macro defines
+Subject: [PATCH 2/5] lib: decompress: remove redundant INT_MAX define
 To: barebox@lists.infradead.org
 
-fs/ubifs/ubifs.h includes <common.h> and the macros INT_MAX, INT_MIN,
-LLONG_MAX are already defined there.
-
-The same defines in fs/ubifs/ubifs.h are redundant.
+lib/decompress_bunzip2.c includes <common.h> and INT_MAX is already
+defined there.  The definition in this file is redundant.
 
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
- fs/ubifs/ubifs.h | 4 ----
+ lib/decompress_bunzip2.c | 4 ----
  1 file changed, 4 deletions(-)
 
-diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
-index b4a9d76..c025d34 100644
---- a/fs/ubifs/ubifs.h
-+++ b/fs/ubifs/ubifs.h
-@@ -318,10 +318,6 @@ struct file {
- #define MAX_LFS_FILESIZE 	0x7fffffffffffffffUL
- #endif
+diff --git a/lib/decompress_bunzip2.c b/lib/decompress_bunzip2.c
+index 0ca2dcd..ee2862b 100644
+--- a/lib/decompress_bunzip2.c
++++ b/lib/decompress_bunzip2.c
+@@ -53,10 +53,6 @@
+ #include <bunzip2.h>
+ #endif /* STATIC */
  
--#define INT_MAX		((int)(~0U>>1))
--#define INT_MIN		(-INT_MAX - 1)
--#define LLONG_MAX	((long long)(~0ULL>>1))
+-#ifndef INT_MAX
+-#define INT_MAX 0x7fffffff
+-#endif
 -
- /*
-  * These are the fs-independent mount-flags: up to 32 flags are supported
-  */
+ /* Constants for Huffman coding */
+ #define MAX_GROUPS		6
+ #define GROUP_SIZE   		50	/* 64 would have been more efficient */
 -- 
 1.9.1
 
