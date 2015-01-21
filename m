@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDqKC-0005Fc-FC
- for barebox@lists.infradead.org; Wed, 21 Jan 2015 08:07:41 +0000
-Received: by mail-la0-f53.google.com with SMTP id gq15so14293111lab.12
- for <barebox@lists.infradead.org>; Wed, 21 Jan 2015 00:07:17 -0800 (PST)
-Date: Wed, 21 Jan 2015 12:09:57 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150121120957.31d77e52b2bf34309c5d756a@gmail.com>
-In-Reply-To: <20150121041236.d1717cd443a38f6e747e48ac@gmail.com>
-References: <20150121041236.d1717cd443a38f6e747e48ac@gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YDrlD-00027M-G6
+ for barebox@lists.infradead.org; Wed, 21 Jan 2015 09:39:40 +0000
+Date: Wed, 21 Jan 2015 10:39:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150121093915.GE12209@pengutronix.de>
+References: <1421738896-20078-1-git-send-email-voice.shen@atmel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1421738896-20078-1-git-send-email-voice.shen@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: sandbox: splash command does not works
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: atmel: sama5d4 xplained: fix mci1 power pin
+To: Bo Shen <voice.shen@atmel.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, 21 Jan 2015 04:12:36 +0400
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+On Tue, Jan 20, 2015 at 03:28:16PM +0800, Bo Shen wrote:
+> Correct the mci1 power pin from PE15 to PE4.
+> 
+> Signed-off-by: Bo Shen <voice.shen@atmel.com>
 
-> Hi All!
-> =
+Applied, thanks
 
-> I have compiled sandbox barebox with CONFIG_VIDEO=3Dy and CONFIG_DRIVER_V=
-IDEO_SDL=3Dy.
-> =
+Sascha
 
-> I can't show any png picture (e.g. png logos from barebox logo/ dir)
-> in the sdl frambuffer window using the 'splash' command.
-> The sdl window is always black.
-> =
 
-> Any ideas?
-
-Sorry!
-
-I forgot to enable it with 'fb0.enable=3D1'.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
