@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo68.mail-out.ovh.net ([46.105.63.230])
+Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YDoou-0000Yj-BR
- for barebox@lists.infradead.org; Wed, 21 Jan 2015 06:31:17 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 1EEA9FF9B30
- for <barebox@lists.infradead.org>; Wed, 21 Jan 2015 07:30:43 +0100 (CET)
-Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <1421816959-19004-1-git-send-email-yamada.m@jp.panasonic.com>
-Date: Wed, 21 Jan 2015 14:30:33 +0800
-Message-Id: <7393E354-E5D5-45FC-943D-84B62C905CC7@jcrosoft.com>
-References: <1421816959-19004-1-git-send-email-yamada.m@jp.panasonic.com>
+ id 1YDqKC-0005Fc-FC
+ for barebox@lists.infradead.org; Wed, 21 Jan 2015 08:07:41 +0000
+Received: by mail-la0-f53.google.com with SMTP id gq15so14293111lab.12
+ for <barebox@lists.infradead.org>; Wed, 21 Jan 2015 00:07:17 -0800 (PST)
+Date: Wed, 21 Jan 2015 12:09:57 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150121120957.31d77e52b2bf34309c5d756a@gmail.com>
+In-Reply-To: <20150121041236.d1717cd443a38f6e747e48ac@gmail.com>
+References: <20150121041236.d1717cd443a38f6e747e48ac@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,46 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] rafactor _*MAX, *_MIN macros
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: sandbox: splash command does not works
+To: barebox@lists.infradead.org
 
-Ack common.h should nearly been drop ASAP
+On Wed, 21 Jan 2015 04:12:36 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-Best Regards,
-J.
-> On Jan 21, 2015, at 1:09 PM, Masahiro Yamada <yamada.m@jp.panasonic.com> wrote:
-> 
-> 
-> 
-> 
-> Masahiro Yamada (5):
->  fs: ubifs: remove redundant macro defines
->  lib: decompress: remove redundant INT_MAX define
->  linux/kernel.h: move *_MAX, *_MIN macros
->  linux/kernel.h: rename USHORT_MAX, SHORT_MAX, SHORT_MIN
->  linux/kernel.h: add more *_MAX, *_MIN macros
-> 
-> fs/parseopt.c            |  2 +-
-> fs/ubifs/ubifs.h         |  4 ----
-> include/common.h         | 13 -------------
-> include/linux/kernel.h   | 27 +++++++++++++++++++++++++++
-> lib/decompress_bunzip2.c |  4 ----
-> 5 files changed, 28 insertions(+), 22 deletions(-)
-> 
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> Hi All!
+> =
 
+> I have compiled sandbox barebox with CONFIG_VIDEO=3Dy and CONFIG_DRIVER_V=
+IDEO_SDL=3Dy.
+> =
+
+> I can't show any png picture (e.g. png logos from barebox logo/ dir)
+> in the sdl frambuffer window using the 'splash' command.
+> The sdl window is always black.
+> =
+
+> Any ideas?
+
+Sorry!
+
+I forgot to enable it with 'fb0.enable=3D1'.
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
