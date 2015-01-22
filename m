@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eusmtp01.atmel.com ([212.144.249.242])
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YEBA4-0004Gq-75
- for barebox@lists.infradead.org; Thu, 22 Jan 2015 06:22:37 +0000
-Message-ID: <54C096B1.2080000@atmel.com>
-Date: Thu, 22 Jan 2015 14:20:33 +0800
+ id 1YECAo-0007sP-UN
+ for barebox@lists.infradead.org; Thu, 22 Jan 2015 07:27:27 +0000
 From: Bo Shen <voice.shen@atmel.com>
+Date: Thu, 22 Jan 2015 15:26:53 +0800
+Message-ID: <1421911613-9188-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
-References: <1421661294-23345-1-git-send-email-voice.shen@atmel.com>
- <20150119113939.GD30554@ns203013.ovh.net>
- <20150121150729.GK12209@pengutronix.de>
- <7BD9F41A-FC1D-415B-A3C0-B0555B7B15CA@jcrosoft.com>
- <54C086AA.9030605@atmel.com>
-In-Reply-To: <54C086AA.9030605@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d3xek: let gmac auto detect phy id
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] ARM: atmel: sama5d3xek: let emac auto detect phy addr
+To: s.hauer@pengutronix.de, plagnioj@jcrosoft.com
 Cc: barebox@lists.infradead.org
 
-T24gMDEvMjIvMjAxNSAwMToxMiBQTSwgQm8gU2hlbiB3cm90ZToKPiBIaSBKLAo+Cj4gT24gMDEv
-MjIvMjAxNSAxMjozNSBQTSwgSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgd3JvdGU6
-Cj4+Cj4+PiBPbiBKYW4gMjEsIDIwMTUsIGF0IDExOjA3IFBNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1
-ZXJAcGVuZ3V0cm9uaXguZGU+Cj4+PiB3cm90ZToKPj4+Cj4+PiBPbiBNb24sIEphbiAxOSwgMjAx
-NSBhdCAxMjozOTozOVBNICswMTAwLCBKZWFuLUNocmlzdG9waGUKPj4+IFBMQUdOSU9MLVZJTExB
-UkQgd3JvdGU6Cj4+Pj4gT24gMTc6NTQgTW9uIDE5IEphbiAgICAgLCBCbyBTaGVuIHdyb3RlOgo+
-Pj4+PiBPbiB0aGUgU0FNQTVEMzMgYW5kIFNBTUE1RDM1IHRoZSBHTUFDIFBIWSBJRCBpcyAxIHdo
-aWxlIG5vdCA3Lgo+Pj4+PiBTbywgbGV0IHRoZSBHTUFDIGF1dG8gZGV0ZWN0IHBoeSBpZCwgb3Ig
-ZWxzZSBoYXJkIGNvZGUgdG8gNywKPj4+Pj4gaXQgY2FuIG5vdCB3b3JrIG9uIHRoZXNlIHR3byBi
-b2FyZHMuCj4+Pj4+Cj4+Pj4+IFNpZ25lZC1vZmYtYnk6IEJvIFNoZW4gPHZvaWNlLnNoZW5AYXRt
-ZWwuY29tPgo+Pj4+PiAtLS0KPj4+Pj4KPj4+Pj4gYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4ZWsv
-aW5pdC5jIHwgMiArLQo+Pj4+PiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVs
-ZXRpb24oLSkKPj4+Pj4KPj4+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9zYW1hNWQz
-eGVrL2luaXQuYwo+Pj4+PiBiL2FyY2gvYXJtL2JvYXJkcy9zYW1hNWQzeGVrL2luaXQuYwo+Pj4+
-PiBpbmRleCA0OWQyYjM3Li4wYjgzMTQ3IDEwMDY0NAo+Pj4+PiAtLS0gYS9hcmNoL2FybS9ib2Fy
-ZHMvc2FtYTVkM3hlay9pbml0LmMKPj4+Pj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4
-ZWsvaW5pdC5jCj4+Pj4+IEBAIC0xMjMsNyArMTIzLDcgQEAgc3RhdGljIHZvaWQgZWtfYWRkX2Rl
-dmljZV9uYW5kKHZvaWQpIHt9Cj4+Pj4+ICNpZiBkZWZpbmVkKENPTkZJR19EUklWRVJfTkVUX01B
-Q0IpCj4+Pj4+IHN0YXRpYyBzdHJ1Y3QgbWFjYl9wbGF0Zm9ybV9kYXRhIGdtYWNfcGRhdGEgPSB7
-Cj4+Pj4+ICAgICAucGh5X2ludGVyZmFjZSA9IFBIWV9JTlRFUkZBQ0VfTU9ERV9SR01JSSwKPj4+
-Pj4gLSAgICAucGh5X2FkZHIgPSA3LAo+Pj4+PiArICAgIC5waHlfYWRkciA9IC0xLAo+Pj4+IElJ
-UkMgdGhlIGF1dG8gZGV0ZWN0IGRvIG5vdCB3b3JrIG9uIGFsbCBib2FyZAo+Pj4+IE5BQ0sKPj4+
-Cj4+PiBQbGVhc2UgZ2l2ZSB1cyBzb21lIG1vcmUgaW5mb3JtYXRpb24gd2h5IHRoaXMgZG9lc24n
-dCB3b3JrIG9yIG9uIHdoaWNoCj4+PiBib2FyZHMgdGhpcyBkb2Vzbid0IHdvcmsuIFJlamVjdGlu
-ZyBwYXRjaGVzIHdpdGggJ0lJUkMnIGp1c3QgYmxvY2tzIHRoZQo+Pj4gcGF0Y2ggd2l0aG91dCBn
-aXZpbmcgYSBjbHVlIHdoYXQgZWxzZSBzaG91bGQgYmUgZG9uZS4KPj4KPj4gVGhpcyBpcyB0aGUg
-c2FtZSBib2FyZCBidXQgZGlmZsOpcmVudCBTb0MgTW9kdWxlCj4+Cj4+IEJvIE1VU1QgdGVzdCBp
-dCBvbiBhbGwgb2YgdGhlbSBiZWZvcmUgZG8gc3VjaCBtb2RpZmljYXRpb24KPgo+IFllcywgSSBk
-byB0aGlzIGtpbmQgb2YgdGVzdC4KPgo+PiBJSVJDIHRoZSBwaHkgaXMgZGV0ZWN0IG9uIGFkZHIg
-MSBpbnN0ZWFkIG9mIDcgb24gc29tZSBDUFUgTW9kdWxlCj4KPiBZZXMsIGFzIHRoZSBjb21taXQg
-bWVzc2FnZSBzcGVjaWZpZWQsIHRoZSBwaHkgYWRkcmVzcyBvZiBTQU1BNUQzMyBhbmQKPiBTQU1B
-NUQzNSBhcmUgMS4gU28sIGxldCB0aGUgR01BQyB0byBhdXRvIGRldGVjdCB0aGUgcGh5IGFkZHJl
-c3MsIG9yIGVsc2UKPiB1c2luZyB0aGUgaGFyZCBjb2RlZCBwaHkgYWRkcmVzcyA3LCB0aGVuIHRo
-ZSBuZXR3b3JrIHdvbid0IHdvcmsgb24KPiBTQU1BNUQzMyBhbmQgU0FNQTVEMzUgbW9kdWxlLgo+
-Cj4+IEJlc3QgUmVnYXJkcywKPj4gSi4KPj4+Cj4+PiBTYXNjaGEKPj4+Cj4+PiAtLQo+Pj4gUGVu
-Z3V0cm9uaXggZS5LLgo+Pj4gfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+Pj4gSW5k
-dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwKPj4+IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8Cj4+PiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0s
-IEdlcm1hbnkgfCBQaG9uZToKPj4+ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPj4+IEFtdHNnZXJp
-Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDoKPj4+ICs0OS01MTIxLTIw
-NjkxNy01NTU1IHwKPj4KPgo+IEJlc3QgUmVnYXJkcywKPiBCbyBTaGVuCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On the SAMA5D35 the EMAC phy addr is 1 while not 0. So, let
+the EMAC auto detect phy addr, or else hard code to 0, the
+ethernet can not work on SAMA5D35 board.
+
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
+---
+
+ arch/arm/boards/sama5d3xek/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3xek/init.c
+index 5cd2f29..3efa506 100644
+--- a/arch/arm/boards/sama5d3xek/init.c
++++ b/arch/arm/boards/sama5d3xek/init.c
+@@ -128,7 +128,7 @@ static struct macb_platform_data gmac_pdata = {
+ 
+ static struct macb_platform_data macb_pdata = {
+ 	.phy_interface = PHY_INTERFACE_MODE_RMII,
+-	.phy_addr = 0,
++	.phy_addr = -1,
+ };
+ 
+ static bool used_23 = false;
+-- 
+2.3.0.rc0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
