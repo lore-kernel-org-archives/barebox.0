@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121])
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YEZ96-0000ID-In
- for barebox@lists.infradead.org; Fri, 23 Jan 2015 07:59:13 +0000
+ id 1YEZAi-0001uc-K3
+ for barebox@lists.infradead.org; Fri, 23 Jan 2015 08:00:53 +0000
 Received: from mail184.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 0B1E3FFC852
- for <barebox@lists.infradead.org>; Fri, 23 Jan 2015 08:58:51 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 0FEBF10003BB
+ for <barebox@lists.infradead.org>; Fri, 23 Jan 2015 09:00:30 +0100 (CET)
 Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <54BF7960.2010006@atmel.com>
-Date: Fri, 23 Jan 2015 15:58:42 +0800
-Message-Id: <5A604EAA-7AE3-4195-96A5-23A564655251@jcrosoft.com>
-References: <1421739085-21150-1-git-send-email-voice.shen@atmel.com>
- <20150121094113.GF12209@pengutronix.de>
- <A202A15F-ECFC-4787-A8A2-1F9D45A29BFF@jcrosoft.com>
- <54BF7960.2010006@atmel.com>
+In-Reply-To: <20150123073650.GW12209@pengutronix.de>
+Date: Fri, 23 Jan 2015 16:00:16 +0800
+Message-Id: <8A2C9F02-0CF3-4255-A97A-B0D0A7351DCE@jcrosoft.com>
+References: <1421661294-23345-1-git-send-email-voice.shen@atmel.com>
+ <20150119113939.GD30554@ns203013.ovh.net>
+ <20150121150729.GK12209@pengutronix.de>
+ <7BD9F41A-FC1D-415B-A3C0-B0555B7B15CA@jcrosoft.com>
+ <20150123073650.GW12209@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,68 +24,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d3xek: fix conflict between w1 and led
-To: Bo Shen <voice.shen@atmel.com>
+Subject: Re: [PATCH] ARM: atmel: sama5d3xek: let gmac auto detect phy id
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-
-> On Jan 21, 2015, at 6:03 PM, Bo Shen <voice.shen@atmel.com> wrote:
-> 
-> Hi J,
-> 
-> On 01/21/2015 05:56 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
->> 
->>> On Jan 21, 2015, at 5:41 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->>> 
->>> On Tue, Jan 20, 2015 at 03:31:25PM +0800, Bo Shen wrote:
->>>> As the 1-wire and LED d2 use the same pin (PE25) on the EK board.
->>>> So, make LED enable only when the 1-wire is disabled.
->>>> 
->>>> Signed-off-by: Bo Shen <voice.shen@atmel.com>
->>>> ---
->>>> 
->>>> arch/arm/boards/sama5d3xek/init.c | 8 ++++++++
->>>> 1 file changed, 8 insertions(+)
->>> 
->> 
->> On barebox this does not conflict
-> 
-> As both use gpio mode, which will call gpio request, when LED try to request the same gpio, it will failed. So, the led d2 won't be successfully registered.
-
-Yes with the pinctrl driver
-
-but it will be a choice at defconfig level not C code
-
-if you enable both we need to put a warning at compiling time
-and decide which one is more important because if you do not use the w1 you may do except to have both legs
-
-
-> 
->> as we do not have multi task support
->> 
->> Best Regards,
->> J.
->>> Applied, thanks
->>> 
->>> Sascha
->>> 
->>> 
->>> --
->>> Pengutronix e.K.                           |                             |
->>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->> 
-> 
-> Best Regards,
-> Bo Shen
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Cj4gT24gSmFuIDIzLCAyMDE1LCBhdCAzOjM2IFBNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
+Z3V0cm9uaXguZGU+IHdyb3RlOgo+IAo+IE9uIFRodSwgSmFuIDIyLCAyMDE1IGF0IDEyOjM1OjE3
+UE0gKzA4MDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+PiAKPj4+
+IE9uIEphbiAyMSwgMjAxNSwgYXQgMTE6MDcgUE0sIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5n
+dXRyb25peC5kZT4gd3JvdGU6Cj4+PiAKPj4+IE9uIE1vbiwgSmFuIDE5LCAyMDE1IGF0IDEyOjM5
+OjM5UE0gKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+Pj4+
+IE9uIDE3OjU0IE1vbiAxOSBKYW4gICAgICwgQm8gU2hlbiB3cm90ZToKPj4+Pj4gT24gdGhlIFNB
+TUE1RDMzIGFuZCBTQU1BNUQzNSB0aGUgR01BQyBQSFkgSUQgaXMgMSB3aGlsZSBub3QgNy4KPj4+
+Pj4gU28sIGxldCB0aGUgR01BQyBhdXRvIGRldGVjdCBwaHkgaWQsIG9yIGVsc2UgaGFyZCBjb2Rl
+IHRvIDcsCj4+Pj4+IGl0IGNhbiBub3Qgd29yayBvbiB0aGVzZSB0d28gYm9hcmRzLgo+Pj4+PiAK
+Pj4+Pj4gU2lnbmVkLW9mZi1ieTogQm8gU2hlbiA8dm9pY2Uuc2hlbkBhdG1lbC5jb20+Cj4+Pj4+
+IC0tLQo+Pj4+PiAKPj4+Pj4gYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4ZWsvaW5pdC5jIHwgMiAr
+LQo+Pj4+PiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPj4+
+Pj4gCj4+Pj4+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9pbml0LmMg
+Yi9hcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9pbml0LmMKPj4+Pj4gaW5kZXggNDlkMmIzNy4u
+MGI4MzE0NyAxMDA2NDQKPj4+Pj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4ZWsvaW5p
+dC5jCj4+Pj4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9zYW1hNWQzeGVrL2luaXQuYwo+Pj4+PiBA
+QCAtMTIzLDcgKzEyMyw3IEBAIHN0YXRpYyB2b2lkIGVrX2FkZF9kZXZpY2VfbmFuZCh2b2lkKSB7
+fQo+Pj4+PiAjaWYgZGVmaW5lZChDT05GSUdfRFJJVkVSX05FVF9NQUNCKQo+Pj4+PiBzdGF0aWMg
+c3RydWN0IG1hY2JfcGxhdGZvcm1fZGF0YSBnbWFjX3BkYXRhID0gewo+Pj4+PiAJLnBoeV9pbnRl
+cmZhY2UgPSBQSFlfSU5URVJGQUNFX01PREVfUkdNSUksCj4+Pj4+IC0JLnBoeV9hZGRyID0gNywK
+Pj4+Pj4gKwkucGh5X2FkZHIgPSAtMSwKPj4+PiBJSVJDIHRoZSBhdXRvIGRldGVjdCBkbyBub3Qg
+d29yayBvbiBhbGwgYm9hcmQKPj4+PiBOQUNLCj4+PiAKPj4+IFBsZWFzZSBnaXZlIHVzIHNvbWUg
+bW9yZSBpbmZvcm1hdGlvbiB3aHkgdGhpcyBkb2Vzbid0IHdvcmsgb3Igb24gd2hpY2gKPj4+IGJv
+YXJkcyB0aGlzIGRvZXNuJ3Qgd29yay4gUmVqZWN0aW5nIHBhdGNoZXMgd2l0aCAnSUlSQycganVz
+dCBibG9ja3MgdGhlCj4+PiBwYXRjaCB3aXRob3V0IGdpdmluZyBhIGNsdWUgd2hhdCBlbHNlIHNo
+b3VsZCBiZSBkb25lLgo+PiAKPj4gVGhpcyBpcyB0aGUgc2FtZSBib2FyZCBidXQgZGlmZsOpcmVu
+dCBTb0MgTW9kdWxlCj4+IAo+PiBCbyBNVVNUIHRlc3QgaXQgb24gYWxsIG9mIHRoZW0gYmVmb3Jl
+IGRvIHN1Y2ggbW9kaWZpY2F0aW9uCj4+IAo+PiBJSVJDIHRoZSBwaHkgaXMgZGV0ZWN0IG9uIGFk
+ZHIgMSBpbnN0ZWFkIG9mIDcgb24gc29tZSBDUFUgTW9kdWxlCj4gCj4gV2hlbiB0aGUgb3JpZ2lu
+YWwgNyBkb2VzIG5vdCB3b3JrIG9uIGFsbCBib2FyZHMsIHRoZW4gYXV0b2RldGVjdGlvbgo+IHNl
+ZW1zIHRvIGJlIGEgdmFsaWQgc29sdXRpb24uCgpFeGNlcHQgdGhlIGF1dG8gZGV0ZWN0aW9uIGRv
+ZXMgbm90IHdvcmsgb24gYWxsIGJvYXJkCgpzbyBhcyB3ZSBjYW4gZGV0ZWN0IHRoZSBib2FyZCBh
+bmQgU29DIHdlIGNhbiBrbm93biB0aGUgcGh5X2FkZHIKPiAKPiBTYXNjaGEKPiAKPiAtLSAKPiBQ
+ZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAg
+ICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAz
+MTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwK
+PiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5
+LTUxMjEtMjA2OTE3LTU1NTUgfAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
