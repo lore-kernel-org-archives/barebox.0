@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from s250.sam-solutions.net ([217.21.49.219])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YEcct-00040L-5I
- for barebox@lists.infradead.org; Fri, 23 Jan 2015 11:42:12 +0000
+ id 1YEcjp-0006qn-He
+ for barebox@lists.infradead.org; Fri, 23 Jan 2015 11:49:22 +0000
 Received: from s326.sam-solutions.net ([217.21.35.11])
  by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
  (Exim 4.77) (envelope-from <D.Lavnikevich@sam-solutions.com>)
- id 1YEccR-0000NO-Uc
- for barebox@lists.infradead.org; Fri, 23 Jan 2015 14:41:43 +0300
+ id 1YEcjT-0000OB-HS
+ for barebox@lists.infradead.org; Fri, 23 Jan 2015 14:48:59 +0300
 From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-Date: Fri, 23 Jan 2015 14:41:41 +0300
-Message-ID: <1422013301-16827-1-git-send-email-d.lavnikevich@sam-solutions.com>
+Date: Fri, 23 Jan 2015 14:48:55 +0300
+Message-ID: <1422013735-19774-1-git-send-email-d.lavnikevich@sam-solutions.com>
+In-Reply-To: <1422013301-16827-1-git-send-email-d.lavnikevich@sam-solutions.com>
+References: <1422013301-16827-1-git-send-email-d.lavnikevich@sam-solutions.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,34 +26,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] memtest: fix 4GB overflow fail
+Subject: [PATCH 2/2] dts:imx6:pfla02: Align nand partitions by 512k
 To: barebox@lists.infradead.org
 Cc: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 
-Add condition for checking size_t overflow. This fixes memtest fail
-> Memtest failed. Error: -22
-which appears when 4GB RAM is present.
+NAND chip used on phyFLEX-i.MX6 with 4GB NAND (MT29F32G08AFACAWP) has
+512k eraseblock size.
 
-Was tested on phyFLEX-i.MX6 modules with 4GB and 1GB RAM.
+Align NAND partitions by 512k to fix erase fails.
 
 Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 ---
- commands/memtest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/commands/memtest.c b/commands/memtest.c
-index d384436afb73..5e7896cc711c 100644
---- a/commands/memtest.c
-+++ b/commands/memtest.c
-@@ -109,7 +109,7 @@ static int request_memtest_regions(struct list_head *list)
- 		start = PAGE_ALIGN(r->end);
- 		end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
- 		size = end - start + 1;
--		if (start < end) {
-+		if (start < end && start > r->end) {
- 			ret = alloc_memtest_region(list, start, size);
- 			if (ret < 0)
- 				return ret;
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index 32ce088fee48..52b279057a33 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -95,22 +95,22 @@
+ 
+ 	partition@1 {
+ 		label = "barebox-environment";
+-		reg = <0x400000 0x20000>;
++		reg = <0x400000 0x80000>;
+ 	};
+ 
+ 	partition@2 {
+ 		label = "oftree";
+-		reg = <0x420000 0x20000>;
++		reg = <0x480000 0x80000>;
+ 	};
+ 
+ 	partition@3 {
+ 		label = "kernel";
+-		reg = <0x440000 0x800000>;
++		reg = <0x500000 0x800000>;
+ 	};
+ 
+ 	partition@4 {
+ 		label = "root";
+-		reg = <0xC40000 0x0>;
++		reg = <0xD00000 0x0>;
+ 	};
+ };
+ 
 -- 
 2.2.1
 
