@@ -1,22 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38])
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YEaOA-00047l-JO
- for barebox@lists.infradead.org; Fri, 23 Jan 2015 09:18:51 +0000
+ id 1YEaP0-0004tt-BD
+ for barebox@lists.infradead.org; Fri, 23 Jan 2015 09:19:43 +0000
 Received: from mail184.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 9A7C0FFA464
- for <barebox@lists.infradead.org>; Fri, 23 Jan 2015 10:18:26 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 85162100052D
+ for <barebox@lists.infradead.org>; Fri, 23 Jan 2015 10:19:19 +0100 (CET)
 Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <54C207DD.9060201@atmel.com>
-Date: Fri, 23 Jan 2015 17:18:05 +0800
-Message-Id: <1A8441EE-39E2-4C69-AB34-C7B7D14412D1@jcrosoft.com>
-References: <1421739085-21150-1-git-send-email-voice.shen@atmel.com>
- <20150121094113.GF12209@pengutronix.de>
- <A202A15F-ECFC-4787-A8A2-1F9D45A29BFF@jcrosoft.com>
- <54BF7960.2010006@atmel.com>
- <5A604EAA-7AE3-4195-96A5-23A564655251@jcrosoft.com>
- <54C207DD.9060201@atmel.com>
+In-Reply-To: <20150123080457.GA12209@pengutronix.de>
+Date: Fri, 23 Jan 2015 17:19:05 +0800
+Message-Id: <6BAD5335-E077-4EE2-B95B-DFBAB1FE3858@jcrosoft.com>
+References: <1421911613-9188-1-git-send-email-voice.shen@atmel.com>
+ <20150123075129.GY12209@pengutronix.de>
+ <81EDBB73-FDD1-48FC-A116-6AD21A073764@jcrosoft.com>
+ <20150123080457.GA12209@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,83 +27,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d3xek: fix conflict between w1 and led
-To: Bo Shen <voice.shen@atmel.com>
+Subject: Re: [PATCH] ARM: atmel: sama5d3xek: let emac auto detect phy addr
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 
-> On Jan 23, 2015, at 4:35 PM, Bo Shen <voice.shen@atmel.com> wrote:
+> On Jan 23, 2015, at 4:04 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> Hi J,
-> 
-> On 01/23/2015 03:58 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On Fri, Jan 23, 2015 at 03:53:48PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
 >> 
->>> On Jan 21, 2015, at 6:03 PM, Bo Shen <voice.shen@atmel.com> wrote:
+>>> On Jan 23, 2015, at 3:51 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
 >>> 
->>> Hi J,
->>> 
->>> On 01/21/2015 05:56 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+>>> On Thu, Jan 22, 2015 at 03:26:53PM +0800, Bo Shen wrote:
+>>>> On the SAMA5D35 the EMAC phy addr is 1 while not 0. So, let
+>>>> the EMAC auto detect phy addr, or else hard code to 0, the
+>>>> ethernet can not work on SAMA5D35 board.
 >>>> 
->>>>> On Jan 21, 2015, at 5:41 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->>>>> 
->>>>> On Tue, Jan 20, 2015 at 03:31:25PM +0800, Bo Shen wrote:
->>>>>> As the 1-wire and LED d2 use the same pin (PE25) on the EK board.
->>>>>> So, make LED enable only when the 1-wire is disabled.
->>>>>> 
->>>>>> Signed-off-by: Bo Shen <voice.shen@atmel.com>
->>>>>> ---
->>>>>> 
->>>>>> arch/arm/boards/sama5d3xek/init.c | 8 ++++++++
->>>>>> 1 file changed, 8 insertions(+)
->>>>> 
->>>> 
->>>> On barebox this does not conflict
+>>>> Signed-off-by: Bo Shen <voice.shen@atmel.com>
 >>> 
->>> As both use gpio mode, which will call gpio request, when LED try to request the same gpio, it will failed. So, the led d2 won't be successfully registered.
+>>> There ere boards with different phy addresses around, so
+>>> the current state does not work on all boards anyway. So the worst
+>>> thing that can happen with this and the other patch for the gmac is
+>>> that now another set of boards does not work. Let's give it a try.
+>>> I'm open to reports when now some board stops working.
+>>> 
+>>> Applied this and the gmac patch.
 >> 
->> Yes with the pinctrl driver
+>> except we can auto detect the board we are running from
+>> so it will be better to specify it at Run time
 >> 
->> but it will be a choice at defconfig level not C code
->> 
->> if you enable both we need to put a warning at compiling time
+>> as we have issue on auto detect on some of them
 > 
-> I don't find any good solution for this, can you provide one? Thanks.
-> 
->> and decide which one is more important because if you do not use the w1 you may do except to have both legs
-> 
-> Actually, in code, no use for led d2, only d1 heart beat.
-> 
+> Ok, so your suggestion is to detect the board (type, revision?) and
+> set phy_addr correctly based on this information, right? Fine with me
+> aswell. Is it known which boards have which phy_addr?
 
-
-Will take a look next week
+yes and I already write the detection code in barebox
 
 Best Regards,
 J.
->> 
->>> 
->>>> as we do not have multi task support
->>>> 
->>>> Best Regards,
->>>> J.
->>>>> Applied, thanks
->>>>> 
->>>>> Sascha
->>>>> 
->>>>> 
->>>>> --
->>>>> Pengutronix e.K.                           |                             |
->>>>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->>>>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>>> 
->>> 
->>> Best Regards,
->>> Bo Shen
->> 
 > 
-> Best Regards,
-> Bo Shen
+> Sascha
 > 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 _______________________________________________
