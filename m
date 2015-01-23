@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149])
+Received: from s250.sam-solutions.net ([217.21.49.219])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YEaP0-0004tt-BD
- for barebox@lists.infradead.org; Fri, 23 Jan 2015 09:19:43 +0000
-Received: from mail184.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 85162100052D
- for <barebox@lists.infradead.org>; Fri, 23 Jan 2015 10:19:19 +0100 (CET)
-Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20150123080457.GA12209@pengutronix.de>
-Date: Fri, 23 Jan 2015 17:19:05 +0800
-Message-Id: <6BAD5335-E077-4EE2-B95B-DFBAB1FE3858@jcrosoft.com>
-References: <1421911613-9188-1-git-send-email-voice.shen@atmel.com>
- <20150123075129.GY12209@pengutronix.de>
- <81EDBB73-FDD1-48FC-A116-6AD21A073764@jcrosoft.com>
- <20150123080457.GA12209@pengutronix.de>
+ id 1YEcct-00040L-5I
+ for barebox@lists.infradead.org; Fri, 23 Jan 2015 11:42:12 +0000
+Received: from s326.sam-solutions.net ([217.21.35.11])
+ by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <D.Lavnikevich@sam-solutions.com>)
+ id 1YEccR-0000NO-Uc
+ for barebox@lists.infradead.org; Fri, 23 Jan 2015 14:41:43 +0300
+From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
+Date: Fri, 23 Jan 2015 14:41:41 +0300
+Message-ID: <1422013301-16827-1-git-send-email-d.lavnikevich@sam-solutions.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,53 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d3xek: let emac auto detect phy addr
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] memtest: fix 4GB overflow fail
+To: barebox@lists.infradead.org
+Cc: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 
+Add condition for checking size_t overflow. This fixes memtest fail
+> Memtest failed. Error: -22
+which appears when 4GB RAM is present.
 
-> On Jan 23, 2015, at 4:04 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> On Fri, Jan 23, 2015 at 03:53:48PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
->> 
->>> On Jan 23, 2015, at 3:51 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->>> 
->>> On Thu, Jan 22, 2015 at 03:26:53PM +0800, Bo Shen wrote:
->>>> On the SAMA5D35 the EMAC phy addr is 1 while not 0. So, let
->>>> the EMAC auto detect phy addr, or else hard code to 0, the
->>>> ethernet can not work on SAMA5D35 board.
->>>> 
->>>> Signed-off-by: Bo Shen <voice.shen@atmel.com>
->>> 
->>> There ere boards with different phy addresses around, so
->>> the current state does not work on all boards anyway. So the worst
->>> thing that can happen with this and the other patch for the gmac is
->>> that now another set of boards does not work. Let's give it a try.
->>> I'm open to reports when now some board stops working.
->>> 
->>> Applied this and the gmac patch.
->> 
->> except we can auto detect the board we are running from
->> so it will be better to specify it at Run time
->> 
->> as we have issue on auto detect on some of them
-> 
-> Ok, so your suggestion is to detect the board (type, revision?) and
-> set phy_addr correctly based on this information, right? Fine with me
-> aswell. Is it known which boards have which phy_addr?
+Was tested on phyFLEX-i.MX6 modules with 4GB and 1GB RAM.
 
-yes and I already write the detection code in barebox
+Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
+---
+ commands/memtest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/commands/memtest.c b/commands/memtest.c
+index d384436afb73..5e7896cc711c 100644
+--- a/commands/memtest.c
++++ b/commands/memtest.c
+@@ -109,7 +109,7 @@ static int request_memtest_regions(struct list_head *list)
+ 		start = PAGE_ALIGN(r->end);
+ 		end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
+ 		size = end - start + 1;
+-		if (start < end) {
++		if (start < end && start > r->end) {
+ 			ret = alloc_memtest_region(list, start, size);
+ 			if (ret < 0)
+ 				return ret;
+-- 
+2.2.1
 
 
 _______________________________________________
