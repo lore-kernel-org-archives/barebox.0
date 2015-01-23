@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YEZAi-0001uc-K3
- for barebox@lists.infradead.org; Fri, 23 Jan 2015 08:00:53 +0000
-Received: from mail184.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 0FEBF10003BB
- for <barebox@lists.infradead.org>; Fri, 23 Jan 2015 09:00:30 +0100 (CET)
-Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20150123073650.GW12209@pengutronix.de>
-Date: Fri, 23 Jan 2015 16:00:16 +0800
-Message-Id: <8A2C9F02-0CF3-4255-A97A-B0D0A7351DCE@jcrosoft.com>
-References: <1421661294-23345-1-git-send-email-voice.shen@atmel.com>
- <20150119113939.GD30554@ns203013.ovh.net>
- <20150121150729.GK12209@pengutronix.de>
- <7BD9F41A-FC1D-415B-A3C0-B0555B7B15CA@jcrosoft.com>
- <20150123073650.GW12209@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YEZF2-0003pl-NP
+ for barebox@lists.infradead.org; Fri, 23 Jan 2015 08:05:21 +0000
+Date: Fri, 23 Jan 2015 09:04:57 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150123080457.GA12209@pengutronix.de>
+References: <1421911613-9188-1-git-send-email-voice.shen@atmel.com>
+ <20150123075129.GY12209@pengutronix.de>
+ <81EDBB73-FDD1-48FC-A116-6AD21A073764@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <81EDBB73-FDD1-48FC-A116-6AD21A073764@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,53 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d3xek: let gmac auto detect phy id
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] ARM: atmel: sama5d3xek: let emac auto detect phy addr
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Cj4gT24gSmFuIDIzLCAyMDE1LCBhdCAzOjM2IFBNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
-Z3V0cm9uaXguZGU+IHdyb3RlOgo+IAo+IE9uIFRodSwgSmFuIDIyLCAyMDE1IGF0IDEyOjM1OjE3
-UE0gKzA4MDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+PiAKPj4+
-IE9uIEphbiAyMSwgMjAxNSwgYXQgMTE6MDcgUE0sIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5n
-dXRyb25peC5kZT4gd3JvdGU6Cj4+PiAKPj4+IE9uIE1vbiwgSmFuIDE5LCAyMDE1IGF0IDEyOjM5
-OjM5UE0gKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+Pj4+
-IE9uIDE3OjU0IE1vbiAxOSBKYW4gICAgICwgQm8gU2hlbiB3cm90ZToKPj4+Pj4gT24gdGhlIFNB
-TUE1RDMzIGFuZCBTQU1BNUQzNSB0aGUgR01BQyBQSFkgSUQgaXMgMSB3aGlsZSBub3QgNy4KPj4+
-Pj4gU28sIGxldCB0aGUgR01BQyBhdXRvIGRldGVjdCBwaHkgaWQsIG9yIGVsc2UgaGFyZCBjb2Rl
-IHRvIDcsCj4+Pj4+IGl0IGNhbiBub3Qgd29yayBvbiB0aGVzZSB0d28gYm9hcmRzLgo+Pj4+PiAK
-Pj4+Pj4gU2lnbmVkLW9mZi1ieTogQm8gU2hlbiA8dm9pY2Uuc2hlbkBhdG1lbC5jb20+Cj4+Pj4+
-IC0tLQo+Pj4+PiAKPj4+Pj4gYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4ZWsvaW5pdC5jIHwgMiAr
-LQo+Pj4+PiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPj4+
-Pj4gCj4+Pj4+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9pbml0LmMg
-Yi9hcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9pbml0LmMKPj4+Pj4gaW5kZXggNDlkMmIzNy4u
-MGI4MzE0NyAxMDA2NDQKPj4+Pj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4ZWsvaW5p
-dC5jCj4+Pj4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9zYW1hNWQzeGVrL2luaXQuYwo+Pj4+PiBA
-QCAtMTIzLDcgKzEyMyw3IEBAIHN0YXRpYyB2b2lkIGVrX2FkZF9kZXZpY2VfbmFuZCh2b2lkKSB7
-fQo+Pj4+PiAjaWYgZGVmaW5lZChDT05GSUdfRFJJVkVSX05FVF9NQUNCKQo+Pj4+PiBzdGF0aWMg
-c3RydWN0IG1hY2JfcGxhdGZvcm1fZGF0YSBnbWFjX3BkYXRhID0gewo+Pj4+PiAJLnBoeV9pbnRl
-cmZhY2UgPSBQSFlfSU5URVJGQUNFX01PREVfUkdNSUksCj4+Pj4+IC0JLnBoeV9hZGRyID0gNywK
-Pj4+Pj4gKwkucGh5X2FkZHIgPSAtMSwKPj4+PiBJSVJDIHRoZSBhdXRvIGRldGVjdCBkbyBub3Qg
-d29yayBvbiBhbGwgYm9hcmQKPj4+PiBOQUNLCj4+PiAKPj4+IFBsZWFzZSBnaXZlIHVzIHNvbWUg
-bW9yZSBpbmZvcm1hdGlvbiB3aHkgdGhpcyBkb2Vzbid0IHdvcmsgb3Igb24gd2hpY2gKPj4+IGJv
-YXJkcyB0aGlzIGRvZXNuJ3Qgd29yay4gUmVqZWN0aW5nIHBhdGNoZXMgd2l0aCAnSUlSQycganVz
-dCBibG9ja3MgdGhlCj4+PiBwYXRjaCB3aXRob3V0IGdpdmluZyBhIGNsdWUgd2hhdCBlbHNlIHNo
-b3VsZCBiZSBkb25lLgo+PiAKPj4gVGhpcyBpcyB0aGUgc2FtZSBib2FyZCBidXQgZGlmZsOpcmVu
-dCBTb0MgTW9kdWxlCj4+IAo+PiBCbyBNVVNUIHRlc3QgaXQgb24gYWxsIG9mIHRoZW0gYmVmb3Jl
-IGRvIHN1Y2ggbW9kaWZpY2F0aW9uCj4+IAo+PiBJSVJDIHRoZSBwaHkgaXMgZGV0ZWN0IG9uIGFk
-ZHIgMSBpbnN0ZWFkIG9mIDcgb24gc29tZSBDUFUgTW9kdWxlCj4gCj4gV2hlbiB0aGUgb3JpZ2lu
-YWwgNyBkb2VzIG5vdCB3b3JrIG9uIGFsbCBib2FyZHMsIHRoZW4gYXV0b2RldGVjdGlvbgo+IHNl
-ZW1zIHRvIGJlIGEgdmFsaWQgc29sdXRpb24uCgpFeGNlcHQgdGhlIGF1dG8gZGV0ZWN0aW9uIGRv
-ZXMgbm90IHdvcmsgb24gYWxsIGJvYXJkCgpzbyBhcyB3ZSBjYW4gZGV0ZWN0IHRoZSBib2FyZCBh
-bmQgU29DIHdlIGNhbiBrbm93biB0aGUgcGh5X2FkZHIKPiAKPiBTYXNjaGEKPiAKPiAtLSAKPiBQ
-ZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAg
-ICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAz
-MTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwK
-PiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5
-LTUxMjEtMjA2OTE3LTU1NTUgfAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Jan 23, 2015 at 03:53:48PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> 
+> > On Jan 23, 2015, at 3:51 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > 
+> > On Thu, Jan 22, 2015 at 03:26:53PM +0800, Bo Shen wrote:
+> >> On the SAMA5D35 the EMAC phy addr is 1 while not 0. So, let
+> >> the EMAC auto detect phy addr, or else hard code to 0, the
+> >> ethernet can not work on SAMA5D35 board.
+> >> 
+> >> Signed-off-by: Bo Shen <voice.shen@atmel.com>
+> > 
+> > There ere boards with different phy addresses around, so
+> > the current state does not work on all boards anyway. So the worst
+> > thing that can happen with this and the other patch for the gmac is
+> > that now another set of boards does not work. Let's give it a try.
+> > I'm open to reports when now some board stops working.
+> > 
+> > Applied this and the gmac patch.
+> 
+> except we can auto detect the board we are running from
+> so it will be better to specify it at Run time
+> 
+> as we have issue on auto detect on some of them
+
+Ok, so your suggestion is to detect the board (type, revision?) and
+set phy_addr correctly based on this information, right? Fine with me
+aswell. Is it known which boards have which phy_addr?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
