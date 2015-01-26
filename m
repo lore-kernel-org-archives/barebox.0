@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from s250.sam-solutions.net ([217.21.49.219])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YFhY6-0001RL-Dl
- for barebox@lists.infradead.org; Mon, 26 Jan 2015 11:09:43 +0000
-Message-ID: <54C6204F.5060908@sam-solutions.com>
-Date: Mon, 26 Jan 2015 14:09:03 +0300
-From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-MIME-Version: 1.0
-References: <1422013301-16827-1-git-send-email-d.lavnikevich@sam-solutions.com>
- <20150126090945.GJ12209@pengutronix.de>
-In-Reply-To: <20150126090945.GJ12209@pengutronix.de>
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]
+ helo=smtp.smtpout.orange.fr)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YFrIt-0003R2-Cl
+ for barebox@lists.infradead.org; Mon, 26 Jan 2015 21:34:40 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Mon, 26 Jan 2015 22:34:10 +0100
+Message-Id: <1422308050-13895-3-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1422308050-13895-1-git-send-email-robert.jarzmik@free.fr>
+References: <1422308050-13895-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +17,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] memtest: fix 4GB overflow fail
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] net: smc1111: improve debug capability
+To: barebox@lists.infradead.org
 
-On 26/01/15 12:09, Sascha Hauer wrote:
-> (Adding Alexander Aring)
-> @@ -107,8 +106,8 @@ static int request_memtest_regions(struct list_head *list)
->   		r = list_last_entry(&bank->res->children,
->   				     struct resource, sibling);
->   		start = PAGE_ALIGN(r->end);
-still here we have overflow.
-Last region (stack) on 4GB systems ends on 0xfffffff7. So aligned up, 
-start=0x00000000.
-After that
-> -		end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
-> -		size = end - start + 1;
-> +		end = bank->res->end;
-> +		size = PAGE_ALIGN_DOWN(end - start + 1);
->   		if (start < end) {
-This check detects that there are some space after last region 
-(start=0x00000000) till end of bank (0xffffffff) and then
->   			ret = alloc_memtest_region(list, start, size);
->   			if (ret < 0)
-fails to allocate region from 0x00000000 for size 0x00000000.
+Improve smc1111 driver debug messages by printing the register accessed,
+the current bank, and the values.
+
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ drivers/net/smc91111.c | 114 ++++++++++++++++++++++++++++---------------------
+ 1 file changed, 65 insertions(+), 49 deletions(-)
+
+diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
+index 880bf75..76e576a 100644
+--- a/drivers/net/smc91111.c
++++ b/drivers/net/smc91111.c
+@@ -528,55 +528,71 @@ static const struct smc91111_accessors access_via_32bit = {
+ 
+ /* ------------------------------------------------------------------------ */
+ 
+-static inline void SMC_outb(struct smc91c111_priv *p, unsigned value,
+-				unsigned offset)
+-{
+-	(p->a.ob)(value, p->base, offset);
+-}
+-
+-static inline void SMC_outw(struct smc91c111_priv *p, unsigned value,
+-				unsigned offset)
+-{
+-	(p->a.ow)(value, p->base, offset);
+-}
+-
+-static inline void SMC_outl(struct smc91c111_priv *p, unsigned long value,
+-				unsigned offset)
+-{
+-	(p->a.ol)(value, p->base, offset);
+-}
+-
+-static inline void SMC_outsl(struct smc91c111_priv *p, unsigned offset,
+-				const void *data, int count)
+-{
+-	(p->a.osl)(p->base, offset, data, count);
+-}
+-
+-static inline unsigned SMC_inb(struct smc91c111_priv *p, unsigned offset)
+-{
+-	return (p->a.ib)(p->base, offset);
+-}
+-
+-static inline unsigned SMC_inw(struct smc91c111_priv *p, unsigned offset)
+-{
+-	return (p->a.iw)(p->base, offset);
+-}
+-
+-static inline unsigned long SMC_inl(struct smc91c111_priv *p, unsigned offset)
+-{
+-	return (p->a.il)(p->base, offset);
+-}
+-
+-static inline void SMC_insl(struct smc91c111_priv *p, unsigned offset,
+-				void *data, int count)
+-{
+-	(p->a.isl)(p->base, offset, data, count);
+-}
+-
+-static inline void SMC_SELECT_BANK(struct smc91c111_priv *p, int bank)
+-{
+-	SMC_outw(p, bank, BANK_SELECT);
+-}
++static unsigned last_bank;
++#define SMC_outb(p, value, offset) \
++	do {								\
++		PRINTK3("\t%s:%d outb: %s[%1d:0x%04x] = 0x%02x\n",	\
++			__func__, __LINE__, #offset, last_bank,		\
++			(offset), (value));				\
++		((p)->a.ob)((value), (p)->base, (offset));		\
++	} while (0)
++
++#define SMC_outw(p, value, offset)					\
++	do {								\
++		PRINTK3("\t%s:%d outw: %s[%1d:0x%04x] = 0x%04x\n",	\
++			__func__, __LINE__, #offset, last_bank,		\
++			(offset), (value));				\
++		((p)->a.ow)((value), (p)->base, (offset));		\
++	} while (0)
++
++#define SMC_outl(p, value, offset)					\
++	do {								\
++		PRINTK3("\t%s:%d outl: %s[%1d:0x%04x] = 0x%08lx\n",	\
++			__func__, __LINE__, #offset, last_bank,		\
++			(offset), (unsigned long)(value));		\
++		((p)->a.ol)((value), (p)->base, (offset));		\
++	} while (0)
++
++#define SMC_outsl(p, offset, data, count)\
++	do {								\
++		PRINTK3("\t%s:%d outsl: %5d@%p -> [%1d:0x%04x]\n",	\
++			__func__, __LINE__, (count) * 4, data,		\
++			last_bank, (offset));				\
++		((p)->a.osl)((p)->base, (offset), data, (count));	\
++	} while (0)
++
++#define SMC_inb(p, offset)						\
++	({								\
++		unsigned _v = ((p)->a.ib)((p)->base, (offset));		\
++		PRINTK3("\t%s:%d inb: %s[%1d:0x%04x] -> 0x%02x\n",	\
++			__func__, __LINE__, #offset, last_bank,		\
++			(offset), _v);					\
++		_v; })
++
++#define SMC_inw(p, offset)						\
++	({								\
++		unsigned _v = ((p)->a.iw)((p)->base, (offset));		\
++		PRINTK3("\t%s:%d inw: %s[%1d:0x%04x] -> 0x%04x\n",	\
++			__func__, __LINE__, #offset, last_bank,		\
++			(offset), _v);					\
++		_v; })
++
++#define SMC_inl(p, offset)						\
++	({								\
++		unsigned long _v = ((p)->a.il)((p)->base, (offset));	\
++		PRINTK3("\t%s:%d inl: %s[%1d:0x%04x] -> 0x%08lx\n",	\
++			__func__, __LINE__, #offset, last_bank,		\
++			(offset), _v);					\
++		_v; })
++
++#define SMC_insl(p, offset, data, count)		\
++	((p)->a.isl)((p)->base, (offset), data, (count))
++
++#define SMC_SELECT_BANK(p, bank)			\
++	do {						\
++		SMC_outw(p, bank & 0xf, BANK_SELECT);	\
++		last_bank = bank & 0xf;			\
++	} while (0)
+ 
+ #if SMC_DEBUG > 2
+ static void print_packet( unsigned char * buf, int length )
+-- 
+2.1.0
 
 
 _______________________________________________
