@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YFhFY-0001Md-OS
- for barebox@lists.infradead.org; Mon, 26 Jan 2015 10:50:33 +0000
-Message-ID: <1422269410.15206.2.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 26 Jan 2015 11:50:10 +0100
-In-Reply-To: <1422269200.15206.1.camel@pengutronix.de>
-References: <1422268796-24782-1-git-send-email-jbe@pengutronix.de>
- <1422268796-24782-3-git-send-email-jbe@pengutronix.de>
- <1422269200.15206.1.camel@pengutronix.de>
-Mime-Version: 1.0
+Received: from s250.sam-solutions.net ([217.21.49.219])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YFhY6-0001RL-Dl
+ for barebox@lists.infradead.org; Mon, 26 Jan 2015 11:09:43 +0000
+Message-ID: <54C6204F.5060908@sam-solutions.com>
+Date: Mon, 26 Jan 2015 14:09:03 +0300
+From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
+MIME-Version: 1.0
+References: <1422013301-16827-1-git-send-email-d.lavnikevich@sam-solutions.com>
+ <20150126090945.GJ12209@pengutronix.de>
+In-Reply-To: <20150126090945.GJ12209@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/9] Docs: just mark the 'bootm' command like the 'go'
- command as well
-To: Juergen Borleis <jbe@pengutronix.de>
+Subject: Re: [PATCH 1/2] memtest: fix 4GB overflow fail
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Am Montag, den 26.01.2015, 11:46 +0100 schrieb Lucas Stach:
-> Am Montag, den 26.01.2015, 11:39 +0100 schrieb Juergen Borleis:
-> > Just a try to be consistent in one sentence.
-> > 
-> > Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> > ---
-> >  Documentation/boards/mxs.rst | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/boards/mxs.rst b/Documentation/boards/mxs.rst
-> > index 6c8bdb5..879663c 100644
-> > --- a/Documentation/boards/mxs.rst
-> > +++ b/Documentation/boards/mxs.rst
-> > @@ -115,5 +115,5 @@ mxsboot tool which changes this sector number in the image.
-> >  Booting second stage
-> >  --------------------
-> >  
-> > -The second stage images can be started with the barebox bootm command or
-> > +The second stage images can be started with the barebox 'bootm' command or
-> >  just jumped into using the 'go' command.
-> 
-> Wouldn't it be better to directly link to those commands by
-> using :ref:`command_bootm` (same for go), like in other parts of the
-> documentation?
-> 
-And I just noticed you do exactly that in Patch 5/9.
-
+On 26/01/15 12:09, Sascha Hauer wrote:
+> (Adding Alexander Aring)
+> @@ -107,8 +106,8 @@ static int request_memtest_regions(struct list_head *list)
+>   		r = list_last_entry(&bank->res->children,
+>   				     struct resource, sibling);
+>   		start = PAGE_ALIGN(r->end);
+still here we have overflow.
+Last region (stack) on 4GB systems ends on 0xfffffff7. So aligned up, 
+start=0x00000000.
+After that
+> -		end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
+> -		size = end - start + 1;
+> +		end = bank->res->end;
+> +		size = PAGE_ALIGN_DOWN(end - start + 1);
+>   		if (start < end) {
+This check detects that there are some space after last region 
+(start=0x00000000) till end of bank (0xffffffff) and then
+>   			ret = alloc_memtest_region(list, start, size);
+>   			if (ret < 0)
+fails to allocate region from 0x00000000 for size 0x00000000.
 
 
 _______________________________________________
