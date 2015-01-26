@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YFeol-0002sX-6b
- for barebox@lists.infradead.org; Mon, 26 Jan 2015 08:14:43 +0000
-Date: Mon, 26 Jan 2015 09:14:20 +0100
+ Linux)) id 1YFer5-0004mI-7o
+ for barebox@lists.infradead.org; Mon, 26 Jan 2015 08:17:07 +0000
+Date: Mon, 26 Jan 2015 09:16:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150126081420.GH12209@pengutronix.de>
-References: <1422195690-20676-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20150126081645.GI12209@pengutronix.de>
+References: <1422192133-17906-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422195690-20676-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1422192133-17906-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] [JUST DEMO] commands: implement 'fbputs' command
+Subject: Re: [PATCH] commands/splash: fix '-y' option handling
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jan 25, 2015 at 05:21:30PM +0300, Antony Pavlov wrote:
-> Mainline barebox at the moment has no framebuffer
-> console support.
-> The 'fbputs' demo command displays a text string
-> on fb device.
+On Sun, Jan 25, 2015 at 04:22:13PM +0300, Antony Pavlov wrote:
+> The '-y' and '-o' options are independent,
+> so just add missing 'break'.
 > 
-> This quick-n-dirty patch demonstates that barebox
-> framebuffer console can be easely realized.
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+
+Applied, thanks.
+
+> ---
+>  commands/splash.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> I'm awaiting your comments!
+> diff --git a/commands/splash.c b/commands/splash.c
+> index 9bd84fb..077c0e4 100644
+> --- a/commands/splash.c
+> +++ b/commands/splash.c
+> @@ -41,6 +41,7 @@ static int do_splash(int argc, char *argv[])
+>  			break;
+>  		case 'y':
+>  			s.y = simple_strtoul(optarg, NULL, 0);
+> +			break;
+>  		case 'o':
+>  			offscreen = 1;
 
-Unfortunately real console support is not that simple, we would have to
-parse ANSI escape sequences up to some point to make it generally usable.
-
-Jean Christophe has framebuffer console patches, he'll probably comment
-on this one aswell.
-Personally I would be fine with your simple approach until real console
-support arrives.
-
-> +static void drawchar(struct screen *sc, int x, int y, char c)
-> +{
-> +	void *buf;
-> +
-> +	buf = gui_screen_redering_buffer(sc);
-> +
-> +	rgba_blend(&sc->info, chars[(int)c],
-> +		buf, VIDEO_FONT_HEIGHT, VIDEO_FONT_WIDTH,
-> +		VIDEO_FONT_WIDTH * x, VIDEO_FONT_HEIGHT * y, 1);
-
-Is this performant enough? I would assume the whole character set should
-be prerendered for the actual framebuffer format before printing a
-string.
+It is missing here aswell. It's the last case, so this is not currently
+a bug, but it could easily turn into a bug once the next option is
+added.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
