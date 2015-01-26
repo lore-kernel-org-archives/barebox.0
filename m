@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YFh5h-0001yN-Eq
- for barebox@lists.infradead.org; Mon, 26 Jan 2015 10:40:25 +0000
+ Linux)) id 1YFh5h-0001yK-Eo
+ for barebox@lists.infradead.org; Mon, 26 Jan 2015 10:40:24 +0000
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1YFh5J-0007QX-P6
+ (envelope-from <jbe@pengutronix.de>) id 1YFh5J-0007QM-NI
  for barebox@lists.infradead.org; Mon, 26 Jan 2015 11:39:57 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <jbe@pengutronix.de>) id 1YFh5J-0007QJ-N5
+ (envelope-from <jbe@pengutronix.de>) id 1YFh5J-0007Q4-LL
  for barebox@lists.infradead.org; Mon, 26 Jan 2015 11:39:57 +0100
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Mon, 26 Jan 2015 11:39:56 +0100
-Message-Id: <1422268796-24782-10-git-send-email-jbe@pengutronix.de>
+Date: Mon, 26 Jan 2015 11:39:53 +0100
+Message-Id: <1422268796-24782-7-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1422268796-24782-1-git-send-email-jbe@pengutronix.de>
 References: <1422268796-24782-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,48 +28,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] Docs: add some info about the Olimex's Olinuxino related
- bootloader images
+Subject: [PATCH 6/9] Docs: move the individual MXS target documentation where
+ they belong to
 To: barebox@lists.infradead.org
+
+i.MX and MXS differs in their global documentation. Honor this.
 
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- Documentation/boards/mxs/Olimex-olinuxino.rst | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
- create mode 100644 Documentation/boards/mxs/Olimex-olinuxino.rst
+ Documentation/boards/imx.rst |  1 -
+ Documentation/boards/mxs.rst | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/boards/mxs/Olimex-olinuxino.rst b/Documentation/boards/mxs/Olimex-olinuxino.rst
-new file mode 100644
-index 0000000..a06eb33
---- /dev/null
-+++ b/Documentation/boards/mxs/Olimex-olinuxino.rst
-@@ -0,0 +1,26 @@
-+Olimex LTD Olinuxino
-+====================
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 21ea825..466f69c 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -101,4 +101,3 @@ or ``imx_defconfig`` instead.
+   :maxdepth: 1
+ 
+   imx/*
+-  mxs/*
+diff --git a/Documentation/boards/mxs.rst b/Documentation/boards/mxs.rst
+index 1c26826..cfcd4c7 100644
+--- a/Documentation/boards/mxs.rst
++++ b/Documentation/boards/mxs.rst
+@@ -117,3 +117,15 @@ Booting second stage
+ 
+ The second stage images can be started with the barebox :ref:`command_bootm` command or
+ just jumped into using the :ref:`command_go` command.
 +
-+The CPU module
-+--------------
++i.MXs boards
++------------
 +
-+This CPU module is based on a Freescale i.MX23 CPU.
++Not all supported boards have a description here.
 +
-+How to get the bootloader binary image
-+--------------------------------------
++.. toctree::
++  :glob:
++  :numbered:
++  :maxdepth: 1
 +
-+Using the default configuration::
-+
-+  make ARCH=arm imx233-olinuxino_defconfig
-+
-+Build the binary image::
-+
-+  make ARCH=arm CROSS_COMPILE=armv5compiler
-+
-+**NOTE:** replace the armv5compiler with your ARM v5 cross compiler.
-+
-+This produces the following images:
-+
-+ * barebox-olinuxino-imx23-bootstream.img - Use with the bcb command
-+ * barebox-olinuxino-imx23-sd.img - Use for SD cards
-+ * barebox-olinuxino-imx23-2nd.img - Use for 2nd stage booting (with :ref:`command_bootm`)
++  mxs/*
 -- 
 2.1.4
 
