@@ -2,13 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from smtp06.smtpout.orange.fr ([80.12.242.128]
  helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YFrIt-0003Py-Cz
- for barebox@lists.infradead.org; Mon, 26 Jan 2015 21:34:40 +0000
+ id 1YFrIo-0003Op-DB
+ for barebox@lists.infradead.org; Mon, 26 Jan 2015 21:34:35 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Mon, 26 Jan 2015 22:34:09 +0100
-Message-Id: <1422308050-13895-2-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1422308050-13895-1-git-send-email-robert.jarzmik@free.fr>
-References: <1422308050-13895-1-git-send-email-robert.jarzmik@free.fr>
+Date: Mon, 26 Jan 2015 22:34:08 +0100
+Message-Id: <1422308050-13895-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,140 +20,210 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] net: smc1111: extend the driver for 91c94 and 91c96
- support
+Subject: [PATCH 1/3] net: smc1111: allow platform specific accessors
 To: barebox@lists.infradead.org
 
-All the smcs family chips 91c94, 91c96, 91c100, 91c111 share almost the
-same behavior and register sets. The noticeable exceptions are coped
-with in this patch, ie :
- - 91c94 and 91c96 only have an internal 10 Mbps phy
-   The registers used for phy discovery on later chips will corrupt the
-   91c96 state.
- - 91c94 and 91c96 have a control and config register quite different
-   from their 91c1xx conterparts
-   A platform data user defined couple of registers is introduced. If
-   these values are 0, 91c1xx legacy behavior is assumed.
+Smc network IPs can be wired up in different funny ways. For example the
+lubbock pxa25x development platform wires all address lines shifted by
+2, ie. bus A2 is smc91c96 A0, bus A3 is smc91c96 A1 etc ...
+
+In order to cope with the different possible combination without
+clobbering the driver, allow the platform data to provide specific
+accessors, and put the wiring mess inside.
+
+By default, the old behaviour using the 32 bit accesses is kept.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/net/smc91111.c | 40 +++++++++++++++++++++++++++++++++++-----
- include/net/smc91111.h |  2 ++
- 2 files changed, 37 insertions(+), 5 deletions(-)
+ drivers/net/smc91111.c | 58 ++++++++++++++++++++++----------------------------
+ include/net/smc91111.h | 13 +++++++++++
+ 2 files changed, 38 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-index 3e66c4d..880bf75 100644
+index 100688c..3e66c4d 100644
 --- a/drivers/net/smc91111.c
 +++ b/drivers/net/smc91111.c
-@@ -439,6 +439,10 @@ struct smc91c111_priv {
- 	struct smc91111_accessors a;
+@@ -434,20 +434,9 @@
+ */
+ #define MEMORY_WAIT_TIME 16
+ 
+-struct accessors {
+-	void (*ob)(unsigned, void __iomem *);
+-	void (*ow)(unsigned, void __iomem *);
+-	void (*ol)(unsigned long, void __iomem *);
+-	void (*osl)(void __iomem *, const void  *, int);
+-	unsigned (*ib)(void __iomem *);
+-	unsigned (*iw)(void __iomem *);
+-	unsigned long (*il)(void __iomem *);
+-	void (*isl)(void __iomem *, void*, int);
+-};
+-
+ struct smc91c111_priv {
+ 	struct mii_bus miibus;
+-	struct accessors a;
++	struct smc91111_accessors a;
  	void __iomem *base;
  	int qemu_fixup;
-+	int version;
-+	int revision;
-+	unsigned int control_setup;
-+	unsigned int config_setup;
  };
+@@ -479,48 +468,50 @@ struct smc91c111_priv {
  
- #if (SMC_DEBUG > 2 )
-@@ -854,6 +858,7 @@ static int smc91c111_phy_read(struct mii_bus *bus, int phyaddr, int phyreg)
- static void smc91c111_reset(struct eth_device *edev)
+ #define ETH_ZLEN 60
+ 
+-static void a_outb(unsigned value, void __iomem *offset)
++static void a_outb(unsigned value, void __iomem *base, unsigned int offset)
  {
- 	struct smc91c111_priv *priv = (struct smc91c111_priv *)edev->priv;
-+	int rev_vers;
- 
- 	/* This resets the registers mostly to defaults, but doesn't
- 	   affect EEPROM.  That seems unnecessary */
-@@ -869,8 +874,11 @@ static void smc91c111_reset(struct eth_device *edev)
- 
- 	/* Release from possible power-down state */
- 	/* Configuration register is not affected by Soft Reset */
--	SMC_outw(priv, SMC_inw(priv, CONFIG_REG) | CONFIG_EPH_POWER_EN,
--			CONFIG_REG);
-+	if (priv->config_setup)
-+		SMC_outw(priv, priv->config_setup, CONFIG_REG);
-+	else
-+		SMC_outw(priv, SMC_inw(priv, CONFIG_REG) | CONFIG_EPH_POWER_EN,
-+			 CONFIG_REG);
- 
- 	SMC_SELECT_BANK(priv, 0);
- 
-@@ -883,7 +891,10 @@ static void smc91c111_reset(struct eth_device *edev)
- 
- 	/* set the control register */
- 	SMC_SELECT_BANK(priv, 1);
--	SMC_outw(priv, CTL_DEFAULT, CTL_REG);
-+	if (priv->control_setup)
-+		SMC_outw(priv, priv->control_setup, CTL_REG);
-+	else
-+		SMC_outw(priv, CTL_DEFAULT, CTL_REG);
- 
- 	/* Reset the MMU */
- 	SMC_SELECT_BANK(priv, 2);
-@@ -899,6 +910,14 @@ static void smc91c111_reset(struct eth_device *edev)
- 
- 	/* Disable all interrupts */
- 	SMC_outb(priv, 0, IM_REG);
-+
-+	/* Check chip revision (91c94, 91c96, 91c100, ...) */
-+	SMC_SELECT_BANK(priv, 3);
-+	rev_vers = SMC_inb(priv, REV_REG);
-+	priv->revision = (rev_vers >> 4) & 0xf;
-+	priv->version = rev_vers & 0xf;
-+	dev_info(edev->parent, "chip is revision=%2d, version=%2d\n",
-+		 priv->revision, priv->version);
+ 	writeb(value, offset);
  }
  
- static void smc91c111_enable(struct eth_device *edev)
-@@ -918,10 +937,16 @@ static int smc91c111_eth_open(struct eth_device *edev)
+-static void a_outw(unsigned value, void __iomem *offset)
++static void a_outw(unsigned value, void __iomem *base, unsigned int offset)
+ {
+ 	writew(value, offset);
+ }
  
- 	/* Configure the Receive/Phy Control register */
- 	SMC_SELECT_BANK(priv, 0);
--	SMC_outw(priv, RPC_DEFAULT, RPC_REG);
-+	if (priv->revision > 4)
-+		SMC_outw(priv, RPC_DEFAULT, RPC_REG);
+-static void a_outl(unsigned long value, void __iomem *offset)
++static void a_outl(unsigned long value, void __iomem *base, unsigned int offset)
+ {
+ 	writel(value, offset);
+ }
  
- 	smc91c111_enable(edev);
+-static void a_outsl(void __iomem *offset, const void *data, int count)
++static void a_outsl(void __iomem *base, unsigned int offset,
++		    const void *data, int count)
+ {
+-	writesl(offset, data, count);
++	writesl(base + offset, data, count);
+ }
  
-+	if (priv->revision <= 4) {
-+		dev_info(edev->parent, "force link at 10Mpbs on internal phy\n");
-+		return 0;
-+	}
-+
- 	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
- 				 0, PHY_INTERFACE_MODE_NA);
+-static unsigned a_inb(void __iomem *offset)
++static unsigned a_inb(void __iomem *base, unsigned int offset)
+ {
+ 	return readb(offset);
+ }
  
-@@ -1332,6 +1357,10 @@ static int smc91c111_probe(struct device_d *dev)
+-static unsigned a_inw(void __iomem *offset)
++static unsigned a_inw(void __iomem *base, unsigned int offset)
+ {
+ 	return readw(offset);
+ }
+ 
+-static unsigned long a_inl(void __iomem *offset)
++static unsigned long a_inl(void __iomem *base, unsigned int offset)
+ {
+ 	return readl(offset);
+ }
+ 
+-static inline void a_insl(void __iomem *offset, void *data, int count)
++static inline void a_insl(void __iomem *base, unsigned int offset,
++			  void *data, int count)
+ {
+-	readsl(offset, data, count);
++	readsl(base + offset, data, count);
+ }
+ 
+ /* access happens via a 32 bit bus */
+-static const struct accessors access_via_32bit = {
++static const struct smc91111_accessors access_via_32bit = {
+ 	.ob = a_outb,
+ 	.ow = a_outw,
+ 	.ol = a_outl,
+@@ -536,46 +527,46 @@ static const struct accessors access_via_32bit = {
+ static inline void SMC_outb(struct smc91c111_priv *p, unsigned value,
+ 				unsigned offset)
+ {
+-	(p->a.ob)(value, p->base + offset);
++	(p->a.ob)(value, p->base, offset);
+ }
+ 
+ static inline void SMC_outw(struct smc91c111_priv *p, unsigned value,
+ 				unsigned offset)
+ {
+-	(p->a.ow)(value, p->base + offset);
++	(p->a.ow)(value, p->base, offset);
+ }
+ 
+ static inline void SMC_outl(struct smc91c111_priv *p, unsigned long value,
+ 				unsigned offset)
+ {
+-	(p->a.ol)(value, p->base + offset);
++	(p->a.ol)(value, p->base, offset);
+ }
+ 
+ static inline void SMC_outsl(struct smc91c111_priv *p, unsigned offset,
+ 				const void *data, int count)
+ {
+-	(p->a.osl)(p->base + offset, data, count);
++	(p->a.osl)(p->base, offset, data, count);
+ }
+ 
+ static inline unsigned SMC_inb(struct smc91c111_priv *p, unsigned offset)
+ {
+-	return (p->a.ib)(p->base + offset);
++	return (p->a.ib)(p->base, offset);
+ }
+ 
+ static inline unsigned SMC_inw(struct smc91c111_priv *p, unsigned offset)
+ {
+-	return (p->a.iw)(p->base + offset);
++	return (p->a.iw)(p->base, offset);
+ }
+ 
+ static inline unsigned long SMC_inl(struct smc91c111_priv *p, unsigned offset)
+ {
+-	return (p->a.il)(p->base + offset);
++	return (p->a.il)(p->base, offset);
+ }
+ 
+ static inline void SMC_insl(struct smc91c111_priv *p, unsigned offset,
+ 				void *data, int count)
+ {
+-	(p->a.isl)(p->base + offset, data, count);
++	(p->a.isl)(p->base, offset, data, count);
+ }
+ 
+ static inline void SMC_SELECT_BANK(struct smc91c111_priv *p, int bank)
+@@ -1333,15 +1324,16 @@ static int smc91c111_probe(struct device_d *dev)
+ 	edev->priv = (struct smc91c111_priv *)(edev + 1);
+ 
+ 	priv = edev->priv;
++	priv->a = access_via_32bit;
+ 
+ 	if (dev->platform_data) {
+ 		struct smc91c111_pdata *pdata = dev->platform_data;
+ 
  		priv->qemu_fixup = pdata->qemu_fixup;
- 		if (pdata->accessors)
- 			priv->a = *pdata->accessors;
-+		if (pdata->config_setup)
-+			priv->config_setup = pdata->config_setup;
-+		if (pdata->control_setup)
-+			priv->control_setup = pdata->control_setup;
++		if (pdata->accessors)
++			priv->a = *pdata->accessors;
  	}
  
+-	priv->a = access_via_32bit;
+-
  	edev->init = smc91c111_init_dev;
-@@ -1353,7 +1382,8 @@ static int smc91c111_probe(struct device_d *dev)
- 
- 	smc91c111_reset(edev);
- 
--	mdiobus_register(&priv->miibus);
-+	if (priv->revision > 4)
-+		mdiobus_register(&priv->miibus);
- 	eth_register(edev);
- 
- 	return 0;
+ 	edev->open = smc91c111_eth_open;
+ 	edev->send = smc91c111_eth_send;
 diff --git a/include/net/smc91111.h b/include/net/smc91111.h
-index d56b1a9..56f08f0 100644
+index 0b2d49b..d56b1a9 100644
 --- a/include/net/smc91111.h
 +++ b/include/net/smc91111.h
-@@ -22,6 +22,8 @@ struct smc91111_accessors {
+@@ -7,8 +7,21 @@
+ #ifndef __SMC91111_H__
+ #define __SMC91111_H__
+ 
++struct smc91111_accessors {
++	void (*ob)(unsigned, void __iomem *, unsigned);
++	void (*ow)(unsigned, void __iomem *, unsigned);
++	void (*ol)(unsigned long, void __iomem *, unsigned);
++	void (*osl)(void __iomem *, unsigned, const void  *, int);
++	unsigned (*ib)(void __iomem *, unsigned);
++	unsigned (*iw)(void __iomem *, unsigned);
++	unsigned long (*il)(void __iomem *, unsigned);
++	void (*isl)(void __iomem *, unsigned, void*, int);
++	void *private;
++};
++
  struct smc91c111_pdata {
  	int qemu_fixup;
- 	struct smc91111_accessors *accessors;
-+	int config_setup;
-+	int control_setup;
++	struct smc91111_accessors *accessors;
  };
  
  #endif /* __SMC91111_H__ */
