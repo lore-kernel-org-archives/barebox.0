@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YFeZO-00034g-Vr
- for barebox@lists.infradead.org; Mon, 26 Jan 2015 07:58:52 +0000
-Date: Mon, 26 Jan 2015 08:58:25 +0100
+ Linux)) id 1YFeol-0002sX-6b
+ for barebox@lists.infradead.org; Mon, 26 Jan 2015 08:14:43 +0000
+Date: Mon, 26 Jan 2015 09:14:20 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150126075825.GG12209@pengutronix.de>
-References: <20150125222629.c52501c7d776cabf4317c82f@gmail.com>
+Message-ID: <20150126081420.GH12209@pengutronix.de>
+References: <1422195690-20676-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150125222629.c52501c7d776cabf4317c82f@gmail.com>
+In-Reply-To: <1422195690-20676-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picopng does not support big-endian CPUs
+Subject: Re: [RFC] [JUST DEMO] commands: implement 'fbputs' command
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jan 25, 2015 at 10:26:29PM +0400, Antony Pavlov wrote:
-> Hi All!
+On Sun, Jan 25, 2015 at 05:21:30PM +0300, Antony Pavlov wrote:
+> Mainline barebox at the moment has no framebuffer
+> console support.
+> The 'fbputs' demo command displays a text string
+> on fb device.
 > 
-> Current lib/gui/picopng.c has problems on big-endian CPUs.
+> This quick-n-dirty patch demonstates that barebox
+> framebuffer console can be easely realized.
 > 
-> Here are two examples from PNG_readPngHeader():
-> 
-> 	if (*(uint64_t *) in != PNG_SIGNATURE) {
-> ...
-> 	if (*(uint32_t *) &in[12] != CHUNK_IHDR) {
-> 
-> 
-> Using memcmp in this situation is much better, e.g.
-> 
-> +	uint8_t png_signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
-> ...
-> +	if (memcmp(in, png_signature, 8)) {
-> 
-> 
-> +	uint8_t chunk_header[4] = {0x49, 0x48, 0x44, 0x52};
-> ...
-> +	if (memcmp(&in[12], chunk_header, 4)) {
-> 
-> 
-> Current lodepng works fine on big-endian, but can we disable picopng
-> in Kconfig for big-endian CPUs?
+> I'm awaiting your comments!
 
-Can't we just fix it? Are there more difficult places than the ones
-above? If it turns out to be difficult I'm fine with adding a dependency
-to CPU_BIG_ENDIAN.
+Unfortunately real console support is not that simple, we would have to
+parse ANSI escape sequences up to some point to make it generally usable.
+
+Jean Christophe has framebuffer console patches, he'll probably comment
+on this one aswell.
+Personally I would be fine with your simple approach until real console
+support arrives.
+
+> +static void drawchar(struct screen *sc, int x, int y, char c)
+> +{
+> +	void *buf;
+> +
+> +	buf = gui_screen_redering_buffer(sc);
+> +
+> +	rgba_blend(&sc->info, chars[(int)c],
+> +		buf, VIDEO_FONT_HEIGHT, VIDEO_FONT_WIDTH,
+> +		VIDEO_FONT_WIDTH * x, VIDEO_FONT_HEIGHT * y, 1);
+
+Is this performant enough? I would assume the whole character set should
+be prerendered for the actual framebuffer format before printing a
+string.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
