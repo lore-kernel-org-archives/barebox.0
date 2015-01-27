@@ -1,14 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YG60G-0002fi-AM
- for barebox@lists.infradead.org; Tue, 27 Jan 2015 13:16:24 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id C60E9A0024C
- for <barebox@lists.infradead.org>; Tue, 27 Jan 2015 14:16:42 +0100 (CET)
-From: Stefan Christ <s.christ@phytec.de>
-Date: Tue, 27 Jan 2015 14:14:59 +0100
-Message-Id: <1422364499-31437-1-git-send-email-s.christ@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YG6OW-0007mm-NK
+ for barebox@lists.infradead.org; Tue, 27 Jan 2015 13:41:29 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 27 Jan 2015 14:41:01 +0100
+Message-Id: <1422366061-26735-1-git-send-email-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,62 +15,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX6: Fix bad block marker in imx6-bbu-nand handler
+Subject: [PATCH] watchdog: imx: error out on negative timeouts
 To: barebox@lists.infradead.org
 
-The i.MX6 NAND update handler sets all bytes of OOB data to 0x00 in pages that
-contain the FCB structure currently.  So the first and second byte which is
-used as the manufacturers bad block marker is in the 'bad block' state. A scan
-for factory bad blocks will detect these blocks as bad while they are still ok.
-
-The barebox issues a scan for factory bad blocks to rebuild the bad block table
-if the NAND is brand new or the last four blocks of flash are erased.
-
-To fix this problem set the first two bytes of OOB data to 0xFF explicitly.
-
-There is a potential chance that the bbu handler will mark a real bad block as
-factory good. That's not a problem for the ROM Loader, because the FCB is
-protected by a checksum and the hamming_13_8 encoding. Additionally the current
-implementation of the bbu handler does not check the bad block table or the
-factory bad block marker before writing the FCB at the first page of the first
-and second block.
-
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
----
- arch/arm/mach-imx/imx6-bbu-nand.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/arm/mach-imx/imx6-bbu-nand.c b/arch/arm/mach-imx/imx6-bbu-nand.c
-index fb7224c..063558b 100644
---- a/arch/arm/mach-imx/imx6-bbu-nand.c
-+++ b/arch/arm/mach-imx/imx6-bbu-nand.c
-@@ -421,6 +421,16 @@ static int imx6_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *da
- 
- 	fcb_create(fcb, mtd);
- 	encode_hamming_13_8(fcb, ecc, 512);
-+
-+	/*
-+	 * Set the first and second byte of OOB data to 0xFF, not 0x00. These
-+	 * bytes are used as the Manufacturers Bad Block Marker (MBBM). Since
-+	 * the FCB is mostly written to the first page in a block, a scan for
-+	 * factory bad blocks will detect these blocks as bad, e.g. when
-+	 * function nand_scan_bbt() is executed to build a new bad block table.
-+	 */
-+	memset(fcb_raw_page + mtd->writesize, 0xFF, 2);
-+
- 	ret = raw_write_page(mtd, fcb_raw_page, 0);
- 	if (ret)
- 		goto out;
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SSdtIG5vdCBzdXJlIHdoZXJlIGEgbmVnYXRpdmUgdGltZW91dCBjb3VsZCBjb21lIGZyb20gYnV0
+IG1ha2luZyB0aGUKY29kZSBtb3JlIHJvYnVzdCBmb3Igbm8gYWRkaXRpb25hbCBydW50aW1lIGNv
+c3QgaXMgZ29vZCBuZXZlcnRoZWxlc3MuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5p
+ZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvd2F0Y2hkb2cv
+aW14d2QuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlv
+bigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvd2F0Y2hkb2cvaW14d2QuYyBiL2RyaXZlcnMvd2F0
+Y2hkb2cvaW14d2QuYwppbmRleCAzMWMzZDBkODUzNTMuLjY2ZTlmNjg0OGY3NCAxMDA2NDQKLS0t
+IGEvZHJpdmVycy93YXRjaGRvZy9pbXh3ZC5jCisrKyBiL2RyaXZlcnMvd2F0Y2hkb2cvaW14d2Qu
+YwpAQCAtODcsNyArODcsNyBAQCBzdGF0aWMgaW50IGlteDIxX3dhdGNoZG9nX3NldF90aW1lb3V0
+KHN0cnVjdCBpbXhfd2QgKnByaXYsIGludCB0aW1lb3V0KQogCiAJZGV2X2RiZyhwcml2LT5kZXYs
+ICIlczogJWRcbiIsIF9fZnVuY19fLCB0aW1lb3V0KTsKIAotCWlmICghdGltZW91dCB8fCB0aW1l
+b3V0ID4gMTI4KQorCWlmICh0aW1lb3V0IDw9IDAgfHwgdGltZW91dCA+IDEyOCkKIAkJcmV0dXJu
+IC1FSU5WQUw7CiAKIAlpZiAodGltZW91dCA+IDApCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
