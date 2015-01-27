@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YG6OW-0007mm-NK
- for barebox@lists.infradead.org; Tue, 27 Jan 2015 13:41:29 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 27 Jan 2015 14:41:01 +0100
-Message-Id: <1422366061-26735-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Received: from mail-we0-f169.google.com ([74.125.82.169])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGARZ-00043A-65
+ for barebox@lists.infradead.org; Tue, 27 Jan 2015 18:00:55 +0000
+Received: by mail-we0-f169.google.com with SMTP id u56so16409249wes.0
+ for <barebox@lists.infradead.org>; Tue, 27 Jan 2015 10:00:28 -0800 (PST)
+From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Date: Tue, 27 Jan 2015 19:00:06 +0100
+Message-Id: <1422381606-23004-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,26 +16,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] watchdog: imx: error out on negative timeouts
+Subject: [PATCH] loadenv: fix typo in help text
 To: barebox@lists.infradead.org
 
-SSdtIG5vdCBzdXJlIHdoZXJlIGEgbmVnYXRpdmUgdGltZW91dCBjb3VsZCBjb21lIGZyb20gYnV0
-IG1ha2luZyB0aGUKY29kZSBtb3JlIHJvYnVzdCBmb3Igbm8gYWRkaXRpb25hbCBydW50aW1lIGNv
-c3QgaXMgZ29vZCBuZXZlcnRoZWxlc3MuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5p
-ZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvd2F0Y2hkb2cv
-aW14d2QuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlv
-bigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvd2F0Y2hkb2cvaW14d2QuYyBiL2RyaXZlcnMvd2F0
-Y2hkb2cvaW14d2QuYwppbmRleCAzMWMzZDBkODUzNTMuLjY2ZTlmNjg0OGY3NCAxMDA2NDQKLS0t
-IGEvZHJpdmVycy93YXRjaGRvZy9pbXh3ZC5jCisrKyBiL2RyaXZlcnMvd2F0Y2hkb2cvaW14d2Qu
-YwpAQCAtODcsNyArODcsNyBAQCBzdGF0aWMgaW50IGlteDIxX3dhdGNoZG9nX3NldF90aW1lb3V0
-KHN0cnVjdCBpbXhfd2QgKnByaXYsIGludCB0aW1lb3V0KQogCiAJZGV2X2RiZyhwcml2LT5kZXYs
-ICIlczogJWRcbiIsIF9fZnVuY19fLCB0aW1lb3V0KTsKIAotCWlmICghdGltZW91dCB8fCB0aW1l
-b3V0ID4gMTI4KQorCWlmICh0aW1lb3V0IDw9IDAgfHwgdGltZW91dCA+IDEyOCkKIAkJcmV0dXJu
-IC1FSU5WQUw7CiAKIAlpZiAodGltZW91dCA+IDApCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
+
+Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+---
+ commands/loadenv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/commands/loadenv.c b/commands/loadenv.c
+index 91ce5e7..8d6be2f 100644
+--- a/commands/loadenv.c
++++ b/commands/loadenv.c
+@@ -109,7 +109,7 @@ static int do_loadenv(int argc, char *argv[])
+ 
+ BAREBOX_CMD_HELP_START(loadenv)
+ BAREBOX_CMD_HELP_TEXT("Load environment from files in ENVFS (default /dev/env0) in")
+-BAREBOX_CMD_HELP_TEXT("DIRECTORY (default /env")
++BAREBOX_CMD_HELP_TEXT("DIRECTORY (default /env)")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT("-n", "do not overwrite existing files")
+@@ -120,7 +120,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(loadenv)
+ 	.cmd		= do_loadenv,
+ 	BAREBOX_CMD_DESC("load environment from ENVFS")
+-	BAREBOX_CMD_OPTS("{-nsd] [ENVFS] [DIRECTORY]")
++	BAREBOX_CMD_OPTS("[-nsd] [ENVFS] [DIRECTORY]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_ENV)
+ 	BAREBOX_CMD_HELP(cmd_loadenv_help)
+ BAREBOX_CMD_END
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
