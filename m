@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YG5nt-0003VP-6w
- for barebox@lists.infradead.org; Tue, 27 Jan 2015 13:03:38 +0000
+ id 1YG5zd-0002Rh-2O
+ for barebox@lists.infradead.org; Tue, 27 Jan 2015 13:15:46 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 5E336A0024C
- for <barebox@lists.infradead.org>; Tue, 27 Jan 2015 14:03:52 +0100 (CET)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Tue, 27 Jan 2015 14:02:09 +0100
-Message-Id: <1422363729-3469-1-git-send-email-w.egorov@phytec.de>
+ by root.phytec.de (Postfix) with ESMTP id 90806A0024C
+ for <barebox@lists.infradead.org>; Tue, 27 Jan 2015 14:16:02 +0100 (CET)
+From: Stefan Christ <s.christ@phytec.de>
+Date: Tue, 27 Jan 2015 14:14:19 +0100
+Message-Id: <1422364459-31395-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,173 +22,170 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH:barebox-mainline] Fix spelling: pathes -> paths
+Subject: [PATCH] ARM: i.MX6: use generic calculation in nand bbu handler
 To: barebox@lists.infradead.org
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- Documentation/boards/efi.rst         | 14 +++++++-------
- Documentation/user/booting-linux.rst |  4 ++--
- Documentation/user/variables.rst     |  2 +-
- commands/Kconfig                     |  2 +-
- commands/of_property.c               |  2 +-
- common/Kconfig                       |  6 +++---
- common/hush.c                        |  2 +-
- drivers/of/of_path.c                 |  2 +-
- scripts/genenv                       |  4 ++--
- 9 files changed, 19 insertions(+), 19 deletions(-)
+The parameters ECC Strength, BadBlockMarkerByte and BadBlockMarkerStartBit in
+the FCB structure depends on the nand chip's pagesize and oobsize. Instead of
+hardcoding these values into the imx6 bbu handler calculate these values on the
+fly. Therefore we export the necessary functions from the nand_mxs driver to
+use them in the bbu handler.
 
-diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
-index 2147cb6..b7ad40e 100644
---- a/Documentation/boards/efi.rst
-+++ b/Documentation/boards/efi.rst
-@@ -164,20 +164,20 @@ Care must be taken that a partition is only accessed either via the Block IO Pro
- the File IO Interface. Doing both at the same time will most likely result in data
- corruption on the partition
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
+---
+ arch/arm/mach-imx/Kconfig                 |  1 +
+ arch/arm/mach-imx/imx6-bbu-nand.c         | 28 +++++------------------
+ arch/arm/mach-imx/include/mach/nand_mxs.h | 37 +++++++++++++++++++++++++++++++
+ drivers/mtd/nand/nand_mxs.c               |  7 +++---
+ 4 files changed, 48 insertions(+), 25 deletions(-)
+ create mode 100644 arch/arm/mach-imx/include/mach/nand_mxs.h
+
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 9ac36e1..42074a2 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -119,6 +119,7 @@ config BAREBOX_UPDATE_IMX6_NAND
+ 	depends on BAREBOX_UPDATE
+ 	depends on MTD
+ 	depends on MTD_WRITE
++	select NAND_MXS
+ 	default y
  
--EFI device pathes
-------------------
-+EFI device paths
-+----------------
+ comment "Freescale i.MX System-on-Chip"
+diff --git a/arch/arm/mach-imx/imx6-bbu-nand.c b/arch/arm/mach-imx/imx6-bbu-nand.c
+index 1b46e51..fb7224c 100644
+--- a/arch/arm/mach-imx/imx6-bbu-nand.c
++++ b/arch/arm/mach-imx/imx6-bbu-nand.c
+@@ -32,6 +32,7 @@
+ #include <linux/mtd/mtd-abi.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/stat.h>
++#include <mach/nand_mxs.h>
  
--In EFI each device can be pointed to using a device path. Device pathes have multiple
-+In EFI each device can be pointed to using a device path. Device paths have multiple
- components. The toplevel component on X86 systems will be the PCI root complex, on
- other systems this can be the physical memory space. Each component will now descrive
- how to find the child component on the parent bus. Additional device path nodes can
--describe network addresses or filenames on partitions. Device pathes have a binary
-+describe network addresses or filenames on partitions. Device paths have a binary
- representation and a clearly defined string representation. These characteristics make
--device pathes suitable for describing boot entries. barebox could use device pathes
--to store the reference to kernels on boot media. Also device pathes could be used to
-+device paths suitable for describing boot entries. barebox could use device paths
-+to store the reference to kernels on boot media. Also device paths could be used to
- pass a root filesystem to the Kernel.
+ struct dbbt_block {
+ 	uint32_t Checksum;
+@@ -235,22 +236,9 @@ static int fcb_create(struct fcb_block *fcb, struct mtd_info *mtd)
+ 	fcb->TotalPageSize = mtd->writesize + mtd->oobsize;
+ 	fcb->SectorsPerBlock = mtd->erasesize / mtd->writesize;
  
--Currently device pathes are only integrated into barebox in a way that each EFI device
-+Currently device paths are only integrated into barebox in a way that each EFI device
- has a device parameter ``devpath`` which contains its device path:
+-	if (mtd->writesize == 2048) {
+-		fcb->EccBlock0EccType = 4;
+-	} else if (mtd->writesize == 4096) {
+-		if (mtd->oobsize == 218) {
+-			fcb->EccBlock0EccType = 8;
+-		} else if (mtd->oobsize == 128) {
+-			fcb->EccBlock0EccType = 4;
+-		} else {
+-			pr_err("Illegal oobsize %d\n", mtd->oobsize);
+-			return -EINVAL;
+-		}
+-	} else {
+-		pr_err("Illegal writesize %d\n", mtd->writesize);
+-		return -EINVAL;
+-	}
+-
++	/* Divide ECC strength by two and save the value into FCB structure. */
++	fcb->EccBlock0EccType =
++		mxs_nand_get_ecc_strength(mtd->writesize, mtd->oobsize) >> 1;
+ 	fcb->EccBlockNEccType = fcb->EccBlock0EccType;
  
- .. code-block:: sh
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 17427f3..3a8da11 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -166,7 +166,7 @@ A Bootloader Spec Entry consists of key value pairs::
-   linux      /6a9857a393724b7a981ebb5b8495b9ea/3.8.0-2.fc19.x86_64/linux
-   initrd     /6a9857a393724b7a981ebb5b8495b9ea/3.8.0-2.fc19.x86_64/initrd
+ 	/* Also hardcoded in kobs-ng */
+@@ -267,12 +255,8 @@ static int fcb_create(struct fcb_block *fcb, struct mtd_info *mtd)
+ 	/* DBBT search area starts at third block */
+ 	fcb->DBBTSearchAreaStartAddress = mtd->erasesize / mtd->writesize * 2;
  
--All pathes are absolute pathes in the partition. Bootloader Spec Entries can
-+All paths are absolute paths in the partition. Bootloader Spec Entries can
- be created manually, but there also is the ``scripts/kernel-install`` tool to
- create/list/modify entries directly on a MMC/SD card or other media. To use
- it create a SD card / USB memory stick with a /boot partition with type 0xea.
-@@ -246,7 +246,7 @@ link target is exported from the server.
+-	if (mtd->writesize == 2048) {
+-		fcb->BadBlockMarkerByte = 0x000007cf;
+-	} else {
+-		pr_err("BadBlockMarkerByte unknown for writesize %d\n", mtd->writesize);
+-		return -EINVAL;
+-	}
++	fcb->BadBlockMarkerByte = mxs_nand_mark_byte_offset(mtd);
++	fcb->BadBlockMarkerStartBit = mxs_nand_mark_bit_offset(mtd);
  
- ``boot net`` will then start the Kernel.
+ 	fcb->BBMarkerPhysicalOffset = mtd->writesize;
  
--If the pathes or names are not suitable they can be adjusted in
-+If the paths or names are not suitable they can be adjusted in
- ``/env/boot/net``:
+diff --git a/arch/arm/mach-imx/include/mach/nand_mxs.h b/arch/arm/mach-imx/include/mach/nand_mxs.h
+new file mode 100644
+index 0000000..eca3177
+--- /dev/null
++++ b/arch/arm/mach-imx/include/mach/nand_mxs.h
+@@ -0,0 +1,37 @@
++/*
++ * Copyright (C) 2015 PHYTEC Messtechnik GmbH,
++ * Author: Stefan Christ <s.christ@phytec.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef __NAND_MXS_H
++#define __NAND_MXS_H
++
++/*
++ * Functions are definied in drivers/mtd/nand/nand_mxs.c.  They are used to
++ * calculate the ECC Strength, BadBlockMarkerByte and BadBlockMarkerStartBit
++ * which are placed into the FCB structure. The i.MX6 ROM needs these
++ * parameters to read the firmware from NAND.
++ *
++ * The parameters depends on the pagesize and oobsize of NAND chips and are
++ * different for each combination. To avoid placing hardcoded values in the bbu
++ * update handler code, the generic calculation from the driver code is used.
++ */
++
++uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
++						uint32_t page_oob_size);
++
++uint32_t mxs_nand_mark_byte_offset(struct mtd_info *mtd);
++
++uint32_t mxs_nand_mark_bit_offset(struct mtd_info *mtd);
++
++#endif /* __NAND_MXS_H */
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 94101a3..4c5bdfa 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -34,6 +34,7 @@
+ #include <stmp-device.h>
+ #include <asm/mmu.h>
+ #include <mach/generic.h>
++#include <mach/nand_mxs.h>
  
- .. code-block:: sh
-diff --git a/Documentation/user/variables.rst b/Documentation/user/variables.rst
-index ea99eb6..0abc25d 100644
---- a/Documentation/user/variables.rst
-+++ b/Documentation/user/variables.rst
-@@ -79,7 +79,7 @@ of all variables with special meaning along with a short description::
+ #define	MX28_BLOCK_SFTRST				(1 << 31)
+ #define	MX28_BLOCK_CLKGATE				(1 << 30)
+@@ -231,7 +232,7 @@ static uint32_t mxs_nand_aux_status_offset(void)
+ 	return (MXS_NAND_METADATA_SIZE + 0x3) & ~0x3;
+ }
  
-   barebox:/ magicvar
-   OPTARG                           optarg for hush builtin getopt
--  PATH                             colon separated list of pathes to search for executables
-+  PATH                             colon separated list of paths to search for executables
-   PS1                              hush prompt
-   armlinux_architecture            ARM machine ID
-   armlinux_system_rev              ARM system revision
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 509e935..e4f68e7 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2018,7 +2018,7 @@ config CMD_OF_PROPERTY
+-static inline uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
++uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
+ 						uint32_t page_oob_size)
+ {
+ 	int ecc_chunk_count = mxs_nand_ecc_chunk_cnt(page_data_size);
+@@ -294,14 +295,14 @@ static inline uint32_t mxs_nand_get_mark_offset(uint32_t page_data_size,
+ 	return block_mark_bit_offset;
+ }
  
- 	  Valid formats for values:
- 	  <0x00112233 4 05> - an array of cells. cells not beginning with a digit are
--                    interpreted as node pathes and converted to phandles
-+                    interpreted as node paths and converted to phandles
- 	  [00 11 22 .. nn]  - byte stream
- 	  If the value does not start with '<' or '[' it is interpreted as string
+-static uint32_t mxs_nand_mark_byte_offset(struct mtd_info *mtd)
++uint32_t mxs_nand_mark_byte_offset(struct mtd_info *mtd)
+ {
+ 	uint32_t ecc_strength;
+ 	ecc_strength = mxs_nand_get_ecc_strength(mtd->writesize, mtd->oobsize);
+ 	return mxs_nand_get_mark_offset(mtd->writesize, ecc_strength) >> 3;
+ }
  
-diff --git a/commands/of_property.c b/commands/of_property.c
-index e0154fc..ae6bfd4 100644
---- a/commands/of_property.c
-+++ b/commands/of_property.c
-@@ -308,7 +308,7 @@ BAREBOX_CMD_HELP_OPT ("-d",  "delete property")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Valid formats for values:")
- BAREBOX_CMD_HELP_TEXT("<0x00112233 4 05> - an array of cells. cells not beginning with a digit are")
--BAREBOX_CMD_HELP_TEXT("                    interpreted as node pathes and converted to phandles")
-+BAREBOX_CMD_HELP_TEXT("                    interpreted as node paths and converted to phandles")
- BAREBOX_CMD_HELP_TEXT("[00 11 22 .. nn]  - byte stream")
- BAREBOX_CMD_HELP_TEXT("If the value does not start with '<' or '[' it is interpreted as string")
- BAREBOX_CMD_HELP_END
-diff --git a/common/Kconfig b/common/Kconfig
-index 00e4f36..d437343 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -674,9 +674,9 @@ config DEFAULT_ENVIRONMENT_PATH
- 	depends on DEFAULT_ENVIRONMENT
- 	prompt "Default environment path"
- 	help
--	  Space separated list of pathes the default environment will be taken from.
--	  Relative pathes will be relative to the barebox Toplevel dir, but absolute
--	  pathes are fine aswell.
-+	  Space separated list of paths the default environment will be taken from.
-+	  Relative paths will be relative to the barebox Toplevel dir, but absolute
-+	  paths are fine aswell.
- 
- config BAREBOXENV_TARGET
- 	bool
-diff --git a/common/hush.c b/common/hush.c
-index b23b3f6..ffd2513 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -2020,7 +2020,7 @@ BAREBOX_CMD_START(getopt)
- BAREBOX_CMD_END
- #endif
- 
--BAREBOX_MAGICVAR(PATH, "colon separated list of pathes to search for executables");
-+BAREBOX_MAGICVAR(PATH, "colon separated list of paths to search for executables");
- #ifdef CONFIG_HUSH_FANCY_PROMPT
- BAREBOX_MAGICVAR(PS1, "hush prompt");
- #endif
-diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index 6a2d634..f0fd917 100644
---- a/drivers/of/of_path.c
-+++ b/drivers/of/of_path.c
-@@ -113,7 +113,7 @@ out:
-  * @outpath: if this function returns 0 outpath will contain the path belonging
-  *           to the input path description. Must be freed with free().
-  *
-- * pathes in the devicetree have the form of a multistring property. The first
-+ * paths in the devicetree have the form of a multistring property. The first
-  * string contains the full path to the physical device containing the path.
-  * The remaining strings have the form "<type>:<options>". Currently supported
-  * for <type> are:
-diff --git a/scripts/genenv b/scripts/genenv
-index 9f22ade..5ebe699 100755
---- a/scripts/genenv
-+++ b/scripts/genenv
-@@ -2,8 +2,8 @@
- 
- # Generate the default environment file from a list of directories
- # usage: genenv <basedir> <objdir> <target> <dir>...
--# where <basedir> is the base directory for relative pathes in <dir>
--# where <objdir> is the base directory for relative pathes for result
-+# where <basedir> is the base directory for relative paths in <dir>
-+# where <objdir> is the base directory for relative paths for result
- # and <target> is the resulting binary environment
- objtree=$2
- basedir=$1
+-static uint32_t mxs_nand_mark_bit_offset(struct mtd_info *mtd)
++uint32_t mxs_nand_mark_bit_offset(struct mtd_info *mtd)
+ {
+ 	uint32_t ecc_strength;
+ 	ecc_strength = mxs_nand_get_ecc_strength(mtd->writesize, mtd->oobsize);
 -- 
 1.9.1
 
