@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGN7K-0000Ft-6J
- for barebox@lists.infradead.org; Wed, 28 Jan 2015 07:32:51 +0000
+ Linux)) id 1YGN7D-0000FH-3V
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 07:32:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 28 Jan 2015 08:32:15 +0100
-Message-Id: <1422430339-11969-12-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 28 Jan 2015 08:32:18 +0100
+Message-Id: <1422430339-11969-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1422430339-11969-1-git-send-email-s.hauer@pengutronix.de>
 References: <1422430339-11969-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,226 +21,224 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/15] pinctrl: Add MXS pinctrl driver
+Subject: [PATCH 14/15] ARM: MXS: power-init: Add parameters to
+ mx28_power_init()
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds a device tree pinctrl driver for MXS.
+Instead of introducing new functions each time a new power supply
+situation is to be added, this patch adds parameters to mx28_power_init.
+
+Right now there are three parameters:
+
+- has_battery - true when this board has a battery.
+- use_battery_input - true when this board is supplied from the
+  battery input, but has a DC source instead of a real battery
+- use_5v_input - true when this board can use the 5V input
+
+The third one is introduced with this patch and allow to boot a board from 5v
+(USB) source only. The main necessary change this needs is that the DC-DC
+converter must always be sourced from DCDC_4P2 (DROPOUT_CTRL field of
+HW_POWER_DCDC4P2)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pinctrl/Kconfig       |   7 ++
- drivers/pinctrl/Makefile      |   1 +
- drivers/pinctrl/pinctrl-mxs.c | 171 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 179 insertions(+)
- create mode 100644 drivers/pinctrl/pinctrl-mxs.c
+ arch/arm/boards/freescale-mx28-evk/lowlevel.c |  2 +-
+ arch/arm/boards/karo-tx28/lowlevel.c          |  2 +-
+ arch/arm/mach-mxs/include/mach/init.h         |  8 ++--
+ arch/arm/mach-mxs/power-init.c                | 67 ++++++++++++++++-----------
+ 4 files changed, 47 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 4cbc167..5c69928 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -37,6 +37,13 @@ comment "OFDEVICE is not enabled."
- comment "Without device tree support PINCTRL won't do anything"
- endif
+diff --git a/arch/arm/boards/freescale-mx28-evk/lowlevel.c b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+index a46a080..1f56756 100644
+--- a/arch/arm/boards/freescale-mx28-evk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx28-evk/lowlevel.c
+@@ -43,7 +43,7 @@ static noinline void freescale_mx28evk_init(void)
  
-+config PINCTRL_MXS
-+	bool "MXS pinctrl"
-+	depends on ARCH_MXS
-+	default ARCH_MXS
-+	help
-+	  This pinmux controller is found on i.MX23,28
-+
- config PINCTRL_ROCKCHIP
- 	select GPIO_GENERIC
- 	select MFD_SYSCON
-diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
-index 724e6d7..af9b30d 100644
---- a/drivers/pinctrl/Makefile
-+++ b/drivers/pinctrl/Makefile
-@@ -3,6 +3,7 @@ obj-$(CONFIG_PINCTRL_AT91) += pinctrl-at91.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V1) += imx-iomux-v1.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V2) += imx-iomux-v2.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V3) += imx-iomux-v3.o
-+obj-$(CONFIG_PINCTRL_MXS) += pinctrl-mxs.o
- obj-$(CONFIG_PINCTRL_ROCKCHIP) += pinctrl-rockchip.o
- obj-$(CONFIG_PINCTRL_SINGLE) += pinctrl-single.o
- obj-$(CONFIG_PINCTRL_TEGRA20) += pinctrl-tegra20.o
-diff --git a/drivers/pinctrl/pinctrl-mxs.c b/drivers/pinctrl/pinctrl-mxs.c
-new file mode 100644
-index 0000000..ec0aaec
---- /dev/null
-+++ b/drivers/pinctrl/pinctrl-mxs.c
-@@ -0,0 +1,171 @@
+ 	pr_debug("initializing power...\n");
+ 
+-	mx28_power_init_battery_input();
++	mx28_power_init(0, 1, 0);
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+diff --git a/arch/arm/boards/karo-tx28/lowlevel.c b/arch/arm/boards/karo-tx28/lowlevel.c
+index c5fdda1..96a8b9b 100644
+--- a/arch/arm/boards/karo-tx28/lowlevel.c
++++ b/arch/arm/boards/karo-tx28/lowlevel.c
+@@ -43,7 +43,7 @@ static noinline void karo_tx28_init(void)
+ 
+ 	pr_debug("initializing power...\n");
+ 
+-	mx28_power_init_battery_input();
++	mx28_power_init(0, 1, 0);
+ 
+ 	pr_debug("initializing SDRAM...\n");
+ 
+diff --git a/arch/arm/mach-mxs/include/mach/init.h b/arch/arm/mach-mxs/include/mach/init.h
+index 1f9d8d4..90b413e 100644
+--- a/arch/arm/mach-mxs/include/mach/init.h
++++ b/arch/arm/mach-mxs/include/mach/init.h
+@@ -12,10 +12,10 @@
+ 
+ void mxs_early_delay(int delay);
+ 
+-void mx23_power_init(void);
+-void mx23_power_init_battery_input(void);
+-void mx28_power_init(void);
+-void mx28_power_init_battery_input(void);
++void mx23_power_init(int __has_battery, int __use_battery_input,
++		int __use_5v_input);
++void mx28_power_init(int __has_battery, int __use_battery_input,
++		int __use_5v_input);
+ void mxs_power_wait_pswitch(void);
+ 
+ extern uint32_t mx28_dram_vals[];
+diff --git a/arch/arm/mach-mxs/power-init.c b/arch/arm/mach-mxs/power-init.c
+index 5d4d089..595b51c 100644
+--- a/arch/arm/mach-mxs/power-init.c
++++ b/arch/arm/mach-mxs/power-init.c
+@@ -24,6 +24,22 @@
+ #include <mach/regs-rtc.h>
+ #include <mach/regs-lradc.h>
+ 
 +/*
-+ * pinctrl-mxs.c - MXS pinctrl support
-+ *
-+ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
++ * has_battery - true when this board has a battery.
 + */
++static int has_battery;
 +
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <of.h>
-+#include <pinctrl.h>
-+#include <malloc.h>
-+#include <stmp-device.h>
++/*
++ * use_battery_input - true when this board is supplied from the
++ * battery input, but has a DC source instead of a real battery
++ */
++static int use_battery_input;
 +
-+struct mxs_pinctrl {
-+	void __iomem *base;
-+	struct pinctrl_device pinctrl;
-+};
++/*
++ * use_5v_input - true when this board can use the 5V input
++ */
++static int use_5v_input;
 +
-+#define PINID(bank, pin)	((bank) * 32 + (pin))
-+#define MUXID_TO_PINID(m)	PINID((m) >> 12 & 0xf, (m) >> 4 & 0xff)
-+#define MUXID_TO_MUXSEL(m)	((m) & 0xf)
-+#define PINID_TO_BANK(p)	((p) >> 5)
-+#define PINID_TO_PIN(p)		((p) % 32)
+ static void mxs_power_status(void)
+ {
+ 	struct mxs_power_regs *power_regs =
+@@ -472,7 +488,7 @@ static void mxs_power_enable_4p2(void)
+ 	struct mxs_power_regs *power_regs =
+ 		(struct mxs_power_regs *)IMX_POWER_BASE;
+ 	uint32_t vdddctrl, vddactrl, vddioctrl;
+-	uint32_t tmp, tmp2;
++	uint32_t tmp, tmp2, dropout_ctrl;
+ 
+ 	vdddctrl = readl(&power_regs->hw_power_vdddctrl);
+ 	vddactrl = readl(&power_regs->hw_power_vddactrl);
+@@ -498,10 +514,15 @@ static void mxs_power_enable_4p2(void)
+ 		POWER_5VCTRL_HEADROOM_ADJ_MASK,
+ 		0x4 << POWER_5VCTRL_HEADROOM_ADJ_OFFSET);
+ 
++	if (has_battery || use_battery_input)
++		dropout_ctrl = POWER_DCDC4P2_DROPOUT_CTRL_SRC_SEL;
++	else
++		dropout_ctrl = POWER_DCDC4P2_DROPOUT_CTRL_SRC_4P2;
 +
-+static int mxs_pinctrl_set_state(struct pinctrl_device *pdev, struct device_node *np)
-+{
-+	struct mxs_pinctrl *iomux = container_of(pdev, struct mxs_pinctrl, pinctrl);
-+	const __be32 *list;
-+	int npins, size, i;
-+	u32 val, ma, vol, pull;
-+	int ret;
-+	int ma_present = 0, vol_present = 0, pull_present = 0;
+ 	clrsetbits_le32(&power_regs->hw_power_dcdc4p2,
+ 		POWER_DCDC4P2_DROPOUT_CTRL_MASK,
+ 		POWER_DCDC4P2_DROPOUT_CTRL_100MV |
+-		POWER_DCDC4P2_DROPOUT_CTRL_SRC_SEL);
++		dropout_ctrl);
+ 
+ 	clrsetbits_le32(&power_regs->hw_power_5vctrl,
+ 		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
+@@ -1162,11 +1183,16 @@ static void mx23_ungate_power(void)
+  * This function calls all the power block initialization functions in
+  * proper sequence to start the power block.
+  */
+-static void __mx23_power_init(int has_battery)
++void mx23_power_init(int __has_battery, int __use_battery_input,
++		int __use_5v_input)
+ {
+ 	struct mxs_power_regs *power_regs =
+ 		(struct mxs_power_regs *)IMX_POWER_BASE;
+ 
++	has_battery = __has_battery;
++	use_battery_input = __use_battery_input;
++	use_5v_input = __use_5v_input;
 +
-+	dev_dbg(iomux->pinctrl.dev, "set state: %s\n", np->full_name);
+ 	mx23_ungate_power();
+ 
+ 	mxs_power_clock2xtal();
+@@ -1180,8 +1206,10 @@ static void __mx23_power_init(int has_battery)
+ 
+ 	if (has_battery)
+ 		mxs_power_configure_power_source();
+-	else
++	else if (use_battery_input)
+ 		mxs_enable_battery_input();
++	else if (use_5v_input)
++		mxs_boot_valid_5v();
+ 
+ 	mxs_power_clock2pll();
+ 
+@@ -1210,27 +1238,22 @@ static void __mx23_power_init(int has_battery)
+ 	mxs_early_delay(1000);
+ }
+ 
+-void mx23_power_init(void)
+-{
+-	__mx23_power_init(1);
+-}
+-
+-void mx23_power_init_battery_input(void)
+-{
+-	__mx23_power_init(0);
+-}
+-
+ /**
+  * mx28_power_init() - The power block init main function
+  *
+  * This function calls all the power block initialization functions in
+  * proper sequence to start the power block.
+  */
+-static void __mx28_power_init(int has_battery)
++void mx28_power_init(int __has_battery, int __use_battery_input,
++		int __use_5v_input)
+ {
+ 	struct mxs_power_regs *power_regs =
+ 		(struct mxs_power_regs *)IMX_POWER_BASE;
+ 
++	has_battery = __has_battery;
++	use_battery_input = __use_battery_input;
++	use_5v_input = __use_5v_input;
 +
-+	list = of_get_property(np, "fsl,pinmux-ids", &size);
-+	if (!list)
-+		return -EINVAL;
-+
-+	if (!size || size % 4) {
-+		dev_err(iomux->pinctrl.dev, "Invalid fsl,pins property in %s\n",
-+				np->full_name);
-+		return -EINVAL;
-+	}
-+
-+	npins = size / 4;
-+
-+	ret = of_property_read_u32(np, "fsl,drive-strength", &ma);
-+	if (!ret)
-+		ma_present = 1;
-+
-+	ret = of_property_read_u32(np, "fsl,voltage", &vol);
-+	if (!ret)
-+		vol_present = 1;
-+
-+	ret = of_property_read_u32(np, "fsl,pull-up", &pull);
-+	if (!ret)
-+		pull_present = 1;
-+
-+	for (i = 0; i < npins; i++) {
-+		int muxsel, pinid, bank, pin, shift;
-+		void __iomem *reg;
-+
-+		val = be32_to_cpu(*list++);
-+
-+		muxsel = MUXID_TO_MUXSEL(val);
-+		pinid = MUXID_TO_PINID(val);
-+
-+		bank = PINID_TO_BANK(pinid);
-+		pin = PINID_TO_PIN(pinid);
-+		reg = iomux->base + 0x100;
-+		reg += bank * 0x20 + pin / 16 * 0x10;
-+		shift = pin % 16 * 2;
-+
-+		writel(0x3 << shift, reg + STMP_OFFSET_REG_CLR);
-+		writel(muxsel << shift, reg + STMP_OFFSET_REG_SET);
-+
-+		dev_dbg(iomux->pinctrl.dev, "pin %d, mux %d, ma: %d, vol: %d, pull: %d\n",
-+				pinid, muxsel, ma, vol, pull);
-+
-+		/* drive */
-+		reg = iomux->base + 0x300;
-+		reg += bank * 0x40 + pin / 8 * 0x10;
-+
-+		/* mA */
-+		if (ma_present) {
-+			shift = pin % 8 * 4;
-+			writel(0x3 << shift, reg + STMP_OFFSET_REG_CLR);
-+			writel(ma << shift, reg + STMP_OFFSET_REG_SET);
-+		}
-+
-+		/* vol */
-+		if (vol_present) {
-+			shift = pin % 8 * 4 + 2;
-+			if (vol)
-+				writel(1 << shift, reg + STMP_OFFSET_REG_SET);
-+			else
-+				writel(1 << shift, reg + STMP_OFFSET_REG_CLR);
-+		}
-+
-+		/* pull */
-+		if (pull_present) {
-+			reg = iomux->base + 0x600;
-+			reg += bank * 0x10;
-+			shift = pin;
-+			if (pull)
-+				writel(1 << shift, reg + STMP_OFFSET_REG_SET);
-+			else
-+				writel(1 << shift, reg + STMP_OFFSET_REG_CLR);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static struct pinctrl_ops mxs_pinctrl_ops = {
-+	.set_state = mxs_pinctrl_set_state,
-+};
-+
-+static int mxs_pinctrl_probe(struct device_d *dev)
-+{
-+	struct mxs_pinctrl *iomux;
-+	int ret = 0;
-+
-+	iomux = xzalloc(sizeof(*iomux));
-+
-+	iomux->base = dev_get_mem_region(dev, 0);
-+
-+	iomux->pinctrl.dev = dev;
-+	iomux->pinctrl.ops = &mxs_pinctrl_ops;
-+
-+	ret = pinctrl_register(&iomux->pinctrl);
-+	if (ret)
-+		free(iomux);
-+
-+	return ret;
-+}
-+
-+static __maybe_unused struct of_device_id mxs_pinctrl_dt_ids[] = {
-+	{
-+		.compatible = "fsl,imx28-pinctrl",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d mxs_pinctrl_driver = {
-+	.name		= "mxs-pinctrl",
-+	.probe		= mxs_pinctrl_probe,
-+	.of_compatible	= DRV_OF_COMPAT(mxs_pinctrl_dt_ids),
-+};
-+
-+static int mxs_pinctrl_init(void)
-+{
-+	return platform_driver_register(&mxs_pinctrl_driver);
-+}
-+postcore_initcall(mxs_pinctrl_init);
+ 	mxs_power_status();
+ 	mxs_power_clock2xtal();
+ 	mxs_power_set_auto_restart();
+@@ -1243,8 +1266,10 @@ static void __mx28_power_init(int has_battery)
+ 
+ 	if (has_battery)
+ 		mxs_power_configure_power_source();
+-	else
++	else if (use_battery_input)
+ 		mxs_enable_battery_input();
++	else if (use_5v_input)
++		mxs_boot_valid_5v();
+ 
+ 	mxs_power_clock2pll();
+ 
+@@ -1270,16 +1295,6 @@ static void __mx28_power_init(int has_battery)
+ 	mxs_power_status();
+ }
+ 
+-void mx28_power_init(void)
+-{
+-	__mx28_power_init(1);
+-}
+-
+-void mx28_power_init_battery_input(void)
+-{
+-	__mx28_power_init(0);
+-}
+-
+ /**
+  * mxs_power_wait_pswitch() - Wait for power switch to be pressed
+  *
 -- 
 2.1.4
 
