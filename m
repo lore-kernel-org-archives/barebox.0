@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3.altran.com ([194.98.79.84] helo=smtp5.altran.com)
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]
+ helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGSmb-0000XJ-5K
- for barebox@lists.infradead.org; Wed, 28 Jan 2015 13:35:49 +0000
-From: DI PEDE Michele <michele.dipede@altran.com>
-Date: Wed, 28 Jan 2015 14:35:19 +0100
-Message-ID: <1588230.G27jqyn2gQ@linux-small.site>
-In-Reply-To: <CAGocsp1GAvjoo7fEs6i+vNRHqKgeQ+e4rQOdzsJKyxCEMCLw=Q@mail.gmail.com>
-References: <CAA4bVAHFEo=Si7NNXXFdR3vWyzpbVms8Txa8wy6MCS_aKyZVAA@mail.gmail.com>
- <CAOngqVX6ZPyUnfpEaNtGZey4Q+sfLNHeOqtt5_AMHH94=uuduw@mail.gmail.com>
- <CAGocsp1GAvjoo7fEs6i+vNRHqKgeQ+e4rQOdzsJKyxCEMCLw=Q@mail.gmail.com>
+ id 1YGbUG-0007cy-7h
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 22:53:29 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1422308027-13836-1-git-send-email-robert.jarzmik@free.fr>
+ <1422308027-13836-2-git-send-email-robert.jarzmik@free.fr>
+ <20150128090028.GB12209@pengutronix.de>
+Date: Wed, 28 Jan 2015 23:53:02 +0100
+In-Reply-To: <20150128090028.GB12209@pengutronix.de> (Sascha Hauer's message
+ of "Wed, 28 Jan 2015 10:00:28 +0100")
+Message-ID: <87oapio6up.fsf@free.fr>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,59 +25,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: picotcp barebox integration
-To: barebox <barebox@lists.infradead.org>
-Cc: Daniele Lacamera <daniele.lacamera@altran.be>
+Subject: Re: [PATCH 2/2] ARM: pxa: add lubbock board support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi all,
-HEAD of development branch contains the required API for a smooth integration 
-with Barebox.
-User manual contains all the information for use them. There is also a small 
-demo TFTP client that show how to use the application driven interface 
-test/test_tftp_app_client.c. To build it just do make clean; make test; cd 
-test; make.
-Now should be easy to integrate out stack in Barebox code.
-Let me know how the integration effort proceed. We could provide proper 
-support from our side to speed up things.
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-If you have any question please don't esitate to contact us
+> On Mon, Jan 26, 2015 at 10:33:47PM +0100, Robert Jarzmik wrote:
+>> +
+>> +static int lubbock_mem_init(void)
+>> +{
+>> +	arm_add_mem_device("ram0", 0xa0000000, SZ_64M);
+>> +	arm_add_mem_device("sram0", 0x0a000000, SZ_1M);
+>
+> When doing this you'll end up with the SRAM being in ATAGS which is
+> probably not what you want. Use add_mem_device() instead.
+Right, for v2.
 
-Best regards
-Michele Di Pede
+> No hardcoded MAC addresses please. barebox generates a random MAC
+> address for you if your board is unable to provide a real one.
 
-Friday 19 December 2014 18:28:30, Michele Di Pede wrote:
-> Hi all,
-> I'm been very busy but I plan to work on the TFPT during the coming holidays
-> to complete the it.
-> 
-> Regards
-> 
-> On Fri, Nov 28, 2014 at 8:38 PM, Daniele Lacamera
-> 
-> <daniele.lacamera@tass.be> wrote:
-> > Hi all,
-> > 
-> > Michele has been busy with another assignment lately, but he has also
-> > been working on the features you requested. He will update you on the
-> > status of his TFTP branch soon.
-> > 
-> > Thanks
-> > 
-> > /d
-> > 
-> > On Fri, Nov 21, 2014 at 3:25 PM, Antony Pavlov <antonynpavlov@gmail.com> 
-wrote:
-> >> Hi!
-> >> 
-> >> What is current picotcp barebox integration status?
-> >> 
-> >> AFAIR latest picotcp-barebox integration discussion thread is
-> >> http://lists.infradead.org/pipermail/barebox/2014-September/020732.html
-> >> 
-> >> --
-> >> Best regards,
-> >> 
-> >>   Antony Pavlov
+I'll remove that from the upstreamed patch. I'll keep it for me for my ISP
+router to give me consistently the same IP address through DHCP.
+
+>> +dhcp -H lubbock
+>
+> dhcp during init time? This unnecessarily delays the boot process when
+> booting from flash.
+>
+> This environment looks very specific to your usecase. Can't you just use
+> the generic defenv-2 template?
+I'll try for v2, yes.
+Speaking of which, this implies one redundant information :
+ - the env/init/mtdpart-nor to define partitions (including bareboxenv)
+ - the code to add env0:
+   devfs_add_partition("nor0", SZ_2M, SZ_256K, DEVFS_PARTITION_FIXED, "env0")
+
+This means that if the partition scheme changes, barebox binary has to be
+recompiled and reflashed. Isn't there a better way ? (that was what my
+mtd_env_override tried to do btw).
+
+Cheers.
+
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
