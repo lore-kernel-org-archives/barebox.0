@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.mei.co.jp ([133.183.100.20])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGP44-0003cN-Nq
- for barebox@lists.infradead.org; Wed, 28 Jan 2015 09:37:37 +0000
-Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
- t0S9bA6Y013592
- for <barebox@lists.infradead.org>; Wed, 28 Jan 2015 18:37:10 +0900 (JST)
-Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili13) with ESMTP id t0S9bBJ03689
- for <barebox@lists.infradead.org>; Wed, 28 Jan 2015 18:37:11 +0900
-From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Wed, 28 Jan 2015 18:37:08 +0900
-Message-Id: <1422437828-2106-1-git-send-email-yamada.m@jp.panasonic.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YGPSn-0006Pb-AS
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 10:03:10 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Wed, 28 Jan 2015 11:02:36 +0100
+Message-Id: <1422439356-9774-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,33 +19,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: fix a wrong comment about relocate_to_adr
+Subject: [PATCH] defaultenv: generate force-built-in (zero) environment file
 To: barebox@lists.infradead.org
 
-The relocated_to_adr does not clear the .bss section.
-It is done by the setup_c routine.
-
-Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
+ .gitignore          | 1 +
+ defaultenv/Makefile | 8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
- arch/arm/cpu/setupc.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/cpu/setupc.S b/arch/arm/cpu/setupc.S
-index 2df2683..c232b08 100644
---- a/arch/arm/cpu/setupc.S
-+++ b/arch/arm/cpu/setupc.S
-@@ -40,7 +40,7 @@ ENDPROC(setup_c)
- /*
-  * void relocate_to_adr(unsigned long targetadr)
-  *
-- * Copy binary to targetadr, relocate code, clear bss and continue
-+ * Copy binary to targetadr, relocate code and continue
-  * executing at new address.
-  */
- .section .text.relocate_to_adr
+diff --git a/.gitignore b/.gitignore
+index 0456bfd..1b48213 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -50,6 +50,7 @@ barebox-flash-image
+ System.map
+ Module.symvers
+ barebox_default_env*
++barebox_zero_env
+ 
+ #
+ # git files that we don't want to ignore even it they are dot-files
+diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+index fc679eb..8a001ec 100644
+--- a/defaultenv/Makefile
++++ b/defaultenv/Makefile
+@@ -3,7 +3,7 @@ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU) += defaultenv-2-menu
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU) += defaultenv-2-dfu
+ bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-1
+ obj-$(CONFIG_DEFAULT_ENVIRONMENT) += defaultenv.o
+-extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX)
++extra-y += barebox_default_env barebox_default_env.h barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) barebox_zero_env
+ 
+ $(obj)/defaultenv.o: $(obj)/barebox_default_env.h
+ 
+@@ -22,3 +22,9 @@ cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c "__aligned(4) defaul
+ 
+ $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) FORCE
+ 	$(call if_changed,env_h)
++
++quiet_cmd_env_zero = ENVZ    $@
++cmd_env_zero = ($(srctree)/scripts/bareboxenv -z $(CONFIG_DEFAULT_ENVIRONMENT_PATH) $@)
++
++$(obj)/barebox_zero_env: FORCE
++	$(call cmd,env_zero)
 -- 
-1.9.1
+2.1.4
 
 
 _______________________________________________
