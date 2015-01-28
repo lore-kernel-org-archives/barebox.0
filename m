@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-f169.google.com ([74.125.82.169])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGARZ-00043A-65
- for barebox@lists.infradead.org; Tue, 27 Jan 2015 18:00:55 +0000
-Received: by mail-we0-f169.google.com with SMTP id u56so16409249wes.0
- for <barebox@lists.infradead.org>; Tue, 27 Jan 2015 10:00:28 -0800 (PST)
-From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-Date: Tue, 27 Jan 2015 19:00:06 +0100
-Message-Id: <1422381606-23004-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGN6U-0008RK-0e
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 07:31:59 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id D7A77A0035F
+ for <barebox@lists.infradead.org>; Wed, 28 Jan 2015 08:32:13 +0100 (CET)
+From: Stefan Christ <s.christ@phytec.de>
+Date: Wed, 28 Jan 2015 08:30:28 +0100
+Message-Id: <1422430228-15758-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] loadenv: fix typo in help text
+Subject: [PATCH] imx6: add partitions on SPI NOR for PFLA02
 To: barebox@lists.infradead.org
 
-From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
+Add partitions oftree and kernel on SPI NOR and increase size of barebox and
+barebox-environment partition.
 
-Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
 ---
- commands/loadenv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/commands/loadenv.c b/commands/loadenv.c
-index 91ce5e7..8d6be2f 100644
---- a/commands/loadenv.c
-+++ b/commands/loadenv.c
-@@ -109,7 +109,7 @@ static int do_loadenv(int argc, char *argv[])
+diff --git a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+index 32ce088..e2343bf 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pfla02.dtsi
+@@ -48,14 +48,23 @@
  
- BAREBOX_CMD_HELP_START(loadenv)
- BAREBOX_CMD_HELP_TEXT("Load environment from files in ENVFS (default /dev/env0) in")
--BAREBOX_CMD_HELP_TEXT("DIRECTORY (default /env")
-+BAREBOX_CMD_HELP_TEXT("DIRECTORY (default /env)")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-n", "do not overwrite existing files")
-@@ -120,7 +120,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(loadenv)
- 	.cmd		= do_loadenv,
- 	BAREBOX_CMD_DESC("load environment from ENVFS")
--	BAREBOX_CMD_OPTS("{-nsd] [ENVFS] [DIRECTORY]")
-+	BAREBOX_CMD_OPTS("[-nsd] [ENVFS] [DIRECTORY]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_ENV)
- 	BAREBOX_CMD_HELP(cmd_loadenv_help)
- BAREBOX_CMD_END
+ 		partition@0 {
+ 			label = "barebox";
+-			reg = <0x0 0x80000>;
++			reg = <0x0 0x100000>;
+ 		};
+ 
+ 		partition@1 {
+ 			label = "barebox-environment";
+-			reg = <0x80000 0x10000>;
++			reg = <0x100000 0x20000>;
+ 		};
+ 
++		partition@2 {
++			label = "oftree";
++			reg = <0x120000 0x20000>;
++		};
++
++		partition@3 {
++			label = "kernel";
++			reg = <0x140000 0x0>;
++		};
+ 	};
+ };
+ 
 -- 
 1.9.1
 
