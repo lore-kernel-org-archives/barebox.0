@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGOkB-0008P5-66
- for barebox@lists.infradead.org; Wed, 28 Jan 2015 09:17:04 +0000
-Date: Wed, 28 Jan 2015 10:16:41 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150128091641.GI12209@pengutronix.de>
-References: <1422430228-15758-1-git-send-email-s.christ@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1422430228-15758-1-git-send-email-s.christ@phytec.de>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGP44-0003cN-Nq
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 09:37:37 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
+ t0S9bA6Y013592
+ for <barebox@lists.infradead.org>; Wed, 28 Jan 2015 18:37:10 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili13) with ESMTP id t0S9bBJ03689
+ for <barebox@lists.infradead.org>; Wed, 28 Jan 2015 18:37:11 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Date: Wed, 28 Jan 2015 18:37:08 +0900
+Message-Id: <1422437828-2106-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +21,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx6: add partitions on SPI NOR for PFLA02
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: fix a wrong comment about relocate_to_adr
+To: barebox@lists.infradead.org
 
-On Wed, Jan 28, 2015 at 08:30:28AM +0100, Stefan Christ wrote:
-> Add partitions oftree and kernel on SPI NOR and increase size of barebox and
-> barebox-environment partition.
-> 
-> Signed-off-by: Stefan Christ <s.christ@phytec.de>
-> ---
->  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
+The relocated_to_adr does not clear the .bss section.
+It is done by the setup_c routine.
 
-Applied, thanks
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+---
 
-Sascha
+ arch/arm/cpu/setupc.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
+diff --git a/arch/arm/cpu/setupc.S b/arch/arm/cpu/setupc.S
+index 2df2683..c232b08 100644
+--- a/arch/arm/cpu/setupc.S
++++ b/arch/arm/cpu/setupc.S
+@@ -40,7 +40,7 @@ ENDPROC(setup_c)
+ /*
+  * void relocate_to_adr(unsigned long targetadr)
+  *
+- * Copy binary to targetadr, relocate code, clear bss and continue
++ * Copy binary to targetadr, relocate code and continue
+  * executing at new address.
+  */
+ .section .text.relocate_to_adr
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
