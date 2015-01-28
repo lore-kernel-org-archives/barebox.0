@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]
- helo=smtp.smtpout.orange.fr)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGbUG-0007cy-7h
- for barebox@lists.infradead.org; Wed, 28 Jan 2015 22:53:29 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1422308027-13836-1-git-send-email-robert.jarzmik@free.fr>
- <1422308027-13836-2-git-send-email-robert.jarzmik@free.fr>
- <20150128090028.GB12209@pengutronix.de>
-Date: Wed, 28 Jan 2015 23:53:02 +0100
-In-Reply-To: <20150128090028.GB12209@pengutronix.de> (Sascha Hauer's message
- of "Wed, 28 Jan 2015 10:00:28 +0100")
-Message-ID: <87oapio6up.fsf@free.fr>
+Received: from smtp3-g21.free.fr ([212.27.42.3])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGcBN-0005xV-HE
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 23:38:02 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Thu, 29 Jan 2015 00:37:34 +0100
+Message-Id: <1422488254-18414-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1422488254-18414-1-git-send-email-eric@eukrea.com>
+References: <1422488254-18414-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,56 +17,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: pxa: add lubbock board support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 3/3] dhcp: fix request packet's seconds elapsed
+To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
-
-> On Mon, Jan 26, 2015 at 10:33:47PM +0100, Robert Jarzmik wrote:
->> +
->> +static int lubbock_mem_init(void)
->> +{
->> +	arm_add_mem_device("ram0", 0xa0000000, SZ_64M);
->> +	arm_add_mem_device("sram0", 0x0a000000, SZ_1M);
->
-> When doing this you'll end up with the SRAM being in ATAGS which is
-> probably not what you want. Use add_mem_device() instead.
-Right, for v2.
-
-> No hardcoded MAC addresses please. barebox generates a random MAC
-> address for you if your board is unable to provide a real one.
-
-I'll remove that from the upstreamed patch. I'll keep it for me for my ISP
-router to give me consistently the same IP address through DHCP.
-
->> +dhcp -H lubbock
->
-> dhcp during init time? This unnecessarily delays the boot process when
-> booting from flash.
->
-> This environment looks very specific to your usecase. Can't you just use
-> the generic defenv-2 template?
-I'll try for v2, yes.
-Speaking of which, this implies one redundant information :
- - the env/init/mtdpart-nor to define partitions (including bareboxenv)
- - the code to add env0:
-   devfs_add_partition("nor0", SZ_2M, SZ_256K, DEVFS_PARTITION_FIXED, "env0")
-
-This means that if the partition scheme changes, barebox binary has to be
-recompiled and reflashed. Isn't there a better way ? (that was what my
-mtd_env_override tried to do btw).
-
-Cheers.
-
--- 
-Robert
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+aXQncyBkb25lIGluIHRoZSBkaXNjb3ZlciBwYWNrZXQgc28gbGV0J3MgZG8gaXQgYWxzbyBpbiB0
+aGUgcmVxdWVzdCBwYWNrZXQuCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVr
+cmVhLmNvbT4KLS0tCiBuZXQvZGhjcC5jIHwgMyArLS0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2Vy
+dGlvbigrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9uZXQvZGhjcC5jIGIvbmV0L2Ro
+Y3AuYwppbmRleCA3ZjliOTg5Li4yYjQ2OWE5IDEwMDY0NAotLS0gYS9uZXQvZGhjcC5jCisrKyBi
+L25ldC9kaGNwLmMKQEAgLTU1Nyw4ICs1NTcsNyBAQCBzdGF0aWMgdm9pZCBkaGNwX3NlbmRfcmVx
+dWVzdF9wYWNrZXQoc3RydWN0IGJvb3RwICpicF9vZmZlcikKIAlicC0+YnBfaHR5cGUgPSBIV1Rf
+RVRIRVI7CiAJYnAtPmJwX2hsZW4gPSBIV0xfRVRIRVI7CiAJYnAtPmJwX2hvcHMgPSAwOwotCS8q
+IEZJWE1FIHdoYXQgaXMgdGhpcz8gKi8KLS8vCWJwLT5icF9zZWNzID0gaHRvbnMoZ2V0X3RpbWVy
+KDApIC8gQ0ZHX0haKTsKKwlicC0+YnBfc2VjcyA9IGh0b25zKGdldF90aW1lX25zKCkgPj4gMzAp
+OwogCiAJLyoKIAkgKiBSRkMzMDQ2IHJlcXVpcmVzIFJlbGF5IEFnZW50cyB0byBkaXNjYXJkIHBh
+Y2tldHMgd2l0aAotLSAKMS45LjMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
