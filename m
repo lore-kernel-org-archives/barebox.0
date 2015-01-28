@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+Received: from smtp3-g21.free.fr ([212.27.42.3])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGcBN-0005xL-HH
- for barebox@lists.infradead.org; Wed, 28 Jan 2015 23:38:02 +0000
+ id 1YGcFy-0000IH-JO
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 23:42:47 +0000
 From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu, 29 Jan 2015 00:37:33 +0100
-Message-Id: <1422488254-18414-2-git-send-email-eric@eukrea.com>
+Date: Thu, 29 Jan 2015 00:42:18 +0100
+Message-Id: <1422488538-21580-1-git-send-email-eric@eukrea.com>
 In-Reply-To: <1422488254-18414-1-git-send-email-eric@eukrea.com>
 References: <1422488254-18414-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
@@ -21,24 +21,28 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] dhcp: fix request packet
+Subject: [PATCH v2 1/3] dhcp: fix request packet's requested IP option
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-d2UgYXJlIG5vdCBzdXBwb3NlZCB0byBmaWxsIGNpYWRkciwgeWlhZGRyIGFuZCBzaWFkZHIgaW4g
-dGhlIHJlcXVlc3QgcGFja2V0LgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1
-a3JlYS5jb20+Ci0tLQogbmV0L2RoY3AuYyB8IDQgKy0tLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5z
-ZXJ0aW9uKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL25ldC9kaGNwLmMgYi9uZXQv
-ZGhjcC5jCmluZGV4IDc4NDQwZGQuLjdmOWI5ODkgMTAwNjQ0Ci0tLSBhL25ldC9kaGNwLmMKKysr
-IGIvbmV0L2RoY3AuYwpAQCAtNTU5LDkgKzU1OSw3IEBAIHN0YXRpYyB2b2lkIGRoY3Bfc2VuZF9y
-ZXF1ZXN0X3BhY2tldChzdHJ1Y3QgYm9vdHAgKmJwX29mZmVyKQogCWJwLT5icF9ob3BzID0gMDsK
-IAkvKiBGSVhNRSB3aGF0IGlzIHRoaXM/ICovCiAvLwlicC0+YnBfc2VjcyA9IGh0b25zKGdldF90
-aW1lcigwKSAvIENGR19IWik7Ci0JbmV0X2NvcHlfaXAoJmJwLT5icF9jaWFkZHIsICZicF9vZmZl
-ci0+YnBfY2lhZGRyKTsgLyogYm90aCBpbiBuZXR3b3JrIGJ5dGUgb3JkZXIgKi8KLQluZXRfY29w
-eV9pcCgmYnAtPmJwX3lpYWRkciwgJmJwX29mZmVyLT5icF95aWFkZHIpOwotCW5ldF9jb3B5X2lw
-KCZicC0+YnBfc2lhZGRyLCAmYnBfb2ZmZXItPmJwX3NpYWRkcik7CisKIAkvKgogCSAqIFJGQzMw
-NDYgcmVxdWlyZXMgUmVsYXkgQWdlbnRzIHRvIGRpc2NhcmQgcGFja2V0cyB3aXRoCiAJICogbm9u
-emVybyBhbmQgb2ZmZXJlZCBnaWFkZHIKLS0gCjEuOS4zCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+SW4gdGhlIHJlcXVlc3QgcGFja2V0LCB3ZSBhcmUgc3VwcG9zZWQgdG8gY29weSB0aGUgSVAgdGhh
+dCB0aGUgREhDUCBzZXJ2ZXIKcHJvdmlkZWQgaW4gdGhlIG9mZmVyIHBhY2tldCBzbyB0aGF0IGRo
+Y3BfZXh0ZW5kZWQgY2FuIGZpbGwgdGhlIG9wdGlvbiA1MC4KVGhlcmUgaXMgYWN0dWFsbHkgYW4g
+ZXJyb3IgaW4gYmFyZWJveCBhcyB0aGUgcG9pbnRlciB0byB0aGUgcGFja2V0IGN1cnJlbnRseQpi
+dWlsdCBpcyB1c2VkIGFzIHRoZSBzb3VyY2UgaW5zdGVhZCBvZiB0aGUgcG9pbnRlciB0byB0aGUg
+b2ZmZXIgcGFja2V0LgpXaXRoIHRoaXMgcGF0Y2gsIGJhcmVib3ggbm93IHNlbmRzIGEgcmVxdWVz
+dCBwYWNrZXQgd2hpY2ggaW5jbHVkZXMgdGhlIHJpZ2h0CnJlcXVlc3RlZCBJUCBpbiBvcHRpb24g
+NTAuCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCnYy
+IDogcmVtb3ZlIDIgbGluZSBzdXBwcmVzc2VkIGJ5IGVycm9yLgoKIG5ldC9kaGNwLmMgfCAyICst
+CiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1n
+aXQgYS9uZXQvZGhjcC5jIGIvbmV0L2RoY3AuYwppbmRleCA5NTUxZDYwLi5hMjJmYWQwIDEwMDY0
+NAotLS0gYS9uZXQvZGhjcC5jCisrKyBiL25ldC9kaGNwLmMKQEAgLTU3OSw3ICs1NzksNyBAQCBz
+dGF0aWMgdm9pZCBkaGNwX3NlbmRfcmVxdWVzdF9wYWNrZXQoc3RydWN0IGJvb3RwICpicF9vZmZl
+cikKIAkvKgogCSAqIENvcHkgb3B0aW9ucyBmcm9tIE9GRkVSIHBhY2tldCBpZiBwcmVzZW50CiAJ
+ICovCi0JbmV0X2NvcHlfaXAoJk9mZmVyZWRJUCwgJmJwLT5icF95aWFkZHIpOworCW5ldF9jb3B5
+X2lwKCZPZmZlcmVkSVAsICZicF9vZmZlci0+YnBfeWlhZGRyKTsKIAlleHRsZW4gPSBkaGNwX2V4
+dGVuZGVkKCh1OCAqKWJwLT5icF92ZW5kLCBESENQX1JFUVVFU1QsIG5ldF9kaGNwX3NlcnZlcl9p
+cCwKIAkJCQlPZmZlcmVkSVApOwogCi0tIAoxLjkuMwoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
