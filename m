@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGOjS-000813-SU
- for barebox@lists.infradead.org; Wed, 28 Jan 2015 09:16:19 +0000
-Date: Wed, 28 Jan 2015 10:15:56 +0100
+ Linux)) id 1YGOkB-0008P5-66
+ for barebox@lists.infradead.org; Wed, 28 Jan 2015 09:17:04 +0000
+Date: Wed, 28 Jan 2015 10:16:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150128091556.GH12209@pengutronix.de>
-References: <1422381606-23004-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+Message-ID: <20150128091641.GI12209@pengutronix.de>
+References: <1422430228-15758-1-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422381606-23004-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+In-Reply-To: <1422430228-15758-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] loadenv: fix typo in help text
-To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Subject: Re: [PATCH] imx6: add partitions on SPI NOR for PFLA02
+To: Stefan Christ <s.christ@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jan 27, 2015 at 07:00:06PM +0100, Wjatscheslaw Stoljarski wrote:
-> From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
+On Wed, Jan 28, 2015 at 08:30:28AM +0100, Stefan Christ wrote:
+> Add partitions oftree and kernel on SPI NOR and increase size of barebox and
+> barebox-environment partition.
 > 
-> Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+> Signed-off-by: Stefan Christ <s.christ@phytec.de>
 > ---
->  commands/loadenv.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 
-applied, thanks
+Applied, thanks
 
 Sascha
 
