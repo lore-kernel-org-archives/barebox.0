@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGeqD-0001AT-E6
+ id 1YGeqD-0001AR-E8
  for barebox@lists.infradead.org; Thu, 29 Jan 2015 02:28:23 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
  by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
- t0T2S01j009972
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:28:00 +0900 (JST)
+ t0T2Rxr6009934
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:27:59 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili14) with ESMTP id t0T2S0L16187
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:28:00 +0900
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili11) with ESMTP id t0T2Rxi09367
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:27:59 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Thu, 29 Jan 2015 11:27:56 +0900
-Message-Id: <1422498476-28986-6-git-send-email-yamada.m@jp.panasonic.com>
+Date: Thu, 29 Jan 2015 11:27:52 +0900
+Message-Id: <1422498476-28986-2-git-send-email-yamada.m@jp.panasonic.com>
 In-Reply-To: <1422498476-28986-1-git-send-email-yamada.m@jp.panasonic.com>
 References: <1422498476-28986-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,38 +28,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] kbuild: drop bogus "common/barebox_default_env*" from
- CLEAN_FILES
+Subject: [PATCH 1/5] gitignore: simplify .gitignore file with pattern
+ "/barebox*"
 To: barebox@lists.infradead.org
 
-Since commit 7fa10256c3f4 (defaultenv: Allow multiple
-defaultenvironment overlays), barebox_default_env* is created
-in the defaultenv/ directory.  They are cleaned up when
-"make clean" descends into the defaultenv/ directory.
-
-We can simply delete "common/barebox_default_env*" from the
-top Makefile.
+There is no source file prefixed "barebox" at the top directory.
+Generated files there can be simply ignored with "/barebox*" pattern.
 
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
- Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .gitignore | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index b5c6c91..ca546e9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -952,8 +952,7 @@ endif # CONFIG_MODULES
- # Directories & files removed with 'make clean'
- CLEAN_DIRS  += $(MODVERDIR)
- CLEAN_FILES +=	barebox* System.map include/generated/barebox_default_env.h \
--                .tmp_version .tmp_barebox* \
--		.tmp_kallsyms* common/barebox_default_env* \
-+		.tmp_version .tmp_barebox* .tmp_kallsyms* \
- 		scripts/bareboxenv-target
- 
- # Directories & files removed with 'make mrproper'
+diff --git a/.gitignore b/.gitignore
+index 0456bfd..a71d814 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -31,22 +31,7 @@
+ #
+ tags
+ TAGS
+-barebox
+-barebox.S
+-barebox.bin
+-barebox.srec
+-barebox.netx
+-barebox.s5p
+-barebox.spi
+-barebox.ubl
+-barebox.zynq
+-barebox.uimage
+-barebox.map
+-barebox.kwb
+-barebox.kwbuart
+-barebox.efi
+-barebox.canon-a1100.bin
+-barebox-flash-image
++/barebox*
+ System.map
+ Module.symvers
+ barebox_default_env*
 -- 
 1.9.1
 
