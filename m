@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGkgk-0004eB-Uq
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 08:42:59 +0000
-Date: Thu, 29 Jan 2015 09:42:36 +0100
+ Linux)) id 1YGkhd-0004l8-9k
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 08:43:53 +0000
+Date: Thu, 29 Jan 2015 09:43:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129084236.GT12209@pengutronix.de>
-References: <1422498476-28986-1-git-send-email-yamada.m@jp.panasonic.com>
- <1422498476-28986-5-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150129084331.GU12209@pengutronix.de>
+References: <1422498677-29255-1-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422498476-28986-5-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1422498677-29255-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,21 +22,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] kbuild: simplify CLEAN_FILES with pattern "barebox*"
+Subject: Re: [PATCH] kbuild: drop $(KBUILD_DTBS) from the all target
 To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 29, 2015 at 11:27:55AM +0900, Masahiro Yamada wrote:
-> There is no source file prefixed "barebox" at the top directory.
-> Generated files there can be simply cleaned up "barebox*" pattern.
+On Thu, Jan 29, 2015 at 11:31:17AM +0900, Masahiro Yamada wrote:
+> $(KBUILD_DTBS) is not set anywhere.
 > 
 > Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 
-Applied the rest but I'm unsure with this one. I sometimes put some
-temporary files into the toplevel barebox directory and I'm probably not
-the only one doing this. I usually don't want them to be deleted when
-they start with "barebox" (which might not be uncommon during barebox
-development).
+Applied, thanks
 
 Sascha
 
