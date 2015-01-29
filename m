@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGk5e-0005rF-TJ
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 08:04:39 +0000
-Date: Thu, 29 Jan 2015 09:04:14 +0100
+ Linux)) id 1YGkgk-0004eB-Uq
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 08:42:59 +0000
+Date: Thu, 29 Jan 2015 09:42:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129080414.GS12209@pengutronix.de>
-References: <1422497647-28863-1-git-send-email-yamada.m@jp.panasonic.com>
- <20150129125419.69CD.AA925319@jp.panasonic.com>
+Message-ID: <20150129084236.GT12209@pengutronix.de>
+References: <1422498476-28986-1-git-send-email-yamada.m@jp.panasonic.com>
+ <1422498476-28986-5-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150129125419.69CD.AA925319@jp.panasonic.com>
+In-Reply-To: <1422498476-28986-5-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +23,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] Slim down include/common.h more
+Subject: Re: [PATCH 4/5] kbuild: simplify CLEAN_FILES with pattern "barebox*"
 To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 29, 2015 at 12:54:20PM +0900, Masahiro Yamada wrote:
+On Thu, Jan 29, 2015 at 11:27:55AM +0900, Masahiro Yamada wrote:
+> There is no source file prefixed "barebox" at the top directory.
+> Generated files there can be simply cleaned up "barebox*" pattern.
 > 
-> On Thu, 29 Jan 2015 11:14:04 +0900
-> Masahiro Yamada <yamada.m@jp.panasonic.com> wrote:
-> 
-> > 
-> > 
-> > 
-> > Masahiro Yamada (3):
-> >   linux/bug.h: move BUILD_BUG_ON*() macros
-> >   asm-generic/bug.h: move BUG(), BUG_ON(), WARN(), WARN_ON() macros
-> >   linux/kernel.h: move some macros and prototypes
-> > 
-> >  include/asm-generic/bug.h |  37 ++++++++++++++++
-> >  include/common.h          | 108 ----------------------------------------------
-> >  include/linux/bug.h       |  30 +++++++++++++
-> >  include/linux/kernel.h    |  61 ++++++++++++++++++++++++++
-> >  4 files changed, 128 insertions(+), 108 deletions(-)
-> >  create mode 100644 include/asm-generic/bug.h
-> >  create mode 100644 include/linux/bug.h
-> > 
-> > -- 
-> > 1.9.1
-> 
-> 
-> Sascha,
-> Please apply this series to for-next/minmax branch
-> to avoid conflicts.
+> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 
-Did that, thanks
+Applied the rest but I'm unsure with this one. I sometimes put some
+temporary files into the toplevel barebox directory and I'm probably not
+the only one doing this. I usually don't want them to be deleted when
+they start with "barebox" (which might not be uncommon during barebox
+development).
 
 Sascha
 
