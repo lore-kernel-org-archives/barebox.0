@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGj1U-0004MZ-I6
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 06:56:17 +0000
-Date: Thu, 29 Jan 2015 07:55:47 +0100
+ Linux)) id 1YGj2Y-0004t0-4u
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 06:57:22 +0000
+Date: Thu, 29 Jan 2015 07:56:59 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129065547.GM12209@pengutronix.de>
-References: <1422437828-2106-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150129065659.GN12209@pengutronix.de>
+References: <1422439695-20800-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422437828-2106-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1422439695-20800-1-git-send-email-voice.shen@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: fix a wrong comment about relocate_to_adr
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Subject: Re: [PATCH] ARM: atmel: sama5d4: nand: add has_pmecc parameter
+To: Bo Shen <voice.shen@atmel.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 28, 2015 at 06:37:08PM +0900, Masahiro Yamada wrote:
-> The relocated_to_adr does not clear the .bss section.
-> It is done by the setup_c routine.
+On Wed, Jan 28, 2015 at 06:08:15PM +0800, Bo Shen wrote:
+> Add the missing has_pmecc parameter for sama5d4 based boards.
 > 
-> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
-> ---
-> 
->  arch/arm/cpu/setupc.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Signed-off-by: Bo Shen <voice.shen@atmel.com>
 
 Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/arch/arm/cpu/setupc.S b/arch/arm/cpu/setupc.S
-> index 2df2683..c232b08 100644
-> --- a/arch/arm/cpu/setupc.S
-> +++ b/arch/arm/cpu/setupc.S
-> @@ -40,7 +40,7 @@ ENDPROC(setup_c)
->  /*
->   * void relocate_to_adr(unsigned long targetadr)
->   *
-> - * Copy binary to targetadr, relocate code, clear bss and continue
-> + * Copy binary to targetadr, relocate code and continue
->   * executing at new address.
->   */
->  .section .text.relocate_to_adr
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
