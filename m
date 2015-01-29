@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGeqD-0001AL-E2
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 02:28:22 +0000
+ id 1YGeqD-0001AQ-E5
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 02:28:23 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
- t0T2S0nv015088
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
+ t0T2S0dS006710
  for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:28:00 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili14) with ESMTP id t0T2S0L16147
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili15) with ESMTP id t0T2S0B12848
  for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:28:00 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Thu, 29 Jan 2015 11:27:53 +0900
-Message-Id: <1422498476-28986-3-git-send-email-yamada.m@jp.panasonic.com>
+Date: Thu, 29 Jan 2015 11:27:55 +0900
+Message-Id: <1422498476-28986-5-git-send-email-yamada.m@jp.panasonic.com>
 In-Reply-To: <1422498476-28986-1-git-send-email-yamada.m@jp.panasonic.com>
 References: <1422498476-28986-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,48 +28,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] gitignore: move "barebox_default_env*" to subdirectory
+Subject: [PATCH 4/5] kbuild: simplify CLEAN_FILES with pattern "barebox*"
 To: barebox@lists.infradead.org
 
-"barebox_default_env*" is not "Top-level generic files" because they
-are generated in the defaultenv/ directory since commit 7fa10256c3f4
-(defaultenv: Allow multiple defaultenvironment overlays).
-
-The comment block of the top-level .gitignore says as follows:
-
-  # NOTE! Don't add files that are generated in specific
-  # subdirectories here. Add them in the ".gitignore" file
-  # in that subdirectory instead.
-
-Let's follow this rule.
+There is no source file prefixed "barebox" at the top directory.
+Generated files there can be simply cleaned up "barebox*" pattern.
 
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
- .gitignore            | 1 -
- defaultenv/.gitignore | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
- create mode 100644 defaultenv/.gitignore
+ Makefile | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index a71d814..4f8769a 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -34,7 +34,6 @@ TAGS
- /barebox*
- System.map
- Module.symvers
--barebox_default_env*
+diff --git a/Makefile b/Makefile
+index 90a7eee..b5c6c91 100644
+--- a/Makefile
++++ b/Makefile
+@@ -951,13 +951,10 @@ endif # CONFIG_MODULES
  
- #
- # git files that we don't want to ignore even it they are dot-files
-diff --git a/defaultenv/.gitignore b/defaultenv/.gitignore
-new file mode 100644
-index 0000000..40e90d7
---- /dev/null
-+++ b/defaultenv/.gitignore
-@@ -0,0 +1 @@
-+barebox_default_env*
+ # Directories & files removed with 'make clean'
+ CLEAN_DIRS  += $(MODVERDIR)
+-CLEAN_FILES +=	barebox System.map include/generated/barebox_default_env.h \
+-                .tmp_version .tmp_barebox* barebox.bin barebox.map barebox.S \
+-		.tmp_kallsyms* common/barebox_default_env* barebox.ldr \
+-		scripts/bareboxenv-target barebox-flash-image \
+-		barebox.srec barebox.s5p barebox.ubl barebox.zynq \
+-		barebox.uimage barebox.spi barebox.kwb barebox.kwbuart \
+-		barebox.efi barebox.canon-a1100.bin
++CLEAN_FILES +=	barebox* System.map include/generated/barebox_default_env.h \
++                .tmp_version .tmp_barebox* \
++		.tmp_kallsyms* common/barebox_default_env* \
++		scripts/bareboxenv-target
+ 
+ # Directories & files removed with 'make mrproper'
+ MRPROPER_DIRS  += include/config usr/include include/generated
 -- 
 1.9.1
 
