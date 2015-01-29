@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f48.google.com ([74.125.82.48])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGlA2-0002pt-Cv
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:13:15 +0000
-Received: by mail-wg0-f48.google.com with SMTP id x12so22693904wgg.7
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 01:12:51 -0800 (PST)
-Received: from gmail.com (p578a7230.dip0.t-ipconnect.de. [87.138.114.48])
- by mx.google.com with ESMTPSA id fi10sm1580313wib.13.2015.01.29.01.12.50
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
- Thu, 29 Jan 2015 01:12:50 -0800 (PST)
-Date: Thu, 29 Jan 2015 10:12:46 +0100
-From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-Message-ID: <20150129091229.GA424@gmail.com>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGlCM-0004LA-ME
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:15:39 +0000
+Date: Thu, 29 Jan 2015 18:15:11 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+In-Reply-To: <20150129085623.GY12209@pengutronix.de>
+References: <1422499357-31461-1-git-send-email-yamada.m@jp.panasonic.com>
+ <20150129085623.GY12209@pengutronix.de>
+Message-Id: <20150129181509.3DA2.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,18 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Access to first 0x1000 byte on imx53/imx6
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] param: add error check to __dev_add_param()
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello,
+Hi Sascha,
 
-If I try to read from first 4k RAM on imx53/imx6, with md or from code,
-barebox show stacktrace with mesage:
-"unable to handle NULL pointer dereference at address 0x...".
-Is it possible in some way do that?
+On Thu, 29 Jan 2015 09:56:23 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Thanks,
-Slawa
+> On Thu, Jan 29, 2015 at 11:42:36AM +0900, Masahiro Yamada wrote:
+> > If the argument, name is given with NULL, it would be probably
+> > unexpected behavior.  It should fail rather than register the
+> > NULL-named parameter.
+> > 
+> > If strdup() fails with out-of-memory, it should also fail
+> > with -ENOMEM.
+> 
+> Applied, thanks
+> 
+> Sascha
+
+Uh, this has been superseded by v2.
+
+
 
 _______________________________________________
 barebox mailing list
