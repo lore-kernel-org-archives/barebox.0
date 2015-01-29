@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGgBr-00084D-HA
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 03:54:49 +0000
+ id 1YGgLW-0003bi-Re
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 04:04:48 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile13) with ESMTP id
- t0T3sPW5021039
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 12:54:25 +0900 (JST)
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
+ t0T44PFK022535
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 13:04:25 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili12) with ESMTP id t0T3sPo20305
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 12:54:25 +0900
-Date: Thu, 29 Jan 2015 12:54:20 +0900
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili12) with ESMTP id t0T44Po27661
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 13:04:25 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-In-Reply-To: <1422497647-28863-1-git-send-email-yamada.m@jp.panasonic.com>
-References: <1422497647-28863-1-git-send-email-yamada.m@jp.panasonic.com>
-Message-Id: <20150129125419.69CD.AA925319@jp.panasonic.com>
-MIME-Version: 1.0
+Date: Thu, 29 Jan 2015 13:04:23 +0900
+Message-Id: <1422504263-9317-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,43 +21,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] Slim down include/common.h more
+Subject: [PATCH] ARM: fix file names in comment blocks
 To: barebox@lists.infradead.org
 
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+---
 
-On Thu, 29 Jan 2015 11:14:04 +0900
-Masahiro Yamada <yamada.m@jp.panasonic.com> wrote:
-
-> 
-> 
-> 
-> Masahiro Yamada (3):
->   linux/bug.h: move BUILD_BUG_ON*() macros
->   asm-generic/bug.h: move BUG(), BUG_ON(), WARN(), WARN_ON() macros
->   linux/kernel.h: move some macros and prototypes
-> 
->  include/asm-generic/bug.h |  37 ++++++++++++++++
->  include/common.h          | 108 ----------------------------------------------
->  include/linux/bug.h       |  30 +++++++++++++
->  include/linux/kernel.h    |  61 ++++++++++++++++++++++++++
->  4 files changed, 128 insertions(+), 108 deletions(-)
->  create mode 100644 include/asm-generic/bug.h
->  create mode 100644 include/linux/bug.h
-> 
-> -- 
-> 1.9.1
+Or delete?
+They do not carry useful information.
 
 
-Sascha,
-Please apply this series to for-next/minmax branch
-to avoid conflicts.
+ arch/arm/cpu/mmu.c   | 2 +-
+ arch/arm/cpu/start.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Best Regards
-Masahiro Yamada
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 09fe8d5..a507954 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -1,5 +1,5 @@
+ /*
+- * start-pbl.c
++ * mmu.c
+  *
+  * Copyright (c) 2009-2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 1c29219..0c85430 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -1,5 +1,5 @@
+ /*
+- * start-arm.c
++ * start.c
+  *
+  * Copyright (c) 2010 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+-- 
+1.9.1
 
 
 _______________________________________________
