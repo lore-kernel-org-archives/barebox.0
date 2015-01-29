@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.mei.co.jp ([133.183.100.20])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGlLM-00077D-4X
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:24:56 +0000
-Date: Thu, 29 Jan 2015 18:24:29 +0900
-From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-In-Reply-To: <20150129091539.GD12209@pengutronix.de>
-References: <1422504263-9317-1-git-send-email-yamada.m@jp.panasonic.com>
- <20150129091539.GD12209@pengutronix.de>
-Message-Id: <20150129182429.3DAA.AA925319@jp.panasonic.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YGlSk-0002oq-Ce
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:32:35 +0000
+Date: Thu, 29 Jan 2015 10:32:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150129093212.GJ18908@pengutronix.de>
+References: <1422499613-683-1-git-send-email-yamada.m@jp.panasonic.com>
+ <20150129090622.GZ12209@pengutronix.de>
+ <20150129182138.3DA6.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150129182138.3DA6.AA925319@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +24,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: fix file names in comment blocks
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2] param: add error check to __dev_add_param()
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-On Thu, 29 Jan 2015 10:15:39 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Thu, Jan 29, 2015 at 01:04:23PM +0900, Masahiro Yamada wrote:
-> > Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
-> > ---
+On Thu, Jan 29, 2015 at 06:21:39PM +0900, Masahiro Yamada wrote:
+> Hi Sascha,
+> 
+> On Thu, 29 Jan 2015 10:06:22 +0100
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > On Thu, Jan 29, 2015 at 11:46:53AM +0900, Masahiro Yamada wrote:
+> > > If the argument, name is given with NULL, it would be probably
+> > > unexpected behavior.  It should fail rather than register the
+> > > NULL-named parameter.
+> > > 
+> > > If strdup() fails with out-of-memory, it should also fail
+> > > with -ENOMEM.
+> > > 
+> > > Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+> > > ---
+> > > 
+> > > Changes in v2:
+> > >   - Fix the condition of returning -ENOMEM
+> > > 
+> > >  lib/parameter.c | 8 +++++++-
+> > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/lib/parameter.c b/lib/parameter.c
+> > > index 71262c4..02a89bb 100644
+> > > --- a/lib/parameter.c
+> > > +++ b/lib/parameter.c
+> > > @@ -130,6 +130,13 @@ static int __dev_add_param(struct param_d *param, struct device_d *dev, const ch
+> > >  	if (get_param_by_name(dev, name))
+> > >  		return -EEXIST;
+> > >  
+> > > +	if (!name)
+> > > +		return -EINVAL;
 > > 
-> > Or delete?
-> > They do not carry useful information.
+> > Name is used already two lines above so barebox will already be crashed
+> > before this triggers.
+> > 
+> > Besides, I normally don't like these checks. dereferencing NULL pointers
+> > means you get a backtrace showing you what went wrong. Returning an error
+> > means adding code which in this case makes dev_add_param just fail
+> > silently because the return value often is not checked.
+> > 
 > 
-> Applied even though it does not contain much information. The headers somehow
-> looks naked if there's nothing.
+> OK, then how about dropping this -EINVAL check?
+
+Yes, please.
+
 > 
-> Sascha
+> I think the -ENOMEM check below is still useful.
+> ( strdup() returns NULL also when NULL is passed,
+> but in that case this line cannot be reached.
+> The problem is that is not apparent at a glance..)
 
+Note we also have xstrdup which crashes barebox on out of memory. This
+is usually the right thing to do when it's known that the allocation is
+small.
 
-If you like, I can send v2
-to delete these useless lines.
+Sascha
 
-
-Best Regards
-Masahiro Yamada
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
