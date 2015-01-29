@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGlIj-0006gO-VW
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:22:14 +0000
-Date: Thu, 29 Jan 2015 10:21:51 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129092151.GE12209@pengutronix.de>
-References: <20150129091229.GA424@gmail.com>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGlIc-0006ft-WE
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:22:07 +0000
+Date: Thu, 29 Jan 2015 18:21:39 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+In-Reply-To: <20150129090622.GZ12209@pengutronix.de>
+References: <1422499613-683-1-git-send-email-yamada.m@jp.panasonic.com>
+ <20150129090622.GZ12209@pengutronix.de>
+Message-Id: <20150129182138.3DA6.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150129091229.GA424@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Access to first 0x1000 byte on imx53/imx6
-To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Subject: Re: [PATCH v2] param: add error check to __dev_add_param()
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 29, 2015 at 10:12:46AM +0100, Wjatscheslaw Stoljarski wrote:
-> Hello,
+Hi Sascha,
+
+On Thu, 29 Jan 2015 10:06:22 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+
+> On Thu, Jan 29, 2015 at 11:46:53AM +0900, Masahiro Yamada wrote:
+> > If the argument, name is given with NULL, it would be probably
+> > unexpected behavior.  It should fail rather than register the
+> > NULL-named parameter.
+> > 
+> > If strdup() fails with out-of-memory, it should also fail
+> > with -ENOMEM.
+> > 
+> > Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+> > ---
+> > 
+> > Changes in v2:
+> >   - Fix the condition of returning -ENOMEM
+> > 
+> >  lib/parameter.c | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/lib/parameter.c b/lib/parameter.c
+> > index 71262c4..02a89bb 100644
+> > --- a/lib/parameter.c
+> > +++ b/lib/parameter.c
+> > @@ -130,6 +130,13 @@ static int __dev_add_param(struct param_d *param, struct device_d *dev, const ch
+> >  	if (get_param_by_name(dev, name))
+> >  		return -EEXIST;
+> >  
+> > +	if (!name)
+> > +		return -EINVAL;
 > 
-> If I try to read from first 4k RAM on imx53/imx6, with md or from code,
-> barebox show stacktrace with mesage:
-> "unable to handle NULL pointer dereference at address 0x...".
-> Is it possible in some way do that?
+> Name is used already two lines above so barebox will already be crashed
+> before this triggers.
+> 
+> Besides, I normally don't like these checks. dereferencing NULL pointers
+> means you get a backtrace showing you what went wrong. Returning an error
+> means adding code which in this case makes dev_add_param just fail
+> silently because the return value often is not checked.
+> 
 
-The only way I know is to disable CONFIG_MMU in the config.
+OK, then how about dropping this -EINVAL check?
 
-Sascha
+I think the -ENOMEM check below is still useful.
+( strdup() returns NULL also when NULL is passed,
+but in that case this line cannot be reached.
+The problem is that is not apparent at a glance..)
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+Best Regards
+Masahiro Yamada
+
 
 _______________________________________________
 barebox mailing list
