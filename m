@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGkhd-0004l8-9k
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 08:43:53 +0000
-Date: Thu, 29 Jan 2015 09:43:31 +0100
+ Linux)) id 1YGkih-0004wz-5X
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 08:44:59 +0000
+Date: Thu, 29 Jan 2015 09:44:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129084331.GU12209@pengutronix.de>
-References: <1422498677-29255-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150129084437.GV12209@pengutronix.de>
+References: <1422498919-30268-1-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422498677-29255-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1422498919-30268-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,12 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kbuild: drop $(KBUILD_DTBS) from the all target
+Subject: Re: [PATCH] blackfin: consolidate arch/blackfin/include/asm/linkage.h
 To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 29, 2015 at 11:31:17AM +0900, Masahiro Yamada wrote:
-> $(KBUILD_DTBS) is not set anywhere.
+On Thu, Jan 29, 2015 at 11:35:19AM +0900, Masahiro Yamada wrote:
+> Since include/linux/linkage.h includes <asm/linkage.h>, the basic
+> coding style we should follow is:
+> 
+>  - <linux/linkage.h> should contain default macro defines
+>  - <asm/linkage.h> can define arch-specific macros and override the
+>    default ones in <linux/linkage.h>
+> 
+> The arch/blackfin/include/asm/linkage.h has redundant defines that
+> are already defined in <linux/linkage.h>.
+> Replace it with the one imported from Linux 3.19-rc6.
+> 
+> Generally, <asm/linkage.h> should not be included directly.
+> Fix two files to include <linux/linkage.h> instead.
 > 
 > Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 
