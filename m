@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGlhO-0005ZP-98
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:47:42 +0000
-Date: Thu, 29 Jan 2015 10:47:20 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129094720.GG12209@pengutronix.de>
-References: <1422308050-13895-1-git-send-email-robert.jarzmik@free.fr>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1422308050-13895-1-git-send-email-robert.jarzmik@free.fr>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGm0k-0002E1-8a
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 10:07:43 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile13) with ESMTP id
+ t0TA7K56020330
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 19:07:20 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili13) with ESMTP id t0TA7KJ22504
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 19:07:20 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Date: Thu, 29 Jan 2015 19:07:16 +0900
+Message-Id: <1422526036-30170-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] net: smc1111: allow platform specific accessors
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] ARM: delete useless and wrong comments
+To: barebox@lists.infradead.org
 
-Hi Robert,
+These comments are wrong.  Anyway, they do not carry useful
+information.  Delete.
 
-On Mon, Jan 26, 2015 at 10:34:08PM +0100, Robert Jarzmik wrote:
-> Smc network IPs can be wired up in different funny ways. For example the
-> lubbock pxa25x development platform wires all address lines shifted by
-> 2, ie. bus A2 is smc91c96 A0, bus A3 is smc91c96 A1 etc ...
+Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+---
 
-Yeah I know, connecting the 91c111 inspired the board designers to many
-funny things. Passing function pointers in platform_data is not very
-future proof since this doesn't work with device tree. I see that the
-Linux driver has device tree support. Does this binding work for you?
+Perhaps, this might be preferable.
+
+Sascha,
+If you like, please replace the former one.
+(Or you can keep v1 as it is, of course.)
+
+I leave it to you.
 
 
-Sascha
+Changes in v2:
+  - Delete rather than fix them.
 
+ arch/arm/cpu/mmu.c   | 2 --
+ arch/arm/cpu/start.c | 2 --
+ 2 files changed, 4 deletions(-)
+
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 09fe8d5..e733ec4 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -1,6 +1,4 @@
+ /*
+- * start-pbl.c
+- *
+  * Copyright (c) 2009-2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+  * See file CREDITS for list of people who contributed to this
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 1c29219..1fc7b52 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -1,6 +1,4 @@
+ /*
+- * start-arm.c
+- *
+  * Copyright (c) 2010 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+  * See file CREDITS for list of people who contributed to this
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
