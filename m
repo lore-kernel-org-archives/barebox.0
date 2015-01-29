@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGlCj-0004Py-SZ
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:16:02 +0000
-Date: Thu, 29 Jan 2015 10:15:39 +0100
+ Linux)) id 1YGlIj-0006gO-VW
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 09:22:14 +0000
+Date: Thu, 29 Jan 2015 10:21:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129091539.GD12209@pengutronix.de>
-References: <1422504263-9317-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150129092151.GE12209@pengutronix.de>
+References: <20150129091229.GA424@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422504263-9317-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <20150129091229.GA424@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: fix file names in comment blocks
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Subject: Re: Access to first 0x1000 byte on imx53/imx6
+To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 29, 2015 at 01:04:23PM +0900, Masahiro Yamada wrote:
-> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
-> ---
+On Thu, Jan 29, 2015 at 10:12:46AM +0100, Wjatscheslaw Stoljarski wrote:
+> Hello,
 > 
-> Or delete?
-> They do not carry useful information.
+> If I try to read from first 4k RAM on imx53/imx6, with md or from code,
+> barebox show stacktrace with mesage:
+> "unable to handle NULL pointer dereference at address 0x...".
+> Is it possible in some way do that?
 
-Applied even though it does not contain much information. The headers somehow
-looks naked if there's nothing.
+The only way I know is to disable CONFIG_MMU in the config.
 
 Sascha
 
