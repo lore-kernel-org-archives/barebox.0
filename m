@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGrGM-00060G-TG
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 15:44:11 +0000
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu, 29 Jan 2015 16:43:48 +0100
-Message-Id: <1422546228-22674-1-git-send-email-m.grzeschik@pengutronix.de>
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]
+ helo=smtp.smtpout.orange.fr)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YGujK-0004gI-8y
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 19:26:19 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <20150129091229.GA424@gmail.com>
+ <20150129092151.GE12209@pengutronix.de>
+Date: Thu, 29 Jan 2015 20:25:54 +0100
+In-Reply-To: <20150129092151.GE12209@pengutronix.de> (Sascha Hauer's message
+ of "Thu, 29 Jan 2015 10:21:51 +0100")
+Message-ID: <87k305o0cd.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,81 +20,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: crc: support setting environment variables
-To: barebox@lists.infradead.org
+Subject: Re: Access to first 0x1000 byte on imx53/imx6
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-From: Jan Luebbe <jlu@pengutronix.de>
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- commands/crc.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+> On Thu, Jan 29, 2015 at 10:12:46AM +0100, Wjatscheslaw Stoljarski wrote:
+>> Hello,
+>> 
+>> If I try to read from first 4k RAM on imx53/imx6, with md or from code,
+>> barebox show stacktrace with mesage:
+>> "unable to handle NULL pointer dereference at address 0x...".
+>> Is it possible in some way do that?
+>
+> The only way I know is to disable CONFIG_MMU in the config.
+I think the solution in arch/arm/boards/mioa701/board.c (remapping the 0x0
+address) should work here :
+	docg3_iospace = map_io_sections(0x0, (void *)0xe0000000, 0x2000);
 
-diff --git a/commands/crc.c b/commands/crc.c
-index 9b6a3e2..58b750e 100644
---- a/commands/crc.c
-+++ b/commands/crc.c
-@@ -46,9 +46,10 @@ static int do_crc(int argc, char *argv[])
- #ifdef CONFIG_CMD_CRC_CMP
- 	char *vfilename = NULL;
- #endif
-+	char *crcvarname = NULL, *sizevarname = NULL;
- 	int opt, err = 0, filegiven = 0, verify = 0;
- 
--	while((opt = getopt(argc, argv, "f:F:v:V:")) > 0) {
-+	while((opt = getopt(argc, argv, "f:F:v:V:r:s:")) > 0) {
- 		switch(opt) {
- 		case 'f':
- 			filename = optarg;
-@@ -60,6 +61,12 @@ static int do_crc(int argc, char *argv[])
- 			vfilename = optarg;
- 			break;
- #endif
-+		case 'r':
-+			crcvarname = optarg;
-+			break;
-+		case 's':
-+			sizevarname = optarg;
-+			break;
- 		case 'v':
- 			verify = 1;
- 			vcrc = simple_strtoul(optarg, NULL, 0);
-@@ -89,6 +96,18 @@ static int do_crc(int argc, char *argv[])
- 	printf("CRC32 for %s 0x%08lx ... 0x%08lx ==> 0x%08lx",
- 			filename, (ulong)start, (ulong)start + total - 1, crc);
- 
-+	if (crcvarname) {
-+		char *crcstr = asprintf("0x%lx", crc);
-+		setenv(crcvarname, crcstr);
-+		kfree(crcstr);
-+	}
-+
-+	if (sizevarname) {
-+		char *sizestr = asprintf("0x%lx", total);
-+		setenv(sizevarname, sizestr);
-+		kfree(sizestr);
-+	}
-+
- #ifdef CONFIG_CMD_CRC_CMP
- 	if (vfilename) {
- 		size = total;
-@@ -118,6 +137,8 @@ BAREBOX_CMD_HELP_OPT ("-F FILE", "Use file to compare.")
- #endif
- BAREBOX_CMD_HELP_OPT ("-v CRC",  "Verify")
- BAREBOX_CMD_HELP_OPT ("-V FILE", "Verify with CRC read from FILE")
-+BAREBOX_CMD_HELP_OPT  ("-r <var>",  "Set <var> to the checksum result\n")
-+BAREBOX_CMD_HELP_OPT  ("-s <var>",  "Set <var> to the data size\n")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(crc32)
+Cheers.
+
 -- 
-2.1.4
-
+Robert
 
 _______________________________________________
 barebox mailing list
