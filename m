@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.mei.co.jp ([133.183.100.20])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGgLW-0003bi-Re
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 04:04:48 +0000
-Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
- t0T44PFK022535
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 13:04:25 +0900 (JST)
-Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili12) with ESMTP id t0T44Po27661
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 13:04:25 +0900
-From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Thu, 29 Jan 2015 13:04:23 +0900
-Message-Id: <1422504263-9317-1-git-send-email-yamada.m@jp.panasonic.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YGj1U-0004MZ-I6
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 06:56:17 +0000
+Date: Thu, 29 Jan 2015 07:55:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150129065547.GM12209@pengutronix.de>
+References: <1422437828-2106-1-git-send-email-yamada.m@jp.panasonic.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1422437828-2106-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,50 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: fix file names in comment blocks
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: fix a wrong comment about relocate_to_adr
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
----
+On Wed, Jan 28, 2015 at 06:37:08PM +0900, Masahiro Yamada wrote:
+> The relocated_to_adr does not clear the .bss section.
+> It is done by the setup_c routine.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+> ---
+> 
+>  arch/arm/cpu/setupc.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Or delete?
-They do not carry useful information.
+Applied, thanks
 
+Sascha
 
- arch/arm/cpu/mmu.c   | 2 +-
- arch/arm/cpu/start.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/setupc.S b/arch/arm/cpu/setupc.S
+> index 2df2683..c232b08 100644
+> --- a/arch/arm/cpu/setupc.S
+> +++ b/arch/arm/cpu/setupc.S
+> @@ -40,7 +40,7 @@ ENDPROC(setup_c)
+>  /*
+>   * void relocate_to_adr(unsigned long targetadr)
+>   *
+> - * Copy binary to targetadr, relocate code, clear bss and continue
+> + * Copy binary to targetadr, relocate code and continue
+>   * executing at new address.
+>   */
+>  .section .text.relocate_to_adr
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 09fe8d5..a507954 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -1,5 +1,5 @@
- /*
-- * start-pbl.c
-+ * mmu.c
-  *
-  * Copyright (c) 2009-2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 1c29219..0c85430 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -1,5 +1,5 @@
- /*
-- * start-arm.c
-+ * start.c
-  *
-  * Copyright (c) 2010 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
 -- 
-1.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
