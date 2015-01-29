@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YGf4Q-0000fT-6r
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 02:43:02 +0000
+ id 1YGf8Z-0002pG-4g
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 02:47:19 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
- t0T2gevA006572
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:42:40 +0900 (JST)
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
+ t0T2kuAj004658
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:46:56 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili15) with ESMTP id t0T2geB05940
- for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:42:40 +0900
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili11) with ESMTP id t0T2kvi17750
+ for <barebox@lists.infradead.org>; Thu, 29 Jan 2015 11:46:57 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Thu, 29 Jan 2015 11:42:36 +0900
-Message-Id: <1422499357-31461-1-git-send-email-yamada.m@jp.panasonic.com>
+Date: Thu, 29 Jan 2015 11:46:53 +0900
+Message-Id: <1422499613-683-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,7 +26,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] param: add error check to __dev_add_param()
+Subject: [PATCH v2] param: add error check to __dev_add_param()
 To: barebox@lists.infradead.org
 
 If the argument, name is given with NULL, it would be probably
@@ -39,11 +39,14 @@ with -ENOMEM.
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
+Changes in v2:
+  - Fix the condition of returning -ENOMEM
+
  lib/parameter.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/lib/parameter.c b/lib/parameter.c
-index 71262c4..c658538 100644
+index 71262c4..02a89bb 100644
 --- a/lib/parameter.c
 +++ b/lib/parameter.c
 @@ -130,6 +130,13 @@ static int __dev_add_param(struct param_d *param, struct device_d *dev, const ch
@@ -54,7 +57,7 @@ index 71262c4..c658538 100644
 +		return -EINVAL;
 +
 +	param->name = strdup(name);
-+	if (param->name)
++	if (!param->name)
 +		return -ENOMEM;
 +
  	if (set)
