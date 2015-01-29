@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YGj2Y-0004t0-4u
- for barebox@lists.infradead.org; Thu, 29 Jan 2015 06:57:22 +0000
-Date: Thu, 29 Jan 2015 07:56:59 +0100
+ Linux)) id 1YGj3p-0005xt-LT
+ for barebox@lists.infradead.org; Thu, 29 Jan 2015 06:58:42 +0000
+Date: Thu, 29 Jan 2015 07:58:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150129065659.GN12209@pengutronix.de>
-References: <1422439695-20800-1-git-send-email-voice.shen@atmel.com>
+Message-ID: <20150129065819.GO12209@pengutronix.de>
+References: <1422439875-21347-1-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422439695-20800-1-git-send-email-voice.shen@atmel.com>
+In-Reply-To: <1422439875-21347-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,14 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d4: nand: add has_pmecc parameter
-To: Bo Shen <voice.shen@atmel.com>
+Subject: Re: [PATCH v2] ARM: i.MX6: use generic calculation in nand bbu handler
+To: Stefan Christ <s.christ@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 28, 2015 at 06:08:15PM +0800, Bo Shen wrote:
-> Add the missing has_pmecc parameter for sama5d4 based boards.
+On Wed, Jan 28, 2015 at 11:11:15AM +0100, Stefan Christ wrote:
+> The parameters ECC Strength, BadBlockMarkerByte and BadBlockMarkerStartBit in
+> the FCB structure depends on the nand chip's pagesize and oobsize. Instead of
+> hardcoding these values into the imx6 bbu handler calculate these values on the
+> fly. Therefore we export the necessary functions from the nand_mxs driver to
+> use them in the bbu handler.
 > 
-> Signed-off-by: Bo Shen <voice.shen@atmel.com>
+> Signed-off-by: Stefan Christ <s.christ@phytec.de>
 
 Applied, thanks
 
