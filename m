@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YH6GR-000782-JS
- for barebox@lists.infradead.org; Fri, 30 Jan 2015 07:45:16 +0000
-Date: Fri, 30 Jan 2015 08:44:53 +0100
+ Linux)) id 1YH6Or-0005iM-U9
+ for barebox@lists.infradead.org; Fri, 30 Jan 2015 07:53:58 +0000
+Date: Fri, 30 Jan 2015 08:53:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150130074453.GR12209@pengutronix.de>
-References: <20150129182138.3DA6.AA925319@jp.panasonic.com>
- <20150129093212.GJ18908@pengutronix.de>
- <20150129194731.3DAE.AA925319@jp.panasonic.com>
+Message-ID: <20150130075335.GS12209@pengutronix.de>
+References: <1422546197-6163-1-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150129194731.3DAE.AA925319@jp.panasonic.com>
+In-Reply-To: <1422546197-6163-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] param: add error check to __dev_add_param()
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Subject: Re: [PATCH] mfd: da9053: add basic da9053 driver
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 29, 2015 at 07:47:31PM +0900, Masahiro Yamada wrote:
-> Hi Sascha,
+On Thu, Jan 29, 2015 at 04:43:17PM +0100, Michael Grzeschik wrote:
+> From: Jan Luebbe <jlu@pengutronix.de>
 > 
-> On Thu, 29 Jan 2015 10:32:12 +0100
-> > > > > @@ -130,6 +130,13 @@ static int __dev_add_param(struct param_d *param, struct device_d *dev, const ch
-> > > > >  	if (get_param_by_name(dev, name))
-> > > > >  		return -EEXIST;
-> > > > >  
-> > > > > +	if (!name)
-> > > > > +		return -EINVAL;
-> > > > 
-> > > > Name is used already two lines above so barebox will already be crashed
-> > > > before this triggers.
-> > > > 
-> > > > Besides, I normally don't like these checks. dereferencing NULL pointers
-> > > > means you get a backtrace showing you what went wrong. Returning an error
-> > > > means adding code which in this case makes dev_add_param just fail
-> > > > silently because the return value often is not checked.
-> > > > 
-> > > 
-> > > OK, then how about dropping this -EINVAL check?
-> > 
-> > Yes, please.
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+> ---
+>  drivers/mfd/Kconfig  |   4 +
+>  drivers/mfd/Makefile |   1 +
+>  drivers/mfd/da9053.c | 360 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 365 insertions(+)
+>  create mode 100644 drivers/mfd/da9053.c
 > 
-> 
-> I did that in v3.
-> 
-> 
-> > > 
-> > > I think the -ENOMEM check below is still useful.
-> > > ( strdup() returns NULL also when NULL is passed,
-> > > but in that case this line cannot be reached.
-> > > The problem is that is not apparent at a glance..)
-> > 
-> > Note we also have xstrdup which crashes barebox on out of memory. This
-> > is usually the right thing to do when it's known that the allocation is
-> > small.
-> > 
-> 
-> I stopped and I have been thinking about it.
-> I hesitate a bit to replace it with xstrdup().  I feel like being lazy.
-> 
-> So, I did not do this in v3.
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 3af904d..3d230f1 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -4,6 +4,10 @@ config MFD_ACT8846
+>  	depends on I2C
+>  	bool "ACT8846 driver"
+>  
+> +config MFD_DA9053
+> +	depends on I2C
+> +	bool "DA9053 PMIC driver"
 
-The name of the parameter can be passed in by the user via the 'global'
-command, so using strdup instead seems like a good idea here.
+You either need a "depends on WATCHDOG" or a if
+(IS_ENABLED(CONFIG_WATCHDOG) in your code.
+
+What do the "shutdown" and "faultlog" parameters do? At least a comment
+in the code, better in the documentation would be good.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
