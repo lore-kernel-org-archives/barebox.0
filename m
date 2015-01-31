@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from smtp10.smtpout.orange.fr ([80.12.242.132]
  helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YHXp3-0002lu-AZ
- for barebox@lists.infradead.org; Sat, 31 Jan 2015 13:10:51 +0000
+ id 1YHXu3-0004vM-7L
+ for barebox@lists.infradead.org; Sat, 31 Jan 2015 13:16:00 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Sat, 31 Jan 2015 14:10:08 +0100
-Message-Id: <1422709810-30622-1-git-send-email-robert.jarzmik@free.fr>
+Date: Sat, 31 Jan 2015 14:15:33 +0100
+Message-Id: <1422710134-30798-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,285 +20,201 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/3] net: smc1111: add 16 bits accessors,
- allow address shift
+Subject: [PATCH v2 1/2] ARM: pxa: add pxa25x support
 To: barebox@lists.infradead.org
 
-Smc network IPs can be wired up in different funny ways. For example the
-lubbock pxa25x development platform wires all address lines shifted by
-2, ie. bus A2 is smc91c96 A0, bus A3 is smc91c96 A1 etc ...
-
-In order to cope with the different possible combination, add a shift
-parameter for addresses.
-
-By default, the old behaviour using the 32 bit accesses is kept.
+Add support for the PXA25X SoC family, the oldest of the PXA serie.
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/net/smc91111.c | 133 ++++++++++++++++++++++++++++++++-----------------
- include/net/smc91111.h |  14 ++++++
- 2 files changed, 100 insertions(+), 47 deletions(-)
+ arch/arm/mach-pxa/Kconfig                    | 21 +++++++++++
+ arch/arm/mach-pxa/Makefile                   |  1 +
+ arch/arm/mach-pxa/include/mach/pxa-regs.h    |  2 ++
+ arch/arm/mach-pxa/include/mach/pxa25x-regs.h |  6 ++++
+ arch/arm/mach-pxa/include/mach/pxa2xx-regs.h |  1 +
+ arch/arm/mach-pxa/mfp-pxa2xx.c               |  4 ++-
+ arch/arm/mach-pxa/sleep.S                    |  2 +-
+ arch/arm/mach-pxa/speed-pxa25x.c             | 54 ++++++++++++++++++++++++++++
+ 8 files changed, 89 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/mach-pxa/include/mach/pxa25x-regs.h
+ create mode 100644 arch/arm/mach-pxa/speed-pxa25x.c
 
-diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-index 100688c..f6d0aed 100644
---- a/drivers/net/smc91111.c
-+++ b/drivers/net/smc91111.c
-@@ -434,22 +434,12 @@
- */
- #define MEMORY_WAIT_TIME 16
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index b36e720..a45e01a 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -22,6 +22,10 @@ config ARCH_PXA310
+ choice
+ 	prompt "Intel/Marvell PXA Processor"
  
--struct accessors {
--	void (*ob)(unsigned, void __iomem *);
--	void (*ow)(unsigned, void __iomem *);
--	void (*ol)(unsigned long, void __iomem *);
--	void (*osl)(void __iomem *, const void  *, int);
--	unsigned (*ib)(void __iomem *);
--	unsigned (*iw)(void __iomem *);
--	unsigned long (*il)(void __iomem *);
--	void (*isl)(void __iomem *, void*, int);
--};
--
- struct smc91c111_priv {
- 	struct mii_bus miibus;
--	struct accessors a;
-+	struct smc91111_accessors a;
- 	void __iomem *base;
- 	int qemu_fixup;
-+	unsigned shift;
- };
++config ARCH_PXA25X
++	bool "PXA25x"
++	select ARCH_PXA2XX
++
+ config ARCH_PXA27X
+ 	bool "PXA27x"
+ 	select ARCH_PXA2XX
+@@ -33,6 +37,23 @@ endchoice
  
- #if (SMC_DEBUG > 2 )
-@@ -479,56 +469,103 @@ struct smc91c111_priv {
+ # ----------------------------------------------------------
  
- #define ETH_ZLEN 60
++if ARCH_PXA25X
++
++choice
++	prompt "PXA25x Board Type"
++	bool
++
++config MACH_LUBBOCK
++	bool "Lubbock board"
++	select PWM
++	help
++	  Say Y here if you are using a Lubbock board
++endchoice
++
++endif
++
++# ----------------------------------------------------------
++
+ if ARCH_PXA27X
  
--static void a_outb(unsigned value, void __iomem *offset)
-+static void a8_outb(unsigned value, void __iomem *base, unsigned int offset,
-+		    unsigned shift)
- {
--	writeb(value, offset);
-+	writeb(value, base + (offset << shift));
- }
+ choice
+diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
+index e5ffe06..0c32198 100644
+--- a/arch/arm/mach-pxa/Makefile
++++ b/arch/arm/mach-pxa/Makefile
+@@ -5,5 +5,6 @@ obj-y += devices.o
+ obj-y += sleep.o
  
--static void a_outw(unsigned value, void __iomem *offset)
-+static void a16_outw(unsigned value, void __iomem *base, unsigned int offset,
-+		     unsigned shift)
- {
--	writew(value, offset);
-+	writew(value, base + (offset << shift));
- }
+ obj-$(CONFIG_ARCH_PXA2XX) += mfp-pxa2xx.o pxa2xx.o
++obj-$(CONFIG_ARCH_PXA25X) += speed-pxa25x.o
+ obj-$(CONFIG_ARCH_PXA27X) += speed-pxa27x.o
+ obj-$(CONFIG_ARCH_PXA3XX) += speed-pxa3xx.o mfp-pxa3xx.o pxa3xx.o
+diff --git a/arch/arm/mach-pxa/include/mach/pxa-regs.h b/arch/arm/mach-pxa/include/mach/pxa-regs.h
+index 5203d88..9bcb5ef 100644
+--- a/arch/arm/mach-pxa/include/mach/pxa-regs.h
++++ b/arch/arm/mach-pxa/include/mach/pxa-regs.h
+@@ -28,6 +28,8 @@
+ # include <mach/pxa27x-regs.h>
+ #elif defined(CONFIG_ARCH_PXA3XX)
+ # include <mach/pxa3xx-regs.h>
++#elif defined(CONFIG_ARCH_PXA25X)
++# include <mach/pxa25x-regs.h>
+ #else
+ # error "unknown PXA soc type"
+ #endif
+diff --git a/arch/arm/mach-pxa/include/mach/pxa25x-regs.h b/arch/arm/mach-pxa/include/mach/pxa25x-regs.h
+new file mode 100644
+index 0000000..a7f16bd
+--- /dev/null
++++ b/arch/arm/mach-pxa/include/mach/pxa25x-regs.h
+@@ -0,0 +1,6 @@
++#ifndef __MACH_PXA25X_REGS
++#define __MACH_PXA25X_REGS
++
++/* this file intentionally left blank */
++
++#endif	/* !__MACH_PXA25X_REGS */
+diff --git a/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h b/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h
+index b43648e..dc7704e 100644
+--- a/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h
++++ b/arch/arm/mach-pxa/include/mach/pxa2xx-regs.h
+@@ -53,6 +53,7 @@
+ #define MECR		__REG(0x48000014)  /* Expansion Memory (PCMCIA/Compact Flash) Bus Configuration */
+ #define SXLCR		__REG(0x48000018)  /* LCR value to be written to SDRAM-Timing Synchronous Flash */
+ #define SXCNFG		__REG(0x4800001C)  /* Synchronous Static Memory Control Register */
++#define FLYCNFG		__REG(0x48000020)  /* Flycnfg Register */
+ #define SXMRS		__REG(0x48000024)  /* MRS value to be written to Synchronous Flash or SMROM */
+ #define MCMEM0		__REG(0x48000028)  /* Card interface Common Memory Space Socket 0 Timing */
+ #define MCMEM1		__REG(0x4800002C)  /* Card interface Common Memory Space Socket 1 Timing */
+diff --git a/arch/arm/mach-pxa/mfp-pxa2xx.c b/arch/arm/mach-pxa/mfp-pxa2xx.c
+index 4f393c4..2456cef 100644
+--- a/arch/arm/mach-pxa/mfp-pxa2xx.c
++++ b/arch/arm/mach-pxa/mfp-pxa2xx.c
+@@ -169,8 +169,10 @@ static int __init pxa2xx_mfp_init(void)
+ 	if (!cpu_is_pxa2xx())
+ 		return 0;
  
--static void a_outl(unsigned long value, void __iomem *offset)
-+static void a32_outl(unsigned long value, void __iomem *base,
-+		     unsigned int offset, unsigned shift)
- {
--	writel(value, offset);
-+	writel(value, base + (offset << shift));
- }
+-	if (cpu_is_pxa25x())
++	if (cpu_is_pxa25x()) {
++		pxa_init_gpio(0, 84);
+ 		pxa25x_mfp_init();
++	}
  
--static void a_outsl(void __iomem *offset, const void *data, int count)
-+static void a16_outsl(void __iomem *base, unsigned int offset,
-+		      const void *data, int count, unsigned shift)
- {
--	writesl(offset, data, count);
-+	writesw(base + (offset << shift), data, count * 2);
- }
+ 	if (cpu_is_pxa27x()) {
+ 		pxa_init_gpio(2, 120);
+diff --git a/arch/arm/mach-pxa/sleep.S b/arch/arm/mach-pxa/sleep.S
+index 7145f7c..1c67815 100644
+--- a/arch/arm/mach-pxa/sleep.S
++++ b/arch/arm/mach-pxa/sleep.S
+@@ -21,7 +21,7 @@
+ #define UNCACHED_PHYS_0	0
+ 		.text
  
--static unsigned a_inb(void __iomem *offset)
-+static void a16_outl(unsigned long value, void __iomem *base,
-+		     unsigned int offset, unsigned shift)
- {
--	return readb(offset);
-+	writew(value & 0xffff, base + (offset << shift));
-+	writew(value >> 16, base + ((offset + 2) << shift));
- }
- 
--static unsigned a_inw(void __iomem *offset)
-+static void a32_outsl(void __iomem *base, unsigned int offset,
-+		      const void *data, int count, unsigned shift)
- {
--	return readw(offset);
-+	writesw(base + (offset << shift), data, count * 2);
- }
- 
--static unsigned long a_inl(void __iomem *offset)
-+static unsigned a8_inb(void __iomem *base, unsigned int offset, unsigned shift)
- {
--	return readl(offset);
-+	return readb(base + (offset << shift));
- }
- 
--static inline void a_insl(void __iomem *offset, void *data, int count)
-+static unsigned a16_inw(void __iomem *base, unsigned int offset, unsigned shift)
- {
--	readsl(offset, data, count);
-+	return readw(base + (offset << shift));
- }
- 
-+static unsigned long a16_inl(void __iomem *base, unsigned int offset,
-+			     unsigned shift)
+-#ifdef CONFIG_ARCH_PXA27X
++#if (defined CONFIG_ARCH_PXA27X || defined CONFIG_ARCH_PXA25X)
+ /*
+  * pxa27x_finish_suspend()
+  *
+diff --git a/arch/arm/mach-pxa/speed-pxa25x.c b/arch/arm/mach-pxa/speed-pxa25x.c
+new file mode 100644
+index 0000000..6914343
+--- /dev/null
++++ b/arch/arm/mach-pxa/speed-pxa25x.c
+@@ -0,0 +1,54 @@
++/*
++ * clock.h - implementation of the PXA clock functions
++ *
++ * Copyright (C) 2014 Robert Jarzmik <robert.jarzmik@free.fr>
++ *
++ * This file is released under the GPLv2
++ *
++ */
++
++#include <common.h>
++#include <mach/clock.h>
++#include <mach/pxa-regs.h>
++
++/* Crystal clock: 13MHz */
++#define BASE_CLK	13000000
++
++unsigned long pxa_get_uartclk(void)
 +{
-+	u32 value;
-+
-+	value = readw(base + (offset << shift));
-+	value |= readw(base + (offset << shift)) << 16;
-+
-+	return value;
++	return 14857000;
 +}
 +
-+static inline void a16_insl(void __iomem *base, unsigned int offset, void *data,
-+			    int count, unsigned shift)
++unsigned long pxa_get_mmcclk(void)
 +{
-+	readsw(base + (offset << shift), data, count * 2);
++	return 19500000;
 +}
 +
-+static unsigned long a32_inl(void __iomem *base, unsigned int offset,
-+			     unsigned shift)
++/*
++ * Return the current LCD clock frequency in units of 10kHz as
++ */
++static unsigned int pxa_get_lcdclk_10khz(void)
 +{
-+	return readl(base + (offset << shift));
++	unsigned long ccsr;
++	unsigned int l, L, k, K;
++
++	ccsr = CCSR;
++
++	l = ccsr & 0x1f;
++	k = (l <= 7) ? 1 : (l <= 16) ? 2 : 4;
++
++	L = l * BASE_CLK;
++	K = L / k;
++
++	return (K / 10000);
 +}
 +
-+static inline void a32_insl(void __iomem *base, unsigned int offset, void *data,
-+			    int count, unsigned shift)
++unsigned long pxa_get_lcdclk(void)
 +{
-+	readsl(base + (offset << shift), data, count);
++	return pxa_get_lcdclk_10khz() * 10000;
 +}
 +
-+static const struct smc91111_accessors access_via_16bit = {
-+	.ob = a8_outb,
-+	.ow = a16_outw,
-+	.ol = a16_outl,
-+	.osl = a16_outsl,
-+	.ib = a8_inb,
-+	.iw = a16_inw,
-+	.il = a16_inl,
-+	.isl = a16_insl,
-+};
-+
- /* access happens via a 32 bit bus */
--static const struct accessors access_via_32bit = {
--	.ob = a_outb,
--	.ow = a_outw,
--	.ol = a_outl,
--	.osl = a_outsl,
--	.ib = a_inb,
--	.iw = a_inw,
--	.il = a_inl,
--	.isl = a_insl,
-+static const struct smc91111_accessors access_via_32bit = {
-+	.ob = a8_outb,
-+	.ow = a16_outw,
-+	.ol = a32_outl,
-+	.osl = a32_outsl,
-+	.ib = a8_inb,
-+	.iw = a16_inw,
-+	.il = a32_inl,
-+	.isl = a32_insl,
- };
- 
- /* ------------------------------------------------------------------------ */
-@@ -536,46 +573,46 @@ static const struct accessors access_via_32bit = {
- static inline void SMC_outb(struct smc91c111_priv *p, unsigned value,
- 				unsigned offset)
- {
--	(p->a.ob)(value, p->base + offset);
-+	(p->a.ob)(value, p->base, offset, p->shift);
- }
- 
- static inline void SMC_outw(struct smc91c111_priv *p, unsigned value,
- 				unsigned offset)
- {
--	(p->a.ow)(value, p->base + offset);
-+	(p->a.ow)(value, p->base, offset, p->shift);
- }
- 
- static inline void SMC_outl(struct smc91c111_priv *p, unsigned long value,
- 				unsigned offset)
- {
--	(p->a.ol)(value, p->base + offset);
-+	(p->a.ol)(value, p->base, offset, p->shift);
- }
- 
- static inline void SMC_outsl(struct smc91c111_priv *p, unsigned offset,
- 				const void *data, int count)
- {
--	(p->a.osl)(p->base + offset, data, count);
-+	(p->a.osl)(p->base, offset, data, count, p->shift);
- }
- 
- static inline unsigned SMC_inb(struct smc91c111_priv *p, unsigned offset)
- {
--	return (p->a.ib)(p->base + offset);
-+	return (p->a.ib)(p->base, offset, p->shift);
- }
- 
- static inline unsigned SMC_inw(struct smc91c111_priv *p, unsigned offset)
- {
--	return (p->a.iw)(p->base + offset);
-+	return (p->a.iw)(p->base, offset, p->shift);
- }
- 
- static inline unsigned long SMC_inl(struct smc91c111_priv *p, unsigned offset)
- {
--	return (p->a.il)(p->base + offset);
-+	return (p->a.il)(p->base, offset, p->shift);
- }
- 
- static inline void SMC_insl(struct smc91c111_priv *p, unsigned offset,
- 				void *data, int count)
- {
--	(p->a.isl)(p->base + offset, data, count);
-+	(p->a.isl)(p->base, offset, data, count, p->shift);
- }
- 
- static inline void SMC_SELECT_BANK(struct smc91c111_priv *p, int bank)
-@@ -1333,15 +1370,17 @@ static int smc91c111_probe(struct device_d *dev)
- 	edev->priv = (struct smc91c111_priv *)(edev + 1);
- 
- 	priv = edev->priv;
-+	priv->a = access_via_32bit;
- 
- 	if (dev->platform_data) {
- 		struct smc91c111_pdata *pdata = dev->platform_data;
- 
- 		priv->qemu_fixup = pdata->qemu_fixup;
-+		priv->shift = pdata->addr_shift;
-+		if (pdata->bus_width == 16)
-+			priv->a = access_via_16bit;
- 	}
- 
--	priv->a = access_via_32bit;
--
- 	edev->init = smc91c111_init_dev;
- 	edev->open = smc91c111_eth_open;
- 	edev->send = smc91c111_eth_send;
-diff --git a/include/net/smc91111.h b/include/net/smc91111.h
-index 0b2d49b..fa904ea 100644
---- a/include/net/smc91111.h
-+++ b/include/net/smc91111.h
-@@ -7,8 +7,22 @@
- #ifndef __SMC91111_H__
- #define __SMC91111_H__
- 
-+struct smc91111_accessors {
-+	void (*ob)(unsigned, void __iomem *, unsigned, unsigned);
-+	void (*ow)(unsigned, void __iomem *, unsigned, unsigned);
-+	void (*ol)(unsigned long, void __iomem *, unsigned, unsigned);
-+	void (*osl)(void __iomem *, unsigned, const void  *, int, unsigned);
-+	unsigned (*ib)(void __iomem *, unsigned, unsigned);
-+	unsigned (*iw)(void __iomem *, unsigned, unsigned);
-+	unsigned long (*il)(void __iomem *, unsigned, unsigned);
-+	void (*isl)(void __iomem *, unsigned, void*, int, unsigned);
-+	void *private;
-+};
-+
- struct smc91c111_pdata {
- 	int qemu_fixup;
-+	int addr_shift;
-+	int bus_width;
- };
- 
- #endif /* __SMC91111_H__ */
++unsigned long pxa_get_pwmclk(void)
++{
++	return BASE_CLK;
++}
 -- 
 2.1.0
 
