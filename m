@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp01.smtpout.orange.fr ([80.12.242.123]
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]
  helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YHGfN-0005tv-IO
- for barebox@lists.infradead.org; Fri, 30 Jan 2015 18:51:42 +0000
+ id 1YHXp3-0002mp-Ag
+ for barebox@lists.infradead.org; Sat, 31 Jan 2015 13:10:50 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <20150129091229.GA424@gmail.com>
- <20150129092151.GE12209@pengutronix.de> <87k305o0cd.fsf@free.fr>
- <20150130074017.GP12209@pengutronix.de>
-Date: Fri, 30 Jan 2015 19:51:19 +0100
-In-Reply-To: <20150130074017.GP12209@pengutronix.de> (Sascha Hauer's message
- of "Fri, 30 Jan 2015 08:40:17 +0100")
-Message-ID: <87lhkkm7a0.fsf@free.fr>
-MIME-Version: 1.0
+Date: Sat, 31 Jan 2015 14:10:09 +0100
+Message-Id: <1422709810-30622-2-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1422709810-30622-1-git-send-email-robert.jarzmik@free.fr>
+References: <1422709810-30622-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +17,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Access to first 0x1000 byte on imx53/imx6
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 2/3] net: smc1111: extend the driver for 91c94 and 91c96
+ support
+To: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+All the smcs family chips 91c94, 91c96, 91c100, 91c111 share almost the
+same behavior and register sets. The noticeable exceptions are coped
+with in this patch, ie :
+ - 91c94 and 91c96 only have an internal 10 Mbps phy
+   The registers used for phy discovery on later chips will corrupt the
+   91c96 state.
+ - 91c94 and 91c96 have a control and config register quite different
+   from their 91c1xx conterparts
+   A platform data user defined couple of registers is introduced. If
+   these values are 0, 91c1xx legacy behavior is assumed.
 
-> On Thu, Jan 29, 2015 at 08:25:54PM +0100, Robert Jarzmik wrote:
->> Sascha Hauer <s.hauer@pengutronix.de> writes:
->> I think the solution in arch/arm/boards/mioa701/board.c (remapping the 0x0
->> address) should work here :
->> 	docg3_iospace = map_io_sections(0x0, (void *)0xe0000000, 0x2000);
->
-> We could create a /dev/zeropage with the code above. That would make the
-> zero page generally available. I don't know if this is worth the effort
-> though.
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ drivers/net/smc91111.c | 38 +++++++++++++++++++++++++++++++++-----
+ include/net/smc91111.h |  2 ++
+ 2 files changed, 35 insertions(+), 5 deletions(-)
 
-Yeah, I don't know if it's worth it either. And how "big" should this
-/dev/zeropage be (4k, 1M, ...) ?
-
-Cheers.
-
+diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
+index f6d0aed..ef7c0dc 100644
+--- a/drivers/net/smc91111.c
++++ b/drivers/net/smc91111.c
+@@ -440,6 +440,10 @@ struct smc91c111_priv {
+ 	void __iomem *base;
+ 	int qemu_fixup;
+ 	unsigned shift;
++	int version;
++	int revision;
++	unsigned int control_setup;
++	unsigned int config_setup;
+ };
+ 
+ #if (SMC_DEBUG > 2 )
+@@ -900,6 +904,7 @@ static int smc91c111_phy_read(struct mii_bus *bus, int phyaddr, int phyreg)
+ static void smc91c111_reset(struct eth_device *edev)
+ {
+ 	struct smc91c111_priv *priv = (struct smc91c111_priv *)edev->priv;
++	int rev_vers;
+ 
+ 	/* This resets the registers mostly to defaults, but doesn't
+ 	   affect EEPROM.  That seems unnecessary */
+@@ -915,8 +920,11 @@ static void smc91c111_reset(struct eth_device *edev)
+ 
+ 	/* Release from possible power-down state */
+ 	/* Configuration register is not affected by Soft Reset */
+-	SMC_outw(priv, SMC_inw(priv, CONFIG_REG) | CONFIG_EPH_POWER_EN,
+-			CONFIG_REG);
++	if (priv->config_setup)
++		SMC_outw(priv, priv->config_setup, CONFIG_REG);
++	else
++		SMC_outw(priv, SMC_inw(priv, CONFIG_REG) | CONFIG_EPH_POWER_EN,
++			 CONFIG_REG);
+ 
+ 	SMC_SELECT_BANK(priv, 0);
+ 
+@@ -929,7 +937,10 @@ static void smc91c111_reset(struct eth_device *edev)
+ 
+ 	/* set the control register */
+ 	SMC_SELECT_BANK(priv, 1);
+-	SMC_outw(priv, CTL_DEFAULT, CTL_REG);
++	if (priv->control_setup)
++		SMC_outw(priv, priv->control_setup, CTL_REG);
++	else
++		SMC_outw(priv, CTL_DEFAULT, CTL_REG);
+ 
+ 	/* Reset the MMU */
+ 	SMC_SELECT_BANK(priv, 2);
+@@ -945,6 +956,14 @@ static void smc91c111_reset(struct eth_device *edev)
+ 
+ 	/* Disable all interrupts */
+ 	SMC_outb(priv, 0, IM_REG);
++
++	/* Check chip revision (91c94, 91c96, 91c100, ...) */
++	SMC_SELECT_BANK(priv, 3);
++	rev_vers = SMC_inb(priv, REV_REG);
++	priv->revision = (rev_vers >> 4) & 0xf;
++	priv->version = rev_vers & 0xf;
++	dev_info(edev->parent, "chip is revision=%2d, version=%2d\n",
++		 priv->revision, priv->version);
+ }
+ 
+ static void smc91c111_enable(struct eth_device *edev)
+@@ -964,10 +983,16 @@ static int smc91c111_eth_open(struct eth_device *edev)
+ 
+ 	/* Configure the Receive/Phy Control register */
+ 	SMC_SELECT_BANK(priv, 0);
+-	SMC_outw(priv, RPC_DEFAULT, RPC_REG);
++	if (priv->revision > 4)
++		SMC_outw(priv, RPC_DEFAULT, RPC_REG);
+ 
+ 	smc91c111_enable(edev);
+ 
++	if (priv->revision <= 4) {
++		dev_info(edev->parent, "force link at 10Mpbs on internal phy\n");
++		return 0;
++	}
++
+ 	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
+ 				 0, PHY_INTERFACE_MODE_NA);
+ 
+@@ -1379,6 +1404,8 @@ static int smc91c111_probe(struct device_d *dev)
+ 		priv->shift = pdata->addr_shift;
+ 		if (pdata->bus_width == 16)
+ 			priv->a = access_via_16bit;
++		pdata->config_setup = pdata->config_setup;
++		pdata->control_setup = pdata->control_setup;
+ 	}
+ 
+ 	edev->init = smc91c111_init_dev;
+@@ -1400,7 +1427,8 @@ static int smc91c111_probe(struct device_d *dev)
+ 
+ 	smc91c111_reset(edev);
+ 
+-	mdiobus_register(&priv->miibus);
++	if (priv->revision > 4)
++		mdiobus_register(&priv->miibus);
+ 	eth_register(edev);
+ 
+ 	return 0;
+diff --git a/include/net/smc91111.h b/include/net/smc91111.h
+index fa904ea..0ed65e7 100644
+--- a/include/net/smc91111.h
++++ b/include/net/smc91111.h
+@@ -23,6 +23,8 @@ struct smc91c111_pdata {
+ 	int qemu_fixup;
+ 	int addr_shift;
+ 	int bus_width;
++	int config_setup;
++	int control_setup;
+ };
+ 
+ #endif /* __SMC91111_H__ */
 -- 
-Robert
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
