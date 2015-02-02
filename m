@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f47.google.com ([209.85.220.47])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YNwfd-0005BU-8t
- for barebox@lists.infradead.org; Wed, 18 Feb 2015 04:55:33 +0000
-Received: by padfb1 with SMTP id fb1so11748864pad.8
- for <barebox@lists.infradead.org>; Tue, 17 Feb 2015 20:55:11 -0800 (PST)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 17 Feb 2015 20:54:40 -0800
-Message-Id: <1424235280-3776-1-git-send-email-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YIEoI-0000RW-Rn
+ for barebox@lists.infradead.org; Mon, 02 Feb 2015 11:04:55 +0000
+Date: Mon, 2 Feb 2015 12:04:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150202110432.GA12209@pengutronix.de>
+References: <1422366061-26735-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20150202104957.GA10842@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150202104957.GA10842@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,87 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RESEND][PATCH] firmware: altera: Make nSTAT GPIO optional
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, kernel@pengutronix.de
+Subject: Re: [PATCH] watchdog: imx: error out on negative timeouts
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-QnkgdGFraW5nIHBhcnRzIG9mIHRoZSBwcm9ncmFtbWluZyBoYW5kc2hha2luZyBwcm90b2NvbCBv
-biBmYWl0aCBpdCBpcwpwb3NzaWJsZSB0byBtYWtlIGR1ZSB3aXRoIG9ubHkgdHdvIEdQSU8gZm9y
-IHByb2dyYW1taW5nIEFsdGVyYQpGUEdBcy4gVGhpcyBpcyBub3QgYSB2ZXJ5IGFkdmlzYWJsZSBw
-cmFjdGljZSwgYnV0IHNvbWV0aW1lIHVuYXZvaWRhYmxlCmluIEdQSU8gY29uc3RyYWluZWQgZGVz
-aWducy4KClNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBnbWFp
-bC5jb20+Ci0tLQogZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2VyaWFsLmMgfCA1OSArKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNDQgaW5z
-ZXJ0aW9ucygrKSwgMTUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9maXJtd2Fy
-ZS9hbHRlcmFfc2VyaWFsLmMgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwppbmRl
-eCBjNWZmYmI2Li40NTI3ZDI3IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9z
-ZXJpYWwuYworKysgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwpAQCAtMjUsNiAr
-MjUsNyBAQAogI2luY2x1ZGUgPGZjbnRsLmg+CiAjaW5jbHVkZSA8ZnMuaD4KCisKIC8qCiAgKiBQ
-aHlzaWNhbCByZXF1aXJlbWVudHM6CiAgKiAtIHRocmVlIGZyZWUgR1BJT3MgZm9yIHRoZSBzaWdu
-YWxzIG5DT05GSUcsIENPTkZJR1VSRV9ET05FLCBuU1RBVFVTCkBAIC02NywxMyArNjgsMTkgQEAg
-c3RhdGljIGludCBhbHRlcmFfc3BpX29wZW4oc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoKQog
-CSAqIGFmdGVyIGFib3V0IDIgwrVzIHRoZSBGUEdBIG11c3QgYWNrbm93bGVkZ2Ugd2l0aAogCSAq
-IFNUQVRVUyBhbmQgQ09ORklHIERPTkUgbGluZXMgYXQgbG93IGxldmVsCiAJICovCi0JcmV0ID0g
-d2FpdF9vbl90aW1lb3V0KDIgKiBVU0VDT05ELAorCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5z
-dGF0X2dwaW8pKSB7CisJCXJldCA9IHdhaXRfb25fdGltZW91dCgyICogVVNFQ09ORCwKIAkJCQko
-Z3Bpb19nZXRfdmFsdWUodGhpcy0+bnN0YXRfZ3BpbykgPT0gMCkgJiYKIAkJCQkoZ3Bpb19nZXRf
-dmFsdWUodGhpcy0+Y29uZmRfZ3BpbykgPT0gMCkpOworCX0gZWxzZSB7CisJCXJldCA9IHdhaXRf
-b25fdGltZW91dCgyICogVVNFQ09ORCwKKwkJCQkoZ3Bpb19nZXRfdmFsdWUodGhpcy0+Y29uZmRf
-Z3BpbykgPT0gMCkpOworCX0KKwoKIAlpZiAocmV0ICE9IDApIHsKIAkJZGV2X2VycihkZXYsICJG
-UEdBIGRvZXMgbm90IGFja25vd2xlZGdlIHRoZSBwcm9ncmFtbWluZyBpbml0aWF0aW9uXG4iKTsK
-LQkJaWYgKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pKQorCQlpZiAoZ3Bpb19pc192
-YWxpZCh0aGlzLT5uc3RhdF9ncGlvKSAmJiBncGlvX2dldF92YWx1ZSh0aGlzLT5uc3RhdF9ncGlv
-KSkKIAkJCWRldl9lcnIoZGV2LCAiU1RBVFVTIGlzIHN0aWxsIGhpZ2ghXG4iKTsKIAkJaWYgKGdw
-aW9fZ2V0X3ZhbHVlKHRoaXMtPmNvbmZkX2dwaW8pKQogCQkJZGV2X2VycihkZXYsICJDT05GSUcg
-RE9ORSBpcyBzdGlsbCBoaWdoIVxuIik7CkBAIC05MCwxMSArOTcsMTYgQEAgc3RhdGljIGludCBh
-bHRlcmFfc3BpX29wZW4oc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoKQogCSAqIGFmdGVyIGFi
-b3V0IDE1MDYgwrVzIHRoZSBGUEdBIG11c3QgYWNrbm93bGVkZ2UgdGhpcyBzdGVwCiAJICogd2l0
-aCB0aGUgU1RBVFVTIGxpbmUgYXQgaGlnaCBsZXZlbAogCSAqLwotCXJldCA9IHdhaXRfb25fdGlt
-ZW91dCgxNjAwICogVVNFQ09ORCwKKworCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5zdGF0X2dw
-aW8pKSB7CisJCXJldCA9IHdhaXRfb25fdGltZW91dCgxNjAwICogVVNFQ09ORCwKIAkJCQlncGlv
-X2dldF92YWx1ZSh0aGlzLT5uc3RhdF9ncGlvKSA9PSAxKTsKLQlpZiAocmV0ICE9IDApIHsKLQkJ
-ZGV2X2VycihkZXYsICJGUEdBIGRvZXMgbm90IGFja25vd2xlZGdlIHRoZSBwcm9ncmFtbWluZyBz
-dGFydFxuIik7Ci0JCXJldHVybiByZXQ7CisJCWlmIChyZXQgIT0gMCkgeworCQkJZGV2X2Vycihk
-ZXYsICJGUEdBIGRvZXMgbm90IGFja25vd2xlZGdlIHRoZSBwcm9ncmFtbWluZyBzdGFydFxuIik7
-CisJCQlyZXR1cm4gcmV0OworCQl9CisJfSBlbHNlIHsKKwkJdWRlbGF5KDE2MDApOwogCX0KCiAJ
-ZGV2X2RiZyhkZXYsICJJbml0aWF0aW5nIHBhc3NlZFxuIik7CkBAIC0xNzcsMTYgKzE4OSwyNCBA
-QCBzdGF0aWMgaW50IGFsdGVyYV9zcGlfY2xvc2Uoc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZo
-KQogCSAqIHdoZW4gcHJvZ3JhbW1pbmcgd2FzIHN1Y2Nlc3NmdWwsCiAJICogYm90aCBzdGF0dXMg
-bGluZXMgc2hvdWxkIGJlIGF0IGhpZ2ggbGV2ZWwKIAkgKi8KLQlyZXQgPSB3YWl0X29uX3RpbWVv
-dXQoMTAgKiBVU0VDT05ELAorCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5zdGF0X2dwaW8pKSB7
-CisJCXJldCA9IHdhaXRfb25fdGltZW91dCgxMCAqIFVTRUNPTkQsCiAJCQkJKGdwaW9fZ2V0X3Zh
-bHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDEpICYmCiAJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRoaXMt
-PmNvbmZkX2dwaW8pID09IDEpKTsKKwl9IGVsc2UgeworCQlyZXQgPSB3YWl0X29uX3RpbWVvdXQo
-MTAgKiBVU0VDT05ELAorCQkJCShncGlvX2dldF92YWx1ZSh0aGlzLT5jb25mZF9ncGlvKSA9PSAx
-KSk7CisKKwl9CisKIAlpZiAocmV0ID09IDApIHsKIAkJZGV2X2RiZyhkZXYsICJQcm9ncmFtbWlu
-ZyBzdWNjZXNzZnVsXG4iKTsKIAkJcmV0dXJuIHJldDsKIAl9CgogCWRldl9lcnIoZGV2LCAiUHJv
-Z3JhbW1pbmcgZmFpbGVkIGR1ZSB0byB0aW1lIG91dFxuIik7Ci0JaWYgKGdwaW9fZ2V0X3ZhbHVl
-KHRoaXMtPm5zdGF0X2dwaW8pID09IDApCisJaWYgKGdwaW9faXNfdmFsaWQodGhpcy0+bnN0YXRf
-Z3BpbykgJiYKKwkJZ3Bpb19nZXRfdmFsdWUodGhpcy0+bnN0YXRfZ3BpbykgPT0gMCkKIAkJZGV2
-X2VycihkZXYsICJTVEFUVVMgaXMgc3RpbGwgbG93IVxuIik7CiAJaWYgKGdwaW9fZ2V0X3ZhbHVl
-KHRoaXMtPmNvbmZkX2dwaW8pID09IDApCiAJCWRldl9lcnIoZGV2LCAiQ09ORklHIERPTkUgaXMg
-c3RpbGwgbG93IVxuIik7CkBAIC0yMDEsMTAgKzIyMSwxNSBAQCBzdGF0aWMgaW50IGFsdGVyYV9z
-cGlfb2Yoc3RydWN0IGRldmljZV9kICpkZXYsIHN0cnVjdCBmcGdhX3NwaSAqdGhpcykKIAlpbnQg
-cmV0OwoKIAluYW1lID0gIm5zdGF0LWdwaW8iOwotCXRoaXMtPm5zdGF0X2dwaW8gPSBvZl9nZXRf
-bmFtZWRfZ3BpbyhuLCBuYW1lLCAwKTsKLQlpZiAodGhpcy0+bnN0YXRfZ3BpbyA8IDApIHsKLQkJ
-cmV0ID0gdGhpcy0+bnN0YXRfZ3BpbzsKLQkJZ290byBvdXQ7CisJaWYgKCFvZl9nZXRfcHJvcGVy
-dHkobiwgbmFtZSwgTlVMTCkpIHsKKwkJZGV2X2luZm8oZGV2LCAibnN0YXQtZ3BpbyBpcyBub3Qg
-c3BlY2lmaWVkLCBhc3N1bWluZyBpdCBpcyBub3QgY29ubmVjdGVkXG4iKTsKKwkJdGhpcy0+bnN0
-YXRfZ3BpbyA9IC0xOworCX0gZWxzZSB7CisJCXRoaXMtPm5zdGF0X2dwaW8gPSBvZl9nZXRfbmFt
-ZWRfZ3BpbyhuLCBuYW1lLCAwKTsKKwkJaWYgKHRoaXMtPm5zdGF0X2dwaW8gPCAwKSB7CisJCQly
-ZXQgPSB0aGlzLT5uc3RhdF9ncGlvOworCQkJZ290byBvdXQ7CisJCX0KIAl9CgogCW5hbWUgPSAi
-Y29uZmQtZ3BpbyI7CkBAIC0yMjUsOSArMjUwLDEzIEBAIHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9v
-ZihzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0IGZwZ2Ffc3BpICp0aGlzKQogCXJldCA9IGdw
-aW9fZGlyZWN0aW9uX291dHB1dCh0aGlzLT5uY29uZmlnX2dwaW8sIDEpOwogCWlmIChyZXQpCiAJ
-CXJldHVybiByZXQ7Ci0JcmV0ID0gZ3Bpb19kaXJlY3Rpb25faW5wdXQodGhpcy0+bnN0YXRfZ3Bp
-byk7Ci0JaWYgKHJldCkKLQkJcmV0dXJuIHJldDsKKworCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMt
-Pm5zdGF0X2dwaW8pKSB7CisJCXJldCA9IGdwaW9fZGlyZWN0aW9uX2lucHV0KHRoaXMtPm5zdGF0
-X2dwaW8pOworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKwl9CisKIAlyZXQgPSBncGlvX2Rp
-cmVjdGlvbl9pbnB1dCh0aGlzLT5jb25mZF9ncGlvKTsKIAlpZiAocmV0KQogCQlyZXR1cm4gcmV0
-OwotLQoyLjEuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Feb 02, 2015 at 11:49:57AM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello,
+> =
+
+> On Tue, Jan 27, 2015 at 02:41:01PM +0100, Uwe Kleine-K=F6nig wrote:
+> > I'm not sure where a negative timeout could come from but making the
+> > code more robust for no additional runtime cost is good nevertheless.
+> > =
+
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > ---
+> >  drivers/watchdog/imxwd.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > =
+
+> > diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+> > index 31c3d0d85353..66e9f6848f74 100644
+> > --- a/drivers/watchdog/imxwd.c
+> > +++ b/drivers/watchdog/imxwd.c
+> > @@ -87,7 +87,7 @@ static int imx21_watchdog_set_timeout(struct imx_wd *=
+priv, int timeout)
+> >  =
+
+> >  	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+> >  =
+
+> > -	if (!timeout || timeout > 128)
+> > +	if (timeout <=3D 0 || timeout > 128)
+> >  		return -EINVAL;
+> This patch is broken because reset_cpu (in the same source file) calls
+> set_timeout with timeout=3D-1 to reset the cpu immediatly. The wd command
+> only parses non-negative values, so from there nothing strange should be
+> expected.
+> =
+
+> Returning -EINVAL on timeout=3D0 (which means "disable watchdog") is OK
+> because the imx21 watchdog cannot be stopped.
+> =
+
+> So in short: please drop this patch from next.
+
+Did that.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
