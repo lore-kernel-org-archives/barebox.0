@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIFcz-0002Ci-Cb
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 11:57:18 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1YIFcd-0003JW-52
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 12:56:55 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1YIFcd-0006zp-36
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 12:56:55 +0100
-Date: Mon, 2 Feb 2015 12:56:55 +0100
+ Linux)) id 1YIFw3-0001Wq-7p
+ for barebox@lists.infradead.org; Mon, 02 Feb 2015 12:17:00 +0000
+Date: Mon, 2 Feb 2015 13:16:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150202115655.GB12209@pengutronix.de>
+Message-ID: <20150202121632.GC12209@pengutronix.de>
+References: <20150202104957.GA10842@pengutronix.de>
+ <20150202110432.GA12209@pengutronix.de>
+ <20150202205038.451E.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20150202205038.451E.AA925319@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,133 +20,132 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2015.02.0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] watchdog: imx: error out on negative timeouts
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Cc: barebox@lists.infradead.org, Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>
 
-SGVyZSdzIGJhcmVib3gtMjAxNS4wMi4wLgoKV29ydGggbm90aW5nIGZvciB0aGlzIHJlbGVhc2Ug
-aXMgdGhhdCB3ZSBub3cgaGF2ZSBjb25zb2xlIHN1cHBvcnQKaW4gdGhlIFBCTCwgc28gcHJpbnRm
-IGFuZCBmcmllbmRzIGNhbiBiZSB1c2VkLCB0aG91Z2ggY3VycmVudGx5IG9ubHkKd2l0aCB0aGUg
-aGVscCBvZiBwdXRzX2xsLiBUaGlzIGNhbiBiZSBhIGdvb2QgZGVidWdnaW5nIGFpZC4gQWxzbyB3
-ZSBjYW4Kbm93IGdlbmVyYXRlIGZpcnN0IHN0YWdlIGltYWdlcyBmb3IgTVhTIHdoaWNoIG1ha2Vz
-IHRoZSBpbmZhbW91cwpGcmVlc2NhbGUgYm9vdGxldCBjb2RlIHVubmNlc3NhcnkuCkZvciBhIGNv
-bXBsZXRlIGxpc3Qgb2YgcGF0Y2hlcyB0aGF0IHdlbnQgaW50byB0aGlzIHJlbGVhc2Ugc2VlIGJl
-bG93LgpUaGFuayB5b3UgYWxsIGZvciB3b3JraW5nIG9uIGJhcmVib3ghCgpTYXNjaGEKCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0KQW50b255IFBhdmxvdiAoMTApOgogICAgICBjbG9jazogaW5jb3Jwb3JhdGUgZHVtbXkgY2xv
-Y2tzb3VyY2UgaW50byBjb3JlIGNsb2NrIGNvZGUKICAgICAgRG9jdW1lbnRhdGlvbjogYWRkIFJh
-c3BiZXJyeSBQaSBiYXJlYm94IG1pbmktaG93dG8KICAgICAgQVJNOiBycGlfZGVmY29uZmlnOiBl
-bmFibGUgbG9hZHkgY29tbWFuZAogICAgICBBUk06IGludHJvZHVjZSBkZWJ1Z19sbF9wbDAxMS5o
-CiAgICAgIEFSTTogdmV4cHJlc3M6IGRlYnVnX2xsLmg6IHN3aXRjaCB0byBkZWJ1Z19sbF9wbDAx
-MS5oCiAgICAgIEFSTTogaGlnaGJhbms6IGRlYnVnX2xsLmg6IHN3aXRjaCB0byBkZWJ1Z19sbF9w
-bDAxMS5oCiAgICAgIEFSTTogdmVyc2F0aWxlOiBlbmFibGUgbWlzc2VkIEhBU19ERUJVR19MTAog
-ICAgICBBUk06IHZlcnNhdGlsZTogZGVidWdfbGwuaDogc3dpdGNoIHRvIGRlYnVnX2xsX3BsMDEx
-LmgKICAgICAgQVJNOiBiY20yODM1OiBhZGQgREVCVUdfTEwgc3VwcG9ydAogICAgICBjb21tYW5k
-cy9zcGxhc2g6IGZpeCAnLXknIG9wdGlvbiBoYW5kbGluZwoKQm8gU2hlbiAoMyk6CiAgICAgIEFS
-TTogYXRtZWw6IHNhbWE1ZDQgeHBsYWluZWQ6IGZpeCBtY2kxIHBvd2VyIHBpbgogICAgICBBUk06
-IGF0bWVsOiBzYW1hNWQzeGVrOiBmaXggY29uZmxpY3QgYmV0d2VlbiB3MSBhbmQgbGVkCiAgICAg
-IEFSTTogYXRtZWw6IHNhbWE1ZDQ6IG5hbmQ6IGFkZCBoYXNfcG1lY2MgcGFyYW1ldGVyCgpKYW4g
-THVlYmJlICg1KToKICAgICAgYXJtOiBteHM6IGZpeCBwaW4gdm9sdGFnZSByZWdpc3RlciB2YWx1
-ZSBmb3IgRU1JCiAgICAgIEFSTTogaW14MjMzLW9saW51eGlubzogZ2VuZXJhdGUgY29tcGxldGUg
-Ym9vdHN0cmVhbQogICAgICBBUk06IGlteDIzMy1vbGludXhpbm86IHVzZSBMRUQxIGFzIGhlYXJ0
-YmVhdAogICAgICBBUk06IGlteDIzMy1vbGludXhpbm86IHVwZGF0ZSBkZWZhdWx0ZW52CiAgICAg
-IEFSTTogaW14MjMzLW9saW51eGlubzogdXBkYXRlIGRlZmNvbmZpZwoKSmVhbi1DaHJpc3RvcGhl
-IFBMQUdOSU9MLVZJTExBUkQgKDkpOgogICAgICBuZXRjb25zb2xlOiBmaXggRG9jdW1lbnRhdGlv
-bgogICAgICBlZmlrYS1teC1zbWFydGJvb2s6IGVuYWJsZSBsZWQgaGVhcmJlYXQgb24gbWFpbAog
-ICAgICB2ZXJzYXRpbGVwYjogbW92ZSBiYXJlYm94IHRvIDMyIE1pQiBhbmQgdXNlIHpJbWFnZQog
-ICAgICB2ZXJzYXRpbGVwYjogc3dpdGNoIHRvIGRlZmF1bHRlbnYtMgogICAgICBhcm06IHN5c3Rl
-bV9pbmZvIGZpeCBDUFVfSVNfQVJNMTE3NgogICAgICB2ZXJzYXRpbGVwYjogYWxsb3cgdG8gY29t
-cGlsZSBpdCBhbiBhcm0xMTc2CiAgICAgIGtjb25maWcvbWVudS5jOjU5MDogZml4IHdhcm5pbmc6
-IOKAmGp1bXDigJkgbWF5IGJlIHVzZWQgdW5pbml0aWFsaXplZCBpbiB0aGlzIGZ1bmN0aW9uIFst
-V21heWJlLXVuaW5pdGlhbGl6ZWRdCiAgICAgIGNvbW1hbmQvc3BsYXNoOiBmaXggcmV0dXJuIHZh
-bHVlCiAgICAgIGRlZmF1bHRlbnYtMjogZml4IG1pc3BsYWNlIE5WIGRpciBpbiBlbnYKCkx1Y2Fz
-IFN0YWNoICgyNCk6CiAgICAgIGVmaTogYWRkIGZ1bmN0aW9uIHRvIGRldGVybWluZSB0eXBlIG9m
-IGRldmljZSBwYXRoCiAgICAgIGVmaTogYWRkIHByb3BlciByZXNldCBob29rCiAgICAgIGVmaTog
-bW92ZSBleGl0IHRvIEVGSSBpbnRvIG93biBjb21tYW5kCiAgICAgIGVmaTogYWRkIEJhcmVib3gg
-R1VJRAogICAgICBmczogZWZpdmFyczogY29zbWV0aWMgY2hhbmdlcwogICAgICBmczogZWZpdmFy
-OiBzd2l0Y2ggdG8gc3RhbmRhcmQgbGlzdCBpbXBsZW1lbnRhdGlvbgogICAgICBmczogZWZpdmFy
-OiBtb3ZlIHZhcmlhYmxlIGRpc2NvdmVyeSBpbnRvIHByb2JlCiAgICAgIGxpYjogYWRkIHdjaGFy
-IHN0cmR1cAogICAgICBmczogZWZpdmFyOiBwcmVzZXJ2ZSBtb3JlIGluZm8gaW4gaW5vZGUKICAg
-ICAgZnM6IGVmaXZhcnM6IGRvbid0IHN0b3JlIGF0dHJpYnV0ZXMgaW4gZmlsZQogICAgICBmczog
-ZWZpdmFyczogaW1wbGVtZW50IHdyaXRlIHN1cHBvcnQKICAgICAgZWZpOiBtb3VudCBlZml2YXJm
-cyBieSBkZWZhdWx0IGlmIGVuYWJsZWQKICAgICAgdXNiOiBnYWRnZXQ6IGZhc3Rib290OiBhbGxv
-dyB0byBidWlsZCB3aXRob3V0IEJPT1RNCiAgICAgIHZpZGVvOiBpbXgtaGRtaTogc2VhcmNoIGZv
-ciBEREMgbm9kZSBvbmx5IHdoZW4gRURJRCBzdXBwb3J0IGlzIGVuYWJsZWQKICAgICAgUmV2ZXJ0
-ICJBUk06IGkuTVg6IE1ha2UgTkFORCByZWxhdGVkIEtjb25maWcgb3B0aW9ucyBkZXBlbmQgb24g
-TVREIgogICAgICBhcm06IGluY2x1ZGUgcmVsZXZhbnQgaGVhZGVycyBpbiBiYXJlYm94LWFybQog
-ICAgICBhcm06IGVkbXFteDY6IGJ1aWxkIGVudHJ5IGluIGx3bCB0YXJnZXQKICAgICAgYXJtOiBk
-byBzZWN0aW9uIGdhcmJhZ2UgY29sbGVjdGlvbiBhbHNvIHdpdGggbW9kdWxlcyBlbmFibGVkCiAg
-ICAgIG5ldDogcnRsODE2OTogcmVtb3ZlIHVubmVjZXNzYXJ5IGNhY2hlIG1haW50ZW5hbmNlCiAg
-ICAgIGRvY3M6IGZpeCBtaXNzaW5nIG5ld2xpbmVzIGluIGNvZGVibG9ja3MKICAgICAgZG9jczog
-Zml4IGJyb2tlbiByZWZlcmVuY2UKICAgICAgY29tbW9uOiBjb25zb2xlX2NvbnNvbGU6IHB1dCBm
-dW5jdGlvbnMgdW5kZXIgY29ycmVjdCBpZmRlZgogICAgICB1c2I6IG11c2ItZHNwczogc2VsZWN0
-IE9GREVWSUNFCiAgICAgIGFybTogYm9hcmQ6IHZpcnQycmVhbDogYnVpbGQgbG93bGV2ZWwgaW4g
-cHJvcGVyIHRhcmdldAoKTWFzYWhpcm8gWWFtYWRhICgxMSk6CiAgICAgIGtidWlsZDogcmVtb3Zl
-IHJlZHVuZGFudCAtaW5jbHVkZSBpbmNsdWRlL2dlbmVyYXRlZC9hdXRvY29uZi5oCiAgICAgIGti
-dWlsZDogZG8gbm90IGNyZWF0ZSBzeW1ib2xpYyBsaW5rIGluY2x1ZGUvYXNtCiAgICAgIGtidWls
-ZDogZG8gbm90IGNyZWF0ZSBpbmNsdWRlMiBkaXJlY3RvcnkKICAgICAga2J1aWxkOiBhZGQgLi9L
-YnVpbGQgZmlsZSB0byBmaXggIm1ha2UgY2xlYW4iCiAgICAgIGtidWlsZDogbW92ZSBhc20tb2Zm
-c2V0cy5oIHJ1bGUgdG8gLi9LYnVpbGQKICAgICAga2J1aWxkOiBjcmVhdGUgYSBidWlsZCBkaXJl
-Y3RvcnkgYXV0b21hdGljYWxseSBmb3Igb3V0LW9mLXRyZWUgYnVpbGQKICAgICAgc2l6ZXMuaDog
-bW92ZSBpbmNsdWRlL3NpemVzLmggdG8gaW5jbHVkZS9saW51eC9zaXplcy5oCiAgICAgIHNpemVz
-Lmg6IHN5bmMgd2l0aCBMaW51eCAzLjE5LXJjMwogICAgICBrYnVpbGQ6IGRlbGV0ZSBpbmNsdWRl
-L2dlbmVyYXRlZCBkaXJlY3RvcnkgYnkgIm1ha2UgbXJwcm9wZXIiCiAgICAgIGtidWlsZDogZHJv
-cCBpbmNsdWRlL2FzbSBmcm9tIE1SUFJPUEVSX0ZJTEVTCiAgICAgIGNvbW1hbmRzOiBmaXggYSB3
-YXJuaW5nIGluIGhlbHAuYwoKUm9iZXJ0IEphcnptaWsgKDEpOgogICAgICBuZXQ6IHNtYzExMTE6
-IGZpeCBtZW1vcnkgY29uZ2VzdGlvbnMKClNhc2NoYSBIYXVlciAoNDUpOgogICAgICBQQkw6IEFk
-ZCBzdHJubGVuLCBuZWVkZWQgZm9yIHByaW50ZiBzdXBwb3J0CiAgICAgIHByaW50ZjogbW92ZSBw
-YW5pYygpIHRvIGNvbW1vbi9taXNjLmMKICAgICAgcHJpbnRmOiBtb3ZlIHNpbXBsZV9zdHJ0byoo
-KSBmdW5jdGlvbnMgdG8gc2VwYXJhdGUgZmlsZQogICAgICBwcmludGY6IHVzZSBsb2NhbCBpc2Rp
-Z2l0L2lzYWxudW0gaW1wbGVtZW50YXRpb24KICAgICAgQWRkIFBCTCBjb25zb2xlIHN1cHBvcnQK
-ICAgICAgbWFsbG9jOiBBZGQgYSBmdW5jdGlvbiB0byBkZXRlY3QgaWYgbWFsbG9jIHBvb2wgaXMg
-YWxyZWFkeSBpbml0aWFsaXplZAogICAgICBjb25zb2xlOiBNYWtlIHN1cmUgeHphbGxvYyBpcyBv
-bmx5IHVzZWQgd2hlbiBpdCdzIGF2YWlsYWJsZQogICAgICBBUk06IHN0YXJ0LmM6IEFkZCBzb21l
-IGRlYnVnZ2luZyBtZXNzYWdlcwogICAgICBBUk06IHVuY29tcHJlc3MuYzogQWRkIHNvbWUgZGVi
-dWdnaW5nIG1lc3NhZ2VzCiAgICAgIGNvbnNvbGU6IEFkZCBzZXRfYWN0aXZlIGNhbGxiYWNrCiAg
-ICAgIG5ldGNvbnNvbGU6IGFjdGl2YXRlIGluIHNldF9hY3RpdmUgY2FsbGJhY2sKICAgICAgUEJM
-OiBBZGQgc3RybmxlbiwgbmVlZGVkIGZvciBwcmludGYgc3VwcG9ydAogICAgICBwcmludGY6IG1v
-dmUgcGFuaWMoKSB0byBjb21tb24vbWlzYy5jCiAgICAgIHByaW50ZjogbW92ZSBzaW1wbGVfc3Ry
-dG8qKCkgZnVuY3Rpb25zIHRvIHNlcGFyYXRlIGZpbGUKICAgICAgcHJpbnRmOiB1c2UgbG9jYWwg
-aXNkaWdpdC9pc2FsbnVtIGltcGxlbWVudGF0aW9uCiAgICAgIEFkZCBQQkwgY29uc29sZSBzdXBw
-b3J0CiAgICAgIG1hbGxvYzogQWRkIGEgZnVuY3Rpb24gdG8gZGV0ZWN0IGlmIG1hbGxvYyBwb29s
-IGlzIGFscmVhZHkgaW5pdGlhbGl6ZWQKICAgICAgY29uc29sZTogTWFrZSBzdXJlIHh6YWxsb2Mg
-aXMgb25seSB1c2VkIHdoZW4gaXQncyBhdmFpbGFibGUKICAgICAgQVJNOiBzdGFydC5jOiBBZGQg
-c29tZSBkZWJ1Z2dpbmcgbWVzc2FnZXMKICAgICAgQVJNOiB1bmNvbXByZXNzLmM6IEFkZCBzb21l
-IGRlYnVnZ2luZyBtZXNzYWdlcwogICAgICBzY3JpcHRzOiBhZGQgbXhzaW1hZ2UgdG9vbAogICAg
-ICBzY3JpcHRzOiBBZGQgbXhzYm9vdCB0b29sCiAgICAgIHNjcmlwdHM6IEFkZCBteHMtdXNiLWxv
-YWRlciB0b29sCiAgICAgIGRyaXZlcnM6IHJlbW92ZSB1bm5lY2Vzc2FyeSBtYWNoL2lteC1yZWdz
-LmggaW5jbHVkZQogICAgICBBUk06IE1YUzogcmVtb3ZlIHVubmVjZXNzYXJ5IG1hY2gvaW14LXJl
-Z3MuaCBpbmNsdWRlCiAgICAgIEFSTTogQWRkIFUtQm9vdCBzcGVjaWZpYyBpbyBmdW5jdGlvbnMK
-ICAgICAgQVJNOiBteHM6IEFkZCBsb3dsZXZlbCBzZXR1cCBmcm9tIFUtQm9vdAogICAgICBBUk06
-IEFkZCBnZXRfc3AoKSBhbmQgZ2V0X2xyKCkgZnVuY3Rpb25zCiAgICAgIEFSTTogTVhTOiBBZGQg
-bW9yZSBiYXNlIGFkZHJlc3MgZGVmaW5lcwogICAgICBBUk06IE1YUzogRW5hYmxlIGlvbXV4IHN1
-cHBvcnQgZm9yIHBibAogICAgICBBUk06IE1YUzogQWRkIG11bHRpaW1hZ2Ugc3VwcG9ydAogICAg
-ICBBUk06IE1YUzogVXBkYXRlIEthcm8gVFgyOCBib2FyZCBzdXBwb3J0CiAgICAgIERvY3VtZW50
-YXRpb246IEFkZCBkb2N1bWVudGF0aW9uIGZvciBib290aW5nIEZyZWVzY2FsZSBNWFMgU29Dcwog
-ICAgICBuZXQ6IGNwc3c6IGlnbm9yZSBlcnJvciBvbiBzbGF2ZSBzZXR1cAogICAgICBNZXJnZSBi
-cmFuY2ggJ2Zvci1uZXh0L2FtMzM1eCcKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9hcm0n
-CiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQvZWZpJwogICAgICBNZXJnZSBicmFuY2ggJ2Zv
-ci1uZXh0L2lteCcKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9rYnVpbGQnCiAgICAgIE1l
-cmdlIGJyYW5jaCAnZm9yLW5leHQvbWlzYycKICAgICAgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9t
-eHMnCiAgICAgIE1lcmdlIGJyYW5jaCAnZm9yLW5leHQvbmV0Y29uc29sZScKICAgICAgTWVyZ2Ug
-YnJhbmNoICdmb3ItbmV4dC9wYmwtY29uc29sZScKICAgICAgYm9hcmRzOiByZW1vdmUgaGFyZGNv
-ZGVkIE1BQyBhZGRyZXNzZXMKICAgICAgUmVsZWFzZSB2MjAxNS4wMi4wCgpUZXJlc2EgR8OhbWV6
-ICgyKToKICAgICAgQVJNOiBkdHM6IGFtMzM1eC1waHl0ZWMtcGh5ZmxleDogSW5jcmVhc2Uga2Vy
-bmVsIHBhcnRpdGlvbiBvbiBTUEkgTk9SCiAgICAgIEFSTTogZHRzOiBhbTMzNXgtcGh5dGVjLXBo
-eWNvcmUtc29tOiBJbmNyZWFzZSBrZXJuZWwgcGFydGl0aW9uIG9uIFNQSSBOT1IKClV3ZSBLbGVp
-bmUtS8O2bmlnICgzKToKICAgICAgYXJtL2NwdS9sb3dsZXZlbDogaW52YWxpZGF0ZSBpLWNhY2hl
-IGJlZm9yZSBlbmFibGluZwogICAgICBhcm0vY3B1L2xvd2xldmVsOiBhZGQgYW5kIGZpeCBjb21t
-ZW50cyBmb3IgQ1BTUiBhbmQgU0NUTFIgYWNjZXNzZXMKICAgICAgYXJtL2NwdS9sb3dsZXZlbDog
-RG9uJ3Qgc2F2ZSB0aGUgcmV0dXJuIGFkZHJlc3MgaW4gYW5vdGhlciByZWdpc3RlcgoKV2FkaW0g
-RWdvcm92ICgxKToKICAgICAgRml4IHNwZWxsaW5nOiBwYXRoZXMgLT4gcGF0aHMKCgotLSAKUGVu
-Z3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAg
-IHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBI
-aWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dl
-cmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIw
-NjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, Feb 02, 2015 at 08:50:38PM +0900, Masahiro Yamada wrote:
+> 
+> On Mon, 2 Feb 2015 12:04:32 +0100
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > On Mon, Feb 02, 2015 at 11:49:57AM +0100, Uwe Kleine-Konig wrote:
+> > > Hello,
+> > > 
+> > > On Tue, Jan 27, 2015 at 02:41:01PM +0100, Uwe Kleine-Konig wrote:
+> > > > I'm not sure where a negative timeout could come from but making the
+> > > > code more robust for no additional runtime cost is good nevertheless.
+> > > > 
+> > > > Signed-off-by: Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>
+> > > > ---
+> > > >  drivers/watchdog/imxwd.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+> > > > index 31c3d0d85353..66e9f6848f74 100644
+> > > > --- a/drivers/watchdog/imxwd.c
+> > > > +++ b/drivers/watchdog/imxwd.c
+> > > > @@ -87,7 +87,7 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, int timeout)
+> > > >  
+> > > >  	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+> > > >  
+> > > > -	if (!timeout || timeout > 128)
+> > > > +	if (timeout <= 0 || timeout > 128)
+> > > >  		return -EINVAL;
+> > > This patch is broken because reset_cpu (in the same source file) calls
+> > > set_timeout with timeout=-1 to reset the cpu immediatly. The wd command
+> > > only parses non-negative values, so from there nothing strange should be
+> > > expected.
+> > > 
+> > > Returning -EINVAL on timeout=0 (which means "disable watchdog") is OK
+> > > because the imx21 watchdog cannot be stopped.
+> > > 
+> > > So in short: please drop this patch from next.
+> > 
+> > Did that.
+> > 
+> 
+> 
+> Forgive my newbie questions.
+> 
+> I have been studied barebox for one month and a half,
+> I think I could roughly understand the next branch policy in this community,
+> but could you help me to make it a little bit clearer?
+> 
+> 
+> I guess the barebox/next is similar to the linux-next repository.
+> 
+> Similar points are:
+>  [1] barebox/next is not fast-forwarded
+>      (Developers should work with "git rebase --onto" as we do in linux-next
+
+If possible please base your patches on the master branch. I'll pick a
+suitable for-next/* branch merge the for-next/* branches together and
+handle the merge conflicts. If you have direct dependencies on some
+patches in -next you can base your patches on -next.
+
+>  [2] barebox/next represents the source tree that is *probably* merged into the master branch
+>      after the next release.
+>      (Perhaps, barebox might not have what we call Merge Window,
+>       but I notice topic branches are merged right after every-month release.)
+
+yes.
+
+> 
+> 
+> On the other hand, I notice some differences
+> 
+> [3] All the topic branches are locally maintained by Sascha, so they are never pushed
+>     to the public repository.
+
+Right.
+
+> [4] Some commits in topic branches might be dropped rather than being git-reverted
+>     if they turned out to be bad.
+
+Right. Also you can always send a patch committed with "--fixup=" to the
+list, then I can just squash the changes into the original commit.
+
+I routinely build every commit in -next with every defconfig in the
+tree. It regularly happens that patches do not build in every defconfig
+because of missing ifdefs or dependencies. Most of the times I fix that
+up quietly.
+
+>     (i.e. commit ID becomes a fixed value when it is merge into the master branch.)
+
+Yes.
+
+> 
+> 
+> If [4] is true, we should not describe the commit ID in the following commits
+> until it is merged into the master branch.   (Or we should be very careful when we do so.)
+
+Yes.
+
+> 
+> We often write something like
+> "Since commit xxxxxxxxxxxx, the foo function has not been working. Blah Blah ..."
+> in bug-fix patches.
+> But xxxxxxxxxxxx may change if the preceding commit is dropped or modified.
+
+As long xxxxxxxxxxxx hasn't hit master you can just ask me to fix the
+offending commit directly, preferably using --fixup= to git-commit.
+Once it hits master the commit IDs are stable, so you can refer to them
+in bug fix patches.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
