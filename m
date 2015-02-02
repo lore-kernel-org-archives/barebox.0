@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YID9S-0002un-F0
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 09:18:39 +0000
-Date: Mon, 2 Feb 2015 10:18:10 +0100
+ Linux)) id 1YIDB2-0004Dm-8g
+ for barebox@lists.infradead.org; Mon, 02 Feb 2015 09:20:17 +0000
+Date: Mon, 2 Feb 2015 10:19:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150202091810.GY12209@pengutronix.de>
-References: <1422759506-27440-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150202091954.GZ12209@pengutronix.de>
+References: <1422853816-21068-1-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422759506-27440-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1422853816-21068-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pinctrl: remove unnecessary error check
+Subject: Re: [PATCH] ARM: use an easier way to create the empty built-in.o
 To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Feb 01, 2015 at 11:58:26AM +0900, Masahiro Yamada wrote:
-> The file drivers/pinctrl/pinctrl.c is compiled only when
-> CONFIG_PINCTRL is defined.  "IS_ENABLED(CONFIG_PINCTRL)" is
-> always evaluated as 1 in this function.
-> (Although the compiler would optimize it, the source file does
-> not look nice.)
-> 
-> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+On Mon, Feb 02, 2015 at 02:10:15PM +0900, Masahiro Yamada wrote:
+> We do not have to build an unneeded file to create the built-in.o.
+> Just add a dummy string to "obj-".
+> (dummy.c does not need to exist.)
 
-> ---
-> 
->  drivers/pinctrl/pinctrl.c | 3 ---
->  1 file changed, 3 deletions(-)
+Ah, nice. Adding files just to make the make process happy felt awkward.
 
 Applied, thanks
 
