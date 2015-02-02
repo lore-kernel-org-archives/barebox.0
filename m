@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIFw3-0001Wq-7p
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 12:17:00 +0000
-Date: Mon, 2 Feb 2015 13:16:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150202121632.GC12209@pengutronix.de>
-References: <20150202104957.GA10842@pengutronix.de>
- <20150202110432.GA12209@pengutronix.de>
- <20150202205038.451E.AA925319@jp.panasonic.com>
+Received: from mail-wg0-f53.google.com ([74.125.82.53])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YIKKt-0006mB-Ha
+ for barebox@lists.infradead.org; Mon, 02 Feb 2015 16:58:56 +0000
+Received: by mail-wg0-f53.google.com with SMTP id a1so39820006wgh.12
+ for <barebox@lists.infradead.org>; Mon, 02 Feb 2015 08:58:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150202205038.451E.AA925319@jp.panasonic.com>
+Date: Mon, 2 Feb 2015 09:58:33 -0700
+Message-ID: <CA+nEJin3xNxtwkhEzPgcfNvP2wiuGxqhdB8cLn71LWC1Y5k-FQ@mail.gmail.com>
+From: Doug Brainard <dbrainard@brainardinsight.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,126 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] watchdog: imx: error out on negative timeouts
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Cc: barebox@lists.infradead.org, Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>
+Subject: Passing kernel arguments - SAMA5D4EK
+To: barebox@lists.infradead.org
 
-On Mon, Feb 02, 2015 at 08:50:38PM +0900, Masahiro Yamada wrote:
-> 
-> On Mon, 2 Feb 2015 12:04:32 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Mon, Feb 02, 2015 at 11:49:57AM +0100, Uwe Kleine-Konig wrote:
-> > > Hello,
-> > > 
-> > > On Tue, Jan 27, 2015 at 02:41:01PM +0100, Uwe Kleine-Konig wrote:
-> > > > I'm not sure where a negative timeout could come from but making the
-> > > > code more robust for no additional runtime cost is good nevertheless.
-> > > > 
-> > > > Signed-off-by: Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>
-> > > > ---
-> > > >  drivers/watchdog/imxwd.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-> > > > index 31c3d0d85353..66e9f6848f74 100644
-> > > > --- a/drivers/watchdog/imxwd.c
-> > > > +++ b/drivers/watchdog/imxwd.c
-> > > > @@ -87,7 +87,7 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, int timeout)
-> > > >  
-> > > >  	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
-> > > >  
-> > > > -	if (!timeout || timeout > 128)
-> > > > +	if (timeout <= 0 || timeout > 128)
-> > > >  		return -EINVAL;
-> > > This patch is broken because reset_cpu (in the same source file) calls
-> > > set_timeout with timeout=-1 to reset the cpu immediatly. The wd command
-> > > only parses non-negative values, so from there nothing strange should be
-> > > expected.
-> > > 
-> > > Returning -EINVAL on timeout=0 (which means "disable watchdog") is OK
-> > > because the imx21 watchdog cannot be stopped.
-> > > 
-> > > So in short: please drop this patch from next.
-> > 
-> > Did that.
-> > 
-> 
-> 
-> Forgive my newbie questions.
-> 
-> I have been studied barebox for one month and a half,
-> I think I could roughly understand the next branch policy in this community,
-> but could you help me to make it a little bit clearer?
-> 
-> 
-> I guess the barebox/next is similar to the linux-next repository.
-> 
-> Similar points are:
->  [1] barebox/next is not fast-forwarded
->      (Developers should work with "git rebase --onto" as we do in linux-next
+Hello all,
 
-If possible please base your patches on the master branch. I'll pick a
-suitable for-next/* branch merge the for-next/* branches together and
-handle the merge conflicts. If you have direct dependencies on some
-patches in -next you can base your patches on -next.
+I've been following barebox for a few months and working with the
+SAMA5D4EK and barebox for about a week now.  I'm trying to
+successfully boot into Android with it.  I am able to do so with
+u-boot, and so I'm trying to figure out how to match the bootargs, so
+that I can transfer over to barebox.
 
->  [2] barebox/next represents the source tree that is *probably* merged into the master branch
->      after the next release.
->      (Perhaps, barebox might not have what we call Merge Window,
->       but I notice topic branches are merged right after every-month release.)
+u-boot sends the following:
+Kernel command line: console=ttyS0,115200
+mtdparts=atmel_nand:8M(Bootstrap),176M(system),304M(userdata),-(cache)
+ubi.mtd=2 ubi.mtd=3 ubi.mtd=4 rw root=ubi0:system systemtype=ubifs
+init=/init androidboot.hardware=sama5-pda androidboot.lcd=wvga
+androidboot.console=ttyS0
 
-yes.
+barebox sends the following:
+Kernel command line: console=ttyS0,115200 init=/init
+androidboot.hardware=sama5-pda androidboot.lcd=wvga
+androidboot.console=ttyS0 ip=dhcp root=ubi0:system ubi.mtd=8
+rootfstype=ubifs noinitrd
+mtdparts=atmel_nand:256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),8M(recovery),176M(system),304M(userdata),-(cache)
 
-> 
-> 
-> On the other hand, I notice some differences
-> 
-> [3] All the topic branches are locally maintained by Sascha, so they are never pushed
->     to the public repository.
+The problem has to do with "ubi.mtd=2 ubi.mtd=3 ubi.mtd=4".  Without 3
+sections mounted, Android is missing pieces.  I've figured out that
+rootfs_mtdblock_nand sets the ubi.mtd, and I changed it to 8, because
+I broke up the first 8M that u-boot didn't.  If I just add "ubi.mtd=9
+ubi.mtd=10" to the bootargs, they are out order, and that also messes
+things up.  Commenting out rootfs_mtdblock_nand leaves a "ubi.mtd=" in
+the command line.  Frankly, I'm confused where rootfs_mtdblock_nand is
+defined.  I'd love to just define userdata_mtdblock_nand, etc. and
+have the information filled in, but I'm not seeing where that is done,
+and the documentation (that I've found) doesn't mention anything like
+that.
 
-Right.
+Also, where is "noinitrd" coming from?  If I were to match u-boot, it
+should be "rw".
 
-> [4] Some commits in topic branches might be dropped rather than being git-reverted
->     if they turned out to be bad.
+Finally, is there a list of keywords (like rootfs_mtdblock_nand,
+ubiroot, etc.) you can use in the config file?  I appreciate you
+helping a newbie out.  Below is my current config file:
 
-Right. Also you can always send a patch committed with "--fixup=" to the
-list, then I can just squash the changes into the original commit.
+#!/bin/sh
 
-I routinely build every commit in -next with every defconfig in the
-tree. It regularly happens that patches do not build in every defconfig
-because of missing ifdefs or dependencies. Most of the times I fix that
-up quietly.
+# use 'dhcp' to do dhcp in barebox and in kernel
+# use 'none' if you want to skip kernel ip autoconfiguration
+ip=dhcp
 
->     (i.e. commit ID becomes a fixed value when it is merge into the master branch.)
+# or set your networking parameters here
+#eth0.ipaddr=a.b.c.d
+#eth0.netmask=a.b.c.d
+#eth0.gateway=a.b.c.d
+#eth0.serverip=a.b.c.d
 
-Yes.
+# can be either 'nfs', 'tftp', 'nor' or 'nand'
+kernel_loc=nand
+# can be either 'net', 'nor', 'nand' or 'initrd'
+rootfs_loc=nand
+# can be either 'nfs', 'tftp', 'nand' or empty
+oftree_loc=nand
 
-> 
-> 
-> If [4] is true, we should not describe the commit ID in the following commits
-> until it is merged into the master branch.   (Or we should be very careful when we do so.)
+# can be either 'jffs2' or 'ubifs'
+rootfs_type=ubifs
+rootfsimage=root.$rootfs_type
+ubiroot=system
 
-Yes.
+# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+kernelimage=zImage
+#kernelimage=uImage
+#kernelimage=Image
+#kernelimage=Image.lzo
 
-> 
-> We often write something like
-> "Since commit xxxxxxxxxxxx, the foo function has not been working. Blah Blah ..."
-> in bug-fix patches.
-> But xxxxxxxxxxxx may change if the preceding commit is dropped or modified.
+nand_device=atmel_nand
+nand_parts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),176M(system),304M(userdata),-(cache)"
+rootfs_mtdblock_nand=7
 
-As long xxxxxxxxxxxx hasn't hit master you can just ask me to fix the
-offending commit directly, preferably using --fixup= to git-commit.
-Once it hits master the commit IDs are stable, so you can refer to them
-in bug fix patches.
+#m25p80_parts="64k(bootstrap),384k(barebox),256k(bareboxenv),256k(bareboxenv2),128k(oftree),-(updater)"
 
-Sascha
+autoboot_timeout=3
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+bootargs="console=ttyS0,115200 init=/init
+androidboot.hardware=sama5-pda androidboot.lcd=wvga
+androidboot.console=ttyS0"
+
+# set a fancy prompt (if support is compiled in)
+PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
 
 _______________________________________________
 barebox mailing list
