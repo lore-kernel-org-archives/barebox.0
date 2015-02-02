@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YID5b-0000a4-In
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 09:14:40 +0000
-Date: Mon, 2 Feb 2015 10:14:12 +0100
+ Linux)) id 1YID8J-0002PM-7D
+ for barebox@lists.infradead.org; Mon, 02 Feb 2015 09:17:27 +0000
+Date: Mon, 2 Feb 2015 10:17:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150202091412.GV12209@pengutronix.de>
-References: <20150129091229.GA424@gmail.com>
- <20150129092151.GE12209@pengutronix.de> <87k305o0cd.fsf@free.fr>
- <20150130074017.GP12209@pengutronix.de> <87lhkkm7a0.fsf@free.fr>
+Message-ID: <20150202091705.GW12209@pengutronix.de>
+References: <1422709810-30622-1-git-send-email-robert.jarzmik@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87lhkkm7a0.fsf@free.fr>
+In-Reply-To: <1422709810-30622-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Access to first 0x1000 byte on imx53/imx6
+Subject: Re: [PATCH v2 1/3] net: smc1111: add 16 bits accessors, allow
+ address shift
 To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jan 30, 2015 at 07:51:19PM +0100, Robert Jarzmik wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Sat, Jan 31, 2015 at 02:10:08PM +0100, Robert Jarzmik wrote:
+> Smc network IPs can be wired up in different funny ways. For example the
+> lubbock pxa25x development platform wires all address lines shifted by
+> 2, ie. bus A2 is smc91c96 A0, bus A3 is smc91c96 A1 etc ...
 > 
-> > On Thu, Jan 29, 2015 at 08:25:54PM +0100, Robert Jarzmik wrote:
-> >> Sascha Hauer <s.hauer@pengutronix.de> writes:
-> >> I think the solution in arch/arm/boards/mioa701/board.c (remapping the 0x0
-> >> address) should work here :
-> >> 	docg3_iospace = map_io_sections(0x0, (void *)0xe0000000, 0x2000);
-> >
-> > We could create a /dev/zeropage with the code above. That would make the
-> > zero page generally available. I don't know if this is worth the effort
-> > though.
+> In order to cope with the different possible combination, add a shift
+> parameter for addresses.
 > 
-> Yeah, I don't know if it's worth it either. And how "big" should this
-> /dev/zeropage be (4k, 1M, ...) ?
+> By default, the old behaviour using the 32 bit accesses is kept.
+> 
+> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
-It should be one page, so 4k. But as Jan said, special casing the first
-page in /dev/mem sounds better.
+Applied all, thanks
 
 Sascha
 
