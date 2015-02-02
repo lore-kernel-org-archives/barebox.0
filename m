@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]
- helo=smtp.smtpout.orange.fr)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YIMB6-0001ay-7j
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 18:56:56 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1422709810-30622-1-git-send-email-robert.jarzmik@free.fr>
- <20150202091705.GW12209@pengutronix.de>
-Date: Mon, 02 Feb 2015 19:56:33 +0100
-In-Reply-To: <20150202091705.GW12209@pengutronix.de> (Sascha Hauer's message
- of "Mon, 2 Feb 2015 10:17:05 +0100")
-Message-ID: <8761bkb0ri.fsf@free.fr>
+Received: from mx.rheinmetall.ca ([207.61.105.111])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YIOQC-0005k4-HU
+ for barebox@lists.infradead.org; Mon, 02 Feb 2015 21:20:40 +0000
+From: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Date: Mon, 2 Feb 2015 21:20:18 +0000
+Message-ID: <29A2697B0516A946B1023D5E798DFCF67BAB6D77@mail-ying>
+Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,28 +20,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] net: smc1111: add 16 bits accessors,
- allow address shift
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Modifying Barebox variables from Linux
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+Hi,
+I am working on an Phytec Phycore-OMAP4460 platform with a Linux BSP (provided by Phytec) which uses Barebox 2013.1.0 to boot the OMAP4. Our application previously ran in a Linux system where U-Boot was used. We could change U-boot variables from the Linux command line as follows:
 
-> Applied all, thanks
->
-> Sascha
-Thanks Sascha,
+fw_setenv bootargs 'mem=512M console=ttyS0,115200n8 noinitrd root=/dev/mtdblock4 ro rootfstype=yaffs2'
 
-I noticed that in my patchset I moved the "struct smc91111_accessors {...}" from
-smc9111.c to include/net/smc91111.h.
+How would I go doing the same with Barebox ? Is bareboxenv-target part of the solution ? 
 
-This was when I thought the accessors would be settable from platform code. Do
-you want me to send an incremental patch to reverse this ?
-
-Cheers.
-
--- 
-Robert
+Many thanks,
 
 _______________________________________________
 barebox mailing list
