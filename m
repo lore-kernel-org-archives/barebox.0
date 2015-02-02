@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIEaD-0007rp-Il
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 10:50:22 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <ukl@pengutronix.de>) id 1YIEZp-00060p-QI
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 11:49:57 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <ukl@pengutronix.de>) id 1YIEZp-000454-OX
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 11:49:57 +0100
-Date: Mon, 2 Feb 2015 11:49:57 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20150202104957.GA10842@pengutronix.de>
-References: <1422366061-26735-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YIFWw-0008Jv-0I
+ for barebox@lists.infradead.org; Mon, 02 Feb 2015 11:51:05 +0000
+Date: Mon, 02 Feb 2015 20:50:38 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+In-Reply-To: <20150202110432.GA12209@pengutronix.de>
+References: <20150202104957.GA10842@pengutronix.de>
+ <20150202110432.GA12209@pengutronix.de>
+Message-Id: <20150202205038.451E.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1422366061-26735-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,57 +18,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] watchdog: imx: error out on negative timeouts
-To: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>
 
-Hello,
 
-On Tue, Jan 27, 2015 at 02:41:01PM +0100, Uwe Kleine-K=F6nig wrote:
-> I'm not sure where a negative timeout could come from but making the
-> code more robust for no additional runtime cost is good nevertheless.
-> =
+On Mon, 2 Feb 2015 12:04:32 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/watchdog/imxwd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
+> On Mon, Feb 02, 2015 at 11:49:57AM +0100, Uwe Kleine-Konig wrote:
+> > Hello,
+> > 
+> > On Tue, Jan 27, 2015 at 02:41:01PM +0100, Uwe Kleine-Konig wrote:
+> > > I'm not sure where a negative timeout could come from but making the
+> > > code more robust for no additional runtime cost is good nevertheless.
+> > > 
+> > > Signed-off-by: Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>
+> > > ---
+> > >  drivers/watchdog/imxwd.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+> > > index 31c3d0d85353..66e9f6848f74 100644
+> > > --- a/drivers/watchdog/imxwd.c
+> > > +++ b/drivers/watchdog/imxwd.c
+> > > @@ -87,7 +87,7 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, int timeout)
+> > >  
+> > >  	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+> > >  
+> > > -	if (!timeout || timeout > 128)
+> > > +	if (timeout <= 0 || timeout > 128)
+> > >  		return -EINVAL;
+> > This patch is broken because reset_cpu (in the same source file) calls
+> > set_timeout with timeout=-1 to reset the cpu immediatly. The wd command
+> > only parses non-negative values, so from there nothing strange should be
+> > expected.
+> > 
+> > Returning -EINVAL on timeout=0 (which means "disable watchdog") is OK
+> > because the imx21 watchdog cannot be stopped.
+> > 
+> > So in short: please drop this patch from next.
+> 
+> Did that.
+> 
 
-> diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-> index 31c3d0d85353..66e9f6848f74 100644
-> --- a/drivers/watchdog/imxwd.c
-> +++ b/drivers/watchdog/imxwd.c
-> @@ -87,7 +87,7 @@ static int imx21_watchdog_set_timeout(struct imx_wd *pr=
-iv, int timeout)
->  =
 
->  	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
->  =
+Forgive my newbie questions.
 
-> -	if (!timeout || timeout > 128)
-> +	if (timeout <=3D 0 || timeout > 128)
->  		return -EINVAL;
-This patch is broken because reset_cpu (in the same source file) calls
-set_timeout with timeout=3D-1 to reset the cpu immediatly. The wd command
-only parses non-negative values, so from there nothing strange should be
-expected.
+I have been studied barebox for one month and a half,
+I think I could roughly understand the next branch policy in this community,
+but could you help me to make it a little bit clearer?
 
-Returning -EINVAL on timeout=3D0 (which means "disable watchdog") is OK
-because the imx21 watchdog cannot be stopped.
 
-So in short: please drop this patch from next.
+I guess the barebox/next is similar to the linux-next repository.
 
-Thanks
-Uwe
+Similar points are:
+ [1] barebox/next is not fast-forwarded
+     (Developers should work with "git rebase --onto" as we do in linux-next
+ [2] barebox/next represents the source tree that is *probably* merged into the master branch
+     after the next release.
+     (Perhaps, barebox might not have what we call Merge Window,
+      but I notice topic branches are merged right after every-month release.)
 
--- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+On the other hand, I notice some differences
+
+[3] All the topic branches are locally maintained by Sascha, so they are never pushed
+    to the public repository.
+[4] Some commits in topic branches might be dropped rather than being git-reverted
+    if they turned out to be bad.
+    (i.e. commit ID becomes a fixed value when it is merge into the master branch.)
+
+
+If [4] is true, we should not describe the commit ID in the following commits
+until it is merged into the master branch.   (Or we should be very careful when we do so.)
+
+We often write something like
+"Since commit xxxxxxxxxxxx, the foo function has not been working. Blah Blah ..."
+in bug-fix patches.
+But xxxxxxxxxxxx may change if the preceding commit is dropped or modified.
+
+
+Is this statement correct?
+
+
+Best Regards
+Masahiro Yamada
+
 
 _______________________________________________
 barebox mailing list
