@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.246]
- helo=DVREDG02.corp.atmel.com)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YIZbl-00066v-1M
- for barebox@lists.infradead.org; Tue, 03 Feb 2015 09:17:21 +0000
-Message-ID: <54D09205.4070704@atmel.com>
-Date: Tue, 3 Feb 2015 17:16:53 +0800
-From: Bo Shen <voice.shen@atmel.com>
-MIME-Version: 1.0
-References: <CA+nEJin3xNxtwkhEzPgcfNvP2wiuGxqhdB8cLn71LWC1Y5k-FQ@mail.gmail.com>
- <20150203085931.GI12209@pengutronix.de>
-In-Reply-To: <20150203085931.GI12209@pengutronix.de>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YIa3a-0000OB-AH
+ for barebox@lists.infradead.org; Tue, 03 Feb 2015 09:46:07 +0000
+Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
+ t139jgcE004692
+ for <barebox@lists.infradead.org>; Tue, 3 Feb 2015 18:45:42 +0900 (JST)
+Received: from epochmail.jp.panasonic.com ([157.8.1.130])
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili16) with ESMTP id t139jgM01496
+ for <barebox@lists.infradead.org>; Tue, 3 Feb 2015 18:45:42 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Date: Tue,  3 Feb 2015 18:45:39 +0900
+Message-Id: <1422956739-2957-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +21,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Passing kernel arguments - SAMA5D4EK
-To: Sascha Hauer <s.hauer@pengutronix.de>, Doug Brainard <dbrainard@brainardinsight.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! defaultenv: generate force-built-in (zero) environment
+ file
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+---
 
-On 02/03/2015 04:59 PM, Sascha Hauer wrote:
-> Note that we started with trying to build a generic default environment
-> which at some point grew into a monster. We now have the 2nd version of
-> the generic default environment which is much better. Unfortunately
-> usage of this new default environment is board specific and your board
-> isn't converted yet. If you are interested I can show you the steps to
-> convert it.
+Without this, out-of-tree build (O=option) fails.
 
-I am interested in this, could you show me the steps to convert it?
-Thanks.
+Sascha,
+Please squash this before you merge the next branches into the mainline.
 
-> Sascha
 
-Best Regards,
-Bo Shen
+
+ defaultenv/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/defaultenv/Makefile b/defaultenv/Makefile
+index 8a001ec..33e0ece 100644
+--- a/defaultenv/Makefile
++++ b/defaultenv/Makefile
+@@ -24,7 +24,7 @@ $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(DEFAULT_COMPRESSION_SU
+ 	$(call if_changed,env_h)
+ 
+ quiet_cmd_env_zero = ENVZ    $@
+-cmd_env_zero = ($(srctree)/scripts/bareboxenv -z $(CONFIG_DEFAULT_ENVIRONMENT_PATH) $@)
++cmd_env_zero = ($(objtree)/scripts/bareboxenv -z $(CONFIG_DEFAULT_ENVIRONMENT_PATH) $@)
+ 
+ $(obj)/barebox_zero_env: FORCE
+ 	$(call cmd,env_zero)
+-- 
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
