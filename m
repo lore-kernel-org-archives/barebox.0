@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YIaVl-0004KP-Ex
+ id 1YIaVl-0004KT-F1
  for barebox@lists.infradead.org; Tue, 03 Feb 2015 10:15:14 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
- t13AEpvu007053
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile14) with ESMTP id
+ t13AEpMw028788
  for <barebox@lists.infradead.org>; Tue, 3 Feb 2015 19:14:51 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili13) with ESMTP id t13AEqJ29277
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili12) with ESMTP id t13AEqo14464
  for <barebox@lists.infradead.org>; Tue, 3 Feb 2015 19:14:52 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Tue,  3 Feb 2015 19:14:47 +0900
-Message-Id: <1422958489-8855-5-git-send-email-yamada.m@jp.panasonic.com>
+Date: Tue,  3 Feb 2015 19:14:48 +0900
+Message-Id: <1422958489-8855-6-git-send-email-yamada.m@jp.panasonic.com>
 In-Reply-To: <1422958489-8855-1-git-send-email-yamada.m@jp.panasonic.com>
 References: <1422958489-8855-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,40 +28,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] MAKEALL: do not pass unneeded -C option to make
+Subject: [PATCH 5/5] MAKEALL: consolidate -j${JOBS} argument
 To: barebox@lists.infradead.org
 
-We do not change the working directory in this script.
-"-C ${here}" is not necessary.
+This argument is common in configuration and compilation.
+Move it to ${MAKE}.
 
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
- MAKEALL | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ MAKEALL | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/MAKEALL b/MAKEALL
-index dd4acb2..a4428fa 100755
+index a4428fa..909e170 100755
 --- a/MAKEALL
 +++ b/MAKEALL
-@@ -10,8 +10,6 @@ errors_list=""
- nb_defconfigs=0
- ret=0
- 
--here=$(pwd)
--
- time_start=$(date +%s)
- 
- filename=$(basename $0)
-@@ -110,7 +108,7 @@ do_build_target() {
+@@ -108,8 +108,8 @@ do_build_target() {
  		fi
  	fi
  
--	MAKE="make -C ${here} CROSS_COMPILE=${cross_compile} ARCH=${arch} O=${BUILDDIR}"
-+	MAKE="make CROSS_COMPILE=${cross_compile} ARCH=${arch} O=${BUILDDIR}"
- 	${MAKE} -j${JOBS} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
+-	MAKE="make CROSS_COMPILE=${cross_compile} ARCH=${arch} O=${BUILDDIR}"
+-	${MAKE} -j${JOBS} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
++	MAKE="make -j${JOBS} CROSS_COMPILE=${cross_compile} ARCH=${arch} O=${BUILDDIR}"
++	${MAKE} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
  
  	check_pipe_status
+ 	result="$?"
+@@ -119,7 +119,7 @@ do_build_target() {
+ 	if [ "$result" = "0" ]; then
+ 		printf "OK     \n" | tee -a "${log_report}"
+ 
+-		${MAKE} -j${JOBS} -s 2>&1 >> "${log_report}" | tee -a "${log_err}"
++		${MAKE} -s 2>&1 >> "${log_report}" | tee -a "${log_err}"
+ 
+ 		check_pipe_status
+ 		result="$?"
 -- 
 1.9.1
 
