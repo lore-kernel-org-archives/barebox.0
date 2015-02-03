@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIDB2-0004Dm-8g
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 09:20:17 +0000
-Date: Mon, 2 Feb 2015 10:19:54 +0100
+ Linux)) id 1YIYA1-0002oh-Hc
+ for barebox@lists.infradead.org; Tue, 03 Feb 2015 07:44:38 +0000
+Date: Tue, 3 Feb 2015 08:44:12 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150202091954.GZ12209@pengutronix.de>
-References: <1422853816-21068-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150203074412.GF12209@pengutronix.de>
+References: <20150202205038.451E.AA925319@jp.panasonic.com>
+ <20150202121632.GC12209@pengutronix.de>
+ <20150203151440.4535.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422853816-21068-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <20150203151440.4535.AA925319@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +24,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: use an easier way to create the empty built-in.o
+Subject: Re: [PATCH] watchdog: imx: error out on negative timeouts
 To: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Uwe Kleine-Konig <u.kleine-koenig@pengutronix.de>
 
-On Mon, Feb 02, 2015 at 02:10:15PM +0900, Masahiro Yamada wrote:
-> We do not have to build an unneeded file to create the built-in.o.
-> Just add a dummy string to "obj-".
-> (dummy.c does not need to exist.)
+On Tue, Feb 03, 2015 at 03:14:41PM +0900, Masahiro Yamada wrote:
+> Please let me ask one more question.
+> 
+>  Is there any pach tracking tool used for barebox, like PatchWork?
 
-Ah, nice. Adding files just to make the make process happy felt awkward.
-
-Applied, thanks
+No, there is no such tool at the moment.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
