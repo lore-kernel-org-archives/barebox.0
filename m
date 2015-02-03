@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIjEv-0001Uo-4k
- for barebox@lists.infradead.org; Tue, 03 Feb 2015 19:34:25 +0000
-Date: Tue, 3 Feb 2015 20:33:59 +0100
+ Linux)) id 1YIjpE-0003K3-Rw
+ for barebox@lists.infradead.org; Tue, 03 Feb 2015 20:11:58 +0000
+Date: Tue, 3 Feb 2015 21:11:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150203193359.GO12209@pengutronix.de>
-References: <CA+nEJin3xNxtwkhEzPgcfNvP2wiuGxqhdB8cLn71LWC1Y5k-FQ@mail.gmail.com>
- <20150203085931.GI12209@pengutronix.de>
- <54D09205.4070704@atmel.com>
- <CA+nEJi=x0PH1Hk0LpB+ELmi8bbjyz3s_KAGeYh-aPpi62Rm9VA@mail.gmail.com>
+Message-ID: <20150203201134.GQ12209@pengutronix.de>
+References: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CA+nEJi=x0PH1Hk0LpB+ELmi8bbjyz3s_KAGeYh-aPpi62Rm9VA@mail.gmail.com>
+In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,34 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Passing kernel arguments - SAMA5D4EK
-To: Doug Brainard <dbrainard@brainardinsight.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: saveenv & erase with bad blocks present
+To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, Feb 03, 2015 at 10:21:45AM -0700, Doug Brainard wrote:
-> > Couldn't you add "ubi.mtd=8 ubi.mtd=9" and rootfs_mtdblock_nand=10
-> > instead?
+On Tue, Feb 03, 2015 at 04:38:42PM +0000, Boulais, Marc-Andre wrote:
+> Hi,
+> I have flashed Barebox-2015.02.0 on my omap4 setup (using the Barebox update command) and I am now trying to modify the environment from the Barebox prompt. I have modified the env/config file and I would like to save my changes to NAND. 
 > 
-> I had thought that barebox had a need to know where the rootfs was
-> located, which is why I hadn't tried that.  Turns out that it worked
-> perfectly for the ubi.mtd settings.  Thank you!  Any idea how
-> "noinitrd" is getting added to the bootargs?  I need to replace that
-> with a "rw".
-
-It comes from /env/bin/boot. You can checkout the sourcecode and grep
-for it since we do not have any search function in barebox.
-
+> For this task, I call the "saveenv" command and I get this result:
 > 
-> > Note that we started with trying to build a generic default environment
-> > which at some point grew into a monster. We now have the 2nd version of
-> > the generic default environment which is much better. Unfortunately
-> > usage of this new default environment is board specific and your board
-> > isn't converted yet. If you are interested I can show you the steps to
-> > convert it.
+> barebox@Phytec phyCORE-OMAP4460:/ saveenv
+> saving environment
+> saveenv: No space left on device
 > 
-> I would be interested in helping with this conversion.
+> The "devinfo" command indicates to me that the /dev/nand0.bareboxenv partition is 128 Kb. 
+> Just to be sure, I erase it and get the following error:
+> 
+> barebox@Phytec phyCORE-OMAP4460:/ erase /dev/nand0.bareboxenv.bb
+> nand: nand_erase_nand: attempt to erase a bad block at page 0x00000140
+> erase: I/O error
+> 
+> So I guess I am a bit confused here. 
+> 1) Is "saveenv" the right command to save my changes to the environment ?
 
-Thanks. I'll prepare a mail tomorrow.
+Yes.
+
+> 2) How can I erase a NAND partition that has bad blocks ?
+
+when erasing a .bb device (which you did above) should let barebox just
+skip the bad blocks.
+
+> 3) Can bad blocks be marked by software or are they all marked by the manufacturer ?
+
+You can mark blocks as bad using the 'nand' command.
+
+barebox tries to erase a bad block at page 0x140 which is 0x140 * 2048 =
+0xa0000. In the device trees I see the environment partition starts at
+0x100000. Could you tell me which config you built, post the startup messages
+from barebox and the output of 'ls -l dev/nand0*'?
 
 Sascha
 
