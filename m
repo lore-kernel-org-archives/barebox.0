@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.mei.co.jp ([133.183.100.20])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YIaVl-0004KS-F0
+ id 1YIaVl-0004KR-Ez
  for barebox@lists.infradead.org; Tue, 03 Feb 2015 10:15:14 +0000
 Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile12) with ESMTP id
- t13AEp5O007061
+ by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile11) with ESMTP id
+ t13AEp7r010339
  for <barebox@lists.infradead.org>; Tue, 3 Feb 2015 19:14:51 +0900 (JST)
 Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili14) with ESMTP id t13AEqL05604
- for <barebox@lists.infradead.org>; Tue, 3 Feb 2015 19:14:52 +0900
+ by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili13) with ESMTP id t13AEpJ29262
+ for <barebox@lists.infradead.org>; Tue, 3 Feb 2015 19:14:51 +0900
 From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Tue,  3 Feb 2015 19:14:46 +0900
-Message-Id: <1422958489-8855-4-git-send-email-yamada.m@jp.panasonic.com>
+Date: Tue,  3 Feb 2015 19:14:45 +0900
+Message-Id: <1422958489-8855-3-git-send-email-yamada.m@jp.panasonic.com>
 In-Reply-To: <1422958489-8855-1-git-send-email-yamada.m@jp.panasonic.com>
 References: <1422958489-8855-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,63 +28,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] MAKEALL: use $(...) instead of `...` for readability
+Subject: [PATCH 2/5] MAKEALL: remove false positive error check
 To: barebox@lists.infradead.org
 
-The mixture of single quotes and back quotes in the same line makes
-scripts unreadable.
-
-Here, do_build_target() is especially unreadable.  Using $(...)
-instead of `...` would make it a little better.
+CROSS_COMPILE is not necessary in some cases:
+ - Sandbox
+ - Native build
+   (e.g. when you build barebox for ARM on the ARM Linux system)
+ - If CONFIG_CROSS_COMPILE is supported like Linux in the future,
+   CROSS_COMPILE might be set by Kbuild.
 
 Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 ---
 
- MAKEALL | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ MAKEALL | 7 -------
+ 1 file changed, 7 deletions(-)
 
 diff --git a/MAKEALL b/MAKEALL
-index 67e6a60..dd4acb2 100755
+index 9a56ceb..67e6a60 100755
 --- a/MAKEALL
 +++ b/MAKEALL
-@@ -14,7 +14,7 @@ here=$(pwd)
+@@ -255,13 +255,6 @@ then
+ 	REGEX="*"
+ fi
  
- time_start=$(date +%s)
- 
--filename=`basename $0`
-+filename=$(basename $0)
- 
- is_print_stats=1
- 
-@@ -96,14 +96,14 @@ do_build_target() {
- 	mkdir -p "${LOGDIR}/${target}"
- 	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
- 
--	tmp=`echo "${target}" | tr - _`
-+	tmp=$(echo "${target}" | tr - _)
- 
--	cross_compile=`eval echo '$CROSS_COMPILE_'${tmp}`
--	cross_compile_set=`eval echo '${CROSS_COMPILE_'${tmp}'+set}'`
-+	cross_compile=$(eval echo '$CROSS_COMPILE_'${tmp})
-+	cross_compile_set=$(eval echo '${CROSS_COMPILE_'${tmp}'+set}')
- 	if [ "${cross_compile_set}" = "" ]
- 	then
--		cross_compile=`eval echo '$CROSS_COMPILE_'${arch}`
--		cross_compile_set=`eval echo '${CROSS_COMPILE_'${arch}'+set}'`
-+		cross_compile=$(eval echo '$CROSS_COMPILE_'${arch})
-+		cross_compile_set=$(eval echo '${CROSS_COMPILE_'${arch}'+set}')
- 		if [ "${cross_compile_set}" = "" ]
- 		then
- 			cross_compile=${CROSS_COMPILE}
-@@ -238,7 +238,7 @@ fi
- 
- if [ "${CONFIG}" ]
+-if [ ! "${CONFIG}" ] && [ ! "${CROSS_COMPILE+set}" ]
+-then
+-	echo "You need to specify a CONFIG or a CROSS_COMPILE"
+-	usage
+-	exit 1
+-fi
+-
+ if [ ! "${ARCH}" ] || [ ! -d arch/${ARCH} ]
  then
--	basedir=`dirname ${CONFIG}`
-+	basedir=$(dirname ${CONFIG})
- 
- 	if [ ! "${basedir}" ] || [ "${basedir}" = "." ]
- 	then
+ 	do_build_all
 -- 
 1.9.1
 
