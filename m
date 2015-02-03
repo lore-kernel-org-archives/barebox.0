@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YKiVZ-0008Se-6J
- for barebox@lists.infradead.org; Mon, 09 Feb 2015 07:11:50 +0000
-Date: Mon, 9 Feb 2015 08:11:26 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150209071126.GQ12209@pengutronix.de>
-References: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from smtp.mei.co.jp ([133.183.100.20])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YIWlN-0007q4-Th
+ for barebox@lists.infradead.org; Tue, 03 Feb 2015 06:15:07 +0000
+Date: Tue, 03 Feb 2015 15:14:41 +0900
+From: Masahiro Yamada <yamada.m@jp.panasonic.com>
+In-Reply-To: <20150129085431.GW12209@pengutronix.de>
+References: <1422499032-30353-1-git-send-email-yamada.m@jp.panasonic.com>
+ <20150129085431.GW12209@pengutronix.de>
+Message-Id: <20150203151440.4536.AA925319@jp.panasonic.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,79 +18,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] mtd: nand: ONFI probing for x16 devices on i.MX25
- (and others)
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] Import missing linkage.h from Linux 3.19-rc6
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 05, 2015 at 10:21:29PM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
+Hi Sascha,
 
-> On an i.MX25 based machine barebox issued a warning during startup:
-> =
 
-> 	nand: Trying ONFI probe in 16 bits mode, aborting !
-> =
+On Thu, 29 Jan 2015 09:54:31 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> without much side effects as the NAND chip was detected correctly neverth=
-eless.
-> =
+> > +
+> > diff --git a/arch/mips/include/asm/linkage.h b/arch/mips/include/asm/linkage.h
+> > new file mode 100644
+> > index 0000000..2767dda
+> > --- /dev/null
+> > +++ b/arch/mips/include/asm/linkage.h
+> > @@ -0,0 +1,13 @@
+> > +#ifndef __ASM_LINKAGE_H
+> > +#define __ASM_LINKAGE_H
+> > +
+> > +#ifdef __ASSEMBLY__
+> > +#include <asm/asm.h>
+> > +#endif
+> > +
+> > +#define __weak __attribute__((weak))
+> > +#define cond_syscall(x) asm(".weak\t" #x "\n" #x "\t=\tsys_ni_syscall")
+> > +#define SYSCALL_ALIAS(alias, name)					\
+> > +	asm ( #alias " = " #name "\n\t.globl " #alias)
+> 
+> __weak is already defined in compiler-gcc.h and should probably be taken
+> from there. The syscall things are unused in barebox, so better make
+> this file just empty?
 
-> On the quest to fix this warning I noticed that there isn't much justific=
-ation
-> to not probe via ONFI even in x16 mode in the presence of the read_byte
-> callback that is correctly used in the ONFI detection code. But removing =
-this
-> early exit in the generic probe routines brought to light that the imx na=
-nd
-> driver didn't implement this read_byte callback correctly.
-> =
 
-> This series first fixes the imx nand driver to implement the read_byte ca=
-llback
-> correctly and then "fixes" the ONFI code to try detection even in x16 mod=
-e.
-> This made the above mentioned warning go away and print
-> =
+OK, will do.
 
-> 	nand: ONFI flash detected
-> =
 
-> instead \o/. The generic code change was mostly cherry-picked from Linux,=
- so I
-> kept the original author annotation here.
-> =
 
-> As an added bonus there is a little optimisation at the end of the series.
-> =
+> > +
+> > +#endif
+> > diff --git a/arch/nios2/include/asm/linkage.h b/arch/nios2/include/asm/linkage.h
+> > new file mode 100644
+> > index 0000000..e0c6dec
+> > --- /dev/null
+> > +++ b/arch/nios2/include/asm/linkage.h
+> > @@ -0,0 +1,25 @@
+> > +/*
+> > + * Copyright (C) 2009 Thomas Chou <thomas@wytron.com.tw>
+> > + *
+> > + * All rights reserved.
+> > + *
+> > + * This program is free software; you can redistribute it and/or modify
+> > + * it under the terms of the GNU General Public License as published by
+> > + * the Free Software Foundation; either version 2 of the License, or
+> > + * (at your option) any later version.
+> > + *
+> > + * This program is distributed in the hope that it will be useful, but
+> > + * WITHOUT ANY WARRANTY; without even the implied warranty of
+> > + * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
+> > + * NON INFRINGEMENT.  See the GNU General Public License for more
+> > + * details.
+> > + */
+> > +
+> > +#ifndef _ASM_NIOS2_LINKAGE_H
+> > +#define _ASM_NIOS2_LINKAGE_H
+> > +
+> > +/* This file is required by include/linux/linkage.h */
+> > +#define __ALIGN .align 4
+> > +#define __ALIGN_STR ".align 4"
+> 
+> Use default instead? The nios2 kernel file doesn't give a clue why this
+> should be different from the default.
 
-> Best regards
-> Uwe
-> =
+I have no idea.
+If the reason is not clear, why don't we keep it as is for safety?
 
-> Brian Norris (1):
->   mtd: nand: cleanup ONFI printed errors, warnings
-> =
 
-> Uwe Kleine-K=F6nig (2):
->   mtd: nand-imx: fix byte reading in x16 mode
->   mtd: nand-imx: don't copy more bytes than read from hardware
 
-Applied, thanks
+> > diff --git a/arch/ppc/include/asm/linkage.h b/arch/ppc/include/asm/linkage.h
+> > new file mode 100644
+> > index 0000000..e3ad5c7
+> > --- /dev/null
+> > +++ b/arch/ppc/include/asm/linkage.h
+> > @@ -0,0 +1,15 @@
+> > +#ifndef _ASM_POWERPC_LINKAGE_H
+> > +#define _ASM_POWERPC_LINKAGE_H
+> > +
+> > +#ifdef CONFIG_PPC64
+> > +#if !defined(_CALL_ELF) || _CALL_ELF != 2
+> > +#define cond_syscall(x) \
+> > +	asm ("\t.weak " #x "\n\t.set " #x ", sys_ni_syscall\n"		\
+> > +	     "\t.weak ." #x "\n\t.set ." #x ", .sys_ni_syscall\n")
+> > +#define SYSCALL_ALIAS(alias, name)					\
+> > +	asm ("\t.globl " #alias "\n\t.set " #alias ", " #name "\n"	\
+> > +	     "\t.globl ." #alias "\n\t.set ." #alias ", ." #name)
+> > +#endif
+> > +#endif
+> 
+> Unused in barebox, should be removed.
+> 
 
-Sascha
+OK.  CONFIG_PPC64 is not defined in barebox.
 
--- =
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+Best Regards
+Masahiro Yamada
+
 
 _______________________________________________
 barebox mailing list
