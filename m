@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIYvO-0008Ih-HI
- for barebox@lists.infradead.org; Tue, 03 Feb 2015 08:33:35 +0000
-Date: Tue, 3 Feb 2015 09:33:12 +0100
+ Linux)) id 1YIYxY-0001qI-AF
+ for barebox@lists.infradead.org; Tue, 03 Feb 2015 08:35:48 +0000
+Date: Tue, 3 Feb 2015 09:35:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150203083312.GK18908@pengutronix.de>
-References: <1422308027-13836-1-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20150203083526.GH12209@pengutronix.de>
+References: <1422709810-30622-1-git-send-email-robert.jarzmik@free.fr>
+ <20150202091705.GW12209@pengutronix.de> <8761bkb0ri.fsf@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422308027-13836-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <8761bkb0ri.fsf@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: pxa: add pxa25x support
+Subject: Re: [PATCH v2 1/3] net: smc1111: add 16 bits accessors, allow
+ address shift
 To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jan 26, 2015 at 10:33:46PM +0100, Robert Jarzmik wrote:
-> Add support for the PXA25X SoC family, the oldest of the PXA serie.
+On Mon, Feb 02, 2015 at 07:56:33PM +0100, Robert Jarzmik wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
 > 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
-> ---
->  arch/arm/mach-pxa/Kconfig                    | 21 +++++++++++
->  arch/arm/mach-pxa/Makefile                   |  1 +
->  arch/arm/mach-pxa/include/mach/pxa-regs.h    |  2 ++
->  arch/arm/mach-pxa/include/mach/pxa25x-regs.h |  6 ++++
->  arch/arm/mach-pxa/include/mach/pxa2xx-regs.h |  1 +
->  arch/arm/mach-pxa/mfp-pxa2xx.c               |  4 ++-
->  arch/arm/mach-pxa/sleep.S                    |  2 +-
->  arch/arm/mach-pxa/speed-pxa25x.c             | 54 ++++++++++++++++++++++++++++
->  8 files changed, 89 insertions(+), 2 deletions(-)
->  create mode 100644 arch/arm/mach-pxa/include/mach/pxa25x-regs.h
->  create mode 100644 arch/arm/mach-pxa/speed-pxa25x.c
+> > Applied all, thanks
+> >
+> > Sascha
+> Thanks Sascha,
 > 
-> diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-> index b36e720..a45e01a 100644
-> --- a/arch/arm/mach-pxa/Kconfig
-> +++ b/arch/arm/mach-pxa/Kconfig
-> @@ -22,6 +22,10 @@ config ARCH_PXA310
->  choice
->  	prompt "Intel/Marvell PXA Processor"
->  
-> +config ARCH_PXA25X
-> +	bool "PXA25x"
-> +	select ARCH_PXA2XX
-> +
+> I noticed that in my patchset I moved the "struct smc91111_accessors {...}" from
+> smc9111.c to include/net/smc91111.h.
+> 
+> This was when I thought the accessors would be settable from platform code. Do
+> you want me to send an incremental patch to reverse this ?
 
-Changes like this can unintentionally change defconfigs. In this case
-the existing pcm027 and mioa701 defconfigs now default to ARCH_PXA25X
-and no longer build for the correct board anymore. Fixed that up by
-adding "CONFIG_ARCH_PXA27X=y" to the defconfig files.
+That would be great, yes. You can commit the patch with --fixup=commitish
+which makes it easy for me to fixup the correct patch.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
