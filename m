@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]
- helo=smtp.smtpout.orange.fr)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YIj8l-0006vu-E4
- for barebox@lists.infradead.org; Tue, 03 Feb 2015 19:28:03 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1422308027-13836-1-git-send-email-robert.jarzmik@free.fr>
- <20150203083312.GK18908@pengutronix.de>
-Date: Tue, 03 Feb 2015 20:27:42 +0100
-In-Reply-To: <20150203083312.GK18908@pengutronix.de> (Sascha Hauer's message
- of "Tue, 3 Feb 2015 09:33:12 +0100")
-Message-ID: <87oapaaj81.fsf@free.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YIjEv-0001Uo-4k
+ for barebox@lists.infradead.org; Tue, 03 Feb 2015 19:34:25 +0000
+Date: Tue, 3 Feb 2015 20:33:59 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150203193359.GO12209@pengutronix.de>
+References: <CA+nEJin3xNxtwkhEzPgcfNvP2wiuGxqhdB8cLn71LWC1Y5k-FQ@mail.gmail.com>
+ <20150203085931.GI12209@pengutronix.de>
+ <54D09205.4070704@atmel.com>
+ <CA+nEJi=x0PH1Hk0LpB+ELmi8bbjyz3s_KAGeYh-aPpi62Rm9VA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CA+nEJi=x0PH1Hk0LpB+ELmi8bbjyz3s_KAGeYh-aPpi62Rm9VA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,24 +25,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: pxa: add pxa25x support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Passing kernel arguments - SAMA5D4EK
+To: Doug Brainard <dbrainard@brainardinsight.com>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+On Tue, Feb 03, 2015 at 10:21:45AM -0700, Doug Brainard wrote:
+> > Couldn't you add "ubi.mtd=8 ubi.mtd=9" and rootfs_mtdblock_nand=10
+> > instead?
+> 
+> I had thought that barebox had a need to know where the rootfs was
+> located, which is why I hadn't tried that.  Turns out that it worked
+> perfectly for the ubi.mtd settings.  Thank you!  Any idea how
+> "noinitrd" is getting added to the bootargs?  I need to replace that
+> with a "rw".
 
-> On Mon, Jan 26, 2015 at 10:33:46PM +0100, Robert Jarzmik wrote:
-> Changes like this can unintentionally change defconfigs. In this case
-> the existing pcm027 and mioa701 defconfigs now default to ARCH_PXA25X
-> and no longer build for the correct board anymore. Fixed that up by
-> adding "CONFIG_ARCH_PXA27X=y" to the defconfig files.
+It comes from /env/bin/boot. You can checkout the sourcecode and grep
+for it since we do not have any search function in barebox.
 
-Oh thanks, I indeed overlooked that.
+> 
+> > Note that we started with trying to build a generic default environment
+> > which at some point grew into a monster. We now have the 2nd version of
+> > the generic default environment which is much better. Unfortunately
+> > usage of this new default environment is board specific and your board
+> > isn't converted yet. If you are interested I can show you the steps to
+> > convert it.
+> 
+> I would be interested in helping with this conversion.
 
-Cheers.
+Thanks. I'll prepare a mail tomorrow.
+
+Sascha
 
 -- 
-Robert
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
