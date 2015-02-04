@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.246]
- helo=DVREDG02.corp.atmel.com)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YIx3U-0003GR-Ec
- for barebox@lists.infradead.org; Wed, 04 Feb 2015 10:19:32 +0000
-From: Bo Shen <voice.shen@atmel.com>
-Date: Wed, 4 Feb 2015 18:19:04 +0800
-Message-ID: <1423045144-25714-1-git-send-email-voice.shen@atmel.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YIyR2-0006JR-Pd
+ for barebox@lists.infradead.org; Wed, 04 Feb 2015 11:47:57 +0000
+Date: Wed, 4 Feb 2015 12:47:27 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150204114727.GT12209@pengutronix.de>
+References: <1422956739-2957-1-git-send-email-yamada.m@jp.panasonic.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1422956739-2957-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,35 +22,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: at91_udc: pass the vbus initial value
-To: s.hauer@pengutronix.de, plagnioj@jcrosoft.com
+Subject: Re: [PATCH] fixup! defaultenv: generate force-built-in (zero)
+ environment file
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
 Cc: barebox@lists.infradead.org
 
-If without pass the vbus initial value, the vbus status alway
-present as 0 even if the vbus is connected to 5v.
+On Tue, Feb 03, 2015 at 06:45:39PM +0900, Masahiro Yamada wrote:
+> ---
+> 
+> Without this, out-of-tree build (O=option) fails.
+> 
+> Sascha,
+> Please squash this before you merge the next branches into the mainline.
 
-Signed-off-by: Bo Shen <voice.shen@atmel.com>
----
+Just did that.
 
- drivers/usb/gadget/at91_udc.c | 2 ++
- 1 file changed, 2 insertions(+)
+Sascha
 
-diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
-index 60e1ff7..b36ef19 100644
---- a/drivers/usb/gadget/at91_udc.c
-+++ b/drivers/usb/gadget/at91_udc.c
-@@ -1464,6 +1464,8 @@ static int __init at91udc_probe(struct device_d *dev)
- 		DBG(udc, "VBUS detection: host:%s \n",
- 			udc->vbus ? "present":"absent");
- 
-+		udc->gpio_vbus_val = udc->vbus;
-+
- 		dev_add_param_bool(dev, "vbus",
- 			at91_udc_vbus_set, NULL, &udc->gpio_vbus_val, udc);
- 	} else {
 -- 
-2.3.0.rc0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
