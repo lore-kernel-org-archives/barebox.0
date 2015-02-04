@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIyYU-0003bV-Kf
- for barebox@lists.infradead.org; Wed, 04 Feb 2015 11:55:39 +0000
-Date: Wed, 4 Feb 2015 12:55:15 +0100
+ Linux)) id 1YIyYe-0003ec-Ev
+ for barebox@lists.infradead.org; Wed, 04 Feb 2015 11:55:48 +0000
+Date: Wed, 4 Feb 2015 12:55:30 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150204115515.GX12209@pengutronix.de>
-References: <1423044277-24529-1-git-send-email-voice.shen@atmel.com>
+Message-ID: <20150204115530.GY12209@pengutronix.de>
+References: <1423045144-25714-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1423044277-24529-1-git-send-email-voice.shen@atmel.com>
+In-Reply-To: <1423045144-25714-1-git-send-email-voice.shen@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: at91sam9n12ek: correct udc device name
+Subject: Re: [PATCH] usb: at91_udc: pass the vbus initial value
 To: Bo Shen <voice.shen@atmel.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 04, 2015 at 06:04:37PM +0800, Bo Shen wrote:
-> The created device name for atmel udc is at91_udc while not
-> at91_udc0.
+On Wed, Feb 04, 2015 at 06:19:04PM +0800, Bo Shen wrote:
+> If without pass the vbus initial value, the vbus status alway
+> present as 0 even if the vbus is connected to 5v.
 > 
 > Signed-off-by: Bo Shen <voice.shen@atmel.com>
+> ---
+> 
+>  drivers/usb/gadget/at91_udc.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
