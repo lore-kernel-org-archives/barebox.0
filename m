@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.246]
- helo=DVREDG02.corp.atmel.com)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YJHQQ-0002mP-1t
- for barebox@lists.infradead.org; Thu, 05 Feb 2015 08:04:34 +0000
-From: Bo Shen <voice.shen@atmel.com>
-Date: Thu, 5 Feb 2015 16:04:05 +0800
-Message-ID: <1423123445-29905-1-git-send-email-voice.shen@atmel.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YJJOC-00005L-1R
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 10:10:24 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  5 Feb 2015 11:09:55 +0100
+Message-Id: <1423130998-21853-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,86 +14,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: atmel: at91sam9n12: add subtype support
-To: s.hauer@pengutronix.de, plagnioj@jcrosoft.com
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] mtd: nand: omap: Fix OMAP_ECC_BCH8_CODE_HW ecc mode
+To: Barebox List <barebox@lists.infradead.org>
 
-As the at91sam9n12 series includes at91sam9n12, at91sam9cn11,
-at91sam9cn12. So, add subtype to distinguish them.
+This is broken since:
 
-Signed-off-by: Bo Shen <voice.shen@atmel.com>
+| commit 00f119a29387cfb1b188fcc4daa4aa94186ac7a9
+| Author: Sascha Hauer <s.hauer@pengutronix.de>
+| Date:   Fri Aug 1 14:09:48 2014 +0200
+|
+|     mtd: omap gpmc: fix ecc bytes/size
+|
+|     The ecc bytes / size are per subpage, not per page.
+|
+|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+The ecc code in omap_correct_data() expects to correct a whole page
+at once, so we must tell the nand layer that we have 4 * 13 bytes of
+ecc bytes and 4 * 512 bytes of ecc size. Otherwise the NAND layer will
+iterate over 512 byte steps over a page and call the .correct callback
+each time.
+
+This only works for 2k pagesize and needs revisit once other page sizes
+shall be supported. It would be better to tell the nand layer the real
+ecc bytes (13) and ecc size (512) instead and drop the iteration in
+omap_correct_bch(). However, this needs better testing so it isn't done
+here now.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
+ drivers/mtd/nand/nand_omap_gpmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- arch/arm/mach-at91/include/mach/cpu.h |  7 +++++++
- arch/arm/mach-at91/setup.c            | 17 +++++++++++++++++
- 2 files changed, 24 insertions(+)
-
-diff --git a/arch/arm/mach-at91/include/mach/cpu.h b/arch/arm/mach-at91/include/mach/cpu.h
-index f684d32..def49dc 100644
---- a/arch/arm/mach-at91/include/mach/cpu.h
-+++ b/arch/arm/mach-at91/include/mach/cpu.h
-@@ -48,6 +48,10 @@
- #define ARCH_EXID_AT91SAM9G25	0x00000003
- #define ARCH_EXID_AT91SAM9X25	0x00000004
- 
-+#define ARCH_EXID_AT91SAM9N12	0x00000006
-+#define ARCH_EXID_AT91SAM9CN11	0x00000009
-+#define ARCH_EXID_AT91SAM9CN12	0x00000005
-+
- #define ARCH_EXID_SAMA5D3	0x00004300
- #define ARCH_EXID_SAMA5D31	0x00444300
- #define ARCH_EXID_SAMA5D33	0x00414300
-@@ -113,6 +117,9 @@ enum at91_soc_subtype {
- 	AT91_SOC_SAM9G15, AT91_SOC_SAM9G35, AT91_SOC_SAM9X35,
- 	AT91_SOC_SAM9G25, AT91_SOC_SAM9X25,
- 
-+	/* SAM9N12 */
-+	AT91_SOC_SAM9CN11, AT91_SOC_SAM9CN12,
-+
- 	/* SAMA5D3 */
- 	AT91_SOC_SAMA5D31, AT91_SOC_SAMA5D33, AT91_SOC_SAMA5D34,
- 	AT91_SOC_SAMA5D35, AT91_SOC_SAMA5D36,
-diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
-index 030b8a2..341979a 100644
---- a/arch/arm/mach-at91/setup.c
-+++ b/arch/arm/mach-at91/setup.c
-@@ -156,6 +156,20 @@ static void __init soc_detect(u32 dbgu_base)
- 		}
- 	}
- 
-+	if (at91_soc_initdata.type == AT91_SOC_SAM9N12) {
-+		switch (at91_soc_initdata.exid) {
-+		case ARCH_EXID_AT91SAM9N12:
-+			at91_soc_initdata.subtype = AT91_SOC_SAM9N12;
-+			break;
-+		case ARCH_EXID_AT91SAM9CN11:
-+			at91_soc_initdata.subtype = AT91_SOC_SAM9CN11;
-+			break;
-+		case ARCH_EXID_AT91SAM9CN12:
-+			at91_soc_initdata.subtype = AT91_SOC_SAM9CN12;
-+			break;
-+		}
-+	}
-+
- 	if (at91_soc_initdata.type == AT91_SOC_SAMA5D3) {
- 		switch (at91_soc_initdata.exid) {
- 		case ARCH_EXID_SAMA5D31:
-@@ -229,6 +243,9 @@ static const char *soc_subtype_name[] = {
- 	[AT91_SOC_SAM9X35]	= "at91sam9x35",
- 	[AT91_SOC_SAM9G25]	= "at91sam9g25",
- 	[AT91_SOC_SAM9X25]	= "at91sam9x25",
-+	[AT91_SOC_SAM9N12]	= "at91sam9n12",
-+	[AT91_SOC_SAM9CN11]	= "at91sam9cn11",
-+	[AT91_SOC_SAM9CN12]	= "at91sam9cn12",
- 	[AT91_SOC_SAMA5D31]	= "sama5d31",
- 	[AT91_SOC_SAMA5D33]	= "sama5d33",
- 	[AT91_SOC_SAMA5D34]	= "sama5d34",
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index b1d266f..d254042 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -815,8 +815,8 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 			omap_oobinfo.eccpos[i] = i + offset;
+ 		break;
+ 	case OMAP_ECC_BCH8_CODE_HW:
+-		oinfo->nand.ecc.bytes    = 13;
+-		oinfo->nand.ecc.size     = 512;
++		oinfo->nand.ecc.bytes    = 13 * 4;
++		oinfo->nand.ecc.size     = 512 * 4;
+ 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
+ 		omap_oobinfo.oobfree->offset = offset;
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
 -- 
-2.3.0.rc0
+2.1.4
 
 
 _______________________________________________
