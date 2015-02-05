@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YJJOC-00005L-1R
- for barebox@lists.infradead.org; Thu, 05 Feb 2015 10:10:24 +0000
+ Linux)) id 1YJJOO-0001HF-OG
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 10:10:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Feb 2015 11:09:55 +0100
-Message-Id: <1423130998-21853-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Feb 2015 11:09:57 +0100
+Message-Id: <1423130998-21853-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1423130998-21853-1-git-send-email-s.hauer@pengutronix.de>
+References: <1423130998-21853-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] mtd: nand: omap: Fix OMAP_ECC_BCH8_CODE_HW ecc mode
+Subject: [PATCH 3/4] mtd: nand-bb: Fix accesses beyond device
 To: Barebox List <barebox@lists.infradead.org>
 
-This is broken since:
-
-| commit 00f119a29387cfb1b188fcc4daa4aa94186ac7a9
-| Author: Sascha Hauer <s.hauer@pengutronix.de>
-| Date:   Fri Aug 1 14:09:48 2014 +0200
-|
-|     mtd: omap gpmc: fix ecc bytes/size
-|
-|     The ecc bytes / size are per subpage, not per page.
-|
-|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-The ecc code in omap_correct_data() expects to correct a whole page
-at once, so we must tell the nand layer that we have 4 * 13 bytes of
-ecc bytes and 4 * 512 bytes of ecc size. Otherwise the NAND layer will
-iterate over 512 byte steps over a page and call the .correct callback
-each time.
-
-This only works for 2k pagesize and needs revisit once other page sizes
-shall be supported. It would be better to tell the nand layer the real
-ecc bytes (13) and ecc size (512) instead and drop the iteration in
-omap_correct_bch(). However, this needs better testing so it isn't done
-here now.
+When a block is marked bad after the bb device has been created
+the real size of the bb device is smaller than the calculated size
+on creation. In this case we can't rely on the upper layers anymore
+that they won't pass read/write sizes in that fit into the device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_omap_gpmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/nand-bb.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index b1d266f..d254042 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -815,8 +815,8 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
- 			omap_oobinfo.eccpos[i] = i + offset;
- 		break;
- 	case OMAP_ECC_BCH8_CODE_HW:
--		oinfo->nand.ecc.bytes    = 13;
--		oinfo->nand.ecc.size     = 512;
-+		oinfo->nand.ecc.bytes    = 13 * 4;
-+		oinfo->nand.ecc.size     = 512 * 4;
- 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
- 		omap_oobinfo.oobfree->offset = offset;
- 		omap_oobinfo.oobfree->length = minfo->oobsize -
+diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+index d888f90..e38517d 100644
+--- a/drivers/mtd/nand/nand-bb.c
++++ b/drivers/mtd/nand/nand-bb.c
+@@ -57,6 +57,11 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
+ 	debug("%s 0x%08llx %d\n", __func__, offset, count);
+ 
+ 	while (count) {
++		loff_t max = bb->mtd->size - bb->offset;
++
++		if (max <= 0)
++			break;
++
+ 		if (mtd_block_isbad(bb->mtd, offset)) {
+ 			printf("skipping bad block at 0x%08llx\n", bb->offset);
+ 			bb->offset += bb->mtd->erasesize;
+@@ -66,6 +71,9 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
+ 		now = min(count, (size_t)(bb->mtd->erasesize -
+ 				((size_t)bb->offset % bb->mtd->erasesize)));
+ 
++		if (now > max)
++			now = max;
++
+ 		ret = mtd_read(bb->mtd, bb->offset, now, &retlen, buf);
+ 		if (ret < 0)
+ 			return ret;
+@@ -90,6 +98,11 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+ 	loff_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
+ 
+ 	while (count) {
++		loff_t max = bb->mtd->size - bb->offset;
++
++		if (max <= 0)
++			return -ENOSPC;
++
+ 		if (mtd_block_isbad(bb->mtd, cur_ofs)) {
+ 			debug("skipping bad block at 0x%08llx\n", cur_ofs);
+ 			bb->offset += bb->mtd->erasesize;
+@@ -98,6 +111,9 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
+ 		}
+ 
+ 		now = min(count, (size_t)(bb->mtd->erasesize));
++		if (now > max)
++			return -ENOSPC;
++
+ 		ret = mtd_write(bb->mtd, cur_ofs, now, &retlen, buf);
+ 		if (ret < 0)
+ 			return ret;
 -- 
 2.1.4
 
