@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx.rheinmetall.ca ([207.61.105.111])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YJRol-0001w3-NR
- for barebox@lists.infradead.org; Thu, 05 Feb 2015 19:10:25 +0000
-From: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
-Date: Thu, 5 Feb 2015 19:09:51 +0000
-Message-ID: <29A2697B0516A946B1023D5E798DFCF67BAB71AD@mail-ying>
-References: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
- <20150203201134.GQ12209@pengutronix.de>
- <29A2697B0516A946B1023D5E798DFCF67BAB6F45@mail-ying>
- <20150205101645.GB12209@pengutronix.de>
-In-Reply-To: <20150205101645.GB12209@pengutronix.de>
-Content-Language: en-US
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YJTsA-0000Zq-63
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 21:22:02 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  5 Feb 2015 22:21:30 +0100
+Message-Id: <1423171292-26728-2-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,108 +17,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: saveenv & erase with bad blocks present
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/3] mtd: nand-imx: fix byte reading in x16 mode
+To: barebox@lists.infradead.org
 
-Sascha,
-I have installed the patches and tried erasing the environment with the nand0.erasebad flag. I am now able to execute the erase command on the nand device bareboxenv.bb without errors but I noticed its length is set to zero length....and finally, command "saveenv" still fails. Here's my output:
-...
-barebox@Phytec phyCORE-OMAP4460:/ ls -l /dev/nand*
-crw------- 1064566784 /dev/nand0.root.bb
-crw------- 1064566784 /dev/nand0.root
-crw-------    4194304 /dev/nand0.splash.bb
-crw-------    4194304 /dev/nand0.splash
-crw-------    4194304 /dev/nand0.kernel.bb
-crw-------    4194304 /dev/nand0.kernel
-crw-------          0 /dev/nand0.bareboxenv.bb               <-------- This does not look good...
-crw-------     131072 /dev/nand0.bareboxenv
-crw-------     524288 /dev/nand0.barebox.bb
-crw-------     524288 /dev/nand0.barebox
-crw-------     131072 /dev/nand0.xload.bb
-crw-------     131072 /dev/nand0.xload
-cr--------   33554432 /dev/nand_oob0
-crw------- 1073610752 /dev/nand0.bb
-crw------- 1073741824 /dev/nand0
-barebox@Phytec phyCORE-OMAP4460:/ unprotect /dev/nand0.bareboxenv.bb
-barebox@Phytec phyCORE-OMAP4460:/ nv nand0.erasebad=1
-barebox@Phytec phyCORE-OMAP4460:/ erase /dev/nand0.bareboxenv.bb
-barebox@Phytec phyCORE-OMAP4460:/ loadenv -s -d
-loading environment from defaultenv
-barebox@Phytec phyCORE-OMAP4460:/ saveenv
-saving environment
-saveenv: No space left on device
-...
-barebox@Phytec phyCORE-OMAP4460:/ md -w -s /dev/nand0.bareboxenv.bb
-barebox@Phytec phyCORE-OMAP4460:/ md -w -s /dev/nand0.bareboxenv
-BCH decoding failed
-read: error 74
-....
-
-So I don't have any more bad block errors....but that zero length bareboxenv.bb is puzzling me. I presume it should have a valid length like the other "bb" devices, right ? Do you think I should attempt deleting and recreating it ? 
-
-I also have this " No renderer found for filetype UBI image"  error in the startup messages, I am not sure it is related, but probably it's the next thing I need to figure out...I have included the startup messages right after my signature.
-
-Thanks for your help,
-Marc-Andre
-
-barebox 2015.02.0-dirty #4 Thu Feb 5 11:09:33 EST 2015
-
-
-Board: Phytec phyCORE-OMAP4460
-i2c-omap i2c-omap40: bus 0 rev0.11 at 100 kHz
-omap-hsmmc omap4-hsmmc0: registered as omap4-hsmmc0
-mci0: detected SD card version 2.0
-mci0: registered disk0
-smc911x smc911x0: LAN911x identified, idrev: 0x92210000, generation: 4
-mdio_bus: miibus0: probed
-eth0: got preset MAC address: 50:2d:f4:05:65:82
-nand: ONFI param page 0 valid
-nand: ONFI flash detected
-nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0xb3 (Micron MT29F8G16ADBDAH4), 1024MiB, page size: 2048, OOB size: 64
-omap_fb omap_fb: HW-Revision 0x0040 0x0040
-omap_fb omap_fb: registered
-malloc space: 0x8d000000 -> 0x8effffff (size 32 MiB)
-read: Directory not empty
-running /env/bin/init...
-set parameter: Invalid argument
-set parameter: Invalid argument
-No renderer found for filetype UBI image
-splash: No such file or directory
-
-Hit any key to stop autoboot:  3
-barebox@Phytec phyCORE-OMAP4460:/
-
-
------Original Message-----
-From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-Sent: February-05-15 5:17 AM
-To: Boulais, Marc-Andre
-Cc: barebox@lists.infradead.org
-Subject: Re: saveenv & erase with bad blocks present
-
-Hi Marc-Andre,
-
-I found some bugs preventing your OMAP board from working correctly. I just sent some mtd patches to the list. Could you apply them and retest?
-
-If your board complains about bad blocks that weren't there last time that could be because of bugs in the Nand driver. In this case you should do a "nand0.erasebad=1" and erase /dev/nand0.barebox again.
-
-Since your flashed version does not work with the Nand correctly you should start the fixed version over network. Do you know how to do that?
-If you need further help please let me know.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlcmUgYXJlIGEgZmV3IE5BTkQgY29tbWFuZHMgdGhhdCBtYWtlIHRoZSBjaGlwIG9ubHkgcmVz
+cG9uZCBvbiBJL08KbGluZXMgMCB0byA3IGV2ZW4gZm9yIHgxNiBkZXZpY2VzLiBSRUFESUQgKDkw
+aCkgaXMgb25lIHN1Y2ggY29tbWFuZAp3aGljaCB3YXMgYWxyZWFkeSBoYW5kbGVkIGZpbmUgaW4g
+dGhlIGRyaXZlciAoYXQgbGVhc3QgZm9yIE5GQyB2MSBhbmQKdjIpLiBPdGhlciBjb21tYW5kcyAo
+bGlrZSBQQVJBTSAoRUNoKSB0byByZWFkIG91dCBPTkZJIHBhcmFtZXRlcnMpCmhvd2V2ZXIgd2Vy
+ZSBub3QgaGFuZGxlZCBwcm9wZXJseS4gSW5zdGVhZCBvZiBhZGRpbmcgYW5vdGhlciBjYWxsYmFj
+awptYWtlIHRoZSByZWFkX2J5dGUgY2FsbGJhY2sgaGFuZGxlIHRoZSBob2xlcyBhZGRlZCBieSB0
+aGUgTkZDIGFuZCBkZXBlbmQKb24gdGhlIG5hbmQtYmFzZSBzdXBwb3J0IHRvIGNhbGwgcmVhZF9i
+eXRlIHdoZW4gbmVjZXNzYXJ5IGluc3RlYWQgb2YKcmVhZF9idWYuCgpUaGlzIGZpeGVzIHJlYWRp
+bmcgdGhlIE9ORkkgcGFyYW1ldGVyIHBhZ2Ugb24gYW4gaS5NWDI1IHdpdGggYW4geDE2IE5BTkQK
+YW5kIHByb2JhYmx5WzFdIGFsc28gdGhlIHJlc3VsdCBvZiBSRUFESUQgb24gaS5NWDUxL2kuTVg1
+MyB3aXRoIHgxNgpOQU5ELgoKWzFdIHVudGVzdGVkIGJlY2F1c2Ugbm8gbWF0Y2hpbmcgbWFjaGlu
+ZSBhdmFpbGFibGUKClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1r
+b2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteC5jIHwg
+MzMgKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTUg
+aW5zZXJ0aW9ucygrKSwgMTggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQv
+bmFuZC9uYW5kX2lteC5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteC5jCmluZGV4IGUyYWFh
+MTUzZWIxOC4uNjg1NzUwOTkxMzg5IDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5kL25hbmRf
+aW14LmMKKysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteC5jCkBAIC0zNzcsOCArMzc3LDYg
+QEAgc3RhdGljIHZvaWQgc2VuZF9yZWFkX3BhcmFtX3YzKHN0cnVjdCBpbXhfbmFuZF9ob3N0ICpo
+b3N0KQogCiBzdGF0aWMgdm9pZCBzZW5kX3JlYWRfaWRfdjFfdjIoc3RydWN0IGlteF9uYW5kX2hv
+c3QgKmhvc3QpCiB7Ci0Jc3RydWN0IG5hbmRfY2hpcCAqdGhpcyA9ICZob3N0LT5uYW5kOwotCiAJ
+LyogTkFOREZDIGJ1ZmZlciAwIGlzIHVzZWQgZm9yIGRldmljZSBJRCBvdXRwdXQgKi8KIAl3cml0
+ZXcoMHgwLCBob3N0LT5yZWdzICsgTkZDX1YxX1YyX0JVRl9BRERSKTsKIApAQCAtMzg3LDIwICsz
+ODUsMTEgQEAgc3RhdGljIHZvaWQgc2VuZF9yZWFkX2lkX3YxX3YyKHN0cnVjdCBpbXhfbmFuZF9o
+b3N0ICpob3N0KQogCS8qIFdhaXQgZm9yIG9wZXJhdGlvbiB0byBjb21wbGV0ZSAqLwogCXdhaXRf
+b3BfZG9uZShob3N0KTsKIAotCWlmICh0aGlzLT5vcHRpb25zICYgTkFORF9CVVNXSURUSF8xNikg
+ewotCQl2b2xhdGlsZSB1MTYgKm1haW5idWYgPSBob3N0LT5tYWluX2FyZWEwOwotCi0JCS8qCi0J
+CSAqIFBhY2sgdGhlIGV2ZXJ5LW90aGVyLWJ5dGUgcmVzdWx0IGZvciAxNi1iaXQgSUQgcmVhZHMK
+LQkJICogaW50byBldmVyeS1ieXRlIGFzIHRoZSBnZW5lcmljIGNvZGUgZXhwZWN0cyBhbmQgdmFy
+aW91cwotCQkgKiBjaGlwcyBpbXBsZW1lbnQuCi0JCSAqLwotCi0JCW1haW5idWZbMF0gPSAobWFp
+bmJ1ZlswXSAmIDB4ZmYpIHwgKChtYWluYnVmWzFdICYgMHhmZikgPDwgOCk7Ci0JCW1haW5idWZb
+MV0gPSAobWFpbmJ1ZlsyXSAmIDB4ZmYpIHwgKChtYWluYnVmWzNdICYgMHhmZikgPDwgOCk7Ci0J
+CW1haW5idWZbMl0gPSAobWFpbmJ1Zls0XSAmIDB4ZmYpIHwgKChtYWluYnVmWzVdICYgMHhmZikg
+PDwgOCk7Ci0JfQotCW1lbWNweTMyKGhvc3QtPmRhdGFfYnVmLCBob3N0LT5tYWluX2FyZWEwLCAx
+Nik7CisJLyoKKwkgKiBORkNfSUQgcmVzdWx0cyBpbiByZWFkaW5nIDYgYnl0ZXMgb3Igd29yZHMg
+KGRlcGVuZGluZyBvbiBkYXRhIHdpZHRoKSwKKwkgKiBzbyBjb3B5aW5nIDMgMzItYml0IHZhbHVl
+cyBpcyBqdXN0IGZpbmUuCisJICovCisJbWVtY3B5MzIoaG9zdC0+ZGF0YV9idWYsIGhvc3QtPm1h
+aW5fYXJlYTAsIDEyKTsKIH0KIAogc3RhdGljIHZvaWQgc2VuZF9yZWFkX3BhcmFtX3YxX3YyKHN0
+cnVjdCBpbXhfbmFuZF9ob3N0ICpob3N0KQpAQCAtNTcyLDggKzU2MSwxNiBAQCBzdGF0aWMgdV9j
+aGFyIGlteF9uYW5kX3JlYWRfYnl0ZShzdHJ1Y3QgbXRkX2luZm8gKm10ZCkKIAlpZiAoaG9zdC0+
+c3RhdHVzX3JlcXVlc3QpCiAJCXJldHVybiBob3N0LT5nZXRfZGV2X3N0YXR1cyhob3N0KSAmIDB4
+RkY7CiAKLQlyZXQgPSAqKHVpbnQ4X3QgKikoaG9zdC0+ZGF0YV9idWYgKyBob3N0LT5idWZfc3Rh
+cnQpOwotCWhvc3QtPmJ1Zl9zdGFydCsrOworCWlmIChuYW5kX2NoaXAtPm9wdGlvbnMgJiBOQU5E
+X0JVU1dJRFRIXzE2KSB7CisJCS8qIG9ubHkgdGFrZSB0aGUgbG93ZXIgYnl0ZSBvZiBlYWNoIHdv
+cmQgKi8KKwkJQlVHX09OKGhvc3QtPmJ1Zl9zdGFydCAmIDEpOworCQlyZXQgPSAqKHVpbnQxNl90
+ICopKGhvc3QtPmRhdGFfYnVmICsgaG9zdC0+YnVmX3N0YXJ0KTsKKworCQlob3N0LT5idWZfc3Rh
+cnQgKz0gMjsKKwl9IGVsc2UgeworCQlyZXQgPSAqKHVpbnQ4X3QgKikoaG9zdC0+ZGF0YV9idWYg
+KyBob3N0LT5idWZfc3RhcnQpOworCQlob3N0LT5idWZfc3RhcnQrKzsKKwl9CiAKIAlyZXR1cm4g
+cmV0OwogfQotLSAKMi4xLjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
