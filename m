@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIjWV-0001Xs-1t
- for barebox@lists.infradead.org; Tue, 03 Feb 2015 19:52:35 +0000
-Date: Tue, 3 Feb 2015 20:52:12 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20150203195212.GG10842@pengutronix.de>
-References: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
+ Linux)) id 1YJTs5-0000Yn-Uq
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 21:21:58 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  5 Feb 2015 22:21:29 +0100
+Message-Id: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +15,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: saveenv & erase with bad blocks present
-To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 0/3] mtd: nand: ONFI probing for x16 devices on i.MX25 (and
+ others)
+To: barebox@lists.infradead.org
 
-Hello,
-
-On Tue, Feb 03, 2015 at 04:38:42PM +0000, Boulais, Marc-Andre wrote:
-> I have flashed Barebox-2015.02.0 on my omap4 setup (using the Barebox
-> update command) and I am now trying to modify the environment from the
-> Barebox prompt. I have modified the env/config file and I would like
-> to save my changes to NAND. =
-
-> =
-
-> For this task, I call the "saveenv" command and I get this result:
-> =
-
-> barebox@Phytec phyCORE-OMAP4460:/ saveenv
-> saving environment
-> saveenv: No space left on device
-> =
-
-> The "devinfo" command indicates to me that the /dev/nand0.bareboxenv part=
-ition is 128 Kb. =
-
-> Just to be sure, I erase it and get the following error:
-What is the block size of your nand device? If your partition only
-consists of a single block and this one turns bad ...
-
-> barebox@Phytec phyCORE-OMAP4460:/ erase /dev/nand0.bareboxenv.bb
-> nand: nand_erase_nand: attempt to erase a bad block at page 0x00000140
-> erase: I/O error
-I'm not sure why this error is printed, maybe erase must not be given a
-.bb partition?
-
-> So I guess I am a bit confused here. =
-
-> 1) Is "saveenv" the right command to save my changes to the environment ?
-Yes
-
-> 2) How can I erase a NAND partition that has bad blocks ?
-It should be transparent to the user. I'd expect that erase does the
-right thing.
-
-> 3) Can bad blocks be marked by software or are they all marked by the man=
-ufacturer ?
-The initial set of bad blocks are (obviously) marked by the
-manufacturer. I don't know if barebox automatically marks blocks as bad,
-but Linux does for sure.
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCgpPbiBhbiBpLk1YMjUgYmFzZWQgbWFjaGluZSBiYXJlYm94IGlzc3VlZCBhIHdhcm5p
+bmcgZHVyaW5nIHN0YXJ0dXA6CgoJbmFuZDogVHJ5aW5nIE9ORkkgcHJvYmUgaW4gMTYgYml0cyBt
+b2RlLCBhYm9ydGluZyAhCgp3aXRob3V0IG11Y2ggc2lkZSBlZmZlY3RzIGFzIHRoZSBOQU5EIGNo
+aXAgd2FzIGRldGVjdGVkIGNvcnJlY3RseSBuZXZlcnRoZWxlc3MuCgpPbiB0aGUgcXVlc3QgdG8g
+Zml4IHRoaXMgd2FybmluZyBJIG5vdGljZWQgdGhhdCB0aGVyZSBpc24ndCBtdWNoIGp1c3RpZmlj
+YXRpb24KdG8gbm90IHByb2JlIHZpYSBPTkZJIGV2ZW4gaW4geDE2IG1vZGUgaW4gdGhlIHByZXNl
+bmNlIG9mIHRoZSByZWFkX2J5dGUKY2FsbGJhY2sgdGhhdCBpcyBjb3JyZWN0bHkgdXNlZCBpbiB0
+aGUgT05GSSBkZXRlY3Rpb24gY29kZS4gQnV0IHJlbW92aW5nIHRoaXMKZWFybHkgZXhpdCBpbiB0
+aGUgZ2VuZXJpYyBwcm9iZSByb3V0aW5lcyBicm91Z2h0IHRvIGxpZ2h0IHRoYXQgdGhlIGlteCBu
+YW5kCmRyaXZlciBkaWRuJ3QgaW1wbGVtZW50IHRoaXMgcmVhZF9ieXRlIGNhbGxiYWNrIGNvcnJl
+Y3RseS4KClRoaXMgc2VyaWVzIGZpcnN0IGZpeGVzIHRoZSBpbXggbmFuZCBkcml2ZXIgdG8gaW1w
+bGVtZW50IHRoZSByZWFkX2J5dGUgY2FsbGJhY2sKY29ycmVjdGx5IGFuZCB0aGVuICJmaXhlcyIg
+dGhlIE9ORkkgY29kZSB0byB0cnkgZGV0ZWN0aW9uIGV2ZW4gaW4geDE2IG1vZGUuClRoaXMgbWFk
+ZSB0aGUgYWJvdmUgbWVudGlvbmVkIHdhcm5pbmcgZ28gYXdheSBhbmQgcHJpbnQKCgluYW5kOiBP
+TkZJIGZsYXNoIGRldGVjdGVkCgppbnN0ZWFkIFxvLy4gVGhlIGdlbmVyaWMgY29kZSBjaGFuZ2Ug
+d2FzIG1vc3RseSBjaGVycnktcGlja2VkIGZyb20gTGludXgsIHNvIEkKa2VwdCB0aGUgb3JpZ2lu
+YWwgYXV0aG9yIGFubm90YXRpb24gaGVyZS4KCkFzIGFuIGFkZGVkIGJvbnVzIHRoZXJlIGlzIGEg
+bGl0dGxlIG9wdGltaXNhdGlvbiBhdCB0aGUgZW5kIG9mIHRoZSBzZXJpZXMuCgpCZXN0IHJlZ2Fy
+ZHMKVXdlCgpCcmlhbiBOb3JyaXMgKDEpOgogIG10ZDogbmFuZDogY2xlYW51cCBPTkZJIHByaW50
+ZWQgZXJyb3JzLCB3YXJuaW5ncwoKVXdlIEtsZWluZS1Lw7ZuaWcgKDIpOgogIG10ZDogbmFuZC1p
+bXg6IGZpeCBieXRlIHJlYWRpbmcgaW4geDE2IG1vZGUKICBtdGQ6IG5hbmQtaW14OiBkb24ndCBj
+b3B5IG1vcmUgYnl0ZXMgdGhhbiByZWFkIGZyb20gaGFyZHdhcmUKCiBkcml2ZXJzL210ZC9uYW5k
+L25hbmRfYmFzZS5jIHwgMTUgKysrKysrLS0tLS0tLS0tCiBkcml2ZXJzL210ZC9uYW5kL25hbmRf
+aW14LmMgIHwgMzkgKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tCiAyIGZp
+bGVzIGNoYW5nZWQsIDI2IGluc2VydGlvbnMoKyksIDI4IGRlbGV0aW9ucygtKQoKLS0gCjIuMS40
+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
