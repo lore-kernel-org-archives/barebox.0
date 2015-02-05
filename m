@@ -1,19 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YJTu1-00017O-LP
- for barebox@lists.infradead.org; Thu, 05 Feb 2015 21:23:58 +0000
-Date: Thu, 5 Feb 2015 22:23:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150205212335.GF12209@pengutronix.de>
-References: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
- <20150203201134.GQ12209@pengutronix.de>
- <29A2697B0516A946B1023D5E798DFCF67BAB6F45@mail-ying>
- <20150205101645.GB12209@pengutronix.de>
- <29A2697B0516A946B1023D5E798DFCF67BAB71AD@mail-ying>
+Received: from mail-we0-f170.google.com ([74.125.82.170])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YJUlo-00063F-OU
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 22:19:33 +0000
+Received: by mail-we0-f170.google.com with SMTP id q59so1439744wes.1
+ for <barebox@lists.infradead.org>; Thu, 05 Feb 2015 14:19:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BAB71AD@mail-ying>
+In-Reply-To: <CA+nEJingM_3v2-d2OpOfARc-G6sVG_GFzjDh60xXQM4=2tgzSQ@mail.gmail.com>
+References: <CA+nEJin3xNxtwkhEzPgcfNvP2wiuGxqhdB8cLn71LWC1Y5k-FQ@mail.gmail.com>
+ <20150203085931.GI12209@pengutronix.de>
+ <54D09205.4070704@atmel.com>
+ <CA+nEJi=x0PH1Hk0LpB+ELmi8bbjyz3s_KAGeYh-aPpi62Rm9VA@mail.gmail.com>
+ <20150203193359.GO12209@pengutronix.de>
+ <CA+nEJingM_3v2-d2OpOfARc-G6sVG_GFzjDh60xXQM4=2tgzSQ@mail.gmail.com>
+Date: Thu, 5 Feb 2015 15:19:08 -0700
+Message-ID: <CA+nEJinMJqBSaFBkAY26gb1SEueL+Fb_B7GCCM-tJLq+9NfQLA@mail.gmail.com>
+From: Doug Brainard <dbrainard@brainardinsight.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,65 +28,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: saveenv & erase with bad blocks present
-To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Passing kernel arguments - SAMA5D4EK
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Feb 05, 2015 at 07:09:51PM +0000, Boulais, Marc-Andre wrote:
-> Sascha,
-> I have installed the patches and tried erasing the environment with the nand0.erasebad flag. I am now able to execute the erase command on the nand device bareboxenv.bb without errors but I noticed its length is set to zero length....and finally, command "saveenv" still fails. Here's my output:
-> ...
-> barebox@Phytec phyCORE-OMAP4460:/ ls -l /dev/nand*
-> crw------- 1064566784 /dev/nand0.root.bb
-> crw------- 1064566784 /dev/nand0.root
-> crw-------    4194304 /dev/nand0.splash.bb
-> crw-------    4194304 /dev/nand0.splash
-> crw-------    4194304 /dev/nand0.kernel.bb
-> crw-------    4194304 /dev/nand0.kernel
-> crw-------          0 /dev/nand0.bareboxenv.bb               <-------- This does not look good...
+Sascha,
 
-This is because the nand bb driver calculates the usable
-size of the partition. Here the size is 0 because the block
-is marked as bad due to writing it with the erroneous nand driver.
+Have you had a chance to look into what I need to do to convert to the
+new environment?
 
-> crw-------     131072 /dev/nand0.bareboxenv
-> crw-------     524288 /dev/nand0.barebox.bb
-> crw-------     524288 /dev/nand0.barebox
-> crw-------     131072 /dev/nand0.xload.bb
-> crw-------     131072 /dev/nand0.xload
-> cr--------   33554432 /dev/nand_oob0
-> crw------- 1073610752 /dev/nand0.bb
-> crw------- 1073741824 /dev/nand0
-> barebox@Phytec phyCORE-OMAP4460:/ unprotect /dev/nand0.bareboxenv.bb
-> barebox@Phytec phyCORE-OMAP4460:/ nv nand0.erasebad=1
+Also, would it be beneficial to add the ability to load more than one
+partition to the bootargs for the old environment setup?  I've almost
+finished the boot script modifications to allow for it while still
+being backwards compatible.  I can push it back up to the repository
+when finished if interested.
 
-Ok, now you can erase bad blocks,
+Doug
 
-> barebox@Phytec phyCORE-OMAP4460:/ erase /dev/nand0.bareboxenv.bb
-
-but the bb device skip the bad blocks, so this does effectively nothing.
-Use /dev/nand0.bareboxenv (without the bb) instead. Restart barebox
-afterwards so that the size of the bb device gets recalculated.
-
-> 
-> I also have this " No renderer found for filetype UBI image"  error in
-> the startup messages, I am not sure it is related, but probably it's
-> the next thing I need to figure out...I have included the startup
-> messages right after my signature.
-
-The phycore startup script contains a splash command which works
-directly on a Nand partition. For some reason this partition contains
-an mtd UBI image. This could be because you wrote it there or because
-the partition offsets are shifted so that the splash partition is now
-where your rootfs has been before.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+On Tue, Feb 3, 2015 at 2:07 PM, Doug Brainard
+<dbrainard@brainardinsight.com> wrote:
+>> It comes from /env/bin/boot. You can checkout the sourcecode and grep
+>> for it since we do not have any search function in barebox.
+>
+> Ah, that's the piece I was missing to understand how the bootargs were
+> being created and what keywords did what.
+>
+>> Thanks. I'll prepare a mail tomorrow.
+>
+> I'll press pause on what I'm doing with this then, and I'll wait on
+> receiving that.
+>
+> Thanks again for your help,
+>
+> Doug
+>
+>
+> On Tue, Feb 3, 2015 at 12:33 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> On Tue, Feb 03, 2015 at 10:21:45AM -0700, Doug Brainard wrote:
+>>> > Couldn't you add "ubi.mtd=8 ubi.mtd=9" and rootfs_mtdblock_nand=10
+>>> > instead?
+>>>
+>>> I had thought that barebox had a need to know where the rootfs was
+>>> located, which is why I hadn't tried that.  Turns out that it worked
+>>> perfectly for the ubi.mtd settings.  Thank you!  Any idea how
+>>> "noinitrd" is getting added to the bootargs?  I need to replace that
+>>> with a "rw".
+>>
+>> It comes from /env/bin/boot. You can checkout the sourcecode and grep
+>> for it since we do not have any search function in barebox.
+>>
+>>>
+>>> > Note that we started with trying to build a generic default environment
+>>> > which at some point grew into a monster. We now have the 2nd version of
+>>> > the generic default environment which is much better. Unfortunately
+>>> > usage of this new default environment is board specific and your board
+>>> > isn't converted yet. If you are interested I can show you the steps to
+>>> > convert it.
+>>>
+>>> I would be interested in helping with this conversion.
+>>
+>> Thanks. I'll prepare a mail tomorrow.
+>>
+>> Sascha
+>>
+>> --
+>> Pengutronix e.K.                           |                             |
+>> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+>> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
