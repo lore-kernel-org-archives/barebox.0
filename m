@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YJJUh-0006f5-AS
- for barebox@lists.infradead.org; Thu, 05 Feb 2015 10:17:08 +0000
-Date: Thu, 5 Feb 2015 11:16:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150205101645.GB12209@pengutronix.de>
+Received: from mx.rheinmetall.ca ([207.61.105.111])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YJRol-0001w3-NR
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 19:10:25 +0000
+From: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Date: Thu, 5 Feb 2015 19:09:51 +0000
+Message-ID: <29A2697B0516A946B1023D5E798DFCF67BAB71AD@mail-ying>
 References: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
  <20150203201134.GQ12209@pengutronix.de>
  <29A2697B0516A946B1023D5E798DFCF67BAB6F45@mail-ying>
+ <20150205101645.GB12209@pengutronix.de>
+In-Reply-To: <20150205101645.GB12209@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BAB6F45@mail-ying>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,21 +25,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: saveenv & erase with bad blocks present
-To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Subject: RE: saveenv & erase with bad blocks present
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+Sascha,
+I have installed the patches and tried erasing the environment with the nand0.erasebad flag. I am now able to execute the erase command on the nand device bareboxenv.bb without errors but I noticed its length is set to zero length....and finally, command "saveenv" still fails. Here's my output:
+...
+barebox@Phytec phyCORE-OMAP4460:/ ls -l /dev/nand*
+crw------- 1064566784 /dev/nand0.root.bb
+crw------- 1064566784 /dev/nand0.root
+crw-------    4194304 /dev/nand0.splash.bb
+crw-------    4194304 /dev/nand0.splash
+crw-------    4194304 /dev/nand0.kernel.bb
+crw-------    4194304 /dev/nand0.kernel
+crw-------          0 /dev/nand0.bareboxenv.bb               <-------- This does not look good...
+crw-------     131072 /dev/nand0.bareboxenv
+crw-------     524288 /dev/nand0.barebox.bb
+crw-------     524288 /dev/nand0.barebox
+crw-------     131072 /dev/nand0.xload.bb
+crw-------     131072 /dev/nand0.xload
+cr--------   33554432 /dev/nand_oob0
+crw------- 1073610752 /dev/nand0.bb
+crw------- 1073741824 /dev/nand0
+barebox@Phytec phyCORE-OMAP4460:/ unprotect /dev/nand0.bareboxenv.bb
+barebox@Phytec phyCORE-OMAP4460:/ nv nand0.erasebad=1
+barebox@Phytec phyCORE-OMAP4460:/ erase /dev/nand0.bareboxenv.bb
+barebox@Phytec phyCORE-OMAP4460:/ loadenv -s -d
+loading environment from defaultenv
+barebox@Phytec phyCORE-OMAP4460:/ saveenv
+saving environment
+saveenv: No space left on device
+...
+barebox@Phytec phyCORE-OMAP4460:/ md -w -s /dev/nand0.bareboxenv.bb
+barebox@Phytec phyCORE-OMAP4460:/ md -w -s /dev/nand0.bareboxenv
+BCH decoding failed
+read: error 74
+....
+
+So I don't have any more bad block errors....but that zero length bareboxenv.bb is puzzling me. I presume it should have a valid length like the other "bb" devices, right ? Do you think I should attempt deleting and recreating it ? 
+
+I also have this " No renderer found for filetype UBI image"  error in the startup messages, I am not sure it is related, but probably it's the next thing I need to figure out...I have included the startup messages right after my signature.
+
+Thanks for your help,
+Marc-Andre
+
+barebox 2015.02.0-dirty #4 Thu Feb 5 11:09:33 EST 2015
+
+
+Board: Phytec phyCORE-OMAP4460
+i2c-omap i2c-omap40: bus 0 rev0.11 at 100 kHz
+omap-hsmmc omap4-hsmmc0: registered as omap4-hsmmc0
+mci0: detected SD card version 2.0
+mci0: registered disk0
+smc911x smc911x0: LAN911x identified, idrev: 0x92210000, generation: 4
+mdio_bus: miibus0: probed
+eth0: got preset MAC address: 50:2d:f4:05:65:82
+nand: ONFI param page 0 valid
+nand: ONFI flash detected
+nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0xb3 (Micron MT29F8G16ADBDAH4), 1024MiB, page size: 2048, OOB size: 64
+omap_fb omap_fb: HW-Revision 0x0040 0x0040
+omap_fb omap_fb: registered
+malloc space: 0x8d000000 -> 0x8effffff (size 32 MiB)
+read: Directory not empty
+running /env/bin/init...
+set parameter: Invalid argument
+set parameter: Invalid argument
+No renderer found for filetype UBI image
+splash: No such file or directory
+
+Hit any key to stop autoboot:  3
+barebox@Phytec phyCORE-OMAP4460:/
+
+
+-----Original Message-----
+From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
+Sent: February-05-15 5:17 AM
+To: Boulais, Marc-Andre
+Cc: barebox@lists.infradead.org
+Subject: Re: saveenv & erase with bad blocks present
 
 Hi Marc-Andre,
 
-I found some bugs preventing your OMAP board from working correctly. I
-just sent some mtd patches to the list. Could you apply them and retest?
+I found some bugs preventing your OMAP board from working correctly. I just sent some mtd patches to the list. Could you apply them and retest?
 
-If your board complains about bad blocks that weren't there last time
-that could be because of bugs in the Nand driver. In this case you
-should do a "nand0.erasebad=1" and erase /dev/nand0.barebox again.
+If your board complains about bad blocks that weren't there last time that could be because of bugs in the Nand driver. In this case you should do a "nand0.erasebad=1" and erase /dev/nand0.barebox again.
 
-Since your flashed version does not work with the Nand correctly you
-should start the fixed version over network. Do you know how to do that?
+Since your flashed version does not work with the Nand correctly you should start the fixed version over network. Do you know how to do that?
 If you need further help please let me know.
 
 Sascha
