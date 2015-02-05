@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YJJOE-0001EF-OF
- for barebox@lists.infradead.org; Thu, 05 Feb 2015 10:10:27 +0000
+ Linux)) id 1YJJOC-00005O-2E
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 10:10:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Feb 2015 11:09:58 +0100
-Message-Id: <1423130998-21853-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  5 Feb 2015 11:09:56 +0100
+Message-Id: <1423130998-21853-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1423130998-21853-1-git-send-email-s.hauer@pengutronix.de>
 References: <1423130998-21853-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] mtd: nand: bb: fix erasing bb devices with bad blocks
+Subject: [PATCH 2/4] mtd: Fix allowing to erase bad blocks on partitions
 To: Barebox List <barebox@lists.infradead.org>
 
-mtd_erase does not skip bad blocks, we must skip them in nand_bb_erase
-instead.
+Partitions are mtd devices themselves, but the 'erasebad'
+parameter is only set to the master mtd device. To allow to
+erase bad blocks on partitions test the master device instead
+of the partition devices.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand-bb.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/mtd/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
-index e38517d..853c617 100644
---- a/drivers/mtd/nand/nand-bb.c
-+++ b/drivers/mtd/nand/nand-bb.c
-@@ -159,16 +159,34 @@ static int nand_bb_erase(struct cdev *cdev, size_t count, loff_t offset)
- {
- 	struct nand_bb *bb = cdev->priv;
- 	struct erase_info erase = {};
-+	int ret;
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 82fb5f7..345752e 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -168,10 +168,10 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
+ 	while (count > 0) {
+ 		dev_dbg(cdev->dev, "erase %d %d\n", addr, erase.len);
  
- 	if (offset != 0) {
- 		printf("can only erase from beginning of device\n");
- 		return -EINVAL;
- 	}
+-		if (!mtd->allow_erasebad)
+-			ret = mtd_block_isbad(mtd, addr);
+-		else
++		if (mtd->allow_erasebad || (mtd->master && mtd->master->allow_erasebad))
+ 			ret = 0;
++		else
++			ret = mtd_block_isbad(mtd, addr);
  
--	erase.addr = 0;
--	erase.len = bb->mtd->size;
-+	while (count) {
-+		if (offset + bb->mtd->erasesize >= bb->mtd->size)
-+			return 0;
-+
-+		if (mtd_block_isbad(bb->mtd, offset)) {
-+			offset += bb->mtd->erasesize;
-+			continue;
-+		}
- 
--	return mtd_erase(bb->mtd, &erase);
-+		erase.addr = offset;
-+		erase.len = bb->mtd->erasesize;
-+
-+		ret = mtd_erase(bb->mtd, &erase);
-+		if (ret)
-+			return ret;
-+
-+		offset += bb->mtd->erasesize;
-+		count -= bb->mtd->erasesize;
-+	}
-+
-+	return 0;
- }
- #endif
+ 		erase.addr = addr;
  
 -- 
 2.1.4
