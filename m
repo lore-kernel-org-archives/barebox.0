@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YJTs5-0000Yo-Ut
- for barebox@lists.infradead.org; Thu, 05 Feb 2015 21:21:59 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  5 Feb 2015 22:21:32 +0100
-Message-Id: <1423171292-26728-4-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ Linux)) id 1YJTu1-00017O-LP
+ for barebox@lists.infradead.org; Thu, 05 Feb 2015 21:23:58 +0000
+Date: Thu, 5 Feb 2015 22:23:35 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150205212335.GF12209@pengutronix.de>
+References: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
+ <20150203201134.GQ12209@pengutronix.de>
+ <29A2697B0516A946B1023D5E798DFCF67BAB6F45@mail-ying>
+ <20150205101645.GB12209@pengutronix.de>
+ <29A2697B0516A946B1023D5E798DFCF67BAB71AD@mail-ying>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BAB71AD@mail-ying>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,31 +22,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] mtd: nand-imx: don't copy more bytes than read from
- hardware
-To: barebox@lists.infradead.org
+Subject: Re: saveenv & erase with bad blocks present
+To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-VGhlIE5GQyBjb21tYW5kIHVzZWQgZm9yIHJlYWRpbmcgdGhlIHJlc3VsdCBvZiBhIFJFQURJRCBj
-b21tYW5kIHRvIHRoZSBOQU5EIGNoaXAKcmVhZHMgNiBieXRlcyAoaW4geDggbW9kZSkgb3IgNiB3
-b3JkcyAoaW4geDE2IG1vZGUgd2l0aCB0aGUgdXBwZXIgYnl0ZXMgYWxsCmJlaW5nIDApLiBTbyB0
-aGVyZSBpcyBubyBuZWVkIHRvIHNhZmUgMTYgYnl0ZXMgZm9yIGxhdGVyIGNvbnN1bXB0aW9uLgoK
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBkcml2ZXJzL210ZC9uYW5kL25hbmRfaW14LmMgfCA2ICsrKysrLQogMSBm
-aWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXgu
-YwppbmRleCA2ODU3NTA5OTEzODkuLjAwYzA1ZDAwYWZlMyAxMDA2NDQKLS0tIGEvZHJpdmVycy9t
-dGQvbmFuZC9uYW5kX2lteC5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYwpAQCAt
-MzYyLDcgKzM2MiwxMSBAQCBzdGF0aWMgdm9pZCBzZW5kX3JlYWRfaWRfdjMoc3RydWN0IGlteF9u
-YW5kX2hvc3QgKmhvc3QpCiAKIAl3YWl0X29wX2RvbmUoaG9zdCk7CiAKLQltZW1jcHkoaG9zdC0+
-ZGF0YV9idWYsIGhvc3QtPm1haW5fYXJlYTAsIDE2KTsKKwkvKgorCSAqIE5GQ19JRCByZXN1bHRz
-IGluIHJlYWRpbmcgNiBieXRlcyBvciB3b3JkcyAoZGVwZW5kaW5nIG9uIGRhdGEgd2lkdGgpLAor
-CSAqIHNvIGNvcHlpbmcgMyAzMi1iaXQgdmFsdWVzIGlzIGp1c3QgZmluZS4KKwkgKi8KKwltZW1j
-cHkoaG9zdC0+ZGF0YV9idWYsIGhvc3QtPm1haW5fYXJlYTAsIDEyKTsKIH0KIAogc3RhdGljIHZv
-aWQgc2VuZF9yZWFkX3BhcmFtX3YzKHN0cnVjdCBpbXhfbmFuZF9ob3N0ICpob3N0KQotLSAKMi4x
-LjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, Feb 05, 2015 at 07:09:51PM +0000, Boulais, Marc-Andre wrote:
+> Sascha,
+> I have installed the patches and tried erasing the environment with the nand0.erasebad flag. I am now able to execute the erase command on the nand device bareboxenv.bb without errors but I noticed its length is set to zero length....and finally, command "saveenv" still fails. Here's my output:
+> ...
+> barebox@Phytec phyCORE-OMAP4460:/ ls -l /dev/nand*
+> crw------- 1064566784 /dev/nand0.root.bb
+> crw------- 1064566784 /dev/nand0.root
+> crw-------    4194304 /dev/nand0.splash.bb
+> crw-------    4194304 /dev/nand0.splash
+> crw-------    4194304 /dev/nand0.kernel.bb
+> crw-------    4194304 /dev/nand0.kernel
+> crw-------          0 /dev/nand0.bareboxenv.bb               <-------- This does not look good...
+
+This is because the nand bb driver calculates the usable
+size of the partition. Here the size is 0 because the block
+is marked as bad due to writing it with the erroneous nand driver.
+
+> crw-------     131072 /dev/nand0.bareboxenv
+> crw-------     524288 /dev/nand0.barebox.bb
+> crw-------     524288 /dev/nand0.barebox
+> crw-------     131072 /dev/nand0.xload.bb
+> crw-------     131072 /dev/nand0.xload
+> cr--------   33554432 /dev/nand_oob0
+> crw------- 1073610752 /dev/nand0.bb
+> crw------- 1073741824 /dev/nand0
+> barebox@Phytec phyCORE-OMAP4460:/ unprotect /dev/nand0.bareboxenv.bb
+> barebox@Phytec phyCORE-OMAP4460:/ nv nand0.erasebad=1
+
+Ok, now you can erase bad blocks,
+
+> barebox@Phytec phyCORE-OMAP4460:/ erase /dev/nand0.bareboxenv.bb
+
+but the bb device skip the bad blocks, so this does effectively nothing.
+Use /dev/nand0.bareboxenv (without the bb) instead. Restart barebox
+afterwards so that the size of the bb device gets recalculated.
+
+> 
+> I also have this " No renderer found for filetype UBI image"  error in
+> the startup messages, I am not sure it is related, but probably it's
+> the next thing I need to figure out...I have included the startup
+> messages right after my signature.
+
+The phycore startup script contains a splash command which works
+directly on a Nand partition. For some reason this partition contains
+an mtd UBI image. This could be because you wrote it there or because
+the partition offsets are shifted so that the splash partition is now
+where your rootfs has been before.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
