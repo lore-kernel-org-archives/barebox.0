@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YKpsI-0008WQ-Fk
- for barebox@lists.infradead.org; Mon, 09 Feb 2015 15:03:48 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id EE1E0A00105
- for <barebox@lists.infradead.org>; Mon,  9 Feb 2015 16:04:02 +0100 (CET)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Mon, 9 Feb 2015 16:01:46 +0100
-Message-Id: <1423494107-29051-1-git-send-email-w.egorov@phytec.de>
+Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YKtwq-0006Tu-Vn
+ for barebox@lists.infradead.org; Mon, 09 Feb 2015 19:24:45 +0000
+Received: by mail-lb0-f180.google.com with SMTP id z12so10736630lbi.11
+ for <barebox@lists.infradead.org>; Mon, 09 Feb 2015 11:24:20 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20150209154911.f0f1e90dac8229ad187bb20f@gmail.com>
+References: <20150208232614.f704a8d152576f0c47ca9c50@gmail.com>
+ <CAJfOKBz5UuqQJtcuPP8nLwLymje7+mPkKDgDSC8yHfj_pbvD+w@mail.gmail.com>
+ <20150209074034.GT12209@pengutronix.de>
+ <CAJfOKBx-KuUdPfQXeC9xCM7wFugBuo7i8dj7cBqGBXtSFQ4n6A@mail.gmail.com>
+ <20150209154911.f0f1e90dac8229ad187bb20f@gmail.com>
+Date: Mon, 9 Feb 2015 20:24:20 +0100
+Message-ID: <CAJfOKBw8ZDEo4N_CRvoKFjx7Aacb0o5q6GSB+DSHNbLq5Yoa_A@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,111 +23,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH: For next 1/2] ARM: am33xx: Add a function to retrieve the
- reset reason
-To: barebox@lists.infradead.org
+Subject: Re: openrisc build problem
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-This patch adds a function to retrieve the last occurred reset reason
-on the AM335x.
+2015-02-09 12:49 GMT+01:00 Antony Pavlov <antonynpavlov@gmail.com>:
+> On Mon, 9 Feb 2015 12:26:05 +0100
+> Franck Jullien <franck.jullien@gmail.com> wrote:
+>
+>> 2015-02-09 8:40 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
+>> > Hi,
+>> >
+>> > On Sun, Feb 08, 2015 at 08:35:40PM +0100, Franck Jullien wrote:
+>> >>
+>> >> Hi,
+>> >>
+>> >> Yes I know :) Until now, the official openrisc toolchain was called or32.
+>> >> However, the new one (and maintained one)  is called or1k. So we need
+>> >> to change "elf32-or32" to "elf32-or1k" in barebox.lds.S.
+>> >>
+>> >> Feel free to send a patch. Or I'll do that later.
+>> >
+>> > Is there a binary toolchain somewhere for download? I'll need for my
+>> > build tests once this patch is in.
+>> >
+>>
+>> Here: http://opencores.org/or1k/OpenRISC_GNU_tool_chain#Prebuilt_versions
+>> Or more recent here:
+>> http://lis.ei.tum.de/pub-download/openrisc-builds/or1k-elf/release/
+>
+>
+> Hmmm.
+>
+> It looks like gcc-or1k-elf-4.8.1-x86_64 does not work on my amd64 Debian testing
+> ('apt-cache search libmpc2' gives no results). E.g.
+>
+>
+> $ /opt/gcc-or1k-elf-4.8.1-x86_64/bin/or1k-elf-gcc 1.c
+> /opt/gcc-or1k-elf-4.8.1-x86_64/bin/../libexec/gcc/or1k-elf/4.8.1/cc1: error while loading shared libraries: libmpc.so.2: cannot open shared object file: No such file or directory
+>
+> --
+> Best regards,
+>   Antony Pavlov
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- arch/arm/mach-omap/am33xx_generic.c              | 41 ++++++++++++++++++++++++
- arch/arm/mach-omap/include/mach/am33xx-generic.h | 13 ++++++++
- arch/arm/mach-omap/include/mach/am33xx-silicon.h |  1 +
- 3 files changed, 55 insertions(+)
+To be honest, I never tried those prebuilt toolchain.
+Did you try the newer version present on the second link ?
 
-diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
-index 912138d..ceafc09 100644
---- a/arch/arm/mach-omap/am33xx_generic.c
-+++ b/arch/arm/mach-omap/am33xx_generic.c
-@@ -476,3 +476,44 @@ int am33xx_of_register_bootdevice(void)
- 
- 	return 0;
- }
-+
-+static const char *resetreason_str[] = {
-+	[AM33XX_RESET_ICEPICK]	= "IcePick",
-+	[AM33XX_RESET_EXTWARM]	= "External warm",
-+	[AM33XX_RESET_WD1]	= "Watchdog1 timer",
-+	[AM33XX_RESET_WD0]	= "Watchdog0 timer",
-+	[AM33XX_RESET_GLOBALSW]	= "Global warm software",
-+	[AM33XX_RESET_COLD]	= "Power-on (cold)",
-+	[AM33XX_RESET_UNKNOWN]	= "Unknown",
-+};
-+
-+const char *am33xx_get_reset_reason_str(void)
-+{
-+	return resetreason_str[am33xx_get_reset_reason()];
-+}
-+
-+enum am33xx_resetreason am33xx_get_reset_reason(void)
-+{
-+	static int init;
-+	static uint32_t val;
-+
-+	if (!init) {
-+		/* save value of AM33XX_PRM_RSTST register */
-+		val = readl(AM33XX_PRM_RSTST);
-+		/* clear AM33XX_PRM_RSTST - must be cleared by software
-+		 * (warm reset insensitive) */
-+		writel(val, AM33XX_PRM_RSTST);
-+		init = 1;
-+	}
-+
-+	switch (val) {
-+	case (1 << 9): return AM33XX_RESET_ICEPICK;
-+	case (1 << 5): return AM33XX_RESET_EXTWARM;
-+	case (1 << 4): return AM33XX_RESET_WD1;
-+	case (1 << 3): return AM33XX_RESET_WD0;
-+	case (1 << 1): return AM33XX_RESET_GLOBALSW;
-+	case (1 << 0): return AM33XX_RESET_COLD;
-+	}
-+
-+	return AM33XX_RESET_UNKNOWN;
-+}
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-generic.h b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-index 03418b0..18ca6e7 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-generic.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-@@ -36,4 +36,17 @@ int am33xx_devices_init(void);
- void am33xx_select_rmii2_crs_dv(void);
- int am33xx_of_register_bootdevice(void);
- 
-+enum am33xx_resetreason {
-+	AM33XX_RESET_ICEPICK,
-+	AM33XX_RESET_EXTWARM,
-+	AM33XX_RESET_WD1,
-+	AM33XX_RESET_WD0,
-+	AM33XX_RESET_GLOBALSW,
-+	AM33XX_RESET_COLD,
-+	AM33XX_RESET_UNKNOWN,
-+};
-+
-+enum am33xx_resetreason am33xx_get_reset_reason(void);
-+const char *am33xx_get_reset_reason_str(void);
-+
- #endif /* __MACH_AM33XX_GENERIC_H */
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-silicon.h b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-index 4e63b43..7c209ec 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-@@ -68,6 +68,7 @@
- 
- #define AM33XX_PRM_RSTCTRL		(AM33XX_PRM_BASE + 0x0f00)
- #define AM33XX_PRM_RSTCTRL_RESET	0x1
-+#define AM33XX_PRM_RSTST		(AM33XX_PRM_BASE + 0x0f08)
- 
- /* CTRL */
- #define AM33XX_CTRL_BASE		(AM33XX_L4_WKUP_BASE + 0x210000)
--- 
-1.9.1
+If you still have problems you can ask the mailing list or IRC at
+#openrisc on freenode.
 
+Franck.
 
 _______________________________________________
 barebox mailing list
