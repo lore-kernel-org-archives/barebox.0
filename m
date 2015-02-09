@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YIOY6-0001qy-8R
- for barebox@lists.infradead.org; Mon, 02 Feb 2015 21:28:51 +0000
-Received: by mail-wi0-f176.google.com with SMTP id bs8so20012937wib.3
- for <barebox@lists.infradead.org>; Mon, 02 Feb 2015 13:28:27 -0800 (PST)
-Date: Mon, 2 Feb 2015 22:28:24 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20150202212821.GB2009@omega>
-References: <1422195690-20676-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YKiVZ-0008Se-6J
+ for barebox@lists.infradead.org; Mon, 09 Feb 2015 07:11:50 +0000
+Date: Mon, 9 Feb 2015 08:11:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150209071126.GQ12209@pengutronix.de>
+References: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1422195690-20676-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1423171292-26728-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,61 +18,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] [JUST DEMO] commands: implement 'fbputs' command
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 0/3] mtd: nand: ONFI probing for x16 devices on i.MX25
+ (and others)
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On Thu, Feb 05, 2015 at 10:21:29PM +0100, Uwe Kleine-K=F6nig wrote:
+> Hello,
+> =
 
-On Sun, Jan 25, 2015 at 05:21:30PM +0300, Antony Pavlov wrote:
-> Mainline barebox at the moment has no framebuffer
-> console support.
-> The 'fbputs' demo command displays a text string
-> on fb device.
-> 
-> This quick-n-dirty patch demonstates that barebox
-> framebuffer console can be easely realized.
-> 
-> I'm awaiting your comments!
-> 
+> On an i.MX25 based machine barebox issued a warning during startup:
+> =
 
-this mail is not related to your fputs implementation but I had some
-really nice idea if we get a console framebuffer feature.
+> 	nand: Trying ONFI probe in 16 bits mode, aborting !
+> =
 
-My friend Werner Almesberger build ~4 years ago a solution for
-bitbanging VGA on a SD card slot and he said that this should probaly
-work on each SD card controller (if you have more than one or just booting
-from other source than sd card).
+> without much side effects as the NAND chip was detected correctly neverth=
+eless.
+> =
 
-There was a hackaday article about that [0]. Some embedded boards don't
-have any video output but an sd card output.
+> On the quest to fix this warning I noticed that there isn't much justific=
+ation
+> to not probe via ONFI even in x16 mode in the presence of the read_byte
+> callback that is correctly used in the ONFI detection code. But removing =
+this
+> early exit in the generic probe routines brought to light that the imx na=
+nd
+> driver didn't implement this read_byte callback correctly.
+> =
 
-So over some self builded SD to VGA cables everyone gets framebuffer
-support in babrebox, he makes all stuff open. See [1]. There exist also
-some software parts at [2] to support this interface under linux.
+> This series first fixes the imx nand driver to implement the read_byte ca=
+llback
+> correctly and then "fixes" the ONFI code to try detection even in x16 mod=
+e.
+> This made the above mentioned warning go away and print
+> =
 
-Maybe, we can grab some stuff there and add a generic barebox
-framebuffer driver to do some VGA to SD card slot connection. (Don't
-know how much possible that is currently).
+> 	nand: ONFI flash detected
+> =
 
+> instead \o/. The generic code change was mostly cherry-picked from Linux,=
+ so I
+> kept the original author annotation here.
+> =
 
-... or I just getting into a crazy idea to support a cool framebuffer
-interface. I mean, we don't need fancy color stuff or doing a very fast
-interface, just printing some fonts stuff.
+> As an added bonus there is a little optimisation at the end of the series.
+> =
 
-There exist also some "version 2 of this SD card slot to VGA connection"
-see [3].
+> Best regards
+> Uwe
+> =
 
-- Alex
+> Brian Norris (1):
+>   mtd: nand: cleanup ONFI printed errors, warnings
+> =
 
-[0] http://hackaday.com/2011/05/10/bit-banging-vga-from-an-sd-card-slot/
-[1] http://downloads.qi-hardware.com/people/werner/ubb/vga/web/
-[2] http://projects.qi-hardware.com/index.php/p/ben-blinkenlights/source/tree/master/ubb-vga
-[3] http://discussion.en.qi-hardware.narkive.com/XyzZEmPH/ubb-vga-version-2-first-impression
+> Uwe Kleine-K=F6nig (2):
+>   mtd: nand-imx: fix byte reading in x16 mode
+>   mtd: nand-imx: don't copy more bytes than read from hardware
+
+Applied, thanks
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
