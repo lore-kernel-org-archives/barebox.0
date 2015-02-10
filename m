@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YL82P-0002lU-3t
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 10:27:25 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1YL822-0006Z0-TS
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 11:27:02 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 10 Feb 2015 11:27:02 +0100
-Message-Id: <1423564022-526-1-git-send-email-l.stach@pengutronix.de>
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YL9yi-0001QH-S0
+ for barebox@lists.infradead.org; Tue, 10 Feb 2015 12:31:46 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 4D853A003A9
+ for <barebox@lists.infradead.org>; Tue, 10 Feb 2015 13:32:06 +0100 (CET)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Tue, 10 Feb 2015 13:29:49 +0100
+Message-Id: <1423571389-42849-2-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1423571389-42849-1-git-send-email-w.egorov@phytec.de>
+References: <1423571389-42849-1-git-send-email-w.egorov@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +20,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! arm: hummingboard: fix fallout from upstream DT usage
- --- This additional include is needed for the PWM and IPU aliases,
- so those new features also work.
+Subject: [PATCH: For next 2/2] ARM: phyCORE-AM335x-SOM: Update NAND partition
+ table
 To: barebox@lists.infradead.org
 
----
- arch/arm/dts/imx6dl-hummingboard.dts | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/dts/imx6dl-hummingboard.dts b/arch/arm/dts/imx6dl-hummingboard.dts
-index 7953fc1c34f4..24f6bfa8171c 100644
---- a/arch/arm/dts/imx6dl-hummingboard.dts
-+++ b/arch/arm/dts/imx6dl-hummingboard.dts
-@@ -6,6 +6,7 @@
-  */
- 
- #include <arm/imx6dl-hummingboard.dts>
-+#include "imx6qdl.dtsi"
- 
- / {
- 	chosen {
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpXZSBkb3VibGUgdGhlIHBh
+cnRpdGlvbiBzaXplIGZvciBiYXJlYm94LWVudiBhbmQgb2Z0cmVlIHRvIGJlCm1vcmUgcm9idXN0
+IGFnYWluc3QgYmFkIGJsb2NrIGlzc3Vlcy4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXog
+PHQuZ2FtZXpAcGh5dGVjLmRlPgpTaWduZWQtb2ZmLWJ5OiBXYWRpbSBFZ29yb3YgPHcuZWdvcm92
+QHBoeXRlYy5kZT4KLS0tCiBhcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3JlLXNvbS5k
+dHNpIHwgOCArKysrLS0tLQogMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3Jl
+LXNvbS5kdHNpIGIvYXJjaC9hcm0vZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaQpp
+bmRleCA3ZDBlM2M1Li5lZDhlMjU3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvYW0zMzV4LXBo
+eXRlYy1waHljb3JlLXNvbS5kdHNpCisrKyBiL2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBo
+eWNvcmUtc29tLmR0c2kKQEAgLTI5MSwxNyArMjkxLDE3IEBACiAKIAkJcGFydGl0aW9uQDUgewog
+CQkJbGFiZWwgPSAiYmFyZWJveGVudiI7Ci0JCQlyZWcgPSA8MHgxMDAwMDAgMHgyMDAwMD47CisJ
+CQlyZWcgPSA8MHgxMDAwMDAgMHg0MDAwMD47CiAJCX07CiAKIAkJcGFydGl0aW9uQDYgewogCQkJ
+bGFiZWwgPSAib2Z0cmVlIjsKLQkJCXJlZyA9IDwweDEyMDAwMCAweDIwMDAwPjsKKwkJCXJlZyA9
+IDwweDE0MDAwMCAweDQwMDAwPjsKIAkJfTsKIAogCQlwYXJ0aXRpb25ANyB7CiAJCQlsYWJlbCA9
+ICJrZXJuZWwiOwotCQkJcmVnID0gPDB4MTQwMDAwIDB4ODAwMDAwPjsKKwkJCXJlZyA9IDwweDE4
+MDAwMCAweDgwMDAwMD47CiAJCX07CiAKIAkJcGFydGl0aW9uQDggewpAQCAtMzEwLDcgKzMxMCw3
+IEBACiAJCQkgKiBTaXplIDB4MCBleHRlbmRzIHBhcnRpdGlvbiB0bwogCQkJICogZW5kIG9mIG5h
+bmQgZmxhc2guCiAJCQkgKi8KLQkJCXJlZyA9IDwweDk0MDAwMCAweDA+OworCQkJcmVnID0gPDB4
+OTgwMDAwIDB4MD47CiAJCX07CiAJfTsKIH07Ci0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
