@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YL6jd-0002pc-FK
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 09:03:59 +0000
+ Linux)) id 1YL6jd-0002pZ-FL
+ for barebox@lists.infradead.org; Tue, 10 Feb 2015 09:03:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 10 Feb 2015 10:03:33 +0100
-Message-Id: <1423559014-3783-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 10 Feb 2015 10:03:30 +0100
+Message-Id: <1423559014-3783-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1423559014-3783-1-git-send-email-s.hauer@pengutronix.de>
 References: <1423559014-3783-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] mtd: nand-bb: Fix test for bad block when reading
+Subject: [PATCH 2/6] mtd: Fix allowing to erase bad blocks on partitions
 To: Barebox List <barebox@lists.infradead.org>
 
-in nand_bb_read() 'offset' contains the virtual position on the device,
-but we have to test for a bad block on the raw physical position, so
-use bb->offset instead of offset
+Partitions are mtd devices themselves, but the 'erasebad'
+parameter is only set to the master mtd device. To allow to
+erase bad blocks on partitions test the master device instead
+of the partition devices.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand-bb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
-index f134635..c8f6988 100644
---- a/drivers/mtd/nand/nand-bb.c
-+++ b/drivers/mtd/nand/nand-bb.c
-@@ -62,7 +62,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
- 		if (max <= 0)
- 			break;
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 82fb5f7..345752e 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -168,10 +168,10 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
+ 	while (count > 0) {
+ 		dev_dbg(cdev->dev, "erase %d %d\n", addr, erase.len);
  
--		if (mtd_block_isbad(bb->mtd, offset)) {
-+		if (mtd_block_isbad(bb->mtd, bb->offset)) {
- 			printf("skipping bad block at 0x%08llx\n", bb->offset);
- 			bb->offset += bb->mtd->erasesize;
- 			continue;
+-		if (!mtd->allow_erasebad)
+-			ret = mtd_block_isbad(mtd, addr);
+-		else
++		if (mtd->allow_erasebad || (mtd->master && mtd->master->allow_erasebad))
+ 			ret = 0;
++		else
++			ret = mtd_block_isbad(mtd, addr);
+ 
+ 		erase.addr = addr;
+ 
 -- 
 2.1.4
 
