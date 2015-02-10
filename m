@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from nasmtp01.atmel.com ([192.199.1.246]
- helo=DVREDG02.corp.atmel.com)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YL5oC-0001vz-0e
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 08:04:44 +0000
-From: Bo Shen <voice.shen@atmel.com>
-Date: Tue, 10 Feb 2015 16:04:01 +0800
-Message-ID: <1423555441-13769-1-git-send-email-voice.shen@atmel.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YL6cG-00082A-MH
+ for barebox@lists.infradead.org; Tue, 10 Feb 2015 08:56:21 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 10 Feb 2015 09:55:57 +0100
+Message-Id: <1423558557-2700-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,37 +14,150 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: atmel: sama5d4 xplained: correc env path
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: Phytec phyCORE OMAP4460: Split xload defconfigs
+To: Barebox List <barebox@lists.infradead.org>
 
-Correct the environment path for sama5d4 xplained board.
+The configs grew too big to support both NAND and MMC at the
+same time, so split them.
 
-Signed-off-by: Bo Shen <voice.shen@atmel.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
+ .../phytec-phycore-omap4460-xload-mmc_defconfig    | 27 ++++++++++++++
+ .../phytec-phycore-omap4460-xload-nand_defconfig   | 34 ++++++++++++++++++
+ .../phytec-phycore-omap4460-xload_defconfig        | 42 ----------------------
+ 3 files changed, 61 insertions(+), 42 deletions(-)
+ create mode 100644 arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig
+ create mode 100644 arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig
+ delete mode 100644 arch/arm/configs/phytec-phycore-omap4460-xload_defconfig
 
- arch/arm/configs/sama5d4_xplained_defconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/configs/sama5d4_xplained_defconfig b/arch/arm/configs/sama5d4_xplained_defconfig
-index 51083fe..84a1bbd 100644
---- a/arch/arm/configs/sama5d4_xplained_defconfig
-+++ b/arch/arm/configs/sama5d4_xplained_defconfig
-@@ -17,7 +17,7 @@ CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/sama5d4ek/env"
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/sama5d4_xplained/env"
- CONFIG_DEBUG_INFO=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_LONGHELP=y
+diff --git a/arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig b/arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig
+new file mode 100644
+index 0000000..4e9e266
+--- /dev/null
++++ b/arch/arm/configs/phytec-phycore-omap4460-xload-mmc_defconfig
+@@ -0,0 +1,27 @@
++CONFIG_ARCH_OMAP=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
++CONFIG_OMAP_BUILD_IFT=y
++CONFIG_MACH_PCM049=y
++CONFIG_THUMB2_BAREBOX=y
++# CONFIG_ARM_EXCEPTIONS is not set
++# CONFIG_MEMINFO is not set
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0x40300000
++CONFIG_MALLOC_SIZE=0x2000000
++CONFIG_MALLOC_DUMMY=y
++CONFIG_PROMPT="barebox> "
++CONFIG_SHELL_NONE=y
++# CONFIG_ERRNO_MESSAGES is not set
++# CONFIG_TIMESTAMP is not set
++CONFIG_CONSOLE_SIMPLE=y
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
++# CONFIG_SPI is not set
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++# CONFIG_MCI_WRITE is not set
++CONFIG_MCI_OMAP_HSMMC=y
++# CONFIG_FS_RAMFS is not set
++# CONFIG_FS_DEVFS is not set
++CONFIG_FS_FAT=y
+diff --git a/arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig b/arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig
+new file mode 100644
+index 0000000..14b8288
+--- /dev/null
++++ b/arch/arm/configs/phytec-phycore-omap4460-xload-nand_defconfig
+@@ -0,0 +1,34 @@
++CONFIG_ARCH_OMAP=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
++CONFIG_OMAP_BUILD_IFT=y
++CONFIG_MACH_PCM049=y
++CONFIG_THUMB2_BAREBOX=y
++# CONFIG_ARM_EXCEPTIONS is not set
++# CONFIG_MEMINFO is not set
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0x40300000
++CONFIG_MALLOC_SIZE=0x2000000
++CONFIG_MALLOC_DUMMY=y
++CONFIG_PROMPT="barebox> "
++CONFIG_SHELL_NONE=y
++# CONFIG_ERRNO_MESSAGES is not set
++# CONFIG_TIMESTAMP is not set
++CONFIG_CONSOLE_SIMPLE=y
++CONFIG_PARTITION=y
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
++# CONFIG_SPI is not set
++CONFIG_MTD=y
++# CONFIG_MTD_WRITE is not set
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_SOFT is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++# CONFIG_NAND_INFO is not set
++# CONFIG_NAND_BBT is not set
++CONFIG_NAND_OMAP_GPMC=y
++# CONFIG_FS_RAMFS is not set
++# CONFIG_FS_DEVFS is not set
++CONFIG_FS_FAT=y
+diff --git a/arch/arm/configs/phytec-phycore-omap4460-xload_defconfig b/arch/arm/configs/phytec-phycore-omap4460-xload_defconfig
+deleted file mode 100644
+index 6bbc2e4..0000000
+--- a/arch/arm/configs/phytec-phycore-omap4460-xload_defconfig
++++ /dev/null
+@@ -1,42 +0,0 @@
+-CONFIG_ARCH_OMAP=y
+-CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
+-CONFIG_ARCH_OMAP4=y
+-CONFIG_OMAP_BUILD_IFT=y
+-CONFIG_MACH_PCM049=y
+-CONFIG_THUMB2_BAREBOX=y
+-# CONFIG_CMD_ARM_CPUINFO is not set
+-# CONFIG_ARM_EXCEPTIONS is not set
+-# CONFIG_MEMINFO is not set
+-CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x40300000
+-CONFIG_MEMORY_LAYOUT_FIXED=y
+-CONFIG_STACK_BASE=0x8f000000
+-CONFIG_MALLOC_BASE=0x84000000
+-CONFIG_MALLOC_SIZE=0x2000000
+-CONFIG_MALLOC_DUMMY=y
+-CONFIG_PROMPT="barebox> "
+-CONFIG_SHELL_NONE=y
+-# CONFIG_ERRNO_MESSAGES is not set
+-# CONFIG_TIMESTAMP is not set
+-CONFIG_CONSOLE_SIMPLE=y
+-# CONFIG_DEFAULT_ENVIRONMENT is not set
+-CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+-# CONFIG_SPI is not set
+-CONFIG_MTD=y
+-# CONFIG_MTD_WRITE is not set
+-# CONFIG_MTD_OOB_DEVICE is not set
+-CONFIG_NAND=y
+-# CONFIG_NAND_ECC_SOFT is not set
+-# CONFIG_NAND_ECC_HW_SYNDROME is not set
+-# CONFIG_NAND_ECC_HW_NONE is not set
+-# CONFIG_NAND_INFO is not set
+-# CONFIG_NAND_BBT is not set
+-CONFIG_NAND_OMAP_GPMC=y
+-CONFIG_MCI=y
+-CONFIG_MCI_STARTUP=y
+-# CONFIG_MCI_WRITE is not set
+-CONFIG_MCI_OMAP_HSMMC=y
+-# CONFIG_FS_RAMFS is not set
+-# CONFIG_FS_DEVFS is not set
+-CONFIG_FS_FAT=y
 -- 
-2.3.0.rc0
+2.1.4
 
 
 _______________________________________________
