@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YL6jd-0002pX-FJ
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 09:03:59 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1YL6jH-0000Jk-8w
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 10:03:35 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <sha@pengutronix.de>) id 1YL6jH-0001uK-7s
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 10:03:35 +0100
+ Linux)) id 1YL6jd-0002pY-FH
+ for barebox@lists.infradead.org; Tue, 10 Feb 2015 09:04:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 10 Feb 2015 10:03:28 +0100
-Message-Id: <1423559014-3783-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 10 Feb 2015 10:03:29 +0100
+Message-Id: <1423559014-3783-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1423559014-3783-1-git-send-email-s.hauer@pengutronix.de>
+References: <1423559014-3783-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,31 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] nand-bb fixes
+Subject: [PATCH 1/6] mtd: nand: omap: Fix OMAP_ECC_BCH8_CODE_HW ecc mode
 To: Barebox List <barebox@lists.infradead.org>
 
-Changes:
+This is broken since:
 
-- in nand_bb_erase we have to use '>' instead of '>=' to test if we must
-  bail out
-- Add patch to fix testing for a bad block when reading from the device.
-- Add patch to also print the raw position when debugging.
+| commit 00f119a29387cfb1b188fcc4daa4aa94186ac7a9
+| Author: Sascha Hauer <s.hauer@pengutronix.de>
+| Date:   Fri Aug 1 14:09:48 2014 +0200
+|
+|     mtd: omap gpmc: fix ecc bytes/size
+|
+|     The ecc bytes / size are per subpage, not per page.
+|
+|     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Sascha
+The ecc code in omap_correct_data() expects to correct a whole page
+at once, so we must tell the nand layer that we have 4 * 13 bytes of
+ecc bytes and 4 * 512 bytes of ecc size. Otherwise the NAND layer will
+iterate over 512 byte steps over a page and call the .correct callback
+each time.
 
-----------------------------------------------------------------
-Sascha Hauer (6):
-      mtd: nand: omap: Fix OMAP_ECC_BCH8_CODE_HW ecc mode
-      mtd: Fix allowing to erase bad blocks on partitions
-      mtd: nand-bb: Fix accesses beyond device
-      mtd: nand-bb: fix erasing bb devices with bad blocks
-      mtd: nand-bb: Fix test for bad block when reading
-      mtd: nand-bb: Also print raw position in debug messages
+This only works for 2k pagesize and needs revisit once other page sizes
+shall be supported. It would be better to tell the nand layer the real
+ecc bytes (13) and ecc size (512) instead and drop the iteration in
+omap_correct_bch(). However, this needs better testing so it isn't done
+here now.
 
- drivers/mtd/core.c                |  6 ++---
- drivers/mtd/nand/nand-bb.c        | 48 ++++++++++++++++++++++++++++++++++-----
- drivers/mtd/nand/nand_omap_gpmc.c |  4 ++--
- 3 files changed, 47 insertions(+), 11 deletions(-)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_omap_gpmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index b1d266f..d254042 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -815,8 +815,8 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 			omap_oobinfo.eccpos[i] = i + offset;
+ 		break;
+ 	case OMAP_ECC_BCH8_CODE_HW:
+-		oinfo->nand.ecc.bytes    = 13;
+-		oinfo->nand.ecc.size     = 512;
++		oinfo->nand.ecc.bytes    = 13 * 4;
++		oinfo->nand.ecc.size     = 512 * 4;
+ 		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
+ 		omap_oobinfo.oobfree->offset = offset;
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
+-- 
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
