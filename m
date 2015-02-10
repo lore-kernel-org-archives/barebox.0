@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLBbV-0007LB-Tn
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 14:15:55 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 8337CA0035F
- for <barebox@lists.infradead.org>; Tue, 10 Feb 2015 15:16:15 +0100 (CET)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Tue, 10 Feb 2015 15:13:57 +0100
-Message-Id: <1423577638-27907-1-git-send-email-w.egorov@phytec.de>
+Received: from mail-pd0-f174.google.com ([209.85.192.174])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YLBoA-000842-Qb
+ for barebox@lists.infradead.org; Tue, 10 Feb 2015 14:28:59 +0000
+Received: by pdbfl12 with SMTP id fl12so14674478pdb.4
+ for <barebox@lists.infradead.org>; Tue, 10 Feb 2015 06:28:37 -0800 (PST)
+From: Doug Brainard <dbrainard@brainardinsight.com>
+Date: Tue, 10 Feb 2015 07:28:00 -0700
+Message-Id: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3: For next 1/2] reset_source: Add external reset
+Subject: [PATCH 1/2] SAMA5D4EK - Now mostly supports booting Android from NAND.
 To: barebox@lists.infradead.org
 
-Some SoCs have special device pins for external reset signals.
-
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 ---
- common/reset_source.c  | 1 +
- include/reset_source.h | 1 +
- 2 files changed, 2 insertions(+)
+ arch/arm/boards/sama5d4ek/env/config | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/common/reset_source.c b/common/reset_source.c
-index 946670b..ae2f9f3 100644
---- a/common/reset_source.c
-+++ b/common/reset_source.c
-@@ -26,6 +26,7 @@ static const char * const reset_src_names[] = {
- 	[RESET_WKE] = "WKE",
- 	[RESET_JTAG] = "JTAG",
- 	[RESET_THERM] = "THERM",
-+	[RESET_EXT] = "EXT",
- };
+diff --git a/arch/arm/boards/sama5d4ek/env/config b/arch/arm/boards/sama5d4ek/env/config
+index 1007345..ee86c07 100644
+--- a/arch/arm/boards/sama5d4ek/env/config
++++ b/arch/arm/boards/sama5d4ek/env/config
+@@ -11,16 +11,16 @@ ip=dhcp
+ #eth0.serverip=a.b.c.d
  
- static enum reset_src_type reset_source;
-diff --git a/include/reset_source.h b/include/reset_source.h
-index 6620228..367f93b 100644
---- a/include/reset_source.h
-+++ b/include/reset_source.h
-@@ -21,6 +21,7 @@ enum reset_src_type {
- 	RESET_WKE,	/* wake-up (some SoCs can handle this) */
- 	RESET_JTAG,	/* JTAG reset */
- 	RESET_THERM,	/* SoC shut down because of overtemperature */
-+	RESET_EXT,	/* External reset through device pin */
- };
+ # can be either 'nfs', 'tftp', 'nor' or 'nand'
+-kernel_loc=nfs
++kernel_loc=nand
+ # can be either 'net', 'nor', 'nand' or 'initrd'
+-rootfs_loc=net
++rootfs_loc=nand
+ # can be either 'nfs', 'tftp', 'nand' or empty
+-oftree_loc=nfs
++oftree_loc=nand
  
- #ifdef CONFIG_RESET_SOURCE
+ # can be either 'jffs2' or 'ubifs'
+ rootfs_type=ubifs
+ rootfsimage=root.$rootfs_type
+-ubiroot=rootfs
++ubiroot=system
+ 
+ # The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+ kernelimage=zImage
+@@ -29,14 +29,14 @@ kernelimage=zImage
+ #kernelimage=Image.lzo
+ 
+ nand_device=atmel_nand
+-nand_parts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),-(rootfs)"
+-rootfs_mtdblock_nand=7
++nand_parts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),8M(recovery),176M(system),304M(userdata),-(cache)"
++rootfs_mtdblock_nand=10
+ 
+ m25p80_parts="64k(bootstrap),384k(barebox),256k(bareboxenv),256k(bareboxenv2),128k(oftree),-(updater)"
+ 
+ autoboot_timeout=3
+ 
+-bootargs="console=ttyS0,115200"
++bootargs="console=ttyS0,115200 ubi.mtd=8 ubi.mtd=9 init=/init androidboot.hardware=sama5-pda androidboot.lcd=wvga"
+ 
+ # set a fancy prompt (if support is compiled in)
+ PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
 -- 
-1.9.1
+2.3.0
 
 
 _______________________________________________
