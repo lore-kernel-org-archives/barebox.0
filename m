@@ -1,13 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YL6jd-0002pa-FI
- for barebox@lists.infradead.org; Tue, 10 Feb 2015 09:04:00 +0000
+ Linux)) id 1YL6zZ-0008CL-VD
+ for barebox@lists.infradead.org; Tue, 10 Feb 2015 09:20:26 +0000
+Date: Tue, 10 Feb 2015 10:20:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 10 Feb 2015 10:03:31 +0100
-Message-Id: <1423559014-3783-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1423559014-3783-1-git-send-email-s.hauer@pengutronix.de>
-References: <1423559014-3783-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20150210092003.GW12209@pengutronix.de>
+References: <29A2697B0516A946B1023D5E798DFCF67BAB6E85@mail-ying>
+ <20150203201134.GQ12209@pengutronix.de>
+ <29A2697B0516A946B1023D5E798DFCF67BAB6F45@mail-ying>
+ <20150205101645.GB12209@pengutronix.de>
+ <29A2697B0516A946B1023D5E798DFCF67BAB71AD@mail-ying>
+ <20150205212335.GF12209@pengutronix.de>
+ <29A2697B0516A946B1023D5E798DFCF67BAB72A5@mail-ying>
+ <20150209071849.GR12209@pengutronix.de>
+ <29A2697B0516A946B1023D5E798DFCF67BAB743C@mail-ying>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BAB743C@mail-ying>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,75 +26,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] mtd: nand-bb: Fix accesses beyond device
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: saveenv & erase with bad blocks present
+To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-When a block is marked bad after the bb device has been created
-the real size of the bb device is smaller than the calculated size
-on creation. In this case we can't rely on the upper layers anymore
-that they won't pass read/write sizes in that fit into the device.
+Hi Marc-Andre,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/nand/nand-bb.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+I just sent an updated series for the nand issues. With this I tested
+bootstrapping the board completly from SD card using the nand_bootstrap
+script. I also tested 'saveenv' successfully.
 
-diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
-index d888f90..e38517d 100644
---- a/drivers/mtd/nand/nand-bb.c
-+++ b/drivers/mtd/nand/nand-bb.c
-@@ -57,6 +57,11 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
- 	debug("%s 0x%08llx %d\n", __func__, offset, count);
- 
- 	while (count) {
-+		loff_t max = bb->mtd->size - bb->offset;
-+
-+		if (max <= 0)
-+			break;
-+
- 		if (mtd_block_isbad(bb->mtd, offset)) {
- 			printf("skipping bad block at 0x%08llx\n", bb->offset);
- 			bb->offset += bb->mtd->erasesize;
-@@ -66,6 +71,9 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
- 		now = min(count, (size_t)(bb->mtd->erasesize -
- 				((size_t)bb->offset % bb->mtd->erasesize)));
- 
-+		if (now > max)
-+			now = max;
-+
- 		ret = mtd_read(bb->mtd, bb->offset, now, &retlen, buf);
- 		if (ret < 0)
- 			return ret;
-@@ -90,6 +98,11 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
- 	loff_t cur_ofs = bb->offset & ~(BB_WRITEBUF_SIZE - 1);
- 
- 	while (count) {
-+		loff_t max = bb->mtd->size - bb->offset;
-+
-+		if (max <= 0)
-+			return -ENOSPC;
-+
- 		if (mtd_block_isbad(bb->mtd, cur_ofs)) {
- 			debug("skipping bad block at 0x%08llx\n", cur_ofs);
- 			bb->offset += bb->mtd->erasesize;
-@@ -98,6 +111,9 @@ static int nand_bb_write_buf(struct nand_bb *bb, size_t count)
- 		}
- 
- 		now = min(count, (size_t)(bb->mtd->erasesize));
-+		if (now > max)
-+			return -ENOSPC;
-+
- 		ret = mtd_write(bb->mtd, cur_ofs, now, &retlen, buf);
- 		if (ret < 0)
- 			return ret;
+On Mon, Feb 09, 2015 at 01:37:26PM +0000, Boulais, Marc-Andre wrote:
+> Hi Sascha,
+> I start the patched/fixed version in second stage. My PCM049 board is
+> programmed with Phytec's BSP Barebox 2013.06.0. Upon entering its
+> prompt, I start v 15.02.0 with your patches using tftp and bootm
+> commands.
+> 
+> The "wrong crc on env superblock" message appears after I execute
+> v15.02.0 with the bootm comand. It does not appear in the resident
+> Barebox startup.
+> 
+> Note: The first time I tried your patches, I had this error message:
+> nand_erase_nand: attempt to erase a bad block at page [...]
+> 
+> Since we were considering potential problems in the nand driver to
+> cause a "false" bad block, I commented out the bad block check in
+> function nand_erase_nand() (nand/nand_base.c):
+
+>  	instr->state = MTD_ERASING;
+> 
+> 	while (len) {
+> #if 0
+> 		/* Check if we have a bad block, we do not erase bad blocks! */
+> 		if (!mtd->allow_erasebad &&
+> 				nand_block_checkbad(mtd, ((loff_t) page) <<
+> 					chip->page_shift, 0, allowbbt)) {
+> 			pr_warn("%s: attempt to erase a bad block at page 0x%08x\n",
+> 				    __func__, page);
+> 			instr->state = MTD_ERASE_FAILED;
+> 			goto erase_exit;
+> 		}
+> #endif
+
+The way to do this without sourcecode changes is to enable
+CONFIG_NAND_ALLOW_ERASE_BAD and do a 'nand0.erasebad=1'
+
+You should make sure to use a consistent barebox version state for both
+the MLO and the full barebox later. Unfortunately the ECC layout
+information and partition information of the NAND is stored in the
+bootloader binaries and not on the device. This makes for a good source
+of unpredictable errors.
+
+Sascha
+
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
