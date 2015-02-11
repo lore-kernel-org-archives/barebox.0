@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLSlx-0001y6-Kd
- for barebox@lists.infradead.org; Wed, 11 Feb 2015 08:35:50 +0000
-Date: Wed, 11 Feb 2015 09:35:24 +0100
+ Linux)) id 1YLSq0-00077g-2z
+ for barebox@lists.infradead.org; Wed, 11 Feb 2015 08:40:00 +0000
+Date: Wed, 11 Feb 2015 09:39:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150211083524.GH12209@pengutronix.de>
-References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
- <1423578481-25230-2-git-send-email-dbrainard@brainardinsight.com>
- <54DABFB8.7030107@atmel.com>
- <CA+nEJi=tcGXZs14eFYkuaDphZ5cGmAPWCV+G8r4tYpYLUU9gwQ@mail.gmail.com>
- <DEFE6320-5432-4AEE-A43B-DBA6B56D4007@jcrosoft.com>
- <54DB0436.3010004@atmel.com>
+Message-ID: <20150211083935.GI12209@pengutronix.de>
+References: <1423555441-13769-1-git-send-email-voice.shen@atmel.com>
+ <20150210093634.GY12209@pengutronix.de>
+ <54DB09EA.8010805@atmel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <54DB0436.3010004@atmel.com>
+In-Reply-To: <54DB09EA.8010805@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,53 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] Switched SAMA5D4EK development board to the newer
- environment method.
+Subject: Re: [PATCH] ARM: atmel: sama5d4 xplained: correc env path
 To: Bo Shen <voice.shen@atmel.com>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBGZWIgMTEsIDIwMTUgYXQgMDM6MjY6NDZQTSArMDgwMCwgQm8gU2hlbiB3cm90ZToK
-PiBIaSBKLAo+IAo+IE9uIDAyLzExLzIwMTUgMDE6MDYgUE0sIEplYW4tQ2hyaXN0b3BoZSBQTEFH
-TklPTC1WSUxMQVJEIHdyb3RlOgo+ID5IaSwKPiA+Cj4gPglhcyBzdGF0ZSBiZWZvcmUgSSB1c2Ug
-dGhlIGF0bWVsIGJvYXJkIGZvciBib290cCBldmVyeWRheSBhcyB0aGUgZGVmYXVsdGVudi0yIGRv
-ZXMgbm90IHN1cHBvcnQKPiA+CXRoaXMgTmFjayB1bnRpbCBpdOKAmXMgZml4ZWQKPiAKPiBEbyB5
-b3UgbWVhbiB0aGUgZGVmYXVsdGVudi0yIGRvZXNuJ3Qgc3VwcG9ydCB0aGUgYm9vdHAgZmVhdHVy
-ZSBvciBkbwo+IHlvdSBtZWFuIGxldCBEb3VnIHRvIGtlZXAgdGhlIGRlZmF1bHQgYm9vdCBmcm9t
-IG5ldD8KPiAKPiA+CUkgZGlkIHNlbmQgcGF0Y2ggZm9yIHRoaXMgaW4gdGhlIHBhc3QgYnV0IHRo
-ZXkgZGlkIG5vdCBoaXQgdGhlIG1haW5saW5lCj4gCj4gQ2FuIHlvdSBwb2ludCB1cyB0aGlzPyBU
-aGFua3MuCgpIZSBtZWFudCB0aGlzIHBhdGNoOgoKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-cGlwZXJtYWlsL2JhcmVib3gvMjAxMi1TZXB0ZW1iZXIvdGhyZWFkLmh0bWwjOTMwNAoKUmVhZGlu
-ZyB0aGlzIGRpc2N1c3Npb24gYWdhaW4gSSBzdGlsbCBoYXZlIG1vc3RseSB0aGUgc2FtZSBvcGlu
-aW9uOgphbiAvZW52L2Jvb3QvKiBzY3JpcHQgc2hvdWxkIGJlIHNpbXBsZSwgaXQgc2hvdWxkIGJl
-IGFkanVzdGFibGUuCgpXZSBzaG91bGQgcmVzb2x2ZSB0aGlzIG5vdy4KClNvIEplYW4tQ2hyaXN0
-b3BoZSwgV2hhdCB5b3Ugd2FudCBpcyB0byBib290IHlvdXIgYm9hcmQgd2l0aAppbmZvcm1hdGlv
-bnMgcHJvdmlkZWQgYnkgdGhlIGRoY3Agc2VydmVyLiBMb29raW5nIGFnYWluIGF0IHlvdXIgcGF0
-Y2gKYmFjayB0aGVuIHRoZSBmb2xsb3dpbmcgc2hvdWxkIGRvIGl0OgoKL2Vudi9ib290L2Jvb3Rw
-OgoKfCAjIS9iaW4vc2gKfCAKfCBwYXRoPSIvbW50L3RmdHAiCnwgCnwgaWZ1cCBldGgwCnwgCnwg
-IyBTZXQgdmFyaWFibGVzIGJhc2VkIG9uIGluZm9ybWF0aW9uIHByb3ZpZGVkIGJ5IHRoZSBkaGNw
-IHJlcXVlc3QKfCBuZnNyb290PSIke2dsb2JhbC5kaGNwLnJvb3RwYXRofSIKfCBnbG9iYWwuYm9v
-dG0uaW1hZ2U9IiR7cGF0aH0vJHtnbG9iYWwuZGhjcC5ib290ZmlsZX0iCnwgZ2xvYmFsLmJvb3Rt
-Lm9mdHJlZT0iJHtwYXRofS8ke2dsb2JhbC5kaGNwLm9mdHJlZV9maWxlfSIKfCAKfCBib290YXJn
-cy1pcAp8IGdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L25mcyBuZnNy
-b290PSRuZnNyb290LHYzLHRjcCIKClNpbmNlIHlvdSByZWplY3QgY2hhbmdlcyB0byB0aGUgZGVm
-YXVsdCBib290IHNvdXJjZSBmb3IgdGhpcyBib2FyZCB5b3VyCm90aGVyIGlzc3VlIHNlZW1zIHRv
-IGJlIHRoYXQgeW91IHdhbnQgeW91ciBib2FyZCB0byBleGVjdXRlIHRoaXMgYm9vdHNjcmlwdAp3
-aXRob3V0IGZ1cnRoZXIgYWRqdXN0aW5nIHRoZSBlbnZpcm9ubWVudC4gVGhpcyBpcyBzb21ldGhp
-bmcgd2UgY2Fubm90IGRvLgpUaGUgZGVmYXVsdCBib290c291cmNlIGNhbiBvbmx5IGV2ZXIgZml0
-IHlvdXIgcGVyc29uYWwgb3Igc29tZW9uZSBlbHNlcwp1c2UuIFdlIGNhbm5vdCBtYWtlIGV2ZXJ5
-b25lIGhhcHB5IHdpdGggdGhlIGRlZmF1bHQgYm9vdCBzb3VyY2UsIHNvIEkKc3VnZ2VzdCB5b3Ug
-ZWl0aGVyIGNvbnRyb2wgeW91ciBib2FyZCB2aWEgc29tZSBleHBlY3Qgc2NyaXB0ICh3aGljaApz
-dWNrcywgSSBrbm93KSBvciB5b3UganVzdCBzYXZlIHlvdXIgYWRqdXN0ZWQgZW52aXJvbm1lbnQg
-b24geW91ciB0ZXN0CmJvYXJkLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0
-cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRy
-b25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwg
-UGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJB
-IDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Wed, Feb 11, 2015 at 03:51:06PM +0800, Bo Shen wrote:
+> Hi Sascha,
+>   I found there is a typo error in subject. "s/correc/correct"
+>   Can you help fix it?
+>   Thanks.
+
+Sorry, too late. It's already in master.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
