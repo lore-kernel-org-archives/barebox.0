@@ -1,16 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLU3n-0007kU-UO
- for barebox@lists.infradead.org; Wed, 11 Feb 2015 09:58:20 +0000
-Message-ID: <54DB279E.7070806@phytec.de>
-Date: Wed, 11 Feb 2015 10:57:50 +0100
-From: Wadim Egorov <w.egorov@phytec.de>
-MIME-Version: 1.0
-References: <1423577638-27907-1-git-send-email-w.egorov@phytec.de>
- <1423577638-27907-2-git-send-email-w.egorov@phytec.de>
- <20150211073910.GF12209@pengutronix.de>
-In-Reply-To: <20150211073910.GF12209@pengutronix.de>
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YLW1I-0003pZ-Qe
+ for barebox@lists.infradead.org; Wed, 11 Feb 2015 12:03:54 +0000
+Received: from mail437.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id D8A0FFFA3E0
+ for <barebox@lists.infradead.org>; Wed, 11 Feb 2015 13:03:25 +0100 (CET)
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <20150211091948.GK12209@pengutronix.de>
+Date: Wed, 11 Feb 2015 20:03:08 +0800
+Message-Id: <78248D27-8489-46A4-A2BB-D3F345E5C6D1@jcrosoft.com>
+References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
+ <1423578481-25230-2-git-send-email-dbrainard@brainardinsight.com>
+ <54DABFB8.7030107@atmel.com>
+ <CA+nEJi=tcGXZs14eFYkuaDphZ5cGmAPWCV+G8r4tYpYLUU9gwQ@mail.gmail.com>
+ <DEFE6320-5432-4AEE-A43B-DBA6B56D4007@jcrosoft.com>
+ <54DB0436.3010004@atmel.com> <20150211083524.GH12209@pengutronix.de>
+ <00D97CEE-D0F1-444E-97F4-F670D9E65907@jcrosoft.com>
+ <20150211091948.GK12209@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +27,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3: For next 2/2] ARM: am33xx: Add support for reset reason
- detection
+Subject: Re: [PATCH 2/2] Switched SAMA5D4EK development board to the newer
+ environment method.
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-
-On 11.02.2015 08:39, Sascha Hauer wrote:
-> On Tue, Feb 10, 2015 at 03:13:58PM +0100, Wadim Egorov wrote:
->> Also activate in defconfig.
->>
->> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
->> +		break;
->> +	case (1 << 1):
->> +		reset_source_set(RESET_RST);
->> +		break;
->> +	case (1 << 0):
->> +		reset_source_set(RESET_POR);
->> +		break;
->> +	default:
->> +		reset_source_set(RESET_UKWN);
->> +		break;
->> +	}
->> +
->> +	return 0;
->> +}
->> +device_initcall(am33xx_detect_reset_reason);
-> No SoC specific initcall without testing if you're running on the
-> correct SoC please. Better call it from am33xx_init() which is only
-> executed on am33xx.
->
-> Sascha
-Calling it from am33xx_init() was also my idea in the first place.
-AFAIK you have to call reset_source_set() after coredevice_initcall().
-So it is not possible to call it from am33xx_init().
-
-But I can do a cpu check within am33xx_detect_reset_reason() and
-cancel the detection if it is not an am335.
->
->
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Cj4gT24gRmViIDExLCAyMDE1LCBhdCA1OjE5IFBNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
+Z3V0cm9uaXguZGU+IHdyb3RlOgo+IAo+IE9uIFdlZCwgRmViIDExLCAyMDE1IGF0IDA0OjU0OjA5
+UE0gKzA4MDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+PiAKPj4+
+IE9uIEZlYiAxMSwgMjAxNSwgYXQgNDozNSBQTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1
+dHJvbml4LmRlPiB3cm90ZToKPj4+IAo+Pj4gT24gV2VkLCBGZWIgMTEsIDIwMTUgYXQgMDM6MjY6
+NDZQTSArMDgwMCwgQm8gU2hlbiB3cm90ZToKPj4+PiBIaSBKLAo+Pj4+IAo+Pj4+IE9uIDAyLzEx
+LzIwMTUgMDE6MDYgUE0sIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+
+Pj4+PiBIaSwKPj4+Pj4gCj4+Pj4+IAlhcyBzdGF0ZSBiZWZvcmUgSSB1c2UgdGhlIGF0bWVsIGJv
+YXJkIGZvciBib290cCBldmVyeWRheSBhcyB0aGUgZGVmYXVsdGVudi0yIGRvZXMgbm90IHN1cHBv
+cnQKPj4+Pj4gCXRoaXMgTmFjayB1bnRpbCBpdOKAmXMgZml4ZWQKPj4+PiAKPj4+PiBEbyB5b3Ug
+bWVhbiB0aGUgZGVmYXVsdGVudi0yIGRvZXNuJ3Qgc3VwcG9ydCB0aGUgYm9vdHAgZmVhdHVyZSBv
+ciBkbwo+Pj4+IHlvdSBtZWFuIGxldCBEb3VnIHRvIGtlZXAgdGhlIGRlZmF1bHQgYm9vdCBmcm9t
+IG5ldD8KPj4+PiAKPj4+Pj4gCUkgZGlkIHNlbmQgcGF0Y2ggZm9yIHRoaXMgaW4gdGhlIHBhc3Qg
+YnV0IHRoZXkgZGlkIG5vdCBoaXQgdGhlIG1haW5saW5lCj4+Pj4gCj4+Pj4gQ2FuIHlvdSBwb2lu
+dCB1cyB0aGlzPyBUaGFua3MuCj4+PiAKPj4+IEhlIG1lYW50IHRoaXMgcGF0Y2g6Cj4+PiAKPj4+
+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMTItU2VwdGVt
+YmVyL3RocmVhZC5odG1sIzkzMDQKPj4+IAo+Pj4gUmVhZGluZyB0aGlzIGRpc2N1c3Npb24gYWdh
+aW4gSSBzdGlsbCBoYXZlIG1vc3RseSB0aGUgc2FtZSBvcGluaW9uOgo+Pj4gYW4gL2Vudi9ib290
+Lyogc2NyaXB0IHNob3VsZCBiZSBzaW1wbGUsIGl0IHNob3VsZCBiZSBhZGp1c3RhYmxlLgo+Pj4g
+Cj4+PiBXZSBzaG91bGQgcmVzb2x2ZSB0aGlzIG5vdy4KPj4+IAo+Pj4gU28gSmVhbi1DaHJpc3Rv
+cGhlLCBXaGF0IHlvdSB3YW50IGlzIHRvIGJvb3QgeW91ciBib2FyZCB3aXRoCj4+PiBpbmZvcm1h
+dGlvbnMgcHJvdmlkZWQgYnkgdGhlIGRoY3Agc2VydmVyLiBMb29raW5nIGFnYWluIGF0IHlvdXIg
+cGF0Y2gKPj4+IGJhY2sgdGhlbiB0aGUgZm9sbG93aW5nIHNob3VsZCBkbyBpdDoKPj4+IAo+Pj4g
+L2Vudi9ib290L2Jvb3RwOgo+Pj4gCj4+PiB8ICMhL2Jpbi9zaAo+Pj4gfCAKPj4+IHwgcGF0aD0i
+L21udC90ZnRwIgo+Pj4gfCAKPj4+IHwgaWZ1cCBldGgwCj4+PiB8IAo+Pj4gfCAjIFNldCB2YXJp
+YWJsZXMgYmFzZWQgb24gaW5mb3JtYXRpb24gcHJvdmlkZWQgYnkgdGhlIGRoY3AgcmVxdWVzdAo+
+Pj4gfCBuZnNyb290PSIke2dsb2JhbC5kaGNwLnJvb3RwYXRofSIKPj4+IHwgZ2xvYmFsLmJvb3Rt
+LmltYWdlPSIke3BhdGh9LyR7Z2xvYmFsLmRoY3AuYm9vdGZpbGV9Igo+Pj4gfCBnbG9iYWwuYm9v
+dG0ub2Z0cmVlPSIke3BhdGh9LyR7Z2xvYmFsLmRoY3Aub2Z0cmVlX2ZpbGV94oCdCj4+IAo+PiB0
+aGlzIGlzIG5vdCBwb3NzaWJsZSB1bmZvcnR1bmF0ZWx5Cj4+IAo+PiBBcyBpZiB5b3UgdXNlIHN5
+bWxpbmsgdGhlIG5mcyB3aWxsIG5vdCB3b3JrCj4+IGl0IHdhcyB3b3JrIG9uIGRlZmF1bHRlbnYg
+YXMgaXTigJlzIHVzZSB0aGUgbmZzIGNvbW1hbmRlIGFuZCBub3QgRlMKPj4gVGhlIG5mcyBjb21t
+YW5kIGhhbmRsZSBzeW1saW5rOwo+IAo+IExldCBtZSByZWNhcDogT24gdGhlIGhvc3QgeW91IGhh
+dmUgc29tZSBkaXJlY3RvcnkgZXhwb3J0ZWQgYXMgTkZTLiBJdAo+IGNvbnRhaW5zIGEgbGluayB0
+byBzb21lIG90aGVyIHBvc2l0aW9uOgo+IAo+IC9leHBvcnQvc29tZWxpbmsgLT4gL3NvbWUvb3Ro
+ZXIvZmlsZQo+IAo+IE5vdyBpZiBJIG1vdW50IC9leHBvcnQgb24gYmFyZWJveCAnc29tZWxpbmsn
+IHBvaW50cyB0byAvc29tZS9vdGhlci9maWxlLAo+IGEgcGF0aCB0aGF0IGRvZXNuJ3QgZXhpc3Qg
+aW4gYmFyZWJveCwgc29tZSB0aGUgZmlsZSBjYW5ub3QgYmUgcmVhZC4gVGhlCj4gTkZTIGNvbW1h
+bmQgaW1wbGVtZW50YXRpb24gbm93IG1vdW50cyAnL3NvbWUvb3RoZXInIGZyb20gdGhlIE5GUyBz
+ZXJ2ZXIKPiBhbmQgcmVhZHMgJ2ZpbGUnIGZyb20gdGhhdCBsb2NhdGlvbi4KPiAKPiBUaGlzIGlz
+IHJlYWxseSBhIG1pc2ZlYXR1cmUgaXMgc29tZXRoaW5nIHRoYXQgd2Ugc2hvdWxkbid0IHN1cHBv
+cnQgYXQKPiBhbGwuCj4gCj4gQ2FuJ3QgeW91IGp1c3QgbWFrZSB5b3VyIGxpbmsgYSByZWxhdGl2
+ZSBvbmUgaW5zaWRlIHRoZSBleHBvcnRlZAo+IGRpcmVjdG9yeT8gVGhhdCB3b3JrcyBqdXN0IGZp
+bmUgYW5kIGFzIGV4cGVjdGVkLgoKdW5mb3J0dW5hdGVseSBubyBjYW7igJl0IGRvIHNvIHdoeSBu
+b3QganVzdCBhZGQgbXkgb2xkIHBhdGNoIHRoYXQgd29yayBpbiBhbGwgY2FzZQoKQmVzdCBSZWdh
+cmRzLApKLgo+IAo+IFNhc2NoYQo+IAo+IAo+IC0tIAo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gSW5k
+dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
+dXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1h
+bnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
