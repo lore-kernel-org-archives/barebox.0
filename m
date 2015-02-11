@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLRpM-0003n6-8m
- for barebox@lists.infradead.org; Wed, 11 Feb 2015 07:35:16 +0000
-Date: Wed, 11 Feb 2015 08:34:48 +0100
+ Linux)) id 1YLRtU-0005Gf-Oq
+ for barebox@lists.infradead.org; Wed, 11 Feb 2015 07:39:33 +0000
+Date: Wed, 11 Feb 2015 08:39:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150211073448.GE12209@pengutronix.de>
-References: <1423577192-16568-1-git-send-email-yamada.m@jp.panasonic.com>
+Message-ID: <20150211073910.GF12209@pengutronix.de>
+References: <1423577638-27907-1-git-send-email-w.egorov@phytec.de>
+ <1423577638-27907-2-git-send-email-w.egorov@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1423577192-16568-1-git-send-email-yamada.m@jp.panasonic.com>
+In-Reply-To: <1423577638-27907-2-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,17 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv: ignore barebox_zero_env
-To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Subject: Re: [PATCH v3: For next 2/2] ARM: am33xx: Add support for reset
+ reason detection
+To: Wadim Egorov <w.egorov@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 10, 2015 at 11:06:32PM +0900, Masahiro Yamada wrote:
-> Since commit c4c2317fe8a2 (defaultenv: generate force-built-in
-> (zero) environment file), we have this generated file.
+On Tue, Feb 10, 2015 at 03:13:58PM +0100, Wadim Egorov wrote:
+> Also activate in defconfig.
 > 
-> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
+> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> +		break;
+> +	case (1 << 1):
+> +		reset_source_set(RESET_RST);
+> +		break;
+> +	case (1 << 0):
+> +		reset_source_set(RESET_POR);
+> +		break;
+> +	default:
+> +		reset_source_set(RESET_UKWN);
+> +		break;
+> +	}
+> +
+> +	return 0;
+> +}
+> +device_initcall(am33xx_detect_reset_reason);
 
-Applied, thanks
+No SoC specific initcall without testing if you're running on the
+correct SoC please. Better call it from am33xx_init() which is only
+executed on am33xx.
 
 Sascha
 
