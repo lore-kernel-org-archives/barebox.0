@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eusmtp01.atmel.com ([212.144.249.242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLRfR-0008BZ-9X
- for barebox@lists.infradead.org; Wed, 11 Feb 2015 07:25:02 +0000
-Message-ID: <54DB0364.8020505@atmel.com>
-Date: Wed, 11 Feb 2015 15:23:16 +0800
+ id 1YLRiH-00017W-Ah
+ for barebox@lists.infradead.org; Wed, 11 Feb 2015 07:27:57 +0000
+Message-ID: <54DB0436.3010004@atmel.com>
+Date: Wed, 11 Feb 2015 15:26:46 +0800
 From: Bo Shen <voice.shen@atmel.com>
 MIME-Version: 1.0
-References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>	<54DAB0AA.7090402@atmel.com>
- <CA+nEJinrt4TiRhESHZOepq-qyTq+Tj+wuMJfSv0Lxfjv2erEvA@mail.gmail.com>
-In-Reply-To: <CA+nEJinrt4TiRhESHZOepq-qyTq+Tj+wuMJfSv0Lxfjv2erEvA@mail.gmail.com>
+References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
+ <1423578481-25230-2-git-send-email-dbrainard@brainardinsight.com>
+ <54DABFB8.7030107@atmel.com>
+ <CA+nEJi=tcGXZs14eFYkuaDphZ5cGmAPWCV+G8r4tYpYLUU9gwQ@mail.gmail.com>
+ <DEFE6320-5432-4AEE-A43B-DBA6B56D4007@jcrosoft.com>
+In-Reply-To: <DEFE6320-5432-4AEE-A43B-DBA6B56D4007@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +21,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] SAMA5D4EK - Now mostly supports booting Android from
- NAND.
-To: Doug Brainard <dbrainard@brainardinsight.com>
+Subject: Re: [PATCH 2/2] Switched SAMA5D4EK development board to the newer
+ environment method.
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, Doug Brainard <dbrainard@brainardinsight.com>
 Cc: barebox@lists.infradead.org
 
-Hi Doug,
-
-On 02/11/2015 12:02 PM, Doug Brainard wrote:
-> Sorry, this was more me not understanding "git send-email" the first
-
-It's OK, won't worry.
-
-> time and how to keep it only sending the latest commit.
-
-We normally do it in steps
-1. format patch
-    $ git format-patch -s -n (n is the number of patch you plan to send, 
-from top to bottom.)
-2. check the patch
-    $ ./scripts/checkpatch.pl <your patches>
-3. send the patch
-    $ git send-email --to=.. --cc=.. <patch files>
-
-More details, please reference the documentation in kernel: 
-https://www.kernel.org/doc/Documentation/SubmittingPatches
-
-> Doug
-
-Best Regards,
-Bo Shen
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgSiwKCk9uIDAyLzExLzIwMTUgMDE6MDYgUE0sIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1W
+SUxMQVJEIHdyb3RlOgo+IEhpLAo+Cj4gCWFzIHN0YXRlIGJlZm9yZSBJIHVzZSB0aGUgYXRtZWwg
+Ym9hcmQgZm9yIGJvb3RwIGV2ZXJ5ZGF5IGFzIHRoZSBkZWZhdWx0ZW52LTIgZG9lcyBub3Qgc3Vw
+cG9ydAo+IAl0aGlzIE5hY2sgdW50aWwgaXTigJlzIGZpeGVkCgpEbyB5b3UgbWVhbiB0aGUgZGVm
+YXVsdGVudi0yIGRvZXNuJ3Qgc3VwcG9ydCB0aGUgYm9vdHAgZmVhdHVyZSBvciBkbyB5b3UgCm1l
+YW4gbGV0IERvdWcgdG8ga2VlcCB0aGUgZGVmYXVsdCBib290IGZyb20gbmV0PwoKPiAJSSBkaWQg
+c2VuZCBwYXRjaCBmb3IgdGhpcyBpbiB0aGUgcGFzdCBidXQgdGhleSBkaWQgbm90IGhpdCB0aGUg
+bWFpbmxpbmUKCkNhbiB5b3UgcG9pbnQgdXMgdGhpcz8gVGhhbmtzLgoKPiBCZXN0IFJlZ2FyZHMs
+Cj4gSi4KCkJlc3QgUmVnYXJkcywKQm8gU2hlbgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
