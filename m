@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLStW-0002Cf-F6
- for barebox@lists.infradead.org; Wed, 11 Feb 2015 08:43:39 +0000
-Date: Wed, 11 Feb 2015 09:43:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150211084315.GJ12209@pengutronix.de>
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YLT4C-00035a-2U
+ for barebox@lists.infradead.org; Wed, 11 Feb 2015 08:54:41 +0000
+Received: from mail606.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 58281FF97AC
+ for <barebox@lists.infradead.org>; Wed, 11 Feb 2015 09:54:17 +0100 (CET)
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <20150211083524.GH12209@pengutronix.de>
+Date: Wed, 11 Feb 2015 16:54:09 +0800
+Message-Id: <00D97CEE-D0F1-444E-97F4-F670D9E65907@jcrosoft.com>
 References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
  <1423578481-25230-2-git-send-email-dbrainard@brainardinsight.com>
  <54DABFB8.7030107@atmel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <54DABFB8.7030107@atmel.com>
+ <CA+nEJi=tcGXZs14eFYkuaDphZ5cGmAPWCV+G8r4tYpYLUU9gwQ@mail.gmail.com>
+ <DEFE6320-5432-4AEE-A43B-DBA6B56D4007@jcrosoft.com>
+ <54DB0436.3010004@atmel.com> <20150211083524.GH12209@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +25,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] Switched SAMA5D4EK development board to the newer
  environment method.
-To: Bo Shen <voice.shen@atmel.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 11, 2015 at 10:34:32AM +0800, Bo Shen wrote:
-> >diff --git a/arch/arm/boards/sama5d4ek/env/nv/bootargs.base b/arch/arm/boards/sama5d4ek/env/nv/bootargs.base
-> >new file mode 100644
-> >index 0000000..476b1fb
-> >--- /dev/null
-> >+++ b/arch/arm/boards/sama5d4ek/env/nv/bootargs.base
-> >@@ -0,0 +1 @@
-> >+console=ttyS0,115200
-> 
-> Till now, I don't know the difference between "bootargs.base" (here
-> maybe linux.bootargs.base (?)) and "linux.bootargs.console"
-
-bootargs.base is unused, this file should be removed.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Cj4gT24gRmViIDExLCAyMDE1LCBhdCA0OjM1IFBNLCBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
+Z3V0cm9uaXguZGU+IHdyb3RlOgo+IAo+IE9uIFdlZCwgRmViIDExLCAyMDE1IGF0IDAzOjI2OjQ2
+UE0gKzA4MDAsIEJvIFNoZW4gd3JvdGU6Cj4+IEhpIEosCj4+IAo+PiBPbiAwMi8xMS8yMDE1IDAx
+OjA2IFBNLCBKZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPj4+IEhpLAo+
+Pj4gCj4+PiAJYXMgc3RhdGUgYmVmb3JlIEkgdXNlIHRoZSBhdG1lbCBib2FyZCBmb3IgYm9vdHAg
+ZXZlcnlkYXkgYXMgdGhlIGRlZmF1bHRlbnYtMiBkb2VzIG5vdCBzdXBwb3J0Cj4+PiAJdGhpcyBO
+YWNrIHVudGlsIGl04oCZcyBmaXhlZAo+PiAKPj4gRG8geW91IG1lYW4gdGhlIGRlZmF1bHRlbnYt
+MiBkb2Vzbid0IHN1cHBvcnQgdGhlIGJvb3RwIGZlYXR1cmUgb3IgZG8KPj4geW91IG1lYW4gbGV0
+IERvdWcgdG8ga2VlcCB0aGUgZGVmYXVsdCBib290IGZyb20gbmV0Pwo+PiAKPj4+IAlJIGRpZCBz
+ZW5kIHBhdGNoIGZvciB0aGlzIGluIHRoZSBwYXN0IGJ1dCB0aGV5IGRpZCBub3QgaGl0IHRoZSBt
+YWlubGluZQo+PiAKPj4gQ2FuIHlvdSBwb2ludCB1cyB0aGlzPyBUaGFua3MuCj4gCj4gSGUgbWVh
+bnQgdGhpcyBwYXRjaDoKPiAKPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1haWwv
+YmFyZWJveC8yMDEyLVNlcHRlbWJlci90aHJlYWQuaHRtbCM5MzA0Cj4gCj4gUmVhZGluZyB0aGlz
+IGRpc2N1c3Npb24gYWdhaW4gSSBzdGlsbCBoYXZlIG1vc3RseSB0aGUgc2FtZSBvcGluaW9uOgo+
+IGFuIC9lbnYvYm9vdC8qIHNjcmlwdCBzaG91bGQgYmUgc2ltcGxlLCBpdCBzaG91bGQgYmUgYWRq
+dXN0YWJsZS4KPiAKPiBXZSBzaG91bGQgcmVzb2x2ZSB0aGlzIG5vdy4KPiAKPiBTbyBKZWFuLUNo
+cmlzdG9waGUsIFdoYXQgeW91IHdhbnQgaXMgdG8gYm9vdCB5b3VyIGJvYXJkIHdpdGgKPiBpbmZv
+cm1hdGlvbnMgcHJvdmlkZWQgYnkgdGhlIGRoY3Agc2VydmVyLiBMb29raW5nIGFnYWluIGF0IHlv
+dXIgcGF0Y2gKPiBiYWNrIHRoZW4gdGhlIGZvbGxvd2luZyBzaG91bGQgZG8gaXQ6Cj4gCj4gL2Vu
+di9ib290L2Jvb3RwOgo+IAo+IHwgIyEvYmluL3NoCj4gfCAKPiB8IHBhdGg9Ii9tbnQvdGZ0cCIK
+PiB8IAo+IHwgaWZ1cCBldGgwCj4gfCAKPiB8ICMgU2V0IHZhcmlhYmxlcyBiYXNlZCBvbiBpbmZv
+cm1hdGlvbiBwcm92aWRlZCBieSB0aGUgZGhjcCByZXF1ZXN0Cj4gfCBuZnNyb290PSIke2dsb2Jh
+bC5kaGNwLnJvb3RwYXRofSIKPiB8IGdsb2JhbC5ib290bS5pbWFnZT0iJHtwYXRofS8ke2dsb2Jh
+bC5kaGNwLmJvb3RmaWxlfSIKPiB8IGdsb2JhbC5ib290bS5vZnRyZWU9IiR7cGF0aH0vJHtnbG9i
+YWwuZGhjcC5vZnRyZWVfZmlsZX3igJ0KCnRoaXMgaXMgbm90IHBvc3NpYmxlIHVuZm9ydHVuYXRl
+bHkKCkFzIGlmIHlvdSB1c2Ugc3ltbGluayB0aGUgbmZzIHdpbGwgbm90IHdvcmsKaXQgd2FzIHdv
+cmsgb24gZGVmYXVsdGVudiBhcyBpdOKAmXMgdXNlIHRoZSBuZnMgY29tbWFuZGUgYW5kIG5vdCBG
+UwpUaGUgbmZzIGNvbW1hbmQgaGFuZGxlIHN5bWxpbms7dwoKdGhhdCB3aHkgaW4gbXkgcGF0Y2gg
+SSBoYWQgdG8gbW91bnQgdGhlIGZzIGZpcnN0IHRoZW4gcmVtb3VudCBpdCBpZiBpdOKAmXMgYSBz
+eW1saW5rCgpzbyB0b2RheSB0aGUgZGVmYXVsdGVudi0yIGJyZWFrIHRoZSBib290cCBzdXBwb3J0
+CgoKPiB8IAo+IHwgYm9vdGFyZ3MtaXAKPiB8IGdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9v
+dD0icm9vdD0vZGV2L25mcyBuZnNyb290PSRuZnNyb290LHYzLHRjcCIKPiAKPiBTaW5jZSB5b3Ug
+cmVqZWN0IGNoYW5nZXMgdG8gdGhlIGRlZmF1bHQgYm9vdCBzb3VyY2UgZm9yIHRoaXMgYm9hcmQg
+eW91cgo+IG90aGVyIGlzc3VlIHNlZW1zIHRvIGJlIHRoYXQgeW91IHdhbnQgeW91ciBib2FyZCB0
+byBleGVjdXRlIHRoaXMgYm9vdHNjcmlwdAo+IHdpdGhvdXQgZnVydGhlciBhZGp1c3RpbmcgdGhl
+IGVudmlyb25tZW50LiBUaGlzIGlzIHNvbWV0aGluZyB3ZSBjYW5ub3QgZG8uCj4gVGhlIGRlZmF1
+bHQgYm9vdHNvdXJjZSBjYW4gb25seSBldmVyIGZpdCB5b3VyIHBlcnNvbmFsIG9yIHNvbWVvbmUg
+ZWxzZXMKPiB1c2UuIFdlIGNhbm5vdCBtYWtlIGV2ZXJ5b25lIGhhcHB5IHdpdGggdGhlIGRlZmF1
+bHQgYm9vdCBzb3VyY2UsIHNvIEkKPiBzdWdnZXN0IHlvdSBlaXRoZXIgY29udHJvbCB5b3VyIGJv
+YXJkIHZpYSBzb21lIGV4cGVjdCBzY3JpcHQgKHdoaWNoCj4gc3Vja3MsIEkga25vdykgb3IgeW91
+IGp1c3Qgc2F2ZSB5b3VyIGFkanVzdGVkIGVudmlyb25tZW50IG9uIHlvdXIgdGVzdAo+IGJvYXJk
+LgoKV2hlbiB0aGUgZGVmYXVsdGVudi0yIHdpbGwgc3VwcG9ydCBib290cCBJ4oCZbGwgYmUgdGhl
+IGZpcnN0IHRvIGdldCByaWQgb2YgdGhlIG9sZCBkZWZhdWx0ZW52CmJ1dCB0b2RheSBJIGhhdmUg
+YXV0b21hdGljIHRlc3Qgc3lzdGVtIHRoYXQgZGVwZW5kcyBvbiBpdCB0byB0ZXN0IGxpbnV4IG9u
+IGF0OTEgYW5kIG90aGVycwoKQmVzdCBSZWdhcmRzLApKLgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
