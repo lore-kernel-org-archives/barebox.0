@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLRx9-0006kO-9D
- for barebox@lists.infradead.org; Wed, 11 Feb 2015 07:43:20 +0000
-Date: Wed, 11 Feb 2015 08:42:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150211074255.GG12209@pengutronix.de>
-References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
- <8AB825FC-0258-468F-AB17-99EA2253BD7D@jcrosoft.com>
+Received: from eusmtp01.atmel.com ([212.144.249.242])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YLS5s-0001bb-AS
+ for barebox@lists.infradead.org; Wed, 11 Feb 2015 07:52:20 +0000
+Message-ID: <54DB09EA.8010805@atmel.com>
+Date: Wed, 11 Feb 2015 15:51:06 +0800
+From: Bo Shen <voice.shen@atmel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8AB825FC-0258-468F-AB17-99EA2253BD7D@jcrosoft.com>
+References: <1423555441-13769-1-git-send-email-voice.shen@atmel.com>
+ <20150210093634.GY12209@pengutronix.de>
+In-Reply-To: <20150210093634.GY12209@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] SAMA5D4EK - Now mostly supports booting Android from
- NAND.
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] ARM: atmel: sama5d4 xplained: correc env path
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 11, 2015 at 01:04:54PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Nack
-> 
-> I use those board everyday on nfs boot
-> 
-> the boot choice is user specific
+Hi Sascha,
+   I found there is a typo error in subject. "s/correc/correct"
+   Can you help fix it?
+   Thanks.
 
-This file is removed anyway in the next patch, so this patch shouldn't
-exist at all.
+On 02/10/2015 05:36 PM, Sascha Hauer wrote:
+> On Tue, Feb 10, 2015 at 04:04:01PM +0800, Bo Shen wrote:
+>> Correct the environment path for sama5d4 xplained board.
+>>
+>> Signed-off-by: Bo Shen <voice.shen@atmel.com>
+>> ---
+>>
+>>   arch/arm/configs/sama5d4_xplained_defconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> Applied, thanks
+>
+> Sascha
+>
+>
 
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+Bo Shen
 
 _______________________________________________
 barebox mailing list
