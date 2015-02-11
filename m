@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLSq0-00077g-2z
- for barebox@lists.infradead.org; Wed, 11 Feb 2015 08:40:00 +0000
-Date: Wed, 11 Feb 2015 09:39:35 +0100
+ Linux)) id 1YLStW-0002Cf-F6
+ for barebox@lists.infradead.org; Wed, 11 Feb 2015 08:43:39 +0000
+Date: Wed, 11 Feb 2015 09:43:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150211083935.GI12209@pengutronix.de>
-References: <1423555441-13769-1-git-send-email-voice.shen@atmel.com>
- <20150210093634.GY12209@pengutronix.de>
- <54DB09EA.8010805@atmel.com>
+Message-ID: <20150211084315.GJ12209@pengutronix.de>
+References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
+ <1423578481-25230-2-git-send-email-dbrainard@brainardinsight.com>
+ <54DABFB8.7030107@atmel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <54DB09EA.8010805@atmel.com>
+In-Reply-To: <54DABFB8.7030107@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,20 +24,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: atmel: sama5d4 xplained: correc env path
+Subject: Re: [PATCH 2/2] Switched SAMA5D4EK development board to the newer
+ environment method.
 To: Bo Shen <voice.shen@atmel.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 11, 2015 at 03:51:06PM +0800, Bo Shen wrote:
-> Hi Sascha,
->   I found there is a typo error in subject. "s/correc/correct"
->   Can you help fix it?
->   Thanks.
+On Wed, Feb 11, 2015 at 10:34:32AM +0800, Bo Shen wrote:
+> >diff --git a/arch/arm/boards/sama5d4ek/env/nv/bootargs.base b/arch/arm/boards/sama5d4ek/env/nv/bootargs.base
+> >new file mode 100644
+> >index 0000000..476b1fb
+> >--- /dev/null
+> >+++ b/arch/arm/boards/sama5d4ek/env/nv/bootargs.base
+> >@@ -0,0 +1 @@
+> >+console=ttyS0,115200
+> 
+> Till now, I don't know the difference between "bootargs.base" (here
+> maybe linux.bootargs.base (?)) and "linux.bootargs.console"
 
-Sorry, too late. It's already in master.
+bootargs.base is unused, this file should be removed.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
