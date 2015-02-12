@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
- (helo=metis.ext.pengutronix.de)
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLoZc-0006xo-1F
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 07:52:33 +0000
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Date: Thu, 12 Feb 2015 08:52:02 +0100
-Message-Id: <1423727522-23239-2-git-send-email-u.oelmann@pengutronix.de>
-In-Reply-To: <1423727522-23239-1-git-send-email-u.oelmann@pengutronix.de>
-References: <1423727522-23239-1-git-send-email-u.oelmann@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YLpAj-0002c5-DJ
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 08:30:54 +0000
+Date: Thu, 12 Feb 2015 09:30:29 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150212083029.GP12209@pengutronix.de>
+References: <1423577638-27907-1-git-send-email-w.egorov@phytec.de>
+ <1423577638-27907-2-git-send-email-w.egorov@phytec.de>
+ <20150211073910.GF12209@pengutronix.de>
+ <54DB279E.7070806@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <54DB279E.7070806@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +21,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] docs: fix typos
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3: For next 2/2] ARM: am33xx: Add support for reset
+ reason detection
+To: Wadim Egorov <w.egorov@phytec.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
-LS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9teHMucnN0IHwgMTAgKysrKystLS0tLQogMSBmaWxl
-IGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9E
-b2N1bWVudGF0aW9uL2JvYXJkcy9teHMucnN0IGIvRG9jdW1lbnRhdGlvbi9ib2FyZHMvbXhzLnJz
-dAppbmRleCBkNjQwNmU1Li5hZDEwYjg3IDEwMDY0NAotLS0gYS9Eb2N1bWVudGF0aW9uL2JvYXJk
-cy9teHMucnN0CisrKyBiL0RvY3VtZW50YXRpb24vYm9hcmRzL214cy5yc3QKQEAgLTMsNyArMyw3
-IEBAIEZyZWVzY2FsZSBpLk1YcwogCiBGcmVlc2NhbGUgaS5NWHMgb3IgTVhTIGFyZSBhIFNvQyBm
-YW1pbHkgd2hpY2ggY29uc2lzdHMgb2YgdGhlIGkuTVgyMwogYW5kIHRoZSBpLk1YMjguIFRoZXNl
-IGFyZSBxdWl0ZSBkaWZmZXJlbnQgZnJvbSB0aGUgcmVndWxhciBpLk1YIFNvQ3MKLWFuZCB0aHVz
-IGFyZSByZXByZXNlbnRlZCBieSBpdHMgb3duIGFyY2hpdGVjdHVyZSBpbiBib3RoIHRoZSBLZXJu
-ZWwKK2FuZCB0aHVzIGFyZSByZXByZXNlbnRlZCBieSB0aGVpciBvd24gYXJjaGl0ZWN0dXJlIGlu
-IGJvdGggdGhlIEtlcm5lbAogYW5kIGJhcmVib3guCiAKIEJvb3RsZXRzCkBAIC0xMDcsMTAgKzEw
-NywxMCBAQCB0aGUgcGFydGl0aW9uOjoKIFRoZSBNWFMgU29DcyByZXF1aXJlIGEgc3BlY2lhbCBw
-YXJ0aXRpb24gb2YgdHlwZSAweDUzIChPblRyYWNrIERNNiBBdXgpCiB3aGljaCBjb250YWlucyB0
-aGUgQkNCIGhlYWRlci4gRm9yIHNvbWUgdW5rbm93biByZWFzb24gdGhlIEJDQiBoZWFkZXIgaXMK
-IGluc2lkZSBhIHBhcnRpdGlvbiwgYnV0IGNvbnRhaW5zIHRoZSBzZWN0b3IgbnVtYmVyIG9mIHRo
-ZSByYXcgZGV2aWNlIGZyb20KLXdoaWNoIHRoZSByZXN0IG9mIHRoZSBpbWFnZSBpcyByZWFkIGZy
-b20uIFdpdGggc3RhbmRhcmQgc2V0dGluZ3MgYm9vdGluZwotZnJvbSBTRCBjYXJkIG9ubHkgd29y
-a3MgaWYgdGhlIHBhcnRpdGlvbiBjb250YWluaW5nIHRoZSBib290bG9hZGVyIHN0YXJ0cwotYXQg
-c2VjdG9yIDIwNDggKHRoZSBzdGFuZGFyZCBmb3IgZmRpc2spLiBTZWUgdGhlIC1wIHBhcmFtZXRl
-ciB0byB0aGUKLW14c2Jvb3QgdG9vbCB3aGljaCBjaGFuZ2VzIHRoaXMgc2VjdG9yIG51bWJlciBp
-biB0aGUgaW1hZ2UuCit3aGljaCB0aGUgcmVzdCBvZiB0aGUgaW1hZ2UgaXMgcmVhZC4gV2l0aCBz
-dGFuZGFyZCBzZXR0aW5ncyBib290aW5nIGZyb20KK1NEIGNhcmQgb25seSB3b3JrcyBpZiB0aGUg
-cGFydGl0aW9uIGNvbnRhaW5pbmcgdGhlIGJvb3Rsb2FkZXIgc3RhcnRzIGF0CitzZWN0b3IgMjA0
-OCAodGhlIHN0YW5kYXJkIGZvciBmZGlzaykuIFNlZSB0aGUgLXAgcGFyYW1ldGVyIHRvIHRoZSBt
-eHNib290Cit0b29sIHdoaWNoIGNoYW5nZXMgdGhpcyBzZWN0b3IgbnVtYmVyIGluIHRoZSBpbWFn
-ZS4KIAogQm9vdGluZyBzZWNvbmQgc3RhZ2UKIC0tLS0tLS0tLS0tLS0tLS0tLS0tCi0tIAoyLjEu
-NAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Wed, Feb 11, 2015 at 10:57:50AM +0100, Wadim Egorov wrote:
+> 
+> On 11.02.2015 08:39, Sascha Hauer wrote:
+> >On Tue, Feb 10, 2015 at 03:13:58PM +0100, Wadim Egorov wrote:
+> >>Also activate in defconfig.
+> >>
+> >>Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> >>+		break;
+> >>+	case (1 << 1):
+> >>+		reset_source_set(RESET_RST);
+> >>+		break;
+> >>+	case (1 << 0):
+> >>+		reset_source_set(RESET_POR);
+> >>+		break;
+> >>+	default:
+> >>+		reset_source_set(RESET_UKWN);
+> >>+		break;
+> >>+	}
+> >>+
+> >>+	return 0;
+> >>+}
+> >>+device_initcall(am33xx_detect_reset_reason);
+> >No SoC specific initcall without testing if you're running on the
+> >correct SoC please. Better call it from am33xx_init() which is only
+> >executed on am33xx.
+> >
+> >Sascha
+> Calling it from am33xx_init() was also my idea in the first place.
+> AFAIK you have to call reset_source_set() after coredevice_initcall().
+> So it is not possible to call it from am33xx_init().
+
+Could you try this patch? It shoud resolve this issue.
+
+Sascha
+
+------------------------8<---------------------------------
+
+From a6efde9c06046111cfe2ad92bb38430674a893b7 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 12 Feb 2015 09:27:35 +0100
+Subject: [PATCH] reset_source: make safe to call earlier
+
+reset_source_init used to set the reset source to unknown in a
+coredevice_initcall. This means if reset_source_set() has been called
+earlier the value would have been overwritten. Fix this by calling
+globalvar_add_simple() each time reset_source_set() is called.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/reset_source.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/common/reset_source.c b/common/reset_source.c
+index 946670b..0147b5c 100644
+--- a/common/reset_source.c
++++ b/common/reset_source.c
+@@ -40,14 +40,14 @@ void reset_source_set(enum reset_src_type st)
+ {
+ 	reset_source = st;
+ 
+-	setenv("global.system.reset", reset_src_names[st]);
++	globalvar_add_simple("system.reset", reset_src_names[reset_source]);
+ }
+ EXPORT_SYMBOL(reset_source_set);
+ 
+ /* ensure this runs after the 'global' device is already registerd */
+ static int reset_source_init(void)
+ {
+-	globalvar_add_simple("system.reset", reset_src_names[RESET_UKWN]);
++	reset_source_set(reset_source);
+ 
+ 	return 0;
+ }
+-- 
+2.1.4
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
