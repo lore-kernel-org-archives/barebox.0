@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1W9-0008JR-Qe
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:52 +0000
+ id 1YM1WB-0008Jz-IT
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:55 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 75F3226C200A
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:10 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id A6C8F26C2011
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:13 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:45 +0100
-Message-Id: <1423777200-22965-10-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:52 +0100
+Message-Id: <1423777200-22965-17-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,78 +24,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 09/24] MCI: tegra-sdmmc: convert to streaming DMA ops
+Subject: [PATCH RFT 16/24] net: macb: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/tegra-sdmmc.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/net/macb.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
-index 0e23d6f..670c280 100644
---- a/drivers/mci/tegra-sdmmc.c
-+++ b/drivers/mci/tegra-sdmmc.c
-@@ -17,10 +17,10 @@
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index b941c27..957e4a7 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -47,7 +47,6 @@
+ #include <platform_data/macb.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
 -#include <asm/mmu.h>
- #include <common.h>
- #include <clock.h>
- #include <driver.h>
-+#include <dma.h>
- #include <gpio.h>
- #include <init.h>
- #include <io.h>
-@@ -100,6 +100,7 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 				struct mci_data *data)
- {
- 	struct tegra_sdmmc_host *host = to_tegra_sdmmc_host(mci);
-+	unsigned int num_bytes = 0;
- 	u32 val = 0;
- 	int ret;
+ #include <linux/phy.h>
  
-@@ -109,15 +110,15 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ #include "macb.h"
+@@ -122,7 +121,7 @@ static int macb_send(struct eth_device *edev, void *packet,
+ 	macb->tx_ring[tx_head].ctrl = ctrl;
+ 	macb->tx_ring[tx_head].addr = (ulong)packet;
+ 	barrier();
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
  
- 	/* Set up for a data transfer if we have one */
- 	if (data) {
-+		num_bytes = data->blocks * data->blocksize;
-+
- 		if (data->flags & MMC_DATA_WRITE) {
--			dma_flush_range((unsigned long)data->src,
--			                (unsigned long)(data->src +
--			                data->blocks * 512));
-+			dma_sync_single_for_device((unsigned long)data->src,
-+						   num_bytes, DMA_TO_DEVICE);
- 			writel((u32)data->src, host->regs + SDHCI_DMA_ADDRESS);
- 		} else {
--			dma_clean_range((unsigned long)data->src,
--			                (unsigned long)(data->src +
--			                data->blocks * 512));
-+			dma_sync_single_for_device((unsigned long)data->dest,
-+						   num_bytes, DMA_FROM_DEVICE);
- 			writel((u32)data->dest, host->regs + SDHCI_DMA_ADDRESS);
+ 	start = get_time_ns();
+@@ -135,6 +134,7 @@ static int macb_send(struct eth_device *edev, void *packet,
+ 			break;
  		}
+ 	} while (!is_timeout(start, 100 * MSECOND));
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
  
-@@ -255,11 +256,12 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 		}
- 		writel(val, host->regs + SDHCI_INT_STATUS);
+ 	if (ctrl & MACB_BIT(TX_UNDERRUN))
+ 		dev_err(macb->dev, "TX underrun\n");
+@@ -188,7 +188,11 @@ static int gem_recv(struct eth_device *edev)
+ 		status = macb->rx_ring[macb->rx_tail].ctrl;
+ 		length = MACB_BFEXT(RX_FRMLEN, status);
+ 		buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
++		dma_sync_single_for_cpu((unsigned long)buffer, length,
++					DMA_FROM_DEVICE);
+ 		net_receive(edev, buffer, length);
++		dma_sync_single_for_device((unsigned long)buffer, length,
++					   DMA_FROM_DEVICE);
+ 		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
+ 		barrier();
  
--		if (data->flags & MMC_DATA_READ) {
--			dma_inv_range((unsigned long)data->dest,
--			              (unsigned long)(data->dest +
--			              data->blocks * 512));
--		}
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_cpu((unsigned long)data->src,
-+						num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_cpu((unsigned long)data->dest,
-+						num_bytes, DMA_FROM_DEVICE);
- 	}
- 
- 	return 0;
 -- 
 2.1.0
 
