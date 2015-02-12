@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.mei.co.jp ([133.183.100.20])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLj9Z-00026M-LT
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 02:05:18 +0000
-Received: from mail-gw.jp.panasonic.com ([157.8.1.157])
- by smtp.mei.co.jp (8.12.11.20060614/3.7W/kc-maile13) with ESMTP id
- t1C24r8h010450
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 11:04:53 +0900 (JST)
-Received: from epochmail.jp.panasonic.com ([157.8.1.130])
- by mail.jp.panasonic.com (8.11.6p2/3.7W/kc-maili17) with ESMTP id t1C24rA05571
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 11:04:53 +0900
-From: Masahiro Yamada <yamada.m@jp.panasonic.com>
-Date: Thu, 12 Feb 2015 11:04:50 +0900
-Message-Id: <1423706690-2966-1-git-send-email-yamada.m@jp.panasonic.com>
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+ (helo=metis.ext.pengutronix.de)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YLoZc-0006xn-1V
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 07:52:33 +0000
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Date: Thu, 12 Feb 2015 08:52:01 +0100
+Message-Id: <1423727522-23239-1-git-send-email-u.oelmann@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +16,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pbl: remove start_barebox() stub
-To: barebox@lists.infradead.org
+Subject: [PATCH 1/2] docs: remove trailing whitespaces
+To: Barebox List <barebox@lists.infradead.org>
 
-PBL never calls start_barebox().  If it does, it is a bug.
-Without this stub function, we can detect such a bug at link time.
-
-Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
----
-
- pbl/misc.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/pbl/misc.c b/pbl/misc.c
-index 9065bf0..7e76120 100644
---- a/pbl/misc.c
-+++ b/pbl/misc.c
-@@ -13,9 +13,3 @@ void __noreturn panic(const char *fmt, ...)
- {
- 	while(1);
- }
--
--void __noreturn start_barebox(void)
--{
--	/* Should never be here in the pbl */
--	hang();
--}
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4K
+LS0tCiBEb2N1bWVudGF0aW9uL2JvYXJkcy9teHMucnN0IHwgMTQgKysrKysrKy0tLS0tLS0KIDEg
+ZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvRG9jdW1lbnRhdGlvbi9ib2FyZHMvbXhzLnJzdCBiL0RvY3VtZW50YXRpb24vYm9hcmRzL214
+cy5yc3QKaW5kZXggY2ZjZDRjNy4uZDY0MDZlNSAxMDA2NDQKLS0tIGEvRG9jdW1lbnRhdGlvbi9i
+b2FyZHMvbXhzLnJzdAorKysgYi9Eb2N1bWVudGF0aW9uL2JvYXJkcy9teHMucnN0CkBAIC0zNiwx
+MSArMzYsMTEgQEAgdGhlIGludGVybmFsIFBNSUMgYW5kIHRoZSBTRFJBTS4gVGhlIHNlY29uZCBp
+bWFnZSBpcyB1c3VhbGx5IHRoZQogYm9vdGxvYWRlciBpdHNlbGYuIEluIGNhc2Ugb2YgYmFyZWJv
+eCB0aGUgYm9vdHN0cmVhbSBpcyBjb21wb3NlZAogb3V0IG9mIHRoZSBzZWxmIGV4dHJhY3Rpbmcg
+YmFyZWJveCBpbWFnZSAocGJseCkgYW5kIHRoZSBwcmVwYXJlCiBzdGFnZSBmb3Igc2V0dGluZyB1
+cCB0aGUgU0RSQU0uCi0gICAgCisKIFRoZSBib290c3RyZWFtIGltYWdlIGl0c2VsZiBpcyB1c2Vm
+dWwgZm9yIFVTQiBib290LCBidXQgZm9yIGJvb3RpbmcgZnJvbQogU0QgY2FyZHMgb3IgTkFORCBh
+IEJDQiBoZWFkZXIgaGFzIHRvIGJlIHByZXBlbmRlZCB0byB0aGUgaW1hZ2UuIEluIGNhc2UKIG9m
+IFNEIGJvb3QgdGhlIGltYWdlIGhhcyB0aGUgLm14c3NkIGZpbGUgZXh0ZW5zaW9uIGluIGJhcmVi
+b3guCi0gICAgCisKIFNpbmNlIHRoZSBib290c3RyZWFtIGltYWdlcyBhcmUgZW5jcnlwdGVkIHRo
+ZXkgYXJlIG5vdCBzdWl0YWJsZSBmb3IKIDJuZCBzdGFnZSBleGVjdXRpb24uIEZvciB0aGlzIHB1
+cnBvc2UgdGhlIDJuZCBzdGFnZSBpbWFnZXMgYXJlIGdlbmVyYXRlZC4KIApAQCAtNjcsNyArNjcs
+NyBAQCBUaGUgU0QgaW1hZ2VzIGFyZSBzdWl0YWJsZSBmb3IgYm9vdGluZyBmcm9tIFNEIGNhcmRz
+LiBTRCBjYXJkcyBuZWVkIGEgc3BlY2lhbAogcGFydGl0aW9uaW5nIHdoaWNoIGNhbiBiZSBjcmVh
+dGVkIHdpdGggdGhlIGZvbGxvd2luZyBmZGlzayBzZXF1ZW5jZSAodXNpbmcKIC9kZXYvc2RnIGFz
+IGV4YW1wbGUpOjoKIAotICBmZGlzayAvZGV2L3NkZyAKKyAgZmRpc2sgL2Rldi9zZGcKIAogICBX
+ZWxjb21lIHRvIGZkaXNrICh1dGlsLWxpbnV4IDIuMjUuMSkuCiAgIENoYW5nZXMgd2lsbCByZW1h
+aW4gaW4gbWVtb3J5IG9ubHksIHVudGlsIHlvdSBkZWNpZGUgdG8gd3JpdGUgdGhlbS4KQEAgLTgz
+LDE3ICs4MywxNyBAQCBwYXJ0aXRpb25pbmcgd2hpY2ggY2FuIGJlIGNyZWF0ZWQgd2l0aCB0aGUg
+Zm9sbG93aW5nIGZkaXNrIHNlcXVlbmNlICh1c2luZwogICAgICBlICAgZXh0ZW5kZWQgKGNvbnRh
+aW5lciBmb3IgbG9naWNhbCBwYXJ0aXRpb25zKQogICBTZWxlY3QgKGRlZmF1bHQgcCk6IHAKICAg
+UGFydGl0aW9uIG51bWJlciAoMS00LCBkZWZhdWx0IDEpOiAxCi0gIEZpcnN0IHNlY3RvciAoMjA0
+OC03ODI5NTAzLCBkZWZhdWx0IDIwNDgpOiAKKyAgRmlyc3Qgc2VjdG9yICgyMDQ4LTc4Mjk1MDMs
+IGRlZmF1bHQgMjA0OCk6CiAgIExhc3Qgc2VjdG9yLCArc2VjdG9ycyBvciArc2l6ZXtLLE0sRyxU
+LFB9ICgyMDQ4LTc4Mjk1MDMsIGRlZmF1bHQgNzgyOTUwMyk6ICsxTQogCiAgIENyZWF0ZWQgYSBu
+ZXcgcGFydGl0aW9uIDEgb2YgdHlwZSAnTGludXgnIGFuZCBvZiBzaXplIDEgTWlCLgogCi0gIENv
+bW1hbmQgKG0gZm9yIGhlbHApOiB0IAorICBDb21tYW5kIChtIGZvciBoZWxwKTogdAogICBTZWxl
+Y3RlZCBwYXJ0aXRpb24gMQogICBIZXggY29kZSAodHlwZSBMIHRvIGxpc3QgYWxsIGNvZGVzKTog
+NTMKICAgQ2hhbmdlZCB0eXBlIG9mIHBhcnRpdGlvbiAnTGludXgnIHRvICdPblRyYWNrIERNNiBB
+dXgzJy4KIAotICBDb21tYW5kIChtIGZvciBoZWxwKTogCisgIENvbW1hbmQgKG0gZm9yIGhlbHAp
+OgogCiAgIENvbW1hbmQgKG0gZm9yIGhlbHApOiB3CiAKQEAgLTEwMSw3ICsxMDEsNyBAQCBBZnRl
+ciB3cml0aW5nIHRoZSBuZXcgcGFydGl0aW9uIHRhYmxlIHRoZSBpbWFnZSBjYW4gYmUgd3JpdHRl
+biBkaXJlY3RseSB0bwogdGhlIHBhcnRpdGlvbjo6CiAKICAgY2F0IGltYWdlcy9iYXJlYm94LWth
+cm8tdHgyOC1zZC5pbWcgPiAvZGV2L3NkZzEKLSAKKwogKiogTk9URSAqKgogCiBUaGUgTVhTIFNv
+Q3MgcmVxdWlyZSBhIHNwZWNpYWwgcGFydGl0aW9uIG9mIHR5cGUgMHg1MyAoT25UcmFjayBETTYg
+QXV4KQotLSAKMi4xLjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
+aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
