@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1Wz-0000Ls-VL
+ id 1YM1Wz-0000N5-VM
  for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:42:44 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id A6D6F26C2007
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:14 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 8E5FF26C2016
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:15 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:54 +0100
-Message-Id: <1423777200-22965-19-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:57 +0100
+Message-Id: <1423777200-22965-22-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,100 +24,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 18/24] net: rtl8169: convert to streaming DMA ops
+Subject: [PATCH RFT 21/24] usb: host: ehci: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/Kconfig   |  1 +
- drivers/net/rtl8169.c | 30 +++++++++++++-----------------
- 2 files changed, 14 insertions(+), 17 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index adb7008..42ffa65 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -167,6 +167,7 @@ config DRIVER_NET_RTL8139
- config DRIVER_NET_RTL8169
- 	bool "RealTek RTL-8169 PCI Ethernet driver"
- 	depends on PCI
-+	depends on HAS_DMA
- 	select PHYLIB
- 	help
- 	  This is a driver for the Fast Ethernet PCI network cards based on
-diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
-index 093a312..ac22512 100644
---- a/drivers/net/rtl8169.c
-+++ b/drivers/net/rtl8169.c
-@@ -14,7 +14,6 @@
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 7f59774..ef1371f 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -30,7 +30,6 @@
+ #include <errno.h>
+ #include <of.h>
+ #include <usb/ehci.h>
 -#include <asm/mmu.h>
- #include <common.h>
- #include <dma.h>
- #include <init.h>
-@@ -234,8 +233,8 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
- 	priv->rx_desc = dma_alloc_coherent(NUM_RX_DESC *
- 				sizeof(struct bufdesc));
- 	priv->rx_buf = malloc(NUM_RX_DESC * PKT_BUF_SIZE);
--	dma_clean_range((unsigned long)priv->rx_buf,
--			(unsigned long)priv->rx_buf + NUM_RX_DESC * PKT_BUF_SIZE);
-+	dma_sync_single_for_device((unsigned long)priv->rx_buf,
-+				   NUM_RX_DESC * PKT_BUF_SIZE, DMA_FROM_DEVICE);
+ #include <linux/err.h>
  
- 	memset(priv->tx_desc, 0, NUM_TX_DESC * sizeof(struct bufdesc));
- 	memset(priv->rx_desc, 0, NUM_RX_DESC * sizeof(struct bufdesc));
-@@ -366,8 +365,8 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
- 	if (packet_length < ETH_ZLEN)
- 		memset(priv->tx_buf + entry * PKT_BUF_SIZE, 0, ETH_ZLEN);
- 	memcpy(priv->tx_buf + entry * PKT_BUF_SIZE, packet, packet_length);
--	dma_flush_range((unsigned long)priv->tx_buf + entry * PKT_BUF_SIZE,
--			(unsigned long)priv->tx_buf + (entry + 1) * PKT_BUF_SIZE);
-+	dma_sync_single_for_device((unsigned long)priv->tx_buf + entry *
-+				   PKT_BUF_SIZE, PKT_BUF_SIZE, DMA_TO_DEVICE);
+ #include "ehci.h"
+@@ -331,7 +330,9 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			struct qTD *qtd = &ehci->td[i];
+ 			if (!qtd->qtd_dma)
+ 				continue;
+-			dma_flush_range(qtd->qtd_dma, qtd->qtd_dma + qtd->length);
++			dma_sync_single_for_device((unsigned long)qtd->qtd_dma,
++						   qtd->length,
++						   DMA_BIDIRECTIONAL);
+ 		}
+ 	}
  
- 	priv->tx_desc[entry].buf_Haddr = 0;
- 	priv->tx_desc[entry].buf_addr =
-@@ -388,6 +387,9 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
- 	while (priv->tx_desc[entry].status & BD_STAT_OWN)
- 		;
+@@ -372,7 +373,8 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			struct qTD *qtd = &ehci->td[i];
+ 			if (!qtd->qtd_dma)
+ 				continue;
+-			dma_inv_range(qtd->qtd_dma, qtd->qtd_dma + qtd->length);
++			dma_sync_single_for_cpu((unsigned long)qtd->qtd_dma,
++						qtd->length, DMA_BIDIRECTIONAL);
+ 		}
+ 	}
  
-+	dma_sync_single_for_cpu((unsigned long)priv->tx_buf + entry *
-+				PKT_BUF_SIZE, PKT_BUF_SIZE, DMA_TO_DEVICE);
-+
- 	priv->cur_tx++;
- 
- 	return 0;
-@@ -405,22 +407,16 @@ static int rtl8169_eth_rx(struct eth_device *edev)
- 		if (!(priv->rx_desc[entry].status & BD_STAT_RX_RES)) {
- 			pkt_size = (priv->rx_desc[entry].status & 0x1fff) - 4;
- 
--			dma_inv_range((unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE,
--			              (unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE + pkt_size);
-+			dma_sync_single_for_cpu((unsigned long)priv->rx_buf
-+						+ entry * PKT_BUF_SIZE,
-+						pkt_size, DMA_FROM_DEVICE);
- 
- 			net_receive(edev, priv->rx_buf + entry * PKT_BUF_SIZE,
- 			            pkt_size);
- 
--			/*
--			 * the buffer is going to be reused by HW, make sure to
--			 * clean out any potentially modified data
--			 */
--			dma_clean_range((unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE,
--			              (unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE + pkt_size);
-+			dma_sync_single_for_device((unsigned long)priv->rx_buf
-+						   + entry * PKT_BUF_SIZE,
-+						   pkt_size, DMA_FROM_DEVICE);
- 
- 			if (entry == NUM_RX_DESC - 1)
- 				priv->rx_desc[entry].status = BD_STAT_OWN |
 -- 
 2.1.0
 
