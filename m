@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLpY2-0003ls-87
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 08:55:05 +0000
+ Linux)) id 1YLpY7-0003lw-4B
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 08:55:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Feb 2015 09:54:26 +0100
-Message-Id: <1423731274-9860-10-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Feb 2015 09:54:29 +0100
+Message-Id: <1423731274-9860-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
 References: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/17] cmdlinepart: make argument types safer
+Subject: [PATCH 12/17] mtd: forbid conflicting mtd partitions
 To: Barebox List <barebox@lists.infradead.org>
 
-The return size should be loff_t to support partitions bigger
-than 4G. Also use const for the devname and endp.
+mtd partitions should not conflict with each other, so forbid this.
+Also add the partitions to the partitions list sorted, so that they
+can be easier translated into a cmdline partition string.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/partition.c  | 4 ++--
- include/cmdlinepart.h | 6 +++---
- lib/cmdlinepart.c     | 6 +++---
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/mtd/core.c | 33 ++++++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/commands/partition.c b/commands/partition.c
-index c95433f..17ca136 100644
---- a/commands/partition.c
-+++ b/commands/partition.c
-@@ -41,7 +41,7 @@
- static int do_addpart(int argc, char *argv[])
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 813edc5..99d50f1 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -377,6 +377,18 @@ static struct file_operations mtd_ops = {
+ 	.lseek  = dev_lseek_default,
+ };
+ 
++static int mtd_part_compare(struct list_head *a, struct list_head *b)
++{
++	struct mtd_info *mtda = container_of(a, struct mtd_info, partitions_entry);
++	struct mtd_info *mtdb = container_of(b, struct mtd_info, partitions_entry);
++
++	if (mtda->master_offset > mtdb->master_offset)
++		return 1;
++	if (mtda->master_offset < mtdb->master_offset)
++		return -1;
++	return 0;
++}
++
+ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
  {
- 	char *devname;
--	char *endp;
-+	const char *endp;
- 	loff_t offset = 0;
- 	loff_t devsize;
- 	struct stat s;
-@@ -70,7 +70,7 @@ static int do_addpart(int argc, char *argv[])
- 	endp = argv[optind + 1];
+ 	struct mtddev_hook *hook;
+@@ -417,20 +429,35 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
+ 	if (ret)
+ 		goto err;
  
- 	while (1) {
--		size_t size = 0;
-+		loff_t size = 0;
++	if (mtd->master && !(mtd->cdev.flags & DEVFS_PARTITION_FIXED)) {
++		struct mtd_info *mtdpart;
++
++		list_for_each_entry(mtdpart, &mtd->master->partitions, partitions_entry) {
++			if (mtdpart->master_offset + mtdpart->size <= mtd->master_offset)
++				continue;
++			if (mtd->master_offset + mtd->size <= mtdpart->master_offset)
++				continue;
++			dev_err(&mtd->class_dev, "New partition %s conflicts with %s\n",
++					mtd->name, mtdpart->name);
++			goto err1;
++		}
++
++		list_add_sort(&mtd->partitions_entry, &mtd->master->partitions, mtd_part_compare);
++	}
++
+ 	if (mtd_can_have_bb(mtd))
+ 		mtd->cdev_bb = mtd_add_bb(mtd, NULL);
  
- 		if (cmdlinepart_do_parse_one(devname, endp, &endp, &offset,
- 					devsize, &size, flags))
-diff --git a/include/cmdlinepart.h b/include/cmdlinepart.h
-index 5ffa3c4..3f8e136 100644
---- a/include/cmdlinepart.h
-+++ b/include/cmdlinepart.h
-@@ -3,9 +3,9 @@
+ 	if (mtd->parent && !mtd->master)
+ 		of_parse_partitions(&mtd->cdev, mtd->parent->device_node);
  
- #define CMDLINEPART_ADD_DEVNAME (1 << 0)
+-	if (mtd->master)
+-		list_add_tail(&mtd->partitions_entry, &mtd->master->partitions);
+-
+ 	list_for_each_entry(hook, &mtd_register_hooks, hook)
+ 		if (hook->add_mtd_device)
+ 			hook->add_mtd_device(mtd, devname, &hook->priv);
  
--int cmdlinepart_do_parse_one(char *devname, const char *partstr,
--				 char **endp, loff_t *offset,
--				 loff_t devsize, size_t *retsize,
-+int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
-+				 const char **endp, loff_t *offset,
-+				 loff_t devsize, loff_t *retsize,
- 				 unsigned int partition_flags);
- 
- #endif /* __CMD_LINE_PART_H */
-diff --git a/lib/cmdlinepart.c b/lib/cmdlinepart.c
-index 4781d82..9351587 100644
---- a/lib/cmdlinepart.c
-+++ b/lib/cmdlinepart.c
-@@ -24,9 +24,9 @@
- 
- #define SIZE_REMAINING ((loff_t)-1)
- 
--int cmdlinepart_do_parse_one(char *devname, const char *partstr,
--				 char **endp, loff_t *offset,
--				 loff_t devsize, size_t *retsize,
-+int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
-+				 const char **endp, loff_t *offset,
-+				 loff_t devsize, loff_t *retsize,
- 				 unsigned int partition_flags)
- {
- 	loff_t size;
+ 	return 0;
++err1:
++	devfs_remove(&mtd->cdev);
+ err:
+ 	free(mtd->cdev.name);
+ 	unregister_device(&mtd->class_dev);
 -- 
 2.1.4
 
