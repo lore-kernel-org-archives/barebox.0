@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLpY2-0003lk-8C
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 08:55:05 +0000
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YLpY3-0003mJ-Uk
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 08:55:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Feb 2015 09:54:21 +0100
-Message-Id: <1423731274-9860-5-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Feb 2015 09:54:34 +0100
+Message-Id: <1423731274-9860-18-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
 References: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,47 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/17] mtd: partitions: Add error check
+Subject: [PATCH 17/17] defaultenv-2: mtdparts-add: Use new partition parameter
 To: Barebox List <barebox@lists.infradead.org>
 
-add_mtd_device can fail. Add an error check and bail out properly.
+mtd devices now have a partition parameter to create mtd partitions.
+Use it to simplify the mtdparts-add script.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/partition.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ defaultenv/defaultenv-2-base/bin/mtdparts-add | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
-index 033a7d2..c514d4b 100644
---- a/drivers/mtd/partition.c
-+++ b/drivers/mtd/partition.c
-@@ -108,6 +108,7 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
- 		uint64_t size, unsigned long flags, const char *name)
- {
- 	struct mtd_info *part;
-+	int ret;
+diff --git a/defaultenv/defaultenv-2-base/bin/mtdparts-add b/defaultenv/defaultenv-2-base/bin/mtdparts-add
+index a0e419e..805e3e2 100644
+--- a/defaultenv/defaultenv-2-base/bin/mtdparts-add
++++ b/defaultenv/defaultenv-2-base/bin/mtdparts-add
+@@ -26,13 +26,12 @@ if [ -z "${parts}" ]; then
+ 	exit
+ fi
  
- 	part = xzalloc(sizeof(*part));
+-if [ -e /tmp/mtdparts/${device} ]; then
+-	delpart /dev/${device}.*
++${device}.partitions="$parts"
++if [ $? != 0 ]; then
++	echo "Failed to add partitions $parts to $device"
++	exit 1
+ fi
  
-@@ -168,9 +169,17 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
- 	if (!strncmp(mtd->cdev.name, name, strlen(mtd->cdev.name)))
- 		part->cdev.partname = xstrdup(name + strlen(mtd->cdev.name) + 1);
- 
--	add_mtd_device(part, part->name, DEVICE_ID_SINGLE);
-+	ret = add_mtd_device(part, part->name, DEVICE_ID_SINGLE);
-+	if (ret)
-+		goto err;
- 
- 	return part;
-+err:
-+	free(part->cdev.partname);
-+	free(part->name);
-+	free(part);
-+
-+	return ERR_PTR(ret);
- }
- 
- int mtd_del_partition(struct mtd_info *part)
+-addpart -n /dev/${device} "$parts" || exit
+-mkdir -p /tmp/mtdparts/${device}
+-
+ if [ -n ${kernelname} ]; then
+ 	global linux.mtdparts.${device}
+ 	global.linux.mtdparts.${device}="${kernelname}:${parts}"
 -- 
 2.1.4
 
