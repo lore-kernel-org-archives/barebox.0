@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1WD-0008JT-50
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:57 +0000
+ id 1YM1WB-0008JS-CG
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:55 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id F007926C200A
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:16 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id AB90B26C200F
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:12 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:40:00 +0100
-Message-Id: <1423777200-22965-25-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:50 +0100
+Message-Id: <1423777200-22965-15-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,102 +24,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 24/24] ARM: MMU: unexport cache maintenance functions
+Subject: [PATCH RFT 14/24] net: designware: convert to streaming DMA ops
 To: barebox@lists.infradead.org
-
-Those should only be used internally. All users should rather
-use the streaming DMA API, which does proper cache maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/cpu/mmu.c         | 35 ++++++++++++++---------------------
- arch/arm/include/asm/mmu.h | 14 --------------
- 2 files changed, 14 insertions(+), 35 deletions(-)
+ drivers/net/designware.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index e3c06cd..53d0446 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -159,6 +159,20 @@ static u32 *find_pte(unsigned long adr)
- 	return &table[(adr >> PAGE_SHIFT) & 0xff];
- }
+diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+index 2bc4471..1e1befd 100644
+--- a/drivers/net/designware.c
++++ b/drivers/net/designware.c
+@@ -27,7 +27,6 @@
+ #include <io.h>
+ #include <net.h>
+ #include <of_net.h>
+-#include <asm/mmu.h>
+ #include <net/designware.h>
+ #include <linux/phy.h>
+ #include <linux/err.h>
+@@ -197,8 +196,8 @@ static void rx_descs_init(struct eth_device *dev)
+ 		else
+ 			desc_p->dmamac_cntl |= DESC_RXCTRL_RXCHAIN;
  
-+static void dma_flush_range(unsigned long start, unsigned long end)
-+{
-+	if (outer_cache.flush_range)
-+		outer_cache.flush_range(start, end);
-+	__dma_flush_range(start, end);
-+}
+-		dma_inv_range((unsigned long)desc_p->dmamac_addr,
+-			      (unsigned long)desc_p->dmamac_addr + CONFIG_ETH_BUFSIZE);
++		dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr,
++					CONFIG_ETH_BUFSIZE, DMA_FROM_DEVICE);
+ 		desc_p->txrx_status = DESC_RXSTS_OWNBYDMA;
+ 	}
+ 
+@@ -302,8 +301,8 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
+ 	}
+ 
+ 	memcpy((void *)desc_p->dmamac_addr, packet, length);
+-	dma_flush_range((unsigned long)desc_p->dmamac_addr,
+-			(unsigned long)desc_p->dmamac_addr + length);
++	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
++				   DMA_TO_DEVICE);
+ 
+ 	if (priv->enh_desc) {
+ 		desc_p->txrx_status |= DESC_ENH_TXSTS_TXFIRST | DESC_ENH_TXSTS_TXLAST;
+@@ -328,6 +327,9 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
+ 
+ 	/* Start the transmission */
+ 	writel(POLL_DATA, &dma_p->txpolldemand);
++	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
++				DMA_TO_DEVICE);
 +
-+static void dma_inv_range(unsigned long start, unsigned long end)
-+{
-+	if (outer_cache.inv_range)
-+		outer_cache.inv_range(start, end);
-+	__dma_inv_range(start, end);
-+}
-+
- void remap_range(void *_start, size_t size, uint32_t flags)
- {
- 	unsigned long start = (unsigned long)_start;
-@@ -412,27 +426,6 @@ void dma_free_coherent(void *mem, size_t size)
- 	free(mem);
+ 	return 0;
  }
  
--void dma_clean_range(unsigned long start, unsigned long end)
--{
--	if (outer_cache.clean_range)
--		outer_cache.clean_range(start, end);
--	__dma_clean_range(start, end);
--}
+@@ -351,10 +353,11 @@ static int dwc_ether_rx(struct eth_device *dev)
+ 	 * Make the current descriptor valid again and go to
+ 	 * the next one
+ 	 */
+-	dma_inv_range((unsigned long)desc_p->dmamac_addr,
+-		      (unsigned long)desc_p->dmamac_addr + length);
 -
--void dma_flush_range(unsigned long start, unsigned long end)
--{
--	if (outer_cache.flush_range)
--		outer_cache.flush_range(start, end);
--	__dma_flush_range(start, end);
--}
--
--void dma_inv_range(unsigned long start, unsigned long end)
--{
--	if (outer_cache.inv_range)
--		outer_cache.inv_range(start, end);
--	__dma_inv_range(start, end);
--}
--
- void dma_sync_single_for_cpu(unsigned long address, size_t size,
- 			     enum dma_data_direction dir)
- {
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index 01c20bd..97bb0db 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -27,26 +27,12 @@ static inline void setup_dma_coherent(unsigned long offset)
- }
++	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
++				DMA_FROM_DEVICE);
+ 	net_receive(dev, desc_p->dmamac_addr, length);
++	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
++				   DMA_FROM_DEVICE);
  
- #ifdef CONFIG_MMU
--void dma_clean_range(unsigned long, unsigned long);
--void dma_flush_range(unsigned long, unsigned long);
--void dma_inv_range(unsigned long, unsigned long);
- void remap_range(void *_start, size_t size, uint32_t flags);
- void *map_io_sections(unsigned long physaddr, void *start, size_t size);
- uint32_t mmu_get_pte_cached_flags(void);
- uint32_t mmu_get_pte_uncached_flags(void);
+ 	desc_p->txrx_status |= DESC_RXSTS_OWNBYDMA;
  
- #else
--static inline void dma_clean_range(unsigned long s, unsigned long e)
--{
--}
--
--static inline void dma_flush_range(unsigned long s, unsigned long e)
--{
--}
--
--static inline void dma_inv_range(unsigned long s, unsigned long e)
--{
--}
- 
- static inline void remap_range(void *_start, size_t size, uint32_t flags)
- {
 -- 
 2.1.0
 
