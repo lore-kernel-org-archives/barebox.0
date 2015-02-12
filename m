@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1W9-0008KX-Qn
+ id 1YM1W9-0008Lr-Ql
  for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:52 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id C7DD826C200B
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:10 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 34DE726C200C
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:11 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:46 +0100
-Message-Id: <1423777200-22965-11-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:47 +0100
+Message-Id: <1423777200-22965-12-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,75 +24,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 10/24] net: arc-emac: convert to streaming DMA ops
+Subject: [PATCH RFT 11/24] net: cpsw: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/arc_emac.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/net/cpsw.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
-index e050199..4bf456e 100644
---- a/drivers/net/arc_emac.c
-+++ b/drivers/net/arc_emac.c
-@@ -16,7 +16,6 @@
-  * GNU General Public License for more details.
-  */
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 799fac8..5c28aa4 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -21,6 +21,7 @@
+ #include <init.h>
  
+ #include <command.h>
++#include <dma.h
+ #include <net.h>
+ #include <malloc.h>
+ #include <net.h>
+@@ -32,7 +33,6 @@
+ #include <of_net.h>
+ #include <of_address.h>
+ #include <xfuncs.h>
 -#include <asm/mmu.h>
- #include <clock.h>
- #include <common.h>
- #include <dma.h>
-@@ -195,6 +194,8 @@ static int arc_emac_open(struct eth_device *edev)
- 		rxbd->data = cpu_to_le32(rxbuf);
+ #include <asm/system.h>
+ #include <linux/err.h>
  
- 		/* Return ownership to EMAC */
-+		dma_sync_single_for_device((unsigned long)rxbuf, PKTSIZE,
-+					   DMA_FROM_DEVICE);
- 		rxbd->info = cpu_to_le32(FOR_EMAC | PKTSIZE);
+@@ -871,9 +871,9 @@ static int cpsw_send(struct eth_device *edev, void *packet, int length)
  
- 		*last_rx_bd = (*last_rx_bd + 1) % RX_BD_NUM;
-@@ -244,7 +245,7 @@ static int arc_emac_send(struct eth_device *edev, void *data, int length)
- 		length = EMAC_ZLEN;
- 	}
+ 	dev_dbg(&slave->dev, "%s: %i bytes @ 0x%p\n", __func__, length, packet);
  
--	dma_flush_range((unsigned long)data, (unsigned long)data + length);
-+	dma_sync_single_for_device((unsigned long)data, length, DMA_TO_DEVICE);
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
+-
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	ret = cpdma_submit(priv, &priv->tx_chan, packet, length);
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
  
- 	bd->data = cpu_to_le32(data);
- 	bd->info = cpu_to_le32(FOR_EMAC | FIRST_OR_LAST_MASK | length);
-@@ -253,6 +254,8 @@ static int arc_emac_send(struct eth_device *edev, void *data, int length)
- 	ret = wait_on_timeout(20 * MSECOND,
- 			      (arc_reg_get(priv, R_STATUS) & TXINT_MASK) != 0);
+ 	return ret;
+ }
+@@ -886,8 +886,11 @@ static int cpsw_recv(struct eth_device *edev)
+ 	int len;
  
-+	dma_sync_single_for_cpu((unsigned long)data, length, DMA_TO_DEVICE);
-+
- 	if (ret) {
- 		dev_err(&edev->dev, "transmit timeout\n");
- 		return ret;
-@@ -294,18 +297,19 @@ static int arc_emac_recv(struct eth_device *edev)
- 			printk(KERN_DEBUG "incomplete packet received\n");
- 
- 			/* Return ownership to EMAC */
--			rxbd->info = cpu_to_le32(FOR_EMAC | PKTSIZE);
- 			continue;
- 		}
- 
- 		pktlen = info & LEN_MASK;
- 
--		/* invalidate current receive buffer */
--		dma_inv_range((unsigned long)rxbd->data,
--			      (unsigned long)rxbd->data + pktlen);
-+		dma_sync_single_for_cpu((unsigned long)rxbd->data, pktlen,
+ 	while (cpdma_process(priv, &priv->rx_chan, &buffer, &len) >= 0) {
+-		dma_inv_range((ulong)buffer, (ulong)buffer + len);
++		dma_sync_single_for_cpu((unsigned long)buffer, len,
 +					DMA_FROM_DEVICE);
- 
- 		net_receive(edev, (unsigned char *)rxbd->data, pktlen);
- 
-+		dma_sync_single_for_device((unsigned long)rxbd->data, pktlen,
+ 		net_receive(edev, buffer, len);
++		dma_sync_single_for_device((unsigned long)buffer, len,
 +					   DMA_FROM_DEVICE);
-+
- 		rxbd->info = cpu_to_le32(FOR_EMAC | PKTSIZE);
+ 		cpdma_submit(priv, &priv->rx_chan, buffer, PKTSIZE);
  	}
  
 -- 
