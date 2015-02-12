@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward4h.mail.yandex.net ([84.201.186.22])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLzwi-0000Ql-4S
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 20:01:09 +0000
-From: =?koi8-r?B?8MHOz9cg4c7E0sXK?= <rockford@yandex.ru>
-In-Reply-To: <20150212195730.GK10842@pengutronix.de>
-References: <1423768031-5014-1-git-send-email-rockford@yandex.ru>
- <20150212193457.GI10842@pengutronix.de>
- <832111423770319@web2g.yandex.ru>
- <20150212195144.GJ10842@pengutronix.de>
- <20150212195730.GK10842@pengutronix.de>
-MIME-Version: 1.0
-Message-Id: <768141423771242@web22h.yandex.ru>
-Date: Thu, 12 Feb 2015 23:00:42 +0300
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YM1VJ-000821-MR
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:40:59 +0000
+Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id ECB2C26C2001
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:03 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:36 +0100
+Message-Id: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +17,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Rockchip: Add DEBUG_LL based on mach-socfpga
-To: =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH RFT 00/24] Phasing out direct usage of asm/mmu.h on ARM
+To: barebox@lists.infradead.org
 
-CgoxMi4wMi4yMDE1LCAyMjo1NywgIlV3ZSBLbGVpbmUtS8O2bmlnIiA8dS5rbGVpbmUta29lbmln
-QHBlbmd1dHJvbml4LmRlPjoKPiBIZWxsbywKPgo+IE9uIFRodSwgRmViIDEyLCAyMDE1IGF0IDA4
-OjUxOjQ0UE0gKzAxMDAsIFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3RlOgo+PiDCoE9uIFRodSwgRmVi
-IDEyLCAyMDE1IGF0IDEwOjQ1OjE5UE0gKzAzMDAsINCf0LDQvdC+0LIg0JDQvdC00YDQtdC5IHdy
-b3RlOgo+Pj4gwqAxMi4wMi4yMDE1LCAyMjozNCwgIlV3ZSBLbGVpbmUtS8O2bmlnIiA8dS5rbGVp
-bmUta29lbmlnQHBlbmd1dHJvbml4LmRlPjoKPj4+PiDCoEJldHRlciBtYWtlIHVzZSBvZiBERUJV
-R19VQVJUX1BIWVMgYW5kIERFQlVHX1VBUlRfQkFTRS4KPj4+PiDCoEFuZCB0aGVyZSBpcyBhbHJl
-YWR5IERFQlVHX1JLMjlfVUFSVFsxMjNdIGFuZCBERUJVR19SSzNYX1VBUlRbMDEyM10gYW5kCj4+
-Pj4gwqBERUJVR19SSzMyX1VBUlQyLiBEb2Vzbid0IG9uZSBvZiB0aG9zZSBmaXQgeW91ciBuZWVk
-cz8KPj4+IMKgV2hpY2ggYnJhbmNoIGNvbnRhaW5zIGl0PyBJJ3ZlIGNoZWNrZWQgbWFzdGVyIGFu
-ZCBuZXh0IGFuZCB0aGVyZSBpcyBubyBzdWNoIGEgZGVmaW5pdGlvbnMuCj4+IMKgVGhlbiB5b3Ug
-ZGlkbid0IGNoZWNrIGNvcnJlY3RseS4gSXQncyBhdmFpbGFibGUgc2luY2UgYXQgbGVhc3QKPj4g
-wqB2My4xMi1yYzE6Cj4+Cj4+IMKgwqAkIGdpdCBzaG93IHYzLjEyLXJjMTphcmNoL2FybS9LY29u
-ZmlnLmRlYnVnIHwgZ3JlcCBERUJVR19SSzI5X1VBUlQxIHwgd2MgLWwKPj4gwqDCoDMKPj4KPj4g
-wqBUaGUgc2FtZSBoYXBwZW5zIHdoZW4gdXNpbmcgMy4xOSBpbnN0ZWFkIG9mIDMuMTItcmMxLgo+
-Cj4gaHVwcywgdGhpcyBpcyB0aGUgd3JvbmcgbGlzdC4gSSB0aG91Z2h0IHdlJ3JlIHRhbGtpbmcg
-YWJvdXQgdGhlIGtlcm5lbC4KPgo+ICpibHVzaCoKCkJ1dCBJIHNob3VsZCByZW5hbWUgZGVmaW5l
-cyB0byBtYXRjaCB0aGUgc2FtZSBpbiBrZXJuZWwuIEp1c3QgaW4gY2FzZS4KCi0tCiDQkNC90LTR
-gNC10LkKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This series introduces to Barebox the streaming DMA ops and implements
+them for the ARM architecture. This will make it a lot easier to
+get common cache maintenance operations for all architectures and in
+turn allows for wider reuse of driver across architectures.
+
+I've tested this on a Tegra124 which is known to fall over in all sorts
+of funny ways if cache maintenance is broken. No odd behavior spotted.
+
+The series is bisect-clean and I've compile tested it on some defconfigs,
+but please go wild and TEST. I'll take any complaints.
+
+Regards,
+Lucas
+
+Lucas Stach (24):
+  usb: gadget: include common.h in header
+  ARM: move virt<->phys translation to io.h
+  dma: add streaming DMA ops
+  ARM: move DMA alloc functions to dma.h
+  ARM: implement streaming DMA ops
+  AHCI: convert to streaming DMA ops
+  MCI: dw-mmc: convert to streaming DMA ops
+  MCI: imx: convert to streaming DMA ops
+  MCI: tegra-sdmmc: convert to streaming DMA ops
+  net: arc-emac: convert to streaming DMA ops
+  net: cpsw: convert to streaming DMA ops
+  net: at91_ether: convert to streaming DMA ops
+  net: davinci_emac: convert to streaming DMA ops
+  net: designware: convert to streaming DMA ops
+  net: fec: convert to streaming DMA ops
+  net: macb: convert to streaming DMA ops
+  net: orion-gbe: convert to streaming DMA ops
+  net: rtl8169: convert to streaming DMA ops
+  net: xgmac: convert to streaming DMA ops
+  usb: gadget: fsl_udc: convert to streaming DMA ops
+  usb: host: ehci: convert to streaming DMA ops
+  usb: host: ohci: convert to streaming DMA ops
+  ARM: bcm2835: mbox: convert to streaming DMA ops
+  ARM: MMU: unexport cache maintenance functions
+
+ arch/arm/cpu/mmu.c                    | 49 +++++++++++++++++++++++------------
+ arch/arm/include/asm/dma.h            | 30 ++++++++++++++++++++-
+ arch/arm/include/asm/io.h             | 15 +++++++++++
+ arch/arm/include/asm/mmu.h            | 45 --------------------------------
+ arch/arm/mach-bcm2835/mbox.c          |  8 +++---
+ drivers/ata/ahci.c                    | 14 +++++++---
+ drivers/dma/apbh_dma.c                |  2 +-
+ drivers/mci/Kconfig                   |  2 +-
+ drivers/mci/dw_mmc.c                  | 25 +++++++++---------
+ drivers/mci/imx-esdhc.c               | 28 ++++++++++++--------
+ drivers/mci/tegra-sdmmc.c             | 26 ++++++++++---------
+ drivers/mtd/nand/nand_mxs.c           |  2 +-
+ drivers/net/Kconfig                   |  1 +
+ drivers/net/altera_tse.c              |  1 +
+ drivers/net/arc_emac.c                | 17 +++++++-----
+ drivers/net/at91_ether.c              | 11 ++++++--
+ drivers/net/cpsw.c                    | 11 +++++---
+ drivers/net/davinci_emac.c            |  9 ++++---
+ drivers/net/designware.c              | 20 ++++++++------
+ drivers/net/fec_imx.c                 | 14 +++++++---
+ drivers/net/macb.c                    |  9 +++++--
+ drivers/net/mvneta.c                  |  1 +
+ drivers/net/orion-gbe.c               | 14 ++++++----
+ drivers/net/rtl8139.c                 |  1 +
+ drivers/net/rtl8169.c                 | 31 ++++++++++------------
+ drivers/net/xgmac.c                   | 12 ++++++---
+ drivers/spi/mxs_spi.c                 |  1 -
+ drivers/usb/gadget/fsl_udc.c          | 11 +++++---
+ drivers/usb/host/ehci-hcd.c           |  9 ++++---
+ drivers/usb/host/ohci-hcd.c           | 11 +++++---
+ drivers/usb/host/xhci-hcd.c           |  2 +-
+ drivers/usb/host/xhci-hub.c           |  1 -
+ drivers/video/atmel_hlcdfb.c          |  1 -
+ drivers/video/atmel_lcdfb.c           |  1 -
+ drivers/video/atmel_lcdfb_core.c      |  2 +-
+ drivers/video/imx-ipu-fb.c            |  2 +-
+ drivers/video/imx-ipu-v3/ipu-common.c |  1 -
+ drivers/video/imx-ipu-v3/ipufb.c      |  2 +-
+ drivers/video/omap.c                  |  3 +--
+ drivers/video/pxa.c                   |  2 +-
+ include/dma-dir.h                     |  6 +++++
+ include/dma.h                         | 11 ++++++++
+ include/usb/gadget.h                  |  1 +
+ 43 files changed, 281 insertions(+), 184 deletions(-)
+ create mode 100644 include/dma-dir.h
+
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
