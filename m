@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YIY4g-00017n-BH
- for barebox@lists.infradead.org; Tue, 03 Feb 2015 07:39:07 +0000
-Date: Tue, 3 Feb 2015 08:38:41 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150203073841.GE12209@pengutronix.de>
-References: <29A2697B0516A946B1023D5E798DFCF67BAB6D77@mail-ying>
+ Linux)) id 1YLzXm-0001O7-1n
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 19:35:23 +0000
+Date: Thu, 12 Feb 2015 20:34:57 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20150212193457.GI10842@pengutronix.de>
+References: <1423768031-5014-1-git-send-email-rockford@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BAB6D77@mail-ying>
+In-Reply-To: <1423768031-5014-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +18,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Modifying Barebox variables from Linux
-To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: Rockchip: Add DEBUG_LL based on mach-socfpga
+To: Andrey Panov <rockford@yandex.ru>
+Cc: barebox@lists.infradead.org
 
-On Mon, Feb 02, 2015 at 09:20:18PM +0000, Boulais, Marc-Andre wrote:
-> Hi,
-> I am working on an Phytec Phycore-OMAP4460 platform with a Linux BSP (provided by Phytec) which uses Barebox 2013.1.0 to boot the OMAP4. Our application previously ran in a Linux system where U-Boot was used. We could change U-boot variables from the Linux command line as follows:
-> 
-> fw_setenv bootargs 'mem=512M console=ttyS0,115200n8 noinitrd root=/dev/mtdblock4 ro rootfstype=yaffs2'
-> 
-> How would I go doing the same with Barebox ? Is bareboxenv-target part of the solution ?
+Hello,
 
-Yes.
+On Thu, Feb 12, 2015 at 10:07:11PM +0300, Andrey Panov wrote:
+> --- /dev/null
+> +++ b/arch/arm/mach-rockchip/include/mach/debug_ll.h
+> @@ -0,0 +1,60 @@
+> +#ifndef __MACH_DEBUG_LL_H__
+> +#define __MACH_DEBUG_LL_H__
+> +
+> +#include <io.h>
+> +
+> +#if CONFIG_DEBUG_ROCKCHIP_UART_PORT =3D=3D 0
+> +#define UART_BASE	0x10124000
+> +#endif
+> +#if CONFIG_DEBUG_ROCKCHIP_UART_PORT =3D=3D 1
+> +#define UART_BASE	0x10126000
+> +#endif
+> +#if CONFIG_DEBUG_ROCKCHIP_UART_PORT =3D=3D 2
+> +#define UART_BASE	0x20064000
+> +#endif
+> +#if CONFIG_DEBUG_ROCKCHIP_UART_PORT =3D=3D 3
+> +#define UART_BASE	0x20068000
+> +#endif
+Better make use of DEBUG_UART_PHYS and DEBUG_UART_BASE.
+And there is already DEBUG_RK29_UART[123] and DEBUG_RK3X_UART[0123] and
+DEBUG_RK32_UART2. Doesn't one of those fit your needs?
 
-On the target do:
+Best regards
+Uwe
 
-bareboxenv -l /tmp/env /dev/mtdblockx
+-- =
 
-... modify stuff in /tmp/env ...
-
-bareboxenv -s /tmp/env /dev/mtdblockx
-
-Note that with a newer barebox (v2015.01.0) barebox has nonvolatile
-variables that are stored in the environment. With that changing
-variables is a matter of doing:
-
-echo "mybootargs" > /tmp/env/nv/linux.bootargs.mine
-
-With your older barebox the variables are created in scripts which means
-you have to modify scripts from other scripts, or you would have to add
-something like "source /env/vars/*" to a barebox startup script.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
