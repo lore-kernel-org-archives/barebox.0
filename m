@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLpqj-0002ab-Rb
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 09:14:18 +0000
-Date: Thu, 12 Feb 2015 10:13:54 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150212091353.GQ12209@pengutronix.de>
-References: <1423578481-25230-1-git-send-email-dbrainard@brainardinsight.com>
- <1423578481-25230-2-git-send-email-dbrainard@brainardinsight.com>
- <54DABFB8.7030107@atmel.com>
- <CA+nEJintvUAV9VhOWye1n9POC4B=iM5u_ZEbJ=ocUnZrmumfFg@mail.gmail.com>
- <CA+nEJi=gTz74211UK2SpydavR1bAN8p6KgQynBoF20M7vW=nPQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CA+nEJi=gTz74211UK2SpydavR1bAN8p6KgQynBoF20M7vW=nPQ@mail.gmail.com>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YLq8i-0002jP-PK
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 09:32:53 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 3D4FBA00489
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 10:33:17 +0100 (CET)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Thu, 12 Feb 2015 10:30:55 +0100
+Message-Id: <1423733455-27084-2-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1423733455-27084-1-git-send-email-w.egorov@phytec.de>
+References: <1423733455-27084-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +19,114 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] Switched SAMA5D4EK development board to the newer
- environment method.
-To: Doug Brainard <dbrainard@brainardinsight.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4: For next 2/2] ARM: am33xx: Add support for reset reason
+ detection
+To: barebox@lists.infradead.org
 
-On Wed, Feb 11, 2015 at 10:39:52AM -0700, Doug Brainard wrote:
-> So it looks like the following line in mtdparts-add is causing the
-> "nand0." issue:
-> 
-> addpart -n /dev/${device} "$parts" || exit
-> 
-> The old environment didn't use the "-n".  Removing the "-n" fixes the
-> issue and gives it the same functionality as the old environment did.
-> 
-> So the question is how should I fix this?  I could remove it in the
-> default environment, but that would require all other boards using the
-> new environment to update.
-> 
-> Or, I can add my own env/bin/mtdparts-add script for the board and
-> remove the "-n" from there instead which would leave the other
-> projects alone.  I'm assuming I should use this option as the fix, but
-> I wanted to confirm that with you.
+Also activate in defconfig.
 
-I would rather add a '-n' option to the mtdparts-add script. Anyway, I
-just sent a series updating the partition handling. Among other things
-I hope that this fixes the naming issue.
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+v4: Calling am33xx_detect_reset_reason() from am33xx_init() is now possible.
+---
+ arch/arm/configs/am335x_defconfig                |  1 +
+ arch/arm/mach-omap/am33xx_generic.c              | 36 ++++++++++++++++++++++++
+ arch/arm/mach-omap/include/mach/am33xx-silicon.h |  1 +
+ 3 files changed, 38 insertions(+)
 
-Sascha
-
-
+diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
+index f34a4c6..0b8f58d 100644
+--- a/arch/arm/configs/am335x_defconfig
++++ b/arch/arm/configs/am335x_defconfig
+@@ -24,6 +24,7 @@ CONFIG_MENU=y
+ CONFIG_BLSPEC=y
+ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_RESET_SOURCE=y
+ CONFIG_DEBUG_INFO=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+index 912138d..ee30351 100644
+--- a/arch/arm/mach-omap/am33xx_generic.c
++++ b/arch/arm/mach-omap/am33xx_generic.c
+@@ -26,6 +26,7 @@
+ #include <mach/sys_info.h>
+ #include <mach/am33xx-generic.h>
+ #include <mach/gpmc.h>
++#include <reset_source.h>
+ 
+ void __noreturn am33xx_reset_cpu(unsigned long addr)
+ {
+@@ -152,6 +153,38 @@ static int am33xx_bootsource(void)
+ 	return 0;
+ }
+ 
++static void am33xx_detect_reset_reason(void)
++{
++	uint32_t val = 0;
++
++	val = readl(AM33XX_PRM_RSTST);
++	/* clear AM33XX_PRM_RSTST - must be cleared by software
++	 * (warm reset insensitive) */
++	writel(val, AM33XX_PRM_RSTST);
++
++	switch (val) {
++	case (1 << 9):
++		reset_source_set(RESET_JTAG);
++		break;
++	case (1 << 5):
++		reset_source_set(RESET_EXT);
++		break;
++	case (1 << 4):
++	case (1 << 3):
++		reset_source_set(RESET_WDG);
++		break;
++	case (1 << 1):
++		reset_source_set(RESET_RST);
++		break;
++	case (1 << 0):
++		reset_source_set(RESET_POR);
++		break;
++	default:
++		reset_source_set(RESET_UKWN);
++		break;
++	}
++}
++
+ int am33xx_register_ethaddr(int eth_id, int mac_id)
+ {
+ 	void __iomem *mac_id_low = (void *)AM33XX_MAC_ID0_LO + mac_id * 8;
+@@ -209,6 +242,9 @@ int am33xx_init(void)
+ 
+ 	am33xx_enable_per_clocks();
+ 
++	if (IS_ENABLED(CONFIG_RESET_SOURCE))
++		am33xx_detect_reset_reason();
++
+ 	return am33xx_bootsource();
+ }
+ 
+diff --git a/arch/arm/mach-omap/include/mach/am33xx-silicon.h b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
+index 4e63b43..7c209ec 100644
+--- a/arch/arm/mach-omap/include/mach/am33xx-silicon.h
++++ b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
+@@ -68,6 +68,7 @@
+ 
+ #define AM33XX_PRM_RSTCTRL		(AM33XX_PRM_BASE + 0x0f00)
+ #define AM33XX_PRM_RSTCTRL_RESET	0x1
++#define AM33XX_PRM_RSTST		(AM33XX_PRM_BASE + 0x0f08)
+ 
+ /* CTRL */
+ #define AM33XX_CTRL_BASE		(AM33XX_L4_WKUP_BASE + 0x210000)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
