@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1VJ-00082i-MN
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:40:58 +0000
+ id 1YM1VO-00083p-6o
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:02 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id BF6F926C2003
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:06 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 4521F26C2006
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:09 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:38 +0100
-Message-Id: <1423777200-22965-3-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:41 +0100
+Message-Id: <1423777200-22965-6-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,75 +24,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 02/24] ARM: move virt<->phys translation to io.h
+Subject: [PATCH RFT 05/24] ARM: implement streaming DMA ops
 To: barebox@lists.infradead.org
-
-That's the place where Linux has them and other architectures would
-implement this.
-
-This will help in phasing out the direct usage of the ARM asm/mmu.h
-header.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/include/asm/io.h  | 15 +++++++++++++++
- arch/arm/include/asm/mmu.h | 12 ------------
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ arch/arm/cpu/mmu.c         | 24 ++++++++++++++++++++++++
+ arch/arm/include/asm/dma.h | 10 ++++++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index 850a99c..0f938ec 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -69,4 +69,19 @@ extern void memset_io(volatile void __iomem *, int, size_t);
- #define setbits_8(addr, set) setbits(8, addr, set)
- #define clrsetbits_8(addr, clear, set) clrsetbits(8, addr, clear, set)
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index e733ec4..e3c06cd 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -18,6 +18,7 @@
+ #define pr_fmt(fmt)	"mmu: " fmt
  
-+#ifdef CONFIG_MMU
-+unsigned long virt_to_phys(void *virt);
-+void *phys_to_virt(unsigned long phys);
-+#else
-+static inline void *phys_to_virt(unsigned long phys)
+ #include <common.h>
++#include <dma-dir.h>
+ #include <init.h>
+ #include <asm/mmu.h>
+ #include <errno.h>
+@@ -432,3 +433,26 @@ void dma_inv_range(unsigned long start, unsigned long end)
+ 	__dma_inv_range(start, end);
+ }
+ 
++void dma_sync_single_for_cpu(unsigned long address, size_t size,
++			     enum dma_data_direction dir)
 +{
-+	return (void *)phys;
++	if (dir != DMA_TO_DEVICE) {
++		if (outer_cache.inv_range)
++			outer_cache.inv_range(address, address + size);
++		__dma_inv_range(address, address + size);
++	}
 +}
 +
-+static inline unsigned long virt_to_phys(void *mem)
++void dma_sync_single_for_device(unsigned long address, size_t size,
++				enum dma_data_direction dir)
 +{
-+	return (unsigned long)mem;
++	if (dir == DMA_FROM_DEVICE) {
++		__dma_inv_range(address, address + size);
++		if (outer_cache.inv_range)
++			outer_cache.inv_range(address, address + size);
++	} else {
++		__dma_clean_range(address, address + size);
++		if (outer_cache.clean_range)
++			outer_cache.clean_range(address, address + size);
++	}
 +}
-+#endif
-+
- #endif	/* __ASM_ARM_IO_H */
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index 4234979..3d87588 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -39,8 +39,6 @@ void dma_free_coherent(void *mem, size_t size);
- void dma_clean_range(unsigned long, unsigned long);
- void dma_flush_range(unsigned long, unsigned long);
- void dma_inv_range(unsigned long, unsigned long);
--unsigned long virt_to_phys(void *virt);
--void *phys_to_virt(unsigned long phys);
- void remap_range(void *_start, size_t size, uint32_t flags);
- void *map_io_sections(unsigned long physaddr, void *start, size_t size);
- uint32_t mmu_get_pte_cached_flags(void);
-@@ -57,16 +55,6 @@ static inline void dma_free_coherent(void *mem, size_t size)
+diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
+index 47e6a91..897c2ed 100644
+--- a/arch/arm/include/asm/dma.h
++++ b/arch/arm/include/asm/dma.h
+@@ -23,4 +23,14 @@ static inline void dma_free_coherent(void *mem, size_t size)
+ {
  	free(mem);
  }
- 
--static inline void *phys_to_virt(unsigned long phys)
--{
--	return (void *)phys;
--}
--
--static inline unsigned long virt_to_phys(void *mem)
--{
--	return (unsigned long)mem;
--}
--
- static inline void dma_clean_range(unsigned long s, unsigned long e)
- {
- }
++
++static inline void dma_sync_single_for_cpu(unsigned long address, size_t size,
++					   enum dma_data_direction dir)
++{
++}
++
++static inline void dma_sync_single_for_device(unsigned long address, size_t size,
++					      enum dma_data_direction dir)
++{
++}
+ #endif
 -- 
 2.1.0
 
