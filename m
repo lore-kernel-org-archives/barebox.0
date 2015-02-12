@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1VJ-000821-MR
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:40:59 +0000
+ id 1YM1VJ-00082i-MN
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:40:58 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id ECB2C26C2001
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:03 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id BF6F926C2003
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:06 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:36 +0100
-Message-Id: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:38 +0100
+Message-Id: <1423777200-22965-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
+References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,95 +24,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 00/24] Phasing out direct usage of asm/mmu.h on ARM
+Subject: [PATCH RFT 02/24] ARM: move virt<->phys translation to io.h
 To: barebox@lists.infradead.org
 
-This series introduces to Barebox the streaming DMA ops and implements
-them for the ARM architecture. This will make it a lot easier to
-get common cache maintenance operations for all architectures and in
-turn allows for wider reuse of driver across architectures.
+That's the place where Linux has them and other architectures would
+implement this.
 
-I've tested this on a Tegra124 which is known to fall over in all sorts
-of funny ways if cache maintenance is broken. No odd behavior spotted.
+This will help in phasing out the direct usage of the ARM asm/mmu.h
+header.
 
-The series is bisect-clean and I've compile tested it on some defconfigs,
-but please go wild and TEST. I'll take any complaints.
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/include/asm/io.h  | 15 +++++++++++++++
+ arch/arm/include/asm/mmu.h | 12 ------------
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-Regards,
-Lucas
-
-Lucas Stach (24):
-  usb: gadget: include common.h in header
-  ARM: move virt<->phys translation to io.h
-  dma: add streaming DMA ops
-  ARM: move DMA alloc functions to dma.h
-  ARM: implement streaming DMA ops
-  AHCI: convert to streaming DMA ops
-  MCI: dw-mmc: convert to streaming DMA ops
-  MCI: imx: convert to streaming DMA ops
-  MCI: tegra-sdmmc: convert to streaming DMA ops
-  net: arc-emac: convert to streaming DMA ops
-  net: cpsw: convert to streaming DMA ops
-  net: at91_ether: convert to streaming DMA ops
-  net: davinci_emac: convert to streaming DMA ops
-  net: designware: convert to streaming DMA ops
-  net: fec: convert to streaming DMA ops
-  net: macb: convert to streaming DMA ops
-  net: orion-gbe: convert to streaming DMA ops
-  net: rtl8169: convert to streaming DMA ops
-  net: xgmac: convert to streaming DMA ops
-  usb: gadget: fsl_udc: convert to streaming DMA ops
-  usb: host: ehci: convert to streaming DMA ops
-  usb: host: ohci: convert to streaming DMA ops
-  ARM: bcm2835: mbox: convert to streaming DMA ops
-  ARM: MMU: unexport cache maintenance functions
-
- arch/arm/cpu/mmu.c                    | 49 +++++++++++++++++++++++------------
- arch/arm/include/asm/dma.h            | 30 ++++++++++++++++++++-
- arch/arm/include/asm/io.h             | 15 +++++++++++
- arch/arm/include/asm/mmu.h            | 45 --------------------------------
- arch/arm/mach-bcm2835/mbox.c          |  8 +++---
- drivers/ata/ahci.c                    | 14 +++++++---
- drivers/dma/apbh_dma.c                |  2 +-
- drivers/mci/Kconfig                   |  2 +-
- drivers/mci/dw_mmc.c                  | 25 +++++++++---------
- drivers/mci/imx-esdhc.c               | 28 ++++++++++++--------
- drivers/mci/tegra-sdmmc.c             | 26 ++++++++++---------
- drivers/mtd/nand/nand_mxs.c           |  2 +-
- drivers/net/Kconfig                   |  1 +
- drivers/net/altera_tse.c              |  1 +
- drivers/net/arc_emac.c                | 17 +++++++-----
- drivers/net/at91_ether.c              | 11 ++++++--
- drivers/net/cpsw.c                    | 11 +++++---
- drivers/net/davinci_emac.c            |  9 ++++---
- drivers/net/designware.c              | 20 ++++++++------
- drivers/net/fec_imx.c                 | 14 +++++++---
- drivers/net/macb.c                    |  9 +++++--
- drivers/net/mvneta.c                  |  1 +
- drivers/net/orion-gbe.c               | 14 ++++++----
- drivers/net/rtl8139.c                 |  1 +
- drivers/net/rtl8169.c                 | 31 ++++++++++------------
- drivers/net/xgmac.c                   | 12 ++++++---
- drivers/spi/mxs_spi.c                 |  1 -
- drivers/usb/gadget/fsl_udc.c          | 11 +++++---
- drivers/usb/host/ehci-hcd.c           |  9 ++++---
- drivers/usb/host/ohci-hcd.c           | 11 +++++---
- drivers/usb/host/xhci-hcd.c           |  2 +-
- drivers/usb/host/xhci-hub.c           |  1 -
- drivers/video/atmel_hlcdfb.c          |  1 -
- drivers/video/atmel_lcdfb.c           |  1 -
- drivers/video/atmel_lcdfb_core.c      |  2 +-
- drivers/video/imx-ipu-fb.c            |  2 +-
- drivers/video/imx-ipu-v3/ipu-common.c |  1 -
- drivers/video/imx-ipu-v3/ipufb.c      |  2 +-
- drivers/video/omap.c                  |  3 +--
- drivers/video/pxa.c                   |  2 +-
- include/dma-dir.h                     |  6 +++++
- include/dma.h                         | 11 ++++++++
- include/usb/gadget.h                  |  1 +
- 43 files changed, 281 insertions(+), 184 deletions(-)
- create mode 100644 include/dma-dir.h
-
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 850a99c..0f938ec 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -69,4 +69,19 @@ extern void memset_io(volatile void __iomem *, int, size_t);
+ #define setbits_8(addr, set) setbits(8, addr, set)
+ #define clrsetbits_8(addr, clear, set) clrsetbits(8, addr, clear, set)
+ 
++#ifdef CONFIG_MMU
++unsigned long virt_to_phys(void *virt);
++void *phys_to_virt(unsigned long phys);
++#else
++static inline void *phys_to_virt(unsigned long phys)
++{
++	return (void *)phys;
++}
++
++static inline unsigned long virt_to_phys(void *mem)
++{
++	return (unsigned long)mem;
++}
++#endif
++
+ #endif	/* __ASM_ARM_IO_H */
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index 4234979..3d87588 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -39,8 +39,6 @@ void dma_free_coherent(void *mem, size_t size);
+ void dma_clean_range(unsigned long, unsigned long);
+ void dma_flush_range(unsigned long, unsigned long);
+ void dma_inv_range(unsigned long, unsigned long);
+-unsigned long virt_to_phys(void *virt);
+-void *phys_to_virt(unsigned long phys);
+ void remap_range(void *_start, size_t size, uint32_t flags);
+ void *map_io_sections(unsigned long physaddr, void *start, size_t size);
+ uint32_t mmu_get_pte_cached_flags(void);
+@@ -57,16 +55,6 @@ static inline void dma_free_coherent(void *mem, size_t size)
+ 	free(mem);
+ }
+ 
+-static inline void *phys_to_virt(unsigned long phys)
+-{
+-	return (void *)phys;
+-}
+-
+-static inline unsigned long virt_to_phys(void *mem)
+-{
+-	return (unsigned long)mem;
+-}
+-
+ static inline void dma_clean_range(unsigned long s, unsigned long e)
+ {
+ }
 -- 
 2.1.0
 
