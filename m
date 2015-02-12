@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1WB-0008JS-CG
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:55 +0000
+ id 1YM1Wz-0000N2-VK
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:42:43 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id AB90B26C200F
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:12 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id F007926C2014
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:14 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:50 +0100
-Message-Id: <1423777200-22965-15-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:55 +0100
+Message-Id: <1423777200-22965-20-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,73 +24,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 14/24] net: designware: convert to streaming DMA ops
+Subject: [PATCH RFT 19/24] net: xgmac: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/designware.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/net/xgmac.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index 2bc4471..1e1befd 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -27,7 +27,6 @@
+diff --git a/drivers/net/xgmac.c b/drivers/net/xgmac.c
+index c1e4da8..3369a64 100644
+--- a/drivers/net/xgmac.c
++++ b/drivers/net/xgmac.c
+@@ -25,7 +25,6 @@
+ #include <errno.h>
  #include <io.h>
- #include <net.h>
- #include <of_net.h>
--#include <asm/mmu.h>
- #include <net/designware.h>
- #include <linux/phy.h>
  #include <linux/err.h>
-@@ -197,8 +196,8 @@ static void rx_descs_init(struct eth_device *dev)
- 		else
- 			desc_p->dmamac_cntl |= DESC_RXCTRL_RXCHAIN;
+-#include <asm/mmu.h>
  
--		dma_inv_range((unsigned long)desc_p->dmamac_addr,
--			      (unsigned long)desc_p->dmamac_addr + CONFIG_ETH_BUFSIZE);
-+		dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr,
-+					CONFIG_ETH_BUFSIZE, DMA_FROM_DEVICE);
- 		desc_p->txrx_status = DESC_RXSTS_OWNBYDMA;
- 	}
+ #define TX_NUM_DESC			1
+ #define RX_NUM_DESC			32
+@@ -587,7 +586,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
+ 	struct xgmac_dma_desc *txdesc = &priv->tx_chain[currdesc];
+ 	int ret;
  
-@@ -302,8 +301,8 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
- 	}
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	desc_set_buf_addr_and_size(txdesc, packet, length);
+ 	desc_set_tx_owner(txdesc, TXDESC_FIRST_SEG |
+ 		TXDESC_LAST_SEG | TXDESC_CRC_EN_APPEND);
+@@ -596,6 +595,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
+ 	writel(1, priv->base + XGMAC_DMA_TX_POLL);
  
- 	memcpy((void *)desc_p->dmamac_addr, packet, length);
--	dma_flush_range((unsigned long)desc_p->dmamac_addr,
--			(unsigned long)desc_p->dmamac_addr + length);
-+	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
-+				   DMA_TO_DEVICE);
+ 	ret = wait_on_timeout(1 * SECOND, !desc_get_owner(txdesc));
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	if (ret) {
+ 		dev_err(priv->dev, "TX timeout\n");
+ 		return ret;
+@@ -611,14 +611,19 @@ static int xgmac_recv(struct eth_device *edev)
+ 	u32 currdesc = priv->rx_currdesc;
+ 	struct xgmac_dma_desc *rxdesc = &priv->rx_chain[currdesc];
+ 	int length = 0;
++	void *buf_addr;
  
- 	if (priv->enh_desc) {
- 		desc_p->txrx_status |= DESC_ENH_TXSTS_TXFIRST | DESC_ENH_TXSTS_TXLAST;
-@@ -328,6 +327,9 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
+ 	/* check if the host has the desc */
+ 	if (desc_get_owner(rxdesc))
+ 		return -1; /* something bad happened */
  
- 	/* Start the transmission */
- 	writel(POLL_DATA, &dma_p->txpolldemand);
-+	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
-+				DMA_TO_DEVICE);
-+
- 	return 0;
- }
+ 	length = desc_get_rx_frame_len(rxdesc);
++	buf_addr = desc_get_buf_addr(rxdesc);
  
-@@ -351,10 +353,11 @@ static int dwc_ether_rx(struct eth_device *dev)
- 	 * Make the current descriptor valid again and go to
- 	 * the next one
- 	 */
--	dma_inv_range((unsigned long)desc_p->dmamac_addr,
--		      (unsigned long)desc_p->dmamac_addr + length);
--
-+	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
-+				DMA_FROM_DEVICE);
- 	net_receive(dev, desc_p->dmamac_addr, length);
-+	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
+-	net_receive(edev, desc_get_buf_addr(rxdesc), length);
++	dma_sync_single_for_cpu((unsigned long)buf_addr, length, DMA_FROM_DEVICE);
++	net_receive(edev, , length);
++	dma_sync_single_for_device((unsigned long)buf_addr, length,
 +				   DMA_FROM_DEVICE);
  
- 	desc_p->txrx_status |= DESC_RXSTS_OWNBYDMA;
- 
+ 	/* set descriptor back to owned by XGMAC */
+ 	desc_set_rx_owner(rxdesc);
 -- 
 2.1.0
 
