@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLpY2-0003lb-8A
+ Linux)) id 1YLpY2-0003lk-8C
  for barebox@lists.infradead.org; Thu, 12 Feb 2015 08:55:05 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1YLpXf-0000x9-PR
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 09:54:35 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <sha@pengutronix.de>) id 1YLpXf-0005Gg-OU
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 09:54:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Feb 2015 09:54:17 +0100
-Message-Id: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Feb 2015 09:54:21 +0100
+Message-Id: <1423731274-9860-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
+References: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,70 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: mtd partition handling updates
+Subject: [PATCH 04/17] mtd: partitions: Add error check
 To: Barebox List <barebox@lists.infradead.org>
 
-This series updates the mtd partition handling in barebox. It used
-to be too simple to create conflicting or inconsistent partitions on
-mtd devices. mtd partitions can be changed from board code, from the
-device tree, using addpart/delpart and with this series also with
-the newly created 'partitions' parameter for mtd devices. The
-informations are now kept in a consistent state, with each changed
-partition the partitions parameter is updated and when starting
-the kernel partitions in the device tree are also updated to the
-current partitioning.
-What's still missing is a way to store the partitioning somewhere
-in the environment, perhaps in a nonvolatile variable.
+add_mtd_device can fail. Add an error check and bail out properly.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/partition.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+index 033a7d2..c514d4b 100644
+--- a/drivers/mtd/partition.c
++++ b/drivers/mtd/partition.c
+@@ -108,6 +108,7 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
+ 		uint64_t size, unsigned long flags, const char *name)
+ {
+ 	struct mtd_info *part;
++	int ret;
+ 
+ 	part = xzalloc(sizeof(*part));
+ 
+@@ -168,9 +169,17 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
+ 	if (!strncmp(mtd->cdev.name, name, strlen(mtd->cdev.name)))
+ 		part->cdev.partname = xstrdup(name + strlen(mtd->cdev.name) + 1);
+ 
+-	add_mtd_device(part, part->name, DEVICE_ID_SINGLE);
++	ret = add_mtd_device(part, part->name, DEVICE_ID_SINGLE);
++	if (ret)
++		goto err;
+ 
+ 	return part;
++err:
++	free(part->cdev.partname);
++	free(part->name);
++	free(part);
++
++	return ERR_PTR(ret);
+ }
+ 
+ int mtd_del_partition(struct mtd_info *part)
+-- 
+2.1.4
 
-The following changes since commit d7dc46d5d6f2c80d1719ef877df728457790ac45:
-
-  defaultenv: ignore barebox_zero_env (2015-02-11 08:34:29 +0100)
-
-are available in the git repository at:
-
-  git://git.pengutronix.de/git/barebox.git 
-
-for you to fetch changes up to cd7feae00b43eeddcaeb229f861d0ddac93f91e2:
-
-  defaultenv-2: mtdparts-add: Use new partition parameter (2015-02-12 09:33:44 +0100)
-
-----------------------------------------------------------------
-Sascha Hauer (17):
-      of: Add for_each_child_of_node_safe
-      mtd: core: add error checks
-      mtd: partitions: Use xstrdup
-      mtd: partitions: Add error check
-      mtd: Add partitions to list
-      mtd: nand: remove automatically created bb devices
-      move cmdline partition parsing code to separate file
-      cmdlinepart: Change SIZE_REMAINING to loff_t
-      cmdlinepart: make argument types safer
-      cmdlinepart: add function to parse a cmdline partition string
-      cmndlinepart: skip devname if partstr already contains it
-      mtd: forbid conflicting mtd partitions
-      mtd: Use flags parameter in mtd_add_partition
-      mtd: Add a partitions parameter to mtd devices
-      mtd: fixup device tree partitions
-      defaultenv-2: mtdparts-add: remove unused variable
-      defaultenv-2: mtdparts-add: Use new partition parameter
-
- commands/partition.c                          | 104 +------------
- defaultenv/defaultenv-2-base/bin/mtdparts-add |  15 +-
- drivers/mtd/core.c                            | 213 +++++++++++++++++++++++++-
- drivers/mtd/nand/nand-bb.c                    |  16 +-
- drivers/mtd/partition.c                       |  14 +-
- include/cmdlinepart.h                         |  14 ++
- include/linux/mtd/mtd.h                       |   5 +
- include/nand.h                                |   7 +-
- include/of.h                                  |   2 +
- lib/Makefile                                  |   1 +
- lib/cmdlinepart.c                             | 124 +++++++++++++++
- 11 files changed, 393 insertions(+), 122 deletions(-)
- create mode 100644 include/cmdlinepart.h
- create mode 100644 lib/cmdlinepart.c
 
 _______________________________________________
 barebox mailing list
