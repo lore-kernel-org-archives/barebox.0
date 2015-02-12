@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1W9-0008JT-Qi
+ id 1YM1W9-0008KX-Qn
  for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:52 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 2CB7926C2009
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id C7DD826C200B
  for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:10 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:44 +0100
-Message-Id: <1423777200-22965-9-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:46 +0100
+Message-Id: <1423777200-22965-11-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,79 +24,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 08/24] MCI: imx: convert to streaming DMA ops
+Subject: [PATCH RFT 10/24] net: arc-emac: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/imx-esdhc.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/net/arc_emac.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 23bdc1f..8b45500 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -22,6 +22,7 @@
+diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
+index e050199..4bf456e 100644
+--- a/drivers/net/arc_emac.c
++++ b/drivers/net/arc_emac.c
+@@ -16,7 +16,6 @@
+  * GNU General Public License for more details.
   */
- #include <config.h>
- #include <common.h>
-+#include <dma.h>
- #include <driver.h>
- #include <init.h>
- #include <of.h>
-@@ -31,7 +32,6 @@
- #include <io.h>
- #include <linux/clk.h>
- #include <linux/err.h>
+ 
 -#include <asm/mmu.h>
- #include <mach/generic.h>
- #include <mach/esdhc.h>
- #include <gpio.h>
-@@ -211,6 +211,7 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	u32	irqstat;
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
- 	void __iomem *regs = host->regs;
-+	unsigned int num_bytes = 0;
- 	int ret;
+ #include <clock.h>
+ #include <common.h>
+ #include <dma.h>
+@@ -195,6 +194,8 @@ static int arc_emac_open(struct eth_device *edev)
+ 		rxbd->data = cpu_to_le32(rxbuf);
  
- 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
-@@ -225,12 +226,15 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		err = esdhc_setup_data(mci, data);
- 		if(err)
- 			return err;
--		if (data->flags & MMC_DATA_WRITE) {
--			dma_flush_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
--		} else
--			dma_clean_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
-+
-+		num_bytes = data->blocks * data->blocksize;
-+
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_device((unsigned long)data->src,
-+						   num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_device((unsigned long)data->dest,
-+						   num_bytes, DMA_FROM_DEVICE);
+ 		/* Return ownership to EMAC */
++		dma_sync_single_for_device((unsigned long)rxbuf, PKTSIZE,
++					   DMA_FROM_DEVICE);
+ 		rxbd->info = cpu_to_le32(FOR_EMAC | PKTSIZE);
  
+ 		*last_rx_bd = (*last_rx_bd + 1) % RX_BD_NUM;
+@@ -244,7 +245,7 @@ static int arc_emac_send(struct eth_device *edev, void *data, int length)
+ 		length = EMAC_ZLEN;
  	}
  
-@@ -313,10 +317,12 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		} while (!(irqstat & IRQSTAT_TC) &&
- 				(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
+-	dma_flush_range((unsigned long)data, (unsigned long)data + length);
++	dma_sync_single_for_device((unsigned long)data, length, DMA_TO_DEVICE);
  
--		if (data->flags & MMC_DATA_READ) {
--			dma_inv_range((unsigned long)data->dest,
--					(unsigned long)(data->dest + data->blocks * 512));
--		}
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_cpu((unsigned long)data->src,
-+						num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_cpu((unsigned long)data->dest,
-+						num_bytes, DMA_FROM_DEVICE);
- #endif
+ 	bd->data = cpu_to_le32(data);
+ 	bd->info = cpu_to_le32(FOR_EMAC | FIRST_OR_LAST_MASK | length);
+@@ -253,6 +254,8 @@ static int arc_emac_send(struct eth_device *edev, void *data, int length)
+ 	ret = wait_on_timeout(20 * MSECOND,
+ 			      (arc_reg_get(priv, R_STATUS) & TXINT_MASK) != 0);
+ 
++	dma_sync_single_for_cpu((unsigned long)data, length, DMA_TO_DEVICE);
++
+ 	if (ret) {
+ 		dev_err(&edev->dev, "transmit timeout\n");
+ 		return ret;
+@@ -294,18 +297,19 @@ static int arc_emac_recv(struct eth_device *edev)
+ 			printk(KERN_DEBUG "incomplete packet received\n");
+ 
+ 			/* Return ownership to EMAC */
+-			rxbd->info = cpu_to_le32(FOR_EMAC | PKTSIZE);
+ 			continue;
+ 		}
+ 
+ 		pktlen = info & LEN_MASK;
+ 
+-		/* invalidate current receive buffer */
+-		dma_inv_range((unsigned long)rxbd->data,
+-			      (unsigned long)rxbd->data + pktlen);
++		dma_sync_single_for_cpu((unsigned long)rxbd->data, pktlen,
++					DMA_FROM_DEVICE);
+ 
+ 		net_receive(edev, (unsigned char *)rxbd->data, pktlen);
+ 
++		dma_sync_single_for_device((unsigned long)rxbd->data, pktlen,
++					   DMA_FROM_DEVICE);
++
+ 		rxbd->info = cpu_to_le32(FOR_EMAC | PKTSIZE);
  	}
  
 -- 
