@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YLpY2-0003m4-7c
+ Linux)) id 1YLpY2-0003ly-85
  for barebox@lists.infradead.org; Thu, 12 Feb 2015 08:54:59 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Feb 2015 09:54:33 +0100
-Message-Id: <1423731274-9860-17-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 12 Feb 2015 09:54:30 +0100
+Message-Id: <1423731274-9860-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
 References: <1423731274-9860-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/17] defaultenv-2: mtdparts-add: remove unused variable
+Subject: [PATCH 13/17] mtd: Use flags parameter in mtd_add_partition
 To: Barebox List <barebox@lists.infradead.org>
+
+mtd_add_partition is passed a flag parameter. This has been unused
+so the DEVFS_PARTITION_FIXED and DEVFS_PARTITION_READONLY were ignored.
+Fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- defaultenv/defaultenv-2-base/bin/mtdparts-add | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/mtd/partition.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/defaultenv/defaultenv-2-base/bin/mtdparts-add b/defaultenv/defaultenv-2-base/bin/mtdparts-add
-index f49561c..a0e419e 100644
---- a/defaultenv/defaultenv-2-base/bin/mtdparts-add
-+++ b/defaultenv/defaultenv-2-base/bin/mtdparts-add
-@@ -5,7 +5,6 @@ mkdir -p /tmp/mtdparts
- parts=
- device=
- kernelname=
--bbdev=
+diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+index c514d4b..98b9081 100644
+--- a/drivers/mtd/partition.c
++++ b/drivers/mtd/partition.c
+@@ -123,6 +123,7 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
+ 	part->ecclayout = mtd->ecclayout;
+ 	part->ecc_strength = mtd->ecc_strength;
+ 	part->subpage_sft = mtd->subpage_sft;
++	part->cdev.flags = flags;
  
- while getopt "p:d:k:b" opt; do
-         if [ ${opt} = p ]; then
-@@ -14,8 +13,6 @@ while getopt "p:d:k:b" opt; do
-                 device=${OPTARG}
-         elif [ ${opt} = k ]; then
-                 kernelname=${OPTARG}
--	elif [ ${opt} = b ]; then
--		bbdev=true
-         fi
- done
- 
+ 	if (mtd->numeraseregions > 1) {
+ 		/* Deal with variable erase size stuff */
 -- 
 2.1.4
 
