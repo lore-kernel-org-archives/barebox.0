@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1W9-0008JW-Qo
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:54 +0000
+ id 1YM1W9-0008JR-Qe
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:52 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id D7C9026C2002
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:09 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 75F3226C200A
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:10 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:43 +0100
-Message-Id: <1423777200-22965-8-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:45 +0100
+Message-Id: <1423777200-22965-10-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,74 +24,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 07/24] MCI: dw-mmc: convert to streaming DMA ops
+Subject: [PATCH RFT 09/24] MCI: tegra-sdmmc: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/Kconfig  |  2 +-
- drivers/mci/dw_mmc.c | 24 ++++++++++++------------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/mci/tegra-sdmmc.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index dbcc38d..a5cf2fe 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -36,7 +36,7 @@ comment "--- MCI host drivers ---"
+diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
+index 0e23d6f..670c280 100644
+--- a/drivers/mci/tegra-sdmmc.c
++++ b/drivers/mci/tegra-sdmmc.c
+@@ -17,10 +17,10 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
  
- config MCI_DW
- 	bool "Synopsys DesignWare Memory Card Interface"
--	depends on ARM
-+	depends on HAS_DMA
- 	help
- 	  This selects support for the Synopsys DesignWare Mobile Storage IP
- 	  block, this provides host support for SD and MMC interfaces, in both
-diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
-index 3992815..f02ea62 100644
---- a/drivers/mci/dw_mmc.c
-+++ b/drivers/mci/dw_mmc.c
-@@ -29,7 +29,6 @@
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <asm-generic/errno.h>
 -#include <asm/mmu.h>
- 
- #define DWMCI_CTRL		0x000
- #define	DWMCI_PWREN		0x004
-@@ -282,7 +281,6 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	uint64_t start;
+ #include <common.h>
+ #include <clock.h>
+ #include <driver.h>
++#include <dma.h>
+ #include <gpio.h>
+ #include <init.h>
+ #include <io.h>
+@@ -100,6 +100,7 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 				struct mci_data *data)
+ {
+ 	struct tegra_sdmmc_host *host = to_tegra_sdmmc_host(mci);
++	unsigned int num_bytes = 0;
+ 	u32 val = 0;
  	int ret;
- 	unsigned int num_bytes = 0;
--	const void *writebuf = NULL;
  
- 	start = get_time_ns();
- 	while (1) {
-@@ -300,12 +298,12 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+@@ -109,15 +110,15 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 
+ 	/* Set up for a data transfer if we have one */
  	if (data) {
- 		num_bytes = data->blocks * data->blocksize;
- 
--		if (data->flags & MMC_DATA_WRITE) {
++		num_bytes = data->blocks * data->blocksize;
++
+ 		if (data->flags & MMC_DATA_WRITE) {
 -			dma_flush_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
--
--			writebuf = data->src;
--		}
-+		if (data->flags & MMC_DATA_WRITE)
+-			                (unsigned long)(data->src +
+-			                data->blocks * 512));
 +			dma_sync_single_for_device((unsigned long)data->src,
 +						   num_bytes, DMA_TO_DEVICE);
-+		else
+ 			writel((u32)data->src, host->regs + SDHCI_DMA_ADDRESS);
+ 		} else {
+-			dma_clean_range((unsigned long)data->src,
+-			                (unsigned long)(data->src +
+-			                data->blocks * 512));
 +			dma_sync_single_for_device((unsigned long)data->dest,
 +						   num_bytes, DMA_FROM_DEVICE);
+ 			writel((u32)data->dest, host->regs + SDHCI_DMA_ADDRESS);
+ 		}
  
- 		ret = dwmci_prepare_data(host, data);
- 		if (ret)
-@@ -389,10 +387,12 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		ctrl &= ~(DWMCI_DMA_EN);
- 		dwmci_writel(host, DWMCI_CTRL, ctrl);
+@@ -255,11 +256,12 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 		}
+ 		writel(val, host->regs + SDHCI_INT_STATUS);
  
 -		if (data->flags & MMC_DATA_READ) {
 -			dma_inv_range((unsigned long)data->dest,
--					(unsigned long)(data->dest + data->blocks * 512));
+-			              (unsigned long)(data->dest +
+-			              data->blocks * 512));
 -		}
 +		if (data->flags & MMC_DATA_WRITE)
 +			dma_sync_single_for_cpu((unsigned long)data->src,
@@ -101,7 +95,7 @@ index 3992815..f02ea62 100644
 +						num_bytes, DMA_FROM_DEVICE);
  	}
  
- 	udelay(100);
+ 	return 0;
 -- 
 2.1.0
 
