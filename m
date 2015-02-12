@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLq8i-0002jN-PM
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 09:32:53 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 078FEA00423
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 10:33:17 +0100 (CET)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Thu, 12 Feb 2015 10:30:54 +0100
-Message-Id: <1423733455-27084-1-git-send-email-w.egorov@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YLqQT-0007On-CW
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 09:51:15 +0000
+Date: Thu, 12 Feb 2015 10:50:45 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150212095045.GS12209@pengutronix.de>
+References: <1423706690-2966-1-git-send-email-yamada.m@jp.panasonic.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1423706690-2966-1-git-send-email-yamada.m@jp.panasonic.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,49 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4: For next 1/2] reset_source: Add external reset
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] pbl: remove start_barebox() stub
+To: Masahiro Yamada <yamada.m@jp.panasonic.com>
+Cc: barebox@lists.infradead.org
 
-Some SoCs have special device pins for external reset signals.
+On Thu, Feb 12, 2015 at 11:04:50AM +0900, Masahiro Yamada wrote:
+> PBL never calls start_barebox().  If it does, it is a bug.
+> Without this stub function, we can detect such a bug at link time.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.m@jp.panasonic.com>
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- common/reset_source.c  | 1 +
- include/reset_source.h | 1 +
- 2 files changed, 2 insertions(+)
+Applied, thanks
 
-diff --git a/common/reset_source.c b/common/reset_source.c
-index 946670b..ae2f9f3 100644
---- a/common/reset_source.c
-+++ b/common/reset_source.c
-@@ -26,6 +26,7 @@ static const char * const reset_src_names[] = {
- 	[RESET_WKE] = "WKE",
- 	[RESET_JTAG] = "JTAG",
- 	[RESET_THERM] = "THERM",
-+	[RESET_EXT] = "EXT",
- };
- 
- static enum reset_src_type reset_source;
-diff --git a/include/reset_source.h b/include/reset_source.h
-index 6620228..367f93b 100644
---- a/include/reset_source.h
-+++ b/include/reset_source.h
-@@ -21,6 +21,7 @@ enum reset_src_type {
- 	RESET_WKE,	/* wake-up (some SoCs can handle this) */
- 	RESET_JTAG,	/* JTAG reset */
- 	RESET_THERM,	/* SoC shut down because of overtemperature */
-+	RESET_EXT,	/* External reset through device pin */
- };
- 
- #ifdef CONFIG_RESET_SOURCE
+Sascha
+
 -- 
-1.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
