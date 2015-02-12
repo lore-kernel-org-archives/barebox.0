@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YM1WB-0008Jz-IT
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:55 +0000
+ id 1YM1W9-0008Lq-Qk
+ for barebox@lists.infradead.org; Thu, 12 Feb 2015 21:41:54 +0000
 Received: from tellur.intern.lynxeye.de (p57B5FBCA.dip0.t-ipconnect.de
- [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id A6C8F26C2011
- for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:13 +0100 (CET)
+ [87.181.251.202]) by lynxeye.de (Postfix) with ESMTPA id 2CB8326C2006
+ for <barebox@lists.infradead.org>; Thu, 12 Feb 2015 22:40:12 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 12 Feb 2015 22:39:52 +0100
-Message-Id: <1423777200-22965-17-git-send-email-dev@lynxeye.de>
+Date: Thu, 12 Feb 2015 22:39:49 +0100
+Message-Id: <1423777200-22965-14-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,54 +24,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFT 16/24] net: macb: convert to streaming DMA ops
+Subject: [PATCH RFT 13/24] net: davinci_emac: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/macb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/davinci_emac.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index b941c27..957e4a7 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -47,7 +47,6 @@
- #include <platform_data/macb.h>
- #include <linux/clk.h>
- #include <linux/err.h>
--#include <asm/mmu.h>
- #include <linux/phy.h>
+diff --git a/drivers/net/davinci_emac.c b/drivers/net/davinci_emac.c
+index ce367a3..056ffe2 100644
+--- a/drivers/net/davinci_emac.c
++++ b/drivers/net/davinci_emac.c
+@@ -40,12 +40,12 @@
+  */
  
- #include "macb.h"
-@@ -122,7 +121,7 @@ static int macb_send(struct eth_device *edev, void *packet,
- 	macb->tx_ring[tx_head].ctrl = ctrl;
- 	macb->tx_ring[tx_head].addr = (ulong)packet;
- 	barrier();
+ #include <common.h>
++#include <dma.h>
+ #include <io.h>
+ #include <clock.h>
+ #include <net.h>
+ #include <malloc.h>
+ #include <init.h>
+-#include <asm/mmu.h>
+ #include <asm/system.h>
+ #include <linux/phy.h>
+ #include <mach/emac_defs.h>
+@@ -411,7 +411,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
+ 				    EMAC_CPPI_OWNERSHIP_BIT |
+ 				    EMAC_CPPI_EOP_BIT),
+ 		priv->emac_tx_desc + EMAC_DESC_PKT_FLAG_LEN);
 -	dma_flush_range((ulong) packet, (ulong)packet + length);
 +	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
- 	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
+ 	/* Send the packet */
+ 	writel(BD_TO_HW(priv->emac_tx_desc), priv->adap_emac + EMAC_TX0HDP);
  
- 	start = get_time_ns();
-@@ -135,6 +134,7 @@ static int macb_send(struct eth_device *edev, void *packet,
+@@ -429,6 +429,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
  			break;
  		}
- 	} while (!is_timeout(start, 100 * MSECOND));
+ 	}
 +	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
  
- 	if (ctrl & MACB_BIT(TX_UNDERRUN))
- 		dev_err(macb->dev, "TX underrun\n");
-@@ -188,7 +188,11 @@ static int gem_recv(struct eth_device *edev)
- 		status = macb->rx_ring[macb->rx_tail].ctrl;
- 		length = MACB_BFEXT(RX_FRMLEN, status);
- 		buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
-+		dma_sync_single_for_cpu((unsigned long)buffer, length,
-+					DMA_FROM_DEVICE);
- 		net_receive(edev, buffer, length);
-+		dma_sync_single_for_device((unsigned long)buffer, length,
-+					   DMA_FROM_DEVICE);
- 		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
- 		barrier();
+ 	dev_dbg(priv->dev, "- emac_send (ret_status %i)\n", ret_status);
+ 	return ret_status;
+@@ -460,9 +461,9 @@ static int davinci_emac_recv(struct eth_device *edev)
+ 		pkt = (unsigned char *)readl(rx_curr_desc + EMAC_DESC_BUFFER);
+ 		len = readl(rx_curr_desc + EMAC_DESC_BUFF_OFF_LEN) & 0xffff;
+ 		dev_dbg(priv->dev, "| emac_recv got packet (length %i)\n", len);
+-		dma_inv_range((ulong)pkt,
+-				(ulong)readl(rx_curr_desc + EMAC_DESC_BUFFER) + len);
++		dma_sync_single_for_cpu((unsigned long)pkt, len, DMA_FROM_DEVICE);
+ 		net_receive(edev, pkt, len);
++		dma_sync_single_for_device((unsigned long)pkt, len, DMA_FROM_DEVICE);
+ 		ret = len;
+ 	}
  
 -- 
 2.1.0
