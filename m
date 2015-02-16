@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YNJBY-0000HS-9n
- for barebox@lists.infradead.org; Mon, 16 Feb 2015 10:45:52 +0000
-Received: by mail-wi0-f175.google.com with SMTP id r20so25088445wiv.2
- for <barebox@lists.infradead.org>; Mon, 16 Feb 2015 02:45:30 -0800 (PST)
-Message-ID: <54E1CA46.10307@gmail.com>
-Date: Mon, 16 Feb 2015 11:45:26 +0100
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1423777200-22965-1-git-send-email-dev@lynxeye.de>
- <1423777200-22965-18-git-send-email-dev@lynxeye.de>
- <54DD2BE3.1090101@gmail.com>
-In-Reply-To: <54DD2BE3.1090101@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YNJmQ-0007As-I1
+ for barebox@lists.infradead.org; Mon, 16 Feb 2015 11:23:59 +0000
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Mon, 16 Feb 2015 12:23:31 +0100
+Message-Id: <1424085811-32526-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +15,52 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFT 17/24] net: orion-gbe: convert to streaming DMA ops
-To: Lucas Stach <dev@lynxeye.de>, barebox@lists.infradead.org
+Subject: [PATCH] defaultenv-2: init: don't call timeout again if the user
+ intervened
+To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-On 12.02.2015 23:40, Sebastian Hesselbarth wrote:
-> I really enjoy reading commit logs, but I cannot find any on this
-> one. ;) Mind adding a few words for the final patch set?
->
-> I'll give it a go on Dove and Kirkwood in the next few days, but be
-> aware that there is still no cache support on both anyway.
+With autoboot_timeout=0 the second 'timeout' might not get another
+character even if the user keeps a key pressed. So just reuse the key from
+the first call.
 
-As expected, the patches do no harm to the driver due to the missing
-cache support for MVEBU.
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ defaultenv/defaultenv-2-base/bin/init | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Tested-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+diff --git a/defaultenv/defaultenv-2-base/bin/init b/defaultenv/defaultenv-2-base/bin/init
+index 34807bcf585d..30651e55d277 100644
+--- a/defaultenv/defaultenv-2-base/bin/init
++++ b/defaultenv/defaultenv-2-base/bin/init
+@@ -37,6 +37,7 @@ fi
+ # allow to stop the boot before execute the /env/init/*
+ # but without waiting
+ timeout -s -a -v key 0
++autoboot="$?"
+ 
+ if [ "${key}" = "q" ]; then
+ 	${login_cmd}
+@@ -57,8 +58,10 @@ fi
+ 
+ [ -n ${login_cmd} ] && global.console.input_allow=1
+ 
+-timeout -a $global.autoboot_timeout -v key
+-autoboot="$?"
++if [ "$autoboot" = 0 ]; then
++	timeout -a $global.autoboot_timeout -v key
++	autoboot="$?"
++fi
+ 
+ [ -n ${login_cmd} ] && global.console.input_allow=0
+ 
+-- 
+2.1.4
 
-on SolidRun CuBox (Dove).
-
-Thanks!
 
 _______________________________________________
 barebox mailing list
