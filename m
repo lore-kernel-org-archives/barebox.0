@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22b.google.com ([2a00:1450:400c:c05::22b])
+Received: from mail-wg0-x236.google.com ([2a00:1450:400c:c00::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YNLKk-0007hN-59
- for barebox@lists.infradead.org; Mon, 16 Feb 2015 13:03:31 +0000
-Received: by mail-wi0-f171.google.com with SMTP id hi2so25861472wib.4
- for <barebox@lists.infradead.org>; Mon, 16 Feb 2015 05:03:07 -0800 (PST)
+ id 1YNLKz-0007sD-7c
+ for barebox@lists.infradead.org; Mon, 16 Feb 2015 13:03:49 +0000
+Received: by mail-wg0-f54.google.com with SMTP id y19so29144439wgg.13
+ for <barebox@lists.infradead.org>; Mon, 16 Feb 2015 05:03:22 -0800 (PST)
 From: h.feurstein@gmail.com
-Date: Mon, 16 Feb 2015 14:02:35 +0100
-Message-Id: <1424091755-23273-1-git-send-email-h.feurstein@gmail.com>
-MIME-Version: 1.0
+Date: Mon, 16 Feb 2015 14:03:18 +0100
+Message-Id: <1424091798-23393-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,112 +16,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands/digest: add verify support
+Subject: [PATCH] common/bootargs: add blkdevparts variables
 To: barebox@lists.infradead.org
+Cc: Hubert Feurstein <hubert.feurstein@deto.at>
 
-RnJvbTogSHViZXJ0IEZldXJzdGVpbiA8aC5mZXVyc3RlaW5AZ21haWwuY29tPgoKU2lnbmVkLW9m
-Zi1ieTogSHViZXJ0IEZldXJzdGVpbiA8aC5mZXVyc3RlaW5AZ21haWwuY29tPgpbRUJdOiByZXdv
-cmtlZCBiYXNlZCBvbiBTYXNjaGEncyBjb21tZW50cyBhbmQgdGVzdGVkIHdpdGggbWQ1c3VtClNp
-Z25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGNvbW1hbmRz
-L2RpZ2VzdC5jIHwgMTIwICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKystLS0tLQogMSBmaWxlIGNoYW5nZWQsIDExMCBpbnNlcnRpb25zKCspLCAxMCBkZWxl
-dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9jb21tYW5kcy9kaWdlc3QuYyBiL2NvbW1hbmRzL2RpZ2Vz
-dC5jCmluZGV4IDA5MmZkYTIuLjJhOTgyZTUgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL2RpZ2VzdC5j
-CisrKyBiL2NvbW1hbmRzL2RpZ2VzdC5jCkBAIC0yMywyNiArMjMsOTkgQEAKICNpbmNsdWRlIDxm
-Y250bC5oPgogI2luY2x1ZGUgPGVycm5vLmg+CiAjaW5jbHVkZSA8eGZ1bmNzLmg+CisjaW5jbHVk
-ZSA8bGliZmlsZS5oPgogI2luY2x1ZGUgPG1hbGxvYy5oPgogI2luY2x1ZGUgPGRpZ2VzdC5oPgor
-I2luY2x1ZGUgPGxpbnV4L2N0eXBlLmg+CisjaW5jbHVkZSA8Z2V0b3B0Lmg+CisKK3N0YXRpYyBp
-bmxpbmUgdW5zaWduZWQgY2hhciBwYXJzZV9oZXhjaGFyKGNoYXIgYykKK3sKKwlpZiAoIWlzeGRp
-Z2l0KGMpKQorCQlyZXR1cm4gMDsKKworCXJldHVybiBpc2RpZ2l0KGMpID8gKGMgLSAnMCcpIDog
-KChpc2xvd2VyKGMpID8gdG91cHBlcihjKSA6IGMpIC0gJ0EnICsgMHhBKTsKK30KKworc3RhdGlj
-IGlubGluZSB1bnNpZ25lZCBjaGFyIHBhcnNlX2hleGJ5dGUoY29uc3QgY2hhciAqcCkKK3sKKwly
-ZXR1cm4gKHBhcnNlX2hleGNoYXIoKnApIDw8IDQpIHwgcGFyc2VfaGV4Y2hhcigqKHAgKyAxKSk7
-Cit9CisKK3N0YXRpYyB1bnNpZ25lZCBjaGFyICpwYXJzZV9oYXNoKGludCBoYXNoX2xlbiwgY29u
-c3QgY2hhciAqaGV4c3RyKQoreworCWludCBpOworCXVuc2lnbmVkIGNoYXIgKnA7CisKKwlwID0g
-Y2FsbG9jKGhhc2hfbGVuLCBzaXplb2YodW5zaWduZWQgY2hhcikpOworCWlmICghcCkgeworCQlw
-ZXJyb3IoImNhbGxvYyIpOworCQlyZXR1cm4gTlVMTDsKKwl9CisKKwlmb3IgKGkgPSAwOyBpIDwg
-aGFzaF9sZW47IGkrKykKKwkJcFtpXSA9IHBhcnNlX2hleGJ5dGUoJmhleHN0cltpICogMl0pOwor
-CisJcmV0dXJuIHA7Cit9CiAKIHN0YXRpYyBpbnQgZG9fZGlnZXN0KGNoYXIgKmFsZ29yaXRobSwg
-aW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIHsKIAlzdHJ1Y3QgZGlnZXN0ICpkOwogCWludCByZXQg
-PSAwOwogCWludCBpOwotCXVuc2lnbmVkIGNoYXIgKmhhc2g7CisJdW5zaWduZWQgY2hhciAqaGFz
-aCA9IE5VTEw7CisJaW50IG9wdDsKKwl1bnNpZ25lZCBjaGFyICp2ZXJpZnlfaGFzaCA9IE5VTEw7
-CisJaW50IHZlcmlmeSA9IDA7CisJaW50IG1pbl9hcmdjID0gMjsKKwlpbnQgbGVuID0gMDsKKwlz
-c2l6ZV90IGJ1ZnN6OwogCiAJZCA9IGRpZ2VzdF9nZXRfYnlfbmFtZShhbGdvcml0aG0pOwogCUJV
-R19PTighZCk7CiAKLQlpZiAoYXJnYyA8IDIpCi0JCXJldHVybiBDT01NQU5EX0VSUk9SX1VTQUdF
-OworCXdoaWxlICgob3B0ID0gZ2V0b3B0KGFyZ2MsIGFyZ3YsICJ2OlY6IikpID4gMCkgeworCQlz
-d2l0Y2ggKG9wdCkgeworCQljYXNlICd2JzoKKwkJCXZlcmlmeSsrOworCQkJZnJlZSh2ZXJpZnlf
-aGFzaCk7CisJCQloYXNoID0geHN0cmR1cChvcHRhcmcpOworCQkJbGVuID0gc3RybGVuKGhhc2gp
-OworCQkJYnJlYWs7CisJCWNhc2UgJ1YnOgorCQkJdmVyaWZ5Kys7CisJCQlmcmVlKHZlcmlmeV9o
-YXNoKTsKKwkJCWhhc2ggPSByZWFkX2ZpbGUob3B0YXJnLCAmYnVmc3opOworCQkJbGVuID0gYnVm
-c3o7CisJCQlicmVhazsKKwkJZGVmYXVsdDoKKwkJCXJldCA9IENPTU1BTkRfRVJST1JfVVNBR0U7
-CisJCQlnb3RvIG91dDsKKwkJfQorCisJCWlmICh2ZXJpZnkgPT0gMSAmJiAoZC0+bGVuZ3RoICog
-MikgPD0gbGVuICYmIGhhc2ggIT0gTlVMTCkgeworCQkJbWluX2FyZ2MgKz0gMjsKKwkJCXZlcmlm
-eV9oYXNoID0gcGFyc2VfaGFzaChkLT5sZW5ndGgsIGhhc2gpOworCQkJaWYgKCF2ZXJpZnlfaGFz
-aCkKKwkJCQlyZXR1cm4gLUVOT01FTTsKKwkJCWZyZWUoaGFzaCk7CisJCX0gZWxzZQorCQkJcmV0
-dXJuIENPTU1BTkRfRVJST1JfVVNBR0U7CisJfQorCisJaWYgKGFyZ2MgPCBtaW5fYXJnYykgewor
-CQlyZXQgPSBDT01NQU5EX0VSUk9SX1VTQUdFOworCQlnb3RvIG91dDsKKwl9CisKKwlhcmd2ICs9
-IG1pbl9hcmdjIC0gMjsKIAogCWhhc2ggPSBjYWxsb2MoZC0+bGVuZ3RoLCBzaXplb2YodW5zaWdu
-ZWQgY2hhcikpOwogCWlmICghaGFzaCkgewogCQlwZXJyb3IoImNhbGxvYyIpOwotCQlyZXR1cm4g
-Q09NTUFORF9FUlJPUl9VU0FHRTsKKwkJcmV0ID0gLUVOT01FTTsKKwkJZ290byBvdXQ7CiAJfQog
-CiAJYXJndisrOwpAQCAtNjAsMTcgKzEzMywzMiBAQCBzdGF0aWMgaW50IGRvX2RpZ2VzdChjaGFy
-ICphbGdvcml0aG0sIGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJCWlmIChkaWdlc3RfZmlsZV93
-aW5kb3coZCwgZmlsZW5hbWUsIGhhc2gsIHN0YXJ0LCBzaXplKSA8IDApIHsKIAkJCXJldCA9IDE7
-CiAJCX0gZWxzZSB7Ci0JCQlmb3IgKGkgPSAwOyBpIDwgZC0+bGVuZ3RoOyBpKyspCisJCQlmb3Ig
-KGkgPSAwOyBpIDwgZC0+bGVuZ3RoOyBpKyspIHsKIAkJCQlwcmludGYoIiUwMngiLCBoYXNoW2ld
-KTsKKwkJCQlpZiAodmVyaWZ5ID4gMCAmJiBoYXNoW2ldICE9IHZlcmlmeV9oYXNoW2ldKQorCQkJ
-CQl2ZXJpZnkgPSAtMTsKKwkJCX0KIAotCQkJcHJpbnRmKCIgICVzXHQweCUwOGxseCAuLi4gMHgl
-MDhsbHhcbiIsCisJCQlwcmludGYoIiAgJXNcdDB4JTA4bGx4IC4uLiAweCUwOGxseCIsCiAJCQkJ
-ZmlsZW5hbWUsIHN0YXJ0LCBzdGFydCArIHNpemUpOworCisJCQlpZiAodmVyaWZ5IDwgMCkgewor
-CQkJCXByaW50ZigiICoqIEVSUk9SICoqICIpOworCQkJCXJldCA9IDE7CisJCQl9CisKKwkJCXBy
-aW50ZigiXG4iKTsKKworCQkJaWYgKHZlcmlmeSkKKwkJCQlicmVhazsKIAkJfQogCiAJCWFyZ3Yr
-KzsKIAl9CiAKK291dDoKIAlmcmVlKGhhc2gpOworCWZyZWUodmVyaWZ5X2hhc2gpOwogCiAJcmV0
-dXJuIHJldDsKIH0KQEAgLTg0LDEyICsxNzIsMTUgQEAgc3RhdGljIGludCBkb19tZDUoaW50IGFy
-Z2MsIGNoYXIgKmFyZ3ZbXSkKIAogQkFSRUJPWF9DTURfSEVMUF9TVEFSVChtZDVzdW0pCiBCQVJF
-Qk9YX0NNRF9IRUxQX1RFWFQoIkNhbGN1bGF0ZSBhIE1ENSBkaWdlc3Qgb3ZlciBhIEZJTEUgb3Ig
-YSBtZW1vcnkgYXJlYS4iKQorQkFSRUJPWF9DTURfSEVMUF9URVhUKCJPcHRpb25zOiIpCitCQVJF
-Qk9YX0NNRF9IRUxQX09QVCAoIi12IGhhc2giLCAgICAgInZlcmlmeSIpCitCQVJFQk9YX0NNRF9I
-RUxQX09QVCAoIi1WIGhhc2gtZmlsZSIsICJ2ZXJpZnkgaGFzaCBmaWxlIikKIEJBUkVCT1hfQ01E
-X0hFTFBfRU5ECiAKIEJBUkVCT1hfQ01EX1NUQVJUKG1kNXN1bSkKIAkuY21kCQk9IGRvX21kNSwK
-IAlCQVJFQk9YX0NNRF9ERVNDKCJjYWxjdWxhdGUgTUQ1IGNoZWNrc3VtIikKLQlCQVJFQk9YX0NN
-RF9PUFRTKCJGSUxFfEFSRUEuLi4iKQorCUJBUkVCT1hfQ01EX09QVFMoIlstdlZdIEZJTEV8QVJF
-QS4uLiIpCiAJQkFSRUJPWF9DTURfR1JPVVAoQ01EX0dSUF9GSUxFKQogCUJBUkVCT1hfQ01EX0hF
-TFAoY21kX21kNXN1bV9oZWxwKQogQkFSRUJPWF9DTURfRU5ECkBAIC0xMDUsMTIgKzE5NiwxNSBA
-QCBzdGF0aWMgaW50IGRvX3NoYTEoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAogQkFSRUJPWF9D
-TURfSEVMUF9TVEFSVChzaGExc3VtKQogQkFSRUJPWF9DTURfSEVMUF9URVhUKCJDYWxjdWxhdGUg
-YSBTSEExIGRpZ2VzdCBvdmVyIGEgRklMRSBvciBhIG1lbW9yeSBhcmVhLiIpCitCQVJFQk9YX0NN
-RF9IRUxQX1RFWFQoIk9wdGlvbnM6IikKK0JBUkVCT1hfQ01EX0hFTFBfT1BUICgiLXYgaGFzaCIs
-ICAgICAidmVyaWZ5IikKK0JBUkVCT1hfQ01EX0hFTFBfT1BUICgiLVYgaGFzaC1maWxlIiwgInZl
-cmlmeSBoYXNoIGZpbGUiKQogQkFSRUJPWF9DTURfSEVMUF9FTkQKIAogQkFSRUJPWF9DTURfU1RB
-UlQoc2hhMXN1bSkKIAkuY21kCQk9IGRvX3NoYTEsCiAJQkFSRUJPWF9DTURfREVTQygiY2FsY3Vs
-YXRlIFNIQTEgZGlnZXN0IikKLQlCQVJFQk9YX0NNRF9PUFRTKCJGSUxFfEFSRUEiKQorCUJBUkVC
-T1hfQ01EX09QVFMoIlstdlZdIEZJTEV8QVJFQSIpCiAJQkFSRUJPWF9DTURfR1JPVVAoQ01EX0dS
-UF9GSUxFKQogCUJBUkVCT1hfQ01EX0hFTFAoY21kX3NoYTFzdW1faGVscCkKIEJBUkVCT1hfQ01E
-X0VORApAQCAtMTI2LDEyICsyMjAsMTUgQEAgc3RhdGljIGludCBkb19zaGEyMjQoaW50IGFyZ2Ms
-IGNoYXIgKmFyZ3ZbXSkKIAogQkFSRUJPWF9DTURfSEVMUF9TVEFSVChzaGEyMjRzdW0pCiBCQVJF
-Qk9YX0NNRF9IRUxQX1RFWFQoIkNhbGN1bGF0ZSBhIFNIQTIyNCBkaWdlc3Qgb3ZlciBhIEZJTEUg
-b3IgYSBtZW1vcnkgYXJlYS4iKQorQkFSRUJPWF9DTURfSEVMUF9URVhUKCJPcHRpb25zOiIpCitC
-QVJFQk9YX0NNRF9IRUxQX09QVCAoIi12IGhhc2giLCAgICAgInZlcmlmeSIpCitCQVJFQk9YX0NN
-RF9IRUxQX09QVCAoIi1WIGhhc2gtZmlsZSIsICJ2ZXJpZnkgaGFzaCBmaWxlIikKIEJBUkVCT1hf
-Q01EX0hFTFBfRU5ECiAKIEJBUkVCT1hfQ01EX1NUQVJUKHNoYTIyNHN1bSkKIAkuY21kCQk9IGRv
-X3NoYTIyNCwKIAlCQVJFQk9YX0NNRF9ERVNDKCJjYWxjdWxhdGUgU0hBMjI0IGRpZ2VzdCIpCi0J
-QkFSRUJPWF9DTURfT1BUUygiRklMRXxBUkVBIikKKwlCQVJFQk9YX0NNRF9PUFRTKCJbLXZWXSBG
-SUxFfEFSRUEiKQogCUJBUkVCT1hfQ01EX0dST1VQKENNRF9HUlBfRklMRSkKIAlCQVJFQk9YX0NN
-RF9IRUxQKGNtZF9zaGEyMjRzdW1faGVscCkKIEJBUkVCT1hfQ01EX0VORApAQCAtMTQ3LDEyICsy
-NDQsMTUgQEAgc3RhdGljIGludCBkb19zaGEyNTYoaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAog
-QkFSRUJPWF9DTURfSEVMUF9TVEFSVChzaGEyNTZzdW0pCiBCQVJFQk9YX0NNRF9IRUxQX1RFWFQo
-IkNhbGN1bGF0ZSBhIFNIQTI1NiBkaWdlc3Qgb3ZlciBhIEZJTEUgb3IgYSBtZW1vcnkgYXJlYS4i
-KQorQkFSRUJPWF9DTURfSEVMUF9URVhUKCJPcHRpb25zOiIpCitCQVJFQk9YX0NNRF9IRUxQX09Q
-VCAoIi12IGhhc2giLCAgICAgInZlcmlmeSIpCitCQVJFQk9YX0NNRF9IRUxQX09QVCAoIi1WIGhh
-c2gtZmlsZSIsICJ2ZXJpZnkgaGFzaCBmaWxlIikKIEJBUkVCT1hfQ01EX0hFTFBfRU5ECiAKIEJB
-UkVCT1hfQ01EX1NUQVJUKHNoYTI1NnN1bSkKIAkuY21kCQk9IGRvX3NoYTI1NiwKIAlCQVJFQk9Y
-X0NNRF9ERVNDKCJjYWxjdWxhdGUgU0hBMjU2IGRpZ2VzdCIpCi0JQkFSRUJPWF9DTURfT1BUUygi
-RklMRXxBUkVBIikKKwlCQVJFQk9YX0NNRF9PUFRTKCJbLXZWXSBGSUxFfEFSRUEiKQogCUJBUkVC
-T1hfQ01EX0dST1VQKENNRF9HUlBfRklMRSkKIAlCQVJFQk9YX0NNRF9IRUxQKGNtZF9zaGEyNTZz
-dW1faGVscCkKIEJBUkVCT1hfQ01EX0VORAotLSAKMi4zLjAKCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+From: Hubert Feurstein <hubert.feurstein@deto.at>
+
+The kernel command line option blkdevparts works like mtdparts, but for all
+block devices. So it can be used for eMMC devices without the need of a
+traditional partition table.
+
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ common/bootargs.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
+
+diff --git a/common/bootargs.c b/common/bootargs.c
+index 6624f72..803736f 100644
+--- a/common/bootargs.c
++++ b/common/bootargs.c
+@@ -38,7 +38,7 @@ static int linux_bootargs_overwritten;
+  */
+ const char *linux_bootargs_get(void)
+ {
+-	char *bootargs, *mtdparts;
++	char *bootargs, *parts;
+ 
+ 	if (linux_bootargs_overwritten)
+ 		return linux_bootargs;
+@@ -49,14 +49,21 @@ const char *linux_bootargs_get(void)
+ 	if (!strlen(bootargs))
+ 		return getenv("bootargs");
+ 
+-	mtdparts = globalvar_get_match("linux.mtdparts.", ";");
++	linux_bootargs = bootargs;
+ 
+-	if (strlen(mtdparts)) {
+-		linux_bootargs = asprintf("%s mtdparts=%s", bootargs, mtdparts);
+-		free(bootargs);
+-		free(mtdparts);
+-	} else {
+-		free(mtdparts);
++	parts = globalvar_get_match("linux.mtdparts.", ";");
++	if (strlen(parts)) {
++		bootargs = asprintf("%s mtdparts=%s", linux_bootargs, parts);
++		free(linux_bootargs);
++		free(parts);
++		linux_bootargs = bootargs;
++	}
++
++	parts = globalvar_get_match("linux.blkdevparts.", ";");
++	if (strlen(parts)) {
++		bootargs = asprintf("%s blkdevparts=%s", linux_bootargs, parts);
++		free(linux_bootargs);
++		free(parts);
+ 		linux_bootargs = bootargs;
+ 	}
+ 
+@@ -78,3 +85,4 @@ int linux_bootargs_overwrite(const char *bootargs)
+ 
+ BAREBOX_MAGICVAR_NAMED(global_linux_bootargs_, global.linux.bootargs.*, "Linux bootargs variables");
+ BAREBOX_MAGICVAR_NAMED(global_linux_mtdparts_, global.linux.mtdparts.*, "Linux mtdparts variables");
++BAREBOX_MAGICVAR_NAMED(global_linux_blkdevparts_, global.linux.blkdevparts.*, "Linux blkdevparts variables");
+-- 
+2.3.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
