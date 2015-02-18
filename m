@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]
- helo=smtp.smtpout.orange.fr)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YHXu3-0004vN-7K
- for barebox@lists.infradead.org; Sat, 31 Jan 2015 13:16:00 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Sat, 31 Jan 2015 14:15:34 +0100
-Message-Id: <1422710134-30798-2-git-send-email-robert.jarzmik@free.fr>
-In-Reply-To: <1422710134-30798-1-git-send-email-robert.jarzmik@free.fr>
-References: <1422710134-30798-1-git-send-email-robert.jarzmik@free.fr>
+Received: from mail-pa0-f47.google.com ([209.85.220.47])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YNwfd-0005BU-8t
+ for barebox@lists.infradead.org; Wed, 18 Feb 2015 04:55:33 +0000
+Received: by padfb1 with SMTP id fb1so11748864pad.8
+ for <barebox@lists.infradead.org>; Tue, 17 Feb 2015 20:55:11 -0800 (PST)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 17 Feb 2015 20:54:40 -0800
+Message-Id: <1424235280-3776-1-git-send-email-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,550 +17,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] ARM: pxa: add lubbock board support
+Subject: [RESEND][PATCH] firmware: altera: Make nSTAT GPIO optional
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, kernel@pengutronix.de
 
-Add support for the Intel XScale PXA255 development system platform.
-
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
-Since v1: add env0 devices
-          change sram0 (no atags)
-	  remove smcs accessors
-	  for smcs91111 use addr_shift and bus width
----
- arch/arm/boards/Makefile                           |   1 +
- arch/arm/boards/lubbock/Makefile                   |   2 +
- arch/arm/boards/lubbock/board.c                    | 134 ++++++++++++++
- arch/arm/boards/lubbock/env/boot/nor-ubi           |   5 +
- arch/arm/boards/lubbock/env/init/mtdparts-nor      |  11 ++
- arch/arm/boards/lubbock/env/nv/linux.bootargs.base |   1 +
- arch/arm/boards/lubbock/lowlevel.c                 | 192 +++++++++++++++++++++
- arch/arm/configs/lubbock_defconfig                 | 106 ++++++++++++
- 8 files changed, 452 insertions(+)
- create mode 100644 arch/arm/boards/lubbock/Makefile
- create mode 100644 arch/arm/boards/lubbock/board.c
- create mode 100644 arch/arm/boards/lubbock/env/boot/nor-ubi
- create mode 100644 arch/arm/boards/lubbock/env/init/mtdparts-nor
- create mode 100644 arch/arm/boards/lubbock/env/nv/linux.bootargs.base
- create mode 100644 arch/arm/boards/lubbock/lowlevel.c
- create mode 100644 arch/arm/configs/lubbock_defconfig
-
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index c536298..e263760 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_MACH_HIGHBANK)			+= highbank/
- obj-$(CONFIG_MACH_IMX21ADS)			+= freescale-mx21-ads/
- obj-$(CONFIG_MACH_IMX233_OLINUXINO)		+= imx233-olinuxino/
- obj-$(CONFIG_MACH_IMX27ADS)			+= freescale-mx27-ads/
-+obj-$(CONFIG_MACH_LUBBOCK)			+= lubbock/
- obj-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP)		+= marvell-armada-xp-gp/
- obj-$(CONFIG_MACH_MB7707)			+= module-mb7707/
- obj-$(CONFIG_MACH_MIOA701)			+= mioa701/
-diff --git a/arch/arm/boards/lubbock/Makefile b/arch/arm/boards/lubbock/Makefile
-new file mode 100644
-index 0000000..01c7a25
---- /dev/null
-+++ b/arch/arm/boards/lubbock/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/lubbock/board.c b/arch/arm/boards/lubbock/board.c
-new file mode 100644
-index 0000000..6f517d8
---- /dev/null
-+++ b/arch/arm/boards/lubbock/board.c
-@@ -0,0 +1,134 @@
-+/*
-+ * (C) 2011 Robert Jarzmik <robert.jarzmik@free.fr>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <environment.h>
-+#include <fs.h>
-+#include <init.h>
-+#include <partition.h>
-+#include <led.h>
-+#include <gpio.h>
-+#include <pwm.h>
-+#include <linux/sizes.h>
-+
-+#include <mach/devices.h>
-+#include <mach/mfp-pxa27x.h>
-+#include <mach/pxa-regs.h>
-+#include <mach/udc_pxa2xx.h>
-+#include <mach/mci_pxa2xx.h>
-+
-+#include <net/smc91111.h>
-+#include <asm/armlinux.h>
-+#include <asm/io.h>
-+#include <asm/mmu.h>
-+
-+#include <generated/mach-types.h>
-+
-+#define ECOR            0x8000
-+#define ECOR_RESET      0x80
-+#define ECOR_LEVEL_IRQ  0x40
-+#define ECOR_WR_ATTRIB  0x04
-+#define ECOR_ENABLE     0x01
-+
-+#define ECSR            0x8002
-+#define ECSR_IOIS8      0x20
-+#define ECSR_PWRDWN     0x04
-+#define ECSR_INT        0x02
-+
-+static struct smc91c111_pdata smsc91x_pdata = {
-+	.control_setup = 0x0800,
-+	.config_setup = 0x10b2,
-+	.bus_width = 16,
-+	.addr_shift = 2,
-+};
-+
-+static unsigned long lubbock_pin_config[] = {
-+	GPIO15_nCS_1,	/* CS1 - Flash */
-+	GPIO78_nCS_2,	/* CS2 - Baseboard FGPA + SRAM */
-+	GPIO79_nCS_3,	/* CS3 - SMC ethernet */
-+	GPIO80_nCS_4,	/* CS4 - SA1111 */
-+
-+	/* LCD - 16bpp DSTN */
-+	GPIOxx_LCD_DSTN_16BPP,
-+
-+	/* FFUART */
-+	GPIO34_FFUART_RXD,
-+	GPIO35_FFUART_CTS,
-+	GPIO36_FFUART_DCD,
-+	GPIO37_FFUART_DSR,
-+	GPIO38_FFUART_RI,
-+	GPIO39_FFUART_TXD,
-+	GPIO40_FFUART_DTR,
-+	GPIO41_FFUART_RTS,
-+};
-+
-+static int lubbock_devices_init(void)
-+{
-+	void *nor0_iospace;
-+
-+	armlinux_set_architecture(MACH_TYPE_LUBBOCK);
-+
-+	pxa_add_uart((void *)0x40100000, 0);
-+	pxa_add_pwm((void *)0x40b00000, 0);
-+
-+	nor0_iospace = map_io_sections(0x0, (void *)0xe0000000, SZ_64M);
-+	add_cfi_flash_device(0, (ulong)nor0_iospace, SZ_64M, 0);
-+	add_cfi_flash_device(1, 0x04000000, SZ_64M, 0);
-+	devfs_add_partition("nor0", SZ_2M, SZ_256K, DEVFS_PARTITION_FIXED,
-+			    "env0");
-+	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL,
-+			   0x0c000300, 0xff4000, IORESOURCE_MEM,
-+			   &smsc91x_pdata);
-+	return 0;
-+}
-+
-+device_initcall(lubbock_devices_init);
-+
-+static void smc_init(void)
-+{
-+	/* SMC91c96 */
-+	void __iomem *attaddr = (void __iomem *)0x0e000000;
-+
-+	writel(ECOR_RESET, attaddr + (ECOR << 2));
-+	mdelay(100);
-+	writel(0, attaddr + (ECOR << 2));
-+	writel(ECOR_ENABLE, attaddr + (ECOR << 2));
-+
-+	/* force 16-bit mode */
-+	writel(0, attaddr + (ECSR << 2));
-+	mdelay(100);
-+}
-+
-+static int lubbock_coredevice_init(void)
-+{
-+	barebox_set_model("Lubbock PXA25x");
-+	barebox_set_hostname("lubbock");
-+	pxa2xx_mfp_config(ARRAY_AND_SIZE(lubbock_pin_config));
-+	smc_init();
-+	return 0;
-+}
-+coredevice_initcall(lubbock_coredevice_init);
-+
-+static int lubbock_mem_init(void)
-+{
-+	arm_add_mem_device("ram0", 0xa0000000, SZ_64M);
-+	add_mem_device("sram0", 0x0a000000, SZ_1M, IORESOURCE_MEM_WRITEABLE);
-+	return 0;
-+}
-+mem_initcall(lubbock_mem_init);
-diff --git a/arch/arm/boards/lubbock/env/boot/nor-ubi b/arch/arm/boards/lubbock/env/boot/nor-ubi
-new file mode 100644
-index 0000000..533605e
---- /dev/null
-+++ b/arch/arm/boards/lubbock/env/boot/nor-ubi
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+global.bootm.image="/dev/nor0.kernel"
-+#global.bootm.oftree="/env/oftree"
-+global.linux.bootargs.dyn.root="root=ubi0:linux_root ubi.mtd=nor0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/lubbock/env/init/mtdparts-nor b/arch/arm/boards/lubbock/env/init/mtdparts-nor
-new file mode 100644
-index 0000000..3307596
---- /dev/null
-+++ b/arch/arm/boards/lubbock/env/init/mtdparts-nor
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+        init-menu-add-entry "$0" "NOR partitions"
-+        exit
-+fi
-+
-+mtdparts="2048k@0(nor0.barebox)ro,256k(nor0.barebox-env),256k(nor0.barebox-logo),256k(nor0.barebox-logo2),5120k(nor0.kernel),-(nor0.root)"
-+kernelname="application-flash"
-+
-+mtdparts-add -d nor0 -k ${kernelname} -p ${mtdparts}
-diff --git a/arch/arm/boards/lubbock/env/nv/linux.bootargs.base b/arch/arm/boards/lubbock/env/nv/linux.bootargs.base
-new file mode 100644
-index 0000000..476b1fb
---- /dev/null
-+++ b/arch/arm/boards/lubbock/env/nv/linux.bootargs.base
-@@ -0,0 +1 @@
-+console=ttyS0,115200
-diff --git a/arch/arm/boards/lubbock/lowlevel.c b/arch/arm/boards/lubbock/lowlevel.c
-new file mode 100644
-index 0000000..3c8ae76
---- /dev/null
-+++ b/arch/arm/boards/lubbock/lowlevel.c
-@@ -0,0 +1,192 @@
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <linux/sizes.h>
-+#include <mach/pxa-regs.h>
-+#include <mach/regs-ost.h>
-+
-+/*
-+ * Memory settings
-+ */
-+#define DEFAULT_MSC0_VAL	0x23d223d2
-+#define DEFAULT_MSC1_VAL	0x3ff1a441
-+#define DEFAULT_MSC2_VAL	0x7ff17ff1
-+#define DEFAULT_MDCNFG_VAL	0x00001ac9
-+#define DEFAULT_MDREFR_VAL	0x00018018
-+#define DEFAULT_MDMRS_VAL	0x00000000
-+
-+#define DEFAULT_FLYCNFG_VAL	0x00000000
-+#define DEFAULT_SXCNFG_VAL	0x00000000
-+
-+/*
-+ * PCMCIA and CF Interfaces
-+ */
-+#define DEFAULT_MECR_VAL	0x00000000
-+#define DEFAULT_MCMEM0_VAL	0x00010504
-+#define DEFAULT_MCMEM1_VAL	0x00010504
-+#define DEFAULT_MCATT0_VAL	0x00010504
-+#define DEFAULT_MCATT1_VAL	0x00010504
-+#define DEFAULT_MCIO0_VAL	0x00004715
-+#define DEFAULT_MCIO1_VAL	0x00004715
-+
-+static inline void writelrb(uint32_t val, volatile u32 __iomem *addr)
-+{
-+	writel(val, addr);
-+	barrier();
-+	readl(addr);
-+	barrier();
-+}
-+
-+static inline void pxa_wait_ticks(int ticks)
-+{
-+	writel(0, &OSCR);
-+	while (readl(&OSCR) < ticks)
-+		barrier();
-+}
-+
-+static inline void pxa2xx_dram_init(void)
-+{
-+	uint32_t tmp;
-+	int i;
-+	/*
-+	 * 1) Initialize Asynchronous static memory controller
-+	 */
-+
-+	writelrb(DEFAULT_MSC0_VAL, &MSC0);
-+	writelrb(DEFAULT_MSC1_VAL, &MSC1);
-+	writelrb(DEFAULT_MSC2_VAL, &MSC2);
-+	/*
-+	 * 2) Initialize Card Interface
-+	 */
-+
-+	/* MECR: Memory Expansion Card Register */
-+	writelrb(DEFAULT_MECR_VAL, &MECR);
-+	/* MCMEM0: Card Interface slot 0 timing */
-+	writelrb(DEFAULT_MCMEM0_VAL, &MCMEM0);
-+	/* MCMEM1: Card Interface slot 1 timing */
-+	writelrb(DEFAULT_MCMEM1_VAL, &MCMEM1);
-+	/* MCATT0: Card Interface Attribute Space Timing, slot 0 */
-+	writelrb(DEFAULT_MCATT0_VAL, &MCATT0);
-+	/* MCATT1: Card Interface Attribute Space Timing, slot 1 */
-+	writelrb(DEFAULT_MCATT1_VAL, &MCATT1);
-+	/* MCIO0: Card Interface I/O Space Timing, slot 0 */
-+	writelrb(DEFAULT_MCIO0_VAL, &MCIO0);
-+	/* MCIO1: Card Interface I/O Space Timing, slot 1 */
-+	writelrb(DEFAULT_MCIO1_VAL, &MCIO1);
-+
-+	/*
-+	 * 3) Configure Fly-By DMA register
-+	 */
-+
-+	writelrb(DEFAULT_FLYCNFG_VAL, &FLYCNFG);
-+
-+	/*
-+	 * 4) Initialize Timing for Sync Memory (SDCLK0)
-+	 */
-+
-+	/*
-+	 * Before accessing MDREFR we need a valid DRI field, so we set
-+	 * this to power on defaults + DRI field.
-+	 */
-+
-+	/* Read current MDREFR config and zero out DRI */
-+	tmp = readl(&MDREFR) & ~0xfff;
-+	/* Add user-specified DRI */
-+	tmp |= DEFAULT_MDREFR_VAL & 0xfff;
-+	/* Configure important bits */
-+	tmp |= MDREFR_K0RUN | MDREFR_SLFRSH;
-+	tmp &= ~(MDREFR_APD | MDREFR_E1PIN);
-+
-+	/* Write MDREFR back */
-+	writelrb(tmp, &MDREFR);
-+
-+	/*
-+	 * 5) Initialize Synchronous Static Memory (Flash/Peripherals)
-+	 */
-+
-+	/* Initialize SXCNFG register. Assert the enable bits.
-+	 *
-+	 * Write SXMRS to cause an MRS command to all enabled banks of
-+	 * synchronous static memory. Note that SXLCR need not be written
-+	 * at this time.
-+	 */
-+	writelrb(DEFAULT_SXCNFG_VAL, &SXCNFG);
-+
-+	/*
-+	 * 6) Initialize SDRAM
-+	 */
-+
-+	writelrb(DEFAULT_MDREFR_VAL & ~MDREFR_SLFRSH, &MDREFR);
-+	writelrb(DEFAULT_MDREFR_VAL | MDREFR_E1PIN, &MDREFR);
-+
-+	/*
-+	 * 7) Write MDCNFG with MDCNFG:DEx deasserted (set to 0), to configure
-+	 *    but not enable each SDRAM partition pair.
-+	 */
-+
-+	writelrb(DEFAULT_MDCNFG_VAL &
-+		 ~(MDCNFG_DE0 | MDCNFG_DE1 | MDCNFG_DE2 | MDCNFG_DE3), &MDCNFG);
-+	/* Wait for the clock to the SDRAMs to stabilize, 100..200 usec. */
-+	pxa_wait_ticks(0x300);
-+
-+	/*
-+	 * 8) Trigger a number (usually 8) refresh cycles by attempting
-+	 *    non-burst read or write accesses to disabled SDRAM, as commonly
-+	 *    specified in the power up sequence documented in SDRAM data
-+	 *    sheets. The address(es) used for this purpose must not be
-+	 *    cacheable.
-+	 */
-+	for (i = 9; i >= 0; i--) {
-+		writel(i, 0xa0000000);
-+		barrier();
-+	}
-+	/*
-+	 * 9) Write MDCNFG with enable bits asserted (MDCNFG:DEx set to 1).
-+	 */
-+
-+	tmp = DEFAULT_MDCNFG_VAL &
-+		(MDCNFG_DE0 | MDCNFG_DE1 | MDCNFG_DE2 | MDCNFG_DE3);
-+	tmp |= readl(&MDCNFG);
-+	writelrb(tmp, &MDCNFG);
-+
-+	/*
-+	 * 10) Write MDMRS.
-+	 */
-+
-+	writelrb(DEFAULT_MDMRS_VAL, &MDMRS);
-+
-+	/*
-+	 * 11) Enable APD
-+	 */
-+
-+	if (DEFAULT_MDREFR_VAL & MDREFR_APD) {
-+		tmp = readl(&MDREFR);
-+		tmp |= MDREFR_APD;
-+		writelrb(tmp, &MDREFR);
-+	}
-+}
-+
-+void __bare_init __naked barebox_arm_reset_vector(void)
-+{
-+	unsigned long pssr = PSSR;
-+	unsigned long pc = get_pc();
-+
-+	arm_cpu_lowlevel_init();
-+	CKEN |= CKEN_OSTIMER | CKEN_MEMC | CKEN_FFUART;
-+
-+	/*
-+	 * When not running from SDRAM, get it out of self refresh, and/or
-+	 * initialize it.
-+	 */
-+	if (!(pc >= 0xa0000000 && pc < 0xb0000000))
-+		pxa2xx_dram_init();
-+
-+	if ((pssr >= 0xa0000000 && pssr < 0xb0000000) ||
-+	    (pssr >= 0x04000000 && pssr < 0x10000000))
-+		asm("mov pc, %0" : : "r"(pssr) : );
-+
-+	barebox_arm_entry(0xa0000000, SZ_64M, 0);
-+}
-diff --git a/arch/arm/configs/lubbock_defconfig b/arch/arm/configs/lubbock_defconfig
-new file mode 100644
-index 0000000..bf04fa3
---- /dev/null
-+++ b/arch/arm/configs/lubbock_defconfig
-@@ -0,0 +1,106 @@
-+CONFIG_ARCH_PXA=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x100000
-+CONFIG_AEABI=y
-+CONFIG_ARM_BOARD_APPEND_ATAG=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
-+# CONFIG_BANNER is not set
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0xa3d00000
-+CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
-+CONFIG_MALLOC_SIZE=0x1000000
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_MODULES=y
-+CONFIG_KALLSYMS=y
-+CONFIG_PROMPT="lubbock-barebox:"
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_CONSOLE_ACTIVATE_ALL=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/lubbock/env"
-+CONFIG_RESET_SOURCE=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_LOADS=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_SAVES=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_UBIFORMAT=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_HOST=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_LSMOD=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_SERIAL_PXA=y
-+CONFIG_DRIVER_NET_SMC91111=y
-+# CONFIG_SPI is not set
-+CONFIG_MTD=y
-+CONFIG_DRIVER_CFI=y
-+# CONFIG_DRIVER_CFI_AMD is not set
-+CONFIG_CFI_BUFFER_WRITE=y
-+CONFIG_MTD_UBI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_PXA=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_GENERIC_PHY=y
-+CONFIG_FS_CRAMFS=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_FS_UBIFS=y
-+CONFIG_FS_UBIFS_COMPRESSION_LZO=y
-+CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
-+CONFIG_BZLIB=y
-+CONFIG_BMP=y
-+CONFIG_PNG=y
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QnkgdGFraW5nIHBhcnRzIG9mIHRoZSBwcm9ncmFtbWluZyBoYW5kc2hha2luZyBwcm90b2NvbCBv
+biBmYWl0aCBpdCBpcwpwb3NzaWJsZSB0byBtYWtlIGR1ZSB3aXRoIG9ubHkgdHdvIEdQSU8gZm9y
+IHByb2dyYW1taW5nIEFsdGVyYQpGUEdBcy4gVGhpcyBpcyBub3QgYSB2ZXJ5IGFkdmlzYWJsZSBw
+cmFjdGljZSwgYnV0IHNvbWV0aW1lIHVuYXZvaWRhYmxlCmluIEdQSU8gY29uc3RyYWluZWQgZGVz
+aWducy4KClNpZ25lZC1vZmYtYnk6IEFuZHJleSBTbWlybm92IDxhbmRyZXcuc21pcm5vdkBnbWFp
+bC5jb20+Ci0tLQogZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2VyaWFsLmMgfCA1OSArKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNDQgaW5z
+ZXJ0aW9ucygrKSwgMTUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9maXJtd2Fy
+ZS9hbHRlcmFfc2VyaWFsLmMgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwppbmRl
+eCBjNWZmYmI2Li40NTI3ZDI3IDEwMDY0NAotLS0gYS9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9z
+ZXJpYWwuYworKysgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwpAQCAtMjUsNiAr
+MjUsNyBAQAogI2luY2x1ZGUgPGZjbnRsLmg+CiAjaW5jbHVkZSA8ZnMuaD4KCisKIC8qCiAgKiBQ
+aHlzaWNhbCByZXF1aXJlbWVudHM6CiAgKiAtIHRocmVlIGZyZWUgR1BJT3MgZm9yIHRoZSBzaWdu
+YWxzIG5DT05GSUcsIENPTkZJR1VSRV9ET05FLCBuU1RBVFVTCkBAIC02NywxMyArNjgsMTkgQEAg
+c3RhdGljIGludCBhbHRlcmFfc3BpX29wZW4oc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoKQog
+CSAqIGFmdGVyIGFib3V0IDIgwrVzIHRoZSBGUEdBIG11c3QgYWNrbm93bGVkZ2Ugd2l0aAogCSAq
+IFNUQVRVUyBhbmQgQ09ORklHIERPTkUgbGluZXMgYXQgbG93IGxldmVsCiAJICovCi0JcmV0ID0g
+d2FpdF9vbl90aW1lb3V0KDIgKiBVU0VDT05ELAorCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5z
+dGF0X2dwaW8pKSB7CisJCXJldCA9IHdhaXRfb25fdGltZW91dCgyICogVVNFQ09ORCwKIAkJCQko
+Z3Bpb19nZXRfdmFsdWUodGhpcy0+bnN0YXRfZ3BpbykgPT0gMCkgJiYKIAkJCQkoZ3Bpb19nZXRf
+dmFsdWUodGhpcy0+Y29uZmRfZ3BpbykgPT0gMCkpOworCX0gZWxzZSB7CisJCXJldCA9IHdhaXRf
+b25fdGltZW91dCgyICogVVNFQ09ORCwKKwkJCQkoZ3Bpb19nZXRfdmFsdWUodGhpcy0+Y29uZmRf
+Z3BpbykgPT0gMCkpOworCX0KKwoKIAlpZiAocmV0ICE9IDApIHsKIAkJZGV2X2VycihkZXYsICJG
+UEdBIGRvZXMgbm90IGFja25vd2xlZGdlIHRoZSBwcm9ncmFtbWluZyBpbml0aWF0aW9uXG4iKTsK
+LQkJaWYgKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pKQorCQlpZiAoZ3Bpb19pc192
+YWxpZCh0aGlzLT5uc3RhdF9ncGlvKSAmJiBncGlvX2dldF92YWx1ZSh0aGlzLT5uc3RhdF9ncGlv
+KSkKIAkJCWRldl9lcnIoZGV2LCAiU1RBVFVTIGlzIHN0aWxsIGhpZ2ghXG4iKTsKIAkJaWYgKGdw
+aW9fZ2V0X3ZhbHVlKHRoaXMtPmNvbmZkX2dwaW8pKQogCQkJZGV2X2VycihkZXYsICJDT05GSUcg
+RE9ORSBpcyBzdGlsbCBoaWdoIVxuIik7CkBAIC05MCwxMSArOTcsMTYgQEAgc3RhdGljIGludCBh
+bHRlcmFfc3BpX29wZW4oc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZoKQogCSAqIGFmdGVyIGFi
+b3V0IDE1MDYgwrVzIHRoZSBGUEdBIG11c3QgYWNrbm93bGVkZ2UgdGhpcyBzdGVwCiAJICogd2l0
+aCB0aGUgU1RBVFVTIGxpbmUgYXQgaGlnaCBsZXZlbAogCSAqLwotCXJldCA9IHdhaXRfb25fdGlt
+ZW91dCgxNjAwICogVVNFQ09ORCwKKworCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5zdGF0X2dw
+aW8pKSB7CisJCXJldCA9IHdhaXRfb25fdGltZW91dCgxNjAwICogVVNFQ09ORCwKIAkJCQlncGlv
+X2dldF92YWx1ZSh0aGlzLT5uc3RhdF9ncGlvKSA9PSAxKTsKLQlpZiAocmV0ICE9IDApIHsKLQkJ
+ZGV2X2VycihkZXYsICJGUEdBIGRvZXMgbm90IGFja25vd2xlZGdlIHRoZSBwcm9ncmFtbWluZyBz
+dGFydFxuIik7Ci0JCXJldHVybiByZXQ7CisJCWlmIChyZXQgIT0gMCkgeworCQkJZGV2X2Vycihk
+ZXYsICJGUEdBIGRvZXMgbm90IGFja25vd2xlZGdlIHRoZSBwcm9ncmFtbWluZyBzdGFydFxuIik7
+CisJCQlyZXR1cm4gcmV0OworCQl9CisJfSBlbHNlIHsKKwkJdWRlbGF5KDE2MDApOwogCX0KCiAJ
+ZGV2X2RiZyhkZXYsICJJbml0aWF0aW5nIHBhc3NlZFxuIik7CkBAIC0xNzcsMTYgKzE4OSwyNCBA
+QCBzdGF0aWMgaW50IGFsdGVyYV9zcGlfY2xvc2Uoc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgKmZo
+KQogCSAqIHdoZW4gcHJvZ3JhbW1pbmcgd2FzIHN1Y2Nlc3NmdWwsCiAJICogYm90aCBzdGF0dXMg
+bGluZXMgc2hvdWxkIGJlIGF0IGhpZ2ggbGV2ZWwKIAkgKi8KLQlyZXQgPSB3YWl0X29uX3RpbWVv
+dXQoMTAgKiBVU0VDT05ELAorCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMtPm5zdGF0X2dwaW8pKSB7
+CisJCXJldCA9IHdhaXRfb25fdGltZW91dCgxMCAqIFVTRUNPTkQsCiAJCQkJKGdwaW9fZ2V0X3Zh
+bHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDEpICYmCiAJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRoaXMt
+PmNvbmZkX2dwaW8pID09IDEpKTsKKwl9IGVsc2UgeworCQlyZXQgPSB3YWl0X29uX3RpbWVvdXQo
+MTAgKiBVU0VDT05ELAorCQkJCShncGlvX2dldF92YWx1ZSh0aGlzLT5jb25mZF9ncGlvKSA9PSAx
+KSk7CisKKwl9CisKIAlpZiAocmV0ID09IDApIHsKIAkJZGV2X2RiZyhkZXYsICJQcm9ncmFtbWlu
+ZyBzdWNjZXNzZnVsXG4iKTsKIAkJcmV0dXJuIHJldDsKIAl9CgogCWRldl9lcnIoZGV2LCAiUHJv
+Z3JhbW1pbmcgZmFpbGVkIGR1ZSB0byB0aW1lIG91dFxuIik7Ci0JaWYgKGdwaW9fZ2V0X3ZhbHVl
+KHRoaXMtPm5zdGF0X2dwaW8pID09IDApCisJaWYgKGdwaW9faXNfdmFsaWQodGhpcy0+bnN0YXRf
+Z3BpbykgJiYKKwkJZ3Bpb19nZXRfdmFsdWUodGhpcy0+bnN0YXRfZ3BpbykgPT0gMCkKIAkJZGV2
+X2VycihkZXYsICJTVEFUVVMgaXMgc3RpbGwgbG93IVxuIik7CiAJaWYgKGdwaW9fZ2V0X3ZhbHVl
+KHRoaXMtPmNvbmZkX2dwaW8pID09IDApCiAJCWRldl9lcnIoZGV2LCAiQ09ORklHIERPTkUgaXMg
+c3RpbGwgbG93IVxuIik7CkBAIC0yMDEsMTAgKzIyMSwxNSBAQCBzdGF0aWMgaW50IGFsdGVyYV9z
+cGlfb2Yoc3RydWN0IGRldmljZV9kICpkZXYsIHN0cnVjdCBmcGdhX3NwaSAqdGhpcykKIAlpbnQg
+cmV0OwoKIAluYW1lID0gIm5zdGF0LWdwaW8iOwotCXRoaXMtPm5zdGF0X2dwaW8gPSBvZl9nZXRf
+bmFtZWRfZ3BpbyhuLCBuYW1lLCAwKTsKLQlpZiAodGhpcy0+bnN0YXRfZ3BpbyA8IDApIHsKLQkJ
+cmV0ID0gdGhpcy0+bnN0YXRfZ3BpbzsKLQkJZ290byBvdXQ7CisJaWYgKCFvZl9nZXRfcHJvcGVy
+dHkobiwgbmFtZSwgTlVMTCkpIHsKKwkJZGV2X2luZm8oZGV2LCAibnN0YXQtZ3BpbyBpcyBub3Qg
+c3BlY2lmaWVkLCBhc3N1bWluZyBpdCBpcyBub3QgY29ubmVjdGVkXG4iKTsKKwkJdGhpcy0+bnN0
+YXRfZ3BpbyA9IC0xOworCX0gZWxzZSB7CisJCXRoaXMtPm5zdGF0X2dwaW8gPSBvZl9nZXRfbmFt
+ZWRfZ3BpbyhuLCBuYW1lLCAwKTsKKwkJaWYgKHRoaXMtPm5zdGF0X2dwaW8gPCAwKSB7CisJCQly
+ZXQgPSB0aGlzLT5uc3RhdF9ncGlvOworCQkJZ290byBvdXQ7CisJCX0KIAl9CgogCW5hbWUgPSAi
+Y29uZmQtZ3BpbyI7CkBAIC0yMjUsOSArMjUwLDEzIEBAIHN0YXRpYyBpbnQgYWx0ZXJhX3NwaV9v
+ZihzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0IGZwZ2Ffc3BpICp0aGlzKQogCXJldCA9IGdw
+aW9fZGlyZWN0aW9uX291dHB1dCh0aGlzLT5uY29uZmlnX2dwaW8sIDEpOwogCWlmIChyZXQpCiAJ
+CXJldHVybiByZXQ7Ci0JcmV0ID0gZ3Bpb19kaXJlY3Rpb25faW5wdXQodGhpcy0+bnN0YXRfZ3Bp
+byk7Ci0JaWYgKHJldCkKLQkJcmV0dXJuIHJldDsKKworCWlmIChncGlvX2lzX3ZhbGlkKHRoaXMt
+Pm5zdGF0X2dwaW8pKSB7CisJCXJldCA9IGdwaW9fZGlyZWN0aW9uX2lucHV0KHRoaXMtPm5zdGF0
+X2dwaW8pOworCQlpZiAocmV0KQorCQkJcmV0dXJuIHJldDsKKwl9CisKIAlyZXQgPSBncGlvX2Rp
+cmVjdGlvbl9pbnB1dCh0aGlzLT5jb25mZF9ncGlvKTsKIAlpZiAocmV0KQogCQlyZXR1cm4gcmV0
+OwotLQoyLjEuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
