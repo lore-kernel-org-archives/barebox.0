@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx.rheinmetall.ca ([207.61.105.111])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YOTdB-00078c-RU
- for barebox@lists.infradead.org; Thu, 19 Feb 2015 16:07:14 +0000
-From: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
-Date: Thu, 19 Feb 2015 16:06:46 +0000
-Message-ID: <29A2697B0516A946B1023D5E798DFCF67BACD87B@mail-yang>
-Content-Language: en-US
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YOX5c-00005h-Qw
+ for barebox@lists.infradead.org; Thu, 19 Feb 2015 19:48:49 +0000
+Date: Thu, 19 Feb 2015 20:48:26 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150219194826.GX12209@pengutronix.de>
+References: <1424219186-10289-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1424219186-10289-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,23 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: bareboxenv-target not loading correctly
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/3] imx_v7_defconfig: enable at least PNG support for
+ splash
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
-I am trying to modify the Barebox (v2015.02.0) environment from the application. To do so, I execute the following commands from Linux:
+On Wed, Feb 18, 2015 at 01:26:24AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/configs/imx_v7_defconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
-root@SBC-172:/root mkdir -p env
-root@SBC-172:/root bareboxenv-target -v -l ./env /dev/mtdblock2
-loading env from file /dev/mtdblock2 to ./env
-root@SBC-172:/root ls -al
-drwx------    2 root     root          4096 Jan  1 03:29 .
-drwxr-xr-x   19 root     root          4096 Jan  2  2000 ..
+Applied, thanks
 
-bareboxenv-target seems to succeed in loading env but the "env" directory has disappeared...
+Sascha
 
-Any thoughts or suggestion would be greatly appreciated.
-Thank you,
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
