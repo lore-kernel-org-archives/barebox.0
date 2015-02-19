@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YOXFY-0004Sk-PZ
- for barebox@lists.infradead.org; Thu, 19 Feb 2015 19:59:05 +0000
-Date: Thu, 19 Feb 2015 20:58:42 +0100
+ Linux)) id 1YOXP8-0001BT-Qv
+ for barebox@lists.infradead.org; Thu, 19 Feb 2015 20:08:59 +0000
+Date: Thu, 19 Feb 2015 21:08:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150219195842.GA12209@pengutronix.de>
-References: <1424260458-19639-1-git-send-email-s.trumtrar@pengutronix.de>
- <1424260458-19639-4-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20150219200836.GB12209@pengutronix.de>
+References: <29A2697B0516A946B1023D5E798DFCF67BACD7A2@mail-yang>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1424260458-19639-4-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <29A2697B0516A946B1023D5E798DFCF67BACD7A2@mail-yang>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: socfpga: add Altera SoCFPGA Development Kit
- support
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Specify where to save Barebox env
+To: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Feb 18, 2015 at 12:54:18PM +0100, Steffen Trumtrar wrote:
-> Add support for the Altera SoCFPGA Development Kit.
-> The setup is based on the GHRD from Altera.
-> 
-> index 000000000000..73a5a7481924
-> --- /dev/null
-> +++ b/arch/arm/boards/altera-socdk/board.c
-> @@ -0,0 +1,20 @@
-> +#include <common.h>
-> +#include <types.h>
-> +#include <driver.h>
-> +#include <init.h>
-> +#include <asm/armlinux.h>
-> +#include <linux/micrel_phy.h>
-> +#include <linux/phy.h>
-> +#include <linux/sizes.h>
-> +#include <fcntl.h>
-> +#include <fs.h>
-> +#include <mach/socfpga-regs.h>
-> +
-> +static int socfpga_console_init(void)
-> +{
-> +	if (!of_machine_is_compatible("altr,socdk"))
-> +		return 0;
-> +
-> +	return 0;
-> +}
-> +console_initcall(socfpga_console_init);
+On Wed, Feb 18, 2015 at 07:55:46PM +0000, Boulais, Marc-Andre wrote:
+> Good day,
+> I am working on a phytec-phycore-OMAP446  system where the system
+> boots from the SD card. On it, I have MLO+barebox.bin (v2015.02). The
+> system boots ok.  However, when I set NV variables (from its prompt)
+> and then do a "saveenv", I would like the environment to be saved in
+> NAND. Is there a way to configure Barebox to do that ?
 
-Nothing useful in this file. Better remove it?
+Normally barebox stores the environment on the medium it is started
+from. Looking at arch/arm/boards/phytec-phycore-omap4460/board.c:
+
+#ifdef CONFIG_PARTITION
+        devfs_add_partition("nand0", 0x00000, SZ_128K, DEVFS_PARTITION_FIXED, "xload_raw");
+        dev_add_bb_dev("xload_raw", "xload");
+        devfs_add_partition("nand0", SZ_128K, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
+        dev_add_bb_dev("self_raw", "self0");
+        devfs_add_partition("nand0", SZ_128K + SZ_512K, SZ_128K, DEVFS_PARTITION_FIXED, "env_raw");
+        dev_add_bb_dev("env_raw", "env0");
+#endif
+
+The last two lines create /dev/env0 on nand. If you boot from nand the
+environment should be stored there already.
 
 Sascha
 
