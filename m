@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YOPlg-0002kw-4F
- for barebox@lists.infradead.org; Thu, 19 Feb 2015 11:59:45 +0000
-Date: Thu, 19 Feb 2015 12:59:18 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-Message-ID: <20150219115918.GI21880@pengutronix.de>
-References: <1373059339-20513-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1373059339-20513-3-git-send-email-sebastian.hesselbarth@gmail.com>
- <20150217234351.GD21880@pengutronix.de>
- <54E4E955.1040908@gmail.com>
+Received: from mx.rheinmetall.ca ([207.61.105.111])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YOTdB-00078c-RU
+ for barebox@lists.infradead.org; Thu, 19 Feb 2015 16:07:14 +0000
+From: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
+Date: Thu, 19 Feb 2015 16:06:46 +0000
+Message-ID: <29A2697B0516A946B1023D5E798DFCF67BACD87B@mail-yang>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <54E4E955.1040908@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,90 +20,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/2] mci: add Marvell Dove SDHCI driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: bareboxenv-target not loading correctly
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Feb 18, 2015 at 08:34:45PM +0100, Sebastian Hesselbarth wrote:
-> On 18.02.2015 00:43, Michael Grzeschik wrote:
-> >On Fri, Jul 05, 2013 at 11:22:19PM +0200, Sebastian Hesselbarth wrote:
-> 
-> Nice! It just bumped up the RFC from 1.5yrs back to top in my barebox
-> mail folder ;)
+Hi,
+I am trying to modify the Barebox (v2015.02.0) environment from the application. To do so, I execute the following commands from Linux:
 
-:)
+root@SBC-172:/root mkdir -p env
+root@SBC-172:/root bareboxenv-target -v -l ./env /dev/mtdblock2
+loading env from file /dev/mtdblock2 to ./env
+root@SBC-172:/root ls -al
+drwx------    2 root     root          4096 Jan  1 03:29 .
+drwxr-xr-x   19 root     root          4096 Jan  2  2000 ..
 
-> >>This adds a driver for the SDHCI controller found on Marvell Dove SoCs.
-> >>Despite a missing pinctrl driver, corresponding MPP config has to be
-> >>set on a per board basis.
-> [...]
-> >>diff --git a/drivers/mci/dove-sdhci.c b/drivers/mci/dove-sdhci.c
-> >>new file mode 100644
-> >>index 0000000..91ef8b0
-> >>--- /dev/null
-> >>+++ b/drivers/mci/dove-sdhci.c
-> [...]
-> >>+static int dove_sdhci_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
-> >>+				struct mci_data *data)
-> >>+{
-> >>+	u16 val;
-> >>+	u64 start;
-> >>+	int ret;
-> >>+	struct dove_sdhci *host = priv_from_mci_host(mci);
-> >>+
-> >>+	dove_sdhci_writel(host, SDHCI_INT_STATUS, ~0);
-> >>+
-> >>+	/* Do not wait for CMD_INHIBIT_DAT on stop commands */
-> >>+	if (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
-> >>+		val = SDHCI_CMD_INHIBIT_CMD;
-> >>+	else
-> >>+		val = SDHCI_CMD_INHIBIT_CMD | SDHCI_CMD_INHIBIT_DATA;
-> >>+
-> >>+	/* Wait for bus idle */
-> >>+	start = get_time_ns();
-> >>+	while (1) {
-> >>+		if (!(dove_sdhci_readw(host, SDHCI_PRESENT_STATE0) & val))
-> >>+			break;
-> >>+		if (is_timeout(start, 10 * MSECOND)) {
-> >
-> >I had to set something higher than 10 milliseconds to make this driver
-> >work with solidrun cubox. Otherwise it was always running into the
-> >timeout.
-> 
-> Can you tell to what value you had to increase the timeout?
-> 
-> I have no problem increasing the timeout, we shouldn't run into
-> any of them anyway at this point.
+bareboxenv-target seems to succeed in loading env but the "env" directory has disappeared...
 
-I checked this code again without my changes. Just to do some
-approximation how small this timeout could get.
-
-This time I have been using another SD-Card.
-
-With that card it was even working without changing the timeout.
-But when I started to copy data from the card to ram (which I did not
-check so far), it was barking the following error:
-
-dove-sdhci f1092000.sdio-host: SDHCI timeout while waiting for done
-dove-sdhci f1092000.sdio-host: error while transfering data for command 18
-dove-sdhci f1092000.sdio-host: state = 0206 01ef, interrupt = 0009 0000
-
-This came from the function dove_sdhci_wait_for_done which also has
-timeout issues. I had no luck with changing this timeout barrier. It was
-giving this error even with an timeout of one second.
-
-I see in the kernel that the dove-sdhci is using the quirk
-SDHCI_QUIRK_BROKEN_TIMEOUT_VAL which probably needs some
-investigation.
-
-Thanks,
-Michael
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Any thoughts or suggestion would be greatly appreciated.
+Thank you,
 
 _______________________________________________
 barebox mailing list
