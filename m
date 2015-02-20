@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx.rheinmetall.ca ([207.61.105.111])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YOYyM-0001xQ-1L
- for barebox@lists.infradead.org; Thu, 19 Feb 2015 21:49:26 +0000
-From: "Boulais, Marc-Andre" <maboulais@rheinmetall.ca>
-Date: Thu, 19 Feb 2015 21:48:58 +0000
-Message-ID: <29A2697B0516A946B1023D5E798DFCF67BACD935@mail-yang>
-References: <29A2697B0516A946B1023D5E798DFCF67BACD87B@mail-yang>
- <20150219212004.GF12209@pengutronix.de>
-In-Reply-To: <20150219212004.GF12209@pengutronix.de>
-Content-Language: en-US
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YOiL4-0006Re-BT
+ for barebox@lists.infradead.org; Fri, 20 Feb 2015 07:49:31 +0000
+References: <1424260458-19639-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1424260458-19639-4-git-send-email-s.trumtrar@pengutronix.de>
+ <20150219195842.GA12209@pengutronix.de>
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+In-reply-to: <20150219195842.GA12209@pengutronix.de>
+Date: Fri, 20 Feb 2015 08:49:04 +0100
+Message-ID: <7361axqaz3.fsf@dude.hi.pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,44 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: bareboxenv-target not loading correctly
+Subject: Re: [PATCH 3/3] ARM: socfpga: add Altera SoCFPGA Development Kit
+ support
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-
-Great, It works. Like you said, the directory is no longer empty once I modify the environment. 
-
-Thanks
-MA
-
------Original Message-----
-From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-Sent: February-19-15 4:20 PM
-To: Boulais, Marc-Andre
 Cc: barebox@lists.infradead.org
-Subject: Re: bareboxenv-target not loading correctly
 
-On Thu, Feb 19, 2015 at 04:06:46PM +0000, Boulais, Marc-Andre wrote:
-> Hi,
-> I am trying to modify the Barebox (v2015.02.0) environment from the application. To do so, I execute the following commands from Linux:
-> 
-> root@SBC-172:/root mkdir -p env
-> root@SBC-172:/root bareboxenv-target -v -l ./env /dev/mtdblock2 
-> loading env from file /dev/mtdblock2 to ./env root@SBC-172:/root ls 
-> -al
-> drwx------    2 root     root          4096 Jan  1 03:29 .
-> drwxr-xr-x   19 root     root          4096 Jan  2  2000 ..
-> 
-> bareboxenv-target seems to succeed in loading env but the "env" directory has disappeared...
 
-The directory shouldn't be removed, that is a bug. I just sent a patch.
-Anyway, the directory will stay empty even after applying the patch.
-That is a side effect of only storing the differences to the default environment. Once you have made changes they will show up there.
+Hi!
 
-Sascha
+Sascha Hauer writes:
+> On Wed, Feb 18, 2015 at 12:54:18PM +0100, Steffen Trumtrar wrote:
+>> Add support for the Altera SoCFPGA Development Kit.
+>> The setup is based on the GHRD from Altera.
+>> 
+>> index 000000000000..73a5a7481924
+>> --- /dev/null
+>> +++ b/arch/arm/boards/altera-socdk/board.c
+>> @@ -0,0 +1,20 @@
+>> +#include <common.h>
+>> +#include <types.h>
+>> +#include <driver.h>
+>> +#include <init.h>
+>> +#include <asm/armlinux.h>
+>> +#include <linux/micrel_phy.h>
+>> +#include <linux/phy.h>
+>> +#include <linux/sizes.h>
+>> +#include <fcntl.h>
+>> +#include <fs.h>
+>> +#include <mach/socfpga-regs.h>
+>> +
+>> +static int socfpga_console_init(void)
+>> +{
+>> +	if (!of_machine_is_compatible("altr,socdk"))
+>> +		return 0;
+>> +
+>> +	return 0;
+>> +}
+>> +console_initcall(socfpga_console_init);
+>
+> Nothing useful in this file. Better remove it?
+>
 
+As it turns out, I actually need to call a phyfixup for the board here.
+What would you prefer: Fixup or Resend?
+
+Regards,
+Steffen
 
 -- 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Steffen Trumtrar            |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
