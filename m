@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YOiL4-0006Re-BT
- for barebox@lists.infradead.org; Fri, 20 Feb 2015 07:49:31 +0000
-References: <1424260458-19639-1-git-send-email-s.trumtrar@pengutronix.de>
- <1424260458-19639-4-git-send-email-s.trumtrar@pengutronix.de>
- <20150219195842.GA12209@pengutronix.de>
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-reply-to: <20150219195842.GA12209@pengutronix.de>
-Date: Fri, 20 Feb 2015 08:49:04 +0100
-Message-ID: <7361axqaz3.fsf@dude.hi.pengutronix.de>
-MIME-Version: 1.0
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YOiW5-0004LI-Mv
+ for barebox@lists.infradead.org; Fri, 20 Feb 2015 08:00:54 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 4844FA00150
+ for <barebox@lists.infradead.org>; Fri, 20 Feb 2015 09:01:14 +0100 (CET)
+Message-ID: <1424419220.4065.15.camel@lws-gamez.phytec.de>
+From: Teresa =?ISO-8859-1?Q?G=E1mez?= <t.gamez@phytec.de>
+Date: Fri, 20 Feb 2015 09:00:20 +0100
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,58 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: socfpga: add Altera SoCFPGA Development Kit
- support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: bareboxenv: console bootargs
+To: barebox@lists.infradead.org
+
+Hello,
+
+I have noticed that the console= bootarg parameter in the latest
+enviroment is set in the /env/nv/linux.bootargs.base variable. But it is
+also set over common/console.c in the variable linux.bootargs.console
+which results here in two console= parameter:
+
+commandline: console=ttyO0,115200n8 console=ttyO0,115200
+root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait
+
+Wouldn't it be the right way to set the linux.bootargs.console instead
+of the linux.bootargs.base in the enviroment. If it needs to be
+overwritten at all...
+
+I suspect that other boards, then the am335x ones, are also affected.
+
+Regards
+Teresa
 
 
-Hi!
 
-Sascha Hauer writes:
-> On Wed, Feb 18, 2015 at 12:54:18PM +0100, Steffen Trumtrar wrote:
->> Add support for the Altera SoCFPGA Development Kit.
->> The setup is based on the GHRD from Altera.
->> 
->> index 000000000000..73a5a7481924
->> --- /dev/null
->> +++ b/arch/arm/boards/altera-socdk/board.c
->> @@ -0,0 +1,20 @@
->> +#include <common.h>
->> +#include <types.h>
->> +#include <driver.h>
->> +#include <init.h>
->> +#include <asm/armlinux.h>
->> +#include <linux/micrel_phy.h>
->> +#include <linux/phy.h>
->> +#include <linux/sizes.h>
->> +#include <fcntl.h>
->> +#include <fs.h>
->> +#include <mach/socfpga-regs.h>
->> +
->> +static int socfpga_console_init(void)
->> +{
->> +	if (!of_machine_is_compatible("altr,socdk"))
->> +		return 0;
->> +
->> +	return 0;
->> +}
->> +console_initcall(socfpga_console_init);
->
-> Nothing useful in this file. Better remove it?
->
-
-As it turns out, I actually need to call a phyfixup for the board here.
-What would you prefer: Fixup or Resend?
-
-Regards,
-Steffen
-
--- 
-Pengutronix e.K.                           | Steffen Trumtrar            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
