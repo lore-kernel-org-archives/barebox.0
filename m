@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YPnXK-0001Zc-N3
- for barebox@lists.infradead.org; Mon, 23 Feb 2015 07:34:40 +0000
-Date: Mon, 23 Feb 2015 08:34:16 +0100
+ Linux)) id 1YPnwc-0006c8-HK
+ for barebox@lists.infradead.org; Mon, 23 Feb 2015 08:00:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150223073416.GK12209@pengutronix.de>
-References: <1424260458-19639-1-git-send-email-s.trumtrar@pengutronix.de>
- <1424260458-19639-4-git-send-email-s.trumtrar@pengutronix.de>
- <20150219195842.GA12209@pengutronix.de>
- <7361axqaz3.fsf@dude.hi.pengutronix.de>
+Date: Mon, 23 Feb 2015 09:00:20 +0100
+Message-Id: <1424678420-5351-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1424678420-5351-1-git-send-email-s.hauer@pengutronix.de>
+References: <1424678420-5351-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7361axqaz3.fsf@dude.hi.pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +17,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: socfpga: add Altera SoCFPGA Development Kit
- support
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] boards: Use nv.linux.bootargs.console for setting the
+ console= commandline parameter
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Feb 20, 2015 at 08:49:04AM +0100, Steffen Trumtrar wrote:
-> 
-> Hi!
-> 
-> Sascha Hauer writes:
-> > On Wed, Feb 18, 2015 at 12:54:18PM +0100, Steffen Trumtrar wrote:
-> >> Add support for the Altera SoCFPGA Development Kit.
-> >> The setup is based on the GHRD from Altera.
-> >> 
-> >> index 000000000000..73a5a7481924
-> >> --- /dev/null
-> >> +++ b/arch/arm/boards/altera-socdk/board.c
-> >> @@ -0,0 +1,20 @@
-> >> +#include <common.h>
-> >> +#include <types.h>
-> >> +#include <driver.h>
-> >> +#include <init.h>
-> >> +#include <asm/armlinux.h>
-> >> +#include <linux/micrel_phy.h>
-> >> +#include <linux/phy.h>
-> >> +#include <linux/sizes.h>
-> >> +#include <fcntl.h>
-> >> +#include <fs.h>
-> >> +#include <mach/socfpga-regs.h>
-> >> +
-> >> +static int socfpga_console_init(void)
-> >> +{
-> >> +	if (!of_machine_is_compatible("altr,socdk"))
-> >> +		return 0;
-> >> +
-> >> +	return 0;
-> >> +}
-> >> +console_initcall(socfpga_console_init);
-> >
-> > Nothing useful in this file. Better remove it?
-> >
-> 
-> As it turns out, I actually need to call a phyfixup for the board here.
-> What would you prefer: Fixup or Resend?
-
-Since I haven't applied it: resend.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXNpbmcgYSBkZWRpY2F0ZWQgdmFyaWFibGUgbWFrZXMgaXQgZWFzaWVyIHRvIGNoYW5nZSB0aGUg
+Y29uc29sZT0gcGFyYW1ldGVyCndpdGhvdXQgYWZmZWN0aW5nIG90aGVyIHZhbHVlcy4gQWxzbyB0
+aGUgbGludXguYm9vdGFyZ3MuY29uc29sZSB2YXJpYWJsZSBpcwphbHJlYWR5IHVzZWQgYnkgY29t
+bW9uL2NvbnNvbGUuYy4gVXNpbmcgdGhlIHNhbWUgdmFyaWFibGUgaW4gdGhlIGVudmlyb25tZW50
+CmF2b2lkcyBnaXZpbmcgZHVwbGljYXRlIGNvbnNvbGU9IHR3aWNlIHRvIHRoZSBrZXJuZWwKClNp
+Z25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KU3VnZ2Vz
+dGVkLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCiAuLi4vbGludXgu
+Ym9vdGFyZ3MuYmFzZSA9PiBhdDkxc2FtOW0xMGloZC9lbnYvbnYvbGludXguYm9vdGFyZ3MuY29u
+c29sZX0gIHwgMAogLi4uL2F2bmV0LXplZGJvYXJkL2Vudi9udi97bGludXguYm9vdGFyZ3MuYmFz
+ZSA9PiBsaW51eC5ib290YXJncy5jb25zb2xlfSB8IDAKIC4uLi9jbGVwNzIxMi9lbnYvbnYve2xp
+bnV4LmJvb3RhcmdzLmJhc2UgPT4gbGludXguYm9vdGFyZ3MuY29uc29sZX0gICAgICAgfCAwCiAu
+Li4vZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGV9ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgMAogLi4uL2Vudi9udi97bGludXguYm9vdGFyZ3MuYmFzZSA9PiBs
+aW51eC5ib290YXJncy5jb25zb2xlfSAgICAgICAgICAgICAgICB8IDAKIC4uLi9kZWZhdWx0ZW52
+LWlteDIzMy1vbGludXhpbm8vbnYvbGludXguYm9vdGFyZ3MuY29uc29sZX0gICAgICAgICAgICAg
+ICAgfCAwCiAuLi4vZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UgPT4gbHViYm9jay9lbnYvbnYv
+bGludXguYm9vdGFyZ3MuY29uc29sZX0gIHwgMAogLi4uL3JhZHhhLXJvY2svZW52L252L3tsaW51
+eC5ib290YXJncy5iYXNlID0+IGxpbnV4LmJvb3RhcmdzLmNvbnNvbGV9ICAgICB8IDAKIC4uLi92
+ZXJzYXRpbGUvZW52L252L3tsaW51eC5ib290YXJncy5iYXNlID0+IGxpbnV4LmJvb3RhcmdzLmNv
+bnNvbGV9ICAgICAgfCAwCiA5IGZpbGVzIGNoYW5nZWQsIDAgaW5zZXJ0aW9ucygrKSwgMCBkZWxl
+dGlvbnMoLSkKIHJlbmFtZSBhcmNoL2FybS9ib2FyZHMve2x1YmJvY2svZW52L252L2xpbnV4LmJv
+b3RhcmdzLmJhc2UgPT4gYXQ5MXNhbTltMTBpaGQvZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNv
+bGV9ICgxMDAlKQogcmVuYW1lIGFyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2FyZC9lbnYvbnYv
+e2xpbnV4LmJvb3RhcmdzLmJhc2UgPT4gbGludXguYm9vdGFyZ3MuY29uc29sZX0gKDEwMCUpCiBy
+ZW5hbWUgYXJjaC9hcm0vYm9hcmRzL2NsZXA3MjEyL2Vudi9udi97bGludXguYm9vdGFyZ3MuYmFz
+ZSA9PiBsaW51eC5ib290YXJncy5jb25zb2xlfSAoMTAwJSkKIHJlbmFtZSBhcmNoL2FybS9ib2Fy
+ZHMve2lteDIzMy1vbGludXhpbm8vZGVmYXVsdGVudi1pbXgyMzMtb2xpbnV4aW5vL252L2xpbnV4
+LmJvb3RhcmdzLmJhc2UgPT4gY3J5c3RhbGZvbnR6LWNmYTEwMDM2L2Vudi9udi9saW51eC5ib290
+YXJncy5jb25zb2xlfSAoMTAwJSkKIHJlbmFtZSBhcmNoL2FybS9ib2FyZHMvZWZpa2EtbXgtc21h
+cnRib29rL2Vudi9udi97bGludXguYm9vdGFyZ3MuYmFzZSA9PiBsaW51eC5ib290YXJncy5jb25z
+b2xlfSAoMTAwJSkKIHJlbmFtZSBhcmNoL2FybS9ib2FyZHMve2NyeXN0YWxmb250ei1jZmExMDAz
+Ni9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSA9PiBpbXgyMzMtb2xpbnV4aW5vL2RlZmF1bHRl
+bnYtaW14MjMzLW9saW51eGluby9udi9saW51eC5ib290YXJncy5jb25zb2xlfSAoMTAwJSkKIHJl
+bmFtZSBhcmNoL2FybS9ib2FyZHMve2F0OTFzYW05bTEwaWhkL2Vudi9udi9saW51eC5ib290YXJn
+cy5iYXNlID0+IGx1YmJvY2svZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGV9ICgxMDAlKQog
+cmVuYW1lIGFyY2gvYXJtL2JvYXJkcy9yYWR4YS1yb2NrL2Vudi9udi97bGludXguYm9vdGFyZ3Mu
+YmFzZSA9PiBsaW51eC5ib290YXJncy5jb25zb2xlfSAoMTAwJSkKIHJlbmFtZSBhcmNoL2FybS9i
+b2FyZHMvdmVyc2F0aWxlL2Vudi9udi97bGludXguYm9vdGFyZ3MuYmFzZSA9PiBsaW51eC5ib290
+YXJncy5jb25zb2xlfSAoMTAwJSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvbHViYm9j
+ay9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSBiL2FyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOW0x
+MGloZC9lbnYvbnYvbGludXguYm9vdGFyZ3MuY29uc29sZQpzaW1pbGFyaXR5IGluZGV4IDEwMCUK
+cmVuYW1lIGZyb20gYXJjaC9hcm0vYm9hcmRzL2x1YmJvY2svZW52L252L2xpbnV4LmJvb3Rhcmdz
+LmJhc2UKcmVuYW1lIHRvIGFyY2gvYXJtL2JvYXJkcy9hdDkxc2FtOW0xMGloZC9lbnYvbnYvbGlu
+dXguYm9vdGFyZ3MuY29uc29sZQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2F2bmV0LXpl
+ZGJvYXJkL2Vudi9udi9saW51eC5ib290YXJncy5iYXNlIGIvYXJjaC9hcm0vYm9hcmRzL2F2bmV0
+LXplZGJvYXJkL2Vudi9udi9saW51eC5ib290YXJncy5jb25zb2xlCnNpbWlsYXJpdHkgaW5kZXgg
+MTAwJQpyZW5hbWUgZnJvbSBhcmNoL2FybS9ib2FyZHMvYXZuZXQtemVkYm9hcmQvZW52L252L2xp
+bnV4LmJvb3RhcmdzLmJhc2UKcmVuYW1lIHRvIGFyY2gvYXJtL2JvYXJkcy9hdm5ldC16ZWRib2Fy
+ZC9lbnYvbnYvbGludXguYm9vdGFyZ3MuY29uc29sZQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9h
+cmRzL2NsZXA3MjEyL2Vudi9udi9saW51eC5ib290YXJncy5iYXNlIGIvYXJjaC9hcm0vYm9hcmRz
+L2NsZXA3MjEyL2Vudi9udi9saW51eC5ib290YXJncy5jb25zb2xlCnNpbWlsYXJpdHkgaW5kZXgg
+MTAwJQpyZW5hbWUgZnJvbSBhcmNoL2FybS9ib2FyZHMvY2xlcDcyMTIvZW52L252L2xpbnV4LmJv
+b3RhcmdzLmJhc2UKcmVuYW1lIHRvIGFyY2gvYXJtL2JvYXJkcy9jbGVwNzIxMi9lbnYvbnYvbGlu
+dXguYm9vdGFyZ3MuY29uc29sZQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2lteDIzMy1v
+bGludXhpbm8vZGVmYXVsdGVudi1pbXgyMzMtb2xpbnV4aW5vL252L2xpbnV4LmJvb3RhcmdzLmJh
+c2UgYi9hcmNoL2FybS9ib2FyZHMvY3J5c3RhbGZvbnR6LWNmYTEwMDM2L2Vudi9udi9saW51eC5i
+b290YXJncy5jb25zb2xlCnNpbWlsYXJpdHkgaW5kZXggMTAwJQpyZW5hbWUgZnJvbSBhcmNoL2Fy
+bS9ib2FyZHMvaW14MjMzLW9saW51eGluby9kZWZhdWx0ZW52LWlteDIzMy1vbGludXhpbm8vbnYv
+bGludXguYm9vdGFyZ3MuYmFzZQpyZW5hbWUgdG8gYXJjaC9hcm0vYm9hcmRzL2NyeXN0YWxmb250
+ei1jZmExMDAzNi9lbnYvbnYvbGludXguYm9vdGFyZ3MuY29uc29sZQpkaWZmIC0tZ2l0IGEvYXJj
+aC9hcm0vYm9hcmRzL2VmaWthLW14LXNtYXJ0Ym9vay9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFz
+ZSBiL2FyY2gvYXJtL2JvYXJkcy9lZmlrYS1teC1zbWFydGJvb2svZW52L252L2xpbnV4LmJvb3Rh
+cmdzLmNvbnNvbGUKc2ltaWxhcml0eSBpbmRleCAxMDAlCnJlbmFtZSBmcm9tIGFyY2gvYXJtL2Jv
+YXJkcy9lZmlrYS1teC1zbWFydGJvb2svZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UKcmVuYW1l
+IHRvIGFyY2gvYXJtL2JvYXJkcy9lZmlrYS1teC1zbWFydGJvb2svZW52L252L2xpbnV4LmJvb3Rh
+cmdzLmNvbnNvbGUKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9jcnlzdGFsZm9udHotY2Zh
+MTAwMzYvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UgYi9hcmNoL2FybS9ib2FyZHMvaW14MjMz
+LW9saW51eGluby9kZWZhdWx0ZW52LWlteDIzMy1vbGludXhpbm8vbnYvbGludXguYm9vdGFyZ3Mu
+Y29uc29sZQpzaW1pbGFyaXR5IGluZGV4IDEwMCUKcmVuYW1lIGZyb20gYXJjaC9hcm0vYm9hcmRz
+L2NyeXN0YWxmb250ei1jZmExMDAzNi9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQpyZW5hbWUg
+dG8gYXJjaC9hcm0vYm9hcmRzL2lteDIzMy1vbGludXhpbm8vZGVmYXVsdGVudi1pbXgyMzMtb2xp
+bnV4aW5vL252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGUKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
+YXJkcy9hdDkxc2FtOW0xMGloZC9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSBiL2FyY2gvYXJt
+L2JvYXJkcy9sdWJib2NrL2Vudi9udi9saW51eC5ib290YXJncy5jb25zb2xlCnNpbWlsYXJpdHkg
+aW5kZXggMTAwJQpyZW5hbWUgZnJvbSBhcmNoL2FybS9ib2FyZHMvYXQ5MXNhbTltMTBpaGQvZW52
+L252L2xpbnV4LmJvb3RhcmdzLmJhc2UKcmVuYW1lIHRvIGFyY2gvYXJtL2JvYXJkcy9sdWJib2Nr
+L2Vudi9udi9saW51eC5ib290YXJncy5jb25zb2xlCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2Fy
+ZHMvcmFkeGEtcm9jay9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSBiL2FyY2gvYXJtL2JvYXJk
+cy9yYWR4YS1yb2NrL2Vudi9udi9saW51eC5ib290YXJncy5jb25zb2xlCnNpbWlsYXJpdHkgaW5k
+ZXggMTAwJQpyZW5hbWUgZnJvbSBhcmNoL2FybS9ib2FyZHMvcmFkeGEtcm9jay9lbnYvbnYvbGlu
+dXguYm9vdGFyZ3MuYmFzZQpyZW5hbWUgdG8gYXJjaC9hcm0vYm9hcmRzL3JhZHhhLXJvY2svZW52
+L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGUKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy92
+ZXJzYXRpbGUvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UgYi9hcmNoL2FybS9ib2FyZHMvdmVy
+c2F0aWxlL2Vudi9udi9saW51eC5ib290YXJncy5jb25zb2xlCnNpbWlsYXJpdHkgaW5kZXggMTAw
+JQpyZW5hbWUgZnJvbSBhcmNoL2FybS9ib2FyZHMvdmVyc2F0aWxlL2Vudi9udi9saW51eC5ib290
+YXJncy5iYXNlCnJlbmFtZSB0byBhcmNoL2FybS9ib2FyZHMvdmVyc2F0aWxlL2Vudi9udi9saW51
+eC5ib290YXJncy5jb25zb2xlCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
