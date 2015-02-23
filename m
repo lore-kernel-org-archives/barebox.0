@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YPnwc-0006c7-Jw
- for barebox@lists.infradead.org; Mon, 23 Feb 2015 08:00:48 +0000
+ Linux)) id 1YPnxF-00079S-9c
+ for barebox@lists.infradead.org; Mon, 23 Feb 2015 08:01:26 +0000
+Date: Mon, 23 Feb 2015 09:01:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 23 Feb 2015 09:00:19 +0100
-Message-Id: <1424678420-5351-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20150223080102.GL12209@pengutronix.de>
+References: <1424419220.4065.15.camel@lws-gamez.phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1424419220.4065.15.camel@lws-gamez.phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,93 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] OMAP and i.MX boards: do not set console= commandline
- parameter in environment
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: bareboxenv: console bootargs
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBpcyBub3QgbmVjZXNzYXJ5IHNpbmNlIGZvciBPTUFQIGFuZCBpLk1YIHRoZSBjb25zb2xl
-PSBwYXJhbWV0ZXIgaXMKaW5pdGlhbGl6ZWQgYnkgdGhlIHNlcmlhbCBkcml2ZXIuCgpTaWduZWQt
-b2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+ClN1Z2dlc3RlZC1i
-eTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJjaC9hcm0vYm9hcmRz
-L2JlYWdsZS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSAgICAgICAgICAgICAgICAgICAgICAg
-IHwgMSAtCiBhcmNoL2FybS9ib2FyZHMvY2N4bXg1MS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFz
-ZSAgICAgICAgICAgICAgICAgICAgICAgfCAxIC0KIGFyY2gvYXJtL2JvYXJkcy9ndWYtdmluY2Vs
-bC9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSAgICAgICAgICAgICAgICAgICB8IDEgLQogYXJj
-aC9hcm0vYm9hcmRzL214MzFtb2JvYXJkL2Vudi9udi9saW51eC5ib290YXJncy5iYXNlICAgICAg
-ICAgICAgICAgICAgIHwgMSAtCiBhcmNoL2FybS9ib2FyZHMvcGFuZGEvZW52L252L2xpbnV4LmJv
-b3RhcmdzLmJhc2UgICAgICAgICAgICAgICAgICAgICAgICAgfCAxIC0KIGFyY2gvYXJtL2JvYXJk
-cy9waHl0ZWMtcGh5Y29yZS1pbXgzMS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSAgICAgICAg
-ICB8IDEgLQogYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWlteDM1L2Vudi9udi9saW51
-eC5ib290YXJncy5iYXNlICAgICAgICAgIHwgMSAtCiAuLi4vZGVmYXVsdGVudi1waHlmbGV4LWFt
-MzM1eC9udi9saW51eC5ib290YXJncy5iYXNlICAgICAgICAgICAgICAgICAgICAgfCAxIC0KIC4u
-Li9waHl0ZWMtcGh5ZmxleC1pbXg2L2RlZmF1bHRlbnYtcGh5ZmxleC1pbXg2L252L2xpbnV4LmJv
-b3RhcmdzLmJhc2UgICB8IDEgLQogOSBmaWxlcyBjaGFuZ2VkLCA5IGRlbGV0aW9ucygtKQogZGVs
-ZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9iZWFnbGUvZW52L252L2xpbnV4LmJvb3Rh
-cmdzLmJhc2UKIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvY2N4bXg1MS9lbnYv
-bnYvbGludXguYm9vdGFyZ3MuYmFzZQogZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJk
-cy9ndWYtdmluY2VsbC9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQogZGVsZXRlIG1vZGUgMTAw
-NjQ0IGFyY2gvYXJtL2JvYXJkcy9teDMxbW9ib2FyZC9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFz
-ZQogZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9wYW5kYS9lbnYvbnYvbGludXgu
-Ym9vdGFyZ3MuYmFzZQogZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMt
-cGh5Y29yZS1pbXgzMS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQogZGVsZXRlIG1vZGUgMTAw
-NjQ0IGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1pbXgzNS9lbnYvbnYvbGludXguYm9v
-dGFyZ3MuYmFzZQogZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5
-ZmxleC1hbTMzNXgvZGVmYXVsdGVudi1waHlmbGV4LWFtMzM1eC9udi9saW51eC5ib290YXJncy5i
-YXNlCiBkZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHlmbGV4LWlt
-eDYvZGVmYXVsdGVudi1waHlmbGV4LWlteDYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQoKZGlmZiAt
-LWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGUvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2Ug
-Yi9hcmNoL2FybS9ib2FyZHMvYmVhZ2xlL2Vudi9udi9saW51eC5ib290YXJncy5iYXNlCmRlbGV0
-ZWQgZmlsZSBtb2RlIDEwMDY0NAppbmRleCA1ZmVmNzI2Li4wMDAwMDAwCi0tLSBhL2FyY2gvYXJt
-L2JvYXJkcy9iZWFnbGUvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UKKysrIC9kZXYvbnVsbApA
-QCAtMSArMCwwIEBACi1jb25zb2xlPXR0eU8yLDExNTIwMApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-Ym9hcmRzL2NjeG14NTEvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UgYi9hcmNoL2FybS9ib2Fy
-ZHMvY2N4bXg1MS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQpkZWxldGVkIGZpbGUgbW9kZSAx
-MDA2NDQKaW5kZXggZDgzZWI5NC4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9ib2FyZHMvY2N4bXg1
-MS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQorKysgL2Rldi9udWxsCkBAIC0xICswLDAgQEAK
-LWVhcmx5cHJpbnRrIGNvbnNvbGU9dHR5bXhjMCwxMTUyMDBuOApkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vYm9hcmRzL2d1Zi12aW5jZWxsL2Vudi9udi9saW51eC5ib290YXJncy5iYXNlIGIvYXJjaC9h
-cm0vYm9hcmRzL2d1Zi12aW5jZWxsL2Vudi9udi9saW51eC5ib290YXJncy5iYXNlCmRlbGV0ZWQg
-ZmlsZSBtb2RlIDEwMDY0NAppbmRleCBkNzc1MzEwLi4wMDAwMDAwCi0tLSBhL2FyY2gvYXJtL2Jv
-YXJkcy9ndWYtdmluY2VsbC9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQorKysgL2Rldi9udWxs
-CkBAIC0xICswLDAgQEAKLWNvbnNvbGU9dHR5bXhjMCwxMTUyMDAKZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2JvYXJkcy9teDMxbW9ib2FyZC9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSBiL2FyY2gv
-YXJtL2JvYXJkcy9teDMxbW9ib2FyZC9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQpkZWxldGVk
-IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggODRlNDg4ZC4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9i
-b2FyZHMvbXgzMW1vYm9hcmQvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UKKysrIC9kZXYvbnVs
-bApAQCAtMSArMCwwIEBACi1jb25zb2xlPXR0eW14YzAsOTIxNjAwCmRpZmYgLS1naXQgYS9hcmNo
-L2FybS9ib2FyZHMvcGFuZGEvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UgYi9hcmNoL2FybS9i
-b2FyZHMvcGFuZGEvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UKZGVsZXRlZCBmaWxlIG1vZGUg
-MTAwNjQ0CmluZGV4IDVmZWY3MjYuLjAwMDAwMDAKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BhbmRh
-L2Vudi9udi9saW51eC5ib290YXJncy5iYXNlCisrKyAvZGV2L251bGwKQEAgLTEgKzAsMCBAQAot
-Y29uc29sZT10dHlPMiwxMTUyMDAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMt
-cGh5Y29yZS1pbXgzMS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZSBiL2FyY2gvYXJtL2JvYXJk
-cy9waHl0ZWMtcGh5Y29yZS1pbXgzMS9lbnYvbnYvbGludXguYm9vdGFyZ3MuYmFzZQpkZWxldGVk
-IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggZDc3NTMxMC4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9i
-b2FyZHMvcGh5dGVjLXBoeWNvcmUtaW14MzEvZW52L252L2xpbnV4LmJvb3RhcmdzLmJhc2UKKysr
-IC9kZXYvbnVsbApAQCAtMSArMCwwIEBACi1jb25zb2xlPXR0eW14YzAsMTE1MjAwCmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtaW14MzUvZW52L252L2xpbnV4LmJv
-b3RhcmdzLmJhc2UgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtaW14MzUvZW52L252
-L2xpbnV4LmJvb3RhcmdzLmJhc2UKZGVsZXRlZCBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IGQ3NzUz
-MTAuLjAwMDAwMDAKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWlteDM1L2Vu
-di9udi9saW51eC5ib290YXJncy5iYXNlCisrKyAvZGV2L251bGwKQEAgLTEgKzAsMCBAQAotY29u
-c29sZT10dHlteGMwLDExNTIwMApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1w
-aHlmbGV4LWFtMzM1eC9kZWZhdWx0ZW52LXBoeWZsZXgtYW0zMzV4L252L2xpbnV4LmJvb3Rhcmdz
-LmJhc2UgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWZsZXgtYW0zMzV4L2RlZmF1bHRlbnYt
-cGh5ZmxleC1hbTMzNXgvbnYvbGludXguYm9vdGFyZ3MuYmFzZQpkZWxldGVkIGZpbGUgbW9kZSAx
-MDA2NDQKaW5kZXggZDdiMDFhMS4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVj
-LXBoeWZsZXgtYW0zMzV4L2RlZmF1bHRlbnYtcGh5ZmxleC1hbTMzNXgvbnYvbGludXguYm9vdGFy
-Z3MuYmFzZQorKysgL2Rldi9udWxsCkBAIC0xICswLDAgQEAKLWNvbnNvbGU9dHR5TzAsMTE1MjAw
-CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWZsZXgtaW14Ni9kZWZhdWx0
-ZW52LXBoeWZsZXgtaW14Ni9udi9saW51eC5ib290YXJncy5iYXNlIGIvYXJjaC9hcm0vYm9hcmRz
-L3BoeXRlYy1waHlmbGV4LWlteDYvZGVmYXVsdGVudi1waHlmbGV4LWlteDYvbnYvbGludXguYm9v
-dGFyZ3MuYmFzZQpkZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggYzYxYzYwMy4uMDAwMDAw
-MAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWZsZXgtaW14Ni9kZWZhdWx0ZW52LXBo
-eWZsZXgtaW14Ni9udi9saW51eC5ib290YXJncy5iYXNlCisrKyAvZGV2L251bGwKQEAgLTEgKzAs
-MCBAQAotY29uc29sZT10dHlteGMzLDExNTIwMAotLSAKMi4xLjQKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Teresa,
+
+On Fri, Feb 20, 2015 at 09:00:20AM +0100, Teresa G=E1mez wrote:
+> Hello,
+> =
+
+> I have noticed that the console=3D bootarg parameter in the latest
+> enviroment is set in the /env/nv/linux.bootargs.base variable. But it is
+> also set over common/console.c in the variable linux.bootargs.console
+> which results here in two console=3D parameter:
+> =
+
+> commandline: console=3DttyO0,115200n8 console=3DttyO0,115200
+> root=3D/dev/mmcblk0p2 rootfstype=3Dext4 rw rootwait
+> =
+
+> Wouldn't it be the right way to set the linux.bootargs.console instead
+> of the linux.bootargs.base in the enviroment. If it needs to be
+> overwritten at all...
+
+Indeed, linux.bootargs.console would be a better variable for the
+console bootargs. The OMAP and i.MX boards don't need this setting
+because they set it in common/console.c using the linux_console_name
+variable. I just sent a patch to fix that.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
