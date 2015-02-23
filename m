@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YPpKR-0004r4-1U
- for barebox@lists.infradead.org; Mon, 23 Feb 2015 09:29:28 +0000
-Date: Mon, 23 Feb 2015 10:29:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150223092903.GM12209@pengutronix.de>
-References: <1423805265-19766-1-git-send-email-dbrainard@brainardinsight.com>
- <54DD9130.40606@atmel.com>
- <CA+nEJikidFkrVM+CbqZfFU=Y2EjYKZDz-ug=eVWDh5Y-g0_Gkw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CA+nEJikidFkrVM+CbqZfFU=Y2EjYKZDz-ug=eVWDh5Y-g0_Gkw@mail.gmail.com>
+Received: from mail-pa0-f49.google.com ([209.85.220.49])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YPuT7-0003NS-Aq
+ for barebox@lists.infradead.org; Mon, 23 Feb 2015 14:58:47 +0000
+Received: by padhz1 with SMTP id hz1so28045680pad.9
+ for <barebox@lists.infradead.org>; Mon, 23 Feb 2015 06:58:23 -0800 (PST)
+From: Doug Brainard <dbrainard@brainardinsight.com>
+Date: Mon, 23 Feb 2015 07:57:51 -0700
+Message-Id: <1424703471-9569-1-git-send-email-dbrainard@brainardinsight.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +16,236 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] SAMA5D4EK - Now uses the new environment.
-To: Doug Brainard <dbrainard@brainardinsight.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3] SAMA5D4EK - Now uses the new environment.
+To: barebox@lists.infradead.org
 
-On Sun, Feb 22, 2015 at 10:58:42AM -0700, Doug Brainard wrote:
-> Bo,
-> 
-> On Thu, Feb 12, 2015 at 10:52 PM, Bo Shen <voice.shen@atmel.com> wrote:
-> > Hi Doug,
-> >
-> > On 02/13/2015 01:27 PM, Doug Brainard wrote:
-> >>
-> >> Switched SAMA5D4EK development board to the newer environment method.
-> >>
-> >> Improved interface to the new environment
-> >>
-> >> Create a custom mtdparts-add script to have the partition naming work the
-> >> same as in the old environment
-> >>
-> >> Removed custom mtdparts-add after new patch resolved the issue being seen.
-> >
-> >
-> > I think the upper three line should be under "---", while not in commit
-> > message. This is what you do between previous version and this version (So
-> > you need add version to the patch).
-> >
-> 
-> Is there an official way to add a patch version?  And shouldn't
-> everything go above the "---" or it will be added to the changed
-> files?
-> 
-> >> Signed-off-by: Doug Brainard <dbrainard@brainardinsight.com>
-> >> ---
-> >
-> >
-> > (Put the depends here)
-> > For example:
-> >   This patch based on "mtd partition handling updates" patch series from
-> > Sascha Hauer <s.hauer@pengutronix.de>
-> >
-> > (Put change log here)
-> >
-> > For example:
-> > Changes in v2:
-> >   - Removed custom mtdparts-add after new patch resolved the issue being
-> > seen.
-> >
-> 
-> To add the depends and change log, do I just edit the patch file with
-> a text editor or is there a command argument to do that?
+This patch switches the SAMA5D4EK development board to the newer environment method.
 
-The --annotate option might help you here. I haven't used it before, so
-I don't know.
+This patch depends on "mtd partition handling updates" patch series from Sascha Hauer <s.hauer@pengutronix.de>
 
-Sascha
+Changes since v2:
+ - Modified the NOR partitions to match what is used in u-boot.
+ - Removed the PS1 variable from init, so the default will now just be used.
 
+Changes since v1:
+ - Improved interface to the new environment.
+ - Create a custom mtdparts-add script to have the partition naming work the same as in the old environment.
+ - Removed custom mtdparts-add after new patch resolved the issue being seen.
 
+Signed-off-by: Doug Brainard <dbrainard@brainardinsight.com>
+---
+ arch/arm/boards/sama5d4ek/env/bin/init_board       | 15 --------
+ arch/arm/boards/sama5d4ek/env/boot/nand            |  6 ++++
+ arch/arm/boards/sama5d4ek/env/config               | 42 ----------------------
+ arch/arm/boards/sama5d4ek/env/init/mtdparts-nand   |  6 ++++
+ arch/arm/boards/sama5d4ek/env/init/mtdparts-nor    |  6 ++++
+ arch/arm/boards/sama5d4ek/env/init/splash          | 10 ++++++
+ arch/arm/boards/sama5d4ek/env/nv/boot.default      |  1 +
+ arch/arm/boards/sama5d4ek/env/nv/hostname          |  1 +
+ .../boards/sama5d4ek/env/nv/linux.bootargs.console |  1 +
+ arch/arm/configs/sama5d4ek_defconfig               |  5 +--
+ arch/arm/mach-at91/Kconfig                         |  1 +
+ 11 files changed, 35 insertions(+), 59 deletions(-)
+ delete mode 100644 arch/arm/boards/sama5d4ek/env/bin/init_board
+ create mode 100644 arch/arm/boards/sama5d4ek/env/boot/nand
+ delete mode 100644 arch/arm/boards/sama5d4ek/env/config
+ create mode 100644 arch/arm/boards/sama5d4ek/env/init/mtdparts-nand
+ create mode 100644 arch/arm/boards/sama5d4ek/env/init/mtdparts-nor
+ create mode 100644 arch/arm/boards/sama5d4ek/env/init/splash
+ create mode 100644 arch/arm/boards/sama5d4ek/env/nv/boot.default
+ create mode 100644 arch/arm/boards/sama5d4ek/env/nv/hostname
+ create mode 100644 arch/arm/boards/sama5d4ek/env/nv/linux.bootargs.console
+
+diff --git a/arch/arm/boards/sama5d4ek/env/bin/init_board b/arch/arm/boards/sama5d4ek/env/bin/init_board
+deleted file mode 100644
+index f3d417e..0000000
+--- a/arch/arm/boards/sama5d4ek/env/bin/init_board
++++ /dev/null
+@@ -1,15 +0,0 @@
+-#!/bin/sh
+-
+-PATH=/env/bin
+-export PATH
+-
+-. /env/config
+-
+-splash=/env/splash.png
+-
+-if [ -f ${splash} -a -e /dev/fb0 ]; then
+-	splash -o ${splash}
+-	fb0.enable=1
+-fi
+-
+-exit 1
+diff --git a/arch/arm/boards/sama5d4ek/env/boot/nand b/arch/arm/boards/sama5d4ek/env/boot/nand
+new file mode 100644
+index 0000000..29489bf
+--- /dev/null
++++ b/arch/arm/boards/sama5d4ek/env/boot/nand
+@@ -0,0 +1,6 @@
++#!/bin/sh
++
++global.bootm.image="/dev/nand0.kernel.bb"
++global.bootm.oftree="/dev/nand0.oftree.bb"
++
++global.linux.bootargs.dyn.root="root=ubi0:rootfs ubi.mtd=rootfs rootfstype=ubifs noinitrd"
+diff --git a/arch/arm/boards/sama5d4ek/env/config b/arch/arm/boards/sama5d4ek/env/config
+deleted file mode 100644
+index 1007345..0000000
+--- a/arch/arm/boards/sama5d4ek/env/config
++++ /dev/null
+@@ -1,42 +0,0 @@
+-#!/bin/sh
+-
+-# use 'dhcp' to do dhcp in barebox and in kernel
+-# use 'none' if you want to skip kernel ip autoconfiguration
+-ip=dhcp
+-
+-# or set your networking parameters here
+-#eth0.ipaddr=a.b.c.d
+-#eth0.netmask=a.b.c.d
+-#eth0.gateway=a.b.c.d
+-#eth0.serverip=a.b.c.d
+-
+-# can be either 'nfs', 'tftp', 'nor' or 'nand'
+-kernel_loc=nfs
+-# can be either 'net', 'nor', 'nand' or 'initrd'
+-rootfs_loc=net
+-# can be either 'nfs', 'tftp', 'nand' or empty
+-oftree_loc=nfs
+-
+-# can be either 'jffs2' or 'ubifs'
+-rootfs_type=ubifs
+-rootfsimage=root.$rootfs_type
+-ubiroot=rootfs
+-
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage=zImage
+-#kernelimage=uImage
+-#kernelimage=Image
+-#kernelimage=Image.lzo
+-
+-nand_device=atmel_nand
+-nand_parts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),-(rootfs)"
+-rootfs_mtdblock_nand=7
+-
+-m25p80_parts="64k(bootstrap),384k(barebox),256k(bareboxenv),256k(bareboxenv2),128k(oftree),-(updater)"
+-
+-autoboot_timeout=3
+-
+-bootargs="console=ttyS0,115200"
+-
+-# set a fancy prompt (if support is compiled in)
+-PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
+diff --git a/arch/arm/boards/sama5d4ek/env/init/mtdparts-nand b/arch/arm/boards/sama5d4ek/env/init/mtdparts-nand
+new file mode 100644
+index 0000000..c947910
+--- /dev/null
++++ b/arch/arm/boards/sama5d4ek/env/init/mtdparts-nand
+@@ -0,0 +1,6 @@
++#!/bin/sh
++
++mtdparts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),-(rootfs)"
++kernelname="atmel_nand"
++
++mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
+diff --git a/arch/arm/boards/sama5d4ek/env/init/mtdparts-nor b/arch/arm/boards/sama5d4ek/env/init/mtdparts-nor
+new file mode 100644
+index 0000000..01fa752
+--- /dev/null
++++ b/arch/arm/boards/sama5d4ek/env/init/mtdparts-nor
+@@ -0,0 +1,6 @@
++#!/bin/sh
++
++mtdparts="64k(bootstrap),64k(bareboxenv),512k(barebox),384k(oftree),-(kernel)"
++kernelname="m25p800"
++
++mtdparts-add -d m25p0 -k ${kernelname} -p ${mtdparts}
+diff --git a/arch/arm/boards/sama5d4ek/env/init/splash b/arch/arm/boards/sama5d4ek/env/init/splash
+new file mode 100644
+index 0000000..190ef31
+--- /dev/null
++++ b/arch/arm/boards/sama5d4ek/env/init/splash
+@@ -0,0 +1,10 @@
++#!/bin/sh
++
++splash=/env/splash.png
++
++if [ -f ${splash} -a -e /dev/fb0 ]; then
++	splash -o ${splash}
++	fb0.enable=1
++fi
++
++exit 1
+diff --git a/arch/arm/boards/sama5d4ek/env/nv/boot.default b/arch/arm/boards/sama5d4ek/env/nv/boot.default
+new file mode 100644
+index 0000000..d287b22
+--- /dev/null
++++ b/arch/arm/boards/sama5d4ek/env/nv/boot.default
+@@ -0,0 +1 @@
++nand net
+diff --git a/arch/arm/boards/sama5d4ek/env/nv/hostname b/arch/arm/boards/sama5d4ek/env/nv/hostname
+new file mode 100644
+index 0000000..b74056d
+--- /dev/null
++++ b/arch/arm/boards/sama5d4ek/env/nv/hostname
+@@ -0,0 +1 @@
++sama5d4ek
+diff --git a/arch/arm/boards/sama5d4ek/env/nv/linux.bootargs.console b/arch/arm/boards/sama5d4ek/env/nv/linux.bootargs.console
+new file mode 100644
+index 0000000..476b1fb
+--- /dev/null
++++ b/arch/arm/boards/sama5d4ek/env/nv/linux.bootargs.console
+@@ -0,0 +1 @@
++console=ttyS0,115200
+diff --git a/arch/arm/configs/sama5d4ek_defconfig b/arch/arm/configs/sama5d4ek_defconfig
+index bbf254a..f050fe4 100644
+--- a/arch/arm/configs/sama5d4ek_defconfig
++++ b/arch/arm/configs/sama5d4ek_defconfig
+@@ -9,13 +9,12 @@ CONFIG_MALLOC_SIZE=0xA00000
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_PROMPT="A5D4EK:"
+-CONFIG_GLOB=y
+ CONFIG_PROMPT_HUSH_PS2="y"
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/sama5d4ek/env"
+ CONFIG_DEBUG_INFO=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+@@ -35,6 +34,8 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_FILETYPE=y
+ CONFIG_CMD_SLEEP=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index b85e6fa..5b27526 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -494,6 +494,7 @@ choice
+ 
+ config MACH_SAMA5D4EK
+ 	bool "Atmel SAMA5D4 Evaluation Kit"
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
+ 	help
+ 	  Select this if you are using Atmel's SAMA5D4-EK Evaluation Kit.
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.3.0
+
 
 _______________________________________________
 barebox mailing list
