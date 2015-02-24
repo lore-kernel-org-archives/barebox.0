@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YQ8t0-00019z-S1
- for barebox@lists.infradead.org; Tue, 24 Feb 2015 06:22:29 +0000
-Date: Tue, 24 Feb 2015 07:21:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150224062157.GN12209@pengutronix.de>
-References: <1424703471-9569-1-git-send-email-dbrainard@brainardinsight.com>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YQAKF-0005fI-SB
+ for barebox@lists.infradead.org; Tue, 24 Feb 2015 07:54:41 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 33A6FA0024C
+ for <barebox@lists.infradead.org>; Tue, 24 Feb 2015 08:55:05 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 24 Feb 2015 08:52:13 +0100
+Message-Id: <1424764334-39730-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1424764334-39730-1-git-send-email-t.gamez@phytec.de>
+References: <1424764334-39730-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1424703471-9569-1-git-send-email-dbrainard@brainardinsight.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +20,22 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] SAMA5D4EK - Now uses the new environment.
-To: Doug Brainard <dbrainard@brainardinsight.com>
-Cc: barebox@lists.infradead.org
+Subject: [For next PATCH 2/3] ARM: am335x_defconfig: Add ext4 support
+To: barebox@lists.infradead.org
 
-On Mon, Feb 23, 2015 at 07:57:51AM -0700, Doug Brainard wrote:
-> This patch switches the SAMA5D4EK development board to the newer environment method.
-> 
-> This patch depends on "mtd partition handling updates" patch series from Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Changes since v2:
->  - Modified the NOR partitions to match what is used in u-boot.
->  - Removed the PS1 variable from init, so the default will now just be used.
-> 
-> Changes since v1:
->  - Improved interface to the new environment.
->  - Create a custom mtdparts-add script to have the partition naming work the same as in the old environment.
->  - Removed custom mtdparts-add after new patch resolved the issue being seen.
-> 
-> Signed-off-by: Doug Brainard <dbrainard@brainardinsight.com>
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJj
+aC9hcm0vY29uZmlncy9hbTMzNXhfZGVmY29uZmlnIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBp
+bnNlcnRpb24oKykKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9jb25maWdzL2FtMzM1eF9kZWZjb25m
+aWcgYi9hcmNoL2FybS9jb25maWdzL2FtMzM1eF9kZWZjb25maWcKaW5kZXggMGI4ZjU4ZC4uMGRi
+MjA3NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9hbTMzNXhfZGVmY29uZmlnCisrKyBi
+L2FyY2gvYXJtL2NvbmZpZ3MvYW0zMzV4X2RlZmNvbmZpZwpAQCAtMTI1LDYgKzEyNSw3IEBAIENP
+TkZJR19FRVBST01fQVQyND15CiBDT05GSUdfR1BJT19HRU5FUklDX1BMQVRGT1JNPXkKIENPTkZJ
+R19QSU5DVFJMX1NJTkdMRT15CiBDT05GSUdfQlVTX09NQVBfR1BNQz15CitDT05GSUdfRlNfRVhU
+ND15CiBDT05GSUdfRlNfVEZUUD15CiBDT05GSUdfRlNfTkZTPXkKIENPTkZJR19GU19GQVQ9eQot
+LSAKMS45LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
+L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
