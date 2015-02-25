@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YQWUG-0004pY-3f
- for barebox@lists.infradead.org; Wed, 25 Feb 2015 07:34:29 +0000
-Date: Wed, 25 Feb 2015 08:34:06 +0100
+ Linux)) id 1YQWW6-0006KM-Dy
+ for barebox@lists.infradead.org; Wed, 25 Feb 2015 07:36:23 +0000
+Date: Wed, 25 Feb 2015 08:36:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150225073406.GS12209@pengutronix.de>
+Message-ID: <20150225073600.GT12209@pengutronix.de>
 References: <1424789630-10461-1-git-send-email-m.olbrich@pengutronix.de>
- <1424789630-10461-3-git-send-email-m.olbrich@pengutronix.de>
+ <1424789630-10461-2-git-send-email-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1424789630-10461-3-git-send-email-m.olbrich@pengutronix.de>
+In-Reply-To: <1424789630-10461-2-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,21 +23,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM Samsung: add simple NAND barebox update handler
+Subject: Re: [PATCH 2/3] friendlyarm-mini2440: add support for the W35 display
 To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 24, 2015 at 03:53:50PM +0100, Michael Olbrich wrote:
+On Tue, Feb 24, 2015 at 03:53:49PM +0100, Michael Olbrich wrote:
 > Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 > ---
 > 
-> I'm not sure if writing to /dev/nand0.barebox.bb is correct. But from what
-> I can tell, the nand boot code cannot handle bad blocks, so it probably
-> doesn't matter anyways.
+> I'm not quite sure about the sync flags. I tried to match what the kernel
+> does and it looks correct here.
+> 
+> Michael
+> 
+>  arch/arm/boards/friendlyarm-mini2440/Kconfig    |  6 ++++++
+>  arch/arm/boards/friendlyarm-mini2440/mini2440.c | 17 +++++++++++++++++
+>  2 files changed, 23 insertions(+)
 
-So when the boot code can't handle bad blocks I think you should use the
-non bb device. Then you'll realize during writing that it won't work,
-not only during booting
+Applied, thanks
 
 Sascha
 
