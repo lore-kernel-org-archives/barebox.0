@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YQWbW-0000bG-S6
- for barebox@lists.infradead.org; Wed, 25 Feb 2015 07:42:02 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id CACF7A00345
- for <barebox@lists.infradead.org>; Wed, 25 Feb 2015 08:42:27 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Wed, 25 Feb 2015 08:39:34 +0100
-Message-Id: <1424849974-41728-1-git-send-email-t.gamez@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YQXaO-0001ky-HS
+ for barebox@lists.infradead.org; Wed, 25 Feb 2015 08:44:53 +0000
+Date: Wed, 25 Feb 2015 09:44:29 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <20150225084429.GR7994@pengutronix.de>
+References: <1424682905-12451-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1424682905-12451-4-git-send-email-s.trumtrar@pengutronix.de>
+ <1424683689.29479.3.camel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1424683689.29479.3.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,27 +20,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For next PATCH] ARM: phytec-som-am335x: Remove mmc rootfstype
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 3/3] ARM: socfpga: add Altera SoCFPGA Development Kit
+ support
+To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Um9vdGZzIHR5cGUgaXMgYmVlaW5nIGRldGVjdGVkLiBSZW1vdmVkIHRoZSByb290ZnN0eXBlIHBh
-cmFtZXRlci4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRl
-PgotLS0KIGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNv
-bS1hbTMzNXgvYm9vdC9tbWMgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyks
-IDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1h
-bTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jIGIvYXJjaC9hcm0vYm9hcmRz
-L3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L21tYwppbmRl
-eCAxYTY0MmY5Li42NzBhZmM3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNv
-bS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jCisrKyBiL2FyY2gvYXJt
-L2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9t
-bWMKQEAgLTUsNCArNSw0IEBAIGdsb2JhbC5ib290bS5vZnRyZWU9L2Jvb3Qvb2Z0cmVlCiAKIGJv
-b3RhcmdzLWlwCiAKLWdsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21t
-Y2JsazBwMiByb290ZnN0eXBlPWV4dDMgcncgcm9vdHdhaXQiCitnbG9iYWwubGludXguYm9vdGFy
-Z3MuZHluLnJvb3Q9InJvb3Q9L2Rldi9tbWNibGswcDIgcncgcm9vdHdhaXQiCi0tIAoxLjkuMQoK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, Feb 23, 2015 at 10:28:09AM +0100, Jan L=FCbbe wrote:
+> On Mo, 2015-02-23 at 10:15 +0100, Steffen Trumtrar wrote:
+> > --- /dev/null
+> > +++ b/arch/arm/boards/altera-socdk/board.c
+> > @@ -0,0 +1,38 @@
+> =
+
+> > +static int ksz9021rn_phy_fixup(struct phy_device *dev)
+> > +{
+> > +	phy_write(dev, 0x09, 0x0f00);
+> > +
+> > +	/* rx skew */
+> > +	phy_write(dev, 0x0b, 0x8105);
+> > +	phy_write(dev, 0x0c, 0x0000);
+> > +
+> > +	/* clk/ctrl skew */
+> > +	phy_write(dev, 0x0b, 0x8104);
+> > +	phy_write(dev, 0x0c, 0xa0d0);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int socfpga_console_init(void)
+> > +{
+> > +	if (!of_machine_is_compatible("altr,socdk"))
+> > +		return 0;
+> > +
+> > +	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
+> > +					   ksz9021rn_phy_fixup);
+> > +
+> > +	return 0;
+> > +}
+> > +console_initcall(socfpga_console_init);
+> =
+
+> > --- /dev/null
+> > +++ b/arch/arm/dts/socfpga_cyclone5_socdk.dts
+> =
+
+> > +&gmac1 {
+> > +	status =3D "okay";
+> > +	phy-mode =3D "rgmii";
+> > +
+> > +	rxd0-skew-ps =3D <0>;
+> > +	rxd1-skew-ps =3D <0>;
+> > +	rxd2-skew-ps =3D <0>;
+> > +	rxd3-skew-ps =3D <0>;
+> > +	txen-skew-ps =3D <0>;
+> > +	txc-skew-ps =3D <2600>;
+> > +	rxdv-skew-ps =3D <0>;
+> > +	rxc-skew-ps =3D <2000>;
+> > +};
+> =
+
+> It seems that with the DT-based configuration of the skew values, the
+> phy_fixup in board.c is not necessary.
+
+Yes, one would expect that. But it didn't work, so I decided to not
+debug this right now.
+The socfpga-DT section needs an overhaul anyway; gpio and clkmgr bindings
+are not correct anymore.
+
+Regards,
+Steffen
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
