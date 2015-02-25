@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YQWSX-0004SJ-Nr
- for barebox@lists.infradead.org; Wed, 25 Feb 2015 07:32:42 +0000
-Message-ID: <1424849536.6197.1.camel@lws-gamez.phytec.de>
-From: Teresa =?ISO-8859-1?Q?G=E1mez?= <t.gamez@phytec.de>
-Date: Wed, 25 Feb 2015 08:32:16 +0100
-In-Reply-To: <20150225072233.GP12209@pengutronix.de>
-References: <1424764334-39730-1-git-send-email-t.gamez@phytec.de>
- <1424764334-39730-3-git-send-email-t.gamez@phytec.de>
- <20150225072233.GP12209@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YQWUG-0004pY-3f
+ for barebox@lists.infradead.org; Wed, 25 Feb 2015 07:34:29 +0000
+Date: Wed, 25 Feb 2015 08:34:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150225073406.GS12209@pengutronix.de>
+References: <1424789630-10461-1-git-send-email-m.olbrich@pengutronix.de>
+ <1424789630-10461-3-git-send-email-m.olbrich@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1424789630-10461-3-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +19,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [For next PATCH 3/3] ARM: phytec-som-am335x: Update sd-card
- rootfs to ext4
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 3/3] ARM Samsung: add simple NAND barebox update handler
+To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-QW0gTWl0dHdvY2gsIGRlbiAyNS4wMi4yMDE1LCAwODoyMiArMDEwMCBzY2hyaWViIFNhc2NoYSBI
-YXVlcjoKPiBPbiBUdWUsIEZlYiAyNCwgMjAxNSBhdCAwODo1MjoxNEFNICswMTAwLCBUZXJlc2Eg
-R8OhbWV6IHdyb3RlOgo+ID4gVXBkYXRlIHJvb3RmcyB0byBleHQ0LiBleHQzIGZpbGVzeXN0ZW1z
-IGFyZSBzdGlsbCBnZXR0aW5nIG1vdW50ZWQuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IFRlcmVz
-YSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgo+ID4gLS0tCj4gPiAgYXJjaC9hcm0vYm9hcmRz
-L3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L21tYyB8IDIg
-Ky0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPiA+
-IAo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZh
-dWx0ZW52LXBoeXNvbS1hbTMzNXgvYm9vdC9tbWMgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNv
-bS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1jCj4gPiBpbmRleCAxYTY0
-MmY5Li40NDdlNDcxIDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20t
-YW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L21tYwo+ID4gKysrIGIvYXJjaC9h
-cm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290
-L21tYwo+ID4gQEAgLTUsNCArNSw0IEBAIGdsb2JhbC5ib290bS5vZnRyZWU9L2Jvb3Qvb2Z0cmVl
-Cj4gPiAgCj4gPiAgYm9vdGFyZ3MtaXAKPiA+ICAKPiA+IC1nbG9iYWwubGludXguYm9vdGFyZ3Mu
-ZHluLnJvb3Q9InJvb3Q9L2Rldi9tbWNibGswcDIgcm9vdGZzdHlwZT1leHQzIHJ3IHJvb3R3YWl0
-Igo+ID4gK2dsb2JhbC5saW51eC5ib290YXJncy5keW4ucm9vdD0icm9vdD0vZGV2L21tY2JsazBw
-MiByb290ZnN0eXBlPWV4dDQgcncgcm9vdHdhaXQiCj4gCj4gSXMgdGhlIHJvb3Rmc3R5cGUgbmVj
-ZXNzYXJ5IGFueXdheT8gSXQgc2hvdWxkIGJlIGF1dG9tYXRpY2FsbHkgZGV0ZWN0ZWQsCj4gbm8/
-CgpZZXMsIGRldGVjdGlvbiB3b3Jrcy4gSSdsbCByZW1vdmUgaXQuCgpUZXJlc2EKCj4gCj4gU2Fz
-Y2hhCj4gCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Feb 24, 2015 at 03:53:50PM +0100, Michael Olbrich wrote:
+> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+> ---
+> 
+> I'm not sure if writing to /dev/nand0.barebox.bb is correct. But from what
+> I can tell, the nand boot code cannot handle bad blocks, so it probably
+> doesn't matter anyways.
+
+So when the boot code can't handle bad blocks I think you should use the
+non bb device. Then you'll realize during writing that it won't work,
+not only during booting
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
