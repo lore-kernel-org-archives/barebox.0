@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YQWW6-0006KM-Dy
- for barebox@lists.infradead.org; Wed, 25 Feb 2015 07:36:23 +0000
-Date: Wed, 25 Feb 2015 08:36:00 +0100
+ Linux)) id 1YQWXi-0006rN-Kb
+ for barebox@lists.infradead.org; Wed, 25 Feb 2015 07:38:03 +0000
+Date: Wed, 25 Feb 2015 08:37:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150225073600.GT12209@pengutronix.de>
-References: <1424789630-10461-1-git-send-email-m.olbrich@pengutronix.de>
- <1424789630-10461-2-git-send-email-m.olbrich@pengutronix.de>
+Message-ID: <20150225073740.GU12209@pengutronix.de>
+References: <1424811619-12636-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1424789630-10461-2-git-send-email-m.olbrich@pengutronix.de>
+In-Reply-To: <1424811619-12636-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,22 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] friendlyarm-mini2440: add support for the W35 display
-To: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH v2 1/2] arm: virt_to_phys should take a volatile ptr
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 24, 2015 at 03:53:49PM +0100, Michael Olbrich wrote:
-> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+On Tue, Feb 24, 2015 at 10:00:18PM +0100, Lucas Stach wrote:
+> So users can pass in device memory pointers without provoking
+> warnings.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
-> 
-> I'm not quite sure about the sync flags. I tried to match what the kernel
-> does and it looks correct here.
-> 
-> Michael
-> 
->  arch/arm/boards/friendlyarm-mini2440/Kconfig    |  6 ++++++
->  arch/arm/boards/friendlyarm-mini2440/mini2440.c | 17 +++++++++++++++++
->  2 files changed, 23 insertions(+)
+>  arch/arm/cpu/mmu.c         | 2 +-
+>  arch/arm/include/asm/mmu.h | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
