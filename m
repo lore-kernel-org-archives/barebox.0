@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo4.mail-out.ovh.net ([46.105.34.195])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YREz3-00062k-Kj
- for barebox@lists.infradead.org; Fri, 27 Feb 2015 07:05:14 +0000
-Received: from mail194.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id F34F8FF9B0B
- for <barebox@lists.infradead.org>; Fri, 27 Feb 2015 08:04:47 +0100 (CET)
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20150227105755.43952954cc1ed935bf22a967@gmail.com>
-Date: Fri, 27 Feb 2015 15:04:40 +0800
-Message-Id: <7A15D276-F075-4CA9-B60B-97FC80EA4978@jcrosoft.com>
-References: <20150227105755.43952954cc1ed935bf22a967@gmail.com>
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YRFsB-0004Z3-2r
+ for barebox@lists.infradead.org; Fri, 27 Feb 2015 08:02:12 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id E455CA00368
+ for <barebox@lists.infradead.org>; Fri, 27 Feb 2015 09:02:31 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Fri, 27 Feb 2015 08:59:34 +0100
+Message-Id: <1425023974-21086-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: on barebox logo
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: Fix nv variable bootargs.base
+To: barebox@lists.infradead.org
 
-
-> On Feb 27, 2015, at 2:57 PM, Antony Pavlov <antonynpavlov@gmail.com> wrot=
-e:
-> =
-
-> Hi!
-> =
-
-> In this patch you have added barebox logo:
-> =
-
->   http://lists.infradead.org/pipermail/barebox/2012-September/009184.html
-> =
-
-> Does the cat on the logo have a proper name?
-
-I never thought about it
-
-but it=92s not a cat but a white tiger
-
-Best Regards,
-J.
-> =
-
-> If my friends ask me about the cat on barebox logo then I just say "It's =
-Vasily-the-cat" :)
-> (Vasily (Basil in English) is a very popular name for a male domestic cat=
- in Russia. Just like "Filix" in UK).
-> =
-
-> -- =
-
-> Best regards,
->   Antony Pavlov
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U29tZSBjb25zb2xlIHBhcmFtZXRlcnMgd2hlcmUgZmF1bHR5IG5hbWVkIGJvb3RhcmdzLmJhc2Uu
+IFdoaWNoIGRvZXMKbm90IGhhdmUgYW55IGVmZmVjdC4gUmVtb3ZlZCB0aGVtIHdoZXJlIHBvc3Np
+YmxlIGFuZCByZW5hbWVkIHRoZSBvdGhlcnMKdG8gbGludXguYm9vdGFyZ3MuY29uc29sZS4KClNp
+Z25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gv
+YXJtL2JvYXJkcy9oaWdoYmFuay9lbnYvbnYvYm9vdGFyZ3MuYmFzZSAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8IDEgLQogYXJjaC9hcm0vYm9hcmRzL2hpZ2hiYW5rL2Vudi9udi9saW51eC5i
+b290YXJncy5jb25zb2xlICAgICAgICAgICAgICAgICAgIHwgMSArCiAuLi4vYm9hcmRzL3BoeXRl
+Yy1waHljYXJkLWlteDYvZGVmYXVsdGVudi1waHljYXJkLWlteDYvbnYvYm9vdGFyZ3MuYmFzZSAg
+fCAxIC0KIC4uLi9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0z
+MzV4L252L2Jvb3RhcmdzLmJhc2UgICB8IDEgLQogYXJjaC9hcm0vYm9hcmRzL3RlbGl0LWV2ay1w
+cm8zL2Vudi9udi9ib290YXJncy5iYXNlICAgICAgICAgICAgICAgICAgICAgIHwgMSAtCiBhcmNo
+L2FybS9ib2FyZHMvdGVsaXQtZXZrLXBybzMvZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGUg
+ICAgICAgICAgICAgfCAxICsKIDYgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRl
+bGV0aW9ucygtKQogZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9oaWdoYmFuay9l
+bnYvbnYvYm9vdGFyZ3MuYmFzZQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9o
+aWdoYmFuay9lbnYvbnYvbGludXguYm9vdGFyZ3MuY29uc29sZQogZGVsZXRlIG1vZGUgMTAwNjQ0
+IGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y2FyZC1pbXg2L2RlZmF1bHRlbnYtcGh5Y2FyZC1p
+bXg2L252L2Jvb3RhcmdzLmJhc2UKIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMv
+cGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L252L2Jvb3RhcmdzLmJh
+c2UKIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdGVsaXQtZXZrLXBybzMvZW52
+L252L2Jvb3RhcmdzLmJhc2UKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdGVs
+aXQtZXZrLXBybzMvZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGUKCmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9ib2FyZHMvaGlnaGJhbmsvZW52L252L2Jvb3RhcmdzLmJhc2UgYi9hcmNoL2FybS9i
+b2FyZHMvaGlnaGJhbmsvZW52L252L2Jvb3RhcmdzLmJhc2UKZGVsZXRlZCBmaWxlIG1vZGUgMTAw
+NjQ0CmluZGV4IDgyNmRlYmUuLjAwMDAwMDAKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2hpZ2hiYW5r
+L2Vudi9udi9ib290YXJncy5iYXNlCisrKyAvZGV2L251bGwKQEAgLTEgKzAsMCBAQAotY29uc29s
+ZT10dHlBTUEwLDExNTIwMG44IENPTlNPTEU9L2Rldi90dHlBTUEwCmRpZmYgLS1naXQgYS9hcmNo
+L2FybS9ib2FyZHMvaGlnaGJhbmsvZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGUgYi9hcmNo
+L2FybS9ib2FyZHMvaGlnaGJhbmsvZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGUKbmV3IGZp
+bGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uODI2ZGViZQotLS0gL2Rldi9udWxsCisrKyBi
+L2FyY2gvYXJtL2JvYXJkcy9oaWdoYmFuay9lbnYvbnYvbGludXguYm9vdGFyZ3MuY29uc29sZQpA
+QCAtMCwwICsxIEBACitjb25zb2xlPXR0eUFNQTAsMTE1MjAwbjggQ09OU09MRT0vZGV2L3R0eUFN
+QTAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y2FyZC1pbXg2L2RlZmF1
+bHRlbnYtcGh5Y2FyZC1pbXg2L252L2Jvb3RhcmdzLmJhc2UgYi9hcmNoL2FybS9ib2FyZHMvcGh5
+dGVjLXBoeWNhcmQtaW14Ni9kZWZhdWx0ZW52LXBoeWNhcmQtaW14Ni9udi9ib290YXJncy5iYXNl
+CmRlbGV0ZWQgZmlsZSBtb2RlIDEwMDY0NAppbmRleCA2YjYyYzk5Li4wMDAwMDAwCi0tLSBhL2Fy
+Y2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y2FyZC1pbXg2L2RlZmF1bHRlbnYtcGh5Y2FyZC1pbXg2
+L252L2Jvb3RhcmdzLmJhc2UKKysrIC9kZXYvbnVsbApAQCAtMSArMCwwIEBACi1jb25zb2xlPXR0
+eW14YzIsMTE1MjAwCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMz
+NXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L252L2Jvb3RhcmdzLmJhc2UgYi9hcmNoL2FybS9i
+b2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L252L2Jvb3Rh
+cmdzLmJhc2UKZGVsZXRlZCBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IGQ3YjAxYTEuLjAwMDAwMDAK
+LS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29t
+LWFtMzM1eC9udi9ib290YXJncy5iYXNlCisrKyAvZGV2L251bGwKQEAgLTEgKzAsMCBAQAotY29u
+c29sZT10dHlPMCwxMTUyMDAKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy90ZWxpdC1ldmst
+cHJvMy9lbnYvbnYvYm9vdGFyZ3MuYmFzZSBiL2FyY2gvYXJtL2JvYXJkcy90ZWxpdC1ldmstcHJv
+My9lbnYvbnYvYm9vdGFyZ3MuYmFzZQpkZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggNDc2
+YjFmYi4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9ib2FyZHMvdGVsaXQtZXZrLXBybzMvZW52L252
+L2Jvb3RhcmdzLmJhc2UKKysrIC9kZXYvbnVsbApAQCAtMSArMCwwIEBACi1jb25zb2xlPXR0eVMw
+LDExNTIwMApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3RlbGl0LWV2ay1wcm8zL2Vudi9u
+di9saW51eC5ib290YXJncy5jb25zb2xlIGIvYXJjaC9hcm0vYm9hcmRzL3RlbGl0LWV2ay1wcm8z
+L2Vudi9udi9saW51eC5ib290YXJncy5jb25zb2xlCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4
+IDAwMDAwMDAuLjQ3NmIxZmIKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvdGVs
+aXQtZXZrLXBybzMvZW52L252L2xpbnV4LmJvb3RhcmdzLmNvbnNvbGUKQEAgLTAsMCArMSBAQAor
+Y29uc29sZT10dHlTMCwxMTUyMDAKLS0gCjEuOS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
