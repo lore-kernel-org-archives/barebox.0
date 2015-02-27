@@ -1,17 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRJsF-0008U0-Bs
- for barebox@lists.infradead.org; Fri, 27 Feb 2015 12:18:31 +0000
-Date: Fri, 27 Feb 2015 13:18:07 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150227121807.GD12209@pengutronix.de>
-References: <1424973945-8008-1-git-send-email-s.hauer@pengutronix.de>
- <1424973945-8008-2-git-send-email-s.hauer@pengutronix.de>
- <1425038693.3668.5.camel@pengutronix.de>
+ Linux)) id 1YRKFZ-0007nB-Re
+ for barebox@lists.infradead.org; Fri, 27 Feb 2015 12:42:39 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <rsc@pengutronix.de>) id 1YRKFC-0002tp-HO
+ for barebox@lists.infradead.org; Fri, 27 Feb 2015 13:42:14 +0100
+Received: from rsc by ptx.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <rsc@pengutronix.de>) id 1YRKFC-0003UM-F9
+ for barebox@lists.infradead.org; Fri, 27 Feb 2015 13:42:14 +0100
+Date: Fri, 27 Feb 2015 13:42:14 +0100
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20150227124214.GP15673@pengutronix.de>
+References: <20150227105755.43952954cc1ed935bf22a967@gmail.com>
+ <7A15D276-F075-4CA9-B60B-97FC80EA4978@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425038693.3668.5.camel@pengutronix.de>
+In-Reply-To: <7A15D276-F075-4CA9-B60B-97FC80EA4978@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +26,20 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: Allow to mask data aborts
-To: Jan =?iso-8859-15?Q?L=FCbbe?= <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: on barebox logo
+To: barebox@lists.infradead.org
 
-On Fri, Feb 27, 2015 at 01:04:53PM +0100, Jan L=FCbbe wrote:
-> On Do, 2015-02-26 at 19:05 +0100, Sascha Hauer wrote:
-> > +int data_abort_unmask(void)
-> > +{
-> > +       arm_ignore_data_abort =3D 0;
-> > +
-> > +       return arm_data_abort_occured;
-> > +}
-> =
+On Fri, Feb 27, 2015 at 03:04:40PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > In this patch you have added barebox logo:
 
-> arm_data_abort_occured is set to &arm_data_abort_occured when an abort
-> occurs. Should we return arm_data_abort_occured !=3D 0?
+We have a new logo which will be available soon.
 
-Yes, sounds good. Changed that.
-
-> =
-
-> Also occured is actually spelled occurred.
-
-Fixed, thanks
-
-Sascha
-
-
--- =
-
+rsc
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
