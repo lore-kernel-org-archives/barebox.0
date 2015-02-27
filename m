@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRLaD-0004rX-EJ
- for barebox@lists.infradead.org; Fri, 27 Feb 2015 14:08:05 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1YRLZp-0007tb-SH
- for barebox@lists.infradead.org; Fri, 27 Feb 2015 15:07:37 +0100
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <jbe@pengutronix.de>) id 1YRLZp-0005tp-RT
- for barebox@lists.infradead.org; Fri, 27 Feb 2015 15:07:37 +0100
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Fri, 27 Feb 2015 15:07:33 +0100
-Message-Id: <1425046053-21214-6-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1425046053-21214-1-git-send-email-jbe@pengutronix.de>
-References: <1425046053-21214-1-git-send-email-jbe@pengutronix.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YRQVL-0005Pd-LV
+ for barebox@lists.infradead.org; Fri, 27 Feb 2015 19:23:21 +0000
+Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 175CA26C2003
+ for <barebox@lists.infradead.org>; Fri, 27 Feb 2015 20:22:22 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri, 27 Feb 2015 20:22:16 +0100
+Message-Id: <1425064938-11558-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1425064938-11558-1-git-send-email-dev@lynxeye.de>
+References: <1425064938-11558-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,49 +24,143 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] Docs: add some info about the Phytec's
- phyCORE-MPC5200-Tiny
+Subject: [PATCH 3/5] ARM: tegra: add eMMC barebox update handler
 To: barebox@lists.infradead.org
 
-Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- Documentation/boards/powerpc.rst                         | 11 +++++++++++
- Documentation/boards/powerpc/Phytec-phyCORE-MPC5200-Tiny |  6 ++++++
- 2 files changed, 17 insertions(+)
- create mode 100644 Documentation/boards/powerpc.rst
- create mode 100644 Documentation/boards/powerpc/Phytec-phyCORE-MPC5200-Tiny
+ arch/arm/mach-tegra/Makefile                 |  1 +
+ arch/arm/mach-tegra/include/mach/tegra-bbu.h | 28 +++++++++++
+ arch/arm/mach-tegra/tegra-bbu.c              | 74 ++++++++++++++++++++++++++++
+ 3 files changed, 103 insertions(+)
+ create mode 100644 arch/arm/mach-tegra/include/mach/tegra-bbu.h
+ create mode 100644 arch/arm/mach-tegra/tegra-bbu.c
 
-diff --git a/Documentation/boards/powerpc.rst b/Documentation/boards/powerpc.rst
+diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
+index e68156a..7c4c1fd 100644
+--- a/arch/arm/mach-tegra/Makefile
++++ b/arch/arm/mach-tegra/Makefile
+@@ -13,3 +13,4 @@ lwl-y += tegra_maincomplex_init.o
+ obj-y += tegra20.o
+ obj-y += tegra20-pmc.o
+ obj-y += tegra20-timer.o
++obj-$(CONFIG_BAREBOX_UPDATE) += tegra-bbu.o
+diff --git a/arch/arm/mach-tegra/include/mach/tegra-bbu.h b/arch/arm/mach-tegra/include/mach/tegra-bbu.h
 new file mode 100644
-index 0000000..94b272c
+index 0000000..32e2861
 --- /dev/null
-+++ b/Documentation/boards/powerpc.rst
-@@ -0,0 +1,11 @@
-+PowerPC boards
-+--------------
++++ b/arch/arm/mach-tegra/include/mach/tegra-bbu.h
+@@ -0,0 +1,28 @@
++/*
++ * Copyright (C) 2015 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
 +
-+Not all supported boards have a description here.
++#include <bbu.h>
 +
-+.. toctree::
-+  :glob:
-+  :numbered:
-+  :maxdepth: 1
-+
-+  powerpc/*
-diff --git a/Documentation/boards/powerpc/Phytec-phyCORE-MPC5200-Tiny b/Documentation/boards/powerpc/Phytec-phyCORE-MPC5200-Tiny
++#ifdef CONFIG_BAREBOX_UPDATE
++int tegra_bbu_register_emmc_handler(const char *name, char *devicefile,
++				    unsigned long flags);
++#else
++static int tegra_bbu_register_emmc_handler(const char *name, char *devicefile,
++				    unsigned long flags)
++{
++	return 0;
++};
++#endif
+diff --git a/arch/arm/mach-tegra/tegra-bbu.c b/arch/arm/mach-tegra/tegra-bbu.c
 new file mode 100644
-index 0000000..6970027
+index 0000000..089e6c7
 --- /dev/null
-+++ b/Documentation/boards/powerpc/Phytec-phyCORE-MPC5200-Tiny
-@@ -0,0 +1,6 @@
-+Phytec phyCORE-MPC5200-Tiny
-+===========================
++++ b/arch/arm/mach-tegra/tegra-bbu.c
+@@ -0,0 +1,74 @@
++/*
++ * Copyright (C) 2015 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
 +
-+Building the bootloader image for this target is covered by the ``pcm030_defconfig``.
++#include <common.h>
++#include <fcntl.h>
++#include <fs.h>
++#include <mach/tegra-bbu.h>
++#include <malloc.h>
 +
-+Use the corresponding ``barebox.bin`` file for this target.
++static int tegra_bbu_emmc_handler(struct bbu_handler *handler,
++				  struct bbu_data *data)
++{
++
++	int fd, ret;
++
++	if (file_detect_type(data->image + 0x4000, data->len) !=
++	    filetype_arm_barebox &&
++	    !bbu_force(data, "Not an ARM barebox image"))
++		return -EINVAL;
++
++	ret = bbu_confirm(data);
++	if (ret)
++		return ret;
++
++	fd = open(data->devicefile, O_WRONLY);
++	if (fd < 0)
++		return fd;
++
++	ret = write(fd, data->image, data->len);
++	if (ret < 0) {
++		pr_err("writing update to %s failed with %s\n",
++			data->devicefile, strerror(-ret));
++		goto err_close;
++	}
++
++	ret = 0;
++
++err_close:
++	close(fd);
++
++	return ret;
++}
++
++int tegra_bbu_register_emmc_handler(const char *name, char *devicefile,
++				    unsigned long flags)
++{
++	struct bbu_handler *handler;
++	int ret = 0;
++
++	handler = xzalloc(sizeof(*handler));
++	handler->name = name;
++	handler->devicefile = devicefile;
++	handler->flags = flags;
++	handler->handler = tegra_bbu_emmc_handler;
++
++	ret = bbu_register_handler(handler);
++	if (ret)
++		free(handler);
++
++	return ret;
++}
 -- 
-2.1.4
+2.1.0
 
 
 _______________________________________________
