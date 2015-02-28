@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRp7w-0003p6-Ec
- for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:50 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=hardanger.do.blackshift.org)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mkl@pengutronix.de>) id 1YRp7Y-0000WM-Gj
- for barebox@lists.infradead.org; Sat, 28 Feb 2015 22:40:24 +0100
+ Linux)) id 1YRp7w-0003pY-EV
+ for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:52 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sat, 28 Feb 2015 22:40:05 +0100
-Message-Id: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
+Date: Sat, 28 Feb 2015 22:40:11 +0100
+Message-Id: <1425159621-22805-7-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
+References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,17 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: general cleanups and sandbox OF integration
+Subject: [PATCH 06/16] sandbox: fix indention in help text
 To: barebox@lists.infradead.org
 
-Hello Sascha,
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ arch/sandbox/os/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-the first five patches are several cleanups in barebox, I've found while
-working on a new feautre. The remaining ones bring OF support to the sandbox so
-that enables testing of framworks which need the device tree.
-
-regards,
-Marc
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index 0854fb5d802d..65dc4a1ab75c 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -399,7 +399,7 @@ static void print_usage(const char *prgname)
+ "Usage: %s [OPTIONS]\n"
+ "Start barebox.\n\n"
+ "Options:\n\n"
+-"  -m, --malloc=<size>	Start sandbox with a specified malloc-space size in bytes.\n"
++"  -m, --malloc=<size>  Start sandbox with a specified malloc-space size in bytes.\n"
+ "  -i, --image=<file>   Map an image file to barebox. This option can be given\n"
+ "                       multiple times. The files will show up as\n"
+ "                       /dev/fd0 ... /dev/fdx under barebox.\n"
+-- 
+2.1.4
 
 
 _______________________________________________
