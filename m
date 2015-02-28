@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRp7y-0003qM-Nh
- for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:54 +0000
+ Linux)) id 1YRp7z-0003qO-32
+ for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:55 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sat, 28 Feb 2015 22:40:16 +0100
-Message-Id: <1425159621-22805-12-git-send-email-mkl@pengutronix.de>
+Date: Sat, 28 Feb 2015 22:40:17 +0100
+Message-Id: <1425159621-22805-13-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/16] sandbox: hostfile: move fd from platform data to priv
+Subject: [PATCH 12/16] sandbox: hostfile: probe driver earlier
 To: barebox@lists.infradead.org
+
+This patch convert from device_platform_driver to coredevice_platform_driver,
+so that the driver is initialzied before the state framework is probed.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/board/hostfile.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/sandbox/board/hostfile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index fef9f5cffa89..103bcd9badc7 100644
+index 103bcd9badc7..42ade6bec8a4 100644
 --- a/arch/sandbox/board/hostfile.c
 +++ b/arch/sandbox/board/hostfile.c
-@@ -28,12 +28,13 @@
- 
- struct hf_priv {
- 	struct cdev cdev;
-+	int fd;
+@@ -91,7 +91,7 @@ static struct driver_d hf_drv = {
+ 	.name  = "hostfile",
+ 	.probe = hf_probe,
  };
+-device_platform_driver(hf_drv);
++coredevice_platform_driver(hf_drv);
  
- static ssize_t hf_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
+ int barebox_register_filedev(struct hf_platform_data *hf)
  {
--	struct hf_platform_data *hf = cdev->priv;
--	int fd = hf->fd;
-+	struct hf_priv *priv= cdev->priv;
-+	int fd = priv->fd;
- 
- 	if (linux_lseek(fd, offset) != offset)
- 		return -EINVAL;
-@@ -43,8 +44,8 @@ static ssize_t hf_read(struct cdev *cdev, void *buf, size_t count, loff_t offset
- 
- static ssize_t hf_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags)
- {
--	struct hf_platform_data *hf = cdev->priv;
--	int fd = hf->fd;
-+	struct hf_priv *priv = cdev->priv;
-+	int fd = priv->fd;
- 
- 	if (linux_lseek(fd, offset) != offset)
- 		return -EINVAL;
-@@ -70,11 +71,12 @@ static int hf_probe(struct device_d *dev)
- 	struct hf_platform_data *hf = dev->platform_data;
- 	struct hf_priv *priv = xzalloc(sizeof(*priv));
- 
-+	priv->fd = hf->fd;
- 	priv->cdev.name = hf->devname;
- 	priv->cdev.size = hf->size;
- 	priv->cdev.dev = dev;
- 	priv->cdev.ops = &hf_fops;
--	priv->cdev.priv = hf;
-+	priv->cdev.priv = priv;
- 
- 	dev->info = hf_info;
- 
 -- 
 2.1.4
 
