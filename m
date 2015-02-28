@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRp7y-0003qK-Bk
- for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:54 +0000
+ Linux)) id 1YRp7w-0003pR-EZ
+ for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:49 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sat, 28 Feb 2015 22:40:15 +0100
-Message-Id: <1425159621-22805-11-git-send-email-mkl@pengutronix.de>
+Date: Sat, 28 Feb 2015 22:40:10 +0100
+Message-Id: <1425159621-22805-6-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/16] sandbox: hostfile: remove struct hf_platform_data from
- hf_priv
+Subject: [PATCH 05/16] of/base: fix sparse warning,
+ don't use interger 0 as NULL pointer
 To: barebox@lists.infradead.org
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/board/hostfile.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/of/base.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index 6ec3b87efa86..fef9f5cffa89 100644
---- a/arch/sandbox/board/hostfile.c
-+++ b/arch/sandbox/board/hostfile.c
-@@ -28,7 +28,6 @@
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 4b5d4d75f19c..0cffb962e637 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -184,7 +184,7 @@ void of_alias_scan(void)
+ 			end--;
+ 		len = end - start;
  
- struct hf_priv {
- 	struct cdev cdev;
--	struct hf_platform_data *pdata;
- };
+-		id = simple_strtol(end, 0, 10);
++		id = simple_strtol(end, NULL, 10);
+ 		if (id < 0)
+ 			continue;
  
- static ssize_t hf_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
-@@ -71,8 +70,6 @@ static int hf_probe(struct device_d *dev)
- 	struct hf_platform_data *hf = dev->platform_data;
- 	struct hf_priv *priv = xzalloc(sizeof(*priv));
+@@ -280,7 +280,7 @@ struct device_node *of_find_node_by_phandle_from(phandle phandle,
+ 		root = root_node;
  
--	priv->pdata = hf;
--
- 	priv->cdev.name = hf->devname;
- 	priv->cdev.size = hf->size;
- 	priv->cdev.dev = dev;
+ 	if (!root)
+-		return 0;
++		return NULL;
+ 
+ 	of_tree_for_each_node_from(node, root)
+ 		if (node->phandle == phandle)
 -- 
 2.1.4
 
