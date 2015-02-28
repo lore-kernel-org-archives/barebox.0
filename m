@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRp7w-0003pi-EU
- for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:51 +0000
+ Linux)) id 1YRp7w-0003pl-Eg
+ for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:54 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sat, 28 Feb 2015 22:40:12 +0100
-Message-Id: <1425159621-22805-8-git-send-email-mkl@pengutronix.de>
+Date: Sat, 28 Feb 2015 22:40:13 +0100
+Message-Id: <1425159621-22805-9-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,190 +21,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/16] sandbox: add support to pass dtb to barebox
+Subject: [PATCH 08/16] sandbox: hostfile: clarify variable names
 To: barebox@lists.infradead.org
+
+Use "filename" for the name of the file in the host system, while "devname" for
+the device in the sandbox.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/board/Makefile                    |  1 +
- arch/sandbox/board/dtb.c                       | 57 ++++++++++++++++++++++++++
- arch/sandbox/mach-sandbox/include/mach/linux.h |  1 +
- arch/sandbox/os/common.c                       | 47 ++++++++++++++++++++-
- 4 files changed, 105 insertions(+), 1 deletion(-)
- create mode 100644 arch/sandbox/board/dtb.c
+ arch/sandbox/board/hostfile.c                     |  2 +-
+ arch/sandbox/mach-sandbox/include/mach/hostfile.h |  2 +-
+ arch/sandbox/os/common.c                          | 16 ++++++++--------
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/sandbox/board/Makefile b/arch/sandbox/board/Makefile
-index 5104f5cb2679..460116332df9 100644
---- a/arch/sandbox/board/Makefile
-+++ b/arch/sandbox/board/Makefile
-@@ -3,5 +3,6 @@ obj-y += clock.o
- obj-y += hostfile.o
- obj-y += console.o
- obj-y += devices.o
-+obj-y += dtb.o
+diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+index ac29cfa47a7d..5324da6f4802 100644
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -73,7 +73,7 @@ static int hf_probe(struct device_d *dev)
  
- extra-y += barebox.lds
-diff --git a/arch/sandbox/board/dtb.c b/arch/sandbox/board/dtb.c
-new file mode 100644
-index 000000000000..9d4210164e01
---- /dev/null
-+++ b/arch/sandbox/board/dtb.c
-@@ -0,0 +1,57 @@
-+/*
-+ * Copyright (c) 2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (c) 2015 Marc Kleine-Budde <mkl@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <of.h>
-+
-+#include <mach/linux.h>
-+#include <linux/err.h>
-+
-+static const void *dtb;
-+
-+int barebox_register_dtb(const void *new_dtb)
-+{
-+	if (dtb)
-+		return -EBUSY;
-+
-+	dtb = new_dtb;
-+
-+	return 0;
-+}
-+
-+static int of_sandbox_init(void)
-+{
-+	struct device_node *root;
-+
-+	if (!dtb)
-+		return 0;
-+
-+	root = of_unflatten_dtb(dtb);
-+	if (IS_ERR(root)) {
-+		return PTR_ERR(root);
-+	}
-+
-+	of_set_root_node(root);
-+	of_fix_tree(root);
-+	if (IS_ENABLED(CONFIG_OFDEVICE))
-+		of_probe();
-+
-+	return 0;
-+}
-+core_initcall(of_sandbox_init);
-diff --git a/arch/sandbox/mach-sandbox/include/mach/linux.h b/arch/sandbox/mach-sandbox/include/mach/linux.h
-index 98f9067046c3..28d5017a4e4b 100644
---- a/arch/sandbox/mach-sandbox/include/mach/linux.h
-+++ b/arch/sandbox/mach-sandbox/include/mach/linux.h
-@@ -19,6 +19,7 @@ int linux_tstc(int fd);
- int linux_execve(const char * filename, char *const argv[], char *const envp[]);
+ 	priv->pdata = hf;
  
- int barebox_register_console(char *name_template, int stdinfd, int stdoutfd);
-+int barebox_register_dtb(const void *dtb);
- 
- struct linux_console_data {
- 	int stdinfd;
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index 65dc4a1ab75c..cfb261acf2b5 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -265,6 +265,42 @@ err_out:
- 	return -1;
- }
- 
-+static int add_dtb(const char *file)
-+{
-+	struct stat s;
-+	void *dtb = NULL;
-+	int fd;
-+
-+	fd = open(file, O_RDONLY);
-+	if (fd < 0) {
-+		perror("open");
-+		goto err_out;
-+	}
-+
-+	if (fstat(fd, &s)) {
-+		perror("fstat");
-+		goto err_out;
-+	}
-+
-+	dtb = mmap(NULL, s.st_size, PROT_READ, MAP_SHARED, fd, 0);
-+	if (dtb == MAP_FAILED) {
-+		perror("mmap");
-+		goto err_out;
-+	}
-+
-+	if (barebox_register_dtb(dtb))
-+		goto err_out;
-+
-+	return 0;
-+
-+ err_out:
-+	if (dtb)
-+		munmap(dtb, s.st_size);
-+	if (fd > 0)
-+		close(fd);
-+	return -1;
-+}
-+
- static void print_usage(const char*);
- 
- static struct option long_options[] = {
-@@ -272,6 +308,7 @@ static struct option long_options[] = {
- 	{"malloc", 1, 0, 'm'},
- 	{"image",  1, 0, 'i'},
- 	{"env",    1, 0, 'e'},
-+	{"dtb",    1, 0, 'd'},
- 	{"stdout", 1, 0, 'O'},
- 	{"stdin",  1, 0, 'I'},
- 	{"xres",  1, 0, 'x'},
-@@ -279,7 +316,7 @@ static struct option long_options[] = {
- 	{0, 0, 0, 0},
+-	priv->cdev.name = hf->name;
++	priv->cdev.name = hf->devname;
+ 	priv->cdev.size = hf->size;
+ 	priv->cdev.ops = &hf_fops;
+ 	priv->cdev.priv = hf;
+diff --git a/arch/sandbox/mach-sandbox/include/mach/hostfile.h b/arch/sandbox/mach-sandbox/include/mach/hostfile.h
+index 7c4e67cf6847..747063182cf3 100644
+--- a/arch/sandbox/mach-sandbox/include/mach/hostfile.h
++++ b/arch/sandbox/mach-sandbox/include/mach/hostfile.h
+@@ -6,7 +6,7 @@ struct hf_platform_data {
+ 	size_t size;
+ 	unsigned long base;
+ 	char *filename;
+-	char *name;
++	char *devname;
  };
  
--static const char optstring[] = "hm:i:e:O:I:x:y:";
-+static const char optstring[] = "hm:i:e:d:O:I:x:y:";
+ int barebox_register_filedev(struct hf_platform_data *hf);
+diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
+index cfb261acf2b5..e2023165d542 100644
+--- a/arch/sandbox/os/common.c
++++ b/arch/sandbox/os/common.c
+@@ -206,9 +206,9 @@ int linux_execve(const char * filename, char *const argv[], char *const envp[])
+ extern void start_barebox(void);
+ extern void mem_malloc_init(void *start, void *end);
  
- int main(int argc, char *argv[])
+-static int add_image(char *str, char *name)
++static int add_image(char *str, char *devname)
  {
-@@ -308,6 +345,13 @@ int main(int argc, char *argv[])
- 			break;
- 		case 'e':
- 			break;
-+		case 'd':
-+			ret = add_dtb(optarg);
-+			if (ret) {
-+				printf("Failed to load dtb: '%s'\n", optarg);
-+				exit(1);
-+			}
-+			break;
- 		case 'O':
- 			fd = open(optarg, O_WRONLY);
- 			if (fd < 0) {
-@@ -408,6 +452,7 @@ static void print_usage(const char *prgname)
- "                       and thus are used as the default environment.\n"
- "                       An empty file generated with dd will do to get started\n"
- "                       with an empty environment.\n"
-+"  -d, --dtb=<file>     Map a device tree binary blob (dtb) into barebox.\n"
- "  -O, --stdout=<file>  Register a file as a console capable of doing stdout.\n"
- "                       <file> can be a regular file or a FIFO.\n"
- "  -I, --stdin=<file>   Register a file as a console capable of doing stdin.\n"
+-	char *file;
++	char *filename;
+ 	int readonly = 0, map = 1;
+ 	struct stat s;
+ 	char *opt;
+@@ -218,7 +218,7 @@ static int add_image(char *str, char *name)
+ 	if (!hf)
+ 		return -1;
+ 
+-	file = strtok(str, ",");
++	filename = strtok(str, ",");
+ 	while ((opt = strtok(NULL, ","))) {
+ 		if (!strcmp(opt, "ro"))
+ 			readonly = 1;
+@@ -226,11 +226,11 @@ static int add_image(char *str, char *name)
+ 			map = 1;
+ 	}
+ 
+-	printf("add file %s(%s)\n", file, readonly ? "ro" : "");
++	printf("add file %s(%s)\n", filename, readonly ? "ro" : "");
+ 
+-	fd = open(file, readonly ? O_RDONLY : O_RDWR);
++	fd = open(filename, readonly ? O_RDONLY : O_RDWR);
+ 	hf->fd = fd;
+-	hf->filename = file;
++	hf->filename = filename;
+ 
+ 	if (fd < 0) {
+ 		perror("open");
+@@ -243,14 +243,14 @@ static int add_image(char *str, char *name)
+ 	}
+ 
+ 	hf->size = s.st_size;
+-	hf->name = strdup(name);
++	hf->devname = strdup(devname);
+ 
+ 	if (map) {
+ 		hf->base = (unsigned long)mmap(NULL, hf->size,
+ 				PROT_READ | (readonly ? 0 : PROT_WRITE),
+ 				MAP_SHARED, fd, 0);
+ 		if ((void *)hf->base == MAP_FAILED)
+-			printf("warning: mmapping %s failed\n", file);
++			printf("warning: mmapping %s failed\n", filename);
+ 	}
+ 
+ 	ret = barebox_register_filedev(hf);
 -- 
 2.1.4
 
