@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRp7w-0003pY-EV
- for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:52 +0000
+ Linux)) id 1YRp7w-0003q1-EY
+ for barebox@lists.infradead.org; Sat, 28 Feb 2015 21:40:49 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sat, 28 Feb 2015 22:40:11 +0100
-Message-Id: <1425159621-22805-7-git-send-email-mkl@pengutronix.de>
+Date: Sat, 28 Feb 2015 22:40:14 +0100
+Message-Id: <1425159621-22805-10-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/16] sandbox: fix indention in help text
+Subject: [PATCH 09/16] sandbox: hostfile: probe(): add missing pointer from
+ cdev.dev to dev
 To: barebox@lists.infradead.org
+
+Without this pointer the cdev will not be associated with the dev,
+of_find_path() relies on this.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/os/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sandbox/board/hostfile.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index 0854fb5d802d..65dc4a1ab75c 100644
---- a/arch/sandbox/os/common.c
-+++ b/arch/sandbox/os/common.c
-@@ -399,7 +399,7 @@ static void print_usage(const char *prgname)
- "Usage: %s [OPTIONS]\n"
- "Start barebox.\n\n"
- "Options:\n\n"
--"  -m, --malloc=<size>	Start sandbox with a specified malloc-space size in bytes.\n"
-+"  -m, --malloc=<size>  Start sandbox with a specified malloc-space size in bytes.\n"
- "  -i, --image=<file>   Map an image file to barebox. This option can be given\n"
- "                       multiple times. The files will show up as\n"
- "                       /dev/fd0 ... /dev/fdx under barebox.\n"
+diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+index 5324da6f4802..6ec3b87efa86 100644
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -75,6 +75,7 @@ static int hf_probe(struct device_d *dev)
+ 
+ 	priv->cdev.name = hf->devname;
+ 	priv->cdev.size = hf->size;
++	priv->cdev.dev = dev;
+ 	priv->cdev.ops = &hf_fops;
+ 	priv->cdev.priv = hf;
+ 
 -- 
 2.1.4
 
