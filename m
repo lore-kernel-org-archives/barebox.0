@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRyED-0005Zy-1u
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 07:23:53 +0000
-Date: Sun, 1 Mar 2015 08:23:30 +0100
+ Linux)) id 1YRyHr-0006tT-5b
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 07:27:39 +0000
+Date: Sun, 1 Mar 2015 08:27:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150301072330.GB11010@pengutronix.de>
-References: <1425064938-11558-1-git-send-email-dev@lynxeye.de>
- <1425064938-11558-4-git-send-email-dev@lynxeye.de>
+Message-ID: <20150301072717.GC11010@pengutronix.de>
+References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
+ <1425159621-22805-5-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425064938-11558-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1425159621-22805-5-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ARM: tegra: add barebox update handler to Beaver board
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 04/16] of: make first argument of several
+ of_property_*_string functions const
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 27, 2015 at 08:22:17PM +0100, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+On Sat, Feb 28, 2015 at 10:40:09PM +0100, Marc Kleine-Budde wrote:
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 > ---
->  arch/arm/boards/nvidia-beaver/board.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/of/base.c |  8 ++++----
+>  include/of.h      | 16 ++++++++--------
+>  2 files changed, 12 insertions(+), 12 deletions(-)
 > 
-> diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
-> index d270301..b4d856e 100644
-> --- a/arch/arm/boards/nvidia-beaver/board.c
-> +++ b/arch/arm/boards/nvidia-beaver/board.c
-> @@ -19,6 +19,7 @@
->  #include <gpio.h>
->  #include <i2c/i2c.h>
->  #include <init.h>
-> +#include <mach/tegra-bbu.h>
->  
->  static int nvidia_beaver_fs_init(void)
->  {
-> @@ -53,6 +54,9 @@ static int nvidia_beaver_device_init(void)
->  
->  	barebox_set_hostname("beaver");
->  
-> +	tegra_bbu_register_emmc_handler("eMMC", "/dev/disk0.boot0",
-> +					BBU_HANDLER_FLAG_DEFAULT);
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index af10fd1da32c..4b5d4d75f19c 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -799,7 +799,7 @@ EXPORT_SYMBOL_GPL(of_property_read_u64);
+>   *
+>   * The out_string pointer is modified only if a valid string can be decoded.
+>   */
+> -int of_property_read_string(struct device_node *np, const char *propname,
+> +int of_property_read_string(const struct device_node *np, const char *propname,
+>  				const char **out_string)
 
-'disk0' is not a persistent name and will change when your SD slots are
-probed in a different order. You should add aliases to the device nodes
-and use of_alias_get() to obtain them, see for example imx-esdhc.c
+Is this necessary for something or just a nice to have? The functions
+are takes from the kernel and the device_node arguments cannot be const
+there because the functions take a reference on the node.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
