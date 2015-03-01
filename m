@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS2ip-0006ID-CY
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 12:11:48 +0000
-Message-ID: <1425211847.2197.3.camel@lynxeye.de>
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 01 Mar 2015 13:10:47 +0100
-In-Reply-To: <20150301072330.GB11010@pengutronix.de>
-References: <1425064938-11558-1-git-send-email-dev@lynxeye.de>
- <1425064938-11558-4-git-send-email-dev@lynxeye.de>
- <20150301072330.GB11010@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YS339-0004cz-Na
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 12:32:48 +0000
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=hardanger.do.blackshift.org)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <mkl@pengutronix.de>) id 1YS32m-0003cY-BF
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:32:24 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Sun,  1 Mar 2015 13:32:06 +0100
+Message-Id: <1425213143-4529-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,54 +19,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ARM: tegra: add barebox update handler to Beaver board
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 00/17] general cleanups and sandbox OF integration
+To: barebox@lists.infradead.org
 
-Am Sonntag, den 01.03.2015, 08:23 +0100 schrieb Sascha Hauer:
-> On Fri, Feb 27, 2015 at 08:22:17PM +0100, Lucas Stach wrote:
-> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> > ---
-> >  arch/arm/boards/nvidia-beaver/board.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
-> > index d270301..b4d856e 100644
-> > --- a/arch/arm/boards/nvidia-beaver/board.c
-> > +++ b/arch/arm/boards/nvidia-beaver/board.c
-> > @@ -19,6 +19,7 @@
-> >  #include <gpio.h>
-> >  #include <i2c/i2c.h>
-> >  #include <init.h>
-> > +#include <mach/tegra-bbu.h>
-> >  
-> >  static int nvidia_beaver_fs_init(void)
-> >  {
-> > @@ -53,6 +54,9 @@ static int nvidia_beaver_device_init(void)
-> >  
-> >  	barebox_set_hostname("beaver");
-> >  
-> > +	tegra_bbu_register_emmc_handler("eMMC", "/dev/disk0.boot0",
-> > +					BBU_HANDLER_FLAG_DEFAULT);
-> 
-> 'disk0' is not a persistent name and will change when your SD slots are
-> probed in a different order. You should add aliases to the device nodes
-> and use of_alias_get() to obtain them, see for example imx-esdhc.c
-> 
-It's not a problem for these patches, as both boards have their
-environment on disk0.boot1, so the eMMC will always be the first SDMMC
-device to be detected and consequently always get number 0 assigned.
+Hello Sascha,
 
-But in general I agree with you and will add the alias handling in a
-follow on series.
+the first five patches are several cleanups in barebox, I've found while
+working on a new feautre. The remaining ones bring OF support to the sandbox so
+that enables testing of framworks which need the device tree.
 
-Regards,
-Lucas
+regards,
+Marc
 
+changes since v1:
+- remove 04/16 "of: make first argument of several of_property_*_string functions const"
+- add 05/17, 06/17: to provide no-ops for of_register_fixup, of_find_node_by_alias
+- fix 08/17: "sandbox: add support to pass dtb to barebox"
+  fix compilation for !CONFIG_OFTREE
 
 
 _______________________________________________
