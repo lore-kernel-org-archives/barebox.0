@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS33M-0006zi-JS
+ id 1YS33M-0006zh-Ix
  for barebox@lists.infradead.org; Sun, 01 Mar 2015 12:33:01 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sun,  1 Mar 2015 13:32:23 +0100
-Message-Id: <1425213143-4529-18-git-send-email-mkl@pengutronix.de>
+Date: Sun,  1 Mar 2015 13:32:22 +0100
+Message-Id: <1425213143-4529-17-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425213143-4529-1-git-send-email-mkl@pengutronix.de>
 References: <1425213143-4529-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 17/17] sandbox: activate OF support in defconfig
+Subject: [PATCH v2 16/17] sandbox: add sample dts
 To: barebox@lists.infradead.org
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/configs/sandbox_defconfig | 35 ++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+ arch/sandbox/Makefile          |  2 ++
+ arch/sandbox/dts/.gitignore    |  1 +
+ arch/sandbox/dts/Makefile      | 11 +++++++++++
+ arch/sandbox/dts/sandbox.dts   | 13 +++++++++++++
+ arch/sandbox/dts/skeleton.dtsi | 13 +++++++++++++
+ 5 files changed, 40 insertions(+)
+ create mode 100644 arch/sandbox/dts/.gitignore
+ create mode 100644 arch/sandbox/dts/Makefile
+ create mode 100644 arch/sandbox/dts/sandbox.dts
+ create mode 100644 arch/sandbox/dts/skeleton.dtsi
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index 7ce256950192..ec045f7c0b51 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -5,25 +5,36 @@ CONFIG_PARTITION=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/sandbox/board/env"
- CONFIG_DEBUG_INFO=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_TFTP=y
-+CONFIG_LONGHELP=y
- CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_FLASH=y
- # CONFIG_CMD_BOOTM is not set
--CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
--CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_RESET=y
- CONFIG_CMD_PARTITION=y
--CONFIG_NET=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_SLEEP=y
- CONFIG_CMD_DHCP=y
- CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_2048=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_NET=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_NET_TAP=y
- # CONFIG_SPI is not set
-+# CONFIG_PINCTRL is not set
- CONFIG_FS_CRAMFS=y
- CONFIG_FS_TFTP=y
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index e3fb03955407..a539a901fc8d 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -50,4 +50,6 @@ cmd_barebox__ = $(CC) -o $@ -Wl,-T,$(barebox-lds) \
+ 
+ common-y += $(BOARD) arch/sandbox/os/
+ 
++common-$(CONFIG_OFTREE) += arch/sandbox/dts/
++
+ CLEAN_FILES += $(BOARD)/barebox.lds
+diff --git a/arch/sandbox/dts/.gitignore b/arch/sandbox/dts/.gitignore
+new file mode 100644
+index 000000000000..077903c50a26
+--- /dev/null
++++ b/arch/sandbox/dts/.gitignore
+@@ -0,0 +1 @@
++*dtb*
+diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
+new file mode 100644
+index 000000000000..6f6838857849
+--- /dev/null
++++ b/arch/sandbox/dts/Makefile
+@@ -0,0 +1,11 @@
++ifeq ($(CONFIG_OFTREE),y)
++dtb-y += \
++	sandbox.dtb
++endif
++
++# just to build a built-in.o. Otherwise compilation fails when no devicetree is
++# created.
++obj- += dummy.o
++
++always := $(dtb-y)
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
+diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
+new file mode 100644
+index 000000000000..b4cb1d1dfc4d
+--- /dev/null
++++ b/arch/sandbox/dts/sandbox.dts
+@@ -0,0 +1,13 @@
++/dts-v1/;
++
++#include "skeleton.dtsi"
++
++/ {
++	aliases {
++		fd0 = &fd0;
++	};
++
++	fd0: fd@0 {
++		compatible = "barebox,hostfile";
++	};
++};
+diff --git a/arch/sandbox/dts/skeleton.dtsi b/arch/sandbox/dts/skeleton.dtsi
+new file mode 100644
+index 000000000000..38ead821bb42
+--- /dev/null
++++ b/arch/sandbox/dts/skeleton.dtsi
+@@ -0,0 +1,13 @@
++/*
++ * Skeleton device tree; the bare minimum needed to boot; just include and
++ * add a compatible value.  The bootloader will typically populate the memory
++ * node.
++ */
++
++/ {
++	#address-cells = <2>;
++	#size-cells = <1>;
++	chosen { };
++	aliases { };
++	memory { device_type = "memory"; reg = <0 0 0>; };
++};
 -- 
 2.1.4
 
