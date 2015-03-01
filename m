@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m3-0007iy-Jv
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:14 +0000
+ id 1YS3m4-0007iv-SR
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:16 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF33A26C200A
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:28 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 451F726C2012
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:31 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:07 +0100
-Message-Id: <1425215842-6982-10-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:15 +0100
+Message-Id: <1425215842-6982-18-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/24] MCI: tegra-sdmmc: convert to streaming DMA ops
+Subject: [PATCH 17/24] net: orion-gbe: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,73 +33,57 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/tegra-sdmmc.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/net/orion-gbe.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
-index 0e23d6f..670c280 100644
---- a/drivers/mci/tegra-sdmmc.c
-+++ b/drivers/mci/tegra-sdmmc.c
-@@ -17,10 +17,10 @@
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
+diff --git a/drivers/net/orion-gbe.c b/drivers/net/orion-gbe.c
+index ad1fc66..4235122 100644
+--- a/drivers/net/orion-gbe.c
++++ b/drivers/net/orion-gbe.c
+@@ -33,7 +33,6 @@
+ #include <net.h>
+ #include <of_net.h>
+ #include <linux/sizes.h>
 -#include <asm/mmu.h>
- #include <common.h>
- #include <clock.h>
- #include <driver.h>
-+#include <dma.h>
- #include <gpio.h>
- #include <init.h>
- #include <io.h>
-@@ -100,6 +100,7 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 				struct mci_data *data)
- {
- 	struct tegra_sdmmc_host *host = to_tegra_sdmmc_host(mci);
-+	unsigned int num_bytes = 0;
- 	u32 val = 0;
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/mbus.h>
+@@ -243,7 +242,7 @@ static int port_send(struct eth_device *edev, void *data, int len)
  	int ret;
  
-@@ -109,15 +110,15 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	/* flush transmit data */
+-	dma_flush_range((unsigned long)data, (unsigned long)data+len);
++	dma_sync_single_for_device((unsigned long)data, len, DMA_TO_DEVICE);
  
- 	/* Set up for a data transfer if we have one */
- 	if (data) {
-+		num_bytes = data->blocks * data->blocksize;
-+
- 		if (data->flags & MMC_DATA_WRITE) {
--			dma_flush_range((unsigned long)data->src,
--			                (unsigned long)(data->src +
--			                data->blocks * 512));
-+			dma_sync_single_for_device((unsigned long)data->src,
-+						   num_bytes, DMA_TO_DEVICE);
- 			writel((u32)data->src, host->regs + SDHCI_DMA_ADDRESS);
- 		} else {
--			dma_clean_range((unsigned long)data->src,
--			                (unsigned long)(data->src +
--			                data->blocks * 512));
-+			dma_sync_single_for_device((unsigned long)data->dest,
-+						   num_bytes, DMA_FROM_DEVICE);
- 			writel((u32)data->dest, host->regs + SDHCI_DMA_ADDRESS);
- 		}
- 
-@@ -255,11 +256,12 @@ static int tegra_sdmmc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 		}
- 		writel(val, host->regs + SDHCI_INT_STATUS);
- 
--		if (data->flags & MMC_DATA_READ) {
--			dma_inv_range((unsigned long)data->dest,
--			              (unsigned long)(data->dest +
--			              data->blocks * 512));
--		}
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_cpu((unsigned long)data->src,
-+						num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_cpu((unsigned long)data->dest,
-+						num_bytes, DMA_FROM_DEVICE);
+ 	txdesc->cmd_sts = TXDESC_OWNED_BY_DMA;
+ 	txdesc->cmd_sts |= TXDESC_FIRST | TXDESC_LAST;
+@@ -258,6 +257,7 @@ static int port_send(struct eth_device *edev, void *data, int len)
+ 	/* wait for packet transmit completion */
+ 	ret = wait_on_timeout(TRANSFER_TIMEOUT,
+ 		      (readl(&txdesc->cmd_sts) & TXDESC_OWNED_BY_DMA) == 0);
++	dma_sync_single_for_cpu((unsigned long)data, len, DMA_TO_DEVICE);
+ 	if (ret) {
+ 		dev_err(&edev->dev, "transmit timeout\n");
+ 		return ret;
+@@ -301,12 +301,15 @@ static int port_recv(struct eth_device *edev)
  	}
  
- 	return 0;
+ 	/* invalidate current receive buffer */
+-	dma_inv_range((unsigned long)rxdesc->buf_ptr,
+-		      (unsigned long)rxdesc->buf_ptr +
+-		      ALIGN(PKTSIZE, 8));
++	dma_sync_single_for_cpu((unsigned long)rxdesc->buf_ptr,
++				ALIGN(PKTSIZE, 8), DMA_FROM_DEVICE);
+ 
+ 	/* received packet is padded with two null bytes */
+ 	net_receive(edev, rxdesc->buf_ptr + 0x2, rxdesc->byte_cnt - 0x2);
++
++	dma_sync_single_for_device((unsigned long)rxdesc->buf_ptr,
++				   ALIGN(PKTSIZE, 8), DMA_FROM_DEVICE);
++
+ 	ret = 0;
+ 
+ recv_err:
 -- 
 2.1.0
 
