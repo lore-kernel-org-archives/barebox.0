@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m6-0007iX-9K
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:18 +0000
+ id 1YS3m7-0007iy-5y
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:19 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 9624526C2003
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:31 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id A6C7826C2007
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:33 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:16 +0100
-Message-Id: <1425215842-6982-19-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:22 +0100
+Message-Id: <1425215842-6982-25-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,104 +24,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/24] net: rtl8169: convert to streaming DMA ops
+Subject: [PATCH 24/24] ARM: MMU: unexport cache maintenance functions
 To: barebox@lists.infradead.org
 
-Move to the common streaming DMA ops in order to get rid of
-the direct usage of the ARM MMU functions for the cache
-maintenance.
+Those should only be used internally. All users should rather
+use the streaming DMA API, which does proper cache maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/Kconfig   |  1 +
- drivers/net/rtl8169.c | 30 +++++++++++++-----------------
- 2 files changed, 14 insertions(+), 17 deletions(-)
+ arch/arm/cpu/mmu.c         | 35 ++++++++++++++---------------------
+ arch/arm/include/asm/mmu.h | 14 --------------
+ 2 files changed, 14 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index adb7008..42ffa65 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -167,6 +167,7 @@ config DRIVER_NET_RTL8139
- config DRIVER_NET_RTL8169
- 	bool "RealTek RTL-8169 PCI Ethernet driver"
- 	depends on PCI
-+	depends on HAS_DMA
- 	select PHYLIB
- 	help
- 	  This is a driver for the Fast Ethernet PCI network cards based on
-diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
-index 638e049..f44dc5a 100644
---- a/drivers/net/rtl8169.c
-+++ b/drivers/net/rtl8169.c
-@@ -14,7 +14,6 @@
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index c4ec72d..7076cb5 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -159,6 +159,20 @@ static u32 *find_pte(unsigned long adr)
+ 	return &table[(adr >> PAGE_SHIFT) & 0xff];
+ }
  
--#include <asm/mmu.h>
- #include <common.h>
- #include <dma.h>
- #include <init.h>
-@@ -234,8 +233,8 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
- 	priv->rx_desc = dma_alloc_coherent(NUM_RX_DESC *
- 				sizeof(struct bufdesc));
- 	priv->rx_buf = malloc(NUM_RX_DESC * PKT_BUF_SIZE);
--	dma_clean_range((unsigned long)priv->rx_buf,
--			(unsigned long)priv->rx_buf + NUM_RX_DESC * PKT_BUF_SIZE);
-+	dma_sync_single_for_device((unsigned long)priv->rx_buf,
-+				   NUM_RX_DESC * PKT_BUF_SIZE, DMA_FROM_DEVICE);
- 
- 	memset((void *)priv->tx_desc, 0, NUM_TX_DESC * sizeof(struct bufdesc));
- 	memset((void *)priv->rx_desc, 0, NUM_RX_DESC * sizeof(struct bufdesc));
-@@ -366,8 +365,8 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
- 	if (packet_length < ETH_ZLEN)
- 		memset(priv->tx_buf + entry * PKT_BUF_SIZE, 0, ETH_ZLEN);
- 	memcpy(priv->tx_buf + entry * PKT_BUF_SIZE, packet, packet_length);
--	dma_flush_range((unsigned long)priv->tx_buf + entry * PKT_BUF_SIZE,
--			(unsigned long)priv->tx_buf + (entry + 1) * PKT_BUF_SIZE);
-+	dma_sync_single_for_device((unsigned long)priv->tx_buf + entry *
-+				   PKT_BUF_SIZE, PKT_BUF_SIZE, DMA_TO_DEVICE);
- 
- 	priv->tx_desc[entry].buf_Haddr = 0;
- 	priv->tx_desc[entry].buf_addr =
-@@ -388,6 +387,9 @@ static int rtl8169_eth_send(struct eth_device *edev, void *packet,
- 	while (priv->tx_desc[entry].status & BD_STAT_OWN)
- 		;
- 
-+	dma_sync_single_for_cpu((unsigned long)priv->tx_buf + entry *
-+				PKT_BUF_SIZE, PKT_BUF_SIZE, DMA_TO_DEVICE);
++static void dma_flush_range(unsigned long start, unsigned long end)
++{
++	if (outer_cache.flush_range)
++		outer_cache.flush_range(start, end);
++	__dma_flush_range(start, end);
++}
 +
- 	priv->cur_tx++;
++static void dma_inv_range(unsigned long start, unsigned long end)
++{
++	if (outer_cache.inv_range)
++		outer_cache.inv_range(start, end);
++	__dma_inv_range(start, end);
++}
++
+ void remap_range(void *_start, size_t size, uint32_t flags)
+ {
+ 	unsigned long start = (unsigned long)_start;
+@@ -412,27 +426,6 @@ void dma_free_coherent(void *mem, size_t size)
+ 	free(mem);
+ }
  
- 	return 0;
-@@ -405,22 +407,16 @@ static int rtl8169_eth_rx(struct eth_device *edev)
- 		if (!(priv->rx_desc[entry].status & BD_STAT_RX_RES)) {
- 			pkt_size = (priv->rx_desc[entry].status & 0x1fff) - 4;
+-void dma_clean_range(unsigned long start, unsigned long end)
+-{
+-	if (outer_cache.clean_range)
+-		outer_cache.clean_range(start, end);
+-	__dma_clean_range(start, end);
+-}
+-
+-void dma_flush_range(unsigned long start, unsigned long end)
+-{
+-	if (outer_cache.flush_range)
+-		outer_cache.flush_range(start, end);
+-	__dma_flush_range(start, end);
+-}
+-
+-void dma_inv_range(unsigned long start, unsigned long end)
+-{
+-	if (outer_cache.inv_range)
+-		outer_cache.inv_range(start, end);
+-	__dma_inv_range(start, end);
+-}
+-
+ void dma_sync_single_for_cpu(unsigned long address, size_t size,
+ 			     enum dma_data_direction dir)
+ {
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index 01c20bd..97bb0db 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -27,26 +27,12 @@ static inline void setup_dma_coherent(unsigned long offset)
+ }
  
--			dma_inv_range((unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE,
--			              (unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE + pkt_size);
-+			dma_sync_single_for_cpu((unsigned long)priv->rx_buf
-+						+ entry * PKT_BUF_SIZE,
-+						pkt_size, DMA_FROM_DEVICE);
+ #ifdef CONFIG_MMU
+-void dma_clean_range(unsigned long, unsigned long);
+-void dma_flush_range(unsigned long, unsigned long);
+-void dma_inv_range(unsigned long, unsigned long);
+ void remap_range(void *_start, size_t size, uint32_t flags);
+ void *map_io_sections(unsigned long physaddr, void *start, size_t size);
+ uint32_t mmu_get_pte_cached_flags(void);
+ uint32_t mmu_get_pte_uncached_flags(void);
  
- 			net_receive(edev, priv->rx_buf + entry * PKT_BUF_SIZE,
- 			            pkt_size);
+ #else
+-static inline void dma_clean_range(unsigned long s, unsigned long e)
+-{
+-}
+-
+-static inline void dma_flush_range(unsigned long s, unsigned long e)
+-{
+-}
+-
+-static inline void dma_inv_range(unsigned long s, unsigned long e)
+-{
+-}
  
--			/*
--			 * the buffer is going to be reused by HW, make sure to
--			 * clean out any potentially modified data
--			 */
--			dma_clean_range((unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE,
--			              (unsigned long)priv->rx_buf
--			               + entry * PKT_BUF_SIZE + pkt_size);
-+			dma_sync_single_for_device((unsigned long)priv->rx_buf
-+						   + entry * PKT_BUF_SIZE,
-+						   pkt_size, DMA_FROM_DEVICE);
- 
- 			if (entry == NUM_RX_DESC - 1)
- 				priv->rx_desc[entry].status = BD_STAT_OWN |
+ static inline void remap_range(void *_start, size_t size, uint32_t flags)
+ {
 -- 
 2.1.0
 
