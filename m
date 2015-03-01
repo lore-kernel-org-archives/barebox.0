@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YS339-0004dP-Nb
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 12:32:51 +0000
+ Linux)) id 1YS339-0004d1-NU
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 12:32:48 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sun,  1 Mar 2015 13:32:11 +0100
-Message-Id: <1425213143-4529-6-git-send-email-mkl@pengutronix.de>
+Date: Sun,  1 Mar 2015 13:32:07 +0100
+Message-Id: <1425213143-4529-2-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425213143-4529-1-git-send-email-mkl@pengutronix.de>
 References: <1425213143-4529-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,47 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/17] of: add no-op function for of_register_fixup()
+Subject: [PATCH v2 01/17] drivers: remove unused function dev_protect()
 To: barebox@lists.infradead.org
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- include/of.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/base/driver.c | 6 ------
+ include/driver.h      | 2 --
+ 2 files changed, 8 deletions(-)
 
-diff --git a/include/of.h b/include/of.h
-index 2ad941864f5d..46eecee70035 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -61,7 +61,6 @@ struct device_d;
- struct driver_d;
- 
- int of_fix_tree(struct device_node *);
--int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context);
- 
- int of_match(struct device_d *dev, struct driver_d *drv);
- 
-@@ -240,6 +239,7 @@ void of_add_memory_bank(struct device_node *node, bool dump, int r,
- 		u64 base, u64 size);
- struct device_d *of_find_device_by_node_path(const char *path);
- int of_find_path(struct device_node *node, const char *propname, char **outpath);
-+int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context);
- #else
- static inline int of_parse_partitions(struct cdev *cdev,
- 					  struct device_node *node)
-@@ -596,6 +596,12 @@ static inline struct device_d *of_device_enable_and_register_by_name(
- {
- 	return NULL;
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 81b35031a111..3363b56675ee 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -350,12 +350,6 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
  }
-+
-+static inline int of_register_fixup(int (*fixup)(struct device_node *, void *),
-+				void *context)
-+{
-+	return -ENOSYS;
-+}
- #endif
+ EXPORT_SYMBOL(dev_request_mem_region);
  
- #define for_each_node_by_name(dn, name) \
+-int dev_protect(struct device_d *dev, size_t count, unsigned long offset, int prot)
+-{
+-	printf("%s: currently broken\n", __func__);
+-	return -EINVAL;
+-}
+-
+ int generic_memmap_ro(struct cdev *cdev, void **map, int flags)
+ {
+ 	if (!cdev->dev)
+diff --git a/include/driver.h b/include/driver.h
+index 76fd4b1720b2..0ee3b4554f98 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -331,8 +331,6 @@ struct driver_d *get_driver_by_name(const char *name);
+ 
+ struct cdev;
+ 
+-int     dev_protect(struct device_d *dev, size_t count, unsigned long offset, int prot);
+-
+ /* These are used by drivers which work with direct memory accesses */
+ ssize_t mem_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags);
+ ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offset, ulong flags);
 -- 
 2.1.4
 
