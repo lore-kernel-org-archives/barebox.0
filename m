@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m7-0007iy-5y
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:19 +0000
+ id 1YS3mt-0008H6-I9
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:20:04 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id A6C7826C2007
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:33 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id A6C7D26C2006
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:32 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:22 +0100
-Message-Id: <1425215842-6982-25-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:19 +0100
+Message-Id: <1425215842-6982-22-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,102 +24,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 24/24] ARM: MMU: unexport cache maintenance functions
+Subject: [PATCH 21/24] usb: host: ehci: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
-Those should only be used internally. All users should rather
-use the streaming DMA API, which does proper cache maintenance.
+Move to the common streaming DMA ops in order to get rid of
+the direct usage of the ARM MMU functions for the cache
+maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/cpu/mmu.c         | 35 ++++++++++++++---------------------
- arch/arm/include/asm/mmu.h | 14 --------------
- 2 files changed, 14 insertions(+), 35 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index c4ec72d..7076cb5 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -159,6 +159,20 @@ static u32 *find_pte(unsigned long adr)
- 	return &table[(adr >> PAGE_SHIFT) & 0xff];
- }
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 7f59774..ef1371f 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -30,7 +30,6 @@
+ #include <errno.h>
+ #include <of.h>
+ #include <usb/ehci.h>
+-#include <asm/mmu.h>
+ #include <linux/err.h>
  
-+static void dma_flush_range(unsigned long start, unsigned long end)
-+{
-+	if (outer_cache.flush_range)
-+		outer_cache.flush_range(start, end);
-+	__dma_flush_range(start, end);
-+}
-+
-+static void dma_inv_range(unsigned long start, unsigned long end)
-+{
-+	if (outer_cache.inv_range)
-+		outer_cache.inv_range(start, end);
-+	__dma_inv_range(start, end);
-+}
-+
- void remap_range(void *_start, size_t size, uint32_t flags)
- {
- 	unsigned long start = (unsigned long)_start;
-@@ -412,27 +426,6 @@ void dma_free_coherent(void *mem, size_t size)
- 	free(mem);
- }
+ #include "ehci.h"
+@@ -331,7 +330,9 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			struct qTD *qtd = &ehci->td[i];
+ 			if (!qtd->qtd_dma)
+ 				continue;
+-			dma_flush_range(qtd->qtd_dma, qtd->qtd_dma + qtd->length);
++			dma_sync_single_for_device((unsigned long)qtd->qtd_dma,
++						   qtd->length,
++						   DMA_BIDIRECTIONAL);
+ 		}
+ 	}
  
--void dma_clean_range(unsigned long start, unsigned long end)
--{
--	if (outer_cache.clean_range)
--		outer_cache.clean_range(start, end);
--	__dma_clean_range(start, end);
--}
--
--void dma_flush_range(unsigned long start, unsigned long end)
--{
--	if (outer_cache.flush_range)
--		outer_cache.flush_range(start, end);
--	__dma_flush_range(start, end);
--}
--
--void dma_inv_range(unsigned long start, unsigned long end)
--{
--	if (outer_cache.inv_range)
--		outer_cache.inv_range(start, end);
--	__dma_inv_range(start, end);
--}
--
- void dma_sync_single_for_cpu(unsigned long address, size_t size,
- 			     enum dma_data_direction dir)
- {
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index 01c20bd..97bb0db 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -27,26 +27,12 @@ static inline void setup_dma_coherent(unsigned long offset)
- }
+@@ -372,7 +373,8 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			struct qTD *qtd = &ehci->td[i];
+ 			if (!qtd->qtd_dma)
+ 				continue;
+-			dma_inv_range(qtd->qtd_dma, qtd->qtd_dma + qtd->length);
++			dma_sync_single_for_cpu((unsigned long)qtd->qtd_dma,
++						qtd->length, DMA_BIDIRECTIONAL);
+ 		}
+ 	}
  
- #ifdef CONFIG_MMU
--void dma_clean_range(unsigned long, unsigned long);
--void dma_flush_range(unsigned long, unsigned long);
--void dma_inv_range(unsigned long, unsigned long);
- void remap_range(void *_start, size_t size, uint32_t flags);
- void *map_io_sections(unsigned long physaddr, void *start, size_t size);
- uint32_t mmu_get_pte_cached_flags(void);
- uint32_t mmu_get_pte_uncached_flags(void);
- 
- #else
--static inline void dma_clean_range(unsigned long s, unsigned long e)
--{
--}
--
--static inline void dma_flush_range(unsigned long s, unsigned long e)
--{
--}
--
--static inline void dma_inv_range(unsigned long s, unsigned long e)
--{
--}
- 
- static inline void remap_range(void *_start, size_t size, uint32_t flags)
- {
 -- 
 2.1.0
 
