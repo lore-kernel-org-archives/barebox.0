@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3lI-0007E4-Cr
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:18:25 +0000
+ id 1YS3m3-0007jE-Jq
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:12 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF31C26C2007
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:27 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id F007926C200E
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:29 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:04 +0100
-Message-Id: <1425215842-6982-7-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:11 +0100
+Message-Id: <1425215842-6982-14-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/24] AHCI: convert to streaming DMA ops
+Subject: [PATCH 13/24] net: davinci_emac: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,48 +33,56 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/ata/ahci.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/davinci_emac.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 1894e47..e4310fc 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -31,7 +31,6 @@
- #include <linux/ctype.h>
- #include <linux/err.h>
- #include <disks.h>
--#include <asm/mmu.h>
- #include <ata_drive.h>
- #include <linux/sizes.h>
+diff --git a/drivers/net/davinci_emac.c b/drivers/net/davinci_emac.c
+index ce367a3..056ffe2 100644
+--- a/drivers/net/davinci_emac.c
++++ b/drivers/net/davinci_emac.c
+@@ -40,12 +40,12 @@
+  */
+ 
+ #include <common.h>
++#include <dma.h>
+ #include <io.h>
  #include <clock.h>
-@@ -170,7 +169,11 @@ static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf
- 		return -EIO;
+ #include <net.h>
+ #include <malloc.h>
+ #include <init.h>
+-#include <asm/mmu.h>
+ #include <asm/system.h>
+ #include <linux/phy.h>
+ #include <mach/emac_defs.h>
+@@ -411,7 +411,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
+ 				    EMAC_CPPI_OWNERSHIP_BIT |
+ 				    EMAC_CPPI_EOP_BIT),
+ 		priv->emac_tx_desc + EMAC_DESC_PKT_FLAG_LEN);
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	/* Send the packet */
+ 	writel(BD_TO_HW(priv->emac_tx_desc), priv->adap_emac + EMAC_TX0HDP);
  
- 	if (wbuf)
--		dma_flush_range((unsigned long)wbuf, (unsigned long)wbuf + buf_len);
-+		dma_sync_single_for_device((unsigned long)wbuf, buf_len,
-+					   DMA_TO_DEVICE);
-+	if (rbuf)
-+		dma_sync_single_for_device((unsigned long)rbuf, buf_len,
-+					   DMA_FROM_DEVICE);
+@@ -429,6 +429,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
+ 			break;
+ 		}
+ 	}
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
  
- 	memcpy((unsigned char *)ahci_port->cmd_tbl, fis, fis_len);
+ 	dev_dbg(priv->dev, "- emac_send (ret_status %i)\n", ret_status);
+ 	return ret_status;
+@@ -460,9 +461,9 @@ static int davinci_emac_recv(struct eth_device *edev)
+ 		pkt = (unsigned char *)readl(rx_curr_desc + EMAC_DESC_BUFFER);
+ 		len = readl(rx_curr_desc + EMAC_DESC_BUFF_OFF_LEN) & 0xffff;
+ 		dev_dbg(priv->dev, "| emac_recv got packet (length %i)\n", len);
+-		dma_inv_range((ulong)pkt,
+-				(ulong)readl(rx_curr_desc + EMAC_DESC_BUFFER) + len);
++		dma_sync_single_for_cpu((unsigned long)pkt, len, DMA_FROM_DEVICE);
+ 		net_receive(edev, pkt, len);
++		dma_sync_single_for_device((unsigned long)pkt, len, DMA_FROM_DEVICE);
+ 		ret = len;
+ 	}
  
-@@ -187,8 +190,12 @@ static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf
- 	if (ret)
- 		return -ETIMEDOUT;
- 
-+	if (wbuf)
-+		dma_sync_single_for_cpu((unsigned long)wbuf, buf_len,
-+					DMA_TO_DEVICE);
- 	if (rbuf)
--		dma_inv_range((unsigned long)rbuf, (unsigned long)rbuf + buf_len);
-+		dma_sync_single_for_cpu((unsigned long)rbuf, buf_len,
-+					DMA_FROM_DEVICE);
- 
- 	return 0;
- }
 -- 
 2.1.0
 
