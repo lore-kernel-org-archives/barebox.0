@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m3-0007iX-Jt
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:13 +0000
+ id 1YS3m3-0007iW-Jp
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:14 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF31626C2004
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:26 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 1450426C2008
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:28 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:01 +0100
-Message-Id: <1425215842-6982-4-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:05 +0100
+Message-Id: <1425215842-6982-8-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,58 +24,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/24] dma: add streaming DMA ops
+Subject: [PATCH 07/24] MCI: dw-mmc: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
-This will allow us to implement cache maintenance in a platform
-agnostic way.
+Move to the common streaming DMA ops in order to get rid of
+the direct usage of the ARM MMU functions for the cache
+maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- include/dma-dir.h |  6 ++++++
- include/dma.h     | 11 +++++++++++
- 2 files changed, 17 insertions(+)
- create mode 100644 include/dma-dir.h
+ drivers/mci/Kconfig  |  2 +-
+ drivers/mci/dw_mmc.c | 24 ++++++++++++------------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/dma-dir.h b/include/dma-dir.h
-new file mode 100644
-index 0000000..ba107f1
---- /dev/null
-+++ b/include/dma-dir.h
-@@ -0,0 +1,6 @@
-+enum dma_data_direction {
-+	DMA_BIDIRECTIONAL = 0,
-+	DMA_TO_DEVICE = 1,
-+	DMA_FROM_DEVICE = 2,
-+	DMA_NONE = 3,
-+};
-diff --git a/include/dma.h b/include/dma.h
-index 899f831..4274520 100644
---- a/include/dma.h
-+++ b/include/dma.h
-@@ -11,6 +11,7 @@
- #include <malloc.h>
- #include <xfuncs.h>
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index dbcc38d..a5cf2fe 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -36,7 +36,7 @@ comment "--- MCI host drivers ---"
  
-+#include <dma-dir.h>
- #include <asm/dma.h>
+ config MCI_DW
+ 	bool "Synopsys DesignWare Memory Card Interface"
+-	depends on ARM
++	depends on HAS_DMA
+ 	help
+ 	  This selects support for the Synopsys DesignWare Mobile Storage IP
+ 	  block, this provides host support for SD and MMC interfaces, in both
+diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
+index 3992815..f02ea62 100644
+--- a/drivers/mci/dw_mmc.c
++++ b/drivers/mci/dw_mmc.c
+@@ -29,7 +29,6 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <asm-generic/errno.h>
+-#include <asm/mmu.h>
  
- #ifndef dma_alloc
-@@ -27,4 +28,14 @@ static inline void dma_free(void *mem)
- }
- #endif
+ #define DWMCI_CTRL		0x000
+ #define	DWMCI_PWREN		0x004
+@@ -282,7 +281,6 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	uint64_t start;
+ 	int ret;
+ 	unsigned int num_bytes = 0;
+-	const void *writebuf = NULL;
  
-+/* streaming DMA - implement the below calls to support HAS_DMA */
-+void dma_sync_single_for_cpu(unsigned long address, size_t size,
-+			     enum dma_data_direction dir);
-+
-+void dma_sync_single_for_device(unsigned long address, size_t size,
-+				enum dma_data_direction dir);
-+
-+void *dma_alloc_coherent(size_t size);
-+void dma_free_coherent(void *mem, size_t size);
-+
- #endif /* __DMA_H */
+ 	start = get_time_ns();
+ 	while (1) {
+@@ -300,12 +298,12 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	if (data) {
+ 		num_bytes = data->blocks * data->blocksize;
+ 
+-		if (data->flags & MMC_DATA_WRITE) {
+-			dma_flush_range((unsigned long)data->src,
+-				(unsigned long)(data->src + data->blocks * 512));
+-
+-			writebuf = data->src;
+-		}
++		if (data->flags & MMC_DATA_WRITE)
++			dma_sync_single_for_device((unsigned long)data->src,
++						   num_bytes, DMA_TO_DEVICE);
++		else
++			dma_sync_single_for_device((unsigned long)data->dest,
++						   num_bytes, DMA_FROM_DEVICE);
+ 
+ 		ret = dwmci_prepare_data(host, data);
+ 		if (ret)
+@@ -389,10 +387,12 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 		ctrl &= ~(DWMCI_DMA_EN);
+ 		dwmci_writel(host, DWMCI_CTRL, ctrl);
+ 
+-		if (data->flags & MMC_DATA_READ) {
+-			dma_inv_range((unsigned long)data->dest,
+-					(unsigned long)(data->dest + data->blocks * 512));
+-		}
++		if (data->flags & MMC_DATA_WRITE)
++			dma_sync_single_for_cpu((unsigned long)data->src,
++						num_bytes, DMA_TO_DEVICE);
++		else
++			dma_sync_single_for_cpu((unsigned long)data->dest,
++						num_bytes, DMA_FROM_DEVICE);
+ 	}
+ 
+ 	udelay(100);
 -- 
 2.1.0
 
