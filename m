@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m3-0007iY-Jv
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:16 +0000
+ id 1YS3m5-0007jE-9A
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:17 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 655E326C2009
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:28 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id F006326C2014
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:31 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:06 +0100
-Message-Id: <1425215842-6982-9-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:17 +0100
+Message-Id: <1425215842-6982-20-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/24] MCI: imx: convert to streaming DMA ops
+Subject: [PATCH 19/24] net: xgmac: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,76 +33,59 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/imx-esdhc.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/net/xgmac.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 23bdc1f..8b45500 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -22,6 +22,7 @@
-  */
- #include <config.h>
- #include <common.h>
-+#include <dma.h>
- #include <driver.h>
- #include <init.h>
- #include <of.h>
-@@ -31,7 +32,6 @@
+diff --git a/drivers/net/xgmac.c b/drivers/net/xgmac.c
+index c1e4da8..f39dc4c 100644
+--- a/drivers/net/xgmac.c
++++ b/drivers/net/xgmac.c
+@@ -25,7 +25,6 @@
+ #include <errno.h>
  #include <io.h>
- #include <linux/clk.h>
  #include <linux/err.h>
 -#include <asm/mmu.h>
- #include <mach/generic.h>
- #include <mach/esdhc.h>
- #include <gpio.h>
-@@ -211,6 +211,7 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	u32	irqstat;
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
- 	void __iomem *regs = host->regs;
-+	unsigned int num_bytes = 0;
+ 
+ #define TX_NUM_DESC			1
+ #define RX_NUM_DESC			32
+@@ -587,7 +586,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
+ 	struct xgmac_dma_desc *txdesc = &priv->tx_chain[currdesc];
  	int ret;
  
- 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
-@@ -225,12 +226,15 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		err = esdhc_setup_data(mci, data);
- 		if(err)
- 			return err;
--		if (data->flags & MMC_DATA_WRITE) {
--			dma_flush_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
--		} else
--			dma_clean_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
-+
-+		num_bytes = data->blocks * data->blocksize;
-+
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_device((unsigned long)data->src,
-+						   num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_device((unsigned long)data->dest,
-+						   num_bytes, DMA_FROM_DEVICE);
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	desc_set_buf_addr_and_size(txdesc, packet, length);
+ 	desc_set_tx_owner(txdesc, TXDESC_FIRST_SEG |
+ 		TXDESC_LAST_SEG | TXDESC_CRC_EN_APPEND);
+@@ -596,6 +595,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
+ 	writel(1, priv->base + XGMAC_DMA_TX_POLL);
  
- 	}
+ 	ret = wait_on_timeout(1 * SECOND, !desc_get_owner(txdesc));
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	if (ret) {
+ 		dev_err(priv->dev, "TX timeout\n");
+ 		return ret;
+@@ -611,14 +611,19 @@ static int xgmac_recv(struct eth_device *edev)
+ 	u32 currdesc = priv->rx_currdesc;
+ 	struct xgmac_dma_desc *rxdesc = &priv->rx_chain[currdesc];
+ 	int length = 0;
++	void *buf_addr;
  
-@@ -313,10 +317,12 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		} while (!(irqstat & IRQSTAT_TC) &&
- 				(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
+ 	/* check if the host has the desc */
+ 	if (desc_get_owner(rxdesc))
+ 		return -1; /* something bad happened */
  
--		if (data->flags & MMC_DATA_READ) {
--			dma_inv_range((unsigned long)data->dest,
--					(unsigned long)(data->dest + data->blocks * 512));
--		}
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_cpu((unsigned long)data->src,
-+						num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_cpu((unsigned long)data->dest,
-+						num_bytes, DMA_FROM_DEVICE);
- #endif
- 	}
+ 	length = desc_get_rx_frame_len(rxdesc);
++	buf_addr = desc_get_buf_addr(rxdesc);
  
+-	net_receive(edev, desc_get_buf_addr(rxdesc), length);
++	dma_sync_single_for_cpu((unsigned long)buf_addr, length, DMA_FROM_DEVICE);
++	net_receive(edev, buf_addr, length);
++	dma_sync_single_for_device((unsigned long)buf_addr, length,
++				   DMA_FROM_DEVICE);
+ 
+ 	/* set descriptor back to owned by XGMAC */
+ 	desc_set_rx_owner(rxdesc);
 -- 
 2.1.0
 
