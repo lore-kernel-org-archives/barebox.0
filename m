@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m3-0007jE-Jq
+ id 1YS3m3-0007iv-Jn
  for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:12 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id F007926C200E
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 5D8A026C200C
  for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:29 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:11 +0100
-Message-Id: <1425215842-6982-14-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:09 +0100
+Message-Id: <1425215842-6982-12-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/24] net: davinci_emac: convert to streaming DMA ops
+Subject: [PATCH 11/24] net: cpsw: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,54 +33,52 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/davinci_emac.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/cpsw.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/davinci_emac.c b/drivers/net/davinci_emac.c
-index ce367a3..056ffe2 100644
---- a/drivers/net/davinci_emac.c
-+++ b/drivers/net/davinci_emac.c
-@@ -40,12 +40,12 @@
-  */
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 799fac8..3f8ffa0 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -21,6 +21,7 @@
+ #include <init.h>
  
- #include <common.h>
+ #include <command.h>
 +#include <dma.h>
- #include <io.h>
- #include <clock.h>
  #include <net.h>
  #include <malloc.h>
- #include <init.h>
+ #include <net.h>
+@@ -32,7 +33,6 @@
+ #include <of_net.h>
+ #include <of_address.h>
+ #include <xfuncs.h>
 -#include <asm/mmu.h>
  #include <asm/system.h>
- #include <linux/phy.h>
- #include <mach/emac_defs.h>
-@@ -411,7 +411,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
- 				    EMAC_CPPI_OWNERSHIP_BIT |
- 				    EMAC_CPPI_EOP_BIT),
- 		priv->emac_tx_desc + EMAC_DESC_PKT_FLAG_LEN);
--	dma_flush_range((ulong) packet, (ulong)packet + length);
-+	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
- 	/* Send the packet */
- 	writel(BD_TO_HW(priv->emac_tx_desc), priv->adap_emac + EMAC_TX0HDP);
+ #include <linux/err.h>
  
-@@ -429,6 +429,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
- 			break;
- 		}
- 	}
+@@ -871,9 +871,9 @@ static int cpsw_send(struct eth_device *edev, void *packet, int length)
+ 
+ 	dev_dbg(&slave->dev, "%s: %i bytes @ 0x%p\n", __func__, length, packet);
+ 
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
+-
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	ret = cpdma_submit(priv, &priv->tx_chan, packet, length);
 +	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
  
- 	dev_dbg(priv->dev, "- emac_send (ret_status %i)\n", ret_status);
- 	return ret_status;
-@@ -460,9 +461,9 @@ static int davinci_emac_recv(struct eth_device *edev)
- 		pkt = (unsigned char *)readl(rx_curr_desc + EMAC_DESC_BUFFER);
- 		len = readl(rx_curr_desc + EMAC_DESC_BUFF_OFF_LEN) & 0xffff;
- 		dev_dbg(priv->dev, "| emac_recv got packet (length %i)\n", len);
--		dma_inv_range((ulong)pkt,
--				(ulong)readl(rx_curr_desc + EMAC_DESC_BUFFER) + len);
-+		dma_sync_single_for_cpu((unsigned long)pkt, len, DMA_FROM_DEVICE);
- 		net_receive(edev, pkt, len);
-+		dma_sync_single_for_device((unsigned long)pkt, len, DMA_FROM_DEVICE);
- 		ret = len;
+ 	return ret;
+ }
+@@ -886,8 +886,11 @@ static int cpsw_recv(struct eth_device *edev)
+ 	int len;
+ 
+ 	while (cpdma_process(priv, &priv->rx_chan, &buffer, &len) >= 0) {
+-		dma_inv_range((ulong)buffer, (ulong)buffer + len);
++		dma_sync_single_for_cpu((unsigned long)buffer, len,
++					DMA_FROM_DEVICE);
+ 		net_receive(edev, buffer, len);
++		dma_sync_single_for_device((unsigned long)buffer, len,
++					   DMA_FROM_DEVICE);
+ 		cpdma_submit(priv, &priv->rx_chan, buffer, PKTSIZE);
  	}
  
 -- 
