@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YS1PB-0000t7-4l
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 10:47:25 +0000
-Message-ID: <54F2EE0E.8050207@pengutronix.de>
-Date: Sun, 01 Mar 2015 11:46:38 +0100
+ Linux)) id 1YS1Pn-0000vT-ID
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 10:48:04 +0000
+Message-ID: <54F2EE4C.50100@pengutronix.de>
+Date: Sun, 01 Mar 2015 11:47:40 +0100
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 MIME-Version: 1.0
 References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
- <1425159621-22805-8-git-send-email-mkl@pengutronix.de>
- <20150301073352.GD11010@pengutronix.de>
-In-Reply-To: <20150301073352.GD11010@pengutronix.de>
+ <1425159621-22805-5-git-send-email-mkl@pengutronix.de>
+ <20150301072717.GC11010@pengutronix.de>
+In-Reply-To: <20150301072717.GC11010@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +19,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5051145771509393922=="
+Content-Type: multipart/mixed; boundary="===============8482925067696467121=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/16] sandbox: add support to pass dtb to barebox
+Subject: Re: [PATCH 04/16] of: make first argument of several
+ of_property_*_string functions const
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============5051145771509393922==
+--===============8482925067696467121==
 Content-Type: multipart/signed; micalg=pgp-sha512;
  protocol="application/pgp-signature";
- boundary="6K9TQSjsvO14oGfqvMTnEObI7U0nM31mO"
+ boundary="w9dUnvdvMjfVdI4bHKWE4ffxkRm1fg9RD"
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---6K9TQSjsvO14oGfqvMTnEObI7U0nM31mO
+--w9dUnvdvMjfVdI4bHKWE4ffxkRm1fg9RD
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 03/01/2015 08:33 AM, Sascha Hauer wrote:
-[...]
->> +	root =3D of_unflatten_dtb(dtb);
+On 03/01/2015 08:27 AM, Sascha Hauer wrote:
+>> -int of_property_read_string(struct device_node *np, const char *propn=
+ame,
+>> +int of_property_read_string(const struct device_node *np, const char =
+*propname,
+>>  				const char **out_string)
 >=20
-> of_unflatten_dtb is only defined when CONFIG_OFTREE is enabled. I see
-> nothing in this patch selectin this option or depending on this option.=
+> Is this necessary for something or just a nice to have? The functions
+> are takes from the kernel and the device_node arguments cannot be const=
 
-> Does this compile with device tree support disabled?
+> there because the functions take a reference on the node.
 
-Doh! - Now it does.
-
-I'm left with:
-
-> undefined reference to `of_find_node_by_alias'
-> undefined reference to `of_register_fixup'
-
-because they have no NOOPs in case if !CONFIG_OFTREE. I'll add them in a
-separate patch, to avoid having ifdefs in the C code.
+I see, I'll remove the patch and adopt my code.
 
 Marc
-
 --=20
 Pengutronix e.K.                  | Marc Kleine-Budde           |
 Industrial Linux Solutions        | Phone: +49-231-2826-924     |
@@ -65,7 +60,7 @@ Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
 Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
---6K9TQSjsvO14oGfqvMTnEObI7U0nM31mO
+--w9dUnvdvMjfVdI4bHKWE4ffxkRm1fg9RD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -73,25 +68,25 @@ Content-Disposition: attachment; filename="signature.asc"
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBCgAGBQJU8u4SAAoJECte4hHFiupUnHwP/25wccOdpTMPnDbu5ulfyh8Q
-Sgpo2hqUuWQBi0dztcNIZYIyPUP+DAS9ItwHQC7GE1ksE6GZ3c65HEqG2v6EbmOC
-s5eGO2D4kwZMLdHj/wzZ+M92gATU87S4wUkzTAmC1idBYD/Z7QgmRX5v36fUKtlE
-ebZDpNV98QVdPtwNiHK9IqAF7qhb7AUQmlamSyywUd57HgHDsuRub3ZymwEH030m
-Xmp31EWFLya7jdyReuTiHZ9KQp7AYUo6EHf9uvaiV+SOlUQVqDXB1XSXJXYKLVO0
-L/71jxmh64ZL/vNFuXzAalTN0+7HjxMIafdxUKjj6QDyDL/bi3VO3XyYs9u8mSzB
-HdD8pfb1z40DUHU411cBqxD6m2qsEA8gVOPlI7bOYTY0fq0TzMoNgLPjxKk1Plnm
-b7FXxVudBAq2Fc8pVC4tJ23dPjNNSmztkUk2u0Kp5KKx2Aqx2WNYslZ/kXtWzQ+0
-U2z7D1OldcyXdJieVKl4mAt5nq6d25Yb4lnXK/N/6F/BcUgOi950NtamUkdLFweZ
-DtnlIQaG/DB1Qbzkm7l6P+wR+0P3R2uZXPeNMoVSj+e0x15Q9p7mbmK+soFiSI3i
-BH2cn1Nhr1ibd7pd2qUm+147qqmpb0/QLK2I6zARuA+c50so+jjSMaP6GrdOkCFD
-/8V+NCHMBJPyZaRy0XwW
-=NKEe
+iQIcBAEBCgAGBQJU8u5MAAoJECte4hHFiupUro4P/Ag95MfSM1j+ZG6TO0URwFpc
+nuM7Z3+zXutQ00hOjqgvswBGiqZVZTj7aHfPbOuOzg3xLTzsLKGDiGskKHl86RFQ
+TXxwTcBgTUV6RCsBFTLHH0iDBifDKn4UJd5YvWHiRtlznXfvhdOGYEuCbbCWspC2
+c5VTSgTmHzQWKYJUuUGD9TUozoAaOCMmGIl5Lyx50z/OvAuB531xPo5EIBZxeRPB
+psoWS/2CMXevVT1KDJeMFrHFLpuckrSj0u+nCshmrqO81u0mHZtcGedaJ/Lo0fKh
+OOdmIHoiJSkdSaZkJtR5gQM5HP8UBrSP3DdwtqETaeMDaolMvltzYn6xpxcbpK/v
+/OIPFnhegpjfG8XZ6DZrLq5npGvo9ORUcOGzZis7S6mEg6BYOd0tFldJ66298tVa
+GNB5NurlCB95/aF8NRqifwHqzTBnNP0P9ajAnU6qN6luDu7UQ7B1xsZwfngNMt3c
+zyr4zRpmlLQ6SA1hiGTvQDMwBHkAULoa/pN2dKGH6BIgcCjvXia5+XIWMmf3qnsv
+3nqRnM6F59OMmDSqdo+d2tQbsddKrYb6WtNiQ6Yi6TvpZvMjRHVwNfkx5nxQ6/w7
+1Zrzych2iEu2Qs+bXWEZi4E+bg4h6UJo3FoBSVAl1+PM00M55swEzFl6g+uekF0c
+qFvjlxzn+EAWqnrHJ8s3
+=K9aP
 -----END PGP SIGNATURE-----
 
---6K9TQSjsvO14oGfqvMTnEObI7U0nM31mO--
+--w9dUnvdvMjfVdI4bHKWE4ffxkRm1fg9RD--
 
 
---===============5051145771509393922==
+--===============8482925067696467121==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -102,4 +97,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============5051145771509393922==--
+--===============8482925067696467121==--
