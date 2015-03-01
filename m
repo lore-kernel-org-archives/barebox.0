@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m5-0007jE-9A
+ id 1YS3m6-0007kg-DE
  for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:17 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id F006326C2014
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:31 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 5DC1E26C2016
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:32 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:17 +0100
-Message-Id: <1425215842-6982-20-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:18 +0100
+Message-Id: <1425215842-6982-21-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/24] net: xgmac: convert to streaming DMA ops
+Subject: [PATCH 20/24] usb: gadget: fsl_udc: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,59 +33,35 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/xgmac.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/fsl_udc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/xgmac.c b/drivers/net/xgmac.c
-index c1e4da8..f39dc4c 100644
---- a/drivers/net/xgmac.c
-+++ b/drivers/net/xgmac.c
-@@ -25,7 +25,6 @@
- #include <errno.h>
- #include <io.h>
- #include <linux/err.h>
--#include <asm/mmu.h>
+diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
+index f9e58bb..9aa313a 100644
+--- a/drivers/usb/gadget/fsl_udc.c
++++ b/drivers/usb/gadget/fsl_udc.c
+@@ -568,8 +568,8 @@ static void done(struct fsl_ep *ep, struct fsl_req *req, int status)
+ 		dma_free_coherent(curr_td, sizeof(struct ep_td_struct));
+ 	}
  
- #define TX_NUM_DESC			1
- #define RX_NUM_DESC			32
-@@ -587,7 +586,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
- 	struct xgmac_dma_desc *txdesc = &priv->tx_chain[currdesc];
- 	int ret;
+-	dma_inv_range((unsigned long)req->req.buf,
+-		(unsigned long)(req->req.buf + req->req.length));
++	dma_sync_single_for_cpu((unsigned long)req->req.buf, req->req.length,
++				DMA_BIDIRECTIONAL);
  
--	dma_flush_range((ulong) packet, (ulong)packet + length);
-+	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
- 	desc_set_buf_addr_and_size(txdesc, packet, length);
- 	desc_set_tx_owner(txdesc, TXDESC_FIRST_SEG |
- 		TXDESC_LAST_SEG | TXDESC_CRC_EN_APPEND);
-@@ -596,6 +595,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
- 	writel(1, priv->base + XGMAC_DMA_TX_POLL);
+ 	if (status && (status != -ESHUTDOWN))
+ 		VDBG("complete %s req %p stat %d len %u/%u",
+@@ -1250,8 +1250,8 @@ fsl_ep_queue(struct usb_ep *_ep, struct usb_request *_req)
  
- 	ret = wait_on_timeout(1 * SECOND, !desc_get_owner(txdesc));
-+	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
- 	if (ret) {
- 		dev_err(priv->dev, "TX timeout\n");
- 		return ret;
-@@ -611,14 +611,19 @@ static int xgmac_recv(struct eth_device *edev)
- 	u32 currdesc = priv->rx_currdesc;
- 	struct xgmac_dma_desc *rxdesc = &priv->rx_chain[currdesc];
- 	int length = 0;
-+	void *buf_addr;
+ 	req->ep = ep;
  
- 	/* check if the host has the desc */
- 	if (desc_get_owner(rxdesc))
- 		return -1; /* something bad happened */
+-	dma_flush_range((unsigned long)req->req.buf,
+-			(unsigned long)(req->req.buf + req->req.length));
++	dma_sync_single_for_device((unsigned long)req->req.buf, req->req.length,
++				   DMA_BIDIRECTIONAL);
  
- 	length = desc_get_rx_frame_len(rxdesc);
-+	buf_addr = desc_get_buf_addr(rxdesc);
- 
--	net_receive(edev, desc_get_buf_addr(rxdesc), length);
-+	dma_sync_single_for_cpu((unsigned long)buf_addr, length, DMA_FROM_DEVICE);
-+	net_receive(edev, buf_addr, length);
-+	dma_sync_single_for_device((unsigned long)buf_addr, length,
-+				   DMA_FROM_DEVICE);
- 
- 	/* set descriptor back to owned by XGMAC */
- 	desc_set_rx_owner(rxdesc);
+ 	req->req.status = -EINPROGRESS;
+ 	req->req.actual = 0;
 -- 
 2.1.0
 
