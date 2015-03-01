@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YRyHr-0006tT-5b
- for barebox@lists.infradead.org; Sun, 01 Mar 2015 07:27:39 +0000
-Date: Sun, 1 Mar 2015 08:27:17 +0100
+ Linux)) id 1YRyOE-0001Pl-Kf
+ for barebox@lists.infradead.org; Sun, 01 Mar 2015 07:34:15 +0000
+Date: Sun, 1 Mar 2015 08:33:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150301072717.GC11010@pengutronix.de>
+Message-ID: <20150301073352.GD11010@pengutronix.de>
 References: <1425159621-22805-1-git-send-email-mkl@pengutronix.de>
- <1425159621-22805-5-git-send-email-mkl@pengutronix.de>
+ <1425159621-22805-8-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425159621-22805-5-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1425159621-22805-8-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +23,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/16] of: make first argument of several
- of_property_*_string functions const
+Subject: Re: [PATCH 07/16] sandbox: add support to pass dtb to barebox
 To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Feb 28, 2015 at 10:40:09PM +0100, Marc Kleine-Budde wrote:
+On Sat, Feb 28, 2015 at 10:40:12PM +0100, Marc Kleine-Budde wrote:
 > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 > ---
->  drivers/of/base.c |  8 ++++----
->  include/of.h      | 16 ++++++++--------
->  2 files changed, 12 insertions(+), 12 deletions(-)
+>  arch/sandbox/board/Makefile                    |  1 +
+>  arch/sandbox/board/dtb.c                       | 57 ++++++++++++++++++++++++++
+>  arch/sandbox/mach-sandbox/include/mach/linux.h |  1 +
+>  arch/sandbox/os/common.c                       | 47 ++++++++++++++++++++-
+>  4 files changed, 105 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/sandbox/board/dtb.c
 > 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index af10fd1da32c..4b5d4d75f19c 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -799,7 +799,7 @@ EXPORT_SYMBOL_GPL(of_property_read_u64);
->   *
->   * The out_string pointer is modified only if a valid string can be decoded.
->   */
-> -int of_property_read_string(struct device_node *np, const char *propname,
-> +int of_property_read_string(const struct device_node *np, const char *propname,
->  				const char **out_string)
+> diff --git a/arch/sandbox/board/Makefile b/arch/sandbox/board/Makefile
+> index 5104f5cb2679..460116332df9 100644
+> --- a/arch/sandbox/board/Makefile
+> +++ b/arch/sandbox/board/Makefile
+> @@ -3,5 +3,6 @@ obj-y += clock.o
+>  obj-y += hostfile.o
+>  obj-y += console.o
+>  obj-y += devices.o
+> +obj-y += dtb.o
+>  
+>  extra-y += barebox.lds
+> diff --git a/arch/sandbox/board/dtb.c b/arch/sandbox/board/dtb.c
+> new file mode 100644
+> index 000000000000..9d4210164e01
+> --- /dev/null
+> +++ b/arch/sandbox/board/dtb.c
+> @@ -0,0 +1,57 @@
+> +/*
+> + * Copyright (c) 2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+> + * Copyright (c) 2015 Marc Kleine-Budde <mkl@pengutronix.de>, Pengutronix
+> + *
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <of.h>
+> +
+> +#include <mach/linux.h>
+> +#include <linux/err.h>
+> +
+> +static const void *dtb;
+> +
+> +int barebox_register_dtb(const void *new_dtb)
+> +{
+> +	if (dtb)
+> +		return -EBUSY;
+> +
+> +	dtb = new_dtb;
+> +
+> +	return 0;
+> +}
+> +
+> +static int of_sandbox_init(void)
+> +{
+> +	struct device_node *root;
+> +
+> +	if (!dtb)
+> +		return 0;
+> +
+> +	root = of_unflatten_dtb(dtb);
 
-Is this necessary for something or just a nice to have? The functions
-are takes from the kernel and the device_node arguments cannot be const
-there because the functions take a reference on the node.
+of_unflatten_dtb is only defined when CONFIG_OFTREE is enabled. I see
+nothing in this patch selectin this option or depending on this option.
+Does this compile with device tree support disabled?
 
 Sascha
 
