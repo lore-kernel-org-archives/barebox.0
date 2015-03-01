@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YS3m3-0007kg-Ju
+ id 1YS3m3-0007iX-Jt
  for barebox@lists.infradead.org; Sun, 01 Mar 2015 13:19:13 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 451F926C200F
- for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:30 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF31626C2004
+ for <barebox@lists.infradead.org>; Sun,  1 Mar 2015 14:17:26 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun,  1 Mar 2015 14:17:12 +0100
-Message-Id: <1425215842-6982-15-git-send-email-dev@lynxeye.de>
+Date: Sun,  1 Mar 2015 14:17:01 +0100
+Message-Id: <1425215842-6982-4-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,77 +24,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/24] net: designware: convert to streaming DMA ops
+Subject: [PATCH 03/24] dma: add streaming DMA ops
 To: barebox@lists.infradead.org
 
-Move to the common streaming DMA ops in order to get rid of
-the direct usage of the ARM MMU functions for the cache
-maintenance.
+This will allow us to implement cache maintenance in a platform
+agnostic way.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/designware.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ include/dma-dir.h |  6 ++++++
+ include/dma.h     | 11 +++++++++++
+ 2 files changed, 17 insertions(+)
+ create mode 100644 include/dma-dir.h
 
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index 2bc4471..1e1befd 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -27,7 +27,6 @@
- #include <io.h>
- #include <net.h>
- #include <of_net.h>
--#include <asm/mmu.h>
- #include <net/designware.h>
- #include <linux/phy.h>
- #include <linux/err.h>
-@@ -197,8 +196,8 @@ static void rx_descs_init(struct eth_device *dev)
- 		else
- 			desc_p->dmamac_cntl |= DESC_RXCTRL_RXCHAIN;
+diff --git a/include/dma-dir.h b/include/dma-dir.h
+new file mode 100644
+index 0000000..ba107f1
+--- /dev/null
++++ b/include/dma-dir.h
+@@ -0,0 +1,6 @@
++enum dma_data_direction {
++	DMA_BIDIRECTIONAL = 0,
++	DMA_TO_DEVICE = 1,
++	DMA_FROM_DEVICE = 2,
++	DMA_NONE = 3,
++};
+diff --git a/include/dma.h b/include/dma.h
+index 899f831..4274520 100644
+--- a/include/dma.h
++++ b/include/dma.h
+@@ -11,6 +11,7 @@
+ #include <malloc.h>
+ #include <xfuncs.h>
  
--		dma_inv_range((unsigned long)desc_p->dmamac_addr,
--			      (unsigned long)desc_p->dmamac_addr + CONFIG_ETH_BUFSIZE);
-+		dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr,
-+					CONFIG_ETH_BUFSIZE, DMA_FROM_DEVICE);
- 		desc_p->txrx_status = DESC_RXSTS_OWNBYDMA;
- 	}
++#include <dma-dir.h>
+ #include <asm/dma.h>
  
-@@ -302,8 +301,8 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
- 	}
- 
- 	memcpy((void *)desc_p->dmamac_addr, packet, length);
--	dma_flush_range((unsigned long)desc_p->dmamac_addr,
--			(unsigned long)desc_p->dmamac_addr + length);
-+	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
-+				   DMA_TO_DEVICE);
- 
- 	if (priv->enh_desc) {
- 		desc_p->txrx_status |= DESC_ENH_TXSTS_TXFIRST | DESC_ENH_TXSTS_TXLAST;
-@@ -328,6 +327,9 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
- 
- 	/* Start the transmission */
- 	writel(POLL_DATA, &dma_p->txpolldemand);
-+	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
-+				DMA_TO_DEVICE);
-+
- 	return 0;
+ #ifndef dma_alloc
+@@ -27,4 +28,14 @@ static inline void dma_free(void *mem)
  }
+ #endif
  
-@@ -351,10 +353,11 @@ static int dwc_ether_rx(struct eth_device *dev)
- 	 * Make the current descriptor valid again and go to
- 	 * the next one
- 	 */
--	dma_inv_range((unsigned long)desc_p->dmamac_addr,
--		      (unsigned long)desc_p->dmamac_addr + length);
--
-+	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
-+				DMA_FROM_DEVICE);
- 	net_receive(dev, desc_p->dmamac_addr, length);
-+	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
-+				   DMA_FROM_DEVICE);
- 
- 	desc_p->txrx_status |= DESC_RXSTS_OWNBYDMA;
- 
++/* streaming DMA - implement the below calls to support HAS_DMA */
++void dma_sync_single_for_cpu(unsigned long address, size_t size,
++			     enum dma_data_direction dir);
++
++void dma_sync_single_for_device(unsigned long address, size_t size,
++				enum dma_data_direction dir);
++
++void *dma_alloc_coherent(size_t size);
++void dma_free_coherent(void *mem, size_t size);
++
+ #endif /* __DMA_H */
 -- 
 2.1.0
 
