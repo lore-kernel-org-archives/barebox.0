@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSXJO-0002CY-9n
- for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:51:35 +0000
-Received: by labhs14 with SMTP id hs14so33118314lab.4
- for <barebox@lists.infradead.org>; Mon, 02 Mar 2015 12:51:11 -0800 (PST)
-Date: Tue, 3 Mar 2015 00:54:49 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150303005449.7ec0b81c54488acba73612e8@gmail.com>
-In-Reply-To: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
-References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
-Mime-Version: 1.0
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YSYCI-0000Fr-TL
+ for barebox@lists.infradead.org; Mon, 02 Mar 2015 21:48:20 +0000
+Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id AB94726C2001
+ for <barebox@lists.infradead.org>; Mon,  2 Mar 2015 22:47:23 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Mon,  2 Mar 2015 22:47:20 +0100
+Message-Id: <1425332840-13427-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +17,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/18] Update support for RK3188, Radxa Rock board
-To: Andrey Panov <rockford@yandex.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] tegra: avp_init: write DT address register earlier
+To: barebox@lists.infradead.org
 
-On Mon,  2 Mar 2015 23:21:44 +0300
-Andrey Panov <rockford@yandex.ru> wrote:
+Otherwise the write would be skipped if we are already running on the main CPU
+cluster. In practice this means that a second stage barebox will reuse the DT
+of the first stage, instead of using it's own.
 
-> Hello!
-> =
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+Sascha, it would be nice if you could squeeze into master as this is
+clearly a simple bugfix.
 
-> This series will update support for Radxa Rock board, allowing it
-> to boot from SD card with Barebox as first-stage loader.
-> =
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/mach-tegra/tegra_avp_init.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> Based on next branch.
+diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
+index 619fecf..91fd894 100644
+--- a/arch/arm/mach-tegra/tegra_avp_init.c
++++ b/arch/arm/mach-tegra/tegra_avp_init.c
+@@ -262,6 +262,9 @@ void tegra_avp_reset_vector(uint32_t boarddata)
+ 	int num_cores;
+ 	unsigned int entry_address = 0;
+ 
++	/* put boarddata in scratch reg, for main CPU to fetch after startup */
++	writel(boarddata, TEGRA_PMC_BASE + PMC_SCRATCH(10));
++
+ 	if (tegra_cpu_is_maincomplex())
+ 		tegra_maincomplex_entry();
+ 
+@@ -291,9 +294,6 @@ void tegra_avp_reset_vector(uint32_t boarddata)
+ 	}
+ 	writel(entry_address, TEGRA_EXCEPTION_VECTORS_BASE + 0x100);
+ 
+-	/* put boarddata in scratch reg, for main CPU to fetch after startup */
+-	writel(boarddata, TEGRA_PMC_BASE + PMC_SCRATCH(10));
+-
+ 	/* bring up main CPU complex */
+ 	start_cpu0_clocks();
+ 	maincomplex_powerup();
+-- 
+2.1.0
 
-Please use checkpatch.pl on your series.
-
-Also please do not use a period '.' at the end of the
-first line of a commit message.
-
-> --
-> Andrey
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
