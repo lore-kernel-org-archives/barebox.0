@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward6l.mail.yandex.net ([84.201.143.139])
+Received: from forward6l.mail.yandex.net ([2a02:6b8:0:1819::6])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSWra-0007Nq-WF
- for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:51 +0000
+ id 1YSWrb-0007Nr-7L
+ for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:52 +0000
 From: Andrey Panov <rockford@yandex.ru>
-Date: Mon,  2 Mar 2015 23:21:50 +0300
-Message-Id: <1425327722-28232-7-git-send-email-rockford@yandex.ru>
+Date: Mon,  2 Mar 2015 23:22:02 +0300
+Message-Id: <1425327722-28232-19-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,82 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/18] CLK: clk-divider: Introduce clk_divider_alloc() and
- *_free() routines.
+Subject: [PATCH 18/18] ARM: Rockchip: Add documentation.
 To: barebox@lists.infradead.org
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- drivers/clk/clk-divider.c | 27 ++++++++++++++++++++++-----
- include/linux/clk.h       |  3 +++
- 2 files changed, 25 insertions(+), 5 deletions(-)
+ Documentation/boards/rockchip.rst | 48 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+ create mode 100644 Documentation/boards/rockchip.rst
 
-diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
-index eb48334..82b11ad 100644
---- a/drivers/clk/clk-divider.c
-+++ b/drivers/clk/clk-divider.c
-@@ -212,11 +212,10 @@ struct clk_ops clk_divider_ops = {
- 	.round_rate = clk_divider_round_rate,
- };
- 
--struct clk *clk_divider(const char *name, const char *parent,
-+struct clk *clk_divider_alloc(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift, u8 width, unsigned flags)
- {
- 	struct clk_divider *div = xzalloc(sizeof(*div));
--	int ret;
- 
- 	div->shift = shift;
- 	div->reg = reg;
-@@ -228,13 +227,31 @@ struct clk *clk_divider(const char *name, const char *parent,
- 	div->clk.parent_names = &div->parent;
- 	div->clk.num_parents = 1;
- 
--	ret = clk_register(&div->clk);
-+	return &div->clk;
-+}
+diff --git a/Documentation/boards/rockchip.rst b/Documentation/boards/rockchip.rst
+new file mode 100644
+index 0000000..e064255
+--- /dev/null
++++ b/Documentation/boards/rockchip.rst
+@@ -0,0 +1,48 @@
++Rockchip RK3188
++===============
 +
-+void clk_divider_free(struct clk *clk_divider)
-+{
-+	struct clk_divider *d =  container_of(clk_divider, struct clk_divider, clk);
++Radxa Rock
++----------
 +
-+	free(d);
-+}
++Radxa Rock is a small SBC based on Rockchip RK3188 SoC.
++See http://radxa.com/Rock for additional information.
 +
-+struct clk *clk_divider(const char *name, const char *parent,
-+		void __iomem *reg, u8 shift, u8 width, unsigned flags)
-+{
-+	struct clk *d;
-+	int ret;
++Building
++^^^^^^^^
 +
-+	d = clk_divider_alloc(name , parent, reg, shift, width, flags);
++.. code-block:: sh
 +
-+	ret = clk_register(d);
- 	if (ret) {
--		free(div);
-+		clk_divider_free(d);
- 		return ERR_PTR(ret);
- 	}
- 
--	return &div->clk;
-+	return d;
- }
- 
- struct clk *clk_divider_one_based(const char *name, const char *parent,
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 258bbe3..65d3e99 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -254,6 +254,9 @@ struct clk_divider {
- 
- extern struct clk_ops clk_divider_ops;
- 
-+struct clk *clk_divider_alloc(const char *name, const char *parent,
-+		void __iomem *reg, u8 shift, u8 width, unsigned flags);
-+void clk_divider_free(struct clk *clk_divider);
- struct clk *clk_divider(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift, u8 width, unsigned flags);
- struct clk *clk_divider_one_based(const char *name, const char *parent,
++  make ARCH=arm radxa_rock_defconfig
++  make ARCH=arm
++
++Creating bootable SD card
++^^^^^^^^^^^^^^^^^^^^^^^^^
++
++This will require a DRAM setup blob and additional utilities, see above.
++
++Card layout (block == 0x200 bytes).
++
++============   ==========================================
++Block Number   Name
++============   ==========================================
++0x0000         DOS partition table
++0x0040         RK bootinfo (BootROM check sector)
++0x0044         DRAM setup routine
++0x005C         Bootloader (barebox)
++0x0400         Barebox environment
++0x0800         Free space start
++============   ==========================================
++
++Instructions.
++
++* Make 2 partitions on SD for boot and root filesystems.
++* Checkout and compile https://github.com/apxii/rkboottools
++* Get some RK3188 bootloader from https://github.com/neo-technologies/rockchip-bootloader
++* Run "rk-splitboot RK3188Loader(L)_V2.13.bin" command. (for example).
++  You will get FlashData file with others. It's a DRAM setup blob.
++* Otherwise it can be borrowed from RK U-boot sources from
++  https://github.com/linux-rockchip/u-boot-rockchip/blob/u-boot-rk3188/tools/rk_tools/3188_LPDDR2_300MHz_DDR3_300MHz_20130830.bin
++* Run "rk-makebootable FlashData barebox-radxa-rock.bin rrboot.bin"
++* Insert SD card and run "dd if=rrboot.bin of=</dev/sdcard> bs=$((0x200)) seek=$((0x40))"
++* SD card is ready
++
 -- 
 2.1.4
 
