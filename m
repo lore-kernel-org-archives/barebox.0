@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YSJsS-0003eL-AL
- for barebox@lists.infradead.org; Mon, 02 Mar 2015 06:30:53 +0000
-Date: Mon, 2 Mar 2015 07:30:30 +0100
+ Linux)) id 1YSJt5-0003j6-2q
+ for barebox@lists.infradead.org; Mon, 02 Mar 2015 06:31:31 +0000
+Date: Mon, 2 Mar 2015 07:31:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150302063029.GF11010@pengutronix.de>
-References: <13024131425216058@web27o.yandex.ru>
+Message-ID: <20150302063109.GG11010@pengutronix.de>
+References: <1425226134-4000-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <13024131425216058@web27o.yandex.ru>
+In-Reply-To: <1425226134-4000-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,52 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] [GIT] Update support for RK3188 (Radxa Rock board).
-To: =?utf-8?B?0J/QsNC90L7QsiDQkNC90LTRgNC10Lk=?= <rockford@yandex.ru>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: Kconfig: remove stale option CPU_V7_DCACHE_SKIP
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-SGkgQW5kcmV5LAoKT24gU3VuLCBNYXIgMDEsIDIwMTUgYXQgMDQ6MjA6NThQTSArMDMwMCwg0J/Q
-sNC90L7QsiDQkNC90LTRgNC10Lkgd3JvdGU6Cj4gSGVsbG8hCj4gCj4gSGVyZSBpcyBhIGJpZyBj
-aGFuZ2VzZXQgZm9yIFJLMzE4OCBhcmNoIGFuZCBSYWR4YSBSb2NrIGJvYXJkLgo+IEl0IGJyaW5n
-cyBzdXBwb3J0IGZvciB1cGRhdGVkIERUUyBhbmQgYm9vdGluZyBmcm9tIFNEIGNhcmQgYXMgZmly
-c3Qtc3RhZ2UgbG9hZGVyLgo+IERSQU0gc2V0dGluZyBibG9iIGZyb20gUksgaXMgcmVxdWlyZWQg
-dG8gYm9vdCAoYnV0IHRoaXMgaXMgdW5yZWxhdGVkIHRvIGJhcmVib3gpLgo+IAo+IEl0IGxhY2tz
-IHNvbWUgdW5rbm93biAoZm9yIG1lKSBhbmQgcmVxdXJlZCBpbml0aWFsaXphdGlvbnMsIHNvOgo+
-IDMuMCBrZXJuZWwgZnJvbSByYWR4YSByZXBvIGJvb3RzIGZpbmUuIE1haW5saW5lIGtlcm5lbCBn
-ZXRzIGEgcmFjZSBpbiBhYm91dCA1MCUsIGFuZCBpbiBhbm90aGVyIDUwJSB3b3Jrcy4KPiBJdCBp
-cyBkaXNndXN0aW5nLCBzaW5jZSBJJ2QganVzdCB3YW50ZWQgdG8gdHJ5IGEgbmV3ZXIga2VybmVs
-IHdpdGggdGhpcyBib2FyZC4KPiAKPiBGb3Igbm90IHRvIHNwYW1taW5nIGEgTUwgd2l0aCBhIGxv
-bmcgcGF0Y2hlcywgaXQgY2FuIGJlIHB1bGxlZCBmcm9tIGdpdCB0cmVlOgo+IGh0dHBzOi8vZ2l0
-aHViLmNvbS9hcHhpaS9iYXJlYm94L3RyZWUvcmsvMnVwCgpOaWNlIHdvcmshIEkgaGFkIGEgcXVp
-Y2sgdmlldyBvdmVyIHNvbWUgb2YgdGhlIHBhdGNoZXMsIHRoZXkgbG9vayBmaW5lIGF0IGZpcnN0
-CnZpZXcuIFlvdSBzaG91bGQgc2VuZCB0aGVtIHRvIHRoZSBsaXN0IGZvciBiZXR0ZXIgcmV2aWV3
-LiBQZW9wbGUgcmVhZGluZwpvcGVuc291cmNlIG1haWxpbmcgbGlzdCBhcmUgbm9ybWFsbHkgdXNl
-ZCB0byBpZ25vcmUgYmlnIGFtb3VudHMgb2YgbWFpbAo7KQoKPiAoYmFzZWQgb24gbmV4dCBicmFu
-Y2gpCj4gCj4gTGl0dGxlIGhvd3RvOgo+IDEuIFByZXBhcmUgU0QgY2FyZCB3aXRoIGJvb3RmcyBh
-bmQgcm9vdGZzIGFzIHVzdWFsbHkuCj4gMi4gQ29tcGlsZSBiYXJlYm94Cj4gICAgbWFrZSBBUkNI
-PWFybSByYWR4YV9yb2NrX2RlZmNvbmZpZwo+ICAgIG1ha2UgQVJDSD1hcm0KPiAzLiBDaGVja291
-dCBhbmQgY29tcGlsZSBodHRwczovL2dpdGh1Yi5jb20vYXB4aWkvcmtib290dG9vbHMKPiA0LiBH
-ZXQgc29tZSBSSzMxODggYm9vdGxvYWRlciBmcm9tIGh0dHBzOi8vZ2l0aHViLmNvbS9uZW8tdGVj
-aG5vbG9naWVzL3JvY2tjaGlwLWJvb3Rsb2FkZXIKPiA1LiBSdW4gInJrLXNwbGl0Ym9vdCBSSzMx
-ODhMb2FkZXIoTClfVjIuMTMuYmluIiBjb21tYW5kLiAoZm9yIGV4YW1wbGUpCj4gICAgWW91IHdp
-bGwgZ2V0ICJGbGFzaERhdGEiIGZpbGUgd2l0aCBvdGhlcnMuCj4gICAgT3RoZXJ3aXNlIGl0IGNh
-biBiZSBib3Jyb3dlZCBmcm9tIFJLIFUtYm9vdCBzb3VyY2VzIGZyb20gaHR0cHM6Ly9naXRodWIu
-Y29tL2xpbnV4LXJvY2tjaGlwL3UtYm9vdC1yb2NrY2hpcC9ibG9iL3UtYm9vdC1yazMxODgvdG9v
-bHMvcmtfdG9vbHMvMzE4OF9MUEREUjJfMzAwTUh6X0REUjNfMzAwTUh6XzIwMTMwODMwLmJpbgo+
-IDYuIFJ1biAicmstbWFrZWJvb3RhYmxlIEZsYXNoRGF0YSBiYXJlYm94LXJhZHhhLXJvY2suYmlu
-IHJyYm9vdC5iaW4iCj4gNy4gSW5zZXJ0IFNEIGNhcmQgYW5kIHJ1biAiZGQgaWY9cnJib290LmJp
-biBvZj08L2Rldi9zZGNhcmQ+IGJzPSQoKDB4MjAwKSkgc2Vlaz0kKCgweDQwKSkiCj4gOC4gQm9v
-dCBmcm9tIFNEIGNhcmQKCkl0IHdvdWxkIGJlIG5pY2UgdG8gaGF2ZSB0aGF0IHNvbWV3aGVyZSBp
-bgpEb2N1bWVudGF0aW9uL2JvYXJkcy9yb2NrY2hpcC5yc3QuCgpTYXNjaGEKCi0tIApQZW5ndXRy
-b25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBo
-dHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRl
-c2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNo
-dCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3
-LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Sun, Mar 01, 2015 at 05:08:54PM +0100, Lucas Stach wrote:
+> I stumbled across this option a few times already and always found it
+> to be at least confusing when and why it should be enabled.
+> 
+> Since commit b7451329b5d2 (ARM: OMAP3: invalidate L2 cache using ROM API)
+> it is actually unused and only adds confusion. Better remove it.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/Kconfig | 8 --------
+>  1 file changed, 8 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
