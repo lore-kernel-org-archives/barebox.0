@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward10l.mail.yandex.net ([84.201.143.143])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSWrX-0007Nn-Oq
- for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:49 +0000
+Received: from forward1l.mail.yandex.net ([2a02:6b8:0:1819::1])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YSWrP-0005xR-Tg
+ for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:45 +0000
 From: Andrey Panov <rockford@yandex.ru>
-Date: Mon,  2 Mar 2015 23:21:59 +0300
-Message-Id: <1425327722-28232-16-git-send-email-rockford@yandex.ru>
+Date: Mon,  2 Mar 2015 23:21:47 +0300
+Message-Id: <1425327722-28232-4-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,819 +21,230 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/18] ARM: Rockchip: Use newer DTS for Radxa Rock board.
+Subject: [PATCH 03/18] CLK: Add fractional divider clock support from Linux
+ kernel.
 To: barebox@lists.infradead.org
+
+Arch Kconfig should select CLK_NEED_FDIV to have this support
+compiled in.
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- arch/arm/dts/rk3188-clocks.dtsi   | 289 -----------------------------------
- arch/arm/dts/rk3188-radxarock.dts |  32 ++--
- arch/arm/dts/rk3188.dtsi          | 306 --------------------------------------
- arch/arm/dts/rk3xxx.dtsi          | 139 -----------------
- 4 files changed, 20 insertions(+), 746 deletions(-)
- delete mode 100644 arch/arm/dts/rk3188-clocks.dtsi
- delete mode 100644 arch/arm/dts/rk3188.dtsi
- delete mode 100644 arch/arm/dts/rk3xxx.dtsi
+ drivers/clk/Kconfig                  |   3 +
+ drivers/clk/Makefile                 |   1 +
+ drivers/clk/clk-fractional-divider.c | 156 +++++++++++++++++++++++++++++++++++
+ include/linux/clk.h                  |   9 ++
+ 4 files changed, 169 insertions(+)
+ create mode 100644 drivers/clk/clk-fractional-divider.c
 
-diff --git a/arch/arm/dts/rk3188-clocks.dtsi b/arch/arm/dts/rk3188-clocks.dtsi
-deleted file mode 100644
-index b1b92dc..0000000
---- a/arch/arm/dts/rk3188-clocks.dtsi
-+++ /dev/null
-@@ -1,289 +0,0 @@
--/*
-- * Copyright (c) 2013 MundoReader S.L.
-- * Author: Heiko Stuebner <heiko@sntech.de>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--
--/ {
--	clocks {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		ranges;
--
--		/*
--		 * This is a dummy clock, to be used as placeholder on
--		 * other mux clocks when a specific parent clock is not
--		 * yet implemented. It should be dropped when the driver
--		 * is complete.
--		 */
--		dummy: dummy {
--			compatible = "fixed-clock";
--			clock-frequency = <0>;
--			#clock-cells = <0>;
--		};
--
--		xin24m: xin24m {
--			compatible = "fixed-clock";
--			clock-frequency = <24000000>;
--			#clock-cells = <0>;
--		};
--
--		dummy48m: dummy48m {
--			compatible = "fixed-clock";
--			clock-frequency = <48000000>;
--			#clock-cells = <0>;
--		};
--
--		dummy150m: dummy150m {
--			compatible = "fixed-clock";
--			clock-frequency = <150000000>;
--			#clock-cells = <0>;
--		};
--
--		clk_gates0: gate-clk@200000d0 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000d0 0x4>;
--			clocks = <&dummy150m>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>;
--
--			clock-output-names =
--				"gate_core_periph", "gate_cpu_gpll",
--				"gate_ddrphy", "gate_aclk_cpu",
--				"gate_hclk_cpu", "gate_pclk_cpu",
--				"gate_atclk_cpu", "gate_aclk_core",
--				"reserved", "gate_i2s0",
--				"gate_i2s0_frac", "reserved",
--				"reserved", "gate_spdif",
--				"gate_spdif_frac", "gate_testclk";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates1: gate-clk@200000d4 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000d4 0x4>;
--			clocks = <&xin24m>, <&xin24m>,
--				 <&xin24m>, <&dummy>,
--				 <&dummy>, <&xin24m>,
--				 <&xin24m>, <&dummy>,
--				 <&xin24m>, <&dummy>,
--				 <&xin24m>, <&dummy>,
--				 <&xin24m>, <&dummy>,
--				 <&xin24m>, <&dummy>;
--
--			clock-output-names =
--				"gate_timer0", "gate_timer1",
--				"gate_timer3", "gate_jtag",
--				"gate_aclk_lcdc1_src", "gate_otgphy0",
--				"gate_otgphy1", "gate_ddr_gpll",
--				"gate_uart0", "gate_frac_uart0",
--				"gate_uart1", "gate_frac_uart1",
--				"gate_uart2", "gate_frac_uart2",
--				"gate_uart3", "gate_frac_uart3";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates2: gate-clk@200000d8 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000d8 0x4>;
--			clocks = <&clk_gates2 1>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&clk_gates2 3>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy48m>,
--				 <&dummy>, <&dummy48m>,
--				 <&dummy>, <&dummy>;
--
--			clock-output-names =
--				"gate_periph_src", "gate_aclk_periph",
--				"gate_hclk_periph", "gate_pclk_periph",
--				"gate_smc", "gate_mac",
--				"gate_hsadc", "gate_hsadc_frac",
--				"gate_saradc", "gate_spi0",
--				"gate_spi1", "gate_mmc0",
--				"gate_mac_lbtest", "gate_mmc1",
--				"gate_emmc", "reserved";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates3: gate-clk@200000dc {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000dc 0x4>;
--			clocks = <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&xin24m>, <&xin24m>,
--				 <&dummy>, <&dummy>,
--				 <&xin24m>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&xin24m>, <&dummy>;
--
--			clock-output-names =
--				"gate_aclk_lcdc0_src", "gate_dclk_lcdc0",
--				"gate_dclk_lcdc1", "gate_pclkin_cif0",
--				"gate_timer2", "gate_timer4",
--				"gate_hsicphy", "gate_cif0_out",
--				"gate_timer5", "gate_aclk_vepu",
--				"gate_hclk_vepu", "gate_aclk_vdpu",
--				"gate_hclk_vdpu", "reserved",
--				"gate_timer6", "gate_aclk_gpu_src";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates4: gate-clk@200000e0 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000e0 0x4>;
--			clocks = <&clk_gates2 2>, <&clk_gates2 3>,
--				 <&clk_gates2 1>, <&clk_gates2 1>,
--				 <&clk_gates2 1>, <&clk_gates2 2>,
--				 <&clk_gates2 2>, <&clk_gates2 2>,
--				 <&clk_gates0 4>, <&clk_gates0 4>,
--				 <&clk_gates0 3>, <&dummy>,
--				 <&clk_gates0 3>, <&dummy>,
--				 <&dummy>, <&dummy>;
--
--			clock-output-names =
--				"gate_hclk_peri_axi_matrix", "gate_pclk_peri_axi_matrix",
--				"gate_aclk_cpu_peri", "gate_aclk_peri_axi_matrix",
--				"gate_aclk_pei_niu", "gate_hclk_usb_peri",
--				"gate_hclk_peri_ahb_arbi", "gate_hclk_emem_peri",
--				"gate_hclk_cpubus", "gate_hclk_ahb2apb",
--				"gate_aclk_strc_sys", "reserved",
--				"gate_aclk_intmem", "reserved",
--				"gate_hclk_imem1", "gate_hclk_imem0";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates5: gate-clk@200000e4 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000e4 0x4>;
--			clocks = <&clk_gates0 3>, <&clk_gates2 1>,
--				 <&clk_gates0 5>, <&clk_gates0 5>,
--				 <&clk_gates0 5>, <&clk_gates0 5>,
--				 <&clk_gates0 4>, <&clk_gates0 5>,
--				 <&clk_gates2 1>, <&clk_gates2 2>,
--				 <&clk_gates2 2>, <&clk_gates2 2>,
--				 <&clk_gates2 2>, <&clk_gates4 5>;
--
--			clock-output-names =
--				"gate_aclk_dmac1", "gate_aclk_dmac2",
--				"gate_pclk_efuse", "gate_pclk_tzpc",
--				"gate_pclk_grf", "gate_pclk_pmu",
--				"gate_hclk_rom", "gate_pclk_ddrupctl",
--				"gate_aclk_smc", "gate_hclk_nandc",
--				"gate_hclk_mmc0", "gate_hclk_mmc1",
--				"gate_hclk_emmc", "gate_hclk_otg0";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates6: gate-clk@200000e8 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000e8 0x4>;
--			clocks = <&clk_gates3 0>, <&clk_gates0 4>,
--				 <&clk_gates0 4>, <&clk_gates1 4>,
--				 <&clk_gates0 4>, <&clk_gates3 0>,
--				 <&dummy>, <&dummy>,
--				 <&clk_gates3 0>, <&clk_gates0 4>,
--				 <&clk_gates0 4>, <&clk_gates1 4>,
--				 <&clk_gates0 4>, <&clk_gates3 0>;
--
--			clock-output-names =
--				"gate_aclk_lcdc0", "gate_hclk_lcdc0",
--				"gate_hclk_lcdc1", "gate_aclk_lcdc1",
--				"gate_hclk_cif0", "gate_aclk_cif0",
--				"reserved", "reserved",
--				"gate_aclk_ipp", "gate_hclk_ipp",
--				"gate_hclk_rga", "gate_aclk_rga",
--				"gate_hclk_vio_bus", "gate_aclk_vio0";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates7: gate-clk@200000ec {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000ec 0x4>;
--			clocks = <&clk_gates2 2>, <&clk_gates0 4>,
--				 <&clk_gates0 4>, <&dummy>,
--				 <&dummy>, <&clk_gates2 2>,
--				 <&clk_gates2 2>, <&clk_gates0 5>,
--				 <&dummy>, <&clk_gates0 5>,
--				 <&clk_gates0 5>, <&clk_gates2 3>,
--				 <&clk_gates2 3>, <&clk_gates2 3>,
--				 <&clk_gates2 3>, <&clk_gates2 3>;
--
--			clock-output-names =
--				"gate_hclk_emac", "gate_hclk_spdif",
--				"gate_hclk_i2s0_2ch", "gate_hclk_otg1",
--				"gate_hclk_hsic", "gate_hclk_hsadc",
--				"gate_hclk_pidf", "gate_pclk_timer0",
--				"reserved", "gate_pclk_timer2",
--				"gate_pclk_pwm01", "gate_pclk_pwm23",
--				"gate_pclk_spi0", "gate_pclk_spi1",
--				"gate_pclk_saradc", "gate_pclk_wdt";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates8: gate-clk@200000f0 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000f0 0x4>;
--			clocks = <&clk_gates0 5>, <&clk_gates0 5>,
--				 <&clk_gates2 3>, <&clk_gates2 3>,
--				 <&clk_gates0 5>, <&clk_gates0 5>,
--				 <&clk_gates2 3>, <&clk_gates2 3>,
--				 <&clk_gates2 3>, <&clk_gates0 5>,
--				 <&clk_gates0 5>, <&clk_gates0 5>,
--				 <&clk_gates2 3>, <&dummy>;
--
--			clock-output-names =
--				"gate_pclk_uart0", "gate_pclk_uart1",
--				"gate_pclk_uart2", "gate_pclk_uart3",
--				"gate_pclk_i2c0", "gate_pclk_i2c1",
--				"gate_pclk_i2c2", "gate_pclk_i2c3",
--				"gate_pclk_i2c4", "gate_pclk_gpio0",
--				"gate_pclk_gpio1", "gate_pclk_gpio2",
--				"gate_pclk_gpio3", "gate_aclk_gps";
--
--			#clock-cells = <1>;
--		};
--
--		clk_gates9: gate-clk@200000f4 {
--			compatible = "rockchip,rk2928-gate-clk";
--			reg = <0x200000f4 0x4>;
--			clocks = <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>,
--				 <&dummy>, <&dummy>;
--
--			clock-output-names =
--				"gate_clk_core_dbg", "gate_pclk_dbg",
--				"gate_clk_trace", "gate_atclk",
--				"gate_clk_l2c", "gate_aclk_vio1",
--				"gate_pclk_publ", "gate_aclk_gpu";
--
--			#clock-cells = <1>;
--		};
--	};
--
--};
-diff --git a/arch/arm/dts/rk3188-radxarock.dts b/arch/arm/dts/rk3188-radxarock.dts
-index 2d49d69..47b2487 100644
---- a/arch/arm/dts/rk3188-radxarock.dts
-+++ b/arch/arm/dts/rk3188-radxarock.dts
-@@ -12,22 +12,30 @@
-  * GNU General Public License for more details.
-  */
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 6db1f33..e82b566 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -11,6 +11,9 @@ config COMMON_CLK
+ config CLK_NEED_COMPOSITE
+ 	bool
  
--/dts-v1/;
--#include "rk3188.dtsi"
-+#include <arm/rk3188-radxarock.dts>
- 
- / {
--	model = "Radxa Rock";
--	compatible = "radxa,rock", "rockchip,rk3188";
-+	chosen {
-+		linux,stdout-path = &uart2;
- 
--	memory {
--		reg = <0x60000000 0x80000000>;
--	};
--
--	soc {
--		uart2: serial@20064000 {
--			pinctrl-names = "default";
--			pinctrl-0 = <&uart2_xfer>;
-+		environment {
-+			compatible = "barebox,environment";
-+			device-path = &mmc0, "partname:barebox-environment";
- 			status = "okay";
- 		};
- 	};
- };
++config CLK_NEED_FDIV
++	bool
 +
-+&mmc0 {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
+ config COMMON_CLK_OF_PROVIDER
+ 	bool
+ 	help
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index bdd93f5..47c7441 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -2,6 +2,7 @@ obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
+ 				clk-mux.o clk-gate.o
+ obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
+ obj-$(CONFIG_CLK_NEED_COMPOSITE)	+= clk-composite.o
++obj-$(CONFIG_CLK_NEED_FDIV)	+= clk-fractional-divider.o
+ 
+ obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
+ obj-$(CONFIG_ARCH_MXS)		+= mxs/
+diff --git a/drivers/clk/clk-fractional-divider.c b/drivers/clk/clk-fractional-divider.c
+new file mode 100644
+index 0000000..2f5d759
+--- /dev/null
++++ b/drivers/clk/clk-fractional-divider.c
+@@ -0,0 +1,156 @@
++/*
++ * Copyright (C) 2014 Intel Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * Adjustable fractional divider clock implementation.
++ * Output rate = (m / n) * parent_rate.
++ */
 +
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0x80000>;
-+	};
-+	partition@1 {
-+		label = "barebox-environment";
-+		reg = <0x80000 0x80000>;
-+	};
++#include <common.h>
++#include <io.h>
++#include <malloc.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <linux/gcd.h>
++#include <linux/math64.h>
++#include <linux/barebox-wrapper.h>
++
++#define to_clk_fd(_hw) container_of(_hw, struct clk_fractional_divider, clk)
++
++struct clk_fractional_divider {
++	struct clk	clk;
++	void __iomem	*reg;
++	u8		mshift;
++	u32		mmask;
++	u8		nshift;
++	u32		nmask;
++	u8		flags;
 +};
-diff --git a/arch/arm/dts/rk3188.dtsi b/arch/arm/dts/rk3188.dtsi
-deleted file mode 100644
-index 277a915..0000000
---- a/arch/arm/dts/rk3188.dtsi
-+++ /dev/null
-@@ -1,306 +0,0 @@
--/*
-- * Copyright (c) 2013 MundoReader S.L.
-- * Author: Heiko Stuebner <heiko@sntech.de>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--
--#include <dt-bindings/gpio/gpio.h>
--#include <dt-bindings/pinctrl/rockchip.h>
--#include "rk3xxx.dtsi"
--#include "rk3188-clocks.dtsi"
--
--/* barebox additions */
--/ {
--	soc {
--		ethernet@10204000 {
--			compatible = "snps,arc-emac";
--			reg = <0x10204000 0x100>;
--			interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
--			clock-frequency = <50000000>;
--			max-speed = <100>;
--			phy = <&phy0>;
--			pinctrl-names = "default";
--			pinctrl-0 = <&emac0_pins>;
--
--			#address-cells = <1>;
--			#size-cells = <0>;
--			phy0: ethernet-phy@0 {
--				reg = <0>;
--			};
--		};
--
--		pinctrl@20008000 {
--			emac0 {
--				emac0_pins: emac0-pins {
--					rockchip,pins = <RK_GPIO3 16 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 17 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 18 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 19 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 20 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 21 RK_FUNC_2 &pcfg_pull_none>,
--							<RK_GPIO3 22 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 23 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 24 RK_FUNC_2 &pcfg_pull_up>,
--							<RK_GPIO3 25 RK_FUNC_2 &pcfg_pull_up>;
--				};
--			};
--		};
--	};
--};
--
--/* original rk3188.dtsi from Linux 3.16 */
--/ {
--	compatible = "rockchip,rk3188";
--
--	cpus {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		enable-method = "rockchip,rk3066-smp";
--
--		cpu@0 {
--			device_type = "cpu";
--			compatible = "arm,cortex-a9";
--			next-level-cache = <&L2>;
--			reg = <0x0>;
--		};
--		cpu@1 {
--			device_type = "cpu";
--			compatible = "arm,cortex-a9";
--			next-level-cache = <&L2>;
--			reg = <0x1>;
--		};
--		cpu@2 {
--			device_type = "cpu";
--			compatible = "arm,cortex-a9";
--			next-level-cache = <&L2>;
--			reg = <0x2>;
--		};
--		cpu@3 {
--			device_type = "cpu";
--			compatible = "arm,cortex-a9";
--			next-level-cache = <&L2>;
--			reg = <0x3>;
--		};
--	};
--
--	soc {
--		global-timer@1013c200 {
--			interrupts = <GIC_PPI 11 0xf04>;
--		};
--
--		local-timer@1013c600 {
--			interrupts = <GIC_PPI 13 0xf04>;
--		};
--
--		sram: sram@10080000 {
--			compatible = "mmio-sram";
--			reg = <0x10080000 0x8000>;
--			#address-cells = <1>;
--			#size-cells = <1>;
--			ranges = <0 0x10080000 0x8000>;
--
--			smp-sram@0 {
--				compatible = "rockchip,rk3066-smp-sram";
--				reg = <0x0 0x50>;
--			};
--		};
--
--		pinctrl@20008000 {
--			compatible = "rockchip,rk3188-pinctrl";
--			rockchip,grf = <&grf>;
--			rockchip,pmu = <&pmu>;
--
--			#address-cells = <1>;
--			#size-cells = <1>;
--			ranges;
--
--			gpio0: gpio0@0x2000a000 {
--				compatible = "rockchip,rk3188-gpio-bank0";
--				reg = <0x2000a000 0x100>;
--				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk_gates8 9>;
--
--				gpio-controller;
--				#gpio-cells = <2>;
--
--				interrupt-controller;
--				#interrupt-cells = <2>;
--			};
--
--			gpio1: gpio1@0x2003c000 {
--				compatible = "rockchip,gpio-bank";
--				reg = <0x2003c000 0x100>;
--				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk_gates8 10>;
--
--				gpio-controller;
--				#gpio-cells = <2>;
--
--				interrupt-controller;
--				#interrupt-cells = <2>;
--			};
--
--			gpio2: gpio2@2003e000 {
--				compatible = "rockchip,gpio-bank";
--				reg = <0x2003e000 0x100>;
--				interrupts = <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk_gates8 11>;
--
--				gpio-controller;
--				#gpio-cells = <2>;
--
--				interrupt-controller;
--				#interrupt-cells = <2>;
--			};
--
--			gpio3: gpio3@20080000 {
--				compatible = "rockchip,gpio-bank";
--				reg = <0x20080000 0x100>;
--				interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk_gates8 12>;
--
--				gpio-controller;
--				#gpio-cells = <2>;
--
--				interrupt-controller;
--				#interrupt-cells = <2>;
--			};
--
--			pcfg_pull_up: pcfg_pull_up {
--				bias-pull-up;
--			};
--
--			pcfg_pull_down: pcfg_pull_down {
--				bias-pull-down;
--			};
--
--			pcfg_pull_none: pcfg_pull_none {
--				bias-disable;
--			};
--
--			uart0 {
--				uart0_xfer: uart0-xfer {
--					rockchip,pins = <RK_GPIO1 0 RK_FUNC_1 &pcfg_pull_up>,
--							<RK_GPIO1 1 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				uart0_cts: uart0-cts {
--					rockchip,pins = <RK_GPIO1 2 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				uart0_rts: uart0-rts {
--					rockchip,pins = <RK_GPIO1 3 RK_FUNC_1 &pcfg_pull_none>;
--				};
--			};
--
--			uart1 {
--				uart1_xfer: uart1-xfer {
--					rockchip,pins = <RK_GPIO1 4 RK_FUNC_1 &pcfg_pull_up>,
--							<RK_GPIO1 5 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				uart1_cts: uart1-cts {
--					rockchip,pins = <RK_GPIO1 6 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				uart1_rts: uart1-rts {
--					rockchip,pins = <RK_GPIO1 7 RK_FUNC_1 &pcfg_pull_none>;
--				};
--			};
--
--			uart2 {
--				uart2_xfer: uart2-xfer {
--					rockchip,pins = <RK_GPIO1 8 RK_FUNC_1 &pcfg_pull_up>,
--							<RK_GPIO1 9 RK_FUNC_1 &pcfg_pull_none>;
--				};
--				/* no rts / cts for uart2 */
--			};
--
--			uart3 {
--				uart3_xfer: uart3-xfer {
--					rockchip,pins = <RK_GPIO1 10 RK_FUNC_1 &pcfg_pull_up>,
--							<RK_GPIO1 11 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				uart3_cts: uart3-cts {
--					rockchip,pins = <RK_GPIO1 12 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				uart3_rts: uart3-rts {
--					rockchip,pins = <RK_GPIO1 13 RK_FUNC_1 &pcfg_pull_none>;
--				};
--			};
--
--			sd0 {
--				sd0_clk: sd0-clk {
--					rockchip,pins = <RK_GPIO3 2 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd0_cmd: sd0-cmd {
--					rockchip,pins = <RK_GPIO3 3 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd0_cd: sd0-cd {
--					rockchip,pins = <RK_GPIO3 8 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd0_wp: sd0-wp {
--					rockchip,pins = <RK_GPIO3 9 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd0_pwr: sd0-pwr {
--					rockchip,pins = <RK_GPIO3 1 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd0_bus1: sd0-bus-width1 {
--					rockchip,pins = <RK_GPIO3 4 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd0_bus4: sd0-bus-width4 {
--					rockchip,pins = <RK_GPIO3 4 RK_FUNC_1 &pcfg_pull_none>,
--							<RK_GPIO3 5 RK_FUNC_1 &pcfg_pull_none>,
--							<RK_GPIO3 6 RK_FUNC_1 &pcfg_pull_none>,
--							<RK_GPIO3 7 RK_FUNC_1 &pcfg_pull_none>;
--				};
--			};
--
--			sd1 {
--				sd1_clk: sd1-clk {
--					rockchip,pins = <RK_GPIO3 21 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd1_cmd: sd1-cmd {
--					rockchip,pins = <RK_GPIO3 16 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd1_cd: sd1-cd {
--					rockchip,pins = <RK_GPIO3 22 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd1_wp: sd1-wp {
--					rockchip,pins = <RK_GPIO3 23 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd1_bus1: sd1-bus-width1 {
--					rockchip,pins = <RK_GPIO3 17 RK_FUNC_1 &pcfg_pull_none>;
--				};
--
--				sd1_bus4: sd1-bus-width4 {
--					rockchip,pins = <RK_GPIO3 17 RK_FUNC_1 &pcfg_pull_none>,
--							<RK_GPIO3 18 RK_FUNC_1 &pcfg_pull_none>,
--							<RK_GPIO3 19 RK_FUNC_1 &pcfg_pull_none>,
--							<RK_GPIO3 20 RK_FUNC_1 &pcfg_pull_none>;
--				};
--			};
--		};
--	};
--};
-diff --git a/arch/arm/dts/rk3xxx.dtsi b/arch/arm/dts/rk3xxx.dtsi
-deleted file mode 100644
-index 2adf1cc..0000000
---- a/arch/arm/dts/rk3xxx.dtsi
-+++ /dev/null
-@@ -1,139 +0,0 @@
--/*
-- * Copyright (c) 2013 MundoReader S.L.
-- * Author: Heiko Stuebner <heiko@sntech.de>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--
--#include <dt-bindings/interrupt-controller/irq.h>
--#include <dt-bindings/interrupt-controller/arm-gic.h>
--#include "skeleton.dtsi"
--
--/ {
--	interrupt-parent = <&gic>;
--
--	soc {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		compatible = "simple-bus";
--		ranges;
--
--		scu@1013c000 {
--			compatible = "arm,cortex-a9-scu";
--			reg = <0x1013c000 0x100>;
--		};
--
--		pmu: pmu@20004000 {
--			compatible = "rockchip,rk3066-pmu", "syscon";
--			reg = <0x20004000 0x100>;
--		};
--
--		grf: grf@20008000 {
--			compatible = "syscon";
--			reg = <0x20008000 0x200>;
--		};
--
--		gic: interrupt-controller@1013d000 {
--			compatible = "arm,cortex-a9-gic";
--			interrupt-controller;
--			#interrupt-cells = <3>;
--			reg = <0x1013d000 0x1000>,
--			      <0x1013c100 0x0100>;
--		};
--
--		L2: l2-cache-controller@10138000 {
--			compatible = "arm,pl310-cache";
--			reg = <0x10138000 0x1000>;
--			cache-unified;
--			cache-level = <2>;
--		};
--
--		global-timer@1013c200 {
--			compatible = "arm,cortex-a9-global-timer";
--			reg = <0x1013c200 0x20>;
--			interrupts = <GIC_PPI 11 0x304>;
--			clocks = <&dummy150m>;
--		};
--
--		local-timer@1013c600 {
--			compatible = "arm,cortex-a9-twd-timer";
--			reg = <0x1013c600 0x20>;
--			interrupts = <GIC_PPI 13 0x304>;
--			clocks = <&dummy150m>;
--		};
--
--		uart0: serial@10124000 {
--			compatible = "snps,dw-apb-uart";
--			reg = <0x10124000 0x400>;
--			interrupts = <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>;
--			reg-shift = <2>;
--			reg-io-width = <1>;
--			clocks = <&clk_gates1 8>;
--			status = "disabled";
--		};
--
--		uart1: serial@10126000 {
--			compatible = "snps,dw-apb-uart";
--			reg = <0x10126000 0x400>;
--			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
--			reg-shift = <2>;
--			reg-io-width = <1>;
--			clocks = <&clk_gates1 10>;
--			status = "disabled";
--		};
--
--		uart2: serial@20064000 {
--			compatible = "snps,dw-apb-uart";
--			reg = <0x20064000 0x400>;
--			interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
--			reg-shift = <2>;
--			reg-io-width = <1>;
--			clocks = <&clk_gates1 12>;
--			status = "disabled";
--		};
--
--		uart3: serial@20068000 {
--			compatible = "snps,dw-apb-uart";
--			reg = <0x20068000 0x400>;
--			interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
--			reg-shift = <2>;
--			reg-io-width = <1>;
--			clocks = <&clk_gates1 14>;
--			status = "disabled";
--		};
--
--		dwmmc@10214000 {
--			compatible = "rockchip,rk2928-dw-mshc";
--			reg = <0x10214000 0x1000>;
--			interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			clocks = <&clk_gates5 10>, <&clk_gates2 11>;
--			clock-names = "biu", "ciu";
--
--			status = "disabled";
--		};
--
--		dwmmc@10218000 {
--			compatible = "rockchip,rk2928-dw-mshc";
--			reg = <0x10218000 0x1000>;
--			interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--
--			clocks = <&clk_gates5 11>, <&clk_gates2 13>;
--			clock-names = "biu", "ciu";
--
--			status = "disabled";
--		};
--	};
--};
++
++static unsigned long clk_fd_recalc_rate(struct clk *hw,
++					unsigned long parent_rate)
++{
++	struct clk_fractional_divider *fd = to_clk_fd(hw);
++	u32 val, m, n;
++	u64 ret;
++
++	val = readl(fd->reg);
++
++	m = (val & fd->mmask) >> fd->mshift;
++	n = (val & fd->nmask) >> fd->nshift;
++
++	ret = (u64)parent_rate * m;
++	do_div(ret, n);
++
++	return ret;
++}
++
++static long clk_fd_round_rate(struct clk *hw, unsigned long rate,
++			      unsigned long *prate)
++{
++	struct clk_fractional_divider *fd = to_clk_fd(hw);
++	unsigned maxn = (fd->nmask >> fd->nshift) + 1;
++	unsigned div;
++
++	if (!rate || rate >= *prate)
++		return *prate;
++
++	div = gcd(*prate, rate);
++
++	while ((*prate / div) > maxn) {
++		div <<= 1;
++		rate <<= 1;
++	}
++
++	return rate;
++}
++
++static int clk_fd_set_rate(struct clk *hw, unsigned long rate,
++			   unsigned long parent_rate)
++{
++	struct clk_fractional_divider *fd = to_clk_fd(hw);
++	unsigned long div;
++	unsigned n, m;
++	u32 val;
++
++	div = gcd(parent_rate, rate);
++	m = rate / div;
++	n = parent_rate / div;
++
++	val = readl(fd->reg);
++	val &= ~(fd->mmask | fd->nmask);
++	val |= (m << fd->mshift) | (n << fd->nshift);
++	writel(val, fd->reg);
++
++	return 0;
++}
++
++const struct clk_ops clk_fractional_divider_ops = {
++	.recalc_rate = clk_fd_recalc_rate,
++	.round_rate = clk_fd_round_rate,
++	.set_rate = clk_fd_set_rate,
++};
++EXPORT_SYMBOL_GPL(clk_fractional_divider_ops);
++
++struct clk *clk_fractional_divider_alloc(
++		const char *name, const char *parent_name, unsigned long flags,
++		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
++		u8 clk_divider_flags)
++{
++	struct clk_fractional_divider *fd;
++
++	fd = kzalloc(sizeof(*fd), GFP_KERNEL);
++	if (!fd) {
++		pr_err("could not allocate fractional divider clk %s\n", name);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	fd->reg = reg;
++	fd->mshift = mshift;
++	fd->mmask = (BIT(mwidth) - 1) << mshift;
++	fd->nshift = nshift;
++	fd->nmask = (BIT(nwidth) - 1) << nshift;
++	fd->flags = clk_divider_flags;
++	fd->clk.name = name;
++	fd->clk.ops = &clk_fractional_divider_ops;
++	fd->clk.flags = flags;
++	fd->clk.parent_names = parent_name ? &parent_name : NULL;
++	fd->clk.num_parents = parent_name ? 1 : 0;
++
++	return &fd->clk;
++}
++
++void clk_fractional_divider_free(struct clk *clk_fd)
++{
++	struct clk_fractional_divider *fd = to_clk_fd(clk_fd);
++
++	free(fd);
++}
++
++struct clk *clk_fractional_divider(
++		const char *name, const char *parent_name, unsigned long flags,
++		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
++		u8 clk_divider_flags)
++{
++	struct clk *fd;
++	int ret;
++
++	fd = clk_fractional_divider_alloc(name, parent_name,flags,
++		reg, mshift, mwidth, nshift, nwidth,
++		clk_divider_flags);
++
++	if (IS_ERR(fd))
++		return fd;
++
++	ret = clk_register(fd);
++	if (ret){
++		clk_fractional_divider_free(fd);
++		return ERR_PTR(ret);
++	}
++
++	return fd;
++}
++EXPORT_SYMBOL_GPL(clk_register_fractional_divider);
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index fe8ae5c..de2d4a5 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -260,6 +260,15 @@ struct clk *clk_divider_table(const char *name,
+ struct clk *clk_fixed_factor(const char *name,
+ 		const char *parent, unsigned int mult, unsigned int div,
+ 		unsigned flags);
++struct clk *clk_fractional_divider_alloc(
++		const char *name, const char *parent_name, unsigned long flags,
++		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
++		u8 clk_divider_flags);
++struct clk *clk_fractional_divider(
++		const char *name, const char *parent_name, unsigned long flags,
++		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
++		u8 clk_divider_flags);
++void clk_fractional_divider_free(struct clk *clk_fd);
+ 
+ struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
+ 		u8 shift, u8 width, const char **parents, u8 num_parents,
 -- 
 2.1.4
 
