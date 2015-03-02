@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward2l.mail.yandex.net ([2a02:6b8:0:1819::2])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSWrT-0005xz-9B
- for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:48 +0000
+Received: from forward10l.mail.yandex.net ([84.201.143.143])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YSWrX-0007No-Pp
+ for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:49 +0000
 From: Andrey Panov <rockford@yandex.ru>
-Date: Mon,  2 Mar 2015 23:21:55 +0300
-Message-Id: <1425327722-28232-12-git-send-email-rockford@yandex.ru>
+Date: Mon,  2 Mar 2015 23:22:01 +0300
+Message-Id: <1425327722-28232-18-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,318 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/18] MMC: dw_mmc: Add support for PIO mode and Rockchip
- variant of this hardware.
+Subject: [PATCH 17/18] ARM: Rockchip: Add Radxa Rock defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- drivers/mci/Kconfig  |   8 ++-
- drivers/mci/dw_mmc.c | 170 ++++++++++++++++++++++++++++++++++++++++++++++++---
- 2 files changed, 170 insertions(+), 8 deletions(-)
+ arch/arm/configs/radxa_rock_defconfig | 110 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 110 insertions(+)
+ create mode 100644 arch/arm/configs/radxa_rock_defconfig
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index a5cf2fe..17bf0d3 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -36,12 +36,18 @@ comment "--- MCI host drivers ---"
- 
- config MCI_DW
- 	bool "Synopsys DesignWare Memory Card Interface"
--	depends on HAS_DMA
-+	depends on ARM
- 	help
- 	  This selects support for the Synopsys DesignWare Mobile Storage IP
- 	  block, this provides host support for SD and MMC interfaces, in both
- 	  PIO and external DMA modes.
- 
-+config MCI_DW_PIO
-+	bool "Use PIO mode on Synopsys DesignWare MCI"
-+	depends on MCI_DW
-+	help
-+	  Use PIO mode (instead of IDMAC) in DW MMC driver.
-+
- config MCI_MXS
- 	bool "i.MX23/i.MX28"
- 	depends on ARCH_MXS
-diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
-index f02ea62..0360a22 100644
---- a/drivers/mci/dw_mmc.c
-+++ b/drivers/mci/dw_mmc.c
-@@ -125,6 +125,8 @@
- #define DWMCI_CTYPE_8BIT		(1 << 16)
- 
- /* Status Register */
-+#define DWMCI_STATUS_FIFO_EMPTY		(1 << 2)
-+#define DWMCI_STATUS_FIFO_FULL		(1 << 3)
- #define DWMCI_STATUS_BUSY		(1 << 9)
- 
- /* FIFOTH Register */
-@@ -153,6 +155,8 @@ struct dwmci_host {
- 	struct dwmci_idmac *idmac;
- 	unsigned long clkrate;
- 	int ciu_div;
-+	u32 fifoth_val;
-+	u32 pwren_value;
- };
- 
- struct dwmci_idmac {
-@@ -201,6 +205,8 @@ static int dwmci_prepare_data(struct dwmci_host *host,
- 		struct mci_data *data)
- {
- 	unsigned long ctrl;
-+
-+#ifndef CONFIG_MCI_DW_PIO
- 	unsigned int i = 0, flags, cnt, blk_cnt;
- 	unsigned long data_start, start_addr;
- 	struct dwmci_idmac *desc = host->idmac;
-@@ -256,7 +262,25 @@ static int dwmci_prepare_data(struct dwmci_host *host,
- 
- 	dwmci_writel(host, DWMCI_BLKSIZ, data->blocksize);
- 	dwmci_writel(host, DWMCI_BYTCNT, data->blocksize * data->blocks);
-+#else
-+	/* PIO MODE */
-+	dwmci_wait_reset(host, DWMCI_CTRL_FIFO_RESET);
-+	dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_TXDR | DWMCI_INTMSK_RXDR);
-+
-+	ctrl = dwmci_readl(host, DWMCI_INTMASK);
-+	ctrl |= DWMCI_INTMSK_TXDR | DWMCI_INTMSK_RXDR;
-+	dwmci_writel(host, DWMCI_INTMASK, ctrl);
-+
-+	ctrl = dwmci_readl(host, DWMCI_CTRL);
-+	ctrl &= ~(DWMCI_IDMAC_EN | DWMCI_DMA_EN);
-+	dwmci_writel(host, DWMCI_CTRL, ctrl);
-+
-+	dwmci_writel(host, DWMCI_FIFOTH, host->fifoth_val);
- 
-+	dwmci_writel(host, DWMCI_TMOUT, 0xFFFFFFFF);
-+	dwmci_writel(host, DWMCI_BLKSIZ, data->blocksize);
-+	dwmci_writel(host, DWMCI_BYTCNT, data->blocksize * data->blocks);
-+#endif
- 	return 0;
- }
- 
-@@ -272,12 +296,108 @@ static int dwmci_set_transfer_mode(struct dwmci_host *host,
- 	return mode;
- }
- 
-+#ifdef CONFIG_MCI_DW_PIO
-+static int dwmci_read_data_pio(struct dwmci_host *host, struct mci_data *data)
-+{
-+	u32 *pdata = (u32 *)data->dest;
-+	u32 val, status, timeout;
-+	u32 fcnt, bcnt, rcnt, rlen = 0;
-+
-+	timeout = 100;
-+	status = dwmci_readl(host, DWMCI_RINTSTS);
-+	while (--timeout && !(status & DWMCI_INTMSK_RXDR)){
-+		status = dwmci_readl(host, DWMCI_RINTSTS);
-+	}
-+
-+	if(!timeout){
-+		dev_err(host->dev, "%s: RX ready wait timeout\n", __func__);
-+		return 0;
-+	}
-+
-+	fcnt = data->blocksize;
-+	bcnt = data->blocks;
-+
-+	do {
-+		for (rcnt = fcnt>>2; rcnt; rcnt--) {
-+			timeout = 20000;
-+			status = dwmci_readl(host, DWMCI_STATUS);
-+			while (--timeout && (status & DWMCI_STATUS_FIFO_EMPTY)){
-+				udelay(200);
-+				status = dwmci_readl(host, DWMCI_STATUS);
-+			}
-+			if(!timeout){
-+				dev_err(host->dev, "%s: FIFO underflow timeout\n",
-+				    __func__);
-+				break;
-+			}
-+
-+			val = dwmci_readl(host, DWMCI_DATA);
-+
-+			*pdata++ = val;
-+			rlen+=4;
-+		}
-+		status = dwmci_readl(host, DWMCI_RINTSTS);
-+		dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_RXDR);
-+	} while (--bcnt && (status & DWMCI_INTMSK_RXDR));
-+
-+	return rlen;
-+}
-+
-+static int dwmci_write_data_pio(struct dwmci_host *host, struct mci_data *data)
-+{
-+	u32 *pdata = (u32 *)data->src;
-+	u32 status, timeout;
-+	u32 fcnt, bcnt, wcnt, wlen = 0;
-+
-+	fcnt = host->fifo_size_bytes;
-+
-+	bcnt = (data->blocks*data->blocksize)/fcnt;
-+
-+	timeout = 100;
-+	status = dwmci_readl(host, DWMCI_RINTSTS);
-+
-+	while (--timeout && !(status & DWMCI_INTMSK_TXDR)){
-+		status = dwmci_readl(host, DWMCI_RINTSTS);
-+	}
-+
-+	if(!timeout){
-+		dev_err(host->dev, "%s: TX ready wait timeout\n", __func__);
-+		return 0;
-+	}
-+
-+	do {
-+		for (wcnt = fcnt>>2; wcnt; wcnt--) {
-+			timeout = 20000;
-+			status = dwmci_readl(host, DWMCI_STATUS);
-+			while (--timeout && (status & DWMCI_STATUS_FIFO_FULL)){
-+				udelay(200);
-+				status = dwmci_readl(host, DWMCI_STATUS);
-+			}
-+			if(!timeout){
-+				dev_err(host->dev, "%s: FIFO overflow timeout\n",
-+				    __func__);
-+				break;
-+			}
-+			dwmci_writel(host, DWMCI_DATA, *pdata++);
-+			wlen+=4;
-+		}
-+		status = dwmci_readl(host, DWMCI_RINTSTS);
-+		dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_TXDR);
-+	} while (--bcnt && (status & DWMCI_INTMSK_TXDR));
-+
-+	return wlen;
-+}
-+#endif
-+
- static int
- dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- {
- 	struct dwmci_host *host = to_dwmci_host(mci);
- 	int flags = 0;
--	uint32_t mask, ctrl;
-+	uint32_t mask;
-+#ifndef CONFIG_MCI_DW_PIO
-+	uint32_t ctrl;
-+#endif
- 	uint64_t start;
- 	int ret;
- 	unsigned int num_bytes = 0;
-@@ -346,8 +466,10 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 				dwmci_writel(host, DWMCI_RINTSTS, mask);
- 			break;
- 		}
--		if (is_timeout(start, 100 * MSECOND))
-+		if (is_timeout(start, 100 * MSECOND)){
-+			dev_dbg(host->dev, "Send command timeout..\n");
- 			return -ETIMEDOUT;
-+		}
- 	}
- 
- 	if (mask & DWMCI_INTMSK_RTO) {
-@@ -373,16 +495,34 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		start = get_time_ns();
- 		do {
- 			mask = dwmci_readl(host, DWMCI_RINTSTS);
-+#ifdef CONFIG_MCI_DW_PIO
-+			if (mask & (DWMCI_DATA_ERR)) {
-+#else
- 			if (mask & (DWMCI_DATA_ERR | DWMCI_DATA_TOUT)) {
-+#endif
- 				dev_dbg(host->dev, "DATA ERROR!\n");
- 				return -EIO;
- 			}
--			if (is_timeout(start, SECOND))
-+#ifndef CONFIG_MCI_DW_PIO
-+			if (is_timeout(start, SECOND)){
-+#else
-+			if (is_timeout(start, SECOND*100)){
-+			/* In PIO end transfer can take more than a second, give it a chance */
-+#endif
-+				dev_dbg(host->dev, "Data timeout\n");
- 				return -ETIMEDOUT;
-+			}
-+#ifdef CONFIG_MCI_DW_PIO
-+			if (mask & DWMCI_INTMSK_RXDR)
-+				dwmci_read_data_pio(host, data);
-+			if (mask & DWMCI_INTMSK_TXDR)
-+				dwmci_write_data_pio(host, data);
-+#endif
- 		} while (!(mask & DWMCI_INTMSK_DTO));
- 
- 		dwmci_writel(host, DWMCI_RINTSTS, mask);
- 
-+#ifndef CONFIG_MCI_DW_PIO
- 		ctrl = dwmci_readl(host, DWMCI_CTRL);
- 		ctrl &= ~(DWMCI_DMA_EN);
- 		dwmci_writel(host, DWMCI_CTRL, ctrl);
-@@ -393,6 +533,7 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		else
- 			dma_sync_single_for_cpu((unsigned long)data->dest,
- 						num_bytes, DMA_FROM_DEVICE);
-+#endif
- 	}
- 
- 	udelay(100);
-@@ -481,9 +622,9 @@ static int dwmci_card_present(struct mci_host *mci)
- static int dwmci_init(struct mci_host *mci, struct device_d *dev)
- {
- 	struct dwmci_host *host = to_dwmci_host(mci);
--	uint32_t fifo_size, fifoth_val;
-+	uint32_t fifo_size;
- 
--	dwmci_writel(host, DWMCI_PWREN, 1);
-+	dwmci_writel(host, DWMCI_PWREN, host->pwren_value);
- 
- 	if (dwmci_wait_reset(host, DWMCI_RESET_ALL)) {
- 		dev_err(host->dev, "reset failed\n");
-@@ -507,11 +648,19 @@ static int dwmci_init(struct mci_host *mci, struct device_d *dev)
- 	fifo_size = DWMCI_FIFOTH_FIFO_DEPTH(fifo_size);
- 	host->fifo_size_bytes = fifo_size * 4;
- 
--	fifoth_val = DWMCI_FIFOTH_MSIZE(0x2) |
-+	/*
-+	 * If fifo-depth property is set, use this value
-+	 */
-+	if (!of_property_read_u32(host->dev->device_node, "fifo-depth", &fifo_size)){
-+		host->fifo_size_bytes = fifo_size;
-+		dev_dbg(host->dev, "Using fifo-depth=%u\n", host->fifo_size_bytes);
-+	}
-+
-+	host->fifoth_val = DWMCI_FIFOTH_MSIZE(0x2) |
- 		DWMCI_FIFOTH_RX_WMARK(fifo_size / 2 - 1) |
- 		DWMCI_FIFOTH_TX_WMARK(fifo_size / 2);
- 
--	dwmci_writel(host, DWMCI_FIFOTH, fifoth_val);
-+	dwmci_writel(host, DWMCI_FIFOTH, host->fifoth_val);
- 
- 	dwmci_writel(host, DWMCI_CLKENA, 0);
- 	dwmci_writel(host, DWMCI_CLKSRC, 0);
-@@ -575,6 +724,11 @@ static int dw_mmc_probe(struct device_d *dev)
- 	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
- 	host->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA;
- 
-+	if (of_device_is_compatible(dev->device_node, "rockchip,rk2928-dw-mshc"))
-+		host->pwren_value = 0;
-+	else
-+		host->pwren_value = 1;
-+
- 	dev->detect = dw_mmc_detect;
- 
- 	host->clkrate = clk_get_rate(host->clk_ciu);
-@@ -594,6 +748,8 @@ static __maybe_unused struct of_device_id dw_mmc_compatible[] = {
- 	{
- 		.compatible = "altr,socfpga-dw-mshc",
- 	}, {
-+		.compatible = "rockchip,rk2928-dw-mshc",
-+	}, {
- 		/* sentinel */
- 	}
- };
+diff --git a/arch/arm/configs/radxa_rock_defconfig b/arch/arm/configs/radxa_rock_defconfig
+new file mode 100644
+index 0000000..6e7da3e
+--- /dev/null
++++ b/arch/arm/configs/radxa_rock_defconfig
+@@ -0,0 +1,110 @@
++CONFIG_ARCH_ROCKCHIP=y
++CONFIG_MACH_RADXA_ROCK=y
++CONFIG_AEABI=y
++CONFIG_ARM_BOARD_APPEND_ATAG=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_MALLOC_SIZE=0x4000000
++CONFIG_EXPERIMENTAL=y
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_PROMPT="radxa-rock:"
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_DEFAULT_COMPRESSION_LZO=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/radxa-rock/env"
++CONFIG_BAREBOXENV_TARGET=y
++CONFIG_BAREBOXCRC32_TARGET=y
++CONFIG_POLLER=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_BOOTM_AIMAGE=y
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_SAVES=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_DEFAULTENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA224SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_ARC_EMAC=y
++CONFIG_SMSC_PHY=y
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_DW=y
++CONFIG_MCI_DW_PIO=y
++CONFIG_MFD_ACT8846=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_GENERIC_PHY=y
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_BPKFS=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_LZO_DECOMPRESS=y
 -- 
 2.1.4
 
