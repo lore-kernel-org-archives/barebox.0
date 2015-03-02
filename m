@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward1h.mail.yandex.net ([84.201.187.146])
+Received: from forward3l.mail.yandex.net ([2a02:6b8:0:1819::3])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSWrR-0005xt-I4
- for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:43 +0000
-Received: from smtp1h.mail.yandex.net (smtp1h.mail.yandex.net [84.201.187.144])
- by forward1h.mail.yandex.net (Yandex) with ESMTP id B2D5E9E19A1
- for <barebox@lists.infradead.org>; Mon,  2 Mar 2015 23:22:17 +0300 (MSK)
+ id 1YSWrR-0005xs-PZ
+ for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:44 +0000
 From: Andrey Panov <rockford@yandex.ru>
-Date: Mon,  2 Mar 2015 23:21:54 +0300
-Message-Id: <1425327722-28232-11-git-send-email-rockford@yandex.ru>
+Date: Mon,  2 Mar 2015 23:21:49 +0300
+Message-Id: <1425327722-28232-6-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -24,85 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/18] NET: arc_emac: Update for newer DTS,
- support for Rockchip .compatible.
+Subject: [PATCH 05/18] CLK: clk-divider: Respect CLK_DIVIDER_HIWORD_MASK flag.
 To: barebox@lists.infradead.org
+
+It is required for Rockchip SoCs where clock settings registers have
+write-enable mask in high word.
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- drivers/net/arc_emac.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ drivers/clk/clk-divider.c | 4 ++++
+ include/linux/clk.h       | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
-index 4bf456e..5a056d3 100644
---- a/drivers/net/arc_emac.c
-+++ b/drivers/net/arc_emac.c
-@@ -23,6 +23,7 @@
- #include <io.h>
- #include <init.h>
- #include <linux/err.h>
-+#include <linux/clk.h>
+diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
+index 506a966..eb48334 100644
+--- a/drivers/clk/clk-divider.c
++++ b/drivers/clk/clk-divider.c
+@@ -197,6 +197,10 @@ static int clk_divider_set_rate(struct clk *clk, unsigned long rate,
+ 	val = readl(divider->reg);
+ 	val &= ~(div_mask(divider) << divider->shift);
+ 	val |= value << divider->shift;
++
++	if (clk->flags & CLK_DIVIDER_HIWORD_MASK)
++		val |= div_mask(divider) << (divider->shift + 16);
++
+ 	writel(val, divider->reg);
  
- /* ARC EMAC register set combines entries for MAC and MDIO */
- enum {
-@@ -99,6 +100,8 @@ struct arc_emac_priv {
- 	u8 *rxbuf;
- 	unsigned int txbd_curr;
- 	unsigned int last_rx_bd;
-+	struct clk *clk;
-+	struct clk *refclk;
+ 	return 0;
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 89cb44e..258bbe3 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -248,6 +248,8 @@ struct clk_divider {
+ 	int table_size;
  };
  
- /**
-@@ -384,20 +387,18 @@ static int arc_emac_mdio_write(struct mii_bus *bus, int phy_addr, int reg_num,
- 	return arc_mdio_complete_wait(priv);
- }
- 
-+#define DEFAULT_EMAC_CLOCK_FREQUENCY 50000000UL;
++#define CLK_DIVIDER_HIWORD_MASK		(1 << 3)
 +
- static int arc_emac_probe(struct device_d *dev)
- {
- 	struct eth_device *edev;
- 	struct arc_emac_priv *priv;
--	unsigned int clock_frequency;
-+	unsigned long clock_frequency;
- 	struct mii_bus *miibus;
- 	u32 id;
+ #define CLK_MUX_HIWORD_MASK		(1 << 2)
  
--	/* Get CPU clock frequency from device tree */
--	if (of_property_read_u32(dev->device_node, "clock-frequency",
--				 &clock_frequency)) {
--		dev_err(dev, "failed to retrieve <clock-frequency> from device tree\n");
--		return -EINVAL;
--	}
-+	/* clock-frequency is dropped from DTS, so hardcode it here */
-+	clock_frequency = DEFAULT_EMAC_CLOCK_FREQUENCY;
- 
- 	edev = xzalloc(sizeof(struct eth_device) +
- 		       sizeof(struct arc_emac_priv));
-@@ -410,6 +411,13 @@ static int arc_emac_probe(struct device_d *dev)
- 		return PTR_ERR(priv->regs);
- 	priv->bus = miibus;
- 
-+	priv->clk = clk_get(dev, "hclk");
-+	clk_enable(priv->clk);
-+
-+	priv->refclk = clk_get(dev, "macref");
-+	clk_set_rate(priv->refclk,clock_frequency);
-+	clk_enable(priv->refclk);
-+
- 	id = arc_reg_get(priv, R_ID);
- 	/* Check for EMAC revision 5 or 7, magic number */
- 	if (!(id == 0x0005fd02 || id == 0x0007fd02)) {
-@@ -455,6 +463,8 @@ static __maybe_unused struct of_device_id arc_emac_dt_ids[] = {
- 	{
- 		.compatible = "snps,arc-emac",
- 	}, {
-+		.compatible = "rockchip,rk3188-emac",
-+	}, {
- 		/* sentinel */
- 	}
- };
+ extern struct clk_ops clk_divider_ops;
 -- 
 2.1.4
 
