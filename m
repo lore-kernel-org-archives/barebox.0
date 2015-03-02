@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward3l.mail.yandex.net ([2a02:6b8:0:1819::3])
+Received: from forward9l.mail.yandex.net ([2a02:6b8:0:1819::9])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSWrR-0005xs-PZ
- for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:44 +0000
+ id 1YSWrP-0005x6-Jo
+ for barebox@lists.infradead.org; Mon, 02 Mar 2015 20:22:41 +0000
+Received: from smtp1h.mail.yandex.net (smtp1h.mail.yandex.net [84.201.187.144])
+ by forward9l.mail.yandex.net (Yandex) with ESMTP id CD9A1E60EBA
+ for <barebox@lists.infradead.org>; Mon,  2 Mar 2015 23:22:12 +0300 (MSK)
+Received: from smtp1h.mail.yandex.net (localhost [127.0.0.1])
+ by smtp1h.mail.yandex.net (Yandex) with ESMTP id 7F602134013C
+ for <barebox@lists.infradead.org>; Mon,  2 Mar 2015 23:22:12 +0300 (MSK)
 From: Andrey Panov <rockford@yandex.ru>
-Date: Mon,  2 Mar 2015 23:21:49 +0300
-Message-Id: <1425327722-28232-6-git-send-email-rockford@yandex.ru>
-In-Reply-To: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
-References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
+Date: Mon,  2 Mar 2015 23:21:44 +0300
+Message-Id: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +25,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/18] CLK: clk-divider: Respect CLK_DIVIDER_HIWORD_MASK flag.
+Subject: [PATCH 00/18] Update support for RK3188, Radxa Rock board
 To: barebox@lists.infradead.org
 
-It is required for Rockchip SoCs where clock settings registers have
-write-enable mask in high word.
+Hello!
 
-Signed-off-by: Andrey Panov <rockford@yandex.ru>
----
- drivers/clk/clk-divider.c | 4 ++++
- include/linux/clk.h       | 2 ++
- 2 files changed, 6 insertions(+)
+This series will update support for Radxa Rock board, allowing it
+to boot from SD card with Barebox as first-stage loader.
 
-diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
-index 506a966..eb48334 100644
---- a/drivers/clk/clk-divider.c
-+++ b/drivers/clk/clk-divider.c
-@@ -197,6 +197,10 @@ static int clk_divider_set_rate(struct clk *clk, unsigned long rate,
- 	val = readl(divider->reg);
- 	val &= ~(div_mask(divider) << divider->shift);
- 	val |= value << divider->shift;
-+
-+	if (clk->flags & CLK_DIVIDER_HIWORD_MASK)
-+		val |= div_mask(divider) << (divider->shift + 16);
-+
- 	writel(val, divider->reg);
- 
- 	return 0;
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 89cb44e..258bbe3 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -248,6 +248,8 @@ struct clk_divider {
- 	int table_size;
- };
- 
-+#define CLK_DIVIDER_HIWORD_MASK		(1 << 3)
-+
- #define CLK_MUX_HIWORD_MASK		(1 << 2)
- 
- extern struct clk_ops clk_divider_ops;
--- 
-2.1.4
+Based on next branch.
 
+--
+Andrey
 
 _______________________________________________
 barebox mailing list
