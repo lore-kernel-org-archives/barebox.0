@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YSljS-0001gd-G3
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 12:15:31 +0000
+ Linux)) id 1YSljT-0001lk-0N
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 12:15:32 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue,  3 Mar 2015 13:14:56 +0100
-Message-Id: <1425384899-18809-11-git-send-email-mkl@pengutronix.de>
+Date: Tue,  3 Mar 2015 13:14:57 +0100
+Message-Id: <1425384899-18809-12-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 References: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 10/13] sandbox: hostfile: is always mmpad'ed
+Subject: [PATCH v3 11/13] sandbox: move device name generation for image/env
+ into add_image()
 To: barebox@lists.infradead.org
-
-...so remove conditional code.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/os/common.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/sandbox/os/common.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/arch/sandbox/os/common.c b/arch/sandbox/os/common.c
-index e2023165d542..3fa0370dfba3 100644
+index 3fa0370dfba3..64a4b26ea6fd 100644
 --- a/arch/sandbox/os/common.c
 +++ b/arch/sandbox/os/common.c
-@@ -209,7 +209,7 @@ extern void mem_malloc_init(void *start, void *end);
- static int add_image(char *str, char *devname)
+@@ -206,9 +206,10 @@ int linux_execve(const char * filename, char *const argv[], char *const envp[])
+ extern void start_barebox(void);
+ extern void mem_malloc_init(void *start, void *end);
+ 
+-static int add_image(char *str, char *devname)
++static int add_image(char *str, char *devname_template, int *devname_number)
  {
- 	char *filename;
--	int readonly = 0, map = 1;
-+	int readonly = 0;
+-	char *filename;
++	char *filename, *devname;
++	char tmp[16];
+ 	int readonly = 0;
  	struct stat s;
  	char *opt;
- 	int fd, ret;
-@@ -222,8 +222,6 @@ static int add_image(char *str, char *devname)
- 	while ((opt = strtok(NULL, ","))) {
- 		if (!strcmp(opt, "ro"))
+@@ -224,7 +225,12 @@ static int add_image(char *str, char *devname)
  			readonly = 1;
--		if (!strcmp(opt, "map"))
--			map = 1;
  	}
  
- 	printf("add file %s(%s)\n", filename, readonly ? "ro" : "");
-@@ -245,13 +243,11 @@ static int add_image(char *str, char *devname)
- 	hf->size = s.st_size;
- 	hf->devname = strdup(devname);
+-	printf("add file %s(%s)\n", filename, readonly ? "ro" : "");
++	snprintf(tmp, sizeof(tmp),
++		 devname_template, (*devname_number)++);
++	devname = strdup(tmp);
++
++	printf("add %s backed by file %s%s\n", devname,
++	       filename, readonly ? "(ro)" : "");
  
--	if (map) {
--		hf->base = (unsigned long)mmap(NULL, hf->size,
--				PROT_READ | (readonly ? 0 : PROT_WRITE),
--				MAP_SHARED, fd, 0);
--		if ((void *)hf->base == MAP_FAILED)
--			printf("warning: mmapping %s failed\n", filename);
--	}
-+	hf->base = (unsigned long)mmap(NULL, hf->size,
-+			PROT_READ | (readonly ? 0 : PROT_WRITE),
-+			MAP_SHARED, fd, 0);
-+	if ((void *)hf->base == MAP_FAILED)
-+		printf("warning: mmapping %s failed\n", filename);
+ 	fd = open(filename, readonly ? O_RDONLY : O_RDWR);
+ 	hf->fd = fd;
+@@ -319,7 +325,6 @@ int main(int argc, char *argv[])
+ 	void *ram;
+ 	int opt, ret, fd;
+ 	int malloc_size = CONFIG_MALLOC_SIZE;
+-	char str[6];
+ 	int fdno = 0, envno = 0, option_index = 0;
  
- 	ret = barebox_register_filedev(hf);
- 	if (ret)
+ 	while (1) {
+@@ -401,18 +406,14 @@ int main(int argc, char *argv[])
+ 
+ 		switch (opt) {
+ 		case 'i':
+-			sprintf(str, "fd%d", fdno);
+-			ret = add_image(optarg, str);
++			ret = add_image(optarg, "fd%d", &fdno);
+ 			if (ret)
+ 				exit(1);
+-			fdno++;
+ 			break;
+ 		case 'e':
+-			sprintf(str, "env%d", envno);
+-			ret = add_image(optarg, str);
++			ret = add_image(optarg, "env%d", &envno);
+ 			if (ret)
+ 				exit(1);
+-			envno++;
+ 			break;
+ 		default:
+ 			break;
 -- 
 2.1.4
 
