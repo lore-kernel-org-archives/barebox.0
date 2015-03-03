@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSsnh-0001Jw-9y
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 19:48:19 +0000
+ id 1YSsnh-0001JY-9v
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 19:48:17 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 75F4426C200B
- for <barebox@lists.infradead.org>; Tue,  3 Mar 2015 20:46:31 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 8E5D826C2009
+ for <barebox@lists.infradead.org>; Tue,  3 Mar 2015 20:46:30 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Mar 2015 20:46:23 +0100
-Message-Id: <1425411983-24732-11-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Mar 2015 20:46:21 +0100
+Message-Id: <1425411983-24732-9-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
 References: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,26 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] ARM: tegra: enable barebox update in defconfig
+Subject: [PATCH 09/11] ARM: tegra: add barebox update handler to Beaver board
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/configs/tegra_v7_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boards/nvidia-beaver/board.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/configs/tegra_v7_defconfig b/arch/arm/configs/tegra_v7_defconfig
-index 47e594b..c7b59ac 100644
---- a/arch/arm/configs/tegra_v7_defconfig
-+++ b/arch/arm/configs/tegra_v7_defconfig
-@@ -36,6 +36,7 @@ CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_CLK=y
- CONFIG_CMD_DETECT=y
- CONFIG_CMD_GPIO=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
- CONFIG_CMD_OFTREE=y
- CONFIG_NET=y
- CONFIG_OF_BAREBOX_DRIVERS=y
+diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
+index d270301..bab0238 100644
+--- a/arch/arm/boards/nvidia-beaver/board.c
++++ b/arch/arm/boards/nvidia-beaver/board.c
+@@ -19,6 +19,7 @@
+ #include <gpio.h>
+ #include <i2c/i2c.h>
+ #include <init.h>
++#include <mach/tegra-bbu.h>
+ 
+ static int nvidia_beaver_fs_init(void)
+ {
+@@ -53,6 +54,9 @@ static int nvidia_beaver_device_init(void)
+ 
+ 	barebox_set_hostname("beaver");
+ 
++	tegra_bbu_register_emmc_handler("eMMC", "/dev/mmc3.boot0",
++					BBU_HANDLER_FLAG_DEFAULT);
++
+ 	return 0;
+ }
+ device_initcall(nvidia_beaver_device_init);
 -- 
 2.1.0
 
