@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YSljR-000132-NE
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 12:15:29 +0000
+ Linux)) id 1YSljR-0001Vq-NF
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 12:15:31 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue,  3 Mar 2015 13:14:48 +0100
-Message-Id: <1425384899-18809-3-git-send-email-mkl@pengutronix.de>
+Date: Tue,  3 Mar 2015 13:14:54 +0100
+Message-Id: <1425384899-18809-9-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 References: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,89 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 02/13] sandbox: add sample dts
+Subject: [PATCH v3 08/13] sandbox: hostfile: probe driver earlier
 To: barebox@lists.infradead.org
+
+This patch convert from device_platform_driver to coredevice_platform_driver,
+so that the driver is initialzied before the state framework is probed.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/Makefile          |  2 ++
- arch/sandbox/dts/.gitignore    |  1 +
- arch/sandbox/dts/Makefile      | 11 +++++++++++
- arch/sandbox/dts/sandbox.dts   |  7 +++++++
- arch/sandbox/dts/skeleton.dtsi | 13 +++++++++++++
- 5 files changed, 34 insertions(+)
- create mode 100644 arch/sandbox/dts/.gitignore
- create mode 100644 arch/sandbox/dts/Makefile
- create mode 100644 arch/sandbox/dts/sandbox.dts
- create mode 100644 arch/sandbox/dts/skeleton.dtsi
+ arch/sandbox/board/hostfile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
-index e3fb03955407..a539a901fc8d 100644
---- a/arch/sandbox/Makefile
-+++ b/arch/sandbox/Makefile
-@@ -50,4 +50,6 @@ cmd_barebox__ = $(CC) -o $@ -Wl,-T,$(barebox-lds) \
+diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+index 103bcd9badc7..42ade6bec8a4 100644
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -91,7 +91,7 @@ static struct driver_d hf_drv = {
+ 	.name  = "hostfile",
+ 	.probe = hf_probe,
+ };
+-device_platform_driver(hf_drv);
++coredevice_platform_driver(hf_drv);
  
- common-y += $(BOARD) arch/sandbox/os/
- 
-+common-$(CONFIG_OFTREE) += arch/sandbox/dts/
-+
- CLEAN_FILES += $(BOARD)/barebox.lds
-diff --git a/arch/sandbox/dts/.gitignore b/arch/sandbox/dts/.gitignore
-new file mode 100644
-index 000000000000..077903c50a26
---- /dev/null
-+++ b/arch/sandbox/dts/.gitignore
-@@ -0,0 +1 @@
-+*dtb*
-diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
-new file mode 100644
-index 000000000000..6f6838857849
---- /dev/null
-+++ b/arch/sandbox/dts/Makefile
-@@ -0,0 +1,11 @@
-+ifeq ($(CONFIG_OFTREE),y)
-+dtb-y += \
-+	sandbox.dtb
-+endif
-+
-+# just to build a built-in.o. Otherwise compilation fails when no devicetree is
-+# created.
-+obj- += dummy.o
-+
-+always := $(dtb-y)
-+clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
-new file mode 100644
-index 000000000000..2595aa13fa62
---- /dev/null
-+++ b/arch/sandbox/dts/sandbox.dts
-@@ -0,0 +1,7 @@
-+/dts-v1/;
-+
-+#include "skeleton.dtsi"
-+
-+/ {
-+
-+};
-diff --git a/arch/sandbox/dts/skeleton.dtsi b/arch/sandbox/dts/skeleton.dtsi
-new file mode 100644
-index 000000000000..38ead821bb42
---- /dev/null
-+++ b/arch/sandbox/dts/skeleton.dtsi
-@@ -0,0 +1,13 @@
-+/*
-+ * Skeleton device tree; the bare minimum needed to boot; just include and
-+ * add a compatible value.  The bootloader will typically populate the memory
-+ * node.
-+ */
-+
-+/ {
-+	#address-cells = <2>;
-+	#size-cells = <1>;
-+	chosen { };
-+	aliases { };
-+	memory { device_type = "memory"; reg = <0 0 0>; };
-+};
+ int barebox_register_filedev(struct hf_platform_data *hf)
+ {
 -- 
 2.1.4
 
