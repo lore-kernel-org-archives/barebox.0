@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YShZv-0005NV-Ic
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 07:49:20 +0000
-Date: Tue, 3 Mar 2015 08:48:57 +0100
+ Linux)) id 1YShcL-0007Bk-Ms
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 07:51:52 +0000
+Date: Tue, 3 Mar 2015 08:51:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150303074857.GP11010@pengutronix.de>
+Message-ID: <20150303075127.GQ11010@pengutronix.de>
 References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
- <1425327722-28232-3-git-send-email-rockford@yandex.ru>
+ <1425327722-28232-4-git-send-email-rockford@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425327722-28232-3-git-send-email-rockford@yandex.ru>
+In-Reply-To: <1425327722-28232-4-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/18] CLK: Add support for composite clock from Linux
- kernel.
+Subject: Re: [PATCH 03/18] CLK: Add fractional divider clock support from
+ Linux kernel.
 To: Andrey Panov <rockford@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 02, 2015 at 11:21:46PM +0300, Andrey Panov wrote:
-> Arch Kconfig should select CLK_NEED_COMPOSITE to have this support
+On Mon, Mar 02, 2015 at 11:21:47PM +0300, Andrey Panov wrote:
+> Arch Kconfig should select CLK_NEED_FDIV to have this support
 > compiled in.
 > 
 > Signed-off-by: Andrey Panov <rockford@yandex.ru>
 > ---
->  drivers/clk/Kconfig         |   3 +
->  drivers/clk/Makefile        |   1 +
->  drivers/clk/clk-composite.c | 146 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/clk.h         |   6 ++
->  4 files changed, 156 insertions(+)
->  create mode 100644 drivers/clk/clk-composite.c
+>  drivers/clk/Kconfig                  |   3 +
+>  drivers/clk/Makefile                 |   1 +
+>  drivers/clk/clk-fractional-divider.c | 156 +++++++++++++++++++++++++++++++++++
+>  include/linux/clk.h                  |   9 ++
+>  4 files changed, 169 insertions(+)
+>  create mode 100644 drivers/clk/clk-fractional-divider.c
 > 
 > diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-> index 1cf0ccb..6db1f33 100644
+> index 6db1f33..e82b566 100644
 > --- a/drivers/clk/Kconfig
 > +++ b/drivers/clk/Kconfig
-> @@ -8,6 +8,9 @@ config COMMON_CLK
->  	select HAVE_CLK
+> @@ -11,6 +11,9 @@ config COMMON_CLK
+>  config CLK_NEED_COMPOSITE
 >  	bool
 >  
-> +config CLK_NEED_COMPOSITE
+> +config CLK_NEED_FDIV
 > +	bool
 > +
->  config COMMON_CLK_OF_PROVIDER
->  	bool
->  	help
-> diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-> index fa707dd..bdd93f5 100644
-> --- a/drivers/clk/Makefile
-> +++ b/drivers/clk/Makefile
-> @@ -1,6 +1,7 @@
->  obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
->  				clk-mux.o clk-gate.o
->  obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
-> +obj-$(CONFIG_CLK_NEED_COMPOSITE)	+= clk-composite.o
 
-Same here, no need for a separate option. You can add this to the
-obj-$(CONFIG_COMMON_CLK) list above.
+No separate option needed.
 
-> +
-> +static struct clk_ops clk_composite_ops = {
-> +        .get_parent = clk_composite_get_parent,
-> +        .set_parent = clk_composite_set_parent,
-> +	.recalc_rate = clk_composite_recalc_rate,
-> +        .round_rate = clk_composite_round_rate,
 
-Indention broken here.
-
-> +struct clk *clk_register_composite(const char *name,
-> +			const char **parent_names, int num_parents,
-> +			struct clk *mux_clk,
-> +			struct clk *rate_clk,
-> +			struct clk *gate_clk,
-> +			unsigned long flags)
+> +struct clk *clk_fractional_divider_alloc(
+> +		const char *name, const char *parent_name, unsigned long flags,
+> +		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
+> +		u8 clk_divider_flags)
 > +{
-> +	struct clk_composite *composite;
-> +	int ret;
+> +	struct clk_fractional_divider *fd;
 > +
-> +	composite = kzalloc(sizeof(*composite), GFP_KERNEL);
-> +	if (!composite) {
-> +		pr_err("%s: could not allocate composite clk\n", __func__);
+> +	fd = kzalloc(sizeof(*fd), GFP_KERNEL);
+> +	if (!fd) {
+> +		pr_err("could not allocate fractional divider clk %s\n", name);
 > +		return ERR_PTR(-ENOMEM);
 > +	}
 
-Please use xzalloc here. You can skip the error check then.
+xzalloc
 
 Sascha
 
