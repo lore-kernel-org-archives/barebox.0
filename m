@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YShWV-00041j-MO
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 07:45:48 +0000
-Date: Tue, 3 Mar 2015 08:45:25 +0100
+ Linux)) id 1YShZv-0005NV-Ic
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 07:49:20 +0000
+Date: Tue, 3 Mar 2015 08:48:57 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150303074525.GO11010@pengutronix.de>
+Message-ID: <20150303074857.GP11010@pengutronix.de>
 References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
- <1425327722-28232-2-git-send-email-rockford@yandex.ru>
+ <1425327722-28232-3-git-send-email-rockford@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425327722-28232-2-git-send-email-rockford@yandex.ru>
+In-Reply-To: <1425327722-28232-3-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,52 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/18] lib: Add gcd() function.
+Subject: Re: [PATCH 02/18] CLK: Add support for composite clock from Linux
+ kernel.
 To: Andrey Panov <rockford@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 02, 2015 at 11:21:45PM +0300, Andrey Panov wrote:
->     It calculates greatest common divisor and is
->     compiled in only if CONFIG_GCD is selected.
+On Mon, Mar 02, 2015 at 11:21:46PM +0300, Andrey Panov wrote:
+> Arch Kconfig should select CLK_NEED_COMPOSITE to have this support
+> compiled in.
 > 
 > Signed-off-by: Andrey Panov <rockford@yandex.ru>
 > ---
->  include/linux/gcd.h | 12 ++++++++++++
->  lib/Kconfig         |  3 +++
->  lib/Makefile        |  1 +
->  lib/gcd.c           | 19 +++++++++++++++++++
->  4 files changed, 35 insertions(+)
->  create mode 100644 include/linux/gcd.h
->  create mode 100644 lib/gcd.c
+>  drivers/clk/Kconfig         |   3 +
+>  drivers/clk/Makefile        |   1 +
+>  drivers/clk/clk-composite.c | 146 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/clk.h         |   6 ++
+>  4 files changed, 156 insertions(+)
+>  create mode 100644 drivers/clk/clk-composite.c
 > 
-> diff --git a/include/linux/gcd.h b/include/linux/gcd.h
-> new file mode 100644
-> index 0000000..6405b27
-> --- /dev/null
-> +++ b/include/linux/gcd.h
-> @@ -0,0 +1,12 @@
-> +#ifndef _GCD_H
-> +#define _GCD_H
+> diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+> index 1cf0ccb..6db1f33 100644
+> --- a/drivers/clk/Kconfig
+> +++ b/drivers/clk/Kconfig
+> @@ -8,6 +8,9 @@ config COMMON_CLK
+>  	select HAVE_CLK
+>  	bool
+>  
+> +config CLK_NEED_COMPOSITE
+> +	bool
 > +
-> +#include <linux/compiler.h>
+>  config COMMON_CLK_OF_PROVIDER
+>  	bool
+>  	help
+> diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+> index fa707dd..bdd93f5 100644
+> --- a/drivers/clk/Makefile
+> +++ b/drivers/clk/Makefile
+> @@ -1,6 +1,7 @@
+>  obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
+>  				clk-mux.o clk-gate.o
+>  obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
+> +obj-$(CONFIG_CLK_NEED_COMPOSITE)	+= clk-composite.o
+
+Same here, no need for a separate option. You can add this to the
+obj-$(CONFIG_COMMON_CLK) list above.
+
 > +
-> +#if !defined(swap)
-> +#define swap(x, y) do { typeof(x) z = x; x = y; y = z; } while (0)
-> +#endiif
+> +static struct clk_ops clk_composite_ops = {
+> +        .get_parent = clk_composite_get_parent,
+> +        .set_parent = clk_composite_set_parent,
+> +	.recalc_rate = clk_composite_recalc_rate,
+> +        .round_rate = clk_composite_round_rate,
 
-Please add this to a location where others can use it, maybe
-include/linux/kernel.h.
+Indention broken here.
 
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -52,3 +52,4 @@ obj-$(CONFIG_STMP_DEVICE) += stmp-device.o
->  obj-y			+= wchar.o
->  obj-y			+= libfile.o
->  obj-y			+= bitmap.o
-> +obj-$(CONFIG_GCD)	+= gcd.o
+> +struct clk *clk_register_composite(const char *name,
+> +			const char **parent_names, int num_parents,
+> +			struct clk *mux_clk,
+> +			struct clk *rate_clk,
+> +			struct clk *gate_clk,
+> +			unsigned long flags)
+> +{
+> +	struct clk_composite *composite;
+> +	int ret;
+> +
+> +	composite = kzalloc(sizeof(*composite), GFP_KERNEL);
+> +	if (!composite) {
+> +		pr_err("%s: could not allocate composite clk\n", __func__);
+> +		return ERR_PTR(-ENOMEM);
+> +	}
 
-You can safely always compile it without adding an extra option. The
-linker will throw it away when it's unused.
+Please use xzalloc here. You can skip the error check then.
 
 Sascha
 
