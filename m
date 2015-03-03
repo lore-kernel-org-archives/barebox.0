@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YShPt-00083k-KJ
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 07:38:58 +0000
-Date: Tue, 3 Mar 2015 08:38:35 +0100
+ Linux)) id 1YShWV-00041j-MO
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 07:45:48 +0000
+Date: Tue, 3 Mar 2015 08:45:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150303073835.GN11010@pengutronix.de>
-References: <1425332840-13427-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20150303074525.GO11010@pengutronix.de>
+References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
+ <1425327722-28232-2-git-send-email-rockford@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425332840-13427-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1425327722-28232-2-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +23,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] tegra: avp_init: write DT address register earlier
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 01/18] lib: Add gcd() function.
+To: Andrey Panov <rockford@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 02, 2015 at 10:47:20PM +0100, Lucas Stach wrote:
-> Otherwise the write would be skipped if we are already running on the main CPU
-> cluster. In practice this means that a second stage barebox will reuse the DT
-> of the first stage, instead of using it's own.
+On Mon, Mar 02, 2015 at 11:21:45PM +0300, Andrey Panov wrote:
+>     It calculates greatest common divisor and is
+>     compiled in only if CONFIG_GCD is selected.
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> Signed-off-by: Andrey Panov <rockford@yandex.ru>
 > ---
-> Sascha, it would be nice if you could squeeze into master as this is
-> clearly a simple bugfix.
+>  include/linux/gcd.h | 12 ++++++++++++
+>  lib/Kconfig         |  3 +++
+>  lib/Makefile        |  1 +
+>  lib/gcd.c           | 19 +++++++++++++++++++
+>  4 files changed, 35 insertions(+)
+>  create mode 100644 include/linux/gcd.h
+>  create mode 100644 lib/gcd.c
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> diff --git a/include/linux/gcd.h b/include/linux/gcd.h
+> new file mode 100644
+> index 0000000..6405b27
+> --- /dev/null
+> +++ b/include/linux/gcd.h
+> @@ -0,0 +1,12 @@
+> +#ifndef _GCD_H
+> +#define _GCD_H
+> +
+> +#include <linux/compiler.h>
+> +
+> +#if !defined(swap)
+> +#define swap(x, y) do { typeof(x) z = x; x = y; y = z; } while (0)
+> +#endiif
 
-Applied, thanks
+Please add this to a location where others can use it, maybe
+include/linux/kernel.h.
+
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -52,3 +52,4 @@ obj-$(CONFIG_STMP_DEVICE) += stmp-device.o
+>  obj-y			+= wchar.o
+>  obj-y			+= libfile.o
+>  obj-y			+= bitmap.o
+> +obj-$(CONFIG_GCD)	+= gcd.o
+
+You can safely always compile it without adding an extra option. The
+linker will throw it away when it's unused.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
