@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSsmq-0000rv-LA
+ id 1YSsmr-0000sR-53
  for barebox@lists.infradead.org; Tue, 03 Mar 2015 19:47:26 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 91A4026C2001
- for <barebox@lists.infradead.org>; Tue,  3 Mar 2015 20:46:27 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id A6C9926C2004
+ for <barebox@lists.infradead.org>; Tue,  3 Mar 2015 20:46:28 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Mar 2015 20:46:13 +0100
-Message-Id: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Mar 2015 20:46:16 +0100
+Message-Id: <1425411983-24732-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
+References: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] of: make of_alias_get work on all types of DT paths
+Subject: [PATCH 04/11] ARM: tegra124: add mmc aliases
 To: barebox@lists.infradead.org
-
-of_alias_get assumed that a DT path is always the full node path,
-whic is not necessarily the case, as there are other valid path
-descriptions. All of them are handled by of_find_node_by_path.
-
-As there is already a preparsed list with all DT aliases that handles
-this case properly we can simply reuse that one.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/of/base.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/dts/tegra124.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index af10fd1..b77d879 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -227,11 +227,11 @@ EXPORT_SYMBOL_GPL(of_alias_get_id);
- 
- const char *of_alias_get(struct device_node *np)
- {
--	struct property *pp;
-+	struct alias_prop *app;
- 
--	list_for_each_entry(pp, &of_aliases->properties, list) {
--		if (!of_node_cmp(np->full_name, pp->value))
--			return pp->name;
-+	list_for_each_entry(app, &aliases_lookup, link) {
-+		if (np == app->np)
-+			return app->alias;
- 	}
- 
- 	return NULL;
+diff --git a/arch/arm/dts/tegra124.dtsi b/arch/arm/dts/tegra124.dtsi
+index c795811..cd515a2 100644
+--- a/arch/arm/dts/tegra124.dtsi
++++ b/arch/arm/dts/tegra124.dtsi
+@@ -4,5 +4,9 @@
+ 		serial1 = "/serial@0,70006040/";
+ 		serial2 = "/serial@0,70006200/";
+ 		serial3 = "/serial@0,70006300/";
++		mmc0 = "/sdhci@0,700b0000/";
++		mmc1 = "/sdhci@0,700b0200/";
++		mmc2 = "/sdhci@0,700b0400/";
++		mmc3 = "/sdhci@0,700b0600/";
+ 	};
+ };
 -- 
 2.1.0
 
