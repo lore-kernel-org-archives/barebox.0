@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YSljR-0001Hw-NC
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 12:15:28 +0000
+ Linux)) id 1YSljR-0001NQ-Mt
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 12:15:29 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue,  3 Mar 2015 13:14:51 +0100
-Message-Id: <1425384899-18809-6-git-send-email-mkl@pengutronix.de>
+Date: Tue,  3 Mar 2015 13:14:52 +0100
+Message-Id: <1425384899-18809-7-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 References: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 05/13] sandbox: hostfile: probe(): add missing pointer from
- cdev.dev to dev
+Subject: [PATCH v3 06/13] sandbox: hostfile: remove struct hf_platform_data
+ from hf_priv
 To: barebox@lists.infradead.org
-
-Without this pointer the cdev will not be associated with the dev,
-of_find_path() relies on this.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/board/hostfile.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/sandbox/board/hostfile.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index 5324da6f4802..6ec3b87efa86 100644
+index 6ec3b87efa86..fef9f5cffa89 100644
 --- a/arch/sandbox/board/hostfile.c
 +++ b/arch/sandbox/board/hostfile.c
-@@ -75,6 +75,7 @@ static int hf_probe(struct device_d *dev)
+@@ -28,7 +28,6 @@
  
+ struct hf_priv {
+ 	struct cdev cdev;
+-	struct hf_platform_data *pdata;
+ };
+ 
+ static ssize_t hf_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags)
+@@ -71,8 +70,6 @@ static int hf_probe(struct device_d *dev)
+ 	struct hf_platform_data *hf = dev->platform_data;
+ 	struct hf_priv *priv = xzalloc(sizeof(*priv));
+ 
+-	priv->pdata = hf;
+-
  	priv->cdev.name = hf->devname;
  	priv->cdev.size = hf->size;
-+	priv->cdev.dev = dev;
- 	priv->cdev.ops = &hf_fops;
- 	priv->cdev.priv = hf;
- 
+ 	priv->cdev.dev = dev;
 -- 
 2.1.4
 
