@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YShcL-0007Bk-Ms
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 07:51:52 +0000
-Date: Tue, 3 Mar 2015 08:51:27 +0100
+ Linux)) id 1YSiKU-0002gR-Rj
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 08:37:28 +0000
+Date: Tue, 3 Mar 2015 09:37:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150303075127.GQ11010@pengutronix.de>
-References: <1425327722-28232-1-git-send-email-rockford@yandex.ru>
- <1425327722-28232-4-git-send-email-rockford@yandex.ru>
+Message-ID: <20150303083704.GA10997@pengutronix.de>
+References: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425327722-28232-4-git-send-email-rockford@yandex.ru>
+In-Reply-To: <1425215842-6982-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,55 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 03/18] CLK: Add fractional divider clock support from
- Linux kernel.
-To: Andrey Panov <rockford@yandex.ru>
+Subject: Re: [PATCH 00/24] Phasing out direct usage of asm/mmu.h on ARM
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 02, 2015 at 11:21:47PM +0300, Andrey Panov wrote:
-> Arch Kconfig should select CLK_NEED_FDIV to have this support
-> compiled in.
+On Sun, Mar 01, 2015 at 02:16:58PM +0100, Lucas Stach wrote:
+> This series introduces to Barebox the streaming DMA ops and implements
+> them for the ARM architecture. This will make it a lot easier to
+> get common cache maintenance operations for all architectures and in
+> turn allows for wider reuse of driver across architectures.
 > 
-> Signed-off-by: Andrey Panov <rockford@yandex.ru>
-> ---
->  drivers/clk/Kconfig                  |   3 +
->  drivers/clk/Makefile                 |   1 +
->  drivers/clk/clk-fractional-divider.c | 156 +++++++++++++++++++++++++++++++++++
->  include/linux/clk.h                  |   9 ++
->  4 files changed, 169 insertions(+)
->  create mode 100644 drivers/clk/clk-fractional-divider.c
+> I've tested this on a Tegra124 which is known to fall over in all sorts
+> of funny ways if cache maintenance is broken. No odd behavior spotted.
 > 
-> diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-> index 6db1f33..e82b566 100644
-> --- a/drivers/clk/Kconfig
-> +++ b/drivers/clk/Kconfig
-> @@ -11,6 +11,9 @@ config COMMON_CLK
->  config CLK_NEED_COMPOSITE
->  	bool
->  
-> +config CLK_NEED_FDIV
-> +	bool
-> +
+> The series is bisect-clean and I've compile tested it on some defconfigs,
+> but please go wild and TEST. I'll take any complaints.
+> 
+> Changes since RFT:
+> - rebased to current master
+> - now compile tested on all ARM defconfigs
+> - fixed a few compile errors by reordering stuff in patches
+> - A few more words in commit logs
 
-No separate option needed.
+As discussed with Lucas personally:
 
+The series breaks MIPS and NIOS2 support.
 
-> +struct clk *clk_fractional_divider_alloc(
-> +		const char *name, const char *parent_name, unsigned long flags,
-> +		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
-> +		u8 clk_divider_flags)
-> +{
-> +	struct clk_fractional_divider *fd;
-> +
-> +	fd = kzalloc(sizeof(*fd), GFP_KERNEL);
-> +	if (!fd) {
-> +		pr_err("could not allocate fractional divider clk %s\n", name);
-> +		return ERR_PTR(-ENOMEM);
-> +	}
+On ARM we assume that the address returned from dma_alloc_coherent
+can be used as physical DMA address. This is not true on MIPS and NIOS2.
+On MIPS and NIOS2 dma_alloc_coherent also returns the DMA address which
+differs from the virtual address. This means most users of DMA memory
+are broken on MIPS and NIOS2, only the drivers which use the MIPS/NIOS2
+variant of dma_alloc_coherent work on these architectures.
 
-xzalloc
+The outcome is that we'll implement dma_alloc_coherent() for all
+architectures which also returns the physical address:
+
+void *dma_alloc_coherent(size_t len, dma_addr_t *handle);
+
+For all the users which do not handle converting the virtual address
+into a DMA address properly we'll add a
+
+#define DMA_ADDRESS_BROKEN	NULL
+
+define which can be passed as the handle pointer. This will allow us to
+identify broken users easily and to fix them one by one.
 
 Sascha
+
+
 
 -- 
 Pengutronix e.K.                           |                             |
