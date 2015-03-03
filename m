@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YSsnh-0001Ja-A0
- for barebox@lists.infradead.org; Tue, 03 Mar 2015 19:48:18 +0000
+ id 1YSsnh-0001Jz-9x
+ for barebox@lists.infradead.org; Tue, 03 Mar 2015 19:48:19 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 75F5B26C2006
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id D7D0D26C2002
  for <barebox@lists.infradead.org>; Tue,  3 Mar 2015 20:46:29 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Mar 2015 20:46:18 +0100
-Message-Id: <1425411983-24732-6-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Mar 2015 20:46:19 +0100
+Message-Id: <1425411983-24732-7-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
 References: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,29 +24,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] bbu: include necessary headers
+Subject: [PATCH 07/11] bbu: make bbu confirm a bit more verbose
 To: barebox@lists.infradead.org
 
-Fixes compile errors due to undefined symbols.
+It is a lot more user friendly if we give a bit more feedback.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- include/bbu.h | 2 ++
- 1 file changed, 2 insertions(+)
+ common/bbu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/bbu.h b/include/bbu.h
-index adb52b0..4a3d35e 100644
---- a/include/bbu.h
-+++ b/include/bbu.h
-@@ -2,6 +2,8 @@
- #define __INCLUDE_BBU_H
+diff --git a/common/bbu.c b/common/bbu.c
+index e31f645..7fb154a 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -65,8 +65,10 @@ int bbu_confirm(struct bbu_data *data)
  
- #include <asm-generic/errno.h>
-+#include <linux/list.h>
-+#include <linux/types.h>
+ 	key = read_key();
  
- struct bbu_data {
- #define BBU_FLAG_FORCE	(1 << 0)
+-	if (key == 'y')
++	if (key == 'y') {
++		printf("updating barebox...\n");
+ 		return 0;
++	}
+ 
+ 	return -EINTR;
+ }
 -- 
 2.1.0
 
