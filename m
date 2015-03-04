@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YT6ef-0003Vq-5P
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:35:54 +0000
-Date: Wed, 4 Mar 2015 11:35:31 +0100
+ Linux)) id 1YT6gH-00043X-Sn
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:37:34 +0000
+Date: Wed, 4 Mar 2015 11:37:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150304103531.GY11010@pengutronix.de>
-References: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
+Message-ID: <20150304103710.GZ11010@pengutronix.de>
+References: <20150217075906.GP12209@pengutronix.de>
+ <1425462724-10581-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1425462724-10581-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +23,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/13] sandbox OF integration
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: [PATCH v2] led: gpio: add support for default-state dt-property
+To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 03, 2015 at 01:14:46PM +0100, Marc Kleine-Budde wrote:
-> Hello Sascha,
+On Wed, Mar 04, 2015 at 10:52:04AM +0100, Hubert Feurstein wrote:
+> This patch adds support for the default-state device tree property.
 > 
-> these are the remaining patches that bring OF support to the sandbox so that
-> enables testing of framworks which need the device tree.
-> 
-> changes since v2:
-> - build sandbox with oftree support always, select CONFIG_OFTREE
-> - the hostfile nodes in the device tree are now generated on the fly,
->   no need for stubs.
-> - hostfile: switch to oftree only, remove platform data
-> - hostfile: add possibility to specify name of device via:
->   --image <DEV>=<FILE>
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+> ---
+>  drivers/led/led-gpio.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-Applied, thanks
+Nice, as it happens I can just make use of this patch to turn off an
+annoying LED on my beaglebone board.
+
+Applied, thanks.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
