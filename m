@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YT6Ug-0003dj-B8
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:25:35 +0000
-Message-ID: <54F6DD99.4010708@erwinrol.com>
-Date: Wed, 04 Mar 2015 11:25:29 +0100
-From: Erwin Rol <mailinglists@erwinrol.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YT6dp-000282-GV
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:35:02 +0000
+Date: Wed, 4 Mar 2015 11:34:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150304103439.GX11010@pengutronix.de>
+References: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,21 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Rockchip RK3188
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 01/11] of: make of_alias_get work on all types of DT paths
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-Hey all,
+On Tue, Mar 03, 2015 at 08:46:13PM +0100, Lucas Stach wrote:
+> of_alias_get assumed that a DT path is always the full node path,
+> whic is not necessarily the case, as there are other valid path
+> descriptions. All of them are handled by of_find_node_by_path.
+> 
+> As there is already a preparsed list with all DT aliases that handles
+> this case properly we can simply reuse that one.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  drivers/of/base.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-I saw some mails and patches passing by for the Rockchip RK3188. Since I
-am just starting a project with a RK3188 I was wondering if there are
-ppl that have more info than the pathetic databook from Rochchip.
+Applied all, thanks
 
-Also it seems large parts (even essential things like the NAND
-controller) are closed source kernel blobs ?
+Sascha
 
-How is this dealt with in barebox? Is NAND even usable ?
 
-- Erwin
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
