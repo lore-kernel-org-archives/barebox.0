@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward8l.mail.yandex.net ([2a02:6b8:0:1819::8])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTFej-000123-CY
+Received: from forward9l.mail.yandex.net ([84.201.143.142])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YTFei-0001Hu-97
  for barebox@lists.infradead.org; Wed, 04 Mar 2015 20:12:34 +0000
 From: Andrey Panov <rockford@yandex.ru>
-Date: Wed,  4 Mar 2015 23:11:46 +0300
-Message-Id: <1425499906-32125-19-git-send-email-rockford@yandex.ru>
+Date: Wed,  4 Mar 2015 23:11:37 +0300
+Message-Id: <1425499906-32125-10-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 References: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 18/18] ARM: Rockchip: Add documentation
+Subject: [PATCH v2 09/18] CLK: Add helper defines to barebox-wrapper.h for
+ easier porting of drivers from Linux kernel
 To: barebox@lists.infradead.org
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- Documentation/boards/rockchip.rst | 47 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
- create mode 100644 Documentation/boards/rockchip.rst
+ include/linux/barebox-wrapper.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/boards/rockchip.rst b/Documentation/boards/rockchip.rst
-new file mode 100644
-index 0000000..a5599c6
---- /dev/null
-+++ b/Documentation/boards/rockchip.rst
-@@ -0,0 +1,47 @@
-+Rockchip RK3188
-+===============
+diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
+index d34d1d1..3859185 100644
+--- a/include/linux/barebox-wrapper.h
++++ b/include/linux/barebox-wrapper.h
+@@ -73,4 +73,10 @@ typedef int irqreturn_t;
+ #define IRQ_NONE 0
+ #define IRQ_HANDLED 0
+ 
++/* To ease clk drivers porting from Linux kernel */
++#define __clk_get_name(clk)		(clk->name)
++#define __clk_lookup			clk_lookup
++#define __clk_get_rate			clk_get_rate
++#define __clk_get_parent		clk_get_parent
 +
-+Radxa Rock
-+----------
-+
-+Radxa Rock is a small SBC based on Rockchip RK3188 SoC.
-+See http://radxa.com/Rock for additional information.
-+
-+Building
-+^^^^^^^^
-+
-+.. code-block:: sh
-+
-+  make ARCH=arm radxa_rock_defconfig
-+  make ARCH=arm
-+
-+Creating bootable SD card
-+^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+This will require a DRAM setup blob and additional utilities, see above.
-+
-+Card layout (block == 0x200 bytes).
-+
-+============   ==========================================
-+Block Number   Name
-+============   ==========================================
-+0x0000         DOS partition table
-+0x0040         RK bootinfo (BootROM check sector)
-+0x0044         DRAM setup routine
-+0x005C         Bootloader (barebox)
-+0x0400         Barebox environment
-+0x0800         Free space start
-+============   ==========================================
-+
-+Instructions.
-+
-+* Make 2 partitions on SD for boot and root filesystems.
-+* Checkout and compile https://github.com/apxii/rkboottools
-+* Get some RK3188 bootloader from https://github.com/neo-technologies/rockchip-bootloader
-+* Run "rk-splitboot RK3188Loader(L)_V2.13.bin" command. (for example).
-+  You will get FlashData file with others. It's a DRAM setup blob.
-+* Otherwise it can be borrowed from RK U-boot sources from
-+  https://github.com/linux-rockchip/u-boot-rockchip/blob/u-boot-rk3188/tools/rk_tools/3188_LPDDR2_300MHz_DDR3_300MHz_20130830.bin
-+* Run "rk-makebootable FlashData barebox-radxa-rock.bin rrboot.bin"
-+* Insert SD card and run "dd if=rrboot.bin of=</dev/sdcard> bs=$((0x200)) seek=$((0x40))"
-+* SD card is ready
+ #endif /* __INCLUDE_LINUX_BAREBOX_WRAPPER_H */
 -- 
 2.1.4
 
