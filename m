@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward3l.mail.yandex.net ([2a02:6b8:0:1819::3])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTFei-0001Hv-7v
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 20:12:34 +0000
+Received: from forward2l.mail.yandex.net ([84.201.143.145])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YTFek-0007iT-Hk
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 20:12:37 +0000
 From: Andrey Panov <rockford@yandex.ru>
-Date: Wed,  4 Mar 2015 23:11:40 +0300
-Message-Id: <1425499906-32125-13-git-send-email-rockford@yandex.ru>
+Date: Wed,  4 Mar 2015 23:11:45 +0300
+Message-Id: <1425499906-32125-18-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 References: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,166 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/18] ARM: Rockchip: Remove unused files from mach-rockchip
+Subject: [PATCH v2 17/18] ARM: Rockchip: Add Radxa Rock defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- arch/arm/mach-rockchip/Makefile                    |   1 -
- arch/arm/mach-rockchip/include/mach/rockchip-pll.h |  26 ------
- arch/arm/mach-rockchip/pll.c                       | 102 ---------------------
- 3 files changed, 129 deletions(-)
- delete mode 100644 arch/arm/mach-rockchip/include/mach/rockchip-pll.h
- delete mode 100644 arch/arm/mach-rockchip/pll.c
+ arch/arm/configs/radxa_rock_defconfig | 110 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 110 insertions(+)
+ create mode 100644 arch/arm/configs/radxa_rock_defconfig
 
-diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
-index 6f4ec16..820eb10 100644
---- a/arch/arm/mach-rockchip/Makefile
-+++ b/arch/arm/mach-rockchip/Makefile
-@@ -1,2 +1 @@
- obj-y += core.o
--obj-y += pll.o
-\ No newline at end of file
-diff --git a/arch/arm/mach-rockchip/include/mach/rockchip-pll.h b/arch/arm/mach-rockchip/include/mach/rockchip-pll.h
-deleted file mode 100644
-index c2cd888..0000000
---- a/arch/arm/mach-rockchip/include/mach/rockchip-pll.h
-+++ /dev/null
-@@ -1,26 +0,0 @@
--/*
-- * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * version 2 as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--
--#ifndef __MACH_ROCKCHIP_PLL_H
--#define __MACH_ROCKCHIP_PLL_H
--
--enum rk3188_plls {
--	RK3188_APLL = 0,	/* ARM */
--	RK3188_DPLL,		/* DDR */
--	RK3188_CPLL,		/* Codec */
--	RK3188_GPLL,		/* General */
--};
--
--int rk3188_pll_set_parameters(int pll, int nr, int nf, int no);
--
--#endif /* __MACH_ROCKCHIP_PLL_H */
-diff --git a/arch/arm/mach-rockchip/pll.c b/arch/arm/mach-rockchip/pll.c
-deleted file mode 100644
-index fce192c..0000000
---- a/arch/arm/mach-rockchip/pll.c
-+++ /dev/null
-@@ -1,102 +0,0 @@
--/*
-- * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
-- *
-- * Based on Linux clk driver:
-- *  Copyright (c) 2014 MundoReader S.L.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * version 2 as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--
--#include <asm/io.h>
--#include <common.h>
--#include <mach/rockchip-regs.h>
--
--#define RK3188_CLK_BASE		0x20000000
--#define RK3188_PLL_LOCK_REG	0x200080ac
--
--#define PLL_MODE_MASK		0x3
--#define PLL_MODE_SLOW		0x0
--#define PLL_MODE_NORM		0x1
--#define PLL_MODE_DEEP		0x2
--
--#define PLL_RESET_DELAY(nr)	((nr * 500) / 24 + 1)
--
--#define PLLCON0_OD_MASK		0xf
--#define PLLCON0_OD_SHIFT	0
--#define PLLCON0_NR_MASK		0x3f
--#define PLLCON0_NR_SHIFT	8
--
--#define PLLCON1_NF_MASK		0x1fff
--#define PLLCON1_NF_SHIFT	0
--
--#define PLLCON2_BWADJ_MASK	0xfff
--#define PLLCON2_BWADJ_SHIFT	0
--
--#define PLLCON3_RESET		(1 << 1)
--#define PLLCON3_BYPASS		(1 << 0)
--
--struct rockchip_pll_data {
--	int con_base;
--	int mode_offset;
--	int mode_shift;
--	int lock_shift;
--};
--
--struct rockchip_pll_data rk3188_plls[] = {
--	{ 0x00, 0x40, 0x00, 0x06 },
--	{ 0x10, 0x40, 0x04, 0x05 },
--	{ 0x20, 0x40, 0x08, 0x07 },
--	{ 0x30, 0x40, 0x0c, 0x08 },
--};
--
--#define HIWORD_UPDATE(val, mask, shift) \
--	((val) << (shift) | (mask) << ((shift) + 16))
--
--int rk3188_pll_set_parameters(int pll, int nr, int nf, int no)
--{
--	struct rockchip_pll_data *d = &rk3188_plls[pll];
--	int delay = 0;
--
--	debug("rk3188 pll %d: set param %d %d %d\n", pll, nr, nf, no);
--
--	/* pull pll in slow mode */
--	writel(HIWORD_UPDATE(PLL_MODE_SLOW, PLL_MODE_MASK, d->mode_shift),
--	       RK3188_CLK_BASE + d->mode_offset);
--	/* enter reset */
--	writel(HIWORD_UPDATE(PLLCON3_RESET, PLLCON3_RESET, 0),
--	       RK3188_CLK_BASE + d->con_base + 12);
--
--	/* update pll values */
--	writel(HIWORD_UPDATE(nr - 1, PLLCON0_NR_MASK, PLLCON0_NR_SHIFT) |
--	       HIWORD_UPDATE(no - 1, PLLCON0_OD_MASK, PLLCON0_OD_SHIFT),
--	       RK3188_CLK_BASE + d->con_base + 0);
--	writel(HIWORD_UPDATE(nf - 1, PLLCON1_NF_MASK, PLLCON1_NF_SHIFT),
--	       RK3188_CLK_BASE + d->con_base + 4);
--	writel(HIWORD_UPDATE(nf >> 1, PLLCON2_BWADJ_MASK, PLLCON2_BWADJ_SHIFT),
--	       RK3188_CLK_BASE + d->con_base + 8);
--
--	/* leave reset and wait the reset_delay */
--	writel(HIWORD_UPDATE(0, PLLCON3_RESET, 0),
--	       RK3188_CLK_BASE + d->con_base + 12);
--	udelay(PLL_RESET_DELAY(nr));
--
--	/* wait for the pll to lock */
--	while (delay++ < 24000000) {
--		if (readl(RK3188_PLL_LOCK_REG) & BIT(d->lock_shift))
--			break;
--	}
--
--	/* go back to normal mode */
--	writel(HIWORD_UPDATE(PLL_MODE_NORM, PLL_MODE_MASK, d->mode_shift),
--	       RK3188_CLK_BASE + d->mode_offset);
--
--	return 0;
--}
--EXPORT_SYMBOL(rk3188_pll_set_parameters);
+diff --git a/arch/arm/configs/radxa_rock_defconfig b/arch/arm/configs/radxa_rock_defconfig
+new file mode 100644
+index 0000000..6e7da3e
+--- /dev/null
++++ b/arch/arm/configs/radxa_rock_defconfig
+@@ -0,0 +1,110 @@
++CONFIG_ARCH_ROCKCHIP=y
++CONFIG_MACH_RADXA_ROCK=y
++CONFIG_AEABI=y
++CONFIG_ARM_BOARD_APPEND_ATAG=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_MALLOC_SIZE=0x4000000
++CONFIG_EXPERIMENTAL=y
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_PROMPT="radxa-rock:"
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_DEFAULT_COMPRESSION_LZO=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/radxa-rock/env"
++CONFIG_BAREBOXENV_TARGET=y
++CONFIG_BAREBOXCRC32_TARGET=y
++CONFIG_POLLER=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_BOOTM_AIMAGE=y
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_SAVES=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_DEFAULTENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA224SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_NET_ARC_EMAC=y
++CONFIG_SMSC_PHY=y
++CONFIG_I2C=y
++CONFIG_I2C_GPIO=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_DW=y
++CONFIG_MCI_DW_PIO=y
++CONFIG_MFD_ACT8846=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_GENERIC_PHY=y
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_BPKFS=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_LZO_DECOMPRESS=y
 -- 
 2.1.4
 
