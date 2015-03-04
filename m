@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward1h.mail.yandex.net ([84.201.187.146])
+Received: from forward2m.mail.yandex.net ([37.140.138.2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTE2j-0004as-3P
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 18:29:14 +0000
-From: =?koi8-r?B?8MHOz9cg4c7E0sXK?= <rockford@yandex.ru>
-In-Reply-To: <54F6DD99.4010708@erwinrol.com>
-References: <54F6DD99.4010708@erwinrol.com>
-MIME-Version: 1.0
-Message-Id: <5272801425493724@web14h.yandex.ru>
-Date: Wed, 04 Mar 2015 21:28:44 +0300
+ id 1YTFeb-0007d0-Sg
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 20:12:28 +0000
+Received: from smtp3m.mail.yandex.net (smtp3m.mail.yandex.net [77.88.61.130])
+ by forward2m.mail.yandex.net (Yandex) with ESMTP id 062895CA0348
+ for <barebox@lists.infradead.org>; Wed,  4 Mar 2015 23:12:01 +0300 (MSK)
+From: Andrey Panov <rockford@yandex.ru>
+Date: Wed,  4 Mar 2015 23:11:29 +0300
+Message-Id: <1425499906-32125-2-git-send-email-rockford@yandex.ru>
+In-Reply-To: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
+References: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,30 +19,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Rockchip RK3188
-To: Erwin Rol <mailinglists@erwinrol.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 01/18] lib: Add gcd() function
+To: barebox@lists.infradead.org
 
-SGVsbG8hCgowNC4wMy4yMDE1LCAxMzoyNiwgIkVyd2luIFJvbCIgPG1haWxpbmdsaXN0c0Blcndp
-bnJvbC5jb20+Ogo+IEhleSBhbGwsCj4KPiBJIHNhdyBzb21lIG1haWxzIGFuZCBwYXRjaGVzIHBh
-c3NpbmcgYnkgZm9yIHRoZSBSb2NrY2hpcCBSSzMxODguIFNpbmNlIEkKPiBhbSBqdXN0IHN0YXJ0
-aW5nIGEgcHJvamVjdCB3aXRoIGEgUkszMTg4IEkgd2FzIHdvbmRlcmluZyBpZiB0aGVyZSBhcmUK
-PiBwcGwgdGhhdCBoYXZlIG1vcmUgaW5mbyB0aGFuIHRoZSBwYXRoZXRpYyBkYXRhYm9vayBmcm9t
-IFJvY2hjaGlwLgoKQWxsIGtub3duIGRvY3VtZW50cyBhcmUgb24gaHR0cDovL3JvY2tjaGlwLmZy
-LwozMTg4IFRSTTogaHR0cDovL3JvY2tjaGlwLmZyL1JvY2tjaGlwJTIwUkszMTg4JTIwVFJNJTIw
-VjEuMy5wZGYKUFgyIFRSTTogaHR0cDovL3JvY2tjaGlwLmZyL1JvY2tjaGlwJTIwUFgyJTIwVFJN
-JTIwVjEuMC5wZGYKUFgyIGRvY3VtZW50IGlzIG1vcmUgY29tcGxldGUgYW5kIGhhcyBkZXNjcmlw
-dGlvbiBvZiBwYXJ0cyBtaXNzaW5nIGluIDMxODggZG9jLgpDaGlwcyBhcmUgc2ltaWxhciBpbiBt
-YW55IHBhcnRzIGFuZCBQWDIgZG9jIGNhbiBiZSB1c2VkIGFzIHJlZmVyZW5jZS4KCj4gQWxzbyBp
-dCBzZWVtcyBsYXJnZSBwYXJ0cyAoZXZlbiBlc3NlbnRpYWwgdGhpbmdzIGxpa2UgdGhlIE5BTkQK
-PiBjb250cm9sbGVyKSBhcmUgY2xvc2VkIHNvdXJjZSBrZXJuZWwgYmxvYnMgPwo+Cj4gSG93IGlz
-IHRoaXMgZGVhbHQgd2l0aCBpbiBiYXJlYm94PyBJcyBOQU5EIGV2ZW4gdXNhYmxlID8KCk5BTkQg
-d29ya3Mgd2l0aCBSYWR4YSBzdXBwbGllZCBpbWFnZXMgd2l0aCAzLjAuMzYrIGtlcm5lbCBhbmQg
-CmRvZXMgbm90IHdpdGggbWFpbmxpbmUuCgpCYXJlYm94ICh3aXRoIHBhdGNoZXMpIHN1cHBvcnRz
-IFNEIGFuZCBuZXR3b3JrIGNvbnRyb2xsZXJzLgoKLS0KIOHOxNLFygoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+It calculates greatest common divisor.
+
+Signed-off-by: Andrey Panov <rockford@yandex.ru>
+---
+ include/linux/gcd.h    |  8 ++++++++
+ include/linux/kernel.h |  5 +++++
+ lib/Makefile           |  1 +
+ lib/gcd.c              | 18 ++++++++++++++++++
+ 4 files changed, 32 insertions(+)
+ create mode 100644 include/linux/gcd.h
+ create mode 100644 lib/gcd.c
+
+diff --git a/include/linux/gcd.h b/include/linux/gcd.h
+new file mode 100644
+index 0000000..0ac2621
+--- /dev/null
++++ b/include/linux/gcd.h
+@@ -0,0 +1,8 @@
++#ifndef _GCD_H
++#define _GCD_H
++
++#include <linux/kernel.h>
++
++unsigned long gcd(unsigned long a, unsigned long b) __attribute_const__;
++
++#endif /* _GCD_H */
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index 3f2644c..5b6b448 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -257,5 +257,10 @@ static inline char *hex_byte_pack_upper(char *buf, u8 byte)
+ 	const typeof( ((type *)0)->member ) *__mptr = (ptr);	\
+ 	(type *)( (char *)__mptr - offsetof(type,member) );})
+ 
++/*
++ * swap - swap value of @a and @b
++ */
++#define swap(a, b) \
++	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+ 
+ #endif /* _LINUX_KERNEL_H */
+diff --git a/lib/Makefile b/lib/Makefile
+index b97e52d..f08ac59 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -52,3 +52,4 @@ obj-$(CONFIG_STMP_DEVICE) += stmp-device.o
+ obj-y			+= wchar.o
+ obj-y			+= libfile.o
+ obj-y			+= bitmap.o
++obj-y			+= gcd.o
+diff --git a/lib/gcd.c b/lib/gcd.c
+new file mode 100644
+index 0000000..86bdba9
+--- /dev/null
++++ b/lib/gcd.c
+@@ -0,0 +1,18 @@
++#include <linux/gcd.h>
++
++/* Greatest common divisor */
++unsigned long gcd(unsigned long a, unsigned long b)
++{
++	unsigned long r;
++
++	if (a < b)
++		swap(a, b);
++
++	if (!b)
++		return a;
++	while ((r = a % b) != 0) {
++		a = b;
++		b = r;
++	}
++	return b;
++}
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
