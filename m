@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward3m.mail.yandex.net ([2a02:6b8:0:2519::3:12])
+Received: from forward8l.mail.yandex.net ([84.201.143.141])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTFee-0007e9-1e
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 20:12:30 +0000
-Received: from smtp3m.mail.yandex.net (smtp3m.mail.yandex.net [77.88.61.130])
- by forward3m.mail.yandex.net (Yandex) with ESMTP id C73846B61623
- for <barebox@lists.infradead.org>; Wed,  4 Mar 2015 23:12:02 +0300 (MSK)
+ id 1YTFeh-0007gB-JS
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 20:12:32 +0000
 From: Andrey Panov <rockford@yandex.ru>
-Date: Wed,  4 Mar 2015 23:11:30 +0300
-Message-Id: <1425499906-32125-3-git-send-email-rockford@yandex.ru>
+Date: Wed,  4 Mar 2015 23:11:38 +0300
+Message-Id: <1425499906-32125-11-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 References: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -24,197 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/18] CLK: Add support for composite clock from Linux
- kernel
+Subject: [PATCH v2 10/18] NET: arc_emac: Update for newer DTS,
+ support for Rockchip .compatible
 To: barebox@lists.infradead.org
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- drivers/clk/Makefile        |   2 +-
- drivers/clk/clk-composite.c | 145 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/clk.h         |   6 ++
- 3 files changed, 152 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/clk-composite.c
+ drivers/net/arc_emac.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index fa707dd..9df98c8 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -1,5 +1,5 @@
- obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
--				clk-mux.o clk-gate.o
-+				clk-mux.o clk-gate.o clk-composite.o
- obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
- 
- obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
-diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
-new file mode 100644
-index 0000000..5d21a0e
---- /dev/null
-+++ b/drivers/clk/clk-composite.c
-@@ -0,0 +1,145 @@
-+/*
-+ * Taken from linux/drivers/clk/
-+ *
-+ * Copyright (c) 2013 NVIDIA CORPORATION.  All rights reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
+diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
+index 1770506..06c3376 100644
+--- a/drivers/net/arc_emac.c
++++ b/drivers/net/arc_emac.c
+@@ -23,6 +23,7 @@
+ #include <io.h>
+ #include <init.h>
+ #include <linux/err.h>
 +#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+struct clk_composite {
-+	struct clk	clk;
-+
-+	struct clk	*mux_clk;
-+	struct clk	*rate_clk;
-+	struct clk	*gate_clk;
-+};
-+
-+#define to_clk_composite(_clk) container_of(_clk, struct clk_composite, clk)
-+
-+static int clk_composite_get_parent(struct clk *clk)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *mux_clk = composite->mux_clk;
-+
-+	return mux_clk ? mux_clk->ops->get_parent(mux_clk) : 0;
-+}
-+
-+static int clk_composite_set_parent(struct clk *clk, u8 index)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *mux_clk = composite->mux_clk;
-+
-+	return mux_clk ? mux_clk->ops->set_parent(mux_clk, index) : 0;
-+}
-+
-+static unsigned long clk_composite_recalc_rate(struct clk *clk,
-+					    unsigned long parent_rate)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *rate_clk = composite->rate_clk;
-+
-+	return rate_clk ? rate_clk->ops->recalc_rate(rate_clk, parent_rate) : 0;
-+}
-+
-+static long clk_composite_round_rate(struct clk *clk, unsigned long rate,
-+				  unsigned long *prate)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *rate_clk = composite->rate_clk;
-+
-+	return rate_clk ? rate_clk->ops->round_rate(rate_clk, rate, prate) : 0;
-+}
-+
-+static int clk_composite_set_rate(struct clk *clk, unsigned long rate,
-+			       unsigned long parent_rate)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *rate_clk = composite->rate_clk;
-+
-+	return rate_clk ?
-+		rate_clk->ops->set_rate(rate_clk, rate, parent_rate) : 0;
-+}
-+
-+static int clk_composite_is_enabled(struct clk *clk)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *gate_clk = composite->gate_clk;
-+
-+	return gate_clk ? gate_clk->ops->is_enabled(gate_clk) : 0;
-+}
-+
-+static int clk_composite_enable(struct clk *clk)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *gate_clk = composite->gate_clk;
-+
-+	return gate_clk ? gate_clk->ops->enable(gate_clk) : 0;
-+}
-+
-+static void clk_composite_disable(struct clk *clk)
-+{
-+	struct clk_composite *composite = to_clk_composite(clk);
-+	struct clk *gate_clk = composite->gate_clk;
-+
-+	if (gate_clk)
-+		gate_clk->ops->disable(gate_clk);
-+}
-+
-+static struct clk_ops clk_composite_ops = {
-+	.get_parent = clk_composite_get_parent,
-+	.set_parent = clk_composite_set_parent,
-+	.recalc_rate = clk_composite_recalc_rate,
-+	.round_rate = clk_composite_round_rate,
-+	.set_rate = clk_composite_set_rate,
-+	.is_enabled = clk_composite_is_enabled,
-+	.enable = clk_composite_enable,
-+	.disable = clk_composite_disable,
-+};
-+
-+struct clk *clk_register_composite(const char *name,
-+			const char **parent_names, int num_parents,
-+			struct clk *mux_clk,
-+			struct clk *rate_clk,
-+			struct clk *gate_clk,
-+			unsigned long flags)
-+{
-+	struct clk_composite *composite;
-+	int ret;
-+
-+	composite = xzalloc(sizeof(*composite));
-+
-+	composite->clk.name = name;
-+	composite->clk.ops = &clk_composite_ops;
-+	composite->clk.flags = flags;
-+	composite->clk.parent_names = parent_names;
-+	composite->clk.num_parents = num_parents;
-+	composite->mux_clk = mux_clk;
-+	composite->rate_clk = rate_clk;
-+	composite->gate_clk = gate_clk;
-+
-+	ret = clk_register(&composite->clk);
-+	if (ret)
-+		goto err;
-+
-+	return &composite->clk;
-+
-+err:
-+	kfree(composite);
-+	return 0;
-+}
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 49cb5a2..fe8ae5c 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -291,6 +291,12 @@ struct clk *clk_lookup(const char *name);
  
- void clk_dump(int verbose);
+ /* ARC EMAC register set combines entries for MAC and MDIO */
+ enum {
+@@ -99,6 +100,8 @@ struct arc_emac_priv {
+ 	u8 *rxbuf;
+ 	unsigned int txbd_curr;
+ 	unsigned int last_rx_bd;
++	struct clk *clk;
++	struct clk *refclk;
+ };
  
-+struct clk *clk_register_composite(const char *name,
-+			const char **parent_names, int num_parents,
-+			struct clk *mux_clk,
-+			struct clk *rate_clk,
-+			struct clk *gate_clk,
-+			unsigned long flags);
- #endif
+ /**
+@@ -379,20 +382,18 @@ static int arc_emac_mdio_write(struct mii_bus *bus, int phy_addr, int reg_num,
+ 	return arc_mdio_complete_wait(priv);
+ }
  
- struct device_node;
++#define DEFAULT_EMAC_CLOCK_FREQUENCY 50000000UL;
++
+ static int arc_emac_probe(struct device_d *dev)
+ {
+ 	struct eth_device *edev;
+ 	struct arc_emac_priv *priv;
+-	unsigned int clock_frequency;
++	unsigned long clock_frequency;
+ 	struct mii_bus *miibus;
+ 	u32 id;
+ 
+-	/* Get CPU clock frequency from device tree */
+-	if (of_property_read_u32(dev->device_node, "clock-frequency",
+-				 &clock_frequency)) {
+-		dev_err(dev, "failed to retrieve <clock-frequency> from device tree\n");
+-		return -EINVAL;
+-	}
++	/* clock-frequency is dropped from DTS, so hardcode it here */
++	clock_frequency = DEFAULT_EMAC_CLOCK_FREQUENCY;
+ 
+ 	edev = xzalloc(sizeof(struct eth_device) +
+ 		       sizeof(struct arc_emac_priv));
+@@ -405,6 +406,13 @@ static int arc_emac_probe(struct device_d *dev)
+ 		return PTR_ERR(priv->regs);
+ 	priv->bus = miibus;
+ 
++	priv->clk = clk_get(dev, "hclk");
++	clk_enable(priv->clk);
++
++	priv->refclk = clk_get(dev, "macref");
++	clk_set_rate(priv->refclk, clock_frequency);
++	clk_enable(priv->refclk);
++
+ 	id = arc_reg_get(priv, R_ID);
+ 	/* Check for EMAC revision 5 or 7, magic number */
+ 	if (!(id == 0x0005fd02 || id == 0x0007fd02)) {
+@@ -450,6 +458,8 @@ static __maybe_unused struct of_device_id arc_emac_dt_ids[] = {
+ 	{
+ 		.compatible = "snps,arc-emac",
+ 	}, {
++		.compatible = "rockchip,rk3188-emac",
++	}, {
+ 		/* sentinel */
+ 	}
+ };
 -- 
 2.1.4
 
