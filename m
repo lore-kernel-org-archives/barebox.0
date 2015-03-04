@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YT5mf-000589-HY
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 09:40:06 +0000
-Received: from kiwi.hi.pengutronix.de ([2001:67c:670:100:1d::c3] helo=kiwi)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jlu@pengutronix.de>) id 1YT5mJ-0005PJ-8d
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:39:43 +0100
-Received: from jlu by kiwi with local (Exim 4.84)
- (envelope-from <jlu@pengutronix.de>) id 1YT5mJ-0000JC-64
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:39:43 +0100
-Message-ID: <1425461983.3668.201.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 04 Mar 2015 10:39:43 +0100
-In-Reply-To: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
-References: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
-Mime-Version: 1.0
+Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YT5yy-0003zs-Gd
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 09:52:49 +0000
+Received: by wggx12 with SMTP id x12so45424086wgg.6
+ for <barebox@lists.infradead.org>; Wed, 04 Mar 2015 01:52:24 -0800 (PST)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Wed,  4 Mar 2015 10:52:04 +0100
+Message-Id: <1425462724-10581-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <20150217075906.GP12209@pengutronix.de>
+References: <20150217075906.GP12209@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,27 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] Device Tree Overlay Support
+Subject: [PATCH v2] led: gpio: add support for default-state dt-property
 To: barebox@lists.infradead.org
 
-On Mi, 2015-03-04 at 10:29 +0100, Jan Luebbe wrote:
-> This adds support for device tree overlays as supported by Linux 4.0-rc1.
-> Patches 2-4 update the included DTC with overlay support.
+This patch adds support for the default-state device tree property.
 
-Sorry, I forgot to mention that this depends on Marc's sandbox-of
-series.
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ drivers/led/led-gpio.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Regards,
-Jan
+diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
+index a1a6617..ae3f13f 100644
+--- a/drivers/led/led-gpio.c
++++ b/drivers/led/led-gpio.c
+@@ -204,6 +204,7 @@ static int led_gpio_of_probe(struct device_d *dev)
+ 
+ 	for_each_child_of_node(dev->device_node, child) {
+ 		struct gpio_led *gled;
++		const char *default_state;
+ 		enum of_gpio_flags flags;
+ 		int gpio;
+ 		const char *label;
+@@ -225,6 +226,13 @@ static int led_gpio_of_probe(struct device_d *dev)
+ 
+ 		led_gpio_register(gled);
+ 		led_of_parse_trigger(&gled->led, child);
++
++		if (!of_property_read_string(child, "default-state", &default_state)) {
++			if (!strcmp(default_state, "on"))
++				led_gpio_set(&gled->led, 1);
++			else if (!strcmp(default_state, "off"))
++				led_gpio_set(&gled->led, 0);
++		}
+ 	}
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.3.0
 
 
 _______________________________________________
