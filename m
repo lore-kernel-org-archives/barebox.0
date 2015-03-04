@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward5m.mail.yandex.net ([2a02:6b8:0:2519::3:14])
+Received: from forward3m.mail.yandex.net ([2a02:6b8:0:2519::3:12])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTFed-0007dy-JN
+ id 1YTFee-0007e9-1e
  for barebox@lists.infradead.org; Wed, 04 Mar 2015 20:12:30 +0000
 Received: from smtp3m.mail.yandex.net (smtp3m.mail.yandex.net [77.88.61.130])
- by forward5m.mail.yandex.net (Yandex) with ESMTP id 5DEBA29A134B
- for <barebox@lists.infradead.org>; Wed,  4 Mar 2015 23:12:03 +0300 (MSK)
+ by forward3m.mail.yandex.net (Yandex) with ESMTP id C73846B61623
+ for <barebox@lists.infradead.org>; Wed,  4 Mar 2015 23:12:02 +0300 (MSK)
 From: Andrey Panov <rockford@yandex.ru>
-Date: Wed,  4 Mar 2015 23:11:31 +0300
-Message-Id: <1425499906-32125-4-git-send-email-rockford@yandex.ru>
+Date: Wed,  4 Mar 2015 23:11:30 +0300
+Message-Id: <1425499906-32125-3-git-send-email-rockford@yandex.ru>
 In-Reply-To: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 References: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -24,45 +24,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/18] CLK: Add fractional divider clock support from Linux
+Subject: [PATCH v2 02/18] CLK: Add support for composite clock from Linux
  kernel
 To: barebox@lists.infradead.org
 
 Signed-off-by: Andrey Panov <rockford@yandex.ru>
 ---
- drivers/clk/Makefile                 |   3 +-
- drivers/clk/clk-fractional-divider.c | 152 +++++++++++++++++++++++++++++++++++
- include/linux/clk.h                  |   9 +++
- 3 files changed, 163 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/clk-fractional-divider.c
+ drivers/clk/Makefile        |   2 +-
+ drivers/clk/clk-composite.c | 145 ++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/clk.h         |   6 ++
+ 3 files changed, 152 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/clk/clk-composite.c
 
 diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 9df98c8..47ed7b1 100644
+index fa707dd..9df98c8 100644
 --- a/drivers/clk/Makefile
 +++ b/drivers/clk/Makefile
-@@ -1,5 +1,6 @@
+@@ -1,5 +1,5 @@
  obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-fixed.o clk-divider.o clk-fixed-factor.o \
--				clk-mux.o clk-gate.o clk-composite.o
-+				clk-mux.o clk-gate.o clk-composite.o \
-+				clk-fractional-divider.o
+-				clk-mux.o clk-gate.o
++				clk-mux.o clk-gate.o clk-composite.o
  obj-$(CONFIG_CLKDEV_LOOKUP)	+= clkdev.o
  
  obj-$(CONFIG_ARCH_MVEBU)	+= mvebu/
-diff --git a/drivers/clk/clk-fractional-divider.c b/drivers/clk/clk-fractional-divider.c
+diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
 new file mode 100644
-index 0000000..59b98aa
+index 0000000..5d21a0e
 --- /dev/null
-+++ b/drivers/clk/clk-fractional-divider.c
-@@ -0,0 +1,152 @@
++++ b/drivers/clk/clk-composite.c
+@@ -0,0 +1,145 @@
 +/*
-+ * Copyright (C) 2014 Intel Corporation
++ * Taken from linux/drivers/clk/
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * Copyright (c) 2013 NVIDIA CORPORATION.  All rights reserved.
 + *
-+ * Adjustable fractional divider clock implementation.
-+ * Output rate = (m / n) * parent_rate.
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
 +
 +#include <common.h>
@@ -70,162 +76,145 @@ index 0000000..59b98aa
 +#include <malloc.h>
 +#include <linux/clk.h>
 +#include <linux/err.h>
-+#include <linux/gcd.h>
-+#include <linux/math64.h>
-+#include <linux/barebox-wrapper.h>
 +
-+#define to_clk_fd(_hw) container_of(_hw, struct clk_fractional_divider, clk)
-+
-+struct clk_fractional_divider {
++struct clk_composite {
 +	struct clk	clk;
-+	void __iomem	*reg;
-+	u8		mshift;
-+	u32		mmask;
-+	u8		nshift;
-+	u32		nmask;
-+	u8		flags;
++
++	struct clk	*mux_clk;
++	struct clk	*rate_clk;
++	struct clk	*gate_clk;
 +};
 +
-+static unsigned long clk_fd_recalc_rate(struct clk *hw,
-+					unsigned long parent_rate)
++#define to_clk_composite(_clk) container_of(_clk, struct clk_composite, clk)
++
++static int clk_composite_get_parent(struct clk *clk)
 +{
-+	struct clk_fractional_divider *fd = to_clk_fd(hw);
-+	u32 val, m, n;
-+	u64 ret;
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *mux_clk = composite->mux_clk;
 +
-+	val = readl(fd->reg);
-+
-+	m = (val & fd->mmask) >> fd->mshift;
-+	n = (val & fd->nmask) >> fd->nshift;
-+
-+	ret = (u64)parent_rate * m;
-+	do_div(ret, n);
-+
-+	return ret;
++	return mux_clk ? mux_clk->ops->get_parent(mux_clk) : 0;
 +}
 +
-+static long clk_fd_round_rate(struct clk *hw, unsigned long rate,
-+			      unsigned long *prate)
++static int clk_composite_set_parent(struct clk *clk, u8 index)
 +{
-+	struct clk_fractional_divider *fd = to_clk_fd(hw);
-+	unsigned maxn = (fd->nmask >> fd->nshift) + 1;
-+	unsigned div;
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *mux_clk = composite->mux_clk;
 +
-+	if (!rate || rate >= *prate)
-+		return *prate;
-+
-+	div = gcd(*prate, rate);
-+
-+	while ((*prate / div) > maxn) {
-+		div <<= 1;
-+		rate <<= 1;
-+	}
-+
-+	return rate;
++	return mux_clk ? mux_clk->ops->set_parent(mux_clk, index) : 0;
 +}
 +
-+static int clk_fd_set_rate(struct clk *hw, unsigned long rate,
-+			   unsigned long parent_rate)
++static unsigned long clk_composite_recalc_rate(struct clk *clk,
++					    unsigned long parent_rate)
 +{
-+	struct clk_fractional_divider *fd = to_clk_fd(hw);
-+	unsigned long div;
-+	unsigned n, m;
-+	u32 val;
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *rate_clk = composite->rate_clk;
 +
-+	div = gcd(parent_rate, rate);
-+	m = rate / div;
-+	n = parent_rate / div;
-+
-+	val = readl(fd->reg);
-+	val &= ~(fd->mmask | fd->nmask);
-+	val |= (m << fd->mshift) | (n << fd->nshift);
-+	writel(val, fd->reg);
-+
-+	return 0;
++	return rate_clk ? rate_clk->ops->recalc_rate(rate_clk, parent_rate) : 0;
 +}
 +
-+const struct clk_ops clk_fractional_divider_ops = {
-+	.recalc_rate = clk_fd_recalc_rate,
-+	.round_rate = clk_fd_round_rate,
-+	.set_rate = clk_fd_set_rate,
++static long clk_composite_round_rate(struct clk *clk, unsigned long rate,
++				  unsigned long *prate)
++{
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *rate_clk = composite->rate_clk;
++
++	return rate_clk ? rate_clk->ops->round_rate(rate_clk, rate, prate) : 0;
++}
++
++static int clk_composite_set_rate(struct clk *clk, unsigned long rate,
++			       unsigned long parent_rate)
++{
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *rate_clk = composite->rate_clk;
++
++	return rate_clk ?
++		rate_clk->ops->set_rate(rate_clk, rate, parent_rate) : 0;
++}
++
++static int clk_composite_is_enabled(struct clk *clk)
++{
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *gate_clk = composite->gate_clk;
++
++	return gate_clk ? gate_clk->ops->is_enabled(gate_clk) : 0;
++}
++
++static int clk_composite_enable(struct clk *clk)
++{
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *gate_clk = composite->gate_clk;
++
++	return gate_clk ? gate_clk->ops->enable(gate_clk) : 0;
++}
++
++static void clk_composite_disable(struct clk *clk)
++{
++	struct clk_composite *composite = to_clk_composite(clk);
++	struct clk *gate_clk = composite->gate_clk;
++
++	if (gate_clk)
++		gate_clk->ops->disable(gate_clk);
++}
++
++static struct clk_ops clk_composite_ops = {
++	.get_parent = clk_composite_get_parent,
++	.set_parent = clk_composite_set_parent,
++	.recalc_rate = clk_composite_recalc_rate,
++	.round_rate = clk_composite_round_rate,
++	.set_rate = clk_composite_set_rate,
++	.is_enabled = clk_composite_is_enabled,
++	.enable = clk_composite_enable,
++	.disable = clk_composite_disable,
 +};
-+EXPORT_SYMBOL_GPL(clk_fractional_divider_ops);
 +
-+struct clk *clk_fractional_divider_alloc(
-+		const char *name, const char *parent_name, unsigned long flags,
-+		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
-+		u8 clk_divider_flags)
++struct clk *clk_register_composite(const char *name,
++			const char **parent_names, int num_parents,
++			struct clk *mux_clk,
++			struct clk *rate_clk,
++			struct clk *gate_clk,
++			unsigned long flags)
 +{
-+	struct clk_fractional_divider *fd;
-+
-+	fd = xzalloc(sizeof(*fd));
-+
-+	fd->reg = reg;
-+	fd->mshift = mshift;
-+	fd->mmask = (BIT(mwidth) - 1) << mshift;
-+	fd->nshift = nshift;
-+	fd->nmask = (BIT(nwidth) - 1) << nshift;
-+	fd->flags = clk_divider_flags;
-+	fd->clk.name = name;
-+	fd->clk.ops = &clk_fractional_divider_ops;
-+	fd->clk.flags = flags;
-+	fd->clk.parent_names = parent_name ? &parent_name : NULL;
-+	fd->clk.num_parents = parent_name ? 1 : 0;
-+
-+	return &fd->clk;
-+}
-+
-+void clk_fractional_divider_free(struct clk *clk_fd)
-+{
-+	struct clk_fractional_divider *fd = to_clk_fd(clk_fd);
-+
-+	free(fd);
-+}
-+
-+struct clk *clk_fractional_divider(
-+		const char *name, const char *parent_name, unsigned long flags,
-+		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
-+		u8 clk_divider_flags)
-+{
-+	struct clk *fd;
++	struct clk_composite *composite;
 +	int ret;
 +
-+	fd = clk_fractional_divider_alloc(name, parent_name, flags,
-+		reg, mshift, mwidth, nshift, nwidth,
-+		clk_divider_flags);
++	composite = xzalloc(sizeof(*composite));
 +
-+	if (IS_ERR(fd))
-+		return fd;
++	composite->clk.name = name;
++	composite->clk.ops = &clk_composite_ops;
++	composite->clk.flags = flags;
++	composite->clk.parent_names = parent_names;
++	composite->clk.num_parents = num_parents;
++	composite->mux_clk = mux_clk;
++	composite->rate_clk = rate_clk;
++	composite->gate_clk = gate_clk;
 +
-+	ret = clk_register(fd);
-+	if (ret) {
-+		clk_fractional_divider_free(fd);
-+		return ERR_PTR(ret);
-+	}
++	ret = clk_register(&composite->clk);
++	if (ret)
++		goto err;
 +
-+	return fd;
++	return &composite->clk;
++
++err:
++	kfree(composite);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(clk_register_fractional_divider);
 diff --git a/include/linux/clk.h b/include/linux/clk.h
-index fe8ae5c..de2d4a5 100644
+index 49cb5a2..fe8ae5c 100644
 --- a/include/linux/clk.h
 +++ b/include/linux/clk.h
-@@ -260,6 +260,15 @@ struct clk *clk_divider_table(const char *name,
- struct clk *clk_fixed_factor(const char *name,
- 		const char *parent, unsigned int mult, unsigned int div,
- 		unsigned flags);
-+struct clk *clk_fractional_divider_alloc(
-+		const char *name, const char *parent_name, unsigned long flags,
-+		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
-+		u8 clk_divider_flags);
-+struct clk *clk_fractional_divider(
-+		const char *name, const char *parent_name, unsigned long flags,
-+		void __iomem *reg, u8 mshift, u8 mwidth, u8 nshift, u8 nwidth,
-+		u8 clk_divider_flags);
-+void clk_fractional_divider_free(struct clk *clk_fd);
+@@ -291,6 +291,12 @@ struct clk *clk_lookup(const char *name);
  
- struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
- 		u8 shift, u8 width, const char **parents, u8 num_parents,
+ void clk_dump(int verbose);
+ 
++struct clk *clk_register_composite(const char *name,
++			const char **parent_names, int num_parents,
++			struct clk *mux_clk,
++			struct clk *rate_clk,
++			struct clk *gate_clk,
++			unsigned long flags);
+ #endif
+ 
+ struct device_node;
 -- 
 2.1.4
 
