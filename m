@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YT5cy-0008RX-V5
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 09:30:13 +0000
+ Linux)) id 1YT5cy-0008Rv-V4
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 09:30:22 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed,  4 Mar 2015 10:29:29 +0100
-Message-Id: <1425461372-31740-2-git-send-email-jlu@pengutronix.de>
+Date: Wed,  4 Mar 2015 10:29:32 +0100
+Message-Id: <1425461372-31740-5-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
 References: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,1067 +21,2766 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] drivers: of: implement overlay support
+Subject: [PATCH 4/4] scripts/dtc: Update to upstream version 1.4.1 with
+ overlay support
 To: barebox@lists.infradead.org
 
-This is based on Pantelis Antoniou's overlay support for the kernel. It
-has been simplified by leaving out transaction support, locking and
-other details required by the Linux DT support.
-
-It should support all features of the overlay file format as implemented
-in linux 4.0-rc1.
+This contains Pantelis Antoniou's "dynamic DT support" v4:
+* dtc: Symbol and local fixup generation support
+* dtc: Plugin (object) device tree support.
+* dtc: Document the dynamic plugin internals
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- Documentation/user/devicetree.rst     | 101 +++++++++-
- arch/sandbox/dts/Makefile             |   5 +-
- arch/sandbox/dts/sandbox-overlay.dtso |  26 +++
- arch/sandbox/dts/sandbox.dts          |   6 +
- commands/oftree.c                     |  65 ++++++-
- drivers/of/Kconfig                    |   6 +
- drivers/of/Makefile                   |   1 +
- drivers/of/overlay.c                  | 234 +++++++++++++++++++++++
- drivers/of/resolver.c                 | 346 ++++++++++++++++++++++++++++++++++
- include/of.h                          |  71 +++++++
- scripts/Makefile.lib                  |   5 +-
- 11 files changed, 857 insertions(+), 9 deletions(-)
- create mode 100644 arch/sandbox/dts/sandbox-overlay.dtso
- create mode 100644 drivers/of/overlay.c
- create mode 100644 drivers/of/resolver.c
+ scripts/dtc/checks.c                 | 107 ++++-
+ scripts/dtc/dtc-lexer.l              |   5 +
+ scripts/dtc/dtc-lexer.lex.c_shipped  | 433 +++++++++++----------
+ scripts/dtc/dtc-parser.tab.c_shipped | 732 ++++++++++++++++++-----------------
+ scripts/dtc/dtc-parser.tab.h_shipped |  46 +--
+ scripts/dtc/dtc-parser.y             |  34 +-
+ scripts/dtc/dtc.c                    |   9 +-
+ scripts/dtc/dtc.h                    |  40 ++
+ scripts/dtc/fdtput.c                 |  85 +++-
+ scripts/dtc/flattree.c               | 202 ++++++++++
+ scripts/dtc/util.h                   |   1 +
+ scripts/dtc/version_gen.h            |   2 +-
+ 12 files changed, 1105 insertions(+), 591 deletions(-)
 
-diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
-index 17934d86e3bf..b2220997d822 100644
---- a/Documentation/user/devicetree.rst
-+++ b/Documentation/user/devicetree.rst
-@@ -21,7 +21,7 @@ The internal devicetree
- -----------------------
- 
- The devicetree consulted by barebox plays a special role. It is referred to
--as the "internal devicetree." The barebox devicetree commands work on this
-+as the "internal devicetree". The barebox devicetree commands work on this
- devicetree. The devicetree source (DTS) files are kept in sync with the kernel DTS
- files. As the FDT files are meant to be backward compatible, it should always be possible
- to start a kernel with the barebox internal devicetree. However, since the barebox
-@@ -83,3 +83,102 @@ you can exchange the internal devicetree during runtime using the
- 
-    oftree -f
-    oftree -l /new/dtb
-+
-+Devicetree overlays
-+-------------------
-+
-+Since version 3.19, the Linux kernel supports applying "devicetree overlays" to
-+its loaded device tree. This can be used to inform the kernel about additional
-+non-discoverable devices after the system has booted, which is useful for modular
-+boards and FPGAs. The details of the overlay format are specified in the Linux
-+`kernel documentation <https://www.kernel.org/doc/Documentation/devicetree/overlay-notes.txt>`_
-+and an updated DTC is required to compile the overlays.
-+
-+The use cases for overlays in barebox are a bit different:
-+
-+* some of the modular devices are needed to boot Linux to userspace, but barebox
-+  can detect which module variant is connected
-+* one of several parallel or LVDS displays (which use timing data from devicetree)
-+  can be connected to the SoC and should be used for boot messages
-+* a generic Linux (distribution) kernel should be booted on a modular
-+  system and support additional hardware on modules
-+
-+barebox supports applying overlays in the internal devicetree was well using the
-+:ref:`command_oftree` command with option ``-o``:
-+
-+.. code-block:: sh
-+
-+   $ ./barebox -d arch/sandbox/dts/sandbox.dtb -i arch/sandbox/dts/sandbox-overlay.dtbo
-+   add fd0 backed by file arch/sandbox/dts/sandbox-overlay.dtbo
-+
-+   barebox 2015.02.0 #26 Wed Mar 4 09:41:19 CET 2015
-+   ...
-+   barebox@barebox sandbox:/ of_dump
-+   ...
-+     dummy@0 {
-+       status = "disabled";
-+       linux,phandle = <0x1>;
-+       phandle = <0x1>;
-+     };
-+     dummy@1 {
-+       status = "disabled";
-+       linux,phandle = <0x2>;
-+       phandle = <0x2>;
-+     };
-+     __symbols__ {
-+       dummy0 = "/dummy@0";
-+       dummy1 = "/dummy@1";
-+     };
-+   ...
-+   barebox@barebox sandbox:/ of_dump -f /dev/fd0
-+    {
-+     fragment@0 {
-+       target = <0xdeadbeef>;
-+       __overlay__ {
-+         status = "okay";
-+         child {
-+           compatible = "barebox,dummy";
-+         };
-+       };
-+     };
-+     fragment@1 {
-+       target = <0xdeadbeef>;
-+       __overlay__ {
-+         status = "okay";
-+         child {
-+           compatible = "barebox,dummy";
-+         };
-+       };
-+     };
-+     __fixups__ {
-+       dummy0 = "/fragment@0:target:0";
-+       dummy1 = "/fragment@1:target:0";
-+     };
-+   };
-+   barebox@barebox sandbox:/ oftree -o /dev/fd0
-+   barebox@barebox sandbox:/ of_dump
-+   ...
-+     dummy@0 {
-+       linux,phandle = <0x1>;
-+       phandle = <0x1>;
-+       status = "okay";
-+       child {
-+         compatible = "barebox,dummy";
-+       };
-+     };
-+     dummy@1 {
-+       linux,phandle = <0x2>;
-+       phandle = <0x2>;
-+       status = "okay";
-+       child {
-+         compatible = "barebox,dummy";
-+       };
-+     };
-+     __symbols__ {
-+       dummy0 = "/dummy@0";
-+       dummy1 = "/dummy@1";
-+     };
-+   ...
-+
-+If you need to use a different base devicetree instead of the one compiled into
-+barebox, it needs to be replaced as described in the previous section.
-diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
-index 6f6838857849..ede219e6f1a8 100644
---- a/arch/sandbox/dts/Makefile
-+++ b/arch/sandbox/dts/Makefile
-@@ -1,6 +1,7 @@
- ifeq ($(CONFIG_OFTREE),y)
- dtb-y += \
--	sandbox.dtb
-+	sandbox.dtb \
-+	sandbox-overlay.dtbo
- endif
- 
- # just to build a built-in.o. Otherwise compilation fails when no devicetree is
-@@ -8,4 +9,4 @@ endif
- obj- += dummy.o
- 
- always := $(dtb-y)
--clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
-+clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtbo
-diff --git a/arch/sandbox/dts/sandbox-overlay.dtso b/arch/sandbox/dts/sandbox-overlay.dtso
-new file mode 100644
-index 000000000000..f9ced04cabcb
---- /dev/null
-+++ b/arch/sandbox/dts/sandbox-overlay.dtso
-@@ -0,0 +1,26 @@
-+/dts-v1/;
-+
-+/plugin/;
-+
-+/ {
-+        fragment@0 {
-+                target = <&dummy0>;
-+                __overlay__ {
-+			status = "okay";
-+                        child {
-+                                compatible = "barebox,dummy";
-+                        };
-+                };
-+        };
-+
-+        fragment@1 {
-+                target = <&dummy1>;
-+                __overlay__ {
-+			status = "okay";
-+                        child {
-+                                compatible = "barebox,dummy";
-+                        };
-+                };
-+        };
-+};
-+
-diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
-index 2595aa13fa62..1b99a4960a88 100644
---- a/arch/sandbox/dts/sandbox.dts
-+++ b/arch/sandbox/dts/sandbox.dts
-@@ -3,5 +3,11 @@
- #include "skeleton.dtsi"
- 
- / {
-+	dummy0: dummy@0 {
-+		status = "disabled";
-+	};
- 
-+	dummy1: dummy@1 {
-+		status = "disabled";
-+	};
- };
-diff --git a/commands/oftree.c b/commands/oftree.c
-index 8a47c0be58ec..e0624ad34633 100644
---- a/commands/oftree.c
-+++ b/commands/oftree.c
-@@ -2,6 +2,7 @@
-  * oftree.c - device tree command support
-  *
-  * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
-  *
-  * based on U-Boot code by:
-  *
-@@ -48,11 +49,14 @@ static int do_oftree(int argc, char *argv[])
- 	int probe = 0;
- 	char *load = NULL;
- 	char *save = NULL;
-+	char *overlay = NULL;
- 	int free_of = 0;
- 	int ret;
- 	struct device_node *root;
-+	int ovinfo_cnt;
-+	struct of_overlay_info *ovinfo;
- 
--	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
-+	while ((opt = getopt(argc, argv, "pfl:o:s:")) > 0) {
- 		switch (opt) {
- 		case 'l':
- 			load = optarg;
-@@ -68,6 +72,9 @@ static int do_oftree(int argc, char *argv[])
- 		case 'f':
- 			free_of = 1;
- 			break;
-+		case 'o':
-+			overlay = optarg;
-+			break;
- 		case 's':
- 			save = optarg;
- 			break;
-@@ -84,7 +91,7 @@ static int do_oftree(int argc, char *argv[])
- 			return 0;
+diff --git a/scripts/dtc/checks.c b/scripts/dtc/checks.c
+index 3bf0fa4a48d7..4be5233e5234 100644
+--- a/scripts/dtc/checks.c
++++ b/scripts/dtc/checks.c
+@@ -113,6 +113,7 @@ static inline void check_msg(struct check *c, const char *fmt, ...)
+ 		vfprintf(stderr, fmt, ap);
+ 		fprintf(stderr, "\n");
  	}
++	va_end(ap);
+ }
  
--	if (!probe && !load && !save)
-+	if (!probe && !load && !save && !overlay)
- 		return COMMAND_ERROR_USAGE;
+ #define FAIL(c, ...) \
+@@ -457,6 +458,8 @@ static void fixup_phandle_references(struct check *c, struct node *dt,
+ 				     struct node *node, struct property *prop)
+ {
+ 	struct marker *m = prop->val.markers;
++	struct fixup *f, **fp;
++	struct fixup_entry *fe, **fep;
+ 	struct node *refnode;
+ 	cell_t phandle;
  
- 	if (save) {
-@@ -123,6 +130,53 @@ static int do_oftree(int argc, char *argv[])
- 		}
- 	}
+@@ -465,14 +468,73 @@ static void fixup_phandle_references(struct check *c, struct node *dt,
  
-+	if (IS_ENABLED(CONFIG_OFTREE_OVERLAY) && overlay) {
-+		struct device_node *ov;
-+
-+		root = of_get_root_node();
-+		if (!root) {
-+			printf("no oftree loaded\n");
-+			goto out;
-+		}
-+
-+		fdt = read_file(overlay, &size);
-+		if (!fdt) {
-+			printf("unable to read %s\n", overlay);
-+			return 1;
-+		}
-+
-+		ov = of_unflatten_dtb(fdt);
-+		free(fdt);
-+
-+		if (IS_ERR(ov)) {
-+			printf("parse oftree: %s\n", strerror(-ret));
-+			return PTR_ERR(ov);
-+		}
-+
-+		ret = of_resolve(ov);
-+		if (ret) {
-+			printf("resolve oftree overlay: %s\n", strerror(-ret));
-+			of_delete_node(ov);
-+			goto out;
-+		}
-+
-+		ret = of_build_overlay_info(ov, &ovinfo_cnt, &ovinfo);
-+		if (ret) {
-+			printf("prepare oftree overlay: %s\n", strerror(-ret));
-+			of_delete_node(ov);
-+			goto out;
-+		}
-+
-+		ret = of_overlay(ovinfo_cnt, ovinfo);
-+		if (ret) {
-+			printf("apply oftree overlay: %s\n", strerror(-ret));
-+			of_delete_node(ov);
-+			goto out;
-+		}
-+
-+		of_delete_node(ov);
-+	}
-+
- 	if (probe) {
- 		ret = of_probe();
- 		if (ret)
-@@ -137,8 +191,9 @@ out:
- 
- BAREBOX_CMD_HELP_START(oftree)
- BAREBOX_CMD_HELP_TEXT("Options:")
--BAREBOX_CMD_HELP_OPT ("-l <DTB>",  "Load <DTB> to internal devicetree\n")
--BAREBOX_CMD_HELP_OPT ("-s <DTB>",  "save internal devicetree to <DTB>\n")
-+BAREBOX_CMD_HELP_OPT ("-l <DTB>",  "load <DTB> to internal devicetree")
-+BAREBOX_CMD_HELP_OPT ("-s <DTB>",  "save internal devicetree to <DTB>")
-+BAREBOX_CMD_HELP_OPT ("-o <DTBO>",  "apply overlay <DTBO> to internal devicetree")
- BAREBOX_CMD_HELP_OPT ("-p",  "probe devices from stored device tree")
- BAREBOX_CMD_HELP_OPT ("-f",  "free stored device tree")
- BAREBOX_CMD_HELP_END
-@@ -146,7 +201,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(oftree)
- 	.cmd		= do_oftree,
- 	BAREBOX_CMD_DESC("handle device trees")
--	BAREBOX_CMD_OPTS("[-lspf]")
-+	BAREBOX_CMD_OPTS("[-lsopf]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
- 	BAREBOX_CMD_HELP(cmd_oftree_help)
- BAREBOX_CMD_END
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 90475cfbcae4..717d833f2fac 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -15,6 +15,12 @@ config OFDEVICE
- 	select DTC
- 	bool "Enable probing of devices from the devicetree"
- 
-+config OFTREE_OVERLAY
-+	bool "Enable support for devicetree overlays"
-+	depends on OFTREE
-+	help
-+	  Allows you to modify the live tree using overlays.
-+
- config OF_ADDRESS_PCI
- 	bool
- 
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index 0dc2f8d63ed0..8f403ecfcf10 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -6,3 +6,4 @@ obj-y += partition.o
- obj-y += of_net.o
- obj-$(CONFIG_MTD) += of_mtd.o
- obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o of_path.o
-+obj-$(CONFIG_OFTREE_OVERLAY) += resolver.o overlay.o
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-new file mode 100644
-index 000000000000..a711a353f8ec
---- /dev/null
-+++ b/drivers/of/overlay.c
-@@ -0,0 +1,234 @@
-+/*
-+ * Functions for working with device tree overlays
-+ *
-+ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
-+ * Copyright (C) 2012 Texas Instruments Inc.
-+ * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ */
-+
-+#include <common.h>
-+#include <of.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <linux/kernel.h>
-+#include <linux/string.h>
-+#include <linux/ctype.h>
-+#include <linux/err.h>
-+
-+/**
-+ * Apply a single overlay node recursively.
-+ *
-+ * All the property notifiers are appropriately called.
-+ * Note that the in case of an error the target node is left
-+ * in a inconsistent state. Error recovery should be performed
-+ * by recording the modification using the of notifiers.
-+ */
-+static int of_overlay_apply_one(struct device_node *target,
-+		const struct device_node *overlay)
-+{
-+	struct device_node *child, *tchild;
-+	struct property *prop;
-+	int ret;
-+
-+	/* sanity checks */
-+	if (target == NULL || overlay == NULL)
-+		return -EINVAL;
-+
-+	for_each_property_of_node(overlay, prop) {
-+		/* don't touch, 'name' */
-+		if (of_prop_cmp(prop->name, "name") == 0)
-+			continue;
-+
-+		of_delete_property(of_find_property(target, prop->name, NULL));
-+
-+		if (of_new_property(target, prop->name, prop->value, prop->length) == NULL)
-+			return -ENOMEM;
-+	}
-+
-+	for_each_child_of_node(overlay, child) {
-+		tchild = of_get_child_by_name(target, child->name);
-+		if (tchild != NULL) {
-+			/* apply overlay recursively */
-+			ret = of_overlay_apply_one(tchild, child);
-+
-+			if (ret != 0)
-+				return ret;
-+		} else {
-+			/* create new child */
-+			tchild = of_new_node(target, child->name);
-+			if (tchild == NULL)
-+				return -ENOMEM;
-+
-+			/* apply the overlay */
-+			ret = of_overlay_apply_one(tchild, child);
-+			if (ret != 0) {
-+				of_delete_node(tchild);
-+				return ret;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * of_overlay	- Apply @count overlays pointed at by @ovinfo_tab
-+ * @count:	Number of of_overlay_info's
-+ * @ovinfo_tab:	Array of overlay_info's to apply
-+ *
-+ * Applies the overlays given, while handling all error conditions
-+ * appropriately. Either the operation succeeds, or if it fails the
-+ * live tree is reverted to the state before the attempt.
-+ * Returns 0, or an error if the overlay attempt failed.
-+ */
-+int of_overlay(int count, struct of_overlay_info *ovinfo_tab)
-+{
-+	struct of_overlay_info *ovinfo;
-+	int i, err;
-+
-+	if (!ovinfo_tab)
-+		return -EINVAL;
-+
-+	for (i = 0; i < count; i++) {
-+		ovinfo = &ovinfo_tab[i];
-+		err = of_overlay_apply_one(ovinfo->target, ovinfo->overlay);
-+		if (err != 0) {
-+			pr_err("%s: overlay failed '%s'\n",
-+				__func__, ovinfo->target->full_name);
-+			goto err_fail;
-+		}
-+	}
-+
-+	return 0;
-+
-+err_fail:
-+	return err;
-+}
-+
-+/**
-+ * of_fill_overlay_info	- Fill an overlay info structure
-+ * @info_node:	Device node containing the overlay
-+ * @ovinfo:	Pointer to the overlay info structure to fill
-+ *
-+ * Fills an overlay info structure with the overlay information
-+ * from a device node. This device node must have a target property
-+ * which contains a phandle of the overlay target node, and an
-+ * __overlay__ child node which has the overlay contents.
-+ * Both ovinfo->target & ovinfo->overlay have their references taken.
-+ *
-+ * Returns 0 on success, or a negative error value.
-+ */
-+int of_fill_overlay_info(struct device_node *info_node,
-+		struct of_overlay_info *ovinfo)
-+{
-+	const char *target_path;
-+	u32 target_handle;
-+	int ret;
-+
-+	if (!info_node || !ovinfo)
-+		return -EINVAL;
-+
-+	ret = of_property_read_u32(info_node, "target", &target_handle);
-+	if (ret == 0) {
-+		ovinfo->target = of_find_node_by_phandle(target_handle);
-+	} else {
-+		ret = of_property_read_string(info_node, "target-path", &target_path);
-+		if (ret == 0) {
-+			ovinfo->target = of_find_node_by_path(target_path);
-+		}
-+	}
-+	if (ovinfo->target == NULL)
-+		goto err_fail;
-+
-+	ovinfo->overlay = of_get_child_by_name(info_node, "__overlay__");
-+	if (ovinfo->overlay == NULL)
-+		goto err_fail;
-+
-+	return 0;
-+
-+err_fail:
-+	memset(ovinfo, 0, sizeof(*ovinfo));
-+	return -EINVAL;
-+}
-+
-+/**
-+ * of_build_overlay_info	- Build an overlay info array
-+ * @tree:	Device node containing all the overlays
-+ * @cntp:	Pointer to where the overlay info count will be help
-+ * @ovinfop:	Pointer to the pointer of an overlay info structure.
-+ *
-+ * Helper function that given a tree containing overlay information,
-+ * allocates and builds an overlay info array containing it, ready
-+ * for use using of_overlay.
-+ *
-+ * Returns 0 on success with the @cntp @ovinfop pointers valid,
-+ * while on error a negative error value is returned.
-+ */
-+int of_build_overlay_info(struct device_node *tree,
-+		int *cntp, struct of_overlay_info **ovinfop)
-+{
-+	struct device_node *node;
-+	struct of_overlay_info *ovinfo;
-+	int cnt, err;
-+
-+	if (tree == NULL || cntp == NULL || ovinfop == NULL)
-+		return -EINVAL;
-+
-+	/* worst case; every child is a node */
-+	cnt = 0;
-+	for_each_child_of_node(tree, node)
-+		cnt++;
-+
-+	ovinfo = kzalloc(cnt * sizeof(*ovinfo), GFP_KERNEL);
-+	if (ovinfo == NULL)
-+		return -ENOMEM;
-+
-+	cnt = 0;
-+	for_each_child_of_node(tree, node) {
-+		memset(&ovinfo[cnt], 0, sizeof(*ovinfo));
-+		err = of_fill_overlay_info(node, &ovinfo[cnt]);
-+		if (err == 0)
-+			cnt++;
-+	}
-+
-+	/* if nothing filled, return error */
-+	if (cnt == 0) {
-+		kfree(ovinfo);
-+		return -ENODEV;
-+	}
-+
-+	*cntp = cnt;
-+	*ovinfop = ovinfo;
-+
-+	return 0;
-+}
-+
-+/**
-+ * of_free_overlay_info	- Free an overlay info array
-+ * @count:	Number of of_overlay_info's
-+ * @ovinfo_tab:	Array of overlay_info's to free
-+ *
-+ * Releases the memory of a previously allocate ovinfo array
-+ * by of_build_overlay_info.
-+ * Returns 0, or an error if the arguments are bogus.
-+ */
-+int of_free_overlay_info(int count, struct of_overlay_info *ovinfo_tab)
-+{
-+	struct of_overlay_info *ovinfo;
-+	int i;
-+
-+	if (!ovinfo_tab || count < 0)
-+		return -EINVAL;
-+
-+	/* do it in reverse */
-+	for (i = count - 1; i >= 0; i--)
-+		ovinfo = &ovinfo_tab[i];
-+
-+	kfree(ovinfo_tab);
-+
-+	return 0;
-+}
-diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
-new file mode 100644
-index 000000000000..62476093c9e8
---- /dev/null
-+++ b/drivers/of/resolver.c
-@@ -0,0 +1,346 @@
-+/*
-+ * Functions for dealing with DT resolution
-+ *
-+ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
-+ * Copyright (C) 2012 Texas Instruments Inc.
-+ * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * version 2 as published by the Free Software Foundation.
-+ */
-+
-+#include <common.h>
-+#include <of.h>
-+#include <errno.h>
-+#include <malloc.h>
-+#include <linux/kernel.h>
-+#include <linux/string.h>
-+#include <linux/ctype.h>
-+#include <linux/string.h>
-+
-+/**
-+ * Adjust a subtree's phandle values by a given delta.
-+ * Makes sure not to just adjust the device node's phandle value,
-+ * but modify the phandle properties values as well.
-+ */
-+static void of_adjust_tree_phandles(struct device_node *node,
-+		int phandle_delta)
-+{
-+	struct device_node *child;
-+	struct property *prop;
-+	phandle phandle;
-+
-+	/* first adjust the node's phandle direct value */
-+	if (node->phandle != 0 && node->phandle != OF_PHANDLE_ILLEGAL)
-+		node->phandle += phandle_delta;
-+
-+	/* now adjust phandle & linux,phandle values */
-+	for_each_property_of_node(node, prop) {
-+		/* only look for these two */
-+		if (of_prop_cmp(prop->name, "phandle") != 0 &&
-+		    of_prop_cmp(prop->name, "linux,phandle") != 0)
-+			continue;
-+
-+		/* must be big enough */
-+		if (prop->length < 4)
-+			continue;
-+
-+		/* read phandle value */
-+		phandle = be32_to_cpu(*(uint32_t *)prop->value);
-+		if (phandle == OF_PHANDLE_ILLEGAL)	/* unresolved */
-+			continue;
-+
-+		/* adjust */
-+		*(uint32_t *)prop->value = cpu_to_be32(node->phandle);
-+	}
-+
-+	/* now do the children recursively */
-+	for_each_child_of_node(node, child)
-+		of_adjust_tree_phandles(child, phandle_delta);
-+}
-+
-+/**
-+ * Adjust the local phandle references by the given phandle delta.
-+ * Assumes the existances of a __local_fixups__ node at the root
-+ * of the tree. Does not take any devtree locks so make sure you
-+ * call this on a tree which is at the detached state.
-+ */
-+static int of_adjust_tree_phandle_references(struct device_node *node,
-+		int phandle_delta)
-+{
-+	phandle phandle;
-+	struct device_node *refnode, *child;
-+	struct property *rprop, *sprop;
-+	char *propval, *propcur, *propend, *nodestr, *propstr, *s;
-+	int offset, propcurlen;
-+	int err;
-+	bool found = false;
-+
-+	/* locate the symbols & fixups nodes on resolve */
-+	for_each_child_of_node(node, child)
-+		if (of_node_cmp(child->name, "__local_fixups__") == 0) {
-+			found = true;
-+			break;
-+		}
-+
-+	/* no local fixups */
-+	if (!found)
-+		return 0;
-+
-+	/* find the local fixups property */
-+	for_each_property_of_node(child, rprop) {
-+		/* skip properties added automatically */
-+		if (of_prop_cmp(rprop->name, "name") == 0)
-+			continue;
-+
-+		/* make a copy */
-+		propval = kmalloc(rprop->length, GFP_KERNEL);
-+		if (propval == NULL) {
-+			pr_err("%s: Could not copy value of '%s'\n",
-+					__func__, rprop->name);
-+			return -ENOMEM;
-+		}
-+		memcpy(propval, rprop->value, rprop->length);
-+
-+		propend = propval + rprop->length;
-+		for (propcur = propval; propcur < propend;
-+				propcur += propcurlen + 1) {
-+
-+			propcurlen = strlen(propcur);
-+
-+			nodestr = propcur;
-+			s = strchr(propcur, ':');
-+			if (s == NULL) {
-+				pr_err("%s: Illegal symbol entry '%s' (1)\n",
-+					__func__, propcur);
-+				err = -EINVAL;
-+				goto err_fail;
-+			}
-+			*s++ = '\0';
-+
-+			propstr = s;
-+			s = strchr(s, ':');
-+			if (s == NULL) {
-+				pr_err("%s: Illegal symbol entry '%s' (2)\n",
-+					__func__, (char *)rprop->value);
-+				err = -EINVAL;
-+				goto err_fail;
-+			}
-+
-+			*s++ = '\0';
-+			offset = simple_strtoul(s, NULL, 10);
-+
-+			/* look into the resolve node for the full path */
-+			refnode = of_find_node_by_path_from(node, nodestr);
-+			if (refnode == NULL) {
-+				pr_warn("%s: Could not find refnode '%s'\n",
-+					__func__, (char *)rprop->value);
+ 		refnode = get_node_by_ref(dt, m->ref);
+ 		if (! refnode) {
+-			FAIL(c, "Reference to non-existent node or label \"%s\"\n",
+-			     m->ref);
++			if (!dt->is_plugin) {
++				FAIL(c, "Reference to non-existent node or label \"%s\"\n",
++					m->ref);
 +				continue;
 +			}
 +
-+			/* now find the property */
-+			found = false;
-+			for_each_property_of_node(refnode, sprop)
-+				if (of_prop_cmp(sprop->name, propstr) == 0) {
-+					found = true;
++			/* allocate fixup entry */
++			fe = xmalloc(sizeof(*fe));
++
++			fe->node = node;
++			fe->prop = prop;
++			fe->offset = m->offset;
++			fe->next = NULL;
++
++			/* search for an already existing fixup */
++			for_each_fixup(dt, f)
++				if (strcmp(f->ref, m->ref) == 0)
 +					break;
-+				}
 +
-+			if (!found) {
-+				pr_err("%s: Could not find property '%s'\n",
-+					__func__, (char *)rprop->value);
-+				err = -ENOENT;
-+				goto err_fail;
++			/* no fixup found, add new */
++			if (f == NULL) {
++				f = xmalloc(sizeof(*f));
++				f->ref = m->ref;
++				f->entries = NULL;
++				f->next = NULL;
++
++				/* add it to the tree */
++				fp = &dt->fixups;
++				while (*fp)
++					fp = &(*fp)->next;
++				*fp = f;
 +			}
 +
-+			phandle = be32_to_cpu(*(uint32_t *)
-+					(sprop->value + offset));
-+			*(uint32_t *)(sprop->value + offset) =
-+				cpu_to_be32(phandle + phandle_delta);
-+		}
++			/* and now append fixup entry */
++			fep = &f->entries;
++			while (*fep)
++				fep = &(*fep)->next;
++			*fep = fe;
 +
-+		kfree(propval);
-+	}
-+
-+	return 0;
-+
-+err_fail:
-+	kfree(propval);
-+	return err;
-+}
-+
-+/**
-+ * of_resolve	- Resolve the given node against the live tree.
-+ *
-+ * @resolve:	Node to resolve
-+ *
-+ * Perform dynamic Device Tree resolution against the live tree
-+ * to the given node to resolve. This depends on the live tree
-+ * having a __symbols__ node, and the resolve node the __fixups__ &
-+ * __local_fixups__ nodes (if needed).
-+ * The result of the operation is a resolve node that it's contents
-+ * are fit to be inserted or operate upon the live tree.
-+ * Returns 0 on success or a negative error value on error.
-+ */
-+int of_resolve(struct device_node *resolve)
-+{
-+	struct device_node *child, *refnode;
-+	struct device_node *root_sym, *resolve_sym, *resolve_fix;
-+	struct property *rprop, *sprop;
-+	const char *refpath;
-+	char *propval, *propcur, *propend, *nodestr, *propstr, *s;
-+	int offset, propcurlen;
-+	phandle phandle, phandle_delta;
-+	int err;
-+	bool found = false;
-+
-+	/* the resolve node must exist */
-+	if (resolve == NULL) {
-+		return -EINVAL;
-+	}
-+
-+	/* first we need to adjust the phandles */
-+	phandle_delta = of_get_tree_max_phandle(NULL) + 1;
-+	of_adjust_tree_phandles(resolve, phandle_delta);
-+	err = of_adjust_tree_phandle_references(resolve, phandle_delta);
-+	if (err != 0)
-+		return err;
-+
-+	root_sym = NULL;
-+	resolve_sym = NULL;
-+	resolve_fix = NULL;
-+
-+	/* this may fail (if no fixups are required) */
-+	root_sym = of_find_node_by_path("/__symbols__");
-+
-+	/* locate the symbols & fixups nodes on resolve */
-+	for_each_child_of_node(resolve, child) {
-+		if (resolve_sym == NULL &&
-+				of_node_cmp(child->name, "__symbols__") == 0)
-+			resolve_sym = child;
-+
-+		if (resolve_fix == NULL &&
-+				of_node_cmp(child->name, "__fixups__") == 0)
-+			resolve_fix = child;
-+
-+		/* both found, don't bother anymore */
-+		if (resolve_sym != NULL && resolve_fix != NULL)
-+			break;
-+	}
-+
-+	/* we do allow for the case where no fixups are needed */
-+	if (resolve_fix == NULL)
-+		goto merge_sym;
-+
-+	/* we need to fixup, but no root symbols... */
-+	if (root_sym == NULL)
-+		return -EINVAL;
-+
-+	for_each_property_of_node(resolve_fix, rprop) {
-+		/* skip properties added automatically */
-+		if (of_prop_cmp(rprop->name, "name") == 0)
-+			continue;
-+
-+		err = of_property_read_string(root_sym,
-+				rprop->name, &refpath);
-+		if (err != 0) {
-+			pr_err("%s: Could not find symbol '%s'\n",
-+					__func__, rprop->name);
-+			goto err_fail;
-+		}
-+
-+		refnode = of_find_node_by_path(refpath);
-+		if (refnode == NULL) {
-+			pr_err("%s: Could not find node by path '%s'\n",
-+					__func__, refpath);
-+			err = -ENOENT;
-+			goto err_fail;
-+		}
-+
-+		phandle = refnode->phandle;
-+
-+		pr_debug("%s: %s phandle is 0x%08x\n",
-+				__func__, rprop->name, phandle);
-+
-+		/* make a copy */
-+		propval = kmalloc(rprop->length, GFP_KERNEL);
-+		if (propval == NULL) {
-+			pr_err("%s: Could not copy value of '%s'\n",
-+					__func__, rprop->name);
-+			err = -ENOMEM;
-+			goto err_fail;
-+		}
-+
-+		memcpy(propval, rprop->value, rprop->length);
-+
-+		propend = propval + rprop->length;
-+		for (propcur = propval; propcur < propend;
-+				propcur += propcurlen + 1) {
-+			propcurlen = strlen(propcur);
-+
-+			nodestr = propcur;
-+			s = strchr(propcur, ':');
-+			if (s == NULL) {
-+				pr_err("%s: Illegal symbol "
-+					"entry '%s' (1)\n",
-+					__func__, (char *)rprop->value);
-+				kfree(propval);
-+				err = -EINVAL;
-+				goto err_fail;
-+			}
-+			*s++ = '\0';
-+
-+			propstr = s;
-+			s = strchr(s, ':');
-+			if (s == NULL) {
-+				pr_err("%s: Illegal symbol "
-+					"entry '%s' (2)\n",
-+					__func__, (char *)rprop->value);
-+				kfree(propval);
-+				err = -EINVAL;
-+				goto err_fail;
-+			}
-+
-+			*s++ = '\0';
-+			offset = simple_strtoul(s, NULL, 10);
-+
-+			/* look into the resolve node for the full path */
-+			refnode = of_find_node_by_path_from(resolve, nodestr);
-+			if (refnode == NULL) {
-+				pr_err("%s: Could not find refnode '%s'\n",
-+					__func__, (char *)rprop->value);
-+				kfree(propval);
-+				err = -ENOENT;
-+				goto err_fail;
-+			}
-+
-+			/* now find the property */
-+			found = false;
-+			for_each_property_of_node(refnode, sprop)
-+				if (of_prop_cmp(sprop->name, propstr) == 0) {
-+					found = true;
-+					break;
-+				}
-+
-+			if (!found) {
-+				pr_err("%s: Could not find property '%s'\n",
-+					__func__, (char *)rprop->value);
-+				kfree(propval);
-+				err = -ENOENT;
-+				goto err_fail;
-+			}
-+
-+			*(uint32_t *)(sprop->value + offset) =
-+				cpu_to_be32(phandle);
-+		}
-+
-+		kfree(propval);
-+	}
-+
-+merge_sym:
-+	return 0;
-+
-+err_fail:
-+	return err;
-+}
-diff --git a/include/of.h b/include/of.h
-index 960122561845..43a36db9dfec 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -650,6 +650,8 @@ static inline struct device_node *of_find_matching_node(
- #define for_each_available_child_of_node(parent, child) \
- 	for (child = of_get_next_available_child(parent, NULL); child != NULL; \
- 	     child = of_get_next_available_child(parent, child))
-+#define for_each_property_of_node(dn, pp) \
-+	list_for_each_entry(pp, &dn->properties, list)
++			/* mark the entry as unresolved */
++			*((cell_t *)(prop->val.val + m->offset)) =
++				cpu_to_fdt32(0xdeadbeef);
+ 			continue;
+ 		}
  
- /**
-  * of_property_read_bool - Findfrom a property
-@@ -759,4 +761,73 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
- 
- 	return node;
++		/* if it's a local reference, we need to record it */
++		if (symbol_fixup_support) {
++
++			/* allocate a new local fixup entry */
++			fe = xmalloc(sizeof(*fe));
++
++			fe->node = node;
++			fe->prop = prop;
++			fe->offset = m->offset;
++			fe->next = NULL;
++
++			/* append it to the local fixups */
++			fep = &dt->local_fixups;
++			while (*fep)
++				fep = &(*fep)->next;
++			*fep = fe;
++		}
++
+ 		phandle = get_node_phandle(dt, refnode);
+ 		*((cell_t *)(prop->val.val + m->offset)) = cpu_to_fdt32(phandle);
+ 	}
++
  }
-+
-+/* illegal phandle value (set when unresolved) */
-+#define OF_PHANDLE_ILLEGAL      0xdeadbeef
-+
-+#ifdef CONFIG_OFTREE_OVERLAY
-+
-+extern int of_resolve(struct device_node *resolve);
-+
-+#else
-+
-+static inline int of_resolve(struct device_node *resolve)
+ ERROR(phandle_references, NULL, NULL, fixup_phandle_references, NULL,
+       &duplicate_node_names, &explicit_phandles);
+@@ -651,6 +713,45 @@ static void check_obsolete_chosen_interrupt_controller(struct check *c,
+ }
+ TREE_WARNING(obsolete_chosen_interrupt_controller, NULL);
+ 
++static void check_auto_label_phandles(struct check *c, struct node *dt,
++				       struct node *node)
 +{
-+	return -ENOSYS;
++	struct label *l;
++	struct symbol *s, **sp;
++	int has_label;
++
++	if (!symbol_fixup_support)
++		return;
++
++	has_label = 0;
++	for_each_label(node->labels, l) {
++		has_label = 1;
++		break;
++	}
++
++	if (!has_label)
++		return;
++
++	/* force allocation of a phandle for this node */
++	(void)get_node_phandle(dt, node);
++
++	/* add the symbol */
++	for_each_label(node->labels, l) {
++
++		s = xmalloc(sizeof(*s));
++		s->label = l;
++		s->node = node;
++		s->next = NULL;
++
++		/* add it to the symbols list */
++		sp = &dt->symbols;
++		while (*sp)
++			sp = &((*sp)->next);
++		*sp = s;
++	}
 +}
++NODE_WARNING(auto_label_phandles, NULL);
 +
-+#endif
+ static struct check *check_table[] = {
+ 	&duplicate_node_names, &duplicate_property_names,
+ 	&node_name_chars, &node_name_format, &property_name_chars,
+@@ -669,6 +770,8 @@ static struct check *check_table[] = {
+ 	&avoid_default_addr_size,
+ 	&obsolete_chosen_interrupt_controller,
+ 
++	&auto_label_phandles,
 +
-+/**
-+ * Overlay support
-+ */
+ 	&always_fail,
+ };
+ 
+diff --git a/scripts/dtc/dtc-lexer.l b/scripts/dtc/dtc-lexer.l
+index 0ee1caf03dd0..dd44ba2aa11d 100644
+--- a/scripts/dtc/dtc-lexer.l
++++ b/scripts/dtc/dtc-lexer.l
+@@ -113,6 +113,11 @@ static void lexical_error(const char *fmt, ...);
+ 			return DT_V1;
+ 		}
+ 
++<*>"/plugin/"	{
++			DPRINT("Keyword: /plugin/\n");
++			return DT_PLUGIN;
++		}
 +
-+/**
-+ * struct of_overlay_info       - Holds a single overlay info
-+ * @target:     target of the overlay operation
-+ * @overlay:    pointer to the overlay contents node
-+ *
-+ * Holds a single overlay state.
-+ */
-+struct of_overlay_info {
-+	struct device_node *target;
-+	struct device_node *overlay;
+ <*>"/memreserve/"	{
+ 			DPRINT("Keyword: /memreserve/\n");
+ 			BEGIN_DEFAULT();
+diff --git a/scripts/dtc/dtc-lexer.lex.c_shipped b/scripts/dtc/dtc-lexer.lex.c_shipped
+index 11cd78e72305..705c47db8269 100644
+--- a/scripts/dtc/dtc-lexer.lex.c_shipped
++++ b/scripts/dtc/dtc-lexer.lex.c_shipped
+@@ -373,8 +373,8 @@ static void yy_fatal_error (yyconst char msg[]  );
+ 	*yy_cp = '\0'; \
+ 	(yy_c_buf_p) = yy_cp;
+ 
+-#define YY_NUM_RULES 30
+-#define YY_END_OF_BUFFER 31
++#define YY_NUM_RULES 31
++#define YY_END_OF_BUFFER 32
+ /* This struct is not used in this scanner,
+    but its presence is necessary. */
+ struct yy_trans_info
+@@ -382,25 +382,26 @@ struct yy_trans_info
+ 	flex_int32_t yy_verify;
+ 	flex_int32_t yy_nxt;
+ 	};
+-static yyconst flex_int16_t yy_accept[159] =
++static yyconst flex_int16_t yy_accept[166] =
+     {   0,
+-        0,    0,    0,    0,    0,    0,    0,    0,   31,   29,
+-       18,   18,   29,   29,   29,   29,   29,   29,   29,   29,
+-       29,   29,   29,   29,   29,   29,   15,   16,   16,   29,
+-       16,   10,   10,   18,   26,    0,    3,    0,   27,   12,
+-        0,    0,   11,    0,    0,    0,    0,    0,    0,    0,
+-       21,   23,   25,   24,   22,    0,    9,   28,    0,    0,
+-        0,   14,   14,   16,   16,   16,   10,   10,   10,    0,
+-       12,    0,   11,    0,    0,    0,   20,    0,    0,    0,
+-        0,    0,    0,    0,    0,   16,   10,   10,   10,    0,
+-       13,   19,    0,    0,    0,    0,    0,    0,    0,    0,
+-
+-        0,   16,    0,    0,    0,    0,    0,    0,    0,    0,
+-        0,   16,    6,    0,    0,    0,    0,    0,    0,    2,
+-        0,    0,    0,    0,    0,    0,    0,    0,    4,   17,
+-        0,    0,    2,    0,    0,    0,    0,    0,    0,    0,
+-        0,    0,    0,    0,    0,    1,    0,    0,    0,    0,
+-        5,    8,    0,    0,    0,    0,    7,    0
++        0,    0,    0,    0,    0,    0,    0,    0,   32,   30,
++       19,   19,   30,   30,   30,   30,   30,   30,   30,   30,
++       30,   30,   30,   30,   30,   30,   16,   17,   17,   30,
++       17,   11,   11,   19,   27,    0,    3,    0,   28,   13,
++        0,    0,   12,    0,    0,    0,    0,    0,    0,    0,
++        0,   22,   24,   26,   25,   23,    0,   10,   29,    0,
++        0,    0,   15,   15,   17,   17,   17,   11,   11,   11,
++        0,   13,    0,   12,    0,    0,    0,   21,    0,    0,
++        0,    0,    0,    0,    0,    0,    0,   17,   11,   11,
++       11,    0,   14,   20,    0,    0,    0,    0,    0,    0,
++
++        0,    0,    0,    0,   17,    0,    0,    0,    0,    0,
++        0,    0,    0,    0,    0,   17,    7,    0,    0,    0,
++        0,    0,    0,    0,    2,    0,    0,    0,    0,    0,
++        0,    0,    0,    0,    4,   18,    0,    0,    5,    2,
++        0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
++        0,    0,    1,    0,    0,    0,    0,    6,    9,    0,
++        0,    0,    0,    8,    0
+     } ;
+ 
+ static yyconst flex_int32_t yy_ec[256] =
+@@ -416,9 +417,9 @@ static yyconst flex_int32_t yy_ec[256] =
+        22,   22,   22,   22,   24,   22,   22,   25,   22,   22,
+         1,   26,   27,    1,   22,    1,   21,   28,   29,   30,
+ 
+-       31,   21,   22,   22,   32,   22,   22,   33,   34,   35,
+-       36,   37,   22,   38,   39,   40,   41,   42,   22,   25,
+-       43,   22,   44,   45,   46,    1,    1,    1,    1,    1,
++       31,   21,   32,   22,   33,   22,   22,   34,   35,   36,
++       37,   38,   22,   39,   40,   41,   42,   43,   22,   25,
++       44,   22,   45,   46,   47,    1,    1,    1,    1,    1,
+         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+@@ -435,163 +436,165 @@ static yyconst flex_int32_t yy_ec[256] =
+         1,    1,    1,    1,    1
+     } ;
+ 
+-static yyconst flex_int32_t yy_meta[47] =
++static yyconst flex_int32_t yy_meta[48] =
+     {   0,
+         1,    1,    1,    1,    1,    1,    2,    3,    1,    2,
+         2,    2,    4,    5,    5,    5,    6,    1,    1,    1,
+         7,    8,    8,    8,    8,    1,    1,    7,    7,    7,
+         7,    8,    8,    8,    8,    8,    8,    8,    8,    8,
+-        8,    8,    8,    3,    1,    4
++        8,    8,    8,    8,    3,    1,    4
+     } ;
+ 
+-static yyconst flex_int16_t yy_base[173] =
++static yyconst flex_int16_t yy_base[180] =
+     {   0,
+-        0,  383,   34,  382,   65,  381,   37,  105,  387,  391,
+-       54,  111,  367,  110,  109,  109,  112,   41,  366,  104,
+-      367,  338,  124,  117,    0,  144,  391,    0,  121,    0,
+-      135,  155,  140,  179,  391,  160,  391,  379,  391,    0,
+-      368,  141,  391,  167,  370,  376,  346,  103,  342,  345,
+-      391,  391,  391,  391,  391,  358,  391,  391,  175,  342,
+-      338,  391,  355,    0,  185,  339,  184,  347,  346,    0,
+-        0,  322,  175,  357,  175,  363,  352,  324,  330,  323,
+-      332,  326,  201,  324,  329,  322,  391,  333,  181,  309,
+-      391,  341,  340,  313,  320,  338,  178,  311,  146,  317,
+-
+-      314,  315,  335,  331,  303,  300,  309,  299,  308,  188,
+-      336,  335,  391,  305,  320,  281,  283,  271,  203,  288,
+-      281,  271,  266,  264,  245,  242,  208,  104,  391,  391,
+-      244,  218,  204,  219,  206,  224,  201,  212,  204,  229,
+-      215,  208,  207,  200,  219,  391,  233,  221,  200,  181,
+-      391,  391,  149,  122,   86,   41,  391,  391,  245,  251,
+-      259,  263,  267,  273,  280,  284,  292,  300,  304,  310,
+-      318,  326
++        0,  393,   35,  392,   66,  391,   38,  107,  397,  401,
++       55,  113,  377,  112,  111,  111,  114,   42,  376,  106,
++      377,  347,  126,  120,    0,  147,  401,    0,  124,    0,
++      137,  158,  170,  163,  401,  153,  401,  389,  401,    0,
++      378,  120,  401,  131,  380,  386,  355,  139,  351,  355,
++      351,  401,  401,  401,  401,  401,  367,  401,  401,  185,
++      350,  346,  401,  364,    0,  185,  347,  189,  356,  355,
++        0,    0,  330,  180,  366,  141,  372,  361,  332,  338,
++      331,  341,  334,  326,  205,  331,  337,  329,  401,  341,
++      167,  316,  401,  349,  348,  320,  328,  346,  180,  318,
++
++      324,  209,  324,  320,  322,  342,  338,  309,  306,  315,
++      305,  315,  312,  192,  342,  341,  401,  293,  306,  282,
++      268,  252,  255,  203,  285,  282,  272,  268,  252,  233,
++      232,  239,  208,  107,  401,  401,  238,  211,  401,  211,
++      212,  208,  228,  203,  215,  207,  233,  222,  212,  211,
++      203,  227,  401,  237,  225,  204,  185,  401,  401,  149,
++      128,   88,   42,  401,  401,  253,  259,  267,  271,  275,
++      281,  288,  292,  300,  308,  312,  318,  326,  334
+     } ;
+ 
+-static yyconst flex_int16_t yy_def[173] =
++static yyconst flex_int16_t yy_def[180] =
+     {   0,
+-      158,    1,    1,    3,  158,    5,    1,    1,  158,  158,
+-      158,  158,  158,  159,  160,  161,  158,  158,  158,  158,
+-      162,  158,  158,  158,  163,  162,  158,  164,  165,  164,
+-      164,  158,  158,  158,  158,  159,  158,  159,  158,  166,
+-      158,  161,  158,  161,  167,  168,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  162,  158,  158,  158,  158,
+-      158,  158,  162,  164,  165,  164,  158,  158,  158,  169,
+-      166,  170,  161,  167,  167,  168,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  164,  158,  158,  169,  170,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-
+-      158,  164,  158,  158,  158,  158,  158,  158,  158,  171,
+-      158,  164,  158,  158,  158,  158,  158,  158,  171,  158,
+-      171,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      172,  158,  158,  158,  172,  158,  172,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158,    0,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158
++      165,    1,    1,    3,  165,    5,    1,    1,  165,  165,
++      165,  165,  165,  166,  167,  168,  165,  165,  165,  165,
++      169,  165,  165,  165,  170,  169,  165,  171,  172,  171,
++      171,  165,  165,  165,  165,  166,  165,  166,  165,  173,
++      165,  168,  165,  168,  174,  175,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  169,  165,  165,  165,
++      165,  165,  165,  169,  171,  172,  171,  165,  165,  165,
++      176,  173,  177,  168,  174,  174,  175,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  171,  165,  165,
++      176,  177,  165,  165,  165,  165,  165,  165,  165,  165,
++
++      165,  165,  165,  165,  171,  165,  165,  165,  165,  165,
++      165,  165,  165,  178,  165,  171,  165,  165,  165,  165,
++      165,  165,  165,  178,  165,  178,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  179,  165,  165,
++      165,  179,  165,  179,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,    0,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165
+     } ;
+ 
+-static yyconst flex_int16_t yy_nxt[438] =
++static yyconst flex_int16_t yy_nxt[449] =
+     {   0,
+        10,   11,   12,   11,   13,   14,   10,   15,   16,   10,
+        10,   10,   17,   10,   10,   10,   10,   18,   19,   20,
+        21,   21,   21,   21,   21,   10,   10,   21,   21,   21,
+        21,   21,   21,   21,   21,   21,   21,   21,   21,   21,
+-       21,   21,   21,   10,   22,   10,   24,   25,   25,   25,
+-       32,   33,   33,  157,   26,   34,   34,   34,   51,   52,
+-       27,   26,   26,   26,   26,   10,   11,   12,   11,   13,
+-       14,   28,   15,   16,   28,   28,   28,   24,   28,   28,
+-       28,   10,   18,   19,   20,   29,   29,   29,   29,   29,
+-       30,   10,   29,   29,   29,   29,   29,   29,   29,   29,
+-
+-       29,   29,   29,   29,   29,   29,   29,   29,   10,   22,
+-       10,   23,   34,   34,   34,   37,   39,   43,   32,   33,
+-       33,   45,   54,   55,   46,   59,   45,   64,  156,   46,
+-       64,   64,   64,   79,   44,   38,   59,   57,  134,   47,
+-      135,   48,   80,   49,   47,   50,   48,   99,   61,   43,
+-       50,  110,   41,   67,   67,   67,   60,   63,   63,   63,
+-       57,  155,   68,   69,   63,   37,   44,   66,   67,   67,
+-       67,   63,   63,   63,   63,   73,   59,   68,   69,   70,
+-       34,   34,   34,   43,   75,   38,  154,   92,   83,   83,
+-       83,   64,   44,  120,   64,   64,   64,   67,   67,   67,
+-
+-       44,   57,   99,   68,   69,  107,   68,   69,  120,  127,
+-      108,  153,  152,  121,   83,   83,   83,  133,  133,  133,
+-      146,  133,  133,  133,  146,  140,  140,  140,  121,  141,
+-      140,  140,  140,  151,  141,  158,  150,  149,  148,  144,
+-      147,  143,  142,  139,  147,   36,   36,   36,   36,   36,
+-       36,   36,   36,   40,  138,  137,  136,   40,   40,   42,
+-       42,   42,   42,   42,   42,   42,   42,   56,   56,   56,
+-       56,   62,  132,   62,   64,  131,  130,   64,  129,   64,
+-       64,   65,  128,  158,   65,   65,   65,   65,   71,  127,
+-       71,   71,   74,   74,   74,   74,   74,   74,   74,   74,
+-
+-       76,   76,   76,   76,   76,   76,   76,   76,   89,  126,
+-       89,   90,  125,   90,   90,  124,   90,   90,  119,  119,
+-      119,  119,  119,  119,  119,  119,  145,  145,  145,  145,
+-      145,  145,  145,  145,  123,  122,   59,   59,  118,  117,
+-      116,  115,  114,  113,   45,  112,  108,  111,  109,  106,
+-      105,  104,   46,  103,   91,   87,  102,  101,  100,   98,
+-       97,   96,   95,   94,   93,   77,   75,   91,   88,   87,
+-       86,   57,   85,   84,   57,   82,   81,   78,   77,   75,
+-       72,  158,   58,   57,   53,   35,  158,   31,   23,   23,
+-        9,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158
++       21,   21,   21,   21,   10,   22,   10,   24,   25,   25,
++       25,   32,   33,   33,  164,   26,   34,   34,   34,   52,
++       53,   27,   26,   26,   26,   26,   10,   11,   12,   11,
++       13,   14,   28,   15,   16,   28,   28,   28,   24,   28,
++       28,   28,   10,   18,   19,   20,   29,   29,   29,   29,
++       29,   30,   10,   29,   29,   29,   29,   29,   29,   29,
++
++       29,   29,   29,   29,   29,   29,   29,   29,   29,   29,
++       10,   22,   10,   23,   34,   34,   34,   37,   39,   43,
++       32,   33,   33,   45,   55,   56,   46,   60,   43,   45,
++       65,  163,   46,   65,   65,   65,   44,   38,   60,   74,
++       58,   47,  141,   48,  142,   44,   49,   47,   50,   48,
++       76,   51,   62,   94,   50,   41,   44,   51,   37,   61,
++       64,   64,   64,   58,   34,   34,   34,   64,  162,   80,
++       67,   68,   68,   68,   64,   64,   64,   64,   38,   81,
++       69,   70,   71,   68,   68,   68,   60,  161,   43,   69,
++       70,   65,   69,   70,   65,   65,   65,  125,   85,   85,
++
++       85,   58,   68,   68,   68,   44,  102,  110,  125,  133,
++      102,   69,   70,  111,  114,  160,  159,  126,   85,   85,
++       85,  140,  140,  140,  140,  140,  140,  153,  126,  147,
++      147,  147,  153,  148,  147,  147,  147,  158,  148,  165,
++      157,  156,  155,  151,  150,  149,  146,  154,  145,  144,
++      143,  139,  154,   36,   36,   36,   36,   36,   36,   36,
++       36,   40,  138,  137,  136,   40,   40,   42,   42,   42,
++       42,   42,   42,   42,   42,   57,   57,   57,   57,   63,
++      135,   63,   65,  134,  165,   65,  133,   65,   65,   66,
++      132,  131,   66,   66,   66,   66,   72,  130,   72,   72,
++
++       75,   75,   75,   75,   75,   75,   75,   75,   77,   77,
++       77,   77,   77,   77,   77,   77,   91,  129,   91,   92,
++      128,   92,   92,  127,   92,   92,  124,  124,  124,  124,
++      124,  124,  124,  124,  152,  152,  152,  152,  152,  152,
++      152,  152,   60,   60,  123,  122,  121,  120,  119,  118,
++      117,   45,  116,  111,  115,  113,  112,  109,  108,  107,
++       46,  106,   93,   89,  105,  104,  103,  101,  100,   99,
++       98,   97,   96,   95,   78,   76,   93,   90,   89,   88,
++       58,   87,   86,   58,   84,   83,   82,   79,   78,   76,
++       73,  165,   59,   58,   54,   35,  165,   31,   23,   23,
++
++        9,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165
+     } ;
+ 
+-static yyconst flex_int16_t yy_chk[438] =
++static yyconst flex_int16_t yy_chk[449] =
+     {   0,
+         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+-        1,    1,    1,    1,    1,    1,    3,    3,    3,    3,
+-        7,    7,    7,  156,    3,   11,   11,   11,   18,   18,
+-        3,    3,    3,    3,    3,    5,    5,    5,    5,    5,
++        1,    1,    1,    1,    1,    1,    1,    3,    3,    3,
++        3,    7,    7,    7,  163,    3,   11,   11,   11,   18,
++       18,    3,    3,    3,    3,    3,    5,    5,    5,    5,
+         5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
+         5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
+         5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
+ 
+         5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
+-        5,    8,   12,   12,   12,   14,   15,   16,    8,    8,
+-        8,   17,   20,   20,   17,   23,   24,   29,  155,   24,
+-       29,   29,   29,   48,   16,   14,   31,   29,  128,   17,
+-      128,   17,   48,   17,   24,   17,   24,   99,   24,   42,
+-       24,   99,   15,   33,   33,   33,   23,   26,   26,   26,
+-       26,  154,   33,   33,   26,   36,   42,   31,   32,   32,
+-       32,   26,   26,   26,   26,   44,   59,   32,   32,   32,
+-       34,   34,   34,   73,   75,   36,  153,   75,   59,   59,
+-       59,   65,   44,  110,   65,   65,   65,   67,   67,   67,
+-
+-       73,   65,   83,   89,   89,   97,   67,   67,  119,  127,
+-       97,  150,  149,  110,   83,   83,   83,  133,  133,  133,
+-      141,  127,  127,  127,  145,  136,  136,  136,  119,  136,
+-      140,  140,  140,  148,  140,  147,  144,  143,  142,  139,
+-      141,  138,  137,  135,  145,  159,  159,  159,  159,  159,
+-      159,  159,  159,  160,  134,  132,  131,  160,  160,  161,
+-      161,  161,  161,  161,  161,  161,  161,  162,  162,  162,
+-      162,  163,  126,  163,  164,  125,  124,  164,  123,  164,
+-      164,  165,  122,  121,  165,  165,  165,  165,  166,  120,
+-      166,  166,  167,  167,  167,  167,  167,  167,  167,  167,
+-
+-      168,  168,  168,  168,  168,  168,  168,  168,  169,  118,
+-      169,  170,  117,  170,  170,  116,  170,  170,  171,  171,
+-      171,  171,  171,  171,  171,  171,  172,  172,  172,  172,
+-      172,  172,  172,  172,  115,  114,  112,  111,  109,  108,
+-      107,  106,  105,  104,  103,  102,  101,  100,   98,   96,
+-       95,   94,   93,   92,   90,   88,   86,   85,   84,   82,
+-       81,   80,   79,   78,   77,   76,   74,   72,   69,   68,
+-       66,   63,   61,   60,   56,   50,   49,   47,   46,   45,
++        5,    5,    5,    8,   12,   12,   12,   14,   15,   16,
++        8,    8,    8,   17,   20,   20,   17,   23,   42,   24,
++       29,  162,   24,   29,   29,   29,   16,   14,   31,   44,
++       29,   17,  134,   17,  134,   42,   17,   24,   17,   24,
++       76,   17,   24,   76,   24,   15,   44,   24,   36,   23,
++       26,   26,   26,   26,   34,   34,   34,   26,  161,   48,
++       31,   32,   32,   32,   26,   26,   26,   26,   36,   48,
++       32,   32,   32,   33,   33,   33,   60,  160,   74,   91,
++       91,   66,   33,   33,   66,   66,   66,  114,   60,   60,
++
++       60,   66,   68,   68,   68,   74,   85,   99,  124,  133,
++      102,   68,   68,   99,  102,  157,  156,  114,   85,   85,
++       85,  133,  133,  133,  140,  140,  140,  148,  124,  143,
++      143,  143,  152,  143,  147,  147,  147,  155,  147,  154,
++      151,  150,  149,  146,  145,  144,  142,  148,  141,  138,
++      137,  132,  152,  166,  166,  166,  166,  166,  166,  166,
++      166,  167,  131,  130,  129,  167,  167,  168,  168,  168,
++      168,  168,  168,  168,  168,  169,  169,  169,  169,  170,
++      128,  170,  171,  127,  126,  171,  125,  171,  171,  172,
++      123,  122,  172,  172,  172,  172,  173,  121,  173,  173,
++
++      174,  174,  174,  174,  174,  174,  174,  174,  175,  175,
++      175,  175,  175,  175,  175,  175,  176,  120,  176,  177,
++      119,  177,  177,  118,  177,  177,  178,  178,  178,  178,
++      178,  178,  178,  178,  179,  179,  179,  179,  179,  179,
++      179,  179,  116,  115,  113,  112,  111,  110,  109,  108,
++      107,  106,  105,  104,  103,  101,  100,   98,   97,   96,
++       95,   94,   92,   90,   88,   87,   86,   84,   83,   82,
++       81,   80,   79,   78,   77,   75,   73,   70,   69,   67,
++       64,   62,   61,   57,   51,   50,   49,   47,   46,   45,
+        41,   38,   22,   21,   19,   13,    9,    6,    4,    2,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+ 
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158,  158,  158,  158,
+-      158,  158,  158,  158,  158,  158,  158
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165,  165,  165,
++      165,  165,  165,  165,  165,  165,  165,  165
+     } ;
+ 
+ static yy_state_type yy_last_accepting_state;
+@@ -662,7 +665,7 @@ static int dts_version = 1;
+ static void push_input_file(const char *filename);
+ static bool pop_input_file(void);
+ static void lexical_error(const char *fmt, ...);
+-#line 666 "dtc-lexer.lex.c"
++#line 669 "dtc-lexer.lex.c"
+ 
+ #define INITIAL 0
+ #define BYTESTRING 1
+@@ -882,7 +885,7 @@ YY_DECL
+ 	{
+ #line 68 "dtc-lexer.l"
+ 
+-#line 886 "dtc-lexer.lex.c"
++#line 889 "dtc-lexer.lex.c"
+ 
+ 	while ( 1 )		/* loops until end-of-file is reached */
+ 		{
+@@ -910,13 +913,13 @@ yy_match:
+ 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
+ 				{
+ 				yy_current_state = (int) yy_def[yy_current_state];
+-				if ( yy_current_state >= 159 )
++				if ( yy_current_state >= 166 )
+ 					yy_c = yy_meta[(unsigned int) yy_c];
+ 				}
+ 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+ 			++yy_cp;
+ 			}
+-		while ( yy_current_state != 158 );
++		while ( yy_current_state != 165 );
+ 		yy_cp = (yy_last_accepting_cpos);
+ 		yy_current_state = (yy_last_accepting_state);
+ 
+@@ -1007,23 +1010,31 @@ case 5:
+ YY_RULE_SETUP
+ #line 116 "dtc-lexer.l"
+ {
++			DPRINT("Keyword: /plugin/\n");
++			return DT_PLUGIN;
++		}
++	YY_BREAK
++case 6:
++YY_RULE_SETUP
++#line 121 "dtc-lexer.l"
++{
+ 			DPRINT("Keyword: /memreserve/\n");
+ 			BEGIN_DEFAULT();
+ 			return DT_MEMRESERVE;
+ 		}
+ 	YY_BREAK
+-case 6:
++case 7:
+ YY_RULE_SETUP
+-#line 122 "dtc-lexer.l"
++#line 127 "dtc-lexer.l"
+ {
+ 			DPRINT("Keyword: /bits/\n");
+ 			BEGIN_DEFAULT();
+ 			return DT_BITS;
+ 		}
+ 	YY_BREAK
+-case 7:
++case 8:
+ YY_RULE_SETUP
+-#line 128 "dtc-lexer.l"
++#line 133 "dtc-lexer.l"
+ {
+ 			DPRINT("Keyword: /delete-property/\n");
+ 			DPRINT("<PROPNODENAME>\n");
+@@ -1031,9 +1042,9 @@ YY_RULE_SETUP
+ 			return DT_DEL_PROP;
+ 		}
+ 	YY_BREAK
+-case 8:
++case 9:
+ YY_RULE_SETUP
+-#line 135 "dtc-lexer.l"
++#line 140 "dtc-lexer.l"
+ {
+ 			DPRINT("Keyword: /delete-node/\n");
+ 			DPRINT("<PROPNODENAME>\n");
+@@ -1041,9 +1052,9 @@ YY_RULE_SETUP
+ 			return DT_DEL_NODE;
+ 		}
+ 	YY_BREAK
+-case 9:
++case 10:
+ YY_RULE_SETUP
+-#line 142 "dtc-lexer.l"
++#line 147 "dtc-lexer.l"
+ {
+ 			DPRINT("Label: %s\n", yytext);
+ 			yylval.labelref = xstrdup(yytext);
+@@ -1051,9 +1062,9 @@ YY_RULE_SETUP
+ 			return DT_LABEL;
+ 		}
+ 	YY_BREAK
+-case 10:
++case 11:
+ YY_RULE_SETUP
+-#line 149 "dtc-lexer.l"
++#line 154 "dtc-lexer.l"
+ {
+ 			char *e;
+ 			DPRINT("Integer Literal: '%s'\n", yytext);
+@@ -1073,10 +1084,10 @@ YY_RULE_SETUP
+ 			return DT_LITERAL;
+ 		}
+ 	YY_BREAK
+-case 11:
+-/* rule 11 can match eol */
++case 12:
++/* rule 12 can match eol */
+ YY_RULE_SETUP
+-#line 168 "dtc-lexer.l"
++#line 173 "dtc-lexer.l"
+ {
+ 			struct data d;
+ 			DPRINT("Character literal: %s\n", yytext);
+@@ -1098,18 +1109,18 @@ YY_RULE_SETUP
+ 			return DT_CHAR_LITERAL;
+ 		}
+ 	YY_BREAK
+-case 12:
++case 13:
+ YY_RULE_SETUP
+-#line 189 "dtc-lexer.l"
++#line 194 "dtc-lexer.l"
+ {	/* label reference */
+ 			DPRINT("Ref: %s\n", yytext+1);
+ 			yylval.labelref = xstrdup(yytext+1);
+ 			return DT_REF;
+ 		}
+ 	YY_BREAK
+-case 13:
++case 14:
+ YY_RULE_SETUP
+-#line 195 "dtc-lexer.l"
++#line 200 "dtc-lexer.l"
+ {	/* new-style path reference */
+ 			yytext[yyleng-1] = '\0';
+ 			DPRINT("Ref: %s\n", yytext+2);
+@@ -1117,27 +1128,27 @@ YY_RULE_SETUP
+ 			return DT_REF;
+ 		}
+ 	YY_BREAK
+-case 14:
++case 15:
+ YY_RULE_SETUP
+-#line 202 "dtc-lexer.l"
++#line 207 "dtc-lexer.l"
+ {
+ 			yylval.byte = strtol(yytext, NULL, 16);
+ 			DPRINT("Byte: %02x\n", (int)yylval.byte);
+ 			return DT_BYTE;
+ 		}
+ 	YY_BREAK
+-case 15:
++case 16:
+ YY_RULE_SETUP
+-#line 208 "dtc-lexer.l"
++#line 213 "dtc-lexer.l"
+ {
+ 			DPRINT("/BYTESTRING\n");
+ 			BEGIN_DEFAULT();
+ 			return ']';
+ 		}
+ 	YY_BREAK
+-case 16:
++case 17:
+ YY_RULE_SETUP
+-#line 214 "dtc-lexer.l"
++#line 219 "dtc-lexer.l"
+ {
+ 			DPRINT("PropNodeName: %s\n", yytext);
+ 			yylval.propnodename = xstrdup((yytext[0] == '\\') ?
+@@ -1146,75 +1157,75 @@ YY_RULE_SETUP
+ 			return DT_PROPNODENAME;
+ 		}
+ 	YY_BREAK
+-case 17:
++case 18:
+ YY_RULE_SETUP
+-#line 222 "dtc-lexer.l"
++#line 227 "dtc-lexer.l"
+ {
+ 			DPRINT("Binary Include\n");
+ 			return DT_INCBIN;
+ 		}
+ 	YY_BREAK
+-case 18:
+-/* rule 18 can match eol */
+-YY_RULE_SETUP
+-#line 227 "dtc-lexer.l"
+-/* eat whitespace */
+-	YY_BREAK
+ case 19:
+ /* rule 19 can match eol */
+ YY_RULE_SETUP
+-#line 228 "dtc-lexer.l"
+-/* eat C-style comments */
++#line 232 "dtc-lexer.l"
++/* eat whitespace */
+ 	YY_BREAK
+ case 20:
+ /* rule 20 can match eol */
+ YY_RULE_SETUP
+-#line 229 "dtc-lexer.l"
+-/* eat C++-style comments */
++#line 233 "dtc-lexer.l"
++/* eat C-style comments */
+ 	YY_BREAK
+ case 21:
++/* rule 21 can match eol */
+ YY_RULE_SETUP
+-#line 231 "dtc-lexer.l"
+-{ return DT_LSHIFT; };
++#line 234 "dtc-lexer.l"
++/* eat C++-style comments */
+ 	YY_BREAK
+ case 22:
+ YY_RULE_SETUP
+-#line 232 "dtc-lexer.l"
+-{ return DT_RSHIFT; };
++#line 236 "dtc-lexer.l"
++{ return DT_LSHIFT; };
+ 	YY_BREAK
+ case 23:
+ YY_RULE_SETUP
+-#line 233 "dtc-lexer.l"
+-{ return DT_LE; };
++#line 237 "dtc-lexer.l"
++{ return DT_RSHIFT; };
+ 	YY_BREAK
+ case 24:
+ YY_RULE_SETUP
+-#line 234 "dtc-lexer.l"
+-{ return DT_GE; };
++#line 238 "dtc-lexer.l"
++{ return DT_LE; };
+ 	YY_BREAK
+ case 25:
+ YY_RULE_SETUP
+-#line 235 "dtc-lexer.l"
+-{ return DT_EQ; };
++#line 239 "dtc-lexer.l"
++{ return DT_GE; };
+ 	YY_BREAK
+ case 26:
+ YY_RULE_SETUP
+-#line 236 "dtc-lexer.l"
+-{ return DT_NE; };
++#line 240 "dtc-lexer.l"
++{ return DT_EQ; };
+ 	YY_BREAK
+ case 27:
+ YY_RULE_SETUP
+-#line 237 "dtc-lexer.l"
+-{ return DT_AND; };
++#line 241 "dtc-lexer.l"
++{ return DT_NE; };
+ 	YY_BREAK
+ case 28:
+ YY_RULE_SETUP
+-#line 238 "dtc-lexer.l"
+-{ return DT_OR; };
++#line 242 "dtc-lexer.l"
++{ return DT_AND; };
+ 	YY_BREAK
+ case 29:
+ YY_RULE_SETUP
+-#line 240 "dtc-lexer.l"
++#line 243 "dtc-lexer.l"
++{ return DT_OR; };
++	YY_BREAK
++case 30:
++YY_RULE_SETUP
++#line 245 "dtc-lexer.l"
+ {
+ 			DPRINT("Char: %c (\\x%02x)\n", yytext[0],
+ 				(unsigned)yytext[0]);
+@@ -1230,12 +1241,12 @@ YY_RULE_SETUP
+ 			return yytext[0];
+ 		}
+ 	YY_BREAK
+-case 30:
++case 31:
+ YY_RULE_SETUP
+-#line 255 "dtc-lexer.l"
++#line 260 "dtc-lexer.l"
+ ECHO;
+ 	YY_BREAK
+-#line 1239 "dtc-lexer.lex.c"
++#line 1250 "dtc-lexer.lex.c"
+ 
+ 	case YY_END_OF_BUFFER:
+ 		{
+@@ -1528,7 +1539,7 @@ static int yy_get_next_buffer (void)
+ 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
+ 			{
+ 			yy_current_state = (int) yy_def[yy_current_state];
+-			if ( yy_current_state >= 159 )
++			if ( yy_current_state >= 166 )
+ 				yy_c = yy_meta[(unsigned int) yy_c];
+ 			}
+ 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+@@ -1556,11 +1567,11 @@ static int yy_get_next_buffer (void)
+ 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
+ 		{
+ 		yy_current_state = (int) yy_def[yy_current_state];
+-		if ( yy_current_state >= 159 )
++		if ( yy_current_state >= 166 )
+ 			yy_c = yy_meta[(unsigned int) yy_c];
+ 		}
+ 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+-	yy_is_jam = (yy_current_state == 158);
++	yy_is_jam = (yy_current_state == 165);
+ 
+ 		return yy_is_jam ? 0 : yy_current_state;
+ }
+@@ -2195,7 +2206,7 @@ void yyfree (void * ptr )
+ 
+ #define YYTABLES_NAME "yytables"
+ 
+-#line 254 "dtc-lexer.l"
++#line 259 "dtc-lexer.l"
+ 
+ 
+ 
+diff --git a/scripts/dtc/dtc-parser.tab.c_shipped b/scripts/dtc/dtc-parser.tab.c_shipped
+index 27fac4b9cd70..844c4628962d 100644
+--- a/scripts/dtc/dtc-parser.tab.c_shipped
++++ b/scripts/dtc/dtc-parser.tab.c_shipped
+@@ -65,6 +65,7 @@
+ #line 20 "dtc-parser.y" /* yacc.c:339  */
+ 
+ #include <stdio.h>
++#include <inttypes.h>
+ 
+ #include "dtc.h"
+ #include "srcpos.h"
+@@ -80,7 +81,7 @@ extern void yyerror(char const *s);
+ extern struct boot_info *the_boot_info;
+ extern bool treesource_error;
+ 
+-#line 84 "dtc-parser.tab.c" /* yacc.c:339  */
++#line 85 "dtc-parser.tab.c" /* yacc.c:339  */
+ 
+ # ifndef YY_NULLPTR
+ #  if defined __cplusplus && 201103L <= __cplusplus
+@@ -116,26 +117,27 @@ extern int yydebug;
+   enum yytokentype
+   {
+     DT_V1 = 258,
+-    DT_MEMRESERVE = 259,
+-    DT_LSHIFT = 260,
+-    DT_RSHIFT = 261,
+-    DT_LE = 262,
+-    DT_GE = 263,
+-    DT_EQ = 264,
+-    DT_NE = 265,
+-    DT_AND = 266,
+-    DT_OR = 267,
+-    DT_BITS = 268,
+-    DT_DEL_PROP = 269,
+-    DT_DEL_NODE = 270,
+-    DT_PROPNODENAME = 271,
+-    DT_LITERAL = 272,
+-    DT_CHAR_LITERAL = 273,
+-    DT_BYTE = 274,
+-    DT_STRING = 275,
+-    DT_LABEL = 276,
+-    DT_REF = 277,
+-    DT_INCBIN = 278
++    DT_PLUGIN = 259,
++    DT_MEMRESERVE = 260,
++    DT_LSHIFT = 261,
++    DT_RSHIFT = 262,
++    DT_LE = 263,
++    DT_GE = 264,
++    DT_EQ = 265,
++    DT_NE = 266,
++    DT_AND = 267,
++    DT_OR = 268,
++    DT_BITS = 269,
++    DT_DEL_PROP = 270,
++    DT_DEL_NODE = 271,
++    DT_PROPNODENAME = 272,
++    DT_LITERAL = 273,
++    DT_CHAR_LITERAL = 274,
++    DT_BYTE = 275,
++    DT_STRING = 276,
++    DT_LABEL = 277,
++    DT_REF = 278,
++    DT_INCBIN = 279
+   };
+ #endif
+ 
+@@ -144,7 +146,7 @@ extern int yydebug;
+ typedef union YYSTYPE YYSTYPE;
+ union YYSTYPE
+ {
+-#line 38 "dtc-parser.y" /* yacc.c:355  */
++#line 39 "dtc-parser.y" /* yacc.c:355  */
+ 
+ 	char *propnodename;
+ 	char *labelref;
+@@ -162,8 +164,9 @@ union YYSTYPE
+ 	struct node *nodelist;
+ 	struct reserve_info *re;
+ 	uint64_t integer;
++	bool is_plugin;
+ 
+-#line 167 "dtc-parser.tab.c" /* yacc.c:355  */
++#line 170 "dtc-parser.tab.c" /* yacc.c:355  */
+ };
+ # define YYSTYPE_IS_TRIVIAL 1
+ # define YYSTYPE_IS_DECLARED 1
+@@ -192,7 +195,7 @@ int yyparse (void);
+ 
+ /* Copy the second part of user declarations.  */
+ 
+-#line 196 "dtc-parser.tab.c" /* yacc.c:358  */
++#line 199 "dtc-parser.tab.c" /* yacc.c:358  */
+ 
+ #ifdef short
+ # undef short
+@@ -436,21 +439,21 @@ union yyalloc
+ /* YYFINAL -- State number of the termination state.  */
+ #define YYFINAL  4
+ /* YYLAST -- Last index in YYTABLE.  */
+-#define YYLAST   133
++#define YYLAST   136
+ 
+ /* YYNTOKENS -- Number of terminals.  */
+-#define YYNTOKENS  47
++#define YYNTOKENS  48
+ /* YYNNTS -- Number of nonterminals.  */
+-#define YYNNTS  28
++#define YYNNTS  29
+ /* YYNRULES -- Number of rules.  */
+-#define YYNRULES  79
++#define YYNRULES  82
+ /* YYNSTATES -- Number of states.  */
+-#define YYNSTATES  141
++#define YYNSTATES  147
+ 
+ /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
+    by yylex, with out-of-bounds checking.  */
+ #define YYUNDEFTOK  2
+-#define YYMAXUTOK   278
++#define YYMAXUTOK   279
+ 
+ #define YYTRANSLATE(YYX)                                                \
+   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+@@ -462,16 +465,16 @@ static const yytype_uint8 yytranslate[] =
+        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+-       2,     2,     2,    46,     2,     2,     2,    44,    40,     2,
+-      32,    34,    43,    41,    33,    42,     2,    25,     2,     2,
+-       2,     2,     2,     2,     2,     2,     2,     2,    37,    24,
+-      35,    28,    29,    36,     2,     2,     2,     2,     2,     2,
++       2,     2,     2,    47,     2,     2,     2,    45,    41,     2,
++      33,    35,    44,    42,    34,    43,     2,    26,     2,     2,
++       2,     2,     2,     2,     2,     2,     2,     2,    38,    25,
++      36,    29,    30,    37,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+-       2,    30,     2,    31,    39,     2,     2,     2,     2,     2,
++       2,    31,     2,    32,    40,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+-       2,     2,     2,    26,    38,    27,    45,     2,     2,     2,
++       2,     2,     2,    27,    39,    28,    46,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+@@ -486,21 +489,22 @@ static const yytype_uint8 yytranslate[] =
+        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
+        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+-      15,    16,    17,    18,    19,    20,    21,    22,    23
++      15,    16,    17,    18,    19,    20,    21,    22,    23,    24
+ };
+ 
+ #if YYDEBUG
+   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+ static const yytype_uint16 yyrline[] =
+ {
+-       0,   104,   104,   113,   116,   123,   127,   135,   139,   143,
+-     153,   168,   176,   179,   186,   190,   194,   198,   206,   210,
+-     214,   218,   222,   238,   248,   256,   259,   263,   270,   286,
+-     291,   310,   324,   331,   332,   333,   340,   344,   345,   349,
+-     350,   354,   355,   359,   360,   364,   365,   369,   370,   374,
+-     375,   376,   380,   381,   382,   383,   384,   388,   389,   390,
+-     394,   395,   396,   400,   401,   402,   403,   407,   408,   409,
+-     410,   415,   418,   422,   430,   433,   437,   445,   449,   453
++       0,   108,   108,   118,   121,   129,   132,   139,   143,   151,
++     155,   160,   171,   181,   196,   204,   207,   214,   218,   222,
++     226,   234,   238,   242,   246,   250,   266,   276,   284,   287,
++     291,   298,   314,   319,   338,   352,   359,   360,   361,   368,
++     372,   373,   377,   378,   382,   383,   387,   388,   392,   393,
++     397,   398,   402,   403,   404,   408,   409,   410,   411,   412,
++     416,   417,   418,   422,   423,   424,   428,   429,   430,   431,
++     435,   436,   437,   438,   443,   446,   450,   458,   461,   465,
++     473,   477,   481
+ };
+ #endif
+ 
+@@ -509,19 +513,19 @@ static const yytype_uint16 yyrline[] =
+    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
+ static const char *const yytname[] =
+ {
+-  "$end", "error", "$undefined", "DT_V1", "DT_MEMRESERVE", "DT_LSHIFT",
+-  "DT_RSHIFT", "DT_LE", "DT_GE", "DT_EQ", "DT_NE", "DT_AND", "DT_OR",
+-  "DT_BITS", "DT_DEL_PROP", "DT_DEL_NODE", "DT_PROPNODENAME", "DT_LITERAL",
+-  "DT_CHAR_LITERAL", "DT_BYTE", "DT_STRING", "DT_LABEL", "DT_REF",
+-  "DT_INCBIN", "';'", "'/'", "'{'", "'}'", "'='", "'>'", "'['", "']'",
+-  "'('", "','", "')'", "'<'", "'?'", "':'", "'|'", "'^'", "'&'", "'+'",
+-  "'-'", "'*'", "'%'", "'~'", "'!'", "$accept", "sourcefile",
+-  "memreserves", "memreserve", "devicetree", "nodedef", "proplist",
+-  "propdef", "propdata", "propdataprefix", "arrayprefix", "integer_prim",
+-  "integer_expr", "integer_trinary", "integer_or", "integer_and",
+-  "integer_bitor", "integer_bitxor", "integer_bitand", "integer_eq",
+-  "integer_rela", "integer_shift", "integer_add", "integer_mul",
+-  "integer_unary", "bytestring", "subnodes", "subnode", YY_NULLPTR
++  "$end", "error", "$undefined", "DT_V1", "DT_PLUGIN", "DT_MEMRESERVE",
++  "DT_LSHIFT", "DT_RSHIFT", "DT_LE", "DT_GE", "DT_EQ", "DT_NE", "DT_AND",
++  "DT_OR", "DT_BITS", "DT_DEL_PROP", "DT_DEL_NODE", "DT_PROPNODENAME",
++  "DT_LITERAL", "DT_CHAR_LITERAL", "DT_BYTE", "DT_STRING", "DT_LABEL",
++  "DT_REF", "DT_INCBIN", "';'", "'/'", "'{'", "'}'", "'='", "'>'", "'['",
++  "']'", "'('", "','", "')'", "'<'", "'?'", "':'", "'|'", "'^'", "'&'",
++  "'+'", "'-'", "'*'", "'%'", "'~'", "'!'", "$accept", "sourcefile",
++  "plugindecl", "memreserves", "memreserve", "devicetree", "nodedef",
++  "proplist", "propdef", "propdata", "propdataprefix", "arrayprefix",
++  "integer_prim", "integer_expr", "integer_trinary", "integer_or",
++  "integer_and", "integer_bitor", "integer_bitxor", "integer_bitand",
++  "integer_eq", "integer_rela", "integer_shift", "integer_add",
++  "integer_mul", "integer_unary", "bytestring", "subnodes", "subnode", YY_NULLPTR
+ };
+ #endif
+ 
+@@ -532,16 +536,16 @@ static const yytype_uint16 yytoknum[] =
+ {
+        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
+      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
+-     275,   276,   277,   278,    59,    47,   123,   125,    61,    62,
+-      91,    93,    40,    44,    41,    60,    63,    58,   124,    94,
+-      38,    43,    45,    42,    37,   126,    33
++     275,   276,   277,   278,   279,    59,    47,   123,   125,    61,
++      62,    91,    93,    40,    44,    41,    60,    63,    58,   124,
++      94,    38,    43,    45,    42,    37,   126,    33
+ };
+ # endif
+ 
+-#define YYPACT_NINF -38
++#define YYPACT_NINF -84
+ 
+ #define yypact_value_is_default(Yystate) \
+-  (!!((Yystate) == (-38)))
++  (!!((Yystate) == (-84)))
+ 
+ #define YYTABLE_NINF -1
+ 
+@@ -552,21 +556,21 @@ static const yytype_uint16 yytoknum[] =
+      STATE-NUM.  */
+ static const yytype_int8 yypact[] =
+ {
+-      21,    11,    45,    10,   -38,     9,    10,    15,    10,   -38,
+-     -38,    -9,     9,   -38,    56,    40,   -38,    -9,    -9,    -9,
+-     -38,    51,   -38,    -6,    75,    49,    52,    48,    50,     3,
+-      66,    33,     0,   -38,    65,   -38,   -38,    68,    56,    56,
+-     -38,   -38,   -38,   -38,    -9,    -9,    -9,    -9,    -9,    -9,
+-      -9,    -9,    -9,    -9,    -9,    -9,    -9,    -9,    -9,    -9,
+-      -9,    -9,    -9,   -38,    42,    69,   -38,   -38,    75,    55,
+-      49,    52,    48,    50,     3,     3,    66,    66,    66,    66,
+-      33,    33,     0,     0,   -38,   -38,   -38,    78,    79,   -11,
+-      42,   -38,    70,    42,   -38,    -9,    72,    74,   -38,   -38,
+-     -38,   -38,   -38,    76,   -38,   -38,   -38,   -38,   -38,    18,
+-      -1,   -38,   -38,   -38,   -38,    82,   -38,   -38,   -38,    71,
+-     -38,   -38,    32,    67,    81,    -3,   -38,   -38,   -38,   -38,
+-     -38,    43,   -38,   -38,   -38,     9,   -38,    73,     9,    77,
+-     -38
++      15,   -12,    35,    42,   -84,    27,     9,   -84,    24,     9,
++      43,     9,   -84,   -84,   -10,    24,   -84,    60,    44,   -84,
++     -10,   -10,   -10,   -84,    55,   -84,    -7,    52,    53,    51,
++      54,    10,     2,    38,    37,    -4,   -84,    68,   -84,   -84,
++      71,    73,    60,    60,   -84,   -84,   -84,   -84,   -10,   -10,
++     -10,   -10,   -10,   -10,   -10,   -10,   -10,   -10,   -10,   -10,
++     -10,   -10,   -10,   -10,   -10,   -10,   -10,   -84,    56,    72,
++      60,   -84,   -84,    52,    61,    53,    51,    54,    10,     2,
++       2,    38,    38,    38,    38,    37,    37,    -4,    -4,   -84,
++     -84,   -84,    81,    83,    34,    56,   -84,    74,    56,   -84,
++     -84,   -10,    76,    78,   -84,   -84,   -84,   -84,   -84,    79,
++     -84,   -84,   -84,   -84,   -84,    -6,     3,   -84,   -84,   -84,
++     -84,    87,   -84,   -84,   -84,    75,   -84,   -84,    32,    70,
++      86,    36,   -84,   -84,   -84,   -84,   -84,    47,   -84,   -84,
++     -84,    24,   -84,    77,    24,    80,   -84
+ };
+ 
+   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+@@ -574,37 +578,37 @@ static const yytype_int8 yypact[] =
+      means the default is an error.  */
+ static const yytype_uint8 yydefact[] =
+ {
+-       0,     0,     0,     3,     1,     0,     0,     0,     3,    33,
+-      34,     0,     0,     6,     0,     2,     4,     0,     0,     0,
+-      67,     0,    36,    37,    39,    41,    43,    45,    47,    49,
+-      52,    59,    62,    66,     0,    12,     7,     0,     0,     0,
+-      68,    69,    70,    35,     0,     0,     0,     0,     0,     0,
++       0,     0,     0,     3,     1,     0,     5,     4,     0,     0,
++       0,     5,    36,    37,     0,     0,     8,     0,     2,     6,
++       0,     0,     0,    70,     0,    39,    40,    42,    44,    46,
++      48,    50,    52,    55,    62,    65,    69,     0,    15,     9,
++       0,     0,     0,     0,    71,    72,    73,    38,     0,     0,
+        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+-       0,     0,     0,     5,    74,     0,     9,     8,    40,     0,
+-      42,    44,    46,    48,    50,    51,    55,    56,    54,    53,
+-      57,    58,    60,    61,    64,    63,    65,     0,     0,     0,
+-       0,    13,     0,    74,    10,     0,     0,     0,    15,    25,
+-      77,    17,    79,     0,    76,    75,    38,    16,    78,     0,
+-       0,    11,    24,    14,    26,     0,    18,    27,    21,     0,
+-      71,    29,     0,     0,     0,     0,    32,    31,    19,    30,
+-      28,     0,    72,    73,    20,     0,    23,     0,     0,     0,
+-      22
++       0,     0,     0,     0,     0,     0,     0,     7,    77,     0,
++       0,    12,    10,    43,     0,    45,    47,    49,    51,    53,
++      54,    58,    59,    57,    56,    60,    61,    63,    64,    67,
++      66,    68,     0,     0,     0,     0,    16,     0,    77,    13,
++      11,     0,     0,     0,    18,    28,    80,    20,    82,     0,
++      79,    78,    41,    19,    81,     0,     0,    14,    27,    17,
++      29,     0,    21,    30,    24,     0,    74,    32,     0,     0,
++       0,     0,    35,    34,    22,    33,    31,     0,    75,    76,
++      23,     0,    26,     0,     0,     0,    25
+ };
+ 
+   /* YYPGOTO[NTERM-NUM].  */
+ static const yytype_int8 yypgoto[] =
+ {
+-     -38,   -38,    96,    99,   -38,   -37,   -38,   -20,   -38,   -38,
+-     -38,    -5,    62,    13,   -38,    80,    63,    84,    64,    61,
+-      28,    14,    24,    25,   -14,   -38,    20,    26
++     -84,   -84,   -84,    98,   101,   -84,   -41,   -84,   -83,   -84,
++     -84,   -84,    -8,    63,    12,   -84,    66,    67,    65,    69,
++      82,    29,    18,    25,    26,   -17,   -84,    20,    28
+ };
+ 
+   /* YYDEFGOTO[NTERM-NUM].  */
+-static const yytype_int8 yydefgoto[] =
++static const yytype_int16 yydefgoto[] =
+ {
+-      -1,     2,     7,     8,    15,    36,    64,    91,   109,   110,
+-     122,    20,    21,    22,    23,    24,    25,    26,    27,    28,
+-      29,    30,    31,    32,    33,   125,    92,    93
++      -1,     2,     6,    10,    11,    18,    39,    68,    96,   115,
++     116,   128,    23,    24,    25,    26,    27,    28,    29,    30,
++      31,    32,    33,    34,    35,    36,   131,    97,    98
+ };
+ 
+   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+@@ -612,85 +616,87 @@ static const yytype_int8 yydefgoto[] =
+      number is the opposite.  If YYTABLE_NINF, syntax error.  */
+ static const yytype_uint8 yytable[] =
+ {
+-      12,    66,    67,    40,    41,    42,    44,    34,     9,    10,
+-      52,    53,   115,    98,     5,    35,   132,    99,   133,   116,
+-     117,   118,   119,    11,     1,    60,     9,    10,   134,   120,
+-      45,     6,    54,    17,   121,     3,    18,    19,    55,   112,
+-      14,    11,   113,    61,    62,     4,    84,    85,    86,     9,
+-      10,   114,   100,   126,   127,    37,    87,    88,    89,    50,
+-      51,   128,    38,    90,    11,    39,    76,    77,    78,    79,
+-     101,    56,    57,   104,    58,    59,   135,   136,    74,    75,
+-      80,    81,    35,    82,    83,    43,    46,    47,    49,    63,
+-      65,    48,    95,    94,    96,    97,   107,   103,   108,   123,
+-     111,   131,   130,   124,    16,    13,   138,    69,   106,    70,
+-      73,   140,    72,   105,     0,     0,   102,   129,     0,     0,
+-       0,     0,     0,     0,    68,     0,     0,     0,     0,     0,
+-     137,    71,     0,   139
++      15,    71,    72,    44,    45,    46,    48,    37,    12,    13,
++      56,    57,   107,     3,     8,   110,   118,   121,     1,   119,
++      54,    55,    64,    14,   122,   123,   124,   125,   120,   100,
++      49,     9,    58,    20,   126,     4,    21,    22,    59,   127,
++      65,    66,    12,    13,    60,    61,     5,    89,    90,    91,
++      12,    13,     7,   106,   132,   133,   138,    14,   139,   104,
++      40,    38,   134,   105,    50,    14,    41,    42,   140,    17,
++      43,    92,    93,    94,    81,    82,    83,    84,    95,    62,
++      63,   141,   142,    79,    80,    85,    86,    38,    87,    88,
++      47,    52,    51,    67,    69,    53,    70,    99,   102,   101,
++     103,   113,   109,   114,   117,   129,   136,   137,   130,    19,
++      16,   144,    74,   112,    73,   146,    76,    75,   111,     0,
++     135,    77,     0,   108,     0,     0,     0,     0,     0,     0,
++       0,     0,     0,   143,     0,    78,   145
+ };
+ 
+ static const yytype_int16 yycheck[] =
+ {
+-       5,    38,    39,    17,    18,    19,    12,    12,    17,    18,
+-       7,     8,    13,    24,     4,    26,    19,    28,    21,    20,
+-      21,    22,    23,    32,     3,    25,    17,    18,    31,    30,
+-      36,    21,    29,    42,    35,    24,    45,    46,    35,    21,
+-      25,    32,    24,    43,    44,     0,    60,    61,    62,    17,
+-      18,    33,    89,    21,    22,    15,    14,    15,    16,     9,
+-      10,    29,    22,    21,    32,    25,    52,    53,    54,    55,
+-      90,     5,     6,    93,    41,    42,    33,    34,    50,    51,
+-      56,    57,    26,    58,    59,    34,    11,    38,    40,    24,
+-      22,    39,    37,    24,    16,    16,    24,    27,    24,    17,
+-      24,    20,    35,    32,     8,     6,    33,    45,    95,    46,
+-      49,    34,    48,    93,    -1,    -1,    90,   122,    -1,    -1,
+-      -1,    -1,    -1,    -1,    44,    -1,    -1,    -1,    -1,    -1,
+-     135,    47,    -1,   138
++       8,    42,    43,    20,    21,    22,    13,    15,    18,    19,
++       8,     9,    95,    25,     5,    98,    22,    14,     3,    25,
++      10,    11,    26,    33,    21,    22,    23,    24,    34,    70,
++      37,    22,    30,    43,    31,     0,    46,    47,    36,    36,
++      44,    45,    18,    19,     6,     7,     4,    64,    65,    66,
++      18,    19,    25,    94,    22,    23,    20,    33,    22,    25,
++      16,    27,    30,    29,    12,    33,    22,    23,    32,    26,
++      26,    15,    16,    17,    56,    57,    58,    59,    22,    42,
++      43,    34,    35,    54,    55,    60,    61,    27,    62,    63,
++      35,    40,    39,    25,    23,    41,    23,    25,    17,    38,
++      17,    25,    28,    25,    25,    18,    36,    21,    33,    11,
++       9,    34,    49,   101,    48,    35,    51,    50,    98,    -1,
++     128,    52,    -1,    95,    -1,    -1,    -1,    -1,    -1,    -1,
++      -1,    -1,    -1,   141,    -1,    53,   144
+ };
+ 
+   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
+      symbol of state STATE-NUM.  */
+ static const yytype_uint8 yystos[] =
+ {
+-       0,     3,    48,    24,     0,     4,    21,    49,    50,    17,
+-      18,    32,    58,    50,    25,    51,    49,    42,    45,    46,
+-      58,    59,    60,    61,    62,    63,    64,    65,    66,    67,
+-      68,    69,    70,    71,    58,    26,    52,    15,    22,    25,
+-      71,    71,    71,    34,    12,    36,    11,    38,    39,    40,
+-       9,    10,     7,     8,    29,    35,     5,     6,    41,    42,
+-      25,    43,    44,    24,    53,    22,    52,    52,    62,    59,
+-      63,    64,    65,    66,    67,    67,    68,    68,    68,    68,
+-      69,    69,    70,    70,    71,    71,    71,    14,    15,    16,
+-      21,    54,    73,    74,    24,    37,    16,    16,    24,    28,
+-      52,    54,    74,    27,    54,    73,    60,    24,    24,    55,
+-      56,    24,    21,    24,    33,    13,    20,    21,    22,    23,
+-      30,    35,    57,    17,    32,    72,    21,    22,    29,    58,
+-      35,    20,    19,    21,    31,    33,    34,    58,    33,    58,
+-      34
++       0,     3,    49,    25,     0,     4,    50,    25,     5,    22,
++      51,    52,    18,    19,    33,    60,    52,    26,    53,    51,
++      43,    46,    47,    60,    61,    62,    63,    64,    65,    66,
++      67,    68,    69,    70,    71,    72,    73,    60,    27,    54,
++      16,    22,    23,    26,    73,    73,    73,    35,    13,    37,
++      12,    39,    40,    41,    10,    11,     8,     9,    30,    36,
++       6,     7,    42,    43,    26,    44,    45,    25,    55,    23,
++      23,    54,    54,    64,    61,    65,    66,    67,    68,    69,
++      69,    70,    70,    70,    70,    71,    71,    72,    72,    73,
++      73,    73,    15,    16,    17,    22,    56,    75,    76,    25,
++      54,    38,    17,    17,    25,    29,    54,    56,    76,    28,
++      56,    75,    62,    25,    25,    57,    58,    25,    22,    25,
++      34,    14,    21,    22,    23,    24,    31,    36,    59,    18,
++      33,    74,    22,    23,    30,    60,    36,    21,    20,    22,
++      32,    34,    35,    60,    34,    60,    35
+ };
+ 
+   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
+ static const yytype_uint8 yyr1[] =
+ {
+-       0,    47,    48,    49,    49,    50,    50,    51,    51,    51,
+-      51,    52,    53,    53,    54,    54,    54,    54,    55,    55,
+-      55,    55,    55,    55,    55,    56,    56,    56,    57,    57,
+-      57,    57,    57,    58,    58,    58,    59,    60,    60,    61,
+-      61,    62,    62,    63,    63,    64,    64,    65,    65,    66,
+-      66,    66,    67,    67,    67,    67,    67,    68,    68,    68,
+-      69,    69,    69,    70,    70,    70,    70,    71,    71,    71,
+-      71,    72,    72,    72,    73,    73,    73,    74,    74,    74
++       0,    48,    49,    50,    50,    51,    51,    52,    52,    53,
++      53,    53,    53,    53,    54,    55,    55,    56,    56,    56,
++      56,    57,    57,    57,    57,    57,    57,    57,    58,    58,
++      58,    59,    59,    59,    59,    59,    60,    60,    60,    61,
++      62,    62,    63,    63,    64,    64,    65,    65,    66,    66,
++      67,    67,    68,    68,    68,    69,    69,    69,    69,    69,
++      70,    70,    70,    71,    71,    71,    72,    72,    72,    72,
++      73,    73,    73,    73,    74,    74,    74,    75,    75,    75,
++      76,    76,    76
+ };
+ 
+   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
+ static const yytype_uint8 yyr2[] =
+ {
+-       0,     2,     4,     0,     2,     4,     2,     2,     3,     3,
+-       4,     5,     0,     2,     4,     2,     3,     2,     2,     3,
+-       4,     2,     9,     5,     2,     0,     2,     2,     3,     1,
+-       2,     2,     2,     1,     1,     3,     1,     1,     5,     1,
+-       3,     1,     3,     1,     3,     1,     3,     1,     3,     1,
+-       3,     3,     1,     3,     3,     3,     3,     3,     3,     1,
+-       3,     3,     1,     3,     3,     3,     1,     1,     2,     2,
+-       2,     0,     2,     2,     0,     2,     2,     2,     3,     2
++       0,     2,     5,     0,     2,     0,     2,     4,     2,     2,
++       3,     4,     3,     4,     5,     0,     2,     4,     2,     3,
++       2,     2,     3,     4,     2,     9,     5,     2,     0,     2,
++       2,     3,     1,     2,     2,     2,     1,     1,     3,     1,
++       1,     5,     1,     3,     1,     3,     1,     3,     1,     3,
++       1,     3,     1,     3,     3,     1,     3,     3,     3,     3,
++       3,     3,     1,     3,     3,     1,     3,     3,     3,     1,
++       1,     2,     2,     2,     0,     2,     2,     0,     2,     2,
++       2,     3,     2
+ };
+ 
+ 
+@@ -1460,65 +1466,97 @@ yyreduce:
+   switch (yyn)
+     {
+         case 2:
+-#line 105 "dtc-parser.y" /* yacc.c:1646  */
++#line 109 "dtc-parser.y" /* yacc.c:1646  */
+     {
++			(yyvsp[0].node)->is_plugin = (yyvsp[-2].is_plugin);
+ 			the_boot_info = build_boot_info((yyvsp[-1].re), (yyvsp[0].node),
+ 							guess_boot_cpuid((yyvsp[0].node)));
+ 		}
+-#line 1469 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1476 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+   case 3:
+-#line 113 "dtc-parser.y" /* yacc.c:1646  */
++#line 118 "dtc-parser.y" /* yacc.c:1646  */
+     {
+-			(yyval.re) = NULL;
++			(yyval.is_plugin) = false;
+ 		}
+-#line 1477 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1484 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+   case 4:
+-#line 117 "dtc-parser.y" /* yacc.c:1646  */
++#line 122 "dtc-parser.y" /* yacc.c:1646  */
+     {
+-			(yyval.re) = chain_reserve_entry((yyvsp[-1].re), (yyvsp[0].re));
++			(yyval.is_plugin) = true;
+ 		}
+-#line 1485 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1492 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+   case 5:
+-#line 124 "dtc-parser.y" /* yacc.c:1646  */
++#line 129 "dtc-parser.y" /* yacc.c:1646  */
+     {
+-			(yyval.re) = build_reserve_entry((yyvsp[-2].integer), (yyvsp[-1].integer));
++			(yyval.re) = NULL;
+ 		}
+-#line 1493 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1500 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+   case 6:
+-#line 128 "dtc-parser.y" /* yacc.c:1646  */
++#line 133 "dtc-parser.y" /* yacc.c:1646  */
++    {
++			(yyval.re) = chain_reserve_entry((yyvsp[-1].re), (yyvsp[0].re));
++		}
++#line 1508 "dtc-parser.tab.c" /* yacc.c:1646  */
++    break;
++
++  case 7:
++#line 140 "dtc-parser.y" /* yacc.c:1646  */
++    {
++			(yyval.re) = build_reserve_entry((yyvsp[-2].integer), (yyvsp[-1].integer));
++		}
++#line 1516 "dtc-parser.tab.c" /* yacc.c:1646  */
++    break;
++
++  case 8:
++#line 144 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			add_label(&(yyvsp[0].re)->labels, (yyvsp[-1].labelref));
+ 			(yyval.re) = (yyvsp[0].re);
+ 		}
+-#line 1502 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1525 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 7:
+-#line 136 "dtc-parser.y" /* yacc.c:1646  */
++  case 9:
++#line 152 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.node) = name_node((yyvsp[0].node), "");
+ 		}
+-#line 1510 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1533 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 8:
+-#line 140 "dtc-parser.y" /* yacc.c:1646  */
++  case 10:
++#line 156 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.node) = merge_nodes((yyvsp[-2].node), (yyvsp[0].node));
+ 		}
+-#line 1518 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1541 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 9:
+-#line 144 "dtc-parser.y" /* yacc.c:1646  */
++  case 11:
++#line 161 "dtc-parser.y" /* yacc.c:1646  */
++    {
++			struct node *target = get_node_by_ref((yyvsp[-3].node), (yyvsp[-1].labelref));
++
++			add_label(&target->labels, (yyvsp[-2].labelref));
++			if (target)
++				merge_nodes(target, (yyvsp[0].node));
++			else
++				ERROR(&(yylsp[-1]), "Label or path %s not found", (yyvsp[-1].labelref));
++			(yyval.node) = (yyvsp[-3].node);
++		}
++#line 1556 "dtc-parser.tab.c" /* yacc.c:1646  */
++    break;
++
++  case 12:
++#line 172 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			struct node *target = get_node_by_ref((yyvsp[-2].node), (yyvsp[-1].labelref));
+ 
+@@ -1528,11 +1566,11 @@ yyreduce:
+ 				ERROR(&(yylsp[-1]), "Label or path %s not found", (yyvsp[-1].labelref));
+ 			(yyval.node) = (yyvsp[-2].node);
+ 		}
+-#line 1532 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1570 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 10:
+-#line 154 "dtc-parser.y" /* yacc.c:1646  */
++  case 13:
++#line 182 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			struct node *target = get_node_by_ref((yyvsp[-3].node), (yyvsp[-1].labelref));
+ 
+@@ -1544,100 +1582,100 @@ yyreduce:
+ 
+ 			(yyval.node) = (yyvsp[-3].node);
+ 		}
+-#line 1548 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1586 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 11:
+-#line 169 "dtc-parser.y" /* yacc.c:1646  */
++  case 14:
++#line 197 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.node) = build_node((yyvsp[-3].proplist), (yyvsp[-2].nodelist));
+ 		}
+-#line 1556 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1594 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 12:
+-#line 176 "dtc-parser.y" /* yacc.c:1646  */
++  case 15:
++#line 204 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.proplist) = NULL;
+ 		}
+-#line 1564 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1602 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 13:
+-#line 180 "dtc-parser.y" /* yacc.c:1646  */
++  case 16:
++#line 208 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.proplist) = chain_property((yyvsp[0].prop), (yyvsp[-1].proplist));
+ 		}
+-#line 1572 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1610 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 14:
+-#line 187 "dtc-parser.y" /* yacc.c:1646  */
++  case 17:
++#line 215 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.prop) = build_property((yyvsp[-3].propnodename), (yyvsp[-1].data));
+ 		}
+-#line 1580 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1618 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 15:
+-#line 191 "dtc-parser.y" /* yacc.c:1646  */
++  case 18:
++#line 219 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.prop) = build_property((yyvsp[-1].propnodename), empty_data);
+ 		}
+-#line 1588 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1626 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 16:
+-#line 195 "dtc-parser.y" /* yacc.c:1646  */
++  case 19:
++#line 223 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.prop) = build_property_delete((yyvsp[-1].propnodename));
+ 		}
+-#line 1596 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1634 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 17:
+-#line 199 "dtc-parser.y" /* yacc.c:1646  */
++  case 20:
++#line 227 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			add_label(&(yyvsp[0].prop)->labels, (yyvsp[-1].labelref));
+ 			(yyval.prop) = (yyvsp[0].prop);
+ 		}
+-#line 1605 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1643 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 18:
+-#line 207 "dtc-parser.y" /* yacc.c:1646  */
++  case 21:
++#line 235 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_merge((yyvsp[-1].data), (yyvsp[0].data));
+ 		}
+-#line 1613 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1651 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 19:
+-#line 211 "dtc-parser.y" /* yacc.c:1646  */
++  case 22:
++#line 239 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_merge((yyvsp[-2].data), (yyvsp[-1].array).data);
+ 		}
+-#line 1621 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1659 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 20:
+-#line 215 "dtc-parser.y" /* yacc.c:1646  */
++  case 23:
++#line 243 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_merge((yyvsp[-3].data), (yyvsp[-1].data));
+ 		}
+-#line 1629 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1667 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 21:
+-#line 219 "dtc-parser.y" /* yacc.c:1646  */
++  case 24:
++#line 247 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_add_marker((yyvsp[-1].data), REF_PATH, (yyvsp[0].labelref));
+ 		}
+-#line 1637 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1675 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 22:
+-#line 223 "dtc-parser.y" /* yacc.c:1646  */
++  case 25:
++#line 251 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			FILE *f = srcfile_relative_open((yyvsp[-5].data).val, NULL);
+ 			struct data d;
+@@ -1653,11 +1691,11 @@ yyreduce:
+ 			(yyval.data) = data_merge((yyvsp[-8].data), d);
+ 			fclose(f);
+ 		}
+-#line 1657 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1695 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 23:
+-#line 239 "dtc-parser.y" /* yacc.c:1646  */
++  case 26:
++#line 267 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			FILE *f = srcfile_relative_open((yyvsp[-1].data).val, NULL);
+ 			struct data d = empty_data;
+@@ -1667,43 +1705,43 @@ yyreduce:
+ 			(yyval.data) = data_merge((yyvsp[-4].data), d);
+ 			fclose(f);
+ 		}
+-#line 1671 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1709 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 24:
+-#line 249 "dtc-parser.y" /* yacc.c:1646  */
++  case 27:
++#line 277 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_add_marker((yyvsp[-1].data), LABEL, (yyvsp[0].labelref));
+ 		}
+-#line 1679 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1717 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 25:
+-#line 256 "dtc-parser.y" /* yacc.c:1646  */
++  case 28:
++#line 284 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = empty_data;
+ 		}
+-#line 1687 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1725 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 26:
+-#line 260 "dtc-parser.y" /* yacc.c:1646  */
++  case 29:
++#line 288 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = (yyvsp[-1].data);
+ 		}
+-#line 1695 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1733 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 27:
+-#line 264 "dtc-parser.y" /* yacc.c:1646  */
++  case 30:
++#line 292 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_add_marker((yyvsp[-1].data), LABEL, (yyvsp[0].labelref));
+ 		}
+-#line 1703 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1741 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 28:
+-#line 271 "dtc-parser.y" /* yacc.c:1646  */
++  case 31:
++#line 299 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			unsigned long long bits;
+ 
+@@ -1719,20 +1757,20 @@ yyreduce:
+ 			(yyval.array).data = empty_data;
+ 			(yyval.array).bits = bits;
+ 		}
+-#line 1723 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1761 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 29:
+-#line 287 "dtc-parser.y" /* yacc.c:1646  */
++  case 32:
++#line 315 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.array).data = empty_data;
+ 			(yyval.array).bits = 32;
+ 		}
+-#line 1732 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1770 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 30:
+-#line 292 "dtc-parser.y" /* yacc.c:1646  */
++  case 33:
++#line 320 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			if ((yyvsp[-1].array).bits < 64) {
+ 				uint64_t mask = (1ULL << (yyvsp[-1].array).bits) - 1;
+@@ -1751,11 +1789,11 @@ yyreduce:
+ 
+ 			(yyval.array).data = data_append_integer((yyvsp[-1].array).data, (yyvsp[0].integer), (yyvsp[-1].array).bits);
+ 		}
+-#line 1755 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1793 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 31:
+-#line 311 "dtc-parser.y" /* yacc.c:1646  */
++  case 34:
++#line 339 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			uint64_t val = ~0ULL >> (64 - (yyvsp[-1].array).bits);
+ 
+@@ -1769,233 +1807,233 @@ yyreduce:
+ 
+ 			(yyval.array).data = data_append_integer((yyvsp[-1].array).data, val, (yyvsp[-1].array).bits);
+ 		}
+-#line 1773 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1811 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 32:
+-#line 325 "dtc-parser.y" /* yacc.c:1646  */
++  case 35:
++#line 353 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.array).data = data_add_marker((yyvsp[-1].array).data, LABEL, (yyvsp[0].labelref));
+ 		}
+-#line 1781 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1819 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 35:
+-#line 334 "dtc-parser.y" /* yacc.c:1646  */
++  case 38:
++#line 362 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.integer) = (yyvsp[-1].integer);
+ 		}
+-#line 1789 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1827 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 38:
+-#line 345 "dtc-parser.y" /* yacc.c:1646  */
++  case 41:
++#line 373 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-4].integer) ? (yyvsp[-2].integer) : (yyvsp[0].integer); }
+-#line 1795 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1833 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 40:
+-#line 350 "dtc-parser.y" /* yacc.c:1646  */
++  case 43:
++#line 378 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) || (yyvsp[0].integer); }
+-#line 1801 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1839 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 42:
+-#line 355 "dtc-parser.y" /* yacc.c:1646  */
++  case 45:
++#line 383 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) && (yyvsp[0].integer); }
+-#line 1807 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1845 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 44:
+-#line 360 "dtc-parser.y" /* yacc.c:1646  */
++  case 47:
++#line 388 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) | (yyvsp[0].integer); }
+-#line 1813 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1851 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 46:
+-#line 365 "dtc-parser.y" /* yacc.c:1646  */
++  case 49:
++#line 393 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) ^ (yyvsp[0].integer); }
+-#line 1819 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1857 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 48:
+-#line 370 "dtc-parser.y" /* yacc.c:1646  */
++  case 51:
++#line 398 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) & (yyvsp[0].integer); }
+-#line 1825 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1863 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 50:
+-#line 375 "dtc-parser.y" /* yacc.c:1646  */
++  case 53:
++#line 403 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) == (yyvsp[0].integer); }
+-#line 1831 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1869 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 51:
+-#line 376 "dtc-parser.y" /* yacc.c:1646  */
++  case 54:
++#line 404 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) != (yyvsp[0].integer); }
+-#line 1837 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1875 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 53:
+-#line 381 "dtc-parser.y" /* yacc.c:1646  */
++  case 56:
++#line 409 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) < (yyvsp[0].integer); }
+-#line 1843 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1881 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 54:
+-#line 382 "dtc-parser.y" /* yacc.c:1646  */
++  case 57:
++#line 410 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) > (yyvsp[0].integer); }
+-#line 1849 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1887 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 55:
+-#line 383 "dtc-parser.y" /* yacc.c:1646  */
++  case 58:
++#line 411 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) <= (yyvsp[0].integer); }
+-#line 1855 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1893 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 56:
+-#line 384 "dtc-parser.y" /* yacc.c:1646  */
++  case 59:
++#line 412 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) >= (yyvsp[0].integer); }
+-#line 1861 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1899 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 57:
+-#line 388 "dtc-parser.y" /* yacc.c:1646  */
++  case 60:
++#line 416 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) << (yyvsp[0].integer); }
+-#line 1867 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1905 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 58:
+-#line 389 "dtc-parser.y" /* yacc.c:1646  */
++  case 61:
++#line 417 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) >> (yyvsp[0].integer); }
+-#line 1873 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1911 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 60:
+-#line 394 "dtc-parser.y" /* yacc.c:1646  */
++  case 63:
++#line 422 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) + (yyvsp[0].integer); }
+-#line 1879 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1917 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 61:
+-#line 395 "dtc-parser.y" /* yacc.c:1646  */
++  case 64:
++#line 423 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) - (yyvsp[0].integer); }
+-#line 1885 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1923 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 63:
+-#line 400 "dtc-parser.y" /* yacc.c:1646  */
++  case 66:
++#line 428 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) * (yyvsp[0].integer); }
+-#line 1891 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1929 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 64:
+-#line 401 "dtc-parser.y" /* yacc.c:1646  */
++  case 67:
++#line 429 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) / (yyvsp[0].integer); }
+-#line 1897 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1935 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 65:
+-#line 402 "dtc-parser.y" /* yacc.c:1646  */
++  case 68:
++#line 430 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = (yyvsp[-2].integer) % (yyvsp[0].integer); }
+-#line 1903 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1941 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 68:
+-#line 408 "dtc-parser.y" /* yacc.c:1646  */
++  case 71:
++#line 436 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = -(yyvsp[0].integer); }
+-#line 1909 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1947 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 69:
+-#line 409 "dtc-parser.y" /* yacc.c:1646  */
++  case 72:
++#line 437 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = ~(yyvsp[0].integer); }
+-#line 1915 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1953 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 70:
+-#line 410 "dtc-parser.y" /* yacc.c:1646  */
++  case 73:
++#line 438 "dtc-parser.y" /* yacc.c:1646  */
+     { (yyval.integer) = !(yyvsp[0].integer); }
+-#line 1921 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1959 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 71:
+-#line 415 "dtc-parser.y" /* yacc.c:1646  */
++  case 74:
++#line 443 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = empty_data;
+ 		}
+-#line 1929 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1967 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 72:
+-#line 419 "dtc-parser.y" /* yacc.c:1646  */
++  case 75:
++#line 447 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_append_byte((yyvsp[-1].data), (yyvsp[0].byte));
+ 		}
+-#line 1937 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1975 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 73:
+-#line 423 "dtc-parser.y" /* yacc.c:1646  */
++  case 76:
++#line 451 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.data) = data_add_marker((yyvsp[-1].data), LABEL, (yyvsp[0].labelref));
+ 		}
+-#line 1945 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1983 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 74:
+-#line 430 "dtc-parser.y" /* yacc.c:1646  */
++  case 77:
++#line 458 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.nodelist) = NULL;
+ 		}
+-#line 1953 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1991 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 75:
+-#line 434 "dtc-parser.y" /* yacc.c:1646  */
++  case 78:
++#line 462 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.nodelist) = chain_node((yyvsp[-1].node), (yyvsp[0].nodelist));
+ 		}
+-#line 1961 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 1999 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 76:
+-#line 438 "dtc-parser.y" /* yacc.c:1646  */
++  case 79:
++#line 466 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			ERROR(&(yylsp[0]), "Properties must precede subnodes");
+ 			YYERROR;
+ 		}
+-#line 1970 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 2008 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 77:
+-#line 446 "dtc-parser.y" /* yacc.c:1646  */
++  case 80:
++#line 474 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.node) = name_node((yyvsp[0].node), (yyvsp[-1].propnodename));
+ 		}
+-#line 1978 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 2016 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 78:
+-#line 450 "dtc-parser.y" /* yacc.c:1646  */
++  case 81:
++#line 478 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			(yyval.node) = name_node(build_node_delete(), (yyvsp[-1].propnodename));
+ 		}
+-#line 1986 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 2024 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+-  case 79:
+-#line 454 "dtc-parser.y" /* yacc.c:1646  */
++  case 82:
++#line 482 "dtc-parser.y" /* yacc.c:1646  */
+     {
+ 			add_label(&(yyvsp[0].node)->labels, (yyvsp[-1].labelref));
+ 			(yyval.node) = (yyvsp[0].node);
+ 		}
+-#line 1995 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 2033 "dtc-parser.tab.c" /* yacc.c:1646  */
+     break;
+ 
+ 
+-#line 1999 "dtc-parser.tab.c" /* yacc.c:1646  */
++#line 2037 "dtc-parser.tab.c" /* yacc.c:1646  */
+       default: break;
+     }
+   /* User semantic actions sometimes alter yychar, and that requires
+@@ -2230,7 +2268,7 @@ yyreturn:
+ #endif
+   return yyresult;
+ }
+-#line 460 "dtc-parser.y" /* yacc.c:1906  */
++#line 488 "dtc-parser.y" /* yacc.c:1906  */
+ 
+ 
+ void yyerror(char const *s)
+diff --git a/scripts/dtc/dtc-parser.tab.h_shipped b/scripts/dtc/dtc-parser.tab.h_shipped
+index 30867c688300..276d0788f858 100644
+--- a/scripts/dtc/dtc-parser.tab.h_shipped
++++ b/scripts/dtc/dtc-parser.tab.h_shipped
+@@ -46,26 +46,27 @@ extern int yydebug;
+   enum yytokentype
+   {
+     DT_V1 = 258,
+-    DT_MEMRESERVE = 259,
+-    DT_LSHIFT = 260,
+-    DT_RSHIFT = 261,
+-    DT_LE = 262,
+-    DT_GE = 263,
+-    DT_EQ = 264,
+-    DT_NE = 265,
+-    DT_AND = 266,
+-    DT_OR = 267,
+-    DT_BITS = 268,
+-    DT_DEL_PROP = 269,
+-    DT_DEL_NODE = 270,
+-    DT_PROPNODENAME = 271,
+-    DT_LITERAL = 272,
+-    DT_CHAR_LITERAL = 273,
+-    DT_BYTE = 274,
+-    DT_STRING = 275,
+-    DT_LABEL = 276,
+-    DT_REF = 277,
+-    DT_INCBIN = 278
++    DT_PLUGIN = 259,
++    DT_MEMRESERVE = 260,
++    DT_LSHIFT = 261,
++    DT_RSHIFT = 262,
++    DT_LE = 263,
++    DT_GE = 264,
++    DT_EQ = 265,
++    DT_NE = 266,
++    DT_AND = 267,
++    DT_OR = 268,
++    DT_BITS = 269,
++    DT_DEL_PROP = 270,
++    DT_DEL_NODE = 271,
++    DT_PROPNODENAME = 272,
++    DT_LITERAL = 273,
++    DT_CHAR_LITERAL = 274,
++    DT_BYTE = 275,
++    DT_STRING = 276,
++    DT_LABEL = 277,
++    DT_REF = 278,
++    DT_INCBIN = 279
+   };
+ #endif
+ 
+@@ -74,7 +75,7 @@ extern int yydebug;
+ typedef union YYSTYPE YYSTYPE;
+ union YYSTYPE
+ {
+-#line 38 "dtc-parser.y" /* yacc.c:1909  */
++#line 39 "dtc-parser.y" /* yacc.c:1909  */
+ 
+ 	char *propnodename;
+ 	char *labelref;
+@@ -92,8 +93,9 @@ union YYSTYPE
+ 	struct node *nodelist;
+ 	struct reserve_info *re;
+ 	uint64_t integer;
++	bool is_plugin;
+ 
+-#line 97 "dtc-parser.tab.h" /* yacc.c:1909  */
++#line 99 "dtc-parser.tab.h" /* yacc.c:1909  */
+ };
+ # define YYSTYPE_IS_TRIVIAL 1
+ # define YYSTYPE_IS_DECLARED 1
+diff --git a/scripts/dtc/dtc-parser.y b/scripts/dtc/dtc-parser.y
+index ea57e0a056fd..d23927d99215 100644
+--- a/scripts/dtc/dtc-parser.y
++++ b/scripts/dtc/dtc-parser.y
+@@ -19,6 +19,7 @@
+  */
+ %{
+ #include <stdio.h>
++#include <inttypes.h>
+ 
+ #include "dtc.h"
+ #include "srcpos.h"
+@@ -52,9 +53,11 @@ extern bool treesource_error;
+ 	struct node *nodelist;
+ 	struct reserve_info *re;
+ 	uint64_t integer;
++	bool is_plugin;
+ }
+ 
+ %token DT_V1
++%token DT_PLUGIN
+ %token DT_MEMRESERVE
+ %token DT_LSHIFT DT_RSHIFT DT_LE DT_GE DT_EQ DT_NE DT_AND DT_OR
+ %token DT_BITS
+@@ -71,6 +74,7 @@ extern bool treesource_error;
+ 
+ %type <data> propdata
+ %type <data> propdataprefix
++%type <is_plugin> plugindecl
+ %type <re> memreserve
+ %type <re> memreserves
+ %type <array> arrayprefix
+@@ -101,10 +105,22 @@ extern bool treesource_error;
+ %%
+ 
+ sourcefile:
+-	  DT_V1 ';' memreserves devicetree
++	  DT_V1 ';' plugindecl memreserves devicetree
+ 		{
+-			the_boot_info = build_boot_info($3, $4,
+-							guess_boot_cpuid($4));
++			$5->is_plugin = $3;
++			the_boot_info = build_boot_info($4, $5,
++							guess_boot_cpuid($5));
++		}
++	;
++
++plugindecl:
++	/* empty */
++		{
++			$$ = false;
++		}
++	| DT_PLUGIN ';'
++		{
++			$$ = true;
+ 		}
+ 	;
+ 
+@@ -140,6 +156,18 @@ devicetree:
+ 		{
+ 			$$ = merge_nodes($1, $3);
+ 		}
++
++	| devicetree DT_LABEL DT_REF nodedef
++		{
++			struct node *target = get_node_by_ref($1, $3);
++
++			add_label(&target->labels, $2);
++			if (target)
++				merge_nodes(target, $4);
++			else
++				ERROR(&@3, "Label or path %s not found", $3);
++			$$ = $1;
++		}
+ 	| devicetree DT_REF nodedef
+ 		{
+ 			struct node *target = get_node_by_ref($1, $2);
+diff --git a/scripts/dtc/dtc.c b/scripts/dtc/dtc.c
+index 8c4add69a765..91e91e79e950 100644
+--- a/scripts/dtc/dtc.c
++++ b/scripts/dtc/dtc.c
+@@ -29,6 +29,7 @@ int reservenum;		/* Number of memory reservation slots */
+ int minsize;		/* Minimum blob size */
+ int padsize;		/* Additional padding to blob */
+ int phandle_format = PHANDLE_BOTH;	/* Use linux,phandle or phandle properties */
++int symbol_fixup_support = 0;
+ 
+ static void fill_fullpaths(struct node *tree, const char *prefix)
+ {
+@@ -51,7 +52,7 @@ static void fill_fullpaths(struct node *tree, const char *prefix)
+ #define FDT_VERSION(version)	_FDT_VERSION(version)
+ #define _FDT_VERSION(version)	#version
+ static const char usage_synopsis[] = "dtc [options] <input file>";
+-static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:fb:i:H:sW:E:hv";
++static const char usage_short_opts[] = "qI:O:o:V:d:R:S:p:fb:i:H:sW:E:@hv";
+ static struct option const usage_long_opts[] = {
+ 	{"quiet",            no_argument, NULL, 'q'},
+ 	{"in-format",         a_argument, NULL, 'I'},
+@@ -69,6 +70,7 @@ static struct option const usage_long_opts[] = {
+ 	{"phandle",           a_argument, NULL, 'H'},
+ 	{"warning",           a_argument, NULL, 'W'},
+ 	{"error",             a_argument, NULL, 'E'},
++	{"symbols",	     no_argument, NULL, '@'},
+ 	{"help",             no_argument, NULL, 'h'},
+ 	{"version",          no_argument, NULL, 'v'},
+ 	{NULL,               no_argument, NULL, 0x0},
+@@ -99,6 +101,7 @@ static const char * const usage_opts_help[] = {
+ 	 "\t\tboth   - Both \"linux,phandle\" and \"phandle\" properties",
+ 	"\n\tEnable/disable warnings (prefix with \"no-\")",
+ 	"\n\tEnable/disable errors (prefix with \"no-\")",
++	"\n\tEnable symbols/fixup support",
+ 	"\n\tPrint this help and exit",
+ 	"\n\tPrint version and exit",
+ 	NULL,
+@@ -186,7 +189,9 @@ int main(int argc, char *argv[])
+ 		case 'E':
+ 			parse_checks_option(false, true, optarg);
+ 			break;
+-
++		case '@':
++			symbol_fixup_support = 1;
++			break;
+ 		case 'h':
+ 			usage(NULL);
+ 		default:
+diff --git a/scripts/dtc/dtc.h b/scripts/dtc/dtc.h
+index 56212c8df660..f163b22b14b8 100644
+--- a/scripts/dtc/dtc.h
++++ b/scripts/dtc/dtc.h
+@@ -54,6 +54,7 @@ extern int reservenum;		/* Number of memory reservation slots */
+ extern int minsize;		/* Minimum blob size */
+ extern int padsize;		/* Additional padding to blob */
+ extern int phandle_format;	/* Use linux,phandle or phandle properties */
++extern int symbol_fixup_support;/* enable symbols & fixup support */
+ 
+ #define PHANDLE_LEGACY	0x1
+ #define PHANDLE_EPAPR	0x2
+@@ -132,6 +133,26 @@ struct label {
+ 	struct label *next;
+ };
+ 
++struct fixup_entry {
++	int offset;
++	struct node *node;
++	struct property *prop;
++	struct fixup_entry *next;
++	bool local_fixup_generated;
 +};
 +
-+#ifdef CONFIG_OFTREE_OVERLAY
++struct fixup {
++	char *ref;
++	struct fixup_entry *entries;
++	struct fixup *next;
++};
 +
-+extern int of_overlay(int count, struct of_overlay_info *ovinfo_tab);
++struct symbol {
++	struct label *label;
++	struct node *node;
++	struct symbol *next;
++};
 +
-+extern int of_fill_overlay_info(struct device_node *info_node,
-+		struct of_overlay_info *ovinfo);
-+extern int of_build_overlay_info(struct device_node *tree,
-+		int *cntp, struct of_overlay_info **ovinfop);
-+extern int of_free_overlay_info(int cnt, struct of_overlay_info *ovinfo);
-+
-+#else
-+
-+static inline int of_overlay(int count, struct of_overlay_info *ovinfo_tab)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_fill_overlay_info(struct device_node *info_node,
-+		struct of_overlay_info *ovinfo)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_build_overlay_info(struct device_node *tree,
-+		int *cntp, struct of_overlay_info **ovinfop)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_free_overlay_info(int cnt, struct of_overlay_info *ovinfo)
-+{
-+	return -ENOSYS;
-+}
-+
-+#endif
-+
- #endif /* __OF_H */
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 57426d030285..5d94330035a1 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -256,7 +256,7 @@ $(obj)/%.dtb.S: $(obj)/%.dtb $(srctree)/scripts/gen-dtb-s FORCE
+ struct property {
+ 	bool deleted;
+ 	char *name;
+@@ -158,6 +179,13 @@ struct node {
+ 	int addr_cells, size_cells;
  
- quiet_cmd_dtc = DTC     $@
- cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
--	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
-+	$(objtree)/scripts/dtc/dtc -@ -O dtb -o $@ -b 0 \
- 		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
- 		-i $(srctree)/dts/src/$(SRCARCH) \
- 		-d $(depfile).dtc $(dtc-tmp) ; \
-@@ -265,6 +265,9 @@ cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
- $(obj)/%.dtb: $(src)/%.dts FORCE
- 	$(call if_changed_dep,dtc)
- 
-+$(obj)/%.dtbo: $(src)/%.dtso FORCE
-+	$(call if_changed_dep,dtc)
+ 	struct label *labels;
 +
- dtc-tmp = $(subst $(comma),_,$(dot-target).dts)
++	struct symbol *symbols;
++	struct fixup_entry *local_fixups;
++	bool emit_local_fixup_node;
++
++	bool is_plugin;
++	struct fixup *fixups;
+ };
  
- obj-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).o,$(bbenv-y))
+ #define for_each_label_withdel(l0, l) \
+@@ -181,6 +209,18 @@ struct node {
+ 	for_each_child_withdel(n, c) \
+ 		if (!(c)->deleted)
+ 
++#define for_each_fixup(n, f) \
++	for ((f) = (n)->fixups; (f); (f) = (f)->next)
++
++#define for_each_fixup_entry(f, fe) \
++	for ((fe) = (f)->entries; (fe); (fe) = (fe)->next)
++
++#define for_each_symbol(n, s) \
++	for ((s) = (n)->symbols; (s); (s) = (s)->next)
++
++#define for_each_local_fixup_entry(n, fe) \
++	for ((fe) = (n)->local_fixups; (fe); (fe) = (fe)->next)
++
+ void add_label(struct label **labels, char *label);
+ void delete_labels(struct label **labels);
+ 
+diff --git a/scripts/dtc/fdtput.c b/scripts/dtc/fdtput.c
+index 2a8d674471e1..9b15c53909dd 100644
+--- a/scripts/dtc/fdtput.c
++++ b/scripts/dtc/fdtput.c
+@@ -32,6 +32,8 @@
+ enum oper_type {
+ 	OPER_WRITE_PROP,		/* Write a property in a node */
+ 	OPER_CREATE_NODE,		/* Create a new node */
++	OPER_REMOVE_NODE,		/* Delete a node */
++	OPER_DELETE_PROP,		/* Delete a property in a node */
+ };
+ 
+ struct display_info {
+@@ -270,11 +272,65 @@ static int create_node(char **blob, const char *node_name)
+ 	return 0;
+ }
+ 
++/**
++ * Delete a property of a node in the fdt.
++ *
++ * @param blob		FDT blob to write into
++ * @param node_name	Path to node containing the property to delete
++ * @param prop_name	Name of property to delete
++ * @return 0 on success, or -1 on failure
++ */
++static int delete_prop(char *blob, const char *node_name, const char *prop_name)
++{
++	int node = 0;
++
++	node = fdt_path_offset(blob, node_name);
++	if (node < 0) {
++		report_error(node_name, -1, node);
++		return -1;
++	}
++
++	node = fdt_delprop(blob, node, prop_name);
++	if (node < 0) {
++		report_error(node_name, -1, node);
++		return -1;
++	}
++
++	return 0;
++}
++
++/**
++ * Delete a node in the fdt.
++ *
++ * @param blob		FDT blob to write into
++ * @param node_name	Name of node to delete
++ * @return 0 on success, or -1 on failure
++ */
++static int delete_node(char *blob, const char *node_name)
++{
++	int node = 0;
++
++	node = fdt_path_offset(blob, node_name);
++	if (node < 0) {
++		report_error(node_name, -1, node);
++		return -1;
++	}
++
++	node = fdt_del_node(blob, node);
++	if (node < 0) {
++		report_error(node_name, -1, node);
++		return -1;
++	}
++
++	return 0;
++}
++
+ static int do_fdtput(struct display_info *disp, const char *filename,
+ 		    char **arg, int arg_count)
+ {
+ 	char *value;
+ 	char *blob;
++	char *node;
+ 	int len, ret = 0;
+ 
+ 	blob = utilfdt_read(filename);
+@@ -302,6 +358,15 @@ static int do_fdtput(struct display_info *disp, const char *filename,
+ 				ret = create_node(&blob, *arg);
+ 		}
+ 		break;
++	case OPER_REMOVE_NODE:
++		for (; ret >= 0 && arg_count--; arg++)
++			ret = delete_node(blob, *arg);
++		break;
++	case OPER_DELETE_PROP:
++		node = *arg;
++		for (arg++; ret >= 0 && arg_count-- > 1; arg++)
++			ret = delete_prop(blob, node, *arg);
++		break;
+ 	}
+ 	if (ret >= 0) {
+ 		fdt_pack(blob);
+@@ -317,12 +382,16 @@ static const char usage_synopsis[] =
+ 	"write a property value to a device tree\n"
+ 	"	fdtput <options> <dt file> <node> <property> [<value>...]\n"
+ 	"	fdtput -c <options> <dt file> [<node>...]\n"
++	"	fdtput -r <options> <dt file> [<node>...]\n"
++	"	fdtput -d <options> <dt file> <node> [<property>...]\n"
+ 	"\n"
+ 	"The command line arguments are joined together into a single value.\n"
+ 	USAGE_TYPE_MSG;
+-static const char usage_short_opts[] = "cpt:v" USAGE_COMMON_SHORT_OPTS;
++static const char usage_short_opts[] = "crdpt:v" USAGE_COMMON_SHORT_OPTS;
+ static struct option const usage_long_opts[] = {
+ 	{"create",           no_argument, NULL, 'c'},
++	{"remove",	     no_argument, NULL, 'r'},
++	{"delete",	     no_argument, NULL, 'd'},
+ 	{"auto-path",        no_argument, NULL, 'p'},
+ 	{"type",              a_argument, NULL, 't'},
+ 	{"verbose",          no_argument, NULL, 'v'},
+@@ -330,6 +399,8 @@ static struct option const usage_long_opts[] = {
+ };
+ static const char * const usage_opts_help[] = {
+ 	"Create nodes if they don't already exist",
++	"Delete nodes (and any subnodes) if they already exist",
++	"Delete properties if they already exist",
+ 	"Automatically create nodes as needed for the node path",
+ 	"Type of data",
+ 	"Display each value decoded from command line",
+@@ -348,8 +419,6 @@ int main(int argc, char *argv[])
+ 	while ((opt = util_getopt_long()) != EOF) {
+ 		/*
+ 		 * TODO: add options to:
+-		 * - delete property
+-		 * - delete node (optionally recursively)
+ 		 * - rename node
+ 		 * - pack fdt before writing
+ 		 * - set amount of free space when writing
+@@ -360,6 +429,12 @@ int main(int argc, char *argv[])
+ 		case 'c':
+ 			disp.oper = OPER_CREATE_NODE;
+ 			break;
++		case 'r':
++			disp.oper = OPER_REMOVE_NODE;
++			break;
++		case 'd':
++			disp.oper = OPER_DELETE_PROP;
++			break;
+ 		case 'p':
+ 			disp.auto_path = 1;
+ 			break;
+@@ -390,6 +465,10 @@ int main(int argc, char *argv[])
+ 			usage("missing property");
+ 	}
+ 
++	if (disp.oper == OPER_DELETE_PROP)
++		if (argc < 1)
++			usage("missing node");
++
+ 	if (do_fdtput(&disp, filename, argv, argc))
+ 		return 1;
+ 	return 0;
+diff --git a/scripts/dtc/flattree.c b/scripts/dtc/flattree.c
+index bd99fa2d33b8..238513780a5b 100644
+--- a/scripts/dtc/flattree.c
++++ b/scripts/dtc/flattree.c
+@@ -255,6 +255,204 @@ static int stringtable_insert(struct data *d, const char *str)
+ 	return i;
+ }
+ 
++static void emit_local_fixups(struct node *tree, struct emitter *emit,
++		void *etarget, struct data *strbuf, struct version_info *vi,
++		struct node *node)
++{
++	struct fixup_entry *fe, *fen;
++	struct node *child;
++	int nameoff, count;
++	cell_t *buf;
++	struct data d;
++
++	if (node->emit_local_fixup_node) {
++
++		/* emit the external fixups (do not emit /) */
++		if (node != tree) {
++			emit->beginnode(etarget, NULL);
++			emit->string(etarget, node->name, 0);
++			emit->align(etarget, sizeof(cell_t));
++		}
++
++		for_each_local_fixup_entry(tree, fe) {
++			if (fe->node != node || fe->local_fixup_generated)
++				continue;
++
++			/* count the number of fixup entries */
++			count = 0;
++			for_each_local_fixup_entry(tree, fen) {
++				if (fen->prop != fe->prop)
++					continue;
++				fen->local_fixup_generated = true;
++				count++;
++			}
++
++			/* allocate buffer */
++			buf = xmalloc(count * sizeof(cell_t));
++
++			/* collect all the offsets in buffer */
++			count = 0;
++			for_each_local_fixup_entry(tree, fen) {
++				if (fen->prop != fe->prop)
++					continue;
++				fen->local_fixup_generated = true;
++				buf[count++] = cpu_to_fdt32(fen->offset);
++			}
++			d = empty_data;
++			d.len = count * sizeof(cell_t);
++			d.val = (char *)buf;
++
++			nameoff = stringtable_insert(strbuf, fe->prop->name);
++			emit->property(etarget, fe->prop->labels);
++			emit->cell(etarget, count * sizeof(cell_t));
++			emit->cell(etarget, nameoff);
++
++			if ((vi->flags & FTF_VARALIGN) &&
++					(count * sizeof(cell_t)) >= 8)
++				emit->align(etarget, 8);
++
++			emit->data(etarget, d);
++			emit->align(etarget, sizeof(cell_t));
++
++			free(buf);
++		}
++	}
++
++	for_each_child(node, child)
++		emit_local_fixups(tree, emit, etarget, strbuf, vi, child);
++
++	if (node->emit_local_fixup_node && node != tree)
++		emit->endnode(etarget, tree->labels);
++}
++
++static void emit_symbols_node(struct node *tree, struct emitter *emit,
++			      void *etarget, struct data *strbuf,
++			      struct version_info *vi)
++{
++	struct symbol *sym;
++	int nameoff, vallen;
++
++	/* do nothing if no symbols */
++	if (!tree->symbols)
++		return;
++
++	emit->beginnode(etarget, NULL);
++	emit->string(etarget, "__symbols__", 0);
++	emit->align(etarget, sizeof(cell_t));
++
++	for_each_symbol(tree, sym) {
++
++		vallen = strlen(sym->node->fullpath);
++
++		nameoff = stringtable_insert(strbuf, sym->label->label);
++
++		emit->property(etarget, NULL);
++		emit->cell(etarget, vallen + 1);
++		emit->cell(etarget, nameoff);
++
++		if ((vi->flags & FTF_VARALIGN) && vallen >= 8)
++			emit->align(etarget, 8);
++
++		emit->string(etarget, sym->node->fullpath,
++				strlen(sym->node->fullpath));
++		emit->align(etarget, sizeof(cell_t));
++	}
++
++	emit->endnode(etarget, NULL);
++}
++
++static void emit_local_fixups_node(struct node *tree, struct emitter *emit,
++				   void *etarget, struct data *strbuf,
++				   struct version_info *vi)
++{
++	struct fixup_entry *fe;
++	struct node *node;
++
++	/* do nothing if no local fixups */
++	if (!tree->local_fixups)
++		return;
++
++	/* mark all nodes that need a local fixup generated (and parents) */
++	for_each_local_fixup_entry(tree, fe) {
++		node = fe->node;
++		while (node != NULL && !node->emit_local_fixup_node) {
++			node->emit_local_fixup_node = true;
++			node = node->parent;
++		}
++	}
++
++	/* emit the local fixups node now */
++	emit->beginnode(etarget, NULL);
++	emit->string(etarget, "__local_fixups__", 0);
++	emit->align(etarget, sizeof(cell_t));
++
++	emit_local_fixups(tree, emit, etarget, strbuf, vi, tree);
++
++	emit->endnode(etarget, tree->labels);
++}
++
++static void emit_fixups_node(struct node *tree, struct emitter *emit,
++			     void *etarget, struct data *strbuf,
++			     struct version_info *vi)
++{
++	struct fixup *f;
++	struct fixup_entry *fe;
++	char *name, *s;
++	const char *fullpath;
++	int namesz, nameoff, vallen;
++
++	/* do nothing if no fixups */
++	if (!tree->fixups)
++		return;
++
++	/* emit the external fixups */
++	emit->beginnode(etarget, NULL);
++	emit->string(etarget, "__fixups__", 0);
++	emit->align(etarget, sizeof(cell_t));
++
++	for_each_fixup(tree, f) {
++
++		namesz = 0;
++		for_each_fixup_entry(f, fe) {
++			fullpath = fe->node->fullpath;
++			if (fullpath[0] == '\0')
++				fullpath = "/";
++			namesz += strlen(fullpath) + 1;
++			namesz += strlen(fe->prop->name) + 1;
++			namesz += 32;	/* space for :<number> + '\0' */
++		}
++
++		name = xmalloc(namesz);
++
++		s = name;
++		for_each_fixup_entry(f, fe) {
++			fullpath = fe->node->fullpath;
++			if (fullpath[0] == '\0')
++				fullpath = "/";
++			snprintf(s, name + namesz - s, "%s:%s:%d", fullpath,
++					fe->prop->name, fe->offset);
++			s += strlen(s) + 1;
++		}
++
++		nameoff = stringtable_insert(strbuf, f->ref);
++		vallen = s - name - 1;
++
++		emit->property(etarget, NULL);
++		emit->cell(etarget, vallen + 1);
++		emit->cell(etarget, nameoff);
++
++		if ((vi->flags & FTF_VARALIGN) && vallen >= 8)
++			emit->align(etarget, 8);
++
++		emit->string(etarget, name, vallen);
++		emit->align(etarget, sizeof(cell_t));
++
++		free(name);
++	}
++
++	emit->endnode(etarget, tree->labels);
++}
++
+ static void flatten_tree(struct node *tree, struct emitter *emit,
+ 			 void *etarget, struct data *strbuf,
+ 			 struct version_info *vi)
+@@ -310,6 +508,10 @@ static void flatten_tree(struct node *tree, struct emitter *emit,
+ 		flatten_tree(child, emit, etarget, strbuf, vi);
+ 	}
+ 
++	emit_symbols_node(tree, emit, etarget, strbuf, vi);
++	emit_local_fixups_node(tree, emit, etarget, strbuf, vi);
++	emit_fixups_node(tree, emit, etarget, strbuf, vi);
++
+ 	emit->endnode(etarget, tree->labels);
+ }
+ 
+diff --git a/scripts/dtc/util.h b/scripts/dtc/util.h
+index ccfdf4b12433..f800b6011fb1 100644
+--- a/scripts/dtc/util.h
++++ b/scripts/dtc/util.h
+@@ -34,6 +34,7 @@ static inline void __attribute__((noreturn)) die(const char *str, ...)
+ 	va_start(ap, str);
+ 	fprintf(stderr, "FATAL ERROR: ");
+ 	vfprintf(stderr, str, ap);
++	va_end(ap);
+ 	exit(1);
+ }
+ 
+diff --git a/scripts/dtc/version_gen.h b/scripts/dtc/version_gen.h
+index 607afac1cde1..32bd3634bead 100644
+--- a/scripts/dtc/version_gen.h
++++ b/scripts/dtc/version_gen.h
+@@ -1 +1 @@
+-#define DTC_VERSION "DTC 1.4.1"
++#define DTC_VERSION "DTC 1.4.1-gde493121"
 -- 
 2.1.4
 
