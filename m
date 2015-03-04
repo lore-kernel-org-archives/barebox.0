@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YT6dp-000282-GV
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:35:02 +0000
-Date: Wed, 4 Mar 2015 11:34:39 +0100
+ Linux)) id 1YT6ef-0003Vq-5P
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 10:35:54 +0000
+Date: Wed, 4 Mar 2015 11:35:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150304103439.GX11010@pengutronix.de>
-References: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20150304103531.GY11010@pengutronix.de>
+References: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425411983-24732-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1425384899-18809-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/11] of: make of_alias_get work on all types of DT paths
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH v3 00/13] sandbox OF integration
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 03, 2015 at 08:46:13PM +0100, Lucas Stach wrote:
-> of_alias_get assumed that a DT path is always the full node path,
-> whic is not necessarily the case, as there are other valid path
-> descriptions. All of them are handled by of_find_node_by_path.
+On Tue, Mar 03, 2015 at 01:14:46PM +0100, Marc Kleine-Budde wrote:
+> Hello Sascha,
 > 
-> As there is already a preparsed list with all DT aliases that handles
-> this case properly we can simply reuse that one.
+> these are the remaining patches that bring OF support to the sandbox so that
+> enables testing of framworks which need the device tree.
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  drivers/of/base.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> changes since v2:
+> - build sandbox with oftree support always, select CONFIG_OFTREE
+> - the hostfile nodes in the device tree are now generated on the fly,
+>   no need for stubs.
+> - hostfile: switch to oftree only, remove platform data
+> - hostfile: add possibility to specify name of device via:
+>   --image <DEV>=<FILE>
 
-Applied all, thanks
+Applied, thanks
 
 Sascha
 
