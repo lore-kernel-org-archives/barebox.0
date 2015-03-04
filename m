@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YT5cy-0008R1-V2
+ Linux)) id 1YT5cy-0008Rh-V1
  for barebox@lists.infradead.org; Wed, 04 Mar 2015 09:30:06 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed,  4 Mar 2015 10:29:28 +0100
-Message-Id: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
+Date: Wed,  4 Mar 2015 10:29:30 +0100
+Message-Id: <1425461372-31740-3-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
+References: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +21,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] Device Tree Overlay Support
+Subject: [PATCH 2/4] scripts/dtc: import update-dtc-source.sh from kernel
+ v4.0-rc1
 To: barebox@lists.infradead.org
 
-This adds support for device tree overlays as supported by Linux 4.0-rc1.
-Patches 2-4 update the included DTC with overlay support.
+The original script was written by Grant Likely <grant.likely@linaro.org>.
+The version for barebox also imports some libfdt sources, so that we are
+able to compile the fdtget host tool. Also remove the unused non-kconfig
+makefiles.
 
-Jan Luebbe (4):
-  drivers: of: implement overlay support
-  scripts/dtc: import update-dtc-source.sh from kernel v4.0-rc1
-  scripts/dtc: Update to upstream version 1.4.1
-  scripts/dtc: Update to upstream version 1.4.1 with overlay support
-
- Documentation/user/devicetree.rst     |  101 +-
- arch/sandbox/dts/Makefile             |    5 +-
- arch/sandbox/dts/sandbox-overlay.dtso |   26 +
- arch/sandbox/dts/sandbox.dts          |    6 +
- commands/oftree.c                     |   65 +-
- drivers/of/Kconfig                    |    6 +
- drivers/of/Makefile                   |    1 +
- drivers/of/overlay.c                  |  234 ++++
- drivers/of/resolver.c                 |  346 +++++
- include/of.h                          |   71 +
- scripts/Makefile.lib                  |    5 +-
- scripts/dtc/checks.c                  |  137 +-
- scripts/dtc/data.c                    |   12 +-
- scripts/dtc/dtc-lexer.l               |   72 +-
- scripts/dtc/dtc-lexer.lex.c_shipped   |  701 +++++-----
- scripts/dtc/dtc-parser.tab.c_shipped  | 2411 ++++++++++++++++-----------------
- scripts/dtc/dtc-parser.tab.h_shipped  |  110 +-
- scripts/dtc/dtc-parser.y              |  169 +--
- scripts/dtc/dtc.c                     |  136 +-
- scripts/dtc/dtc.h                     |   59 +-
- scripts/dtc/fdt.c                     |   30 +-
- scripts/dtc/fdt.h                     |   93 +-
- scripts/dtc/fdt_addresses.c           |   96 ++
- scripts/dtc/fdt_ro.c                  |    7 +-
- scripts/dtc/fdt_rw.c                  |   10 +-
- scripts/dtc/fdt_sw.c                  |   36 +-
- scripts/dtc/fdt_wip.c                 |    2 +-
- scripts/dtc/fdtdump.c                 |  135 +-
- scripts/dtc/fdtget.c                  |   60 +-
- scripts/dtc/fdtput.c                  |  225 ++-
- scripts/dtc/flattree.c                |  206 ++-
- scripts/dtc/fstree.c                  |   16 +-
- scripts/dtc/libfdt.h                  |  133 +-
- scripts/dtc/libfdt/Makefile.libfdt    |   10 -
- scripts/dtc/libfdt_env.h              |  104 +-
- scripts/dtc/libfdt_internal.h         |    6 +-
- scripts/dtc/livetree.c                |    4 +-
- scripts/dtc/srcpos.c                  |   49 +-
- scripts/dtc/srcpos.h                  |   15 +-
- scripts/dtc/treesource.c              |   14 +-
- scripts/dtc/update-dtc-source.sh      |   61 +
- scripts/dtc/util.c                    |  153 ++-
- scripts/dtc/util.h                    |  111 +-
- scripts/dtc/version_gen.h             |    2 +-
- 44 files changed, 4104 insertions(+), 2147 deletions(-)
- create mode 100644 arch/sandbox/dts/sandbox-overlay.dtso
- create mode 100644 drivers/of/overlay.c
- create mode 100644 drivers/of/resolver.c
- create mode 100644 scripts/dtc/fdt_addresses.c
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+---
+ scripts/dtc/Makefile.dtc           | 18 -----------
+ scripts/dtc/libfdt/Makefile.libfdt | 10 -------
+ scripts/dtc/update-dtc-source.sh   | 61 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 61 insertions(+), 28 deletions(-)
+ delete mode 100644 scripts/dtc/Makefile.dtc
  delete mode 100644 scripts/dtc/libfdt/Makefile.libfdt
  create mode 100755 scripts/dtc/update-dtc-source.sh
 
+diff --git a/scripts/dtc/Makefile.dtc b/scripts/dtc/Makefile.dtc
+deleted file mode 100644
+index bece49b35535..000000000000
+--- a/scripts/dtc/Makefile.dtc
++++ /dev/null
+@@ -1,18 +0,0 @@
+-# Makefile.dtc
+-#
+-# This is not a complete Makefile of itself.  Instead, it is designed to
+-# be easily embeddable into other systems of Makefiles.
+-#
+-DTC_SRCS = \
+-	checks.c \
+-	data.c \
+-	dtc.c \
+-	flattree.c \
+-	fstree.c \
+-	livetree.c \
+-	srcpos.c \
+-	treesource.c \
+-	util.c
+-
+-DTC_GEN_SRCS = dtc-lexer.lex.c dtc-parser.tab.c
+-DTC_OBJS = $(DTC_SRCS:%.c=%.o) $(DTC_GEN_SRCS:%.c=%.o)
+diff --git a/scripts/dtc/libfdt/Makefile.libfdt b/scripts/dtc/libfdt/Makefile.libfdt
+deleted file mode 100644
+index 91126c000a1e..000000000000
+--- a/scripts/dtc/libfdt/Makefile.libfdt
++++ /dev/null
+@@ -1,10 +0,0 @@
+-# Makefile.libfdt
+-#
+-# This is not a complete Makefile of itself.  Instead, it is designed to
+-# be easily embeddable into other systems of Makefiles.
+-#
+-LIBFDT_soname = libfdt.$(SHAREDLIB_EXT).1
+-LIBFDT_INCLUDES = fdt.h libfdt.h libfdt_env.h
+-LIBFDT_VERSION = version.lds
+-LIBFDT_SRCS = fdt.c fdt_ro.c fdt_wip.c fdt_sw.c fdt_rw.c fdt_strerror.c fdt_empty_tree.c
+-LIBFDT_OBJS = $(LIBFDT_SRCS:%.c=%.o)
+diff --git a/scripts/dtc/update-dtc-source.sh b/scripts/dtc/update-dtc-source.sh
+new file mode 100755
+index 000000000000..075d1d7af01d
+--- /dev/null
++++ b/scripts/dtc/update-dtc-source.sh
+@@ -0,0 +1,61 @@
++#!/bin/sh
++# Simple script to update the version of DTC carried by the Linux kernel
++#
++# This script assumes that the dtc and the linux git trees are in the
++# same directory. After building dtc in the dtc directory, it copies the
++# source files and generated source files into the scripts/dtc directory
++# in the kernel and creates a git commit updating them to the new
++# version.
++#
++# Usage: from the top level Linux source tree, run:
++# $ ./scripts/dtc/update-dtc-source.sh
++#
++# The script will change into the dtc tree, build and test dtc, copy the
++# relevant files into the kernel tree and create a git commit. The commit
++# message will need to be modified to reflect the version of DTC being
++# imported
++#
++# TODO:
++# This script is pretty basic, but it is seldom used so a few manual tasks
++# aren't a big deal. If anyone is interested in making it more robust, the
++# the following would be nice:
++# * Actually fail to complete if any testcase fails.
++#   - The dtc "make check" target needs to return a failure
++# * Extract the version number from the dtc repo for the commit message
++# * Build dtc in the kernel tree
++# * run 'make check" on dtc built from the kernel tree
++
++set -ev
++
++DTC_UPSTREAM_PATH=`pwd`/../dtc
++DTC_LINUX_PATH=`pwd`/scripts/dtc
++
++DTC_SOURCE="checks.c data.c dtc.c dtc.h flattree.c fstree.c livetree.c srcpos.c \
++		srcpos.h treesource.c util.c util.h version_gen.h Makefile.dtc \
++		dtc-lexer.l dtc-parser.y fdtdump.c fdtput.c fdtget.c"
++DTC_LIB="fdt.c fdt.h fdt_addresses.c fdt_empty_tree.c fdt_ro.c fdt_rw.c \
++		fdt_strerror.c fdt_sw.c fdt_wip.c libfdt.h libfdt_env.h \
++		libfdt_internal.h"
++DTC_GENERATED="dtc-lexer.lex.c dtc-parser.tab.c dtc-parser.tab.h"
++
++# Build DTC
++cd $DTC_UPSTREAM_PATH
++make clean
++make check
++
++# Copy the files into the Linux tree
++cd $DTC_LINUX_PATH
++for f in $DTC_SOURCE; do
++	cp ${DTC_UPSTREAM_PATH}/${f} ${f}
++	git add ${f}
++done
++for f in $DTC_LIB; do
++	cp ${DTC_UPSTREAM_PATH}/libfdt/${f} ${f}
++	git add ${f}
++done
++for f in $DTC_GENERATED; do
++	cp ${DTC_UPSTREAM_PATH}/$f ${f}_shipped
++	git add ${f}_shipped
++done
++
++git commit -e -v -m "scripts/dtc: Update to upstream version [CHANGEME]"
 -- 
 2.1.4
 
