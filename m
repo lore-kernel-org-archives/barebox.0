@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YT5cy-0008Rh-V1
- for barebox@lists.infradead.org; Wed, 04 Mar 2015 09:30:06 +0000
+ Linux)) id 1YT5cy-0008RX-V5
+ for barebox@lists.infradead.org; Wed, 04 Mar 2015 09:30:13 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed,  4 Mar 2015 10:29:30 +0100
-Message-Id: <1425461372-31740-3-git-send-email-jlu@pengutronix.de>
+Date: Wed,  4 Mar 2015 10:29:29 +0100
+Message-Id: <1425461372-31740-2-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
 References: <1425461372-31740-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,132 +21,1067 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] scripts/dtc: import update-dtc-source.sh from kernel
- v4.0-rc1
+Subject: [PATCH 1/4] drivers: of: implement overlay support
 To: barebox@lists.infradead.org
 
-The original script was written by Grant Likely <grant.likely@linaro.org>.
-The version for barebox also imports some libfdt sources, so that we are
-able to compile the fdtget host tool. Also remove the unused non-kconfig
-makefiles.
+This is based on Pantelis Antoniou's overlay support for the kernel. It
+has been simplified by leaving out transaction support, locking and
+other details required by the Linux DT support.
+
+It should support all features of the overlay file format as implemented
+in linux 4.0-rc1.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- scripts/dtc/Makefile.dtc           | 18 -----------
- scripts/dtc/libfdt/Makefile.libfdt | 10 -------
- scripts/dtc/update-dtc-source.sh   | 61 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+), 28 deletions(-)
- delete mode 100644 scripts/dtc/Makefile.dtc
- delete mode 100644 scripts/dtc/libfdt/Makefile.libfdt
- create mode 100755 scripts/dtc/update-dtc-source.sh
+ Documentation/user/devicetree.rst     | 101 +++++++++-
+ arch/sandbox/dts/Makefile             |   5 +-
+ arch/sandbox/dts/sandbox-overlay.dtso |  26 +++
+ arch/sandbox/dts/sandbox.dts          |   6 +
+ commands/oftree.c                     |  65 ++++++-
+ drivers/of/Kconfig                    |   6 +
+ drivers/of/Makefile                   |   1 +
+ drivers/of/overlay.c                  | 234 +++++++++++++++++++++++
+ drivers/of/resolver.c                 | 346 ++++++++++++++++++++++++++++++++++
+ include/of.h                          |  71 +++++++
+ scripts/Makefile.lib                  |   5 +-
+ 11 files changed, 857 insertions(+), 9 deletions(-)
+ create mode 100644 arch/sandbox/dts/sandbox-overlay.dtso
+ create mode 100644 drivers/of/overlay.c
+ create mode 100644 drivers/of/resolver.c
 
-diff --git a/scripts/dtc/Makefile.dtc b/scripts/dtc/Makefile.dtc
-deleted file mode 100644
-index bece49b35535..000000000000
---- a/scripts/dtc/Makefile.dtc
-+++ /dev/null
-@@ -1,18 +0,0 @@
--# Makefile.dtc
--#
--# This is not a complete Makefile of itself.  Instead, it is designed to
--# be easily embeddable into other systems of Makefiles.
--#
--DTC_SRCS = \
--	checks.c \
--	data.c \
--	dtc.c \
--	flattree.c \
--	fstree.c \
--	livetree.c \
--	srcpos.c \
--	treesource.c \
--	util.c
--
--DTC_GEN_SRCS = dtc-lexer.lex.c dtc-parser.tab.c
--DTC_OBJS = $(DTC_SRCS:%.c=%.o) $(DTC_GEN_SRCS:%.c=%.o)
-diff --git a/scripts/dtc/libfdt/Makefile.libfdt b/scripts/dtc/libfdt/Makefile.libfdt
-deleted file mode 100644
-index 91126c000a1e..000000000000
---- a/scripts/dtc/libfdt/Makefile.libfdt
-+++ /dev/null
-@@ -1,10 +0,0 @@
--# Makefile.libfdt
--#
--# This is not a complete Makefile of itself.  Instead, it is designed to
--# be easily embeddable into other systems of Makefiles.
--#
--LIBFDT_soname = libfdt.$(SHAREDLIB_EXT).1
--LIBFDT_INCLUDES = fdt.h libfdt.h libfdt_env.h
--LIBFDT_VERSION = version.lds
--LIBFDT_SRCS = fdt.c fdt_ro.c fdt_wip.c fdt_sw.c fdt_rw.c fdt_strerror.c fdt_empty_tree.c
--LIBFDT_OBJS = $(LIBFDT_SRCS:%.c=%.o)
-diff --git a/scripts/dtc/update-dtc-source.sh b/scripts/dtc/update-dtc-source.sh
-new file mode 100755
-index 000000000000..075d1d7af01d
+diff --git a/Documentation/user/devicetree.rst b/Documentation/user/devicetree.rst
+index 17934d86e3bf..b2220997d822 100644
+--- a/Documentation/user/devicetree.rst
++++ b/Documentation/user/devicetree.rst
+@@ -21,7 +21,7 @@ The internal devicetree
+ -----------------------
+ 
+ The devicetree consulted by barebox plays a special role. It is referred to
+-as the "internal devicetree." The barebox devicetree commands work on this
++as the "internal devicetree". The barebox devicetree commands work on this
+ devicetree. The devicetree source (DTS) files are kept in sync with the kernel DTS
+ files. As the FDT files are meant to be backward compatible, it should always be possible
+ to start a kernel with the barebox internal devicetree. However, since the barebox
+@@ -83,3 +83,102 @@ you can exchange the internal devicetree during runtime using the
+ 
+    oftree -f
+    oftree -l /new/dtb
++
++Devicetree overlays
++-------------------
++
++Since version 3.19, the Linux kernel supports applying "devicetree overlays" to
++its loaded device tree. This can be used to inform the kernel about additional
++non-discoverable devices after the system has booted, which is useful for modular
++boards and FPGAs. The details of the overlay format are specified in the Linux
++`kernel documentation <https://www.kernel.org/doc/Documentation/devicetree/overlay-notes.txt>`_
++and an updated DTC is required to compile the overlays.
++
++The use cases for overlays in barebox are a bit different:
++
++* some of the modular devices are needed to boot Linux to userspace, but barebox
++  can detect which module variant is connected
++* one of several parallel or LVDS displays (which use timing data from devicetree)
++  can be connected to the SoC and should be used for boot messages
++* a generic Linux (distribution) kernel should be booted on a modular
++  system and support additional hardware on modules
++
++barebox supports applying overlays in the internal devicetree was well using the
++:ref:`command_oftree` command with option ``-o``:
++
++.. code-block:: sh
++
++   $ ./barebox -d arch/sandbox/dts/sandbox.dtb -i arch/sandbox/dts/sandbox-overlay.dtbo
++   add fd0 backed by file arch/sandbox/dts/sandbox-overlay.dtbo
++
++   barebox 2015.02.0 #26 Wed Mar 4 09:41:19 CET 2015
++   ...
++   barebox@barebox sandbox:/ of_dump
++   ...
++     dummy@0 {
++       status = "disabled";
++       linux,phandle = <0x1>;
++       phandle = <0x1>;
++     };
++     dummy@1 {
++       status = "disabled";
++       linux,phandle = <0x2>;
++       phandle = <0x2>;
++     };
++     __symbols__ {
++       dummy0 = "/dummy@0";
++       dummy1 = "/dummy@1";
++     };
++   ...
++   barebox@barebox sandbox:/ of_dump -f /dev/fd0
++    {
++     fragment@0 {
++       target = <0xdeadbeef>;
++       __overlay__ {
++         status = "okay";
++         child {
++           compatible = "barebox,dummy";
++         };
++       };
++     };
++     fragment@1 {
++       target = <0xdeadbeef>;
++       __overlay__ {
++         status = "okay";
++         child {
++           compatible = "barebox,dummy";
++         };
++       };
++     };
++     __fixups__ {
++       dummy0 = "/fragment@0:target:0";
++       dummy1 = "/fragment@1:target:0";
++     };
++   };
++   barebox@barebox sandbox:/ oftree -o /dev/fd0
++   barebox@barebox sandbox:/ of_dump
++   ...
++     dummy@0 {
++       linux,phandle = <0x1>;
++       phandle = <0x1>;
++       status = "okay";
++       child {
++         compatible = "barebox,dummy";
++       };
++     };
++     dummy@1 {
++       linux,phandle = <0x2>;
++       phandle = <0x2>;
++       status = "okay";
++       child {
++         compatible = "barebox,dummy";
++       };
++     };
++     __symbols__ {
++       dummy0 = "/dummy@0";
++       dummy1 = "/dummy@1";
++     };
++   ...
++
++If you need to use a different base devicetree instead of the one compiled into
++barebox, it needs to be replaced as described in the previous section.
+diff --git a/arch/sandbox/dts/Makefile b/arch/sandbox/dts/Makefile
+index 6f6838857849..ede219e6f1a8 100644
+--- a/arch/sandbox/dts/Makefile
++++ b/arch/sandbox/dts/Makefile
+@@ -1,6 +1,7 @@
+ ifeq ($(CONFIG_OFTREE),y)
+ dtb-y += \
+-	sandbox.dtb
++	sandbox.dtb \
++	sandbox-overlay.dtbo
+ endif
+ 
+ # just to build a built-in.o. Otherwise compilation fails when no devicetree is
+@@ -8,4 +9,4 @@ endif
+ obj- += dummy.o
+ 
+ always := $(dtb-y)
+-clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtbo
+diff --git a/arch/sandbox/dts/sandbox-overlay.dtso b/arch/sandbox/dts/sandbox-overlay.dtso
+new file mode 100644
+index 000000000000..f9ced04cabcb
 --- /dev/null
-+++ b/scripts/dtc/update-dtc-source.sh
-@@ -0,0 +1,61 @@
-+#!/bin/sh
-+# Simple script to update the version of DTC carried by the Linux kernel
-+#
-+# This script assumes that the dtc and the linux git trees are in the
-+# same directory. After building dtc in the dtc directory, it copies the
-+# source files and generated source files into the scripts/dtc directory
-+# in the kernel and creates a git commit updating them to the new
-+# version.
-+#
-+# Usage: from the top level Linux source tree, run:
-+# $ ./scripts/dtc/update-dtc-source.sh
-+#
-+# The script will change into the dtc tree, build and test dtc, copy the
-+# relevant files into the kernel tree and create a git commit. The commit
-+# message will need to be modified to reflect the version of DTC being
-+# imported
-+#
-+# TODO:
-+# This script is pretty basic, but it is seldom used so a few manual tasks
-+# aren't a big deal. If anyone is interested in making it more robust, the
-+# the following would be nice:
-+# * Actually fail to complete if any testcase fails.
-+#   - The dtc "make check" target needs to return a failure
-+# * Extract the version number from the dtc repo for the commit message
-+# * Build dtc in the kernel tree
-+# * run 'make check" on dtc built from the kernel tree
++++ b/arch/sandbox/dts/sandbox-overlay.dtso
+@@ -0,0 +1,26 @@
++/dts-v1/;
 +
-+set -ev
++/plugin/;
 +
-+DTC_UPSTREAM_PATH=`pwd`/../dtc
-+DTC_LINUX_PATH=`pwd`/scripts/dtc
++/ {
++        fragment@0 {
++                target = <&dummy0>;
++                __overlay__ {
++			status = "okay";
++                        child {
++                                compatible = "barebox,dummy";
++                        };
++                };
++        };
 +
-+DTC_SOURCE="checks.c data.c dtc.c dtc.h flattree.c fstree.c livetree.c srcpos.c \
-+		srcpos.h treesource.c util.c util.h version_gen.h Makefile.dtc \
-+		dtc-lexer.l dtc-parser.y fdtdump.c fdtput.c fdtget.c"
-+DTC_LIB="fdt.c fdt.h fdt_addresses.c fdt_empty_tree.c fdt_ro.c fdt_rw.c \
-+		fdt_strerror.c fdt_sw.c fdt_wip.c libfdt.h libfdt_env.h \
-+		libfdt_internal.h"
-+DTC_GENERATED="dtc-lexer.lex.c dtc-parser.tab.c dtc-parser.tab.h"
++        fragment@1 {
++                target = <&dummy1>;
++                __overlay__ {
++			status = "okay";
++                        child {
++                                compatible = "barebox,dummy";
++                        };
++                };
++        };
++};
 +
-+# Build DTC
-+cd $DTC_UPSTREAM_PATH
-+make clean
-+make check
+diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
+index 2595aa13fa62..1b99a4960a88 100644
+--- a/arch/sandbox/dts/sandbox.dts
++++ b/arch/sandbox/dts/sandbox.dts
+@@ -3,5 +3,11 @@
+ #include "skeleton.dtsi"
+ 
+ / {
++	dummy0: dummy@0 {
++		status = "disabled";
++	};
+ 
++	dummy1: dummy@1 {
++		status = "disabled";
++	};
+ };
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 8a47c0be58ec..e0624ad34633 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -2,6 +2,7 @@
+  * oftree.c - device tree command support
+  *
+  * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
+  *
+  * based on U-Boot code by:
+  *
+@@ -48,11 +49,14 @@ static int do_oftree(int argc, char *argv[])
+ 	int probe = 0;
+ 	char *load = NULL;
+ 	char *save = NULL;
++	char *overlay = NULL;
+ 	int free_of = 0;
+ 	int ret;
+ 	struct device_node *root;
++	int ovinfo_cnt;
++	struct of_overlay_info *ovinfo;
+ 
+-	while ((opt = getopt(argc, argv, "pfl:s:")) > 0) {
++	while ((opt = getopt(argc, argv, "pfl:o:s:")) > 0) {
+ 		switch (opt) {
+ 		case 'l':
+ 			load = optarg;
+@@ -68,6 +72,9 @@ static int do_oftree(int argc, char *argv[])
+ 		case 'f':
+ 			free_of = 1;
+ 			break;
++		case 'o':
++			overlay = optarg;
++			break;
+ 		case 's':
+ 			save = optarg;
+ 			break;
+@@ -84,7 +91,7 @@ static int do_oftree(int argc, char *argv[])
+ 			return 0;
+ 	}
+ 
+-	if (!probe && !load && !save)
++	if (!probe && !load && !save && !overlay)
+ 		return COMMAND_ERROR_USAGE;
+ 
+ 	if (save) {
+@@ -123,6 +130,53 @@ static int do_oftree(int argc, char *argv[])
+ 		}
+ 	}
+ 
++	if (IS_ENABLED(CONFIG_OFTREE_OVERLAY) && overlay) {
++		struct device_node *ov;
 +
-+# Copy the files into the Linux tree
-+cd $DTC_LINUX_PATH
-+for f in $DTC_SOURCE; do
-+	cp ${DTC_UPSTREAM_PATH}/${f} ${f}
-+	git add ${f}
-+done
-+for f in $DTC_LIB; do
-+	cp ${DTC_UPSTREAM_PATH}/libfdt/${f} ${f}
-+	git add ${f}
-+done
-+for f in $DTC_GENERATED; do
-+	cp ${DTC_UPSTREAM_PATH}/$f ${f}_shipped
-+	git add ${f}_shipped
-+done
++		root = of_get_root_node();
++		if (!root) {
++			printf("no oftree loaded\n");
++			goto out;
++		}
 +
-+git commit -e -v -m "scripts/dtc: Update to upstream version [CHANGEME]"
++		fdt = read_file(overlay, &size);
++		if (!fdt) {
++			printf("unable to read %s\n", overlay);
++			return 1;
++		}
++
++		ov = of_unflatten_dtb(fdt);
++		free(fdt);
++
++		if (IS_ERR(ov)) {
++			printf("parse oftree: %s\n", strerror(-ret));
++			return PTR_ERR(ov);
++		}
++
++		ret = of_resolve(ov);
++		if (ret) {
++			printf("resolve oftree overlay: %s\n", strerror(-ret));
++			of_delete_node(ov);
++			goto out;
++		}
++
++		ret = of_build_overlay_info(ov, &ovinfo_cnt, &ovinfo);
++		if (ret) {
++			printf("prepare oftree overlay: %s\n", strerror(-ret));
++			of_delete_node(ov);
++			goto out;
++		}
++
++		ret = of_overlay(ovinfo_cnt, ovinfo);
++		if (ret) {
++			printf("apply oftree overlay: %s\n", strerror(-ret));
++			of_delete_node(ov);
++			goto out;
++		}
++
++		of_delete_node(ov);
++	}
++
+ 	if (probe) {
+ 		ret = of_probe();
+ 		if (ret)
+@@ -137,8 +191,9 @@ out:
+ 
+ BAREBOX_CMD_HELP_START(oftree)
+ BAREBOX_CMD_HELP_TEXT("Options:")
+-BAREBOX_CMD_HELP_OPT ("-l <DTB>",  "Load <DTB> to internal devicetree\n")
+-BAREBOX_CMD_HELP_OPT ("-s <DTB>",  "save internal devicetree to <DTB>\n")
++BAREBOX_CMD_HELP_OPT ("-l <DTB>",  "load <DTB> to internal devicetree")
++BAREBOX_CMD_HELP_OPT ("-s <DTB>",  "save internal devicetree to <DTB>")
++BAREBOX_CMD_HELP_OPT ("-o <DTBO>",  "apply overlay <DTBO> to internal devicetree")
+ BAREBOX_CMD_HELP_OPT ("-p",  "probe devices from stored device tree")
+ BAREBOX_CMD_HELP_OPT ("-f",  "free stored device tree")
+ BAREBOX_CMD_HELP_END
+@@ -146,7 +201,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(oftree)
+ 	.cmd		= do_oftree,
+ 	BAREBOX_CMD_DESC("handle device trees")
+-	BAREBOX_CMD_OPTS("[-lspf]")
++	BAREBOX_CMD_OPTS("[-lsopf]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_HELP(cmd_oftree_help)
+ BAREBOX_CMD_END
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 90475cfbcae4..717d833f2fac 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -15,6 +15,12 @@ config OFDEVICE
+ 	select DTC
+ 	bool "Enable probing of devices from the devicetree"
+ 
++config OFTREE_OVERLAY
++	bool "Enable support for devicetree overlays"
++	depends on OFTREE
++	help
++	  Allows you to modify the live tree using overlays.
++
+ config OF_ADDRESS_PCI
+ 	bool
+ 
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index 0dc2f8d63ed0..8f403ecfcf10 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -6,3 +6,4 @@ obj-y += partition.o
+ obj-y += of_net.o
+ obj-$(CONFIG_MTD) += of_mtd.o
+ obj-$(CONFIG_OF_BAREBOX_DRIVERS) += barebox.o of_path.o
++obj-$(CONFIG_OFTREE_OVERLAY) += resolver.o overlay.o
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+new file mode 100644
+index 000000000000..a711a353f8ec
+--- /dev/null
++++ b/drivers/of/overlay.c
+@@ -0,0 +1,234 @@
++/*
++ * Functions for working with device tree overlays
++ *
++ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
++ * Copyright (C) 2012 Texas Instruments Inc.
++ * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * version 2 as published by the Free Software Foundation.
++ */
++
++#include <common.h>
++#include <of.h>
++#include <errno.h>
++#include <malloc.h>
++#include <linux/kernel.h>
++#include <linux/string.h>
++#include <linux/ctype.h>
++#include <linux/err.h>
++
++/**
++ * Apply a single overlay node recursively.
++ *
++ * All the property notifiers are appropriately called.
++ * Note that the in case of an error the target node is left
++ * in a inconsistent state. Error recovery should be performed
++ * by recording the modification using the of notifiers.
++ */
++static int of_overlay_apply_one(struct device_node *target,
++		const struct device_node *overlay)
++{
++	struct device_node *child, *tchild;
++	struct property *prop;
++	int ret;
++
++	/* sanity checks */
++	if (target == NULL || overlay == NULL)
++		return -EINVAL;
++
++	for_each_property_of_node(overlay, prop) {
++		/* don't touch, 'name' */
++		if (of_prop_cmp(prop->name, "name") == 0)
++			continue;
++
++		of_delete_property(of_find_property(target, prop->name, NULL));
++
++		if (of_new_property(target, prop->name, prop->value, prop->length) == NULL)
++			return -ENOMEM;
++	}
++
++	for_each_child_of_node(overlay, child) {
++		tchild = of_get_child_by_name(target, child->name);
++		if (tchild != NULL) {
++			/* apply overlay recursively */
++			ret = of_overlay_apply_one(tchild, child);
++
++			if (ret != 0)
++				return ret;
++		} else {
++			/* create new child */
++			tchild = of_new_node(target, child->name);
++			if (tchild == NULL)
++				return -ENOMEM;
++
++			/* apply the overlay */
++			ret = of_overlay_apply_one(tchild, child);
++			if (ret != 0) {
++				of_delete_node(tchild);
++				return ret;
++			}
++		}
++	}
++
++	return 0;
++}
++
++/**
++ * of_overlay	- Apply @count overlays pointed at by @ovinfo_tab
++ * @count:	Number of of_overlay_info's
++ * @ovinfo_tab:	Array of overlay_info's to apply
++ *
++ * Applies the overlays given, while handling all error conditions
++ * appropriately. Either the operation succeeds, or if it fails the
++ * live tree is reverted to the state before the attempt.
++ * Returns 0, or an error if the overlay attempt failed.
++ */
++int of_overlay(int count, struct of_overlay_info *ovinfo_tab)
++{
++	struct of_overlay_info *ovinfo;
++	int i, err;
++
++	if (!ovinfo_tab)
++		return -EINVAL;
++
++	for (i = 0; i < count; i++) {
++		ovinfo = &ovinfo_tab[i];
++		err = of_overlay_apply_one(ovinfo->target, ovinfo->overlay);
++		if (err != 0) {
++			pr_err("%s: overlay failed '%s'\n",
++				__func__, ovinfo->target->full_name);
++			goto err_fail;
++		}
++	}
++
++	return 0;
++
++err_fail:
++	return err;
++}
++
++/**
++ * of_fill_overlay_info	- Fill an overlay info structure
++ * @info_node:	Device node containing the overlay
++ * @ovinfo:	Pointer to the overlay info structure to fill
++ *
++ * Fills an overlay info structure with the overlay information
++ * from a device node. This device node must have a target property
++ * which contains a phandle of the overlay target node, and an
++ * __overlay__ child node which has the overlay contents.
++ * Both ovinfo->target & ovinfo->overlay have their references taken.
++ *
++ * Returns 0 on success, or a negative error value.
++ */
++int of_fill_overlay_info(struct device_node *info_node,
++		struct of_overlay_info *ovinfo)
++{
++	const char *target_path;
++	u32 target_handle;
++	int ret;
++
++	if (!info_node || !ovinfo)
++		return -EINVAL;
++
++	ret = of_property_read_u32(info_node, "target", &target_handle);
++	if (ret == 0) {
++		ovinfo->target = of_find_node_by_phandle(target_handle);
++	} else {
++		ret = of_property_read_string(info_node, "target-path", &target_path);
++		if (ret == 0) {
++			ovinfo->target = of_find_node_by_path(target_path);
++		}
++	}
++	if (ovinfo->target == NULL)
++		goto err_fail;
++
++	ovinfo->overlay = of_get_child_by_name(info_node, "__overlay__");
++	if (ovinfo->overlay == NULL)
++		goto err_fail;
++
++	return 0;
++
++err_fail:
++	memset(ovinfo, 0, sizeof(*ovinfo));
++	return -EINVAL;
++}
++
++/**
++ * of_build_overlay_info	- Build an overlay info array
++ * @tree:	Device node containing all the overlays
++ * @cntp:	Pointer to where the overlay info count will be help
++ * @ovinfop:	Pointer to the pointer of an overlay info structure.
++ *
++ * Helper function that given a tree containing overlay information,
++ * allocates and builds an overlay info array containing it, ready
++ * for use using of_overlay.
++ *
++ * Returns 0 on success with the @cntp @ovinfop pointers valid,
++ * while on error a negative error value is returned.
++ */
++int of_build_overlay_info(struct device_node *tree,
++		int *cntp, struct of_overlay_info **ovinfop)
++{
++	struct device_node *node;
++	struct of_overlay_info *ovinfo;
++	int cnt, err;
++
++	if (tree == NULL || cntp == NULL || ovinfop == NULL)
++		return -EINVAL;
++
++	/* worst case; every child is a node */
++	cnt = 0;
++	for_each_child_of_node(tree, node)
++		cnt++;
++
++	ovinfo = kzalloc(cnt * sizeof(*ovinfo), GFP_KERNEL);
++	if (ovinfo == NULL)
++		return -ENOMEM;
++
++	cnt = 0;
++	for_each_child_of_node(tree, node) {
++		memset(&ovinfo[cnt], 0, sizeof(*ovinfo));
++		err = of_fill_overlay_info(node, &ovinfo[cnt]);
++		if (err == 0)
++			cnt++;
++	}
++
++	/* if nothing filled, return error */
++	if (cnt == 0) {
++		kfree(ovinfo);
++		return -ENODEV;
++	}
++
++	*cntp = cnt;
++	*ovinfop = ovinfo;
++
++	return 0;
++}
++
++/**
++ * of_free_overlay_info	- Free an overlay info array
++ * @count:	Number of of_overlay_info's
++ * @ovinfo_tab:	Array of overlay_info's to free
++ *
++ * Releases the memory of a previously allocate ovinfo array
++ * by of_build_overlay_info.
++ * Returns 0, or an error if the arguments are bogus.
++ */
++int of_free_overlay_info(int count, struct of_overlay_info *ovinfo_tab)
++{
++	struct of_overlay_info *ovinfo;
++	int i;
++
++	if (!ovinfo_tab || count < 0)
++		return -EINVAL;
++
++	/* do it in reverse */
++	for (i = count - 1; i >= 0; i--)
++		ovinfo = &ovinfo_tab[i];
++
++	kfree(ovinfo_tab);
++
++	return 0;
++}
+diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
+new file mode 100644
+index 000000000000..62476093c9e8
+--- /dev/null
++++ b/drivers/of/resolver.c
+@@ -0,0 +1,346 @@
++/*
++ * Functions for dealing with DT resolution
++ *
++ * Copyright (C) 2012 Pantelis Antoniou <panto@antoniou-consulting.com>
++ * Copyright (C) 2012 Texas Instruments Inc.
++ * Copyright (C) 2015 Pengutronix, Jan Luebbe <jlu@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * version 2 as published by the Free Software Foundation.
++ */
++
++#include <common.h>
++#include <of.h>
++#include <errno.h>
++#include <malloc.h>
++#include <linux/kernel.h>
++#include <linux/string.h>
++#include <linux/ctype.h>
++#include <linux/string.h>
++
++/**
++ * Adjust a subtree's phandle values by a given delta.
++ * Makes sure not to just adjust the device node's phandle value,
++ * but modify the phandle properties values as well.
++ */
++static void of_adjust_tree_phandles(struct device_node *node,
++		int phandle_delta)
++{
++	struct device_node *child;
++	struct property *prop;
++	phandle phandle;
++
++	/* first adjust the node's phandle direct value */
++	if (node->phandle != 0 && node->phandle != OF_PHANDLE_ILLEGAL)
++		node->phandle += phandle_delta;
++
++	/* now adjust phandle & linux,phandle values */
++	for_each_property_of_node(node, prop) {
++		/* only look for these two */
++		if (of_prop_cmp(prop->name, "phandle") != 0 &&
++		    of_prop_cmp(prop->name, "linux,phandle") != 0)
++			continue;
++
++		/* must be big enough */
++		if (prop->length < 4)
++			continue;
++
++		/* read phandle value */
++		phandle = be32_to_cpu(*(uint32_t *)prop->value);
++		if (phandle == OF_PHANDLE_ILLEGAL)	/* unresolved */
++			continue;
++
++		/* adjust */
++		*(uint32_t *)prop->value = cpu_to_be32(node->phandle);
++	}
++
++	/* now do the children recursively */
++	for_each_child_of_node(node, child)
++		of_adjust_tree_phandles(child, phandle_delta);
++}
++
++/**
++ * Adjust the local phandle references by the given phandle delta.
++ * Assumes the existances of a __local_fixups__ node at the root
++ * of the tree. Does not take any devtree locks so make sure you
++ * call this on a tree which is at the detached state.
++ */
++static int of_adjust_tree_phandle_references(struct device_node *node,
++		int phandle_delta)
++{
++	phandle phandle;
++	struct device_node *refnode, *child;
++	struct property *rprop, *sprop;
++	char *propval, *propcur, *propend, *nodestr, *propstr, *s;
++	int offset, propcurlen;
++	int err;
++	bool found = false;
++
++	/* locate the symbols & fixups nodes on resolve */
++	for_each_child_of_node(node, child)
++		if (of_node_cmp(child->name, "__local_fixups__") == 0) {
++			found = true;
++			break;
++		}
++
++	/* no local fixups */
++	if (!found)
++		return 0;
++
++	/* find the local fixups property */
++	for_each_property_of_node(child, rprop) {
++		/* skip properties added automatically */
++		if (of_prop_cmp(rprop->name, "name") == 0)
++			continue;
++
++		/* make a copy */
++		propval = kmalloc(rprop->length, GFP_KERNEL);
++		if (propval == NULL) {
++			pr_err("%s: Could not copy value of '%s'\n",
++					__func__, rprop->name);
++			return -ENOMEM;
++		}
++		memcpy(propval, rprop->value, rprop->length);
++
++		propend = propval + rprop->length;
++		for (propcur = propval; propcur < propend;
++				propcur += propcurlen + 1) {
++
++			propcurlen = strlen(propcur);
++
++			nodestr = propcur;
++			s = strchr(propcur, ':');
++			if (s == NULL) {
++				pr_err("%s: Illegal symbol entry '%s' (1)\n",
++					__func__, propcur);
++				err = -EINVAL;
++				goto err_fail;
++			}
++			*s++ = '\0';
++
++			propstr = s;
++			s = strchr(s, ':');
++			if (s == NULL) {
++				pr_err("%s: Illegal symbol entry '%s' (2)\n",
++					__func__, (char *)rprop->value);
++				err = -EINVAL;
++				goto err_fail;
++			}
++
++			*s++ = '\0';
++			offset = simple_strtoul(s, NULL, 10);
++
++			/* look into the resolve node for the full path */
++			refnode = of_find_node_by_path_from(node, nodestr);
++			if (refnode == NULL) {
++				pr_warn("%s: Could not find refnode '%s'\n",
++					__func__, (char *)rprop->value);
++				continue;
++			}
++
++			/* now find the property */
++			found = false;
++			for_each_property_of_node(refnode, sprop)
++				if (of_prop_cmp(sprop->name, propstr) == 0) {
++					found = true;
++					break;
++				}
++
++			if (!found) {
++				pr_err("%s: Could not find property '%s'\n",
++					__func__, (char *)rprop->value);
++				err = -ENOENT;
++				goto err_fail;
++			}
++
++			phandle = be32_to_cpu(*(uint32_t *)
++					(sprop->value + offset));
++			*(uint32_t *)(sprop->value + offset) =
++				cpu_to_be32(phandle + phandle_delta);
++		}
++
++		kfree(propval);
++	}
++
++	return 0;
++
++err_fail:
++	kfree(propval);
++	return err;
++}
++
++/**
++ * of_resolve	- Resolve the given node against the live tree.
++ *
++ * @resolve:	Node to resolve
++ *
++ * Perform dynamic Device Tree resolution against the live tree
++ * to the given node to resolve. This depends on the live tree
++ * having a __symbols__ node, and the resolve node the __fixups__ &
++ * __local_fixups__ nodes (if needed).
++ * The result of the operation is a resolve node that it's contents
++ * are fit to be inserted or operate upon the live tree.
++ * Returns 0 on success or a negative error value on error.
++ */
++int of_resolve(struct device_node *resolve)
++{
++	struct device_node *child, *refnode;
++	struct device_node *root_sym, *resolve_sym, *resolve_fix;
++	struct property *rprop, *sprop;
++	const char *refpath;
++	char *propval, *propcur, *propend, *nodestr, *propstr, *s;
++	int offset, propcurlen;
++	phandle phandle, phandle_delta;
++	int err;
++	bool found = false;
++
++	/* the resolve node must exist */
++	if (resolve == NULL) {
++		return -EINVAL;
++	}
++
++	/* first we need to adjust the phandles */
++	phandle_delta = of_get_tree_max_phandle(NULL) + 1;
++	of_adjust_tree_phandles(resolve, phandle_delta);
++	err = of_adjust_tree_phandle_references(resolve, phandle_delta);
++	if (err != 0)
++		return err;
++
++	root_sym = NULL;
++	resolve_sym = NULL;
++	resolve_fix = NULL;
++
++	/* this may fail (if no fixups are required) */
++	root_sym = of_find_node_by_path("/__symbols__");
++
++	/* locate the symbols & fixups nodes on resolve */
++	for_each_child_of_node(resolve, child) {
++		if (resolve_sym == NULL &&
++				of_node_cmp(child->name, "__symbols__") == 0)
++			resolve_sym = child;
++
++		if (resolve_fix == NULL &&
++				of_node_cmp(child->name, "__fixups__") == 0)
++			resolve_fix = child;
++
++		/* both found, don't bother anymore */
++		if (resolve_sym != NULL && resolve_fix != NULL)
++			break;
++	}
++
++	/* we do allow for the case where no fixups are needed */
++	if (resolve_fix == NULL)
++		goto merge_sym;
++
++	/* we need to fixup, but no root symbols... */
++	if (root_sym == NULL)
++		return -EINVAL;
++
++	for_each_property_of_node(resolve_fix, rprop) {
++		/* skip properties added automatically */
++		if (of_prop_cmp(rprop->name, "name") == 0)
++			continue;
++
++		err = of_property_read_string(root_sym,
++				rprop->name, &refpath);
++		if (err != 0) {
++			pr_err("%s: Could not find symbol '%s'\n",
++					__func__, rprop->name);
++			goto err_fail;
++		}
++
++		refnode = of_find_node_by_path(refpath);
++		if (refnode == NULL) {
++			pr_err("%s: Could not find node by path '%s'\n",
++					__func__, refpath);
++			err = -ENOENT;
++			goto err_fail;
++		}
++
++		phandle = refnode->phandle;
++
++		pr_debug("%s: %s phandle is 0x%08x\n",
++				__func__, rprop->name, phandle);
++
++		/* make a copy */
++		propval = kmalloc(rprop->length, GFP_KERNEL);
++		if (propval == NULL) {
++			pr_err("%s: Could not copy value of '%s'\n",
++					__func__, rprop->name);
++			err = -ENOMEM;
++			goto err_fail;
++		}
++
++		memcpy(propval, rprop->value, rprop->length);
++
++		propend = propval + rprop->length;
++		for (propcur = propval; propcur < propend;
++				propcur += propcurlen + 1) {
++			propcurlen = strlen(propcur);
++
++			nodestr = propcur;
++			s = strchr(propcur, ':');
++			if (s == NULL) {
++				pr_err("%s: Illegal symbol "
++					"entry '%s' (1)\n",
++					__func__, (char *)rprop->value);
++				kfree(propval);
++				err = -EINVAL;
++				goto err_fail;
++			}
++			*s++ = '\0';
++
++			propstr = s;
++			s = strchr(s, ':');
++			if (s == NULL) {
++				pr_err("%s: Illegal symbol "
++					"entry '%s' (2)\n",
++					__func__, (char *)rprop->value);
++				kfree(propval);
++				err = -EINVAL;
++				goto err_fail;
++			}
++
++			*s++ = '\0';
++			offset = simple_strtoul(s, NULL, 10);
++
++			/* look into the resolve node for the full path */
++			refnode = of_find_node_by_path_from(resolve, nodestr);
++			if (refnode == NULL) {
++				pr_err("%s: Could not find refnode '%s'\n",
++					__func__, (char *)rprop->value);
++				kfree(propval);
++				err = -ENOENT;
++				goto err_fail;
++			}
++
++			/* now find the property */
++			found = false;
++			for_each_property_of_node(refnode, sprop)
++				if (of_prop_cmp(sprop->name, propstr) == 0) {
++					found = true;
++					break;
++				}
++
++			if (!found) {
++				pr_err("%s: Could not find property '%s'\n",
++					__func__, (char *)rprop->value);
++				kfree(propval);
++				err = -ENOENT;
++				goto err_fail;
++			}
++
++			*(uint32_t *)(sprop->value + offset) =
++				cpu_to_be32(phandle);
++		}
++
++		kfree(propval);
++	}
++
++merge_sym:
++	return 0;
++
++err_fail:
++	return err;
++}
+diff --git a/include/of.h b/include/of.h
+index 960122561845..43a36db9dfec 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -650,6 +650,8 @@ static inline struct device_node *of_find_matching_node(
+ #define for_each_available_child_of_node(parent, child) \
+ 	for (child = of_get_next_available_child(parent, NULL); child != NULL; \
+ 	     child = of_get_next_available_child(parent, child))
++#define for_each_property_of_node(dn, pp) \
++	list_for_each_entry(pp, &dn->properties, list)
+ 
+ /**
+  * of_property_read_bool - Findfrom a property
+@@ -759,4 +761,73 @@ static inline struct device_node *of_find_root_node(struct device_node *node)
+ 
+ 	return node;
+ }
++
++/* illegal phandle value (set when unresolved) */
++#define OF_PHANDLE_ILLEGAL      0xdeadbeef
++
++#ifdef CONFIG_OFTREE_OVERLAY
++
++extern int of_resolve(struct device_node *resolve);
++
++#else
++
++static inline int of_resolve(struct device_node *resolve)
++{
++	return -ENOSYS;
++}
++
++#endif
++
++/**
++ * Overlay support
++ */
++
++/**
++ * struct of_overlay_info       - Holds a single overlay info
++ * @target:     target of the overlay operation
++ * @overlay:    pointer to the overlay contents node
++ *
++ * Holds a single overlay state.
++ */
++struct of_overlay_info {
++	struct device_node *target;
++	struct device_node *overlay;
++};
++
++#ifdef CONFIG_OFTREE_OVERLAY
++
++extern int of_overlay(int count, struct of_overlay_info *ovinfo_tab);
++
++extern int of_fill_overlay_info(struct device_node *info_node,
++		struct of_overlay_info *ovinfo);
++extern int of_build_overlay_info(struct device_node *tree,
++		int *cntp, struct of_overlay_info **ovinfop);
++extern int of_free_overlay_info(int cnt, struct of_overlay_info *ovinfo);
++
++#else
++
++static inline int of_overlay(int count, struct of_overlay_info *ovinfo_tab)
++{
++	return -ENOSYS;
++}
++
++static inline int of_fill_overlay_info(struct device_node *info_node,
++		struct of_overlay_info *ovinfo)
++{
++	return -ENOSYS;
++}
++
++static inline int of_build_overlay_info(struct device_node *tree,
++		int *cntp, struct of_overlay_info **ovinfop)
++{
++	return -ENOSYS;
++}
++
++static inline int of_free_overlay_info(int cnt, struct of_overlay_info *ovinfo)
++{
++	return -ENOSYS;
++}
++
++#endif
++
+ #endif /* __OF_H */
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 57426d030285..5d94330035a1 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -256,7 +256,7 @@ $(obj)/%.dtb.S: $(obj)/%.dtb $(srctree)/scripts/gen-dtb-s FORCE
+ 
+ quiet_cmd_dtc = DTC     $@
+ cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+-	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
++	$(objtree)/scripts/dtc/dtc -@ -O dtb -o $@ -b 0 \
+ 		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
+ 		-i $(srctree)/dts/src/$(SRCARCH) \
+ 		-d $(depfile).dtc $(dtc-tmp) ; \
+@@ -265,6 +265,9 @@ cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+ $(obj)/%.dtb: $(src)/%.dts FORCE
+ 	$(call if_changed_dep,dtc)
+ 
++$(obj)/%.dtbo: $(src)/%.dtso FORCE
++	$(call if_changed_dep,dtc)
++
+ dtc-tmp = $(subst $(comma),_,$(dot-target).dts)
+ 
+ obj-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).o,$(bbenv-y))
 -- 
 2.1.4
 
