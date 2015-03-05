@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward12.mail.yandex.net ([95.108.130.94])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTaqX-0002nL-0e
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 18:50:10 +0000
-From: =?koi8-r?B?8MHOz9cg4c7E0sXK?= <rockford@yandex.ru>
-In-Reply-To: <20150305100339.GI11010@pengutronix.de>
-References: <4994491425500292@web17m.yandex.ru>
- <20150305100339.GI11010@pengutronix.de>
-MIME-Version: 1.0
-Message-Id: <564621425581291@web3j.yandex.ru>
-Date: Thu, 05 Mar 2015 21:48:11 +0300
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YTdfv-00077S-JN
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:51:24 +0000
+Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 4522F26C2002
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:25 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:49:52 +0100
+Message-Id: <1425592221-23774-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
+References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,26 +19,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox drops into shell immediately,
- without waiting for key (next branch)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v2 01/27] usb: gadget: include common.h in header
+To: barebox@lists.infradead.org
 
-CgowNS4wMy4yMDE1LCAxMzowMywgIlNhc2NoYSBIYXVlciIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
-ZGU+Ogo+IE9uIFdlZCwgTWFyIDA0LCAyMDE1IGF0IDExOjE4OjEyUE0gKzAzMDAsIPDBzs/XIOHO
-xNLFyiB3cm90ZToKPj4gmkhlbGxvIQo+Pgo+PiCaSSd2ZSBkaXNjb3ZlcmVkIHRoYXQgb24gcmVj
-ZW50IG5leHQgY29tbWl0Cj4+IJoiYWNjNjliZGRkYzUwMjYyYjhmOTEwMzRjMjQ4Mjc5ZDhkYzcz
-NDI4NCBkZWZhdWx0ZW52LTI6IGluaXQ6IGRvbid0IGNhbGwgdGltZW91dCBhZ2FpbiBpZiB0aGUg
-dXNlciBpbnRlcnZlbmVkIgo+PiCaY2F1c2VkIGJhcmVib3ggdG8gZW50ZXIgc2hlbGwgd2l0aG91
-dCBhc2tpbmcgZm9yIHByZXNzaW5nIGEga2V5Lgo+PiCaT24gUmFkeGEgUm9jayBib2FyZC4gSXQn
-cyBqdXN0IG1lPwo+Cj4gVGhpcyBkb2Vzbid0IGhhcHBlbiBoZXJlIG9uIG90aGVyIGhhcmR3YXJl
-LiBNYXliZSB5b3VyIHNlcmlhbCBkcml2ZXIKPiBoYXMgYSBzdHJheSBjaGFyYWN0ZXIgaW4gdGhl
-IEZJRk8gd2hpY2ggY2F1c2VzIHRoZSBhYm9ydCBoZXJlPwoKVGhpcyBjdXJlcyB3aXRoIENPTkZJ
-R19DT05TT0xFX0FDVElWQVRFX05PTkU9eQoKCgotLQog4c7E0sXKCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
-Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94Cg==
+It is needed for container_of() and this header falls
+over if we change the include order.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ include/usb/gadget.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/usb/gadget.h b/include/usb/gadget.h
+index f663e98..80418a9 100644
+--- a/include/usb/gadget.h
++++ b/include/usb/gadget.h
+@@ -15,6 +15,7 @@
+ #ifndef __LINUX_USB_GADGET_H
+ #define __LINUX_USB_GADGET_H
+ 
++#include <common.h>
+ #include <malloc.h>
+ #include <driver.h>
+ #include <linux/list.h>
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
