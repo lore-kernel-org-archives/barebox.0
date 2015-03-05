@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTdgp-0007hf-8q
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:22 +0000
+ id 1YTdgm-0007hg-2I
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:19 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 5D8AF26C2006
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:31 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id F021026C2007
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:26 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  5 Mar 2015 22:50:10 +0100
-Message-Id: <1425592221-23774-20-git-send-email-dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:49:57 +0100
+Message-Id: <1425592221-23774-7-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,65 +24,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 16/27] net: davinci_emac: convert to streaming DMA ops
+Subject: [PATCH v2 05/27] ARM: move virt<->phys translation to io.h
 To: barebox@lists.infradead.org
 
-Move to the common streaming DMA ops in order to get rid of
-the direct usage of the ARM MMU functions for the cache
-maintenance.
+That's the place where Linux has them and other architectures would
+implement this.
+
+This will help in phasing out the direct usage of the ARM asm/mmu.h
+header.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/davinci_emac.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/include/asm/io.h  | 15 +++++++++++++++
+ arch/arm/include/asm/mmu.h | 12 ------------
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/davinci_emac.c b/drivers/net/davinci_emac.c
-index ce367a3..056ffe2 100644
---- a/drivers/net/davinci_emac.c
-+++ b/drivers/net/davinci_emac.c
-@@ -40,12 +40,12 @@
-  */
+diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
+index 850a99c..eebf093 100644
+--- a/arch/arm/include/asm/io.h
++++ b/arch/arm/include/asm/io.h
+@@ -69,4 +69,19 @@ extern void memset_io(volatile void __iomem *, int, size_t);
+ #define setbits_8(addr, set) setbits(8, addr, set)
+ #define clrsetbits_8(addr, clear, set) clrsetbits(8, addr, clear, set)
  
- #include <common.h>
-+#include <dma.h>
- #include <io.h>
- #include <clock.h>
- #include <net.h>
- #include <malloc.h>
- #include <init.h>
--#include <asm/mmu.h>
- #include <asm/system.h>
- #include <linux/phy.h>
- #include <mach/emac_defs.h>
-@@ -411,7 +411,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
- 				    EMAC_CPPI_OWNERSHIP_BIT |
- 				    EMAC_CPPI_EOP_BIT),
- 		priv->emac_tx_desc + EMAC_DESC_PKT_FLAG_LEN);
--	dma_flush_range((ulong) packet, (ulong)packet + length);
-+	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
- 	/* Send the packet */
- 	writel(BD_TO_HW(priv->emac_tx_desc), priv->adap_emac + EMAC_TX0HDP);
++#ifdef CONFIG_MMU
++void *phys_to_virt(unsigned long phys);
++unsigned long virt_to_phys(volatile void *virt);
++#else
++static inline void *phys_to_virt(unsigned long phys)
++{
++	return (void *)phys;
++}
++
++static inline unsigned long virt_to_phys(volatile void *mem)
++{
++	return (unsigned long)mem;
++}
++#endif
++
+ #endif	/* __ASM_ARM_IO_H */
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index f01c003..d0a644b 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -41,8 +41,6 @@ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size);
+ void dma_clean_range(unsigned long, unsigned long);
+ void dma_flush_range(unsigned long, unsigned long);
+ void dma_inv_range(unsigned long, unsigned long);
+-unsigned long virt_to_phys(volatile void *virt);
+-void *phys_to_virt(unsigned long phys);
+ void remap_range(void *_start, size_t size, uint32_t flags);
+ void *map_io_sections(unsigned long physaddr, void *start, size_t size);
+ uint32_t mmu_get_pte_cached_flags(void);
+@@ -64,16 +62,6 @@ static inline void dma_free_coherent(void *mem, dma_addr_t dma_handle,
+ 	free(mem);
+ }
  
-@@ -429,6 +429,7 @@ static int davinci_emac_send(struct eth_device *edev, void *packet, int length)
- 			break;
- 		}
- 	}
-+	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
- 
- 	dev_dbg(priv->dev, "- emac_send (ret_status %i)\n", ret_status);
- 	return ret_status;
-@@ -460,9 +461,9 @@ static int davinci_emac_recv(struct eth_device *edev)
- 		pkt = (unsigned char *)readl(rx_curr_desc + EMAC_DESC_BUFFER);
- 		len = readl(rx_curr_desc + EMAC_DESC_BUFF_OFF_LEN) & 0xffff;
- 		dev_dbg(priv->dev, "| emac_recv got packet (length %i)\n", len);
--		dma_inv_range((ulong)pkt,
--				(ulong)readl(rx_curr_desc + EMAC_DESC_BUFFER) + len);
-+		dma_sync_single_for_cpu((unsigned long)pkt, len, DMA_FROM_DEVICE);
- 		net_receive(edev, pkt, len);
-+		dma_sync_single_for_device((unsigned long)pkt, len, DMA_FROM_DEVICE);
- 		ret = len;
- 	}
- 
+-static inline void *phys_to_virt(unsigned long phys)
+-{
+-	return (void *)phys;
+-}
+-
+-static inline unsigned long virt_to_phys(volatile void *mem)
+-{
+-	return (unsigned long)mem;
+-}
+-
+ static inline void dma_clean_range(unsigned long s, unsigned long e)
+ {
+ }
 -- 
 2.1.0
 
