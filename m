@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTdgm-0007iB-2P
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:19 +0000
+ id 1YTdhb-000895-OA
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:53:10 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF30A26C200F
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:29 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 7615126C201F
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:34 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  5 Mar 2015 22:50:05 +0100
-Message-Id: <1425592221-23774-15-git-send-email-dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:50:20 +0100
+Message-Id: <1425592221-23774-30-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/27] MCI: imx: convert to streaming DMA ops
+Subject: [PATCH v2 26/27] ARM: bcm2835: mbox: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,76 +33,44 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/imx-esdhc.c | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ arch/arm/mach-bcm2835/mbox.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 23bdc1f..8b45500 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -22,6 +22,7 @@
+diff --git a/arch/arm/mach-bcm2835/mbox.c b/arch/arm/mach-bcm2835/mbox.c
+index 1a80771..9d69bc8 100644
+--- a/arch/arm/mach-bcm2835/mbox.c
++++ b/arch/arm/mach-bcm2835/mbox.c
+@@ -7,9 +7,9 @@
   */
- #include <config.h>
- #include <common.h>
-+#include <dma.h>
- #include <driver.h>
- #include <init.h>
- #include <of.h>
-@@ -31,7 +32,6 @@
- #include <io.h>
- #include <linux/clk.h>
- #include <linux/err.h>
+ 
+ #include <asm/io.h>
 -#include <asm/mmu.h>
- #include <mach/generic.h>
- #include <mach/esdhc.h>
- #include <gpio.h>
-@@ -211,6 +211,7 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	u32	irqstat;
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
- 	void __iomem *regs = host->regs;
-+	unsigned int num_bytes = 0;
- 	int ret;
+ #include <common.h>
+ #include <clock.h>
++#include <dma.h>
  
- 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
-@@ -225,12 +226,15 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		err = esdhc_setup_data(mci, data);
- 		if(err)
- 			return err;
--		if (data->flags & MMC_DATA_WRITE) {
--			dma_flush_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
--		} else
--			dma_clean_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
-+
-+		num_bytes = data->blocks * data->blocksize;
-+
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_device((unsigned long)data->src,
-+						   num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_device((unsigned long)data->dest,
-+						   num_bytes, DMA_FROM_DEVICE);
+ #include <mach/mbox.h>
  
- 	}
+@@ -55,7 +55,8 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 	/* Send the request */
+ 	val = BCM2835_MBOX_PACK(chan, send);
+ 	debug("mbox: TX raw: 0x%08x\n", val);
+-	dma_flush_range(send, send + buffer->buf_size);
++	dma_sync_single_for_device((unsigned long)send, buffer->buf_size,
++				   DMA_BIDIRECTIONAL);
+ 	writel(val, &regs->write);
  
-@@ -313,10 +317,12 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		} while (!(irqstat & IRQSTAT_TC) &&
- 				(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
+ 	/* Wait for the response */
+@@ -72,7 +73,8 @@ static int bcm2835_mbox_call_raw(u32 chan, struct bcm2835_mbox_hdr *buffer,
+ 	/* Read the response */
+ 	val = readl(&regs->read);
+ 	debug("mbox: RX raw: 0x%08x\n", val);
+-	dma_inv_range(send, send + buffer->buf_size);
++	dma_sync_single_for_cpu((unsigned long)send, buffer->buf_size,
++				DMA_BIDIRECTIONAL);
  
--		if (data->flags & MMC_DATA_READ) {
--			dma_inv_range((unsigned long)data->dest,
--					(unsigned long)(data->dest + data->blocks * 512));
--		}
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_cpu((unsigned long)data->src,
-+						num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_cpu((unsigned long)data->dest,
-+						num_bytes, DMA_FROM_DEVICE);
- #endif
- 	}
- 
+ 	/* Validate the response */
+ 	if (BCM2835_MBOX_UNPACK_CHAN(val) != chan) {
 -- 
 2.1.0
 
