@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YTROo-0005QJ-CN
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 08:44:55 +0000
-Date: Thu, 5 Mar 2015 09:44:31 +0100
+ Linux)) id 1YTSdO-0000NW-3t
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 10:04:02 +0000
+Date: Thu, 5 Mar 2015 11:03:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150305084431.GG11010@pengutronix.de>
-References: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
+Message-ID: <20150305100339.GI11010@pengutronix.de>
+References: <4994491425500292@web17m.yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
+In-Reply-To: <4994491425500292@web17m.yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/18] Update support for RK3188, Radxa Rock board
-To: Andrey Panov <rockford@yandex.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: Barebox drops into shell immediately, without waiting for key
+ (next branch)
+To: =?utf-8?B?0J/QsNC90L7QsiDQkNC90LTRgNC10Lk=?= <rockford@yandex.ru>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Mar 04, 2015 at 11:11:28PM +0300, Andrey Panov wrote:
-> This series will update support for Radxa Rock board, allowing it
-> to boot from SD card with Barebox as first-stage loader.
-> 
-> Based on next branch.
-> 
-> v2: Rebased on more recent sources, fixed patches.
-
-Mostly applied. I changed the PIO support in the dwmci patch to use if()
-instead of #ifdef, please give the result a test in -next.
-Also I haven't applied the defconfig patch. There already is a
-rockchip_defconfig which should be updated instead of creating a new
-config file.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBNYXIgMDQsIDIwMTUgYXQgMTE6MTg6MTJQTSArMDMwMCwg0J/QsNC90L7QsiDQkNC9
+0LTRgNC10Lkgd3JvdGU6Cj4gSGVsbG8hCj4gCj4gSSd2ZSBkaXNjb3ZlcmVkIHRoYXQgb24gcmVj
+ZW50IG5leHQgY29tbWl0IAo+ICJhY2M2OWJkZGRjNTAyNjJiOGY5MTAzNGMyNDgyNzlkOGRjNzM0
+Mjg0IGRlZmF1bHRlbnYtMjogaW5pdDogZG9uJ3QgY2FsbCB0aW1lb3V0IGFnYWluIGlmIHRoZSB1
+c2VyIGludGVydmVuZWQiCj4gY2F1c2VkIGJhcmVib3ggdG8gZW50ZXIgc2hlbGwgd2l0aG91dCBh
+c2tpbmcgZm9yIHByZXNzaW5nIGEga2V5Lgo+IE9uIFJhZHhhIFJvY2sgYm9hcmQuIEl0J3MganVz
+dCBtZT8KClRoaXMgZG9lc24ndCBoYXBwZW4gaGVyZSBvbiBvdGhlciBoYXJkd2FyZS4gTWF5YmUg
+eW91ciBzZXJpYWwgZHJpdmVyCmhhcyBhIHN0cmF5IGNoYXJhY3RlciBpbiB0aGUgRklGTyB3aGlj
+aCBjYXVzZXMgdGhlIGFib3J0IGhlcmU/CgpTYXNjaGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
+SW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5w
+ZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJt
+YW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVp
+bSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
