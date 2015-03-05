@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward3h.mail.yandex.net ([84.201.187.148])
+Received: from forward15.mail.yandex.net ([2a02:6b8:0:801::5])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTamk-0001MI-VB
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 18:46:16 +0000
-Received: from smtp2h.mail.yandex.net (smtp2h.mail.yandex.net [84.201.187.145])
- by forward3h.mail.yandex.net (Yandex) with ESMTP id 416BD13604A5
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 21:45:46 +0300 (MSK)
-From: Andrey Panov <rockford@yandex.ru>
-Date: Thu,  5 Mar 2015 21:45:19 +0300
-Message-Id: <1425581119-23045-1-git-send-email-rockford@yandex.ru>
+ id 1YTanh-0001pa-73
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 18:47:14 +0000
+From: =?koi8-r?B?8MHOz9cg4c7E0sXK?= <rockford@yandex.ru>
+In-Reply-To: <20150305084431.GG11010@pengutronix.de>
+References: <1425499906-32125-1-git-send-email-rockford@yandex.ru>
+ <20150305084431.GG11010@pengutronix.de>
+MIME-Version: 1.0
+Message-Id: <562091425581206@web3j.yandex.ru>
+Date: Thu, 05 Mar 2015 21:46:46 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,154 +18,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Rockchip: Update defconfig
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 00/18] Update support for RK3188, Radxa Rock board
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Signed-off-by: Andrey Panov <rockford@yandex.ru>
----
- arch/arm/configs/rockchip_defconfig | 91 ++++++++++++++++++++++++++-----------
- 1 file changed, 65 insertions(+), 26 deletions(-)
-
-diff --git a/arch/arm/configs/rockchip_defconfig b/arch/arm/configs/rockchip_defconfig
-index 40442ac..f95c6c7 100644
---- a/arch/arm/configs/rockchip_defconfig
-+++ b/arch/arm/configs/rockchip_defconfig
-@@ -1,51 +1,77 @@
- CONFIG_ARCH_ROCKCHIP=y
- CONFIG_MACH_RADXA_ROCK=y
--CONFIG_THUMB2_BAREBOX=y
--CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_BOARD_APPEND_ATAG=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
--CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0x4000000
- CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_RELOCATABLE=y
- CONFIG_PROMPT="radxa-rock:"
--CONFIG_LONGHELP=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--CONFIG_PARTITION=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_DEFAULT_COMPRESSION_LZO=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/radxa-rock/env"
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_LOADY=y
--CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MM=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_BOOTM_AIMAGE=y
- CONFIG_CMD_BOOTZ=y
--CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_PARTITION=y
--CONFIG_CMD_GPIO=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA224SUM=y
-+CONFIG_CMD_SHA256SUM=y
- CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_I2C=y
--CONFIG_CMD_LED=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_HOST=y
- CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_MM=y
- CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
- CONFIG_NET=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_PING=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_NETCONSOLE=y
- CONFIG_OFDEVICE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_SERIAL_NS16550=y
-@@ -53,8 +79,21 @@ CONFIG_DRIVER_NET_ARC_EMAC=y
- CONFIG_SMSC_PHY=y
- CONFIG_I2C=y
- CONFIG_I2C_GPIO=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_MCI_DW=y
-+CONFIG_MCI_DW_PIO=y
- CONFIG_MFD_ACT8846=y
- CONFIG_LED=y
- CONFIG_LED_GPIO=y
- CONFIG_LED_GPIO_OF=y
-+CONFIG_GENERIC_PHY=y
-+CONFIG_FS_CRAMFS=y
-+CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_BPKFS=y
-+CONFIG_FS_UIMAGEFS=y
-+CONFIG_LZO_DECOMPRESS=y
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CgowNS4wMy4yMDE1LCAxMTo0NCwgIlNhc2NoYSBIYXVlciIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
+ZGU+Ogo+IE9uIFdlZCwgTWFyIDA0LCAyMDE1IGF0IDExOjExOjI4UE0gKzAzMDAsIEFuZHJleSBQ
+YW5vdiB3cm90ZToKPj4gmlRoaXMgc2VyaWVzIHdpbGwgdXBkYXRlIHN1cHBvcnQgZm9yIFJhZHhh
+IFJvY2sgYm9hcmQsIGFsbG93aW5nIGl0Cj4+IJp0byBib290IGZyb20gU0QgY2FyZCB3aXRoIEJh
+cmVib3ggYXMgZmlyc3Qtc3RhZ2UgbG9hZGVyLgo+Pgo+PiCaQmFzZWQgb24gbmV4dCBicmFuY2gu
+Cj4+Cj4+IJp2MjogUmViYXNlZCBvbiBtb3JlIHJlY2VudCBzb3VyY2VzLCBmaXhlZCBwYXRjaGVz
+Lgo+Cj4gTW9zdGx5IGFwcGxpZWQuIEkgY2hhbmdlZCB0aGUgUElPIHN1cHBvcnQgaW4gdGhlIGR3
+bWNpIHBhdGNoIHRvIHVzZSBpZigpCj4gaW5zdGVhZCBvZiAjaWZkZWYsIHBsZWFzZSBnaXZlIHRo
+ZSByZXN1bHQgYSB0ZXN0IGluIC1uZXh0LgoKVGhhbmtzIQpJJ3ZlIHRlc3RlZCBpdCBhbmQgaXQg
+d29ya3MuCgo+IEFsc28gSSBoYXZlbid0IGFwcGxpZWQgdGhlIGRlZmNvbmZpZyBwYXRjaC4gVGhl
+cmUgYWxyZWFkeSBpcyBhCj4gcm9ja2NoaXBfZGVmY29uZmlnIHdoaWNoIHNob3VsZCBiZSB1cGRh
+dGVkIGluc3RlYWQgb2YgY3JlYXRpbmcgYSBuZXcKPiBjb25maWcgZmlsZS4KCkkndmUgc2VudCBh
+IGRlZmNvbmZpZyB1cGRhdGUKCi0tCiDhzsTSxcoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
