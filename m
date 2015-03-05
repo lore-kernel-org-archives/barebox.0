@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTdfv-00077Z-M9
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:51:26 +0000
+ id 1YTdgp-0007hg-Ez
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:23 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 9622126C2003
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:25 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id A6C7526C2015
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:31 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  5 Mar 2015 22:49:53 +0100
-Message-Id: <1425592221-23774-3-git-send-email-dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:50:11 +0100
+Message-Id: <1425592221-23774-21-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,81 +24,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/27] NIOS2: use dma_addr_t in dma_alloc_coherent
+Subject: [PATCH v2 17/27] net: designware: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
-This allows to consolidate the prototype of this function across
-architectures. Also guard against calles that pass in NULL as the
-dma handle pointer.
+Move to the common streaming DMA ops in order to get rid of
+the direct usage of the ARM MMU functions for the cache
+maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/nios2/include/asm/dma-mapping.h | 13 +++++++------
- arch/nios2/include/asm/types.h       |  2 ++
- drivers/net/altera_tse.c             |  2 +-
- 3 files changed, 10 insertions(+), 7 deletions(-)
+ drivers/net/designware.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/nios2/include/asm/dma-mapping.h b/arch/nios2/include/asm/dma-mapping.h
-index 620c207..5ecc1ed 100644
---- a/arch/nios2/include/asm/dma-mapping.h
-+++ b/arch/nios2/include/asm/dma-mapping.h
-@@ -14,24 +14,25 @@
-  */
+diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+index 0428a8c..985bb5f 100644
+--- a/drivers/net/designware.c
++++ b/drivers/net/designware.c
+@@ -27,7 +27,6 @@
+ #include <io.h>
+ #include <net.h>
+ #include <of_net.h>
+-#include <asm/mmu.h>
+ #include <net/designware.h>
+ #include <linux/phy.h>
+ #include <linux/err.h>
+@@ -197,8 +196,8 @@ static void rx_descs_init(struct eth_device *dev)
+ 		else
+ 			desc_p->dmamac_cntl |= DESC_RXCTRL_RXCHAIN;
  
- #if (DCACHE_SIZE != 0)
--static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
-+static inline void *dma_alloc_coherent(size_t len, dma_addr_t *handle)
- {
- 	void *addr = malloc(len + DCACHE_LINE_SIZE);
- 	if (!addr)
- 		return 0;
- 	flush_dcache_range((unsigned long)addr,(unsigned long)addr + len + DCACHE_LINE_SIZE);
--	*handle = ((unsigned long)addr +
--		   (DCACHE_LINE_SIZE - 1)) &
--		~(DCACHE_LINE_SIZE - 1) & ~(IO_REGION_BASE);
-+	if (handle)
-+		*handle = ((dma_addr_t)addr + (DCACHE_LINE_SIZE - 1)) &
-+			  ~(DCACHE_LINE_SIZE - 1) & ~(IO_REGION_BASE);
- 	return (void *)(*handle | IO_REGION_BASE);
- }
- #else
--static inline void *dma_alloc_coherent(size_t len, unsigned long *handle)
-+static inline void *dma_alloc_coherent(size_t len, dma_addr_t *handle)
- {
- 	void *addr = malloc(len);
- 	if (!addr)
- 		return 0;
--	*handle = (unsigned long)addr;
-+	if (handle)
-+		*handle = (dma_addr_t)addr;
- 	return (void *)(*handle | IO_REGION_BASE);
- }
- #endif
-diff --git a/arch/nios2/include/asm/types.h b/arch/nios2/include/asm/types.h
-index 1f613d1..21c3415 100644
---- a/arch/nios2/include/asm/types.h
-+++ b/arch/nios2/include/asm/types.h
-@@ -3,5 +3,7 @@
+-		dma_inv_range((unsigned long)desc_p->dmamac_addr,
+-			      (unsigned long)desc_p->dmamac_addr + CONFIG_ETH_BUFSIZE);
++		dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr,
++					CONFIG_ETH_BUFSIZE, DMA_FROM_DEVICE);
+ 		desc_p->txrx_status = DESC_RXSTS_OWNBYDMA;
+ 	}
  
- #include <asm/int-ll64.h>
+@@ -302,8 +301,8 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
+ 	}
  
-+typedef u32 dma_addr_t;
+ 	memcpy((void *)desc_p->dmamac_addr, packet, length);
+-	dma_flush_range((unsigned long)desc_p->dmamac_addr,
+-			(unsigned long)desc_p->dmamac_addr + length);
++	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
++				   DMA_TO_DEVICE);
+ 
+ 	if (priv->enh_desc) {
+ 		desc_p->txrx_status |= DESC_ENH_TXSTS_TXFIRST | DESC_ENH_TXSTS_TXLAST;
+@@ -328,6 +327,9 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
+ 
+ 	/* Start the transmission */
+ 	writel(POLL_DATA, &dma_p->txpolldemand);
++	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
++				DMA_TO_DEVICE);
 +
- #endif
+ 	return 0;
+ }
  
-diff --git a/drivers/net/altera_tse.c b/drivers/net/altera_tse.c
-index ecbb9f8..3c49c09 100644
---- a/drivers/net/altera_tse.c
-+++ b/drivers/net/altera_tse.c
-@@ -520,7 +520,7 @@ static int tse_probe(struct device_d *dev)
- 		return PTR_ERR(tx_desc);
- 	rx_desc = tx_desc + 2;
- #else
--	tx_desc = dma_alloc_coherent(sizeof(*tx_desc) * (3 + PKTBUFSRX), (unsigned long *)&dma_handle);
-+	tx_desc = dma_alloc_coherent(sizeof(*tx_desc) * (3 + PKTBUFSRX), (dma_addr_t *)&dma_handle);
- 	rx_desc = tx_desc + 2;
+@@ -351,10 +353,11 @@ static int dwc_ether_rx(struct eth_device *dev)
+ 	 * Make the current descriptor valid again and go to
+ 	 * the next one
+ 	 */
+-	dma_inv_range((unsigned long)desc_p->dmamac_addr,
+-		      (unsigned long)desc_p->dmamac_addr + length);
+-
++	dma_sync_single_for_cpu((unsigned long)desc_p->dmamac_addr, length,
++				DMA_FROM_DEVICE);
+ 	net_receive(dev, desc_p->dmamac_addr, length);
++	dma_sync_single_for_device((unsigned long)desc_p->dmamac_addr, length,
++				   DMA_FROM_DEVICE);
  
- 	if (!tx_desc) {
+ 	desc_p->txrx_status |= DESC_RXSTS_OWNBYDMA;
+ 
 -- 
 2.1.0
 
