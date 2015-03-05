@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTdgn-0007hh-8h
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:21 +0000
+ id 1YTdgm-0007iB-2P
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:19 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF3AA26C2012
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:30 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF30A26C200F
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:29 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  5 Mar 2015 22:50:08 +0100
-Message-Id: <1425592221-23774-18-git-send-email-dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:50:05 +0100
+Message-Id: <1425592221-23774-15-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/27] net: cpsw: convert to streaming DMA ops
+Subject: [PATCH v2 11/27] MCI: imx: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,52 +33,74 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/cpsw.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/mci/imx-esdhc.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 799fac8..3f8ffa0 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -21,6 +21,7 @@
- #include <init.h>
- 
- #include <command.h>
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 23bdc1f..8b45500 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -22,6 +22,7 @@
+  */
+ #include <config.h>
+ #include <common.h>
 +#include <dma.h>
- #include <net.h>
- #include <malloc.h>
- #include <net.h>
-@@ -32,7 +33,6 @@
- #include <of_net.h>
- #include <of_address.h>
- #include <xfuncs.h>
--#include <asm/mmu.h>
- #include <asm/system.h>
+ #include <driver.h>
+ #include <init.h>
+ #include <of.h>
+@@ -31,7 +32,6 @@
+ #include <io.h>
+ #include <linux/clk.h>
  #include <linux/err.h>
+-#include <asm/mmu.h>
+ #include <mach/generic.h>
+ #include <mach/esdhc.h>
+ #include <gpio.h>
+@@ -211,6 +211,7 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	u32	irqstat;
+ 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
+ 	void __iomem *regs = host->regs;
++	unsigned int num_bytes = 0;
+ 	int ret;
  
-@@ -871,9 +871,9 @@ static int cpsw_send(struct eth_device *edev, void *packet, int length)
+ 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
+@@ -225,12 +226,15 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 		err = esdhc_setup_data(mci, data);
+ 		if(err)
+ 			return err;
+-		if (data->flags & MMC_DATA_WRITE) {
+-			dma_flush_range((unsigned long)data->src,
+-				(unsigned long)(data->src + data->blocks * 512));
+-		} else
+-			dma_clean_range((unsigned long)data->src,
+-				(unsigned long)(data->src + data->blocks * 512));
++
++		num_bytes = data->blocks * data->blocksize;
++
++		if (data->flags & MMC_DATA_WRITE)
++			dma_sync_single_for_device((unsigned long)data->src,
++						   num_bytes, DMA_TO_DEVICE);
++		else
++			dma_sync_single_for_device((unsigned long)data->dest,
++						   num_bytes, DMA_FROM_DEVICE);
  
- 	dev_dbg(&slave->dev, "%s: %i bytes @ 0x%p\n", __func__, length, packet);
+ 	}
  
--	dma_flush_range((ulong) packet, (ulong)packet + length);
--
-+	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
- 	ret = cpdma_submit(priv, &priv->tx_chan, packet, length);
-+	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
+@@ -313,10 +317,12 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 		} while (!(irqstat & IRQSTAT_TC) &&
+ 				(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
  
- 	return ret;
- }
-@@ -886,8 +886,11 @@ static int cpsw_recv(struct eth_device *edev)
- 	int len;
- 
- 	while (cpdma_process(priv, &priv->rx_chan, &buffer, &len) >= 0) {
--		dma_inv_range((ulong)buffer, (ulong)buffer + len);
-+		dma_sync_single_for_cpu((unsigned long)buffer, len,
-+					DMA_FROM_DEVICE);
- 		net_receive(edev, buffer, len);
-+		dma_sync_single_for_device((unsigned long)buffer, len,
-+					   DMA_FROM_DEVICE);
- 		cpdma_submit(priv, &priv->rx_chan, buffer, PKTSIZE);
+-		if (data->flags & MMC_DATA_READ) {
+-			dma_inv_range((unsigned long)data->dest,
+-					(unsigned long)(data->dest + data->blocks * 512));
+-		}
++		if (data->flags & MMC_DATA_WRITE)
++			dma_sync_single_for_cpu((unsigned long)data->src,
++						num_bytes, DMA_TO_DEVICE);
++		else
++			dma_sync_single_for_cpu((unsigned long)data->dest,
++						num_bytes, DMA_FROM_DEVICE);
+ #endif
  	}
  
 -- 
