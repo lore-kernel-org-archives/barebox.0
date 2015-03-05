@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTdgp-0007i8-Ot
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:25 +0000
+ id 1YTdhb-00086o-Nx
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:53:10 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 5DB9026C2018
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:32 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 1463026C2013
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:31 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  5 Mar 2015 22:50:13 +0100
-Message-Id: <1425592221-23774-23-git-send-email-dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:50:09 +0100
+Message-Id: <1425592221-23774-19-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 19/27] net: macb: convert to streaming DMA ops
+Subject: [PATCH v2 15/27] net: at91_ether: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,50 +33,52 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/macb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/at91_ether.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 1ed5c0e..2ac00f3 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -47,7 +47,6 @@
- #include <platform_data/macb.h>
+diff --git a/drivers/net/at91_ether.c b/drivers/net/at91_ether.c
+index 9597639..5a74837 100644
+--- a/drivers/net/at91_ether.c
++++ b/drivers/net/at91_ether.c
+@@ -35,7 +35,6 @@
  #include <linux/clk.h>
- #include <linux/err.h>
+ #include <linux/mii.h>
+ #include <errno.h>
 -#include <asm/mmu.h>
  #include <linux/phy.h>
  
- #include "macb.h"
-@@ -122,7 +121,7 @@ static int macb_send(struct eth_device *edev, void *packet,
- 	macb->tx_ring[tx_head].ctrl = ctrl;
- 	macb->tx_ring[tx_head].addr = (ulong)packet;
- 	barrier();
+ #include "at91_ether.h"
+@@ -200,7 +199,8 @@ static int at91_ether_send(struct eth_device *edev, void *packet, int length)
+ {
+ 	while (!(at91_emac_read(AT91_EMAC_TSR) & AT91_EMAC_TSR_BNQ));
+ 
 -	dma_flush_range((ulong) packet, (ulong)packet + length);
 +	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
- 	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
++
+ 	/* Set address of the data in the Transmit Address register */
+ 	at91_emac_write(AT91_EMAC_TAR, (unsigned long) packet);
+ 	/* Set length of the packet in the Transmit Control register */
+@@ -211,6 +211,8 @@ static int at91_ether_send(struct eth_device *edev, void *packet, int length)
+ 	at91_emac_write(AT91_EMAC_TSR,
+ 		at91_emac_read(AT91_EMAC_TSR) | AT91_EMAC_TSR_COMP);
  
- 	start = get_time_ns();
-@@ -135,6 +134,7 @@ static int macb_send(struct eth_device *edev, void *packet,
- 			break;
- 		}
- 	} while (!is_timeout(start, 100 * MSECOND));
 +	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
++
+ 	return 0;
+ }
  
- 	if (ctrl & MACB_BIT(TX_UNDERRUN))
- 		dev_err(macb->dev, "TX underrun\n");
-@@ -188,7 +188,11 @@ static int gem_recv(struct eth_device *edev)
- 		status = macb->rx_ring[macb->rx_tail].ctrl;
- 		length = MACB_BFEXT(RX_FRMLEN, status);
- 		buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
-+		dma_sync_single_for_cpu((unsigned long)buffer, length,
-+					DMA_FROM_DEVICE);
- 		net_receive(edev, buffer, length);
-+		dma_sync_single_for_device((unsigned long)buffer, length,
-+					   DMA_FROM_DEVICE);
- 		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
- 		barrier();
+@@ -225,7 +227,11 @@ static int at91_ether_rx(struct eth_device *edev)
  
+ 	size = rbfp->size & RBF_SIZE;
+ 
++	dma_sync_single_for_cpu((unsigned long)rbfp->addr, size,
++				DMA_FROM_DEVICE);
+ 	net_receive(edev, (unsigned char *)(rbfp->addr & RBF_ADDR), size);
++	dma_sync_single_for_device((unsigned long)rbfp->addr, size,
++				   DMA_FROM_DEVICE);
+ 
+ 	rbfp->addr &= ~RBF_OWNER;
+ 	if (rbfp->addr & RBF_WRAP)
 -- 
 2.1.0
 
