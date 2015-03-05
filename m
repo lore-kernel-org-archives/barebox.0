@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YTWtd-0004L5-Km
+ Linux)) id 1YTWtd-0004LH-Ko
  for barebox@lists.infradead.org; Thu, 05 Mar 2015 14:37:07 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu,  5 Mar 2015 15:36:40 +0100
-Message-Id: <1425566201-31989-3-git-send-email-mkl@pengutronix.de>
+Date: Thu,  5 Mar 2015 15:36:41 +0100
+Message-Id: <1425566201-31989-4-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1425566201-31989-1-git-send-email-mkl@pengutronix.de>
 References: <1425566201-31989-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,61 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] fixup! sandbox: hostfile: completely switch to OF based
- probing
+Subject: [PATCH 3/3] fixup! sandbox: add support to pass dtb to barebox
 To: barebox@lists.infradead.org
 
-hostfile: add "barebox" prefix to properties
+This patch will generate a oftree on the fly, if no dtb is specified on the cmd
+line.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/sandbox/board/hostfile.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/sandbox/board/dtb.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index 41ded73a3a21..c1a2643bc7ff 100644
---- a/arch/sandbox/board/hostfile.c
-+++ b/arch/sandbox/board/hostfile.c
-@@ -85,11 +85,12 @@ static int hf_probe(struct device_d *dev)
- 	if (!dev->device_node)
- 		return -ENODEV;
+diff --git a/arch/sandbox/board/dtb.c b/arch/sandbox/board/dtb.c
+index 9d4210164e01..708eca903a38 100644
+--- a/arch/sandbox/board/dtb.c
++++ b/arch/sandbox/board/dtb.c
+@@ -38,15 +38,25 @@ int barebox_register_dtb(const void *new_dtb)
+ static int of_sandbox_init(void)
+ {
+ 	struct device_node *root;
++	int ret;
  
--	err = of_property_read_u32(dev->device_node, "fd", &priv->fd);
-+	err = of_property_read_u32(dev->device_node, "barebox,fd", &priv->fd);
- 	if (err)
- 		return err;
+-	if (!dtb)
+-		return 0;
++	if (dtb) {
++		root = of_unflatten_dtb(dtb);
++	} else {
++		root = of_new_node(NULL, NULL);
++				
++		ret = of_property_write_u32(root, "#address-cells", 2);
++		if (ret)
++			return ret;
  
--	err = of_property_read_string(dev->device_node, "filename", &priv->filename);
-+	err = of_property_read_string(dev->device_node, "barebox,filename",
-+				      &priv->filename);
- 	if (err)
- 		return err;
+-	root = of_unflatten_dtb(dtb);
+-	if (IS_ERR(root)) {
+-		return PTR_ERR(root);
++		ret = of_property_write_u32(root, "#size-cells", 1);
++		if (ret)
++			return ret;
+ 	}
  
-@@ -132,7 +133,8 @@ static int of_hostfile_fixup(struct device_node *root, void *ctx)
- 
- 	node = of_new_node(root, hf->devname);
- 
--	ret = of_property_write_u32(node, "fd", hf->fd);
-+	ret = of_set_property(node, "compatible", hostfile_dt_ids->compatible,
-+			      strlen(hostfile_dt_ids->compatible) + 1, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -140,12 +142,11 @@ static int of_hostfile_fixup(struct device_node *root, void *ctx)
- 	if (ret)
- 		return ret;
- 
--	ret = of_set_property(node, "compatible", hostfile_dt_ids->compatible,
--			      strlen(hostfile_dt_ids->compatible) + 1, 1);
-+	ret = of_property_write_u32(node, "barebox,fd", hf->fd);
- 	if (ret)
- 		return ret;
- 
--	ret = of_set_property(node, "filename", hf->filename,
-+	ret = of_set_property(node, "barebox,filename", hf->filename,
- 			      strlen(hf->filename) + 1, 1);
- 
- 	return ret;
++	if (IS_ERR(root))
++		return PTR_ERR(root);
++
+ 	of_set_root_node(root);
+ 	of_fix_tree(root);
+ 	if (IS_ENABLED(CONFIG_OFDEVICE))
 -- 
 2.1.4
 
