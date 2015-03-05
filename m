@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTdgm-0007i8-2N
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:19 +0000
+ id 1YTdgn-0007hh-8h
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:21 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 75F3326C200E
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:29 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id BF3AA26C2012
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:30 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  5 Mar 2015 22:50:04 +0100
-Message-Id: <1425592221-23774-14-git-send-email-dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:50:08 +0100
+Message-Id: <1425592221-23774-18-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 10/27] MCI: dw-mmc: convert to streaming DMA ops
+Subject: [PATCH v2 14/27] net: cpsw: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,79 +33,54 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/Kconfig  |  2 +-
- drivers/mci/dw_mmc.c | 24 ++++++++++++------------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/cpsw.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index dbcc38d..a5cf2fe 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -36,7 +36,7 @@ comment "--- MCI host drivers ---"
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 799fac8..3f8ffa0 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -21,6 +21,7 @@
+ #include <init.h>
  
- config MCI_DW
- 	bool "Synopsys DesignWare Memory Card Interface"
--	depends on ARM
-+	depends on HAS_DMA
- 	help
- 	  This selects support for the Synopsys DesignWare Mobile Storage IP
- 	  block, this provides host support for SD and MMC interfaces, in both
-diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
-index 0ec37b6..ac940e8 100644
---- a/drivers/mci/dw_mmc.c
-+++ b/drivers/mci/dw_mmc.c
-@@ -29,7 +29,6 @@
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <asm-generic/errno.h>
+ #include <command.h>
++#include <dma.h>
+ #include <net.h>
+ #include <malloc.h>
+ #include <net.h>
+@@ -32,7 +33,6 @@
+ #include <of_net.h>
+ #include <of_address.h>
+ #include <xfuncs.h>
 -#include <asm/mmu.h>
+ #include <asm/system.h>
+ #include <linux/err.h>
  
- #define DWMCI_CTRL		0x000
- #define	DWMCI_PWREN		0x004
-@@ -282,7 +281,6 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	uint64_t start;
- 	int ret;
- 	unsigned int num_bytes = 0;
--	const void *writebuf = NULL;
+@@ -871,9 +871,9 @@ static int cpsw_send(struct eth_device *edev, void *packet, int length)
  
- 	start = get_time_ns();
- 	while (1) {
-@@ -300,12 +298,12 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 	if (data) {
- 		num_bytes = data->blocks * data->blocksize;
+ 	dev_dbg(&slave->dev, "%s: %i bytes @ 0x%p\n", __func__, length, packet);
  
--		if (data->flags & MMC_DATA_WRITE) {
--			dma_flush_range((unsigned long)data->src,
--				(unsigned long)(data->src + data->blocks * 512));
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
 -
--			writebuf = data->src;
--		}
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_device((unsigned long)data->src,
-+						   num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_device((unsigned long)data->dest,
-+						   num_bytes, DMA_FROM_DEVICE);
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	ret = cpdma_submit(priv, &priv->tx_chan, packet, length);
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
  
- 		ret = dwmci_prepare_data(host, data);
- 		if (ret)
-@@ -389,10 +387,12 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 		ctrl &= ~(DWMCI_DMA_EN);
- 		dwmci_writel(host, DWMCI_CTRL, ctrl);
+ 	return ret;
+ }
+@@ -886,8 +886,11 @@ static int cpsw_recv(struct eth_device *edev)
+ 	int len;
  
--		if (data->flags & MMC_DATA_READ) {
--			dma_inv_range((unsigned long)data->dest,
--					(unsigned long)(data->dest + data->blocks * 512));
--		}
-+		if (data->flags & MMC_DATA_WRITE)
-+			dma_sync_single_for_cpu((unsigned long)data->src,
-+						num_bytes, DMA_TO_DEVICE);
-+		else
-+			dma_sync_single_for_cpu((unsigned long)data->dest,
-+						num_bytes, DMA_FROM_DEVICE);
+ 	while (cpdma_process(priv, &priv->rx_chan, &buffer, &len) >= 0) {
+-		dma_inv_range((ulong)buffer, (ulong)buffer + len);
++		dma_sync_single_for_cpu((unsigned long)buffer, len,
++					DMA_FROM_DEVICE);
+ 		net_receive(edev, buffer, len);
++		dma_sync_single_for_device((unsigned long)buffer, len,
++					   DMA_FROM_DEVICE);
+ 		cpdma_submit(priv, &priv->rx_chan, buffer, PKTSIZE);
  	}
  
- 	udelay(100);
 -- 
 2.1.0
 
