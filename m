@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTdgq-0007iA-7O
- for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:26 +0000
+ id 1YTdgp-0007iB-MH
+ for barebox@lists.infradead.org; Thu, 05 Mar 2015 21:52:25 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 2CB7D26C201D
- for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:34 +0100 (CET)
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 4520426C201A
+ for <barebox@lists.infradead.org>; Thu,  5 Mar 2015 22:50:33 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  5 Mar 2015 22:50:19 +0100
-Message-Id: <1425592221-23774-29-git-send-email-dev@lynxeye.de>
+Date: Thu,  5 Mar 2015 22:50:16 +0100
+Message-Id: <1425592221-23774-26-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 References: <1425592221-23774-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,7 +24,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 25/27] usb: host: ohci: convert to streaming DMA ops
+Subject: [PATCH v2 22/27] net: xgmac: convert to streaming DMA ops
 To: barebox@lists.infradead.org
 
 Move to the common streaming DMA ops in order to get rid of
@@ -33,58 +33,59 @@ maintenance.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/usb/host/ohci-hcd.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/xgmac.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 010ba35..1d511b7 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -43,6 +43,7 @@
- #include <common.h>
- #include <dma.h>
- #include <clock.h>
-+#include <dma.h>
- #include <malloc.h>
- #include <usb/usb.h>
- #include <usb/usb_defs.h>
-@@ -52,7 +53,6 @@
- 
- #include <asm/byteorder.h>
+diff --git a/drivers/net/xgmac.c b/drivers/net/xgmac.c
+index c597110..3b2273f 100644
+--- a/drivers/net/xgmac.c
++++ b/drivers/net/xgmac.c
+@@ -25,7 +25,6 @@
+ #include <errno.h>
  #include <io.h>
+ #include <linux/err.h>
 -#include <asm/mmu.h>
  
- #include "ohci.h"
+ #define TX_NUM_DESC			1
+ #define RX_NUM_DESC			32
+@@ -587,7 +586,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
+ 	struct xgmac_dma_desc *txdesc = &priv->tx_chain[currdesc];
+ 	int ret;
  
-@@ -857,7 +857,7 @@ static void td_fill(struct ohci *ohci, unsigned int info,
+-	dma_flush_range((ulong) packet, (ulong)packet + length);
++	dma_sync_single_for_device((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	desc_set_buf_addr_and_size(txdesc, packet, length);
+ 	desc_set_tx_owner(txdesc, TXDESC_FIRST_SEG |
+ 		TXDESC_LAST_SEG | TXDESC_CRC_EN_APPEND);
+@@ -596,6 +595,7 @@ static int xgmac_send(struct eth_device *edev, void *packet, int length)
+ 	writel(1, priv->base + XGMAC_DMA_TX_POLL);
  
- 	td->hwNextTD = virt_to_phys((void *)m32_swap((unsigned long)td_pt));
+ 	ret = wait_on_timeout(1 * SECOND, !desc_get_owner(txdesc));
++	dma_sync_single_for_cpu((unsigned long)packet, length, DMA_TO_DEVICE);
+ 	if (ret) {
+ 		dev_err(priv->dev, "TX timeout\n");
+ 		return ret;
+@@ -611,14 +611,19 @@ static int xgmac_recv(struct eth_device *edev)
+ 	u32 currdesc = priv->rx_currdesc;
+ 	struct xgmac_dma_desc *rxdesc = &priv->rx_chain[currdesc];
+ 	int length = 0;
++	void *buf_addr;
  
--	dma_flush_range((unsigned long)data, (unsigned long)(data + len));
-+	dma_sync_single_for_device((unsigned long)data, len, DMA_BIDIRECTIONAL);
+ 	/* check if the host has the desc */
+ 	if (desc_get_owner(rxdesc))
+ 		return -1; /* something bad happened */
  
- 	/* append to queue */
- 	td->ed->hwTailP = td->hwNextTD;
-@@ -1093,7 +1093,8 @@ static int dl_done_list(struct ohci *ohci)
- 	unsigned long ptdphys = virt_to_phys(ptd);
- 	struct td *td_list;
+ 	length = desc_get_rx_frame_len(rxdesc);
++	buf_addr = desc_get_buf_addr(rxdesc);
  
--	dma_clean_range(ptdphys, ptdphys + (sizeof(struct td) * NUM_TD));
-+	dma_sync_single_for_device((unsigned long)ptdphys,
-+				sizeof(struct td) * NUM_TD, DMA_BIDIRECTIONAL);
+-	net_receive(edev, desc_get_buf_addr(rxdesc), length);
++	dma_sync_single_for_cpu((unsigned long)buf_addr, length, DMA_FROM_DEVICE);
++	net_receive(edev, buf_addr, length);
++	dma_sync_single_for_device((unsigned long)buf_addr, length,
++				   DMA_FROM_DEVICE);
  
- 	td_list = dl_reverse_done_list(ohci);
- 
-@@ -1529,7 +1530,8 @@ static int submit_common_msg(struct usb_device *dev, unsigned long pipe, void *b
- 	dev->status = stat;
- 	dev->act_len = urb->actual_length;
- 
--	dma_inv_range((unsigned long)buffer, (unsigned long)(buffer + transfer_len));
-+	dma_sync_single_for_cpu((unsigned long)buffer, transfer_len,
-+				DMA_BIDIRECTIONAL);
- 
- 	pkt_print(urb, dev, pipe, buffer, transfer_len,
- 		  setup, "RET(ctlr)", usb_pipein(pipe));
+ 	/* set descriptor back to owned by XGMAC */
+ 	desc_set_rx_owner(rxdesc);
 -- 
 2.1.0
 
