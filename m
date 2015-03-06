@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YTv4Q-000306-Vh
- for barebox@lists.infradead.org; Fri, 06 Mar 2015 16:25:53 +0000
+ Linux)) id 1YTv4Q-000305-VI
+ for barebox@lists.infradead.org; Fri, 06 Mar 2015 16:25:52 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri,  6 Mar 2015 17:25:20 +0100
-Message-Id: <1425659123-5365-7-git-send-email-s.trumtrar@pengutronix.de>
+Date: Fri,  6 Mar 2015 17:25:21 +0100
+Message-Id: <1425659123-5365-8-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1425659123-5365-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1425659123-5365-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,22 +21,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] ARM: socfpga: socrates: add qspi flash
+Subject: [PATCH 7/9] ARM: socfpga: sockit: add qspi flash
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/dts/socfpga_cyclone5_socrates.dts | 20 ++++++++++++++++++++
+ arch/arm/dts/socfpga_cyclone5_sockit.dts | 20 ++++++++++++++++++++
  1 file changed, 20 insertions(+)
 
-diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-index 7fa5e63076d4..125ad1b8502d 100644
---- a/arch/arm/dts/socfpga_cyclone5_socrates.dts
-+++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-@@ -62,3 +62,23 @@
- &mmc {
- 	status = "okay";
+diff --git a/arch/arm/dts/socfpga_cyclone5_sockit.dts b/arch/arm/dts/socfpga_cyclone5_sockit.dts
+index e8e00aedfc10..1c3fb4d39c0b 100644
+--- a/arch/arm/dts/socfpga_cyclone5_sockit.dts
++++ b/arch/arm/dts/socfpga_cyclone5_sockit.dts
+@@ -119,3 +119,23 @@
+ 		interrupts = <0x0 0xa6 0x4>;
+ 	};
  };
 +
 +&qspi {
@@ -47,7 +47,7 @@ index 7fa5e63076d4..125ad1b8502d 100644
 +		#size-cells = <1>;
 +		compatible = "n25q00";
 +		reg = <0>;
-+		spi-max-frequency = <100000000>;
++		spi-max-frequency = <108000000>;
 +		m25p,fast-read;
 +		cdns,page-size = <256>;
 +		cdns,block-size = <16>;
