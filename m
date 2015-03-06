@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward5m.mail.yandex.net ([2a02:6b8:0:2519::3:14])
+Received: from forward1h.mail.yandex.net ([2a02:6b8:0:f05::10])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTx5b-000211-K3
- for barebox@lists.infradead.org; Fri, 06 Mar 2015 18:35:14 +0000
-Received: from smtp4m.mail.yandex.net (smtp4m.mail.yandex.net [77.88.61.131])
- by forward5m.mail.yandex.net (Yandex) with ESMTP id 8F4A429A13CA
- for <barebox@lists.infradead.org>; Fri,  6 Mar 2015 21:34:42 +0300 (MSK)
-From: Andrey Panov <rockford@yandex.ru>
-Date: Fri,  6 Mar 2015 21:34:21 +0300
-Message-Id: <1425666862-8616-1-git-send-email-rockford@yandex.ru>
+ id 1YTx8C-0004nK-0Y
+ for barebox@lists.infradead.org; Fri, 06 Mar 2015 18:37:53 +0000
+From: =?koi8-r?B?8MHOz9cg4c7E0sXK?= <rockford@yandex.ru>
+In-Reply-To: <20150306064052.GM11010@pengutronix.de>
+References: <1425581119-23045-1-git-send-email-rockford@yandex.ru>
+ <20150306064052.GM11010@pengutronix.de>
+MIME-Version: 1.0
+Message-Id: <4857461425667046@web25h.yandex.ru>
+Date: Fri, 06 Mar 2015 21:37:26 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,189 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] MMC: dw_mmc: PIO mode fixes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: Rockchip: Update defconfig
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Simplify PIO mode routines.
-Fix a bug when IO is possibly performed twice because of using old
-interrupt status.
-Support for slow-speed card writes.
-
-Signed-off-by: Andrey Panov <rockford@yandex.ru>
----
- drivers/mci/dw_mmc.c | 129 ++++++++++++++++++++++-----------------------------
- 1 file changed, 56 insertions(+), 73 deletions(-)
-
-diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
-index 076f99d..f8ceeba 100644
---- a/drivers/mci/dw_mmc.c
-+++ b/drivers/mci/dw_mmc.c
-@@ -320,44 +320,27 @@ static int dwmci_read_data_pio(struct dwmci_host *host, struct mci_data *data)
- {
- 	u32 *pdata = (u32 *)data->dest;
- 	u32 val, status, timeout;
--	u32 fcnt, bcnt, rcnt, rlen = 0;
--
--	timeout = 100;
--	status = dwmci_readl(host, DWMCI_RINTSTS);
--	while (--timeout && !(status & DWMCI_INTMSK_RXDR))
--		status = dwmci_readl(host, DWMCI_RINTSTS);
--
--	if (!timeout) {
--		dev_err(host->dev, "%s: RX ready wait timeout\n", __func__);
--		return 0;
--	}
--
--	fcnt = data->blocksize;
--	bcnt = data->blocks;
--
--	do {
--		for (rcnt = fcnt>>2; rcnt; rcnt--) {
--			timeout = 20000;
-+	u32 rcnt, rlen = 0;
-+
-+	for (rcnt = (data->blocksize * data->blocks)>>2; rcnt; rcnt--) {
-+		timeout = 20000;
-+		status = dwmci_readl(host, DWMCI_STATUS);
-+		while (--timeout
-+		    && (status & DWMCI_STATUS_FIFO_EMPTY)) {
-+			udelay(200);
- 			status = dwmci_readl(host, DWMCI_STATUS);
--			while (--timeout
--			    && (status & DWMCI_STATUS_FIFO_EMPTY)) {
--				udelay(200);
--				status = dwmci_readl(host, DWMCI_STATUS);
--			}
--			if (!timeout) {
--				dev_err(host->dev, "%s: FIFO underflow timeout\n",
--				    __func__);
--				break;
--			}
--
--			val = dwmci_readl(host, DWMCI_DATA);
--
--			*pdata++ = val;
--			rlen += 4;
- 		}
--		status = dwmci_readl(host, DWMCI_RINTSTS);
--		dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_RXDR);
--	} while (--bcnt && (status & DWMCI_INTMSK_RXDR));
-+		if (!timeout) {
-+			dev_err(host->dev, "%s: FIFO underflow timeout\n",
-+			    __func__);
-+			break;
-+		}
-+
-+		val = dwmci_readl(host, DWMCI_DATA);
-+		*pdata++ = val;
-+		rlen += 4;
-+	}
-+	dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_RXDR);
- 
- 	return rlen;
- }
-@@ -366,43 +349,39 @@ static int dwmci_write_data_pio(struct dwmci_host *host, struct mci_data *data)
- {
- 	u32 *pdata = (u32 *)data->src;
- 	u32 status, timeout;
--	u32 fcnt, bcnt, wcnt, wlen = 0;
--
--	fcnt = host->fifo_size_bytes;
--
--	bcnt = (data->blocks*data->blocksize)/fcnt;
--
--	timeout = 100;
--	status = dwmci_readl(host, DWMCI_RINTSTS);
--
--	while (--timeout && !(status & DWMCI_INTMSK_TXDR))
--		status = dwmci_readl(host, DWMCI_RINTSTS);
--
--	if (!timeout) {
--		dev_err(host->dev, "%s: TX ready wait timeout\n", __func__);
--		return 0;
--	}
--
--	do {
--		for (wcnt = fcnt>>2; wcnt; wcnt--) {
--			timeout = 20000;
-+	u32 wcnt, wlen = 0;
-+
-+	for (wcnt = (data->blocksize * data->blocks)>>2; wcnt; wcnt--) {
-+		timeout = 20000;
-+		status = dwmci_readl(host, DWMCI_STATUS);
-+		while (--timeout
-+		    && (status & DWMCI_STATUS_FIFO_FULL)) {
-+			udelay(200);
- 			status = dwmci_readl(host, DWMCI_STATUS);
--			while (--timeout
--			    && (status & DWMCI_STATUS_FIFO_FULL)) {
--				udelay(200);
--				status = dwmci_readl(host, DWMCI_STATUS);
--			}
--			if (!timeout) {
--				dev_err(host->dev, "%s: FIFO overflow timeout\n",
--				    __func__);
--				break;
--			}
--			dwmci_writel(host, DWMCI_DATA, *pdata++);
--			wlen += 4;
- 		}
--		status = dwmci_readl(host, DWMCI_RINTSTS);
--		dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_TXDR);
--	} while (--bcnt && (status & DWMCI_INTMSK_TXDR));
-+		if (!timeout) {
-+			dev_err(host->dev, "%s: FIFO overflow timeout\n",
-+			    __func__);
-+			break;
-+		}
-+		dwmci_writel(host, DWMCI_DATA, *pdata++);
-+		wlen += 4;
-+	}
-+	dwmci_writel(host, DWMCI_RINTSTS, DWMCI_INTMSK_TXDR);
-+
-+	/* Wait for FIFO is flushed for slow-speed cards */
-+	timeout = 20000;
-+	status = dwmci_readl(host, DWMCI_STATUS);
-+	while (--timeout
-+	    && !(status & DWMCI_STATUS_FIFO_EMPTY)) {
-+		udelay(10);
-+		status = dwmci_readl(host, DWMCI_STATUS);
-+	}
-+	if (!timeout) {
-+		dev_err(host->dev, "%s: FIFO flush timeout\n",
-+		    __func__);
-+		return -EIO;
-+	}
- 
- 	return wlen;
- }
-@@ -528,10 +507,14 @@ dwmci_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 				return -ETIMEDOUT;
- 			}
- 
--			if (dwmci_use_pio(host) && (mask & DWMCI_INTMSK_RXDR))
-+			if (dwmci_use_pio(host) && (mask & DWMCI_INTMSK_RXDR)) {
- 				dwmci_read_data_pio(host, data);
--			if (dwmci_use_pio(host) && (mask & DWMCI_INTMSK_TXDR))
-+				mask = dwmci_readl(host, DWMCI_RINTSTS);
-+			}
-+			if (dwmci_use_pio(host) && (mask & DWMCI_INTMSK_TXDR)) {
- 				dwmci_write_data_pio(host, data);
-+				mask = dwmci_readl(host, DWMCI_RINTSTS);
-+			}
- 		} while (!(mask & DWMCI_INTMSK_DTO));
- 
- 		dwmci_writel(host, DWMCI_RINTSTS, mask);
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CgowNi4wMy4yMDE1LCAwOTo0MCwgIlNhc2NoYSBIYXVlciIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
+ZGU+Ogo+IE9uIFRodSwgTWFyIDA1LCAyMDE1IGF0IDA5OjQ1OjE5UE0gKzAzMDAsIEFuZHJleSBQ
+YW5vdiB3cm90ZToKPj4gmlNpZ25lZC1vZmYtYnk6IEFuZHJleSBQYW5vdiA8cm9ja2ZvcmRAeWFu
+ZGV4LnJ1Pgo+PiCaLS0tCj4+IJqaYXJjaC9hcm0vY29uZmlncy9yb2NrY2hpcF9kZWZjb25maWcg
+fCA5MSArKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tCj4+IJqaMSBmaWxlIGNo
+YW5nZWQsIDY1IGluc2VydGlvbnMoKyksIDI2IGRlbGV0aW9ucygtKQo+Pgo+PiCaZGlmZiAtLWdp
+dCBhL2FyY2gvYXJtL2NvbmZpZ3Mvcm9ja2NoaXBfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmln
+cy9yb2NrY2hpcF9kZWZjb25maWcKPj4gmmluZGV4IDQwNDQyYWMuLmY5NWM2YzcgMTAwNjQ0Cj4+
+IJotLS0gYS9hcmNoL2FybS9jb25maWdzL3JvY2tjaGlwX2RlZmNvbmZpZwo+PiCaKysrIGIvYXJj
+aC9hcm0vY29uZmlncy9yb2NrY2hpcF9kZWZjb25maWcKPj4gmkBAIC0xLDUxICsxLDc3IEBACj4+
+IJqaQ09ORklHX0FSQ0hfUk9DS0NISVA9eQo+PiCamkNPTkZJR19NQUNIX1JBRFhBX1JPQ0s9eQo+
+PiCaLUNPTkZJR19USFVNQjJfQkFSRUJPWD15Cj4KPiBXaHkgZGlzYWJsZSB0aHVtYjI/IFRodW1i
+MiBtYWtlcyB0aGUgYmluYXJ5IHNtYWxsZXIuCj4+IJotQ09ORklHX0NNRF9BUk1fTU1VSU5GTz15
+Cj4+IJorQ09ORklHX0FFQUJJPXkKPj4gmitDT05GSUdfQVJNX0JPQVJEX0FQUEVORF9BVEFHPXkK
+Pj4gmppDT05GSUdfQVJNX09QVElNWkVEX1NUUklOR19GVU5DVElPTlM9eQo+PiCamkNPTkZJR19B
+Uk1fVU5XSU5EPXkKPj4gmi1DT05GSUdfTU1VPXkKPgo+IFdoeSBkbyB5b3UgZGlzYWJsZSBNTVUg
+c3VwcG9ydD8gRG9lc24ndCB0aGlzIHdvcmsgcHJvcGVybHk/IElmIGl0Cj4gZG9lc24ndCB0aGlz
+IHNob3VsZCBiZSBmaXhlZCBzaW5jZSB5b3UgZGVmaW5pdGVseSB3YW50IHRvIGhhdmUgTU1VCj4g
+c3VwcG9ydC4KPgo+IFNpbmNlIHJlbG9jYXRhYmxlIGJhcmVib3ggaXMgZW5hYmxlZCBJIHJlY29t
+bWVuZCB0byBzZXQgdGhlIGJhc2UgYWRkcmVzcwo+IHRvIDB4MC4gQWxzbyB0aGUgbWFsbG9jIGFy
+ZWEgc2l6ZSBjYW4gYmUgc3BlY2lmaWVkIHRvIDB4MCB3aGljaCBtZWFucwo+IGJhcmVib3ggd2ls
+bCBhdXRvbWF0aWNhbGx5IGZpbmQgYSBnb29kIHZhbHVlLgoKT2guIEkndmUgc2VuZCBhbiBkZWZj
+b25maWcgdXBkYXRlLgpBbmQgSSBmb3VuZCB0aGF0IGkgaGFkIG92ZXJ0aG91Z2h0IFBJTyBjb2Rl
+IGluIGR3bW1jLCBJJ3ZlIHNlbnQgYSBwYXRjaCB0b28sIHBsZWFzZSBhcHBseSBpdC4gU29ycnku
+CldpdGggdGhpcyBhbGwgd29ya3MgZmluZSB3aXRoIE1NVSBvbiBhbmQgaW4gdGh1bWIyIG1vZGUu
+CgotLQog4c7E0sXKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
