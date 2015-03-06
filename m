@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTspZ-00034y-K5
- for barebox@lists.infradead.org; Fri, 06 Mar 2015 14:02:25 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 4DC61A00215
- for <barebox@lists.infradead.org>; Fri,  6 Mar 2015 15:02:47 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Fri, 6 Mar 2015 14:59:32 +0100
-Message-Id: <1425650372-29593-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YTv4Q-0002zz-Vk
+ for barebox@lists.infradead.org; Fri, 06 Mar 2015 16:25:56 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri,  6 Mar 2015 17:25:14 +0100
+Message-Id: <1425659123-5365-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,27 +14,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: phycore-am335x-som: Fix boards with no SPI
+Subject: [PATCH 0/9] Socfpga: QSPI support
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Qm9hcmRzIGxpa2UgcGh5Qk9BUkQtV0VHQS1yZGsgZG8gbm90IGhhdmUgU1BJIEZsYXNoLgpUaGUg
-Y29tcGF0aWJsZSBzdHJpbmcgd2FzIG5vdCB1cGRhdGVkIHdoZW4gbWVyZ2luZyBhbGwgcGh5dGVj
-CmFtMzM1eCBTT01zIHRvIG9uZSBib2FyZCBmaWxlLgpVcGRhdGluZyB0aGlzIG5vdy4KClNpZ25l
-ZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJt
-L2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29tLW5vLXNwaS5kdHMgfCAyICstCiAxIGZpbGUg
-Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9hcmNo
-L2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3JlLXNvbS1uby1zcGkuZHRzIGIvYXJjaC9hcm0v
-ZHRzL2FtMzM1eC1waHl0ZWMtcGh5Y29yZS1zb20tbm8tc3BpLmR0cwppbmRleCA2MzUwNzA2Li5h
-ZDAzZDRkIDEwMDY0NAotLS0gYS9hcmNoL2FybS9kdHMvYW0zMzV4LXBoeXRlYy1waHljb3JlLXNv
-bS1uby1zcGkuZHRzCisrKyBiL2FyY2gvYXJtL2R0cy9hbTMzNXgtcGh5dGVjLXBoeWNvcmUtc29t
-LW5vLXNwaS5kdHMKQEAgLTEyLDcgKzEyLDcgQEAKIAogLyB7CiAJbW9kZWwgPSAiUGh5dGVjIHBo
-eUNPUkUgQU0zMzV4IjsKLQljb21wYXRpYmxlID0gInBoeXRlYyxwaHljb3JlLWFtMzM1eC1zb20i
-LCAidGksYW0zM3h4IjsKKwljb21wYXRpYmxlID0gInBoeXRlYyxwaHljb3JlLWFtMzM1eC1zb20i
-LCAicGh5dGVjLGFtMzM1eC1zb20iLCAidGksYW0zM3h4IjsKIH07CiAKICZlZXByb20gewotLSAK
-MS45LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi!
+
+This series adds support for reading,writing and booting from Quad SPI
+flash chips on the SoCFPFGA platform.
+
+The driver is based on a patch for linux, which is still in development.
+As this driver uses the spi-nor framework, this is imported into barebox, too.
+A next step would be to update the m25p80 driver, as both share a lot of code.
+In linux this migration is already done.
+
+With the QSPI driver in place, support for booting from it is also added.
+As the preloader barebox doesn't have a devicetree to go from, the driver doesn't
+touch the registers that have already been set up successfully by the Boot ROM code.
+If there ever is any other user of the Cadence QSPI core, that does not have a
+devicetree to probe from, platform code might have to be added for this initialization.
+As there isn't at the moment, I chose to not bother with this.
+
+Regards,
+Steffen
+
+Steffen Trumtrar (9):
+  mtd: spi-nor: add SPI-NOR framework
+  mtd: spi-nor: enable quadspi for n25q00/n25q256a
+  mtd: spi-nor: add cadence quadspi driver
+  ARM: dts: socfpga: add qspi node
+  ARM: socfpga: socdk add qspi flash
+  ARM: socfpga: socrates: add qspi flash
+  ARM: socfpga: sockit: add qspi flash
+  ARM: socfpga: xload: support qspi bootsource
+  ARM: socfpga: update defconfigs
+
+ Documentation/boards/socfpga.rst                  |   56 +-
+ arch/arm/configs/socfpga-xload_defconfig          |    3 +-
+ arch/arm/configs/socfpga_defconfig                |   77 +-
+ arch/arm/dts/socfpga.dtsi                         |   15 +
+ arch/arm/dts/socfpga_cyclone5_socdk.dts           |   21 +
+ arch/arm/dts/socfpga_cyclone5_sockit.dts          |   20 +
+ arch/arm/dts/socfpga_cyclone5_socrates.dts        |   20 +
+ arch/arm/mach-socfpga/include/mach/generic.h      |    5 +
+ arch/arm/mach-socfpga/include/mach/socfpga-regs.h |    2 +
+ arch/arm/mach-socfpga/xload.c                     |   58 +-
+ drivers/mtd/Kconfig                               |    1 +
+ drivers/mtd/Makefile                              |    1 +
+ drivers/mtd/spi-nor/Kconfig                       |   15 +
+ drivers/mtd/spi-nor/Makefile                      |    2 +
+ drivers/mtd/spi-nor/cadence-quadspi.c             | 1193 +++++++++++++++++++++
+ drivers/mtd/spi-nor/spi-nor.c                     | 1143 ++++++++++++++++++++
+ include/linux/mod_devicetable.h                   |    7 +
+ include/linux/mtd/spi-nor.h                       |  204 ++++
+ include/platform_data/cadence_qspi.h              |    9 +
+ 19 files changed, 2808 insertions(+), 44 deletions(-)
+ create mode 100644 drivers/mtd/spi-nor/Kconfig
+ create mode 100644 drivers/mtd/spi-nor/Makefile
+ create mode 100644 drivers/mtd/spi-nor/cadence-quadspi.c
+ create mode 100644 drivers/mtd/spi-nor/spi-nor.c
+ create mode 100644 include/linux/mtd/spi-nor.h
+ create mode 100644 include/platform_data/cadence_qspi.h
+
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
