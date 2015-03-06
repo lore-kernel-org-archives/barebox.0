@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YTym1-0000pK-QW
- for barebox@lists.infradead.org; Fri, 06 Mar 2015 20:23:09 +0000
+ id 1YTym1-0000pH-QY
+ for barebox@lists.infradead.org; Fri, 06 Mar 2015 20:23:08 +0000
 Received: from tellur.intern.lynxeye.de (p57B5E414.dip0.t-ipconnect.de
- [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 4964B26C2002
+ [87.181.228.20]) by lynxeye.de (Postfix) with ESMTPA id 167F526C2001
  for <barebox@lists.infradead.org>; Fri,  6 Mar 2015 21:22:09 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Fri,  6 Mar 2015 21:22:02 +0100
-Message-Id: <1425673322-31946-2-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1425673322-31946-1-git-send-email-dev@lynxeye.de>
-References: <1425673322-31946-1-git-send-email-dev@lynxeye.de>
+Date: Fri,  6 Mar 2015 21:22:01 +0100
+Message-Id: <1425673322-31946-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,94 +22,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] images: fix Tegra out-of-tree build
+Subject: [PATCH 1/2] images: move board variable to parent makefile
 To: barebox@lists.infradead.org
 
-The BCTs are build objects and as such are located in the objtree instead of
-the srctree. Fix out-of-tree build by defining a variable which refers to the
-board directories in the objtree and use it for Tegra.
+A lot of the image makefiles define an equal board variable, which
+gives the impression that this variable is unique for this makefile.
+As those files aren't freestanding makefiles but get included into a
+parent makefile this is not actually true. Attempts to override this
+variable will not work reliable as make is picking up a random instance.
+
+Fix this confusion by moving this variable out of the individual makefiles.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- images/Makefile       |  1 +
- images/Makefile.tegra | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ images/Makefile          | 2 ++
+ images/Makefile.imx      | 2 --
+ images/Makefile.mvebu    | 2 --
+ images/Makefile.mxs      | 1 -
+ images/Makefile.rockchip | 2 --
+ images/Makefile.tegra    | 2 --
+ 6 files changed, 2 insertions(+), 9 deletions(-)
 
 diff --git a/images/Makefile b/images/Makefile
-index 2ed7464..fe051e8 100644
+index 7c3aaf7..2ed7464 100644
 --- a/images/Makefile
 +++ b/images/Makefile
-@@ -98,6 +98,7 @@ $(obj)/%.img: $(obj)/$$(FILE_$$(@F))
+@@ -97,6 +97,8 @@ $(obj)/%.img: $(obj)/$$(FILE_$$(@F))
+ 	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
  	$(call if_changed,shipped)
  
- board = $(srctree)/arch/$(ARCH)/boards
-+objboard = $(objtree)/arch/$(ARCH)/boards
- 
++board = $(srctree)/arch/$(ARCH)/boards
++
  include $(srctree)/images/Makefile.am33xx
  include $(srctree)/images/Makefile.imx
+ include $(srctree)/images/Makefile.mvebu
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index eacc76e..cc9fdfc 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -7,8 +7,6 @@
+ $(obj)/%.imximg: $(obj)/% FORCE
+ 	$(call if_changed,imx_image)
+ 
+-board = $(srctree)/arch/$(ARCH)/boards
+-
+ # ----------------------- i.MX25 based boards ---------------------------
+ pblx-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
+ FILE_barebox-karo-tx25.img = start_imx25_karo_tx25.pblx
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index 5e90855..c3923e4 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -9,8 +9,6 @@ $(obj)/%.kwbimg: $(obj)/% FORCE
+ $(obj)/%.kwbuartimg: $(obj)/% FORCE
+ 	$(call if_changed,kwb_image)
+ 
+-board = $(srctree)/arch/$(ARCH)/boards
+-
+ KWBOPTS = -c -d 0x1000000 -e 0x1000000
+ 
+ # ----------------------- Armada 370 based boards ---------------------------
+diff --git a/images/Makefile.mxs b/images/Makefile.mxs
+index 733f83b..c93fb57 100644
+--- a/images/Makefile.mxs
++++ b/images/Makefile.mxs
+@@ -18,7 +18,6 @@ quiet_cmd_mxs_sd = MXS-SD $@
+ $(obj)/%.mxssd: $(obj)/%
+ 	$(call if_changed,mxs_sd)
+ 
+-board = $(srctree)/arch/$(ARCH)/boards
+ mxs23cfg = $(srctree)/arch/arm/mach-mxs/mxs23img.cfg
+ mxs28cfg = $(srctree)/arch/arm/mach-mxs/mxs28img.cfg
+ 
+diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
+index 2444433..9715b92 100644
+--- a/images/Makefile.rockchip
++++ b/images/Makefile.rockchip
+@@ -2,8 +2,6 @@
+ # barebox image generation Makefile for Rockchip images
+ #
+ 
+-board = $(srctree)/arch/$(ARCH)/boards
+-
+ pblx-$(CONFIG_MACH_RADXA_ROCK) += start_radxa_rock
+ FILE_barebox-radxa-rock.img = start_radxa_rock.pblx
+ image-$(CONFIG_MACH_RADXA_ROCK) += barebox-radxa-rock.img
 diff --git a/images/Makefile.tegra b/images/Makefile.tegra
-index b5782ca..c1e0b20 100644
+index 4f876e4..b5782ca 100644
 --- a/images/Makefile.tegra
 +++ b/images/Makefile.tegra
-@@ -38,17 +38,17 @@ FILE_barebox-tegra20-toradex-colibri-t20-256-usbloader-iris.img = start_colibri_
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-usbloader-iris.img
+@@ -28,8 +28,6 @@ quiet_cmd_tegra124_image = T124IMG  $@
+ $(obj)/%.t124img: $(obj)/% FORCE
+ 	$(call if_changed,tegra124_image)
  
- pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_256_hsmmc
--BCT_start_colibri_t20_256_hsmmc.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_256_hsmmc.bct
-+BCT_start_colibri_t20_256_hsmmc.pblx.t20img = $(objboard)/toradex-colibri-t20/colibri-t20_256_hsmmc.bct
- FILE_barebox-tegra20-toradex-colibri-t20-256-hsmmc-iris.img = start_colibri_t20_256_hsmmc.pblx.t20img
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-hsmmc-iris.img
- 
- pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_256_v11_nand
--BCT_start_colibri_t20_256_v11_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_256_v11_nand.bct
-+BCT_start_colibri_t20_256_v11_nand.pblx.t20img = $(objboard)/toradex-colibri-t20/colibri-t20_256_v11_nand.bct
- FILE_barebox-tegra20-toradex-colibri-t20-256-v11-nand-iris.img = start_colibri_t20_256_v11_nand.pblx.t20img
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-v11-nand-iris.img
- 
- pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_256_v12_nand
--BCT_start_colibri_t20_256_v12_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_256_v12_nand.bct
-+BCT_start_colibri_t20_256_v12_nand.pblx.t20img = $(objboard)/toradex-colibri-t20/colibri-t20_256_v12_nand.bct
- FILE_barebox-tegra20-toradex-colibri-t20-256-v12-nand-iris.img = start_colibri_t20_256_v12_nand.pblx.t20img
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-v12-nand-iris.img
- 
-@@ -57,17 +57,17 @@ FILE_barebox-tegra20-toradex-colibri-t20-512-usbloader-iris.img = start_colibri_
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-usbloader-iris.img
- 
- pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_512_hsmmc
--BCT_start_colibri_t20_512_hsmmc.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_512_hsmmc.bct
-+BCT_start_colibri_t20_512_hsmmc.pblx.t20img = $(objboard)/toradex-colibri-t20/colibri-t20_512_hsmmc.bct
- FILE_barebox-tegra20-toradex-colibri-t20-512-hsmmc-iris.img = start_colibri_t20_512_hsmmc.pblx.t20img
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-hsmmc-iris.img
- 
- pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_512_v11_nand
--BCT_start_colibri_t20_512_v11_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_512_v11_nand.bct
-+BCT_start_colibri_t20_512_v11_nand.pblx.t20img = $(objboard)/toradex-colibri-t20/colibri-t20_512_v11_nand.bct
- FILE_barebox-tegra20-toradex-colibri-t20-512-v11-nand-iris.img = start_colibri_t20_512_v11_nand.pblx.t20img
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-v11-nand-iris.img
- 
- pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_512_v12_nand
--BCT_start_colibri_t20_512_v12_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_512_v12_nand.bct
-+BCT_start_colibri_t20_512_v12_nand.pblx.t20img = $(objboard)/toradex-colibri-t20/colibri-t20_512_v12_nand.bct
- FILE_barebox-tegra20-toradex-colibri-t20-512-v12-nand-iris.img = start_colibri_t20_512_v12_nand.pblx.t20img
- image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-v12-nand-iris.img
- 
-@@ -77,7 +77,7 @@ FILE_barebox-tegra30-nvidia-beaver-usbloader.img = start_nvidia_beaver.pblx
- image-$(CONFIG_MACH_NVIDIA_BEAVER) += barebox-tegra30-nvidia-beaver-usbloader.img
- 
- pblx-$(CONFIG_MACH_NVIDIA_BEAVER) += start_nvidia_beaver
--BCT_start_nvidia_beaver.pblx.t30img = $(board)/nvidia-beaver/beaver-2gb-emmc.bct
-+BCT_start_nvidia_beaver.pblx.t30img = $(objboard)/nvidia-beaver/beaver-2gb-emmc.bct
- FILE_barebox-tegra30-nvidia-beaver-emmc.img = start_nvidia_beaver.pblx.t30img
- image-$(CONFIG_MACH_NVIDIA_BEAVER) += barebox-tegra30-nvidia-beaver-emmc.img
- 
-@@ -87,6 +87,6 @@ FILE_barebox-tegra124-nvidia-jetson-tk1-usbloader.img = start_nvidia_jetson.pblx
- image-$(CONFIG_MACH_NVIDIA_JETSON) += barebox-tegra124-nvidia-jetson-tk1-usbloader.img
- 
- pblx-$(CONFIG_MACH_NVIDIA_JETSON) += start_nvidia_jetson
--BCT_start_nvidia_jetson.pblx.t124img = $(board)/nvidia-jetson-tk1/jetson-tk1-2gb-emmc.bct
-+BCT_start_nvidia_jetson.pblx.t124img = $(objboard)/nvidia-jetson-tk1/jetson-tk1-2gb-emmc.bct
- FILE_barebox-tegra124-nvidia-jetson-tk1-emmc.img = start_nvidia_jetson.pblx.t124img
- image-$(CONFIG_MACH_NVIDIA_JETSON) += barebox-tegra124-nvidia-jetson-tk1-emmc.img
+-board = $(srctree)/arch/$(ARCH)/boards
+-
+ # ----------------------- Tegra20 based boards ---------------------------
+ pblx-$(CONFIG_MACH_TOSHIBA_AC100) += start_toshiba_ac100
+ FILE_barebox-tegra20-toshiba-ac100-usbloader.img = start_toshiba_ac100.pblx
 -- 
 2.1.0
 
