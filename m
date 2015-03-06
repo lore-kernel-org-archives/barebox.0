@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YTlmv-0003uB-3t
- for barebox@lists.infradead.org; Fri, 06 Mar 2015 06:31:10 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1YTlmY-0004ZL-W6
- for barebox@lists.infradead.org; Fri, 06 Mar 2015 07:30:46 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1YTlmY-00082k-Ux
- for barebox@lists.infradead.org; Fri, 06 Mar 2015 07:30:46 +0100
-Date: Fri, 6 Mar 2015 07:30:46 +0100
+ Linux)) id 1YTlwg-0008Lp-Nk
+ for barebox@lists.infradead.org; Fri, 06 Mar 2015 06:41:16 +0000
+Date: Fri, 6 Mar 2015 07:40:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150306063046.GL11010@pengutronix.de>
+Message-ID: <20150306064052.GM11010@pengutronix.de>
+References: <1425581119-23045-1-git-send-email-rockford@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <1425581119-23045-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,240 +18,197 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: v2015.03.0
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: Rockchip: Update defconfig
+To: Andrey Panov <rockford@yandex.ru>
+Cc: barebox@lists.infradead.org
 
-Hi All,
+On Thu, Mar 05, 2015 at 09:45:19PM +0300, Andrey Panov wrote:
+> Signed-off-by: Andrey Panov <rockford@yandex.ru>
+> ---
+>  arch/arm/configs/rockchip_defconfig | 91 ++++++++++++++++++++++++++-----------
+>  1 file changed, 65 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/arm/configs/rockchip_defconfig b/arch/arm/configs/rockchip_defconfig
+> index 40442ac..f95c6c7 100644
+> --- a/arch/arm/configs/rockchip_defconfig
+> +++ b/arch/arm/configs/rockchip_defconfig
+> @@ -1,51 +1,77 @@
+>  CONFIG_ARCH_ROCKCHIP=y
+>  CONFIG_MACH_RADXA_ROCK=y
+> -CONFIG_THUMB2_BAREBOX=y
 
-Here comes the release for march.
+Why disable thumb2? Thumb2 makes the binary smaller.
 
-Not many new features, but fixes and cleanups all over the place, so
-this release should be a good one ;)
+> -CONFIG_CMD_ARM_MMUINFO=y
+> +CONFIG_AEABI=y
+> +CONFIG_ARM_BOARD_APPEND_ATAG=y
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+>  CONFIG_ARM_UNWIND=y
+> -CONFIG_MMU=y
 
-See below for a list of patches that went into this release.
+Why do you disable MMU support? Doesn't this work properly? If it
+doesn't this should be fixed since you definitely want to have MMU
+support.
+
+Since relocatable barebox is enabled I recommend to set the base address
+to 0x0. Also the malloc area size can be specified to 0x0 which means
+barebox will automatically find a good value.
 
 Sascha
 
-----------------------------------------------------------------
-Andrey Panov (2):
-      MMC: IMX: Reset MMC_BOOT register after controller reset.
-      ARM: IMX: Embedsky E9: Choose right environment when booting from SD =
-or EMMC.
+---------------8<---------------------------
 
-Andrey Smirnov (4):
-      i.MX6: phytec: Separate SoM specific code
-      i.MX: SPI: Respect SPI_LSB_FIRST flag in mode settings
-      i.MX6: phytec: Check environment path selection for errors
-      i.MX6: phytec: Allow multiple MMC devices to contain boot environment
+From acd71e52c8835146e361464edce661b0c637eeb8 Mon Sep 17 00:00:00 2001
+From: Andrey Panov <rockford@yandex.ru>
+Date: Thu, 5 Mar 2015 21:45:19 +0300
+Subject: [PATCH] ARM: Rockchip: Update defconfig
 
-Antony Pavlov (3):
-      scripts/checkpatch.pl: don't search for CREDITS when checking top_of_=
-kernel_tree()
-      sandbox: get malloc_size from .config
-      ARM: bcm2835: fix checkpatch warning
+Signed-off-by: Andrey Panov <rockford@yandex.ru>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/configs/rockchip_defconfig | 91 +++++++++++++++++++++++++++----------
+ 1 file changed, 66 insertions(+), 25 deletions(-)
 
-Bo Shen (7):
-      ARM: atmel: sama5d4 xplained: correct the name
-      ARM: atmel: sama5d4ek: correct the typo
-      ARM: atmel: sama5d3xek: let emac auto detect phy addr
-      ARM: atmel: sama5d3xek: let gmac auto detect phy id
-      ARM: atmel: at91sam9n12ek: correct udc device name
-      usb: at91_udc: pass the vbus initial value
-      ARM: atmel: sama5d4 xplained: correc env path
+diff --git a/arch/arm/configs/rockchip_defconfig b/arch/arm/configs/rockchip_defconfig
+index 40442ac..6733462 100644
+--- a/arch/arm/configs/rockchip_defconfig
++++ b/arch/arm/configs/rockchip_defconfig
+@@ -1,51 +1,79 @@
+ CONFIG_ARCH_ROCKCHIP=y
+ CONFIG_MACH_RADXA_ROCK=y
+ CONFIG_THUMB2_BAREBOX=y
+-CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x4000000
++CONFIG_TEXT_BASE=0x0
++CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_RELOCATABLE=y
+ CONFIG_PROMPT="radxa-rock:"
+-CONFIG_LONGHELP=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+-CONFIG_PARTITION=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_DEFAULT_COMPRESSION_LZO=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/radxa-rock/env"
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_LOADB=y
+-CONFIG_CMD_LOADY=y
+-CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MM=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
++CONFIG_CMD_BOOTM_AIMAGE=y
+ CONFIG_CMD_BOOTZ=y
+-CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_GPIO=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_DEFAULTENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA224SUM=y
++CONFIG_CMD_SHA256SUM=y
+ CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_I2C=y
+-CONFIG_CMD_LED=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
+ CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_MM=y
+ CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_PING=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+@@ -53,8 +81,21 @@ CONFIG_DRIVER_NET_ARC_EMAC=y
+ CONFIG_SMSC_PHY=y
+ CONFIG_I2C=y
+ CONFIG_I2C_GPIO=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_DW=y
++CONFIG_MCI_DW_PIO=y
+ CONFIG_MFD_ACT8846=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
++CONFIG_GENERIC_PHY=y
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_BPKFS=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_LZO_DECOMPRESS=y
+-- 
+2.1.4
 
-Borislav Petkov (1):
-      gitignore: add all.config
 
-Christian Hemp (1):
-      ARM: phyFLEX-i.MX6: Add support for 1GB on 1 bank
-
-Dmitry Lavnikevich (2):
-      memtest: fix 4GB overflow fail
-      dts:imx6:pfla02: Align nand partitions by 512k
-
-Eric B=E9nard (3):
-      dhcp: fix request packet's requested IP option
-      dhcp: fix request packet
-      dhcp: fix request packet's seconds elapsed
-
-Jan Luebbe (3):
-      imx53: add uart3
-      commands: crc: support setting environment variables
-      defaultenv: generate force-built-in (zero) environment file
-
-Jani Nikula (1):
-      gitignore: Add GNU GLOBAL files to top .gitignore
-
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      console: allow to specify the device id
-      raspberry-pi: add board model detection
-      raspberry-pi: add leds support
-      amba: pl011: add support for regulator
-      driver: add postcore_platform_driver
-      regulator: allow to use it with non DT device
-      regulator: add bcm2835 driver
-      raspberry-pi: mac address detection support
-
-Jike Song (1):
-      .gitignore: match ncscope.out
-
-Juergen Beisert (8):
-      Docs: just fix a typo
-      Docs: add some info about the Ka-Ro TX25 related bootloader images
-      Docs: add some info about the Phytec's phyCORE27 and phyCARD27 relate=
-d bootloader images
-      Docs: extend the mentioned commands with a link to their documentation
-      Docs: move the individual MXS target documentation where they belong =
-to
-      Docs: the name of the default config file for the FSL i.MX23 evk has =
-changed
-      Docs: extend the mentioned commands with a link to their documentation
-      Docs: add some info about the Olimex's Olinuxino related bootloader i=
-mages
-
-Lucas Stach (6):
-      arm: virt_to_phys should take a volatile ptr
-      net: rtl8169: silence compiler warning
-      ARM: Kconfig: remove stale option CPU_V7_DCACHE_SKIP
-      scripts: fix warning generated by glibc 2.20
-      net: cpsw: prevent stray cache writeback
-      tegra: avp_init: write DT address register earlier
-
-Markus Pargmann (4):
-      ARM: sockit: Define inst_rom_init static
-      scripts: socfpga sequencer extraction tool
-      ARM: boards: socfpga new mem calibration function
-      ARM: socfpga: Import sequencer code from generated uboot
-
-Masahiro Yamada (40):
-      Remove the CREDITS file
-      powerpc: include <linux/stringify.h> to avoid dupulicated defines
-      kbuild: arm: Do not define "comma" twice
-      gitignore: do not ignore .mailmap
-      gitignore: remove bogus ignore patterns
-      kbuild: add KBUILD_DEFCONFIG
-      ARM: include some headers from barebox-arm.h
-      gitignore: remove obsolete link method for arch specification
-      debug_ll: change the argument type of putc_ll()
-      fs: ubifs: remove redundant macro defines
-      lib: decompress: remove redundant INT_MAX define
-      linux/kernel.h: move *_MAX, *_MIN macros
-      linux/kernel.h: rename USHORT_MAX, SHORT_MAX, SHORT_MIN
-      linux/kernel.h: add more *_MAX, *_MIN macros
-      linux/bug.h: move BUILD_BUG_ON*() macros
-      asm-generic/bug.h: move BUG(), BUG_ON(), WARN(), WARN_ON() macros
-      linux/kernel.h: move some macros and prototypes
-      ARM: delete useless and wrong comments
-      ARM: use an easier way to create the empty built-in.o
-      ARM: fix a wrong comment about relocate_to_adr
-      usb: abolish wait_ms() function
-      gitignore: simplify .gitignore file with pattern "/barebox*"
-      gitignore: move "barebox_default_env*" to subdirectory
-      gitignore: sync with Linux's .gitignore
-      kbuild: drop bogus "common/barebox_default_env*" from CLEAN_FILES
-      kbuild: drop $(KBUILD_DTBS) from the all target
-      blackfin: consolidate arch/blackfin/include/asm/linkage.h
-      param: add error check to dev_param_set_generic()
-      blackfin: fix undefined reference with CONFIG_CMD_MAGICVAR
-      MAKEALL: fix do_build_all
-      MAKEALL: do not create build directory explicitly
-      param: add error check to __dev_add_param()
-      pinctrl: remove unnecessary error check
-      MAKEALL: check the return code of "make" rather than "printf"
-      MAKEALL: remove false positive error check
-      MAKEALL: use $(...) instead of `...` for readability
-      MAKEALL: do not pass unneeded -C option to make
-      MAKEALL: consolidate -j${JOBS} argument
-      nios2: ignore arch/nios2/cpu/barebox.lds by git
-      defaultenv: ignore barebox_zero_env
-
-Michael Olbrich (1):
-      ARM Samsung: fix booting from NAND without pbl
-
-Robert Jarzmik (9):
-      mtd: nand: add mrvl-nand driver
-      ARM: pxa: move pxa2xx functionality to SoC specific file
-      ARM: pxa: add pxa3xx architecture
-      ARM: pxa: add the zylonite board
-      net: smc1111: add 16 bits accessors, allow address shift
-      net: smc1111: extend the driver for 91c94 and 91c96 support
-      net: smc1111: improve debug capability
-      ARM: pxa: add pxa25x support
-      ARM: pxa: add lubbock board support
-
-Sascha Hauer (40):
-      ARM: MXS: imx28evk: Add lowlevel support
-      ARM: MXS: imx28evk: Update environment and config
-      memtest: Fix SDRAM size calculations
-      ARM: MXS: Fix vddd brownout setting
-      MXS: power-init: inline only once used functions
-      ARM: MXS: Do not register devices with device tree support
-      ARM: MXS: Make gpio a driver
-      mci: mxs: Add devicetree support
-      serial: stm_serial: Add devicetree support
-      ARM: MXS: Create ocotp device in SoC code
-      ARM: MXS: ocotp: Add devicetree support
-      of: Create platform_device when creating AMBA device failed
-      pbl: Add support for memory_display
-      pinctrl: Add MXS pinctrl driver
-      ARM: MXS: Setup vdda in power prep
-      ARM: MXS: Add regulator debug print
-      ARM: MXS: power-init: Add parameters to mx28_power_init()
-      ARM: MXS: Add duckbill board support
-      Merge branch 'for-next/am335x'
-      Merge branch 'for-next/arm'
-      Merge branch 'for-next/doc'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/makeall'
-      Merge branch 'for-next/minmax'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/mxs'
-      Merge branch 'for-next/net'
-      Merge branch 'for-next/pxa'
-      Merge branch 'for-next/raspberry-pi'
-      Merge branch 'for-next/socfpga'
-      blspec: put blspec bootargs into a .dyn bootargs variable
-      ARM: Phytec phyCORE OMAP4460: Split xload defconfigs
-      mtd: nand: omap: Fix OMAP_ECC_BCH8_CODE_HW ecc mode
-      mtd: Fix allowing to erase bad blocks on partitions
-      mtd: nand-bb: Fix accesses beyond device
-      mtd: nand-bb: fix erasing bb devices with bad blocks
-      mtd: nand-bb: Fix test for bad block when reading
-      mtd: nand-bb: Also print raw position in debug messages
-      environment: Do not remove base env directory
-      Release v2015.03.0
-
-Stefan Christ (3):
-      ARM: i.MX6: Fix bad block marker in imx6-bbu-nand handler
-      imx6: add partitions on SPI NOR for PFLA02
-      ARM: i.MX6: use generic calculation in nand bbu handler
-
-Steffen Trumtrar (5):
-      ARM: socfpga: avoid using external regulator for PLL
-      ARM: socfpga: clkmgr: set alteragrp clocks
-      ARM: socfpga: clkmgr: bypass debug root clock
-      ARM: socfpga: clock-manager: set mainnandsdmmcclk
-      ARM: socfpga: cleanup sequencer warnings
-
-Uwe Kleine-K=F6nig (1):
-      trivial: s/flasg/flash/
-
-Wadim Egorov (2):
-      ARM: dts: am335x-phytec-phycore-som: Add USB host support
-      ARM: dts: am335x-phytec-phyflex: Add USB host support
-
-Wjatscheslaw Stoljarski (1):
-      loadenv: fix typo in help text
-
-gregory hermant (1):
-      add support for the haba-knx-lite controller
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
