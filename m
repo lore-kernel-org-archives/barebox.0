@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo69.mail-out.ovh.net ([46.105.50.107])
+Received: from 9.mo69.mail-out.ovh.net ([46.105.56.78])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YVKyO-0001up-RN
- for barebox@lists.infradead.org; Tue, 10 Mar 2015 14:17:30 +0000
+ id 1YVL5F-0006pD-GN
+ for barebox@lists.infradead.org; Tue, 10 Mar 2015 14:24:34 +0000
 Received: from mail409.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id 143B81000F4A
- for <barebox@lists.infradead.org>; Tue, 10 Mar 2015 15:17:03 +0100 (CET)
-Date: Tue, 10 Mar 2015 15:16:59 +0100
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id 7AB2110040CF
+ for <barebox@lists.infradead.org>; Tue, 10 Mar 2015 15:24:10 +0100 (CET)
+Date: Tue, 10 Mar 2015 15:24:07 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150310141659.GH30554@ns203013.ovh.net>
+Message-ID: <20150310142407.GI30554@ns203013.ovh.net>
+References: <1425566201-31989-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <1425566201-31989-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,63 +25,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] add sha384/sha512 and hmac support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] sandbox cleanups
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-HI,
+On 15:36 Thu 05 Mar     , Marc Kleine-Budde wrote:
+> Hey Sascha,
+> 
+> three patches for next, please fixup into the for-next/sandbox-of banch.
 
-	this will allow to add later secure boot support
+I test the new sanbox on next
 
-	This the first patch series of some mores
+when you pass -i the file is not present in the /dev now
 
-	To add
-	 - AES with CBC and XTS
-	 - RSA with AS1N and X509
-	 - Key store support
-	 - 2 customs software support
-	 - 1 hardware secure boot support
-	 - a generic API to handle secure boot
-	   without specific user interaction
+I'm working on secure boot and I use sandbox & qemu to test it
 
-The following changes since commit a1a5a212985053fac141975f6f6cd8e30051b401:
-
-  Documentation: handle missing group declaration (2015-03-10 15:04:23 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/hmac
-
-for you to fetch changes up to c0016394be2b50c24727d971a1a76c50abb42cad:
-
-  command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512 (2015-03-10 17:48:11 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      digest: introduce digest_{init/update/final/length}
-      digest: make it multi-instance
-      crypto: add sha384 & sha512 support
-      command: add sha384sum and sha512sum support
-      password: add support for sha512
-      digest: add HMAC support for md5, sha1, sha224, sha256, sha384, sha512
-      command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512
-
- commands/Kconfig  |  24 ++++++++++++++
- commands/digest.c |  75 +++++++++++++++++++++++++++++++++++++++----
- common/Kconfig    |   4 +++
- common/digest.c   | 121 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
- common/password.c |  33 ++++++++++---------
- crypto/Kconfig    |   6 ++++
- crypto/Makefile   |   2 ++
- crypto/md5.c      |  35 +++++++-------------
- crypto/sha1.c     |  35 +++++++-------------
- crypto/sha2.c     |  57 +++++++++++++--------------------
- crypto/sha4.c     | 342 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/digest.h  |  58 ++++++++++++++++++++++++++++++---
- 12 files changed, 670 insertions(+), 122 deletions(-)
- create mode 100644 crypto/sha4.c
+can we fix it asap please TOO busy to dig into it
 
 Best Regards,
 J.
+> 
+> Two patches cleanup the hostfile handling, while the third one will generate a
+> device tree of the fly, if no one is specified on the sandbox command line.
+> 
+> Marc
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
