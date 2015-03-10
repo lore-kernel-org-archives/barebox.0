@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo69.mail-out.ovh.net ([178.32.228.69])
+Received: from 3.mo69.mail-out.ovh.net ([188.165.52.203])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YVL9R-0001Q4-7C
- for barebox@lists.infradead.org; Tue, 10 Mar 2015 14:28:55 +0000
+ id 1YVL9N-0001Ou-0N
+ for barebox@lists.infradead.org; Tue, 10 Mar 2015 14:28:51 +0000
 Received: from mail409.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id 4D13B1004087
- for <barebox@lists.infradead.org>; Tue, 10 Mar 2015 15:28:30 +0100 (CET)
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id 5EF4E1000F7F
+ for <barebox@lists.infradead.org>; Tue, 10 Mar 2015 15:28:26 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 10 Mar 2015 15:28:17 +0100
-Message-Id: <1425997697-27467-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 10 Mar 2015 15:28:13 +0100
+Message-Id: <1425997697-27467-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1425997697-27467-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150310141659.GH30554@ns203013.ovh.net>
  <1425997697-27467-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,179 +25,388 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] command: add hmac sum supportfor md5, sha1, sha224, sha256,
- sha384, sha512
+Subject: [PATCH 3/7] crypto: add sha384 & sha512 support
 To: barebox@lists.infradead.org
-
-pass the key via -k param
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/digest.c | 26 ++++++++++++++++++++++----
- common/digest.c   | 22 +++++++++++++++++-----
- include/digest.h  |  3 +++
- 3 files changed, 42 insertions(+), 9 deletions(-)
+ crypto/Kconfig  |   6 +
+ crypto/Makefile |   2 +
+ crypto/sha4.c   | 340 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 348 insertions(+)
+ create mode 100644 crypto/sha4.c
 
-diff --git a/commands/digest.c b/commands/digest.c
-index 20fa13f..713f5c6 100644
---- a/commands/digest.c
-+++ b/commands/digest.c
-@@ -25,6 +25,7 @@
- #include <xfuncs.h>
- #include <malloc.h>
- #include <digest.h>
-+#include <getopt.h>
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index 4bd8dcf..3b78a14 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -24,4 +24,10 @@ config SHA224
+ config SHA256
+ 	bool "SHA256"
  
- static int do_digest(char *algorithm, int argc, char *argv[])
- {
-@@ -32,11 +33,26 @@ static int do_digest(char *algorithm, int argc, char *argv[])
- 	int ret = 0;
- 	int i;
- 	unsigned char *hash;
-+	unsigned char *key = NULL;
-+	size_t keylen = 0;
-+	int opt;
++config SHA384
++	bool "SHA384"
 +
-+	while((opt = getopt(argc, argv, "k:")) > 0) {
-+		switch(opt) {
-+		case 'k':
-+			key = optarg;
-+			keylen = strlen(key);
-+			break;
-+		}
++config SHA512
++	bool "SHA512"
++
+ endif
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 7c5b035..5482b3e 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -5,3 +5,5 @@ obj-$(CONFIG_MD5)	+= md5.o
+ obj-$(CONFIG_SHA1)	+= sha1.o
+ obj-$(CONFIG_SHA224)	+= sha2.o
+ obj-$(CONFIG_SHA256)	+= sha2.o
++obj-$(CONFIG_SHA384)	+= sha4.o
++obj-$(CONFIG_SHA512)	+= sha4.o
+diff --git a/crypto/sha4.c b/crypto/sha4.c
+new file mode 100644
+index 0000000..c3dcf17
+--- /dev/null
++++ b/crypto/sha4.c
+@@ -0,0 +1,340 @@
++/*
++ *  FIPS-180-2 compliant SHA-384/512 implementation
++ *
++ *  Copyright (C) 2006-2007  Christophe Devine
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++/*
++ *  The SHA-512 Secure Hash Standard was published by NIST in 2002.
++ *
++ *  http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
++ */
++
++#include <common.h>
++#include <digest.h>
++#include <init.h>
++#include <linux/string.h>
++#include <asm/byteorder.h>
++
++#define SHA384_SUM_LEN	48
++#define SHA512_SUM_LEN	64
++
++typedef struct {
++	uint64_t total[2];
++	uint64_t state[8];
++	uint8_t buffer[128];
++	int is384;
++} sha4_context;
++
++/*
++ * 64-bit integer manipulation macros (big endian)
++ */
++
++#define GET_UINT64_BE(n,b,i) (n) = be64_to_cpu(((uint64_t*)(b))[i / 8])
++#define PUT_UINT64_BE(n,b,i) ((uint64_t*)(b))[i / 8] = cpu_to_be64(n)
++
++/*
++ * Round constants
++ */
++static const uint64_t K[80] = {
++	0x428A2F98D728AE22, 0x7137449123EF65CD,
++	0xB5C0FBCFEC4D3B2F, 0xE9B5DBA58189DBBC,
++	0x3956C25BF348B538, 0x59F111F1B605D019,
++	0x923F82A4AF194F9B, 0xAB1C5ED5DA6D8118,
++	0xD807AA98A3030242, 0x12835B0145706FBE,
++	0x243185BE4EE4B28C, 0x550C7DC3D5FFB4E2,
++	0x72BE5D74F27B896F, 0x80DEB1FE3B1696B1,
++	0x9BDC06A725C71235, 0xC19BF174CF692694,
++	0xE49B69C19EF14AD2, 0xEFBE4786384F25E3,
++	0x0FC19DC68B8CD5B5, 0x240CA1CC77AC9C65,
++	0x2DE92C6F592B0275, 0x4A7484AA6EA6E483,
++	0x5CB0A9DCBD41FBD4, 0x76F988DA831153B5,
++	0x983E5152EE66DFAB, 0xA831C66D2DB43210,
++	0xB00327C898FB213F, 0xBF597FC7BEEF0EE4,
++	0xC6E00BF33DA88FC2, 0xD5A79147930AA725,
++	0x06CA6351E003826F, 0x142929670A0E6E70,
++	0x27B70A8546D22FFC, 0x2E1B21385C26C926,
++	0x4D2C6DFC5AC42AED, 0x53380D139D95B3DF,
++	0x650A73548BAF63DE, 0x766A0ABB3C77B2A8,
++	0x81C2C92E47EDAEE6, 0x92722C851482353B,
++	0xA2BFE8A14CF10364, 0xA81A664BBC423001,
++	0xC24B8B70D0F89791, 0xC76C51A30654BE30,
++	0xD192E819D6EF5218, 0xD69906245565A910,
++	0xF40E35855771202A, 0x106AA07032BBD1B8,
++	0x19A4C116B8D2D0C8, 0x1E376C085141AB53,
++	0x2748774CDF8EEB99, 0x34B0BCB5E19B48A8,
++	0x391C0CB3C5C95A63, 0x4ED8AA4AE3418ACB,
++	0x5B9CCA4F7763E373, 0x682E6FF3D6B2B8A3,
++	0x748F82EE5DEFB2FC, 0x78A5636F43172F60,
++	0x84C87814A1F0AB72, 0x8CC702081A6439EC,
++	0x90BEFFFA23631E28, 0xA4506CEBDE82BDE9,
++	0xBEF9A3F7B2C67915, 0xC67178F2E372532B,
++	0xCA273ECEEA26619C, 0xD186B8C721C0C207,
++	0xEADA7DD6CDE0EB1E, 0xF57D4F7FEE6ED178,
++	0x06F067AA72176FBA, 0x0A637DC5A2C898A6,
++	0x113F9804BEF90DAE, 0x1B710B35131C471B,
++	0x28DB77F523047D84, 0x32CAAB7B40C72493,
++	0x3C9EBE0A15C9BEBC, 0x431D67C49C100D4C,
++	0x4CC5D4BECB3E42B6, 0x597F299CFC657E2A,
++	0x5FCB6FAB3AD6FAEC, 0x6C44198C4A475817
++};
++
++/*
++ * SHA-512 context setup
++ */
++static void sha4_starts(sha4_context * ctx, int is384)
++{
++	ctx->total[0] = 0;
++	ctx->total[1] = 0;
++
++	if (is384 == 0 && IS_ENABLED(CONFIG_SHA512)) {
++		/* SHA-512 */
++		ctx->state[0] = 0x6A09E667F3BCC908;
++		ctx->state[1] = 0xBB67AE8584CAA73B;
++		ctx->state[2] = 0x3C6EF372FE94F82B;
++		ctx->state[3] = 0xA54FF53A5F1D36F1;
++		ctx->state[4] = 0x510E527FADE682D1;
++		ctx->state[5] = 0x9B05688C2B3E6C1F;
++		ctx->state[6] = 0x1F83D9ABFB41BD6B;
++		ctx->state[7] = 0x5BE0CD19137E2179;
++	} else if (IS_ENABLED(CONFIG_SHA384)) {
++		/* SHA-384 */
++		ctx->state[0] = 0xCBBB9D5DC1059ED8;
++		ctx->state[1] = 0x629A292A367CD507;
++		ctx->state[2] = 0x9159015A3070DD17;
++		ctx->state[3] = 0x152FECD8F70E5939;
++		ctx->state[4] = 0x67332667FFC00B31;
++		ctx->state[5] = 0x8EB44A8768581511;
++		ctx->state[6] = 0xDB0C2E0D64F98FA7;
++		ctx->state[7] = 0x47B5481DBEFA4FA4;
 +	}
 +
-+	argc -= optind;
-+	argv += optind;
- 
- 	d = digest_alloc(algorithm);
- 	BUG_ON(!d);
- 
--	if (argc < 2)
-+	if (argc < 1)
- 		return COMMAND_ERROR_USAGE;
- 
- 	hash = calloc(digest_length(d), sizeof(unsigned char));
-@@ -45,7 +61,6 @@ static int do_digest(char *algorithm, int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
- 	}
- 
--	argv++;
- 	while (*argv) {
- 		char *filename = "/dev/mem";
- 		loff_t start = 0, size = ~0;
-@@ -53,11 +68,14 @@ static int do_digest(char *algorithm, int argc, char *argv[])
- 		/* arguments are either file, file+area or area */
- 		if (parse_area_spec(*argv, &start, &size)) {
- 			filename = *argv;
--			if (argv[1] && !parse_area_spec(argv[1], &start, &size))
-+			if (argv[0] && !parse_area_spec(argv[0], &start, &size))
- 				argv++;
- 		}
- 
--		if (digest_file_window(d, filename, hash, start, size) < 0) {
-+		ret = digest_file_window(d, filename,
-+					 key, keylen,
-+					 hash, start, size);
-+		if (ret < 0) {
- 			ret = 1;
- 		} else {
- 			for (i = 0; i < digest_length(d); i++)
-diff --git a/common/digest.c b/common/digest.c
-index 7c09ce2..dcbb2c1 100644
---- a/common/digest.c
-+++ b/common/digest.c
-@@ -154,6 +154,7 @@ void digest_hmac_final(struct digest *d, unsigned char *md)
- EXPORT_SYMBOL_GPL(digest_hmac_final);
- 
- int digest_file_window(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash,
- 		       ulong start, ulong size)
- {
-@@ -162,7 +163,10 @@ int digest_file_window(struct digest *d, char *filename,
- 	unsigned char *buf;
- 	int flags = 0;
- 
--	digest_init(d);
-+	if (key)
-+		digest_hmac_init(d, key, keylen);
-+	else
-+		digest_init(d);
- 
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
-@@ -206,12 +210,18 @@ int digest_file_window(struct digest *d, char *filename,
- 			goto out_free;
- 		}
- 
--		digest_update(d, buf, now);
-+		if (key)
-+			digest_hmac_update(d, buf, now);
-+		else
-+			digest_update(d, buf, now);
- 		size -= now;
- 		len += now;
- 	}
- 
--	digest_final(d, hash);
-+	if (key)
-+		digest_hmac_final(d, hash);
-+	else
-+		digest_final(d, hash);
- 
- out_free:
- 	if (flags)
-@@ -224,6 +234,7 @@ out:
- EXPORT_SYMBOL_GPL(digest_file_window);
- 
- int digest_file(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash)
- {
- 	struct stat st;
-@@ -234,11 +245,12 @@ int digest_file(struct digest *d, char *filename,
- 	if (ret < 0)
- 		return ret;
- 
--	return digest_file_window(d, filename, hash, 0, st.st_size);
-+	return digest_file_window(d, filename, key, keylen, hash, 0, st.st_size);
- }
- EXPORT_SYMBOL_GPL(digest_file);
- 
- int digest_file_by_name(char *algo, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash)
- {
- 	struct digest *d;
-@@ -248,7 +260,7 @@ int digest_file_by_name(char *algo, char *filename,
- 	if (!d)
- 		return -EIO;
- 
--	ret = digest_file(d, filename, hash);
-+	ret = digest_file(d, filename, key, keylen, hash);
- 	digest_free(d);
- 	return ret;
- }
-diff --git a/include/digest.h b/include/digest.h
-index f04f467..776b71c 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -56,11 +56,14 @@ struct digest* digest_alloc(char* name);
- void digest_free(struct digest *d);
- 
- int digest_file_window(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash,
- 		       ulong start, ulong size);
- int digest_file(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash);
- int digest_file_by_name(char *algo, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash);
- 
- static inline void digest_init(struct digest *d)
++	ctx->is384 = is384;
++}
++
++static void sha4_process(sha4_context * ctx, unsigned char data[128])
++{
++	int i;
++	uint64_t temp1, temp2, W[80];
++	uint64_t A, B, C, D, E, F, G, H;
++
++#define  SHR(x,n) (x >> n)
++#define ROTR(x,n) (SHR(x,n) | (x << (64 - n)))
++
++#define S0(x) (ROTR(x, 1) ^ ROTR(x, 8) ^  SHR(x, 7))
++#define S1(x) (ROTR(x,19) ^ ROTR(x,61) ^  SHR(x, 6))
++
++#define S2(x) (ROTR(x,28) ^ ROTR(x,34) ^ ROTR(x,39))
++#define S3(x) (ROTR(x,14) ^ ROTR(x,18) ^ ROTR(x,41))
++
++#define F0(x,y,z) ((x & y) | (z & (x | y)))
++#define F1(x,y,z) (z ^ (x & (y ^ z)))
++
++#define P(a,b,c,d,e,f,g,h,x,K)                  \
++{                                               \
++    temp1 = h + S3(e) + F1(e,f,g) + K + x;      \
++    temp2 = S2(a) + F0(a,b,c);                  \
++    d += temp1; h = temp1 + temp2;              \
++}
++
++	for (i = 0; i < 16; i++) {
++		GET_UINT64_BE(W[i], data, i << 3);
++	}
++
++	for (; i < 80; i++) {
++		W[i] = S1(W[i - 2]) + W[i - 7] + S0(W[i - 15]) + W[i - 16];
++	}
++
++	A = ctx->state[0];
++	B = ctx->state[1];
++	C = ctx->state[2];
++	D = ctx->state[3];
++	E = ctx->state[4];
++	F = ctx->state[5];
++	G = ctx->state[6];
++	H = ctx->state[7];
++	i = 0;
++
++	do {
++		P(A, B, C, D, E, F, G, H, W[i], K[i]);
++		i++;
++		P(H, A, B, C, D, E, F, G, W[i], K[i]);
++		i++;
++		P(G, H, A, B, C, D, E, F, W[i], K[i]);
++		i++;
++		P(F, G, H, A, B, C, D, E, W[i], K[i]);
++		i++;
++		P(E, F, G, H, A, B, C, D, W[i], K[i]);
++		i++;
++		P(D, E, F, G, H, A, B, C, W[i], K[i]);
++		i++;
++		P(C, D, E, F, G, H, A, B, W[i], K[i]);
++		i++;
++		P(B, C, D, E, F, G, H, A, W[i], K[i]);
++		i++;
++	} while (i < 80);
++
++	ctx->state[0] += A;
++	ctx->state[1] += B;
++	ctx->state[2] += C;
++	ctx->state[3] += D;
++	ctx->state[4] += E;
++	ctx->state[5] += F;
++	ctx->state[6] += G;
++	ctx->state[7] += H;
++}
++
++/*
++ * SHA-512 process buffer
++ */
++static void sha4_update(sha4_context * ctx, unsigned char *input, int ilen)
++{
++	int fill;
++	uint64_t left;
++
++	if (ilen <= 0)
++		return;
++
++	left = ctx->total[0] & 0x7F;
++	fill = (int)(128 - left);
++
++	ctx->total[0] += ilen;
++
++	if (ctx->total[0] < (uint64_t)ilen)
++		ctx->total[1]++;
++
++	if (left && ilen >= fill) {
++		memcpy((void *)(ctx->buffer + left), (void *)input, fill);
++		sha4_process(ctx, ctx->buffer);
++		input += fill;
++		ilen -= fill;
++		left = 0;
++	}
++
++	while (ilen >= 128) {
++		sha4_process(ctx, input);
++		input += 128;
++		ilen -= 128;
++	}
++
++	if (ilen > 0)
++		memcpy((void *)(ctx->buffer + left), (void *)input, ilen);
++}
++
++static const unsigned char sha4_padding[128] = {
++	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
++	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
++};
++
++/*
++ * SHA-512 final digest
++ */
++static void sha4_finish(sha4_context * ctx, unsigned char output[64])
++{
++	int last, padn;
++	uint64_t high, low;
++	unsigned char msglen[16];
++
++	high = (ctx->total[0] >> 61)
++	    | (ctx->total[1] << 3);
++	low = (ctx->total[0] << 3);
++
++	PUT_UINT64_BE(high, msglen, 0);
++	PUT_UINT64_BE(low, msglen, 8);
++
++	last = (int)(ctx->total[0] & 0x7F);
++	padn = (last < 112) ? (112 - last) : (240 - last);
++
++	sha4_update(ctx, (unsigned char *)sha4_padding, padn);
++	sha4_update(ctx, msglen, 16);
++
++	PUT_UINT64_BE(ctx->state[0], output, 0);
++	PUT_UINT64_BE(ctx->state[1], output, 8);
++	PUT_UINT64_BE(ctx->state[2], output, 16);
++	PUT_UINT64_BE(ctx->state[3], output, 24);
++	PUT_UINT64_BE(ctx->state[4], output, 32);
++	PUT_UINT64_BE(ctx->state[5], output, 40);
++
++	if (ctx->is384 == 0) {
++		PUT_UINT64_BE(ctx->state[6], output, 48);
++		PUT_UINT64_BE(ctx->state[7], output, 56);
++	}
++}
++
++static int digest_sha4_update(struct digest *d, const void *data,
++				unsigned long len)
++{
++	sha4_update(d->ctx, (uint8_t *)data, len);
++
++	return 0;
++}
++
++static int digest_sha4_final(struct digest *d, unsigned char *md)
++{
++	sha4_finish(d->ctx, md);
++
++	return 0;
++}
++
++static int digest_sha384_init(struct digest *d)
++{
++	sha4_starts(d->ctx, 1);
++
++	return 0;
++}
++
++static struct digest_algo m384 = {
++	.name = "sha384",
++	.init = digest_sha384_init,
++	.update = digest_sha4_update,
++	.final = digest_sha4_final,
++	.length = SHA384_SUM_LEN,
++	.ctx_length = sizeof(sha4_context),
++};
++
++static int digest_sha512_init(struct digest *d)
++{
++	sha4_starts(d->ctx, 0);
++
++	return 0;
++}
++
++static struct digest_algo m512 = {
++	.name = "sha512",
++	.init = digest_sha512_init,
++	.update = digest_sha4_update,
++	.final = digest_sha4_final,
++	.length = SHA512_SUM_LEN,
++	.ctx_length = sizeof(sha4_context),
++};
++
++static int sha4_digest_register(void)
++{
++	if IS_ENABLED(CONFIG_SHA384)
++		digest_algo_register(&m384);
++
++	if IS_ENABLED(CONFIG_SHA512)
++		digest_algo_register(&m512);
++
++	return 0;
++}
++device_initcall(sha4_digest_register);
 -- 
 2.1.4
 
