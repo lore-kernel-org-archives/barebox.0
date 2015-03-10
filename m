@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVH6S-00077k-Jc
- for barebox@lists.infradead.org; Tue, 10 Mar 2015 10:09:33 +0000
-Date: Tue, 10 Mar 2015 11:09:10 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150310100910.GE24885@pengutronix.de>
-References: <1425912304-9998-1-git-send-email-mkl@pengutronix.de>
+Received: from 6.mo69.mail-out.ovh.net ([46.105.50.107])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YVKyO-0001up-RN
+ for barebox@lists.infradead.org; Tue, 10 Mar 2015 14:17:30 +0000
+Received: from mail409.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id 143B81000F4A
+ for <barebox@lists.infradead.org>; Tue, 10 Mar 2015 15:17:03 +0100 (CET)
+Date: Tue, 10 Mar 2015 15:16:59 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150310141659.GH30554@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425912304-9998-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] paramter: The dev_add_param_*() return ERR_PTR(), change
- no-ops to return ERR_PTR(-ENOSYS) instead of NULL
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/7] add sha384/sha512 and hmac support
+To: barebox@lists.infradead.org
 
-On Mon, Mar 09, 2015 at 03:45:04PM +0100, Marc Kleine-Budde wrote:
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->  include/param.h | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+HI,
 
-Applied, thanks
+	this will allow to add later secure boot support
 
-Sascha
+	This the first patch series of some mores
 
+	To add
+	 - AES with CBC and XTS
+	 - RSA with AS1N and X509
+	 - Key store support
+	 - 2 customs software support
+	 - 1 hardware secure boot support
+	 - a generic API to handle secure boot
+	   without specific user interaction
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The following changes since commit a1a5a212985053fac141975f6f6cd8e30051b401:
+
+  Documentation: handle missing group declaration (2015-03-10 15:04:23 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/hmac
+
+for you to fetch changes up to c0016394be2b50c24727d971a1a76c50abb42cad:
+
+  command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512 (2015-03-10 17:48:11 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      digest: introduce digest_{init/update/final/length}
+      digest: make it multi-instance
+      crypto: add sha384 & sha512 support
+      command: add sha384sum and sha512sum support
+      password: add support for sha512
+      digest: add HMAC support for md5, sha1, sha224, sha256, sha384, sha512
+      command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512
+
+ commands/Kconfig  |  24 ++++++++++++++
+ commands/digest.c |  75 +++++++++++++++++++++++++++++++++++++++----
+ common/Kconfig    |   4 +++
+ common/digest.c   | 121 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ common/password.c |  33 ++++++++++---------
+ crypto/Kconfig    |   6 ++++
+ crypto/Makefile   |   2 ++
+ crypto/md5.c      |  35 +++++++-------------
+ crypto/sha1.c     |  35 +++++++-------------
+ crypto/sha2.c     |  57 +++++++++++++--------------------
+ crypto/sha4.c     | 342 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/digest.h  |  58 ++++++++++++++++++++++++++++++---
+ 12 files changed, 670 insertions(+), 122 deletions(-)
+ create mode 100644 crypto/sha4.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
