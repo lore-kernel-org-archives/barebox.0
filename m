@@ -1,28 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YUyzy-0003ch-Dy
- for barebox@lists.infradead.org; Mon, 09 Mar 2015 14:49:39 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=bjornoya.do.blackshift.org)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mkl@pengutronix.de>) id 1YUyzb-0007X4-H4
- for barebox@lists.infradead.org; Mon, 09 Mar 2015 15:49:15 +0100
-Received: from [IPv6:2001:6f8:105b:1122:a87d:7344:ab4e:ae52]
- (dyn-2001-06f8-105b-1122-a87d-7344-ab4e-ae52.pool.blackshift.org
- [IPv6:2001:6f8:105b:1122:a87d:7344:ab4e:ae52])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (Client did not present a certificate)
- (Authenticated sender: frogger)
- by bjornoya.do.blackshift.org (Postfix) with ESMTPSA id 28B1E615DC
- for <barebox@lists.infradead.org>; Mon,  9 Mar 2015 15:49:15 +0100 (CET)
-Message-ID: <54FDB2EA.30104@pengutronix.de>
-Date: Mon, 09 Mar 2015 15:49:14 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+Received: from nasmtp01.atmel.com ([192.199.1.245]
+ helo=DVREDG01.corp.atmel.com)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YVDso-0006eY-3g
+ for barebox@lists.infradead.org; Tue, 10 Mar 2015 06:43:15 +0000
+From: Bo Shen <voice.shen@atmel.com>
+Date: Tue, 10 Mar 2015 14:42:46 +0800
+Message-ID: <1425969766-14812-1-git-send-email-voice.shen@atmel.com>
 MIME-Version: 1.0
-References: <1425912304-9998-1-git-send-email-mkl@pengutronix.de>
- <54FDB21A.3040402@pengutronix.de>
-In-Reply-To: <54FDB21A.3040402@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,90 +16,201 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2962289038988491051=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] paramter: The dev_add_param_*() return ERR_PTR(),
- change no-ops to return ERR_PTR(-ENOSYS) instead of NULL
-To: barebox@lists.infradead.org
+Subject: [PATCH] ARM: atmel: sama5d4_xplained: switch to env2
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============2962289038988491051==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="xcIW6G9Unhmi1NtxXuvwVgqmcBtRsFKgW"
+Switch sama5d4 xplained board to use default environment 2.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---xcIW6G9Unhmi1NtxXuvwVgqmcBtRsFKgW
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Bo Shen <voice.shen@atmel.com>
+---
 
-On 03/09/2015 03:45 PM, Marc Kleine-Budde wrote:
-> On 03/09/2015 03:45 PM, Marc Kleine-Budde wrote:
->> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
->> ---
->>  include/param.h | 18 +++++++++---------
->>  1 file changed, 9 insertions(+), 9 deletions(-)
->>
->> diff --git a/include/param.h b/include/param.h
->> index 53bee541100e..bd2c0789968a 100644
->> --- a/include/param.h
->> +++ b/include/param.h
->> @@ -97,7 +97,7 @@ static inline struct param_d *dev_add_param(struct d=
-evice_d *dev, char *name,
->>  		const char *(*get)(struct device_d *, struct param_d *p),
->>  		unsigned long flags)
->>  {
->> -	return 0;
->> +	return ERR_PTR(-ENOSYS);
+ arch/arm/boards/sama5d4_xplained/env/boot/mmc      |  8 +++++
+ arch/arm/boards/sama5d4_xplained/env/boot/nand     |  8 +++++
+ arch/arm/boards/sama5d4_xplained/env/config        | 42 ----------------------
+ .../arm/boards/sama5d4_xplained/env/init/automount |  5 +++
+ .../boards/sama5d4_xplained/env/init/mtdparts-nand |  6 ++++
+ .../env/{bin/init_board => init/splash}            |  0
+ .../boards/sama5d4_xplained/env/nv/boot.default    |  1 +
+ .../sama5d4_xplained/env/nv/linux.bootargs.console |  1 +
+ arch/arm/configs/sama5d4_xplained_defconfig        |  5 +--
+ arch/arm/mach-at91/Kconfig                         |  1 +
+ 10 files changed, 33 insertions(+), 44 deletions(-)
+ create mode 100644 arch/arm/boards/sama5d4_xplained/env/boot/mmc
+ create mode 100644 arch/arm/boards/sama5d4_xplained/env/boot/nand
+ delete mode 100644 arch/arm/boards/sama5d4_xplained/env/config
+ create mode 100644 arch/arm/boards/sama5d4_xplained/env/init/automount
+ create mode 100644 arch/arm/boards/sama5d4_xplained/env/init/mtdparts-nand
+ rename arch/arm/boards/sama5d4_xplained/env/{bin/init_board => init/splash} (100%)
+ create mode 100644 arch/arm/boards/sama5d4_xplained/env/nv/boot.default
+ create mode 100644 arch/arm/boards/sama5d4_xplained/env/nv/linux.bootargs.console
 
-The function returned a plain integer 0 instead of a NULL pointer, so
-this patch is correct.
+diff --git a/arch/arm/boards/sama5d4_xplained/env/boot/mmc b/arch/arm/boards/sama5d4_xplained/env/boot/mmc
+new file mode 100644
+index 0000000..75a0f9b
+--- /dev/null
++++ b/arch/arm/boards/sama5d4_xplained/env/boot/mmc
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++global.bootm.oftree="/mnt/mmcblk0p1/at91-sama5d4_xplained.dtb"
++global.bootm.image="/mnt/mmcblk0p1/zImage"
++
++bootargs-ip
++
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rw rootwait"
+diff --git a/arch/arm/boards/sama5d4_xplained/env/boot/nand b/arch/arm/boards/sama5d4_xplained/env/boot/nand
+new file mode 100644
+index 0000000..d1485c6
+--- /dev/null
++++ b/arch/arm/boards/sama5d4_xplained/env/boot/nand
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++global.bootm.image="/dev/nand0.kernel.bb"
++global.bootm.oftree="/dev/nand0.oftree.bb"
++
++bootargs-ip
++
++global.linux.bootargs.dyn.root="root=ubi0:rootfs ubi.mtd=rootfs rootfstype=ubifs noinitrd"
+diff --git a/arch/arm/boards/sama5d4_xplained/env/config b/arch/arm/boards/sama5d4_xplained/env/config
+deleted file mode 100644
+index 1007345..0000000
+--- a/arch/arm/boards/sama5d4_xplained/env/config
++++ /dev/null
+@@ -1,42 +0,0 @@
+-#!/bin/sh
+-
+-# use 'dhcp' to do dhcp in barebox and in kernel
+-# use 'none' if you want to skip kernel ip autoconfiguration
+-ip=dhcp
+-
+-# or set your networking parameters here
+-#eth0.ipaddr=a.b.c.d
+-#eth0.netmask=a.b.c.d
+-#eth0.gateway=a.b.c.d
+-#eth0.serverip=a.b.c.d
+-
+-# can be either 'nfs', 'tftp', 'nor' or 'nand'
+-kernel_loc=nfs
+-# can be either 'net', 'nor', 'nand' or 'initrd'
+-rootfs_loc=net
+-# can be either 'nfs', 'tftp', 'nand' or empty
+-oftree_loc=nfs
+-
+-# can be either 'jffs2' or 'ubifs'
+-rootfs_type=ubifs
+-rootfsimage=root.$rootfs_type
+-ubiroot=rootfs
+-
+-# The image type of the kernel. Can be uimage, zimage, raw, or raw_lzo
+-kernelimage=zImage
+-#kernelimage=uImage
+-#kernelimage=Image
+-#kernelimage=Image.lzo
+-
+-nand_device=atmel_nand
+-nand_parts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),-(rootfs)"
+-rootfs_mtdblock_nand=7
+-
+-m25p80_parts="64k(bootstrap),384k(barebox),256k(bareboxenv),256k(bareboxenv2),128k(oftree),-(updater)"
+-
+-autoboot_timeout=3
+-
+-bootargs="console=ttyS0,115200"
+-
+-# set a fancy prompt (if support is compiled in)
+-PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m\n# "
+diff --git a/arch/arm/boards/sama5d4_xplained/env/init/automount b/arch/arm/boards/sama5d4_xplained/env/init/automount
+new file mode 100644
+index 0000000..3476922
+--- /dev/null
++++ b/arch/arm/boards/sama5d4_xplained/env/init/automount
+@@ -0,0 +1,5 @@
++#!/bin/sh
++
++# SD card slot, first partition
++mkdir -p /mnt/mmcblk0p1
++automount -d /mnt/mmcblk0p1 'mount /dev/disk0.0 /mnt/mmcblk0p1'
+diff --git a/arch/arm/boards/sama5d4_xplained/env/init/mtdparts-nand b/arch/arm/boards/sama5d4_xplained/env/init/mtdparts-nand
+new file mode 100644
+index 0000000..c947910
+--- /dev/null
++++ b/arch/arm/boards/sama5d4_xplained/env/init/mtdparts-nand
+@@ -0,0 +1,6 @@
++#!/bin/sh
++
++mtdparts="256k(at91bootstrap),512k(barebox)ro,256k(bareboxenv),256k(bareboxenv2),256k(spare),512k(oftree),6M(kernel),-(rootfs)"
++kernelname="atmel_nand"
++
++mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
+diff --git a/arch/arm/boards/sama5d4_xplained/env/bin/init_board b/arch/arm/boards/sama5d4_xplained/env/init/splash
+similarity index 100%
+rename from arch/arm/boards/sama5d4_xplained/env/bin/init_board
+rename to arch/arm/boards/sama5d4_xplained/env/init/splash
+diff --git a/arch/arm/boards/sama5d4_xplained/env/nv/boot.default b/arch/arm/boards/sama5d4_xplained/env/nv/boot.default
+new file mode 100644
+index 0000000..026a25c
+--- /dev/null
++++ b/arch/arm/boards/sama5d4_xplained/env/nv/boot.default
+@@ -0,0 +1 @@
++nand
+diff --git a/arch/arm/boards/sama5d4_xplained/env/nv/linux.bootargs.console b/arch/arm/boards/sama5d4_xplained/env/nv/linux.bootargs.console
+new file mode 100644
+index 0000000..476b1fb
+--- /dev/null
++++ b/arch/arm/boards/sama5d4_xplained/env/nv/linux.bootargs.console
+@@ -0,0 +1 @@
++console=ttyS0,115200
+diff --git a/arch/arm/configs/sama5d4_xplained_defconfig b/arch/arm/configs/sama5d4_xplained_defconfig
+index 84a1bbd..5b9a793 100644
+--- a/arch/arm/configs/sama5d4_xplained_defconfig
++++ b/arch/arm/configs/sama5d4_xplained_defconfig
+@@ -10,13 +10,12 @@ CONFIG_MALLOC_SIZE=0xA00000
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_PROMPT="A5D4_XPLAINED:"
+-CONFIG_GLOB=y
+ CONFIG_PROMPT_HUSH_PS2="y"
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/sama5d4_xplained/env"
+ CONFIG_DEBUG_INFO=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+@@ -36,6 +35,8 @@ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_FILETYPE=y
+ CONFIG_CMD_SLEEP=y
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 5b27526..4166fa5 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -500,6 +500,7 @@ config MACH_SAMA5D4EK
+ 
+ config MACH_SAMA5D4_XPLAINED
+ 	bool "Atmel SAMA5D4 XPLAINED ULTRA Evaluation Kit"
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
+ 	help
+ 	  Select this if you are using Atmel's SAMA5D4_XPLAINED ULTRA Evaluation Kit.
+ 
+-- 
+2.3.0
 
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---xcIW6G9Unhmi1NtxXuvwVgqmcBtRsFKgW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCgAGBQJU/bLqAAoJECte4hHFiupUcvsP+wTrb0ZHU9x8OAfQ/iMI1Hk2
-kIl1eGG/6A8h+vqxtKlU6EJb8aThc6EA0/KS6pcdbwdVOTUhF01+H7bZwp4YhH1a
-U6/Jg8+w0fguK23lhfALRnru+6OsC/efkSKQKOxxECb13Fuo4qbzCbbo5IJZY2Ml
-aNjLIY9ZLU8SC/tO0i5+zCJa2u/qteKgczTm47j9MO8RLau7egOxcL3dJHx39wiU
-CHrMzpKDOYs7JyfbYsyM7bAbJybCLpkYtcW3SQmV14mokNreQCfj8dJebb/6JCG+
-kJ5mumSs4Btth6YuuVWA/gRL67ycnsTPxJtY0Uk4A1nf5GvdVrN/k6diqaroLhv2
-UNxm1TJ+J8T/5jfddtAUHhEUQ5Lro7UCurfj3MA4lfBQMoolZT3xy6UYLuWkqaMs
-PCOXie9up6Rupz27efv+Mu1PlMB/k1crlMtCOXsqscNywcWpkm0K4v/hA1hMJnQP
-D5nc25cMI+WKWKqEJ6CbFYj/L7ePL1jObsZ81WYLx96Gc4v2n57jhcOuyPegf9Gw
-DzLXOJQMPfb9xvnlHF1UHnzxXdrGEsDmdZJNDEd16H5bZ9hrOto69rqO1po2yVQh
-aXpEXaGPoLKgE7HLGY9Croab3oNo/ucUSsCXGquEpjxtC3q8t5Bhv3zLegCkNg9l
-mZhtSO1WP5rl7jEEHgxM
-=68fl
------END PGP SIGNATURE-----
-
---xcIW6G9Unhmi1NtxXuvwVgqmcBtRsFKgW--
-
-
---===============2962289038988491051==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2962289038988491051==--
