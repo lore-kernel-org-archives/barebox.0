@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVQmI-0005N1-R4
- for barebox@lists.infradead.org; Tue, 10 Mar 2015 20:29:23 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1YVQlw-0006Aq-FP
- for barebox@lists.infradead.org; Tue, 10 Mar 2015 21:29:00 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 10 Mar 2015 21:29:00 +0100
-Message-Id: <1426019340-12159-1-git-send-email-l.stach@pengutronix.de>
+ Linux)) id 1YVZ5T-0001Pu-Qb
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 05:21:44 +0000
+Date: Wed, 11 Mar 2015 06:21:20 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150311052120.GK24885@pengutronix.de>
+References: <20150310141659.GH30554@ns203013.ovh.net>
+ <1425997697-27467-1-git-send-email-plagnioj@jcrosoft.com>
+ <1425997697-27467-2-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1425997697-27467-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +20,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] parameter: include header for ERR_PTR and errno
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] digest: make it multi-instance
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Commit 03b59bdb64e83e (paramter: The dev_add_param_*() return ERR_PTR(),
-change no-ops to return ERR_PTR(-ENOSYS) instead of NULL) started using
-ERR_PTR and errnos without including the relevant header.
+On Tue, Mar 10, 2015 at 03:28:12PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Now you need to call digest_alloc and when you finish to use it digest_free.
+> 
+> We need this for upcomming aes encryption support and secure boot
+> as we will need multiple instance of the same digest.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  commands/digest.c |  3 ++-
+>  common/digest.c   | 50 ++++++++++++++++++++++++++++++++++++++++----------
+>  common/password.c |  5 +++--
+>  crypto/md5.c      | 34 +++++++++++-----------------------
+>  crypto/sha1.c     | 34 +++++++++++-----------------------
+>  crypto/sha2.c     | 55 ++++++++++++++++++++-----------------------------------
+>  include/digest.h  | 26 +++++++++++++++++---------
+>  7 files changed, 104 insertions(+), 103 deletions(-)
+> 
+> diff --git a/commands/digest.c b/commands/digest.c
+> index bad7d3f..c6a2751 100644
+> --- a/commands/digest.c
+> +++ b/commands/digest.c
+> @@ -33,7 +33,7 @@ static int do_digest(char *algorithm, int argc, char *argv[])
+>  	int i;
+>  	unsigned char *hash;
+>  
+> -	d = digest_get_by_name(algorithm);
+> +	d = digest_alloc(algorithm);
+>  	BUG_ON(!d);
+>  
+>  	if (argc < 2)
+> @@ -71,6 +71,7 @@ static int do_digest(char *algorithm, int argc, char *argv[])
+>  	}
+>  
+>  	free(hash);
+> +	digest_free(d);
+>  
+>  	return ret;
+>  }
+> diff --git a/common/digest.c b/common/digest.c
+> index 789c0b2..89af862 100644
+> --- a/common/digest.c
+> +++ b/common/digest.c
+> @@ -28,12 +28,14 @@
+>  
+>  static LIST_HEAD(digests);
+>  
+> +static struct digest_algo* digest_algo_get_by_name(char* name);
 
-This fixes the build for a lot of configurations.
+The coding style is to put the '*' adjacent to the data name or function
+name, not adjacent to the type name. Please stick to it. A patch to
+clean this up first in this file would be very welcomed.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
-Sascha, please apply to master as the above commit is already there.
----
- include/param.h | 1 +
- 1 file changed, 1 insertion(+)
+Sascha
 
-diff --git a/include/param.h b/include/param.h
-index bd2c0789968a..3a851fc552a4 100644
---- a/include/param.h
-+++ b/include/param.h
-@@ -1,6 +1,7 @@
- #ifndef PARAM_H
- #define PARAM_H
- 
-+#include <linux/err.h>
- #include <linux/types.h>
- #include <linux/list.h>
- 
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
