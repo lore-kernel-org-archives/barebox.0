@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVf1C-0004yh-KE
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 11:41:43 +0000
-Date: Wed, 11 Mar 2015 12:41:20 +0100
+ Linux)) id 1YVf52-0007K3-4n
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 11:45:41 +0000
+Date: Wed, 11 Mar 2015 12:45:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150311114120.GT24885@pengutronix.de>
+Message-ID: <20150311114518.GU24885@pengutronix.de>
 References: <20150310141659.GH30554@ns203013.ovh.net>
  <1425997697-27467-1-git-send-email-plagnioj@jcrosoft.com>
- <1425997697-27467-7-git-send-email-plagnioj@jcrosoft.com>
- <20150311054350.GN24885@pengutronix.de>
- <20150311105251.GL30554@ns203013.ovh.net>
- <20150311110029.GM30554@ns203013.ovh.net>
+ <1425997697-27467-2-git-send-email-plagnioj@jcrosoft.com>
+ <20150311053242.GL24885@pengutronix.de>
+ <20150311102654.GJ30554@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150311110029.GM30554@ns203013.ovh.net>
+In-Reply-To: <20150311102654.GJ30554@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,75 +26,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] command: add hmac sum supportfor md5, sha1, sha224,
- sha256, sha384, sha512
+Subject: Re: [PATCH 2/7] digest: make it multi-instance
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Mar 11, 2015 at 12:00:29PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:52 Wed 11 Mar     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 06:43 Wed 11 Mar     , Sascha Hauer wrote:
-> > > On Tue, Mar 10, 2015 at 03:28:17PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > pass the key via -k param
-> > > > 
-> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > ---
-> > > >  commands/digest.c | 26 ++++++++++++++++++++++----
-> > > >  common/digest.c   | 22 +++++++++++++++++-----
-> > > >  include/digest.h  |  3 +++
-> > > >  3 files changed, 42 insertions(+), 9 deletions(-)
-> > > > 
-> > > > diff --git a/commands/digest.c b/commands/digest.c
-> > > > index 20fa13f..713f5c6 100644
-> > > > --- a/commands/digest.c
-> > > > +++ b/commands/digest.c
-> > > > @@ -25,6 +25,7 @@
-> > > >  #include <xfuncs.h>
-> > > >  #include <malloc.h>
-> > > >  #include <digest.h>
-> > > > +#include <getopt.h>
-> > > >  
-> > > >  static int do_digest(char *algorithm, int argc, char *argv[])
-> > > >  {
-> > > > @@ -32,11 +33,26 @@ static int do_digest(char *algorithm, int argc, char *argv[])
-> > > >  	int ret = 0;
-> > > >  	int i;
-> > > >  	unsigned char *hash;
-> > > > +	unsigned char *key = NULL;
-> > > > +	size_t keylen = 0;
-> > > > +	int opt;
-> > > > +
-> > > > +	while((opt = getopt(argc, argv, "k:")) > 0) {
-> > > > +		switch(opt) {
-> > > > +		case 'k':
-> > > > +			key = optarg;
-> > > > +			keylen = strlen(key);
-> > > > +			break;
-> > > > +		}
+On Wed, Mar 11, 2015 at 11:44:48AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 06:32 Wed 11 Mar     , Sascha Hauer wrote:
+> > On Tue, Mar 10, 2015 at 03:28:12PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Now you need to call digest_alloc and when you finish to use it digest_free.
 > > > 
-> > > This passes the key directly as string to the digest operations. This
-> > > means we are limited to ASCII printable strings here. I'm not very
-> > > familiar with ways for passing keys, but shouldn't we allow to pass the
-> > > key as hex numbers or similar?
-> > for hmac yes
+> > > We need this for upcomming aes encryption support and secure boot
+> > > as we will need multiple instance of the same digest.
+> > > 
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > 
+> > > +struct digest* digest_alloc(char* name)
+> > > +{
+> > > +	struct digest* d;
+> > > +	struct digest_algo* algo;
+> > > +
+> > > +	algo = digest_algo_get_by_name(name);
+> > > +	if (!algo)
+> > > +		return NULL;
+> > > +
+> > > +	d = xzalloc(sizeof(*d));
+> > > +	d->algo = algo;
+> > > +	d->ctx = xzalloc(algo->ctx_length);
+> > 
+> > 
+> > I would pretty much prefer to delegate the allocation to the digest_algo
+> > via an algo->alloc() function. The algo specific allocation function
+> > could then embed struct digest into a bigger struct and use
+> > container_of() to get its private data. No need for d->ctx and
+> > algo->ctx_length then.
+> > 
 > 
-> to use it in openssl
+> even in linux we did allocate the ctx at framework level
 > 
-> echo -n "value" | openssl dgst -sha1 -hmac "key"
-> 
-> hmac does not care about the key itself just it length
-> but for the command I prefer to key something similar to openssl
-> 
-> we could LATER
-> 
-> put a file as -K <file> use full for rsa as we will need to load the key from
-> file anyway
-> 
-> so I do prefer to keep it as this
+> this will reduce the binary size at the end just few bytes maybe but
+> few bytes everywhere make kiB as did Mazda on then new mx-5
 
-Ok.
+Ok, then let's hope this is really smaller in binary size.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
