@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVZGS-0006IL-QL
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 05:33:05 +0000
-Date: Wed, 11 Mar 2015 06:32:42 +0100
+ Linux)) id 1YVZNl-0001kD-9E
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 05:40:37 +0000
+Date: Wed, 11 Mar 2015 06:40:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150311053242.GL24885@pengutronix.de>
+Message-ID: <20150311054014.GM24885@pengutronix.de>
 References: <20150310141659.GH30554@ns203013.ovh.net>
  <1425997697-27467-1-git-send-email-plagnioj@jcrosoft.com>
- <1425997697-27467-2-git-send-email-plagnioj@jcrosoft.com>
+ <1425997697-27467-6-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1425997697-27467-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1425997697-27467-6-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] digest: make it multi-instance
+Subject: Re: [PATCH 6/7] digest: add HMAC support for md5, sha1, sha224,
+ sha256, sha384, sha512
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 10, 2015 at 03:28:12PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Now you need to call digest_alloc and when you finish to use it digest_free.
-> 
-> We need this for upcomming aes encryption support and secure boot
-> as we will need multiple instance of the same digest.
-> 
+On Tue, Mar 10, 2015 at 03:28:16PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
-
-> +struct digest* digest_alloc(char* name)
+>  common/digest.c  | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  crypto/md5.c     |  1 +
+>  crypto/sha1.c    |  1 +
+>  crypto/sha2.c    |  2 ++
+>  crypto/sha4.c    |  2 ++
+>  include/digest.h | 16 ++++++++++++++++
+>  6 files changed, 73 insertions(+)
+> 
+> diff --git a/common/digest.c b/common/digest.c
+> index 89af862..7c09ce2 100644
+> --- a/common/digest.c
+> +++ b/common/digest.c
+> @@ -102,6 +102,57 @@ void digest_free(struct digest *d)
+>  }
+>  EXPORT_SYMBOL_GPL(digest_free);
+>  
+> +void digest_hmac_init(struct digest *d, const unsigned char *key,
+> +                       size_t keylen)
 > +{
-> +	struct digest* d;
-> +	struct digest_algo* algo;
-> +
-> +	algo = digest_algo_get_by_name(name);
-> +	if (!algo)
-> +		return NULL;
-> +
-> +	d = xzalloc(sizeof(*d));
-> +	d->algo = algo;
-> +	d->ctx = xzalloc(algo->ctx_length);
 
-
-I would pretty much prefer to delegate the allocation to the digest_algo
-via an algo->alloc() function. The algo specific allocation function
-could then embed struct digest into a bigger struct and use
-container_of() to get its private data. No need for d->ctx and
-algo->ctx_length then.
+We should rather implement hmac just like the other digests. That is,
+this function should be digest->init and the key would have to be passed
+via the same mechanism used in the kernel: a digest->setkey
 
 Sascha
 
