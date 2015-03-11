@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVf52-0007K3-4n
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 11:45:41 +0000
-Date: Wed, 11 Mar 2015 12:45:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150311114518.GU24885@pengutronix.de>
-References: <20150310141659.GH30554@ns203013.ovh.net>
- <1425997697-27467-1-git-send-email-plagnioj@jcrosoft.com>
- <1425997697-27467-2-git-send-email-plagnioj@jcrosoft.com>
- <20150311053242.GL24885@pengutronix.de>
- <20150311102654.GJ30554@ns203013.ovh.net>
+Received: from 8.mo6.mail-out.ovh.net ([178.33.42.204])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YVgfO-0000sQ-Mv
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 13:27:20 +0000
+Received: from mail179.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id D5C58FFA0D8
+ for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 14:26:47 +0100 (CET)
+Date: Wed, 11 Mar 2015 14:26:34 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150311132634.GN30554@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150311102654.GJ30554@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,57 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] digest: make it multi-instance
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/8] add sha384/sha512 and hmac support
+To: barebox@lists.infradead.org
 
-On Wed, Mar 11, 2015 at 11:44:48AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 06:32 Wed 11 Mar     , Sascha Hauer wrote:
-> > On Tue, Mar 10, 2015 at 03:28:12PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Now you need to call digest_alloc and when you finish to use it digest_free.
-> > > 
-> > > We need this for upcomming aes encryption support and secure boot
-> > > as we will need multiple instance of the same digest.
-> > > 
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > 
-> > > +struct digest* digest_alloc(char* name)
-> > > +{
-> > > +	struct digest* d;
-> > > +	struct digest_algo* algo;
-> > > +
-> > > +	algo = digest_algo_get_by_name(name);
-> > > +	if (!algo)
-> > > +		return NULL;
-> > > +
-> > > +	d = xzalloc(sizeof(*d));
-> > > +	d->algo = algo;
-> > > +	d->ctx = xzalloc(algo->ctx_length);
-> > 
-> > 
-> > I would pretty much prefer to delegate the allocation to the digest_algo
-> > via an algo->alloc() function. The algo specific allocation function
-> > could then embed struct digest into a bigger struct and use
-> > container_of() to get its private data. No need for d->ctx and
-> > algo->ctx_length then.
-> > 
-> 
-> even in linux we did allocate the ctx at framework level
-> 
-> this will reduce the binary size at the end just few bytes maybe but
-> few bytes everywhere make kiB as did Mazda on then new mx-5
+HI,
 
-Ok, then let's hope this is really smaller in binary size.
+	this will allow to add later secure boot support
 
-Sascha
+	This the first patch series of some mores
 
+	To add
+	 - AES with CBC and XTS
+	 - RSA with AS1N and X509
+	 - Key store support
+	 - 2 customs software support
+	 - 1 hardware secure boot support
+	 - a generic API to handle secure boot
+	   without specific user interaction
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+v2:
+
+	switch hmac to generic digest as hmac(%s) such as hmac(sha256)
+	by introducing set_key call back
+
+	for the command use -h to pass the key
+
+	The RSA_SIGN support will be add as a digest too
+
+Best Regards,
+J.
+
+The following changes since commit a1a5a212985053fac141975f6f6cd8e30051b401:
+
+  Documentation: handle missing group declaration (2015-03-10 15:04:23 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/hmac
+
+for you to fetch changes up to b92e8460facf9bc65ec511a44a305e4273a31d70:
+
+  command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512 (2015-03-11 18:45:59 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (8):
+      digest: move digest.c to crypto
+      digest: introduce digest_{init/update/final/length}
+      digest: make it multi-instance
+      crypto: add sha384 & sha512 support
+      command: add sha384sum and sha512sum support
+      password: add support for sha512
+      digest: add HMAC support for md5, sha1, sha224, sha256, sha384, sha512
+      command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512
+
+ commands/Kconfig            |  24 +++++++++++++
+ commands/digest.c           |  81 ++++++++++++++++++++++++++++++++++++++----
+ common/Kconfig              |   4 +++
+ common/Makefile             |   1 -
+ common/password.c           |  33 +++++++++--------
+ crypto/Kconfig              |   9 +++++
+ crypto/Makefile             |   4 +++
+ {common => crypto}/digest.c |  64 +++++++++++++++++++++++++--------
+ crypto/hmac.c               | 129 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ crypto/internal.h           |  15 ++++++++
+ crypto/md5.c                |  42 ++++++++++------------
+ crypto/sha1.c               |  42 ++++++++++------------
+ crypto/sha2.c               |  92 +++++++++++++++++++++++------------------------
+ crypto/sha4.c               | 361 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/digest.h            |  50 +++++++++++++++++++++++---
+ 15 files changed, 815 insertions(+), 136 deletions(-)
+ rename {common => crypto}/digest.c (68%)
+ create mode 100644 crypto/hmac.c
+ create mode 100644 crypto/internal.h
+ create mode 100644 crypto/sha4.c
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
