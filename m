@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVcAS-0004af-Mc
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 08:39:05 +0000
-Date: Wed, 11 Mar 2015 09:38:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150311083842.GQ24885@pengutronix.de>
-References: <1426019340-12159-1-git-send-email-l.stach@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1426019340-12159-1-git-send-email-l.stach@pengutronix.de>
+ Linux)) id 1YVdMB-0007fD-JD
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 09:55:17 +0000
+Message-ID: <1426067690.30734.3.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 11 Mar 2015 10:54:50 +0100
+In-Reply-To: <20150311083814.GP24885@pengutronix.de>
+References: <1426017548-30324-1-git-send-email-l.stach@pengutronix.de>
+ <1426017548-30324-5-git-send-email-l.stach@pengutronix.de>
+ <20150311083814.GP24885@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] parameter: include header for ERR_PTR and errno
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 5/5] ARM: highbank: fix Thumb build
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 10, 2015 at 09:29:00PM +0100, Lucas Stach wrote:
-> Commit 03b59bdb64e83e (paramter: The dev_add_param_*() return ERR_PTR(),
-> change no-ops to return ERR_PTR(-ENOSYS) instead of NULL) started using
-> ERR_PTR and errnos without including the relevant header.
+Am Mittwoch, den 11.03.2015, 09:38 +0100 schrieb Sascha Hauer:
+> On Tue, Mar 10, 2015 at 08:59:08PM +0100, Lucas Stach wrote:
+> > Note: this only fixes the build failure, I haven't actually tested
+> > if it works.
+> > 
+> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> > ---
+> >  arch/arm/mach-highbank/smc.S | 1 +
+> >  1 file changed, 1 insertion(+)
 > 
-> This fixes the build for a lot of configurations.
+> Applied all but this one.
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
-> Sascha, please apply to master as the above commit is already there.
+> Could you tell us more about the build failure? It builds fine here with
+> thumb2 enabled.
+> 
+The failure is this one:
+Error: selected processor does not support Thumb mode `smc #0' 
 
-Applied, thanks
+Now looking at this again it may not only hit the Thumb build, but also
+normal ARM mode builds. The check that is triggered here was only later
+introduced into binutils, I can't really point at a specific version
+though.
 
-Sascha
+So you may not see this error depending on your toolchain version.
 
-
+Regards,
+Lucas
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
+
 
 _______________________________________________
 barebox mailing list
