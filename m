@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo6.mail-out.ovh.net ([87.98.171.146])
+Received: from 8.mo6.mail-out.ovh.net ([178.33.42.204])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YVjt6-0004xd-VV
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 16:53:43 +0000
+ id 1YVjt3-0004tY-VX
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 16:53:39 +0000
 Received: from mail617.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 2BDCDFFA0A4
- for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 17:53:17 +0100 (CET)
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 1AF2AFFA0BC
+ for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 17:53:15 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 11 Mar 2015 17:53:09 +0100
-Message-Id: <1426092789-7708-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 11 Mar 2015 17:53:06 +0100
+Message-Id: <1426092789-7708-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426092789-7708-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150311165009.GP30554@ns203013.ovh.net>
  <1426092789-7708-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,171 +25,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] command: add hmac sum supportfor md5, sha1, sha224, sha256,
- sha384, sha512
+Subject: [PATCH 5/8] command: add sha384sum and sha512sum support
 To: barebox@lists.infradead.org
-
-pass the key via -h param
-
-barebox@barebox sandbox:/ sha256sum -h test /dev/fd0
-c297473e9bb221c5dc51d47ad75c76095f1bdc4ca9dff1d5931c2e22bf11a0de  /dev/fd0 0x00000000 ... 0xffffffffffffffff
-
-use the same idea as openssl command
-
-$ openssl dgst -sha256 -hmac "test" TODO
-HMAC-SHA256(TODO)= c297473e9bb221c5dc51d47ad75c76095f1bdc4ca9dff1d5931c2e22bf11a0de
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/digest.c | 34 +++++++++++++++++++++++++++++-----
- crypto/digest.c   | 10 ++++++++--
- include/digest.h  |  3 +++
- 3 files changed, 40 insertions(+), 7 deletions(-)
+ commands/Kconfig  | 24 ++++++++++++++++++++++++
+ commands/digest.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+)
 
+diff --git a/commands/Kconfig b/commands/Kconfig
+index e4f68e7..8fa2178 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1016,6 +1016,30 @@ config CMD_SHA256SUM
+ 
+ 	  Calculate a SHA256 digest over a FILE or a memory area.
+ 
++config CMD_SHA384SUM
++	tristate
++	select COMPILE_DIGEST
++	select SHA384
++	prompt "sha384sum"
++	help
++	  Calculate SHA384 digest
++
++	  Usage: sha384sum FILE|AREA
++
++	  Calculate a SHA384 digest over a FILE or a memory area.
++
++config CMD_SHA512SUM
++	tristate
++	select COMPILE_DIGEST
++	select SHA512
++	prompt "sha512sum"
++	help
++	  sha512sum - calculate SHA512 digest
++
++	  Usage: sha512sum FILE|AREA
++
++	  Calculate a SHA512 digest over a FILE or a memory area.
++
+ config CMD_UNCOMPRESS
+ 	bool
+ 	select UNCOMPRESS
 diff --git a/commands/digest.c b/commands/digest.c
-index 20fa13f..701e6a1 100644
+index c6a2751..20fa13f 100644
 --- a/commands/digest.c
 +++ b/commands/digest.c
-@@ -25,6 +25,7 @@
- #include <xfuncs.h>
- #include <malloc.h>
- #include <digest.h>
-+#include <getopt.h>
+@@ -159,3 +159,45 @@ BAREBOX_CMD_START(sha256sum)
+ BAREBOX_CMD_END
  
- static int do_digest(char *algorithm, int argc, char *argv[])
- {
-@@ -32,11 +33,32 @@ static int do_digest(char *algorithm, int argc, char *argv[])
- 	int ret = 0;
- 	int i;
- 	unsigned char *hash;
-+	unsigned char *key = NULL;
-+	size_t keylen = 0;
-+	int opt;
+ #endif /* CMD_CMD_SHA256SUM */
 +
-+	while((opt = getopt(argc, argv, "h:")) > 0) {
-+		switch(opt) {
-+		case 'h':
-+			key = optarg;
-+			keylen = strlen(key);
-+			break;
-+		}
-+	}
- 
--	d = digest_alloc(algorithm);
-+	argc -= optind;
-+	argv += optind;
++#ifdef CONFIG_CMD_SHA384SUM
 +
-+	if (key) {
-+		char *tmp = asprintf("hmac(%s)", algorithm);
-+		d = digest_alloc(tmp);
-+		free(tmp);
-+	} else {
-+		d = digest_alloc(algorithm);
-+	}
- 	BUG_ON(!d);
- 
--	if (argc < 2)
-+	if (argc < 1)
- 		return COMMAND_ERROR_USAGE;
- 
- 	hash = calloc(digest_length(d), sizeof(unsigned char));
-@@ -45,7 +67,6 @@ static int do_digest(char *algorithm, int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
- 	}
- 
--	argv++;
- 	while (*argv) {
- 		char *filename = "/dev/mem";
- 		loff_t start = 0, size = ~0;
-@@ -53,11 +74,14 @@ static int do_digest(char *algorithm, int argc, char *argv[])
- 		/* arguments are either file, file+area or area */
- 		if (parse_area_spec(*argv, &start, &size)) {
- 			filename = *argv;
--			if (argv[1] && !parse_area_spec(argv[1], &start, &size))
-+			if (argv[0] && !parse_area_spec(argv[0], &start, &size))
- 				argv++;
- 		}
- 
--		if (digest_file_window(d, filename, hash, start, size) < 0) {
-+		ret = digest_file_window(d, filename,
-+					 key, keylen,
-+					 hash, start, size);
-+		if (ret < 0) {
- 			ret = 1;
- 		} else {
- 			for (i = 0; i < digest_length(d); i++)
-diff --git a/crypto/digest.c b/crypto/digest.c
-index 65224bd..2f2039c 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -116,6 +116,7 @@ void digest_free(struct digest *d)
- EXPORT_SYMBOL_GPL(digest_free);
- 
- int digest_file_window(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash,
- 		       ulong start, ulong size)
- {
-@@ -124,6 +125,9 @@ int digest_file_window(struct digest *d, char *filename,
- 	unsigned char *buf;
- 	int flags = 0;
- 
-+	if (key)
-+		digest_set_key(d, key, keylen);
++static int do_sha384(int argc, char *argv[])
++{
++	return do_digest("sha384", argc, argv);
++}
 +
- 	digest_init(d);
- 
- 	fd = open(filename, O_RDONLY);
-@@ -186,6 +190,7 @@ out:
- EXPORT_SYMBOL_GPL(digest_file_window);
- 
- int digest_file(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash)
- {
- 	struct stat st;
-@@ -196,11 +201,12 @@ int digest_file(struct digest *d, char *filename,
- 	if (ret < 0)
- 		return ret;
- 
--	return digest_file_window(d, filename, hash, 0, st.st_size);
-+	return digest_file_window(d, filename, key, keylen, hash, 0, st.st_size);
- }
- EXPORT_SYMBOL_GPL(digest_file);
- 
- int digest_file_by_name(char *algo, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash)
- {
- 	struct digest *d;
-@@ -210,7 +216,7 @@ int digest_file_by_name(char *algo, char *filename,
- 	if (!d)
- 		return -EIO;
- 
--	ret = digest_file(d, filename, hash);
-+	ret = digest_file(d, filename, key, keylen, hash);
- 	digest_free(d);
- 	return ret;
- }
-diff --git a/include/digest.h b/include/digest.h
-index a26848c..fd47a7e 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -54,11 +54,14 @@ struct digest *digest_alloc(char* name);
- void digest_free(struct digest *d);
- 
- int digest_file_window(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash,
- 		       ulong start, ulong size);
- int digest_file(struct digest *d, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash);
- int digest_file_by_name(char *algo, char *filename,
-+		       unsigned char *key, size_t keylen,
- 		       unsigned char *hash);
- 
- static inline int digest_init(struct digest *d)
++BAREBOX_CMD_HELP_START(sha384sum)
++BAREBOX_CMD_HELP_TEXT("Calculate a SHA384 digest over a FILE or a memory area.")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(sha384sum)
++	.cmd		= do_sha384,
++	BAREBOX_CMD_DESC("calculate SHA384 digest")
++	BAREBOX_CMD_OPTS("FILE|AREA")
++	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
++	BAREBOX_CMD_HELP(cmd_sha384sum_help)
++BAREBOX_CMD_END
++
++#endif /* CMD_CMD_SHA384SUM */
++
++#ifdef CONFIG_CMD_SHA512SUM
++
++static int do_sha512(int argc, char *argv[])
++{
++	return do_digest("sha512", argc, argv);
++}
++
++BAREBOX_CMD_HELP_START(sha512sum)
++BAREBOX_CMD_HELP_TEXT("Calculate a SHA512 digest over a FILE or a memory area.")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(sha512sum)
++	.cmd		= do_sha512,
++	BAREBOX_CMD_DESC("calculate SHA512 digest")
++	BAREBOX_CMD_OPTS("FILE|AREA")
++	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
++	BAREBOX_CMD_HELP(cmd_sha512sum_help)
++BAREBOX_CMD_END
++
++#endif /* CMD_CMD_SHA512SUM */
 -- 
 2.1.4
 
