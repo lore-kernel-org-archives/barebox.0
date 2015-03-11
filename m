@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo6.mail-out.ovh.net ([178.32.124.17])
+Received: from 17.mo6.mail-out.ovh.net ([46.105.36.150])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YVgqn-0004H8-TS
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 13:39:07 +0000
+ id 1YVgu6-0008UZ-MW
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 13:42:31 +0000
 Received: from mail179.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id B862BFFA13C
- for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 14:38:37 +0100 (CET)
-Date: Wed, 11 Mar 2015 14:38:27 +0100
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 06622FFA232
+ for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 14:42:04 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150311133827.GO30554@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 11 Mar 2015 14:41:49 +0100
+Message-Id: <1426081316-14657-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20150311132634.GN30554@ns203013.ovh.net>
+References: <20150311132634.GN30554@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,83 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8 v2] add sha384/sha512 and hmac support
+Subject: [PATCH 1/8] digest: move digest.c to crypto
 To: barebox@lists.infradead.org
 
-HI,
+with not the rest of the implementation
 
-	this will allow to add later secure boot support
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/Makefile             | 1 -
+ crypto/Makefile             | 1 +
+ {common => crypto}/digest.c | 0
+ 3 files changed, 1 insertion(+), 1 deletion(-)
+ rename {common => crypto}/digest.c (100%)
 
-	This the first patch series of some mores
+diff --git a/common/Makefile b/common/Makefile
+index ee5dca7..6bfbfb4 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -20,7 +20,6 @@ obj-$(CONFIG_CMD_MEMTEST)	+= memtest.o
+ obj-$(CONFIG_COMMAND_SUPPORT)	+= command.o
+ obj-$(CONFIG_CONSOLE_FULL)	+= console.o
+ obj-$(CONFIG_CONSOLE_SIMPLE)	+= console_simple.o
+-obj-$(CONFIG_DIGEST)		+= digest.o
+ obj-$(CONFIG_DDR_SPD)		+= ddr_spd.o
+ obj-$(CONFIG_ENV_HANDLING)	+= environment.o
+ obj-$(CONFIG_ENVIRONMENT_VARIABLES) += env.o
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 7c5b035..22ae829 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -1,6 +1,7 @@
+ obj-$(CONFIG_CRC32)	+= crc32.o
+ obj-$(CONFIG_CRC16)	+= crc16.o
+ obj-$(CONFIG_CRC7)	+= crc7.o
++obj-$(CONFIG_DIGEST)	+= digest.o
+ obj-$(CONFIG_MD5)	+= md5.o
+ obj-$(CONFIG_SHA1)	+= sha1.o
+ obj-$(CONFIG_SHA224)	+= sha2.o
+diff --git a/common/digest.c b/crypto/digest.c
+similarity index 100%
+rename from common/digest.c
+rename to crypto/digest.c
+-- 
+2.1.4
 
-	To add
-	 - AES with CBC and XTS
-	 - RSA with AS1N and X509
-	 - Key store support
-	 - 2 customs software support
-	 - 1 hardware secure boot support
-	 - a generic API to handle secure boot
-	   without specific user interaction
-
-v2:
-
-	switch hmac to a generic digest as hmac(%s) such as hamc(sha256)
-	add set_key to algo to allow to pass the key
-
-	RSA_SIGN will be intergrate in the same way
-
-	for the command use -h to pass the key (similar to openssl)
-
-The following changes since commit a1a5a212985053fac141975f6f6cd8e30051b401:
-
-  Documentation: handle missing group declaration (2015-03-10 15:04:23 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/hmac
-
-for you to fetch changes up to b92e8460facf9bc65ec511a44a305e4273a31d70:
-
-  command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512 (2015-03-11 18:45:59 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (8):
-      digest: move digest.c to crypto
-      digest: introduce digest_{init/update/final/length}
-      digest: make it multi-instance
-      crypto: add sha384 & sha512 support
-      command: add sha384sum and sha512sum support
-      password: add support for sha512
-      digest: add HMAC support for md5, sha1, sha224, sha256, sha384, sha512
-      command: add hmac sum supportfor md5, sha1, sha224, sha256, sha384, sha512
-
- commands/Kconfig            |  24 +++++++++++++
- commands/digest.c           |  81 ++++++++++++++++++++++++++++++++++++++----
- common/Kconfig              |   4 +++
- common/Makefile             |   1 -
- common/password.c           |  33 +++++++++--------
- crypto/Kconfig              |   9 +++++
- crypto/Makefile             |   4 +++
- {common => crypto}/digest.c |  64 +++++++++++++++++++++++++--------
- crypto/hmac.c               | 129 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- crypto/internal.h           |  15 ++++++++
- crypto/md5.c                |  42 ++++++++++------------
- crypto/sha1.c               |  42 ++++++++++------------
- crypto/sha2.c               |  92 +++++++++++++++++++++++------------------------
- crypto/sha4.c               | 361 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/digest.h            |  50 +++++++++++++++++++++++---
- 15 files changed, 815 insertions(+), 136 deletions(-)
- rename {common => crypto}/digest.c (68%)
- create mode 100644 crypto/hmac.c
- create mode 100644 crypto/internal.h
- create mode 100644 crypto/sha4.c
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
