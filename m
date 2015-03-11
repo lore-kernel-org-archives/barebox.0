@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo6.mail-out.ovh.net ([188.165.39.161])
+Received: from 18.mo6.mail-out.ovh.net ([46.105.73.110])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YVk71-0001E3-E1
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 17:08:04 +0000
+ id 1YVk7t-0001t3-AO
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 17:08:58 +0000
 Received: from mail617.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 8F036FF9EFA
- for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 18:07:36 +0100 (CET)
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 92B49FFA1DA
+ for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 18:08:28 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 11 Mar 2015 18:07:32 +0100
-Message-Id: <1426093652-9836-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 11 Mar 2015 18:08:25 +0100
+Message-Id: <1426093705-9990-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -50,7 +50,7 @@ index e72b91e..9a0befc 100644
  config DIGEST_HMAC
  	bool "HMAC"
  
-+config PBKDF2
++config CRYPTO_PBKDF2
 +	select DIGEST
 +	select SHA1
 +	bool
