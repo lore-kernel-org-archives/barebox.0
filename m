@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo6.mail-out.ovh.net ([178.33.42.204])
+Received: from 20.mo6.mail-out.ovh.net ([178.32.124.17])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YVgfO-0000sQ-Mv
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 13:27:20 +0000
+ id 1YVgqn-0004H8-TS
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 13:39:07 +0000
 Received: from mail179.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id D5C58FFA0D8
- for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 14:26:47 +0100 (CET)
-Date: Wed, 11 Mar 2015 14:26:34 +0100
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id B862BFFA13C
+ for <barebox@lists.infradead.org>; Wed, 11 Mar 2015 14:38:37 +0100 (CET)
+Date: Wed, 11 Mar 2015 14:38:27 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150311132634.GN30554@ns203013.ovh.net>
+Message-ID: <20150311133827.GO30554@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -23,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] add sha384/sha512 and hmac support
+Subject: [PATCH 0/8 v2] add sha384/sha512 and hmac support
 To: barebox@lists.infradead.org
 
 HI,
@@ -43,15 +43,12 @@ HI,
 
 v2:
 
-	switch hmac to generic digest as hmac(%s) such as hmac(sha256)
-	by introducing set_key call back
+	switch hmac to a generic digest as hmac(%s) such as hamc(sha256)
+	add set_key to algo to allow to pass the key
 
-	for the command use -h to pass the key
+	RSA_SIGN will be intergrate in the same way
 
-	The RSA_SIGN support will be add as a digest too
-
-Best Regards,
-J.
+	for the command use -h to pass the key (similar to openssl)
 
 The following changes since commit a1a5a212985053fac141975f6f6cd8e30051b401:
 
