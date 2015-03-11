@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVZ5T-0001Pu-Qb
- for barebox@lists.infradead.org; Wed, 11 Mar 2015 05:21:44 +0000
-Date: Wed, 11 Mar 2015 06:21:20 +0100
+ Linux)) id 1YVZGS-0006IL-QL
+ for barebox@lists.infradead.org; Wed, 11 Mar 2015 05:33:05 +0000
+Date: Wed, 11 Mar 2015 06:32:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150311052120.GK24885@pengutronix.de>
+Message-ID: <20150311053242.GL24885@pengutronix.de>
 References: <20150310141659.GH30554@ns203013.ovh.net>
  <1425997697-27467-1-git-send-email-plagnioj@jcrosoft.com>
  <1425997697-27467-2-git-send-email-plagnioj@jcrosoft.com>
@@ -36,49 +36,26 @@ On Tue, Mar 10, 2015 at 03:28:12PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  commands/digest.c |  3 ++-
->  common/digest.c   | 50 ++++++++++++++++++++++++++++++++++++++++----------
->  common/password.c |  5 +++--
->  crypto/md5.c      | 34 +++++++++++-----------------------
->  crypto/sha1.c     | 34 +++++++++++-----------------------
->  crypto/sha2.c     | 55 ++++++++++++++++++++-----------------------------------
->  include/digest.h  | 26 +++++++++++++++++---------
->  7 files changed, 104 insertions(+), 103 deletions(-)
-> 
-> diff --git a/commands/digest.c b/commands/digest.c
-> index bad7d3f..c6a2751 100644
-> --- a/commands/digest.c
-> +++ b/commands/digest.c
-> @@ -33,7 +33,7 @@ static int do_digest(char *algorithm, int argc, char *argv[])
->  	int i;
->  	unsigned char *hash;
->  
-> -	d = digest_get_by_name(algorithm);
-> +	d = digest_alloc(algorithm);
->  	BUG_ON(!d);
->  
->  	if (argc < 2)
-> @@ -71,6 +71,7 @@ static int do_digest(char *algorithm, int argc, char *argv[])
->  	}
->  
->  	free(hash);
-> +	digest_free(d);
->  
->  	return ret;
->  }
-> diff --git a/common/digest.c b/common/digest.c
-> index 789c0b2..89af862 100644
-> --- a/common/digest.c
-> +++ b/common/digest.c
-> @@ -28,12 +28,14 @@
->  
->  static LIST_HEAD(digests);
->  
-> +static struct digest_algo* digest_algo_get_by_name(char* name);
 
-The coding style is to put the '*' adjacent to the data name or function
-name, not adjacent to the type name. Please stick to it. A patch to
-clean this up first in this file would be very welcomed.
+> +struct digest* digest_alloc(char* name)
+> +{
+> +	struct digest* d;
+> +	struct digest_algo* algo;
+> +
+> +	algo = digest_algo_get_by_name(name);
+> +	if (!algo)
+> +		return NULL;
+> +
+> +	d = xzalloc(sizeof(*d));
+> +	d->algo = algo;
+> +	d->ctx = xzalloc(algo->ctx_length);
+
+
+I would pretty much prefer to delegate the allocation to the digest_algo
+via an algo->alloc() function. The algo specific allocation function
+could then embed struct digest into a bigger struct and use
+container_of() to get its private data. No need for d->ctx and
+algo->ctx_length then.
 
 Sascha
 
