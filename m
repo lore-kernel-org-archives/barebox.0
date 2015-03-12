@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YVyFK-0007qM-Qn
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 08:13:35 +0000
-Received: from mail240.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 24FDEFFAB43
- for <barebox@lists.infradead.org>; Thu, 12 Mar 2015 09:13:12 +0100 (CET)
-Date: Thu, 12 Mar 2015 09:13:08 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150312081308.GR30554@ns203013.ovh.net>
-References: <20150311165009.GP30554@ns203013.ovh.net>
- <1426092789-7708-1-git-send-email-plagnioj@jcrosoft.com>
- <1426092789-7708-7-git-send-email-plagnioj@jcrosoft.com>
- <20150312071707.GZ24885@pengutronix.de>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YVysA-0002Rq-5L
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 08:53:43 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 51329A002FA
+ for <barebox@lists.infradead.org>; Thu, 12 Mar 2015 09:54:09 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 12 Mar 2015 09:50:40 +0100
+Message-Id: <1426150240-13615-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150312071707.GZ24885@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/8] digest: add HMAC support for md5, sha1, sha224,
- sha256, sha384, sha512
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: phytec-som-am335x: Remove bootargs-ip from boot scripts
+To: barebox@lists.infradead.org
 
-On 08:17 Thu 12 Mar     , Sascha Hauer wrote:
-> On Wed, Mar 11, 2015 at 05:53:08PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > the hmac algo will be registered as hmac(%s) such as hmac(sha256)
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> > +static int digest_hmac_alloc(struct digest *d)
-> > +{
-> > +	struct digest_hmac_ctx *dh = d->ctx;
-> > +	struct digest_hmac *hmac = to_digest_hmac(d->algo);
-> > +
-> > +	dh->d = digest_alloc(hmac->name);
-> > +	if (!dh->d)
-> > +		return -EINVAL;
-> > +
-> > +	dh->ipad = xmalloc(sizeof(unsigned char) * hmac->pad_length);
-> > +	dh->opad = xmalloc(sizeof(unsigned char) * hmac->pad_length);
-> 
-> sizeof(unsigned char) is 1. Dropped while applying.
-habit to always use sizeof but yes no diff
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2UgZG8gbm90IHBhc3MgdGhlIGlwIHRvIGtlcm5lbCBhbnkgbW9yZS4gU28gcmVtb3ZlIGFkZGlu
+ZwppdCB0byBib290YXJncyB3aGVuIGJvb3RpbmcgZnJvbSBuYW5kLCBtbWMgb3Igc3BpIG5vci4K
+ClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFy
+Y2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgv
+Ym9vdC9tbWMgIHwgMiAtLQogYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1
+bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQgfCAyIC0tCiBhcmNoL2FybS9ib2FyZHMvcGh5
+dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3Qvc3BpICB8IDIgLS0K
+IDMgZmlsZXMgY2hhbmdlZCwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9i
+b2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbW1j
+IGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFt
+MzM1eC9ib290L21tYwppbmRleCA2NzBhZmM3Li44MzQ2NjlkIDEwMDY0NAotLS0gYS9hcmNoL2Fy
+bS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3Qv
+bW1jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBo
+eXNvbS1hbTMzNXgvYm9vdC9tbWMKQEAgLTMsNiArMyw0IEBACiBnbG9iYWwuYm9vdG0uaW1hZ2U9
+L2Jvb3QvbGludXhpbWFnZQogZ2xvYmFsLmJvb3RtLm9mdHJlZT0vYm9vdC9vZnRyZWUKIAotYm9v
+dGFyZ3MtaXAKLQogZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PS9kZXYvbW1j
+YmxrMHAyIHJ3IHJvb3R3YWl0IgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1z
+b20tYW0zMzV4L2RlZmF1bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L25hbmQgYi9hcmNoL2FybS9i
+b2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbmFu
+ZAppbmRleCBjNmU0OWJlLi5iOWIxYmM2IDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5
+dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4L2Jvb3QvbmFuZAorKysgYi9h
+cmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1waHlzb20tYW0zMzV4
+L2Jvb3QvbmFuZApAQCAtMyw2ICszLDQgQEAKIGdsb2JhbC5ib290bS5pbWFnZT0iL2Rldi9uYW5k
+MC5rZXJuZWwuYmIiCiBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIvZGV2L25hbmQwLm9mdHJlZS5iYiIK
+IAotYm9vdGFyZ3MtaXAKLQogZ2xvYmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PXVi
+aTA6cm9vdCB1YmkubXRkPXJvb3Qgcncgcm9vdGZzdHlwZT11YmlmcyIKZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMzNXgv
+Ym9vdC9zcGkgYi9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXNvbS1hbTMzNXgvZGVmYXVsdGVudi1w
+aHlzb20tYW0zMzV4L2Jvb3Qvc3BpCmluZGV4IDQzYTg5ZmUuLjcxYzU4MzQgMTAwNjQ0Ci0tLSBh
+L2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtc29tLWFtMzM1eC9kZWZhdWx0ZW52LXBoeXNvbS1hbTMz
+NXgvYm9vdC9zcGkKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1zb20tYW0zMzV4L2RlZmF1
+bHRlbnYtcGh5c29tLWFtMzM1eC9ib290L3NwaQpAQCAtMyw3ICszLDUgQEAKIGdsb2JhbC5ib290
+bS5pbWFnZT0iL2Rldi9tMjVwMC5rZXJuZWwiCiBnbG9iYWwuYm9vdG0ub2Z0cmVlPSIvZGV2L20y
+NXAwLm9mdHJlZSIKIAotYm9vdGFyZ3MtaXAKLQogIyBVc2Ugcm9vdGZzIGZyb20gTkFORAogZ2xv
+YmFsLmxpbnV4LmJvb3RhcmdzLmR5bi5yb290PSJyb290PXViaTA6cm9vdCB1YmkubXRkPW5hbmQw
+LnJvb3Qgcncgcm9vdGZzdHlwZT11YmlmcyIKLS0gCjEuOS4xCgoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
