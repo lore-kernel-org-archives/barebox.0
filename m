@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YW0bx-0004aj-CH
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 10:45:06 +0000
-Received: from mail412.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id BF2ADFFAFC4
- for <barebox@lists.infradead.org>; Thu, 12 Mar 2015 11:44:41 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 12 Mar 2015 11:44:32 +0100
-Message-Id: <1426157072-2434-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1426157072-2434-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1426157072-2434-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YW0sn-0008Uc-Nj
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 11:02:33 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 12 Mar 2015 12:02:05 +0100
+Message-Id: <1426158125-3861-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +19,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] digest: hmac: fix set_key prototype
-To: barebox@lists.infradead.org
+Subject: [PATCH] clk: clk-divider: fix _get_maxdiv for table based divider
+To: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+The divider lacks the code for calculating the maximum divider for table
+based dividers. Add it.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- crypto/hmac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/clk-divider.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/crypto/hmac.c b/crypto/hmac.c
-index 8d07a61..1462730 100644
---- a/crypto/hmac.c
-+++ b/crypto/hmac.c
-@@ -57,7 +57,8 @@ static void digest_hmac_free(struct digest *d)
- 	digest_free(dh->d);
+diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
+index 646e5b0..791e10e 100644
+--- a/drivers/clk/clk-divider.c
++++ b/drivers/clk/clk-divider.c
+@@ -23,12 +23,25 @@
+ 
+ #define div_mask(d)	((1 << ((d)->width)) - 1)
+ 
++static unsigned int _get_table_maxdiv(const struct clk_div_table *table)
++{
++	unsigned int maxdiv = 0;
++	const struct clk_div_table *clkt;
++
++	for (clkt = table; clkt->div; clkt++)
++		if (clkt->div > maxdiv)
++			maxdiv = clkt->div;
++	return maxdiv;
++}
++
+ static unsigned int _get_maxdiv(struct clk_divider *divider)
+ {
+ 	if (divider->flags & CLK_DIVIDER_ONE_BASED)
+ 		return div_mask(divider);
+ 	if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
+ 		return 1 << div_mask(divider);
++	if (divider->table)
++		return _get_table_maxdiv(divider->table);
+ 	return div_mask(divider) + 1;
  }
  
--static int digest_hmac_set_key(struct digest *d, unsigned char *key, unsigned int len)
-+static int digest_hmac_set_key(struct digest *d, const unsigned char *key,
-+				unsigned int len)
- {
- 	struct digest_hmac_ctx *dh = d->ctx;
- 	struct digest_hmac *hmac = to_digest_hmac(d->algo);
 -- 
 2.1.4
 
