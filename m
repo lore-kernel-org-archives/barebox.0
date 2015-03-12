@@ -1,23 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YW4Wv-0007nb-OV
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:56:10 +0000
-Received: from kiwi.hi.pengutronix.de ([2001:67c:670:100:1d::c3] helo=kiwi)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jlu@pengutronix.de>) id 1YW4WZ-0002qe-9P
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 15:55:47 +0100
-Received: from jlu by kiwi with local (Exim 4.84)
- (envelope-from <jlu@pengutronix.de>) id 1YW4WZ-00051J-0X
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 15:55:47 +0100
-Message-ID: <1426172146.13791.70.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Thu, 12 Mar 2015 15:55:46 +0100
-In-Reply-To: <1426170146-31302-4-git-send-email-plagnioj@jcrosoft.com>
+ Linux)) id 1YW77c-0007SN-PD
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 17:42:13 +0000
+Date: Thu, 12 Mar 2015 18:41:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150312174149.GH24885@pengutronix.de>
 References: <20150312141938.GS30554@ns203013.ovh.net>
  <1426170146-31302-1-git-send-email-plagnioj@jcrosoft.com>
  <1426170146-31302-4-git-send-email-plagnioj@jcrosoft.com>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1426170146-31302-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,21 +25,77 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 4/7] digest: add verify callback
-To: barebox@lists.infradead.org
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On Do, 2015-03-12 at 15:22 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Thu, Mar 12, 2015 at 03:22:23PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> this will allow to compare a md with the original one
+> 
+> When calling this do not call final
+> 
+> For RSA_SIGN verification final does not exist only verify
+> as final will be for signing
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  crypto/digest.c   | 23 ++++++++++++++++++++++-
+>  crypto/hmac.c     |  1 +
+>  crypto/internal.h |  2 ++
+>  crypto/md5.c      |  1 +
+>  crypto/sha1.c     |  1 +
+>  crypto/sha2.c     |  2 ++
+>  crypto/sha4.c     |  2 ++
+>  include/digest.h  |  6 ++++++
+>  8 files changed, 37 insertions(+), 1 deletion(-)
+> 
+> diff --git a/crypto/digest.c b/crypto/digest.c
+> index c06089d..98c3607 100644
+> --- a/crypto/digest.c
+> +++ b/crypto/digest.c
+> @@ -26,6 +26,8 @@
+>  #include <module.h>
+>  #include <linux/err.h>
+>  
+> +#include "internal.h"
+> +
+>  static LIST_HEAD(digests);
+>  
+>  static struct digest_algo *digest_algo_get_by_name(const char *name);
+> @@ -37,9 +39,28 @@ static int dummy_init(struct digest *d)
+>  
+>  static void dummy_free(struct digest *d) {}
+>  
 > +int digest_generic_verity(struct digest *d, const unsigned char *md)
-                     ^^^^^^ shouldn't this be "verify" for consistency?
 
-> +       int (*verify)(struct digest *d, const unsigned char *in);
-                                                              ^^
-this is called "md" in the other prototypes
+s/verity/verify/
+
+> +{
+> +	int ret;
+> +	int len = digest_length(d);
+> +	unsigned char *tmp;
+> +
+> +	tmp = xmalloc(sizeof(len));
+
+sizeof(len) is not what you want.
+
+> +
+> +	ret = digest_final(d, tmp);
+> +	if (ret)
+> +		goto end;
+> +
+> +	ret = memcmp(md, tmp, len);
+
+ret = ret ? -EINVAL : 0;
+
+To consistently return an error code.
+
+Sascha
+
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 _______________________________________________
 barebox mailing list
