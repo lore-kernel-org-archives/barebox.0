@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo6.mail-out.ovh.net ([178.32.124.17])
+Received: from 15.mo6.mail-out.ovh.net ([188.165.39.161])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YW40n-0003sp-N1
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:22:59 +0000
+ id 1YW40n-0003s3-Ky
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:22:58 +0000
 Received: from mail609.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 7B857FFA7BB
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 4A405FFA7DB
  for <barebox@lists.infradead.org>; Thu, 12 Mar 2015 15:22:34 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 12 Mar 2015 15:22:23 +0100
-Message-Id: <1426170146-31302-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 12 Mar 2015 15:22:25 +0100
+Message-Id: <1426170146-31302-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426170146-31302-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150312141938.GS30554@ns203013.ovh.net>
  <1426170146-31302-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,181 +25,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] digest: add verify callback
+Subject: [PATCH 6/7] command: rename digest.c to hashsum.c
 To: barebox@lists.infradead.org
 
-this will allow to compare a md with the original one
-
-When calling this do not call final
-
-For RSA_SIGN verification final does not exist only verify
-as final will be for signing
+as I'll add a new generic command named digest
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- crypto/digest.c   | 23 ++++++++++++++++++++++-
- crypto/hmac.c     |  1 +
- crypto/internal.h |  2 ++
- crypto/md5.c      |  1 +
- crypto/sha1.c     |  1 +
- crypto/sha2.c     |  2 ++
- crypto/sha4.c     |  2 ++
- include/digest.h  |  6 ++++++
- 8 files changed, 37 insertions(+), 1 deletion(-)
+ commands/Kconfig                 | 14 +++++++-------
+ commands/Makefile                |  2 +-
+ commands/{digest.c => hashsum.c} |  0
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+ rename commands/{digest.c => hashsum.c} (100%)
 
-diff --git a/crypto/digest.c b/crypto/digest.c
-index c06089d..98c3607 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -26,6 +26,8 @@
- #include <module.h>
- #include <linux/err.h>
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 286e9ce..7e3e8b7 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -12,7 +12,7 @@ config HAS_POWEROFF
  
-+#include "internal.h"
-+
- static LIST_HEAD(digests);
+ if COMMAND_SUPPORT
  
- static struct digest_algo *digest_algo_get_by_name(const char *name);
-@@ -37,9 +39,28 @@ static int dummy_init(struct digest *d)
+-config COMPILE_DIGEST
++config COMPILE_HASH
+ 	tristate
+ 	select DIGEST
+ 	help
+@@ -917,7 +917,7 @@ config CMD_LS
  
- static void dummy_free(struct digest *d) {}
+ config CMD_MD5SUM
+ 	tristate
+-	select COMPILE_DIGEST
++	select COMPILE_HASH
+ 	select MD5
+ 	prompt "md5sum"
+ 	help
+@@ -982,7 +982,7 @@ config CMD_RMDIR
  
-+int digest_generic_verity(struct digest *d, const unsigned char *md)
-+{
-+	int ret;
-+	int len = digest_length(d);
-+	unsigned char *tmp;
-+
-+	tmp = xmalloc(sizeof(len));
-+
-+	ret = digest_final(d, tmp);
-+	if (ret)
-+		goto end;
-+
-+	ret = memcmp(md, tmp, len);
-+end:
-+	free(tmp);
-+	return ret;
-+}
-+
- int digest_algo_register(struct digest_algo *d)
- {
--	if (!d || !d->name || !d->update || !d->final || d->length < 1)
-+	if (!d || !d->name || !d->update || !d->final || !d->verify ||
-+	    d->length < 1)
- 		return -EINVAL;
+ config CMD_SHA1SUM
+ 	tristate
+-	select COMPILE_DIGEST
++	select COMPILE_HASH
+ 	select SHA1
+ 	prompt "sha1sum"
+ 	help
+@@ -994,7 +994,7 @@ config CMD_SHA1SUM
  
- 	if (!d->init)
-diff --git a/crypto/hmac.c b/crypto/hmac.c
-index 1462730..1041352 100644
---- a/crypto/hmac.c
-+++ b/crypto/hmac.c
-@@ -136,6 +136,7 @@ struct digest_algo hmac_algo = {
- 	.init = digest_hmac_init,
- 	.update = digest_hmac_update,
- 	.final = digest_hmac_final,
-+	.verify = digest_generic_verity,
- 	.set_key = digest_hmac_set_key,
- 	.free = digest_hmac_free,
- 	.ctx_length = sizeof(struct digest_hmac),
-diff --git a/crypto/internal.h b/crypto/internal.h
-index cc409d8..82c5186 100644
---- a/crypto/internal.h
-+++ b/crypto/internal.h
-@@ -13,3 +13,5 @@ static inline int digest_hmac_register(struct digest_algo *algo,
- 	return 0;
- }
- #endif
-+
-+int digest_generic_verity(struct digest *d, const unsigned char *md);
-diff --git a/crypto/md5.c b/crypto/md5.c
-index fe17ff5..718f8f0 100644
---- a/crypto/md5.c
-+++ b/crypto/md5.c
-@@ -294,6 +294,7 @@ static struct digest_algo md5 = {
- 	.init = digest_md5_init,
- 	.update = digest_md5_update,
- 	.final = digest_md5_final,
-+	.verify = digest_generic_verity,
- 	.length = 16,
- 	.ctx_length = sizeof(struct MD5Context),
- };
-diff --git a/crypto/sha1.c b/crypto/sha1.c
-index a244b5d..38f0c42 100644
---- a/crypto/sha1.c
-+++ b/crypto/sha1.c
-@@ -315,6 +315,7 @@ static struct digest_algo m = {
- 	.init = digest_sha1_init,
- 	.update = digest_sha1_update,
- 	.final = digest_sha1_final,
-+	.verify = digest_generic_verity,
- 	.length = SHA1_SUM_LEN,
- 	.ctx_length = sizeof(sha1_context),
- };
-diff --git a/crypto/sha2.c b/crypto/sha2.c
-index cb89c82..41e5720 100644
---- a/crypto/sha2.c
-+++ b/crypto/sha2.c
-@@ -304,6 +304,7 @@ static struct digest_algo m224 = {
- 	.init = digest_sha224_init,
- 	.update = digest_sha2_update,
- 	.final = digest_sha2_final,
-+	.verify = digest_generic_verity,
- 	.length = SHA224_SUM_LEN,
- 	.ctx_length = sizeof(sha2_context),
- };
-@@ -335,6 +336,7 @@ static struct digest_algo m256 = {
- 	.init = digest_sha256_init,
- 	.update = digest_sha2_update,
- 	.final = digest_sha2_final,
-+	.verify = digest_generic_verity,
- 	.length = SHA256_SUM_LEN,
- 	.ctx_length = sizeof(sha2_context),
- };
-diff --git a/crypto/sha4.c b/crypto/sha4.c
-index 1c768e7..7c96ac3 100644
---- a/crypto/sha4.c
-+++ b/crypto/sha4.c
-@@ -309,6 +309,7 @@ static struct digest_algo m384 = {
- 	.init = digest_sha384_init,
- 	.update = digest_sha4_update,
- 	.final = digest_sha4_final,
-+	.verify = digest_generic_verity,
- 	.length = SHA384_SUM_LEN,
- 	.ctx_length = sizeof(sha4_context),
- };
-@@ -341,6 +342,7 @@ static struct digest_algo m512 = {
- 	.init = digest_sha512_init,
- 	.update = digest_sha4_update,
- 	.final = digest_sha4_final,
-+	.verify = digest_generic_verity,
- 	.length = SHA512_SUM_LEN,
- 	.ctx_length = sizeof(sha4_context),
- };
-diff --git a/include/digest.h b/include/digest.h
-index b890a7a..c675018 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -32,6 +32,7 @@ struct digest_algo {
- 	int (*update)(struct digest *d, const void *data, unsigned long len);
- 	int (*final)(struct digest *d, unsigned char *md);
- 	int (*set_key)(struct digest *d, const unsigned char *key, unsigned int len);
-+	int (*verify)(struct digest *d, const unsigned char *in);
+ config CMD_SHA224SUM
+ 	tristate
+-	select COMPILE_DIGEST
++	select COMPILE_HASH
+ 	select SHA224
+ 	prompt "sha224sum"
+ 	help
+@@ -1006,7 +1006,7 @@ config CMD_SHA224SUM
  
- 	unsigned int length;
- 	unsigned int ctx_length;
-@@ -80,6 +81,11 @@ static inline int digest_final(struct digest *d, unsigned char *md)
- 	return d->algo->final(d, md);
- }
+ config CMD_SHA256SUM
+ 	tristate
+-	select COMPILE_DIGEST
++	select COMPILE_HASH
+ 	select SHA256
+ 	prompt "sha256sum"
+ 	help
+@@ -1018,7 +1018,7 @@ config CMD_SHA256SUM
  
-+static inline int digest_verify(struct digest *d, const unsigned char *md)
-+{
-+	return d->algo->verify(d, md);
-+}
-+
- static inline int digest_length(struct digest *d)
- {
- 	return d->algo->length;
+ config CMD_SHA384SUM
+ 	tristate
+-	select COMPILE_DIGEST
++	select COMPILE_HASH
+ 	select SHA384
+ 	prompt "sha384sum"
+ 	help
+@@ -1030,7 +1030,7 @@ config CMD_SHA384SUM
+ 
+ config CMD_SHA512SUM
+ 	tristate
+-	select COMPILE_DIGEST
++	select COMPILE_HASH
+ 	select SHA512
+ 	prompt "sha512sum"
+ 	help
+diff --git a/commands/Makefile b/commands/Makefile
+index 7344e01..e42662f 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -1,5 +1,5 @@
+ obj-$(CONFIG_STDDEV)		+= stddev.o
+-obj-$(CONFIG_COMPILE_DIGEST)	+= digest.o
++obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
+ obj-$(CONFIG_COMPILE_MEMORY)	+= mem.o
+ obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
+ obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
+diff --git a/commands/digest.c b/commands/hashsum.c
+similarity index 100%
+rename from commands/digest.c
+rename to commands/hashsum.c
 -- 
 2.1.4
 
