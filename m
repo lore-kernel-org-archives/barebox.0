@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YVxZL-0000kb-8e
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 07:30:11 +0000
-Date: Thu, 12 Mar 2015 08:29:49 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20150312072949.GD24885@pengutronix.de>
-References: <1425999266-20716-1-git-send-email-mkl@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1425999266-20716-1-git-send-email-mkl@pengutronix.de>
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YVy4I-0007n8-7R
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 08:02:10 +0000
+Received: by lbjb6 with SMTP id b6so14053831lbj.9
+ for <barebox@lists.infradead.org>; Thu, 12 Mar 2015 01:01:47 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+ by mx.google.com with ESMTPSA id x5sm1156190laa.44.2015.03.12.01.01.45
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 12 Mar 2015 01:01:46 -0700 (PDT)
+Date: Thu, 12 Mar 2015 12:05:41 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150312120541.2e7f1bc81056c1f28a20753f@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v5] state: add framework for persistent state handling
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: git fetch issue
+To: barebox@lists.infradead.org
 
-On Tue, Mar 10, 2015 at 03:54:26PM +0100, Marc Kleine-Budde wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> This patch adds a framework to describe, access, store and restore a set of
-> variables. A state variable set can be fully described in a devicetree node.
-> This node could be part of the regular devicetree blob or it could be an extra
-> devicetree solely for the state. The state variable set contains variables of
-> different types and a place to store the variable set.
-> 
-> For more information see:
->     Documentation/devicetree/bindings/barebox/barebox,state.rst
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
+Hi All!
 
-Applied, thanks
+I have a problem with git-fetch. Here is the log:
 
-Sascha
+antony@puro:~/barebox$ git remote show pengutronix | grep "Fetch URL"
+  Fetch URL: git://git.pengutronix.de/git/barebox.git
+
+antony@puro:~/barebox$ git fetch pengutronix
+remote: Counting objects: 1101, done.
+remote: Compressing objects: 100% (199/199), done.
+remote: Total 771 (delta 628), reused 672 (delta 555)
+Receiving objects: 100% (771/771), 131.67 KiB | 0 bytes/s, done.
+error: index-pack died of signal 7
+fatal: index-pack failed
+
+antony@puro:~/barebox$ git --version
+git version 2.1.4
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Any comments?
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
