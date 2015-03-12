@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo6.mail-out.ovh.net ([188.165.39.161])
+Received: from 4.mo6.mail-out.ovh.net ([87.98.184.159])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YW40n-0003s3-Ky
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:22:58 +0000
+ id 1YW40p-0003rt-0K
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:23:00 +0000
 Received: from mail609.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 4A405FFA7DB
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 3C6EAFFA4B6
  for <barebox@lists.infradead.org>; Thu, 12 Mar 2015 15:22:34 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 12 Mar 2015 15:22:25 +0100
-Message-Id: <1426170146-31302-6-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1426170146-31302-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 12 Mar 2015 15:22:20 +0100
+Message-Id: <1426170146-31302-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20150312141938.GS30554@ns203013.ovh.net>
 References: <20150312141938.GS30554@ns203013.ovh.net>
- <1426170146-31302-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,101 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] command: rename digest.c to hashsum.c
+Subject: [PATCH 1/7] digest: fix and add missing copyright
 To: barebox@lists.infradead.org
-
-as I'll add a new generic command named digest
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/Kconfig                 | 14 +++++++-------
- commands/Makefile                |  2 +-
- commands/{digest.c => hashsum.c} |  0
- 3 files changed, 8 insertions(+), 8 deletions(-)
- rename commands/{digest.c => hashsum.c} (100%)
+ crypto/hmac.c     | 6 ++++++
+ crypto/internal.h | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 286e9ce..7e3e8b7 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -12,7 +12,7 @@ config HAS_POWEROFF
- 
- if COMMAND_SUPPORT
- 
--config COMPILE_DIGEST
-+config COMPILE_HASH
- 	tristate
- 	select DIGEST
- 	help
-@@ -917,7 +917,7 @@ config CMD_LS
- 
- config CMD_MD5SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select MD5
- 	prompt "md5sum"
- 	help
-@@ -982,7 +982,7 @@ config CMD_RMDIR
- 
- config CMD_SHA1SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA1
- 	prompt "sha1sum"
- 	help
-@@ -994,7 +994,7 @@ config CMD_SHA1SUM
- 
- config CMD_SHA224SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA224
- 	prompt "sha224sum"
- 	help
-@@ -1006,7 +1006,7 @@ config CMD_SHA224SUM
- 
- config CMD_SHA256SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA256
- 	prompt "sha256sum"
- 	help
-@@ -1018,7 +1018,7 @@ config CMD_SHA256SUM
- 
- config CMD_SHA384SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA384
- 	prompt "sha384sum"
- 	help
-@@ -1030,7 +1030,7 @@ config CMD_SHA384SUM
- 
- config CMD_SHA512SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA512
- 	prompt "sha512sum"
- 	help
-diff --git a/commands/Makefile b/commands/Makefile
-index 7344e01..e42662f 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
+diff --git a/crypto/hmac.c b/crypto/hmac.c
+index b04dff1..8d07a61 100644
+--- a/crypto/hmac.c
++++ b/crypto/hmac.c
+@@ -1,3 +1,9 @@
++/*
++ * (C) Copyright 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPL v2 only
++ */
++
+ #include <common.h>
+ #include <digest.h>
+ #include <malloc.h>
+diff --git a/crypto/internal.h b/crypto/internal.h
+index b6a8df0..cc409d8 100644
+--- a/crypto/internal.h
++++ b/crypto/internal.h
 @@ -1,5 +1,5 @@
- obj-$(CONFIG_STDDEV)		+= stddev.o
--obj-$(CONFIG_COMPILE_DIGEST)	+= digest.o
-+obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
- obj-$(CONFIG_COMPILE_MEMORY)	+= mem.o
- obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
- obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
-diff --git a/commands/digest.c b/commands/hashsum.c
-similarity index 100%
-rename from commands/digest.c
-rename to commands/hashsum.c
+ /*
+- * (C) Copyright 215 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * (C) Copyright 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+  *
+  * GPL v2 only
+  */
 -- 
 2.1.4
 
