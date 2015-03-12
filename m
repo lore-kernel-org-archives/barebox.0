@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YW0sn-0008Uc-Nj
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 11:02:33 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 12 Mar 2015 12:02:05 +0100
-Message-Id: <1426158125-3861-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 12.mo6.mail-out.ovh.net ([178.32.125.228])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YW3yM-0004QU-Bv
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:20:27 +0000
+Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 3F6FBFF92B3
+ for <barebox@lists.infradead.org>; Thu, 12 Mar 2015 15:19:59 +0100 (CET)
+Date: Thu, 12 Mar 2015 15:19:51 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150312141938.GS30554@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +19,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: clk-divider: fix _get_maxdiv for table based divider
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 0/7] prepare for rsa support
+To: barebox@lists.infradead.org
 
-The divider lacks the code for calculating the maximum divider for table
-based dividers. Add it.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/clk/clk-divider.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+	The following patch series prepare for the adding of the rsa digest
+	support
 
-diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
-index 646e5b0..791e10e 100644
---- a/drivers/clk/clk-divider.c
-+++ b/drivers/clk/clk-divider.c
-@@ -23,12 +23,25 @@
- 
- #define div_mask(d)	((1 << ((d)->width)) - 1)
- 
-+static unsigned int _get_table_maxdiv(const struct clk_div_table *table)
-+{
-+	unsigned int maxdiv = 0;
-+	const struct clk_div_table *clkt;
-+
-+	for (clkt = table; clkt->div; clkt++)
-+		if (clkt->div > maxdiv)
-+			maxdiv = clkt->div;
-+	return maxdiv;
-+}
-+
- static unsigned int _get_maxdiv(struct clk_divider *divider)
- {
- 	if (divider->flags & CLK_DIVIDER_ONE_BASED)
- 		return div_mask(divider);
- 	if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
- 		return 1 << div_mask(divider);
-+	if (divider->table)
-+		return _get_table_maxdiv(divider->table);
- 	return div_mask(divider) + 1;
- }
- 
--- 
-2.1.4
+	This will allow to verify a rsa signature of a file
 
+	Introduction of a new command digest to handle the digest and check
+
+	include also some fix
+
+	The next patch series will add RSA and keystore support
+
+The following changes since commit 01b0fd707ebede1303f7471adca41ebee06d2ac7:
+
+  Merge branch 'for-next/state' into next (2015-03-12 08:29:17 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/digest
+
+for you to fetch changes up to 1807649fab2109a962415e1ba5651d9d7c385e08:
+
+  command: add generic digest command (2015-03-12 16:34:23 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      digest: fix and add missing copyright
+      digest: hmac: fix set_key prototype
+      crypto: add pbkdf2 hmac key generator
+      digest: add verify callback
+      digest: allow algo to specify their length at runtime
+      command: rename digest.c to hashsum.c
+      command: add generic digest command
+
+ commands/Kconfig        |  26 +++++++++++-----
+ commands/Makefile       |   3 +-
+ commands/digest.c       | 270 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------------------------------------------------------------
+ commands/hashsum.c      | 187 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ commands/internal.h     |   3 ++
+ common/password.c       |  43 +-------------------------
+ crypto/Kconfig          |   5 +++
+ crypto/Makefile         |   2 ++
+ crypto/digest.c         | 113 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ crypto/hmac.c           |  10 +++++-
+ crypto/internal.h       |   4 ++-
+ crypto/md5.c            |   1 +
+ crypto/pbkdf2.c         |  79 ++++++++++++++++++++++++++++++++++++++++++++++++
+ crypto/sha1.c           |   1 +
+ crypto/sha2.c           |   2 ++
+ crypto/sha4.c           |   2 ++
+ include/crypto/pbkdf2.h |  23 ++++++++++++++
+ include/digest.h        |  22 ++++++++++++--
+ 18 files changed, 583 insertions(+), 213 deletions(-)
+ create mode 100644 commands/hashsum.c
+ create mode 100644 commands/internal.h
+ create mode 100644 crypto/pbkdf2.c
+ create mode 100644 include/crypto/pbkdf2.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
