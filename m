@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YW4I1-0005eR-WA
- for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:40:48 +0000
+ Linux)) id 1YW4I5-0005gl-Bl
+ for barebox@lists.infradead.org; Thu, 12 Mar 2015 14:40:51 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 12 Mar 2015 15:39:59 +0100
-Message-Id: <1426171199-2729-5-git-send-email-jlu@pengutronix.de>
+Date: Thu, 12 Mar 2015 15:39:57 +0100
+Message-Id: <1426171199-2729-3-git-send-email-jlu@pengutronix.de>
 In-Reply-To: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
 References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,159 +21,535 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 4/4] FIT: add test config and data [do not merge]
+Subject: [RFC 2/4] Add rsa support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/sandbox/configs/sandbox_defconfig |  33 +++++++++++++++++++++------------
- key.dtb                                | Bin 0 -> 1023 bytes
- key.dts                                |  27 +++++++++++++++++++++++++++
- sign-configs.itb                       | Bin 0 -> 2453 bytes
- 4 files changed, 48 insertions(+), 12 deletions(-)
- create mode 100644 key.dtb
- create mode 100644 key.dts
- create mode 100644 sign-configs.itb
+ crypto/Kconfig              |   3 +
+ crypto/Makefile             |   1 +
+ crypto/rsa.c                | 411 ++++++++++++++++++++++++++++++++++++++++++++
+ include/asm-generic/errno.h |   5 +
+ include/rsa.h               |  54 ++++++
+ 5 files changed, 474 insertions(+)
+ create mode 100644 crypto/rsa.c
+ create mode 100644 include/rsa.h
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index 7ce256950192..ec9d729127cb 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -5,25 +5,34 @@ CONFIG_PARTITION=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/sandbox/board/env"
- CONFIG_DEBUG_INFO=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_BOOTM_FITIMAGE=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_PARTITION=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_PING=y
- CONFIG_CMD_TFTP=y
--CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_CRC=y
- CONFIG_CMD_FLASH=y
--# CONFIG_CMD_BOOTM is not set
--CONFIG_CMD_RESET=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
- CONFIG_NET=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_PING=y
- CONFIG_DRIVER_NET_TAP=y
- # CONFIG_SPI is not set
- CONFIG_FS_CRAMFS=y
- CONFIG_FS_TFTP=y
-+CONFIG_DIGEST=y
-diff --git a/key.dtb b/key.dtb
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index 4bd8dcf359f8..fa9ba491b79b 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -25,3 +25,6 @@ config SHA256
+ 	bool "SHA256"
+ 
+ endif
++
++config RSA
++	bool
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 7c5b035b73de..44be124aa368 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -5,3 +5,4 @@ obj-$(CONFIG_MD5)	+= md5.o
+ obj-$(CONFIG_SHA1)	+= sha1.o
+ obj-$(CONFIG_SHA224)	+= sha2.o
+ obj-$(CONFIG_SHA256)	+= sha2.o
++obj-$(CONFIG_RSA)	+= rsa.o
+diff --git a/crypto/rsa.c b/crypto/rsa.c
 new file mode 100644
-index 0000000000000000000000000000000000000000..9a3294e9f0b2ad30362127b9cc4e0d7e67d2f7b6
-GIT binary patch
-literal 1023
-zcmcb>`|m9S1M`0d1_lctodcvbfLIWS1%Ma?CIiJyAWRgJ5z1o*(kxImNDRj32eOg*
-z(nx$xAX~@HGejXIwYUVx1_6*hkiAApiAAYN`4u{8nI*a<2zkch%=Em(lG377kZPdW
-z*{PMfDXC>3Hb^fo5Ze}KBpT`z6(<@Qm;n6)20%HmQ=PU1Z(bo{!?H7Tdz#ejmnRlI
-z*Li3@Va_e-M)%VlOm~iQ_kP?u?UU4(@X|fcChNYldzd?OrF@m3aRtk)SzFdUW!+!?
-zl-;3HSLVh<<+sd5o02*7=SzIKV|d40?ad2ceWi~DtZ5tFYN8q6C^<MSWBIrCh{QFH
-z<~t|qZHnHpg+vMT7Kz<|8F1LSjOBJ)ZR)RsY<s!Zy<d9r{$t+BeG)#$+t@m%cJJJx
-z_}*LU{(1{}GymD2jc0s$;lik<CTroiYs={yo;k|v3oi1ov<X&aZ#%rNLiDE`)6^N~
-z)q|Nb?-ai;T)=uN?}Os3d3Hbc<+@sAs$6zFbLsfMM1hp~$t$yUop)(32ZjbLECOzJ
-zyk9$KTknPl+iL5pC88Hp0~fF!l4webd1B%d{h)k7#oH58YEyH$%r}=S*E%vvzvEIl
-zo8#>*V=*n`#cf5u&q5*JI&8RS8~vQaDY?4xN5_TL2G1AY%>Ee>H*s%{<MF%mn50ge
-zlzndS;9cpeYajPaS{D-Wn~_7Q(#OzzTZ_bkXA8tl{pP>9v}P}Vb>2z!>x;GZbD5V!
-zD@U%<UeYa@ZFr^U&+@lF<ZhHaekJf&_~z@YXFWbX=zPuc_U-ReDiPMtd|MvvXZ@qT
-z@}vPP-_{1vJ0i(%TI?IwiiUrhx;>li-_^MM-&#?dBi{rqy}D%eiM)?zCY@t1nqDk*
-zL~5!3yui7K?nA<Yfdfd#fKv%0N?OgV>}-1oRRc=f6%1gd@U-0uO?ON{IS^({&d4uL
-z%>%Na{KTBh#NyOq7$2mDQ#mmur6{$yST{K}C#RS}xj3^b70S-cD@iRXDlI6{EdVC|
-zyb^}o{FKxjhUEO*g2a-{q?}ZS#GLee24KS0Dbg)2ECnh`0rP<BN^?q!!R*wEg8V#?
-nW{|Qx1KrHLvecsDR0y{;S2roMq?iGeY4Q?tQ*|?db}|3}pHW%$
-
-literal 0
-HcmV?d00001
-
-diff --git a/key.dts b/key.dts
-new file mode 100644
-index 000000000000..c6f1e7cd4699
+index 000000000000..6a0c7b8a15cc
 --- /dev/null
-+++ b/key.dts
-@@ -0,0 +1,27 @@
-+/dts-v1/;
++++ b/crypto/rsa.c
+@@ -0,0 +1,411 @@
++/*
++ * Copyright (c) 2013, Google Inc.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
 +
-+/ {
-+	#address-cells = <0x1>;
-+	#size-cells = <0x1>;
-+	interrupt-parent = <0x1>;
-+	model = "FIT Test";
-+	compatible = "barebox,fit-test";
++#include <common.h>
++#include <malloc.h>
++#include <of.h>
++#include <digest.h>
++#include <asm/types.h>
++#include <asm/byteorder.h>
++#include <errno.h>
++#include <rsa.h>
++#include <asm/types.h>
++#include <asm/unaligned.h>
 +
-+	signature {
-+		key-dev {
-+			algo = "sha1,rsa2048";
-+			rsa,r-squared = <0xb453b3a8 0x143c04b9 0x69b7661a 0x9be9c8a2 0xe72ce137 0x909cda1b 0x8147cb88 0x2dcc50b 0x8df1b596 0xf21af457 0x75bce693 0x2dee3ee1 0x6d99a91f 0x7a113378 0x49a9ab4 0xaee505bf 0x77e50740 0x792d1cd8 0x9123ed03 0x72b26308 0x2f9f18f4 0xdc31dc37 0x26ece84d 0x2f22f170 0x566b146 0x7c5b01ec 0x224042a6 0x4feadc4 0x18d60883 0xdcc87f3c 0x72ee0654 0x5a108d72 0x16dfe950 0xc3437604 0xdb867d65 0xfac106bd 0xaaeefa5 0xc9dfe30d 0x938e184c 0xc7860689 0x958bb9b4 0x21ef4b1a 0xdfaf381f 0x364f9bf3 0x3398f4e8 0x44012626 0x1d3841ba 0xb4cbd849 0x6c23af70 0xd10c0486 0x117a6bb6 0xc3be7815 0xf91e0295 0x98cf2753 0x269dc73 0xef71a005 0xca6ef021 0x9a9e3ef8 0xbe6d4538 0x6924d341 0xccd2c7fe 0x6110649f 0x63a96b2d 0x43ba2ba7>;
-+			rsa,modulus = <0xd988efad 0x9cb68db0 0x583d7b3b 0xd57415d0 0x2551a005 0xc2188262 0x5ce4344c 0x5be077a0 0x78edc894 0x7d656d0a 0x37b37723 0x7d41011b 0xee0a24cd 0x6c4b4b1c 0x389668e8 0xdb214ef3 0x1254f688 0x3c0b9b32 0xf99c0919 0xab79f888 0xd0ab30e7 0xa3d96bf9 0x585e91bd 0x6c41c7dd 0x9e021ac8 0xc91de730 0xe0ee75aa 0xd6f1bc92 0xae5458fb 0x1082279 0x4c3137b6 0x8418a0e6 0xa017354e 0x9fecd2ac 0xbd0f7b6e 0xc927d7a3 0x2b2f6d03 0xa45b2359 0xaa2ba48b 0x196b31d4 0x8cfca7ed 0xf81ed874 0xe3ea10e3 0x13d9ebd5 0xcd48f1e0 0x89eb04ed 0xedfbca24 0x583be64d 0x84e2bf05 0xfc27a9c9 0x30050eb5 0x8015dc14 0x63ec843f 0x81ad1557 0xf295b76b 0x6fed55e 0x6ffb2a5a 0xb359ec52 0xa5d5a4ab 0xc86ef1cc 0x92ce0772 0x97731ac4 0x1aa54f9e 0x519dc2df>;
-+			rsa,exponent = <0x0 0x10001>;
-+			rsa,n0-inverse = <0x798986e1>;
-+			rsa,num-bits = <0x800>;
-+			key-name-hint = "dev";
-+		};
-+	};
++#define UINT64_MULT32(v, multby)  (((uint64_t)(v)) * ((uint32_t)(multby)))
 +
-+	chosen {
-+	};
++#define get_unaligned_be32(a) fdt32_to_cpu(*(uint32_t *)a)
++#define put_unaligned_be32(a, b) (*(uint32_t *)(b) = cpu_to_fdt32(a))
 +
-+	aliases {
-+	};
++/* Default public exponent for backward compatibility */
++#define RSA_DEFAULT_PUBEXP	65537
++
++/* This is the minimum/maximum key size we support, in bits */
++#define RSA_MIN_KEY_BITS	1024
++#define RSA_MAX_KEY_BITS	4096
++
++/**
++ * subtract_modulus() - subtract modulus from the given value
++ *
++ * @key:	Key containing modulus to subtract
++ * @num:	Number to subtract modulus from, as little endian word array
++ */
++static void subtract_modulus(const struct rsa_public_key *key, uint32_t num[])
++{
++	int64_t acc = 0;
++	uint i;
++
++	for (i = 0; i < key->len; i++) {
++		acc += (uint64_t)num[i] - key->modulus[i];
++		num[i] = (uint32_t)acc;
++		acc >>= 32;
++	}
++}
++
++/**
++ * greater_equal_modulus() - check if a value is >= modulus
++ *
++ * @key:	Key containing modulus to check
++ * @num:	Number to check against modulus, as little endian word array
++ * @return 0 if num < modulus, 1 if num >= modulus
++ */
++static int greater_equal_modulus(const struct rsa_public_key *key,
++				 uint32_t num[])
++{
++	int i;
++
++	for (i = (int)key->len - 1; i >= 0; i--) {
++		if (num[i] < key->modulus[i])
++			return 0;
++		if (num[i] > key->modulus[i])
++			return 1;
++	}
++
++	return 1;  /* equal */
++}
++
++/**
++ * montgomery_mul_add_step() - Perform montgomery multiply-add step
++ *
++ * Operation: montgomery result[] += a * b[] / n0inv % modulus
++ *
++ * @key:	RSA key
++ * @result:	Place to put result, as little endian word array
++ * @a:		Multiplier
++ * @b:		Multiplicand, as little endian word array
++ */
++static void montgomery_mul_add_step(const struct rsa_public_key *key,
++		uint32_t result[], const uint32_t a, const uint32_t b[])
++{
++	uint64_t acc_a, acc_b;
++	uint32_t d0;
++	uint i;
++
++	acc_a = (uint64_t)a * b[0] + result[0];
++	d0 = (uint32_t)acc_a * key->n0inv;
++	acc_b = (uint64_t)d0 * key->modulus[0] + (uint32_t)acc_a;
++	for (i = 1; i < key->len; i++) {
++		acc_a = (acc_a >> 32) + (uint64_t)a * b[i] + result[i];
++		acc_b = (acc_b >> 32) + (uint64_t)d0 * key->modulus[i] +
++				(uint32_t)acc_a;
++		result[i - 1] = (uint32_t)acc_b;
++	}
++
++	acc_a = (acc_a >> 32) + (acc_b >> 32);
++
++	result[i - 1] = (uint32_t)acc_a;
++
++	if (acc_a >> 32)
++		subtract_modulus(key, result);
++}
++
++/**
++ * montgomery_mul() - Perform montgomery mutitply
++ *
++ * Operation: montgomery result[] = a[] * b[] / n0inv % modulus
++ *
++ * @key:	RSA key
++ * @result:	Place to put result, as little endian word array
++ * @a:		Multiplier, as little endian word array
++ * @b:		Multiplicand, as little endian word array
++ */
++static void montgomery_mul(const struct rsa_public_key *key,
++		uint32_t result[], uint32_t a[], const uint32_t b[])
++{
++	uint i;
++
++	for (i = 0; i < key->len; ++i)
++		result[i] = 0;
++	for (i = 0; i < key->len; ++i)
++		montgomery_mul_add_step(key, result, a[i], b);
++}
++
++/**
++ * num_pub_exponent_bits() - Number of bits in the public exponent
++ *
++ * @key:	RSA key
++ * @num_bits:	Storage for the number of public exponent bits
++ */
++static int num_public_exponent_bits(const struct rsa_public_key *key,
++		int *num_bits)
++{
++	uint64_t exponent;
++	int exponent_bits;
++	const uint max_bits = (sizeof(exponent) * 8);
++
++	exponent = key->exponent;
++	exponent_bits = 0;
++
++	if (!exponent) {
++		*num_bits = exponent_bits;
++		return 0;
++	}
++
++	for (exponent_bits = 1; exponent_bits < max_bits + 1; ++exponent_bits)
++		if (!(exponent >>= 1)) {
++			*num_bits = exponent_bits;
++			return 0;
++		}
++
++	return -EINVAL;
++}
++
++/**
++ * is_public_exponent_bit_set() - Check if a bit in the public exponent is set
++ *
++ * @key:	RSA key
++ * @pos:	The bit position to check
++ */
++static int is_public_exponent_bit_set(const struct rsa_public_key *key,
++		int pos)
++{
++	return key->exponent & (1ULL << pos);
++}
++
++/**
++ * pow_mod() - in-place public exponentiation
++ *
++ * @key:	RSA key
++ * @inout:	Big-endian word array containing value and result
++ */
++static int pow_mod(const struct rsa_public_key *key, void *__inout)
++{
++	uint32_t *inout = __inout;
++	uint32_t *result, *ptr;
++	uint i;
++	int j, k;
++	uint32_t val[RSA_MAX_KEY_BITS / 32], acc[RSA_MAX_KEY_BITS / 32], tmp[RSA_MAX_KEY_BITS / 32];
++	uint32_t a_scaled[RSA_MAX_KEY_BITS / 32];
++
++	/* Sanity check for stack size - key->len is in 32-bit words */
++	if (key->len > RSA_MAX_KEY_BITS / 32) {
++		debug("RSA key words %u exceeds maximum %d\n", key->len,
++		      RSA_MAX_KEY_BITS / 32);
++		return -EINVAL;
++	}
++
++	result = tmp;  /* Re-use location. */
++
++	/* Convert from big endian byte array to little endian word array. */
++	for (i = 0, ptr = inout + key->len - 1; i < key->len; i++, ptr--)
++		val[i] = get_unaligned_be32(ptr);
++
++	if (0 != num_public_exponent_bits(key, &k))
++		return -EINVAL;
++
++	if (k < 2) {
++		debug("Public exponent is too short (%d bits, minimum 2)\n",
++		      k);
++		return -EINVAL;
++	}
++
++	if (!is_public_exponent_bit_set(key, 0)) {
++		debug("LSB of RSA public exponent must be set.\n");
++		return -EINVAL;
++	}
++
++	/* the bit at e[k-1] is 1 by definition, so start with: C := M */
++	montgomery_mul(key, acc, val, key->rr); /* acc = a * RR / R mod n */
++	/* retain scaled version for intermediate use */
++	memcpy(a_scaled, acc, key->len * sizeof(a_scaled[0]));
++
++	for (j = k - 2; j > 0; --j) {
++		montgomery_mul(key, tmp, acc, acc); /* tmp = acc^2 / R mod n */
++
++		if (is_public_exponent_bit_set(key, j)) {
++			/* acc = tmp * val / R mod n */
++			montgomery_mul(key, acc, tmp, a_scaled);
++		} else {
++			/* e[j] == 0, copy tmp back to acc for next operation */
++			memcpy(acc, tmp, key->len * sizeof(acc[0]));
++		}
++	}
++
++	/* the bit at e[0] is always 1 */
++	montgomery_mul(key, tmp, acc, acc); /* tmp = acc^2 / R mod n */
++	montgomery_mul(key, acc, tmp, val); /* acc = tmp * a / R mod M */
++	memcpy(result, acc, key->len * sizeof(result[0]));
++
++	/* Make sure result < mod; result is at most 1x mod too large. */
++	if (greater_equal_modulus(key, result))
++		subtract_modulus(key, result);
++
++	/* Convert to bigendian byte array */
++	for (i = key->len - 1, ptr = inout; (int)i >= 0; i--, ptr++)
++		put_unaligned_be32(result[i], ptr);
++	return 0;
++}
++
++/*
++ * Hash algorithm OIDs plus ASN.1 DER wrappings [RFC4880 sec 5.2.2].
++ */
++static const u8 RSA_digest_info_MD5[] = {
++	0x30, 0x20, 0x30, 0x0C, 0x06, 0x08,
++	0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x02, 0x05, /* OID */
++	0x05, 0x00, 0x04, 0x10
 +};
-diff --git a/sign-configs.itb b/sign-configs.itb
++
++static const u8 RSA_digest_info_SHA1[] = {
++	0x30, 0x21, 0x30, 0x09, 0x06, 0x05,
++	0x2B, 0x0E, 0x03, 0x02, 0x1A,
++	0x05, 0x00, 0x04, 0x14
++};
++
++static const u8 RSA_digest_info_RIPE_MD_160[] = {
++	0x30, 0x21, 0x30, 0x09, 0x06, 0x05,
++	0x2B, 0x24, 0x03, 0x02, 0x01,
++	0x05, 0x00, 0x04, 0x14
++};
++
++static const u8 RSA_digest_info_SHA224[] = {
++	0x30, 0x2d, 0x30, 0x0d, 0x06, 0x09,
++	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x04,
++	0x05, 0x00, 0x04, 0x1C
++};
++
++static const u8 RSA_digest_info_SHA256[] = {
++	0x30, 0x31, 0x30, 0x0d, 0x06, 0x09,
++	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01,
++	0x05, 0x00, 0x04, 0x20
++};
++
++static const u8 RSA_digest_info_SHA384[] = {
++	0x30, 0x41, 0x30, 0x0d, 0x06, 0x09,
++	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02,
++	0x05, 0x00, 0x04, 0x30
++};
++
++static const u8 RSA_digest_info_SHA512[] = {
++	0x30, 0x51, 0x30, 0x0d, 0x06, 0x09,
++	0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03,
++	0x05, 0x00, 0x04, 0x40
++};
++
++static const struct {
++	const u8 *data;
++	size_t size;
++} RSA_ASN1_templates[] = {
++#define _(X) { RSA_digest_info_##X, sizeof(RSA_digest_info_##X) }
++	[HASH_ALGO_MD5]		= _(MD5),
++	[HASH_ALGO_SHA1]	= _(SHA1),
++	[HASH_ALGO_RIPE_MD_160]	= _(RIPE_MD_160),
++	[HASH_ALGO_SHA256]	= _(SHA256),
++	[HASH_ALGO_SHA384]	= _(SHA384),
++	[HASH_ALGO_SHA512]	= _(SHA512),
++	[HASH_ALGO_SHA224]	= _(SHA224),
++#undef _
++};
++
++int rsa_verify(const struct rsa_public_key *key, const uint8_t *sig,
++			  const uint32_t sig_len, const uint8_t *hash,
++			  enum hash_algo algo)
++{
++	int ret;
++	uint8_t buf[RSA_MAX_SIG_BITS / 8];
++	int i;
++	unsigned PS_end, T_offset;
++	const u8 *asn1_template = RSA_ASN1_templates[algo].data;
++	size_t asn1_size = RSA_ASN1_templates[algo].size;
++	struct digest *d = digest_get(algo);
++
++	if (!d)
++		return -EOPNOTSUPP;
++
++	if (sig_len != (key->len * sizeof(uint32_t))) {
++		debug("Signature is of incorrect length %d, should be %d\n", sig_len,
++				key->len * sizeof(uint32_t));
++		return -EINVAL;
++	}
++
++	/* Sanity check for stack size */
++	if (sig_len > RSA_MAX_SIG_BITS / 8) {
++		debug("Signature length %u exceeds maximum %d\n", sig_len,
++		      RSA_MAX_SIG_BITS / 8);
++		return -EINVAL;
++	}
++
++	memcpy(buf, sig, sig_len);
++
++	ret = pow_mod(key, buf);
++	if (ret)
++		return ret;
++
++	T_offset = sig_len - (asn1_size + d->length);
++
++	PS_end = T_offset - 1;
++	if (buf[PS_end] != 0x00) {
++		pr_err(" = -EBADMSG [EM[T-1] == %02u]", buf[PS_end]);
++		return -EBADMSG;
++	}
++
++	for (i = 2; i < PS_end; i++) {
++		if (buf[i] != 0xff) {
++			pr_err(" = -EBADMSG [EM[PS%x] == %02u]", i - 2, buf[i]);
++			return -EBADMSG;
++		}
++	}
++
++	if (memcmp(asn1_template, buf + T_offset, asn1_size) != 0) {
++		pr_err(" = -EBADMSG [EM[T] ASN.1 mismatch]");
++		return -EBADMSG;
++	}
++
++	if (memcmp(hash, buf + T_offset + asn1_size, d->length) != 0) {
++		pr_err(" = -EKEYREJECTED [EM[T] hash mismatch]");
++		return -EKEYREJECTED;
++	}
++
++	return 0;
++}
++
++static void rsa_convert_big_endian(uint32_t *dst, const uint32_t *src, int len)
++{
++	int i;
++
++	for (i = 0; i < len; i++)
++		dst[i] = fdt32_to_cpu(src[len - 1 - i]);
++}
++
++int rsa_of_read_key(struct device_node *node, struct rsa_public_key *key)
++{
++	const void *modulus, *rr;
++	const uint64_t *public_exponent;
++	int length;
++
++	of_property_read_u32(node, "rsa,num-bits", &key->len);
++	of_property_read_u32(node, "rsa,n0-inverse", &key->n0inv);
++
++	public_exponent = of_get_property(node, "rsa,exponent", &length);
++	if (!public_exponent || length < sizeof(*public_exponent))
++		key->exponent = RSA_DEFAULT_PUBEXP;
++	else
++		key->exponent = fdt64_to_cpu(*public_exponent);
++
++	modulus = of_get_property(node, "rsa,modulus", NULL);
++	rr = of_get_property(node, "rsa,r-squared", NULL);
++
++	if (!key->len || !modulus || !rr) {
++		debug("%s: Missing RSA key info", __func__);
++		return -EFAULT;
++	}
++
++	/* Sanity check for stack size */
++	if (key->len > RSA_MAX_KEY_BITS || key->len < RSA_MIN_KEY_BITS) {
++		debug("RSA key bits %u outside allowed range %d..%d\n",
++		      key->len, RSA_MIN_KEY_BITS, RSA_MAX_KEY_BITS);
++		return -EFAULT;
++	}
++
++	key->len /= sizeof(uint32_t) * 8;
++
++	key->modulus = xzalloc(RSA_MAX_KEY_BITS / 8);
++	key->rr = xzalloc(RSA_MAX_KEY_BITS / 8);
++
++	rsa_convert_big_endian(key->modulus, modulus, key->len);
++	rsa_convert_big_endian(key->rr, rr, key->len);
++
++	return 0;
++}
+diff --git a/include/asm-generic/errno.h b/include/asm-generic/errno.h
+index bbf493c373ae..b239831bc703 100644
+--- a/include/asm-generic/errno.h
++++ b/include/asm-generic/errno.h
+@@ -126,6 +126,11 @@
+ 
+ #define	ENOMEDIUM	123	/* No medium found */
+ #define	EMEDIUMTYPE	124	/* Wrong medium type */
++#define	ECANCELED	125	/* Operation Canceled */
++#define	ENOKEY		126	/* Required key not available */
++#define	EKEYEXPIRED	127	/* Key has expired */
++#define	EKEYREVOKED	128	/* Key has been revoked */
++#define	EKEYREJECTED	129	/* Key was rejected by service */
+ 
+ /* Should never be seen by user programs */
+ #define ERESTARTSYS	512
+diff --git a/include/rsa.h b/include/rsa.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..fd4c0c984102d384835d1eaf40cd27c542a5e71e
-GIT binary patch
-literal 2453
-zcmeHHTWl0n7(QFKl~T3=TN(@+$C4@#hMiptw4^q)pwKi;C2eUR49)4z*`2YoGrMzU
-zw=U7hi>4|NXu<<lf~GZc(T0l&4YY|=FqS~5LMX^3F$N-pOSEb*hT{Lvr52-!55}jS
-z<eUF;{_|hYnUTQwZ9;Ol6GF-e$zB6=K42DLCIHt3(0jb2alSrRcm${)u&wds;T)hS
-zhXG`zVj6KK)Hew2%+#4CsBs!&LWgQ8f}u0PFon2bGU3HljY6Adv~fJ-oJW5%02sq(
-zA9FT+j;9qN(Br~b0$^@k`)a<ns;>N%nZMM&^+Uz-_0ku^r_ZE^8b+R(Q}p)0Vb?Yv
-z?HwPjx}h0V1_dniGYwF}sV=t}uX;MHXQ8I*DO>YrZlboq@N6*GasX1V7nQ)HKTlo-
-zyj_bzx#DJzdxe1Ru018qwLkjbnf^iVHwD|vwpMOBQ|F$|2HL<C>eZVCGQt;?Ew2ga
-z2ki*gjSi%+P$vNXZC@}~A*xZURkncr$9`ZOQHSB75iGC17U2KO`s^Abh8|U8DU({N
-zp*!=(c#i^P+;bb?o5bUOE<pR6dxEp%lltc4YD}kA%4CisJd1r82H--9I;?ddNP-Wi
-zV~cPw=-ker<M<&d=nmUcPUQ4gg=hHLcYEEKc$X%>r(%#l4NIZY#UV+Qq$SIq6Jwze
-zm1%i6yo839in3~28M5H0dmiifFy3zG1}xTr<00KoUg=NH>hqs!{HW{s#n}t1Y9MC*
-zjJ%WT_cvNg>iY)|kBxqPfOJ;hPnl28UN(O9>{G{gHcY$xSa#E~b)jwN{8HYW>zj*D
-zzQ0?V-k+)H8b7=B+F)riF}G@C?3Taa!fSz?BYM#y<?b6}t<{%rjeSy-dvwjYeY>By
-z^X&Y==Bz8P*SsJ#Ukfm;I#m66bkFS4l`U60Yl`pPxxVgZkCZoRWj^kFH(B^?a((ZE
-z<d&Dd+<0?n$H998(PI~r6$dUArb%D;#1UU-eoN2D??XHIf<C2x)6ZWO1U57s>dsld
-zIcsNG&x%XG9&d|`)>STj@BFT&uE*yY^}n4+{zP}(=&jwq#pwkJ0JY!MB9qgwR9c43
-zfrazN-gn3>?a6t-yb0qa&iqhqzd`RUBF&W<kC<u#Zz`EbW!Yq$ixH-2oXFIo#L6TX
-zp=LxO1}70Co<IXMw*Ns)x6F*|UraO8-l1B|AP{##A+sn=X%l%kDP=^R#+j(7x<&9p
-zi|*gjQsazUG@c-7s->8{$4uMU<Gnz5O_>bO8j2vUz%5hNW9}c>E_v!R)q$xF{4X8&
-E1I{~<CjbBd
-
-literal 0
-HcmV?d00001
-
+index 000000000000..feb8c3120023
+--- /dev/null
++++ b/include/rsa.h
+@@ -0,0 +1,54 @@
++/*
++ * Copyright (c) 2013, Google Inc.
++ *
++ * (C) Copyright 2008 Semihalf
++ *
++ * (C) Copyright 2000-2006
++ * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef _RSA_H
++#define _RSA_H
++
++#include <errno.h>
++#include <digest.h>
++
++/**
++ * struct rsa_public_key - holder for a public key
++ *
++ * An RSA public key consists of a modulus (typically called N), the inverse
++ * and R^2, where R is 2^(# key bits).
++ */
++
++struct rsa_public_key {
++	uint len;		/* len of modulus[] in number of uint32_t */
++	uint32_t n0inv;		/* -1 / modulus[0] mod 2^32 */
++	uint32_t *modulus;	/* modulus as little endian array */
++	uint32_t *rr;		/* R^2 as little endian array */
++	uint64_t exponent;	/* public exponent */
++};
++
++/**
++ * rsa_verify() - Verify a signature against some data
++ *
++ * Verify a RSA PKCS1.5 signature against an expected hash.
++ *
++ * @info:	Specifies key and FIT information
++ * @data:	Pointer to the input data
++ * @data_len:	Data length
++ * @sig:	Signature
++ * @sig_len:	Number of bytes in signature
++ * @return 0 if verified, -ve on error
++ */
++int rsa_verify(const struct rsa_public_key *key, const uint8_t *sig,
++			  const uint32_t sig_len, const uint8_t *hash,
++			  enum hash_algo algo);
++
++/* This is the maximum signature length that we support, in bits */
++#define RSA_MAX_SIG_BITS	4096
++
++int rsa_of_read_key(struct device_node *node, struct rsa_public_key *key);
++
++#endif
 -- 
 2.1.4
 
