@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YWUbe-00012x-Oy
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 18:46:47 +0000
-Date: Fri, 13 Mar 2015 19:46:22 +0100
+ Linux)) id 1YWUfn-0002vQ-O0
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 18:51:05 +0000
+Date: Fri, 13 Mar 2015 19:50:41 +0100
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20150313184621.GD26703@pengutronix.de>
-References: <20150313083211.GW30554@ns203013.ovh.net>
- <1426236142-12050-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20150313185041.GE26703@pengutronix.de>
+References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
+ <1426171880-5966-1-git-send-email-jlu@pengutronix.de>
+ <20150312175042.GU30554@ns203013.ovh.net>
+ <1426240482.13791.94.camel@pengutronix.de>
+ <20150313101019.GC20624@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1426236142-12050-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20150313101019.GC20624@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,81 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] command: allow runtime usage
+Subject: Re: [RFC] digest: Add enum
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 13, 2015 at 09:42:22AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this will allow as example to list the current supported digest
-  ^                                            ^                 ^
-  T                                            ly                .
-
-Maybe you mean "This will for example allow to list the currently
-supported digest."?
-
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  common/command.c  | 2 ++
->  include/command.h | 3 +++
->  2 files changed, 5 insertions(+)
-> 
-> diff --git a/common/command.c b/common/command.c
-> index 61191c2..dc2cb88 100644
-> --- a/common/command.c
-> +++ b/common/command.c
-> @@ -47,6 +47,8 @@ void barebox_cmd_usage(struct command *cmdtp)
->  		puts(cmdtp->help);
->  		putchar('\n');
->  	}
-> +	if (cmdtp->usage)
-> +		cmdtp->usage();
->  #endif
->  }
->  EXPORT_SYMBOL(barebox_cmd_usage);
-> diff --git a/include/command.h b/include/command.h
-> index 5d5bf53..3aca1a9 100644
-> --- a/include/command.h
-> +++ b/include/command.h
-> @@ -54,6 +54,7 @@ struct command {
->  	uint32_t	group;
->  #ifdef	CONFIG_LONGHELP
->  	const char	*help;		/* Help  message	(long)	*/
-> +	void		(*usage)(void);
->  #endif
->  }
->  #ifdef __x86_64__
-> @@ -115,8 +116,10 @@ static const __maybe_unused char cmd_##_name##_help[] =
->  
->  #ifdef CONFIG_LONGHELP
->  #define BAREBOX_CMD_HELP(text)	.help = text,
-> +#define BAREBOX_CMD_USAGE(fn)	.usage = fn,
->  #else
->  #define BAREBOX_CMD_HELP(text)
-> +#define BAREBOX_CMD_USAGE(fn)
->  #endif
->  
->  #define BAREBOX_CMD_GROUP(grp)	.group = grp,
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBNYXIgMTMsIDIwMTUgYXQgMTE6MTA6MTlBTSArMDEwMCwgSmVhbi1DaHJpc3RvcGhl
+IFBMQUdOSU9MLVZJTExBUkQgd3JvdGU6Cj4gT24gMTA6NTQgRnJpIDEzIE1hciAgICAgLCBKYW4g
+TMO8YmJlIHdyb3RlOgo+ID4gT24gRG8sIDIwMTUtMDMtMTIgYXQgMTg6NTAgKzAxMDAsIEplYW4t
+Q2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+ID4gPiBkbyBhcyBpbiB0aGUga2Vy
+bmVsIHVzZSB0aGUgc3RyaW5nIGFzIHdlIG1heSB3YW50IHRvIGFkZCBodyBJUAo+ID4gCj4gPiBZ
+b3UgbWVhbiB3ZSBzaG91bGQgYWRkIGEgcHJpb3JpdHkgaW5zdGVhZD8gVGhlIGtlcm5lbCBhbHNv
+IGhhcyBzZXBhcmF0ZQo+ID4gbmFtZXMgZm9yIHRoZSBhbGdvcml0aG0gYW5kIGZvciB0aGUgZHJp
+dmVyLgo+IAo+IHllcyB3aGVuIHdlIGFkZCBodyBpcCB3ZSB3aWxsIGhhdmUgdG8gZG8gc28gdG9v
+Cj4gYXMgd2UgbWF5YmUgZW5hYmxlIHRoZSBodyBkcml2ZXIgYnV0IHRoZSBkZXZpY2UgYXMgaW4g
+bXVsdGlwbGUgaW1hZ2UgYnVpbGQKPiBzdWNoIGFzIGlteAoKSmVhbi1DaHJpc3RvcGhlLCBwbGVh
+c2UgdGFrZSB0aGUgdGltZSB0byB3cml0ZSBpbiBmdWxsIHNlbnRlbmNlcywgc3RhcnQKdGhlbSB3
+aXRoIHVwcGVyIGNhc2UgY2hhcmFjdGVycyBhbmQgZG9uJ3QgZm9yZ2V0IHRoZSBkb3QgYXQgdGhl
+IGVuZCBhbmQKb3RoZXIgcHVuY3R1YXRpb24gbWFya3MuIEFuZCByZS1yZWFkIHRoZSB0ZXh0IGJl
+Zm9yZSBzZW5kaW5nLgoKSXQgaXMgb2YgY291cnNlIG5vIHJlcXVpcmVtZW50IGhlcmUgdG8gd3Jp
+dGUgMTAwJSBwcm9wZXIgRW5nbGlzaCAtIG1vc3QKb2YgdXMgYXJlIG5vIG5hdGl2ZSBzcGVha2Vy
+cy4gQnV0IHlvdXIgdGV4dHMgbWFrZSBpdCBwcmV0dHkgZGlmZmljdWx0IHRvCmZvbGxvdyB3aGF0
+IHlvdSBpbnRlbmQgdG8gc2F5LCBzbyBwbGVhc2UgbWFrZSBpdCBlYXNpZXIgZm9yIHVzIHRvCnVu
+ZGVyc3RhbmQgeW91ciB0ZXh0LgoKVGhhbmtzLgoKUm9iZXJ0Ci0tIApQZW5ndXRyb25peCBlLksu
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
+cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
+ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
