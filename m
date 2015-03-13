@@ -1,25 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YWMnx-0008Pl-5B
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 10:26:58 +0000
-Received: from mail438.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id F11ACFF9FCF
- for <barebox@lists.infradead.org>; Fri, 13 Mar 2015 11:26:31 +0100 (CET)
-Date: Fri, 13 Mar 2015 11:26:30 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150313102630.GB23879@ns203013.ovh.net>
-References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171199-2729-3-git-send-email-jlu@pengutronix.de>
- <20150312174740.GT30554@ns203013.ovh.net>
- <1426239335.13791.92.camel@pengutronix.de>
- <20150313095654.GA20624@ns203013.ovh.net>
- <20150313100648.GQ24885@pengutronix.de>
- <20150313101244.GD20624@ns203013.ovh.net>
- <1426242146.13791.111.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1426242146.13791.111.camel@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YWMpP-0000mx-TJ
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 10:28:28 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1YWMp2-00053m-NT
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 11:28:04 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Fri, 13 Mar 2015 11:28:04 +0100
+Message-Id: <1426242484-13731-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,46 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/4] Add rsa support
-To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] PCI: fix bad bugs in bridge setup code
+To: barebox@lists.infradead.org
 
-On 11:22 Fri 13 Mar     , Jan L=FCbbe wrote:
-> On Fr, 2015-03-13 at 11:12 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > =
+Add the required brackets, so that we don't write unused registers
+with potentially bogus values.
 
-> > sorry mutt via ssh lost some character when typing
-> > =
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+/me hides under a rock
+---
+ drivers/pci/pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> > der is few 100s line of code that's all
-> > =
-
-> > and x509 just a few more
-> > =
-
-> > as I do not plan to support all the options of x509 specially the non
-> > standard one
-> =
-
-> Do you intend to reject unknown/unimplemented parts of x509? Or just
-> ignore them?
-ignore it
-
-Best Regards,
-J.
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> =
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 5b848eeb2a53..1f5dc78b3ce1 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -259,15 +259,17 @@ static void postscan_setup_bridge(struct pci_dev *dev)
+ 	/* limit subordinate to last used bus number */
+ 	pci_write_config_byte(dev, PCI_SUBORDINATE_BUS, bus_index - 1);
+ 
+-	if (last_mem)
++	if (last_mem) {
+ 		last_mem = ALIGN(last_mem, SZ_1M);
+ 		pci_write_config_word(dev, PCI_MEMORY_LIMIT,
+ 				      ((last_mem - 1) & 0xfff00000) >> 16);
++	}
+ 
+-	if (last_mem_pref)
++	if (last_mem_pref) {
+ 		last_mem_pref = ALIGN(last_mem_pref, SZ_1M);
+ 		pci_write_config_word(dev, PCI_PREF_MEMORY_LIMIT,
+ 				      ((last_mem_pref - 1) & 0xfff00000) >> 16);
++	}
+ 
+ 	if (last_io) {
+ 		last_io = ALIGN(last_io, SZ_4K);
+-- 
+2.1.4
 
 
 _______________________________________________
