@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YWLBE-0006Wu-6G
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 08:42:53 +0000
-Received: from mail607.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 775B2FFA6A4
- for <barebox@lists.infradead.org>; Fri, 13 Mar 2015 09:42:29 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 13 Mar 2015 09:42:22 +0100
-Message-Id: <1426236142-12050-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20150313083211.GW30554@ns203013.ovh.net>
-References: <20150313083211.GW30554@ns203013.ovh.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YWLtL-0000QU-5P
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 09:28:27 +0000
+Message-ID: <1426238884.13791.85.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Fri, 13 Mar 2015 10:28:04 +0100
+In-Reply-To: <20150312181934.GV30554@ns203013.ovh.net>
+References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
+ <1426171199-2729-4-git-send-email-jlu@pengutronix.de>
+ <20150312181934.GV30554@ns203013.ovh.net>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,60 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] command: allow runtime usage
-To: barebox@lists.infradead.org
+Subject: Re: [RFC 3/4] FIT: add FIT image support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-this will allow as example to list the current supported digest
+On Do, 2015-03-12 at 19:19 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> please do not send a new version except for fix
+> 
+> I'm going to re-integrate it with the keystore & co
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/command.c  | 2 ++
- include/command.h | 3 +++
- 2 files changed, 5 insertions(+)
+Could you describe your keystore design?
 
-diff --git a/common/command.c b/common/command.c
-index 61191c2..dc2cb88 100644
---- a/common/command.c
-+++ b/common/command.c
-@@ -47,6 +47,8 @@ void barebox_cmd_usage(struct command *cmdtp)
- 		puts(cmdtp->help);
- 		putchar('\n');
- 	}
-+	if (cmdtp->usage)
-+		cmdtp->usage();
- #endif
- }
- EXPORT_SYMBOL(barebox_cmd_usage);
-diff --git a/include/command.h b/include/command.h
-index 5d5bf53..3aca1a9 100644
---- a/include/command.h
-+++ b/include/command.h
-@@ -54,6 +54,7 @@ struct command {
- 	uint32_t	group;
- #ifdef	CONFIG_LONGHELP
- 	const char	*help;		/* Help  message	(long)	*/
-+	void		(*usage)(void);
- #endif
- }
- #ifdef __x86_64__
-@@ -115,8 +116,10 @@ static const __maybe_unused char cmd_##_name##_help[] =
- 
- #ifdef CONFIG_LONGHELP
- #define BAREBOX_CMD_HELP(text)	.help = text,
-+#define BAREBOX_CMD_USAGE(fn)	.usage = fn,
- #else
- #define BAREBOX_CMD_HELP(text)
-+#define BAREBOX_CMD_USAGE(fn)
- #endif
- 
- #define BAREBOX_CMD_GROUP(grp)	.group = grp,
+> and sha1,rsa2048 is considered weak in term of security
+> and worse md4/md5
+> 
+> for barebox I would only use
+> at least sha256 with rs2048 or sha512 with rsa4096
+
+Yes, of course. These were only used as an example and it's trivial to
+switch to other hash algos or RSA key sizes. Also, the FIT format can
+easily be extended to support ECC/Curve25519.
+
+In some cases, where the SoC's ROM code only supports RSA2048 with SHA1,
+using stronger settings in Barebox doesn't increase security. So there
+we want to use the same settings as the ROM code.
+
+Regards,
+Jan
 -- 
-2.1.4
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 _______________________________________________
