@@ -1,25 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo68.mail-out.ovh.net ([46.105.59.63])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YWSxd-00016l-Dp
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 17:01:22 +0000
-Received: from mail181.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 44AEBFFACFA
- for <barebox@lists.infradead.org>; Fri, 13 Mar 2015 18:00:35 +0100 (CET)
-Date: Fri, 13 Mar 2015 18:00:32 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150313170032.GD24510@ns203013.ovh.net>
-References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171199-2729-4-git-send-email-jlu@pengutronix.de>
- <20150312181934.GV30554@ns203013.ovh.net>
- <1426238884.13791.85.camel@pengutronix.de>
- <20150313100538.GB20624@ns203013.ovh.net>
- <5502CB15.4070306@pengutronix.de>
- <20150313155423.GB24510@ns203013.ovh.net>
- <55030AF3.8050903@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YWUbe-00012x-Oy
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 18:46:47 +0000
+Date: Fri, 13 Mar 2015 19:46:22 +0100
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Message-ID: <20150313184621.GD26703@pengutronix.de>
+References: <20150313083211.GW30554@ns203013.ovh.net>
+ <1426236142-12050-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <55030AF3.8050903@pengutronix.de>
+In-Reply-To: <1426236142-12050-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,45 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/4] FIT: add FIT image support
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: [PATCH 1/1] command: allow runtime usage
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 17:06 Fri 13 Mar     , Marc Kleine-Budde wrote:
-> On 03/13/2015 04:54 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> >>> if you can break rsa4096, the chance you can break ECC are high too
-> >>
-> >> If you want to open the box, today you would probably not break
-> >> rsa2048/sha1 (unless you have huge calculation power) but look for
-> >> implementation weaknesses, like bugs or side channel attacks.
-> > 
-> > I alredy see it done on rsa1024 few years ago, today rs2048 is supposedly
-> > secured but as you hw may have to run for 10 years rs2048/sha1 is considered not
-> > strong enough
+On Fri, Mar 13, 2015 at 09:42:22AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> this will allow as example to list the current supported digest
+  ^                                            ^                 ^
+  T                                            ly                .
+
+Maybe you mean "This will for example allow to list the currently
+supported digest."?
+
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  common/command.c  | 2 ++
+>  include/command.h | 3 +++
+>  2 files changed, 5 insertions(+)
 > 
-> Some thoughts on 2048 vs. 4096:
-> https://www.yubico.com/2015/02/big-debate-2048-4096-yubicos-stand/
-
-I known about it already read it and work with yubico stuff
-
-I disagre on the fact that rsa2048 is good for 15 years, with more and more
-low cost power efficent SoC build a super calculator will be cheaper and
-cheaper. I'd give it a go for less than 10 years.
-
-It's always the same question what the hardware control. what damage can
-happend if the software is tampered with.
-
-A hw that control security door and co => high rist life issue.
-Medical stuf ditto.
+> diff --git a/common/command.c b/common/command.c
+> index 61191c2..dc2cb88 100644
+> --- a/common/command.c
+> +++ b/common/command.c
+> @@ -47,6 +47,8 @@ void barebox_cmd_usage(struct command *cmdtp)
+>  		puts(cmdtp->help);
+>  		putchar('\n');
+>  	}
+> +	if (cmdtp->usage)
+> +		cmdtp->usage();
+>  #endif
+>  }
+>  EXPORT_SYMBOL(barebox_cmd_usage);
+> diff --git a/include/command.h b/include/command.h
+> index 5d5bf53..3aca1a9 100644
+> --- a/include/command.h
+> +++ b/include/command.h
+> @@ -54,6 +54,7 @@ struct command {
+>  	uint32_t	group;
+>  #ifdef	CONFIG_LONGHELP
+>  	const char	*help;		/* Help  message	(long)	*/
+> +	void		(*usage)(void);
+>  #endif
+>  }
+>  #ifdef __x86_64__
+> @@ -115,8 +116,10 @@ static const __maybe_unused char cmd_##_name##_help[] =
+>  
+>  #ifdef CONFIG_LONGHELP
+>  #define BAREBOX_CMD_HELP(text)	.help = text,
+> +#define BAREBOX_CMD_USAGE(fn)	.usage = fn,
+>  #else
+>  #define BAREBOX_CMD_HELP(text)
+> +#define BAREBOX_CMD_USAGE(fn)
+>  #endif
+>  
+>  #define BAREBOX_CMD_GROUP(grp)	.group = grp,
+> -- 
+> 2.1.4
 > 
-> While sha1 is considered broken.
-it's broken and sha256 not yet but in 10 years strongly suspected
-even in brut force
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-That's why FIPS work on SHA-2
-
-Best Regards,
-J.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
