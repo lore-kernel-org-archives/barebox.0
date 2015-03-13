@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YWUfn-0002vQ-O0
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 18:51:05 +0000
-Date: Fri, 13 Mar 2015 19:50:41 +0100
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Message-ID: <20150313185041.GE26703@pengutronix.de>
-References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171880-5966-1-git-send-email-jlu@pengutronix.de>
- <20150312175042.GU30554@ns203013.ovh.net>
- <1426240482.13791.94.camel@pengutronix.de>
- <20150313101019.GC20624@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150313101019.GC20624@ns203013.ovh.net>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YWW8W-0002nr-VT
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 20:24:50 +0000
+Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
+ (p4FD7CC94.dip0.t-ipconnect.de [79.215.204.148])
+ by lynxeye.de (Postfix) with ESMTPA id 91D9A26C2001
+ for <barebox@lists.infradead.org>; Fri, 13 Mar 2015 21:23:51 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri, 13 Mar 2015 21:23:44 +0100
+Message-Id: <1426278224-9538-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +18,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] digest: Add enum
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net: mvneta: convert to streaming DMA ops
+To: barebox@lists.infradead.org
 
-T24gRnJpLCBNYXIgMTMsIDIwMTUgYXQgMTE6MTA6MTlBTSArMDEwMCwgSmVhbi1DaHJpc3RvcGhl
-IFBMQUdOSU9MLVZJTExBUkQgd3JvdGU6Cj4gT24gMTA6NTQgRnJpIDEzIE1hciAgICAgLCBKYW4g
-TMO8YmJlIHdyb3RlOgo+ID4gT24gRG8sIDIwMTUtMDMtMTIgYXQgMTg6NTAgKzAxMDAsIEplYW4t
-Q2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+ID4gPiBkbyBhcyBpbiB0aGUga2Vy
-bmVsIHVzZSB0aGUgc3RyaW5nIGFzIHdlIG1heSB3YW50IHRvIGFkZCBodyBJUAo+ID4gCj4gPiBZ
-b3UgbWVhbiB3ZSBzaG91bGQgYWRkIGEgcHJpb3JpdHkgaW5zdGVhZD8gVGhlIGtlcm5lbCBhbHNv
-IGhhcyBzZXBhcmF0ZQo+ID4gbmFtZXMgZm9yIHRoZSBhbGdvcml0aG0gYW5kIGZvciB0aGUgZHJp
-dmVyLgo+IAo+IHllcyB3aGVuIHdlIGFkZCBodyBpcCB3ZSB3aWxsIGhhdmUgdG8gZG8gc28gdG9v
-Cj4gYXMgd2UgbWF5YmUgZW5hYmxlIHRoZSBodyBkcml2ZXIgYnV0IHRoZSBkZXZpY2UgYXMgaW4g
-bXVsdGlwbGUgaW1hZ2UgYnVpbGQKPiBzdWNoIGFzIGlteAoKSmVhbi1DaHJpc3RvcGhlLCBwbGVh
-c2UgdGFrZSB0aGUgdGltZSB0byB3cml0ZSBpbiBmdWxsIHNlbnRlbmNlcywgc3RhcnQKdGhlbSB3
-aXRoIHVwcGVyIGNhc2UgY2hhcmFjdGVycyBhbmQgZG9uJ3QgZm9yZ2V0IHRoZSBkb3QgYXQgdGhl
-IGVuZCBhbmQKb3RoZXIgcHVuY3R1YXRpb24gbWFya3MuIEFuZCByZS1yZWFkIHRoZSB0ZXh0IGJl
-Zm9yZSBzZW5kaW5nLgoKSXQgaXMgb2YgY291cnNlIG5vIHJlcXVpcmVtZW50IGhlcmUgdG8gd3Jp
-dGUgMTAwJSBwcm9wZXIgRW5nbGlzaCAtIG1vc3QKb2YgdXMgYXJlIG5vIG5hdGl2ZSBzcGVha2Vy
-cy4gQnV0IHlvdXIgdGV4dHMgbWFrZSBpdCBwcmV0dHkgZGlmZmljdWx0IHRvCmZvbGxvdyB3aGF0
-IHlvdSBpbnRlbmQgdG8gc2F5LCBzbyBwbGVhc2UgbWFrZSBpdCBlYXNpZXIgZm9yIHVzIHRvCnVu
-ZGVyc3RhbmQgeW91ciB0ZXh0LgoKVGhhbmtzLgoKUm9iZXJ0Ci0tIApQZW5ndXRyb25peCBlLksu
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
-cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
-ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Move to the common streaming DMA ops in order to get rid of
+the direct usage of the ARM MMU functions for the cache
+maintenance.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+I don't know why I missed this one driver in the big conversion
+series, but the randconfig builder just came around and reminded
+to get my act together.
+
+Please apply to master.
+---
+ drivers/net/mvneta.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/mvneta.c b/drivers/net/mvneta.c
+index f2948e4ed7f1..d4c8a2c68dd2 100644
+--- a/drivers/net/mvneta.c
++++ b/drivers/net/mvneta.c
+@@ -393,7 +393,7 @@ static int mvneta_send(struct eth_device *edev, void *data, int len)
+ 	int ret, error, last_desc;
+ 
+ 	/* Flush transmit data */
+-	dma_flush_range((unsigned long)data, (unsigned long)data+len);
++	dma_sync_single_for_device((unsigned long)data, len, DMA_TO_DEVICE);
+ 
+ 	/* Fill the Tx descriptor */
+ 	txdesc->cmd_sts |= MVNETA_TX_L4_CSUM_NOT | MVNETA_TXD_FLZ_DESC;
+@@ -409,6 +409,7 @@ static int mvneta_send(struct eth_device *edev, void *data, int len)
+ 	 * the Tx port status register (PTXS).
+ 	 */
+ 	ret = wait_on_timeout(TRANSFER_TIMEOUT, !mvneta_pending_tx(priv));
++	dma_sync_single_for_cpu((unsigned long)data, len, DMA_TO_DEVICE);
+ 	if (ret) {
+ 		dev_err(&edev->dev, "transmit timeout\n");
+ 		return ret;
+@@ -459,15 +460,17 @@ static int mvneta_recv(struct eth_device *edev)
+ 	}
+ 
+ 	/* invalidate current receive buffer */
+-	dma_inv_range((unsigned long)rxdesc->buf_phys_addr,
+-		      (unsigned long)rxdesc->buf_phys_addr +
+-		      ALIGN(PKTSIZE, 8));
++	dma_sync_single_for_cpu((unsigned long)rxdesc->buf_phys_addr,
++				ALIGN(PKTSIZE, 8), DMA_FROM_DEVICE);
+ 
+ 	/* received packet is padded with two null bytes (Marvell header) */
+ 	net_receive(edev, (void *)(rxdesc->buf_phys_addr + MVNETA_MH_SIZE),
+ 			  rxdesc->data_size - MVNETA_MH_SIZE);
+ 	ret = 0;
+ 
++	dma_sync_single_for_device((unsigned long)rxdesc->buf_phys_addr,
++				   ALIGN(PKTSIZE, 8), DMA_FROM_DEVICE);
++
+ recv_err:
+ 	/* reset this and get next rx descriptor*/
+ 	rxdesc->data_size = 0;
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
