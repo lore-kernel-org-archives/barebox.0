@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward19.mail.yandex.net ([95.108.253.144])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YLzhq-0002u4-2C
- for barebox@lists.infradead.org; Thu, 12 Feb 2015 19:45:47 +0000
-From: =?koi8-r?B?8MHOz9cg4c7E0sXK?= <rockford@yandex.ru>
-In-Reply-To: <20150212193457.GI10842@pengutronix.de>
-References: <1423768031-5014-1-git-send-email-rockford@yandex.ru>
- <20150212193457.GI10842@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YWVAc-00009a-4U
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 19:22:54 +0000
+Date: Fri, 13 Mar 2015 20:22:29 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20150313192229.GT952@pengutronix.de>
+References: <20150312120541.2e7f1bc81056c1f28a20753f@gmail.com>
+ <550149C2.6010808@pengutronix.de>
+ <20150312133253.e8445a7aadc4d131a56ee20d@gmail.com>
 MIME-Version: 1.0
-Message-Id: <832111423770319@web2g.yandex.ru>
-Date: Thu, 12 Feb 2015 22:45:19 +0300
+Content-Disposition: inline
+In-Reply-To: <20150312133253.e8445a7aadc4d131a56ee20d@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,21 +20,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Rockchip: Add DEBUG_LL based on mach-socfpga
-To: =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: git fetch issue
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-CgoxMi4wMi4yMDE1LCAyMjozNCwgIlV3ZSBLbGVpbmUtS8O2bmlnIiA8dS5rbGVpbmUta29lbmln
-QHBlbmd1dHJvbml4LmRlPjoKPiBIZWxsbywKPgo+Cj4gQmV0dGVyIG1ha2UgdXNlIG9mIERFQlVH
-X1VBUlRfUEhZUyBhbmQgREVCVUdfVUFSVF9CQVNFLgo+IEFuZCB0aGVyZSBpcyBhbHJlYWR5IERF
-QlVHX1JLMjlfVUFSVFsxMjNdIGFuZCBERUJVR19SSzNYX1VBUlRbMDEyM10gYW5kCj4gREVCVUdf
-UkszMl9VQVJUMi4gRG9lc24ndCBvbmUgb2YgdGhvc2UgZml0IHlvdXIgbmVlZHM/Cj4KCldoaWNo
-IGJyYW5jaCBjb250YWlucyBpdD8gSSd2ZSBjaGVja2VkIG1hc3RlciBhbmQgbmV4dCBhbmQgdGhl
-cmUgaXMgbm8gc3VjaCBhIGRlZmluaXRpb25zLgoKLS0KINCQ0L3QtNGA0LXQuQoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hello Antony,
+
+On Thu, Mar 12, 2015 at 01:32:53PM +0400, Antony Pavlov wrote:
+> It looks like my local repo is damaged ("git fsck" exits with a bus error=
+ message).
+> I suppose that the problem is likely due to my laptop yesterday emergency=
+ power off.
+> I have just re-cloned barebox.git from pengutronix. This new copy has no =
+bus error problem.
+If you can share your repository the git-people might be interested to
+look into why git runs into a bus error.
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
