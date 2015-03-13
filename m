@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YWMid-00050I-E1
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 10:21:28 +0000
-Message-ID: <1426242065.13791.110.camel@pengutronix.de>
+ Linux)) id 1YWMjw-0005OJ-C5
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 10:22:49 +0000
+Message-ID: <1426242146.13791.111.camel@pengutronix.de>
 From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 13 Mar 2015 11:21:05 +0100
-In-Reply-To: <20150313100538.GB20624@ns203013.ovh.net>
+Date: Fri, 13 Mar 2015 11:22:26 +0100
+In-Reply-To: <20150313101244.GD20624@ns203013.ovh.net>
 References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171199-2729-4-git-send-email-jlu@pengutronix.de>
- <20150312181934.GV30554@ns203013.ovh.net>
- <1426238884.13791.85.camel@pengutronix.de>
- <20150313100538.GB20624@ns203013.ovh.net>
+ <1426171199-2729-3-git-send-email-jlu@pengutronix.de>
+ <20150312174740.GT30554@ns203013.ovh.net>
+ <1426239335.13791.92.camel@pengutronix.de>
+ <20150313095654.GA20624@ns203013.ovh.net>
+ <20150313100648.GQ24885@pengutronix.de>
+ <20150313101244.GD20624@ns203013.ovh.net>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,54 +23,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/4] FIT: add FIT image support
+Subject: Re: [RFC 2/4] Add rsa support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-T24gRnIsIDIwMTUtMDMtMTMgYXQgMTE6MDUgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
-TC1WSUxMQVJEIHdyb3RlOgo+IE9uIDEwOjI4IEZyaSAxMyBNYXIgICAgICwgSmFuIEzDvGJiZSB3
-cm90ZToKPiA+IE9uIERvLCAyMDE1LTAzLTEyIGF0IDE5OjE5ICswMTAwLCBKZWFuLUNocmlzdG9w
-aGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+ID4gcGxlYXNlIGRvIG5vdCBzZW5kIGEgbmV3
-IHZlcnNpb24gZXhjZXB0IGZvciBmaXgKPiA+ID4gCj4gPiA+IEknbSBnb2luZyB0byByZS1pbnRl
-Z3JhdGUgaXQgd2l0aCB0aGUga2V5c3RvcmUgJiBjbwo+ID4gCj4gPiBDb3VsZCB5b3UgZGVzY3Jp
-YmUgeW91ciBrZXlzdG9yZSBkZXNpZ24/Cj4gCj4gSSdsbCBzZW5kIHRoZSBwYXRjaCBzZXJpZXMg
-c29vbgo+IAo+IGNvZGUgaXMgYmV0dGVyIHRoYW4gMTAwMHMgb2Ygd29yZHMKPiAKPiB3aXRoIERF
-UiBzdXBwb3J0IGFuZCB0aGUgZml0CgpUaGFua3MuCgo+ID4gPiBhbmQgc2hhMSxyc2EyMDQ4IGlz
-IGNvbnNpZGVyZWQgd2VhayBpbiB0ZXJtIG9mIHNlY3VyaXR5Cj4gPiA+IGFuZCB3b3JzZSBtZDQv
-bWQ1Cj4gPiA+IAo+ID4gPiBmb3IgYmFyZWJveCBJIHdvdWxkIG9ubHkgdXNlCj4gPiA+IGF0IGxl
-YXN0IHNoYTI1NiB3aXRoIHJzMjA0OCBvciBzaGE1MTIgd2l0aCByc2E0MDk2Cj4gPiAKPiA+IFll
-cywgb2YgY291cnNlLiBUaGVzZSB3ZXJlIG9ubHkgdXNlZCBhcyBhbiBleGFtcGxlIGFuZCBpdCdz
-IHRyaXZpYWwgdG8KPiA+IHN3aXRjaCB0byBvdGhlciBoYXNoIGFsZ29zIG9yIFJTQSBrZXkgc2l6
-ZXMuIEFsc28sIHRoZSBGSVQgZm9ybWF0IGNhbgo+ID4gZWFzaWx5IGJlIGV4dGVuZGVkIHRvIHN1
-cHBvcnQgRUNDL0N1cnZlMjU1MTkuCj4gCj4gdmVyeSBzbG93IHZzIHJzYSwgYnV0IGFzIHdlIHdp
-bGwgdXNlIGEgZ2VuZXJpYyBmcmFtZXdvcmsgd2Ugd2lsbCBqdXN0IG5lZWQgdG8KPiBhZGQgdGhl
-IGFsZ28KPiAKPiBpZiB5b3UgY2FuIGJyZWFrIHJzYTQwOTYsIHRoZSBjaGFuY2UgeW91IGNhbiBi
-cmVhayBFQ0MgYXJlIGhpZ2ggdG9vCgpQbGVhc2Ugc2VlIGh0dHA6Ly9lZDI1NTE5LmNyLnlwLnRv
-LyBhbmQKaHR0cDovL2NyLnlwLnRvL3BhcGVycy5odG1sI3J3c290YS4gQ3VydmUyMjUxOSBpcyB2
-ZXJ5IGZhc3QgYW5kIGhhcyBzb21lCmJlbmVmaXRzIG92ZXIgUlNBLgoKSSdtIG5vdCBhcmd1aW5n
-IHRoYXQgZWl0aGVyIFJTQSBvciBFQ0MgYXJlIGJldHRlciBmb3IgdmVyaWZpZWQgYm9vdCwgd2UK
-c2hvdWxkIGp1c3Qga2VlcCBpbiBtaW5kIHRoYXQgc3VwcG9ydGluZyBFQ0MgbGF0ZXIgc2hvdWxk
-IGZpdCB0aGUKZGVzaWduLgoKPiA+IEluIHNvbWUgY2FzZXMsIHdoZXJlIHRoZSBTb0MncyBST00g
-Y29kZSBvbmx5IHN1cHBvcnRzIFJTQTIwNDggd2l0aCBTSEExLAo+ID4gdXNpbmcgc3Ryb25nZXIg
-c2V0dGluZ3MgaW4gQmFyZWJveCBkb2Vzbid0IGluY3JlYXNlIHNlY3VyaXR5LiBTbyB0aGVyZQo+
-ID4gd2Ugd2FudCB0byB1c2UgdGhlIHNhbWUgc2V0dGluZ3MgYXMgdGhlIFJPTSBjb2RlLgo+IAo+
-IGFncmVlZCBidXQgSSByZWZ1c2UgdG8gYWxsb3cgaXQgdW5sZXNzIHdlIGhhdmUgbm8gY2hvaWNl
-Cj4gYW5kIGVtaXQgYSB3YXJuaW5nCgpJJ20gZmluZSB3aXRoIGEgd2FybmluZyBpbiBLY29uZmln
-IG9yIGR1cmluZyBjb21waWxlIHRpbWUuIAoKPiBhbmQgZXZlbiBJJ2xsIHByZWZlciB0byB1c2Ug
-c3RvbmdlciwgeWVzIHRoaXMgd2lsbCBpbmNyZWFzZSB0aGUgc2VjdXJpdHkuCj4gQXMgYSBzZWN1
-cmUgYm9vdCBpcyBhcyBzdHJvbmcgYXMgaXQncyB3ZWFrIGxpbmsKCkl0J3Mgbm90IHRoZSBqb2Ig
-b2YgYmFyZWJveCB0byBkZWZpbmUgc2VjdXJpdHkgcG9saWNpZXMsIGl0IG11c3QgZml0CndlbGwg
-aW50byB0aGUgbGFyZ2VyIHNlY3VyaXR5IGRlc2lnbiwgd2hpY2ggbWF5IHJlcXVpcmUgY29tcHJv
-bWlzZXMuCgpSZWdhcmRzLApKYW4KLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGlu
-dXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUv
-ICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiAr
-NDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAg
-ICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fr, 2015-03-13 at 11:12 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> 
+> sorry mutt via ssh lost some character when typing
+> 
+> der is few 100s line of code that's all
+> 
+> and x509 just a few more
+> 
+> as I do not plan to support all the options of x509 specially the non
+> standard one
+
+Do you intend to reject unknown/unimplemented parts of x509? Or just
+ignore them?
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
