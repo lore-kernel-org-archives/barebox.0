@@ -1,20 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YWRiv-0002uK-6G
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 15:42:06 +0000
-Message-ID: <1426261300.13791.192.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 13 Mar 2015 16:41:40 +0100
-In-Reply-To: <20150313142808.GC23879@ns203013.ovh.net>
-References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171199-2729-4-git-send-email-jlu@pengutronix.de>
- <20150312181934.GV30554@ns203013.ovh.net>
- <1426238884.13791.85.camel@pengutronix.de>
- <20150313100538.GB20624@ns203013.ovh.net>
- <1426242065.13791.110.camel@pengutronix.de>
- <20150313142808.GC23879@ns203013.ovh.net>
-Mime-Version: 1.0
+Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YWRqN-0008Cp-6Y
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 15:49:48 +0000
+Received: from pps.filterd (m0048299.ppops.net [127.0.0.1])
+ by m0048299.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id t2DFh3Kg008144
+ for <barebox@lists.infradead.org>; Fri, 13 Mar 2015 11:49:23 -0400
+Received: from alpmlip12.e2k.ad.ge.com (n165-156-000-000.static.ge.com
+ [165.156.5.1] (may be forged))
+ by m0048299.ppops.net-00176a03. with ESMTP id 1t422qg1b6-6
+ (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+ for <barebox@lists.infradead.org>; Fri, 13 Mar 2015 11:49:23 -0400
+Received: from [3.26.68.149] (unknown [3.26.68.149])
+ by selma.edi.geip.ge.com (Postfix) with ESMTP id D6F67E0775
+ for <barebox@lists.infradead.org>; Fri, 13 Mar 2015 15:49:12 +0000 (GMT)
+Message-ID: <550306F8.9050107@ge.com>
+Date: Fri, 13 Mar 2015 15:49:12 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,32 +30,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/4] FIT: add FIT image support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: ARM: UBI/UBIFS on spi-nor
+To: barebox@lists.infradead.org
 
-On Fr, 2015-03-13 at 15:28 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > It's not the job of barebox to define security policies, it must fit
-> > well into the larger security design, which may require compromises.
-> 
-> I disagree, disable by default non secure feature is require to pass
-> secure boot certification
+Hello,
+I have a cortex-A9 based platform featuring a spi-nor (n25q256a).
+I have disabled 4KB sector for this spi-nor in order to use UBI/UBIFS.
 
-Is there a specific certification you are targeting?
+So far I can ubiattach, mount and copy small files (~65KB or 2 sectors)
+to ramfs. Copying a bigger file (512KB) leads to a read failure
+(ubifs_search_zbranch fails to find matching keys) and only part of the
+file is copied (always the same amount).
 
-How do you intend to handle console access in verified boot mode?
-Allowing access to md/mw would break any security.
+With Linux, I have not seen any issue and the boot loader SPI driver I
+ported seems to work fine as write-read-compare pass.
 
-I was thinking about switching off access to the HW AES keys as soon as
-a prompt appears. At least on MX28/MX6 that's possible and important.
+Has anybody used UBI/UBIFS on spi-nor successfully or seen a similar issue?
 
-Regards,
-Jan
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+cheers.
+
+
+
 
 
 _______________________________________________
