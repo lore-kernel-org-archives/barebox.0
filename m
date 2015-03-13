@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YWN3t-0002bi-Do
- for barebox@lists.infradead.org; Fri, 13 Mar 2015 10:43:26 +0000
-Message-ID: <1426243382.13791.121.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 13 Mar 2015 11:43:02 +0100
-In-Reply-To: <20150313102543.GA23879@ns203013.ovh.net>
+ Linux)) id 1YWNr0-0006tj-IV
+ for barebox@lists.infradead.org; Fri, 13 Mar 2015 11:34:11 +0000
+Message-ID: <5502CB15.4070306@pengutronix.de>
+Date: Fri, 13 Mar 2015 12:33:41 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+MIME-Version: 1.0
 References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171199-2729-3-git-send-email-jlu@pengutronix.de>
- <20150312174740.GT30554@ns203013.ovh.net>
- <1426239335.13791.92.camel@pengutronix.de>
- <20150313095654.GA20624@ns203013.ovh.net>
- <1426241455.13791.103.camel@pengutronix.de>
- <20150313102543.GA23879@ns203013.ovh.net>
-Mime-Version: 1.0
+ <1426171199-2729-4-git-send-email-jlu@pengutronix.de>
+ <20150312181934.GV30554@ns203013.ovh.net>
+ <1426238884.13791.85.camel@pengutronix.de>
+ <20150313100538.GB20624@ns203013.ovh.net>
+In-Reply-To: <20150313100538.GB20624@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +21,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1379946498562010620=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/4] Add rsa support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [RFC 3/4] FIT: add FIT image support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, =?UTF-8?Q?Jan_L=c3=bcbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gRnIsIDIwMTUtMDMtMTMgYXQgMTE6MjUgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
-TC1WSUxMQVJEIHdyb3RlOgo+IE9uIDExOjEwIEZyaSAxMyBNYXIgICAgICwgSmFuIEzDvGJiZSB3
-cm90ZToKPiA+IE9uIEZyLCAyMDE1LTAzLTEzIGF0IDEwOjU2ICswMTAwLCBKZWFuLUNocmlzdG9w
-aGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+ID4gPiBIYXZpbmcgYW4gQVNOMSBwYXJzZXIg
-Zm9yIERFUi94NTA5IGlzIGEgaHVnZSBhbW91bnQgb2YgY29tcGxleGl0eSBJCj4gPiA+ID4gd291
-bGQgbm90IHdhbnQgaW4gYSBib290bG9hZGVyLiBKdXN0IHRha2UgYSBsb29rIGF0IHRoZSBwcm9i
-bGVtcyB0aGUKPiA+ID4gPiBTU0wtQ0FzIGFuZCBicm93c2VycyBoYWQgd2l0aCBkaWZmZXJlbnQg
-aW50ZXJwcmV0YXRpb25zIG9mIHRoZSBzYW1lCj4gPiA+ID4gY2VydC4KPiA+ID4gCj4gPiA+IGRl
-ciBpcyBub3RoaW5nIGZldyB1bmRlciBsaW5lcwo+ID4gCj4gPiBTb3JyeSwgSSBjYW4ndCBwYXJz
-ZSB0aGlzLgo+ID4gCj4gPiA+IHg1MDkgYSBmZXcgbW9yZSBhcyBpdCdzIGJhc2VkIG9uIERFUgo+
-ID4gCj4gPiBDb3VsZCB5b3Ugc2hvdyBtZSB0aGF0IGNvZGU/Cj4gbGV0IG1lIGZpbmlzaCB0byBj
-bGVhbiBpdAo+IGFuZCByZWJhc2UgaXQKClN1cmUuCgo+ID4gPiA+IFRoZSBGSVQgZm9ybWF0IChh
-bmQgY29ycmVzcG9uZGluZyBwdWJsaWMga2V5IGluIHRoZSBib290bG9hZGVyJ3MgRFQpIGhhcwo+
-ID4gPiA+IGJlZW4gYWRvcHRlZCBieSBkZXB0aGNoYXJnZSBhbmQgdS1ib290LCBiZWNhdXNlIGl0
-IGhhbmRsZXMgdGhlCj4gPiA+ID4gcmVxdWlyZW1lbnRzIGFuZCBub3RoaW5nIG1vcmUuCj4gPiA+
-IAo+ID4gPiBpZiB5b3Ugd2FudCB0byBhZGQgdGhpcyBmb3JtYXQgeW91IGNhbiBidXQgdmlhIHRo
-ZSBrZXljaGFpbiBsb2FkZXIgbm90IGluIHRoZQo+ID4gPiBjb2RlIGFzIHRvZGF5IHlvdSBkbyBo
-YXZlIHNvYyBzdWNoIGFzIGlteCB0aGF0IHN0b3JlIHRoZSBrZXkgaW4gT1RQIGFzIERFUgo+ID4g
-Cj4gPiBUaGUgSU1YIGRvZXMgbm90IHN0b3JlIGtleXMgaW4gT1RQLiBJdCBzdG9yZXMgYSBTSEEo
-MSBvciAyNTYpIGhhc2ggb3Zlcgo+ID4gYSB0YWJsZSBvZiAic3VwZXIgcm9vdCBrZXlzIi4gVGhp
-cyBpcyBpcnJlbGV2YW50IGZvciBiYXJlYm94LCBhcyB0aGlzIGlzCj4gPiBhbHJlYWR5IGhhbmRs
-ZWQgYnkgdGhlIFJPTSBjb2RlLgo+IGl0J3MgZG9lcyBhcyB5b3UgY2FuIHVzZSBpdCBhcyBodyBJ
-UCB0byBjaGVjayB0aGUga2VybmVsCgpSU0EgY2hlY2tpbmcgaW4gSEFCdjQgKGkuZS4gTVg2KSBp
-cyBkb25lIGluIHNvZnR3YXJlIGJ5IHRoZSBST00gY29kZS4KRm9yIHRoZSBmaXJzdCBzdGVwIHdl
-IHNob3VsZCBvbmx5IHN1cHBvcnQgUlNBIGluIHNvZnR3YXJlIHRvIGtlZXAgdGhlCmNvbXBsZXhp
-dHkgZG93bi4KCj4geWVzIHlvdSBzdG9yZSBhIGhhc2ggYnV0IHlvdSBkbyBjYW4gdXNlIGl0IGlu
-IGJhcmVib3guCgpZZXMsIHlvdSBjb3VsZCB1c2UgaXQgaW4gYmFyZWJveC4gV2hhdCBpcyB0aGUg
-dXNlIGNhc2Ugd2hlcmUgeW91IHdvdWxkCmRvIHRoaXMgaW5zdGVhZCBvZiBoYXZpbmcgdGhlIGtl
-eSBjb21waWxlZC1pbiAoYW5kIHZlcmlmaWVkIHRvZ2V0aGVyCndpdGggdGhlIGNvZGUgYnkgdGhl
-IFJPTSk/Cgo+IG90aGVyIFNvQyAoaSBjYW4gbWVudGlvbiB0aGUgbmFtZSBOREEpIGRvZXMgc3Rv
-cmUgdGhlIGtleSBpbiB0aGUgT1RQIG9mIHRoZQo+IFNvQyBwcm9ncmFtbWVkIGF0IHByb2R1Y3Rp
-b24gdGltZSBvZiB0aGUgU29DIGl0c2VsZi4KPiB3aXRoIEhXIFJTQSBhY2NlbGVyYXRvcgoKT0ss
-IHBsZWFzZSBsZWF2ZSBIVyBSU0EgYXMgYSBmdXR1cmUgc3RlcC4KCj4gPiA+IGFuZCB1LWJvb3Qg
-aXMgbm90IHRoZSBiZXN0IHJlZmVyZW5jZSBFVkVSLgo+ID4gCj4gPiBEZXB0aGNoYXJnZSBpcyBt
-dWNoIG1vcmUgcmVsZXZhbnQgaGVyZSwgYXMgaXQncyB1c2VkIGFzIGEgY29yZWJvb3QKPiA+IHBh
-eWxvYWQgb24gY2hyb21lYm9va3MuCj4gCj4gZG9lcyBub3QgbWFrZSBpdCBtb3JlIHJlbGV2YW50
-IGlzIHRoZSB0ZXJtIG9mIGtleSBmb3JtYXQKPiAKPiB0aGUgU3RhbmRhcmQgYXJlIHg1MDksIFBH
-UCBhbmQgZGVyL3BlbSBmb3IgYWdlcwo+IAo+IGFuZCBhcyBzYWlkIHdlIGNhbiBzdXBwb3J0IGl0
-IGJ1dCBtYWtlIGl0IHRoZSBvbmx5IG9uZSBOTyBXQVkKCkknZCBwcmVmZXIgUEdQIHRvIHg1MDkg
-YW55d2F5LiA7KQoKSWYgd2UgY2FuIGhhdmUgeDUwOSBhbmQgRklUICh3aXRoIGtleSBpbiBEVCkg
-d2l0aG91dCB0b28gbXVjaCBhZGRpdGlvbmFsCmNvbXBsZXhpdHkgYW5kIGhhdmUgZWFjaCBvcHRp
-b25hbCBhdCBjb21waWxlIHRpbWUsIEknbSBub3QgYWdhaW5zdCBpdC4KSSdsbCB3YWl0IGZvciB5
-b3VyIGNvZGUuCgo+ID4gPiA+IFdoYXQgaXMgeW91ciB1c2UtY2FzZSBmb3Igd2hpY2ggeW91IG5l
-ZWQgdG8gYWRkIGtleXMgYXQgcnVudGltZT8KPiA+ID4gCj4gPiA+IHNpbXBsZSB5b3Ugd2FudCB0
-byBhbGxvdyB1c2VyIHRvIHB1dCB0aGVpciBvd24ga2V5Cj4gPiA+IG9yIHVzZSBhIENBIHRvIGhh
-bmRsZSBhbGxvd2VkIGtleQo+ID4gPgo+ID4gPiBpZiB5b3Ugd2FudCB0byByZXBsYWNlIGdydWIg
-dGhpcyBpcyBjcml0aWNhbAo+ID4gCj4gPiBXZSBoYXZlIGN1c3RvbWVycyB3aGljaCByZXF1aXJl
-IHRoYXQgZG8gbm90IGFsbG93IHJ1bnRpbWUgbG9hZGluZyBvZgo+ID4ga2V5cy4gU28gaXQgc2hv
-dWxkIGJlIHBvc3NpYmxlIHRvIGRpc2FibGUgcnVudGltZSBsb2FkaW5nIGF0IGNvbXBpbGUKPiA+
-IHRpbWUuIAo+IHllYWggb2YgY291cmNlIGJ1dCB0aGUgZmVhdHVyZSBuZWVkIHRvIGJlIGhlcmUg
-SU1ITwoKT0suCgo+IGFuZCBob25lc3RseSB0byByZXNwZWN0IHRoZSBvcGVuc291cmNlIGlmIHlv
-dSBhbGxvdyB0aGlzIHlvdSBNSUdIVCBiZQo+IGNvbXBsaWFudCB3aXRoIEdQTHYzCgpzL2NvbXBs
-aWFudC9ub24tY29tcGxpYW50LyA/CgpIb3cgeW91IG5lZWQgdG8gaGFuZGxlIHRoYXQgaW4gcHJh
-Y3RpY2UgZGVwZW5kcyBvbiB0aGUgY29udGV4dCBvZiB0aGUKd2hvbGUgc3lzdGVtLgoKPiBpdCdz
-IG1vcmUgdXNlciBmcmllbmRseQo+IEZvciBteSBvd24gY3VzdG9tZXIgSSBhbHdheXMgcmVjb21t
-YW5kIHRvIGhhdmUgYSBib2FyZCB1bmlxIGtleSB0aGF0IHlvdQo+IGNhbiBwcm92aWRlIHRvIGVh
-Y2ggZW5kIGN1c3RvbWVyIHVwb24gcmVxdWVzdCB0byBpdCBjYW4gaW5zdGFsbCBpdCdzIG93bgo+
-IGxpbnV4LiBFdmVuIGlmIHRoZSBrZXkgaXMgbm90IHJlcGxhY2VibGUuCgpZZXMsIHRoYXQncyBu
-aWNlIGlmIHRoZSBwcm9kdWN0aW9uIHdvcmsgZmxvdyBpbiB0aGUgZmFjdG9yeSBjYW4gZG8gdGhp
-cywKYnV0IGl0J3Mgbm90IGFsd2F5cyBwb3NzaWJsZS4KClJlZ2FyZHMsCkphbgotLSAKUGVuZ3V0
-cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwg
-aHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxk
-ZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmlj
-aHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkx
-Ny01NTU1IHwKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============1379946498562010620==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="ak5HoJr4E2chPijd45WEnF584K2FWvXWk"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--ak5HoJr4E2chPijd45WEnF584K2FWvXWk
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 03/13/2015 11:05 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:28 Fri 13 Mar     , Jan L=C3=BCbbe wrote:
+>> On Do, 2015-03-12 at 19:19 +0100, Jean-Christophe PLAGNIOL-VILLARD wro=
+te:
+>>> please do not send a new version except for fix
+>>>
+>>> I'm going to re-integrate it with the keystore & co
+>>
+>> Could you describe your keystore design?
+>=20
+> I'll send the patch series soon
+>=20
+> code is better than 1000s of words
+>=20
+> with DER support and the fit
+>>
+>>> and sha1,rsa2048 is considered weak in term of security
+>>> and worse md4/md5
+>>>
+>>> for barebox I would only use
+>>> at least sha256 with rs2048 or sha512 with rsa4096
+>>
+>> Yes, of course. These were only used as an example and it's trivial to=
+
+>> switch to other hash algos or RSA key sizes. Also, the FIT format can
+>> easily be extended to support ECC/Curve25519.
+>=20
+> very slow vs rsa, but as we will use a generic framework we will just n=
+eed to
+> add the algo
+>=20
+> if you can break rsa4096, the chance you can break ECC are high too
+
+If you want to open the box, today you would probably not break
+rsa2048/sha1 (unless you have huge calculation power) but look for
+implementation weaknesses, like bugs or side channel attacks.
+
+>> In some cases, where the SoC's ROM code only supports RSA2048 with SHA=
+1,
+>> using stronger settings in Barebox doesn't increase security. So there=
+
+>> we want to use the same settings as the ROM code.
+>=20
+> agreed but I refuse to allow it unless we have no choice
+> and emit a warning
+>=20
+> and even I'll prefer to use stonger, yes this will increase the securit=
+y.
+> As a secure boot is as strong as it's weak link
+>=20
+> but this will not reduce it either
+
+Adding unneeded complexity might not the best move here.
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--ak5HoJr4E2chPijd45WEnF584K2FWvXWk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBCgAGBQJVAssYAAoJECte4hHFiupUJboP/1GuBx7zUb8C2602vhwnjkoK
+orcj+LnTSRuAMpm9R3aUOjhX04m7c+sbS/VGdho+hkfv5R+nnZjFvF2MzNzJl7FN
+XCd2XtjFBztolBPvltMSpTgIvGlGfDTLL5BrpVNA5+8RIFMM0SsLkFpr5opT06F0
+MQSepnsFdGYyFPc6HTQzTFR/873QW/jtPdMy/z4Au5Y2HfDdaASwR5AY6EeiHcE8
+CGIymk2aWrqaYBqzcuiErYQbIZLht7GvmZkpig6BPvU4AQc4qZ7LPx6Q9dyuZ9oF
+902LKIWWcDkHo+U/SDXrywwnL/MmLi6o957afRd74YJ97My415bZmknY4AC3MABU
+2amWebDOsFJUzORlU4pYj6kHip2bshqUgIJEW5Hfm17jFHWYkDSSkYeiqNE2RYdk
+3M/uFulrLX1dy749Ry8IHW+/4o5uiQ9GaEozEndiNx+W1Hi6+i0MHGgvvS15I5Vt
+vJFH0FN3NsSQGjkQ6r6DvCh6kAg6qmOT3KGtkplMXW+H/atRbXkQMKZDx6/URlbv
+w2I6H/H5BNprw0BxLhv9zxWLGr4iWlY5w5JonONN1kurp+LoPtUGwnPjtogINvdZ
+IiW1RTUUTTcZ8tdoHkcYWTgjFfvVJBsN5ZsRte2Wsybm3eF6jbIuU81xPwLIZfDL
+XrzpFWlrQSC+FAqLzpsN
+=4Bs4
+-----END PGP SIGNATURE-----
+
+--ak5HoJr4E2chPijd45WEnF584K2FWvXWk--
+
+
+--===============1379946498562010620==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1379946498562010620==--
