@@ -1,14 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo68.mail-out.ovh.net ([46.105.78.111])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXTZQ-0005qD-Kr
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:52:34 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 035D5FFA80E
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 12:52:08 +0100 (CET)
-Date: Mon, 16 Mar 2015 12:52:04 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150316115204.GI26127@ns203013.ovh.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YXTfn-0001bM-SX
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:59:08 +0000
+Message-ID: <1426507125.3330.79.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Mon, 16 Mar 2015 12:58:45 +0100
+In-Reply-To: <20150316115204.GI26127@ns203013.ovh.net>
 References: <20150316101321.GA26127@ns203013.ovh.net>
  <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
  <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
@@ -17,9 +15,8 @@ References: <20150316101321.GA26127@ns203013.ovh.net>
  <1426503959.3330.45.camel@pengutronix.de>
  <20150316112507.GF26127@ns203013.ovh.net>
  <1426506097.3330.64.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1426506097.3330.64.camel@pengutronix.de>
+ <20150316115204.GI26127@ns203013.ovh.net>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,75 +25,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 07/10] password: add pbkdf2 support
-To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 12:41 Mon 16 Mar     , Jan L=FCbbe wrote:
-> On Mo, 2015-03-16 at 12:25 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Yes, definitely. We must use the algorithms as they are intended to be
-> > > used.
-> > > =
-
-> > > If we try to move users away from RSA2048 because it will be vulnerab=
-le
-> > > in the future, we should not go against established practice for
-> > > password salts by hard-coding it. =
-
-> > I'm not against it but with the barebox entropy did not see the point t=
-o use
-> > it.
-> > =
-
-> > so how do we generate the salt? what length
-> > =
-
-> > Personnaly I'll prefer
-> > =
-
-> > a random 64 bytes | sha256 | take first 32bytes. | pbkdf2 10000 round
-> =
-
-> Running SHA-256 on random data is useless for security.
-SHA256 is to improve the entrpopy not security
-> Just get
-> <hash-size> bytes from /dev/urandom on the host. We could generate a
-> file with the compile-time SALT which is then included.
-> =
-
-> On the running barebox, we could use SHA to hash the old password file
-> together with the current timer value. At least until we have something
-> better.
-> =
-
-> > result a 64 bytes password file <salt 32 byes><key 32 bytes>
-> =
-
-> Yes. As we select the algorithm at compile time, we don't the to save it
-> in the file.
-
-this is for barebox as we may not have any passwd file
-
-Best Regards,
-J.
-> =
-
-> Regards,
-> Jan
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> =
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW8sIDIwMTUtMDMtMTYgYXQgMTI6NTIgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
+TC1WSUxMQVJECndyb3RlOgo+IE9uIDEyOjQxIE1vbiAxNiBNYXIgICAgICwgSmFuIEzDvGJiZSB3
+cm90ZToKPiA+IE9uIE1vLCAyMDE1LTAzLTE2IGF0IDEyOjI1ICswMTAwLCBKZWFuLUNocmlzdG9w
+aGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+ID4gPiBZZXMsIGRlZmluaXRlbHkuIFdlIG11
+c3QgdXNlIHRoZSBhbGdvcml0aG1zIGFzIHRoZXkgYXJlIGludGVuZGVkIHRvIGJlCj4gPiA+ID4g
+dXNlZC4KPiA+ID4gPiAKPiA+ID4gPiBJZiB3ZSB0cnkgdG8gbW92ZSB1c2VycyBhd2F5IGZyb20g
+UlNBMjA0OCBiZWNhdXNlIGl0IHdpbGwgYmUgdnVsbmVyYWJsZQo+ID4gPiA+IGluIHRoZSBmdXR1
+cmUsIHdlIHNob3VsZCBub3QgZ28gYWdhaW5zdCBlc3RhYmxpc2hlZCBwcmFjdGljZSBmb3IKPiA+
+ID4gPiBwYXNzd29yZCBzYWx0cyBieSBoYXJkLWNvZGluZyBpdC4gCj4gPiA+IEknbSBub3QgYWdh
+aW5zdCBpdCBidXQgd2l0aCB0aGUgYmFyZWJveCBlbnRyb3B5IGRpZCBub3Qgc2VlIHRoZSBwb2lu
+dCB0byB1c2UKPiA+ID4gaXQuCj4gPiA+IAo+ID4gPiBzbyBob3cgZG8gd2UgZ2VuZXJhdGUgdGhl
+IHNhbHQ/IHdoYXQgbGVuZ3RoCj4gPiA+IAo+ID4gPiBQZXJzb25uYWx5IEknbGwgcHJlZmVyCj4g
+PiA+IAo+ID4gPiBhIHJhbmRvbSA2NCBieXRlcyB8IHNoYTI1NiB8IHRha2UgZmlyc3QgMzJieXRl
+cy4gfCBwYmtkZjIgMTAwMDAgcm91bmQKPiA+IAo+ID4gUnVubmluZyBTSEEtMjU2IG9uIHJhbmRv
+bSBkYXRhIGlzIHVzZWxlc3MgZm9yIHNlY3VyaXR5Lgo+IFNIQTI1NiBpcyB0byBpbXByb3ZlIHRo
+ZSBlbnRycG9weSBub3Qgc2VjdXJpdHkKClJ1bm5pbmcgYSBkZXRlcm1pbmlzdGljIGFsZ29yaXRo
+bSBjYW5ub3QgaW5jcmVhc2UgZW50cm9weSAob25seSByZWR1Y2UKaXQpLgoKPiA+IEp1c3QgZ2V0
+Cj4gPiA8aGFzaC1zaXplPiBieXRlcyBmcm9tIC9kZXYvdXJhbmRvbSBvbiB0aGUgaG9zdC4gV2Ug
+Y291bGQgZ2VuZXJhdGUgYQo+ID4gZmlsZSB3aXRoIHRoZSBjb21waWxlLXRpbWUgU0FMVCB3aGlj
+aCBpcyB0aGVuIGluY2x1ZGVkLgo+ID4gCj4gPiBPbiB0aGUgcnVubmluZyBiYXJlYm94LCB3ZSBj
+b3VsZCB1c2UgU0hBIHRvIGhhc2ggdGhlIG9sZCBwYXNzd29yZCBmaWxlCj4gPiB0b2dldGhlciB3
+aXRoIHRoZSBjdXJyZW50IHRpbWVyIHZhbHVlLiBBdCBsZWFzdCB1bnRpbCB3ZSBoYXZlIHNvbWV0
+aGluZwo+ID4gYmV0dGVyLgo+ID4gCj4gPiA+IHJlc3VsdCBhIDY0IGJ5dGVzIHBhc3N3b3JkIGZp
+bGUgPHNhbHQgMzIgYnllcz48a2V5IDMyIGJ5dGVzPgo+ID4gCj4gPiBZZXMuIEFzIHdlIHNlbGVj
+dCB0aGUgYWxnb3JpdGhtIGF0IGNvbXBpbGUgdGltZSwgd2UgZG9uJ3QgdGhlIHRvIHNhdmUgaXQK
+PiA+IGluIHRoZSBmaWxlLgo+IAo+IHRoaXMgaXMgZm9yIGJhcmVib3ggYXMgd2UgbWF5IG5vdCBo
+YXZlIGFueSBwYXNzd2QgZmlsZQoKVGhlIHNhbWUgYXBwbGllcyBhbHNvIHRvIHRoZSBkZWZhdWx0
+X3Bhc3N3ZCBjb21waWxlZCBpbiB2YXJpYWJsZS4KCkN1cnJlbnRseSB3ZSBoYXZlOgpQQVNTV0Rf
+RklMRSA6PSAkKHNoZWxsIGNkICQoc3JjdHJlZSk7IGZpbmQgJChDT05GSUdfUEFTU1dPUkRfREVG
+QVVMVCkgLXR5cGUgZikKY21kX3B3ZF9oID0gZWNobyAtbiAic3RhdGljIGNvbnN0IGNoYXIgZGVm
+YXVsdF9wYXNzd2RbXSA9IFwiIiA+ICRAOyBcCiAgICAgICAgY2F0ICQ8IHwgdHIgLWQgJ1xuJyA+
+PiAkQDsgXAogICAgICAgIGVjaG8gIlwiOyIgPj4gJEAKCmluY2x1ZGUvZ2VuZXJhdGVkL3Bhc3N3
+ZC5oOiAkKFBBU1NXRF9GSUxFKQogICAgICAgICQoY2FsbCBpZl9jaGFuZ2VkLHB3ZF9oKQoKVGhp
+cyB3b3VsZCBuZWVkIHRvIHJ1biB0aGUgaGFzaC9wYmtkZjIgYW5kIHN0b3JlIHNhbHQra2V5LgoK
+UmVnYXJkcywKSmFuCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0
+aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWlu
+ZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEt
+MjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
+fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
