@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YXV4U-0002QU-Rv
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 13:28:43 +0000
-Message-ID: <1426512500.3330.115.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Mon, 16 Mar 2015 14:28:20 +0100
-In-Reply-To: <20150316121923.GK26127@ns203013.ovh.net>
-References: <20150312181934.GV30554@ns203013.ovh.net>
- <1426238884.13791.85.camel@pengutronix.de>
- <20150313100538.GB20624@ns203013.ovh.net>
+Received: from 11.mo4.mail-out.ovh.net ([46.105.34.195])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YXVRW-0003dh-Gq
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 13:52:31 +0000
+Received: from mail170.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 80C85FF8CCB
+ for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 14:52:04 +0100 (CET)
+Date: Mon, 16 Mar 2015 14:51:41 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150316135141.GL26127@ns203013.ovh.net>
+References: <20150313100538.GB20624@ns203013.ovh.net>
  <1426242065.13791.110.camel@pengutronix.de>
  <20150313142808.GC23879@ns203013.ovh.net>
  <1426261300.13791.192.camel@pengutronix.de>
@@ -18,7 +18,10 @@ References: <20150312181934.GV30554@ns203013.ovh.net>
  <20150316111432.GE26127@ns203013.ovh.net>
  <1426507732.3330.87.camel@pengutronix.de>
  <20150316121923.GK26127@ns203013.ovh.net>
-Mime-Version: 1.0
+ <1426512500.3330.115.camel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1426512500.3330.115.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,90 +30,120 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC 3/4] FIT: add FIT image support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gTW8sIDIwMTUtMDMtMTYgYXQgMTM6MTkgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
-TC1WSUxMQVJEIHdyb3RlOgo+IE9uIDEzOjA4IE1vbiAxNiBNYXIgICAgICwgSmFuIEzDvGJiZSB3
-cm90ZToKPiA+IE9uIE1vLCAyMDE1LTAzLTE2IGF0IDEyOjE0ICswMTAwLCBKZWFuLUNocmlzdG9w
-aGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+ID4gT24gMTE6MTkgTW9uIDE2IE1hciAgICAg
-LCBKYW4gTMO8YmJlIHdyb3RlOgo+ID4gPiA+IExhdGVyIEknZCBsaWtlIHRvIGhhdmUgb3B0aW9u
-YWwgc3VwcG9ydCB0byBzd2l0Y2ggYmFyZWJveCBpbnRvIGEKPiA+ID4gPiAibm9uLXNlY3VyZSIg
-b3IgImRldmVsb3BlciIgbW9kZSBhdCBydW50aW1lLCB3aGljaCB3b3VsZCBtYWtlIGhhcmR3YXJl
-Cj4gPiA+ID4gc2VjcmV0cyBpbmFjY2Vzc2libGUuIFRoYXQgY291bGQgYmUgdHJpZ2dlcmVkIHdo
-ZW4gYSBwcm9tcHQgYXBwZWFycyBvcgo+ID4gPiA+IHdoZW4gYm9vdGluZyBmb3IgYSBkaWZmZXJl
-bnQgc291cmNlIChzdWNoIGFzIFVTQiBmYXN0Ym9vdCkuCj4gPiA+IAo+ID4gPiB5ZWFoLCBJIGxp
-a2UgdGhlIGlkZWEgYnV0IGZvciB0aGlzIHdpbGwgaGF2ZSB0byBwdXQgYSBsb3Qgb2YgcHJvdGVj
-dGlvbiBzbyB5b3UKPiA+ID4gY2FuIG5vdCByZWFkL3dyaXRlIHNvbWUgcGFydCBvZiB0aGUgbWVt
-b3J5IGluY2x1ZGVkIGJhcmVib3ggaXRzZWxmIChpbiBSQU0pCj4gPiA+IAo+ID4gPiBBcyBpbiB0
-aGUga2VybmVsIHdlIGhhdmUgbm8gbWVtbW9yeSBwcm90ZWN0aW9uIGZyb20gdGhlIHNoZWxsLgo+
-ID4gCj4gPiBOb3QgbmVjZXNzYXJpbHkuIEZvciBleGFtcGxlIG9uIHRoZSBNWDYgeW91IGNhbiB0
-cmlnZ2VyIGEgc2VjdXJpdHkKPiA+IHZpb2xhdGlvbiBpbiB0aGUgQ0FBTSBmcm9tIHNvZnR3YXJl
-LiBUaGF0IHdpbGwgY2xlYXIgdGhlIE9UUE1LIGluIGl0cwo+ID4gS2V5LVJBTS4gRnJvbSB0aGF0
-IHBvaW50IG9uIHlvdSBjYW4gcnVuIGFueSBzb2Z0d2FyZSBidXQgeW91IHdpbGwgbm90IGJlCj4g
-PiBhYmxlIHRvIGRlY3J5cHQgYW55IHNlY3JldCBkYXRhIHdoaWNoIHdhcyBlbmNyeXB0ZWQgd2l0
-aCB0aGUgT1RQTUsuCj4gPiAKPiA+IE9uIGhhcmR3YXJlIHdoaWNoIHN1cHBvcnRzIHNvbWV0aGlu
-ZyBsaWtlIHRoaXMsIGRlYnVnZ2luZyBoYXJkd2FyZQo+ID4gcHJvYmxlbXMgaXMgZWFzeSBhbmQg
-dGhlcmUgaXMgbm8gZGFuZ2VyIG9mIGxlYWtpbmcgYW55IHNlY3JldAo+ID4gaW5mb3JtYXRpb24u
-IElmIHNvbWV0aGluZyBpcyB1c2VmdWwvcG9zc2libGUgaW4gYW55IHNwZWNpZmljIHByb2plY3QK
-PiA+IG9idmlvdXNseSBkZXBlbmRzIG9uIHRoZSB0aHJlYXQgbW9kZWwgYW5kIGhhcmR3YXJlIGNh
-cGFiaWxpdGllcy4KPiAKPiBJIGtub253IGFib3V0IHRoZSBpbXg2IGJ1dCB0aGF0IGRvZXMgbm90
-IG1lYW4gYWxsIHRoZSBTb0MKPiB1bmZvcnR1bmF0bHkuCgpZZXMsIGV2ZXJ5IFNvQyBpcyBkaWZm
-ZXJlbnQuIEJ1dCB3ZSBzaG91bGQgYmUgYWJsZSB0byB1c2UgSFcgZmVhdHVyZXMKd2hlbiB0aGUg
-YXJlIGF2YWlsYWJsZSwgYXMgc29tZXRpbWVzIHRoZSBIVyBpcyBzZWxlY3RlZCBzcGVjaWZpY2Fs
-bHkgdG8KdXNlZCB0aGVzZSBzZWN1cml0eSBmZWF0dXJlcy4KCj4gVGhlIG90aGVyIHBiIEkgc2Vl
-IGlzIHRoaXMgb25lIHdoZXJlIGFuZCBkbyB5b3UgcGxhbiB0byBzdG9yZSB0aGUgUk8geDUwOQo+
-IHRoZSB0cnVzdGVkIG9uZS4KClNvcnJ5LCBJIGNhbid0IHBhcnNlIHRoaXMuCgo+IGlmIHlvdSB1
-c2Ugb24gT1RQIHRoaXMgbWVhbnMgdGhpcyBpcyBlbm91Z2ggdG8gZW5zdXJlIHNlY3VyZWQgYm9v
-dCBhcyBpZiB5b3UKPiBjYW4gbm90IG1vZGlmeSB0aGUgcHJpbWFyeSBjZXJ0IG9mIGtleS4gTm8g
-b25lIGNhbiBicmFrZSBpdC4gQnV0IGFzIHlvdSBsb2FkCj4gaXQgaW4gcmFtIHlvdSBuZWVkIHRv
-IGJlIHN1cmUgbm8gb25lIG1vZGlmeSBpdC4gRXZlbiBpbiB1bmxvY2sgbW9kZSB0byBkbyBvbmx5
-Cj4gYWxsb3cgdG8gYm9vdCBzZWN1cmUgaW1hZ2VzIGJ5IGV4cGVjdGVkIGtleS4KCkkgc2hvdWxk
-IGhhdmUgYmVlbiBtb3JlIGNsZWFyOiBUaGUgdXNlIGNhc2UgaGVyZSBpcyB0byBlbnN1cmUgdGhh
-dCB0aGUKT1RQTUstQUVTLUhXLUtleSBpcyBvbmx5IGF2YWlsYWJsZSB3aGVuIGJvb3Rpbmcgd2l0
-aCBhIGNvcnJlY3QgYm9vdApjaGFpbi4gSXQncyBPSyB0byBib290IHNvbWV0aGluZyBlbHNlIChv
-bmx5IHRoZSBPVFBNSyBuZWVkcyB0byBiZQpjbGVhcmVkKS4KClRoaXMgaXMgYSB2ZXJ5IGRpZmZl
-cmVudCBnb2FsIGZyb20gbWFraW5nIHN1cmUgdGhhdCBvbmx5IGNvcnJlY3RseQpzaWduZWQgY29k
-ZSBpcyBleGVjdXRlZC4KCkJvdGggY2FzZXMgbmVlZCBtb3N0bHkgdGhlIHNhbWUgdmVyaWZpZWQg
-Ym9vdCBmZWF0dXJlcywgb25seSB0aGUgcG9saWN5Cihlc3BlY2lhbGx5IHdoYXQgdG8gZG8gb24g
-c2lnbmF0dXJlIGVycm9ycykgaXMgZGlmZmVyZW50LgoKPiBTbyB5b3UgbWF5IG5vdCBoYXZlIHNl
-Y3VyZWQgcGxhY2UgdG8gc3RvcmUgdGhlIGNlcnQgb3Iga2V5IGluIHJhbSBidXQgb25seQo+IFJB
-TS4gc28gd2UgZG8gbmVlZCB0byBmb3JiaWRkZW4gdGhpcyBtZW1vcnkgYWNjZXMgdG8gZXZlcnlv
-bmUgZXhjZXB0IHRoZQo+IGNyeXB0byBBUEkuIGlmIHdlIHdhbnQgb3QgYWxsb3cgZGV2IG1vZGUu
-CgpPbiBNWDYgdGhpcyBjYW4gYmUgZG9uZSBieSB0aGUgSFcuIERvaW5nIHRoaXMgKHdpdGhvdXQg
-VHJ1c3Rab25lKSBwdXJlbHkKaW4gU1cgc2VlbXMgZXh0cmVtZWx5IGRpZmZpY3VsdC4KCj4gPiA+
-ID4gPiB0aGUgbWFpbiBwcm9ibGVtIGlzIG5vdCBjb25zb2xlIGJ1dCBlbnYgeW91IG5lZWQgdG8g
-ZHJvcCBSVyBlbnYgc3VwcG9ydAo+ID4gPiA+ID4gYW5kIHVzZSBvbmx5IFJPIG9uZSwgZXhjZXB0
-IGZvciBrZXlyaW5nIHN1cHBvcnQgd2hlcmUgeW91IHdpbGwgYSBSVyBlbnYgYnV0Cj4gPiA+ID4g
-PiBub3QgZXhlY3V0YWJsZSBhbmQgb25seSBhY2Nlc2FibGUgYnkgY3J5cHRvIEFQSQo+ID4gPiA+
-ID4gCj4gPiA+ID4gPiBvdGhlcndpc2UgeW91IG5lZWQgdG8gdXNlIGEgc2VjdXJlZCBkaWdlc3Qg
-c3VjaCBhcyBITUFDL0NNQUMvT01BQyBzdXBwb3J0Cj4gPiA+ID4gPiB0byBzaWduIHRoZSBlbnYg
-YXQgcnVudGltZSBhbmQgZW5zdXJlIHRoZSBzeW1ldHJpYyBrZXkgaXMgc2VjdXJlZAo+ID4gPiA+
-ID4gb3IgZW5jcnlwdCBpdCB2aWEgYWVzIChkaWQgdGhpcyBpbiB0aGUgcGFzdCkKPiA+ID4gPiAK
-PiA+ID4gPiBGb3IgYW4gdXBjb21pbmcgcHJvamVjdCB3ZSdsbCBhZGQgSE1BQyBzdXBwb3J0IHRv
-IHRoZSBzdGF0ZSBzdG9yYWdlIE1hcmMKPiA+ID4gPiByZWNlbnRseSBzdWJtaXR0ZWQuCj4gPiA+
-IEkndmUgYSBwYXRjaCB0b28gSSBuZWVkIHRvIHNlbmQgaXQKPiA+IAo+ID4gRm9yIGVudmlyb25t
-ZW50IG9yIHN0YXRlIHN0b3JhZ2U/Cj4gZW52ZnMKCk5pY2UuIDopCgo+ID4gCj4gPiA+IGJ1dCBJ
-IHByZWZlciB0byB3YWl0IHdlIGhhdmUga2V5c3RvcmUgc3VwcG9ydCBhcyB0aGlzIHdpbGwgc3Rv
-cmUgdGhlIGtleSBmb3IKPiA+ID4gdGhlIEhNQUMgb3RoZXJ3aXNlIHdlIG5lZWQgdG8gdXNlIEhX
-IEhNQUMgdGhhdCBzdG9yZSB0aGUga2V5IGluIHRoZSBzb2MKPiA+IAo+ID4gQW5vdGhlciBwb3Nz
-aWJpbGl0eSBpcyB0byB1c2UgdGhlIEhXIEFFUyBrZXkgYW5kIGEgY29tcGlsZWQgaW4gdmFsdWUg
-dG8KPiA+IGRlcml2ZSBhIHBlci1kZXZpY2UgSE1BQyBzZWNyZXQuIFRoZSBzYW1lIGFwcHJvYWNo
-IGNhbiBhbHNvIGJlIHVzZWQgaW4KPiA+IExpbnV4IGZvciBkZXJpdmluZyB0aGUgSU1BL0VWTSBI
-TUFDIHNlY3JldC4KPiB0aGlzIGZvciBtZSBuZWVkIHRvIGJlIGludGVncmF0ZWQgaW4gdGhlIGtl
-eXN0b3JlIHRvIGJlIHRyYW5zcGFyZW50IGZvciB0aGUKPiByZXN0IG9mIHRoZSBBUEkKClRoYXQg
-c2hvdWxkbid0IGJlIGhhcmQuIFdlIGNhbiBsb29rIGF0IHRoaXMgaW4gZGV0YWlsIGFmdGVyIHlv
-dSd2ZQpwb3N0ZWQgdGhhdCBBUEkuCgpSZWdhcmRzLApKYW4KLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
-bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 14:28 Mon 16 Mar     , Jan L=FCbbe wrote:
+> On Mo, 2015-03-16 at 13:19 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 13:08 Mon 16 Mar     , Jan L=FCbbe wrote:
+> > > On Mo, 2015-03-16 at 12:14 +0100, Jean-Christophe PLAGNIOL-VILLARD wr=
+ote:
+> > > > On 11:19 Mon 16 Mar     , Jan L=FCbbe wrote:
+> > > > > Later I'd like to have optional support to switch barebox into a
+> > > > > "non-secure" or "developer" mode at runtime, which would make har=
+dware
+> > > > > secrets inaccessible. That could be triggered when a prompt appea=
+rs or
+> > > > > when booting for a different source (such as USB fastboot).
+> > > > =
+
+> > > > yeah, I like the idea but for this will have to put a lot of protec=
+tion so you
+> > > > can not read/write some part of the memory included barebox itself =
+(in RAM)
+> > > > =
+
+> > > > As in the kernel we have no memmory protection from the shell.
+> > > =
+
+> > > Not necessarily. For example on the MX6 you can trigger a security
+> > > violation in the CAAM from software. That will clear the OTPMK in its
+> > > Key-RAM. From that point on you can run any software but you will not=
+ be
+> > > able to decrypt any secret data which was encrypted with the OTPMK.
+> > > =
+
+> > > On hardware which supports something like this, debugging hardware
+> > > problems is easy and there is no danger of leaking any secret
+> > > information. If something is useful/possible in any specific project
+> > > obviously depends on the threat model and hardware capabilities.
+> > =
+
+> > I knonw about the imx6 but that does not mean all the SoC
+> > unfortunatly.
+> =
+
+> Yes, every SoC is different. But we should be able to use HW features
+> when the are available, as sometimes the HW is selected specifically to
+> used these security features.
+
+I agree with you we just need to ensure that it work also when we can not
+use such HW feature.
+> =
+
+> > The other pb I see is this one where and do you plan to store the RO x5=
+09
+> > the trusted one.
+> =
+
+> Sorry, I can't parse this.
+where do we store the trusted keys/cert need to be secured or inaccessible
+except crypto API
+> =
+
+> > if you use on OTP this means this is enough to ensure secured boot as i=
+f you
+> > can not modify the primary cert of key. No one can brake it. But as you=
+ load
+> > it in ram you need to be sure no one modify it. Even in unlock mode to =
+do only
+> > allow to boot secure images by expected key.
+> =
+
+> I should have been more clear: The use case here is to ensure that the
+> OTPMK-AES-HW-Key is only available when booting with a correct boot
+> chain. It's OK to boot something else (only the OTPMK needs to be
+> cleared).
+> =
+
+> This is a very different goal from making sure that only correctly
+> signed code is executed.
+> =
+
+> Both cases need mostly the same verified boot features, only the policy
+> (especially what to do on signature errors) is different.
+secure boot means in 95% of the case only correctly signed file can be boot=
+ed
+> =
+
+> > So you may not have secured place to store the cert or key in ram but o=
+nly
+> > RAM. so we do need to forbidden this memory acces to everyone except the
+> > crypto API. if we want ot allow dev mode.
+> =
+
+> On MX6 this can be done by the HW. Doing this (without TrustZone) purely
+> in SW seems extremely difficult.
+
+if you do not allow console easy, if you do you need to make the memory whe=
+re
+you do store the trusted keys and barebox itself no accessible by any std A=
+PI
+or command
+
+such as md/mw, etc...
+
+yes this will be difficult
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
