@@ -1,27 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo68.mail-out.ovh.net ([46.105.41.146])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXTzn-000478-9N
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 12:19:48 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 60F40FF9F86
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 13:19:24 +0100 (CET)
-Date: Mon, 16 Mar 2015 13:19:23 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150316121923.GK26127@ns203013.ovh.net>
-References: <20150312181934.GV30554@ns203013.ovh.net>
- <1426238884.13791.85.camel@pengutronix.de>
- <20150313100538.GB20624@ns203013.ovh.net>
- <1426242065.13791.110.camel@pengutronix.de>
- <20150313142808.GC23879@ns203013.ovh.net>
- <1426261300.13791.192.camel@pengutronix.de>
- <20150313160826.GC24510@ns203013.ovh.net>
- <1426501162.3330.25.camel@pengutronix.de>
- <20150316111432.GE26127@ns203013.ovh.net>
- <1426507732.3330.87.camel@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YXUVo-0002EH-AB
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 12:52:53 +0000
+Date: Mon, 16 Mar 2015 13:52:29 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150316125229.GA4927@pengutronix.de>
+References: <20150311165009.GP30554@ns203013.ovh.net>
+ <1426092789-7708-1-git-send-email-plagnioj@jcrosoft.com>
+ <1426092789-7708-8-git-send-email-plagnioj@jcrosoft.com>
+ <1426503692.3330.41.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1426507732.3330.87.camel@pengutronix.de>
+In-Reply-To: <1426503692.3330.41.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,96 +21,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/4] FIT: add FIT image support
-To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Subject: Re: [PATCH 8/8] command: add hmac sum supportfor md5, sha1, sha224,
+ sha256, sha384, sha512
+To: Jan =?iso-8859-15?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 13:08 Mon 16 Mar     , Jan L=FCbbe wrote:
-> On Mo, 2015-03-16 at 12:14 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 11:19 Mon 16 Mar     , Jan L=FCbbe wrote:
-> > > Later I'd like to have optional support to switch barebox into a
-> > > "non-secure" or "developer" mode at runtime, which would make hardware
-> > > secrets inaccessible. That could be triggered when a prompt appears or
-> > > when booting for a different source (such as USB fastboot).
-> > =
+On Mon, Mar 16, 2015 at 12:01:32PM +0100, Jan L=FCbbe wrote:
+> On Mi, 2015-03-11 at 17:53 +0100, Jean-Christophe PLAGNIOL-VILLARD
+> wrote:
+> > diff --git a/include/digest.h b/include/digest.h
+> > index a26848c..fd47a7e 100644
+> > --- a/include/digest.h
+> > +++ b/include/digest.h
+> > @@ -54,11 +54,14 @@ struct digest *digest_alloc(char* name);
+> >  void digest_free(struct digest *d);
+> >  =
 
-> > yeah, I like the idea but for this will have to put a lot of protection=
- so you
-> > can not read/write some part of the memory included barebox itself (in =
-RAM)
-> > =
-
-> > As in the kernel we have no memmory protection from the shell.
+> >  int digest_file_window(struct digest *d, char *filename,
+> > +                      unsigned char *key, size_t keylen,
+> >                        unsigned char *hash,
+> >                        ulong start, ulong size);
+> >  int digest_file(struct digest *d, char *filename,
+> > +                      unsigned char *key, size_t keylen,
+> >                        unsigned char *hash);
 > =
 
-> Not necessarily. For example on the MX6 you can trigger a security
-> violation in the CAAM from software. That will clear the OTPMK in its
-> Key-RAM. From that point on you can run any software but you will not be
-> able to decrypt any secret data which was encrypted with the OTPMK.
+> This is already in next, but I'd like to know why you added the
+> key/keylen args to each function instead of letting the caller use
+> digest_set_key()?
 > =
 
-> On hardware which supports something like this, debugging hardware
-> problems is easy and there is no danger of leaking any secret
-> information. If something is useful/possible in any specific project
-> obviously depends on the threat model and hardware capabilities.
-
-I knonw about the imx6 but that does not mean all the SoC
-unfortunatly.
-
-The other pb I see is this one where and do you plan to store the RO x509
-the trusted one.
-
-if you use on OTP this means this is enough to ensure secured boot as if you
-can not modify the primary cert of key. No one can brake it. But as you load
-it in ram you need to be sure no one modify it. Even in unlock mode to do o=
-nly
-allow to boot secure images by expected key.
-
-So you may not have secured place to store the cert or key in ram but only
-RAM. so we do need to forbidden this memory acces to everyone except the
-crypto API. if we want ot allow dev mode.
+> In the patch "[PATCH 04/10] command: add generic digest command" you add
+> another parameter (unsigned char *sig) to these functions, which is used
+> instead of the key parameter when verifying.
 > =
 
-> > > > the main problem is not console but env you need to drop RW env sup=
-port
-> > > > and use only RO one, except for keyring support where you will a RW=
- env but
-> > > > not executable and only accesable by crypto API
-> > > > =
+> Maybe we are overloading them with to much different functionality?
 
-> > > > otherwise you need to use a secured digest such as HMAC/CMAC/OMAC s=
-upport
-> > > > to sign the env at runtime and ensure the symetric key is secured
-> > > > or encrypt it via aes (did this in the past)
-> > > =
+I agree here. For the caller of digest_file() it is equally simple to
+call digest_set_key() beforehand.
 
-> > > For an upcoming project we'll add HMAC support to the state storage M=
-arc
-> > > recently submitted.
-> > I've a patch too I need to send it
-> =
+Sascha
 
-> For environment or state storage?
-envfs
-> =
+-- =
 
-> > but I prefer to wait we have keystore support as this will store the ke=
-y for
-> > the HMAC otherwise we need to use HW HMAC that store the key in the soc
-> =
-
-> Another possibility is to use the HW AES key and a compiled in value to
-> derive a per-device HMAC secret. The same approach can also be used in
-> Linux for deriving the IMA/EVM HMAC secret.
-this for me need to be integrated in the keystore to be transparent for the
-rest of the API
-
-Best Regards,
-J.
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
