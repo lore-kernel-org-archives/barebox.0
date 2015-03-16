@@ -1,27 +1,27 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
+Received: from 1.mo68.mail-out.ovh.net ([46.105.41.146])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXTrX-0000k9-LX
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 12:11:16 +0000
+ id 1YXTzn-000478-9N
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 12:19:48 +0000
 Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 2B05DFFA02A
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 13:10:53 +0100 (CET)
-Date: Mon, 16 Mar 2015 13:10:48 +0100
+ by mo68.mail-out.ovh.net (Postfix) with SMTP id 60F40FF9F86
+ for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 13:19:24 +0100 (CET)
+Date: Mon, 16 Mar 2015 13:19:23 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150316121048.GJ26127@ns203013.ovh.net>
-References: <20150316101321.GA26127@ns203013.ovh.net>
- <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
- <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
- <1426502999.3330.35.camel@pengutronix.de>
- <20150316110114.GD26127@ns203013.ovh.net>
- <1426503959.3330.45.camel@pengutronix.de>
- <20150316112507.GF26127@ns203013.ovh.net>
- <1426506097.3330.64.camel@pengutronix.de>
- <20150316115204.GI26127@ns203013.ovh.net>
- <1426507125.3330.79.camel@pengutronix.de>
+Message-ID: <20150316121923.GK26127@ns203013.ovh.net>
+References: <20150312181934.GV30554@ns203013.ovh.net>
+ <1426238884.13791.85.camel@pengutronix.de>
+ <20150313100538.GB20624@ns203013.ovh.net>
+ <1426242065.13791.110.camel@pengutronix.de>
+ <20150313142808.GC23879@ns203013.ovh.net>
+ <1426261300.13791.192.camel@pengutronix.de>
+ <20150313160826.GC24510@ns203013.ovh.net>
+ <1426501162.3330.25.camel@pengutronix.de>
+ <20150316111432.GE26127@ns203013.ovh.net>
+ <1426507732.3330.87.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1426507125.3330.79.camel@pengutronix.de>
+In-Reply-To: <1426507732.3330.87.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -34,100 +34,89 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/10] password: add pbkdf2 support
+Subject: Re: [RFC 3/4] FIT: add FIT image support
 To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 12:58 Mon 16 Mar     , Jan L=FCbbe wrote:
-> On Mo, 2015-03-16 at 12:52 +0100, Jean-Christophe PLAGNIOL-VILLARD
-> wrote:
-> > On 12:41 Mon 16 Mar     , Jan L=FCbbe wrote:
-> > > On Mo, 2015-03-16 at 12:25 +0100, Jean-Christophe PLAGNIOL-VILLARD wr=
-ote:
-> > > > > Yes, definitely. We must use the algorithms as they are intended =
-to be
-> > > > > used.
-> > > > > =
-
-> > > > > If we try to move users away from RSA2048 because it will be vuln=
-erable
-> > > > > in the future, we should not go against established practice for
-> > > > > password salts by hard-coding it. =
-
-> > > > I'm not against it but with the barebox entropy did not see the poi=
-nt to use
-> > > > it.
-> > > > =
-
-> > > > so how do we generate the salt? what length
-> > > > =
-
-> > > > Personnaly I'll prefer
-> > > > =
-
-> > > > a random 64 bytes | sha256 | take first 32bytes. | pbkdf2 10000 rou=
-nd
-> > > =
-
-> > > Running SHA-256 on random data is useless for security.
-> > SHA256 is to improve the entrpopy not security
-> =
-
-> Running a deterministic algorithm cannot increase entropy (only reduce
-> it).
-
-check the kennel algo for PRGN
-
-and youp will see why I want to use a sha
-
-> =
-
-> > > Just get
-> > > <hash-size> bytes from /dev/urandom on the host. We could generate a
-> > > file with the compile-time SALT which is then included.
-> > > =
-
-> > > On the running barebox, we could use SHA to hash the old password file
-> > > together with the current timer value. At least until we have somethi=
-ng
-> > > better.
-> > > =
-
-> > > > result a 64 bytes password file <salt 32 byes><key 32 bytes>
-> > > =
-
-> > > Yes. As we select the algorithm at compile time, we don't the to save=
- it
-> > > in the file.
+On 13:08 Mon 16 Mar     , Jan L=FCbbe wrote:
+> On Mo, 2015-03-16 at 12:14 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 11:19 Mon 16 Mar     , Jan L=FCbbe wrote:
+> > > Later I'd like to have optional support to switch barebox into a
+> > > "non-secure" or "developer" mode at runtime, which would make hardware
+> > > secrets inaccessible. That could be triggered when a prompt appears or
+> > > when booting for a different source (such as USB fastboot).
 > > =
 
-> > this is for barebox as we may not have any passwd file
+> > yeah, I like the idea but for this will have to put a lot of protection=
+ so you
+> > can not read/write some part of the memory included barebox itself (in =
+RAM)
+> > =
+
+> > As in the kernel we have no memmory protection from the shell.
 > =
 
-> The same applies also to the default_passwd compiled in variable.
+> Not necessarily. For example on the MX6 you can trigger a security
+> violation in the CAAM from software. That will clear the OTPMK in its
+> Key-RAM. From that point on you can run any software but you will not be
+> able to decrypt any secret data which was encrypted with the OTPMK.
 > =
 
-> Currently we have:
-> PASSWD_FILE :=3D $(shell cd $(srctree); find $(CONFIG_PASSWORD_DEFAULT) -=
-type f)
-> cmd_pwd_h =3D echo -n "static const char default_passwd[] =3D \"" > $@; \
->         cat $< | tr -d '\n' >> $@; \
->         echo "\";" >> $@
+> On hardware which supports something like this, debugging hardware
+> problems is easy and there is no danger of leaking any secret
+> information. If something is useful/possible in any specific project
+> obviously depends on the threat model and hardware capabilities.
+
+I knonw about the imx6 but that does not mean all the SoC
+unfortunatly.
+
+The other pb I see is this one where and do you plan to store the RO x509
+the trusted one.
+
+if you use on OTP this means this is enough to ensure secured boot as if you
+can not modify the primary cert of key. No one can brake it. But as you load
+it in ram you need to be sure no one modify it. Even in unlock mode to do o=
+nly
+allow to boot secure images by expected key.
+
+So you may not have secured place to store the cert or key in ram but only
+RAM. so we do need to forbidden this memory acces to everyone except the
+crypto API. if we want ot allow dev mode.
 > =
 
-> include/generated/passwd.h: $(PASSWD_FILE)
->         $(call if_changed,pwd_h)
+> > > > the main problem is not console but env you need to drop RW env sup=
+port
+> > > > and use only RO one, except for keyring support where you will a RW=
+ env but
+> > > > not executable and only accesable by crypto API
+> > > > =
+
+> > > > otherwise you need to use a secured digest such as HMAC/CMAC/OMAC s=
+upport
+> > > > to sign the env at runtime and ensure the symetric key is secured
+> > > > or encrypt it via aes (did this in the past)
+> > > =
+
+> > > For an upcoming project we'll add HMAC support to the state storage M=
+arc
+> > > recently submitted.
+> > I've a patch too I need to send it
 > =
 
-> This would need to run the hash/pbkdf2 and store salt+key.
+> For environment or state storage?
+envfs
+> =
 
-no as the current current code expect you to give the correct file format f=
-or
-the currently use password
+> > but I prefer to wait we have keystore support as this will store the ke=
+y for
+> > the HMAC otherwise we need to use HW HMAC that store the key in the soc
+> =
 
-so today the output of openssl
-
-but yes we may need to do more here
+> Another possibility is to use the HW AES key and a compiled in value to
+> derive a per-device HMAC secret. The same approach can also be used in
+> Linux for deriving the IMA/EVM HMAC secret.
+this for me need to be integrated in the keystore to be transparent for the
+rest of the API
 
 Best Regards,
 J.
