@@ -1,18 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YXUVo-0002EH-AB
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 12:52:53 +0000
-Date: Mon, 16 Mar 2015 13:52:29 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150316125229.GA4927@pengutronix.de>
-References: <20150311165009.GP30554@ns203013.ovh.net>
- <1426092789-7708-1-git-send-email-plagnioj@jcrosoft.com>
- <1426092789-7708-8-git-send-email-plagnioj@jcrosoft.com>
- <1426503692.3330.41.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1426503692.3330.41.camel@pengutronix.de>
+ Linux)) id 1YXUrG-0005Tb-T4
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 13:15:04 +0000
+Message-ID: <1426511679.3330.103.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Mon, 16 Mar 2015 14:14:39 +0100
+In-Reply-To: <20150316121048.GJ26127@ns203013.ovh.net>
+References: <20150316101321.GA26127@ns203013.ovh.net>
+ <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
+ <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
+ <1426502999.3330.35.camel@pengutronix.de>
+ <20150316110114.GD26127@ns203013.ovh.net>
+ <1426503959.3330.45.camel@pengutronix.de>
+ <20150316112507.GF26127@ns203013.ovh.net>
+ <1426506097.3330.64.camel@pengutronix.de>
+ <20150316115204.GI26127@ns203013.ovh.net>
+ <1426507125.3330.79.camel@pengutronix.de>
+ <20150316121048.GJ26127@ns203013.ovh.net>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +27,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/8] command: add hmac sum supportfor md5, sha1, sha224,
- sha256, sha384, sha512
-To: Jan =?iso-8859-15?Q?L=FCbbe?= <jlu@pengutronix.de>
+Subject: Re: [PATCH 07/10] password: add pbkdf2 support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 16, 2015 at 12:01:32PM +0100, Jan L=FCbbe wrote:
-> On Mi, 2015-03-11 at 17:53 +0100, Jean-Christophe PLAGNIOL-VILLARD
-> wrote:
-> > diff --git a/include/digest.h b/include/digest.h
-> > index a26848c..fd47a7e 100644
-> > --- a/include/digest.h
-> > +++ b/include/digest.h
-> > @@ -54,11 +54,14 @@ struct digest *digest_alloc(char* name);
-> >  void digest_free(struct digest *d);
-> >  =
-
-> >  int digest_file_window(struct digest *d, char *filename,
-> > +                      unsigned char *key, size_t keylen,
-> >                        unsigned char *hash,
-> >                        ulong start, ulong size);
-> >  int digest_file(struct digest *d, char *filename,
-> > +                      unsigned char *key, size_t keylen,
-> >                        unsigned char *hash);
-> =
-
-> This is already in next, but I'd like to know why you added the
-> key/keylen args to each function instead of letting the caller use
-> digest_set_key()?
-> =
-
-> In the patch "[PATCH 04/10] command: add generic digest command" you add
-> another parameter (unsigned char *sig) to these functions, which is used
-> instead of the key parameter when verifying.
-> =
-
-> Maybe we are overloading them with to much different functionality?
-
-I agree here. For the caller of digest_file() it is equally simple to
-call digest_set_key() beforehand.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW8sIDIwMTUtMDMtMTYgYXQgMTM6MTAgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
+TC1WSUxMQVJEIHdyb3RlOgo+IE9uIDEyOjU4IE1vbiAxNiBNYXIgICAgICwgSmFuIEzDvGJiZSB3
+cm90ZToKPiA+ID4gPiA+IFBlcnNvbm5hbHkgSSdsbCBwcmVmZXIKPiA+ID4gPiA+IAo+ID4gPiA+
+ID4gYSByYW5kb20gNjQgYnl0ZXMgfCBzaGEyNTYgfCB0YWtlIGZpcnN0IDMyYnl0ZXMuIHwgcGJr
+ZGYyIDEwMDAwIHJvdW5kCj4gPiA+ID4gCj4gPiA+ID4gUnVubmluZyBTSEEtMjU2IG9uIHJhbmRv
+bSBkYXRhIGlzIHVzZWxlc3MgZm9yIHNlY3VyaXR5Lgo+ID4gPiBTSEEyNTYgaXMgdG8gaW1wcm92
+ZSB0aGUgZW50cnBvcHkgbm90IHNlY3VyaXR5Cj4gPiAKPiA+IFJ1bm5pbmcgYSBkZXRlcm1pbmlz
+dGljIGFsZ29yaXRobSBjYW5ub3QgaW5jcmVhc2UgZW50cm9weSAob25seSByZWR1Y2UKPiA+IGl0
+KS4KPiAKPiBjaGVjayB0aGUga2VubmVsIGFsZ28gZm9yIFBSR04KClBSTkc/IFRoYXQgaXMgYSBk
+aWZmZXJlbnQgdXNlIGNhc2UuIFRoZSBrZXJuZWwgdGFrZXMgc291cmNlcyBvZiBlbnRyb3B5CmFu
+ZCB1c2VzIHRob3NlIHRvIHNlZWQgYW4gQ1NQUk5HOgpodHRwOi8vd3d3LjJ1by5kZS9teXRocy1h
+Ym91dC11cmFuZG9tLwoKPiBhbmQgeW91cCB3aWxsIHNlZSB3aHkgSSB3YW50IHRvIHVzZSBhIHNo
+YQoKSGF2aW5nIGhpZ2ggZW50cm9weSBhbmQgYXBwZWFyaW5nIHJhbmRvbSBhcmUgZGlmZmVyZW50
+IHByb3BlcnRpZXMuIEFzClNIQS0yNTYgaXMgZGV0ZXJtaW5pc3RpYyBpdCAqY2Fubm90KiBpbmNy
+ZWFzZSBlbnRyb3B5OgpodHRwOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL0VudHJvcHlfKGluZm9y
+bWF0aW9uX3RoZW9yeSkKCj4gPiA+ID4gSnVzdCBnZXQKPiA+ID4gPiA8aGFzaC1zaXplPiBieXRl
+cyBmcm9tIC9kZXYvdXJhbmRvbSBvbiB0aGUgaG9zdC4gV2UgY291bGQgZ2VuZXJhdGUgYQo+ID4g
+PiA+IGZpbGUgd2l0aCB0aGUgY29tcGlsZS10aW1lIFNBTFQgd2hpY2ggaXMgdGhlbiBpbmNsdWRl
+ZC4KPiA+ID4gPiAKPiA+ID4gPiBPbiB0aGUgcnVubmluZyBiYXJlYm94LCB3ZSBjb3VsZCB1c2Ug
+U0hBIHRvIGhhc2ggdGhlIG9sZCBwYXNzd29yZCBmaWxlCj4gPiA+ID4gdG9nZXRoZXIgd2l0aCB0
+aGUgY3VycmVudCB0aW1lciB2YWx1ZS4gQXQgbGVhc3QgdW50aWwgd2UgaGF2ZSBzb21ldGhpbmcK
+PiA+ID4gPiBiZXR0ZXIuCj4gPiA+ID4gCj4gPiA+ID4gPiByZXN1bHQgYSA2NCBieXRlcyBwYXNz
+d29yZCBmaWxlIDxzYWx0IDMyIGJ5ZXM+PGtleSAzMiBieXRlcz4KPiA+ID4gPiAKPiA+ID4gPiBZ
+ZXMuIEFzIHdlIHNlbGVjdCB0aGUgYWxnb3JpdGhtIGF0IGNvbXBpbGUgdGltZSwgd2UgZG9uJ3Qg
+dGhlIHRvIHNhdmUgaXQKPiA+ID4gPiBpbiB0aGUgZmlsZS4KPiA+ID4gCj4gPiA+IHRoaXMgaXMg
+Zm9yIGJhcmVib3ggYXMgd2UgbWF5IG5vdCBoYXZlIGFueSBwYXNzd2QgZmlsZQo+ID4gCj4gPiBU
+aGUgc2FtZSBhcHBsaWVzIGFsc28gdG8gdGhlIGRlZmF1bHRfcGFzc3dkIGNvbXBpbGVkIGluIHZh
+cmlhYmxlLgo+ID4gCj4gPiBDdXJyZW50bHkgd2UgaGF2ZToKPiA+IFBBU1NXRF9GSUxFIDo9ICQo
+c2hlbGwgY2QgJChzcmN0cmVlKTsgZmluZCAkKENPTkZJR19QQVNTV09SRF9ERUZBVUxUKSAtdHlw
+ZSBmKQo+ID4gY21kX3B3ZF9oID0gZWNobyAtbiAic3RhdGljIGNvbnN0IGNoYXIgZGVmYXVsdF9w
+YXNzd2RbXSA9IFwiIiA+ICRAOyBcCj4gPiAgICAgICAgIGNhdCAkPCB8IHRyIC1kICdcbicgPj4g
+JEA7IFwKPiA+ICAgICAgICAgZWNobyAiXCI7IiA+PiAkQAo+ID4gCj4gPiBpbmNsdWRlL2dlbmVy
+YXRlZC9wYXNzd2QuaDogJChQQVNTV0RfRklMRSkKPiA+ICAgICAgICAgJChjYWxsIGlmX2NoYW5n
+ZWQscHdkX2gpCj4gPiAKPiA+IFRoaXMgd291bGQgbmVlZCB0byBydW4gdGhlIGhhc2gvcGJrZGYy
+IGFuZCBzdG9yZSBzYWx0K2tleS4KPiAKPiBubyBhcyB0aGUgY3VycmVudCBjdXJyZW50IGNvZGUg
+ZXhwZWN0IHlvdSB0byBnaXZlIHRoZSBjb3JyZWN0IGZpbGUgZm9ybWF0IGZvcgo+IHRoZSBjdXJy
+ZW50bHkgdXNlIHBhc3N3b3JkCj4gCj4gc28gdG9kYXkgdGhlIG91dHB1dCBvZiBvcGVuc3NsCgpB
+aCwgc29ycnkgSSBtaXNyZWFkIHRoZSBjb2RlIGhlcmUuIEkgdGhvdWdoIHRoYXQgdGhlIHBsYWlu
+dGV4dCBwYXNzd29yZAp3YXMgaW4gdGhlIGNvbmZpZy4gQ09ORklHX1BBU1NXT1JEX0RFRkFVTFQg
+bXVzdCBiZSB0aGUgbmFtZSBvZiBhIGZpbGUgaW4KdGhlIHNyY3RyZWUgd2l0aCB0aGUgZm9ybWF0
+IG1hdGNoaW5nIHRoZSBzZWxlY3RlZCBoYXNoIGFsZ28/Cgo+IGJ1dCB5ZXMgd2UgbWF5IG5lZWQg
+dG8gZG8gbW9yZSBoZXJlCgpJdCBzZWVtcyB0aGVyZSBpcyBubyBzdGFuZGFyZCB0b29sIHRvIGNy
+ZWF0ZSBwYXNzd29yZCBoYXNoZXMgd2hpY2gKc3VwcG9ydHMgYWxsIHRoZSBhbGdvcml0aG1zIHdl
+IHdhbnQgdG8gaGF2ZS4KClNvIHRoZSBjdXJyZW50IHdheSBpcyB0byB1c2UgYmFyZWJveCBpdHNl
+bGYgdG8gY3JlYXRlIHRoZSBkZWZhdWx0CnBhc3N3b3JkIGZpbGU/IFNob3VsZCBiZSBoYXZlIGEg
+aG9zdCB0b29sIGZvciB0aGF0IG9yIGlzIGJhcmVib3ggc2FuZGJveAplbm91Z2g/CgpSZWdhcmRz
+LApKYW4KLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAg
+ICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIu
+IDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTct
+MCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDog
+ICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
