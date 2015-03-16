@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YXMgD-0000fU-12
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 04:31:05 +0000
-Date: Mon, 16 Mar 2015 05:30:43 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150316043043.GB24798@pengutronix.de>
-References: <1426278224-9538-1-git-send-email-dev@lynxeye.de>
+Received: from mout.kundenserver.de ([212.227.126.187])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YXR5l-000283-6f
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 09:13:46 +0000
+Date: Mon, 16 Mar 2015 10:13:11 +0100 (CET)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <alpine.DEB.2.10.1503160957040.7455@9VTHT2J-D520>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1426278224-9538-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +19,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: mvneta: convert to streaming DMA ops
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: ARM: UBI/UBIFS on spi-nor
+To: renaud.barbier@ge.com
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 13, 2015 at 09:23:44PM +0100, Lucas Stach wrote:
-> Move to the common streaming DMA ops in order to get rid of
-> the direct usage of the ARM MMU functions for the cache
-> maintenance.
+> I have a cortex-A9 based platform featuring a spi-nor (n25q256a).
+
+> Copying a bigger file (512KB) leads to a read failure
+> Has anybody used UBI/UBIFS on spi-nor successfully or seen a similar 
+issue?
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
-> I don't know why I missed this one driver in the big conversion
-> series, but the randconfig builder just came around and reminded
-> to get my act together.
-> 
-> Please apply to master.
 
-Did that, thanks
+Hello,
+I've recently used UBI/UBIFS with a cortex-A7 based platform featuring a 
+spi-nor from Spansion (s25fl256). I had to introduce some changes for the 
+4-byte-mode, which will be set automatically, if barebox detects a flash 
+memory with more than 16MByte, because I was not able to reboot my 
+platform. But it seems that your problem is a different one.
 
-Sascha
+I've just downloaded the datasheet of the n25q256a, and it seems that this 
+chip reports the JEDEC_MFR of ST (0x20), but needs the 4-byte CMD of 
+Macronix (0xb7).
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+This combination is currently not supported by barebox, but if you add an 
+additional 'case: CFI_MRF_ST' line to your 'set_4byte()' function, it 
+should hopefully work:
+
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 095a4ca..f54eb1f 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -157,6 +157,7 @@ static inline int set_4byte(struct m25p *flash, u32 
+jedec_id, int enable)
+ {
+ 	switch (JEDEC_MFR(jedec_id)) {
+ 	case CFI_MFR_MACRONIX:
++	case CFI_MFR_ST:
+ 		flash->command[0] = enable ? OPCODE_EN4B : OPCODE_EX4B;
+ 		return spi_write(flash->spi, flash->command, 1);
+ 	default:
+
+
+Best regards,
+ Rolf
+
 
 _______________________________________________
 barebox mailing list
