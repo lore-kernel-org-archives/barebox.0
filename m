@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
+Received: from 8.mo68.mail-out.ovh.net ([46.105.74.219])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXRBU-0005P0-Qq
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 09:19:43 +0000
+ id 1YXRBU-0005Pb-Lw
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 09:19:41 +0000
 Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 1EF36FF966E
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 10:19:18 +0100 (CET)
+ by mo68.mail-out.ovh.net (Postfix) with SMTP id 97819FFA8E7
+ for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 10:19:22 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 16 Mar 2015 10:19:00 +0100
-Message-Id: <1426497545-24175-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 16 Mar 2015 10:19:05 +0100
+Message-Id: <1426497545-24175-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426497545-24175-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150316091710.GE24510@ns203013.ovh.net>
  <1426497545-24175-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,53 +25,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] command: allow runtime usage
+Subject: [PATCH 8/8] digest: allow algo to specify their length at runtime
 To: barebox@lists.infradead.org
 
-This will allow as example to list the currently supported digest.
+such as RSA as we load a DER key we will detect the key size
+at runtime and so the algo length.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/command.c  | 2 ++
- include/command.h | 3 +++
- 2 files changed, 5 insertions(+)
+ include/digest.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/common/command.c b/common/command.c
-index 61191c2..dc2cb88 100644
---- a/common/command.c
-+++ b/common/command.c
-@@ -47,6 +47,8 @@ void barebox_cmd_usage(struct command *cmdtp)
- 		puts(cmdtp->help);
- 		putchar('\n');
- 	}
-+	if (cmdtp->usage)
-+		cmdtp->usage();
- #endif
- }
- EXPORT_SYMBOL(barebox_cmd_usage);
-diff --git a/include/command.h b/include/command.h
-index 5d5bf53..3aca1a9 100644
---- a/include/command.h
-+++ b/include/command.h
-@@ -54,6 +54,7 @@ struct command {
- 	uint32_t	group;
- #ifdef	CONFIG_LONGHELP
- 	const char	*help;		/* Help  message	(long)	*/
-+	void		(*usage)(void);
- #endif
- }
- #ifdef __x86_64__
-@@ -115,8 +116,10 @@ static const __maybe_unused char cmd_##_name##_help[] =
+diff --git a/include/digest.h b/include/digest.h
+index 8250ca7..41ad912 100644
+--- a/include/digest.h
++++ b/include/digest.h
+@@ -45,6 +45,7 @@ struct digest_algo {
+ struct digest {
+ 	struct digest_algo *algo;
+ 	void *ctx;
++	unsigned int length;
+ };
  
- #ifdef CONFIG_LONGHELP
- #define BAREBOX_CMD_HELP(text)	.help = text,
-+#define BAREBOX_CMD_USAGE(fn)	.usage = fn,
- #else
- #define BAREBOX_CMD_HELP(text)
-+#define BAREBOX_CMD_USAGE(fn)
- #endif
+ /*
+@@ -100,7 +101,7 @@ static inline int digest_verify(struct digest *d, const unsigned char *md)
  
- #define BAREBOX_CMD_GROUP(grp)	.group = grp,
+ static inline int digest_length(struct digest *d)
+ {
+-	return d->algo->length;
++	return d->length ? d->length : d->algo->length;
+ }
+ 
+ static inline int digest_set_key(struct digest *d, const unsigned char *key,
 -- 
 2.1.4
 
