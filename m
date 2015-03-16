@@ -1,27 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo68.mail-out.ovh.net ([178.32.228.68])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXTH4-0004HC-Hv
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:33:35 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 2C90FFFA505
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 12:33:12 +0100 (CET)
-Date: Mon, 16 Mar 2015 12:33:06 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150316113306.GH26127@ns203013.ovh.net>
-References: <20150312174740.GT30554@ns203013.ovh.net>
- <1426239335.13791.92.camel@pengutronix.de>
- <20150313095654.GA20624@ns203013.ovh.net>
- <1426241455.13791.103.camel@pengutronix.de>
- <20150313102543.GA23879@ns203013.ovh.net>
- <1426243382.13791.121.camel@pengutronix.de>
- <20150313154928.GA24510@ns203013.ovh.net>
- <1426500022.3330.12.camel@pengutronix.de>
- <20150316102713.GB26127@ns203013.ovh.net>
- <1426505135.3330.55.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1426505135.3330.55.camel@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YXTPD-0001Gv-Jd
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:42:00 +0000
+Message-ID: <1426506097.3330.64.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Mon, 16 Mar 2015 12:41:37 +0100
+In-Reply-To: <20150316112507.GF26127@ns203013.ovh.net>
+References: <20150316101321.GA26127@ns203013.ovh.net>
+ <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
+ <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
+ <1426502999.3330.35.camel@pengutronix.de>
+ <20150316110114.GD26127@ns203013.ovh.net>
+ <1426503959.3330.45.camel@pengutronix.de>
+ <20150316112507.GF26127@ns203013.ovh.net>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,96 +23,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/4] Add rsa support
-To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Subject: Re: [PATCH 07/10] password: add pbkdf2 support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 12:25 Mon 16 Mar     , Jan L=FCbbe wrote:
-> On Mo, 2015-03-16 at 11:27 +0100, Jean-Christophe PLAGNIOL-VILLARD
-> wrote:
-> > On 11:00 Mon 16 Mar     , Jan L=FCbbe wrote:
-> > > On Fr, 2015-03-13 at 16:49 +0100, Jean-Christophe PLAGNIOL-VILLARD wr=
-ote:
-> > > > you just need to have a unique ID on the HW and then use a x509 obj=
-ect
-> > > > to store it. then signed it with you CA. As only validated keys can=
- be
-> > > > used, you can easly give a generated key for a specific HW.
-> > > > And this key will be valid only for this HW.
-> > > =
+On Mo, 2015-03-16 at 12:25 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Yes, definitely. We must use the algorithms as they are intended to be
+> > used.
+> > 
+> > If we try to move users away from RSA2048 because it will be vulnerable
+> > in the future, we should not go against established practice for
+> > password salts by hard-coding it. 
+> I'm not against it but with the barebox entropy did not see the point to use
+> it.
+> 
+> so how do we generate the salt? what length
+> 
+> Personnaly I'll prefer
+> 
+> a random 64 bytes | sha256 | take first 32bytes. | pbkdf2 10000 round
 
-> > > Yes, this sounds useful. So you'd have a board-specific way to check =
-the
-> > > unique ID constraint in an intermediate cert against the HW ID?
-> > yes more or less but but at the key itself as you will have to upload t=
-he
-> > key to the board. And the key will only be accepted to be stored as it =
-will
-> > be valid and have the HW ID.
-> =
+Running SHA-256 on random data is useless for security. Just get
+<hash-size> bytes from /dev/urandom on the host. We could generate a
+file with the compile-time SALT which is then included.
 
-> OK. Sounds good to me.
-> =
+On the running barebox, we could use SHA to hash the old password file
+together with the current timer value. At least until we have something
+better.
 
-> > And for the record remember if you want to use module in secured boot m=
-ode
-> > for the kernel you will have to use x509 certificate anyway.
-> > =
+> result a 64 bytes password file <salt 32 byes><key 32 bytes>
 
-> > So why not to use the same principal.
-> > =
+Yes. As we select the algorithm at compile time, we don't the to save it
+in the file.
 
-> > u-boot way is not what is doing today on the market for authentication
-> > format. Today it's x509 or PGP.
-> > =
+Regards,
+Jan
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-> > So I do prefer to stay as standard as possible, this does not mean we c=
-an not
-> > support the FTD stuff. But IMHO it's not the right way.
-> =
-
-> x509 only defines the certificate format, not how it is used to sign
-> kernel, initramfs and device tree.
-> =
-
-> The kernel defines its own format based on ELF and store the signature
-> inside. That can't be reused directly for the kernel itself, initramfs
-> or DTB. UEFI has again its own format.
-> =
-
-> We don't want to sign kernel, initramfs and DTB individually, as this
-> would allow an attacker to mix-and-match these to trigger a
-> vulnerability. So we need to have some format which supports signing a
-> given configuration consisting of specific kernel, initramfs and DTB.
-> =
-
-> FIT handles this requirement. It also supports having multiple
-> configurations (each signed) referencing for example the same kernel
-> +initramfs but different DTBs for a set of similar boards.
-> =
-
-> What is the image format you intend to use with x509 certs?
-
-I'm not talking about FIT format but the key FTD format
-
-I do not like and do not want to use the FTD format to store the key
-but x509.
-
-Image format need to be 100% seperated from key format.
-
-That's why I work on a framework so we do not care of both.
-
-Multiple image format with multiple image of key format.
-
-So internally we will store the key in our own format so we can do what we
-want.
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
