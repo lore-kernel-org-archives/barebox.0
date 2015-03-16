@@ -1,24 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YXT9h-0001dO-9Q
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:25:58 +0000
-Message-ID: <1426505135.3330.55.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Mon, 16 Mar 2015 12:25:35 +0100
-In-Reply-To: <20150316102713.GB26127@ns203013.ovh.net>
-References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171199-2729-3-git-send-email-jlu@pengutronix.de>
- <20150312174740.GT30554@ns203013.ovh.net>
- <1426239335.13791.92.camel@pengutronix.de>
- <20150313095654.GA20624@ns203013.ovh.net>
- <1426241455.13791.103.camel@pengutronix.de>
- <20150313102543.GA23879@ns203013.ovh.net>
- <1426243382.13791.121.camel@pengutronix.de>
- <20150313154928.GA24510@ns203013.ovh.net>
- <1426500022.3330.12.camel@pengutronix.de>
- <20150316102713.GB26127@ns203013.ovh.net>
-Mime-Version: 1.0
+Received: from 2.mo68.mail-out.ovh.net ([46.105.52.162])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YXTBz-00023V-P9
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:28:20 +0000
+Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo68.mail-out.ovh.net (Postfix) with SMTP id 740E7FFA015
+ for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 12:27:55 +0100 (CET)
+Date: Mon, 16 Mar 2015 12:27:53 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150316112753.GG26127@ns203013.ovh.net>
+References: <20150311165009.GP30554@ns203013.ovh.net>
+ <1426092789-7708-1-git-send-email-plagnioj@jcrosoft.com>
+ <1426092789-7708-8-git-send-email-plagnioj@jcrosoft.com>
+ <1426503692.3330.41.camel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1426503692.3330.41.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,56 +24,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/4] Add rsa support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 8/8] command: add hmac sum supportfor md5, sha1, sha224,
+ sha256, sha384, sha512
+To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gTW8sIDIwMTUtMDMtMTYgYXQgMTE6MjcgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
-TC1WSUxMQVJECndyb3RlOgo+IE9uIDExOjAwIE1vbiAxNiBNYXIgICAgICwgSmFuIEzDvGJiZSB3
-cm90ZToKPiA+IE9uIEZyLCAyMDE1LTAzLTEzIGF0IDE2OjQ5ICswMTAwLCBKZWFuLUNocmlzdG9w
-aGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+ID4geW91IGp1c3QgbmVlZCB0byBoYXZlIGEg
-dW5pcXVlIElEIG9uIHRoZSBIVyBhbmQgdGhlbiB1c2UgYSB4NTA5IG9iamVjdAo+ID4gPiB0byBz
-dG9yZSBpdC4gdGhlbiBzaWduZWQgaXQgd2l0aCB5b3UgQ0EuIEFzIG9ubHkgdmFsaWRhdGVkIGtl
-eXMgY2FuIGJlCj4gPiA+IHVzZWQsIHlvdSBjYW4gZWFzbHkgZ2l2ZSBhIGdlbmVyYXRlZCBrZXkg
-Zm9yIGEgc3BlY2lmaWMgSFcuCj4gPiA+IEFuZCB0aGlzIGtleSB3aWxsIGJlIHZhbGlkIG9ubHkg
-Zm9yIHRoaXMgSFcuCj4gPiAKPiA+IFllcywgdGhpcyBzb3VuZHMgdXNlZnVsLiBTbyB5b3UnZCBo
-YXZlIGEgYm9hcmQtc3BlY2lmaWMgd2F5IHRvIGNoZWNrIHRoZQo+ID4gdW5pcXVlIElEIGNvbnN0
-cmFpbnQgaW4gYW4gaW50ZXJtZWRpYXRlIGNlcnQgYWdhaW5zdCB0aGUgSFcgSUQ/Cj4geWVzIG1v
-cmUgb3IgbGVzcyBidXQgYnV0IGF0IHRoZSBrZXkgaXRzZWxmIGFzIHlvdSB3aWxsIGhhdmUgdG8g
-dXBsb2FkIHRoZQo+IGtleSB0byB0aGUgYm9hcmQuIEFuZCB0aGUga2V5IHdpbGwgb25seSBiZSBh
-Y2NlcHRlZCB0byBiZSBzdG9yZWQgYXMgaXQgd2lsbAo+IGJlIHZhbGlkIGFuZCBoYXZlIHRoZSBI
-VyBJRC4KCk9LLiBTb3VuZHMgZ29vZCB0byBtZS4KCj4gQW5kIGZvciB0aGUgcmVjb3JkIHJlbWVt
-YmVyIGlmIHlvdSB3YW50IHRvIHVzZSBtb2R1bGUgaW4gc2VjdXJlZCBib290IG1vZGUKPiBmb3Ig
-dGhlIGtlcm5lbCB5b3Ugd2lsbCBoYXZlIHRvIHVzZSB4NTA5IGNlcnRpZmljYXRlIGFueXdheS4K
-PiAKPiBTbyB3aHkgbm90IHRvIHVzZSB0aGUgc2FtZSBwcmluY2lwYWwuCj4gCj4gdS1ib290IHdh
-eSBpcyBub3Qgd2hhdCBpcyBkb2luZyB0b2RheSBvbiB0aGUgbWFya2V0IGZvciBhdXRoZW50aWNh
-dGlvbgo+IGZvcm1hdC4gVG9kYXkgaXQncyB4NTA5IG9yIFBHUC4KPiAKPiBTbyBJIGRvIHByZWZl
-ciB0byBzdGF5IGFzIHN0YW5kYXJkIGFzIHBvc3NpYmxlLCB0aGlzIGRvZXMgbm90IG1lYW4gd2Ug
-Y2FuIG5vdAo+IHN1cHBvcnQgdGhlIEZURCBzdHVmZi4gQnV0IElNSE8gaXQncyBub3QgdGhlIHJp
-Z2h0IHdheS4KCng1MDkgb25seSBkZWZpbmVzIHRoZSBjZXJ0aWZpY2F0ZSBmb3JtYXQsIG5vdCBo
-b3cgaXQgaXMgdXNlZCB0byBzaWduCmtlcm5lbCwgaW5pdHJhbWZzIGFuZCBkZXZpY2UgdHJlZS4K
-ClRoZSBrZXJuZWwgZGVmaW5lcyBpdHMgb3duIGZvcm1hdCBiYXNlZCBvbiBFTEYgYW5kIHN0b3Jl
-IHRoZSBzaWduYXR1cmUKaW5zaWRlLiBUaGF0IGNhbid0IGJlIHJldXNlZCBkaXJlY3RseSBmb3Ig
-dGhlIGtlcm5lbCBpdHNlbGYsIGluaXRyYW1mcwpvciBEVEIuIFVFRkkgaGFzIGFnYWluIGl0cyBv
-d24gZm9ybWF0LgoKV2UgZG9uJ3Qgd2FudCB0byBzaWduIGtlcm5lbCwgaW5pdHJhbWZzIGFuZCBE
-VEIgaW5kaXZpZHVhbGx5LCBhcyB0aGlzCndvdWxkIGFsbG93IGFuIGF0dGFja2VyIHRvIG1peC1h
-bmQtbWF0Y2ggdGhlc2UgdG8gdHJpZ2dlciBhCnZ1bG5lcmFiaWxpdHkuIFNvIHdlIG5lZWQgdG8g
-aGF2ZSBzb21lIGZvcm1hdCB3aGljaCBzdXBwb3J0cyBzaWduaW5nIGEKZ2l2ZW4gY29uZmlndXJh
-dGlvbiBjb25zaXN0aW5nIG9mIHNwZWNpZmljIGtlcm5lbCwgaW5pdHJhbWZzIGFuZCBEVEIuCgpG
-SVQgaGFuZGxlcyB0aGlzIHJlcXVpcmVtZW50LiBJdCBhbHNvIHN1cHBvcnRzIGhhdmluZyBtdWx0
-aXBsZQpjb25maWd1cmF0aW9ucyAoZWFjaCBzaWduZWQpIHJlZmVyZW5jaW5nIGZvciBleGFtcGxl
-IHRoZSBzYW1lIGtlcm5lbAoraW5pdHJhbWZzIGJ1dCBkaWZmZXJlbnQgRFRCcyBmb3IgYSBzZXQg
-b2Ygc2ltaWxhciBib2FyZHMuCgpXaGF0IGlzIHRoZSBpbWFnZSBmb3JtYXQgeW91IGludGVuZCB0
-byB1c2Ugd2l0aCB4NTA5IGNlcnRzPwoKUmVnYXJkcywKSmFuCi0tIApQZW5ndXRyb25peCBlLksu
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
-cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
-ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 12:01 Mon 16 Mar     , Jan L=FCbbe wrote:
+> On Mi, 2015-03-11 at 17:53 +0100, Jean-Christophe PLAGNIOL-VILLARD
+> wrote:
+> > diff --git a/include/digest.h b/include/digest.h
+> > index a26848c..fd47a7e 100644
+> > --- a/include/digest.h
+> > +++ b/include/digest.h
+> > @@ -54,11 +54,14 @@ struct digest *digest_alloc(char* name);
+> >  void digest_free(struct digest *d);
+> >  =
+
+> >  int digest_file_window(struct digest *d, char *filename,
+> > +                      unsigned char *key, size_t keylen,
+> >                        unsigned char *hash,
+> >                        ulong start, ulong size);
+> >  int digest_file(struct digest *d, char *filename,
+> > +                      unsigned char *key, size_t keylen,
+> >                        unsigned char *hash);
+> =
+
+> This is already in next, but I'd like to know why you added the
+> key/keylen args to each function instead of letting the caller use
+> digest_set_key()?
+> =
+
+> In the patch "[PATCH 04/10] command: add generic digest command" you add
+> another parameter (unsigned char *sig) to these functions, which is used
+> instead of the key parameter when verifying.
+> =
+
+> Maybe we are overloading them with to much different functionality? =
+
+
+digest_file_window/digest_file the idea was to only chose the digest and
+lest the function to handle the rest
+
+Best Regards,
+J.
+> =
+
+> Regards,
+> Jan
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> =
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
