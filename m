@@ -1,23 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXT9O-0001bZ-A6
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:25:39 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 575A1FF96CA
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 12:25:15 +0100 (CET)
-Date: Mon, 16 Mar 2015 12:25:07 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150316112507.GF26127@ns203013.ovh.net>
-References: <20150316101321.GA26127@ns203013.ovh.net>
- <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
- <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
- <1426502999.3330.35.camel@pengutronix.de>
- <20150316110114.GD26127@ns203013.ovh.net>
- <1426503959.3330.45.camel@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1426503959.3330.45.camel@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YXT9h-0001dO-9Q
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 11:25:58 +0000
+Message-ID: <1426505135.3330.55.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Mon, 16 Mar 2015 12:25:35 +0100
+In-Reply-To: <20150316102713.GB26127@ns203013.ovh.net>
+References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
+ <1426171199-2729-3-git-send-email-jlu@pengutronix.de>
+ <20150312174740.GT30554@ns203013.ovh.net>
+ <1426239335.13791.92.camel@pengutronix.de>
+ <20150313095654.GA20624@ns203013.ovh.net>
+ <1426241455.13791.103.camel@pengutronix.de>
+ <20150313102543.GA23879@ns203013.ovh.net>
+ <1426243382.13791.121.camel@pengutronix.de>
+ <20150313154928.GA24510@ns203013.ovh.net>
+ <1426500022.3330.12.camel@pengutronix.de>
+ <20150316102713.GB26127@ns203013.ovh.net>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,74 +27,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/10] password: add pbkdf2 support
-To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Subject: Re: [RFC 2/4] Add rsa support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 12:05 Mon 16 Mar     , Jan L=FCbbe wrote:
-> On Mo, 2015-03-16 at 12:01 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 11:49 Mon 16 Mar     , Jan L=FCbbe wrote:
-> > > On Mo, 2015-03-16 at 11:15 +0100, Jean-Christophe PLAGNIOL-VILLARD wr=
-ote:
-> > > > We will use "barebox_password" as salt and 10000 round to generate a
-> > > > 64 bytes key.
-> > > =
-
-> > > The purpose of a salt is to protect a against dictionary or
-> > > rainbow-table (precomputed) attacks. That means that the Salt must be
-> > > randomly generated and saved with the password.
-> > This will be a enough stong enven with static one to protect against
-> > reverse hack for barebox protection
-> > =
-
-> > Use a 32 byte pass try to do an attack agaist dictionary.
-> > it will take you more than 10 years to break it
-> > > =
-
-> > > For setting a new password in barebox, even a low entropy salt will m=
-ake
-> > > attacks significantly more expensive. So we should add some entropy f=
-rom
-> > > user interaction timing in that case.
-> > yes we could do this too
-> > > =
-
-> > > For hashing a password at compile time, we should get the salt from t=
-he
-> > > host system.
-> > yes
-> > =
-
-> > do we really need it?
-> =
-
-> Yes, definitely. We must use the algorithms as they are intended to be
-> used.
-> =
-
-> If we try to move users away from RSA2048 because it will be vulnerable
-> in the future, we should not go against established practice for
-> password salts by hard-coding it. =
-
-I'm not against it but with the barebox entropy did not see the point to use
-it.
-
-so how do we generate the salt? what length
-
-Personnaly I'll prefer
-
-a random 64 bytes | sha256 | take first 32bytes. | pbkdf2 10000 round
-
-result a 64 bytes password file <salt 32 byes><key 32 bytes>
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW8sIDIwMTUtMDMtMTYgYXQgMTE6MjcgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
+TC1WSUxMQVJECndyb3RlOgo+IE9uIDExOjAwIE1vbiAxNiBNYXIgICAgICwgSmFuIEzDvGJiZSB3
+cm90ZToKPiA+IE9uIEZyLCAyMDE1LTAzLTEzIGF0IDE2OjQ5ICswMTAwLCBKZWFuLUNocmlzdG9w
+aGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+ID4geW91IGp1c3QgbmVlZCB0byBoYXZlIGEg
+dW5pcXVlIElEIG9uIHRoZSBIVyBhbmQgdGhlbiB1c2UgYSB4NTA5IG9iamVjdAo+ID4gPiB0byBz
+dG9yZSBpdC4gdGhlbiBzaWduZWQgaXQgd2l0aCB5b3UgQ0EuIEFzIG9ubHkgdmFsaWRhdGVkIGtl
+eXMgY2FuIGJlCj4gPiA+IHVzZWQsIHlvdSBjYW4gZWFzbHkgZ2l2ZSBhIGdlbmVyYXRlZCBrZXkg
+Zm9yIGEgc3BlY2lmaWMgSFcuCj4gPiA+IEFuZCB0aGlzIGtleSB3aWxsIGJlIHZhbGlkIG9ubHkg
+Zm9yIHRoaXMgSFcuCj4gPiAKPiA+IFllcywgdGhpcyBzb3VuZHMgdXNlZnVsLiBTbyB5b3UnZCBo
+YXZlIGEgYm9hcmQtc3BlY2lmaWMgd2F5IHRvIGNoZWNrIHRoZQo+ID4gdW5pcXVlIElEIGNvbnN0
+cmFpbnQgaW4gYW4gaW50ZXJtZWRpYXRlIGNlcnQgYWdhaW5zdCB0aGUgSFcgSUQ/Cj4geWVzIG1v
+cmUgb3IgbGVzcyBidXQgYnV0IGF0IHRoZSBrZXkgaXRzZWxmIGFzIHlvdSB3aWxsIGhhdmUgdG8g
+dXBsb2FkIHRoZQo+IGtleSB0byB0aGUgYm9hcmQuIEFuZCB0aGUga2V5IHdpbGwgb25seSBiZSBh
+Y2NlcHRlZCB0byBiZSBzdG9yZWQgYXMgaXQgd2lsbAo+IGJlIHZhbGlkIGFuZCBoYXZlIHRoZSBI
+VyBJRC4KCk9LLiBTb3VuZHMgZ29vZCB0byBtZS4KCj4gQW5kIGZvciB0aGUgcmVjb3JkIHJlbWVt
+YmVyIGlmIHlvdSB3YW50IHRvIHVzZSBtb2R1bGUgaW4gc2VjdXJlZCBib290IG1vZGUKPiBmb3Ig
+dGhlIGtlcm5lbCB5b3Ugd2lsbCBoYXZlIHRvIHVzZSB4NTA5IGNlcnRpZmljYXRlIGFueXdheS4K
+PiAKPiBTbyB3aHkgbm90IHRvIHVzZSB0aGUgc2FtZSBwcmluY2lwYWwuCj4gCj4gdS1ib290IHdh
+eSBpcyBub3Qgd2hhdCBpcyBkb2luZyB0b2RheSBvbiB0aGUgbWFya2V0IGZvciBhdXRoZW50aWNh
+dGlvbgo+IGZvcm1hdC4gVG9kYXkgaXQncyB4NTA5IG9yIFBHUC4KPiAKPiBTbyBJIGRvIHByZWZl
+ciB0byBzdGF5IGFzIHN0YW5kYXJkIGFzIHBvc3NpYmxlLCB0aGlzIGRvZXMgbm90IG1lYW4gd2Ug
+Y2FuIG5vdAo+IHN1cHBvcnQgdGhlIEZURCBzdHVmZi4gQnV0IElNSE8gaXQncyBub3QgdGhlIHJp
+Z2h0IHdheS4KCng1MDkgb25seSBkZWZpbmVzIHRoZSBjZXJ0aWZpY2F0ZSBmb3JtYXQsIG5vdCBo
+b3cgaXQgaXMgdXNlZCB0byBzaWduCmtlcm5lbCwgaW5pdHJhbWZzIGFuZCBkZXZpY2UgdHJlZS4K
+ClRoZSBrZXJuZWwgZGVmaW5lcyBpdHMgb3duIGZvcm1hdCBiYXNlZCBvbiBFTEYgYW5kIHN0b3Jl
+IHRoZSBzaWduYXR1cmUKaW5zaWRlLiBUaGF0IGNhbid0IGJlIHJldXNlZCBkaXJlY3RseSBmb3Ig
+dGhlIGtlcm5lbCBpdHNlbGYsIGluaXRyYW1mcwpvciBEVEIuIFVFRkkgaGFzIGFnYWluIGl0cyBv
+d24gZm9ybWF0LgoKV2UgZG9uJ3Qgd2FudCB0byBzaWduIGtlcm5lbCwgaW5pdHJhbWZzIGFuZCBE
+VEIgaW5kaXZpZHVhbGx5LCBhcyB0aGlzCndvdWxkIGFsbG93IGFuIGF0dGFja2VyIHRvIG1peC1h
+bmQtbWF0Y2ggdGhlc2UgdG8gdHJpZ2dlciBhCnZ1bG5lcmFiaWxpdHkuIFNvIHdlIG5lZWQgdG8g
+aGF2ZSBzb21lIGZvcm1hdCB3aGljaCBzdXBwb3J0cyBzaWduaW5nIGEKZ2l2ZW4gY29uZmlndXJh
+dGlvbiBjb25zaXN0aW5nIG9mIHNwZWNpZmljIGtlcm5lbCwgaW5pdHJhbWZzIGFuZCBEVEIuCgpG
+SVQgaGFuZGxlcyB0aGlzIHJlcXVpcmVtZW50LiBJdCBhbHNvIHN1cHBvcnRzIGhhdmluZyBtdWx0
+aXBsZQpjb25maWd1cmF0aW9ucyAoZWFjaCBzaWduZWQpIHJlZmVyZW5jaW5nIGZvciBleGFtcGxl
+IHRoZSBzYW1lIGtlcm5lbAoraW5pdHJhbWZzIGJ1dCBkaWZmZXJlbnQgRFRCcyBmb3IgYSBzZXQg
+b2Ygc2ltaWxhciBib2FyZHMuCgpXaGF0IGlzIHRoZSBpbWFnZSBmb3JtYXQgeW91IGludGVuZCB0
+byB1c2Ugd2l0aCB4NTA5IGNlcnRzPwoKUmVnYXJkcywKSmFuCi0tIApQZW5ndXRyb25peCBlLksu
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
+cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
+ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
