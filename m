@@ -1,24 +1,27 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YXTpb-0007kv-UP
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 12:09:16 +0000
-Message-ID: <1426507732.3330.87.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Mon, 16 Mar 2015 13:08:52 +0100
-In-Reply-To: <20150316111432.GE26127@ns203013.ovh.net>
-References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <1426171199-2729-4-git-send-email-jlu@pengutronix.de>
- <20150312181934.GV30554@ns203013.ovh.net>
- <1426238884.13791.85.camel@pengutronix.de>
- <20150313100538.GB20624@ns203013.ovh.net>
- <1426242065.13791.110.camel@pengutronix.de>
- <20150313142808.GC23879@ns203013.ovh.net>
- <1426261300.13791.192.camel@pengutronix.de>
- <20150313160826.GC24510@ns203013.ovh.net>
- <1426501162.3330.25.camel@pengutronix.de>
- <20150316111432.GE26127@ns203013.ovh.net>
-Mime-Version: 1.0
+Received: from 6.mo68.mail-out.ovh.net ([46.105.63.100])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YXTrX-0000k9-LX
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 12:11:16 +0000
+Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo68.mail-out.ovh.net (Postfix) with SMTP id 2B05DFFA02A
+ for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 13:10:53 +0100 (CET)
+Date: Mon, 16 Mar 2015 13:10:48 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150316121048.GJ26127@ns203013.ovh.net>
+References: <20150316101321.GA26127@ns203013.ovh.net>
+ <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
+ <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
+ <1426502999.3330.35.camel@pengutronix.de>
+ <20150316110114.GD26127@ns203013.ovh.net>
+ <1426503959.3330.45.camel@pengutronix.de>
+ <20150316112507.GF26127@ns203013.ovh.net>
+ <1426506097.3330.64.camel@pengutronix.de>
+ <20150316115204.GI26127@ns203013.ovh.net>
+ <1426507125.3330.79.camel@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1426507125.3330.79.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,57 +30,109 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/4] FIT: add FIT image support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 07/10] password: add pbkdf2 support
+To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gTW8sIDIwMTUtMDMtMTYgYXQgMTI6MTQgKzAxMDAsIEplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
-TC1WSUxMQVJEIHdyb3RlOgo+IE9uIDExOjE5IE1vbiAxNiBNYXIgICAgICwgSmFuIEzDvGJiZSB3
-cm90ZToKPiA+IExhdGVyIEknZCBsaWtlIHRvIGhhdmUgb3B0aW9uYWwgc3VwcG9ydCB0byBzd2l0
-Y2ggYmFyZWJveCBpbnRvIGEKPiA+ICJub24tc2VjdXJlIiBvciAiZGV2ZWxvcGVyIiBtb2RlIGF0
-IHJ1bnRpbWUsIHdoaWNoIHdvdWxkIG1ha2UgaGFyZHdhcmUKPiA+IHNlY3JldHMgaW5hY2Nlc3Np
-YmxlLiBUaGF0IGNvdWxkIGJlIHRyaWdnZXJlZCB3aGVuIGEgcHJvbXB0IGFwcGVhcnMgb3IKPiA+
-IHdoZW4gYm9vdGluZyBmb3IgYSBkaWZmZXJlbnQgc291cmNlIChzdWNoIGFzIFVTQiBmYXN0Ym9v
-dCkuCj4gCj4geWVhaCwgSSBsaWtlIHRoZSBpZGVhIGJ1dCBmb3IgdGhpcyB3aWxsIGhhdmUgdG8g
-cHV0IGEgbG90IG9mIHByb3RlY3Rpb24gc28geW91Cj4gY2FuIG5vdCByZWFkL3dyaXRlIHNvbWUg
-cGFydCBvZiB0aGUgbWVtb3J5IGluY2x1ZGVkIGJhcmVib3ggaXRzZWxmIChpbiBSQU0pCj4gCj4g
-QXMgaW4gdGhlIGtlcm5lbCB3ZSBoYXZlIG5vIG1lbW1vcnkgcHJvdGVjdGlvbiBmcm9tIHRoZSBz
-aGVsbC4KCk5vdCBuZWNlc3NhcmlseS4gRm9yIGV4YW1wbGUgb24gdGhlIE1YNiB5b3UgY2FuIHRy
-aWdnZXIgYSBzZWN1cml0eQp2aW9sYXRpb24gaW4gdGhlIENBQU0gZnJvbSBzb2Z0d2FyZS4gVGhh
-dCB3aWxsIGNsZWFyIHRoZSBPVFBNSyBpbiBpdHMKS2V5LVJBTS4gRnJvbSB0aGF0IHBvaW50IG9u
-IHlvdSBjYW4gcnVuIGFueSBzb2Z0d2FyZSBidXQgeW91IHdpbGwgbm90IGJlCmFibGUgdG8gZGVj
-cnlwdCBhbnkgc2VjcmV0IGRhdGEgd2hpY2ggd2FzIGVuY3J5cHRlZCB3aXRoIHRoZSBPVFBNSy4K
-Ck9uIGhhcmR3YXJlIHdoaWNoIHN1cHBvcnRzIHNvbWV0aGluZyBsaWtlIHRoaXMsIGRlYnVnZ2lu
-ZyBoYXJkd2FyZQpwcm9ibGVtcyBpcyBlYXN5IGFuZCB0aGVyZSBpcyBubyBkYW5nZXIgb2YgbGVh
-a2luZyBhbnkgc2VjcmV0CmluZm9ybWF0aW9uLiBJZiBzb21ldGhpbmcgaXMgdXNlZnVsL3Bvc3Np
-YmxlIGluIGFueSBzcGVjaWZpYyBwcm9qZWN0Cm9idmlvdXNseSBkZXBlbmRzIG9uIHRoZSB0aHJl
-YXQgbW9kZWwgYW5kIGhhcmR3YXJlIGNhcGFiaWxpdGllcy4KCj4gPiA+IHRoZSBtYWluIHByb2Js
-ZW0gaXMgbm90IGNvbnNvbGUgYnV0IGVudiB5b3UgbmVlZCB0byBkcm9wIFJXIGVudiBzdXBwb3J0
-Cj4gPiA+IGFuZCB1c2Ugb25seSBSTyBvbmUsIGV4Y2VwdCBmb3Iga2V5cmluZyBzdXBwb3J0IHdo
-ZXJlIHlvdSB3aWxsIGEgUlcgZW52IGJ1dAo+ID4gPiBub3QgZXhlY3V0YWJsZSBhbmQgb25seSBh
-Y2Nlc2FibGUgYnkgY3J5cHRvIEFQSQo+ID4gPiAKPiA+ID4gb3RoZXJ3aXNlIHlvdSBuZWVkIHRv
-IHVzZSBhIHNlY3VyZWQgZGlnZXN0IHN1Y2ggYXMgSE1BQy9DTUFDL09NQUMgc3VwcG9ydAo+ID4g
-PiB0byBzaWduIHRoZSBlbnYgYXQgcnVudGltZSBhbmQgZW5zdXJlIHRoZSBzeW1ldHJpYyBrZXkg
-aXMgc2VjdXJlZAo+ID4gPiBvciBlbmNyeXB0IGl0IHZpYSBhZXMgKGRpZCB0aGlzIGluIHRoZSBw
-YXN0KQo+ID4gCj4gPiBGb3IgYW4gdXBjb21pbmcgcHJvamVjdCB3ZSdsbCBhZGQgSE1BQyBzdXBw
-b3J0IHRvIHRoZSBzdGF0ZSBzdG9yYWdlIE1hcmMKPiA+IHJlY2VudGx5IHN1Ym1pdHRlZC4KPiBJ
-J3ZlIGEgcGF0Y2ggdG9vIEkgbmVlZCB0byBzZW5kIGl0CgpGb3IgZW52aXJvbm1lbnQgb3Igc3Rh
-dGUgc3RvcmFnZT8KCj4gYnV0IEkgcHJlZmVyIHRvIHdhaXQgd2UgaGF2ZSBrZXlzdG9yZSBzdXBw
-b3J0IGFzIHRoaXMgd2lsbCBzdG9yZSB0aGUga2V5IGZvcgo+IHRoZSBITUFDIG90aGVyd2lzZSB3
-ZSBuZWVkIHRvIHVzZSBIVyBITUFDIHRoYXQgc3RvcmUgdGhlIGtleSBpbiB0aGUgc29jCgpBbm90
-aGVyIHBvc3NpYmlsaXR5IGlzIHRvIHVzZSB0aGUgSFcgQUVTIGtleSBhbmQgYSBjb21waWxlZCBp
-biB2YWx1ZSB0bwpkZXJpdmUgYSBwZXItZGV2aWNlIEhNQUMgc2VjcmV0LiBUaGUgc2FtZSBhcHBy
-b2FjaCBjYW4gYWxzbyBiZSB1c2VkIGluCkxpbnV4IGZvciBkZXJpdmluZyB0aGUgSU1BL0VWTSBI
-TUFDIHNlY3JldC4KClJlZ2FyZHMsCkphbgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlh
-bCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25p
-eC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhv
-bmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2
-ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On 12:58 Mon 16 Mar     , Jan L=FCbbe wrote:
+> On Mo, 2015-03-16 at 12:52 +0100, Jean-Christophe PLAGNIOL-VILLARD
+> wrote:
+> > On 12:41 Mon 16 Mar     , Jan L=FCbbe wrote:
+> > > On Mo, 2015-03-16 at 12:25 +0100, Jean-Christophe PLAGNIOL-VILLARD wr=
+ote:
+> > > > > Yes, definitely. We must use the algorithms as they are intended =
+to be
+> > > > > used.
+> > > > > =
+
+> > > > > If we try to move users away from RSA2048 because it will be vuln=
+erable
+> > > > > in the future, we should not go against established practice for
+> > > > > password salts by hard-coding it. =
+
+> > > > I'm not against it but with the barebox entropy did not see the poi=
+nt to use
+> > > > it.
+> > > > =
+
+> > > > so how do we generate the salt? what length
+> > > > =
+
+> > > > Personnaly I'll prefer
+> > > > =
+
+> > > > a random 64 bytes | sha256 | take first 32bytes. | pbkdf2 10000 rou=
+nd
+> > > =
+
+> > > Running SHA-256 on random data is useless for security.
+> > SHA256 is to improve the entrpopy not security
+> =
+
+> Running a deterministic algorithm cannot increase entropy (only reduce
+> it).
+
+check the kennel algo for PRGN
+
+and youp will see why I want to use a sha
+
+> =
+
+> > > Just get
+> > > <hash-size> bytes from /dev/urandom on the host. We could generate a
+> > > file with the compile-time SALT which is then included.
+> > > =
+
+> > > On the running barebox, we could use SHA to hash the old password file
+> > > together with the current timer value. At least until we have somethi=
+ng
+> > > better.
+> > > =
+
+> > > > result a 64 bytes password file <salt 32 byes><key 32 bytes>
+> > > =
+
+> > > Yes. As we select the algorithm at compile time, we don't the to save=
+ it
+> > > in the file.
+> > =
+
+> > this is for barebox as we may not have any passwd file
+> =
+
+> The same applies also to the default_passwd compiled in variable.
+> =
+
+> Currently we have:
+> PASSWD_FILE :=3D $(shell cd $(srctree); find $(CONFIG_PASSWORD_DEFAULT) -=
+type f)
+> cmd_pwd_h =3D echo -n "static const char default_passwd[] =3D \"" > $@; \
+>         cat $< | tr -d '\n' >> $@; \
+>         echo "\";" >> $@
+> =
+
+> include/generated/passwd.h: $(PASSWD_FILE)
+>         $(call if_changed,pwd_h)
+> =
+
+> This would need to run the hash/pbkdf2 and store salt+key.
+
+no as the current current code expect you to give the correct file format f=
+or
+the currently use password
+
+so today the output of openssl
+
+but yes we may need to do more here
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
