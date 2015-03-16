@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo68.mail-out.ovh.net ([46.105.78.111])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXS5A-00022F-2w
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 10:17:14 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id A61CBFFAA84
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 11:16:50 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 16 Mar 2015 11:15:44 +0100
-Message-Id: <1426500945-31815-9-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20150316101321.GA26127@ns203013.ovh.net>
- <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YXS7d-0003Fg-9Q
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 10:19:45 +0000
+Message-ID: <1426501162.3330.25.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Mon, 16 Mar 2015 11:19:22 +0100
+In-Reply-To: <20150313160826.GC24510@ns203013.ovh.net>
+References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
+ <1426171199-2729-4-git-send-email-jlu@pengutronix.de>
+ <20150312181934.GV30554@ns203013.ovh.net>
+ <1426238884.13791.85.camel@pengutronix.de>
+ <20150313100538.GB20624@ns203013.ovh.net>
+ <1426242065.13791.110.camel@pengutronix.de>
+ <20150313142808.GC23879@ns203013.ovh.net>
+ <1426261300.13791.192.camel@pengutronix.de>
+ <20150313160826.GC24510@ns203013.ovh.net>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,121 +25,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] crypto: hmac: use digest_digest and check the return of
- every digest_xxx
-To: barebox@lists.infradead.org
+Subject: Re: [RFC 3/4] FIT: add FIT image support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- crypto/hmac.c | 49 +++++++++++++++++++++++++++++++------------------
- 1 file changed, 31 insertions(+), 18 deletions(-)
-
-diff --git a/crypto/hmac.c b/crypto/hmac.c
-index b1c17af..c2195d9 100644
---- a/crypto/hmac.c
-+++ b/crypto/hmac.c
-@@ -62,15 +62,15 @@ static int digest_hmac_set_key(struct digest *d, const unsigned char *key,
- {
- 	struct digest_hmac_ctx *dh = d->ctx;
- 	struct digest_hmac *hmac = to_digest_hmac(d->algo);
-+	unsigned char *sum = NULL;
-+	int ret;
- 
- 	free(dh->key);
- 	if (len > hmac->pad_length) {
--		unsigned char *sum;
--
- 		sum = xmalloc(digest_length(dh->d));
--		digest_init(dh->d);
--		digest_update(dh->d, dh->key, dh->keylen);
--		digest_final(dh->d, sum);
-+		ret = digest_digest(dh->d, dh->key, dh->keylen, sum);
-+		if (ret)
-+			goto err;
- 		dh->keylen = digest_length(dh->d);
- 		dh->key = sum;
- 	} else {
-@@ -79,14 +79,17 @@ static int digest_hmac_set_key(struct digest *d, const unsigned char *key,
- 		dh->keylen = len;
- 	}
- 
--	return 0;
-+	ret = 0;
-+err:
-+	free(sum);
-+	return ret;
- }
- 
- static int digest_hmac_init(struct digest *d)
- {
- 	struct digest_hmac_ctx *dh = d->ctx;
- 	struct digest_hmac *hmac = to_digest_hmac(d->algo);
--	int i;
-+	int i, ret;
- 	unsigned char *key = dh->key;
- 	unsigned int keylen = dh->keylen;
- 
-@@ -98,10 +101,10 @@ static int digest_hmac_init(struct digest *d)
- 		dh->opad[i] = (unsigned char)(dh->opad[i] ^ key[i]);
- 	}
- 
--	digest_init(dh->d);
--	digest_update(dh->d, dh->ipad, hmac->pad_length);
--
--	return 0;
-+	ret = digest_init(dh->d);
-+	if (ret)
-+		return ret;
-+	return digest_update(dh->d, dh->ipad, hmac->pad_length);
- }
- 
- static int digest_hmac_update(struct digest *d, const void *data,
-@@ -117,18 +120,28 @@ static int digest_hmac_final(struct digest *d, unsigned char *md)
- 	struct digest_hmac_ctx *dh = d->ctx;
- 	struct digest_hmac *hmac = to_digest_hmac(d->algo);
- 	unsigned char *tmp = NULL;
-+	int ret;
- 
- 	tmp = xmalloc(digest_length(d));
- 
--	digest_final(dh->d, tmp);
--	digest_init(dh->d);
--	digest_update(dh->d, dh->opad, hmac->pad_length);
--	digest_update(dh->d, tmp, digest_length(d));
--	digest_final(dh->d, md);
--
-+	ret = digest_final(dh->d, tmp);
-+	if (ret)
-+		goto err;
-+	ret = digest_init(dh->d);
-+	if (ret)
-+		goto err;
-+	ret = digest_update(dh->d, dh->opad, hmac->pad_length);
-+	if (ret)
-+		goto err;
-+	ret = digest_update(dh->d, tmp, digest_length(d));
-+	if (ret)
-+		goto err;
-+	ret = digest_final(dh->d, md);
-+
-+err:
- 	free(tmp);
- 
--	return 0;
-+	return ret;
- }
- 
- struct digest_algo hmac_algo = {
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgSmVhbi1DaHJpc3RvcGhlLAoKT24gRnIsIDIwMTUtMDMtMTMgYXQgMTc6MDggKzAxMDAsIEpl
+YW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIHdyb3RlOgo+IE9uIDE2OjQxIEZyaSAxMyBN
+YXIgICAgICwgSmFuIEzDvGJiZSB3cm90ZToKPiA+IE9uIEZyLCAyMDE1LTAzLTEzIGF0IDE1OjI4
+ICswMTAwLCBKZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFSRCB3cm90ZToKPiA+ID4gPiBJ
+dCdzIG5vdCB0aGUgam9iIG9mIGJhcmVib3ggdG8gZGVmaW5lIHNlY3VyaXR5IHBvbGljaWVzLCBp
+dCBtdXN0IGZpdAo+ID4gPiA+IHdlbGwgaW50byB0aGUgbGFyZ2VyIHNlY3VyaXR5IGRlc2lnbiwg
+d2hpY2ggbWF5IHJlcXVpcmUgY29tcHJvbWlzZXMuCj4gPiA+IAo+ID4gPiBJIGRpc2FncmVlLCBk
+aXNhYmxlIGJ5IGRlZmF1bHQgbm9uIHNlY3VyZSBmZWF0dXJlIGlzIHJlcXVpcmUgdG8gcGFzcwo+
+ID4gPiBzZWN1cmUgYm9vdCBjZXJ0aWZpY2F0aW9uCj4gPiAKPiA+IElzIHRoZXJlIGEgc3BlY2lm
+aWMgY2VydGlmaWNhdGlvbiB5b3UgYXJlIHRhcmdldGluZz8KPiAKPiB5ZXMgYnV0IGNhbiBub3Qg
+Z2l2ZSBkZXRhaWxzIGFsbCB1bmRlciBOREEsIGEgYm9vayBvZiBtb3JlIHRoYW4gNTAwIHBhZ2Vz
+Cj4gZm9yIGJvb3Rsb2FkZXIvbGludXgva2VybmVsICYgY28KCk9LLCB0aGF0J3MgdW5mb3J0dW5h
+dGUuIFN0aWxsIEknZCBsaWtlIHRvIGhhdmUgc29tZSBkb2N1bWVudGF0aW9uIG9uIHRoZQpvdmVy
+YWxsIGRlc2lnbiBvZiBCYXJlYm94J3MgdmVyaWZpZWQgYm9vdC4gVGhhdCBkb2Vzbid0IG1lYW4g
+eW91IGhhdmUgdG8Kd3JpdGUgaXQgYWxsIGJ5IHlvdXJzZWxmLiA7KQoKPiA+IEhvdyBkbyB5b3Ug
+aW50ZW5kIHRvIGhhbmRsZSBjb25zb2xlIGFjY2VzcyBpbiB2ZXJpZmllZCBib290IG1vZGU/Cj4g
+PiBBbGxvd2luZyBhY2Nlc3MgdG8gbWQvbXcgd291bGQgYnJlYWsgYW55IHNlY3VyaXR5Lgo+IAo+
+IGl0J3MgYWxyZWFkeSBtYWlubGluZSBmb3IgbW9udGgsIGNoZWNrIHBhc3N3b3JkIHN1cHBvcnQK
+PiAKPiBhcyBJIHB1dCBpdCBpbiBwcm9kdWN0aW9uIG1vcmUgdGhhbiAxIHllYXJzIGFnbwo+IAo+
+IG9yIHNpbXBsZSBkaXNhYmxlIGlucHV0IGNvbnNvbGUgYWxsIHRpbWUsIHRoZSBjb2RlIGlzIGhl
+cmUKClNvIGN1cnJlbnRseSB3ZSBoYXZlOgoxKSB1c2UgcGFzc3dvcmQKMikgZGlzYWJsZSBjb25z
+b2xlCgpMYXRlciBJJ2QgbGlrZSB0byBoYXZlIG9wdGlvbmFsIHN1cHBvcnQgdG8gc3dpdGNoIGJh
+cmVib3ggaW50byBhCiJub24tc2VjdXJlIiBvciAiZGV2ZWxvcGVyIiBtb2RlIGF0IHJ1bnRpbWUs
+IHdoaWNoIHdvdWxkIG1ha2UgaGFyZHdhcmUKc2VjcmV0cyBpbmFjY2Vzc2libGUuIFRoYXQgY291
+bGQgYmUgdHJpZ2dlcmVkIHdoZW4gYSBwcm9tcHQgYXBwZWFycyBvcgp3aGVuIGJvb3RpbmcgZm9y
+IGEgZGlmZmVyZW50IHNvdXJjZSAoc3VjaCBhcyBVU0IgZmFzdGJvb3QpLgoKPiB0aGUgbWFpbiBw
+cm9ibGVtIGlzIG5vdCBjb25zb2xlIGJ1dCBlbnYgeW91IG5lZWQgdG8gZHJvcCBSVyBlbnYgc3Vw
+cG9ydAo+IGFuZCB1c2Ugb25seSBSTyBvbmUsIGV4Y2VwdCBmb3Iga2V5cmluZyBzdXBwb3J0IHdo
+ZXJlIHlvdSB3aWxsIGEgUlcgZW52IGJ1dAo+IG5vdCBleGVjdXRhYmxlIGFuZCBvbmx5IGFjY2Vz
+YWJsZSBieSBjcnlwdG8gQVBJCj4gCj4gb3RoZXJ3aXNlIHlvdSBuZWVkIHRvIHVzZSBhIHNlY3Vy
+ZWQgZGlnZXN0IHN1Y2ggYXMgSE1BQy9DTUFDL09NQUMgc3VwcG9ydAo+IHRvIHNpZ24gdGhlIGVu
+diBhdCBydW50aW1lIGFuZCBlbnN1cmUgdGhlIHN5bWV0cmljIGtleSBpcyBzZWN1cmVkCj4gb3Ig
+ZW5jcnlwdCBpdCB2aWEgYWVzIChkaWQgdGhpcyBpbiB0aGUgcGFzdCkKCkZvciBhbiB1cGNvbWlu
+ZyBwcm9qZWN0IHdlJ2xsIGFkZCBITUFDIHN1cHBvcnQgdG8gdGhlIHN0YXRlIHN0b3JhZ2UgTWFy
+YwpyZWNlbnRseSBzdWJtaXR0ZWQuCgo+IHd3IG1heSBoYXZlIHRvIGdldCBzZWN1cmVkIG1hbGxv
+YWMgd2l0aCBwYXJ0IHdoZXJlIHRoZSBtZC9tdyBhbmQgYW55IG90aGVyCj4gQVBJIGNhbiBub3Qg
+dG91Y2ggb25seSB0aGUgY3J5cHRvIEFQSQo+IAo+IGJ1dCB0aGlzIHdpbGwgYmUgZm9yIGxhdGVy
+CgpZZXMuCgo+IEknbGwgc2VuZCBhIHBhdGNoIHRvIHVzZSB0aGUgcGJrZGYyIGZvciBwYXNzd29y
+ZAoKTmljZS4KClJlZ2FyZHMsCkphbgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBM
+aW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
+ZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6
+ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYg
+ICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
