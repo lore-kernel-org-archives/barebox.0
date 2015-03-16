@@ -1,27 +1,27 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo4.mail-out.ovh.net ([46.105.34.195])
+Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXVRW-0003dh-Gq
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 13:52:31 +0000
+ id 1YXVVP-0005EN-MG
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 13:56:32 +0000
 Received: from mail170.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 80C85FF8CCB
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 14:52:04 +0100 (CET)
-Date: Mon, 16 Mar 2015 14:51:41 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id CAFCDFFA49B
+ for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 14:56:07 +0100 (CET)
+Date: Mon, 16 Mar 2015 14:55:57 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150316135141.GL26127@ns203013.ovh.net>
-References: <20150313100538.GB20624@ns203013.ovh.net>
- <1426242065.13791.110.camel@pengutronix.de>
- <20150313142808.GC23879@ns203013.ovh.net>
- <1426261300.13791.192.camel@pengutronix.de>
- <20150313160826.GC24510@ns203013.ovh.net>
- <1426501162.3330.25.camel@pengutronix.de>
- <20150316111432.GE26127@ns203013.ovh.net>
- <1426507732.3330.87.camel@pengutronix.de>
- <20150316121923.GK26127@ns203013.ovh.net>
- <1426512500.3330.115.camel@pengutronix.de>
+Message-ID: <20150316135557.GM26127@ns203013.ovh.net>
+References: <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
+ <1426502999.3330.35.camel@pengutronix.de>
+ <20150316110114.GD26127@ns203013.ovh.net>
+ <1426503959.3330.45.camel@pengutronix.de>
+ <20150316112507.GF26127@ns203013.ovh.net>
+ <1426506097.3330.64.camel@pengutronix.de>
+ <20150316115204.GI26127@ns203013.ovh.net>
+ <1426507125.3330.79.camel@pengutronix.de>
+ <20150316121048.GJ26127@ns203013.ovh.net>
+ <1426511679.3330.103.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1426512500.3330.115.camel@pengutronix.de>
+In-Reply-To: <1426511679.3330.103.camel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -34,111 +34,122 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/4] FIT: add FIT image support
+Subject: Re: [PATCH 07/10] password: add pbkdf2 support
 To: Jan =?iso-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 14:28 Mon 16 Mar     , Jan L=FCbbe wrote:
-> On Mo, 2015-03-16 at 13:19 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 13:08 Mon 16 Mar     , Jan L=FCbbe wrote:
-> > > On Mo, 2015-03-16 at 12:14 +0100, Jean-Christophe PLAGNIOL-VILLARD wr=
-ote:
-> > > > On 11:19 Mon 16 Mar     , Jan L=FCbbe wrote:
-> > > > > Later I'd like to have optional support to switch barebox into a
-> > > > > "non-secure" or "developer" mode at runtime, which would make har=
-dware
-> > > > > secrets inaccessible. That could be triggered when a prompt appea=
-rs or
-> > > > > when booting for a different source (such as USB fastboot).
-> > > > =
+On 14:14 Mon 16 Mar     , Jan L=FCbbe wrote:
+> On Mo, 2015-03-16 at 13:10 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 12:58 Mon 16 Mar     , Jan L=FCbbe wrote:
+> > > > > > Personnaly I'll prefer
+> > > > > > =
 
-> > > > yeah, I like the idea but for this will have to put a lot of protec=
-tion so you
-> > > > can not read/write some part of the memory included barebox itself =
-(in RAM)
-> > > > =
+> > > > > > a random 64 bytes | sha256 | take first 32bytes. | pbkdf2 10000=
+ round
+> > > > > =
 
-> > > > As in the kernel we have no memmory protection from the shell.
+> > > > > Running SHA-256 on random data is useless for security.
+> > > > SHA256 is to improve the entrpopy not security
 > > > =
 
-> > > Not necessarily. For example on the MX6 you can trigger a security
-> > > violation in the CAAM from software. That will clear the OTPMK in its
-> > > Key-RAM. From that point on you can run any software but you will not=
- be
-> > > able to decrypt any secret data which was encrypted with the OTPMK.
-> > > =
-
-> > > On hardware which supports something like this, debugging hardware
-> > > problems is easy and there is no danger of leaking any secret
-> > > information. If something is useful/possible in any specific project
-> > > obviously depends on the threat model and hardware capabilities.
+> > > Running a deterministic algorithm cannot increase entropy (only reduce
+> > > it).
 > > =
 
-> > I knonw about the imx6 but that does not mean all the SoC
-> > unfortunatly.
+> > check the kennel algo for PRGN
 > =
 
-> Yes, every SoC is different. But we should be able to use HW features
-> when the are available, as sometimes the HW is selected specifically to
-> used these security features.
+> PRNG? That is a different use case. The kernel takes sources of entropy
+> and uses those to seed an CSPRNG:
+> http://www.2uo.de/myths-about-urandom/
 
-I agree with you we just need to ensure that it work also when we can not
-use such HW feature.
+I known how work urandom and random but the kernel do use SHA-1 for generat=
+ing
+the Random numbers. I do not want to go to deep in the algo we can look at =
+the
+code.
 > =
 
-> > The other pb I see is this one where and do you plan to store the RO x5=
-09
-> > the trusted one.
+> > and youp will see why I want to use a sha
 > =
 
-> Sorry, I can't parse this.
-where do we store the trusted keys/cert need to be secured or inaccessible
-except crypto API
+> Having high entropy and appearing random are different properties. As
+> SHA-256 is deterministic it *cannot* increase entropy:
+> http://en.wikipedia.org/wiki/Entropy_(information_theory)
+I known about it
 > =
 
-> > if you use on OTP this means this is enough to ensure secured boot as i=
-f you
-> > can not modify the primary cert of key. No one can brake it. But as you=
- load
-> > it in ram you need to be sure no one modify it. Even in unlock mode to =
-do only
-> > allow to boot secure images by expected key.
+> > > > > Just get
+> > > > > <hash-size> bytes from /dev/urandom on the host. We could generat=
+e a
+> > > > > file with the compile-time SALT which is then included.
+> > > > > =
+
+> > > > > On the running barebox, we could use SHA to hash the old password=
+ file
+> > > > > together with the current timer value. At least until we have som=
+ething
+> > > > > better.
+> > > > > =
+
+> > > > > > result a 64 bytes password file <salt 32 byes><key 32 bytes>
+> > > > > =
+
+> > > > > Yes. As we select the algorithm at compile time, we don't the to =
+save it
+> > > > > in the file.
+> > > > =
+
+> > > > this is for barebox as we may not have any passwd file
+> > > =
+
+> > > The same applies also to the default_passwd compiled in variable.
+> > > =
+
+> > > Currently we have:
+> > > PASSWD_FILE :=3D $(shell cd $(srctree); find $(CONFIG_PASSWORD_DEFAUL=
+T) -type f)
+> > > cmd_pwd_h =3D echo -n "static const char default_passwd[] =3D \"" > $=
+@; \
+> > >         cat $< | tr -d '\n' >> $@; \
+> > >         echo "\";" >> $@
+> > > =
+
+> > > include/generated/passwd.h: $(PASSWD_FILE)
+> > >         $(call if_changed,pwd_h)
+> > > =
+
+> > > This would need to run the hash/pbkdf2 and store salt+key.
+> > =
+
+> > no as the current current code expect you to give the correct file form=
+at for
+> > the currently use password
+> > =
+
+> > so today the output of openssl
 > =
 
-> I should have been more clear: The use case here is to ensure that the
-> OTPMK-AES-HW-Key is only available when booting with a correct boot
-> chain. It's OK to boot something else (only the OTPMK needs to be
-> cleared).
+> Ah, sorry I misread the code here. I though that the plaintext password
+> was in the config. CONFIG_PASSWORD_DEFAULT must be the name of a file in
+> the srctree with the format matching the selected hash algo?
 > =
 
-> This is a very different goal from making sure that only correctly
-> signed code is executed.
+> > but yes we may need to do more here
 > =
 
-> Both cases need mostly the same verified boot features, only the policy
-> (especially what to do on signature errors) is different.
-secure boot means in 95% of the case only correctly signed file can be boot=
-ed
+> It seems there is no standard tool to create password hashes which
+> supports all the algorithms we want to have.
 > =
 
-> > So you may not have secured place to store the cert or key in ram but o=
-nly
-> > RAM. so we do need to forbidden this memory acces to everyone except the
-> > crypto API. if we want ot allow dev mode.
-> =
+> So the current way is to use barebox itself to create the default
+> password file? Should be have a host tool for that or is barebox sandbox
+> enough?
 
-> On MX6 this can be done by the HW. Doing this (without TrustZone) purely
-> in SW seems extremely difficult.
+yes sandbox is enough we can create such tool but today it's just the sha of
+the password store in base64 so you can easly create it in shell
 
-if you do not allow console easy, if you do you need to make the memory whe=
-re
-you do store the trusted keys and barebox itself no accessible by any std A=
-PI
-or command
-
-such as md/mw, etc...
-
-yes this will be difficult
+if we start to play we random salt yes we do need a tool
 
 Best Regards,
 J.
