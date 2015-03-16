@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo68.mail-out.ovh.net ([46.105.62.179])
+Received: from 7.mo68.mail-out.ovh.net ([46.105.63.230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXS5A-00021i-1y
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 10:17:13 +0000
+ id 1YXS5A-000227-0G
+ for barebox@lists.infradead.org; Mon, 16 Mar 2015 10:17:14 +0000
 Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 3B50EFFAA5C
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 11:16:49 +0100 (CET)
+ by mo68.mail-out.ovh.net (Postfix) with SMTP id 6817AFFAA3B
+ for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 11:16:50 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 16 Mar 2015 11:15:41 +0100
-Message-Id: <1426500945-31815-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 16 Mar 2015 11:15:42 +0100
+Message-Id: <1426500945-31815-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150316101321.GA26127@ns203013.ovh.net>
  <1426500945-31815-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,176 +25,176 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] crypto: add pbkdf2 hmac key generator
+Subject: [PATCH 07/10] password: add pbkdf2 support
 To: barebox@lists.infradead.org
 
-this will allow to generate a KEY + IV based on a password and salt for AES
-encryption/decryption as example
-
-or simply the key for hmac or rsa from text password
+We will use "barebox_password" as salt and 10000 round to generate a
+64 bytes key.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- crypto/Kconfig          |  5 +++
- crypto/Makefile         |  2 ++
- crypto/pbkdf2.c         | 94 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/crypto/pbkdf2.h | 23 ++++++++++++
- 4 files changed, 124 insertions(+)
- create mode 100644 crypto/pbkdf2.c
- create mode 100644 include/crypto/pbkdf2.h
+ common/Kconfig    |  4 +++
+ common/password.c | 79 +++++++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 55 insertions(+), 28 deletions(-)
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index e72b91e..b721e30 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -34,3 +34,8 @@ config DIGEST_HMAC
- 	bool "HMAC"
+diff --git a/common/Kconfig b/common/Kconfig
+index 96ace6b..ad8a596 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -453,6 +453,10 @@ config PASSWD_SUM_SHA512
+ 	bool "SHA512"
+ 	select SHA512
+ 
++config PASSWD_CRYPTO_PBKDF2
++	bool "PBKDF2"
++	select CRYPTO_PBKDF2
++
+ endchoice
  
  endif
-+
-+config CRYPTO_PBKDF2
-+	select DIGEST
-+	select SHA1
-+	bool
-diff --git a/crypto/Makefile b/crypto/Makefile
-index ff5c289..0bb67d5 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -9,3 +9,5 @@ obj-$(CONFIG_SHA224)	+= sha2.o
- obj-$(CONFIG_SHA256)	+= sha2.o
- obj-$(CONFIG_SHA384)	+= sha4.o
- obj-$(CONFIG_SHA512)	+= sha4.o
-+
-+obj-$(CONFIG_CRYPTO_PBKDF2)	+= pbkdf2.o
-diff --git a/crypto/pbkdf2.c b/crypto/pbkdf2.c
-new file mode 100644
-index 0000000..c4ba7be
---- /dev/null
-+++ b/crypto/pbkdf2.c
-@@ -0,0 +1,94 @@
-+/*
-+ * (C) Copyright 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2 Only
-+ */
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <errno.h>
+diff --git a/common/password.c b/common/password.c
+index 6ecf717..0e1db61 100644
+--- a/common/password.c
++++ b/common/password.c
+@@ -26,6 +26,7 @@
+ #include <xfuncs.h>
+ #include <clock.h>
+ #include <generated/passwd.h>
 +#include <crypto/pbkdf2.h>
+ 
+ #if defined(CONFIG_PASSWD_SUM_MD5)
+ #define PASSWD_SUM "md5"
+@@ -35,8 +36,14 @@
+ #define PASSWD_SUM "sha256"
+ #elif defined(CONFIG_PASSWD_SUM_SHA512)
+ #define PASSWD_SUM "sha512"
++#else
++#define PASSWD_SUM	NULL
+ #endif
+ 
++#define PBKDF2_SALT	"barebox_password"
++#define PBKDF2_LENGTH	64
++#define PBKDF2_COUNT	10000
 +
-+int pkcs5_pbkdf2_hmac(struct digest* d,
-+		      const unsigned char *pwd, size_t pwd_len,
-+		      const unsigned char *salt, size_t salt_len,
-+		      uint32_t iteration,
-+		      uint32_t key_len, unsigned char *key)
-+{
-+	int i, j, k;
-+	unsigned char cnt[4];
-+	uint32_t pass_len;
-+	unsigned char *tmpdgt;
-+	uint32_t d_len;
-+	int ret;
-+
-+	if (!d)
-+		return -EINVAL;
-+
-+	d_len = digest_length(d);
-+	tmpdgt = malloc(d_len);
-+	if (!tmpdgt)
-+		return -ENOMEM;
-+
-+	i = 1;
-+
-+	ret = digest_set_key(d, pwd, pwd_len);
+ int password(unsigned char *passwd, size_t length, int flags, int timeout)
+ {
+ 	unsigned char *buf = passwd;
+@@ -277,45 +284,50 @@ EXPORT_SYMBOL(write_env_passwd);
+ 
+ static int __check_passwd(unsigned char* passwd, size_t length, int std)
+ {
+-	struct digest *d;
++	struct digest *d = NULL;
+ 	unsigned char *passwd1_sum;
+ 	unsigned char *passwd2_sum;
+ 	int ret = 0;
++	int hash_len;
+ 
+-	d = digest_alloc(PASSWD_SUM);
++	if (IS_ENABLED(CONFIG_PASSWD_CRYPTO_PBKDF2)) {
++		hash_len = PBKDF2_LENGTH;
++	} else {
++		d = digest_alloc(PASSWD_SUM);
+ 
+-	passwd1_sum = calloc(digest_length(d), sizeof(unsigned char));
++		hash_len = digest_length(d);
++	}
+ 
++	passwd1_sum = calloc(hash_len * 2, sizeof(unsigned char));
+ 	if (!passwd1_sum)
+ 		return -ENOMEM;
+ 
+-	passwd2_sum = calloc(digest_length(d), sizeof(unsigned char));
+-
+-	if (!passwd2_sum) {
+-		ret = -ENOMEM;
+-		goto err1;
+-	}
++	passwd2_sum = passwd1_sum + hash_len;
+ 
+-	digest_init(d);
++	if (IS_ENABLED(CONFIG_PASSWD_CRYPTO_PBKDF2)) {
++		char *salt = PBKDF2_SALT;
+ 
+-	digest_update(d, passwd, length);
++		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt, strlen(salt),
++					PBKDF2_COUNT, hash_len, passwd1_sum);
++	} else {
++		ret = digest_digest(d, passwd, length, passwd1_sum);
++	}
+ 
+-	digest_final(d, passwd1_sum);
 +	if (ret)
 +		goto err;
-+
-+	while (key_len) {
-+		pass_len = min(key_len, d_len);
-+		cnt[0] = (i >> 24) & 0xff;
-+		cnt[1] = (i >> 16) & 0xff;
-+		cnt[2] = (i >> 8) & 0xff;
-+		cnt[3] = i & 0xff;
-+		ret = digest_init(d);
-+		if (ret)
-+			goto err;
-+		ret = digest_update(d, salt, salt_len);
-+		if (ret)
-+			goto err;
-+		ret = digest_update(d, cnt, 4);
-+		if (ret)
-+			goto err;
-+		ret = digest_final(d, tmpdgt);
-+		if (ret)
-+			goto err;
-+
-+		memcpy(key, tmpdgt, pass_len);
-+
-+		for (j = 1; j < iteration; j++) {
-+			ret = digest_digest(d, tmpdgt, d_len, tmpdgt);
-+			if (ret)
-+				goto err;
-+
-+			for(k = 0; k < pass_len; k++)
-+				key[k] ^= tmpdgt[k];
-+		}
-+
-+		key_len -= pass_len;
-+		key += pass_len;
-+		i++;
-+	}
-+
-+	ret = 0;
+ 
+ 	if (std)
+-		ret = read_env_passwd(passwd2_sum, digest_length(d));
++		ret = read_env_passwd(passwd2_sum, hash_len);
+ 	else
+-		ret = read_default_passwd(passwd2_sum, digest_length(d));
++		ret = read_default_passwd(passwd2_sum, hash_len);
+ 
+ 	if (ret < 0)
+-		goto err2;
++		goto err;
+ 
+-	if (strncmp(passwd1_sum, passwd2_sum, digest_length(d)) == 0)
++	if (strncmp(passwd1_sum, passwd2_sum, hash_len) == 0)
+ 		ret = 1;
+ 
+-err2:
+-	free(passwd2_sum);
+-err1:
 +err:
-+	free(tmpdgt);
-+
-+	return ret;;
-+}
-+
-+int pkcs5_pbkdf2_hmac_sha1(const unsigned char *pwd, size_t pwd_len,
-+			   const unsigned char *salt, size_t salt_len,
-+			   uint32_t iter,
-+			   uint32_t key_len, unsigned char *key)
-+{
-+	int ret;
-+	struct digest* d = digest_alloc("hmac(sha1)");
-+
-+	ret = pkcs5_pbkdf2_hmac(d, pwd, pwd_len, salt, salt_len, iter,
-+				 key_len, key);
-+
-+	digest_free(d);
-+	return ret;
-+}
-diff --git a/include/crypto/pbkdf2.h b/include/crypto/pbkdf2.h
-new file mode 100644
-index 0000000..fa66675
---- /dev/null
-+++ b/include/crypto/pbkdf2.h
-@@ -0,0 +1,23 @@
-+/*
-+ * (C) Copyright 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2 Only
-+ */
-+
-+#ifndef __PBKDF2_H__
-+#define __PBKDF2_H__
-+
-+#include <digest.h>
-+
-+int pkcs5_pbkdf2_hmac_sha1(const unsigned char *pwd, size_t pwd_len,
-+			   const unsigned char *salt, size_t salt_len,
-+			   uint32_t iteration,
-+			   uint32_t key_len, unsigned char *buf);
-+
-+int pkcs5_pbkdf2_hmac(struct digest* d,
-+		      const unsigned char *pwd, size_t pwd_len,
-+		      const unsigned char *salt, size_t salt_len,
-+		      uint32_t iteration,
-+		      uint32_t key_len, unsigned char *key);
-+
-+#endif /* __PBKDF2_H__ */
+ 	free(passwd1_sum);
+ 	digest_free(d);
+ 
+@@ -346,25 +358,36 @@ int check_passwd(unsigned char* passwd, size_t length)
+ 
+ int set_env_passwd(unsigned char* passwd, size_t length)
+ {
+-	struct digest *d;
++	struct digest *d = NULL;
+ 	unsigned char *passwd_sum;
+-	int ret;
++	int ret, hash_len;
+ 
+-	d = digest_alloc(PASSWD_SUM);
++	if (IS_ENABLED(CONFIG_PASSWD_CRYPTO_PBKDF2)) {
++		hash_len = PBKDF2_LENGTH;
++	} else {
++		d = digest_alloc(PASSWD_SUM);
+ 
+-	passwd_sum = calloc(digest_length(d), sizeof(unsigned char));
++		hash_len = digest_length(d);
++	}
+ 
++	passwd_sum = calloc(hash_len, sizeof(unsigned char));
+ 	if (!passwd_sum)
+ 		return -ENOMEM;
+ 
+-	digest_init(d);
++	if (IS_ENABLED(CONFIG_PASSWD_CRYPTO_PBKDF2)) {
++		char *salt = PBKDF2_SALT;
+ 
+-	digest_update(d, passwd, length);
+-
+-	digest_final(d, passwd_sum);
++		ret = pkcs5_pbkdf2_hmac_sha1(passwd, length, salt, strlen(salt),
++				       PBKDF2_COUNT, hash_len, passwd_sum);
++	} else {
++		ret = digest_digest(d, passwd, length, passwd_sum);
++	}
++	if (ret)
++		goto err;
+ 
+-	ret = write_env_passwd(passwd_sum, digest_length(d));
++	ret = write_env_passwd(passwd_sum, hash_len);
+ 
++err:
+ 	free(passwd_sum);
+ 
+ 	return ret;
 -- 
 2.1.4
 
