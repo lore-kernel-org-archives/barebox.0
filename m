@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo69.mail-out.ovh.net ([46.105.56.233])
+Received: from 1.mo69.mail-out.ovh.net ([178.33.251.173])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXq48-0002JR-SO
+ id 1YXq4B-0002K7-VQ
  for barebox@lists.infradead.org; Tue, 17 Mar 2015 11:53:48 +0000
 Received: from mail603.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id EB6021000D5C
- for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:21 +0100 (CET)
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id BEF711000DA2
+ for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 17 Mar 2015 12:53:11 +0100
-Message-Id: <1426593196-12509-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 17 Mar 2015 12:53:14 +0100
+Message-Id: <1426593196-12509-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150317114923.GQ26127@ns203013.ovh.net>
  <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,152 +25,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] digest: add digest callback
+Subject: [PATCH 7/9] command: allow runtime usage
 To: barebox@lists.infradead.org
 
-Combination of @init and @update and @final. This function
-effectively behaves as the entire chain of operations, @init,
-@update and @final issued in sequence. This is added for hardware
-which cannot do even the @finup, but can only do the whole
-transformation in one run.
+This will allow as example to list the currently supported digest.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- crypto/digest.c   | 18 ++++++++++++++++++
- crypto/hmac.c     |  1 +
- crypto/internal.h |  2 ++
- crypto/md5.c      |  1 +
- crypto/sha1.c     |  1 +
- crypto/sha2.c     |  1 +
- crypto/sha4.c     |  1 +
- include/digest.h  |  8 ++++++++
- 8 files changed, 33 insertions(+)
+ common/command.c  | 2 ++
+ include/command.h | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/crypto/digest.c b/crypto/digest.c
-index 7869c04..7670ed0 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -58,6 +58,24 @@ end:
- 	return ret;
+diff --git a/common/command.c b/common/command.c
+index 61191c2..dc2cb88 100644
+--- a/common/command.c
++++ b/common/command.c
+@@ -47,6 +47,8 @@ void barebox_cmd_usage(struct command *cmdtp)
+ 		puts(cmdtp->help);
+ 		putchar('\n');
+ 	}
++	if (cmdtp->usage)
++		cmdtp->usage();
+ #endif
  }
+ EXPORT_SYMBOL(barebox_cmd_usage);
+diff --git a/include/command.h b/include/command.h
+index 5d5bf53..3aca1a9 100644
+--- a/include/command.h
++++ b/include/command.h
+@@ -54,6 +54,7 @@ struct command {
+ 	uint32_t	group;
+ #ifdef	CONFIG_LONGHELP
+ 	const char	*help;		/* Help  message	(long)	*/
++	void		(*usage)(void);
+ #endif
+ }
+ #ifdef __x86_64__
+@@ -115,8 +116,10 @@ static const __maybe_unused char cmd_##_name##_help[] =
  
-+int digest_generic_digest(struct digest *d, const void *data,
-+			  unsigned int len, u8 *md)
-+
-+{
-+	int ret;
-+
-+	if (!data || len == 0 || !md)
-+		return -EINVAL;
-+
-+	ret = digest_init(d);
-+	if (ret)
-+		return ret;
-+	ret = digest_update(d, data, len);
-+	if (ret)
-+		return ret;
-+	return digest_final(d, md);
-+}
-+
- int digest_algo_register(struct digest_algo *d)
- {
- 	if (!d || !d->name || !d->update || !d->final || !d->verify ||
-diff --git a/crypto/hmac.c b/crypto/hmac.c
-index f39e4c8..b1c17af 100644
---- a/crypto/hmac.c
-+++ b/crypto/hmac.c
-@@ -136,6 +136,7 @@ struct digest_algo hmac_algo = {
- 	.init = digest_hmac_init,
- 	.update = digest_hmac_update,
- 	.final = digest_hmac_final,
-+	.digest = digest_generic_digest,
- 	.verify = digest_generic_verify,
- 	.set_key = digest_hmac_set_key,
- 	.free = digest_hmac_free,
-diff --git a/crypto/internal.h b/crypto/internal.h
-index f482654..c6f5908 100644
---- a/crypto/internal.h
-+++ b/crypto/internal.h
-@@ -15,3 +15,5 @@ static inline int digest_hmac_register(struct digest_algo *algo,
+ #ifdef CONFIG_LONGHELP
+ #define BAREBOX_CMD_HELP(text)	.help = text,
++#define BAREBOX_CMD_USAGE(fn)	.usage = fn,
+ #else
+ #define BAREBOX_CMD_HELP(text)
++#define BAREBOX_CMD_USAGE(fn)
  #endif
  
- int digest_generic_verify(struct digest *d, const unsigned char *md);
-+int digest_generic_digest(struct digest *d, const void *data,
-+			  unsigned int len, u8 *out);
-diff --git a/crypto/md5.c b/crypto/md5.c
-index 4847b38..b7ad6f2 100644
---- a/crypto/md5.c
-+++ b/crypto/md5.c
-@@ -294,6 +294,7 @@ static struct digest_algo md5 = {
- 	.init = digest_md5_init,
- 	.update = digest_md5_update,
- 	.final = digest_md5_final,
-+	.digest = digest_generic_digest,
- 	.verify = digest_generic_verify,
- 	.length = 16,
- 	.ctx_length = sizeof(struct MD5Context),
-diff --git a/crypto/sha1.c b/crypto/sha1.c
-index 09dee87..b108f8a 100644
---- a/crypto/sha1.c
-+++ b/crypto/sha1.c
-@@ -315,6 +315,7 @@ static struct digest_algo m = {
- 	.init = digest_sha1_init,
- 	.update = digest_sha1_update,
- 	.final = digest_sha1_final,
-+	.digest = digest_generic_digest,
- 	.verify = digest_generic_verify,
- 	.length = SHA1_SUM_LEN,
- 	.ctx_length = sizeof(sha1_context),
-diff --git a/crypto/sha2.c b/crypto/sha2.c
-index 9bf6541..375a40e 100644
---- a/crypto/sha2.c
-+++ b/crypto/sha2.c
-@@ -336,6 +336,7 @@ static struct digest_algo m256 = {
- 	.init = digest_sha256_init,
- 	.update = digest_sha2_update,
- 	.final = digest_sha2_final,
-+	.digest = digest_generic_digest,
- 	.verify = digest_generic_verify,
- 	.length = SHA256_SUM_LEN,
- 	.ctx_length = sizeof(sha2_context),
-diff --git a/crypto/sha4.c b/crypto/sha4.c
-index 5c3097d..1b91e7f 100644
---- a/crypto/sha4.c
-+++ b/crypto/sha4.c
-@@ -342,6 +342,7 @@ static struct digest_algo m512 = {
- 	.init = digest_sha512_init,
- 	.update = digest_sha4_update,
- 	.final = digest_sha4_final,
-+	.digest = digest_generic_digest,
- 	.verify = digest_generic_verify,
- 	.length = SHA512_SUM_LEN,
- 	.ctx_length = sizeof(sha4_context),
-diff --git a/include/digest.h b/include/digest.h
-index 5d1d80c..718793a 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -31,6 +31,8 @@ struct digest_algo {
- 	int (*init)(struct digest *d);
- 	int (*update)(struct digest *d, const void *data, unsigned long len);
- 	int (*final)(struct digest *d, unsigned char *md);
-+	int (*digest)(struct digest *d, const void *data,
-+		      unsigned int len, u8 *out);
- 	int (*set_key)(struct digest *d, const unsigned char *key, unsigned int len);
- 	int (*verify)(struct digest *d, const unsigned char *md);
- 
-@@ -78,6 +80,12 @@ static inline int digest_final(struct digest *d, unsigned char *md)
- 	return d->algo->final(d, md);
- }
- 
-+static inline int digest_digest(struct digest *d, const void *data,
-+		      unsigned int len, u8 *md)
-+{
-+	return d->algo->digest(d, data, len, md);
-+}
-+
- static inline int digest_verify(struct digest *d, const unsigned char *md)
- {
- 	return d->algo->verify(d, md);
+ #define BAREBOX_CMD_GROUP(grp)	.group = grp,
 -- 
 2.1.4
 
