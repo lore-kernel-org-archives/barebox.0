@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from neo.develer.net ([2.228.72.10])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXXaI-00060e-Fz
- for barebox@lists.infradead.org; Mon, 16 Mar 2015 16:09:43 +0000
-Received: from webmail.develer.com (neo.develer.net [IPv6:2001:b02:400:1::10])
- (Authenticated sender: mirko)
- by neo.develer.net (Postfix) with ESMTPSA id 489565E10EA
- for <barebox@lists.infradead.org>; Mon, 16 Mar 2015 17:09:17 +0100 (CET)
-MIME-Version: 1.0
-Date: Mon, 16 Mar 2015 17:09:17 +0100
-From: mirko <mirko@develer.com>
-In-Reply-To: <5506F091.2040009@develer.com>
-References: <5506F091.2040009@develer.com>
-Message-ID: <cffe106187616d6ba17018ddbf722f69@develer.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YXkxR-0006Br-QW
+ for barebox@lists.infradead.org; Tue, 17 Mar 2015 06:26:30 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 17 Mar 2015 07:25:53 +0100
+Message-Id: <1426573554-14478-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1426573554-14478-1-git-send-email-s.hauer@pengutronix.de>
+References: <1426573554-14478-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +16,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: ping: return an error exit code when connection fails
-To: barebox@lists.infradead.org
+Subject: [PATCH 2/3] driver: Call remove function only when available
+To: Barebox List <barebox@lists.infradead.org>
 
-Il 2015-03-16 16:02 Mirko Damiani ha scritto:
-> Hi,
-> ping command does not always returns 1 as exit code when connection to
-> host fails.
-> In particular it returns the exit code of the previous run.
-> This patch fixes this issue.
-> 
+The bus implementations currently call the drivers remove
+hook unconditionally, but this hook is seldomly populated. Only call
+it when it's actually populated.
 
-Sorry, the same patch with proper tabulation characters.
-
-
-Signed-off-by: Mirko Damiani <mirko@develer.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-  net/ping.c | 6 +++---
-  1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/efi/efi/efi-device.c | 3 ++-
+ drivers/base/platform.c   | 3 ++-
+ drivers/i2c/i2c.c         | 3 ++-
+ drivers/pci/bus.c         | 3 ++-
+ drivers/spi/spi.c         | 3 ++-
+ drivers/w1/w1.c           | 3 ++-
+ 6 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/ping.c b/net/ping.c
-index 2349f4b..4eb77cb 100644
---- a/net/ping.c
-+++ b/net/ping.c
-@@ -67,6 +67,9 @@ static int do_ping(int argc, char *argv[])
-  		return 1;
-  	}
-
-+	ping_state = PING_STATE_INIT;
-+	ping_sequence_number = 0;
-+
-  	ping_con = net_icmp_new(net_ping_ip, ping_handler, NULL);
-  	if (IS_ERR(ping_con)) {
-  		ret = PTR_ERR(ping_con);
-@@ -78,9 +81,6 @@ static int do_ping(int argc, char *argv[])
-  	if (ret)
-  		goto out_unreg;
-
--	ping_state = PING_STATE_INIT;
--	ping_sequence_number = 0;
--
-  	while (ping_state == PING_STATE_INIT) {
-  		if (ctrlc()) {
-  			ret = -EINTR;
+diff --git a/arch/efi/efi/efi-device.c b/arch/efi/efi/efi-device.c
+index 788bb71..7db8e48 100644
+--- a/arch/efi/efi/efi-device.c
++++ b/arch/efi/efi/efi-device.c
+@@ -328,7 +328,8 @@ static void efi_bus_remove(struct device_d *dev)
+ 	struct efi_driver *efidrv = to_efi_driver(dev->driver);
+ 	struct efi_device *efidev = to_efi_device(dev);
+ 
+-	return efidrv->remove(efidev);
++	if (efidrv->remove)
++		efidrv->remove(efidev);
+ }
+ 
+ struct bus_type efi_bus = {
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index e053ec7..85bdfb0 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -29,7 +29,8 @@ static int platform_probe(struct device_d *dev)
+ 
+ static void platform_remove(struct device_d *dev)
+ {
+-	dev->driver->remove(dev);
++	if (dev->driver->remove)
++		dev->driver->remove(dev);
+ }
+ 
+ int platform_driver_register(struct driver_d *drv)
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 9873957..7a6bde0 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -472,7 +472,8 @@ static int i2c_probe(struct device_d *dev)
+ 
+ static void i2c_remove(struct device_d *dev)
+ {
+-	dev->driver->remove(dev);
++	if (dev->driver->remove)
++		dev->driver->remove(dev);
+ }
+ 
+ struct bus_type i2c_bus = {
+diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+index 866ab08..d6c5496 100644
+--- a/drivers/pci/bus.c
++++ b/drivers/pci/bus.c
+@@ -51,7 +51,8 @@ static void pci_remove(struct device_d *dev)
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+ 	struct pci_driver *pdrv = to_pci_driver(dev->driver);
+ 
+-	pdrv->remove(pdev);
++	if (pdrv->remove)
++		pdrv->remove(pdev);
+ }
+ 
+ struct bus_type pci_bus = {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8bddd98..ba23cf7 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -311,7 +311,8 @@ static int spi_probe(struct device_d *dev)
+ 
+ static void spi_remove(struct device_d *dev)
+ {
+-	dev->driver->remove(dev);
++	if (dev->driver->remove)
++		dev->driver->remove(dev);
+ }
+ 
+ struct bus_type spi_bus = {
+diff --git a/drivers/w1/w1.c b/drivers/w1/w1.c
+index bbef470..ff57386 100644
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -392,7 +392,8 @@ static void w1_bus_remove(struct device_d *_dev)
+ 	struct w1_driver *drv = to_w1_driver(_dev->driver);
+ 	struct w1_device *dev = to_w1_device(_dev);
+ 
+-	return drv->remove(dev);
++	if (drv->remove)
++		drv->remove(dev);
+ }
+ 
+ struct bus_type w1_bustype= {
 -- 
-1.9.1
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
