@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo69.mail-out.ovh.net ([178.33.251.80])
+Received: from 7.mo69.mail-out.ovh.net ([46.105.50.32])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXq4D-0002K0-5g
- for barebox@lists.infradead.org; Tue, 17 Mar 2015 11:53:50 +0000
+ id 1YXq48-0002JQ-4Z
+ for barebox@lists.infradead.org; Tue, 17 Mar 2015 11:53:46 +0000
 Received: from mail603.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id 6ADF71000D47
- for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:23 +0100 (CET)
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id B9F911000D89
+ for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:21 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 17 Mar 2015 12:53:13 +0100
-Message-Id: <1426593196-12509-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 17 Mar 2015 12:53:10 +0100
+Message-Id: <1426593196-12509-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150317114923.GQ26127@ns203013.ovh.net>
  <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,176 +25,182 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] crypto: add pbkdf2 hmac key generator
+Subject: [PATCH 3/9] digest: add verify callback
 To: barebox@lists.infradead.org
 
-this will allow to generate a KEY + IV based on a password and salt for AES
-encryption/decryption as example
+this will allow to compare a md with the original one
 
-or simply the key for hmac or rsa from text password
+When calling this do not call final
+
+For RSA_SIGN verification final does not exist only verify
+as final will be for signing
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- crypto/Kconfig          |  5 +++
- crypto/Makefile         |  2 ++
- crypto/pbkdf2.c         | 94 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/crypto/pbkdf2.h | 23 ++++++++++++
- 4 files changed, 124 insertions(+)
- create mode 100644 crypto/pbkdf2.c
- create mode 100644 include/crypto/pbkdf2.h
+ crypto/digest.c   | 24 +++++++++++++++++++++++-
+ crypto/hmac.c     |  1 +
+ crypto/internal.h |  2 ++
+ crypto/md5.c      |  1 +
+ crypto/sha1.c     |  1 +
+ crypto/sha2.c     |  2 ++
+ crypto/sha4.c     |  2 ++
+ include/digest.h  |  6 ++++++
+ 8 files changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index e72b91e..b721e30 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -34,3 +34,8 @@ config DIGEST_HMAC
- 	bool "HMAC"
+diff --git a/crypto/digest.c b/crypto/digest.c
+index 208a204..7869c04 100644
+--- a/crypto/digest.c
++++ b/crypto/digest.c
+@@ -26,6 +26,8 @@
+ #include <module.h>
+ #include <linux/err.h>
  
- endif
++#include "internal.h"
 +
-+config CRYPTO_PBKDF2
-+	select DIGEST
-+	select SHA1
-+	bool
-diff --git a/crypto/Makefile b/crypto/Makefile
-index ff5c289..0bb67d5 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -9,3 +9,5 @@ obj-$(CONFIG_SHA224)	+= sha2.o
- obj-$(CONFIG_SHA256)	+= sha2.o
- obj-$(CONFIG_SHA384)	+= sha4.o
- obj-$(CONFIG_SHA512)	+= sha4.o
-+
-+obj-$(CONFIG_CRYPTO_PBKDF2)	+= pbkdf2.o
-diff --git a/crypto/pbkdf2.c b/crypto/pbkdf2.c
-new file mode 100644
-index 0000000..c4ba7be
---- /dev/null
-+++ b/crypto/pbkdf2.c
-@@ -0,0 +1,94 @@
-+/*
-+ * (C) Copyright 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2 Only
-+ */
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <crypto/pbkdf2.h>
-+
-+int pkcs5_pbkdf2_hmac(struct digest* d,
-+		      const unsigned char *pwd, size_t pwd_len,
-+		      const unsigned char *salt, size_t salt_len,
-+		      uint32_t iteration,
-+		      uint32_t key_len, unsigned char *key)
+ static LIST_HEAD(digests);
+ 
+ static struct digest_algo *digest_algo_get_by_name(const char *name);
+@@ -37,9 +39,29 @@ static int dummy_init(struct digest *d)
+ 
+ static void dummy_free(struct digest *d) {}
+ 
++int digest_generic_verify(struct digest *d, const unsigned char *md)
 +{
-+	int i, j, k;
-+	unsigned char cnt[4];
-+	uint32_t pass_len;
-+	unsigned char *tmpdgt;
-+	uint32_t d_len;
 +	int ret;
++	int len = digest_length(d);
++	unsigned char *tmp;
 +
-+	if (!d)
-+		return -EINVAL;
++	tmp = xmalloc(len);
 +
-+	d_len = digest_length(d);
-+	tmpdgt = malloc(d_len);
-+	if (!tmpdgt)
-+		return -ENOMEM;
-+
-+	i = 1;
-+
-+	ret = digest_set_key(d, pwd, pwd_len);
++	ret = digest_final(d, tmp);
 +	if (ret)
-+		goto err;
++		goto end;
 +
-+	while (key_len) {
-+		pass_len = min(key_len, d_len);
-+		cnt[0] = (i >> 24) & 0xff;
-+		cnt[1] = (i >> 16) & 0xff;
-+		cnt[2] = (i >> 8) & 0xff;
-+		cnt[3] = i & 0xff;
-+		ret = digest_init(d);
-+		if (ret)
-+			goto err;
-+		ret = digest_update(d, salt, salt_len);
-+		if (ret)
-+			goto err;
-+		ret = digest_update(d, cnt, 4);
-+		if (ret)
-+			goto err;
-+		ret = digest_final(d, tmpdgt);
-+		if (ret)
-+			goto err;
-+
-+		memcpy(key, tmpdgt, pass_len);
-+
-+		for (j = 1; j < iteration; j++) {
-+			ret = digest_digest(d, tmpdgt, d_len, tmpdgt);
-+			if (ret)
-+				goto err;
-+
-+			for(k = 0; k < pass_len; k++)
-+				key[k] ^= tmpdgt[k];
-+		}
-+
-+		key_len -= pass_len;
-+		key += pass_len;
-+		i++;
-+	}
-+
-+	ret = 0;
-+err:
-+	free(tmpdgt);
-+
-+	return ret;;
-+}
-+
-+int pkcs5_pbkdf2_hmac_sha1(const unsigned char *pwd, size_t pwd_len,
-+			   const unsigned char *salt, size_t salt_len,
-+			   uint32_t iter,
-+			   uint32_t key_len, unsigned char *key)
-+{
-+	int ret;
-+	struct digest* d = digest_alloc("hmac(sha1)");
-+
-+	ret = pkcs5_pbkdf2_hmac(d, pwd, pwd_len, salt, salt_len, iter,
-+				 key_len, key);
-+
-+	digest_free(d);
++	ret = memcmp(md, tmp, len);
++	ret = ret ? -EINVAL : 0;
++end:
++	free(tmp);
 +	return ret;
 +}
-diff --git a/include/crypto/pbkdf2.h b/include/crypto/pbkdf2.h
-new file mode 100644
-index 0000000..fa66675
---- /dev/null
-+++ b/include/crypto/pbkdf2.h
-@@ -0,0 +1,23 @@
-+/*
-+ * (C) Copyright 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2 Only
-+ */
 +
-+#ifndef __PBKDF2_H__
-+#define __PBKDF2_H__
+ int digest_algo_register(struct digest_algo *d)
+ {
+-	if (!d || !d->name || !d->update || !d->final || d->length < 1)
++	if (!d || !d->name || !d->update || !d->final || !d->verify ||
++	    d->length < 1)
+ 		return -EINVAL;
+ 
+ 	if (!d->init)
+diff --git a/crypto/hmac.c b/crypto/hmac.c
+index 1462730..f39e4c8 100644
+--- a/crypto/hmac.c
++++ b/crypto/hmac.c
+@@ -136,6 +136,7 @@ struct digest_algo hmac_algo = {
+ 	.init = digest_hmac_init,
+ 	.update = digest_hmac_update,
+ 	.final = digest_hmac_final,
++	.verify = digest_generic_verify,
+ 	.set_key = digest_hmac_set_key,
+ 	.free = digest_hmac_free,
+ 	.ctx_length = sizeof(struct digest_hmac),
+diff --git a/crypto/internal.h b/crypto/internal.h
+index cc409d8..f482654 100644
+--- a/crypto/internal.h
++++ b/crypto/internal.h
+@@ -13,3 +13,5 @@ static inline int digest_hmac_register(struct digest_algo *algo,
+ 	return 0;
+ }
+ #endif
 +
-+#include <digest.h>
++int digest_generic_verify(struct digest *d, const unsigned char *md);
+diff --git a/crypto/md5.c b/crypto/md5.c
+index fe17ff5..4847b38 100644
+--- a/crypto/md5.c
++++ b/crypto/md5.c
+@@ -294,6 +294,7 @@ static struct digest_algo md5 = {
+ 	.init = digest_md5_init,
+ 	.update = digest_md5_update,
+ 	.final = digest_md5_final,
++	.verify = digest_generic_verify,
+ 	.length = 16,
+ 	.ctx_length = sizeof(struct MD5Context),
+ };
+diff --git a/crypto/sha1.c b/crypto/sha1.c
+index a244b5d..09dee87 100644
+--- a/crypto/sha1.c
++++ b/crypto/sha1.c
+@@ -315,6 +315,7 @@ static struct digest_algo m = {
+ 	.init = digest_sha1_init,
+ 	.update = digest_sha1_update,
+ 	.final = digest_sha1_final,
++	.verify = digest_generic_verify,
+ 	.length = SHA1_SUM_LEN,
+ 	.ctx_length = sizeof(sha1_context),
+ };
+diff --git a/crypto/sha2.c b/crypto/sha2.c
+index cb89c82..9bf6541 100644
+--- a/crypto/sha2.c
++++ b/crypto/sha2.c
+@@ -304,6 +304,7 @@ static struct digest_algo m224 = {
+ 	.init = digest_sha224_init,
+ 	.update = digest_sha2_update,
+ 	.final = digest_sha2_final,
++	.verify = digest_generic_verify,
+ 	.length = SHA224_SUM_LEN,
+ 	.ctx_length = sizeof(sha2_context),
+ };
+@@ -335,6 +336,7 @@ static struct digest_algo m256 = {
+ 	.init = digest_sha256_init,
+ 	.update = digest_sha2_update,
+ 	.final = digest_sha2_final,
++	.verify = digest_generic_verify,
+ 	.length = SHA256_SUM_LEN,
+ 	.ctx_length = sizeof(sha2_context),
+ };
+diff --git a/crypto/sha4.c b/crypto/sha4.c
+index 1c768e7..5c3097d 100644
+--- a/crypto/sha4.c
++++ b/crypto/sha4.c
+@@ -309,6 +309,7 @@ static struct digest_algo m384 = {
+ 	.init = digest_sha384_init,
+ 	.update = digest_sha4_update,
+ 	.final = digest_sha4_final,
++	.verify = digest_generic_verify,
+ 	.length = SHA384_SUM_LEN,
+ 	.ctx_length = sizeof(sha4_context),
+ };
+@@ -341,6 +342,7 @@ static struct digest_algo m512 = {
+ 	.init = digest_sha512_init,
+ 	.update = digest_sha4_update,
+ 	.final = digest_sha4_final,
++	.verify = digest_generic_verify,
+ 	.length = SHA512_SUM_LEN,
+ 	.ctx_length = sizeof(sha4_context),
+ };
+diff --git a/include/digest.h b/include/digest.h
+index 1c742f6..5d1d80c 100644
+--- a/include/digest.h
++++ b/include/digest.h
+@@ -32,6 +32,7 @@ struct digest_algo {
+ 	int (*update)(struct digest *d, const void *data, unsigned long len);
+ 	int (*final)(struct digest *d, unsigned char *md);
+ 	int (*set_key)(struct digest *d, const unsigned char *key, unsigned int len);
++	int (*verify)(struct digest *d, const unsigned char *md);
+ 
+ 	unsigned int length;
+ 	unsigned int ctx_length;
+@@ -77,6 +78,11 @@ static inline int digest_final(struct digest *d, unsigned char *md)
+ 	return d->algo->final(d, md);
+ }
+ 
++static inline int digest_verify(struct digest *d, const unsigned char *md)
++{
++	return d->algo->verify(d, md);
++}
 +
-+int pkcs5_pbkdf2_hmac_sha1(const unsigned char *pwd, size_t pwd_len,
-+			   const unsigned char *salt, size_t salt_len,
-+			   uint32_t iteration,
-+			   uint32_t key_len, unsigned char *buf);
-+
-+int pkcs5_pbkdf2_hmac(struct digest* d,
-+		      const unsigned char *pwd, size_t pwd_len,
-+		      const unsigned char *salt, size_t salt_len,
-+		      uint32_t iteration,
-+		      uint32_t key_len, unsigned char *key);
-+
-+#endif /* __PBKDF2_H__ */
+ static inline int digest_length(struct digest *d)
+ {
+ 	return d->algo->length;
 -- 
 2.1.4
 
