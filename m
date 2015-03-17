@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo69.mail-out.ovh.net ([46.105.50.32])
+Received: from 10.mo69.mail-out.ovh.net ([46.105.73.241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXq48-0002JQ-4Z
- for barebox@lists.infradead.org; Tue, 17 Mar 2015 11:53:46 +0000
+ id 1YXq4D-0002Kc-5Z
+ for barebox@lists.infradead.org; Tue, 17 Mar 2015 11:53:51 +0000
 Received: from mail603.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id B9F911000D89
- for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:21 +0100 (CET)
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id 845461000DCF
+ for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:24 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 17 Mar 2015 12:53:10 +0100
-Message-Id: <1426593196-12509-3-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 17 Mar 2015 12:53:16 +0100
+Message-Id: <1426593196-12509-9-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150317114923.GQ26127@ns203013.ovh.net>
  <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,182 +25,530 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] digest: add verify callback
+Subject: [PATCH 9/9] command: add generic digest command
 To: barebox@lists.infradead.org
 
-this will allow to compare a md with the original one
-
-When calling this do not call final
-
-For RSA_SIGN verification final does not exist only verify
-as final will be for signing
+That can be used for digest calculation and verify
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- crypto/digest.c   | 24 +++++++++++++++++++++++-
- crypto/hmac.c     |  1 +
- crypto/internal.h |  2 ++
- crypto/md5.c      |  1 +
- crypto/sha1.c     |  1 +
- crypto/sha2.c     |  2 ++
- crypto/sha4.c     |  2 ++
- include/digest.h  |  6 ++++++
- 8 files changed, 38 insertions(+), 1 deletion(-)
+ commands/Kconfig    |  12 +++-
+ commands/Makefile   |   1 +
+ commands/digest.c   | 204 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ commands/hashsum.c  |  76 ++++----------------
+ commands/internal.h |   3 +
+ crypto/digest.c     |  25 +++++--
+ include/digest.h    |   8 ++-
+ 7 files changed, 260 insertions(+), 69 deletions(-)
+ create mode 100644 commands/digest.c
+ create mode 100644 commands/internal.h
 
-diff --git a/crypto/digest.c b/crypto/digest.c
-index 208a204..7869c04 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -26,6 +26,8 @@
- #include <module.h>
- #include <linux/err.h>
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 7e3e8b7..847ff76 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -14,7 +14,7 @@ if COMMAND_SUPPORT
  
+ config COMPILE_HASH
+ 	tristate
+-	select DIGEST
++	select CMD_DIGEST
+ 	help
+ 	  Turns on compilation of digest.c
+ 
+@@ -842,6 +842,16 @@ config CMD_CMP
+ 
+ 	  Returns successfully if the two files are the same, return with an error if not
+ 
++config CMD_DIGEST
++	tristate
++	select DIGEST
++	prompt "digest"
++	help
++	  Usage: digest -a <algo> [-k <key> | -K <file>] [-s <sig> | -S <file>] FILE|AREA
++
++	  Calculate a digest over a FILE or a memory area with the possibility
++	  to checkit.
++
+ config CMD_DIRNAME
+ 	tristate
+ 	prompt "dirname"
+diff --git a/commands/Makefile b/commands/Makefile
+index e42662f..b902f58 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_STDDEV)		+= stddev.o
++obj-$(CONFIG_CMD_DIGEST)	+= digest.o
+ obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
+ obj-$(CONFIG_COMPILE_MEMORY)	+= mem.o
+ obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
+diff --git a/commands/digest.c b/commands/digest.c
+new file mode 100644
+index 0000000..fa47f24
+--- /dev/null
++++ b/commands/digest.c
+@@ -0,0 +1,204 @@
++/*
++ * Copyright (c) 2015 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPLv2 ONLY
++ */
++
++#include <common.h>
++#include <command.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <xfuncs.h>
++#include <malloc.h>
++#include <digest.h>
++#include <getopt.h>
++#include <libfile.h>
++
 +#include "internal.h"
 +
- static LIST_HEAD(digests);
- 
- static struct digest_algo *digest_algo_get_by_name(const char *name);
-@@ -37,9 +39,29 @@ static int dummy_init(struct digest *d)
- 
- static void dummy_free(struct digest *d) {}
- 
-+int digest_generic_verify(struct digest *d, const unsigned char *md)
++int __do_digest(struct digest *d, unsigned char *key, int keylen,
++		       unsigned char *sig,
++		       int argc, char *argv[])
 +{
-+	int ret;
-+	int len = digest_length(d);
-+	unsigned char *tmp;
++	int ret = COMMAND_ERROR_USAGE;
++	int i;
++	unsigned char *hash;
 +
-+	tmp = xmalloc(len);
++	if (argc < 1)
++		goto err;
 +
-+	ret = digest_final(d, tmp);
-+	if (ret)
-+		goto end;
++	if (key) {
++		ret = digest_set_key(d, key, keylen);
++		if (ret) {
++			perror("set_key");
++			goto err;
++		}
++	}
 +
-+	ret = memcmp(md, tmp, len);
-+	ret = ret ? -EINVAL : 0;
-+end:
-+	free(tmp);
++	hash = calloc(digest_length(d), sizeof(unsigned char));
++	if (!hash) {
++		perror("calloc");
++		goto err;
++	}
++
++	while (*argv) {
++		char *filename = "/dev/mem";
++		loff_t start = 0, size = ~0;
++
++		/* arguments are either file, file+area or area */
++		if (parse_area_spec(*argv, &start, &size)) {
++			filename = *argv;
++			if (argv[1] && !parse_area_spec(argv[1], &start, &size))
++				argv++;
++		}
++
++		ret = digest_file_window(d, filename,
++					 hash, sig, start, size);
++		if (ret < 0) {
++			ret = 1;
++		} else {
++			if (!sig) {
++				for (i = 0; i < digest_length(d); i++)
++					printf("%02x", hash[i]);
++
++				printf("  %s\t0x%08llx ... 0x%08llx\n",
++					filename, start, start + size);
++			}
++		}
++
++		argv++;
++	}
++
++	free(hash);
++err:
++	digest_free(d);
++
 +	return ret;
 +}
 +
- int digest_algo_register(struct digest_algo *d)
- {
--	if (!d || !d->name || !d->update || !d->final || d->length < 1)
-+	if (!d || !d->name || !d->update || !d->final || !d->verify ||
-+	    d->length < 1)
- 		return -EINVAL;
- 
- 	if (!d->init)
-diff --git a/crypto/hmac.c b/crypto/hmac.c
-index 1462730..f39e4c8 100644
---- a/crypto/hmac.c
-+++ b/crypto/hmac.c
-@@ -136,6 +136,7 @@ struct digest_algo hmac_algo = {
- 	.init = digest_hmac_init,
- 	.update = digest_hmac_update,
- 	.final = digest_hmac_final,
-+	.verify = digest_generic_verify,
- 	.set_key = digest_hmac_set_key,
- 	.free = digest_hmac_free,
- 	.ctx_length = sizeof(struct digest_hmac),
-diff --git a/crypto/internal.h b/crypto/internal.h
-index cc409d8..f482654 100644
---- a/crypto/internal.h
-+++ b/crypto/internal.h
-@@ -13,3 +13,5 @@ static inline int digest_hmac_register(struct digest_algo *algo,
- 	return 0;
- }
- #endif
-+
-+int digest_generic_verify(struct digest *d, const unsigned char *md);
-diff --git a/crypto/md5.c b/crypto/md5.c
-index fe17ff5..4847b38 100644
---- a/crypto/md5.c
-+++ b/crypto/md5.c
-@@ -294,6 +294,7 @@ static struct digest_algo md5 = {
- 	.init = digest_md5_init,
- 	.update = digest_md5_update,
- 	.final = digest_md5_final,
-+	.verify = digest_generic_verify,
- 	.length = 16,
- 	.ctx_length = sizeof(struct MD5Context),
- };
-diff --git a/crypto/sha1.c b/crypto/sha1.c
-index a244b5d..09dee87 100644
---- a/crypto/sha1.c
-+++ b/crypto/sha1.c
-@@ -315,6 +315,7 @@ static struct digest_algo m = {
- 	.init = digest_sha1_init,
- 	.update = digest_sha1_update,
- 	.final = digest_sha1_final,
-+	.verify = digest_generic_verify,
- 	.length = SHA1_SUM_LEN,
- 	.ctx_length = sizeof(sha1_context),
- };
-diff --git a/crypto/sha2.c b/crypto/sha2.c
-index cb89c82..9bf6541 100644
---- a/crypto/sha2.c
-+++ b/crypto/sha2.c
-@@ -304,6 +304,7 @@ static struct digest_algo m224 = {
- 	.init = digest_sha224_init,
- 	.update = digest_sha2_update,
- 	.final = digest_sha2_final,
-+	.verify = digest_generic_verify,
- 	.length = SHA224_SUM_LEN,
- 	.ctx_length = sizeof(sha2_context),
- };
-@@ -335,6 +336,7 @@ static struct digest_algo m256 = {
- 	.init = digest_sha256_init,
- 	.update = digest_sha2_update,
- 	.final = digest_sha2_final,
-+	.verify = digest_generic_verify,
- 	.length = SHA256_SUM_LEN,
- 	.ctx_length = sizeof(sha2_context),
- };
-diff --git a/crypto/sha4.c b/crypto/sha4.c
-index 1c768e7..5c3097d 100644
---- a/crypto/sha4.c
-+++ b/crypto/sha4.c
-@@ -309,6 +309,7 @@ static struct digest_algo m384 = {
- 	.init = digest_sha384_init,
- 	.update = digest_sha4_update,
- 	.final = digest_sha4_final,
-+	.verify = digest_generic_verify,
- 	.length = SHA384_SUM_LEN,
- 	.ctx_length = sizeof(sha4_context),
- };
-@@ -341,6 +342,7 @@ static struct digest_algo m512 = {
- 	.init = digest_sha512_init,
- 	.update = digest_sha4_update,
- 	.final = digest_sha4_final,
-+	.verify = digest_generic_verify,
- 	.length = SHA512_SUM_LEN,
- 	.ctx_length = sizeof(sha4_context),
- };
-diff --git a/include/digest.h b/include/digest.h
-index 1c742f6..5d1d80c 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -32,6 +32,7 @@ struct digest_algo {
- 	int (*update)(struct digest *d, const void *data, unsigned long len);
- 	int (*final)(struct digest *d, unsigned char *md);
- 	int (*set_key)(struct digest *d, const unsigned char *key, unsigned int len);
-+	int (*verify)(struct digest *d, const unsigned char *md);
- 
- 	unsigned int length;
- 	unsigned int ctx_length;
-@@ -77,6 +78,11 @@ static inline int digest_final(struct digest *d, unsigned char *md)
- 	return d->algo->final(d, md);
- }
- 
-+static inline int digest_verify(struct digest *d, const unsigned char *md)
++static void prints_algo_help(void)
 +{
-+	return d->algo->verify(d, md);
++	puts("\navailable algo:\n");
++	digest_algo_prints("\t");
 +}
 +
- static inline int digest_length(struct digest *d)
++static int do_digest(int argc, char *argv[])
++{
++	struct digest *d;
++	unsigned char *tmp_key = NULL;
++	unsigned char *tmp_sig = NULL;
++	char *sig = NULL;
++	char *sigfile = NULL;
++	size_t siglen = 0;
++	char *key = NULL;
++	char *keyfile = NULL;
++	size_t keylen = 0;
++	size_t digestlen = 0;
++	char *algo = NULL;
++	int opt;
++	int ret = COMMAND_ERROR;
++
++	if (argc < 2)
++		return COMMAND_ERROR_USAGE;
++
++	while((opt = getopt(argc, argv, "a:k:K:s:S:")) > 0) {
++		switch(opt) {
++		case 'k':
++			key = optarg;
++			keylen = strlen(key);
++			break;
++		case 'K':
++			keyfile = optarg;
++			break;
++		case 'a':
++			algo = optarg;
++			break;
++		case 's':
++			sig = optarg;
++			siglen = strlen(sig);
++			break;
++		case 'S':
++			sigfile = optarg;
++			break;
++		}
++	}
++
++	if (!algo)
++		return COMMAND_ERROR_USAGE;
++
++	d = digest_alloc(algo);
++	if (!d) {
++		eprintf("algo '%s' not found\n", algo);
++		return COMMAND_ERROR_USAGE;
++	}
++
++	argc -= optind;
++	argv += optind;
++
++	if (keyfile) {
++		tmp_key = key = read_file(keyfile, &keylen);
++		if (!key) {
++			eprintf("file '%s' not found\n", keyfile);
++			goto err;
++		}
++	}
++
++	ret = digest_set_key(d, key, keylen);
++	free(tmp_key);
++	if (ret)
++		goto err;
++
++	if (sigfile) {
++		sig = tmp_sig = read_file(sigfile, &siglen);
++		if (!tmp_sig) {
++			eprintf("file '%s' not found\n", sigfile);
++			goto err;
++		}
++	}
++
++	if (sig) {
++		digestlen = digest_length(d);
++		if (siglen == 2 * digestlen) {
++			if (!tmp_sig)
++				tmp_sig = xmalloc(digestlen);
++
++			ret = hex2bin(tmp_sig, sig, digestlen);
++			if (ret)
++				goto err;
++
++			sig = tmp_sig;
++		} else if (siglen != digestlen) {
++			eprintf("%s wrong size digest %ld expected %ld not found\n",
++				sigfile, siglen, digestlen);
++			goto err;
++		}
++	}
++
++	ret = __do_digest(d, NULL, 0, sig, argc, argv);
++	free(tmp_sig);
++	return ret;
++
++err:
++	digest_free(d);
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(digest)
++BAREBOX_CMD_HELP_TEXT("Calculate a digest over a FILE or a memory area.")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT ("-a <algo>\t",  "hash or signature algorithm to use")
++BAREBOX_CMD_HELP_OPT ("-k <key>\t",   "use supplied <key> (ASCII or hex) for MAC")
++BAREBOX_CMD_HELP_OPT ("-K <file>\t",  "use key from <file> (binary) for MAC")
++BAREBOX_CMD_HELP_OPT ("-v <hex>\t",   "verify data against supplied <hex> (hash, MAC or signature)")
++BAREBOX_CMD_HELP_OPT ("-V <file>\t",  "verify data against <file> (hash, MAC or signature)")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(digest)
++	.cmd		= do_digest,
++	BAREBOX_CMD_DESC("calculate digest")
++	BAREBOX_CMD_OPTS("-a <algo> [-k <key> | -K <file>] [-s <sig> | -S <file>] FILE|AREA")
++	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
++	BAREBOX_CMD_HELP(cmd_digest_help)
++	BAREBOX_CMD_USAGE(prints_algo_help)
++BAREBOX_CMD_END
+diff --git a/commands/hashsum.c b/commands/hashsum.c
+index fa692eb..dc48af5 100644
+--- a/commands/hashsum.c
++++ b/commands/hashsum.c
+@@ -27,12 +27,11 @@
+ #include <digest.h>
+ #include <getopt.h>
+ 
+-static int do_digest(char *algorithm, int argc, char *argv[])
++#include "internal.h"
++
++static int do_hash(char *algo, int argc, char *argv[])
  {
- 	return d->algo->length;
+ 	struct digest *d;
+-	int ret = 0;
+-	int i;
+-	unsigned char *hash;
+ 	unsigned char *key = NULL;
+ 	size_t keylen = 0;
+ 	int opt;
+@@ -46,71 +45,26 @@ static int do_digest(char *algorithm, int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	argc -= optind;
+-	argv += optind;
+-
+ 	if (key) {
+-		char *tmp = asprintf("hmac(%s)", algorithm);
++		char *tmp = asprintf("hmac(%s)", algo);
+ 		d = digest_alloc(tmp);
+-		BUG_ON(!d);
+-		ret = digest_sey_key(d, key, keylen);
+ 		free(tmp);
+-		if (ret) {
+-			perror("set_key");
+-			goto err;
+-		}
+ 	} else {
+-		d = digest_alloc(algorithm);
+-		BUG_ON(!d);
+-	}
+-
+-	if (argc < 1)
+-		return COMMAND_ERROR_USAGE;
+-
+-	hash = calloc(digest_length(d), sizeof(unsigned char));
+-	if (!hash) {
+-		perror("calloc");
+-		return COMMAND_ERROR_USAGE;
+-	}
+-
+-	while (*argv) {
+-		char *filename = "/dev/mem";
+-		loff_t start = 0, size = ~0;
+-
+-		/* arguments are either file, file+area or area */
+-		if (parse_area_spec(*argv, &start, &size)) {
+-			filename = *argv;
+-			if (argv[0] && !parse_area_spec(argv[0], &start, &size))
+-				argv++;
+-		}
+-
+-		ret = digest_file_window(d, filename,
+-					 hash, start, size);
+-		if (ret < 0) {
+-			ret = 1;
+-		} else {
+-			for (i = 0; i < digest_length(d); i++)
+-				printf("%02x", hash[i]);
+-
+-			printf("  %s\t0x%08llx ... 0x%08llx\n",
+-				filename, start, start + size);
+-		}
+-
+-		argv++;
++		d = digest_alloc(algo);
+ 	}
++	BUG_ON(!d);
+ 
+-err:
+-	free(hash);
+-	digest_free(d);
++	argc -= optind;
++	argv += optind;
+ 
+-	return ret;
++	return __do_digest(d, key, keylen, NULL, argc, argv);
+ }
+ 
+ #ifdef CONFIG_CMD_MD5SUM
+ 
+ static int do_md5(int argc, char *argv[])
+ {
+-	return do_digest("md5", argc, argv);
++	return do_hash("md5", argc, argv);
+ }
+ 
+ BAREBOX_CMD_HELP_START(md5sum)
+@@ -131,7 +85,7 @@ BAREBOX_CMD_END
+ 
+ static int do_sha1(int argc, char *argv[])
+ {
+-	return do_digest("sha1", argc, argv);
++	return do_hash("sha1", argc, argv);
+ }
+ 
+ BAREBOX_CMD_HELP_START(sha1sum)
+@@ -152,7 +106,7 @@ BAREBOX_CMD_END
+ 
+ static int do_sha224(int argc, char *argv[])
+ {
+-	return do_digest("sha224", argc, argv);
++	return do_hash("sha224", argc, argv);
+ }
+ 
+ BAREBOX_CMD_HELP_START(sha224sum)
+@@ -173,7 +127,7 @@ BAREBOX_CMD_END
+ 
+ static int do_sha256(int argc, char *argv[])
+ {
+-	return do_digest("sha256", argc, argv);
++	return do_hash("sha256", argc, argv);
+ }
+ 
+ BAREBOX_CMD_HELP_START(sha256sum)
+@@ -194,7 +148,7 @@ BAREBOX_CMD_END
+ 
+ static int do_sha384(int argc, char *argv[])
+ {
+-	return do_digest("sha384", argc, argv);
++	return do_hash("sha384", argc, argv);
+ }
+ 
+ BAREBOX_CMD_HELP_START(sha384sum)
+@@ -215,7 +169,7 @@ BAREBOX_CMD_END
+ 
+ static int do_sha512(int argc, char *argv[])
+ {
+-	return do_digest("sha512", argc, argv);
++	return do_hash("sha512", argc, argv);
+ }
+ 
+ BAREBOX_CMD_HELP_START(sha512sum)
+diff --git a/commands/internal.h b/commands/internal.h
+new file mode 100644
+index 0000000..29cc656
+--- /dev/null
++++ b/commands/internal.h
+@@ -0,0 +1,3 @@
++int __do_digest(struct digest *d, unsigned char *key, int keylen,
++		       unsigned char *sig,
++		       int argc, char *argv[]);
+diff --git a/crypto/digest.c b/crypto/digest.c
+index 7670ed0..047131b 100644
+--- a/crypto/digest.c
++++ b/crypto/digest.c
+@@ -124,6 +124,15 @@ static struct digest_algo *digest_algo_get_by_name(const char *name)
+ 	return NULL;
+ }
+ 
++void digest_algo_prints(const char *prefix)
++{
++	struct digest_algo* d;
++
++	list_for_each_entry(d, &digests, list) {
++		printf("%s%s\n", prefix, d->name);
++	}
++}
++
+ struct digest *digest_alloc(const char *name)
+ {
+ 	struct digest *d;
+@@ -157,6 +166,7 @@ EXPORT_SYMBOL_GPL(digest_free);
+ 
+ int digest_file_window(struct digest *d, const char *filename,
+ 		       unsigned char *hash,
++		       unsigned char *sig,
+ 		       ulong start, ulong size)
+ {
+ 	ulong len = 0;
+@@ -217,7 +227,10 @@ int digest_file_window(struct digest *d, const char *filename,
+ 		len += now;
+ 	}
+ 
+-	ret = digest_final(d, hash);
++	if (sig)
++		ret = digest_verify(d, sig);
++	else
++		ret = digest_final(d, hash);
+ 
+ out_free:
+ 	if (flags)
+@@ -230,7 +243,8 @@ out:
+ EXPORT_SYMBOL_GPL(digest_file_window);
+ 
+ int digest_file(struct digest *d, const char *filename,
+-		       unsigned char *hash)
++		       unsigned char *hash,
++		       unsigned char *sig)
+ {
+ 	struct stat st;
+ 	int ret;
+@@ -240,12 +254,13 @@ int digest_file(struct digest *d, const char *filename,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return digest_file_window(d, filename, hash, 0, st.st_size);
++	return digest_file_window(d, filename, hash, sig, 0, st.st_size);
+ }
+ EXPORT_SYMBOL_GPL(digest_file);
+ 
+ int digest_file_by_name(const char *algo, const char *filename,
+-		       unsigned char *hash)
++		       unsigned char *hash,
++		       unsigned char *sig)
+ {
+ 	struct digest *d;
+ 	int ret;
+@@ -254,7 +269,7 @@ int digest_file_by_name(const char *algo, const char *filename,
+ 	if (!d)
+ 		return -EIO;
+ 
+-	ret = digest_file(d, filename, hash);
++	ret = digest_file(d, filename, hash, sig);
+ 	digest_free(d);
+ 	return ret;
+ }
+diff --git a/include/digest.h b/include/digest.h
+index 718793a..cb579ee 100644
+--- a/include/digest.h
++++ b/include/digest.h
+@@ -52,17 +52,21 @@ struct digest {
+  */
+ int digest_algo_register(struct digest_algo *d);
+ void digest_algo_unregister(struct digest_algo *d);
++void digest_algo_prints(const char *prefix);
+ 
+ struct digest *digest_alloc(const char *name);
+ void digest_free(struct digest *d);
+ 
+ int digest_file_window(struct digest *d, const char *filename,
+ 		       unsigned char *hash,
++		       unsigned char *sig,
+ 		       ulong start, ulong size);
+ int digest_file(struct digest *d, const char *filename,
+-		       unsigned char *hash);
++		       unsigned char *hash,
++		       unsigned char *sig);
+ int digest_file_by_name(const char *algo, const char *filename,
+-		       unsigned char *hash);
++		       unsigned char *hash,
++		       unsigned char *sig);
+ 
+ static inline int digest_init(struct digest *d)
+ {
 -- 
 2.1.4
 
