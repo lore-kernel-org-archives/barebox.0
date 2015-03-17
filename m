@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo69.mail-out.ovh.net ([46.105.56.233])
+Received: from 6.mo69.mail-out.ovh.net ([46.105.50.107])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YXq48-0002KN-SL
- for barebox@lists.infradead.org; Tue, 17 Mar 2015 11:53:48 +0000
+ id 1YXq49-0002JZ-Aw
+ for barebox@lists.infradead.org; Tue, 17 Mar 2015 11:53:49 +0000
 Received: from mail603.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id 299031000D6B
- for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:24 +0100 (CET)
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id 62B991000D95
+ for <barebox@lists.infradead.org>; Tue, 17 Mar 2015 12:53:22 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 17 Mar 2015 12:53:15 +0100
-Message-Id: <1426593196-12509-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 17 Mar 2015 12:53:12 +0100
+Message-Id: <1426593196-12509-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150317114923.GQ26127@ns203013.ovh.net>
  <1426593196-12509-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,101 +25,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] command: rename digest.c to hashsum.c
+Subject: [PATCH 5/9] crypto: hmac: use digest_digest and check the return of
+ every digest_xxx
 To: barebox@lists.infradead.org
-
-as I'll add a new generic command named digest
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/Kconfig                 | 14 +++++++-------
- commands/Makefile                |  2 +-
- commands/{digest.c => hashsum.c} |  0
- 3 files changed, 8 insertions(+), 8 deletions(-)
- rename commands/{digest.c => hashsum.c} (100%)
+ crypto/hmac.c | 49 +++++++++++++++++++++++++++++++------------------
+ 1 file changed, 31 insertions(+), 18 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 286e9ce..7e3e8b7 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -12,7 +12,7 @@ config HAS_POWEROFF
+diff --git a/crypto/hmac.c b/crypto/hmac.c
+index b1c17af..c2195d9 100644
+--- a/crypto/hmac.c
++++ b/crypto/hmac.c
+@@ -62,15 +62,15 @@ static int digest_hmac_set_key(struct digest *d, const unsigned char *key,
+ {
+ 	struct digest_hmac_ctx *dh = d->ctx;
+ 	struct digest_hmac *hmac = to_digest_hmac(d->algo);
++	unsigned char *sum = NULL;
++	int ret;
  
- if COMMAND_SUPPORT
+ 	free(dh->key);
+ 	if (len > hmac->pad_length) {
+-		unsigned char *sum;
+-
+ 		sum = xmalloc(digest_length(dh->d));
+-		digest_init(dh->d);
+-		digest_update(dh->d, dh->key, dh->keylen);
+-		digest_final(dh->d, sum);
++		ret = digest_digest(dh->d, dh->key, dh->keylen, sum);
++		if (ret)
++			goto err;
+ 		dh->keylen = digest_length(dh->d);
+ 		dh->key = sum;
+ 	} else {
+@@ -79,14 +79,17 @@ static int digest_hmac_set_key(struct digest *d, const unsigned char *key,
+ 		dh->keylen = len;
+ 	}
  
--config COMPILE_DIGEST
-+config COMPILE_HASH
- 	tristate
- 	select DIGEST
- 	help
-@@ -917,7 +917,7 @@ config CMD_LS
+-	return 0;
++	ret = 0;
++err:
++	free(sum);
++	return ret;
+ }
  
- config CMD_MD5SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select MD5
- 	prompt "md5sum"
- 	help
-@@ -982,7 +982,7 @@ config CMD_RMDIR
+ static int digest_hmac_init(struct digest *d)
+ {
+ 	struct digest_hmac_ctx *dh = d->ctx;
+ 	struct digest_hmac *hmac = to_digest_hmac(d->algo);
+-	int i;
++	int i, ret;
+ 	unsigned char *key = dh->key;
+ 	unsigned int keylen = dh->keylen;
  
- config CMD_SHA1SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA1
- 	prompt "sha1sum"
- 	help
-@@ -994,7 +994,7 @@ config CMD_SHA1SUM
+@@ -98,10 +101,10 @@ static int digest_hmac_init(struct digest *d)
+ 		dh->opad[i] = (unsigned char)(dh->opad[i] ^ key[i]);
+ 	}
  
- config CMD_SHA224SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA224
- 	prompt "sha224sum"
- 	help
-@@ -1006,7 +1006,7 @@ config CMD_SHA224SUM
+-	digest_init(dh->d);
+-	digest_update(dh->d, dh->ipad, hmac->pad_length);
+-
+-	return 0;
++	ret = digest_init(dh->d);
++	if (ret)
++		return ret;
++	return digest_update(dh->d, dh->ipad, hmac->pad_length);
+ }
  
- config CMD_SHA256SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA256
- 	prompt "sha256sum"
- 	help
-@@ -1018,7 +1018,7 @@ config CMD_SHA256SUM
+ static int digest_hmac_update(struct digest *d, const void *data,
+@@ -117,18 +120,28 @@ static int digest_hmac_final(struct digest *d, unsigned char *md)
+ 	struct digest_hmac_ctx *dh = d->ctx;
+ 	struct digest_hmac *hmac = to_digest_hmac(d->algo);
+ 	unsigned char *tmp = NULL;
++	int ret;
  
- config CMD_SHA384SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA384
- 	prompt "sha384sum"
- 	help
-@@ -1030,7 +1030,7 @@ config CMD_SHA384SUM
+ 	tmp = xmalloc(digest_length(d));
  
- config CMD_SHA512SUM
- 	tristate
--	select COMPILE_DIGEST
-+	select COMPILE_HASH
- 	select SHA512
- 	prompt "sha512sum"
- 	help
-diff --git a/commands/Makefile b/commands/Makefile
-index 7344e01..e42662f 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -1,5 +1,5 @@
- obj-$(CONFIG_STDDEV)		+= stddev.o
--obj-$(CONFIG_COMPILE_DIGEST)	+= digest.o
-+obj-$(CONFIG_COMPILE_HASH)	+= hashsum.o
- obj-$(CONFIG_COMPILE_MEMORY)	+= mem.o
- obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
- obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
-diff --git a/commands/digest.c b/commands/hashsum.c
-similarity index 100%
-rename from commands/digest.c
-rename to commands/hashsum.c
+-	digest_final(dh->d, tmp);
+-	digest_init(dh->d);
+-	digest_update(dh->d, dh->opad, hmac->pad_length);
+-	digest_update(dh->d, tmp, digest_length(d));
+-	digest_final(dh->d, md);
+-
++	ret = digest_final(dh->d, tmp);
++	if (ret)
++		goto err;
++	ret = digest_init(dh->d);
++	if (ret)
++		goto err;
++	ret = digest_update(dh->d, dh->opad, hmac->pad_length);
++	if (ret)
++		goto err;
++	ret = digest_update(dh->d, tmp, digest_length(d));
++	if (ret)
++		goto err;
++	ret = digest_final(dh->d, md);
++
++err:
+ 	free(tmp);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ struct digest_algo hmac_algo = {
 -- 
 2.1.4
 
