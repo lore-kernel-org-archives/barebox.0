@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YXl9m-00069v-8r
- for barebox@lists.infradead.org; Tue, 17 Mar 2015 06:39:16 +0000
+ Linux)) id 1YXl9m-00069y-8q
+ for barebox@lists.infradead.org; Tue, 17 Mar 2015 06:39:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 17 Mar 2015 07:38:45 +0100
-Message-Id: <1426574331-22797-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 17 Mar 2015 07:38:49 +0100
+Message-Id: <1426574331-22797-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1426574331-22797-1-git-send-email-s.hauer@pengutronix.de>
 References: <1426574331-22797-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,124 +21,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] pci: Use standard pr_debug
+Subject: [PATCH 5/7] ARM: i.MX: Add imx_clk_gate_exclusive
 To: Barebox List <barebox@lists.infradead.org>
 
-Use pr_debug instead of custom DBG macro.
+This adds support for two gates from can only exclusively be enabled.
+Based on the corresponding Linux code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pci/pci.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+ arch/arm/mach-imx/Makefile             |   2 +-
+ arch/arm/mach-imx/clk-gate-exclusive.c | 103 +++++++++++++++++++++++++++++++++
+ arch/arm/mach-imx/clk.h                |   3 +
+ 3 files changed, 107 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-imx/clk-gate-exclusive.c
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 1f5dc78..cb8c539 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1,13 +1,9 @@
-+#define pr_fmt(fmt)  "pci: " fmt
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 048cac5..ae953b1 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -16,7 +16,7 @@ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+ lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
+-obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o clk-gate2.o
++obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o clk-gate2.o clk-gate-exclusive.o
+ obj-y += devices.o imx.o esdctl.o
+ obj-y += boot.o
+ obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
+diff --git a/arch/arm/mach-imx/clk-gate-exclusive.c b/arch/arm/mach-imx/clk-gate-exclusive.c
+new file mode 100644
+index 0000000..db88db0
+--- /dev/null
++++ b/arch/arm/mach-imx/clk-gate-exclusive.c
+@@ -0,0 +1,103 @@
++/*
++ * Copyright 2014 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
 +
- #include <common.h>
- #include <linux/sizes.h>
- #include <linux/pci.h>
- 
--#ifdef DEBUG
--#define DBG(x...) printk(x)
--#else
--#define DBG(x...)
--#endif
--
- static struct pci_controller *hose_head, **hose_tail = &hose_head;
- 
- LIST_HEAD(pci_root_buses);
-@@ -150,16 +146,16 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 		pci_read_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, &mask);
- 
- 		if (mask == 0 || mask == 0xffffffff) {
--			DBG("  PCI: pbar%d set bad mask\n", bar);
-+			pr_debug("pbar%d set bad mask\n", bar);
- 			continue;
- 		}
- 
- 		if (mask & 0x01) { /* IO */
- 			size = ((~(mask & 0xfffffffe)) & 0xffff) + 1;
--			DBG("  PCI: pbar%d: mask=%08x io %d bytes\n", bar, mask, size);
-+			pr_debug("pbar%d: mask=%08x io %d bytes\n", bar, mask, size);
- 			if (last_io + size >
- 			    dev->bus->resource[PCI_BUS_RESOURCE_IO]->end) {
--				DBG("BAR does not fit within bus IO res\n");
-+				pr_debug("BAR does not fit within bus IO res\n");
- 				return;
- 			}
- 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_io);
-@@ -169,11 +165,11 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 		} else if ((mask & PCI_BASE_ADDRESS_MEM_PREFETCH) &&
- 		           last_mem_pref) /* prefetchable MEM */ {
- 			size = (~(mask & 0xfffffff0)) + 1;
--			DBG("  PCI: pbar%d: mask=%08x P memory %d bytes\n",
-+			pr_debug("pbar%d: mask=%08x P memory %d bytes\n",
- 			    bar, mask, size);
- 			if (last_mem_pref + size >
- 			    dev->bus->resource[PCI_BUS_RESOURCE_MEM_PREF]->end) {
--				DBG("BAR does not fit within bus p-mem res\n");
-+				pr_debug("BAR does not fit within bus p-mem res\n");
- 				return;
- 			}
- 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem_pref);
-@@ -183,11 +179,11 @@ static void setup_device(struct pci_dev *dev, int max_bar)
- 			last_mem_pref += size;
- 		} else { /* non-prefetch MEM */
- 			size = (~(mask & 0xfffffff0)) + 1;
--			DBG("  PCI: pbar%d: mask=%08x NP memory %d bytes\n",
-+			pr_debug("pbar%d: mask=%08x NP memory %d bytes\n",
- 			    bar, mask, size);
- 			if (last_mem + size >
- 			    dev->bus->resource[PCI_BUS_RESOURCE_MEM]->end) {
--				DBG("BAR does not fit within bus np-mem res\n");
-+				pr_debug("BAR does not fit within bus np-mem res\n");
- 				return;
- 			}
- 			pci_write_config_dword(dev, PCI_BASE_ADDRESS_0 + bar * 4, last_mem);
-@@ -287,8 +283,8 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 	unsigned int devfn, l, max, class;
- 	unsigned char cmd, tmp, hdr_type, is_multi = 0;
- 
--	DBG("pci_scan_bus for bus %d\n", bus->number);
--	DBG(" last_io = 0x%08x, last_mem = 0x%08x, last_mem_pref = 0x%08x\n",
-+	pr_debug("pci_scan_bus for bus %d\n", bus->number);
-+	pr_debug(" last_io = 0x%08x, last_mem = 0x%08x, last_mem_pref = 0x%08x\n",
- 	    last_io, last_mem, last_mem_pref);
- 
- 	max = bus->secondary;
-@@ -331,8 +327,8 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 		class >>= 8;
- 		dev->hdr_type = hdr_type;
- 
--		DBG("PCI: class = %08x, hdr_type = %08x\n", class, hdr_type);
--		DBG("PCI: %02x:%02x [%04x:%04x]\n", bus->number, dev->devfn,
-+		pr_debug("class = %08x, hdr_type = %08x\n", class, hdr_type);
-+		pr_debug("%02x:%02x [%04x:%04x]\n", bus->number, dev->devfn,
- 		    dev->vendor, dev->device);
- 
- 		switch (hdr_type & 0x7f) {
-@@ -385,7 +381,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 		}
- 
- 		if (class == PCI_CLASS_BRIDGE_HOST) {
--			DBG("PCI: skip pci host bridge\n");
-+			pr_debug("skip pci host bridge\n");
- 			continue;
- 		}
- 	}
-@@ -398,7 +394,7 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 	 * Return how far we've got finding sub-buses.
- 	 */
- 	max = bus_index;
--	DBG("PCI: pci_scan_bus returning with max=%02x\n", max);
-+	pr_debug("pci_scan_bus returning with max=%02x\n", max);
- 
- 	return max;
++#include <common.h>
++#include <io.h>
++#include <malloc.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++
++#include "clk.h"
++
++/**
++ * struct clk_gate_exclusive - i.MX specific gate clock which is mutually
++ * exclusive with other gate clocks
++ *
++ * @gate: the parent class
++ * @exclusive_mask: mask of gate bits which are mutually exclusive to this
++ *	gate clock
++ *
++ * The imx exclusive gate clock is a subclass of basic clk_gate
++ * with an addtional mask to indicate which other gate bits in the same
++ * register is mutually exclusive to this gate clock.
++ */
++struct clk_gate_exclusive {
++	struct clk clk;
++	void __iomem *reg;
++	int shift;
++	const char *parent;
++	u32 exclusive_mask;
++};
++
++static int clk_gate_exclusive_enable(struct clk *clk)
++{
++	struct clk_gate_exclusive *exgate = container_of(clk,
++					struct clk_gate_exclusive, clk);
++	u32 val = readl(exgate->reg);
++
++	if (val & exgate->exclusive_mask)
++		return -EBUSY;
++
++	val |= 1 << exgate->shift;
++
++	writel(val, exgate->reg);
++
++	return 0;
++}
++
++static void clk_gate_exclusive_disable(struct clk *clk)
++{
++	struct clk_gate_exclusive *exgate = container_of(clk,
++					struct clk_gate_exclusive, clk);
++	u32 val = readl(exgate->reg);
++
++	val &= ~(1 << exgate->shift);
++
++	writel(val, exgate->reg);
++}
++
++static int clk_gate_exclusive_is_enabled(struct clk *clk)
++{
++	struct clk_gate_exclusive *exgate = container_of(clk,
++					struct clk_gate_exclusive, clk);
++
++	return readl(exgate->reg) & (1 << exgate->shift);
++}
++
++static const struct clk_ops clk_gate_exclusive_ops = {
++	.enable = clk_gate_exclusive_enable,
++	.disable = clk_gate_exclusive_disable,
++	.is_enabled = clk_gate_exclusive_is_enabled,
++};
++
++struct clk *imx_clk_gate_exclusive(const char *name, const char *parent,
++	 void __iomem *reg, u8 shift, u32 exclusive_mask)
++{
++	struct clk_gate_exclusive *exgate;
++	int ret;
++
++	exgate = xzalloc(sizeof(*exgate));
++	exgate->parent = parent;
++	exgate->clk.name = name;
++	exgate->clk.ops = &clk_gate_exclusive_ops;
++	exgate->clk.flags = CLK_SET_RATE_PARENT;
++	exgate->clk.parent_names = &exgate->parent;
++	exgate->clk.num_parents = 1;
++
++	exgate->reg = reg;
++	exgate->shift = shift;
++	exgate->exclusive_mask = exclusive_mask;
++
++	ret = clk_register(&exgate->clk);
++	if (ret) {
++		free(exgate);
++		return ERR_PTR(ret);
++	}
++
++	return &exgate->clk;
++}
+diff --git a/arch/arm/mach-imx/clk.h b/arch/arm/mach-imx/clk.h
+index 8ec3eb5..c8da2fa 100644
+--- a/arch/arm/mach-imx/clk.h
++++ b/arch/arm/mach-imx/clk.h
+@@ -92,4 +92,7 @@ static inline struct clk *imx_clk_busy_mux(const char *name, void __iomem *reg,
+ 	return imx_clk_mux(name, reg, shift, width, parents, num_parents);
  }
+ 
++struct clk *imx_clk_gate_exclusive(const char *name, const char *parent,
++		void __iomem *reg, u8 shift, u32 exclusive_mask);
++
+ #endif /* __IMX_CLK_H */
 -- 
 2.1.4
 
