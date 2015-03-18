@@ -1,24 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YXr4T-00042r-ED
- for barebox@lists.infradead.org; Tue, 17 Mar 2015 12:58:10 +0000
-Message-ID: <1426597066.3330.177.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Tue, 17 Mar 2015 13:57:46 +0100
-In-Reply-To: <20150317123955.GR26127@ns203013.ovh.net>
-References: <20150313102543.GA23879@ns203013.ovh.net>
- <1426243382.13791.121.camel@pengutronix.de>
- <20150313154928.GA24510@ns203013.ovh.net>
- <1426500022.3330.12.camel@pengutronix.de>
- <20150316102713.GB26127@ns203013.ovh.net>
- <1426505135.3330.55.camel@pengutronix.de>
- <20150316113306.GH26127@ns203013.ovh.net>
- <1426520527.3330.139.camel@pengutronix.de>
- <20150317104803.GP26127@ns203013.ovh.net>
- <1426594190.3330.173.camel@pengutronix.de>
- <20150317123955.GR26127@ns203013.ovh.net>
-Mime-Version: 1.0
+ Linux)) id 1YY8f9-0003Lp-AX
+ for barebox@lists.infradead.org; Wed, 18 Mar 2015 07:45:12 +0000
+Date: Wed, 18 Mar 2015 08:44:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150318074448.GI4927@pengutronix.de>
+References: <20150317114923.GQ26127@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150317114923.GQ26127@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,42 +22,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/4] Add rsa support
+Subject: Re: [PATCH 0/9 v4] prepare for rsa support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Di, 2015-03-17 at 13:39 +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > I want to understand how your image formats would be used in the larger
-> > context of a BSP or distribution. Please describe which image formats
-> > you want to support (in addition to FIT). How are they structured? How
-> > are they generated? Are they already supported by other software? 
-> Today we use a bpk formoat
+On Tue, Mar 17, 2015 at 12:49:23PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> in bpk format you can store different data for each hw_id, each data have a
-> specific type.
+> 	The following patch series prepare for the adding of the rsa digest
+> 	support
 > 
-> we add a new type for the signature.
+> 	This will allow to verify a rsa signature of a file
 > 
-> we do a sha512 of the other data of one hw_id and signed it with a rsa4096
-> we use 1 unique rsa key per HW_ID
+> 	Introduction of a new command digest to handle the digest and check
 > 
-> as soon as one of the file of a specific hw_id is open we check the signature
+> 	The next patch series will add RSA and keystore support
 > 
-> The code is no public yet but this is handled at FS level
+> v2:
 > 
-> and we allow only to open data that have been verified or decrypted if we use
-> AES
+> 	- rebase on next
+> 	- add pbkdf2 to password/login framework
+> 	- command allow to have runtime output
+> 	  used it in the new digest to print the supported algo
+> 
+> v3:
+> 	add more fix to ensure all the digest_xx call return are checked
+> 
+> v4:
+> 	- drop key params for digest_file_window/digest_file/digest_file_by_name
+> 	- digest improve help
+> 
+> please pull
+> The following changes since commit bbba2d05585637d04657dce293c0cb0611dbfeea:
+> 
+>   Merge branch 'for-next/state' into next (2015-03-13 08:32:38 +0100)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/digest
+> 
+> for you to fetch changes up to 50b6b7d02eb109ba2807c2bb6e740fa01cdedc24:
+> 
+>   command: add generic digest command (2015-03-15 06:28:34 +0800)
+> 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (9):
+>       crypto: digest: digest_file_window: check every digest_xxx return
+>       crypto: digest: digest_file_window/digest_file/digest_file_by_name drop key params
+>       digest: add verify callback
+>       digest: add digest callback
+>       crypto: hmac: use digest_digest and check the return of every digest_xxx
+>       crypto: add pbkdf2 hmac key generator
+>       command: allow runtime usage
+>       command: rename digest.c to hashsum.c
+>       command: add generic digest command
 
-Thanks for the explanation, it's clearer now.
+Applied, thanks
 
-Regards,
-Jan
+Sascha
+
+
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 _______________________________________________
 barebox mailing list
