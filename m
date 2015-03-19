@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YYJ7x-0003jo-1q
- for barebox@lists.infradead.org; Wed, 18 Mar 2015 18:55:39 +0000
-Date: Wed, 18 Mar 2015 19:55:12 +0100
+ Linux)) id 1YYUKH-0003Or-9R
+ for barebox@lists.infradead.org; Thu, 19 Mar 2015 06:53:06 +0000
+Date: Thu, 19 Mar 2015 07:52:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150318185512.GQ4927@pengutronix.de>
-References: <DB3PR03MB0826E47A0EE5FF439BDD67B698000@DB3PR03MB0826.eurprd03.prod.outlook.com>
+Message-ID: <20150319065239.GR4927@pengutronix.de>
+References: <1426688022-13679-1-git-send-email-w.egorov@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <DB3PR03MB0826E47A0EE5FF439BDD67B698000@DB3PR03MB0826.eurprd03.prod.outlook.com>
+In-Reply-To: <1426688022-13679-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Is this a barebox bootm memory release Bug ?
-To: "Gabor Janak (g.janak@agilion.de)" <g.janak@agilion.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] mci: core: Check return value of dev_add_param_bool
+To: Wadim Egorov <w.egorov@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Hi Gabor,
+On Wed, Mar 18, 2015 at 03:13:42PM +0100, Wadim Egorov wrote:
+> Commit 03b59bdb64e83ebcdb9111681775117ebce0e03b changed the
+> return values of dev_add_param_* to ERR_PTR(-ENOSYS) and broke a few boards.
+> We have now to care about the return value of dev_add_param_bool() in
+> mci_register().
+> 
+> Also set the ret variable when dev_add_param_bool() fails.
+> 
+> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> ---
+>  drivers/mci/mci-core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-On Wed, Mar 18, 2015 at 04:28:26PM +0000, Gabor Janak (g.janak@agilion.de) wrote:
-> Hi,
-> 
-> I have one little question.
-> In [barebox.git] / common / bootm.c Line 201
-> 
-> 196        if (data->verify) {
-> 197                 ret = uimage_verify(data->os);
-> 198                 if (ret) {
-> 199                         printf("Checking data crc failed with %s\n",
-> 200                                         strerror(-ret));
-> 201                         uimage_close(data->os);
-> 202                         return ret;
-> 203                 }
-> 204         }
-> 
-> The uimage is closed but data->os is not set to NULL.
-> 
-> If this function is called from  bootm_boot in
-> 472                 ret = handler->bootm(data);
-> 
-> and
-> 482         if (data->os)
-> 483                 uimage_close(data->os);
-> 
-> will crash free something ....
-> Will end in a possible
-> unable to handle paging request at address 0xfe148f0e
-> 
-> Is this a correct analyze ?
-> If yes, it's enough to add an data->os=NULL after uimage_close ?
-
-Yes, this seems to be a bug. Alternatively we could just skip the
-uimage_close in the bootm_open_os_uimage error paths.
+Applied, thanks
 
 Sascha
 
