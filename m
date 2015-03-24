@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo69.mail-out.ovh.net ([46.105.50.107])
+Received: from 3.mo68.mail-out.ovh.net ([46.105.58.60])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YaOZz-0000xV-Te
- for barebox@lists.infradead.org; Tue, 24 Mar 2015 13:09:25 +0000
-Received: from mail182.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id 292A110042CD
- for <barebox@lists.infradead.org>; Tue, 24 Mar 2015 14:08:49 +0100 (CET)
+ id 1YaOZz-0000xI-Nv
+ for barebox@lists.infradead.org; Tue, 24 Mar 2015 13:09:21 +0000
+Received: from mail642.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo68.mail-out.ovh.net (Postfix) with SMTP id D3437FFA418
+ for <barebox@lists.infradead.org>; Tue, 24 Mar 2015 14:08:46 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 24 Mar 2015 14:08:34 +0100
-Message-Id: <1427202519-15224-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 24 Mar 2015 14:08:36 +0100
+Message-Id: <1427202519-15224-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1427202519-15224-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150324130035.GB8125@ns203013.ovh.net>
  <1427202519-15224-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,629 +25,773 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] crypto: prepare to allow multiple digest driver
+Subject: [PATCH 4/7] crypto: sha256: switch to linux implementation
 To: barebox@lists.infradead.org
-
-This will allow to have hw driver or asm optimised driver.
-
-Use a priority level to determine which one to use at runtime.
-The generic one will be 0.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/configs/at91rm9200ek_defconfig         |  4 +--
- arch/arm/configs/highbank_defconfig             |  4 +--
- arch/arm/configs/mioa701_defconfig              |  2 +-
- arch/arm/configs/module-mb7707_defconfig        |  4 +--
- arch/arm/configs/nhk8815_defconfig              |  2 +-
- arch/arm/configs/phytec-phycard-omap3_defconfig |  6 ++--
- arch/arm/configs/rpi_defconfig                  |  4 +--
- arch/arm/configs/versatilepb_arm1176_defconfig  |  4 +--
- arch/arm/configs/versatilepb_defconfig          |  4 +--
- arch/arm/configs/vexpress_ca9_defconfig         |  4 +--
- arch/arm/configs/vexpress_defconfig             |  4 +--
- arch/arm/configs/virt2real_defconfig            |  4 +--
- arch/arm/configs/zylonite310_defconfig          |  2 +-
- arch/mips/configs/img-ci20_defconfig            |  6 ++--
- arch/mips/configs/ritmix-rzx50_defconfig        |  6 ++--
- arch/mips/configs/tplink-mr3020_defconfig       |  4 +--
- crypto/Kconfig                                  | 40 +++++++++++++++++++++----
- crypto/Makefile                                 | 14 ++++-----
- crypto/digest.c                                 | 31 +++++++++++--------
- crypto/hmac.c                                   | 16 ++++++----
- crypto/md5.c                                    |  9 ++++--
- crypto/sha1.c                                   |  9 ++++--
- crypto/sha2.c                                   | 17 ++++++++---
- crypto/sha4.c                                   | 17 ++++++++---
- {crypto => include/crypto}/internal.h           |  0
- include/digest.h                                | 12 ++++++--
- 26 files changed, 151 insertions(+), 78 deletions(-)
- rename {crypto => include/crypto}/internal.h (100%)
+ crypto/sha2.c | 752 ++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 385 insertions(+), 367 deletions(-)
+ rewrite crypto/sha2.c (88%)
 
-diff --git a/arch/arm/configs/at91rm9200ek_defconfig b/arch/arm/configs/at91rm9200ek_defconfig
-index 54e3b1d..03fca04 100644
---- a/arch/arm/configs/at91rm9200ek_defconfig
-+++ b/arch/arm/configs/at91rm9200ek_defconfig
-@@ -76,5 +76,5 @@ CONFIG_LED=y
- CONFIG_LED_GPIO=y
- CONFIG_LED_TRIGGERS=y
- CONFIG_FS_CRAMFS=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/highbank_defconfig b/arch/arm/configs/highbank_defconfig
-index cf42d29..8c965c8 100644
---- a/arch/arm/configs/highbank_defconfig
-+++ b/arch/arm/configs/highbank_defconfig
-@@ -59,5 +59,5 @@ CONFIG_DISK=y
- CONFIG_DISK_AHCI=y
- CONFIG_GPIO_PL061=y
- CONFIG_FS_TFTP=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/mioa701_defconfig b/arch/arm/configs/mioa701_defconfig
-index d405edf..cc4587c 100644
---- a/arch/arm/configs/mioa701_defconfig
-+++ b/arch/arm/configs/mioa701_defconfig
-@@ -104,4 +104,4 @@ CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
- CONFIG_BZLIB=y
- CONFIG_BMP=y
- CONFIG_PNG=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/module-mb7707_defconfig b/arch/arm/configs/module-mb7707_defconfig
-index 843dd59..83a798b 100644
---- a/arch/arm/configs/module-mb7707_defconfig
-+++ b/arch/arm/configs/module-mb7707_defconfig
-@@ -45,5 +45,5 @@ CONFIG_USB_HOST=y
- CONFIG_USB_EHCI=y
- CONFIG_USB_STORAGE=y
- CONFIG_CLOCKSOURCE_DUMMY=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
-index dcb00c0..46c3a68 100644
---- a/arch/arm/configs/nhk8815_defconfig
-+++ b/arch/arm/configs/nhk8815_defconfig
-@@ -55,4 +55,4 @@ CONFIG_MTD_NAND_NOMADIK=y
- CONFIG_UBI=y
- CONFIG_FS_CRAMFS=y
- CONFIG_MD5=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/phytec-phycard-omap3_defconfig b/arch/arm/configs/phytec-phycard-omap3_defconfig
-index aefc78d..a2564d4 100644
---- a/arch/arm/configs/phytec-phycard-omap3_defconfig
-+++ b/arch/arm/configs/phytec-phycard-omap3_defconfig
-@@ -173,6 +173,6 @@ CONFIG_CRC32=y
- CONFIG_CRC16=y
- CONFIG_DIGEST=y
- CONFIG_MD5=y
--CONFIG_SHA1=y
--CONFIG_SHA224=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA224_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-index c6b2c50..25770a0 100644
---- a/arch/arm/configs/rpi_defconfig
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -64,5 +64,5 @@ CONFIG_FS_EXT4=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/versatilepb_arm1176_defconfig b/arch/arm/configs/versatilepb_arm1176_defconfig
-index ca0ab36..cefdb29 100644
---- a/arch/arm/configs/versatilepb_arm1176_defconfig
-+++ b/arch/arm/configs/versatilepb_arm1176_defconfig
-@@ -95,5 +95,5 @@ CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
- CONFIG_PNG=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/versatilepb_defconfig b/arch/arm/configs/versatilepb_defconfig
-index 54a6fec..0876824 100644
---- a/arch/arm/configs/versatilepb_defconfig
-+++ b/arch/arm/configs/versatilepb_defconfig
-@@ -81,5 +81,5 @@ CONFIG_FS_CRAMFS=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/vexpress_ca9_defconfig b/arch/arm/configs/vexpress_ca9_defconfig
-index 84171c4..c5ad315 100644
---- a/arch/arm/configs/vexpress_ca9_defconfig
-+++ b/arch/arm/configs/vexpress_ca9_defconfig
-@@ -58,5 +58,5 @@ CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
- # CONFIG_DRIVER_CFI_BANK_WIDTH_2 is not set
- CONFIG_FS_TFTP=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
-index c7928c4..beea11a 100644
---- a/arch/arm/configs/vexpress_defconfig
-+++ b/arch/arm/configs/vexpress_defconfig
-@@ -57,5 +57,5 @@ CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
- # CONFIG_DRIVER_CFI_BANK_WIDTH_2 is not set
- CONFIG_FS_TFTP=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/virt2real_defconfig b/arch/arm/configs/virt2real_defconfig
-index a81d18b..0c686ca 100644
---- a/arch/arm/configs/virt2real_defconfig
-+++ b/arch/arm/configs/virt2real_defconfig
-@@ -45,5 +45,5 @@ CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_LED=y
- CONFIG_LED_GPIO=y
- CONFIG_LED_GPIO_OF=y
--CONFIG_SHA1=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/zylonite310_defconfig b/arch/arm/configs/zylonite310_defconfig
-index 77e4f84..fa6587c 100644
---- a/arch/arm/configs/zylonite310_defconfig
-+++ b/arch/arm/configs/zylonite310_defconfig
-@@ -114,4 +114,4 @@ CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
- CONFIG_BZLIB=y
- CONFIG_BMP=y
- CONFIG_PNG=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/mips/configs/img-ci20_defconfig b/arch/mips/configs/img-ci20_defconfig
-index 56235c4..6702c88 100644
---- a/arch/mips/configs/img-ci20_defconfig
-+++ b/arch/mips/configs/img-ci20_defconfig
-@@ -37,6 +37,6 @@ CONFIG_OFDEVICE=y
- # CONFIG_SPI is not set
- CONFIG_CLOCKSOURCE_DUMMY=y
- CONFIG_CLOCKSOURCE_DUMMY_RATE=3500
--CONFIG_SHA1=y
--CONFIG_SHA224=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA224_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/mips/configs/ritmix-rzx50_defconfig b/arch/mips/configs/ritmix-rzx50_defconfig
-index 0814883..eedb329 100644
---- a/arch/mips/configs/ritmix-rzx50_defconfig
-+++ b/arch/mips/configs/ritmix-rzx50_defconfig
-@@ -46,6 +46,6 @@ CONFIG_LED_TRIGGERS=y
- CONFIG_GPIO_JZ4740=y
- CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_JZ4740=y
--CONFIG_SHA1=y
--CONFIG_SHA224=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA1_GENERIC=y
-+CONFIG_DIGEST_SHA224_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/mips/configs/tplink-mr3020_defconfig b/arch/mips/configs/tplink-mr3020_defconfig
-index d249919..9f81ce3 100644
---- a/arch/mips/configs/tplink-mr3020_defconfig
-+++ b/arch/mips/configs/tplink-mr3020_defconfig
-@@ -30,5 +30,5 @@ CONFIG_MTD=y
- # CONFIG_MTD_OOB_DEVICE is not set
- CONFIG_MTD_M25P80=y
- CONFIG_MD5=y
--CONFIG_SHA224=y
--CONFIG_SHA256=y
-+CONFIG_DIGEST_SHA224_GENERIC=y
-+CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index b721e30..5a69236 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -13,25 +13,53 @@ menuconfig DIGEST
- if DIGEST
- 
- config MD5
--	bool "MD5"
-+	bool
- 
- config SHA1
--	bool "SHA1"
-+	bool
- 
- config SHA224
--	bool "SHA224"
-+	bool
- 
- config SHA256
--	bool "SHA256"
-+	bool
- 
- config SHA384
--	bool "SHA384"
-+	bool
- 
- config SHA512
--	bool "SHA512"
-+	bool
- 
- config DIGEST_HMAC
-+	bool
-+
-+config DIGEST_MD5_GENERIC
-+	bool "MD5"
-+	select MD5
-+
-+config DIGEST_SHA1_GENERIC
-+	bool "SHA1"
-+	select SHA1
-+
-+config DIGEST_SHA224_GENERIC
-+	bool "SHA224"
-+	select SHA224
-+
-+config DIGEST_SHA256_GENERIC
-+	bool "SHA256"
-+	select SHA256
-+
-+config DIGEST_SHA384_GENERIC
-+	bool "SHA384"
-+	select SHA384
-+
-+config DIGEST_SHA512_GENERIC
-+	bool "SHA512"
-+	select SHA512
-+
-+config DIGEST_HMAC_GENERIC
- 	bool "HMAC"
-+	select DIGEST_HMAC
- 
- endif
- 
-diff --git a/crypto/Makefile b/crypto/Makefile
-index 0bb67d5..f39de71 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -2,12 +2,12 @@ obj-$(CONFIG_CRC32)	+= crc32.o
- obj-$(CONFIG_CRC16)	+= crc16.o
- obj-$(CONFIG_CRC7)	+= crc7.o
- obj-$(CONFIG_DIGEST)	+= digest.o
--obj-$(CONFIG_DIGEST_HMAC)	+= hmac.o
--obj-$(CONFIG_MD5)	+= md5.o
--obj-$(CONFIG_SHA1)	+= sha1.o
--obj-$(CONFIG_SHA224)	+= sha2.o
--obj-$(CONFIG_SHA256)	+= sha2.o
--obj-$(CONFIG_SHA384)	+= sha4.o
--obj-$(CONFIG_SHA512)	+= sha4.o
-+obj-$(CONFIG_DIGEST_HMAC_GENERIC)	+= hmac.o
-+obj-$(CONFIG_DIGEST_MD5_GENERIC)	+= md5.o
-+obj-$(CONFIG_DIGEST_SHA1_GENERIC)	+= sha1.o
-+obj-$(CONFIG_DIGEST_SHA224_GENERIC)	+= sha2.o
-+obj-$(CONFIG_DIGEST_SHA256_GENERIC)	+= sha2.o
-+obj-$(CONFIG_DIGEST_SHA384_GENERIC)	+= sha4.o
-+obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
- 
- obj-$(CONFIG_CRYPTO_PBKDF2)	+= pbkdf2.o
-diff --git a/crypto/digest.c b/crypto/digest.c
-index 047131b..03dacab 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -25,8 +25,7 @@
- #include <errno.h>
- #include <module.h>
- #include <linux/err.h>
--
--#include "internal.h"
-+#include <crypto/internal.h>
- 
- static LIST_HEAD(digests);
- 
-@@ -78,7 +77,7 @@ int digest_generic_digest(struct digest *d, const void *data,
- 
- int digest_algo_register(struct digest_algo *d)
- {
--	if (!d || !d->name || !d->update || !d->final || !d->verify ||
-+	if (!d || !d->base.name || !d->update || !d->final || !d->verify ||
- 	    d->length < 1)
- 		return -EINVAL;
- 
-@@ -91,9 +90,6 @@ int digest_algo_register(struct digest_algo *d)
- 	if (!d->free)
- 		d->free = dummy_free;
- 
--	if (digest_algo_get_by_name(d->name))
--		return -EEXIST;
--
- 	list_add_tail(&d->list, &digests);
- 
- 	return 0;
-@@ -111,25 +107,36 @@ EXPORT_SYMBOL(digest_algo_unregister);
- 
- static struct digest_algo *digest_algo_get_by_name(const char *name)
- {
--	struct digest_algo *d;
-+	struct digest_algo *d = NULL;
-+	struct digest_algo *tmp;
-+	int priority = -1;
- 
- 	if (!name)
- 		return NULL;
- 
--	list_for_each_entry(d, &digests, list) {
--		if(strcmp(d->name, name) == 0)
--			return d;
-+	list_for_each_entry(tmp, &digests, list) {
-+		if (strcmp(tmp->base.name, name) != 0)
-+			continue;
-+		
-+		if (tmp->base.priority <= priority)
-+			continue;
-+
-+		d = tmp;
-+		priority = tmp->base.priority;
- 	}
- 
--	return NULL;
-+	return d;
- }
- 
- void digest_algo_prints(const char *prefix)
- {
- 	struct digest_algo* d;
- 
-+	printf("%s%-15s\t%-20s\t%-15s\n", prefix, "name", "driver", "priority");
-+	printf("%s--------------------------------------------------\n", prefix);
- 	list_for_each_entry(d, &digests, list) {
--		printf("%s%s\n", prefix, d->name);
-+		printf("%s%-15s\t%-20s\t%d\n", prefix, d->base.name,
-+			d->base.driver_name, d->base.priority);
- 	}
- }
- 
-diff --git a/crypto/hmac.c b/crypto/hmac.c
-index 4c6a703..77814a1 100644
---- a/crypto/hmac.c
-+++ b/crypto/hmac.c
-@@ -7,8 +7,7 @@
- #include <common.h>
- #include <digest.h>
- #include <malloc.h>
--
--#include "internal.h"
-+#include <crypto/internal.h>
- 
- struct digest_hmac {
- 	char *name;
-@@ -145,7 +144,10 @@ err:
- }
- 
- struct digest_algo hmac_algo = {
--	.flags = DIGEST_ALGO_NEED_KEY,
-+	.base = {
-+		.priority	= 0,
-+		.flags		= DIGEST_ALGO_NEED_KEY,
-+	},
- 	.alloc = digest_hmac_alloc,
- 	.init = digest_hmac_init,
- 	.update = digest_hmac_update,
-@@ -160,16 +162,20 @@ struct digest_algo hmac_algo = {
- int digest_hmac_register(struct digest_algo *algo, unsigned int pad_length)
- {
- 	struct digest_hmac *dh;
-+	char *name;
- 
- 	if (!algo || !pad_length)
- 		return -EINVAL;
- 
-+	name = algo->base.name;
- 	dh = xzalloc(sizeof(*dh));
--	dh->name = xstrdup(algo->name);
-+	dh->name = xstrdup(name);
- 	dh->pad_length = pad_length;
- 	dh->algo = hmac_algo;
- 	dh->algo.length = algo->length;
--	dh->algo.name = asprintf("hmac(%s)", algo->name);
-+	dh->algo.base.name = asprintf("hmac(%s)", name);
-+	dh->algo.base.driver_name = asprintf("hmac(%s)-generic", name);
-+	dh->algo.base.priority = algo->base.priority;
- 
- 	return digest_algo_register(&dh->algo);
- }
-diff --git a/crypto/md5.c b/crypto/md5.c
-index b7ad6f2..74c9b70 100644
---- a/crypto/md5.c
-+++ b/crypto/md5.c
-@@ -28,8 +28,7 @@
- #include <common.h>
- #include <digest.h>
- #include <init.h>
--
--#include "internal.h"
-+#include <crypto/internal.h>
- 
- struct MD5Context {
- 	__u32 buf[4];
-@@ -290,7 +289,11 @@ static int digest_md5_final(struct digest *d, unsigned char *md)
- }
- 
- static struct digest_algo md5 = {
--	.name = "md5",
-+	.base = {
-+		.name		= "md5",
-+		.driver_name	= "md5-generic",
-+		.priority	= 0,
-+	},
- 	.init = digest_md5_init,
- 	.update = digest_md5_update,
- 	.final = digest_md5_final,
-diff --git a/crypto/sha1.c b/crypto/sha1.c
-index b108f8a..a2ca191 100644
---- a/crypto/sha1.c
-+++ b/crypto/sha1.c
-@@ -26,7 +26,7 @@
- #include <linux/string.h>
- #include <asm/byteorder.h>
- 
--#include "internal.h"
-+#include <crypto/internal.h>
- 
- #define SHA1_SUM_POS	-0x20
- #define SHA1_SUM_LEN	20
-@@ -311,7 +311,12 @@ static int digest_sha1_final(struct digest *d, unsigned char *md)
- }
- 
- static struct digest_algo m = {
--	.name = "sha1",
-+	.base = {
-+		.name		=	"sha1",
-+		.driver_name	=	"sha1-generic",
-+		.priority	=	0,
-+	},
-+
- 	.init = digest_sha1_init,
- 	.update = digest_sha1_update,
- 	.final = digest_sha1_final,
 diff --git a/crypto/sha2.c b/crypto/sha2.c
-index 375a40e..42c40da 100644
+dissimilarity index 88%
+index 42c40da..8ee5620 100644
 --- a/crypto/sha2.c
 +++ b/crypto/sha2.c
-@@ -20,8 +20,7 @@
- #include <init.h>
- #include <linux/string.h>
- #include <asm/byteorder.h>
+@@ -1,367 +1,385 @@
+-/*
+- * FIPS-180-2 compliant SHA-256 implementation
+- *
+- * Copyright (C) 2001-2003  Christophe Devine
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
 -
--#include "internal.h"
+-#include <common.h>
+-#include <digest.h>
+-#include <init.h>
+-#include <linux/string.h>
+-#include <asm/byteorder.h>
+-#include <crypto/internal.h>
+-
+-#define SHA224_SUM_LEN	28
+-#define SHA256_SUM_LEN	32
+-
+-typedef struct {
+-	uint32_t total[2];
+-	uint32_t state[8];
+-	uint8_t buffer[64];
+-	int is224;
+-} sha2_context;
+-
+-/*
+- * 32-bit integer manipulation macros (big endian)
+- */
+-#define GET_UINT32_BE(n,b,i) (n) = be32_to_cpu(((uint32_t*)(b))[i / 4])
+-#define PUT_UINT32_BE(n,b,i) ((uint32_t*)(b))[i / 4] = cpu_to_be32(n)
+-
+-static void sha2_starts(sha2_context *ctx, int is224)
+-{
+-	ctx->total[0] = 0;
+-	ctx->total[1] = 0;
+-
+-#ifdef CONFIG_SHA256
+-	if (is224 == 0) {
+-		/* SHA-256 */
+-		ctx->state[0] = 0x6A09E667;
+-		ctx->state[1] = 0xBB67AE85;
+-		ctx->state[2] = 0x3C6EF372;
+-		ctx->state[3] = 0xA54FF53A;
+-		ctx->state[4] = 0x510E527F;
+-		ctx->state[5] = 0x9B05688C;
+-		ctx->state[6] = 0x1F83D9AB;
+-		ctx->state[7] = 0x5BE0CD19;
+-	}
+-#endif
+-#ifdef CONFIG_SHA224
+-	if (is224 == 1) {
+-		/* SHA-224 */
+-		ctx->state[0] = 0xC1059ED8;
+-		ctx->state[1] = 0x367CD507;
+-		ctx->state[2] = 0x3070DD17;
+-		ctx->state[3] = 0xF70E5939;
+-		ctx->state[4] = 0xFFC00B31;
+-		ctx->state[5] = 0x68581511;
+-		ctx->state[6] = 0x64F98FA7;
+-		ctx->state[7] = 0xBEFA4FA4;
+-	}
+-#endif
+-
+-	ctx->is224 = is224;
+-}
+-
+-static void sha2_process(sha2_context *ctx, const uint8_t data[64])
+-{
+-	uint32_t temp1, temp2;
+-	uint32_t W[64];
+-	uint32_t A, B, C, D, E, F, G, H;
+-
+-	GET_UINT32_BE(W[0], data, 0);
+-	GET_UINT32_BE(W[1], data, 4);
+-	GET_UINT32_BE(W[2], data, 8);
+-	GET_UINT32_BE(W[3], data, 12);
+-	GET_UINT32_BE(W[4], data, 16);
+-	GET_UINT32_BE(W[5], data, 20);
+-	GET_UINT32_BE(W[6], data, 24);
+-	GET_UINT32_BE(W[7], data, 28);
+-	GET_UINT32_BE(W[8], data, 32);
+-	GET_UINT32_BE(W[9], data, 36);
+-	GET_UINT32_BE(W[10], data, 40);
+-	GET_UINT32_BE(W[11], data, 44);
+-	GET_UINT32_BE(W[12], data, 48);
+-	GET_UINT32_BE(W[13], data, 52);
+-	GET_UINT32_BE(W[14], data, 56);
+-	GET_UINT32_BE(W[15], data, 60);
+-
+-#define SHR(x,n) ((x & 0xFFFFFFFF) >> n)
+-#define ROTR(x,n) (SHR(x,n) | (x << (32 - n)))
+-
+-#define S0(x) (ROTR(x, 7) ^ ROTR(x,18) ^ SHR(x, 3))
+-#define S1(x) (ROTR(x,17) ^ ROTR(x,19) ^ SHR(x,10))
+-
+-#define S2(x) (ROTR(x, 2) ^ ROTR(x,13) ^ ROTR(x,22))
+-#define S3(x) (ROTR(x, 6) ^ ROTR(x,11) ^ ROTR(x,25))
+-
+-#define F0(x,y,z) ((x & y) | (z & (x | y)))
+-#define F1(x,y,z) (z ^ (x & (y ^ z)))
+-
+-#define R(t)					\
+-(						\
+-	W[t] = S1(W[t - 2]) + W[t - 7] +	\
+-		S0(W[t - 15]) + W[t - 16]	\
+-)
+-
+-#define P(a,b,c,d,e,f,g,h,x,K) {		\
+-	temp1 = h + S3(e) + F1(e,f,g) + K + x;	\
+-	temp2 = S2(a) + F0(a,b,c);		\
+-	d += temp1; h = temp1 + temp2;		\
+-}
+-
+-	A = ctx->state[0];
+-	B = ctx->state[1];
+-	C = ctx->state[2];
+-	D = ctx->state[3];
+-	E = ctx->state[4];
+-	F = ctx->state[5];
+-	G = ctx->state[6];
+-	H = ctx->state[7];
+-
+-	P(A, B, C, D, E, F, G, H, W[0], 0x428A2F98);
+-	P(H, A, B, C, D, E, F, G, W[1], 0x71374491);
+-	P(G, H, A, B, C, D, E, F, W[2], 0xB5C0FBCF);
+-	P(F, G, H, A, B, C, D, E, W[3], 0xE9B5DBA5);
+-	P(E, F, G, H, A, B, C, D, W[4], 0x3956C25B);
+-	P(D, E, F, G, H, A, B, C, W[5], 0x59F111F1);
+-	P(C, D, E, F, G, H, A, B, W[6], 0x923F82A4);
+-	P(B, C, D, E, F, G, H, A, W[7], 0xAB1C5ED5);
+-	P(A, B, C, D, E, F, G, H, W[8], 0xD807AA98);
+-	P(H, A, B, C, D, E, F, G, W[9], 0x12835B01);
+-	P(G, H, A, B, C, D, E, F, W[10], 0x243185BE);
+-	P(F, G, H, A, B, C, D, E, W[11], 0x550C7DC3);
+-	P(E, F, G, H, A, B, C, D, W[12], 0x72BE5D74);
+-	P(D, E, F, G, H, A, B, C, W[13], 0x80DEB1FE);
+-	P(C, D, E, F, G, H, A, B, W[14], 0x9BDC06A7);
+-	P(B, C, D, E, F, G, H, A, W[15], 0xC19BF174);
+-	P(A, B, C, D, E, F, G, H, R(16), 0xE49B69C1);
+-	P(H, A, B, C, D, E, F, G, R(17), 0xEFBE4786);
+-	P(G, H, A, B, C, D, E, F, R(18), 0x0FC19DC6);
+-	P(F, G, H, A, B, C, D, E, R(19), 0x240CA1CC);
+-	P(E, F, G, H, A, B, C, D, R(20), 0x2DE92C6F);
+-	P(D, E, F, G, H, A, B, C, R(21), 0x4A7484AA);
+-	P(C, D, E, F, G, H, A, B, R(22), 0x5CB0A9DC);
+-	P(B, C, D, E, F, G, H, A, R(23), 0x76F988DA);
+-	P(A, B, C, D, E, F, G, H, R(24), 0x983E5152);
+-	P(H, A, B, C, D, E, F, G, R(25), 0xA831C66D);
+-	P(G, H, A, B, C, D, E, F, R(26), 0xB00327C8);
+-	P(F, G, H, A, B, C, D, E, R(27), 0xBF597FC7);
+-	P(E, F, G, H, A, B, C, D, R(28), 0xC6E00BF3);
+-	P(D, E, F, G, H, A, B, C, R(29), 0xD5A79147);
+-	P(C, D, E, F, G, H, A, B, R(30), 0x06CA6351);
+-	P(B, C, D, E, F, G, H, A, R(31), 0x14292967);
+-	P(A, B, C, D, E, F, G, H, R(32), 0x27B70A85);
+-	P(H, A, B, C, D, E, F, G, R(33), 0x2E1B2138);
+-	P(G, H, A, B, C, D, E, F, R(34), 0x4D2C6DFC);
+-	P(F, G, H, A, B, C, D, E, R(35), 0x53380D13);
+-	P(E, F, G, H, A, B, C, D, R(36), 0x650A7354);
+-	P(D, E, F, G, H, A, B, C, R(37), 0x766A0ABB);
+-	P(C, D, E, F, G, H, A, B, R(38), 0x81C2C92E);
+-	P(B, C, D, E, F, G, H, A, R(39), 0x92722C85);
+-	P(A, B, C, D, E, F, G, H, R(40), 0xA2BFE8A1);
+-	P(H, A, B, C, D, E, F, G, R(41), 0xA81A664B);
+-	P(G, H, A, B, C, D, E, F, R(42), 0xC24B8B70);
+-	P(F, G, H, A, B, C, D, E, R(43), 0xC76C51A3);
+-	P(E, F, G, H, A, B, C, D, R(44), 0xD192E819);
+-	P(D, E, F, G, H, A, B, C, R(45), 0xD6990624);
+-	P(C, D, E, F, G, H, A, B, R(46), 0xF40E3585);
+-	P(B, C, D, E, F, G, H, A, R(47), 0x106AA070);
+-	P(A, B, C, D, E, F, G, H, R(48), 0x19A4C116);
+-	P(H, A, B, C, D, E, F, G, R(49), 0x1E376C08);
+-	P(G, H, A, B, C, D, E, F, R(50), 0x2748774C);
+-	P(F, G, H, A, B, C, D, E, R(51), 0x34B0BCB5);
+-	P(E, F, G, H, A, B, C, D, R(52), 0x391C0CB3);
+-	P(D, E, F, G, H, A, B, C, R(53), 0x4ED8AA4A);
+-	P(C, D, E, F, G, H, A, B, R(54), 0x5B9CCA4F);
+-	P(B, C, D, E, F, G, H, A, R(55), 0x682E6FF3);
+-	P(A, B, C, D, E, F, G, H, R(56), 0x748F82EE);
+-	P(H, A, B, C, D, E, F, G, R(57), 0x78A5636F);
+-	P(G, H, A, B, C, D, E, F, R(58), 0x84C87814);
+-	P(F, G, H, A, B, C, D, E, R(59), 0x8CC70208);
+-	P(E, F, G, H, A, B, C, D, R(60), 0x90BEFFFA);
+-	P(D, E, F, G, H, A, B, C, R(61), 0xA4506CEB);
+-	P(C, D, E, F, G, H, A, B, R(62), 0xBEF9A3F7);
+-	P(B, C, D, E, F, G, H, A, R(63), 0xC67178F2);
+-
+-	ctx->state[0] += A;
+-	ctx->state[1] += B;
+-	ctx->state[2] += C;
+-	ctx->state[3] += D;
+-	ctx->state[4] += E;
+-	ctx->state[5] += F;
+-	ctx->state[6] += G;
+-	ctx->state[7] += H;
+-}
+-
+-static void sha2_update(sha2_context *ctx, const uint8_t *input, size_t length)
+-{
+-	size_t fill;
+-	uint32_t left;
+-
+-	if (length == 0)
+-		return;
+-
+-	left = ctx->total[0] & 0x3F;
+-	fill = 64 - left;
+-
+-	ctx->total[0] += (uint32_t)length;
+-	ctx->total[0] &= 0xFFFFFFFF;
+-
+-	if (ctx->total[0] < (uint32_t)length)
+-		ctx->total[1]++;
+-
+-	if (left && length >= fill) {
+-		memcpy((void *) (ctx->buffer + left), (void *) input, fill);
+-		sha2_process(ctx, ctx->buffer);
+-		length -= fill;
+-		input += fill;
+-		left = 0;
+-	}
+-
+-	while (length >= 64) {
+-		sha2_process(ctx, input);
+-		length -= 64;
+-		input += 64;
+-	}
+-
+-	if (length)
+-		memcpy((void *) (ctx->buffer + left), (void *) input, length);
+-}
+-
+-static const uint8_t sha2_padding[64] = {
+-	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+-	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+-	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+-	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+-};
+-
+-static void sha2_finish(sha2_context *ctx, uint8_t digest[32])
+-{
+-	uint32_t last, padn;
+-	uint32_t high, low;
+-	uint8_t msglen[8];
+-
+-	high = ((ctx->total[0] >> 29)
+-		| (ctx->total[1] << 3));
+-	low = (ctx->total[0] << 3);
+-
+-	PUT_UINT32_BE(high, msglen, 0);
+-	PUT_UINT32_BE(low, msglen, 4);
+-
+-	last = ctx->total[0] & 0x3F;
+-	padn = (last < 56) ? (56 - last) : (120 - last);
+-
+-	sha2_update(ctx, sha2_padding, padn);
+-	sha2_update(ctx, msglen, 8);
+-
+-	PUT_UINT32_BE(ctx->state[0], digest, 0);
+-	PUT_UINT32_BE(ctx->state[1], digest, 4);
+-	PUT_UINT32_BE(ctx->state[2], digest, 8);
+-	PUT_UINT32_BE(ctx->state[3], digest, 12);
+-	PUT_UINT32_BE(ctx->state[4], digest, 16);
+-	PUT_UINT32_BE(ctx->state[5], digest, 20);
+-	PUT_UINT32_BE(ctx->state[6], digest, 24);
+-	if (!ctx->is224)
+-		PUT_UINT32_BE(ctx->state[7], digest, 28);
+-}
+-
+-static int digest_sha2_update(struct digest *d, const void *data,
+-				unsigned long len)
+-{
+-	sha2_update(d->ctx, (uint8_t *)data, len);
+-
+-	return 0;
+-}
+-
+-static int digest_sha2_final(struct digest *d, unsigned char *md)
+-{
+-	sha2_finish(d->ctx, md);
+-
+-	return 0;
+-}
+-
+-static int digest_sha224_init(struct digest *d)
+-{
+-	sha2_starts(d->ctx, 1);
+-
+-	return 0;
+-}
+-
+-static struct digest_algo m224 = {
+-	.base = {
+-		.name		=	"sha224",
+-		.driver_name	=	"sha224-generic",
+-		.priority	=	0,
+-	},
+-
+-	.init = digest_sha224_init,
+-	.update = digest_sha2_update,
+-	.final = digest_sha2_final,
+-	.verify = digest_generic_verify,
+-	.length = SHA224_SUM_LEN,
+-	.ctx_length = sizeof(sha2_context),
+-};
+-
+-static int sha224_digest_register(void)
+-{
+-	int ret;
+-
+-	if (!IS_ENABLED(CONFIG_SHA224))
+-		return 0;
+-
+-	ret = digest_algo_register(&m224);
+-	if (ret)
+-		return ret;
+-
+-	return digest_hmac_register(&m224, 64);
+-}
+-device_initcall(sha224_digest_register);
+-
+-static int digest_sha256_init(struct digest *d)
+-{
+-	sha2_starts(d->ctx, 0);
+-
+-	return 0;
+-}
+-
+-static struct digest_algo m256 = {
+-	.base = {
+-		.name		=	"sha256",
+-		.driver_name	=	"sha256-generic",
+-		.priority	=	0,
+-	},
+-
+-	.init = digest_sha256_init,
+-	.update = digest_sha2_update,
+-	.final = digest_sha2_final,
+-	.digest = digest_generic_digest,
+-	.verify = digest_generic_verify,
+-	.length = SHA256_SUM_LEN,
+-	.ctx_length = sizeof(sha2_context),
+-};
+-
+-static int sha256_digest_register(void)
+-{
+-	int ret;
+-
+-	if (!IS_ENABLED(CONFIG_SHA256))
+-		return 0;
+-
+-	ret = digest_algo_register(&m256);
+-	if (ret)
+-		return ret;
+-
+-	return digest_hmac_register(&m256, 64);
+-}
+-device_initcall(sha256_digest_register);
++/*
++ * Cryptographic API.
++ *
++ * SHA-256, as specified in
++ * http://csrc.nist.gov/groups/STM/cavp/documents/shs/sha256-384-512.pdf
++ *
++ * SHA-256 code by Jean-Luc Cooke <jlcooke@certainkey.com>.
++ *
++ * Copyright (c) Jean-Luc Cooke <jlcooke@certainkey.com>
++ * Copyright (c) Andrew McDonald <andrew@mcdonald.org.uk>
++ * Copyright (c) 2002 James Morris <jmorris@intercode.com.au>
++ * SHA224 Support Copyright 2007 Intel Corporation <jonathan.lynch@intel.com>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the Free
++ * Software Foundation; either version 2 of the License, or (at your option) 
++ * any later version.
++ *
++ */
++
++#include <common.h>
++#include <digest.h>
++#include <init.h>
++#include <linux/string.h>
++#include <asm/unaligned.h>
++#include <asm/byteorder.h>
++
++#include <crypto/sha.h>
 +#include <crypto/internal.h>
- 
- #define SHA224_SUM_LEN	28
- #define SHA256_SUM_LEN	32
-@@ -300,7 +299,12 @@ static int digest_sha224_init(struct digest *d)
- }
- 
- static struct digest_algo m224 = {
--	.name = "sha224",
++
++static inline u32 Ch(u32 x, u32 y, u32 z)
++{
++	return z ^ (x & (y ^ z));
++}
++
++static inline u32 Maj(u32 x, u32 y, u32 z)
++{
++	return (x & y) | (z & (x | y));
++}
++
++#define e0(x)       (ror32(x, 2) ^ ror32(x,13) ^ ror32(x,22))
++#define e1(x)       (ror32(x, 6) ^ ror32(x,11) ^ ror32(x,25))
++#define s0(x)       (ror32(x, 7) ^ ror32(x,18) ^ (x >> 3))
++#define s1(x)       (ror32(x,17) ^ ror32(x,19) ^ (x >> 10))
++
++static inline void LOAD_OP(int I, u32 *W, const u8 *input)
++{
++	W[I] = get_unaligned_be32((__u32 *)input + I);
++}
++
++static inline void BLEND_OP(int I, u32 *W)
++{
++	W[I] = s1(W[I-2]) + W[I-7] + s0(W[I-15]) + W[I-16];
++}
++
++static void sha256_transform(u32 *state, const u8 *input)
++{
++	u32 a, b, c, d, e, f, g, h, t1, t2;
++	u32 W[64];
++	int i;
++
++	/* load the input */
++	for (i = 0; i < 16; i++)
++		LOAD_OP(i, W, input);
++
++	/* now blend */
++	for (i = 16; i < 64; i++)
++		BLEND_OP(i, W);
++
++	/* load the state into our registers */
++	a=state[0];  b=state[1];  c=state[2];  d=state[3];
++	e=state[4];  f=state[5];  g=state[6];  h=state[7];
++
++	/* now iterate */
++	t1 = h + e1(e) + Ch(e,f,g) + 0x428a2f98 + W[ 0];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x71374491 + W[ 1];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0xb5c0fbcf + W[ 2];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0xe9b5dba5 + W[ 3];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x3956c25b + W[ 4];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x59f111f1 + W[ 5];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x923f82a4 + W[ 6];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0xab1c5ed5 + W[ 7];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0xd807aa98 + W[ 8];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x12835b01 + W[ 9];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x243185be + W[10];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x550c7dc3 + W[11];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x72be5d74 + W[12];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x80deb1fe + W[13];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x9bdc06a7 + W[14];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0xc19bf174 + W[15];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0xe49b69c1 + W[16];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0xefbe4786 + W[17];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x0fc19dc6 + W[18];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x240ca1cc + W[19];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x2de92c6f + W[20];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x4a7484aa + W[21];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x5cb0a9dc + W[22];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x76f988da + W[23];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x983e5152 + W[24];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0xa831c66d + W[25];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0xb00327c8 + W[26];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0xbf597fc7 + W[27];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0xc6e00bf3 + W[28];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0xd5a79147 + W[29];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x06ca6351 + W[30];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x14292967 + W[31];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x27b70a85 + W[32];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x2e1b2138 + W[33];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x4d2c6dfc + W[34];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x53380d13 + W[35];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x650a7354 + W[36];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x766a0abb + W[37];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x81c2c92e + W[38];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x92722c85 + W[39];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0xa2bfe8a1 + W[40];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0xa81a664b + W[41];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0xc24b8b70 + W[42];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0xc76c51a3 + W[43];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0xd192e819 + W[44];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0xd6990624 + W[45];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0xf40e3585 + W[46];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x106aa070 + W[47];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x19a4c116 + W[48];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x1e376c08 + W[49];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x2748774c + W[50];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x34b0bcb5 + W[51];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x391c0cb3 + W[52];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x4ed8aa4a + W[53];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x5b9cca4f + W[54];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x682e6ff3 + W[55];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x748f82ee + W[56];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x78a5636f + W[57];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x84c87814 + W[58];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x8cc70208 + W[59];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x90befffa + W[60];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0xa4506ceb + W[61];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0xbef9a3f7 + W[62];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0xc67178f2 + W[63];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	state[0] += a; state[1] += b; state[2] += c; state[3] += d;
++	state[4] += e; state[5] += f; state[6] += g; state[7] += h;
++
++	/* clear any sensitive info... */
++	a = b = c = d = e = f = g = h = t1 = t2 = 0;
++	memset(W, 0, 64 * sizeof(u32));
++}
++
++static int sha224_init(struct digest *desc)
++{
++	struct sha256_state *sctx = digest_ctx(desc);
++	sctx->state[0] = SHA224_H0;
++	sctx->state[1] = SHA224_H1;
++	sctx->state[2] = SHA224_H2;
++	sctx->state[3] = SHA224_H3;
++	sctx->state[4] = SHA224_H4;
++	sctx->state[5] = SHA224_H5;
++	sctx->state[6] = SHA224_H6;
++	sctx->state[7] = SHA224_H7;
++	sctx->count = 0;
++
++	return 0;
++}
++
++static int sha256_init(struct digest *desc)
++{
++	struct sha256_state *sctx = digest_ctx(desc);
++	sctx->state[0] = SHA256_H0;
++	sctx->state[1] = SHA256_H1;
++	sctx->state[2] = SHA256_H2;
++	sctx->state[3] = SHA256_H3;
++	sctx->state[4] = SHA256_H4;
++	sctx->state[5] = SHA256_H5;
++	sctx->state[6] = SHA256_H6;
++	sctx->state[7] = SHA256_H7;
++	sctx->count = 0;
++
++	return 0;
++}
++
++static int sha256_update(struct digest *desc, const void *data,
++				unsigned long len)
++{
++	struct sha256_state *sctx = digest_ctx(desc);
++	unsigned int partial, done;
++	const u8 *src;
++
++	partial = sctx->count & 0x3f;
++	sctx->count += len;
++	done = 0;
++	src = data;
++
++	if ((partial + len) > 63) {
++		if (partial) {
++			done = -partial;
++			memcpy(sctx->buf + partial, data, done + 64);
++			src = sctx->buf;
++		}
++
++		do {
++			sha256_transform(sctx->state, src);
++			done += 64;
++			src = data + done;
++		} while (done + 63 < len);
++
++		partial = 0;
++	}
++	memcpy(sctx->buf + partial, src, len - done);
++
++	return 0;
++}
++
++static int sha256_final(struct digest *desc, u8 *out)
++{
++	struct sha256_state *sctx = digest_ctx(desc);
++	__be32 *dst = (__be32 *)out;
++	__be64 bits;
++	unsigned int index, pad_len;
++	int i;
++	static const u8 padding[64] = { 0x80, };
++
++	/* Save number of bits */
++	bits = cpu_to_be64(sctx->count << 3);
++
++	/* Pad out to 56 mod 64. */
++	index = sctx->count & 0x3f;
++	pad_len = (index < 56) ? (56 - index) : ((64+56) - index);
++	sha256_update(desc, padding, pad_len);
++
++	/* Append length (before padding) */
++	sha256_update(desc, (const u8 *)&bits, sizeof(bits));
++
++	/* Store state in digest */
++	for (i = 0; i < 8; i++)
++		dst[i] = cpu_to_be32(sctx->state[i]);
++
++	/* Zeroize sensitive information. */
++	memset(sctx, 0, sizeof(*sctx));
++
++	return 0;
++}
++
++static int sha224_final(struct digest *desc, u8 *hash)
++{
++	u8 D[SHA256_DIGEST_SIZE];
++
++	sha256_final(desc, D);
++
++	memcpy(hash, D, SHA224_DIGEST_SIZE);
++	memset(D, 0, SHA256_DIGEST_SIZE);
++
++	return 0;
++}
++
++static struct digest_algo m224 = {
 +	.base = {
 +		.name		=	"sha224",
 +		.driver_name	=	"sha224-generic",
 +		.priority	=	0,
 +	},
 +
- 	.init = digest_sha224_init,
- 	.update = digest_sha2_update,
- 	.final = digest_sha2_final,
-@@ -332,7 +336,12 @@ static int digest_sha256_init(struct digest *d)
- }
- 
- static struct digest_algo m256 = {
--	.name = "sha256",
++	.init		= sha224_init,
++	.update		= sha256_update,
++	.final		= sha224_final,
++	.digest		= digest_generic_digest,
++	.verify 	= digest_generic_verify,
++	.length 	= SHA224_DIGEST_SIZE,
++	.ctx_length	= sizeof(struct sha256_state),
++};
++
++static int sha224_digest_register(void)
++{
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_SHA224))
++		return 0;
++
++	ret = digest_algo_register(&m224);
++	if (ret)
++		return ret;
++
++	return digest_hmac_register(&m224, 64);
++}
++device_initcall(sha224_digest_register);
++
++static struct digest_algo m256 = {
 +	.base = {
 +		.name		=	"sha256",
 +		.driver_name	=	"sha256-generic",
 +		.priority	=	0,
 +	},
 +
- 	.init = digest_sha256_init,
- 	.update = digest_sha2_update,
- 	.final = digest_sha2_final,
-diff --git a/crypto/sha4.c b/crypto/sha4.c
-index 1b91e7f..cb62d1d 100644
---- a/crypto/sha4.c
-+++ b/crypto/sha4.c
-@@ -28,8 +28,7 @@
- #include <init.h>
- #include <linux/string.h>
- #include <asm/byteorder.h>
--
--#include "internal.h"
-+#include <crypto/internal.h>
- 
- #define SHA384_SUM_LEN	48
- #define SHA512_SUM_LEN	64
-@@ -305,7 +304,12 @@ static int digest_sha384_init(struct digest *d)
- }
- 
- static struct digest_algo m384 = {
--	.name = "sha384",
-+	.base = {
-+		.name		=	"sha384",
-+		.driver_name	=	"sha384-generic",
-+		.priority	=	0,
-+	},
-+
- 	.init = digest_sha384_init,
- 	.update = digest_sha4_update,
- 	.final = digest_sha4_final,
-@@ -338,7 +342,12 @@ static int digest_sha512_init(struct digest *d)
- }
- 
- static struct digest_algo m512 = {
--	.name = "sha512",
-+	.base = {
-+		.name		=	"sha512",
-+		.driver_name	=	"sha512-generic",
-+		.priority	=	0,
-+	},
-+
- 	.init = digest_sha512_init,
- 	.update = digest_sha4_update,
- 	.final = digest_sha4_final,
-diff --git a/crypto/internal.h b/include/crypto/internal.h
-similarity index 100%
-rename from crypto/internal.h
-rename to include/crypto/internal.h
-diff --git a/include/digest.h b/include/digest.h
-index 85c4da3..c1221fc 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -23,10 +23,16 @@
- 
- struct digest;
- 
--struct digest_algo {
-+struct crypto_alg {
- 	char *name;
-+	char *driver_name;
-+	int priority;
- #define DIGEST_ALGO_NEED_KEY	(1 << 0)
- 	unsigned int flags;
++	.init		= sha256_init,
++	.update		= sha256_update,
++	.final		= sha256_final,
++	.digest		= digest_generic_digest,
++	.verify		= digest_generic_verify,
++	.length		= SHA256_DIGEST_SIZE,
++	.ctx_length	= sizeof(struct sha256_state),
 +};
 +
-+struct digest_algo {
-+	struct crypto_alg base;
- 
- 	int (*alloc)(struct digest *d);
- 	void (*free)(struct digest *d);
-@@ -112,12 +118,12 @@ static inline int digest_set_key(struct digest *d, const unsigned char *key,
- 
- static inline int digest_is_flags(struct digest *d, unsigned int flags)
- {
--	return d->algo->flags & flags;
-+	return d->algo->base.flags & flags;
- }
- 
- static inline const char *digest_name(struct digest *d)
- {
--	return d->algo->name;
-+	return d->algo->base.name;
- }
- 
- #endif /* __SH_ST_DEVICES_H__ */
++static int sha256_digest_register(void)
++{
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_SHA256))
++		return 0;
++
++	ret = digest_algo_register(&m256);
++	if (ret)
++		return ret;
++
++	return digest_hmac_register(&m256, 64);
++}
++device_initcall(sha256_digest_register);
 -- 
 2.1.4
 
