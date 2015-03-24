@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ya49w-0008D7-Pz
- for barebox@lists.infradead.org; Mon, 23 Mar 2015 15:20:58 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 32198A00288
- for <barebox@lists.infradead.org>; Mon, 23 Mar 2015 16:21:30 +0100 (CET)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Mon, 23 Mar 2015 16:17:32 +0100
-Message-Id: <1427123853-26983-1-git-send-email-t.gamez@phytec.de>
+Received: from [2001:6f8:1178:4:290:27ff:fe1d:cc33]
+ (helo=metis.ext.pengutronix.de)
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YaIBd-0003ZB-DV
+ for barebox@lists.infradead.org; Tue, 24 Mar 2015 06:19:38 +0000
+Date: Tue, 24 Mar 2015 07:19:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150324061915.GQ9742@pengutronix.de>
+References: <1427049507-15396-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1427049507-15396-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +19,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] AM335x: MLO image issue
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] toshiba_ac100: board.c: drop unused headers
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgp3ZSBoYXZlIGVuY291bnRlcmVkIGFuIGlzc3VlIGluIHRoZSBBTTMzNXggTUxPLCB3
-aGljaCBzZWVtcyB0byBkZXBlbmQgb24gdGhlIAppbWFnZSBzaXplIGl0c2VsZi4gVGhlIGJvb3Rs
-b2FkZXIgaGFuZ3MgdXAgaW4gdGhlIGRlY29tcHJlc3NfdW5sem8oKSBmdW5jdGlvbi4KVGhlIGRl
-Y29tcHJlc3NfdW5sem8oKSBmdW5jdGlvbiBmYWlscyB3aXRoICJkZXN0IGxlbiBsb25nZXIgdGhh
-biBibG9jayBzaXplIgphbmQgZW5kcyB1cCBpbiBpdCdzIGVycm9yIGZ1bmN0aW9uIGluIGFuIGlu
-ZmluaXRlIGxvb3AuCgpBcyB0aGUgZXJyb3Igc2VlbXMgdG8gZGVwZW5kIGluIHRoZSBpbWFnZSBz
-aXplLCBhZGRpbmcgb3IgcmVtb3ZpbmcgcmFuZG9tIGNvZGUKbWFrZXMgdGhlIGltYWdlIHdvcmtp
-bmcgYWdhaW4uCgpXZSBoYXZlIHNlZW4gdGhpcyBpc3N1ZSBzbyBmYXIgb25seSB3aXRoIGEgTUxP
-IHNpemUgb2YgOTg4MjMgYnl0ZXMgYW5kCmJhcmVib3gueiBzaXplOiA2MTAwMyBieXRlcy4gQnV0
-IGNvdWxkIHJlcHJvZHVjZSBpdCB1c2luZyBkaWZmZXJlbnQgdG9vbGNoYWlucy4KClNvIHdlIHN1
-c3BlY3QgdGhpcyBpcyBhbiBpc3N1ZSBpbiB0aGUgbHpvIGNvZGUuIApTeW5jaW5nIHRoZSBsem8g
-Y29kZSB3aXRoIHRoZSBrZXJuZWwgY29kZSwgc2VlbXMgdG8gaGVscC4KRm9yIHRoaXMgd2UgaGF2
-ZSBhdHRhY2hlZCBhIHBhdGNoLgpCdXQgd2UgYXJlIHVuc3VyZSBpZiB0aGlzIGlzIHRoZSBzb2x1
-dGlvbiB0byB0aGUgYnVnIHdlIGhhdmUuCgpBbnkgaWRlYXMgb24gdGhpcz8KClJlZ2FyZHMsClRl
-cmVzYQoKU3RlZmFuIE3DvGxsZXItS2xpZXNlciAoMSk6CiAgbGliL2x6bzogcG9ydCBsem8gZml4
-IGZyb20gdXBzdHJlYW0ga2VybmVsCgogbGliL2x6by9sem8xeF9kZWNvbXByZXNzX3NhZmUuYyB8
-IDEwNSArKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hh
-bmdlZCwgNTggaW5zZXJ0aW9ucygrKSwgNDcgZGVsZXRpb25zKC0pCgotLSAKMS45LjEKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Sun, Mar 22, 2015 at 09:38:27PM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/arm/boards/toshiba-ac100/board.c | 4 ----
+>  1 file changed, 4 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
