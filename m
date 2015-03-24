@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YaIMJ-0000aJ-NR
- for barebox@lists.infradead.org; Tue, 24 Mar 2015 06:30:41 +0000
-Date: Tue, 24 Mar 2015 07:30:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150324063015.GR9742@pengutronix.de>
-References: <1427123853-26983-1-git-send-email-t.gamez@phytec.de>
+Received: from mail-we0-x22d.google.com ([2a00:1450:400c:c03::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YaKB5-0002jX-1B
+ for barebox@lists.infradead.org; Tue, 24 Mar 2015 08:27:12 +0000
+Received: by weop45 with SMTP id p45so157165283weo.0
+ for <barebox@lists.infradead.org>; Tue, 24 Mar 2015 01:26:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1427123853-26983-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1427123853-26983-2-git-send-email-t.gamez@phytec.de>
+References: <1427123853-26983-1-git-send-email-t.gamez@phytec.de>
+ <1427123853-26983-2-git-send-email-t.gamez@phytec.de>
+Date: Tue, 24 Mar 2015 09:26:46 +0100
+Message-ID: <CAOpc7mE+LEy6ymHURmvq=Q8zLusdOoVDcSSEzbb2LrgEYNupBw@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] AM335x: MLO image issue
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] lib/lzo: port lzo fix from upstream kernel
+To: =?ISO-8859-1?Q?Teresa_G=E1mez?= <t.gamez@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Mar 23, 2015 at 04:17:32PM +0100, Teresa G=E1mez wrote:
-> Hello,
-> =
+Teresa,
 
-> we have encountered an issue in the AM335x MLO, which seems to depend on =
-the =
+your commit text doesn't seem to be accurate:
 
-> image size itself. The bootloader hangs up in the decompress_unlzo() func=
-tion.
-> The decompress_unlzo() function fails with "dest len longer than block si=
-ze"
-> and ends up in it's error function in an infinite loop.
-> =
 
-> As the error seems to depend in the image size, adding or removing random=
- code
-> makes the image working again.
-> =
+> This ports commit 72cf90124e87d975d0b from mainline kernel to the
 
-> We have seen this issue so far only with a MLO size of 98823 bytes and
-> barebox.z size: 61003 bytes. But could reproduce it using different toolc=
-hains.
-> =
+... and ...
 
-> So we suspect this is an issue in the lzo code. =
+> -#define HAVE_IP(t, x)                                  \
+> -       (((size_t)(ip_end - ip) >= (size_t)(t + x)) &&  \
+> -        (((t + x) >= t) && ((t + x) >= x)))
 
-> Syncing the lzo code with the kernel code, seems to help.
-> For this we have attached a patch.
-> But we are unsure if this is the solution to the bug we have.
-> =
+... doesn't match. Because the removal of HAVE_IP isn't in the patch
+you mentioned, it's in af958a38a60c7ca3d8a39c918c1baa2ff7b6b233
 
-> Any ideas on this?
-
-I have no idea how lzo works. I could apply the patch though, as it only
-contains an update to the latest kernel code. Of course it would feel
-better if we knew what we are doing.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I guess you combined those two kernel patches?
 
 _______________________________________________
 barebox mailing list
