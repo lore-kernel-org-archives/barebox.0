@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YaLjv-0004kk-C6
- for barebox@lists.infradead.org; Tue, 24 Mar 2015 10:07:17 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id ECD9AA003E6
- for <barebox@lists.infradead.org>; Tue, 24 Mar 2015 11:07:51 +0100 (CET)
-From: =?UTF-8?q?Stefan=20M=C3=BCller-Klieser?= <s.mueller-klieser@phytec.de>
-Date: Tue, 24 Mar 2015 11:03:53 +0100
-Message-Id: <1427191433-48345-3-git-send-email-s.mueller-klieser@phytec.de>
-In-Reply-To: <1427191433-48345-1-git-send-email-s.mueller-klieser@phytec.de>
-References: <1427191433-48345-1-git-send-email-s.mueller-klieser@phytec.de>
+Received: from 10.mo69.mail-out.ovh.net ([46.105.73.241])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YaOSL-0005F9-NW
+ for barebox@lists.infradead.org; Tue, 24 Mar 2015 13:01:21 +0000
+Received: from mail182.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo69.mail-out.ovh.net (Postfix) with SMTP id 59BC41004151
+ for <barebox@lists.infradead.org>; Tue, 24 Mar 2015 14:00:53 +0100 (CET)
+Date: Tue, 24 Mar 2015 14:00:35 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20150324130035.GB8125@ns203013.ovh.net>
 MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,88 +19,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] lzo: check for length overrun in variable length
- encoding.
+Subject: [PATCH 0/7 v2] digest: allow multiple implementation of digest
 To: barebox@lists.infradead.org
 
-VGhpcyBjb3JyZXNwb25kcyB0byBrZXJuZWwgY29tbWl0IDcyY2Y5MDEyNGU4N2Q5NzVkMGIKClRo
-aXMgZml4IGVuc3VyZXMgdGhhdCB3ZSBuZXZlciBtZWV0IGFuIGludGVnZXIgb3ZlcmZsb3cgd2hp
-bGUgYWRkaW5nCjI1NSB3aGlsZSBwYXJzaW5nIGEgdmFyaWFibGUgbGVuZ3RoIGVuY29kaW5nLiBJ
-dCB3b3JrcyBkaWZmZXJlbnRseSBmcm9tCmNvbW1pdCAyMDZhODFjICgibHpvOiBwcm9wZXJseSBj
-aGVjayBmb3Igb3ZlcnJ1bnMiKSBiZWNhdXNlIGluc3RlYWQgb2YKZW5zdXJpbmcgdGhhdCB3ZSBk
-b24ndCBvdmVycnVuIHRoZSBpbnB1dCwgd2hpY2ggaXMgdHJpY2t5IHRvIGd1YXJhbnRlZQpkdWUg
-dG8gbWFueSBhc3N1bXB0aW9ucyBpbiB0aGUgY29kZSwgaXQgc2ltcGx5IGNoZWNrcyB0aGF0IHRo
-ZSBjdW11bGF0ZWQKbnVtYmVyIG9mIDI1NSByZWFkIGNhbm5vdCBvdmVyZmxvdyBieSBib3VuZGlu
-ZyB0aGlzIG51bWJlci4KClRoZSBNQVhfMjU1X0NPVU5UIGlzIHRoZSBtYXhpbXVtIG51bWJlciBv
-ZiB0aW1lcyB3ZSBjYW4gYWRkIDI1NSB0byBhIGJhc2UKY291bnQgd2l0aG91dCBvdmVyZmxvd2lu
-ZyBhbiBpbnRlZ2VyLiBUaGUgbXVsdGlwbHkgd2lsbCBvdmVyZmxvdyB3aGVuCm11bHRpcGx5aW5n
-IDI1NSBieSBtb3JlIHRoYW4gTUFYSU5ULzI1NS4gVGhlIHN1bSB3aWxsIG92ZXJmbG93IGVhcmxp
-ZXIKZGVwZW5kaW5nIG9uIHRoZSBiYXNlIGNvdW50LiBTaW5jZSB0aGUgYmFzZSBjb3VudCBpcyB0
-YWtlbiBmcm9tIGEgdTgKYW5kIGEgZmV3IGJpdHMsIGl0IGlzIHNhZmUgdG8gYXNzdW1lIHRoYXQg
-aXQgd2lsbCBhbHdheXMgYmUgbG93ZXIgdGhhbgpvciBlcXVhbCB0byAyKjI1NSwgdGh1cyB3ZSBj
-YW4gYWx3YXlzIHByZXZlbnQgYW55IG92ZXJmbG93IGJ5IGFjY2VwdGluZwp0d28gbGVzcyAyNTUg
-c3RlcHMuCgpUaGlzIHBhdGNoIGFsc28gcmVkdWNlcyB0aGUgQ1BVIG92ZXJoZWFkIGFuZCBhY3R1
-YWxseSBpbmNyZWFzZXMgcGVyZm9ybWFuY2UKYnkgMS4xJSBjb21wYXJlZCB0byB0aGUgaW5pdGlh
-bCBjb2RlLCB3aGlsZSB0aGUgcHJldmlvdXMgZml4IGNvc3RzIDMuMSUKKG1lYXN1cmVkIG9uIHg4
-Nl82NCkuCgpUaGUgZml4IG5lZWRzIHRvIGJlIGJhY2twb3J0ZWQgdG8gYWxsIGN1cnJlbnRseSBz
-dXBwb3J0ZWQgc3RhYmxlIGtlcm5lbHMuCgpSZXBvcnRlZC1ieTogV2lsbGVtIFBpbmNrYWVycyA8
-d2lsbGVtQGxla2tlcnRlY2gubmV0PgpDYzogIkRvbiBBLiBCYWlsZXkiIDxkb25iQHNlY3VyaXR5
-bW91c2UuY29tPgpDYzogc3RhYmxlIDxzdGFibGVAdmdlci5rZXJuZWwub3JnPgpTaWduZWQtb2Zm
-LWJ5OiBXaWxseSBUYXJyZWF1IDx3QDF3dC5ldT4KU2lnbmVkLW9mZi1ieTogR3JlZyBLcm9haC1I
-YXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4KU2lnbmVkLW9mZi1ieTogU3RlZmFu
-IE3DvGxsZXItS2xpZXNlciA8cy5tdWVsbGVyLWtsaWVzZXJAcGh5dGVjLmRlPgotLS0KIGxpYi9s
-em8vbHpvMXhfZGVjb21wcmVzc19zYWZlLmMgfCA0MyArKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKy0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDM3IGluc2VydGlvbnMoKyksIDYgZGVs
-ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2x6by9sem8xeF9kZWNvbXByZXNzX3NhZmUuYyBi
-L2xpYi9sem8vbHpvMXhfZGVjb21wcmVzc19zYWZlLmMKaW5kZXggZGU3OTVhMy4uM2MwZjUxMiAx
-MDA2NDQKLS0tIGEvbGliL2x6by9sem8xeF9kZWNvbXByZXNzX3NhZmUuYworKysgYi9saWIvbHpv
-L2x6bzF4X2RlY29tcHJlc3Nfc2FmZS5jCkBAIC0yMiw2ICsyMiwxNiBAQAogI2RlZmluZSBORUVE
-X09QKHgpICAgICAgaWYgKCFIQVZFX09QKHgpKSBnb3RvIG91dHB1dF9vdmVycnVuCiAjZGVmaW5l
-IFRFU1RfTEIobV9wb3MpICBpZiAoKG1fcG9zKSA8IG91dCkgZ290byBsb29rYmVoaW5kX292ZXJy
-dW4KIAorLyogVGhpcyBNQVhfMjU1X0NPVU5UIGlzIHRoZSBtYXhpbXVtIG51bWJlciBvZiB0aW1l
-cyB3ZSBjYW4gYWRkIDI1NSB0byBhIGJhc2UKKyAqIGNvdW50IHdpdGhvdXQgb3ZlcmZsb3dpbmcg
-YW4gaW50ZWdlci4gVGhlIG11bHRpcGx5IHdpbGwgb3ZlcmZsb3cgd2hlbgorICogbXVsdGlwbHlp
-bmcgMjU1IGJ5IG1vcmUgdGhhbiBNQVhJTlQvMjU1LiBUaGUgc3VtIHdpbGwgb3ZlcmZsb3cgZWFy
-bGllcgorICogZGVwZW5kaW5nIG9uIHRoZSBiYXNlIGNvdW50LiBTaW5jZSB0aGUgYmFzZSBjb3Vu
-dCBpcyB0YWtlbiBmcm9tIGEgdTgKKyAqIGFuZCBhIGZldyBiaXRzLCBpdCBpcyBzYWZlIHRvIGFz
-c3VtZSB0aGF0IGl0IHdpbGwgYWx3YXlzIGJlIGxvd2VyIHRoYW4KKyAqIG9yIGVxdWFsIHRvIDIq
-MjU1LCB0aHVzIHdlIGNhbiBhbHdheXMgcHJldmVudCBhbnkgb3ZlcmZsb3cgYnkgYWNjZXB0aW5n
-CisgKiB0d28gbGVzcyAyNTUgc3RlcHMuIFNlZSBEb2N1bWVudGF0aW9uL2x6by50eHQgZm9yIG1v
-cmUgaW5mb3JtYXRpb24uCisgKi8KKyNkZWZpbmUgTUFYXzI1NV9DT1VOVCAgICAgICgoKChzaXpl
-X3QpfjApIC8gMjU1KSAtIDIpCisKIGludCBsem8xeF9kZWNvbXByZXNzX3NhZmUoY29uc3QgdW5z
-aWduZWQgY2hhciAqaW4sIHNpemVfdCBpbl9sZW4sCiAJCQl1bnNpZ25lZCBjaGFyICpvdXQsIHNp
-emVfdCAqb3V0X2xlbikKIHsKQEAgLTUyLDEyICs2MiwxOSBAQCBpbnQgbHpvMXhfZGVjb21wcmVz
-c19zYWZlKGNvbnN0IHVuc2lnbmVkIGNoYXIgKmluLCBzaXplX3QgaW5fbGVuLAogCQlpZiAodCA8
-IDE2KSB7CiAJCQlpZiAobGlrZWx5KHN0YXRlID09IDApKSB7CiAJCQkJaWYgKHVubGlrZWx5KHQg
-PT0gMCkpIHsKKwkJCQkJc2l6ZV90IG9mZnNldDsKKwkJCQkJY29uc3QgdW5zaWduZWQgY2hhciAq
-aXBfbGFzdCA9IGlwOworCiAJCQkJCXdoaWxlICh1bmxpa2VseSgqaXAgPT0gMCkpIHsKLQkJCQkJ
-CXQgKz0gMjU1OwogCQkJCQkJaXArKzsKIAkJCQkJCU5FRURfSVAoMSk7CiAJCQkJCX0KLQkJCQkJ
-dCArPSAxNSArICppcCsrOworCQkJCQlvZmZzZXQgPSBpcCAtIGlwX2xhc3Q7CisJCQkJCWlmICh1
-bmxpa2VseShvZmZzZXQgPiBNQVhfMjU1X0NPVU5UKSkKKwkJCQkJCXJldHVybiBMWk9fRV9FUlJP
-UjsKKworCQkJCQlvZmZzZXQgPSAob2Zmc2V0IDw8IDgpIC0gb2Zmc2V0OworCQkJCQl0ICs9IG9m
-ZnNldCArIDE1ICsgKmlwKys7CiAJCQkJfQogCQkJCXQgKz0gMzsKIGNvcHlfbGl0ZXJhbF9ydW46
-CkBAIC0xMTMsMTIgKzEzMCwxOSBAQCBjb3B5X2xpdGVyYWxfcnVuOgogCQl9IGVsc2UgaWYgKHQg
-Pj0gMzIpIHsKIAkJCXQgPSAodCAmIDMxKSArICgzIC0gMSk7CiAJCQlpZiAodW5saWtlbHkodCA9
-PSAyKSkgeworCQkJCXNpemVfdCBvZmZzZXQ7CisJCQkJY29uc3QgdW5zaWduZWQgY2hhciAqaXBf
-bGFzdCA9IGlwOworCiAJCQkJd2hpbGUgKHVubGlrZWx5KCppcCA9PSAwKSkgewotCQkJCQl0ICs9
-IDI1NTsKIAkJCQkJaXArKzsKIAkJCQkJTkVFRF9JUCgxKTsKIAkJCQl9Ci0JCQkJdCArPSAzMSAr
-ICppcCsrOworCQkJCW9mZnNldCA9IGlwIC0gaXBfbGFzdDsKKwkJCQlpZiAodW5saWtlbHkob2Zm
-c2V0ID4gTUFYXzI1NV9DT1VOVCkpCisJCQkJCXJldHVybiBMWk9fRV9FUlJPUjsKKworCQkJCW9m
-ZnNldCA9IChvZmZzZXQgPDwgOCkgLSBvZmZzZXQ7CisJCQkJdCArPSBvZmZzZXQgKyAzMSArICpp
-cCsrOwogCQkJCU5FRURfSVAoMik7CiAJCQl9CiAJCQltX3BvcyA9IG9wIC0gMTsKQEAgLTEzMSwx
-MiArMTU1LDE5IEBAIGNvcHlfbGl0ZXJhbF9ydW46CiAJCQltX3BvcyAtPSAodCAmIDgpIDw8IDEx
-OwogCQkJdCA9ICh0ICYgNykgKyAoMyAtIDEpOwogCQkJaWYgKHVubGlrZWx5KHQgPT0gMikpIHsK
-KwkJCQlzaXplX3Qgb2Zmc2V0OworCQkJCWNvbnN0IHVuc2lnbmVkIGNoYXIgKmlwX2xhc3QgPSBp
-cDsKKwogCQkJCXdoaWxlICh1bmxpa2VseSgqaXAgPT0gMCkpIHsKLQkJCQkJdCArPSAyNTU7CiAJ
-CQkJCWlwKys7CiAJCQkJCU5FRURfSVAoMSk7CiAJCQkJfQotCQkJCXQgKz0gNyArICppcCsrOwor
-CQkJCW9mZnNldCA9IGlwIC0gaXBfbGFzdDsKKwkJCQlpZiAodW5saWtlbHkob2Zmc2V0ID4gTUFY
-XzI1NV9DT1VOVCkpCisJCQkJCXJldHVybiBMWk9fRV9FUlJPUjsKKworCQkJCW9mZnNldCA9IChv
-ZmZzZXQgPDwgOCkgLSBvZmZzZXQ7CisJCQkJdCArPSBvZmZzZXQgKyA3ICsgKmlwKys7CiAJCQkJ
-TkVFRF9JUCgyKTsKIAkJCX0KIAkJCW5leHQgPSBnZXRfdW5hbGlnbmVkX2xlMTYoaXApOwotLSAK
-MS45LjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+	The following serie allow you to have multiple driver for
+	the digest.
+
+	This also switch the sha1 implementation to the kernel one and
+	add the armv4 asm implementtion that save nearly 6KiB in a zbarebox
+	lzo.
+
+
+v2:
+	switch sha256 and sha512 to linux implementation
+	add arm sha256 asm implementation
+
+The following changes since commit 52d4a0321405b7525422f04fffbe7f318c9c5a88:
+
+  Merge branch 'for-next/state' into next (2015-03-19 07:55:59 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/sha1
+
+for you to fetch changes up to 6bebe62f4b828f0b85334b8a8a189e8a84864935:
+
+  arm: crypto: add sha256 assembly support (2015-03-24 17:18:55 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (7):
+      command: digest: only set the key when specified
+      crypto: prepare to allow multiple digest driver
+      crypto: sha1: switch to linux implementation
+      crypto: sha256: switch to linux implementation
+      crypto: sha512: switch to linux implementation
+      arm: crypto: add sha1 assembly support
+      arm: crypto: add sha256 assembly support
+
+ arch/arm/Makefile                               |    1 +
+ arch/arm/configs/at91rm9200ek_defconfig         |    4 +-
+ arch/arm/configs/highbank_defconfig             |    4 +-
+ arch/arm/configs/mioa701_defconfig              |    2 +-
+ arch/arm/configs/module-mb7707_defconfig        |    4 +-
+ arch/arm/configs/nhk8815_defconfig              |    2 +-
+ arch/arm/configs/phytec-phycard-omap3_defconfig |    6 +-
+ arch/arm/configs/rpi_defconfig                  |    4 +-
+ arch/arm/configs/versatilepb_arm1176_defconfig  |    4 +-
+ arch/arm/configs/versatilepb_defconfig          |    4 +-
+ arch/arm/configs/vexpress_ca9_defconfig         |    4 +-
+ arch/arm/configs/vexpress_defconfig             |    4 +-
+ arch/arm/configs/virt2real_defconfig            |    4 +-
+ arch/arm/configs/zylonite310_defconfig          |    2 +-
+ arch/arm/crypto/Makefile                        |   17 +
+ arch/arm/crypto/sha1-armv4-large.S              |  497 ++++++++++++++++++++++++++++++
+ arch/arm/crypto/sha1_glue.c                     |  143 +++++++++
+ arch/arm/crypto/sha256-armv4.pl                 |  713 ++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/crypto/sha256-core.S_shipped           | 2775 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/crypto/sha256_glue.c                   |  231 ++++++++++++++
+ arch/arm/crypto/sha256_glue.h                   |   23 ++
+ arch/mips/configs/img-ci20_defconfig            |    6 +-
+ arch/mips/configs/ritmix-rzx50_defconfig        |    6 +-
+ arch/mips/configs/tplink-mr3020_defconfig       |    4 +-
+ commands/digest.c                               |   10 +-
+ crypto/Kconfig                                  |   56 +++-
+ crypto/Makefile                                 |   14 +-
+ crypto/digest.c                                 |   31 +-
+ crypto/hmac.c                                   |   16 +-
+ crypto/md5.c                                    |    9 +-
+ crypto/sha1.c                                   |  531 +++++++++++++++----------------
+ crypto/sha2.c                                   |  577 +++++++++++++++++-----------------
+ crypto/sha4.c                                   |  479 +++++++++++++---------------
+ {crypto => include/crypto}/internal.h           |    0
+ include/crypto/sha.h                            |   95 ++++++
+ include/digest.h                                |   17 +-
+ 36 files changed, 5406 insertions(+), 893 deletions(-)
+ create mode 100644 arch/arm/crypto/Makefile
+ create mode 100644 arch/arm/crypto/sha1-armv4-large.S
+ create mode 100644 arch/arm/crypto/sha1_glue.c
+ create mode 100644 arch/arm/crypto/sha256-armv4.pl
+ create mode 100644 arch/arm/crypto/sha256-core.S_shipped
+ create mode 100644 arch/arm/crypto/sha256_glue.c
+ create mode 100644 arch/arm/crypto/sha256_glue.h
+ rename {crypto => include/crypto}/internal.h (100%)
+ create mode 100644 include/crypto/sha.h
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
