@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102])
+Received: from 14.mo1.mail-out.ovh.net ([178.32.97.215])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YajvR-0008Tc-Em
- for barebox@lists.infradead.org; Wed, 25 Mar 2015 11:56:46 +0000
+ id 1YajvS-0008Tj-Vo
+ for barebox@lists.infradead.org; Wed, 25 Mar 2015 11:56:47 +0000
 Received: from mail191.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 17BDC103C098
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 6834F103C102
  for <barebox@lists.infradead.org>; Wed, 25 Mar 2015 12:56:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 25 Mar 2015 12:56:12 +0100
-Message-Id: <1427284580-30218-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20150325115140.GD8125@ns203013.ovh.net>
+Date: Wed, 25 Mar 2015 12:56:13 +0100
+Message-Id: <1427284580-30218-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1427284580-30218-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150325115140.GD8125@ns203013.ovh.net>
+ <1427284580-30218-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,115 +25,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] command: digest/hashsum: set key command level
+Subject: [PATCH 2/9] digest: allow algo to specify their length at runtime
 To: barebox@lists.infradead.org
 
-and only set the key when specified
+such as RSA as we load a DER key we will detect the key size
+at runtime and so the algo length.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/digest.c   | 27 ++++++++++-----------------
- commands/hashsum.c  | 10 ++++++++--
- commands/internal.h |  3 +--
- 3 files changed, 19 insertions(+), 21 deletions(-)
+ crypto/digest.c  | 3 +--
+ include/digest.h | 3 ++-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/commands/digest.c b/commands/digest.c
-index 876c37a..79ce705 100644
---- a/commands/digest.c
-+++ b/commands/digest.c
-@@ -17,8 +17,7 @@
+diff --git a/crypto/digest.c b/crypto/digest.c
+index 047131b..f902dc1 100644
+--- a/crypto/digest.c
++++ b/crypto/digest.c
+@@ -78,8 +78,7 @@ int digest_generic_digest(struct digest *d, const void *data,
  
- #include "internal.h"
- 
--int __do_digest(struct digest *d, unsigned char *key, int keylen,
--		       unsigned char *sig,
-+int __do_digest(struct digest *d, unsigned char *sig,
- 		       int argc, char *argv[])
+ int digest_algo_register(struct digest_algo *d)
  {
- 	int ret = COMMAND_ERROR_USAGE;
-@@ -28,17 +27,6 @@ int __do_digest(struct digest *d, unsigned char *key, int keylen,
- 	if (argc < 1)
- 		goto err;
+-	if (!d || !d->name || !d->update || !d->final || !d->verify ||
+-	    d->length < 1)
++	if (!d || !d->name || !d->update || !d->final || !d->verify)
+ 		return -EINVAL;
  
--	if (key) {
--		ret = digest_set_key(d, key, keylen);
--		if (ret) {
--			perror("set_key");
--			goto err;
--		}
--	} else if (digest_is_flags(d, DIGEST_ALGO_NEED_KEY)) {
--		eprintf("%s need a key to be used\n", digest_name(d));
--		goto err;
--	}
--
- 	hash = calloc(digest_length(d), sizeof(unsigned char));
- 	if (!hash) {
- 		perror("calloc");
-@@ -147,10 +135,15 @@ static int do_digest(int argc, char *argv[])
- 		}
- 	}
+ 	if (!d->init)
+diff --git a/include/digest.h b/include/digest.h
+index 85c4da3..c574b4d 100644
+--- a/include/digest.h
++++ b/include/digest.h
+@@ -47,6 +47,7 @@ struct digest_algo {
+ struct digest {
+ 	struct digest_algo *algo;
+ 	void *ctx;
++	unsigned int length;
+ };
  
--	ret = digest_set_key(d, key, keylen);
--	free(tmp_key);
--	if (ret)
-+	if (key) {
-+		ret = digest_set_key(d, key, keylen);
-+		free(tmp_key);
-+		if (ret)
-+			goto err;
-+	} else if (digest_is_flags(d, DIGEST_ALGO_NEED_KEY)) {
-+		eprintf("%s need a key to be used\n", digest_name(d));
- 		goto err;
-+	}
+ /*
+@@ -99,7 +100,7 @@ static inline int digest_verify(struct digest *d, const unsigned char *md)
  
- 	if (sigfile) {
- 		sig = tmp_sig = read_file(sigfile, &siglen);
-@@ -178,7 +171,7 @@ static int do_digest(int argc, char *argv[])
- 		}
- 	}
- 
--	ret = __do_digest(d, NULL, 0, sig, argc, argv);
-+	ret = __do_digest(d, sig, argc, argv);
- 	free(tmp_sig);
- 	return ret;
- 
-diff --git a/commands/hashsum.c b/commands/hashsum.c
-index dc48af5..071fb84 100644
---- a/commands/hashsum.c
-+++ b/commands/hashsum.c
-@@ -49,15 +49,21 @@ static int do_hash(char *algo, int argc, char *argv[])
- 		char *tmp = asprintf("hmac(%s)", algo);
- 		d = digest_alloc(tmp);
- 		free(tmp);
-+		BUG_ON(!d);
-+
-+		ret = digest_set_key(d, key, keylen);
-+		if (ret) {
-+			perror("set_key");
-+			return ret;
- 	} else {
- 		d = digest_alloc(algo);
-+		BUG_ON(!d);
- 	}
--	BUG_ON(!d);
- 
- 	argc -= optind;
- 	argv += optind;
- 
--	return __do_digest(d, key, keylen, NULL, argc, argv);
-+	return __do_digest(d, NULL, argc, argv);
+ static inline int digest_length(struct digest *d)
+ {
+-	return d->algo->length;
++	return d->length ? d->length : d->algo->length;
  }
  
- #ifdef CONFIG_CMD_MD5SUM
-diff --git a/commands/internal.h b/commands/internal.h
-index 29cc656..21d1408 100644
---- a/commands/internal.h
-+++ b/commands/internal.h
-@@ -1,3 +1,2 @@
--int __do_digest(struct digest *d, unsigned char *key, int keylen,
--		       unsigned char *sig,
-+int __do_digest(struct digest *d, unsigned char *sig,
- 		       int argc, char *argv[]);
+ static inline int digest_set_key(struct digest *d, const unsigned char *key,
 -- 
 2.1.4
 
