@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo1.mail-out.ovh.net ([178.32.119.250])
+Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yajvb-0008Vx-27
- for barebox@lists.infradead.org; Wed, 25 Mar 2015 11:57:08 +0000
+ id 1Yajvb-0008Vv-Kv
+ for barebox@lists.infradead.org; Wed, 25 Mar 2015 11:57:09 +0000
 Received: from mail191.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id E65D0103C0C7
- for <barebox@lists.infradead.org>; Wed, 25 Mar 2015 12:56:26 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 724EB103C1AD
+ for <barebox@lists.infradead.org>; Wed, 25 Mar 2015 12:56:30 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 25 Mar 2015 12:56:16 +0100
-Message-Id: <1427284580-30218-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 25 Mar 2015 12:56:17 +0100
+Message-Id: <1427284580-30218-6-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1427284580-30218-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20150325115140.GD8125@ns203013.ovh.net>
  <1427284580-30218-1-git-send-email-plagnioj@jcrosoft.com>
@@ -25,56 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] crypto: sha1: switch to linux implementation
+Subject: [PATCH 6/9] crypto: sha256: switch to linux implementation
 To: barebox@lists.infradead.org
-
-current implementation
-
-$ ls -al build/versatilpb/arch/arm/pbl/zbarebox.bin
--rw-r--r-- 1 root root 211095 Mar 24 13:21 build/versatilpb/arch/arm/pbl/zbarebox.bin
-
-linux generic implementation
-
-$ ls -al build/versatilpb/arch/arm/pbl/zbarebox.bin
--rw-r--r-- 1 root root 210829 Mar 24 13:21 build/versatilpb/arch/arm/pbl/zbarebox.bin
-
-on a compressed lzo barebox we will 266 bytes
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- crypto/sha1.c        | 638 ++++++++++++++++++++++++---------------------------
- include/crypto/sha.h |  95 ++++++++
- include/digest.h     |   5 +
- 3 files changed, 405 insertions(+), 333 deletions(-)
- rewrite crypto/sha1.c (93%)
- create mode 100644 include/crypto/sha.h
+ crypto/sha2.c | 728 ++++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 373 insertions(+), 355 deletions(-)
+ rewrite crypto/sha2.c (89%)
 
-diff --git a/crypto/sha1.c b/crypto/sha1.c
-dissimilarity index 93%
-index 94d56c3..a3de271 100644
---- a/crypto/sha1.c
-+++ b/crypto/sha1.c
-@@ -1,333 +1,305 @@
+diff --git a/crypto/sha2.c b/crypto/sha2.c
+dissimilarity index 89%
+index f7b8beb..6ac5527 100644
+--- a/crypto/sha2.c
++++ b/crypto/sha2.c
+@@ -1,355 +1,373 @@
 -/*
-- *  Heiko Schocher, DENX Software Engineering, hs@denx.de.
-- *  based on:
-- *  FIPS-180-1 compliant SHA-1 implementation
+- * FIPS-180-2 compliant SHA-256 implementation
 - *
-- *  Copyright (C) 2003-2006  Christophe Devine
+- * Copyright (C) 2001-2003  Christophe Devine
 - *
-- *  This library is free software; you can redistribute it and/or
-- *  modify it under the terms of the GNU Lesser General Public
-- *  License, version 2.1 as published by the Free Software Foundation.
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
 - *
-- *  This library is distributed in the hope that it will be useful,
-- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- *  Lesser General Public License for more details.
-- */
--/*
-- *  The SHA-1 standard was published by NIST in 1993.
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
 - *
-- *  http://www.itl.nist.gov/fipspubs/fip180-1.htm
 - */
 -
 -#include <common.h>
@@ -82,19 +62,17 @@ index 94d56c3..a3de271 100644
 -#include <init.h>
 -#include <linux/string.h>
 -#include <asm/byteorder.h>
--
 -#include <crypto/internal.h>
 -
--#define SHA1_SUM_POS	-0x20
--#define SHA1_SUM_LEN	20
+-#define SHA224_SUM_LEN	28
+-#define SHA256_SUM_LEN	32
 -
--typedef struct
--{
--	uint32_t total[2];	/*!< number of bytes processed	*/
--	uint32_t state[5];	/*!< intermediate digest state	*/
--	uint8_t buffer[64];	/*!< data block being processed */
--}
--sha1_context;
+-typedef struct {
+-	uint32_t total[2];
+-	uint32_t state[8];
+-	uint8_t buffer[64];
+-	int is224;
+-} sha2_context;
 -
 -/*
 - * 32-bit integer manipulation macros (big endian)
@@ -102,52 +80,86 @@ index 94d56c3..a3de271 100644
 -#define GET_UINT32_BE(n,b,i) (n) = be32_to_cpu(((uint32_t*)(b))[i / 4])
 -#define PUT_UINT32_BE(n,b,i) ((uint32_t*)(b))[i / 4] = cpu_to_be32(n)
 -
--/*
-- * SHA-1 context setup
-- */
--static void sha1_starts (sha1_context *ctx)
+-static void sha2_starts(sha2_context *ctx, int is224)
 -{
 -	ctx->total[0] = 0;
 -	ctx->total[1] = 0;
 -
--	ctx->state[0] = 0x67452301;
--	ctx->state[1] = 0xEFCDAB89;
--	ctx->state[2] = 0x98BADCFE;
--	ctx->state[3] = 0x10325476;
--	ctx->state[4] = 0xC3D2E1F0;
+-#ifdef CONFIG_SHA256
+-	if (is224 == 0) {
+-		/* SHA-256 */
+-		ctx->state[0] = 0x6A09E667;
+-		ctx->state[1] = 0xBB67AE85;
+-		ctx->state[2] = 0x3C6EF372;
+-		ctx->state[3] = 0xA54FF53A;
+-		ctx->state[4] = 0x510E527F;
+-		ctx->state[5] = 0x9B05688C;
+-		ctx->state[6] = 0x1F83D9AB;
+-		ctx->state[7] = 0x5BE0CD19;
+-	}
+-#endif
+-#ifdef CONFIG_SHA224
+-	if (is224 == 1) {
+-		/* SHA-224 */
+-		ctx->state[0] = 0xC1059ED8;
+-		ctx->state[1] = 0x367CD507;
+-		ctx->state[2] = 0x3070DD17;
+-		ctx->state[3] = 0xF70E5939;
+-		ctx->state[4] = 0xFFC00B31;
+-		ctx->state[5] = 0x68581511;
+-		ctx->state[6] = 0x64F98FA7;
+-		ctx->state[7] = 0xBEFA4FA4;
+-	}
+-#endif
+-
+-	ctx->is224 = is224;
 -}
 -
--static void sha1_process (sha1_context *ctx, uint8_t data[64])
+-static void sha2_process(sha2_context *ctx, const uint8_t data[64])
 -{
--	uint32_t temp, W[16], A, B, C, D, E;
+-	uint32_t temp1, temp2;
+-	uint32_t W[64];
+-	uint32_t A, B, C, D, E, F, G, H;
 -
--	GET_UINT32_BE (W[0], data, 0);
--	GET_UINT32_BE (W[1], data, 4);
--	GET_UINT32_BE (W[2], data, 8);
--	GET_UINT32_BE (W[3], data, 12);
--	GET_UINT32_BE (W[4], data, 16);
--	GET_UINT32_BE (W[5], data, 20);
--	GET_UINT32_BE (W[6], data, 24);
--	GET_UINT32_BE (W[7], data, 28);
--	GET_UINT32_BE (W[8], data, 32);
--	GET_UINT32_BE (W[9], data, 36);
--	GET_UINT32_BE (W[10], data, 40);
--	GET_UINT32_BE (W[11], data, 44);
--	GET_UINT32_BE (W[12], data, 48);
--	GET_UINT32_BE (W[13], data, 52);
--	GET_UINT32_BE (W[14], data, 56);
--	GET_UINT32_BE (W[15], data, 60);
+-	GET_UINT32_BE(W[0], data, 0);
+-	GET_UINT32_BE(W[1], data, 4);
+-	GET_UINT32_BE(W[2], data, 8);
+-	GET_UINT32_BE(W[3], data, 12);
+-	GET_UINT32_BE(W[4], data, 16);
+-	GET_UINT32_BE(W[5], data, 20);
+-	GET_UINT32_BE(W[6], data, 24);
+-	GET_UINT32_BE(W[7], data, 28);
+-	GET_UINT32_BE(W[8], data, 32);
+-	GET_UINT32_BE(W[9], data, 36);
+-	GET_UINT32_BE(W[10], data, 40);
+-	GET_UINT32_BE(W[11], data, 44);
+-	GET_UINT32_BE(W[12], data, 48);
+-	GET_UINT32_BE(W[13], data, 52);
+-	GET_UINT32_BE(W[14], data, 56);
+-	GET_UINT32_BE(W[15], data, 60);
 -
--#define S(x,n)	((x << n) | ((x & 0xFFFFFFFF) >> (32 - n)))
+-#define SHR(x,n) ((x & 0xFFFFFFFF) >> n)
+-#define ROTR(x,n) (SHR(x,n) | (x << (32 - n)))
 -
--#define R(t) (						\
--	temp = W[(t -  3) & 0x0F] ^ W[(t - 8) & 0x0F] ^	\
--	       W[(t - 14) & 0x0F] ^ W[ t      & 0x0F],	\
--	( W[t & 0x0F] = S(temp,1) )			\
+-#define S0(x) (ROTR(x, 7) ^ ROTR(x,18) ^ SHR(x, 3))
+-#define S1(x) (ROTR(x,17) ^ ROTR(x,19) ^ SHR(x,10))
+-
+-#define S2(x) (ROTR(x, 2) ^ ROTR(x,13) ^ ROTR(x,22))
+-#define S3(x) (ROTR(x, 6) ^ ROTR(x,11) ^ ROTR(x,25))
+-
+-#define F0(x,y,z) ((x & y) | (z & (x | y)))
+-#define F1(x,y,z) (z ^ (x & (y ^ z)))
+-
+-#define R(t)					\
+-(						\
+-	W[t] = S1(W[t - 2]) + W[t - 7] +	\
+-		S0(W[t - 15]) + W[t - 16]	\
 -)
 -
--#define P(a,b,c,d,e,x)	{				\
--	e += S(a,5) + F(b,c,d) + K + x; b = S(b,30);	\
+-#define P(a,b,c,d,e,f,g,h,x,K) {		\
+-	temp1 = h + S3(e) + F1(e,f,g) + K + x;	\
+-	temp2 = S2(a) + F0(a,b,c);		\
+-	d += temp1; h = temp1 + temp2;		\
 -}
 -
 -	A = ctx->state[0];
@@ -155,254 +167,250 @@ index 94d56c3..a3de271 100644
 -	C = ctx->state[2];
 -	D = ctx->state[3];
 -	E = ctx->state[4];
+-	F = ctx->state[5];
+-	G = ctx->state[6];
+-	H = ctx->state[7];
 -
--#define F(x,y,z) (z ^ (x & (y ^ z)))
--#define K 0x5A827999
--
--	P (A, B, C, D, E, W[0]);
--	P (E, A, B, C, D, W[1]);
--	P (D, E, A, B, C, W[2]);
--	P (C, D, E, A, B, W[3]);
--	P (B, C, D, E, A, W[4]);
--	P (A, B, C, D, E, W[5]);
--	P (E, A, B, C, D, W[6]);
--	P (D, E, A, B, C, W[7]);
--	P (C, D, E, A, B, W[8]);
--	P (B, C, D, E, A, W[9]);
--	P (A, B, C, D, E, W[10]);
--	P (E, A, B, C, D, W[11]);
--	P (D, E, A, B, C, W[12]);
--	P (C, D, E, A, B, W[13]);
--	P (B, C, D, E, A, W[14]);
--	P (A, B, C, D, E, W[15]);
--	P (E, A, B, C, D, R (16));
--	P (D, E, A, B, C, R (17));
--	P (C, D, E, A, B, R (18));
--	P (B, C, D, E, A, R (19));
--
--#undef K
--#undef F
--
--#define F(x,y,z) (x ^ y ^ z)
--#define K 0x6ED9EBA1
--
--	P (A, B, C, D, E, R (20));
--	P (E, A, B, C, D, R (21));
--	P (D, E, A, B, C, R (22));
--	P (C, D, E, A, B, R (23));
--	P (B, C, D, E, A, R (24));
--	P (A, B, C, D, E, R (25));
--	P (E, A, B, C, D, R (26));
--	P (D, E, A, B, C, R (27));
--	P (C, D, E, A, B, R (28));
--	P (B, C, D, E, A, R (29));
--	P (A, B, C, D, E, R (30));
--	P (E, A, B, C, D, R (31));
--	P (D, E, A, B, C, R (32));
--	P (C, D, E, A, B, R (33));
--	P (B, C, D, E, A, R (34));
--	P (A, B, C, D, E, R (35));
--	P (E, A, B, C, D, R (36));
--	P (D, E, A, B, C, R (37));
--	P (C, D, E, A, B, R (38));
--	P (B, C, D, E, A, R (39));
--
--#undef K
--#undef F
--
--#define F(x,y,z) ((x & y) | (z & (x | y)))
--#define K 0x8F1BBCDC
--
--	P (A, B, C, D, E, R (40));
--	P (E, A, B, C, D, R (41));
--	P (D, E, A, B, C, R (42));
--	P (C, D, E, A, B, R (43));
--	P (B, C, D, E, A, R (44));
--	P (A, B, C, D, E, R (45));
--	P (E, A, B, C, D, R (46));
--	P (D, E, A, B, C, R (47));
--	P (C, D, E, A, B, R (48));
--	P (B, C, D, E, A, R (49));
--	P (A, B, C, D, E, R (50));
--	P (E, A, B, C, D, R (51));
--	P (D, E, A, B, C, R (52));
--	P (C, D, E, A, B, R (53));
--	P (B, C, D, E, A, R (54));
--	P (A, B, C, D, E, R (55));
--	P (E, A, B, C, D, R (56));
--	P (D, E, A, B, C, R (57));
--	P (C, D, E, A, B, R (58));
--	P (B, C, D, E, A, R (59));
--
--#undef K
--#undef F
--
--#define F(x,y,z) (x ^ y ^ z)
--#define K 0xCA62C1D6
--
--	P (A, B, C, D, E, R (60));
--	P (E, A, B, C, D, R (61));
--	P (D, E, A, B, C, R (62));
--	P (C, D, E, A, B, R (63));
--	P (B, C, D, E, A, R (64));
--	P (A, B, C, D, E, R (65));
--	P (E, A, B, C, D, R (66));
--	P (D, E, A, B, C, R (67));
--	P (C, D, E, A, B, R (68));
--	P (B, C, D, E, A, R (69));
--	P (A, B, C, D, E, R (70));
--	P (E, A, B, C, D, R (71));
--	P (D, E, A, B, C, R (72));
--	P (C, D, E, A, B, R (73));
--	P (B, C, D, E, A, R (74));
--	P (A, B, C, D, E, R (75));
--	P (E, A, B, C, D, R (76));
--	P (D, E, A, B, C, R (77));
--	P (C, D, E, A, B, R (78));
--	P (B, C, D, E, A, R (79));
--
--#undef K
--#undef F
+-	P(A, B, C, D, E, F, G, H, W[0], 0x428A2F98);
+-	P(H, A, B, C, D, E, F, G, W[1], 0x71374491);
+-	P(G, H, A, B, C, D, E, F, W[2], 0xB5C0FBCF);
+-	P(F, G, H, A, B, C, D, E, W[3], 0xE9B5DBA5);
+-	P(E, F, G, H, A, B, C, D, W[4], 0x3956C25B);
+-	P(D, E, F, G, H, A, B, C, W[5], 0x59F111F1);
+-	P(C, D, E, F, G, H, A, B, W[6], 0x923F82A4);
+-	P(B, C, D, E, F, G, H, A, W[7], 0xAB1C5ED5);
+-	P(A, B, C, D, E, F, G, H, W[8], 0xD807AA98);
+-	P(H, A, B, C, D, E, F, G, W[9], 0x12835B01);
+-	P(G, H, A, B, C, D, E, F, W[10], 0x243185BE);
+-	P(F, G, H, A, B, C, D, E, W[11], 0x550C7DC3);
+-	P(E, F, G, H, A, B, C, D, W[12], 0x72BE5D74);
+-	P(D, E, F, G, H, A, B, C, W[13], 0x80DEB1FE);
+-	P(C, D, E, F, G, H, A, B, W[14], 0x9BDC06A7);
+-	P(B, C, D, E, F, G, H, A, W[15], 0xC19BF174);
+-	P(A, B, C, D, E, F, G, H, R(16), 0xE49B69C1);
+-	P(H, A, B, C, D, E, F, G, R(17), 0xEFBE4786);
+-	P(G, H, A, B, C, D, E, F, R(18), 0x0FC19DC6);
+-	P(F, G, H, A, B, C, D, E, R(19), 0x240CA1CC);
+-	P(E, F, G, H, A, B, C, D, R(20), 0x2DE92C6F);
+-	P(D, E, F, G, H, A, B, C, R(21), 0x4A7484AA);
+-	P(C, D, E, F, G, H, A, B, R(22), 0x5CB0A9DC);
+-	P(B, C, D, E, F, G, H, A, R(23), 0x76F988DA);
+-	P(A, B, C, D, E, F, G, H, R(24), 0x983E5152);
+-	P(H, A, B, C, D, E, F, G, R(25), 0xA831C66D);
+-	P(G, H, A, B, C, D, E, F, R(26), 0xB00327C8);
+-	P(F, G, H, A, B, C, D, E, R(27), 0xBF597FC7);
+-	P(E, F, G, H, A, B, C, D, R(28), 0xC6E00BF3);
+-	P(D, E, F, G, H, A, B, C, R(29), 0xD5A79147);
+-	P(C, D, E, F, G, H, A, B, R(30), 0x06CA6351);
+-	P(B, C, D, E, F, G, H, A, R(31), 0x14292967);
+-	P(A, B, C, D, E, F, G, H, R(32), 0x27B70A85);
+-	P(H, A, B, C, D, E, F, G, R(33), 0x2E1B2138);
+-	P(G, H, A, B, C, D, E, F, R(34), 0x4D2C6DFC);
+-	P(F, G, H, A, B, C, D, E, R(35), 0x53380D13);
+-	P(E, F, G, H, A, B, C, D, R(36), 0x650A7354);
+-	P(D, E, F, G, H, A, B, C, R(37), 0x766A0ABB);
+-	P(C, D, E, F, G, H, A, B, R(38), 0x81C2C92E);
+-	P(B, C, D, E, F, G, H, A, R(39), 0x92722C85);
+-	P(A, B, C, D, E, F, G, H, R(40), 0xA2BFE8A1);
+-	P(H, A, B, C, D, E, F, G, R(41), 0xA81A664B);
+-	P(G, H, A, B, C, D, E, F, R(42), 0xC24B8B70);
+-	P(F, G, H, A, B, C, D, E, R(43), 0xC76C51A3);
+-	P(E, F, G, H, A, B, C, D, R(44), 0xD192E819);
+-	P(D, E, F, G, H, A, B, C, R(45), 0xD6990624);
+-	P(C, D, E, F, G, H, A, B, R(46), 0xF40E3585);
+-	P(B, C, D, E, F, G, H, A, R(47), 0x106AA070);
+-	P(A, B, C, D, E, F, G, H, R(48), 0x19A4C116);
+-	P(H, A, B, C, D, E, F, G, R(49), 0x1E376C08);
+-	P(G, H, A, B, C, D, E, F, R(50), 0x2748774C);
+-	P(F, G, H, A, B, C, D, E, R(51), 0x34B0BCB5);
+-	P(E, F, G, H, A, B, C, D, R(52), 0x391C0CB3);
+-	P(D, E, F, G, H, A, B, C, R(53), 0x4ED8AA4A);
+-	P(C, D, E, F, G, H, A, B, R(54), 0x5B9CCA4F);
+-	P(B, C, D, E, F, G, H, A, R(55), 0x682E6FF3);
+-	P(A, B, C, D, E, F, G, H, R(56), 0x748F82EE);
+-	P(H, A, B, C, D, E, F, G, R(57), 0x78A5636F);
+-	P(G, H, A, B, C, D, E, F, R(58), 0x84C87814);
+-	P(F, G, H, A, B, C, D, E, R(59), 0x8CC70208);
+-	P(E, F, G, H, A, B, C, D, R(60), 0x90BEFFFA);
+-	P(D, E, F, G, H, A, B, C, R(61), 0xA4506CEB);
+-	P(C, D, E, F, G, H, A, B, R(62), 0xBEF9A3F7);
+-	P(B, C, D, E, F, G, H, A, R(63), 0xC67178F2);
 -
 -	ctx->state[0] += A;
 -	ctx->state[1] += B;
 -	ctx->state[2] += C;
 -	ctx->state[3] += D;
 -	ctx->state[4] += E;
+-	ctx->state[5] += F;
+-	ctx->state[6] += G;
+-	ctx->state[7] += H;
 -}
 -
--/*
-- * SHA-1 process buffer
-- */
--static void sha1_update (sha1_context *ctx, uint8_t *input, uint32_t ilen)
+-static void sha2_update(sha2_context *ctx, const uint8_t *input, size_t length)
 -{
--	uint32_t fill, left;
+-	size_t fill;
+-	uint32_t left;
 -
--	if (ilen <= 0)
+-	if (length == 0)
 -		return;
 -
 -	left = ctx->total[0] & 0x3F;
 -	fill = 64 - left;
 -
--	ctx->total[0] += ilen;
+-	ctx->total[0] += (uint32_t)length;
 -	ctx->total[0] &= 0xFFFFFFFF;
 -
--	if (ctx->total[0] < ilen)
+-	if (ctx->total[0] < (uint32_t)length)
 -		ctx->total[1]++;
 -
--	if (left && ilen >= fill) {
--		memcpy ((void *) (ctx->buffer + left), (void *) input, fill);
--		sha1_process (ctx, ctx->buffer);
+-	if (left && length >= fill) {
+-		memcpy((void *) (ctx->buffer + left), (void *) input, fill);
+-		sha2_process(ctx, ctx->buffer);
+-		length -= fill;
 -		input += fill;
--		ilen -= fill;
 -		left = 0;
 -	}
 -
--	while (ilen >= 64) {
--		sha1_process (ctx, input);
+-	while (length >= 64) {
+-		sha2_process(ctx, input);
+-		length -= 64;
 -		input += 64;
--		ilen -= 64;
 -	}
 -
--	if (ilen > 0) {
--		memcpy ((void *) (ctx->buffer + left), (void *) input, ilen);
--	}
+-	if (length)
+-		memcpy((void *) (ctx->buffer + left), (void *) input, length);
 -}
 -
--static uint8_t sha1_padding[64] = {
+-static const uint8_t sha2_padding[64] = {
 -	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 -	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 -	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 -	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 -};
 -
--/*
-- * SHA-1 final digest
-- */
--static void sha1_finish (sha1_context *ctx, uint8_t output[20])
+-static void sha2_finish(sha2_context *ctx, uint8_t digest[32])
 -{
 -	uint32_t last, padn;
 -	uint32_t high, low;
 -	uint8_t msglen[8];
 -
--	high = (ctx->total[0] >> 29)
--		| (ctx->total[1] << 3);
+-	high = ((ctx->total[0] >> 29)
+-		| (ctx->total[1] << 3));
 -	low = (ctx->total[0] << 3);
 -
--	PUT_UINT32_BE (high, msglen, 0);
--	PUT_UINT32_BE (low, msglen, 4);
+-	PUT_UINT32_BE(high, msglen, 0);
+-	PUT_UINT32_BE(low, msglen, 4);
 -
 -	last = ctx->total[0] & 0x3F;
 -	padn = (last < 56) ? (56 - last) : (120 - last);
 -
--	sha1_update (ctx, sha1_padding, padn);
--	sha1_update (ctx, msglen, 8);
+-	sha2_update(ctx, sha2_padding, padn);
+-	sha2_update(ctx, msglen, 8);
 -
--	PUT_UINT32_BE (ctx->state[0], output, 0);
--	PUT_UINT32_BE (ctx->state[1], output, 4);
--	PUT_UINT32_BE (ctx->state[2], output, 8);
--	PUT_UINT32_BE (ctx->state[3], output, 12);
--	PUT_UINT32_BE (ctx->state[4], output, 16);
+-	PUT_UINT32_BE(ctx->state[0], digest, 0);
+-	PUT_UINT32_BE(ctx->state[1], digest, 4);
+-	PUT_UINT32_BE(ctx->state[2], digest, 8);
+-	PUT_UINT32_BE(ctx->state[3], digest, 12);
+-	PUT_UINT32_BE(ctx->state[4], digest, 16);
+-	PUT_UINT32_BE(ctx->state[5], digest, 20);
+-	PUT_UINT32_BE(ctx->state[6], digest, 24);
+-	if (!ctx->is224)
+-		PUT_UINT32_BE(ctx->state[7], digest, 28);
 -}
 -
--static int digest_sha1_init(struct digest *d)
+-static int digest_sha2_update(struct digest *d, const void *data,
+-				unsigned long len)
 -{
--	sha1_starts(d->ctx);
+-	sha2_update(d->ctx, (uint8_t *)data, len);
 -
 -	return 0;
 -}
 -
--static int digest_sha1_update(struct digest *d, const void *data,
--			     unsigned long len)
+-static int digest_sha2_final(struct digest *d, unsigned char *md)
 -{
--	sha1_update(d->ctx, (uint8_t*)data, len);
+-	sha2_finish(d->ctx, md);
 -
 -	return 0;
 -}
 -
--static int digest_sha1_final(struct digest *d, unsigned char *md)
+-static int digest_sha224_init(struct digest *d)
 -{
--	sha1_finish(d->ctx, md);
+-	sha2_starts(d->ctx, 1);
 -
 -	return 0;
 -}
 -
--static struct digest_algo m = {
+-static struct digest_algo m224 = {
 -	.base = {
--		.name		=	"sha1",
--		.driver_name	=	"sha1-generic",
+-		.name		=	"sha224",
+-		.driver_name	=	"sha224-generic",
 -		.priority	=	0,
 -	},
 -
--	.init = digest_sha1_init,
--	.update = digest_sha1_update,
--	.final = digest_sha1_final,
--	.digest = digest_generic_digest,
+-	.init = digest_sha224_init,
+-	.update = digest_sha2_update,
+-	.final = digest_sha2_final,
 -	.verify = digest_generic_verify,
--	.length = SHA1_SUM_LEN,
--	.ctx_length = sizeof(sha1_context),
+-	.length = SHA224_SUM_LEN,
+-	.ctx_length = sizeof(sha2_context),
 -};
 -
--static int sha1_digest_register(void)
+-static int sha224_digest_register(void)
 -{
--	return digest_algo_register(&m);
+-	if (!IS_ENABLED(CONFIG_SHA224))
+-		return 0;
+-
+-	return digest_algo_register(&m224);
 -}
--device_initcall(sha1_digest_register);
+-device_initcall(sha224_digest_register);
+-
+-static int digest_sha256_init(struct digest *d)
+-{
+-	sha2_starts(d->ctx, 0);
+-
+-	return 0;
+-}
+-
+-static struct digest_algo m256 = {
+-	.base = {
+-		.name		=	"sha256",
+-		.driver_name	=	"sha256-generic",
+-		.priority	=	0,
+-	},
+-
+-	.init = digest_sha256_init,
+-	.update = digest_sha2_update,
+-	.final = digest_sha2_final,
+-	.digest = digest_generic_digest,
+-	.verify = digest_generic_verify,
+-	.length = SHA256_SUM_LEN,
+-	.ctx_length = sizeof(sha2_context),
+-};
+-
+-static int sha256_digest_register(void)
+-{
+-	if (!IS_ENABLED(CONFIG_SHA256))
+-		return 0;
+-
+-	return digest_algo_register(&m256);
+-}
+-device_initcall(sha256_digest_register);
 +/*
 + * Cryptographic API.
 + *
-+ * SHA1 Secure Hash Algorithm.
++ * SHA-256, as specified in
++ * http://csrc.nist.gov/groups/STM/cavp/documents/shs/sha256-384-512.pdf
 + *
-+ * Derived from cryptoapi implementation, adapted for in-place
-+ * scatterlist interface.
++ * SHA-256 code by Jean-Luc Cooke <jlcooke@certainkey.com>.
 + *
-+ * Copyright (c) Alan Smithee.
++ * Copyright (c) Jean-Luc Cooke <jlcooke@certainkey.com>
 + * Copyright (c) Andrew McDonald <andrew@mcdonald.org.uk>
-+ * Copyright (c) Jean-Francois Dive <jef@linuxbe.org>
++ * Copyright (c) 2002 James Morris <jmorris@intercode.com.au>
++ * SHA224 Support Copyright 2007 Intel Corporation <jonathan.lynch@intel.com>
 + *
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms of the GNU General Public License as published by the Free
-+ * Software Foundation; either version 2 of the License, or (at your option)
++ * Software Foundation; either version 2 of the License, or (at your option) 
 + * any later version.
 + *
 + */
@@ -417,397 +425,349 @@ index 94d56c3..a3de271 100644
 +#include <crypto/sha.h>
 +#include <crypto/internal.h>
 +
-+#define SHA_WORKSPACE_WORDS 16
-+
-+static int sha1_init(struct digest *desc)
++static inline u32 Ch(u32 x, u32 y, u32 z)
 +{
-+	struct sha1_state *ctx = digest_ctx(desc);
++	return z ^ (x & (y ^ z));
++}
 +
-+	ctx->count = 0;
++static inline u32 Maj(u32 x, u32 y, u32 z)
++{
++	return (x & y) | (z & (x | y));
++}
 +
-+	ctx->state[0] = SHA1_H0;
-+	ctx->state[1] = SHA1_H1;
-+	ctx->state[2] = SHA1_H2;
-+	ctx->state[3] = SHA1_H3;
-+	ctx->state[4] = SHA1_H4;
++#define e0(x)       (ror32(x, 2) ^ ror32(x,13) ^ ror32(x,22))
++#define e1(x)       (ror32(x, 6) ^ ror32(x,11) ^ ror32(x,25))
++#define s0(x)       (ror32(x, 7) ^ ror32(x,18) ^ (x >> 3))
++#define s1(x)       (ror32(x,17) ^ ror32(x,19) ^ (x >> 10))
++
++static inline void LOAD_OP(int I, u32 *W, const u8 *input)
++{
++	W[I] = get_unaligned_be32((__u32 *)input + I);
++}
++
++static inline void BLEND_OP(int I, u32 *W)
++{
++	W[I] = s1(W[I-2]) + W[I-7] + s0(W[I-15]) + W[I-16];
++}
++
++static void sha256_transform(u32 *state, const u8 *input)
++{
++	u32 a, b, c, d, e, f, g, h, t1, t2;
++	u32 W[64];
++	int i;
++
++	/* load the input */
++	for (i = 0; i < 16; i++)
++		LOAD_OP(i, W, input);
++
++	/* now blend */
++	for (i = 16; i < 64; i++)
++		BLEND_OP(i, W);
++
++	/* load the state into our registers */
++	a=state[0];  b=state[1];  c=state[2];  d=state[3];
++	e=state[4];  f=state[5];  g=state[6];  h=state[7];
++
++	/* now iterate */
++	t1 = h + e1(e) + Ch(e,f,g) + 0x428a2f98 + W[ 0];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x71374491 + W[ 1];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0xb5c0fbcf + W[ 2];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0xe9b5dba5 + W[ 3];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x3956c25b + W[ 4];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x59f111f1 + W[ 5];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x923f82a4 + W[ 6];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0xab1c5ed5 + W[ 7];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0xd807aa98 + W[ 8];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x12835b01 + W[ 9];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x243185be + W[10];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x550c7dc3 + W[11];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x72be5d74 + W[12];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x80deb1fe + W[13];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x9bdc06a7 + W[14];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0xc19bf174 + W[15];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0xe49b69c1 + W[16];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0xefbe4786 + W[17];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x0fc19dc6 + W[18];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x240ca1cc + W[19];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x2de92c6f + W[20];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x4a7484aa + W[21];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x5cb0a9dc + W[22];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x76f988da + W[23];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x983e5152 + W[24];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0xa831c66d + W[25];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0xb00327c8 + W[26];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0xbf597fc7 + W[27];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0xc6e00bf3 + W[28];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0xd5a79147 + W[29];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x06ca6351 + W[30];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x14292967 + W[31];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x27b70a85 + W[32];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x2e1b2138 + W[33];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x4d2c6dfc + W[34];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x53380d13 + W[35];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x650a7354 + W[36];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x766a0abb + W[37];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x81c2c92e + W[38];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x92722c85 + W[39];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0xa2bfe8a1 + W[40];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0xa81a664b + W[41];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0xc24b8b70 + W[42];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0xc76c51a3 + W[43];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0xd192e819 + W[44];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0xd6990624 + W[45];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0xf40e3585 + W[46];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x106aa070 + W[47];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x19a4c116 + W[48];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x1e376c08 + W[49];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x2748774c + W[50];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x34b0bcb5 + W[51];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x391c0cb3 + W[52];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0x4ed8aa4a + W[53];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0x5b9cca4f + W[54];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0x682e6ff3 + W[55];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	t1 = h + e1(e) + Ch(e,f,g) + 0x748f82ee + W[56];
++	t2 = e0(a) + Maj(a,b,c);    d+=t1;    h=t1+t2;
++	t1 = g + e1(d) + Ch(d,e,f) + 0x78a5636f + W[57];
++	t2 = e0(h) + Maj(h,a,b);    c+=t1;    g=t1+t2;
++	t1 = f + e1(c) + Ch(c,d,e) + 0x84c87814 + W[58];
++	t2 = e0(g) + Maj(g,h,a);    b+=t1;    f=t1+t2;
++	t1 = e + e1(b) + Ch(b,c,d) + 0x8cc70208 + W[59];
++	t2 = e0(f) + Maj(f,g,h);    a+=t1;    e=t1+t2;
++	t1 = d + e1(a) + Ch(a,b,c) + 0x90befffa + W[60];
++	t2 = e0(e) + Maj(e,f,g);    h+=t1;    d=t1+t2;
++	t1 = c + e1(h) + Ch(h,a,b) + 0xa4506ceb + W[61];
++	t2 = e0(d) + Maj(d,e,f);    g+=t1;    c=t1+t2;
++	t1 = b + e1(g) + Ch(g,h,a) + 0xbef9a3f7 + W[62];
++	t2 = e0(c) + Maj(c,d,e);    f+=t1;    b=t1+t2;
++	t1 = a + e1(f) + Ch(f,g,h) + 0xc67178f2 + W[63];
++	t2 = e0(b) + Maj(b,c,d);    e+=t1;    a=t1+t2;
++
++	state[0] += a; state[1] += b; state[2] += c; state[3] += d;
++	state[4] += e; state[5] += f; state[6] += g; state[7] += h;
++
++	/* clear any sensitive info... */
++	a = b = c = d = e = f = g = h = t1 = t2 = 0;
++	memset(W, 0, 64 * sizeof(u32));
++}
++
++static int sha224_init(struct digest *desc)
++{
++	struct sha256_state *sctx = digest_ctx(desc);
++	sctx->state[0] = SHA224_H0;
++	sctx->state[1] = SHA224_H1;
++	sctx->state[2] = SHA224_H2;
++	sctx->state[3] = SHA224_H3;
++	sctx->state[4] = SHA224_H4;
++	sctx->state[5] = SHA224_H5;
++	sctx->state[6] = SHA224_H6;
++	sctx->state[7] = SHA224_H7;
++	sctx->count = 0;
 +
 +	return 0;
 +}
 +
-+/*
-+ * If you have 32 registers or more, the compiler can (and should)
-+ * try to change the array[] accesses into registers. However, on
-+ * machines with less than ~25 registers, that won't really work,
-+ * and at least gcc will make an unholy mess of it.
-+ *
-+ * So to avoid that mess which just slows things down, we force
-+ * the stores to memory to actually happen (we might be better off
-+ * with a 'W(t)=(val);asm("":"+m" (W(t))' there instead, as
-+ * suggested by Artur Skawina - that will also make gcc unable to
-+ * try to do the silly "optimize away loads" part because it won't
-+ * see what the value will be).
-+ *
-+ * Ben Herrenschmidt reports that on PPC, the C version comes close
-+ * to the optimized asm with this (ie on PPC you don't want that
-+ * 'volatile', since there are lots of registers).
-+ *
-+ * On ARM we get the best code generation by forcing a full memory barrier
-+ * between each SHA_ROUND, otherwise gcc happily get wild with spilling and
-+ * the stack frame size simply explode and performance goes down the drain.
-+ */
-+
-+#ifdef CONFIG_X86
-+  #define setW(x, val) (*(volatile __u32 *)&W(x) = (val))
-+#elif defined(CONFIG_ARM)
-+  #define setW(x, val) do { W(x) = (val); __asm__("":::"memory"); } while (0)
-+#else
-+  #define setW(x, val) (W(x) = (val))
-+#endif
-+
-+/* This "rolls" over the 512-bit array */
-+#define W(x) (array[(x)&15])
-+
-+/*
-+ * Where do we get the source from? The first 16 iterations get it from
-+ * the input data, the next mix it from the 512-bit array.
-+ */
-+#define SHA_SRC(t) get_unaligned_be32((__u32 *)data + t)
-+#define SHA_MIX(t) rol32(W(t+13) ^ W(t+8) ^ W(t+2) ^ W(t), 1)
-+
-+#define SHA_ROUND(t, input, fn, constant, A, B, C, D, E) do { \
-+	__u32 TEMP = input(t); setW(t, TEMP); \
-+	E += TEMP + rol32(A,5) + (fn) + (constant); \
-+	B = ror32(B, 2); } while (0)
-+
-+#define T_0_15(t, A, B, C, D, E)  SHA_ROUND(t, SHA_SRC, (((C^D)&B)^D) , 0x5a827999, A, B, C, D, E )
-+#define T_16_19(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (((C^D)&B)^D) , 0x5a827999, A, B, C, D, E )
-+#define T_20_39(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (B^C^D) , 0x6ed9eba1, A, B, C, D, E )
-+#define T_40_59(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, ((B&C)+(D&(B^C))) , 0x8f1bbcdc, A, B, C, D, E )
-+#define T_60_79(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (B^C^D) ,  0xca62c1d6, A, B, C, D, E )
-+
-+/**
-+ * sha_transform - single block SHA1 transform
-+ *
-+ * @digest: 160 bit digest to update
-+ * @data:   512 bits of data to hash
-+ * @array:  16 words of workspace (see note)
-+ *
-+ * This function generates a SHA1 digest for a single 512-bit block.
-+ * Be warned, it does not handle padding and message digest, do not
-+ * confuse it with the full FIPS 180-1 digest algorithm for variable
-+ * length messages.
-+ *
-+ * Note: If the hash is security sensitive, the caller should be sure
-+ * to clear the workspace. This is left to the caller to avoid
-+ * unnecessary clears between chained hashing operations.
-+ */
-+static void sha_transform(__u32 *digest, const char *data, __u32 *array)
++static int sha256_init(struct digest *desc)
 +{
-+	__u32 A, B, C, D, E;
++	struct sha256_state *sctx = digest_ctx(desc);
++	sctx->state[0] = SHA256_H0;
++	sctx->state[1] = SHA256_H1;
++	sctx->state[2] = SHA256_H2;
++	sctx->state[3] = SHA256_H3;
++	sctx->state[4] = SHA256_H4;
++	sctx->state[5] = SHA256_H5;
++	sctx->state[6] = SHA256_H6;
++	sctx->state[7] = SHA256_H7;
++	sctx->count = 0;
 +
-+	A = digest[0];
-+	B = digest[1];
-+	C = digest[2];
-+	D = digest[3];
-+	E = digest[4];
-+
-+	/* Round 1 - iterations 0-16 take their input from 'data' */
-+	T_0_15( 0, A, B, C, D, E);
-+	T_0_15( 1, E, A, B, C, D);
-+	T_0_15( 2, D, E, A, B, C);
-+	T_0_15( 3, C, D, E, A, B);
-+	T_0_15( 4, B, C, D, E, A);
-+	T_0_15( 5, A, B, C, D, E);
-+	T_0_15( 6, E, A, B, C, D);
-+	T_0_15( 7, D, E, A, B, C);
-+	T_0_15( 8, C, D, E, A, B);
-+	T_0_15( 9, B, C, D, E, A);
-+	T_0_15(10, A, B, C, D, E);
-+	T_0_15(11, E, A, B, C, D);
-+	T_0_15(12, D, E, A, B, C);
-+	T_0_15(13, C, D, E, A, B);
-+	T_0_15(14, B, C, D, E, A);
-+	T_0_15(15, A, B, C, D, E);
-+
-+	/* Round 1 - tail. Input from 512-bit mixing array */
-+	T_16_19(16, E, A, B, C, D);
-+	T_16_19(17, D, E, A, B, C);
-+	T_16_19(18, C, D, E, A, B);
-+	T_16_19(19, B, C, D, E, A);
-+
-+	/* Round 2 */
-+	T_20_39(20, A, B, C, D, E);
-+	T_20_39(21, E, A, B, C, D);
-+	T_20_39(22, D, E, A, B, C);
-+	T_20_39(23, C, D, E, A, B);
-+	T_20_39(24, B, C, D, E, A);
-+	T_20_39(25, A, B, C, D, E);
-+	T_20_39(26, E, A, B, C, D);
-+	T_20_39(27, D, E, A, B, C);
-+	T_20_39(28, C, D, E, A, B);
-+	T_20_39(29, B, C, D, E, A);
-+	T_20_39(30, A, B, C, D, E);
-+	T_20_39(31, E, A, B, C, D);
-+	T_20_39(32, D, E, A, B, C);
-+	T_20_39(33, C, D, E, A, B);
-+	T_20_39(34, B, C, D, E, A);
-+	T_20_39(35, A, B, C, D, E);
-+	T_20_39(36, E, A, B, C, D);
-+	T_20_39(37, D, E, A, B, C);
-+	T_20_39(38, C, D, E, A, B);
-+	T_20_39(39, B, C, D, E, A);
-+
-+	/* Round 3 */
-+	T_40_59(40, A, B, C, D, E);
-+	T_40_59(41, E, A, B, C, D);
-+	T_40_59(42, D, E, A, B, C);
-+	T_40_59(43, C, D, E, A, B);
-+	T_40_59(44, B, C, D, E, A);
-+	T_40_59(45, A, B, C, D, E);
-+	T_40_59(46, E, A, B, C, D);
-+	T_40_59(47, D, E, A, B, C);
-+	T_40_59(48, C, D, E, A, B);
-+	T_40_59(49, B, C, D, E, A);
-+	T_40_59(50, A, B, C, D, E);
-+	T_40_59(51, E, A, B, C, D);
-+	T_40_59(52, D, E, A, B, C);
-+	T_40_59(53, C, D, E, A, B);
-+	T_40_59(54, B, C, D, E, A);
-+	T_40_59(55, A, B, C, D, E);
-+	T_40_59(56, E, A, B, C, D);
-+	T_40_59(57, D, E, A, B, C);
-+	T_40_59(58, C, D, E, A, B);
-+	T_40_59(59, B, C, D, E, A);
-+
-+	/* Round 4 */
-+	T_60_79(60, A, B, C, D, E);
-+	T_60_79(61, E, A, B, C, D);
-+	T_60_79(62, D, E, A, B, C);
-+	T_60_79(63, C, D, E, A, B);
-+	T_60_79(64, B, C, D, E, A);
-+	T_60_79(65, A, B, C, D, E);
-+	T_60_79(66, E, A, B, C, D);
-+	T_60_79(67, D, E, A, B, C);
-+	T_60_79(68, C, D, E, A, B);
-+	T_60_79(69, B, C, D, E, A);
-+	T_60_79(70, A, B, C, D, E);
-+	T_60_79(71, E, A, B, C, D);
-+	T_60_79(72, D, E, A, B, C);
-+	T_60_79(73, C, D, E, A, B);
-+	T_60_79(74, B, C, D, E, A);
-+	T_60_79(75, A, B, C, D, E);
-+	T_60_79(76, E, A, B, C, D);
-+	T_60_79(77, D, E, A, B, C);
-+	T_60_79(78, C, D, E, A, B);
-+	T_60_79(79, B, C, D, E, A);
-+
-+	digest[0] += A;
-+	digest[1] += B;
-+	digest[2] += C;
-+	digest[3] += D;
-+	digest[4] += E;
++	return 0;
 +}
 +
-+static int sha1_update(struct digest *desc, const void *data,
-+			     unsigned long len)
++static int sha256_update(struct digest *desc, const void *data,
++				unsigned long len)
 +{
-+	struct sha1_state *sctx = digest_ctx(desc);
++	struct sha256_state *sctx = digest_ctx(desc);
 +	unsigned int partial, done;
 +	const u8 *src;
 +
-+	partial = sctx->count % SHA1_BLOCK_SIZE;
++	partial = sctx->count & 0x3f;
 +	sctx->count += len;
 +	done = 0;
 +	src = data;
 +
-+	if ((partial + len) >= SHA1_BLOCK_SIZE) {
-+		u32 temp[SHA_WORKSPACE_WORDS];
-+
++	if ((partial + len) > 63) {
 +		if (partial) {
 +			done = -partial;
-+			memcpy(sctx->buffer + partial, data,
-+			       done + SHA1_BLOCK_SIZE);
-+			src = sctx->buffer;
++			memcpy(sctx->buf + partial, data, done + 64);
++			src = sctx->buf;
 +		}
 +
 +		do {
-+			sha_transform(sctx->state, src, temp);
-+			done += SHA1_BLOCK_SIZE;
++			sha256_transform(sctx->state, src);
++			done += 64;
 +			src = data + done;
-+		} while (done + SHA1_BLOCK_SIZE <= len);
++		} while (done + 63 < len);
 +
-+		memset(temp, 0, sizeof(temp));
 +		partial = 0;
 +	}
-+	memcpy(sctx->buffer + partial, src, len - done);
++	memcpy(sctx->buf + partial, src, len - done);
 +
 +	return 0;
 +}
 +
-+static int sha1_final(struct digest *desc, unsigned char *md)
++static int sha256_final(struct digest *desc, u8 *out)
 +{
-+	struct sha1_state *sctx = digest_ctx(desc);
-+	__be32 *dst = (__be32 *)md;
-+	u32 i, index, padlen;
++	struct sha256_state *sctx = digest_ctx(desc);
++	__be32 *dst = (__be32 *)out;
 +	__be64 bits;
++	unsigned int index, pad_len;
++	int i;
 +	static const u8 padding[64] = { 0x80, };
 +
++	/* Save number of bits */
 +	bits = cpu_to_be64(sctx->count << 3);
 +
-+	/* Pad out to 56 mod 64 */
++	/* Pad out to 56 mod 64. */
 +	index = sctx->count & 0x3f;
-+	padlen = (index < 56) ? (56 - index) : ((64+56) - index);
-+	sha1_update(desc, padding, padlen);
++	pad_len = (index < 56) ? (56 - index) : ((64+56) - index);
++	sha256_update(desc, padding, pad_len);
 +
-+	/* Append length */
-+	sha1_update(desc, (const u8 *)&bits, sizeof(bits));
++	/* Append length (before padding) */
++	sha256_update(desc, (const u8 *)&bits, sizeof(bits));
 +
 +	/* Store state in digest */
-+	for (i = 0; i < 5; i++)
++	for (i = 0; i < 8; i++)
 +		dst[i] = cpu_to_be32(sctx->state[i]);
 +
-+	/* Wipe context */
-+	memset(sctx, 0, sizeof *sctx);
++	/* Zeroize sensitive information. */
++	memset(sctx, 0, sizeof(*sctx));
 +
 +	return 0;
 +}
 +
-+static struct digest_algo m = {
++static int sha224_final(struct digest *desc, u8 *hash)
++{
++	u8 D[SHA256_DIGEST_SIZE];
++
++	sha256_final(desc, D);
++
++	memcpy(hash, D, SHA224_DIGEST_SIZE);
++	memset(D, 0, SHA256_DIGEST_SIZE);
++
++	return 0;
++}
++
++static struct digest_algo m224 = {
 +	.base = {
-+		.name		=	"sha1",
-+		.driver_name	=	"sha1-generic",
++		.name		=	"sha224",
++		.driver_name	=	"sha224-generic",
 +		.priority	=	0,
 +	},
 +
-+	.init		= sha1_init,
-+	.update		= sha1_update,
-+	.final		= sha1_final,
++	.init		= sha224_init,
++	.update		= sha256_update,
++	.final		= sha224_final,
++	.digest		= digest_generic_digest,
++	.verify 	= digest_generic_verify,
++	.length 	= SHA224_DIGEST_SIZE,
++	.ctx_length	= sizeof(struct sha256_state),
++};
++
++static int sha224_digest_register(void)
++{
++	if (!IS_ENABLED(CONFIG_SHA224))
++		return 0;
++
++	return digest_algo_register(&m224);
++}
++device_initcall(sha224_digest_register);
++
++static struct digest_algo m256 = {
++	.base = {
++		.name		=	"sha256",
++		.driver_name	=	"sha256-generic",
++		.priority	=	0,
++	},
++
++	.init		= sha256_init,
++	.update		= sha256_update,
++	.final		= sha256_final,
 +	.digest		= digest_generic_digest,
 +	.verify		= digest_generic_verify,
-+	.length		= SHA1_DIGEST_SIZE,
-+	.ctx_length = sizeof(struct sha1_state),
++	.length		= SHA256_DIGEST_SIZE,
++	.ctx_length	= sizeof(struct sha256_state),
 +};
 +
-+static int sha1_digest_register(void)
++static int sha256_digest_register(void)
 +{
-+	return digest_algo_register(&m);
++	if (!IS_ENABLED(CONFIG_SHA256))
++		return 0;
++
++	return digest_algo_register(&m256);
 +}
-+device_initcall(sha1_digest_register);
-diff --git a/include/crypto/sha.h b/include/crypto/sha.h
-new file mode 100644
-index 0000000..190f8a0
---- /dev/null
-+++ b/include/crypto/sha.h
-@@ -0,0 +1,95 @@
-+/*
-+ * Common values for SHA algorithms
-+ */
-+
-+#ifndef _CRYPTO_SHA_H
-+#define _CRYPTO_SHA_H
-+
-+#include <linux/types.h>
-+
-+#define SHA1_DIGEST_SIZE        20
-+#define SHA1_BLOCK_SIZE         64
-+
-+#define SHA224_DIGEST_SIZE	28
-+#define SHA224_BLOCK_SIZE	64
-+
-+#define SHA256_DIGEST_SIZE      32
-+#define SHA256_BLOCK_SIZE       64
-+
-+#define SHA384_DIGEST_SIZE      48
-+#define SHA384_BLOCK_SIZE       128
-+
-+#define SHA512_DIGEST_SIZE      64
-+#define SHA512_BLOCK_SIZE       128
-+
-+#define SHA1_H0		0x67452301UL
-+#define SHA1_H1		0xefcdab89UL
-+#define SHA1_H2		0x98badcfeUL
-+#define SHA1_H3		0x10325476UL
-+#define SHA1_H4		0xc3d2e1f0UL
-+
-+#define SHA224_H0	0xc1059ed8UL
-+#define SHA224_H1	0x367cd507UL
-+#define SHA224_H2	0x3070dd17UL
-+#define SHA224_H3	0xf70e5939UL
-+#define SHA224_H4	0xffc00b31UL
-+#define SHA224_H5	0x68581511UL
-+#define SHA224_H6	0x64f98fa7UL
-+#define SHA224_H7	0xbefa4fa4UL
-+
-+#define SHA256_H0	0x6a09e667UL
-+#define SHA256_H1	0xbb67ae85UL
-+#define SHA256_H2	0x3c6ef372UL
-+#define SHA256_H3	0xa54ff53aUL
-+#define SHA256_H4	0x510e527fUL
-+#define SHA256_H5	0x9b05688cUL
-+#define SHA256_H6	0x1f83d9abUL
-+#define SHA256_H7	0x5be0cd19UL
-+
-+#define SHA384_H0	0xcbbb9d5dc1059ed8ULL
-+#define SHA384_H1	0x629a292a367cd507ULL
-+#define SHA384_H2	0x9159015a3070dd17ULL
-+#define SHA384_H3	0x152fecd8f70e5939ULL
-+#define SHA384_H4	0x67332667ffc00b31ULL
-+#define SHA384_H5	0x8eb44a8768581511ULL
-+#define SHA384_H6	0xdb0c2e0d64f98fa7ULL
-+#define SHA384_H7	0x47b5481dbefa4fa4ULL
-+
-+#define SHA512_H0	0x6a09e667f3bcc908ULL
-+#define SHA512_H1	0xbb67ae8584caa73bULL
-+#define SHA512_H2	0x3c6ef372fe94f82bULL
-+#define SHA512_H3	0xa54ff53a5f1d36f1ULL
-+#define SHA512_H4	0x510e527fade682d1ULL
-+#define SHA512_H5	0x9b05688c2b3e6c1fULL
-+#define SHA512_H6	0x1f83d9abfb41bd6bULL
-+#define SHA512_H7	0x5be0cd19137e2179ULL
-+
-+struct sha1_state {
-+	u64 count;
-+	u32 state[SHA1_DIGEST_SIZE / 4];
-+	u8 buffer[SHA1_BLOCK_SIZE];
-+};
-+
-+struct sha256_state {
-+	u64 count;
-+	u32 state[SHA256_DIGEST_SIZE / 4];
-+	u8 buf[SHA256_BLOCK_SIZE];
-+};
-+
-+struct sha512_state {
-+	u64 count[2];
-+	u64 state[SHA512_DIGEST_SIZE / 8];
-+	u8 buf[SHA512_BLOCK_SIZE];
-+};
-+
-+struct shash_desc;
-+
-+extern int crypto_sha1_update(struct shash_desc *desc, const u8 *data,
-+			      unsigned int len);
-+
-+extern int crypto_sha256_update(struct shash_desc *desc, const u8 *data,
-+			      unsigned int len);
-+
-+extern int crypto_sha512_update(struct shash_desc *desc, const u8 *data,
-+			      unsigned int len);
-+#endif
-diff --git a/include/digest.h b/include/digest.h
-index 00aeee5..7f8d696 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -127,4 +127,9 @@ static inline const char *digest_name(struct digest *d)
- 	return d->algo->base.name;
- }
- 
-+static inline void* digest_ctx(struct digest *d)
-+{
-+	return d->ctx;
-+}
-+
- #endif /* __SH_ST_DEVICES_H__ */
++device_initcall(sha256_digest_register);
 -- 
 2.1.4
 
