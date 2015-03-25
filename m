@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo6.mail-out.ovh.net ([188.165.56.177])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YabUZ-0000tm-Tm
- for barebox@lists.infradead.org; Wed, 25 Mar 2015 02:56:28 +0000
-Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 89A81FF900D
- for <barebox@lists.infradead.org>; Wed, 25 Mar 2015 03:56:03 +0100 (CET)
-Date: Wed, 25 Mar 2015 03:55:59 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20150325025559.GC8125@ns203013.ovh.net>
-References: <20150324130035.GB8125@ns203013.ovh.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YagzG-0003ti-Eg
+ for barebox@lists.infradead.org; Wed, 25 Mar 2015 08:48:31 +0000
+Date: Wed, 25 Mar 2015 09:48:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150325084806.GA9742@pengutronix.de>
+References: <1427191433-48345-1-git-send-email-s.mueller-klieser@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150324130035.GB8125@ns203013.ovh.net>
+In-Reply-To: <1427191433-48345-1-git-send-email-s.mueller-klieser@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,32 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7 v2] digest: allow multiple implementation of digest
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/2] lzo update from kernel
+To: Stefan =?iso-8859-15?Q?M=FCller-Klieser?= <s.mueller-klieser@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On 14:00 Tue 24 Mar     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	The following serie allow you to have multiple driver for
-> 	the digest.
-> 
-> 	This also switch the sha1 implementation to the kernel one and
-> 	add the armv4 asm implementtion that save nearly 6KiB in a zbarebox
-> 	lzo.
-> 
-> 
-> v2:
-> 	switch sha256 and sha512 to linux implementation
-> 	add arm sha256 asm implementation
+On Tue, Mar 24, 2015 at 11:03:51AM +0100, Stefan M=FCller-Klieser wrote:
+> This would be the lzo update with the correct revert.
+> =
 
-Totaly we save 4896 bytes ~4.8KiB ad double the speed arround
+> Stefan M=FCller-Klieser (2):
+>   Revert "lzo: properly check for overruns"
+>   lzo: check for length overrun in variable length encoding.
+> =
 
-Best Regards,
-J.
+>  lib/lzo/lzo1x_decompress_safe.c | 107 ++++++++++++++++++++++------------=
+------
+>  1 file changed, 59 insertions(+), 48 deletions(-)
+
+Applied both, thanks
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
