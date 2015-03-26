@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yb1mn-0001kp-Qx
- for barebox@lists.infradead.org; Thu, 26 Mar 2015 07:01:02 +0000
-Date: Thu, 26 Mar 2015 08:00:40 +0100
+ Linux)) id 1Yb1nE-0001tZ-2H
+ for barebox@lists.infradead.org; Thu, 26 Mar 2015 07:01:28 +0000
+Date: Thu, 26 Mar 2015 08:01:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150326070040.GJ9742@pengutronix.de>
-References: <1427327146-5029-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20150326070106.GK9742@pengutronix.de>
+References: <1427317062-20969-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1427327146-5029-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1427317062-20969-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] docs: correct link to microcom repo
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 1/4] ARM: highbank: fix build with recent binutils
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 26, 2015 at 12:45:46AM +0100, Lucas Stach wrote:
-> It's not nice to land on a 404 page and having to
-> search for the right location manually.
+On Wed, Mar 25, 2015 at 09:57:39PM +0100, Lucas Stach wrote:
+> Recent binutils versions assume that the v7 security
+> extensions are not available by default. They need to be enabled
+> explicitly if code wishes to use instructions defined by them.
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  Documentation/user/system-setup.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm/mach-highbank/smc.S | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied, thanks
+Applied the non controversal patches for now.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
