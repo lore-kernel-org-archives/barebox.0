@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yav0Y-0004G8-8u
- for barebox@lists.infradead.org; Wed, 25 Mar 2015 23:46:47 +0000
-Received: from antimon.intern.lynxeye.de.Speedport_W_504V_Typ_A
- (p4FD7DA20.dip0.t-ipconnect.de [79.215.218.32])
- by lynxeye.de (Postfix) with ESMTPA id D8F2F26C2001
- for <barebox@lists.infradead.org>; Thu, 26 Mar 2015 00:45:49 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 26 Mar 2015 00:45:46 +0100
-Message-Id: <1427327146-5029-1-git-send-email-dev@lynxeye.de>
+Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YaywO-0000Bd-Kq
+ for barebox@lists.infradead.org; Thu, 26 Mar 2015 03:58:45 +0000
+Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 6465DFFC2F7
+ for <barebox@lists.infradead.org>; Thu, 26 Mar 2015 04:58:19 +0100 (CET)
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <1427317062-20969-3-git-send-email-l.stach@pengutronix.de>
+Date: Thu, 26 Mar 2015 11:58:12 +0800
+Message-Id: <91E9E3EA-7E8E-40FF-B6B5-F5AF9B7DF859@jcrosoft.com>
+References: <1427317062-20969-1-git-send-email-l.stach@pengutronix.de>
+ <1427317062-20969-3-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +21,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] docs: correct link to microcom repo
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/4] ARM: highbank: select OFTREE
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-It's not nice to land on a 404 page and having to
-search for the right location manually.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- Documentation/user/system-setup.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On Mar 26, 2015, at 4:57 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
+> 
+> The board code uses quite a few OF functions and it doesn't seem
+> reasonable to run this board without DT support.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+> arch/arm/mach-highbank/Kconfig | 1 +
+> 1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/mach-highbank/Kconfig b/arch/arm/mach-highbank/Kconfig
+> index 950810b57517..8af480861c3f 100644
+> --- a/arch/arm/mach-highbank/Kconfig
+> +++ b/arch/arm/mach-highbank/Kconfig
+> @@ -9,6 +9,7 @@ choice
+> 
+> config MACH_HIGHBANK
+> 	bool "Calxeda Highbank"
+> +	select OFTREE
+> 	select HAVE_DEFAULT_ENVIRONMENT_NEW
 
-diff --git a/Documentation/user/system-setup.rst b/Documentation/user/system-setup.rst
-index 683da9e6b584..7e4a7669a8fe 100644
---- a/Documentation/user/system-setup.rst
-+++ b/Documentation/user/system-setup.rst
-@@ -29,7 +29,7 @@ A good alternative terminal program is microcom. On Debian it can be installed
- with ``apt-get install microcom``, on other distributions it can be installed
- from source:
- 
--http://git.pengutronix.de/?p=tools/microcom;a=summary
-+http://git.pengutronix.de/?p=tools/microcom.git;a=summary
- 
- Usage is simple::
- 
--- 
-2.1.0
+you can run wihtout it as the oftree code is only used if you decide to use the dtb provided by the
+firmware
+
+as example on qemu
+
+so nack on this one
+
+Best Regards,
+J.
+> 
+> endchoice
+> -- 
+> 2.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
 _______________________________________________
