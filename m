@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YaywO-0000Bd-Kq
- for barebox@lists.infradead.org; Thu, 26 Mar 2015 03:58:45 +0000
-Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 6465DFFC2F7
- for <barebox@lists.infradead.org>; Thu, 26 Mar 2015 04:58:19 +0100 (CET)
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <1427317062-20969-3-git-send-email-l.stach@pengutronix.de>
-Date: Thu, 26 Mar 2015 11:58:12 +0800
-Message-Id: <91E9E3EA-7E8E-40FF-B6B5-F5AF9B7DF859@jcrosoft.com>
-References: <1427317062-20969-1-git-send-email-l.stach@pengutronix.de>
- <1427317062-20969-3-git-send-email-l.stach@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Yb1ZH-0004CW-OT
+ for barebox@lists.infradead.org; Thu, 26 Mar 2015 06:47:05 +0000
+Date: Thu, 26 Mar 2015 07:46:41 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150326064641.GH9742@pengutronix.de>
+References: <20150325115140.GD8125@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150325115140.GD8125@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,52 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] ARM: highbank: select OFTREE
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 0/9 v3] digest: allow multiple implementation of digest
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
+On Wed, Mar 25, 2015 at 12:51:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> 	The following serie allow you to have multiple driver for
+> 	the digest.
+> 
+> 	This also switch the sha1 implementation to the kernel one and
+> 	add the armv4 asm implementtion that save nearly 6KiB in a zbarebox
+> 	lzo.
 
-> On Mar 26, 2015, at 4:57 AM, Lucas Stach <l.stach@pengutronix.de> wrote:
-> 
-> The board code uses quite a few OF functions and it doesn't seem
-> reasonable to run this board without DT support.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
-> arch/arm/mach-highbank/Kconfig | 1 +
-> 1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm/mach-highbank/Kconfig b/arch/arm/mach-highbank/Kconfig
-> index 950810b57517..8af480861c3f 100644
-> --- a/arch/arm/mach-highbank/Kconfig
-> +++ b/arch/arm/mach-highbank/Kconfig
-> @@ -9,6 +9,7 @@ choice
-> 
-> config MACH_HIGHBANK
-> 	bool "Calxeda Highbank"
-> +	select OFTREE
-> 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+Applied, thanks
 
-you can run wihtout it as the oftree code is only used if you decide to use the dtb provided by the
-firmware
+Sascha
 
-as example on qemu
 
-so nack on this one
-
-Best Regards,
-J.
-> 
-> endchoice
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
