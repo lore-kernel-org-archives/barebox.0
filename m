@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YbP4E-000473-Bw
- for barebox@lists.infradead.org; Fri, 27 Mar 2015 07:52:35 +0000
-Date: Fri, 27 Mar 2015 08:52:09 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150327075209.GT9742@pengutronix.de>
-References: <DB3PR03MB0826EDA17C8F26BA05AEAC9A98080@DB3PR03MB0826.eurprd03.prod.outlook.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <DB3PR03MB0826EDA17C8F26BA05AEAC9A98080@DB3PR03MB0826.eurprd03.prod.outlook.com>
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YbX2l-0002r6-O1
+ for barebox@lists.infradead.org; Fri, 27 Mar 2015 16:23:36 +0000
+Received: by lbdc10 with SMTP id c10so13232606lbd.2
+ for <barebox@lists.infradead.org>; Fri, 27 Mar 2015 09:23:13 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 27 Mar 2015 19:23:04 +0300
+Message-Id: <1427473384-30472-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: OMAP NAND Driver ECC Read broken
-To: "Gabor Janak (g.janak@agilion.de)" <g.janak@agilion.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] fixup! command: add hmac sum supportfor md5, sha1, sha224,
+ sha256, sha384, sha512
+To: barebox@lists.infradead.org
 
-Hi Gabor,
+---
+ commands/hashsum.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Thu, Mar 26, 2015 at 08:13:38AM +0000, Gabor Janak (g.janak@agilion.de) wrote:
-> Hello,
-> 
-> on all Platforms which using
-> drivers/mtd/nand/nand_omap_gpmc.c
-> with  ECC Mode OMAP_ECC_HAMMING_CODE_HW_ROMCODE
-> (in DTS: bch8_hw_romcode )  the Code is only check the first part of a block page.
-> 
-> The special Read-function read always a whole page, but only the ECC results oft he first block is checked.
-> Any Error after first 512Byte are not detected and not corrected.
-> 
-> I'm Using barebox-2014.09  on am335x . But it looks in the current HEAD same ...
-> 
-> A fast Workaround hack :
-> In function omap_correct_bch:
-> Settings blocks always to 4  and because eccsize is 13
-> 
-> Changing at the end:
->                calc_ecc = calc_ecc + eccsize;
->                 read_ecc = read_ecc + eccsize+1; //add 1 because in Flash 13+1 is written
->                 dat += 512;
-> 
-> 
-> I know this ist he wrong way.... ;)
-> 
-> If i have some time, i will try to search a better solution, but currently i have not much time.
-
-It would be great if you could find the time to write a patch. Thanks
-for noting this issue anyway, it may safe other peoples time.
-
-Sascha
-
-
+diff --git a/commands/hashsum.c b/commands/hashsum.c
+index e2dc70e..8d3694f 100644
+--- a/commands/hashsum.c
++++ b/commands/hashsum.c
+@@ -36,7 +36,7 @@ static int do_hash(char *algo, int argc, char *argv[])
+ 	size_t keylen = 0;
+ 	int opt, ret;
+ 
+-	while((opt = getopt(argc, argv, "h:")) > 0) {
++	while ((opt = getopt(argc, argv, "h:")) > 0) {
+ 		switch(opt) {
+ 		case 'h':
+ 			key = optarg;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
