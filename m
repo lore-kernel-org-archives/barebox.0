@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YbNpl-00048H-GE
- for barebox@lists.infradead.org; Fri, 27 Mar 2015 06:33:34 +0000
-Received: by lahp7 with SMTP id p7so44145577lah.2
- for <barebox@lists.infradead.org>; Thu, 26 Mar 2015 23:33:10 -0700 (PDT)
-Date: Fri, 27 Mar 2015 10:37:26 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150327103726.ce76e9f7bbb13fd557d17ce1@gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YbO7Z-0004iT-KG
+ for barebox@lists.infradead.org; Fri, 27 Mar 2015 06:51:58 +0000
+Date: Fri, 27 Mar 2015 07:51:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150327065132.GS9742@pengutronix.de>
+References: <20150327103726.ce76e9f7bbb13fd557d17ce1@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150327103726.ce76e9f7bbb13fd557d17ce1@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,27 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: hashsum.c:54:3: error: 'ret' undeclared (first use in this function)
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: hashsum.c:54:3: error: 'ret' undeclared (first use in this
+ function)
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi !
+Hi Antony,
 
-I can't build barebox/next for qemu-malta:
+On Fri, Mar 27, 2015 at 10:37:26AM +0400, Antony Pavlov wrote:
+> Hi !
+> 
+> I can't build barebox/next for qemu-malta:
+> 
+>   CC      commands/hashsum.o
+> commands/hashsum.c: In function 'do_hash':
+> commands/hashsum.c:54:3: error: 'ret' undeclared (first use in this function)
+>    ret = digest_set_key(d, key, keylen);
 
-  CC      commands/hashsum.o
-commands/hashsum.c: In function 'do_hash':
-commands/hashsum.c:54:3: error: 'ret' undeclared (first use in this functio=
-n)
-   ret =3D digest_set_key(d, key, keylen);
+Yeah, my auto builder complained about that aswell. A fix is upstream
+now. Thanks for noting.
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
