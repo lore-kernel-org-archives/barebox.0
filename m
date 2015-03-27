@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YbZqz-0008JK-LI
- for barebox@lists.infradead.org; Fri, 27 Mar 2015 19:23:38 +0000
+ Linux)) id 1YbZqz-0008JE-LI
+ for barebox@lists.infradead.org; Fri, 27 Mar 2015 19:23:39 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Fri, 27 Mar 2015 20:23:12 +0100
-Message-Id: <1427484192-5410-2-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1427484192-5410-1-git-send-email-mkl@pengutronix.de>
-References: <1427484192-5410-1-git-send-email-mkl@pengutronix.de>
+Date: Fri, 27 Mar 2015 20:23:11 +0100
+Message-Id: <1427484192-5410-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] duckbill: fix PBL debug prefix
+Subject: [PATCH 1/2] ARM/MXS/i.MX28: recognize watchdog reset
 To: barebox@lists.infradead.org
-Cc: sha@pengutronix.de
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, sha@pengutronix.de
 
-From: Jan Luebbe <jlu@pengutronix.de>
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+When a watchdog timeout is set in the linux kernel, the FORCE_UPDATE bit is set.
+Use this to recognize a system reset that was triggered by the watchdog.
+Since only the wdt part of the kernel driver sets this bit, this is a safe
+distinguishing feature.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/arm/boards/duckbill/lowlevel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/im28wd.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/boards/duckbill/lowlevel.c b/arch/arm/boards/duckbill/lowlevel.c
-index 77d2e83aedd0..49563a0876e0 100644
---- a/arch/arm/boards/duckbill/lowlevel.c
-+++ b/arch/arm/boards/duckbill/lowlevel.c
-@@ -1,4 +1,4 @@
--#define pr_fmt(fmt) "Freescale MX28evk: " fmt
-+#define pr_fmt(fmt) "I2SE Duckbill: " fmt
- #define DEBUG
+diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
+index 3e73ecd62e7c..a9093a7b51c9 100644
+--- a/drivers/watchdog/im28wd.c
++++ b/drivers/watchdog/im28wd.c
+@@ -176,6 +176,13 @@ static void __maybe_unused imx28_detect_reset_source(const struct imx28_wd *p)
+ 		reset_source_set(RESET_RST);
+ 		return;
+ 	}
++	reg = readl(p->regs + MXS_RTC_PERSISTENT1);
++	if (reg & MXS_RTC_PERSISTENT1_FORCE_UPDATER) {
++		writel(MXS_RTC_PERSISTENT1_FORCE_UPDATER,
++			p->regs + MXS_RTC_PERSISTENT1 + MXS_RTC_CLR_ADDR);
++		reset_source_set(RESET_WDG);
++		return;
++	}
  
- #include <common.h>
+ 	reset_source_set(RESET_RST);
+ }
 -- 
 2.1.4
 
