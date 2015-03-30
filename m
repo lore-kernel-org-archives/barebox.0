@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YcdRW-0003e4-89
- for barebox@lists.infradead.org; Mon, 30 Mar 2015 17:25:42 +0000
-Date: Mon, 30 Mar 2015 19:25:20 +0200
+ Linux)) id 1YcdTt-0004dK-7S
+ for barebox@lists.infradead.org; Mon, 30 Mar 2015 17:28:10 +0000
+Date: Mon, 30 Mar 2015 19:27:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150330172520.GD9742@pengutronix.de>
-References: <1427712963-16478-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20150330172747.GE9742@pengutronix.de>
+References: <1427723465-9306-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1427712963-16478-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1427723465-9306-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,28 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: tegra124: remove serial aliases
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 1/2] mtd: nand_omap_gpmc: Remove unused code
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 30, 2015 at 12:56:03PM +0200, Lucas Stach wrote:
-> They are upstream now and unfortunately actively break some boards
-> as they are using a different alias numbering in the kernel.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
-> If possible please apply to master, to shorten the period of time
-> where barebox + upstream kernel combinations are broken.
+On Mon, Mar 30, 2015 at 03:51:04PM +0200, Teresa G=E1mez wrote:
+> The ecc layout structs are not used anywhere.
+> =
 
-Did that
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+> ---
+>  drivers/mtd/nand/nand_omap_gpmc.c | 68 ---------------------------------=
+------
+>  1 file changed, 68 deletions(-)
+
+Applied both, thanks
 
 Sascha
 
--- 
+
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
