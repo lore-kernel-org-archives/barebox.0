@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yca9K-0000qI-B4
- for barebox@lists.infradead.org; Mon, 30 Mar 2015 13:54:43 +0000
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Mon, 30 Mar 2015 15:51:04 +0200
-Message-Id: <1427723465-9306-1-git-send-email-t.gamez@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YcdQa-0002Hw-RY
+ for barebox@lists.infradead.org; Mon, 30 Mar 2015 17:24:46 +0000
+Date: Mon, 30 Mar 2015 19:24:24 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+Message-ID: <20150330172424.GC9742@pengutronix.de>
+References: <1427484192-5410-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1427484192-5410-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,53 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: nand_omap_gpmc: Remove unused code
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM/MXS/i.MX28: recognize watchdog reset
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-VGhlIGVjYyBsYXlvdXQgc3RydWN0cyBhcmUgbm90IHVzZWQgYW55d2hlcmUuCgpTaWduZWQtb2Zm
-LWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCiBkcml2ZXJzL210ZC9u
-YW5kL25hbmRfb21hcF9ncG1jLmMgfCA2OCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA2OCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9k
-cml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRf
-b21hcF9ncG1jLmMKaW5kZXggZDI1NDA0Mi4uNjQ3NjA1YiAxMDA2NDQKLS0tIGEvZHJpdmVycy9t
-dGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFw
-X2dwbWMuYwpAQCAtMTMwLDUzICsxMzAsNiBAQCBzdGF0aWMgc3RydWN0IG5hbmRfYmJ0X2Rlc2Ny
-IGJiX2Rlc2NyaXBfZmxhc2hiYXNlZCA9IHsKIAkucGF0dGVybiA9IHNjYW5fZmZfcGF0dGVybiwK
-IH07CiAKLS8qKiBMYXJnZSBQYWdlIHg4IE5BTkQgZGV2aWNlIExheW91dCAqLwotc3RhdGljIHN0
-cnVjdCBuYW5kX2VjY2xheW91dCBlY2NfbHBfeDggPSB7Ci0JLmVjY2J5dGVzID0gMTIsCi0JLmVj
-Y3BvcyA9IHsxLCAyLCAzLCA0LCA1LCA2LCA3LCA4LCA5LCAxMCwgMTEsIDEyfSwKLQkub29iZnJl
-ZSA9IHsKLQkJewotCQkJLm9mZnNldCA9IDYwLAotCQkJLmxlbmd0aCA9IDIsCi0JCX0KLQl9Ci19
-OwotCi0vKiogTGFyZ2UgUGFnZSB4MTYgTkFORCBkZXZpY2UgTGF5b3V0ICovCi1zdGF0aWMgc3Ry
-dWN0IG5hbmRfZWNjbGF5b3V0IGVjY19scF94MTYgPSB7Ci0JLmVjY2J5dGVzID0gMTIsCi0JLmVj
-Y3BvcyA9IHsyLCAzLCA0LCA1LCA2LCA3LCA4LCA5LCAxMCwgMTEsIDEyLCAxM30sCi0JLm9vYmZy
-ZWUgPSB7Ci0JCXsKLQkJCS5vZmZzZXQgPSA2MCwKLQkJCS5sZW5ndGggPSAyLAotCQl9Ci0JfQot
-fTsKLQotLyoqIFNtYWxsIFBhZ2UgeDggTkFORCBkZXZpY2UgTGF5b3V0ICovCi1zdGF0aWMgc3Ry
-dWN0IG5hbmRfZWNjbGF5b3V0IGVjY19zcF94OCA9IHsKLQkuZWNjYnl0ZXMgPSAzLAotCS5lY2Nw
-b3MgPSB7MSwgMiwgM30sCi0JLm9vYmZyZWUgPSB7Ci0JCXsKLQkJCS5vZmZzZXQgPSAxNCwKLQkJ
-CS5sZW5ndGggPSAyLAotCQl9Ci0JfQotfTsKLQotLyoqIFNtYWxsIFBhZ2UgeDE2IE5BTkQgZGV2
-aWNlIExheW91dCAqLwotc3RhdGljIHN0cnVjdCBuYW5kX2VjY2xheW91dCBlY2Nfc3BfeDE2ID0g
-ewotCS5lY2NieXRlcyA9IDMsCi0JLmVjY3BvcyA9IHsyLCAzLCA0fSwKLQkub29iZnJlZSA9IHsK
-LQkJewotCQkJLm9mZnNldCA9IDE0LAotCQkJLmxlbmd0aCA9IDIgfQotCX0KLX07Ci0KIC8qKgog
-ICogQGJyaWVmIGNhbGxzIHRoZSBwbGF0Zm9ybSBzcGVjaWZpYyBkZXZfcmVhZHkgZnVuY3Rpb25k
-cwogICoKQEAgLTg5MSw3ICs4NDQsNiBAQCBzdGF0aWMgaW50IGdwbWNfbmFuZF9wcm9iZShzdHJ1
-Y3QgZGV2aWNlX2QgKnBkZXYpCiAJc3RydWN0IG10ZF9pbmZvICptaW5mbzsKIAl2b2lkIF9faW9t
-ZW0gKmNzX2Jhc2U7CiAJaW50IGVycjsKLQlzdHJ1Y3QgbmFuZF9lY2NsYXlvdXQgKmxheW91dCwg
-KmxzcCwgKmxscDsKIAogCXBkYXRhID0gKHN0cnVjdCBncG1jX25hbmRfcGxhdGZvcm1fZGF0YSAq
-KXBkZXYtPnBsYXRmb3JtX2RhdGE7CiAJaWYgKHBkYXRhID09IE5VTEwpIHsKQEAgLTEwMTIsMjYg
-Kzk2NCw2IEBAIHN0YXRpYyBpbnQgZ3BtY19uYW5kX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqcGRl
-dikKIAogCWdwbWNfc2V0X2J1c3dpZHRoKG5hbmQsIG5hbmQtPm9wdGlvbnMgJiBOQU5EX0JVU1dJ
-RFRIXzE2KTsKIAotCWlmIChuYW5kLT5vcHRpb25zICYgTkFORF9CVVNXSURUSF8xNikgewotCQls
-c3AgPSAmZWNjX3NwX3gxNjsKLQkJbGxwID0gJmVjY19scF94MTY7Ci0JfSBlbHNlIHsKLQkJbHNw
-ID0gJmVjY19zcF94ODsKLQkJbGxwID0gJmVjY19scF94ODsKLQl9Ci0KLQlzd2l0Y2ggKG1pbmZv
-LT53cml0ZXNpemUpIHsKLQljYXNlIDUxMjoKLQkJbGF5b3V0ID0gbHNwOwotCQlicmVhazsKLQlj
-YXNlIDIwNDg6Ci0JCWxheW91dCA9IGxscDsKLQkJYnJlYWs7Ci0JZGVmYXVsdDoKLQkJZXJyID0g
-LUVJTlZBTDsKLQkJZ290byBvdXRfcmVsZWFzZV9tZW07Ci0JfQotCiAJbmFuZC0+cmVhZF9idWYg
-ICA9IG9tYXBfcmVhZF9idWZfcHJlZjsKIAlpZiAoSVNfRU5BQkxFRChDT05GSUdfTVREX1dSSVRF
-KSkKIAkJbmFuZC0+d3JpdGVfYnVmICA9IG9tYXBfd3JpdGVfYnVmX3ByZWY7Ci0tIAoxLjkuMQoK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Fri, Mar 27, 2015 at 08:23:11PM +0100, Marc Kleine-Budde wrote:
+> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> 
+> When a watchdog timeout is set in the linux kernel, the FORCE_UPDATE bit is set.
+> Use this to recognize a system reset that was triggered by the watchdog.
+> Since only the wdt part of the kernel driver sets this bit, this is a safe
+> distinguishing feature.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  drivers/watchdog/im28wd.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+
+Applied, thanks
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
