@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YcdQa-0002Hw-RY
- for barebox@lists.infradead.org; Mon, 30 Mar 2015 17:24:46 +0000
-Date: Mon, 30 Mar 2015 19:24:24 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20150330172424.GC9742@pengutronix.de>
-References: <1427484192-5410-1-git-send-email-mkl@pengutronix.de>
+ Linux)) id 1YcdRW-0003e4-89
+ for barebox@lists.infradead.org; Mon, 30 Mar 2015 17:25:42 +0000
+Date: Mon, 30 Mar 2015 19:25:20 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150330172520.GD9742@pengutronix.de>
+References: <1427712963-16478-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1427484192-5410-1-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1427712963-16478-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM/MXS/i.MX28: recognize watchdog reset
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH] ARM: tegra124: remove serial aliases
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Mar 27, 2015 at 08:23:11PM +0100, Marc Kleine-Budde wrote:
-> From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+On Mon, Mar 30, 2015 at 12:56:03PM +0200, Lucas Stach wrote:
+> They are upstream now and unfortunately actively break some boards
+> as they are using a different alias numbering in the kernel.
 > 
-> When a watchdog timeout is set in the linux kernel, the FORCE_UPDATE bit is set.
-> Use this to recognize a system reset that was triggered by the watchdog.
-> Since only the wdt part of the kernel driver sets this bit, this is a safe
-> distinguishing feature.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  drivers/watchdog/im28wd.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> If possible please apply to master, to shorten the period of time
+> where barebox + upstream kernel combinations are broken.
 
-Applied, thanks
+Did that
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
