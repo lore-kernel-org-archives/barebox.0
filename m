@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YcXMo-0001Tp-RD
- for barebox@lists.infradead.org; Mon, 30 Mar 2015 10:56:27 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1YcXMR-0002Gp-4U
- for barebox@lists.infradead.org; Mon, 30 Mar 2015 12:56:03 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 30 Mar 2015 12:56:03 +0200
-Message-Id: <1427712963-16478-1-git-send-email-l.stach@pengutronix.de>
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Yca9K-0000qL-B5
+ for barebox@lists.infradead.org; Mon, 30 Mar 2015 13:54:43 +0000
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Mon, 30 Mar 2015 15:51:05 +0200
+Message-Id: <1427723465-9306-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1427723465-9306-1-git-send-email-t.gamez@phytec.de>
+References: <1427723465-9306-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,44 +17,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: tegra124: remove serial aliases
+Subject: [PATCH 2/2] mtd: nand_omap_gpmc: Fix ecc check for bch8 romcode
 To: barebox@lists.infradead.org
 
-They are upstream now and unfortunately actively break some boards
-as they are using a different alias numbering in the kernel.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
-If possible please apply to master, to shorten the period of time
-where barebox + upstream kernel combinations are broken.
----
- arch/arm/dts/tegra124.dtsi | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/arch/arm/dts/tegra124.dtsi b/arch/arm/dts/tegra124.dtsi
-index cd515a2e2ab1..9276f2f0bd9c 100644
---- a/arch/arm/dts/tegra124.dtsi
-+++ b/arch/arm/dts/tegra124.dtsi
-@@ -1,9 +1,5 @@
- / {
- 	aliases {
--		serial0 = "/serial@0,70006000/";
--		serial1 = "/serial@0,70006040/";
--		serial2 = "/serial@0,70006200/";
--		serial3 = "/serial@0,70006300/";
- 		mmc0 = "/sdhci@0,700b0000/";
- 		mmc1 = "/sdhci@0,700b0200/";
- 		mmc2 = "/sdhci@0,700b0400/";
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGJjaDggcm9tY29kZSB3YXMgb25seSBjaGVja2VkIGFuZCBjb3JyZWN0ZWQgZm9yIHRoZQpm
+aXJzdCA1MTIgYnl0ZXMgb2YgYSAyMDQ4IGJ5dGUgcGFnZS4gU2V0IGludGVyYXRpb24gY291bnRl
+cgphbmQgZWNjc2l6ZXMgY29ycmVjdCBmb3IgdGhlIGRpZmZlcmVudCBiY2ggdHlwZXMuCgpUZXN0
+ZWQgT01BUF9FQ0NfQkNIOF9DT0RFX0hXIGFuZCBPTUFQX0VDQ19CQ0g4X0NPREVfSFdfUk9NQ09E
+RS4KClJlcG9ydGVkLWJ5OiBHYWJvciBKYW5hayA8Zy5qYW5ha0BhZ2lsaW9uLmRlPgpTaWduZWQt
+b2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCiBkcml2ZXJzL210
+ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMgfCAzOCArKysrKysrKysrKysrKysrKysrKysrKy0tLS0t
+LS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDIzIGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9u
+cygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dwbWMuYyBiL2Ry
+aXZlcnMvbXRkL25hbmQvbmFuZF9vbWFwX2dwbWMuYwppbmRleCA2NDc2MDViLi45ZDlkMjdlIDEw
+MDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfb21hcF9ncG1jLmMKKysrIGIvZHJpdmVy
+cy9tdGQvbmFuZC9uYW5kX29tYXBfZ3BtYy5jCkBAIC0yOTgsMzcgKzI5OCw0NSBAQCBzdGF0aWMg
+aW50IG9tYXBfY29ycmVjdF9iY2goc3RydWN0IG10ZF9pbmZvICptdGQsIHVpbnQ4X3QgKmRhdCwK
+IHsKIAlzdHJ1Y3QgbmFuZF9jaGlwICpuYW5kID0gKHN0cnVjdCBuYW5kX2NoaXAgKikobXRkLT5w
+cml2KTsKIAlzdHJ1Y3QgZ3BtY19uYW5kX2luZm8gKm9pbmZvID0gKHN0cnVjdCBncG1jX25hbmRf
+aW5mbyAqKShuYW5kLT5wcml2KTsKLQlpbnQgaSwgaiwgZWNjc2l6ZSwgZWNjZmxhZywgY291bnQs
+IHRvdGFsY291bnQ7CisJaW50IGksIGosIGVjY2ZsYWcsIGNvdW50LCB0b3RhbGNvdW50LCBhY3R1
+YWxfZWNjc2l6ZTsKIAl1bnNpZ25lZCBpbnQgZXJyX2xvY1s4XTsKLQlpbnQgYmxvY2tzID0gMDsK
+IAlpbnQgc2VsZWN0XzRfODsKIAotCWlmIChvaW5mby0+ZWNjX21vZGUgPT0gT01BUF9FQ0NfQkNI
+NF9DT0RFX0hXKSB7Ci0JCWVjY3NpemUgPSA3OworCWludCBlY2NzdGVwcyA9IG9pbmZvLT5uYW5k
+LmVjYy5zdGVwczsKKwlpbnQgZWNjc2l6ZSA9IG9pbmZvLT5uYW5kLmVjYy5ieXRlczsKKworCXN3
+aXRjaCAob2luZm8tPmVjY19tb2RlKSB7CisJY2FzZSBPTUFQX0VDQ19CQ0g0X0NPREVfSFc6CisJ
+CWFjdHVhbF9lY2NzaXplID0gZWNjc2l6ZTsKIAkJc2VsZWN0XzRfOCA9IDA7Ci0JfSBlbHNlIHsK
+LQkJZWNjc2l6ZSA9IDEzOworCQlicmVhazsKKwljYXNlIE9NQVBfRUNDX0JDSDhfQ09ERV9IVzoK
+KwkJZWNjc2l6ZSAvPSBlY2NzdGVwczsKKwkJYWN0dWFsX2VjY3NpemUgPSBlY2NzaXplOworCQlz
+ZWxlY3RfNF84ID0gMTsKKwkJYnJlYWs7CisJY2FzZSBPTUFQX0VDQ19CQ0g4X0NPREVfSFdfUk9N
+Q09ERToKKwkJYWN0dWFsX2VjY3NpemUgPSBlY2NzaXplIC0gMTsKIAkJc2VsZWN0XzRfOCA9IDE7
+CisJCWJyZWFrOworCWRlZmF1bHQ6CisJCWRldl9lcnIob2luZm8tPnBkZXYsICJpbnZhbGlkIGRy
+aXZlciBjb25maWd1cmF0aW9uXG4iKTsKKwkJcmV0dXJuIC1FSU5WQUw7CiAJfQogCi0JaWYgKG5h
+bmQtPmVjYy5zaXplICA9PSAyMDQ4KQotCQlibG9ja3MgPSA0OwotCWVsc2UKLQkJYmxvY2tzID0g
+MTsKLQogCXRvdGFsY291bnQgPSAwOwogCi0JZm9yIChpID0gMDsgaSA8IGJsb2NrczsgaSsrKSB7
+CisJZm9yIChpID0gMDsgaSA8IGVjY3N0ZXBzOyBpKyspIHsKIAkJLyogY2hlY2sgaWYgYW55IGVj
+YyBlcnJvciAqLwogCQllY2NmbGFnID0gMDsKLQkJZm9yIChqID0gMDsgKGogPCBlY2NzaXplKSAm
+JiAoZWNjZmxhZyA9PSAwKTsgaisrKSB7CisJCWZvciAoaiA9IDA7IChqIDwgYWN0dWFsX2VjY3Np
+emUpICYmIChlY2NmbGFnID09IDApOyBqKyspIHsKIAkJCWlmIChjYWxjX2VjY1tqXSAhPSAwKQog
+CQkJCWVjY2ZsYWcgPSAxOwogCQl9CiAKIAkJaWYgKGVjY2ZsYWcgPT0gMSkgewogCQkJZWNjZmxh
+ZyA9IDA7Ci0JCQlmb3IgKGogPSAwOyAoaiA8IGVjY3NpemUpICYmCisJCQlmb3IgKGogPSAwOyAo
+aiA8IGFjdHVhbF9lY2NzaXplKSAmJgogCQkJCQkoZWNjZmxhZyA9PSAwKTsgaisrKQogCQkJCWlm
+IChyZWFkX2VjY1tqXSAhPSAweEZGKQogCQkJCQllY2NmbGFnID0gMTsKQEAgLTM1MCw3ICszNTgs
+NyBAQCBzdGF0aWMgaW50IG9tYXBfY29ycmVjdF9iY2goc3RydWN0IG10ZF9pbmZvICptdGQsIHVp
+bnQ4X3QgKmRhdCwKIAkJCS8qIGVsc2UsIG5vdCBpbnRlcmVzdGVkIHRvIGNvcnJlY3QgZWNjICov
+CiAJCX0KIAotCQljYWxjX2VjYyA9IGNhbGNfZWNjICsgZWNjc2l6ZTsKKwkJY2FsY19lY2MgPSBj
+YWxjX2VjYyArIGFjdHVhbF9lY2NzaXplOwogCQlyZWFkX2VjYyA9IHJlYWRfZWNjICsgZWNjc2l6
+ZTsKIAkJZGF0ICs9IDUxMjsKIAl9Ci0tIAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
