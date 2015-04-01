@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YdLHq-0007qD-Iu
+ Linux)) id 1YdLHq-0007qB-It
  for barebox@lists.infradead.org; Wed, 01 Apr 2015 16:14:45 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed,  1 Apr 2015 18:14:15 +0200
-Message-Id: <1427904855-32548-11-git-send-email-mkl@pengutronix.de>
+Date: Wed,  1 Apr 2015 18:14:14 +0200
+Message-Id: <1427904855-32548-10-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1427904855-32548-1-git-send-email-mkl@pengutronix.de>
 References: <1427904855-32548-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,327 +21,310 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] habv4: add High Assurance Boot v4
+Subject: [PATCH 09/10] images: add HABv4 support for i.MX6
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
-This patch adds the code to check the HAB ROM for failures during development.
-Add a cal to "habv4_get_status();" to your board file, to get the current
-system state from the ROM.
+This patch adds high assurance boot support (HABv4) image generation to
+barebox, currently tested on i.MX6 only.
 
-_NOTE_: On i.MX6 this has to happen before barebox starts the MMU, because the
-        HAB ROM vector table is placed at 0x94, which is not accessible after the
-	MMU has setup the zero page.
+In order to build a singed barebox image, add a new image target to
+images/Makefile.imx as illustrated in the diff below:
 
-This patch contains code ported from u-boot patches [1][2] by Shaojun Wang [3]
-which were found in the "Mx28 Secure Boot" and "Mx6 HAB (High Assurance Boot)"
-thread on the freescale community forum [4][5].
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -163,10 +163,14 @@ image-$(CONFIG_MACH_SABRELITE) += barebox-freescale-imx6dl-sabrelite.img
+ pblx-$(CONFIG_MACH_SABRESD) += start_imx6q_sabresd
+ CFG_start_imx6q_sabresd.pblx.imximg = $(board)/freescale-mx6-sabresd/flash-header-mx6-sabresd.imxcfg
+ FILE_barebox-freescale-imx6q-sabresd.img = start_imx6q_sabresd.pblx.imximg
+ image-$(CONFIG_MACH_SABRESD) += barebox-freescale-imx6q-sabresd.img
 
-[1] https://community.freescale.com/servlet/JiveServlet/download/370047-269174/0001-enable-mx28-u-boot-hab.patch.txt.zip
-[1] https://community.freescale.com/servlet/JiveServlet/download/96451-11-266175/0001-u-boot-enable-mx6-hab.patch.zip
-[2] https://community.freescale.com/people/ShaojunWang
-[3] https://community.freescale.com/thread/317254
-[3] https://community.freescale.com/docs/DOC-96451
++CSF_start_imx6q_sabresd.pblx.imximg = $(havb4_imx6csf)
++FILE_barebox-freescale-imx6q-sabresd-signed.img = start_imx6q_sabresd.pblx.imximg.signed
++image-$(CONFIG_MACH_SABRESD) += barebox-freescale-imx6q-sabresd-signed.img
++
+
+Here the defaut i.MX6 CSF file $(havb4_imx6csf) is used, it's generated during
+build on from the template "scripts/habv4/habv4-imx6.csf.in". You can configure
+the paths to the SRK table and certificates via: System Type -> i.MX specific
+settings -> HABv4 support.
+
+The proprietary tool "cst" by Freescale tool is expected in the PATH.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/Makefile       |   1 +
- drivers/habv4/Makefile |   1 +
- drivers/habv4/habv4.c  | 237 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/habv4.h        |  23 +++++
- 4 files changed, 262 insertions(+)
- create mode 100644 drivers/habv4/Makefile
- create mode 100644 drivers/habv4/habv4.c
- create mode 100644 include/habv4.h
+ arch/arm/mach-imx/Kconfig        | 39 ++++++++++++++++++++++++++++++++
+ images/.gitignore                |  2 ++
+ images/Makefile                  |  1 +
+ images/Makefile.habv4            | 48 ++++++++++++++++++++++++++++++++++++++++
+ scripts/habv4/gencsf.sh          | 47 +++++++++++++++++++++++++++++++++++++++
+ scripts/habv4/habv4-imx28.csf.in | 28 +++++++++++++++++++++++
+ scripts/habv4/habv4-imx6.csf.in  | 37 +++++++++++++++++++++++++++++++
+ 7 files changed, 202 insertions(+)
+ create mode 100644 images/Makefile.habv4
+ create mode 100755 scripts/habv4/gencsf.sh
+ create mode 100644 scripts/habv4/habv4-imx28.csf.in
+ create mode 100644 scripts/habv4/habv4-imx6.csf.in
 
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 7ef5e90d80cf..3afbb61b2d3b 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -30,3 +30,4 @@ obj-$(CONFIG_PCI) += pci/
- obj-y += rtc/
- obj-$(CONFIG_FIRMWARE) += firmware/
- obj-$(CONFIG_GENERIC_PHY) += phy/
-+obj-$(CONFIG_HABV4) += habv4/
-diff --git a/drivers/habv4/Makefile b/drivers/habv4/Makefile
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 4d257a87a60c..e44a033f20b6 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -675,6 +675,45 @@ config IMX_OCOTP_WRITE
+ 		mw -l -d /dev/imx-ocotp 0x8C 0x00001234
+ 		mw -l -d /dev/imx-ocotp 0x88 0x56789ABC
+ 
++config HABV4
++	tristate "HABv4 support"
++	help
++	  High Assurance Boot, as found on i.MX28/i.MX6.
++
++if HABV4
++
++config HABV4_TABLE_BIN
++	string "Path to SRK table"
++	default "../crts/SRK_1_2_3_4_table.bin"
++	help
++	  Path to the Super Root Key (SRK) table, produced by the
++	  Freescale Code Signing Tool (cst).
++
++	  This file will be inserted into to Command Sequence File
++	  (CSF) when using the CSF template that comes with barebox.
++
++config HABV4_CSF_CRT_PEM
++	string "Path to CSF certificate"
++	default "../crts/CSF1_1_sha256_4096_65537_v3_usr_crt.pem"
++	help
++	  Path to the Command Sequence File (CSF) certificate, produced by the
++	  Freescale Public Key Infrastructure (PKI) script.
++
++	  This file will be inserted into to Command Sequence File
++	  (CSF) when using the CSF template that comes with barebox.
++
++config HABV4_IMG_CRT_PEM
++	string "Path to IMG certificate"
++	default "../crts/IMG_1_sha256_4096_65537_v3_usr_crt.pem"
++	help
++	  Path to the Image certificate, produced by the Freescale
++	  Public Key Infrastructure (PKI) script.
++
++	  This file will be inserted into to Command Sequence File
++	  (CSF) when using the CSF template that comes with barebox.
++
++endif
++
+ endmenu
+ 
+ endif
+diff --git a/images/.gitignore b/images/.gitignore
+index c5377d9f6531..b5004fe48fd6 100644
+--- a/images/.gitignore
++++ b/images/.gitignore
+@@ -3,6 +3,8 @@
+ *.pblb
+ *.img
+ *.imximg
++*.imximg.prep
++*.imximg.signed
+ *.map
+ *.src
+ *.kwbimg
+diff --git a/images/Makefile b/images/Makefile
+index c01179081d92..ca053f36bb46 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -107,6 +107,7 @@ include $(srctree)/images/Makefile.rockchip
+ include $(srctree)/images/Makefile.socfpga
+ include $(srctree)/images/Makefile.tegra
+ include $(srctree)/images/Makefile.mxs
++include $(srctree)/images/Makefile.habv4
+ 
+ targets += $(image-y) pbl.lds barebox.x barebox.z
+ targets += $(patsubst %,%.pblx,$(pblx-y))
+diff --git a/images/Makefile.habv4 b/images/Makefile.habv4
 new file mode 100644
-index 000000000000..40b3253147dd
+index 000000000000..bb2fd3082639
 --- /dev/null
-+++ b/drivers/habv4/Makefile
-@@ -0,0 +1 @@
-+obj-y += habv4.o
-diff --git a/drivers/habv4/habv4.c b/drivers/habv4/habv4.c
++++ b/images/Makefile.habv4
+@@ -0,0 +1,48 @@
++# -*-makefile-*-
++#
++# barebox image generation Makefile for HABv4 images
++#
++
++# default csf templates
++havb4_imx6csf = $(srctree)/scripts/habv4/habv4-imx6.csf.in
++habv4_imx2csf = $(srctree)/scripts/habv4/habv4-imx28.csf.in
++
++# %.imximg.prep - Convert in i.MX image, with preparation for signature
++# ----------------------------------------------------------------
++quiet_cmd_imx_prep_image = IMX-PREP-IMG $@
++      cmd_imx_prep_image = $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(word 2,$^) ; \
++			   $< -o $@ -b -c $(imximg-tmp) -p -f $(word 3,$^)
++
++.SECONDEXPANSION:
++$(obj)/%.imximg.prep: $(objtree)/scripts/imx/imx-image $$(CFG_%.imximg) $(obj)/%
++	$(call if_changed,imx_prep_image)
++
++# %.habv4.csf - create Command Sequence File from template
++# ----------------------------------------------------------------
++quiet_cmd_csf = CSF     $@
++      cmd_csf = TABLE_BIN=$(CONFIG_HABV4_TABLE_BIN) \
++		CSF_CRT_PEM=$(CONFIG_HABV4_CSF_CRT_PEM) \
++		IMG_CRT_PEM=$(CONFIG_HABV4_IMG_CRT_PEM) \
++		$< -f $(word 2,$^) -c $(word 3,$^) -i $(word 4,$^) -o $@
++
++.SECONDEXPANSION:
++$(obj)/%.habv4.csf: $(srctree)/scripts/habv4/gencsf.sh $(obj)/%.prep $$(CFG_%) $$(CSF_%)
++	$(call if_changed,csf)
++
++# %.habv4.sig - create signature and pad to 0x2000
++# ----------------------------------------------------------------
++CST = cst
++quiet_cmd_habv4_sig = HAB4SIG $@
++      cmd_habv4_sig = $(CST) -o $(imximg-tmp) < $(word 2,$^) > /dev/null; \
++		      $(OBJCOPY) -I binary -O binary --pad-to 0x2000 --gap-fill=0x5a $(imximg-tmp) $@
++
++$(obj)/%.habv4.sig: $(obj)/%.prep $(obj)/%.habv4.csf
++	$(call if_changed,habv4_sig)
++
++# %.imximg.singed - concatinate bootloader and signature
++# ----------------------------------------------------------------
++quiet_cmd_cat = CAT     $@
++      cmd_cat = cat $^ > $@
++
++$(obj)/%.imximg.signed: $(obj)/%.imximg.prep $(obj)/%.imximg.habv4.sig
++	$(call if_changed,cat)
+diff --git a/scripts/habv4/gencsf.sh b/scripts/habv4/gencsf.sh
+new file mode 100755
+index 000000000000..2c1c34add43a
+--- /dev/null
++++ b/scripts/habv4/gencsf.sh
+@@ -0,0 +1,47 @@
++#!/bin/sh
++
++set -e
++
++while getopts "f:c:i:o:" opt; do
++    case $opt in
++	f)
++	    file=$OPTARG
++	    ;;
++	c)
++	    cfg=$OPTARG
++	    ;;
++	i)
++	    in=$OPTARG
++	    ;;
++	o)
++	    out=$OPTARG
++	    ;;
++	\?)
++	    echo "Invalid option: -$OPTARG" >&2
++	    exit 1
++	;;
++    esac
++done
++
++if [ ! -e $file -o ! -e $cfg -o ! -e $in ]; then
++    echo "file not found!"
++    exit 1
++fi
++
++#
++# extract and set as shell vars:
++# loadaddr=
++# dcdofs=
++#
++eval $(sed -n -e "s/^[[:space:]]*\(loadaddr\|dcdofs\)[[:space:]]*\(0x[0-9]*\)/\1=\2/p" $cfg)
++
++length=$(stat -c '%s' $file)
++
++sed -e "s:@TABLE_BIN@:$TABLE_BIN:" \
++    -e "s:@CSF_CRT_PEM@:$CSF_CRT_PEM:" \
++    -e "s:@IMG_CRT_PEM@:$IMG_CRT_PEM:" \
++    -e "s:@LOADADDR@:$loadaddr:" \
++    -e "s:@OFFSET@:0:" \
++    -e "s:@LENGTH@:$length:" \
++    -e "s:@FILE@:$file:" \
++    $in > $out
+diff --git a/scripts/habv4/habv4-imx28.csf.in b/scripts/habv4/habv4-imx28.csf.in
 new file mode 100644
-index 000000000000..cdd5d599ced5
+index 000000000000..043602e09ba4
 --- /dev/null
-+++ b/drivers/habv4/habv4.c
-@@ -0,0 +1,237 @@
-+/*
-+ * Copyright (C) 2014, 2015 Marc Kleine-Budde <mkl@pengutronix.de>
-+ * Copyright (C) 2010 Freescale Semiconductor, Inc.
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
++++ b/scripts/habv4/habv4-imx28.csf.in
+@@ -0,0 +1,28 @@
++[Header]
++Version = 4.0
++Hash Algorithm = sha256
++Engine Configuration = 0
++Certificate Format = X509
++Signature Format = CMS
 +
-+#define pr_fmt(fmt)  "HABv4: " fmt
++[Install SRK]
++File = "@TABLE_BIN@"
++Source index = 0
 +
-+#include <common.h>
-+#include <types.h>
++[Install CSFK]
++File = "@CSF_CRT_PEM@"
 +
-+#include <habv4.h>
++[Authenticate CSF]
 +
-+#define HABV4_RVT_IMX28 0xffff8af8
-+#define HABV4_RVT_IMX6 0x00000094
++[Install Key]
++Verification index = 0
++Target index = 2
++File = "@IMG_CRT_PEM@"
 +
-+enum hab_tag {
-+	HAB_TAG_IVT = 0xd1,		/* Image Vector Table */
-+	HAB_TAG_DCD = 0xd2,		/* Device Configuration Data */
-+	HAB_TAG_CSF = 0xd4,		/* Command Sequence File */
-+	HAB_TAG_CRT = 0xd7, 		/* Certificate */
-+	HAB_TAG_SIG = 0xd8,		/* Signature */
-+	HAB_TAG_EVT = 0xdb,		/* Event */
-+	HAB_TAG_RVT = 0xdd,		/* ROM Vector Table */
-+	HAB_TAG_WRP = 0x81,		/* Wrapped Key */
-+	HAB_TAG_MAC = 0xac,		/* Message Authentication Code */
-+};
-+
-+/* Status definitions */
-+enum hab_status {
-+	HAB_STATUS_ANY = 0x00,		/* Match any status in report_event */
-+	HAB_STATUS_FAILURE = 0x33,	/* Operation failed */
-+	HAB_STATUS_WARNING = 0x69,	/* Operation completed with warning */
-+	HAB_STATUS_SUCCESS = 0xf0,	/* Operation completed successfully */
-+};
-+
-+/* Security Configuration definitions */
-+enum hab_config {
-+	HAB_CONFIG_FAB = 0x00,		/* Un-programmed IC */
-+	HAB_CONFIG_RETURN = 0x33,	/* Field Return IC */
-+	HAB_CONFIG_OPEN = 0xf0,		/* Non-secure IC */
-+	HAB_CONFIG_CLOSED = 0xcc,	/* Secure IC */
-+};
-+
-+/* State definitions */
-+enum hab_state {
-+	HAB_STATE_INITIAL = 0x33,	/* Initialising state (transitory) */
-+	HAB_STATE_CHECK = 0x55,		/* Check state (non-secure) */
-+	HAB_STATE_NONSECURE = 0x66,	/* Non-secure state */
-+	HAB_STATE_TRUSTED = 0x99,	/* Trusted state */
-+	HAB_STATE_SECURE = 0xaa,	/* Secure state */
-+	HAB_STATE_FAIL_SOFT = 0xcc,	/* Soft fail state */
-+	HAB_STATE_FAIL_HARD = 0xff,	/* Hard fail state (terminal) */
-+	HAB_STATE_NONE = 0xf0,		/* No security state machine */
-+};
-+
-+enum hab_target {
-+	HAB_TARGET_MEMORY = 0x0f,	/* Check memory white list */
-+	HAB_TARGET_PERIPHERAL = 0xf0,	/* Check peripheral white list*/
-+	HAB_TARGET_ANY = 0x55,		/* Check memory & peripheral white list */
-+};
-+
-+enum hab_assertion {
-+	HAB_ASSERTION_BLOCK = 0x0,	/* Check if memory is authenticated after CSF */
-+};
-+
-+
-+struct hab_header {
-+	uint8_t tag;
-+	uint16_t len;			/* len including the header */
-+	uint8_t par;
-+} __packed;
-+
-+typedef enum hab_status hab_loader_callback_fn(void **start, uint32_t *bytes, const void *boot_data);
-+
-+struct habv4_rvt {
-+	struct hab_header header;
-+	enum hab_status (*entry)(void);
-+	enum hab_status (*exit)(void);
-+	enum hab_status (*check_target)(enum hab_target target, const void *start, uint32_t bytes);
-+	void *(*authenticate_image)(uint8_t cid, uint32_t ivt_offset, void **start, uint32_t *bytes, hab_loader_callback_fn *loader);
-+	enum hab_status (*run_dcd)(const void *dcd);
-+	enum hab_status (*run_csf)(const void *csf, uint8_t cid);
-+	enum hab_status (*assert)(enum hab_assertion assertion, const void *data, uint32_t count);
-+	enum hab_status (*report_event)(enum hab_status status, uint32_t index, void *event, uint32_t *bytes);
-+	enum hab_status (*report_status)(enum hab_config *config, enum hab_state *state);
-+	void (*failsafe)(void);
-+} __packed;
-+
-+static const struct habv4_rvt *__rvt;
-+
-+static inline const struct habv4_rvt *habv4_get_rvt(void)
-+{
-+	if (__rvt)
-+		return __rvt;
-+
-+	if (IS_ENABLED(CONFIG_ARCH_IMX28))
-+		__rvt = (void *)HABV4_RVT_IMX28;
-+	else if (IS_ENABLED(CONFIG_ARCH_IMX6))
-+		__rvt = (void *)HABV4_RVT_IMX6;
-+
-+	if (__rvt->header.tag != HAB_TAG_RVT) {
-+		pr_err("ERROR - RVT not found!\n");
-+		return NULL;
-+	}
-+
-+	pr_info("Found RVT v%d.%d\n", __rvt->header.par >> 4,
-+		__rvt->header.par & 0xf);
-+
-+	return __rvt;
-+}
-+
-+static const char *habv4_get_status_str(enum hab_status status)
-+{
-+	switch (status) {
-+	case HAB_STATUS_ANY:
-+		return "Match any status in report_event"; break;
-+	case HAB_STATUS_FAILURE:
-+		return "Operation failed"; break;
-+	case HAB_STATUS_WARNING:
-+		return "Operation completed with warning"; break;
-+	case HAB_STATUS_SUCCESS:
-+		return "Operation completed successfully"; break;
-+	}
-+
-+	return "<unknown>";
-+}
-+
-+static const char *habv4_get_config_str(enum hab_config config)
-+{
-+	switch (config) {
-+	case HAB_CONFIG_FAB:
-+		return "Un-programmed IC"; break;
-+	case HAB_CONFIG_RETURN:
-+		return "Field Return IC"; break;
-+	case HAB_CONFIG_OPEN:
-+		return "Non-secure IC"; break;
-+	case HAB_CONFIG_CLOSED:
-+		return "Secure IC"; break;
-+	}
-+
-+	return "<unknown>";
-+}
-+
-+static const char *habv4_get_state_str(enum hab_state state)
-+{
-+	switch (state) {
-+	case HAB_STATE_INITIAL:
-+		return "Initialising state (transitory)"; break;
-+	case HAB_STATE_CHECK:
-+		return "Check state (non-secure)"; break;
-+	case HAB_STATE_NONSECURE:
-+		return "Non-secure state"; break;
-+	case HAB_STATE_TRUSTED:
-+		return "Trusted state"; break;
-+	case HAB_STATE_SECURE:
-+		return "Secure state"; break;
-+	case HAB_STATE_FAIL_SOFT:
-+		return "Soft fail state"; break;
-+	case HAB_STATE_FAIL_HARD:
-+		return "Hard fail state (terminal)"; break;
-+	case HAB_STATE_NONE:
-+		return "No security state machine"; break;
-+	}
-+
-+	return "<unknown>";
-+}
-+
-+static void habv4_display_event(uint8_t *data, uint32_t len)
-+{
-+	unsigned int i;
-+
-+	if (data && len) {
-+		for (i = 0; i < len; i++) {
-+			if (i == 0)
-+				printf(" %02x", data[i]);
-+			else if ((i % 8) == 0)
-+				printf("\n %02x", data[i]);
-+			else if ((i % 4) == 0)
-+				printf("  %02x", data[i]);
-+			else
-+				printf(" %02x", data[i]);
-+		}
-+	}
-+	printf("\n\n");
-+}
-+
-+int habv4_get_status(void)
-+{
-+	const struct habv4_rvt *rvt = habv4_get_rvt();
-+	uint8_t data[256];
-+	uint32_t len = sizeof(data);
-+	uint32_t index = 0;
-+	enum hab_status status;
-+	enum hab_config config = 0x0;
-+	enum hab_state state = 0x0;
-+
-+	if (!rvt)
-+		return -EINVAL;
-+
-+	status = rvt->report_status(&config, &state);
-+	pr_info("Status: %s (0x%02x)\n", habv4_get_status_str(status), status);
-+	pr_info("Config: %s (0x%02x)\n", habv4_get_config_str(config), config);
-+	pr_info("State: %s (0x%02x)\n",	habv4_get_state_str(state), state);
-+
-+	if (status == HAB_STATUS_SUCCESS) {
-+		pr_info("No HAB Failure Events Found!\n\n");
-+		return 0;
-+	}
-+
-+	while (rvt->report_event(HAB_STATUS_FAILURE, index, data, &len) == HAB_STATUS_SUCCESS) {
-+		printf("-------- HAB Event %d --------\n"
-+		       "event data:\n", index);
-+
-+		habv4_display_event(data, len);
-+		len = sizeof(data);
-+		index++;
-+	}
-+
-+	/* Check reason for stopping */
-+	if (rvt->report_event(HAB_STATUS_ANY, index, NULL, &len) == HAB_STATUS_SUCCESS)
-+		pr_err("ERROR: Recompile with larger event data buffer (at least %d bytes)\n\n", len);
-+
-+	return -EINVAL;
-+}
-diff --git a/include/habv4.h b/include/habv4.h
++# Sign entire image
++# Blocks have the following definition:
++# Base address of the binary file, Offset, Length of block in bytes
++[Authenticate Data]
++Verification index = 2
++Engine = DCP
++Blocks = @LOADADDR@ @OFFSET@ @LENGTH@ "@FILE@"
+diff --git a/scripts/habv4/habv4-imx6.csf.in b/scripts/habv4/habv4-imx6.csf.in
 new file mode 100644
-index 000000000000..a3fb9b140f21
+index 000000000000..11a5db94946c
 --- /dev/null
-+++ b/include/habv4.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Copyright (C) 2014, 2015 Marc Kleine-Budde <mkl@pengutronix.de>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
++++ b/scripts/habv4/habv4-imx6.csf.in
+@@ -0,0 +1,37 @@
++[Header]
++Version = 4.1
++Hash Algorithm = sha256
++Engine Configuration = 0
++Certificate Format = X509
++Signature Format = CMS
++Engine = CAAM
 +
-+#ifndef __HABV4_H
-+#define __HABV4_H
++[Install SRK]
++File = "@TABLE_BIN@"
++# SRK index within SRK-Table 0..3
++Source index = 0
 +
-+int habv4_get_status(void);
++[Install CSFK]
++File = "@CSF_CRT_PEM@"
 +
-+#endif /* __HABV4_H */
++[Authenticate CSF]
++
++[Unlock]
++Engine = CAAM
++Features = RNG
++
++[Install Key]
++# verification key index in key store (0, 2...5)
++Verification index = 0
++# target key index in key store (2...5)
++Target index = 2
++File = "@IMG_CRT_PEM@"
++
++[Authenticate Data]
++# verification key index in key store (2...5)
++Verification index = 2
++# "starting load address in memory"
++# "starting offset within the source file"
++# "length (in bytes)"
++# "file (binary)"
++Blocks = @LOADADDR@ @OFFSET@ @LENGTH@ "@FILE@"
 -- 
 2.1.4
 
