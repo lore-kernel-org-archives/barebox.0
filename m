@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YdhBK-0000Mu-Jo
- for barebox@lists.infradead.org; Thu, 02 Apr 2015 15:37:24 +0000
-From: Markus Pargmann <mpa@pengutronix.de>
-Date: Thu,  2 Apr 2015 17:36:50 +0200
-Message-Id: <1427989011-26503-1-git-send-email-mpa@pengutronix.de>
+Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Ydm4v-0006Ta-Ll
+ for barebox@lists.infradead.org; Thu, 02 Apr 2015 20:51:06 +0000
+Received: by lbbug6 with SMTP id ug6so67849562lbb.3
+ for <barebox@lists.infradead.org>; Thu, 02 Apr 2015 13:50:43 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  2 Apr 2015 23:50:21 +0300
+Message-Id: <1428007821-10422-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,152 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] wdog: imx-wd: Introduce ops struct for imx21/imx1
-To: barebox@lists.infradead.org
+Subject: [PATCH] fixup! net: Add Intel e1000 driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Replace the set_timeout function in the device platform data by an ops
-struct which stores a set_timeout and init function.
+the fixup removes this warning
 
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+drivers/net/e1000.c:139:6: warning: no previous prototype for 'e1000_raise_ee_clk' [-Wmissing-prototypes]
+void e1000_raise_ee_clk(struct e1000_hw *hw, uint32_t *eecd)
+     ^
 ---
- drivers/watchdog/imxwd.c | 54 +++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 42 insertions(+), 12 deletions(-)
+ drivers/net/e1000.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index 31c3d0d85353..42edfe00d2bc 100644
---- a/drivers/watchdog/imxwd.c
-+++ b/drivers/watchdog/imxwd.c
-@@ -21,11 +21,18 @@
- #include <watchdog.h>
- #include <reset_source.h>
- 
-+struct imx_wd;
-+
-+struct imx_wd_ops {
-+	int (*set_timeout)(struct imx_wd *, int);
-+	int (*init)(struct imx_wd *);
-+};
-+
- struct imx_wd {
- 	struct watchdog wd;
- 	void __iomem *base;
- 	struct device_d *dev;
--	int (*set_timeout)(struct imx_wd *, unsigned);
-+	const struct imx_wd_ops *ops;
- };
- 
- #define to_imx_wd(h) container_of(h, struct imx_wd, wd)
-@@ -110,7 +117,7 @@ static int imx_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
+diff --git a/drivers/net/e1000.c b/drivers/net/e1000.c
+index 0512ae4..6ef8259 100644
+--- a/drivers/net/e1000.c
++++ b/drivers/net/e1000.c
+@@ -136,7 +136,7 @@ static bool e1000_media_fiber_serdes(struct e1000_hw *hw)
+  * hw - Struct containing variables accessed by shared code
+  * eecd - EECD's current value
+  *****************************************************************************/
+-void e1000_raise_ee_clk(struct e1000_hw *hw, uint32_t *eecd)
++static void e1000_raise_ee_clk(struct e1000_hw *hw, uint32_t *eecd)
  {
- 	struct imx_wd *priv = (struct imx_wd *)to_imx_wd(wd);
- 
--	return priv->set_timeout(priv, timeout);
-+	return priv->ops->set_timeout(priv, timeout);
- }
- 
- static struct imx_wd *reset_wd;
-@@ -118,7 +125,7 @@ static struct imx_wd *reset_wd;
- void __noreturn reset_cpu(unsigned long addr)
- {
- 	if (reset_wd)
--		reset_wd->set_timeout(reset_wd, -1);
-+		reset_wd->ops->set_timeout(reset_wd, -1);
- 
- 	mdelay(1000);
- 
-@@ -147,13 +154,20 @@ static void imx_watchdog_detect_reset_source(struct imx_wd *priv)
- 	/* else keep the default 'unknown' state */
- }
- 
-+static int imx21_wd_init(struct imx_wd *priv)
-+{
-+	imx_watchdog_detect_reset_source(priv);
-+
-+	return 0;
-+}
-+
- static int imx_wd_probe(struct device_d *dev)
- {
- 	struct imx_wd *priv;
--	void *fn;
-+	void *ops;
- 	int ret;
- 
--	ret = dev_get_drvdata(dev, (unsigned long *)&fn);
-+	ret = dev_get_drvdata(dev, (unsigned long *)&ops);
- 	if (ret)
- 		return ret;
- 
-@@ -163,7 +177,7 @@ static int imx_wd_probe(struct device_d *dev)
- 		dev_err(dev, "could not get memory region\n");
- 		return -ENODEV;
- 	}
--	priv->set_timeout = fn;
-+	priv->ops = ops;
- 	priv->wd.set_timeout = imx_watchdog_set_timeout;
- 	priv->dev = dev;
- 
-@@ -176,13 +190,20 @@ static int imx_wd_probe(struct device_d *dev)
- 			goto on_error;
- 	}
- 
--	if (fn != imx1_watchdog_set_timeout)
--		imx_watchdog_detect_reset_source(priv);
-+	if (priv->ops->init) {
-+		ret = priv->ops->init(priv);
-+		if (ret) {
-+			dev_err(dev, "Failed to init watchdog device %d\n", ret);
-+			goto error_unregister;
-+		}
-+	}
- 
- 	dev->priv = priv;
- 
- 	return 0;
- 
-+error_unregister:
-+	watchdog_deregister(&priv->wd);
- on_error:
- 	if (reset_wd && reset_wd != priv)
- 		free(priv);
-@@ -200,13 +221,22 @@ static void imx_wd_remove(struct device_d *dev)
- 		free(priv);
- }
- 
-+static const struct imx_wd_ops imx21_wd_ops = {
-+	.set_timeout = imx21_watchdog_set_timeout,
-+	.init = imx21_wd_init,
-+};
-+
-+static const struct imx_wd_ops imx1_wd_ops = {
-+	.set_timeout = imx1_watchdog_set_timeout,
-+};
-+
- static __maybe_unused struct of_device_id imx_wdt_dt_ids[] = {
- 	{
- 		.compatible = "fsl,imx1-wdt",
--		.data = (unsigned long)&imx1_watchdog_set_timeout,
-+		.data = (unsigned long)&imx1_wd_ops,
- 	}, {
- 		.compatible = "fsl,imx21-wdt",
--		.data = (unsigned long)&imx21_watchdog_set_timeout,
-+		.data = (unsigned long)&imx21_wd_ops,
- 	}, {
- 		/* sentinel */
- 	}
-@@ -215,10 +245,10 @@ static __maybe_unused struct of_device_id imx_wdt_dt_ids[] = {
- static struct platform_device_id imx_wdt_ids[] = {
- 	{
- 		.name = "imx1-wdt",
--		.driver_data = (unsigned long)&imx1_watchdog_set_timeout,
-+		.driver_data = (unsigned long)&imx1_wd_ops,
- 	}, {
- 		.name = "imx21-wdt",
--		.driver_data = (unsigned long)&imx21_watchdog_set_timeout,
-+		.driver_data = (unsigned long)&imx21_wd_ops,
- 	}, {
- 		/* sentinel */
- 	},
+ 	/* Raise the clock input to the EEPROM (by setting the SK bit), and then
+ 	 * wait 50 microseconds.
 -- 
 2.1.4
 
