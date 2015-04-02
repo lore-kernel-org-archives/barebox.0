@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YdbV7-0006z0-Lw
- for barebox@lists.infradead.org; Thu, 02 Apr 2015 09:33:26 +0000
-Message-ID: <551D0CCD.7050307@pengutronix.de>
-Date: Thu, 02 Apr 2015 11:33:01 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-MIME-Version: 1.0
-References: <1427841205-9393-1-git-send-email-mkl@pengutronix.de>
- <20150402083522.GE8125@ns203013.ovh.net> <551D039F.3060506@pengutronix.de>
- <20150402092604.GG8125@ns203013.ovh.net>
-In-Reply-To: <20150402092604.GG8125@ns203013.ovh.net>
+ Linux)) id 1YdhBK-0000M4-Jp
+ for barebox@lists.infradead.org; Thu, 02 Apr 2015 15:37:23 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Thu,  2 Apr 2015 17:36:51 +0200
+Message-Id: <1427989011-26503-2-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1427989011-26503-1-git-send-email-mpa@pengutronix.de>
+References: <1427989011-26503-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============9179110620307133061=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] makfiles: add emacs syntax highlighting hint
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, sha@pengutronix.de
+Subject: [PATCH 2/2] wdog: imx-wd: Disable watchdog powerdown counter
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============9179110620307133061==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="gSxXRcjbS2QcvK6jMElxoW5JwA5k6IEhu"
+Disable the watchdog powerdown counter at start. Otherwise this may
+trigger a reset or poweroff over the WDOG_B line to a PMIC. This counter
+is set to 16 seconds after poweron.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---gSxXRcjbS2QcvK6jMElxoW5JwA5k6IEhu
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ drivers/watchdog/imxwd.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-On 04/02/2015 11:26 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 10:53 Thu 02 Apr     , Marc Kleine-Budde wrote:
->> On 04/02/2015 10:35 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
->>> On 00:33 Wed 01 Apr     , Marc Kleine-Budde wrote:
->>>> This patches makes a standard emacs to recognise the files as makefi=
-les.
->>> not a fan of vi or emacs stuff in file
->>
->> admit, you don't like emacs :D
->=20
-> I don't like vi sutff in file too
-> and I do use vim
-> I also said fix your editor
-> otherwise we can eclipse, vim stuff too
+diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+index 42edfe00d2bc..3479d7b02da7 100644
+--- a/drivers/watchdog/imxwd.c
++++ b/drivers/watchdog/imxwd.c
+@@ -46,6 +46,7 @@ struct imx_wd {
+ #define IMX21_WDOG_WCR	0x00 /* Watchdog Control Register */
+ #define IMX21_WDOG_WSR	0x02 /* Watchdog Service Register */
+ #define IMX21_WDOG_WSTR	0x04 /* Watchdog Status Register  */
++#define IMX21_WDOG_WMCR	0x08 /* Misc Register */
+ #define IMX21_WDOG_WCR_WDE	(1 << 2)
+ #define IMX21_WDOG_WCR_SRS	(1 << 4)
+ #define IMX21_WDOG_WCR_WDA	(1 << 5)
+@@ -158,6 +159,11 @@ static int imx21_wd_init(struct imx_wd *priv)
+ {
+ 	imx_watchdog_detect_reset_source(priv);
+ 
++	/*
++	 * Disable watchdog powerdown counter
++	 */
++	writew(0x0, priv->base + IMX21_WDOG_WMCR);
++
+ 	return 0;
+ }
+ 
+-- 
+2.1.4
 
-I was trying to troll, but failed :)
-
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---gSxXRcjbS2QcvK6jMElxoW5JwA5k6IEhu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBCgAGBQJVHQzNAAoJECte4hHFiupUqkAP/2K5E86N/hINKrc4lsa1ahxU
-kVLPZmYRLm0QX0BEj9xXiLBdmegVKBf5BM8IKZJYyya3IqlhMyZozCutZ6vgibeh
-8TtpL/AN7X/YPHgjOCD8yat730tTtCsI6jlqNVQ1B8fMCbWthS1Tr3tRNLnMSY1/
-WGLBqtsEPonh+LbPB1ajdpgOxbZW+1rwQQLMURYQACDAPbDZEzOlEeBZLrJpKDdC
-cA3MQon6Ui/mYGppcEv7FAH6AYOzfZcy450DzUtPR/bnhptehqivrntkWss1zw4i
-vuNTcWSUq2jsnjiI7T2cSg5YpY8YntdW5Eub+JcQkZZ9qEf40mUxtVVslxIUekA+
-UdKgB8qt3njwsY577qsXLh2WHqf1IKWjoDCArKHPTRtIiHrfSguu9vlg6vV/Tom/
-TxKE4gJVfKzAUMOIgeNKA9TT2Qva0R0LaQ+g0ZxsY+uPVd+/RS1zOxJDAxfS6eHE
-RqEELzwsv6Py4vliGviKAmkErFpxkmhjPfCwwKd3n2RTD/dWg9AdoEKMwbIBz2ZK
-ceQ/h4jdmaYpMcjwywAH3Wm0F4ZVwYhny0urvIAmKqQ56ceI6SrNWZ6jZj1Z6jg5
-qjIm1+y7mfwwm7awQxV+rrr2KKDP7Ax+WR6CIkoeeg8/THEDWWMGVu3KaAfYAy5K
-+Gs1bpj2A0kN11KfyxW3
-=j3IB
------END PGP SIGNATURE-----
-
---gSxXRcjbS2QcvK6jMElxoW5JwA5k6IEhu--
-
-
---===============9179110620307133061==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============9179110620307133061==--
