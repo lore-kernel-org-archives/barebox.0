@@ -1,15 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Ye20Y-0001sV-3Z
- for barebox@lists.infradead.org; Fri, 03 Apr 2015 13:51:39 +0000
-Date: Fri, 3 Apr 2015 15:51:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150403135114.GG4946@pengutronix.de>
-References: <1427989011-26503-1-git-send-email-mpa@pengutronix.de>
+Received: from gateway14.websitewelcome.com ([69.93.243.15])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YeMQ2-0008Fu-Mh
+ for barebox@lists.infradead.org; Sat, 04 Apr 2015 11:39:19 +0000
+Received: from ham06.websitewelcome.com (unknown [192.185.0.197])
+ by gateway14.websitewelcome.com (Postfix) with ESMTP id E2C844A0DD03D
+ for <barebox@lists.infradead.org>; Sat,  4 Apr 2015 06:38:46 -0500 (CDT)
+Received: from polo.websitedns.in (polo.websitedns.in [119.18.60.4])
+ by ham06.websitewelcome.com (Postfix) with ESMTP id 18A2F4000C
+ for <barebox@lists.infradead.org>; Sat,  4 Apr 2015 06:38:45 -0500 (CDT)
+Received: from dsoninfo by polo.websitedns.in with local (Exim 4.82)
+ (envelope-from <dsoninfo@polo.websitedns.in>) id 1YeMPT-0002ce-Td
+ for barebox@lists.infradead.org; Sat, 04 Apr 2015 17:08:43 +0530
+Date: Sat, 4 Apr 2015 17:08:43 +0530
+From: "FedEx International MailService" <marshall.norman@polo.websitedns.in>
+Message-ID: <5d129248a0ff933130f7c1ade255c9c6@polo.websitedns.in>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1427989011-26503-1-git-send-email-mpa@pengutronix.de>
+Content-Type: multipart/mixed; boundary="b1_fdec426d89b94188346fea83236038ce"
+Content-Transfer-Encoding: 8bit
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +26,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: FedEx International MailService <marshall.norman@polo.websitedns.in>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] wdog: imx-wd: Introduce ops struct for imx21/imx1
-To: Markus Pargmann <mpa@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Courier was unable to deliver the parcel, ID00000864508
+To: barebox@lists.infradead.org
 
-On Thu, Apr 02, 2015 at 05:36:50PM +0200, Markus Pargmann wrote:
-> Replace the set_timeout function in the device platform data by an ops
-> struct which stores a set_timeout and init function.
-> 
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
->  	}
->  
-> -	if (fn != imx1_watchdog_set_timeout)
-> -		imx_watchdog_detect_reset_source(priv);
-> +	if (priv->ops->init) {
-> +		ret = priv->ops->init(priv);
-> +		if (ret) {
-> +			dev_err(dev, "Failed to init watchdog device %d\n", ret);
-> +			goto error_unregister;
-> +		}
-> +	}
->  
->  	dev->priv = priv;
->  
->  	return 0;
->  
-> +error_unregister:
-> +	watchdog_deregister(&priv->wd);
+--b1_fdec426d89b94188346fea83236038ce
+Content-Type: text/plain; charset=us-ascii
 
-I had to revert this one because compilation fails with:
+Dear Customer,
 
-imx-iomux-v1.c:(.text.imx_wd_probe+0xb0): undefined reference to `watchdog_deregister'
+Courier was unable to deliver the parcel to you.
+Shipment Label is attached to email.
 
-This happens when watchdog support is disabled. imxwd.c is compiled
-anyway because it provides the reset function. Either you have to
-provide static inline wrappers or reorder the code so that
-watchdog_register is called last and thus you don't have to call
-watchdog_deregister().
+Kind regards,
+Marshall Norman,
+Support Agent.
 
-Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--b1_fdec426d89b94188346fea83236038ce
+Content-Type: application/zip; name="FedEx_ID_00000864508.zip"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=FedEx_ID_00000864508.zip
+
+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
+EQAAAAA=
+
+
+--b1_fdec426d89b94188346fea83236038ce
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--b1_fdec426d89b94188346fea83236038ce--
