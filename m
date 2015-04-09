@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from chakra.websitewelcome.com ([192.185.82.130])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yf6lW-0002hz-Ig
- for barebox@lists.infradead.org; Mon, 06 Apr 2015 13:08:35 +0000
-Received: from capital by chakra.websitewelcome.com with local (Exim 4.82)
- (envelope-from <capital@chakra.websitewelcome.com>)
- id 1Yf6l5-0003hi-Jp
- for barebox@lists.infradead.org; Mon, 06 Apr 2015 08:08:07 -0500
-Date: Mon, 6 Apr 2015 08:08:07 -0500
-From: "FedEx International Economy" <hugh.carver@ns1574.websitewelcome.com>
-Message-ID: <5d129248a0ff933130f7c1ade255c9c6@ns1574.websitewelcome.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="b1_fdec426d89b94188346fea83236038ce"
-Content-Transfer-Encoding: 8bit
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YgCZO-00016F-5G
+ for barebox@lists.infradead.org; Thu, 09 Apr 2015 13:32:35 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Thu,  9 Apr 2015 15:31:56 +0200
+Message-Id: <1428586316-17722-2-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1428586316-17722-1-git-send-email-mpa@pengutronix.de>
+References: <1428586316-17722-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,121 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: FedEx International Economy <hugh.carver@ns1574.websitewelcome.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Courier was unable to deliver the parcel, ID00000655069
+Subject: [PATCH v2 2/2] wdog: imx-wd: Disable watchdog powerdown counter
 To: barebox@lists.infradead.org
 
---b1_fdec426d89b94188346fea83236038ce
-Content-Type: text/plain; charset=us-ascii
+Disable the watchdog powerdown counter at start. Otherwise this may
+trigger a reset or poweroff over the WDOG_B line to a PMIC. This counter
+is set to 16 seconds after poweron.
 
-Dear Customer,
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ drivers/watchdog/imxwd.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Your parcel has arrived at April 02. Courier was unable to deliver the parcel to you.
-Please, open email attachment to print shipment label.
+diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+index 6e9edd9d81cf..221ad93107f4 100644
+--- a/drivers/watchdog/imxwd.c
++++ b/drivers/watchdog/imxwd.c
+@@ -46,6 +46,7 @@ struct imx_wd {
+ #define IMX21_WDOG_WCR	0x00 /* Watchdog Control Register */
+ #define IMX21_WDOG_WSR	0x02 /* Watchdog Service Register */
+ #define IMX21_WDOG_WSTR	0x04 /* Watchdog Status Register  */
++#define IMX21_WDOG_WMCR	0x08 /* Misc Register */
+ #define IMX21_WDOG_WCR_WDE	(1 << 2)
+ #define IMX21_WDOG_WCR_SRS	(1 << 4)
+ #define IMX21_WDOG_WCR_WDA	(1 << 5)
+@@ -158,6 +159,11 @@ static int imx21_wd_init(struct imx_wd *priv)
+ {
+ 	imx_watchdog_detect_reset_source(priv);
+ 
++	/*
++	 * Disable watchdog powerdown counter
++	 */
++	writew(0x0, priv->base + IMX21_WDOG_WMCR);
++
+ 	return 0;
+ }
+ 
+-- 
+2.1.4
 
-Yours faithfully,
-Hugh Carver,
-Sr. Station Manager.
-
-
---b1_fdec426d89b94188346fea83236038ce
-Content-Type: application/zip; name="FedEx_00000655069.zip"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=FedEx_00000655069.zip
-
-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
-AQBGAAAARxEAAAAA
-
-
---b1_fdec426d89b94188346fea83236038ce
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---b1_fdec426d89b94188346fea83236038ce--
