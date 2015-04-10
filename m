@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22b.google.com ([2a00:1450:400c:c05::22b])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgNMs-0001Ar-S1
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:24 +0000
-Received: by widdi4 with SMTP id di4so111290000wid.0
- for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:04:01 -0700 (PDT)
+Received: from mail-wi0-x22a.google.com ([2a00:1450:400c:c05::22a])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YgNMs-0003JI-Vj
+ for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:23 +0000
+Received: by wizk4 with SMTP id k4so111440218wiz.1
+ for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:04:00 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 10 Apr 2015 03:03:47 +0200
-Message-Id: <1428627830-17281-11-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 10 Apr 2015 03:03:45 +0200
+Message-Id: <1428627830-17281-9-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,18 +23,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/13] ARM: mvebu: armada-xp: Limit PUP access to Armada XP
+Subject: [PATCH 08/13] ARM: mvebu: Move PCIe register defines to socid.h
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Commit 6638760c225c37f90e822ebf4dd8f0d2cd0b0ef3
- ("ARM: mvebu: Enable PUP register")
-correctly enables devices that are disabled after boot-up due to
-some Design For Testability registers.
-
-However, although harmless on Armada 370, call the code conditionally
-on Armada XP only. While at it, move PUP register defines to SYSCTL
-registers where they belong to.
+To prepare PCIe device id fixups, move PCIe register defines
+to a common location.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -42,60 +36,48 @@ Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/armada-370-xp.c                   | 18 ++++++++++++++----
- arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h |  3 +--
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ arch/arm/mach-mvebu/common.c             | 5 +----
+ arch/arm/mach-mvebu/include/mach/socid.h | 4 ++++
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-index 9ba3247805d1..8e1463dd8b11 100644
---- a/arch/arm/mach-mvebu/armada-370-xp.c
-+++ b/arch/arm/mach-mvebu/armada-370-xp.c
-@@ -112,6 +112,18 @@ static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
- 		;
- }
+diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
+index 309f7a6aaa52..7d28d9c45aed 100644
+--- a/arch/arm/mach-mvebu/common.c
++++ b/arch/arm/mach-mvebu/common.c
+@@ -22,6 +22,7 @@
+ #include <of_address.h>
+ #include <linux/clk.h>
+ #include <mach/common.h>
++#include <mach/socid.h>
  
-+static int armada_xp_init_soc(struct device_node *root)
-+{
-+	u32 reg;
-+
-+	/* Enable GBE0, GBE1, LCD and NFC PUP */
-+	reg = readl(ARMADA_XP_PUP_ENABLE);
-+	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
-+	writel(reg, ARMADA_XP_PUP_ENABLE);
-+
-+	return 0;
-+}
-+
- static int armada_370_xp_init_soc(struct device_node *root, void *context)
- {
- 	unsigned long phys_base, phys_size;
-@@ -137,10 +149,8 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
+ /*
+  * Marvell MVEBU SoC id and revision can be read from any PCIe
+@@ -40,10 +41,6 @@ static const struct of_device_id mvebu_pcie_of_ids[] = {
+ 	{ },
+ };
  
- 	armada_370_xp_soc_id_fixup();
- 
--	/* Enable peripherals PUP */
--	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
--	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
--	writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
-+	if (of_machine_is_compatible("marvell,armadaxp"))
-+		armada_xp_init_soc(root);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
-index 2a6e6d1aec2c..1dad05317211 100644
---- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
-+++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
-@@ -37,8 +37,7 @@
- #define ARMADA_370_XP_SAR_HIGH		(ARMADA_370_XP_SYSCTL_BASE + 0x034)
- #define ARMADA_370_XP_CPU_SOC_ID	(ARMADA_370_XP_SYSCTL_BASE + 0x03c)
- #define  CPU_SOC_ID_DEVICE_MASK		0xffff
+-#define PCIE_VEN_DEV_ID		0x000
+-#define PCIE_REV_ID		0x008
+-#define  REV_ID_MASK		0xff
 -
--#define ARMADA_XP_PUP_ENABLE_BASE       (ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
-+#define ARMADA_XP_PUP_ENABLE		(ARMADA_370_XP_SYSCTL_BASE + 0x44c)
- #define  GE0_PUP_EN			BIT(0)
- #define  GE1_PUP_EN			BIT(1)
- #define  LCD_PUP_EN			BIT(2)
+ static int mvebu_soc_id_init(void)
+ {
+ 	struct device_node *np, *cnp;
+diff --git a/arch/arm/mach-mvebu/include/mach/socid.h b/arch/arm/mach-mvebu/include/mach/socid.h
+index 36d681a9dcc1..7a29c82b30c0 100644
+--- a/arch/arm/mach-mvebu/include/mach/socid.h
++++ b/arch/arm/mach-mvebu/include/mach/socid.h
+@@ -16,6 +16,10 @@
+ #ifndef __MACH_MVEBU_SOCID_H
+ #define __MACH_MVEBU_SOCID_H
+ 
++#define PCIE_VEN_DEV_ID		0x000
++#define PCIE_REV_ID		0x008
++#define  REV_ID_MASK		0xff
++
+ extern u16 soc_devid;
+ extern u16 soc_revid;
+ 
 -- 
 2.1.0
 
