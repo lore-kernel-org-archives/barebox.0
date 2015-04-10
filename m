@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
+Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgNMt-0001As-8M
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:26 +0000
-Received: by wiax7 with SMTP id x7so5768606wia.0
- for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:04:02 -0700 (PDT)
+ id 1YgNMs-0001Aq-S2
+ for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:25 +0000
+Received: by wizk4 with SMTP id k4so111440371wiz.1
+ for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:04:00 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 10 Apr 2015 03:03:48 +0200
-Message-Id: <1428627830-17281-12-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 10 Apr 2015 03:03:43 +0200
+Message-Id: <1428627830-17281-7-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,12 +23,13 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/13] ARM: mvebu: armada-xp: Use MBUS_ERR_PROP_EN define
+Subject: [PATCH 06/13] bus: mvebu-mbus: Drop device reference
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-With proper defines for ARMADA_370_XP_FABRIC_CTRL and MBUS_ERR_PROP_EN
-make use of it.
+Prior converting mbus driver from a platform device back to directly
+called SoC driver, drop the device_d reference and covert dev_foo to
+pr_foo.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -36,25 +37,118 @@ Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/armada-370-xp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/bus/mvebu-mbus.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-index 8e1463dd8b11..2405629526e0 100644
---- a/arch/arm/mach-mvebu/armada-370-xp.c
-+++ b/arch/arm/mach-mvebu/armada-370-xp.c
-@@ -138,9 +138,9 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
- 	barebox_set_hostname("armada");
+diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+index 75c357a869ef..077d7ccb83ca 100644
+--- a/drivers/bus/mvebu-mbus.c
++++ b/drivers/bus/mvebu-mbus.c
+@@ -50,6 +50,8 @@
+  *   configuration (file 'devices').
+  */
  
- 	/* Disable MBUS error propagation */
--	reg = readl(ARMADA_370_XP_FABRIC_BASE);
--	reg &= ~BIT(8);
--	writel(reg, ARMADA_370_XP_FABRIC_BASE);
-+	reg = readl(ARMADA_370_XP_FABRIC_CTRL);
-+	reg &= ~MBUS_ERR_PROP_EN;
-+	writel(reg, ARMADA_370_XP_FABRIC_CTRL);
++#define pr_fmt(fmt)	"mvebu-mbus: " fmt
++
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+@@ -100,7 +102,7 @@ struct mvebu_mbus_soc_data {
+ };
  
- 	armada_370_xp_memory_find(&phys_base, &phys_size);
+ struct mvebu_mbus_state {
+-	struct device_d *dev;
++	struct device_node *np;
+ 	void __iomem *mbuswins_base;
+ 	void __iomem *sdramwins_base;
+ 	struct dentry *debugfs_root;
+@@ -496,7 +498,7 @@ int mvebu_mbus_add_window_remap_by_id(unsigned int target,
+ 	struct mvebu_mbus_state *s = &mbus_state;
+ 
+ 	if (!mvebu_mbus_window_conflicts(s, base, size, target, attribute)) {
+-		dev_err(s->dev, "cannot add window '%x:%x', conflicts with another window\n",
++		pr_err("cannot add window '%x:%x', conflicts with another window\n",
+ 		       target, attribute);
+ 		return -EINVAL;
+ 	}
+@@ -552,14 +554,14 @@ static int mbus_dt_setup_win(struct mvebu_mbus_state *mbus,
+ 			     u32 base, u32 size, u8 target, u8 attr)
+ {
+ 	if (!mvebu_mbus_window_conflicts(mbus, base, size, target, attr)) {
+-		dev_err(mbus->dev, "cannot add window '%04x:%04x', conflicts with another window\n",
++		pr_err("cannot add window '%04x:%04x', conflicts with another window\n",
+ 		       target, attr);
+ 		return -EBUSY;
+ 	}
+ 
+ 	if (mvebu_mbus_alloc_window(mbus, base, size, MVEBU_MBUS_NO_REMAP,
+ 				    target, attr)) {
+-		dev_err(mbus->dev, "cannot add window '%04x:%04x', too many windows\n",
++		pr_err("cannot add window '%04x:%04x', too many windows\n",
+ 		       target, attr);
+ 		return -ENOMEM;
+ 	}
+@@ -571,7 +573,7 @@ static int mbus_parse_ranges(struct mvebu_mbus_state *mbus, int *addr_cells,
+ 			     int *cell_count, const __be32 **ranges_start,
+ 			     const __be32 **ranges_end)
+ {
+-	struct device_node *node = mbus->dev->device_node;
++	struct device_node *node = mbus->np;
+ 	const __be32 *prop;
+ 	int ranges_len, tuple_len;
+ 
+@@ -596,8 +598,7 @@ static int mbus_parse_ranges(struct mvebu_mbus_state *mbus, int *addr_cells,
+ 	tuple_len = (*cell_count) * sizeof(__be32);
+ 
+ 	if (ranges_len % tuple_len) {
+-		dev_warn(mbus->dev, "malformed ranges entry '%s'\n",
+-			node->name);
++		pr_warn("malformed ranges entry '%s'\n", node->name);
+ 		return -EINVAL;
+ 	}
+ 	return 0;
+@@ -679,36 +680,35 @@ static int mvebu_mbus_probe(struct device_d *dev)
+ 	const __be32 *prop;
+ 	int win;
+ 
+-	mbus_state.dev = dev;
+-
+ 	np = of_find_matching_node_and_match(NULL, mvebu_mbus_dt_ids, &match);
+ 	if (!np) {
+-		dev_err(dev, "could not find a matching SoC family\n");
++		pr_err("could not find a matching SoC family\n");
+ 		return -ENODEV;
+ 	}
++	mbus_state.np = np;
+ 	mbus_state.soc = (struct mvebu_mbus_soc_data *)match->data;
+ 
+ 	prop = of_get_property(np, "controller", NULL);
+ 	if (!prop) {
+-		dev_err(dev, "required 'controller' property missing\n");
++		pr_err("required 'controller' property missing\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	controller = of_find_node_by_phandle(be32_to_cpup(prop));
+ 	if (!controller) {
+-		dev_err(dev, "could not find an 'mbus-controller' node\n");
++		pr_err("could not find an 'mbus-controller' node\n");
+ 		return -ENODEV;
+ 	}
+ 
+ 	mbus_state.mbuswins_base = of_iomap(controller, 0);
+ 	if (!mbus_state.mbuswins_base) {
+-		dev_err(dev, "cannot get MBUS register address\n");
++		pr_err("cannot get MBUS register address\n");
+ 		return -ENOMEM;
+ 	}
+ 
+ 	mbus_state.sdramwins_base = of_iomap(controller, 1);
+ 	if (!mbus_state.sdramwins_base) {
+-		dev_err(dev, "cannot get SDRAM register address\n");
++		pr_err("cannot get SDRAM register address\n");
+ 		return -ENOMEM;
+ 	}
  
 -- 
 2.1.0
