@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
+Received: from mail-wg0-x231.google.com ([2a00:1450:400c:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgNMn-0003HJ-JI
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:19 +0000
-Received: by widdi4 with SMTP id di4so111288402wid.0
- for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:03:56 -0700 (PDT)
+ id 1YgNMq-0003IK-8h
+ for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:21 +0000
+Received: by wgsk9 with SMTP id k9so3355959wgs.3
+ for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:03:58 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 10 Apr 2015 03:03:39 +0200
-Message-Id: <1428627830-17281-3-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 10 Apr 2015 03:03:41 +0200
+Message-Id: <1428627830-17281-5-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,73 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] gpio: Add driver for 74x164 compatible shift-registers
+Subject: [PATCH 04/13] spi: Add SPI GPIO bitbang driver
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-A 74x164 shift register can be seen as a SPI attached GPIO expander.
-This adds a driver for those poor-man expanders based on the Linux
-driver.
+This adds a driver for SPI master by GPIO pins.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/gpio/Kconfig      |   8 +++
- drivers/gpio/Makefile     |   1 +
- drivers/gpio/gpio-74164.c | 131 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 140 insertions(+)
- create mode 100644 drivers/gpio/gpio-74164.c
+ drivers/spi/Kconfig    |   4 +
+ drivers/spi/Makefile   |   1 +
+ drivers/spi/gpio_spi.c | 238 +++++++++++++++++++++++++++++++++++++++++++++++++
+ include/spi/spi_gpio.h |  36 ++++++++
+ 4 files changed, 279 insertions(+)
+ create mode 100644 drivers/spi/gpio_spi.c
+ create mode 100644 include/spi/spi_gpio.h
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index c8b1efb1f23a..9cb22613dd91 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -13,6 +13,14 @@ config GPIO_DIGIC
- 	bool "GPIO support for Canon DIGIC"
- 	depends on ARCH_DIGIC
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index e4fa6a2d94bb..738b88ea5ed7 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -18,6 +18,10 @@ config DRIVER_SPI_ATMEL
+ 	bool "Atmel (AT91) SPI Master driver"
+ 	depends on ARCH_AT91
  
-+config GPIO_74164
-+	bool "Generic SPI attached shift register"
-+	depends on SPI
-+	help
-+	  Driver for 74x164 compatible serial-in/parallel-out 8-outputs
-+	  shift registers. This driver can be used to provide access
-+	  to more gpio outputs.
++config DRIVER_SPI_GPIO
++	bool "GPIO SPI Master driver"
++	depends on GPIOLIB
 +
- config GPIO_BCM2835
- 	bool "GPIO support for BCM2835"
- 	depends on ARCH_BCM2835
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 508e228bac2c..1d946614e3a6 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
+ config DRIVER_SPI_IMX
+ 	bool "i.MX SPI Master driver"
+ 	depends on ARCH_IMX
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 7469479c31fc..74819665856e 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
 @@ -1,5 +1,6 @@
- obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
- 
-+obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
- obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
- obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
-diff --git a/drivers/gpio/gpio-74164.c b/drivers/gpio/gpio-74164.c
+ obj-$(CONFIG_SPI) += spi.o
+ obj-$(CONFIG_DRIVER_SPI_ATH79) += ath79_spi.o
++obj-$(CONFIG_DRIVER_SPI_GPIO) += gpio_spi.o
+ obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
+ obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
+ obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
+diff --git a/drivers/spi/gpio_spi.c b/drivers/spi/gpio_spi.c
 new file mode 100644
-index 000000000000..535a508bf15e
+index 000000000000..fd9aa3e2303c
 --- /dev/null
-+++ b/drivers/gpio/gpio-74164.c
-@@ -0,0 +1,131 @@
++++ b/drivers/spi/gpio_spi.c
+@@ -0,0 +1,238 @@
 +/*
-+ * Generic serial-in/parallel-out 8-bits shift register GPIO driver
-+ *   e.g. for 74x164
++ * SPI master driver using generic bitbanged GPIO
 + *
 + * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 + *
 + * Based on Linux driver
-+ *  Copyright (C) 2010 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2010 Miguel Gaio <miguel.gaio@efixo.com>
++ *   Copyright (C) 2006,2008 David Brownell
 + *
 + * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + */
 +
 +#include <common.h>
@@ -99,115 +99,260 @@ index 000000000000..535a508bf15e
 +#include <init.h>
 +#include <io.h>
 +#include <malloc.h>
++#include <of_gpio.h>
 +#include <spi/spi.h>
++#include <spi/spi_gpio.h>
 +
-+#define MAX_REGS	4
-+
-+struct gpio_74164 {
-+	struct gpio_chip chip;
-+	struct spi_device *spi;
-+	u8 buffer[MAX_REGS];
-+	u8 num_regs;
-+};	
-+
-+#define gc_to_gpio_74164(c)	container_of(c, struct gpio_74164, chip)
-+
-+/*
-+ * Since the registers are chained, every byte sent will make
-+ * the previous byte shift to the next register in the
-+ * chain. Thus, the first byte send will end up in the last
-+ * register at the end of the transfer. So, to have a logical
-+ * numbering, send the bytes in reverse order so that the last
-+ * byte of the buffer will end up in the last register.
-+ */
-+static int gpio_74164_update_buffers(struct gpio_74164 *priv)
-+{
-+	u8 b[MAX_REGS];
-+	int n;
-+
-+	for (n = 0; n < priv->num_regs; n++)
-+		b[priv->num_regs - n - 1] = priv->buffer[n];
-+	spi_write(priv->spi, b, priv->num_regs);
-+
-+	return 0;
-+}
-+
-+static int gpio_74164_get_value(struct gpio_chip *chip, unsigned off)
-+{
-+	struct gpio_74164 *priv = gc_to_gpio_74164(chip);
-+	u8 bank = off / 8;
-+	u8 pin = off % 8;
-+
-+	return (priv->buffer[bank] >> pin) & 1;
-+}
-+
-+static void gpio_74164_set_value(struct gpio_chip *chip,
-+				 unsigned off, int val)
-+{
-+	struct gpio_74164 *priv = gc_to_gpio_74164(chip);
-+	u8 bank = off / 8;
-+	u8 pin = off % 8;
-+
-+	if (val)
-+		priv->buffer[bank] |= BIT(pin);
-+	else
-+		priv->buffer[bank] &= ~BIT(pin);
-+
-+	gpio_74164_update_buffers(priv);
-+}
-+
-+static int gpio_74164_direction_output(struct gpio_chip *chip,
-+				       unsigned off, int val)
-+{
-+	gpio_74164_set_value(chip, off, val);
-+	return 0;
-+}
-+
-+static struct gpio_ops gpio_74164_ops = {
-+	.direction_output = gpio_74164_direction_output,
-+	.get = gpio_74164_get_value,
-+	.set = gpio_74164_set_value,
++struct gpio_spi {
++	struct spi_master master;
++	struct gpio_spi_pdata *data;
 +};
 +
-+static struct platform_device_id gpio_74164_ids[] = {
-+	{ "74hc164" },
-+	{ "74hc595" },
++#define priv_from_spi_device(s)	container_of(s->master, struct gpio_spi, master)
++
++static inline void setsck(const struct spi_device *spi, int is_on)
++{
++	struct gpio_spi *priv = priv_from_spi_device(spi);
++	gpio_set_value(priv->data->sck, is_on);
++}
++
++static inline void setmosi(const struct spi_device *spi, int is_on)
++{
++	struct gpio_spi *priv = priv_from_spi_device(spi);
++	if (!gpio_is_valid(priv->data->mosi))
++		return;
++	gpio_set_value(priv->data->mosi, is_on);
++}
++
++static inline int getmiso(const struct spi_device *spi)
++{
++	struct gpio_spi *priv = priv_from_spi_device(spi);
++	if (!gpio_is_valid(priv->data->miso))
++		return 1;
++	return !!gpio_get_value(priv->data->miso);
++}
++
++#define spidelay(nsecs) do { } while (0)
++
++#include "spi-bitbang-txrx.h"
++
++static int gpio_spi_set_cs(struct spi_device *spi, bool en)
++{
++	struct gpio_spi *priv = priv_from_spi_device(spi);
++
++	if (!gpio_is_valid(priv->data->cs[spi->chip_select]))
++		return 0;
++
++	gpio_set_value(priv->data->cs[spi->chip_select],
++		       (spi->mode & SPI_CS_HIGH) ? en : !en);
++
++	return 0;
++}
++
++static inline u32 gpio_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
++				     u32 word, u8 bits)
++{
++	int cpol = !!(spi->mode & SPI_CPOL);
++	if (spi->mode & SPI_CPHA)
++		return bitbang_txrx_be_cpha1(spi, nsecs, cpol, word, bits);
++	else
++		return bitbang_txrx_be_cpha0(spi, nsecs, cpol, word, bits);
++}
++
++static int gpio_spi_transfer_one(struct spi_device *spi, struct spi_transfer *t)
++{
++	bool read = (t->rx_buf) ? true : false;
++	u32 word = 0;
++	int n;
++
++	for (n = 0; n < t->len; n++) {
++		if (!read)
++			word = ((const u8 *)t->tx_buf)[n];
++		word = gpio_spi_txrx_word(spi, 0, word, 8);
++		if (read)
++			((u8 *)t->rx_buf)[n] = word & 0xff;
++	}
++
++	return 0;
++}
++
++static int gpio_spi_transfer(struct spi_device *spi, struct spi_message *msg)
++{
++	struct spi_transfer *t;
++	int ret;
++
++	ret = gpio_spi_set_cs(spi, true);
++	if (ret)
++		return ret;
++
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		ret = gpio_spi_transfer_one(spi, t);
++		if (ret)
++			return ret;
++		msg->actual_length += t->len;
++	}
++
++	ret = gpio_spi_set_cs(spi, false);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int gpio_spi_setup(struct spi_device *spi)
++{
++	if (spi->bits_per_word != 8) {
++		dev_err(spi->master->dev, "master does not support %d bits per word\n",
++			spi->bits_per_word);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int gpio_spi_of_probe(struct device_d *dev)
++{
++	struct device_node *np = dev->device_node;
++	struct gpio_spi_pdata *pdata;
++	int n, sck;
++
++	if (!IS_ENABLED(CONFIG_OFDEVICE) || dev->platform_data)
++		return 0;
++
++	sck = of_get_named_gpio(np, "gpio-sck", 0);
++	if (!gpio_is_valid(sck)) {
++		dev_err(dev, "missing mandatory SCK gpio\n");
++		return sck;
++	}
++
++	pdata = xzalloc(sizeof(*pdata));
++	pdata->sck = sck;
++	pdata->num_cs = MAX_CHIPSELECT;
++
++	pdata->miso = of_get_named_gpio(np, "gpio-miso", 0);
++	if (!gpio_is_valid(pdata->miso))
++		pdata->miso = SPI_GPIO_NO_MISO;
++
++	pdata->mosi = of_get_named_gpio(np, "gpio-mosi", 0);
++	if (!gpio_is_valid(pdata->mosi))
++		pdata->mosi = SPI_GPIO_NO_MOSI;
++
++	for (n = 0; n < MAX_CHIPSELECT; n++) {
++		pdata->cs[n] = of_get_named_gpio(np, "cs-gpios", n);
++		if (!gpio_is_valid(pdata->cs[n]))
++		    pdata->cs[n] = SPI_GPIO_NO_CS;
++	}
++
++	dev->platform_data = pdata;
++
++	return 0;
++}
++
++static int gpio_spi_probe(struct device_d *dev)
++{
++	struct gpio_spi *priv;
++	struct gpio_spi_pdata *pdata;
++	struct spi_master *master;
++	int n, ret;
++
++	ret = gpio_spi_of_probe(dev);
++	if (ret)
++		return ret;
++	pdata = dev->platform_data;
++
++	ret = gpio_request_one(pdata->sck, GPIOF_DIR_OUT, "spi-sck");
++	if (ret)
++		return ret;
++
++	if (pdata->miso != SPI_GPIO_NO_MISO) {
++		ret = gpio_request_one(pdata->miso, GPIOF_DIR_IN, "spi-miso");
++		if (ret)
++			return ret;
++	}
++
++	if (pdata->mosi != SPI_GPIO_NO_MOSI) {
++		ret = gpio_request_one(pdata->mosi, GPIOF_DIR_OUT, "spi-mosi");
++		if (ret)
++			return ret;
++	}
++
++	for (n = 0; n < pdata->num_cs; n++) {
++		char *cs_name;
++
++		if (!gpio_is_valid(pdata->cs[n]))
++			continue;
++
++		cs_name = asprintf("spi-cs%d", n);
++		ret = gpio_request_one(pdata->cs[n], GPIOF_DIR_OUT, cs_name);
++		if (ret)
++			return ret;
++	}
++
++	priv = xzalloc(sizeof(*priv));
++	priv->data = pdata;
++	master = &priv->master;
++	master->dev = dev;
++	master->bus_num = dev->id;
++	master->setup = gpio_spi_setup;
++	master->transfer = gpio_spi_transfer;
++	master->num_chipselect = priv->data->num_cs;
++
++	return spi_register_master(&priv->master);
++}
++
++static struct of_device_id __maybe_unused gpio_spi_dt_ids[] = {
++	{ .compatible = "spi-gpio", },
 +	{ }
 +};
 +
-+static int gpio_74164_probe(struct device_d *dev)
-+{
-+	struct spi_device *spi = (struct spi_device *)dev->type_data;
-+	struct gpio_74164 *priv;
-+	u32 num_regs = 1;
-+
-+	dev->id = DEVICE_ID_DYNAMIC;
-+	if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node) {
-+		dev->id = of_alias_get_id(dev->device_node, "gpio");
-+		of_property_read_u32(dev->device_node, "registers-number",
-+				     &num_regs);
-+	}
-+
-+	if (num_regs > MAX_REGS)
-+		num_regs = MAX_REGS;
-+
-+	priv = xzalloc(sizeof(*priv));
-+	priv->spi = spi;
-+	priv->num_regs = num_regs;
-+	priv->chip.dev = dev;
-+	priv->chip.ops = &gpio_74164_ops;
-+	priv->chip.base = dev->id * 32;
-+	priv->chip.ngpio = num_regs * 8;
-+
-+	return gpiochip_add(&priv->chip);
-+}
-+
-+static struct driver_d gpio_74164_driver = {
-+	.name = "gpio-74164",
-+	.probe = gpio_74164_probe,
-+	.id_table = gpio_74164_ids,
++static struct driver_d gpio_spi_driver = {
++	.name = "gpio-spi",
++	.probe = gpio_spi_probe,
++	.of_compatible = DRV_OF_COMPAT(gpio_spi_dt_ids),
 +};
-+device_spi_driver(gpio_74164_driver);
++device_platform_driver(gpio_spi_driver);
+diff --git a/include/spi/spi_gpio.h b/include/spi/spi_gpio.h
+new file mode 100644
+index 000000000000..841c934f6ead
+--- /dev/null
++++ b/include/spi/spi_gpio.h
+@@ -0,0 +1,36 @@
++/*
++ * SPI master driver using generic bitbanged GPIO
++ *
++ * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * Based on Linux driver
++ *   Copyright (C) 2006,2008 David Brownell
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#ifndef __SPI_GPIO_H
++#define __SPI_GPIO_H
++
++#define MAX_CHIPSELECT		4
++#define SPI_GPIO_NO_CS		(-1)
++#define SPI_GPIO_NO_MISO	(-1)
++#define SPI_GPIO_NO_MOSI	(-1)
++
++struct gpio_spi_pdata {
++	int sck;
++	int mosi;
++	int miso;
++	int cs[MAX_CHIPSELECT];
++	int num_cs;
++};
++
++#endif
 -- 
 2.1.0
 
