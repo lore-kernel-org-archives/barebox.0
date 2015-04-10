@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgNMs-0001Aq-S2
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:25 +0000
-Received: by wizk4 with SMTP id k4so111440371wiz.1
- for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:04:00 -0700 (PDT)
+Received: from mail-wg0-x22a.google.com ([2a00:1450:400c:c00::22a])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YgNMx-0000gG-H2
+ for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:28 +0000
+Received: by wgsk9 with SMTP id k9so3357049wgs.3
+ for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:04:02 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 10 Apr 2015 03:03:43 +0200
-Message-Id: <1428627830-17281-7-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 10 Apr 2015 03:03:49 +0200
+Message-Id: <1428627830-17281-13-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,13 +23,13 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/13] bus: mvebu-mbus: Drop device reference
+Subject: [PATCH 12/13] ARM: mvebu: armada-xp: Sort boards and images
+ alphabetically
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Prior converting mbus driver from a platform device back to directly
-called SoC driver, drop the device_d reference and covert dev_foo to
-pr_foo.
+Before adding new Armada XP based boards becomes messier than necessary,
+sort Armada XP based board Kconfig and image Makefile alphabetically.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -37,119 +37,73 @@ Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- drivers/bus/mvebu-mbus.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ arch/arm/mach-mvebu/Kconfig |  8 ++++----
+ images/Makefile.mvebu       | 22 +++++++++++-----------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
-index 75c357a869ef..077d7ccb83ca 100644
---- a/drivers/bus/mvebu-mbus.c
-+++ b/drivers/bus/mvebu-mbus.c
-@@ -50,6 +50,8 @@
-  *   configuration (file 'devices').
-  */
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index 8323b6604174..9394cf71a998 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -43,14 +43,14 @@ config MACH_GLOBALSCALE_MIRABOX
  
-+#define pr_fmt(fmt)	"mvebu-mbus: " fmt
-+
- #include <common.h>
- #include <init.h>
- #include <io.h>
-@@ -100,7 +102,7 @@ struct mvebu_mbus_soc_data {
- };
+ comment "Armada XP based boards"
  
- struct mvebu_mbus_state {
--	struct device_d *dev;
-+	struct device_node *np;
- 	void __iomem *mbuswins_base;
- 	void __iomem *sdramwins_base;
- 	struct dentry *debugfs_root;
-@@ -496,7 +498,7 @@ int mvebu_mbus_add_window_remap_by_id(unsigned int target,
- 	struct mvebu_mbus_state *s = &mbus_state;
- 
- 	if (!mvebu_mbus_window_conflicts(s, base, size, target, attribute)) {
--		dev_err(s->dev, "cannot add window '%x:%x', conflicts with another window\n",
-+		pr_err("cannot add window '%x:%x', conflicts with another window\n",
- 		       target, attribute);
- 		return -EINVAL;
- 	}
-@@ -552,14 +554,14 @@ static int mbus_dt_setup_win(struct mvebu_mbus_state *mbus,
- 			     u32 base, u32 size, u8 target, u8 attr)
- {
- 	if (!mvebu_mbus_window_conflicts(mbus, base, size, target, attr)) {
--		dev_err(mbus->dev, "cannot add window '%04x:%04x', conflicts with another window\n",
-+		pr_err("cannot add window '%04x:%04x', conflicts with another window\n",
- 		       target, attr);
- 		return -EBUSY;
- 	}
- 
- 	if (mvebu_mbus_alloc_window(mbus, base, size, MVEBU_MBUS_NO_REMAP,
- 				    target, attr)) {
--		dev_err(mbus->dev, "cannot add window '%04x:%04x', too many windows\n",
-+		pr_err("cannot add window '%04x:%04x', too many windows\n",
- 		       target, attr);
- 		return -ENOMEM;
- 	}
-@@ -571,7 +573,7 @@ static int mbus_parse_ranges(struct mvebu_mbus_state *mbus, int *addr_cells,
- 			     int *cell_count, const __be32 **ranges_start,
- 			     const __be32 **ranges_end)
- {
--	struct device_node *node = mbus->dev->device_node;
-+	struct device_node *node = mbus->np;
- 	const __be32 *prop;
- 	int ranges_len, tuple_len;
- 
-@@ -596,8 +598,7 @@ static int mbus_parse_ranges(struct mvebu_mbus_state *mbus, int *addr_cells,
- 	tuple_len = (*cell_count) * sizeof(__be32);
- 
- 	if (ranges_len % tuple_len) {
--		dev_warn(mbus->dev, "malformed ranges entry '%s'\n",
--			node->name);
-+		pr_warn("malformed ranges entry '%s'\n", node->name);
- 		return -EINVAL;
- 	}
- 	return 0;
-@@ -679,36 +680,35 @@ static int mvebu_mbus_probe(struct device_d *dev)
- 	const __be32 *prop;
- 	int win;
- 
--	mbus_state.dev = dev;
+-config MACH_PLATHOME_OPENBLOCKS_AX3
+-	bool "PlatHome OpenBlocks AX3"
+-	select ARCH_ARMADA_XP
 -
- 	np = of_find_matching_node_and_match(NULL, mvebu_mbus_dt_ids, &match);
- 	if (!np) {
--		dev_err(dev, "could not find a matching SoC family\n");
-+		pr_err("could not find a matching SoC family\n");
- 		return -ENODEV;
- 	}
-+	mbus_state.np = np;
- 	mbus_state.soc = (struct mvebu_mbus_soc_data *)match->data;
+ config MACH_MARVELL_ARMADA_XP_GP
+ 	bool "Marvell Armada XP GP"
+ 	select ARCH_ARMADA_XP
  
- 	prop = of_get_property(np, "controller", NULL);
- 	if (!prop) {
--		dev_err(dev, "required 'controller' property missing\n");
-+		pr_err("required 'controller' property missing\n");
- 		return -EINVAL;
- 	}
++config MACH_PLATHOME_OPENBLOCKS_AX3
++	bool "PlatHome OpenBlocks AX3"
++	select ARCH_ARMADA_XP
++
+ #
+ # Dove 88AP510 SoC boards
+ #
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index c3923e4ecc8f..82f370576468 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -24,17 +24,6 @@ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-uart.img
+ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-2nd.img
  
- 	controller = of_find_node_by_phandle(be32_to_cpup(prop));
- 	if (!controller) {
--		dev_err(dev, "could not find an 'mbus-controller' node\n");
-+		pr_err("could not find an 'mbus-controller' node\n");
- 		return -ENODEV;
- 	}
+ # ----------------------- Armada XP based boards ---------------------------
+-PLATHOME_OPENBLOCKS_AX3_KWBOPTS = ${KWBOPTS} -i $(board)/plathome-openblocks-ax3/kwbimage.cfg
+-OPTS_start_plathome_openblocks_ax3.pblx.kwbimg = $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
+-OPTS_start_plathome_openblocks_ax3.pblx.kwbuartimg = -m uart $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
+-FILE_barebox-plathome-openblocks-ax3.img   = start_plathome_openblocks_ax3.pblx.kwbimg
+-FILE_barebox-plathome-openblocks-ax3-uart.img = start_plathome_openblocks_ax3.pblx.kwbuartimg
+-FILE_barebox-plathome-openblocks-ax3-2nd.img = start_plathome_openblocks_ax3.pblx
+-pblx-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += start_plathome_openblocks_ax3
+-image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3.img
+-image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-uart.img
+-image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-2nd.img
+-
+ MARVELL_ARMADA_XP_GP_KWBOPTS = ${KWBOPTS} -i $(board)/marvell-armada-xp-gp/kwbimage.cfg
+ OPTS_start_marvell_armada_xp_gp.pblx.kwbimg = $(MARVELL_ARMADA_XP_GP_KWBOPTS)
+ OPTS_start_marvell_armada_xp_gp.pblx.kwbuartimg = -m uart $(MARVELL_ARMADA_XP_GP_KWBOPTS)
+@@ -46,6 +35,17 @@ image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp.img
+ image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp-uart.img
+ image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp-2nd.img
  
- 	mbus_state.mbuswins_base = of_iomap(controller, 0);
- 	if (!mbus_state.mbuswins_base) {
--		dev_err(dev, "cannot get MBUS register address\n");
-+		pr_err("cannot get MBUS register address\n");
- 		return -ENOMEM;
- 	}
- 
- 	mbus_state.sdramwins_base = of_iomap(controller, 1);
- 	if (!mbus_state.sdramwins_base) {
--		dev_err(dev, "cannot get SDRAM register address\n");
-+		pr_err("cannot get SDRAM register address\n");
- 		return -ENOMEM;
- 	}
- 
++PLATHOME_OPENBLOCKS_AX3_KWBOPTS = ${KWBOPTS} -i $(board)/plathome-openblocks-ax3/kwbimage.cfg
++OPTS_start_plathome_openblocks_ax3.pblx.kwbimg = $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
++OPTS_start_plathome_openblocks_ax3.pblx.kwbuartimg = -m uart $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
++FILE_barebox-plathome-openblocks-ax3.img   = start_plathome_openblocks_ax3.pblx.kwbimg
++FILE_barebox-plathome-openblocks-ax3-uart.img = start_plathome_openblocks_ax3.pblx.kwbuartimg
++FILE_barebox-plathome-openblocks-ax3-2nd.img = start_plathome_openblocks_ax3.pblx
++pblx-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += start_plathome_openblocks_ax3
++image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3.img
++image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-uart.img
++image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-2nd.img
++
+ # ----------------------- Dove 88AP510 based boards ---------------------------
+ SOLIDRUN_CUBOX_KWBOPTS = ${KWBOPTS} -i $(board)/solidrun-cubox/kwbimage.cfg
+ OPTS_start_solidrun_cubox.pblx.kwbimg = $(SOLIDRUN_CUBOX_KWBOPTS)
 -- 
 2.1.0
 
