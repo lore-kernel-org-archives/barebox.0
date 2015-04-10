@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x236.google.com ([2a00:1450:400c:c05::236])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgNMr-0003J0-VF
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:23 +0000
-Received: by wiun10 with SMTP id n10so8444316wiu.1
- for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:03:59 -0700 (PDT)
+Received: from mail-wi0-x22b.google.com ([2a00:1450:400c:c05::22b])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YgNMs-0001Ar-S1
+ for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:04:24 +0000
+Received: by widdi4 with SMTP id di4so111290000wid.0
+ for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:04:01 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 10 Apr 2015 03:03:44 +0200
-Message-Id: <1428627830-17281-8-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 10 Apr 2015 03:03:47 +0200
+Message-Id: <1428627830-17281-11-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,15 +23,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/13] bus: mvebu-mbus: Convert mbus platform driver to direct
- driver
+Subject: [PATCH 10/13] ARM: mvebu: armada-xp: Limit PUP access to Armada XP
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Registering mbus driver as platform driver is a little late for
-some register accesses to work. We have to make sure boot-up
-mbus windows are disabled early, so call mbus driver directly
-from SoC init.
+Commit 6638760c225c37f90e822ebf4dd8f0d2cd0b0ef3
+ ("ARM: mvebu: Enable PUP register")
+correctly enables devices that are disabled after boot-up due to
+some Design For Testability registers.
+
+However, although harmless on Armada 370, call the code conditionally
+on Armada XP only. While at it, move PUP register defines to SYSCTL
+registers where they belong to.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -39,92 +42,60 @@ Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/armada-370-xp.c |  1 +
- arch/arm/mach-mvebu/dove.c          |  1 +
- arch/arm/mach-mvebu/kirkwood.c      |  1 +
- drivers/bus/mvebu-mbus.c            | 14 +-------------
- include/linux/mbus.h                |  2 ++
- 5 files changed, 6 insertions(+), 13 deletions(-)
+ arch/arm/mach-mvebu/armada-370-xp.c                   | 18 ++++++++++++++----
+ arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h |  3 +--
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-index 244f8cdd81a5..ae458b4433b3 100644
+index 9ba3247805d1..8e1463dd8b11 100644
 --- a/arch/arm/mach-mvebu/armada-370-xp.c
 +++ b/arch/arm/mach-mvebu/armada-370-xp.c
-@@ -73,6 +73,7 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
- 	armada_370_xp_memory_find(&phys_base, &phys_size);
- 
- 	mvebu_set_memory(phys_base, phys_size);
-+	mvebu_mbus_init();
- 
- 	/* Enable peripherals PUP */
- 	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
-diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
-index c2852f8986ae..a7284fd33a63 100644
---- a/arch/arm/mach-mvebu/dove.c
-+++ b/arch/arm/mach-mvebu/dove.c
-@@ -93,6 +93,7 @@ static int dove_init_soc(struct device_node *root, void *context)
- 	dove_memory_find(&phys_base, &phys_size);
- 
- 	mvebu_set_memory(phys_base, phys_size);
-+	mvebu_mbus_init();
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
-index d7903f732eac..19c6f0730332 100644
---- a/arch/arm/mach-mvebu/kirkwood.c
-+++ b/arch/arm/mach-mvebu/kirkwood.c
-@@ -66,6 +66,7 @@ static int kirkwood_init_soc(struct device_node *root, void *context)
- 	kirkwood_memory_find(&phys_base, &phys_size);
- 
- 	mvebu_set_memory(phys_base, phys_size);
-+	mvebu_mbus_init();
- 
- 	return 0;
- }
-diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
-index 077d7ccb83ca..e1898103540b 100644
---- a/drivers/bus/mvebu-mbus.c
-+++ b/drivers/bus/mvebu-mbus.c
-@@ -673,7 +673,7 @@ static void mvebu_mbus_get_pcie_resources(struct device_node *np,
- 	}
+@@ -112,6 +112,18 @@ static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
+ 		;
  }
  
--static int mvebu_mbus_probe(struct device_d *dev)
-+int mvebu_mbus_init(void)
- {
- 	struct device_node *np, *controller;
- 	const struct of_device_id *match;
-@@ -725,18 +725,6 @@ static int mvebu_mbus_probe(struct device_d *dev)
- 	return mbus_dt_setup(&mbus_state);
- }
- 
--static struct driver_d mvebu_mbus_driver = {
--	.probe	= mvebu_mbus_probe,
--	.name	= "mvebu-mbus",
--	.of_compatible = DRV_OF_COMPAT(mvebu_mbus_dt_ids),
--};
--
--static int mvebu_mbus_init(void)
--{
--	return platform_driver_register(&mvebu_mbus_driver);
--}
--postcore_initcall(mvebu_mbus_init);
--
- struct mbus_range {
- 	const char *compatible;
- 	u32 mbusid;
-diff --git a/include/linux/mbus.h b/include/linux/mbus.h
-index b90fabbfb7e5..bcc5949219cf 100644
---- a/include/linux/mbus.h
-+++ b/include/linux/mbus.h
-@@ -61,4 +61,6 @@ int mvebu_mbus_del_window(phys_addr_t base, size_t size);
- void mvebu_mbus_add_range(const char *compatible,
- 			  u8 target, u8 attr, u32 remap);
- 
-+int mvebu_mbus_init(void);
++static int armada_xp_init_soc(struct device_node *root)
++{
++	u32 reg;
 +
- #endif /* __LINUX_MBUS_H */
++	/* Enable GBE0, GBE1, LCD and NFC PUP */
++	reg = readl(ARMADA_XP_PUP_ENABLE);
++	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
++	writel(reg, ARMADA_XP_PUP_ENABLE);
++
++	return 0;
++}
++
+ static int armada_370_xp_init_soc(struct device_node *root, void *context)
+ {
+ 	unsigned long phys_base, phys_size;
+@@ -137,10 +149,8 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
+ 
+ 	armada_370_xp_soc_id_fixup();
+ 
+-	/* Enable peripherals PUP */
+-	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
+-	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
+-	writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
++	if (of_machine_is_compatible("marvell,armadaxp"))
++		armada_xp_init_soc(root);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+index 2a6e6d1aec2c..1dad05317211 100644
+--- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
++++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+@@ -37,8 +37,7 @@
+ #define ARMADA_370_XP_SAR_HIGH		(ARMADA_370_XP_SYSCTL_BASE + 0x034)
+ #define ARMADA_370_XP_CPU_SOC_ID	(ARMADA_370_XP_SYSCTL_BASE + 0x03c)
+ #define  CPU_SOC_ID_DEVICE_MASK		0xffff
+-
+-#define ARMADA_XP_PUP_ENABLE_BASE       (ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
++#define ARMADA_XP_PUP_ENABLE		(ARMADA_370_XP_SYSCTL_BASE + 0x44c)
+ #define  GE0_PUP_EN			BIT(0)
+ #define  GE1_PUP_EN			BIT(1)
+ #define  LCD_PUP_EN			BIT(2)
 -- 
 2.1.0
 
