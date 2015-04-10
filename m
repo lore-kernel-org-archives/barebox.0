@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgNKy-0002PR-98
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:02:25 +0000
-Received: by wiaa2 with SMTP id a2so8456707wia.0
- for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:02:03 -0700 (PDT)
+ id 1YgNLn-0002dy-2a
+ for barebox@lists.infradead.org; Fri, 10 Apr 2015 01:03:15 +0000
+Received: by widdi4 with SMTP id di4so111269735wid.0
+ for <barebox@lists.infradead.org>; Thu, 09 Apr 2015 18:02:53 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 10 Apr 2015 03:01:54 +0200
-Message-Id: <1428627714-17077-5-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1428627714-17077-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1428627714-17077-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 10 Apr 2015 03:02:43 +0200
+Message-Id: <1428627766-17178-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1428627766-17178-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1428627766-17178-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,52 +23,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] USB: xHCI: Sync non-coherent DMA buffers
+Subject: [PATCH 1/4] base: Introduce deferred probing
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-When working with non-coherent transfer buffers, we have to sync
-device and cpu for outgoing and incoming buffers. Fix the driver where
-non-coherent buffers are used in device context.
+As expected, we would need deferred probing sooner or later. This is
+a first approach to allow devices to return -EPROBE_DEFER and get
+sorted into a list of deferred devices that will be re-probed later.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/usb/host/xhci-hcd.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/base/driver.c       | 42 +++++++++++++++++++++++++++++++++++++++---
+ include/asm-generic/errno.h |  1 +
+ 2 files changed, 40 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-hcd.c b/drivers/usb/host/xhci-hcd.c
-index c3d623e91f51..fab884229732 100644
---- a/drivers/usb/host/xhci-hcd.c
-+++ b/drivers/usb/host/xhci-hcd.c
-@@ -1026,6 +1026,8 @@ static int xhci_submit_normal(struct usb_device *udev, unsigned long pipe,
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 590c97c96424..5eac21f3c950 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -29,6 +29,7 @@
+ #include <console.h>
+ #include <linux/ctype.h>
+ #include <errno.h>
++#include <init.h>
+ #include <fs.h>
+ #include <of.h>
+ #include <linux/list.h>
+@@ -43,6 +44,7 @@ LIST_HEAD(driver_list);
+ EXPORT_SYMBOL(driver_list);
  
- 	/* Normal TRB */
- 	memset(&trb, 0, sizeof(union xhci_trb));
-+	dma_sync_single_for_device((unsigned long)buffer, length,
-+				   DMA_TO_DEVICE);
- 	trb.event_cmd.cmd_trb = cpu_to_le64((dma_addr_t)buffer);
- 	/* FIXME: TD remainder */
- 	trb.event_cmd.status = TRB_LEN(length) | TRB_INTR_TARGET(0);
-@@ -1114,6 +1116,8 @@ static int xhci_submit_control(struct usb_device *udev, unsigned long pipe,
- 	/* Data TRB */
- 	if (length > 0) {
- 		memset(&trb, 0, sizeof(union xhci_trb));
-+		dma_sync_single_for_device((unsigned long)buffer, length,
-+					   DMA_TO_DEVICE);
- 		trb.event_cmd.cmd_trb = cpu_to_le64((dma_addr_t)buffer);
- 		/* FIXME: TD remainder */
- 		trb.event_cmd.status = TRB_LEN(length) | TRB_INTR_TARGET(0);
-@@ -1142,6 +1146,8 @@ static int xhci_submit_control(struct usb_device *udev, unsigned long pipe,
- 			length -= EVENT_TRB_LEN(trb.event_cmd.status);
- 		else if (ret < 0)
- 			return ret;
-+		dma_sync_single_for_cpu((unsigned long)buffer, length,
-+					DMA_FROM_DEVICE);
+ static LIST_HEAD(active);
++static LIST_HEAD(deferred);
+ 
+ struct device_d *get_device_by_name(const char *name)
+ {
+@@ -88,13 +90,20 @@ int device_probe(struct device_d *dev)
+ 	list_add(&dev->active, &active);
+ 
+ 	ret = dev->bus->probe(dev);
+-	if (ret) {
++	if (ret == 0)
++		return 0;
++
++	if (ret == -EPROBE_DEFER) {
+ 		list_del(&dev->active);
+-		dev_err(dev, "probe failed: %s\n", strerror(-ret));
++		list_add(&dev->active, &deferred);
++		dev_dbg(dev, "probe deferred\n");
+ 		return ret;
  	}
  
- 	ret = xhci_wait_for_event(xhci, TRB_TRANSFER, &trb);
+-	return 0;
++	list_del(&dev->active);
++	dev_err(dev, "probe failed: %s\n", strerror(-ret));
++
++	return ret;
+ }
+ 
+ int device_detect(struct device_d *dev)
+@@ -213,6 +222,33 @@ int unregister_device(struct device_d *old_dev)
+ }
+ EXPORT_SYMBOL(unregister_device);
+ 
++static int device_probe_deferred(void)
++{
++	struct device_d *dev, *tmp;
++	struct driver_d *drv;
++	int retries = 10;
++
++	do {
++		if (list_empty(&deferred))
++			break;
++
++		list_for_each_entry_safe(dev, tmp, &deferred, active) {
++			list_del(&dev->active);
++
++			if (dev->bus) {
++				bus_for_each_driver(dev->bus, drv) {
++					if (!match(drv, dev))
++						break;
++				}
++				device_probe(dev);
++			}
++		}
++	} while (retries--);
++
++	return 0;
++}
++late_initcall(device_probe_deferred);
++
+ struct driver_d *get_driver_by_name(const char *name)
+ {
+ 	struct driver_d *drv;
+diff --git a/include/asm-generic/errno.h b/include/asm-generic/errno.h
+index bbf493c373ae..6072f7b605bb 100644
+--- a/include/asm-generic/errno.h
++++ b/include/asm-generic/errno.h
+@@ -132,6 +132,7 @@
+ #define ERESTARTNOINTR	513
+ #define ERESTARTNOHAND	514	/* restart if no handler.. */
+ #define ENOIOCTLCMD	515	/* No ioctl command */
++#define EPROBE_DEFER	517	/* Driver requests probe retry */
+ 
+ #define ENOTSUPP	524	/* Operation is not supported */
+ 
 -- 
 2.1.0
 
