@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgiGZ-0001zF-SI
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 23:23:16 +0000
-Received: by lbcga7 with SMTP id ga7so24108441lbc.1
- for <barebox@lists.infradead.org>; Fri, 10 Apr 2015 16:22:53 -0700 (PDT)
+ id 1YgiGf-0001zW-Dz
+ for barebox@lists.infradead.org; Fri, 10 Apr 2015 23:23:23 +0000
+Received: by laat2 with SMTP id t2so23358842laa.1
+ for <barebox@lists.infradead.org>; Fri, 10 Apr 2015 16:22:58 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 11 Apr 2015 02:22:58 +0300
-Message-Id: <1428708181-12506-3-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 11 Apr 2015 02:23:01 +0300
+Message-Id: <1428708181-12506-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1428708181-12506-1-git-send-email-antonynpavlov@gmail.com>
 References: <1428708181-12506-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,128 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] MIPS: xburst: debug_ll: add JZ4770 support
+Subject: [PATCH 5/5] Documentation: add Ainol Novo7 Paladin board mini-howto
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/mach-xburst/Kconfig                      |  8 ++--
- .../mach-xburst/include/mach/debug_ll_jz4770.h     | 47 ++++++++++++++++++++++
- arch/mips/mach-xburst/include/mach/jz4770.h        | 25 ++++++++++++
- 3 files changed, 76 insertions(+), 4 deletions(-)
+ Documentation/boards/mips/ainol-novo7-paladin.rst | 45 +++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/arch/mips/mach-xburst/Kconfig b/arch/mips/mach-xburst/Kconfig
-index 1fadf3f..3623d1a 100644
---- a/arch/mips/mach-xburst/Kconfig
-+++ b/arch/mips/mach-xburst/Kconfig
-@@ -41,19 +41,19 @@ choice
- 	prompt "DEBUG_LL port"
- 
- config JZ47XX_DEBUG_LL_UART0
--	depends on CPU_JZ4755 || CPU_JZ4780
-+	depends on CPU_JZ4755 || CPU_JZ4770 || CPU_JZ4780
- 	bool "UART0"
- 
- config JZ47XX_DEBUG_LL_UART1
--	depends on CPU_JZ4755 || CPU_JZ4780
-+	depends on CPU_JZ4755 || CPU_JZ4770 || CPU_JZ4780
- 	bool "UART1"
- 
- config JZ47XX_DEBUG_LL_UART2
--	depends on CPU_JZ4755 || CPU_JZ4780
-+	depends on CPU_JZ4755 || CPU_JZ4770 || CPU_JZ4780
- 	bool "UART2"
- 
- config JZ47XX_DEBUG_LL_UART3
--	depends on CPU_JZ4780
-+	depends on CPU_JZ4770 || CPU_JZ4780
- 	bool "UART3"
- 
- config JZ47XX_DEBUG_LL_UART4
-diff --git a/arch/mips/mach-xburst/include/mach/debug_ll_jz4770.h b/arch/mips/mach-xburst/include/mach/debug_ll_jz4770.h
+diff --git a/Documentation/boards/mips/ainol-novo7-paladin.rst b/Documentation/boards/mips/ainol-novo7-paladin.rst
 new file mode 100644
-index 0000000..79d72a0
+index 0000000..becfcd0
 --- /dev/null
-+++ b/arch/mips/mach-xburst/include/mach/debug_ll_jz4770.h
-@@ -0,0 +1,47 @@
-+/*
-+ * Copyright (C) 2015 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++++ b/Documentation/boards/mips/ainol-novo7-paladin.rst
+@@ -0,0 +1,45 @@
++Ainol Novo7 Paladin
++===================
 +
-+#ifndef __INCLUDE_DEBUG_LL_JZ4770_H__
-+#define __INCLUDE_DEBUG_LL_JZ4770_H__
++The tablet has
 +
-+#include <mach/jz4770.h>
++  * Ingenic JZ4770 SoC;
++  * 512 MiB DDR2 SDRAM;
++  * 8 GiB eMMC Flash Memory;
++  * UART;
++  * touchscreen (800x480);
++  * 1xUSB interface;
++  * buttons.
 +
-+#ifdef CONFIG_JZ47XX_DEBUG_LL_UART0
-+#define DEBUG_LL_UART_ADDR	JZ4770_UART0_BASE
-+#endif
++The tablet uses X-Boot (Ingenic's not interactive U-Boot) as bootloader.
 +
-+#ifdef CONFIG_JZ47XX_DEBUG_LL_UART1
-+#define DEBUG_LL_UART_ADDR	JZ4770_UART1_BASE
-+#endif
++Running barebox
++---------------
 +
-+#ifdef CONFIG_JZ47XX_DEBUG_LL_UART2
-+#define DEBUG_LL_UART_ADDR	JZ4770_UART2_BASE
-+#endif
++  1. Connect to the tablet's UART (see. http://a320.emulate.su/2012/05/14/mini-obzor-planshet-ainol-novo7-paladin-i-processor-jz4770/);
 +
-+#ifdef CONFIG_JZ47XX_DEBUG_LL_UART3
-+#define DEBUG_LL_UART_ADDR	JZ4770_UART3_BASE
-+#endif
++  2. Download and compile ingenic-boot tool for GCW0
 +
-+#define DEBUG_LL_UART_SHIFT	2
++.. code-block:: none
 +
-+#ifndef DEBUG_LL_UART_CLK
-+#define DEBUG_LL_UART_CLK	(12000000 / 16)
-+#endif
-+#define DEBUG_LL_UART_BPS	CONFIG_BAUDRATE
-+#define DEBUG_LL_UART_DIVISOR	(DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
++    $ git clone https://github.com/gcwnow/ingenic-boot
++    $ cd ingenic-boot
++    ingenic-boot$ make
++..
 +
-+#endif /* __INCLUDE_DEBUG_LL_JZ4770_H__ */
-diff --git a/arch/mips/mach-xburst/include/mach/jz4770.h b/arch/mips/mach-xburst/include/mach/jz4770.h
-new file mode 100644
-index 0000000..161c1af
---- /dev/null
-+++ b/arch/mips/mach-xburst/include/mach/jz4770.h
-@@ -0,0 +1,25 @@
-+/*
-+ * JZ4770 SoC definitions
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++  3. Push & hold VOL- (GPIO 114 aka D18) while power on or reset (this selects USB boot mode by activating BOOTSEL1 signal);
 +
-+#ifndef __MIPS_ASM_MACH_JZ4770_JZ4770_H__
-+#define __MIPS_ASM_MACH_JZ4770_JZ4770_H__
++  3. Upload and start barebox:
 +
-+/* APB bus devices */
-+#define JZ4770_UART0_BASE	0xb0030000
-+#define JZ4770_UART1_BASE	0xb0031000
-+#define JZ4770_UART2_BASE	0xb0032000
-+#define JZ4770_UART3_BASE	0xb0033000
++.. code-block:: none
 +
-+#endif /* __MIPS_ASM_MACH_JZ4770_JZ4770_H__ */
++    ingenic-boot$ sudo ./tool/down2ram.sh --config=gcw0_v11_ddr2_512mb --bin=${PATH_TO_BAREBOX_DIR}/barebox-flash-image --downto=0xa0800000 --runat=0xa0800000
++..
++
++Links
++-----
++
++  * http://www.ainol-novo.com/ainol-novo-7-paladin-first-android-4-0-tablet-pc.html
++  * ftp://ftp.ingenic.cn/SOC/JZ4770/JZ4770_DS.PDF
++  * https://github.com/IngenicSemiconductor/X-BOOT_NPM801
++  * https://github.com/gcwnow/UBIBoot
 -- 
 2.1.4
 
