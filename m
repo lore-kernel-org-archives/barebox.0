@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [162.144.41.148] (helo=nic.nichelabs.net)
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]
+ helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yh0li-0007KS-O1
- for barebox@lists.infradead.org; Sat, 11 Apr 2015 19:08:39 +0000
-Received: from kitchens by nic.nichelabs.net with local (Exim 4.85)
- (envelope-from <kitchens@nic.nichelabs.net>) id 1Yh0Fl-0007Zd-A9
- for barebox@lists.infradead.org; Sat, 11 Apr 2015 13:35:37 -0500
-Date: Sat, 11 Apr 2015 13:35:37 -0500
-From: "FedEx SmartPost" <anthony.gay@kitchensbyclay.com>
-Message-ID: <2515252c4a7e5f8f0fe8221a68c92389@kitchensbyclay.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="b1_84fa8920efe9c2decf64013f3ed8a606"
-Content-Transfer-Encoding: 8bit
+ id 1Yh3BO-0004VM-VV
+ for barebox@lists.infradead.org; Sat, 11 Apr 2015 21:43:20 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Sat, 11 Apr 2015 23:42:41 +0200
+Message-Id: <1428788562-10004-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,122 +15,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: FedEx SmartPost <anthony.gay@kitchensbyclay.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Problem with parcel shipping, ID:0000959119
+Subject: [PATCH 1/2] net: smc1111: fix platform data initializations
 To: barebox@lists.infradead.org
 
---b1_84fa8920efe9c2decf64013f3ed8a606
-Content-Type: text/plain; charset=us-ascii
+The configuration and control setup introduced in commit "extend the
+driver for 91c94 and 91c96 support" suffers from a typo defect, which
+makes the commit broken.
 
-Dear Customer,
+The typo happens to be in barebox tree, while it's not in the tested
+patches I had, and there was a mismatch in my former submission, which
+is fixed by this patch.
 
-Courier was unable to deliver the parcel to you.
-Shipment Label is attached to email.
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ drivers/net/smc91111.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Sincerely,
-Anthony Gay,
-Support Agent.
+diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
+index 698c74a..bcb470c 100644
+--- a/drivers/net/smc91111.c
++++ b/drivers/net/smc91111.c
+@@ -1437,6 +1437,8 @@ static int smc91c111_probe(struct device_d *dev)
+ 			priv->a = access_via_16bit;
+ 		pdata->config_setup = pdata->config_setup;
+ 		pdata->control_setup = pdata->control_setup;
++		priv->config_setup = pdata->config_setup;
++		priv->control_setup = pdata->control_setup;
+ 	}
+ 
+ 	edev->init = smc91c111_init_dev;
+-- 
+2.1.4
 
-
---b1_84fa8920efe9c2decf64013f3ed8a606
-Content-Type: application/zip; name="Delivery_Notification_0000959119.zip"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=Delivery_Notification_0000959119.zip
-
-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
-LmRvYy5qc1BLBQYAAAAAAQABAFUAAACCEQAAAAA=
-
-
---b1_84fa8920efe9c2decf64013f3ed8a606
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---b1_84fa8920efe9c2decf64013f3ed8a606--
