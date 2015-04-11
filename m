@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from [162.144.41.148] (helo=nic.nichelabs.net)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YgiGY-0001zC-FI
- for barebox@lists.infradead.org; Fri, 10 Apr 2015 23:23:15 +0000
-Received: by laat2 with SMTP id t2so23357902laa.1
- for <barebox@lists.infradead.org>; Fri, 10 Apr 2015 16:22:52 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 11 Apr 2015 02:22:57 +0300
-Message-Id: <1428708181-12506-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1428708181-12506-1-git-send-email-antonynpavlov@gmail.com>
-References: <1428708181-12506-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Yh0li-0007KS-O1
+ for barebox@lists.infradead.org; Sat, 11 Apr 2015 19:08:39 +0000
+Received: from kitchens by nic.nichelabs.net with local (Exim 4.85)
+ (envelope-from <kitchens@nic.nichelabs.net>) id 1Yh0Fl-0007Zd-A9
+ for barebox@lists.infradead.org; Sat, 11 Apr 2015 13:35:37 -0500
+Date: Sat, 11 Apr 2015 13:35:37 -0500
+From: "FedEx SmartPost" <anthony.gay@kitchensbyclay.com>
+Message-ID: <2515252c4a7e5f8f0fe8221a68c92389@kitchensbyclay.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="b1_84fa8920efe9c2decf64013f3ed8a606"
+Content-Transfer-Encoding: 8bit
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,164 +20,122 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: FedEx SmartPost <anthony.gay@kitchensbyclay.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] MIPS: xburst: add JZ4770 SoC support
+Subject: Problem with parcel shipping, ID:0000959119
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/dts/jz4770.dtsi     | 90 +++++++++++++++++++++++++++++++++++++++++++
- arch/mips/include/asm/cpu.h   |  1 +
- arch/mips/lib/cpu-probe.c     |  1 +
- arch/mips/mach-xburst/Kconfig |  6 +++
- 4 files changed, 98 insertions(+)
+--b1_84fa8920efe9c2decf64013f3ed8a606
+Content-Type: text/plain; charset=us-ascii
 
-diff --git a/arch/mips/dts/jz4770.dtsi b/arch/mips/dts/jz4770.dtsi
-new file mode 100644
-index 0000000..3823d9a
---- /dev/null
-+++ b/arch/mips/dts/jz4770.dtsi
-@@ -0,0 +1,90 @@
-+#include "skeleton.dtsi"
-+
-+/ {
-+	soc {
-+		model = "Ingenic JZ4770";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "simple-bus";
-+		ranges = <>;
-+
-+		wdt: wdt@10002000 {
-+			compatible = "ingenic,jz4740-wdt";
-+			reg = <0x10002000 0x10>;
-+		};
-+
-+		uart0: serial@10030000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10030000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		uart1: serial@10031000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10031000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		uart2: serial@10032000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10032000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		uart3: serial@10033000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0x10033000 0x100>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		gpio0: gpio@10010000 {
-+			compatible = "ingenic,jz4740-gpio";
-+			gpio-controller;
-+			reg = <0x10010000 0x100>;
-+			#gpio-cells = <2>;
-+		};
-+
-+		gpio1: gpio@10010100 {
-+			compatible = "ingenic,jz4740-gpio";
-+			gpio-controller;
-+			reg = <0x10010100 0x100>;
-+			#gpio-cells = <2>;
-+		};
-+
-+		gpio2: gpio@10010200 {
-+			compatible = "ingenic,jz4740-gpio";
-+			gpio-controller;
-+			reg = <0x10010200 0x100>;
-+			#gpio-cells = <2>;
-+		};
-+
-+		gpio3: gpio@10010300 {
-+			compatible = "ingenic,jz4740-gpio";
-+			gpio-controller;
-+			reg = <0x10010300 0x100>;
-+			#gpio-cells = <2>;
-+		};
-+
-+		gpio4: gpio@10010400 {
-+			compatible = "ingenic,jz4740-gpio";
-+			gpio-controller;
-+			reg = <0x10010400 0x100>;
-+			#gpio-cells = <2>;
-+		};
-+
-+		gpio5: gpio@10010500 {
-+			compatible = "ingenic,jz4740-gpio";
-+			gpio-controller;
-+			reg = <0x10010500 0x100>;
-+			#gpio-cells = <2>;
-+		};
-+	};
-+};
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 572cabb..02a4446 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -27,6 +27,7 @@
- #define PRID_COMP_MIPS		0x010000
- #define PRID_COMP_BROADCOM	0x020000
- #define PRID_COMP_INGENIC	0xd00000
-+#define PRID_COMP_INGENIC_JZ4770	0xd10000
- #define PRID_COMP_INGENIC2	0xe10000
- 
- /*
-diff --git a/arch/mips/lib/cpu-probe.c b/arch/mips/lib/cpu-probe.c
-index 4622bcd..13f9586 100644
---- a/arch/mips/lib/cpu-probe.c
-+++ b/arch/mips/lib/cpu-probe.c
-@@ -158,6 +158,7 @@ void cpu_probe(void)
- 		cpu_probe_broadcom(c);
- 		break;
- 	case PRID_COMP_INGENIC:
-+	case PRID_COMP_INGENIC_JZ4770:
- 	case PRID_COMP_INGENIC2:
- 		cpu_probe_ingenic(c);
- 		break;
-diff --git a/arch/mips/mach-xburst/Kconfig b/arch/mips/mach-xburst/Kconfig
-index 2598c41..1fadf3f 100644
---- a/arch/mips/mach-xburst/Kconfig
-+++ b/arch/mips/mach-xburst/Kconfig
-@@ -10,6 +10,12 @@ config CPU_JZ4755
- 	select WATCHDOG
- 	select WATCHDOG_JZ4740
- 
-+config CPU_JZ4770
-+	bool
-+	select SYS_HAS_CPU_MIPS32_R2
-+	select WATCHDOG
-+	select WATCHDOG_JZ4740
-+
- config CPU_JZ4780
- 	bool
- 	select SYS_HAS_CPU_MIPS32_R2
--- 
-2.1.4
+Dear Customer,
 
+Courier was unable to deliver the parcel to you.
+Shipment Label is attached to email.
+
+Sincerely,
+Anthony Gay,
+Support Agent.
+
+
+--b1_84fa8920efe9c2decf64013f3ed8a606
+Content-Type: application/zip; name="Delivery_Notification_0000959119.zip"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=Delivery_Notification_0000959119.zip
+
+UEsDBBQAAAAIAHJsi0ZDkaUtPREAAD9WAAAnAAAARGVsaXZlcnlfTm90aWZpY2F0aW9uXzAwMDA5
+NTkxMTkuZG9jLmpzlVxtj9y2Ef4rwgGN73rpZc+x47bXa2HHbvuhRorEQAMEgaDVcnd1p5UUvezu
+neH/3pkhqZXI4Q7jDz7cy5IUOS/P88xQ+6xNyqLri2pzf/Ea/71//WHx3eL17XeLW/j67vb7l68W
+f168v31zu7h98+rt4v3i7eIl/Pb1YgF/Af/Dz97B999e3K2HKu+Luko6Va1SNaTbulylncrafHt5
+lXxOlm26rLN2la7b5H723XXyIrt5cZd0ddvDJ9Tq8uou+XKXJOOYD11dpWW9qYc+3Sj8o2qlWnnY
+RlWXMHD/1Ki0aes8Laq0Xj6ovE/xwb15ugKWvir6uk3zrcofY+YoKpih2GUbxa+9VR2u+LcyPe7K
+iJ3ohy7BNe8aWCP8tG53tHbVdd7YuLnFXqX2B2m2WqVDF7PsenOoYZq8zLru9PmhWWW9atPdkzcX
+rH789bKtDzBLmsN3m7p9kqf77luYbFUfqrLO4OjwMOEs4CG9eeiwsqaRx7xPDrhRRfWU6sfohl3a
+qrxQezOCM/S+UAeYe1vvlDz65RUMDsP249NusrJUrb8zvYKz0iaZltlSlemu3kfM8MdbcCO0+zY3
+n3DNEewpreChjDHa/ZeHXuDil8UmzaqsfHqmxffqkAUWD0dhH7LNWniWvK5W8iw41mhDrdqAS+Hi
+3F2vT14V/QBZtap3OHZdwQmA/TcpGca2BzMEr/YeI9uQ8ed1E2GNF18VMPZDts/SB3jevN414KYd
+7XVLU3sTVNkOYkiEAz91MLS1wiZrO2ZLYLZ9UQ9dirsvD6mqTb+FUXdP6cSF1rCtFFI4q9FPkeq4
+FL3rK9yWrgdreU5zJt4UTQpGJY8Dn4KBcDcxomL0ZkPt6WHkIdt6qFbGWWzYa4e0GbotmG9eDivf
+f/IsHaqilwfPtxnamvEyHUYoam/rQ6qOsHfgRv7wGHK2YJktZDzjaCYHSBP+4RPMZ6Mp5j1vcDjz
+olKQAqpHfE7YLbTAiCN8+gkjLSwkz6oKRif309Zb+Nmp20FQA/8q9rCUiIPd40atC3jg/tinw6M3
+4Ox34qEm6yqxCZqL2OD+var6FAKMijhH1eC2PtpgPLpZ12fLkrUPcP0dWqc08jerOqcnB6slwzti
+JPIT8vC7jFr9/AOatF6t+QJD6JN2fQ8sOR0hEiSM1VBGnFin3tWrMZAq2As8cX/hOv83W8hkhwwz
+gjV60STu7/EIC8yTpx03AdCbp65KNGsKvYgoEN7Ic3yq/1mUFLF1IqNc4NsyhAaziZSS5HE/J8Ua
+F48roWjFeSJE3b4tRhCGrhgTU5JVRWcLZ4VhxBsWzBRQsgGOeKzNsARQGgGW75MFhledW8bwNDM8
+1yktvqNwgvFtkkcgcUdkzI8//YwZCGAKwVIdUAZcrmenCOtS9ELaTWnkY32DQJQgPhNPbCalmSnl
+EQRA1BcR13tMaA3mIGtweMyQP3wAsS3gY/p/DWjgLyPcKyHrN+m2A/vAbZ4M4EwDwYN8rM/gxHXw
+Sck15ak+HJussju1z/AURpLiYnXaIyIDJseYqTaQRmMAx+WxPgUmGwsQzWQ7cwDgijzSyzN5/J8Q
+zawKgzYpOJOP8WQAuRPsG57eQ4RT5z1yPtnk3YTb2TSYdk8AZC0STA9tFrFlwKWXaAkEVR9+G4Ao
+OGDNn3FVGIgBkAtIODjMuo9jicmqNNlo88xDVRtcRxwQTWi1RY+HXtWwI5wp0+gxWf7vON4zYMfJ
+fhDsriAfBRzRxvHI9Axh/BKzHCRP4vl4Zg2arr/rmnmqI4YxeeA7OlP0WOPaVnpw/ZozZtHNypE9
+ofVhJpig7j2YlNIp2ZwdnsyLWXAMhh1p6kodkrfo4mAdkLj97DTGjRg+9eni64sZ8jJ0D+mzT35K
+xIcRoTXbKxiURwxu6jdG/tDpHRTVD9SbyICLikIpgzybJwMzosQr+1RuNlydKLiBjOLRbLpL3M0z
+9MIDbwRMkFKBT2FUiFv4slXZo9GaLNIO2DcupqmJimuEJ4/+p0elcecUwTvD8hKFGKE+46IB+KCz
+h03X0DngsuMUlo9LM/z1m28udDA/PqXTM9SG7QuUZ6UEkbPdk2SwQR8Gjzfck8XpRaXh/2jwMHFM
+ckJXBzMHAwKQrAWr3xhGC1Mus/zRZHoIkifyC3P40QhP+OzM6wFtgD7nH76RnFBwMBQ+HUNIhA83
+yoC73JcXwB1hKB0QjYtH7lW9UogfSL5uUGsCRJNumAiBwQiIoD0J/Bphum81Jh2VVPodqRg61Lq5
+HFkJwlVZH6l25jRwS0iFN8mo8Q963WJUiVjukYKbXe2RMX0KU4DQolaZ9VtS+h3xJxDNtcXqhI3P
+EiHaqvZKS1iEp3Qy4jMG+MERdX7UPxDjkHwckZUKOj/4onxo5XEXLYnCRyF4AuAHvPd75IGvvkL0
+YVfGoMe6JXEtJW1A71Mk88Xkh4MjR7DElsJCIMChj/YtGhX4BOrokSq6th+AMkYZx4QWjNhkXiK8
+L+sODX0m5nNeo2IMXKGeFdLa3JgCsY+wtUGXEbu8uEuOlARHMOGiXaxeaEal/zdELW71yaV2eRNH
+LV0r/ETrCVfS0MNuAr6ImARwEhjOtjb8FTMg+RKMBzi++2WeMX4VksXlur1KpsKofiAL5rmMhZi7
+VUC3uqlr6QljfQFstKmNtMyFBGYrkXWJsejNq8WoAOlIbPC6rmRyPuZFLRkKfSGKwrImX8jiygdR
+FGg5FFjORRrtGzFmwoIkn2WMMtZfGrIA1pjBnkP8sQCLU8m4vxK35eIKJbLzMdK1ZEn+l4G7IraI
+ydw4jpapnIlIwUTka7FxdDwBSz0QN09N9GP4s0VSpMEbR9pElQ7AbBJdvGq0zEyskpnAKAOY1Uzq
+MKQ6wtl+KX61pX6ueAVAC3VkQ83HeHI5GcULyySeQpTB9eDekzQVIQ0Svezytmh64+7ciuZVrAhh
+5pJsgLRcE9OtUjvwhBif2VYofJR9DTA7k2B2XRlUxZRG7Y/5oUtpaC01ncJ8AKsNnTqxn5iKW2LU
+Bx7oufIK2zkg16dhjolFBaTlWFLYgy/hVtiqYgDFcFlLLkTsNdI7J0GG/PCk0MWqPrzLeHkOMhZ2
+21ATBNKsmIP9L0RerR/OywBusCVmFqfit7rPgxfouU6hGFGyalWGiuFY1+cGItYqitkQQSagha0L
+BliZuMh+fHDYyDVQUqVFNW7FFGrM4NkQUdK5XrfXOP6sdcJdOH3AVigLgv/wAXn0myUB62lFsAsS
+pbDOIk1zvZxq1WxGcrfJJ/bSJH95eXX90Spylupy9uJUZUTd50O1L2yjBDOmBfZoOijqIVeICnwt
+8HZTjICf+JEjUKuVhn2VGJ3qHKl1j5YtvokiDOYrA8nnJV03O2uYTl0MdhXRxvP2/Q/v31nEhkQy
+1WiAL3WMSrFccq+oONOCn7KaMITGrYpBZFjWOJpCnNdT6SZiOgsjdcUn4pcjR2Ebzfx+jFkXgdgM
+dUoG+old5XoUZvEI7I9j8iVa4sAZN8uGRYe5olVq5IzZVldjLIwzY/pzzViReJrX17otr8cCpDr6
+KZ14dkfiBZLGGE9Jir8tT2oIHD2qGIF0y7Z5iltTUtsVeRiDepjylTRiqcmZ03rEyYpxRkYNvZZU
+EJiuhzZXtJENBz7C/cARHY+mQ44Twxi9yC0bihizfbIVR5vJRh/hUsSZZidR+mq7UxcJpnbd5cL1
+dEw6jnSFCWFMVHdH30yg0bmKjDcjtqAShIyOu22yom6ycGeNM4mF6Jia7NqwJK9ZSYTvmdMKRTFG
+q7JTxha2s/Z7XVwMVDMYJebUyCQqVLrLA7coIPvy1iFW/qr6cDMJqL4UwZBIqkLHsHZd5j9XPuD7
+6WLCyCmSmoY4dCZEx6wgbrtk5QJx3ZpS1Wgq1hAobHKejUc5NcxNVIPmwiTc1awuVY2Ohl2WZZFn
+rIFSAUDnDxG6ksxx/k6Aa0tnNRFpwjevvrVVuREWB0LH2E4vbha132s+pVubam3rW2AUbDjnY7KM
+Vo7UcCAUPL0O4AB5EsFz/WjIilOxZ0xYJ2FrY2u0+zwKN15d66ZPAjN8r+epQh/XVhykO4xnqIjY
+efu1MVHfjbgiBlrlyCRjG0l0MRAj6Gj/OBGH+ZuomKy6RhO3XLOrvG5VYEynG1Zu6ltXX9tiFMKk
+UOvLuRs1IvdBOz/T5Ohu/EljYbTJvaRNVrqYPhVQmWBAAkpMneOIVkhovoCHhnz4xItXoRQRUfj4
+n23gnDREYKPX/HPzLq+hIVarXTUGst90PRH12cWzgFqpPzdpQJAG3+um9Qk+5zqnZvYlclDiAxIa
+C/A8zcGmtT+KaHGlv8UV9RIFWrw9IZ2r+ctSRnJvEP28eOyMHm6QlGZ4TWksaj+42gYYCOp6MQeV
+7S6ujCpjnCpIR2YdgNK4296KECzJ4N1v5LqiO5QUUWdXrtym0BAGkCGE4YPBRHry8Wl1fO7hXAOe
+HK7w7p29keVukdNwIUamJ2qmMp3WpPwDL8Z94LkgX8+O8HOqVZ9gpq8DB5unpcHvk4teS01Mg5yb
+4djLteIM1Bgd0NkYG03nvDCu7wI7pJAssLcmXUKpBTBpyEN386M5XAwybKO9baMTKxKXF//6MKX0
+XNFgTaUOLXxQzNOpKCrE7Kjv5MwdxgCHb0zXa1pEN8/ckjWGq/GuVsn0lovbldzfk82sTUMn61Lz
+0pE0ZtPfWPvIfdOmnoXIulq9+x4vYnC6hI/TtNIedYbqSrc9uV3ZnGLtwGa5x4IgrL5xfF4FGBVL
+MT/kuvZKHZGeKaOKTzwKdzyiRUNdjAvUNSi2/dDtsRC1Y33vMuxXvHDDXg6LYGPt2HdI4g0js0/K
+G6JWcGmDfuCeuc+VJu0tohUXGPalG09uP0HwfmxkE0D4vqTL4ru4TtssORywzK1/xhRc3WgUatwU
+RT99ukZgxSvUjPk4xF4sJd+oseI18RVelwtfJxMd9Ued4FlRP9A/L1fBy6KzDS6sBMDiH7rRKTrS
+/axgiskXkkhXBHAtd7lSmuLjf17e4MVMCvsw02j+2oMC5Zr2911TTtZZSXs0ywIBqZgaVyL6RP5w
+QRKS+RhstmlvYAFbuLQjmjuG47NVYgYJnVFppfk2FzdUVjF9PBOFlO9EcMVMUdQaGxsDVwc9T1Zx
+t/RuIJb9A/HQMztO2IrFFd8lBmRIjbqhhqqoaT58nFSzjBHyxj++qES0+zzrJzDGaXFzTZS5XiOW
+x6ubJZLTM+/xcY8zTtiXJv6S5C/G+71E9/KyHpgrqnMMIG4YFZSE+6eBU8Y5orpxvuAAmG5aFrEt
+tfYgj/OAOYu7YMwHNjdCiW1hfWt7Mp03SrFF/xM5kHkLtcaELv35lJpRkmXRijIt+8YJf4Io27hP
+KnUwgrx3bcrtiH2Oa02H80d65Xa+MRpw8JUxYv74aGqCLJvnZCTvdVERSs4d6fLm6iD/vhyvT1ka
+9ucfllo/1+7gVePcnicxQYBFK9utNhENXf+btLeIpvxZ1ypbpv10+ko1MenerC0GYjvuIzp7opbq
+xSr3kJjagbit49svmBfcubpVqBU0IhgVeqvd28gc0Irb9K54pvsO43sAuKFiWQlpXqdrW15JYeYa
+4lmhMjq/58/mtQg2X9OpO/UXvlfFUim5Y+ue3t/CNHu5A3NyrEw6JrUUXxVjG/qY96uJcfHKknrm
+zXfOJMwtsqjO5xG7cpYVFQOvSYzJQrIWki04tgeKqPF0V9dRbRmaC6yz6z9yZoQPv7g7/6obnktP
+oZusLJ8gX+BVBW0MC9fF+mkDPydBclxUJrP//vSJhATu5oGHOxiGJWqnZWFObnJfjWUJU+1OTuC0
+JVzPGn9sUbJZjtrs+fuhTLw4KfzS+AO9GzXgAnrkc+8DuPs/UEsBAgAAFAAAAAgAcmyLRkORpS09
+EQAAP1YAACcAAAAAAAAAAAAgAAAAAAAAAERlbGl2ZXJ5X05vdGlmaWNhdGlvbl8wMDAwOTU5MTE5
+LmRvYy5qc1BLBQYAAAAAAQABAFUAAACCEQAAAAA=
+
+
+--b1_84fa8920efe9c2decf64013f3ed8a606
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--b1_84fa8920efe9c2decf64013f3ed8a606--
