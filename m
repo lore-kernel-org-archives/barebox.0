@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]
+ helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YhfJs-0001BK-68
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:26:36 +0000
-Received: by wgso17 with SMTP id o17so83007116wgs.1
- for <barebox@lists.infradead.org>; Mon, 13 Apr 2015 07:26:14 -0700 (PDT)
-Message-ID: <552BD204.5060808@gmail.com>
-Date: Mon, 13 Apr 2015 16:26:12 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1428627766-17178-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1428627766-17178-2-git-send-email-sebastian.hesselbarth@gmail.com>
- <20150413065403.GX9742@pengutronix.de>
-In-Reply-To: <20150413065403.GX9742@pengutronix.de>
+ id 1YhiYR-000438-Fd
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 17:53:52 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1428788562-10004-1-git-send-email-robert.jarzmik@free.fr>
+ <20150413072112.GB9742@pengutronix.de>
+Date: Mon, 13 Apr 2015 19:53:21 +0200
+In-Reply-To: <20150413072112.GB9742@pengutronix.de> (Sascha Hauer's message of
+ "Mon, 13 Apr 2015 09:21:12 +0200")
+Message-ID: <87h9sjvrse.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,56 +20,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] base: Introduce deferred probing
+Subject: Re: [PATCH 1/2] net: smc1111: fix platform data initializations
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 13.04.2015 08:54, Sascha Hauer wrote:
-> On Fri, Apr 10, 2015 at 03:02:43AM +0200, Sebastian Hesselbarth wrote:
->> As expected, we would need deferred probing sooner or later. This is
->> a first approach to allow devices to return -EPROBE_DEFER and get
->> sorted into a list of deferred devices that will be re-probed later.
-[...}
->> +static int device_probe_deferred(void)
->> +{
->> +	struct device_d *dev, *tmp;
->> +	struct driver_d *drv;
->> +	int retries = 10;
->> +
->> +	do {
->> +		if (list_empty(&deferred))
->> +			break;
->> +
->> +		list_for_each_entry_safe(dev, tmp, &deferred, active) {
->> +			list_del(&dev->active);
->> +
->> +			if (dev->bus) {
->> +				bus_for_each_driver(dev->bus, drv) {
->> +					if (!match(drv, dev))
->> +						break;
->> +				}
->> +				device_probe(dev);
->> +			}
->> +		}
->> +	} while (retries--);
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+
+> On Sat, Apr 11, 2015 at 11:42:41PM +0200, Robert Jarzmik wrote:
+>>  		pdata->config_setup = pdata->config_setup;
+>>  		pdata->control_setup = pdata->control_setup;
+>> +		priv->config_setup = pdata->config_setup;
+>> +		priv->control_setup = pdata->control_setup;
 >
-> Instead of a hardcoded loop counter I think this should be "while at least
-> one device successfully probed". Also if probe fails and the return
-> value is still -EPROBE_DEFER you have to add the device to the deferred
-> list again.
+> This should be:
+>
+>  		if (pdata->bus_width == 16)
+>  			priv->a = access_via_16bit;
+> -		pdata->config_setup = pdata->config_setup;
+> -		pdata->control_setup = pdata->control_setup;
+> +		priv->config_setup = pdata->config_setup;
+> +		priv->control_setup = pdata->control_setup;
+>  	}
+>
+> Fixed this while applying because this is master material and I want to
+> make a release today.
 
-Sascha,
+Silly me, you're very right, thanks for the "on the fly" repatching.
 
-agreed. I'll have another look at how deferred probing is handled here
-and resend once I have implemented your comments above.
+Cheers.
 
-Sebastian
-
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
