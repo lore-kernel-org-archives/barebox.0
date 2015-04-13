@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YhdD8-0005kA-4o
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 12:11:30 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <mgr@pengutronix.de>) id 1YhdCl-0008E4-Rs
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:11:07 +0200
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <mgr@pengutronix.de>) id 1YhdCl-0004WN-Qj
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:11:07 +0200
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Mon, 13 Apr 2015 14:11:05 +0200
-Message-Id: <1428927065-10987-1-git-send-email-m.grzeschik@pengutronix.de>
+Received: from mail-pa0-x233.google.com ([2607:f8b0:400e:c03::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YhdDd-0005vI-HW
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 12:12:02 +0000
+Received: by pacyx8 with SMTP id yx8so100349038pac.1
+ for <barebox@lists.infradead.org>; Mon, 13 Apr 2015 05:11:39 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Mon, 13 Apr 2015 05:11:30 -0700
+Message-Id: <1428927090-4310-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,58 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: OMAP: AM33xx: add uart1 pinmux setup
+Subject: [PATCH] firmware: socfpga: Add necessary dependency to Kconfig
 To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
- arch/arm/mach-omap/am33xx_mux.c              | 11 +++++++++++
- arch/arm/mach-omap/include/mach/am33xx-mux.h |  1 +
- 2 files changed, 12 insertions(+)
+ drivers/firmware/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap/am33xx_mux.c b/arch/arm/mach-omap/am33xx_mux.c
-index 8318713..f13582b 100644
---- a/arch/arm/mach-omap/am33xx_mux.c
-+++ b/arch/arm/mach-omap/am33xx_mux.c
-@@ -27,6 +27,12 @@ static const __maybe_unused struct module_pin_mux uart0_pin_mux[] = {
- 	{-1},
- };
- 
-+static const __maybe_unused struct module_pin_mux uart1_pin_mux[] = {
-+	{OFFSET(uart1_rxd), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* UART1_RXD */
-+	{OFFSET(uart1_txd), (MODE(0) | PULLUDEN)},		/* UART1_TXD */
-+	{-1},
-+};
-+
- static const __maybe_unused struct module_pin_mux uart2_pin_mux[] = {
- 	{OFFSET(mii1_txclk), (MODE(1) | PULLUDEN | RXACTIVE)},	/* UART2_RXD */
- 	{OFFSET(mii1_rxclk), (MODE(1) | PULLUDEN)},		/* UART2_TXD */
-@@ -302,6 +308,11 @@ void am33xx_enable_uart0_pin_mux(void)
- 	configure_module_pin_mux(uart0_pin_mux);
- }
- 
-+void am33xx_enable_uart1_pin_mux(void)
-+{
-+	configure_module_pin_mux(uart1_pin_mux);
-+}
-+
- void am33xx_enable_uart2_pin_mux(void)
- {
- 	configure_module_pin_mux(uart2_pin_mux);
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-mux.h b/arch/arm/mach-omap/include/mach/am33xx-mux.h
-index fe3168b..af9f14d 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-mux.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-mux.h
-@@ -254,6 +254,7 @@ extern void am33xx_enable_i2c0_pin_mux(void);
- extern void am33xx_enable_i2c1_pin_mux(void);
- extern void am33xx_enable_i2c2_pin_mux(void);
- extern void am33xx_enable_uart0_pin_mux(void);
-+extern void am33xx_enable_uart1_pin_mux(void);
- extern void am33xx_enable_uart2_pin_mux(void);
- extern void am33xx_enable_mmc0_pin_mux(void);
- extern void am33xx_enable_spi0_pin_mux(void);
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 15465fe..710b500 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -13,5 +13,5 @@ config FIRMWARE_ALTERA_SERIAL
+ config FIRMWARE_ALTERA_SOCFPGA
+ 	bool "Altera SoCFPGA fpga loader"
+ 	depends on ARCH_SOCFPGA
+-
++	select FIRMWARE
+ endmenu
 -- 
-2.1.4
+2.1.0
 
 
 _______________________________________________
