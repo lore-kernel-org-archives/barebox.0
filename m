@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YhfGQ-0007T0-BP
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:23:03 +0000
-Received: by wgsk9 with SMTP id k9so82688760wgs.3
- for <barebox@lists.infradead.org>; Mon, 13 Apr 2015 07:22:39 -0700 (PDT)
+ id 1YhfJs-0001BK-68
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:26:36 +0000
+Received: by wgso17 with SMTP id o17so83007116wgs.1
+ for <barebox@lists.infradead.org>; Mon, 13 Apr 2015 07:26:14 -0700 (PDT)
+Message-ID: <552BD204.5060808@gmail.com>
+Date: Mon, 13 Apr 2015 16:26:12 +0200
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 13 Apr 2015 16:22:30 +0200
-Message-Id: <1428934950-6836-1-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1428627714-17077-5-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1428627714-17077-5-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1428627766-17178-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1428627766-17178-2-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20150413065403.GX9742@pengutronix.de>
+In-Reply-To: <20150413065403.GX9742@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,91 +21,54 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] USB: xHCI: Sync non-coherent DMA buffers
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 1/4] base: Introduce deferred probing
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-When working with non-coherent transfer buffers, we have to sync
-device and cpu for outgoing and incoming buffers. Fix the driver where
-non-coherent buffers are used in device context.
+On 13.04.2015 08:54, Sascha Hauer wrote:
+> On Fri, Apr 10, 2015 at 03:02:43AM +0200, Sebastian Hesselbarth wrote:
+>> As expected, we would need deferred probing sooner or later. This is
+>> a first approach to allow devices to return -EPROBE_DEFER and get
+>> sorted into a list of deferred devices that will be re-probed later.
+[...}
+>> +static int device_probe_deferred(void)
+>> +{
+>> +	struct device_d *dev, *tmp;
+>> +	struct driver_d *drv;
+>> +	int retries = 10;
+>> +
+>> +	do {
+>> +		if (list_empty(&deferred))
+>> +			break;
+>> +
+>> +		list_for_each_entry_safe(dev, tmp, &deferred, active) {
+>> +			list_del(&dev->active);
+>> +
+>> +			if (dev->bus) {
+>> +				bus_for_each_driver(dev->bus, drv) {
+>> +					if (!match(drv, dev))
+>> +						break;
+>> +				}
+>> +				device_probe(dev);
+>> +			}
+>> +		}
+>> +	} while (retries--);
+>
+> Instead of a hardcoded loop counter I think this should be "while at least
+> one device successfully probed". Also if probe fails and the return
+> value is still -EPROBE_DEFER you have to add the device to the deferred
+> list again.
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
----
-Changelog:
-v1->v2:
-- balance dma_sync_single_foo() calls (Reported by Lucas Stach)
+Sascha,
 
-Cc: barebox@lists.infradead.org
-Cc: Lucas Stach <dev@lynxeye.de>
----
- drivers/usb/host/xhci-hcd.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+agreed. I'll have another look at how deferred probing is handled here
+and resend once I have implemented your comments above.
 
-diff --git a/drivers/usb/host/xhci-hcd.c b/drivers/usb/host/xhci-hcd.c
-index c3d623e91f51..a44a1a4dffa5 100644
---- a/drivers/usb/host/xhci-hcd.c
-+++ b/drivers/usb/host/xhci-hcd.c
-@@ -1024,6 +1024,11 @@ static int xhci_submit_normal(struct usb_device *udev, unsigned long pipe,
- 		GET_SLOT_STATE(le32_to_cpu(vdev->out_ctx->slot.dev_state)), epi,
- 		vdev->in_ctx, vdev->out_ctx);
- 
-+	/* pass ownership of data buffer to device */
-+	dma_sync_single_for_device((unsigned long)buffer, length,
-+				   usb_pipein(pipe) ?
-+				   DMA_FROM_DEVICE : DMA_TO_DEVICE);
-+
- 	/* Normal TRB */
- 	memset(&trb, 0, sizeof(union xhci_trb));
- 	trb.event_cmd.cmd_trb = cpu_to_le64((dma_addr_t)buffer);
-@@ -1037,6 +1042,11 @@ static int xhci_submit_normal(struct usb_device *udev, unsigned long pipe,
- 	ret = xhci_wait_for_event(xhci, TRB_TRANSFER, &trb);
- 	xhci_print_trb(xhci, &trb, "Response Normal");
- 
-+	/* Regain ownership of data buffer from device */
-+	dma_sync_single_for_cpu((unsigned long)buffer, length,
-+				usb_pipein(pipe) ?
-+				DMA_FROM_DEVICE : DMA_TO_DEVICE);
-+
- 	switch (ret) {
- 	case -COMP_SHORT_TX:
- 		udev->status = 0;
-@@ -1094,6 +1104,11 @@ static int xhci_submit_control(struct usb_device *udev, unsigned long pipe,
- 			return ret;
- 	}
- 
-+	/* Pass ownership of data buffer to device */
-+	dma_sync_single_for_device((unsigned long)buffer, length,
-+				   (req->requesttype & USB_DIR_IN) ?
-+				   DMA_FROM_DEVICE : DMA_TO_DEVICE);
-+
- 	/* Setup TRB */
- 	memset(&trb, 0, sizeof(union xhci_trb));
- 	trb.generic.field[0] = le16_to_cpu(req->value) << 16 |
-@@ -1141,11 +1156,17 @@ static int xhci_submit_control(struct usb_device *udev, unsigned long pipe,
- 		if (ret == -COMP_SHORT_TX)
- 			length -= EVENT_TRB_LEN(trb.event_cmd.status);
- 		else if (ret < 0)
--			return ret;
-+			goto dma_regain;
- 	}
- 
- 	ret = xhci_wait_for_event(xhci, TRB_TRANSFER, &trb);
- 	xhci_print_trb(xhci, &trb, "Response Status");
-+
-+dma_regain:
-+	/* Regain ownership of data buffer from device */
-+	dma_sync_single_for_cpu((unsigned long)buffer, length,
-+				(req->requesttype & USB_DIR_IN) ?
-+				DMA_FROM_DEVICE : DMA_TO_DEVICE);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.1.0
+Sebastian
 
 
 _______________________________________________
