@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YhXzN-00052w-MV
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 06:36:58 +0000
-Date: Mon, 13 Apr 2015 08:36:35 +0200
+ Linux)) id 1YhY5m-0007Bp-P0
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 06:43:35 +0000
+Date: Mon, 13 Apr 2015 08:43:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150413063635.GV9742@pengutronix.de>
-References: <1428586316-17722-1-git-send-email-mpa@pengutronix.de>
+Message-ID: <20150413064310.GW9742@pengutronix.de>
+References: <1428627714-17077-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1428627714-17077-3-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1428586316-17722-1-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1428627714-17077-3-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] wdog: imx-wd: Introduce ops struct for imx21/imx1
-To: Markus Pargmann <mpa@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/4] net: mvneta: Fix transmit errors due to dirty txdesc
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-On Thu, Apr 09, 2015 at 03:31:55PM +0200, Markus Pargmann wrote:
-> Replace the set_timeout function in the device platform data by an ops
-> struct which stores a set_timeout and init function.
-> 
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+On Fri, Apr 10, 2015 at 03:01:52AM +0200, Sebastian Hesselbarth wrote:
+> Marvell Neta's transmit descriptor (txdesc) is allocated by dma_alloc_coh=
+erent()
+> but not zeroed before calling mvneta_send the first time. This can cause =
+spurious
+> transmit errors due to improperly set bits in txdesc's cmd_sts field.
+> =
+
+> Fix initial transmit errors by always writing whole cmd_sts field instead=
+ of ORing
+> the bits.
+> =
+
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 > ---
-> 
-> Notes:
->     Changes in v2:
->      - Compile fix for !CONFIG_WATCHDOG_IMX. watchdog_deregister is using an
->        IS_ENABLED condition as well now.
-> 
->  drivers/watchdog/imxwd.c | 55 +++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 43 insertions(+), 12 deletions(-)
+> Cc: barebox@lists.infradead.org
+> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> ---
+>  drivers/net/mvneta.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
+Applied this one, thanks
 
 Sascha
 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
