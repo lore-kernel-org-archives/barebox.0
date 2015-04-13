@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x22c.google.com ([2607:f8b0:400e:c02::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YhdE9-000670-V7
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 12:12:34 +0000
-Received: by pdea3 with SMTP id a3so105231188pde.3
- for <barebox@lists.infradead.org>; Mon, 13 Apr 2015 05:12:12 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 13 Apr 2015 05:12:06 -0700
-Message-Id: <1428927126-4409-1-git-send-email-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YhdSd-0004mn-2k
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 12:27:31 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <mkl@pengutronix.de>) id 1YhdSG-0001hv-U2
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:27:08 +0200
+Received: from mkl by dude.hi.pengutronix.de with local (Exim 4.84)
+ (envelope-from <mkl@pengutronix.de>) id 1YhdSG-0003EW-Sy
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:27:08 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon, 13 Apr 2015 14:27:00 +0200
+Message-Id: <1428928023-13401-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,68 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: i.MX: Respect the value of 'cs_change'
+Subject: [PATCH v3 0/3] add habv4 support for i.MX6
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add the code to correctly handle 'cs_change' field in 'struct
-spi_transfer'(base on the similar code from altera_spi.c)
+Hello,
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- drivers/spi/imx_spi.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+this series adds support for HABv4 signed images. The last patch add code to
+decode HAB events, which is usefull during development.
 
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index a1f19eb..e552d5f 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -29,6 +29,7 @@
- #include <mach/generic.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-+#include <clock.h>
- 
- #define CSPI_0_0_RXDATA		0x00
- #define CSPI_0_0_TXDATA		0x04
-@@ -457,17 +458,34 @@ static int imx_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
- {
- 	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
- 	struct spi_transfer *t;
-+	unsigned int cs_change;
-+	const int nsecs = 50;
- 
- 	imx->chipselect(spi, 1);
- 
-+	cs_change = 0;
-+
- 	mesg->actual_length = 0;
- 
- 	list_for_each_entry(t, &mesg->transfers, transfer_list) {
-+		if (cs_change) {
-+			ndelay(nsecs);
-+			imx->chipselect(spi, 0);
-+			ndelay(nsecs);
-+			imx->chipselect(spi, 1);
-+		}
-+
-+		cs_change = t->cs_change;
-+
- 		imx_spi_do_transfer(spi, t);
- 		mesg->actual_length += t->len;
-+
-+		if (cs_change)
-+			imx->chipselect(spi, 1);
- 	}
- 
--	imx->chipselect(spi, 0);
-+	if (!cs_change)
-+		imx->chipselect(spi, 0);
- 
- 	return 0;
- }
--- 
-2.1.0
+Tested on $CUSTOMER's i.MX6 solo.
+
+Changes since v2:
+- [PATCH v3 2/3] images: add HABv4 support for i.MX6:
+  fix typos
+  add missing depends on ARCH_IMX6
+  renamed Makefile
+  improved commentsin habv4-imx28.csf.in
+- [PATCH v3 3/3] habv4: add High Assurance Boot v4:
+  habv4_get_rvt(): make use of cpu_is_ rather than IS_ENABLED(CONFIG_ARCH_)
+  provide static inline wrapper for habv4_get_status()
+
+Marc
 
 
 _______________________________________________
