@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yhe2V-0000M9-8p
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 13:04:36 +0000
-Date: Mon, 13 Apr 2015 15:04:11 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20150413130411.GB19889@pengutronix.de>
-References: <CAHQ1cqGVK7z-joRkPEWvswo4JDw6BgPxM9TNVgrsZAyN8cmqUg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqGVK7z-joRkPEWvswo4JDw6BgPxM9TNVgrsZAyN8cmqUg@mail.gmail.com>
+Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YhfGQ-0007T0-BP
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 14:23:03 +0000
+Received: by wgsk9 with SMTP id k9so82688760wgs.3
+ for <barebox@lists.infradead.org>; Mon, 13 Apr 2015 07:22:39 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Mon, 13 Apr 2015 16:22:30 +0200
+Message-Id: <1428934950-6836-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1428627714-17077-5-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1428627714-17077-5-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +18,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Booting Linux on Altera's socfpga
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2] USB: xHCI: Sync non-coherent DMA buffers
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi!
+When working with non-coherent transfer buffers, we have to sync
+device and cpu for outgoing and incoming buffers. Fix the driver where
+non-coherent buffers are used in device context.
 
-On Mon, Apr 13, 2015 at 05:43:39AM -0700, Andrey Smirnov wrote:
-> Hi All,
-> 
-> I am trying to use Barebox on Terasic's SoCKit board and so far I've
-> had limited success.
-> 
-> My sequence of actions is the following:
-> 
-> 1. Get zImage, device tree file and .rbf file from a pre-built image
-> available here:
-> http://www.rocketboards.org/foswiki/Documentation/ArrowSoCKITEvaluationBoard140LinuxGettingStarted
-> 
-> 2. Boot into barebox
-> 
-> 3. cp /boot/soc_system.rbf /dev/socfpga-fpga (This step initially
-> didn't work for me, so I had to make a change to the firmware driver
-> http://lists.infradead.org/pipermail/barebox/2015-April/023194.html)
->
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Changelog:
+v1->v2:
+- balance dma_sync_single_foo() calls (Reported by Lucas Stach)
 
-This is interesting, because all rbf's I generated myself worked fine.
-I wonder why this is different...
+Cc: barebox@lists.infradead.org
+Cc: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/usb/host/xhci-hcd.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-> 4. global.linux.bootargs.base="console=ttyS0,115200"
-> 
-> 5. global.bootm.oftree=/boot/soc_system.dtb
-> 
-> 6. global.bootm.image=/boot/zImage
-> 
-> 7. bootm
-> 
-> After the last step I and barebox jumps to the kernel code I don't see
-> any output on the serial at all.
->
-
-Wild guess: does the Rocketboards kernel define "CONFIG_VMSPLIT_2G=y"?
-It is possible, that this produces errors when you use barebox.
-
-Try setting
-	global.linux.bootargs.base="console=ttyS0,115200 earlyprintk"
-if early printk is enabled in the rocketboards kernel.
-
-> I feel like I am missing something obvious, but I can't figure out
-> what it is. If anyone has had experience booting Linux using barebox
-> on aforementioned board I'd greatly appreciate to hear about how you
-> did it.
-> 
-
-I'm booting the mainline kernel with barebox since a v3.15ish kernel
-and it works fine. I have no idea about the state of the rocketboards
-kernel, though.
-
-Regards,
-Steffen
-
+diff --git a/drivers/usb/host/xhci-hcd.c b/drivers/usb/host/xhci-hcd.c
+index c3d623e91f51..a44a1a4dffa5 100644
+--- a/drivers/usb/host/xhci-hcd.c
++++ b/drivers/usb/host/xhci-hcd.c
+@@ -1024,6 +1024,11 @@ static int xhci_submit_normal(struct usb_device *udev, unsigned long pipe,
+ 		GET_SLOT_STATE(le32_to_cpu(vdev->out_ctx->slot.dev_state)), epi,
+ 		vdev->in_ctx, vdev->out_ctx);
+ 
++	/* pass ownership of data buffer to device */
++	dma_sync_single_for_device((unsigned long)buffer, length,
++				   usb_pipein(pipe) ?
++				   DMA_FROM_DEVICE : DMA_TO_DEVICE);
++
+ 	/* Normal TRB */
+ 	memset(&trb, 0, sizeof(union xhci_trb));
+ 	trb.event_cmd.cmd_trb = cpu_to_le64((dma_addr_t)buffer);
+@@ -1037,6 +1042,11 @@ static int xhci_submit_normal(struct usb_device *udev, unsigned long pipe,
+ 	ret = xhci_wait_for_event(xhci, TRB_TRANSFER, &trb);
+ 	xhci_print_trb(xhci, &trb, "Response Normal");
+ 
++	/* Regain ownership of data buffer from device */
++	dma_sync_single_for_cpu((unsigned long)buffer, length,
++				usb_pipein(pipe) ?
++				DMA_FROM_DEVICE : DMA_TO_DEVICE);
++
+ 	switch (ret) {
+ 	case -COMP_SHORT_TX:
+ 		udev->status = 0;
+@@ -1094,6 +1104,11 @@ static int xhci_submit_control(struct usb_device *udev, unsigned long pipe,
+ 			return ret;
+ 	}
+ 
++	/* Pass ownership of data buffer to device */
++	dma_sync_single_for_device((unsigned long)buffer, length,
++				   (req->requesttype & USB_DIR_IN) ?
++				   DMA_FROM_DEVICE : DMA_TO_DEVICE);
++
+ 	/* Setup TRB */
+ 	memset(&trb, 0, sizeof(union xhci_trb));
+ 	trb.generic.field[0] = le16_to_cpu(req->value) << 16 |
+@@ -1141,11 +1156,17 @@ static int xhci_submit_control(struct usb_device *udev, unsigned long pipe,
+ 		if (ret == -COMP_SHORT_TX)
+ 			length -= EVENT_TRB_LEN(trb.event_cmd.status);
+ 		else if (ret < 0)
+-			return ret;
++			goto dma_regain;
+ 	}
+ 
+ 	ret = xhci_wait_for_event(xhci, TRB_TRANSFER, &trb);
+ 	xhci_print_trb(xhci, &trb, "Response Status");
++
++dma_regain:
++	/* Regain ownership of data buffer from device */
++	dma_sync_single_for_cpu((unsigned long)buffer, length,
++				(req->requesttype & USB_DIR_IN) ?
++				DMA_FROM_DEVICE : DMA_TO_DEVICE);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
