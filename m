@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YhZWA-0004RW-3K
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 08:14:54 +0000
-Date: Mon, 13 Apr 2015 10:14:31 +0200
+ Linux)) id 1YhZZU-0006nH-2u
+ for barebox@lists.infradead.org; Mon, 13 Apr 2015 08:18:21 +0000
+Date: Mon, 13 Apr 2015 10:17:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150413081431.GE9742@pengutronix.de>
-References: <1428627766-17178-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20150413081757.GF9742@pengutronix.de>
+References: <1428156197-5305-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1428627766-17178-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1428156197-5305-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] Introduce deferred probing
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH] make PBL_CONSOLE depend on PBL_IMAGE
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Apr 10, 2015 at 03:02:42AM +0200, Sebastian Hesselbarth wrote:
-> As expected, the Lenovo ix4 has an poor-man's GPIO expander (74x163)
-> connected by (guess what) GPIO bitbang SPI. This causes driver probing
-> to fail when the GPIO expander is probed before GPIO SPI driver.
+On Sat, Apr 04, 2015 at 05:03:17PM +0300, Antony Pavlov wrote:
+> PBL_CONSOLE option is used only for building PBL. See this output:
+> 
+>     barebox$ git grep PBL_CONSOLE
+>     arch/arm/configs/tx28stk5_defconfig:CONFIG_PBL_CONSOLE=y
+>     common/Kconfig:config PBL_CONSOLE
+>     common/Makefile:pbl-$(CONFIG_PBL_CONSOLE)       += memory_display.o
+>     include/printk.h:       (defined(__PBL__) && defined(CONFIG_PBL_CONSOLE))
+>     include/stdio.h:        (defined(__PBL__) && defined(CONFIG_PBL_CONSOLE))
+>     lib/Makefile:pbl-$(CONFIG_PBL_CONSOLE) += vsprintf.o
+>     pbl/Makefile:pbl-$(CONFIG_PBL_CONSOLE) += console.o
+> 
+> PBL_CONSOLE looks confusing in PBL-less configuration
+> so it's better to enable it only if PBL is enabled.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  common/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
-Hard to get this right without deferred probing. I agree that we reached
-the point where deferred probing gets necessary.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
