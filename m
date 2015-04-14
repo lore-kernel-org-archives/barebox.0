@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
+Received: from mail-wg0-x230.google.com ([2a00:1450:400c:c00::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yi9iH-00079z-Qq
+ id 1Yi9iH-0007B0-NR
  for barebox@lists.infradead.org; Tue, 14 Apr 2015 22:53:53 +0000
-Received: by wizk4 with SMTP id k4so132619485wiz.1
- for <barebox@lists.infradead.org>; Tue, 14 Apr 2015 15:53:26 -0700 (PDT)
+Received: by wgin8 with SMTP id n8so28225281wgi.0
+ for <barebox@lists.infradead.org>; Tue, 14 Apr 2015 15:53:28 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 15 Apr 2015 00:53:15 +0200
-Message-Id: <1429052000-20647-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 15 Apr 2015 00:53:18 +0200
+Message-Id: <1429052000-20647-5-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1429052000-20647-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1429052000-20647-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,134 +23,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/6] base: Introduce deferred probing
+Subject: [PATCH v2 4/6] led: gpio: Properly deal with deferred probing
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-As expected, we would need deferred probing sooner or later. This is
-a first approach to allow devices to return -EPROBE_DEFER and get
-sorted into a list of deferred devices that will be re-probed later.
+GPIO LEDs can suffer from deferred probing due to failing gpio request.
+Instead of registering each gpio led independently, pre-allocate an
+array of struct gpio_led for all and tear it down properly if probing
+of one leds fails. While at it, silence error messages on -EPROBE_DEFER.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Changelog:
 v1->v2:
-- Rework deferred probing to loop until no previously deferred device
-  probing succeeds. (Suggested by Sascha Hauer)
-- Print an error message for devices stuck in deferred list.
-- Add a comment how deferred probing and re-assignment to deferred
-  list works.
+- Drop static registered bitmap as two "gpio-leds" nodes will both
+  call led_gpio_of_probe(). The second call will find the static
+  variable modified and skip some leds.
+- Use a pre-allocated array of struct gpio_led instead that will
+  be torn down on failure.
 
 Cc: barebox@lists.infradead.org
 ---
- drivers/base/driver.c       | 56 ++++++++++++++++++++++++++++++++++++++++++---
- include/asm-generic/errno.h |  1 +
- 2 files changed, 54 insertions(+), 3 deletions(-)
+ drivers/led/led-gpio.c | 30 ++++++++++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 590c97c96424..6112b4953ba6 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -29,6 +29,7 @@
- #include <console.h>
- #include <linux/ctype.h>
- #include <errno.h>
-+#include <init.h>
- #include <fs.h>
- #include <of.h>
- #include <linux/list.h>
-@@ -43,6 +44,7 @@ LIST_HEAD(driver_list);
- EXPORT_SYMBOL(driver_list);
+diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
+index ae3f13f45b6c..807251721fd3 100644
+--- a/drivers/led/led-gpio.c
++++ b/drivers/led/led-gpio.c
+@@ -20,6 +20,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <led.h>
++#include <malloc.h>
+ #include <gpio.h>
+ #include <of_gpio.h>
  
- static LIST_HEAD(active);
-+static LIST_HEAD(deferred);
- 
- struct device_d *get_device_by_name(const char *name)
+@@ -201,19 +202,32 @@ void led_gpio_rgb_unregister(struct gpio_led *led)
+ static int led_gpio_of_probe(struct device_d *dev)
  {
-@@ -88,13 +90,20 @@ int device_probe(struct device_d *dev)
- 	list_add(&dev->active, &active);
- 
- 	ret = dev->bus->probe(dev);
--	if (ret) {
-+	if (ret == 0)
-+		return 0;
+ 	struct device_node *child;
++	struct gpio_led *leds;
++	int num_leds;
++	int ret = 0, n = 0;
 +
-+	if (ret == -EPROBE_DEFER) {
- 		list_del(&dev->active);
--		dev_err(dev, "probe failed: %s\n", strerror(-ret));
-+		list_add(&dev->active, &deferred);
-+		dev_dbg(dev, "probe deferred\n");
- 		return ret;
++	num_leds = of_get_child_count(dev->device_node);
++	if (num_leds <= 0)
++		return num_leds;
++
++	leds = xzalloc(num_leds * sizeof(struct gpio_led));
+ 
+ 	for_each_child_of_node(dev->device_node, child) {
+-		struct gpio_led *gled;
++		struct gpio_led *gled = &leds[n];
+ 		const char *default_state;
+ 		enum of_gpio_flags flags;
+ 		int gpio;
+ 		const char *label;
+ 
+ 		gpio = of_get_named_gpio_flags(child, "gpios", 0, &flags);
+-		if (gpio < 0)
+-			continue;
++		if (gpio < 0) {
++			if (gpio != -EPROBE_DEFER)
++				dev_err(dev, "failed to get gpio for %s: %d\n",
++					child->full_name, gpio);
++			ret = gpio;
++			goto err;
++		}
+ 
+-		gled = xzalloc(sizeof(*gled));
+ 		if (of_property_read_string(child, "label", &label))
+ 			label = child->name;
+ 		gled->led.name = xstrdup(label);
+@@ -233,9 +247,17 @@ static int led_gpio_of_probe(struct device_d *dev)
+ 			else if (!strcmp(default_state, "off"))
+ 				led_gpio_set(&gled->led, 0);
+ 		}
++
++		n++;
  	}
  
--	return 0;
-+	list_del(&dev->active);
-+	dev_err(dev, "probe failed: %s\n", strerror(-ret));
+ 	return 0;
 +
++err:
++	for (n = n - 1; n >= 0; n--)
++		led_gpio_unregister(&leds[n]);
++	free(leds);
 +	return ret;
  }
  
- int device_detect(struct device_d *dev)
-@@ -213,6 +222,47 @@ int unregister_device(struct device_d *old_dev)
- }
- EXPORT_SYMBOL(unregister_device);
- 
-+/*
-+ * Loop over list of deferred devices as long as at least one
-+ * device is successfully probed. Devices that again request
-+ * deferral are re-added to deferred list in device_probe().
-+ * For devices finally left in deferred list -EPROBE_DEFER
-+ * becomes a fatal error.
-+ */
-+static int device_probe_deferred(void)
-+{
-+	struct device_d *dev, *tmp;
-+	struct driver_d *drv;
-+	bool success;
-+
-+	do {
-+		success = false;
-+
-+		if (list_empty(&deferred))
-+			break;
-+
-+		list_for_each_entry_safe(dev, tmp, &deferred, active) {
-+			list_del(&dev->active);
-+			dev_dbg(dev, "re-probe device\n");
-+			bus_for_each_driver(dev->bus, drv) {
-+				if (match(drv, dev))
-+					continue;
-+				success = true;
-+				break;
-+			}
-+		}
-+	} while (success);
-+
-+	if (list_empty(&deferred))
-+		return 0;
-+
-+	list_for_each_entry(dev, &deferred, active)
-+		dev_err(dev, "probe permanently deferred\n");
-+
-+	return 0;
-+}
-+late_initcall(device_probe_deferred);
-+
- struct driver_d *get_driver_by_name(const char *name)
- {
- 	struct driver_d *drv;
-diff --git a/include/asm-generic/errno.h b/include/asm-generic/errno.h
-index bbf493c373ae..6072f7b605bb 100644
---- a/include/asm-generic/errno.h
-+++ b/include/asm-generic/errno.h
-@@ -132,6 +132,7 @@
- #define ERESTARTNOINTR	513
- #define ERESTARTNOHAND	514	/* restart if no handler.. */
- #define ENOIOCTLCMD	515	/* No ioctl command */
-+#define EPROBE_DEFER	517	/* Driver requests probe retry */
- 
- #define ENOTSUPP	524	/* Operation is not supported */
- 
+ static struct of_device_id led_gpio_of_ids[] = {
 -- 
 2.1.0
 
