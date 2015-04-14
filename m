@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132])
+Received: from arcturus.kleine-koenig.org ([78.47.169.190])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yd03B-0002ps-97
- for barebox@lists.infradead.org; Tue, 31 Mar 2015 17:34:06 +0000
-Received: from mail414.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 765F1FF9F7C
- for <barebox@lists.infradead.org>; Tue, 31 Mar 2015 19:33:32 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20150331184428.cf4d380d942268a64a0fc0e4@gmail.com>
-Date: Wed, 1 Apr 2015 01:33:26 +0800
-Message-Id: <9AAF8238-8C67-47B4-9F68-7203842FA27C@jcrosoft.com>
-References: <20150325115140.GD8125@ns203013.ovh.net>
- <20150331184428.cf4d380d942268a64a0fc0e4@gmail.com>
+ id 1Yi6x1-0005Wj-GZ
+ for barebox@lists.infradead.org; Tue, 14 Apr 2015 19:56:52 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Date: Tue, 14 Apr 2015 21:56:23 +0200
+Message-Id: <1429041383-18927-1-git-send-email-uwe@kleine-koenig.org>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,73 +15,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/9 v3] digest: allow multiple implementation of digest
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC PATCH] pci: Improve handling of constant id_table pointer
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 
-
-> On Mar 31, 2015, at 11:44 PM, Antony Pavlov <antonynpavlov@gmail.com> wro=
-te:
-> =
-
-> On Wed, 25 Mar 2015 12:51:40 +0100
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> =
-
-> Hmmm.
-> =
-
-> This new digest implementation have some Kconfig inconsistency.
-> =
-
-> E.g. I can configure barebox like this:
-> =
-
->  CONFIG_CMD_SHA1SUM=3Dy
->  ...
->  CONFIG_SHA1=3Dy
->  # CONFIG_DIGEST_MD5_GENERIC is not set
->  # CONFIG_DIGEST_SHA1_GENERIC is not set
->  # CONFIG_DIGEST_SHA224_GENERIC is not set
->  # CONFIG_DIGEST_SHA256_GENERIC is not set
->  # CONFIG_DIGEST_SHA384_GENERIC is not set
->  # CONFIG_DIGEST_SHA512_GENERIC is not set
->  # CONFIG_DIGEST_HMAC_GENERIC is not set
-> =
-
-> And here is BUG log for this configuration:
-
-normal you select none of the implementation
-
-you have to select one it=92s your choice which one generic vs asm or hard =
-if implemented
-> =
-
->  barebox:/ sha1sum foobar
->  BUG: failure at commands/hashsum.c:61/do_hash()!
->  BUG!
->  no stack data available
-> =
-
-> Could we tune Kconfig somehow (e.g. add addition dependencies) to prevent=
- situations like this?
-
-yes buy inverting the dependancy, no need a new one
-
-SHA1 means we have at least one SHA1 implementation enabled
-
-I would even drop the hashsum command for the new digest command as you wil=
-l have less impact
-in term of binary size and more features.
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
+ClRoaXMgbWFrZXMgaXQgbW9yZSBvYnZpb3VzIHdoeSB0aGUgY2FzdCBpcyBuZWVkZWQuIFN0aWxs
+IGxvb2tzIHVnbHkgdGhvdWdoLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUu
+a2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBkcml2ZXJzL3BjaS9idXMuYyB8IDYg
+KysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoK
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvcGNpL2J1cy5jIGIvZHJpdmVycy9wY2kvYnVzLmMKaW5kZXgg
+ODY2YWIwOC4uZmNhNGY1YyAxMDA2NDQKLS0tIGEvZHJpdmVycy9wY2kvYnVzLmMKKysrIGIvZHJp
+dmVycy9wY2kvYnVzLmMKQEAgLTI3LDExICsyNywxMSBAQCBzdGF0aWMgaW50IHBjaV9tYXRjaChz
+dHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0IGRyaXZlcl9kICpkcnYpCiB7CiAJc3RydWN0IHBj
+aV9kZXYgKnBkZXYgPSB0b19wY2lfZGV2KGRldik7CiAJc3RydWN0IHBjaV9kcml2ZXIgKnBkcnYg
+PSB0b19wY2lfZHJpdmVyKGRydik7Ci0Jc3RydWN0IHBjaV9kZXZpY2VfaWQgKmlkOworCWNvbnN0
+IHN0cnVjdCBwY2lfZGV2aWNlX2lkICppZDsKIAotCWZvciAoaWQgPSAoc3RydWN0IHBjaV9kZXZp
+Y2VfaWQgKilwZHJ2LT5pZF90YWJsZTsgaWQtPnZlbmRvcjsgaWQrKykKKwlmb3IgKGlkID0gcGRy
+di0+aWRfdGFibGU7IGlkLT52ZW5kb3I7IGlkKyspCiAJCWlmIChwY2lfbWF0Y2hfb25lX2Rldmlj
+ZShpZCwgcGRldikpIHsKLQkJCWRldi0+cHJpdiA9IGlkOworCQkJZGV2LT5wcml2ID0gKC8qIG5v
+bi1jb25zdCAqLyB2b2lkICopaWQ7CiAJCQlyZXR1cm4gMDsKIAkJfQogCi0tIAoyLjEuNAoKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
