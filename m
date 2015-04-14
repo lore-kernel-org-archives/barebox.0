@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yi5eN-0008DR-GL
- for barebox@lists.infradead.org; Tue, 14 Apr 2015 18:33:32 +0000
-Date: Tue, 14 Apr 2015 20:33:07 +0200
+ Linux)) id 1Yi5ea-0008GC-W1
+ for barebox@lists.infradead.org; Tue, 14 Apr 2015 18:33:45 +0000
+Date: Tue, 14 Apr 2015 20:33:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150414183307.GA9742@pengutronix.de>
-References: <1428926785-26654-1-git-send-email-mkl@pengutronix.de>
+Message-ID: <20150414183327.GB9742@pengutronix.de>
+References: <1428927065-10987-1-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1428926785-26654-1-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1428927065-10987-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX6: Add support for clko clocks
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: [PATCH] ARM: OMAP: AM33xx: add uart1 pinmux setup
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 13, 2015 at 02:06:25PM +0200, Marc Kleine-Budde wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> the clko pins are general purpose clock outputs. Add support for them.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+On Mon, Apr 13, 2015 at 02:11:05PM +0200, Michael Grzeschik wrote:
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
->  arch/arm/mach-imx/clk-imx6.c | 43 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
+>  arch/arm/mach-omap/am33xx_mux.c              | 11 +++++++++++
+>  arch/arm/mach-omap/include/mach/am33xx-mux.h |  1 +
+>  2 files changed, 12 insertions(+)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
