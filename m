@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-x22f.google.com ([2607:f8b0:4001:c03::22f])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yi6oa-000169-4u
- for barebox@lists.infradead.org; Tue, 14 Apr 2015 19:48:08 +0000
-Received: by iecrt8 with SMTP id rt8so11605807iec.0
- for <barebox@lists.infradead.org>; Tue, 14 Apr 2015 12:47:46 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Yi71I-0007qI-Kl
+ for barebox@lists.infradead.org; Tue, 14 Apr 2015 20:01:17 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Tue, 14 Apr 2015 22:00:47 +0200
+Message-Id: <1429041647-2020-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20150414183914.GC9742@pengutronix.de>
-References: <1428927090-4310-1-git-send-email-andrew.smirnov@gmail.com>
- <20150414183914.GC9742@pengutronix.de>
-Date: Tue, 14 Apr 2015 12:47:46 -0700
-Message-ID: <CAHQ1cqFU1waM3z8D1ZKDb3zqPyP2GtYAovZo-RZ9Ag2=sCywow@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,37 +15,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] firmware: socfpga: Add necessary dependency to Kconfig
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] drivers/base: Mark (of|platform)_device_id data as constant
+To: barebox@lists.infradead.org
 
-On Tue, Apr 14, 2015 at 11:39 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Mon, Apr 13, 2015 at 05:11:30AM -0700, Andrey Smirnov wrote:
->> ---
->>  drivers/firmware/Kconfig | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> This patch lacks a signed-off-by. Could you resend it?
-
-I figured tat since this was just a one line in a build configuration
-file it would be too trivial for copyright assignment, but I can add
-the signed-off-by line in the next version of the patch.
-
-
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlcmUgc2hvdWxkIGJlIG5vIHJlYXNvbiB0byBldmVyIGNoYW5nZSB0aGUgZGF0YSBwb2ludGVk
+IHRvIGJ5IGlkX3RhYmxlCm9yIG9mX2NvbXBhdGlibGUuIFNvIG1ha2UgdGhpcyBvZmZpY2FsIGJ5
+IGFkZGluZyBzb21lICdjb25zdCdzLgoKSW4gTGludXggdGhlIGNvcnJlc3BvbmRpbmcgcG9pbnRl
+cnMgYXJlIG1hcmtlZCBhcyBjb25zdCwgdG9vLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1L
+w7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCkJ1aWxkIHRlc3RlZCBv
+biBhcm0vbXZlYnUrYW0zM3h4IG9ubHkKCiBkcml2ZXJzL2Jhc2UvYnVzLmMgfCA0ICsrLS0KIGlu
+Y2x1ZGUvZHJpdmVyLmggICB8IDYgKysrLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9u
+cygrKSwgNSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2Jhc2UvYnVzLmMgYi9k
+cml2ZXJzL2Jhc2UvYnVzLmMKaW5kZXggYzQxZTBiMDQzODFhLi4xMjY0ZTQwMjUwZGQgMTAwNjQ0
+Ci0tLSBhL2RyaXZlcnMvYmFzZS9idXMuYworKysgYi9kcml2ZXJzL2Jhc2UvYnVzLmMKQEAgLTU4
+LDcgKzU4LDcgQEAgaW50IGRldmljZV9tYXRjaChzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0
+IGRyaXZlcl9kICpkcnYpCiAJCXJldHVybiAwOwogCiAJaWYgKGRydi0+aWRfdGFibGUpIHsKLQkJ
+c3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCAqaWQgPSBkcnYtPmlkX3RhYmxlOworCQljb25zdCBz
+dHJ1Y3QgcGxhdGZvcm1fZGV2aWNlX2lkICppZCA9IGRydi0+aWRfdGFibGU7CiAKIAkJd2hpbGUg
+KGlkLT5uYW1lKSB7CiAJCQlpZiAoIXN0cmNtcChpZC0+bmFtZSwgZGV2LT5uYW1lKSkgewpAQCAt
+NzQsNyArNzQsNyBAQCBpbnQgZGV2aWNlX21hdGNoKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBzdHJ1
+Y3QgZHJpdmVyX2QgKmRydikKIAogaW50IGRldmljZV9tYXRjaF9vZl9tb2RhbGlhcyhzdHJ1Y3Qg
+ZGV2aWNlX2QgKmRldiwgc3RydWN0IGRyaXZlcl9kICpkcnYpCiB7Ci0Jc3RydWN0IHBsYXRmb3Jt
+X2RldmljZV9pZCAqaWQgPSBkcnYtPmlkX3RhYmxlOworCWNvbnN0IHN0cnVjdCBwbGF0Zm9ybV9k
+ZXZpY2VfaWQgKmlkID0gZHJ2LT5pZF90YWJsZTsKIAljb25zdCBjaGFyICpvZl9tb2RhbGlhcyA9
+IE5VTEwsICpwOwogCWludCBjcGxlbjsKIAljb25zdCBjaGFyICpjb21wYXQ7CmRpZmYgLS1naXQg
+YS9pbmNsdWRlL2RyaXZlci5oIGIvaW5jbHVkZS9kcml2ZXIuaAppbmRleCAwZWUzYjQ1NTRmOTgu
+LjE3NDU3MTczMTU3OSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9kcml2ZXIuaAorKysgYi9pbmNsdWRl
+L2RyaXZlci5oCkBAIC03Nyw3ICs3Nyw3IEBAIHN0cnVjdCBkZXZpY2VfZCB7CiAKIAlzdHJ1Y3Qg
+bGlzdF9oZWFkIGNkZXZzOwogCi0Jc3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCAqaWRfZW50cnk7
+CisJY29uc3Qgc3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCAqaWRfZW50cnk7CiAJc3RydWN0IGRl
+dmljZV9ub2RlICpkZXZpY2Vfbm9kZTsKIAogCWNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgKm9m
+X2lkX2VudHJ5OwpAQCAtMTA3LDggKzEwNyw4IEBAIHN0cnVjdCBkcml2ZXJfZCB7CiAKIAlzdHJ1
+Y3QgYnVzX3R5cGUgKmJ1czsKIAotCXN0cnVjdCBwbGF0Zm9ybV9kZXZpY2VfaWQgKmlkX3RhYmxl
+OwotCXN0cnVjdCBvZl9kZXZpY2VfaWQgKm9mX2NvbXBhdGlibGU7CisJY29uc3Qgc3RydWN0IHBs
+YXRmb3JtX2RldmljZV9pZCAqaWRfdGFibGU7CisJY29uc3Qgc3RydWN0IG9mX2RldmljZV9pZCAq
+b2ZfY29tcGF0aWJsZTsKIH07CiAKIC8qQH0qLwkvKiBkbyBub3QgZGVsZXRlLCBkb3h5Z2VuIHJl
+bGV2YW50ICovCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
