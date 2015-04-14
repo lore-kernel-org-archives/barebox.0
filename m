@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yi71I-0007qI-Kl
- for barebox@lists.infradead.org; Tue, 14 Apr 2015 20:01:17 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 14 Apr 2015 22:00:47 +0200
-Message-Id: <1429041647-2020-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Received: from mail-wg0-x230.google.com ([2a00:1450:400c:c00::230])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Yi9iH-0007AG-NQ
+ for barebox@lists.infradead.org; Tue, 14 Apr 2015 22:53:52 +0000
+Received: by wgsk9 with SMTP id k9so28146031wgs.3
+ for <barebox@lists.infradead.org>; Tue, 14 Apr 2015 15:53:27 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Wed, 15 Apr 2015 00:53:14 +0200
+Message-Id: <1429052000-20647-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,45 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] drivers/base: Mark (of|platform)_device_id data as constant
-To: barebox@lists.infradead.org
+Subject: [PATCH v2 0/6] Introduce deferred probing
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-VGhlcmUgc2hvdWxkIGJlIG5vIHJlYXNvbiB0byBldmVyIGNoYW5nZSB0aGUgZGF0YSBwb2ludGVk
-IHRvIGJ5IGlkX3RhYmxlCm9yIG9mX2NvbXBhdGlibGUuIFNvIG1ha2UgdGhpcyBvZmZpY2FsIGJ5
-IGFkZGluZyBzb21lICdjb25zdCdzLgoKSW4gTGludXggdGhlIGNvcnJlc3BvbmRpbmcgcG9pbnRl
-cnMgYXJlIG1hcmtlZCBhcyBjb25zdCwgdG9vLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1L
-w7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCkJ1aWxkIHRlc3RlZCBv
-biBhcm0vbXZlYnUrYW0zM3h4IG9ubHkKCiBkcml2ZXJzL2Jhc2UvYnVzLmMgfCA0ICsrLS0KIGlu
-Y2x1ZGUvZHJpdmVyLmggICB8IDYgKysrLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9u
-cygrKSwgNSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL2Jhc2UvYnVzLmMgYi9k
-cml2ZXJzL2Jhc2UvYnVzLmMKaW5kZXggYzQxZTBiMDQzODFhLi4xMjY0ZTQwMjUwZGQgMTAwNjQ0
-Ci0tLSBhL2RyaXZlcnMvYmFzZS9idXMuYworKysgYi9kcml2ZXJzL2Jhc2UvYnVzLmMKQEAgLTU4
-LDcgKzU4LDcgQEAgaW50IGRldmljZV9tYXRjaChzdHJ1Y3QgZGV2aWNlX2QgKmRldiwgc3RydWN0
-IGRyaXZlcl9kICpkcnYpCiAJCXJldHVybiAwOwogCiAJaWYgKGRydi0+aWRfdGFibGUpIHsKLQkJ
-c3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCAqaWQgPSBkcnYtPmlkX3RhYmxlOworCQljb25zdCBz
-dHJ1Y3QgcGxhdGZvcm1fZGV2aWNlX2lkICppZCA9IGRydi0+aWRfdGFibGU7CiAKIAkJd2hpbGUg
-KGlkLT5uYW1lKSB7CiAJCQlpZiAoIXN0cmNtcChpZC0+bmFtZSwgZGV2LT5uYW1lKSkgewpAQCAt
-NzQsNyArNzQsNyBAQCBpbnQgZGV2aWNlX21hdGNoKHN0cnVjdCBkZXZpY2VfZCAqZGV2LCBzdHJ1
-Y3QgZHJpdmVyX2QgKmRydikKIAogaW50IGRldmljZV9tYXRjaF9vZl9tb2RhbGlhcyhzdHJ1Y3Qg
-ZGV2aWNlX2QgKmRldiwgc3RydWN0IGRyaXZlcl9kICpkcnYpCiB7Ci0Jc3RydWN0IHBsYXRmb3Jt
-X2RldmljZV9pZCAqaWQgPSBkcnYtPmlkX3RhYmxlOworCWNvbnN0IHN0cnVjdCBwbGF0Zm9ybV9k
-ZXZpY2VfaWQgKmlkID0gZHJ2LT5pZF90YWJsZTsKIAljb25zdCBjaGFyICpvZl9tb2RhbGlhcyA9
-IE5VTEwsICpwOwogCWludCBjcGxlbjsKIAljb25zdCBjaGFyICpjb21wYXQ7CmRpZmYgLS1naXQg
-YS9pbmNsdWRlL2RyaXZlci5oIGIvaW5jbHVkZS9kcml2ZXIuaAppbmRleCAwZWUzYjQ1NTRmOTgu
-LjE3NDU3MTczMTU3OSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9kcml2ZXIuaAorKysgYi9pbmNsdWRl
-L2RyaXZlci5oCkBAIC03Nyw3ICs3Nyw3IEBAIHN0cnVjdCBkZXZpY2VfZCB7CiAKIAlzdHJ1Y3Qg
-bGlzdF9oZWFkIGNkZXZzOwogCi0Jc3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCAqaWRfZW50cnk7
-CisJY29uc3Qgc3RydWN0IHBsYXRmb3JtX2RldmljZV9pZCAqaWRfZW50cnk7CiAJc3RydWN0IGRl
-dmljZV9ub2RlICpkZXZpY2Vfbm9kZTsKIAogCWNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgKm9m
-X2lkX2VudHJ5OwpAQCAtMTA3LDggKzEwNyw4IEBAIHN0cnVjdCBkcml2ZXJfZCB7CiAKIAlzdHJ1
-Y3QgYnVzX3R5cGUgKmJ1czsKIAotCXN0cnVjdCBwbGF0Zm9ybV9kZXZpY2VfaWQgKmlkX3RhYmxl
-OwotCXN0cnVjdCBvZl9kZXZpY2VfaWQgKm9mX2NvbXBhdGlibGU7CisJY29uc3Qgc3RydWN0IHBs
-YXRmb3JtX2RldmljZV9pZCAqaWRfdGFibGU7CisJY29uc3Qgc3RydWN0IG9mX2RldmljZV9pZCAq
-b2ZfY29tcGF0aWJsZTsKIH07CiAKIC8qQH0qLwkvKiBkbyBub3QgZGVsZXRlLCBkb3h5Z2VuIHJl
-bGV2YW50ICovCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This is round two of the introduction of deferred probing by moving
+drivers that request probe deferral to an extra device list that will
+be re-probed later.
+
+Compared to v1 there are the following changes:
+- Loop over deferred device list until none succeeds
+  (Suggested by Sascha Hauer)
+- (Now) properly deal with deferred probing in led-gpio
+- Free GPIOs claimed by leds on foo_led_unregister()
+- Convert Orion GPIO to real platform driver
+Each patch also contains an individual changelog.
+
+It would be great to give this patch series a little more coverage.
+Also, several other subsystems could use some support -EPROBE_DEFER
+but IMHO we should wait for someone to actually force probe deferral
+there.
+
+Sebastian Hesselbarth (6):
+  base: Introduce deferred probing
+  gpio: Return -EPROBE_DEFER on gpio_get_num()
+  OF: gpio: Silence error message on -EPROBE_DEFER
+  led: gpio: Properly deal with deferred probing
+  led: gpio: Free GPIOs on unregister()
+  gpio: orion: Convert to platform_driver
+
+ drivers/base/driver.c       | 56 ++++++++++++++++++++++++++++++++++++++++++---
+ drivers/gpio/gpio-orion.c   |  7 +-----
+ drivers/gpio/gpiolib.c      |  5 +++-
+ drivers/led/led-gpio.c      | 36 +++++++++++++++++++++++++----
+ drivers/of/of_gpio.c        |  8 ++++---
+ include/asm-generic/errno.h |  1 +
+ 6 files changed, 96 insertions(+), 17 deletions(-)
+
+---
+Cc: barebox@lists.infradead.org
+-- 
+2.1.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
