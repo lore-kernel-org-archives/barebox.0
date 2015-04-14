@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YhlPR-0007P3-RK
- for barebox@lists.infradead.org; Mon, 13 Apr 2015 20:56:47 +0000
-Received: by lbcga7 with SMTP id ga7so69372389lbc.1
- for <barebox@lists.infradead.org>; Mon, 13 Apr 2015 13:56:23 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 13 Apr 2015 23:56:41 +0300
-Message-Id: <1428958601-28506-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Yhv7b-000355-RG
+ for barebox@lists.infradead.org; Tue, 14 Apr 2015 07:19:00 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 14 Apr 2015 09:18:35 +0200
+Message-Id: <1428995915-26349-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +19,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: m25p80: import ID for Winbond W25Q128FVSSI from linux
+Subject: [PATCH] environment: remove unused code
 To: barebox@lists.infradead.org
 
-Winbond W25Q128FVSSI chip is used in Black Swift board,
-(see http://www.black-swift.com for details).
+This patch removes the LIST_HEAD of_partition_list and a struct definition from
+the code. This was present but unused, since the file was added to barebox.
 
-Black Swift can run barebox for TP-LINK MR3020.
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/mtd/devices/m25p80.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/of/barebox.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 095a4ca..efef984 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -743,6 +743,7 @@ static const struct platform_device_id m25p_ids[] = {
- 	{ "w25q64", INFO(0xef4017, 0, 64 * 1024, 128, SECT_4K) },
- 	{ "w25q80", INFO(0xef5014, 0, 64 * 1024,  16, SECT_4K) },
- 	{ "w25q80bl", INFO(0xef4014, 0, 64 * 1024,  16, SECT_4K) },
-+	{ "w25q128", INFO(0xef4018, 0, 64 * 1024, 256, SECT_4K) },
+diff --git a/drivers/of/barebox.c b/drivers/of/barebox.c
+index 224674240e7c..0220bc6b3123 100644
+--- a/drivers/of/barebox.c
++++ b/drivers/of/barebox.c
+@@ -26,15 +26,6 @@
+ #include <envfs.h>
+ #include <linux/mtd/mtd.h>
  
- 	/* Catalyst / On Semiconductor -- non-JEDEC */
- 	{ "cat25c11", CAT25_INFO(  16, 8, 16, 1) },
+-struct of_partition {
+-	struct list_head list;
+-	char *nodepath;
+-	struct device_d *dev;
+-	struct device_node *of_partitions;
+-};
+-
+-static LIST_HEAD(of_partition_list);
+-
+ static int environment_probe(struct device_d *dev)
+ {
+ 	char *path;
 -- 
 2.1.4
 
