@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YiK0Z-0006CP-HF
- for barebox@lists.infradead.org; Wed, 15 Apr 2015 09:53:24 +0000
-Date: Wed, 15 Apr 2015 11:52:59 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-Message-ID: <20150415095259.GM9742@pengutronix.de>
-References: <1429090430.3365.17.camel@pengutronix.de>
+ Linux)) id 1YiM5r-0005so-KL
+ for barebox@lists.infradead.org; Wed, 15 Apr 2015 12:07:00 +0000
+Date: Wed, 15 Apr 2015 14:06:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150415120636.GL4946@pengutronix.de>
+References: <1428627714-17077-5-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1428934950-6836-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1429090430.3365.17.camel@pengutronix.de>
+In-Reply-To: <1428934950-6836-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: List server drops CCs
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH v2] USB: xHCI: Sync non-coherent DMA buffers
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 15, 2015 at 11:33:50AM +0200, Lucas Stach wrote:
-> This is a test mail demonstrating that the list server drops the CC List
-> from E-Mails. Please fix.
+On Mon, Apr 13, 2015 at 04:22:30PM +0200, Sebastian Hesselbarth wrote:
+> When working with non-coherent transfer buffers, we have to sync
+> device and cpu for outgoing and incoming buffers. Fix the driver where
+> non-coherent buffers are used in device context.
+> 
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+> Changelog:
+> v1->v2:
+> - balance dma_sync_single_foo() calls (Reported by Lucas Stach)
+> 
+> Cc: barebox@lists.infradead.org
+> Cc: Lucas Stach <dev@lynxeye.de>
+> ---
+>  drivers/usb/host/xhci-hcd.c | 23 ++++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
 
-I have unchecked "Filter out duplicate messages to list members (if
-possible)". This (hopefully) means that mailman will no longer drop Ccs,
-but it also means that everyone Cced will now receive two mails, one
-directly via the original MTA and one from mailman.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
