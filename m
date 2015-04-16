@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yije0-0003KQ-Dt
- for barebox@lists.infradead.org; Thu, 16 Apr 2015 13:15:49 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 16 Apr 2015 15:15:22 +0200
-Message-Id: <1429190122-21490-1-git-send-email-mkl@pengutronix.de>
+Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Yip1S-0004AQ-68
+ for barebox@lists.infradead.org; Thu, 16 Apr 2015 19:00:23 +0000
+Received: by lbbzk7 with SMTP id zk7so66042277lbb.0
+ for <barebox@lists.infradead.org>; Thu, 16 Apr 2015 11:59:57 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 16 Apr 2015 22:00:45 +0300
+Message-Id: <1429210845-5402-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] command: state: harmonize in-barebox documentation
+Subject: [PATCH] i2c: mv64xxx: continue probe when clock-frequency is missing
 To: barebox@lists.infradead.org
 
-According to this patch by Holger Schurig:
+Based on this linux kernel commit:
 
-    f1f532084a6e commands: harmonize in-barebox documentation
+    commit 0ce4bc1dbdd911ae1763e2d4ff36bd1b214a59f7
+    Author: Chen-Yu Tsai <wens@csie.org>
+    Date:   Mon Sep 1 22:28:13 2014 +0800
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+        i2c: mv64xxx: continue probe when clock-frequency is missing
+
+        The "clock-frequency" DT property is listed as optional, However,
+        the current code stores the return value of of_property_read_u32 in
+        the return code of mv64xxx_of_config, but then forgets to clear it
+        after setting the default value of "clock-frequency". It is then
+        passed out to the main probe function, resulting in a probe failure
+        when "clock-frequency" is missing.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/state.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-mv64xxx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/commands/state.c b/commands/state.c
-index 82c29d00c880..59d1eb850215 100644
---- a/commands/state.c
-+++ b/commands/state.c
-@@ -62,16 +62,18 @@ static int do_state(int argc, char *argv[])
- 	return ret;
- }
+diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
+index 6d8c85b..4fd3a6f 100644
+--- a/drivers/i2c/busses/i2c-mv64xxx.c
++++ b/drivers/i2c/busses/i2c-mv64xxx.c
+@@ -540,8 +540,7 @@ mv64xxx_of_config(struct mv64xxx_i2c_data *drv_data,
+ 	}
+ 	tclk = clk_get_rate(drv_data->clk);
  
--static const __maybe_unused char cmd_state_help[] =
--"Usage: state [OPTIONS] [STATENAME]\n"
--"\n"
--"options:\n"
--"-s        save state\n"
--"-l        load state\n";
-+BAREBOX_CMD_HELP_START(state)
-+BAREBOX_CMD_HELP_TEXT("Usage: state [OPTIONS] [STATENAME]")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("options:")
-+BAREBOX_CMD_HELP_OPT ("-s", "save state")
-+BAREBOX_CMD_HELP_OPT ("-l", "load state")
-+BAREBOX_CMD_HELP_END
+-	rc = of_property_read_u32(np, "clock-frequency", &bus_freq);
+-	if (rc)
++	if (of_property_read_u32(np, "clock-frequency", &bus_freq))
+ 		bus_freq = 100000; /* 100kHz by default */
  
- BAREBOX_CMD_START(state)
- 	.cmd		= do_state,
--	BAREBOX_CMD_DESC("handle state information")
-+	BAREBOX_CMD_DESC("load and save state information")
-+	BAREBOX_CMD_OPTS("[-sl] [STATENAME]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
- 	BAREBOX_CMD_HELP(cmd_state_help)
- BAREBOX_CMD_END
+ 	if (!mv64xxx_find_baud_factors(bus_freq, tclk,
 -- 
 2.1.4
 
