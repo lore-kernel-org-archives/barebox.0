@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YiUAe-0004UD-Hp
- for barebox@lists.infradead.org; Wed, 15 Apr 2015 20:44:29 +0000
+ Linux)) id 1Yije0-0003KQ-Dt
+ for barebox@lists.infradead.org; Thu, 16 Apr 2015 13:15:49 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 15 Apr 2015 22:43:59 +0200
-Message-Id: <1429130640-15900-1-git-send-email-mkl@pengutronix.de>
+Date: Thu, 16 Apr 2015 15:15:22 +0200
+Message-Id: <1429190122-21490-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +19,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] environment: remove unused code
+Subject: [PATCH] command: state: harmonize in-barebox documentation
 To: barebox@lists.infradead.org
 
-This patch removes the LIST_HEAD of_partition_list and a struct definition from
-the code. This was present but unused, since the file was added to barebox.
+According to this patch by Holger Schurig:
+
+    f1f532084a6e commands: harmonize in-barebox documentation
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/of/barebox.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ commands/state.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/of/barebox.c b/drivers/of/barebox.c
-index 224674240e7c..0220bc6b3123 100644
---- a/drivers/of/barebox.c
-+++ b/drivers/of/barebox.c
-@@ -26,15 +26,6 @@
- #include <envfs.h>
- #include <linux/mtd/mtd.h>
+diff --git a/commands/state.c b/commands/state.c
+index 82c29d00c880..59d1eb850215 100644
+--- a/commands/state.c
++++ b/commands/state.c
+@@ -62,16 +62,18 @@ static int do_state(int argc, char *argv[])
+ 	return ret;
+ }
  
--struct of_partition {
--	struct list_head list;
--	char *nodepath;
--	struct device_d *dev;
--	struct device_node *of_partitions;
--};
--
--static LIST_HEAD(of_partition_list);
--
- static int environment_probe(struct device_d *dev)
- {
- 	char *path;
+-static const __maybe_unused char cmd_state_help[] =
+-"Usage: state [OPTIONS] [STATENAME]\n"
+-"\n"
+-"options:\n"
+-"-s        save state\n"
+-"-l        load state\n";
++BAREBOX_CMD_HELP_START(state)
++BAREBOX_CMD_HELP_TEXT("Usage: state [OPTIONS] [STATENAME]")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("options:")
++BAREBOX_CMD_HELP_OPT ("-s", "save state")
++BAREBOX_CMD_HELP_OPT ("-l", "load state")
++BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(state)
+ 	.cmd		= do_state,
+-	BAREBOX_CMD_DESC("handle state information")
++	BAREBOX_CMD_DESC("load and save state information")
++	BAREBOX_CMD_OPTS("[-sl] [STATENAME]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_HELP(cmd_state_help)
+ BAREBOX_CMD_END
 -- 
 2.1.4
 
