@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YiylW-0004ji-78
- for barebox@lists.infradead.org; Fri, 17 Apr 2015 05:24:34 +0000
-Date: Fri, 17 Apr 2015 07:24:12 +0200
+ Linux)) id 1YiynC-00065R-57
+ for barebox@lists.infradead.org; Fri, 17 Apr 2015 05:26:18 +0000
+Date: Fri, 17 Apr 2015 07:25:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150417052412.GB6325@pengutronix.de>
-References: <1429052000-20647-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20150417052555.GC6325@pengutronix.de>
+References: <1429130640-15900-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1429052000-20647-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1429130640-15900-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/6] Introduce deferred probing
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 1/2] environment: remove unused code
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 15, 2015 at 12:53:14AM +0200, Sebastian Hesselbarth wrote:
-> This is round two of the introduction of deferred probing by moving
-> drivers that request probe deferral to an extra device list that will
-> be re-probed later.
+On Wed, Apr 15, 2015 at 10:43:59PM +0200, Marc Kleine-Budde wrote:
+> This patch removes the LIST_HEAD of_partition_list and a struct definition from
+> the code. This was present but unused, since the file was added to barebox.
 > 
-> Compared to v1 there are the following changes:
-> - Loop over deferred device list until none succeeds
->   (Suggested by Sascha Hauer)
-> - (Now) properly deal with deferred probing in led-gpio
-> - Free GPIOs claimed by leds on foo_led_unregister()
-> - Convert Orion GPIO to real platform driver
-> Each patch also contains an individual changelog.
-> 
-> It would be great to give this patch series a little more coverage.
-> Also, several other subsystems could use some support -EPROBE_DEFER
-> but IMHO we should wait for someone to actually force probe deferral
-> there.
-> 
-> Sebastian Hesselbarth (6):
->   base: Introduce deferred probing
->   gpio: Return -EPROBE_DEFER on gpio_get_num()
->   OF: gpio: Silence error message on -EPROBE_DEFER
->   led: gpio: Properly deal with deferred probing
->   led: gpio: Free GPIOs on unregister()
->   gpio: orion: Convert to platform_driver
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  drivers/of/barebox.c | 9 ---------
+>  1 file changed, 9 deletions(-)
 
 Applied, thanks
 
