@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x235.google.com ([2a00:1450:400c:c00::235])
+Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YkI2v-0003Ax-Tw
- for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:12:03 +0000
-Received: by wgsk9 with SMTP id k9so191131458wgs.3
- for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:36 -0700 (PDT)
+ id 1YkI2w-0003BF-EM
+ for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:12:04 +0000
+Received: by wiax7 with SMTP id x7so91917124wia.0
+ for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:38 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 20 Apr 2015 22:11:19 +0200
-Message-Id: <1429560686-11391-8-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 20 Apr 2015 22:11:24 +0200
+Message-Id: <1429560686-11391-13-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,15 +23,13 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/14] bus: mvebu-mbus: Convert mbus platform driver to
- direct driver
+Subject: [PATCH v2 12/14] ARM: mvebu: armada-xp: Sort boards and images
+ alphabetically
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Registering mbus driver as platform driver is a little late for
-some register accesses to work. We have to make sure boot-up
-mbus windows are disabled early, so call mbus driver directly
-from SoC init.
+Before adding new Armada XP based boards becomes messier than necessary,
+sort Armada XP based board Kconfig and image Makefile alphabetically.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -39,92 +37,73 @@ Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/armada-370-xp.c |  1 +
- arch/arm/mach-mvebu/dove.c          |  1 +
- arch/arm/mach-mvebu/kirkwood.c      |  1 +
- drivers/bus/mvebu-mbus.c            | 14 +-------------
- include/linux/mbus.h                |  2 ++
- 5 files changed, 6 insertions(+), 13 deletions(-)
+ arch/arm/mach-mvebu/Kconfig |  8 ++++----
+ images/Makefile.mvebu       | 22 +++++++++++-----------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
-index 244f8cdd81a5..ae458b4433b3 100644
---- a/arch/arm/mach-mvebu/armada-370-xp.c
-+++ b/arch/arm/mach-mvebu/armada-370-xp.c
-@@ -73,6 +73,7 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
- 	armada_370_xp_memory_find(&phys_base, &phys_size);
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index 8323b6604174..9394cf71a998 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -43,14 +43,14 @@ config MACH_GLOBALSCALE_MIRABOX
  
- 	mvebu_set_memory(phys_base, phys_size);
-+	mvebu_mbus_init();
+ comment "Armada XP based boards"
  
- 	/* Enable peripherals PUP */
- 	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
-diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
-index c2852f8986ae..a7284fd33a63 100644
---- a/arch/arm/mach-mvebu/dove.c
-+++ b/arch/arm/mach-mvebu/dove.c
-@@ -93,6 +93,7 @@ static int dove_init_soc(struct device_node *root, void *context)
- 	dove_memory_find(&phys_base, &phys_size);
- 
- 	mvebu_set_memory(phys_base, phys_size);
-+	mvebu_mbus_init();
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
-index d7903f732eac..19c6f0730332 100644
---- a/arch/arm/mach-mvebu/kirkwood.c
-+++ b/arch/arm/mach-mvebu/kirkwood.c
-@@ -66,6 +66,7 @@ static int kirkwood_init_soc(struct device_node *root, void *context)
- 	kirkwood_memory_find(&phys_base, &phys_size);
- 
- 	mvebu_set_memory(phys_base, phys_size);
-+	mvebu_mbus_init();
- 
- 	return 0;
- }
-diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
-index 077d7ccb83ca..e1898103540b 100644
---- a/drivers/bus/mvebu-mbus.c
-+++ b/drivers/bus/mvebu-mbus.c
-@@ -673,7 +673,7 @@ static void mvebu_mbus_get_pcie_resources(struct device_node *np,
- 	}
- }
- 
--static int mvebu_mbus_probe(struct device_d *dev)
-+int mvebu_mbus_init(void)
- {
- 	struct device_node *np, *controller;
- 	const struct of_device_id *match;
-@@ -725,18 +725,6 @@ static int mvebu_mbus_probe(struct device_d *dev)
- 	return mbus_dt_setup(&mbus_state);
- }
- 
--static struct driver_d mvebu_mbus_driver = {
--	.probe	= mvebu_mbus_probe,
--	.name	= "mvebu-mbus",
--	.of_compatible = DRV_OF_COMPAT(mvebu_mbus_dt_ids),
--};
+-config MACH_PLATHOME_OPENBLOCKS_AX3
+-	bool "PlatHome OpenBlocks AX3"
+-	select ARCH_ARMADA_XP
 -
--static int mvebu_mbus_init(void)
--{
--	return platform_driver_register(&mvebu_mbus_driver);
--}
--postcore_initcall(mvebu_mbus_init);
--
- struct mbus_range {
- 	const char *compatible;
- 	u32 mbusid;
-diff --git a/include/linux/mbus.h b/include/linux/mbus.h
-index b90fabbfb7e5..bcc5949219cf 100644
---- a/include/linux/mbus.h
-+++ b/include/linux/mbus.h
-@@ -61,4 +61,6 @@ int mvebu_mbus_del_window(phys_addr_t base, size_t size);
- void mvebu_mbus_add_range(const char *compatible,
- 			  u8 target, u8 attr, u32 remap);
+ config MACH_MARVELL_ARMADA_XP_GP
+ 	bool "Marvell Armada XP GP"
+ 	select ARCH_ARMADA_XP
  
-+int mvebu_mbus_init(void);
++config MACH_PLATHOME_OPENBLOCKS_AX3
++	bool "PlatHome OpenBlocks AX3"
++	select ARCH_ARMADA_XP
 +
- #endif /* __LINUX_MBUS_H */
+ #
+ # Dove 88AP510 SoC boards
+ #
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index c3923e4ecc8f..82f370576468 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -24,17 +24,6 @@ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-uart.img
+ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-2nd.img
+ 
+ # ----------------------- Armada XP based boards ---------------------------
+-PLATHOME_OPENBLOCKS_AX3_KWBOPTS = ${KWBOPTS} -i $(board)/plathome-openblocks-ax3/kwbimage.cfg
+-OPTS_start_plathome_openblocks_ax3.pblx.kwbimg = $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
+-OPTS_start_plathome_openblocks_ax3.pblx.kwbuartimg = -m uart $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
+-FILE_barebox-plathome-openblocks-ax3.img   = start_plathome_openblocks_ax3.pblx.kwbimg
+-FILE_barebox-plathome-openblocks-ax3-uart.img = start_plathome_openblocks_ax3.pblx.kwbuartimg
+-FILE_barebox-plathome-openblocks-ax3-2nd.img = start_plathome_openblocks_ax3.pblx
+-pblx-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += start_plathome_openblocks_ax3
+-image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3.img
+-image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-uart.img
+-image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-2nd.img
+-
+ MARVELL_ARMADA_XP_GP_KWBOPTS = ${KWBOPTS} -i $(board)/marvell-armada-xp-gp/kwbimage.cfg
+ OPTS_start_marvell_armada_xp_gp.pblx.kwbimg = $(MARVELL_ARMADA_XP_GP_KWBOPTS)
+ OPTS_start_marvell_armada_xp_gp.pblx.kwbuartimg = -m uart $(MARVELL_ARMADA_XP_GP_KWBOPTS)
+@@ -46,6 +35,17 @@ image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp.img
+ image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp-uart.img
+ image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp-2nd.img
+ 
++PLATHOME_OPENBLOCKS_AX3_KWBOPTS = ${KWBOPTS} -i $(board)/plathome-openblocks-ax3/kwbimage.cfg
++OPTS_start_plathome_openblocks_ax3.pblx.kwbimg = $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
++OPTS_start_plathome_openblocks_ax3.pblx.kwbuartimg = -m uart $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
++FILE_barebox-plathome-openblocks-ax3.img   = start_plathome_openblocks_ax3.pblx.kwbimg
++FILE_barebox-plathome-openblocks-ax3-uart.img = start_plathome_openblocks_ax3.pblx.kwbuartimg
++FILE_barebox-plathome-openblocks-ax3-2nd.img = start_plathome_openblocks_ax3.pblx
++pblx-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += start_plathome_openblocks_ax3
++image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3.img
++image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-uart.img
++image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-2nd.img
++
+ # ----------------------- Dove 88AP510 based boards ---------------------------
+ SOLIDRUN_CUBOX_KWBOPTS = ${KWBOPTS} -i $(board)/solidrun-cubox/kwbimage.cfg
+ OPTS_start_solidrun_cubox.pblx.kwbimg = $(SOLIDRUN_CUBOX_KWBOPTS)
 -- 
 2.1.0
 
