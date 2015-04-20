@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x231.google.com ([2a00:1450:400c:c00::231])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YkI30-0003BQ-Ni
- for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:12:07 +0000
-Received: by wgso17 with SMTP id o17so191791569wgs.1
- for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:40 -0700 (PDT)
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 20 Apr 2015 22:11:26 +0200
-Message-Id: <1429560686-11391-15-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]
+ helo=smtp.smtpout.orange.fr)
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YkJ9u-0005nS-A3
+ for barebox@lists.infradead.org; Mon, 20 Apr 2015 21:23:14 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1429520152-27399-1-git-send-email-l.stach@pengutronix.de>
+Date: Mon, 20 Apr 2015 23:22:33 +0200
+In-Reply-To: <1429520152-27399-1-git-send-email-l.stach@pengutronix.de> (Lucas
+ Stach's message of "Mon, 20 Apr 2015 10:55:48 +0200")
+Message-ID: <87y4lmze92.fsf@belgarion.home>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +19,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/14] ARM: Add Lenovo ix4 and related drivers to
- mvebu_defconfig
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
-
-Update mvebu_defconfig to cover recently introduced Lenovo ix4 and
-its related drivers.
-
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
----
+Subject: Re: [PATCH 1/5] usb: gadget: pxa27x: depend on right symbol
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
----
- arch/arm/configs/mvebu_defconfig | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
-index 9309084cdc05..6d1b021768df 100644
---- a/arch/arm/configs/mvebu_defconfig
-+++ b/arch/arm/configs/mvebu_defconfig
-@@ -1,7 +1,8 @@
- CONFIG_ARCH_MVEBU=y
- CONFIG_MACH_GLOBALSCALE_MIRABOX=y
--CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3=y
-+CONFIG_MACH_LENOVO_IX4_300D=y
- CONFIG_MACH_MARVELL_ARMADA_XP_GP=y
-+CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3=y
- CONFIG_MACH_SOLIDRUN_CUBOX=y
- CONFIG_MACH_GLOBALSCALE_GURUPLUG=y
- CONFIG_MACH_USI_TOPKICK=y
-@@ -90,6 +91,7 @@ CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_NET_ORION=y
- CONFIG_MARVELL_PHY=y
-+CONFIG_DRIVER_SPI_GPIO=y
- CONFIG_DRIVER_SPI_MVEBU=y
- CONFIG_I2C=y
- CONFIG_I2C_MV64XXX=y
-@@ -111,6 +113,7 @@ CONFIG_LED_TRIGGERS=y
- CONFIG_EEPROM_AT25=y
- CONFIG_KEYBOARD_GPIO=y
- CONFIG_WATCHDOG=y
-+CONFIG_GPIO_74164=y
- CONFIG_GPIO_ORION=y
- CONFIG_PCI_MVEBU=y
- CONFIG_FS_CRAMFS=y
+Lucas Stach <l.stach@pengutronix.de> writes:
+
+> Now that we also have PXA3XX support the dependency on
+> ARCH_PXA is too broad for this driver.
+>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  drivers/usb/gadget/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+> index 5d9158ffae9f..04847b4bf30a 100644
+> --- a/drivers/usb/gadget/Kconfig
+> +++ b/drivers/usb/gadget/Kconfig
+> @@ -25,7 +25,7 @@ config USB_GADGET_DRIVER_AT91
+>  config USB_GADGET_DRIVER_PXA27X
+>  	bool
+>  	prompt "PXA27x gadget driver"
+> -	depends on ARCH_PXA
+> +	depends on ARCH_PXA2XX
+ARCH_PXA27X please.
+
+Cheers.
+
 -- 
-2.1.0
-
+Robert
 
 _______________________________________________
 barebox mailing list
