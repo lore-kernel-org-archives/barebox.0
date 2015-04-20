@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
+Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YkI2u-0003A7-5Q
- for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:11:57 +0000
-Received: by wiun10 with SMTP id n10so105271578wiu.1
- for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:33 -0700 (PDT)
+ id 1YkI2w-0003B0-EN
+ for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:12:02 +0000
+Received: by wizk4 with SMTP id k4so113804277wiz.1
+ for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:36 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 20 Apr 2015 22:11:12 +0200
-Message-Id: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 20 Apr 2015 22:11:20 +0200
+Message-Id: <1429560686-11391-9-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,75 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/14] Add support for Lenovo ix4-300d NAS
+Subject: [PATCH v2 08/14] ARM: mvebu: Move PCIe register defines to socid.h
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-This is v2 of the patch set adding support for the Lenovo ix4-300d
-NAS based on Marvell Armada XP MV78230 SoC. Compared to v1 [1] there
-have been the following changes:
+To prepare PCIe device id fixups, move PCIe register defines
+to a common location.
 
-- SPI GPIO bitbang driver now respects -EPROBE_DEFER
-- Add ix4 and its drivers to mvebu_defconfig
-
-[1] http://www.spinics.net/lists/u-boot-v2/msg23048.html
-
-Sebastian Hesselbarth (14):
-  net: phy: Support Marvell 88E1318S PHY
-  gpio: Add driver for 74x164 compatible shift-registers
-  spi: ath79: move spidelay from spi-bitbang-txrx
-  spi: Add SPI GPIO bitbang driver
-  bus: mvebu-mbus: Remove coherency attribute
-  bus: mvebu-mbus: Drop device reference
-  bus: mvebu-mbus: Convert mbus platform driver to direct driver
-  ARM: mvebu: Move PCIe register defines to socid.h
-  ARM: mvebu: armada-xp: Fixup broken MV78230-A0 SoC ID
-  ARM: mvebu: armada-xp: Limit PUP access to Armada XP
-  ARM: mvebu: armada-xp: Use MBUS_ERR_PROP_EN define
-  ARM: mvebu: armada-xp: Sort boards and images alphabetically
-  ARM: mvebu: armada-xp: Add Lenovo Iomega ix4-300d
-  ARM: Add Lenovo ix4 and related drivers to mvebu_defconfig
-
- arch/arm/boards/Makefile                           |   1 +
- arch/arm/boards/lenovo-ix4-300d/Makefile           |   1 +
- arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg       |   5 +
- arch/arm/boards/lenovo-ix4-300d/lowlevel.c         |  35 +++
- arch/arm/configs/mvebu_defconfig                   |   5 +-
- arch/arm/dts/Makefile                              |   1 +
- arch/arm/dts/armada-xp-lenovo-ix4-300d-bb.dts      |  14 ++
- arch/arm/mach-mvebu/Kconfig                        |   8 +-
- arch/arm/mach-mvebu/armada-370-xp.c                |  87 +++++++-
- arch/arm/mach-mvebu/common.c                       |   5 +-
- arch/arm/mach-mvebu/dove.c                         |   1 +
- .../mach-mvebu/include/mach/armada-370-xp-regs.h   |  31 ++-
- arch/arm/mach-mvebu/include/mach/socid.h           |   4 +
- arch/arm/mach-mvebu/kirkwood.c                     |   1 +
- drivers/bus/mvebu-mbus.c                           |  48 ++---
- drivers/gpio/Kconfig                               |   8 +
- drivers/gpio/Makefile                              |   1 +
- drivers/gpio/gpio-74164.c                          | 131 +++++++++++
- drivers/net/phy/marvell.c                          |  31 +++
- drivers/spi/Kconfig                                |   4 +
- drivers/spi/Makefile                               |   1 +
- drivers/spi/ath79_spi.c                            |   2 +
- drivers/spi/gpio_spi.c                             | 240 +++++++++++++++++++++
- drivers/spi/spi-bitbang-txrx.h                     |   2 -
- images/Makefile.mvebu                              |  31 ++-
- include/linux/mbus.h                               |   2 +
- include/spi/spi_gpio.h                             |  36 ++++
- 27 files changed, 671 insertions(+), 65 deletions(-)
- create mode 100644 arch/arm/boards/lenovo-ix4-300d/Makefile
- create mode 100644 arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg
- create mode 100644 arch/arm/boards/lenovo-ix4-300d/lowlevel.c
- create mode 100644 arch/arm/dts/armada-xp-lenovo-ix4-300d-bb.dts
- create mode 100644 drivers/gpio/gpio-74164.c
- create mode 100644 drivers/spi/gpio_spi.c
- create mode 100644 include/spi/spi_gpio.h
-
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ arch/arm/mach-mvebu/common.c             | 5 +----
+ arch/arm/mach-mvebu/include/mach/socid.h | 4 ++++
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
+index 309f7a6aaa52..7d28d9c45aed 100644
+--- a/arch/arm/mach-mvebu/common.c
++++ b/arch/arm/mach-mvebu/common.c
+@@ -22,6 +22,7 @@
+ #include <of_address.h>
+ #include <linux/clk.h>
+ #include <mach/common.h>
++#include <mach/socid.h>
+ 
+ /*
+  * Marvell MVEBU SoC id and revision can be read from any PCIe
+@@ -40,10 +41,6 @@ static const struct of_device_id mvebu_pcie_of_ids[] = {
+ 	{ },
+ };
+ 
+-#define PCIE_VEN_DEV_ID		0x000
+-#define PCIE_REV_ID		0x008
+-#define  REV_ID_MASK		0xff
+-
+ static int mvebu_soc_id_init(void)
+ {
+ 	struct device_node *np, *cnp;
+diff --git a/arch/arm/mach-mvebu/include/mach/socid.h b/arch/arm/mach-mvebu/include/mach/socid.h
+index 36d681a9dcc1..7a29c82b30c0 100644
+--- a/arch/arm/mach-mvebu/include/mach/socid.h
++++ b/arch/arm/mach-mvebu/include/mach/socid.h
+@@ -16,6 +16,10 @@
+ #ifndef __MACH_MVEBU_SOCID_H
+ #define __MACH_MVEBU_SOCID_H
+ 
++#define PCIE_VEN_DEV_ID		0x000
++#define PCIE_REV_ID		0x008
++#define  REV_ID_MASK		0xff
++
+ extern u16 soc_devid;
+ extern u16 soc_revid;
+ 
 -- 
 2.1.0
 
