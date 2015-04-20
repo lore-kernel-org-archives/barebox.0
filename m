@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yk9dl-0006Kl-Cs
- for barebox@lists.infradead.org; Mon, 20 Apr 2015 11:13:26 +0000
-Date: Mon, 20 Apr 2015 13:13:02 +0200
+ Linux)) id 1Yk9ht-0007sM-C9
+ for barebox@lists.infradead.org; Mon, 20 Apr 2015 11:17:42 +0000
+Date: Mon, 20 Apr 2015 13:17:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150420111302.GN6325@pengutronix.de>
-References: <1429519419-20325-1-git-send-email-mkl@pengutronix.de>
- <1429519419-20325-3-git-send-email-mkl@pengutronix.de>
+Message-ID: <20150420111719.GO6325@pengutronix.de>
+References: <1429520152-27399-1-git-send-email-l.stach@pengutronix.de>
+ <1429520152-27399-3-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1429519419-20325-3-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1429520152-27399-3-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,54 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] timeout: factor out wait-for-key-press loop into
- separate file
-To: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: Re: [PATCH 3/5] ARM: omap: move GPMC calls under config define
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 20, 2015 at 10:43:37AM +0200, Marc Kleine-Budde wrote:
-> This patch factors out the wait-for-key-press loop from the shell command
-> "timeout" into a sparate file, so that it can be used from C, too.
+On Mon, Apr 20, 2015 at 10:55:50AM +0200, Lucas Stach wrote:
+> Fixes build failures on a few boards if CONFIG_OMAP_GPMC
+> is not set.
 > 
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  commands/Kconfig         |  1 +
->  commands/timeout.c       | 62 ++++++++++-----------------------------------
->  common/Kconfig           |  3 +++
->  common/Makefile          |  1 +
->  common/simple_timeout.c  | 66 ++++++++++++++++++++++++++++++++++++++++++++++++
->  include/simple_timeout.h | 11 ++++++++
->  6 files changed, 95 insertions(+), 49 deletions(-)
->  create mode 100644 common/simple_timeout.c
->  create mode 100644 include/simple_timeout.h
+>  arch/arm/boards/beagle/board.c                   |  4 +++-
+>  arch/arm/boards/phytec-phycard-omap3/pca-a-l1.c  | 11 +++++++----
+>  arch/arm/boards/phytec-phycard-omap4/pca-a-xl2.c | 10 +++++++---
+>  arch/arm/boards/phytec-phycore-omap4460/board.c  |  9 +++++++--
+>  4 files changed, 24 insertions(+), 10 deletions(-)
 > 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 847ff76d1d8b..1c9083381fac 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -1487,6 +1487,7 @@ config CMD_READLINE
->  config CMD_TIMEOUT
->  	tristate
->  	prompt "timeout"
-> +	select SIMPLE_TIMEOUT
+> diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
+> index 775621069c27..c7fd5a30542e 100644
+> --- a/arch/arm/boards/beagle/board.c
+> +++ b/arch/arm/boards/beagle/board.c
+> @@ -74,11 +74,13 @@ static struct i2c_board_info i2c_devices[] = {
+>  	},
+>  };
+>  
+> +#ifdef CONFIG_OMAP_GPMC
+>  static struct gpmc_nand_platform_data nand_plat = {
+>  	.device_width = 16,
+>  	.ecc_mode = OMAP_ECC_HAMMING_CODE_HW_ROMCODE,
+>  	.nand_cfg = &omap3_nand_cfg,
+>  };
+> +#endif
+>  
+>  static int beagle_mem_init(void)
+>  {
+> @@ -100,8 +102,8 @@ static int beagle_devices_init(void)
+>  #ifdef CONFIG_OMAP_GPMC
+>  	/* WP is made high and WAIT1 active Low */
+>  	gpmc_generic_init(0x10);
+> -#endif
+>  	omap_add_gpmc_nand_device(&nand_plat);
+> +#endif
 
-Since the linker throws away unused functions anyway I think we don't
-need an option for this.
-
-> +#include <clock.h>
-> +#include <command.h>
-> +#include <errno.h>
-> +#include <simple_timeout.h>
-> +#include <stdio.h>
-> +
-> +int is_simple_timeout(int timeout_s, unsigned flags, char *out_key)
-
-I don't like the name very much since we already have a is_timeout
-function which does something completely different. Also is_xxx_timeout
-seems to imply that this function doesn't wait but only returns a
-status.
-
-How about console_countdown() or similar?
+Maybe add a static inline no-op wrapper instead? This would save us some
+ifdefs.
 
 Sascha
 
