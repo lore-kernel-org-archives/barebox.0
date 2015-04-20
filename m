@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
+Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YkI2w-0003BF-EM
+ id 1YkI2x-0003B2-0v
  for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:12:04 +0000
-Received: by wiax7 with SMTP id x7so91917124wia.0
- for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:38 -0700 (PDT)
+Received: by widdi4 with SMTP id di4so113653476wid.0
+ for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:37 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 20 Apr 2015 22:11:24 +0200
-Message-Id: <1429560686-11391-13-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 20 Apr 2015 22:11:22 +0200
+Message-Id: <1429560686-11391-11-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,13 +23,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/14] ARM: mvebu: armada-xp: Sort boards and images
- alphabetically
+Subject: [PATCH v2 10/14] ARM: mvebu: armada-xp: Limit PUP access to Armada XP
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Before adding new Armada XP based boards becomes messier than necessary,
-sort Armada XP based board Kconfig and image Makefile alphabetically.
+Commit 6638760c225c37f90e822ebf4dd8f0d2cd0b0ef3
+ ("ARM: mvebu: Enable PUP register")
+correctly enables devices that are disabled after boot-up due to
+some Design For Testability registers.
+
+However, although harmless on Armada 370, call the code conditionally
+on Armada XP only. While at it, move PUP register defines to SYSCTL
+registers where they belong to.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -37,73 +42,60 @@ Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/Kconfig |  8 ++++----
- images/Makefile.mvebu       | 22 +++++++++++-----------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ arch/arm/mach-mvebu/armada-370-xp.c                   | 18 ++++++++++++++----
+ arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h |  3 +--
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index 8323b6604174..9394cf71a998 100644
---- a/arch/arm/mach-mvebu/Kconfig
-+++ b/arch/arm/mach-mvebu/Kconfig
-@@ -43,14 +43,14 @@ config MACH_GLOBALSCALE_MIRABOX
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index 9ba3247805d1..8e1463dd8b11 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -112,6 +112,18 @@ static void __noreturn armada_370_xp_reset_cpu(unsigned long addr)
+ 		;
+ }
  
- comment "Armada XP based boards"
- 
--config MACH_PLATHOME_OPENBLOCKS_AX3
--	bool "PlatHome OpenBlocks AX3"
--	select ARCH_ARMADA_XP
--
- config MACH_MARVELL_ARMADA_XP_GP
- 	bool "Marvell Armada XP GP"
- 	select ARCH_ARMADA_XP
- 
-+config MACH_PLATHOME_OPENBLOCKS_AX3
-+	bool "PlatHome OpenBlocks AX3"
-+	select ARCH_ARMADA_XP
++static int armada_xp_init_soc(struct device_node *root)
++{
++	u32 reg;
 +
- #
- # Dove 88AP510 SoC boards
- #
-diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
-index c3923e4ecc8f..82f370576468 100644
---- a/images/Makefile.mvebu
-+++ b/images/Makefile.mvebu
-@@ -24,17 +24,6 @@ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-uart.img
- image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-2nd.img
- 
- # ----------------------- Armada XP based boards ---------------------------
--PLATHOME_OPENBLOCKS_AX3_KWBOPTS = ${KWBOPTS} -i $(board)/plathome-openblocks-ax3/kwbimage.cfg
--OPTS_start_plathome_openblocks_ax3.pblx.kwbimg = $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
--OPTS_start_plathome_openblocks_ax3.pblx.kwbuartimg = -m uart $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
--FILE_barebox-plathome-openblocks-ax3.img   = start_plathome_openblocks_ax3.pblx.kwbimg
--FILE_barebox-plathome-openblocks-ax3-uart.img = start_plathome_openblocks_ax3.pblx.kwbuartimg
--FILE_barebox-plathome-openblocks-ax3-2nd.img = start_plathome_openblocks_ax3.pblx
--pblx-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += start_plathome_openblocks_ax3
--image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3.img
--image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-uart.img
--image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-2nd.img
--
- MARVELL_ARMADA_XP_GP_KWBOPTS = ${KWBOPTS} -i $(board)/marvell-armada-xp-gp/kwbimage.cfg
- OPTS_start_marvell_armada_xp_gp.pblx.kwbimg = $(MARVELL_ARMADA_XP_GP_KWBOPTS)
- OPTS_start_marvell_armada_xp_gp.pblx.kwbuartimg = -m uart $(MARVELL_ARMADA_XP_GP_KWBOPTS)
-@@ -46,6 +35,17 @@ image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp.img
- image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp-uart.img
- image-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += barebox-marvell-armada-xp-gp-2nd.img
- 
-+PLATHOME_OPENBLOCKS_AX3_KWBOPTS = ${KWBOPTS} -i $(board)/plathome-openblocks-ax3/kwbimage.cfg
-+OPTS_start_plathome_openblocks_ax3.pblx.kwbimg = $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
-+OPTS_start_plathome_openblocks_ax3.pblx.kwbuartimg = -m uart $(PLATHOME_OPENBLOCKS_AX3_KWBOPTS)
-+FILE_barebox-plathome-openblocks-ax3.img   = start_plathome_openblocks_ax3.pblx.kwbimg
-+FILE_barebox-plathome-openblocks-ax3-uart.img = start_plathome_openblocks_ax3.pblx.kwbuartimg
-+FILE_barebox-plathome-openblocks-ax3-2nd.img = start_plathome_openblocks_ax3.pblx
-+pblx-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += start_plathome_openblocks_ax3
-+image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3.img
-+image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-uart.img
-+image-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += barebox-plathome-openblocks-ax3-2nd.img
++	/* Enable GBE0, GBE1, LCD and NFC PUP */
++	reg = readl(ARMADA_XP_PUP_ENABLE);
++	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
++	writel(reg, ARMADA_XP_PUP_ENABLE);
 +
- # ----------------------- Dove 88AP510 based boards ---------------------------
- SOLIDRUN_CUBOX_KWBOPTS = ${KWBOPTS} -i $(board)/solidrun-cubox/kwbimage.cfg
- OPTS_start_solidrun_cubox.pblx.kwbimg = $(SOLIDRUN_CUBOX_KWBOPTS)
++	return 0;
++}
++
+ static int armada_370_xp_init_soc(struct device_node *root, void *context)
+ {
+ 	unsigned long phys_base, phys_size;
+@@ -137,10 +149,8 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
+ 
+ 	armada_370_xp_soc_id_fixup();
+ 
+-	/* Enable peripherals PUP */
+-	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
+-	reg |= GE0_PUP_EN | GE1_PUP_EN | LCD_PUP_EN | NAND_PUP_EN | SPI_PUP_EN;
+-	writel(reg, ARMADA_XP_PUP_ENABLE_BASE);
++	if (of_machine_is_compatible("marvell,armadaxp"))
++		armada_xp_init_soc(root);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+index 2a6e6d1aec2c..1dad05317211 100644
+--- a/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
++++ b/arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
+@@ -37,8 +37,7 @@
+ #define ARMADA_370_XP_SAR_HIGH		(ARMADA_370_XP_SYSCTL_BASE + 0x034)
+ #define ARMADA_370_XP_CPU_SOC_ID	(ARMADA_370_XP_SYSCTL_BASE + 0x03c)
+ #define  CPU_SOC_ID_DEVICE_MASK		0xffff
+-
+-#define ARMADA_XP_PUP_ENABLE_BASE       (ARMADA_370_XP_INT_REGS_BASE + 0x1864c)
++#define ARMADA_XP_PUP_ENABLE		(ARMADA_370_XP_SYSCTL_BASE + 0x44c)
+ #define  GE0_PUP_EN			BIT(0)
+ #define  GE1_PUP_EN			BIT(1)
+ #define  LCD_PUP_EN			BIT(2)
 -- 
 2.1.0
 
