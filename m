@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22f.google.com ([2607:f8b0:400e:c03::22f])
+Received: from mail-pd0-x233.google.com ([2607:f8b0:400e:c02::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YkAxx-000279-8H
- for barebox@lists.infradead.org; Mon, 20 Apr 2015 12:38:21 +0000
-Received: by paboj16 with SMTP id oj16so205715773pab.0
- for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 05:37:59 -0700 (PDT)
+ id 1YkAyE-000290-VS
+ for barebox@lists.infradead.org; Mon, 20 Apr 2015 12:38:39 +0000
+Received: by pdbnk13 with SMTP id nk13so206568021pdb.0
+ for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 05:38:15 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 20 Apr 2015 05:37:43 -0700
-Message-Id: <1429533463-5625-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 20 Apr 2015 05:38:11 -0700
+Message-Id: <1429533491-5705-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] firmware: socfpga: Fix a bug in
- fpgamgr_program_write_buf()
+Subject: [PATCH v2 2/2] firmware: socfpga: Add necessary dependency to Kconfig
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Fix a bug in fpgamgr_program_write_buf() where .rbf file whose length
-is not a multiple of 4 would cause an integer overflow which would
-result in infinite loop.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/firmware/socfpga.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/firmware/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index a5dc607..71f260f 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -321,14 +321,28 @@ static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *bu
- 		size_t size)
- {
- 	struct fpgamgr *mgr = container_of(fh, struct fpgamgr, fh);
--	const uint32_t *buf32 = buf;
-+	const uint8_t *buffer = buf;
-+	uint32_t word;
-+	size_t chunk_size;
-+	size_t offset = 0;
- 
- 	/* write to FPGA Manager AXI data */
--	while (size) {
--		writel(*buf32, mgr->regs_data);
--		readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
--		buf32++;
-+	while (size >= sizeof(uint32_t)) {
- 		size -= sizeof(uint32_t);
-+
-+		word = *(uint32_t *)(buffer + offset);
-+		offset += sizeof(uint32_t);
-+
-+		writel(word, mgr->regs_data);
-+		readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
-+	}
-+	
-+	if (size) {
-+		word = 0;
-+		while (chunk_size--) {
-+			word |= buffer[offset++];
-+			word <<= 8;
-+		}
- 	}
- 
- 	return 0;
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 15465fe..710b500 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -13,5 +13,5 @@ config FIRMWARE_ALTERA_SERIAL
+ config FIRMWARE_ALTERA_SOCFPGA
+ 	bool "Altera SoCFPGA fpga loader"
+ 	depends on ARCH_SOCFPGA
+-
++	select FIRMWARE
+ endmenu
 -- 
 2.1.4
 
