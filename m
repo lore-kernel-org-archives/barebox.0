@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
+Received: from mail-wg0-x235.google.com ([2a00:1450:400c:c00::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YkI2w-0003B0-EN
- for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:12:02 +0000
-Received: by wizk4 with SMTP id k4so113804277wiz.1
+ id 1YkI2v-0003Ax-Tw
+ for barebox@lists.infradead.org; Mon, 20 Apr 2015 20:12:03 +0000
+Received: by wgsk9 with SMTP id k9so191131458wgs.3
  for <barebox@lists.infradead.org>; Mon, 20 Apr 2015 13:11:36 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 20 Apr 2015 22:11:20 +0200
-Message-Id: <1429560686-11391-9-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 20 Apr 2015 22:11:19 +0200
+Message-Id: <1429560686-11391-8-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1429560686-11391-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,12 +23,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/14] ARM: mvebu: Move PCIe register defines to socid.h
+Subject: [PATCH v2 07/14] bus: mvebu-mbus: Convert mbus platform driver to
+ direct driver
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-To prepare PCIe device id fixups, move PCIe register defines
-to a common location.
+Registering mbus driver as platform driver is a little late for
+some register accesses to work. We have to make sure boot-up
+mbus windows are disabled early, so call mbus driver directly
+from SoC init.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -36,48 +39,92 @@ Cc: barebox@lists.infradead.org
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/common.c             | 5 +----
- arch/arm/mach-mvebu/include/mach/socid.h | 4 ++++
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/mach-mvebu/armada-370-xp.c |  1 +
+ arch/arm/mach-mvebu/dove.c          |  1 +
+ arch/arm/mach-mvebu/kirkwood.c      |  1 +
+ drivers/bus/mvebu-mbus.c            | 14 +-------------
+ include/linux/mbus.h                |  2 ++
+ 5 files changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-index 309f7a6aaa52..7d28d9c45aed 100644
---- a/arch/arm/mach-mvebu/common.c
-+++ b/arch/arm/mach-mvebu/common.c
-@@ -22,6 +22,7 @@
- #include <of_address.h>
- #include <linux/clk.h>
- #include <mach/common.h>
-+#include <mach/socid.h>
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index 244f8cdd81a5..ae458b4433b3 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -73,6 +73,7 @@ static int armada_370_xp_init_soc(struct device_node *root, void *context)
+ 	armada_370_xp_memory_find(&phys_base, &phys_size);
  
- /*
-  * Marvell MVEBU SoC id and revision can be read from any PCIe
-@@ -40,10 +41,6 @@ static const struct of_device_id mvebu_pcie_of_ids[] = {
- 	{ },
- };
+ 	mvebu_set_memory(phys_base, phys_size);
++	mvebu_mbus_init();
  
--#define PCIE_VEN_DEV_ID		0x000
--#define PCIE_REV_ID		0x008
--#define  REV_ID_MASK		0xff
--
- static int mvebu_soc_id_init(void)
+ 	/* Enable peripherals PUP */
+ 	reg = readl(ARMADA_XP_PUP_ENABLE_BASE);
+diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+index c2852f8986ae..a7284fd33a63 100644
+--- a/arch/arm/mach-mvebu/dove.c
++++ b/arch/arm/mach-mvebu/dove.c
+@@ -93,6 +93,7 @@ static int dove_init_soc(struct device_node *root, void *context)
+ 	dove_memory_find(&phys_base, &phys_size);
+ 
+ 	mvebu_set_memory(phys_base, phys_size);
++	mvebu_mbus_init();
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
+index d7903f732eac..19c6f0730332 100644
+--- a/arch/arm/mach-mvebu/kirkwood.c
++++ b/arch/arm/mach-mvebu/kirkwood.c
+@@ -66,6 +66,7 @@ static int kirkwood_init_soc(struct device_node *root, void *context)
+ 	kirkwood_memory_find(&phys_base, &phys_size);
+ 
+ 	mvebu_set_memory(phys_base, phys_size);
++	mvebu_mbus_init();
+ 
+ 	return 0;
+ }
+diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
+index 077d7ccb83ca..e1898103540b 100644
+--- a/drivers/bus/mvebu-mbus.c
++++ b/drivers/bus/mvebu-mbus.c
+@@ -673,7 +673,7 @@ static void mvebu_mbus_get_pcie_resources(struct device_node *np,
+ 	}
+ }
+ 
+-static int mvebu_mbus_probe(struct device_d *dev)
++int mvebu_mbus_init(void)
  {
- 	struct device_node *np, *cnp;
-diff --git a/arch/arm/mach-mvebu/include/mach/socid.h b/arch/arm/mach-mvebu/include/mach/socid.h
-index 36d681a9dcc1..7a29c82b30c0 100644
---- a/arch/arm/mach-mvebu/include/mach/socid.h
-+++ b/arch/arm/mach-mvebu/include/mach/socid.h
-@@ -16,6 +16,10 @@
- #ifndef __MACH_MVEBU_SOCID_H
- #define __MACH_MVEBU_SOCID_H
+ 	struct device_node *np, *controller;
+ 	const struct of_device_id *match;
+@@ -725,18 +725,6 @@ static int mvebu_mbus_probe(struct device_d *dev)
+ 	return mbus_dt_setup(&mbus_state);
+ }
  
-+#define PCIE_VEN_DEV_ID		0x000
-+#define PCIE_REV_ID		0x008
-+#define  REV_ID_MASK		0xff
+-static struct driver_d mvebu_mbus_driver = {
+-	.probe	= mvebu_mbus_probe,
+-	.name	= "mvebu-mbus",
+-	.of_compatible = DRV_OF_COMPAT(mvebu_mbus_dt_ids),
+-};
+-
+-static int mvebu_mbus_init(void)
+-{
+-	return platform_driver_register(&mvebu_mbus_driver);
+-}
+-postcore_initcall(mvebu_mbus_init);
+-
+ struct mbus_range {
+ 	const char *compatible;
+ 	u32 mbusid;
+diff --git a/include/linux/mbus.h b/include/linux/mbus.h
+index b90fabbfb7e5..bcc5949219cf 100644
+--- a/include/linux/mbus.h
++++ b/include/linux/mbus.h
+@@ -61,4 +61,6 @@ int mvebu_mbus_del_window(phys_addr_t base, size_t size);
+ void mvebu_mbus_add_range(const char *compatible,
+ 			  u8 target, u8 attr, u32 remap);
+ 
++int mvebu_mbus_init(void);
 +
- extern u16 soc_devid;
- extern u16 soc_revid;
- 
+ #endif /* __LINUX_MBUS_H */
 -- 
 2.1.0
 
