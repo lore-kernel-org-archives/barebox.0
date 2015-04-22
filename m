@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Ykptf-00081r-K8
- for barebox@lists.infradead.org; Wed, 22 Apr 2015 08:20:42 +0000
+ Linux)) id 1Ykptf-00081t-K6
+ for barebox@lists.infradead.org; Wed, 22 Apr 2015 08:20:43 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 22 Apr 2015 10:20:11 +0200
-Message-Id: <1429690812-26083-4-git-send-email-mkl@pengutronix.de>
+Date: Wed, 22 Apr 2015 10:20:12 +0200
+Message-Id: <1429690812-26083-5-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1429690812-26083-1-git-send-email-mkl@pengutronix.de>
 References: <1429690812-26083-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,83 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/5] ubi: cdev: remove trailing newline from debug messages
+Subject: [PATCH v2 5/5] of_path: of_find_path(): add possibility to return .bb
+ device
 To: barebox@lists.infradead.org
 
-This patch removes the trailing newline "\n" from the ubi/cdev.c debug
-messages, as the macro ifself already adds a newine.
+This patch adds a flags argument to the of_find_path() function. The only flag
+defined for now is OF_FIND_PATH_FLAGS_BB. When used on NAND devices, the
+function returns the bad block aware device (the ".bb" device).
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/mtd/ubi/cdev.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/misc/state.c |  2 +-
+ drivers/of/barebox.c | 20 +-------------------
+ drivers/of/of_path.c | 12 ++++++++++--
+ include/of.h         |  3 ++-
+ 4 files changed, 14 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
-index dcd138f55382..90d5b2dd6627 100644
---- a/drivers/mtd/ubi/cdev.c
-+++ b/drivers/mtd/ubi/cdev.c
-@@ -25,7 +25,7 @@ static ssize_t ubi_volume_cdev_read(struct cdev *cdev, void *buf, size_t size,
- 	loff_t offp = offset;
- 	int usable_leb_size = vol->usable_leb_size;
+diff --git a/drivers/misc/state.c b/drivers/misc/state.c
+index f066a836cb93..3b07bb93d725 100644
+--- a/drivers/misc/state.c
++++ b/drivers/misc/state.c
+@@ -41,7 +41,7 @@ static int state_probe(struct device_d *dev)
+ 	if (IS_ERR(state))
+ 		return PTR_ERR(state);
  
--	ubi_debug("%s: %zd @ 0x%08llx\n", __func__, size, offset);
-+	ubi_debug("%s: %zd @ 0x%08llx", __func__, size, offset);
+-	ret = of_find_path(np, "backend", &path);
++	ret = of_find_path(np, "backend", &path, 0);
+ 	if (ret)
+ 		return ret;
  
- 	len = size > usable_leb_size ? usable_leb_size : size;
+diff --git a/drivers/of/barebox.c b/drivers/of/barebox.c
+index 0220bc6b3123..1b3078eb4757 100644
+--- a/drivers/of/barebox.c
++++ b/drivers/of/barebox.c
+@@ -31,28 +31,10 @@ static int environment_probe(struct device_d *dev)
+ 	char *path;
+ 	int ret;
  
-@@ -38,7 +38,7 @@ static ssize_t ubi_volume_cdev_read(struct cdev *cdev, void *buf, size_t size,
+-	ret = of_find_path(dev->device_node, "device-path", &path);
++	ret = of_find_path(dev->device_node, "device-path", &path, OF_FIND_PATH_FLAGS_BB);
+ 	if (ret)
+ 		return ret;
  
- 		err = ubi_eba_read_leb(ubi, vol, lnum, buf, off, len, 0);
- 		if (err) {
--			ubi_err("read error: %s\n", strerror(-err));
-+			ubi_err("read error: %s", strerror(-err));
- 			break;
- 		}
- 		off += len;
-@@ -68,14 +68,14 @@ static ssize_t ubi_volume_cdev_write(struct cdev* cdev, const void *buf,
- 	if (!priv->written) {
- 		err = ubi_start_update(ubi, vol, vol->used_bytes);
- 		if (err < 0) {
--			ubi_err("Cannot start volume update\n");
-+			ubi_err("Cannot start volume update");
- 			return err;
- 		}
- 	}
+-	/*
+-	 * The environment support is not bad block aware, hence we
+-	 * have to use the .bb device. Test if we have a nand device
+-	 * and if yes, append .bb to the filename.
+-	 */
+-	if (!strncmp(path, "/dev/", 5)) {
+-		struct cdev *cdev;
+-		char *cdevname;
+-
+-		cdevname = path + 5;
+-		cdev = cdev_by_name(cdevname);
+-		if (cdev && cdev->mtd && mtd_can_have_bb(cdev->mtd)) {
+-			char *bbpath = asprintf("%s.bb", path);
+-			free(path);
+-			path = bbpath;
+-		}
+-	}
+-
+ 	dev_info(dev, "setting default environment path to %s\n", path);
  
- 	err = ubi_more_update_data(ubi, vol, buf, size);
- 	if (err < 0) {
--		ubi_err("Couldnt or partially wrote data \n");
-+		ubi_err("Couldnt or partially wrote data");
- 		return err;
- 	}
+ 	default_environment_path_set(path);
+diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+index df63c5782a02..2dc784851de8 100644
+--- a/drivers/of/of_path.c
++++ b/drivers/of/of_path.c
+@@ -21,6 +21,8 @@
+ #include <malloc.h>
+ #include <of.h>
  
-@@ -117,7 +117,7 @@ static int ubi_volume_cdev_close(struct cdev *cdev)
- 			kfree(buf);
++#include <linux/mtd/mtd.h>
++
+ struct of_path {
+ 	struct cdev *cdev;
+ 	struct device_d *dev;
+@@ -112,6 +114,7 @@ out:
+  * @propname: the property name of the path description
+  * @outpath: if this function returns 0 outpath will contain the path belonging
+  *           to the input path description. Must be freed with free().
++ * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if available
+  *
+  * paths in the devicetree have the form of a multistring property. The first
+  * string contains the full path to the physical device containing the path.
+@@ -127,11 +130,12 @@ out:
+  * device-path = &mmc0, "partname:0";
+  * device-path = &norflash, "partname:barebox-environment";
+  */
+-int of_find_path(struct device_node *node, const char *propname, char **outpath)
++int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags)
+ {
+ 	struct of_path op = {};
+ 	struct device_node *rnode;
+ 	const char *path, *str;
++	bool add_bb = false;
+ 	int i, ret;
  
- 			if (err < 0) {
--				ubi_err("Couldnt or partially wrote data \n");
-+				ubi_err("Couldnt or partially wrote data");
- 				return err;
- 			}
- 		}
-@@ -128,7 +128,7 @@ static int ubi_volume_cdev_close(struct cdev *cdev)
+ 	path = of_get_property(node, propname, NULL);
+@@ -166,7 +170,11 @@ int of_find_path(struct device_node *node, const char *propname, char **outpath)
+ 	if (!op.cdev)
+ 		return -ENOENT;
  
- 		err = ubi_check_volume(ubi, vol->vol_id);
- 		if (err < 0) {
--			ubi_err("ubi volume check failed: %s\n", strerror(err));
-+			ubi_err("ubi volume check failed: %s", strerror(err));
- 			return err;
- 		}
+-	*outpath = asprintf("/dev/%s", op.cdev->name);
++	if ((flags & OF_FIND_PATH_FLAGS_BB) && op.cdev->mtd &&
++	    mtd_can_have_bb(op.cdev->mtd))
++		add_bb = true;
++
++	*outpath = asprintf("/dev/%s%s", op.cdev->name, add_bb ? ".bb" : "");
  
-@@ -180,7 +180,7 @@ int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
- 	cdev->priv = priv;
- 	cdev->size = vol->used_bytes;
- 	cdev->dev = &vol->dev;
--	ubi_msg("registering %s as /dev/%s\n", vol->name, cdev->name);
-+	ubi_msg("registering %s as /dev/%s", vol->name, cdev->name);
- 	ret = devfs_create(cdev);
- 	if (ret) {
- 		kfree(priv);
+ 	return 0;
+ }
+diff --git a/include/of.h b/include/of.h
+index 7235138f30bf..2dcb613a77ba 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -240,7 +240,8 @@ int of_add_memory(struct device_node *node, bool dump);
+ void of_add_memory_bank(struct device_node *node, bool dump, int r,
+ 		u64 base, u64 size);
+ struct device_d *of_find_device_by_node_path(const char *path);
+-int of_find_path(struct device_node *node, const char *propname, char **outpath);
++#define OF_FIND_PATH_FLAGS_BB 1		/* return .bb device if available */
++int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags);
+ int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context);
+ struct device_node *of_find_node_by_alias(struct device_node *root,
+ 		const char *alias);
 -- 
 2.1.4
 
