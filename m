@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x22a.google.com ([2607:f8b0:400e:c02::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YkhY6-0005R4-Rx
- for barebox@lists.infradead.org; Tue, 21 Apr 2015 23:25:51 +0000
-Received: by pdbnk13 with SMTP id nk13so255957949pdb.0
- for <barebox@lists.infradead.org>; Tue, 21 Apr 2015 16:25:28 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 21 Apr 2015 16:25:02 -0700
-Message-Id: <1429658702-24553-1-git-send-email-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YkpCb-00031X-Or
+ for barebox@lists.infradead.org; Wed, 22 Apr 2015 07:36:10 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Wed, 22 Apr 2015 09:35:40 +0200
+Message-Id: <1429688140-4800-2-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1429688140-4800-1-git-send-email-mkl@pengutronix.de>
+References: <1429688140-4800-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3] firmware: socfpga: Fix a bug in fpgamgr_program_write_buf()
+Subject: [PATCH 2/2] RFC: state: work around pointer signess mismach warnings
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Fix a bug in fpgamgr_program_write_buf() where .rbf file whose length
-is not a multiple of 4 would cause an integer overflow which would
-result in infinite loop.
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/firmware/socfpga.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ common/state.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index a5dc607..14a7a14 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -324,13 +324,27 @@ static int fpgamgr_program_write_buf(struct firmware_handler *fh, const void *bu
- 	const uint32_t *buf32 = buf;
+diff --git a/common/state.c b/common/state.c
+index 637a15c66ad0..1b4a43be585c 100644
+--- a/common/state.c
++++ b/common/state.c
+@@ -162,7 +162,7 @@ static struct state_variable *state_uint32_create(struct state *state,
+ 	su32 = xzalloc(sizeof(*su32));
  
- 	/* write to FPGA Manager AXI data */
--	while (size) {
-+	while (size >= sizeof(uint32_t)) {
- 		writel(*buf32, mgr->regs_data);
- 		readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
- 		buf32++;
- 		size -= sizeof(uint32_t);
+ 	param = dev_add_param_int(&state->dev, name, state_set_dirty,
+-				  NULL, &su32->value, "%d", state);
++				  NULL, (int *)&su32->value, "%d", state);
+ 	if (IS_ERR(param)) {
+ 		free(su32);
+ 		return ERR_CAST(param);
+@@ -278,7 +278,7 @@ static struct state_variable *state_enum32_create(struct state *state,
  	}
  
-+	if (size) {
-+		const uint8_t *buf8 = (const uint8_t *)buf32;
-+		uint32_t word = 0;
-+
-+		while (size--) {
-+			word |= *buf8;
-+			word <<= 8;
-+			buf8++;
-+		}
-+
-+		writel(word, mgr->regs_data);
-+		readl(mgr->regs + FPGAMGRREGS_MON_GPIO_EXT_PORTA_ADDRESS);
-+	}
-+
- 	return 0;
- }
- 
+ 	enum32->param = dev_add_param_enum(&state->dev, name, state_set_dirty,
+-			NULL, &enum32->value, enum32->names, num_names, state);
++			NULL, (int *)&enum32->value, enum32->names, num_names, state);
+ 	if (IS_ERR(enum32->param)) {
+ 		ret = PTR_ERR(enum32->param);
+ 		goto out;
 -- 
 2.1.4
 
