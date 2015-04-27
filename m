@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ymf5w-00040s-Mz
- for barebox@lists.infradead.org; Mon, 27 Apr 2015 09:12:53 +0000
-Received: by lbbuc2 with SMTP id uc2so77121562lbb.2
- for <barebox@lists.infradead.org>; Mon, 27 Apr 2015 02:12:28 -0700 (PDT)
-Date: Mon, 27 Apr 2015 12:17:31 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150427121731.f02ffb50a9b227f619f21f4e@gmail.com>
-In-Reply-To: <20150427060059.GV6325@pengutronix.de>
-References: <20150426173831.c6246f01a64d316351f3ce54@gmail.com>
- <20150427060059.GV6325@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YmfmD-00005K-Hm
+ for barebox@lists.infradead.org; Mon, 27 Apr 2015 09:56:34 +0000
+Date: Mon, 27 Apr 2015 11:56:11 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20150427095611.GJ19431@pengutronix.de>
+References: <1430126650-6382-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1430126650-6382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,61 +22,68 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: of_device_id: use pointer for the data field
+Subject: Re: [PATCH] mtd: partition: Fix OF partition fixup
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, 27 Apr 2015 08:00:59 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hello Sascha,
 
-> On Sun, Apr 26, 2015 at 05:38:31PM +0300, Antony Pavlov wrote:
-> > Hi!
-> > =
+On Mon, Apr 27, 2015 at 11:24:10AM +0200, Sascha Hauer wrote:
+> To get the number of address cells and size cells we have to use
+> the newly created partition node, not the parent device node. The
+> parent device node returns the address/size cells of the controller
+> node, not the partition node.
+seems like correctly "schlau gekuckt" and matching the problem report I
+sent you (off-list).
 
-> > Just now barebox' of_device_id struct uses unsigned long type for data =
-field:
-> > =
+Just tested your patch and it really fixes my problem, it works fine now
+with and without passing a dtb for booting. As you pointed out this
+doesn't explain though why the use case with an explicit dtb worked
+already before. I verified that of_mtd_fixup is called there, but didn't
+dig any deeper, e.g. by testing if the partitioning is really modified
+if I did any changes. Will do so later today.
 
-> >   struct of_device_id {
-> >           char *compatible;
-> >           unsigned long data;
-> >   };
-> > =
+I'd formulate the commit log a tad more critical, like adding:
 
-> > Here is of_device_id struct in linux kernel:
-> > =
+	On an am335x machine this fixes the device tree passed to Linux.
+	The situation there is:
 
-> >   struct of_device_id {
-> >           char name[32];
-> >           char type[32];
-> >           char compatible[128];
-> >           const void *data;
-> >   };
-> > =
+        ...
+        gpmc@50000000 {
+                ...
+                #address-cells =3D <0x2>;
+                #size-cells =3D <0x1>;
+                ranges =3D <0x0 0x0 0x8000000 0x10000000>;
+                ...
+                nand@0,0 {
+                        reg =3D <0x0 0x0 0x0>;
+                        #address-cells =3D <0x1>;
+                        #size-cells =3D <0x1>;
+                        ...
+                        partition@7 {
+                                label =3D "system";
+                                reg =3D <0x220000 0x7de0000>;
+                        };
+                };
+        };
 
-> > Just all data fields are used as pointers and need 'unsigned long' cast=
-ing.
-> > E.g. see 'git grep -A 4 of_device_id drivers/' output:
-> > =
+	and without this patch barebox passes three bytes for
+	partition@7's reg property instead of only two which naturally
+	confuses Linux and yields to the system partition to start at 0
+	with a size of 0x220000.
 
-> >   drivers/ata/sata-imx.c:static __maybe_unused struct of_device_id imx_=
-sata_dt_ids[] =3D {
-> >   drivers/ata/sata-imx.c- {
-> >   drivers/ata/sata-imx.c-         .compatible =3D "fsl,imx6q-ahci",
-> >   drivers/ata/sata-imx.c-         .data =3D (unsigned long)&data_imx6,
-> >   drivers/ata/sata-imx.c- }, {
-> > =
+Other than than that:
 
-> > Could we use 'const void *' type for data field as linux kernel does?
-> =
+Reported-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+Tested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-> Yes, good idea.
+Thanks
+Uwe
 
-Ok, I'll try to prepare the patch in several days.
+-- =
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
