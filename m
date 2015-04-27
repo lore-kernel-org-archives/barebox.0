@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YmfmD-00005K-Hm
- for barebox@lists.infradead.org; Mon, 27 Apr 2015 09:56:34 +0000
-Date: Mon, 27 Apr 2015 11:56:11 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20150427095611.GJ19431@pengutronix.de>
-References: <1430126650-6382-1-git-send-email-s.hauer@pengutronix.de>
+Received: from janus.medel.com ([195.189.166.130])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YmhKs-00069c-Gr
+ for barebox@lists.infradead.org; Mon, 27 Apr 2015 11:36:29 +0000
+From: Mayur Nande <Mayur.Nande@medel.com>
+Date: Mon, 27 Apr 2015 11:36:01 +0000
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1430126650-6382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +15,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
+Message-ID: <E1YmhKy-0006Jt-Op@bombadil.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: partition: Fix OF partition fixup
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] net: usb: asix: Add D-link DUB-E100 H/W Ver C1 support
+To: "'barebox@lists.infradead.org'" <barebox@lists.infradead.org>
 
-Hello Sascha,
+Hello!
 
-On Mon, Apr 27, 2015 at 11:24:10AM +0200, Sascha Hauer wrote:
-> To get the number of address cells and size cells we have to use
-> the newly created partition node, not the parent device node. The
-> parent device node returns the address/size cells of the controller
-> node, not the partition node.
-seems like correctly "schlau gekuckt" and matching the problem report I
-sent you (off-list).
+This patch adds support for USB ethernet adapter D-Link DUB-E100 H/W Rev C1. I tested this on
+Beagleboneblack Rev A6A and our custom h/w based on i.mx6 Phytec phycore module. More 
+information about the adapter is here: 
+http://us.dlink.com/products/connect/high-speed-usb-2-0-fast-ethernet-adapter/ 
+ 
+Signed-off-by: Mayur Nande <mayur.nande@medel.com>
+---
+ drivers/net/usb/asix.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Just tested your patch and it really fixes my problem, it works fine now
-with and without passing a dtb for booting. As you pointed out this
-doesn't explain though why the use case with an explicit dtb worked
-already before. I verified that of_mtd_fixup is called there, but didn't
-dig any deeper, e.g. by testing if the partitioning is really modified
-if I did any changes. Will do so later today.
-
-I'd formulate the commit log a tad more critical, like adding:
-
-	On an am335x machine this fixes the device tree passed to Linux.
-	The situation there is:
-
-        ...
-        gpmc@50000000 {
-                ...
-                #address-cells =3D <0x2>;
-                #size-cells =3D <0x1>;
-                ranges =3D <0x0 0x0 0x8000000 0x10000000>;
-                ...
-                nand@0,0 {
-                        reg =3D <0x0 0x0 0x0>;
-                        #address-cells =3D <0x1>;
-                        #size-cells =3D <0x1>;
-                        ...
-                        partition@7 {
-                                label =3D "system";
-                                reg =3D <0x220000 0x7de0000>;
-                        };
-                };
-        };
-
-	and without this patch barebox passes three bytes for
-	partition@7's reg property instead of only two which naturally
-	confuses Linux and yields to the system partition to start at 0
-	with a size of 0x220000.
-
-Other than than that:
-
-Reported-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-Tested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
-Thanks
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
+index 14a8c76..7cce5b9 100644
+--- a/drivers/net/usb/asix.c
++++ b/drivers/net/usb/asix.c
+@@ -846,6 +846,10 @@ static const struct usb_device_id products [] = {
+ 	// LevelOne USB Fast Ethernet Adapter
+ 	USB_DEVICE(0x0b95, 0x772b),
+ 	.driver_info = &ax88772b_info,
++}, {
++	// DLink DUB-E100 H/W Ver C1
++	USB_DEVICE(0x2001, 0x1a02),
++	.driver_info = &ax88772_info,
+ },
+ 	{ },		// END
+ };
+--
+1.9.1
 
 _______________________________________________
 barebox mailing list
