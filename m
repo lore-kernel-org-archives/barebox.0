@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yn3L4-0005jZ-Bj
- for barebox@lists.infradead.org; Tue, 28 Apr 2015 11:06:07 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 28 Apr 2015 13:05:35 +0200
-Message-Id: <1430219137-8294-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1430219137-8294-1-git-send-email-s.hauer@pengutronix.de>
-References: <1430219137-8294-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Yn6yb-0000CK-Kw
+ for barebox@lists.infradead.org; Tue, 28 Apr 2015 14:59:10 +0000
+Received: by lbcga7 with SMTP id ga7so109540023lbc.1
+ for <barebox@lists.infradead.org>; Tue, 28 Apr 2015 07:58:47 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 28 Apr 2015 17:59:41 +0300
+Message-Id: <1430233181-17135-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] net: phy: Add missing phy_unregister_device
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] net: e1000: add HAS_DMA dependency
+To: barebox@lists.infradead.org
 
-The counterpart of phy_register_device is missing. Add it.
+The e1000 driver uses the dma coherent functions
+and thus can only be build for architectures implementing them.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Here is mips malta build error log:
+
+  drivers/built-in.o: In function `e1000_transmit':
+  drivers/net/e1000.c:(.text.e1000_transmit+0x80): undefined reference to
+  `dma_sync_single_for_device'
+  drivers/built-in.o: In function `e1000_poll':
+  drivers/net/e1000.c:(.text.e1000_poll+0x60): undefined reference to
+  `dma_sync_single_for_cpu'
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/net/phy/phy.c | 11 +++++++++++
- include/linux/phy.h   |  1 +
- 2 files changed, 12 insertions(+)
+ drivers/net/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index f3dffca..edf5d03 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -272,6 +272,17 @@ int phy_register_device(struct phy_device *phydev)
- 	return ret;
- }
- 
-+void phy_unregister_device(struct phy_device *phydev)
-+{
-+	if (!phydev->registered)
-+		return;
-+
-+	phydev->bus->phy_map[phydev->addr] = NULL;
-+
-+	unregister_device(&phydev->dev);
-+	phydev->registered = 0;
-+}
-+
- static struct phy_device *of_mdio_find_phy(struct eth_device *edev)
- {
- 	struct device_d *dev;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index c0fd4ff..9a451a6 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -266,6 +266,7 @@ int phy_init(void);
- int phy_init_hw(struct phy_device *phydev);
- 
- int phy_register_device(struct phy_device* dev);
-+void phy_unregister_device(struct phy_device *phydev);
- 
- /**
-  * phy_read - Convenience function for reading a given PHY register
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 41f033f..b723a12 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -79,6 +79,7 @@ config DRIVER_NET_DM9K
+ config DRIVER_NET_E1000
+ 	bool "Intel e1000 ethernet driver"
+ 	depends on PCI
++	depends on HAS_DMA
+ 	select PHYLIB
+ 	help
+ 	  This is a driver for the Gigabit Ethernet PCI network cards based on
 -- 
 2.1.4
 
