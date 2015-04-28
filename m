@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YmzQH-0007hQ-Tg
- for barebox@lists.infradead.org; Tue, 28 Apr 2015 06:55:15 +0000
-Date: Tue, 28 Apr 2015 08:54:50 +0200
+ Linux)) id 1YmzQx-0000Rr-Mf
+ for barebox@lists.infradead.org; Tue, 28 Apr 2015 06:55:56 +0000
+Date: Tue, 28 Apr 2015 08:55:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150428065450.GF6325@pengutronix.de>
-References: <E1YmhKy-0006Jt-Op@bombadil.infradead.org>
+Message-ID: <20150428065533.GG6325@pengutronix.de>
+References: <1430197974-1394-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <E1YmhKy-0006Jt-Op@bombadil.infradead.org>
+In-Reply-To: <1430197974-1394-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: usb: asix: Add D-link DUB-E100 H/W Ver C1 support
-To: Mayur Nande <Mayur.Nande@medel.com>
-Cc: "'barebox@lists.infradead.org'" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] linux/amba/bus.h: drop unusable amba_{g,s}et_drvdata
+ macros
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Apr 27, 2015 at 11:36:01AM +0000, Mayur Nande wrote:
-> Hello!
+On Tue, Apr 28, 2015 at 08:12:54AM +0300, Antony Pavlov wrote:
+> amba_{g,s}et_drvdata macros from linux kernel use
+> dev_{g,s}et_drvdata functions.
 > 
-> This patch adds support for USB ethernet adapter D-Link DUB-E100 H/W Rev C1. I tested this on
-> Beagleboneblack Rev A6A and our custom h/w based on i.mx6 Phytec phycore module. More 
-> information about the adapter is here: 
-> http://us.dlink.com/products/connect/high-speed-usb-2-0-fast-ethernet-adapter/ 
->  
-> Signed-off-by: Mayur Nande <mayur.nande@medel.com>
+> But in linux dev_get_drvdata() takes only one argument
+> while in barebox dev_get_drvdata() takes two arguments.
+> There is no dev_set_drvdata() in barebox at all.
+> 
+> So amba_{g,s}et_drvdata macros from linux are
+> unusable for barebox.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  drivers/net/usb/asix.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  include/linux/amba/bus.h | 3 ---
+>  1 file changed, 3 deletions(-)
 
 Applied, thanks
 
