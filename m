@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yn3Kz-0005fG-KY
- for barebox@lists.infradead.org; Tue, 28 Apr 2015 11:06:03 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1Yn3Kc-0003nS-Sn
- for barebox@lists.infradead.org; Tue, 28 Apr 2015 13:05:38 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <sha@pengutronix.de>) id 1Yn3Kc-0006r1-K4
- for barebox@lists.infradead.org; Tue, 28 Apr 2015 13:05:38 +0200
+ Linux)) id 1Yn3Kz-0005fK-Jl
+ for barebox@lists.infradead.org; Tue, 28 Apr 2015 11:06:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 28 Apr 2015 13:05:32 +0200
-Message-Id: <1430219137-8294-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 28 Apr 2015 13:05:34 +0200
+Message-Id: <1430219137-8294-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1430219137-8294-1-git-send-email-s.hauer@pengutronix.de>
+References: <1430219137-8294-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,35 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: AM335x fixes
+Subject: [PATCH 2/5] usb: musb: set controller->priv pointer
 To: Barebox List <barebox@lists.infradead.org>
 
-This series fixes some strange issues on AM335x which I currently
-can't reproduce with this series anymore. What happened was that
-the device hierarchy was garbled so that the output of devinfo
-resulted in an endless loop. There are also some other similar
-strange corruption issues. My assumption is that the CPSW driver
-wasn't quiesced, so that incoming DMA transfers corrupted the
-memory.
+This is used by the detect callback but never initialized.
 
-Also the 'detect -a' made barebox crash on the musb controller, this
-one is fixed aswell.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/musb/musb_barebox.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-----------------------------------------------------------------
-Sascha Hauer (5):
-      usb: musb: dsps: Do not use priv pointer
-      usb: musb: set controller->priv pointer
-      net: phy: Add missing phy_unregister_device
-      eth: halt active ethernet device on unregister
-      net: cpsw: unregister device on remove callback
+diff --git a/drivers/usb/musb/musb_barebox.c b/drivers/usb/musb/musb_barebox.c
+index 6bc232b..b1f38c3 100644
+--- a/drivers/usb/musb/musb_barebox.c
++++ b/drivers/usb/musb/musb_barebox.c
+@@ -139,6 +139,7 @@ int musb_register(struct musb *musb)
+ 	host->submit_control_msg = submit_control_msg;
+ 	host->submit_bulk_msg = submit_bulk_msg;
+ 
++	musb->controller->priv = musb;
+ 	musb->controller->detect = musb_detect;
+ 	usb_register_host(host);
+ 
+-- 
+2.1.4
 
- drivers/net/cpsw.c              | 44 ++++++++++++++++++++++++++++++++++++-----
- drivers/net/phy/phy.c           | 11 +++++++++++
- drivers/usb/musb/musb_barebox.c |  1 +
- drivers/usb/musb/musb_dsps.c    | 21 +++++++++-----------
- include/linux/phy.h             |  1 +
- net/eth.c                       |  3 +++
- 6 files changed, 64 insertions(+), 17 deletions(-)
 
 _______________________________________________
 barebox mailing list
