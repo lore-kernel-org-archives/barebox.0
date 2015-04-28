@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ymxof-00060h-Ak
- for barebox@lists.infradead.org; Tue, 28 Apr 2015 05:12:17 +0000
-Received: by lagv1 with SMTP id v1so95718677lag.3
- for <barebox@lists.infradead.org>; Mon, 27 Apr 2015 22:11:53 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 28 Apr 2015 08:12:54 +0300
-Message-Id: <1430197974-1394-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YmzQH-0007hQ-Tg
+ for barebox@lists.infradead.org; Tue, 28 Apr 2015 06:55:15 +0000
+Date: Tue, 28 Apr 2015 08:54:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150428065450.GF6325@pengutronix.de>
+References: <E1YmhKy-0006Jt-Op@bombadil.infradead.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <E1YmhKy-0006Jt-Op@bombadil.infradead.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] linux/amba/bus.h: drop unusable amba_{g,s}et_drvdata macros
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] net: usb: asix: Add D-link DUB-E100 H/W Ver C1 support
+To: Mayur Nande <Mayur.Nande@medel.com>
+Cc: "'barebox@lists.infradead.org'" <barebox@lists.infradead.org>
 
-amba_{g,s}et_drvdata macros from linux kernel use
-dev_{g,s}et_drvdata functions.
+On Mon, Apr 27, 2015 at 11:36:01AM +0000, Mayur Nande wrote:
+> Hello!
+> 
+> This patch adds support for USB ethernet adapter D-Link DUB-E100 H/W Rev C1. I tested this on
+> Beagleboneblack Rev A6A and our custom h/w based on i.mx6 Phytec phycore module. More 
+> information about the adapter is here: 
+> http://us.dlink.com/products/connect/high-speed-usb-2-0-fast-ethernet-adapter/ 
+>  
+> Signed-off-by: Mayur Nande <mayur.nande@medel.com>
+> ---
+>  drivers/net/usb/asix.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-But in linux dev_get_drvdata() takes only one argument
-while in barebox dev_get_drvdata() takes two arguments.
-There is no dev_set_drvdata() in barebox at all.
+Applied, thanks
 
-So amba_{g,s}et_drvdata macros from linux are
-unusable for barebox.
+Sascha
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- include/linux/amba/bus.h | 3 ---
- 1 file changed, 3 deletions(-)
 
-diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
-index a7bbae0..2ecef35 100644
---- a/include/linux/amba/bus.h
-+++ b/include/linux/amba/bus.h
-@@ -60,9 +60,6 @@ extern struct bus_type amba_bustype;
- 
- #define to_amba_device(d)	container_of(d, struct amba_device, dev)
- 
--#define amba_get_drvdata(d)	dev_get_drvdata(&d->dev)
--#define amba_set_drvdata(d,p)	dev_set_drvdata(&d->dev, p)
--
- int amba_driver_register(struct amba_driver *);
- void amba_driver_unregister(struct amba_driver *);
- struct amba_device *amba_device_alloc(const char *, int id, resource_size_t, size_t);
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
