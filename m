@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YnYA7-0003sn-LZ
+ id 1YnYA7-0003sy-L8
  for barebox@lists.infradead.org; Wed, 29 Apr 2015 20:00:52 +0000
 Received: from tellur.intern.lynxeye.de (p57B5F6E7.dip0.t-ipconnect.de
- [87.181.246.231]) by lynxeye.de (Postfix) with ESMTPA id 857C626C2001
- for <barebox@lists.infradead.org>; Wed, 29 Apr 2015 21:59:53 +0200 (CEST)
+ [87.181.246.231]) by lynxeye.de (Postfix) with ESMTPA id 8E7DE26C2001
+ for <barebox@lists.infradead.org>; Wed, 29 Apr 2015 21:59:54 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 29 Apr 2015 21:59:46 +0200
-Message-Id: <1430337588-11998-1-git-send-email-dev@lynxeye.de>
+Date: Wed, 29 Apr 2015 21:59:48 +0200
+Message-Id: <1430337588-11998-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1430337588-11998-1-git-send-email-dev@lynxeye.de>
+References: <1430337588-11998-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +24,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] PCI: register and active bridge device before proceeding
- to scan
+Subject: [PATCH 3/3] PCI: imx6: simplify config access code
 To: barebox@lists.infradead.org
 
-The bridge device needs to be registered and activated before
-the scanning can proceed, as the bridge is the parent for other
-devices.
-
-This fixes a NULL ptr derefernce when scanning PCI hierarchies
-with bridges behind bridges.
+The PCI core fills in the primary bus number, so there is no
+need to walk up the PCI hierarchy in the driver manually.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
-Please apply to master, as this fixes a crash when activating
-PCI support on the GW54xx board.
----
- drivers/pci/pci.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/pci/pcie-designware.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 40e0fe7..470ea66 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -371,11 +371,15 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
- 			list_add_tail(&child_bus->node, &bus->children);
- 			dev->subordinate = child_bus;
+diff --git a/drivers/pci/pcie-designware.c b/drivers/pci/pcie-designware.c
+index 4edaede..4962a19 100644
+--- a/drivers/pci/pcie-designware.c
++++ b/drivers/pci/pcie-designware.c
+@@ -350,13 +350,6 @@ static void dw_pcie_prog_viewport_io_outbound(struct pcie_port *pp)
+ 	dw_pcie_writel_rc(pp, PCIE_ATU_ENABLE, PCIE_ATU_CR2);
+ }
  
-+			/* activate bridge device */
-+			pci_register_device(dev);
-+
-+			/* scan pci hierarchy behind bridge */
- 			prescan_setup_bridge(dev);
- 			pci_scan_bus(child_bus);
- 			postscan_setup_bridge(dev);
--			/* first activate bridge then all devices on it's bus */
--			pci_register_device(dev);
-+
-+			/* finally active all devices behind the bridge */
- 			list_for_each_entry(dev, &child_bus->devices, bus_list)
- 				if (!dev->subordinate)
- 					pci_register_device(dev);
+-struct pci_bus *get_parent_bus(struct pci_bus *bus)
+-{
+-	struct pci_dev *bridge = container_of(bus->parent, struct pci_dev, dev);
+-
+-	return bridge->bus;
+-}
+-
+ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 		u32 devfn, int where, int size, u32 *val)
+ {
+@@ -367,7 +360,7 @@ static int dw_pcie_rd_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 		 PCIE_ATU_FUNC(PCI_FUNC(devfn));
+ 	address = where & ~0x3;
+ 
+-	if (get_parent_bus(bus)->number == pp->root_bus_nr) {
++	if (bus->primary == pp->root_bus_nr) {
+ 		dw_pcie_prog_viewport_cfg0(pp, busdev);
+ 		ret = dw_pcie_cfg_read(pp->va_cfg0_base + address, where, size,
+ 				val);
+@@ -392,7 +385,7 @@ static int dw_pcie_wr_other_conf(struct pcie_port *pp, struct pci_bus *bus,
+ 		 PCIE_ATU_FUNC(PCI_FUNC(devfn));
+ 	address = where & ~0x3;
+ 
+-	if (get_parent_bus(bus)->number == pp->root_bus_nr) {
++	if (bus->primary == pp->root_bus_nr) {
+ 		dw_pcie_prog_viewport_cfg0(pp, busdev);
+ 		ret = dw_pcie_cfg_write(pp->va_cfg0_base + address, where, size,
+ 				val);
 -- 
 2.1.0
 
