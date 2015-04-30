@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yni4Q-00008L-5O
- for barebox@lists.infradead.org; Thu, 30 Apr 2015 06:35:39 +0000
-Date: Thu, 30 Apr 2015 08:35:14 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150430063514.GZ6325@pengutronix.de>
-References: <1430297818-14961-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1430297818-14961-1-git-send-email-antonynpavlov@gmail.com>
+ Linux)) id 1Ynm4I-0001E8-7Z
+ for barebox@lists.infradead.org; Thu, 30 Apr 2015 10:51:47 +0000
+references: <1430126650-6382-1-git-send-email-s.hauer@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+message-id: <55420919.7050904@pengutronix.de>
+Date: Thu, 30 Apr 2015 12:51:05 +0200
+mime-version: 1.0
+in-reply-to: <1430126650-6382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,144 +17,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2517127817835802060=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: use 'const void *' for struct of_device_id.data
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd: partition: Fix OF partition fixup
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Cc: ukl@pengutronix.de
 
-On Wed, Apr 29, 2015 at 11:56:58AM +0300, Antony Pavlov wrote:
-> Since 2011 barebox' of_device_id struct uses unsigned long type for data field:
-> 
->     struct of_device_id {
->             char *compatible;
->             unsigned long data;
->     };
-> 
-> Almost always struct of_device_id.data field are used as pointer
-> and need 'unsigned long' casting.
-> 
-> E.g. see 'git grep -A 4 of_device_id drivers/' output:
-> 
->     drivers/ata/sata-imx.c:static __maybe_unused struct of_device_id imx_sata_dt_ids[] = {
->     drivers/ata/sata-imx.c- {
->     drivers/ata/sata-imx.c-         .compatible = "fsl,imx6q-ahci",
->     drivers/ata/sata-imx.c-         .data = (unsigned long)&data_imx6,
->     drivers/ata/sata-imx.c- }, {
-> 
-> Here is of_device_id struct in linux kernel v4.0:
-> 
->     struct of_device_id {
->             char name[32];
->             char type[32];
->             char compatible[128];
->             const void *data;
->     };
-> 
-> Changing of_device_id.data type to 'const void *data' will increase
-> barebox' linux kernel compatibility and decrease number of 'unsigned
-> long' casts.
-> 
-> Part of the patch was done using the 'coccinelle' tool with the
-> following semantic patch:
-> 
->     @rule1@
->     identifier dev;
->     identifier type;
->     identifier func;
->     @@
->     func(...) {
->     <...
->     - dev_get_drvdata(dev, (unsigned long *)&type)
->     + dev_get_drvdata(dev, (const void **)&type)
->     ...>
->     }
->     @rule2@
->     identifier dev;
->     identifier type;
->     identifier func;
->     identifier data;
->     @@
->     func(...) {
->     <...
->     - dev_get_drvdata(dev, (unsigned long *)&type->data)
->     + dev_get_drvdata(dev, (const void **)&type->data)
->     ...>
->     }
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============2517127817835802060==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="QoE8xUJSSr54RCw41lgtNdFM4VTaUGC1i"
 
-[...]
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--QoE8xUJSSr54RCw41lgtNdFM4VTaUGC1i
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> diff --git a/arch/arm/mach-imx/clocksource.c b/arch/arm/mach-imx/clocksource.c
-> index eba04a3..06d2fba 100644
-> --- a/arch/arm/mach-imx/clocksource.c
-> +++ b/arch/arm/mach-imx/clocksource.c
-> @@ -99,7 +99,7 @@ static int imx_gpt_probe(struct device_d *dev)
->  	if (timer_base)
->  		return 0;
->  
-> -	ret = dev_get_drvdata(dev, (unsigned long *)&regs);
-> +	ret = dev_get_drvdata(dev, (const void **)&regs);
+On 04/27/2015 11:24 AM, Sascha Hauer wrote:
+> To get the number of address cells and size cells we have to use
+> the newly created partition node, not the parent device node. The
+> parent device node returns the address/size cells of the controller
+> node, not the partition node.
+>=20
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-I applied this to -next to get some compile coverage. The one thing I
-don't like about this patch is this explicit cast to const void ** that
-is needed. This makes the compiler happy even when the pointer passed in
-is not const.
+Have you already applied this patch?
 
-The following may be a way to fix this, but maybe there is a more
-elegant way. However, since most of the data passed into dev_get_drvdata
-is not const at the moment this requires more patches anyway. So I think
-your patch is fine the way it is.
+Marc
 
-Sascha
-
------------------------------8<-----------------------
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index da020d8..e55aa44 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -404,7 +404,7 @@ void devices_shutdown(void)
- 	}
- }
- 
--int dev_get_drvdata(struct device_d *dev, const void **data)
-+int __dev_get_drvdata(struct device_d *dev, const void **data)
- {
- 	if (dev->of_id_entry) {
- 		*data = dev->of_id_entry->data;
-diff --git a/include/driver.h b/include/driver.h
-index b8a94e4..f182e01 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -512,7 +512,15 @@ int devfs_create_partitions(const char *devname,
- #define DRV_OF_COMPAT(compat) \
- 	IS_ENABLED(CONFIG_OFDEVICE) ? (compat) : NULL
- 
--int dev_get_drvdata(struct device_d *dev, const void **data);
-+int __dev_get_drvdata(struct device_d *dev, const void **data);
-+
-+#define dev_get_drvdata(dev, data) ({		\
-+	const void *d;				\
-+	int ret;				\
-+	ret = __dev_get_drvdata(dev, &d);	\
-+	*(data) = d;				\
-+	ret;					\
-+})
- 
- int device_match_of_modalias(struct device_d *dev, struct driver_d *drv);
- 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--QoE8xUJSSr54RCw41lgtNdFM4VTaUGC1i
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCgAGBQJVQgkZAAoJECte4hHFiupU+dcP/1ayt4c+HWcF0atlb4C9qmL+
+cuiv5wXhuWWCm3RQ1tXJ0EXhlzJsq6OYZAt2XRGbac4qByLnhYVlsGRa3keTMXzg
+yF4u69TfrzxYvLRGUSt3Bvn+rAr2CY5rM3xzrJjOFB9uNdAa+WzvvrAZY4+8iMn9
+D3lxRFAmLWzMUEdFLqQXIY0FK0aHzTmxZvdoucI+yrhVCplSCnPqF2aLaETA7wd5
+nzmYBd2ZPjRSfMuaVrqUZs3OSOyYdmu3DRs4asWge2Jt6H79KwgS8xKkWeFS6rVL
+/mx47BoJV2JPCscJJj/CpgiP//ROkQLovbN3n/YulhdaA/xv/7aR9xjoEZK9Z92X
+aiiYbXPZsO46RBJY/rvyPwY2KzNHDKS0WNC5V88MpYk8piee6YevhJNK/J7XFaC8
+jVpSq7P9FTUql4awc1fNjQyZ62bNG5vOsz/s6l2iH+eeGo1uiAqWWKOFi25sIUIX
+XIaLL+59UV8wWngeJTHAI3fwmBqMDnDO0Os6Apc96jkmacWWI5nEzsbF2ur5fv26
+2+hPJdFw/CF/nzrgFCXkehqnKoNAz1L1j/cQL7KD5Piban6RAskqjzjNBLFfFOVV
+fk+2Vxx1FC6LLsm7J2QAGRCxz5lPaA61u41Wpw56nZfR5o5afLS6uzdxAk3p49RS
+0ADWFqXF6+tZAAPHjfaI
+=7JQq
+-----END PGP SIGNATURE-----
+
+--QoE8xUJSSr54RCw41lgtNdFM4VTaUGC1i--
+
+
+--===============2517127817835802060==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2517127817835802060==--
