@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YuEDO-0001zM-CD
- for barebox@lists.infradead.org; Mon, 18 May 2015 06:07:50 +0000
-Date: Mon, 18 May 2015 08:07:26 +0200
+ Linux)) id 1Yo4ai-0004C0-7I
+ for barebox@lists.infradead.org; Fri, 01 May 2015 06:38:29 +0000
+Date: Fri, 1 May 2015 08:38:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150518060726.GM6325@pengutronix.de>
-References: <1431511952-32124-6-git-send-email-mkl@pengutronix.de>
- <1431771327-27442-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Message-ID: <20150501063805.GC6325@pengutronix.de>
+References: <1430337588-11998-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1431771327-27442-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1430337588-11998-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! state: add fixup to copy state from barebox to
- kernel device tree
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 1/3] PCI: register and active bridge device before
+ proceeding to scan
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, May 16, 2015 at 12:15:27PM +0200, Uwe Kleine-K=F6nig wrote:
-> of_unregister_fixup must also be called in the release function.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+On Wed, Apr 29, 2015 at 09:59:46PM +0200, Lucas Stach wrote:
+> The bridge device needs to be registered and activated before
+> the scanning can proceed, as the bridge is the parent for other
+> devices.
+> 
+> This fixes a NULL ptr derefernce when scanning PCI hierarchies
+> with bridges behind bridges.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
-> This depends on the patch "of: add a function to remove an of_fixup" I
-> just sent to the list
+> Please apply to master, as this fixes a crash when activating
+> PCI support on the GW54xx board.
 > ---
->  common/state.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
+>  drivers/pci/pci.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 
-Applied with said patch beforehand.
+
+Applied, thanks
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
