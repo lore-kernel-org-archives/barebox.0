@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk0-f175.google.com ([209.85.220.175])
+Received: from mail-wg0-f43.google.com ([74.125.82.43])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yoag4-0006xw-EY
- for barebox@lists.infradead.org; Sat, 02 May 2015 16:54:09 +0000
-Received: by qkx62 with SMTP id 62so65666709qkx.0
- for <barebox@lists.infradead.org>; Sat, 02 May 2015 09:53:45 -0700 (PDT)
-Message-ID: <55450062.6050205@vanguardiasur.com.ar>
-Date: Sat, 02 May 2015 13:50:42 -0300
+ id 1YoaiY-0008Fq-CB
+ for barebox@lists.infradead.org; Sat, 02 May 2015 16:56:43 +0000
+Received: by wgen6 with SMTP id n6so114904713wge.3
+ for <barebox@lists.infradead.org>; Sat, 02 May 2015 09:56:20 -0700 (PDT)
+Message-ID: <554500FC.2050607@vanguardiasur.com.ar>
+Date: Sat, 02 May 2015 13:53:16 -0300
 From: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 MIME-Version: 1.0
-References: <1426573554-14478-1-git-send-email-s.hauer@pengutronix.de>
- <1426573554-14478-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1426573554-14478-3-git-send-email-s.hauer@pengutronix.de>
+References: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1428627830-17281-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1428627830-17281-2-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,84 +24,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Regression on next (Re: [PATCH 3/3] driver: Call bus->remove instead
- of driver->remove)
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 01/13] net: phy: Support Marvell 88E1318S PHY
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+Hi Sebastian,
 
-On 03/17/2015 03:25 AM, Sascha Hauer wrote:
-> In devices_shutdown we should call the busses remove function
-> which in turn calls the drivers remove function. Otherwise for
-> example PCI devices never get removed since they do not have
-> a remove function but a pcidev->remove function instead.
+On 04/09/2015 10:03 PM, Sebastian Hesselbarth wrote:
+> This adds support for the Marvell 88E1318S Gigabit Ethernet PHY.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 > ---
->  drivers/base/driver.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Cc: barebox@lists.infradead.org
+> ---
+>  drivers/net/phy/marvell.c | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
 > 
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 453966b..590c97c 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -399,8 +399,8 @@ void devices_shutdown(void)
->  	struct device_d *dev;
+> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+> index aaf9f53451f4..6409f14ae2e2 100644
+> --- a/drivers/net/phy/marvell.c
+> +++ b/drivers/net/phy/marvell.c
+> @@ -35,6 +35,9 @@
+>  #define MII_88E1121_PHY_MSCR_DELAY_MASK	\
+>  	(MII_88E1121_PHY_MSCR_RX_DELAY | MII_88E1121_PHY_MSCR_TX_DELAY)
 >  
->  	list_for_each_entry(dev, &active, active) {
-> -		if (dev->driver->remove)
-> -			dev->driver->remove(dev);
-> +		if (dev->bus->remove)
-> +			dev->bus->remove(dev);
->  	}
+> +#define MII_88E1318S_PHY_MSCR1_REG	16
+> +#define MII_88E1318S_PHY_MSCR1_PAD_ODD	BIT(6)
+> +
+>  #define MII_88E1540_LED_PAGE		0x3
+>  #define MII_88E1540_LED_CONTROL		0x10
+>  
+> @@ -214,6 +217,25 @@ static int m88e1121_config_init(struct phy_device *phydev)
+>  	return 0;
 >  }
 >  
+> +static int m88e1318s_config_init(struct phy_device *phydev)
+> +{
+> +	u16 reg;
+> +	int ret;
+> +
+> +	ret = phy_write(phydev, MII_MARVELL_PHY_PAGE,
+> +			MII_88E1121_PHY_MSCR_PAGE);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	reg = phy_read(phydev, MII_88E1318S_PHY_MSCR1_REG);
+> +	reg |= MII_88E1318S_PHY_MSCR1_PAD_ODD;
+> +	ret = phy_write(phydev, MII_88E1318S_PHY_MSCR1_REG, reg);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return m88e1121_config_init(phydev);
+> +}
+> +
+>  static struct phy_driver marvell_phys[] = {
+>  	{
+>  		.phy_id		= MARVELL_PHY_ID_88E1121R,
+> @@ -225,6 +247,15 @@ static struct phy_driver marvell_phys[] = {
+>  		.read_status	= marvell_read_status,
+>  	},
+>  	{
+> +		.phy_id		= MARVELL_PHY_ID_88E1318S,
+> +		.phy_id_mask	= MARVELL_PHY_ID_MASK,
+> +		.drv.name	= "Marvell 88E1318S",
+> +		.features	= PHY_GBIT_FEATURES,
+> +		.config_init	= m88e1318s_config_init,
+> +		.config_aneg	= genphy_config_aneg,
+> +		.read_status	= marvell_read_status,
+> +	},
+> +	{
+>  		.phy_id		= MARVELL_PHY_ID_88E1543,
+>  		.phy_id_mask	= MARVELL_PHY_ID_MASK,
+>  		.drv.name	= "Marvell 88E1543",
 > 
 
-This commit caused a regression on the Openblocks A6 board, which now freezes
-when calling devices_shutdown. The problem is that calling bus->remove makes
-the remove() of the PHY driver called twice.
+With this commit, the Openblocks A6 PHY is not brought up, and so
+network is broken.
 
-This happened because the mdio bus device (mdio-mvebu) was registered first,
-and the phy0 device was be registered later, and attached to the mdio bus.
-
-Upon device shutdown, when iterating through the active device list,
-the phy0 device is removed before mdio-mvebu. Then, when the mdio bus device
-is removed, the phy0 device is removed again, here:
-
-mdio_bus_remove(on mdio-mvebu)
-  mvebu_mdio_remove
-    mdiobus_unregister
-      unregister_device
-        mdio_bus_remove(on phy0)
-        
-This is currently the case for the Kirkwood Openblocks A6 board, where a double
-free(dev->cdev.name) in mdio_bus_remove causes a silent freeze when booting
-Linux.
-
-I tried something like this:
-
-@@ -446,12 +450,14 @@ const char *dev_id(const struct device_d *dev)
-  void devices_shutdown(void)
- {
--	struct device_d *dev;
-+	struct device_d *dev, *tmpdev;
-+	struct bus_type *bus;
-+
-+	for_each_bus(bus)
-+		list_for_each_entry_safe(dev, tmpdev, &(bus)->device_list, bus_list)
-+			if (dev->is_active && dev->bus->remove)
-+				dev->bus->remove(dev);
- -	list_for_each_entry(dev, &active, active) {
--		if (dev->bus->remove)
--			dev->bus->remove(dev);
--	}
- }
-
-But then realise this messes the remove order, and so will probably
-break some other case :(
-
---
+I'll look into it (unless you have an idea),
+-- 
 Ezequiel Garcia, VanguardiaSur
 www.vanguardiasur.com.ar
 
