@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x234.google.com ([2607:f8b0:400e:c02::234])
+Received: from mail-pa0-x22a.google.com ([2607:f8b0:400e:c03::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yojcf-0004jA-Mz
- for barebox@lists.infradead.org; Sun, 03 May 2015 02:27:14 +0000
-Received: by pdbnk13 with SMTP id nk13so130840441pdb.0
- for <barebox@lists.infradead.org>; Sat, 02 May 2015 19:26:52 -0700 (PDT)
+ id 1Yojcc-0004iv-Ey
+ for barebox@lists.infradead.org; Sun, 03 May 2015 02:27:11 +0000
+Received: by pacyx8 with SMTP id yx8so128795489pac.1
+ for <barebox@lists.infradead.org>; Sat, 02 May 2015 19:26:48 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  2 May 2015 19:26:20 -0700
-Message-Id: <1430619980-26243-9-git-send-email-andrew.smirnov@gmail.com>
+Date: Sat,  2 May 2015 19:26:16 -0700
+Message-Id: <1430619980-26243-5-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,80 +23,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] Makefile.lib: Make 'check_file_size' more flexible
+Subject: [PATCH 4/8] i.MX51: babbage: Implement CONFIG_DEBUG_LL
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Make 'check_file_size' more flexible by not hardcoding the file whose
-size is going to be checked to '$@'. This way it is possible to use
-this subroutine to check the size of files other than the target of
-the rule.
+Implement bits of configuraion needed to configure early debug output
+support.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Makefile               | 2 +-
- arch/arm/pbl/Makefile  | 2 +-
- arch/mips/pbl/Makefile | 2 +-
- scripts/Makefile.lib   | 6 +++---
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/boards/freescale-mx51-babbage/lowlevel.c | 58 +++++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/clock-imx51_53.h   |  5 +-
+ 2 files changed, 61 insertions(+), 2 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 372d18a..9ed0a1d 100644
---- a/Makefile
-+++ b/Makefile
-@@ -700,7 +700,7 @@ OBJCOPYFLAGS_barebox.bin = -O binary
- barebox.bin: barebox FORCE
- 	$(call if_changed,objcopy)
- ifndef CONFIG_PBL_IMAGE
--	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
-+	$(call cmd,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
- endif
+diff --git a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+index 0f453f3..0135cb4 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
++++ b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+@@ -1,9 +1,63 @@
++#include <debug_ll.h>
++#include <mach/clock-imx51_53.h>
+ #include <common.h>
+ #include <mach/esdctl.h>
+ #include <mach/generic.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
 
- # By default the uImage load address is 2MB below CONFIG_TEXT_BASE,
-diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-index 4c1788d..1ff39db 100644
---- a/arch/arm/pbl/Makefile
-+++ b/arch/arm/pbl/Makefile
-@@ -22,7 +22,7 @@ endif
++#ifdef CONFIG_DEBUG_LL
++static inline void setup_uart(void)
++{
++
++	void __iomem *uartbase =
++	  (void *)IMX_UART_BASE(IMX_DEBUG_SOC,
++				CONFIG_DEBUG_IMX_UART_PORT);
++	void __iomem *iomuxbase = (void *)MX51_IOMUXC_BASE_ADDR;
++	void __iomem *ccmbase = (void *)MX51_CCM_BASE_ADDR;
++
++	/*
++	 * Restore CCM values that might be changed by the Mask ROM
++	 * code.
++	 *
++	 * Source: RealView debug scripts provided by Freescale
++	 */
++	writel(MX5_CCM_CBCDR_RESET_VALUE,  ccmbase + MX5_CCM_CBCDR);
++	writel(MX5_CCM_CSCMR1_RESET_VALUE, ccmbase + MX5_CCM_CSCMR1);
++	writel(MX5_CCM_CSCDR1_RESET_VALUE, ccmbase + MX5_CCM_CSCDR1);
++
++	/*
++	 * The code below should be more or less a "moral equivalent"
++	 * of:
++	 *	 MX51_PAD_UART1_TXD__UART1_TXD 0x1c5
++	 *
++	 * in device tree
++	 */
++	writel(0x00000000, iomuxbase + 0x022c);
++	writel(0x000001c5, iomuxbase + 0x061c);
++
++	writel(0x00000000, uartbase + UCR1);
++
++	writel(UCR2_IRTS | UCR2_WS | UCR2_TXEN | UCR2_RXEN | UCR2_SRST,
++	       uartbase + UCR2);
++	writel(UCR3_DSR | UCR3_DCD | UCR3_RI | UCR3_ADNIMP | UCR3_RXDMUXSEL,
++	       uartbase + UCR3);
++	writel((0b10 << UFCR_TXTL_SHF) | UFCR_RFDIV1 | (1 << UFCR_RXTL_SHF),
++	       uartbase + UFCR);
++
++	writel(baudrate_to_ubir(115200), uartbase + UBIR);
++	writel(refclock_to_ubmr(54000000), uartbase + UBMR);
++
++	writel(UCR1_UARTEN, uartbase + UCR1);
++
++	putc_ll('>');
++}
++#else
++static inline void setup_uart(void)
++{
++}
++#endif	/* CONFIG_DEBUG_LL */
++
+ extern char __dtb_imx51_babbage_start[];
 
- $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
- 	$(call if_changed,objcopy)
--	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
-+	$(call cmd,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
- 	$(Q)$(kecho) '  Barebox: fix size'
- 	$(Q)$(objtree)/scripts/fix_size -i -f $(objtree)/$@ $(FIX_SIZE)
- 	$(Q)$(kecho) '  Barebox: $@ is ready'
-diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
-index fea1f24..b03bca1 100644
---- a/arch/mips/pbl/Makefile
-+++ b/arch/mips/pbl/Makefile
-@@ -15,7 +15,7 @@ extra-y       += piggy.gzip piggy.lz4 piggy.lzo piggy.lzma piggy.xzkern piggy.sh
+ ENTRY_FUNCTION(start_imx51_babbage, r0, r1, r2)
+@@ -11,6 +65,10 @@ ENTRY_FUNCTION(start_imx51_babbage, r0, r1, r2)
+ 	void *fdt;
 
- $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
- 	$(call if_changed,objcopy)
--	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
-+	$(call cmd,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
- 	$(Q)$(kecho) '  Barebox: $@ is ready'
+ 	imx5_cpu_lowlevel_init();
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
+ 	arm_setup_stack(0x20000000 - 16);
 
- $(obj)/zbarebox.S: $(obj)/zbarebox FORCE
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 57426d0..e991f33 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -388,10 +388,10 @@ quiet_cmd_ln = LN      $@
- cmd_ln = ln -sf $< $@
+ 	fdt = __dtb_imx51_babbage_start - get_runtime_offset();
+diff --git a/arch/arm/mach-imx/include/mach/clock-imx51_53.h b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
+index 6004a6d..0f25dfb 100644
+--- a/arch/arm/mach-imx/include/mach/clock-imx51_53.h
++++ b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
+@@ -149,6 +149,7 @@
+ #define MX5_CCM_CACRR_ARM_PODF_MASK	(0x7)
 
- # Check size of a file
--quiet_cmd_check_file_size = CHKSIZE $@
-+quiet_cmd_check_file_size = CHKSIZE $2
-       cmd_check_file_size = set -e;					\
--	size=`stat -c%s $@`;						\
--	max_size=`printf "%d" $2`;					\
-+	size=`stat -c%s $2`;						\
-+	max_size=`printf "%d" $3`;					\
- 	if [ $$size -gt $$max_size ] ;					\
- 	then								\
- 		echo "$@ size $$size > of the maximum size $$max_size" >&2;	\
+ /* Define the bits in register CBCDR */
++#define MX5_CCM_CBCDR_RESET_VALUE		(0x19239145)
+ #define MX5_CCM_CBCDR_EMI_CLK_SEL		(0x1 << 26)
+ #define MX5_CCM_CBCDR_PERIPH_CLK_SEL		(0x1 << 25)
+ #define MX5_CCM_CBCDR_DDR_HF_SEL_OFFSET		(30)
+@@ -193,6 +194,7 @@
+ #define MX5_CCM_CBCMR_PERCLK_IPG_CLK_SEL	(0x1 << 0)
+
+ /* Define the bits in register CSCMR1 */
++#define MX5_CCM_CSCMR1_RESET_VALUE			(0xa6a2a020)
+ #define MX5_CCM_CSCMR1_SSI_EXT2_CLK_SEL_OFFSET		(30)
+ #define MX5_CCM_CSCMR1_SSI_EXT2_CLK_SEL_MASK		(0x3 << 30)
+ #define MX5_CCM_CSCMR1_SSI_EXT1_CLK_SEL_OFFSET		(28)
+@@ -259,6 +261,7 @@
+ #define MX5_CCM_CSCMR2_SPDIF0_CLK_SEL_MASK		(0x3)
+
+ /* Define the bits in register CSCDR1 */
++#define MX5_CCM_CSCDR1_RESET_VALUE			(0x00c30318)
+ #define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_OFFSET	(22)
+ #define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_MASK	(0x7 << 22)
+ #define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PODF_OFFSET	(19)
+@@ -585,5 +588,3 @@
+ #define MX5_SRPGC_EMI_PDNSCR	(MX5_SRPGC_EMI_BASE + 0x8)
+
+ #endif				/* __ARCH_ARM_MACH_MX51_CRM_REGS_H__ */
+-
+-
 --
 2.1.4
 
