@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x232.google.com ([2607:f8b0:400e:c03::232])
+Received: from mail-pa0-x236.google.com ([2607:f8b0:400e:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YojcW-0004im-Fz
- for barebox@lists.infradead.org; Sun, 03 May 2015 02:27:05 +0000
-Received: by pabsx10 with SMTP id sx10so128763677pab.3
- for <barebox@lists.infradead.org>; Sat, 02 May 2015 19:26:43 -0700 (PDT)
+ id 1YojcT-0004id-5c
+ for barebox@lists.infradead.org; Sun, 03 May 2015 02:27:02 +0000
+Received: by pabtp1 with SMTP id tp1so128805688pab.2
+ for <barebox@lists.infradead.org>; Sat, 02 May 2015 19:26:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  2 May 2015 19:26:13 -0700
-Message-Id: <1430619980-26243-2-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Sat,  2 May 2015 19:26:12 -0700
+Message-Id: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,286 +21,339 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] i.MX: Move UART definitions into a separate file
+Subject: [RFC, PATCH] i.MX: Add provisions to boot from IRAM
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Move UART definitions into a separate file to avoid redefinition in
-<mach/debug_ll.h> and magical constants in low level UART
-initialization code.
+This commit add a very basic code to allow Barebox to be booted from
+IRAM. Given that the amount of IRAM on most i.MX variants is
+insufficient to contain a copy of Barebox with any reasonable degree
+of functionality this code uses IRAM only as a temporary location and
+eventually bootstraps from DRAM. But the presense of the intermediate
+IRAM-only stage allows to add provisions to test the area of DRAM that
+Barebox would be using to facilitate various testing scenarious.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/debug_ll.h |   9 +--
- arch/arm/mach-imx/include/mach/serial.h   | 112 ++++++++++++++++++++++++++++++
- drivers/serial/serial_imx.c               | 108 +---------------------------
- 3 files changed, 114 insertions(+), 115 deletions(-)
- create mode 100644 arch/arm/mach-imx/include/mach/serial.h
+ arch/arm/boards/freescale-mx51-babbage/Makefile    |  3 ++
+ .../flash-header-imx51-babbage-xload.imxcfg        | 59 ++++++++++++++++++++++
+ arch/arm/boards/freescale-mx51-babbage/lowlevel.c  | 25 +++++++++
+ arch/arm/configs/imx_v7-xload_defconfig            | 46 +++++++++++++++++
+ arch/arm/mach-imx/Kconfig                          | 15 ++++++
+ arch/arm/mach-imx/Makefile                         |  1 +
+ arch/arm/mach-imx/xload.c                          | 54 ++++++++++++++++++++
+ images/Makefile.imx                                | 20 +++++++-
+ 8 files changed, 222 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
+ create mode 100644 arch/arm/configs/imx_v7-xload_defconfig
+ create mode 100644 arch/arm/mach-imx/xload.c
 
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-index f34eaa1..1c9f3a6 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -12,6 +12,7 @@
- #include <mach/imx51-regs.h>
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
-+#include <mach/serial.h>
-
- #ifdef CONFIG_DEBUG_LL
-
-@@ -40,14 +41,6 @@
- #define __IMX_UART_BASE(soc, num) soc##_UART##num##_BASE_ADDR
- #define IMX_UART_BASE(soc, num) __IMX_UART_BASE(soc, num)
-
--#define URTX0		0x40		/* Transmitter Register */
--
--#define UCR1		0x80		/* Control Register 1 */
--#define UCR1_UARTEN	(1 << 0)	/* UART enabled */
--
--#define USR2		0x98		/* Status Register 2 */
--#define USR2_TXDC	(1 << 3)	/* Transmitter complete */
--
- static inline void PUTC_LL(int c)
- {
- 	void __iomem *base = (void *)IMX_UART_BASE(IMX_DEBUG_SOC,
-diff --git a/arch/arm/mach-imx/include/mach/serial.h b/arch/arm/mach-imx/include/mach/serial.h
+diff --git a/arch/arm/boards/freescale-mx51-babbage/Makefile b/arch/arm/boards/freescale-mx51-babbage/Makefile
+index 6252c88..31b8fcd 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/Makefile
++++ b/arch/arm/boards/freescale-mx51-babbage/Makefile
+@@ -1,3 +1,6 @@
+ obj-y += board.o flash-header-imx51-babbage.dcd.o
+ extra-y += flash-header-imx51-babbage.dcd.S flash-header-imx51-babbage.dcd
+ lwl-y += lowlevel.o
++
++obj-$(CONFIG_ARCH_IMX_XLOAD) += flash-header-imx51-babbage-xload.dcd.o
++extra-$(CONFIG_ARCH_IMX_XLOAD) += flash-header-imx51-babbage-xload.dcd.S flash-header-imx51-babbage-xload.dcd
+diff --git a/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg b/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
 new file mode 100644
-index 0000000..b999c58
+index 0000000..a04ac75
 --- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/serial.h
-@@ -0,0 +1,112 @@
-+#ifndef __MACH_SERIAL_H__
-+#define __MACH_SERIAL_H__
-+
-+#define URXD0	0x0	/* Receiver Register */
-+#define URTX0	0x40	/* Transmitter Register */
-+#define UCR1	0x80	/* Control Register 1 */
-+#define UCR2	0x84	/* Control Register 2 */
-+#define UCR3	0x88	/* Control Register 3 */
-+#define UCR4	0x8c	/* Control Register 4 */
-+#define UFCR	0x90	/* FIFO Control Register */
-+#define USR1	0x94	/* Status Register 1 */
-+#define USR2	0x98	/* Status Register 2 */
-+#define UESC	0x9c	/* Escape Character Register */
-+#define UTIM	0xa0	/* Escape Timer Register */
-+#define UBIR	0xa4	/* BRM Incremental Register */
-+#define UBMR	0xa8	/* BRM Modulator Register */
-+#define UBRC	0xac	/* Baud Rate Count Register */
-+
-+/* UART Control Register Bit Fields.*/
-+#define  URXD_CHARRDY    (1<<15)
-+#define  URXD_ERR        (1<<14)
-+#define  URXD_OVRRUN     (1<<13)
-+#define  URXD_FRMERR     (1<<12)
-+#define  URXD_BRK        (1<<11)
-+#define  URXD_PRERR      (1<<10)
-+#define  UCR1_ADEN       (1<<15) /* Auto dectect interrupt */
-+#define  UCR1_ADBR       (1<<14) /* Auto detect baud rate */
-+#define  UCR1_TRDYEN     (1<<13) /* Transmitter ready interrupt enable */
-+#define  UCR1_IDEN       (1<<12) /* Idle condition interrupt */
-+#define  UCR1_RRDYEN     (1<<9)	 /* Recv ready interrupt enable */
-+#define  UCR1_RDMAEN     (1<<8)	 /* Recv ready DMA enable */
-+#define  UCR1_IREN       (1<<7)	 /* Infrared interface enable */
-+#define  UCR1_TXMPTYEN   (1<<6)	 /* Transimitter empty interrupt enable */
-+#define  UCR1_RTSDEN     (1<<5)	 /* RTS delta interrupt enable */
-+#define  UCR1_SNDBRK     (1<<4)	 /* Send break */
-+#define  UCR1_TDMAEN     (1<<3)	 /* Transmitter ready DMA enable */
-+#define  UCR1_UARTCLKEN  (1<<2)	 /* UART clock enabled */
-+#define  UCR1_DOZE       (1<<1)	 /* Doze */
-+#define  UCR1_UARTEN     (1<<0)	 /* UART enabled */
-+#define  UCR2_ESCI     	 (1<<15) /* Escape seq interrupt enable */
-+#define  UCR2_IRTS  	 (1<<14) /* Ignore RTS pin */
-+#define  UCR2_CTSC  	 (1<<13) /* CTS pin control */
-+#define  UCR2_CTS        (1<<12) /* Clear to send */
-+#define  UCR2_ESCEN      (1<<11) /* Escape enable */
-+#define  UCR2_PREN       (1<<8)  /* Parity enable */
-+#define  UCR2_PROE       (1<<7)  /* Parity odd/even */
-+#define  UCR2_STPB       (1<<6)	 /* Stop */
-+#define  UCR2_WS         (1<<5)	 /* Word size */
-+#define  UCR2_RTSEN      (1<<4)	 /* Request to send interrupt enable */
-+#define  UCR2_TXEN       (1<<2)	 /* Transmitter enabled */
-+#define  UCR2_RXEN       (1<<1)	 /* Receiver enabled */
-+#define  UCR2_SRST 	 (1<<0)	 /* SW reset */
-+#define  UCR3_DTREN 	 (1<<13) /* DTR interrupt enable */
-+#define  UCR3_PARERREN   (1<<12) /* Parity enable */
-+#define  UCR3_FRAERREN   (1<<11) /* Frame error interrupt enable */
-+#define  UCR3_DSR        (1<<10) /* Data set ready */
-+#define  UCR3_DCD        (1<<9)  /* Data carrier detect */
-+#define  UCR3_RI         (1<<8)  /* Ring indicator */
-+#define  UCR3_ADNIMP     (1<<7)  /* Autobaud Detection Not Improved */
-+#define  UCR3_RXDSEN	 (1<<6)  /* Receive status interrupt enable */
-+#define  UCR3_AIRINTEN   (1<<5)  /* Async IR wake interrupt enable */
-+#define  UCR3_AWAKEN	 (1<<4)  /* Async wake interrupt enable */
-+#define  UCR3_REF25 	 (1<<3)  /* Ref freq 25 MHz (i.MXL / i.MX1) */
-+#define  UCR3_REF30 	 (1<<2)  /* Ref Freq 30 MHz (i.MXL / i.MX1) */
-+#define  UCR3_RXDMUXSEL  (1<<2)  /* RXD Muxed input select (i.MX27) */
-+#define  UCR3_INVT  	 (1<<1)  /* Inverted Infrared transmission */
-+#define  UCR3_BPEN  	 (1<<0)  /* Preset registers enable */
-+#define  UCR4_CTSTL_32   (32<<10) /* CTS trigger level (32 chars) */
-+#define  UCR4_INVR  	 (1<<9)  /* Inverted infrared reception */
-+#define  UCR4_ENIRI 	 (1<<8)  /* Serial infrared interrupt enable */
-+#define  UCR4_WKEN  	 (1<<7)  /* Wake interrupt enable */
-+#define  UCR4_REF16 	 (1<<6)  /* Ref freq 16 MHz */
-+#define  UCR4_IRSC  	 (1<<5)  /* IR special case */
-+#define  UCR4_TCEN  	 (1<<3)  /* Transmit complete interrupt enable */
-+#define  UCR4_BKEN  	 (1<<2)  /* Break condition interrupt enable */
-+#define  UCR4_OREN  	 (1<<1)  /* Receiver overrun interrupt enable */
-+#define  UCR4_DREN  	 (1<<0)  /* Recv data ready interrupt enable */
-+#define  UFCR_RXTL_SHF   0       /* Receiver trigger level shift */
-+#define  UFCR_RFDIV      (7<<7)  /* Reference freq divider mask */
-+#define  UFCR_TXTL_SHF   10      /* Transmitter trigger level shift */
-+#define  USR1_PARITYERR  (1<<15) /* Parity error interrupt flag */
-+#define  USR1_RTSS  	 (1<<14) /* RTS pin status */
-+#define  USR1_TRDY  	 (1<<13) /* Transmitter ready interrupt/dma flag */
-+#define  USR1_RTSD  	 (1<<12) /* RTS delta */
-+#define  USR1_ESCF  	 (1<<11) /* Escape seq interrupt flag */
-+#define  USR1_FRAMERR    (1<<10) /* Frame error interrupt flag */
-+#define  USR1_RRDY       (1<<9)	 /* Receiver ready interrupt/dma flag */
-+#define  USR1_TIMEOUT    (1<<7)	 /* Receive timeout interrupt status */
-+#define  USR1_RXDS  	 (1<<6)	 /* Receiver idle interrupt flag */
-+#define  USR1_AIRINT	 (1<<5)	 /* Async IR wake interrupt flag */
-+#define  USR1_AWAKE 	 (1<<4)	 /* Aysnc wake interrupt flag */
-+#define  USR2_ADET  	 (1<<15) /* Auto baud rate detect complete */
-+#define  USR2_TXFE  	 (1<<14) /* Transmit buffer FIFO empty */
-+#define  USR2_DTRF  	 (1<<13) /* DTR edge interrupt flag */
-+#define  USR2_IDLE  	 (1<<12) /* Idle condition */
-+#define  USR2_IRINT 	 (1<<8)	 /* Serial infrared interrupt flag */
-+#define  USR2_WAKE  	 (1<<7)	 /* Wake */
-+#define  USR2_RTSF  	 (1<<4)	 /* RTS edge interrupt flag */
-+#define  USR2_TXDC  	 (1<<3)	 /* Transmitter complete */
-+#define  USR2_BRCD  	 (1<<2)	 /* Break condition */
-+#define  USR2_ORE        (1<<1)	 /* Overrun error */
-+#define  USR2_RDR        (1<<0)	 /* Recv data ready */
-+#define  UTS_FRCPERR	 (1<<13) /* Force parity error */
-+#define  UTS_LOOP        (1<<12) /* Loop tx and rx */
-+#define  UTS_TXEMPTY	 (1<<6)	 /* TxFIFO empty */
-+#define  UTS_RXEMPTY	 (1<<5)	 /* RxFIFO empty */
-+#define  UTS_TXFULL 	 (1<<4)	 /* TxFIFO full */
-+#define  UTS_RXFULL 	 (1<<3)	 /* RxFIFO full */
-+#define  UTS_SOFTRST	 (1<<0)	 /* Software reset */
-+
-+
-+#endif	/* __MACH_SERIAL_H__ */
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index cd954c2..e197be8 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -23,113 +23,7 @@
- #include <of.h>
- #include <linux/err.h>
- #include <linux/clk.h>
--
--#define URXD0	0x0	/* Receiver Register */
--#define URTX0	0x40	/* Transmitter Register */
--#define UCR1	0x80	/* Control Register 1 */
--#define UCR2	0x84	/* Control Register 2 */
--#define UCR3	0x88	/* Control Register 3 */
--#define UCR4	0x8c	/* Control Register 4 */
--#define UFCR	0x90	/* FIFO Control Register */
--#define USR1	0x94	/* Status Register 1 */
--#define USR2	0x98	/* Status Register 2 */
--#define UESC	0x9c	/* Escape Character Register */
--#define UTIM	0xa0	/* Escape Timer Register */
--#define UBIR	0xa4	/* BRM Incremental Register */
--#define UBMR	0xa8	/* BRM Modulator Register */
--#define UBRC	0xac	/* Baud Rate Count Register */
--
--/* UART Control Register Bit Fields.*/
--#define  URXD_CHARRDY    (1<<15)
--#define  URXD_ERR        (1<<14)
--#define  URXD_OVRRUN     (1<<13)
--#define  URXD_FRMERR     (1<<12)
--#define  URXD_BRK        (1<<11)
--#define  URXD_PRERR      (1<<10)
--#define  UCR1_ADEN       (1<<15) /* Auto dectect interrupt */
--#define  UCR1_ADBR       (1<<14) /* Auto detect baud rate */
--#define  UCR1_TRDYEN     (1<<13) /* Transmitter ready interrupt enable */
--#define  UCR1_IDEN       (1<<12) /* Idle condition interrupt */
--#define  UCR1_RRDYEN     (1<<9)	 /* Recv ready interrupt enable */
--#define  UCR1_RDMAEN     (1<<8)	 /* Recv ready DMA enable */
--#define  UCR1_IREN       (1<<7)	 /* Infrared interface enable */
--#define  UCR1_TXMPTYEN   (1<<6)	 /* Transimitter empty interrupt enable */
--#define  UCR1_RTSDEN     (1<<5)	 /* RTS delta interrupt enable */
--#define  UCR1_SNDBRK     (1<<4)	 /* Send break */
--#define  UCR1_TDMAEN     (1<<3)	 /* Transmitter ready DMA enable */
--#define  UCR1_UARTCLKEN  (1<<2)	 /* UART clock enabled */
--#define  UCR1_DOZE       (1<<1)	 /* Doze */
--#define  UCR1_UARTEN     (1<<0)	 /* UART enabled */
--#define  UCR2_ESCI     	 (1<<15) /* Escape seq interrupt enable */
--#define  UCR2_IRTS  	 (1<<14) /* Ignore RTS pin */
--#define  UCR2_CTSC  	 (1<<13) /* CTS pin control */
--#define  UCR2_CTS        (1<<12) /* Clear to send */
--#define  UCR2_ESCEN      (1<<11) /* Escape enable */
--#define  UCR2_PREN       (1<<8)  /* Parity enable */
--#define  UCR2_PROE       (1<<7)  /* Parity odd/even */
--#define  UCR2_STPB       (1<<6)	 /* Stop */
--#define  UCR2_WS         (1<<5)	 /* Word size */
--#define  UCR2_RTSEN      (1<<4)	 /* Request to send interrupt enable */
--#define  UCR2_TXEN       (1<<2)	 /* Transmitter enabled */
--#define  UCR2_RXEN       (1<<1)	 /* Receiver enabled */
--#define  UCR2_SRST 	 (1<<0)	 /* SW reset */
--#define  UCR3_DTREN 	 (1<<13) /* DTR interrupt enable */
--#define  UCR3_PARERREN   (1<<12) /* Parity enable */
--#define  UCR3_FRAERREN   (1<<11) /* Frame error interrupt enable */
--#define  UCR3_DSR        (1<<10) /* Data set ready */
--#define  UCR3_DCD        (1<<9)  /* Data carrier detect */
--#define  UCR3_RI         (1<<8)  /* Ring indicator */
--#define  UCR3_ADNIMP     (1<<7)  /* Autobaud Detection Not Improved */
--#define  UCR3_RXDSEN	 (1<<6)  /* Receive status interrupt enable */
--#define  UCR3_AIRINTEN   (1<<5)  /* Async IR wake interrupt enable */
--#define  UCR3_AWAKEN	 (1<<4)  /* Async wake interrupt enable */
--#define  UCR3_REF25 	 (1<<3)  /* Ref freq 25 MHz (i.MXL / i.MX1) */
--#define  UCR3_REF30 	 (1<<2)  /* Ref Freq 30 MHz (i.MXL / i.MX1) */
--#define  UCR3_RXDMUXSEL  (1<<2)  /* RXD Muxed input select (i.MX27) */
--#define  UCR3_INVT  	 (1<<1)  /* Inverted Infrared transmission */
--#define  UCR3_BPEN  	 (1<<0)  /* Preset registers enable */
--#define  UCR4_CTSTL_32   (32<<10) /* CTS trigger level (32 chars) */
--#define  UCR4_INVR  	 (1<<9)  /* Inverted infrared reception */
--#define  UCR4_ENIRI 	 (1<<8)  /* Serial infrared interrupt enable */
--#define  UCR4_WKEN  	 (1<<7)  /* Wake interrupt enable */
--#define  UCR4_REF16 	 (1<<6)  /* Ref freq 16 MHz */
--#define  UCR4_IRSC  	 (1<<5)  /* IR special case */
--#define  UCR4_TCEN  	 (1<<3)  /* Transmit complete interrupt enable */
--#define  UCR4_BKEN  	 (1<<2)  /* Break condition interrupt enable */
--#define  UCR4_OREN  	 (1<<1)  /* Receiver overrun interrupt enable */
--#define  UCR4_DREN  	 (1<<0)  /* Recv data ready interrupt enable */
--#define  UFCR_RXTL_SHF   0       /* Receiver trigger level shift */
--#define  UFCR_RFDIV      (7<<7)  /* Reference freq divider mask */
--#define  UFCR_TXTL_SHF   10      /* Transmitter trigger level shift */
--#define  USR1_PARITYERR  (1<<15) /* Parity error interrupt flag */
--#define  USR1_RTSS  	 (1<<14) /* RTS pin status */
--#define  USR1_TRDY  	 (1<<13) /* Transmitter ready interrupt/dma flag */
--#define  USR1_RTSD  	 (1<<12) /* RTS delta */
--#define  USR1_ESCF  	 (1<<11) /* Escape seq interrupt flag */
--#define  USR1_FRAMERR    (1<<10) /* Frame error interrupt flag */
--#define  USR1_RRDY       (1<<9)	 /* Receiver ready interrupt/dma flag */
--#define  USR1_TIMEOUT    (1<<7)	 /* Receive timeout interrupt status */
--#define  USR1_RXDS  	 (1<<6)	 /* Receiver idle interrupt flag */
--#define  USR1_AIRINT	 (1<<5)	 /* Async IR wake interrupt flag */
--#define  USR1_AWAKE 	 (1<<4)	 /* Aysnc wake interrupt flag */
--#define  USR2_ADET  	 (1<<15) /* Auto baud rate detect complete */
--#define  USR2_TXFE  	 (1<<14) /* Transmit buffer FIFO empty */
--#define  USR2_DTRF  	 (1<<13) /* DTR edge interrupt flag */
--#define  USR2_IDLE  	 (1<<12) /* Idle condition */
--#define  USR2_IRINT 	 (1<<8)	 /* Serial infrared interrupt flag */
--#define  USR2_WAKE  	 (1<<7)	 /* Wake */
--#define  USR2_RTSF  	 (1<<4)	 /* RTS edge interrupt flag */
--#define  USR2_TXDC  	 (1<<3)	 /* Transmitter complete */
--#define  USR2_BRCD  	 (1<<2)	 /* Break condition */
--#define  USR2_ORE        (1<<1)	 /* Overrun error */
--#define  USR2_RDR        (1<<0)	 /* Recv data ready */
--#define  UTS_FRCPERR	 (1<<13) /* Force parity error */
--#define  UTS_LOOP        (1<<12) /* Loop tx and rx */
--#define  UTS_TXEMPTY	 (1<<6)	 /* TxFIFO empty */
--#define  UTS_RXEMPTY	 (1<<5)	 /* RxFIFO empty */
--#define  UTS_TXFULL 	 (1<<4)	 /* TxFIFO full */
--#define  UTS_RXFULL 	 (1<<3)	 /* RxFIFO full */
--#define  UTS_SOFTRST	 (1<<0)	 /* Software reset */
-+#include <mach/serial.h>
++++ b/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
+@@ -0,0 +1,59 @@
++loadaddr CONFIG_ARCH_IMX_UNUSED_IRAM_BASE
++soc imx51
++dcdofs 0x400
++wm 32 0x73fa88a0 0x00000200
++wm 32 0x73fa850c 0x000020c5
++wm 32 0x73fa8510 0x000020c5
++wm 32 0x73fa883c 0x00000002
++wm 32 0x73fa8848 0x00000002
++wm 32 0x73fa84b8 0x000000e7
++wm 32 0x73fa84bc 0x00000045
++wm 32 0x73fa84c0 0x00000045
++wm 32 0x73fa84c4 0x00000045
++wm 32 0x73fa84c8 0x00000045
++wm 32 0x73fa8820 0x00000000
++wm 32 0x73fa84a4 0x00000003
++wm 32 0x73fa84a8 0x00000003
++wm 32 0x73fa84ac 0x000000e3
++wm 32 0x73fa84b0 0x000000e3
++wm 32 0x73fa84b4 0x000000e3
++wm 32 0x73fa84cc 0x000000e3
++wm 32 0x73fa84d0 0x000000e2
++wm 32 0x73fa882c 0x00000004
++wm 32 0x73fa88a4 0x00000004
++wm 32 0x73fa88ac 0x00000004
++wm 32 0x73fa88b8 0x00000004
++wm 32 0x83fd9000 0x82a20000
++wm 32 0x83fd9008 0x82a20000
++wm 32 0x83fd9010 0x000ad0d0
++wm 32 0x83fd9004 0x3f3584ab
++wm 32 0x83fd900c 0x3f3584ab
++wm 32 0x83fd9014 0x04008008
++wm 32 0x83fd9014 0x0000801a
++wm 32 0x83fd9014 0x0000801b
++wm 32 0x83fd9014 0x00448019
++wm 32 0x83fd9014 0x07328018
++wm 32 0x83fd9014 0x04008008
++wm 32 0x83fd9014 0x00008010
++wm 32 0x83fd9014 0x00008010
++wm 32 0x83fd9014 0x06328018
++wm 32 0x83fd9014 0x03808019
++wm 32 0x83fd9014 0x00408019
++wm 32 0x83fd9014 0x00008000
++wm 32 0x83fd9014 0x0400800c
++wm 32 0x83fd9014 0x0000801e
++wm 32 0x83fd9014 0x0000801f
++wm 32 0x83fd9014 0x0000801d
++wm 32 0x83fd9014 0x0732801c
++wm 32 0x83fd9014 0x0400800c
++wm 32 0x83fd9014 0x00008014
++wm 32 0x83fd9014 0x00008014
++wm 32 0x83fd9014 0x0632801c
++wm 32 0x83fd9014 0x0380801d
++wm 32 0x83fd9014 0x0040801d
++wm 32 0x83fd9014 0x00008004
++wm 32 0x83fd9000 0xb2a20000
++wm 32 0x83fd9008 0xb2a20000
++wm 32 0x83fd9010 0x000ad6d0
++wm 32 0x83fd9034 0x90000000
++wm 32 0x83fd9014 0x00000000
+diff --git a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+index 3bb8614..e308553 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
++++ b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+@@ -3,6 +3,7 @@
+ #include <common.h>
+ #include <mach/esdctl.h>
+ #include <mach/generic.h>
++#include <asm/cache.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
 
- /*
-  * create default values for different platforms
+@@ -53,3 +54,27 @@ ENTRY_FUNCTION(start_imx51_babbage, r0, r1, r2)
+
+ 	imx51_barebox_entry(fdt);
+ }
++
++static noinline void babbage_entry(void)
++{
++	arm_early_mmu_cache_invalidate();
++
++	relocate_to_current_adr();
++	setup_c();
++
++	puts_ll("lowlevel init done\n");
++
++	imx51_barebox_entry(NULL);
++}
++
++ENTRY_FUNCTION(start_imx51_babbage_xload, r0, r1, r2)
++{
++	imx5_cpu_lowlevel_init();
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	arm_setup_stack(0x20000000 - 16);
++
++	babbage_entry();
++}
+diff --git a/arch/arm/configs/imx_v7-xload_defconfig b/arch/arm/configs/imx_v7-xload_defconfig
+new file mode 100644
+index 0000000..41293fb
+--- /dev/null
++++ b/arch/arm/configs/imx_v7-xload_defconfig
+@@ -0,0 +1,46 @@
++CONFIG_ARCH_IMX=y
++CONFIG_ARCH_IMX_IMXIMAGE=y
++CONFIG_ARCH_IMX_XLOAD=y
++
++CONFIG_ARCH_IMX51=y
++CONFIG_IMX_MULTI_BOARDS=y
++CONFIG_MACH_FREESCALE_MX51_PDK=y
++
++CONFIG_THUMB2_BAREBOX=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0x0
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_DUMMY=y
++CONFIG_RELOCATABLE=y
++CONFIG_BAUDRATE=115200
++CONFIG_SHELL_NONE=y
++
++CONFIG_DEBUG_LL=y
++CONFIG_DEBUG_IMX51_UART=y
++CONFIG_DEBUG_IMX_UART_PORT=1
++
++CONFIG_HAS_DEBUG_LL=y
++# CONFIG_ERRNO_MESSAGES is not set
++# CONFIG_TIMESTAMP is not set
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_DRIVER_SERIAL_IMX=y
++
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++# CONFIG_MCI_WRITE is not set
++
++CONFIG_MCI_IMX_ESDHC=y
++
++CONFIG_EEPROM_AT25=y
++
++CONFIG_WATCHDOG_IMX_RESET_SOURCE=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_IMX=y
++
++# CONFIG_FS_RAMFS is not set
++# CONFIG_FS_DEVFS is not set
++CONFIG_FS_FAT=y
++CONFIG_BOOTSTRAP=y
++CONFIG_BOOTSTRAP_DISK=y
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index c713477..3ccd060 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -68,6 +68,21 @@ config ARCH_IMX_IMXIMAGE
+ 	help
+ 	  if enabled the imx-image tool is compiled
+
++config ARCH_IMX_XLOAD
++	bool
++	depends on ARCH_IMX51
++	prompt "Build preloader image"
++
++config ARCH_IMX_UNUSED_IRAM_BASE
++       hex
++       depends on ARCH_IMX_XLOAD
++       default 0x1ffe2000 if ARCH_IMX51
++
++config ARCH_IMX_UNUSED_IRAM_SIZE
++       hex
++       depends on ARCH_IMX_XLOAD
++       default 0x16000 if ARCH_IMX51
++
+ choice
+ 	depends on ARCH_IMX_INTERNAL_BOOT
+ 	prompt "Internal boot source"
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index ae953b1..0320d1c 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -12,6 +12,7 @@ pbl-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
+ obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o clk-imx6.o
+ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
+ obj-$(CONFIG_ARCH_IMX6SX) += clk-imx6sx.o
++obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
+ obj-$(CONFIG_IMX_IIM)	+= iim.o
+ obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+diff --git a/arch/arm/mach-imx/xload.c b/arch/arm/mach-imx/xload.c
+new file mode 100644
+index 0000000..07d6520
+--- /dev/null
++++ b/arch/arm/mach-imx/xload.c
+@@ -0,0 +1,54 @@
++#include <bootsource.h>
++#include <bootstrap.h>
++#include <common.h>
++#include <malloc.h>
++#include <init.h>
++#include <envfs.h>
++#include <linux/sizes.h>
++#include <fs.h>
++#include <io.h>
++
++#include <linux/clkdev.h>
++#include <linux/stat.h>
++#include <linux/clk.h>
++
++#include <mach/devices-imx51.h>
++
++static __noreturn int imx_xload(void)
++{
++	enum bootsource bootsource = bootsource_get();
++	void *buf;
++
++	switch (bootsource) {
++	case BOOTSOURCE_MMC:
++		buf = bootstrap_read_disk("disk0.0", "fat");
++		break;
++	default:
++		pr_err("unknown bootsource %d\n", bootsource);
++		hang();
++	}
++
++	if (!buf) {
++		pr_err("failed to load barebox.bin\n");
++		hang();
++	}
++
++	pr_info("starting bootloader...\n");
++
++	bootstrap_boot(buf, 0);
++
++	hang();
++}
++
++static int imx_devices_init(void)
++{
++#ifdef CONFIG_MCI_IMX_ESDHC
++	imx51_add_mmc0(NULL);
++	imx51_add_mmc1(NULL);
++#endif
++
++	barebox_main = imx_xload;
++
++	return 0;
++}
++coredevice_initcall(imx_devices_init);
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 415b294..6b44958 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -4,8 +4,15 @@
+
+ # %.imximg - convert into i.MX image
+ # ----------------------------------------------------------------
++
++ifdef CONFIG_ARCH_IMX_XLOAD
++$(obj)/%.imximg: $(obj)/% FORCE
++	$(call cmd,check_file_size,$<,$(CONFIG_ARCH_IMX_UNUSED_IRAM_SIZE))
++	$(call if_changed,imx_image)
++else
+ $(obj)/%.imximg: $(obj)/% FORCE
+ 	$(call if_changed,imx_image)
++endif
+
+ # ----------------------- i.MX25 based boards ---------------------------
+ pblx-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
+@@ -29,7 +36,18 @@ image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
+ pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
+ CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg
+ FILE_barebox-freescale-imx51-babbage.img = start_imx51_babbage.pblx.imximg
+-image-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage.img
++imx-barebox-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage.img
++
++pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage_xload
++CFG_start_imx51_babbage_xload.pblx.imximg = $(board)/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
++FILE_barebox-freescale-imx51-babbage-xload.img = start_imx51_babbage_xload.pblx.imximg
++imx-xload-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage-xload.img
++
++ifdef CONFIG_ARCH_IMX_XLOAD
++image-y += $(imx-xload-y)
++else
++image-y += $(imx-barebox-y)
++endif
+
+ pblx-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK) += start_imx51_genesi_efikasb
+ CFG_start_imx51_genesi_efikasb.pblx.imximg = $(board)/efika-mx-smartbook/flash-header-imx51-genesi-efikasb.imxcfg
 --
 2.1.4
 
