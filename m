@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x235.google.com ([2607:f8b0:400e:c02::235])
+Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yp0HI-0001up-0y
- for barebox@lists.infradead.org; Sun, 03 May 2015 20:14:16 +0000
-Received: by pdbqa5 with SMTP id qa5so145082893pdb.1
- for <barebox@lists.infradead.org>; Sun, 03 May 2015 13:13:55 -0700 (PDT)
+ id 1Yp0HF-0001u6-W8
+ for barebox@lists.infradead.org; Sun, 03 May 2015 20:14:14 +0000
+Received: by pabtp1 with SMTP id tp1so142975865pab.2
+ for <barebox@lists.infradead.org>; Sun, 03 May 2015 13:13:50 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun,  3 May 2015 13:13:14 -0700
-Message-Id: <1430683999-5910-3-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1430683999-5910-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1430683999-5910-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun,  3 May 2015 13:13:12 -0700
+Message-Id: <1430683999-5910-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] bootstrap_read_devfs(): Check for errors from
- devfs_add_partition()
+Subject: [PATCH 1/8] Makefile.lib: Fix i.MX image size after generation
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Check for errors returned by devfs_add_partition() and bail if there
-are any.
+If called with '-b' option 'imx-image' tool prepends barebox header to
+the image, but the tool does not fill the data at image size offset
+correctly. Call 'fix_size', right after 'imx-image' to fix that.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- lib/bootstrap/devfs.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ scripts/Makefile.lib | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
-index 82c7d21..de274a0 100644
---- a/lib/bootstrap/devfs.c
-+++ b/lib/bootstrap/devfs.c
-@@ -82,10 +82,17 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
- 	int ret;
- 	int size = 0;
- 	void *to, *header;
--	struct cdev *cdev;
-+	struct cdev *cdev, partition;
- 	char *partname = "x";
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index e991f33..c140d16 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -431,7 +431,8 @@ imximg-tmp = $(subst $(comma),_,$(dot-target).imxcfg.tmp)
 
--	devfs_add_partition(devname, offset, max_size, DEVFS_PARTITION_FIXED, partname);
-+	partition = devfs_add_partition(devname, offset, max_size,
-+					DEVFS_PARTITION_FIXED, partname);
-+	if (IS_ERR_OR_NULL(partition)) {
-+		bootstrap_err("%s: failed to add partition (%ld)\n",
-+			      devname, PTR_ERR(partition));
-+		return NULL;
-+	}
-+
- 	if (use_bb) {
- 		dev_add_bb_dev(partname, "bbx");
- 		partname = "bbx";
+ quiet_cmd_imx_image = IMX-IMG $@
+       cmd_imx_image = $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(CFG_$(@F)) ; \
+-		      $(objtree)/scripts/imx/imx-image -o $@ -b -c $(imximg-tmp) -f $<
++		      $(objtree)/scripts/imx/imx-image -o $@ -b -c $(imximg-tmp) -f $<; \
++		      $(objtree)/scripts/fix_size -f $@
+
+ quiet_cmd_kwb_image = KWB     $@
+       cmd_kwb_image = scripts/kwbimage -p $< $(OPTS_$(@F)) -o $@
 --
 2.1.4
 
