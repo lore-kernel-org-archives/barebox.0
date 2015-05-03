@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ig0-x234.google.com ([2607:f8b0:4001:c05::234])
+Received: from mail-pd0-x234.google.com ([2607:f8b0:400e:c02::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yp1lP-0001rC-Vq
- for barebox@lists.infradead.org; Sun, 03 May 2015 21:49:28 +0000
-Received: by igbyr2 with SMTP id yr2so71986888igb.0
- for <barebox@lists.infradead.org>; Sun, 03 May 2015 14:49:06 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <554684FB.9090707@pengutronix.de>
-References: <1430683999-5910-1-git-send-email-andrew.smirnov@gmail.com>
- <554684FB.9090707@pengutronix.de>
-Date: Sun, 3 May 2015 14:49:06 -0700
-Message-ID: <CAHQ1cqHNQASC5+xZ-Fb46nC_2_vQO4Ee6Vdn9r_4U-K-99XxLQ@mail.gmail.com>
+ id 1Yp1rj-0004nY-Cd
+ for barebox@lists.infradead.org; Sun, 03 May 2015 21:55:59 +0000
+Received: by pdbnk13 with SMTP id nk13so146470165pdb.0
+ for <barebox@lists.infradead.org>; Sun, 03 May 2015 14:55:37 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun,  3 May 2015 14:55:22 -0700
+Message-Id: <1430690125-2257-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,39 +16,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/8] Makefile.lib: Fix i.MX image size after generation
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 1/8] imx-image: Correctly fill image size in prepended
+ header
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-On Sun, May 3, 2015 at 1:28 PM, Marc Kleine-Budde <mkl@pengutronix.de> wrote:
-> On 05/03/2015 10:13 PM, Andrey Smirnov wrote:
->> If called with '-b' option 'imx-image' tool prepends barebox header to
->> the image, but the tool does not fill the data at image size offset
->> correctly. Call 'fix_size', right after 'imx-image' to fix that.
->
-> What about fixing the tool instead? The imx-image tool in used
-> imx-habv4, too, see images/Makefile.imxhabv4.
->
+If called with '-b' option 'imx-image' tool prepends barebox header to
+the image, but the tool does not fill the data at image size offset
+correctly. Fix that.
 
-I wasn't sure what would be the most appropriate way to fix this, so I
-chose the path of a least resistance. But now that I know that the
-tool is used in multiple places -- I agree -- it makes more sense to
-fix the problem at its root. I will send the updated patch shortly.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
 
-Andrey
+This patch supercedes the one sent earlier titled:
+ "[PATCH 1/8] Makefile.lib: Fix i.MX image size after generation"
 
-> Marc
->
-> --
-> Pengutronix e.K.                  | Marc Kleine-Budde           |
-> Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-> Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-> Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
->
+ scripts/imx/Makefile    |  2 ++
+ scripts/imx/imx-image.c | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
+index be0b490..ee0acc1 100644
+--- a/scripts/imx/Makefile
++++ b/scripts/imx/Makefile
+@@ -6,5 +6,7 @@ always          := $(hostprogs-y)
+ HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
+ HOSTLOADLIBES_imx-usb-loader  = `pkg-config --libs libusb-1.0`
+
++HOSTCFLAGS_imx-image.o = -I$(srctree)
++
+ imx-usb-loader-objs := imx-usb-loader.o
+ imx-image-objs := imx-image.o
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 25ea4d8..c0181df 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -27,6 +27,8 @@
+ #include <fcntl.h>
+ #include <endian.h>
+
++#include <include/filetype.h>
++
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+ #define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
+ #define roundup(x, y) ((((x) + ((y) - 1)) / (y)) * (y))
+@@ -92,8 +94,11 @@ static int add_header_v1(void *buf, int offset, uint32_t loadaddr, uint32_t imag
+ 	struct imx_flash_header *hdr;
+ 	int dcdsize = curdcd * sizeof(uint32_t);
+
+-	if (add_barebox_header)
++	if (add_barebox_header) {
++		uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
+ 		memcpy(buf, bb_header, sizeof(bb_header));
++		*psize = imagesize;
++	}
+
+ 	buf += offset;
+ 	hdr = buf;
+@@ -178,8 +183,11 @@ static int add_header_v2(void *buf, int offset, uint32_t loadaddr, uint32_t imag
+ 	struct imx_flash_header_v2 *hdr;
+ 	int dcdsize = curdcd * sizeof(uint32_t);
+
+-	if (add_barebox_header)
++	if (add_barebox_header) {
++		uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
+ 		memcpy(buf, bb_header, sizeof(bb_header));
++		*psize = imagesize;
++	}
+
+ 	buf += offset;
+ 	hdr = buf;
+--
+2.1.4
 
 _______________________________________________
 barebox mailing list
