@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x234.google.com ([2607:f8b0:400e:c02::234])
+Received: from mail-pd0-x235.google.com ([2607:f8b0:400e:c02::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yp1rj-0004nY-Cd
- for barebox@lists.infradead.org; Sun, 03 May 2015 21:55:59 +0000
-Received: by pdbnk13 with SMTP id nk13so146470165pdb.0
- for <barebox@lists.infradead.org>; Sun, 03 May 2015 14:55:37 -0700 (PDT)
+ id 1Yp1rk-0004nb-7Y
+ for barebox@lists.infradead.org; Sun, 03 May 2015 21:56:00 +0000
+Received: by pdea3 with SMTP id a3so146520624pde.3
+ for <barebox@lists.infradead.org>; Sun, 03 May 2015 14:55:39 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun,  3 May 2015 14:55:22 -0700
-Message-Id: <1430690125-2257-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun,  3 May 2015 14:55:24 -0700
+Message-Id: <1430690125-2257-3-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1430690125-2257-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1430690125-2257-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,76 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/8] imx-image: Correctly fill image size in prepended
- header
+Subject: [PATCH v2 5/8] bootstrap_read_devfs(): Fix potential memory leak
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-If called with '-b' option 'imx-image' tool prepends barebox header to
-the image, but the tool does not fill the data at image size offset
-correctly. Fix that.
+In case of a failure in one of the cdev_* functions original version
+of bootstrap_read_devfs would not release memory allocated for barebox
+header or memory allocated for the image. This commit fixes this by
+adding resource deallocation code.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
 
-This patch supercedes the one sent earlier titled:
- "[PATCH 1/8] Makefile.lib: Fix i.MX image size after generation"
+Changes since v1:
 
- scripts/imx/Makefile    |  2 ++
- scripts/imx/imx-image.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ - Fix a compile time error that snuck in during the time the diff was
+   being split into multiple patches
 
-diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
-index be0b490..ee0acc1 100644
---- a/scripts/imx/Makefile
-+++ b/scripts/imx/Makefile
-@@ -6,5 +6,7 @@ always          := $(hostprogs-y)
- HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
- HOSTLOADLIBES_imx-usb-loader  = `pkg-config --libs libusb-1.0`
+ lib/bootstrap/devfs.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-+HOSTCFLAGS_imx-image.o = -I$(srctree)
+diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
+index 3c4276f..05a6346 100644
+--- a/lib/bootstrap/devfs.c
++++ b/lib/bootstrap/devfs.c
+@@ -81,7 +81,7 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+ {
+ 	int ret;
+ 	int size = 0;
+-	void *to, *header;
++	void *to, *header, *result = NULL;
+ 	struct cdev *cdev, *partition;
+ 	char *partname = "x";
+
+@@ -116,16 +116,21 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+ 	cdev = cdev_open(partname, O_RDONLY);
+ 	if (!cdev) {
+ 		bootstrap_err("%s: failed to open %s\n", devname, partname);
+-		return NULL;
++		goto free_memory;
+ 	}
+
+ 	ret = cdev_read(cdev, to, size, 0, 0);
+ 	cdev_close(cdev);
+
+-	if (ret != size) {
++	if (ret != size)
+ 		bootstrap_err("%s: failed to read from %s\n", devname, partname);
+-		return NULL;
+-	}
++	else
++		result = to;
 +
- imx-usb-loader-objs := imx-usb-loader.o
- imx-image-objs := imx-image.o
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 25ea4d8..c0181df 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -27,6 +27,8 @@
- #include <fcntl.h>
- #include <endian.h>
++free_memory:
++	free(header);
++	if (!result)
++		free(to);
 
-+#include <include/filetype.h>
-+
- #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
- #define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
- #define roundup(x, y) ((((x) + ((y) - 1)) / (y)) * (y))
-@@ -92,8 +94,11 @@ static int add_header_v1(void *buf, int offset, uint32_t loadaddr, uint32_t imag
- 	struct imx_flash_header *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
-
--	if (add_barebox_header)
-+	if (add_barebox_header) {
-+		uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
- 		memcpy(buf, bb_header, sizeof(bb_header));
-+		*psize = imagesize;
-+	}
-
- 	buf += offset;
- 	hdr = buf;
-@@ -178,8 +183,11 @@ static int add_header_v2(void *buf, int offset, uint32_t loadaddr, uint32_t imag
- 	struct imx_flash_header_v2 *hdr;
- 	int dcdsize = curdcd * sizeof(uint32_t);
-
--	if (add_barebox_header)
-+	if (add_barebox_header) {
-+		uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
- 		memcpy(buf, bb_header, sizeof(bb_header));
-+		*psize = imagesize;
-+	}
-
- 	buf += offset;
- 	hdr = buf;
+-	return to;
++	return result;
+ }
 --
 2.1.4
 
