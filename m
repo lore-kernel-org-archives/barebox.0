@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x236.google.com ([2607:f8b0:400e:c03::236])
+Received: from mail-pa0-x22a.google.com ([2607:f8b0:400e:c03::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YojcT-0004id-5c
- for barebox@lists.infradead.org; Sun, 03 May 2015 02:27:02 +0000
-Received: by pabtp1 with SMTP id tp1so128805688pab.2
- for <barebox@lists.infradead.org>; Sat, 02 May 2015 19:26:39 -0700 (PDT)
+ id 1Yojcc-0004j1-Ex
+ for barebox@lists.infradead.org; Sun, 03 May 2015 02:27:11 +0000
+Received: by pacyx8 with SMTP id yx8so128795889pac.1
+ for <barebox@lists.infradead.org>; Sat, 02 May 2015 19:26:50 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sat,  2 May 2015 19:26:12 -0700
-Message-Id: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Sat,  2 May 2015 19:26:17 -0700
+Message-Id: <1430619980-26243-6-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,339 +23,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC, PATCH] i.MX: Add provisions to boot from IRAM
+Subject: [PATCH 5/8] i.MX: serial: Add setup_uart_ll function
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-This commit add a very basic code to allow Barebox to be booted from
-IRAM. Given that the amount of IRAM on most i.MX variants is
-insufficient to contain a copy of Barebox with any reasonable degree
-of functionality this code uses IRAM only as a temporary location and
-eventually bootstraps from DRAM. But the presense of the intermediate
-IRAM-only stage allows to add provisions to test the area of DRAM that
-Barebox would be using to facilitate various testing scenarious.
+It appears that all i.MX based boards that support early debug output
+inevitably do exactly the same thing with the registers of the UART
+peripheral. So to avoid code duplication distill that functionality
+into dedicated subroutine.
+
+IMPORTANT: Please note that 'setup_uart_ll' function does add a slight
+difference in behaviour by dropping the initialization of ONEMS and
+UESC registers since those do not seem to be needed for early UART
+functionality
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/boards/freescale-mx51-babbage/Makefile    |  3 ++
- .../flash-header-imx51-babbage-xload.imxcfg        | 59 ++++++++++++++++++++++
- arch/arm/boards/freescale-mx51-babbage/lowlevel.c  | 25 +++++++++
- arch/arm/configs/imx_v7-xload_defconfig            | 46 +++++++++++++++++
- arch/arm/mach-imx/Kconfig                          | 15 ++++++
- arch/arm/mach-imx/Makefile                         |  1 +
- arch/arm/mach-imx/xload.c                          | 54 ++++++++++++++++++++
- images/Makefile.imx                                | 20 +++++++-
- 8 files changed, 222 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
- create mode 100644 arch/arm/configs/imx_v7-xload_defconfig
- create mode 100644 arch/arm/mach-imx/xload.c
+ arch/arm/mach-imx/include/mach/debug_ll.h | 34 +++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/arch/arm/boards/freescale-mx51-babbage/Makefile b/arch/arm/boards/freescale-mx51-babbage/Makefile
-index 6252c88..31b8fcd 100644
---- a/arch/arm/boards/freescale-mx51-babbage/Makefile
-+++ b/arch/arm/boards/freescale-mx51-babbage/Makefile
-@@ -1,3 +1,6 @@
- obj-y += board.o flash-header-imx51-babbage.dcd.o
- extra-y += flash-header-imx51-babbage.dcd.S flash-header-imx51-babbage.dcd
- lwl-y += lowlevel.o
+diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+index 1c9f3a6..5b0b33b 100644
+--- a/arch/arm/mach-imx/include/mach/debug_ll.h
++++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+@@ -30,10 +30,12 @@
+ #define IMX_DEBUG_SOC MX35
+ #elif defined CONFIG_DEBUG_IMX51_UART
+ #define IMX_DEBUG_SOC MX51
++#define IMX_DEBUG_UART_REFCLOCK_HZ 54000000
+ #elif defined CONFIG_DEBUG_IMX53_UART
+ #define IMX_DEBUG_SOC MX53
+ #elif defined CONFIG_DEBUG_IMX6Q_UART
+ #define IMX_DEBUG_SOC MX6
++#define IMX_DEBUG_UART_REFCLOCK_HZ 80000000
+ #else
+ #error "unknown i.MX debug uart soc type"
+ #endif
+@@ -41,6 +43,34 @@
+ #define __IMX_UART_BASE(soc, num) soc##_UART##num##_BASE_ADDR
+ #define IMX_UART_BASE(soc, num) __IMX_UART_BASE(soc, num)
+
 +
-+obj-$(CONFIG_ARCH_IMX_XLOAD) += flash-header-imx51-babbage-xload.dcd.o
-+extra-$(CONFIG_ARCH_IMX_XLOAD) += flash-header-imx51-babbage-xload.dcd.S flash-header-imx51-babbage-xload.dcd
-diff --git a/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg b/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
-new file mode 100644
-index 0000000..a04ac75
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
-@@ -0,0 +1,59 @@
-+loadaddr CONFIG_ARCH_IMX_UNUSED_IRAM_BASE
-+soc imx51
-+dcdofs 0x400
-+wm 32 0x73fa88a0 0x00000200
-+wm 32 0x73fa850c 0x000020c5
-+wm 32 0x73fa8510 0x000020c5
-+wm 32 0x73fa883c 0x00000002
-+wm 32 0x73fa8848 0x00000002
-+wm 32 0x73fa84b8 0x000000e7
-+wm 32 0x73fa84bc 0x00000045
-+wm 32 0x73fa84c0 0x00000045
-+wm 32 0x73fa84c4 0x00000045
-+wm 32 0x73fa84c8 0x00000045
-+wm 32 0x73fa8820 0x00000000
-+wm 32 0x73fa84a4 0x00000003
-+wm 32 0x73fa84a8 0x00000003
-+wm 32 0x73fa84ac 0x000000e3
-+wm 32 0x73fa84b0 0x000000e3
-+wm 32 0x73fa84b4 0x000000e3
-+wm 32 0x73fa84cc 0x000000e3
-+wm 32 0x73fa84d0 0x000000e2
-+wm 32 0x73fa882c 0x00000004
-+wm 32 0x73fa88a4 0x00000004
-+wm 32 0x73fa88ac 0x00000004
-+wm 32 0x73fa88b8 0x00000004
-+wm 32 0x83fd9000 0x82a20000
-+wm 32 0x83fd9008 0x82a20000
-+wm 32 0x83fd9010 0x000ad0d0
-+wm 32 0x83fd9004 0x3f3584ab
-+wm 32 0x83fd900c 0x3f3584ab
-+wm 32 0x83fd9014 0x04008008
-+wm 32 0x83fd9014 0x0000801a
-+wm 32 0x83fd9014 0x0000801b
-+wm 32 0x83fd9014 0x00448019
-+wm 32 0x83fd9014 0x07328018
-+wm 32 0x83fd9014 0x04008008
-+wm 32 0x83fd9014 0x00008010
-+wm 32 0x83fd9014 0x00008010
-+wm 32 0x83fd9014 0x06328018
-+wm 32 0x83fd9014 0x03808019
-+wm 32 0x83fd9014 0x00408019
-+wm 32 0x83fd9014 0x00008000
-+wm 32 0x83fd9014 0x0400800c
-+wm 32 0x83fd9014 0x0000801e
-+wm 32 0x83fd9014 0x0000801f
-+wm 32 0x83fd9014 0x0000801d
-+wm 32 0x83fd9014 0x0732801c
-+wm 32 0x83fd9014 0x0400800c
-+wm 32 0x83fd9014 0x00008014
-+wm 32 0x83fd9014 0x00008014
-+wm 32 0x83fd9014 0x0632801c
-+wm 32 0x83fd9014 0x0380801d
-+wm 32 0x83fd9014 0x0040801d
-+wm 32 0x83fd9014 0x00008004
-+wm 32 0x83fd9000 0xb2a20000
-+wm 32 0x83fd9008 0xb2a20000
-+wm 32 0x83fd9010 0x000ad6d0
-+wm 32 0x83fd9034 0x90000000
-+wm 32 0x83fd9014 0x00000000
-diff --git a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
-index 3bb8614..e308553 100644
---- a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
-@@ -3,6 +3,7 @@
- #include <common.h>
- #include <mach/esdctl.h>
- #include <mach/generic.h>
-+#include <asm/cache.h>
- #include <asm/barebox-arm-head.h>
- #include <asm/barebox-arm.h>
-
-@@ -53,3 +54,27 @@ ENTRY_FUNCTION(start_imx51_babbage, r0, r1, r2)
-
- 	imx51_barebox_entry(fdt);
- }
++#if defined IMX_DEBUG_UART_REFCLOCK_HZ
 +
-+static noinline void babbage_entry(void)
++static inline void setup_uart_ll(void)
 +{
-+	arm_early_mmu_cache_invalidate();
++	void __iomem *uartbase =
++	  (void *)IMX_UART_BASE(IMX_DEBUG_SOC,
++				CONFIG_DEBUG_IMX_UART_PORT);
 +
-+	relocate_to_current_adr();
-+	setup_c();
++	writel(0x00000000, uartbase + UCR1);
 +
-+	puts_ll("lowlevel init done\n");
++	writel(UCR2_IRTS | UCR2_WS | UCR2_TXEN | UCR2_RXEN | UCR2_SRST,
++	       uartbase + UCR2);
++	writel(UCR3_DSR | UCR3_DCD | UCR3_RI | UCR3_ADNIMP | UCR3_RXDMUXSEL,
++	       uartbase + UCR3);
++	writel((0b10 << UFCR_TXTL_SHF) | UFCR_RFDIV1 | (1 << UFCR_RXTL_SHF),
++	       uartbase + UFCR);
 +
-+	imx51_barebox_entry(NULL);
++	writel(baudrate_to_ubir(CONFIG_BAUDRATE),
++	       uartbase + UBIR);
++	writel(refclock_to_ubmr(IMX_DEBUG_UART_REFCLOCK_HZ),
++	       uartbase + UBMR);
++
++	writel(UCR1_UARTEN, uartbase + UCR1);
 +}
 +
-+ENTRY_FUNCTION(start_imx51_babbage_xload, r0, r1, r2)
-+{
-+	imx5_cpu_lowlevel_init();
-+
-+	if (IS_ENABLED(CONFIG_DEBUG_LL))
-+		setup_uart();
-+
-+	arm_setup_stack(0x20000000 - 16);
-+
-+	babbage_entry();
-+}
-diff --git a/arch/arm/configs/imx_v7-xload_defconfig b/arch/arm/configs/imx_v7-xload_defconfig
-new file mode 100644
-index 0000000..41293fb
---- /dev/null
-+++ b/arch/arm/configs/imx_v7-xload_defconfig
-@@ -0,0 +1,46 @@
-+CONFIG_ARCH_IMX=y
-+CONFIG_ARCH_IMX_IMXIMAGE=y
-+CONFIG_ARCH_IMX_XLOAD=y
-+
-+CONFIG_ARCH_IMX51=y
-+CONFIG_IMX_MULTI_BOARDS=y
-+CONFIG_MACH_FREESCALE_MX51_PDK=y
-+
-+CONFIG_THUMB2_BAREBOX=y
-+# CONFIG_CMD_ARM_CPUINFO is not set
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_DUMMY=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_BAUDRATE=115200
-+CONFIG_SHELL_NONE=y
-+
-+CONFIG_DEBUG_LL=y
-+CONFIG_DEBUG_IMX51_UART=y
-+CONFIG_DEBUG_IMX_UART_PORT=1
-+
-+CONFIG_HAS_DEBUG_LL=y
-+# CONFIG_ERRNO_MESSAGES is not set
-+# CONFIG_TIMESTAMP is not set
-+# CONFIG_DEFAULT_ENVIRONMENT is not set
-+CONFIG_DRIVER_SERIAL_IMX=y
-+
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+# CONFIG_MCI_WRITE is not set
-+
-+CONFIG_MCI_IMX_ESDHC=y
-+
-+CONFIG_EEPROM_AT25=y
-+
-+CONFIG_WATCHDOG_IMX_RESET_SOURCE=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_IMX=y
-+
-+# CONFIG_FS_RAMFS is not set
-+# CONFIG_FS_DEVFS is not set
-+CONFIG_FS_FAT=y
-+CONFIG_BOOTSTRAP=y
-+CONFIG_BOOTSTRAP_DISK=y
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index c713477..3ccd060 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -68,6 +68,21 @@ config ARCH_IMX_IMXIMAGE
- 	help
- 	  if enabled the imx-image tool is compiled
-
-+config ARCH_IMX_XLOAD
-+	bool
-+	depends on ARCH_IMX51
-+	prompt "Build preloader image"
-+
-+config ARCH_IMX_UNUSED_IRAM_BASE
-+       hex
-+       depends on ARCH_IMX_XLOAD
-+       default 0x1ffe2000 if ARCH_IMX51
-+
-+config ARCH_IMX_UNUSED_IRAM_SIZE
-+       hex
-+       depends on ARCH_IMX_XLOAD
-+       default 0x16000 if ARCH_IMX51
-+
- choice
- 	depends on ARCH_IMX_INTERNAL_BOOT
- 	prompt "Internal boot source"
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index ae953b1..0320d1c 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -12,6 +12,7 @@ pbl-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
- obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o clk-imx6.o
- lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
- obj-$(CONFIG_ARCH_IMX6SX) += clk-imx6sx.o
-+obj-$(CONFIG_ARCH_IMX_XLOAD) += xload.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
- obj-$(CONFIG_NAND_IMX) += nand.o
-diff --git a/arch/arm/mach-imx/xload.c b/arch/arm/mach-imx/xload.c
-new file mode 100644
-index 0000000..07d6520
---- /dev/null
-+++ b/arch/arm/mach-imx/xload.c
-@@ -0,0 +1,54 @@
-+#include <bootsource.h>
-+#include <bootstrap.h>
-+#include <common.h>
-+#include <malloc.h>
-+#include <init.h>
-+#include <envfs.h>
-+#include <linux/sizes.h>
-+#include <fs.h>
-+#include <io.h>
-+
-+#include <linux/clkdev.h>
-+#include <linux/stat.h>
-+#include <linux/clk.h>
-+
-+#include <mach/devices-imx51.h>
-+
-+static __noreturn int imx_xload(void)
-+{
-+	enum bootsource bootsource = bootsource_get();
-+	void *buf;
-+
-+	switch (bootsource) {
-+	case BOOTSOURCE_MMC:
-+		buf = bootstrap_read_disk("disk0.0", "fat");
-+		break;
-+	default:
-+		pr_err("unknown bootsource %d\n", bootsource);
-+		hang();
-+	}
-+
-+	if (!buf) {
-+		pr_err("failed to load barebox.bin\n");
-+		hang();
-+	}
-+
-+	pr_info("starting bootloader...\n");
-+
-+	bootstrap_boot(buf, 0);
-+
-+	hang();
-+}
-+
-+static int imx_devices_init(void)
-+{
-+#ifdef CONFIG_MCI_IMX_ESDHC
-+	imx51_add_mmc0(NULL);
-+	imx51_add_mmc1(NULL);
 +#endif
 +
-+	barebox_main = imx_xload;
-+
-+	return 0;
+ static inline void PUTC_LL(int c)
+ {
+ 	void __iomem *base = (void *)IMX_UART_BASE(IMX_DEBUG_SOC,
+@@ -56,5 +86,9 @@ static inline void PUTC_LL(int c)
+
+ 	writel(c, base + URTX0);
+ }
++#else
++static inline void setup_uart_ll(void)
++{
 +}
-+coredevice_initcall(imx_devices_init);
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 415b294..6b44958 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -4,8 +4,15 @@
-
- # %.imximg - convert into i.MX image
- # ----------------------------------------------------------------
-+
-+ifdef CONFIG_ARCH_IMX_XLOAD
-+$(obj)/%.imximg: $(obj)/% FORCE
-+	$(call cmd,check_file_size,$<,$(CONFIG_ARCH_IMX_UNUSED_IRAM_SIZE))
-+	$(call if_changed,imx_image)
-+else
- $(obj)/%.imximg: $(obj)/% FORCE
- 	$(call if_changed,imx_image)
-+endif
-
- # ----------------------- i.MX25 based boards ---------------------------
- pblx-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
-@@ -29,7 +36,18 @@ image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
- pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
- CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg
- FILE_barebox-freescale-imx51-babbage.img = start_imx51_babbage.pblx.imximg
--image-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage.img
-+imx-barebox-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage.img
-+
-+pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage_xload
-+CFG_start_imx51_babbage_xload.pblx.imximg = $(board)/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
-+FILE_barebox-freescale-imx51-babbage-xload.img = start_imx51_babbage_xload.pblx.imximg
-+imx-xload-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage-xload.img
-+
-+ifdef CONFIG_ARCH_IMX_XLOAD
-+image-y += $(imx-xload-y)
-+else
-+image-y += $(imx-barebox-y)
-+endif
-
- pblx-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK) += start_imx51_genesi_efikasb
- CFG_start_imx51_genesi_efikasb.pblx.imximg = $(board)/efika-mx-smartbook/flash-header-imx51-genesi-efikasb.imxcfg
+ #endif /* CONFIG_DEBUG_LL */
+ #endif /* __MACH_DEBUG_LL_H__ */
 --
 2.1.4
 
