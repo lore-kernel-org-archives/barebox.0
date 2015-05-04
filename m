@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YpFUF-0005DW-Tp
+ id 1YpFUG-0005Dy-1O
  for barebox@lists.infradead.org; Mon, 04 May 2015 12:28:41 +0000
-Received: by lagv1 with SMTP id v1so102708557lag.3
- for <barebox@lists.infradead.org>; Mon, 04 May 2015 05:28:16 -0700 (PDT)
+Received: by lbbzk7 with SMTP id zk7so103551366lbb.0
+ for <barebox@lists.infradead.org>; Mon, 04 May 2015 05:28:18 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  4 May 2015 15:29:20 +0300
-Message-Id: <1430742565-18714-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  4 May 2015 15:29:21 +0300
+Message-Id: <1430742565-18714-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1430742565-18714-1-git-send-email-antonynpavlov@gmail.com>
+References: <1430742565-18714-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,45 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] MIPS: tplink-mr3020: initial PBL support
+Subject: [PATCH 1/5] MIPS: tplink-mr3020: enable PBL and compression
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-This patch series enables PBL for AR9331-based TP-Link MR3020 router.
-This makes it possible to implement full-grown bootloader for AR9331-based
-boards in the future.
+From: Oleksij Rempel <linux@rempel-privat.de>
 
-AR9331 lowlevel initialization links:
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ .../tplink-mr3020/include/board/board_pbl_start.h  | 32 ++++++++++++++++++++++
+ arch/mips/mach-ath79/Kconfig                       |  2 ++
+ 2 files changed, 34 insertions(+)
 
-  * https://github.com/pepe2k/u-boot_mod
-  * https://github.com/frantony/barebox/commits/20140507.ar933x.pbl.dirty
-  * https://wikidevi.com/wiki/TP-LINK_TL-MR3020#Notes_on_JTAG
-  * http://openocd.zylin.com/#/c/2519/
-  * http://geektimes.ru/post/245066/
-  * http://geektimes.ru/post/249184/
-  * http://openocd.zylin.com/#/c/2722/
-
-Antony Pavlov (4):
-  MIPS: debug_ll_ns16550.h: drop _ns16550 suffix
-  MIPS: mach-ath79: debug_ll.h: add assembler routines
-  MIPS: tplink-mr3020: enable nmon
-  Documentation: mips: fix tplink-mr3020 instruction
-
-Oleksij Rempel (1):
-  MIPS: tplink-mr3020: enable PBL and compression
-
- Documentation/boards/mips/tplink-mr3020.rst        |   7 +-
- .../img-ci20/include/board/board_pbl_start.h       |   2 +-
- .../loongson-ls1b/include/board/board_pbl_start.h  |   2 +-
- .../netgear-wg102/include/board/board_pbl_start.h  |   6 +-
- .../ritmix-rzx50/include/board/board_pbl_start.h   |   2 +-
- .../tplink-mr3020/include/board/board_pbl_start.h  |  35 ++++++
- arch/mips/include/asm/debug_ll_ns16550.h           |  20 +--
- arch/mips/include/asm/pbl_nmon.h                   |  21 ++--
- arch/mips/mach-ath79/Kconfig                       |   3 +
- arch/mips/mach-ath79/include/mach/debug_ll.h       | 136 ++++++++++++++++++++-
- 10 files changed, 199 insertions(+), 35 deletions(-)
- create mode 100644 arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-
+diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
+new file mode 100644
+index 0000000..f85c5ad
+--- /dev/null
++++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright (C) 2013, 2015 Antony Pavlov <antonynpavlov@gmail.com>
++ * Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <asm/pbl_macros.h>
++
++	.macro	board_pbl_start
++	.set	push
++	.set	noreorder
++
++	mips_barebox_10h
++
++	mips_disable_interrupts
++
++	copy_to_link_location	pbl_start
++
++	.set	pop
++	.endm
+diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
+index 96fffd3..3fd9cdd 100644
+--- a/arch/mips/mach-ath79/Kconfig
++++ b/arch/mips/mach-ath79/Kconfig
+@@ -9,6 +9,8 @@ choice
+ 
+ config BOARD_TPLINK_MR3020
+ 	bool "TP-LINK MR3020"
++	select HAVE_PBL_IMAGE
++	select HAVE_IMAGE_COMPRESSION
+ 
+ endchoice
+ 
 -- 
 2.1.4
 
