@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YpB0P-0002bF-CM
- for barebox@lists.infradead.org; Mon, 04 May 2015 07:41:34 +0000
-Date: Mon, 4 May 2015 09:41:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150504074110.GQ6325@pengutronix.de>
-References: <1430690125-2257-1-git-send-email-andrew.smirnov@gmail.com>
+ Linux)) id 1YpB39-0002vg-8J
+ for barebox@lists.infradead.org; Mon, 04 May 2015 07:44:24 +0000
+Date: Mon, 4 May 2015 09:43:59 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <20150504074359.GA27811@pengutronix.de>
+References: <1430217147-14188-1-git-send-email-s.trumtrar@pengutronix.de>
+ <20150504073219.GO6325@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1430690125-2257-1-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <20150504073219.GO6325@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,90 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/8] imx-image: Correctly fill image size in prepended
- header
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] common: env: make error message more verbose
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-It seems you only resent the patches from this series you actually
-changed. Could you resent *all* patches again next time?
+Hi!
 
-Sascha
+On Mon, May 04, 2015 at 09:32:19AM +0200, Sascha Hauer wrote:
+> On Tue, Apr 28, 2015 at 12:32:27PM +0200, Steffen Trumtrar wrote:
+> > Change the setenv error message from
+> > 
+> > 	set parameter: Invalid argument
+> > 
+> > to a more helpful
+> > 
+> > 	net: cannot set parameter 'nameserver': Invalid argument
+> > 
+> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > ---
+> >  common/env.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/common/env.c b/common/env.c
+> > index 2e33eb35856b..434170a7468b 100644
+> > --- a/common/env.c
+> > +++ b/common/env.c
+> > @@ -225,8 +225,10 @@ int setenv(const char *_name, const char *value)
+> >  
+> >  		errno = -ret;
+> >  
+> > -		if (ret < 0)
+> > -			perror("set parameter");
+> > +		if (ret < 0) {
+> > +			dev_err(dev, "cannot set parameter '%s'", par);
+> > +			perror("");
+> > +		}
+> 
+> dev may be invalid here, so you shouldn't use dev_err.
+> 
 
-On Sun, May 03, 2015 at 02:55:22PM -0700, Andrey Smirnov wrote:
-> If called with '-b' option 'imx-image' tool prepends barebox header to
-> the image, but the tool does not fill the data at image size offset
-> correctly. Fix that.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
-> 
-> This patch supercedes the one sent earlier titled:
->  "[PATCH 1/8] Makefile.lib: Fix i.MX image size after generation"
-> 
->  scripts/imx/Makefile    |  2 ++
->  scripts/imx/imx-image.c | 12 ++++++++++--
->  2 files changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
-> index be0b490..ee0acc1 100644
-> --- a/scripts/imx/Makefile
-> +++ b/scripts/imx/Makefile
-> @@ -6,5 +6,7 @@ always          := $(hostprogs-y)
->  HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
->  HOSTLOADLIBES_imx-usb-loader  = `pkg-config --libs libusb-1.0`
-> 
-> +HOSTCFLAGS_imx-image.o = -I$(srctree)
-> +
->  imx-usb-loader-objs := imx-usb-loader.o
->  imx-image-objs := imx-image.o
-> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-> index 25ea4d8..c0181df 100644
-> --- a/scripts/imx/imx-image.c
-> +++ b/scripts/imx/imx-image.c
-> @@ -27,6 +27,8 @@
->  #include <fcntl.h>
->  #include <endian.h>
-> 
-> +#include <include/filetype.h>
-> +
->  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
->  #define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
->  #define roundup(x, y) ((((x) + ((y) - 1)) / (y)) * (y))
-> @@ -92,8 +94,11 @@ static int add_header_v1(void *buf, int offset, uint32_t loadaddr, uint32_t imag
->  	struct imx_flash_header *hdr;
->  	int dcdsize = curdcd * sizeof(uint32_t);
-> 
-> -	if (add_barebox_header)
-> +	if (add_barebox_header) {
-> +		uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
->  		memcpy(buf, bb_header, sizeof(bb_header));
-> +		*psize = imagesize;
-> +	}
-> 
->  	buf += offset;
->  	hdr = buf;
-> @@ -178,8 +183,11 @@ static int add_header_v2(void *buf, int offset, uint32_t loadaddr, uint32_t imag
->  	struct imx_flash_header_v2 *hdr;
->  	int dcdsize = curdcd * sizeof(uint32_t);
-> 
-> -	if (add_barebox_header)
-> +	if (add_barebox_header) {
-> +		uint32_t *psize = buf + ARM_HEAD_SIZE_OFFSET;
->  		memcpy(buf, bb_header, sizeof(bb_header));
-> +		*psize = imagesize;
-> +	}
-> 
->  	buf += offset;
->  	hdr = buf;
-> --
-> 2.1.4
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Argh, yeah, of course *facepalm*.
+
+> After we talked about the missing informations in the setenv failure
+> path I created the following patch. I applied this one now.
+
+Thanks for fixing.
+Steffen
 
 -- 
 Pengutronix e.K.                           |                             |
