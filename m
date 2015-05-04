@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yp9sy-0006bl-9i
- for barebox@lists.infradead.org; Mon, 04 May 2015 06:29:49 +0000
-Date: Mon, 4 May 2015 08:29:19 +0200
+ Linux)) id 1YpA6h-0003P7-GH
+ for barebox@lists.infradead.org; Mon, 04 May 2015 06:44:00 +0000
+Date: Mon, 4 May 2015 08:43:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150504062919.GF6325@pengutronix.de>
-References: <1426573554-14478-1-git-send-email-s.hauer@pengutronix.de>
- <1426573554-14478-3-git-send-email-s.hauer@pengutronix.de>
- <55450062.6050205@vanguardiasur.com.ar>
+Message-ID: <20150504064341.GG6325@pengutronix.de>
+References: <1430619980-26243-1-git-send-email-andrew.smirnov@gmail.com>
+ <1430619980-26243-5-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <55450062.6050205@vanguardiasur.com.ar>
+In-Reply-To: <1430619980-26243-5-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,123 +23,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Regression on next (Re: [PATCH 3/3] driver: Call bus->remove
- instead of driver->remove)
-To: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 4/8] i.MX51: babbage: Implement CONFIG_DEBUG_LL
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi Ezequiel,
+On Sat, May 02, 2015 at 07:26:16PM -0700, Andrey Smirnov wrote:
+> Implement bits of configuraion needed to configure early debug output
+> support.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/boards/freescale-mx51-babbage/lowlevel.c | 58 +++++++++++++++++++++++
+>  arch/arm/mach-imx/include/mach/clock-imx51_53.h   |  5 +-
+>  2 files changed, 61 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+> index 0f453f3..0135cb4 100644
+> --- a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+> +++ b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+> @@ -1,9 +1,63 @@
+> +#include <debug_ll.h>
+> +#include <mach/clock-imx51_53.h>
+>  #include <common.h>
+>  #include <mach/esdctl.h>
+>  #include <mach/generic.h>
+>  #include <asm/barebox-arm-head.h>
+>  #include <asm/barebox-arm.h>
+> 
+> +#ifdef CONFIG_DEBUG_LL
+> +static inline void setup_uart(void)
+> +{
+> +
+> +	void __iomem *uartbase =
+> +	  (void *)IMX_UART_BASE(IMX_DEBUG_SOC,
+> +				CONFIG_DEBUG_IMX_UART_PORT);
+> +	void __iomem *iomuxbase = (void *)MX51_IOMUXC_BASE_ADDR;
+> +	void __iomem *ccmbase = (void *)MX51_CCM_BASE_ADDR;
+> +
+> +	/*
+> +	 * Restore CCM values that might be changed by the Mask ROM
+> +	 * code.
+> +	 *
+> +	 * Source: RealView debug scripts provided by Freescale
+> +	 */
+> +	writel(MX5_CCM_CBCDR_RESET_VALUE,  ccmbase + MX5_CCM_CBCDR);
+> +	writel(MX5_CCM_CSCMR1_RESET_VALUE, ccmbase + MX5_CCM_CSCMR1);
+> +	writel(MX5_CCM_CSCDR1_RESET_VALUE, ccmbase + MX5_CCM_CSCDR1);
+> +
+> +	/*
+> +	 * The code below should be more or less a "moral equivalent"
+> +	 * of:
+> +	 *	 MX51_PAD_UART1_TXD__UART1_TXD 0x1c5
+> +	 *
+> +	 * in device tree
+> +	 */
+> +	writel(0x00000000, iomuxbase + 0x022c);
+> +	writel(0x000001c5, iomuxbase + 0x061c);
+> +
+> +	writel(0x00000000, uartbase + UCR1);
+> +
+> +	writel(UCR2_IRTS | UCR2_WS | UCR2_TXEN | UCR2_RXEN | UCR2_SRST,
+> +	       uartbase + UCR2);
+> +	writel(UCR3_DSR | UCR3_DCD | UCR3_RI | UCR3_ADNIMP | UCR3_RXDMUXSEL,
+> +	       uartbase + UCR3);
+> +	writel((0b10 << UFCR_TXTL_SHF) | UFCR_RFDIV1 | (1 << UFCR_RXTL_SHF),
+> +	       uartbase + UFCR);
+> +
+> +	writel(baudrate_to_ubir(115200), uartbase + UBIR);
+> +	writel(refclock_to_ubmr(54000000), uartbase + UBMR);
+> +
+> +	writel(UCR1_UARTEN, uartbase + UCR1);
 
-On Sat, May 02, 2015 at 01:50:42PM -0300, Ezequiel Garcia wrote:
-> Hi Sascha,
-> 
-> On 03/17/2015 03:25 AM, Sascha Hauer wrote:
-> > In devices_shutdown we should call the busses remove function
-> > which in turn calls the drivers remove function. Otherwise for
-> > example PCI devices never get removed since they do not have
-> > a remove function but a pcidev->remove function instead.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/base/driver.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> > index 453966b..590c97c 100644
-> > --- a/drivers/base/driver.c
-> > +++ b/drivers/base/driver.c
-> > @@ -399,8 +399,8 @@ void devices_shutdown(void)
-> >  	struct device_d *dev;
-> >  
-> >  	list_for_each_entry(dev, &active, active) {
-> > -		if (dev->driver->remove)
-> > -			dev->driver->remove(dev);
-> > +		if (dev->bus->remove)
-> > +			dev->bus->remove(dev);
-> >  	}
-> >  }
-> >  
-> > 
-> 
-> This commit caused a regression on the Openblocks A6 board, which now freezes
-> when calling devices_shutdown. The problem is that calling bus->remove makes
-> the remove() of the PHY driver called twice.
-> 
-> This happened because the mdio bus device (mdio-mvebu) was registered first,
-> and the phy0 device was be registered later, and attached to the mdio bus.
-> 
-> Upon device shutdown, when iterating through the active device list,
-> the phy0 device is removed before mdio-mvebu. Then, when the mdio bus device
-> is removed, the phy0 device is removed again, here:
-> 
-> mdio_bus_remove(on mdio-mvebu)
->   mvebu_mdio_remove
->     mdiobus_unregister
->       unregister_device
->         mdio_bus_remove(on phy0)
->         
-> This is currently the case for the Kirkwood Openblocks A6 board, where a double
-> free(dev->cdev.name) in mdio_bus_remove causes a silent freeze when booting
-> Linux.
+This is more generic than what I usually do when setting up the UART for
+lowlevel debug. I usually hardcode the UBIR/UBMR values in board code.
+From the above we could create a
 
-Too bad that happened. I believe the following fixes this, but I have no
-hardware to test this on. Could you give this a test? I'll delay the
-outstanding release until this is solved.
+static inline void imx_uart_init(int reffreq)
+
+int arch/arm/mach-imx/include/mach/debug_ll.h. What do you think?
 
 Sascha
-
-----------------------------8<---------------------------
-
-From 15422e3435b0151f1b5d753b19a8578210da9d04 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 4 May 2015 08:16:20 +0200
-Subject: [PATCH] net: phy: Do not double remove phy device
-
-This fixes: 80264a8 driver: Call bus->remove instead of driver->remove
-
-On mvebu it happens that:
-
-Upon device shutdown, when iterating through the active device list,
-the phy0 device is removed before mdio-mvebu. Then, when the mdio bus
-device is removed, the phy0 device is removed again, here:
-
-mdio_bus_remove(on mdio-mvebu)
-  mvebu_mdio_remove
-    mdiobus_unregister
-      unregister_device
-        mdio_bus_remove(on phy0)
-
-Fix this by setting the mdio busses phy_map[phy->addr] to NULL when
-unregistering the phy device, so that mdiobus_unregister no longer
-finds a valid phy_device when iterating over the busses device list.
-
-Reported-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/phy/mdio_bus.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index f526cfc..0959c45 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -331,12 +331,14 @@ static void mdio_bus_remove(struct device_d *_dev)
- {
- 	struct phy_device *dev = to_phy_device(_dev);
- 	struct phy_driver *drv = to_phy_driver(_dev->driver);
-+	struct mii_bus *bus = dev->bus;
- 
- 	if (drv->remove)
- 		drv->remove(dev);
- 
- 	free(dev->cdev.name);
- 	devfs_remove(&dev->cdev);
-+	bus->phy_map[dev->addr] = NULL;
- }
- 
- struct bus_type mdio_bus_type = {
--- 
-2.1.4
 
 -- 
 Pengutronix e.K.                           |                             |
