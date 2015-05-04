@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YpFUJ-0005Fo-WB
+ id 1YpFUL-0005GG-6W
  for barebox@lists.infradead.org; Mon, 04 May 2015 12:28:45 +0000
-Received: by layy10 with SMTP id y10so102824420lay.0
- for <barebox@lists.infradead.org>; Mon, 04 May 2015 05:28:21 -0700 (PDT)
+Received: by lbbzk7 with SMTP id zk7so103552910lbb.0
+ for <barebox@lists.infradead.org>; Mon, 04 May 2015 05:28:23 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  4 May 2015 15:29:24 +0300
-Message-Id: <1430742565-18714-5-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  4 May 2015 15:29:25 +0300
+Message-Id: <1430742565-18714-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1430742565-18714-1-git-send-email-antonynpavlov@gmail.com>
 References: <1430742565-18714-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,48 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] MIPS: tplink-mr3020: enable nmon
+Subject: [PATCH 5/5] Documentation: mips: fix tplink-mr3020 instruction
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h | 3 +++
- arch/mips/mach-ath79/Kconfig                                   | 1 +
- 2 files changed, 4 insertions(+)
+ Documentation/boards/mips/tplink-mr3020.rst | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-index f85c5ad..944a510 100644
---- a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-@@ -17,6 +17,7 @@
-  */
+diff --git a/Documentation/boards/mips/tplink-mr3020.rst b/Documentation/boards/mips/tplink-mr3020.rst
+index c9e092c..8a95e11 100644
+--- a/Documentation/boards/mips/tplink-mr3020.rst
++++ b/Documentation/boards/mips/tplink-mr3020.rst
+@@ -23,7 +23,8 @@ But you have to encode barebox image in a very special way.
+ First obtain ``lzma`` and ``mktplinkfw`` utilities.
  
- #include <asm/pbl_macros.h>
-+#include <asm/pbl_nmon.h>
+ The ``lzma`` utility can be obtained in Debian/Ubuntu
+-distro by installing lzma package.
++distro by installing lzma package
++(lzma from xz-utils package is unusable).
  
- 	.macro	board_pbl_start
- 	.set	push
-@@ -26,6 +27,8 @@
+ The ``mktplinkfw`` utility can be obtained from openwrt, e.g.::
  
- 	mips_disable_interrupts
+@@ -36,8 +37,8 @@ The ``mktplinkfw`` utility can be obtained from openwrt, e.g.::
+ To convert your barebox.bin to U-Boot-loadable image (``6F01A8C0.img``)
+ use this command sequence::
  
-+	mips_nmon
-+
- 	copy_to_link_location	pbl_start
+-  $ lzma -c -k barebox.bin > barebox.lzma
+-  $ ./FW/mktplinkfw -c -H 0x07200103 -W 1 -N TL-WR720N-v3 \
++  $ lzma -c -k barebox-flash-image > barebox.lzma
++  $ ./mktplinkfw -c -H 0x07200103 -W 1 -N TL-WR720N-v3 \
+       -s -F 4Mlzma -k barebox.lzma -o 6F01A8C0.img
  
- 	.set	pop
-diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
-index 3fd9cdd..f730b37 100644
---- a/arch/mips/mach-ath79/Kconfig
-+++ b/arch/mips/mach-ath79/Kconfig
-@@ -11,6 +11,7 @@ config BOARD_TPLINK_MR3020
- 	bool "TP-LINK MR3020"
- 	select HAVE_PBL_IMAGE
- 	select HAVE_IMAGE_COMPRESSION
-+	select HAS_NMON
- 
- endchoice
- 
+ You must setup tftp-server on host 192.168.0.1.
 -- 
 2.1.4
 
