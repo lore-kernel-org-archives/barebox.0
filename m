@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YpB39-0002vg-8J
- for barebox@lists.infradead.org; Mon, 04 May 2015 07:44:24 +0000
-Date: Mon, 4 May 2015 09:43:59 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20150504074359.GA27811@pengutronix.de>
-References: <1430217147-14188-1-git-send-email-s.trumtrar@pengutronix.de>
- <20150504073219.GO6325@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150504073219.GO6325@pengutronix.de>
+Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YpFUF-0005DW-Tp
+ for barebox@lists.infradead.org; Mon, 04 May 2015 12:28:41 +0000
+Received: by lagv1 with SMTP id v1so102708557lag.3
+ for <barebox@lists.infradead.org>; Mon, 04 May 2015 05:28:16 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  4 May 2015 15:29:20 +0300
+Message-Id: <1430742565-18714-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,62 +16,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: env: make error message more verbose
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] MIPS: tplink-mr3020: initial PBL support
+To: barebox@lists.infradead.org
 
-Hi!
+This patch series enables PBL for AR9331-based TP-Link MR3020 router.
+This makes it possible to implement full-grown bootloader for AR9331-based
+boards in the future.
 
-On Mon, May 04, 2015 at 09:32:19AM +0200, Sascha Hauer wrote:
-> On Tue, Apr 28, 2015 at 12:32:27PM +0200, Steffen Trumtrar wrote:
-> > Change the setenv error message from
-> > 
-> > 	set parameter: Invalid argument
-> > 
-> > to a more helpful
-> > 
-> > 	net: cannot set parameter 'nameserver': Invalid argument
-> > 
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  common/env.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/common/env.c b/common/env.c
-> > index 2e33eb35856b..434170a7468b 100644
-> > --- a/common/env.c
-> > +++ b/common/env.c
-> > @@ -225,8 +225,10 @@ int setenv(const char *_name, const char *value)
-> >  
-> >  		errno = -ret;
-> >  
-> > -		if (ret < 0)
-> > -			perror("set parameter");
-> > +		if (ret < 0) {
-> > +			dev_err(dev, "cannot set parameter '%s'", par);
-> > +			perror("");
-> > +		}
-> 
-> dev may be invalid here, so you shouldn't use dev_err.
-> 
+AR9331 lowlevel initialization links:
 
-Argh, yeah, of course *facepalm*.
+  * https://github.com/pepe2k/u-boot_mod
+  * https://github.com/frantony/barebox/commits/20140507.ar933x.pbl.dirty
+  * https://wikidevi.com/wiki/TP-LINK_TL-MR3020#Notes_on_JTAG
+  * http://openocd.zylin.com/#/c/2519/
+  * http://geektimes.ru/post/245066/
+  * http://geektimes.ru/post/249184/
+  * http://openocd.zylin.com/#/c/2722/
 
-> After we talked about the missing informations in the setenv failure
-> path I created the following patch. I applied this one now.
+Antony Pavlov (4):
+  MIPS: debug_ll_ns16550.h: drop _ns16550 suffix
+  MIPS: mach-ath79: debug_ll.h: add assembler routines
+  MIPS: tplink-mr3020: enable nmon
+  Documentation: mips: fix tplink-mr3020 instruction
 
-Thanks for fixing.
-Steffen
+Oleksij Rempel (1):
+  MIPS: tplink-mr3020: enable PBL and compression
+
+ Documentation/boards/mips/tplink-mr3020.rst        |   7 +-
+ .../img-ci20/include/board/board_pbl_start.h       |   2 +-
+ .../loongson-ls1b/include/board/board_pbl_start.h  |   2 +-
+ .../netgear-wg102/include/board/board_pbl_start.h  |   6 +-
+ .../ritmix-rzx50/include/board/board_pbl_start.h   |   2 +-
+ .../tplink-mr3020/include/board/board_pbl_start.h  |  35 ++++++
+ arch/mips/include/asm/debug_ll_ns16550.h           |  20 +--
+ arch/mips/include/asm/pbl_nmon.h                   |  21 ++--
+ arch/mips/mach-ath79/Kconfig                       |   3 +
+ arch/mips/mach-ath79/include/mach/debug_ll.h       | 136 ++++++++++++++++++++-
+ 10 files changed, 199 insertions(+), 35 deletions(-)
+ create mode 100644 arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
