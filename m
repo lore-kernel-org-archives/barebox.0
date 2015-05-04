@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YpAi0-0003L3-EB
- for barebox@lists.infradead.org; Mon, 04 May 2015 07:22:33 +0000
-Date: Mon, 4 May 2015 09:22:09 +0200
+ Linux)) id 1YpAjF-0003Ue-3f
+ for barebox@lists.infradead.org; Mon, 04 May 2015 07:23:49 +0000
+Date: Mon, 4 May 2015 09:23:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150504072209.GM6325@pengutronix.de>
-References: <1430126650-6382-1-git-send-email-s.hauer@pengutronix.de>
- <55420919.7050904@pengutronix.de>
+Message-ID: <20150504072326.GN6325@pengutronix.de>
+References: <1430218309-23741-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <55420919.7050904@pengutronix.de>
+In-Reply-To: <1430218309-23741-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,22 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: partition: Fix OF partition fixup
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>, ukl@pengutronix.de
+Subject: Re: [PATCH] usb: increase USB_CNTL_TIMEOUT to match linux
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, Apr 30, 2015 at 12:51:05PM +0200, Marc Kleine-Budde wrote:
-> On 04/27/2015 11:24 AM, Sascha Hauer wrote:
-> > To get the number of address cells and size cells we have to use
-> > the newly created partition node, not the parent device node. The
-> > parent device node returns the address/size cells of the controller
-> > node, not the partition node.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+On Tue, Apr 28, 2015 at 12:51:49PM +0200, Steffen Trumtrar wrote:
+> USB requests should be processed within a timeframe of 5s.
+> The linux kernel also uses this timeout value for the control packets.
 > 
-> Have you already applied this patch?
+> For the musb the increase in timeout helps successfully probing USB devices
+> (at least on one test hardware), but on the other hand doesn't slow down the
+> system, if there are no devices, i.e. the timeout never hits. That means,
+> that the USB core correctly aborts instead of timing out.
+> Why and how the 100ms was chosen in the first place, can not be deduced from
+> the git history, just that it seems to work fine for most boards.
+> 
+> Change USB_CNTL_TIMEOUT to 5000ms and replace all occurences of
+> 	`USB_CNTL_TIMEOUT * x`
+> with just
+> 	`USB_CNTL_TIMEOUT`,
+> as the timeout is now large enough without it.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/usb/core/usb.c | 4 ++--
+>  include/usb/usb.h      | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
-Yes, it's applied to master.
+Applied, thanks
 
 Sascha
 
