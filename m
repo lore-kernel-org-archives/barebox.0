@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f175.google.com ([209.85.212.175])
+Received: from mail-wi0-f173.google.com ([209.85.212.173])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YpbKA-0004Kx-P6
- for barebox@lists.infradead.org; Tue, 05 May 2015 11:47:44 +0000
-Received: by widdi4 with SMTP id di4so142818226wid.0
- for <barebox@lists.infradead.org>; Tue, 05 May 2015 04:47:19 -0700 (PDT)
-Message-ID: <5548AD0D.2040008@vanguardiasur.com.ar>
-Date: Tue, 05 May 2015 08:44:13 -0300
+ id 1YpbfQ-0005W3-Sa
+ for barebox@lists.infradead.org; Tue, 05 May 2015 12:09:41 +0000
+Received: by wizk4 with SMTP id k4so157853572wiz.1
+ for <barebox@lists.infradead.org>; Tue, 05 May 2015 05:09:17 -0700 (PDT)
+Message-ID: <5548B234.8070408@vanguardiasur.com.ar>
+Date: Tue, 05 May 2015 09:06:12 -0300
 From: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 MIME-Version: 1.0
-References: <1426573554-14478-1-git-send-email-s.hauer@pengutronix.de>
- <1426573554-14478-3-git-send-email-s.hauer@pengutronix.de>
- <55450062.6050205@vanguardiasur.com.ar>
- <20150504062919.GF6325@pengutronix.de>
-In-Reply-To: <20150504062919.GF6325@pengutronix.de>
+References: <1428627830-17281-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1428627830-17281-2-git-send-email-sebastian.hesselbarth@gmail.com>
+ <554500FC.2050607@vanguardiasur.com.ar>
+ <5545335E.1000700@vanguardiasur.com.ar> <5545EF64.4050107@gmail.com>
+ <5546A571.1000006@gmail.com>
+In-Reply-To: <5546A571.1000006@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,105 +27,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Regression on next (Re: [PATCH 3/3] driver: Call bus->remove
- instead of driver->remove)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 01/13] net: phy: Support Marvell 88E1318S PHY
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
+Hi Sebastian,
 
-
-On 05/04/2015 03:29 AM, Sascha Hauer wrote:
-> Hi Ezequiel,
-> 
-> On Sat, May 02, 2015 at 01:50:42PM -0300, Ezequiel Garcia wrote:
->> Hi Sascha,
->>
->> On 03/17/2015 03:25 AM, Sascha Hauer wrote:
->>> In devices_shutdown we should call the busses remove function
->>> which in turn calls the drivers remove function. Otherwise for
->>> example PCI devices never get removed since they do not have
->>> a remove function but a pcidev->remove function instead.
+On 05/03/2015 07:47 PM, Sebastian Hesselbarth wrote:
+> On 03.05.2015 11:50, Sebastian Hesselbarth wrote:
+>> On 02.05.2015 22:28, Ezequiel Garcia wrote:
+>>> On 05/02/2015 01:53 PM, Ezequiel Garcia wrote:
+>>>> On 04/09/2015 10:03 PM, Sebastian Hesselbarth wrote:
+>>>>> This adds support for the Marvell 88E1318S Gigabit Ethernet PHY.
+>>>>>
+>>>>> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+>> [...]
+>>>>
+>>>> With this commit, the Openblocks A6 PHY is not brought up, and so
+>>>> network is broken.
+>>>>
+>>>> I'll look into it (unless you have an idea),
+>>>>
 >>>
->>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->>> ---
->>>  drivers/base/driver.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>> Hm.. the devicetree needs to specify the phy-mode:
 >>>
->>> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
->>> index 453966b..590c97c 100644
->>> --- a/drivers/base/driver.c
->>> +++ b/drivers/base/driver.c
->>> @@ -399,8 +399,8 @@ void devices_shutdown(void)
->>>  	struct device_d *dev;
->>>  
->>>  	list_for_each_entry(dev, &active, active) {
->>> -		if (dev->driver->remove)
->>> -			dev->driver->remove(dev);
->>> +		if (dev->bus->remove)
->>> +			dev->bus->remove(dev);
->>>  	}
->>>  }
->>>  
+>>> diff --git a/dts/src/arm/kirkwood-openblocks_a6.dts
+>>> b/dts/src/arm/kirkwood-openblocks_a6.dts
+>>> index fb9dc22..c53e37f 100644
+>>> --- a/dts/src/arm/kirkwood-openblocks_a6.dts
+>>> +++ b/dts/src/arm/kirkwood-openblocks_a6.dts
+>>> @@ -171,6 +171,7 @@
+>>>   &eth0 {
+>>>          status = "okay";
+>>>          ethernet0-port@0 {
+>>> +               phy-mode = "rgmii-id";
+>>>                  phy-handle = <&ethphy0>;
+>>>          };
+>>>   };
 >>>
+>>> However, network works really crappy even after this change (either in
+>>> barebox or in Linux).
 >>
->> This commit caused a regression on the Openblocks A6 board, which now freezes
->> when calling devices_shutdown. The problem is that calling bus->remove makes
->> the remove() of the PHY driver called twice.
+>> Ezequiel,
 >>
->> This happened because the mdio bus device (mdio-mvebu) was registered first,
->> and the phy0 device was be registered later, and attached to the mdio bus.
+>> RGMII phy-mode would have been my first guess.
 >>
->> Upon device shutdown, when iterating through the active device list,
->> the phy0 device is removed before mdio-mvebu. Then, when the mdio bus device
->> is removed, the phy0 device is removed again, here:
+>> Can you define "crappy"  with respect to ethernet?
 >>
->> mdio_bus_remove(on mdio-mvebu)
->>   mvebu_mdio_remove
->>     mdiobus_unregister
->>       unregister_device
->>         mdio_bus_remove(on phy0)
->>         
->> This is currently the case for the Kirkwood Openblocks A6 board, where a double
->> free(dev->cdev.name) in mdio_bus_remove causes a silent freeze when booting
->> Linux.
-> 
-> Too bad that happened. I believe the following fixes this, but I have no
-> hardware to test this on. Could you give this a test? I'll delay the
-> outstanding release until this is solved.
-> 
-> Sascha
-> 
-> ----------------------------8<---------------------------
-> 
-> From 15422e3435b0151f1b5d753b19a8578210da9d04 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Mon, 4 May 2015 08:16:20 +0200
-> Subject: [PATCH] net: phy: Do not double remove phy device
-> 
-> This fixes: 80264a8 driver: Call bus->remove instead of driver->remove
-> 
-> On mvebu it happens that:
-> 
-> Upon device shutdown, when iterating through the active device list,
-> the phy0 device is removed before mdio-mvebu. Then, when the mdio bus
-> device is removed, the phy0 device is removed again, here:
-> 
-> mdio_bus_remove(on mdio-mvebu)
->   mvebu_mdio_remove
->     mdiobus_unregister
->       unregister_device
->         mdio_bus_remove(on phy0)
-> 
-> Fix this by setting the mdio busses phy_map[phy->addr] to NULL when
-> unregistering the phy device, so that mdiobus_unregister no longer
-> finds a valid phy_device when iterating over the busses device list.
-> 
-> Reported-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Tested-by: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+On barebox, I'm seeing tftp making slow progress but with lots and lots of
+timeouts. And then on the Linux side, there are many NFSroot disconnects,
+and userspace is unresponsive.
 
-Thanks for the quick fix,
+I haven't really done any serious measurements.
+
+>> The patch doesn't do anything different than the linux marvell phy
+>> code would do.
+
+Yeah, I don't think the issue in on the PHY init.
+
+>> Do you have access to A6's u-boot source and can match
+>> up the PHY init sequence?
+
+Yes. Although U-Boot is barely readable, can't see anything interesting
+being done with the PHY. (from ftp://ftp.plathome.co.jp/pub/OBSA6/uboot/)
+
+MV_VOID mvEthE1310PhyBasicInit(MV_U32 ethPortNum)
+{
+        MV_U16 reg;
+
+        /* Set phy address */
+        MV_REG_WRITE(ETH_PHY_ADDR_REG(ethPortNum), mvBoardPhyAddrGet(ethPortNum));
+
+        /* reset the phy */
+        mvEthPhyRegRead(mvBoardPhyAddrGet(ethPortNum),0,&reg);
+        reg |= BIT15;
+        mvEthPhyRegWrite(mvBoardPhyAddrGet(ethPortNum),0,reg);
+        mvOsDelay(10);
+
+        /* Leds link and activity*/
+        mvEthPhyRegWrite(mvBoardPhyAddrGet(ethPortNum),22,0x3);
+        mvEthPhyRegRead(mvBoardPhyAddrGet(ethPortNum),16,&reg);
+        reg &= ~0xfff;
+        reg |= 0x671;
+        mvEthPhyRegWrite(mvBoardPhyAddrGet(ethPortNum),16,reg);
+        mvEthPhyRegWrite(mvBoardPhyAddrGet(ethPortNum),22,0x0);
+}
+
+> 
+> Maybe we need some 1V8 RGMII setup for A6 too?
+> 
+> https://lkml.org/lkml/2015/5/3/159
+> 
+> IO Configuration 0 register 0xf10100e0, bit 7:
+
+Hm, it seems it's off in U-Boot:
+
+openblocks>> md f10100e0
+f10100e0: 1b1b1b1b 011b1b1b 00000000 00000000    ................
+
 -- 
 Ezequiel Garcia, VanguardiaSur
 www.vanguardiasur.com.ar
