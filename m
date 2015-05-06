@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22a.google.com ([2607:f8b0:400e:c03::22a])
+Received: from mail-pa0-x22e.google.com ([2607:f8b0:400e:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yq54A-0007ra-6J
- for barebox@lists.infradead.org; Wed, 06 May 2015 19:33:11 +0000
-Received: by pacyx8 with SMTP id yx8so17973298pac.1
- for <barebox@lists.infradead.org>; Wed, 06 May 2015 12:32:49 -0700 (PDT)
+ id 1Yq545-0007qZ-Ld
+ for barebox@lists.infradead.org; Wed, 06 May 2015 19:33:10 +0000
+Received: by pabsx10 with SMTP id sx10so17917104pab.3
+ for <barebox@lists.infradead.org>; Wed, 06 May 2015 12:32:46 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 May 2015 12:32:13 -0700
-Message-Id: <1430940733-4415-19-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  6 May 2015 12:32:10 -0700
+Message-Id: <1430940733-4415-16-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 18/18] bootstrap: Warn if image size in BB header is zero
+Subject: [PATCH v3 15/18] bootstrap_read_devfs(): Fix potential memory leak
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
+In case of a failure in one of the cdev_* functions original version
+of bootstrap_read_devfs would not release memory allocated for barebox
+header or memory allocated for the image. This commit fixes this by
+adding resource deallocation code.
+
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- lib/bootstrap/devfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ lib/bootstrap/devfs.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
-index b6edec7..5a64477 100644
+index 5693431..576f151 100644
 --- a/lib/bootstrap/devfs.c
 +++ b/lib/bootstrap/devfs.c
-@@ -58,8 +58,12 @@ static unsigned int get_image_size(void *head)
- 	unsigned int ret = 0;
- 	unsigned int *psize = head + BAREBOX_HEAD_SIZE_OFFSET;
+@@ -81,7 +81,7 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+ {
+ 	int ret;
+ 	int size = 0;
+-	void *to, *header;
++	void *to, *header, *result = NULL;
+ 	struct cdev *cdev, *partition;
+ 	char *partname = "x";
  
--	if (is_barebox_head(head))
-+	if (is_barebox_head(head)) {
- 		ret = *psize;
-+		if (!ret)
-+			bootstrap_err(
-+				"image has correct magic, but the length is zero\n");
-+	}
- 	debug("Detected barebox image size %u\n", ret);
+@@ -116,16 +116,21 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+ 	cdev = cdev_open(partname, O_RDONLY);
+ 	if (!cdev) {
+ 		bootstrap_err("%s: failed to open %s\n", devname, partname);
+-		return NULL;
++		goto free_memory;
+ 	}
  
- 	return ret;
+ 	ret = cdev_read(cdev, to, size, 0, 0);
+ 	cdev_close(cdev);
+ 
+-	if (ret != size) {
++	if (ret != size)
+ 		bootstrap_err("%s: failed to read from %s\n", devname, partname);
+-		return NULL;
+-	}
++	else
++		result = to;
++
++free_memory:
++	free(header);
++	if (!result)
++		free(to);
+ 
+-	return to;
++	return result;
+ }
 -- 
 2.1.4
 
