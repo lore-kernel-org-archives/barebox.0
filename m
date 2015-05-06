@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22e.google.com ([2607:f8b0:400e:c03::22e])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yq545-0007qZ-Ld
- for barebox@lists.infradead.org; Wed, 06 May 2015 19:33:10 +0000
-Received: by pabsx10 with SMTP id sx10so17917104pab.3
- for <barebox@lists.infradead.org>; Wed, 06 May 2015 12:32:46 -0700 (PDT)
+Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Yq54B-0005He-V1
+ for barebox@lists.infradead.org; Wed, 06 May 2015 19:33:12 +0000
+Received: by pacyx8 with SMTP id yx8so17973026pac.1
+ for <barebox@lists.infradead.org>; Wed, 06 May 2015 12:32:48 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 May 2015 12:32:10 -0700
-Message-Id: <1430940733-4415-16-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  6 May 2015 12:32:12 -0700
+Message-Id: <1430940733-4415-18-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,59 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 15/18] bootstrap_read_devfs(): Fix potential memory leak
+Subject: [PATCH v3 17/18] bootstrap_read_devfs(): Remove all partitions upon
+ function completion
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-In case of a failure in one of the cdev_* functions original version
-of bootstrap_read_devfs would not release memory allocated for barebox
-header or memory allocated for the image. This commit fixes this by
-adding resource deallocation code.
+Bootstrap_read_devfs does not remove the devices it creates during the
+course of its execution which might be considered as a resource
+leak. Remedy that by adding the code to remove those devices upon
+function completion.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- lib/bootstrap/devfs.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ lib/bootstrap/devfs.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
-index 5693431..576f151 100644
+index 48b74f9..b6edec7 100644
 --- a/lib/bootstrap/devfs.c
 +++ b/lib/bootstrap/devfs.c
-@@ -81,7 +81,7 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
- {
- 	int ret;
- 	int size = 0;
--	void *to, *header;
-+	void *to, *header, *result = NULL;
- 	struct cdev *cdev, *partition;
- 	char *partname = "x";
+@@ -99,7 +99,7 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+ 			bootstrap_err(
+ 				"%s: failed to add bad block aware partition (%d)\n",
+ 				devname, ret);
+-			goto exit;
++			goto delete_devfs_partition;
+ 		}
  
-@@ -116,16 +116,21 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
- 	cdev = cdev_open(partname, O_RDONLY);
- 	if (!cdev) {
- 		bootstrap_err("%s: failed to open %s\n", devname, partname);
--		return NULL;
-+		goto free_memory;
- 	}
- 
- 	ret = cdev_read(cdev, to, size, 0, 0);
- 	cdev_close(cdev);
- 
--	if (ret != size) {
-+	if (ret != size)
- 		bootstrap_err("%s: failed to read from %s\n", devname, partname);
--		return NULL;
--	}
-+	else
-+		result = to;
+ 		partname = "bbx";
+@@ -138,6 +138,14 @@ free_memory:
+ 	free(header);
+ 	if (!result)
+ 		free(to);
+-exit:
 +
-+free_memory:
-+	free(header);
-+	if (!result)
-+		free(to);
- 
--	return to;
-+	return result;
++	if (use_bb) {
++		dev_remove_bb_dev(partname);
++		partname = "x";
++	}
++
++delete_devfs_partition:
++	devfs_del_partition(partname);
++
+ 	return result;
  }
 -- 
 2.1.4
