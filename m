@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x230.google.com ([2607:f8b0:400e:c02::230])
+Received: from mail-pa0-x232.google.com ([2607:f8b0:400e:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yq53y-0007q1-JA
- for barebox@lists.infradead.org; Wed, 06 May 2015 19:33:00 +0000
-Received: by pdea3 with SMTP id a3so18558361pde.3
- for <barebox@lists.infradead.org>; Wed, 06 May 2015 12:32:37 -0700 (PDT)
+ id 1Yq542-0007q7-Fq
+ for barebox@lists.infradead.org; Wed, 06 May 2015 19:33:04 +0000
+Received: by pabtp1 with SMTP id tp1so17984469pab.2
+ for <barebox@lists.infradead.org>; Wed, 06 May 2015 12:32:40 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 May 2015 12:31:59 -0700
-Message-Id: <1430940733-4415-5-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed,  6 May 2015 12:32:02 -0700
+Message-Id: <1430940733-4415-8-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,119 +23,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 04/18] i.MX: serial: Add UART init functions for DEBUG_LL
+Subject: [PATCH v3 07/18] i.MX51: babbage: Implement CONFIG_DEBUG_LL
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-It appears that all i.MX51 and i.MX6 based boards that support early
-debug output inevitably do exactly the same thing with the registers
-of the UART peripheral. So to avoid code duplication three new
-subroutines are introduced:
-
-  - imx_uart_setup_ll() that allows user to perform aforementioned
-    "same thing" on any arbitrary UART at 'uartbase' and clocked at
-    'refclock' Hz.
-
-  - imx6_uart_setup_ll() and imx5_uart_setup_ll() that do those
-    actions assuming UART to be the one specified in configuration and
-    'refclock' to be equal to what it is when SoC comes out of reset.
-
-NOTE: Please note that 'imx*_uart_setup_ll' functions do add a slight
-difference in behaviour by dropping the initialization of ONEMS and
-UESC registers since those do not seem to be needed for early UART
-functionality
+Implement bits of configuraion needed to configure early debug output
+support.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/mach-imx/include/mach/debug_ll.h | 55 +++++++++++++++++++++++++++++--
- 1 file changed, 53 insertions(+), 2 deletions(-)
+ arch/arm/boards/freescale-mx51-babbage/lowlevel.c | 42 +++++++++++++++++++++++
+ arch/arm/mach-imx/include/mach/clock-imx51_53.h   |  5 +--
+ 2 files changed, 45 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-index 31371e2..baf7f53 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -3,6 +3,7 @@
+diff --git a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+index 0f453f3..ffb0548 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
++++ b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
+@@ -1,9 +1,47 @@
++#include <debug_ll.h>
++#include <mach/clock-imx51_53.h>
+ #include <common.h>
+ #include <mach/esdctl.h>
+ #include <mach/generic.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/barebox-arm.h>
  
- #include <io.h>
- #include <config.h>
-+#include <common.h>
- #include <mach/imx1-regs.h>
- #include <mach/imx21-regs.h>
- #include <mach/imx25-regs.h>
-@@ -17,6 +18,36 @@
- 
- #ifdef CONFIG_DEBUG_LL
- 
-+#define __IMX_UART_BASE(soc, num) soc##_UART##num##_BASE_ADDR
-+#define IMX_UART_BASE(soc, num) __IMX_UART_BASE(soc, num)
-+
-+static inline void imx_uart_setup_ll(void __iomem *uartbase,
-+				     unsigned int refclock)
++#ifdef CONFIG_DEBUG_LL
++static inline void setup_uart(void)
 +{
-+	writel(0x00000000, uartbase + UCR1);
++	void __iomem *iomuxbase = IOMEM(MX51_IOMUXC_BASE_ADDR);
++	void __iomem *ccmbase = IOMEM(MX51_CCM_BASE_ADDR);
 +
-+	writel(UCR2_IRTS | UCR2_WS | UCR2_TXEN | UCR2_RXEN | UCR2_SRST,
-+	       uartbase + UCR2);
-+	writel(UCR3_DSR | UCR3_DCD | UCR3_RI | UCR3_ADNIMP | UCR3_RXDMUXSEL,
-+	       uartbase + UCR3);
-+	writel((0b10 << UFCR_TXTL_SHF) | UFCR_RFDIV1 | (1 << UFCR_RXTL_SHF),
-+	       uartbase + UFCR);
++	/*
++	 * Restore CCM values that might be changed by the Mask ROM
++	 * code.
++	 *
++	 * Source: RealView debug scripts provided by Freescale
++	 */
++	writel(MX5_CCM_CBCDR_RESET_VALUE,  ccmbase + MX5_CCM_CBCDR);
++	writel(MX5_CCM_CSCMR1_RESET_VALUE, ccmbase + MX5_CCM_CSCMR1);
++	writel(MX5_CCM_CSCDR1_RESET_VALUE, ccmbase + MX5_CCM_CSCDR1);
 +
-+	writel(baudrate_to_ubir(CONFIG_BAUDRATE),
-+	       uartbase + UBIR);
-+	writel(refclock_to_ubmr(refclock),
-+	       uartbase + UBMR);
++	/*
++	 * The code below should be more or less a "moral equivalent"
++	 * of:
++	 *	 MX51_PAD_UART1_TXD__UART1_TXD 0x1c5
++	 *
++	 * in device tree
++	 */
++	writel(0x00000000, iomuxbase + 0x022c);
++	writel(0x000001c5, iomuxbase + 0x061c);
 +
-+	writel(UCR1_UARTEN, uartbase + UCR1);
++	imx51_uart_setup_ll();
++
++	putc_ll('>');
 +}
-+
-+#define __imx_uart_setup_ll(refclock)					\
-+	do {								\
-+		imx_uart_setup_ll(IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,	\
-+						      CONFIG_DEBUG_IMX_UART_PORT)), \
-+				  refclock);				\
-+	} while(0)
-+
- #ifdef CONFIG_DEBUG_IMX1_UART
- #define IMX_DEBUG_SOC MX1
- #elif defined CONFIG_DEBUG_IMX21_UART
-@@ -39,8 +70,19 @@
- #error "unknown i.MX debug uart soc type"
- #endif
- 
--#define __IMX_UART_BASE(soc, num) soc##_UART##num##_BASE_ADDR
--#define IMX_UART_BASE(soc, num) __IMX_UART_BASE(soc, num)
-+static inline void imx51_uart_setup_ll(void)
-+{
-+#if defined CONFIG_DEBUG_IMX51_UART
-+	__imx_uart_setup_ll(54000000);
-+#endif
-+}
-+
-+static inline void imx6_uart_setup_ll(void)
-+{
-+#if defined CONFIG_DEBUG_IMX6Q_UART
-+	__imx_uart_setup(80000000);
-+#endif
-+}
- 
- static inline void PUTC_LL(int c)
- {
-@@ -57,5 +99,14 @@ static inline void PUTC_LL(int c)
- 
- 	writel(c, base + URTX0);
- }
 +#else
-+
-+static inline void imx_uart_setup_ll(void __iomem *uartbase,
-+				     unsigned int refclock)
++static inline void setup_uart(void)
 +{
 +}
-+static inline void imx51_uart_setup_ll(void) {}
-+static inline void imx6_uart_setup_ll(void)  {}
++#endif	/* CONFIG_DEBUG_LL */
 +
- #endif /* CONFIG_DEBUG_LL */
- #endif /* __MACH_DEBUG_LL_H__ */
+ extern char __dtb_imx51_babbage_start[];
+ 
+ ENTRY_FUNCTION(start_imx51_babbage, r0, r1, r2)
+@@ -11,6 +49,10 @@ ENTRY_FUNCTION(start_imx51_babbage, r0, r1, r2)
+ 	void *fdt;
+ 
+ 	imx5_cpu_lowlevel_init();
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
+ 	arm_setup_stack(0x20000000 - 16);
+ 
+ 	fdt = __dtb_imx51_babbage_start - get_runtime_offset();
+diff --git a/arch/arm/mach-imx/include/mach/clock-imx51_53.h b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
+index 6004a6d..0f25dfb 100644
+--- a/arch/arm/mach-imx/include/mach/clock-imx51_53.h
++++ b/arch/arm/mach-imx/include/mach/clock-imx51_53.h
+@@ -149,6 +149,7 @@
+ #define MX5_CCM_CACRR_ARM_PODF_MASK	(0x7)
+ 
+ /* Define the bits in register CBCDR */
++#define MX5_CCM_CBCDR_RESET_VALUE		(0x19239145)
+ #define MX5_CCM_CBCDR_EMI_CLK_SEL		(0x1 << 26)
+ #define MX5_CCM_CBCDR_PERIPH_CLK_SEL		(0x1 << 25)
+ #define MX5_CCM_CBCDR_DDR_HF_SEL_OFFSET		(30)
+@@ -193,6 +194,7 @@
+ #define MX5_CCM_CBCMR_PERCLK_IPG_CLK_SEL	(0x1 << 0)
+ 
+ /* Define the bits in register CSCMR1 */
++#define MX5_CCM_CSCMR1_RESET_VALUE			(0xa6a2a020)
+ #define MX5_CCM_CSCMR1_SSI_EXT2_CLK_SEL_OFFSET		(30)
+ #define MX5_CCM_CSCMR1_SSI_EXT2_CLK_SEL_MASK		(0x3 << 30)
+ #define MX5_CCM_CSCMR1_SSI_EXT1_CLK_SEL_OFFSET		(28)
+@@ -259,6 +261,7 @@
+ #define MX5_CCM_CSCMR2_SPDIF0_CLK_SEL_MASK		(0x3)
+ 
+ /* Define the bits in register CSCDR1 */
++#define MX5_CCM_CSCDR1_RESET_VALUE			(0x00c30318)
+ #define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_OFFSET	(22)
+ #define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PRED_MASK	(0x7 << 22)
+ #define MX5_CCM_CSCDR1_ESDHC2_MSHC2_CLK_PODF_OFFSET	(19)
+@@ -585,5 +588,3 @@
+ #define MX5_SRPGC_EMI_PDNSCR	(MX5_SRPGC_EMI_BASE + 0x8)
+ 
+ #endif				/* __ARCH_ARM_MACH_MX51_CRM_REGS_H__ */
+-
+-
 -- 
 2.1.4
 
