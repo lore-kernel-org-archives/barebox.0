@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YqGah-0000RL-G5
- for barebox@lists.infradead.org; Thu, 07 May 2015 07:51:32 +0000
-Date: Thu, 7 May 2015 09:51:08 +0200
+ Linux)) id 1YqGcA-00016T-V7
+ for barebox@lists.infradead.org; Thu, 07 May 2015 07:53:06 +0000
+Date: Thu, 7 May 2015 09:52:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150507075108.GM6325@pengutronix.de>
+Message-ID: <20150507075240.GN6325@pengutronix.de>
 References: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
+ <1430940733-4415-5-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1430940733-4415-5-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,97 +23,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/18] i.MX serial cleanup, bootstrap code fixes, boot
- via IRAM
+Subject: Re: [PATCH v3 04/18] i.MX: serial: Add UART init functions for
+ DEBUG_LL
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Andrey,
+On Wed, May 06, 2015 at 12:31:59PM -0700, Andrey Smirnov wrote:
+> It appears that all i.MX51 and i.MX6 based boards that support early
+> debug output inevitably do exactly the same thing with the registers
+> of the UART peripheral. So to avoid code duplication three new
+> subroutines are introduced:
+> 
+>   - imx_uart_setup_ll() that allows user to perform aforementioned
+>     "same thing" on any arbitrary UART at 'uartbase' and clocked at
+>     'refclock' Hz.
+> 
+>   - imx6_uart_setup_ll() and imx5_uart_setup_ll() that do those
+>     actions assuming UART to be the one specified in configuration and
+>     'refclock' to be equal to what it is when SoC comes out of reset.
+> 
+> NOTE: Please note that 'imx*_uart_setup_ll' functions do add a slight
+> difference in behaviour by dropping the initialization of ONEMS and
+> UESC registers since those do not seem to be needed for early UART
+> functionality
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/mach-imx/include/mach/debug_ll.h | 55 +++++++++++++++++++++++++++++--
+>  1 file changed, 53 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+> index 31371e2..baf7f53 100644
+> --- a/arch/arm/mach-imx/include/mach/debug_ll.h
+> +++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+> @@ -3,6 +3,7 @@
+>  
+>  #include <io.h>
+>  #include <config.h>
+> +#include <common.h>
+>  #include <mach/imx1-regs.h>
+>  #include <mach/imx21-regs.h>
+>  #include <mach/imx25-regs.h>
+> @@ -17,6 +18,36 @@
+>  
+>  #ifdef CONFIG_DEBUG_LL
+>  
+> +#define __IMX_UART_BASE(soc, num) soc##_UART##num##_BASE_ADDR
+> +#define IMX_UART_BASE(soc, num) __IMX_UART_BASE(soc, num)
+> +
+> +static inline void imx_uart_setup_ll(void __iomem *uartbase,
+> +				     unsigned int refclock)
+> +{
+> +	writel(0x00000000, uartbase + UCR1);
+> +
+> +	writel(UCR2_IRTS | UCR2_WS | UCR2_TXEN | UCR2_RXEN | UCR2_SRST,
+> +	       uartbase + UCR2);
+> +	writel(UCR3_DSR | UCR3_DCD | UCR3_RI | UCR3_ADNIMP | UCR3_RXDMUXSEL,
+> +	       uartbase + UCR3);
+> +	writel((0b10 << UFCR_TXTL_SHF) | UFCR_RFDIV1 | (1 << UFCR_RXTL_SHF),
+> +	       uartbase + UFCR);
+> +
+> +	writel(baudrate_to_ubir(CONFIG_BAUDRATE),
+> +	       uartbase + UBIR);
+> +	writel(refclock_to_ubmr(refclock),
+> +	       uartbase + UBMR);
+> +
+> +	writel(UCR1_UARTEN, uartbase + UCR1);
+> +}
+> +
+> +#define __imx_uart_setup_ll(refclock)					\
+> +	do {								\
+> +		imx_uart_setup_ll(IOMEM(IMX_UART_BASE(IMX_DEBUG_SOC,	\
+> +						      CONFIG_DEBUG_IMX_UART_PORT)), \
+> +				  refclock);				\
+> +	} while(0)
+> +
+>  #ifdef CONFIG_DEBUG_IMX1_UART
+>  #define IMX_DEBUG_SOC MX1
+>  #elif defined CONFIG_DEBUG_IMX21_UART
+> @@ -39,8 +70,19 @@
+>  #error "unknown i.MX debug uart soc type"
+>  #endif
+>  
+> -#define __IMX_UART_BASE(soc, num) soc##_UART##num##_BASE_ADDR
+> -#define IMX_UART_BASE(soc, num) __IMX_UART_BASE(soc, num)
+> +static inline void imx51_uart_setup_ll(void)
+> +{
+> +#if defined CONFIG_DEBUG_IMX51_UART
+> +	__imx_uart_setup_ll(54000000);
+> +#endif
+> +}
+> +
+> +static inline void imx6_uart_setup_ll(void)
+> +{
+> +#if defined CONFIG_DEBUG_IMX6Q_UART
+> +	__imx_uart_setup(80000000);
+> +#endif
 
-I applied this series with some small changes.
+Typo here, should be __imx_uart_setup_ll like above. I also removed the
+#ifdefs which seem unnecessary.
 
-Thanks
- Sascha
-
-On Wed, May 06, 2015 at 12:31:55PM -0700, Andrey Smirnov wrote:
-> This patch set combines all previously sent patches together:
-> 
-> - Serial cleanups
-> - Bootstap code fixes/cleanup
-> - Boot via IRAM
-> 
-> I marked the whole thing as a version 3 since some of the included
-> patches in some of their incarnations had version 2 and I wanted to
-> decrease the amount of confusion I was creating :)
-> 
-> Andrey Smirnov (18):
->   i.MX: Move UART definitions into a separate file
->   i.MX: serial: Add constants for UART clock divisor
->   i.MX: serial: Add baud rate calculation convenience functions
->   i.MX: serial: Add UART init functions for DEBUG_LL
->   i.MX: serial: Convert PUTC_LL to use IOMEM
->   i.MX: serial: Convert i.MX51 and i.MX6 to use 'imx*_uart_setup_ll'
->   i.MX51: babbage: Implement CONFIG_DEBUG_LL
->   i.MX: serial: Distil common clock ungating code
->   Makefile.lib: Make 'check_file_size' more flexible
->   i.MX: Add provisions to boot from IRAM
->   imx-image: Correctly fill image size in prepended header
->   bootstrap: Fix potential memory leak in 'read_image_head'
->   bootstrap_read_devfs(): Check for errors from devfs_add_partition()
->   bootstrap_read_devfs(): Close file after we are done with it
->   bootstrap_read_devfs(): Fix potential memory leak
->   bootstrap_read_devfs(): Check for errors from dev_add_bb_dev()
->   bootstrap_read_devfs(): Remove all partitions upon function completion
->   bootstrap: Warn if image size in BB header is zero
-> 
->  Documentation/boards/imx.rst                       |  27 +++++
->  Makefile                                           |   2 +-
->  arch/arm/boards/eltec-hipercam/lowlevel.c          |  18 +--
->  arch/arm/boards/embest-riotboard/lowlevel.c        |  16 +--
->  arch/arm/boards/freescale-mx51-babbage/Makefile    |   3 +
->  arch/arm/boards/freescale-mx51-babbage/board.c     |  60 ++++++++++
->  .../flash-header-common.imxcfg                     |  58 ++++++++++
->  .../flash-header-imx51-babbage-xload.imxcfg        |   3 +
->  .../flash-header-imx51-babbage.imxcfg              |  60 +---------
->  arch/arm/boards/freescale-mx51-babbage/lowlevel.c  |  67 +++++++++++
->  .../arm/boards/freescale-mx6sx-sabresdb/lowlevel.c |  20 +---
->  arch/arm/boards/guf-santaro/lowlevel.c             |  18 +--
->  arch/arm/boards/karo-tx6x/lowlevel.c               |  21 +---
->  arch/arm/boards/phytec-phycard-imx6/lowlevel.c     |  21 +---
->  arch/arm/boards/phytec-phyflex-imx6/lowlevel.c     |  21 +---
->  arch/arm/boards/tqma6x/lowlevel.c                  |  18 +--
->  arch/arm/boards/variscite-mx6/lowlevel.c           |  21 +---
->  arch/arm/configs/imx_v7-xload_defconfig            |  52 +++++++++
->  arch/arm/mach-imx/Kconfig                          |  15 +++
->  arch/arm/mach-imx/Makefile                         |   1 +
->  arch/arm/mach-imx/include/mach/clock-imx51_53.h    |   5 +-
->  arch/arm/mach-imx/include/mach/debug_ll.h          |  85 ++++++++++++--
->  arch/arm/mach-imx/xload.c                          |  52 +++++++++
->  arch/arm/pbl/Makefile                              |   2 +-
->  arch/mips/pbl/Makefile                             |   2 +-
->  drivers/serial/serial_imx.c                        | 112 +-----------------
->  images/Makefile.imx                                |  20 +++-
->  include/serial/imx-uart.h                          | 128 +++++++++++++++++++++
->  lib/bootstrap/devfs.c                              |  59 ++++++++--
->  scripts/Makefile.lib                               |   6 +-
->  scripts/imx/Makefile                               |   2 +
->  scripts/imx/imx-image.c                            |  11 +-
->  32 files changed, 658 insertions(+), 348 deletions(-)
->  create mode 100644 arch/arm/boards/freescale-mx51-babbage/flash-header-common.imxcfg
->  create mode 100644 arch/arm/boards/freescale-mx51-babbage/flash-header-imx51-babbage-xload.imxcfg
->  create mode 100644 arch/arm/configs/imx_v7-xload_defconfig
->  create mode 100644 arch/arm/mach-imx/xload.c
->  create mode 100644 include/serial/imx-uart.h
-> 
-> -- 
-> 2.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
