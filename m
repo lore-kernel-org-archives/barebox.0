@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-f175.google.com ([209.85.212.175])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yuxab-0005iF-HR
- for barebox@lists.infradead.org; Wed, 20 May 2015 06:34:50 +0000
-Received: by wicmx19 with SMTP id mx19so139089978wic.0
- for <barebox@lists.infradead.org>; Tue, 19 May 2015 23:34:26 -0700 (PDT)
-Message-ID: <555C2AEF.206@elfin.de>
-Date: Wed, 20 May 2015 08:34:23 +0200
-From: Marcel Behlau <marcel.behlau@elfin.de>
-MIME-Version: 1.0
-References: <5548DA0A.3050408@elfin.de> <20150505155450.GB6325@pengutronix.de>
- <20150506071228.GQ25193@pengutronix.de> <554B4B63.7020301@elfin.de>
- <20150508051242.GV6325@pengutronix.de>
-In-Reply-To: <20150508051242.GV6325@pengutronix.de>
+ id 1YqUgh-0001Z1-3G
+ for barebox@lists.infradead.org; Thu, 07 May 2015 22:54:40 +0000
+Received: by laat2 with SMTP id t2so41280100laa.1
+ for <barebox@lists.infradead.org>; Thu, 07 May 2015 15:54:16 -0700 (PDT)
+Date: Fri, 8 May 2015 01:59:33 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150508015933.1e00066aab99376b174ddfcb@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +17,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="windows-1252"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Usage of i2c_-Tools in Barebox
+Subject: barebox on i.MX 6SoloX
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?windows-1252?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Hi!
 
-i found the problem. The Pad Mux Register (0x20E008C and 0x20E0090) are =
+I have just readed about new RaspberyPi-like board: UDOO Neo.
+See https://www.kickstarter.com/projects/udoo/udoo-neo-raspberry-pi-arduino=
+-wi-fi-bt-40-sensors
+for details.
 
-not initialised. In both registers is a 0x00000005 (reset value), =
+The board's main chip is Freescale i.MX 6SoloX.
 
-instead of 0x00000016. I think, i must specify the value of the mux =
+I see the arch/arm/mach-imx/imx6.c file in barebox source tree.
 
-register in the device tree, too. How can i do this?
+I have no knowledge on i.MX family, so my question is:
+does barebox already support i.MX 6SoloX?
 
-Thank in advance,
-
-Marcel
-
-md 0x20E008C-0x20E0093
-
-On 08.05.2015 07:12, Sascha Hauer wrote:
-> On Thu, May 07, 2015 at 01:24:19PM +0200, Marcel Behlau wrote:
->> Hi,
->>
->> many thanks for your help. I activated the i2c devices in the device
->> tree, the pinctrl is already done in the imx6q.dtsi, which is
->> included. The used pins are identically with the used pins on the
->> SBC. devinfo told me, that the driver "i2c-fsl" is loaded. After
->> rebuild barebox, it's possible to probe the bus, but the command
->> only answered with an timeout:
->>
->> barebox@Phytec phyFLEX-i.MX6 Quad Carrier-Board:/ i2c_probe 1 83 83
->> probing i2c range 0x53 - 0x53 :
->> i2c2: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
-> I *think* this means that the levels on the bus do not properly follow
-> what the controller wants to do. Maybe pullup missing? An oscilloscope
-> might help here.
->
-> Sascha
->
-
--- =
-
-Dipl. Ing (FH) Marcel Behlau
-(Software Developer)
-
-ELFIN GmbH
-Siegburger Stra=DFe 215
-50679 K=F6ln
-Germany
-
-Tel: +49 (221) 6778932-0
-Fax: +49 (221) 6778932-2
-marcel.behlau@elfin.de
-www.elfin.de
-
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
