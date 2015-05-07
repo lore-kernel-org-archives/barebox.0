@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YqGgf-0003eL-Il
- for barebox@lists.infradead.org; Thu, 07 May 2015 07:57:44 +0000
-Date: Thu, 7 May 2015 09:57:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150507075719.GP6325@pengutronix.de>
-References: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
- <1430940733-4415-8-git-send-email-andrew.smirnov@gmail.com>
+ Linux)) id 1YqHRb-0005kV-N0
+ for barebox@lists.infradead.org; Thu, 07 May 2015 08:46:12 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  7 May 2015 10:45:45 +0200
+Message-Id: <1430988346-25450-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1430940733-4415-8-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +15,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 07/18] i.MX51: babbage: Implement CONFIG_DEBUG_LL
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] devfs: be more lax with partition boundaries
+To: barebox@lists.infradead.org
 
-On Wed, May 06, 2015 at 12:32:02PM -0700, Andrey Smirnov wrote:
-> Implement bits of configuraion needed to configure early debug output
-> support.
-> 
-> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> ---
->  arch/arm/boards/freescale-mx51-babbage/lowlevel.c | 42 +++++++++++++++++++++++
->  arch/arm/mach-imx/include/mach/clock-imx51_53.h   |  5 +--
->  2 files changed, 45 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
-> index 0f453f3..ffb0548 100644
-> --- a/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
-> +++ b/arch/arm/boards/freescale-mx51-babbage/lowlevel.c
-> @@ -1,9 +1,47 @@
-> +#include <debug_ll.h>
-> +#include <mach/clock-imx51_53.h>
->  #include <common.h>
->  #include <mach/esdctl.h>
->  #include <mach/generic.h>
->  #include <asm/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
-> +#ifdef CONFIG_DEBUG_LL
-> +static inline void setup_uart(void)
-> +{
-
-I removed the #ifdef, this function called only when CONFIG_DEBUG_LL is
-enabled anyway.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SWYgYSBwYXJ0aXRpb24gc3RhcnRzIGluc2lkZSBpdHMgcGFyZW50IGRldmljZSBidXQgaXMgdG9v
+IGJpZyBzdWNoIHRoYXQKaXQgZXh0ZW5kcyBvdmVyIHRoZSBkZXZpY2UgYm91bmRhcnksIGp1c3Qg
+Y2hvcCBpdCB0byB0aGUgZGV2aWNlJ3MgZW5kLgoKVGhpcyBtYXRjaGVzIHRoZSBiZWhhdmlvdXIg
+b2YgTGludXguCgpUaGUgbW90aXZhdGlvbiBmb3IgdGhpcyBjaGFuZ2UgaXMgdGhhdCBpdCBtYWtl
+cyBpdCBwb3NzaWJsZSBpbiBzb21lCmNhc2VzIHRvIGhhdmUgdGhlIHBhcnRpdGlvbmluZyBpbiBh
+IGRldmljZSB0cmVlIGZpeGVkIGFuZCBzdGlsbCBhbGxvdwpkaWZmZXJlbnQgZmxhc2ggc2l6ZXMu
+CgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1
+dHJvbml4LmRlPgotLS0KIGZzL2RldmZzLWNvcmUuYyB8IDE0ICsrKysrKysrKysrLS0tCiAxIGZp
+bGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
+YS9mcy9kZXZmcy1jb3JlLmMgYi9mcy9kZXZmcy1jb3JlLmMKaW5kZXggZjQ1ZjhjYWRmMWIwLi5k
+NDU2ZWJjY2FmMDYgMTAwNjQ0Ci0tLSBhL2ZzL2RldmZzLWNvcmUuYworKysgYi9mcy9kZXZmcy1j
+b3JlLmMKQEAgLTI5MCwxMiArMjkwLDIwIEBAIHN0YXRpYyBzdHJ1Y3QgY2RldiAqX19kZXZmc19h
+ZGRfcGFydGl0aW9uKHN0cnVjdCBjZGV2ICpjZGV2LAogCiAJKmVuZCA9IG9mZnNldCArIHNpemU7
+CiAKLQlpZiAob2Zmc2V0IDwgMCB8fCAqZW5kID4gY2Rldi0+c2l6ZSkgewotCQlwcl93YXJuKCJw
+YXJ0aXRpb24gJXMgbm90IGNvbXBsZXRlbHkgaW5zaWRlIGRldmljZSAlc1xuIiwKLQkJCQlwYXJ0
+aW5mby0+bmFtZSwgY2Rldi0+bmFtZSk7CisJaWYgKG9mZnNldCA8IDAgfHwgb2Zmc2V0ID4gY2Rl
+di0+c2l6ZSkgeworCQlwcl93YXJuKCJzdGFydCBvZiBwYXJ0aXRpb24gJXMgbm90IGluc2lkZSBv
+ZiBkZXZpY2UgJXNcbiIsCisJCQlwYXJ0aW5mby0+bmFtZSwgY2Rldi0+bmFtZSk7CiAJCXJldHVy
+biBFUlJfUFRSKC1FSU5WQUwpOwogCX0KIAorCWlmICgqZW5kID4gY2Rldi0+c2l6ZSkgeworCQlw
+cl93YXJuKCJlbmQgb2YgcGFydGl0aW9uICVzIGFmdGVyIGVuZCBvZiBkZXZpY2UgJXMsIGNob3Bw
+aW5nXG4iLAorCQkJcGFydGluZm8tPm5hbWUsIGNkZXYtPm5hbWUpOworCisJCSplbmQgPSBjZGV2
+LT5zaXplOworCQlzaXplID0gKmVuZCAtIG9mZnNldDsKKwl9CisKIAlpZiAoSVNfRU5BQkxFRChD
+T05GSUdfTVREKSAmJiBjZGV2LT5tdGQpIHsKIAkJc3RydWN0IG10ZF9pbmZvICptdGQ7CiAKLS0g
+CjIuMS40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
