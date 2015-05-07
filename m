@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YqG2U-0003pR-DN
- for barebox@lists.infradead.org; Thu, 07 May 2015 07:16:11 +0000
-Date: Thu, 7 May 2015 09:15:46 +0200
+ Linux)) id 1YqGZ3-0007Rn-AD
+ for barebox@lists.infradead.org; Thu, 07 May 2015 07:49:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150507071546.GL6325@pengutronix.de>
-References: <1430916691-12459-1-git-send-email-mkl@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1430916691-12459-1-git-send-email-mkl@pengutronix.de>
+Date: Thu,  7 May 2015 09:49:26 +0200
+Message-Id: <1430984966-25382-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +14,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] fdt: of_unflatten_dtb(): remove left over "root"
- argument from inline doc
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX5: Add missing CONFIG_ prefix in test
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, May 06, 2015 at 02:51:26PM +0200, Marc Kleine-Budde wrote:
-> In commit
-> 
->     d384b5639fc1 of: Drop devicetree merge support
-> 
-> the signature of of_unflatten_dtb() was changed, but the inline documentation
-> was forgotten to adjust. This patch removes the left over "root" argument from
-> the doc.
-> 
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
->  drivers/of/fdt.c | 1 -
->  1 file changed, 1 deletion(-)
+The variable name misses a CONFIG_ prefix to work as expected.
 
-Applied, thanks
+Fixes: 05a1e4b ARM: i.MX5: Do not register fixed clocks twice
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/clk-imx5.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/arm/mach-imx/clk-imx5.c b/arch/arm/mach-imx/clk-imx5.c
+index 8a0d875..6dc3c80 100644
+--- a/arch/arm/mach-imx/clk-imx5.c
++++ b/arch/arm/mach-imx/clk-imx5.c
+@@ -189,7 +189,7 @@ static void __init mx5_clocks_common_init(struct device_d *dev, void __iomem *ba
+ 	writel(0xffffffff, base + CCM_CCGR6);
+ 	writel(0xffffffff, base + CCM_CCGR7);
+ 
+-	if (!IS_ENABLED(COMMON_CLK_OF_PROVIDER) || !dev->device_node) {
++	if (!IS_ENABLED(CONFIG_COMMON_CLK_OF_PROVIDER) || !dev->device_node) {
+ 		clks[IMX5_CLK_CKIL] = clk_fixed("ckil", 32768);
+ 		clks[IMX5_CLK_OSC] = clk_fixed("osc", 24000000);
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
