@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x22a.google.com ([2607:f8b0:400e:c02::22a])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yq54C-0001EG-Dq
- for barebox@lists.infradead.org; Wed, 06 May 2015 19:33:13 +0000
-Received: by pdbnk13 with SMTP id nk13so18664473pdb.0
- for <barebox@lists.infradead.org>; Wed, 06 May 2015 12:32:47 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed,  6 May 2015 12:32:11 -0700
-Message-Id: <1430940733-4415-17-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1430940733-4415-1-git-send-email-andrew.smirnov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YqG2U-0003pR-DN
+ for barebox@lists.infradead.org; Thu, 07 May 2015 07:16:11 +0000
+Date: Thu, 7 May 2015 09:15:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150507071546.GL6325@pengutronix.de>
+References: <1430916691-12459-1-git-send-email-mkl@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1430916691-12459-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 16/18] bootstrap_read_devfs(): Check for errors from
- dev_add_bb_dev()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/6] fdt: of_unflatten_dtb(): remove left over "root"
+ argument from inline doc
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Check for errors returned by dev_add_bb_dev() and bail if there
-are any.
+On Wed, May 06, 2015 at 02:51:26PM +0200, Marc Kleine-Budde wrote:
+> In commit
+> 
+>     d384b5639fc1 of: Drop devicetree merge support
+> 
+> the signature of of_unflatten_dtb() was changed, but the inline documentation
+> was forgotten to adjust. This patch removes the left over "root" argument from
+> the doc.
+> 
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  drivers/of/fdt.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- lib/bootstrap/devfs.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Applied, thanks
 
-diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
-index 576f151..48b74f9 100644
---- a/lib/bootstrap/devfs.c
-+++ b/lib/bootstrap/devfs.c
-@@ -94,7 +94,14 @@ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
- 	}
- 
- 	if (use_bb) {
--		dev_add_bb_dev(partname, "bbx");
-+		ret = dev_add_bb_dev(partname, "bbx");
-+		if (ret) {
-+			bootstrap_err(
-+				"%s: failed to add bad block aware partition (%d)\n",
-+				devname, ret);
-+			goto exit;
-+		}
-+
- 		partname = "bbx";
- 	}
- 
-@@ -131,6 +138,6 @@ free_memory:
- 	free(header);
- 	if (!result)
- 		free(to);
--
-+exit:
- 	return result;
- }
+Sascha
+
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
