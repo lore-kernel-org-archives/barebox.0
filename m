@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YqUgh-0001Z1-3G
- for barebox@lists.infradead.org; Thu, 07 May 2015 22:54:40 +0000
-Received: by laat2 with SMTP id t2so41280100laa.1
- for <barebox@lists.infradead.org>; Thu, 07 May 2015 15:54:16 -0700 (PDT)
-Date: Fri, 8 May 2015 01:59:33 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150508015933.1e00066aab99376b174ddfcb@gmail.com>
-Mime-Version: 1.0
+ id 1YqUp0-0004TL-Lo
+ for barebox@lists.infradead.org; Thu, 07 May 2015 23:03:15 +0000
+Received: by lbbuc2 with SMTP id uc2so41766410lbb.2
+ for <barebox@lists.infradead.org>; Thu, 07 May 2015 16:02:51 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20150508015933.1e00066aab99376b174ddfcb@gmail.com>
+References: <20150508015933.1e00066aab99376b174ddfcb@gmail.com>
+Date: Thu, 7 May 2015 20:02:51 -0300
+Message-ID: <CAOMZO5AfOS8jsCPcS_LGCLoTLAC=gAGN9tAKBCOmUohMeGfZEw@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,31 +19,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox on i.MX 6SoloX
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: barebox on i.MX 6SoloX
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi!
+On Thu, May 7, 2015 at 7:59 PM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
+> Hi!
+>
+> I have just readed about new RaspberyPi-like board: UDOO Neo.
+> See https://www.kickstarter.com/projects/udoo/udoo-neo-raspberry-pi-arduino-wi-fi-bt-40-sensors
+> for details.
+>
+> The board's main chip is Freescale i.MX 6SoloX.
+>
+> I see the arch/arm/mach-imx/imx6.c file in barebox source tree.
+>
+> I have no knowledge on i.MX family, so my question is:
+> does barebox already support i.MX 6SoloX?
 
-I have just readed about new RaspberyPi-like board: UDOO Neo.
-See https://www.kickstarter.com/projects/udoo/udoo-neo-raspberry-pi-arduino=
--wi-fi-bt-40-sensors
-for details.
-
-The board's main chip is Freescale i.MX 6SoloX.
-
-I see the arch/arm/mach-imx/imx6.c file in barebox source tree.
-
-I have no knowledge on i.MX family, so my question is:
-does barebox already support i.MX 6SoloX?
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+Yes, it does. Please check:
+arch/arm/boards/freescale-mx6sx-sabresdb/board.c
 
 _______________________________________________
 barebox mailing list
