@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yrunf-0004hc-9H
- for barebox@lists.infradead.org; Mon, 11 May 2015 20:59:44 +0000
-Received: by laat2 with SMTP id t2so102339966laa.1
- for <barebox@lists.infradead.org>; Mon, 11 May 2015 13:59:21 -0700 (PDT)
+ id 1Yrunl-0004jk-Dq
+ for barebox@lists.infradead.org; Mon, 11 May 2015 20:59:50 +0000
+Received: by lagv1 with SMTP id v1so102328873lag.3
+ for <barebox@lists.infradead.org>; Mon, 11 May 2015 13:59:26 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 12 May 2015 00:00:49 +0300
-Message-Id: <1431378053-18914-2-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 12 May 2015 00:00:53 +0300
+Message-Id: <1431378053-18914-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1431378053-18914-1-git-send-email-antonynpavlov@gmail.com>
 References: <1431378053-18914-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,42 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/5] net: dm9k: show only one phy on miibus
+Subject: [PATCH v2 5/5] MIPS: img-ci20_defconfig: enable network stuff
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/net/dm9k.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/configs/img-ci20_defconfig | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dm9k.c b/drivers/net/dm9k.c
-index abcb7ee..5798e16 100644
---- a/drivers/net/dm9k.c
-+++ b/drivers/net/dm9k.c
-@@ -359,6 +359,11 @@ static int dm9k_phy_read(struct mii_bus *bus, int addr, int reg)
- 	struct dm9k *priv = bus->priv;
- 	struct device_d *dev = &bus->dev;
- 
-+	/* only internal phy supported by now, so show only one phy on miibus */
-+	if (addr != 0) {
-+		return 0xffff;
-+	}
-+
- 	/* Fill the phyxcer register into REG_0C */
- 	dm9k_iow(priv, DM9K_EPAR, DM9K_PHY | reg);
- 	dm9k_iow(priv, DM9K_EPCR, 0xc);	/* Issue phyxcer read command */
-@@ -378,6 +383,11 @@ static int dm9k_phy_write(struct mii_bus *bus, int addr, int reg, u16 val)
- 	struct dm9k *priv = bus->priv;
- 	struct device_d *dev = &bus->dev;
- 
-+	/* only internal phy supported by now, so show only one phy on miibus */
-+	if (addr != 0) {
-+		return 0;
-+	}
-+
- 	/* Fill the phyxcer register into REG_0C */
- 	dm9k_iow(priv, DM9K_EPAR, DM9K_PHY | reg);
- 
+diff --git a/arch/mips/configs/img-ci20_defconfig b/arch/mips/configs/img-ci20_defconfig
+index 6702c88..28319c5 100644
+--- a/arch/mips/configs/img-ci20_defconfig
++++ b/arch/mips/configs/img-ci20_defconfig
+@@ -28,15 +28,18 @@ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_MD5SUM=y
+ CONFIG_CMD_GETOPT=y
+ CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OFTREE=y
++CONFIG_NET=y
+ CONFIG_OFDEVICE=y
++CONFIG_DRIVER_NET_DM9K=y
+ # CONFIG_SPI is not set
+-CONFIG_CLOCKSOURCE_DUMMY=y
+ CONFIG_CLOCKSOURCE_DUMMY_RATE=3500
+-CONFIG_DIGEST_SHA1_GENERIC=y
+-CONFIG_DIGEST_SHA224_GENERIC=y
+-CONFIG_DIGEST_SHA256_GENERIC=y
++CONFIG_FS_TFTP=y
 -- 
 2.1.4
 
