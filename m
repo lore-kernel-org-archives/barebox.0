@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yrunl-0004jk-Dq
- for barebox@lists.infradead.org; Mon, 11 May 2015 20:59:50 +0000
-Received: by lagv1 with SMTP id v1so102328873lag.3
- for <barebox@lists.infradead.org>; Mon, 11 May 2015 13:59:26 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 12 May 2015 00:00:53 +0300
-Message-Id: <1431378053-18914-6-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1431378053-18914-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Ys3aq-0002Dv-Dr
+ for barebox@lists.infradead.org; Tue, 12 May 2015 06:23:05 +0000
+Date: Tue, 12 May 2015 08:22:39 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150512062239.GO6325@pengutronix.de>
 References: <1431378053-18914-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1431378053-18914-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/5] MIPS: img-ci20_defconfig: enable network stuff
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 0/5] dm9k fixups; img-ci20: enable dm9000 ethernet
+ controller
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/configs/img-ci20_defconfig | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+On Tue, May 12, 2015 at 12:00:48AM +0300, Antony Pavlov wrote:
+> Changes since v1 (http://lists.infradead.org/pipermail/barebox/2014-September):
+> 
+>   * rework 'net: dm9k: add device tree support' completely;
+>   * add additional comments to 'net: dm9k: show only one phy on miibus';
+>   * add img-ci20-related patches.
+> 
+> 
+> Antony Pavlov (5):
+>   net: dm9k: show only one phy on miibus
+>   net: dm9k: add device tree support
+>   net: dm9k: fix reset routine
+>   MIPS: img-ci20: enable dm9000 ethernet controller
+>   MIPS: img-ci20_defconfig: enable network stuff
 
-diff --git a/arch/mips/configs/img-ci20_defconfig b/arch/mips/configs/img-ci20_defconfig
-index 6702c88..28319c5 100644
---- a/arch/mips/configs/img-ci20_defconfig
-+++ b/arch/mips/configs/img-ci20_defconfig
-@@ -28,15 +28,18 @@ CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_MD5SUM=y
- CONFIG_CMD_GETOPT=y
- CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OFTREE=y
-+CONFIG_NET=y
- CONFIG_OFDEVICE=y
-+CONFIG_DRIVER_NET_DM9K=y
- # CONFIG_SPI is not set
--CONFIG_CLOCKSOURCE_DUMMY=y
- CONFIG_CLOCKSOURCE_DUMMY_RATE=3500
--CONFIG_DIGEST_SHA1_GENERIC=y
--CONFIG_DIGEST_SHA224_GENERIC=y
--CONFIG_DIGEST_SHA256_GENERIC=y
-+CONFIG_FS_TFTP=y
+Applied, thanks
+
+Sascha
+
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
