@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Ys3aq-0002Dv-Dr
- for barebox@lists.infradead.org; Tue, 12 May 2015 06:23:05 +0000
-Date: Tue, 12 May 2015 08:22:39 +0200
+ Linux)) id 1Ys3d7-0003Pe-Bc
+ for barebox@lists.infradead.org; Tue, 12 May 2015 06:25:26 +0000
+Date: Tue, 12 May 2015 08:25:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150512062239.GO6325@pengutronix.de>
-References: <1431378053-18914-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20150512062502.GP6325@pengutronix.de>
+References: <20150511174717.fd248fd24a066b26a2b73c7b@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1431378053-18914-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <20150511174717.fd248fd24a066b26a2b73c7b@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/5] dm9k fixups; img-ci20: enable dm9000 ethernet
- controller
+Subject: Re: are some ppc-related patches absent in May-2015 barebox-next?
 To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org, Juergen Borleis <jbe@pengutronix.de>
 
-On Tue, May 12, 2015 at 12:00:48AM +0300, Antony Pavlov wrote:
-> Changes since v1 (http://lists.infradead.org/pipermail/barebox/2014-September):
-> 
->   * rework 'net: dm9k: add device tree support' completely;
->   * add additional comments to 'net: dm9k: show only one phy on miibus';
->   * add img-ci20-related patches.
-> 
-> 
-> Antony Pavlov (5):
->   net: dm9k: show only one phy on miibus
->   net: dm9k: add device tree support
->   net: dm9k: fix reset routine
->   MIPS: img-ci20: enable dm9000 ethernet controller
->   MIPS: img-ci20_defconfig: enable network stuff
+Hi Antony,
 
-Applied, thanks
+On Mon, May 11, 2015 at 05:47:17PM +0300, Antony Pavlov wrote:
+> Hi, Sascha and Juergen!
+> 
+> I have had rebased one of my old private branches over May-2015 barebox-next.
+> I have found that some ppc-related patches are present in my old private branch
+> but these patches are absent in the May-2015 barebox-next branch.
+> I'm speaking about this '[RFC] Add PowerPC MPC5125 support'
+> patchseries http://lists.infradead.org/pipermail/barebox/2014-October/021108.html
+> 
+> At the other hand I can't find any comments on this patchseries in the maillist (so,
+> there is no 'Applied, thanks!' response on this patcheseries).
+> 
+> AFAIR I have not intentionaly picked any patches from this patchseries to my private branch.
+> May be these patches for not very long time were in the next branch and were skipped one day?
+
+I think I had some offli[st|ne] review comments which never got
+addresses so this series never made it mainline. I assume I had this
+series merged to next for testing purposes.
 
 Sascha
 
