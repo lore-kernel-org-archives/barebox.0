@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YsTes-0000Di-Hd
+ Linux)) id 1YsTes-0000Dm-GL
  for barebox@lists.infradead.org; Wed, 13 May 2015 10:13:02 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 13 May 2015 12:12:30 +0200
-Message-Id: <1431511952-32124-5-git-send-email-mkl@pengutronix.de>
+Date: Wed, 13 May 2015 12:12:29 +0200
+Message-Id: <1431511952-32124-4-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1431511952-32124-1-git-send-email-mkl@pengutronix.de>
 References: <1431511952-32124-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,189 +21,196 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] state: backend: support phandle and of_path references
+Subject: [PATCH 4/7] state: add functionality to export state description
 To: barebox@lists.infradead.org
 
-This patch improves the backend property, it can be either a phandle or a
-of_path. During probe() of the state driver the backend property is
-dereferenced and the resulting of_path is saved in the state context. In a
-later patch it will be used to generate a phandle reference to the backend
-during DT fixup.
+This patch adds the functionality to export the description of the state, but
+not the contents of the variables to a DT node. This will be used in a later
+patch to "copy" the state description to the kernel device tree during DT
+fixup.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- common/state.c       |  9 ++++---
- drivers/misc/state.c | 70 ++++++++++++++++++++++++++++++++++++++++++----------
- include/state.h      |  7 +++---
- 3 files changed, 67 insertions(+), 19 deletions(-)
+ common/state.c | 61 ++++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 23 deletions(-)
 
 diff --git a/common/state.c b/common/state.c
-index 744a6f8250c4..d6060bb7dff4 100644
+index 66620a892074..744a6f8250c4 100644
 --- a/common/state.c
 +++ b/common/state.c
-@@ -54,6 +54,7 @@ struct state_backend {
- 	int (*load)(struct state_backend *backend, struct state *state);
- 	int (*save)(struct state_backend *backend, struct state *state);
- 	const char *name;
-+	const char *of_path;
- 	const char *path;
+@@ -74,12 +74,20 @@ struct state_variable {
+ 	void *raw;
  };
  
-@@ -903,7 +904,7 @@ out:
-  * @state	The state instance to work on
-  * @path	The path where the state will be stored to
-  */
--int state_backend_dtb_file(struct state *state, const char *path)
-+int state_backend_dtb_file(struct state *state, const char *of_path, const char *path)
- {
- 	struct state_backend_dtb *backend_dtb;
- 	struct state_backend *backend;
-@@ -918,6 +919,7 @@ int state_backend_dtb_file(struct state *state, const char *path)
- 
- 	backend->load = state_backend_dtb_load;
- 	backend->save = state_backend_dtb_save;
-+	backend->of_path = xstrdup(of_path);
- 	backend->path = xstrdup(path);
- 	backend->name = "dtb";
- 
-@@ -1133,8 +1135,8 @@ out_free:
-  * device @size may be 0. The two copies are spread to different
-  * eraseblocks if approriate for this device.
-  */
--int state_backend_raw_file(struct state *state, const char *path, off_t offset,
--		size_t size)
-+int state_backend_raw_file(struct state *state, const char *of_path,
-+		const char *path, off_t offset, size_t size)
- {
- 	struct state_backend_raw *backend_raw;
- 	struct state_backend *backend;
-@@ -1159,6 +1161,7 @@ int state_backend_raw_file(struct state *state, const char *path, off_t offset,
- 
- 	backend->load = state_backend_raw_load;
- 	backend->save = state_backend_raw_save;
-+	backend->of_path = xstrdup(of_path);
- 	backend->path = xstrdup(path);
- 	backend->name = "raw";
- 
-diff --git a/drivers/misc/state.c b/drivers/misc/state.c
-index 3b07bb93d725..9e8a40255348 100644
---- a/drivers/misc/state.c
-+++ b/drivers/misc/state.c
-@@ -24,10 +24,12 @@
- static int state_probe(struct device_d *dev)
- {
- 	struct device_node *np = dev->device_node;
-+	struct device_node *partition_node;
- 	struct state *state;
- 	const char *alias;
- 	const char *backend_type = NULL;
- 	int ret;
-+	const char *of_path;
- 	char *path;
- 
- 	if (!np)
-@@ -41,28 +43,70 @@ static int state_probe(struct device_d *dev)
- 	if (IS_ERR(state))
- 		return PTR_ERR(state);
- 
--	ret = of_find_path(np, "backend", &path, 0);
--	if (ret)
--		return ret;
-+	of_path = of_get_property(np, "backend", NULL);
-+	if (!of_path) {
-+		ret = -ENODEV;
-+		goto out_release;
-+	}
++enum state_convert {
++	STATE_CONVERT_FROM_NODE,
++	STATE_CONVERT_FROM_NODE_CREATE,
++	STATE_CONVERT_TO_NODE,
++	STATE_CONVERT_FIXUP,
++};
 +
-+	/* guess if of_path is a path, not a phandle */
-+	if (of_path[0] == '/') {
-+		ret = of_find_path(np, "backend", &path, 0);
-+		if (ret)
-+			goto out_release;
-+	} else {
-+		struct device_d *dev;
-+		struct cdev *cdev;
-+
-+		partition_node = of_parse_phandle(np, "backend", 0);
-+		if (!partition_node) {
-+			ret = -ENODEV;
-+			goto out_release;
-+		}
-+
-+		dev = of_find_device_by_node(partition_node);
-+		if (!list_is_singular(&dev->cdevs)) {
-+			ret = -ENODEV;
-+			goto out_release;
-+		}
-+
-+		cdev = list_first_entry(&dev->cdevs, struct cdev, devices_list);
-+		if (!cdev) {
-+			ret = -ENODEV;
-+			goto out_release;
-+		}
- 
--	dev_info(dev, "outpath: %s\n", path);
-+		path = asprintf("/dev/%s", cdev->name);
-+		of_path = partition_node->full_name;
-+	}
- 
- 	ret = of_property_read_string(np, "backend-type", &backend_type);
--	if (ret)
--		return ret;
--	else if (!strcmp(backend_type, "raw"))
--		ret = state_backend_raw_file(state, path, 0, 0);
--	else if (!strcmp(backend_type, "dtb"))
--		ret = state_backend_dtb_file(state, path);
--	else
-+	if (ret) {
-+		goto out_free;
-+	} else if (!strcmp(backend_type, "raw")) {
-+		ret = state_backend_raw_file(state, of_path, path, 0, 0);
-+	} else if (!strcmp(backend_type, "dtb")) {
-+		ret = state_backend_dtb_file(state, of_path, path);
-+	} else {
- 		dev_warn(dev, "invalid backend type: %s\n", backend_type);
-+		ret = -ENODEV;
-+		goto out_free;
-+	}
- 
- 	if (ret)
--		return ret;
-+		goto out_free;
- 
--	state_load(state);
-+	dev_info(dev, "backend: %s, path: %s, of_path: %s\n", backend_type, path, of_path);
-+	free(path);
- 
-+	state_load(state);
- 	return 0;
-+
-+ out_free:
-+	free(path);
-+ out_release:
-+	state_release(state);
-+	return ret;
+ /* A variable type (uint32, enum32) */
+ struct variable_type {
+ 	enum state_variable_type type;
+ 	const char *type_name;
+ 	struct list_head list;
+-	int (*export)(struct state_variable *, struct device_node *);
++	int (*export)(struct state_variable *, struct device_node *,
++			enum state_convert);
+ 	int (*import)(struct state_variable *, const struct device_node *);
+ 	struct state_variable *(*create)(struct state *state,
+ 			const char *name, struct device_node *);
+@@ -126,15 +134,15 @@ static inline struct state_uint32 *to_state_uint32(struct state_variable *s)
  }
  
- static __maybe_unused struct of_device_id state_ids[] = {
-diff --git a/include/state.h b/include/state.h
-index 116ec6301c1c..08c4e8654b9e 100644
---- a/include/state.h
-+++ b/include/state.h
-@@ -5,9 +5,10 @@
+ static int state_uint32_export(struct state_variable *var,
+-		struct device_node *node)
++		struct device_node *node, enum state_convert conv)
+ {
+ 	struct state_uint32 *su32 = to_state_uint32(var);
+ 	int ret;
  
- struct state;
+-	if (su32->value_default) {
++	if (su32->value_default || conv == STATE_CONVERT_FIXUP) {
+ 		ret = of_property_write_u32(node, "default",
+ 					    su32->value_default);
+-		if (ret)
++		if (ret || conv == STATE_CONVERT_FIXUP)
+ 			return ret;
+ 	}
  
--int state_backend_dtb_file(struct state *state, const char *path);
--int state_backend_raw_file(struct state *state, const char *path,
--		off_t offset, size_t size);
-+int state_backend_dtb_file(struct state *state, const char *of_path,
-+		const char *path);
-+int state_backend_raw_file(struct state *state, const char *of_path,
-+		const char *path, off_t offset, size_t size);
+@@ -193,16 +201,16 @@ static inline struct state_enum32 *to_state_enum32(struct state_variable *s)
+ }
  
- struct state *state_new_from_node(const char *name, struct device_node *node);
- void state_release(struct state *state);
+ static int state_enum32_export(struct state_variable *var,
+-		struct device_node *node)
++		struct device_node *node, enum state_convert conv)
+ {
+ 	struct state_enum32 *enum32 = to_state_enum32(var);
+ 	int ret, i, len;
+ 	char *prop, *str;
+ 
+-	if (enum32->value_default) {
++	if (enum32->value_default || conv == STATE_CONVERT_FIXUP) {
+ 		ret = of_property_write_u32(node, "default",
+ 					    enum32->value_default);
+-		if (ret)
++		if (ret || conv == STATE_CONVERT_FIXUP)
+ 			return ret;
+ 	}
+ 
+@@ -309,14 +317,14 @@ static inline struct state_mac *to_state_mac(struct state_variable *s)
+ }
+ 
+ static int state_mac_export(struct state_variable *var,
+-		struct device_node *node)
++		struct device_node *node, enum state_convert conv)
+ {
+ 	struct state_mac *mac = to_state_mac(var);
+ 	int ret;
+ 
+ 	ret = of_property_write_u8_array(node, "default", mac->value_default,
+ 					 ARRAY_SIZE(mac->value_default));
+-	if (ret)
++	if (ret || conv == STATE_CONVERT_FIXUP)
+ 		return ret;
+ 
+ 	return of_property_write_u8_array(node, "value", mac->value,
+@@ -446,12 +454,6 @@ static struct state_variable *state_find_var(struct state *state,
+ 	return ERR_PTR(-ENOENT);
+ }
+ 
+-enum state_convert {
+-	STATE_CONVERT_FROM_NODE,
+-	STATE_CONVERT_FROM_NODE_CREATE,
+-	STATE_CONVERT_TO_NODE,
+-};
+-
+ static int state_convert_node_variable(struct state *state,
+ 		struct device_node *node, struct device_node *parent,
+ 		const char *parent_name, enum state_convert conv)
+@@ -476,7 +478,8 @@ static int state_convert_node_variable(struct state *state,
+ 			parent_name, parent_name[0] ? "." : "", short_name);
+ 	free(short_name);
+ 
+-	if (conv == STATE_CONVERT_TO_NODE)
++	if ((conv == STATE_CONVERT_TO_NODE) ||
++	    (conv == STATE_CONVERT_FIXUP))
+ 		new_node = of_new_node(parent, node->name);
+ 
+ 	for_each_child_of_node(node, child) {
+@@ -489,6 +492,15 @@ static int state_convert_node_variable(struct state *state,
+ 	/* parents are allowed to have no type */
+ 	ret = of_property_read_string(node, "type", &type_name);
+ 	if (!list_empty(&node->children) && ret == -EINVAL) {
++		if (conv == STATE_CONVERT_FIXUP) {
++			ret = of_property_write_u32(new_node, "#address-cells", 1);
++			if (ret)
++				goto out_free;
++
++			ret = of_property_write_u32(new_node, "#size-cells", 1);
++			if (ret)
++				goto out_free;
++		}
+ 		ret = 0;
+ 		goto out_free;
+ 	} else if (ret) {
+@@ -542,7 +554,8 @@ static int state_convert_node_variable(struct state *state,
+ 		}
+ 		free(name);
+ 
+-		if (conv == STATE_CONVERT_TO_NODE) {
++		if ((conv == STATE_CONVERT_TO_NODE) ||
++		    (conv == STATE_CONVERT_FIXUP)) {
+ 			ret = of_set_property(new_node, "type",
+ 					      vtype->type_name,
+ 					      strlen(vtype->type_name) + 1, 1);
+@@ -559,8 +572,9 @@ static int state_convert_node_variable(struct state *state,
+ 		}
+ 	}
+ 
+-	if (conv == STATE_CONVERT_TO_NODE)
+-		ret = vtype->export(sv, new_node);
++	if ((conv == STATE_CONVERT_TO_NODE) ||
++	    (conv == STATE_CONVERT_FIXUP))
++		ret = vtype->export(sv, new_node, conv);
+ 	else
+ 		ret = vtype->import(sv, node);
+ 
+@@ -574,20 +588,21 @@ out:
+ 	return ret;
+ }
+ 
+-static struct device_node *state_to_node(struct state *state)
++static struct device_node *state_to_node(struct state *state, struct device_node *parent,
++					 enum state_convert conv)
+ {
+ 	struct device_node *child;
+ 	struct device_node *root;
+ 	int ret;
+ 
+-	root = of_new_node(NULL, NULL);
++	root = of_new_node(parent, state->root->name);
+ 	ret = of_property_write_u32(root, "magic", state->magic);
+ 	if (ret)
+ 		goto out;
+ 
+ 	for_each_child_of_node(state->root, child) {
+ 		ret = state_convert_node_variable(state, child, root, "",
+-						  STATE_CONVERT_TO_NODE);
++						  conv);
+ 		if (ret)
+ 			goto out;
+ 	}
+@@ -845,7 +860,7 @@ static int state_backend_dtb_save(struct state_backend *backend,
+ 	struct device_node *root;
+ 	struct fdt_header *fdt;
+ 
+-	root = state_to_node(state);
++	root = state_to_node(state, NULL, STATE_CONVERT_TO_NODE);
+ 	if (IS_ERR(root))
+ 		return PTR_ERR(root);
+ 
 -- 
 2.1.4
 
