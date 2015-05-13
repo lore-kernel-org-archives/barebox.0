@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YsQ2U-0001PK-DT
- for barebox@lists.infradead.org; Wed, 13 May 2015 06:21:08 +0000
+ Linux)) id 1YsQ57-0002FP-Lw
+ for barebox@lists.infradead.org; Wed, 13 May 2015 06:23:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 13 May 2015 08:20:35 +0200
-Message-Id: <1431498037-31789-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 13 May 2015 08:23:25 +0200
+Message-Id: <1431498205-2544-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,188 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mci: imx-esdhc: Use IS_ENABLED() instead of #ifdef
+Subject: [PATCH] console: use regular malloc for log messages
 To: Barebox List <barebox@lists.infradead.org>
 
-To get rid of some #ifdefery.
+Using xfunctions to allocate log messages is not a good idea. Should
+we be out of memory the xfunctions will panic which will cause another
+allocation, so we deadlock the system with no message going out.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/imx-esdhc.c | 124 +++++++++++++++++++++++++++---------------------
- 1 file changed, 69 insertions(+), 55 deletions(-)
+ common/console_common.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 8b45500..178967a 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -60,9 +60,10 @@ static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
+diff --git a/common/console_common.c b/common/console_common.c
+index 41a6929..36bd1dd 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -106,15 +106,23 @@ static void pr_puts(int level, const char *str)
+ 			log_clean(barebox_log_max_messages - 1);
  
- 	if (data) {
- 		xfertyp |= COMMAND_DPSEL;
--#ifndef CONFIG_MCI_IMX_ESDHC_PIO
--		xfertyp |= TRANSFER_MODE_DMAEN;
--#endif
+ 		if (barebox_log_max_messages >= 0) {
+-			log = xzalloc(sizeof(*log));
+-			log->msg = xstrdup(str);
++			log = malloc(sizeof(*log));
++			if (!log)
++				goto nolog;
 +
-+		if (!IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
-+			xfertyp |= TRANSFER_MODE_DMAEN;
++			log->msg = strdup(str);
++			if (!log->msg) {
++				free(log);
++				goto nolog;
++			}
 +
- 		if (data->blocks > 1) {
- 			xfertyp |= TRANSFER_MODE_MSBSEL;
- 			xfertyp |= TRANSFER_MODE_BCEN;
-@@ -89,7 +90,6 @@ static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
- 	return COMMAND_CMD(cmd->cmdidx) | xfertyp;
- }
- 
--#ifdef CONFIG_MCI_IMX_ESDHC_PIO
- /*
-  * PIO Read/Write Mode reduce the performace as DMA is not used in this mode.
-  */
-@@ -153,52 +153,84 @@ esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
+ 			log->timestamp = get_time_ns();
+ 			log->level = level;
+ 			list_add_tail(&log->list, &barebox_logbuf);
+ 			barebox_logbuf_num_messages++;
  		}
  	}
- }
--#endif
- 
- static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
- {
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
- 	void __iomem *regs = host->regs;
--#ifndef CONFIG_MCI_IMX_ESDHC_PIO
- 	u32 wml_value;
- 
--	wml_value = data->blocksize/4;
 -
--	if (data->flags & MMC_DATA_READ) {
--		if (wml_value > 0x10)
--			wml_value = 0x10;
--
--		esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_RD_WML_MASK, wml_value);
--		esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
--	} else {
--		if (wml_value > 0x80)
--			wml_value = 0x80;
--		if ((esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_WPSPL) == 0) {
--			printf("\nThe SD card is locked. Can not write to a locked card.\n\n");
--			return -ETIMEDOUT;
-+	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
-+		if (!(data->flags & MMC_DATA_READ)) {
-+			if ((esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_WPSPL) == 0) {
-+				printf("\nThe SD card is locked. "
-+					"Can not write to a locked card.\n\n");
-+				return -ETIMEDOUT;
-+			}
-+			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
-+		} else {
-+			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
- 		}
-+	} else {
-+		wml_value = data->blocksize/4;
-+
-+		if (data->flags & MMC_DATA_READ) {
-+			if (wml_value > 0x10)
-+				wml_value = 0x10;
-+
-+			esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_RD_WML_MASK, wml_value);
-+			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
-+		} else {
-+			if (wml_value > 0x80)
-+				wml_value = 0x80;
-+			if ((esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_WPSPL) == 0) {
-+				printf("\nThe SD card is locked. Can not write to a locked card.\n\n");
-+				return -ETIMEDOUT;
-+			}
++nolog:
+ 	if (level > barebox_loglevel)
+ 		return;
  
--		esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_WR_WML_MASK,
--					wml_value << 16);
--		esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
--	}
--#else	/* CONFIG_MCI_IMX_ESDHC_PIO */
--	if (!(data->flags & MMC_DATA_READ)) {
--		if ((esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_WPSPL) == 0) {
--			printf("\nThe SD card is locked. "
--				"Can not write to a locked card.\n\n");
--			return -ETIMEDOUT;
-+			esdhc_clrsetbits32(regs + IMX_SDHCI_WML, WML_WR_WML_MASK,
-+						wml_value << 16);
-+			esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
- 		}
--		esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->src);
--	} else
--		esdhc_write32(regs + SDHCI_DMA_ADDRESS, (u32)data->dest);
--#endif	/* CONFIG_MCI_IMX_ESDHC_PIO */
-+	}
- 
- 	esdhc_write32(regs + SDHCI_BLOCK_SIZE__BLOCK_COUNT, data->blocks << 16 | data->blocksize);
- 
- 	return 0;
- }
- 
-+static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
-+{
-+	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
-+	void __iomem *regs = host->regs;
-+	unsigned int num_bytes = data->blocks * data->blocksize;
-+	u32 irqstat;
-+
-+	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
-+		esdhc_pio_read_write(mci, data);
-+		return 0;
-+	}
-+
-+	do {
-+		irqstat = esdhc_read32(regs + SDHCI_INT_STATUS);
-+
-+		if (irqstat & DATA_ERR)
-+			return -EIO;
-+
-+		if (irqstat & IRQSTAT_DTOE)
-+			return -ETIMEDOUT;
-+	} while (!(irqstat & IRQSTAT_TC) &&
-+		(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
-+
-+	if (data->flags & MMC_DATA_WRITE)
-+		dma_sync_single_for_cpu((unsigned long)data->src,
-+					num_bytes, DMA_TO_DEVICE);
-+	else
-+		dma_sync_single_for_cpu((unsigned long)data->dest,
-+					num_bytes, DMA_FROM_DEVICE);
-+
-+	return 0;
-+}
- 
- /*
-  * Sends a command out on the bus.  Takes the mci pointer,
-@@ -303,27 +335,9 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
- 
- 	/* Wait until all of the blocks are transferred */
- 	if (data) {
--#ifdef CONFIG_MCI_IMX_ESDHC_PIO
--		esdhc_pio_read_write(mci, data);
--#else
--		do {
--			irqstat = esdhc_read32(regs + SDHCI_INT_STATUS);
--
--			if (irqstat & DATA_ERR)
--				return -EIO;
--
--			if (irqstat & IRQSTAT_DTOE)
--				return -ETIMEDOUT;
--		} while (!(irqstat & IRQSTAT_TC) &&
--				(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DLA));
--
--		if (data->flags & MMC_DATA_WRITE)
--			dma_sync_single_for_cpu((unsigned long)data->src,
--						num_bytes, DMA_TO_DEVICE);
--		else
--			dma_sync_single_for_cpu((unsigned long)data->dest,
--						num_bytes, DMA_FROM_DEVICE);
--#endif
-+		ret = esdhc_do_data(mci, data);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	esdhc_write32(regs + SDHCI_INT_STATUS, -1);
 -- 
 2.1.4
 
