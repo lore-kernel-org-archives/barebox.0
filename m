@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ys5nB-0004hx-OB
- for barebox@lists.infradead.org; Tue, 12 May 2015 08:43:58 +0000
-Received: by lbcga7 with SMTP id ga7so233296lbc.1
- for <barebox@lists.infradead.org>; Tue, 12 May 2015 01:43:34 -0700 (PDT)
-Received: from puro.NIISI (t35.niisi.ras.ru. [193.232.173.35])
- by mx.google.com with ESMTPSA id p6sm3627736laj.41.2015.05.12.01.43.33
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Tue, 12 May 2015 01:43:33 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 12 May 2015 11:45:06 +0300
-Message-Id: <1431420306-23337-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1431420306-23337-1-git-send-email-antonynpavlov@gmail.com>
-References: <1431420306-23337-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YsQ2Y-0001RY-TF
+ for barebox@lists.infradead.org; Wed, 13 May 2015 06:21:11 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 13 May 2015 08:20:36 +0200
+Message-Id: <1431498037-31789-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1431498037-31789-1-git-send-email-s.hauer@pengutronix.de>
+References: <1431498037-31789-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,39 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] update dlink-dir-320_defconfig
-To: barebox@lists.infradead.org
+Subject: [PATCH 2/3] mci: imx-esdhc: Check for errors in esdhc_pio_read_write
+To: Barebox List <barebox@lists.infradead.org>
 
-Just 'make defconfig && mv defconfig arch/mips/configs/dlink-dir-320_defconfig'.
+esdhc_pio_read_write can fail, so let it return an error code
+rather than void.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/mips/configs/dlink-dir-320_defconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mci/imx-esdhc.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/configs/dlink-dir-320_defconfig b/arch/mips/configs/dlink-dir-320_defconfig
-index 4c9a06f..61798bf 100644
---- a/arch/mips/configs/dlink-dir-320_defconfig
-+++ b/arch/mips/configs/dlink-dir-320_defconfig
-@@ -2,7 +2,6 @@ CONFIG_BUILTIN_DTB=y
- CONFIG_BUILTIN_DTB_NAME="dlink-dir-320"
- CONFIG_MACH_MIPS_BCM47XX=y
- CONFIG_STACK_SIZE=0x7000
--CONFIG_BROKEN=y
- CONFIG_EXPERIMENTAL=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
-@@ -35,9 +34,9 @@ CONFIG_CMD_PING=y
- CONFIG_CMD_TFTP=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_EDIT=y
-+CONFIG_CMD_LOGIN=y
- CONFIG_CMD_MENU=y
- CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_LOGIN=y
- CONFIG_CMD_PASSWD=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_TIMEOUT=y
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 178967a..f310213 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -93,7 +93,7 @@ static u32 esdhc_xfertyp(struct mci_cmd *cmd, struct mci_data *data)
+ /*
+  * PIO Read/Write Mode reduce the performace as DMA is not used in this mode.
+  */
+-static void
++static int
+ esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
+ {
+ 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
+@@ -116,7 +116,7 @@ esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
+ 				&& --timeout);
+ 			if (timeout <= 0) {
+ 				printf("\nData Read Failed in PIO Mode.");
+-				return;
++				return -ETIMEDOUT;
+ 			}
+ 			while (size && (!(irqstat & IRQSTAT_TC))) {
+ 				udelay(100); /* Wait before last byte transfer complete */
+@@ -139,7 +139,7 @@ esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
+ 				&& --timeout);
+ 			if (timeout <= 0) {
+ 				printf("\nData Write Failed in PIO Mode.");
+-				return;
++				return -ETIMEDOUT;
+ 			}
+ 			while (size && (!(irqstat & IRQSTAT_TC))) {
+ 				udelay(100); /* Wait before last byte transfer complete */
+@@ -152,6 +152,8 @@ esdhc_pio_read_write(struct mci_host *mci, struct mci_data *data)
+ 			blocks--;
+ 		}
+ 	}
++
++	return 0;
+ }
+ 
+ static int esdhc_setup_data(struct mci_host *mci, struct mci_data *data)
+@@ -206,10 +208,8 @@ static int esdhc_do_data(struct mci_host *mci, struct mci_data *data)
+ 	unsigned int num_bytes = data->blocks * data->blocksize;
+ 	u32 irqstat;
+ 
+-	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO)) {
+-		esdhc_pio_read_write(mci, data);
+-		return 0;
+-	}
++	if (IS_ENABLED(CONFIG_MCI_IMX_ESDHC_PIO))
++		return esdhc_pio_read_write(mci, data);
+ 
+ 	do {
+ 		irqstat = esdhc_read32(regs + SDHCI_INT_STATUS);
 -- 
 2.1.4
 
