@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YsqH1-0002I1-FF
+ Linux)) id 1YsqH1-0002Ht-Bh
  for barebox@lists.infradead.org; Thu, 14 May 2015 10:21:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 May 2015 12:21:22 +0200
-Message-Id: <1431598883-25668-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
-References: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 14 May 2015 12:21:20 +0200
+Message-Id: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] mtd: Fix function prototype
+Subject: [PATCH 1/4] i2c: Use correct format specifier
 To: Barebox List <barebox@lists.infradead.org>
 
-mtd_op_protect must return int instead of size_t.
+'count' is of type u16, not size_t.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c | 2 +-
+ drivers/i2c/i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 1755e76..681dc93 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -191,7 +191,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- 	return 0;
- }
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 7a6bde0..5d0fa06 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -183,7 +183,7 @@ int i2c_read_reg(struct i2c_client *client, u32 addr, u8 *buf, u16 count)
+ 	msg->len = i;
  
--static ssize_t mtd_op_protect(struct cdev *cdev, size_t count, loff_t offset, int prot)
-+static int mtd_op_protect(struct cdev *cdev, size_t count, loff_t offset, int prot)
- {
- 	struct mtd_info *mtd = cdev->priv;
+ 	status = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
+-	dev_dbg(&client->dev, "%s: %zu@%u --> %d\n", __func__,
++	dev_dbg(&client->dev, "%s: %u@%u --> %d\n", __func__,
+ 		count, addr, status);
  
+ 	if (status == ARRAY_SIZE(msg))
 -- 
 2.1.4
 
