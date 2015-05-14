@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YsqH1-0002Hx-Ez
+ Linux)) id 1YsqH1-0002Hy-FN
  for barebox@lists.infradead.org; Thu, 14 May 2015 10:21:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 May 2015 12:21:23 +0200
-Message-Id: <1431598883-25668-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 14 May 2015 12:21:21 +0200
+Message-Id: <1431598883-25668-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
 References: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] mtd: nand: Fix format specifier
+Subject: [PATCH 2/4] mem: Fix memcpy_sz variable types
 To: Barebox List <barebox@lists.infradead.org>
 
-'count' is of type size_t, so use %zx.
+- Drop usage of 'ulong', use unsigned long
+- remove unnecessary intermediate casting to unsigned long
+- Use proper u8/u16/u32 types. Fixes 64bit systems on which ulong is 64bit
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand-bb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fs.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
-index 539c685..8e4600a 100644
---- a/drivers/mtd/nand/nand-bb.c
-+++ b/drivers/mtd/nand/nand-bb.c
-@@ -54,7 +54,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
- 	size_t retlen;
- 	int ret, bytes = 0, now;
+diff --git a/fs/fs.c b/fs/fs.c
+index 779f264..a056d83 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1564,14 +1564,11 @@ out:
+ }
+ EXPORT_SYMBOL(rmdir);
  
--	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08x\n",
-+	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08zx\n",
- 			__func__, offset, bb->offset, count);
+-static void memcpy_sz(void *_dst, const void *_src, ulong count, ulong rwsize)
++static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
+ {
+-	ulong dst = (ulong)_dst;
+-	ulong src = (ulong)_src;
+-
+ 	/* no rwsize specification given. Do whatever memcpy likes best */
+ 	if (!rwsize) {
+-		memcpy(_dst, _src, count);
++		memcpy(dst, src, count);
+ 		return;
+ 	}
  
- 	while (count) {
-@@ -132,7 +132,7 @@ static ssize_t nand_bb_write(struct cdev *cdev, const void *buf, size_t count,
- 	struct nand_bb *bb = cdev->priv;
- 	int bytes = count, now, wroffs, ret;
- 
--	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08x\n",
-+	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08zx\n",
- 			__func__, offset, bb->offset, count);
- 
- 	while (count) {
+@@ -1582,13 +1579,13 @@ static void memcpy_sz(void *_dst, const void *_src, ulong count, ulong rwsize)
+ 	while (count-- > 0) {
+ 		switch (rwsize) {
+ 		case 1:
+-			*((u_char *)dst) = *((u_char *)src);
++			*((u8 *)dst) = *((u8 *)src);
+ 			break;
+ 		case 2:
+-			*((ushort *)dst) = *((ushort *)src);
++			*((u16 *)dst) = *((u16 *)src);
+ 			break;
+ 		case 4:
+-			*((ulong  *)dst) = *((ulong  *)src);
++			*((u32  *)dst) = *((u32  *)src);
+ 			break;
+ 		}
+ 		dst += rwsize;
 -- 
 2.1.4
 
