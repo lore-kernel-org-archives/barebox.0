@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YsqH1-0002Ht-Bh
- for barebox@lists.infradead.org; Thu, 14 May 2015 10:21:52 +0000
+ Linux)) id 1YsqH1-0002Hx-Ez
+ for barebox@lists.infradead.org; Thu, 14 May 2015 10:21:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 May 2015 12:21:20 +0200
-Message-Id: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 14 May 2015 12:21:23 +0200
+Message-Id: <1431598883-25668-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
+References: <1431598883-25668-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] i2c: Use correct format specifier
+Subject: [PATCH 4/4] mtd: nand: Fix format specifier
 To: Barebox List <barebox@lists.infradead.org>
 
-'count' is of type u16, not size_t.
+'count' is of type size_t, so use %zx.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/nand-bb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 7a6bde0..5d0fa06 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -183,7 +183,7 @@ int i2c_read_reg(struct i2c_client *client, u32 addr, u8 *buf, u16 count)
- 	msg->len = i;
+diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+index 539c685..8e4600a 100644
+--- a/drivers/mtd/nand/nand-bb.c
++++ b/drivers/mtd/nand/nand-bb.c
+@@ -54,7 +54,7 @@ static ssize_t nand_bb_read(struct cdev *cdev, void *buf, size_t count,
+ 	size_t retlen;
+ 	int ret, bytes = 0, now;
  
- 	status = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
--	dev_dbg(&client->dev, "%s: %zu@%u --> %d\n", __func__,
-+	dev_dbg(&client->dev, "%s: %u@%u --> %d\n", __func__,
- 		count, addr, status);
+-	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08x\n",
++	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08zx\n",
+ 			__func__, offset, bb->offset, count);
  
- 	if (status == ARRAY_SIZE(msg))
+ 	while (count) {
+@@ -132,7 +132,7 @@ static ssize_t nand_bb_write(struct cdev *cdev, const void *buf, size_t count,
+ 	struct nand_bb *bb = cdev->priv;
+ 	int bytes = count, now, wroffs, ret;
+ 
+-	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08x\n",
++	debug("%s offset: 0x%08llx (raw: 0x%08llx) count: 0x%08zx\n",
+ 			__func__, offset, bb->offset, count);
+ 
+ 	while (count) {
 -- 
 2.1.4
 
