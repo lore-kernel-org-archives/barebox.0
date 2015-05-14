@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x233.google.com ([2607:f8b0:400e:c02::233])
+Received: from mail-pd0-x234.google.com ([2607:f8b0:400e:c02::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YsjIi-0000IV-QK
- for barebox@lists.infradead.org; Thu, 14 May 2015 02:55:10 +0000
-Received: by pdea3 with SMTP id a3so70199963pde.3
- for <barebox@lists.infradead.org>; Wed, 13 May 2015 19:54:45 -0700 (PDT)
+ id 1YsjIk-0000JS-Cw
+ for barebox@lists.infradead.org; Thu, 14 May 2015 02:55:12 +0000
+Received: by pdea3 with SMTP id a3so70201119pde.3
+ for <barebox@lists.infradead.org>; Wed, 13 May 2015 19:54:48 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 13 May 2015 19:54:19 -0700
-Message-Id: <1431572067-4038-2-git-send-email-andrew.smirnov@gmail.com>
+Date: Wed, 13 May 2015 19:54:22 -0700
+Message-Id: <1431572067-4038-5-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1431572067-4038-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1431572067-4038-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] common/memtest.c: Do not omit offset of 0 from tests
+Subject: [PATCH 05/10] serial: i.MX: Write settings to a correct register
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Ommiting offset 0 from address line tests allows certain corner cases
-of faults to be undetected.
-
-For the "stuck high" case, consider scenario in which all of the
-tested address lines are stuck high. In original code first data
-filling loop would execute writing data to a single cell multiple
-times and second loop would just read data from that cell over and
-over again. Adding a write to start[0] should prevent this since it
-would cause the second loop to read incorrect data on its first
-iteration.
-
-For the "stuck low" case, having any of the tested bits of the address
-shorted would effectively "remap" that memory cell to start[0] in this
-case excluding start[0] during the verification phase would result in
-a false positive result.
-
-Note that both of the changes are present in Michael Barr's code here:
-http://www.esacademy.com/en/library/technical-articles-and-documents/miscellaneous/software-based-memory-testing.html
-
-and the code in barebox is based on that code.
+Fix what looks like a copy and past error, where settings for USR1
+register were being written to USR2.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/memtest.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/serial/serial_imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/memtest.c b/common/memtest.c
-index 3b0bcb7..9eda788 100644
---- a/common/memtest.c
-+++ b/common/memtest.c
-@@ -170,6 +170,15 @@ int mem_test(resource_size_t _start,
- 	for (offset = 1; offset <= num_words; offset <<= 1)
- 		start[offset] = pattern;
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index 12155ad..b7ea14a 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -113,10 +113,10 @@ static int imx_serial_init_port(struct console_device *cdev)
+ 	writel(val, regs + USR2);
 
-+	/*
-+	 * Now write anti-pattern at offset 0. If during the previous
-+	 * step one of the address lines got stuck high this
-+	 * operation would result in a memory cell at power-of-two
-+	 * offset being set to anti-pattern which hopefully would be
-+	 * detected byt the loop that follows.
-+	 */
-+	start[0] = anti_pattern;
-+
- 	printf("Check for address bits stuck high.\n");
+   	/* Clear status flags */
+-	val = readl(regs + USR2);
++	val = readl(regs + USR1);
+ 	val |= USR1_PARITYERR | USR1_RTSD | USR1_ESCF | USR1_FRAMERR | USR1_AIRINT |
+ 	       USR1_AWAKE;
+-	writel(val, regs + USR2);
++	writel(val, regs + USR1);
 
- 	/*
-@@ -187,6 +196,11 @@ int mem_test(resource_size_t _start,
- 		}
- 	}
-
-+	/*
-+	  Restore original value
-+	 */
-+	start[0] = pattern;
-+
- 	printf("Check for address bits stuck "
- 			"low or shorted.\n");
-
-@@ -196,7 +210,8 @@ int mem_test(resource_size_t _start,
- 	for (offset2 = 1; offset2 <= num_words; offset2 <<= 1) {
- 		start[offset2] = anti_pattern;
-
--		for (offset = 1; offset <= num_words; offset <<= 1) {
-+		for (offset = 0; offset <= num_words;
-+		     offset = (offset) ? offset << 1 : 1) {
- 			temp = start[offset];
-
- 			if ((temp != pattern) &&
+ 	return 0;
+ }
 --
 2.1.4
 
