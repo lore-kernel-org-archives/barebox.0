@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg010.nifty.com ([202.248.44.36]
- helo=conuserg010-v.nifty.com)
+Received: from conuserg012.nifty.com ([202.248.44.38]
+ helo=conuserg012-v.nifty.com)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YtFD6-0003sk-Qt
- for barebox@lists.infradead.org; Fri, 15 May 2015 12:59:29 +0000
+ id 1YtFH4-0003uN-FI
+ for barebox@lists.infradead.org; Fri, 15 May 2015 13:03:35 +0000
 From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Fri, 15 May 2015 21:58:46 +0900
-Message-Id: <1431694726-3761-1-git-send-email-yamada.masahiro@socionext.com>
+Date: Fri, 15 May 2015 22:02:47 +0900
+Message-Id: <1431694967-2416-1-git-send-email-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,7 +20,8 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] include: introcude include/linux/io.h as a wrapper of asm/io.h
+Subject: [PATCH v2] include: introduce include/linux/io.h as a wrapper of
+ asm/io.h
 To: barebox@lists.infradead.org
 
 In the latest Linux coding style, <linux/io.h> should be included
@@ -29,6 +30,9 @@ add include/linux/io.h.  Currently, it just includes <asm/io.h>.
 
 Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 ---
+
+Changes in v2:
+  - Fix a type s/introcude/introduce/
 
  include/linux/io.h | 23 +++++++++++++++++++++++
  1 file changed, 23 insertions(+)
