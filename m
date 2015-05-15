@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yt7v7-0002QZ-9Y
- for barebox@lists.infradead.org; Fri, 15 May 2015 05:12:26 +0000
-Date: Fri, 15 May 2015 07:12:02 +0200
+ Linux)) id 1Yt7wB-0002nO-DH
+ for barebox@lists.infradead.org; Fri, 15 May 2015 05:13:32 +0000
+Date: Fri, 15 May 2015 07:13:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150515051202.GG6325@pengutronix.de>
-References: <1431512154-25432-1-git-send-email-w.egorov@phytec.de>
+Message-ID: <20150515051308.GH6325@pengutronix.de>
+References: <1431521784-27413-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1431512154-25432-1-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1431521784-27413-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: am33xx: Fix SCRM compatible string to match new DT
- compatible string
-To: Wadim Egorov <w.egorov@phytec.de>
+Subject: Re: [PATCH 0/2] Socfpga: Sequencer updates
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Wadim,
-
-On Wed, May 13, 2015 at 12:15:54PM +0200, Wadim Egorov wrote:
-> Commit 461f8cfc7ea788428240271818363333ceff5c4c renamed the SCRM compatible
-> string in am33xx.dtsi and breaks all am335x based boards.
+On Wed, May 13, 2015 at 02:56:22PM +0200, Steffen Trumtrar wrote:
+> Hi!
 > 
-> Rename the SCRM compatible string.
+> This updates the socfpga_get_sequencer script to handle the new
+> Quartus 15.0 generated sources.
+> Luckily the real changes in the code are very minor, so the patch
+> mostly just removes TCL/ALTERA macros that are useless for barebox.
 > 
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> (Boot)Tested on Sockit/Socrates.
 
-Applied to master, thanks. Please mention next time that this should
-be applied to master. I realized this time but I might miss it next
-time.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
