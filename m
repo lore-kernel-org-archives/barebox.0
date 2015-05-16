@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conuserg012.nifty.com ([202.248.44.38]
- helo=conuserg012-v.nifty.com)
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YtFH4-0003uN-FI
- for barebox@lists.infradead.org; Fri, 15 May 2015 13:03:35 +0000
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
-Date: Fri, 15 May 2015 22:02:47 +0900
-Message-Id: <1431694967-2416-1-git-send-email-yamada.masahiro@socionext.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1YtZ5V-0008R1-6p
+ for barebox@lists.infradead.org; Sat, 16 May 2015 10:12:58 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Sat, 16 May 2015 12:12:29 +0200
+Message-Id: <1431771149-27265-1-git-send-email-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,63 +15,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] include: introduce include/linux/io.h as a wrapper of
- asm/io.h
+Subject: [PATCH] of: add a function to remove an of_fixup
 To: barebox@lists.infradead.org
 
-In the latest Linux coding style, <linux/io.h> should be included
-rather than <asm/io.h>.  To follow this standard also in barebox,
-add include/linux/io.h.  Currently, it just includes <asm/io.h>.
-
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
----
-
-Changes in v2:
-  - Fix a type s/introcude/introduce/
-
- include/linux/io.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
- create mode 100644 include/linux/io.h
-
-diff --git a/include/linux/io.h b/include/linux/io.h
-new file mode 100644
-index 0000000..548b245
---- /dev/null
-+++ b/include/linux/io.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Copyright 2006 PathScale, Inc.  All Rights Reserved.
-+ *
-+ * This file is free software; you can redistribute it and/or modify
-+ * it under the terms of version 2 of the GNU General Public License
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software Foundation,
-+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
-+ */
-+
-+#ifndef _LINUX_IO_H
-+#define _LINUX_IO_H
-+
-+#include <asm/io.h>
-+
-+#endif /* _LINUX_IO_H */
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhpcyBmdW5jdGlvbiBpcyBuZWVkZWQgd2hlbiBhIGRldmljZSB0aGF0IGFscmVhZHkgcmVnaXN0
+ZXJlZCBhIGZpeHVwIGluCnRoZSBwcm9iZSByb3V0aW5lIGZhaWxzIGxhdGVyIHRvIHByb2JlIGNv
+bXBsZXRlbHkuIFdpdGhvdXQgdW5yZWdpc3RlcmluZwp0aGUgZml4dXAgdGhlIGZ1bmN0aW9uIG1p
+Z2h0IGxhdGVyIGJlIGNhbGxlZCB3aXRoIGludmFsaWQgZGF0YS4KClNpZ25lZC1vZmYtYnk6IFV3
+ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29t
+bW9uL29mdHJlZS5jIHwgMTkgKysrKysrKysrKysrKysrKysrKwogaW5jbHVkZS9vZi5oICAgIHwg
+IDEgKwogMiBmaWxlcyBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvY29t
+bW9uL29mdHJlZS5jIGIvY29tbW9uL29mdHJlZS5jCmluZGV4IDUwZmM5NWI1ODgyMC4uZjc1ZDdi
+NGJmZTVkIDEwMDY0NAotLS0gYS9jb21tb24vb2Z0cmVlLmMKKysrIGIvY29tbW9uL29mdHJlZS5j
+CkBAIC0xNjAsNiArMTYwLDI1IEBAIGludCBvZl9yZWdpc3Rlcl9maXh1cChpbnQgKCpmaXh1cCko
+c3RydWN0IGRldmljZV9ub2RlICosIHZvaWQgKiksIHZvaWQgKmNvbnRleHQpCiB9CiAKIC8qCisg
+KiBSZW1vdmUgYSBwcmV2aW91c2x5IHJlZ2lzdGVyZWQgZml4dXAuIE9ubHkgdGhlIGZpcnN0IChp
+ZiBhbnkpIGlzIHJlbW92ZWQuCisgKiBSZXR1cm5zIDAgaWYgYSBtYXRjaCB3YXMgZm91bmQgKGFu
+ZCByZW1vdmVkKSwgLUVOT0VOVCBvdGhlcndpc2UuCisgKi8KK2ludCBvZl91bnJlZ2lzdGVyX2Zp
+eHVwKGludCAoKmZpeHVwKShzdHJ1Y3QgZGV2aWNlX25vZGUgKiwgdm9pZCAqKSwKKwkJCXZvaWQg
+KmNvbnRleHQpCit7CisJc3RydWN0IG9mX2ZpeHVwICpvZl9maXh1cDsKKworCWxpc3RfZm9yX2Vh
+Y2hfZW50cnkob2ZfZml4dXAsICZvZl9maXh1cF9saXN0LCBsaXN0KSB7CisJCWlmIChvZl9maXh1
+cC0+Zml4dXAgPT0gZml4dXAgJiYgb2ZfZml4dXAtPmNvbnRleHQgPT0gY29udGV4dCkgeworCQkJ
+bGlzdF9kZWwoJm9mX2ZpeHVwLT5saXN0KTsKKwkJCXJldHVybiAwOworCQl9CisJfQorCisJcmV0
+dXJuIC1FTk9FTlQ7Cit9CisKKy8qCiAgKiBBcHBseSByZWdpc3RlcmVkIGZpeHVwcyBmb3IgdGhl
+IGdpdmVuIGZkdC4gVGhlIGZkdCBtdXN0IGhhdmUKICAqIGVub3VnaCBmcmVlIHNwYWNlIHRvIGFw
+cGx5IHRoZSBmaXh1cHMuCiAgKi8KZGlmZiAtLWdpdCBhL2luY2x1ZGUvb2YuaCBiL2luY2x1ZGUv
+b2YuaAppbmRleCBlNzNjZDdhNDQ2YjcuLmMwMmY1ZjQ5YWJhNCAxMDA2NDQKLS0tIGEvaW5jbHVk
+ZS9vZi5oCisrKyBiL2luY2x1ZGUvb2YuaApAQCAtMjQzLDYgKzI0Myw3IEBAIHN0cnVjdCBkZXZp
+Y2VfZCAqb2ZfZmluZF9kZXZpY2VfYnlfbm9kZV9wYXRoKGNvbnN0IGNoYXIgKnBhdGgpOwogI2Rl
+ZmluZSBPRl9GSU5EX1BBVEhfRkxBR1NfQkIgMQkJLyogcmV0dXJuIC5iYiBkZXZpY2UgaWYgYXZh
+aWxhYmxlICovCiBpbnQgb2ZfZmluZF9wYXRoKHN0cnVjdCBkZXZpY2Vfbm9kZSAqbm9kZSwgY29u
+c3QgY2hhciAqcHJvcG5hbWUsIGNoYXIgKipvdXRwYXRoLCB1bnNpZ25lZCBmbGFncyk7CiBpbnQg
+b2ZfcmVnaXN0ZXJfZml4dXAoaW50ICgqZml4dXApKHN0cnVjdCBkZXZpY2Vfbm9kZSAqLCB2b2lk
+ICopLCB2b2lkICpjb250ZXh0KTsKK2ludCBvZl91bnJlZ2lzdGVyX2ZpeHVwKGludCAoKmZpeHVw
+KShzdHJ1Y3QgZGV2aWNlX25vZGUgKiwgdm9pZCAqKSwgdm9pZCAqY29udGV4dCk7CiBzdHJ1Y3Qg
+ZGV2aWNlX25vZGUgKm9mX2ZpbmRfbm9kZV9ieV9hbGlhcyhzdHJ1Y3QgZGV2aWNlX25vZGUgKnJv
+b3QsCiAJCWNvbnN0IGNoYXIgKmFsaWFzKTsKIHN0cnVjdCBkZXZpY2Vfbm9kZSAqb2ZfZmluZF9u
+b2RlX2J5X3BhdGhfb3JfYWxpYXMoc3RydWN0IGRldmljZV9ub2RlICpyb290LAotLSAKMi4xLjQK
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
