@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YsTes-0000Do-HD
- for barebox@lists.infradead.org; Wed, 13 May 2015 10:13:00 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 13 May 2015 12:12:32 +0200
-Message-Id: <1431511952-32124-7-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1431511952-32124-1-git-send-email-mkl@pengutronix.de>
-References: <1431511952-32124-1-git-send-email-mkl@pengutronix.de>
+Received: from mail-wi0-f175.google.com ([209.85.212.175])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Yuxab-0005iF-HR
+ for barebox@lists.infradead.org; Wed, 20 May 2015 06:34:50 +0000
+Received: by wicmx19 with SMTP id mx19so139089978wic.0
+ for <barebox@lists.infradead.org>; Tue, 19 May 2015 23:34:26 -0700 (PDT)
+Message-ID: <555C2AEF.206@elfin.de>
+Date: Wed, 20 May 2015 08:34:23 +0200
+From: Marcel Behlau <marcel.behlau@elfin.de>
 MIME-Version: 1.0
+References: <5548DA0A.3050408@elfin.de> <20150505155450.GB6325@pengutronix.de>
+ <20150506071228.GQ25193@pengutronix.de> <554B4B63.7020301@elfin.de>
+ <20150508051242.GV6325@pengutronix.de>
+In-Reply-To: <20150508051242.GV6325@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,30 +21,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="windows-1252"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] state: return -EPROBE_DEFER if the backend isn't available
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: Usage of i2c_-Tools in Barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, =?windows-1252?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 
-RnJvbTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
-ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
-cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IE1hcmMgS2xlaW5lLUJ1ZGRlIDxta2xAcGVuZ3V0cm9u
-aXguZGU+Ci0tLQogZHJpdmVycy9taXNjL3N0YXRlLmMgfCA0ICsrKy0KIDEgZmlsZSBjaGFuZ2Vk
-LCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL21p
-c2Mvc3RhdGUuYyBiL2RyaXZlcnMvbWlzYy9zdGF0ZS5jCmluZGV4IDllOGE0MDI1NTM0OC4uZGJl
-ODg3MTVhMTAzIDEwMDY0NAotLS0gYS9kcml2ZXJzL21pc2Mvc3RhdGUuYworKysgYi9kcml2ZXJz
-L21pc2Mvc3RhdGUuYwpAQCAtNTIsNiArNTIsOCBAQCBzdGF0aWMgaW50IHN0YXRlX3Byb2JlKHN0
-cnVjdCBkZXZpY2VfZCAqZGV2KQogCS8qIGd1ZXNzIGlmIG9mX3BhdGggaXMgYSBwYXRoLCBub3Qg
-YSBwaGFuZGxlICovCiAJaWYgKG9mX3BhdGhbMF0gPT0gJy8nKSB7CiAJCXJldCA9IG9mX2ZpbmRf
-cGF0aChucCwgImJhY2tlbmQiLCAmcGF0aCwgMCk7CisJCWlmIChyZXQgPT0gLUVOT0RFVikKKwkJ
-CXJldCA9IC1FUFJPQkVfREVGRVI7CiAJCWlmIChyZXQpCiAJCQlnb3RvIG91dF9yZWxlYXNlOwog
-CX0gZWxzZSB7CkBAIC02Niw3ICs2OCw3IEBAIHN0YXRpYyBpbnQgc3RhdGVfcHJvYmUoc3RydWN0
-IGRldmljZV9kICpkZXYpCiAKIAkJZGV2ID0gb2ZfZmluZF9kZXZpY2VfYnlfbm9kZShwYXJ0aXRp
-b25fbm9kZSk7CiAJCWlmICghbGlzdF9pc19zaW5ndWxhcigmZGV2LT5jZGV2cykpIHsKLQkJCXJl
-dCA9IC1FTk9ERVY7CisJCQlyZXQgPSAtRVBST0JFX0RFRkVSOwogCQkJZ290byBvdXRfcmVsZWFz
-ZTsKIAkJfQogCi0tIAoyLjEuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+i found the problem. The Pad Mux Register (0x20E008C and 0x20E0090) are =
+
+not initialised. In both registers is a 0x00000005 (reset value), =
+
+instead of 0x00000016. I think, i must specify the value of the mux =
+
+register in the device tree, too. How can i do this?
+
+Thank in advance,
+
+Marcel
+
+md 0x20E008C-0x20E0093
+
+On 08.05.2015 07:12, Sascha Hauer wrote:
+> On Thu, May 07, 2015 at 01:24:19PM +0200, Marcel Behlau wrote:
+>> Hi,
+>>
+>> many thanks for your help. I activated the i2c devices in the device
+>> tree, the pinctrl is already done in the imx6q.dtsi, which is
+>> included. The used pins are identically with the used pins on the
+>> SBC. devinfo told me, that the driver "i2c-fsl" is loaded. After
+>> rebuild barebox, it's possible to probe the bus, but the command
+>> only answered with an timeout:
+>>
+>> barebox@Phytec phyFLEX-i.MX6 Quad Carrier-Board:/ i2c_probe 1 83 83
+>> probing i2c range 0x53 - 0x53 :
+>> i2c2: <i2c_fsl_bus_busy> timeout waiting for I2C bus busy
+> I *think* this means that the levels on the bus do not properly follow
+> what the controller wants to do. Maybe pullup missing? An oscilloscope
+> might help here.
+>
+> Sascha
+>
+
+-- =
+
+Dipl. Ing (FH) Marcel Behlau
+(Software Developer)
+
+ELFIN GmbH
+Siegburger Stra=DFe 215
+50679 K=F6ln
+Germany
+
+Tel: +49 (221) 6778932-0
+Fax: +49 (221) 6778932-2
+marcel.behlau@elfin.de
+www.elfin.de
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
