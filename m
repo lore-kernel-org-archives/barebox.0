@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yux9Z-0000cr-7t
- for barebox@lists.infradead.org; Wed, 20 May 2015 06:06:54 +0000
-Date: Wed, 20 May 2015 08:06:29 +0200
+ Linux)) id 1YuxDB-0002GG-Gy
+ for barebox@lists.infradead.org; Wed, 20 May 2015 06:10:38 +0000
+Date: Wed, 20 May 2015 08:10:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150520060629.GG6325@pengutronix.de>
-References: <1431999086-19465-1-git-send-email-yamada.masahiro@socionext.com>
+Message-ID: <20150520061013.GH6325@pengutronix.de>
+References: <555B3AB1.5080208@atsonline.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1431999086-19465-1-git-send-email-yamada.masahiro@socionext.com>
+In-Reply-To: <555B3AB1.5080208@atsonline.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Abolish cpu_read* and cpu_write* accessors
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: Re: [PATCH] fixing argumentparser for ubiformat
+To: Alexander Richter <alexander.richter@atsonline.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 19, 2015 at 10:31:26AM +0900, Masahiro Yamada wrote:
-> Commit 2e6a88f2101d (add cpu native ordered io accessors) introduced
-> these macros and then commit be57f20cdd7d (Fix big endian MMIO
-> primitives) figured out they are equivalent to __raw_{read,write}*.
+On Tue, May 19, 2015 at 03:29:21PM +0200, Alexander Richter wrote:
 > 
-> They turned out unnecessary after all.  Anyway, most source files
-> use __raw_read* and __raw_write*.
-> 
-> Let's replace a few remaining references and abolish them.
-> 
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Signed-off-by: Alexander Richter <alexander.richter@atsonline.de>
 > ---
+>  commands/ubiformat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
