@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YvhaF-0005hU-MZ
- for barebox@lists.infradead.org; Fri, 22 May 2015 07:41:32 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 May 2015 09:41:06 +0200
-Message-Id: <1432280466-7055-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YvlYC-0004uR-Gb
+ for barebox@lists.infradead.org; Fri, 22 May 2015 11:55:41 +0000
+Date: Fri, 22 May 2015 13:55:16 +0200
+From: Stefan Christ <s.christ@phytec.de>
+Message-ID: <20150522115515.GB5384@lws-christ>
+References: <1432194109-4340-1-git-send-email-s.christ@phytec.de>
+ <20150522065037.GT6325@pengutronix.de>
+MIME-Version: 1.0
+In-Reply-To: <20150522065037.GT6325@pengutronix.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] tlsf malloc: enable 64bit support on 64bit architectures
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] barebox update: add note after successful update
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 64bit architectures TLSF_64BIT should be defined. Decide that
-depending on the CONFIG_64BIT symbol. When 64bit support is enabled
-all allocations will be aligned to 8 byte boundaries which is necessary
-for architectures that do not support unaligned accesses or have
-a performance penalty for unaligned accesses.
-Also changes the undefined tlsf_decl to 'static'.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/tlsfbits.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/common/tlsfbits.h b/common/tlsfbits.h
-index 93466e4..edbac80 100644
---- a/common/tlsfbits.h
-+++ b/common/tlsfbits.h
-@@ -3,6 +3,10 @@
- 
- #include <linux/bitops.h>
- 
-+#ifdef CONFIG_64BIT
-+#define TLSF_64BIT
-+#endif
-+
- /*
- ** Architecture-specific bit manipulation routines.
- **
-@@ -33,7 +37,7 @@ static int tlsf_fls(unsigned int word)
- 
- /* Possibly 64-bit version of tlsf_fls. */
- #if defined (TLSF_64BIT)
--tlsf_decl int tlsf_fls_sizet(size_t size)
-+static int tlsf_fls_sizet(size_t size)
- {
- 	int high = (int)(size >> 32);
- 	int bits = 0;
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBNYXkgMjIsIDIwMTUgYXQgMDg6NTA6MzdBTSArMDIwMCwgU2FzY2hhIEhhdWVyIHdy
+b3RlOgo+IE9uIFRodSwgTWF5IDIxLCAyMDE1IGF0IDA5OjQxOjQ5QU0gKzAyMDAsIFN0ZWZhbiBD
+aHJpc3Qgd3JvdGU6Cj4gPiBTb21lIHVzZXJzIG9mIHRoZSBiYXJlYm94X3VwZGF0ZSBjb21tYW5k
+IGZvcmdldCB0byBlcmFzZSB0aGUgZXh0ZXJuYWwKPiA+IGJhcmVib3ggZW52aXJvbm1lbnQgYWZ0
+ZXIgdXBkYXRpbmcgdGhlIGJhcmVib3guIFVzaW5nIGFuIG9sZCBiYXJlYm94Cj4gPiBlbnZpcm9u
+bWVudCBsZWFkcyB0byB2YXJpb3VzIHByb2JsZW1zIGlmIHRoZXJlIHdlcmUgbWFqb3IgY2hhbmdl
+cy4KPiA+IAo+ID4gU28gYWRkIGEgZ2VudGxlIHJlbWluZGVyIGFmdGVyIHRoZSBzdWNjZXNzZnVs
+IHVwZGF0ZS4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogU3RlZmFuIENocmlzdCA8cy5jaHJpc3RA
+cGh5dGVjLmRlPgo+ID4gLS0tCj4gPiAgY29tbW9uL2JidS5jIHwgNSArKysrLQo+ID4gIDEgZmls
+ZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiA+IAo+ID4gZGlmZiAt
+LWdpdCBhL2NvbW1vbi9iYnUuYyBiL2NvbW1vbi9iYnUuYwo+ID4gaW5kZXggN2ZiMTU0YS4uMWIx
+MjVlOSAxMDA2NDQKPiA+IC0tLSBhL2NvbW1vbi9iYnUuYwo+ID4gKysrIGIvY29tbW9uL2JidS5j
+Cj4gPiBAQCAtMTEzLDggKzExMywxMSBAQCBpbnQgYmFyZWJveF91cGRhdGUoc3RydWN0IGJidV9k
+YXRhICpkYXRhKQo+ID4gIAlpZiAocmV0ID09IC1FSU5UUikKPiA+ICAJCXByaW50ZigidXBkYXRl
+IGFib3J0ZWRcbiIpOwo+ID4gIAo+ID4gLQlpZiAoIXJldCkKPiA+ICsJaWYgKCFyZXQpIHsKPiA+
+ICAJCXByaW50ZigidXBkYXRlIHN1Y2NlZWRlZFxuIik7Cj4gPiArCQlpZiAoSVNfRU5BQkxFRChD
+T05GSUdfRU5WX0hBTkRMSU5HKSkKPiA+ICsJCQlwcmludGYoIllvdSBtYXliZSB3YW50IHRvIGVy
+YXNlIHRoZSBiYXJlYm94IGVudmlyb25tZW50LlxuIik7Cj4gCj4gSG93IGFib3V0IGFkZGluZyBh
+IGhpbnQgLi4udXNpbmcgc2F2ZWVudiAtej8KCk9oLCBJIGRpZG4ndCBrbm93IHRoYXQgdGhlICIt
+eiIgYXJndW1lbnQgZXhpdHMuIE5pY2UuCgpPaywgYnV0IHdoYXQgYWJvdXQgdGhlIHNpdHVhdGlv
+biB3aGVuIGEgdXNlciBib290cyB0aGUgYmFyZWJveCBmcm9tIHNkY2FyZCBhbmQKdXNlcyB0aGUg
+YmFyZWJveF91cGRhdGUgaGFuZGxlciB0byBmbGFzaCBhIGJhcmVib3ggdG8gTkFORC4gSW4gc3Vj
+aCBjYXNlCidzYXZlZW52IC16JyBvdmVyd3JpdGVzIHRoZSBlbnZpcm9ubWVudCBvbiB0aGUgc2Rj
+YXJkLgoKSSd2ZSBzdHJ1Z2dsZWQgYSBiaXQgdG8gY29tZSB1cCB3aXRoIGEgc2hvcnQgdGV4dCB0
+aGF0IGNvdmVycyBhbGwgdGhlc2UgY2FzZXMuCgpNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuIC8g
+S2luZCByZWdhcmRzLAoJU3RlZmFuIENocmlzdAoKPiAKPiBTYXNjaGEKPiAKPiAtLSAKPiBQZW5n
+dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAg
+ICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEz
+NyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBB
+bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
+MjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
