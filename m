@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YvgBD-0003Gh-QJ
- for barebox@lists.infradead.org; Fri, 22 May 2015 06:11:38 +0000
+ Linux)) id 1YvgBD-0003Gi-QA
+ for barebox@lists.infradead.org; Fri, 22 May 2015 06:11:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 May 2015 08:11:02 +0200
-Message-Id: <1432275071-28554-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 May 2015 08:11:08 +0200
+Message-Id: <1432275071-28554-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1432275071-28554-1-git-send-email-s.hauer@pengutronix.de>
 References: <1432275071-28554-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,131 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/14] remove unused nlink_t
+Subject: [PATCH 11/14] ppc: use generic posix_types.h
 To: Barebox List <barebox@lists.infradead.org>
 
-The nlink_t type is unused in barebox, so drop it. This prevents
-compile failures when architectures use the generic posix_types.h
-which no longer has __kernel_nlink_t defined.
+Use generic asm-generic/posix_types.h instead of repeating the
+typedefs.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/linux/types.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/ppc/include/asm/posix_types.h | 109 +------------------------------------
+ 1 file changed, 1 insertion(+), 108 deletions(-)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 9871a66..ce1a0ec 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -15,7 +15,6 @@ typedef __kernel_fd_set		fd_set;
- typedef __kernel_dev_t		dev_t;
- typedef __kernel_ino_t		ino_t;
- typedef __kernel_mode_t		mode_t;
--typedef __kernel_nlink_t	nlink_t;
- typedef __kernel_off_t		off_t;
- typedef __kernel_pid_t		pid_t;
- typedef __kernel_daddr_t	daddr_t;
+diff --git a/arch/ppc/include/asm/posix_types.h b/arch/ppc/include/asm/posix_types.h
+index a7af406..22cae62 100644
+--- a/arch/ppc/include/asm/posix_types.h
++++ b/arch/ppc/include/asm/posix_types.h
+@@ -1,108 +1 @@
+-#ifndef _PPC_POSIX_TYPES_H
+-#define _PPC_POSIX_TYPES_H
+-
+-/*
+- * This file is generally used by user-level software, so you need to
+- * be a little careful about namespace pollution etc.  Also, we cannot
+- * assume GCC is being used.
+- */
+-
+-typedef unsigned int	__kernel_ino_t;
+-typedef unsigned int	__kernel_mode_t;
+-typedef unsigned short	__kernel_nlink_t;
+-typedef long		__kernel_off_t;
+-typedef int		__kernel_pid_t;
+-typedef unsigned int	__kernel_uid_t;
+-typedef unsigned int	__kernel_gid_t;
+-typedef unsigned int	__kernel_size_t;
+-typedef int		__kernel_ssize_t;
+-typedef long		__kernel_ptrdiff_t;
+-typedef long		__kernel_time_t;
+-typedef long		__kernel_suseconds_t;
+-typedef long		__kernel_clock_t;
+-typedef int		__kernel_daddr_t;
+-typedef char *		__kernel_caddr_t;
+-typedef short             __kernel_ipc_pid_t;
+-typedef unsigned short	__kernel_uid16_t;
+-typedef unsigned short	__kernel_gid16_t;
+-typedef unsigned int	__kernel_uid32_t;
+-typedef unsigned int	__kernel_gid32_t;
+-
+-typedef unsigned int	__kernel_old_uid_t;
+-typedef unsigned int	__kernel_old_gid_t;
+-
+-#ifdef __GNUC__
+-typedef long long	__kernel_loff_t;
+-#endif
+-
+-typedef struct {
+-	int	val[2];
+-} __kernel_fsid_t;
+-
+-#ifndef __GNUC__
+-
+-#define	__FD_SET(d, set)	((set)->fds_bits[__FDELT(d)] |= __FDMASK(d))
+-#define	__FD_CLR(d, set)	((set)->fds_bits[__FDELT(d)] &= ~__FDMASK(d))
+-#define	__FD_ISSET(d, set)	((set)->fds_bits[__FDELT(d)] & __FDMASK(d))
+-#define	__FD_ZERO(set)	\
+-  ((void) memset ((__ptr_t) (set), 0, sizeof (__kernel_fd_set)))
+-
+-#else /* __GNUC__ */
+-
+-#if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ < 2) \
+-    || (__GLIBC__ == 2 && __GLIBC_MINOR__ == 0)
+-/* With GNU C, use inline functions instead so args are evaluated only once: */
+-
+-#undef __FD_SET
+-static __inline__ void __FD_SET(unsigned long fd, __kernel_fd_set *fdsetp)
+-{
+-	unsigned long _tmp = fd / __NFDBITS;
+-	unsigned long _rem = fd % __NFDBITS;
+-	fdsetp->fds_bits[_tmp] |= (1UL<<_rem);
+-}
+-
+-#undef __FD_CLR
+-static __inline__ void __FD_CLR(unsigned long fd, __kernel_fd_set *fdsetp)
+-{
+-	unsigned long _tmp = fd / __NFDBITS;
+-	unsigned long _rem = fd % __NFDBITS;
+-	fdsetp->fds_bits[_tmp] &= ~(1UL<<_rem);
+-}
+-
+-#undef __FD_ISSET
+-static __inline__ int __FD_ISSET(unsigned long fd, __kernel_fd_set *p)
+-{
+-	unsigned long _tmp = fd / __NFDBITS;
+-	unsigned long _rem = fd % __NFDBITS;
+-	return (p->fds_bits[_tmp] & (1UL<<_rem)) != 0;
+-}
+-
+-/*
+- * This will unroll the loop for the normal constant case (8 ints,
+- * for a 256-bit fd_set)
+- */
+-#undef __FD_ZERO
+-static __inline__ void __FD_ZERO(__kernel_fd_set *p)
+-{
+-	unsigned int *tmp = (unsigned int *)p->fds_bits;
+-	int i;
+-
+-	if (__builtin_constant_p(__FDSET_LONGS)) {
+-		switch (__FDSET_LONGS) {
+-			case 8:
+-				tmp[0] = 0; tmp[1] = 0; tmp[2] = 0; tmp[3] = 0;
+-				tmp[4] = 0; tmp[5] = 0; tmp[6] = 0; tmp[7] = 0;
+-				return;
+-		}
+-	}
+-	i = __FDSET_LONGS;
+-	while (i) {
+-		i--;
+-		*tmp = 0;
+-		tmp++;
+-	}
+-}
+-
+-#endif /* defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ < 2) */
+-#endif /* __GNUC__ */
+-#endif /* _PPC_POSIX_TYPES_H */
++#include <asm-generic/posix_types.h>
 -- 
 2.1.4
 
