@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YvlYC-0004uR-Gb
- for barebox@lists.infradead.org; Fri, 22 May 2015 11:55:41 +0000
-Date: Fri, 22 May 2015 13:55:16 +0200
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20150522115515.GB5384@lws-christ>
-References: <1432194109-4340-1-git-send-email-s.christ@phytec.de>
- <20150522065037.GT6325@pengutronix.de>
-MIME-Version: 1.0
-In-Reply-To: <20150522065037.GT6325@pengutronix.de>
-Content-Disposition: inline
+ id 1YvlmF-0003Gn-6G
+ for barebox@lists.infradead.org; Fri, 22 May 2015 12:10:12 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id D6CB0A00345
+ for <barebox@lists.infradead.org>; Fri, 22 May 2015 14:11:15 +0200 (CEST)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Fri, 22 May 2015 14:09:15 +0200
+Message-Id: <1432296555-48594-2-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1432296555-48594-1-git-send-email-w.egorov@phytec.de>
+References: <1432296555-48594-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +19,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] barebox update: add note after successful update
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] ARM: dts: Add strip-am33xx.dtsi to PHYTEC MLOs
+To: barebox@lists.infradead.org
 
-T24gRnJpLCBNYXkgMjIsIDIwMTUgYXQgMDg6NTA6MzdBTSArMDIwMCwgU2FzY2hhIEhhdWVyIHdy
-b3RlOgo+IE9uIFRodSwgTWF5IDIxLCAyMDE1IGF0IDA5OjQxOjQ5QU0gKzAyMDAsIFN0ZWZhbiBD
-aHJpc3Qgd3JvdGU6Cj4gPiBTb21lIHVzZXJzIG9mIHRoZSBiYXJlYm94X3VwZGF0ZSBjb21tYW5k
-IGZvcmdldCB0byBlcmFzZSB0aGUgZXh0ZXJuYWwKPiA+IGJhcmVib3ggZW52aXJvbm1lbnQgYWZ0
-ZXIgdXBkYXRpbmcgdGhlIGJhcmVib3guIFVzaW5nIGFuIG9sZCBiYXJlYm94Cj4gPiBlbnZpcm9u
-bWVudCBsZWFkcyB0byB2YXJpb3VzIHByb2JsZW1zIGlmIHRoZXJlIHdlcmUgbWFqb3IgY2hhbmdl
-cy4KPiA+IAo+ID4gU28gYWRkIGEgZ2VudGxlIHJlbWluZGVyIGFmdGVyIHRoZSBzdWNjZXNzZnVs
-IHVwZGF0ZS4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogU3RlZmFuIENocmlzdCA8cy5jaHJpc3RA
-cGh5dGVjLmRlPgo+ID4gLS0tCj4gPiAgY29tbW9uL2JidS5jIHwgNSArKysrLQo+ID4gIDEgZmls
-ZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiA+IAo+ID4gZGlmZiAt
-LWdpdCBhL2NvbW1vbi9iYnUuYyBiL2NvbW1vbi9iYnUuYwo+ID4gaW5kZXggN2ZiMTU0YS4uMWIx
-MjVlOSAxMDA2NDQKPiA+IC0tLSBhL2NvbW1vbi9iYnUuYwo+ID4gKysrIGIvY29tbW9uL2JidS5j
-Cj4gPiBAQCAtMTEzLDggKzExMywxMSBAQCBpbnQgYmFyZWJveF91cGRhdGUoc3RydWN0IGJidV9k
-YXRhICpkYXRhKQo+ID4gIAlpZiAocmV0ID09IC1FSU5UUikKPiA+ICAJCXByaW50ZigidXBkYXRl
-IGFib3J0ZWRcbiIpOwo+ID4gIAo+ID4gLQlpZiAoIXJldCkKPiA+ICsJaWYgKCFyZXQpIHsKPiA+
-ICAJCXByaW50ZigidXBkYXRlIHN1Y2NlZWRlZFxuIik7Cj4gPiArCQlpZiAoSVNfRU5BQkxFRChD
-T05GSUdfRU5WX0hBTkRMSU5HKSkKPiA+ICsJCQlwcmludGYoIllvdSBtYXliZSB3YW50IHRvIGVy
-YXNlIHRoZSBiYXJlYm94IGVudmlyb25tZW50LlxuIik7Cj4gCj4gSG93IGFib3V0IGFkZGluZyBh
-IGhpbnQgLi4udXNpbmcgc2F2ZWVudiAtej8KCk9oLCBJIGRpZG4ndCBrbm93IHRoYXQgdGhlICIt
-eiIgYXJndW1lbnQgZXhpdHMuIE5pY2UuCgpPaywgYnV0IHdoYXQgYWJvdXQgdGhlIHNpdHVhdGlv
-biB3aGVuIGEgdXNlciBib290cyB0aGUgYmFyZWJveCBmcm9tIHNkY2FyZCBhbmQKdXNlcyB0aGUg
-YmFyZWJveF91cGRhdGUgaGFuZGxlciB0byBmbGFzaCBhIGJhcmVib3ggdG8gTkFORC4gSW4gc3Vj
-aCBjYXNlCidzYXZlZW52IC16JyBvdmVyd3JpdGVzIHRoZSBlbnZpcm9ubWVudCBvbiB0aGUgc2Rj
-YXJkLgoKSSd2ZSBzdHJ1Z2dsZWQgYSBiaXQgdG8gY29tZSB1cCB3aXRoIGEgc2hvcnQgdGV4dCB0
-aGF0IGNvdmVycyBhbGwgdGhlc2UgY2FzZXMuCgpNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuIC8g
-S2luZCByZWdhcmRzLAoJU3RlZmFuIENocmlzdAoKPiAKPiBTYXNjaGEKPiAKPiAtLSAKPiBQZW5n
-dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfAo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAg
-ICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8Cj4gUGVpbmVyIFN0ci4gNi04LCAzMTEz
-NyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiBB
-bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
-MjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+This patch will reduce the size of the MLO images.
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ arch/arm/dts/am335x-phytec-phycard-som-mlo.dts | 1 +
+ arch/arm/dts/am335x-phytec-phycore-som-mlo.dts | 1 +
+ arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
+index 17d9152..c762ee9 100644
+--- a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
++++ b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
+@@ -9,6 +9,7 @@
+ 
+ #include "am33xx.dtsi"
+ #include "am335x-phytec-phycard-som.dtsi"
++#include "strip-am33xx.dtsi"
+ 
+ / {
+ 	model = "Phytec phyCARD AM335x";
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
+index b08a59e..d056212 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
++++ b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
+@@ -9,6 +9,7 @@
+ 
+ #include "am33xx.dtsi"
+ #include "am335x-phytec-phycore-som.dtsi"
++#include "strip-am33xx.dtsi"
+ 
+ / {
+ 	model = "Phytec phyCORE AM335x";
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
+index 5294ff5..916979b 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
++++ b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
+@@ -9,6 +9,7 @@
+ 
+ #include "am33xx.dtsi"
+ #include "am335x-phytec-phyflex-som.dtsi"
++#include "strip-am33xx.dtsi"
+ 
+ / {
+ 	model = "Phytec phyFLEX AM335x";
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
