@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YvgBD-0003Gg-Q8
- for barebox@lists.infradead.org; Fri, 22 May 2015 06:11:37 +0000
+ Linux)) id 1YvgBD-0003Gd-QJ
+ for barebox@lists.infradead.org; Fri, 22 May 2015 06:11:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 May 2015 08:11:03 +0200
-Message-Id: <1432275071-28554-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 May 2015 08:10:59 +0200
+Message-Id: <1432275071-28554-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1432275071-28554-1-git-send-email-s.hauer@pengutronix.de>
 References: <1432275071-28554-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,101 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/14] ARM: use generic posix_types.h
+Subject: [PATCH 02/14] drop __BITS_PER_LONG
 To: Barebox List <barebox@lists.infradead.org>
 
-Use generic asm-generic/posix_types.h instead of repeating the
-typedefs.
+The kernel has __BITS_PER_LONG and BITS_PER_LONG. The formaer
+is needed for architectures which support 32bit userspace on a
+64bit kernel. This is not relevant for barebox, so drop
+__BITS_PER_LONG and use BITS_PER_LONG only.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/posix_types.h | 79 +-------------------------------------
- 1 file changed, 1 insertion(+), 78 deletions(-)
+ arch/mips/include/asm/bitsperlong.h |  4 +---
+ include/asm-generic/bitsperlong.h   | 22 ----------------------
+ include/asm-generic/swab.h          |  2 +-
+ 3 files changed, 2 insertions(+), 26 deletions(-)
 
-diff --git a/arch/arm/include/asm/posix_types.h b/arch/arm/include/asm/posix_types.h
-index aee050e..22cae62 100644
---- a/arch/arm/include/asm/posix_types.h
-+++ b/arch/arm/include/asm/posix_types.h
-@@ -1,78 +1 @@
+diff --git a/arch/mips/include/asm/bitsperlong.h b/arch/mips/include/asm/bitsperlong.h
+index 3e4c10a..4171216 100644
+--- a/arch/mips/include/asm/bitsperlong.h
++++ b/arch/mips/include/asm/bitsperlong.h
+@@ -1,8 +1,6 @@
+ #ifndef __ASM_MIPS_BITSPERLONG_H
+ #define __ASM_MIPS_BITSPERLONG_H
+ 
+-#define __BITS_PER_LONG _MIPS_SZLONG
+-
+-#include <asm-generic/bitsperlong.h>
++#define BITS_PER_LONG _MIPS_SZLONG
+ 
+ #endif /* __ASM_MIPS_BITSPERLONG_H */
+diff --git a/include/asm-generic/bitsperlong.h b/include/asm-generic/bitsperlong.h
+index 4ae54e0..bb98650 100644
+--- a/include/asm-generic/bitsperlong.h
++++ b/include/asm-generic/bitsperlong.h
+@@ -1,32 +1,10 @@
+ #ifndef __ASM_GENERIC_BITS_PER_LONG
+ #define __ASM_GENERIC_BITS_PER_LONG
+ 
 -/*
-- *  linux/include/asm-arm/posix_types.h
-- *
-- *  Copyright (C) 1996-1998 Russell King.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- *  Changelog:
-- *   27-06-1996	RMK	Created
+- * There seems to be no way of detecting this automatically from user
+- * space, so 64 bit architectures should override this in their
+- * bitsperlong.h. In particular, an architecture that supports
+- * both 32 and 64 bit user space must not rely on CONFIG_64BIT
+- * to decide it, but rather check a compiler provided macro.
 - */
--#ifndef __ARCH_ARM_POSIX_TYPES_H
--#define __ARCH_ARM_POSIX_TYPES_H
+-#ifndef __BITS_PER_LONG
+-#define __BITS_PER_LONG 32
+-#endif
 -
+-#ifdef __KERNEL__
+-
+ #ifdef CONFIG_64BIT
+ #define BITS_PER_LONG 64
+ #else
+ #define BITS_PER_LONG 32
+ #endif /* CONFIG_64BIT */
+ 
 -/*
-- * This file is generally used by user-level software, so you need to
-- * be a little careful about namespace pollution etc.  Also, we cannot
-- * assume GCC is being used.
+- * FIXME: The check currently breaks x86-64 build, so it's
+- * temporarily disabled. Please fix x86-64 and reenable
 - */
--
--typedef unsigned long		__kernel_ino_t;
--typedef unsigned short		__kernel_mode_t;
--typedef unsigned short		__kernel_nlink_t;
--typedef long			__kernel_off_t;
--typedef int			__kernel_pid_t;
--typedef unsigned short		__kernel_ipc_pid_t;
--typedef unsigned short		__kernel_uid_t;
--typedef unsigned short		__kernel_gid_t;
--typedef unsigned int		__kernel_size_t;
--typedef int			__kernel_ssize_t;
--typedef int			__kernel_ptrdiff_t;
--typedef long			__kernel_time_t;
--typedef long			__kernel_suseconds_t;
--typedef long			__kernel_clock_t;
--typedef int			__kernel_daddr_t;
--typedef char *			__kernel_caddr_t;
--typedef unsigned short		__kernel_uid16_t;
--typedef unsigned short		__kernel_gid16_t;
--typedef unsigned int		__kernel_uid32_t;
--typedef unsigned int		__kernel_gid32_t;
--
--typedef unsigned short		__kernel_old_uid_t;
--typedef unsigned short		__kernel_old_gid_t;
--
--#ifdef __GNUC__
--typedef long long		__kernel_loff_t;
+-#if 0 && BITS_PER_LONG != __BITS_PER_LONG
+-#error Inconsistent word size. Check asm/bitsperlong.h
 -#endif
 -
--typedef struct {
--#if defined(__KERNEL__) || defined(__USE_ALL)
--	int	val[2];
--#else /* !defined(__KERNEL__) && !defined(__USE_ALL) */
--	int	__val[2];
--#endif /* !defined(__KERNEL__) && !defined(__USE_ALL) */
--} __kernel_fsid_t;
--
--#if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ < 2)
--
--#undef	__FD_SET
--#define __FD_SET(fd, fdsetp) \
--		(((fd_set *)fdsetp)->fds_bits[fd >> 5] |= (1<<(fd & 31)))
--
--#undef	__FD_CLR
--#define __FD_CLR(fd, fdsetp) \
--		(((fd_set *)fdsetp)->fds_bits[fd >> 5] &= ~(1<<(fd & 31)))
--
--#undef	__FD_ISSET
--#define __FD_ISSET(fd, fdsetp) \
--		((((fd_set *)fdsetp)->fds_bits[fd >> 5] & (1<<(fd & 31))) != 0)
--
--#undef	__FD_ZERO
--#define __FD_ZERO(fdsetp) \
--		(memset (fdsetp, 0, sizeof (*(fd_set *)fdsetp)))
--
--#endif
--
--#endif
-+#include <asm-generic/posix_types.h>
+-#endif /* __KERNEL__ */
+ #endif /* __ASM_GENERIC_BITS_PER_LONG */
+diff --git a/include/asm-generic/swab.h b/include/asm-generic/swab.h
+index a8e9029..3ab5add 100644
+--- a/include/asm-generic/swab.h
++++ b/include/asm-generic/swab.h
+@@ -9,7 +9,7 @@
+  * valid if the compiler supports 64 bit data types.
+  */
+ 
+-#if __BITS_PER_LONG == 32
++#if BITS_PER_LONG == 32
+ #if defined(__GNUC__) && !defined(__STRICT_ANSI__) || defined(__KERNEL__)
+ #define __SWAB_64_THRU_32__
+ #endif
 -- 
 2.1.4
 
