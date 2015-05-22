@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YvgnM-000618-4A
- for barebox@lists.infradead.org; Fri, 22 May 2015 06:51:00 +0000
-Date: Fri, 22 May 2015 08:50:37 +0200
+ Linux)) id 1YvhaF-0005hU-MZ
+ for barebox@lists.infradead.org; Fri, 22 May 2015 07:41:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150522065037.GT6325@pengutronix.de>
-References: <1432194109-4340-1-git-send-email-s.christ@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1432194109-4340-1-git-send-email-s.christ@phytec.de>
+Date: Fri, 22 May 2015 09:41:06 +0200
+Message-Id: <1432280466-7055-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +14,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] barebox update: add note after successful update
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] tlsf malloc: enable 64bit support on 64bit architectures
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, May 21, 2015 at 09:41:49AM +0200, Stefan Christ wrote:
-> Some users of the barebox_update command forget to erase the external
-> barebox environment after updating the barebox. Using an old barebox
-> environment leads to various problems if there were major changes.
-> 
-> So add a gentle reminder after the successful update.
-> 
-> Signed-off-by: Stefan Christ <s.christ@phytec.de>
-> ---
->  common/bbu.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/bbu.c b/common/bbu.c
-> index 7fb154a..1b125e9 100644
-> --- a/common/bbu.c
-> +++ b/common/bbu.c
-> @@ -113,8 +113,11 @@ int barebox_update(struct bbu_data *data)
->  	if (ret == -EINTR)
->  		printf("update aborted\n");
->  
-> -	if (!ret)
-> +	if (!ret) {
->  		printf("update succeeded\n");
-> +		if (IS_ENABLED(CONFIG_ENV_HANDLING))
-> +			printf("You maybe want to erase the barebox environment.\n");
+On 64bit architectures TLSF_64BIT should be defined. Decide that
+depending on the CONFIG_64BIT symbol. When 64bit support is enabled
+all allocations will be aligned to 8 byte boundaries which is necessary
+for architectures that do not support unaligned accesses or have
+a performance penalty for unaligned accesses.
+Also changes the undefined tlsf_decl to 'static'.
 
-How about adding a hint ...using saveenv -z?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/tlsfbits.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/common/tlsfbits.h b/common/tlsfbits.h
+index 93466e4..edbac80 100644
+--- a/common/tlsfbits.h
++++ b/common/tlsfbits.h
+@@ -3,6 +3,10 @@
+ 
+ #include <linux/bitops.h>
+ 
++#ifdef CONFIG_64BIT
++#define TLSF_64BIT
++#endif
++
+ /*
+ ** Architecture-specific bit manipulation routines.
+ **
+@@ -33,7 +37,7 @@ static int tlsf_fls(unsigned int word)
+ 
+ /* Possibly 64-bit version of tlsf_fls. */
+ #if defined (TLSF_64BIT)
+-tlsf_decl int tlsf_fls_sizet(size_t size)
++static int tlsf_fls_sizet(size_t size)
+ {
+ 	int high = (int)(size >> 32);
+ 	int bits = 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
