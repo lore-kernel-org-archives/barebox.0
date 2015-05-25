@@ -1,11 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
+Received: from mx0a-00176a03.pphosted.com ([67.231.149.52])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ywq0S-0005uK-Ns
- for barebox@lists.infradead.org; Mon, 25 May 2015 10:53:20 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 25 May 2015 12:48:44 +0200
-Message-Id: <1432550924-20953-1-git-send-email-mkl@pengutronix.de>
+ id 1YwwTa-0004iA-Ne
+ for barebox@lists.infradead.org; Mon, 25 May 2015 17:47:47 +0000
+Received: from pps.filterd (m0047961.ppops.net [127.0.0.1])
+ by m0047961.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id t4PHju6K020785
+ for <barebox@lists.infradead.org>; Mon, 25 May 2015 13:47:19 -0400
+Received: from alpmlip13.e2k.ad.ge.com (n165-156-000-000.static.ge.com
+ [165.156.5.1] (may be forged))
+ by m0047961.ppops.net-00176a03. with ESMTP id 1um738r2xm-2
+ (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+ for <barebox@lists.infradead.org>; Mon, 25 May 2015 13:47:19 -0400
+Received: from [3.26.68.149] (unknown [3.26.68.149])
+ by selma.edi.geip.ge.com (Postfix) with ESMTP id 6EF3BE1D0A
+ for <barebox@lists.infradead.org>; Mon, 25 May 2015 18:47:17 +0100 (BST)
+Message-ID: <55636025.4050508@ge.com>
+Date: Mon, 25 May 2015 18:47:17 +0100
+From: Renaud Barbier <renaud.barbier@ge.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,81 +26,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] crypto: digest: mark signature argument as const
+Subject: Memtest failed. Error: -22
 To: barebox@lists.infradead.org
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- crypto/digest.c  | 10 +++++-----
- include/digest.h | 10 +++++-----
- 2 files changed, 10 insertions(+), 10 deletions(-)
+I just used memtest on a couple of PPC board (freescale mpc8544 and
+P1014) and it failed with:
 
-diff --git a/crypto/digest.c b/crypto/digest.c
-index b3f514c8ad73..a90e4ff79f89 100644
---- a/crypto/digest.c
-+++ b/crypto/digest.c
-@@ -172,7 +172,7 @@ EXPORT_SYMBOL_GPL(digest_free);
- 
- int digest_file_window(struct digest *d, const char *filename,
- 		       unsigned char *hash,
--		       unsigned char *sig,
-+		       const unsigned char *sig,
- 		       ulong start, ulong size)
- {
- 	ulong len = 0;
-@@ -249,8 +249,8 @@ out:
- EXPORT_SYMBOL_GPL(digest_file_window);
- 
- int digest_file(struct digest *d, const char *filename,
--		       unsigned char *hash,
--		       unsigned char *sig)
-+		unsigned char *hash,
-+		const unsigned char *sig)
- {
- 	struct stat st;
- 	int ret;
-@@ -265,8 +265,8 @@ int digest_file(struct digest *d, const char *filename,
- EXPORT_SYMBOL_GPL(digest_file);
- 
- int digest_file_by_name(const char *algo, const char *filename,
--		       unsigned char *hash,
--		       unsigned char *sig)
-+			unsigned char *hash,
-+			const unsigned char *sig)
- {
- 	struct digest *d;
- 	int ret;
-diff --git a/include/digest.h b/include/digest.h
-index 7f8d696eb600..7c6711b32a56 100644
---- a/include/digest.h
-+++ b/include/digest.h
-@@ -68,14 +68,14 @@ void digest_free(struct digest *d);
- 
- int digest_file_window(struct digest *d, const char *filename,
- 		       unsigned char *hash,
--		       unsigned char *sig,
-+		       const unsigned char *sig,
- 		       ulong start, ulong size);
- int digest_file(struct digest *d, const char *filename,
--		       unsigned char *hash,
--		       unsigned char *sig);
-+		unsigned char *hash,
-+		const unsigned char *sig);
- int digest_file_by_name(const char *algo, const char *filename,
--		       unsigned char *hash,
--		       unsigned char *sig);
-+			unsigned char *hash,
-+			const unsigned char *sig);
- 
- static inline int digest_init(struct digest *d)
- {
--- 
-2.1.4
+barebox>/ memtest
+Memtest failed. Error: -22
+
+This error happens when the space between two regions is smaller than a
+page size:
+ 0x0bf75000 - 0x0ff74fff (size 0x04000000) malloc space
+ 0x0ff756e8 - 0x0ff7d6e7 (size 0x00008000) stack
+
+
+In this case, the size - when doing the calculation "size =
+PAGE_ALIGN_DOWN(end - start + 1);" - is zero.
+
+The function call ret = alloc_memtest_region(list, start, size);
+then fails.
+
+I will not be able to offer a patch until second week of June as I am away.
+
+Renaud.
+
+
+
+
 
 
 _______________________________________________
