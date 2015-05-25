@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-x22d.google.com ([2607:f8b0:4001:c03::22d])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1YwaoE-0006lu-BU
- for barebox@lists.infradead.org; Sun, 24 May 2015 18:39:42 +0000
-Received: by iesa3 with SMTP id a3so60855711ies.2
- for <barebox@lists.infradead.org>; Sun, 24 May 2015 11:39:16 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20150523204429.GA675@omega>
-References: <1431572067-4038-1-git-send-email-andrew.smirnov@gmail.com>
- <1431572067-4038-10-git-send-email-andrew.smirnov@gmail.com>
- <20150519070613.GX6325@pengutronix.de>
- <CAHQ1cqECGkwNQp4tgBrj1g6NR01EQHjsbf_omeiN+GPHpaeuhA@mail.gmail.com>
- <20150523204429.GA675@omega>
-Date: Sun, 24 May 2015 11:39:16 -0700
-Message-ID: <CAHQ1cqH-RKa_6FZtKtMMQo_QU-TdA=80kT5CT2+95y5KNaUXPA@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+ id 1Ywq0S-0005uK-Ns
+ for barebox@lists.infradead.org; Mon, 25 May 2015 10:53:20 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon, 25 May 2015 12:48:44 +0200
+Message-Id: <1432550924-20953-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,59 +14,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/10] ARM: pbl: Add an option to validate DRAM
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] crypto: digest: mark signature argument as const
+To: barebox@lists.infradead.org
 
->>
->> Also, testing all of the memory in PBL code brings up the question of
->> what is the point of 'memtest' command? If the only comprehensive way
->
-> The memtest command enable/disable caches and running the memtest
-> function. The memtest function is moslty the same like it was when I
-> touched the code, it's original taken from u-boot code [0]. The memtest
-> will run on all memory space which is not allocated by barebox
-> automatically, the command before had some simple "start" and "end"
-> address parameters and you had some luck if you doesn't hit any core
-> functionality of barebox.
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ crypto/digest.c  | 10 +++++-----
+ include/digest.h | 10 +++++-----
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-I am sorry it looks like I didn't convey my point well enough. I do
-understand what the 'memtest' command is doing and I agree that having
-arbitrary "start" and "end' points without taking into account what
-memory areas are being used internally by Barebox is a recipe for
-disaster. At the same time I expects/assume that the majority of the
-potential users of that command would be using that command because
-they want to perform a full memory test. So what I am trying to say is
-because 'memtest' can't really touch reserved memory during
-execution(for obvious reasons), unless those regions are explicitly
-tested before Barebox starts using them, calling it offers very
-limited value(it wouldn't be completely useless, but having big chunks
-of untested memory is far from ideal).
+diff --git a/crypto/digest.c b/crypto/digest.c
+index b3f514c8ad73..a90e4ff79f89 100644
+--- a/crypto/digest.c
++++ b/crypto/digest.c
+@@ -172,7 +172,7 @@ EXPORT_SYMBOL_GPL(digest_free);
+ 
+ int digest_file_window(struct digest *d, const char *filename,
+ 		       unsigned char *hash,
+-		       unsigned char *sig,
++		       const unsigned char *sig,
+ 		       ulong start, ulong size)
+ {
+ 	ulong len = 0;
+@@ -249,8 +249,8 @@ out:
+ EXPORT_SYMBOL_GPL(digest_file_window);
+ 
+ int digest_file(struct digest *d, const char *filename,
+-		       unsigned char *hash,
+-		       unsigned char *sig)
++		unsigned char *hash,
++		const unsigned char *sig)
+ {
+ 	struct stat st;
+ 	int ret;
+@@ -265,8 +265,8 @@ int digest_file(struct digest *d, const char *filename,
+ EXPORT_SYMBOL_GPL(digest_file);
+ 
+ int digest_file_by_name(const char *algo, const char *filename,
+-		       unsigned char *hash,
+-		       unsigned char *sig)
++			unsigned char *hash,
++			const unsigned char *sig)
+ {
+ 	struct digest *d;
+ 	int ret;
+diff --git a/include/digest.h b/include/digest.h
+index 7f8d696eb600..7c6711b32a56 100644
+--- a/include/digest.h
++++ b/include/digest.h
+@@ -68,14 +68,14 @@ void digest_free(struct digest *d);
+ 
+ int digest_file_window(struct digest *d, const char *filename,
+ 		       unsigned char *hash,
+-		       unsigned char *sig,
++		       const unsigned char *sig,
+ 		       ulong start, ulong size);
+ int digest_file(struct digest *d, const char *filename,
+-		       unsigned char *hash,
+-		       unsigned char *sig);
++		unsigned char *hash,
++		const unsigned char *sig);
+ int digest_file_by_name(const char *algo, const char *filename,
+-		       unsigned char *hash,
+-		       unsigned char *sig);
++			unsigned char *hash,
++			const unsigned char *sig);
+ 
+ static inline int digest_init(struct digest *d)
+ {
+-- 
+2.1.4
 
->
->> of testing memory is in PBL code than, IMHO, that function is not very
->> useful.
->>
->
-> The memtest function or the memtest command? If I remember correctly
-> then the memtest function was exported out of memtest command exactly
-> for the reason to use it in PBL or anywhere for debugging. The memtest
-> command is just simple to use.
-
-I agree that it is very easy to use, but why would you want to use it?
-I am having hard time imagining use-case where the user would want to
-test only unreserved areas of memory and not need to test anything
-else.
-
-
->
-> - Alex
->
-> [0] http://git.denx.de/?p=u-boot.git;a=blob;f=common/cmd_mem.c;h=2e85d53dd23c02902b6e4973ad3cb2e98bbda678;hb=HEAD#l711
 
 _______________________________________________
 barebox mailing list
