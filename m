@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YxDBY-0006Gd-Q7
- for barebox@lists.infradead.org; Tue, 26 May 2015 11:38:17 +0000
+ Linux)) id 1YxDBY-0006Ga-Q5
+ for barebox@lists.infradead.org; Tue, 26 May 2015 11:38:19 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 26 May 2015 13:37:47 +0200
-Message-Id: <1432640273-3895-4-git-send-email-mkl@pengutronix.de>
+Date: Tue, 26 May 2015 13:37:52 +0200
+Message-Id: <1432640273-3895-9-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1432640273-3895-1-git-send-email-mkl@pengutronix.de>
 References: <1432640273-3895-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] state: backend_raw: remove hard coded limit of two copies
+Subject: [PATCH 8/9] state: backend_raw: add sanity check of data_len during
+ load
 To: barebox@lists.infradead.org
 
-Although there is the define RAW_BACKEND_COPIES, the state_backend_raw_save()
-function silently assumes exactly two copies. This patch removes that assumtion
-by looping over all copies, but saving the one we're read from at the end.
+The length of the data must fit into the remaining available space until the
+next copy of the data.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- common/state.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ common/state.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/common/state.c b/common/state.c
-index 82a21e912206..79e7f4cc6849 100644
+index 8f6d14c98255..4a1e935a3b86 100644
 --- a/common/state.c
 +++ b/common/state.c
-@@ -1167,7 +1167,7 @@ static int state_backend_raw_save(struct state_backend *backend,
- {
- 	struct state_backend_raw *backend_raw = container_of(backend,
- 			struct state_backend_raw, backend);
--	int ret = 0, size, fd;
-+	int ret = 0, size, fd, i;
- 	void *buf, *data;
- 	struct backend_raw_header *header;
+@@ -1053,14 +1053,18 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
+ 	uint32_t crc;
  	struct state_variable *sv;
-@@ -1192,10 +1192,17 @@ static int state_backend_raw_save(struct state_backend *backend,
- 	if (fd < 0)
- 		goto out_free;
+ 	struct backend_raw_header header = {};
++	unsigned long max_len;
+ 	int ret;
+ 	void *buf;
  
--	ret = backend_raw_write_one(backend_raw, state, fd,
--				    !backend_raw->num_copy_read, buf, size);
--	if (ret)
--		goto out_close;
-+	/* save other slots first */
-+	for (i = 0; i < RAW_BACKEND_COPIES; i++) {
-+		if (i == backend_raw->num_copy_read)
-+			continue;
++	max_len = backend_raw->stride;
 +
-+		ret = backend_raw_write_one(backend_raw, state, fd,
-+					    i, buf, size);
-+		if (ret)
-+			goto out_close;
-+
+ 	ret = lseek(fd, offset, SEEK_SET);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	ret = read_full(fd, &header, sizeof(header));
++	max_len -= sizeof(header);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -1079,6 +1083,13 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
+ 		return -EINVAL;
+ 	}
+ 
++	if (header.data_len > max_len) {
++		dev_err(&state->dev,
++			"invalid data_len %u in header, max is %lu\n",
++			header.data_len, max_len);
++		return -EINVAL;
 +	}
++
+ 	buf = xzalloc(header.data_len);
  
- 	ret = backend_raw_write_one(backend_raw, state, fd,
- 				    backend_raw->num_copy_read, buf, size);
+ 	ret = read_full(fd, buf, header.data_len);
 -- 
 2.1.4
 
