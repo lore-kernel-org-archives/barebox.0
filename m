@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YxVDQ-000345-M9
- for barebox@lists.infradead.org; Wed, 27 May 2015 06:53:25 +0000
-Date: Wed, 27 May 2015 08:53:00 +0200
+ Linux)) id 1YxVJN-00055S-M2
+ for barebox@lists.infradead.org; Wed, 27 May 2015 06:59:34 +0000
+Date: Wed, 27 May 2015 08:59:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150527065300.GP6325@pengutronix.de>
-References: <CABP==CLFeG59X3OyMxJrxTzWDg-Xm8dURb-k-JXu3as+pY5mKA@mail.gmail.com>
+Message-ID: <20150527065910.GQ6325@pengutronix.de>
+References: <1432646591-6991-1-git-send-email-w.egorov@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CABP==CLFeG59X3OyMxJrxTzWDg-Xm8dURb-k-JXu3as+pY5mKA@mail.gmail.com>
+In-Reply-To: <1432646591-6991-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Programatically write in a file in the environnent with a hush
- command
-To: Jean-Christophe BEGUE <begue.jc@gmail.com>
+Subject: Re: [PATCH v2 1/2] ARM: dts: Add an am33xx include file for MLO size
+ reduction
+To: Wadim Egorov <w.egorov@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Jean-Christophe,
+On Tue, May 26, 2015 at 03:23:10PM +0200, Wadim Egorov wrote:
+> AM335x's MLO size limit is 109K.
+> The am33xx.dtsi file adds spare and never used nodes to the dtb.
+> With this patch we add a file to remove the unused nodes and reduce the
+> size of the dtb.
+> 
+> Including this file will reduce the lzo packed MLO size about 6K.
+> 
+> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 
-On Tue, May 26, 2015 at 05:41:06PM +0200, Jean-Christophe BEGUE wrote:
-> Hello,
-> 
-> I'm trying to pass a value from Barebox to the operating system, using
-> the usreland command bareboxenv -l.
-> 
-> My problem is : How should I write that status from my hush barebox script?
-> 
-> echo $mystatus > /env/data/my_status_file
-> 
-> The above command doesn't work as '>' is not implemented.
-> 
-> I've the feeling that I'm missing something?
-
-Besides the ways Alexander just mentioned you could also add something
-to the kernel cmdline and parse /proc/cmdline later in userspace.
-Still another possibility is to add nodes/properties to the device tree
-using the of_* commands.
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
