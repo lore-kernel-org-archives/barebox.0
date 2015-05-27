@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YxVJN-00055S-M2
- for barebox@lists.infradead.org; Wed, 27 May 2015 06:59:34 +0000
-Date: Wed, 27 May 2015 08:59:10 +0200
+ Linux)) id 1YxVKM-0006Vs-Qe
+ for barebox@lists.infradead.org; Wed, 27 May 2015 07:00:36 +0000
+Date: Wed, 27 May 2015 09:00:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150527065910.GQ6325@pengutronix.de>
-References: <1432646591-6991-1-git-send-email-w.egorov@phytec.de>
+Message-ID: <20150527070012.GR6325@pengutronix.de>
+References: <1432647106-8295-1-git-send-email-w.egorov@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1432646591-6991-1-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1432647106-8295-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] ARM: dts: Add an am33xx include file for MLO size
- reduction
+Subject: Re: [RFC v2 1/3] bootsource: Add NET bootsource
 To: Wadim Egorov <w.egorov@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 26, 2015 at 03:23:10PM +0200, Wadim Egorov wrote:
-> AM335x's MLO size limit is 109K.
-> The am33xx.dtsi file adds spare and never used nodes to the dtb.
-> With this patch we add a file to remove the unused nodes and reduce the
-> size of the dtb.
-> 
-> Including this file will reduce the lzo packed MLO size about 6K.
-> 
+On Tue, May 26, 2015 at 03:31:44PM +0200, Wadim Egorov wrote:
 > Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> ---
+>  common/bootsource.c  | 1 +
+>  include/bootsource.h | 1 +
+>  2 files changed, 2 insertions(+)
 
-Applied, thanks
+Applied all, thanks
 
 Sascha
 
