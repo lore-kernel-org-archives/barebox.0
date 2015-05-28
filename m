@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yxv9X-000659-K0
- for barebox@lists.infradead.org; Thu, 28 May 2015 10:35:10 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1Yxv9B-0001pS-D4
- for barebox@lists.infradead.org; Thu, 28 May 2015 12:34:45 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.85)
- (envelope-from <sha@pengutronix.de>) id 1Yxv9B-0003Kp-1G
- for barebox@lists.infradead.org; Thu, 28 May 2015 12:34:45 +0200
+ Linux)) id 1Yxv9c-00066C-Du
+ for barebox@lists.infradead.org; Thu, 28 May 2015 10:35:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 28 May 2015 12:34:34 +0200
-Message-Id: <1432809284-17362-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 28 May 2015 12:34:36 +0200
+Message-Id: <1432809284-17362-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1432809284-17362-1-git-send-email-s.hauer@pengutronix.de>
+References: <1432809284-17362-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,39 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Add 64bit support to mem commands
+Subject: [PATCH 02/10] memory_display: Add 64bit support
 To: Barebox List <barebox@lists.infradead.org>
 
-This series adds 64bit support to the memory commands which can
-be quite useful on 64bit architectures. The commands use the
-'-q' (for quad) option to switch to 64bit mode.
+Add support for showing hexdumps in 64bit width.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/memory_display.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Sascha Hauer (10):
-      memory_display: Use consistent types
-      memory_display: Add 64bit support
-      fs: Add O_RWSIZE_8
-      mem commands: suppport parsing 'q' option
-      md command: Add 64bit support
-      memcmp command: Add 64bit support
-      memcpy command: Add 64bit support
-      memset command: Add 64bit support
-      mm command: Add 64bit support
-      mw command: Add 64bit support
+diff --git a/common/memory_display.c b/common/memory_display.c
+index 1ad0f05..ea91985 100644
+--- a/common/memory_display.c
++++ b/common/memory_display.c
+@@ -16,6 +16,7 @@ int memory_display(const void *addr, loff_t offs, unsigned nbytes, int size, int
+ 	 */
+ 	do {
+ 		unsigned char linebuf[DISP_LINE_LEN];
++		uint64_t *ullp = (uint64_t *)linebuf;
+ 		uint32_t *uip = (uint32_t *)linebuf;
+ 		uint16_t *usp = (uint16_t *)linebuf;
+ 		uint8_t *ucp = (uint8_t *)linebuf;
+@@ -25,7 +26,20 @@ int memory_display(const void *addr, loff_t offs, unsigned nbytes, int size, int
+ 		linebytes = (nbytes > DISP_LINE_LEN) ? DISP_LINE_LEN : nbytes;
+ 
+ 		for (i = 0; i < linebytes; i += size) {
+-			if (size == 4) {
++			if (size == 8) {
++				uint64_t res;
++				data_abort_mask();
++				res = *((uint64_t *)addr);
++				if (swab)
++					res = __swab64(res);
++				if (data_abort_unmask()) {
++					res = 0xffffffffffffffffULL;
++					count -= printf(" xxxxxxxxxxxxxxxx");
++				} else {
++					count -= printf(" %016llx", res);
++				}
++				*ullp++ = res;
++			} else if (size == 4) {
+ 				uint32_t res;
+ 				data_abort_mask();
+ 				res = *((uint32_t *)addr);
+-- 
+2.1.4
 
- commands/md.c           |  3 ++-
- commands/mem.c          |  3 +++
- commands/memcmp.c       |  3 ++-
- commands/memcpy.c       |  3 ++-
- commands/memset.c       |  3 ++-
- commands/mm.c           | 20 ++++++++++++++++----
- commands/mw.c           | 10 +++++++++-
- common/memory_display.c | 42 ++++++++++++++++++++++++++++--------------
- fs/fs.c                 |  3 +++
- include/fcntl.h         |  3 ++-
- 10 files changed, 69 insertions(+), 24 deletions(-)
 
 _______________________________________________
 barebox mailing list
