@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Yxv9X-00065D-Jo
- for barebox@lists.infradead.org; Thu, 28 May 2015 10:35:09 +0000
+ Linux)) id 1Yxv9X-000659-K0
+ for barebox@lists.infradead.org; Thu, 28 May 2015 10:35:10 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1Yxv9B-0001pS-D4
+ for barebox@lists.infradead.org; Thu, 28 May 2015 12:34:45 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.85)
+ (envelope-from <sha@pengutronix.de>) id 1Yxv9B-0003Kp-1G
+ for barebox@lists.infradead.org; Thu, 28 May 2015 12:34:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 28 May 2015 12:34:37 +0200
-Message-Id: <1432809284-17362-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1432809284-17362-1-git-send-email-s.hauer@pengutronix.de>
-References: <1432809284-17362-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 28 May 2015 12:34:34 +0200
+Message-Id: <1432809284-17362-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +26,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/10] fs: Add O_RWSIZE_8
+Subject: Add 64bit support to mem commands
 To: Barebox List <barebox@lists.infradead.org>
 
-To support native 64bit accesses in memcpy_sz.
+This series adds 64bit support to the memory commands which can
+be quite useful on 64bit architectures. The commands use the
+'-q' (for quad) option to switch to 64bit mode.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/fs.c         | 3 +++
- include/fcntl.h | 3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Sascha
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 779f264..9a79a03 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1590,6 +1590,9 @@ static void memcpy_sz(void *_dst, const void *_src, ulong count, ulong rwsize)
- 		case 4:
- 			*((ulong  *)dst) = *((ulong  *)src);
- 			break;
-+		case 8:
-+			*((u64  *)dst) = *((u64  *)src);
-+			break;
- 		}
- 		dst += rwsize;
- 		src += rwsize;
-diff --git a/include/fcntl.h b/include/fcntl.h
-index aed741e..501b415 100644
---- a/include/fcntl.h
-+++ b/include/fcntl.h
-@@ -17,11 +17,12 @@
- #define O_NOFOLLOW	00400000	/* don't follow links */
- 
- /* barebox additional flags */
--#define O_RWSIZE_MASK	00000070
-+#define O_RWSIZE_MASK	00000170
- #define O_RWSIZE_SHIFT	3
- #define O_RWSIZE_1      00000010
- #define O_RWSIZE_2      00000020
- #define O_RWSIZE_4      00000040
-+#define O_RWSIZE_8      00000100
- 
- #define F_DUPFD		0	/* dup */
- #define F_GETFD		1	/* get close_on_exec */
--- 
-2.1.4
+----------------------------------------------------------------
+Sascha Hauer (10):
+      memory_display: Use consistent types
+      memory_display: Add 64bit support
+      fs: Add O_RWSIZE_8
+      mem commands: suppport parsing 'q' option
+      md command: Add 64bit support
+      memcmp command: Add 64bit support
+      memcpy command: Add 64bit support
+      memset command: Add 64bit support
+      mm command: Add 64bit support
+      mw command: Add 64bit support
 
+ commands/md.c           |  3 ++-
+ commands/mem.c          |  3 +++
+ commands/memcmp.c       |  3 ++-
+ commands/memcpy.c       |  3 ++-
+ commands/memset.c       |  3 ++-
+ commands/mm.c           | 20 ++++++++++++++++----
+ commands/mw.c           | 10 +++++++++-
+ common/memory_display.c | 42 ++++++++++++++++++++++++++++--------------
+ fs/fs.c                 |  3 +++
+ include/fcntl.h         |  3 ++-
+ 10 files changed, 69 insertions(+), 24 deletions(-)
 
 _______________________________________________
 barebox mailing list
