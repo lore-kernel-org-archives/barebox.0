@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rafi.de ([178.15.151.14])
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yzd6f-0004K8-H3
- for barebox@lists.infradead.org; Tue, 02 Jun 2015 03:43:14 +0000
-References: <OF82039B53.F8CCC59C-ONC1257E57.002D20B0-C1257E57.002D20B8@o0802.rafi.inhouse>,
- <20150601114150.GG6325@pengutronix.de>
-In-Reply-To: <20150601114150.GG6325@pengutronix.de>
-MIME-Version: 1.0
-From: andreas.willig@rafi.de
-Message-ID: <OF4A53439D.B017BB3F-ONC1257E58.0014663E-C1257E58.00146649@o0802.rafi.inhouse>
-Date: Tue, 2 Jun 2015 05:42:49 +0200
+ id 1Yzh9W-0003Hs-EZ
+ for barebox@lists.infradead.org; Tue, 02 Jun 2015 08:02:27 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 8D0ECA00405
+ for <barebox@lists.infradead.org>; Tue,  2 Jun 2015 10:03:24 +0200 (CEST)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Tue, 2 Jun 2015 10:01:07 +0200
+Message-Id: <1433232067-31563-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,93 +17,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Clocks on Barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] image: am335x: Generate SPI MLO images
+To: barebox@lists.infradead.org
 
-Hi Sascha,
-I'm currently on the next branch, but i did not see changes at this point s=
-ince master or stable release. Like issued earlier the clock table enumerat=
-ion is empty. Is there a specific compatible attribute required? =
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ images/Makefile        | 2 +-
+ images/Makefile.am33xx | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
- =
-
-
-Mit freundlichen Gr=FC=DFen aus Berg/ With kind regards
-
-i.A. Andreas Willig
-Dipl.-Ing. (FH)
-Entwicklung Elektronik
-
-RAFI GmbH & Co. KG
-Postfach 2060
-88276 Ravensburg
-Tel.: +49 (0) 751 89-6142
-
-mailto:andreas.willig@rafi.de, http://www.rafi.de
-
-Kommanditgesellschaft: Sitz Berg, Amtsgericht Ulm, HRA 550059
-Komplement=E4r: RAFI Beteiligungs-GmbH, Sitz Berg, Amtsgericht Ulm HRB 5500=
-74
-Gesch=E4ftsf=FChrer: Albert Wasmeier, Dipl.-Kfm. Gerhard Schenk
-USt-Ident.-Nr.: DE 146 392 319, Steuer-Nr.: 77079/00291 =
-
-
- =
-
------Sascha Hauer <s.hauer@pengutronix.de> schrieb: -----
-
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
- An: andreas.willig@rafi.de
- Von: Sascha Hauer <s.hauer@pengutronix.de>
- Datum: 01.06.2015 13:41 =
-
- Kopie: barebox@lists.infradead.org
- Betreff: Re: Clocks on Barebox
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-   Hi Andreas,
-
-On Mon, Jun 01, 2015 at 10:12:55AM +0200, andreas.willig@rafi.de wrote:
-> Hi all
-> i just updated from 2014 to latest Barebox and hit the following problem:
-> of_clk_init from clk.c:451 does not find any entries. matches is set to _=
-_clk_of_table start where compatible=3D0 and data=3D0,
-> but from my thoughts the dt is ok on this point:
-
-I have no idea currently. You are doing nothing obviously wrong.
-
-> from arch/arm/mach-imx/clk-imx6.c are removed:
-> static int imx6_ccm_probe()
-> {
-> - unsigned long ckil_rate =3D 32768;
-> - unsigned long ckih_rate =3D 0;
-> - unsigned long osc_rate =3D 24000000;
-> - clks[dummy] =3D clk_fixed("dummy", 0);
-> - clks[ckil] =3D clk_fixed("ckil", ckil_rate);
-> - clks[ckih] =3D clk_fixed("ckih", ckih_rate);
-> - clks[osc] =3D clk_fixed("osc", osc_rate);
-> }
-
-These are removed because they come from the OF clock providers now. For
-this you need COMMON_CLK_OF_PROVIDER enabled, but this should be
-selected by the imx6 support automatically though. Let me test this on
-some hardware here. What barebox version do you use? master, next, or
-the latest release?
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-    =
+diff --git a/images/Makefile b/images/Makefile
+index 587cb26..36c1a57 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -123,6 +123,6 @@ images: $(addprefix $(obj)/, $(image-y)) FORCE
+ 	@for i in $(image-y); do echo $$i; done
+ 
+ clean-files := *.pbl *.pblb *.pblx *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+-	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
++	start_*.kwbuartimg *.socfpgaimg *.mlo *.spi *.t20img *.t20img.cfg *.t30img \
+ 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd
+ clean-files += pbl.lds
+diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
+index eae2a6a..ddf4f2b 100644
+--- a/images/Makefile.am33xx
++++ b/images/Makefile.am33xx
+@@ -4,8 +4,14 @@
+ quiet_cmd_mlo_image = MLO     $@
+       cmd_mlo_image = scripts/omap_signGP -o $@ -l 0x402f0400 -c $<
+ 
++quiet_cmd_mlo_spi_image = SPI-IMG $@.spi
++      cmd_mlo_spi_image = scripts/mk-omap-image -s -a 0x402f0400 $<.mlo > $@.spi
++
+ $(obj)/%.mlo: $(obj)/% FORCE
+ 	$(call if_changed,mlo_image)
++ifdef CONFIG_OMAP_BUILD_SPI
++	$(call if_changed,mlo_spi_image)
++endif
+ 
+ pblx-$(CONFIG_MACH_AFI_GF) += start_am33xx_afi_gf_sdram
+ FILE_barebox-am33xx-afi-gf.img = start_am33xx_afi_gf_sdram.pblx
+-- 
+1.9.1
 
 
 _______________________________________________
