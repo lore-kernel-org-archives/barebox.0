@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Yzh9W-0003Hs-EZ
- for barebox@lists.infradead.org; Tue, 02 Jun 2015 08:02:27 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 8D0ECA00405
- for <barebox@lists.infradead.org>; Tue,  2 Jun 2015 10:03:24 +0200 (CEST)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Tue, 2 Jun 2015 10:01:07 +0200
-Message-Id: <1433232067-31563-1-git-send-email-w.egorov@phytec.de>
+Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1YzhcB-0005C0-SY
+ for barebox@lists.infradead.org; Tue, 02 Jun 2015 08:32:04 +0000
+Received: by laei3 with SMTP id i3so32030781lae.3
+ for <barebox@lists.infradead.org>; Tue, 02 Jun 2015 01:31:41 -0700 (PDT)
+Date: Tue, 2 Jun 2015 11:37:36 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150602113736.07b93fb60300ecf8754272a7@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,54 +17,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] image: am335x: Generate SPI MLO images
-To: barebox@lists.infradead.org
+Subject: building sandbox barebox: too many '"BITS_PER_LONG" redefined'
+ warnings
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- images/Makefile        | 2 +-
- images/Makefile.am33xx | 6 ++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+Hi, Sascha!
 
-diff --git a/images/Makefile b/images/Makefile
-index 587cb26..36c1a57 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -123,6 +123,6 @@ images: $(addprefix $(obj)/, $(image-y)) FORCE
- 	@for i in $(image-y); do echo $$i; done
- 
- clean-files := *.pbl *.pblb *.pblx *.map start_*.imximg *.img barebox.z start_*.kwbimg \
--	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
-+	start_*.kwbuartimg *.socfpgaimg *.mlo *.spi *.t20img *.t20img.cfg *.t30img \
- 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd
- clean-files += pbl.lds
-diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
-index eae2a6a..ddf4f2b 100644
---- a/images/Makefile.am33xx
-+++ b/images/Makefile.am33xx
-@@ -4,8 +4,14 @@
- quiet_cmd_mlo_image = MLO     $@
-       cmd_mlo_image = scripts/omap_signGP -o $@ -l 0x402f0400 -c $<
- 
-+quiet_cmd_mlo_spi_image = SPI-IMG $@.spi
-+      cmd_mlo_spi_image = scripts/mk-omap-image -s -a 0x402f0400 $<.mlo > $@.spi
-+
- $(obj)/%.mlo: $(obj)/% FORCE
- 	$(call if_changed,mlo_image)
-+ifdef CONFIG_OMAP_BUILD_SPI
-+	$(call if_changed,mlo_spi_image)
-+endif
- 
- pblx-$(CONFIG_MACH_AFI_GF) += start_am33xx_afi_gf_sdram
- FILE_barebox-am33xx-afi-gf.img = start_am33xx_afi_gf_sdram.pblx
--- 
-1.9.1
+I have tried to build sandbox barebox from latest next on amd64 debian linu=
+x host.
 
+I see very many '"BITS_PER_LONG" redefined' warnings, e.g.
+
+  CC      common/misc.o
+In file included from /home/antony/barebog.git/arch/sandbox/include/asm/typ=
+es.h:57:0,
+                 from include/linux/types.h:5,
+                 from include/param.h:5,
+                 from include/console.h:23,
+                 from include/stdio.h:5,
+                 from include/common.h:23,
+                 from common/misc.c:19:
+include/asm-generic/bitsperlong.h:7:0: warning: "BITS_PER_LONG" redefined
+ #define BITS_PER_LONG 32
+ ^
+In file included from include/asm-generic/posix_types.h:4:0,
+                 from /home/antony/barebog.git/arch/sandbox/include/asm/pos=
+ix_types.h:1,
+                 from include/linux/posix_types.h:46,
+                 from include/linux/types.h:4,
+                 from include/param.h:5,
+                 from include/console.h:23,
+                 from include/stdio.h:5,
+                 from include/common.h:23,
+                 from common/misc.c:19:
+/home/antony/barebog.git/arch/sandbox/include/asm/bitsperlong.h:5:0: note: =
+this is the location of the previous definition
+ #define BITS_PER_LONG 64
+ ^
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
