@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z03yP-0003UP-0o
- for barebox@lists.infradead.org; Wed, 03 Jun 2015 08:24:29 +0000
-Date: Wed, 3 Jun 2015 10:24:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150603082406.GS6325@pengutronix.de>
-References: <556C271F.6040005@meteocontrol.de>
- <20150601120652.GH6325@pengutronix.de>
- <556C4C10.3010400@meteocontrol.de>
- <556C503B.4010405@meteocontrol.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <556C503B.4010405@meteocontrol.de>
+Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z044G-0006l4-Rj
+ for barebox@lists.infradead.org; Wed, 03 Jun 2015 08:30:33 +0000
+Received: by labpy14 with SMTP id py14so2376050lab.0
+ for <barebox@lists.infradead.org>; Wed, 03 Jun 2015 01:30:09 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  3 Jun 2015 11:32:11 +0300
+Message-Id: <1433320331-31720-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +16,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Secure barebox
-To: Moritz Warning <m.warning@meteocontrol.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] PPC: asm/bitops.h: drp unused ext2* and minix* stuff
+To: barebox@lists.infradead.org
 
-On Mon, Jun 01, 2015 at 02:29:47PM +0200, Moritz Warning wrote:
-> Oh, anyway; what happens when the timeout is 0.
-> How can you access the barebox again?
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/ppc/include/asm/bitops.h | 63 -------------------------------------------
+ 1 file changed, 63 deletions(-)
 
-You can try holding ctrl-c while starting the board. If that doesn't
-work I think you have to erase the environment externally. Where do you
-boot from?
-
-Sascha
-
+diff --git a/arch/ppc/include/asm/bitops.h b/arch/ppc/include/asm/bitops.h
+index c4ed2de..e4572bc 100644
+--- a/arch/ppc/include/asm/bitops.h
++++ b/arch/ppc/include/asm/bitops.h
+@@ -189,67 +189,4 @@ extern __inline__ int ffs(int x)
+ 
+ #include <asm-generic/bitops/find.h>
+ 
+-#define _EXT2_HAVE_ASM_BITOPS_
+-
+-#ifdef __KERNEL__
+-/*
+- * test_and_{set,clear}_bit guarantee atomicity without
+- * disabling interrupts.
+- */
+-#define ext2_set_bit(nr, addr)		test_and_set_bit((nr) ^ 0x18, addr)
+-#define ext2_clear_bit(nr, addr)	test_and_clear_bit((nr) ^ 0x18, addr)
+-
+-#else
+-extern __inline__ int ext2_set_bit(int nr, void * addr)
+-{
+-	int		mask;
+-	unsigned char	*ADDR = (unsigned char *) addr;
+-	int oldbit;
+-
+-	ADDR += nr >> 3;
+-	mask = 1 << (nr & 0x07);
+-	oldbit = (*ADDR & mask) ? 1 : 0;
+-	*ADDR |= mask;
+-	return oldbit;
+-}
+-
+-extern __inline__ int ext2_clear_bit(int nr, void * addr)
+-{
+-	int		mask;
+-	unsigned char	*ADDR = (unsigned char *) addr;
+-	int oldbit;
+-
+-	ADDR += nr >> 3;
+-	mask = 1 << (nr & 0x07);
+-	oldbit = (*ADDR & mask) ? 1 : 0;
+-	*ADDR = *ADDR & ~mask;
+-	return oldbit;
+-}
+-#endif	/* __KERNEL__ */
+-
+-extern __inline__ int ext2_test_bit(int nr, __const__ void * addr)
+-{
+-	__const__ unsigned char	*ADDR = (__const__ unsigned char *) addr;
+-
+-	return (ADDR[nr >> 3] >> (nr & 7)) & 1;
+-}
+-
+-/*
+- * This implementation of ext2_find_{first,next}_zero_bit was stolen from
+- * Linus' asm-alpha/bitops.h and modified for a big-endian machine.
+- */
+-
+-#define ext2_find_first_zero_bit(addr, size) \
+-	ext2_find_next_zero_bit((addr), (size), 0)
+-
+-#define ext2_find_next_zero_bit(addr, size, off) \
+-	generic_find_next_zero_le_bit((unsigned long*)addr, size, off)
+-
+-/* Bitmap functions for the minix filesystem.  */
+-#define minix_test_and_set_bit(nr,addr) ext2_set_bit(nr,addr)
+-#define minix_set_bit(nr,addr) ((void)ext2_set_bit(nr,addr))
+-#define minix_test_and_clear_bit(nr,addr) ext2_clear_bit(nr,addr)
+-#define minix_test_bit(nr,addr) ext2_test_bit(nr,addr)
+-#define minix_find_first_zero_bit(addr,size) ext2_find_first_zero_bit(addr,size)
+-
+ #endif /* _PPC_BITOPS_H */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
