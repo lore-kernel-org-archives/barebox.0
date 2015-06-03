@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x22d.google.com ([2607:f8b0:4003:c06::22d])
+Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z09Lh-0001Fw-RC
- for barebox@lists.infradead.org; Wed, 03 Jun 2015 14:08:54 +0000
-Received: by oiww2 with SMTP id w2so7997359oiw.0
- for <barebox@lists.infradead.org>; Wed, 03 Jun 2015 07:08:32 -0700 (PDT)
+ id 1Z0EYc-0000hj-L9
+ for barebox@lists.infradead.org; Wed, 03 Jun 2015 19:42:35 +0000
+Received: by wibut5 with SMTP id ut5so113871813wib.1
+ for <barebox@lists.infradead.org>; Wed, 03 Jun 2015 12:42:11 -0700 (PDT)
+Date: Wed, 3 Jun 2015 21:42:05 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20150603194202.GA4802@omega>
+References: <CAKOK1G0iK=kZJPHGV6mtCbwdNpwdZOXEfnCTeozC+8Nkehxe1A@mail.gmail.com>
 MIME-Version: 1.0
-Date: Wed, 3 Jun 2015 17:08:31 +0300
-Message-ID: <CAKOK1G0iK=kZJPHGV6mtCbwdNpwdZOXEfnCTeozC+8Nkehxe1A@mail.gmail.com>
-From: =?UTF-8?B?0JLQsNC70LXRgNC40Lkg0J3Ri9GA0L7Qsg==?= <nvg.dev@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <CAKOK1G0iK=kZJPHGV6mtCbwdNpwdZOXEfnCTeozC+8Nkehxe1A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,107 +20,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: BeagleBoard-Xm: memtest return error
-To: barebox@lists.infradead.org
+Subject: Re: BeagleBoard-Xm: memtest return error
+To: =?utf-8?B?0JLQsNC70LXRgNC40Lkg0J3Ri9GA0L7Qsg==?= <nvg.dev@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hello everyone! I am a newbie and trying to run the barebox on
-BeagleBoard-Xm rev.C with 512MB DDR on board.
-
-To support 512MB I did the following:
-
-1) file: arm/boards/beagle/board.c, func: beagle_mem_init(), change line 85:
-
-beagle_mem_init(void)
-{
-    //omap_add_ram0(SZ_128M);
-    omap_add_ram0(SZ_512M);
-}
-
-2) file: arm/boards/beagle/lowlevel.c, func: sdrc_init(), change line 127:
-
-//writel(0x02584099, OMAP3_SDRC_REG(MCFG_0));
-writel(0x02590099, OMAP3_SDRC_REG(MCFG_0)); // to add 512MB support on CS0
-
-Then launch barebox and send command - memtest, which return error:
-"FAILURE: Address bit stuck high @ 0x90000000: expected 0xaaaaaaaa,
-actual 0x7fffffff",
-but commands "memset" writes data to the address 0x90000000 correct,
-what I did not so?
-
-Best Regards,
-Valeriy Nyrov.
-
-Here is the log:
-
-Board: Texas Instruments beagle
-netconsole: registered as netconsole-1
-i2c-omap i2c-omap30: bus 0 rev4.4 at 100 kHz
-ehci ehci0: USB EHCI 1.00
-nand: No NAND device found
-gpmc_nand gpmc_nand0: probe failed: No such device or address
-omap-hsmmc omap3-hsmmc0: registered as omap3-hsmmc0
-mci0: detected SD card version 2.0
-mci0: registered disk0
-malloc space: 0x85e00000 -> 0x87dfffff (size 32 MiB)
-environment load /boot/barebox.env: No such file or directory
-Maybe you have to create the partition.
-running /env/bin/init...
-set parameter: No such device
-Failed to add partitions
-128k(nand0.xload),256k(nand0.barebox)ro,128k(nand0.bareboxenv),128k(nand0.oftree),4M(nand0.kernel),1200
-
-Hit any key to stop autoboot:  1
-barebox@Texas Instruments beagle:/ memtest
-Start iteration 1 of 1.
-Do memtest with caching enabled.
-Testing memory space: 0x80000000 -> 0x85dfffff:
-Starting data line test.
-Check for address bits stuck high.
-Check for address bits stuck low or shorted.
-Starting integrity check of physicaly ram.
-Filling ram with patterns...
-        [#################################################################]
-Compare written patterns...
-        [#################################################################]
-Filling ram with inverted pattern and compare it...
-        [#################################################################]
-done.
-
-Testing memory space: 0x87e48000 -> 0x87ff3fff:
-Starting data line test.
-Check for address bits stuck high.
-Check for address bits stuck low or shorted.
-Starting integrity check of physicaly ram.
-Filling ram with patterns...
-        [#################################################################]
-Compare written patterns...
-        [#################################################################]
-Filling ram with inverted pattern and compare it...
-        [#################################################################]
-done.
-
-Testing memory space: 0x88000000 -> 0x9fffffff:
-Starting data line test.
-Check for address bits stuck high.
-FAILURE: Address bit stuck high @ 0x90000000: expected 0xaaaaaaaa,
-actual 0x7fffffff.
-Memtest failed. Error: -5
-
-barebox@Texas Instruments beagle:/ memset -b 0x90000000 0xaa 4
-barebox@Texas Instruments beagle:/ md -b 0x90000000
-90000000: aa aa aa aa aa aa aa aa aa aa aa aa 00 00 00 00    ................
-90000010: aa aa aa aa 00 00 00 00 00 00 00 00 00 00 00 00
-
-barebox@Texas Instruments beagle:/ memset -b 0x90000000 0x55 4
-barebox@Texas Instruments beagle:/ md -b 0x90000000
-90000000: 55 55 55 55 aa aa aa aa aa aa aa aa 00 00 00 00    UUUU............
-90000010: aa aa aa aa 00 00 00 00 00 00 00 00 00 00 00 00    ................
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgpPbiBXZWQsIEp1biAwMywgMjAxNSBhdCAwNTowODozMVBNICswMzAwLCDQktCw0LvQtdGA
+0LjQuSDQndGL0YDQvtCyIHdyb3RlOgo+IEhlbGxvIGV2ZXJ5b25lISBJIGFtIGEgbmV3YmllIGFu
+ZCB0cnlpbmcgdG8gcnVuIHRoZSBiYXJlYm94IG9uCj4gQmVhZ2xlQm9hcmQtWG0gcmV2LkMgd2l0
+aCA1MTJNQiBERFIgb24gYm9hcmQuCj4gCj4gVG8gc3VwcG9ydCA1MTJNQiBJIGRpZCB0aGUgZm9s
+bG93aW5nOgo+IAo+IDEpIGZpbGU6IGFybS9ib2FyZHMvYmVhZ2xlL2JvYXJkLmMsIGZ1bmM6IGJl
+YWdsZV9tZW1faW5pdCgpLCBjaGFuZ2UgbGluZSA4NToKPiAKPiBiZWFnbGVfbWVtX2luaXQodm9p
+ZCkKPiB7Cj4gICAgIC8vb21hcF9hZGRfcmFtMChTWl8xMjhNKTsKPiAgICAgb21hcF9hZGRfcmFt
+MChTWl81MTJNKTsKPiB9Cj4gCj4gMikgZmlsZTogYXJtL2JvYXJkcy9iZWFnbGUvbG93bGV2ZWwu
+YywgZnVuYzogc2RyY19pbml0KCksIGNoYW5nZSBsaW5lIDEyNzoKPiAKPiAvL3dyaXRlbCgweDAy
+NTg0MDk5LCBPTUFQM19TRFJDX1JFRyhNQ0ZHXzApKTsKPiB3cml0ZWwoMHgwMjU5MDA5OSwgT01B
+UDNfU0RSQ19SRUcoTUNGR18wKSk7IC8vIHRvIGFkZCA1MTJNQiBzdXBwb3J0IG9uIENTMAo+IAo+
+IFRoZW4gbGF1bmNoIGJhcmVib3ggYW5kIHNlbmQgY29tbWFuZCAtIG1lbXRlc3QsIHdoaWNoIHJl
+dHVybiBlcnJvcjoKPiAiRkFJTFVSRTogQWRkcmVzcyBiaXQgc3R1Y2sgaGlnaCBAIDB4OTAwMDAw
+MDA6IGV4cGVjdGVkIDB4YWFhYWFhYWEsCj4gYWN0dWFsIDB4N2ZmZmZmZmYiLAo+IGJ1dCBjb21t
+YW5kcyAibWVtc2V0IiB3cml0ZXMgZGF0YSB0byB0aGUgYWRkcmVzcyAweDkwMDAwMDAwIGNvcnJl
+Y3QsCj4gd2hhdCBJIGRpZCBub3Qgc28/Cj4gCgppZiBtZW10ZXN0IGZhaWxlZCB0aGVuIHRoZSBj
+YWNoaW5nIHdpbGwgYmUgZW5hYmxlZCBhZ2Fpbi4gVGhpcyBtZWFucyBJCndvdWxkIG5vdCB0cnVz
+dCB0aGUgbWVtc2V0IGFuZCBtZW1vcnkgZGlzcGxheSBjb21tYW5kIGhlcmUuCgpNYXliZSB5b3Ug
+Y291bGQgYWRkIHNvbWUgbWVtc2V0IGFyZ3VtZW50IGZvciBkaXNhYmxlL2VuYWJsZSB0aGUgY2Fj
+aGluZwpvbiBzb21lIHBhZ2UgKHdoaWNoIGlzIG1lbW9yeSBhZGRyZXNzIHNwYWNlKSB3aGljaCB5
+b3Ugd2FudCB0byB3cml0ZSBhbmQKcmVhZC4gSnVzdCBmb3IgZGVidWdnaW5nIGNhc2VzLgoKRG9u
+J3Qga25vdyBpZiBTYXNjaGEgbGlrZXMgdGhpcyBpZGVhLgoKLSBBbGV4CgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
