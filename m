@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z044G-0006l4-Rj
- for barebox@lists.infradead.org; Wed, 03 Jun 2015 08:30:33 +0000
-Received: by labpy14 with SMTP id py14so2376050lab.0
- for <barebox@lists.infradead.org>; Wed, 03 Jun 2015 01:30:09 -0700 (PDT)
+ id 1Z044Z-0007Bt-HT
+ for barebox@lists.infradead.org; Wed, 03 Jun 2015 08:30:52 +0000
+Received: by lbcue7 with SMTP id ue7so2053552lbc.0
+ for <barebox@lists.infradead.org>; Wed, 03 Jun 2015 01:30:29 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  3 Jun 2015 11:32:11 +0300
-Message-Id: <1433320331-31720-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed,  3 Jun 2015 11:32:33 +0300
+Message-Id: <1433320353-31777-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,86 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] PPC: asm/bitops.h: drp unused ext2* and minix* stuff
+Subject: [PATCH] MIPS: asm/debug_ll_ns16550.h: use plain inline instead of
+ __inline__
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/ppc/include/asm/bitops.h | 63 -------------------------------------------
- 1 file changed, 63 deletions(-)
+ arch/mips/include/asm/debug_ll_ns16550.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/ppc/include/asm/bitops.h b/arch/ppc/include/asm/bitops.h
-index c4ed2de..e4572bc 100644
---- a/arch/ppc/include/asm/bitops.h
-+++ b/arch/ppc/include/asm/bitops.h
-@@ -189,67 +189,4 @@ extern __inline__ int ffs(int x)
+diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
+index a3e1c52..4a6562f 100644
+--- a/arch/mips/include/asm/debug_ll_ns16550.h
++++ b/arch/mips/include/asm/debug_ll_ns16550.h
+@@ -57,7 +57,7 @@
  
- #include <asm-generic/bitops/find.h>
+ #include <asm/io.h>
  
--#define _EXT2_HAVE_ASM_BITOPS_
--
--#ifdef __KERNEL__
--/*
-- * test_and_{set,clear}_bit guarantee atomicity without
-- * disabling interrupts.
-- */
--#define ext2_set_bit(nr, addr)		test_and_set_bit((nr) ^ 0x18, addr)
--#define ext2_clear_bit(nr, addr)	test_and_clear_bit((nr) ^ 0x18, addr)
--
--#else
--extern __inline__ int ext2_set_bit(int nr, void * addr)
--{
--	int		mask;
--	unsigned char	*ADDR = (unsigned char *) addr;
--	int oldbit;
--
--	ADDR += nr >> 3;
--	mask = 1 << (nr & 0x07);
--	oldbit = (*ADDR & mask) ? 1 : 0;
--	*ADDR |= mask;
--	return oldbit;
--}
--
--extern __inline__ int ext2_clear_bit(int nr, void * addr)
--{
--	int		mask;
--	unsigned char	*ADDR = (unsigned char *) addr;
--	int oldbit;
--
--	ADDR += nr >> 3;
--	mask = 1 << (nr & 0x07);
--	oldbit = (*ADDR & mask) ? 1 : 0;
--	*ADDR = *ADDR & ~mask;
--	return oldbit;
--}
--#endif	/* __KERNEL__ */
--
--extern __inline__ int ext2_test_bit(int nr, __const__ void * addr)
--{
--	__const__ unsigned char	*ADDR = (__const__ unsigned char *) addr;
--
--	return (ADDR[nr >> 3] >> (nr & 7)) & 1;
--}
--
--/*
-- * This implementation of ext2_find_{first,next}_zero_bit was stolen from
-- * Linus' asm-alpha/bitops.h and modified for a big-endian machine.
-- */
--
--#define ext2_find_first_zero_bit(addr, size) \
--	ext2_find_next_zero_bit((addr), (size), 0)
--
--#define ext2_find_next_zero_bit(addr, size, off) \
--	generic_find_next_zero_le_bit((unsigned long*)addr, size, off)
--
--/* Bitmap functions for the minix filesystem.  */
--#define minix_test_and_set_bit(nr,addr) ext2_set_bit(nr,addr)
--#define minix_set_bit(nr,addr) ((void)ext2_set_bit(nr,addr))
--#define minix_test_and_clear_bit(nr,addr) ext2_clear_bit(nr,addr)
--#define minix_test_bit(nr,addr) ext2_test_bit(nr,addr)
--#define minix_find_first_zero_bit(addr,size) ext2_find_first_zero_bit(addr,size)
--
- #endif /* _PPC_BITOPS_H */
+-static __inline__ void PUTC_LL(char ch)
++static inline void PUTC_LL(char ch)
+ {
+ #ifdef CONFIG_DEBUG_LL
+ 	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
 -- 
 2.1.4
 
