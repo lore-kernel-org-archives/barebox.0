@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z03va-0002tx-Pg
- for barebox@lists.infradead.org; Wed, 03 Jun 2015 08:21:35 +0000
-Date: Wed, 3 Jun 2015 10:21:11 +0200
+ Linux)) id 1Z03yP-0003UP-0o
+ for barebox@lists.infradead.org; Wed, 03 Jun 2015 08:24:29 +0000
+Date: Wed, 3 Jun 2015 10:24:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150603082111.GR6325@pengutronix.de>
-References: <1432991505-21204-1-git-send-email-jluebbe@debian.org>
+Message-ID: <20150603082406.GS6325@pengutronix.de>
+References: <556C271F.6040005@meteocontrol.de>
+ <20150601120652.GH6325@pengutronix.de>
+ <556C4C10.3010400@meteocontrol.de>
+ <556C503B.4010405@meteocontrol.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1432991505-21204-1-git-send-email-jluebbe@debian.org>
+In-Reply-To: <556C503B.4010405@meteocontrol.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +25,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: state support updates
-To: Jan Luebbe <jluebbe@debian.org>
-Cc: barebox@lists.infradead.org
+Subject: Re: Secure barebox
+To: Moritz Warning <m.warning@meteocontrol.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Sat, May 30, 2015 at 03:11:43PM +0200, Jan Luebbe wrote:
-> Hi,
-> 
-> these patches apply to for-next/state. The first improves the error reporting
-> and the second makes it easier to use the state framework with small EEPROMs.
+On Mon, Jun 01, 2015 at 02:29:47PM +0200, Moritz Warning wrote:
+> Oh, anyway; what happens when the timeout is 0.
+> How can you access the barebox again?
 
-Applied, thanks
+You can try holding ctrl-c while starting the board. If that doesn't
+work I think you have to erase the environment externally. Where do you
+boot from?
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
