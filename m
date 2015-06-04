@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z0R0r-0002Cl-Mc
- for barebox@lists.infradead.org; Thu, 04 Jun 2015 09:00:34 +0000
-Date: Thu, 4 Jun 2015 11:00:11 +0200
+ Linux)) id 1Z0R4A-0003P1-2p
+ for barebox@lists.infradead.org; Thu, 04 Jun 2015 09:03:58 +0000
+Date: Thu, 4 Jun 2015 11:03:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150604090011.GX6325@pengutronix.de>
-References: <1433323143-32522-1-git-send-email-w.egorov@phytec.de>
+Message-ID: <20150604090335.GZ6325@pengutronix.de>
+References: <1433320423-31838-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1433323143-32522-1-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1433320423-31838-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,16 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 1/3] bootsource: Add NET bootsource
-To: Wadim Egorov <w.egorov@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] .mailmap: add more Juergen Borleis' e-mail addresses
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Juergen Borleis <jbe@pengutronix.de>
 
-On Wed, Jun 03, 2015 at 11:19:01AM +0200, Wadim Egorov wrote:
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+On Wed, Jun 03, 2015 at 11:33:43AM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  common/bootsource.c  | 1 +
->  include/bootsource.h | 1 +
->  2 files changed, 2 insertions(+)
+>  .mailmap | 5 +++++
+>  1 file changed, 5 insertions(+)
 
 Applied, thanks
 
