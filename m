@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z0nF5-0001kB-93
- for barebox@lists.infradead.org; Fri, 05 Jun 2015 08:44:44 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 84EE0A00243
- for <barebox@lists.infradead.org>; Fri,  5 Jun 2015 10:45:44 +0200 (CEST)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Fri, 5 Jun 2015 10:43:20 +0200
-Message-Id: <1433493800-23732-1-git-send-email-w.egorov@phytec.de>
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z0pqC-000744-NO
+ for barebox@lists.infradead.org; Fri, 05 Jun 2015 11:31:19 +0000
+Date: Fri, 5 Jun 2015 13:28:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150605112840.GC6325@pengutronix.de>
+References: <CAKOK1G0iK=kZJPHGV6mtCbwdNpwdZOXEfnCTeozC+8Nkehxe1A@mail.gmail.com>
+ <20150603194202.GA4802@omega>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150603194202.GA4802@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,67 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: dhcp: Fix CONFIG_ENVIRONMENT_VARIABLES check
-To: barebox@lists.infradead.org
+Subject: Re: BeagleBoard-Xm: memtest return error
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: barebox@lists.infradead.org, =?utf-8?B?0JLQsNC70LXRgNC40Lkg0J3Ri9GA0L7Qsg==?= <nvg.dev@gmail.com>
 
-Please squash this patch into
-[PATCH v3 2/3] net: dhcp: Split dhcp funcionality & add dhcp command
-
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- net/dhcp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/net/dhcp.c b/net/dhcp.c
-index eb4bb38..e1625ec 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -141,7 +141,7 @@ static void env_ip_handle(struct dhcp_opt *opt, unsigned char *popt, int optlen)
- 	IPaddr_t ip;
- 
- 	ip = net_read_ip(popt);
--	if (IS_ENABLED(ENVIRONMENT_VARIABLES))
-+	if (IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
- 		setenv_ip(opt->barebox_var_name, ip);
- }
- 
-@@ -262,7 +262,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
- 	int str_len;
- 	char* str = param->data;
- 
--	if (!str && param->barebox_var_name && IS_ENABLED(ENVIRONMENT_VARIABLES))
-+	if (!str && param->barebox_var_name && IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
- 		str = (char*)getenv(param->barebox_var_name);
- 
- 	if (!str && param->barebox_dhcp_global && IS_ENABLED(CONFIG_GLOBALVAR))
-@@ -390,7 +390,7 @@ static void bootp_copy_net_params(struct bootp *bp)
- 		net_set_serverip(tmp_ip);
- 
- 	if (strlen(bp->bp_file) > 0) {
--		if (IS_ENABLED(ENVIRONMENT_VARIABLES))
-+		if (IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
- 			setenv("bootfile", bp->bp_file);
- 		if (IS_ENABLED(CONFIG_GLOBALVAR))
- 			dhcp_set_barebox_global("bootfile", bp->bp_file);
-@@ -652,7 +652,7 @@ static void dhcp_reset_env(void)
- 		if (!opt->barebox_var_name || opt->copy_only_if_valid)
- 			continue;
- 
--		if (IS_ENABLED(ENVIRONMENT_VARIABLES))
-+		if (IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
- 			setenv(opt->barebox_var_name, "");
- 		if (opt->barebox_dhcp_global && IS_ENABLED(CONFIG_GLOBALVAR))
- 			dhcp_set_barebox_global(opt->barebox_dhcp_global, "");
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBKdW4gMDMsIDIwMTUgYXQgMDk6NDI6MDVQTSArMDIwMCwgQWxleGFuZGVyIEFyaW5n
+IHdyb3RlOgo+IEhpLAo+IAo+IE9uIFdlZCwgSnVuIDAzLCAyMDE1IGF0IDA1OjA4OjMxUE0gKzAz
+MDAsINCS0LDQu9C10YDQuNC5INCd0YvRgNC+0LIgd3JvdGU6Cj4gPiBIZWxsbyBldmVyeW9uZSEg
+SSBhbSBhIG5ld2JpZSBhbmQgdHJ5aW5nIHRvIHJ1biB0aGUgYmFyZWJveCBvbgo+ID4gQmVhZ2xl
+Qm9hcmQtWG0gcmV2LkMgd2l0aCA1MTJNQiBERFIgb24gYm9hcmQuCj4gPiAKPiA+IFRvIHN1cHBv
+cnQgNTEyTUIgSSBkaWQgdGhlIGZvbGxvd2luZzoKPiA+IAo+ID4gMSkgZmlsZTogYXJtL2JvYXJk
+cy9iZWFnbGUvYm9hcmQuYywgZnVuYzogYmVhZ2xlX21lbV9pbml0KCksIGNoYW5nZSBsaW5lIDg1
+Ogo+ID4gCj4gPiBiZWFnbGVfbWVtX2luaXQodm9pZCkKPiA+IHsKPiA+ICAgICAvL29tYXBfYWRk
+X3JhbTAoU1pfMTI4TSk7Cj4gPiAgICAgb21hcF9hZGRfcmFtMChTWl81MTJNKTsKPiA+IH0KPiA+
+IAo+ID4gMikgZmlsZTogYXJtL2JvYXJkcy9iZWFnbGUvbG93bGV2ZWwuYywgZnVuYzogc2RyY19p
+bml0KCksIGNoYW5nZSBsaW5lIDEyNzoKPiA+IAo+ID4gLy93cml0ZWwoMHgwMjU4NDA5OSwgT01B
+UDNfU0RSQ19SRUcoTUNGR18wKSk7Cj4gPiB3cml0ZWwoMHgwMjU5MDA5OSwgT01BUDNfU0RSQ19S
+RUcoTUNGR18wKSk7IC8vIHRvIGFkZCA1MTJNQiBzdXBwb3J0IG9uIENTMAo+ID4gCj4gPiBUaGVu
+IGxhdW5jaCBiYXJlYm94IGFuZCBzZW5kIGNvbW1hbmQgLSBtZW10ZXN0LCB3aGljaCByZXR1cm4g
+ZXJyb3I6Cj4gPiAiRkFJTFVSRTogQWRkcmVzcyBiaXQgc3R1Y2sgaGlnaCBAIDB4OTAwMDAwMDA6
+IGV4cGVjdGVkIDB4YWFhYWFhYWEsCj4gPiBhY3R1YWwgMHg3ZmZmZmZmZiIsCj4gPiBidXQgY29t
+bWFuZHMgIm1lbXNldCIgd3JpdGVzIGRhdGEgdG8gdGhlIGFkZHJlc3MgMHg5MDAwMDAwMCBjb3Jy
+ZWN0LAo+ID4gd2hhdCBJIGRpZCBub3Qgc28/Cj4gPiAKPiAKPiBpZiBtZW10ZXN0IGZhaWxlZCB0
+aGVuIHRoZSBjYWNoaW5nIHdpbGwgYmUgZW5hYmxlZCBhZ2Fpbi4gVGhpcyBtZWFucyBJCj4gd291
+bGQgbm90IHRydXN0IHRoZSBtZW1zZXQgYW5kIG1lbW9yeSBkaXNwbGF5IGNvbW1hbmQgaGVyZS4K
+PiAKPiBNYXliZSB5b3UgY291bGQgYWRkIHNvbWUgbWVtc2V0IGFyZ3VtZW50IGZvciBkaXNhYmxl
+L2VuYWJsZSB0aGUgY2FjaGluZwo+IG9uIHNvbWUgcGFnZSAod2hpY2ggaXMgbWVtb3J5IGFkZHJl
+c3Mgc3BhY2UpIHdoaWNoIHlvdSB3YW50IHRvIHdyaXRlIGFuZAo+IHJlYWQuIEp1c3QgZm9yIGRl
+YnVnZ2luZyBjYXNlcy4KCkhvdyBhYm91dCBhIGNvbW1hbmQgdG8gZmx1c2ggY2FjaGVzIGluc3Rl
+YWQ/CgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0
+aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWlu
+ZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEt
+MjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
+fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAo=
