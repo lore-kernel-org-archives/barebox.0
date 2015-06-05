@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo68.mail-out.ovh.net ([46.105.52.162])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z0mXc-0004qa-TM
- for barebox@lists.infradead.org; Fri, 05 Jun 2015 07:59:49 +0000
-Received: from mail626.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo68.mail-out.ovh.net (Postfix) with SMTP id 26DEEFFB7A6
- for <barebox@lists.infradead.org>; Fri,  5 Jun 2015 09:59:22 +0200 (CEST)
-Date: Fri, 5 Jun 2015 09:59:19 +0200
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20150605095919.35bae12b@e6520eb.localdomain>
-In-Reply-To: <1433490685-27486-2-git-send-email-s.christ@phytec.de>
-References: <1433490685-27486-1-git-send-email-s.christ@phytec.de>
- <1433490685-27486-2-git-send-email-s.christ@phytec.de>
-MIME-Version: 1.0
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z0nF5-0001kB-93
+ for barebox@lists.infradead.org; Fri, 05 Jun 2015 08:44:44 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 84EE0A00243
+ for <barebox@lists.infradead.org>; Fri,  5 Jun 2015 10:45:44 +0200 (CEST)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Fri, 5 Jun 2015 10:43:20 +0200
+Message-Id: <1433493800-23732-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +17,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] barebox update: add note after successful update
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net: dhcp: Fix CONFIG_ENVIRONMENT_VARIABLES check
+To: barebox@lists.infradead.org
 
-SGkgU3RlZmFuLAoKTGUgRnJpLCA1IEp1biAyMDE1IDA5OjUxOjI1ICswMjAwLApTdGVmYW4gQ2hy
-aXN0IDxzLmNocmlzdEBwaHl0ZWMuZGU+IGEgw6ljcml0IDoKCj4gU29tZSB1c2VycyBvZiB0aGUg
-YmFyZWJveF91cGRhdGUgY29tbWFuZCBmb3JnZXQgdG8gZXJhc2UgdGhlIGV4dGVybmFsCj4gYmFy
-ZWJveCBlbnZpcm9ubWVudCBhZnRlciB1cGRhdGluZyB0aGUgYmFyZWJveC4gVXNpbmcgYW4gb2xk
-IGJhcmVib3gKPiBlbnZpcm9ubWVudCBsZWFkcyB0byB2YXJpb3VzIHByb2JsZW1zIGlmIHRoZXJl
-IHdlcmUgbWFqb3IgY2hhbmdlcy4KPiAKPiBTbyBhZGQgYSBnZW50bGUgcmVtaW5kZXIgYWZ0ZXIg
-dGhlIHN1Y2Nlc3NmdWwgdXBkYXRlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFN0ZWZhbiBDaHJpc3Qg
-PHMuY2hyaXN0QHBoeXRlYy5kZT4KPiAtLS0KPiB2MjogQWRkIGV4cGxhbmF0aW9uIGhvd3RvIHRv
-IGNsZWFuIHVwIHRoZSBlbnZpcm9ubWVudAo+IC0tLQo+ICBjb21tb24vYmJ1LmMgfCA5ICsrKysr
-KysrLQo+ICAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4g
-Cj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9iYnUuYyBiL2NvbW1vbi9iYnUuYwo+IGluZGV4IDdmYjE1
-NGEuLmQyM2I4NjQgMTAwNjQ0Cj4gLS0tIGEvY29tbW9uL2JidS5jCj4gKysrIGIvY29tbW9uL2Ji
-dS5jCj4gQEAgLTExMyw4ICsxMTMsMTUgQEAgaW50IGJhcmVib3hfdXBkYXRlKHN0cnVjdCBiYnVf
-ZGF0YSAqZGF0YSkKPiAgCWlmIChyZXQgPT0gLUVJTlRSKQo+ICAJCXByaW50ZigidXBkYXRlIGFi
-b3J0ZWRcbiIpOwo+ICAKPiAtCWlmICghcmV0KQo+ICsJaWYgKCFyZXQpIHsKPiAgCQlwcmludGYo
-InVwZGF0ZSBzdWNjZWVkZWRcbiIpOwo+ICsJCWlmIChJU19FTkFCTEVEKENPTkZJR19FTlZfSEFO
-RExJTkcpKSB7Cj4gKwkJCXByaW50ZigiWW91IG1heWJlIHdhbnQgdG8gZXJhc2UgdGhlIGJhcmVi
-b3ggZW52aXJvbm1lbnQgbm93LlxuIik7Cj4gKwkJCXByaW50ZigiQWZ0ZXIgYm9vdGluZyB0aGUg
-Zmxhc2hlZCBiYXJlYm94IHlvdSBjYW4gdXNlXG4iKTsKPiArCQkJcHJpbnRmKCIgICAgJCBzYXZl
-ZW52IC16OyBsb2FkZW52XG4iKTsKPiArCQkJcHJpbnRmKCJ0byBkbyB0aGF0LlxuIik7Cj4gKwkJ
-fQo+ICsJfQoKbWF5YmUgbG9hZGVudiAtZDsgc2F2ZWVudiBpcyBsZXNzIGludmFzaXZlIHRoYW4g
-c2F2ZWVudiAteiBpbiBvcmRlciB0bwpwcmVzZXJ2ZSBudiA/CgpFcmljCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Please squash this patch into
+[PATCH v3 2/3] net: dhcp: Split dhcp funcionality & add dhcp command
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ net/dhcp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/net/dhcp.c b/net/dhcp.c
+index eb4bb38..e1625ec 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -141,7 +141,7 @@ static void env_ip_handle(struct dhcp_opt *opt, unsigned char *popt, int optlen)
+ 	IPaddr_t ip;
+ 
+ 	ip = net_read_ip(popt);
+-	if (IS_ENABLED(ENVIRONMENT_VARIABLES))
++	if (IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
+ 		setenv_ip(opt->barebox_var_name, ip);
+ }
+ 
+@@ -262,7 +262,7 @@ static int dhcp_set_string_options(struct dhcp_param *param, u8 *e)
+ 	int str_len;
+ 	char* str = param->data;
+ 
+-	if (!str && param->barebox_var_name && IS_ENABLED(ENVIRONMENT_VARIABLES))
++	if (!str && param->barebox_var_name && IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
+ 		str = (char*)getenv(param->barebox_var_name);
+ 
+ 	if (!str && param->barebox_dhcp_global && IS_ENABLED(CONFIG_GLOBALVAR))
+@@ -390,7 +390,7 @@ static void bootp_copy_net_params(struct bootp *bp)
+ 		net_set_serverip(tmp_ip);
+ 
+ 	if (strlen(bp->bp_file) > 0) {
+-		if (IS_ENABLED(ENVIRONMENT_VARIABLES))
++		if (IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
+ 			setenv("bootfile", bp->bp_file);
+ 		if (IS_ENABLED(CONFIG_GLOBALVAR))
+ 			dhcp_set_barebox_global("bootfile", bp->bp_file);
+@@ -652,7 +652,7 @@ static void dhcp_reset_env(void)
+ 		if (!opt->barebox_var_name || opt->copy_only_if_valid)
+ 			continue;
+ 
+-		if (IS_ENABLED(ENVIRONMENT_VARIABLES))
++		if (IS_ENABLED(CONFIG_ENVIRONMENT_VARIABLES))
+ 			setenv(opt->barebox_var_name, "");
+ 		if (opt->barebox_dhcp_global && IS_ENABLED(CONFIG_GLOBALVAR))
+ 			dhcp_set_barebox_global(opt->barebox_dhcp_global, "");
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
