@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z0pqC-000744-NO
- for barebox@lists.infradead.org; Fri, 05 Jun 2015 11:31:19 +0000
-Date: Fri, 5 Jun 2015 13:28:40 +0200
+ id 1Z0pt3-0007Eg-BB
+ for barebox@lists.infradead.org; Fri, 05 Jun 2015 11:34:09 +0000
+Date: Fri, 5 Jun 2015 13:33:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150605112840.GC6325@pengutronix.de>
-References: <CAKOK1G0iK=kZJPHGV6mtCbwdNpwdZOXEfnCTeozC+8Nkehxe1A@mail.gmail.com>
- <20150603194202.GA4802@omega>
+Message-ID: <20150605113347.GE6325@pengutronix.de>
+References: <1433493800-23732-1-git-send-email-w.egorov@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20150603194202.GA4802@omega>
+In-Reply-To: <1433493800-23732-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: BeagleBoard-Xm: memtest return error
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org, =?utf-8?B?0JLQsNC70LXRgNC40Lkg0J3Ri9GA0L7Qsg==?= <nvg.dev@gmail.com>
+Subject: Re: [PATCH] net: dhcp: Fix CONFIG_ENVIRONMENT_VARIABLES check
+To: Wadim Egorov <w.egorov@phytec.de>
+Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBKdW4gMDMsIDIwMTUgYXQgMDk6NDI6MDVQTSArMDIwMCwgQWxleGFuZGVyIEFyaW5n
-IHdyb3RlOgo+IEhpLAo+IAo+IE9uIFdlZCwgSnVuIDAzLCAyMDE1IGF0IDA1OjA4OjMxUE0gKzAz
-MDAsINCS0LDQu9C10YDQuNC5INCd0YvRgNC+0LIgd3JvdGU6Cj4gPiBIZWxsbyBldmVyeW9uZSEg
-SSBhbSBhIG5ld2JpZSBhbmQgdHJ5aW5nIHRvIHJ1biB0aGUgYmFyZWJveCBvbgo+ID4gQmVhZ2xl
-Qm9hcmQtWG0gcmV2LkMgd2l0aCA1MTJNQiBERFIgb24gYm9hcmQuCj4gPiAKPiA+IFRvIHN1cHBv
-cnQgNTEyTUIgSSBkaWQgdGhlIGZvbGxvd2luZzoKPiA+IAo+ID4gMSkgZmlsZTogYXJtL2JvYXJk
-cy9iZWFnbGUvYm9hcmQuYywgZnVuYzogYmVhZ2xlX21lbV9pbml0KCksIGNoYW5nZSBsaW5lIDg1
-Ogo+ID4gCj4gPiBiZWFnbGVfbWVtX2luaXQodm9pZCkKPiA+IHsKPiA+ICAgICAvL29tYXBfYWRk
-X3JhbTAoU1pfMTI4TSk7Cj4gPiAgICAgb21hcF9hZGRfcmFtMChTWl81MTJNKTsKPiA+IH0KPiA+
-IAo+ID4gMikgZmlsZTogYXJtL2JvYXJkcy9iZWFnbGUvbG93bGV2ZWwuYywgZnVuYzogc2RyY19p
-bml0KCksIGNoYW5nZSBsaW5lIDEyNzoKPiA+IAo+ID4gLy93cml0ZWwoMHgwMjU4NDA5OSwgT01B
-UDNfU0RSQ19SRUcoTUNGR18wKSk7Cj4gPiB3cml0ZWwoMHgwMjU5MDA5OSwgT01BUDNfU0RSQ19S
-RUcoTUNGR18wKSk7IC8vIHRvIGFkZCA1MTJNQiBzdXBwb3J0IG9uIENTMAo+ID4gCj4gPiBUaGVu
-IGxhdW5jaCBiYXJlYm94IGFuZCBzZW5kIGNvbW1hbmQgLSBtZW10ZXN0LCB3aGljaCByZXR1cm4g
-ZXJyb3I6Cj4gPiAiRkFJTFVSRTogQWRkcmVzcyBiaXQgc3R1Y2sgaGlnaCBAIDB4OTAwMDAwMDA6
-IGV4cGVjdGVkIDB4YWFhYWFhYWEsCj4gPiBhY3R1YWwgMHg3ZmZmZmZmZiIsCj4gPiBidXQgY29t
-bWFuZHMgIm1lbXNldCIgd3JpdGVzIGRhdGEgdG8gdGhlIGFkZHJlc3MgMHg5MDAwMDAwMCBjb3Jy
-ZWN0LAo+ID4gd2hhdCBJIGRpZCBub3Qgc28/Cj4gPiAKPiAKPiBpZiBtZW10ZXN0IGZhaWxlZCB0
-aGVuIHRoZSBjYWNoaW5nIHdpbGwgYmUgZW5hYmxlZCBhZ2Fpbi4gVGhpcyBtZWFucyBJCj4gd291
-bGQgbm90IHRydXN0IHRoZSBtZW1zZXQgYW5kIG1lbW9yeSBkaXNwbGF5IGNvbW1hbmQgaGVyZS4K
-PiAKPiBNYXliZSB5b3UgY291bGQgYWRkIHNvbWUgbWVtc2V0IGFyZ3VtZW50IGZvciBkaXNhYmxl
-L2VuYWJsZSB0aGUgY2FjaGluZwo+IG9uIHNvbWUgcGFnZSAod2hpY2ggaXMgbWVtb3J5IGFkZHJl
-c3Mgc3BhY2UpIHdoaWNoIHlvdSB3YW50IHRvIHdyaXRlIGFuZAo+IHJlYWQuIEp1c3QgZm9yIGRl
-YnVnZ2luZyBjYXNlcy4KCkhvdyBhYm91dCBhIGNvbW1hbmQgdG8gZmx1c2ggY2FjaGVzIGluc3Rl
-YWQ/CgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0
-aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWlu
-ZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEt
-MjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
-fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+On Fri, Jun 05, 2015 at 10:43:20AM +0200, Wadim Egorov wrote:
+> Please squash this patch into
+> [PATCH v3 2/3] net: dhcp: Split dhcp funcionality & add dhcp command
+
+Ok, did that. You can also directly do a git commit --fixup=xxx and send
+that patch. This makes it easy for me to squash it into the correct
+patch.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
