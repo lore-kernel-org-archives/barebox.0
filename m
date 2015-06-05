@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z0mPs-0001Fp-Hr
+ id 1Z0mPs-0001Fo-Hr
  for barebox@lists.infradead.org; Fri, 05 Jun 2015 07:51:49 +0000
 From: Stefan Christ <s.christ@phytec.de>
-Date: Fri, 5 Jun 2015 09:51:24 +0200
-Message-Id: <1433490685-27486-1-git-send-email-s.christ@phytec.de>
-MIME-Version: 1.0
+Date: Fri, 5 Jun 2015 09:51:25 +0200
+Message-Id: <1433490685-27486-2-git-send-email-s.christ@phytec.de>
+In-Reply-To: <1433490685-27486-1-git-send-email-s.christ@phytec.de>
+References: <1433490685-27486-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,43 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: [PATCH v2] barebox update: add note after successful update
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKT24gRnJpLCBNYXkgMjksIDIwMTUgYXQgMDk6MjI6NTBBTSArMDIwMCwgU2Fz
-Y2hhIEhhdWVyIHdyb3RlOgo+ID4gT2gsIEkgZGlkbid0IGtub3cgdGhhdCB0aGUgIi16IiBhcmd1
-bWVudCBleGl0cy4gTmljZS4KPiA+IAo+ID4gT2ssIGJ1dCB3aGF0IGFib3V0IHRoZSBzaXR1YXRp
-b24gd2hlbiBhIHVzZXIgYm9vdHMgdGhlIGJhcmVib3ggZnJvbSBzZGNhcmQgYW5kCj4gPiB1c2Vz
-IHRoZSBiYXJlYm94X3VwZGF0ZSBoYW5kbGVyIHRvIGZsYXNoIGEgYmFyZWJveCB0byBOQU5ELiBJ
-biBzdWNoIGNhc2UKPiA+ICdzYXZlZW52IC16JyBvdmVyd3JpdGVzIHRoZSBlbnZpcm9ubWVudCBv
-biB0aGUgc2RjYXJkLgo+IAo+IEkgc3RpbGwgaGF2ZSBubyBnb29kIGFuc3dlciB0byB0aGlzIDov
-Cj4gCj4gSSBtYXkgYWxzbyBoYXBwZW4gdGhhdCB0aGUgdXBkYXRlZCBiYXJlYm94IGNvbWVzIHdp
-dGggYSBkaWZmZXJlbnQKPiBwYXJ0aXRpb24gbGF5b3V0IHNvIHRoYXQgeW91IGNhbid0IHByb3Bl
-cmx5IGVyYXNlIHRoZSBlbnZpcm9ubWVudCBmcm9tCj4gdGhlIGN1cnJlbnRseSBydW5uaW5nIGJh
-cmVib3guIEF0IHNvbWUgcG9pbnQgd2UgdGhvdWdodCBhYm91dCBhZGRpbmcKPiBzb21lIHZlcnNp
-b24gY291bnRlciB0byB0aGUgZW52aXJvbm1lbnQgc28gdGhhdCB0aGUgdXBkYXRlZCBiYXJlYm94
-Cj4gY291bGQgZWl0aGVyIGlzc3VlIGEgd2FybmluZyB3aGVuIGFuIG91dGRhdGVkIGVudmlyb25t
-ZW50IGlzIGRldGVjdGVkCj4gb3IgaWdub3JlIGl0IGNvbXBsZXRlbHkuIFRoaXMgd291bGQgb2Yg
-Y291cnNlIG1lYW4gd2UgbXVzdCBub3QgZm9yZ2V0IHRvCj4gaW5jcmVhc2UgdGhlIHZlcnNpb24g
-d2hlbiB3ZSBkbyBhbiBpbmNvbXBhdGlibGUgY2hhbmdlLgo+IAo+IFNhc2NoYQoKSGVyZSBpcyB0
-aGUgc2Vjb25kIHZlcnNpb24gb2YgdGhlIHBhdGNoLiBJIGFkZGVkIHNvbWUgZnVydGhlciBleHBs
-YW5hdGlvbnMgZm9yCnRoZSB1c2VyLCBob3d0byBjbGVhbnVwIHRoZSBlbnZpcm9ubWVudC4gSSB0
-aGluayBhIG1vc3RseSB3b3JraW5nIGFkdmljZSBpcyB0bwpib290IHRoZSBuZXcgYmFyZWJveCwg
-d2hpY2ggaXMgZmxhc2hlZCBieSB0aGUgYmFyZWJveF91cGRhdGUgY29tbWFuZCwgYW5kIHRoZW4K
-dG8gZXhlY3V0ZQoKICAgJCBzYXZlZW52IC16OyBsb2FkZW52CgpUaGlzIHNob3VsZCByZXN0b3Jl
-IHRoZSBkZWZhdWx0IGVudmlyb25tZW50IGluIHRoZSBydW5uaW5nIGJhcmVib3ggYW5kIHVwZGF0
-ZQp0aGUgc3RvcmVkIGVudmlyb25tZW50LiBBbSBJIGNvcnJlY3Q/CgpUaGUgYWR2aWNlIHdvcmtz
-IHdoZW4gdGhlIGJvb3Rzb3VyY2UgaXMgZGlmZmVyZW50IHRoYW4gdGhlIGZsYXNoIHRhcmdldCBh
-bmQKd2hlbiB0aGUgcGFydGl0aW9uIGxheW91dCBjaGFuZ2VzLgoKTWl0IGZyZXVuZGxpY2hlbiBH
-csO8w59lbiAvIEtpbmQgcmVnYXJkcywKICAgICAgICBTdGVmYW4gQ2hyaXN0CgpTdGVmYW4gQ2hy
-aXN0ICgxKToKICBiYXJlYm94IHVwZGF0ZTogYWRkIG5vdGUgYWZ0ZXIgc3VjY2Vzc2Z1bCB1cGRh
-dGUKCiBjb21tb24vYmJ1LmMgfCA5ICsrKysrKysrLQogMSBmaWxlIGNoYW5nZWQsIDggaW5zZXJ0
-aW9ucygrKSwgMSBkZWxldGlvbigtKQoKLS0gCjEuOS4xCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+Some users of the barebox_update command forget to erase the external
+barebox environment after updating the barebox. Using an old barebox
+environment leads to various problems if there were major changes.
+
+So add a gentle reminder after the successful update.
+
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
+---
+v2: Add explanation howto to clean up the environment
+---
+ common/bbu.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/common/bbu.c b/common/bbu.c
+index 7fb154a..d23b864 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -113,8 +113,15 @@ int barebox_update(struct bbu_data *data)
+ 	if (ret == -EINTR)
+ 		printf("update aborted\n");
+ 
+-	if (!ret)
++	if (!ret) {
+ 		printf("update succeeded\n");
++		if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
++			printf("You maybe want to erase the barebox environment now.\n");
++			printf("After booting the flashed barebox you can use\n");
++			printf("    $ saveenv -z; loadenv\n");
++			printf("to do that.\n");
++		}
++	}
+ 
+ 	return ret;
+ }
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
