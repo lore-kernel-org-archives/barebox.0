@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.meteocontrol.de ([62.245.201.114])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z1sO4-00050h-00
- for barebox@lists.infradead.org; Mon, 08 Jun 2015 08:26:28 +0000
-Message-ID: <55755173.3080400@meteocontrol.de>
-Date: Mon, 8 Jun 2015 10:25:23 +0200
-From: Moritz Warning <m.warning@meteocontrol.de>
-MIME-Version: 1.0
-References: <556C271F.6040005@meteocontrol.de>
- <20150601120652.GH6325@pengutronix.de> <556C4C10.3010400@meteocontrol.de>
- <556C503B.4010405@meteocontrol.de> <20150603082406.GS6325@pengutronix.de>
-In-Reply-To: <20150603082406.GS6325@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z1vXk-0002O1-8L
+ for barebox@lists.infradead.org; Mon, 08 Jun 2015 11:48:40 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  8 Jun 2015 13:48:16 +0200
+Message-Id: <1433764096-26938-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Secure barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] crc16: Make buffer argument const
+To: Barebox List <barebox@lists.infradead.org>
 
-In only need to hold down any key to enter Barebox when the
-timeout is set to zero. So you don't lock yourself out.
+The buffer is not modified by crc16, so make the argument const.
 
-I was a bit wary to try it out. :)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ crypto/crc16.c | 2 +-
+ include/crc.h  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-On 06/03/2015 10:24 AM, Sascha Hauer wrote:
-> On Mon, Jun 01, 2015 at 02:29:47PM +0200, Moritz Warning wrote:
->> Oh, anyway; what happens when the timeout is 0.
->> How can you access the barebox again?
->
-> You can try holding ctrl-c while starting the board. If that doesn't
-> work I think you have to erase the environment externally. Where do you
-> boot from?
->
-> Sascha
->
+diff --git a/crypto/crc16.c b/crypto/crc16.c
+index d22b656..0b08e9c 100644
+--- a/crypto/crc16.c
++++ b/crypto/crc16.c
+@@ -90,7 +90,7 @@ static const uint16_t crc16_tab[] = {
+ };
+ 
+ uint16_t
+-cyg_crc16(unsigned char *buf, int len)
++cyg_crc16(const unsigned char *buf, int len)
+ {
+     int i;
+     uint16_t cksum;
+diff --git a/include/crc.h b/include/crc.h
+index 10560c9..4290f41 100644
+--- a/include/crc.h
++++ b/include/crc.h
+@@ -95,6 +95,6 @@ cyg_ether_crc32_accumulate(uint32_t crc, unsigned char *s, int len);
+ 
+ /* 16 bit CRC with polynomial x^16+x^12+x^5+1 */
+ 
+-extern uint16_t cyg_crc16(unsigned char *s, int len);
++extern uint16_t cyg_crc16(const unsigned char *s, int len);
+ 
+ #endif /* _SERVICES_CRC_CRC_H_ */
+-- 
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
