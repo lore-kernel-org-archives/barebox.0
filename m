@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1YqHcT-0003Vr-8c
- for barebox@lists.infradead.org; Thu, 07 May 2015 08:57:25 +0000
-Date: Thu, 7 May 2015 10:57:02 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150507085702.GR6325@pengutronix.de>
-References: <1430988346-25450-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1430988346-25450-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from mail-la0-x244.google.com ([2a00:1450:4010:c03::244])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z2PWb-0006EZ-Md
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 19:49:30 +0000
+Received: by lams18 with SMTP id s18so3285536lam.2
+ for <barebox@lists.infradead.org>; Tue, 09 Jun 2015 12:49:07 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue,  9 Jun 2015 22:51:19 +0300
+Message-Id: <1433879479-11300-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +16,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] devfs: be more lax with partition boundaries
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] PCI: skip pci host bridge as early as possible
+To: barebox@lists.infradead.org
 
-On Thu, May 07, 2015 at 10:45:45AM +0200, Uwe Kleine-K=F6nig wrote:
-> If a partition starts inside its parent device but is too big such that
-> it extends over the device boundary, just chop it to the device's end.
-> =
+The barebox' pci_scan_bus() function first tries to setup GT64120
+host bridge BARs but fails:
 
-> This matches the behaviour of Linux.
-> =
+    barebox:/ dmesg
+    pci: pci_scan_bus for bus 0
+    pci:  last_io = 0x18000000, last_mem = 0x10000000, last_mem_pref = 0x00000000
+    pci: class = 00000600, hdr_type = 00000000
+    pci: 00:00 [11ab:4620]
+    pci: pbar0: mask=00000008 NP memory 0 bytes
+    pci: pbar1: mask=01000008 NP memory -16777216 bytes
+    pci: pbar2: mask=1c000000 NP memory -469762048 bytes
+    pci: BAR does not fit within bus np-mem res
+    pci: skip pci host bridge
 
-> The motivation for this change is that it makes it possible in some
-> cases to have the partitioning in a device tree fixed and still allow
-> different flash sizes.
+so PCI host bridge and all discovered devices are misconfigured, e.g.
+miitool can't find rtl8139 emulated NIC tranceiver:
 
-When doing it someone is probably annoyed about the warning pretty soon.
-I know we just talked whether I would accept this patch, but now I
-realized that the correct way to extend the last partition to the end of
-the device is to use size 0. This works under barebox and Linux.
+    rtl8139_eth pci-10ec:8139.0: rtl8139 (rev 20) at 90: 0200 (base=8f000000)
+    rtl8139_eth pci-10ec:8139.0: enabling bus mastering
+    ...
+    barebox:/ miitool
+    miibus0: registered phy as /dev/phy0
+    phy0: eth0:   No MII transceiver present!.
 
-Sascha
+Here is linux-3.19 GT64120 host bridge discovery log:
 
+    PCI host bridge to bus 0000:00
+    pci_bus 0000:00: root bus resource [mem 0x10000000-0x17ffffff]
+    pci_bus 0000:00: root bus resource [io  0x1000-0x1fffff]
+    pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
+    pci 0000:00:00.0: [Firmware Bug]: reg 0x14: invalid BAR (can't size)
+    pci 0000:00:00.0: [Firmware Bug]: reg 0x18: invalid BAR (can't size)
+    pci 0000:00:00.0: [Firmware Bug]: reg 0x1c: invalid BAR (can't size)
+    pci 0000:00:00.0: [Firmware Bug]: reg 0x20: invalid BAR (can't size)
+    pci 0000:00:00.0: [Firmware Bug]: reg 0x24: invalid BAR (can't size)
 
--- =
+The appropriate lspci -v log:
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+    00:00.0 Host bridge: Marvell Technology Group Ltd. GT-64120/64120A/64121A System Controller (rev 10)
+            Subsystem: Red Hat, Inc Device 1100
+            Control: I/O- Mem- BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+            Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+            Interrupt: pin A routed to IRQ 0
+            Subsystem: Red Hat, Inc Device 1100
+            Flags: medium devsel
+            Memory at <unassigned> (32-bit, prefetchable) [disabled]
+            Memory at <ignored> (32-bit, prefetchable) [disabled]
+            Memory at <ignored> (32-bit, non-prefetchable) [disabled]
+            Memory at <ignored> (32-bit, non-prefetchable) [disabled]
+            Memory at <ignored> (32-bit, non-prefetchable) [disabled]
+            I/O ports at <ignored> [disabled]
+
+It looks like qemu-system-mips does not fully emulates GT64120 host
+bridge BARs so skipping host bridge BAR's setup fixes qemu-malta
+problem. But can we skip host bridge BAR's setup for other targets?
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/pci/pci.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 3a0e7a5..7953c55 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -331,6 +331,11 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 		pr_debug("%02x:%02x [%04x:%04x]\n", bus->number, dev->devfn,
+ 		    dev->vendor, dev->device);
+ 
++		if (class == PCI_CLASS_BRIDGE_HOST) {
++			pr_debug("skip pci host bridge\n");
++			continue;
++		}
++
+ 		switch (hdr_type & 0x7f) {
+ 		case PCI_HEADER_TYPE_NORMAL:
+ 			if (class == PCI_CLASS_BRIDGE_PCI)
+@@ -391,11 +396,6 @@ unsigned int pci_scan_bus(struct pci_bus *bus)
+ 			       bus->number, dev->devfn, dev->vendor, dev->device, class, hdr_type);
+ 			continue;
+ 		}
+-
+-		if (class == PCI_CLASS_BRIDGE_HOST) {
+-			pr_debug("skip pci host bridge\n");
+-			continue;
+-		}
+ 	}
+ 
+ 	/*
+-- 
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
