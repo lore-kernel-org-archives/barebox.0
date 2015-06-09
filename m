@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z2FTV-00085r-W3
- for barebox@lists.infradead.org; Tue, 09 Jun 2015 09:05:39 +0000
-Date: Tue, 9 Jun 2015 11:05:11 +0200
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20150609090511.GA2453@lws-christ>
-References: <1433490685-27486-1-git-send-email-s.christ@phytec.de>
- <1433490685-27486-2-git-send-email-s.christ@phytec.de>
- <20150605095919.35bae12b@e6520eb.localdomain>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z2Gc0-00051z-Pj
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 10:18:30 +0000
+Date: Tue, 9 Jun 2015 12:18:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150609101805.GO26575@pengutronix.de>
+References: <OF82039B53.F8CCC59C-ONC1257E57.002D20B0-C1257E57.002D20B8@o0802.rafi.inhouse>
 MIME-Version: 1.0
-In-Reply-To: <20150605095919.35bae12b@e6520eb.localdomain>
 Content-Disposition: inline
+In-Reply-To: <OF82039B53.F8CCC59C-ONC1257E57.002D20B0-C1257E57.002D20B8@o0802.rafi.inhouse>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +18,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] barebox update: add note after successful update
-To: Eric =?utf-8?Q?B=C3=A9nard?= <eric@eukrea.com>
+Subject: Re: Clocks on Barebox
+To: andreas.willig@rafi.de
 Cc: barebox@lists.infradead.org
 
-SGkgRXJpYywKCj4gbWF5YmUgbG9hZGVudiAtZDsgc2F2ZWVudiBpcyBsZXNzIGludmFzaXZlIHRo
-YW4gc2F2ZWVudiAteiBpbiBvcmRlciB0bwo+IHByZXNlcnZlIG52ID8KClBsZWFzZSBjb3JyZWN0
-IG1lIGlmIEknbSB3cm9uZy4gJ2xvYWRlbnYgLWQnIHdpbGwgcmVzZXQgYWxsIG52IHZhcmlhYmxl
-cyB3aGljaAphcmUgYWxyZWFkeSBkZWZpbmVkIGluIHRoZSBkZWZhdWx0IGVudmlyb25tZW50LiBP
-bmx5IHZhcmlhYmxlcyB3aGljaCBhcmUgbm90IGluCnRoZSBkZWZhdWx0IGVudmlyb25tZW50IGFy
-ZSBsZWZ0IGFzIGlzLgoKVGhlIHNhbWUgaG9sZHMgZm9yIGFsbCBmaWxlcyBpbiAvZW52Ly4gSWYg
-dGhleSBkb24ndCBleGlzdCBpbiB0aGUgZGVmYXVsdAplbnZpcm9ubWVudCwgdGhleSB3b24ndCBi
-ZSBvdmVyd3JpdHRlbi4gUmlnaHQ/CgpIbW0uIEkgd291bGQgcHJlZmVyIHRvIGNsZWFudXAgdGhl
-IHdob2xlIGVudmlyb25tZW50IGZvciB0aGUgdXNlciwgc28gbm8gbGVmdApvdmVyIGZpbGVzIG1h
-eSBpbnRlcmZlcmUgdGhlIGJvb3QgcHJvY2Vzcy4gVGhhdCBndWFyYW50ZWVzIGEgY29uc2lzdGVu
-dCBzdGF0ZQpvZiB0aGUgZW52aXJvbm1lbnQsIHdoaWNoIHNob3VsZCB3b3JrIGFzLWlzLgoKV2hh
-dCBhcmUgeW91ciB0aG91Z2h0cz8KCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4gLyBLaW5kIHJl
-Z2FyZHMsCglTdGVmYW4gQ2hyaXN0CgpPbiBGcmksIEp1biAwNSwgMjAxNSBhdCAwOTo1OToxOUFN
-ICswMjAwLCBFcmljIELDqW5hcmQgd3JvdGU6Cj4gSGkgU3RlZmFuLAo+IAo+IExlIEZyaSwgNSBK
-dW4gMjAxNSAwOTo1MToyNSArMDIwMCwKPiBTdGVmYW4gQ2hyaXN0IDxzLmNocmlzdEBwaHl0ZWMu
-ZGU+IGEgw6ljcml0IDoKPiAKPiA+IFNvbWUgdXNlcnMgb2YgdGhlIGJhcmVib3hfdXBkYXRlIGNv
-bW1hbmQgZm9yZ2V0IHRvIGVyYXNlIHRoZSBleHRlcm5hbAo+ID4gYmFyZWJveCBlbnZpcm9ubWVu
-dCBhZnRlciB1cGRhdGluZyB0aGUgYmFyZWJveC4gVXNpbmcgYW4gb2xkIGJhcmVib3gKPiA+IGVu
-dmlyb25tZW50IGxlYWRzIHRvIHZhcmlvdXMgcHJvYmxlbXMgaWYgdGhlcmUgd2VyZSBtYWpvciBj
-aGFuZ2VzLgo+ID4gCj4gPiBTbyBhZGQgYSBnZW50bGUgcmVtaW5kZXIgYWZ0ZXIgdGhlIHN1Y2Nl
-c3NmdWwgdXBkYXRlLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBTdGVmYW4gQ2hyaXN0IDxzLmNo
-cmlzdEBwaHl0ZWMuZGU+Cj4gPiAtLS0KPiA+IHYyOiBBZGQgZXhwbGFuYXRpb24gaG93dG8gdG8g
-Y2xlYW4gdXAgdGhlIGVudmlyb25tZW50Cj4gPiAtLS0KPiA+ICBjb21tb24vYmJ1LmMgfCA5ICsr
-KysrKysrLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24o
-LSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2NvbW1vbi9iYnUuYyBiL2NvbW1vbi9iYnUuYwo+ID4g
-aW5kZXggN2ZiMTU0YS4uZDIzYjg2NCAxMDA2NDQKPiA+IC0tLSBhL2NvbW1vbi9iYnUuYwo+ID4g
-KysrIGIvY29tbW9uL2JidS5jCj4gPiBAQCAtMTEzLDggKzExMywxNSBAQCBpbnQgYmFyZWJveF91
-cGRhdGUoc3RydWN0IGJidV9kYXRhICpkYXRhKQo+ID4gIAlpZiAocmV0ID09IC1FSU5UUikKPiA+
-ICAJCXByaW50ZigidXBkYXRlIGFib3J0ZWRcbiIpOwo+ID4gIAo+ID4gLQlpZiAoIXJldCkKPiA+
-ICsJaWYgKCFyZXQpIHsKPiA+ICAJCXByaW50ZigidXBkYXRlIHN1Y2NlZWRlZFxuIik7Cj4gPiAr
-CQlpZiAoSVNfRU5BQkxFRChDT05GSUdfRU5WX0hBTkRMSU5HKSkgewo+ID4gKwkJCXByaW50Zigi
-WW91IG1heWJlIHdhbnQgdG8gZXJhc2UgdGhlIGJhcmVib3ggZW52aXJvbm1lbnQgbm93LlxuIik7
-Cj4gPiArCQkJcHJpbnRmKCJBZnRlciBib290aW5nIHRoZSBmbGFzaGVkIGJhcmVib3ggeW91IGNh
-biB1c2VcbiIpOwo+ID4gKwkJCXByaW50ZigiICAgICQgc2F2ZWVudiAtejsgbG9hZGVudlxuIik7
-Cj4gPiArCQkJcHJpbnRmKCJ0byBkbyB0aGF0LlxuIik7Cj4gPiArCQl9Cj4gPiArCX0KPiAKPiBt
-YXliZSBsb2FkZW52IC1kOyBzYXZlZW52IGlzIGxlc3MgaW52YXNpdmUgdGhhbiBzYXZlZW52IC16
-IGluIG9yZGVyIHRvCj4gcHJlc2VydmUgbnYgPwo+IAo+IEVyaWMKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+On Mon, Jun 01, 2015 at 10:12:55AM +0200, andreas.willig@rafi.de wrote:
+> Hi all
+> i just updated from 2014 to latest Barebox and hit the following problem:
+> of_clk_init from clk.c:451 does not find any entries. matches is set to __clk_of_table start where compatible=0 and data=0,
+
+Do you mean the clk_of_table is empty? Could you post an excerpt from
+you barebox.map file containing the __clk_of_table? Here it looks like:
+
+                0x0000000000092178                __clk_of_table_start =
+.
+ *(.__clk_of_table_*)
+ .__clk_of_table_fixed_clk
+                0x0000000000092178        0x8 drivers/built-in.o
+                0x0000000000092178
+__clk_of_table_fixed_clk
+ .__clk_of_table_fixed_factor_clk
+                0x0000000000092180        0x8 drivers/built-in.o
+                0x0000000000092180
+__clk_of_table_fixed_factor_clk
+ .__clk_of_table_end
+                0x0000000000092188        0x8 drivers/built-in.o
+                0x0000000000092188
+__clk_of_table_sentinel
+                0x0000000000092190                __clk_of_table_end = .
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
