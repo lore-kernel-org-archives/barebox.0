@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z2Cuo-0004rm-FX
- for barebox@lists.infradead.org; Tue, 09 Jun 2015 06:21:42 +0000
+ Linux)) id 1Z2Cuo-0004rl-Fa
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 06:21:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Jun 2015 08:21:12 +0200
-Message-Id: <1433830875-31119-10-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Jun 2015 08:21:11 +0200
+Message-Id: <1433830875-31119-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
 References: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,122 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] loadxy: use console_set_baudrate
+Subject: [PATCH 08/12] loadx: ignore -c option
 To: Barebox List <barebox@lists.infradead.org>
 
-No need to do this manually
+And always create the file if necessary. No need to have an extra flag for
+this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/loadb.c  |  2 +-
- commands/loadxy.c | 46 ++++++++++++++++++++++++++--------------------
- 2 files changed, 27 insertions(+), 21 deletions(-)
+ commands/loadxy.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/commands/loadb.c b/commands/loadb.c
-index 7424bcc..66934c4 100644
---- a/commands/loadb.c
-+++ b/commands/loadb.c
-@@ -604,7 +604,7 @@ static int do_load_serial_bin(int argc, char *argv[])
- 	ulong offset = 0;
- 	ulong addr;
- 	int load_baudrate = 0, current_baudrate;
--	int rcode = 0;
-+	int rcode = 0, ret;
- 	int opt;
- 	int open_mode = O_WRONLY;
- 	char *output_file = NULL;
 diff --git a/commands/loadxy.c b/commands/loadxy.c
-index d5cc588..a4b1bec 100644
+index b475edf..d5cc588 100644
 --- a/commands/loadxy.c
 +++ b/commands/loadxy.c
-@@ -40,21 +40,6 @@
- 
- #define DEF_FILE	"image.bin"
- 
--static int console_change_speed(struct console_device *cdev, int baudrate)
--{
--	int current_baudrate;
--
--	current_baudrate = console_get_baudrate(cdev);
--	if (baudrate && baudrate != current_baudrate) {
--		printf("## Switch baudrate from %d to %d bps and press ENTER ...\n",
--		       current_baudrate, baudrate);
--		mdelay(50);
--		cdev->setbrg(cdev, baudrate);
--		mdelay(50);
--	}
--	return current_baudrate;
--}
--
- /**
-  * @brief provide the loady(Y-Modem or Y-Modem/G) support
-  *
-@@ -97,7 +82,15 @@ static int do_loady(int argc, char *argv[])
- 		return -ENODEV;
- 	}
- 
--	current_baudrate = console_change_speed(cdev, load_baudrate);
-+	current_baudrate = console_get_baudrate(cdev);
-+
-+	if (!load_baudrate)
-+		load_baudrate = current_baudrate;
-+
-+	rc = console_set_baudrate(cdev, load_baudrate);
-+	if (rc)
-+		return rc;
-+
- 	printf("## Ready for binary (ymodem) download at %d bps...\n",
- 	       load_baudrate ? load_baudrate : current_baudrate);
- 
-@@ -111,7 +104,9 @@ static int do_loady(int argc, char *argv[])
- 		rcode = 1;
- 	}
- 
--	console_change_speed(cdev, current_baudrate);
-+	rc = console_set_baudrate(cdev, current_baudrate);
-+	if (rc)
-+		return rc;
- 
- 	return rcode;
- }
-@@ -143,7 +138,7 @@ BAREBOX_CMD_END
- static int do_loadx(int argc, char *argv[])
+@@ -144,7 +144,6 @@ static int do_loadx(int argc, char *argv[])
  {
  	ulong offset = 0;
--	int load_baudrate = 0, current_baudrate, ofd, opt, rcode = 0;
-+	int load_baudrate = 0, current_baudrate, rc, ofd, opt, rcode = 0;
+ 	int load_baudrate = 0, current_baudrate, ofd, opt, rcode = 0;
+-	int open_mode = O_WRONLY;
  	char *output_file = NULL, *cname = NULL;
  	struct console_device *cdev = NULL;
  
-@@ -198,7 +193,15 @@ static int do_loadx(int argc, char *argv[])
- 		}
- 	}
+@@ -159,9 +158,6 @@ static int do_loadx(int argc, char *argv[])
+ 		case 'o':
+ 			offset = (int)simple_strtoul(optarg, NULL, 10);
+ 			break;
+-		case 'c':
+-			open_mode |= O_CREAT;
+-			break;
+ 		case 't':
+ 			cname = optarg;
+ 			break;
+@@ -186,7 +182,7 @@ static int do_loadx(int argc, char *argv[])
+ 		output_file = DEF_FILE;
  
--	current_baudrate = console_change_speed(cdev, load_baudrate);
-+	current_baudrate = console_get_baudrate(cdev);
-+
-+	if (!load_baudrate)
-+		load_baudrate = current_baudrate;
-+
-+	rc = console_set_baudrate(cdev, load_baudrate);
-+	if (rc)
-+		return rc;
-+
- 	printf("## Ready for binary (xmodem) download "
- 	       "to 0x%08lX offset on %s device at %d bps...\n", offset,
- 	       output_file, load_baudrate ? load_baudrate : current_baudrate);
-@@ -207,7 +210,10 @@ static int do_loadx(int argc, char *argv[])
- 		printf("## Binary (xmodem) download aborted (%d)\n", rcode);
- 		rcode = 1;
- 	}
--	console_change_speed(cdev, current_baudrate);
-+
-+	rc = console_set_baudrate(cdev, current_baudrate);
-+	if (rc)
-+		return rc;
+ 	/* File should exist */
+-	ofd = open(output_file, open_mode);
++	ofd = open(output_file, O_WRONLY | O_CREAT);
+ 	if (ofd < 0) {
+ 		perror(argv[0]);
+ 		return 3;
+@@ -222,7 +218,6 @@ BAREBOX_CMD_HELP_OPT("-f FILE", "download to FILE (default image.bin")
+ BAREBOX_CMD_HELP_OPT("-o OFFS", "destination file OFFSet (default 0)")
+ BAREBOX_CMD_HELP_OPT("-b BAUD", "baudrate for download (default: console baudrate")
+ BAREBOX_CMD_HELP_OPT("-t NAME", "console name to use (default: current)")
+-BAREBOX_CMD_HELP_OPT("-c",      "create file if not present")
+ BAREBOX_CMD_HELP_END
  
- 	return rcode;
- }
+ BAREBOX_CMD_START(loadx)
 -- 
 2.1.4
 
