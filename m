@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z2Cuo-0004rl-Fa
- for barebox@lists.infradead.org; Tue, 09 Jun 2015 06:21:39 +0000
+ Linux)) id 1Z2Cuo-0004ro-FZ
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 06:21:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Jun 2015 08:21:11 +0200
-Message-Id: <1433830875-31119-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Jun 2015 08:21:14 +0200
+Message-Id: <1433830875-31119-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
 References: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] loadx: ignore -c option
+Subject: [PATCH 11/12] loadb: Use console_set_baudrate
 To: Barebox List <barebox@lists.infradead.org>
 
-And always create the file if necessary. No need to have an extra flag for
-this.
+No Need to do this manually
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/loadxy.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ commands/loadb.c | 28 ++++++----------------------
+ 1 file changed, 6 insertions(+), 22 deletions(-)
 
-diff --git a/commands/loadxy.c b/commands/loadxy.c
-index b475edf..d5cc588 100644
---- a/commands/loadxy.c
-+++ b/commands/loadxy.c
-@@ -144,7 +144,6 @@ static int do_loadx(int argc, char *argv[])
- {
- 	ulong offset = 0;
- 	int load_baudrate = 0, current_baudrate, ofd, opt, rcode = 0;
--	int open_mode = O_WRONLY;
- 	char *output_file = NULL, *cname = NULL;
- 	struct console_device *cdev = NULL;
+diff --git a/commands/loadb.c b/commands/loadb.c
+index 8294f39..acc3cd4 100644
+--- a/commands/loadb.c
++++ b/commands/loadb.c
+@@ -660,17 +660,9 @@ static int do_load_serial_bin(int argc, char *argv[])
+ 		}
+ 	}
  
-@@ -159,9 +158,6 @@ static int do_loadx(int argc, char *argv[])
- 		case 'o':
- 			offset = (int)simple_strtoul(optarg, NULL, 10);
- 			break;
--		case 'c':
--			open_mode |= O_CREAT;
--			break;
- 		case 't':
- 			cname = optarg;
- 			break;
-@@ -186,7 +182,7 @@ static int do_loadx(int argc, char *argv[])
- 		output_file = DEF_FILE;
+-	if (load_baudrate != current_baudrate) {
+-		printf("## Switch baudrate to %d bps and press ENTER ...\n",
+-		       load_baudrate);
+-		udelay(50000);
+-		cdev->setbrg(cdev, load_baudrate);
+-		udelay(50000);
+-		for (;;) {
+-			if (getc() == '\r')
+-				break;
+-		}
+-	}
++	ret = console_set_baudrate(cdev, load_baudrate);
++	if (ret)
++		return ret;
  
- 	/* File should exist */
--	ofd = open(output_file, open_mode);
-+	ofd = open(output_file, O_WRONLY | O_CREAT);
- 	if (ofd < 0) {
- 		perror(argv[0]);
- 		return 3;
-@@ -222,7 +218,6 @@ BAREBOX_CMD_HELP_OPT("-f FILE", "download to FILE (default image.bin")
- BAREBOX_CMD_HELP_OPT("-o OFFS", "destination file OFFSet (default 0)")
- BAREBOX_CMD_HELP_OPT("-b BAUD", "baudrate for download (default: console baudrate")
- BAREBOX_CMD_HELP_OPT("-t NAME", "console name to use (default: current)")
--BAREBOX_CMD_HELP_OPT("-c",      "create file if not present")
- BAREBOX_CMD_HELP_END
+ 	printf("## Ready for binary (kermit) download "
+ 	       "to 0x%08lX offset on %s device at %d bps...\n", offset,
+@@ -681,17 +673,9 @@ static int do_load_serial_bin(int argc, char *argv[])
+ 		rcode = 1;
+ 	}
  
- BAREBOX_CMD_START(loadx)
+-	if (load_baudrate != current_baudrate) {
+-		printf("## Switch baudrate to %d bps and press ESC ...\n",
+-		       current_baudrate);
+-		udelay(50000);
+-		cdev->setbrg(cdev, current_baudrate);
+-		udelay(50000);
+-		for (;;) {
+-			if (getc() == 0x1B)	/* ESC */
+-				break;
+-		}
+-	}
++	ret = console_set_baudrate(cdev, current_baudrate);
++	if (ret)
++		return ret;
+ 
+ 	close(ofd);
+ 	ofd = 0;
 -- 
 2.1.4
 
