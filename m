@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rafi.de ([178.15.151.14])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z2BzA-0007Qu-E7
- for barebox@lists.infradead.org; Tue, 09 Jun 2015 05:22:05 +0000
-MIME-Version: 1.0
-In-Reply-To: <20150603081935.GQ6325@pengutronix.de>
-References: <20150603081935.GQ6325@pengutronix.de>,
- <OF82039B53.F8CCC59C-ONC1257E57.002D20B0-C1257E57.002D20B8@o0802.rafi.inhouse>
- <20150601114150.GG6325@pengutronix.de>
- <OF4A53439D.B017BB3F-ONC1257E58.0014663E-C1257E58.00146649@o0802.rafi.inhouse>
-From: andreas.willig@rafi.de
-Message-ID: <OF0C768F98.A61061DB-ONC1257E5F.001D72E8-C1257E5F.001D72F0@o0802.rafi.inhouse>
-Date: Tue, 9 Jun 2015 07:21:39 +0200
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z2Cuo-0004rh-Fb
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 06:21:41 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue,  9 Jun 2015 08:21:06 +0200
+Message-Id: <1433830875-31119-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
+References: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +16,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Clocks on Barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 03/12] console: Add console_get_by_name
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Sascha,
+Commands like loadx/loady wish to find a console device by its name. Add
+a function for this.
 
-any news on the clocking Problem, did you receive my patch file? I did a wo=
-rkaround and readded the hardcoded osc settings, but i think this is not th=
-e way on long term.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/console_common.c | 13 +++++++++++++
+ include/console.h       |  1 +
+ 2 files changed, 14 insertions(+)
 
-Congrats for the new barebox.org website, pretty nice :)
+diff --git a/common/console_common.c b/common/console_common.c
+index 41a6929..1e362ab 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -260,6 +260,19 @@ struct console_device *console_get_by_dev(struct device_d *dev)
+ }
+ EXPORT_SYMBOL(console_get_by_dev);
+ 
++struct console_device *console_get_by_name(const char *name)
++{
++	struct console_device *cdev;
++
++	for_each_console(cdev) {
++		if (!strcmp(cdev->devname, name))
++			return cdev;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL(console_get_by_name);
++
+ /*
+  * @brief returns current used console device
+  *
+diff --git a/include/console.h b/include/console.h
+index 945bdcb..c2622c9 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -63,6 +63,7 @@ int console_register(struct console_device *cdev);
+ int console_unregister(struct console_device *cdev);
+ 
+ struct console_device *console_get_by_dev(struct device_d *dev);
++struct console_device *console_get_by_name(const char *name);
+ 
+ extern struct list_head console_list;
+ #define for_each_console(console) list_for_each_entry(console, &console_list, list)
+-- 
+2.1.4
 
-
-
-Mit freundlichen Gr=FC=DFen aus Berg/ With kind regards
-
-i.A. Andreas Willig
-Dipl.-Ing. (FH)
-Entwicklung Elektronik
-
-RAFI GmbH & Co. KG
-Postfach 2060
-88276 Ravensburg
-Tel.: +49 (0) 751 89-6142
-
-mailto:andreas.willig@rafi.de, http://www.rafi.de
-
-Kommanditgesellschaft: Sitz Berg, Amtsgericht Ulm, HRA 550059
-Komplement=E4r: RAFI Beteiligungs-GmbH, Sitz Berg, Amtsgericht Ulm HRB 5500=
-74
-Gesch=E4ftsf=FChrer: Albert Wasmeier, Dipl.-Kfm. Gerhard Schenk
-USt-Ident.-Nr.: DE 146 392 319, Steuer-Nr.: 77079/00291
-
-
------Sascha Hauer <s.hauer@pengutronix.de> schrieb: ----- =
-
-An: andreas.willig@rafi.de
-Von: Sascha Hauer <s.hauer@pengutronix.de>
-Datum: 03.06.2015 10:19
-Kopie: barebox@lists.infradead.org
-Betreff: Re: Clocks on Barebox
-
-
-On Tue, Jun 02, 2015 at 05:42:49AM +0200, andreas.willig@rafi.de wrote:
-> Hi Sascha,
-> I'm currently on the next branch, but i did not see changes at this
-> point since master or stable release. Like issued earlier the clock
-> table enumeration is empty. Is there a specific compatible attribute
-> required?
-
-I just tested barebox -next on the SabreLite board with the
-imx_v7_defconfig. It works as expected. Do you have any patches applied
-or use a different config file? I have no idea what goes wrong here.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
