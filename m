@@ -1,14 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z2Dbc-0000v1-5i
- for barebox@lists.infradead.org; Tue, 09 Jun 2015 07:05:52 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 63992A0041E
- for <barebox@lists.infradead.org>; Tue,  9 Jun 2015 09:06:58 +0200 (CEST)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Tue, 9 Jun 2015 09:04:25 +0200
-Message-Id: <1433833465-6569-1-git-send-email-w.egorov@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z2Dvj-0002sG-M1
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 07:26:40 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim)
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1Z2DvL-000588-2Q
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 09:26:15 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1Z2DvK-0004uH-L5
+ for barebox@lists.infradead.org; Tue, 09 Jun 2015 09:26:14 +0200
+Date: Tue, 9 Jun 2015 09:26:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150609072614.GM26575@pengutronix.de>
+References: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1433830875-31119-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,36 +26,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: Set the actual ethaddr in register_preset_mac_address()
-To: barebox@lists.infradead.org
+Subject: Re: Add functions for (de)activating consoles and for setting baudrate
+To: Barebox List <barebox@lists.infradead.org>
 
-Set the ethaddr for the current edev.
+On Tue, Jun 09, 2015 at 08:21:03AM +0200, Sascha Hauer wrote:
+> We have some console users like load[bxy] which fiddle with device
+> parameters to control console activation and baudrate settings. This
+> series introduces functions for doing this and makes use of them where
+> possible. The serial download stuff is untested as I have been unable
+> to get that to work with any of the three protocols and kermit or minicom
+> as terminal programs. If anyone has a hint how this works I'd be grateful.
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- net/eth.c | 1 +
- 1 file changed, 1 insertion(+)
+The hint came from Uwe. He uses sx/sz directly and with this it works
+together with the barebox commands like this:
 
-diff --git a/net/eth.c b/net/eth.c
-index 89bddba..03e0a2e 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -49,6 +49,7 @@ static void register_preset_mac_address(struct eth_device *edev, const char *eth
- 	ethaddr_to_string(ethaddr, ethaddr_str);
- 
- 	if (is_valid_ether_addr(ethaddr)) {
-+		memcpy(edev->ethaddr, ethaddr, 6);
- 		dev_info(&edev->dev, "got preset MAC address: %s\n", ethaddr_str);
- 		dev_set_param(&edev->dev, "ethaddr", ethaddr_str);
- 	}
+barebox> loadx
+host> sx -kb -vvvv FILE < /dev/ttyUSB2 > /dev/ttyUSB2
+
+barebox> loady
+host> sz -kb -vvvv FILE < /dev/ttyUSB2 > /dev/ttyUSB2
+
+Sascha
+
 -- 
-1.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
