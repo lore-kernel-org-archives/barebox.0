@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z2XhE-0002tm-EG
- for barebox@lists.infradead.org; Wed, 10 Jun 2015 04:33:01 +0000
-Date: Wed, 10 Jun 2015 06:32:37 +0200
+ Linux)) id 1Z2Y5r-0002DM-TM
+ for barebox@lists.infradead.org; Wed, 10 Jun 2015 04:58:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150610043237.GT6325@pengutronix.de>
-References: <1433833465-6569-1-git-send-email-w.egorov@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1433833465-6569-1-git-send-email-w.egorov@phytec.de>
+Date: Wed, 10 Jun 2015 06:58:02 +0200
+Message-Id: <1433912282-10774-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +14,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: Set the actual ethaddr in
- register_preset_mac_address()
-To: Wadim Egorov <w.egorov@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] clk: of: fix clk_of_table generation
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Wadim,
+We used to collect all sections beginning with __clk_of_table_ in a single
+section in the linker using KEEP(*(.__clk_of_table_*)). That the sentinel
+entry ended up as the last entry was pure luck, but not always the case.
 
-On Tue, Jun 09, 2015 at 09:04:25AM +0200, Wadim Egorov wrote:
-> Set the ethaddr for the current edev.
-> 
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-> ---
->  net/eth.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/eth.c b/net/eth.c
-> index 89bddba..03e0a2e 100644
-> --- a/net/eth.c
-> +++ b/net/eth.c
-> @@ -49,6 +49,7 @@ static void register_preset_mac_address(struct eth_device *edev, const char *eth
->  	ethaddr_to_string(ethaddr, ethaddr_str);
->  
->  	if (is_valid_ether_addr(ethaddr)) {
-> +		memcpy(edev->ethaddr, ethaddr, 6);
->  		dev_info(&edev->dev, "got preset MAC address: %s\n", ethaddr_str);
->  		dev_set_param(&edev->dev, "ethaddr", ethaddr_str);
->  	}
+Instead of putting all entries in different sections we now put all entries
+in the same section. Only the sentinel entry gets its own section and is
+collected by the linker separately.
 
-In which case is this necessary? Normally a dev_set_param on "ethaddr"
-should already set edev->ethaddr, there should be no need to copy this
-manually.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reported-by: Andreas Willig <andreas.willig@rafi.de>
+---
+ include/asm-generic/barebox.lds.h | 3 ++-
+ include/linux/clk.h               | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index 254397e..00d6eca 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -47,7 +47,8 @@
+ #define BAREBOX_CLK_TABLE()			\
+ 	. = ALIGN(8);				\
+ 	__clk_of_table_start = .;		\
+-	KEEP(*(.__clk_of_table_*));		\
++	KEEP(*(.__clk_of_table));		\
++	KEEP(*(.__clk_of_table_end));		\
+ 	__clk_of_table_end = .;
+ 
+ #define BAREBOX_DTB()				\
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 4aeec63..7a0ee11 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -321,7 +321,7 @@ struct of_phandle_args;
+ 
+ #define CLK_OF_DECLARE(name, compat, fn)				\
+ const struct of_device_id __clk_of_table_##name				\
+-__attribute__ ((unused,section (".__clk_of_table_" __stringify(name)))) \
++__attribute__ ((unused,section (".__clk_of_table"))) \
+ 	= { .compatible = compat, .data = fn }
+ 
+ #if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
