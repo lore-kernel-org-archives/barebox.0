@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z2a6c-0004KE-5o
+ id 1Z2a6c-0004KC-5r
  for barebox@lists.infradead.org; Wed, 10 Jun 2015 07:07:22 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id AD745A003E7
+ by root.phytec.de (Postfix) with ESMTP id 7792BA00391
  for <barebox@lists.infradead.org>; Wed, 10 Jun 2015 09:08:28 +0200 (CEST)
 From: Wadim Egorov <w.egorov@phytec.de>
-Date: Wed, 10 Jun 2015 09:05:52 +0200
-Message-Id: <1433919952-28025-2-git-send-email-w.egorov@phytec.de>
-In-Reply-To: <1433919952-28025-1-git-send-email-w.egorov@phytec.de>
-References: <1433919952-28025-1-git-send-email-w.egorov@phytec.de>
+Date: Wed, 10 Jun 2015 09:05:51 +0200
+Message-Id: <1433919952-28025-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: OMAP: Add max file size for PBLX images
+Subject: [PATCH 1/2] images: Add file size check for PBLX files
 To: barebox@lists.infradead.org
-
-On AM335x SOCs the maximum size of a downloaded MLO/PBLX image is 109 KB.
 
 Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
 ---
- arch/arm/configs/am335x_mlo_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ common/Kconfig  | 10 ++++++++++
+ images/Makefile |  1 +
+ 2 files changed, 11 insertions(+)
 
-diff --git a/arch/arm/configs/am335x_mlo_defconfig b/arch/arm/configs/am335x_mlo_defconfig
-index 1dd7567..611385a 100644
---- a/arch/arm/configs/am335x_mlo_defconfig
-+++ b/arch/arm/configs/am335x_mlo_defconfig
-@@ -9,6 +9,7 @@ CONFIG_THUMB2_BAREBOX=y
- # CONFIG_MEMINFO is not set
- CONFIG_MMU=y
- CONFIG_TEXT_BASE=0x0
-+CONFIG_BAREBOX_MAX_PBLX_SIZE=0x1a9c8
- CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
- CONFIG_RELOCATABLE=y
+diff --git a/common/Kconfig b/common/Kconfig
+index 1c5d14c..0ffa783 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -198,6 +198,16 @@ config BAREBOX_MAX_BARE_INIT_SIZE
+ 	  this will allow your bare_init to fit in SRAM as example
+ 	  ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+ 
++config BAREBOX_MAX_PBLX_SIZE
++	depends on PBL_MULTI_IMAGES
++	depends on IMAGE_COMPRESSION
++	prompt "Maximum PBLX size"
++	hex
++	default 0xffffffff
++	help
++	  Define the maximum size of the PBLX image.
++	  The pblx is a self extracting barebox binary.
++
+ config HAVE_CONFIGURABLE_MEMORY_LAYOUT
+ 	bool
+ 
+diff --git a/images/Makefile b/images/Makefile
+index 587cb26..bbbfd81 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -75,6 +75,7 @@ quiet_cmd_pblx ?= PBLX    $@
+ 
+ $(obj)/%.pblx: $(obj)/%.pblb $(obj)/barebox.z FORCE
+ 	$(call if_changed,pblx,$(@F))
++	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_PBLX_SIZE))
+ 
+ $(obj)/%.s: $(obj)/% FORCE
+ 	$(call if_changed,disasm)
 -- 
 1.9.1
 
