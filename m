@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z3Lf4-0004aA-3v
- for barebox@lists.infradead.org; Fri, 12 Jun 2015 09:54:07 +0000
+ Linux)) id 1Z3LgV-0006C6-Kg
+ for barebox@lists.infradead.org; Fri, 12 Jun 2015 09:55:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 12 Jun 2015 11:53:37 +0200
-Message-Id: <1434102821-10555-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1434102821-10555-1-git-send-email-s.hauer@pengutronix.de>
-References: <1434102821-10555-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 12 Jun 2015 11:55:11 +0200
+Message-Id: <1434102911-1063-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,169 +19,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] video: Add backlight support
+Subject: [PATCH] ARM: MXS: ocotp: Register a separate device
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds a small backlight layer. It provides a backlight device
-on which the brightness parameter can be used to adjust the brightness.
+With device tree the device name starts with a number, so
+the device parameters are not accessible on the shell. Register
+a separate device for the ocotp to make the permanent_write_enable
+variable accessible again.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/Kconfig     |  4 +++
- drivers/video/Makefile    |  1 +
- drivers/video/backlight.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++
- include/video/backlight.h | 20 +++++++++++
- 4 files changed, 115 insertions(+)
- create mode 100644 drivers/video/backlight.c
- create mode 100644 include/video/backlight.h
+ arch/arm/mach-mxs/ocotp.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index f096a54..e108d8a 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -93,4 +93,8 @@ config DRIVER_VIDEO_EDID
- 	  This enabled support for reading and parsing EDID data from an attached
- 	  monitor.
+diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
+index 2029b90..0075845 100644
+--- a/arch/arm/mach-mxs/ocotp.c
++++ b/arch/arm/mach-mxs/ocotp.c
+@@ -43,6 +43,7 @@
+ #define OCOTP_WORD_OFFSET		0x20
  
-+config DRIVER_VIDEO_BACKLIGHT
-+	bool "Add backlight support"
-+	help
-+	  Enable this for backlight support.
- endif
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index ae9f6e5..0655b0f 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -1,6 +1,7 @@
- obj-$(CONFIG_VIDEO) += fb.o
- obj-$(CONFIG_DRIVER_VIDEO_EDID) += edid.o
- obj-$(CONFIG_OFDEVICE) += of_display_timing.o
-+obj-$(CONFIG_DRIVER_VIDEO_BACKLIGHT) += backlight.o
- 
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
-diff --git a/drivers/video/backlight.c b/drivers/video/backlight.c
-new file mode 100644
-index 0000000..ddde6f8
---- /dev/null
-+++ b/drivers/video/backlight.c
-@@ -0,0 +1,90 @@
-+#include <common.h>
-+#include <driver.h>
-+#include <linux/list.h>
-+#include <video/backlight.h>
-+
-+static LIST_HEAD(backlights);
-+
-+int backlight_set_brightness(struct backlight_device *bl, int brightness)
-+{
-+	int ret, step, i, num_steps;
-+
-+	if (brightness > bl->brightness_max)
-+		brightness = bl->brightness_max;
-+
-+	if (brightness == bl->brightness_cur)
-+		return 0;
-+
-+	if (brightness > bl->brightness_cur)
-+		step = 1;
-+	else
-+		step = -1;
-+
-+	i = bl->brightness_cur;
-+
-+	num_steps = abs(brightness - bl->brightness_cur);
-+
-+	while (1) {
-+		i += step;
-+
-+		ret = bl->brightness_set(bl, i);
-+		if (ret)
-+			return ret;
-+
-+		if (i == brightness)
-+			break;
-+
-+		udelay(100000 / num_steps);
-+	}
-+
-+
-+	bl->brightness_cur = bl->brightness = brightness;
-+
-+	return ret;
-+}
-+
-+int backlight_set_brightness_default(struct backlight_device *bl)
-+{
-+	int ret;
-+
-+	ret = backlight_set_brightness(bl, bl->brightness_default);
-+
-+	return ret;
-+}
-+
-+static int backlight_brightness_set(struct param_d *p, void *priv)
-+{
-+	struct backlight_device *bl = priv;
-+
-+	return backlight_set_brightness(bl, bl->brightness);
-+}
-+
-+int backlight_register(struct backlight_device *bl)
-+{
-+	int ret;
-+
-+	sprintf(bl->dev.name, "backlight");
-+	bl->dev.id = DEVICE_ID_DYNAMIC;
-+
-+	ret = register_device(&bl->dev);
-+	if (ret)
-+		return ret;
-+
-+	dev_add_param_int(&bl->dev, "brightness", backlight_brightness_set,
-+			NULL, &bl->brightness, "%d", bl);
-+
-+	list_add_tail(&bl->list, &backlights);
-+
-+	return ret;
-+}
-+
-+struct backlight_device *of_backlight_find(struct device_node *node)
-+{
-+	struct backlight_device *bl;
-+
-+	list_for_each_entry(bl, &backlights, list)
-+		if (bl->node == node)
-+			return bl;
-+
-+	return NULL;
-+}
-diff --git a/include/video/backlight.h b/include/video/backlight.h
-new file mode 100644
-index 0000000..56e0341
---- /dev/null
-+++ b/include/video/backlight.h
-@@ -0,0 +1,20 @@
-+#ifndef __VIDEO_BACKLIGHT_H
-+#define __VIDEO_BACKLIGHT_H
-+
-+struct backlight_device {
-+	int brightness;
-+	int brightness_cur;
-+	int brightness_max;
-+	int brightness_default;
-+	int (*brightness_set)(struct backlight_device *, int brightness);
-+	struct list_head list;
+ struct ocotp_priv {
 +	struct device_d dev;
-+	struct device_node *node;
-+};
+ 	struct cdev cdev;
+ 	void __iomem *base;
+ 	unsigned int write_enable;
+@@ -194,13 +195,19 @@ static int mxs_ocotp_probe(struct device_d *dev)
+ 	priv->cdev.size = cpu_is_mx23() ? 128 : 160;
+ 	priv->cdev.name = DRIVERNAME;
+ 
++	strcpy(priv->dev.name, "ocotp");
++	priv->dev.parent = dev;
++	err = register_device(&priv->dev);
++	if (err)
++		return err;
 +
-+int backlight_set_brightness(struct backlight_device *, int brightness);
-+int backlight_set_brightness_default(struct backlight_device *);
-+int backlight_register(struct backlight_device *);
-+struct backlight_device *of_backlight_find(struct device_node *node);
-+
-+#endif /* __VIDEO_BACKLIGHT_H */
+ 	err = devfs_create(&priv->cdev);
+ 	if (err < 0)
+ 		return err;
+ 
+ 	if (IS_ENABLED(CONFIG_MXS_OCOTP_WRITABLE)) {
+ 		mxs_ocotp_ops.write = mxs_ocotp_cdev_write;
+-		dev_add_param_bool(dev, "permanent_write_enable",
++		dev_add_param_bool(&priv->dev, "permanent_write_enable",
+ 			NULL, NULL, &priv->write_enable, NULL);
+ 	}
+ 
 -- 
 2.1.4
 
