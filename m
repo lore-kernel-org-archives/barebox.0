@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.bemta3.messagelabs.com ([195.245.230.164])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z3LTN-0008Cp-3i
- for barebox@lists.infradead.org; Fri, 12 Jun 2015 09:42:02 +0000
-Message-ID: <557AA945.4040108@celad.com>
-Date: Fri, 12 Jun 2015 11:41:25 +0200
-From: Herve Codina <herve.CODINA@celad.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z3Lf8-0004cK-SN
+ for barebox@lists.infradead.org; Fri, 12 Jun 2015 09:54:12 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 12 Jun 2015 11:53:40 +0200
+Message-Id: <1434102821-10555-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1434102821-10555-1-git-send-email-s.hauer@pengutronix.de>
+References: <1434102821-10555-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,66 +16,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] Barebox shutdown hooks
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 5/6] PWM: Allow multiple PWMs per device node
+To: Barebox List <barebox@lists.infradead.org>
 
-I try to find a way to perform some tasks on barebox leaving (ie last step of go command or boot/bootm command)
-and i look at shutdown_barebox (common/startup.c)
-This function is :
----- 8< -----
-void shutdown_barebox(void)
-{
-	devices_shutdown();
-#ifdef ARCH_SHUTDOWN
-	arch_shutdown();
-#endif
-	if (board_shutdown)
-		board_shutdown();
-}
----- 8< -----
+Matching a device node is enough since a device node may have
+multiple PWMs. Check for a id aswell.
 
-I have several questions :
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/pwm/core.c | 7 ++++---
+ include/pwm.h      | 2 ++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-1) Why board_shutdown is called after arch_shutdown.
-arch shutdown is supposed to do stuf like disabling mmu, flushing cache, ...
-Don't you think that board_shutdown should be between devices_shutdown and arch_shutdown ?
-
-2) What about the ability to have hooks for shutdown with all resources available
-For my tasks, i need devices available. What do you thing about a new "early_shutdown" called before devices_shutdown.
-barebox_shutdown will become :
-void shutdown_barebox(void)
-{
-	early_shutdown();
-	devices_shutdown();
-#ifdef ARCH_SHUTDOWN
-	arch_shutdown();
-#endif
-	if (board_shutdown)
-		board_shutdown();
-}
-
-for early_shutdown itself, i would give flexibility. I thing about 2 way :
-
-2.1) register shutdown hooks
-Use same mechanism as fixing up device tree :
-early_shutdown_register function to register hook
-and iterator calling all registered hooks in early_shutdown
-
-2.2) exitcall
-Use same mechanism as initcall functions :
-Use a specific section to store exit hooks table. A macro early_exitcall (same mechanism as xxxx_initcall macro) will be used to do this.
-Iterate on each hook in this section in early_shutdown (same mechanism as initcall in start_barebox).
-
-
-Before doing a patch what do you think about this functionality and what way is preferred ?
-
-Regards,
-Herve
-
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index cc33dec..3605201 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -181,12 +181,13 @@ struct pwm_device *pwm_request(const char *devname)
+ }
+ EXPORT_SYMBOL_GPL(pwm_request);
+ 
+-static struct pwm_device *of_node_to_pwm_device(struct device_node *np)
++static struct pwm_device *of_node_to_pwm_device(struct device_node *np, int id)
+ {
+ 	struct pwm_device *pwm;
+ 
+ 	list_for_each_entry(pwm, &pwm_list, node) {
+-		if (pwm->hwdev && pwm->hwdev->device_node == np)
++		if (pwm->hwdev && pwm->hwdev->device_node == np &&
++				pwm->chip->id == id)
+ 			return pwm;
+ 	}
+ 
+@@ -210,7 +211,7 @@ struct pwm_device *of_pwm_request(struct device_node *np, const char *con_id)
+ 		return ERR_PTR(ret);
+ 	}
+ 
+-	pwm = of_node_to_pwm_device(args.np);
++	pwm = of_node_to_pwm_device(args.np, args.args[0]);
+ 	if (IS_ERR(pwm)) {
+ 		pr_debug("%s(): PWM chip not found\n", __func__);
+ 		return pwm;
+diff --git a/include/pwm.h b/include/pwm.h
+index 59d86d4..911c760 100644
+--- a/include/pwm.h
++++ b/include/pwm.h
+@@ -57,12 +57,14 @@ struct pwm_ops {
+ 
+ /**
+  * struct pwm_chip - abstract a PWM
++ * @id: The id of this pwm
+  * @devname: unique identifier for this pwm
+  * @ops: The callbacks for this PWM
+  * @duty_ns: The duty cycle of the PWM, in nano-seconds
+  * @period_ns: The period of the PWM, in nano-seconds
+  */
+ struct pwm_chip {
++	int			id;
+ 	const char		*devname;
+ 	struct pwm_ops		*ops;
+ 	int			duty_ns;
+-- 
+2.1.4
 
 
 _______________________________________________
