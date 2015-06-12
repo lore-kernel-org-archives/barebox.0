@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z3IZZ-0006uF-Ih
- for barebox@lists.infradead.org; Fri, 12 Jun 2015 06:36:15 +0000
+ Linux)) id 1Z3IZZ-0006uH-Ii
+ for barebox@lists.infradead.org; Fri, 12 Jun 2015 06:36:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 12 Jun 2015 08:35:42 +0200
-Message-Id: <1434090946-6574-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 12 Jun 2015 08:35:45 +0200
+Message-Id: <1434090946-6574-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1434090946-6574-1-git-send-email-s.hauer@pengutronix.de>
 References: <1434090946-6574-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] imx-bbu-nand-fcb: Use barebox partition instead of
- whole device
+Subject: [PATCH 09/10] imx-bbu-nand-fcb: Erase whole partition
 To: Barebox List <barebox@lists.infradead.org>
 
-We used to use nand0 device for storing barebox and made the assumption
-that there is enough space at the beginning of the first device. Instead,
-use the barebox partition directly. This requires that the partition
-where barebox should be stored is named 'barebox', that is the case for
-all boards currently.
+Now that we use a partition for the bootloader instead of
+the whole NAND device we can erase it completely instead of
+hardcoded 2MB.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/imx-bbu-nand-fcb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ common/imx-bbu-nand-fcb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 5b984d4..ca7df97 100644
+index d65b9cd..c4f49b5 100644
 --- a/common/imx-bbu-nand-fcb.c
 +++ b/common/imx-bbu-nand-fcb.c
-@@ -370,7 +370,7 @@ static int imx6_bbu_nand_update(struct bbu_handler *handler, struct bbu_data *da
- 	if (ret)
- 		return ret;
- 
--	bcb_cdev = cdev_by_name("nand0");
-+	bcb_cdev = cdev_by_name(handler->devicefile);
- 	if (!bcb_cdev) {
- 		pr_err("%s: No FCB device!\n", __func__);
- 		return -ENODEV;
-@@ -478,7 +478,7 @@ int imx6_bbu_nand_register_handler(const char *name, unsigned long flags)
+@@ -275,11 +275,10 @@ static int fcb_create(struct imx_nand_fcb_bbu_handler *imx_handler,
+ static int imx_bbu_erase(struct mtd_info *mtd)
+ {
+ 	uint64_t offset = 0;
+-	int len = SZ_2M;
+ 	struct erase_info erase;
  	int ret;
  
- 	handler = xzalloc(sizeof(*handler));
--	handler->devicefile = "/dev/nand0";
-+	handler->devicefile = "nand0.barebox";
- 	handler->name = name;
- 	handler->flags = flags;
- 	handler->handler = imx6_bbu_nand_update;
+-	while (len > 0) {
++	while (offset < mtd->size) {
+ 		pr_debug("erasing at 0x%08llx\n", offset);
+ 		if (mtd_block_isbad(mtd, offset)) {
+ 			pr_debug("erase skip block @ 0x%08llx\n", offset);
+@@ -296,7 +295,6 @@ static int imx_bbu_erase(struct mtd_info *mtd)
+ 			return ret;
+ 
+ 		offset += mtd->erasesize;
+-		len -= mtd->erasesize;
+ 	}
+ 
+ 	return 0;
 -- 
 2.1.4
 
