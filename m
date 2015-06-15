@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z4Mh6-000456-Mo
- for barebox@lists.infradead.org; Mon, 15 Jun 2015 05:12:25 +0000
-Date: Mon, 15 Jun 2015 07:12:02 +0200
+ Linux)) id 1Z4MsG-0007fN-Le
+ for barebox@lists.infradead.org; Mon, 15 Jun 2015 05:23:57 +0000
+Date: Mon, 15 Jun 2015 07:23:33 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150615051202.GJ6325@pengutronix.de>
-References: <1434005650-28131-1-git-send-email-s.hauer@pengutronix.de>
- <1434005650-28131-2-git-send-email-s.hauer@pengutronix.de>
- <87bngli13j.fsf@dell.be.48ers.dk>
+Message-ID: <20150615052333.GK6325@pengutronix.de>
+References: <557AA945.4040108@celad.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87bngli13j.fsf@dell.be.48ers.dk>
+In-Reply-To: <557AA945.4040108@celad.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,44 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Add Reliable Asynchronous Transfer Protocol
-To: Peter Korsgaard <peter@korsgaard.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFC] Barebox shutdown hooks
+To: Herve Codina <herve.CODINA@celad.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Jun 12, 2015 at 02:05:04PM +0200, Peter Korsgaard wrote:
-> >>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
-> 
->  > This patch adds support for Reliable Asynchronous Transfer Protocol (RATP)
->  > as described in RFC916.
-> 
->  > Communication over RS232 is often unreliable as characters are lost or
->  > misinterpreted. This protocol allows for a reliable packet based communication
->  > over serial lines.
-> 
->  > The implementation simply follows the state machine described in the RFC text.
-> 
-> Almost ;)
-> 
-> > +static int ratp_recv_pkt_data(struct ratp *ratp, void *data, uint8_t len,
->  > +		int poll_timeout_ms)
->  > +{
->  > +	uint16_t crc_expect, crc_read;
->  > +	int ret, i;
->  > +
->  > +	for (i = 0; i < len + 2; i++) {
->  > +		ret = ratp_getc(ratp, data + i, poll_timeout_ms);
->  > +		if (ret < 0)
->  > +			return ret;
->  > +	}
->  > +
->  > +	crc_expect = cyg_crc16(data, len);
-> 
-> Why crc16? RFC916 states that the checksum is the inverted 1s complement
-> 16bit sum, E.G. like TCP/UDP/IP header checksums:
+Hi Herve,
 
-Indeed CRC16 is not correct here according to RFC916. We can implement
-the original checksum algorithm, I'm not sure if that's a good idea
-though. Plain checksumming does not detect lost 0 characters.
+On Fri, Jun 12, 2015 at 11:41:25AM +0200, Herve Codina wrote:
+> I try to find a way to perform some tasks on barebox leaving (ie last step of go command or boot/bootm command)
+> and i look at shutdown_barebox (common/startup.c)
+> This function is :
+> ---- 8< -----
+> void shutdown_barebox(void)
+> {
+> 	devices_shutdown();
+> #ifdef ARCH_SHUTDOWN
+> 	arch_shutdown();
+> #endif
+> 	if (board_shutdown)
+> 		board_shutdown();
+> }
+> ---- 8< -----
+> 
+> I have several questions :
+> 
+> 1) Why board_shutdown is called after arch_shutdown.
+> arch shutdown is supposed to do stuf like disabling mmu, flushing cache, ...
+> Don't you think that board_shutdown should be between devices_shutdown and arch_shutdown ?
+
+You are probably right. Only one single board implements board_shutdown
+anyway, so I guess it's just where it suited the original author.
+
+> 
+> 2) What about the ability to have hooks for shutdown with all resources available
+> For my tasks, i need devices available. What do you thing about a new "early_shutdown" called before devices_shutdown.
+> barebox_shutdown will become :
+> void shutdown_barebox(void)
+> {
+> 	early_shutdown();
+> 	devices_shutdown();
+> #ifdef ARCH_SHUTDOWN
+> 	arch_shutdown();
+> #endif
+> 	if (board_shutdown)
+> 		board_shutdown();
+> }
+> 
+> for early_shutdown itself, i would give flexibility. I thing about 2 way :
+> 
+> 2.1) register shutdown hooks
+> Use same mechanism as fixing up device tree :
+> early_shutdown_register function to register hook
+> and iterator calling all registered hooks in early_shutdown
+> 
+> 2.2) exitcall
+> Use same mechanism as initcall functions :
+> Use a specific section to store exit hooks table. A macro early_exitcall (same mechanism as xxxx_initcall macro) will be used to do this.
+> Iterate on each hook in this section in early_shutdown (same mechanism as initcall in start_barebox).
+
+I vote for 2.2). It has the smaller runtime overhead and we can hook
+the existing devices_shutdown, arch_shutdown and board_shutdown into
+that mechanism aswell.
 
 Sascha
 
