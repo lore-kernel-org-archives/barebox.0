@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z4OgA-0003nk-IR
- for barebox@lists.infradead.org; Mon, 15 Jun 2015 07:19:35 +0000
-Received: by wiwd19 with SMTP id d19so65653396wiw.0
- for <barebox@lists.infradead.org>; Mon, 15 Jun 2015 00:19:12 -0700 (PDT)
-From: Peter Korsgaard <peter@korsgaard.com>
-References: <1434005650-28131-1-git-send-email-s.hauer@pengutronix.de>
- <1434005650-28131-2-git-send-email-s.hauer@pengutronix.de>
- <87bngli13j.fsf@dell.be.48ers.dk>
- <20150615051202.GJ6325@pengutronix.de>
-Date: Mon, 15 Jun 2015 09:19:08 +0200
-In-Reply-To: <20150615051202.GJ6325@pengutronix.de> (Sascha Hauer's message of
- "Mon, 15 Jun 2015 07:12:02 +0200")
-Message-ID: <87h9q9mob7.fsf@dell.be.48ers.dk>
-MIME-Version: 1.0
+Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z4PnZ-0002qn-OX
+ for barebox@lists.infradead.org; Mon, 15 Jun 2015 08:31:18 +0000
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Mon, 15 Jun 2015 10:29:33 +0200
+Message-Id: <1434356973-16490-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] Add Reliable Asynchronous Transfer Protocol
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] scripts/omap_signGP: Fix image size in GP header
+To: barebox@lists.infradead.org
+Cc: p-stockmar@ti.com
 
->>>>> "Sascha" == Sascha Hauer <s.hauer@pengutronix.de> writes:
+The size field in the GP header has to include its own size.
+This can be easily misread in the TRM.
 
-Hi,
+Sometimes, when the gp_header size is not included, the ROM code
+will not copy the complete MLO into the SRAM. This happens when the MLO file
+size is 98823 bytes (and the value of GP header size field is 98303 bytes).
 
->> > +	crc_expect = cyg_crc16(data, len);
- >> 
- >> Why crc16? RFC916 states that the checksum is the inverted 1s complement
- >> 16bit sum, E.G. like TCP/UDP/IP header checksums:
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
 
- > Indeed CRC16 is not correct here according to RFC916. We can implement
- > the original checksum algorithm, I'm not sure if that's a good idea
- > though. Plain checksumming does not detect lost 0 characters.
+This patch is the fix for the following reported issue:
 
-True, but missing/extra 0 characters would normally get caught by the
-length mismatch, so I'm not sure it is a real problem.
+  http://lists.infradead.org/pipermail/barebox/2015-March/023022.html
 
+A 98823 bytes big lzo packed MLO will not be copied correctly to the SRAM.
+This will cause a failure in the lzo code. The lzo code expects a correct MLO
+and is not the real problem here!
+
+We have discussed this problem with TI.
+
+---
+ scripts/omap_signGP.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/scripts/omap_signGP.c b/scripts/omap_signGP.c
+index 482cfac..ac47fdf 100644
+--- a/scripts/omap_signGP.c
++++ b/scripts/omap_signGP.c
+@@ -317,8 +317,15 @@ int main(int argc, char *argv[])
+ 		if (fwrite(&config_header, 1, 512, ofile) <= 0)
+ 			pdie("fwrite");
+ 
++	/* The size field in the header needs to include the
++	 * size of the gp_header */
++	len += sizeof(struct gp_header);
++
+ 	if (fwrite(&len, 1, 4, ofile) <= 0)
+ 		pdie("fwrite");
++
++	len -= sizeof(struct gp_header);
++
+ 	if (fwrite(&loadaddr, 1, 4, ofile) <= 0)
+ 		pdie("fwrite");
+ 	for (i = 0; i < len; i++) {
 -- 
-Venlig hilsen,
-Peter Korsgaard 
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
