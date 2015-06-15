@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z4UhL-0006E5-1Q
+ Linux)) id 1Z4UhL-0006E6-1O
  for barebox@lists.infradead.org; Mon, 15 Jun 2015 13:45:11 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <mkl@pengutronix.de>) id 1Z4Ugy-00075i-Uk
- for barebox@lists.infradead.org; Mon, 15 Jun 2015 15:44:48 +0200
-Received: from mkl by dude.hi.pengutronix.de with local (Exim 4.85)
- (envelope-from <mkl@pengutronix.de>) id 1Z4Ugy-0004Q8-LL
- for barebox@lists.infradead.org; Mon, 15 Jun 2015 15:44:48 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 15 Jun 2015 15:44:45 +0200
-Message-Id: <1434375887-16733-1-git-send-email-mkl@pengutronix.de>
+Date: Mon, 15 Jun 2015 15:44:46 +0200
+Message-Id: <1434375887-16733-2-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1434375887-16733-1-git-send-email-mkl@pengutronix.de>
+References: <1434375887-16733-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,16 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] state: add support for fixed size strings
+Subject: [PATCH 1/2] parameter: allow setting of string parameters of zero
+ length
 To: barebox@lists.infradead.org
 
-Hello,
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ lib/parameter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-this series adds support for fixed size strings to the state framework. It
-depends on the previous sent "state: Documentation updates" series.
-
-regards,
-Marc
+diff --git a/lib/parameter.c b/lib/parameter.c
+index 865ad9f4316f..09559b637ee3 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -225,7 +225,7 @@ static int param_string_set(struct device_d *dev, struct param_d *p, const char
+ 	char *value_save = *ps->value;
+ 
+ 	if (!val)
+-		return -EINVAL;
++		val = "";
+ 
+ 	*ps->value = xstrdup(val);
+ 
+-- 
+2.1.4
 
 
 _______________________________________________
