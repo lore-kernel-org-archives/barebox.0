@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z4pZq-0001Cw-CA
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 12:02:52 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <jbe@pengutronix.de>) id 1Z4pZU-0007Bg-Br
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 14:02:28 +0200
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.85)
- (envelope-from <jbe@pengutronix.de>) id 1Z4pZU-00082j-5u
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 14:02:28 +0200
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Tue, 16 Jun 2015 14:02:23 +0200
-Message-Id: <1434456145-21912-1-git-send-email-jbe@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z4rOw-0000r4-Fs
+ for barebox@lists.infradead.org; Tue, 16 Jun 2015 13:59:44 +0000
+Date: Tue, 16 Jun 2015 15:59:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150616135917.GU6325@pengutronix.de>
+References: <1434360941-22892-1-git-send-email-renaud.barbier@ge.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1434360941-22892-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,18 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add some doc
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] memtest: skip memory region smaller than one page
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-Sorry for the other unintended patch series. These two patches are the intended ones.
+On Mon, Jun 15, 2015 at 10:35:41AM +0100, Renaud Barbier wrote:
+> If the size between memory regions is smaller than one page, the
+> size is rounded down to 0. This results in a region request failure.
+> This commit skips the memory region whose size is smaller than a page.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> ---
+>  commands/memtest.c |   12 ++++++++----
+>  1 files changed, 8 insertions(+), 4 deletions(-)
 
-jbe
+Applied, thanks
 
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
