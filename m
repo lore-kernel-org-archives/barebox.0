@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z4rPI-0000xl-As
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 14:00:04 +0000
-Date: Tue, 16 Jun 2015 15:59:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150616135941.GV6325@pengutronix.de>
-References: <1434358516-22058-1-git-send-email-jbe@pengutronix.de>
+Received: from mail1.bemta14.messagelabs.com ([193.109.254.113])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z4rT1-0003na-9W
+ for barebox@lists.infradead.org; Tue, 16 Jun 2015 14:03:57 +0000
+From: Herve Codina <Herve.CODINA@celad.com>
+Date: Tue, 16 Jun 2015 16:02:58 +0200
+Message-ID: <1434463378-13311-1-git-send-email-Herve.CODINA@celad.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1434358516-22058-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: fix typo
-To: Juergen Borleis <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] mach-clps711: call shutdown_barebox instead of
+ arch_shutdown in reset_cpu
+To: barebox@lists.infradead.org
+Cc: Herve Codina <Herve.CODINA@celad.com>
 
-On Mon, Jun 15, 2015 at 10:55:16AM +0200, Juergen Borleis wrote:
-> This change enables Sphinx to resolve the reference.
-> 
-> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> ---
->  Documentation/user/usb.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
+Tested-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-clps711x/reset.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
-
-Sascha
-
+diff --git a/arch/arm/mach-clps711x/reset.c b/arch/arm/mach-clps711x/reset.c
+index 67c9c8b..859d8ae 100644
+--- a/arch/arm/mach-clps711x/reset.c
++++ b/arch/arm/mach-clps711x/reset.c
+@@ -11,7 +11,7 @@
+ 
+ void __noreturn reset_cpu(unsigned long addr)
+ {
+-	arch_shutdown();
++	shutdown_barebox();
+ 
+ 	asm("mov pc, #0");
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.9.5
+
 
 _______________________________________________
 barebox mailing list
