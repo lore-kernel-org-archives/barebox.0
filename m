@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z4jeI-00063W-9z
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 05:43:03 +0000
-Received: by lblr1 with SMTP id r1so3728231lbl.0
- for <barebox@lists.infradead.org>; Mon, 15 Jun 2015 22:42:38 -0700 (PDT)
-Date: Tue, 16 Jun 2015 08:48:51 +0300
+ id 1Z4k1M-0000q5-Ey
+ for barebox@lists.infradead.org; Tue, 16 Jun 2015 06:06:53 +0000
+Received: by lacny3 with SMTP id ny3so4004040lac.3
+ for <barebox@lists.infradead.org>; Mon, 15 Jun 2015 23:06:30 -0700 (PDT)
+Date: Tue, 16 Jun 2015 09:12:46 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150616084851.a398757dc38808bc5e83fe50@gmail.com>
-In-Reply-To: <1432828567-14037-9-git-send-email-s.trumtrar@pengutronix.de>
-References: <1432828567-14037-1-git-send-email-s.trumtrar@pengutronix.de>
- <1432828567-14037-9-git-send-email-s.trumtrar@pengutronix.de>
+Message-Id: <20150616091246.1123a8b08e9590e87ddaf932@gmail.com>
+In-Reply-To: <1434399757-19360-1-git-send-email-antonynpavlov@gmail.com>
+References: <1434399757-19360-1-git-send-email-antonynpavlov@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,53 +23,62 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 8/8] mtd: m25p80: use the SPI nor framework
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd: m25p80: add Spansion S25FL204K support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Thu, 28 May 2015 17:56:07 +0200
-Steffen Trumtrar <s.trumtrar@pengutronix.de> wrote:
+On Mon, 15 Jun 2015 23:22:37 +0300
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-> Use the spi-nor framework for the m25p80 driver to de-duplicate the code =
-base
-> and follow along with the linux kernel version, so bugfixes or features c=
-an be
-> easier integrated.
-> =
+> Spansion S25FL204K is a 4-Mbit 3.0V Serial Flash Memory
+> with Uniform 4 kB Sectors.
 
-> Based on the Linux v4.1-rc3 version of m25p80.c.
-> =
+It looks that I have to recheck this patch with spi-nor framework.
 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  drivers/mtd/devices/Kconfig  |   2 +-
->  drivers/mtd/devices/m25p80.c | 998 +++++++------------------------------=
-------
->  2 files changed, 166 insertions(+), 834 deletions(-)
+>  drivers/mtd/devices/m25p80.c  | 2 +-
+>  drivers/mtd/spi-nor/spi-nor.c | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
 > =
 
 > diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index 095a4ca0936c..c941767de94c 100644
+> index c941767..fb727bb 100644
 > --- a/drivers/mtd/devices/m25p80.c
 > +++ b/drivers/mtd/devices/m25p80.c
+> @@ -193,7 +193,7 @@ static const struct platform_device_id m25p_ids[] =3D=
+ {
+>  	{"s25fl512s"},  {"s70fl01gs"},  {"s25sl12800"}, {"s25sl12801"},
+>  	{"s25fl129p0"}, {"s25fl129p1"}, {"s25sl004a"},  {"s25sl008a"},
+>  	{"s25sl016a"},  {"s25sl032a"},  {"s25sl064a"},  {"s25fl008k"},
+> -	{"s25fl016k"},  {"s25fl064k"},  {"s25fl132k"},
+> +	{"s25fl016k"},  {"s25fl064k"},  {"s25fl132k"},	{"s25fl204k"},
+>  	{"sst25vf040b"},{"sst25vf080b"},{"sst25vf016b"},{"sst25vf032b"},
+>  	{"sst25vf064c"},{"sst25wf512"}, {"sst25wf010"}, {"sst25wf020"},
+>  	{"sst25wf040"},
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index c85ed34..db347a5 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -596,6 +596,7 @@ static const struct spi_device_id spi_nor_ids[] =3D {
+>  	{ "s25fl016k",  INFO(0xef4015,      0,  64 * 1024,  32, SECT_4K) },
+>  	{ "s25fl064k",  INFO(0xef4017,      0,  64 * 1024, 128, SECT_4K) },
+>  	{ "s25fl132k",  INFO(0x014016,      0,  64 * 1024,  64, 0) },
+> +	{ "s25fl204k",  INFO(0x014013,      0,  64 * 1024,   8, SECT_4K) },
+>  =
 
-...
+>  	/* SST -- large erase sizes are "overlays", "sectors" are 4K */
+>  	{ "sst25vf040b", INFO(0xbf258d, 0, 64 * 1024,  8, SECT_4K | SST_WRITE) =
+},
+> -- =
 
-> +	{"w25q128"},    {"w25q256"},    {"cat25c11"},
-> +	{"cat25c03"},   {"cat25c09"},   {"cat25c17"},   {"cat25128"},
-> +
-> +        /*
-> +         * Generic support for SPI NOR that can be identified by the JED=
-EC READ
-> +         * ID opcode (0x9F). Use this, if possible.
-> +         */
-> +        {"nor-jedec"},
->  	{ },
->  };
+> 2.1.4
+> =
 
-Please fix whitespaces here.
 
-Please use checkpatch.pl on your patches before submitting!
+
+-- =
 
 --=A0
 Best regards,
