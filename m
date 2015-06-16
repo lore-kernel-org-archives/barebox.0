@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z4pTt-00017V-VM
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 11:56:43 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <jbe@pengutronix.de>) id 1Z4pTP-0006RD-Bv
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 13:56:11 +0200
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.85)
- (envelope-from <jbe@pengutronix.de>) id 1Z4pTN-0004UN-Hk
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 13:56:09 +0200
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z4pTt-0003AQ-1v
+ for barebox@lists.infradead.org; Tue, 16 Jun 2015 11:56:42 +0000
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Tue, 16 Jun 2015 13:56:05 +0200
-Message-Id: <1434455769-17216-2-git-send-email-jbe@pengutronix.de>
+Date: Tue, 16 Jun 2015 13:56:09 +0200
+Message-Id: <1434455769-17216-6-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1434455769-17216-1-git-send-email-jbe@pengutronix.de>
 References: <1434455769-17216-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,109 +21,212 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] Watchdog/i.MX: make the watchdog driver a regular driver
+Subject: [PATCH 6/6] mfd: da9063: add da9063 watchdog and system restart driver
 To: barebox@lists.infradead.org
 
-Even if the driver for the internal watchdog unit is disabled, it gets
-enabled again silently if we select an i.MX platform.
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-This change compiles the driver on user demand only. Barebox can handle one
-watchdog and one reset source. This change enables a user to select a
-different one if the built-in unit cannot be used due to hardware issues like
-power management and voltage changes the internal watchdog cannot reset
-correctly.
-
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- arch/arm/Kconfig          |  1 -
- drivers/watchdog/Kconfig  | 15 ++++++++++++---
- drivers/watchdog/Makefile |  2 +-
- drivers/watchdog/imxwd.c  |  5 ++++-
- 4 files changed, 17 insertions(+), 6 deletions(-)
+ drivers/mfd/Kconfig  |   4 ++
+ drivers/mfd/Makefile |   1 +
+ drivers/mfd/da9063.c | 160 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 165 insertions(+)
+ create mode 100644 drivers/mfd/da9063.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 50f3095..b115d10 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -101,7 +101,6 @@ config ARCH_IMX
- 	select GPIOLIB
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
--	select WATCHDOG_IMX_RESET_SOURCE
- 	select HAS_DEBUG_LL
- 
- config ARCH_MVEBU
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 7f7b02e..04fad45 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1,7 +1,4 @@
- 
--config WATCHDOG_IMX_RESET_SOURCE
--	bool
--
- menuconfig WATCHDOG
- 	bool "Watchdog support"
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index bf012bf..1be9f61 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -20,6 +20,10 @@ config MFD_DA9053_RESET_FEATURE
  	help
-@@ -22,6 +19,18 @@ config WATCHDOG_IMX
- 	help
- 	  Add support for watchdog found on Freescale i.MX SoCs.
+ 	  This PMIC unit can be used to reset/restart the system.
  
-+config WATCHDOG_IMX_RESET_SOURCE
-+	depends on WATCHDOG_IMX
-+	bool "Reset source provider"
-+	help
-+	  This watchdog unit can provide the reset reason.
++config MFD_DA9063
++	depends on I2C
++	bool "DA9063 PMIC driver"
 +
-+config WATCHDOG_IMX_RESET_FEATURE
-+	depends on WATCHDOG_IMX
-+	bool "Use for SoC reset"
-+	help
-+	  This watchdog unit can be used to reset/restart the SoC.
+ config MFD_LP3972
+ 	depends on I2C
+ 	bool "LP3972 driver"
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index 2899dde..041915a 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -1,5 +1,6 @@
+ obj-$(CONFIG_MFD_ACT8846)	+= act8846.o
+ obj-$(CONFIG_MFD_DA9053)	+= da9053.o
++obj-$(CONFIG_MFD_DA9063)	+= da9063.o
+ obj-$(CONFIG_MFD_LP3972)	+= lp3972.o
+ obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx.o
+ obj-$(CONFIG_MFD_MC34704)	+= mc34704.o
+diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
+new file mode 100644
+index 0000000..65b1fad
+--- /dev/null
++++ b/drivers/mfd/da9063.c
+@@ -0,0 +1,160 @@
++/*
++ * Copyright (C) 2015 Pengutronix, Philipp Zabel <p.zabel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
- config WATCHDOG_JZ4740
- 	bool "Ingenic jz4740 SoC hardware watchdog"
- 	depends on MACH_MIPS_XBURST
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index 865fc47..446056d 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -1,4 +1,4 @@
- obj-$(CONFIG_WATCHDOG) += wd_core.o
- obj-$(CONFIG_WATCHDOG_MXS28) += im28wd.o
- obj-$(CONFIG_WATCHDOG_JZ4740) += jz4740.o
--obj-$(CONFIG_WATCHDOG_IMX_RESET_SOURCE) += imxwd.o
-+obj-$(CONFIG_WATCHDOG_IMX) += imxwd.o
-diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index 5ffbac7..60e4c59 100644
---- a/drivers/watchdog/imxwd.c
-+++ b/drivers/watchdog/imxwd.c
-@@ -123,6 +123,7 @@ static int imx_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
- 
- static struct imx_wd *reset_wd;
- 
-+#ifdef CONFIG_WATCHDOG_IMX_RESET_FEATURE
- void __noreturn reset_cpu(unsigned long addr)
- {
- 	if (reset_wd)
-@@ -132,6 +133,7 @@ void __noreturn reset_cpu(unsigned long addr)
- 
- 	hang();
- }
-+#endif
- 
- static void imx_watchdog_detect_reset_source(struct imx_wd *priv)
- {
-@@ -157,7 +159,8 @@ static void imx_watchdog_detect_reset_source(struct imx_wd *priv)
- 
- static int imx21_wd_init(struct imx_wd *priv)
- {
--	imx_watchdog_detect_reset_source(priv);
-+	if (IS_ENABLED(CONFIG_WATCHDOG_IMX_RESET_SOURCE))
-+		imx_watchdog_detect_reset_source(priv);
- 
- 	/*
- 	 * Disable watchdog powerdown counter
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <i2c/i2c.h>
++#include <malloc.h>
++#include <notifier.h>
++#include <reset_source.h>
++#include <watchdog.h>
++
++struct da9063 {
++	struct watchdog		wd;
++	struct i2c_client	*client;
++	struct notifier_block	notify;
++};
++
++/* System Control and Event Registers */
++#define DA9063_REG_FAULT_LOG	0x05
++#define DA9063_REG_CONTROL_D	0x11
++#define DA9063_REG_CONTROL_F	0x13
++
++/* DA9063_REG_FAULT_LOG (addr=0x05) */
++#define DA9063_TWD_ERROR	0x01
++#define DA9063_POR		0x02
++#define DA9063_NSHUTDOWN	0x40
++
++/* DA9063_REG_CONTROL_D (addr=0x11) */
++#define DA9063_TWDSCALE_MASK	0x07
++
++/* DA9063_REG_CONTROL_F (addr=0x13) */
++#define DA9063_SHUTDOWN		0x02
++
++static int da9063_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
++{
++	struct da9063 *priv = container_of(wd, struct da9063, wd);
++	struct device_d *dev = &priv->client->dev;
++	unsigned int scale = 0;
++	int ret;
++	u8 val;
++
++	if (timeout > 131)
++		return -EINVAL;
++
++	if (timeout) {
++		timeout *= 1000; /* convert to ms */
++		scale = 0;
++		while (timeout > (2048 << scale) && scale <= 6)
++			scale++;
++		dev_dbg(dev, "calculated TWDSCALE=%u (req=%ims calc=%ims)\n",
++				scale, timeout, 2048 << scale);
++		scale++; /* scale 0 disables the WD */
++	}
++
++	ret = i2c_read_reg(priv->client, DA9063_REG_CONTROL_D, &val, 1);
++	if (ret < 0)
++		return ret;
++
++	val &= ~DA9063_TWDSCALE_MASK;
++	val |= scale;
++
++	return i2c_write_reg(priv->client, DA9063_REG_CONTROL_D, &val, 1);
++}
++
++static void da9063_detect_reset_source(struct da9063 *priv)
++{
++	int ret;
++	u8 val;
++
++	ret = i2c_read_reg(priv->client, DA9063_REG_FAULT_LOG, &val, 1);
++	if (ret < 0)
++		return;
++
++	/* Write one to clear */
++	i2c_write_reg(priv->client, DA9063_REG_FAULT_LOG, &val, 1);
++
++	if (val & DA9063_TWD_ERROR) {
++		reset_source_set(RESET_WDG);
++		return;
++	}
++
++	if (val & DA9063_POR) {
++		reset_source_set(RESET_POR);
++		return;
++	}
++
++	if (val & DA9063_NSHUTDOWN) {
++		reset_source_set(RESET_RST);
++		return;
++	}
++
++	/* else keep the default 'unknown' state */
++}
++
++static int da9063_restart(struct notifier_block *nb, unsigned long event, void *data)
++{
++	struct da9063 *priv = container_of(nb, struct da9063, notify);
++	u8 val = DA9063_SHUTDOWN;
++
++	return i2c_write_reg(priv->client, DA9063_REG_CONTROL_F, &val, 1);
++}
++
++static int da9063_probe(struct device_d *dev)
++{
++	struct da9063 *priv = NULL;
++	int ret;
++
++	priv = xzalloc(sizeof(struct da9063));
++	priv->wd.set_timeout = da9063_watchdog_set_timeout;
++	priv->client = to_i2c_client(dev);
++	priv->notify.notifier_call = da9063_restart;
++
++	ret = watchdog_register(&priv->wd);
++	if (ret)
++		goto on_error;
++
++	da9063_detect_reset_source(priv);
++
++	register_restart_handler(&priv->notify);
++
++	dev->priv = priv;
++
++	return 0;
++
++on_error:
++	if (priv)
++		free(priv);
++	return ret;
++}
++
++static struct platform_device_id da9063_id[] = {
++        { "da9063", },
++	{ }
++};
++
++static struct driver_d da9063_driver = {
++	.name = "da9063",
++	.probe = da9063_probe,
++	.id_table = da9063_id,
++};
++
++static int da9063_init(void)
++{
++	return i2c_driver_register(&da9063_driver);
++}
++
++device_initcall(da9063_init);
 -- 
 2.1.4
 
