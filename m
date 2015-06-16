@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z4rOw-0000r4-Fs
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 13:59:44 +0000
-Date: Tue, 16 Jun 2015 15:59:17 +0200
+ Linux)) id 1Z4rPI-0000xl-As
+ for barebox@lists.infradead.org; Tue, 16 Jun 2015 14:00:04 +0000
+Date: Tue, 16 Jun 2015 15:59:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150616135917.GU6325@pengutronix.de>
-References: <1434360941-22892-1-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20150616135941.GV6325@pengutronix.de>
+References: <1434358516-22058-1-git-send-email-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1434360941-22892-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1434358516-22058-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] memtest: skip memory region smaller than one page
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [PATCH] Documentation: fix typo
+To: Juergen Borleis <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 15, 2015 at 10:35:41AM +0100, Renaud Barbier wrote:
-> If the size between memory regions is smaller than one page, the
-> size is rounded down to 0. This results in a region request failure.
-> This commit skips the memory region whose size is smaller than a page.
+On Mon, Jun 15, 2015 at 10:55:16AM +0200, Juergen Borleis wrote:
+> This change enables Sphinx to resolve the reference.
 > 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 > ---
->  commands/memtest.c |   12 ++++++++----
->  1 files changed, 8 insertions(+), 4 deletions(-)
+>  Documentation/user/usb.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
