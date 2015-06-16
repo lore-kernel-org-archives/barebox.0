@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-ie0-x22b.google.com ([2607:f8b0:4001:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z4k1M-0000q5-Ey
- for barebox@lists.infradead.org; Tue, 16 Jun 2015 06:06:53 +0000
-Received: by lacny3 with SMTP id ny3so4004040lac.3
- for <barebox@lists.infradead.org>; Mon, 15 Jun 2015 23:06:30 -0700 (PDT)
-Date: Tue, 16 Jun 2015 09:12:46 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150616091246.1123a8b08e9590e87ddaf932@gmail.com>
-In-Reply-To: <1434399757-19360-1-git-send-email-antonynpavlov@gmail.com>
-References: <1434399757-19360-1-git-send-email-antonynpavlov@gmail.com>
-Mime-Version: 1.0
+ id 1Z4mFs-0006TX-F4
+ for barebox@lists.infradead.org; Tue, 16 Jun 2015 08:30:00 +0000
+Received: by iebmu5 with SMTP id mu5so8251595ieb.1
+ for <barebox@lists.infradead.org>; Tue, 16 Jun 2015 01:29:44 -0700 (PDT)
+MIME-Version: 1.0
+Date: Tue, 16 Jun 2015 08:29:44 +0000
+Message-ID: <CADwFkYdH9ox+PxLk6Y+b03owqud_Y=+RKfQVrrraOPRrseiFyw@mail.gmail.com>
+From: Yi Qingliang <niqingliang2003@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,70 +17,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: m25p80: add Spansion S25FL204K support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: parallel lcd on i.mx6
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, 15 Jun 2015 23:22:37 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+hello,
+    I'm using imx6 (on embedsky e9 board).
+   does barebox support parallel lcd on it?
+   I found 'imx-parallel-display' in barebox's dts, but cannot find
+the driver, how can i use it?
 
-> Spansion S25FL204K is a 4-Mbit 3.0V Serial Flash Memory
-> with Uniform 4 kB Sectors.
+   in driver/video/imx-ipu-v3/, only hdmi and ldb, there is no
+parallel lcd, isn't it?
 
-It looks that I have to recheck this patch with spi-nor framework.
-
-
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/mtd/devices/m25p80.c  | 2 +-
->  drivers/mtd/spi-nor/spi-nor.c | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index c941767..fb727bb 100644
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
-> @@ -193,7 +193,7 @@ static const struct platform_device_id m25p_ids[] =3D=
- {
->  	{"s25fl512s"},  {"s70fl01gs"},  {"s25sl12800"}, {"s25sl12801"},
->  	{"s25fl129p0"}, {"s25fl129p1"}, {"s25sl004a"},  {"s25sl008a"},
->  	{"s25sl016a"},  {"s25sl032a"},  {"s25sl064a"},  {"s25fl008k"},
-> -	{"s25fl016k"},  {"s25fl064k"},  {"s25fl132k"},
-> +	{"s25fl016k"},  {"s25fl064k"},  {"s25fl132k"},	{"s25fl204k"},
->  	{"sst25vf040b"},{"sst25vf080b"},{"sst25vf016b"},{"sst25vf032b"},
->  	{"sst25vf064c"},{"sst25wf512"}, {"sst25wf010"}, {"sst25wf020"},
->  	{"sst25wf040"},
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index c85ed34..db347a5 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -596,6 +596,7 @@ static const struct spi_device_id spi_nor_ids[] =3D {
->  	{ "s25fl016k",  INFO(0xef4015,      0,  64 * 1024,  32, SECT_4K) },
->  	{ "s25fl064k",  INFO(0xef4017,      0,  64 * 1024, 128, SECT_4K) },
->  	{ "s25fl132k",  INFO(0x014016,      0,  64 * 1024,  64, 0) },
-> +	{ "s25fl204k",  INFO(0x014013,      0,  64 * 1024,   8, SECT_4K) },
->  =
-
->  	/* SST -- large erase sizes are "overlays", "sectors" are 4K */
->  	{ "sst25vf040b", INFO(0xbf258d, 0, 64 * 1024,  8, SECT_4K | SST_WRITE) =
-},
-> -- =
-
-> 2.1.4
-> =
-
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+Yi Qingliang
 
 _______________________________________________
 barebox mailing list
