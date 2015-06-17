@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z59pq-00068Z-7P
- for barebox@lists.infradead.org; Wed, 17 Jun 2015 09:40:43 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Jun 2015 11:40:12 +0200
-Message-Id: <1434534012-30441-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1434534012-30441-1-git-send-email-s.hauer@pengutronix.de>
-References: <1434534012-30441-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z5D0N-0000sy-Mb
+ for barebox@lists.infradead.org; Wed, 17 Jun 2015 13:03:52 +0000
+Received: by wiwd19 with SMTP id d19so132910905wiw.0
+ for <barebox@lists.infradead.org>; Wed, 17 Jun 2015 06:03:25 -0700 (PDT)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Wed, 17 Jun 2015 15:02:53 +0200
+Message-Id: <1434546173-18283-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,112 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] blspec: Automatically attach UBI devices
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] login: fix broken login command
+To: barebox@lists.infradead.org
 
-When blspec_scan_cdev finds an UBI device then attach it. This
-allows us to boot blspec entries found on the UBIFS images inside
-UBI volumes by pointing to the corresponding mtd partition.
-With this we can do 'boot nand0.root' or even 'boot=nand0' on the
-commandline.
+It was possible to login with ctrl-c or an empty password. This bug was
+introduced by the recent digest changes in common/password.c (e49a47fb).
+The function check_passwd returns now also negative error codes which were
+not correctly handled in do_login.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 ---
- common/blspec.c | 50 +++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 45 insertions(+), 5 deletions(-)
+ commands/login.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index 3506388..aef246d 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -30,6 +30,7 @@
- #include <of.h>
- #include <linux/stat.h>
- #include <linux/err.h>
-+#include <mtd/ubi-user.h>
+diff --git a/commands/login.c b/commands/login.c
+index 210eb20..bf5085c 100644
+--- a/commands/login.c
++++ b/commands/login.c
+@@ -71,7 +71,7 @@ static int do_login(int argc, char *argv[])
+ 			run_command(timeout_cmd);
+ 		}
  
- /*
-  * blspec_entry_var_set - set a variable to a value
-@@ -436,6 +437,35 @@ err_out:
- }
+-		if (check_passwd(passwd, passwd_len))
++		if (check_passwd(passwd, passwd_len) == 1)
+ 			return 0;
+ 	} while(1);
  
- /*
-+ * blspec_scan_ubi - scan over a cdev containing UBI volumes
-+ *
-+ * This function attaches a cdev as UBI devices and collects all blspec
-+ * entries found in the UBI volumes
-+ *
-+ * returns the number of entries found or a negative error code if some unexpected
-+ * error occured.
-+ */
-+static int blspec_scan_ubi(struct blspec *blspec, struct cdev *cdev)
-+{
-+	struct device_d *child;
-+	int ret, found = 0;
-+
-+	pr_debug("%s: %s\n", __func__, cdev->name);
-+
-+	ret = ubi_attach_mtd_dev(cdev->mtd, UBI_DEV_NUM_AUTO, 0, 20);
-+	if (ret && ret != -EEXIST)
-+		return 0;
-+
-+	device_for_each_child(cdev->dev, child) {
-+		ret = blspec_scan_device(blspec, child);
-+		if (ret > 0)
-+			found += ret;
-+	}
-+
-+	return found;
-+}
-+
-+/*
-  * blspec_scan_cdev - scan over a cdev
-  *
-  * Given a cdev this function mounts the filesystem and collects all blspec
-@@ -446,9 +476,9 @@ err_out:
-  */
- static int blspec_scan_cdev(struct blspec *blspec, struct cdev *cdev)
- {
--	int ret;
-+	int ret, found = 0;
- 	void *buf = xzalloc(512);
--	enum filetype type;
-+	enum filetype type, filetype;
- 	const char *rootpath;
- 
- 	pr_debug("%s: %s\n", __func__, cdev->name);
-@@ -460,16 +490,26 @@ static int blspec_scan_cdev(struct blspec *blspec, struct cdev *cdev)
- 	}
- 
- 	type = file_detect_partition_table(buf, 512);
-+	filetype = file_detect_type(buf, 512);
- 	free(buf);
- 
- 	if (type == filetype_mbr || type == filetype_gpt)
- 		return -EINVAL;
- 
-+	if (filetype == filetype_ubi && IS_ENABLED(CONFIG_MTD_UBI)) {
-+		ret = blspec_scan_ubi(blspec, cdev);
-+		if (ret > 0)
-+			found += ret;
-+	}
-+
- 	rootpath = cdev_mount_default(cdev, NULL);
--	if (IS_ERR(rootpath))
--		return PTR_ERR(rootpath);
-+	if (!IS_ERR(rootpath)) {
-+		ret = blspec_scan_directory(blspec, rootpath);
-+		if (ret > 0)
-+			found += ret;
-+	}
- 
--	return blspec_scan_directory(blspec, rootpath);
-+	return found;
- }
- 
- /*
 -- 
-2.1.4
+2.4.1
 
 
 _______________________________________________
