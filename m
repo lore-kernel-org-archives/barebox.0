@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z56C7-0003p0-0C
- for barebox@lists.infradead.org; Wed, 17 Jun 2015 05:47:27 +0000
-Date: Wed, 17 Jun 2015 07:47:03 +0200
+ Linux)) id 1Z56Eg-00043w-1Y
+ for barebox@lists.infradead.org; Wed, 17 Jun 2015 05:50:06 +0000
+Date: Wed, 17 Jun 2015 07:49:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150617054703.GX6325@pengutronix.de>
-References: <1434356973-16490-1-git-send-email-w.egorov@phytec.de>
+Message-ID: <20150617054943.GY6325@pengutronix.de>
+References: <1434374946-7212-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1434356973-16490-1-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1434374946-7212-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts/omap_signGP: Fix image size in GP header
-To: Wadim Egorov <w.egorov@phytec.de>
-Cc: barebox@lists.infradead.org, p-stockmar@ti.com
+Subject: Re: [PATCH 0/3] state: cleanup uint8 support
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Jun 15, 2015 at 10:29:33AM +0200, Wadim Egorov wrote:
-> The size field in the GP header has to include its own size.
-> This can be easily misread in the TRM.
+On Mon, Jun 15, 2015 at 03:29:03PM +0200, Marc Kleine-Budde wrote:
+> Hello Sascha,
 > 
-> Sometimes, when the gp_header size is not included, the ROM code
-> will not copy the complete MLO into the SRAM. This happens when the MLO file
-> size is 98823 bytes (and the value of GP header size field is 98303 bytes).
+> these are three cleanup patches for the uint8 support. Feel free to squash
+> into:
 > 
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-> ---
+>     2532f5dfbfe5 state: add support for uint8 variables
 
-Applied, thanks
+This is not possible because this patch is already in master. Applied
+for -next.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
