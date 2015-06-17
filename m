@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z5KFG-0007g7-65
+ Linux)) id 1Z5KFG-0007g2-6B
  for barebox@lists.infradead.org; Wed, 17 Jun 2015 20:47:39 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <mkl@pengutronix.de>) id 1Z5KEi-0003ND-8I
+ for barebox@lists.infradead.org; Wed, 17 Jun 2015 22:47:04 +0200
+Received: from mkl by dude.hi.pengutronix.de with local (Exim 4.85)
+ (envelope-from <mkl@pengutronix.de>) id 1Z5KEi-0001rV-0f
+ for barebox@lists.infradead.org; Wed, 17 Jun 2015 22:47:04 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 17 Jun 2015 22:47:02 +0200
-Message-Id: <1434574023-20556-4-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1434574023-20556-1-git-send-email-mkl@pengutronix.de>
-References: <1434574023-20556-1-git-send-email-mkl@pengutronix.de>
+Date: Wed, 17 Jun 2015 22:46:59 +0200
+Message-Id: <1434574023-20556-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +26,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/4] state: struct variable_type::import: remove const from
- node argument
+Subject: [PATCH v3 0/4] state: add support for fixed size strings
 To: barebox@lists.infradead.org
 
-This patch removes the const qualifier of the node argument from struct
-variable_type::import. This is a preparation patch to support fixed strings in
-state.
+Hello,
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- common/state.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+this series adds support for fixed size strings to the state framework.
 
-diff --git a/common/state.c b/common/state.c
-index 8fa027a847b9..8a7a7680bca5 100644
---- a/common/state.c
-+++ b/common/state.c
-@@ -90,7 +90,7 @@ struct variable_type {
- 	struct list_head list;
- 	int (*export)(struct state_variable *, struct device_node *,
- 			enum state_convert);
--	int (*import)(struct state_variable *, const struct device_node *);
-+	int (*import)(struct state_variable *, struct device_node *);
- 	struct state_variable *(*create)(struct state *state,
- 			const char *name, struct device_node *);
- };
-@@ -153,7 +153,7 @@ static int state_uint32_export(struct state_variable *var,
- }
- 
- static int state_uint32_import(struct state_variable *sv,
--		const struct device_node *node)
-+			       struct device_node *node)
- {
- 	struct state_uint32 *su32 = to_state_uint32(sv);
- 
-@@ -278,7 +278,7 @@ static int state_enum32_export(struct state_variable *var,
- }
- 
- static int state_enum32_import(struct state_variable *sv,
--			       const struct device_node *node)
-+			       struct device_node *node)
- {
- 	struct state_enum32 *enum32 = to_state_enum32(sv);
- 	int len;
-@@ -373,7 +373,7 @@ static int state_mac_export(struct state_variable *var,
- }
- 
- static int state_mac_import(struct state_variable *sv,
--			    const struct device_node *node)
-+			    struct device_node *node)
- {
- 	struct state_mac *mac = to_state_mac(sv);
- 
--- 
-2.1.4
+Changes since v2:
+- add patch 2/4: xstrndup
+- as strings have a fixed length, which is given by the reg property,
+  the need for the terminating 0 byte has been removed from the storage.
+
+Marc
 
 
 _______________________________________________
