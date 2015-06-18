@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z5UUZ-0000Cc-MI
- for barebox@lists.infradead.org; Thu, 18 Jun 2015 07:44:08 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1Z5UUD-0001DW-7S
- for barebox@lists.infradead.org; Thu, 18 Jun 2015 09:43:45 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.85)
- (envelope-from <sha@pengutronix.de>) id 1Z5UUC-0003nj-Vm
- for barebox@lists.infradead.org; Thu, 18 Jun 2015 09:43:44 +0200
+ Linux)) id 1Z5UVh-0000r1-84
+ for barebox@lists.infradead.org; Thu, 18 Jun 2015 07:45:17 +0000
+Date: Thu, 18 Jun 2015 09:44:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Jun 2015 09:43:38 +0200
-Message-Id: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20150618074453.GS6325@pengutronix.de>
+References: <1434546173-18283-1-git-send-email-h.feurstein@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1434546173-18283-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Bootspec: Allow to automatically append root= option
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] login: fix broken login command
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org
 
-In bootspec entries we have to add a root= to specify the kernel where
-it can find its root filesystem. This series allows to automatically
-append this option based on the filesystem where the entry is found on.
-With this we can make the root filesystem images independent of the
-device they are installed on.
+On Wed, Jun 17, 2015 at 03:02:53PM +0200, Hubert Feurstein wrote:
+> It was possible to login with ctrl-c or an empty password. This bug was
+> introduced by the recent digest changes in common/password.c (e49a47fb).
+> The function check_passwd returns now also negative error codes which were
+> not correctly handled in do_login.
+> 
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+> ---
+>  commands/login.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
 
 Sascha
 
-----------------------------------------------------------------
-Sascha Hauer (6):
-      Add globalvar_add_simple_string function
-      cdev: Add partuuid string to struct cdev
-      fs: Add device parameter for Linux root= option
-      fs: ubifs: Implement Linux rootarg
-      fs: nfs: Implement Linux rootarg
-      blspec: Automatically append rootarg
-
- Documentation/filesystems/nfs.rst    | 13 +++++++++++++
- Documentation/user/booting-linux.rst |  7 +++++++
- common/blspec.c                      | 29 +++++++++++++++++++++++++++-
- common/partitions.c                  |  1 +
- common/partitions/dos.c              |  4 ++++
- common/partitions/parser.h           |  1 +
- drivers/mtd/ubi/kapi.c               |  1 +
- fs/fs.c                              | 37 ++++++++++++++++++++++++++++++++++++
- fs/nfs.c                             | 24 +++++++++++++++++++++++
- fs/ubifs/ubifs.c                     | 23 ++++++++++++++++++++++
- include/driver.h                     |  3 +++
- include/fs.h                         |  4 ++++
- include/globalvar.h                  | 19 ++++++++++++++++++
- include/linux/mtd/ubi.h              |  1 +
- 14 files changed, 166 insertions(+), 1 deletion(-)
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
