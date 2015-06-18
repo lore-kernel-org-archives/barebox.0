@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z5UUZ-0000Cn-MK
- for barebox@lists.infradead.org; Thu, 18 Jun 2015 07:44:10 +0000
+ Linux)) id 1Z5UUZ-0000D2-ML
+ for barebox@lists.infradead.org; Thu, 18 Jun 2015 07:44:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Jun 2015 09:43:41 +0200
-Message-Id: <1434613424-19989-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 18 Jun 2015 09:43:40 +0200
+Message-Id: <1434613424-19989-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
 References: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,93 +21,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] fs: Add device parameter for Linux root= option
+Subject: [PATCH 2/6] cdev: Add partuuid string to struct cdev
 To: Barebox List <barebox@lists.infradead.org>
 
-When registering a filesystem device add a device parameter suitable
-for the Linux root= option to boot from exactly this filesystem. Currently
-the fs layer sets this parameter to the root=PARTUUID= mechanism if a
-partuuid is available. Other filesystems like NFS and UBIFS which do
-not have a PARTUUID can overwrite this.
+This adds the partuuid string to struct cdev in order to have this
+available for constructing a suitable Linux root=PARTUUID= option
+for booting Linux.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c      | 37 +++++++++++++++++++++++++++++++++++++
- include/fs.h |  4 ++++
- 2 files changed, 41 insertions(+)
+ common/partitions.c        | 1 +
+ common/partitions/dos.c    | 4 ++++
+ common/partitions/parser.h | 1 +
+ include/driver.h           | 3 +++
+ 4 files changed, 9 insertions(+)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index c249f84..67c78cd 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1298,6 +1298,12 @@ int mount(const char *device, const char *fsname, const char *_path,
- 		goto err_no_driver;
+diff --git a/common/partitions.c b/common/partitions.c
+index 37d9cb7..4f50bfe 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -64,6 +64,7 @@ static int register_one_partition(struct block_device *blk,
  	}
  
-+	if (!fsdev->linux_rootarg && fsdev->cdev && fsdev->cdev->partuuid[0] != 0) {
-+		char *str = asprintf("root=PARTUUID=%s", fsdev->cdev->partuuid);
-+
-+		fsdev_set_linux_rootarg(fsdev, str);
-+	}
-+
- 	return 0;
+ 	cdev->dos_partition_type = part->dos_partition_type;
++	strcpy(cdev->partuuid, part->partuuid);
  
- err_no_driver:
-@@ -1708,3 +1714,34 @@ void mount_all(void)
- 			cdev_mount_default(cdev, NULL);
- 	}
- }
-+
-+void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str)
-+{
-+	fsdev->linux_rootarg = xstrdup(str);
-+
-+	dev_add_param_fixed(&fsdev->dev, "linux.bootargs", fsdev->linux_rootarg);
-+}
-+
-+/**
-+ * path_get_linux_rootarg() - Given a path return a suitable root= option for
-+ *                            Linux
-+ * @path: The path
-+ *
-+ * Return: A string containing the root= option or an ERR_PTR. the returned
-+ *         string must be freed by the caller.
-+ */
-+char *path_get_linux_rootarg(const char *path)
-+{
-+	struct fs_device_d *fsdev;
-+	const char *str;
-+
-+	fsdev = get_fsdevice_by_path(path);
-+	if (!fsdev)
-+		return ERR_PTR(-EINVAL);
-+
-+	str = dev_get_param(&fsdev->dev, "linux.bootargs");
-+	if (!str)
-+		return ERR_PTR(-ENOSYS);
-+
-+	return xstrdup(str);
-+}
-diff --git a/include/fs.h b/include/fs.h
-index f95464d..ee7e48b 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -100,6 +100,7 @@ struct fs_device_d {
- 	struct device_d *parent_device;
- 	struct list_head list;
- 	char *options;
-+	char *linux_rootarg;
+ 	free(partition_name);
+ 
+diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+index 37addfd..e0cb356 100644
+--- a/common/partitions/dos.c
++++ b/common/partitions/dos.c
+@@ -185,6 +185,7 @@ static void dos_partition(void *buf, struct block_device *blk,
+ 	uint8_t *buffer = buf;
+ 	int i;
+ 	struct disk_signature_priv *dsp;
++	uint32_t signature = get_unaligned_le32(buf + 0x1b8);
+ 
+ 	table = (struct partition_entry *)&buffer[446];
+ 
+@@ -202,6 +203,9 @@ static void dos_partition(void *buf, struct block_device *blk,
+ 			pd->parts[n].first_sec = pentry.first_sec;
+ 			pd->parts[n].size = pentry.size;
+ 			pd->parts[n].dos_partition_type = pentry.dos_partition_type;
++			if (signature)
++				sprintf(pd->parts[n].partuuid, "%08x-%02d",
++						signature, i + 1);
+ 			pd->used_entries++;
+ 			/*
+ 			 * Partitions of type 0x05 and 0x0f (and some more)
+diff --git a/common/partitions/parser.h b/common/partitions/parser.h
+index 8d39452..8ad134a 100644
+--- a/common/partitions/parser.h
++++ b/common/partitions/parser.h
+@@ -17,6 +17,7 @@
+ struct partition {
+ 	char name[MAX_PARTITION_NAME];
+ 	u8 dos_partition_type;
++	char partuuid[MAX_PARTUUID_STR];
+ 	uint64_t first_sec;
+ 	uint64_t size;
+ };
+diff --git a/include/driver.h b/include/driver.h
+index d0cdcc9..9c60054 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -435,6 +435,8 @@ struct file_operations {
+ 	int (*memmap)(struct cdev*, void **map, int flags);
  };
  
- #define drv_to_fs_driver(d) container_of(d, struct fs_driver_d, drv)
-@@ -189,4 +190,7 @@ const char *cdev_get_mount_path(struct cdev *cdev);
- const char *cdev_mount_default(struct cdev *cdev, const char *fsoptions);
- void mount_all(void);
- 
-+void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str);
-+char *path_get_linux_rootarg(const char *path);
++#define MAX_PARTUUID_STR	sizeof("00112233-4455-6677-8899-AABBCCDDEEFF")
 +
- #endif /* __FS_H */
+ struct cdev {
+ 	struct file_operations *ops;
+ 	void *priv;
+@@ -445,6 +447,7 @@ struct cdev {
+ 	char *partname; /* the partition name, usually the above without the
+ 			 * device part, i.e. name = "nand0.barebox" -> partname = "barebox"
+ 			 */
++	char partuuid[MAX_PARTUUID_STR];
+ 	loff_t offset;
+ 	loff_t size;
+ 	unsigned int flags;
 -- 
 2.1.4
 
