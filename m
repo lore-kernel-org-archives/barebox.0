@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z5KFG-0007g4-67
- for barebox@lists.infradead.org; Wed, 17 Jun 2015 20:47:39 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 17 Jun 2015 22:47:00 +0200
-Message-Id: <1434574023-20556-2-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1434574023-20556-1-git-send-email-mkl@pengutronix.de>
-References: <1434574023-20556-1-git-send-email-mkl@pengutronix.de>
+ Linux)) id 1Z5Srz-0003iw-C9
+ for barebox@lists.infradead.org; Thu, 18 Jun 2015 06:00:12 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 18 Jun 2015 07:59:46 +0200
+Message-Id: <1434607186-11118-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +19,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/4] parameter: allow setting of string parameters of zero
- length
-To: barebox@lists.infradead.org
+Subject: [PATCH] scripts: Add mxs-usb-loader to .gitignore
+To: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- lib/parameter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/parameter.c b/lib/parameter.c
-index 865ad9f4316f..09559b637ee3 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -225,7 +225,7 @@ static int param_string_set(struct device_d *dev, struct param_d *p, const char
- 	char *value_save = *ps->value;
- 
- 	if (!val)
--		return -EINVAL;
-+		val = "";
- 
- 	*ps->value = xstrdup(val);
- 
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 6203589..533bffd 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -24,3 +24,4 @@ bareboxstate-target
+ mk-am35xx-spi-image
+ mxsimage
+ mxsboot
++mxs-usb-loader
 -- 
 2.1.4
 
