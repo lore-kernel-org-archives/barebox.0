@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z5Uhv-0002RU-9o
- for barebox@lists.infradead.org; Thu, 18 Jun 2015 07:57:56 +0000
-Date: Thu, 18 Jun 2015 09:57:23 +0200
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20150618075723.GB2575@lws-christ>
-References: <1433490685-27486-1-git-send-email-s.christ@phytec.de>
- <1433490685-27486-2-git-send-email-s.christ@phytec.de>
- <20150615102008.GA15736@lws-christ>
- <20150616135241.GT6325@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z5Vfe-0000Mq-UI
+ for barebox@lists.infradead.org; Thu, 18 Jun 2015 08:59:39 +0000
+Date: Thu, 18 Jun 2015 10:59:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150618085914.GT6325@pengutronix.de>
+References: <1434574023-20556-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20150616135241.GT6325@pengutronix.de>
 Content-Disposition: inline
+In-Reply-To: <1434574023-20556-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +18,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] barebox update: add note after successful update
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v3 0/4] state: add support for fixed size strings
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKPiBJIHdvdWxkIGZpbmQgdGhpcyBtZXNzYWdlIG1vcmUgdXNlZnVsIGZyb20g
-dGhlIG5ldywgdXBkYXRlZCBiYXJlYm94Cj4gcmF0aGVyIHRoYW4gZnJvbSB0aGUgYmFyZWJveCB0
-aGF0IGRvZXMgdGhlIHVwZGF0ZS4gVGhpcyB3YXkgd2UgY291bGQKPiBhbHNvIHNlZSB0aGUgbWVz
-c2FnZSB3aXRoIG9mZmxpbmUgdXBkYXRlcyB3aGVuIGZvciBleGFtcGxlIGEgU0QKPiBjYXJkIGhh
-cyBiZWVuIHVwZGF0ZWQgb24gYW4gZXh0ZXJuYWwgaG9zdC4gQWxzbyB3ZSB3b3VsZCBoYXZlIG1v
-cmUKPiBmcmVlZG9tIHRvIHJlYWN0IG9uIGFuIG91dGRhdGVkIGVudmlyb25tZW50IGluIHRoZSBu
-ZXh0IHN0ZXBzLiBXZSBjb3VsZAo+IGZvciBleGFtcGxlIG1ha2UgaXQgY29uZmlndXJhYmxlIHRv
-IGNvbXBsZXRlbHkgaWdub3JlIGFuIG91dGRhdGVkCj4gZW52aXJvbm1lbnQgb3IganVzdCB0byBp
-c3N1ZSBhIHdhcm5pbmcgbWVzc2FnZS4KPiBEb2luZyB0aGlzIHNob3VsZCBiZSBmYWlybHkgc2lt
-cGxlLCB3ZSBjb3VsZCBzdG9yZSB0aGUgYmFyZWJveCB2ZXJzaW9uCj4gaW4gYSBudiB2YXJpYWJs
-ZSBhbmQgY29tcGFyZSB0aGUgdmFyaWFibGUgd2l0aCB0aGUgY3VycmVudCB2ZXJzaW9uCj4gZHVy
-aW5nIHN0YXJ0dXAuCj4gCj4gV2hhdCBkbyB5b3UgdGhpbms/CgpUaGlzIHdvdWxkIHNvbHZlIHRo
-ZSBpc3N1ZSBmb3Igb3VyIHVzZXJzLgoKSWYgSSB1bmRlcnN0YW5kIHlvdSBjb3JyZWN0bHksIHRo
-aXMgYXBwcm9hY2ggaXMgZGlmZmVyZW50IGZyb20gYSBzZXBhcmF0ZQp2ZXJzaW9uaW5nIG9mIHRo
-ZSBlbnZpcm9ubWVudCBkYXRhLCBzaW5jZSB0aGUgYmFyZWJveCB2ZXJpc29uIGluIFVUU19SRUxF
-QVNFIGlzCndyaXR0ZW4gdG8gdGhlIG52IHZhcmlhYmxlLiBTbyBub2JvZHkgY2FuIGZvcmdldCB0
-byBpbmNyZWFzZSB0aGUgdmVyc2lvbiBudW1iZXIKb2YgdGhlIGVudmlyb25tZW50IGFuZCBhIHdh
-cm5pbmcgbWVzc2FnZSBpcyBwcmludGluZyB0byB0aGUgdXNlciBhcyBhIG5ldwpiYXJlYm94IHdp
-dGggYSBkaWZmZXJlbnQgdmVyc2lvbiBpcyBmbGFzaGVkLgoKSSBsb29rZWQgYXQgdGhlIGNvZGUg
-YSBiaXQuIFRoZSBmaXJzdCBzdGVwIHdvdWxkIGJlIHRvIHdyaXRlIHRoZSB2ZXJzaW9uIG9mIHRo
-ZQpydW5uaW5nIGJhcmVib3ggaW50byBlbnZpcm9ubWVudCBpbiB0aGUgZnVuY3Rpb24gZW52ZnNf
-c2F2ZSgpIGFuZCBjb21wYXJlIHRoZQp2ZXJzaW9uIGluIHRoZSBmdW5jdGlvbiBlbnZmc19sb2Fk
-KCkuIENvcnJlY3Q/IEluIGVudmZzX2xvYWQoKSB0aGUgd2FybmluZwptZXNzYWdlIHdvdWxkIGJl
-IHByaW50ZWQuCgpCdXQgd2UgY2Fubm90IGludGVycnVwdCB0aGUgYm9vdCBzZXF1ZW5jZSBhbmQg
-YXNrIHRoZSB1c2VyIHdoZXRoZXIgaGUvc2hlIHdhbnRzCnRvIHVzZSB0aGUgb2xkIGVudmlyb25t
-ZW50IG9yIHVzZSB0aGUgZGVmYXVsdCBlbnZpcm9ubWVudCwgYmVjYXVzZSB0aGUgZGVmYXVsdApi
-b290IHByb2Nlc3MgbXVzdCBiZSBub24taW50ZXJhY3RpdmUuIFNvIG9ubHkgYSB3YXJuaW5nIGNh
-biBiZSBwcmludGVkLCByaWdodD8KCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4gLyBLaW5kIHJl
-Z2FyZHMsCglTdGVmYW4gQ2hyaXN0CgpPbiBUdWUsIEp1biAxNiwgMjAxNSBhdCAwMzo1Mjo0MVBN
-ICswMjAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gSGkgU3RlZmFuLAo+IAo+IE9uIE1vbiwgSnVu
-IDE1LCAyMDE1IGF0IDEyOjIwOjA4UE0gKzAyMDAsIFN0ZWZhbiBDaHJpc3Qgd3JvdGU6Cj4gPiBI
-aSBTYXNjaGEsCj4gPiAKPiA+ICpwaW5nLCBpcyB0aGlzIHBhdGNoIGFjY2VwdGFibGU/Cj4gCj4g
-SSB0aG91Z2h0IGFib3V0IHRoaXMgYWdhaW4uCj4gCj4gSSB3b3VsZCBmaW5kIHRoaXMgbWVzc2Fn
-ZSBtb3JlIHVzZWZ1bCBmcm9tIHRoZSBuZXcsIHVwZGF0ZWQgYmFyZWJveAo+IHJhdGhlciB0aGFu
-IGZyb20gdGhlIGJhcmVib3ggdGhhdCBkb2VzIHRoZSB1cGRhdGUuIFRoaXMgd2F5IHdlIGNvdWxk
-Cj4gYWxzbyBzZWUgdGhlIG1lc3NhZ2Ugd2l0aCBvZmZsaW5lIHVwZGF0ZXMgd2hlbiBmb3IgZXhh
-bXBsZSBhIFNECj4gY2FyZCBoYXMgYmVlbiB1cGRhdGVkIG9uIGFuIGV4dGVybmFsIGhvc3QuIEFs
-c28gd2Ugd291bGQgaGF2ZSBtb3JlCj4gZnJlZWRvbSB0byByZWFjdCBvbiBhbiBvdXRkYXRlZCBl
-bnZpcm9ubWVudCBpbiB0aGUgbmV4dCBzdGVwcy4gV2UgY291bGQKPiBmb3IgZXhhbXBsZSBtYWtl
-IGl0IGNvbmZpZ3VyYWJsZSB0byBjb21wbGV0ZWx5IGlnbm9yZSBhbiBvdXRkYXRlZAo+IGVudmly
-b25tZW50IG9yIGp1c3QgdG8gaXNzdWUgYSB3YXJuaW5nIG1lc3NhZ2UuCj4gRG9pbmcgdGhpcyBz
-aG91bGQgYmUgZmFpcmx5IHNpbXBsZSwgd2UgY291bGQgc3RvcmUgdGhlIGJhcmVib3ggdmVyc2lv
-bgo+IGluIGEgbnYgdmFyaWFibGUgYW5kIGNvbXBhcmUgdGhlIHZhcmlhYmxlIHdpdGggdGhlIGN1
-cnJlbnQgdmVyc2lvbgo+IGR1cmluZyBzdGFydHVwLgo+IAo+IFdoYXQgZG8geW91IHRoaW5rPwo+
-IAo+IFNhc2NoYQo+IAo+IC0tIAo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51
-eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
-IHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTog
-KzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2
-ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Jun 17, 2015 at 10:46:59PM +0200, Marc Kleine-Budde wrote:
+> Hello,
+> 
+> this series adds support for fixed size strings to the state framework.
+> 
+> Changes since v2:
+> - add patch 2/4: xstrndup
+> - as strings have a fixed length, which is given by the reg property,
+>   the need for the terminating 0 byte has been removed from the storage.
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
