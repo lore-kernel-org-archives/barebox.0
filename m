@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z5UUZ-0000D2-ML
- for barebox@lists.infradead.org; Thu, 18 Jun 2015 07:44:09 +0000
+ Linux)) id 1Z5UUZ-0000Ct-MO
+ for barebox@lists.infradead.org; Thu, 18 Jun 2015 07:44:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 18 Jun 2015 09:43:40 +0200
-Message-Id: <1434613424-19989-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 18 Jun 2015 09:43:42 +0200
+Message-Id: <1434613424-19989-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
 References: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,88 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] cdev: Add partuuid string to struct cdev
+Subject: [PATCH 4/6] fs: ubifs: Implement Linux rootarg
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds the partuuid string to struct cdev in order to have this
-available for constructing a suitable Linux root=PARTUUID= option
-for booting Linux.
+Add the parameter to boot from ubifs fileystems. This assumes that
+there will be only one UBI device registered in the kernel, otherwise
+there is no way to predict the ubi number.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/partitions.c        | 1 +
- common/partitions/dos.c    | 4 ++++
- common/partitions/parser.h | 1 +
- include/driver.h           | 3 +++
- 4 files changed, 9 insertions(+)
+ drivers/mtd/ubi/kapi.c  |  1 +
+ fs/ubifs/ubifs.c        | 23 +++++++++++++++++++++++
+ include/linux/mtd/ubi.h |  1 +
+ 3 files changed, 25 insertions(+)
 
-diff --git a/common/partitions.c b/common/partitions.c
-index 37d9cb7..4f50bfe 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -64,6 +64,7 @@ static int register_one_partition(struct block_device *blk,
+diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
+index 08cb8dd..7fc1aa8 100644
+--- a/drivers/mtd/ubi/kapi.c
++++ b/drivers/mtd/ubi/kapi.c
+@@ -36,6 +36,7 @@ void ubi_do_get_device_info(struct ubi_device *ubi, struct ubi_device_info *di)
+ 	di->min_io_size = ubi->min_io_size;
+ 	di->max_write_size = ubi->max_write_size;
+ 	di->ro_mode = ubi->ro_mode;
++	di->mtd = ubi->mtd;
+ }
+ EXPORT_SYMBOL_GPL(ubi_do_get_device_info);
+ 
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index 68d90b3..a9189f7 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -36,6 +36,7 @@
+ #include <linux/zlib.h>
+ #include <xfuncs.h>
+ #include <fcntl.h>
++#include <linux/mtd/mtd.h>
+ 
+ #include "ubifs.h"
+ 
+@@ -584,6 +585,26 @@ static int ubifs_readlink(struct device_d *dev, const char *pathname, char *buf,
+ 	return 0;
+ }
+ 
++static void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev)
++{
++	struct ubi_volume_info vi = {};
++	struct ubi_device_info di = {};
++	struct mtd_info *mtd;
++	char *str;
++
++	ubi_get_volume_info(priv->ubi, &vi);
++	ubi_get_device_info(vi.ubi_num, &di);
++
++	mtd = di.mtd;
++
++	str = asprintf("root=ubi0:%s ubi.mtd=%s rootfstype=ubifs",
++			vi.name, mtd->cdev.partname);
++
++	fsdev_set_linux_rootarg(fsdev, str);
++
++	free(str);
++}
++
+ static int ubifs_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+@@ -612,6 +633,8 @@ static int ubifs_probe(struct device_d *dev)
+ 		goto err;
  	}
  
- 	cdev->dos_partition_type = part->dos_partition_type;
-+	strcpy(cdev->partuuid, part->partuuid);
- 
- 	free(partition_name);
- 
-diff --git a/common/partitions/dos.c b/common/partitions/dos.c
-index 37addfd..e0cb356 100644
---- a/common/partitions/dos.c
-+++ b/common/partitions/dos.c
-@@ -185,6 +185,7 @@ static void dos_partition(void *buf, struct block_device *blk,
- 	uint8_t *buffer = buf;
- 	int i;
- 	struct disk_signature_priv *dsp;
-+	uint32_t signature = get_unaligned_le32(buf + 0x1b8);
- 
- 	table = (struct partition_entry *)&buffer[446];
- 
-@@ -202,6 +203,9 @@ static void dos_partition(void *buf, struct block_device *blk,
- 			pd->parts[n].first_sec = pentry.first_sec;
- 			pd->parts[n].size = pentry.size;
- 			pd->parts[n].dos_partition_type = pentry.dos_partition_type;
-+			if (signature)
-+				sprintf(pd->parts[n].partuuid, "%08x-%02d",
-+						signature, i + 1);
- 			pd->used_entries++;
- 			/*
- 			 * Partitions of type 0x05 and 0x0f (and some more)
-diff --git a/common/partitions/parser.h b/common/partitions/parser.h
-index 8d39452..8ad134a 100644
---- a/common/partitions/parser.h
-+++ b/common/partitions/parser.h
-@@ -17,6 +17,7 @@
- struct partition {
- 	char name[MAX_PARTITION_NAME];
- 	u8 dos_partition_type;
-+	char partuuid[MAX_PARTUUID_STR];
- 	uint64_t first_sec;
- 	uint64_t size;
- };
-diff --git a/include/driver.h b/include/driver.h
-index d0cdcc9..9c60054 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -435,6 +435,8 @@ struct file_operations {
- 	int (*memmap)(struct cdev*, void **map, int flags);
- };
- 
-+#define MAX_PARTUUID_STR	sizeof("00112233-4455-6677-8899-AABBCCDDEEFF")
++	ubifs_set_rootarg(priv, fsdev);
 +
- struct cdev {
- 	struct file_operations *ops;
- 	void *priv;
-@@ -445,6 +447,7 @@ struct cdev {
- 	char *partname; /* the partition name, usually the above without the
- 			 * device part, i.e. name = "nand0.barebox" -> partname = "barebox"
- 			 */
-+	char partuuid[MAX_PARTUUID_STR];
- 	loff_t offset;
- 	loff_t size;
- 	unsigned int flags;
+ 	return 0;
+ err:
+ 	ubi_close_volume(priv->ubi);
+diff --git a/include/linux/mtd/ubi.h b/include/linux/mtd/ubi.h
+index 274ec4e..0614681 100644
+--- a/include/linux/mtd/ubi.h
++++ b/include/linux/mtd/ubi.h
+@@ -154,6 +154,7 @@ struct ubi_device_info {
+ 	int max_write_size;
+ 	int ro_mode;
+ 	dev_t cdev;
++	struct mtd_info *mtd;
+ };
+ 
+ /*
 -- 
 2.1.4
 
