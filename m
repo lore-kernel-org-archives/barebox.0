@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rafi.de ([178.15.151.14])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z5rOC-0007bl-5X
- for barebox@lists.infradead.org; Fri, 19 Jun 2015 08:11:05 +0000
+Received: from mx2.rafi.de ([178.15.151.13])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z5uDa-0004Pg-Im
+ for barebox@lists.infradead.org; Fri, 19 Jun 2015 11:12:19 +0000
 MIME-Version: 1.0
-In-Reply-To: 
-References: 
+In-Reply-To: <OF8A4A9DD7.EAA49236-ONC1257E69.002CEC59-C1257E69.002CEC64@o0802.rafi.inhouse>
+References: <OF8A4A9DD7.EAA49236-ONC1257E69.002CEC59-C1257E69.002CEC64@o0802.rafi.inhouse>
 From: andreas.willig@rafi.de
-Message-ID: <OF8A4A9DD7.EAA49236-ONC1257E69.002CEC59-C1257E69.002CEC64@o0802.rafi.inhouse>
-Date: Fri, 19 Jun 2015 10:10:41 +0200
+Message-ID: <OFCBE64D2D.49C56E9D-ONC1257E69.003D79AA-C1257E69.003D79B5@o0802.rafi.inhouse>
+Date: Fri, 19 Jun 2015 13:11:28 +0200
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,8 +21,49 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: USB Host i.Mx6S
+Subject: Antwort: USB Host i.Mx6S
 To: Barebox List <barebox@lists.infradead.org>
+
+Soon after posting, I found the problem myself :)
+
+USB H1 requires to have VBus fead into controller to power the USBPHY. Afte=
+r adding a 0 Ohm resistor on the right place, the D- semi voltage disappear=
+s and enumeration works.
+
+Maybe this is helpfull for someone hitting similar problem (even if hardwar=
+e is slightly off-Topic here)
+
+
+
+Mit freundlichen Gr=FC=DFen aus Berg/ With kind regards
+
+i.A. Andreas Willig
+Dipl.-Ing. (FH)
+Entwicklung Elektronik
+
+RAFI GmbH & Co. KG
+Postfach 2060
+88276 Ravensburg
+Tel.: +49 (0) 751 89-6142
+
+mailto:andreas.willig@rafi.de, http://www.rafi.de
+
+Kommanditgesellschaft: Sitz Berg, Amtsgericht Ulm, HRA 550059
+Komplement=E4r: RAFI Beteiligungs-GmbH, Sitz Berg, Amtsgericht Ulm HRB 5500=
+74
+Gesch=E4ftsf=FChrer: Albert Wasmeier, Dipl.-Kfm. Gerhard Schenk
+USt-Ident.-Nr.: DE 146 392 319, Steuer-Nr.: 77079/00291
+
+
+-----"barebox" <barebox-bounces@lists.infradead.org> schrieb: ----- =
+
+An: Barebox List <barebox@lists.infradead.org>
+Von: andreas.willig@rafi.de
+Gesendet von: "barebox" =
+
+Datum: 19.06.2015 10:11
+Betreff: USB Host i.Mx6S
+
 
 Hi everyone
 
@@ -56,6 +97,11 @@ Komplement=E4r: RAFI Beteiligungs-GmbH, Sitz Berg, Amtsgericht Ulm HRB 5500=
 74
 Gesch=E4ftsf=FChrer: Albert Wasmeier, Dipl.-Kfm. Gerhard Schenk
 USt-Ident.-Nr.: DE 146 392 319, Steuer-Nr.: 77079/00291
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
