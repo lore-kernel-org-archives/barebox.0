@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z5VqW-0000H5-Ah
- for barebox@lists.infradead.org; Thu, 18 Jun 2015 09:10:54 +0000
-Date: Thu, 18 Jun 2015 11:10:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150618091029.GR26575@pengutronix.de>
-References: <1433490685-27486-1-git-send-email-s.christ@phytec.de>
- <1433490685-27486-2-git-send-email-s.christ@phytec.de>
- <20150615102008.GA15736@lws-christ>
- <20150616135241.GT6325@pengutronix.de>
- <20150618075723.GB2575@lws-christ>
+ Linux)) id 1Z5r6O-0008B1-9f
+ for barebox@lists.infradead.org; Fri, 19 Jun 2015 07:52:41 +0000
+References: <1434699697-26688-1-git-send-email-j.remmet@phytec.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <5583CA27.5000403@pengutronix.de>
+Date: Fri, 19 Jun 2015 09:52:07 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150618075723.GB2575@lws-christ>
+In-Reply-To: <1434699697-26688-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,76 +17,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============8464312400656048971=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] barebox update: add note after successful update
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] libdt: fix detection of eeprom devicepath
+To: Jan Remmet <j.remmet@phytec.de>, u.kleine-koenig@pengutronix.de, s.hauer@pengutronix.de, Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jun 18, 2015 at 09:57:23AM +0200, Stefan Christ wrote:
-> Hi Sascha,
-> 
-> > I would find this message more useful from the new, updated barebox
-> > rather than from the barebox that does the update. This way we could
-> > also see the message with offline updates when for example a SD
-> > card has been updated on an external host. Also we would have more
-> > freedom to react on an outdated environment in the next steps. We could
-> > for example make it configurable to completely ignore an outdated
-> > environment or just to issue a warning message.
-> > Doing this should be fairly simple, we could store the barebox version
-> > in a nv variable and compare the variable with the current version
-> > during startup.
-> > 
-> > What do you think?
-> 
-> This would solve the issue for our users.
-> 
-> If I understand you correctly, this approach is different from a separate
-> versioning of the environment data, since the barebox verison in UTS_RELEASE is
-> written to the nv variable. So nobody can forget to increase the version number
-> of the environment and a warning message is printing to the user as a new
-> barebox with a different version is flashed.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============8464312400656048971==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="ic1Qee2I2sIIvdqNx3qgIeT3QWxmXpt4W"
 
-Yes.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--ic1Qee2I2sIIvdqNx3qgIeT3QWxmXpt4W
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> I looked at the code a bit. The first step would be to write the version of the
-> running barebox into environment in the function envfs_save() and compare the
-> version in the function envfs_load(). Correct? In envfs_load() the warning
-> message would be printed.
+Hey Jan,
 
-Yes.
+I think it's okay to use the barebox list for dt-utils related stuff. :)
 
-> 
-> But we cannot interrupt the boot sequence and ask the user whether he/she wants
-> to use the old environment or use the default environment, because the default
-> boot process must be non-interactive. So only a warning can be printed, right?
+On 06/19/2015 09:41 AM, Jan Remmet wrote:
+> If nodepath can directly be translated to a device, the device can also=
 
-Right. We can at some point make it configurable to a) use the default
-env b) Use the saved env anyway or c) do something else in such a case.
-For now I think being able to detect an outdated environment and to 
-print a warning is a good first step.
+> be a eeprom. Set default size to 0. The real size can be got from the
+> path.
+>=20
+> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+> ---
+> I my setup I have an eeprom as backend:
+>   backend =3D "/soc/aips-bus@02100000/i2c@021a0000/eeprom@50";
+> barebox-state runs in a initramfs without udev daemon, but wih libudev =
+and
+> devtmpfs
+>=20
+> of_find_device_by_node_path directly found a devices and it was handled=
+ as mtd
+> device. I added a check for eeprom. Setting the size to 0 let barebox-s=
+tate
+> check the size by itself.
+>=20
+> At the end of of_get_devicepath there is a check for eeproms, but then
+> of_parse_partition looks for a reg property which is in a casse of a i2=
+c
+> eeprom is the i2c address. This results in a wrong offset.
 
-BTW I think it's clear that an environment generated with another
-barebox version doesn't necessarily mean that it's outdated. Also
-detecting the same version doesn't necessarily mean it's compatible.
-It's just a good indicator. The alternative would be to have some
-counter which we update with each incompatible environment change, but
-I think we are not always aware of incompatible changes so increasing
-that counter would be forgotten. Also not all incompatible changes
-would affect all boards. I think such a counter would not be feasible.
+doh!
 
-Sascha
+> With this patch a i2c eeprom backend works. It's not tested with a mtd =
+device
+> or a eeprom with a partition layout.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+AFAIK on Linux partition layouts are not supported on eeprom devices, as
+they are not handled by the mtd layer. I'll apply this patch and test on
+my standard device, which uses a mtd device.
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--ic1Qee2I2sIIvdqNx3qgIeT3QWxmXpt4W
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJVg8onAAoJEP5prqPJtc/HU9oH/Ajyr7ZThI6ALVsE495zBje8
+12KTsLgjx4C4QodznqUBBSIrbnP8RN+37/h1Gk4Com3DPwo2BbNJ8Rx73PwNIWuw
+NsM1Wwa0T8CpP0wbbAIM2k6BKy6BC9rd48O5BhUd8qMtPKUoqwBHSGDdh45p0zML
+hfEOeTjoOc/QzcU/b6VoJYHtxlctZiVm9JlrOnXhk3XMXiAx0KA8xcI3bbIHu+Kw
+xCGRFgJlC6kCIX3TO4tfca8hHqUxuMBziGSIwwK5eY11o/+Ra/xSv0s+Ilj5Hkj2
+TE9Lqi0Sw3hz2kF18/sBMTecBGo1sl6EFD3BGP5Gm3Pu8yI0CKmLCYULiAtzL7Y=
+=+SPn
+-----END PGP SIGNATURE-----
+
+--ic1Qee2I2sIIvdqNx3qgIeT3QWxmXpt4W--
+
+
+--===============8464312400656048971==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============8464312400656048971==--
