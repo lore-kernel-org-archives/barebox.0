@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z70PJ-0002Zt-MS
- for barebox@lists.infradead.org; Mon, 22 Jun 2015 12:00:58 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Jun 2015 14:00:34 +0200
-Message-Id: <1434974434-14563-1-git-send-email-s.hauer@pengutronix.de>
+Received: from forward3m.mail.yandex.net ([37.140.138.3])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z70rs-0000TW-Bu
+ for barebox@lists.infradead.org; Mon, 22 Jun 2015 12:30:30 +0000
+From: Smirnov Alexander <alllecs@yandex.ru>
+In-Reply-To: <20150622054340.GB6325@pengutronix.de>
+References: <1434728762-32567-1-git-send-email-alllecs@yandex.ru>
+ <20150622054340.GB6325@pengutronix.de>
+MIME-Version: 1.0
+Message-Id: <629881434976201@web13m.yandex.ru>
+Date: Mon, 22 Jun 2015 15:30:01 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,100 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: OMAP: remove unused CONFIG_OMAP3_CLOCK_CONFIG option
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFC] add decode command (SPD EEPROM data decoder)
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-All boards have this option enabled and there should be no reason
-to disable it.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/phytec-phycard-omap3_defconfig | 1 -
- arch/arm/mach-omap/Kconfig                      | 8 --------
- arch/arm/mach-omap/Makefile                     | 4 ++--
- arch/arm/mach-omap/omap3_generic.c              | 5 -----
- 4 files changed, 2 insertions(+), 16 deletions(-)
-
-diff --git a/arch/arm/configs/phytec-phycard-omap3_defconfig b/arch/arm/configs/phytec-phycard-omap3_defconfig
-index a2564d4..5865ebd 100644
---- a/arch/arm/configs/phytec-phycard-omap3_defconfig
-+++ b/arch/arm/configs/phytec-phycard-omap3_defconfig
-@@ -7,7 +7,6 @@ CONFIG_CPU_V7=y
- CONFIG_CPU_32v7=y
- CONFIG_ARCH_OMAP3=y
- CONFIG_OMAP_CLOCK_SOURCE_S32K=y
--CONFIG_OMAP3_CLOCK_CONFIG=y
- CONFIG_OMAP3_COPY_CLOCK_SRAM=n
- CONFIG_OMAP_GPMC=y
- CONFIG_MACH_PCAAL1=y
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index bc00d5b..c865423 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -54,14 +54,6 @@ config OMAP_CLOCK_SOURCE_S32K
- config OMAP_CLOCK_SOURCE_DMTIMER0
- 	bool
- 
--config OMAP3_CLOCK_CONFIG
--	prompt "Clock Configuration"
--	bool
--	depends on ARCH_OMAP3
--	default y
--	help
--	  Say Y here if you like to have OMAP3 Clock configuration done.
--
- config OMAP_GPMC
- 	prompt "Support for GPMC configuration"
- 	bool
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index bef1d05..fcc2727 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -25,8 +25,8 @@ obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
- pbl-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
- obj-pbl-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o
- obj-$(CONFIG_ARCH_AM33XX) += am33xx_scrm.o
--obj-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
--pbl-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
-+obj-$(CONFIG_ARCH_OMAP3) += omap3_clock.o
-+pbl-$(CONFIG_ARCH_OMAP3) += omap3_clock.o
- obj-$(CONFIG_OMAP_GPMC) += gpmc.o devices-gpmc-nand.o
- obj-$(CONFIG_SHELL_NONE) += xload.o
- obj-$(CONFIG_MFD_TWL6030) += omap4_twl6030_mmc.o
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index dbb0b5f..0f2e9ce 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -435,9 +435,6 @@ static void try_unlock_memory(void)
-  * Does early system init of disabling the watchdog, enable
-  * memory and configuring the clocks.
-  *
-- * prcm_init is called only if CONFIG_OMAP3_CLOCK_CONFIG is defined.
-- * We depend on link time clean up to remove a_init if no caller exists.
-- *
-  * @warning Called path is with SRAM stack
-  *
-  * @return void
-@@ -459,9 +456,7 @@ void omap3_core_init(void)
- 
- 	sdelay(100);
- 
--#ifdef CONFIG_OMAP3_CLOCK_CONFIG
- 	prcm_init();
--#endif
- }
- 
- #define OMAP3_TRACING_VECTOR1 0x4020ffb4
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhIQoKMjIuMDYuMjAxNSwgMDg6NDMsICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPjoKPiCaSGkgQWxleGFuZGVyLAo+Cj4gmk9uIEZyaSwgSnVuIDE5LCAyMDE1
+IGF0IDA2OjQ2OjAyUE0gKzAzMDAsIEFsZXhhbmRlciBTbWlybm92IHdyb3RlOgo+PiCammRlY29k
+ZS1kaW1tcyBwZXJsIHNjcmlwdCBpcyB1c2VkIGFzIHByb3RvdHlwZQo+PiCamihzZWUgaHR0cHM6
+Ly9naXRodWIuY29tL2dyb2Vjay9pMmMtdG9vbHMvYmxvYi9tYXN0ZXIvZWVwcm9tL2RlY29kZS1k
+aW1tcykuCj4+Cj4+IJqaSGVyZSBpcyBhIHNhbXBsZSBkZWNvZGUgb3V0cHV0Ogo+Pgo+PiCammJh
+cmVib3hAYmFyZWJveCBzYW5kYm94Oi8gZGVjb2RlIGVudi9jcnVjaWFsX3BjMi02NDAwX2RkcjIK
+Pj4gmppEZWNvZGluZyBFRVBST006IGVudi9jcnVjaWFsX3BjMi02NDAwX2RkcjIKPj4KPj4gmpot
+LS09PT0gU1BEIEVFUFJPTSBJbmZvcm1hdGlvbiA9PT0tLS0KPj4gmppFRVBST00gQ2hlY2tzdW0g
+b2YgYnl0ZXMgMC02MiBPSyAoMHhDQSkKPj4gmppUb3RhbCBudW1iZXIgb2YgYnl0ZXMgaW4gRUVQ
+Uk9NIDI1Ngo+PiCamkZ1bmRhbWVudGFsIE1lbW9yeSB0eXBlIEREUjIgU0RSQU0KPj4gmppTUEQg
+UmV2aXNpb24gMS4zCj4+Cj4+IJqaLS0tPT09IE1lbW9yeSBDaGFyYWN0ZXJpc3RpY3MgPT09LS0t
+Cj4+IJqaTWF4aW11bSBtb2R1bGUgc3BlZWQgODAwIE1IeiAoUEMyLTY0MDApCj4+IJqaU2l6ZSAx
+MDI0IE1CCj4+IJqaQmFua3MgeCBSb3dzIHggQ29sdW1ucyB4IEJpdHMgOCB4IDE0IHggMTAgeCA2
+NAo+PiCamlJhbmtzIDEKPj4gmppTRFJBTSBEZXZpY2UgV2lkdGggOCBiaXRzCj4+IJqaTW9kdWxl
+IEhlaWdodCAzMC4wIG1tCj4+IJqaTW9kdWxlIFR5cGUgU08tRElNTSAoNjcuNiBtbSkKPj4gmppE
+UkFNIFBhY2thZ2UgUGxhbmFyCj4+IJqaVm9sdGFnZSBJbnRlcmZhY2UgTGV2ZWwgU1NUTCAxLjhW
+Cj4+IJqaTW9kdWxlIENvbmZpZ3VyYXRpb24gVHlwZSBObyBQYXJpdHkKPj4gmppSZWZyZXNoIFJh
+dGUgUmVkdWNlZCAoNy44IHVzKSAtIFNlbGYgUmVmcmVzaAo+PiCamlN1cHBvcnRlZCBCdXJzdCBM
+ZW5ndGhzIDQsIDgKPj4gmppTdXBwb3J0ZWQgQ0FTIExhdGVuY2llcyAodENMKSA2VAo+PiCamnRD
+TC10UkNELXRSUC10UkFTIDYtNi02LTE4IGFzIEREUjItODAwCj4+IJqaTWluaW11bSBDeWNsZSBU
+aW1lIDI1MCAobnMqMTAwKSBhdCBDQVMgNgo+PiCamk1heGltdW0gQWNjZXNzIFRpbWUgNCAobnMq
+MTApIGF0IENBUyA2Cj4+IJqaTWF4aW11bSBDeWNsZSBUaW1lICh0Q0sgbWF4KSA4IG5zCj4+Cj4+
+IJqaLS0tPT09IFRpbWluZyBQYXJhbWV0ZXJzID09PS0tLQo+PiCamkFkZHJlc3MvQ29tbWFuZCBT
+ZXR1cCBUaW1lIEJlZm9yZSBDbG9jayAodElTKSAxNyAobnMqMTAwKQo+Cj4gmkJldHRlciBwcmlu
+dCB0aGVzZSBpbiBucyBkaXJlY3RseT8KPgo+PiCamitzdGF0aWMgaW50IGRvX2RlY29kZShpbnQg
+YXJnYywgY2hhciAqYXJndltdKQo+PiCamit7Cj4+IJqaKyBpbnQgaGlnaGVzdENBUyA9IDA7Cj4+
+IJqaKyBpbnQgY2FzWzI1Nl07Cj4+IJqaKyBpbnQgaSwgaV9pLCBrOwo+PiCamisgaW50IGRkcmNs
+aywgdGJpdHMsIHBjY2xrOwo+PiCamisgaW50IHRyY2QsIHRycCwgdHJhczsKPj4gmporIGludCBj
+dGltZTsKPj4gmporIGludCBmcDsKPj4gmporIHVpbnQ4X3QgcmVjb3JkWzI1Nl07Cj4+IJqaKyB1
+aW50OF90IHBhcml0eTsKPj4gmporIGNoYXIgKnJlZjsKPj4gmporCj4+IJqaKyBpZiAoYXJnYyAh
+PSAyKSB7Cj4+IJqaKyBwcmludGYoIu/U09XU09TX1cXUIMnMySDVy8Hawc7PIMLPzNjbxSAxIMHS
+x9XNxc7UwVxuIik7Cj4KPiCaSSB0aGluayBtb3N0IHJlYWRlcnMgY2FuJ3QgcmVhZCB0aGlzIGxh
+bmd1YWdlIDspCj4KPj4gmporIHJldHVybiAyOwo+PiCamisgfQo+PiCamisKPj4gmporIGZwID0g
+b3Blbihhcmd2WzFdLCBPX1JET05MWSk7Cj4KPiCaYmV0dGVyICdmZCc/IEl0J3MgYSBmaWxlIGRl
+c2NyaXB0b3IsIG5vdCBhIGZpbGUgcG9pbnRlci4KPgo+PiCamisKPj4gmporIGlmIChmcCA9PSAw
+KSB7Cj4+IJqaKyBwZXJyb3IoIu/bycLLwSDQ0skg0sHCz9TFINMgxsHKzM/NIik7Cj4+IJqaKyBy
+ZXR1cm4gMzsKPj4gmporIH0KPj4gmporCj4+IJqaKyByZWFkKGZwLCAmcmVjb3JkWzBdLCAyNTYp
+Owo+PiCamisgY2xvc2UoZnApOwo+Cj4gmllvdSBzaG91bGQgc2VwYXJhdGUgdGhlIGNvbW1hbmQg
+Y29kZSBmcm9tIHRoZSBkaXNwYXRjaGluZy9wcmludGluZyBjb2RlLgo+IJpsZXQgdGhlIGRpc3Bh
+dGNoaW5nL3ByaW50aW5nIGNvZGUgdGFrZSBhIHZvaWQgKmJ1ZiBhbmQgcHV0IGl0IGludG8KPiCa
+Y29tbW9uLy4gVGhpcyB3YXkgd2UgY2FuIGNhbGwgdGhpcyBub3Qgb25seSBmcm9tIHRoZSBjb21t
+YW5kIGJ1dCBhbHNvCj4gmmZyb20gQyBjb2RlIHdoaWNoIG1ha2VzIHRoaXMgbW9yZSB1c2VmdWwu
+Cj4KPj4gmporCj4+IJqaKy8vIGR1bXAoJnJlY29yZFswXSwgMjU2KTsKPj4gmporCj4+IJqaKyBw
+cmludGYoIkRlY29kaW5nIEVFUFJPTTogJXNcblxuIiwgYXJndlsxXSk7Cj4+IJqaKwo+PiCamisg
+cHJpbnRmKCItLS09PT0gU1BEIEVFUFJPTSBJbmZvcm1hdGlvbiA9PT0tLS1cbiIpOwo+PiCamisg
+cHJpbnRmKCJFRVBST00gQ2hlY2tzdW0gb2YgYnl0ZXMgMC02Mlx0XHRcdCBPSyAoMHglMFgpXG4i
+LCByZWNvcmRbNjNdKTsKPj4gmporIHByaW50ZigiIyBvZiBieXRlcyB3cml0dGVuIHRvIFNEUkFN
+IEVFUFJPTVx0XHQgJWRcbiIsIHJlY29yZFswXSk7Cj4+IJqaKyBwcmludGYoIlRvdGFsIG51bWJl
+ciBvZiBieXRlcyBpbiBFRVBST01cdFx0XHQgJWRcbiIsIDEgPDwgcmVjb3JkWzFdKTsKPj4gmpor
+Cj4+IJqaKyBpZiAocmVjb3JkWzJdIDwgMTEpIHsKPj4gmporIHByaW50ZigiRnVuZGFtZW50YWwg
+TWVtb3J5IHR5cGVcdFx0XHRcdCAlc1xuIiwgdHlwZV9saXN0W3JlY29yZFsyXV0pOwo+PiCamisg
+fSBlbHNlIHsKPj4gmporIHByaW50ZigiV2FybmluZzogdW5rbm93biBtZW1vcnkgdHlwZSAoJTAy
+eClcbiIsIHJlY29yZFsyXSk7Cj4+IJqaKyB9Cj4KPiCaUGxlYXNlIHNraXAgdGhlIGJyYWNlcyB3
+aGVuIHRoZXkgYXJlIG5vdCBuZWVkZWQuCj4KPiCaR2VuZXJhbGx5IHdlIGFscmVhZHkgaGF2ZSBp
+bmNsdWRlL2Rkcl9zcGQuaC4gSWYgeW91IHB1dCB0aGlzIHN0cnVjdCBvdmVyCj4gmnRoZSBidWZm
+ZXIgdGhlbiB0aGUgZGlzcGF0Y2hpbmcgc2hvdWxkIGJlIG1vcmUgc3RyYWlnaHQgZm9yd2FyZC4K
+PiCaV291bGRuJ3QgdGhhdCBiZSBwb3NzaWJsZT8KClRoYW5rcyBmb3IgeW91ciByZXZpZXchCkkn
+bGwgdHJ5IHRvIHJld29yayBteSBwYXRjaCBhbmQgcmVzdWJtaXQgaXQgaW4gYSBmZXcgZGF5cy4K
+Ci0tmgrzINXXwdbFzsnFzSwKmlNtaXJub3YgQWxleGFuZGVyCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
+QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9iYXJlYm94Cg==
