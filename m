@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward3m.mail.yandex.net ([37.140.138.3])
+Received: from charon.eutecus.com ([66.211.109.45])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z70rs-0000TW-Bu
- for barebox@lists.infradead.org; Mon, 22 Jun 2015 12:30:30 +0000
-From: Smirnov Alexander <alllecs@yandex.ru>
-In-Reply-To: <20150622054340.GB6325@pengutronix.de>
-References: <1434728762-32567-1-git-send-email-alllecs@yandex.ru>
- <20150622054340.GB6325@pengutronix.de>
+ id 1Z73VV-0002VJ-En
+ for barebox@lists.infradead.org; Mon, 22 Jun 2015 15:19:33 +0000
+Received: from [192.168.42.238] (budapest.eutecus.com [176.63.203.49])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ (Authenticated sender: kgyorgy@eutecus.com)
+ by charon.eutecus.com (Postfix) with ESMTPSA id A9F4A2AA1CA
+ for <barebox@lists.infradead.org>; Mon, 22 Jun 2015 08:19:10 -0700 (PDT)
+Message-ID: <5588272F.9010803@eutecus.com>
+Date: Mon, 22 Jun 2015 17:18:07 +0200
+From: =?UTF-8?B?R3nDtnJneSBLw7Z2ZXNkaQ==?= <gyorgy.kovesdi@eutecus.com>
 MIME-Version: 1.0
-Message-Id: <629881434976201@web13m.yandex.ru>
-Date: Mon, 22 Jun 2015 15:30:01 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,74 +21,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] add decode command (SPD EEPROM data decoder)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Compiling barebox for newest Yocto/meta-freescale
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhIQoKMjIuMDYuMjAxNSwgMDg6NDMsICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPjoKPiCaSGkgQWxleGFuZGVyLAo+Cj4gmk9uIEZyaSwgSnVuIDE5LCAyMDE1
-IGF0IDA2OjQ2OjAyUE0gKzAzMDAsIEFsZXhhbmRlciBTbWlybm92IHdyb3RlOgo+PiCammRlY29k
-ZS1kaW1tcyBwZXJsIHNjcmlwdCBpcyB1c2VkIGFzIHByb3RvdHlwZQo+PiCamihzZWUgaHR0cHM6
-Ly9naXRodWIuY29tL2dyb2Vjay9pMmMtdG9vbHMvYmxvYi9tYXN0ZXIvZWVwcm9tL2RlY29kZS1k
-aW1tcykuCj4+Cj4+IJqaSGVyZSBpcyBhIHNhbXBsZSBkZWNvZGUgb3V0cHV0Ogo+Pgo+PiCammJh
-cmVib3hAYmFyZWJveCBzYW5kYm94Oi8gZGVjb2RlIGVudi9jcnVjaWFsX3BjMi02NDAwX2RkcjIK
-Pj4gmppEZWNvZGluZyBFRVBST006IGVudi9jcnVjaWFsX3BjMi02NDAwX2RkcjIKPj4KPj4gmpot
-LS09PT0gU1BEIEVFUFJPTSBJbmZvcm1hdGlvbiA9PT0tLS0KPj4gmppFRVBST00gQ2hlY2tzdW0g
-b2YgYnl0ZXMgMC02MiBPSyAoMHhDQSkKPj4gmppUb3RhbCBudW1iZXIgb2YgYnl0ZXMgaW4gRUVQ
-Uk9NIDI1Ngo+PiCamkZ1bmRhbWVudGFsIE1lbW9yeSB0eXBlIEREUjIgU0RSQU0KPj4gmppTUEQg
-UmV2aXNpb24gMS4zCj4+Cj4+IJqaLS0tPT09IE1lbW9yeSBDaGFyYWN0ZXJpc3RpY3MgPT09LS0t
-Cj4+IJqaTWF4aW11bSBtb2R1bGUgc3BlZWQgODAwIE1IeiAoUEMyLTY0MDApCj4+IJqaU2l6ZSAx
-MDI0IE1CCj4+IJqaQmFua3MgeCBSb3dzIHggQ29sdW1ucyB4IEJpdHMgOCB4IDE0IHggMTAgeCA2
-NAo+PiCamlJhbmtzIDEKPj4gmppTRFJBTSBEZXZpY2UgV2lkdGggOCBiaXRzCj4+IJqaTW9kdWxl
-IEhlaWdodCAzMC4wIG1tCj4+IJqaTW9kdWxlIFR5cGUgU08tRElNTSAoNjcuNiBtbSkKPj4gmppE
-UkFNIFBhY2thZ2UgUGxhbmFyCj4+IJqaVm9sdGFnZSBJbnRlcmZhY2UgTGV2ZWwgU1NUTCAxLjhW
-Cj4+IJqaTW9kdWxlIENvbmZpZ3VyYXRpb24gVHlwZSBObyBQYXJpdHkKPj4gmppSZWZyZXNoIFJh
-dGUgUmVkdWNlZCAoNy44IHVzKSAtIFNlbGYgUmVmcmVzaAo+PiCamlN1cHBvcnRlZCBCdXJzdCBM
-ZW5ndGhzIDQsIDgKPj4gmppTdXBwb3J0ZWQgQ0FTIExhdGVuY2llcyAodENMKSA2VAo+PiCamnRD
-TC10UkNELXRSUC10UkFTIDYtNi02LTE4IGFzIEREUjItODAwCj4+IJqaTWluaW11bSBDeWNsZSBU
-aW1lIDI1MCAobnMqMTAwKSBhdCBDQVMgNgo+PiCamk1heGltdW0gQWNjZXNzIFRpbWUgNCAobnMq
-MTApIGF0IENBUyA2Cj4+IJqaTWF4aW11bSBDeWNsZSBUaW1lICh0Q0sgbWF4KSA4IG5zCj4+Cj4+
-IJqaLS0tPT09IFRpbWluZyBQYXJhbWV0ZXJzID09PS0tLQo+PiCamkFkZHJlc3MvQ29tbWFuZCBT
-ZXR1cCBUaW1lIEJlZm9yZSBDbG9jayAodElTKSAxNyAobnMqMTAwKQo+Cj4gmkJldHRlciBwcmlu
-dCB0aGVzZSBpbiBucyBkaXJlY3RseT8KPgo+PiCamitzdGF0aWMgaW50IGRvX2RlY29kZShpbnQg
-YXJnYywgY2hhciAqYXJndltdKQo+PiCamit7Cj4+IJqaKyBpbnQgaGlnaGVzdENBUyA9IDA7Cj4+
-IJqaKyBpbnQgY2FzWzI1Nl07Cj4+IJqaKyBpbnQgaSwgaV9pLCBrOwo+PiCamisgaW50IGRkcmNs
-aywgdGJpdHMsIHBjY2xrOwo+PiCamisgaW50IHRyY2QsIHRycCwgdHJhczsKPj4gmporIGludCBj
-dGltZTsKPj4gmporIGludCBmcDsKPj4gmporIHVpbnQ4X3QgcmVjb3JkWzI1Nl07Cj4+IJqaKyB1
-aW50OF90IHBhcml0eTsKPj4gmporIGNoYXIgKnJlZjsKPj4gmporCj4+IJqaKyBpZiAoYXJnYyAh
-PSAyKSB7Cj4+IJqaKyBwcmludGYoIu/U09XU09TX1cXUIMnMySDVy8Hawc7PIMLPzNjbxSAxIMHS
-x9XNxc7UwVxuIik7Cj4KPiCaSSB0aGluayBtb3N0IHJlYWRlcnMgY2FuJ3QgcmVhZCB0aGlzIGxh
-bmd1YWdlIDspCj4KPj4gmporIHJldHVybiAyOwo+PiCamisgfQo+PiCamisKPj4gmporIGZwID0g
-b3Blbihhcmd2WzFdLCBPX1JET05MWSk7Cj4KPiCaYmV0dGVyICdmZCc/IEl0J3MgYSBmaWxlIGRl
-c2NyaXB0b3IsIG5vdCBhIGZpbGUgcG9pbnRlci4KPgo+PiCamisKPj4gmporIGlmIChmcCA9PSAw
-KSB7Cj4+IJqaKyBwZXJyb3IoIu/bycLLwSDQ0skg0sHCz9TFINMgxsHKzM/NIik7Cj4+IJqaKyBy
-ZXR1cm4gMzsKPj4gmporIH0KPj4gmporCj4+IJqaKyByZWFkKGZwLCAmcmVjb3JkWzBdLCAyNTYp
-Owo+PiCamisgY2xvc2UoZnApOwo+Cj4gmllvdSBzaG91bGQgc2VwYXJhdGUgdGhlIGNvbW1hbmQg
-Y29kZSBmcm9tIHRoZSBkaXNwYXRjaGluZy9wcmludGluZyBjb2RlLgo+IJpsZXQgdGhlIGRpc3Bh
-dGNoaW5nL3ByaW50aW5nIGNvZGUgdGFrZSBhIHZvaWQgKmJ1ZiBhbmQgcHV0IGl0IGludG8KPiCa
-Y29tbW9uLy4gVGhpcyB3YXkgd2UgY2FuIGNhbGwgdGhpcyBub3Qgb25seSBmcm9tIHRoZSBjb21t
-YW5kIGJ1dCBhbHNvCj4gmmZyb20gQyBjb2RlIHdoaWNoIG1ha2VzIHRoaXMgbW9yZSB1c2VmdWwu
-Cj4KPj4gmporCj4+IJqaKy8vIGR1bXAoJnJlY29yZFswXSwgMjU2KTsKPj4gmporCj4+IJqaKyBw
-cmludGYoIkRlY29kaW5nIEVFUFJPTTogJXNcblxuIiwgYXJndlsxXSk7Cj4+IJqaKwo+PiCamisg
-cHJpbnRmKCItLS09PT0gU1BEIEVFUFJPTSBJbmZvcm1hdGlvbiA9PT0tLS1cbiIpOwo+PiCamisg
-cHJpbnRmKCJFRVBST00gQ2hlY2tzdW0gb2YgYnl0ZXMgMC02Mlx0XHRcdCBPSyAoMHglMFgpXG4i
-LCByZWNvcmRbNjNdKTsKPj4gmporIHByaW50ZigiIyBvZiBieXRlcyB3cml0dGVuIHRvIFNEUkFN
-IEVFUFJPTVx0XHQgJWRcbiIsIHJlY29yZFswXSk7Cj4+IJqaKyBwcmludGYoIlRvdGFsIG51bWJl
-ciBvZiBieXRlcyBpbiBFRVBST01cdFx0XHQgJWRcbiIsIDEgPDwgcmVjb3JkWzFdKTsKPj4gmpor
-Cj4+IJqaKyBpZiAocmVjb3JkWzJdIDwgMTEpIHsKPj4gmporIHByaW50ZigiRnVuZGFtZW50YWwg
-TWVtb3J5IHR5cGVcdFx0XHRcdCAlc1xuIiwgdHlwZV9saXN0W3JlY29yZFsyXV0pOwo+PiCamisg
-fSBlbHNlIHsKPj4gmporIHByaW50ZigiV2FybmluZzogdW5rbm93biBtZW1vcnkgdHlwZSAoJTAy
-eClcbiIsIHJlY29yZFsyXSk7Cj4+IJqaKyB9Cj4KPiCaUGxlYXNlIHNraXAgdGhlIGJyYWNlcyB3
-aGVuIHRoZXkgYXJlIG5vdCBuZWVkZWQuCj4KPiCaR2VuZXJhbGx5IHdlIGFscmVhZHkgaGF2ZSBp
-bmNsdWRlL2Rkcl9zcGQuaC4gSWYgeW91IHB1dCB0aGlzIHN0cnVjdCBvdmVyCj4gmnRoZSBidWZm
-ZXIgdGhlbiB0aGUgZGlzcGF0Y2hpbmcgc2hvdWxkIGJlIG1vcmUgc3RyYWlnaHQgZm9yd2FyZC4K
-PiCaV291bGRuJ3QgdGhhdCBiZSBwb3NzaWJsZT8KClRoYW5rcyBmb3IgeW91ciByZXZpZXchCkkn
-bGwgdHJ5IHRvIHJld29yayBteSBwYXRjaCBhbmQgcmVzdWJtaXQgaXQgaW4gYSBmZXcgZGF5cy4K
-Ci0tmgrzINXXwdbFzsnFzSwKmlNtaXJub3YgQWxleGFuZGVyCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+I have a i.MX6 based board and want to compile barebox using Yocto.
+It was successful so far, but something is changed in the gcc behaviour.
+The first thing is that some arch-specific parameters must be passed, or 
+else the compilation fails. I could fix it, but there is another problem.
+The option "-mfloat-abi=soft" is used in barebox compilation, which 
+seems not supported by gcc. Adding "-mfloat-abi=hard" is not enough, the 
+original "-mfloat-abi=soft" should be removed. Unfortunately, i could 
+not find where this option is added and how to remove it.
+Can anybody help me to fix it?
+
+Thanx in advance
+Gyorgy Kovesdi
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
