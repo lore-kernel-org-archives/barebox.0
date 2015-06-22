@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z6xII-0002zR-H3
- for barebox@lists.infradead.org; Mon, 22 Jun 2015 08:41:36 +0000
+ Linux)) id 1Z6xII-0002zV-H2
+ for barebox@lists.infradead.org; Mon, 22 Jun 2015 08:41:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Jun 2015 10:40:57 +0200
-Message-Id: <1434962466-23590-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 22 Jun 2015 10:41:06 +0200
+Message-Id: <1434962466-23590-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1434962466-23590-1-git-send-email-s.hauer@pengutronix.de>
 References: <1434962466-23590-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,269 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] mtd: cfi-flash: save indention level
+Subject: [PATCH 11/11] mtd: cfi-flash: remove dead code
 To: Barebox List <barebox@lists.infradead.org>
 
-Bail out early in flash_get_size() and save an indention level.
+CFG_FLASH_PROTECTION is never defined, remove the code. Also
+remove code inside #if 0.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nor/cfi_flash.c | 227 ++++++++++++++++++++++----------------------
- 1 file changed, 114 insertions(+), 113 deletions(-)
+ drivers/mtd/nor/cfi_flash.c       | 36 ------------------------------------
+ drivers/mtd/nor/cfi_flash.h       |  6 ------
+ drivers/mtd/nor/cfi_flash_intel.c |  6 ------
+ 3 files changed, 48 deletions(-)
 
 diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
-index 6d82764..01d23d5 100644
+index b93c663..f9aecad 100644
 --- a/drivers/mtd/nor/cfi_flash.c
 +++ b/drivers/mtd/nor/cfi_flash.c
-@@ -312,134 +312,135 @@ static ulong flash_get_size (struct flash_info *info)
- 	info->start[0] = base;
- 	info->protect = 0;
+@@ -308,9 +308,6 @@ static int flash_detect_size(struct flash_info *info)
  
--	if (flash_detect_cfi (info, &qry)) {
--		info->vendor = le16_to_cpu(qry.p_id);
--		info->ext_addr = le16_to_cpu(qry.p_adr);
--		num_erase_regions = qry.num_erase_regions;
--
--		if (info->ext_addr) {
--			info->cfi_version = (ushort) flash_read_uchar (info,
--						info->ext_addr + 3) << 8;
--			info->cfi_version |= (ushort) flash_read_uchar (info,
--						info->ext_addr + 4);
--		}
-+	if (!flash_detect_cfi (info, &qry))
-+		return 0;
-+
-+	info->vendor = le16_to_cpu(qry.p_id);
-+	info->ext_addr = le16_to_cpu(qry.p_adr);
-+	num_erase_regions = qry.num_erase_regions;
-+
-+	if (info->ext_addr) {
-+		info->cfi_version = (ushort) flash_read_uchar (info,
-+					info->ext_addr + 3) << 8;
-+		info->cfi_version |= (ushort) flash_read_uchar (info,
-+					info->ext_addr + 4);
-+	}
+ 	info->ext_addr = 0;
+ 	info->cfi_version = 0;
+-#ifdef CFG_FLASH_PROTECTION
+-	info->legacy_unlock = 0;
+-#endif
  
- #ifdef DEBUG
--		flash_printqry (&qry);
-+	flash_printqry (&qry);
- #endif
- 
--		switch (info->vendor) {
-+	switch (info->vendor) {
- #ifdef CONFIG_DRIVER_CFI_INTEL
--		case CFI_CMDSET_INTEL_EXTENDED:
--		case CFI_CMDSET_INTEL_STANDARD:
--			info->cfi_cmd_set = &cfi_cmd_set_intel;
--			break;
-+	case CFI_CMDSET_INTEL_EXTENDED:
-+	case CFI_CMDSET_INTEL_STANDARD:
-+		info->cfi_cmd_set = &cfi_cmd_set_intel;
-+		break;
- #endif
- #ifdef CONFIG_DRIVER_CFI_AMD
--		case CFI_CMDSET_AMD_STANDARD:
--		case CFI_CMDSET_AMD_EXTENDED:
--			info->cfi_cmd_set = &cfi_cmd_set_amd;
--			break;
-+	case CFI_CMDSET_AMD_STANDARD:
-+	case CFI_CMDSET_AMD_EXTENDED:
-+		info->cfi_cmd_set = &cfi_cmd_set_amd;
-+		break;
- #endif
--		default:
--			dev_err(info->dev, "unsupported vendor\n");
--			return 0;
--		}
--		info->cfi_cmd_set->flash_read_jedec_ids (info);
--		flash_write_cmd (info, 0, info->cfi_offset, FLASH_CMD_CFI);
--
--		info->cfi_cmd_set->flash_fixup (info, &qry);
--
--		dev_dbg(info->dev, "manufacturer is %d\n", info->vendor);
--		dev_dbg(info->dev, "manufacturer id is 0x%x\n", info->manufacturer_id);
--		dev_dbg(info->dev, "device id is 0x%x\n", info->device_id);
--		dev_dbg(info->dev, "device id2 is 0x%x\n", info->device_id2);
--		dev_dbg(info->dev, "cfi version is 0x%04x\n", info->cfi_version);
--
--		size_ratio = info->portwidth / info->chipwidth;
--		/* if the chip is x8/x16 reduce the ratio by half */
--		if ((info->interface == FLASH_CFI_X8X16)
--		    && (info->chipwidth == FLASH_CFI_BY8)
--		    && (size_ratio != 1)) {
--			size_ratio >>= 1;
-+	default:
-+		dev_err(info->dev, "unsupported vendor\n");
-+		return 0;
-+	}
-+	info->cfi_cmd_set->flash_read_jedec_ids (info);
-+	flash_write_cmd (info, 0, info->cfi_offset, FLASH_CMD_CFI);
-+
-+	info->cfi_cmd_set->flash_fixup (info, &qry);
-+
-+	dev_dbg(info->dev, "manufacturer is %d\n", info->vendor);
-+	dev_dbg(info->dev, "manufacturer id is 0x%x\n", info->manufacturer_id);
-+	dev_dbg(info->dev, "device id is 0x%x\n", info->device_id);
-+	dev_dbg(info->dev, "device id2 is 0x%x\n", info->device_id2);
-+	dev_dbg(info->dev, "cfi version is 0x%04x\n", info->cfi_version);
-+
-+	size_ratio = info->portwidth / info->chipwidth;
-+	/* if the chip is x8/x16 reduce the ratio by half */
-+	if ((info->interface == FLASH_CFI_X8X16)
-+	    && (info->chipwidth == FLASH_CFI_BY8)
-+	    && (size_ratio != 1)) {
-+		size_ratio >>= 1;
-+	}
-+	dev_dbg(info->dev, "size_ratio %d port %d bits chip %d bits\n",
-+	       size_ratio, info->portwidth << CFI_FLASH_SHIFT_WIDTH,
-+	       info->chipwidth << CFI_FLASH_SHIFT_WIDTH);
-+	dev_dbg(info->dev, "found %d erase regions\n", num_erase_regions);
-+	info->eraseregions = xzalloc(sizeof(*(info->eraseregions)) * num_erase_regions);
-+	info->numeraseregions = num_erase_regions;
-+	sect_cnt = 0;
-+	sector = base;
-+
-+	for (i = 0; i < num_erase_regions; i++) {
-+		struct mtd_erase_region_info *region = &info->eraseregions[i];
-+
-+		if (i > NUM_ERASE_REGIONS) {
-+			dev_info(info->dev, "%d erase regions found, only %d used\n",
-+				num_erase_regions, NUM_ERASE_REGIONS);
-+			break;
- 		}
--		dev_dbg(info->dev, "size_ratio %d port %d bits chip %d bits\n",
--		       size_ratio, info->portwidth << CFI_FLASH_SHIFT_WIDTH,
--		       info->chipwidth << CFI_FLASH_SHIFT_WIDTH);
--		dev_dbg(info->dev, "found %d erase regions\n", num_erase_regions);
--		info->eraseregions = xzalloc(sizeof(*(info->eraseregions)) * num_erase_regions);
--		info->numeraseregions = num_erase_regions;
--		sect_cnt = 0;
--		sector = base;
--
--		for (i = 0; i < num_erase_regions; i++) {
--			struct mtd_erase_region_info *region = &info->eraseregions[i];
--
--			if (i > NUM_ERASE_REGIONS) {
--				dev_info(info->dev, "%d erase regions found, only %d used\n",
--					num_erase_regions, NUM_ERASE_REGIONS);
--				break;
--			}
- 
--			tmp = le32_to_cpu(qry.erase_region_info[i]);
--			dev_dbg(info->dev, "erase region %u: 0x%08lx\n", i, tmp);
--
--			erase_region_count = (tmp & 0xffff) + 1;
--			tmp >>= 16;
--			erase_region_size =
--				(tmp & 0xffff) ? ((tmp & 0xffff) * 256) : 128;
--			dev_dbg(info->dev, "erase_region_count = %d erase_region_size = %d\n",
--				erase_region_count, erase_region_size);
--
--			region->offset = cur_offset;
--			region->erasesize = erase_region_size * size_ratio;
--			region->numblocks = erase_region_count;
--			cur_offset += erase_region_size * size_ratio * erase_region_count;
--
--			/* increase the space malloced for the sector start addresses */
--			info->start = xrealloc(info->start, sizeof(ulong) * (erase_region_count + sect_cnt));
--			info->protect = xrealloc(info->protect, sizeof(uchar) * (erase_region_count + sect_cnt));
--
--			for (j = 0; j < erase_region_count; j++) {
--				info->start[sect_cnt] = sector;
--				sector += (erase_region_size * size_ratio);
--
--				/*
--				 * Only read protection status from supported devices (intel...)
--				 */
--				switch (info->vendor) {
--				case CFI_CMDSET_INTEL_EXTENDED:
--				case CFI_CMDSET_INTEL_STANDARD:
--					info->protect[sect_cnt] =
--						flash_isset (info, sect_cnt,
--							     FLASH_OFFSET_PROTECT,
--							     FLASH_STATUS_PROTECT);
--					break;
--				default:
--					info->protect[sect_cnt] = 0; /* default: not protected */
--				}
--
--				sect_cnt++;
-+		tmp = le32_to_cpu(qry.erase_region_info[i]);
-+		dev_dbg(info->dev, "erase region %u: 0x%08lx\n", i, tmp);
-+
-+		erase_region_count = (tmp & 0xffff) + 1;
-+		tmp >>= 16;
-+		erase_region_size =
-+			(tmp & 0xffff) ? ((tmp & 0xffff) * 256) : 128;
-+		dev_dbg(info->dev, "erase_region_count = %d erase_region_size = %d\n",
-+			erase_region_count, erase_region_size);
-+
-+		region->offset = cur_offset;
-+		region->erasesize = erase_region_size * size_ratio;
-+		region->numblocks = erase_region_count;
-+		cur_offset += erase_region_size * size_ratio * erase_region_count;
-+
-+		/* increase the space malloced for the sector start addresses */
-+		info->start = xrealloc(info->start, sizeof(ulong) * (erase_region_count + sect_cnt));
-+		info->protect = xrealloc(info->protect, sizeof(uchar) * (erase_region_count + sect_cnt));
-+
-+		for (j = 0; j < erase_region_count; j++) {
-+			info->start[sect_cnt] = sector;
-+			sector += (erase_region_size * size_ratio);
-+
-+			/*
-+			 * Only read protection status from supported devices (intel...)
-+			 */
-+			switch (info->vendor) {
-+			case CFI_CMDSET_INTEL_EXTENDED:
-+			case CFI_CMDSET_INTEL_STANDARD:
-+				info->protect[sect_cnt] =
-+					flash_isset (info, sect_cnt,
-+						     FLASH_OFFSET_PROTECT,
-+						     FLASH_STATUS_PROTECT);
-+				break;
-+			default:
-+				info->protect[sect_cnt] = 0; /* default: not protected */
- 			}
--		}
- 
--		info->sector_count = sect_cnt;
--		/* multiply the size by the number of chips */
--		info->size = (1 << qry.dev_size) * size_ratio;
--		info->buffer_size = (1 << le16_to_cpu(qry.max_buf_write_size));
--		info->erase_blk_tout = 1 << (qry.block_erase_timeout_typ +
--					     qry.block_erase_timeout_max);
--		info->buffer_write_tout = 1 << (qry.buf_write_timeout_typ +
--						qry.buf_write_timeout_max);
--		info->write_tout = 1 << (qry.word_write_timeout_typ +
--					 qry.word_write_timeout_max);
--		info->flash_id = FLASH_MAN_CFI;
--		if ((info->interface == FLASH_CFI_X8X16) && (info->chipwidth == FLASH_CFI_BY8)) {
--			info->portwidth >>= 1;	/* XXX - Need to test on x8/x16 in parallel. */
-+			sect_cnt++;
- 		}
--		flash_write_cmd (info, 0, 0, info->cmd_reset);
- 	}
- 
-+	info->sector_count = sect_cnt;
-+	/* multiply the size by the number of chips */
-+	info->size = (1 << qry.dev_size) * size_ratio;
-+	info->buffer_size = (1 << le16_to_cpu(qry.max_buf_write_size));
-+	info->erase_blk_tout = 1 << (qry.block_erase_timeout_typ +
-+				     qry.block_erase_timeout_max);
-+	info->buffer_write_tout = 1 << (qry.buf_write_timeout_typ +
-+					qry.buf_write_timeout_max);
-+	info->write_tout = 1 << (qry.word_write_timeout_typ +
-+				 qry.word_write_timeout_max);
-+	info->flash_id = FLASH_MAN_CFI;
-+	if ((info->interface == FLASH_CFI_X8X16) && (info->chipwidth == FLASH_CFI_BY8))
-+		info->portwidth >>= 1;	/* XXX - Need to test on x8/x16 in parallel. */
-+
-+	flash_write_cmd (info, 0, 0, info->cmd_reset);
-+
- 	return info->size;
+ 	/* first only malloc space for the first sector */
+ 	info->start = xmalloc(sizeof(*info->eraseregions));
+@@ -763,39 +760,6 @@ static void cfi_info (struct device_d* dev)
+ 	return;
  }
  
+-#if 0
+-/*
+- * flash_read_user_serial - read the OneTimeProgramming cells
+- */
+-static void flash_read_user_serial (struct flash_info *info, void *buffer, int offset,
+-			     int len)
+-{
+-	uchar *src;
+-	uchar *dst;
+-
+-	dst = buffer;
+-	src = flash_make_addr (info, 0, FLASH_OFFSET_USER_PROTECTION);
+-	flash_write_cmd (info, 0, 0, FLASH_CMD_READ_ID);
+-	memcpy (dst, src + offset, len);
+-	flash_write_cmd (info, 0, 0, info->cmd_reset);
+-}
+-
+-/*
+- * flash_read_factory_serial - read the device Id from the protection area
+- */
+-static void flash_read_factory_serial (struct flash_info *info, void *buffer, int offset,
+-				int len)
+-{
+-	uchar *src;
+-
+-	src = flash_make_addr (info, 0, FLASH_OFFSET_INTEL_PROTECTION);
+-	flash_write_cmd (info, 0, 0, FLASH_CMD_READ_ID);
+-	memcpy (buffer, src + offset, len);
+-	flash_write_cmd (info, 0, 0, info->cmd_reset);
+-}
+-
+-#endif
+-
+ int flash_status_check(struct flash_info *info, flash_sect_t sector,
+ 			       u64 tout, char *prompt)
+ {
+diff --git a/drivers/mtd/nor/cfi_flash.h b/drivers/mtd/nor/cfi_flash.h
+index 6d975b9..e82eb28 100644
+--- a/drivers/mtd/nor/cfi_flash.h
++++ b/drivers/mtd/nor/cfi_flash.h
+@@ -355,12 +355,6 @@ extern void flash_protect(int flag, unsigned long from, unsigned long to,
+ 		struct flash_info *info);
+ extern int flash_write(char *, unsigned long, unsigned long);
+ 
+-#if defined(CFG_FLASH_PROTECTION)
+-extern int flash_real_protect(struct flash_info *info, long sector, int prot);
+-extern void flash_read_user_serial(struct flash_info *info, void *buffer, int offset, int len);
+-extern void flash_read_factory_serial(struct flash_info *info, void *buffer, int offset, int len);
+-#endif	/* CFG_FLASH_PROTECTION */
+-
+ /*-----------------------------------------------------------------------
+  * Protection Flags for flash_protect():
+  */
+diff --git a/drivers/mtd/nor/cfi_flash_intel.c b/drivers/mtd/nor/cfi_flash_intel.c
+index 835734d..6108d7c 100644
+--- a/drivers/mtd/nor/cfi_flash_intel.c
++++ b/drivers/mtd/nor/cfi_flash_intel.c
+@@ -154,12 +154,6 @@ static int intel_flash_real_protect(struct flash_info *info, long sector, int pr
+ 
+ static void intel_flash_fixup(struct flash_info *info, struct cfi_qry *qry)
+ {
+-#ifdef CFG_FLASH_PROTECTION
+-	/* read legacy lock/unlock bit from intel flash */
+-	if (info->ext_addr)
+-		info->legacy_unlock = flash_read_uchar(info,
+-				info->ext_addr + 5) & 0x08;
+-#endif
+ }
+ 
+ struct cfi_cmd_set cfi_cmd_set_intel = {
 -- 
 2.1.4
 
