@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z6y0P-00050Y-V9
- for barebox@lists.infradead.org; Mon, 22 Jun 2015 09:27:06 +0000
-Received: by laka10 with SMTP id a10so106013442lak.0
- for <barebox@lists.infradead.org>; Mon, 22 Jun 2015 02:26:43 -0700 (PDT)
-Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
- by mx.google.com with ESMTPSA id j2sm4074686lag.10.2015.06.22.02.26.41
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 22 Jun 2015 02:26:41 -0700 (PDT)
-Date: Mon, 22 Jun 2015 12:33:07 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150622123307.9b3137c2a1ff0608d0c7d655@gmail.com>
-In-Reply-To: <1434962920-5868-1-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z6yQK-0007Xq-Ug
+ for barebox@lists.infradead.org; Mon, 22 Jun 2015 09:53:53 +0000
+Date: Mon, 22 Jun 2015 11:53:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150622095327.GG6325@pengutronix.de>
 References: <1434962920-5868-1-git-send-email-s.hauer@pengutronix.de>
-Mime-Version: 1.0
+ <20150622123307.9b3137c2a1ff0608d0c7d655@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150622123307.9b3137c2a1ff0608d0c7d655@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +19,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] serial: ns16550: Fix reading clock-frequency property
-To: barebox@lists.infradead.org
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, 22 Jun 2015 10:48:40 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, Jun 22, 2015 at 12:33:07PM +0300, Antony Pavlov wrote:
+> On Mon, 22 Jun 2015 10:48:40 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > The clock-frequency property is never read because the driver
+> 
+> hmmm, but how qemu-malta works?
 
-> The clock-frequency property is never read because the driver
+Probably qemu-malta has clk support disabled, so:
 
-hmmm, but how qemu-malta works?
+static inline struct clk *clk_get(struct device_d *dev, const char *id)
+{
+	return NULL;
+}
 
-> bails out earlier when it is unable to clk_get the clk. Move
-> the clock-frequency read out to the dt setup code which is
-> executed before the driver bails out due to the missing clk.
-> =
+Which is a valid clk and the driver is happy. clk_get_rate(priv->clk)
+returns 0 and the drivers continues with:
 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+        if (priv->plat.clock == 0 && IS_ENABLED(CONFIG_OFDEVICE)) {
+                struct device_node *np = dev->device_node;
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+                of_property_read_u32(np, "clock-frequency", &priv->plat.clock);
+        }
+
+Which will read the correct clock-frequency from the device tree.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
