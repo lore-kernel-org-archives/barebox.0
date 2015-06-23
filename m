@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z7HwH-0005GK-8f
- for barebox@lists.infradead.org; Tue, 23 Jun 2015 06:44:10 +0000
-References: <1434699697-26688-1-git-send-email-j.remmet@phytec.de>
- <5583CA27.5000403@pengutronix.de> <55870437.9000102@pengutronix.de>
- <20150623063159.GA2841@lws-weitzel2@phytec.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <55890019.3060505@pengutronix.de>
-Date: Tue, 23 Jun 2015 08:43:37 +0200
-MIME-Version: 1.0
-In-Reply-To: <20150623063159.GA2841@lws-weitzel2@phytec.de>
+ Linux)) id 1Z7IPG-0002IK-8D
+ for barebox@lists.infradead.org; Tue, 23 Jun 2015 07:14:07 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 23 Jun 2015 09:13:42 +0200
+Message-Id: <1435043622-23459-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,75 +14,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============3273482085719742509=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] libdt: fix detection of eeprom devicepath
-To: Jan Remmet <J.Remmet@phytec.de>, barebox@lists.infradead.org
+Subject: [PATCH] param_enum: Make name strings const
+To: Barebox List <barebox@lists.infradead.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============3273482085719742509==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="9KA4I1TBbcgW30RfkvBTxfM1p3nUQH2dl"
+Not only the array containing the pointers should be const but
+also the strings themselves, so instead of using const char **
+use const char * const *.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---9KA4I1TBbcgW30RfkvBTxfM1p3nUQH2dl
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/globalvar.h | 4 ++--
+ include/param.h     | 4 ++--
+ lib/parameter.c     | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-On 06/23/2015 08:32 AM, Jan Remmet wrote:
->> Works here with the NAND-partition backend. However udev from
->> systemd-220 fails to find NAND-partition while systemd-219 works, no
->> matter if your patch is applied or not. Which systemd/udev version are=
+diff --git a/include/globalvar.h b/include/globalvar.h
+index 8b2caf1..e9fa348 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -46,7 +46,7 @@ static inline int globalvar_add_simple_bool(const char *name,
+ }
+ 
+ static inline int globalvar_add_simple_enum(const char *name,
+-		int *value, const char **names, int max)
++		int *value, const char * const *names, int max)
+ {
+ 	struct param_d *p;
+ 
+@@ -98,7 +98,7 @@ static inline int globalvar_add_simple_bool(const char *name,
+ }
+ 
+ static inline int globalvar_add_simple_enum(const char *name,
+-		int *value, const char **names, int max)
++		int *value, const char * const *names, int max)
+ {
+ 	return 0;
+ }
+diff --git a/include/param.h b/include/param.h
+index 3a851fc..3fb4740 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -50,7 +50,7 @@ struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
+ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char **names, int max, void *priv);
++		int *value, const char * const *names, int max, void *priv);
+ 
+ struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
+ 		int value, const char *format);
+@@ -120,7 +120,7 @@ static inline struct param_d *dev_add_param_int(struct device_d *dev, const char
+ static inline struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char **names, int max, void *priv)
++		int *value, const char * const *names, int max, void *priv)
+ 
+ {
+ 	return ERR_PTR(-ENOSYS);
+diff --git a/lib/parameter.c b/lib/parameter.c
+index 865ad9f..0ac3b90 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -382,7 +382,7 @@ struct param_d *dev_add_param_int(struct device_d *dev, const char *name,
+ struct param_enum {
+ 	struct param_d param;
+ 	int *value;
+-	const char **names;
++	const char * const *names;
+ 	int num_names;
+ 	int (*set)(struct param_d *p, void *priv);
+ 	int (*get)(struct param_d *p, void *priv);
+@@ -459,7 +459,7 @@ static void param_enum_info(struct param_d *p)
+ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char **names, int num_names, void *priv)
++		int *value, const char * const *names, int num_names, void *priv)
+ {
+ 	struct param_enum *pe;
+ 	struct param_d *p;
+-- 
+2.1.4
 
->> you using?
-> Here I use it in a initramfs with libudev.so.1.6.0, but no running daem=
-on.
-
-The .so version cannot be mapped directly tothe tarball version.
-
-For the record: systemd-220 is broken, 219 and 221 are working. If you
-need 220, cherry-pick commit 5f529f4c97a141457301477505ae7eb4c28cf610
-from the systemd.git repo.
-
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---9KA4I1TBbcgW30RfkvBTxfM1p3nUQH2dl
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAEBCgAGBQJViQAZAAoJEP5prqPJtc/HSUsIAK8XfCN2LkfMRrY/LkdlZ8SM
-gFfELtN9Tm7A6JK4XHY5CQ+CMUBbO7DDnRPaisEO7qqVZHsT19Z8Vn2E2v9aWuL8
-hA/vrdpmz+dKTlWXi6sVb3AXY3Ld7NkJVNGpGYnulNOhvXc/QAgfzg8oH40jKlYa
-QzKHSYmGiv86SwtFsKJBb8A5KkHPlema21bAdemilCUK1e5P+gU6aDbDdOdo3P5E
-1zOBw+4zOl8gwpsMEKR1iYKyHSYVAzZMHlXuOOxgME6OTBXdP7GHatHCWXmUn5VU
-MbEHDr+dZ17ryUfTswNVSCSg64oVDOMvY9nxNg6POkbBzg8RFhbwL5xEceObbmk=
-=D4lF
------END PGP SIGNATURE-----
-
---9KA4I1TBbcgW30RfkvBTxfM1p3nUQH2dl--
-
-
---===============3273482085719742509==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============3273482085719742509==--
