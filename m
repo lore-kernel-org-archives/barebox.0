@@ -1,14 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z7q8F-0005kO-CT
- for barebox@lists.infradead.org; Wed, 24 Jun 2015 19:14:48 +0000
-Received: from tellur.intern.lynxeye.de (p57B5FAB3.dip0.t-ipconnect.de
- [87.181.250.179]) by lynxeye.de (Postfix) with ESMTPA id F1A2A26C2001
- for <barebox@lists.infradead.org>; Wed, 24 Jun 2015 21:13:53 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 24 Jun 2015 21:13:49 +0200
-Message-Id: <1435173229-16144-1-git-send-email-dev@lynxeye.de>
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z7qpZ-0008Vu-8m
+ for barebox@lists.infradead.org; Wed, 24 Jun 2015 19:59:34 +0000
+Received: by lbnk3 with SMTP id k3so32978148lbn.1
+ for <barebox@lists.infradead.org>; Wed, 24 Jun 2015 12:59:09 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <1435156380.25607.28.camel@pengutronix.de>
+References: <5588272F.9010803@eutecus.com>
+ <1435047176.25607.3.camel@pengutronix.de>
+ <55894326.5000107@teledigit.eu>
+ <CAOpc7mH---D=ddMwuRdMyqWT1zHe-YZbQrZsMTVWvvQda4YKUQ@mail.gmail.com>
+ <558961C0.2090005@teledigit.eu>
+ <CAOpc7mF1SnaT0==JpBTPvJ=b_MiwADfWNLAJ=moKd61ietku1w@mail.gmail.com>
+ <55897294.10908@teledigit.eu>
+ <CAOpc7mEoU-a2Hk3nkQjQX-ya7Nobf3un-aaJpJ0QeG+Ye_JuVA@mail.gmail.com>
+ <20150623195716.4fda658d@kgy-pc.lan>
+ <1435087804.28585.8.camel@lynxeye.de>
+ <1435156380.25607.28.camel@pengutronix.de>
+Date: Wed, 24 Jun 2015 16:59:09 -0300
+Message-ID: <CAOMZO5AAnVL99GNAmi0J4+8xK=jq+j=KO+buXSiUjHOPR1eyoA@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,78 +29,19 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: tegra: jump to maincluster earlier
-To: barebox@lists.infradead.org
+Subject: Re: Compiling barebox for newest Yocto/meta-freescale
+To: jlu@pengutronix.de
+Cc: Gyorgy Kovesdi <kgy@teledigit.eu>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Holger Hans Peter Freyther <holger@freyther.de>
 
-There is no point in repeating the board setup on the main cluster.
-It is done either in the AVP startup path or from a first stage loader.
-
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- arch/arm/mach-tegra/include/mach/lowlevel.h | 15 +++++++++------
- arch/arm/mach-tegra/tegra_avp_init.c        |  3 ---
- 2 files changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index 768b13d..0c76b88 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -243,11 +243,20 @@ void tegra_ll_delay_usec(int delay)
- 	while ((int)readl(TEGRA_TMRUS_BASE + TIMER_CNTR_1US) - timeout < 0);
- }
- 
-+/* reset vector for the AVP, to be called from board reset vector */
-+void tegra_avp_reset_vector(uint32_t boarddata);
-+
-+/* reset vector for the main CPU complex */
-+void tegra_maincomplex_entry(void);
-+
- static __always_inline
- void tegra_cpu_lowlevel_setup(void)
- {
- 	uint32_t r;
- 
-+	if (tegra_cpu_is_maincomplex())
-+		tegra_maincomplex_entry();
-+
- 	/* set the cpu to SVC32 mode */
- 	__asm__ __volatile__("mrs %0, cpsr":"=r"(r));
- 	r &= ~0x1f;
-@@ -258,10 +267,4 @@ void tegra_cpu_lowlevel_setup(void)
- 	tegra_ll_delay_setup();
- }
- 
--/* reset vector for the AVP, to be called from board reset vector */
--void tegra_avp_reset_vector(uint32_t boarddata);
--
--/* reset vector for the main CPU complex */
--void tegra_maincomplex_entry(void);
--
- #endif /* __TEGRA_LOWLEVEL_H */
-diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
-index 91fd894..20fcf3f 100644
---- a/arch/arm/mach-tegra/tegra_avp_init.c
-+++ b/arch/arm/mach-tegra/tegra_avp_init.c
-@@ -265,9 +265,6 @@ void tegra_avp_reset_vector(uint32_t boarddata)
- 	/* put boarddata in scratch reg, for main CPU to fetch after startup */
- 	writel(boarddata, TEGRA_PMC_BASE + PMC_SCRATCH(10));
- 
--	if (tegra_cpu_is_maincomplex())
--		tegra_maincomplex_entry();
--
- 	/* we want to bring up the high performance CPU complex */
- 	if (tegra_get_chiptype() >= TEGRA30)
- 		tegra_cluster_switch_hp();
--- 
-2.1.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gV2VkLCBKdW4gMjQsIDIwMTUgYXQgMTE6MzMgQU0sIEphbiBMw7xiYmUgPGpsdUBwZW5ndXRy
+b25peC5kZT4gd3JvdGU6Cgo+IEd5b3JneSwgY291bGQgeW91IHBvaW50IHVzIHRvIHRoZSBZb2N0
+byBzaWRlIG9mIHRoZSBkaXNjdXNzaW9uLCBpZiBpdAo+IHdhcyBvbiBzb21lIGxpc3Q/CgpodHRw
+czovL3d3dy5tYWlsLWFyY2hpdmUuY29tL21ldGEtZnJlZXNjYWxlQHlvY3RvcHJvamVjdC5vcmcv
+bXNnMTQxOTcuaHRtbAoKUmVnYXJkcywKCkZhYmlvIEVzdGV2YW0KCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
