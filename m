@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z7doe-00027f-N8
- for barebox@lists.infradead.org; Wed, 24 Jun 2015 06:05:45 +0000
-Received: by lbnk3 with SMTP id k3so19864296lbn.1
- for <barebox@lists.infradead.org>; Tue, 23 Jun 2015 23:05:21 -0700 (PDT)
-Date: Wed, 24 Jun 2015 09:11:47 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150624091147.c4b5aac4be4a90b23c585cc7@gmail.com>
-In-Reply-To: <20150622060022.GC6325@pengutronix.de>
-References: <20150615011343.40eddc832febd97ade569cbb@gmail.com>
- <20150617092857.GJ6325@pengutronix.de>
- <20150620140912.b8435aff9de4a645f5d4639e@gmail.com>
- <20150622060022.GC6325@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z7eFC-0006rx-GK
+ for barebox@lists.infradead.org; Wed, 24 Jun 2015 06:33:12 +0000
+Date: Wed, 24 Jun 2015 08:32:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150624063247.GR6325@pengutronix.de>
+References: <1435064284-8015-1-git-send-email-jbe@pengutronix.de>
+ <1435064284-8015-2-git-send-email-jbe@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1435064284-8015-2-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,127 +19,514 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox picotcp integration (2015.06.14)
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/5] Reset reason: add a scope value to the reset reason
+ feature
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, 22 Jun 2015 08:00:22 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Tue, Jun 23, 2015 at 02:58:00PM +0200, Juergen Borleis wrote:
+> Some systems do have more than one source to detect the reason of a reset.
+> In this case it depends on the initialization order which reason will be
+> reported to barebox. To avoid this race, this change adds a scope to the
+> function call to always accept settings with a wider scope and ignore
+> all settings with a limited scope.
+> 
+> This change is required to support systems where one reset reason source
+> is more reliable than other sources. Examples are all i.MX SoCs with
+> an internal reset reason detector and an external PMIC which has the same
+> capabilities. For these systems the external PMIC provides the correct
+> reset cause while the internal unit flags a POR only all the time. In order
+> to support one binary for more than one machine we cannot just disable the
+> internal reset reason detector, so we need this scope mechanism.
+> 
+> Assumption in this change is, the reset cause sources with a wider scope are
+> always reporting the correct reason and not vice versa.
+> 
+> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+> ---
+>  Documentation/user/reset-reason.rst   | 30 ++++++++++++++
+>  Documentation/user/system-reset.rst   |  3 +-
+>  arch/arm/mach-imx/imx1.c              |  8 ++--
+>  arch/arm/mach-omap/am33xx_generic.c   | 14 +++----
+>  arch/arm/mach-pxa/pxa2xx.c            | 12 +++---
+>  arch/arm/mach-pxa/pxa3xx.c            | 12 +++---
+>  arch/arm/mach-samsung/reset_source.c  |  8 ++--
+>  arch/arm/mach-tegra/tegra20-pmc.c     | 14 +++----
+>  common/Kconfig                        |  8 ----
+>  common/Makefile                       |  2 +-
+>  common/reset_source.c                 | 56 ---------------------------
+>  common/restart.c                      | 73 +++++++++++++++++++++++++++++++++++
+>  drivers/watchdog/im28wd.c             | 12 +++---
+>  drivers/watchdog/imxwd.c              |  8 ++--
+>  include/{reset_source.h => restart.h} | 29 +++++++-------
+>  15 files changed, 164 insertions(+), 125 deletions(-)
+>  delete mode 100644 common/reset_source.c
+>  create mode 100644 common/restart.c
+>  rename include/{reset_source.h => restart.h} (71%)
+> 
+> diff --git a/Documentation/user/reset-reason.rst b/Documentation/user/reset-reason.rst
+> index a4872fa..525ade2 100644
+> --- a/Documentation/user/reset-reason.rst
+> +++ b/Documentation/user/reset-reason.rst
+> @@ -3,6 +3,9 @@
+>  Reset Reason
+>  ------------
+>  
+> +Using the Reset Reason
+> +~~~~~~~~~~~~~~~~~~~~~~
+> +
+>  To handle a device in a secure and safty manner many applications are using
+>  a watchdog or other ways to reset a system to bring it back into life if it
+>  hangs or crashes somehow.
+> @@ -45,3 +48,30 @@ The following values can help to detect the reason why the bootloader runs:
+>  It depends on your board/SoC and its features if the hardware is able to detect
+>  these reset reasons. Most of the time only ``POR`` and ``RST`` are supported
+>  but often ``WDG`` as well.
+> +
+> +.. _reset_reason_scope:
+> +
+> +Scope of Reset Reason
+> +~~~~~~~~~~~~~~~~~~~~~
+> +
+> +Some machines can detect the reset reason via different devices, for example
+> +via a SoC internal devices and an externally attached device. Both can provide
+> +the correct reason - or not. If their reset reason point of view differ, you
+> +need a ``scope`` to decide what reason is the correct one. Barebox provides
+> +the reset reason scope via the global variable ``system.reset.scope`` and
+> +the following values:
+> +
+> +* ``unknown``: the software can't define the scope of the reset reason.
+> +* ``cpu``: the inner core CPU only point of view.
+> +* ``soc``: the full SoC point of view.
+> +* ``machine``: the full machine point of view
+> +
+> +The scopes are rated: lowest rate is ``unknown`` and ``cpu``. The highest
+> +rate has the ``machine`` point of view. The ``soc`` point of view in inbetween.
+> +
+> +Why can the reset reason differ due to different scopes? Think about a SoC which
+> +is powered by a PMIC: the reset reason detection inside the SoC has the ``soc``
+> +scope, the PMIC's reset reason detection has the ``machine`` scope. In this case
+> +the ``soc`` scope reset reason is always ``POR``, while the ``machine`` scope
+> +reset reason is ``POR`` only on a real POR, ``RST`` due to an user
+> +intervention and ``WDG`` because the system has failed somehow.
+> diff --git a/Documentation/user/system-reset.rst b/Documentation/user/system-reset.rst
+> index e76e3a2..e902026 100644
+> --- a/Documentation/user/system-reset.rst
+> +++ b/Documentation/user/system-reset.rst
+> @@ -61,4 +61,5 @@ wide reset, like the POR is.
+>  Drawback of the PMIC solution is, you can't use the SoC's internal mechanisms to
+>  detect the :ref:`reset_reason` anymore. From the SoC point of view it is always
+>  a POR when the PMIC handles the system reset. If you are in luck the PMIC
+> -instead can provide this information if you depend on it.
+> +instead can provide this information if you depend on it. Refer
+> +:ref:`reset_reason_scope` for further information.
+> diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
+> index 51bdcbf..a3759df 100644
+> --- a/arch/arm/mach-imx/imx1.c
+> +++ b/arch/arm/mach-imx/imx1.c
+> @@ -18,7 +18,7 @@
+>  #include <mach/weim.h>
+>  #include <mach/iomux-v1.h>
+>  #include <mach/generic.h>
+> -#include <reset_source.h>
+> +#include <restart.h>
+>  
+>  #define MX1_RSR MX1_SCM_BASE_ADDR
+>  #define RSR_EXR	(1 << 0)
+> @@ -30,13 +30,13 @@ static void imx1_detect_reset_source(void)
+>  
+>  	switch (val) {
+>  	case RSR_EXR:
+> -		reset_source_set(RESET_RST);
+> +		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+>  		return;
+>  	case RSR_WDR:
+> -		reset_source_set(RESET_WDG);
+> +		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+>  		return;
+>  	case 0:
+> -		reset_source_set(RESET_POR);
+> +		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+>  		return;
+>  	default:
+>  		/* else keep the default 'unknown' state */
+> diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+> index 7ce32f0..8ac1290 100644
+> --- a/arch/arm/mach-omap/am33xx_generic.c
+> +++ b/arch/arm/mach-omap/am33xx_generic.c
+> @@ -26,7 +26,7 @@
+>  #include <mach/sys_info.h>
+>  #include <mach/am33xx-generic.h>
+>  #include <mach/gpmc.h>
+> -#include <reset_source.h>
+> +#include <restart.h>
+>  
+>  void __noreturn am33xx_reset_cpu(unsigned long addr)
+>  {
+> @@ -167,23 +167,23 @@ static void am33xx_detect_reset_reason(void)
+>  
+>  	switch (val) {
+>  	case (1 << 9):
+> -		reset_source_set(RESET_JTAG);
+> +		reset_source_set(RESET_JTAG, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case (1 << 5):
+> -		reset_source_set(RESET_EXT);
+> +		reset_source_set(RESET_EXT, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case (1 << 4):
+>  	case (1 << 3):
+> -		reset_source_set(RESET_WDG);
+> +		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case (1 << 1):
+> -		reset_source_set(RESET_RST);
+> +		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case (1 << 0):
+> -		reset_source_set(RESET_POR);
+> +		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+>  		break;
+>  	default:
+> -		reset_source_set(RESET_UKWN);
+> +		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+>  		break;
+>  	}
+>  }
+> diff --git a/arch/arm/mach-pxa/pxa2xx.c b/arch/arm/mach-pxa/pxa2xx.c
+> index b712b38..973e394 100644
+> --- a/arch/arm/mach-pxa/pxa2xx.c
+> +++ b/arch/arm/mach-pxa/pxa2xx.c
+> @@ -14,7 +14,7 @@
+>  
+>  #include <common.h>
+>  #include <init.h>
+> -#include <reset_source.h>
+> +#include <restart.h>
+>  #include <mach/hardware.h>
+>  #include <mach/pxa-regs.h>
+>  
+> @@ -28,15 +28,15 @@ static int pxa_detect_reset_source(void)
+>  	 * Order is important, as many bits can be set together
+>  	 */
+>  	if (reg & RCSR_GPR)
+> -		reset_source_set(RESET_RST);
+> +		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+>  	else if (reg & RCSR_WDR)
+> -		reset_source_set(RESET_WDG);
+> +		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+>  	else if (reg & RCSR_HWR)
+> -		reset_source_set(RESET_POR);
+> +		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+>  	else if (reg & RCSR_SMR)
+> -		reset_source_set(RESET_WKE);
+> +		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+>  	else
+> -		reset_source_set(RESET_UKWN);
+> +		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+>  
+>  	return 0;
+>  }
+> diff --git a/arch/arm/mach-pxa/pxa3xx.c b/arch/arm/mach-pxa/pxa3xx.c
+> index 86ca63b..e273996 100644
+> --- a/arch/arm/mach-pxa/pxa3xx.c
+> +++ b/arch/arm/mach-pxa/pxa3xx.c
+> @@ -14,7 +14,7 @@
+>  
+>  #include <common.h>
+>  #include <init.h>
+> -#include <reset_source.h>
+> +#include <restart.h>
+>  #include <mach/hardware.h>
+>  #include <mach/pxa-regs.h>
+>  
+> @@ -28,15 +28,15 @@ static int pxa_detect_reset_source(void)
+>  	 * Order is important, as many bits can be set together
+>  	 */
+>  	if (reg & ARSR_GPR)
+> -		reset_source_set(RESET_RST);
+> +		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+>  	else if (reg & ARSR_WDT)
+> -		reset_source_set(RESET_WDG);
+> +		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+>  	else if (reg & ARSR_HWR)
+> -		reset_source_set(RESET_POR);
+> +		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+>  	else if (reg & ARSR_LPMR)
+> -		reset_source_set(RESET_WKE);
+> +		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+>  	else
+> -		reset_source_set(RESET_UKWN);
+> +		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+>  
+>  	return 0;
+>  }
+> diff --git a/arch/arm/mach-samsung/reset_source.c b/arch/arm/mach-samsung/reset_source.c
+> index c1365b2..e122909 100644
+> --- a/arch/arm/mach-samsung/reset_source.c
+> +++ b/arch/arm/mach-samsung/reset_source.c
+> @@ -15,7 +15,7 @@
+>  #include <common.h>
+>  #include <init.h>
+>  #include <io.h>
+> -#include <reset_source.h>
+> +#include <restart.h>
+>  #include <mach/s3c-iomap.h>
+>  
+>  /* S3C2440 relevant */
+> @@ -29,21 +29,21 @@ static int s3c_detect_reset_source(void)
+>  	u32 reg = readl(S3C_GPIO_BASE + S3C2440_GSTATUS2);
+>  
+>  	if (reg & S3C2440_GSTATUS2_PWRST) {
+> -		reset_source_set(RESET_POR);
+> +		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+>  		writel(S3C2440_GSTATUS2_PWRST,
+>  					S3C_GPIO_BASE + S3C2440_GSTATUS2);
+>  		return 0;
+>  	}
+>  
+>  	if (reg & S3C2440_GSTATUS2_SLEEPRST) {
+> -		reset_source_set(RESET_WKE);
+> +		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+>  		writel(S3C2440_GSTATUS2_SLEEPRST,
+>  					S3C_GPIO_BASE + S3C2440_GSTATUS2);
+>  		return 0;
+>  	}
+>  
+>  	if (reg & S3C2440_GSTATUS2_WDRST) {
+> -		reset_source_set(RESET_WDG);
+> +		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+>  		writel(S3C2440_GSTATUS2_WDRST,
+>  					S3C_GPIO_BASE + S3C2440_GSTATUS2);
+>  		return 0;
+> diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
+> index eaa5ac7..6493eea 100644
+> --- a/arch/arm/mach-tegra/tegra20-pmc.c
+> +++ b/arch/arm/mach-tegra/tegra20-pmc.c
+> @@ -28,7 +28,7 @@
+>  #include <linux/reset.h>
+>  #include <mach/lowlevel.h>
+>  #include <mach/tegra-powergate.h>
+> -#include <reset_source.h>
+> +#include <restart.h>
+>  
+>  #include <mach/tegra20-pmc.h>
+>  
+> @@ -180,22 +180,22 @@ static void tegra20_pmc_detect_reset_cause(void)
+>  	switch ((reg & PMC_RST_STATUS_RST_SRC_MASK) >>
+>  	         PMC_RST_STATUS_RST_SRC_SHIFT) {
+>  	case PMC_RST_STATUS_RST_SRC_POR:
+> -		reset_source_set(RESET_POR);
+> +		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case PMC_RST_STATUS_RST_SRC_WATCHDOG:
+> -		reset_source_set(RESET_WDG);
+> +		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case PMC_RST_STATUS_RST_SRC_LP0:
+> -		reset_source_set(RESET_WKE);
+> +		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case PMC_RST_STATUS_RST_SRC_SW_MAIN:
+> -		reset_source_set(RESET_RST);
+> +		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+>  		break;
+>  	case PMC_RST_STATUS_RST_SRC_SENSOR:
+> -		reset_source_set(RESET_THERM);
+> +		reset_source_set(RESET_THERM, FEATURE_SCOPE_SOC);
+>  		break;
+>  	default:
+> -		reset_source_set(RESET_UKWN);
+> +		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+>  		break;
+>  	}
+>  }
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 3dfb5ac..f241482 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -716,14 +716,6 @@ config STATE
+>  	select OFTREE
+>  	select PARAMETER
+>  
+> -config RESET_SOURCE
+> -	bool "detect Reset cause"
+> -	depends on GLOBALVAR
+> -	help
+> -	  Provide a global variable at runtine which reflects the possible cause
+> -	  of the reset and why the bootloader is currently running. It can be
+> -	  useful for any kind of system recovery or repair.
+> -
+>  endmenu
+>  
+>  menu "Debugging"
+> diff --git a/common/Makefile b/common/Makefile
+> index 2738238..16e6690 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -8,6 +8,7 @@ obj-y				+= misc.o
+>  obj-y				+= memsize.o
+>  obj-y				+= resource.o
+>  obj-y				+= bootsource.o
+> +obj-y				+= restart.o
+>  obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+>  obj-$(CONFIG_BANNER)		+= version.o
+>  obj-$(CONFIG_BAREBOX_UPDATE)	+= bbu.o
+> @@ -40,7 +41,6 @@ obj-$(CONFIG_OFTREE)		+= oftree.o
+>  obj-$(CONFIG_PARTITION_DISK)	+= partitions.o partitions/
+>  obj-$(CONFIG_PASSWORD)		+= password.o
+>  obj-$(CONFIG_POLLER)		+= poller.o
+> -obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
+>  obj-$(CONFIG_SHELL_HUSH)	+= hush.o
+>  obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
+>  obj-$(CONFIG_STATE)		+= state.o
+> diff --git a/common/reset_source.c b/common/reset_source.c
+> deleted file mode 100644
+> index 80002a9..0000000
+> --- a/common/reset_source.c
+> +++ /dev/null
+> @@ -1,56 +0,0 @@
+> -/*
+> - * (C) Copyright 2012 Juergen Beisert - <kernel@pengutronix.de>
+> - *
+> - * This program is free software; you can redistribute it and/or
+> - * modify it under the terms of the GNU General Public License as
+> - * published by the Free Software Foundation; either version 2 of
+> - * the License, or (at your option) any later version.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - */
+> -
+> -#include <common.h>
+> -#include <init.h>
+> -#include <environment.h>
+> -#include <globalvar.h>
+> -#include <reset_source.h>
+> -
+> -static const char * const reset_src_names[] = {
+> -	[RESET_UKWN] = "unknown",
+> -	[RESET_POR] = "POR",
+> -	[RESET_RST] = "RST",
+> -	[RESET_WDG] = "WDG",
+> -	[RESET_WKE] = "WKE",
+> -	[RESET_JTAG] = "JTAG",
+> -	[RESET_THERM] = "THERM",
+> -	[RESET_EXT] = "EXT",
+> -};
+> -
+> -static enum reset_src_type reset_source;
+> -
+> -enum reset_src_type reset_source_get(void)
+> -{
+> -	return reset_source;
+> -}
+> -EXPORT_SYMBOL(reset_source_get);
+> -
+> -void reset_source_set(enum reset_src_type st)
+> -{
+> -	reset_source = st;
+> -
+> -	globalvar_add_simple("system.reset", reset_src_names[reset_source]);
+> -}
+> -EXPORT_SYMBOL(reset_source_set);
+> -
+> -/* ensure this runs after the 'global' device is already registerd */
+> -static int reset_source_init(void)
+> -{
+> -	reset_source_set(reset_source);
+> -
+> -	return 0;
+> -}
+> -
+> -coredevice_initcall(reset_source_init);
+> diff --git a/common/restart.c b/common/restart.c
+> new file mode 100644
+> index 0000000..f73a9da
+> --- /dev/null
+> +++ b/common/restart.c
+> @@ -0,0 +1,73 @@
+> +/*
+> + * (C) Copyright 2015 Juergen Borleis - <kernel@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <restart.h>
+> +#include <globalvar.h>
+> +
+> +static const char * const scope_names[] = {
+> +	[FEATURE_SCOPE_UNKNOWN] = "unknown",
+> +	[FEATURE_SCOPE_CPU] = "cpu",
+> +	[FEATURE_SCOPE_SOC] = "soc",
+> +	[FEATURE_SCOPE_MACHINE] = "machine",
+> +};
+> +
+> +static const char * const reset_src_names[] = {
+> +	[RESET_UKWN] = "unknown",
+> +	[RESET_POR] = "POR",
+> +	[RESET_RST] = "RST",
+> +	[RESET_WDG] = "WDG",
+> +	[RESET_WKE] = "WKE",
+> +	[RESET_JTAG] = "JTAG",
+> +	[RESET_THERM] = "THERM",
+> +	[RESET_EXT] = "EXT",
+> +};
+> +
+> +/* handle reset cause detection feature */
+> +
+> +static int reset_source;
+> +static int reset_source_scope;
+> +
+> +enum reset_src_type reset_source_get(void)
+> +{
+> +	return reset_source;
+> +}
+> +EXPORT_SYMBOL(reset_source_get);
+> +
+> +static void reset_source_update_global_info(void)
+> +{
+> +	globalvar_add_simple_enum("system.reset", &reset_source, reset_src_names,
+> +					ARRAY_SIZE(reset_src_names));
+> +	globalvar_add_simple_enum("system.reset.scope", &reset_source_scope,
+> +					scope_names, ARRAY_SIZE(scope_names));
+> +}
+> +
+> +void reset_source_set(enum reset_src_type st, enum f_scope scope)
+> +{
+> +	if ((int)scope <= reset_source_scope)
+> +		return; /* just ignore this setting */
+> +
+> +	reset_source = (int)st;
+> +	reset_source_scope = (int)scope;
+> +	reset_source_update_global_info();
 
-> On Sat, Jun 20, 2015 at 02:09:12PM +0300, Antony Pavlov wrote:
-> > On Wed, 17 Jun 2015 11:28:57 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+This call is unnecessary. You can call globalvar_add_simple_enum()
+directly from the initcall.
 
-> > > On Mon, Jun 15, 2015 at 01:13:43AM +0300, Antony Pavlov wrote:
-> > > > Hi!
-> > > > =
+Sascha
 
-> > > > I have just published latest picotcp-enabled barebox.
-> > > > Please see my 20150614.picotcp branch in my github barebox repo
-> > > > (https://github.com/frantony/barebox/tree/20150614.picotcp).
-> > > > =
-
-> > ...
-> > > =
-
-> > > Why are you using the picotcp tftp implementation? picotcp surely
-> > > supports sending/receiving udp packets, right? Wouldn't it be a good
-> > > first step to replace the barebox udp API with the one picotcp provid=
-es?
-> > > I mean I would expect that you replace only the network stack, not the
-> > > network stack including the applications. If at some point we decide
-> > > that the tftp implementation in picotcp is better than the one in
-> > > barebox that would be the time to switch it.
-> > > =
-
-> > =
-
-> > I have reworked tftp support: now barebox tftp implementation is used o=
-n top
-> > of picotcp udp/ip stack and works 2 times slower than original u-boot s=
-tack-based
-> > implementation (I have tested it with sandbox arch).
-> =
-
-> Do you have an idea why this is slower? I had a quick look into it and
-> found nothing obvious.
-> =
-
-
-I have added nfs-over-picotcp support, please see https://github.com/franto=
-ny/barebox/tree/20150624.picotcp
-
-I use very simple benchmarks.
-I have sandbox barebox (192.168.1.2) and nfs- and tftp- servers on the same=
- host (192.168.1.1).
-I copy 16MiB (16777216 bytes) file from server to sandbox barebox over netw=
-ork several times.
-I use time command inside sandox barebox for computing transfer time.
-
-barebox@barebox sandbox:/ eth0.ipaddr=3D192.168.1.2
-barebox@barebox sandbox:/ mount -t tftp 192.168.1.1 /mnt
-...
-barebox@barebox sandbox:/ time cp /mnt/16M .
-time: 546ms
-
-Here is typical transfer time values:
-
-+--------+--------------+--------------+
-|        |   U-boot     |   picotcp    |
-|        |    stack     |    stack     |
-+--------+--------------+--------------+
-|        |              |              |
-|  tftp  |    546ms     |    859ms     |
-|        |              |              |
-+--------+--------------+--------------+
-|        |              |              |
-|  nfs   |   1037ms     |   1393ms     |
-|        |              |              |
-+--------+--------------+--------------+
-
-There are some rather simple possibilities to slighly improve picotcp-bareb=
-ox performance:
-
-  * drop extra memory copy;
-  * drop extra pico_tick() calls (is_timeout() calls poller_call(), so ther=
-e is no need
-                                  to call poller_call() explicitly in nfs/t=
-ftp code);
-  * there is an issue with sustained tftp small file copy. E.g.
-
-         barebox@barebox sandbox:/ ifconfig eth 192.168.1.2 255.255.255.0
-         Assigned ipv4 192.168.1.2 to device eth
-         barebox@barebox sandbox:/ mount -t tftp 192.168.1.1 /mnt
-         barebox@barebox sandbox:/ while true; do time cp /mnt/1M . ; done
-         ...
-         Warning: I have 122 timers
-         Warning: I have 121 timers
-         time: 48ms
-         Warning: I have 122 timers
-         Warning: I have 121 timers
-         time: 53ms
-         Warning: I have 122 timers
-         Warning: I have 121 timers
-         time: 54ms
-
-Just now picotcp-enabled barebox uses
-
-   * ping from picotcp;
-   * dhcp from picotcp;
-   * no DNS support.
-
-Sascha! Do you think I should use barebox' own dhcp and ping realisation or=
- keep one from picotcp?
-Should I use DNS from barebox (over picotcp) or picotcp DNS realization?
-
---
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
