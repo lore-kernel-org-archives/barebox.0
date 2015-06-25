@@ -1,27 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0b-00176a03.pphosted.com ([67.231.157.48])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z83WD-0001vD-Kr
- for barebox@lists.infradead.org; Thu, 25 Jun 2015 09:32:26 +0000
-Received: from pps.filterd (m0048206.ppops.net [127.0.0.1])
- by m0048206.ppops.net-00176a03. (8.15.0.59/8.15.0.59) with SMTP id
- t5P9W2g6007560
- for <barebox@lists.infradead.org>; Thu, 25 Jun 2015 05:32:02 -0400
-Received: from cinmlip10.e2k.ad.ge.com (n165-156-000-000.static.ge.com
- [165.156.4.1] (may be forged))
- by m0048206.ppops.net-00176a03. with ESMTP id 1v79txhj55-1
- (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
- for <barebox@lists.infradead.org>; Thu, 25 Jun 2015 05:32:02 -0400
-Received: from [3.26.68.149] (unknown [3.26.68.149])
- by selma.edi.geip.ge.com (Postfix) with ESMTP id 2F7C6E2185
- for <barebox@lists.infradead.org>; Thu, 25 Jun 2015 10:32:00 +0100 (BST)
-Message-ID: <558BCA90.2050105@ge.com>
-Date: Thu, 25 Jun 2015 10:32:00 +0100
-From: Renaud Barbier <renaud.barbier@ge.com>
-MIME-Version: 1.0
-References: <1435150649-10266-1-git-send-email-alllecs@yandex.ru>
- <1435150649-10266-2-git-send-email-alllecs@yandex.ru>
-In-Reply-To: <1435150649-10266-2-git-send-email-alllecs@yandex.ru>
+ id 1Z869U-0002ON-Q3
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 12:21:09 +0000
+Received: by laka10 with SMTP id a10so43869728lak.0
+ for <barebox@lists.infradead.org>; Thu, 25 Jun 2015 05:20:46 -0700 (PDT)
+Date: Thu, 25 Jun 2015 15:27:14 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150625152714.71ffc6272ed69a63a346ea02@gmail.com>
+In-Reply-To: <20150608184033.GL6325@pengutronix.de>
+References: <20150608184033.GL6325@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,72 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC V2 1/3] common: move DDR_SPD to common/Kconfig
-To: barebox@lists.infradead.org
+Subject: Re: v2015.06.0 ...and a new website
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-There may be an issue in the future. DDR_SPD selects the PPC Freescale
-DDR driver support (my fault for this bad choice). If somebody was to
-add and build a PPC machine with DDR support that is none of the
-Freescale boards then the Freescale DDR driver will be selected too.
+On Mon, 8 Jun 2015 20:40:33 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-To be safe, something like that could be used:
+> Hi all,
+> =
 
-diff --git a/arch/ppc/mach-mpc85xx/Makefile b/arch/ppc/mach-mpc85xx/Makefile
-index 3e64617..a7453f7 100644
---- a/arch/ppc/mach-mpc85xx/Makefile
-+++ b/arch/ppc/mach-mpc85xx/Makefile
-@@ -9,5 +9,6 @@ obj-y                   += fsl_i2c.o
- obj-$(CONFIG_MP)       += mp.o
- obj-$(CONFIG_OFTREE)   += fdt.o
- obj-$(CONFIG_DRIVER_NET_GIANFAR) += eth-devices.o
--obj-$(CONFIG_DDR_SPD)  += ../ddr-8xxx/
-+obj-$(CONFIG_FSL_DDR2) += ../ddr-8xxx/
-+obj-$(CONFIG_FSL_DDR3) += ../ddr-8xxx/
+> We have a release for June, see below for a list of changes between this
+> and the last release.
+> =
 
+> Also we are proud to anounce a new website for barebox, check it out on
+> http://www.barebox.org. We finally brought the new documentation
+> currently growing under Documentation online. Also check out our shiny
+> new logo.
 
-On 24/06/2015 13:57, Alexander Smirnov wrote:
-> This patch makes it possible to use ddr_spd-related
-> routines in any arch not only in ppc.
-> 
-> Signed-off-by: Alexander Smirnov <alllecs@yandex.ru>
-> ---
->  arch/ppc/mach-mpc85xx/Kconfig | 4 ----
->  common/Kconfig                | 4 ++++
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/ppc/mach-mpc85xx/Kconfig b/arch/ppc/mach-mpc85xx/Kconfig
-> index e29be9c..aa518b9 100644
-> --- a/arch/ppc/mach-mpc85xx/Kconfig
-> +++ b/arch/ppc/mach-mpc85xx/Kconfig
-> @@ -81,10 +81,6 @@ config P1022
->  config MPC8544
->  	bool
->  
-> -config DDR_SPD
-> -	bool
-> -	select CRC16
-> -
->  config FSL_DDR2
->  	bool
->  
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 925fe4b..91e4ef3 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -941,3 +941,7 @@ endmenu
->  
->  config HAS_DEBUG_LL
->  	bool
-> +
-> +config DDR_SPD
-> +	bool
-> +	select CRC16
-> 
+What is about adding new logo to the git repo?
 
+> On first sight it may look like a 'b' for barebox, on second
+> sight there is a box in the b. Also the b itself looks like a factory,
+> stressing barebox' use in the embedded world. Thanks Sandro for creating
+> the logo.
+> =
+
+> Sascha
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
