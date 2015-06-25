@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z8Buh-00013F-AW
- for barebox@lists.infradead.org; Thu, 25 Jun 2015 18:30:16 +0000
+ id 1Z8Buh-00013R-AV
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 18:30:17 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Jun 2015 20:29:10 +0200
-Message-Id: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
+Date: Thu, 25 Jun 2015 20:29:13 +0200
+Message-Id: <1435256953-7307-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
+References: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH repost 1/4] usb: gadget: pxa27x: depend on right symbol
+Subject: [PATCH repost 4/4] ARM: pxa: move lubbock TEXTBASE to Kconfig
 To: barebox@lists.infradead.org
 
 From: Lucas Stach <l.stach@pengutronix.de>
 
-Now that we also have PXA3XX support the dependency on
-ARCH_PXA is too broad for this driver.
+So we can drop it from the defconfig and stop bothering
+the user with this choice by default.
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
-v2:
-- use ARCH_PXA27X symbol
----
- drivers/usb/gadget/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/configs/lubbock_defconfig | 1 -
+ arch/arm/mach-pxa/Kconfig          | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
-index 5d9158f..13a3e70 100644
---- a/drivers/usb/gadget/Kconfig
-+++ b/drivers/usb/gadget/Kconfig
-@@ -25,7 +25,7 @@ config USB_GADGET_DRIVER_AT91
- config USB_GADGET_DRIVER_PXA27X
- 	bool
- 	prompt "PXA27x gadget driver"
--	depends on ARCH_PXA
-+	depends on ARCH_PXA27X
- 	default y
- 	select USB_GADGET_DUALSPEED
+diff --git a/arch/arm/configs/lubbock_defconfig b/arch/arm/configs/lubbock_defconfig
+index bf04fa3..224854c 100644
+--- a/arch/arm/configs/lubbock_defconfig
++++ b/arch/arm/configs/lubbock_defconfig
+@@ -6,7 +6,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ # CONFIG_BANNER is not set
+ CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0xa3d00000
+ CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
+ CONFIG_MALLOC_SIZE=0x1000000
+ CONFIG_EXPERIMENTAL=y
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index 610fb1c..2b7f631 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -4,6 +4,7 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0xa0000000 if MACH_MIOA701
+ 	default 0xa3f00000 if MACH_PCM027
++	default 0xa3d00000 if MACH_LUBBOCK
+ 	default 0x83f00000 if MACH_ZYLONITE
  
+ # ----------------------------------------------------------
 -- 
 2.1.0
 
