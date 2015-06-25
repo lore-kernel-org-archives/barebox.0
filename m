@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z80iq-0004D2-EG
- for barebox@lists.infradead.org; Thu, 25 Jun 2015 06:33:17 +0000
-Date: Thu, 25 Jun 2015 08:32:51 +0200
+ Linux)) id 1Z80lb-0006VY-Du
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 06:36:08 +0000
+Date: Thu, 25 Jun 2015 08:35:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150625063251.GA3795@pengutronix.de>
+Message-ID: <20150625063543.GB3795@pengutronix.de>
 References: <1435150649-10266-1-git-send-email-alllecs@yandex.ru>
- <1435150649-10266-3-git-send-email-alllecs@yandex.ru>
+ <1435150649-10266-4-git-send-email-alllecs@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1435150649-10266-3-git-send-email-alllecs@yandex.ru>
+In-Reply-To: <1435150649-10266-4-git-send-email-alllecs@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,68 +23,169 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC V2 2/3] ddr_spd: add routune for printing SPD contents in
- human readable format
+Subject: Re: [RFC V2 3/3] add decode command (SPD EEPROM data decoder)
 To: Alexander Smirnov <alllecs@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jun 24, 2015 at 03:57:28PM +0300, Alexander Smirnov wrote:
+On Wed, Jun 24, 2015 at 03:57:29PM +0300, Alexander Smirnov wrote:
+> decode-dimms perl script is used as prototype
+> (see https://github.com/groeck/i2c-tools/blob/master/eeprom/decode-dimms).
+> 
+> Here is a sample decode output:
+> 
+> barebox@barebox sandbox:/ decode env/crucial_pc2-6400_ddr2
+> Decoding EEPROM: env/crucial_pc2-6400_ddr2
+> 
+> ---=== SPD EEPROM Information ===---
+> EEPROM Checksum of bytes 0-62			 OK (0xCA)
+> Total number of bytes in EEPROM			 256
+> Fundamental Memory type				 DDR2 SDRAM
+> SPD Revision					 1.3
+> 
+> ---=== Memory Characteristics ===---
+> Maximum module speed				 800 MHz (PC2-6400)
+> Size						 1024 MB
+> Banks x Rows x Columns x Bits			 8 x 14 x 10 x 64
+> Ranks						 1
+> SDRAM Device Width				 8 bits
+> Module Height					 30.0 mm
+> Module Type					 SO-DIMM (67.6 mm)
+> DRAM Package					 Planar
+> Voltage Interface Level				 SSTL 1.8V
+> Module Configuration Type 			 No Parity
+> Refresh Rate					 Reduced (7.8 us) - Self Refresh
+> Supported Burst Lengths				 4, 8
+> Supported CAS Latencies (tCL)			 6T
+> tCL-tRCD-tRP-tRAS				 6-6-6-18 as DDR2-800
+> Minimum Cycle Time				 250 (ns*100) at CAS 6
+> Maximum Access Time				 4 (ns*10) at CAS 6
+> Maximum Cycle Time (tCK max)			 8 ns
+> 
+> ---=== Timing Parameters ===---
+> Address/Command Setup Time Before Clock (tIS)	 17 (ns*100)
+> Address/Command Hold Time After Clock (tIH)	 25 (ns*100)
+> Data Input Setup Time Before Strobe (tDS)	 5 (ns*100)
+> Data Input Hold Time After Strobe (tDH)		 12 (ns*100)
+> Minimum Row Precharge Delay (tRP)		 150 (ns*10)
+> Minimum Row Active to Row Active Delay (tRRD)	 75 (ns*10)
+> Minimum RAS# to CAS# Delay (tRCD)		 150 (ns*10)
+> Minimum RAS# Pulse Width (tRAS)			 450 (ns*10)
+> Write Recovery Time (tWR)			 150 (ns*10)
+> Minimum Write to Read CMD Delay (tWTR)		 75 (ns*10)
+> Minimum Read to Pre-charge CMD Delay (tRTP)	 75 (ns*10)
+> Minimum Active to Auto-refresh Delay (tRC)	 600 (ns*10)
+> Minimum Recovery Delay (tRFC)			 1270 (ns*10)
+> Maximum DQS to DQ Skew (tDQSQ)			 20 (ns*100)
+> Maximum Read Data Hold Skew (tQHS)		 30 (ns*100)
+> 
+> ---=== Manufacturing Information ===---
+> Manufacturer JEDEC ID				 7f 7f 7f 7f 7f 9b 00 00
+> Part Number					 CT12864AC800.M8FM8
+> Manufacturing Date				 2014-W24
+> Assembly Serial Number				 0x00000000
+> 
+> TODOs:
+> 
+>   * Timing Parameters section output format is slightly
+>     differ from decode-dimms' format;
+>   * supports only DDR2 SPD EEPROM.
+> 
 > Signed-off-by: Alexander Smirnov <alllecs@yandex.ru>
 > ---
-> +void prin(uint8_t *record)
-
-Please use a more meaningful name.
-
+>  commands/Kconfig  |  7 ++++++
+>  commands/Makefile |  1 +
+>  commands/decode.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 73 insertions(+)
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index bb6674e..9230873 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -2102,6 +2102,13 @@ config CMD_STATE
+>  	depends on STATE
+>  	prompt "state"
+>  
+> +config CMD_DECODE
+> +	tristate
+> +	prompt "decode"
+> +	select DDR_SPD
+> +	help
+> +	  decode spd eeprom
+> +
+>  # end Miscellaneous commands
+>  endmenu
+>  
+> diff --git a/commands/Makefile b/commands/Makefile
+> index 3698347..71cd877 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -112,3 +112,4 @@ obj-$(CONFIG_CMD_NV)		+= nv.o
+>  obj-$(CONFIG_CMD_DEFAULTENV)	+= defaultenv.o
+>  obj-$(CONFIG_CMD_STATE)		+= state.o
+>  obj-$(CONFIG_CMD_DHCP)		+= dhcp.o
+> +obj-$(CONFIG_CMD_DECODE)	+= decode.o
+> diff --git a/commands/decode.c b/commands/decode.c
+> new file mode 100644
+> index 0000000..80da80c
+> --- /dev/null
+> +++ b/commands/decode.c
+> @@ -0,0 +1,65 @@
+> +#include <fcntl.h>
+> +#include <common.h>
+> +#include <getopt.h>
+> +#include <command.h>
+> +#include <envfs.h>
+> +#include <errno.h>
+> +#include <fs.h>
+> +#include <libfile.h>
+> +#include <malloc.h>
+> +#include <globalvar.h>
+> +#include <stdlib.h>
+> +#include <stdio.h>
+> +#include <ddr_spd.h>
+> +
+> +void dump(uint8_t *addr, int len)
 > +{
-> +	int highestCAS = 0;
-> +	int cas[256];
-> +	int i, i_i, k, x, y;
-> +	int ddrclk, tbits, pcclk;
-> +	int trcd, trp, tras;
-> +	int ctime;
-> +	uint8_t parity;
-> +	char *ref;
+> +	int i;
 > +
-> +	ctime = ddr2_sdram_ctime(record[9]);
-> +	ddrclk = 2 * (1000 / ctime) * 100;
-> +	tbits = (record[7] << 8) + record[6];
-> +	if ((record[11] & 0x03) == 1) {
-> +		tbits = tbits - 8;
-> +	}
-> +	pcclk = ddrclk * tbits / 8;
-> +	pcclk = pcclk - (pcclk % 100);
-> +	i_i = (record[3] & 0x0f) + (record[4] & 0x0f) - 17;
-> +	k = ((record[5] & 0x7) + 1) * record[17];
-> +	trcd = ((record[29] >> 2) + ((record[29] & 3) * 0.25)) / ctime * 100;
-> +	trp = ((record[27] >> 2) + ((record[27] & 3) * 0.25)) / ctime * 100;
-> +	tras = record[30] * 100 / ctime ;
-> +	x = (int)(ctime / 100);
-> +	y = (ctime - (int)((ctime / 100) * 100)) / 10;
+> +	printf("\t 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f\n\n");
 > +
-> +	for (i_i = 2; i_i < 7; i_i++) {
-> +		if (record[18] & (1 << i_i)) {
-> +			highestCAS = i_i;
-> +		cas[highestCAS]++;
+> +	for (i = 0; i < len; i++) {
+> +		if ((i % 0x10) == 0x00) {
+> +			printf("%07x:", i);
 > +		}
-
-indention broken here.
-
+> +		printf(" %02x", addr[i]);
+> +		if ((i % 0x10) == 0xf) {
+> +			printf("\n");
+> +		}
 > +	}
 > +
-> +	printf("---=== SPD EEPROM Information ===---\n");
-> +	printf("EEPROM Checksum of bytes 0-62\t\t\t OK (0x%0X)\n", record[63]);
-> +	printf("# of bytes written to SDRAM EEPROM\t\t %d\n", record[0]);
-> +	printf("Total number of bytes in EEPROM\t\t\t %d\n", 1 << record[1]);
+> +	printf("\n");
+> +}
 > +
-> +	if (record[2] < 11) {
-> +		printf("Fundamental Memory type\t\t\t\t %s\n", type_list[record[2]]);
-> +	} else {
-> +		printf("Warning: unknown memory type (%02x)\n", record[2]);
+> +static int do_decode(int argc, char *argv[])
+> +{
+> +	int fp;
+> +	uint8_t record[256];
+> +
+> +	if (argc != 2) {
+> +		return COMMAND_ERROR_USAGE;
 > +	}
+> +
+> +	fp = open(argv[1], O_RDONLY);
+> +
+> +	if (fp < 0) {
+> +		printf("could not open %s: %s\n", argv[args], errno_str());
+> +	}
+> +
+> +	read(fp, &record[0], 256);
+> +	close(fp);
 
-Please drop unnecessary braces here and elsewhere.
+read_file_2 is your friend here. It reads a file into an allocated
+buffer.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
