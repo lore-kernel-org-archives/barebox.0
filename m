@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z81gc-0002rp-5A
- for barebox@lists.infradead.org; Thu, 25 Jun 2015 07:35:08 +0000
+ Linux)) id 1Z81gc-0002re-59
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 07:35:09 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <jbe@pengutronix.de>) id 1Z7zo6-0005rk-2A
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 07:34:38 +0200
+Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.85)
+ (envelope-from <jbe@pengutronix.de>) id 1Z81gE-0006IC-MP
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 09:34:38 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Thu, 25 Jun 2015 09:34:37 +0200
-Message-Id: <1435217677-9525-6-git-send-email-jbe@pengutronix.de>
+Date: Thu, 25 Jun 2015 09:34:33 +0200
+Message-Id: <1435217677-9525-2-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1435217677-9525-1-git-send-email-jbe@pengutronix.de>
 References: <1435217677-9525-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,390 +28,568 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] MFD/DA9053: da9053: add basic da9053 driver
+Subject: [PATCH 1/5] Reset reason: add a scope value to the reset reason
+ feature
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Some systems do have more than one source to detect the reason of a reset.
+In this case it depends on the initialization order which reason will be
+reported to barebox. To avoid this race, this change adds a scope to the
+function call to always accept settings with a wider scope and ignore
+all settings with a limited scope.
+
+This change is required to support systems where one reset reason source
+is more reliable than other sources. Examples are all i.MX SoCs with
+an internal reset reason detector and an external PMIC which has the same
+capabilities. For these systems the external PMIC provides the correct
+reset cause while the internal unit flags a POR only all the time. In order
+to support one binary for more than one machine we cannot just disable the
+internal reset reason detector, so we need this scope mechanism.
+
+Assumption in this change is, the reset cause sources with a wider scope are
+always reporting the correct reason and not vice versa.
+
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- drivers/mfd/Kconfig  |   8 ++
- drivers/mfd/Makefile |   1 +
- drivers/mfd/da9053.c | 337 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 346 insertions(+)
- create mode 100644 drivers/mfd/da9053.c
+ Documentation/user/reset-reason.rst   | 30 ++++++++++++++++++++++++++++
+ Documentation/user/system-reset.rst   |  3 ++-
+ arch/arm/mach-imx/imx1.c              |  8 ++++----
+ arch/arm/mach-omap/am33xx_generic.c   | 14 ++++++-------
+ arch/arm/mach-pxa/pxa2xx.c            | 12 ++++++------
+ arch/arm/mach-pxa/pxa3xx.c            | 12 ++++++------
+ arch/arm/mach-samsung/reset_source.c  |  8 ++++----
+ arch/arm/mach-tegra/tegra20-pmc.c     | 14 ++++++-------
+ common/Kconfig                        |  8 --------
+ common/Makefile                       |  2 +-
+ common/{reset_source.c => restart.c}  | 37 +++++++++++++++++++++++------------
+ drivers/watchdog/im28wd.c             | 12 ++++++------
+ drivers/watchdog/imxwd.c              |  8 ++++----
+ include/{reset_source.h => restart.h} | 29 +++++++++++++--------------
+ 14 files changed, 115 insertions(+), 82 deletions(-)
+ rename common/{reset_source.c => restart.c} (54%)
+ rename include/{reset_source.h => restart.h} (71%)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 3af904d..6ec66ac 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -4,6 +4,14 @@ config MFD_ACT8846
- 	depends on I2C
- 	bool "ACT8846 driver"
+diff --git a/Documentation/user/reset-reason.rst b/Documentation/user/reset-reason.rst
+index a4872fa..525ade2 100644
+--- a/Documentation/user/reset-reason.rst
++++ b/Documentation/user/reset-reason.rst
+@@ -3,6 +3,9 @@
+ Reset Reason
+ ------------
  
-+config MFD_DA9053
-+	depends on I2C
-+	bool "DA9053 PMIC driver"
-+	help
-+	  This power management controller provides configureable power supplies,
-+	  a machine restart feature and a watchdog which are effective machine
-+	  wide.
++Using the Reset Reason
++~~~~~~~~~~~~~~~~~~~~~~
 +
- config MFD_LP3972
- 	depends on I2C
- 	bool "LP3972 driver"
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 49b9e35..2899dde 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_MFD_ACT8846)	+= act8846.o
-+obj-$(CONFIG_MFD_DA9053)	+= da9053.o
- obj-$(CONFIG_MFD_LP3972)	+= lp3972.o
- obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx.o
- obj-$(CONFIG_MFD_MC34704)	+= mc34704.o
-diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
-new file mode 100644
-index 0000000..6e86195
---- /dev/null
-+++ b/drivers/mfd/da9053.c
-@@ -0,0 +1,337 @@
-+/*
-+ * Copyright (C) 2013 Jan Luebbe <jlu@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ *
-+ */
+ To handle a device in a secure and safty manner many applications are using
+ a watchdog or other ways to reset a system to bring it back into life if it
+ hangs or crashes somehow.
+@@ -45,3 +48,30 @@ The following values can help to detect the reason why the bootloader runs:
+ It depends on your board/SoC and its features if the hardware is able to detect
+ these reset reasons. Most of the time only ``POR`` and ``RST`` are supported
+ but often ``WDG`` as well.
 +
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <xfuncs.h>
-+#include <errno.h>
-+#include <watchdog.h>
++.. _reset_reason_scope:
 +
-+#include <i2c/i2c.h>
++Scope of Reset Reason
++~~~~~~~~~~~~~~~~~~~~~
++
++Some machines can detect the reset reason via different devices, for example
++via a SoC internal devices and an externally attached device. Both can provide
++the correct reason - or not. If their reset reason point of view differ, you
++need a ``scope`` to decide what reason is the correct one. Barebox provides
++the reset reason scope via the global variable ``system.reset.scope`` and
++the following values:
++
++* ``unknown``: the software can't define the scope of the reset reason.
++* ``cpu``: the inner core CPU only point of view.
++* ``soc``: the full SoC point of view.
++* ``machine``: the full machine point of view
++
++The scopes are rated: lowest rate is ``unknown`` and ``cpu``. The highest
++rate has the ``machine`` point of view. The ``soc`` point of view in inbetween.
++
++Why can the reset reason differ due to different scopes? Think about a SoC which
++is powered by a PMIC: the reset reason detection inside the SoC has the ``soc``
++scope, the PMIC's reset reason detection has the ``machine`` scope. In this case
++the ``soc`` scope reset reason is always ``POR``, while the ``machine`` scope
++reset reason is ``POR`` only on a real POR, ``RST`` due to an user
++intervention and ``WDG`` because the system has failed somehow.
+diff --git a/Documentation/user/system-reset.rst b/Documentation/user/system-reset.rst
+index e76e3a2..e902026 100644
+--- a/Documentation/user/system-reset.rst
++++ b/Documentation/user/system-reset.rst
+@@ -61,4 +61,5 @@ wide reset, like the POR is.
+ Drawback of the PMIC solution is, you can't use the SoC's internal mechanisms to
+ detect the :ref:`reset_reason` anymore. From the SoC point of view it is always
+ a POR when the PMIC handles the system reset. If you are in luck the PMIC
+-instead can provide this information if you depend on it.
++instead can provide this information if you depend on it. Refer
++:ref:`reset_reason_scope` for further information.
+diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
+index 51bdcbf..a3759df 100644
+--- a/arch/arm/mach-imx/imx1.c
++++ b/arch/arm/mach-imx/imx1.c
+@@ -18,7 +18,7 @@
+ #include <mach/weim.h>
+ #include <mach/iomux-v1.h>
+ #include <mach/generic.h>
+-#include <reset_source.h>
 +#include <restart.h>
+ 
+ #define MX1_RSR MX1_SCM_BASE_ADDR
+ #define RSR_EXR	(1 << 0)
+@@ -30,13 +30,13 @@ static void imx1_detect_reset_source(void)
+ 
+ 	switch (val) {
+ 	case RSR_EXR:
+-		reset_source_set(RESET_RST);
++		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ 		return;
+ 	case RSR_WDR:
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 		return;
+ 	case 0:
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 		return;
+ 	default:
+ 		/* else keep the default 'unknown' state */
+diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+index 7ce32f0..8ac1290 100644
+--- a/arch/arm/mach-omap/am33xx_generic.c
++++ b/arch/arm/mach-omap/am33xx_generic.c
+@@ -26,7 +26,7 @@
+ #include <mach/sys_info.h>
+ #include <mach/am33xx-generic.h>
+ #include <mach/gpmc.h>
+-#include <reset_source.h>
 +#include <restart.h>
+ 
+ void __noreturn am33xx_reset_cpu(unsigned long addr)
+ {
+@@ -167,23 +167,23 @@ static void am33xx_detect_reset_reason(void)
+ 
+ 	switch (val) {
+ 	case (1 << 9):
+-		reset_source_set(RESET_JTAG);
++		reset_source_set(RESET_JTAG, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case (1 << 5):
+-		reset_source_set(RESET_EXT);
++		reset_source_set(RESET_EXT, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case (1 << 4):
+ 	case (1 << 3):
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case (1 << 1):
+-		reset_source_set(RESET_RST);
++		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case (1 << 0):
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 		break;
+ 	default:
+-		reset_source_set(RESET_UKWN);
++		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+ 		break;
+ 	}
+ }
+diff --git a/arch/arm/mach-pxa/pxa2xx.c b/arch/arm/mach-pxa/pxa2xx.c
+index b712b38..973e394 100644
+--- a/arch/arm/mach-pxa/pxa2xx.c
++++ b/arch/arm/mach-pxa/pxa2xx.c
+@@ -14,7 +14,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <reset_source.h>
++#include <restart.h>
+ #include <mach/hardware.h>
+ #include <mach/pxa-regs.h>
+ 
+@@ -28,15 +28,15 @@ static int pxa_detect_reset_source(void)
+ 	 * Order is important, as many bits can be set together
+ 	 */
+ 	if (reg & RCSR_GPR)
+-		reset_source_set(RESET_RST);
++		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ 	else if (reg & RCSR_WDR)
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 	else if (reg & RCSR_HWR)
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 	else if (reg & RCSR_SMR)
+-		reset_source_set(RESET_WKE);
++		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+ 	else
+-		reset_source_set(RESET_UKWN);
++		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-pxa/pxa3xx.c b/arch/arm/mach-pxa/pxa3xx.c
+index 86ca63b..e273996 100644
+--- a/arch/arm/mach-pxa/pxa3xx.c
++++ b/arch/arm/mach-pxa/pxa3xx.c
+@@ -14,7 +14,7 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <reset_source.h>
++#include <restart.h>
+ #include <mach/hardware.h>
+ #include <mach/pxa-regs.h>
+ 
+@@ -28,15 +28,15 @@ static int pxa_detect_reset_source(void)
+ 	 * Order is important, as many bits can be set together
+ 	 */
+ 	if (reg & ARSR_GPR)
+-		reset_source_set(RESET_RST);
++		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ 	else if (reg & ARSR_WDT)
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 	else if (reg & ARSR_HWR)
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 	else if (reg & ARSR_LPMR)
+-		reset_source_set(RESET_WKE);
++		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+ 	else
+-		reset_source_set(RESET_UKWN);
++		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-samsung/reset_source.c b/arch/arm/mach-samsung/reset_source.c
+index c1365b2..e122909 100644
+--- a/arch/arm/mach-samsung/reset_source.c
++++ b/arch/arm/mach-samsung/reset_source.c
+@@ -15,7 +15,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <reset_source.h>
++#include <restart.h>
+ #include <mach/s3c-iomap.h>
+ 
+ /* S3C2440 relevant */
+@@ -29,21 +29,21 @@ static int s3c_detect_reset_source(void)
+ 	u32 reg = readl(S3C_GPIO_BASE + S3C2440_GSTATUS2);
+ 
+ 	if (reg & S3C2440_GSTATUS2_PWRST) {
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 		writel(S3C2440_GSTATUS2_PWRST,
+ 					S3C_GPIO_BASE + S3C2440_GSTATUS2);
+ 		return 0;
+ 	}
+ 
+ 	if (reg & S3C2440_GSTATUS2_SLEEPRST) {
+-		reset_source_set(RESET_WKE);
++		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+ 		writel(S3C2440_GSTATUS2_SLEEPRST,
+ 					S3C_GPIO_BASE + S3C2440_GSTATUS2);
+ 		return 0;
+ 	}
+ 
+ 	if (reg & S3C2440_GSTATUS2_WDRST) {
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 		writel(S3C2440_GSTATUS2_WDRST,
+ 					S3C_GPIO_BASE + S3C2440_GSTATUS2);
+ 		return 0;
+diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
+index eaa5ac7..6493eea 100644
+--- a/arch/arm/mach-tegra/tegra20-pmc.c
++++ b/arch/arm/mach-tegra/tegra20-pmc.c
+@@ -28,7 +28,7 @@
+ #include <linux/reset.h>
+ #include <mach/lowlevel.h>
+ #include <mach/tegra-powergate.h>
+-#include <reset_source.h>
++#include <restart.h>
+ 
+ #include <mach/tegra20-pmc.h>
+ 
+@@ -180,22 +180,22 @@ static void tegra20_pmc_detect_reset_cause(void)
+ 	switch ((reg & PMC_RST_STATUS_RST_SRC_MASK) >>
+ 	         PMC_RST_STATUS_RST_SRC_SHIFT) {
+ 	case PMC_RST_STATUS_RST_SRC_POR:
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case PMC_RST_STATUS_RST_SRC_WATCHDOG:
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case PMC_RST_STATUS_RST_SRC_LP0:
+-		reset_source_set(RESET_WKE);
++		reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case PMC_RST_STATUS_RST_SRC_SW_MAIN:
+-		reset_source_set(RESET_RST);
++		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ 		break;
+ 	case PMC_RST_STATUS_RST_SRC_SENSOR:
+-		reset_source_set(RESET_THERM);
++		reset_source_set(RESET_THERM, FEATURE_SCOPE_SOC);
+ 		break;
+ 	default:
+-		reset_source_set(RESET_UKWN);
++		reset_source_set(RESET_UKWN, FEATURE_SCOPE_SOC);
+ 		break;
+ 	}
+ }
+diff --git a/common/Kconfig b/common/Kconfig
+index 3dfb5ac..f241482 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -716,14 +716,6 @@ config STATE
+ 	select OFTREE
+ 	select PARAMETER
+ 
+-config RESET_SOURCE
+-	bool "detect Reset cause"
+-	depends on GLOBALVAR
+-	help
+-	  Provide a global variable at runtine which reflects the possible cause
+-	  of the reset and why the bootloader is currently running. It can be
+-	  useful for any kind of system recovery or repair.
+-
+ endmenu
+ 
+ menu "Debugging"
+diff --git a/common/Makefile b/common/Makefile
+index 2738238..16e6690 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -8,6 +8,7 @@ obj-y				+= misc.o
+ obj-y				+= memsize.o
+ obj-y				+= resource.o
+ obj-y				+= bootsource.o
++obj-y				+= restart.o
+ obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
+ obj-$(CONFIG_BANNER)		+= version.o
+ obj-$(CONFIG_BAREBOX_UPDATE)	+= bbu.o
+@@ -40,7 +41,6 @@ obj-$(CONFIG_OFTREE)		+= oftree.o
+ obj-$(CONFIG_PARTITION_DISK)	+= partitions.o partitions/
+ obj-$(CONFIG_PASSWORD)		+= password.o
+ obj-$(CONFIG_POLLER)		+= poller.o
+-obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
+ obj-$(CONFIG_SHELL_HUSH)	+= hush.o
+ obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
+ obj-$(CONFIG_STATE)		+= state.o
+diff --git a/common/reset_source.c b/common/restart.c
+similarity index 54%
+rename from common/reset_source.c
+rename to common/restart.c
+index 80002a9..5b53264 100644
+--- a/common/reset_source.c
++++ b/common/restart.c
+@@ -1,5 +1,5 @@
+ /*
+- * (C) Copyright 2012 Juergen Beisert - <kernel@pengutronix.de>
++ * (C) Copyright 2015 Juergen Borleis - <kernel@pengutronix.de>
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License as
+@@ -14,9 +14,15 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <environment.h>
++#include <restart.h>
+ #include <globalvar.h>
+-#include <reset_source.h>
 +
-+#define DRIVERNAME		"da9053"
++static const char * const scope_names[] = {
++	[FEATURE_SCOPE_UNKNOWN] = "unknown",
++	[FEATURE_SCOPE_CPU] = "cpu",
++	[FEATURE_SCOPE_SOC] = "soc",
++	[FEATURE_SCOPE_MACHINE] = "machine",
++};
+ 
+ static const char * const reset_src_names[] = {
+ 	[RESET_UKWN] = "unknown",
+@@ -29,7 +35,10 @@ static const char * const reset_src_names[] = {
+ 	[RESET_EXT] = "EXT",
+ };
+ 
+-static enum reset_src_type reset_source;
++/* handle reset cause detection feature */
 +
-+/* STATUS REGISTERS */
-+#define DA9053_STATUS_A_REG		1
-+#define DA9053_STATUS_B_REG		2
-+#define DA9053_STATUS_C_REG		3
-+#define DA9053_STATUS_D_REG		4
++static int reset_source;
++static int reset_source_scope;
+ 
+ enum reset_src_type reset_source_get(void)
+ {
+@@ -37,20 +46,22 @@ enum reset_src_type reset_source_get(void)
+ }
+ EXPORT_SYMBOL(reset_source_get);
+ 
+-void reset_source_set(enum reset_src_type st)
++void reset_source_set(enum reset_src_type st, enum f_scope scope)
+ {
+-	reset_source = st;
++	if (scope <= reset_source_scope)
++		return; /* just ignore this setting */
+ 
+-	globalvar_add_simple("system.reset", reset_src_names[reset_source]);
++	reset_source = st;
++	reset_source_scope = scope;
+ }
+ EXPORT_SYMBOL(reset_source_set);
+ 
+-/* ensure this runs after the 'global' device is already registerd */
+-static int reset_source_init(void)
++static int reset_feature_init(void)
+ {
+-	reset_source_set(reset_source);
+-
++	globalvar_add_simple_enum("system.reset", &reset_source, reset_src_names,
++					ARRAY_SIZE(reset_src_names));
++	globalvar_add_simple_enum("system.reset.scope", &reset_source_scope,
++					scope_names, ARRAY_SIZE(scope_names));
+ 	return 0;
+ }
+-
+-coredevice_initcall(reset_source_init);
++coredevice_initcall(reset_feature_init);
+diff --git a/drivers/watchdog/im28wd.c b/drivers/watchdog/im28wd.c
+index a9093a7..c824a25 100644
+--- a/drivers/watchdog/im28wd.c
++++ b/drivers/watchdog/im28wd.c
+@@ -21,7 +21,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <watchdog.h>
+-#include <reset_source.h>
++#include <restart.h>
+ #include <linux/err.h>
+ 
+ #define MXS_RTC_CTRL 0x0
+@@ -164,27 +164,27 @@ static void __maybe_unused imx28_detect_reset_source(const struct imx28_wd *p)
+ 		if (reg & MXS_RTC_PERSISTENT0_ALARM_WAKE) {
+ 			writel(MXS_RTC_PERSISTENT0_ALARM_WAKE,
+ 				p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
+-			reset_source_set(RESET_WKE);
++			reset_source_set(RESET_WKE, FEATURE_SCOPE_SOC);
+ 			return;
+ 		}
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 		return;
+ 	}
+ 	if (reg & MXS_RTC_PERSISTENT0_THM_RST) {
+ 		writel(MXS_RTC_PERSISTENT0_THM_RST,
+ 			p->regs + MXS_RTC_PERSISTENT0 + MXS_RTC_CLR_ADDR);
+-		reset_source_set(RESET_RST);
++		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ 		return;
+ 	}
+ 	reg = readl(p->regs + MXS_RTC_PERSISTENT1);
+ 	if (reg & MXS_RTC_PERSISTENT1_FORCE_UPDATER) {
+ 		writel(MXS_RTC_PERSISTENT1_FORCE_UPDATER,
+ 			p->regs + MXS_RTC_PERSISTENT1 + MXS_RTC_CLR_ADDR);
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 		return;
+ 	}
+ 
+-	reset_source_set(RESET_RST);
++	reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ }
+ 
+ static int imx28_wd_probe(struct device_d *dev)
+diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+index 5ffbac7..f3decae 100644
+--- a/drivers/watchdog/imxwd.c
++++ b/drivers/watchdog/imxwd.c
+@@ -19,7 +19,7 @@
+ #include <errno.h>
+ #include <malloc.h>
+ #include <watchdog.h>
+-#include <reset_source.h>
++#include <restart.h>
+ 
+ struct imx_wd;
+ 
+@@ -138,17 +138,17 @@ static void imx_watchdog_detect_reset_source(struct imx_wd *priv)
+ 	u16 val = readw(priv->base + IMX21_WDOG_WSTR);
+ 
+ 	if (val & WSTR_COLDSTART) {
+-		reset_source_set(RESET_POR);
++		reset_source_set(RESET_POR, FEATURE_SCOPE_SOC);
+ 		return;
+ 	}
+ 
+ 	if (val & (WSTR_HARDRESET | WSTR_WARMSTART)) {
+-		reset_source_set(RESET_RST);
++		reset_source_set(RESET_RST, FEATURE_SCOPE_SOC);
+ 		return;
+ 	}
+ 
+ 	if (val & WSTR_WDOG) {
+-		reset_source_set(RESET_WDG);
++		reset_source_set(RESET_WDG, FEATURE_SCOPE_SOC);
+ 		return;
+ 	}
+ 
+diff --git a/include/reset_source.h b/include/restart.h
+similarity index 71%
+rename from include/reset_source.h
+rename to include/restart.h
+index 367f93b..4215760 100644
+--- a/include/reset_source.h
++++ b/include/restart.h
+@@ -10,8 +10,18 @@
+  * GNU General Public License for more details.
+  */
+ 
+-#ifndef __INCLUDE_RESET_SOURCE_H
+-# define __INCLUDE_RESET_SOURCE_H
++#ifndef __INCLUDE_SYSTEM_RESTART_H
++# define __INCLUDE_SYSTEM_RESTART_H
 +
-+/* PARK REGISTER */
-+#define DA9053_PARK_REGISTER		DA9053_STATUS_D_REG
-+
-+/* EVENT REGISTERS */
-+#define DA9053_EVENT_A_REG		5
-+#define DA9053_EVENT_B_REG		6
-+#define DA9053_EVENT_C_REG		7
-+#define DA9053_EVENT_D_REG		8
-+#define DA9053_FAULTLOG_REG		9
-+
-+/* IRQ REGISTERS */
-+#define DA9053_IRQ_MASK_A_REG		10
-+#define DA9053_IRQ_MASK_B_REG		11
-+#define DA9053_IRQ_MASK_C_REG		12
-+#define DA9053_IRQ_MASK_D_REG		13
-+
-+/* CONTROL REGISTERS */
-+#define DA9053_CONTROL_A_REG		14
-+#define DA9053_CONTROL_B_REG		15
-+#define DA9053_CONTROL_C_REG		16
-+#define DA9053_CONTROL_D_REG		17
-+
-+#define DA9053_PDDIS_REG		18
-+#define DA9053_INTERFACE_REG		19
-+#define DA9053_RESET_REG		20
-+
-+/* FAULT LOG REGISTER BITS */
-+#define DA9053_FAULTLOG_WAITSET		0X80
-+#define DA9053_FAULTLOG_NSDSET		0X40
-+#define DA9053_FAULTLOG_KEYSHUT		0X20
-+#define DA9053_FAULTLOG_TEMPOVER	0X08
-+#define DA9053_FAULTLOG_VDDSTART	0X04
-+#define DA9053_FAULTLOG_VDDFAULT	0X02
-+#define DA9053_FAULTLOG_TWDERROR	0X01
-+
-+/* CONTROL REGISTER B BITS */
-+#define DA9053_CONTROLB_SHUTDOWN	0X80
-+#define DA9053_CONTROLB_DEEPSLEEP	0X40
-+#define DA9053_CONTROLB_WRITEMODE	0X20
-+#define DA9053_CONTROLB_BBATEN		0X10
-+#define DA9053_CONTROLB_OTPREADEN	0X08
-+#define DA9053_CONTROLB_AUTOBOOT	0X04
-+#define DA9053_CONTROLB_ACTDIODE	0X02
-+#define DA9053_CONTROLB_BUCKMERGE	0X01
-+
-+/* CONTROL REGISTER D BITS */
-+#define DA9053_CONTROLD_WATCHDOG	0X80
-+#define DA9053_CONTROLD_ACCDETEN	0X40
-+#define DA9053_CONTROLD_GPI1415SD	0X20
-+#define DA9053_CONTROLD_NONKEYSD	0X10
-+#define DA9053_CONTROLD_KEEPACTEN	0X08
-+#define DA9053_CONTROLD_TWDSCALE	0X07
-+
-+struct da9053_priv {
-+	struct cdev		cdev;
-+	struct watchdog		wd;
-+	struct i2c_client	*client;
++/* define a scope a specific hardware feature can cope with */
++enum f_scope {
++	FEATURE_SCOPE_UNKNOWN,
++	FEATURE_SCOPE_CPU,
++	FEATURE_SCOPE_SOC,
++	FEATURE_SCOPE_MACHINE,
 +};
 +
-+#define cdev_to_da9053_priv(x)	container_of(x, struct da9053_priv, cdev)
-+#define wd_to_da9053_priv(x)	container_of(x, struct da9053_priv, wd)
-+
-+static int da9053_reg_read(struct da9053_priv *da9053, u32 reg, u8 *val)
-+{
-+	int ret;
-+
-+	ret = i2c_read_reg(da9053->client, reg, val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+static int da9053_reg_write(struct da9053_priv *da9053, u32 reg, u8 val)
-+{
-+	int ret;
-+
-+	ret = i2c_write_reg(da9053->client, reg, &val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+static int da9053_park(struct da9053_priv *da9053)
-+{
-+	int ret;
-+	u8 val;
-+
-+	ret = i2c_read_reg(da9053->client, DA9053_PARK_REGISTER, &val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+static ssize_t da9053_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
-+{
-+	struct da9053_priv *da9053 = cdev_to_da9053_priv(cdev);
-+	u8 *buf = _buf;
-+	size_t i = count;
-+	int err;
-+
-+	while (i) {
-+		err = da9053_reg_read(da9053, offset, buf);
-+		if (err) {
-+			da9053_park(da9053);
-+			return (ssize_t)err;
-+		}
-+		buf++;
-+		i--;
-+		offset++;
-+	}
-+
-+	if (da9053_park(da9053) < 0)
-+		return -EIO;
-+
-+	return count;
-+}
-+
-+static int da9053_enable_multiwrite(struct da9053_priv *da9053)
-+{
-+	int ret;
-+	u8 val;
-+
-+	ret = da9053_reg_read(da9053, DA9053_CONTROL_B_REG, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (val & DA9053_CONTROLB_WRITEMODE) {
-+		val &= ~DA9053_CONTROLB_WRITEMODE;
-+		ret = da9053_reg_write(da9053, DA9053_CONTROL_B_REG, val);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	ret = da9053_park(da9053);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static struct file_operations da9053_fops = {
-+	.lseek	= dev_lseek_default,
-+	.read	= da9053_read,
-+};
-+
-+static int da9053_set_timeout(struct watchdog *wd, unsigned timeout)
-+{
-+	struct da9053_priv *da9053 = wd_to_da9053_priv(wd);
-+	struct device_d *dev = da9053->cdev.dev;
-+	unsigned scale = 0;
-+	int ret;
-+	u8 val;
-+
-+	if (timeout > 131)
-+		return -EINVAL;
-+
-+	if (timeout) {
-+		timeout *= 1000; /* convert to ms */
-+		scale = 0;
-+		while (timeout > (2048 << scale) && scale <= 6)
-+			scale++;
-+		dev_dbg(dev, "calculated TWDSCALE=%u (req=%ims calc=%ims)\n",
-+		        scale, timeout, 2048 << scale);
-+		scale++; /* scale 0 disables the WD */
-+	}
-+
-+	ret = da9053_reg_read(da9053, DA9053_CONTROL_D_REG, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	dev_dbg(dev, "read watchdog (val=0x%02x)\n", val);
-+
-+	if (scale && scale == (val & DA9053_CONTROLD_TWDSCALE)) {
-+		/* trigger WD */
-+		val |= DA9053_CONTROLD_WATCHDOG;
-+		ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
-+		if (ret < 0)
-+			return ret;
-+		dev_dbg(dev, "triggered watchdog (val=0x%02x)\n", val);
-+	} else {
-+		/* disable WD first */
-+		val &= ~DA9053_CONTROLD_TWDSCALE;
-+		ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
-+		if (ret < 0)
-+			return ret;
-+
-+		dev_dbg(dev, "disabled watchdog (val=0x%02x)\n", val);
-+		if (scale) {
-+			/* park before waiting */
-+			ret = da9053_park(da9053);
-+			if (ret < 0)
-+				return ret;
-+
-+			/* wait required time */
-+			udelay(150);
-+
-+			/* enable WD with new timeout */
-+			val |= scale;
-+			ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
-+			if (ret < 0)
-+				return ret;
-+			dev_dbg(dev, "enabled watchdog (val=0x%02x)\n", val);
-+		}
-+	}
-+
-+	ret = da9053_park(da9053);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static void da9053_detect_reset_source(struct da9053_priv *da9053)
-+{
-+	int ret;
-+	u8 val;
-+
-+	ret = da9053_reg_read(da9053, DA9053_FAULTLOG_REG, &val);
-+	if (ret < 0)
-+		return;
-+
-+	ret = da9053_park(da9053);
-+	if (ret < 0)
-+		return;
-+
-+	if (val & DA9053_FAULTLOG_TWDERROR) {
-+		reset_source_set(RESET_WDG, FEATURE_SCOPE_MACHINE);
-+		return;
-+	}
-+
-+	if (val & DA9053_FAULTLOG_VDDFAULT) {
-+		reset_source_set(RESET_POR, FEATURE_SCOPE_MACHINE);
-+		return;
-+	}
-+
-+	if (val & DA9053_FAULTLOG_NSDSET) {
-+		reset_source_set(RESET_RST, FEATURE_SCOPE_MACHINE);
-+		return;
-+	}
-+
-+	/* else keep the default 'unknown' state */
-+}
-+
-+static void __noreturn da9053_force_system_reset(struct device_d *dev)
-+{
-+	struct da9053_priv *da9053 = dev->priv;
-+	u8 val;
-+	int ret;
-+
-+	ret = da9053_reg_read(da9053, DA9053_CONTROL_B_REG, &val);
-+	if (ret < 0)
-+		hang();
-+
-+	val |= DA9053_CONTROLB_SHUTDOWN;
-+	ret = da9053_reg_write(da9053, DA9053_CONTROL_B_REG, val);
-+	if (ret < 0)
-+		hang();
-+
-+	da9053_park(da9053);
-+
-+	hang();
-+}
-+
-+static int da9053_probe(struct device_d *dev)
-+{
-+	struct da9053_priv *da9053;
-+	int ret;
-+
-+	da9053 = xzalloc(sizeof(struct da9053_priv));
-+	dev->priv = da9053;
-+	da9053->cdev.name = DRIVERNAME;
-+	da9053->client = to_i2c_client(dev);
-+	da9053->cdev.size = 128;
-+	da9053->cdev.dev = dev;
-+	da9053->cdev.ops = &da9053_fops;
-+	da9053->wd.set_timeout = da9053_set_timeout;
-+	da9053->wd.scope = FEATURE_SCOPE_MACHINE;
-+
-+	ret = da9053_enable_multiwrite(da9053);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = watchdog_register(&da9053->wd);
-+	if (ret)
-+		return ret;
-+
-+	da9053_detect_reset_source(da9053);
-+
-+	restart_register_handler(da9053_force_system_reset, dev, FEATURE_SCOPE_MACHINE);
-+
-+	return 0;
-+}
-+
-+static struct driver_d da9053_driver = {
-+	.name  = DRIVERNAME,
-+	.probe = da9053_probe,
-+};
-+
-+static int da9053_init(void)
-+{
-+	i2c_driver_register(&da9053_driver);
-+	return 0;
-+}
-+
-+device_initcall(da9053_init);
++/* reset cause detection feature */
+ 
+ enum reset_src_type {
+ 	RESET_UKWN,	/* maybe the SoC cannot detect the reset source */
+@@ -24,18 +34,7 @@ enum reset_src_type {
+ 	RESET_EXT,	/* External reset through device pin */
+ };
+ 
+-#ifdef CONFIG_RESET_SOURCE
+-void reset_source_set(enum reset_src_type);
++void reset_source_set(enum reset_src_type, enum f_scope);
+ enum reset_src_type reset_source_get(void);
+-#else
+-static inline void reset_source_set(enum reset_src_type unused)
+-{
+-}
+-
+-static inline enum reset_src_type reset_source_get(void)
+-{
+-	return RESET_UKWN;
+-}
+-#endif
+ 
+-#endif /* __INCLUDE_RESET_SOURCE_H */
++#endif /* __INCLUDE_SYSTEM_RESTART_H */
 -- 
 2.1.4
 
