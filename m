@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z869U-0002ON-Q3
- for barebox@lists.infradead.org; Thu, 25 Jun 2015 12:21:09 +0000
-Received: by laka10 with SMTP id a10so43869728lak.0
- for <barebox@lists.infradead.org>; Thu, 25 Jun 2015 05:20:46 -0700 (PDT)
-Date: Thu, 25 Jun 2015 15:27:14 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150625152714.71ffc6272ed69a63a346ea02@gmail.com>
-In-Reply-To: <20150608184033.GL6325@pengutronix.de>
-References: <20150608184033.GL6325@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z86Z7-0006vp-N2
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 12:47:38 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Thu, 25 Jun 2015 14:47:10 +0200
+Message-Id: <1435236431-11021-2-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1435236431-11021-1-git-send-email-mkl@pengutronix.de>
+References: <1435236431-11021-1-git-send-email-mkl@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +17,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: v2015.06.0 ...and a new website
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] fixup! state: add support for fixed length strings
+To: barebox@lists.infradead.org
 
-On Mon, 8 Jun 2015 20:40:33 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> Hi all,
-> =
-
-> We have a release for June, see below for a list of changes between this
-> and the last release.
-> =
-
-> Also we are proud to anounce a new website for barebox, check it out on
-> http://www.barebox.org. We finally brought the new documentation
-> currently growing under Documentation online. Also check out our shiny
-> new logo.
-
-What is about adding new logo to the git repo?
-
-> On first sight it may look like a 'b' for barebox, on second
-> sight there is a box in the b. Also the b itself looks like a factory,
-> stressing barebox' use in the embedded world. Thanks Sandro for creating
-> the logo.
-> =
-
-> Sascha
-
---=A0
-Best regards,
-=A0 Antony Pavlov
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVWxyaWNoIMOWbG1hbm4gPHUub2VsbWFubkBwZW5ndXRyb25peC5kZT4KClNpZ25lZC1v
+ZmYtYnk6IFVscmljaCDDlmxtYW5uIDx1Lm9lbG1hbm5AcGVuZ3V0cm9uaXguZGU+ClNpZ25lZC1v
+ZmYtYnk6IE1hcmMgS2xlaW5lLUJ1ZGRlIDxta2xAcGVuZ3V0cm9uaXguZGU+Ci0tLQogRG9jdW1l
+bnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2JhcmVib3gvYmFyZWJveCxzdGF0ZS5yc3QgfCAy
+ICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYg
+LS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJveC9iYXJlYm94
+LHN0YXRlLnJzdCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9iYXJlYm94L2Jh
+cmVib3gsc3RhdGUucnN0CmluZGV4IDZkZWQxNjFlNjE4ZC4uNGM1YjA2ZGI0N2Y2IDEwMDY0NAot
+LS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJveC9iYXJlYm94LHN0
+YXRlLnJzdAorKysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYmFyZWJveC9i
+YXJlYm94LHN0YXRlLnJzdApAQCAtODcsNyArODcsNyBAQCBWYXJpYWJsZSBUeXBlcwogCiAqIGBg
+dWludDhgYDoKICogYGB1aW50MzJgYDoKLSogYGBlbnVtMzJgYDogVGhlIGBgZGVmYXVsdGBgIHZh
+bHVlIGl0IGlzIGFuIGludGVnZXIgcmVwcmVzZW50aW5nIGFuCisqIGBgZW51bTMyYGA6IFRoZSBg
+YGRlZmF1bHRgYCB2YWx1ZSBpcyBhbiBpbnRlZ2VyIHJlcHJlc2VudGluZyBhbgogICBvZmZzZXQg
+aW50byB0aGUgbmFtZXMgYXJyYXkuCiAqIGBgbWFjYGA6CiAqIGBgc3RyaW5nYGA6IFRoZSBsZW5n
+dGggb2YgdGhlIHN0cmluZyBleGNsdWRpbmcgdGhlIHRyYWlsaW5nIDAgaXMKLS0gCjIuMS40CgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
