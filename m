@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z81Bv-0003qf-E5
- for barebox@lists.infradead.org; Thu, 25 Jun 2015 07:03:20 +0000
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Thu, 25 Jun 2015 09:06:05 +0200
-References: <1434969204-11433-1-git-send-email-jbe@pengutronix.de>
- <1434969204-11433-4-git-send-email-jbe@pengutronix.de>
- <20150624183440.GT26575@pengutronix.de>
-In-Reply-To: <20150624183440.GT26575@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201506250906.06141.jbe@pengutronix.de>
+ Linux)) id 1Z81ZF-0005qP-5a
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 07:27:26 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 25 Jun 2015 09:27:01 +0200
+Message-Id: <1435217221-8086-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,57 +14,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] System restart: add a scope value to the system
- restart feature
-To: barebox@lists.infradead.org
+Subject: [PATCH] image_renderer: Use read_file_2
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Sascha,
+This returns a proper error code and allows us to print a proper
+error message which might not always be -ENOMEM.
 
-On Wednesday 24 June 2015 20:34:40 Sascha Hauer wrote:
-> On Mon, Jun 22, 2015 at 12:33:21PM +0200, Juergen Borleis wrote:
-> > Some systems have more than one feature to restart it. Maybe these
-> > restarts features are all equal or it is very important which restart
-> > feauture is used to restart the system in a reliable manner. For example
-> > if external devices must be reset in conjunction with the SoC some SoC's
-> > internal restart features cannot be used. Then an external restart
-> > feature must be forced instead by using the restart feature with the
-> > wider scope.
->
-> It seems this patch misses several conversions from reset_cpu to
-> restart_machine:
->
-> ./arch/mips/lib/bootm.c:23:     reset_cpu(0);
-> ./arch/ppc/lib/ppclinux.c:90:   reset_cpu(0);
-> ./arch/sandbox/os/common.c:144:                 reset_cpu(0);
-> ./arch/sandbox/os/common.c:152:                 reset_cpu(0);
-> ./arch/arm/mach-at91/bootstrap.c:148:   reset_cpu(0);
-> ./arch/arm/mach-tegra/tegra20-pmc.c:221:        reset_cpu(0);
-> ./arch/blackfin/lib/traps.c:94: reset_cpu(0);
-> ./arch/blackfin/lib/traps.c:104:        reset_cpu(0);
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/gui/image_renderer.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Hmm, interesting. I did a sed replacement in the whole source tree. Don't k=
-now =
+diff --git a/lib/gui/image_renderer.c b/lib/gui/image_renderer.c
+index dd29389..9bef99a 100644
+--- a/lib/gui/image_renderer.c
++++ b/lib/gui/image_renderer.c
+@@ -37,10 +37,10 @@ struct image *image_renderer_open(const char* file)
+ 	struct image *img;
+ 	int ret;
+ 
+-	data = read_file(file, &size);
+-	if (!data) {
+-		printf("unable to read %s\n", file);
+-		return ERR_PTR(-ENOMEM);
++	ret = read_file_2(file, &size, &data, FILESIZE_MAX);
++	if (ret) {
++		printf("unable to read %s: %s\n", file, strerror(-ret));
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	ir = get_renderer(data, size);
+-- 
+2.1.4
 
-why they slipped through.
-
-> ./arch/arm/mach-at91/at91sam9g45_reset.S
-> ./arch/arm/mach-at91/at91sam9_reset.S
-
-Ups, assembler...
-
-Regards,
-Juergen
-
--- =
-
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0| Juergen Borleis =A0 =A0 =A0 =A0 =A0 =A0 |
-Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://=
-www.pengutronix.de/ =A0|
 
 _______________________________________________
 barebox mailing list
