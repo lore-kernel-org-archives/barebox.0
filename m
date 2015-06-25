@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z8Buh-00013R-AV
- for barebox@lists.infradead.org; Thu, 25 Jun 2015 18:30:17 +0000
-From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 25 Jun 2015 20:29:13 +0200
-Message-Id: <1435256953-7307-4-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
-References: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z8DR0-0002LD-Lr
+ for barebox@lists.infradead.org; Thu, 25 Jun 2015 20:07:43 +0000
+Date: Thu, 25 Jun 2015 22:07:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150625200718.GA18611@pengutronix.de>
+References: <20150608184033.GL6325@pengutronix.de>
+ <20150625152714.71ffc6272ed69a63a346ea02@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150625152714.71ffc6272ed69a63a346ea02@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,53 +19,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH repost 4/4] ARM: pxa: move lubbock TEXTBASE to Kconfig
-To: barebox@lists.infradead.org
+Subject: Re: v2015.06.0 ...and a new website
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-From: Lucas Stach <l.stach@pengutronix.de>
+On Thu, Jun 25, 2015 at 03:27:14PM +0300, Antony Pavlov wrote:
+> On Mon, 8 Jun 2015 20:40:33 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > Hi all,
+> > 
+> > We have a release for June, see below for a list of changes between this
+> > and the last release.
+> > 
+> > Also we are proud to anounce a new website for barebox, check it out on
+> > http://www.barebox.org. We finally brought the new documentation
+> > currently growing under Documentation online. Also check out our shiny
+> > new logo.
+> 
+> What is about adding new logo to the git repo?
 
-So we can drop it from the defconfig and stop bothering
-the user with this choice by default.
+We'll add it to the repo. Instead of adding multiple pngs in different
+sizes I want to put the svg in the repo and some foo to convert it to
+png in different sizes. So far librsvg looks like a good candidate for
+converting the svg to png. I need some time though to write the makefile
+magic.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
- arch/arm/configs/lubbock_defconfig | 1 -
- arch/arm/mach-pxa/Kconfig          | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/arch/arm/configs/lubbock_defconfig b/arch/arm/configs/lubbock_defconfig
-index bf04fa3..224854c 100644
---- a/arch/arm/configs/lubbock_defconfig
-+++ b/arch/arm/configs/lubbock_defconfig
-@@ -6,7 +6,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- # CONFIG_BANNER is not set
- CONFIG_MMU=y
--CONFIG_TEXT_BASE=0xa3d00000
- CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
- CONFIG_MALLOC_SIZE=0x1000000
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index 610fb1c..2b7f631 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -4,6 +4,7 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0xa0000000 if MACH_MIOA701
- 	default 0xa3f00000 if MACH_PCM027
-+	default 0xa3d00000 if MACH_LUBBOCK
- 	default 0x83f00000 if MACH_ZYLONITE
- 
- # ----------------------------------------------------------
 -- 
-2.1.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
