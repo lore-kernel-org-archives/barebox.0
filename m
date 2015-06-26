@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z8O6l-0005gC-Da
- for barebox@lists.infradead.org; Fri, 26 Jun 2015 07:31:34 +0000
+ Linux)) id 1Z8O6q-0005i4-1p
+ for barebox@lists.infradead.org; Fri, 26 Jun 2015 07:31:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Jun 2015 09:31:04 +0200
-Message-Id: <1435303867-12889-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 26 Jun 2015 09:31:03 +0200
+Message-Id: <1435303867-12889-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1435303867-12889-1-git-send-email-s.hauer@pengutronix.de>
 References: <1435303867-12889-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,83 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] mtd: detect ubi devices automatically
+Subject: [PATCH 4/8] ubi: Use preditable device names
 To: Barebox List <barebox@lists.infradead.org>
 
-Hook UBI attachment into the mtd class devices detect function. This
-makes it possible to attach ubi devices with 'detect nand0.root'.
+Instead of naming all ubi devices and cdev names ubi<num> append
+'.ubi' to the original mtd name. This makes ubi device and cdev
+names predictable. With this ubi0 becomes nand0.root.ubi. Also
+do the same for volume names, so ubi0.root becomes nand0.root.ubi.root.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ drivers/mtd/ubi/build.c | 7 ++-----
+ drivers/mtd/ubi/cdev.c  | 4 ++--
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 681dc93..8a07086 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -18,7 +18,9 @@
- #include <common.h>
- #include <linux/mtd/nand.h>
- #include <linux/mtd/mtd.h>
-+#include <mtd/ubi-user.h>
- #include <cmdlinepart.h>
-+#include <filetype.h>
- #include <init.h>
- #include <xfuncs.h>
- #include <driver.h>
-@@ -542,6 +544,41 @@ static int of_mtd_fixup(struct device_node *root, void *ctx)
- 	return 0;
- }
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index b02880e..1074feb 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -155,8 +155,8 @@ static int uif_init(struct ubi_device *ubi, int *ref)
+ 	*ref = 0;
+ 	sprintf(ubi->ubi_name, UBI_NAME_STR "%d", ubi->ubi_num);
  
-+static int mtd_detect(struct device_d *dev)
-+{
-+	struct mtd_info *mtd = container_of(dev, struct mtd_info, class_dev);
-+	int bufsize = 512;
-+	void *buf;
-+	int ret;
-+	enum filetype filetype;
-+	size_t retlen;
-+
-+	/*
-+	 * Do not try to attach an UBI device if this device has partitions
-+	 * as it's not a good idea to attach UBI on a raw device when the
-+	 * real UBI only spans the first partition.
-+	 */
-+	if (!list_empty(&mtd->partitions))
-+		return -EBUSY;
-+
-+	buf = xmalloc(bufsize);
-+
-+	ret = mtd_read(mtd, 0, bufsize, &retlen, buf);
-+	if (ret)
-+		goto out;
-+
-+	filetype = file_detect_type(buf, bufsize);
-+	if (filetype == filetype_ubi) {
-+		ret = ubi_attach_mtd_dev(mtd, UBI_DEV_NUM_AUTO, 0, 20);
-+		if (ret == -EEXIST)
-+			ret = 0;
-+	}
-+out:
-+	free(buf);
-+
-+	return ret;
-+}
-+
- int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
- {
- 	struct mtddev_hook *hook;
-@@ -554,6 +591,9 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
- 	if (mtd->parent)
- 		mtd->class_dev.parent = mtd->parent;
+-	sprintf(ubi->dev.name, "ubi");
+-	ubi->dev.id = DEVICE_ID_DYNAMIC;
++	sprintf(ubi->dev.name, "%s.ubi", ubi->mtd->cdev.name);
++	ubi->dev.id = DEVICE_ID_SINGLE;
+ 	ubi->dev.parent = &ubi->mtd->class_dev;
  
-+	if (IS_ENABLED(CONFIG_MTD_UBI))
-+		mtd->class_dev.detect = mtd_detect;
-+
- 	ret = register_device(&mtd->class_dev);
- 	if (ret)
- 		return ret;
+ 	err = register_device(&ubi->dev);
+@@ -596,9 +596,6 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ #else
+ 	ubi->fm_disabled = 1;
+ #endif
+-
+-	ubi_msg("attaching mtd%d to ubi%d", mtd->index, ubi_num);
+-
+ 	err = io_init(ubi, max_beb_per1024);
+ 	if (err)
+ 		goto out_free;
+diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
+index 90d5b2d..fe71a8d 100644
+--- a/drivers/mtd/ubi/cdev.c
++++ b/drivers/mtd/ubi/cdev.c
+@@ -176,7 +176,7 @@ int ubi_volume_cdev_add(struct ubi_device *ubi, struct ubi_volume *vol)
+ 	priv->ubi = ubi;
+ 
+ 	cdev->ops = &ubi_volume_fops;
+-	cdev->name = asprintf("ubi%d.%s", ubi->ubi_num, vol->name);
++	cdev->name = asprintf("%s.%s", ubi->cdev.name, vol->name);
+ 	cdev->priv = priv;
+ 	cdev->size = vol->used_bytes;
+ 	cdev->dev = &vol->dev;
+@@ -239,7 +239,7 @@ int ubi_cdev_add(struct ubi_device *ubi)
+ 	int ret;
+ 
+ 	cdev->ops = &ubi_fops;
+-	cdev->name = asprintf("ubi%d", ubi->ubi_num);
++	cdev->name = asprintf("%s.ubi", ubi->mtd->cdev.name);
+ 	cdev->priv = ubi;
+ 	cdev->size = 0;
+ 
 -- 
 2.1.4
 
