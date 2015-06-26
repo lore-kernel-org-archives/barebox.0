@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z8Pd2-0001Eu-06
- for barebox@lists.infradead.org; Fri, 26 Jun 2015 09:08:57 +0000
-Received: by wicnd19 with SMTP id nd19so39527283wic.1
- for <barebox@lists.infradead.org>; Fri, 26 Jun 2015 02:08:33 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z8Pcu-0001DG-1M
+ for barebox@lists.infradead.org; Fri, 26 Jun 2015 09:08:48 +0000
+Date: Fri, 26 Jun 2015 11:08:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150626090823.GG18611@pengutronix.de>
+References: <1435220309-35810-1-git-send-email-w.egorov@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20150626071832.GC18611@pengutronix.de>
-References: <20150608184033.GL6325@pengutronix.de>
- <20150625152714.71ffc6272ed69a63a346ea02@gmail.com>
- <20150625200718.GA18611@pengutronix.de>
- <CAOpc7mH4aGVaj8FKuS+R7Bv+8KhWQEHbN0-bNAgrxAKFp=xn2w@mail.gmail.com>
- <20150626071832.GC18611@pengutronix.de>
-Date: Fri, 26 Jun 2015 11:08:33 +0200
-Message-ID: <CAOpc7mF+saUEMb7ORXDvpPjE-+8ymgK3Goptf0Kqky+0pJL+qg@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
-Content-Type: multipart/mixed; boundary=f46d04428e70a233df05196815e7
+Content-Disposition: inline
+In-Reply-To: <1435220309-35810-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,139 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: v2015.06.0 ...and a new website
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 1/2] images: Add file size check for PBLX files
+To: Wadim Egorov <w.egorov@phytec.de>
+Cc: barebox@lists.infradead.org
 
---f46d04428e70a233df05196815e7
-Content-Type: text/plain; charset=UTF-8
+On Thu, Jun 25, 2015 at 10:18:28AM +0200, Wadim Egorov wrote:
+> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> ---
+>  common/Kconfig  | 10 ++++++++++
+>  images/Makefile |  2 ++
+>  2 files changed, 12 insertions(+)
 
-Hmm, this transparent background worked for me using the "inkscape -z
--e ..." method.
+Applied, thanks
 
-What setting do you background-color in File -> Document Properties
-(near the top)?  The Alpha-Channel must be set to 0 there.
+Sascha
 
 
-I have attached my sample files.
-
---f46d04428e70a233df05196815e7
-Content-Type: text/html; charset=US-ASCII; name="test.html"
-Content-Disposition: attachment; filename="test.html"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_ibdebcul0
-
-PGJvZHkgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICNmZjAwZmYiPgpCbGFoCjxpbWcgc3JjPSJ0
-ZXN0LnBuZyIgd2lkdGg9MjAwIGhlaWdodD0yMDA+CjwvYm9keT4K
---f46d04428e70a233df05196815e7
-Content-Type: image/png; name="test.png"
-Content-Disposition: attachment; filename="test.png"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_ibdebcv81
-
-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
-C7UHsULS6ZRTS75We5ZN0Rd3mIqItZKOB5ZKejwi/lB7pkEm6ePAKZS7fDV3Pd7h+mITa4ikvYHf
-A8dGxH215xlE3cWqFwJHRsTjlcfZZP2yiQVARDwMfBZY1N151caRpF2ABcCn+iEO6LNAACJiKXA+
-sFjSNrXnGRTd+XGLgW+0usfqjfRdIAARcSVlNX+7JF+edDOTtB9wO3BFRPyq9jxjqa8+g2xI0tHA
-j4CzI2JB7Xn6kaQTgXmUYx1/qj3PWOvrQAAk7UbZLv4z8PXu2ky2ibrT1y8CplPuLPxk5ZE2i77c
-xBquuyX04d1/LpXU1JX9elH3S2cJ8DLw4X6NAwYgEChX9IuI0ym/8W6RdEztmVol6SjgZuC7EXFG
-68c53krfb2JtqDv1+irgIeCciHio8khN6HZ2nAfsSdmNOxDXRh6INchwEfEAMIuyS3KxpMsl7Vp5
-rJ4laffuXLdF3eN9gxIHDGAgUG7mEhFXAQdSPrzfLOkiSTtWHq1nSHqnpEuAGym3mpgWEQtauwnn
-phrIQIZExLqI+CkllCeAOySdK2n7yqNVI2mSpHmU4xqPAAdGxPxBvTjGQAcyJCJeioiLgWnAOmCl
-pAslzaw82riRNEvS94HlwPPAQRFxaUSsrTxaVQP3IX1jSJoEnACcBOxMOSp/bUT8repgY0zSNGAu
-MBv4B3ANsDAi1lQdrIc4kLcgaQowBzgR2J5y0PHaiHiw6mCj1J0WMhf4JPBv1kfxr6qD9SgHMgLd
-Qca5lFgEXAfcBSyPiGdqzvZmurOaZwKHAp8A1lKiuDYi/llzthY4kFHqjgscCxxCWQAnUL5/vbx7
-rIiIp8d5pinAwcMeM4AXu7nuBq4bpF20Y8GBjJFuz9cMyoI5s3veBriHsoA+CawCVnfPQ39+9q32
-EEnaEphIuS/KZModmoaed+lebzrwHOsjXQGs7K5CaaPkQDYjSW+nLLjTgSm8fsEe+vNEYEvKfTOG
-4tGw/z8BeJVy27nhga3uHk8BK4G/RMQL4/SjDQwH0iO6m8sMRRF0AUTEy1UHG3AOxCzhA4VmCQdi
-lnAgZgkHYpZwIGYJB2KWcCBmCQdilnAgZgkHYpZwIGYJB2KWcCBmCQdilnAgZgkHYpZwIGYJB2KW
-cCBmCQdilnAgZgkHYpZwIGYJB2KWcCBmCQdilnAgZgkHYpZwIGYJB2KWcCBmCQdilnAgZgkHYpZw
-IGYJB2KWcCBmCQdilnAgZgkHYpZwIGYJB2KWcCBmCQdilnAgZgkHYpZwIGYJB2KWcCBmCQdilnAg
-ZgkHYpZwIGYJB2KWcCBmCQdilnAgZgkHYpb4H3jLWatSEPL7AAAAAElFTkSuQmCC
---f46d04428e70a233df05196815e7
-Content-Type: image/svg+xml; name="test.svg"
-Content-Disposition: attachment; filename="test.svg"
-Content-Transfer-Encoding: base64
-X-Attachment-Id: f_ibdebcvc2
-
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjwh
-LS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoK
-PHN2ZwogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgIHht
-bG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOnJkZj0iaHR0
-cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIKICAgeG1sbnM6c3ZnPSJo
-dHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIw
-MDAvc3ZnIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5l
-dC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3Nj
-YXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB3aWR0aD0iNzQ0LjA5NDQ4ODE5IgogICBo
-ZWlnaHQ9IjEwNTIuMzYyMjA0NyIKICAgaWQ9InN2ZzIiCiAgIHZlcnNpb249IjEuMSIKICAgaW5r
-c2NhcGU6dmVyc2lvbj0iMC40OC41IHIxMDA0MCIKICAgc29kaXBvZGk6ZG9jbmFtZT0iTmV3IGRv
-Y3VtZW50IDEiPgogIDxkZWZzCiAgICAgaWQ9ImRlZnM0IiAvPgogIDxzb2RpcG9kaTpuYW1lZHZp
-ZXcKICAgICBpZD0iYmFzZSIKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29s
-b3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMS4wIgogICAgIGlua3NjYXBlOnBhZ2Vv
-cGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgICBpbmtzY2FwZTp6
-b29tPSIwLjM1IgogICAgIGlua3NjYXBlOmN4PSIzNzUiCiAgICAgaW5rc2NhcGU6Y3k9IjUyMCIK
-ICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0icHgiCiAgICAgaW5rc2NhcGU6Y3VycmVudC1s
-YXllcj0ibGF5ZXIxIgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp3aW5kb3ct
-d2lkdGg9IjQ4MyIKICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI0MjEiCiAgICAgaW5rc2Nh
-cGU6d2luZG93LXg9IjQ1OSIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMzIyIgogICAgIGlua3Nj
-YXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjAiIC8+CiAgPG1ldGFkYXRhCiAgICAgaWQ9Im1ldGFkYXRh
-NyI+CiAgICA8cmRmOlJERj4KICAgICAgPGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPgog
-ICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PgogICAgICAgIDxkYzp0
-eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUv
-U3RpbGxJbWFnZSIgLz4KICAgICAgICA8ZGM6dGl0bGU+PC9kYzp0aXRsZT4KICAgICAgPC9jYzpX
-b3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGcKICAgICBpbmtzY2FwZTpsYWJl
-bD0iTGF5ZXIgMSIKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXll
-cjEiPgogICAgPHBhdGgKICAgICAgIHNvZGlwb2RpOnR5cGU9ImFyYyIKICAgICAgIHN0eWxlPSJm
-aWxsOm5vbmU7c3Ryb2tlOiMwMDAwMDA7c3Ryb2tlLXdpZHRoOjQ7c3Ryb2tlLWxpbmVjYXA6YnV0
-dDtzdHJva2UtbGluZWpvaW46bWl0ZXI7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2Utb3BhY2l0
-eToxO3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2UtZGFzaG9mZnNldDowIgogICAgICAgaWQ9
-InBhdGgyOTg1IgogICAgICAgc29kaXBvZGk6Y3g9IjM3NS43MTQyOSIKICAgICAgIHNvZGlwb2Rp
-OmN5PSI1NDkuNTA1MDciCiAgICAgICBzb2RpcG9kaTpyeD0iMjA3LjE0Mjg1IgogICAgICAgc29k
-aXBvZGk6cnk9IjE4NS43MTQyOCIKICAgICAgIGQ9Im0gNTgyLjg1NzE1LDU0OS41MDUwNyBhIDIw
-Ny4xNDI4NSwxODUuNzE0MjggMCAxIDEgLTQxNC4yODU3MSwwIDIwNy4xNDI4NSwxODUuNzE0Mjgg
-MCAxIDEgNDE0LjI4NTcxLDAgeiIgLz4KICA8L2c+Cjwvc3ZnPgo=
---f46d04428e70a233df05196815e7
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---f46d04428e70a233df05196815e7--
