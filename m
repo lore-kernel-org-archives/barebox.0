@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z8Nub-0006nS-1a
- for barebox@lists.infradead.org; Fri, 26 Jun 2015 07:18:57 +0000
-Date: Fri, 26 Jun 2015 09:18:32 +0200
+ Linux)) id 1Z8O6l-0005g6-Dd
+ for barebox@lists.infradead.org; Fri, 26 Jun 2015 07:31:33 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1Z8MEI-00060s-33
+ for barebox@lists.infradead.org; Fri, 26 Jun 2015 07:31:10 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.85)
+ (envelope-from <sha@pengutronix.de>) id 1Z8O6O-00049I-Ir
+ for barebox@lists.infradead.org; Fri, 26 Jun 2015 09:31:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150626071832.GC18611@pengutronix.de>
-References: <20150608184033.GL6325@pengutronix.de>
- <20150625152714.71ffc6272ed69a63a346ea02@gmail.com>
- <20150625200718.GA18611@pengutronix.de>
- <CAOpc7mH4aGVaj8FKuS+R7Bv+8KhWQEHbN0-bNAgrxAKFp=xn2w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAOpc7mH4aGVaj8FKuS+R7Bv+8KhWQEHbN0-bNAgrxAKFp=xn2w@mail.gmail.com>
+Date: Fri, 26 Jun 2015 09:30:59 +0200
+Message-Id: <1435303867-12889-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +21,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: v2015.06.0 ...and a new website
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: ubi: Make attaching UBI more convenient
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Jun 26, 2015 at 08:09:21AM +0200, Holger Schurig wrote:
-> Imagemagick (and therefore also probably /Graphicsmagic) allows this
-> from the command line:
-> 
-> convert -setTheOutputSizeOfThePng 1024x1024 test.svg test.png
+Using UBI is a matter of using 'ubiattach' before UBI volumes can
+be used. This makes it hard to use since the various autodetection
+mechanisms can't be used. This series changes this. We introduce
+predictable names for UBI devices and volumes and hook UBI attachment
+into the mtd devices detect callback. This makes these commands possible:
 
-That was my first choice aswell. 'convert' calls Inkscape in the
-background, so you're lucky, 'convert' uses your SVG tool of choice
-anyway ;). However, unfortunately it takes several seconds to convert
-a single barebox logo, so converting the logo into different sizes will
-take some time. Also Imagemagick has the problem that the transparent
-background of the logo becomes white. I have found no solution even
-after some digging and trying the different options to 'convert'. I'm
-sure this problem is solvable though.
+# UBI attach nand0.root and mount to /mnt/nand0.root.ubi.root:
+mount nand0.root.ubi.root
+
+or:
+
+# boot bootspec entry on an UBIFS found on the
+# UBI volume 'root' on nand0.root:
+boot nand0.root.ubi.root
+
+or just:
+
+# If there's UBI found on nand0.root then attach it:
+detect nand0.root
 
 Sascha
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+----------------------------------------------------------------
+Sascha Hauer (8):
+      commands: detect: use device_detect_by_name
+      driver: detect: detect parent devices aswell
+      blspec: Use device_detect_by_name
+      ubi: Use preditable device names
+      mtd: detect ubi devices automatically
+      ubi: Lower 'already attached' message to debug level
+      commands: mount: detect the device to be mounted
+      ubi: Update documentation
+
+ Documentation/user/ubi.rst | 44 +++++++++++++++-----------------------------
+ commands/detect.c          |  5 +----
+ commands/mount.c           |  2 ++
+ common/blspec.c            |  9 +--------
+ drivers/base/driver.c      | 25 ++++++++++++++++++++-----
+ drivers/mtd/core.c         | 40 ++++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/ubi/build.c    |  9 +++------
+ drivers/mtd/ubi/cdev.c     |  4 ++--
+ 8 files changed, 84 insertions(+), 54 deletions(-)
 
 _______________________________________________
 barebox mailing list
