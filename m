@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z8Pcu-0001DG-1M
- for barebox@lists.infradead.org; Fri, 26 Jun 2015 09:08:48 +0000
-Date: Fri, 26 Jun 2015 11:08:23 +0200
+ Linux)) id 1Z8Pg7-0003Gz-7m
+ for barebox@lists.infradead.org; Fri, 26 Jun 2015 09:12:07 +0000
+Date: Fri, 26 Jun 2015 11:11:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150626090823.GG18611@pengutronix.de>
-References: <1435220309-35810-1-git-send-email-w.egorov@phytec.de>
+Message-ID: <20150626091144.GH18611@pengutronix.de>
+References: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1435220309-35810-1-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,16 +22,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] images: Add file size check for PBLX files
-To: Wadim Egorov <w.egorov@phytec.de>
+Subject: Re: [PATCH repost 1/4] usb: gadget: pxa27x: depend on right symbol
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 25, 2015 at 10:18:28AM +0200, Wadim Egorov wrote:
-> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-> ---
->  common/Kconfig  | 10 ++++++++++
->  images/Makefile |  2 ++
->  2 files changed, 12 insertions(+)
+On Thu, Jun 25, 2015 at 08:29:10PM +0200, Lucas Stach wrote:
+> From: Lucas Stach <l.stach@pengutronix.de>
+> 
+> Now that we also have PXA3XX support the dependency on
+> ARCH_PXA is too broad for this driver.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 
 Applied, thanks
 
