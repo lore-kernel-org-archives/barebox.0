@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z8Pg7-0003Gz-7m
- for barebox@lists.infradead.org; Fri, 26 Jun 2015 09:12:07 +0000
-Date: Fri, 26 Jun 2015 11:11:44 +0200
+ Linux)) id 1Z8PvE-0001y7-Na
+ for barebox@lists.infradead.org; Fri, 26 Jun 2015 09:27:45 +0000
+Date: Fri, 26 Jun 2015 11:27:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150626091144.GH18611@pengutronix.de>
-References: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20150626092722.GI18611@pengutronix.de>
+References: <1435236431-11021-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1435256953-7307-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1435236431-11021-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,17 +22,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH repost 1/4] usb: gadget: pxa27x: depend on right symbol
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 1/3] state: fixup: only export default value during fixup
+ if set
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 25, 2015 at 08:29:10PM +0200, Lucas Stach wrote:
-> From: Lucas Stach <l.stach@pengutronix.de>
-> 
-> Now that we also have PXA3XX support the dependency on
-> ARCH_PXA is too broad for this driver.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Thu, Jun 25, 2015 at 02:47:09PM +0200, Marc Kleine-Budde wrote:
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  common/state.c | 27 +++++++++++++++++++--------
+>  1 file changed, 19 insertions(+), 8 deletions(-)
 
 Applied, thanks
 
