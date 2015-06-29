@@ -1,15 +1,28 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z9RZb-0002lu-QI
- for barebox@lists.infradead.org; Mon, 29 Jun 2015 05:25:40 +0000
-Date: Mon, 29 Jun 2015 07:25:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150629052517.GS18611@pengutronix.de>
-References: <1435508380-21284-1-git-send-email-antonynpavlov@gmail.com>
+Received: from teledigit.eu ([195.56.148.37])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Z9WGn-0003TX-To
+ for barebox@lists.infradead.org; Mon, 29 Jun 2015 10:26:36 +0000
+Received: from kgy-pc.lan ([46.139.64.211]:45290)
+ by teledigit.eu with [XMail 1.27 ESMTP Server]
+ id <S6BEF3> for <barebox@lists.infradead.org> from <kgy@teledigit.eu>;
+ Mon, 29 Jun 2015 12:24:10 +0200
+Date: Mon, 29 Jun 2015 12:24:09 +0200
+From: Gyorgy Kovesdi <kgy@teledigit.eu>
+Message-ID: <20150629122409.1d1c845f@kgy-pc.lan>
+In-Reply-To: <1435156380.25607.28.camel@pengutronix.de>
+References: <5588272F.9010803@eutecus.com>
+ <1435047176.25607.3.camel@pengutronix.de>
+ <55894326.5000107@teledigit.eu>
+ <CAOpc7mH---D=ddMwuRdMyqWT1zHe-YZbQrZsMTVWvvQda4YKUQ@mail.gmail.com>
+ <558961C0.2090005@teledigit.eu>
+ <CAOpc7mF1SnaT0==JpBTPvJ=b_MiwADfWNLAJ=moKd61ietku1w@mail.gmail.com>
+ <55897294.10908@teledigit.eu>
+ <CAOpc7mEoU-a2Hk3nkQjQX-ya7Nobf3un-aaJpJ0QeG+Ye_JuVA@mail.gmail.com>
+ <20150623195716.4fda658d@kgy-pc.lan>
+ <1435087804.28585.8.camel@lynxeye.de>
+ <1435156380.25607.28.camel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1435508380-21284-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +31,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] tftp: prepare for picotcp
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: Compiling barebox for newest Yocto/meta-freescale
+To: barebox@lists.infradead.org
 
-On Sun, Jun 28, 2015 at 07:19:37PM +0300, Antony Pavlov wrote:
-> This patchseries makes it much easier to run barebox tftp client
-> on top of picotcp network stack in the future.
-> 
-> Antony Pavlov (3):
->   fs/tftp: handle incoming packets in the separate tftp_recv() function
->   tftp_recv(): according to RFC1350 minimal tftp packet length is 4
->     bytes
->   tftp_recv(): handle opcode field in a more natural way
-> 
->  fs/tftp.c | 47 ++++++++++++++++++++++++++---------------------
->  1 file changed, 26 insertions(+), 21 deletions(-)
-
-Applied, thanks
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgZXZlcnlib2R5LAoKWW91IGFyZSByaWdodCwgYmFyZWJveCByZWFsbHkgY2Fubm90IGJlIHJ1
+biB3aXRoIGhhcmQtZmxvYXQuCkkgcmUtZW5hYmxlZCBzb2Z0IGZsb2F0IGluIGdjYyBjb21waWxh
+dGlvbiwgYW5kIG5vdyBpdCB3b3JrcyBwZXJmZWN0bHkgb24gWW9jdG8gYnVpbGQgd2l0aG91dCBh
+bnkgbW9kaWZpY2F0aW9uLgoKTWFueSB0aGFueApHecO2cmd5IEvDtnZlc2RpCgpPbiBXZWQsIDI0
+IEp1biAyMDE1IDE2OjMzOjAwICswMjAwCkphbiBMw7xiYmUgPGpsdUBwZW5ndXRyb25peC5kZT4g
+d3JvdGU6Cgo+IE9uIERpLCAyMDE1LTA2LTIzIGF0IDIxOjMwICswMjAwLCBMdWNhcyBTdGFjaCB3
+cm90ZToKPiA+IEFsc28geW91IGRvbid0IGhhdmUgYSBoYXJkLWZsb2F0IG9ubHkgZW52aXJvbm1l
+bnQsIHlvdXIgdG9vbGNoYWluIGlzCj4gPiBwZXJmZWN0bHkgYWJsZSB0byBidWlsZCB3aXRoIHRo
+ZSBzb2Z0LWZsb2F0IEFCSSwgaXQncyBqdXN0IHRoYXQgWW9jdG8KPiA+IGFwcGFyZW50bHkgcGFz
+c2VzIHRoZSBtZmxvYXQtYWJpPWhhcmQgZmxhZyBldmVyeXdoZXJlIGluc3RlYWQgb2YKPiA+IHNl
+dHRpbmcgYSByZWFzb25hYmxlIHRvb2xjaGFpbiBkZWZhdWx0Lgo+IAo+IEkgaGF2ZSB0aGUgc2Ft
+ZSBwcm9ibGVtIG5vdywgYXMgd2VsbCAodHJpZ2dlcmVkIGJ5IHNldHRpbmcKPiBERUZBVUxUVFVO
+RT0iY29ydGV4YThoZi1uZW9uIikuCj4gCj4gVGhlIGtlcm5lbCB1c2VzIHRoZSBzYW1lIC1tc29m
+dC1mbG9hdCBpbiBhcmNoL2FybS9NYWtlZmlsZSBhcyB3ZSBkbyBpbgo+IGJhcmVib3guIEFzIEx1
+Y2FzIHNhaWQsIHRoaXMgaXMgYWN0dWFsbHkgaW1wb3J0YW50IGZvciBjb3JyZWN0IGJlaGF2aW9y
+Lgo+IAo+IFlvY3RvIGhhbmRsZXMgdGhpcyBieSBidWlsZGluZyB0aGUga2VybmVsIHdpdGggQ0M9
+IiR7S0VSTkVMX0NDfSIKPiBMRD0iJHtLRVJORUxfTER9IiBpbnN0ZWFkIChzZWUga2VybmVsLmJi
+Y2xhc3MgYW5kIGtlcm5lbC1hcmNoLmJiY2xhc3MpLgo+IEZvciBiYXJlYm94IEkgbm93IGhhdmU6
+Cj4gZG9fY29tcGlsZSAoKSB7Cj4gICAgICAgICB1bnNldCBDRkxBR1MgQ1BQRkxBR1MgQ1hYRkxB
+R1MgTERGTEFHUyBNQUNISU5FCj4gICAgICAgICBvZV9ydW5tYWtlIENDPSIke0tFUk5FTF9DQ30i
+IExEPSIke0tFUk5FTF9MRH0iCj4gfQo+IAo+IFRoZXNlIHNldHRpbmdzIG1ha2UgaXQgaW1wb3Nz
+aWJsZSB0byBidWlsZCB0aGUgYmFyZWJveCB0YXJnZXQgdXNlcnNwYWNlCj4gdG9vbHMgZnJvbSBz
+Y3JpcHRzLywgdGhvdWdoLiBUaGlzIGlzIGJlY2F1c2UgdGhlIC0tc3lzcm9vdCBwYXJhbWV0ZXIg
+aXMKPiBwYXNzZWQgYnkgWW9jdG8gb25seSBpbiAke0NDfSBhbmQgbm90IGluICR7S0VSTkVMX0ND
+fSwgc28gdGhlIHRhcmdldAo+IHVzZXJzcGFjZSB0b29scyB3aWxsIGZhaWwgdG8gZmluZCB0aGVp
+ciBzdGFuZGFyZCBoZWFkZXJzLiBTbyBJIGhhdmUgYXMgYQo+IHRlbXBvcmFyeSB3b3JrYXJvdW5k
+Ogo+IGRvX2NvbmZpZ3VyZV9wcmVwZW5kKCkgewo+ICAgICAgICAgY3AgJHtXT1JLRElSfS9kZWZj
+b25maWcgJHtTfS8uY29uZmlnCj4gICAgICAgICAjIGRvIG5vdCBjb21waWxlIHRvb2xzIHdoZW4g
+dXNpbmcgS0VSTkVMX0NDL0tFUk5FTF9MRAo+ICAgICAgICAgZWNobyBDT05GSUdfQkFSRUJPWEVO
+Vl9UQVJHRVQ9biA+PiAke1N9Ly5jb25maWcKPiAgICAgICAgIGVjaG8gQ09ORklHX0JBUkVCT1hD
+UkMzMl9UQVJHRVQ9biA+PiAke1N9Ly5jb25maWcKPiAgICAgICAgIGVjaG8gQ09ORklHX0tFUk5F
+TF9JTlNUQUxMX1RBUkdFVD1uID4+ICR7U30vLmNvbmZpZwo+ICAgICAgICAgZWNobyBDT05GSUdf
+SU1EX1RBUkdFVD1uID4+ICR7U30vLmNvbmZpZwo+ICAgICAgICAgb2VfcnVubWFrZSBvbGRjb25m
+aWcKPiB9Cj4gCj4gVG8gY29tcGlsZSB0aGUgdGFyZ2V0IHVzZXJzcGFjZSB0b29scywgd2UnbGwg
+bmVlZCB0byB1c2UgJHtDQ30gaW5zdGVhZCwKPiB3aGljaCBpcyBjdXJyZW50bHkgbm90IHN1cHBv
+cnRlZCBieSBvdXIgKG9yIHRoZSBrZXJuZWwncykga2J1aWxkLiBJdAo+IHNlZW1zIHRoYXQgd2Ug
+Y3VycmVudGx5IGJ1aWxkIHRoZXNlIHRvb2xzIHdpdGggLW1zb2Z0LWZsb2F0IGFzIHdlbGwsCj4g
+d2hpY2ggY2F1c2VzIG5vIHByb2JsZW1zIGJlY2F1c2Ugd2UgZG9uJ3QgdXNlIGZsb2F0IG1hdGgs
+IGJ1dCBpdCdzIG5vdAo+IGNvcnJlY3QgZWl0aGVyLgo+IAo+IEd5b3JneSwgY291bGQgeW91IHBv
+aW50IHVzIHRvIHRoZSBZb2N0byBzaWRlIG9mIHRoZSBkaXNjdXNzaW9uLCBpZiBpdAo+IHdhcyBv
+biBzb21lIGxpc3Q/Cj4gCj4gUmVnYXJkcywKPiBKYW4KCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
+c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94Cg==
