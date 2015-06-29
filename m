@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z9FJW-0001t0-Sm
- for barebox@lists.infradead.org; Sun, 28 Jun 2015 16:20:15 +0000
-Received: by lagh6 with SMTP id h6so29249567lag.2
- for <barebox@lists.infradead.org>; Sun, 28 Jun 2015 09:19:51 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 28 Jun 2015 19:19:37 +0300
-Message-Id: <1435508380-21284-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z9R1k-0007MH-V7
+ for barebox@lists.infradead.org; Mon, 29 Jun 2015 04:50:41 +0000
+Date: Mon, 29 Jun 2015 06:50:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150629045014.GM18611@pengutronix.de>
+References: <1435173229-16144-1-git-send-email-dev@lynxeye.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1435173229-16144-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,29 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] tftp: prepare for picotcp
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: tegra: jump to maincluster earlier
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-This patchseries makes it much easier to run barebox tftp client
-on top of picotcp network stack in the future.
+On Wed, Jun 24, 2015 at 09:13:49PM +0200, Lucas Stach wrote:
+> There is no point in repeating the board setup on the main cluster.
+> It is done either in the AVP startup path or from a first stage loader.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 
-Antony Pavlov (3):
-  fs/tftp: handle incoming packets in the separate tftp_recv() function
-  tftp_recv(): according to RFC1350 minimal tftp packet length is 4
-    bytes
-  tftp_recv(): handle opcode field in a more natural way
+Applied, thanks
 
- fs/tftp.c | 47 ++++++++++++++++++++++++++---------------------
- 1 file changed, 26 insertions(+), 21 deletions(-)
+Sascha
 
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
