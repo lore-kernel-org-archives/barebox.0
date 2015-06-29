@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z9RXT-0001Dv-Bu
- for barebox@lists.infradead.org; Mon, 29 Jun 2015 05:23:27 +0000
-Date: Mon, 29 Jun 2015 07:23:04 +0200
+ Linux)) id 1Z9RZb-0002lu-QI
+ for barebox@lists.infradead.org; Mon, 29 Jun 2015 05:25:40 +0000
+Date: Mon, 29 Jun 2015 07:25:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150629052304.GR18611@pengutronix.de>
-References: <1435345163-16565-1-git-send-email-dev@lynxeye.de>
- <1435345163-16565-2-git-send-email-dev@lynxeye.de>
+Message-ID: <20150629052517.GS18611@pengutronix.de>
+References: <1435508380-21284-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1435345163-16565-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1435508380-21284-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,21 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] commands: digest: fix harmless warning
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 0/3] tftp: prepare for picotcp
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 26, 2015 at 08:59:21PM +0200, Lucas Stach wrote:
-> Fixes with !CONFIG_LONGHELP:
-> commands/digest.c:71:13: warning:
-> 'prints_algo_help' defined but not used [-Wunused-function]
+On Sun, Jun 28, 2015 at 07:19:37PM +0300, Antony Pavlov wrote:
+> This patchseries makes it much easier to run barebox tftp client
+> on top of picotcp network stack in the future.
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> Antony Pavlov (3):
+>   fs/tftp: handle incoming packets in the separate tftp_recv() function
+>   tftp_recv(): according to RFC1350 minimal tftp packet length is 4
+>     bytes
+>   tftp_recv(): handle opcode field in a more natural way
+> 
+>  fs/tftp.c | 47 ++++++++++++++++++++++++++---------------------
+>  1 file changed, 26 insertions(+), 21 deletions(-)
 
-Applied this one and 3/4.
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
