@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward2l.mail.yandex.net ([2a02:6b8:0:1819::2])
+Received: from forward9l.mail.yandex.net ([84.201.143.142])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z9a0J-0007Bc-Go
- for barebox@lists.infradead.org; Mon, 29 Jun 2015 14:25:50 +0000
+ id 1Z9a0H-0007BJ-Vb
+ for barebox@lists.infradead.org; Mon, 29 Jun 2015 14:25:47 +0000
 From: Alexander Smirnov <alllecs@yandex.ru>
-Date: Mon, 29 Jun 2015 17:26:57 +0300
-Message-Id: <1435588017-24949-4-git-send-email-alllecs@yandex.ru>
+Date: Mon, 29 Jun 2015 17:26:55 +0300
+Message-Id: <1435588017-24949-2-git-send-email-alllecs@yandex.ru>
 In-Reply-To: <1435588017-24949-1-git-send-email-alllecs@yandex.ru>
 References: <1435588017-24949-1-git-send-email-alllecs@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,165 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC V3 3/3] add decode command (SPD EEPROM data decoder)
+Subject: [RFC V3 1/3] common: move DDR_SPD to common/Kconfig
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, Alexander Smirnov <alllecs@yandex.ru>
 
-decode-dimms perl script is used as prototype
-(see https://github.com/groeck/i2c-tools/blob/master/eeprom/decode-dimms).
-
-Here is a sample decode output:
-
-barebox@barebox sandbox:/ decode env/crucial_pc2-6400_ddr2
-Decoding EEPROM: env/crucial_pc2-6400_ddr2
-
----=== SPD EEPROM Information ===---
-EEPROM Checksum of bytes 0-62                      OK (0xCA)
-Total number of bytes in EEPROM                    256
-Fundamental Memory type                            DDR2 SDRAM
-SPD Revision                                       1.3
-
----=== Memory Characteristics ===---
-Maximum module speed                               800 MHz (PC2-6400)
-Size                                               1024 MB
-Banks x Rows x Columns x Bits                      8 x 14 x 10 x 64
-Ranks                                              1
-SDRAM Device Width                                 8 bits
-Module Height                                      30.0 mm
-Module Type                                        SO-DIMM (67.6 mm)
-DRAM Package                                       Planar
-Voltage Interface Level                            SSTL 1.8V
-Module Configuration Type                          No Parity
-Refresh Rate                                       Reduced (7.8 us) - Self Refresh
-Supported Burst Lengths                            4, 8
-Supported CAS Latencies (tCL)                      6T
-tCL-tRCD-tRP-tRAS                                  6-6-6-18 as DDR2-800
-Minimum Cycle Time                                 2.5 ns at CAS 6
-Maximum Access Time                                0.40 ns at CAS 6
-Maximum Cycle Time (tCK max)                       8 ns
-
----=== Timing Parameters ===---
-Address/Command Setup Time Before Clock (tIS)      0.17 ns
-Address/Command Hold Time After Clock (tIH)        0.25 ns
-Data Input Setup Time Before Strobe (tDS)          0.05 ns
-Data Input Hold Time After Strobe (tDH)            0.12 ns
-Minimum Row Precharge Delay (tRP)                  15.0 ns
-Minimum Row Active to Row Active Delay (tRRD)      7.5 ns
-Minimum RAS# to CAS# Delay (tRCD)                  15.0 ns
-Minimum RAS# Pulse Width (tRAS)                    45 ns
-Write Recovery Time (tWR)                          15.0 ns
-Minimum Write to Read CMD Delay (tWTR)             7.5 ns
-Minimum Read to Pre-charge CMD Delay (tRTP)        7.5 ns
-Minimum Active to Auto-refresh Delay (tRC)         60 ns
-Minimum Recovery Delay (tRFC)                      127 ns
-Maximum DQS to DQ Skew (tDQSQ)                     0.20 ns
-Maximum Read Data Hold Skew (tQHS)                 0.30 ns
-
----=== Manufacturing Information ===---
-Manufacturer JEDEC ID                              7f 7f 7f 7f 7f 9b 00 00
-Part Number                                        CT12864AC800.M8FM8
-Manufacturing Date                                 2014-W24
-Assembly Serial Number                             0x00000000
-
-TODOs:
-
-  * Timing Parameters section output format is slightly
-    differ from decode-dimms' format;
-  * supports only DDR2 SPD EEPROM.
+This patch makes it possible to use ddr_spd-related
+routines in any arch not only in ppc.
 
 Signed-off-by: Alexander Smirnov <alllecs@yandex.ru>
 ---
- commands/Kconfig  |  7 +++++++
- commands/Makefile |  1 +
- commands/decode.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 61 insertions(+)
+ arch/ppc/mach-mpc85xx/Kconfig  | 4 ----
+ arch/ppc/mach-mpc85xx/Makefile | 3 ++-
+ common/Kconfig                 | 4 ++++
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index bb6674e..9230873 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2102,6 +2102,13 @@ config CMD_STATE
- 	depends on STATE
- 	prompt "state"
+diff --git a/arch/ppc/mach-mpc85xx/Kconfig b/arch/ppc/mach-mpc85xx/Kconfig
+index e29be9c..aa518b9 100644
+--- a/arch/ppc/mach-mpc85xx/Kconfig
++++ b/arch/ppc/mach-mpc85xx/Kconfig
+@@ -81,10 +81,6 @@ config P1022
+ config MPC8544
+ 	bool
  
-+config CMD_DECODE
-+	tristate
-+	prompt "decode"
-+	select DDR_SPD
-+	help
-+	  decode spd eeprom
-+
- # end Miscellaneous commands
- endmenu
+-config DDR_SPD
+-	bool
+-	select CRC16
+-
+ config FSL_DDR2
+ 	bool
  
-diff --git a/commands/Makefile b/commands/Makefile
-index 3698347..71cd877 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -112,3 +112,4 @@ obj-$(CONFIG_CMD_NV)		+= nv.o
- obj-$(CONFIG_CMD_DEFAULTENV)	+= defaultenv.o
- obj-$(CONFIG_CMD_STATE)		+= state.o
- obj-$(CONFIG_CMD_DHCP)		+= dhcp.o
-+obj-$(CONFIG_CMD_DECODE)	+= decode.o
-diff --git a/commands/decode.c b/commands/decode.c
-new file mode 100644
-index 0000000..f8e7264
---- /dev/null
-+++ b/commands/decode.c
-@@ -0,0 +1,53 @@
-+/*
-+ * This program is decoding and printing SPD contents
-+ * in human readable format
-+ * As an argument program, you must specify the file name.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * Copyright (C) 2015 Alexander Smirnov <alllecs@yandex.ru>
-+ *
-+ * Originally from https://github.com/groeck/i2c-tools/blob/master/eeprom/decode-dimms
-+ */
+diff --git a/arch/ppc/mach-mpc85xx/Makefile b/arch/ppc/mach-mpc85xx/Makefile
+index 3e64617..de4f5ef 100644
+--- a/arch/ppc/mach-mpc85xx/Makefile
++++ b/arch/ppc/mach-mpc85xx/Makefile
+@@ -9,5 +9,6 @@ obj-y			+= fsl_i2c.o
+ obj-$(CONFIG_MP)	+= mp.o
+ obj-$(CONFIG_OFTREE)	+= fdt.o
+ obj-$(CONFIG_DRIVER_NET_GIANFAR) += eth-devices.o
+-obj-$(CONFIG_DDR_SPD)	+= ../ddr-8xxx/
++obj-$(CONFIG_FSL_DDR2) += ../ddr-8xxx/
++obj-$(CONFIG_FSL_DDR3) += ../ddr-8xxx/
+ extra-y += barebox.lds
+diff --git a/common/Kconfig b/common/Kconfig
+index 925fe4b..91e4ef3 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -941,3 +941,7 @@ endmenu
+ 
+ config HAS_DEBUG_LL
+ 	bool
 +
-+#include <common.h>
-+#include <command.h>
-+#include <libfile.h>
-+#include <malloc.h>
-+#include <ddr_spd.h>
-+
-+static int do_decode(int argc, char *argv[])
-+{
-+	int ret;
-+	size_t size;
-+	void *data;
-+
-+	if (argc != 2)
-+		return COMMAND_ERROR_USAGE;
-+
-+	ret = read_file_2(argv[1], &size, &data, 256);
-+	if (ret && ret != -EFBIG) {
-+		printf("unable to read %s: %s\n", argv[1], strerror(-ret));
-+		return COMMAND_ERROR;
-+	}
-+
-+	printf("Decoding EEPROM: %s\n\n", argv[1]);
-+	ddr_spd_print(data);
-+	printf("\n\n");
-+
-+	free(data);
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(decode)
-+BAREBOX_CMD_HELP_TEXT("Not enough or more than one argument to continue.")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(decode)
-+	.cmd	= do_decode,
-+	BAREBOX_CMD_HELP(cmd_decode_help)
-+BAREBOX_CMD_END
++config DDR_SPD
++	bool
++	select CRC16
 -- 
 2.1.4
 
