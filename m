@@ -1,28 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from teledigit.eu ([195.56.148.37])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z9WGn-0003TX-To
- for barebox@lists.infradead.org; Mon, 29 Jun 2015 10:26:36 +0000
-Received: from kgy-pc.lan ([46.139.64.211]:45290)
- by teledigit.eu with [XMail 1.27 ESMTP Server]
- id <S6BEF3> for <barebox@lists.infradead.org> from <kgy@teledigit.eu>;
- Mon, 29 Jun 2015 12:24:10 +0200
-Date: Mon, 29 Jun 2015 12:24:09 +0200
-From: Gyorgy Kovesdi <kgy@teledigit.eu>
-Message-ID: <20150629122409.1d1c845f@kgy-pc.lan>
-In-Reply-To: <1435156380.25607.28.camel@pengutronix.de>
-References: <5588272F.9010803@eutecus.com>
- <1435047176.25607.3.camel@pengutronix.de>
- <55894326.5000107@teledigit.eu>
- <CAOpc7mH---D=ddMwuRdMyqWT1zHe-YZbQrZsMTVWvvQda4YKUQ@mail.gmail.com>
- <558961C0.2090005@teledigit.eu>
- <CAOpc7mF1SnaT0==JpBTPvJ=b_MiwADfWNLAJ=moKd61ietku1w@mail.gmail.com>
- <55897294.10908@teledigit.eu>
- <CAOpc7mEoU-a2Hk3nkQjQX-ya7Nobf3un-aaJpJ0QeG+Ye_JuVA@mail.gmail.com>
- <20150623195716.4fda658d@kgy-pc.lan>
- <1435087804.28585.8.camel@lynxeye.de>
- <1435156380.25607.28.camel@pengutronix.de>
-MIME-Version: 1.0
+ id 1Z9WcL-0005J2-DU
+ for barebox@lists.infradead.org; Mon, 29 Jun 2015 10:48:50 +0000
+Received: by lagh6 with SMTP id h6so48527284lag.2
+ for <barebox@lists.infradead.org>; Mon, 29 Jun 2015 03:48:26 -0700 (PDT)
+Received: from flare (t35.niisi.ras.ru. [193.232.173.35])
+ by mx.google.com with ESMTPSA id d7sm1156226lae.48.2015.06.29.03.48.25
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 29 Jun 2015 03:48:25 -0700 (PDT)
+Date: Mon, 29 Jun 2015 13:55:01 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150629135501.344827695c942d496959aa1e@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,54 +22,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Compiling barebox for newest Yocto/meta-freescale
+Subject: Fw: next: sandbox: arch/sandbox/os/common.c:31:18: fatal error:
+ init.h: No such file or directory
 To: barebox@lists.infradead.org
 
-SGkgZXZlcnlib2R5LAoKWW91IGFyZSByaWdodCwgYmFyZWJveCByZWFsbHkgY2Fubm90IGJlIHJ1
-biB3aXRoIGhhcmQtZmxvYXQuCkkgcmUtZW5hYmxlZCBzb2Z0IGZsb2F0IGluIGdjYyBjb21waWxh
-dGlvbiwgYW5kIG5vdyBpdCB3b3JrcyBwZXJmZWN0bHkgb24gWW9jdG8gYnVpbGQgd2l0aG91dCBh
-bnkgbW9kaWZpY2F0aW9uLgoKTWFueSB0aGFueApHecO2cmd5IEvDtnZlc2RpCgpPbiBXZWQsIDI0
-IEp1biAyMDE1IDE2OjMzOjAwICswMjAwCkphbiBMw7xiYmUgPGpsdUBwZW5ndXRyb25peC5kZT4g
-d3JvdGU6Cgo+IE9uIERpLCAyMDE1LTA2LTIzIGF0IDIxOjMwICswMjAwLCBMdWNhcyBTdGFjaCB3
-cm90ZToKPiA+IEFsc28geW91IGRvbid0IGhhdmUgYSBoYXJkLWZsb2F0IG9ubHkgZW52aXJvbm1l
-bnQsIHlvdXIgdG9vbGNoYWluIGlzCj4gPiBwZXJmZWN0bHkgYWJsZSB0byBidWlsZCB3aXRoIHRo
-ZSBzb2Z0LWZsb2F0IEFCSSwgaXQncyBqdXN0IHRoYXQgWW9jdG8KPiA+IGFwcGFyZW50bHkgcGFz
-c2VzIHRoZSBtZmxvYXQtYWJpPWhhcmQgZmxhZyBldmVyeXdoZXJlIGluc3RlYWQgb2YKPiA+IHNl
-dHRpbmcgYSByZWFzb25hYmxlIHRvb2xjaGFpbiBkZWZhdWx0Lgo+IAo+IEkgaGF2ZSB0aGUgc2Ft
-ZSBwcm9ibGVtIG5vdywgYXMgd2VsbCAodHJpZ2dlcmVkIGJ5IHNldHRpbmcKPiBERUZBVUxUVFVO
-RT0iY29ydGV4YThoZi1uZW9uIikuCj4gCj4gVGhlIGtlcm5lbCB1c2VzIHRoZSBzYW1lIC1tc29m
-dC1mbG9hdCBpbiBhcmNoL2FybS9NYWtlZmlsZSBhcyB3ZSBkbyBpbgo+IGJhcmVib3guIEFzIEx1
-Y2FzIHNhaWQsIHRoaXMgaXMgYWN0dWFsbHkgaW1wb3J0YW50IGZvciBjb3JyZWN0IGJlaGF2aW9y
-Lgo+IAo+IFlvY3RvIGhhbmRsZXMgdGhpcyBieSBidWlsZGluZyB0aGUga2VybmVsIHdpdGggQ0M9
-IiR7S0VSTkVMX0NDfSIKPiBMRD0iJHtLRVJORUxfTER9IiBpbnN0ZWFkIChzZWUga2VybmVsLmJi
-Y2xhc3MgYW5kIGtlcm5lbC1hcmNoLmJiY2xhc3MpLgo+IEZvciBiYXJlYm94IEkgbm93IGhhdmU6
-Cj4gZG9fY29tcGlsZSAoKSB7Cj4gICAgICAgICB1bnNldCBDRkxBR1MgQ1BQRkxBR1MgQ1hYRkxB
-R1MgTERGTEFHUyBNQUNISU5FCj4gICAgICAgICBvZV9ydW5tYWtlIENDPSIke0tFUk5FTF9DQ30i
-IExEPSIke0tFUk5FTF9MRH0iCj4gfQo+IAo+IFRoZXNlIHNldHRpbmdzIG1ha2UgaXQgaW1wb3Nz
-aWJsZSB0byBidWlsZCB0aGUgYmFyZWJveCB0YXJnZXQgdXNlcnNwYWNlCj4gdG9vbHMgZnJvbSBz
-Y3JpcHRzLywgdGhvdWdoLiBUaGlzIGlzIGJlY2F1c2UgdGhlIC0tc3lzcm9vdCBwYXJhbWV0ZXIg
-aXMKPiBwYXNzZWQgYnkgWW9jdG8gb25seSBpbiAke0NDfSBhbmQgbm90IGluICR7S0VSTkVMX0ND
-fSwgc28gdGhlIHRhcmdldAo+IHVzZXJzcGFjZSB0b29scyB3aWxsIGZhaWwgdG8gZmluZCB0aGVp
-ciBzdGFuZGFyZCBoZWFkZXJzLiBTbyBJIGhhdmUgYXMgYQo+IHRlbXBvcmFyeSB3b3JrYXJvdW5k
-Ogo+IGRvX2NvbmZpZ3VyZV9wcmVwZW5kKCkgewo+ICAgICAgICAgY3AgJHtXT1JLRElSfS9kZWZj
-b25maWcgJHtTfS8uY29uZmlnCj4gICAgICAgICAjIGRvIG5vdCBjb21waWxlIHRvb2xzIHdoZW4g
-dXNpbmcgS0VSTkVMX0NDL0tFUk5FTF9MRAo+ICAgICAgICAgZWNobyBDT05GSUdfQkFSRUJPWEVO
-Vl9UQVJHRVQ9biA+PiAke1N9Ly5jb25maWcKPiAgICAgICAgIGVjaG8gQ09ORklHX0JBUkVCT1hD
-UkMzMl9UQVJHRVQ9biA+PiAke1N9Ly5jb25maWcKPiAgICAgICAgIGVjaG8gQ09ORklHX0tFUk5F
-TF9JTlNUQUxMX1RBUkdFVD1uID4+ICR7U30vLmNvbmZpZwo+ICAgICAgICAgZWNobyBDT05GSUdf
-SU1EX1RBUkdFVD1uID4+ICR7U30vLmNvbmZpZwo+ICAgICAgICAgb2VfcnVubWFrZSBvbGRjb25m
-aWcKPiB9Cj4gCj4gVG8gY29tcGlsZSB0aGUgdGFyZ2V0IHVzZXJzcGFjZSB0b29scywgd2UnbGwg
-bmVlZCB0byB1c2UgJHtDQ30gaW5zdGVhZCwKPiB3aGljaCBpcyBjdXJyZW50bHkgbm90IHN1cHBv
-cnRlZCBieSBvdXIgKG9yIHRoZSBrZXJuZWwncykga2J1aWxkLiBJdAo+IHNlZW1zIHRoYXQgd2Ug
-Y3VycmVudGx5IGJ1aWxkIHRoZXNlIHRvb2xzIHdpdGggLW1zb2Z0LWZsb2F0IGFzIHdlbGwsCj4g
-d2hpY2ggY2F1c2VzIG5vIHByb2JsZW1zIGJlY2F1c2Ugd2UgZG9uJ3QgdXNlIGZsb2F0IG1hdGgs
-IGJ1dCBpdCdzIG5vdAo+IGNvcnJlY3QgZWl0aGVyLgo+IAo+IEd5b3JneSwgY291bGQgeW91IHBv
-aW50IHVzIHRvIHRoZSBZb2N0byBzaWRlIG9mIHRoZSBkaXNjdXNzaW9uLCBpZiBpdAo+IHdhcyBv
-biBzb21lIGxpc3Q/Cj4gCj4gUmVnYXJkcywKPiBKYW4KCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxp
-c3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9iYXJlYm94Cg==
+Sorry!
+
+I have forgotten to add barebox@list.infradead.org to CC.
+
+Begin forwarded message:
+
+Date: Mon, 29 Jun 2015 13:11:12 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>, Juergen Borleis <jbe@pengutronix=
+.de>
+Subject: next: sandbox: arch/sandbox/os/common.c:31:18: fatal error: init.h=
+: No such file or directory
+
+
+Hi!
+
+It looks like sandbox barebox from next branch is broken.
+
+How to reproduce the problem
+
+$ cd barebox.git
+$ git checkout next
+$ git show -1
+commit 5e98d4ec2d434e20a4044ec5d5897ae7b51f9411
+Merge: 9175369 3c36a73
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Mon Jun 29 07:25:47 2015 +0200
+
+    Merge branch 'for-next/watchdog' into next
+
+$ unset ARCH
+$ unset CROSS_COMPILE
+$ make sandbox_defconfig
+...
+$ make
+
+...
+  CC      arch/sandbox/os/common.o
+arch/sandbox/os/common.c:31:18: fatal error: init.h: No such file or direct=
+ory
+ #include <init.h>
+                  ^
+compilation terminated.
+
+git-bisect reports that
+
+0c142e405712586ed8074ce0166c515e158cc986 is the first bad commit
+commit 0c142e405712586ed8074ce0166c515e158cc986
+Author: Juergen Borleis <jbe@pengutronix.de>
+Date:   Thu Jun 25 09:34:34 2015 +0200
+
+    System restart: add a scope value to the system restart feature
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
