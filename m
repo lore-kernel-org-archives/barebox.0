@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z9RQx-0007wQ-3A
- for barebox@lists.infradead.org; Mon, 29 Jun 2015 05:16:44 +0000
+ Linux)) id 1Z9RQx-0007wT-3C
+ for barebox@lists.infradead.org; Mon, 29 Jun 2015 05:16:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 29 Jun 2015 07:16:20 +0200
-Message-Id: <1435554981-30388-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 29 Jun 2015 07:16:21 +0200
+Message-Id: <1435554981-30388-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1435554981-30388-1-git-send-email-s.hauer@pengutronix.de>
+References: <1435554981-30388-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,86 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mtd: Make devname argument to add_mtd_device const
+Subject: [PATCH 2/2] mtd: m25p80: make flash_name const
 To: Barebox List <barebox@lists.infradead.org>
-
-add_mtd_device duplicates the string where necessary, so make it
-const.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c      | 2 +-
- drivers/mtd/mtd.h       | 2 +-
- drivers/mtd/mtdoob.c    | 2 +-
- drivers/mtd/mtdraw.c    | 2 +-
- include/linux/mtd/mtd.h | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/mtd/devices/m25p80.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 681dc93..8b8254c 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -542,7 +542,7 @@ static int of_mtd_fixup(struct device_node *root, void *ctx)
- 	return 0;
- }
- 
--int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
-+int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id)
- {
- 	struct mtddev_hook *hook;
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 231d139..794c9db 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -233,7 +233,7 @@ static int m25p_probe(struct device_d *dev)
+ 	struct m25p			*flash;
+ 	struct spi_nor			*nor;
+ 	enum read_mode mode =		SPI_NOR_NORMAL;
+-	char				*flash_name = NULL;
++	const char			*flash_name = NULL;
+ 	int				device_id;
  	int ret;
-diff --git a/drivers/mtd/mtd.h b/drivers/mtd/mtd.h
-index 414bd6c..2a85265 100644
---- a/drivers/mtd/mtd.h
-+++ b/drivers/mtd/mtd.h
-@@ -25,7 +25,7 @@
-  */
- struct mtddev_hook {
- 	struct list_head hook;
--	int (*add_mtd_device)(struct mtd_info *mtd, char *devname, void **priv);
-+	int (*add_mtd_device)(struct mtd_info *mtd, const char *devname, void **priv);
- 	int (*del_mtd_device)(struct mtd_info *mtd, void **priv);
- 	void *priv;
- };
-diff --git a/drivers/mtd/mtdoob.c b/drivers/mtd/mtdoob.c
-index 10d17e9..6160ddb 100644
---- a/drivers/mtd/mtdoob.c
-+++ b/drivers/mtd/mtdoob.c
-@@ -69,7 +69,7 @@ static struct file_operations mtd_ops_oob = {
- 	.lseek  = dev_lseek_default,
- };
  
--static int add_mtdoob_device(struct mtd_info *mtd, char *devname, void **priv)
-+static int add_mtdoob_device(struct mtd_info *mtd, const char *devname, void **priv)
- {
- 	struct mtdoob *mtdoob;
+@@ -277,13 +277,10 @@ static int m25p_probe(struct device_d *dev)
+ 		return ret;
  
-diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-index c25e406..ae4bec2 100644
---- a/drivers/mtd/mtdraw.c
-+++ b/drivers/mtd/mtdraw.c
-@@ -281,7 +281,7 @@ static const struct file_operations mtd_raw_fops = {
- 	.lseek		= dev_lseek_default,
- };
+ 	device_id = DEVICE_ID_SINGLE;
+-	if (dev->device_node) {
+-		const char *alias = of_alias_get(dev->device_node);
+-		if (alias)
+-			flash_name = xstrdup(alias);
+-	} else if (data && data->name) {
++	if (dev->device_node)
++		flash_name = of_alias_get(dev->device_node);
++	else if (data && data->name)
+ 		flash_name = data->name;
+-	}
  
--static int add_mtdraw_device(struct mtd_info *mtd, char *devname, void **priv)
-+static int add_mtdraw_device(struct mtd_info *mtd, const char *devname, void **priv)
- {
- 	struct mtdraw *mtdraw;
- 
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 33f1fd5..7e828bc 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -270,7 +270,7 @@ static inline uint32_t mtd_div_by_wb(uint64_t sz, struct mtd_info *mtd)
- 
- 	/* Kernel-side ioctl definitions */
- 
--extern int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id);
-+extern int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id);
- extern int del_mtd_device (struct mtd_info *mtd);
- 
- extern struct mtd_info *get_mtd_device(struct mtd_info *mtd, int num);
+ 	if (!flash_name) {
+ 		device_id = DEVICE_ID_DYNAMIC;
 -- 
 2.1.4
 
