@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Z9px3-0003t3-TU
- for barebox@lists.infradead.org; Tue, 30 Jun 2015 07:27:31 +0000
-References: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
- <1434613424-19989-7-git-send-email-s.hauer@pengutronix.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <559244C2.80500@pengutronix.de>
-Date: Tue, 30 Jun 2015 09:26:58 +0200
-MIME-Version: 1.0
-In-Reply-To: <1434613424-19989-7-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZA39S-0001sn-FH
+ for barebox@lists.infradead.org; Tue, 30 Jun 2015 21:33:11 +0000
+Received: by lbnk3 with SMTP id k3so1623551lbn.1
+ for <barebox@lists.infradead.org>; Tue, 30 Jun 2015 14:32:47 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  1 Jul 2015 00:32:24 +0300
+Message-Id: <1435699944-20478-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,166 +16,253 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2488398886135259260=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] blspec: Automatically append rootarg
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] treewide: fix 'new blank line at EOF' formatting error
+To: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============2488398886135259260==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA"
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ commands/automount.c            | 1 -
+ commands/export.c               | 1 -
+ commands/false.c                | 1 -
+ commands/help.c                 | 1 -
+ commands/net.c                  | 1 -
+ commands/readline.c             | 1 -
+ commands/timeout.c              | 1 -
+ commands/trigger.c              | 1 -
+ commands/true.c                 | 1 -
+ commands/ubi.c                  | 1 -
+ commands/version.c              | 1 -
+ common/complete.c               | 1 -
+ common/kallsyms.c               | 1 -
+ common/parser.c                 | 1 -
+ fs/cramfs/cramfs.c              | 1 -
+ fs/fat/fat.c                    | 1 -
+ fs/ramfs.c                      | 1 -
+ lib/fnmatch.c                   | 1 -
+ lib/lzo/lzo1x_decompress_safe.c | 1 -
+ lib/random.c                    | 1 -
+ lib/strtox.c                    | 1 -
+ net/net.c                       | 1 -
+ net/nfs.c                       | 1 -
+ 23 files changed, 23 deletions(-)
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-On 06/18/2015 09:43 AM, Sascha Hauer wrote:
-> This patch makes it possible to automatically add a suitable root=3D op=
-tion
-> for booting Linux from the same filesystem on which the bootspec entry
-> has been found. This adds an additional 'linux-appendroot' option to
-> bootspec which if set to 'true' will cause barebox to automatically
-> add a root=3D option. This currently works for NFS, UBIFS and regular
-> block devices like ATA, SD/MMC using the root=3DPARTUUID=3D mechanism.
->=20
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  Documentation/user/booting-linux.rst |  7 +++++++
->  common/blspec.c                      | 29 ++++++++++++++++++++++++++++=
+diff --git a/commands/automount.c b/commands/automount.c
+index a29f286..b491d20 100644
+--- a/commands/automount.c
++++ b/commands/automount.c
+@@ -70,4 +70,3 @@ BAREBOX_CMD_START(automount)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+ 	BAREBOX_CMD_HELP(cmd_automount_help)
+ BAREBOX_CMD_END
 -
->  2 files changed, 35 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/=
-booting-linux.rst
-> index 6e7d155..39084e5 100644
-> --- a/Documentation/user/booting-linux.rst
-> +++ b/Documentation/user/booting-linux.rst
-> @@ -205,6 +205,13 @@ compatible NFS URI string must be passed to the bo=
-ot command:
-> =20
->    boot nfs://nfshost//path/
-> =20
-> +Additionally to the options defined in the original spec barebox under=
-stands the
-> +``linux-appendroot`` option. This is a boolean value and if set to ``t=
-rue`` barebox
-> +will automatically append a ``root=3D`` string to the Linux commandlin=
-e based on the
-> +device where the entry is found on. This makes it possible to use the =
-same rootfs
-> +image on different devices without having to specify a different root=3D=
- option each
-> +time.
-> +
->  Network boot
->  ------------
-> =20
-> diff --git a/common/blspec.c b/common/blspec.c
-> index 3506388..742065e 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -601,6 +601,29 @@ int blspec_scan_devicename(struct blspec *blspec, =
-const char *devname)
->  	return blspec_scan_device(blspec, dev);
->  }
-> =20
-> +static int blspec_append_root(struct blspec_entry *entry)
-> +{
-> +	const char *appendroot;
-> +	char *rootarg;
-> +
-> +	appendroot =3D blspec_entry_var_get(entry, "linux-appendroot");
-> +	if (!appendroot || strcmp(appendroot, "true"))
-> +		return 0;
-> +
+diff --git a/commands/export.c b/commands/export.c
+index 2e8bb49..4b4cf1e 100644
+--- a/commands/export.c
++++ b/commands/export.c
+@@ -59,4 +59,3 @@ BAREBOX_CMD_START(export)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_ENV)
+ 	BAREBOX_CMD_HELP(cmd_export_help)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/false.c b/commands/false.c
+index 6ef9af3..90aa2cc 100644
+--- a/commands/false.c
++++ b/commands/false.c
+@@ -32,4 +32,3 @@ BAREBOX_CMD_START(false)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_SCRIPT)
+ 	BAREBOX_CMD_COMPLETE(empty_complete)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/help.c b/commands/help.c
+index 6e61bde..3d36d9b 100644
+--- a/commands/help.c
++++ b/commands/help.c
+@@ -148,4 +148,3 @@ BAREBOX_CMD_START(help)
+ 	BAREBOX_CMD_HELP(cmd_help_help)
+ 	BAREBOX_CMD_COMPLETE(command_complete)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/net.c b/commands/net.c
+index 7508c99..219c7ef 100644
+--- a/commands/net.c
++++ b/commands/net.c
+@@ -64,4 +64,3 @@ BAREBOX_CMD_START(ethact)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
+ 	BAREBOX_CMD_COMPLETE(eth_complete)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/readline.c b/commands/readline.c
+index e537498..b6e0e3e 100644
+--- a/commands/readline.c
++++ b/commands/readline.c
+@@ -53,4 +53,3 @@ BAREBOX_CMD_START(readline)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
+ 	BAREBOX_CMD_HELP(cmd_readline_help)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/timeout.c b/commands/timeout.c
+index 2b99d4f..ef1a037 100644
+--- a/commands/timeout.c
++++ b/commands/timeout.c
+@@ -84,4 +84,3 @@ BAREBOX_CMD_START(timeout)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_CONSOLE)
+ 	BAREBOX_CMD_HELP(cmd_timeout_help)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/trigger.c b/commands/trigger.c
+index b605448..2758ce7 100644
+--- a/commands/trigger.c
++++ b/commands/trigger.c
+@@ -105,4 +105,3 @@ BAREBOX_CMD_START(trigger)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
+ 	BAREBOX_CMD_HELP(cmd_trigger_help)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/true.c b/commands/true.c
+index fbb34e7..24dea46 100644
+--- a/commands/true.c
++++ b/commands/true.c
+@@ -32,4 +32,3 @@ BAREBOX_CMD_START(true)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_SCRIPT)
+ 	BAREBOX_CMD_COMPLETE(empty_complete)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 94da799..9463127 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -179,4 +179,3 @@ BAREBOX_CMD_START(ubirmvol)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_PART)
+ 	BAREBOX_CMD_HELP(cmd_ubirmvol_help)
+ BAREBOX_CMD_END
+-
+diff --git a/commands/version.c b/commands/version.c
+index 898c719..090f2dd 100644
+--- a/commands/version.c
++++ b/commands/version.c
+@@ -33,4 +33,3 @@ BAREBOX_CMD_START(version)
+ 	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
+ 	BAREBOX_CMD_COMPLETE(empty_complete)
+ BAREBOX_CMD_END
+-
+diff --git a/common/complete.c b/common/complete.c
+index 5b71f03..f0ef576 100644
+--- a/common/complete.c
++++ b/common/complete.c
+@@ -466,4 +466,3 @@ int complete(char *instr, char **outstr)
+ 
+ 	return reprint;
+ }
+-
+diff --git a/common/kallsyms.c b/common/kallsyms.c
+index 53e22cd..e15dec5 100644
+--- a/common/kallsyms.c
++++ b/common/kallsyms.c
+@@ -212,4 +212,3 @@ int sprint_symbol(char *buffer, unsigned long address)
+ 	return len;
+ }
+ EXPORT_SYMBOL_GPL(sprint_symbol);
+-
+diff --git a/common/parser.c b/common/parser.c
+index 4a48210..207599f 100644
+--- a/common/parser.c
++++ b/common/parser.c
+@@ -284,4 +284,3 @@ int run_shell(void)
+ 	}
+ 	return 0;
+ }
+-
+diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
+index fb92714..97f028a 100644
+--- a/fs/cramfs/cramfs.c
++++ b/fs/cramfs/cramfs.c
+@@ -481,4 +481,3 @@ static int cramfs_init(void)
+ }
+ 
+ device_initcall(cramfs_init);
+-
+diff --git a/fs/fat/fat.c b/fs/fat/fat.c
+index 6d7d262..ece937d 100644
+--- a/fs/fat/fat.c
++++ b/fs/fat/fat.c
+@@ -434,4 +434,3 @@ static int fat_init(void)
+ }
+ 
+ coredevice_initcall(fat_init);
+-
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index fe5eb89..716f40f 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -644,4 +644,3 @@ static int ramfs_init(void)
+ }
+ 
+ coredevice_initcall(ramfs_init);
+-
+diff --git a/lib/fnmatch.c b/lib/fnmatch.c
+index 1a5e8d0..0ab530d 100644
+--- a/lib/fnmatch.c
++++ b/lib/fnmatch.c
+@@ -218,4 +218,3 @@ int fnmatch(const char *pattern, const char *string, int flags)
+ 
+ # undef FOLD
+ }
+-
+diff --git a/lib/lzo/lzo1x_decompress_safe.c b/lib/lzo/lzo1x_decompress_safe.c
+index 3c0f512..6e8c822 100644
+--- a/lib/lzo/lzo1x_decompress_safe.c
++++ b/lib/lzo/lzo1x_decompress_safe.c
+@@ -258,4 +258,3 @@ lookbehind_overrun:
+ }
+ 
+ EXPORT_SYMBOL(lzo1x_decompress_safe);
+-
+diff --git a/lib/random.c b/lib/random.c
+index 14c7da1..210fea9 100644
+--- a/lib/random.c
++++ b/lib/random.c
+@@ -25,4 +25,3 @@ void get_random_bytes(void *_buf, int len)
+ 	while (len--)
+ 		*buf++ = rand() % 256;
+ }
+-
+diff --git a/lib/strtox.c b/lib/strtox.c
+index 882865b..cfe6124 100644
+--- a/lib/strtox.c
++++ b/lib/strtox.c
+@@ -65,4 +65,3 @@ unsigned long long simple_strtoull (const char *cp, char **endp, unsigned int ba
+ 	return result;
+ }
+ EXPORT_SYMBOL(simple_strtoull);
+-
+diff --git a/net/net.c b/net/net.c
+index 7eeedea..7bc15cf 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -638,4 +638,3 @@ static int net_init(void)
+ }
+ 
+ postcore_initcall(net_init);
+-
+diff --git a/net/nfs.c b/net/nfs.c
+index 2753330..0a30219 100644
+--- a/net/nfs.c
++++ b/net/nfs.c
+@@ -731,4 +731,3 @@ BAREBOX_CMD_START(nfs)
+ 	BAREBOX_CMD_OPTS("FILE [LOCALFILE]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
+ BAREBOX_CMD_END
+-
+-- 
+2.1.4
 
-Can you move the following into a separate function outside of blspec.c
-so that it can be used somewhere else, too?
-
-> +	rootarg =3D path_get_linux_rootarg(entry->rootpath);
-> +	if (IS_ERR(rootarg)) {
-> +		pr_err("Getting root argument for %s failed with: %s\n",
-> +				entry->rootpath, strerror(-PTR_ERR(rootarg)));
-> +		return PTR_ERR(rootarg);
-> +	}
-> +
-> +	globalvar_add_simple("linux.bootargs.dyn.blspec.appendroot", rootarg)=
-;
-> +
-> +	free(rootarg);
-> +
-> +	return 0;
-> +}
-> +
->  /*
->   * blspec_boot - boot an entry
->   *
-> @@ -650,6 +673,10 @@ int blspec_boot(struct blspec_entry *entry, int ve=
-rbose, int dryrun)
-> =20
->  	globalvar_add_simple("linux.bootargs.dyn.blspec", options);
-> =20
-> +	ret =3D blspec_append_root(entry);
-> +	if (ret)
-> +		goto err_out;
-> +
->  	pr_info("booting %s from %s\n", blspec_entry_var_get(entry, "title"),=
-
->  			entry->cdev ? dev_name(entry->cdev->dev) : "none");
-> =20
-> @@ -668,7 +695,7 @@ int blspec_boot(struct blspec_entry *entry, int ver=
-bose, int dryrun)
->  	ret =3D bootm_boot(&data);
->  	if (ret)
->  		pr_err("Booting failed\n");
-> -
-> +err_out:
->  	free((char *)data.oftree_file);
->  	free((char *)data.initrd_file);
->  	free((char *)data.os_file);
->=20
-
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAEBCgAGBQJVkkTDAAoJEP5prqPJtc/HoOgH/jxbzrGai8tyPeteeGNsfrMp
-qJsYe+uAvan6Uyx9TvG1yJDsxwrLkPHShjrPsCu83/kT2qnukrs4Lodrf0+zae2x
-w/ml9GqjF/7mQTyuiW7ykOMTbFVND3GDMIpKePbmbV0W4nIrmevlV0zLxuZth62V
-u8LXk5cBpJzokqkPwCkS5BTtPcCISZhpHk4/d9aOnywzYCABA3Ex8ACenT4HHIxB
-/L0f8rqDNuFRZdL8e3FBZyoLtQ068Am91Oljz+JyjTz744/BKw5Ko1GIuIO73kq0
-ZxJtPEDTULJHho24M2qVTfHI0bHlINmGbRyiy9AdnyVP2n67WVz7BdfLQei1qgA=
-=ga9x
------END PGP SIGNATURE-----
-
---RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA--
-
-
---===============2488398886135259260==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2488398886135259260==--
