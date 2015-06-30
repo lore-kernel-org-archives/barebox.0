@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Z9bcI-000609-IF
- for barebox@lists.infradead.org; Mon, 29 Jun 2015 16:09:08 +0000
-Received: by lagh6 with SMTP id h6so59678391lag.2
- for <barebox@lists.infradead.org>; Mon, 29 Jun 2015 09:08:43 -0700 (PDT)
-Date: Mon, 29 Jun 2015 19:15:19 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150629191519.93ab1e7934af3dc6556a6bbc@gmail.com>
-In-Reply-To: <1435588017-24949-3-git-send-email-alllecs@yandex.ru>
-References: <1435588017-24949-1-git-send-email-alllecs@yandex.ru>
- <1435588017-24949-3-git-send-email-alllecs@yandex.ru>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Z9px3-0003t3-TU
+ for barebox@lists.infradead.org; Tue, 30 Jun 2015 07:27:31 +0000
+References: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
+ <1434613424-19989-7-git-send-email-s.hauer@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <559244C2.80500@pengutronix.de>
+Date: Tue, 30 Jun 2015 09:26:58 +0200
+MIME-Version: 1.0
+In-Reply-To: <1434613424-19989-7-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,353 +18,166 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============2488398886135259260=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC V3 2/3] ddr_spd: add routune for printing SPD contents in
- human readable format
-To: Alexander Smirnov <alllecs@yandex.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 6/6] blspec: Automatically append rootarg
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-On Mon, 29 Jun 2015 17:26:56 +0300
-Alexander Smirnov <alllecs@yandex.ru> wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============2488398886135259260==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA"
 
-> Signed-off-by: Alexander Smirnov <alllecs@yandex.ru>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 06/18/2015 09:43 AM, Sascha Hauer wrote:
+> This patch makes it possible to automatically add a suitable root=3D op=
+tion
+> for booting Linux from the same filesystem on which the bootspec entry
+> has been found. This adds an additional 'linux-appendroot' option to
+> bootspec which if set to 'true' will cause barebox to automatically
+> add a root=3D option. This currently works for NFS, UBIFS and regular
+> block devices like ATA, SD/MMC using the root=3DPARTUUID=3D mechanism.
+>=20
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  common/ddr_spd.c  | 239 ++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  include/ddr_spd.h |   1 +
->  2 files changed, 240 insertions(+)
-> =
-
-> diff --git a/common/ddr_spd.c b/common/ddr_spd.c
-> index ea0b529..380ea18 100644
-> --- a/common/ddr_spd.c
-> +++ b/common/ddr_spd.c
-> @@ -61,3 +61,242 @@ uint32_t ddr3_spd_checksum_pass(const struct ddr3_spd=
-_eeprom_s *spd)
->  =
-
->  	return 0;
+>  Documentation/user/booting-linux.rst |  7 +++++++
+>  common/blspec.c                      | 29 ++++++++++++++++++++++++++++=
+-
+>  2 files changed, 35 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/=
+booting-linux.rst
+> index 6e7d155..39084e5 100644
+> --- a/Documentation/user/booting-linux.rst
+> +++ b/Documentation/user/booting-linux.rst
+> @@ -205,6 +205,13 @@ compatible NFS URI string must be passed to the bo=
+ot command:
+> =20
+>    boot nfs://nfshost//path/
+> =20
+> +Additionally to the options defined in the original spec barebox under=
+stands the
+> +``linux-appendroot`` option. This is a boolean value and if set to ``t=
+rue`` barebox
+> +will automatically append a ``root=3D`` string to the Linux commandlin=
+e based on the
+> +device where the entry is found on. This makes it possible to use the =
+same rootfs
+> +image on different devices without having to specify a different root=3D=
+ option each
+> +time.
+> +
+>  Network boot
+>  ------------
+> =20
+> diff --git a/common/blspec.c b/common/blspec.c
+> index 3506388..742065e 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -601,6 +601,29 @@ int blspec_scan_devicename(struct blspec *blspec, =
+const char *devname)
+>  	return blspec_scan_device(blspec, dev);
 >  }
-> +
-> +static char *heights[] =3D {
-> +	"<25.4",
-> +	"25.4",
-> +	"25.4 - 30.0",
-> +	"30.0",
-> +	"30.5",
-> +	"> 30.5"
-> +};
-> +
-> +static char *sdram_voltage_interface_level[] =3D {
-> +	"TTL (5V tolerant)",
-> +	"LVTTL (not 5V tolerant)",
-> +	"HSTL 1.5V",
-> +	"SSTL 3.3V",
-> +	"SSTL 2.5V",
-> +	"SSTL 1.8V"
-> +};
-> +
-> +static char *ddr2_module_types[] =3D {
-> +	"RDIMM (133.35 mm)",
-> +	"UDIMM (133.25 mm)",
-> +	"SO-DIMM (67.6 mm)",
-> +	"Micro-DIMM (45.5 mm)",
-> +	"Mini-RDIMM (82.0 mm)",
-> +	"Mini-UDIMM (82.0 mm)"
-> +};
-> +
-> +static char *refresh[] =3D {
-> +	"15.625",
-> +	"3.9",
-> +	"7.8",
-> +	"31.3",
-> +	"62.5",
-> +	"125"
-> +};
-> +
-> +static char *type_list[] =3D {
-> +	"Reserved",
-> +	"FPM DRAM",
-> +	"EDO",
-> +	"Pipelined Nibble",
-> +	"SDR SDRAM",
-> +	"Multiplexed ROM",
-> +	"DDR SGRAM",
-> +	"DDR SDRAM",
-> +	"DDR2 SDRAM",
-> +	"FB-DIMM",
-> +	"FB-DIMM Probe",
-> +	"DDR3 SDRAM"
-> +};
-> +
-> +static int funct(uint8_t addr)
+> =20
+> +static int blspec_append_root(struct blspec_entry *entry)
 > +{
-> +	int t;
+> +	const char *appendroot;
+> +	char *rootarg;
 > +
-> +	t =3D ((addr >> 4) * 10 + (addr & 0xf));
+> +	appendroot =3D blspec_entry_var_get(entry, "linux-appendroot");
+> +	if (!appendroot || strcmp(appendroot, "true"))
+> +		return 0;
 > +
-> +	return t;
-> +}
-> +
-> +static int des(uint8_t byte)
-> +{
-> +	int k;
-> +
-> +	k =3D (byte & 0x3) * 10 / 4;
-> +
-> +	return k;
-> +}
-> +
-> +static int integ(uint8_t byte)
-> +{
-> +	int k;
-> +
-> +	k =3D (byte >> 2);
-> +
-> +	return k;
-> +}
-> +
-> +static int ddr2_sdram_ctime(uint8_t byte)
-> +{
-> +	int ctime;
-> +
-> +	ctime =3D (byte >> 4) * 100;
-> +	if ((byte & 0xf) <=3D 9)
-> +		ctime +=3D (byte & 0xf) * 10;
-> +	else if ((byte & 0xf) =3D=3D 10)
-> +		ctime +=3D 25;
-> +	else if ((byte & 0xf) =3D=3D 11)
-> +		ctime +=3D 33;
-> +	else if ((byte & 0xf) =3D=3D 12)
-> +		ctime +=3D 66;
-> +	else if ((byte & 0xf) =3D=3D 13)
-> +		ctime +=3D 75;
-> +
-> +	return ctime;
-> +}
-> +
-> +void ddr_spd_print(uint8_t *record)
-> +{
-> +	int highestCAS =3D 0;
-> +	int cas[256];
-> +	int i, i_i, k, x, y;
-> +	int ddrclk, tbits, pcclk;
-> +	int trcd, trp, tras;
-> +	int ctime;
-> +	uint8_t parity;
-> +	char *ref;
-> +	struct ddr2_spd_eeprom_s *s =3D (struct ddr2_spd_eeprom_s *)record;
-> +
-> +	ctime =3D ddr2_sdram_ctime(s->clk_cycle);
-> +	ddrclk =3D 2 * (1000 / ctime) * 100;
-> +	tbits =3D ((s->res_7) << 8) + (s->dataw);
-> +	if (((s->config) & 0x03) =3D=3D 1)
-> +		tbits =3D tbits - 8;
-> +
-> +	pcclk =3D ddrclk * tbits / 8;
-> +	pcclk =3D pcclk - (pcclk % 100);
-> +	i_i =3D ((s->nrow_addr) & 0x0f) + ((s->ncol_addr) & 0x0f) - 17;
-> +	k =3D (((s->mod_ranks) & 0x7) + 1) * (s->nbanks);
-> +	trcd =3D (((s->trcd) >> 2) + (((s->trcd) & 3) * 0.25)) / ctime * 100;
-> +	trp =3D (((s->trp) >> 2) + (((s->trp) & 3) * 0.25)) / ctime * 100;
-> +	tras =3D (s->tras) * 100 / ctime ;
-> +	x =3D (int)(ctime / 100);
-> +	y =3D (ctime - (int)((ctime / 100) * 100)) / 10;
-> +
-> +	for (i_i =3D 2; i_i < 7; i_i++) {
-> +		if ((s->cas_lat) & (1 << i_i)) {
-> +			highestCAS =3D i_i;
-> +			cas[highestCAS]++;
-> +		}
+
+Can you move the following into a separate function outside of blspec.c
+so that it can be used somewhere else, too?
+
+> +	rootarg =3D path_get_linux_rootarg(entry->rootpath);
+> +	if (IS_ERR(rootarg)) {
+> +		pr_err("Getting root argument for %s failed with: %s\n",
+> +				entry->rootpath, strerror(-PTR_ERR(rootarg)));
+> +		return PTR_ERR(rootarg);
 > +	}
-> +	printf("---=3D=3D=3D SPD EEPROM Information =3D=3D=3D---\n");
-> +	printf("%-50s OK (0x%0X)\n", "EEPROM Checksum of bytes 0-62", s->cksum);
-> +	printf("%-50s %d\n", "# of bytes written to SDRAM EEPROM", s->info_size=
-);
-> +	printf("%-50s %d\n", "Total number of bytes in EEPROM", 1 << (s->chip_s=
-ize));
 > +
-> +	if ((s->mem_type) < 11)
-> +		printf("%-50s %s\n", "Fundamental Memory type", type_list[(s->mem_type=
-)]);
-> +	else
-> +		printf("%-50s (%02x)\n", "Warning: unknown memory type", s->mem_type);
+> +	globalvar_add_simple("linux.bootargs.dyn.blspec.appendroot", rootarg)=
+;
 > +
-> +	printf("%-50s %x.%x\n", "SPD Revision", (s->spd_rev) >> 4, (s->spd_rev)=
- & 0x0f);
+> +	free(rootarg);
 > +
-> +	printf("\n---=3D=3D=3D Memory Characteristics =3D=3D=3D---\n");
-> +	printf("%-50s %d MHz (PC2-%d)\n", "Maximum module speed", ddrclk, pcclk=
-);
-> +	if (i_i > 0 && i_i <=3D 12 && k > 0)
-> +		printf("%-50s %d MB\n", "Size", ((1 << i_i) * k));
-
-extra brackets here.
-
-> +	else
-> +		printf("%-50s INVALID: %02x %02x %02x %02x\n", "Size", s->nrow_addr, s=
-->ncol_addr, s->mod_ranks, s->nbanks);
-> +
-> +	printf("%-50s %d x %d x %d x %d\n", "Banks x Rows x Columns x Bits", s-=
->nbanks, s->nrow_addr, s->ncol_addr, s->dataw);
-> +	printf("%-50s %d\n", "Ranks", ((s->mod_ranks) & 0x7) + 1);
-
-and here
-
-> +	printf("%-50s %d bits\n", "SDRAM Device Width", (s->primw));
-and here
-> +	if (((s->mod_ranks) >> 5) < 7)
-
-Please use ARRAY_SIZE(heights) instead of 7.
-
-> +		printf("%-50s %s mm\n", "Module Height", heights[((s->mod_ranks) >> 5)=
-]);
-> +	else
-> +		printf("Error height\n");
-> +
-> +	printf("%-50s %s\n", "Module Type", ddr2_module_types[fls(s->dimm_type)=
- - 1]);
-> +	printf("%-50s ", "DRAM Package ");
-> +	if (((s->mod_ranks) & 0x10) =3D=3D 1)
-> +		printf("Stack\n");
-> +	else
-> +		printf("Planar\n");
-> +	if ((s->voltage) < 7)
-> +		printf("%-50s %s\n", "Voltage Interface Level", sdram_voltage_interfac=
-e_level[s->voltage]);
-> +	else
-> +		printf("Error Voltage Interface Level\n");
-> +
-> +	printf("%-50s ", "Module Configuration Type ");
-> +
-> +	parity =3D (s->config) & 0x07;
-> +	if (parity =3D=3D 0)
-> +		printf("No Parity\n");
-> +
-> +	if ((parity & 0x03) =3D=3D 0x01)
-> +		printf("Data Parity\n");
-> +	if (parity & 0x02)
-> +		printf("Data ECC\n");
-> +
-> +	if (parity & 0x04)
-> +		printf("Address/Command Parity\n");
-> +
-> +	if (((s->refresh) >> 7) =3D=3D 1)
-> +		ref =3D "- Self Refresh";
-> +	else
-> +		ref =3D " ";
-> +
-> +	printf("%-50s Reduced (%s us) %s\n", "Refresh Rate", refresh[(s->refres=
-h) & 0x7f], ref);
-> +	printf("%-50s %d, %d\n", "Supported Burst Lengths", (s->burstl) & 4, (s=
-->burstl) & 8);
-> +
-> +	printf("%-50s %dT\n", "Supported CAS Latencies (tCL)", highestCAS);
-> +	printf("%-50s %d-%d-%d-%d as DDR2-%d\n", "tCL-tRCD-tRP-tRAS", highestCA=
-S, trcd, trp, tras, ddrclk);
-> +	printf("%-50s %d.%d ns at CAS %d\n", "Minimum Cycle Time", x, y, highes=
-tCAS);
-> +	printf("%-50s 0.%d%d ns at CAS %d\n", "Maximum Access Time", ((s->clk_a=
-ccess) >> 4), ((s->clk_access) & 0xf), highestCAS);
-> +	printf("%-50s %d ns\n", "Maximum Cycle Time (tCK max)", ((s->tckmax) >>=
- 4) + ((s->tckmax) & 0x0f));
-> +printf("\n---=3D=3D=3D Timing Parameters =3D=3D=3D---\n");
-
-wrong formatting here.
-
-> +	printf("%-50s 0.%d ns\n", "Address/Command Setup Time Before Clock (tIS=
-)", (funct(s->ca_setup)));
-> +	printf("%-50s 0.%d ns\n", "Address/Command Hold Time After Clock (tIH)"=
-, (funct(s->ca_hold)));
-> +	printf("%-50s 0.%d%d ns\n", "Data Input Setup Time Before Strobe (tDS)"=
-, ((s->data_setup) >> 4), ((s->data_setup) & 0xf));
-> +	printf("%-50s 0.%d%d ns\n", "Data Input Hold Time After Strobe (tDH)", =
-((s->data_hold) >> 4), ((s->data_hold) & 0xf));
-> +
-> +	printf("%-50s %d.%d ns\n", "Minimum Row Precharge Delay (tRP)", integ(s=
-->trp), des(s->trp));
-> +	printf("%-50s %d.%d ns\n", "Minimum Row Active to Row Active Delay (tRR=
-D)", integ(s->trrd), des(s->trrd));
-> +	printf("%-50s %d.%d ns\n", "Minimum RAS# to CAS# Delay (tRCD)", integ(s=
-->trcd), des(s->trcd));
-> +	printf("%-50s %d ns\n", "Minimum RAS# Pulse Width (tRAS)", (((s->tras) =
-& 0xfc) + ((s->tras) & 0x3)));
-> +	printf("%-50s %d.%d ns\n", "Write Recovery Time (tWR)", integ(s->twr), =
-des(s->twr));
-> +	printf("%-50s %d.%d ns\n", "Minimum Write to Read CMD Delay (tWTR)", in=
-teg(s->twtr), des(s->twtr));
-> +	printf("%-50s %d.%d ns\n", "Minimum Read to Pre-charge CMD Delay (tRTP)=
-", integ(s->trtp), des(s->trtp));
-> +	printf("%-50s %d ns\n", "Minimum Active to Auto-refresh Delay (tRC)", s=
-->trc);
-> +	printf("%-50s %d ns\n", "Minimum Recovery Delay (tRFC)", s->trfc);
-> +	printf("%-50s 0.%d ns\n", "Maximum DQS to DQ Skew (tDQSQ)", s->tdqsq);
-> +	printf("%-50s 0.%d ns\n", "Maximum Read Data Hold Skew (tQHS)", s->tqhs=
-);
-> +
-> +	printf("\n---=3D=3D=3D Manufacturing Information =3D=3D=3D---\n");
-> +
-> +	printf("%-50s", "Manufacturer JEDEC ID");
-> +	for (i =3D 64; i < 72; i++)
-> +		printf(" %02x", record[i]);
-> +
-> +	printf("\n");
-> +	if (s->mloc)
-> +		printf("%-50s 0x%02x\n", "Manufacturing Location Code", s->mloc);
-> +
-> +	printf("%-50s ", "Part Number");
-> +	for (i =3D 73; i < 91; i++) {
-> +		if (record[i] >=3D 32 && record[i] < 127)
-> +			printf("%c", record[i]);
-> +		else
-> +			printf("%d", record[i]);
-> +	}
-> +	printf("\n");
-> +	printf("%-50s 20%d-W%d\n", "Manufacturing Date", record[93], record[94]=
-);
-> +	printf("%-50s 0x", "Assembly Serial Number");
-> +	for (i =3D 95; i < 99; i++)
-> +		printf("%02X", record[i]);
+> +	return 0;
 > +}
-> diff --git a/include/ddr_spd.h b/include/ddr_spd.h
-> index fc03bac..01fe73c 100644
-> --- a/include/ddr_spd.h
-> +++ b/include/ddr_spd.h
-> @@ -228,6 +228,7 @@ struct ddr3_spd_eeprom_s {
->  	uint8_t cust[80];        /* 176-255 Open for Customer Use */
->  };
->  =
+> +
+>  /*
+>   * blspec_boot - boot an entry
+>   *
+> @@ -650,6 +673,10 @@ int blspec_boot(struct blspec_entry *entry, int ve=
+rbose, int dryrun)
+> =20
+>  	globalvar_add_simple("linux.bootargs.dyn.blspec", options);
+> =20
+> +	ret =3D blspec_append_root(entry);
+> +	if (ret)
+> +		goto err_out;
+> +
+>  	pr_info("booting %s from %s\n", blspec_entry_var_get(entry, "title"),=
 
-> +extern void ddr_spd_print(uint8_t *record);
->  extern uint32_t ddr3_spd_checksum_pass(const struct ddr3_spd_eeprom_s *s=
-pd);
->  extern uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *s=
-pd);
->  =
+>  			entry->cdev ? dev_name(entry->cdev->dev) : "none");
+> =20
+> @@ -668,7 +695,7 @@ int blspec_boot(struct blspec_entry *entry, int ver=
+bose, int dryrun)
+>  	ret =3D bootm_boot(&data);
+>  	if (ret)
+>  		pr_err("Booting failed\n");
+> -
+> +err_out:
+>  	free((char *)data.oftree_file);
+>  	free((char *)data.initrd_file);
+>  	free((char *)data.os_file);
+>=20
 
-> -- =
+Marc
 
-> 2.1.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
--- =
+--RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJVkkTDAAoJEP5prqPJtc/HoOgH/jxbzrGai8tyPeteeGNsfrMp
+qJsYe+uAvan6Uyx9TvG1yJDsxwrLkPHShjrPsCu83/kT2qnukrs4Lodrf0+zae2x
+w/ml9GqjF/7mQTyuiW7ykOMTbFVND3GDMIpKePbmbV0W4nIrmevlV0zLxuZth62V
+u8LXk5cBpJzokqkPwCkS5BTtPcCISZhpHk4/d9aOnywzYCABA3Ex8ACenT4HHIxB
+/L0f8rqDNuFRZdL8e3FBZyoLtQ068Am91Oljz+JyjTz744/BKw5Ko1GIuIO73kq0
+ZxJtPEDTULJHho24M2qVTfHI0bHlINmGbRyiy9AdnyVP2n67WVz7BdfLQei1qgA=
+=ga9x
+-----END PGP SIGNATURE-----
+
+--RwqPxrAM9xfxud2V2HBGbfnCh9TdVL8iA--
+
+
+--===============2488398886135259260==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2488398886135259260==--
