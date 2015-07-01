@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1ZAAfq-0002GO-RA
- for barebox@lists.infradead.org; Wed, 01 Jul 2015 05:35:07 +0000
-Date: Wed, 1 Jul 2015 07:34:44 +0200
+ Linux)) id 1ZAAgM-0003S8-3r
+ for barebox@lists.infradead.org; Wed, 01 Jul 2015 05:35:38 +0000
+Date: Wed, 1 Jul 2015 07:35:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150701053444.GZ18611@pengutronix.de>
-References: <1435699974-20530-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20150701053515.GA18611@pengutronix.de>
+References: <1435724904-21687-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1435699974-20530-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1435724904-21687-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] dns: handle incoming packets in the separate dns_recv()
- function
+Subject: Re: [PATCH] sandbox: asm/byteorder.h: fix guard macro name
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jul 01, 2015 at 12:32:54AM +0300, Antony Pavlov wrote:
-> The separation of incoming packets handling makes it much easier
-> to run barebox dns client on top of picotcp network stack in the future.
-> 
+On Wed, Jul 01, 2015 at 07:28:24AM +0300, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  net/dns.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+>  arch/sandbox/include/asm/byteorder.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
