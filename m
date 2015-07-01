@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1ZACBy-0004yD-Je
+ Linux)) id 1ZACBy-0004yF-Jf
  for barebox@lists.infradead.org; Wed, 01 Jul 2015 07:12:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  1 Jul 2015 09:11:57 +0200
-Message-Id: <1435734718-18367-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  1 Jul 2015 09:11:58 +0200
+Message-Id: <1435734718-18367-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1435734718-18367-1-git-send-email-s.hauer@pengutronix.de>
+References: <1435734718-18367-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,181 +21,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] bbu: Add a standard file-to-device-copy handler
+Subject: [PATCH 2/2] ARM: AM335x: replace specific barebox update handler with
+ generic one
 To: Barebox List <barebox@lists.infradead.org>
 
-The most standard update handler will simply copy a file to a device.
-This can be shared across several users, so add a standard handler for
-this operation.
+The AM335x SPI NOR barebox update handlers only writes a file to a device,
+so use the generic handler for this purpose.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bbu.c  | 113 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/bbu.h |   9 +++++
- 2 files changed, 122 insertions(+)
+ arch/arm/mach-omap/am33xx_bbu_spi_mlo.c | 56 ---------------------------------
+ arch/arm/mach-omap/include/mach/bbu.h   |  5 ++-
+ 2 files changed, 2 insertions(+), 59 deletions(-)
 
-diff --git a/common/bbu.c b/common/bbu.c
-index 7fb154a..4d71fa4 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -20,6 +20,12 @@
- #include <linux/list.h>
- #include <errno.h>
- #include <readkey.h>
-+#include <filetype.h>
-+#include <libfile.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <malloc.h>
-+#include <linux/stat.h>
+diff --git a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+index 97dc54e..702bb9a 100644
+--- a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
++++ b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+@@ -97,41 +97,6 @@ out:
+ 	return ret;
+ }
  
- static LIST_HEAD(bbu_image_handlers);
+-static int spi_nor_handler(struct bbu_handler *handler,
+-					struct bbu_data *data)
+-{
+-	int fd, ret;
+-
+-	if (file_detect_type(data->image, data->len) != filetype_arm_barebox) {
+-		if (!bbu_force(data, "Not an ARM barebox image"))
+-			return -EINVAL;
+-	}
+-
+-	fd = open(data->devicefile, O_RDWR | O_CREAT);
+-	if (fd < 0)
+-		return fd;
+-
+-	debug("%s: eraseing %s from 0 to 0x%08x\n", __func__,
+-			data->devicefile, data->len);
+-	ret = erase(fd, data->len, 0);
+-	if (ret) {
+-		printf("erasing %s failed with %s\n", data->devicefile,
+-				strerror(-ret));
+-		goto err_close;
+-	}
+-
+-	ret = write(fd, data->image, data->len);
+-	if (ret < 0)
+-		goto err_close;
+-
+-	ret = 0;
+-
+-err_close:
+-	close(fd);
+-
+-	return ret;
+-}
+-
+ /*
+  * Register a am33xx MLO update handler for SPI NOR
+  */
+@@ -152,24 +117,3 @@ int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
  
-@@ -153,3 +159,110 @@ int bbu_register_handler(struct bbu_handler *handler)
+ 	return ret;
+ }
+-
+-/*
+- * Register a am33xx update handler for SPI NOR
+- */
+-int am33xx_bbu_spi_nor_register_handler(const char *name, char *devicefile)
+-{
+-	struct bbu_handler *handler;
+-	int ret;
+-
+-	handler = xzalloc(sizeof(*handler));
+-	handler->devicefile = devicefile;
+-	handler->name = name;
+-	handler->handler = spi_nor_handler;
+-
+-	ret = bbu_register_handler(handler);
+-
+-	if (ret)
+-		free(handler);
+-
+-	return ret;
+-}
+diff --git a/arch/arm/mach-omap/include/mach/bbu.h b/arch/arm/mach-omap/include/mach/bbu.h
+index 36d87e1..da5c214 100644
+--- a/arch/arm/mach-omap/include/mach/bbu.h
++++ b/arch/arm/mach-omap/include/mach/bbu.h
+@@ -5,18 +5,17 @@
  
+ #ifdef CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO
+ int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile);
+-int am33xx_bbu_spi_nor_register_handler(const char *name, char *devicefile);
+ #else
+ static inline int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
+ {
  	return 0;
  }
-+
-+struct bbu_std {
-+	struct bbu_handler handler;
-+	enum filetype filetype;
-+};
-+
-+static int bbu_std_file_handler(struct bbu_handler *handler,
-+					struct bbu_data *data)
-+{
-+	struct bbu_std *std = container_of(handler, struct bbu_std, handler);
-+	int fd, ret;
-+	enum filetype filetype;
-+	struct stat s;
-+	unsigned oflags = O_WRONLY;
-+
-+	filetype = file_detect_type(data->image, data->len);
-+	if (filetype != std->filetype) {
-+		if (!bbu_force(data, "incorrect image type. Expected: %s, got %s",
-+				file_type_to_string(std->filetype),
-+				file_type_to_string(filetype)))
-+			return -EINVAL;
-+	}
-+
-+	ret = stat(data->devicefile, &s);
-+	if (ret) {
-+		oflags |= O_CREAT;
-+	} else {
-+		if (!S_ISREG(s.st_mode) && s.st_size < data->len) {
-+			printf("Image (%lld) is too big for device (%d)\n",
-+					s.st_size, data->len);
-+		}
-+	}
-+
-+	ret = bbu_confirm(data);
-+	if (ret)
-+		return ret;
-+
-+	fd = open(data->devicefile, oflags);
-+	if (fd < 0)
-+		return fd;
-+
-+	ret = protect(fd, data->len, 0, 0);
-+	if (ret && ret != -ENOSYS) {
-+		printf("unprotecting %s failed with %s\n", data->devicefile,
-+				strerror(-ret));
-+		goto err_close;
-+	}
-+
-+	ret = erase(fd, data->len, 0);
-+	if (ret && ret != -ENOSYS) {
-+		printf("erasing %s failed with %s\n", data->devicefile,
-+				strerror(-ret));
-+		goto err_close;
-+	}
-+
-+	ret = write_full(fd, data->image, data->len);
-+	if (ret < 0)
-+		goto err_close;
-+
-+	protect(fd, data->len, 0, 1);
-+
-+	ret = 0;
-+
-+err_close:
-+	close(fd);
-+
-+	return ret;
-+}
-+
-+/**
-+ * bbu_register_std_file_update() - register a barebox update handler for a
-+ *                                  standard file-to-device-copy operation
-+ * @name:	Name of the handler
-+ * @flags:	BBU_HANDLER_FLAG_* flags
-+ * @devicefile: the file to write the update image to
-+ * @imagetype:	The filetype that the update image must have
-+ *
-+ * This update handler us suitable for a standard file-to-device copy operation.
-+ * The handler checks for a filetype and unprotects/erases the device if
-+ * necessary. If devicefile belongs to a device then the device is checkd for
-+ * enough space before touching it.
-+ *
-+ * Return: 0 if successful, negative error code otherwise
-+ */
-+int bbu_register_std_file_update(const char *name, unsigned long flags,
-+		char *devicefile, enum filetype imagetype)
-+{
-+	struct bbu_std *std;
-+	struct bbu_handler *handler;
-+	int ret;
-+
-+	std = xzalloc(sizeof(*std));
-+	std->filetype = imagetype;
-+
-+	handler = &std->handler;
-+
-+	handler->flags = flags;
-+	handler->devicefile = devicefile;
-+	handler->name = name;
-+	handler->handler = bbu_std_file_handler;
-+
-+	ret = bbu_register_handler(handler);
-+	if (ret)
-+		free(std);
-+
-+	return ret;
-+}
-diff --git a/include/bbu.h b/include/bbu.h
-index 4a3d35e..af2f84a 100644
---- a/include/bbu.h
-+++ b/include/bbu.h
-@@ -4,6 +4,7 @@
- #include <asm-generic/errno.h>
- #include <linux/list.h>
- #include <linux/types.h>
-+#include <filetype.h>
++#endif
  
- struct bbu_data {
- #define BBU_FLAG_FORCE	(1 << 0)
-@@ -41,6 +42,9 @@ void bbu_handlers_list(void);
- 
- int bbu_register_handler(struct bbu_handler *);
- 
-+int bbu_register_std_file_update(const char *name, unsigned long flags,
-+		char *devicefile, enum filetype imagetype);
-+
- #else
- 
- static inline int bbu_register_handler(struct bbu_handler *unused)
-@@ -48,6 +52,11 @@ static inline int bbu_register_handler(struct bbu_handler *unused)
- 	return -EINVAL;
+ static inline int am33xx_bbu_spi_nor_register_handler(const char *name, char *devicefile)
+ {
+-	return 0;
++	return bbu_register_std_file_update(name, 0, devicefile, filetype_arm_barebox);
  }
+-#endif
  
-+static inline int bbu_register_std_file_update(const char *name, unsigned long flags,
-+		char *devicefile, enum filetype imagetype)
-+{
-+	return -ENOSYS;
-+}
- #endif
- 
- #endif /* __INCLUDE_BBU_H */
+ #ifdef CONFIG_BAREBOX_UPDATE_AM33XX_NAND
+ int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
 -- 
 2.1.4
 
