@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1ZACMQ-0002Sm-7K
- for barebox@lists.infradead.org; Wed, 01 Jul 2015 07:23:11 +0000
-References: <1434613424-19989-1-git-send-email-s.hauer@pengutronix.de>
- <1434613424-19989-7-git-send-email-s.hauer@pengutronix.de>
- <559244C2.80500@pengutronix.de> <20150701065856.GD18611@pengutronix.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <55939542.7000607@pengutronix.de>
-Date: Wed, 1 Jul 2015 09:22:42 +0200
-MIME-Version: 1.0
-In-Reply-To: <20150701065856.GD18611@pengutronix.de>
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZAWch-0000yy-CU
+ for barebox@lists.infradead.org; Thu, 02 Jul 2015 05:01:21 +0000
+Received: by lagc2 with SMTP id c2so53472282lag.3
+ for <barebox@lists.infradead.org>; Wed, 01 Jul 2015 22:00:57 -0700 (PDT)
+Date: Thu, 2 Jul 2015 08:07:33 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150702080733.ba99c058b69ad76948f7e8c4@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,94 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7061565769048218647=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] blspec: Automatically append rootarg
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: should we change 'extern inline' to 'static inline'?
+To: Renaud Barbier <renaud.barbier@ge.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============7061565769048218647==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="L6I9KCCxMTxVjllGOePjH854tK9QrLNGs"
+Hi!
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---L6I9KCCxMTxVjllGOePjH854tK9QrLNGs
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+It looks like 'extern inline' breaks gcc-5.x build.
 
-On 07/01/2015 08:58 AM, Sascha Hauer wrote:
->> Can you move the following into a separate function outside of blspec.=
-c
->> so that it can be used somewhere else, too?
->>
->>> +	rootarg =3D path_get_linux_rootarg(entry->rootpath);
->>> +	if (IS_ERR(rootarg)) {
->>> +		pr_err("Getting root argument for %s failed with: %s\n",
->>> +				entry->rootpath, strerror(-PTR_ERR(rootarg)));
->>> +		return PTR_ERR(rootarg);
->>> +	}
->>> +
->>> +	globalvar_add_simple("linux.bootargs.dyn.blspec.appendroot", rootar=
-g);
->>> +
->>> +	free(rootarg);
->>> +
->>> +	return 0;
->>> +}
->=20
-> You mean the combination of path_get_linux_rootarg() and globalvar_add_=
-simple()
-> should be a separate function? I'm not sure. Once we see a usecase for
-> this we can do this.
+Here is U-Boot patch https://patchwork.ozlabs.org/patch/490178/
 
-I've the fit image support pachtes here. They use this functionality.
+In barebox we have several 'extern inline' functions in arch/blackfin and a=
+rch/ppc:
 
-> Hm, just thinking. We could create a barebox command which takes a
-> barebox device as argument and sets a linux.bootargs.* variable to the
-> corresponding root=3D snippet. This might be useful.
+arch/blackfin/include/asm/io.h
+arch/blackfin/include/asm/processor.h
+arch/ppc/include/asm/atomic.h
+arch/ppc/include/asm/bitops.h
+arch/ppc/include/asm/io.h
 
-Sounds nice - however I don't use the shell in that procject :D
+I can't fix it by myself because I have neither blackfin nor ppc cross-comp=
+iler to check result.
 
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---L6I9KCCxMTxVjllGOePjH854tK9QrLNGs
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAEBCgAGBQJVk5VCAAoJEP5prqPJtc/HZa0H/j2KWAKi6h2/pRimn0fRgMNU
-OG1qaE1nsjNHj0gESb6tV5kxuJ279wm2UQ4055sIbMYqQwMF2NtkB0xso4nXxSAj
-oWcoeJ809NJ+JoF66tQV/Xrm6ypaVIbMIiGpBzL/2JETtZYvqdvk2Sv81HUsku7s
-18t2dfVLj1hcd8AMLZobTlKVQ02v2dtOW4GOUG+j2Woe7K7ToAymbHlxk57I4C2j
-XytfPUMwdUaaJOI0wxagXd4pdINccqQtoFUx6zBd04XSkLKfJf5fmp0i5F+fDq+R
-ZdP+1qtjqnpDAal3bhreCx36b4h18Bil4Haf2YnQkLwY//KPSgHHDhatA2kH4Ic=
-=Hx/G
------END PGP SIGNATURE-----
-
---L6I9KCCxMTxVjllGOePjH854tK9QrLNGs--
-
-
---===============7061565769048218647==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7061565769048218647==--
