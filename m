@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward4l.mail.yandex.net ([2a02:6b8:0:1819::4])
+Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZAaB3-00032K-Bm
- for barebox@lists.infradead.org; Thu, 02 Jul 2015 08:49:02 +0000
-From: Alexander Smirnov <alllecs@yandex.ru>
-Date: Thu,  2 Jul 2015 11:50:16 +0300
-Message-Id: <1435827017-1999-3-git-send-email-alllecs@yandex.ru>
-In-Reply-To: <1435827017-1999-1-git-send-email-alllecs@yandex.ru>
-References: <1435827017-1999-1-git-send-email-alllecs@yandex.ru>
+ id 1ZAaFQ-0005aN-OP
+ for barebox@lists.infradead.org; Thu, 02 Jul 2015 08:53:33 +0000
+Received: by lagh6 with SMTP id h6so56474194lag.2
+ for <barebox@lists.infradead.org>; Thu, 02 Jul 2015 01:53:08 -0700 (PDT)
+MIME-Version: 1.0
+Date: Thu, 2 Jul 2015 10:53:08 +0200
+Message-ID: <CABQt-U=gj3q-_ok0WW+C=NJfnJq0CQzvyEmud2exzFmQKS2Mdw@mail.gmail.com>
+From: Philippe Leduc <ledphilippe@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,335 +17,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC V4 2/3] ddr_spd: add routune for printing SPD contents in human
- readable format
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Alexander Smirnov <alllecs@yandex.ru>
+Subject: Re: how to do a digest on a flashed uImage ? uimage command evolution
+To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Smirnov <alllecs@yandex.ru>
----
- common/ddr_spd.c  | 290 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/ddr_spd.h |   1 +
- 2 files changed, 291 insertions(+)
+Hi,
 
-diff --git a/common/ddr_spd.c b/common/ddr_spd.c
-index ea0b529..6757d58 100644
---- a/common/ddr_spd.c
-+++ b/common/ddr_spd.c
-@@ -61,3 +61,293 @@ uint32_t ddr3_spd_checksum_pass(const struct ddr3_spd_eeprom_s *spd)
- 
- 	return 0;
- }
-+
-+static char *heights[] = {
-+	"<25.4",
-+	"25.4",
-+	"25.4 - 30.0",
-+	"30.0",
-+	"30.5",
-+	"> 30.5",
-+};
-+
-+static char *sdram_voltage_interface_level[] = {
-+	"TTL (5V tolerant)",
-+	"LVTTL (not 5V tolerant)",
-+	"HSTL 1.5V",
-+	"SSTL 3.3V",
-+	"SSTL 2.5V",
-+	"SSTL 1.8V",
-+};
-+
-+static char *ddr2_module_types[] = {
-+	"RDIMM (133.35 mm)",
-+	"UDIMM (133.25 mm)",
-+	"SO-DIMM (67.6 mm)",
-+	"Micro-DIMM (45.5 mm)",
-+	"Mini-RDIMM (82.0 mm)",
-+	"Mini-UDIMM (82.0 mm)",
-+};
-+
-+static char *refresh[] = {
-+	"15.625",
-+	"3.9",
-+	"7.8",
-+	"31.3",
-+	"62.5",
-+	"125",
-+};
-+
-+static char *type_list[] = {
-+	"Reserved",
-+	"FPM DRAM",
-+	"EDO",
-+	"Pipelined Nibble",
-+	"SDR SDRAM",
-+	"Multiplexed ROM",
-+	"DDR SGRAM",
-+	"DDR SDRAM",
-+	[SPD_MEMTYPE_DDR2] = "DDR2 SDRAM",
-+	"FB-DIMM",
-+	"FB-DIMM Probe",
-+	[SPD_MEMTYPE_DDR3] = "DDR3 SDRAM",
-+};
-+
-+static int funct(uint8_t addr)
-+{
-+	int t;
-+
-+	t = ((addr >> 4) * 10 + (addr & 0xf));
-+
-+	return t;
-+}
-+
-+static int des(uint8_t byte)
-+{
-+	int k;
-+
-+	k = (byte & 0x3) * 10 / 4;
-+
-+	return k;
-+}
-+
-+static int integ(uint8_t byte)
-+{
-+	int k;
-+
-+	k = (byte >> 2);
-+
-+	return k;
-+}
-+
-+static int ddr2_sdram_ctime(uint8_t byte)
-+{
-+	int ctime;
-+
-+	ctime = (byte >> 4) * 100;
-+	if ((byte & 0xf) <= 9)
-+		ctime += (byte & 0xf) * 10;
-+	else if ((byte & 0xf) == 10)
-+		ctime += 25;
-+	else if ((byte & 0xf) == 11)
-+		ctime += 33;
-+	else if ((byte & 0xf) == 12)
-+		ctime += 66;
-+	else if ((byte & 0xf) == 13)
-+		ctime += 75;
-+
-+	return ctime;
-+}
-+
-+void ddr_spd_print(uint8_t *record)
-+{
-+	int highestCAS = 0;
-+	int cas[256];
-+	int i, i_i, k, x, y;
-+	int ddrclk, tbits, pcclk;
-+	int trcd, trp, tras;
-+	int ctime;
-+	uint8_t parity;
-+	char *ref, *sum;
-+	struct ddr2_spd_eeprom_s *s = (struct ddr2_spd_eeprom_s *)record;
-+
-+	ctime = ddr2_sdram_ctime(s->clk_cycle);
-+	ddrclk = 2 * (1000 / ctime) * 100;
-+	tbits = (s->res_7 << 8) + (s->dataw);
-+	if ((s->config & 0x03) == 1)
-+		tbits = tbits - 8;
-+
-+	pcclk = ddrclk * tbits / 8;
-+	pcclk = pcclk - (pcclk % 100);
-+	i_i = (s->nrow_addr & 0x0f) + (s->ncol_addr & 0x0f) - 17;
-+	k = ((s->mod_ranks & 0x7) + 1) * s->nbanks;
-+	trcd = ((s->trcd >> 2) + ((s->trcd & 3) * 0.25)) / ctime * 100;
-+	trp = ((s->trp >> 2) + ((s->trp & 3) * 0.25)) / ctime * 100;
-+	tras = s->tras * 100 / ctime ;
-+	x = (int)(ctime / 100);
-+	y = (ctime - (int)((ctime / 100) * 100)) / 10;
-+
-+	for (i_i = 2; i_i < 7; i_i++) {
-+		if (s->cas_lat & 1 << i_i) {
-+			highestCAS = i_i;
-+			cas[highestCAS]++;
-+		}
-+	}
-+
-+	if (ddr2_spd_checksum_pass(s))
-+		sum = "ERR";
-+	else
-+		sum = "OK";
-+
-+	printf("---=== SPD EEPROM Information ===---\n");
-+	printf("%-50s %s (0x%0X)\n", "EEPROM Checksum of bytes 0-62",
-+		sum, s->cksum);
-+	printf("%-50s %d\n", "# of bytes written to SDRAM EEPROM",
-+		s->info_size);
-+	printf("%-50s %d\n", "Total number of bytes in EEPROM",
-+		1 << (s->chip_size));
-+
-+	if (s->mem_type < ARRAY_SIZE(type_list))
-+		printf("%-50s %s\n", "Fundamental Memory type",
-+			type_list[s->mem_type]);
-+	else
-+		printf("%-50s (%02x)\n", "Warning: unknown memory type",
-+			s->mem_type);
-+
-+	printf("%-50s %x.%x\n", "SPD Revision", s->spd_rev >> 4,
-+		s->spd_rev & 0x0f);
-+	if (s->mem_type != SPD_MEMTYPE_DDR2) {
-+		printf("Can't dump extended information for non-DDR2 memory\n");
-+		return;
-+	}
-+
-+	printf("\n---=== Memory Characteristics ===---\n");
-+	printf("%-50s %d MHz (PC2-%d)\n", "Maximum module speed",
-+		ddrclk, pcclk);
-+	if (i_i > 0 && i_i <= 12 && k > 0)
-+		printf("%-50s %d MB\n", "Size", (1 << i_i) * k);
-+	else
-+		printf("%-50s INVALID: %02x %02x %02x %02x\n", "Size",
-+			s->nrow_addr, s->ncol_addr, s->mod_ranks, s->nbanks);
-+
-+	printf("%-50s %d x %d x %d x %d\n", "Banks x Rows x Columns x Bits",
-+		s->nbanks, s->nrow_addr, s->ncol_addr, s->dataw);
-+	printf("%-50s %d\n", "Ranks", (s->mod_ranks & 0x7) + 1);
-+	printf("%-50s %d bits\n", "SDRAM Device Width", s->primw);
-+
-+	if (s->mod_ranks >> 5 < ARRAY_SIZE(heights))
-+		printf("%-50s %s mm\n", "Module Height",
-+			heights[s->mod_ranks >> 5]);
-+	else
-+		printf("Error height\n");
-+
-+	if ((fls(s->dimm_type) - 1) < ARRAY_SIZE(ddr2_module_types))
-+		printf("%-50s %s\n", "Module Type",
-+			ddr2_module_types[fls(s->dimm_type) - 1]);
-+	else
-+		printf("Error module type\n");
-+
-+	printf("%-50s ", "DRAM Package ");
-+	if ((s->mod_ranks & 0x10) == 1)
-+		printf("Stack\n");
-+	else
-+		printf("Planar\n");
-+	if (s->voltage < 7)
-+		printf("%-50s %s\n", "Voltage Interface Level",
-+			sdram_voltage_interface_level[s->voltage]);
-+	else
-+		printf("Error Voltage Interface Level\n");
-+
-+	printf("%-50s ", "Module Configuration Type ");
-+
-+	parity = s->config & 0x07;
-+	if (parity == 0)
-+		printf("No Parity\n");
-+
-+	if ((parity & 0x03) == 0x01)
-+		printf("Data Parity\n");
-+	if (parity & 0x02)
-+		printf("Data ECC\n");
-+
-+	if (parity & 0x04)
-+		printf("Address/Command Parity\n");
-+
-+	if ((s->refresh >> 7) == 1)
-+		ref = "- Self Refresh";
-+	else
-+		ref = " ";
-+
-+	printf("%-50s Reduced (%s us) %s\n", "Refresh Rate",
-+		refresh[s->refresh & 0x7f], ref);
-+	printf("%-50s %d, %d\n", "Supported Burst Lengths",
-+		s->burstl & 4, s->burstl & 8);
-+
-+	printf("%-50s %dT\n", "Supported CAS Latencies (tCL)", highestCAS);
-+	printf("%-50s %d-%d-%d-%d as DDR2-%d\n", "tCL-tRCD-tRP-tRAS",
-+		highestCAS, trcd, trp, tras, ddrclk);
-+	printf("%-50s %d.%d ns at CAS %d\n", "Minimum Cycle Time", x, y,
-+		highestCAS);
-+	printf("%-50s 0.%d%d ns at CAS %d\n", "Maximum Access Time",
-+		(s->clk_access >> 4), (s->clk_access & 0xf), highestCAS);
-+	printf("%-50s %d ns\n", "Maximum Cycle Time (tCK max)",
-+		(s->tckmax >> 4) + (s->tckmax & 0x0f));
-+
-+	printf("\n---=== Timing Parameters ===---\n");
-+	printf("%-50s 0.%d ns\n",
-+		"Address/Command Setup Time Before Clock (tIS)",
-+		funct(s->ca_setup));
-+	printf("%-50s 0.%d ns\n", "Address/Command Hold Time After Clock (tIH)",
-+		funct(s->ca_hold));
-+	printf("%-50s 0.%d%d ns\n", "Data Input Setup Time Before Strobe (tDS)",
-+		s->data_setup >> 4, s->data_setup & 0xf);
-+	printf("%-50s 0.%d%d ns\n", "Data Input Hold Time After Strobe (tDH)",
-+		s->data_hold >> 4, s->data_hold & 0xf);
-+
-+	printf("%-50s %d.%d ns\n", "Minimum Row Precharge Delay (tRP)",
-+		integ(s->trp), des(s->trp));
-+	printf("%-50s %d.%d ns\n",
-+		"Minimum Row Active to Row Active Delay (tRRD)",
-+		integ(s->trrd), des(s->trrd));
-+	printf("%-50s %d.%d ns\n", "Minimum RAS# to CAS# Delay (tRCD)",
-+		integ(s->trcd), des(s->trcd));
-+	printf("%-50s %d ns\n", "Minimum RAS# Pulse Width (tRAS)",
-+		((s->tras & 0xfc) + (s->tras & 0x3)));
-+	printf("%-50s %d.%d ns\n", "Write Recovery Time (tWR)",
-+		integ(s->twr), des(s->twr));
-+	printf("%-50s %d.%d ns\n", "Minimum Write to Read CMD Delay (tWTR)",
-+		integ(s->twtr), des(s->twtr));
-+	printf("%-50s %d.%d ns\n",
-+		"Minimum Read to Pre-charge CMD Delay (tRTP)",
-+		integ(s->trtp), des(s->trtp));
-+	printf("%-50s %d ns\n", "Minimum Active to Auto-refresh Delay (tRC)",
-+		s->trc);
-+	printf("%-50s %d ns\n", "Minimum Recovery Delay (tRFC)", s->trfc);
-+	printf("%-50s 0.%d ns\n", "Maximum DQS to DQ Skew (tDQSQ)", s->tdqsq);
-+	printf("%-50s 0.%d ns\n", "Maximum Read Data Hold Skew (tQHS)",
-+		s->tqhs);
-+
-+	printf("\n---=== Manufacturing Information ===---\n");
-+
-+	printf("%-50s", "Manufacturer JEDEC ID");
-+	for (i = 64; i < 72; i++)
-+		printf(" %02x", record[i]);
-+
-+	printf("\n");
-+	if (s->mloc)
-+		printf("%-50s 0x%02x\n", "Manufacturing Location Code",
-+			s->mloc);
-+
-+	printf("%-50s ", "Part Number");
-+	for (i = 73; i < 91; i++) {
-+		if (record[i] >= 32 && record[i] < 127)
-+			printf("%c", record[i]);
-+		else
-+			printf("%d", record[i]);
-+	}
-+	printf("\n");
-+	printf("%-50s 20%d-W%d\n", "Manufacturing Date", record[93],
-+		record[94]);
-+	printf("%-50s 0x", "Assembly Serial Number");
-+	for (i = 95; i < 99; i++)
-+		printf("%02X", record[i]);
-+}
-diff --git a/include/ddr_spd.h b/include/ddr_spd.h
-index fc03bac..01fe73c 100644
---- a/include/ddr_spd.h
-+++ b/include/ddr_spd.h
-@@ -228,6 +228,7 @@ struct ddr3_spd_eeprom_s {
- 	uint8_t cust[80];        /* 176-255 Open for Customer Use */
- };
- 
-+extern void ddr_spd_print(uint8_t *record);
- extern uint32_t ddr3_spd_checksum_pass(const struct ddr3_spd_eeprom_s *spd);
- extern uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *spd);
- 
--- 
-2.1.4
+First thank you for the details answers :)
 
+Following your explanations/propositions, I think uimagefs is not
+suited to my needs. I think therefore make an evolution of the uImage
+command to be able to retrieve the size of my image and to copy it
+efficiently into the RAM.
+
+I'll try to propose a patch next week for review. But before that,
+what do you think about thes follwing interface:
+
+uimage - extract/verify/copy uImage
+
+Usage: uimage [-vienc] FILE
+
+Options:
+        -i                      show information about image
+        -v                     verify image
+        -e OUTFILE      extract image to OUTFILE
+        -n NO               use image number NO in multifile image
+        -c OUTFILE      Copy the image to OUTFILE
+        -s SIZE            Return the size of the uimage file into a VARiable.
+
+
+Regards,
+
+
+Philippe LEDUC
+ledphilippe@gmail.com
 
 _______________________________________________
 barebox mailing list
