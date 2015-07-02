@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZAWch-0000yy-CU
- for barebox@lists.infradead.org; Thu, 02 Jul 2015 05:01:21 +0000
-Received: by lagc2 with SMTP id c2so53472282lag.3
- for <barebox@lists.infradead.org>; Wed, 01 Jul 2015 22:00:57 -0700 (PDT)
-Date: Thu, 2 Jul 2015 08:07:33 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150702080733.ba99c058b69ad76948f7e8c4@gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1ZAXGb-0002Zg-Gj
+ for barebox@lists.infradead.org; Thu, 02 Jul 2015 05:42:34 +0000
+Date: Thu, 2 Jul 2015 07:42:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150702054208.GE18611@pengutronix.de>
+References: <CABQt-UnvAoFHp_4LJvH0Q6AFw8US2vhcb_nOGGmjfAaCXrOFWQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CABQt-UnvAoFHp_4LJvH0Q6AFw8US2vhcb_nOGGmjfAaCXrOFWQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,35 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: should we change 'extern inline' to 'static inline'?
-To: Renaud Barbier <renaud.barbier@ge.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: how to do a digest on a flashed uImage ?
+To: Philippe Leduc <ledphilippe@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi!
+Hi Philippe,
 
-It looks like 'extern inline' breaks gcc-5.x build.
+On Wed, Jul 01, 2015 at 09:02:28AM +0200, Philippe Leduc wrote:
+> Hello,
+> 
+> I have a uImage saved in a memory partition and I am able to boot on
+> it with bootm command. I would like to add a digest (like a
+> hmac(sha1)) in order to check the integrity of the binary before
+> booting on it.
+> 
+> Because my partition is bigger than my uImage, I don't know how to use
+> digest on it.
+> In fact there are two problems that I don't know how to solve: I can't
+> get the size of my file and I can't ask digest to work on COUNT bytes.
+> 
+> For the size problem: I can extract the size of the uImage in binary
+> form since this information is present in the uImage header (via
+> memcpy), but I don't know how to convert it in a format compatible
+> with Hush.
+> 
+> For digest, I can copy the binary in the RAM, but I fear that it is
+> longer than working on the flash: it takes 4,8s to memcpy the uImage
+> in a RAM file, and less than 3s to bootm on the flash. But
+> 
+> 
+> Do you know a way to get the size of a file? Or to convert a binary
+> size into a "human readable format" for Hush? Or should I develop a
+> kind of "stat" utility for barebox?
+> Thank you in advance,
 
-Here is U-Boot patch https://patchwork.ozlabs.org/patch/490178/
+I can't think of a way on the shell to accomplish this. Something that
+might come close is uImagefs. You can mount an uImage as a filesystem,
+then you can run digest on the individual contents of the image, but not
+of the whole image itself.
 
-In barebox we have several 'extern inline' functions in arch/blackfin and a=
-rch/ppc:
+Also extracting the size from the image via memcpy and somehow convert
+the value to hex, then memcpy the uImage to a file sounds fragile. I
+would probably add a option to the uimage command, like -c for copy.
+In C it's easy to sanity check the size you read and to verify the
+header checksum before doing anything else. You can't do that in shell.
 
-arch/blackfin/include/asm/io.h
-arch/blackfin/include/asm/processor.h
-arch/ppc/include/asm/atomic.h
-arch/ppc/include/asm/bitops.h
-arch/ppc/include/asm/io.h
+Sascha
 
-I can't fix it by myself because I have neither blackfin nor ppc cross-comp=
-iler to check result.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
