@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1ZB1lp-0002Xu-Ck
- for barebox@lists.infradead.org; Fri, 03 Jul 2015 14:16:50 +0000
-References: <1435932461-27674-1-git-send-email-mkl@pengutronix.de>
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <55969936.5020904@pengutronix.de>
-Date: Fri, 3 Jul 2015 16:16:22 +0200
-MIME-Version: 1.0
-In-Reply-To: <1435932461-27674-1-git-send-email-mkl@pengutronix.de>
+Received: from forward3l.mail.yandex.net ([84.201.143.136])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZB3Ko-0003Pi-8e
+ for barebox@lists.infradead.org; Fri, 03 Jul 2015 15:57:03 +0000
+From: Alexander Smirnov <alllecs@yandex.ru>
+Date: Fri,  3 Jul 2015 18:58:23 +0300
+Message-Id: <1435939105-12189-2-git-send-email-alllecs@yandex.ru>
+In-Reply-To: <1435939105-12189-1-git-send-email-alllecs@yandex.ru>
+References: <1435939105-12189-1-git-send-email-alllecs@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,87 +16,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5827101577394582938=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] state: fix range check on uint8 and uint32 variables
-To: barebox@lists.infradead.org
-Cc: sha@pengutronix.de
+Subject: [PATCH 1/3] common: move DDR_SPD to common/Kconfig
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Alexander Smirnov <alllecs@yandex.ru>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============5827101577394582938==
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF"
+This patch makes it possible to use ddr_spd-related
+routines in any arch not only in ppc.
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Alexander Smirnov <alllecs@yandex.ru>
+---
+ arch/ppc/mach-mpc85xx/Kconfig  | 4 ----
+ arch/ppc/mach-mpc85xx/Makefile | 3 ++-
+ common/Kconfig                 | 4 ++++
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-On 07/03/2015 04:07 PM, Marc Kleine-Budde wrote:
-> The patch "8bfd06f073c8 state: uint8: add range check for uint8" as app=
-lied not
-> correctly to the repository. It was supposed to change the state_uint8_=
-create()
-> function:
->=20
-> |  static struct state_variable *state_uint8_create(struct state *state=
-,
-> |
-> |  	su32 =3D xzalloc(sizeof(*su32));
-> |
-> | -	param =3D dev_add_param_int(&state->dev, name, state_set_dirty,
-> | -				  NULL, &su32->value, "%u", state);
-> | +	param =3D dev_add_param_int(&state->dev, name, state_uint8_set,
-> | +				  NULL, &su32->value, "%u", su32);
->=20
-> but the state_uint32_create() was changed instead, which leads to broke=
-n range
-> checks on uint32 variables and no range checks on uint8. This patch fix=
-es the
-> problem.
+diff --git a/arch/ppc/mach-mpc85xx/Kconfig b/arch/ppc/mach-mpc85xx/Kconfig
+index e29be9c..aa518b9 100644
+--- a/arch/ppc/mach-mpc85xx/Kconfig
++++ b/arch/ppc/mach-mpc85xx/Kconfig
+@@ -81,10 +81,6 @@ config P1022
+ config MPC8544
+ 	bool
+ 
+-config DDR_SPD
+-	bool
+-	select CRC16
+-
+ config FSL_DDR2
+ 	bool
+ 
+diff --git a/arch/ppc/mach-mpc85xx/Makefile b/arch/ppc/mach-mpc85xx/Makefile
+index 3e64617..de4f5ef 100644
+--- a/arch/ppc/mach-mpc85xx/Makefile
++++ b/arch/ppc/mach-mpc85xx/Makefile
+@@ -9,5 +9,6 @@ obj-y			+= fsl_i2c.o
+ obj-$(CONFIG_MP)	+= mp.o
+ obj-$(CONFIG_OFTREE)	+= fdt.o
+ obj-$(CONFIG_DRIVER_NET_GIANFAR) += eth-devices.o
+-obj-$(CONFIG_DDR_SPD)	+= ../ddr-8xxx/
++obj-$(CONFIG_FSL_DDR2) += ../ddr-8xxx/
++obj-$(CONFIG_FSL_DDR3) += ../ddr-8xxx/
+ extra-y += barebox.lds
+diff --git a/common/Kconfig b/common/Kconfig
+index 983d305..9c3628e 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -951,3 +951,7 @@ endmenu
+ 
+ config HAS_DEBUG_LL
+ 	bool
++
++config DDR_SPD
++	bool
++	select CRC16
+-- 
+2.1.4
 
-Sorry for the noise, that error occurred while rebasing my code to the
-current release....origin/next is fine.
-
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEcBAEBCgAGBQJVlpk2AAoJEP5prqPJtc/H3e8H/A2pLTNYYufs6V81GhDV5SsM
-E+kCfZh7ZvUsfjCSr0ZY/tvKE+BRVBcFrgEg5WaunTegi9O91uer+mrCWuJi3Gxz
-zqxjFC/FZ6M4098SrrxV0pQU8jfiHax1+Llys1DxUPKu4SKvrBIgFwdzLn3AYG3o
-PWEV2btgizv3kc8TzQgEELhl197F33S+W5J0w+AAabVde+uGwclS/RSo76TZwBf4
-BlWHckKon3uGkK8G59ZfDswikjFoniccykW2YBKyhm0bmidKAzv9NY/IFuoTlejU
-68Yujh1UnH6Gl93AYIieiKZXUkWgu2yXcxJtmRiJIKAE7l7oD6iO0D07MCiOYq8=
-=t2Q/
------END PGP SIGNATURE-----
-
---XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF--
-
-
---===============5827101577394582938==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============5827101577394582938==--
