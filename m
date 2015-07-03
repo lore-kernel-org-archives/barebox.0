@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZAcN3-00012M-61
- for barebox@lists.infradead.org; Thu, 02 Jul 2015 11:09:33 +0000
-Received: by lbcpe5 with SMTP id pe5so29724411lbc.2
- for <barebox@lists.infradead.org>; Thu, 02 Jul 2015 04:09:11 -0700 (PDT)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1ZAsP3-00060c-0n
+ for barebox@lists.infradead.org; Fri, 03 Jul 2015 04:16:42 +0000
+Date: Fri, 3 Jul 2015 06:16:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150703041617.GC18700@pengutronix.de>
+References: <1435827017-1999-1-git-send-email-alllecs@yandex.ru>
+ <1435827017-1999-4-git-send-email-alllecs@yandex.ru>
 MIME-Version: 1.0
-In-Reply-To: <836000AE-9A04-47B7-9BD4-106A3D487558@jcrosoft.com>
-References: <CABQt-U=gj3q-_ok0WW+C=NJfnJq0CQzvyEmud2exzFmQKS2Mdw@mail.gmail.com>
- <931117BB-24FC-4564-AD2F-B66FA129D3C1@jcrosoft.com>
- <CABQt-UkB_fvyNErv6ENGFD_b84n86zZ8rs1sUNdvvNG4Di5k6A@mail.gmail.com>
- <836000AE-9A04-47B7-9BD4-106A3D487558@jcrosoft.com>
-Date: Thu, 2 Jul 2015 13:09:11 +0200
-Message-ID: <CABQt-U=+_8gzKB8K9fM=UE5Un-Q-Wn3k4Q_33+kRUzbi5G2hSQ@mail.gmail.com>
-From: Philippe Leduc <ledphilippe@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1435827017-1999-4-git-send-email-alllecs@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,77 +23,198 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: how to do a digest on a flashed uImage ? uimage command evolution
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [RFC V4 3/3] add decode command (SPD EEPROM data decoder)
+To: Alexander Smirnov <alllecs@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-Is this a Linux specific behavior? Because I am trying to boot a RTOS
-(PikeOS) without success? (Anyway thank you for the info :) )
+On Thu, Jul 02, 2015 at 11:50:17AM +0300, Alexander Smirnov wrote:
+> decode-dimms perl script is used as prototype
+> (see https://github.com/groeck/i2c-tools/blob/master/eeprom/decode-dimms).
+> 
+> Here is a sample decode output:
+> 
+> barebox@barebox sandbox:/ decode env/crucial_pc2-6400_ddr2
+> Decoding EEPROM: env/crucial_pc2-6400_ddr2
+> 
+> ---=== SPD EEPROM Information ===---
+> EEPROM Checksum of bytes 0-62                      OK (0xCA)
+> Total number of bytes in EEPROM                    256
+> Fundamental Memory type                            DDR2 SDRAM
+> SPD Revision                                       1.3
+> 
+> ---=== Memory Characteristics ===---
+> Maximum module speed                               800 MHz (PC2-6400)
+> Size                                               1024 MB
+> Banks x Rows x Columns x Bits                      8 x 14 x 10 x 64
+> Ranks                                              1
+> SDRAM Device Width                                 8 bits
+> Module Height                                      30.0 mm
+> Module Type                                        SO-DIMM (67.6 mm)
+> DRAM Package                                       Planar
+> Voltage Interface Level                            SSTL 1.8V
+> Module Configuration Type                          No Parity
+> Refresh Rate                                       Reduced (7.8 us) - Self Refresh
+> Supported Burst Lengths                            4, 8
+> Supported CAS Latencies (tCL)                      6T
+> tCL-tRCD-tRP-tRAS                                  6-6-6-18 as DDR2-800
+> Minimum Cycle Time                                 2.5 ns at CAS 6
+> Maximum Access Time                                0.40 ns at CAS 6
+> Maximum Cycle Time (tCK max)                       8 ns
+> 
+> ---=== Timing Parameters ===---
+> Address/Command Setup Time Before Clock (tIS)      0.17 ns
+> Address/Command Hold Time After Clock (tIH)        0.25 ns
+> Data Input Setup Time Before Strobe (tDS)          0.05 ns
+> Data Input Hold Time After Strobe (tDH)            0.12 ns
+> Minimum Row Precharge Delay (tRP)                  15.0 ns
+> Minimum Row Active to Row Active Delay (tRRD)      7.5 ns
+> Minimum RAS# to CAS# Delay (tRCD)                  15.0 ns
+> Minimum RAS# Pulse Width (tRAS)                    45 ns
+> Write Recovery Time (tWR)                          15.0 ns
+> Minimum Write to Read CMD Delay (tWTR)             7.5 ns
+> Minimum Read to Pre-charge CMD Delay (tRTP)        7.5 ns
+> Minimum Active to Auto-refresh Delay (tRC)         60 ns
+> Minimum Recovery Delay (tRFC)                      127 ns
+> Maximum DQS to DQ Skew (tDQSQ)                     0.20 ns
+> Maximum Read Data Hold Skew (tQHS)                 0.30 ns
+> 
+> ---=== Manufacturing Information ===---
+> Manufacturer JEDEC ID                              7f 7f 7f 7f 7f 9b 00 00
+> Part Number                                        CT12864AC800.M8FM8
+> Manufacturing Date                                 2014-W24
+> Assembly Serial Number                             0x00000000
+> 
+> TODOs:
+> 
+>   * Timing Parameters section output format is slightly
+>     differ from decode-dimms' format;
+>   * supports only DDR2 SPD EEPROM.
+> 
+> Signed-off-by: Alexander Smirnov <alllecs@yandex.ru>
+> ---
+>  commands/Kconfig  |  7 +++++++
+>  commands/Makefile |  1 +
+>  commands/decode.c | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 71 insertions(+)
+> 
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index bb6674e..9230873 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -2102,6 +2102,13 @@ config CMD_STATE
+>  	depends on STATE
+>  	prompt "state"
+>  
+> +config CMD_DECODE
+> +	tristate
+> +	prompt "decode"
+> +	select DDR_SPD
+> +	help
+> +	  decode spd eeprom
+> +
+>  # end Miscellaneous commands
+>  endmenu
+>  
+> diff --git a/commands/Makefile b/commands/Makefile
+> index 3698347..71cd877 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -112,3 +112,4 @@ obj-$(CONFIG_CMD_NV)		+= nv.o
+>  obj-$(CONFIG_CMD_DEFAULTENV)	+= defaultenv.o
+>  obj-$(CONFIG_CMD_STATE)		+= state.o
+>  obj-$(CONFIG_CMD_DHCP)		+= dhcp.o
+> +obj-$(CONFIG_CMD_DECODE)	+= decode.o
+> diff --git a/commands/decode.c b/commands/decode.c
+> new file mode 100644
+> index 0000000..4fc9c99
+> --- /dev/null
+> +++ b/commands/decode.c
+> @@ -0,0 +1,63 @@
+> +/*
+> + * This program is decoding and printing SPD contents
+> + * in human readable format
+> + * As an argument program, you must specify the file name.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+> + * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+> + * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+> + * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL ALTERA CORPORATION BE LIABLE
+> + * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+> + * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+> + * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+> + * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+> + * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+> + * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+> + *
+> + * Copyright (C) 2015 Alexander Smirnov <alllecs@yandex.ru>
+> + *
+> + * Originally from https://github.com/groeck/i2c-tools/blob/master/eeprom/decode-dimms
 
-Best regards,
-Philippe LEDUC
-ledphilippe@gmail.com
+This comment is probably better fitted above the actual decoding code.
 
+> + */
+> +
+> +#include <common.h>
+> +#include <command.h>
+> +#include <libfile.h>
+> +#include <malloc.h>
+> +#include <ddr_spd.h>
+> +
+> +static int do_decode(int argc, char *argv[])
+> +{
+> +	int ret;
+> +	size_t size;
+> +	void *data;
+> +
+> +	if (argc != 2)
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	ret = read_file_2(argv[1], &size, &data, 256);
+> +	if (ret && ret != -EFBIG) {
+> +		printf("unable to read %s: %s\n", argv[1], strerror(-ret));
+> +		return COMMAND_ERROR;
+> +	}
+> +
+> +	printf("Decoding EEPROM: %s\n\n", argv[1]);
+> +	ddr_spd_print(data);
+> +
+> +	free(data);
+> +
+> +	return 0;
+> +}
+> +
+> +BAREBOX_CMD_HELP_START(decode)
+> +BAREBOX_CMD_HELP_TEXT("Not enough or more than one argument to continue.")
 
-2015-07-02 12:50 GMT+02:00 Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com>:
->
->> On Jul 2, 2015, at 6:47 PM, Philippe Leduc <ledphilippe@gmail.com> wrote:
->>
->> Well, I am using bootm to start my system: how do you boot your system
->> with a mounted uImage?
->>
->
-> bootm /mnt/data simply specialy on arm.
->
-> Best Regards,
-> J.
->
->> Best regards,
->>
->>
->> Philippe LEDUC
->> ledphilippe@gmail.com
->>
->>
->> 2015-07-02 11:30 GMT+02:00 Jean-Christophe PLAGNIOL-VILLARD
->> <plagnioj@jcrosoft.com>:
->>>
->>>> On Jul 2, 2015, at 4:53 PM, Philippe Leduc <ledphilippe@gmail.com> wrote:
->>>>
->>>> Hi,
->>>>
->>>> First thank you for the details answers :)
->>>>
->>>> Following your explanations/propositions, I think uimagefs is not
->>>> suited to my needs. I think therefore make an evolution of the uImage
->>>> command to be able to retrieve the size of my image and to copy it
->>>> efficiently into the RAM.
->>>>
->>>> I'll try to propose a patch next week for review. But before that,
->>>> what do you think about thes follwing interface:
->>>>
->>>> uimage - extract/verify/copy uImage
->>>>
->>>> Usage: uimage [-vienc] FILE
->>>>
->>>> Options:
->>>>       -i                      show information about image
->>>>       -v                     verify image
->>>>       -e OUTFILE      extract image to OUTFILE
->>>>       -n NO               use image number NO in multifile image
->>>>       -c OUTFILE      Copy the image to OUTFILE
->>>>       -s SIZE            Return the size of the uimage file into a VARiable.
->>>>
->>>
->>>
->>> I see no point to extract and copy as you you need to mount it
->>>
->>> and then use cp
->>>
->>> Best Regards,
->>> J.
->
+Some information would be nice here. Something like:
+
+BAREBOX_CMD_HELP_TEXT("Decode a SPD EEPROM and print contents in human readable form")
+
+> +BAREBOX_CMD_HELP_END
+> +
+> +BAREBOX_CMD_START(decode)
+> +	.cmd	= do_decode,
+
+	BAREBOX_CMD_DESC("Decode SPD EEPROM")
+	BAREBOX_CMD_OPTS("FILE")
+
+The name of the command is too generic. How about spd_decode?
+
+I think it's time to remove the RFC tag from the patches because they
+seem to be nearly ready for inclusion.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
