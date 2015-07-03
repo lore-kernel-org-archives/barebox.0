@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1ZB1eY-000784-AQ
- for barebox@lists.infradead.org; Fri, 03 Jul 2015 14:09:18 +0000
+ Linux)) id 1ZB1lp-0002Xu-Ck
+ for barebox@lists.infradead.org; Fri, 03 Jul 2015 14:16:50 +0000
 References: <1435932461-27674-1-git-send-email-mkl@pengutronix.de>
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Message-ID: <55969773.2090009@pengutronix.de>
-Date: Fri, 3 Jul 2015 16:08:51 +0200
+Message-ID: <55969936.5020904@pengutronix.de>
+Date: Fri, 3 Jul 2015 16:16:22 +0200
 MIME-Version: 1.0
 In-Reply-To: <1435932461-27674-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -17,7 +17,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0982788613630070505=="
+Content-Type: multipart/mixed; boundary="===============5827101577394582938=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] state: fix range check on uint8 and uint32 variables
@@ -25,13 +25,13 @@ To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============0982788613630070505==
+--===============5827101577394582938==
 Content-Type: multipart/signed; micalg=pgp-sha512;
  protocol="application/pgp-signature";
- boundary="TX2gO91rnsJrS6v8SmicRNhIXhHnOoH0b"
+ boundary="XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF"
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---TX2gO91rnsJrS6v8SmicRNhIXhHnOoH0b
+--XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
@@ -58,7 +58,8 @@ n range
 es the
 > problem.
 
-Doh! I forgot the second part to the patch - will send v2.
+Sorry for the noise, that error occurred while rebasing my code to the
+current release....origin/next is fine.
 
 Marc
 
@@ -69,26 +70,26 @@ Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
 Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
---TX2gO91rnsJrS6v8SmicRNhIXhHnOoH0b
+--XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEcBAEBCgAGBQJVlpdzAAoJEP5prqPJtc/HhsEH+wWHQyEfTkEmgVOHmXKbNL9m
-kIXdq9qLVQ6PPJyaULLzYLwQf8he1jxRQA46o2u2lXckKLv/A2PwHSo4xpx0AS5f
-+JhFXGauao0Dqtcj0zV//B3a0JcULXSHD1qdzIi7zpWp8QYUBzwVzJUJX2H3Y3zh
-vpBTIw8CDFI3vEfdv1zJgynUDk/teNPWNvSjOqVAv6W28kYDrr56/ogrXfxLKKcD
-phMUsFzKI70QPghFR490XYdzEsytgTn7k3g27QHkPGRU1oEp7eYZTJWuHjKzlM9i
-57WfMtczaiwQ9kkIqVKs6Eg0LEC3UE26a2o8sgcU+osqVxZEWUxofhCP2aAhfGM=
-=UMnp
+iQEcBAEBCgAGBQJVlpk2AAoJEP5prqPJtc/H3e8H/A2pLTNYYufs6V81GhDV5SsM
+E+kCfZh7ZvUsfjCSr0ZY/tvKE+BRVBcFrgEg5WaunTegi9O91uer+mrCWuJi3Gxz
+zqxjFC/FZ6M4098SrrxV0pQU8jfiHax1+Llys1DxUPKu4SKvrBIgFwdzLn3AYG3o
+PWEV2btgizv3kc8TzQgEELhl197F33S+W5J0w+AAabVde+uGwclS/RSo76TZwBf4
+BlWHckKon3uGkK8G59ZfDswikjFoniccykW2YBKyhm0bmidKAzv9NY/IFuoTlejU
+68Yujh1UnH6Gl93AYIieiKZXUkWgu2yXcxJtmRiJIKAE7l7oD6iO0D07MCiOYq8=
+=t2Q/
 -----END PGP SIGNATURE-----
 
---TX2gO91rnsJrS6v8SmicRNhIXhHnOoH0b--
+--XTpn3f8WS8oT64W2wNd5KFi8xX5gJpEEF--
 
 
---===============0982788613630070505==
+--===============5827101577394582938==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -99,4 +100,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============0982788613630070505==--
+--===============5827101577394582938==--
