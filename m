@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1ZAvjl-000690-1I
- for barebox@lists.infradead.org; Fri, 03 Jul 2015 07:50:18 +0000
+ Linux)) id 1ZAvle-0008KX-N3
+ for barebox@lists.infradead.org; Fri, 03 Jul 2015 07:52:15 +0000
+References: <1435909794-17349-1-git-send-email-mkl@pengutronix.de>
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Fri,  3 Jul 2015 09:49:54 +0200
-Message-Id: <1435909794-17349-1-git-send-email-mkl@pengutronix.de>
+Message-ID: <55963F13.9080106@pengutronix.de>
+Date: Fri, 3 Jul 2015 09:51:47 +0200
+MIME-Version: 1.0
+In-Reply-To: <1435909794-17349-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,115 +17,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0435235940591015568=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] mtd: mark devname argument of add_mtd_device as const
+Subject: Re: [PATCH v2] mtd: mark devname argument of add_mtd_device as const
 To: barebox@lists.infradead.org
 Cc: sha@pengutronix.de
 
-This patch fixes the following warning:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============0435235940591015568==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="abgs1E2d5GLGO3PXfTKutaI0M6mmpAOwk"
 
-| drivers/mtd/devices/m25p80.c: In function 'm25p_probe':
-| drivers/mtd/devices/m25p80.c:271:14: warning: assignment discards 'const' qualifier from pointer target type
-|   flash_name = dev->id_entry->name;
-|                 ^
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--abgs1E2d5GLGO3PXfTKutaI0M6mmpAOwk
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/mtd/core.c           | 2 +-
- drivers/mtd/devices/m25p80.c | 2 +-
- drivers/mtd/mtd.h            | 2 +-
- drivers/mtd/mtdoob.c         | 2 +-
- drivers/mtd/mtdraw.c         | 2 +-
- include/linux/mtd/mtd.h      | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+On 07/03/2015 09:49 AM, Marc Kleine-Budde wrote:
+> This patch fixes the following warning:
+>=20
+> | drivers/mtd/devices/m25p80.c: In function 'm25p_probe':
+> | drivers/mtd/devices/m25p80.c:271:14: warning: assignment discards 'co=
+nst' qualifier from pointer target type
+> |   flash_name =3D dev->id_entry->name;
+> |                 ^
+>=20
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 681dc9313c3a..8b8254c2d3a8 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -542,7 +542,7 @@ static int of_mtd_fixup(struct device_node *root, void *ctx)
- 	return 0;
- }
- 
--int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
-+int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id)
- {
- 	struct mtddev_hook *hook;
- 	int ret;
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index c941767de94c..7f955ee28716 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -233,7 +233,7 @@ static int m25p_probe(struct device_d *dev)
- 	struct m25p			*flash;
- 	struct spi_nor			*nor;
- 	enum read_mode mode =		SPI_NOR_NORMAL;
--	char				*flash_name = NULL;
-+	const char			*flash_name = NULL;
- 	int				device_id;
- 	int ret;
- 
-diff --git a/drivers/mtd/mtd.h b/drivers/mtd/mtd.h
-index 414bd6cdb53a..2a85265f98bd 100644
---- a/drivers/mtd/mtd.h
-+++ b/drivers/mtd/mtd.h
-@@ -25,7 +25,7 @@
-  */
- struct mtddev_hook {
- 	struct list_head hook;
--	int (*add_mtd_device)(struct mtd_info *mtd, char *devname, void **priv);
-+	int (*add_mtd_device)(struct mtd_info *mtd, const char *devname, void **priv);
- 	int (*del_mtd_device)(struct mtd_info *mtd, void **priv);
- 	void *priv;
- };
-diff --git a/drivers/mtd/mtdoob.c b/drivers/mtd/mtdoob.c
-index 10d17e90d27f..6160ddba0804 100644
---- a/drivers/mtd/mtdoob.c
-+++ b/drivers/mtd/mtdoob.c
-@@ -69,7 +69,7 @@ static struct file_operations mtd_ops_oob = {
- 	.lseek  = dev_lseek_default,
- };
- 
--static int add_mtdoob_device(struct mtd_info *mtd, char *devname, void **priv)
-+static int add_mtdoob_device(struct mtd_info *mtd, const char *devname, void **priv)
- {
- 	struct mtdoob *mtdoob;
- 
-diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-index c25e4062eea9..ae4bec2a4cbf 100644
---- a/drivers/mtd/mtdraw.c
-+++ b/drivers/mtd/mtdraw.c
-@@ -281,7 +281,7 @@ static const struct file_operations mtd_raw_fops = {
- 	.lseek		= dev_lseek_default,
- };
- 
--static int add_mtdraw_device(struct mtd_info *mtd, char *devname, void **priv)
-+static int add_mtdraw_device(struct mtd_info *mtd, const char *devname, void **priv)
- {
- 	struct mtdraw *mtdraw;
- 
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 33f1fd512ddd..7e828bc98f92 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -270,7 +270,7 @@ static inline uint32_t mtd_div_by_wb(uint64_t sz, struct mtd_info *mtd)
- 
- 	/* Kernel-side ioctl definitions */
- 
--extern int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id);
-+extern int add_mtd_device(struct mtd_info *mtd, const char *devname, int device_id);
- extern int del_mtd_device (struct mtd_info *mtd);
- 
- extern struct mtd_info *get_mtd_device(struct mtd_info *mtd, int num);
--- 
-2.1.4
+This patch applies to master. I can rebase it to -next if needed.
 
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--abgs1E2d5GLGO3PXfTKutaI0M6mmpAOwk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJVlj8TAAoJEP5prqPJtc/HS/wH/2jycFTris+NhHn8crRhxIIz
+8dS6JxlCXgUAv8kept6j+PnjFzCyCGA+X73XndWhPWAaJ6TUlyAg0PELkO54n0AH
+N/06nbsp4XNgVX5XrztC9sZYjsU9d/4QK079XuVM0Hy7u/hNjPuxNYVdzkR4t+EU
+U431i4L1xrRrjxzAo58eEMQGZKB6MiwZH5mWczYXRpTLvJ7MvvdqaIXlQwpUFnYj
+xuAem+0ohj+gKuS+bI9rKqM9pC6O6WfD1GeUw2aEWSEs8rxlg6FWBMKq0rH2M6cn
+vZ+8R3FgRLkvFM/XAncaGDzT8rzICPK4vr8uo2gESbOR8MZQxdB3i/WN+kCZ/ss=
+=5aqw
+-----END PGP SIGNATURE-----
+
+--abgs1E2d5GLGO3PXfTKutaI0M6mmpAOwk--
+
+
+--===============0435235940591015568==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============0435235940591015568==--
