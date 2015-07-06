@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.bemta14.messagelabs.com ([193.109.254.111])
+Received: from mail1.bemta14.messagelabs.com ([193.109.254.118])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZC0yC-0002on-Tf
+ id 1ZC0yD-0002p8-Qg
  for barebox@lists.infradead.org; Mon, 06 Jul 2015 07:37:42 +0000
 From: Herve Codina <Herve.CODINA@celad.com>
-Date: Mon, 6 Jul 2015 09:36:44 +0200
-Message-ID: <1436168207-6433-3-git-send-email-Herve.CODINA@celad.com>
+Date: Mon, 6 Jul 2015 09:36:46 +0200
+Message-ID: <1436168207-6433-5-git-send-email-Herve.CODINA@celad.com>
 In-Reply-To: <1436168207-6433-1-git-send-email-Herve.CODINA@celad.com>
 References: <1436168207-6433-1-git-send-email-Herve.CODINA@celad.com>
 MIME-Version: 1.0
@@ -21,66 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] exitcall: move device_shutdown to exitcall infrastructure
+Subject: [PATCH 4/4] exitcall: move board_shutdown to exitcall infrastructure
 To: barebox@lists.infradead.org
 Cc: Herve Codina <Herve.CODINA@celad.com>
 
 Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
 ---
- common/startup.c      |    1 -
- drivers/base/driver.c |    3 ++-
- include/driver.h      |    5 -----
- 3 files changed, 2 insertions(+), 7 deletions(-)
+ arch/arm/boards/animeo_ip/init.c |    2 +-
+ common/startup.c                 |    5 -----
+ include/common.h                 |    1 -
+ 3 files changed, 1 insertion(+), 7 deletions(-)
 
+diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+index 0fda013..2069ab3 100644
+--- a/arch/arm/boards/animeo_ip/init.c
++++ b/arch/arm/boards/animeo_ip/init.c
+@@ -346,6 +346,7 @@ static void animeo_ip_shutdown(void)
+ 	animeo_ip_shutdown_uart(IOMEM(AT91SAM9260_BASE_US0));
+ 	animeo_ip_shutdown_uart(IOMEM(AT91SAM9260_BASE_US1));
+ }
++postdevshutdown_exitcall(animeo_ip_shutdown);
+ 
+ static int animeo_ip_console_init(void)
+ {
+@@ -353,7 +354,6 @@ static int animeo_ip_console_init(void)
+ 
+ 	usart0 = at91_register_uart(1, ATMEL_UART_RTS);
+ 	usart1 = at91_register_uart(2, ATMEL_UART_RTS);
+-	board_shutdown = animeo_ip_shutdown;
+ 
+ 	barebox_set_model("Somfy Animeo IP");
+ 	barebox_set_hostname("animeoip");
 diff --git a/common/startup.c b/common/startup.c
-index 676e435..e9ab248 100644
+index 4ed390c..dc12415 100644
 --- a/common/startup.c
 +++ b/common/startup.c
-@@ -151,7 +151,6 @@ void shutdown_barebox(void)
+@@ -135,8 +135,6 @@ void __noreturn hang (void)
+ 	for (;;);
+ }
+ 
+-void (*board_shutdown)(void);
+-
+ /* Everything needed to cleanly shutdown barebox.
+  * Should be called before starting an OS to get
+  * the devices into a clean state
+@@ -150,7 +148,4 @@ void shutdown_barebox(void)
+ 		pr_debug("exitcall-> %pS\n", *exitcall);
  		(*exitcall)();
  	}
- 	
--	devices_shutdown();
- #ifdef ARCH_SHUTDOWN
- 	arch_shutdown();
- #endif
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 338bea1..943deb4 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -459,7 +459,7 @@ const char *dev_id(const struct device_d *dev)
- 	return buf;
+-	
+-	if (board_shutdown)
+-		board_shutdown();
  }
+diff --git a/include/common.h b/include/common.h
+index 6766c02..6b9dd4d 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -116,7 +116,6 @@ extern int (*barebox_main)(void);
  
--void devices_shutdown(void)
-+static void devices_shutdown(void)
- {
- 	struct device_d *dev;
+ void __noreturn start_barebox(void);
+ void shutdown_barebox(void);
+-extern void (*board_shutdown)(void);
  
-@@ -468,6 +468,7 @@ void devices_shutdown(void)
- 			dev->bus->remove(dev);
- 	}
- }
-+devshutdown_exitcall(devices_shutdown);
- 
- int dev_get_drvdata(struct device_d *dev, const void **data)
- {
-diff --git a/include/driver.h b/include/driver.h
-index d0cdcc9..d862ed0 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -339,11 +339,6 @@ int mem_memmap(struct cdev *cdev, void **map, int flags);
- /* Use this if you have nothing to do in your drivers probe function */
- int dummy_probe(struct device_d *);
- 
--/* Iterate over all activated devices (i.e. the ones with drivers and shut
-- * them down.
-- */
--void devices_shutdown(void);
--
- int generic_memmap_ro(struct cdev *dev, void **map, int flags);
- int generic_memmap_rw(struct cdev *dev, void **map, int flags);
- 
+ /*
+  * architectures which have special calling conventions for
 -- 
 1.7.9.5
 
