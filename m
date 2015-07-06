@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZC3lN-0002TC-Tj
- for barebox@lists.infradead.org; Mon, 06 Jul 2015 10:36:38 +0000
+ id 1ZC3lS-0002We-H8
+ for barebox@lists.infradead.org; Mon, 06 Jul 2015 10:36:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  6 Jul 2015 12:36:12 +0200
-Message-Id: <1436178974-20064-7-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  6 Jul 2015 12:36:09 +0200
+Message-Id: <1436178974-20064-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1436178974-20064-1-git-send-email-s.hauer@pengutronix.de>
 References: <1436178974-20064-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] video: stm: honor display_flags
+Subject: [PATCH 4/9] video: stm: use uncached memory
 To: Barebox List <barebox@lists.infradead.org>
 
-stmfb uses custom flags FB_SYNC_DE_HIGH_ACT and FB_SYNC_CLK_INVERT.
-These have generic counterparts in display_flags. Honor them aswell.
+To avoid caching effects on the display use uncached memory.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/stm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/video/stm.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/video/stm.c b/drivers/video/stm.c
-index 3d64238..f0f5ce0 100644
+index 92bff9c..c825092 100644
 --- a/drivers/video/stm.c
 +++ b/drivers/video/stm.c
-@@ -449,9 +449,11 @@ static int stmfb_activate_var(struct fb_info *fb_info)
- 		reg |= VDCTRL0_HSYNC_POL;
- 	if (mode->sync & FB_SYNC_VERT_HIGH_ACT)
- 		reg |= VDCTRL0_VSYNC_POL;
--	if (mode->sync & FB_SYNC_DE_HIGH_ACT)
-+	if (mode->sync & FB_SYNC_DE_HIGH_ACT ||
-+			mode->display_flags & DISPLAY_FLAGS_DE_LOW)
- 		reg |= VDCTRL0_ENABLE_POL;
--	if (mode->sync & FB_SYNC_CLK_INVERT)
-+	if (mode->sync & FB_SYNC_CLK_INVERT ||
-+			mode->display_flags & DISPLAY_FLAGS_PIXDATA_NEGEDGE)
- 		reg |= VDCTRL0_DOTCLK_POL;
+@@ -24,6 +24,8 @@
+ #include <errno.h>
+ #include <xfuncs.h>
+ #include <io.h>
++#include <dma.h>
++#include <asm/mmu.h>
+ #include <stmp-device.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+@@ -329,8 +331,13 @@ static int stmfb_activate_var(struct fb_info *fb_info)
+ 			return -ENOMEM;
+ 		fb_info->screen_base = fbi->fixed_screen;
+ 		fbi->memory_size = fbi->fixed_screen_size;
++		remap_range(fbi->fixed_screen,
++				fbi->fixed_screen_size,
++				mmu_get_pte_uncached_flags());
+ 	} else {
+-		fb_info->screen_base = xrealloc(fb_info->screen_base, size);
++		fb_info->screen_base = dma_alloc_coherent(size, NULL);
++		if (!fb_info->screen_base)
++			return -ENOMEM;
+ 		fbi->memory_size = size;
+ 	}
  
- 	reg |= SET_VSYNC_PULSE_WIDTH(mode->vsync_len);
 -- 
 2.1.4
 
