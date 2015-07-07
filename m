@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.bemta5.messagelabs.com ([195.245.231.153])
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZC5No-0000OB-Ca
- for barebox@lists.infradead.org; Mon, 06 Jul 2015 12:20:25 +0000
-Message-ID: <559A7264.1020205@celad.com>
-Date: Mon, 6 Jul 2015 14:19:48 +0200
-From: Herve Codina <herve.CODINA@celad.com>
-MIME-Version: 1.0
-References: <1436168207-6433-1-git-send-email-Herve.CODINA@celad.com>
- <20150706115236.GR18700@pengutronix.de>
-In-Reply-To: <20150706115236.GR18700@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZCNO0-0008RZ-6m
+ for barebox@lists.infradead.org; Tue, 07 Jul 2015 07:33:49 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Tue,  7 Jul 2015 09:33:20 +0200
+Message-Id: <1436254400-5271-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,42 +14,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] exitcall infrastructure
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: imx6: fix GK802 DT
+To: barebox@lists.infradead.org
 
+From: Philipp Zabel <philipp.zabel@gmail.com>
 
+Including "imx6q.dtsi" after <arm/imx6q-gk802.dts> also includes
+<arm/imx6ql.dtsi> again, disabling all peripherals, including the
+serial console uart. We can't include it first either, because
+arm/imx6q-gk802.dts contains the /dts-v1/ header.
+This patch drops the offending include statement and instead adds
+the missing IPU aliases manually.
 
-Le 06/07/2015 13:52, Sascha Hauer a =E9crit :
-> On Mon, Jul 06, 2015 at 09:36:42AM +0200, Herve Codina wrote:
->> This series adds shutdown hooks mechanism.
->> The mechanism chosen is based on initcall infrastructure and so the name
->> given is exitcall.
->> The first patch implement the exitcall infrastructure.
->> The other patches move old shutdown functions to this new infrastructure.
->>
->> Herve Codina (4):
->>   exitcall: Add exitcall infrastructure
->>   exitcall: move device_shutdown to exitcall infrastructure
->>   exitcall: move arch_shutdown to exitcall infrastructure
->>   exitcall: move board_shutdown to exitcall infrastructure
-> =
+Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
+---
+ arch/arm/dts/imx6q-gk802.dts | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-> Applied, thanks. Please watch out for trailing whitespaces next time. I
-> removed several while applying.
-Oups, i am sorry for this additional work.
-I will be more carefull about whitespaces.
-
-Thanks,
-Herve
-> =
-
-> Sascha
-> =
+diff --git a/arch/arm/dts/imx6q-gk802.dts b/arch/arm/dts/imx6q-gk802.dts
+index 310d6f0..d712e00 100644
+--- a/arch/arm/dts/imx6q-gk802.dts
++++ b/arch/arm/dts/imx6q-gk802.dts
+@@ -7,7 +7,13 @@
+  */
+ 
+ #include <arm/imx6q-gk802.dts>
+-#include "imx6q.dtsi"
++
++/ {
++	aliases {
++		ipu0 = &ipu1;
++		ipu1 = &ipu2;
++	};
++};
+ 
+ /* External USB-A port (USBOTG) */
+ &usbotg {
+-- 
+2.2.1.209.g41e5f3a
 
 
 _______________________________________________
