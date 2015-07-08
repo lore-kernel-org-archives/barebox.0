@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZCn3D-0003FD-OK
- for barebox@lists.infradead.org; Wed, 08 Jul 2015 10:58:04 +0000
+ id 1ZCoJR-00029i-I6
+ for barebox@lists.infradead.org; Wed, 08 Jul 2015 12:18:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  8 Jul 2015 12:57:40 +0200
-Message-Id: <1436353060-22497-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  8 Jul 2015 14:18:29 +0200
+Message-Id: <1436357910-4785-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +19,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Build with -fno-delete-null-pointer-checks
+Subject: [PATCH 1/2] ARM: i.MX: Add i.MX5 debug functions
 To: Barebox List <barebox@lists.infradead.org>
 
-This becomes important with gcc-4.9. Without this gcc assumes
-that accessing NULL pointers traps and everything that happens
-behind the access is not executed. This recently happened with
-i.MX53 which has:
-
-static int imx53_silicon_revision(void)
-{
-	void __iomem *rom = MX53_IROM_BASE_ADDR;
-
-	rev = readl(rom + SI_REV);
-	...
-}
-
-This resulted in object code in which the last instruction is
-the readl, the reset of the function is missing because gcc assumes this
-is never executed.
-
-Disable this optimization with -fno-delete-null-pointer-checks since
-in barebox NULL pointers can indeed be valid.
+We recently introduced ungate_all_peripherals and SoC specific low
+level UART init functions. Add some more for i.MX5 SoCs.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/debug_ll.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/Makefile b/Makefile
-index e7db67a..0fe9274 100644
---- a/Makefile
-+++ b/Makefile
-@@ -301,7 +301,8 @@ CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffre
+diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+index ab939b3..f2f4768 100644
+--- a/arch/arm/mach-imx/include/mach/debug_ll.h
++++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+@@ -75,6 +75,11 @@ static inline void imx51_uart_setup_ll(void)
+ 	__imx_uart_setup_ll(54000000);
+ }
  
- CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-                    -Werror-implicit-function-declaration \
--                   -fno-strict-aliasing -fno-common -Os -pipe
-+                   -fno-strict-aliasing -fno-common -Os -pipe \
-+                   -fno-delete-null-pointer-checks
- AFLAGS          := -D__ASSEMBLY__
++static inline void imx53_uart_setup_ll(void)
++{
++	__imx_uart_setup_ll(66666666);
++}
++
+ static inline void imx6_uart_setup_ll(void)
+ {
+ 	__imx_uart_setup_ll(80000000);
+@@ -119,4 +124,14 @@ static inline void imx6_ungate_all_peripherals(void)
+ 	imx_ungate_all_peripherals(IOMEM(MX6_CCM_BASE_ADDR));
+ }
  
- LDFLAGS_barebox	:= -Map barebox.map
++static inline void imx51_ungate_all_peripherals(void)
++{
++	imx_ungate_all_peripherals(IOMEM(MX51_CCM_BASE_ADDR));
++}
++
++static inline void imx53_ungate_all_peripherals(void)
++{
++	imx_ungate_all_peripherals(IOMEM(MX53_CCM_BASE_ADDR));
++}
++
+ #endif /* __MACH_DEBUG_LL_H__ */
 -- 
 2.1.4
 
