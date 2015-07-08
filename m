@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from proxima.lasnet.de ([2a01:198:210:70::2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZCoWU-0002Km-EX
- for barebox@lists.infradead.org; Wed, 08 Jul 2015 12:32:23 +0000
-Date: Wed, 8 Jul 2015 14:32:00 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150708123200.GH18700@pengutronix.de>
-References: <OF2C7718AB.DA224B8D-ONC1257E7C.002375F3-C1257E7C.0023CCF2@beijer.se>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <OF2C7718AB.DA224B8D-ONC1257E7C.002375F3-C1257E7C.0023CCF2@beijer.se>
+ id 1ZCpQD-0007nm-RM
+ for barebox@lists.infradead.org; Wed, 08 Jul 2015 13:29:58 +0000
+Received: from polaris.guest.pengutronix.de (hazel.nat.pengutronix.de
+ [85.220.165.66])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ (Authenticated sender: polaris@lasnet.de)
+ by proxima.lasnet.de (Postfix) with ESMTPSA id 1C892C2B0B
+ for <barebox@lists.infradead.org>; Wed,  8 Jul 2015 15:29:33 +0200 (CEST)
+From: Jan Luebbe <jluebbe@debian.org>
+Date: Wed,  8 Jul 2015 15:29:16 +0200
+Message-Id: <1436362158-24488-3-git-send-email-jluebbe@debian.org>
+In-Reply-To: <1436362158-24488-1-git-send-email-jluebbe@debian.org>
+References: <1436362158-24488-1-git-send-email-jluebbe@debian.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +23,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Boot using SPI-NOR device
-To: joacim.zetterling@westermo.se
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/4] i2c: only use set_scl for recovery after calling
+ prepare_recovery
+To: barebox@lists.infradead.org
 
-On Wed, Jul 08, 2015 at 08:31:02AM +0200, joacim.zetterling@westermo.se wro=
-te:
->    Hi
-> =
+set_scl may be ineffective before calling the driver specific
+prepare_recovery callback.
 
->    I have some problem booting a linux from a spi-nor device (Spansion,
->    s25fl512s). There is no trouble booting up barebox from the first
->    partition.
->    When I debugged our system (ARM based) I find out that when we probe t=
-he
->    file system, we get -22 as a result code from a memmap(s->fd, PROT_REA=
-D)
->    function call.
->    With further investigations I see that memmap is set to 0 with no ops =
-is
->    defined, witch probably means that I do not have any memory mapped spi.
-> =
+Signed-off-by: Jan Luebbe <jluebbe@debian.org>
+---
+ drivers/i2c/i2c.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
->    I add my partitions like this
->    =A0addpart -n /dev/s25fl512s
->    2048k(barebox),24M(primary),24M(reserved),2048k(config),4096k(barebox-=
-environment)
-> =
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index e350ac5..39837fe 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -299,6 +299,9 @@ static int i2c_generic_recovery(struct i2c_adapter *adap)
+ 	if (bri->prepare_recovery)
+ 		bri->prepare_recovery(adap);
+ 
++	bri->set_scl(adap, val);
++	ndelay(RECOVERY_NDELAY);
++
+ 	/*
+ 	 * By this time SCL is high, as we need to give 9 falling-rising edges
+ 	 */
+@@ -329,7 +332,6 @@ static int i2c_generic_recovery(struct i2c_adapter *adap)
+ 
+ int i2c_generic_scl_recovery(struct i2c_adapter *adap)
+ {
+-	adap->bus_recovery_info->set_scl(adap, 1);
+ 	return i2c_generic_recovery(adap);
+ }
+ 
+-- 
+2.1.4
 
->    And my dts section for the spi looks like this
->    =A0...
->    =A0...
->    =A0spi: spi@10600 {
->    =A0 =A0spi-flash@0 {
->    =A0 =A0 =A0 #address-cells =3D <1>;
->    =A0 =A0 =A0 #size-cells =3D <1>;
->    =A0 =A0 =A0 compatible =3D "s25fl512s", "nor-jedec";
->    =A0 =A0 =A0 spi-max-frequency =3D <20000000>;
->    =A0 =A0 =A0 reg =3D <0>; /* Chip select 0 */
->    =A0 };
->    };
->    ...
->    ...
-> =
-
->    I also have all the configurations for spi, mtd and env in place.
->    And I have no issues reading/writing/erasing the spi flash.
-> =
-
->    My simple question is. How do I enable memory mapped spi-nor support in
->    barebox?
-
-That's not possible because spi-nor is never memory mapped. The good
-news is that you won't need this. What exactly are you doing to get the
-memmap error? Are you trying to use the 'go' command to start something
-from spi-nor? Use bootm instead.
-
-Regards,
- Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
