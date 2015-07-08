@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from proxima.lasnet.de ([2a01:198:210:70::2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZCpRJ-0000sG-KO
- for barebox@lists.infradead.org; Wed, 08 Jul 2015 13:31:06 +0000
-Message-ID: <559D2602.8060001@pengutronix.de>
-Date: Wed, 08 Jul 2015 15:30:42 +0200
-From: Enrico Joerns <ejo@pengutronix.de>
-MIME-Version: 1.0
-References: <1436357910-4785-1-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1436357910-4785-1-git-send-email-s.hauer@pengutronix.de>
+ id 1ZCpRn-0000zO-CB
+ for barebox@lists.infradead.org; Wed, 08 Jul 2015 13:31:36 +0000
+Received: from polaris.guest.pengutronix.de (hazel.nat.pengutronix.de
+ [85.220.165.66])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ (Authenticated sender: polaris@lasnet.de)
+ by proxima.lasnet.de (Postfix) with ESMTPSA id B4A82C2B07
+ for <barebox@lists.infradead.org>; Wed,  8 Jul 2015 15:31:13 +0200 (CEST)
+From: Jan Luebbe <jluebbe@debian.org>
+Date: Wed,  8 Jul 2015 15:31:03 +0200
+Message-Id: <1436362263-25076-2-git-send-email-jluebbe@debian.org>
+In-Reply-To: <1436362263-25076-1-git-send-email-jluebbe@debian.org>
+References: <1436362263-25076-1-git-send-email-jluebbe@debian.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,64 +23,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: i.MX: Add i.MX5 debug functions
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] spi: only register enabled child nodes
+To: barebox@lists.infradead.org
 
-On 07/08/2015 02:18 PM, Sascha Hauer wrote:
-> We recently introduced ungate_all_peripherals and SoC specific low
-> level UART init functions. Add some more for i.MX5 SoCs.
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->   arch/arm/mach-imx/include/mach/debug_ll.h | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
->
-> diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-> index ab939b3..f2f4768 100644
-> --- a/arch/arm/mach-imx/include/mach/debug_ll.h
-> +++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-> @@ -75,6 +75,11 @@ static inline void imx51_uart_setup_ll(void)
->   	__imx_uart_setup_ll(54000000);
->   }
->
-> +static inline void imx53_uart_setup_ll(void)
-> +{
-> +	__imx_uart_setup_ll(66666666);
-> +}
-> +
-
-Currently, the patch does not compile when CONFIG_DEBUG_LL is unset.
-Seems you forgot to add this line to your patch:
-
- From b0135fa957a0ebe053349f4442b20006ba5509bf Mon Sep 17 00:00:00 2001
-From: Enrico Jorns <ejo@pengutronix.de>
-Date: Wed, 8 Jul 2015 15:29:02 +0200
-Subject: [PATCH] fixup! ARM: i.MX: Add i.MX5 debug functions
-
+Signed-off-by: Jan Luebbe <jluebbe@debian.org>
 ---
-  arch/arm/mach-imx/include/mach/debug_ll.h | 1 +
-  1 file changed, 1 insertion(+)
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h 
-b/arch/arm/mach-imx/include/mach/debug_ll.h
-index f2f4768..eceac40 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -108,6 +108,7 @@ static inline void imx_uart_setup_ll(void __iomem 
-*uartbase,
-  }
-
-  static inline void imx51_uart_setup_ll(void) {}
-+static inline void imx53_uart_setup_ll(void) {}
-  static inline void imx6_uart_setup_ll(void)  {}
-
-  #endif /* CONFIG_DEBUG_LL */
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ba23cf7..99412b0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -113,7 +113,7 @@ static void spi_of_register_slaves(struct spi_master *master)
+ 	if (!node)
+ 		return;
+ 
+-	for_each_child_of_node(node, n) {
++	for_each_available_child_of_node(node, n) {
+ 		memset(&chip, 0, sizeof(chip));
+ 		chip.name = xstrdup(n->name);
+ 		chip.bus_num = master->bus_num;
 -- 
 2.1.4
+
 
 _______________________________________________
 barebox mailing list
