@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from proxima.lasnet.de ([2a01:198:210:70::2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZCpQD-0007nm-RM
- for barebox@lists.infradead.org; Wed, 08 Jul 2015 13:29:58 +0000
+ id 1ZCpQE-0007np-Ge
+ for barebox@lists.infradead.org; Wed, 08 Jul 2015 13:29:59 +0000
 Received: from polaris.guest.pengutronix.de (hazel.nat.pengutronix.de
  [85.220.165.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
  (Authenticated sender: polaris@lasnet.de)
- by proxima.lasnet.de (Postfix) with ESMTPSA id 1C892C2B0B
+ by proxima.lasnet.de (Postfix) with ESMTPSA id 7FB9DC2B0C
  for <barebox@lists.infradead.org>; Wed,  8 Jul 2015 15:29:33 +0200 (CEST)
 From: Jan Luebbe <jluebbe@debian.org>
-Date: Wed,  8 Jul 2015 15:29:16 +0200
-Message-Id: <1436362158-24488-3-git-send-email-jluebbe@debian.org>
+Date: Wed,  8 Jul 2015 15:29:17 +0200
+Message-Id: <1436362158-24488-4-git-send-email-jluebbe@debian.org>
 In-Reply-To: <1436362158-24488-1-git-send-email-jluebbe@debian.org>
 References: <1436362158-24488-1-git-send-email-jluebbe@debian.org>
 List-Id: <barebox.lists.infradead.org>
@@ -28,40 +28,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] i2c: only use set_scl for recovery after calling
- prepare_recovery
+Subject: [PATCH 3/4] i2c-omap: clear ARDY twice
 To: barebox@lists.infradead.org
 
-set_scl may be ineffective before calling the driver specific
-prepare_recovery callback.
+This implements the fix from the kernel commit
+4cdbf7d346e7461c3b93a26707c852e2c9db3753.
 
 Signed-off-by: Jan Luebbe <jluebbe@debian.org>
 ---
- drivers/i2c/i2c.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-omap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index e350ac5..39837fe 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -299,6 +299,9 @@ static int i2c_generic_recovery(struct i2c_adapter *adap)
- 	if (bri->prepare_recovery)
- 		bri->prepare_recovery(adap);
- 
-+	bri->set_scl(adap, val);
-+	ndelay(RECOVERY_NDELAY);
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 330db98..58d2ec9 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -673,6 +673,10 @@ omap_i2c_isr(struct omap_i2c_struct *dev)
+ 		/*
+ 		 * ProDB0017052: Clear ARDY bit twice
+ 		 */
++		if (stat & OMAP_I2C_STAT_ARDY)
++			omap_i2c_ack_stat(dev, OMAP_I2C_STAT_ARDY);
 +
- 	/*
- 	 * By this time SCL is high, as we need to give 9 falling-rising edges
- 	 */
-@@ -329,7 +332,6 @@ static int i2c_generic_recovery(struct i2c_adapter *adap)
- 
- int i2c_generic_scl_recovery(struct i2c_adapter *adap)
- {
--	adap->bus_recovery_info->set_scl(adap, 1);
- 	return i2c_generic_recovery(adap);
- }
- 
++
+ 		if (stat & (OMAP_I2C_STAT_ARDY | OMAP_I2C_STAT_NACK |
+ 					OMAP_I2C_STAT_AL)) {
+ 			omap_i2c_ack_stat(dev, (OMAP_I2C_STAT_RRDY |
 -- 
 2.1.4
 
