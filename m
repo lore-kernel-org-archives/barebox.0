@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZCijM-0003F6-UG
- for barebox@lists.infradead.org; Wed, 08 Jul 2015 06:21:17 +0000
+ id 1ZCimY-0003ka-Hq
+ for barebox@lists.infradead.org; Wed, 08 Jul 2015 06:24:35 +0000
+Date: Wed, 8 Jul 2015 08:24:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  8 Jul 2015 08:20:54 +0200
-Message-Id: <1436336454-21067-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20150708062412.GZ18700@pengutronix.de>
+References: <1436165726-33606-1-git-send-email-j.remmet@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1436165726-33606-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] socfpga_mkimage: Fix/clarify error message
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: am33xx: netboot use ramfs
+To: Jan Remmet <j.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-The actual max_image_size may be smaller than the define MAX_IMAGE_SIZE
-due to the additional header needed, so print max_image_size in the
-error message. Also, when complaining about a too big image say how big
-the image actually is.
+Hi Jan,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- scripts/socfpga_mkimage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, Jul 06, 2015 at 08:55:26AM +0200, Jan Remmet wrote:
+> Older tftp server don't send the file size.
+> Then tftpfs needs temporary place to store the file.
+> mount ramfs and then tftpfs in a own mount point
 
-diff --git a/scripts/socfpga_mkimage.c b/scripts/socfpga_mkimage.c
-index bab1b1a..1a7a66d 100644
---- a/scripts/socfpga_mkimage.c
-+++ b/scripts/socfpga_mkimage.c
-@@ -234,8 +234,8 @@ int main(int argc, char *argv[])
- 	}
- 
- 	if (s.st_size > max_image_size) {
--		fprintf(stderr, "input image too big. Maximum is %d bytes\n",
--				MAX_IMAGE_SIZE);
-+		fprintf(stderr, "input image too big. Maximum is %d bytes, got %ld bytes\n",
-+				max_image_size, s.st_size);
- 		exit(1);
- 	}
- 
+I don't like this at all. The missing file size has led to a workaround
+in read_file and now it additionally leads to a workaround in a user of
+read_file. I hoped I could think of something better, but so far I
+failed, so: Applied.
+Anyway, I'm still open for better solutions.
+
+Sascha
+
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
