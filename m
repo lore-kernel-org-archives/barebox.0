@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZD5eS-0000aU-Mg
- for barebox@lists.infradead.org; Thu, 09 Jul 2015 06:49:45 +0000
-Date: Thu, 9 Jul 2015 08:49:20 +0200
+ id 1ZD5hr-000337-TT
+ for barebox@lists.infradead.org; Thu, 09 Jul 2015 06:53:16 +0000
+Date: Thu, 9 Jul 2015 08:52:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150709064920.GJ18700@pengutronix.de>
-References: <1436346939-2306-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20150709065253.GK18700@pengutronix.de>
+References: <20150708123200.GH18700@pengutronix.de>
+ <OF2C7718AB.DA224B8D-ONC1257E7C.002375F3-C1257E7C.0023CCF2@beijer.se>
+ <OF33093548.0EB61029-ONC1257E7C.004A9EB9-C1257E7C.004A9EBC@beijer.se>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1436346939-2306-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <OF33093548.0EB61029-ONC1257E7C.004A9EB9-C1257E7C.004A9EBC@beijer.se>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +24,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] WIP: video: implement quick-n-dirty framebuffer console
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: Boot using SPI-NOR device
+To: joacim.zetterling@westermo.se
 Cc: barebox@lists.infradead.org
 
-Hi Antony,
-
-On Wed, Jul 08, 2015 at 12:15:39PM +0300, Antony Pavlov wrote:
-> This patch realizes very simple framebuffer console for barebox.
-> Minimal ANSI/VT100 Escape Sequence parser is used to ignore color
-> change commands (based on GNU screen parser).
+On Wed, Jul 08, 2015 at 03:35:03PM +0200, joacim.zetterling@westermo.se wrote:
+>    I try to boot linux from a spi-flash with squashfs.
+>    by doing the following (discard the debug printouts ;-))
 > 
-> THere are several ANSI/VT100 parsers:
-> 
->   * GNU screen (git://git.savannah.gnu.org/screen.git);
->   * st - simple terminal (http://git.suckless.org/st);
->   * or even mutt (https://github.com/karelzak/mutt-kz).
+>    barebox:/ mkdir -p /mnt/bootfs
+>    barebox:/ mount -t squash -o sha1 /dev/s25fl512s.primary /mnt/bootfs
 
-There's even one in barebox in drivers/serial/efi-stdio.c
-
-> 
-> fbconsole mini-HOWTO
-> ====================
-> 
-> 1. compile sandbox barebox with
-> 
->     CONFIG_VIDEO=y
->     CONFIG_FBCONSOLE=y
->     CONFIG_DRIVER_VIDEO_SDL=y
-> 
-> 2. run barebox
-> 
-> 3. test fbconsole
-> 
->     fbconsole0.active=o
-
-I gave it a try on real hardware. Works nice.
-
-> 
-> TODO:
-> 
->    * no visible cursor;
-
-I couldn't resist and did some hacking on this. The cursor is visible
-now. Also I implemented more control characters and color support. I'll
-send an update patch shortly.
-
->    * FIXME: /dev/fb0 is hardcoded;
->    * FIXME: drop blanckchar() dirty hack;
->    * Sascha Hauer: character set should be prerendered for the actual framebuffer format
->                    before printing a string.
-
-Did I mention that ealier? I don't know if that's a good idea since with
-color support we would need quite some memory and I'm not sure if that
-would really speed up things.
-
-I'd really love to have framebuffer console in barebox. I wasn't aware
-that this would be relatively straight forward to implement though. I'm
-willing to help working on this job so that we finally have a fbcon.
-
-Maybe one first step is to simply merge the font so that the patches
-get smaller.
+squash? barebox does not have squashfs support. You must have some out
+of tree patches to which I can't say anything. How about posting these,
+then we can maybe see what's going wrong.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
