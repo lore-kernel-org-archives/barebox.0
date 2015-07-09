@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZD6CH-0000db-MG
+ id 1ZD6CH-0000dd-MK
  for barebox@lists.infradead.org; Thu, 09 Jul 2015 07:24:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  9 Jul 2015 09:24:14 +0200
-Message-Id: <1436426657-5266-11-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  9 Jul 2015 09:24:16 +0200
+Message-Id: <1436426657-5266-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1436426657-5266-1-git-send-email-s.hauer@pengutronix.de>
 References: <1436426657-5266-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/13] video: ipuv3: remove unused variable
+Subject: [PATCH 12/13] video: ipuv3: match ipu_di_signal_cfg's clk_pol with
+ its description
 To: Barebox List <barebox@lists.infradead.org>
+
+From this Linux commit:
+
+commit 85de9d17c485c4196f74d45de2206d4802f8a3be
+Author: Denis Carikli <denis@eukrea.com>
+Date:   Mon Apr 7 14:44:43 2014 +0200
+
+    imx-drm: match ipu_di_signal_cfg's clk_pol with its description.
+
+    According to the datasheet, setting the di0_polarity_disp_clk
+    field in the GENERAL di register sets the output clock polarity
+    to active high.
+
+    Signed-off-by: Denis Carikli <denis@eukrea.com>
+    Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-v3/imx-ipu-v3.h | 1 -
- drivers/video/imx-ipu-v3/ipufb.c      | 1 -
- 2 files changed, 2 deletions(-)
+ drivers/video/imx-ipu-v3/ipu-di.c | 2 +-
+ drivers/video/imx-ipu-v3/ipufb.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/imx-ipu-v3/imx-ipu-v3.h b/drivers/video/imx-ipu-v3/imx-ipu-v3.h
-index 7c48a7c..d046aee 100644
---- a/drivers/video/imx-ipu-v3/imx-ipu-v3.h
-+++ b/drivers/video/imx-ipu-v3/imx-ipu-v3.h
-@@ -44,7 +44,6 @@ struct ipu_di_signal_cfg {
+diff --git a/drivers/video/imx-ipu-v3/ipu-di.c b/drivers/video/imx-ipu-v3/ipu-di.c
+index e3338d0..8df9c9f 100644
+--- a/drivers/video/imx-ipu-v3/ipu-di.c
++++ b/drivers/video/imx-ipu-v3/ipu-di.c
+@@ -627,7 +627,7 @@ int ipu_di_init_sync_panel(struct ipu_di *di, struct ipu_di_signal_cfg *sig)
+ 		}
+ 	}
  
- 	u16 width;
- 	u16 height;
--	u32 pixel_fmt;
- 	u16 h_start_width;
- 	u16 h_sync_width;
- 	u16 h_end_width;
+-	if (!sig->clk_pol)
++	if (sig->clk_pol)
+ 		di_gen |= DI_GEN_POLARITY_DISP_CLK;
+ 
+ 	ipu_di_write(di, di_gen, DI_GENERAL);
 diff --git a/drivers/video/imx-ipu-v3/ipufb.c b/drivers/video/imx-ipu-v3/ipufb.c
-index 7ee4ae3..c032621 100644
+index 74c4dba..e804c31 100644
 --- a/drivers/video/imx-ipu-v3/ipufb.c
 +++ b/drivers/video/imx-ipu-v3/ipufb.c
-@@ -115,7 +115,6 @@ int ipu_crtc_mode_set(struct ipufb_info *fbi,
- 	sig_cfg.clk_pol = 1;
+@@ -100,7 +100,7 @@ int ipu_crtc_mode_set(struct ipufb_info *fbi,
+ 		sig_cfg.Vsync_pol = 1;
+ 
+ 	sig_cfg.enable_pol = 1;
+-	sig_cfg.clk_pol = 1;
++	sig_cfg.clk_pol = 0;
  	sig_cfg.width = mode->xres;
  	sig_cfg.height = mode->yres;
--	sig_cfg.pixel_fmt = out_pixel_fmt;
  	sig_cfg.h_start_width = mode->left_margin;
- 	sig_cfg.h_sync_width = mode->hsync_len;
- 	sig_cfg.h_end_width = mode->right_margin;
 -- 
 2.1.4
 
