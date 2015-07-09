@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZD8Jq-0007Mp-Ik
- for barebox@lists.infradead.org; Thu, 09 Jul 2015 09:40:39 +0000
-Received: by labgy5 with SMTP id gy5so90308923lab.2
- for <barebox@lists.infradead.org>; Thu, 09 Jul 2015 02:40:16 -0700 (PDT)
-Date: Thu, 9 Jul 2015 12:47:06 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150709124706.f0274223036d046a95f7a5c6@gmail.com>
-In-Reply-To: <20150709081639.GL18700@pengutronix.de>
+ id 1ZD9M3-0003Z2-Ev
+ for barebox@lists.infradead.org; Thu, 09 Jul 2015 10:47:00 +0000
+Date: Thu, 9 Jul 2015 12:46:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150709104637.GS18700@pengutronix.de>
 References: <1436346939-2306-1-git-send-email-antonynpavlov@gmail.com>
- <20150709081639.GL18700@pengutronix.de>
-Mime-Version: 1.0
+ <20150709064920.GJ18700@pengutronix.de>
+ <20150709124254.3aeed69d7330aebd34377e12@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150709124254.3aeed69d7330aebd34377e12@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,407 +20,140 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] WIP: video: implement quick-n-dirty framebuffer console
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, 9 Jul 2015 10:16:39 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Thu, Jul 09, 2015 at 12:42:54PM +0300, Antony Pavlov wrote:
+> On Thu, 9 Jul 2015 08:49:20 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > Hi Antony,
+> > 
+> > On Wed, Jul 08, 2015 at 12:15:39PM +0300, Antony Pavlov wrote:
+> > > This patch realizes very simple framebuffer console for barebox.
+> > > Minimal ANSI/VT100 Escape Sequence parser is used to ignore color
+> > > change commands (based on GNU screen parser).
+> > > 
+> > > THere are several ANSI/VT100 parsers:
+> > > 
+> > >   * GNU screen (git://git.savannah.gnu.org/screen.git);
+> > >   * st - simple terminal (http://git.suckless.org/st);
+> > >   * or even mutt (https://github.com/karelzak/mutt-kz).
+> > 
+> > There's even one in barebox in drivers/serial/efi-stdio.c
+> > 
+> > > 
+> > > fbconsole mini-HOWTO
+> > > ====================
+> > > 
+> > > 1. compile sandbox barebox with
+> > > 
+> > >     CONFIG_VIDEO=y
+> > >     CONFIG_FBCONSOLE=y
+> > >     CONFIG_DRIVER_VIDEO_SDL=y
+> > > 
+> > > 2. run barebox
+> > > 
+> > > 3. test fbconsole
+> > > 
+> > >     fbconsole0.active=o
+> > 
+> > I gave it a try on real hardware. Works nice.
+> > 
+> > > 
+> > > TODO:
+> > > 
+> > >    * no visible cursor;
+> > 
+> > I couldn't resist and did some hacking on this. The cursor is visible
+> > now. Also I implemented more control characters and color support. I'll
+> > send an update patch shortly.
+> > 
+> > >    * FIXME: /dev/fb0 is hardcoded;
+> > >    * FIXME: drop blanckchar() dirty hack;
+> > >    * Sascha Hauer: character set should be prerendered for the actual framebuffer format
+> > >                    before printing a string.
+> > 
+> > Did I mention that ealier? I don't know if that's a good idea since with
+> > color support we would need quite some memory and I'm not sure if that
+> > would really speed up things.
+> > 
+> > I'd really love to have framebuffer console in barebox. I wasn't aware
+> > that this would be relatively straight forward to implement though. I'm
+> > willing to help working on this job so that we finally have a fbcon.
+> > 
+> > Maybe one first step is to simply merge the font so that the patches
+> > get smaller.
+> 
+> IMHO it is very reasonable to add simple tools and instruction for
+> font modifing. We even can add several fonts and select one of them
+> via Kconfig options as linux kernel does. There are some reasons
+> for that:
+> 
+>    * some people prefere another fonts (e.g. Terminus);
+>    * in Russia we need a font with cyrillic letters.
 
-> On Wed, Jul 08, 2015 at 12:15:39PM +0300, Antony Pavlov wrote:
-> > This patch realizes very simple framebuffer console for barebox.
-> > Minimal ANSI/VT100 Escape Sequence parser is used to ignore color
-> > change commands (based on GNU screen parser).
-> > =
+Ok. I'm happy to add this later, but if you want to add this from the
+start, fine aswell. 
 
-> > THere are several ANSI/VT100 parsers:
-> > =
-
-> >   * GNU screen (git://git.savannah.gnu.org/screen.git);
-> >   * st - simple terminal (http://git.suckless.org/st);
-> >   * or even mutt (https://github.com/karelzak/mutt-kz).
-> > =
-
-> =
-
-> Here's my WIP state based on your patch. It's probably worth to create a
-> function that takes a bw bitmap and a color and which renders the bitmap
-> to the screen with the given color. Also it might be worth to separate
-> the ANSI/VT100 parser to be able to share it between the EFI console
-> and fbcon.
-
-
-Thanks!
-
-I'll try you patch as soon as possible.
-
-I have not known about EFI console ANSI/VT100 parser until now.
-I'll take a look on it too.
-
-
-> From 59211105b2fdcdf6c1891edfa999d915ceba3bb3 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Thu, 9 Jul 2015 10:01:36 +0200
-> Subject: [PATCH] fbcon wip
-> =
-
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/video/fbconsole.c | 172 ++++++++++++++++++++++++++++++++--------=
-------
->  lib/gui/graphic_utils.c   |  21 +++++-
->  2 files changed, 140 insertions(+), 53 deletions(-)
-> =
-
-> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-> index 8ad4c2c..74592c5 100644
-> --- a/drivers/video/fbconsole.c
-> +++ b/drivers/video/fbconsole.c
-> @@ -15,6 +15,8 @@ enum state_t {
->  	CSI,				/* Reading arguments in "CSI Pn ;...*/
->  };
->  =
-
-> +u32 get_pixel(struct fb_info *info, u32 color);
+> 
+> Also I prefere fix original font header file.
+> Here is an example. 
+> 
+> 1. original font header file fragment:
+> 
+> +	/* 65 0x41 */
+> +	0x00, /* 00000000 */
+> +	0x00, /* 00000000 */
+> +	0x10, /* 00010000 */
+> +	0x38, /* 00111000 */
+> +	0x6c, /* 01101100 */
+> +	0xc6, /* 11000110 */
+> +	0xc6, /* 11000110 */
+> +	0xfe, /* 11111110 */
+> +	0xc6, /* 11000110 */
+> +	0xc6, /* 11000110 */
+> +	0xc6, /* 11000110 */
+> +	0xc6, /* 11000110 */
+> +	0x00, /* 00000000 */
+> +	0x00, /* 00000000 */
+> +	0x00, /* 00000000 */
+> +	0x00, /* 00000000 */
 > +
->  struct fbc_priv {
->  	struct console_device cdev;
->  	struct fb_info *fb;
-> @@ -25,49 +27,13 @@ struct fbc_priv {
->  	unsigned int x, y; /* cursor position */
->  =
+> 
+> 2. my version
+> +	/* 65 0x41 'A' */
+> +	0x00, /* ........ */
+> +	0x00, /* ........ */
+> +	0x10, /* ...#.... */
+> +	0x38, /* ..###... */
+> +	0x6c, /* .##.##.. */
+> +	0xc6, /* ##...##. */
+> +	0xc6, /* ##...##. */
+> +	0xfe, /* #######. */
+> +	0xc6, /* ##...##. */
+> +	0xc6, /* ##...##. */
+> +	0xc6, /* ##...##. */
+> +	0xc6, /* ##...##. */
+> +	0x00, /* ........ */
+> +	0x00, /* ........ */
+> +	0x00, /* ........ */
+> +	0x00, /* ........ */
 
->  	enum state_t state;
-> -};
-> -
-> -static struct image *char8x16_img(char *inbuf)
-> -{
-> -	struct image *img =3D calloc(1, sizeof(struct image));
-> -	int i;
-> -	uint32_t *p;
-> -
-> -	if (!img)
-> -		return ERR_PTR(-ENOMEM);
-> -
-> -	img->bits_per_pixel =3D 4 << 3;
-> -	img->data =3D calloc(1, sizeof(uint32_t) * VIDEO_FONT_WIDTH * VIDEO_FON=
-T_HEIGHT);
-> -	img->height =3D VIDEO_FONT_HEIGHT;
-> -	img->width =3D VIDEO_FONT_WIDTH;
-> -
-> -	p =3D img->data;
-> -
-> -	for (i =3D 0; i < VIDEO_FONT_HEIGHT; i++) {
-> -		uint8_t t =3D inbuf[i];
-> -		int j;
->  =
+Yeah, that's much better to read.
 
-> -		for (j =3D 0; j < VIDEO_FONT_WIDTH; j++) {
-> -			if (t & 0x80) {
-> -				*p =3D 0xffffffff;
-> -			}
-> +	u32 color;
-> +	bool invert;
->  =
+Sascha
 
-> -			p++;
-> -			t <<=3D 1;
-> -		}
-> -	}
-> -
-> -	return img;
-> -}
-> -
-> -static void init_chars(struct image *chars[], int char_num)
-> -{
-> -	int i;
-> -
-> -	for (i =3D 0; i < char_num; i++) {
-> -		chars[i] =3D char8x16_img(&video_fontdata[i * VIDEO_FONT_HEIGHT]);
-> -	}
-> -}
-> +	int csipos;
-> +	u8 csi[20];
-> +};
->  =
-
->  static int fbc_getc(struct console_device *cdev)
->  {
-> @@ -82,39 +48,66 @@ static int fbc_tstc(struct console_device *cdev)
->  static void drawchar(struct fbc_priv *priv, int x, int y, char c)
->  {
->  	void *buf;
-> +	int bpp =3D priv->fb->bits_per_pixel >> 3;
-> +	void *adr;
-> +	int i;
-> +	char *inbuf;
-> +	int line_length;
-> +	u32 color, bgcolor;
->  =
-
->  	buf =3D gui_screen_redering_buffer(&priv->sc);
->  =
-
-> -	rgba_blend(priv->fb, priv->chars[(int)c],
-> -		buf, VIDEO_FONT_HEIGHT, VIDEO_FONT_WIDTH,
-> -		VIDEO_FONT_WIDTH * x, VIDEO_FONT_HEIGHT * y, 1);
-> +	inbuf =3D &video_fontdata[c * VIDEO_FONT_HEIGHT];
-> +
-> +	line_length =3D priv->fb->line_length;
-> +
-> +	color =3D priv->invert ? 0xff000000 : priv->color;
-> +	bgcolor =3D priv->invert ? priv->color : 0xff000000;
-> +
-> +	for (i =3D 0; i < VIDEO_FONT_HEIGHT; i++) {
-> +		uint8_t t =3D inbuf[i];
-> +		int j;
-> +
-> +		adr =3D buf + line_length * (y * VIDEO_FONT_HEIGHT + i) + x * VIDEO_FO=
-NT_WIDTH * bpp;
-> +
-> +		for (j =3D 0; j < VIDEO_FONT_WIDTH; j++) {
-> +			if (t & 0x80)
-> +				set_pixel(priv->fb, adr, color);
-> +			else
-> +				set_pixel(priv->fb, adr, bgcolor);
-> +
-> +			adr +=3D priv->fb->bits_per_pixel >> 3;
-> +			t <<=3D 1;
-> +		}
-> +	}
->  }
->  =
-
-> -/* FIXME */
-> -static void blankchar(struct fbc_priv *priv, int x, int y)
-> +void invert_area(struct fb_info *info, void *buf, int startx, int starty=
-, int width,
-> +		int height);
-> +
-> +static void video_invertchar(struct fbc_priv *priv, int x, int y)
->  {
->  	void *buf;
->  =
-
->  	buf =3D gui_screen_redering_buffer(&priv->sc);
->  =
-
-> -	rgba_blend(priv->fb, priv->chars[' '],
-> -		buf, VIDEO_FONT_HEIGHT, VIDEO_FONT_WIDTH,
-> -		VIDEO_FONT_WIDTH * x, VIDEO_FONT_HEIGHT * y, 0);
-> +	invert_area(priv->fb, buf, x * VIDEO_FONT_WIDTH, y * VIDEO_FONT_HEIGHT,
-> +			VIDEO_FONT_WIDTH, VIDEO_FONT_HEIGHT);
->  }
->  =
-
->  static void printchar(struct fbc_priv *priv, int c)
->  {
-> +	video_invertchar(priv, priv->x, priv->y);
-> +
->  	switch (c) {
->  	case '\007': /* bell: ignore */
->  		break;
->  	case '\b':
->  		if (priv->x > 0) {
->  			priv->x--;
-> -			blankchar(priv, priv->x, priv->y);
->  		} else if (priv->y > 0) {
->  			priv->x =3D priv->cols;
->  			priv->y--;
-> -			blankchar(priv, priv->x, priv->y);
->  		}
->  		break;
->  	case '\n':
-> @@ -126,6 +119,10 @@ static void printchar(struct fbc_priv *priv, int c)
->  		priv->x =3D 0;
->  		break;
->  =
-
-> +	case '\t':
-> +		priv->x =3D (priv->x + 8) & ~0x3;
-> +		break;
-> +
->  	default:
->  		drawchar(priv, priv->x, priv->y, c);
->  		screen_blit(&priv->sc);
-> @@ -150,9 +147,75 @@ static void printchar(struct fbc_priv *priv, int c)
->  		priv->y =3D priv->rows;
->  	}
->  =
-
-> +	video_invertchar(priv, priv->x, priv->y);
-> +
->  	return;
->  }
->  =
-
-> +static void fbc_parse_csi(struct fbc_priv *priv)
-> +{
-> +	int a, b =3D -1;
-> +	char *end;
-> +
-> +	a =3D simple_strtoul(priv->csi, &end, 10);
-> +	if (*end =3D=3D ';')
-> +		b =3D simple_strtoul(end + 1, &end, 10);
-> +
-> +	if (*end =3D=3D 'm' && b =3D=3D -1) {
-> +		switch (a) {
-> +		case 0:
-> +			priv->color =3D 0xffffffff;
-> +			priv->invert =3D false;
-> +			break;
-> +		case 7:
-> +			priv->invert =3D true;
-> +			break;
-> +		}
-> +		return;
-> +	}
-> +
-> +	if (*end =3D=3D 'J' && a =3D=3D 2 && b =3D=3D -1) {
-> +		void *buf =3D gui_screen_redering_buffer(&priv->sc);
-> +
-> +		memset(buf, 0, priv->fb->line_length * priv->fb->yres);
-> +
-> +		priv->x =3D 0;
-> +		priv->y =3D 0;
-> +		video_invertchar(priv, priv->x, priv->y);
-> +	}
-> +
-> +	if (*end =3D=3D 'm' && a =3D=3D 1) {
-> +		switch (b) {
-> +		case 32:
-> +			priv->color =3D get_pixel(priv->fb, 0xff00ff00);
-> +			break;
-> +		case 31:
-> +			priv->color =3D get_pixel(priv->fb, 0xffff0000);
-> +			break;
-> +		case 34:
-> +			priv->color =3D get_pixel(priv->fb, 0xff0000ff);
-> +			break;
-> +		case 36:
-> +			priv->color =3D get_pixel(priv->fb, 0xff54ffff);
-> +			break;
-> +		case 37:
-> +			priv->color =3D get_pixel(priv->fb, 0xffffffff);
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +		return;
-> +	}
-> +
-> +	if (*end =3D=3D 'H') {
-> +		video_invertchar(priv, priv->x, priv->y);
-> +		priv->x =3D b - 1;
-> +		priv->y =3D a - 1;
-> +		video_invertchar(priv, priv->x, priv->y);
-> +		return;
-> +	}
-> +}
-> +
->  static void fbc_putc(struct console_device *cdev, char c)
->  {
->  	struct fbc_priv *priv =3D container_of(cdev,
-> @@ -172,10 +235,14 @@ static void fbc_putc(struct console_device *cdev, c=
-har c)
->  		switch (c) {
->  		case '[':
->  			priv->state =3D CSI;
-> +			priv->csipos =3D 0;
-> +			memset(priv->csi, 0, 6);
->  			break;
->  		}
->  		break;
->  	case CSI:
-> +		priv->csi[priv->csipos++] =3D c;
-> +
->  		switch (c) {
->  		case '0':
->  		case '1':
-> @@ -191,6 +258,7 @@ static void fbc_putc(struct console_device *cdev, cha=
-r c)
->  		case ':':
->  			break;
->  		default:
-> +			fbc_parse_csi(priv);
->  			priv->state =3D LIT;
->  		}
->  		break;
-> @@ -235,7 +303,7 @@ int register_fbconsole(struct fb_info *fb)
->  	priv->fb =3D fb;
->  	priv->x =3D 0;
->  	priv->y =3D 0;
-> -	init_chars(priv->chars, VIDEO_FONT_CHARS);
-> +	priv->color =3D 0xff00ff00;
->  =
-
->  	cdev =3D &priv->cdev;
->  	cdev->dev =3D &fb->dev;
-> diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
-> index 6465f8e..5f492c8 100644
-> --- a/lib/gui/graphic_utils.c
-> +++ b/lib/gui/graphic_utils.c
-> @@ -7,7 +7,7 @@
->  #include <fs.h>
->  #include <malloc.h>
->  =
-
-> -static u32 get_pixel(struct fb_info *info, u32 color)
-> +u32 get_pixel(struct fb_info *info, u32 color)
->  {
->  	u32 px;
->  	u8 t =3D (color >> 24) & 0xff;
-> @@ -128,6 +128,25 @@ static u8 alpha_mux(int s, int d, int a)
->  	return (d * a + s * (255 - a)) >> 8;
->  }
->  =
-
-> +void invert_area(struct fb_info *info, void *buf, int startx, int starty=
-, int width,
-> +		int height)
-> +{
-> +	unsigned char *adr;
-> +	int x, y;
-> +	int line_length;
-> +	int bpp =3D info->bits_per_pixel >> 3;
-> +
-> +	line_length =3D info->line_length;
-> +
-> +	for (y =3D starty; y < starty + height; y++) {
-> +		adr =3D buf + line_length * y + startx * bpp;
-> +
-> +		for (x =3D 0; x < width * bpp; x++) {
-> +			*adr++ ^=3D 0xff;
-> +		}
-> +	}
-> +}
-> +
->  void set_rgba_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b, u=
-8 a)
->  {
->  	u32 px =3D 0x0;
-> -- =
-
-> 2.1.4
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
