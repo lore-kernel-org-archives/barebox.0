@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZEEAi-0003Kr-In
- for barebox@lists.infradead.org; Sun, 12 Jul 2015 10:07:45 +0000
-Received: by lbbpo10 with SMTP id po10so110982432lbb.3
- for <barebox@lists.infradead.org>; Sun, 12 Jul 2015 03:07:21 -0700 (PDT)
+ id 1ZEECr-00041l-T6
+ for barebox@lists.infradead.org; Sun, 12 Jul 2015 10:09:58 +0000
+Received: by lblf12 with SMTP id f12so41451475lbl.2
+ for <barebox@lists.infradead.org>; Sun, 12 Jul 2015 03:09:36 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 12 Jul 2015 13:07:12 +0300
-Message-Id: <1436695632-20270-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 12 Jul 2015 13:09:17 +0300
+Message-Id: <1436695758-20331-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,35 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! WIP: video: implement quick-n-dirty framebuffer console
+Subject: [PATCH] fixup! exitcall: Add exitcall infrastructure
 To: barebox@lists.infradead.org
+Cc: Herve Codina <Herve.CODINA@celad.com>
 
 ---
-Sascha moved fbconsole registration to common fb code.
-So we can drop this supefluous code.
+fix whitespaces
 ---
- drivers/video/sdl.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/ppc/boards/pcm030/barebox.lds.S | 2 +-
+ arch/ppc/mach-mpc85xx/barebox.lds.S  | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/sdl.c b/drivers/video/sdl.c
-index 5407a1a..a568340 100644
---- a/drivers/video/sdl.c
-+++ b/drivers/video/sdl.c
-@@ -69,13 +69,8 @@ static int sdlfb_probe(struct device_d *dev)
- 	dev->priv = fb;
+diff --git a/arch/ppc/boards/pcm030/barebox.lds.S b/arch/ppc/boards/pcm030/barebox.lds.S
+index dc71464..0e08e05 100644
+--- a/arch/ppc/boards/pcm030/barebox.lds.S
++++ b/arch/ppc/boards/pcm030/barebox.lds.S
+@@ -111,7 +111,7 @@ SECTIONS
+   .barebox_initcalls : { INITCALLS }
+   __barebox_initcalls_end = .;
+   __initcall_entries = (__barebox_initcalls_end - __barebox_initcalls_start) >> 2;
+-  
++
+   __barebox_exitcalls_start = .;
+   .barebox_exitcalls : { EXITCALLS }
+   __barebox_exitcalls_end = .;
+diff --git a/arch/ppc/mach-mpc85xx/barebox.lds.S b/arch/ppc/mach-mpc85xx/barebox.lds.S
+index f0894a1..1f7f52c 100644
+--- a/arch/ppc/mach-mpc85xx/barebox.lds.S
++++ b/arch/ppc/mach-mpc85xx/barebox.lds.S
+@@ -108,11 +108,11 @@ SECTIONS
+   .barebox_initcalls : { INITCALLS }
+   __barebox_initcalls_end = .;
+   __initcall_entries = (__barebox_initcalls_end - __barebox_initcalls_start)>>2;
+-  
++
+   __barebox_exitcalls_start = .;
+   .barebox_exitcalls : { EXITCALLS }
+   __barebox_exitcalls_end = .;
+-  __exitcall_entries = (__barebox_exitcalls_end - __barebox_exitcalls_start)>>2;
++  __exitcall_entries = (__barebox_exitcalls_end - __barebox_exitcalls_start) >> 2;
  
- 	ret = register_framebuffer(fb);
--	if (!ret) {
--		extern int register_fbconsole(struct fb_info *fb);
--
--		register_fbconsole(fb);
--
-+	if (!ret)
- 		return 0;
--	}
- 
- err:
- 	kfree(fb->screen_base);
+   __usymtab_start = .;
+   __usymtab : { BAREBOX_SYMS }
 -- 
 2.1.4
 
