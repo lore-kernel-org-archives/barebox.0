@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x234.google.com ([2607:f8b0:400e:c02::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZERK6-0007N0-8r
- for barebox@lists.infradead.org; Mon, 13 Jul 2015 00:10:18 +0000
-Received: by pdjr16 with SMTP id r16so52379533pdj.3
- for <barebox@lists.infradead.org>; Sun, 12 Jul 2015 17:09:57 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 12 Jul 2015 17:09:47 -0700
-Message-Id: <1436746187-8652-1-git-send-email-asmirnov@kymetacorp.com>
+ id 1ZEWAd-0006ht-Vd
+ for barebox@lists.infradead.org; Mon, 13 Jul 2015 05:20:53 +0000
+Date: Mon, 13 Jul 2015 07:20:25 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150713052025.GB18700@pengutronix.de>
+References: <1436357910-4785-1-git-send-email-s.hauer@pengutronix.de>
+ <559D2602.8060001@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <559D2602.8060001@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,59 +19,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib: libfile: Do not ignore errors in close()
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/2] ARM: i.MX: Add i.MX5 debug functions
+To: Enrico Joerns <ejo@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+On Wed, Jul 08, 2015 at 03:30:42PM +0200, Enrico Joerns wrote:
+> On 07/08/2015 02:18 PM, Sascha Hauer wrote:
+> >We recently introduced ungate_all_peripherals and SoC specific low
+> >level UART init functions. Add some more for i.MX5 SoCs.
+> >
+> >Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> >---
+> >  arch/arm/mach-imx/include/mach/debug_ll.h | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
+> >
+> >diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
+> >index ab939b3..f2f4768 100644
+> >--- a/arch/arm/mach-imx/include/mach/debug_ll.h
+> >+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
+> >@@ -75,6 +75,11 @@ static inline void imx51_uart_setup_ll(void)
+> >  	__imx_uart_setup_ll(54000000);
+> >  }
+> >
+> >+static inline void imx53_uart_setup_ll(void)
+> >+{
+> >+	__imx_uart_setup_ll(66666666);
+> >+}
+> >+
+> 
+> Currently, the patch does not compile when CONFIG_DEBUG_LL is unset.
+> Seems you forgot to add this line to your patch:
 
-Some character devices may perform meaningful operations in their
-implementation of close() -- a good example would be socfpga.c which
-checks if the FPGA was programmed succesfully in it's close() method
--- so ignoring return value of this call may cause false positives in
-checking exit status for success.
+Fixed that up, thanks
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- lib/libfile.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Sascha
 
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 8acff04..4f21e70 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -262,7 +262,7 @@ int copy_file(const char *src, const char *dst, int verbose)
- 	char *rw_buf = NULL;
- 	int srcfd = 0, dstfd = 0;
- 	int r, w;
--	int ret = 1;
-+	int ret = 1, err1 = 0, err2 = 0;
- 	void *buf;
- 	int total = 0;
- 	struct stat statbuf;
-@@ -324,11 +324,11 @@ out:
- 
- 	free(rw_buf);
- 	if (srcfd > 0)
--		close(srcfd);
-+		err1 = close(srcfd);
- 	if (dstfd > 0)
--		close(dstfd);
-+		err2 = close(dstfd);
- 
--	return ret;
-+	return ret ?: err1 ?: err2;
- }
- EXPORT_SYMBOL(copy_file);
- 
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
