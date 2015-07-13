@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZCOHp-0004k1-10
- for barebox@lists.infradead.org; Tue, 07 Jul 2015 08:31:30 +0000
-Date: Tue, 7 Jul 2015 10:31:06 +0200
+ id 1ZEY1o-00023G-5E
+ for barebox@lists.infradead.org; Mon, 13 Jul 2015 07:19:52 +0000
+Date: Mon, 13 Jul 2015 09:19:29 +0200
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20150707083106.GD6099@pengutronix.de>
-References: <1436254400-5271-1-git-send-email-p.zabel@pengutronix.de>
+Message-ID: <20150713071929.GV1426@pengutronix.de>
+References: <1436353060-22497-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1436254400-5271-1-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <1436353060-22497-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +22,22 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx6: fix GK802 DT
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Build with -fno-delete-null-pointer-checks
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Jul 07, 2015 at 09:33:20AM +0200, Philipp Zabel wrote:
-> From: Philipp Zabel <philipp.zabel@gmail.com>
+On Wed, Jul 08, 2015 at 12:57:40PM +0200, Sascha Hauer wrote:
+> This becomes important with gcc-4.9. Without this gcc assumes
+> that accessing NULL pointers traps and everything that happens
+> behind the access is not executed. This recently happened with
+> i.MX53 which has:
 > =
 
-> Including "imx6q.dtsi" after <arm/imx6q-gk802.dts> also includes
-> <arm/imx6ql.dtsi> again, disabling all peripherals, including the
-> serial console uart. We can't include it first either, because
-> arm/imx6q-gk802.dts contains the /dts-v1/ header.
-> This patch drops the offending include statement and instead adds
-> the missing IPU aliases manually.
-> =
-
-> Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
-> ---
->  arch/arm/dts/imx6q-gk802.dts | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/arch/arm/dts/imx6q-gk802.dts b/arch/arm/dts/imx6q-gk802.dts
-> index 310d6f0..d712e00 100644
-> --- a/arch/arm/dts/imx6q-gk802.dts
-> +++ b/arch/arm/dts/imx6q-gk802.dts
-> @@ -7,7 +7,13 @@
->   */
->  =
-
->  #include <arm/imx6q-gk802.dts>
-> -#include "imx6q.dtsi"
-> +
-> +/ {
-> +	aliases {
-> +		ipu0 =3D &ipu1;
-> +		ipu1 =3D &ipu2;
-> +	};
-> +};
->  =
-
->  /* External USB-A port (USBOTG) */
->  &usbotg {
-Alternatively you could remove the line
-
-	#include <arm/imx6q.dtsi>
-
-from arch/arm/dts/imx6q.dtsi, right? This is already included via
-
-arch/arm/dts/imx6q-gk802.dts -> #include <arm/imx6q-gk802.dts>
-dts/src/arm/imx6q-gk802.dts -> #include "imx6q.dtsi"
-
-anyhow. This would need a fixup for all imx6q boards that don't have a
-dts in dts/src though (i.e. all but imx6q-gk802 if my grep magic was
-correct).
+> static int imx53_silicon_revision(void)
+> {
+> 	void __iomem *rom =3D MX53_IROM_BASE_ADDR;
+I assume MX53_IROM_BASE_ADDR is 0? Is this worth to be pointed out in
+the commit log?
 
 Best regards
 Uwe
