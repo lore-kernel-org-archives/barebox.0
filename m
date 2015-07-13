@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mail-pd0-x234.google.com ([2607:f8b0:400e:c02::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZEECw-00042F-Q7
- for barebox@lists.infradead.org; Sun, 12 Jul 2015 10:10:03 +0000
-Received: by lbnk3 with SMTP id k3so110980036lbn.1
- for <barebox@lists.infradead.org>; Sun, 12 Jul 2015 03:09:38 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 12 Jul 2015 13:09:18 +0300
-Message-Id: <1436695758-20331-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1436695758-20331-1-git-send-email-antonynpavlov@gmail.com>
-References: <1436695758-20331-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZERK6-0007N0-8r
+ for barebox@lists.infradead.org; Mon, 13 Jul 2015 00:10:18 +0000
+Received: by pdjr16 with SMTP id r16so52379533pdj.3
+ for <barebox@lists.infradead.org>; Sun, 12 Jul 2015 17:09:57 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Sun, 12 Jul 2015 17:09:47 -0700
+Message-Id: <1436746187-8652-1-git-send-email-asmirnov@kymetacorp.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,54 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! exitcall: move arch_shutdown to exitcall infrastructure
+Subject: [PATCH] lib: libfile: Do not ignore errors in close()
 To: barebox@lists.infradead.org
-Cc: Herve Codina <Herve.CODINA@celad.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
----
-fix whitespaces
----
- arch/blackfin/include/asm/common.h | 2 --
- arch/blackfin/lib/board.c          | 1 -
- arch/nios2/lib/board.c             | 1 -
- arch/openrisc/lib/board.c          | 1 -
- 4 files changed, 5 deletions(-)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-diff --git a/arch/blackfin/include/asm/common.h b/arch/blackfin/include/asm/common.h
-index 5760fb9..443adf7 100644
---- a/arch/blackfin/include/asm/common.h
-+++ b/arch/blackfin/include/asm/common.h
-@@ -1,3 +1 @@
--
- /* nothing special */
--
-diff --git a/arch/blackfin/lib/board.c b/arch/blackfin/lib/board.c
-index 4731887..3a04f28 100644
---- a/arch/blackfin/lib/board.c
-+++ b/arch/blackfin/lib/board.c
-@@ -46,4 +46,3 @@ static void arch_shutdown(void)
- 	icache_disable();
- }
- archshutdown_exitcall(arch_shutdown);
--
-diff --git a/arch/nios2/lib/board.c b/arch/nios2/lib/board.c
-index c04dda9..537675c 100644
---- a/arch/nios2/lib/board.c
-+++ b/arch/nios2/lib/board.c
-@@ -30,4 +30,3 @@ void __noreturn nios_start_barebox(void)
+Some character devices may perform meaningful operations in their
+implementation of close() -- a good example would be socfpga.c which
+checks if the FPGA was programmed succesfully in it's close() method
+-- so ignoring return value of this call may cause false positives in
+checking exit status for success.
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ lib/libfile.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 8acff04..4f21e70 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -262,7 +262,7 @@ int copy_file(const char *src, const char *dst, int verbose)
+ 	char *rw_buf = NULL;
+ 	int srcfd = 0, dstfd = 0;
+ 	int r, w;
+-	int ret = 1;
++	int ret = 1, err1 = 0, err2 = 0;
+ 	void *buf;
+ 	int total = 0;
+ 	struct stat statbuf;
+@@ -324,11 +324,11 @@ out:
  
- 	start_barebox();
- }
--
-diff --git a/arch/openrisc/lib/board.c b/arch/openrisc/lib/board.c
-index ff527e2..25bcc05 100644
---- a/arch/openrisc/lib/board.c
-+++ b/arch/openrisc/lib/board.c
-@@ -29,4 +29,3 @@ void __noreturn openrisc_start_barebox(void)
+ 	free(rw_buf);
+ 	if (srcfd > 0)
+-		close(srcfd);
++		err1 = close(srcfd);
+ 	if (dstfd > 0)
+-		close(dstfd);
++		err2 = close(dstfd);
  
- 	start_barebox();
+-	return ret;
++	return ret ?: err1 ?: err2;
  }
--
+ EXPORT_SYMBOL(copy_file);
+ 
 -- 
 2.1.4
 
