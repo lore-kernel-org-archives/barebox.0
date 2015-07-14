@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZF2tG-0007Jr-8k
- for barebox@lists.infradead.org; Tue, 14 Jul 2015 16:17:07 +0000
+ id 1ZF2tG-0007Js-6x
+ for barebox@lists.infradead.org; Tue, 14 Jul 2015 16:17:06 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 14 Jul 2015 18:16:36 +0200
-Message-Id: <1436890599-31412-2-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Tue, 14 Jul 2015 18:16:35 +0200
+Message-Id: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +19,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ARM: socfpga: socrates: set alias for ethernet0
+Subject: [PATCH 1/5] ARM: socfpga: socrates: add qspi partitions
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/dts/socfpga_cyclone5_socrates.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/dts/socfpga_cyclone5_socrates.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-index ccb940584b5b..f0af9fac954e 100644
+index 125ad1b8502d..ccb940584b5b 100644
 --- a/arch/arm/dts/socfpga_cyclone5_socrates.dts
 +++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-@@ -30,6 +30,10 @@
- 		reg = <0x0 0x0>;
- 	};
- 
-+	aliases {
-+		ethernet0 = &gmac1;
-+	};
+@@ -80,5 +80,20 @@
+ 		cdns,tsd2d-ns = <50>;
+ 		cdns,tchsh-ns = <4>;
+ 		cdns,tslch-ns = <4>;
 +
- 	leds: gpio-leds {
++		partition@0 {
++			label = "prebootloader0";
++			reg = <0x00000 0x10000>;
++		};
++
++		partition@1 {
++			label = "barebox0";
++			reg = <0x40000 0x80000>;
++		};
++
++		partition@2 {
++			label = "data";
++			reg = <0xc0000 0x1f40000>;
++		};
  	};
  };
 -- 
