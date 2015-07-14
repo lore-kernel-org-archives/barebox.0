@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp11.services.sfr.fr ([93.17.128.28])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZF1nw-0000w3-HD
- for barebox@lists.infradead.org; Tue, 14 Jul 2015 15:07:33 +0000
-Resent-Message-Id: <20150713062856.D309F1C00123@msfrf2412.sfr.fr>
-Date: Tue, 14 Jul 2015 17:07:07 +0200 (CEST)
-From: codina.herve@club-internet.fr
-Message-ID: <11576260.2682655.1436886427242.JavaMail.www@wsfrf1136>
-In-Reply-To: <1436695758-20331-1-git-send-email-antonynpavlov@gmail.com>
-References: <1436695758-20331-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1ZF2tG-0007Jt-7C
+ for barebox@lists.infradead.org; Tue, 14 Jul 2015 16:17:07 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue, 14 Jul 2015 18:16:38 +0200
+Message-Id: <1436890599-31412-4-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +16,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: codina.herve@club-internet.fr
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re: [PATCH] fixup! exitcall: Add exitcall infrastructure
-To: Sascha Hauer <s.hauer@pengutronix.de>, Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Herve.CODINA@celad.com, barebox@lists.infradead.org
+Subject: [PATCH 4/5] ARM: socfpga: socrates: register spi bbu handler
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Pj4gLS0tCj4+IGZpeCB3aGl0ZXNwYWNlcwo+PiAtLS0KPj4gwqBhcmNoL3BwYy9ib2FyZHMvcGNt
-MDMwL2JhcmVib3gubGRzLlMgfCAyICstCj4+IMKgYXJjaC9wcGMvbWFjaC1tcGM4NXh4L2JhcmVi
-b3gubGRzLlMgwqB8IDQgKystLQo+PiDCoDIgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCsp
-LCAzIGRlbGV0aW9ucygtKQo+Cj5BcHBsaWVkLCB0aGFua3MuIERhbW4sIEkgdGhvdWdodCBJIGNh
-dWdodCBhbGwgd2hpdGVzcGFjZSBlcnJvcnMuCgpNeSBmYXVsdCAuLi4KCkkgYW0gdmVyeSBzb3Jy
-eSBhYm91dCB0aGlzIHRyb3VibGUuCgpIZXJ2ZQoKPgo+U2FzY2hhCj4KPi0tIAo+UGVuZ3V0cm9u
-aXggZS5LLiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwKPkluZHVzdHJpYWwgTGludXggU29s
-dXRpb25zIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
-ZS8gwqB8Cj5QZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9u
-ZTogKzQ5LTUxMjEtMjA2OTE3LTAgwqAgwqB8Cj5BbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
-MjY4NiDCoCDCoCDCoCDCoCDCoCB8IEZheDogwqAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/boards/ebv-socrates/board.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/boards/ebv-socrates/board.c b/arch/arm/boards/ebv-socrates/board.c
+index 5d2d61991431..20998682a389 100644
+--- a/arch/arm/boards/ebv-socrates/board.c
++++ b/arch/arm/boards/ebv-socrates/board.c
+@@ -8,6 +8,7 @@
+ #include <linux/sizes.h>
+ #include <fcntl.h>
+ #include <fs.h>
++#include <mach/bbu.h>
+ #include <mach/socfpga-regs.h>
+ 
+ static int phy_fixup(struct phy_device *dev)
+@@ -32,6 +33,9 @@ static int socrates_init(void)
+ 	if (IS_ENABLED(CONFIG_PHYLIB))
+ 		phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK, phy_fixup);
+ 
++	socfpga_bbu_spi_nor_register_handler("qspi-xload", "/dev/mtd0.prebootloader0");
++	socfpga_bbu_spi_nor_register_handler("qspi", "/dev/mtd0.barebox0");
++
+ 	return 0;
+ }
+ postcore_initcall(socrates_init);
+-- 
+2.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
