@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZEyoN-0005I4-78
- for barebox@lists.infradead.org; Tue, 14 Jul 2015 11:55:51 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 9FEA0A00450
- for <barebox@lists.infradead.org>; Tue, 14 Jul 2015 13:56:56 +0200 (CEST)
-From: Stefan Christ <s.christ@phytec.de>
-Date: Tue, 14 Jul 2015 13:55:14 +0200
-Message-Id: <1436874914-7750-1-git-send-email-s.christ@phytec.de>
+Received: from smtp11.services.sfr.fr ([93.17.128.28])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZF1nw-0000w3-HD
+ for barebox@lists.infradead.org; Tue, 14 Jul 2015 15:07:33 +0000
+Resent-Message-Id: <20150713062856.D309F1C00123@msfrf2412.sfr.fr>
+Date: Tue, 14 Jul 2015 17:07:07 +0200 (CEST)
+From: codina.herve@club-internet.fr
+Message-ID: <11576260.2682655.1436886427242.JavaMail.www@wsfrf1136>
+In-Reply-To: <1436695758-20331-1-git-send-email-antonynpavlov@gmail.com>
+References: <1436695758-20331-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +19,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: codina.herve@club-internet.fr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX6: clarify usage of /dev/imx-ocotp
-To: barebox@lists.infradead.org
+Subject: Re: Re: [PATCH] fixup! exitcall: Add exitcall infrastructure
+To: Sascha Hauer <s.hauer@pengutronix.de>, Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Herve.CODINA@celad.com, barebox@lists.infradead.org
 
-Explain the relationship between the OCOTP addresses from the i.MX6
-Reference Manual and the file offset in '/dev/imx-ocotp'.
-
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
----
- arch/arm/mach-imx/Kconfig | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index f8f6004..147c411 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -676,8 +676,10 @@ config IMX_OCOTP_WRITE
- 	prompt "Enable write support of i.MX6 CPUs OTP fuses"
- 	depends on IMX_OCOTP
- 	help
--	  This adds write support to IMX6 On-Chip OTP registers.
--	  Example of set MAC to 12:34:56:78:9A:BC (2 words with offset 0x22 * 4):
-+	  This adds write support to IMX6 On-Chip OTP registers. Example of set
-+	  MAC to 12:34:56:78:9A:BC (2 words with address 0x22 (OCOTP_MAC0) and
-+	  address 0x23 (OCOTP_MAC1)). To calculate the file offset multiply
-+	  the value of the address by 4.
- 		mw -l -d /dev/imx-ocotp 0x8C 0x00001234
- 		mw -l -d /dev/imx-ocotp 0x88 0x56789ABC
- 
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Pj4gLS0tCj4+IGZpeCB3aGl0ZXNwYWNlcwo+PiAtLS0KPj4gwqBhcmNoL3BwYy9ib2FyZHMvcGNt
+MDMwL2JhcmVib3gubGRzLlMgfCAyICstCj4+IMKgYXJjaC9wcGMvbWFjaC1tcGM4NXh4L2JhcmVi
+b3gubGRzLlMgwqB8IDQgKystLQo+PiDCoDIgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCsp
+LCAzIGRlbGV0aW9ucygtKQo+Cj5BcHBsaWVkLCB0aGFua3MuIERhbW4sIEkgdGhvdWdodCBJIGNh
+dWdodCBhbGwgd2hpdGVzcGFjZSBlcnJvcnMuCgpNeSBmYXVsdCAuLi4KCkkgYW0gdmVyeSBzb3Jy
+eSBhYm91dCB0aGlzIHRyb3VibGUuCgpIZXJ2ZQoKPgo+U2FzY2hhCj4KPi0tIAo+UGVuZ3V0cm9u
+aXggZS5LLiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB8IMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwKPkluZHVzdHJpYWwgTGludXggU29s
+dXRpb25zIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
+ZS8gwqB8Cj5QZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9u
+ZTogKzQ5LTUxMjEtMjA2OTE3LTAgwqAgwqB8Cj5BbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEg
+MjY4NiDCoCDCoCDCoCDCoCDCoCB8IEZheDogwqAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
