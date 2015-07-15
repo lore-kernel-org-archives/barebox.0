@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZFT4g-0003Wp-Gm
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:39 +0000
-Received: by lbbpo10 with SMTP id po10so31617373lbb.3
- for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:15 -0700 (PDT)
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZFT4d-0005HH-0c
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:35 +0000
+Received: by lbbyj8 with SMTP id yj8so31751457lbb.0
+ for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:11 -0700 (PDT)
 Received: from localhost.localdomain (ppp79-139-249-41.pppoe.spdop.ru.
  [79.139.249.41])
- by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.14
+ by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.10
  for <barebox@lists.infradead.org>
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 15 Jul 2015 13:14:14 -0700 (PDT)
+ Wed, 15 Jul 2015 13:14:11 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Jul 2015 23:13:49 +0300
-Message-Id: <1436991230-14251-12-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 15 Jul 2015 23:13:46 +0300
+Message-Id: <1436991230-14251-9-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 References: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,147 +29,161 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 11/12] sandbox_defconfig: switch to picotcp
+Subject: [RFC 08/12] net: picotcp: add ifconfig command
 To: barebox@lists.infradead.org
-
-Picotcp sandbox barebox howto
-=============================
-
-Compile sandbox barebox:
-
-  $ cd barebox.git
-  $ unset ARCH
-  $ unset CROSS_COMPILE
-  $ make sandbox_defconfig
-  ...
-  $ make
-
-Run barebox:
-
-  $ su
-  # ./barebox
-
-Testing ping
-------------
-
-While sandbox barebox is running setup a IP-address
-for your host 'barebox' network interface, e.g.:
-
-  # ifconfig barebox 192.168.1.1
-
-Next, in sandbox barebox console setup network interface
-and try to ping host:
-
-  barebox:/ ifconfig eth 192.168.1.2 255.255.255.0
-  Assigned ipv4 192.168.1.2 to device eth
-  barebox:/ picoping 192.168.1.1
-  48 bytes from 192.168.1.1: icmp_req=1 ttl=64 time=1 ms
-  ...
-  48 bytes from 192.168.1.1: icmp_req=10 ttl=64 time=0 ms
-
-Testing domain name resolving
------------------------------
-
-Install simple maradns name server on the host.
-
-Edit /etc/maradns/mararc config file, add these lines:
-
-  csv2 = {}
-  csv2["example.com."] = "db.example.com"
-
-  bind_address = "192.168.1.1"
-
-Edit /etc/maradns/db.example.com, add these lines:
-
-  example.com. 192.168.1.1 ~
-  www.example.com. 192.168.1.1 ~
-  barebox.example.com. 192.168.1.2 ~
-
-Run sandbox barebox and setup the www.example.com IP-address
-for your host 'barebox' network interface, e.g.:
-
-  # ifconfig barebox 192.168.1.1
-
-Restart maradns:
-
-  $ /etc/init.d/maradns restart
-
-Check name resolution:
-
-  barebox@barebox sandbox:/ ifconfig eth 192.168.1.2 255.255.255.0
-  Assigned ipv4 192.168.1.2 to device eth
-  barebox@barebox sandbox:/ net.nameserver=192.168.1.1
-  barebox@barebox sandbox:/ host barebox.example.com
-  barebox.example.com is at 192.168.1.2
-  barebox@barebox sandbox:/ host www.example.com
-  www.example.com is at 192.168.1.1
-
-The same checks for barebox legacy network stack:
-
-  barebox@barebox sandbox:/ eth0.ipaddr=192.168.1.2
-  barebox@barebox sandbox:/ eth0.serverip=192.168.1.1
-  barebox@barebox sandbox:/ net.domainname=example.com
-  barebox@barebox sandbox:/ net.nameserver=192.168.1.1
-  barebox@barebox sandbox:/ host barebox.example.com
-  warning: No MAC address set. Using random address 9a:a1:86:31:05:1e
-  barebox.example.com is at 192.168.1.2
-  barebox@barebox sandbox:/ host www.example.com
-  www.example.com is at 192.168.1.1
-
-Testing dhcp (ad memorandum)
-----------------------------
-
-Configure your host dhcp server, e.g. add this
-to your /etc/dhcp/dhcpd.conf:
-
-  subnet 192.168.1.0 netmask 255.255.255.0 {
-    range dynamic-bootp 192.168.1.26 192.168.1.29;
-    option routers 192.168.1.1;
-    option broadcast-address 192.168.1.255;
-    default-lease-time 600;
-    max-lease-time 7200;
-  }
-
-While sandbox barebox is running setup a IP-address
-for your host 'barebox' network interface and restart
-your host dhcp server, e.g.:
-
-  # ifconfig barebox 192.168.1.1
-  # /etc/init.d/isc-dhcp-server restart
-
-Next, in your sandbox barebox console run 'dhclient':
-
-  barebox:/ dhclient eth
-  Assigned ipv4 0.0.0.0 to device eth
-  Assigned ipv4 192.168.1.26 to device eth
-  DHCP client: renewal time (T1) 300
-  DHCP client: rebinding time (T2) 525
-  DHCP client: lease time 496
-  DHCP client: IP assigned by the server: 192.168.1.26
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/sandbox/configs/sandbox_defconfig | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/Makefile           |   1 +
+ net/picotcp/Kconfig    |   5 +++
+ net/picotcp_ifconfig.c | 116 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 122 insertions(+)
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index ec045f7..909969a 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -31,6 +31,13 @@ CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OF_DISPLAY_TIMINGS=y
- CONFIG_CMD_OFTREE=y
- CONFIG_NET=y
-+CONFIG_NET_PICOTCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_CMD_PICOTCP_TEST_IPV4=y
-+CONFIG_CMD_PICOTCP_IFCONFIG=y
-+CONFIG_CMD_PICOTCP_PING=y
-+CONFIG_CMD_PICOTCP_ROUTE=y
- CONFIG_OFDEVICE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_NET_TAP=y
+diff --git a/net/Makefile b/net/Makefile
+index bfe74fb..d5b133b 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -12,3 +12,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp/
+ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
+ 
+ obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
++obj-$(CONFIG_CMD_PICOTCP_IFCONFIG) += picotcp_ifconfig.o
+diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
+index 17b8293..9a2d628 100644
+--- a/net/picotcp/Kconfig
++++ b/net/picotcp/Kconfig
+@@ -38,4 +38,9 @@ config CMD_PICOTCP_TEST_IPV4
+ 	depends on NET_PICO_SUPPORT_IPV4
+ 	prompt "test_picotcp command"
+ 
++config CMD_PICOTCP_IFCONFIG
++	bool
++	depends on NET_PICO_SUPPORT_IPV4
++	prompt "ifconfig command"
++
+ endif # NET_PICOTCP
+diff --git a/net/picotcp_ifconfig.c b/net/picotcp_ifconfig.c
+new file mode 100644
+index 0000000..1d4e89b
+--- /dev/null
++++ b/net/picotcp_ifconfig.c
+@@ -0,0 +1,116 @@
++#include <common.h>
++#include <command.h>
++#include <complete.h>
++
++#include <pico_stack.h>
++#include <pico_ipv4.h>
++#include <pico_dev_null.h>
++#include <pico_icmp4.h>
++#include <pico_tree.h>
++
++extern struct pico_tree Device_tree;
++extern struct pico_tree Tree_dev_link;
++
++static void printf_iface(struct pico_device *dev)
++{
++	struct pico_ipv4_link *link;
++	struct pico_tree_node *index;
++
++	printf("%-10s", dev->name);
++
++	if (dev->eth) {
++		struct pico_ethdev *eth = dev->eth;
++
++		printf("Link encap:Ethernet  HWaddr ");
++		printf("%02x:%02x:%02x:%02x:%02x:%02x",
++			eth->mac.addr[0], eth->mac.addr[1],
++			eth->mac.addr[2], eth->mac.addr[3],
++			eth->mac.addr[4], eth->mac.addr[5]);
++	}
++	printf("\n");
++
++	pico_tree_foreach(index, &Tree_dev_link) {
++		link = index->keyValue;
++		if (dev == link->dev) {
++			char ipstr[16];
++			pico_ipv4_to_string(ipstr, link->address.addr);
++			printf("          inet addr:%s", ipstr);
++			pico_ipv4_to_string(ipstr, link->netmask.addr);
++			printf(" Mask:%s\n", ipstr);
++		}
++	}
++	printf("\n");
++}
++
++static int do_ifconfig(int argc, char *argv[])
++{
++	struct pico_device *picodev;
++	struct pico_ip4 ipaddr, nm;
++	int ret;
++
++	if (argc == 1) {
++		struct pico_tree_node *index;
++
++		pico_tree_foreach(index, &Device_tree) {
++			printf_iface(index->keyValue);
++		}
++
++		return 0;
++	}
++
++	picodev = pico_get_device(argv[1]);
++	if (!picodev) {
++		struct pico_device *dev;
++		struct pico_tree_node *index;
++
++		perror("wrong device name");
++
++		printf("available interfaces:\n");
++
++		pico_tree_foreach(index, &Device_tree) {
++			dev = index->keyValue;
++			printf("%s\n", dev->name);
++		}
++
++		return 1;
++	}
++
++	if (argc == 2) {
++		struct pico_tree_node *index;
++
++		pico_tree_foreach(index, &Device_tree) {
++			struct pico_device *dev = index->keyValue;
++
++			if (!strcmp(dev->name, argv[1])) {
++				printf_iface(dev);
++			}
++		}
++
++		return 0;
++	}
++
++	if (argc < 4) {
++		perror("ifconfig");
++		return 1;
++	}
++
++	ret = pico_string_to_ipv4(argv[2], &(ipaddr.addr));
++	if (ret) {
++		perror("wrong ipaddr");
++		return 1;
++	}
++
++	ret = pico_string_to_ipv4(argv[3], &(nm.addr));
++	if (ret) {
++		perror("wrong netmask");
++		return 1;
++	}
++
++	pico_ipv4_link_add(picodev, ipaddr, nm);
++
++	return 0;
++}
++
++BAREBOX_CMD_START(ifconfig)
++	.cmd		= do_ifconfig,
++BAREBOX_CMD_END
 -- 
 2.1.4
 
