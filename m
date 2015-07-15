@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFT4U-0006Nf-Ps
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:27 +0000
-Received: by laem6 with SMTP id m6so31443366lae.0
- for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:04 -0700 (PDT)
+ id 1ZFTaW-0007Er-Fv
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:47:32 +0000
+Received: by laem6 with SMTP id m6so31912350lae.0
+ for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:47:10 -0700 (PDT)
 Received: from localhost.localdomain (ppp79-139-249-41.pppoe.spdop.ru.
  [79.139.249.41])
- by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.03
+ by smtp.gmail.com with ESMTPSA id y3sm1417340laj.8.2015.07.15.13.47.09
  for <barebox@lists.infradead.org>
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 15 Jul 2015 13:14:03 -0700 (PDT)
+ Wed, 15 Jul 2015 13:47:09 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Jul 2015 23:13:40 +0300
-Message-Id: <1436991230-14251-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
-References: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 15 Jul 2015 23:47:03 +0300
+Message-Id: <1436993223-14627-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,130 +27,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 02/12] picotcp: switch to Kbuild
+Subject: [PATCH] sandbox_defconfig: enable 'echo -e' support as defenv uses it
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- net/picotcp/.gitignore       |  1 +
- net/picotcp/Kconfig          | 34 ++++++++++++++++++++++++++++++++++
- net/picotcp/Makefile         | 30 ++++++++++++++++++++++++++++++
- net/picotcp/modules/Makefile |  8 ++++++++
- net/picotcp/stack/Makefile   |  7 +++++++
- 5 files changed, 80 insertions(+)
+ arch/sandbox/configs/sandbox_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/picotcp/.gitignore b/net/picotcp/.gitignore
-index 88593da..10f36c8 100644
---- a/net/picotcp/.gitignore
-+++ b/net/picotcp/.gitignore
-@@ -22,3 +22,4 @@ cscope.out
- *.gcov
- *.gcda
- *.gcno
-+*.o.cmd
-diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
-new file mode 100644
-index 0000000..3882984
---- /dev/null
-+++ b/net/picotcp/Kconfig
-@@ -0,0 +1,34 @@
-+if NET_PICOTCP
-+
-+config NET_PICO_SUPPORT_IPV4
-+	bool
-+	default y if NET_PICOTCP
-+
-+config NET_PICO_SUPPORT_IPFRAG
-+	bool
-+	default y if NET_PICO_SUPPORT_IPV4
-+
-+config NET_PICO_SUPPORT_ICMP4
-+	bool
-+	default y if NET_PICO_SUPPORT_IPV4
-+
-+config NET_PICO_SUPPORT_UDP
-+	bool
-+	default y if NET_PICO_SUPPORT_IPV4
-+
-+
-+config NET_PICO_SUPPORT_ETH
-+	bool
-+	default y if NET_PICOTCP
-+
-+config NET_PICO_SUPPORT_DEVLOOP
-+	bool
-+	default y if NET_PICOTCP
-+
-+comment "Misc options"
-+
-+config NET_PICO_BIGENDIAN
-+	bool
-+	prompt "bigendian picotcp"
-+
-+endif # NET_PICOTCP
-diff --git a/net/picotcp/Makefile b/net/picotcp/Makefile
-new file mode 100644
-index 0000000..8127453
---- /dev/null
-+++ b/net/picotcp/Makefile
-@@ -0,0 +1,30 @@
-+ifeq ($(CONFIG_NET_PICO_SUPPORT_IPV4),y)
-+CPPFLAGS += -DPICO_SUPPORT_IPV4
-+endif
-+
-+ifeq ($(CONFIG_NET_PICO_SUPPORT_ICMP4),y)
-+CPPFLAGS += -DPICO_SUPPORT_ICMP4 -DPICO_SUPPORT_PING
-+endif
-+
-+ifeq ($(CONFIG_NET_PICO_SUPPORT_IPFRAG),y)
-+CPPFLAGS += -DPICO_SUPPORT_IPFRAG
-+endif
-+
-+ifeq ($(CONFIG_NET_PICO_SUPPORT_UDP),y)
-+CPPFLAGS += -DPICO_SUPPORT_UDP
-+endif
-+
-+ifeq ($(CONFIG_NET_PICO_SUPPORT_ETH),y)
-+CPPFLAGS += -DPICO_SUPPORT_ETH
-+endif
-+
-+ifeq ($(CONFIG_NET_PICO_SUPPORT_DEVLOOP),y)
-+CPPFLAGS += -DPICO_SUPPORT_DEVLOOP
-+endif
-+
-+ifeq ($(CONFIG_NET_PICO_BIGENDIAN),y)
-+CPPFLAGS += -DPICO_BIGENDIAN
-+endif
-+
-+obj-y += modules/
-+obj-y += stack/
-diff --git a/net/picotcp/modules/Makefile b/net/picotcp/modules/Makefile
-new file mode 100644
-index 0000000..2fa2261
---- /dev/null
-+++ b/net/picotcp/modules/Makefile
-@@ -0,0 +1,8 @@
-+obj-$(CONFIG_NET_PICO_SUPPORT_IPV4) += pico_ipv4.o
-+obj-$(CONFIG_NET_PICO_SUPPORT_IPFRAG) += pico_fragments.o
-+obj-$(CONFIG_NET_PICO_SUPPORT_ICMP4) += pico_icmp4.o
-+obj-$(CONFIG_NET_PICO_SUPPORT_UDP) += pico_udp.o pico_socket_udp.o
-+
-+obj-$(CONFIG_NET_PICO_SUPPORT_ETH) += pico_arp.o
-+obj-$(CONFIG_NET_PICO_SUPPORT_DEVLOOP) += pico_dev_loop.o
-+obj-y += pico_dev_null.o
-diff --git a/net/picotcp/stack/Makefile b/net/picotcp/stack/Makefile
-new file mode 100644
-index 0000000..13be8d0
---- /dev/null
-+++ b/net/picotcp/stack/Makefile
-@@ -0,0 +1,7 @@
-+obj-y += pico_device.o
-+obj-y += pico_frame.o
-+obj-y += pico_protocol.o
-+obj-y += pico_socket.o
-+obj-y += pico_socket_multicast.o
-+obj-y += pico_stack.o
-+obj-y += pico_tree.o
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index ec045f7..2ee1fa8 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -17,6 +17,7 @@ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_SLEEP=y
++CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_TFTP=y
 -- 
 2.1.4
 
