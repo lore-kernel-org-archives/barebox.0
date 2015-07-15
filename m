@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFHa9-0001ET-QM
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 07:58:23 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Jul 2015 09:57:57 +0200
-Message-Id: <1436947077-31143-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1436947077-31143-1-git-send-email-s.hauer@pengutronix.de>
-References: <1436947077-31143-1-git-send-email-s.hauer@pengutronix.de>
+ id 1ZFIDe-0007F4-H2
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 08:39:11 +0000
+Received: by lblf12 with SMTP id f12so20446658lbl.2
+ for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 01:38:48 -0700 (PDT)
+Date: Wed, 15 Jul 2015 11:45:47 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150715114547.8a8a5fb1787aed6a29714996@gmail.com>
+In-Reply-To: <20150715054532.GU18700@pengutronix.de>
+References: <1436867794-15409-1-git-send-email-antonynpavlov@gmail.com>
+ <20150715054532.GU18700@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,322 +20,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] Add new barebox logo to the tree
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [RFC v2] WIP: fbconsole: not so dirty font selection via
+ param_enum
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This adds the new barebox logo to the tree. This is added as svg
-image which is converted to different png images during build time. The logo
-can be found under /logo/barebox-logo-<width>.png in the running barebox.
+On Wed, 15 Jul 2015 07:45:32 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- Documentation/barebox.svg | 102 ++++++++++++++++++++++++++++++++++++++++++++++
- lib/Kconfig               |   2 +
- lib/Makefile              |   1 +
- lib/logo/Kconfig          |  21 ++++++++++
- lib/logo/Makefile         |  51 +++++++++++++++++++++++
- lib/logo/logo.c           |  66 ++++++++++++++++++++++++++++++
- 6 files changed, 243 insertions(+)
- create mode 100644 Documentation/barebox.svg
- create mode 100644 lib/logo/Kconfig
- create mode 100644 lib/logo/Makefile
- create mode 100644 lib/logo/logo.c
+> Hi Antony,
+> =
 
-diff --git a/Documentation/barebox.svg b/Documentation/barebox.svg
-new file mode 100644
-index 0000000..4d104fa
---- /dev/null
-+++ b/Documentation/barebox.svg
-@@ -0,0 +1,102 @@
-+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-+
-+<svg
-+   xmlns:dc="http://purl.org/dc/elements/1.1/"
-+   xmlns:cc="http://creativecommons.org/ns#"
-+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-+   xmlns:svg="http://www.w3.org/2000/svg"
-+   xmlns="http://www.w3.org/2000/svg"
-+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-+   version="1.1"
-+   x="0px"
-+   y="0px"
-+   width="3000px"
-+   height="1500px"
-+   viewBox="0 0 3000 1500"
-+   enable-background="new 0 0 3000 1500"
-+   xml:space="preserve"
-+   id="svg2"
-+   inkscape:version="0.91 r13725"
-+   sodipodi:docname="barebox.svg"><metadata
-+     id="metadata57"><rdf:RDF><cc:Work
-+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
-+     id="defs55" /><sodipodi:namedview
-+     pagecolor="#ffffff"
-+     bordercolor="#666666"
-+     borderopacity="1"
-+     objecttolerance="10"
-+     gridtolerance="10"
-+     guidetolerance="10"
-+     inkscape:pageopacity="0"
-+     inkscape:pageshadow="2"
-+     inkscape:window-width="640"
-+     inkscape:window-height="480"
-+     id="namedview53" /><g
-+     id="Ebene_1" /><g
-+     id="Ebene_3" /><g
-+     id="Ebene_2"><g
-+       id="g7"><g
-+         id="g9"><path
-+           fill="#34414A"
-+           d="M1819.033,238.947v48.442c0,54.389-20.971,89.525-62.891,105.379     c45.321,15.3,67.988,51.288,67.988,107.935v50.99c0,40.236-11.471,71.815-34.42,94.762     c-22.947,22.947-57.087,34.421-102.407,34.421h-152.127v-571.11h147.027c45.322,0,79.465,11.475,102.409,34.422     C1807.559,167.132,1819.033,198.724,1819.033,238.947z M1677.106,162.457h-81.59v204.817h81.59     c54.391,0,81.586-26.049,81.586-78.189v-48.441C1758.692,188.525,1731.497,162.457,1677.106,162.457z M1763.79,549.997v-50.989     c0-52.124-27.194-78.188-81.586-78.188h-86.688v207.366h86.688C1736.596,628.186,1763.79,602.129,1763.79,549.997z"
-+           id="path11" /><path
-+           fill="#34414A"
-+           d="M2125.826,680.876l-34.846-159.772h-152.979l-34.845,159.772h-60.341l129.18-571.11h84.988     l129.174,571.11H2125.826z M1949.049,468.409h130.03l-65.446-300.003L1949.049,468.409z"
-+           id="path13" /><path
-+           fill="#34414A"
-+           d="M2370.573,451.41h-84.135v229.466h-60.342v-571.11h138.53c45.322,0,79.598,11.475,102.83,34.422     c23.229,22.944,34.847,54.257,34.847,93.907v84.136c0,61.19-24.365,100.854-73.089,118.979l90.932,239.666h-66.289     L2370.573,451.41z M2286.438,398.716h75.639c53.244,0,79.885-25.772,79.885-77.332v-80.74c0-51.548-26.641-77.334-79.885-77.334     h-75.639V398.716z"
-+           id="path15" /><path
-+           fill="#34414A"
-+           d="M2585.575,109.766h247.312v53.543h-186.972v203.117h163.177v53.542h-163.177v207.366h186.972v53.542     h-247.312V109.766z"
-+           id="path17" /></g><g
-+         id="g19"><path
-+           fill="#34414A"
-+           d="M1888.602,916.396v56.506c0,56.227-20.58,90.711-61.726,103.458     c44.624,10.435,66.94,45.205,66.94,104.327v61.723c0,92.153-49.266,138.23-147.792,138.23h-211.259V778.155h206.042     C1839.333,778.155,1888.602,824.237,1888.602,916.396z M1719.072,887.702h-53.9v131.276h53.9     c27.239,0,40.861-12.452,40.861-37.38v-56.517C1759.934,900.177,1746.312,887.702,1719.072,887.702z M1765.149,1233.717v-61.726     c0-24.911-13.626-37.385-40.859-37.385h-59.118v136.492h59.118C1751.523,1271.099,1765.149,1258.646,1765.149,1233.717z"
-+           id="path21" /><path
-+           fill="#34414A"
-+           d="M2005.092,925.082c0-47.513,15.354-85.333,46.076-113.452c30.714-28.106,75.927-42.162,135.625-42.162     c59.689,0,105.051,14.056,136.055,42.162c31,28.119,46.52,65.939,46.52,113.452v308.635c0,47.527-15.52,85.351-46.52,113.457     c-31.004,28.116-76.365,42.162-136.055,42.162c-59.698,0-104.911-14.046-135.625-42.162     c-30.722-28.106-46.076-65.93-46.076-113.457V925.082z M2238.958,932.045c0-28.98-17.249-43.475-51.735-43.475     c-34.487,0-51.718,14.494-51.718,43.475v294.715c0,28.997,17.23,43.475,51.718,43.475c34.486,0,51.735-14.478,51.735-43.475     V932.045z"
-+           id="path23" /><path
-+           fill="#34414A"
-+           d="M2707.549,778.155h140.839l-129.532,302.555l129.532,299.93h-141.704l-55.642-164.305l-59.118,164.305     h-141.708l128.671-299.93l-128.671-302.555h140.838l59.988,166.057L2707.549,778.155z"
-+           id="path25" /></g><g
-+         id="g27"><path
-+           fill="#34414A"
-+           d="M1385.371,136.608c-21.177-18.754-48.148-29.608-76.465-29.608H265.556     c-28.302,0-55.5,10.848-76.671,29.581C164.142,158.479,150,190.491,150,223.499v24.766v1018.987     c0,33.019,14.148,63.656,38.897,85.556c21.171,18.729,48.371,28.192,76.658,28.192h498.668L414,1030.614V247h139.322     l170.681,170.058l62.496-36.482L1160,597.17v0.582l1.085-0.582L1424,858.972V248.265v-24.766     C1424,190.512,1410.1,158.5,1385.371,136.608z M262.435,199.868c20.482,0,37.088,16.605,37.088,37.085     c0,20.476-16.605,37.083-37.088,37.083c-20.476,0-37.079-16.607-37.079-37.083C225.356,216.474,241.959,199.868,262.435,199.868z      M262.456,1296.189c-20.482,0-37.088-16.607-37.088-37.083c0-20.485,16.605-37.085,37.088-37.085     c20.476,0,37.079,16.6,37.079,37.085C299.535,1279.582,282.932,1296.189,262.456,1296.189z M1292.45,274.037     c-20.48,0-37.082-16.607-37.082-37.083c0-20.48,16.601-37.085,37.082-37.085c20.48,0,37.085,16.605,37.085,37.085     C1329.535,257.429,1312.93,274.037,1292.45,274.037z"
-+           id="path29" /><polygon
-+           fill="#34414A"
-+           points="553,516.144 557.593,513.471 553,508.888    "
-+           id="polygon31" /><path
-+           opacity="0.3"
-+           fill="#34414A"
-+           d="M1385.239,1352.782c-21.177,18.746-48.024,28.218-76.333,28.218h0.628     c28.363,0,54.838-9.472,76.055-28.218c24.789-21.891,38.173-52.406,38.173-85.411     C1423.763,1300.376,1409.981,1330.892,1385.239,1352.782z"
-+           id="path33" /><path
-+           fill="#28343A"
-+           d="M1160,597.751v432.863l-373.07,216.729l-373.077-216.609L764.224,1381h0.413h544.27     c28.309,0,55.275-9.472,76.452-28.218c24.742-21.891,38.642-52.524,38.642-85.53v-408.28L1161.085,597.17L1160,597.751z      M1292.45,1222.021c20.48,0,37.085,16.6,37.085,37.085c0,20.476-16.605,37.083-37.085,37.083     c-20.48,0-37.082-16.607-37.082-37.083C1255.368,1238.621,1271.969,1222.021,1292.45,1222.021z"
-+           id="path35" /><polygon
-+           fill="#28343A"
-+           points="557.754,513.471 723.762,416.801 553,246.486 553,508.888    "
-+           id="polygon37" /><path
-+           fill="#FFFFFF"
-+           d="M262.435,274.037c20.482,0,37.088-16.607,37.088-37.083c0-20.48-16.605-37.085-37.088-37.085     c-20.476,0-37.079,16.605-37.079,37.085C225.356,257.429,241.959,274.037,262.435,274.037z"
-+           id="path39" /><path
-+           fill="#FFFFFF"
-+           d="M1292.45,199.868c-20.48,0-37.082,16.605-37.082,37.085c0,20.476,16.601,37.083,37.082,37.083     c20.48,0,37.085-16.607,37.085-37.083C1329.535,216.474,1312.93,199.868,1292.45,199.868z"
-+           id="path41" /><path
-+           fill="#FFFFFF"
-+           d="M1292.45,1296.189c20.48,0,37.085-16.607,37.085-37.083c0-20.485-16.605-37.085-37.085-37.085     c-20.48,0-37.082,16.6-37.082,37.085C1255.368,1279.582,1271.969,1296.189,1292.45,1296.189z"
-+           id="path43" /><path
-+           fill="#FFFFFF"
-+           d="M262.456,1222.021c-20.482,0-37.088,16.6-37.088,37.085c0,20.476,16.605,37.083,37.088,37.083     c20.476,0,37.079-16.607,37.079-37.083C299.535,1238.621,282.932,1222.021,262.456,1222.021z"
-+           id="path45" /><polygon
-+           fill="#EF6D6D"
-+           points="786,542.494 553,678.192 553,949.589 786,1085.287    "
-+           id="polygon47" /><polygon
-+           fill="#E45757"
-+           points="1020,949.589 1020,678.192 786.233,542.487 786,542.494 786,1085.287 786.233,1085.294    "
-+           id="polygon49" /><path
-+           fill="#FFFFFF"
-+           d="M1160,1030.614V597.751v-0.582L786.499,380.447l-62.477,36.354l-166.259,96.67L553,516.144v-7.255V247     H414v783.614l373.013,216.729L1160,1030.614z M553,949.589V678.192l233.721-135.698l-0.127-0.007L1020,678.192v271.397     l-233.326,135.705l-0.063-0.007L553,949.589z"
-+           id="path51" /></g></g></g></svg>
-\ No newline at end of file
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 62695f1..fb4f6e9 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -57,6 +57,8 @@ config STMP_DEVICE
- 
- source lib/gui/Kconfig
- 
-+source lib/logo/Kconfig
-+
- source lib/bootstrap/Kconfig
- 
- config PRINTF_UUID
-diff --git a/lib/Makefile b/lib/Makefile
-index 6a3e9fd..6f64ef9 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -54,3 +54,4 @@ obj-y			+= libfile.o
- obj-y			+= bitmap.o
- obj-y			+= gcd.o
- obj-y			+= hexdump.o
-+obj-$(CONFIG_BAREBOX_LOGO)     += logo/
-diff --git a/lib/logo/Kconfig b/lib/logo/Kconfig
-new file mode 100644
-index 0000000..5b40d75
---- /dev/null
-+++ b/lib/logo/Kconfig
-@@ -0,0 +1,21 @@
-+menuconfig BAREBOX_LOGO
-+	bool "include barebox logos in build"
-+	help
-+	  Say yes here to build the barebox logos. This adds inkscape to the build
-+	  dependencies. The logo can be found under /logo/barebox-logo-<width>.png
-+	  in the running barebox.
-+
-+config BAREBOX_LOGO_64
-+	bool "include 64x32 pixel logo"
-+
-+config BAREBOX_LOGO_240
-+	bool "include 240x120 pixel logo"
-+
-+config BAREBOX_LOGO_320
-+	bool "include 320x160 pixel logo"
-+
-+config BAREBOX_LOGO_400
-+	bool "include 400x200 pixel logo"
-+
-+config BAREBOX_LOGO_640
-+	bool "include 640x320 pixel logo"
-diff --git a/lib/logo/Makefile b/lib/logo/Makefile
-new file mode 100644
-index 0000000..f5f229f
---- /dev/null
-+++ b/lib/logo/Makefile
-@@ -0,0 +1,51 @@
-+
-+OPTS_barebox-logo-w64.bblogo="-w 64"
-+bblogo-$(CONFIG_BAREBOX_LOGO_64) += barebox-logo-w64
-+
-+OPTS_barebox-logo-w240.bblogo="-w 240"
-+bblogo-$(CONFIG_BAREBOX_LOGO_240) += barebox-logo-w240
-+
-+OPTS_barebox-logo-w320.bblogo="-w 320"
-+bblogo-$(CONFIG_BAREBOX_LOGO_320) += barebox-logo-w320
-+
-+OPTS_barebox-logo-w400.bblogo="-w 400"
-+bblogo-$(CONFIG_BAREBOX_LOGO_400) += barebox-logo-w400
-+
-+OPTS_barebox-logo-w640.bblogo="-w 640"
-+bblogo-$(CONFIG_BAREBOX_LOGO_640) += barebox-logo-w640
-+
-+obj-y += $(patsubst %,%.bblogo.o,$(bblogo-y))
-+extra-y += $(patsubst %,%.bblogo,$(bblogo-y))
-+extra-y += $(patsubst %,%.bblogo.S,$(bblogo-y))
-+extra-y += $(patsubst %,%.bblogo.o,$(bblogo-y))
-+
-+obj-$(CONFIG_BAREBOX_LOGO) += logo.o
-+
-+quiet_cmd_logo_S = LOGO.S   $@
-+cmd_logo_S =							\
-+(								\
-+	echo '\#include <asm-generic/barebox.lds.h>';		\
-+	echo '.section .bblogo.rodata.$(subst -,_,$(*F)),"a"';	\
-+	echo '.balign STRUCT_ALIGNMENT';			\
-+	echo '.global __bblogo_$(subst -,_,$(*F))_start';	\
-+	echo '__bblogo_$(subst -,_,$(*F))_start:';		\
-+	echo '.incbin "$<" ';					\
-+	echo '__bblogo_$(subst -,_,$(*F))_end:';		\
-+	echo '.global __bblogo_$(subst -,_,$(*F))_end';		\
-+	echo '.balign STRUCT_ALIGNMENT';			\
-+) > $@
-+
-+%.bblogo.S: %.bblogo FORCE
-+	$(call if_changed,logo_S)
-+
-+quiet_cmd_logo = LOGO.S   $@
-+cmd_logo =							\
-+(								\
-+	echo OPTS: $(OPTS_$(@F));				\
-+	inkscape -z $(OPTS_$(@F)) -e $@ $< > /dev/null;		\
-+)
-+
-+%.bblogo: $(srctree)/Documentation/barebox.svg FORCE
-+	$(call if_changed,logo)
-+
-+clean-files += *.bblogo *.bblogo.S
-diff --git a/lib/logo/logo.c b/lib/logo/logo.c
-new file mode 100644
-index 0000000..614d8c0
---- /dev/null
-+++ b/lib/logo/logo.c
-@@ -0,0 +1,66 @@
-+/*
-+ * Copyright (c) 2015 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <fs.h>
-+#include <libfile.h>
-+#include <malloc.h>
-+
-+#define DEFINE_LOGO(width)							\
-+	extern char __bblogo_barebox_logo_w##width##_start[];			\
-+	extern char __bblogo_barebox_logo_w##width##_end[];			\
-+										\
-+	static void load_logo_##width(void)					\
-+	{									\
-+		if (!IS_ENABLED(CONFIG_BAREBOX_LOGO_##width))			\
-+			return;							\
-+		load_logo(width, __bblogo_barebox_logo_w##width##_start,	\
-+				__bblogo_barebox_logo_w##width##_end);		\
-+	}
-+
-+static void load_logo(int width, void *start, void *end)
-+{
-+	char *filename;
-+	size_t size = end - start;
-+
-+	filename = asprintf("/logo/barebox-logo-%d.png", width);
-+	write_file(filename, start, size);
-+	free(filename);
-+}
-+
-+DEFINE_LOGO(64);
-+DEFINE_LOGO(240);
-+DEFINE_LOGO(320);
-+DEFINE_LOGO(400);
-+DEFINE_LOGO(640);
-+
-+static int logo_init(void)
-+{
-+	int ret;
-+
-+	ret = make_directory("/logo");
-+	if (ret)
-+		return ret;
-+
-+	load_logo_64();
-+	load_logo_240();
-+	load_logo_320();
-+	load_logo_400();
-+	load_logo_640();
-+
-+	return 0;
-+}
-+postenvironment_initcall(logo_init);
--- 
-2.1.4
+> On Tue, Jul 14, 2015 at 12:56:34PM +0300, Antony Pavlov wrote:
+> > Alas I can't find any tab-complition for param_enum,
+> > so addition 'fonts' command is introduced.
+> > =
 
+> > Usage example:
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > =
+
+> >     barebox@barebox sandbox:/ fonts
+> >     VGA8x16
+> >     MINI4x6
+> >     barebox@barebox sandbox:/ fbconsole0.font=3DMINI4x6
+> >     barebox@barebox sandbox:/ fbconsole0.active=3Do
+> >     fb0: framebuffer console 160x80 activated
+> >     barebox@barebox sandbox:/ fbconsole0.font=3DVGA8x16
+> > =
+
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >  drivers/video/fbconsole.c | 60 +++++++++++++++++++++++++++++++++++++++=
+--------
+> >  include/linux/font.h      | 11 ++++++---
+> >  lib/fonts/fonts.c         | 39 ++++++++++++++++--------------
+> >  3 files changed, 80 insertions(+), 30 deletions(-)
+> > =
+
+> > diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+> > index 36fd138..7df89ab 100644
+> > --- a/drivers/video/fbconsole.c
+> > +++ b/drivers/video/fbconsole.c
+> > @@ -20,6 +20,10 @@ struct fbc_priv {
+> >  	struct fb_info *fb;
+> >  =
+
+> >  	struct screen *sc;
+> > +
+> > +	struct param_d *par_font;
+> > +	int par_font_val;
+> > +
+> >  /* FIXME */
+> >  #define VIDEO_FONT_CHARS 256
+> >  	struct image *chars[VIDEO_FONT_CHARS];
+> > @@ -47,6 +51,16 @@ static int fbc_tstc(struct console_device *cdev)
+> >  	return 0;
+> >  }
+> >  =
+
+> > +static void cls(struct fbc_priv *priv)
+> > +{
+> > +	void *buf =3D gui_screen_render_buffer(priv->sc);
+> > +
+> > +	memset(buf, 0, priv->fb->line_length * priv->fb->yres);
+> > +
+> > +	priv->x =3D 0;
+> > +	priv->y =3D 0;
+> =
+
+> I found out this is not entirely correct. Clearing the screen (\e[2J)
+> and putting the cursor top left (\e[;H) are two different things.
+> =
+
+> I integrated the changes from this patch, but changed cls() not to put
+> the cursor in home position.
+> =
+
+> Also I integrated some other changes:
+> =
+
+> - Fix fbc_set_active, no longer lose memory when called multiple times
+> - Add 7x14 font
+> - properly export get_pixel
+> - Add fb_enable/fb_disable function so that we do not have to call into
+>   the fb_info ops directly
+> - Make splash screen work again, was broken by "graphics_utils: Let
+>   fb_open allocate the screen"
+> =
+
+> Checkout the result on -next.
+
+So my fbconsole TODO list contain only one position:
+
+  - add Documentation.
+
+Have you any fbconsole TODOs?
+
+
+
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
