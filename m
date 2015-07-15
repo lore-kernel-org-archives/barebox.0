@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFJux-0004j7-EI
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 10:28:00 +0000
-Date: Wed, 15 Jul 2015 12:27:36 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150715102736.GV18700@pengutronix.de>
-References: <1436867794-15409-1-git-send-email-antonynpavlov@gmail.com>
- <20150715054532.GU18700@pengutronix.de>
- <20150715114547.8a8a5fb1787aed6a29714996@gmail.com>
+ id 1ZFKaj-00050n-64
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 11:11:09 +0000
+References: <1436940123-25118-1-git-send-email-s.hauer@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <55A63FB1.2020804@pengutronix.de>
+Date: Wed, 15 Jul 2015 13:10:41 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150715114547.8a8a5fb1787aed6a29714996@gmail.com>
+In-Reply-To: <1436940123-25118-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,114 +17,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============3292883328999504646=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v2] WIP: fbconsole: not so dirty font selection via
- param_enum
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] scripts: imx-image: Do not pad image
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-On Wed, Jul 15, 2015 at 11:45:47AM +0300, Antony Pavlov wrote:
-> On Wed, 15 Jul 2015 07:45:32 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > Hi Antony,
-> > 
-> > On Tue, Jul 14, 2015 at 12:56:34PM +0300, Antony Pavlov wrote:
-> > > Alas I can't find any tab-complition for param_enum,
-> > > so addition 'fonts' command is introduced.
-> > > 
-> > > Usage example:
-> > > ==============
-> > > 
-> > >     barebox@barebox sandbox:/ fonts
-> > >     VGA8x16
-> > >     MINI4x6
-> > >     barebox@barebox sandbox:/ fbconsole0.font=MINI4x6
-> > >     barebox@barebox sandbox:/ fbconsole0.active=o
-> > >     fb0: framebuffer console 160x80 activated
-> > >     barebox@barebox sandbox:/ fbconsole0.font=VGA8x16
-> > > 
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > ---
-> > >  drivers/video/fbconsole.c | 60 +++++++++++++++++++++++++++++++++++++++--------
-> > >  include/linux/font.h      | 11 ++++++---
-> > >  lib/fonts/fonts.c         | 39 ++++++++++++++++--------------
-> > >  3 files changed, 80 insertions(+), 30 deletions(-)
-> > > 
-> > > diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-> > > index 36fd138..7df89ab 100644
-> > > --- a/drivers/video/fbconsole.c
-> > > +++ b/drivers/video/fbconsole.c
-> > > @@ -20,6 +20,10 @@ struct fbc_priv {
-> > >  	struct fb_info *fb;
-> > >  
-> > >  	struct screen *sc;
-> > > +
-> > > +	struct param_d *par_font;
-> > > +	int par_font_val;
-> > > +
-> > >  /* FIXME */
-> > >  #define VIDEO_FONT_CHARS 256
-> > >  	struct image *chars[VIDEO_FONT_CHARS];
-> > > @@ -47,6 +51,16 @@ static int fbc_tstc(struct console_device *cdev)
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +static void cls(struct fbc_priv *priv)
-> > > +{
-> > > +	void *buf = gui_screen_render_buffer(priv->sc);
-> > > +
-> > > +	memset(buf, 0, priv->fb->line_length * priv->fb->yres);
-> > > +
-> > > +	priv->x = 0;
-> > > +	priv->y = 0;
-> > 
-> > I found out this is not entirely correct. Clearing the screen (\e[2J)
-> > and putting the cursor top left (\e[;H) are two different things.
-> > 
-> > I integrated the changes from this patch, but changed cls() not to put
-> > the cursor in home position.
-> > 
-> > Also I integrated some other changes:
-> > 
-> > - Fix fbc_set_active, no longer lose memory when called multiple times
-> > - Add 7x14 font
-> > - properly export get_pixel
-> > - Add fb_enable/fb_disable function so that we do not have to call into
-> >   the fb_info ops directly
-> > - Make splash screen work again, was broken by "graphics_utils: Let
-> >   fb_open allocate the screen"
-> > 
-> > Checkout the result on -next.
-> 
-> So my fbconsole TODO list contain only one position:
-> 
->   - add Documentation.
-> 
-> Have you any fbconsole TODOs?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============3292883328999504646==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="dVc1mKs5p1e9UfJaVvKatShiiu0UHvanj"
 
-One that should be fixed before merging into master:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--dVc1mKs5p1e9UfJaVvKatShiiu0UHvanj
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-- protect against u8 csi[20] overflows
+On 07/15/2015 08:02 AM, Sascha Hauer wrote:
+> We have to pad the load size to the next 4k boundary, but we don't
+> need to pad the image itself since we do not care what data the ROM
+> actually loads.
+>=20
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Some items that can be done later, shouldn't prevent us from merging:
+NACK - We do for the HABv4 case.
 
-- support remaining colors
-- implement dma_alloc_writecombine for faster scrolling
-- implement more ANSI sequences (until edit works properly)
+Marc
 
-Sascha
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--dVc1mKs5p1e9UfJaVvKatShiiu0UHvanj
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJVpj+xAAoJEP5prqPJtc/HcY8IAKEiTGAs38vBCOaqkAcHJspj
+Ulj0v69JerG2BrrO9BSiGzVuUhtGNFBMSJgG3dZr3x0+e66wcjZKIdAesiRXa9zL
+Jnc1HBLBQIhkOcs6QwC7aET36OUroSlgX8h97Cyg8In6JjPoGShAE+dLHsLxNPpx
+DL4KbpMQmRq3e2Xd57k7ZzkX/YrZic2YCxQx7jUxX909rF6RHlcnVnZSPJxW3l/N
+zLmh8YDca+Kl3bnIeZ4gU32/gtFBU1k1IYRzS4jhh5OXrS/24tRYOy0GL7MudCMN
+GVvsNTJ5BpGEvuIE4ZYQjNLBpWf9sHlqeXvkvl76Sn6LK/E0R7MiONcycXg+RAI=
+=PNSt
+-----END PGP SIGNATURE-----
+
+--dVc1mKs5p1e9UfJaVvKatShiiu0UHvanj--
+
+
+--===============3292883328999504646==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============3292883328999504646==--
