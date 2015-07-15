@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFT4e-0005HQ-7c
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:36 +0000
-Received: by lbbzr7 with SMTP id zr7so31744803lbb.1
- for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:14 -0700 (PDT)
+Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+ by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
+ id 1ZFT4i-0003Wn-OB
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:41 +0000
+Received: by lagw2 with SMTP id w2so31429301lag.3
+ for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:13 -0700 (PDT)
 Received: from localhost.localdomain (ppp79-139-249-41.pppoe.spdop.ru.
  [79.139.249.41])
- by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.13
+ by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.11
  for <barebox@lists.infradead.org>
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 15 Jul 2015 13:14:13 -0700 (PDT)
+ Wed, 15 Jul 2015 13:14:12 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Jul 2015 23:13:48 +0300
-Message-Id: <1436991230-14251-11-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 15 Jul 2015 23:13:47 +0300
+Message-Id: <1436991230-14251-10-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 References: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,81 +29,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 10/12] net: picotcp: add route command
+Subject: [RFC 09/12] net: picotcp: add ping command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
  net/Makefile        |  1 +
- net/picotcp/Kconfig |  5 +++++
- net/picotcp_route.c | 37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 43 insertions(+)
+ net/picotcp/Kconfig |  5 ++++
+ net/picotcp_ping.c  | 85 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 91 insertions(+)
 
 diff --git a/net/Makefile b/net/Makefile
-index 04e347f..6261454 100644
+index d5b133b..04e347f 100644
 --- a/net/Makefile
 +++ b/net/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
+@@ -13,3 +13,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
+ 
  obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
  obj-$(CONFIG_CMD_PICOTCP_IFCONFIG) += picotcp_ifconfig.o
- obj-$(CONFIG_CMD_PICOTCP_PING) += picotcp_ping.o
-+obj-$(CONFIG_CMD_PICOTCP_ROUTE) += picotcp_route.o
++obj-$(CONFIG_CMD_PICOTCP_PING) += picotcp_ping.o
 diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
-index cb60001..2cd04d2 100644
+index 9a2d628..cb60001 100644
 --- a/net/picotcp/Kconfig
 +++ b/net/picotcp/Kconfig
-@@ -48,4 +48,9 @@ config CMD_PICOTCP_PING
- 	depends on NET_PICO_SUPPORT_ICMP4
- 	prompt "ping command"
+@@ -43,4 +43,9 @@ config CMD_PICOTCP_IFCONFIG
+ 	depends on NET_PICO_SUPPORT_IPV4
+ 	prompt "ifconfig command"
  
-+config CMD_PICOTCP_ROUTE
++config CMD_PICOTCP_PING
 +	bool
-+	depends on NET_PICO_SUPPORT_IPV4
-+	prompt "route command"
++	depends on NET_PICO_SUPPORT_ICMP4
++	prompt "ping command"
 +
  endif # NET_PICOTCP
-diff --git a/net/picotcp_route.c b/net/picotcp_route.c
+diff --git a/net/picotcp_ping.c b/net/picotcp_ping.c
 new file mode 100644
-index 0000000..a2b1453
+index 0000000..d4ceb92
 --- /dev/null
-+++ b/net/picotcp_route.c
-@@ -0,0 +1,37 @@
-+#include <common.h>
++++ b/net/picotcp_ping.c
+@@ -0,0 +1,85 @@
 +#include <command.h>
++#include <common.h>
 +#include <complete.h>
++#include <driver.h>
 +#include <poller.h>
 +
 +#include <pico_stack.h>
 +#include <pico_ipv4.h>
++#include <pico_dev_null.h>
++#include <pico_dhcp_client.h>
 +#include <pico_icmp4.h>
 +
-+static int do_route(int argc, char *argv[])
++#define NUM_PING 10
++
++static int ping_done;
++static int ping_code;
++
++/* callback function for receiving ping reply */
++void cb_ping(struct pico_icmp4_stats *s)
 +{
-+	struct pico_ipv4_route *r;
-+	struct pico_tree_node *index;
++	char host[30];
++	int time_sec = 0;
++	int time_msec = 0;
 +
-+	printf("picotcp IPv4 routing table\n");
-+	printf("Destination     Gateway         Genmask         Metric Iface\n");
++	/* convert ip address from icmp4_stats structure to string */
++	pico_ipv4_to_string(host, s->dst.addr);
 +
-+	pico_tree_foreach(index, &Routes) {
-+		char ipstr[32];
++	/* get time information from icmp4_stats structure */
++	time_sec = s->time / 1000;
++	time_msec = s->time % 1000;
 +
-+		r = index->keyValue;
++	if (s->err == PICO_PING_ERR_REPLIED) {
++		/* print info if no error reported in icmp4_stats structure */
++		printf("%lu bytes from %s: icmp_req=%lu ttl=%lu time=%llu ms\n", \
++			s->size, host, s->seq, s->ttl, s->time);
++		if (s->seq == NUM_PING) {
++			ping_done = 1;
++		}
++	} else {
++		/* else, print error info */
++		printf("PING %lu to %s: Error %d\n", s->seq, host, s->err);
++		ping_done = 1;
++	}
 +
-+		pico_ipv4_to_string(ipstr, r->dest.addr);
-+		printf("%-16s", ipstr);
-+		pico_ipv4_to_string(ipstr, r->gateway.addr);
-+		printf("%-16s", ipstr);
-+		pico_ipv4_to_string(ipstr, r->netmask.addr);
-+		printf("%-16s", ipstr);
-+		printf("%-7d%s\n", r->metric, r->link->dev->name);
++	ping_code = s->err;
++}
++
++static int do_picoping(int argc, char *argv[])
++{
++	int id;
++
++	if (argc < 1) {
++		perror("picoping");
++		return 1;
++	}
++
++	id = pico_icmp4_ping(argv[1], NUM_PING, 1000, 5000, 48, cb_ping);
++
++	if (id == -1) {
++		return -EIO;
++	}
++
++	ping_done = 0;
++	ping_code = PICO_PING_ERR_PENDING;
++
++	while (!ping_done) {
++		if (ctrlc()) {
++			break;
++		}
++		get_time_ns();
++		poller_call();
++	}
++
++	pico_icmp4_ping_abort(id);
++
++	if (ping_code != PICO_PING_ERR_REPLIED) {
++		return -EIO;
 +	}
 +
 +	return 0;
 +}
 +
-+BAREBOX_CMD_START(route)
-+	.cmd		= do_route,
++BAREBOX_CMD_START(picoping)
++	.cmd		= do_picoping,
 +BAREBOX_CMD_END
 -- 
 2.1.4
