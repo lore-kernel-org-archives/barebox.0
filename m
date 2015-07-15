@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZF2tG-0007Js-6x
- for barebox@lists.infradead.org; Tue, 14 Jul 2015 16:17:06 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 14 Jul 2015 18:16:35 +0200
-Message-Id: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1ZFFW1-0003Lj-2X
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 05:45:58 +0000
+Date: Wed, 15 Jul 2015 07:45:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150715054532.GU18700@pengutronix.de>
+References: <1436867794-15409-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1436867794-15409-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,48 +18,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ARM: socfpga: socrates: add qspi partitions
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [RFC v2] WIP: fbconsole: not so dirty font selection via
+ param_enum
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- arch/arm/dts/socfpga_cyclone5_socrates.dts | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Hi Antony,
 
-diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-index 125ad1b8502d..ccb940584b5b 100644
---- a/arch/arm/dts/socfpga_cyclone5_socrates.dts
-+++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-@@ -80,5 +80,20 @@
- 		cdns,tsd2d-ns = <50>;
- 		cdns,tchsh-ns = <4>;
- 		cdns,tslch-ns = <4>;
-+
-+		partition@0 {
-+			label = "prebootloader0";
-+			reg = <0x00000 0x10000>;
-+		};
-+
-+		partition@1 {
-+			label = "barebox0";
-+			reg = <0x40000 0x80000>;
-+		};
-+
-+		partition@2 {
-+			label = "data";
-+			reg = <0xc0000 0x1f40000>;
-+		};
- 	};
- };
+On Tue, Jul 14, 2015 at 12:56:34PM +0300, Antony Pavlov wrote:
+> Alas I can't find any tab-complition for param_enum,
+> so addition 'fonts' command is introduced.
+> 
+> Usage example:
+> ==============
+> 
+>     barebox@barebox sandbox:/ fonts
+>     VGA8x16
+>     MINI4x6
+>     barebox@barebox sandbox:/ fbconsole0.font=MINI4x6
+>     barebox@barebox sandbox:/ fbconsole0.active=o
+>     fb0: framebuffer console 160x80 activated
+>     barebox@barebox sandbox:/ fbconsole0.font=VGA8x16
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  drivers/video/fbconsole.c | 60 +++++++++++++++++++++++++++++++++++++++--------
+>  include/linux/font.h      | 11 ++++++---
+>  lib/fonts/fonts.c         | 39 ++++++++++++++++--------------
+>  3 files changed, 80 insertions(+), 30 deletions(-)
+> 
+> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+> index 36fd138..7df89ab 100644
+> --- a/drivers/video/fbconsole.c
+> +++ b/drivers/video/fbconsole.c
+> @@ -20,6 +20,10 @@ struct fbc_priv {
+>  	struct fb_info *fb;
+>  
+>  	struct screen *sc;
+> +
+> +	struct param_d *par_font;
+> +	int par_font_val;
+> +
+>  /* FIXME */
+>  #define VIDEO_FONT_CHARS 256
+>  	struct image *chars[VIDEO_FONT_CHARS];
+> @@ -47,6 +51,16 @@ static int fbc_tstc(struct console_device *cdev)
+>  	return 0;
+>  }
+>  
+> +static void cls(struct fbc_priv *priv)
+> +{
+> +	void *buf = gui_screen_render_buffer(priv->sc);
+> +
+> +	memset(buf, 0, priv->fb->line_length * priv->fb->yres);
+> +
+> +	priv->x = 0;
+> +	priv->y = 0;
+
+I found out this is not entirely correct. Clearing the screen (\e[2J)
+and putting the cursor top left (\e[;H) are two different things.
+
+I integrated the changes from this patch, but changed cls() not to put
+the cursor in home position.
+
+Also I integrated some other changes:
+
+- Fix fbc_set_active, no longer lose memory when called multiple times
+- Add 7x14 font
+- properly export get_pixel
+- Add fb_enable/fb_disable function so that we do not have to call into
+  the fb_info ops directly
+- Make splash screen work again, was broken by "graphics_utils: Let
+  fb_open allocate the screen"
+
+Checkout the result on -next.
+
+Sascha
+
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
