@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f41.google.com ([209.85.215.41])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZFT4i-0003Wm-IC
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:40 +0000
-Received: by lagx9 with SMTP id x9so31439390lag.1
- for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:10 -0700 (PDT)
-Received: from localhost.localdomain (ppp79-139-249-41.pppoe.spdop.ru.
- [79.139.249.41])
- by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.09
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 15 Jul 2015 13:14:09 -0700 (PDT)
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZFT4V-0006Nh-S0
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:29 +0000
+Received: by lbbpo10 with SMTP id po10so31615141lbb.3
+ for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:06 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Jul 2015 23:13:45 +0300
-Message-Id: <1436991230-14251-8-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 15 Jul 2015 23:13:41 +0300
+Message-Id: <1436991230-14251-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 References: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,146 +23,310 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 07/12] net: picotcp: add test_picotcp command
+Subject: [RFC 03/12] net: add initial picotcp support
 To: barebox@lists.infradead.org
+Cc: Daniele Lacamera <daniele.lacamera@tass.be>
 
-See original test_ipv4() from picotcp.git/test/unit/unit_ipv4.c.
+This commit adds initial picotcp support:
+
+ * build stuff (Kbuild fixes and fake stdint.h);
+ * "pico_adapter" code for connecting barebox ethernet interfaces
+   to picotcp;
+ * picotcp start initialization and necessary poller.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Daniele Lacamera <daniele.lacamera@tass.be>
 ---
- net/Makefile            |  2 ++
- net/picotcp/Kconfig     |  7 ++++
- net/picotcp_test_ipv4.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 105 insertions(+)
+ Makefile               |  1 +
+ commands/Kconfig       |  4 +++
+ include/net.h          |  3 +++
+ include/pico_defines.h |  0
+ include/stdint.h       |  1 +
+ net/Kconfig            | 17 ++++++++++++
+ net/Makefile           |  3 +++
+ net/eth.c              | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ net/net.c              | 10 +++++++
+ net/picotcp.c          | 20 ++++++++++++++
+ 10 files changed, 130 insertions(+)
 
+diff --git a/Makefile b/Makefile
+index 0fe9274..8724d08 100644
+--- a/Makefile
++++ b/Makefile
+@@ -292,6 +292,7 @@ export MODVERDIR := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/).tmp_ve
+ # Use LINUXINCLUDE when you must reference the include/ directory.
+ # Needed to be compatible with the O= option
+ LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
++                   -I$(srctree)/net/picotcp/include -I$(srctree)/net/picotcp/modules \
+                    $(if $(KBUILD_SRC), -I$(srctree)/include) \
+ 		   -I$(srctree)/arch/$(ARCH)/include \
+ 		   -I$(objtree)/arch/$(ARCH)/include \
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 5571902..77193cb 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1184,6 +1184,7 @@ menu "Network"
+ config CMD_DHCP
+ 	bool
+ 	select NET_DHCP
++	depends on NET_LEGACY
+ 	prompt "dhcp"
+ 	help
+ 	  DHCP client to obtain IP or boot params
+@@ -1210,6 +1211,7 @@ config CMD_HOST
+ config NET_CMD_IFUP
+ 	bool
+ 	prompt "ifup"
++	depends on NET_LEGACY
+ 	help
+ 	  Bring up network interfaces based on config files.
+ 
+@@ -1237,6 +1239,7 @@ config CMD_MIITOOL
+ 
+ config CMD_PING
+ 	tristate
++	depends on NET_LEGACY
+ 	prompt "ping"
+ 	help
+ 	  Send ICMP echo requests.
+@@ -1245,6 +1248,7 @@ config CMD_PING
+ 
+ config CMD_TFTP
+ 	depends on FS_TFTP
++	depends on NET_LEGACY
+ 	tristate
+ 	prompt "tftp"
+ 	help
+diff --git a/include/net.h b/include/net.h
+index b93e264..c48eceb 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -32,6 +32,8 @@
+ 
+ struct device_d;
+ 
++#include <pico_stack.h>
++
+ struct eth_device {
+ 	int active;
+ 
+@@ -44,6 +46,7 @@ struct eth_device {
+ 	int  (*get_ethaddr) (struct eth_device*, u8 adr[6]);
+ 	int  (*set_ethaddr) (struct eth_device*, const unsigned char *adr);
+ 
++	struct pico_device *picodev;
+ 	struct eth_device *next;
+ 	void *priv;
+ 
+diff --git a/include/pico_defines.h b/include/pico_defines.h
+new file mode 100644
+index 0000000..e69de29
+diff --git a/include/stdint.h b/include/stdint.h
+new file mode 100644
+index 0000000..029276e
+--- /dev/null
++++ b/include/stdint.h
+@@ -0,0 +1 @@
++/* fake stdint.h for picotcp */
+diff --git a/net/Kconfig b/net/Kconfig
+index a890492..0099e6f 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -3,6 +3,18 @@ menuconfig NET
+ 
+ if NET
+ 
++choice
++	prompt "network stack implementation"
++
++config NET_LEGACY
++	bool "legacy U-Boot network stack"
++
++config NET_PICOTCP
++	bool "picotcp network stack"
++	select POLLER
++
++endchoice
++
+ config NET_NFS
+ 	bool
+ 	prompt "nfs support"
+@@ -10,6 +22,7 @@ config NET_NFS
+ config NET_NETCONSOLE
+ 	bool
+ 	depends on !CONSOLE_NONE
++	depends on NET_LEGACY
+ 	prompt "network console support"
+ 	help
+ 	  This option adds support for a simple udp based network console.
+@@ -20,10 +33,14 @@ config NET_RESOLV
+ 
+ config NET_IFUP
+ 	default y
++	depends on NET_LEGACY
+ 	bool
+ 
+ config NET_DHCP
+ 	bool
++	depends on NET_LEGACY
+ 	prompt "dhcp support"
+ 
++source "net/picotcp/Kconfig"
++
+ endif
 diff --git a/net/Makefile b/net/Makefile
-index 7a4597d..bfe74fb 100644
+index 8d564e7..7a4597d 100644
 --- a/net/Makefile
 +++ b/net/Makefile
-@@ -10,3 +10,5 @@ obj-$(CONFIG_NET_IFUP)	+= ifup.o
+@@ -7,3 +7,6 @@ obj-$(CONFIG_CMD_PING)	+= ping.o
+ obj-$(CONFIG_NET_RESOLV)+= dns.o
+ obj-$(CONFIG_NET_NETCONSOLE) += netconsole.o
+ obj-$(CONFIG_NET_IFUP)	+= ifup.o
++
++obj-$(CONFIG_NET_PICOTCP) += picotcp/
++obj-$(CONFIG_NET_PICOTCP) += picotcp.o
+diff --git a/net/eth.c b/net/eth.c
+index a090961..34358f6 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -328,6 +328,73 @@ static int eth_register_of_fixup(void)
+ late_initcall(eth_register_of_fixup);
+ #endif
  
- obj-$(CONFIG_NET_PICOTCP) += picotcp/
- obj-$(CONFIG_NET_PICOTCP) += picotcp.o
-+
-+obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
-diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
-index 3882984..17b8293 100644
---- a/net/picotcp/Kconfig
-+++ b/net/picotcp/Kconfig
-@@ -31,4 +31,11 @@ config NET_PICO_BIGENDIAN
- 	bool
- 	prompt "bigendian picotcp"
- 
-+comment "Commands"
-+
-+config CMD_PICOTCP_TEST_IPV4
-+	bool
-+	depends on NET_PICO_SUPPORT_IPV4
-+	prompt "test_picotcp command"
-+
- endif # NET_PICOTCP
-diff --git a/net/picotcp_test_ipv4.c b/net/picotcp_test_ipv4.c
-new file mode 100644
-index 0000000..314d21c
---- /dev/null
-+++ b/net/picotcp_test_ipv4.c
-@@ -0,0 +1,96 @@
-+#include <common.h>
-+#include <command.h>
-+#include <complete.h>
++#ifdef CONFIG_NET_PICO_SUPPORT_ETH
 +
 +#include <pico_stack.h>
 +#include <pico_ipv4.h>
-+#include <pico_dev_null.h>
 +
-+#define fail_if(a, msg) \
-+	if (a) { \
-+		printf("%s\n", msg); \
-+		return; \
-+	}
++struct pico_device_barebox_eth {
++	struct pico_device dev;
++	struct eth_device *edev;
++};
 +
-+#define fail_unless(a, msg) fail_if(!(a), msg)
-+
-+static void do_test_ipv4(void)
++static int pico_adapter_send(struct pico_device *dev, void *buf, int len)
 +{
-+	#define IP_TST_SIZ 256
-+	int i;
++	struct pico_device_barebox_eth *t = (struct pico_device_barebox_eth *)dev;
++	struct eth_device *edev = t->edev;
 +
-+	struct pico_device *dev[IP_TST_SIZ];
-+	char devname[8];
-+	struct pico_ip4 a[IP_TST_SIZ], d[IP_TST_SIZ], *source[IP_TST_SIZ], nm16, nm32, gw[IP_TST_SIZ], r[IP_TST_SIZ], ret;
-+	struct pico_ipv4_link *l[IP_TST_SIZ];
++	pr_debug("pico_adapter_send barebox eth (len=%d)\n", len);
++	edev->send(edev, buf, len);
 +
-+	char ipstr[] = "192.168.1.1";
-+	struct pico_ip4 ipaddr;
-+
-+	struct pico_frame *f_NULL = NULL;
-+	struct pico_ip4 *dst_NULL = NULL;
-+
-+	nm16.addr = long_be(0xFFFF0000);
-+	nm32.addr = long_be(0xFFFFFFFF);
-+
-+	/*link_add*/
-+	for (i = 0; i < IP_TST_SIZ; i++) {
-+		snprintf(devname, 8, "nul%d", i);
-+		dev[i] = pico_null_create(devname);
-+		a[i].addr = long_be(0x0a000001 + (i << 16));
-+		d[i].addr = long_be(0x0a000002 + (i << 16));
-+		fail_if(pico_ipv4_link_add(dev[i], a[i], nm16) != 0, "Error adding link");
-+	}
-+	/*link_find + link_get + route_add*/
-+	for (i = 0; i < IP_TST_SIZ; i++) {
-+		gw[i].addr = long_be(0x0a0000f0 + (i << 16));
-+		r[i].addr = long_be(0x0c00001 + (i << 16));
-+		fail_unless(pico_ipv4_link_find(&a[i]) == dev[i], "Error finding link");
-+		l[i] = pico_ipv4_link_get(&a[i]);
-+		fail_if(l[i] == NULL, "Error getting link");
-+		fail_if(pico_ipv4_route_add(r[i], nm32, gw[i], 1, l[i]) != 0, "Error adding route");
-+		fail_if(pico_ipv4_route_add(d[i], nm32, gw[i], 1, l[i]) != 0, "Error adding route");
-+	}
-+	/*get_gateway + source_find*/
-+	for (i = 0; i < IP_TST_SIZ; i++) {
-+		ret = pico_ipv4_route_get_gateway(&r[i]);
-+		fail_if(ret.addr != gw[i].addr, "Error get gateway: returned wrong route");
-+		source[i] = pico_ipv4_source_find(&d[i]);
-+		fail_if(source[i]->addr != a[i].addr, "Error find source: returned wrong route");
-+	}
-+	/*route_del + link_del*/
-+	for (i = 0; i < IP_TST_SIZ; i++) {
-+		fail_if(pico_ipv4_route_del(r[i], nm32, 1) != 0, "Error deleting route");
-+		fail_if(pico_ipv4_link_del(dev[i], a[i]) != 0, "Error deleting link");
-+	}
-+	/*string_to_ipv4 + ipv4_to_string*/
-+	pico_string_to_ipv4(ipstr, &(ipaddr.addr));
-+	fail_if(ipaddr.addr != long_be(0xc0a80101), "Error string to ipv4");
-+	memset(ipstr, 0, 12);
-+	pico_ipv4_to_string(ipstr, ipaddr.addr);
-+	fail_if(strncmp(ipstr, "192.168.1.1", 11) != 0, "Error ipv4 to string");
-+
-+	/*valid_netmask*/
-+	fail_if(pico_ipv4_valid_netmask(long_be(nm32.addr)) != 32, "Error checking netmask");
-+
-+	/*is_unicast*/
-+	fail_if((pico_ipv4_is_unicast(long_be(0xc0a80101))) != 1, "Error checking unicast");
-+	fail_if((pico_ipv4_is_unicast(long_be(0xe0000001))) != 0, "Error checking unicast");
-+
-+	/*rebound*/
-+	fail_if(pico_ipv4_rebound(f_NULL) != -1, "Error rebound frame");
-+
-+	/*frame_push*/
-+	fail_if(pico_ipv4_frame_push(f_NULL, dst_NULL, PICO_PROTO_TCP) != -1, "Error push frame");
++	return len;
 +}
 +
-+static int do_test_picotcp(int argc, char *argv[])
++static int pico_adapter_poll(struct pico_device *dev, int loop_score)
 +{
-+	do_test_ipv4();
++	struct pico_device_barebox_eth *t = (struct pico_device_barebox_eth *)dev;
++	struct eth_device *edev = t->edev;
 +
-+	return 0;
++	/* pico_stack_recv(dev, buf, len) will be called from net_receive */
++
++	edev->recv(edev);
++
++	return loop_score;
 +}
 +
-+BAREBOX_CMD_START(test_picotcp)
-+	.cmd		= do_test_picotcp,
-+BAREBOX_CMD_END
++static void pico_adapter_destroy(struct pico_device *dev)
++{
++	printf("pico_adapter_destroy barebox eth\n");
++}
++
++static void pico_adapter_init(struct eth_device *edev)
++{
++	/* FIXME: get macaddr for edev */
++	static unsigned char macaddr0[6] = { 0, 0, 0, 0xa, 0xb, 0xc };
++
++	struct pico_device_barebox_eth *pif = PICO_ZALLOC(sizeof(struct pico_device_barebox_eth));
++
++	struct pico_device *picodev;
++
++	char *name = strdup(edev->dev.name);
++
++	picodev = &pif->dev;
++	if (0 != pico_device_init(picodev, name, macaddr0)) {
++		pr_info("pico_adapter_init failed.\n");
++		pico_adapter_destroy(picodev);
++		return;
++	}
++
++	picodev->send = pico_adapter_send;
++	picodev->poll = pico_adapter_poll;
++	picodev->destroy = pico_adapter_destroy;
++
++	pif->edev = edev;
++	edev->picodev = picodev;
++
++	pr_info("Device %s created.\n", picodev->name);
++}
++#endif /* CONFIG_NET_PICO_SUPPORT_ETH */
++
+ int eth_register(struct eth_device *edev)
+ {
+ 	struct device_d *dev = &edev->dev;
+@@ -388,6 +455,10 @@ int eth_register(struct eth_device *edev)
+ 	if (!eth_current)
+ 		eth_current = edev;
+ 
++#ifdef CONFIG_NET_PICO_SUPPORT_ETH
++	pico_adapter_init(edev);
++#endif
++
+ 	return 0;
+ }
+ 
+diff --git a/net/net.c b/net/net.c
+index e5bd9bb..dfa916c 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -540,12 +540,22 @@ bad:
+ 	return 0;
+ }
+ 
++#include <pico_stack.h>
++
+ int net_receive(struct eth_device *edev, unsigned char *pkt, int len)
+ {
+ 	struct ethernet *et = (struct ethernet *)pkt;
+ 	int et_protlen = ntohs(et->et_protlen);
+ 	int ret;
+ 
++	if (IS_ENABLED(CONFIG_NET_PICOTCP)) {
++		pico_stack_recv(edev->picodev, pkt, len);
++
++		led_trigger_network(LED_TRIGGER_NET_RX);
++
++		return 0;
++	}
++
+ 	led_trigger_network(LED_TRIGGER_NET_RX);
+ 
+ 	if (len < ETHER_HDR_SIZE) {
+diff --git a/net/picotcp.c b/net/picotcp.c
+new file mode 100644
+index 0000000..ee16a68
+--- /dev/null
++++ b/net/picotcp.c
+@@ -0,0 +1,20 @@
++#include <init.h>
++#include <poller.h>
++#include <pico_stack.h>
++
++static struct poller_struct picotcp_poller;
++
++static void picotcp_poller_cb(struct poller_struct *poller)
++{
++	pico_stack_tick();
++}
++
++static int picotcp_net_init(void)
++{
++	pico_stack_init();
++
++	picotcp_poller.func = picotcp_poller_cb;
++
++	return poller_register(&picotcp_poller);
++}
++postcore_initcall(picotcp_net_init);
 -- 
 2.1.4
 
