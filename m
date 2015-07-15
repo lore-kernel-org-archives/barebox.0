@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFN3H-0005WC-TF
+ id 1ZFN3H-0005WD-TF
  for barebox@lists.infradead.org; Wed, 15 Jul 2015 13:48:49 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 3932AA0020D
+ by root.phytec.de (Postfix) with ESMTP id 43A0BA002FD
  for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 15:50:06 +0200 (CEST)
 From: Daniel Schultz <d.schultz@phytec.de>
-Date: Wed, 15 Jul 2015 15:47:54 +0200
-Message-Id: <1436968074-36098-2-git-send-email-d.schultz@phytec.de>
-In-Reply-To: <1436968074-36098-1-git-send-email-d.schultz@phytec.de>
-References: <1436968074-36098-1-git-send-email-d.schultz@phytec.de>
-MIME-Version: 1.0
+Date: Wed, 15 Jul 2015 15:47:53 +0200
+Message-Id: <1436968074-36098-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,137 +17,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: am335x: Changed timer
+Subject: [PATCH 1/2] ARM: AM335x: dts: Fix wrong GPMC size mapping for omaps
 To: barebox@lists.infradead.org
 
-VGhlIGRtdGltZXIwIGlzIHRvbyBpbmFjY3VyYXRlIHRvIGJlIHVzZWQgZm9yIG1lYXN1cmVtZW50
-cy4KV2Ugc3dpdGNoIHRvIHRoZSBtb3JlIGFjY3VyYXRlIGRtdGltZXIyLgoKU2lnbmVkLW9mZi1i
-eTogRGFuaWVsIFNjaHVsdHogPGQuc2NodWx0ekBwaHl0ZWMuZGU+Ci0tLQogYXJjaC9hcm0vbWFj
-aC1vbWFwL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgIHwgIDQgKy0KIGFyY2gvYXJtL21h
-Y2gtb21hcC9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAyICstCiBhcmNoL2FybS9t
-YWNoLW9tYXAvZG10aW1lcjAuYyAgICAgICAgICAgICAgICAgICAgfCA4NSAtLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tCiBhcmNoL2FybS9tYWNoLW9tYXAvZG10aW1lcjIuYyAgICAgICAgICAgICAgICAg
-ICAgfCA4OSArKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gtb21hcC9pbmNs
-dWRlL21hY2gvYW0zM3h4LXNpbGljb24uaCB8ICAzICsKIDUgZmlsZXMgY2hhbmdlZCwgOTUgaW5z
-ZXJ0aW9ucygrKSwgODggZGVsZXRpb25zKC0pCiBkZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0v
-bWFjaC1vbWFwL2RtdGltZXIwLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLW9t
-YXAvZG10aW1lcjIuYwoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnIGIv
-YXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcKaW5kZXggYWYzNTk3NS4uMDM3MjkwNiAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFw
-L0tjb25maWcKQEAgLTQzLDcgKzQzLDcgQEAgY29uZmlnIEFSQ0hfQU0zM1hYCiAJc2VsZWN0IENQ
-VV9WNwogCXNlbGVjdCBHRU5FUklDX0dQSU8KIAlzZWxlY3QgT0ZUUkVFCi0Jc2VsZWN0IE9NQVBf
-Q0xPQ0tfU09VUkNFX0RNVElNRVIwCisJc2VsZWN0IE9NQVBfQ0xPQ0tfU09VUkNFX0RNVElNRVIy
-CiAJaGVscAogCSAgU2F5IFkgaGVyZSBpZiB5b3UgYXJlIHVzaW5nIFRleGFzIEluc3RydW1lbnQn
-cyBBTTMzeHggYmFzZWQgcGxhdGZvcm0KIApAQCAtNTEsNyArNTEsNyBAQCBjb25maWcgQVJDSF9B
-TTMzWFgKIGNvbmZpZyBPTUFQX0NMT0NLX1NPVVJDRV9TMzJLCiAJYm9vbAogCi1jb25maWcgT01B
-UF9DTE9DS19TT1VSQ0VfRE1USU1FUjAKK2NvbmZpZyBPTUFQX0NMT0NLX1NPVVJDRV9ETVRJTUVS
-MgogCWJvb2wKIAogY29uZmlnIE9NQVBfR1BNQwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1v
-bWFwL01ha2VmaWxlIGIvYXJjaC9hcm0vbWFjaC1vbWFwL01ha2VmaWxlCmluZGV4IDY1MDcyYjku
-LmU1MTg3NTUgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9NYWtlZmlsZQorKysgYi9h
-cmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUKQEAgLTE4LDcgKzE4LDcgQEAKIG9iai0kKENPTkZJ
-R19BUkNIX09NQVApICs9IHN5c2xpYi5vIG9tYXBfZGV2aWNlcy5vIG9tYXBfZ2VuZXJpYy5vIG9t
-YXBfZmIubwogcGJsLSQoQ09ORklHX0FSQ0hfT01BUCkgKz0gc3lzbGliLm8KIG9iai0kKENPTkZJ
-R19PTUFQX0NMT0NLX1NPVVJDRV9TMzJLKSArPSBzMzJrX2Nsa3NvdXJjZS5vCi1vYmotJChDT05G
-SUdfT01BUF9DTE9DS19TT1VSQ0VfRE1USU1FUjApICs9IGRtdGltZXIwLm8KK29iai0kKENPTkZJ
-R19PTUFQX0NMT0NLX1NPVVJDRV9ETVRJTUVSMikgKz0gZG10aW1lcjIubwogb2JqLSQoQ09ORklH
-X0FSQ0hfT01BUDMpICs9IG9tYXAzX2dlbmVyaWMubyBhdXhjci5vCiBwYmwtJChDT05GSUdfQVJD
-SF9PTUFQMykgKz0gb21hcDNfZ2VuZXJpYy5vIGF1eGNyLm8KIG9iai0kKENPTkZJR19BUkNIX09N
-QVA0KSArPSBvbWFwNF9nZW5lcmljLm8gb21hcDRfY2xvY2subwpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vbWFjaC1vbWFwL2RtdGltZXIwLmMgYi9hcmNoL2FybS9tYWNoLW9tYXAvZG10aW1lcjAuYwpk
-ZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggZTUzNmY4ZC4uMDAwMDAwMAotLS0gYS9hcmNo
-L2FybS9tYWNoLW9tYXAvZG10aW1lcjAuYworKysgL2Rldi9udWxsCkBAIC0xLDg1ICswLDAgQEAK
-LS8qKgotICogQGZpbGUKLSAqIEBicmllZiBTdXBwb3J0IERNVGltZXIwIGNvdW50ZXIKLSAqCi0g
-KiBGaWxlTmFtZTogYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIwLmMKLSAqLwotLyoKLSAqIFRo
-aXMgRmlsZSBpcyBiYXNlZCBvbiBhcmNoL2FybS9tYWNoLW9tYXAvczMya19jbGtzb3VyY2UuYwot
-ICogKEMpIENvcHlyaWdodCAyMDA4Ci0gKiBUZXhhcyBJbnN0cnVtZW50cywgPHd3dy50aS5jb20+
-Ci0gKiBOaXNoYW50aCBNZW5vbiA8eDBuaXNoYW5AdGkuY29tPgotICoKLSAqIChDKSBDb3B5cmln
-aHQgMjAxMiBUZXJlc2EgR8OhbWV6LCBQaHl0ZWMgTWVzc3RlY2huaWsgR21iSAotICoKLSAqIFRo
-aXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQv
-b3IKLSAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1Ymxp
-YyBMaWNlbnNlIGFzCi0gKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlv
-bjsgZWl0aGVyIHZlcnNpb24gMiBvZgotICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlv
-bikgYW55IGxhdGVyIHZlcnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVk
-IGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkg
-V0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hB
-TlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQot
-ICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8K
-LQotI2luY2x1ZGUgPGNsb2NrLmg+Ci0jaW5jbHVkZSA8aW5pdC5oPgotI2luY2x1ZGUgPGlvLmg+
-Ci0jaW5jbHVkZSA8bWFjaC9hbTMzeHgtc2lsaWNvbi5oPgotCi0jZGVmaW5lIENMS19SQzMySwkz
-Mjc2OAotCi0jZGVmaW5lIFRJRFIJCQkweDAKLSNkZWZpbmUgVElPQ1BfQ0ZHCQkweDEwCi0jZGVm
-aW5lIElSUV9FT0kJCQkweDIwCi0jZGVmaW5lIElSUVNUQVRVU19SQVcJCTB4MjQKLSNkZWZpbmUg
-SVJRU1RBVFVTCQkweDI4Ci0jZGVmaW5lIElSUVNUQVRVU19TRVQJCTB4MmMKLSNkZWZpbmUgSVJR
-U1RBVFVTX0NMUgkJMHgzMAotI2RlZmluZSBJUlFXQUtFRU4JCTB4MzQKLSNkZWZpbmUgVENMUgkJ
-CTB4MzgKLSNkZWZpbmUgVENSUgkJCTB4M0MKLSNkZWZpbmUgVExEUgkJCTB4NDAKLSNkZWZpbmUg
-VFRHUgkJCTB4NDQKLSNkZWZpbmUgVFdQUwkJCTB4NDgKLSNkZWZpbmUgVE1BUgkJCTB4NEMKLSNk
-ZWZpbmUgVENBUjEJCQkweDUwCi0jZGVmaW5lIFRTSUNSCQkJMHg1NAotI2RlZmluZSBUQ0FSMgkJ
-CTB4NTgKLQotLyoqCi0gKiBAYnJpZWYgUHJvdmlkZSBhIHNpbXBsZSBjb3VudGVyIHJlYWQKLSAq
-Ci0gKiBAcmV0dXJuIERNVGltZXIwIGNvdW50ZXIKLSAqLwotc3RhdGljIHVpbnQ2NF90IGRtdGlt
-ZXIwX3JlYWQodm9pZCkKLXsKLQlyZXR1cm4gcmVhZGwoQU0zM1hYX0RNVElNRVIwX0JBU0UgKyBU
-Q1JSKTsKLX0KLQotc3RhdGljIHN0cnVjdCBjbG9ja3NvdXJjZSBkbXRpbWVyMF9jcyA9IHsKLQku
-cmVhZAk9IGRtdGltZXIwX3JlYWQsCi0JLm1hc2sJPSBDTE9DS1NPVVJDRV9NQVNLKDMyKSwKLQku
-c2hpZnQJPSAxMCwKLX07Ci0KLS8qKgotICogQGJyaWVmIEluaXRpYWxpemUgdGhlIENsb2NrCi0g
-KgotICogRW5hYmxlIGRtdGltZXIwLgotICoKLSAqIEByZXR1cm4gcmVzdWx0IG9mIEByZWYgaW5p
-dF9jbG9jawotICovCi1zdGF0aWMgaW50IGRtdGltZXIwX2luaXQodm9pZCkKLXsKLQlkbXRpbWVy
-MF9jcy5tdWx0ID0gY2xvY2tzb3VyY2VfaHoybXVsdChDTEtfUkMzMkssIGRtdGltZXIwX2NzLnNo
-aWZ0KTsKLQkvKiBFbmFibGUgY291bnRlciAqLwotCXdyaXRlbCgweDMsIEFNMzNYWF9ETVRJTUVS
-MF9CQVNFICsgVENMUik7Ci0KLQlyZXR1cm4gaW5pdF9jbG9jaygmZG10aW1lcjBfY3MpOwotfQot
-Ci0vKiBSdW4gbWUgYXQgYm9vdCB0aW1lICovCi1jb3JlX2luaXRjYWxsKGRtdGltZXIwX2luaXQp
-OwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIyLmMgYi9hcmNoL2FybS9t
-YWNoLW9tYXAvZG10aW1lcjIuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi40
-NDQ0MGQ3Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2RtdGltZXIyLmMK
-QEAgLTAsMCArMSw4OSBAQAorLyoqCisgKiBAZmlsZQorICogQGJyaWVmIFN1cHBvcnQgRE1UaW1l
-cjIgY291bnRlcgorICoKKyAqIEZpbGVOYW1lOiBhcmNoL2FybS9tYWNoLW9tYXAvZG10aW1lcjIu
-YworICovCisvKgorICogVGhpcyBGaWxlIGlzIGJhc2VkIG9uIGFyY2gvYXJtL21hY2gtb21hcC9z
-MzJrX2Nsa3NvdXJjZS5jCisgKiAoQykgQ29weXJpZ2h0IDIwMDgKKyAqIFRleGFzIEluc3RydW1l
-bnRzLCA8d3d3LnRpLmNvbT4KKyAqIE5pc2hhbnRoIE1lbm9uIDx4MG5pc2hhbkB0aS5jb20+Cisg
-KgorICogKEMpIENvcHlyaWdodCAyMDEyIFBoeXRlYyBNZXNzdGVjaG5payBHbWJICisgKiBBdXRo
-b3I6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgorICogKEMpIENvcHlyaWdodCAy
-MDE1IFBoeXRlYyBNZXNzdGVjaG5payBHbWJICisgKiBBdXRob3I6IERhbmllbCBTY2h1bHR6IDxk
-LnNjaHVsdHpAcGh5dGVjLmRlPgorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJl
-OyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUg
-dGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQg
-YnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgorICog
-dGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCisgKgor
-ICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBi
-ZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUg
-aW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEg
-UEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vu
-c2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKi8KKworI2luY2x1ZGUgPGNsb2NrLmg+CisjaW5j
-bHVkZSA8aW5pdC5oPgorI2luY2x1ZGUgPGlvLmg+CisjaW5jbHVkZSA8bWFjaC9hbTMzeHgtc2ls
-aWNvbi5oPgorCisjZGVmaW5lIENMS19SQzMySwkzMjc2OAorI2RlZmluZSBDTEtfTV9PU0MJMjUw
-MDAwMDAKKworI2RlZmluZSBUSURSCQkJMHgwCisjZGVmaW5lIFRJT0NQX0NGRwkJMHgxMAorI2Rl
-ZmluZSBJUlFfRU9JCQkJMHgyMAorI2RlZmluZSBJUlFTVEFUVVNfUkFXCQkweDI0CisjZGVmaW5l
-IElSUVNUQVRVUwkJMHgyOAorI2RlZmluZSBJUlFTVEFUVVNfU0VUCQkweDJjCisjZGVmaW5lIElS
-UVNUQVRVU19DTFIJCTB4MzAKKyNkZWZpbmUgSVJRV0FLRUVOCQkweDM0CisjZGVmaW5lIFRDTFIJ
-CQkweDM4CisjZGVmaW5lIFRDUlIJCQkweDNDCisjZGVmaW5lIFRMRFIJCQkweDQwCisjZGVmaW5l
-IFRUR1IJCQkweDQ0CisjZGVmaW5lIFRXUFMJCQkweDQ4CisjZGVmaW5lIFRNQVIJCQkweDRDCisj
-ZGVmaW5lIFRDQVIxCQkJMHg1MAorI2RlZmluZSBUU0lDUgkJCTB4NTQKKyNkZWZpbmUgVENBUjIJ
-CQkweDU4CisKKy8qKgorICogQGJyaWVmIFByb3ZpZGUgYSBzaW1wbGUgY291bnRlciByZWFkCisg
-KgorICogQHJldHVybiBETVRpbWVyMiBjb3VudGVyCisgKi8KK3N0YXRpYyB1aW50NjRfdCBkbXRp
-bWVyMl9yZWFkKHZvaWQpCit7CisJcmV0dXJuIHJlYWRsKEFNMzNYWF9ETVRJTUVSMl9CQVNFICsg
-VENSUik7Cit9CisKK3N0YXRpYyBzdHJ1Y3QgY2xvY2tzb3VyY2UgZG10aW1lcjJfY3MgPSB7CisJ
-LnJlYWQJPSBkbXRpbWVyMl9yZWFkLAorCS5tYXNrCT0gQ0xPQ0tTT1VSQ0VfTUFTSygzMiksCisJ
-LnNoaWZ0CT0gMTAsCit9OworCisvKioKKyAqIEBicmllZiBJbml0aWFsaXplIHRoZSBDbG9jawor
-ICoKKyAqIEVuYWJsZSBkbXRpbWVyMi4KKyAqCisgKiBAcmV0dXJuIHJlc3VsdCBvZiBAcmVmIGlu
-aXRfY2xvY2sKKyAqLworc3RhdGljIGludCBkbXRpbWVyMl9pbml0KHZvaWQpCit7CisJZG10aW1l
-cjJfY3MubXVsdCA9IGNsb2Nrc291cmNlX2h6Mm11bHQoQ0xLX01fT1NDLCBkbXRpbWVyMl9jcy5z
-aGlmdCk7CisJLyogRW5hYmxlIGNvdW50ZXIgKi8KKwl3cml0ZWwoMHgzLCBBTTMzWFhfRE1USU1F
-UjJfQkFTRSArIFRDTFIpOworCisJcmV0dXJuIGluaXRfY2xvY2soJmRtdGltZXIyX2NzKTsKK30K
-KworLyogUnVuIG1lIGF0IGJvb3QgdGltZSAqLworY29yZV9pbml0Y2FsbChkbXRpbWVyMl9pbml0
-KTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LXNp
-bGljb24uaCBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LXNpbGljb24u
-aAppbmRleCA3YzIwOWVjLi5lZTBiODQ2IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAv
-aW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2lu
-Y2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oCkBAIC02Miw2ICs2Miw5IEBACiAKIC8qIERUTVRp
-bWVyMCAqLwogI2RlZmluZSBBTTMzWFhfRE1USU1FUjBfQkFTRQkJKEFNMzNYWF9MNF9XS1VQX0JB
-U0UgKyAweDIwNTAwMCkKKy8qIERNVElpbWVyMiAqLworI2RlZmluZSBBTTMzWFhfRE1USU1FUjJf
-QkFTRQkJKEFNMzNYWF9MNF9QRVJfQkFTRSArIDB4NDAwMDApCisjZGVmaW5lIEFNMzNYWF9DTV9E
-UExMCQkJKEFNMzNYWF9MNF9XS1VQX0JBU0UgKyAweDIwMDUwMCkKIAogLyogUFJNICovCiAjZGVm
-aW5lIEFNMzNYWF9QUk1fQkFTRQkJCShBTTMzWFhfTDRfV0tVUF9CQVNFICsgMHgyMDAwMDApCi0t
-IAoxLjkuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Patch is based on Linux upstream patch:
+commit e2c5eb78a3cc9b0d69ae924c33da50a4cd6d1fa4
+Author: Tony Lindgren <tony@atomide.com>
+
+The GPMC binding is obviously very confusing as the values
+are all over the place. People seem to confuse the GPMC partition
+size for the chip select, and the device IO size within the GPMC
+partition easily.
+
+The ranges entry contains the GPMC partition size. And the
+reg entry contains the size of the IO registers of the
+device connected to the GPMC.
+
+Let's fix the issue according to the following table:
+
+Device GPMC partition size Device IO size
+connected in the ranges entry in the reg entry
+
+NAND 0x01000000 (16MB) 4
+16550 0x01000000 (16MB) 8
+smc91x 0x01000000 (16MB) 0xf
+smc911x 0x01000000 (16MB) 0xff
+OneNAND 0x01000000 (16MB) 0x20000 (128KB)
+16MB NOR 0x01000000 (16MB) 0x01000000 (16MB)
+32MB NOR 0x02000000 (32MB) 0x02000000 (32MB)
+64MB NOR 0x04000000 (64MB) 0x04000000 (64MB)
+128MB NOR 0x08000000 (128MB) 0x08000000 (128MB)
+256MB NOR 0x10000000 (256MB) 0x10000000 (256MB)
+
+Let's also add comments to the fixed entries while at it.
+
+Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ arch/arm/dts/am335x-phytec-phycard-som.dtsi | 4 ++--
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi | 4 ++--
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/dts/am335x-phytec-phycard-som.dtsi b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+index 1f1036f..c0b2456 100644
+--- a/arch/arm/dts/am335x-phytec-phycard-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
+@@ -144,9 +144,9 @@
+ 	status = "okay";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&nandflash_pins_s0>;
+-	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
++	ranges = <0 0 0x08000000 0x1000000>;	/* CS0: 16MB for NAND */
+ 	nand: nand@0,0 {
+-		reg = <0 0 0>; /* CS0, offset 0 */
++		reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
+ 		nand-bus-width = <8>;
+ 		ti,nand-ecc-opt = "bch8";
+ 		gpmc,device-nand = "true";
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+index ed8e257..5cc4455 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+@@ -228,9 +228,9 @@
+ 	status = "okay";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&nandflash_pins_s0>;
+-	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
++	ranges = <0 0 0x08000000 0x1000000>;	/* CS0: 16MB for NAND */
+ 	nand: nand@0,0 {
+-		reg = <0 0 0>; /* CS0, offset 0 */
++		reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
+ 		nand-bus-width = <8>;
+ 		ti,nand-ecc-opt = "bch8";
+ 		gpmc,device-nand = "true";
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+index fc9c9ba..71f0a97 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+@@ -240,9 +240,9 @@
+ 	status = "okay";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&nandflash_pins_s0>;
+-	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
++	ranges = <0 0 0x08000000 0x1000000>;	/* CS0: 16MB for NAND */
+ 	nand: nand@0,0 {
+-		reg = <0 0 0>; /* CS0, offset 0 */
++		reg = <0 0 4>; /* CS0, offset 0, IO size 4  */
+ 		nand-bus-width = <8>;
+ 		ti,nand-ecc-opt = "bch8";
+ 		gpmc,device-nand = "true";
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
