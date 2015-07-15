@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZFT4i-0003Wn-OB
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:41 +0000
-Received: by lagw2 with SMTP id w2so31429301lag.3
- for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:13 -0700 (PDT)
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZFT4S-0006Nc-3S
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:24 +0000
+Received: by lbbyj8 with SMTP id yj8so31749037lbb.0
+ for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:01 -0700 (PDT)
 Received: from localhost.localdomain (ppp79-139-249-41.pppoe.spdop.ru.
  [79.139.249.41])
- by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.11
+ by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.00
  for <barebox@lists.infradead.org>
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 15 Jul 2015 13:14:12 -0700 (PDT)
+ Wed, 15 Jul 2015 13:14:00 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Jul 2015 23:13:47 +0300
-Message-Id: <1436991230-14251-10-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
-References: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 15 Jul 2015 23:13:38 +0300
+Message-Id: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,130 +27,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 09/12] net: picotcp: add ping command
+Subject: [RFC 00/12] barebox picotcp integration (2015.07.15)
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- net/Makefile        |  1 +
- net/picotcp/Kconfig |  5 ++++
- net/picotcp_ping.c  | 85 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 91 insertions(+)
+I have just published latest picotcp-enabled barebox.
+Please see my 20150715.picotcp branch in my github barebox repo
+(https://github.com/frantony/barebox/tree/20150715.picotcp).
 
-diff --git a/net/Makefile b/net/Makefile
-index d5b133b..04e347f 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -13,3 +13,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
- 
- obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
- obj-$(CONFIG_CMD_PICOTCP_IFCONFIG) += picotcp_ifconfig.o
-+obj-$(CONFIG_CMD_PICOTCP_PING) += picotcp_ping.o
-diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
-index 9a2d628..cb60001 100644
---- a/net/picotcp/Kconfig
-+++ b/net/picotcp/Kconfig
-@@ -43,4 +43,9 @@ config CMD_PICOTCP_IFCONFIG
- 	depends on NET_PICO_SUPPORT_IPV4
- 	prompt "ifconfig command"
- 
-+config CMD_PICOTCP_PING
-+	bool
-+	depends on NET_PICO_SUPPORT_ICMP4
-+	prompt "ping command"
-+
- endif # NET_PICOTCP
-diff --git a/net/picotcp_ping.c b/net/picotcp_ping.c
-new file mode 100644
-index 0000000..d4ceb92
---- /dev/null
-+++ b/net/picotcp_ping.c
-@@ -0,0 +1,85 @@
-+#include <command.h>
-+#include <common.h>
-+#include <complete.h>
-+#include <driver.h>
-+#include <poller.h>
-+
-+#include <pico_stack.h>
-+#include <pico_ipv4.h>
-+#include <pico_dev_null.h>
-+#include <pico_dhcp_client.h>
-+#include <pico_icmp4.h>
-+
-+#define NUM_PING 10
-+
-+static int ping_done;
-+static int ping_code;
-+
-+/* callback function for receiving ping reply */
-+void cb_ping(struct pico_icmp4_stats *s)
-+{
-+	char host[30];
-+	int time_sec = 0;
-+	int time_msec = 0;
-+
-+	/* convert ip address from icmp4_stats structure to string */
-+	pico_ipv4_to_string(host, s->dst.addr);
-+
-+	/* get time information from icmp4_stats structure */
-+	time_sec = s->time / 1000;
-+	time_msec = s->time % 1000;
-+
-+	if (s->err == PICO_PING_ERR_REPLIED) {
-+		/* print info if no error reported in icmp4_stats structure */
-+		printf("%lu bytes from %s: icmp_req=%lu ttl=%lu time=%llu ms\n", \
-+			s->size, host, s->seq, s->ttl, s->time);
-+		if (s->seq == NUM_PING) {
-+			ping_done = 1;
-+		}
-+	} else {
-+		/* else, print error info */
-+		printf("PING %lu to %s: Error %d\n", s->seq, host, s->err);
-+		ping_done = 1;
-+	}
-+
-+	ping_code = s->err;
-+}
-+
-+static int do_picoping(int argc, char *argv[])
-+{
-+	int id;
-+
-+	if (argc < 1) {
-+		perror("picoping");
-+		return 1;
-+	}
-+
-+	id = pico_icmp4_ping(argv[1], NUM_PING, 1000, 5000, 48, cb_ping);
-+
-+	if (id == -1) {
-+		return -EIO;
-+	}
-+
-+	ping_done = 0;
-+	ping_code = PICO_PING_ERR_PENDING;
-+
-+	while (!ping_done) {
-+		if (ctrlc()) {
-+			break;
-+		}
-+		get_time_ns();
-+		poller_call();
-+	}
-+
-+	pico_icmp4_ping_abort(id);
-+
-+	if (ping_code != PICO_PING_ERR_REPLIED) {
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_START(picoping)
-+	.cmd		= do_picoping,
-+BAREBOX_CMD_END
+This version is based on the latest barebox-next and picotcp v1.5.0
+(there is also picotcp v1.5.1, but is has no interested
+for barebox changes since v1.5.0).
+
+Changes since 2015.06.14 (see http://lists.infradead.org/pipermail/barebox/2015-June/023749.html):
+
+  * drop picotcp tftp support;
+    make it possible to use some barebox' network applications
+    on top of picotcp udp packet ip:
+
+      * use barebox' tftp support on top of picotcp;
+      * use barebox' nfs support on top of picotcp;
+      * use barebox' dns support on top of picotcp;
+
+    Anyway new 'picoping' command uses picotcp ICMP support
+    because it makes possible to realize traditional *NIX 'ping'
+    program behaviour in barebox.
+
+  * drop all unused picotcp files;
+
+  * import picotcp dhcp stuff temporary skipped
+    we can revive it in any moment but
+    it's better to adapt barebox' dhcp implementation;
+
+Here is note/todo list:
+
+  1. with picotcp we can't easely use 'tftp' command with old syntax
+     (no $<current network interface>.serverip anymore);
+
+  2. just now picotcp-based tftp/nfs file transfer is slower than
+     old realisation (partialy it is my bad, e.g. extra memory copy operation
+     is used for code simplification); see Very Simple Benchmarks below for details;
+
+  3. rework barebox dhcp, ifup and netconsole realization for working on top of picotcp.
+
+
+Very Simple Benchmarks
+======================
+
+I have sandbox barebox (192.168.1.2) and nfs- and tftp- servers on the same host (192.168.1.1).
+I copy 16MiB (16777216 bytes) file from server to sandbox barebox over network several times.
+I use time command inside sandox barebox for computing transfer time.
+
+barebox at barebox sandbox:/ eth0.ipaddr=192.168.1.2
+barebox at barebox sandbox:/ mount -t tftp 192.168.1.1 /mnt
+...
+barebox at barebox sandbox:/ time cp /mnt/16M .
+time: 546ms
+
+Here is typical transfer time values:
+
++--------+--------------+--------------+
+|        |   U-boot     |   picotcp    |
+|        |    stack     |    stack     |
++--------+--------------+--------------+
+|        |              |              |
+|  tftp  |    546ms     |    859ms     |
+|        |              |              |
++--------+--------------+--------------+
+|        |              |              |
+|  nfs   |   1037ms     |   1393ms     |
+|        |              |              |
++--------+--------------+--------------+
+
+There are some rather simple possibilities to slighly improve picotcp-barebox performance:
+
+  * drop extra memory copy;
+  * drop extra pico_tick() calls (is_timeout() calls poller_call(), so there is no need
+                                  to call poller_call() explicitly in nfs/tftp code);
+  * there is an issue with sustained tftp small file copy. E.g.
+
+         barebox at barebox sandbox:/ ifconfig eth 192.168.1.2 255.255.255.0
+         Assigned ipv4 192.168.1.2 to device eth
+         barebox at barebox sandbox:/ mount -t tftp 192.168.1.1 /mnt
+         barebox at barebox sandbox:/ while true; do time cp /mnt/1M . ; done
+         ...
+         Warning: I have 122 timers
+         Warning: I have 121 timers
+         time: 48ms
+         Warning: I have 122 timers
+         Warning: I have 121 timers
+         time: 53ms
+         Warning: I have 122 timers
+         Warning: I have 121 timers
+         time: 54ms
+
+
+Antony Pavlov (12):
+  picotcp: add barebox target support
+  picotcp: switch to Kbuild
+  net: add initial picotcp support
+  WIP: fs/nfs.c: convert to picotcp
+  WIP: fs/tftp.c: convert to picotcp
+  WIP: net/dns: convert to picotcp
+  net: picotcp: add test_picotcp command
+  net: picotcp: add ifconfig command
+  net: picotcp: add ping command
+  net: picotcp: add route command
+  sandbox_defconfig: switch to picotcp
+  WIP: sandbox_defconfig: enable network testing-related stuff
+
+ Makefile                                |   1 +
+ arch/sandbox/configs/sandbox_defconfig  |  12 ++
+ commands/Kconfig                        |   4 +
+ fs/nfs.c                                | 150 +++++++++++++++++++++---
+ fs/tftp.c                               | 199 ++++++++++++++++++++++++++++----
+ include/net.h                           |   3 +
+ include/pico_defines.h                  |   0
+ include/stdint.h                        |   1 +
+ net/Kconfig                             |  17 +++
+ net/Makefile                            |   8 ++
+ net/dns.c                               | 101 ++++++++++++++--
+ net/eth.c                               |  71 ++++++++++++
+ net/net.c                               |  10 ++
+ net/picotcp.c                           |  20 ++++
+ net/picotcp/.gitignore                  |   1 +
+ net/picotcp/Kconfig                     |  56 +++++++++
+ net/picotcp/Makefile                    |  30 +++++
+ net/picotcp/include/arch/pico_barebox.h |  76 ++++++++++++
+ net/picotcp/include/pico_config.h       |   2 +
+ net/picotcp/modules/Makefile            |   8 ++
+ net/picotcp/stack/Makefile              |   7 ++
+ net/picotcp_ifconfig.c                  | 116 +++++++++++++++++++
+ net/picotcp_ping.c                      |  85 ++++++++++++++
+ net/picotcp_route.c                     |  37 ++++++
+ net/picotcp_test_ipv4.c                 |  96 +++++++++++++++
+ 25 files changed, 1063 insertions(+), 48 deletions(-)
+ create mode 100644 include/pico_defines.h
+ create mode 100644 include/stdint.h
+ create mode 100644 net/picotcp.c
+ create mode 100644 net/picotcp/Kconfig
+ create mode 100644 net/picotcp/Makefile
+ create mode 100644 net/picotcp/include/arch/pico_barebox.h
+ create mode 100644 net/picotcp/modules/Makefile
+ create mode 100644 net/picotcp/stack/Makefile
+ create mode 100644 net/picotcp_ifconfig.c
+ create mode 100644 net/picotcp_ping.c
+ create mode 100644 net/picotcp_route.c
+ create mode 100644 net/picotcp_test_ipv4.c
+
 -- 
 2.1.4
 
