@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFFW1-0003Lj-2X
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 05:45:58 +0000
-Date: Wed, 15 Jul 2015 07:45:32 +0200
+ id 1ZFFcz-0006iu-Uf
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 05:53:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150715054532.GU18700@pengutronix.de>
-References: <1436867794-15409-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1436867794-15409-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 15 Jul 2015 07:52:46 +0200
+Message-Id: <1436939566-20823-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1436939566-20823-1-git-send-email-s.hauer@pengutronix.de>
+References: <1436939566-20823-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,92 +16,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v2] WIP: fbconsole: not so dirty font selection via
- param_enum
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] regulator: Add support for regulator-boot-on device tree
+ property
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Antony,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/regulator/core.c | 15 +++++++++++++++
+ include/regulator.h      |  1 +
+ 2 files changed, 16 insertions(+)
 
-On Tue, Jul 14, 2015 at 12:56:34PM +0300, Antony Pavlov wrote:
-> Alas I can't find any tab-complition for param_enum,
-> so addition 'fonts' command is introduced.
-> 
-> Usage example:
-> ==============
-> 
->     barebox@barebox sandbox:/ fonts
->     VGA8x16
->     MINI4x6
->     barebox@barebox sandbox:/ fbconsole0.font=MINI4x6
->     barebox@barebox sandbox:/ fbconsole0.active=o
->     fb0: framebuffer console 160x80 activated
->     barebox@barebox sandbox:/ fbconsole0.font=VGA8x16
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/video/fbconsole.c | 60 +++++++++++++++++++++++++++++++++++++++--------
->  include/linux/font.h      | 11 ++++++---
->  lib/fonts/fonts.c         | 39 ++++++++++++++++--------------
->  3 files changed, 80 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-> index 36fd138..7df89ab 100644
-> --- a/drivers/video/fbconsole.c
-> +++ b/drivers/video/fbconsole.c
-> @@ -20,6 +20,10 @@ struct fbc_priv {
->  	struct fb_info *fb;
->  
->  	struct screen *sc;
-> +
-> +	struct param_d *par_font;
-> +	int par_font_val;
-> +
->  /* FIXME */
->  #define VIDEO_FONT_CHARS 256
->  	struct image *chars[VIDEO_FONT_CHARS];
-> @@ -47,6 +51,16 @@ static int fbc_tstc(struct console_device *cdev)
->  	return 0;
->  }
->  
-> +static void cls(struct fbc_priv *priv)
-> +{
-> +	void *buf = gui_screen_render_buffer(priv->sc);
-> +
-> +	memset(buf, 0, priv->fb->line_length * priv->fb->yres);
-> +
-> +	priv->x = 0;
-> +	priv->y = 0;
-
-I found out this is not entirely correct. Clearing the screen (\e[2J)
-and putting the cursor top left (\e[;H) are two different things.
-
-I integrated the changes from this patch, but changed cls() not to put
-the cursor in home position.
-
-Also I integrated some other changes:
-
-- Fix fbc_set_active, no longer lose memory when called multiple times
-- Add 7x14 font
-- properly export get_pixel
-- Add fb_enable/fb_disable function so that we do not have to call into
-  the fb_info ops directly
-- Make splash screen work again, was broken by "graphics_utils: Let
-  fb_open allocate the screen"
-
-Checkout the result on -next.
-
-Sascha
-
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 96bf846..73f5c6e 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -89,6 +89,7 @@ static int regulator_disable_internal(struct regulator_internal *ri)
+ static struct regulator_internal * __regulator_register(struct regulator_dev *rd, const char *name)
+ {
+ 	struct regulator_internal *ri;
++	int ret;
+ 
+ 	ri = xzalloc(sizeof(*ri));
+ 	ri->rdev = rd;
+@@ -100,7 +101,19 @@ static struct regulator_internal * __regulator_register(struct regulator_dev *rd
+ 	if (name)
+ 		ri->name = xstrdup(name);
+ 
++	if (rd->boot_on) {
++		ret = regulator_enable_internal(ri);
++		if (ret && ret != -ENOSYS)
++			goto err;
++	}
++
+ 	return ri;
++err:
++	list_del(&ri->list);
++	free(ri->name);
++	free(ri);
++
++	return ERR_PTR(ret);
+ }
+ 
+ 
+@@ -117,6 +130,8 @@ int of_regulator_register(struct regulator_dev *rd, struct device_node *node)
+ 	struct regulator_internal *ri;
+ 	const char *name;
+ 
++	rd->boot_on = of_property_read_bool(node, "regulator-boot-on");
++
+ 	name = of_get_property(node, "regulator-name", NULL);
+ 
+ 	ri = __regulator_register(rd, name);
+diff --git a/include/regulator.h b/include/regulator.h
+index a43d3df..367e13f 100644
+--- a/include/regulator.h
++++ b/include/regulator.h
+@@ -6,6 +6,7 @@ struct regulator;
+ 
+ struct regulator_dev {
+ 	struct regulator_ops *ops;
++	int boot_on;
+ };
+ 
+ struct regulator_ops {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
