@@ -1,14 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFN3H-0005WD-TF
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 13:48:49 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 43A0BA002FD
- for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 15:50:06 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Wed, 15 Jul 2015 15:47:53 +0200
-Message-Id: <1436968074-36098-1-git-send-email-d.schultz@phytec.de>
+Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZFT4T-0006Ne-4q
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:14:25 +0000
+Received: by lagx9 with SMTP id x9so31437664lag.1
+ for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:14:03 -0700 (PDT)
+Received: from localhost.localdomain (ppp79-139-249-41.pppoe.spdop.ru.
+ [79.139.249.41])
+ by smtp.gmail.com with ESMTPSA id ao8sm531319lac.38.2015.07.15.13.14.01
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Wed, 15 Jul 2015 13:14:02 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 15 Jul 2015 23:13:39 +0300
+Message-Id: <1436991230-14251-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
+References: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,97 +29,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: AM335x: dts: Fix wrong GPMC size mapping for omaps
+Subject: [RFC 01/12] picotcp: add barebox target support
 To: barebox@lists.infradead.org
 
-Patch is based on Linux upstream patch:
-commit e2c5eb78a3cc9b0d69ae924c33da50a4cd6d1fa4
-Author: Tony Lindgren <tony@atomide.com>
-
-The GPMC binding is obviously very confusing as the values
-are all over the place. People seem to confuse the GPMC partition
-size for the chip select, and the device IO size within the GPMC
-partition easily.
-
-The ranges entry contains the GPMC partition size. And the
-reg entry contains the size of the IO registers of the
-device connected to the GPMC.
-
-Let's fix the issue according to the following table:
-
-Device GPMC partition size Device IO size
-connected in the ranges entry in the reg entry
-
-NAND 0x01000000 (16MB) 4
-16550 0x01000000 (16MB) 8
-smc91x 0x01000000 (16MB) 0xf
-smc911x 0x01000000 (16MB) 0xff
-OneNAND 0x01000000 (16MB) 0x20000 (128KB)
-16MB NOR 0x01000000 (16MB) 0x01000000 (16MB)
-32MB NOR 0x02000000 (32MB) 0x02000000 (32MB)
-64MB NOR 0x04000000 (64MB) 0x04000000 (64MB)
-128MB NOR 0x08000000 (128MB) 0x08000000 (128MB)
-256MB NOR 0x10000000 (256MB) 0x10000000 (256MB)
-
-Let's also add comments to the fixed entries while at it.
-
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/dts/am335x-phytec-phycard-som.dtsi | 4 ++--
- arch/arm/dts/am335x-phytec-phycore-som.dtsi | 4 ++--
- arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ net/picotcp/include/arch/pico_barebox.h | 76 +++++++++++++++++++++++++++++++++
+ net/picotcp/include/pico_config.h       |  2 +
+ 2 files changed, 78 insertions(+)
 
-diff --git a/arch/arm/dts/am335x-phytec-phycard-som.dtsi b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
-index 1f1036f..c0b2456 100644
---- a/arch/arm/dts/am335x-phytec-phycard-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phycard-som.dtsi
-@@ -144,9 +144,9 @@
- 	status = "okay";
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&nandflash_pins_s0>;
--	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
-+	ranges = <0 0 0x08000000 0x1000000>;	/* CS0: 16MB for NAND */
- 	nand: nand@0,0 {
--		reg = <0 0 0>; /* CS0, offset 0 */
-+		reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
- 		nand-bus-width = <8>;
- 		ti,nand-ecc-opt = "bch8";
- 		gpmc,device-nand = "true";
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-index ed8e257..5cc4455 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
-@@ -228,9 +228,9 @@
- 	status = "okay";
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&nandflash_pins_s0>;
--	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
-+	ranges = <0 0 0x08000000 0x1000000>;	/* CS0: 16MB for NAND */
- 	nand: nand@0,0 {
--		reg = <0 0 0>; /* CS0, offset 0 */
-+		reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
- 		nand-bus-width = <8>;
- 		ti,nand-ecc-opt = "bch8";
- 		gpmc,device-nand = "true";
-diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-index fc9c9ba..71f0a97 100644
---- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-+++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-@@ -240,9 +240,9 @@
- 	status = "okay";
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&nandflash_pins_s0>;
--	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
-+	ranges = <0 0 0x08000000 0x1000000>;	/* CS0: 16MB for NAND */
- 	nand: nand@0,0 {
--		reg = <0 0 0>; /* CS0, offset 0 */
-+		reg = <0 0 4>; /* CS0, offset 0, IO size 4  */
- 		nand-bus-width = <8>;
- 		ti,nand-ecc-opt = "bch8";
- 		gpmc,device-nand = "true";
+diff --git a/net/picotcp/include/arch/pico_barebox.h b/net/picotcp/include/arch/pico_barebox.h
+new file mode 100644
+index 0000000..11e6ed3
+--- /dev/null
++++ b/net/picotcp/include/arch/pico_barebox.h
+@@ -0,0 +1,76 @@
++#ifndef PICO_SUPPORT_BAREBOX
++#define PICO_SUPPORT_BAREBOX
++
++#include <string.h>
++#include <stdio.h>
++#include <malloc.h>
++#include <clock.h>
++#include <linux/math64.h>
++
++/*
++   #define MEMORY_MEASURE
++ */
++#define dbg printf
++
++#define stack_fill_pattern(...) do {} while(0)
++#define stack_count_free_words(...) do {} while(0)
++#define stack_get_free_words() (0)
++
++/* measure allocated memory */
++#ifdef MEMORY_MEASURE
++extern uint32_t max_mem;
++extern uint32_t cur_mem;
++
++static inline void *pico_zalloc(int x)
++{
++    uint32_t *ptr;
++    if ((cur_mem + x) > (10 * 1024))
++        return NULL;
++
++    ptr = (uint32_t *)calloc(x + 4, 1);
++    *ptr = (uint32_t)x;
++    cur_mem += x;
++    if (cur_mem > max_mem) {
++        max_mem = cur_mem;
++    }
++
++    return (void*)(ptr + 1);
++}
++
++static inline void pico_free(void *x)
++{
++    uint32_t *ptr = (uint32_t*)(((uint8_t *)x) - 4);
++    cur_mem -= *ptr;
++    free(ptr);
++}
++#else
++
++#define pico_zalloc(x) calloc(x, 1)
++#define pico_free(x) free(x)
++#endif
++
++static inline uint32_t PICO_TIME(void)
++{
++    uint64_t time;
++
++    time = get_time_ns();
++    do_div(time, 1000000000);
++
++    return (uint32_t) time;
++}
++
++static inline uint32_t PICO_TIME_MS(void)
++{
++    uint64_t time;
++
++    time = get_time_ns();
++    do_div(time, 1000000);
++
++    return (uint32_t) time;
++}
++
++static inline void PICO_IDLE(void)
++{
++}
++
++#endif /* PICO_SUPPORT_BAREBOX */
+diff --git a/net/picotcp/include/pico_config.h b/net/picotcp/include/pico_config.h
+index 6b9c040..79aaadc 100644
+--- a/net/picotcp/include/pico_config.h
++++ b/net/picotcp/include/pico_config.h
+@@ -211,6 +211,8 @@ static inline uint64_t long_long_be(uint64_t le)
+ # include "arch/pico_none.h"
+ #elif defined GENERIC
+ # include "arch/pico_generic_gcc.h"
++#elif defined __BAREBOX__
++# include "arch/pico_barebox.h"
+ #elif defined __KERNEL__
+ # include "arch/pico_linux.h"
+ /* #elif defined ... */
 -- 
-1.9.1
+2.1.4
 
 
 _______________________________________________
