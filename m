@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFFcz-0006it-Uf
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 05:53:10 +0000
+ id 1ZFFm4-0001GR-9K
+ for barebox@lists.infradead.org; Wed, 15 Jul 2015 06:02:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Jul 2015 07:52:45 +0200
-Message-Id: <1436939566-20823-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 15 Jul 2015 08:02:03 +0200
+Message-Id: <1436940123-25118-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1436940123-25118-1-git-send-email-s.hauer@pengutronix.de>
+References: <1436940123-25118-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,136 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] regulator: Factor out functions to work with
- regulator_internal
+Subject: [PATCH 2/2] scripts: imx-image: Make in-place capable
 To: Barebox List <barebox@lists.infradead.org>
 
-Internally we only have a struct regulator_internal, so factor
-out regulator_enable_internal and regulator_disable_internal
-functions which can be called from regulator internal code.
+Read in the source image completely before starting to write the output
+image. This makes it possible to pass the same file as input and output.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/regulator/core.c | 86 +++++++++++++++++++++++++-----------------------
- 1 file changed, 45 insertions(+), 41 deletions(-)
+ scripts/imx/imx-image.c | 46 +++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index a3c9e41..96bf846 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -43,6 +43,49 @@ struct regulator {
- 	struct device_d *dev;
- };
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index a588882..c13e059 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -666,11 +666,11 @@ int main(int argc, char *argv[])
+ 	char *imagename = NULL;
+ 	char *outfile = NULL;
+ 	void *buf;
+-	size_t image_size = 0, load_size;
++	size_t image_size = 0, load_size, insize;
++	void *infile;
+ 	struct stat s;
+ 	int infd, outfd;
+ 	int dcd_only = 0;
+-	int now = 0;
  
-+static int regulator_enable_internal(struct regulator_internal *ri)
-+{
-+	int ret;
-+
-+	if (ri->enable_count) {
-+		ri->enable_count++;
-+		return 0;
+ 	while ((opt = getopt(argc, argv, "c:hf:o:bdp")) != -1) {
+ 		switch (opt) {
+@@ -779,6 +779,24 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
+ 
++	infd = open(imagename, O_RDONLY);
++	if (infd < 0) {
++		perror("open");
++		exit(1);
 +	}
 +
-+	if (!ri->rdev->ops->enable)
-+		return -ENOSYS;
-+
-+	ret = ri->rdev->ops->enable(ri->rdev);
++	ret = fstat(infd, &s);
 +	if (ret)
 +		return ret;
 +
-+	if (ri->enable_time_us)
-+		udelay(ri->enable_time_us);
++	insize = s.st_size;
++	infile = malloc(insize);
++	if (!infile)
++		exit(1);
 +
-+	ri->enable_count++;
++	xread(infd, infile, insize);
++	close(infd);
 +
-+	return 0;
-+}
-+
-+static int regulator_disable_internal(struct regulator_internal *ri)
-+{
-+	int ret;
-+
-+	if (!ri->enable_count)
-+		return -EINVAL;
-+
-+	if (!ri->rdev->ops->disable)
-+		return -ENOSYS;
-+
-+	ret = ri->rdev->ops->disable(ri->rdev);
-+	if (ret)
-+		return ret;
-+
-+	ri->enable_count--;
-+
-+	return 0;
-+}
-+
- static struct regulator_internal * __regulator_register(struct regulator_dev *rd, const char *name)
- {
- 	struct regulator_internal *ri;
-@@ -239,32 +282,10 @@ struct regulator *regulator_get(struct device_d *dev, const char *supply)
-  */
- int regulator_enable(struct regulator *r)
- {
--	struct regulator_internal *ri;
--	int ret;
--
- 	if (!r)
- 		return 0;
+ 	outfd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+ 	if (outfd < 0) {
+ 		perror("open");
+@@ -799,30 +817,12 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
  
--	ri = r->ri;
+-	infd = open(imagename, O_RDONLY);
+-	if (infd < 0) {
+-		perror("open");
++	ret = xwrite(outfd, infile, insize);
++	if (ret) {
++		perror("write");
+ 		exit(1);
+ 	}
+ 
+-	while (image_size) {
+-		now = image_size < 4096 ? image_size : 4096;
 -
--	if (ri->enable_count) {
--		ri->enable_count++;
--		return 0;
+-		ret = xread(infd, buf, now);
+-		if (ret) {
+-			perror("read");
+-			exit(1);
+-		}
+-
+-		ret = xwrite(outfd, buf, now);
+-		if (ret) {
+-			perror("write");
+-			exit(1);
+-		}
+-
+-		image_size -= now;
 -	}
 -
--	if (!ri->rdev->ops->enable)
--		return -ENOSYS;
--
--	ret = ri->rdev->ops->enable(ri->rdev);
--	if (ret)
--		return ret;
--
--	if (ri->enable_time_us)
--		udelay(ri->enable_time_us);
--
--	ri->enable_count++;
--
--	return 0;
-+	return regulator_enable_internal(r->ri);
- }
- 
- /*
-@@ -278,27 +299,10 @@ int regulator_enable(struct regulator *r)
-  */
- int regulator_disable(struct regulator *r)
- {
--	struct regulator_internal *ri;
--	int ret;
--
- 	if (!r)
- 		return 0;
- 
--	ri = r->ri;
--
--	if (!ri->enable_count)
--		return -EINVAL;
--
--	if (!ri->rdev->ops->disable)
--		return -ENOSYS;
--
--	ret = ri->rdev->ops->disable(ri->rdev);
--	if (ret)
--		return ret;
--
--	ri->enable_count--;
--
--	return 0;
-+	return regulator_disable_internal(r->ri);
- }
- 
- static void regulator_print_one(struct regulator_internal *ri)
+ 	ret = close(outfd);
+ 	if (ret) {
+ 		perror("close");
 -- 
 2.1.4
 
