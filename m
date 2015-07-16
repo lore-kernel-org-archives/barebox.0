@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFdun-0000AO-GG
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:49:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 16 Jul 2015 09:48:45 +0200
-Message-Id: <1437032926-25680-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1437032926-25680-1-git-send-email-s.hauer@pengutronix.de>
-References: <1437032926-25680-1-git-send-email-s.hauer@pengutronix.de>
+ id 1ZFeEl-00040H-D6
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:09:48 +0000
+Date: Thu, 16 Jul 2015 10:09:25 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <20150716080925.GA30696@pengutronix.de>
+References: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1436890599-31412-3-git-send-email-s.trumtrar@pengutronix.de>
+ <20150716061208.GY18700@pengutronix.de>
+ <20150716070154.GF5161@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150716070154.GF5161@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,53 +21,141 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] scripts: imx-image: Do not pad image
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 3/5] ARM: socfpga: add bbu handler for spi nor
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-We have to pad the load size to the next 4k boundary, but only for the
-HAB4 case we actually care what data is loaded in the rest of the image.
-This lets the padding depend on the prepare_sign option.
+On Thu, Jul 16, 2015 at 09:01:54AM +0200, Sascha Hauer wrote:
+> On Thu, Jul 16, 2015 at 08:12:08AM +0200, Sascha Hauer wrote:
+> > On Tue, Jul 14, 2015 at 06:16:37PM +0200, Steffen Trumtrar wrote:
+> > > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > > ---
+> > >  arch/arm/mach-socfpga/Kconfig               |  8 +++
+> > >  arch/arm/mach-socfpga/Makefile              |  1 +
+> > >  arch/arm/mach-socfpga/include/mach/bbu.h    | 15 +++++
+> > >  arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c | 86 +++++++++++++++++++++++++++++
+> > >  4 files changed, 110 insertions(+)
+> > >  create mode 100644 arch/arm/mach-socfpga/include/mach/bbu.h
+> > >  create mode 100644 arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
+> > > 
+> > > diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
+> > > index 90b3533b1ffb..a85749b7f829 100644
+> > > --- a/arch/arm/mach-socfpga/Kconfig
+> > > +++ b/arch/arm/mach-socfpga/Kconfig
+> > > @@ -20,4 +20,12 @@ config MACH_SOCFPGA_TERASIC_SOCKIT
+> > >  	select HAVE_DEFAULT_ENVIRONMENT_NEW
+> > >  	bool "Terasic SoCKit"
+> > >  
+> > > +config BAREBOX_UPDATE_SOCFPGA_SPI_NOR
+> > > +	prompt "barebox update SPI NOR XLOAD handler"
+> > > +	bool
+> > > +	depends on BAREBOX_UPDATE
+> > > +	depends on SPI_CADENCE_QUADSPI
+> > > +	help
+> > > +	  Say Y for barebox update SPI NOR XLOAD handler.
+> > > +
+> > >  endif
+> > > diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
+> > > index b81d57da26fd..12c5252d1a6e 100644
+> > > --- a/arch/arm/mach-socfpga/Makefile
+> > > +++ b/arch/arm/mach-socfpga/Makefile
+> > > @@ -3,3 +3,4 @@ pbl-y += init.o freeze-controller.o scan-manager.o system-manager.o
+> > >  pbl-y += clock-manager.o
+> > >  obj-$(CONFIG_ARCH_SOCFPGA_XLOAD) += xload.o
+> > >  obj-$(CONFIG_ARCH_SOCFPGA_FPGA) += fpga.o
+> > > +obj-$(CONFIG_BAREBOX_UPDATE_SOCFPGA_SPI_NOR) += socfpga_bbu_spi_nor.o
+> > > diff --git a/arch/arm/mach-socfpga/include/mach/bbu.h b/arch/arm/mach-socfpga/include/mach/bbu.h
+> > > new file mode 100644
+> > > index 000000000000..e4846d36bc5d
+> > > --- /dev/null
+> > > +++ b/arch/arm/mach-socfpga/include/mach/bbu.h
+> > > @@ -0,0 +1,15 @@
+> > > +#ifndef __MACH_BBU_H
+> > > +#define __MACH_BBU_H
+> > > +
+> > > +#include <bbu.h>
+> > > +
+> > > +#ifdef CONFIG_BAREBOX_UPDATE_SOCFPGA_SPI_NOR
+> > > +int socfpga_bbu_spi_nor_register_handler(const char *name, char *devicefile);
+> > > +#else
+> > > +static inline int socfpga_bbu_spi_nor_register_handler(const char *name, char *devicefile)
+> > > +{
+> > > +	return 0;
+> > > +}
+> > > +#endif
+> > > +
+> > > +#endif
+> > > diff --git a/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c b/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
+> > > new file mode 100644
+> > > index 000000000000..cf44bc81c60b
+> > > --- /dev/null
+> > > +++ b/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
+> > > @@ -0,0 +1,86 @@
+> > > +/*
+> > > + * Copyright (c) 2015 Pengutronix, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > > + *
+> > > + * This program is free software; you can redistribute it and/or modify
+> > > + * it under the terms of the GNU General Public License version 2
+> > > + * as published by the Free Software Foundation.
+> > > + *
+> > > + * This program is distributed in the hope that it will be useful,
+> > > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> > > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> > > + * GNU General Public License for more details.
+> > > + */
+> > > +#include <common.h>
+> > > +#include <malloc.h>
+> > > +#include <bbu.h>
+> > > +#include <fs.h>
+> > > +#include <fcntl.h>
+> > > +#include <linux/stat.h>
+> > > +
+> > > +static int spi_nor_handler(struct bbu_handler *handler,
+> > > +			   struct bbu_data *data)
+> > > +{
+> > > +	int fd, ret;
+> > > +	int *header;
+> > > +
+> > > +	if (file_detect_type(data->image, data->len) != filetype_arm_barebox) {
+> > > +		if (!bbu_force(data, "Not an ARM barebox image"))
+> > > +			return -EINVAL;
+> > > +	}
+> > > +
+> > > +	header = data->image;
+> > > +
+> > > +	if (!header[0x40] == 0x31305341) {
+> > 
+> > This will never be true. header[0x40] != 0x31305341 instead?
+> > Also you probably want to expliticitly use u32 instead of int.
+> 
+> Does the fixed test return true for the barebox image?
+> 
+> Note now there's also bbu_register_std_file_update() which will do the
+> same as your code in a generic way. The only thing that won't work with
+> the generic code is this check above.
+> 
 
-Background for this patch is a new yet-to-be-introduced image loading
-mechanism for i.MX. This new mechanism only loads the PBL portion of
-the image to memory, and not the whole image anymore. This means that
-the image in this case changes from:
+Ah, that sounds good. I guess the way to go would be defining a new
+filetype ala filetype_ch_image for OMAP. This seems to be the same thing
+in the end.
+The magic value gets written by scripts/socfpga_mkimage and is mandatory.
+(Theoretically I would also have to validate the crc32 checksum, too).
 
-i.MX header (with loadsize: whole image), PBL, payload, padding
+What is not possible then is writing multiple redundant copies of the
+prebootloader it seems.
 
-to:
+Regards,
+Steffen
 
-i.MX header (with loadsize: header + PBL + padding), PBL, padding, payload
-
-With the padding between PBL and payload we are no longer able to find
-the payload, so we cannot add the padding there.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- scripts/imx/imx-image.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index e765c1d..f0e8ca3 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -825,7 +825,7 @@ int main(int argc, char *argv[])
- 
- 	/* pad until next 4k boundary */
- 	now = 4096 - now;
--	if (now) {
-+	if (prepare_sign && now) {
- 		memset(buf, 0x5a, now);
- 
- 		ret = xwrite(outfd, buf, now);
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
