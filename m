@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFdge-0005yI-Gx
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:34:33 +0000
-Date: Thu, 16 Jul 2015 09:34:10 +0200
+ id 1ZFdus-0000Cp-Dy
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:49:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150716073410.GB18700@pengutronix.de>
-References: <1436968074-36098-1-git-send-email-d.schultz@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1436968074-36098-1-git-send-email-d.schultz@phytec.de>
+Date: Thu, 16 Jul 2015 09:48:46 +0200
+Message-Id: <1437032926-25680-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1437032926-25680-1-git-send-email-s.hauer@pengutronix.de>
+References: <1437032926-25680-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +16,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: AM335x: dts: Fix wrong GPMC size mapping for
- omaps
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] scripts: imx-image: Make in-place capable
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Jul 15, 2015 at 03:47:53PM +0200, Daniel Schultz wrote:
-> Patch is based on Linux upstream patch:
-> commit e2c5eb78a3cc9b0d69ae924c33da50a4cd6d1fa4
-> Author: Tony Lindgren <tony@atomide.com>
-> 
-> The GPMC binding is obviously very confusing as the values
-> are all over the place. People seem to confuse the GPMC partition
-> size for the chip select, and the device IO size within the GPMC
-> partition easily.
-> 
-> The ranges entry contains the GPMC partition size. And the
-> reg entry contains the size of the IO registers of the
-> device connected to the GPMC.
-> 
-> Let's fix the issue according to the following table:
-> 
-> Device GPMC partition size Device IO size
-> connected in the ranges entry in the reg entry
-> 
-> NAND 0x01000000 (16MB) 4
-> 16550 0x01000000 (16MB) 8
-> smc91x 0x01000000 (16MB) 0xf
-> smc911x 0x01000000 (16MB) 0xff
-> OneNAND 0x01000000 (16MB) 0x20000 (128KB)
-> 16MB NOR 0x01000000 (16MB) 0x01000000 (16MB)
-> 32MB NOR 0x02000000 (32MB) 0x02000000 (32MB)
-> 64MB NOR 0x04000000 (64MB) 0x04000000 (64MB)
-> 128MB NOR 0x08000000 (128MB) 0x08000000 (128MB)
-> 256MB NOR 0x10000000 (256MB) 0x10000000 (256MB)
-> 
-> Let's also add comments to the fixed entries while at it.
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Read in the source image completely before starting to write the output
+image. This makes it possible to pass the same file as input and output.
 
-Applied this one, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/imx/imx-image.c | 47 ++++++++++++++++++++++++-----------------------
+ 1 file changed, 24 insertions(+), 23 deletions(-)
 
-Sascha
-
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index f0e8ca3..e8d9dbf 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -666,7 +666,8 @@ int main(int argc, char *argv[])
+ 	char *imagename = NULL;
+ 	char *outfile = NULL;
+ 	void *buf;
+-	size_t image_size = 0, load_size;
++	size_t image_size = 0, load_size, insize;
++	void *infile;
+ 	struct stat s;
+ 	int infd, outfd;
+ 	int dcd_only = 0;
+@@ -779,6 +780,24 @@ int main(int argc, char *argv[])
+ 		exit(1);
+ 	}
+ 
++	infd = open(imagename, O_RDONLY);
++	if (infd < 0) {
++		perror("open");
++		exit(1);
++	}
++
++	ret = fstat(infd, &s);
++	if (ret)
++		return ret;
++
++	insize = s.st_size;
++	infile = malloc(insize);
++	if (!infile)
++		exit(1);
++
++	xread(infd, infile, insize);
++	close(infd);
++
+ 	outfd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+ 	if (outfd < 0) {
+ 		perror("open");
+@@ -799,32 +818,14 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	infd = open(imagename, O_RDONLY);
+-	if (infd < 0) {
+-		perror("open");
++	ret = xwrite(outfd, infile, insize);
++	if (ret) {
++		perror("write");
+ 		exit(1);
+ 	}
+ 
+-	while (image_size) {
+-		now = image_size < 4096 ? image_size : 4096;
+-
+-		ret = xread(infd, buf, now);
+-		if (ret) {
+-			perror("read");
+-			exit(1);
+-		}
+-
+-		ret = xwrite(outfd, buf, now);
+-		if (ret) {
+-			perror("write");
+-			exit(1);
+-		}
+-
+-		image_size -= now;
+-	}
+-
+ 	/* pad until next 4k boundary */
+-	now = 4096 - now;
++	now = 4096 - (insize % 4096);
+ 	if (prepare_sign && now) {
+ 		memset(buf, 0x5a, now);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
