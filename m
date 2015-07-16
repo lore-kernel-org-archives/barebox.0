@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFemO-0001SV-1w
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:44:33 +0000
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Thu, 16 Jul 2015 10:43:54 +0200
-Message-Id: <1437036236-19096-6-git-send-email-m.olbrich@pengutronix.de>
-In-Reply-To: <1437036236-19096-1-git-send-email-m.olbrich@pengutronix.de>
-References: <1437036236-19096-1-git-send-email-m.olbrich@pengutronix.de>
+ id 1ZFesV-0005kV-PP
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:50:52 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 16 Jul 2015 10:50:24 +0200
+Message-Id: <1437036628-29439-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1437036628-29439-1-git-send-email-s.hauer@pengutronix.de>
+References: <1437036628-29439-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] efi: export device_path_from_handle()
-To: barebox@lists.infradead.org
-Cc: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: [PATCH 07/11] images: i.MX: Create target for SRAM images
+To: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+Some boards like to do their SDRAM setup in code rather than in hardcoded
+DCD tables. For these boards the bootloader has to be loaded to the internal
+SRAM which is often too small for a full featured barebox. This new SRAM
+image type target allows to overcome this limitation. The image created
+with the new imx-sram-img rule is a regular imx-image with the difference
+that the load size only spans the pblx image and not the whole image including
+the payload. The pbl image easily fits into SRAM. The strategy is that this
+initial code initializes the SDRAM, loads the whole image to SDRAM and jumps
+to it.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/efi.h | 1 +
- 1 file changed, 1 insertion(+)
+ images/Makefile.imx | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/efi.h b/include/efi.h
-index b6ee42b3fd49..830e0457dd1c 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -622,6 +622,7 @@ static inline int efi_compare_guid(efi_guid_t *a, efi_guid_t *b)
- 	return memcmp(a, b, sizeof(efi_guid_t));
- }
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 6b44958..cdbae8c 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -14,6 +14,17 @@ $(obj)/%.imximg: $(obj)/% FORCE
+ 	$(call if_changed,imx_image)
+ endif
  
-+struct efi_device_path *device_path_from_handle(efi_handle_t Handle);
- char *device_path_to_str(struct efi_device_path *dev_path);
- u8 device_path_to_type(struct efi_device_path *dev_path);
- char *device_path_to_partuuid(struct efi_device_path *dev_path);
++quiet_cmd_imx_sram_img ?= IMX-SRAM-IMG    $@
++      cmd_imx_sram_img ?= cat $(obj)/$(patsubst %.imx-sram-img,%.pblb,$(2)) > $@; \
++		  $(call size_append, $(obj)/barebox.z) >> $@; \
++		  $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(CFG_$(@F)) ; \
++		  $(objtree)/scripts/imx/imx-image -o $@ -b -c $(imximg-tmp) -f $@; \
++		  cat $(obj)/barebox.z >> $@; \
++		  $(objtree)/scripts/fix_size -f $@
++
++$(obj)/%.imx-sram-img: $(obj)/%.pblb $(obj)/barebox.z FORCE
++	$(call if_changed,imx_sram_img,$(@F))
++
+ # ----------------------- i.MX25 based boards ---------------------------
+ pblx-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
+ FILE_barebox-karo-tx25.img = start_imx25_karo_tx25.pblx
 -- 
 2.1.4
 
