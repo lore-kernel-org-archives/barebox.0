@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFdeR-0004Bx-Gl
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:32:17 +0000
+ id 1ZFdeR-0004By-Gp
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:32:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 16 Jul 2015 09:31:51 +0200
-Message-Id: <1437031912-24754-12-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 16 Jul 2015 09:31:52 +0200
+Message-Id: <1437031912-24754-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1437031912-24754-1-git-send-email-s.hauer@pengutronix.de>
 References: <1437031912-24754-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,284 +21,557 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] graphics_utils: Let fb_open allocate the screen
+Subject: [PATCH 12/12] video: implement framebuffer console
 To: Barebox List <barebox@lists.infradead.org>
 
-Allocate the screen dynamically in fb_open. This opens the way to create
-a fb_create_screen function which takes a struct fb_info * instead of a
-filename. This is suitable for the framebuffer console which already has
-a struct fb_info *.
+From: Antony Pavlov <antonynpavlov@gmail.com>
 
+This patch realizes framebuffer console support for barebox. It
+supports colors and enough escape sequences to show the barebox
+console and editor properly.
+
+fbconsole mini-HOWTO
+====================
+
+1. compile sandbox barebox with
+
+    CONFIG_VIDEO=y
+    CONFIG_FRAMEBUFFER_CONSOLE=y
+    CONFIG_DRIVER_VIDEO_SDL=y
+
+2. run barebox
+
+3. test fbconsole
+
+    fbconsole0.active=oe
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/splash.c           | 27 ++++++++--------
- include/gui/graphic_utils.h |  3 +-
- include/gui/gui.h           |  2 +-
- lib/gui/bmp.c               | 16 +++++-----
- lib/gui/graphic_utils.c     | 78 ++++++++++++++++++++++++++++++---------------
- lib/gui/png.c               |  2 +-
- 6 files changed, 77 insertions(+), 51 deletions(-)
+ Documentation/user/framebuffer.rst |   8 +
+ drivers/video/Kconfig              |   6 +
+ drivers/video/Makefile             |   1 +
+ drivers/video/fb.c                 |   3 +
+ drivers/video/fbconsole.c          | 439 +++++++++++++++++++++++++++++++++++++
+ include/fb.h                       |   2 +
+ 6 files changed, 459 insertions(+)
+ create mode 100644 drivers/video/fbconsole.c
 
-diff --git a/commands/splash.c b/commands/splash.c
-index 04562e3..90f0a0c 100644
---- a/commands/splash.c
-+++ b/commands/splash.c
-@@ -10,9 +10,9 @@
- static int do_splash(int argc, char *argv[])
- {
- 	struct surface s;
--	struct screen sc;
+diff --git a/Documentation/user/framebuffer.rst b/Documentation/user/framebuffer.rst
+index 0065e7b..7d004fa 100644
+--- a/Documentation/user/framebuffer.rst
++++ b/Documentation/user/framebuffer.rst
+@@ -41,3 +41,11 @@ A typical script to enable the framebuffer could look like this:
+   # finally enable backlight
+   gpio_direction_output 42 1
+ 
++Framebuffer console
++-------------------
++
++barebox has framebuffer console support which can be enabled with CONFIG_FRAMEBUFFER_CONSOLE.
++When registered each framebuffer device gets a corresponding fbconsole device. The console
++can be activated with ``fbconsolex.active=oe``. Depending on compile time options there are
++different fonts available. These can be selected with the fbconsolex.font variable. To get a
++list of fonts use ``devinfo fbconsolex``.
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 8e6ae99..fe334e5 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -5,6 +5,12 @@ menuconfig VIDEO
+ 
+ if VIDEO
+ 
++config FRAMEBUFFER_CONSOLE
++	bool
++	select IMAGE_RENDERER
++	select FONTS
++	prompt "framebuffer console support"
++
+ config DRIVER_VIDEO_ATMEL
+ 	bool "Atmel LCDC framebuffer driver"
+ 	depends on ARCH_AT91
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 76fad5c..359135e 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -3,6 +3,7 @@ obj-$(CONFIG_DRIVER_VIDEO_EDID) += edid.o
+ obj-$(CONFIG_OFDEVICE) += of_display_timing.o
+ obj-$(CONFIG_DRIVER_VIDEO_BACKLIGHT) += backlight.o
+ obj-$(CONFIG_DRIVER_VIDEO_BACKLIGHT_PWM) += backlight-pwm.o
++obj-$(CONFIG_FRAMEBUFFER_CONSOLE) += fbconsole.o
+ 
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
+ obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 25f089a..a4f1734 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -238,6 +238,9 @@ int register_framebuffer(struct fb_info *info)
+ 					strerror(-ret));
+ 	}
+ 
++	if (IS_ENABLED(CONFIG_FRAMEBUFFER_CONSOLE))
++		register_fbconsole(info);
++
+ 	return 0;
+ 
+ err_unregister:
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+new file mode 100644
+index 0000000..5aa3c3e
+--- /dev/null
++++ b/drivers/video/fbconsole.c
+@@ -0,0 +1,439 @@
++#include <common.h>
++#include <errno.h>
++#include <malloc.h>
++#include <getopt.h>
++#include <fb.h>
++#include <gui/image_renderer.h>
++#include <gui/graphic_utils.h>
++#include <linux/font.h>
++
++enum state_t {
++	LIT,				/* Literal input */
++	ESC,				/* Start of escape sequence */
++	CSI,				/* Reading arguments in "CSI Pn ;...*/
++};
++
++struct fbc_priv {
++	struct console_device cdev;
++	struct fb_info *fb;
++
 +	struct screen *sc;
- 	int ret = 0;
--	int opt, fd;
-+	int opt;
- 	char *fbdev = "/dev/fb0";
- 	char *image_file;
- 	int offscreen = 0;
-@@ -20,7 +20,6 @@ static int do_splash(int argc, char *argv[])
- 	bool do_bg = false;
- 
- 	memset(&s, 0, sizeof(s));
--	memset(&sc, 0, sizeof(sc));
- 
- 	s.x = -1;
- 	s.y = -1;
-@@ -53,29 +52,29 @@ static int do_splash(int argc, char *argv[])
- 	}
- 	image_file = argv[optind];
- 
--	fd = fb_open(fbdev, &sc, offscreen);
--	if (fd < 0) {
-+	sc = fb_open(fbdev, offscreen);
-+	if (IS_ERR(sc)) {
- 		perror("fd_open");
--		return fd;
-+		return PTR_ERR(sc);
- 	}
- 
--	if (sc.offscreenbuf) {
-+	if (sc->offscreenbuf) {
- 		if (do_bg)
--			gu_memset_pixel(&sc.info, sc.offscreenbuf, bg_color,
--					sc.s.width * sc.s.height);
-+			gu_memset_pixel(sc->info, sc->offscreenbuf, bg_color,
-+					sc->s.width * sc->s.height);
- 		else
--			memcpy(sc.offscreenbuf, sc.fb, sc.fbsize);
-+			memcpy(sc->offscreenbuf, sc->fb, sc->fbsize);
- 	} else if (do_bg) {
--		gu_memset_pixel(&sc.info, sc.fb, bg_color, sc.s.width * sc.s.height);
-+		gu_memset_pixel(sc->info, sc->fb, bg_color, sc->s.width * sc->s.height);
- 	}
- 
--	ret = image_renderer_file(&sc, &s, image_file);
-+	ret = image_renderer_file(sc, &s, image_file);
- 	if (ret > 0)
- 		ret = 0;
- 
--	gu_screen_blit(&sc);
-+	gu_screen_blit(sc);
- 
--	fb_close(&sc);
-+	fb_close(sc);
- 
- 	return ret;
- }
-diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
-index 161f8d6..ab8c3fc 100644
---- a/include/gui/graphic_utils.h
-+++ b/include/gui/graphic_utils.h
-@@ -19,7 +19,8 @@ void gu_set_pixel(struct fb_info *info, void *adr, u32 px);
- void gu_set_rgb_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b);
- void gu_set_rgba_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b, u8 a);
- void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size);
--int fb_open(const char * fbdev, struct screen *sc, bool offscreen);
-+struct screen *fb_create_screen(struct fb_info *info, bool offscreen);
-+struct screen *fb_open(const char *fbdev, bool offscreen);
- void fb_close(struct screen *sc);
- void gu_screen_blit(struct screen *sc);
- void gu_invert_area(struct fb_info *info, void *buf, int startx, int starty, int width,
-diff --git a/include/gui/gui.h b/include/gui/gui.h
-index 59ff590..03e60aa 100644
---- a/include/gui/gui.h
-+++ b/include/gui/gui.h
-@@ -18,7 +18,7 @@ struct surface {
- 
- struct screen {
- 	int fd;
--	struct fb_info info;
-+	struct fb_info *info;
- 
- 	struct surface s;
- 
-diff --git a/lib/gui/bmp.c b/lib/gui/bmp.c
-index 892b759..143aa28 100644
---- a/lib/gui/bmp.c
-+++ b/lib/gui/bmp.c
-@@ -79,17 +79,17 @@ static int bmp_renderer(struct screen *sc, struct surface *s, struct image *img)
- 			image = (char *)bmp +
- 					get_unaligned_le32(&bmp->header.data_offset);
- 			image += (img->height - y - 1) * img->width * (bits_per_pixel >> 3);
--			adr = buf + (y + starty) * sc->info.line_length +
--					startx * (sc->info.bits_per_pixel >> 3);
-+			adr = buf + (y + starty) * sc->info->line_length +
-+					startx * (sc->info->bits_per_pixel >> 3);
- 			for (x = 0; x < width; x++) {
- 				int pixel;
- 
- 				pixel = *image;
- 
--				gu_set_rgb_pixel(&sc->info, adr, color_table[pixel].red,
-+				gu_set_rgb_pixel(sc->info, adr, color_table[pixel].red,
- 						color_table[pixel].green,
- 						color_table[pixel].blue);
--				adr += sc->info.bits_per_pixel >> 3;
-+				adr += sc->info->bits_per_pixel >> 3;
- 
- 				image += bits_per_pixel >> 3;
- 			}
-@@ -101,16 +101,16 @@ static int bmp_renderer(struct screen *sc, struct surface *s, struct image *img)
- 			image = (char *)bmp +
- 					get_unaligned_le32(&bmp->header.data_offset);
- 			image += (img->height - y - 1) * img->width * (bits_per_pixel >> 3);
--			adr = buf + (y + starty) * sc->info.line_length +
--					startx * (sc->info.bits_per_pixel >> 3);
-+			adr = buf + (y + starty) * sc->info->line_length +
-+					startx * (sc->info->bits_per_pixel >> 3);
- 			for (x = 0; x < width; x++) {
- 				char *pixel;
- 
- 				pixel = image;
- 
--				gu_set_rgb_pixel(&sc->info, adr, pixel[2], pixel[1],
-+				gu_set_rgb_pixel(sc->info, adr, pixel[2], pixel[1],
- 						pixel[0]);
--				adr += sc->info.bits_per_pixel >> 3;
-+				adr += sc->info->bits_per_pixel >> 3;
- 
- 				image += bits_per_pixel >> 3;
- 			}
-diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
-index 7302611..47003a0 100644
---- a/lib/gui/graphic_utils.c
-+++ b/lib/gui/graphic_utils.c
-@@ -245,51 +245,77 @@ void gu_rgba_blend(struct fb_info *info, struct image *img, void* buf, int heigh
- 	}
- }
- 
--int fb_open(const char * fbdev, struct screen *sc, bool offscreen)
-+struct screen *fb_create_screen(struct fb_info *info, bool offscreen)
- {
--	int ret;
-+	struct screen *sc;
- 
--	sc->fd = open(fbdev, O_RDWR);
--	if (sc->fd < 0)
--		return sc->fd;
--
--	sc->fb = memmap(sc->fd, PROT_READ | PROT_WRITE);
--	if (sc->fb == (void *)-1) {
--		ret = -ENOMEM;
--		goto failed_memmap;
--	}
--
--	ret = ioctl(sc->fd, FBIOGET_SCREENINFO, &sc->info);
--	if (ret) {
--		goto failed_memmap;
--	}
-+	sc = xzalloc(sizeof(*sc));
- 
- 	sc->s.x = 0;
- 	sc->s.y = 0;
--	sc->s.width = sc->info.xres;
--	sc->s.height = sc->info.yres;
--	sc->fbsize = sc->info.line_length * sc->s.height;
-+	sc->s.width = info->xres;
-+	sc->s.height = info->yres;
-+	sc->fbsize = info->line_length * sc->s.height;
-+	sc->fb = info->screen_base;
- 
- 	if (offscreen) {
--		/* Don't fail if malloc fails, just continue rendering directly
-+		/*
-+		 * Don't fail if malloc fails, just continue rendering directly
- 		 * on the framebuffer
- 		 */
- 		sc->offscreenbuf = malloc(sc->fbsize);
- 	}
- 
--	return sc->fd;
-+	return sc;
-+}
- 
--failed_memmap:
--	sc->fb = NULL;
--	close(sc->fd);
-+struct screen *fb_open(const char * fbdev, bool offscreen)
++
++	struct param_d *par_font;
++	int par_font_val;
++
++	int font_width, font_height;
++	const u8 *fontdata;
++	unsigned int cols, rows;
++	unsigned int x, y; /* cursor position */
++
++	enum state_t state;
++
++	int color;
++	int bgcolor;
++
++#define ANSI_FLAG_INVERT	(1 << 0)
++#define ANSI_FLAG_BRIGHT	(1 << 1)
++	unsigned flags;
++
++	int csipos;
++	u8 csi[256];
++
++	int active;
++};
++
++static int fbc_getc(struct console_device *cdev)
 +{
-+	int fd, ret;
-+	struct fb_info *info;
-+	struct screen *sc;
++	return 0;
++}
 +
-+	fd = open(fbdev, O_RDWR);
-+	if (fd < 0)
-+		return ERR_PTR(fd);
++static int fbc_tstc(struct console_device *cdev)
++{
++	return 0;
++}
 +
-+	info = xzalloc(sizeof(*info));
- 
--	return ret;
-+	ret = ioctl(fd, FBIOGET_SCREENINFO, info);
++static void cls(struct fbc_priv *priv)
++{
++	void *buf = gui_screen_render_buffer(priv->sc);
++
++	memset(buf, 0, priv->fb->line_length * priv->fb->yres);
++}
++
++struct rgb {
++	u8 r, g, b;
++};
++
++static struct rgb colors[] = {
++	{ 0, 0, 0 },
++	{ 205, 0, 0 },
++	{ 0, 205, 0 },
++	{ 205, 205, 0 },
++	{ 0, 0, 238 },
++	{ 205, 0, 205 },
++	{ 0, 205, 205 },
++	{ 229, 229, 229 },
++	{ 127, 127, 127 },
++	{ 255, 0, 0 },
++	{ 0, 255, 0 },
++	{ 255, 255, 0 },
++	{ 92, 92, 255 },
++	{ 255, 0, 255 },
++	{ 0, 255, 255 },
++	{ 255, 255, 255 },
++};
++
++static void drawchar(struct fbc_priv *priv, int x, int y, char c)
++{
++	void *buf;
++	int bpp = priv->fb->bits_per_pixel >> 3;
++	void *adr;
++	int i;
++	const char *inbuf;
++	int line_length;
++	u32 color, bgcolor;
++	struct rgb *rgb;
++
++	buf = gui_screen_render_buffer(priv->sc);
++
++	inbuf = &priv->fontdata[c * priv->font_height];
++
++	line_length = priv->fb->line_length;
++
++	color = priv->flags & ANSI_FLAG_INVERT ? priv->bgcolor : priv->color;
++	bgcolor = priv->flags & ANSI_FLAG_INVERT ? priv->color : priv->bgcolor;
++
++	if (priv->flags & ANSI_FLAG_BRIGHT)
++		color += 8;
++
++	rgb = &colors[color];
++	color = gu_rgb_to_pixel(priv->fb, rgb->r, rgb->g, rgb->b, 0xff);
++
++	rgb = &colors[bgcolor];
++	bgcolor = gu_rgb_to_pixel(priv->fb, rgb->r, rgb->g, rgb->b, 0xff);
++
++	for (i = 0; i < priv->font_height; i++) {
++		uint8_t t = inbuf[i];
++		int j;
++
++		adr = buf + line_length * (y * priv->font_height + i) + x * priv->font_width * bpp;
++
++		for (j = 0; j < priv->font_width; j++) {
++			if (t & 0x80)
++				gu_set_pixel(priv->fb, adr, color);
++			else
++				gu_set_pixel(priv->fb, adr, bgcolor);
++
++			adr += priv->fb->bits_per_pixel >> 3;
++			t <<= 1;
++		}
++	}
++}
++
++static void video_invertchar(struct fbc_priv *priv, int x, int y)
++{
++	void *buf;
++
++	buf = gui_screen_render_buffer(priv->sc);
++
++	gu_invert_area(priv->fb, buf, x * priv->font_width, y * priv->font_height,
++			priv->font_width, priv->font_height);
++}
++
++static void printchar(struct fbc_priv *priv, int c)
++{
++	video_invertchar(priv, priv->x, priv->y);
++
++	switch (c) {
++	case '\007': /* bell: ignore */
++		break;
++	case '\b':
++		if (priv->x > 0) {
++			priv->x--;
++		} else if (priv->y > 0) {
++			priv->x = priv->cols;
++			priv->y--;
++		}
++		break;
++	case '\n':
++	case '\013': /* Vertical tab is the same as Line Feed */
++		priv->y++;
++		break;
++
++	case '\r':
++		priv->x = 0;
++		break;
++
++	case '\t':
++		priv->x = (priv->x + 8) & ~0x3;
++		break;
++
++	default:
++		drawchar(priv, priv->x, priv->y, c);
++		gu_screen_blit(priv->sc);
++
++		priv->x++;
++		if (priv->x > priv->cols) {
++			priv->y++;
++			priv->x = 0;
++		}
++	}
++
++	if (priv->y > priv->rows) {
++		void *buf;
++		u32 line_length = priv->fb->line_length;
++		int line_height = line_length * priv->font_height;
++
++		buf = gui_screen_render_buffer(priv->sc);
++
++		memcpy(buf, buf + line_height, line_height * (priv->rows + 1));
++		memset(buf + line_height * priv->rows, 0, line_height);
++		priv->y = priv->rows;
++	}
++
++	video_invertchar(priv, priv->x, priv->y);
++
++	return;
++}
++
++static void fbc_parse_colors(struct fbc_priv *priv)
++{
++	int code;
++	char *str;
++
++	str = priv->csi;
++
++	while (1) {
++		code = simple_strtoul(str, &str, 10);
++		switch (code) {
++		case 0:
++			priv->flags = 0;
++			priv->color = 8;
++			priv->bgcolor = 0;
++			break;
++		case 1:
++			priv->flags |= ANSI_FLAG_BRIGHT;
++			break;
++		case 7:
++			priv->flags |= ANSI_FLAG_INVERT;
++			break;
++		case 30 ... 37:
++			priv->color = code - 30;
++			break;
++		case 39:
++			priv->color = 7;
++			break;
++		case 40 ... 47:
++			priv->bgcolor = code - 40;
++			break;
++		case 49:
++			priv->bgcolor = 0;
++			break;
++		}
++
++		if (*str != ';')
++			break;
++		str++;
++	}
++}
++
++static void fbc_parse_csi(struct fbc_priv *priv)
++{
++	char *end;
++	unsigned char last;
++	int pos, i;
++
++	last = priv->csi[priv->csipos - 1];
++
++	switch (last) {
++	case 'm':
++		fbc_parse_colors(priv);
++		return;
++	case 'J':
++		cls(priv);
++		return;
++	case 'H':
++		video_invertchar(priv, priv->x, priv->y);
++		pos = simple_strtoul(priv->csi, &end, 10);
++		priv->y = pos ? pos - 1 : 0;
++		pos = simple_strtoul(end + 1, NULL, 10);
++		priv->x = pos ? pos - 1 : 0;
++		video_invertchar(priv, priv->x, priv->y);
++	case 'K':
++		pos = simple_strtoul(priv->csi, &end, 10);
++		video_invertchar(priv, priv->x, priv->y);
++		switch (pos) {
++		case 0:
++			for (i = priv->x; i < priv->cols; i++)
++				drawchar(priv, i, priv->y, ' ');
++			break;
++		case 1:
++			for (i = 0; i <= priv->x; i++)
++				drawchar(priv, i, priv->y, ' ');
++			break;
++		}
++		video_invertchar(priv, priv->x, priv->y);
++
++		break;
++	}
++}
++
++static void fbc_putc(struct console_device *cdev, char c)
++{
++	struct fbc_priv *priv = container_of(cdev,
++					struct fbc_priv, cdev);
++
++	switch (priv->state) {
++	case LIT:
++		switch (c) {
++		case '\033':
++			priv->state = ESC;
++			break;
++		default:
++			printchar(priv, c);
++		}
++		break;
++	case ESC:
++		switch (c) {
++		case '[':
++			priv->state = CSI;
++			priv->csipos = 0;
++			memset(priv->csi, 0, 6);
++			break;
++		}
++		break;
++	case CSI:
++		priv->csi[priv->csipos++] = c;
++		if (priv->csipos == 255) {
++			priv->csipos = 0;
++			priv->state = LIT;
++			return;
++		}
++
++		switch (c) {
++		case '0':
++		case '1':
++		case '2':
++		case '3':
++		case '4':
++		case '5':
++		case '6':
++		case '7':
++		case '8':
++		case '9':
++		case ';':
++		case ':':
++			break;
++		default:
++			fbc_parse_csi(priv);
++			priv->state = LIT;
++		}
++		break;
++	}
++}
++
++static int setup_font(struct fbc_priv *priv)
++{
++	struct fb_info *fb = priv->fb;
++	const struct font_desc *font;
++
++	font = find_font_enum(priv->par_font_val);
++	if (!font) {
++		return -ENOENT;
++	}
++
++	priv->font_width = font->width;
++	priv->font_height = font->height;
++	priv->fontdata = font->data;
++
++	priv->rows = fb->yres / priv->font_height - 1;
++	priv->cols = fb->xres / priv->font_width - 1;
++
++	return 0;
++}
++
++static int fbc_set_active(struct console_device *cdev, unsigned flags)
++{
++	struct fbc_priv *priv = container_of(cdev,
++					struct fbc_priv, cdev);
++	struct fb_info *fb = priv->fb;
++	int ret;
++
++	if (priv->active) {
++		fb_close(priv->sc);
++		priv->active = false;
++	}
++
++	if (!(flags & (CONSOLE_STDOUT | CONSOLE_STDERR)))
++		return 0;
++
++	ret = setup_font(priv);
++	if (ret)
++		return ret;
++
++	priv->sc = fb_create_screen(fb, 0);
++	if (IS_ERR(priv->sc))
++		return PTR_ERR(priv->sc);
++
++	fb_enable(fb);
++
++	priv->state = LIT;
++
++	dev_info(priv->cdev.dev, "framebuffer console %dx%d activated\n",
++		priv->cols + 1, priv->rows + 1);
++
++	priv->active = true;
++
++	return 0;
++}
++
++static int set_font(struct param_d *p, void *vpriv)
++{
++	struct fbc_priv *priv = vpriv;
++	struct console_device *cdev = &priv->cdev;
++
++	if (cdev->f_active & (CONSOLE_STDOUT | CONSOLE_STDERR)) {
++		cls(priv);
++		setup_font(priv);
++	}
++
++	return 0;
++}
++
++int register_fbconsole(struct fb_info *fb)
++{
++	struct fbc_priv *priv;
++	struct console_device *cdev;
++	int ret;
++
++	priv = xzalloc(sizeof(*priv));
++
++	priv->fb = fb;
++	priv->x = 0;
++	priv->y = 0;
++	priv->color = 0xff00ff00;
++
++	cdev = &priv->cdev;
++	cdev->dev = &fb->dev;
++	cdev->tstc = fbc_tstc;
++	cdev->putc = fbc_putc;
++	cdev->getc = fbc_getc;
++	cdev->devname = "fbconsole";
++	cdev->devid = DEVICE_ID_DYNAMIC;
++	cdev->set_active = fbc_set_active;
++
++	ret = console_register(cdev);
 +	if (ret) {
-+		goto failed_screeninfo;
++		pr_err("registering failed with %s\n", strerror(-ret));
++		kfree(priv);
++		return ret;
 +	}
 +
-+	sc = fb_create_screen(info, offscreen);
-+	if (IS_ERR(sc)) {
-+		ret = PTR_ERR(sc);
-+		goto failed_create;
-+	}
++	priv->par_font_val = 0;
++	priv->par_font = add_param_font(&cdev->class_dev,
++			set_font, NULL,
++			&priv->par_font_val, priv);
 +
-+	sc->fd = fd;
-+	sc->info = info;
++	pr_info("registered as %s%d\n", cdev->class_dev.name, cdev->class_dev.id);
 +
-+	return sc;
-+
-+failed_create:
-+	free(sc->offscreenbuf);
-+	free(sc);
-+failed_screeninfo:
-+	close(fd);
-+
-+	return ERR_PTR(ret);
- }
++	return 0;
++}
+diff --git a/include/fb.h b/include/fb.h
+index 9221618..27894db 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -163,4 +163,6 @@ int edid_to_display_timings(struct display_timings *, unsigned char *edid);
+ void *edid_read_i2c(struct i2c_adapter *adapter);
+ void fb_edid_add_modes(struct fb_info *info);
  
- void fb_close(struct screen *sc)
- {
- 	free(sc->offscreenbuf);
--	close(sc->fd);
++int register_fbconsole(struct fb_info *fb);
 +
-+	if (sc->fd > 0) {
-+		close(sc->fd);
-+		free(sc->info);
-+	}
-+
-+	free(sc);
- }
- 
- void gu_screen_blit(struct screen *sc)
-diff --git a/lib/gui/png.c b/lib/gui/png.c
-index e72786e..6bf997c 100644
---- a/lib/gui/png.c
-+++ b/lib/gui/png.c
-@@ -67,7 +67,7 @@ static int png_renderer(struct screen *sc, struct surface *s, struct image *img)
- 
- 	buf = gui_screen_render_buffer(sc);
- 
--	gu_rgba_blend(&sc->info, img, buf, height, width, startx, starty, true);
-+	gu_rgba_blend(sc->info, img, buf, height, width, startx, starty, true);
- 
- 	return img->height;
- }
+ #endif /* __FB_H */
 -- 
 2.1.4
 
