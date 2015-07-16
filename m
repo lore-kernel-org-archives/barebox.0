@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFeRO-000402-Qq
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:22:51 +0000
-Date: Thu, 16 Jul 2015 10:22:28 +0200
+ id 1ZFeex-0005lT-0Z
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:36:51 +0000
+Date: Thu, 16 Jul 2015 10:36:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150716082228.GE18700@pengutronix.de>
-References: <1436993223-14627-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20150716083627.GG5161@pengutronix.de>
+References: <1437031912-24754-1-git-send-email-s.hauer@pengutronix.de>
+ <1437031912-24754-13-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1436993223-14627-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1437031912-24754-13-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] sandbox_defconfig: enable 'echo -e' support as defenv
- uses it
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 12/12] video: implement framebuffer console
+To: Barebox List <barebox@lists.infradead.org>
 
-Hi Antony,
-
-On Wed, Jul 15, 2015 at 11:47:03PM +0300, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/sandbox/configs/sandbox_defconfig | 1 +
->  1 file changed, 1 insertion(+)
+On Thu, Jul 16, 2015 at 09:31:52AM +0200, Sascha Hauer wrote:
+> From: Antony Pavlov <antonynpavlov@gmail.com>
 > 
-> diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-> index ec045f7..2ee1fa8 100644
-> --- a/arch/sandbox/configs/sandbox_defconfig
-> +++ b/arch/sandbox/configs/sandbox_defconfig
-> @@ -17,6 +17,7 @@ CONFIG_CMD_MAGICVAR=y
->  CONFIG_CMD_MAGICVAR_HELP=y
->  CONFIG_CMD_SAVEENV=y
->  CONFIG_CMD_SLEEP=y
-> +CONFIG_CMD_ECHO_E=y
+> This patch realizes framebuffer console support for barebox. It
+> supports colors and enough escape sequences to show the barebox
+> console and editor properly.
+> 
+> fbconsole mini-HOWTO
+> ====================
+> 
+> 1. compile sandbox barebox with
+> 
+>     CONFIG_VIDEO=y
+>     CONFIG_FRAMEBUFFER_CONSOLE=y
+>     CONFIG_DRIVER_VIDEO_SDL=y
+> 
+> 2. run barebox
+> 
+> 3. test fbconsole
+> 
+>     fbconsole0.active=oe
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+> +int register_fbconsole(struct fb_info *fb)
+> +{
+> +	struct fbc_priv *priv;
+> +	struct console_device *cdev;
+> +	int ret;
+> +
+> +	priv = xzalloc(sizeof(*priv));
+> +
+> +	priv->fb = fb;
+> +	priv->x = 0;
+> +	priv->y = 0;
+> +	priv->color = 0xff00ff00;
 
-I recently missed that aswell. I think it's time for a general sandbox
-config update which I just posted. Only thing I am not sure about is the
-enabling of SDL which adds an additional build dependency. Maybe this
-should rather be in a second defconfig.
+Oops, this is wrong. Should be priv->color = 7 now.
 
 Sascha
 
