@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFdBQ-000525-Jg
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:02:17 +0000
-Date: Thu, 16 Jul 2015 09:01:54 +0200
+ id 1ZFdeW-0004GG-7w
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:32:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150716070154.GF5161@pengutronix.de>
-References: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
- <1436890599-31412-3-git-send-email-s.trumtrar@pengutronix.de>
- <20150716061208.GY18700@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150716061208.GY18700@pengutronix.de>
+Date: Thu, 16 Jul 2015 09:31:44 +0200
+Message-Id: <1437031912-24754-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1437031912-24754-1-git-send-email-s.hauer@pengutronix.de>
+References: <1437031912-24754-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,129 +16,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] ARM: socfpga: add bbu handler for spi nor
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 04/12] graphics_utils: Export get_pixel
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jul 16, 2015 at 08:12:08AM +0200, Sascha Hauer wrote:
-> On Tue, Jul 14, 2015 at 06:16:37PM +0200, Steffen Trumtrar wrote:
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  arch/arm/mach-socfpga/Kconfig               |  8 +++
-> >  arch/arm/mach-socfpga/Makefile              |  1 +
-> >  arch/arm/mach-socfpga/include/mach/bbu.h    | 15 +++++
-> >  arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c | 86 +++++++++++++++++++++++++++++
-> >  4 files changed, 110 insertions(+)
-> >  create mode 100644 arch/arm/mach-socfpga/include/mach/bbu.h
-> >  create mode 100644 arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
-> > 
-> > diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-> > index 90b3533b1ffb..a85749b7f829 100644
-> > --- a/arch/arm/mach-socfpga/Kconfig
-> > +++ b/arch/arm/mach-socfpga/Kconfig
-> > @@ -20,4 +20,12 @@ config MACH_SOCFPGA_TERASIC_SOCKIT
-> >  	select HAVE_DEFAULT_ENVIRONMENT_NEW
-> >  	bool "Terasic SoCKit"
-> >  
-> > +config BAREBOX_UPDATE_SOCFPGA_SPI_NOR
-> > +	prompt "barebox update SPI NOR XLOAD handler"
-> > +	bool
-> > +	depends on BAREBOX_UPDATE
-> > +	depends on SPI_CADENCE_QUADSPI
-> > +	help
-> > +	  Say Y for barebox update SPI NOR XLOAD handler.
-> > +
-> >  endif
-> > diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
-> > index b81d57da26fd..12c5252d1a6e 100644
-> > --- a/arch/arm/mach-socfpga/Makefile
-> > +++ b/arch/arm/mach-socfpga/Makefile
-> > @@ -3,3 +3,4 @@ pbl-y += init.o freeze-controller.o scan-manager.o system-manager.o
-> >  pbl-y += clock-manager.o
-> >  obj-$(CONFIG_ARCH_SOCFPGA_XLOAD) += xload.o
-> >  obj-$(CONFIG_ARCH_SOCFPGA_FPGA) += fpga.o
-> > +obj-$(CONFIG_BAREBOX_UPDATE_SOCFPGA_SPI_NOR) += socfpga_bbu_spi_nor.o
-> > diff --git a/arch/arm/mach-socfpga/include/mach/bbu.h b/arch/arm/mach-socfpga/include/mach/bbu.h
-> > new file mode 100644
-> > index 000000000000..e4846d36bc5d
-> > --- /dev/null
-> > +++ b/arch/arm/mach-socfpga/include/mach/bbu.h
-> > @@ -0,0 +1,15 @@
-> > +#ifndef __MACH_BBU_H
-> > +#define __MACH_BBU_H
-> > +
-> > +#include <bbu.h>
-> > +
-> > +#ifdef CONFIG_BAREBOX_UPDATE_SOCFPGA_SPI_NOR
-> > +int socfpga_bbu_spi_nor_register_handler(const char *name, char *devicefile);
-> > +#else
-> > +static inline int socfpga_bbu_spi_nor_register_handler(const char *name, char *devicefile)
-> > +{
-> > +	return 0;
-> > +}
-> > +#endif
-> > +
-> > +#endif
-> > diff --git a/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c b/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
-> > new file mode 100644
-> > index 000000000000..cf44bc81c60b
-> > --- /dev/null
-> > +++ b/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
-> > @@ -0,0 +1,86 @@
-> > +/*
-> > + * Copyright (c) 2015 Pengutronix, Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > + *
-> > + * This program is free software; you can redistribute it and/or modify
-> > + * it under the terms of the GNU General Public License version 2
-> > + * as published by the Free Software Foundation.
-> > + *
-> > + * This program is distributed in the hope that it will be useful,
-> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > + * GNU General Public License for more details.
-> > + */
-> > +#include <common.h>
-> > +#include <malloc.h>
-> > +#include <bbu.h>
-> > +#include <fs.h>
-> > +#include <fcntl.h>
-> > +#include <linux/stat.h>
-> > +
-> > +static int spi_nor_handler(struct bbu_handler *handler,
-> > +			   struct bbu_data *data)
-> > +{
-> > +	int fd, ret;
-> > +	int *header;
-> > +
-> > +	if (file_detect_type(data->image, data->len) != filetype_arm_barebox) {
-> > +		if (!bbu_force(data, "Not an ARM barebox image"))
-> > +			return -EINVAL;
-> > +	}
-> > +
-> > +	header = data->image;
-> > +
-> > +	if (!header[0x40] == 0x31305341) {
-> 
-> This will never be true. header[0x40] != 0x31305341 instead?
-> Also you probably want to expliticitly use u32 instead of int.
+get_pixel converts a 32bit trgb color into framebuffer format. This
+is useful for other code aswell, so export it.
+Other functions in the graphics utils code use the name get/set_pixel
+aswell, but instead of converting data they get a pixel from the framebuffer
+or set a pixel on the framebuffer. To separate from these rename the
+function to gu_hex_to_pixel.
 
-Does the fixed test return true for the barebox image?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/gui/graphic_utils.h |  1 +
+ lib/gui/graphic_utils.c     | 14 ++++++++++++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-Note now there's also bbu_register_std_file_update() which will do the
-same as your code in a generic way. The only thing that won't work with
-the generic code is this check above.
-
-Sascha
-
+diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
+index 5c5c40a..136cac1 100644
+--- a/include/gui/graphic_utils.h
++++ b/include/gui/graphic_utils.h
+@@ -11,6 +11,7 @@
+ #include <gui/image.h>
+ #include <gui/gui.h>
+ 
++u32 gu_hex_to_pixel(struct fb_info *info, u32 color);
+ void gu_rgba_blend(struct fb_info *info, struct image *img, void* dest, int height,
+ 	int width, int startx, int starty, bool is_rgba);
+ void gu_set_pixel(struct fb_info *info, void *adr, u32 px);
+diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+index 6d2540f..516e903 100644
+--- a/lib/gui/graphic_utils.c
++++ b/lib/gui/graphic_utils.c
+@@ -7,7 +7,17 @@
+ #include <fs.h>
+ #include <malloc.h>
+ 
+-static u32 get_pixel(struct fb_info *info, u32 color)
++/**
++ * gu_hex_to_pixel - convert a 32bit color to fb format
++ * @info: The framebuffer info to convert the pixel for
++ * @color: The color in 0xttrrggbb format
++ *
++ * This converts a color in 0xttrrggbb format to the format
++ * suitable for writing directly into the framebuffer.
++ *
++ * Return: The pixel suitable for the framebuffer
++ */
++u32 gu_hex_to_pixel(struct fb_info *info, u32 color)
+ {
+ 	u32 px;
+ 	u8 t = (color >> 24) & 0xff;
+@@ -51,7 +61,7 @@ void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
+ 	u32 px;
+ 	u8 *screen = buf;
+ 
+-	px = get_pixel(info, color);
++	px = gu_hex_to_pixel(info, color);
+ 
+ 	switch (info->bits_per_pixel) {
+ 	case 8:
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
