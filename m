@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFTaW-0007Er-Fv
- for barebox@lists.infradead.org; Wed, 15 Jul 2015 20:47:32 +0000
-Received: by laem6 with SMTP id m6so31912350lae.0
- for <barebox@lists.infradead.org>; Wed, 15 Jul 2015 13:47:10 -0700 (PDT)
-Received: from localhost.localdomain (ppp79-139-249-41.pppoe.spdop.ru.
- [79.139.249.41])
- by smtp.gmail.com with ESMTPSA id y3sm1417340laj.8.2015.07.15.13.47.09
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 15 Jul 2015 13:47:09 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 15 Jul 2015 23:47:03 +0300
-Message-Id: <1436993223-14627-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZFcKg-0004Ev-Tt
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 06:07:47 +0000
+Date: Thu, 16 Jul 2015 08:07:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150716060723.GX18700@pengutronix.de>
+References: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +18,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] sandbox_defconfig: enable 'echo -e' support as defenv uses it
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/5] ARM: socfpga: socrates: add qspi partitions
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/sandbox/configs/sandbox_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+On Tue, Jul 14, 2015 at 06:16:35PM +0200, Steffen Trumtrar wrote:
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  arch/arm/dts/socfpga_cyclone5_socrates.dts | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
+> index 125ad1b8502d..ccb940584b5b 100644
+> --- a/arch/arm/dts/socfpga_cyclone5_socrates.dts
+> +++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
+> @@ -80,5 +80,20 @@
+>  		cdns,tsd2d-ns = <50>;
+>  		cdns,tchsh-ns = <4>;
+>  		cdns,tslch-ns = <4>;
+> +
+> +		partition@0 {
+> +			label = "prebootloader0";
+> +			reg = <0x00000 0x10000>;
+> +		};
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index ec045f7..2ee1fa8 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -17,6 +17,7 @@ CONFIG_CMD_MAGICVAR=y
- CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_CMD_SAVEENV=y
- CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_DHCP=y
- CONFIG_CMD_PING=y
- CONFIG_CMD_TFTP=y
+Why prebootloader0? There's only one or not?
+
+> +
+> +		partition@1 {
+> +			label = "barebox0";
+> +			reg = <0x40000 0x80000>;
+> +		};
+
+Same here.
+
+Sascha
+
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
