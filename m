@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFdf5-0004ek-7u
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:32:55 +0000
+ id 1ZFdev-0004Vl-7s
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 07:32:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 16 Jul 2015 09:31:42 +0200
-Message-Id: <1437031912-24754-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 16 Jul 2015 09:31:50 +0200
+Message-Id: <1437031912-24754-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1437031912-24754-1-git-send-email-s.hauer@pengutronix.de>
 References: <1437031912-24754-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] gui: Fix typo in function name
+Subject: [PATCH 10/12] fb: sdl: create graphics window on enabling
 To: Barebox List <barebox@lists.infradead.org>
 
-It's a render buffer, not a redering buffer.
+The framebuffer should be enabled on the fb_enable callback and disabled
+in the fb_disable callback. In SDL context this means the grapics window
+has to be created / destroyed in fb_enable / fb_disable.
+
+With this change the framebuffer has to be enabled explicitly with
+fb0.enable=1 like with other framebuffer driver aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/gui/gui.h | 2 +-
- lib/gui/bmp.c     | 2 +-
- lib/gui/png.c     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/video/sdl.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/include/gui/gui.h b/include/gui/gui.h
-index 829d156..59ff590 100644
---- a/include/gui/gui.h
-+++ b/include/gui/gui.h
-@@ -27,7 +27,7 @@ struct screen {
- 	int fbsize;
- };
+diff --git a/drivers/video/sdl.c b/drivers/video/sdl.c
+index a568340..5e1dc8e 100644
+--- a/drivers/video/sdl.c
++++ b/drivers/video/sdl.c
+@@ -15,12 +15,21 @@
  
--static inline void* gui_screen_redering_buffer(struct screen *sc)
-+static inline void *gui_screen_render_buffer(struct screen *sc)
+ static void sdlfb_enable(struct fb_info *info)
  {
- 	if (sc->offscreenbuf)
- 		return sc->offscreenbuf;
-diff --git a/lib/gui/bmp.c b/lib/gui/bmp.c
-index 2a0509d..892b759 100644
---- a/lib/gui/bmp.c
-+++ b/lib/gui/bmp.c
-@@ -67,7 +67,7 @@ static int bmp_renderer(struct screen *sc, struct surface *s, struct image *img)
- 	width = min(width, sc->s.width - startx);
- 	height = min(height, sc->s.height - starty);
++	int ret;
++
++	ret = sdl_open(info->xres, info->yres, info->bits_per_pixel,
++		     info->screen_base);
++	if (ret)
++		return;
++	sdl_get_bitfield_rgba(&info->red, &info->green, &info->blue, &info->transp);
++
+ 	sdl_start_timer();
+ }
  
--	buf = gui_screen_redering_buffer(sc);
-+	buf = gui_screen_render_buffer(sc);
+ static void sdlfb_disable(struct fb_info *info)
+ {
+ 	sdl_stop_timer();
++	sdl_close();
+ }
  
- 	bits_per_pixel = img->bits_per_pixel;
+ static struct fb_ops sdlfb_ops = {
+@@ -50,12 +59,6 @@ static int sdlfb_probe(struct device_d *dev)
+ 	fb->screen_base = xzalloc(fb->xres * fb->yres *
+ 				  fb->bits_per_pixel >> 3);
  
-diff --git a/lib/gui/png.c b/lib/gui/png.c
-index 10faf5c..e72786e 100644
---- a/lib/gui/png.c
-+++ b/lib/gui/png.c
-@@ -65,7 +65,7 @@ static int png_renderer(struct screen *sc, struct surface *s, struct image *img)
- 	width = min(width, sc->s.width - startx);
- 	height = min(height, sc->s.height - starty);
+-	if (sdl_open(fb->xres, fb->yres, fb->bits_per_pixel,
+-		     fb->screen_base))
+-		goto err;
+-
+-	sdl_get_bitfield_rgba(&fb->red, &fb->green, &fb->blue, &fb->transp);
+-
+ 	dev_dbg(dev, "red: length = %d, offset = %d\n",
+ 		fb->red.length, fb->red.offset);
+ 	dev_dbg(dev, "green: length = %d, offset = %d\n",
+@@ -72,7 +75,6 @@ static int sdlfb_probe(struct device_d *dev)
+ 	if (!ret)
+ 		return 0;
  
--	buf = gui_screen_redering_buffer(sc);
-+	buf = gui_screen_render_buffer(sc);
- 
- 	gu_rgba_blend(&sc->info, img, buf, height, width, startx, starty, true);
- 
+-err:
+ 	kfree(fb->screen_base);
+ 	kfree(fb);
+ 	sdl_close();
 -- 
 2.1.4
 
