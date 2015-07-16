@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFesV-0005kO-PO
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:50:52 +0000
+ id 1ZFesV-0005kT-PS
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:50:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 16 Jul 2015 10:50:18 +0200
-Message-Id: <1437036628-29439-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 16 Jul 2015 10:50:22 +0200
+Message-Id: <1437036628-29439-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1437036628-29439-1-git-send-email-s.hauer@pengutronix.de>
 References: <1437036628-29439-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,51 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] ARM: i.MX6: Add i.MX6 entry function
+Subject: [PATCH 05/11] ARM: i.MX: compile boot.c for pbl aswell
 To: Barebox List <barebox@lists.infradead.org>
 
-Add a i.MX6 specific entry function which automatically detects the SDRAM
-size. The prototype has already been present, but it was never implemented.
-Rename it to imx6q_ since the other variants need other functions.
+As boot.c now contains code for the pbl compile compile it there
+awell. While at it move esdctl.c to obj-pbl-y.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/esdctl.c              | 11 +++++++++++
- arch/arm/mach-imx/include/mach/esdctl.h |  2 +-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/Makefile | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index a8ef854..2f9f5e9 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -576,3 +576,14 @@ void __noreturn imx53_barebox_entry(void *boarddata)
- 
- 	barebox_arm_entry(base, size, boarddata);
- }
-+
-+void __noreturn imx6q_barebox_entry(void *boarddata)
-+{
-+	u64 size_cs0 = imx6_mmdc_sdram_size((void *)MX6_MMDC_P0_BASE_ADDR, 0);
-+	u64 size_cs1 = imx6_mmdc_sdram_size((void *)MX6_MMDC_P0_BASE_ADDR, 1);
-+	u64 total    = size_cs0 + size_cs1;
-+
-+	resource_size_t size = min(total, (u64)IMX6_MAX_SDRAM_SIZE);
-+
-+	barebox_arm_entry(0x10000000, size, boarddata);
-+}
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 468a928..cf8d89d 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -135,7 +135,7 @@ void __noreturn imx31_barebox_entry(void *boarddata);
- void __noreturn imx35_barebox_entry(void *boarddata);
- void __noreturn imx51_barebox_entry(void *boarddata);
- void __noreturn imx53_barebox_entry(void *boarddata);
--void __noreturn imx6_barebox_entry(void *boarddata);
-+void __noreturn imx6q_barebox_entry(void *boarddata);
- void imx_esdctl_disable(void);
- #endif
- 
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 458d7b4..9e21429 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -18,9 +18,8 @@ obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+ lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
+ obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o clk-gate2.o clk-gate-exclusive.o
+-obj-y += devices.o imx.o esdctl.o
+-obj-y += boot.o
++obj-y += devices.o imx.o
++obj-pbl-y += esdctl.o boot.o
+ obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
+ obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
+-pbl-y += esdctl.o
+ lwl-y += cpu_init.o
 -- 
 2.1.4
 
