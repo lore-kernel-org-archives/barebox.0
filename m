@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFesV-0005kV-PP
+ id 1ZFesV-0005kS-PV
  for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:50:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 16 Jul 2015 10:50:24 +0200
-Message-Id: <1437036628-29439-8-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 16 Jul 2015 10:50:23 +0200
+Message-Id: <1437036628-29439-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1437036628-29439-1-git-send-email-s.hauer@pengutronix.de>
 References: <1437036628-29439-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] images: i.MX: Create target for SRAM images
+Subject: [PATCH 06/11] ARM: i.MX6: create cpu_is() functions for use in PBL
 To: Barebox List <barebox@lists.infradead.org>
 
-Some boards like to do their SDRAM setup in code rather than in hardcoded
-DCD tables. For these boards the bootloader has to be loaded to the internal
-SRAM which is often too small for a full featured barebox. This new SRAM
-image type target allows to overcome this limitation. The image created
-with the new imx-sram-img rule is a regular imx-image with the difference
-that the load size only spans the pblx image and not the whole image including
-the payload. The pbl image easily fits into SRAM. The strategy is that this
-initial code initializes the SDRAM, loads the whole image to SDRAM and jumps
-to it.
+The current cpu_is_mx6x() functions need the imx6_cpu_type variable
+which make them unsuitable for PBL. Add a set of cpu_mx6_is_mx6x()
+functions which can be called from PBL aswell. Unlike the cpu_is_mx6x()
+functions the cpu_mx6_is_mx6x() functions assume that they are called on
+i.MX6 only.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- images/Makefile.imx | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/mach-imx/include/mach/imx6.h | 41 +++++++++++++++--------------------
+ 1 file changed, 17 insertions(+), 24 deletions(-)
 
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 6b44958..cdbae8c 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -14,6 +14,17 @@ $(obj)/%.imximg: $(obj)/% FORCE
- 	$(call if_changed,imx_image)
- endif
+diff --git a/arch/arm/mach-imx/include/mach/imx6.h b/arch/arm/mach-imx/include/mach/imx6.h
+index 3b75421..3ddb6d2 100644
+--- a/arch/arm/mach-imx/include/mach/imx6.h
++++ b/arch/arm/mach-imx/include/mach/imx6.h
+@@ -48,29 +48,22 @@ static inline int imx6_cpu_type(void)
+ 	return __imx6_cpu_type();
+ }
  
-+quiet_cmd_imx_sram_img ?= IMX-SRAM-IMG    $@
-+      cmd_imx_sram_img ?= cat $(obj)/$(patsubst %.imx-sram-img,%.pblb,$(2)) > $@; \
-+		  $(call size_append, $(obj)/barebox.z) >> $@; \
-+		  $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(CFG_$(@F)) ; \
-+		  $(objtree)/scripts/imx/imx-image -o $@ -b -c $(imximg-tmp) -f $@; \
-+		  cat $(obj)/barebox.z >> $@; \
-+		  $(objtree)/scripts/fix_size -f $@
+-static inline int cpu_is_mx6s(void)
+-{
+-	return imx6_cpu_type() == IMX6_CPUTYPE_IMX6S;
+-}
+-
+-static inline int cpu_is_mx6dl(void)
+-{
+-	return imx6_cpu_type() == IMX6_CPUTYPE_IMX6DL;
+-}
+-
+-static inline int cpu_is_mx6d(void)
+-{
+-	return imx6_cpu_type() == IMX6_CPUTYPE_IMX6D;
+-}
+-
+-static inline int cpu_is_mx6q(void)
+-{
+-	return imx6_cpu_type() == IMX6_CPUTYPE_IMX6Q;
+-}
+-
+-static inline int cpu_is_mx6sx(void)
+-{
+-	return imx6_cpu_type() == IMX6_CPUTYPE_IMX6SX;
+-}
++#define DEFINE_MX6_CPU_TYPE(str, type)					\
++	static inline int cpu_mx6_is_##str(void)			\
++	{								\
++		return __imx6_cpu_type() == type;			\
++	}								\
++									\
++	static inline int cpu_is_##str(void)				\
++	{								\
++		if (!cpu_is_mx6())					\
++			return 0;					\
++		return cpu_mx6_is_##str();				\
++	}
 +
-+$(obj)/%.imx-sram-img: $(obj)/%.pblb $(obj)/barebox.z FORCE
-+	$(call if_changed,imx_sram_img,$(@F))
-+
- # ----------------------- i.MX25 based boards ---------------------------
- pblx-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
- FILE_barebox-karo-tx25.img = start_imx25_karo_tx25.pblx
++DEFINE_MX6_CPU_TYPE(mx6dl, IMX6_CPUTYPE_IMX6DL);
++DEFINE_MX6_CPU_TYPE(mx6q, IMX6_CPUTYPE_IMX6Q);
++DEFINE_MX6_CPU_TYPE(mx6d, IMX6_CPUTYPE_IMX6D);
++DEFINE_MX6_CPU_TYPE(mx6sx, IMX6_CPUTYPE_IMX6SX);
+ 
+ #endif /* __MACH_IMX6_H */
 -- 
 2.1.4
 
