@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFeEl-00040H-D6
- for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:09:48 +0000
-Date: Thu, 16 Jul 2015 10:09:25 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20150716080925.GA30696@pengutronix.de>
-References: <1436890599-31412-1-git-send-email-s.trumtrar@pengutronix.de>
- <1436890599-31412-3-git-send-email-s.trumtrar@pengutronix.de>
- <20150716061208.GY18700@pengutronix.de>
- <20150716070154.GF5161@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150716070154.GF5161@pengutronix.de>
+ id 1ZFePf-0002x7-Oh
+ for barebox@lists.infradead.org; Thu, 16 Jul 2015 08:21:04 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 16 Jul 2015 10:20:40 +0200
+Message-Id: <1437034840-10473-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,141 +14,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] ARM: socfpga: add bbu handler for spi nor
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] sandbox: Update defconfig
+To: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Jul 16, 2015 at 09:01:54AM +0200, Sascha Hauer wrote:
-> On Thu, Jul 16, 2015 at 08:12:08AM +0200, Sascha Hauer wrote:
-> > On Tue, Jul 14, 2015 at 06:16:37PM +0200, Steffen Trumtrar wrote:
-> > > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > > ---
-> > >  arch/arm/mach-socfpga/Kconfig               |  8 +++
-> > >  arch/arm/mach-socfpga/Makefile              |  1 +
-> > >  arch/arm/mach-socfpga/include/mach/bbu.h    | 15 +++++
-> > >  arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c | 86 +++++++++++++++++++++++++++++
-> > >  4 files changed, 110 insertions(+)
-> > >  create mode 100644 arch/arm/mach-socfpga/include/mach/bbu.h
-> > >  create mode 100644 arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
-> > > 
-> > > diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-> > > index 90b3533b1ffb..a85749b7f829 100644
-> > > --- a/arch/arm/mach-socfpga/Kconfig
-> > > +++ b/arch/arm/mach-socfpga/Kconfig
-> > > @@ -20,4 +20,12 @@ config MACH_SOCFPGA_TERASIC_SOCKIT
-> > >  	select HAVE_DEFAULT_ENVIRONMENT_NEW
-> > >  	bool "Terasic SoCKit"
-> > >  
-> > > +config BAREBOX_UPDATE_SOCFPGA_SPI_NOR
-> > > +	prompt "barebox update SPI NOR XLOAD handler"
-> > > +	bool
-> > > +	depends on BAREBOX_UPDATE
-> > > +	depends on SPI_CADENCE_QUADSPI
-> > > +	help
-> > > +	  Say Y for barebox update SPI NOR XLOAD handler.
-> > > +
-> > >  endif
-> > > diff --git a/arch/arm/mach-socfpga/Makefile b/arch/arm/mach-socfpga/Makefile
-> > > index b81d57da26fd..12c5252d1a6e 100644
-> > > --- a/arch/arm/mach-socfpga/Makefile
-> > > +++ b/arch/arm/mach-socfpga/Makefile
-> > > @@ -3,3 +3,4 @@ pbl-y += init.o freeze-controller.o scan-manager.o system-manager.o
-> > >  pbl-y += clock-manager.o
-> > >  obj-$(CONFIG_ARCH_SOCFPGA_XLOAD) += xload.o
-> > >  obj-$(CONFIG_ARCH_SOCFPGA_FPGA) += fpga.o
-> > > +obj-$(CONFIG_BAREBOX_UPDATE_SOCFPGA_SPI_NOR) += socfpga_bbu_spi_nor.o
-> > > diff --git a/arch/arm/mach-socfpga/include/mach/bbu.h b/arch/arm/mach-socfpga/include/mach/bbu.h
-> > > new file mode 100644
-> > > index 000000000000..e4846d36bc5d
-> > > --- /dev/null
-> > > +++ b/arch/arm/mach-socfpga/include/mach/bbu.h
-> > > @@ -0,0 +1,15 @@
-> > > +#ifndef __MACH_BBU_H
-> > > +#define __MACH_BBU_H
-> > > +
-> > > +#include <bbu.h>
-> > > +
-> > > +#ifdef CONFIG_BAREBOX_UPDATE_SOCFPGA_SPI_NOR
-> > > +int socfpga_bbu_spi_nor_register_handler(const char *name, char *devicefile);
-> > > +#else
-> > > +static inline int socfpga_bbu_spi_nor_register_handler(const char *name, char *devicefile)
-> > > +{
-> > > +	return 0;
-> > > +}
-> > > +#endif
-> > > +
-> > > +#endif
-> > > diff --git a/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c b/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
-> > > new file mode 100644
-> > > index 000000000000..cf44bc81c60b
-> > > --- /dev/null
-> > > +++ b/arch/arm/mach-socfpga/socfpga_bbu_spi_nor.c
-> > > @@ -0,0 +1,86 @@
-> > > +/*
-> > > + * Copyright (c) 2015 Pengutronix, Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > > + *
-> > > + * This program is free software; you can redistribute it and/or modify
-> > > + * it under the terms of the GNU General Public License version 2
-> > > + * as published by the Free Software Foundation.
-> > > + *
-> > > + * This program is distributed in the hope that it will be useful,
-> > > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> > > + * GNU General Public License for more details.
-> > > + */
-> > > +#include <common.h>
-> > > +#include <malloc.h>
-> > > +#include <bbu.h>
-> > > +#include <fs.h>
-> > > +#include <fcntl.h>
-> > > +#include <linux/stat.h>
-> > > +
-> > > +static int spi_nor_handler(struct bbu_handler *handler,
-> > > +			   struct bbu_data *data)
-> > > +{
-> > > +	int fd, ret;
-> > > +	int *header;
-> > > +
-> > > +	if (file_detect_type(data->image, data->len) != filetype_arm_barebox) {
-> > > +		if (!bbu_force(data, "Not an ARM barebox image"))
-> > > +			return -EINVAL;
-> > > +	}
-> > > +
-> > > +	header = data->image;
-> > > +
-> > > +	if (!header[0x40] == 0x31305341) {
-> > 
-> > This will never be true. header[0x40] != 0x31305341 instead?
-> > Also you probably want to expliticitly use u32 instead of int.
-> 
-> Does the fixed test return true for the barebox image?
-> 
-> Note now there's also bbu_register_std_file_update() which will do the
-> same as your code in a generic way. The only thing that won't work with
-> the generic code is this check above.
-> 
+The sandbox defconfig hasn't been updated for a long time. This enables
+tons of features since the binary size is not relevant at all for sandbox.
 
-Ah, that sounds good. I guess the way to go would be defining a new
-filetype ala filetype_ch_image for OMAP. This seems to be the same thing
-in the end.
-The magic value gets written by scripts/socfpga_mkimage and is mandatory.
-(Theoretically I would also have to validate the crc32 checksum, too).
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/sandbox/configs/sandbox_defconfig | 64 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 63 insertions(+), 1 deletion(-)
 
-What is not possible then is writing multiple redundant copies of the
-prebootloader it seems.
-
-Regards,
-Steffen
-
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index ec045f7..7e494a6 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -1,40 +1,102 @@
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
+ CONFIG_PARTITION=y
++CONFIG_DEFAULT_COMPRESSION_GZIP=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/sandbox/board/env"
+ CONFIG_DEBUG_INFO=y
++CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
++CONFIG_CMD_IMD=y
+ CONFIG_CMD_MEMINFO=y
+ # CONFIG_CMD_BOOTM is not set
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_EXPORT=y
++CONFIG_CMD_DEFAULTENV=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_CMP=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA224SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_SHA384SUM=y
++CONFIG_CMD_SHA512SUM=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_EDIT=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_SPLASH=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_DETECT=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_2048=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OF_DISPLAY_TIMINGS=y
+ CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_SPD_DECODE=y
+ CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+-CONFIG_DRIVER_NET_TAP=y
+ # CONFIG_SPI is not set
++CONFIG_VIDEO=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
+ # CONFIG_PINCTRL is not set
+ CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_FS_BPKFS=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_BZLIB=y
++CONFIG_LZ4_DECOMPRESS=y
++CONFIG_XZ_DECOMPRESS=y
++CONFIG_LZO_DECOMPRESS=y
++CONFIG_BMP=y
++CONFIG_PNG=y
++CONFIG_FONT_8x16=y
++CONFIG_FONT_7x14=y
++CONFIG_FONT_MINI_4x6=y
++CONFIG_BAREBOX_LOGO=y
++CONFIG_BAREBOX_LOGO_64=y
++CONFIG_BAREBOX_LOGO_240=y
++CONFIG_BAREBOX_LOGO_320=y
++CONFIG_BAREBOX_LOGO_400=y
++CONFIG_BAREBOX_LOGO_640=y
++CONFIG_DIGEST_MD5_GENERIC=y
++CONFIG_DIGEST_SHA1_GENERIC=y
++CONFIG_DIGEST_SHA224_GENERIC=y
++CONFIG_DIGEST_SHA256_GENERIC=y
++CONFIG_DIGEST_SHA384_GENERIC=y
++CONFIG_DIGEST_SHA512_GENERIC=y
++CONFIG_DIGEST_HMAC_GENERIC=y
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
