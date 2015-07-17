@@ -1,22 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZG77a-0003DM-Tv
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 15:00:19 +0000
-Received: from kiwi.hi.pengutronix.de ([2001:67c:670:100:1d::c3] helo=kiwi)
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <jlu@pengutronix.de>) id 1ZG5FX-0008N9-Kb
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 15:00:23 +0200
-Received: from jlu by kiwi with local (Exim 4.84)
- (envelope-from <jlu@pengutronix.de>) id 1ZG77F-00021x-1L
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 16:59:57 +0200
-Message-ID: <1437145196.3498.119.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 17 Jul 2015 16:59:56 +0200
-In-Reply-To: <1437131633-9590-2-git-send-email-t.remmet@phytec.de>
-References: <1437131633-9590-1-git-send-email-t.remmet@phytec.de>
- <1437131633-9590-2-git-send-email-t.remmet@phytec.de>
-Mime-Version: 1.0
+ id 1ZGBEE-0002SI-TL
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 19:23:31 +0000
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Fri, 17 Jul 2015 21:22:33 +0200
+Message-Id: <1437160969-31517-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,28 +14,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] drivers: i2c: Only register available devices
+Subject: [PATCHv2 00/16] EFI updates
 To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-On Fr, 2015-07-17 at 13:13 +0200, Teresa Remmet wrote:
-> -       for_each_child_of_node(adap->dev.device_node, n) {
-> +       for_each_available_child_of_node(adap->dev.device_node, n) {
->                 struct i2c_board_info info = {};
+Hi,
 
-I've submitted an identical patch last week, which was applied by
-Sascha.
+I've added a patch for xasprintf() and one to add xfuncs for the relevant
+wchar functions. I've replaced all occurrences in the EFI code but I'm not
+confident enough to do this elsewhere without being able to test it.
 
-Regards,
-Jan
+And I've added some patches to save the environment in an EFI variable.
+
+Michael Olbrich (16):
+  xfuncs: add xasprintf() and xvasprintf()
+  xfuncs: add wrapper for wchar strdup functions
+  efi: improve malloc pool allocation
+  efi: refactor & improve application loading code
+  efi: add support for initrd loading
+  efi: add helper to get the GPT partition UUID for a device
+  efi: export device_path_from_handle()
+  efi: add helper functions to write EFI variables
+  efi: write volatile EFI variables used by systemd
+  efi: use xasprintf() when appropriate
+  efi: use xstrdup_* when appropriate
+  fs: efi: use xstrdup_* when appropriate
+  fs: efivars: use xstrdup_* when appropriate
+  fs: efivars: add more error checking
+  fs: efivars: read the attributes on the second get_variable()
+  efi: use an EFI variable to save the environment
+
+ arch/efi/efi/efi-block-io.c |   2 +-
+ arch/efi/efi/efi-image.c    | 198 +++++++++++++++++++++++++++++++++++++++++---
+ arch/efi/efi/efi.c          |  74 +++++++++++++++--
+ arch/efi/include/mach/efi.h |   4 +
+ common/efi-devicepath.c     |  30 +++++++
+ common/efi-guid.c           |   2 +
+ fs/efi.c                    |   4 +-
+ fs/efivarfs.c               |  29 ++++---
+ include/efi.h               |  10 ++-
+ include/xfuncs.h            |   8 ++
+ lib/xfuncs.c                |  55 ++++++++++++
+ 11 files changed, 383 insertions(+), 33 deletions(-)
+
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
 
 
 _______________________________________________
