@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGBEE-0002KJ-P9
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 19:23:29 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZGBEE-0002SO-TH
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 19:23:28 +0000
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Fri, 17 Jul 2015 21:22:48 +0200
-Message-Id: <1437160969-31517-16-git-send-email-m.olbrich@pengutronix.de>
+Date: Fri, 17 Jul 2015 21:22:39 +0200
+Message-Id: <1437160969-31517-7-git-send-email-m.olbrich@pengutronix.de>
 In-Reply-To: <1437160969-31517-1-git-send-email-m.olbrich@pengutronix.de>
 References: <1437160969-31517-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/16] fs: efivars: read the attributes on the second
- get_variable()
+Subject: [PATCH 06/16] efi: add helper to get the GPT partition UUID for a
+ device
 To: barebox@lists.infradead.org
 Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
-Some EFI get_variable() implementations don't set the attributes when
-returning EFI_BUFFER_TOO_SMALL.
-
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
- fs/efivarfs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+v2: use xasprintf()
 
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index 87fc771739e2..c7a282b05c63 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -216,7 +216,7 @@ static int efivarfs_open(struct device_d *dev, FILE *f, const char *filename)
- 		return -ENOENT;
+ common/efi-devicepath.c | 30 ++++++++++++++++++++++++++++++
+ include/efi.h           |  1 +
+ 2 files changed, 31 insertions(+)
+
+diff --git a/common/efi-devicepath.c b/common/efi-devicepath.c
+index a53c6d2e8b9b..a1cd0952f929 100644
+--- a/common/efi-devicepath.c
++++ b/common/efi-devicepath.c
+@@ -1383,3 +1383,33 @@ u8 device_path_to_type(struct efi_device_path *dev_path)
  
- 	efiret = RT->get_variable(efile->name, &efile->vendor,
--				  &efile->attributes, &efile->size, NULL);
-+				  NULL, &efile->size, NULL);
- 	if (EFI_ERROR(efiret) && efiret != EFI_BUFFER_TOO_SMALL) {
- 		ret = -efi_errno(efiret);
- 		goto out;
-@@ -228,8 +228,9 @@ static int efivarfs_open(struct device_d *dev, FILE *f, const char *filename)
- 		goto out;
- 	}
+ 	return device_path_type(dev_path);
+ }
++
++char *device_path_to_partuuid(struct efi_device_path *dev_path)
++{
++	struct efi_device_path *dev_path_node;
++	struct harddrive_device_path *hd;
++	char *str = NULL;;
++
++	dev_path = unpack_device_path(dev_path);
++
++	for (dev_path_node = dev_path; !is_device_path_end(dev_path_node);
++	     dev_path_node = next_device_path_node(dev_path_node)) {
++
++		if (device_path_type(dev_path_node) != MEDIA_DEVICE_PATH)
++			continue;
++
++		if (dev_path_node->sub_type != MEDIA_HARDDRIVE_DP)
++			continue;
++
++		hd = (struct harddrive_device_path *)dev_path_node;
++
++		if (hd->signature_type != SIGNATURE_TYPE_GUID)
++			continue;
++
++		str = xasprintf("%pU)", (efi_guid_t *)&(hd->signature[0]));
++		break;
++	}
++
++	return str;
++}
++
+diff --git a/include/efi.h b/include/efi.h
+index e79a407bc2c8..b6ee42b3fd49 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -624,6 +624,7 @@ static inline int efi_compare_guid(efi_guid_t *a, efi_guid_t *b)
  
--	efiret = RT->get_variable(efile->name, &efile->vendor, NULL, &efile->size,
--			efile->buf);
-+	efiret = RT->get_variable(efile->name, &efile->vendor,
-+				  &efile->attributes, &efile->size,
-+				  efile->buf);
- 	if (EFI_ERROR(efiret)) {
- 		ret = -efi_errno(efiret);
- 		goto out;
+ char *device_path_to_str(struct efi_device_path *dev_path);
+ u8 device_path_to_type(struct efi_device_path *dev_path);
++char *device_path_to_partuuid(struct efi_device_path *dev_path);
+ 
+ const char *efi_guid_string(efi_guid_t *g);
+ 
 -- 
 2.1.4
 
