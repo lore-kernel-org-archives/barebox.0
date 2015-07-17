@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZG1kz-0002GN-N1
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 09:16:38 +0000
-Message-ID: <1437124574.3498.73.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 17 Jul 2015 11:16:14 +0200
-In-Reply-To: <1437036707-48320-1-git-send-email-d.schultz@phytec.de>
-References: <1437036707-48320-1-git-send-email-d.schultz@phytec.de>
-Mime-Version: 1.0
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZG3bO-000536-T3
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 11:14:51 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 0B7E6A0045E
+ for <barebox@lists.infradead.org>; Fri, 17 Jul 2015 13:16:11 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Fri, 17 Jul 2015 13:13:49 +0200
+Message-Id: <1437131633-9590-3-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1437131633-9590-1-git-send-email-t.remmet@phytec.de>
+References: <1437131633-9590-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,45 +19,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] ARM: am335x: Changed timer
-To: Daniel Schultz <d.schultz@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/7] ARM: dts: am335x-phytec boards: Fixup spi flash node name
+To: barebox@lists.infradead.org
 
-On Do, 2015-07-16 at 10:51 +0200, Daniel Schultz wrote:
-> The dmtimer0 is too inaccurate to be used for measurements.
-> We switch to the more accurate dmtimer2.
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ arch/arm/dts/am335x-phytec-phycore-som.dtsi | 2 +-
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-What are you trying to measure? Is the resolution or the accuracy too
-low?
-
-> +#define CLK_M_OSC	25000000
-
-> +static int dmtimer_init(void)
-> +{
-> +	dmtimer_cs.mult = clocksource_hz2mult(CLK_M_OSC, dmtimer_cs.shift);
-> +	/* Enable counter */
-> +	writel(0x3, base + TCLR);
-> +
-> +	return init_clock(&dmtimer_cs);
-
-You use a fixed M_OSC of 25 MHz, but this value actually depends on the
-the board. The AM335x supports 19.2, 24 and 26 MHz in addition to 25
-MHz.
-
-The advantage of using dmtimer0 is that it is always available and runs
-at 32KiHz on every board.
-
-Regards,
-Jan
+diff --git a/arch/arm/dts/am335x-phytec-phycore-som.dtsi b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+index ed8e257..59816d0 100644
+--- a/arch/arm/dts/am335x-phytec-phycore-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phycore-som.dtsi
+@@ -162,7 +162,7 @@
+ 	pinctrl-0 = <&spi0_pins>;
+ 	status = "disabled";
+ 
+-	flash: m25p80 {
++	flash: m25p80@0 {
+ 		compatible = "m25p80";
+ 		spi-max-frequency = <48000000>;
+ 		reg = <0>;
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+index fc9c9ba..b8c6886 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+@@ -151,7 +151,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spi0_pins>;
+ 	status = "disabled";
+-	flash: m25p80 {
++	flash: m25p80@0 {
+ 		compatible = "m25p80";
+ 		spi-max-frequency = <48000000>;
+ 		reg = <0>;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
 
 
 _______________________________________________
