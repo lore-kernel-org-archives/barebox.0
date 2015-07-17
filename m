@@ -1,26 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFzwK-0002mb-1k
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 07:20:12 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- ident=Debian-exim)
- by metis.ext.pengutronix.de with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1ZFy4E-0004Vv-VO
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 07:20:14 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1ZFzvx-0007Z3-1v
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 09:19:49 +0200
-Date: Fri, 17 Jul 2015 09:19:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150717071949.GN18700@pengutronix.de>
-References: <1437036236-19096-1-git-send-email-m.olbrich@pengutronix.de>
- <1437036236-19096-8-git-send-email-m.olbrich@pengutronix.de>
- <20150716200848.GI18700@pengutronix.de>
- <20150717070540.GB26620@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150717070540.GB26620@pengutronix.de>
+ id 1ZG1kz-0002GN-N1
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 09:16:38 +0000
+Message-ID: <1437124574.3498.73.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Fri, 17 Jul 2015 11:16:14 +0200
+In-Reply-To: <1437036707-48320-1-git-send-email-d.schultz@phytec.de>
+References: <1437036707-48320-1-git-send-email-d.schultz@phytec.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -33,97 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] efi: write volatile EFI variables used by systemd
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 2/2] ARM: am335x: Changed timer
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Jul 17, 2015 at 09:05:40AM +0200, Michael Olbrich wrote:
-> On Thu, Jul 16, 2015 at 10:08:48PM +0200, Sascha Hauer wrote:
-> > On Thu, Jul 16, 2015 at 10:43:56AM +0200, Michael Olbrich wrote:
-> > > LoaderTimeInitUSec and LoaderTimeExecUSec are used e.g. in systemd-analyze
-> > > to calculate the time spent in the firmare and barebox.
-> > > 
-> > > LoaderDevicePartUUID is used to mount the EFI partition to /boot.
-> > > 
-> > > Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
-> > > ---
-> > >  arch/efi/efi/efi-image.c |  5 +++++
-> > >  arch/efi/efi/efi.c       | 14 ++++++++++++++
-> > >  common/efi-guid.c        |  1 +
-> > >  include/efi.h            |  5 +++++
-> > >  4 files changed, 25 insertions(+)
-> > > 
-> > > diff --git a/arch/efi/efi/efi-image.c b/arch/efi/efi/efi-image.c
-> > > index f41322744bbc..89b712baab1f 100644
-> > > --- a/arch/efi/efi/efi-image.c
-> > > +++ b/arch/efi/efi/efi-image.c
-> > > @@ -17,6 +17,7 @@
-> > >   *
-> > >   */
-> > >  
-> > > +#include <clock.h>
-> > >  #include <common.h>
-> > >  #include <linux/sizes.h>
-> > >  #include <memory.h>
-> > > @@ -242,6 +243,10 @@ static int do_bootm_efi(struct image_data *data)
-> > >  			       boot_header->ramdisk_image);
-> > >  		printf("...\n");
-> > >  	}
-> > > +
-> > > +	efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
-> > > +			      get_time_ns()/1000);
-> > > +
-> > >  	linux_efi_handover(handle, boot_header);
-> > >  
-> > >  	return 0;
-> > > diff --git a/arch/efi/efi/efi.c b/arch/efi/efi/efi.c
-> > > index b0e98f95b02b..a665a546be90 100644
-> > > --- a/arch/efi/efi/efi.c
-> > > +++ b/arch/efi/efi/efi.c
-> > > @@ -340,6 +340,7 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
-> > >  	efi_physical_addr_t mem;
-> > >  	size_t memsize;
-> > >  	efi_status_t efiret;
-> > > +	char *uuid;
-> > >  
-> > >  #ifdef DEBUG
-> > >  	sys_table->con_out->output_string(sys_table->con_out, L"barebox\n");
-> > > @@ -377,6 +378,19 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
-> > >  	mem_malloc_init((void *)mem, (void *)mem + memsize);
-> > >  
-> > >  	efi_clocksource_init();
-> > > +	efi_set_variable_usec("LoaderTimeInitUSec", &efi_systemd_vendor_guid,
-> > > +			      get_time_ns()/1000);
-> > > +
-> > > +	uuid = device_path_to_partuuid(device_path_from_handle(
-> > > +				       efi_loaded_image->device_handle));
-> > > +	if (uuid) {
-> > > +		wchar_t *uuid16 = strdup_char_to_wchar(uuid);
-> > > +		efi_set_variable("LoaderDevicePartUUID",
-> > > +				 &efi_systemd_vendor_guid,
-> > > +				 EFI_VARIABLE_BOOTSERVICE_ACCESS |
-> > > +				 EFI_VARIABLE_RUNTIME_ACCESS,
-> > > +				 uuid16, (strlen(uuid)+1) * sizeof(wchar_t));
-> > > +	}
-> > 
-> > Shouldn't you free uuid here?
-> 
-> Yes, and uuid16.
-> 
-> Hmmm, what's the policy for OOM checks for string functions? None of the
-> existing calls of strdup_char_to_wchar() check for NULL. And I didn't find
-> any checks for asprintf() either.
+On Do, 2015-07-16 at 10:51 +0200, Daniel Schultz wrote:
+> The dmtimer0 is too inaccurate to be used for measurements.
+> We switch to the more accurate dmtimer2.
 
-Introducing xasprintf and using it throughout the tree is on my mental
-todo list for some time now. I think You can skip the error check, or,
-even better, introduce xasprintf ;)
+What are you trying to measure? Is the resolution or the accuracy too
+low?
 
-Sascha
+> +#define CLK_M_OSC	25000000
 
+> +static int dmtimer_init(void)
+> +{
+> +	dmtimer_cs.mult = clocksource_hz2mult(CLK_M_OSC, dmtimer_cs.shift);
+> +	/* Enable counter */
+> +	writel(0x3, base + TCLR);
+> +
+> +	return init_clock(&dmtimer_cs);
+
+You use a fixed M_OSC of 25 MHz, but this value actually depends on the
+the board. The AM335x supports 19.2, 24 and 26 MHz in addition to 25
+MHz.
+
+The advantage of using dmtimer0 is that it is always available and runs
+at 32KiHz on every board.
+
+Regards,
+Jan
 -- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
