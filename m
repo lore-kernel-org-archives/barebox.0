@@ -1,18 +1,26 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZFzoA-0000b0-Ru
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 07:11:48 +0000
-Received: by lagx9 with SMTP id x9so56173037lag.1
- for <barebox@lists.infradead.org>; Fri, 17 Jul 2015 00:11:25 -0700 (PDT)
-Date: Fri, 17 Jul 2015 10:18:26 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150717101826.8b7440dfe537ba4fd8318a9f@gmail.com>
-In-Reply-To: <20150716195150.GG18700@pengutronix.de>
-References: <1436991230-14251-1-git-send-email-antonynpavlov@gmail.com>
- <1436991230-14251-5-git-send-email-antonynpavlov@gmail.com>
- <20150716195150.GG18700@pengutronix.de>
-Mime-Version: 1.0
+ id 1ZFzwK-0002mb-1k
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 07:20:12 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim)
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1ZFy4E-0004Vv-VO
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 07:20:14 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1ZFzvx-0007Z3-1v
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 09:19:49 +0200
+Date: Fri, 17 Jul 2015 09:19:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150717071949.GN18700@pengutronix.de>
+References: <1437036236-19096-1-git-send-email-m.olbrich@pengutronix.de>
+ <1437036236-19096-8-git-send-email-m.olbrich@pengutronix.de>
+ <20150716200848.GI18700@pengutronix.de>
+ <20150717070540.GB26620@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150717070540.GB26620@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,166 +29,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 04/12] WIP: fs/nfs.c: convert to picotcp
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/7] efi: write volatile EFI variables used by systemd
+To: barebox@lists.infradead.org
 
-On Thu, 16 Jul 2015 21:51:50 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Fri, Jul 17, 2015 at 09:05:40AM +0200, Michael Olbrich wrote:
+> On Thu, Jul 16, 2015 at 10:08:48PM +0200, Sascha Hauer wrote:
+> > On Thu, Jul 16, 2015 at 10:43:56AM +0200, Michael Olbrich wrote:
+> > > LoaderTimeInitUSec and LoaderTimeExecUSec are used e.g. in systemd-analyze
+> > > to calculate the time spent in the firmare and barebox.
+> > > 
+> > > LoaderDevicePartUUID is used to mount the EFI partition to /boot.
+> > > 
+> > > Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+> > > ---
+> > >  arch/efi/efi/efi-image.c |  5 +++++
+> > >  arch/efi/efi/efi.c       | 14 ++++++++++++++
+> > >  common/efi-guid.c        |  1 +
+> > >  include/efi.h            |  5 +++++
+> > >  4 files changed, 25 insertions(+)
+> > > 
+> > > diff --git a/arch/efi/efi/efi-image.c b/arch/efi/efi/efi-image.c
+> > > index f41322744bbc..89b712baab1f 100644
+> > > --- a/arch/efi/efi/efi-image.c
+> > > +++ b/arch/efi/efi/efi-image.c
+> > > @@ -17,6 +17,7 @@
+> > >   *
+> > >   */
+> > >  
+> > > +#include <clock.h>
+> > >  #include <common.h>
+> > >  #include <linux/sizes.h>
+> > >  #include <memory.h>
+> > > @@ -242,6 +243,10 @@ static int do_bootm_efi(struct image_data *data)
+> > >  			       boot_header->ramdisk_image);
+> > >  		printf("...\n");
+> > >  	}
+> > > +
+> > > +	efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
+> > > +			      get_time_ns()/1000);
+> > > +
+> > >  	linux_efi_handover(handle, boot_header);
+> > >  
+> > >  	return 0;
+> > > diff --git a/arch/efi/efi/efi.c b/arch/efi/efi/efi.c
+> > > index b0e98f95b02b..a665a546be90 100644
+> > > --- a/arch/efi/efi/efi.c
+> > > +++ b/arch/efi/efi/efi.c
+> > > @@ -340,6 +340,7 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
+> > >  	efi_physical_addr_t mem;
+> > >  	size_t memsize;
+> > >  	efi_status_t efiret;
+> > > +	char *uuid;
+> > >  
+> > >  #ifdef DEBUG
+> > >  	sys_table->con_out->output_string(sys_table->con_out, L"barebox\n");
+> > > @@ -377,6 +378,19 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
+> > >  	mem_malloc_init((void *)mem, (void *)mem + memsize);
+> > >  
+> > >  	efi_clocksource_init();
+> > > +	efi_set_variable_usec("LoaderTimeInitUSec", &efi_systemd_vendor_guid,
+> > > +			      get_time_ns()/1000);
+> > > +
+> > > +	uuid = device_path_to_partuuid(device_path_from_handle(
+> > > +				       efi_loaded_image->device_handle));
+> > > +	if (uuid) {
+> > > +		wchar_t *uuid16 = strdup_char_to_wchar(uuid);
+> > > +		efi_set_variable("LoaderDevicePartUUID",
+> > > +				 &efi_systemd_vendor_guid,
+> > > +				 EFI_VARIABLE_BOOTSERVICE_ACCESS |
+> > > +				 EFI_VARIABLE_RUNTIME_ACCESS,
+> > > +				 uuid16, (strlen(uuid)+1) * sizeof(wchar_t));
+> > > +	}
+> > 
+> > Shouldn't you free uuid here?
+> 
+> Yes, and uuid16.
+> 
+> Hmmm, what's the policy for OOM checks for string functions? None of the
+> existing calls of strdup_char_to_wchar() check for NULL. And I didn't find
+> any checks for asprintf() either.
 
-> Hi Antony,
-> =
+Introducing xasprintf and using it throughout the tree is on my mental
+todo list for some time now. I think You can skip the error check, or,
+even better, introduce xasprintf ;)
 
-> On Wed, Jul 15, 2015 at 11:13:42PM +0300, Antony Pavlov wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  fs/nfs.c | 150 +++++++++++++++++++++++++++++++++++++++++++++++++++++++=
---------
-> >  1 file changed, 133 insertions(+), 17 deletions(-)
-> > =
+Sascha
 
-> > @@ -1346,19 +1424,38 @@ static int nfs_probe(struct device_d *dev)
-> >  =
-
-> >  	npriv->path =3D xstrdup(path + 1);
-> >  =
-
-> > -	npriv->server =3D resolv(tmp);
-> > +	if (IS_ENABLED(CONFIG_NET_LEGACY)) {
-> > +		npriv->server =3D resolv(tmp);
-> > +	} else if (IS_ENABLED(CONFIG_NET_PICOTCP)) {
-> > +		/* FIXME: check corectness */
-> > +		npriv->remote_address.ip4.addr =3D resolv(tmp);
-> > +	}
-> >  =
-
-> >  	debug("nfs: server: %s path: %s\n", tmp, npriv->path);
-> >  =
-
-> > -	npriv->con =3D net_udp_new(npriv->server, 0, nfs_handler, npriv);
-> > -	if (IS_ERR(npriv->con)) {
-> > -		ret =3D PTR_ERR(npriv->con);
-> > -		goto err1;
-> > +	if (IS_ENABLED(CONFIG_NET_LEGACY)) {
-> > +		npriv->con =3D net_udp_new(npriv->server, 0, nfs_handler, npriv);
-> > +		if (IS_ERR(npriv->con)) {
-> > +			ret =3D PTR_ERR(npriv->con);
-> > +			goto err1;
-> > +		}
-> > +
-> > +		/* Need a priviliged source port */
-> > +		net_udp_bind(npriv->con, 1000);
-> > +	} else if (IS_ENABLED(CONFIG_NET_PICOTCP)) {
-> > +		/* FIXME: 2048 */
-> > +		npriv->pkt =3D xzalloc(2048);
-> > +
-> > +		/* Need a priviliged source port */
-> > +		npriv->sock =3D nfs_socket_open(1000);
-> > +		if (!npriv->sock) {
-> > +			ret =3D -1;
-> > +			goto err1;
-> > +		}
-> > +
-> > +		npriv->sock->priv =3D npriv;
-> >  	}
-> =
-
-> The different network stacks should be transparent to the users. Instead
-> of implementing them in tftp/nfs/... I would expect the abstraction in the
-> current network functions, something like:
-
-It's near impossible with current network stack implementation.
-
-We have to drop direct access to net_connection private fields from applica=
-tion code;
-e.g. direct access to packet UDP fields in tftp code:
-
-  priv->tftp_con->udp->uh_dport =3D uh_sport;
-
-My patch series was not intended to change legacy network code in any way.
-On the contrary it intentionaly keeps original code "as is".
-This approach demonstrates in practice picotcp and legacy network stack dif=
-ferences,
-so future work on integration is much more evident.
-
-I can start next round of picotcp integration with removing direct access t=
-o net_connection private fields
-from application code.
-
-
-> struct net_connection *net_udp_new(IPaddr_t dest, uint16_t dport,
->                 rx_handler_f *handler, void *ctx)
-> {
-> 	struct net_connection *con =3D net_new(dest, handler, ctx);
-> 	if (IS_ERR(con))
->                 return con;
-> =
-
-> 	con->proto =3D IPPROTO_UDP;
-> 	con->udp->uh_dport =3D htons(dport);
-> 	con->udp->uh_sport =3D htons(net_udp_new_localport());
-> 	con->ip->protocol =3D IPPROTO_UDP;
-> =
-
-> 	if (IS_ENABLED(CONFIG_NET_PICOTCP)) {
-> 		con->sock =3D pico_socket_open(PICO_PROTO_IPV4, PICO_PROTO_UDP, handler=
-);
-> 	}
-> =
-
-> 	return con;
-> }
-> =
-
-> static inline int net_udp_bind(struct net_connection *con, int sport)
-> {
-> 	if (IS_ENABLED(CONFIG_NET_PICOTCP)) {
-> 		memset(&local_address, 0, sizeof(union pico_address));
-> 		pico_socket_bind(con->sock, &local_address, &sport);
-> 	} else {
-> 		con->udp->uh_sport =3D ntohs(sport);
-> 	}
-> =
-
-> 	return 0;
-> }
-> =
-
-> int net_udp_send(struct net_connection *con, int len)
-> {
-> 	if (IS_ENABLED(CONFIG_NET_PICOTCP)) {
-> 		return pico_socket_sendto(con->sock, npriv->pkt,
-> 				sizeof(pkt) + datalen * sizeof(uint32_t),
-> 				con->ip->daddr, con->udp->uh_dport);
-> 	}
-> =
-
-> 	con->udp->uh_ulen =3D htons(len + 8);
-> 	con->udp->uh_sum =3D 0;
-> =
-
-> 	return net_ip_send(con, sizeof(struct udphdr) + len);
-> }
-> =
-
-> The APIs between current barebox implementation and picotcp probably do
-> not match exactly. Where the APIs don't match we can change the existing
-> barebox API to what picotcp expects.
-
-Yeah, picotcp uses more advanced API so we have to "pull up" existing API.
-
-> =
-
-> With that the remaining pieces like DHCP, netconsole and DNS would work
-> without additional effort.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
