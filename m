@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGBEE-0002SO-TH
- for barebox@lists.infradead.org; Fri, 17 Jul 2015 19:23:28 +0000
+ id 1ZGBEE-0002SK-TD
+ for barebox@lists.infradead.org; Fri, 17 Jul 2015 19:23:29 +0000
 From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Fri, 17 Jul 2015 21:22:39 +0200
-Message-Id: <1437160969-31517-7-git-send-email-m.olbrich@pengutronix.de>
+Date: Fri, 17 Jul 2015 21:22:36 +0200
+Message-Id: <1437160969-31517-4-git-send-email-m.olbrich@pengutronix.de>
 In-Reply-To: <1437160969-31517-1-git-send-email-m.olbrich@pengutronix.de>
 References: <1437160969-31517-1-git-send-email-m.olbrich@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,68 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/16] efi: add helper to get the GPT partition UUID for a
- device
+Subject: [PATCH 03/16] efi: improve malloc pool allocation
 To: barebox@lists.infradead.org
 Cc: Michael Olbrich <m.olbrich@pengutronix.de>
 
+Use allocate_pages() instead of allocate_pool(). With allocate_pages() we
+can specify the address. This way, any address passed to the kernel will
+never exceed the lower 32 bit.
+If possible, try to allocate a larger pool.
+
 Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 ---
-v2: use xasprintf()
+ arch/efi/efi/efi.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
- common/efi-devicepath.c | 30 ++++++++++++++++++++++++++++++
- include/efi.h           |  1 +
- 2 files changed, 31 insertions(+)
-
-diff --git a/common/efi-devicepath.c b/common/efi-devicepath.c
-index a53c6d2e8b9b..a1cd0952f929 100644
---- a/common/efi-devicepath.c
-+++ b/common/efi-devicepath.c
-@@ -1383,3 +1383,33 @@ u8 device_path_to_type(struct efi_device_path *dev_path)
+diff --git a/arch/efi/efi/efi.c b/arch/efi/efi/efi.c
+index d351775a2868..c05d183c02fa 100644
+--- a/arch/efi/efi/efi.c
++++ b/arch/efi/efi/efi.c
+@@ -310,7 +310,8 @@ device_initcall(efi_init);
+  */
+ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
+ {
+-	void *mem;
++	efi_physical_addr_t mem;
++	size_t memsize;
+ 	efi_status_t efiret;
  
- 	return device_path_type(dev_path);
- }
-+
-+char *device_path_to_partuuid(struct efi_device_path *dev_path)
-+{
-+	struct efi_device_path *dev_path_node;
-+	struct harddrive_device_path *hd;
-+	char *str = NULL;;
-+
-+	dev_path = unpack_device_path(dev_path);
-+
-+	for (dev_path_node = dev_path; !is_device_path_end(dev_path_node);
-+	     dev_path_node = next_device_path_node(dev_path_node)) {
-+
-+		if (device_path_type(dev_path_node) != MEDIA_DEVICE_PATH)
-+			continue;
-+
-+		if (dev_path_node->sub_type != MEDIA_HARDDRIVE_DP)
-+			continue;
-+
-+		hd = (struct harddrive_device_path *)dev_path_node;
-+
-+		if (hd->signature_type != SIGNATURE_TYPE_GUID)
-+			continue;
-+
-+		str = xasprintf("%pU)", (efi_guid_t *)&(hd->signature[0]));
-+		break;
+ #ifdef DEBUG
+@@ -332,8 +333,21 @@ efi_status_t efi_main(efi_handle_t image, efi_system_table_t *sys_table)
+ 
+ 	fixup_tables();
+ 
+-	BS->allocate_pool(efi_loaded_image->image_data_type, SZ_16M, &mem);
+-	mem_malloc_init(mem, mem + SZ_16M);
++	mem = 0x3fffffff;
++	for (memsize = SZ_256M; memsize >= SZ_8M; memsize /= 2) {
++		efiret  = BS->allocate_pages(EFI_ALLOCATE_MAX_ADDRESS,
++					     EFI_LOADER_DATA,
++					     memsize/PAGE_SIZE, &mem);
++		if (!EFI_ERROR(efiret))
++			break;
++		if (efiret != EFI_OUT_OF_RESOURCES)
++			panic("failed to allocate malloc pool: %s\n",
++			      efi_strerror(efiret));
 +	}
-+
-+	return str;
-+}
-+
-diff --git a/include/efi.h b/include/efi.h
-index e79a407bc2c8..b6ee42b3fd49 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -624,6 +624,7 @@ static inline int efi_compare_guid(efi_guid_t *a, efi_guid_t *b)
++	if (EFI_ERROR(efiret))
++		panic("failed to allocate malloc pool: %s\n",
++		      efi_strerror(efiret));
++	mem_malloc_init((void *)mem, (void *)mem + memsize);
  
- char *device_path_to_str(struct efi_device_path *dev_path);
- u8 device_path_to_type(struct efi_device_path *dev_path);
-+char *device_path_to_partuuid(struct efi_device_path *dev_path);
- 
- const char *efi_guid_string(efi_guid_t *g);
+ 	efi_clocksource_init();
  
 -- 
 2.1.4
