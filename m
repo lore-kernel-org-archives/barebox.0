@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f177.google.com ([209.85.217.177])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZGuvP-0000bU-Kx
- for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:11:05 +0000
-Received: by lbbyj8 with SMTP id yj8so85000504lbb.0
- for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:52 -0700 (PDT)
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZGuxX-0001gp-VW
+ for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:13:16 +0000
+Received: by laem6 with SMTP id m6so86605383lae.0
+ for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:12:53 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 19 Jul 2015 23:07:23 +0300
-Message-Id: <1437336443-8076-17-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 19 Jul 2015 23:07:16 +0300
+Message-Id: <1437336443-8076-10-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,158 +23,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 16/16] sandbox_defconfig: switch to picotcp
+Subject: [RFC v2 09/16] picotcp: add barebox target support
 To: barebox@lists.infradead.org
-
-Picotcp sandbox barebox howto
-=============================
-
-Compile sandbox barebox:
-
-  $ cd barebox.git
-  $ unset ARCH
-  $ unset CROSS_COMPILE
-  $ make sandbox_defconfig
-  ...
-  $ make
-
-Run barebox:
-
-  $ su
-  # ./barebox
-
-Testing ping
-------------
-
-While sandbox barebox is running setup a IP-address
-for your host 'barebox' network interface, e.g.:
-
-  # ifconfig barebox 192.168.1.1
-
-Next, in sandbox barebox console setup network interface
-and try to ping host:
-
-  barebox:/ ifconfig eth 192.168.1.2 255.255.255.0
-  Assigned ipv4 192.168.1.2 to device eth
-  barebox:/ picoping 192.168.1.1
-  48 bytes from 192.168.1.1: icmp_req=1 ttl=64 time=1 ms
-  ...
-  48 bytes from 192.168.1.1: icmp_req=10 ttl=64 time=0 ms
-
-Testing domain name resolving
------------------------------
-
-Install simple maradns name server on the host.
-
-Edit /etc/maradns/mararc config file, add these lines:
-
-  csv2 = {}
-  csv2["example.com."] = "db.example.com"
-
-  bind_address = "192.168.1.1"
-
-Edit /etc/maradns/db.example.com, add these lines:
-
-  example.com. 192.168.1.1 ~
-  www.example.com. 192.168.1.1 ~
-  barebox.example.com. 192.168.1.2 ~
-
-Run sandbox barebox and setup the www.example.com IP-address
-for your host 'barebox' network interface, e.g.:
-
-  # ifconfig barebox 192.168.1.1
-
-Restart maradns:
-
-  $ /etc/init.d/maradns restart
-
-Check name resolution:
-
-  barebox@barebox sandbox:/ ifconfig eth 192.168.1.2 255.255.255.0
-  Assigned ipv4 192.168.1.2 to device eth
-  barebox@barebox sandbox:/ net.nameserver=192.168.1.1
-  barebox@barebox sandbox:/ host barebox.example.com
-  barebox.example.com is at 192.168.1.2
-  barebox@barebox sandbox:/ host www.example.com
-  www.example.com is at 192.168.1.1
-
-The same checks for barebox legacy network stack:
-
-  barebox@barebox sandbox:/ eth0.ipaddr=192.168.1.2
-  barebox@barebox sandbox:/ eth0.serverip=192.168.1.1
-  barebox@barebox sandbox:/ net.domainname=example.com
-  barebox@barebox sandbox:/ net.nameserver=192.168.1.1
-  barebox@barebox sandbox:/ host barebox.example.com
-  warning: No MAC address set. Using random address 9a:a1:86:31:05:1e
-  barebox.example.com is at 192.168.1.2
-  barebox@barebox sandbox:/ host www.example.com
-  www.example.com is at 192.168.1.1
-
-Testing dhcp (ad memorandum)
-----------------------------
-
-Configure your host dhcp server, e.g. add this
-to your /etc/dhcp/dhcpd.conf:
-
-  subnet 192.168.1.0 netmask 255.255.255.0 {
-    range dynamic-bootp 192.168.1.26 192.168.1.29;
-    option routers 192.168.1.1;
-    option broadcast-address 192.168.1.255;
-    default-lease-time 600;
-    max-lease-time 7200;
-  }
-
-While sandbox barebox is running setup a IP-address
-for your host 'barebox' network interface and restart
-your host dhcp server, e.g.:
-
-  # ifconfig barebox 192.168.1.1
-  # /etc/init.d/isc-dhcp-server restart
-
-Next, in your sandbox barebox console run 'dhclient':
-
-  barebox:/ dhclient eth
-  Assigned ipv4 0.0.0.0 to device eth
-  Assigned ipv4 192.168.1.26 to device eth
-  DHCP client: renewal time (T1) 300
-  DHCP client: rebinding time (T2) 525
-  DHCP client: lease time 496
-  DHCP client: IP assigned by the server: 192.168.1.26
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/sandbox/configs/sandbox_defconfig | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/picotcp/include/arch/pico_barebox.h | 76 +++++++++++++++++++++++++++++++++
+ net/picotcp/include/pico_config.h       |  2 +
+ 2 files changed, 78 insertions(+)
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index d82579b..320a22b 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -36,10 +36,7 @@ CONFIG_CMD_LET=y
- CONFIG_CMD_MSLEEP=y
- CONFIG_CMD_READF=y
- CONFIG_CMD_SLEEP=y
--CONFIG_CMD_DHCP=y
- CONFIG_CMD_HOST=y
--CONFIG_CMD_PING=y
--CONFIG_CMD_TFTP=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_MENU=y
-@@ -61,8 +58,13 @@ CONFIG_CMD_OFTREE=y
- CONFIG_CMD_TIME=y
- CONFIG_CMD_SPD_DECODE=y
- CONFIG_NET=y
-+CONFIG_NET_PICOTCP=y
- CONFIG_NET_NFS=y
- CONFIG_NET_NETCONSOLE=y
-+CONFIG_CMD_PICOTCP_TEST_IPV4=y
-+CONFIG_CMD_PICOTCP_IFCONFIG=y
-+CONFIG_CMD_PICOTCP_PING=y
-+CONFIG_CMD_PICOTCP_ROUTE=y
- CONFIG_OFDEVICE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_NET_TAP=y
+diff --git a/net/picotcp/include/arch/pico_barebox.h b/net/picotcp/include/arch/pico_barebox.h
+new file mode 100644
+index 0000000..11e6ed3
+--- /dev/null
++++ b/net/picotcp/include/arch/pico_barebox.h
+@@ -0,0 +1,76 @@
++#ifndef PICO_SUPPORT_BAREBOX
++#define PICO_SUPPORT_BAREBOX
++
++#include <string.h>
++#include <stdio.h>
++#include <malloc.h>
++#include <clock.h>
++#include <linux/math64.h>
++
++/*
++   #define MEMORY_MEASURE
++ */
++#define dbg printf
++
++#define stack_fill_pattern(...) do {} while(0)
++#define stack_count_free_words(...) do {} while(0)
++#define stack_get_free_words() (0)
++
++/* measure allocated memory */
++#ifdef MEMORY_MEASURE
++extern uint32_t max_mem;
++extern uint32_t cur_mem;
++
++static inline void *pico_zalloc(int x)
++{
++    uint32_t *ptr;
++    if ((cur_mem + x) > (10 * 1024))
++        return NULL;
++
++    ptr = (uint32_t *)calloc(x + 4, 1);
++    *ptr = (uint32_t)x;
++    cur_mem += x;
++    if (cur_mem > max_mem) {
++        max_mem = cur_mem;
++    }
++
++    return (void*)(ptr + 1);
++}
++
++static inline void pico_free(void *x)
++{
++    uint32_t *ptr = (uint32_t*)(((uint8_t *)x) - 4);
++    cur_mem -= *ptr;
++    free(ptr);
++}
++#else
++
++#define pico_zalloc(x) calloc(x, 1)
++#define pico_free(x) free(x)
++#endif
++
++static inline uint32_t PICO_TIME(void)
++{
++    uint64_t time;
++
++    time = get_time_ns();
++    do_div(time, 1000000000);
++
++    return (uint32_t) time;
++}
++
++static inline uint32_t PICO_TIME_MS(void)
++{
++    uint64_t time;
++
++    time = get_time_ns();
++    do_div(time, 1000000);
++
++    return (uint32_t) time;
++}
++
++static inline void PICO_IDLE(void)
++{
++}
++
++#endif /* PICO_SUPPORT_BAREBOX */
+diff --git a/net/picotcp/include/pico_config.h b/net/picotcp/include/pico_config.h
+index 6b9c040..79aaadc 100644
+--- a/net/picotcp/include/pico_config.h
++++ b/net/picotcp/include/pico_config.h
+@@ -211,6 +211,8 @@ static inline uint64_t long_long_be(uint64_t le)
+ # include "arch/pico_none.h"
+ #elif defined GENERIC
+ # include "arch/pico_generic_gcc.h"
++#elif defined __BAREBOX__
++# include "arch/pico_barebox.h"
+ #elif defined __KERNEL__
+ # include "arch/pico_linux.h"
+ /* #elif defined ... */
 -- 
 2.1.4
 
