@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGuse-00081y-1A
- for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:08:14 +0000
-Received: by lblf12 with SMTP id f12so84915284lbl.2
- for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:49 -0700 (PDT)
+Received: from mail-lb0-f177.google.com ([209.85.217.177])
+ by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
+ id 1ZGuvP-0000bU-Kx
+ for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:11:05 +0000
+Received: by lbbyj8 with SMTP id yj8so85000504lbb.0
+ for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:52 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 19 Jul 2015 23:07:21 +0300
-Message-Id: <1437336443-8076-15-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 19 Jul 2015 23:07:23 +0300
+Message-Id: <1437336443-8076-17-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,130 +23,158 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 14/16] net: picotcp: add ping command
+Subject: [RFC v2 16/16] sandbox_defconfig: switch to picotcp
 To: barebox@lists.infradead.org
+
+Picotcp sandbox barebox howto
+=============================
+
+Compile sandbox barebox:
+
+  $ cd barebox.git
+  $ unset ARCH
+  $ unset CROSS_COMPILE
+  $ make sandbox_defconfig
+  ...
+  $ make
+
+Run barebox:
+
+  $ su
+  # ./barebox
+
+Testing ping
+------------
+
+While sandbox barebox is running setup a IP-address
+for your host 'barebox' network interface, e.g.:
+
+  # ifconfig barebox 192.168.1.1
+
+Next, in sandbox barebox console setup network interface
+and try to ping host:
+
+  barebox:/ ifconfig eth 192.168.1.2 255.255.255.0
+  Assigned ipv4 192.168.1.2 to device eth
+  barebox:/ picoping 192.168.1.1
+  48 bytes from 192.168.1.1: icmp_req=1 ttl=64 time=1 ms
+  ...
+  48 bytes from 192.168.1.1: icmp_req=10 ttl=64 time=0 ms
+
+Testing domain name resolving
+-----------------------------
+
+Install simple maradns name server on the host.
+
+Edit /etc/maradns/mararc config file, add these lines:
+
+  csv2 = {}
+  csv2["example.com."] = "db.example.com"
+
+  bind_address = "192.168.1.1"
+
+Edit /etc/maradns/db.example.com, add these lines:
+
+  example.com. 192.168.1.1 ~
+  www.example.com. 192.168.1.1 ~
+  barebox.example.com. 192.168.1.2 ~
+
+Run sandbox barebox and setup the www.example.com IP-address
+for your host 'barebox' network interface, e.g.:
+
+  # ifconfig barebox 192.168.1.1
+
+Restart maradns:
+
+  $ /etc/init.d/maradns restart
+
+Check name resolution:
+
+  barebox@barebox sandbox:/ ifconfig eth 192.168.1.2 255.255.255.0
+  Assigned ipv4 192.168.1.2 to device eth
+  barebox@barebox sandbox:/ net.nameserver=192.168.1.1
+  barebox@barebox sandbox:/ host barebox.example.com
+  barebox.example.com is at 192.168.1.2
+  barebox@barebox sandbox:/ host www.example.com
+  www.example.com is at 192.168.1.1
+
+The same checks for barebox legacy network stack:
+
+  barebox@barebox sandbox:/ eth0.ipaddr=192.168.1.2
+  barebox@barebox sandbox:/ eth0.serverip=192.168.1.1
+  barebox@barebox sandbox:/ net.domainname=example.com
+  barebox@barebox sandbox:/ net.nameserver=192.168.1.1
+  barebox@barebox sandbox:/ host barebox.example.com
+  warning: No MAC address set. Using random address 9a:a1:86:31:05:1e
+  barebox.example.com is at 192.168.1.2
+  barebox@barebox sandbox:/ host www.example.com
+  www.example.com is at 192.168.1.1
+
+Testing dhcp (ad memorandum)
+----------------------------
+
+Configure your host dhcp server, e.g. add this
+to your /etc/dhcp/dhcpd.conf:
+
+  subnet 192.168.1.0 netmask 255.255.255.0 {
+    range dynamic-bootp 192.168.1.26 192.168.1.29;
+    option routers 192.168.1.1;
+    option broadcast-address 192.168.1.255;
+    default-lease-time 600;
+    max-lease-time 7200;
+  }
+
+While sandbox barebox is running setup a IP-address
+for your host 'barebox' network interface and restart
+your host dhcp server, e.g.:
+
+  # ifconfig barebox 192.168.1.1
+  # /etc/init.d/isc-dhcp-server restart
+
+Next, in your sandbox barebox console run 'dhclient':
+
+  barebox:/ dhclient eth
+  Assigned ipv4 0.0.0.0 to device eth
+  Assigned ipv4 192.168.1.26 to device eth
+  DHCP client: renewal time (T1) 300
+  DHCP client: rebinding time (T2) 525
+  DHCP client: lease time 496
+  DHCP client: IP assigned by the server: 192.168.1.26
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- net/Makefile        |  1 +
- net/picotcp/Kconfig |  5 ++++
- net/picotcp_ping.c  | 85 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 91 insertions(+)
+ arch/sandbox/configs/sandbox_defconfig | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/Makefile b/net/Makefile
-index d5b133b..04e347f 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -13,3 +13,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
- 
- obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
- obj-$(CONFIG_CMD_PICOTCP_IFCONFIG) += picotcp_ifconfig.o
-+obj-$(CONFIG_CMD_PICOTCP_PING) += picotcp_ping.o
-diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
-index 9a2d628..cb60001 100644
---- a/net/picotcp/Kconfig
-+++ b/net/picotcp/Kconfig
-@@ -43,4 +43,9 @@ config CMD_PICOTCP_IFCONFIG
- 	depends on NET_PICO_SUPPORT_IPV4
- 	prompt "ifconfig command"
- 
-+config CMD_PICOTCP_PING
-+	bool
-+	depends on NET_PICO_SUPPORT_ICMP4
-+	prompt "ping command"
-+
- endif # NET_PICOTCP
-diff --git a/net/picotcp_ping.c b/net/picotcp_ping.c
-new file mode 100644
-index 0000000..ed69fb5
---- /dev/null
-+++ b/net/picotcp_ping.c
-@@ -0,0 +1,85 @@
-+#include <command.h>
-+#include <common.h>
-+#include <complete.h>
-+#include <driver.h>
-+#include <poller.h>
-+
-+#include <pico_stack.h>
-+#include <pico_ipv4.h>
-+#include <pico_dev_null.h>
-+#include <pico_dhcp_client.h>
-+#include <pico_icmp4.h>
-+
-+#define NUM_PING 3
-+
-+static int ping_done;
-+static int ping_code;
-+
-+/* callback function for receiving ping reply */
-+void cb_ping(struct pico_icmp4_stats *s)
-+{
-+	char host[30];
-+	int time_sec = 0;
-+	int time_msec = 0;
-+
-+	/* convert ip address from icmp4_stats structure to string */
-+	pico_ipv4_to_string(host, s->dst.addr);
-+
-+	/* get time information from icmp4_stats structure */
-+	time_sec = s->time / 1000;
-+	time_msec = s->time % 1000;
-+
-+	if (s->err == PICO_PING_ERR_REPLIED) {
-+		/* print info if no error reported in icmp4_stats structure */
-+		printf("%lu bytes from %s: icmp_req=%lu ttl=%lu time=%llu ms\n", \
-+			s->size, host, s->seq, s->ttl, s->time);
-+		if (s->seq == NUM_PING) {
-+			ping_done = 1;
-+		}
-+	} else {
-+		/* else, print error info */
-+		printf("PING %lu to %s: Error %d\n", s->seq, host, s->err);
-+		ping_done = 1;
-+	}
-+
-+	ping_code = s->err;
-+}
-+
-+static int do_picoping(int argc, char *argv[])
-+{
-+	int id;
-+
-+	if (argc < 1) {
-+		perror("picoping");
-+		return 1;
-+	}
-+
-+	id = pico_icmp4_ping(argv[1], NUM_PING, 1000, 5000, 48, cb_ping);
-+
-+	if (id == -1) {
-+		return -EIO;
-+	}
-+
-+	ping_done = 0;
-+	ping_code = PICO_PING_ERR_PENDING;
-+
-+	while (!ping_done) {
-+		if (ctrlc()) {
-+			break;
-+		}
-+		get_time_ns();
-+		poller_call();
-+	}
-+
-+	pico_icmp4_ping_abort(id);
-+
-+	if (ping_code != PICO_PING_ERR_REPLIED) {
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_START(picoping)
-+	.cmd		= do_picoping,
-+BAREBOX_CMD_END
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index d82579b..320a22b 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -36,10 +36,7 @@ CONFIG_CMD_LET=y
+ CONFIG_CMD_MSLEEP=y
+ CONFIG_CMD_READF=y
+ CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+ CONFIG_CMD_HOST=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_MENU=y
+@@ -61,8 +58,13 @@ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_CMD_SPD_DECODE=y
+ CONFIG_NET=y
++CONFIG_NET_PICOTCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
++CONFIG_CMD_PICOTCP_TEST_IPV4=y
++CONFIG_CMD_PICOTCP_IFCONFIG=y
++CONFIG_CMD_PICOTCP_PING=y
++CONFIG_CMD_PICOTCP_ROUTE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_NET_TAP=y
 -- 
 2.1.4
 
