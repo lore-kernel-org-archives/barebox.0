@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
+Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGb8e-0005TS-Ss
- for barebox@lists.infradead.org; Sat, 18 Jul 2015 23:03:25 +0000
-Received: by lahe2 with SMTP id e2so15809667lah.1
- for <barebox@lists.infradead.org>; Sat, 18 Jul 2015 16:03:01 -0700 (PDT)
+ id 1ZGsCg-0002Uq-6m
+ for barebox@lists.infradead.org; Sun, 19 Jul 2015 17:16:42 +0000
+Received: by lbbzr7 with SMTP id zr7so83866701lbb.1
+ for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 10:16:19 -0700 (PDT)
+Received: from localhost.localdomain (ppp79-139-243-189.pppoe.spdop.ru.
+ [79.139.243.189])
+ by smtp.gmail.com with ESMTPSA id ci2sm2354532lad.23.2015.07.19.10.16.18
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Sun, 19 Jul 2015 10:16:18 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 19 Jul 2015 02:02:53 +0300
-Message-Id: <1437260573-27143-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 19 Jul 2015 20:16:14 +0300
+Message-Id: <1437326174-28351-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +27,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! Add new barebox logo to the tree
+Subject: [PATCH] fixup! sandbox: Update defconfig
 To: barebox@lists.infradead.org
 
 ---
- lib/logo/.gitignore | 10 ++++++++++
- 1 file changed, 10 insertions(+)
- create mode 100644 lib/logo/.gitignore
+ arch/sandbox/configs/sandbox_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/logo/.gitignore b/lib/logo/.gitignore
-new file mode 100644
-index 0000000..fd013c7
---- /dev/null
-+++ b/lib/logo/.gitignore
-@@ -0,0 +1,10 @@
-+barebox-logo-w64.bblogo
-+barebox-logo-w64.bblogo.S
-+barebox-logo-w240.bblogo
-+barebox-logo-w240.bblogo.S
-+barebox-logo-w320.bblogo
-+barebox-logo-w320.bblogo.S
-+barebox-logo-w400.bblogo
-+barebox-logo-w400.bblogo.S
-+barebox-logo-w640.bblogo
-+barebox-logo-w640.bblogo.S
+diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+index 7e494a6..d82579b 100644
+--- a/arch/sandbox/configs/sandbox_defconfig
++++ b/arch/sandbox/configs/sandbox_defconfig
+@@ -65,6 +65,7 @@ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_NET_TAP=y
+ # CONFIG_SPI is not set
+ CONFIG_VIDEO=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
 -- 
 2.1.4
 
