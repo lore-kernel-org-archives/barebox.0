@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGusT-0007lv-61
- for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:08:01 +0000
-Received: by lbbqi7 with SMTP id qi7so4572494lbb.3
- for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:39 -0700 (PDT)
+ id 1ZGusY-0007m5-81
+ for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:08:07 +0000
+Received: by lbbqi7 with SMTP id qi7so4573037lbb.3
+ for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:44 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 19 Jul 2015 23:07:14 +0300
-Message-Id: <1437336443-8076-8-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 19 Jul 2015 23:07:17 +0300
+Message-Id: <1437336443-8076-11-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,84 +23,130 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 07/16] net: introduce setudppeerport()
+Subject: [RFC v2 10/16] picotcp: switch to Kbuild
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- fs/nfs.c      | 2 +-
- fs/tftp.c     | 9 +++++----
- include/net.h | 7 +++++++
- 3 files changed, 13 insertions(+), 5 deletions(-)
+ net/picotcp/.gitignore       |  1 +
+ net/picotcp/Kconfig          | 34 ++++++++++++++++++++++++++++++++++
+ net/picotcp/Makefile         | 30 ++++++++++++++++++++++++++++++
+ net/picotcp/modules/Makefile |  8 ++++++++
+ net/picotcp/stack/Makefile   |  7 +++++++
+ 5 files changed, 80 insertions(+)
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 6c55b42..8910fd1 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -411,7 +411,7 @@ static int rpc_req(struct nfs_priv *npriv, int rpc_prog, int rpc_proc,
- 	memcpy(payload, &pkt, sizeof(pkt));
- 	memcpy(payload + sizeof(pkt), data, datalen * sizeof(uint32_t));
- 
--	npriv->con->udp->uh_dport = hton16(dport);
-+	setudppeerport(npriv->con, htons(dport));
- 
- again:
- 	ret = net_udp_send(npriv->con, payload,
-diff --git a/fs/tftp.c b/fs/tftp.c
-index 11a10de..575f064 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -177,7 +177,7 @@ static int tftp_send(struct file_priv *priv)
- static int tftp_send_write(struct file_priv *priv, void *buf, int len)
- {
- 	uint16_t *s;
--	unsigned char *pkt = net_udp_get_payload(priv->tftp_con);
-+	uint8_t *pkt = net_udp_get_payload(priv->tftp_con);
- 	int ret;
- 
- 	s = (uint16_t *)pkt;
-@@ -293,13 +293,14 @@ static void tftp_recv(struct file_priv *priv,
- 			priv->state = STATE_DONE;
- 			break;
- 		}
--		priv->tftp_con->udp->uh_dport = uh_sport;
-+		setudppeerport(priv->tftp_con, uh_sport);
+diff --git a/net/picotcp/.gitignore b/net/picotcp/.gitignore
+index 88593da..10f36c8 100644
+--- a/net/picotcp/.gitignore
++++ b/net/picotcp/.gitignore
+@@ -22,3 +22,4 @@ cscope.out
+ *.gcov
+ *.gcda
+ *.gcno
++*.o.cmd
+diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
+new file mode 100644
+index 0000000..3882984
+--- /dev/null
++++ b/net/picotcp/Kconfig
+@@ -0,0 +1,34 @@
++if NET_PICOTCP
 +
- 		priv->state = STATE_WDATA;
- 		break;
- 
- 	case TFTP_OACK:
- 		tftp_parse_oack(priv, pkt, len);
--		priv->tftp_con->udp->uh_dport = uh_sport;
-+		setudppeerport(priv->tftp_con, uh_sport);
- 
- 		if (priv->push) {
- 			/* send first block */
-@@ -320,7 +321,7 @@ static void tftp_recv(struct file_priv *priv,
- 		if (priv->state == STATE_RRQ || priv->state == STATE_OACK) {
- 			/* first block received */
- 			priv->state = STATE_RDATA;
--			priv->tftp_con->udp->uh_dport = uh_sport;
-+			setudppeerport(priv->tftp_con, uh_sport);
- 			priv->last_block = 0;
- 
- 			if (priv->block != 1) {	/* Assertion */
-diff --git a/include/net.h b/include/net.h
-index 90cbb09..ed63d3c 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -478,4 +478,11 @@ static inline uint16_t getudppeerport(struct net_connection *con)
- 	return udp->uh_sport;
- }
- 
-+#include <byteorder.h>
++config NET_PICO_SUPPORT_IPV4
++	bool
++	default y if NET_PICOTCP
 +
-+static inline void setudppeerport(struct net_connection *con, uint16_t dport)
-+{
-+	con->udp->uh_dport = dport;
-+}
++config NET_PICO_SUPPORT_IPFRAG
++	bool
++	default y if NET_PICO_SUPPORT_IPV4
 +
- #endif /* __NET_H__ */
++config NET_PICO_SUPPORT_ICMP4
++	bool
++	default y if NET_PICO_SUPPORT_IPV4
++
++config NET_PICO_SUPPORT_UDP
++	bool
++	default y if NET_PICO_SUPPORT_IPV4
++
++
++config NET_PICO_SUPPORT_ETH
++	bool
++	default y if NET_PICOTCP
++
++config NET_PICO_SUPPORT_DEVLOOP
++	bool
++	default y if NET_PICOTCP
++
++comment "Misc options"
++
++config NET_PICO_BIGENDIAN
++	bool
++	prompt "bigendian picotcp"
++
++endif # NET_PICOTCP
+diff --git a/net/picotcp/Makefile b/net/picotcp/Makefile
+new file mode 100644
+index 0000000..8127453
+--- /dev/null
++++ b/net/picotcp/Makefile
+@@ -0,0 +1,30 @@
++ifeq ($(CONFIG_NET_PICO_SUPPORT_IPV4),y)
++CPPFLAGS += -DPICO_SUPPORT_IPV4
++endif
++
++ifeq ($(CONFIG_NET_PICO_SUPPORT_ICMP4),y)
++CPPFLAGS += -DPICO_SUPPORT_ICMP4 -DPICO_SUPPORT_PING
++endif
++
++ifeq ($(CONFIG_NET_PICO_SUPPORT_IPFRAG),y)
++CPPFLAGS += -DPICO_SUPPORT_IPFRAG
++endif
++
++ifeq ($(CONFIG_NET_PICO_SUPPORT_UDP),y)
++CPPFLAGS += -DPICO_SUPPORT_UDP
++endif
++
++ifeq ($(CONFIG_NET_PICO_SUPPORT_ETH),y)
++CPPFLAGS += -DPICO_SUPPORT_ETH
++endif
++
++ifeq ($(CONFIG_NET_PICO_SUPPORT_DEVLOOP),y)
++CPPFLAGS += -DPICO_SUPPORT_DEVLOOP
++endif
++
++ifeq ($(CONFIG_NET_PICO_BIGENDIAN),y)
++CPPFLAGS += -DPICO_BIGENDIAN
++endif
++
++obj-y += modules/
++obj-y += stack/
+diff --git a/net/picotcp/modules/Makefile b/net/picotcp/modules/Makefile
+new file mode 100644
+index 0000000..2fa2261
+--- /dev/null
++++ b/net/picotcp/modules/Makefile
+@@ -0,0 +1,8 @@
++obj-$(CONFIG_NET_PICO_SUPPORT_IPV4) += pico_ipv4.o
++obj-$(CONFIG_NET_PICO_SUPPORT_IPFRAG) += pico_fragments.o
++obj-$(CONFIG_NET_PICO_SUPPORT_ICMP4) += pico_icmp4.o
++obj-$(CONFIG_NET_PICO_SUPPORT_UDP) += pico_udp.o pico_socket_udp.o
++
++obj-$(CONFIG_NET_PICO_SUPPORT_ETH) += pico_arp.o
++obj-$(CONFIG_NET_PICO_SUPPORT_DEVLOOP) += pico_dev_loop.o
++obj-y += pico_dev_null.o
+diff --git a/net/picotcp/stack/Makefile b/net/picotcp/stack/Makefile
+new file mode 100644
+index 0000000..13be8d0
+--- /dev/null
++++ b/net/picotcp/stack/Makefile
+@@ -0,0 +1,7 @@
++obj-y += pico_device.o
++obj-y += pico_frame.o
++obj-y += pico_protocol.o
++obj-y += pico_socket.o
++obj-y += pico_socket_multicast.o
++obj-y += pico_stack.o
++obj-y += pico_tree.o
 -- 
 2.1.4
 
