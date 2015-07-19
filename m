@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGusc-0007mY-4W
- for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:08:11 +0000
-Received: by lbbyj8 with SMTP id yj8so85000087lbb.0
- for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:48 -0700 (PDT)
+Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZGuse-000820-1B
+ for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:08:12 +0000
+Received: by lahe2 with SMTP id e2so24135558lah.1
+ for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:50 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 19 Jul 2015 23:07:20 +0300
-Message-Id: <1437336443-8076-14-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 19 Jul 2015 23:07:22 +0300
+Message-Id: <1437336443-8076-16-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,160 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 13/16] net: picotcp: add ifconfig command
+Subject: [RFC v2 15/16] net: picotcp: add route command
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- net/Makefile           |   1 +
- net/picotcp/Kconfig    |   5 +++
- net/picotcp_ifconfig.c | 116 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 122 insertions(+)
+ net/Makefile        |  1 +
+ net/picotcp/Kconfig |  5 +++++
+ net/picotcp_route.c | 36 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 42 insertions(+)
 
 diff --git a/net/Makefile b/net/Makefile
-index bfe74fb..d5b133b 100644
+index 04e347f..6261454 100644
 --- a/net/Makefile
 +++ b/net/Makefile
-@@ -12,3 +12,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp/
- obj-$(CONFIG_NET_PICOTCP) += picotcp.o
- 
+@@ -14,3 +14,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
  obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
-+obj-$(CONFIG_CMD_PICOTCP_IFCONFIG) += picotcp_ifconfig.o
+ obj-$(CONFIG_CMD_PICOTCP_IFCONFIG) += picotcp_ifconfig.o
+ obj-$(CONFIG_CMD_PICOTCP_PING) += picotcp_ping.o
++obj-$(CONFIG_CMD_PICOTCP_ROUTE) += picotcp_route.o
 diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
-index 17b8293..9a2d628 100644
+index cb60001..2cd04d2 100644
 --- a/net/picotcp/Kconfig
 +++ b/net/picotcp/Kconfig
-@@ -38,4 +38,9 @@ config CMD_PICOTCP_TEST_IPV4
- 	depends on NET_PICO_SUPPORT_IPV4
- 	prompt "test_picotcp command"
+@@ -48,4 +48,9 @@ config CMD_PICOTCP_PING
+ 	depends on NET_PICO_SUPPORT_ICMP4
+ 	prompt "ping command"
  
-+config CMD_PICOTCP_IFCONFIG
++config CMD_PICOTCP_ROUTE
 +	bool
 +	depends on NET_PICO_SUPPORT_IPV4
-+	prompt "ifconfig command"
++	prompt "route command"
 +
  endif # NET_PICOTCP
-diff --git a/net/picotcp_ifconfig.c b/net/picotcp_ifconfig.c
+diff --git a/net/picotcp_route.c b/net/picotcp_route.c
 new file mode 100644
-index 0000000..1d4e89b
+index 0000000..d24e9ba
 --- /dev/null
-+++ b/net/picotcp_ifconfig.c
-@@ -0,0 +1,116 @@
++++ b/net/picotcp_route.c
+@@ -0,0 +1,36 @@
 +#include <common.h>
 +#include <command.h>
 +#include <complete.h>
 +
 +#include <pico_stack.h>
 +#include <pico_ipv4.h>
-+#include <pico_dev_null.h>
 +#include <pico_icmp4.h>
-+#include <pico_tree.h>
 +
-+extern struct pico_tree Device_tree;
-+extern struct pico_tree Tree_dev_link;
-+
-+static void printf_iface(struct pico_device *dev)
++static int do_route(int argc, char *argv[])
 +{
-+	struct pico_ipv4_link *link;
++	struct pico_ipv4_route *r;
 +	struct pico_tree_node *index;
 +
-+	printf("%-10s", dev->name);
++	printf("picotcp IPv4 routing table\n");
++	printf("Destination     Gateway         Genmask         Metric Iface\n");
 +
-+	if (dev->eth) {
-+		struct pico_ethdev *eth = dev->eth;
++	pico_tree_foreach(index, &Routes) {
++		char ipstr[32];
 +
-+		printf("Link encap:Ethernet  HWaddr ");
-+		printf("%02x:%02x:%02x:%02x:%02x:%02x",
-+			eth->mac.addr[0], eth->mac.addr[1],
-+			eth->mac.addr[2], eth->mac.addr[3],
-+			eth->mac.addr[4], eth->mac.addr[5]);
++		r = index->keyValue;
++
++		pico_ipv4_to_string(ipstr, r->dest.addr);
++		printf("%-16s", ipstr);
++		pico_ipv4_to_string(ipstr, r->gateway.addr);
++		printf("%-16s", ipstr);
++		pico_ipv4_to_string(ipstr, r->netmask.addr);
++		printf("%-16s", ipstr);
++		printf("%-7d%s\n", r->metric, r->link->dev->name);
 +	}
-+	printf("\n");
-+
-+	pico_tree_foreach(index, &Tree_dev_link) {
-+		link = index->keyValue;
-+		if (dev == link->dev) {
-+			char ipstr[16];
-+			pico_ipv4_to_string(ipstr, link->address.addr);
-+			printf("          inet addr:%s", ipstr);
-+			pico_ipv4_to_string(ipstr, link->netmask.addr);
-+			printf(" Mask:%s\n", ipstr);
-+		}
-+	}
-+	printf("\n");
-+}
-+
-+static int do_ifconfig(int argc, char *argv[])
-+{
-+	struct pico_device *picodev;
-+	struct pico_ip4 ipaddr, nm;
-+	int ret;
-+
-+	if (argc == 1) {
-+		struct pico_tree_node *index;
-+
-+		pico_tree_foreach(index, &Device_tree) {
-+			printf_iface(index->keyValue);
-+		}
-+
-+		return 0;
-+	}
-+
-+	picodev = pico_get_device(argv[1]);
-+	if (!picodev) {
-+		struct pico_device *dev;
-+		struct pico_tree_node *index;
-+
-+		perror("wrong device name");
-+
-+		printf("available interfaces:\n");
-+
-+		pico_tree_foreach(index, &Device_tree) {
-+			dev = index->keyValue;
-+			printf("%s\n", dev->name);
-+		}
-+
-+		return 1;
-+	}
-+
-+	if (argc == 2) {
-+		struct pico_tree_node *index;
-+
-+		pico_tree_foreach(index, &Device_tree) {
-+			struct pico_device *dev = index->keyValue;
-+
-+			if (!strcmp(dev->name, argv[1])) {
-+				printf_iface(dev);
-+			}
-+		}
-+
-+		return 0;
-+	}
-+
-+	if (argc < 4) {
-+		perror("ifconfig");
-+		return 1;
-+	}
-+
-+	ret = pico_string_to_ipv4(argv[2], &(ipaddr.addr));
-+	if (ret) {
-+		perror("wrong ipaddr");
-+		return 1;
-+	}
-+
-+	ret = pico_string_to_ipv4(argv[3], &(nm.addr));
-+	if (ret) {
-+		perror("wrong netmask");
-+		return 1;
-+	}
-+
-+	pico_ipv4_link_add(picodev, ipaddr, nm);
 +
 +	return 0;
 +}
 +
-+BAREBOX_CMD_START(ifconfig)
-+	.cmd		= do_ifconfig,
++BAREBOX_CMD_START(route)
++	.cmd		= do_route,
 +BAREBOX_CMD_END
 -- 
 2.1.4
