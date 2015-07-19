@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGuse-000820-1B
- for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:08:12 +0000
-Received: by lahe2 with SMTP id e2so24135558lah.1
- for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:50 -0700 (PDT)
+Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZGusN-0007lg-0o
+ for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:07:55 +0000
+Received: by lbbqi7 with SMTP id qi7so4571812lbb.3
+ for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:33 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 19 Jul 2015 23:07:22 +0300
-Message-Id: <1437336443-8076-16-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 19 Jul 2015 23:07:09 +0300
+Message-Id: <1437336443-8076-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,81 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 15/16] net: picotcp: add route command
+Subject: [RFC v2 02/16] fs/tftp.c: drop unused server_port variable
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- net/Makefile        |  1 +
- net/picotcp/Kconfig |  5 +++++
- net/picotcp_route.c | 36 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 42 insertions(+)
+ fs/tftp.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/Makefile b/net/Makefile
-index 04e347f..6261454 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
- obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
- obj-$(CONFIG_CMD_PICOTCP_IFCONFIG) += picotcp_ifconfig.o
- obj-$(CONFIG_CMD_PICOTCP_PING) += picotcp_ping.o
-+obj-$(CONFIG_CMD_PICOTCP_ROUTE) += picotcp_route.o
-diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
-index cb60001..2cd04d2 100644
---- a/net/picotcp/Kconfig
-+++ b/net/picotcp/Kconfig
-@@ -48,4 +48,9 @@ config CMD_PICOTCP_PING
- 	depends on NET_PICO_SUPPORT_ICMP4
- 	prompt "ping command"
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 0de215e..56d4365 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -75,7 +75,6 @@ struct file_priv {
+ 	uint16_t last_block;
+ 	int state;
+ 	int err;
+-	int server_port;
+ 	const char *filename;
+ 	int filesize;
+ 	uint64_t resend_timeout;
+@@ -299,7 +298,6 @@ static void tftp_recv(struct file_priv *priv,
  
-+config CMD_PICOTCP_ROUTE
-+	bool
-+	depends on NET_PICO_SUPPORT_IPV4
-+	prompt "route command"
-+
- endif # NET_PICOTCP
-diff --git a/net/picotcp_route.c b/net/picotcp_route.c
-new file mode 100644
-index 0000000..d24e9ba
---- /dev/null
-+++ b/net/picotcp_route.c
-@@ -0,0 +1,36 @@
-+#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+
-+#include <pico_stack.h>
-+#include <pico_ipv4.h>
-+#include <pico_icmp4.h>
-+
-+static int do_route(int argc, char *argv[])
-+{
-+	struct pico_ipv4_route *r;
-+	struct pico_tree_node *index;
-+
-+	printf("picotcp IPv4 routing table\n");
-+	printf("Destination     Gateway         Genmask         Metric Iface\n");
-+
-+	pico_tree_foreach(index, &Routes) {
-+		char ipstr[32];
-+
-+		r = index->keyValue;
-+
-+		pico_ipv4_to_string(ipstr, r->dest.addr);
-+		printf("%-16s", ipstr);
-+		pico_ipv4_to_string(ipstr, r->gateway.addr);
-+		printf("%-16s", ipstr);
-+		pico_ipv4_to_string(ipstr, r->netmask.addr);
-+		printf("%-16s", ipstr);
-+		printf("%-7d%s\n", r->metric, r->link->dev->name);
-+	}
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_START(route)
-+	.cmd		= do_route,
-+BAREBOX_CMD_END
+ 	case TFTP_OACK:
+ 		tftp_parse_oack(priv, pkt, len);
+-		priv->server_port = ntohs(uh_sport);
+ 		priv->tftp_con->udp->uh_dport = uh_sport;
+ 
+ 		if (priv->push) {
+@@ -322,7 +320,6 @@ static void tftp_recv(struct file_priv *priv,
+ 			/* first block received */
+ 			priv->state = STATE_RDATA;
+ 			priv->tftp_con->udp->uh_dport = uh_sport;
+-			priv->server_port = ntohs(uh_sport);
+ 			priv->last_block = 0;
+ 
+ 			if (priv->block != 1) {	/* Assertion */
 -- 
 2.1.4
 
