@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZGusP-0007ll-Ac
- for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:07:57 +0000
-Received: by laem6 with SMTP id m6so86570934lae.0
- for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:35 -0700 (PDT)
+ id 1ZGusa-0007mU-N7
+ for barebox@lists.infradead.org; Sun, 19 Jul 2015 20:08:10 +0000
+Received: by lahe2 with SMTP id e2so24135186lah.1
+ for <barebox@lists.infradead.org>; Sun, 19 Jul 2015 13:07:47 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 19 Jul 2015 23:07:11 +0300
-Message-Id: <1437336443-8076-5-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 19 Jul 2015 23:07:19 +0300
+Message-Id: <1437336443-8076-13-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,29 +23,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 04/16] fs/nfs.c: use SUNRPC_PORT remote port by default
+Subject: [RFC v2 12/16] net: picotcp: add test_picotcp command
 To: barebox@lists.infradead.org
 
-pico_socket_connect() needs remote_port != 0.
+See original test_ipv4() from picotcp.git/test/unit/unit_ipv4.c.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- fs/nfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/Makefile            |  2 ++
+ net/picotcp/Kconfig     |  7 ++++
+ net/picotcp_test_ipv4.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 105 insertions(+)
 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 0269814..3824752 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1350,7 +1350,7 @@ static int nfs_probe(struct device_d *dev)
+diff --git a/net/Makefile b/net/Makefile
+index 7a4597d..bfe74fb 100644
+--- a/net/Makefile
++++ b/net/Makefile
+@@ -10,3 +10,5 @@ obj-$(CONFIG_NET_IFUP)	+= ifup.o
  
- 	debug("nfs: server: %s path: %s\n", tmp, npriv->path);
+ obj-$(CONFIG_NET_PICOTCP) += picotcp/
+ obj-$(CONFIG_NET_PICOTCP) += picotcp.o
++
++obj-$(CONFIG_CMD_PICOTCP_TEST_IPV4) += picotcp_test_ipv4.o
+diff --git a/net/picotcp/Kconfig b/net/picotcp/Kconfig
+index 3882984..17b8293 100644
+--- a/net/picotcp/Kconfig
++++ b/net/picotcp/Kconfig
+@@ -31,4 +31,11 @@ config NET_PICO_BIGENDIAN
+ 	bool
+ 	prompt "bigendian picotcp"
  
--	npriv->con = net_udp_new(npriv->server, 0, nfs_handler, npriv);
-+	npriv->con = net_udp_new(npriv->server, SUNRPC_PORT, nfs_handler, npriv);
- 	if (IS_ERR(npriv->con)) {
- 		ret = PTR_ERR(npriv->con);
- 		goto err1;
++comment "Commands"
++
++config CMD_PICOTCP_TEST_IPV4
++	bool
++	depends on NET_PICO_SUPPORT_IPV4
++	prompt "test_picotcp command"
++
+ endif # NET_PICOTCP
+diff --git a/net/picotcp_test_ipv4.c b/net/picotcp_test_ipv4.c
+new file mode 100644
+index 0000000..314d21c
+--- /dev/null
++++ b/net/picotcp_test_ipv4.c
+@@ -0,0 +1,96 @@
++#include <common.h>
++#include <command.h>
++#include <complete.h>
++
++#include <pico_stack.h>
++#include <pico_ipv4.h>
++#include <pico_dev_null.h>
++
++#define fail_if(a, msg) \
++	if (a) { \
++		printf("%s\n", msg); \
++		return; \
++	}
++
++#define fail_unless(a, msg) fail_if(!(a), msg)
++
++static void do_test_ipv4(void)
++{
++	#define IP_TST_SIZ 256
++	int i;
++
++	struct pico_device *dev[IP_TST_SIZ];
++	char devname[8];
++	struct pico_ip4 a[IP_TST_SIZ], d[IP_TST_SIZ], *source[IP_TST_SIZ], nm16, nm32, gw[IP_TST_SIZ], r[IP_TST_SIZ], ret;
++	struct pico_ipv4_link *l[IP_TST_SIZ];
++
++	char ipstr[] = "192.168.1.1";
++	struct pico_ip4 ipaddr;
++
++	struct pico_frame *f_NULL = NULL;
++	struct pico_ip4 *dst_NULL = NULL;
++
++	nm16.addr = long_be(0xFFFF0000);
++	nm32.addr = long_be(0xFFFFFFFF);
++
++	/*link_add*/
++	for (i = 0; i < IP_TST_SIZ; i++) {
++		snprintf(devname, 8, "nul%d", i);
++		dev[i] = pico_null_create(devname);
++		a[i].addr = long_be(0x0a000001 + (i << 16));
++		d[i].addr = long_be(0x0a000002 + (i << 16));
++		fail_if(pico_ipv4_link_add(dev[i], a[i], nm16) != 0, "Error adding link");
++	}
++	/*link_find + link_get + route_add*/
++	for (i = 0; i < IP_TST_SIZ; i++) {
++		gw[i].addr = long_be(0x0a0000f0 + (i << 16));
++		r[i].addr = long_be(0x0c00001 + (i << 16));
++		fail_unless(pico_ipv4_link_find(&a[i]) == dev[i], "Error finding link");
++		l[i] = pico_ipv4_link_get(&a[i]);
++		fail_if(l[i] == NULL, "Error getting link");
++		fail_if(pico_ipv4_route_add(r[i], nm32, gw[i], 1, l[i]) != 0, "Error adding route");
++		fail_if(pico_ipv4_route_add(d[i], nm32, gw[i], 1, l[i]) != 0, "Error adding route");
++	}
++	/*get_gateway + source_find*/
++	for (i = 0; i < IP_TST_SIZ; i++) {
++		ret = pico_ipv4_route_get_gateway(&r[i]);
++		fail_if(ret.addr != gw[i].addr, "Error get gateway: returned wrong route");
++		source[i] = pico_ipv4_source_find(&d[i]);
++		fail_if(source[i]->addr != a[i].addr, "Error find source: returned wrong route");
++	}
++	/*route_del + link_del*/
++	for (i = 0; i < IP_TST_SIZ; i++) {
++		fail_if(pico_ipv4_route_del(r[i], nm32, 1) != 0, "Error deleting route");
++		fail_if(pico_ipv4_link_del(dev[i], a[i]) != 0, "Error deleting link");
++	}
++	/*string_to_ipv4 + ipv4_to_string*/
++	pico_string_to_ipv4(ipstr, &(ipaddr.addr));
++	fail_if(ipaddr.addr != long_be(0xc0a80101), "Error string to ipv4");
++	memset(ipstr, 0, 12);
++	pico_ipv4_to_string(ipstr, ipaddr.addr);
++	fail_if(strncmp(ipstr, "192.168.1.1", 11) != 0, "Error ipv4 to string");
++
++	/*valid_netmask*/
++	fail_if(pico_ipv4_valid_netmask(long_be(nm32.addr)) != 32, "Error checking netmask");
++
++	/*is_unicast*/
++	fail_if((pico_ipv4_is_unicast(long_be(0xc0a80101))) != 1, "Error checking unicast");
++	fail_if((pico_ipv4_is_unicast(long_be(0xe0000001))) != 0, "Error checking unicast");
++
++	/*rebound*/
++	fail_if(pico_ipv4_rebound(f_NULL) != -1, "Error rebound frame");
++
++	/*frame_push*/
++	fail_if(pico_ipv4_frame_push(f_NULL, dst_NULL, PICO_PROTO_TCP) != -1, "Error push frame");
++}
++
++static int do_test_picotcp(int argc, char *argv[])
++{
++	do_test_ipv4();
++
++	return 0;
++}
++
++BAREBOX_CMD_START(test_picotcp)
++	.cmd		= do_test_picotcp,
++BAREBOX_CMD_END
 -- 
 2.1.4
 
