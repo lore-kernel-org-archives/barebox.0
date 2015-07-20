@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZH5Dg-0005iQ-0K
- for barebox@lists.infradead.org; Mon, 20 Jul 2015 07:10:36 +0000
-Date: Mon, 20 Jul 2015 09:10:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150720071013.GX18700@pengutronix.de>
-References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZH6W5-0005AY-Q3
+ for barebox@lists.infradead.org; Mon, 20 Jul 2015 08:33:42 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Mon, 20 Jul 2015 10:33:05 +0200
+Message-Id: <1437381185-30047-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,75 +14,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v2 00/16] barebox picotcp integration (2015.07.19)
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: imx6: rename SPI NOR device to /dev/spinor0
+To: barebox@lists.infradead.org
 
-Hi Antony,
+Barebox currently names the SPI NOR device "/dev/sst25vf016b",
+but the barebox update handler still points to "/dev/m25p80",
+causing barebox_update to fail.
+Choose a descriptive name instead.
 
-On Sun, Jul 19, 2015 at 11:07:07PM +0300, Antony Pavlov wrote:
-> I have just published latest picotcp-enabled barebox.
-> Please see my 20150719.picotcp branch in my github barebox repo
-> (https://github.com/frantony/barebox/tree/20150719.picotcp).
-> 
-> This version is based on the latest barebox-next and picotcp v1.5.0
-> (there is also picotcp v1.5.1, but is has no interested
-> for barebox changes since v1.5.0).
-> 
-> 
-> Changes since 2015.07.15 (see http://lists.infradead.org/pipermail/barebox/2015-June/024174.html):
-> 
->     * net: UDP API changed to satisfy the picotcp integration needs;
->     * nfs, tftp and dns subsystems have no picotcp-related stuff anymore.
->     * netconsole works on top of picotcp with no additional changes.
-> 
-> 
-> Here are some notes:
-> 
->   1. just now tftp/nfs file transfer on top of picotcp is slower than
->      the same transfer on top of legacy network stack;
-> 
->   2. there is no $<current network interface> anymore,
->      so dhcp, tftp and ifup commands don't work on top of picotcp.
->      The ifconfig command is used for network interfaces setup.
-> 
->      N.B. There is an old patch for dhcp support on top of picotcp
->         https://github.com/frantony/barebox/commit/94021b6d7bb933cd50b7ea9e2c55725b5c404205
-> 
->   3. The picoping command is used insted of traditional ping command.
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+ arch/arm/boards/freescale-mx6-sabrelite/board.c | 4 ++--
+ arch/arm/dts/imx6q-sabrelite.dts                | 4 ++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-First of all I applied patches 1-4 to next.
-
-I can't get this version to work. I have done:
-
-# eth0.ethaddr=00:04:9f:01:b5:37
-# eth0.ipaddr=192.168.23.170
-# eth0.netmask=255.255.0.0
-# mount -t tftp 192.168.23.4 /mnt/
-# cp mnt/b b
-T T T T could not open mnt/b: Interrupted system call
-# picoping 192.168.23.4
- ---- Ping timeout!!!
-PING 1 to 192.168.23.4: Error 1
-picoping: I/O error
-
-Anything I have missed?
-
-I noticed that the MAC address is no longer set and the stack no longer
-checks for a link. I believe picotcp should call eth_send rather than
-invoking eth->send directly.
-
-Sascha
-
+diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+index edf0811..d40f99b 100644
+--- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
++++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
+@@ -164,8 +164,8 @@ static int sabrelite_devices_init(void)
+ 
+ 	armlinux_set_architecture(3769);
+ 
+-	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0.barebox",
+-			BBU_HANDLER_FLAG_DEFAULT);
++	imx6_bbu_internal_spi_i2c_register_handler("spiflash",
++			"/dev/spinor0.barebox", BBU_HANDLER_FLAG_DEFAULT);
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/dts/imx6q-sabrelite.dts b/arch/arm/dts/imx6q-sabrelite.dts
+index 96e4688..61ca82e 100644
+--- a/arch/arm/dts/imx6q-sabrelite.dts
++++ b/arch/arm/dts/imx6q-sabrelite.dts
+@@ -17,6 +17,10 @@
+ / {
+ 	model = "Freescale i.MX6 Quad SABRE Lite Board";
+ 	compatible = "fsl,imx6q-sabrelite", "fsl,imx6q";
++
++	aliases {
++		spinor0 = &flash;
++	};
+ };
+ 
+ &sata {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
