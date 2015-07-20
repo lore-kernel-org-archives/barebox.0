@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZH3bk-0004Ie-45
- for barebox@lists.infradead.org; Mon, 20 Jul 2015 05:27:20 +0000
-Date: Mon, 20 Jul 2015 07:26:57 +0200
+ id 1ZH3f3-0005YF-By
+ for barebox@lists.infradead.org; Mon, 20 Jul 2015 05:30:46 +0000
+Date: Mon, 20 Jul 2015 07:30:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150720052657.GR18700@pengutronix.de>
-References: <1437160969-31517-1-git-send-email-m.olbrich@pengutronix.de>
+Message-ID: <20150720053023.GS18700@pengutronix.de>
+References: <1437260573-27143-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1437160969-31517-1-git-send-email-m.olbrich@pengutronix.de>
+In-Reply-To: <1437260573-27143-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 00/16] EFI updates
-To: Michael Olbrich <m.olbrich@pengutronix.de>
+Subject: Re: [PATCH] fixup! Add new barebox logo to the tree
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jul 17, 2015 at 09:22:33PM +0200, Michael Olbrich wrote:
-> Hi,
-> 
-> I've added a patch for xasprintf() and one to add xfuncs for the relevant
-> wchar functions. I've replaced all occurrences in the EFI code but I'm not
-> confident enough to do this elsewhere without being able to test it.
-> 
-> And I've added some patches to save the environment in an EFI variable.
-> 
-> Michael Olbrich (16):
->   xfuncs: add xasprintf() and xvasprintf()
->   xfuncs: add wrapper for wchar strdup functions
->   efi: improve malloc pool allocation
->   efi: refactor & improve application loading code
->   efi: add support for initrd loading
->   efi: add helper to get the GPT partition UUID for a device
->   efi: export device_path_from_handle()
->   efi: add helper functions to write EFI variables
->   efi: write volatile EFI variables used by systemd
->   efi: use xasprintf() when appropriate
->   efi: use xstrdup_* when appropriate
->   fs: efi: use xstrdup_* when appropriate
->   fs: efivars: use xstrdup_* when appropriate
->   fs: efivars: add more error checking
->   fs: efivars: read the attributes on the second get_variable()
->   efi: use an EFI variable to save the environment
+On Sun, Jul 19, 2015 at 02:02:53AM +0300, Antony Pavlov wrote:
+> ---
+>  lib/logo/.gitignore | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>  create mode 100644 lib/logo/.gitignore
 
-Applied, thanks
+Applied, thanks. Maybe one day I remember myself to add the ignore
+files...
 
 Sascha
 
