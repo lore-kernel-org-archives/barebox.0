@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-ig0-x22e.google.com ([2607:f8b0:4001:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZH9tI-00008e-C0
- for barebox@lists.infradead.org; Mon, 20 Jul 2015 12:09:53 +0000
-Received: by lahe2 with SMTP id e2so33214487lah.1
- for <barebox@lists.infradead.org>; Mon, 20 Jul 2015 05:09:28 -0700 (PDT)
-Date: Mon, 20 Jul 2015 15:16:33 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150720151633.50a5762da6ac6b724ac4cc87@gmail.com>
-In-Reply-To: <20150720104524.GC18700@pengutronix.de>
-References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
- <20150720071013.GX18700@pengutronix.de>
- <20150720130649.24ddbd5dd3f7e3cd7de9b3a0@gmail.com>
- <20150720104524.GC18700@pengutronix.de>
-Mime-Version: 1.0
+ id 1ZHH6M-0006B2-L8
+ for barebox@lists.infradead.org; Mon, 20 Jul 2015 19:51:51 +0000
+Received: by igr7 with SMTP id 7so22247797igr.0
+ for <barebox@lists.infradead.org>; Mon, 20 Jul 2015 12:51:29 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20150714050815.GM18700@pengutronix.de>
+References: <1436746187-8652-1-git-send-email-asmirnov@kymetacorp.com>
+ <20150714050815.GM18700@pengutronix.de>
+Date: Mon, 20 Jul 2015 12:51:29 -0700
+Message-ID: <CAHQ1cqGyY6JcqUp1R5qwwrP6g+FEGG4YDZit16vXxuCpiAt+YA@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,101 +20,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v2 00/16] barebox picotcp integration (2015.07.19)
+Subject: Re: [PATCH] lib: libfile: Do not ignore errors in close()
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, 20 Jul 2015 12:45:24 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>>       free(rw_buf);
+>>       if (srcfd > 0)
+>> -             close(srcfd);
+>> +             err1 = close(srcfd);
+>>       if (dstfd > 0)
+>> -             close(dstfd);
+>> +             err2 = close(dstfd);
+>
+> I agree that an error on closing the destination is an error for
+> copy_file, but is an error on closing the source file an error for
+> copy_file? We read everything from the source, so errors while closing
+> the file should not be relevant.
 
-> On Mon, Jul 20, 2015 at 01:06:49PM +0300, Antony Pavlov wrote:
-> > On Mon, 20 Jul 2015 09:10:13 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+I guess it depends on one's interpretation of what "success" means for
+execution of copy_file(). I personally interpret it as: "the function
+accomplished what is was supposed to do and all of the operations that
+had to be done in order to do that completed without any errors", but
+I can see how that being defined as "the function accomplished it's
+main purpose with some possible minor failures" could work too. Since
+I expect a call to close() to not fail for 99% of the time I don't see
+any harm in checking for errors from both calls, but I don't feel very
+strongly about the subject so if you want it I can remove the extra
+check.
 
-> > > Hi Antony,
-> > > =
-
-> > > On Sun, Jul 19, 2015 at 11:07:07PM +0300, Antony Pavlov wrote:
-> > > > I have just published latest picotcp-enabled barebox.
-> > > > Please see my 20150719.picotcp branch in my github barebox repo
-> > > > (https://github.com/frantony/barebox/tree/20150719.picotcp).
-> > > > =
-
-> > > > This version is based on the latest barebox-next and picotcp v1.5.0
-> > > > (there is also picotcp v1.5.1, but is has no interested
-> > > > for barebox changes since v1.5.0).
-> > > > =
-
-> > > > =
-
-> > > > Changes since 2015.07.15 (see http://lists.infradead.org/pipermail/=
-barebox/2015-June/024174.html):
-> > > > =
-
-> > > >     * net: UDP API changed to satisfy the picotcp integration needs;
-> > > >     * nfs, tftp and dns subsystems have no picotcp-related stuff an=
-ymore.
-> > > >     * netconsole works on top of picotcp with no additional changes.
-> > > > =
-
-> > > > =
-
-> > > > Here are some notes:
-> > > > =
-
-> > > >   1. just now tftp/nfs file transfer on top of picotcp is slower th=
-an
-> > > >      the same transfer on top of legacy network stack;
-> > > > =
-
-> > > >   2. there is no $<current network interface> anymore,
-> > > >      so dhcp, tftp and ifup commands don't work on top of picotcp.
-> > > >      The ifconfig command is used for network interfaces setup.
-> > > > =
-
-> > > >      N.B. There is an old patch for dhcp support on top of picotcp
-> > > >         https://github.com/frantony/barebox/commit/94021b6d7bb933cd=
-50b7ea9e2c55725b5c404205
-> > > > =
-
-> > > >   3. The picoping command is used insted of traditional ping comman=
-d.
-> > > =
-
-> > > First of all I applied patches 1-4 to next.
-> > =
-
-> > Sascha!
-> > =
-
-> > Please comment patches 5-7!
-> > =
-
-> > Probably these patches will be changed in the next picotcp integration =
-patchseries version,
-> > but your comment on them could be very beneficial.
-> =
-
-> From looking at them they are ok. I haven't found the place where you
-> allocate packets now, but please make sure they are aligned for dma
-> accesses, i.e. use net_alloc_packet(). Otherwise this happens:
-> =
-
-> eth0: Transmit data not aligned: c0416acc!
-
-I see only one possibility: fix pico_zalloc() macro definition in net/picot=
-cp/include/arch/pico_barebox.h.
-
-Could you please check it on your hardware?
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+Andrey
 
 _______________________________________________
 barebox mailing list
