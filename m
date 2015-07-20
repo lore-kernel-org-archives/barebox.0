@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZH3Mw-0007nV-8Y
- for barebox@lists.infradead.org; Mon, 20 Jul 2015 05:12:02 +0000
-Date: Mon, 20 Jul 2015 07:11:38 +0200
+ id 1ZH3Pb-0007tj-0w
+ for barebox@lists.infradead.org; Mon, 20 Jul 2015 05:14:47 +0000
+Date: Mon, 20 Jul 2015 07:14:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150720051138.GP18700@pengutronix.de>
-References: <1437066751-28074-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20150720051424.GQ18700@pengutronix.de>
+References: <1437131633-9590-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1437066751-28074-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1437131633-9590-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,18 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! fonts: Add 7x14 font
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 1/7] mtd: core: Check partitions for empty string
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 16, 2015 at 08:12:31PM +0300, Antony Pavlov wrote:
+On Fri, Jul 17, 2015 at 01:13:47PM +0200, Teresa Remmet wrote:
+> Make setting partitions a litte bit more robust.
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 > ---
-> do as linux kernel does.
-> ---
->  include/linux/font.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/mtd/core.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Applied, thanks
+Applied all except 2/7, thanks
 
 Sascha
 
