@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZH7c9-0002nz-KT
- for barebox@lists.infradead.org; Mon, 20 Jul 2015 09:44:02 +0000
-Received: by laem6 with SMTP id m6so93610050lae.0
- for <barebox@lists.infradead.org>; Mon, 20 Jul 2015 02:43:38 -0700 (PDT)
-Date: Mon, 20 Jul 2015 12:50:45 +0300
+ id 1ZH7rh-0002IO-H7
+ for barebox@lists.infradead.org; Mon, 20 Jul 2015 10:00:08 +0000
+Received: by lbbzr7 with SMTP id zr7so92094290lbb.1
+ for <barebox@lists.infradead.org>; Mon, 20 Jul 2015 02:59:43 -0700 (PDT)
+Date: Mon, 20 Jul 2015 13:06:49 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150720125045.55f8ec8b4bdcbc39839c6054@gmail.com>
+Message-Id: <20150720130649.24ddbd5dd3f7e3cd7de9b3a0@gmail.com>
 In-Reply-To: <20150720071013.GX18700@pengutronix.de>
 References: <1437336443-8076-1-git-send-email-antonynpavlov@gmail.com>
  <20150720071013.GX18700@pengutronix.de>
@@ -69,98 +69,25 @@ e.
 > >   2. there is no $<current network interface> anymore,
 > >      so dhcp, tftp and ifup commands don't work on top of picotcp.
 > >      The ifconfig command is used for network interfaces setup.
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is the reason of your 'Ping timeout!!!'
+> > =
 
+> >      N.B. There is an old patch for dhcp support on top of picotcp
+> >         https://github.com/frantony/barebox/commit/94021b6d7bb933cd50b7=
+ea9e2c55725b5c404205
+> > =
+
+> >   3. The picoping command is used insted of traditional ping command.
 > =
 
-> I can't get this version to work. I have done:
-> =
+> First of all I applied patches 1-4 to next.
 
-> # eth0.ethaddr=3D00:04:9f:01:b5:37
-> # eth0.ipaddr=3D192.168.23.170
-> # eth0.netmask=3D255.255.0.0
-> # mount -t tftp 192.168.23.4 /mnt/
-> # cp mnt/b b
-> T T T T could not open mnt/b: Interrupted system call
-> # picoping 192.168.23.4
->  ---- Ping timeout!!!
-> PING 1 to 192.168.23.4: Error 1
-> picoping: I/O error
-> =
+Sascha!
 
-> Anything I have missed?
+Please comment patches 5-7!
 
-Please use ifconfig for interface setup. E.g.
-
-ifconfig eth 192.168.23.170 255.255.0.0
-
-I think it is possible to implement network interface setup via =
-
-eth0.ipaddr and eth0.netmask manipulation (and even sacrifice ifconfig comm=
-and).
-
-
-Here is my picotcp test script
-
-#!/bin/sh
-
-SERVER=3D192.168.100.1
-ifconfig eth 192.168.100.2 255.255.255.0
-
-picoping $SERVER
-
-net.nameserver=3D$SERVER
-host barebox.example.com
-host www.example.com
-
-mount -t nfs $SERVER:/tftpboot /mnt
-ls /mnt
-md5sum /mnt/bash
-umount /mnt
-ls /mnt
-
-mount -t tftp $SERVER /mnt
-md5sum /mnt/test
-umount /mnt
-
-> I noticed that the MAC address is no longer set and the stack no longer
-> checks for a link. I believe picotcp should call eth_send rather than
-> invoking eth->send directly.
-
-Hmmm, It looks like I have completely missed any MAC-address manipulation s=
-tuff.
-
-I see no means to use eth_send() from picotcp code at the moment.
-
-Just now picotcp "parasitize" on legacy stack: for one phisical network int=
-erface
-there are the picotcp network interface and the legacy network interface at=
- the same time,
-but only picotcp actualy operates (but some legacy network interface functi=
-ons are not
-realized).
-
-The main problem is that barebox has the 'only one network interface is act=
-ive' conception,
-but picotcp can handle several active network interfaces at the same time.
-In this patchseries the 'only one network interface is active' conception i=
-s not used, so
-some commands (dhcp, ifup) do not work.
-
-Picotcp selects necessary network interface for eth->send() invoking after =
-routing.
-But if I just call eth_send() from picotcp a collision is possible.
-E.g. if you have two network interfaces and picotcp want to use the 2nd for=
- packet sending
-but barebox thinks that the 1st interface is active then eth_send() leads t=
-o sending via the 1st one.
-
-I think it is possible to impart current_active_interface
-property to picotcp-barebox glue code for smooth integration.
-
-I'll try to take into account your notes in the next picotcp integration pa=
-tchseries;
+Probably these patches will be changed in the next picotcp integration patc=
+hseries version,
+but your comment on them could be very beneficial.
 
 --=A0
 Best regards,
