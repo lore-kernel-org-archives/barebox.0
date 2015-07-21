@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZHIXs-00087A-9i
- for barebox@lists.infradead.org; Mon, 20 Jul 2015 21:24:21 +0000
-Received: by lahe2 with SMTP id e2so42603473lah.1
- for <barebox@lists.infradead.org>; Mon, 20 Jul 2015 14:23:58 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 21 Jul 2015 00:23:48 +0300
-Message-Id: <1437427428-24176-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZHSos-0006VA-Ds
+ for barebox@lists.infradead.org; Tue, 21 Jul 2015 08:22:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 21 Jul 2015 10:22:11 +0200
+Message-Id: <1437466931-23552-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +19,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: eth_send: Allow to use multiple network interfaces at
- once
-To: barebox@lists.infradead.org
+Subject: [PATCH] drop <stddef.h> includes
+To: Barebox List <barebox@lists.infradead.org>
 
-The commit
+The compilers stddef.h should not be included. We declare all types
+ourselves.
 
-commit be0404c21f22da2d736168b2e56a9ae583cc3e95
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Wed May 14 16:08:04 2014 +0200
-
-    net: Allow to use multiple network interfaces at once
-
-changes the eth_send() function:
-
--       return eth_current->send(eth_current, packet, length);
-+       return edev->send(eth_current, packet, length);
-
-But we have to change the both eth_current occurrences to edev here!
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/tlsf.c         | 1 -
+ fs/ext4/ext4_common.c | 1 -
+ include/tlsf.h        | 2 --
+ 3 files changed, 4 deletions(-)
 
-diff --git a/net/eth.c b/net/eth.c
-index a090961..bea4706 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -243,7 +243,7 @@ int eth_send(struct eth_device *edev, void *packet, int length)
+diff --git a/common/tlsf.c b/common/tlsf.c
+index 9515ac7..984342e 100644
+--- a/common/tlsf.c
++++ b/common/tlsf.c
+@@ -1,4 +1,3 @@
+-#include <stddef.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
+index ab0e6b5..04b1915 100644
+--- a/fs/ext4/ext4_common.c
++++ b/fs/ext4/ext4_common.c
+@@ -30,7 +30,6 @@
  
- 	led_trigger_network(LED_TRIGGER_NET_TX);
+ #include <common.h>
+ #include <malloc.h>
+-#include <stddef.h>
+ #include <linux/stat.h>
+ #include <linux/time.h>
+ #include <asm/byteorder.h>
+diff --git a/include/tlsf.h b/include/tlsf.h
+index d575e16..1917fa1 100644
+--- a/include/tlsf.h
++++ b/include/tlsf.h
+@@ -16,8 +16,6 @@
+ ** of the document, therefore no GPL restrictions apply.
+ */
  
--	return edev->send(eth_current, packet, length);
-+	return edev->send(edev, packet, length);
- }
- 
- static int __eth_rx(struct eth_device *edev)
+-#include <stddef.h>
+-
+ #if defined(__cplusplus)
+ extern "C" {
+ #endif
 -- 
 2.1.4
 
