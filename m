@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZIDFl-00037p-AK
- for barebox@lists.infradead.org; Thu, 23 Jul 2015 09:57:25 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1ZIBNj-00021X-NX
- for barebox@lists.infradead.org; Thu, 23 Jul 2015 09:57:31 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 23 Jul 2015 11:56:51 +0200
-Message-Id: <1437645413-18057-2-git-send-email-l.stach@pengutronix.de>
-In-Reply-To: <1437645413-18057-1-git-send-email-l.stach@pengutronix.de>
-References: <1437645413-18057-1-git-send-email-l.stach@pengutronix.de>
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZIGNO-0000u4-Pa
+ for barebox@lists.infradead.org; Thu, 23 Jul 2015 13:17:31 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 23 Jul 2015 15:17:07 +0200
+Message-Id: <1437657427-13585-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,44 +19,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM: pxa: move mainstone TEXTBASE to Kconfig
-To: barebox@lists.infradead.org
+Subject: [PATCH] mtd: of: put master offset into partition name
+To: Barebox List <barebox@lists.infradead.org>
 
-From: Lucas Stach <dev@lynxeye.de>
+Partition names should be partition@<offset> with <offset> being the
+offset in the master mtd, and not a counting number.
 
-So we can drop it from the defconfig and stop bothering
-the user with this choice by default.
-
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/mainstone_defconfig | 1 -
- arch/arm/mach-pxa/Kconfig            | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/configs/mainstone_defconfig b/arch/arm/configs/mainstone_defconfig
-index 946902d200ee..1e735d4a6dbb 100644
---- a/arch/arm/configs/mainstone_defconfig
-+++ b/arch/arm/configs/mainstone_defconfig
-@@ -7,7 +7,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- # CONFIG_BANNER is not set
- CONFIG_MMU=y
--CONFIG_TEXT_BASE=0xa3d00000
- CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
- CONFIG_MALLOC_SIZE=0x1000000
- CONFIG_EXPERIMENTAL=y
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index 2b7f631757b7..54094f4ca0ed 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -5,6 +5,7 @@ config ARCH_TEXT_BASE
- 	default 0xa0000000 if MACH_MIOA701
- 	default 0xa3f00000 if MACH_PCM027
- 	default 0xa3d00000 if MACH_LUBBOCK
-+	default 0xa3d00000 if MACH_MAINSTONE
- 	default 0x83f00000 if MACH_ZYLONITE
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 3bdf441..d873369 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -491,7 +491,7 @@ static int of_mtd_fixup(struct device_node *root, void *ctx)
+ {
+ 	struct mtd_info *mtd = ctx, *partmtd;
+ 	struct device_node *np, *part, *tmp;
+-	int ret, i = 0;
++	int ret;
  
- # ----------------------------------------------------------
+ 	np = of_find_node_by_path_from(root, mtd->of_path);
+ 	if (!np) {
+@@ -508,7 +508,7 @@ static int of_mtd_fixup(struct device_node *root, void *ctx)
+ 
+ 	list_for_each_entry(partmtd, &mtd->partitions, partitions_entry) {
+ 		int na, ns, len = 0;
+-		char *name = asprintf("partition@%d", i++);
++		char *name = asprintf("partition@%0llx", partmtd->master_offset);
+ 		void *p;
+ 		u8 tmp[16 * 16]; /* Up to 64-bit address + 64-bit size */
+ 
 -- 
 2.1.4
 
