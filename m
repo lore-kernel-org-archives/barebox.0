@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZIGNO-0000u4-Pa
- for barebox@lists.infradead.org; Thu, 23 Jul 2015 13:17:31 +0000
+ id 1ZIGPp-0002Ki-7L
+ for barebox@lists.infradead.org; Thu, 23 Jul 2015 13:20:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 23 Jul 2015 15:17:07 +0200
-Message-Id: <1437657427-13585-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 23 Jul 2015 15:19:38 +0200
+Message-Id: <1437657578-17979-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +19,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: of: put master offset into partition name
+Subject: [PATCH] ata: sata-imx: Add delay to prevent link timeout
 To: Barebox List <barebox@lists.infradead.org>
 
-Partition names should be partition@<offset> with <offset> being the
-offset in the master mtd, and not a counting number.
+On the Utilite board this delay is necessary to prevent a link timeout.
+It seems the values written to GPR13 have to settle for some time before
+further accesses may be made.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ata/sata-imx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 3bdf441..d873369 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -491,7 +491,7 @@ static int of_mtd_fixup(struct device_node *root, void *ctx)
- {
- 	struct mtd_info *mtd = ctx, *partmtd;
- 	struct device_node *np, *part, *tmp;
--	int ret, i = 0;
-+	int ret;
+diff --git a/drivers/ata/sata-imx.c b/drivers/ata/sata-imx.c
+index 42a56dc..612762e 100644
+--- a/drivers/ata/sata-imx.c
++++ b/drivers/ata/sata-imx.c
+@@ -37,6 +37,8 @@ static int imx6_sata_init(struct imx_ahci *imx_ahci)
+ 	writel(val, base + IOMUXC_GPR13);
+ 	writel(val | 2, base + IOMUXC_GPR13);
  
- 	np = of_find_node_by_path_from(root, mtd->of_path);
- 	if (!np) {
-@@ -508,7 +508,7 @@ static int of_mtd_fixup(struct device_node *root, void *ctx)
- 
- 	list_for_each_entry(partmtd, &mtd->partitions, partitions_entry) {
- 		int na, ns, len = 0;
--		char *name = asprintf("partition@%d", i++);
-+		char *name = asprintf("partition@%0llx", partmtd->master_offset);
- 		void *p;
- 		u8 tmp[16 * 16]; /* Up to 64-bit address + 64-bit size */
++	udelay(100);
++
+ 	return 0;
+ }
  
 -- 
 2.1.4
