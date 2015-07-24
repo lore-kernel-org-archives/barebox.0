@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZIXIb-0001Pq-5v
- for barebox@lists.infradead.org; Fri, 24 Jul 2015 07:21:42 +0000
-Date: Fri, 24 Jul 2015 09:21:19 +0200
+ id 1ZIXJa-0001WK-7v
+ for barebox@lists.infradead.org; Fri, 24 Jul 2015 07:22:42 +0000
+Date: Fri, 24 Jul 2015 09:22:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150724072119.GM18700@pengutronix.de>
-References: <1437381185-30047-1-git-send-email-p.zabel@pengutronix.de>
+Message-ID: <20150724072220.GN18700@pengutronix.de>
+References: <1437644174-29714-1-git-send-email-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1437381185-30047-1-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <1437644174-29714-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: imx6: rename SPI NOR device to /dev/spinor0
-To: Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: [PATCH] ARM: OMAP: AM33xx: add uart1 pinmux setup
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 20, 2015 at 10:33:05AM +0200, Philipp Zabel wrote:
-> Barebox currently names the SPI NOR device "/dev/sst25vf016b",
-> but the barebox update handler still points to "/dev/m25p80",
-> causing barebox_update to fail.
-> Choose a descriptive name instead.
-> 
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+On Thu, Jul 23, 2015 at 11:36:14AM +0200, Michael Grzeschik wrote:
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
->  arch/arm/boards/freescale-mx6-sabrelite/board.c | 4 ++--
->  arch/arm/dts/imx6q-sabrelite.dts                | 4 ++++
->  2 files changed, 6 insertions(+), 2 deletions(-)
+>  arch/arm/mach-omap/am33xx_mux.c              | 12 ++++++++++++
+>  arch/arm/mach-omap/include/mach/am33xx-mux.h |  1 +
+>  2 files changed, 13 insertions(+)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
