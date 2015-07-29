@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZKKP4-0004QI-0s
- for barebox@lists.infradead.org; Wed, 29 Jul 2015 05:59:46 +0000
-Date: Wed, 29 Jul 2015 07:59:24 +0200
+ id 1ZKKR8-0005cx-Al
+ for barebox@lists.infradead.org; Wed, 29 Jul 2015 06:01:54 +0000
+Date: Wed, 29 Jul 2015 08:01:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150729055924.GF18700@pengutronix.de>
-References: <1437999653-15630-1-git-send-email-s.christ@phytec.de>
+Message-ID: <20150729060131.GG18700@pengutronix.de>
+References: <1438012113-27213-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1437999653-15630-1-git-send-email-s.christ@phytec.de>
+In-Reply-To: <1438012113-27213-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: [phyFLEX,phyCARD]-i.MX6: rename define in
- flash-headers
-To: Stefan Christ <s.christ@phytec.de>
+Subject: Re: [PATCH 1/4] video: backlight-pwm: depend on GPIOLIB
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jul 27, 2015 at 02:20:53PM +0200, Stefan Christ wrote:
-> The files flash-header-*.imxfg contains two defines which are use in
-> include files flash-header-phytec-*.h. The first define is SETUP_MDCFG0.
-> In the second define name some RAM size value were used, e.g.
-> SETUP_S_DL_512MB_1GB or SETUP_1GIB_2GIB_4GIB.
+On Mon, Jul 27, 2015 at 05:48:30PM +0200, Lucas Stach wrote:
+> The PWM backlight driver does not only control PWMs but also GPIOs.
 > 
-> It's better to name also the second define after the register names,
-> here MMDC1_MDCTL and MMDC1_MDASP, because these values changes for every
-> RAM configurations and it's consistent with the first define.
+> Fixes:
+> In file included from include/gpio.h:4:0,
+>                  from drivers/video/backlight-pwm.c:27:
+> arch/arm/include/asm/gpio.h:5:23: fatal error: mach/gpio.h: No such file or directory
 > 
-> Signed-off-by: Stefan Christ <s.christ@phytec.de>
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
