@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from proxima.lasnet.de ([78.47.171.185])
+Received: from proxima.lasnet.de ([2a01:198:210:70::2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZKpCk-0005jg-4E
+ id 1ZKpCk-0005jh-6i
  for barebox@lists.infradead.org; Thu, 30 Jul 2015 14:53:06 +0000
 Received: from polaris.fritz.box (f053152215.adsl.alicedsl.de [78.53.152.215])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
  (Authenticated sender: polaris@lasnet.de)
- by proxima.lasnet.de (Postfix) with ESMTPSA id 7ED25C35AE
+ by proxima.lasnet.de (Postfix) with ESMTPSA id 1AA3EC35AD
  for <barebox@lists.infradead.org>; Thu, 30 Jul 2015 16:52:20 +0200 (CEST)
 From: Jan Luebbe <jluebbe@debian.org>
-Date: Thu, 30 Jul 2015 16:52:11 +0200
-Message-Id: <1438267931-22374-7-git-send-email-jluebbe@debian.org>
+Date: Thu, 30 Jul 2015 16:52:10 +0200
+Message-Id: <1438267931-22374-6-git-send-email-jluebbe@debian.org>
 In-Reply-To: <1438267931-22374-1-git-send-email-jluebbe@debian.org>
 References: <1438267931-22374-1-git-send-email-jluebbe@debian.org>
 List-Id: <barebox.lists.infradead.org>
@@ -27,53 +27,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/6] i2c: gpio: add bus recovery support
+Subject: [PATCH v2 5/6] i2c: algo-bit: check if the bus is busy
 To: barebox@lists.infradead.org
+
+If we have a timeout while waiting, try to recover.
 
 Signed-off-by: Jan Luebbe <jluebbe@debian.org>
 ---
- drivers/i2c/busses/i2c-gpio.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/i2c/algos/i2c-algo-bit.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-gpio.c b/drivers/i2c/busses/i2c-gpio.c
-index b4a0ecd..9362ed1 100644
---- a/drivers/i2c/busses/i2c-gpio.c
-+++ b/drivers/i2c/busses/i2c-gpio.c
-@@ -10,6 +10,7 @@
- 
- #include <common.h>
- #include <driver.h>
-+#include <malloc.h>
- #include <i2c/i2c.h>
- #include <i2c/i2c-algo-bit.h>
- #include <i2c/i2c-gpio.h>
-@@ -187,6 +188,13 @@ static int i2c_gpio_probe(struct device_d *dev)
- 	adap->algo_data = bit_data;
- 	adap->dev.parent = dev;
- 	adap->dev.device_node = dev->device_node;
-+	adap->bus_recovery_info = xzalloc(sizeof(*adap->bus_recovery_info));
-+	adap->bus_recovery_info->scl_gpio = pdata->scl_pin;
-+	adap->bus_recovery_info->sda_gpio = pdata->sda_pin;
-+	adap->bus_recovery_info->get_sda = i2c_get_sda_gpio_value;
-+	adap->bus_recovery_info->get_scl = i2c_get_scl_gpio_value;
-+	adap->bus_recovery_info->set_scl = i2c_set_scl_gpio_value;
-+	adap->bus_recovery_info->recover_bus = i2c_generic_scl_recovery;
- 
- 	adap->nr = dev->id;
- 	ret = i2c_bit_add_numbered_bus(adap);
-@@ -201,10 +209,12 @@ static int i2c_gpio_probe(struct device_d *dev)
+diff --git a/drivers/i2c/algos/i2c-algo-bit.c b/drivers/i2c/algos/i2c-algo-bit.c
+index 62040cc..2563c0d 100644
+--- a/drivers/i2c/algos/i2c-algo-bit.c
++++ b/drivers/i2c/algos/i2c-algo-bit.c
+@@ -117,6 +117,31 @@ done:
  	return 0;
- 
- err_add_bus:
-+	free(adap->bus_recovery_info);
- 	gpio_free(pdata->scl_pin);
- err_request_scl:
- 	gpio_free(pdata->sda_pin);
- err_request_sda:
-+	free(priv);
- 	return ret;
  }
  
++static int wait_busy(struct i2c_algo_bit_data *adap)
++{
++	uint64_t start;
++
++	if (sclhi(adap) < 0)
++		return -ETIMEDOUT;
++
++	start = get_time_ns();
++	while (!getsda(adap)) {
++		if (is_timeout(start, adap->timeout_ms * MSECOND)) {
++			if (getsda(adap))
++				break;
++			return -ETIMEDOUT;
++		}
++	}
++#ifdef DEBUG
++	if ((get_time_ns() - start) < 10000)
++		pr_debug("i2c-algo-bit: needed %u usecs for SDA to go "
++			 "high\n", (unsigned int)(get_time_ns() - start) /
++			 1000);
++#endif
++
++	udelay(adap->udelay);
++	return 0;
++}
+ 
+ /* --- other auxiliary functions --------------------------------------	*/
+ static void i2c_start(struct i2c_algo_bit_data *adap)
+@@ -512,6 +537,13 @@ static int bit_xfer(struct i2c_adapter *i2c_adap,
+ 			return ret;
+ 	}
+ 
++	if (wait_busy(adap) < 0) { /* timeout */
++		dev_warn(&i2c_adap->dev, "timeout waiting for bus ready\n");
++		ret = i2c_recover_bus(i2c_adap);
++		if (ret < 0)
++			return ret;
++	}
++
+ 	bit_dbg(3, &i2c_adap->dev, "emitting start condition\n");
+ 	i2c_start(adap);
+ 	for (i = 0; i < num; i++) {
 -- 
 2.1.4
 
