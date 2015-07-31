@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from proxima.lasnet.de ([78.47.171.185])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZKpv4-0004PV-Vc
- for barebox@lists.infradead.org; Thu, 30 Jul 2015 15:38:56 +0000
-Received: from polaris.fritz.box (f053152215.adsl.alicedsl.de [78.53.152.215])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
- (No client certificate requested)
- (Authenticated sender: polaris@lasnet.de)
- by proxima.lasnet.de (Postfix) with ESMTPSA id 70054C08C6
- for <barebox@lists.infradead.org>; Thu, 30 Jul 2015 17:38:33 +0200 (CEST)
-From: Jan Luebbe <jluebbe@debian.org>
-Date: Thu, 30 Jul 2015 17:38:29 +0200
-Message-Id: <1438270709-2066-1-git-send-email-jluebbe@debian.org>
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZL41E-00058k-8O
+ for barebox@lists.infradead.org; Fri, 31 Jul 2015 06:42:13 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 13A43A0032D
+ for <barebox@lists.infradead.org>; Fri, 31 Jul 2015 08:43:36 +0200 (CEST)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Fri, 31 Jul 2015 08:40:39 +0200
+Message-Id: <1438324839-38714-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,100 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at24: support write-protect GPIO
+Subject: [PATCH] ARM: dts: beaglebone: Strip MLO device tree
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jluebbe@debian.org>
----
- drivers/eeprom/at24.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+Reduce size of beaglebone MLO image.
 
-diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-index bb2dd53..76f30e7 100644
---- a/drivers/eeprom/at24.c
-+++ b/drivers/eeprom/at24.c
-@@ -21,6 +21,8 @@
- #include <linux/log2.h>
- #include <i2c/i2c.h>
- #include <i2c/at24.h>
-+#include <gpio.h>
-+#include <of_gpio.h>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+Tested-by: Daniel Schultz <d.schultz@phytec.de>
+---
+ arch/arm/dts/am335x-bone-common.dts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/dts/am335x-bone-common.dts b/arch/arm/dts/am335x-bone-common.dts
+index 5d3d2ed..91745d3 100644
+--- a/arch/arm/dts/am335x-bone-common.dts
++++ b/arch/arm/dts/am335x-bone-common.dts
+@@ -8,6 +8,7 @@
+  */
  
- /*
-  * I2C EEPROMs from most vendors are inexpensive and mostly interchangeable.
-@@ -55,6 +57,8 @@ struct at24_data {
- 	u8 *writebuf;
- 	unsigned write_max;
- 	unsigned num_addresses;
-+	int wp_gpio;
-+	int wp_active_low;
+ #include "am33xx.dtsi"
++#include "am33xx-strip.dtsi"
+ #include "am335x-bone-common.dtsi"
  
- 	/*
- 	 * Some chips tie up multiple I2C addresses; dummy devices reserve
-@@ -345,6 +349,25 @@ static ssize_t at24_cdev_write(struct cdev *cdev, const void *buf, size_t count,
- 	return at24_write(at24, buf, off, count);
- }
- 
-+static ssize_t at24_cdev_protect(struct cdev *cdev, size_t count, loff_t offset,
-+		int prot)
-+{
-+	struct at24_data *at24 = cdev->priv;
-+
-+	if (!gpio_is_valid(at24->wp_gpio))
-+		return -EOPNOTSUPP;
-+
-+	prot = !!prot;
-+	if (at24->wp_active_low)
-+		prot = !prot;
-+
-+	gpio_set_value(at24->wp_gpio, prot);
-+
-+	udelay(50);
-+
-+	return 0;
-+}
-+
- static int at24_probe(struct device_d *dev)
- {
- 	struct i2c_client *client = to_i2c_client(dev);
-@@ -403,6 +426,7 @@ static int at24_probe(struct device_d *dev)
- 	at24->cdev.ops = &at24->fops;
- 	at24->fops.lseek = dev_lseek_default;
- 	at24->fops.read	= at24_cdev_read,
-+	at24->fops.protect = at24_cdev_protect,
- 	at24->cdev.size = chip.byte_len;
- 
- 	writable = !(chip.flags & AT24_FLAG_READONLY);
-@@ -419,6 +443,19 @@ static int at24_probe(struct device_d *dev)
- 		at24->writebuf = xmalloc(write_max + 2);
- 	}
- 
-+	at24->wp_gpio = -1;
-+	if (dev->device_node) {
-+		enum of_gpio_flags flags;
-+		at24->wp_gpio = of_get_named_gpio_flags(dev->device_node,
-+				"wp-gpios", 0, &flags);
-+		if (gpio_is_valid(at24->wp_gpio)) {
-+			at24->wp_active_low = flags & OF_GPIO_ACTIVE_LOW;
-+			gpio_request(at24->wp_gpio, "eeprom-wp");
-+			gpio_direction_output(at24->wp_gpio,
-+					!at24->wp_active_low);
-+		}
-+	}
-+
- 	at24->client[0] = client;
- 
- 	/* use dummy devices for multiple-address chips */
-@@ -440,6 +477,7 @@ static int at24_probe(struct device_d *dev)
- 	return 0;
- 
- err_clients:
-+	gpio_free(at24->wp_gpio);
- 	kfree(at24->writebuf);
- 	kfree(at24);
- err_out:
+ / {
 -- 
-2.1.4
+1.9.1
 
 
 _______________________________________________
