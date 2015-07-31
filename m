@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
+Received: from forward19o.cmail.yandex.net ([37.9.109.217])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZL8Gc-0007mb-Rs
- for barebox@lists.infradead.org; Fri, 31 Jul 2015 11:14:23 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1ZL6Oe-0002HC-Lm
- for barebox@lists.infradead.org; Fri, 31 Jul 2015 11:14:32 +0200
-From: Juergen Borleis <jbe@pengutronix.de>
-Date: Fri, 31 Jul 2015 13:17:08 +0200
-References: <1438333432-10118-1-git-send-email-jbe@pengutronix.de>
- <1438333432-10118-7-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1438333432-10118-7-git-send-email-jbe@pengutronix.de>
+ id 1ZLE4x-0001JM-9t
+ for barebox@lists.infradead.org; Fri, 31 Jul 2015 17:26:44 +0000
+From: Smirnov Alexander <alllecs@yandex.ru>
+In-Reply-To: <20150724080634.GQ18700@pengutronix.de>
+References: <1437666788-26574-1-git-send-email-alllecs@yandex.ru>
+ <20150724080634.GQ18700@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201507311317.08715.jbe@pengutronix.de>
+Message-Id: <1419861438363575@web21o.yandex.ru>
+Date: Fri, 31 Jul 2015 20:26:15 +0300
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +18,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: fixup! PPC/PCM030: provide EEPROM support to read factory settings
-To: barebox@lists.infradead.org
+Subject: Re: [RFC] Introduce MIPS disassembler library for barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Forgotten to enable I2C and EEPROM support in the PCM030's default config.
-
-diff --git a/arch/ppc/configs/pcm030_defconfig b/arch/ppc/configs/pcm030_de=
-fconfig
-index 7b84e2f3b689..61380ac294e5 100644
---- a/arch/ppc/configs/pcm030_defconfig
-+++ b/arch/ppc/configs/pcm030_defconfig
-@@ -35,8 +35,11 @@ CONFIG_CMD_OFTREE=3Dy
- CONFIG_CMD_TIME=3Dy
- CONFIG_NET=3Dy
- CONFIG_DRIVER_NET_MPC5200=3Dy
-+CONFIG_I2C=3Dy
-+CONFIG_I2C_IMX=3Dy
- CONFIG_MTD=3Dy
- CONFIG_DRIVER_CFI=3Dy
- CONFIG_CFI_BUFFER_WRITE=3Dy
-+CONFIG_EEPROM_AT24=3Dy
- CONFIG_FS_TFTP=3Dy
- CONFIG_ZLIB=3Dy
-
--- =
-
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0| Juergen Borleis =A0 =A0 =A0 =A0 =A0 =A0 |
-Industrial Linux Solutions =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://=
-www.pengutronix.de/ =A0|
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKMjQuMDcuMjAxNSwgMTE6MDYsICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPjoKPiCaSGkgQWxleGFuZGVyLAo+Cj4gmk9uIFRodSwgSnVsIDIzLCAyMDE1
+IGF0IDA2OjUzOjA4UE0gKzAzMDAsIEFsZXhhbmRlciBTbWlybm92IHdyb3RlOgo+PiCamlRoaXMg
+Y29tbWl0IGltcG9ydHMgZGlzYXNzZW1ibGVyIGZvciBtaXBzIGZyb20gcWVtdS9iaW51dGlscy4K
+Pj4KPj4gmppIZXJlIGlzIGEgc2FtcGxlIGRpc2Fzc2VtYmxlciBvdXRwdXQ6Cj4+Cj4+IJqaYmFy
+ZWJveDovIGRpc2FzbSAweGJmYzAwMDE4KzB4MjAKPj4gmppiZmMwMDAxODogNDAxYTYwMDAgbWZj
+MCBrMCwkMTIKPj4gmppiZmMwMDAxYzogMjQxYmZmZmUgbGkgazEsLTIKPj4gmppiZmMwMDAyMDog
+MDM1YmQwMjQgYW5kIGswLGswLGsxCj4+IJqaYmZjMDAwMjQ6IDQwOWE2MDAwIG10YzAgazAsJDEy
+Cj4+IJqaYmZjMDAwMjg6IDNjMDliNDAwIGx1aSB0MSwweGI0MDAKPj4gmppiZmMwMDAyYzogM2Mw
+OGRmMDAgbHVpIHQwLDB4ZGYwMAo+PiCammJmYzAwMDMwOiBhZDI4MDA2OCBzdyB0MCwxMDQodDEp
+Cj4+IJqaYmZjMDAwMzQ6IDNjMDliYmUwIGx1aSB0MSwweGJiZTAKPj4KPj4gmppUT0RPczoKPj4K
+Pj4gmpqamiogLWEgb3B0aW9uIChzZWxlY3QgY3B1IGFyY2hpdGVjdHVyZSkgZG9lcyBub3Qgd29y
+ayBwcm9wZXJseTsKPj4gmpqamiogLXMgb3B0aW9uIChzZWxlY3QgYmluYXJ5IGZpbGUgZm9yIGRp
+c2Fzc2VtYmx5KSBkb2VzIG5vdCB3b3JrIHByb3Blcmx5IC4KPj4KPj4gmppUaGlzIGNvbW1pdCBk
+ZW1vbnN0cmF0ZSBzaW1wbGUgd2F5IGZvciBpbXBvcnRpbmcgZGlzYXNzZW1ibGVyIGZyb20gcWVt
+dS9iaW51dGlsczoKPj4gmppkaXNhc3NlbWJsZXJzIGZvciBvdGhlciBhcmNoaXRlY3R1cmVzIChl
+LmcuIEFSTSkgY2FuIGJlIGVhc2VseSBpbXBvcnRlZC4KPgo+IJpUaGlzIGlzIG5pY2UgYW5kIHNv
+bWVob3cgY29vbCB0byBiZSBhYmxlIHRvIGp1c3QgZGlzYXNzZW1ibGUgc29tZSBjb2RlCj4gmnVu
+ZGVyIGJhcmVib3guIEhvd2V2ZXIsIGl0J3MgcXVpdGUgYSBidW5jaCBvZiBjb2RlIGltcG9ydGVk
+IGZyb20gYW5vdGhlcgo+IJpwcm9qZWN0IGFuZCB3ZSdsbCBuZWVkIGV2ZW4gbW9yZSBjb2RlIGZv
+ciBvdGhlciBhcmNoaXRlY3R1cmVzLiBUaGlzIGNvZGUKPiCabmVlZHMgbWFpbnRlbmFuY2UgdG8g
+c3RheSB1c2VmdWwsIHNvIEkgYW0gbm90IHZlcnkgZm9uZCBvZiBtZXJnaW5nIGl0Lgo+IJpXaGF0
+IGlzIHlvdXIgdXNlY2FzZSBmb3IgdGhpcz8gTm9ybWFsbHkgSSB3b3VsZCB0cmFuc2ZlciB0aGUg
+YXJlYSBJJ2QKPiCabGlrZSB0byBkaXNhc3NlbWJsZSB2aWEgdGZ0cCBvciB3aGF0ZXZlciB0byBh
+IGhvc3QgYW5kIGRpc2Fzc2VtYmxlIGl0Cj4gmnRoZXJlLCBidXQgdGhhdCBpdCBzb21ldGhpbmcg
+dGhhdCBJIG5lZWQgdmVyeSBzZWxkb21seS4KPgpJIGNhcnJ5IG91dCB0aGlzIHdvcmsgZm9yIGVk
+dWNhdGlvbmFsIHB1cnBvc2VzLgpJIHN0dWR5IHByb2dyYW1taW5nIGZvciBlbWJlZGRlZCBzeXN0
+ZW1zLgpJIHJ1biBiYXJlYm94IGZvciBtaXBzIGFzIGFuIGV4ZXJjaXNlLgpXb3JrIG9uIHRoZSBk
+aXNhc3NlbWJsZXIgd2lsbCBhbGxvdyBtZSB0byBnZXQgYmV0dGVyIGFjcXVhaW50ZWQgd2l0aCB0
+aGUgTUlQUyBpbnN0cnVjdGlvbiBzZXQuCkknbSBvbiB2YWNhdGlvbiBub3cuCkkgcGxhbiB0byBm
+aW5pc2ggZGlzYXNzZW1ibGVyIGFmdGVyIHRoZSB2YWNhdGlvbiBlbmRzLgpPcHRpb25zIC1zIGFu
+ZCAtYSBhcmUgbm90IHdvcmtpbmcgaW4gdGhlIGN1cnJlbnQgdmVyc2lvbiwgSSBwbGFuIHRvIGZp
+eCBpdC4KSWYgeW91IHRoaW5rIHRoZSBkaXNhc3NlbWJsZXIgcHVsbHMgdG9vIG11Y2ggY29kZSBm
+cm9tIG90aGVyIHByb2plY3RzLCBJJ2xsIGtlZXAgdGhlIGZpbmlzaGVkIHZlcnNpb24gaW4gbXkg
+c2VwYXJhdGUgYnJhbmNoIG9uIGdpdGh1Yi4KCi0tmgpTbWlybm92IEFsZXhhbmRlcgoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
+IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
