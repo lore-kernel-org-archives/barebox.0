@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZMs0L-0005ZW-BN
- for barebox@lists.infradead.org; Wed, 05 Aug 2015 06:16:46 +0000
-Received: by labjt7 with SMTP id jt7so4377958lab.0
- for <barebox@lists.infradead.org>; Tue, 04 Aug 2015 23:16:22 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed,  5 Aug 2015 09:10:34 +0300
-Message-Id: <1438755034-22236-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZMtVc-0007HH-Ap
+ for barebox@lists.infradead.org; Wed, 05 Aug 2015 07:53:08 +0000
+Date: Wed, 5 Aug 2015 09:52:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150805075246.GD18700@pengutronix.de>
+References: <1438605671-46880-1-git-send-email-d.schultz@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1438605671-46880-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,49 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand_base: replace ifdef with IS_ENABLE
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v4] commands: Add dhrystone
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/mtd/nand/nand_base.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+On Mon, Aug 03, 2015 at 02:41:11PM +0200, Daniel Schultz wrote:
+> This tool will help to measure the system performance.
+> 
+> Some SoCs haven't the possibility to route their clocks to the output pins.
+> So you can use dhrystone to get a feedback about the clock speed.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index 2b3f9a9..bf4110a 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -445,15 +445,15 @@ static int nand_block_checkbad(struct mtd_info *mtd, loff_t ofs, int getchip,
- {
- 	struct nand_chip *chip = mtd->priv;
- 
--#ifdef CONFIG_NAND_BBT
--	if (!chip->bbt)
--		return chip->block_bad(mtd, ofs, getchip);
-+	if (IS_ENABLED(CONFIG_NAND_BBT)) {
-+		if (!chip->bbt)
-+			return chip->block_bad(mtd, ofs, getchip);
-+
-+		/* Return info from the table */
-+		return nand_isbad_bbt(mtd, ofs, allowbbt);
-+	}
- 
--	/* Return info from the table */
--	return nand_isbad_bbt(mtd, ofs, allowbbt);
--#else
- 	return chip->block_bad(mtd, ofs, getchip);
--#endif
- }
- 
- /* Wait for the ready pin, after a command. The timeout is caught later. */
+Applied, thanks
+
+Sascha
+
 -- 
-2.5.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
