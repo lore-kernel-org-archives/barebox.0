@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward19o.cmail.yandex.net ([37.9.109.217])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZLE4x-0001JM-9t
- for barebox@lists.infradead.org; Fri, 31 Jul 2015 17:26:44 +0000
-From: Smirnov Alexander <alllecs@yandex.ru>
-In-Reply-To: <20150724080634.GQ18700@pengutronix.de>
-References: <1437666788-26574-1-git-send-email-alllecs@yandex.ru>
- <20150724080634.GQ18700@pengutronix.de>
-MIME-Version: 1.0
-Message-Id: <1419861438363575@web21o.yandex.ru>
-Date: Fri, 31 Jul 2015 20:26:15 +0300
+ id 1ZNM96-0004Ld-7l
+ for barebox@lists.infradead.org; Thu, 06 Aug 2015 14:27:55 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  6 Aug 2015 16:27:24 +0200
+Message-Id: <1438871244-16849-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +14,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] Introduce MIPS disassembler library for barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] completion: fix device parameter completion
+To: Barebox List <barebox@lists.infradead.org>
+Cc: ukl@pengutronix.de
 
-SGkgU2FzY2hhLAoKMjQuMDcuMjAxNSwgMTE6MDYsICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPjoKPiCaSGkgQWxleGFuZGVyLAo+Cj4gmk9uIFRodSwgSnVsIDIzLCAyMDE1
-IGF0IDA2OjUzOjA4UE0gKzAzMDAsIEFsZXhhbmRlciBTbWlybm92IHdyb3RlOgo+PiCamlRoaXMg
-Y29tbWl0IGltcG9ydHMgZGlzYXNzZW1ibGVyIGZvciBtaXBzIGZyb20gcWVtdS9iaW51dGlscy4K
-Pj4KPj4gmppIZXJlIGlzIGEgc2FtcGxlIGRpc2Fzc2VtYmxlciBvdXRwdXQ6Cj4+Cj4+IJqaYmFy
-ZWJveDovIGRpc2FzbSAweGJmYzAwMDE4KzB4MjAKPj4gmppiZmMwMDAxODogNDAxYTYwMDAgbWZj
-MCBrMCwkMTIKPj4gmppiZmMwMDAxYzogMjQxYmZmZmUgbGkgazEsLTIKPj4gmppiZmMwMDAyMDog
-MDM1YmQwMjQgYW5kIGswLGswLGsxCj4+IJqaYmZjMDAwMjQ6IDQwOWE2MDAwIG10YzAgazAsJDEy
-Cj4+IJqaYmZjMDAwMjg6IDNjMDliNDAwIGx1aSB0MSwweGI0MDAKPj4gmppiZmMwMDAyYzogM2Mw
-OGRmMDAgbHVpIHQwLDB4ZGYwMAo+PiCammJmYzAwMDMwOiBhZDI4MDA2OCBzdyB0MCwxMDQodDEp
-Cj4+IJqaYmZjMDAwMzQ6IDNjMDliYmUwIGx1aSB0MSwweGJiZTAKPj4KPj4gmppUT0RPczoKPj4K
-Pj4gmpqamiogLWEgb3B0aW9uIChzZWxlY3QgY3B1IGFyY2hpdGVjdHVyZSkgZG9lcyBub3Qgd29y
-ayBwcm9wZXJseTsKPj4gmpqamiogLXMgb3B0aW9uIChzZWxlY3QgYmluYXJ5IGZpbGUgZm9yIGRp
-c2Fzc2VtYmx5KSBkb2VzIG5vdCB3b3JrIHByb3Blcmx5IC4KPj4KPj4gmppUaGlzIGNvbW1pdCBk
-ZW1vbnN0cmF0ZSBzaW1wbGUgd2F5IGZvciBpbXBvcnRpbmcgZGlzYXNzZW1ibGVyIGZyb20gcWVt
-dS9iaW51dGlsczoKPj4gmppkaXNhc3NlbWJsZXJzIGZvciBvdGhlciBhcmNoaXRlY3R1cmVzIChl
-LmcuIEFSTSkgY2FuIGJlIGVhc2VseSBpbXBvcnRlZC4KPgo+IJpUaGlzIGlzIG5pY2UgYW5kIHNv
-bWVob3cgY29vbCB0byBiZSBhYmxlIHRvIGp1c3QgZGlzYXNzZW1ibGUgc29tZSBjb2RlCj4gmnVu
-ZGVyIGJhcmVib3guIEhvd2V2ZXIsIGl0J3MgcXVpdGUgYSBidW5jaCBvZiBjb2RlIGltcG9ydGVk
-IGZyb20gYW5vdGhlcgo+IJpwcm9qZWN0IGFuZCB3ZSdsbCBuZWVkIGV2ZW4gbW9yZSBjb2RlIGZv
-ciBvdGhlciBhcmNoaXRlY3R1cmVzLiBUaGlzIGNvZGUKPiCabmVlZHMgbWFpbnRlbmFuY2UgdG8g
-c3RheSB1c2VmdWwsIHNvIEkgYW0gbm90IHZlcnkgZm9uZCBvZiBtZXJnaW5nIGl0Lgo+IJpXaGF0
-IGlzIHlvdXIgdXNlY2FzZSBmb3IgdGhpcz8gTm9ybWFsbHkgSSB3b3VsZCB0cmFuc2ZlciB0aGUg
-YXJlYSBJJ2QKPiCabGlrZSB0byBkaXNhc3NlbWJsZSB2aWEgdGZ0cCBvciB3aGF0ZXZlciB0byBh
-IGhvc3QgYW5kIGRpc2Fzc2VtYmxlIGl0Cj4gmnRoZXJlLCBidXQgdGhhdCBpdCBzb21ldGhpbmcg
-dGhhdCBJIG5lZWQgdmVyeSBzZWxkb21seS4KPgpJIGNhcnJ5IG91dCB0aGlzIHdvcmsgZm9yIGVk
-dWNhdGlvbmFsIHB1cnBvc2VzLgpJIHN0dWR5IHByb2dyYW1taW5nIGZvciBlbWJlZGRlZCBzeXN0
-ZW1zLgpJIHJ1biBiYXJlYm94IGZvciBtaXBzIGFzIGFuIGV4ZXJjaXNlLgpXb3JrIG9uIHRoZSBk
-aXNhc3NlbWJsZXIgd2lsbCBhbGxvdyBtZSB0byBnZXQgYmV0dGVyIGFjcXVhaW50ZWQgd2l0aCB0
-aGUgTUlQUyBpbnN0cnVjdGlvbiBzZXQuCkknbSBvbiB2YWNhdGlvbiBub3cuCkkgcGxhbiB0byBm
-aW5pc2ggZGlzYXNzZW1ibGVyIGFmdGVyIHRoZSB2YWNhdGlvbiBlbmRzLgpPcHRpb25zIC1zIGFu
-ZCAtYSBhcmUgbm90IHdvcmtpbmcgaW4gdGhlIGN1cnJlbnQgdmVyc2lvbiwgSSBwbGFuIHRvIGZp
-eCBpdC4KSWYgeW91IHRoaW5rIHRoZSBkaXNhc3NlbWJsZXIgcHVsbHMgdG9vIG11Y2ggY29kZSBm
-cm9tIG90aGVyIHByb2plY3RzLCBJJ2xsIGtlZXAgdGhlIGZpbmlzaGVkIHZlcnNpb24gaW4gbXkg
-c2VwYXJhdGUgYnJhbmNoIG9uIGdpdGh1Yi4KCi0tmgpTbWlybm92IEFsZXhhbmRlcgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+With device parameter completion the '.' separator between the device
+name and the parameter was not handled correctly. For example with
+a device named global a completion starting with "g." was completed to
+"g.obal.". fix this.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/complete.c | 35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
+
+diff --git a/common/complete.c b/common/complete.c
+index f0ef576..aee21ea 100644
+--- a/common/complete.c
++++ b/common/complete.c
+@@ -169,15 +169,12 @@ int device_complete(struct string_list *sl, char *instr)
+ }
+ EXPORT_SYMBOL(device_complete);
+ 
+-static int device_param_complete(char *begin, struct device_d *dev,
+-				 struct string_list *sl, char *instr)
++static int device_param_complete(struct device_d *dev, struct string_list *sl,
++				 char *instr, int eval)
+ {
+ 	struct param_d *param;
+ 	int len;
+ 
+-	if (!instr)
+-		instr = "";
+-
+ 	len = strlen(instr);
+ 
+ 	list_for_each_entry(param, &dev->parameters, list) {
+@@ -185,8 +182,8 @@ static int device_param_complete(char *begin, struct device_d *dev,
+ 			continue;
+ 
+ 		string_list_add_asprintf(sl, "%s%s.%s%c",
+-			begin ? begin : "", dev_name(dev), param->name,
+-			begin ? ' ' : '=');
++			eval ? "$" : "", dev_name(dev), param->name,
++			eval ? ' ' : '=');
+ 	}
+ 
+ 	return 0;
+@@ -316,20 +313,26 @@ static int env_param_complete(struct string_list *sl, char *instr, int eval)
+ 	}
+ 
+ 	if (instr_param) {
++		char *devname;
++
+ 		len = (instr_param - instr);
++
++		devname = xstrndup(instr, len);
++
+ 		instr_param++;
+-	} else {
+-		len = strlen(instr);
+-		instr_param = "";
++
++		dev = get_device_by_name(devname);
++		free(devname);
++		if (dev)
++			device_param_complete(dev, sl, instr_param, eval);
++		return 0;
+ 	}
+ 
++	len = strlen(instr);
++
+ 	for_each_device(dev) {
+-		if (!strncmp(instr, dev_name(dev), len)) {
+-			if (eval)
+-				device_param_complete("$", dev, sl, instr_param);
+-			else
+-				device_param_complete(NULL, dev, sl, instr_param);
+-		}
++		if (!strncmp(instr, dev_name(dev), len))
++			device_param_complete(dev, sl, "", eval);
+ 	}
+ 
+ 	return 0;
+-- 
+2.4.6
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
