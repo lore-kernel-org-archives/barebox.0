@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZNhog-0006Sn-Ip
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:36:11 +0000
+ id 1ZNhst-00018r-Nm
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:40:32 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1ZNhsY-0000EE-8j
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 15:40:10 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86)
+ (envelope-from <sha@pengutronix.de>) id 1ZNhsY-0007N8-2R
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 15:40:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Aug 2015 15:35:44 +0200
-Message-Id: <1438954545-24917-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1438954545-24917-1-git-send-email-s.hauer@pengutronix.de>
-References: <1438954545-24917-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Aug 2015 15:40:05 +0200
+Message-Id: <1438954809-5962-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +26,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM: l2x0: Add some informational debug messages
+Subject: video: update imx-ipu-v3 and hdmi support
 To: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/cache-l2x0.c | 2 ++
- 1 file changed, 2 insertions(+)
+This makes the i.MX6 HDMI work with higher resolutions. Also we now
+use writecombined memory for faster graphics.
 
-diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
-index 665f862..428dd93 100644
---- a/arch/arm/cpu/cache-l2x0.c
-+++ b/arch/arm/cpu/cache-l2x0.c
-@@ -1,3 +1,5 @@
-+#define pr_fmt(fmt) "l2x0: " fmt
-+
- #include <common.h>
- #include <init.h>
- #include <io.h>
--- 
-2.4.6
+----------------------------------------------------------------
+Sascha Hauer (4):
+      video: imx-hdmi: sync with kernel
+      video: ipuv3: Adjust videomode to IPU limitations
+      ARM: implement dma_alloc_writecombine
+      video: imx-ipu-v3: Use writecombine memory for fb
 
+ arch/arm/cpu/mmu.c                  |  20 ++
+ drivers/video/imx-ipu-v3/imx-hdmi.c | 380 ++++++++++++++++++++++--------------
+ drivers/video/imx-ipu-v3/imx-hdmi.h |   3 +-
+ drivers/video/imx-ipu-v3/ipufb.c    |  32 ++-
+ include/dma.h                       |   1 +
+ 5 files changed, 287 insertions(+), 149 deletions(-)
 
 _______________________________________________
 barebox mailing list
