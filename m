@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZNhyL-00057r-2P
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:46:10 +0000
+ by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
+ id 1ZNhyK-0008Ru-NN
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:46:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Aug 2015 15:45:36 +0200
-Message-Id: <1438955141-8850-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Aug 2015 15:45:41 +0200
+Message-Id: <1438955141-8850-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1438955141-8850-1-git-send-email-s.hauer@pengutronix.de>
 References: <1438955141-8850-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,127 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] fb: Add shadowfb support
+Subject: [PATCH 8/8] fb: fbconsole: Add missing blits
 To: Barebox List <barebox@lists.infradead.org>
 
-For speeding up rendering we need shadow framebuffers. This is currently
-implemented in the gui functions. This does not work properly when two
-users (splash and fbconsole) use the same framebuffer since in this case
-two different shadow framebuffers will be used. This patch implements
-shadowfb handling in the fb core directly. With this the fb device gets
-a parameter 'shadowfb'. When this is true the fb core will allocate a
-shadow fb and provide it to the users.
+When using offscreen rendering we need some more points where we
+blit the offscreen buffer to the screen. Add them.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/fb.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- include/fb.h       |  3 +++
- 2 files changed, 50 insertions(+)
+ drivers/video/fbconsole.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index dbda8d4..3672c44 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -31,11 +31,40 @@ static int fb_ioctl(struct cdev* cdev, int req, void *data)
- 	return 0;
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index 745833a..b10503e 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -58,6 +58,7 @@ static void cls(struct fbc_priv *priv)
+ 	void *buf = gui_screen_render_buffer(priv->sc);
+ 
+ 	memset(buf, 0, priv->fb->line_length * priv->fb->yres);
++	gu_screen_blit(priv->sc);
  }
  
-+static int fb_alloc_shadowfb(struct fb_info *info)
-+{
-+	if (info->screen_base_shadow && info->shadowfb)
-+		return 0;
-+
-+	if (!info->screen_base_shadow && !info->shadowfb)
-+		return 0;
-+
-+	if (info->shadowfb) {
-+		info->screen_base_shadow = memalign(PAGE_SIZE,
-+				info->line_length * info->yres);
-+		if (!info->screen_base_shadow)
-+			return -ENOMEM;
-+		memcpy(info->screen_base_shadow, info->screen_base,
-+				info->line_length * info->yres);
-+	} else {
-+		free(info->screen_base_shadow);
-+		info->screen_base_shadow = NULL;
-+	}
-+
-+	return 0;
-+}
-+
- int fb_enable(struct fb_info *info)
- {
-+	int ret;
-+
- 	if (info->enabled)
- 		return 0;
+ struct rgb {
+@@ -138,6 +139,8 @@ static void video_invertchar(struct fbc_priv *priv, int x, int y)
  
-+	ret = fb_alloc_shadowfb(info);
-+	if (ret)
-+		return ret;
-+
- 	info->fbops->fb_enable(info);
- 
- 	info->enabled = true;
-@@ -188,6 +217,22 @@ static void fb_info(struct device_d *dev)
- 	fb_print_modes(&info->edid_modes);
+ 	gu_invert_area(priv->fb, buf, x * priv->font_width, y * priv->font_height,
+ 			priv->font_width, priv->font_height);
++	gu_screen_blit_area(priv->sc, x * priv->font_width, y * priv->font_height,
++			priv->font_width, priv->font_height);
  }
  
-+void *fb_get_screen_base(struct fb_info *info)
-+{
-+	return info->screen_base_shadow ?
-+		info->screen_base_shadow : info->screen_base;
-+}
+ static void printchar(struct fbc_priv *priv, int c)
+@@ -170,7 +173,10 @@ static void printchar(struct fbc_priv *priv, int c)
+ 
+ 	default:
+ 		drawchar(priv, priv->x, priv->y, c);
+-		gu_screen_blit(priv->sc);
 +
-+int fb_set_shadowfb(struct param_d *p, void *priv)
-+{
-+	struct fb_info *info = priv;
-+
-+	if (!info->enabled)
-+		return 0;
-+
-+	return fb_alloc_shadowfb(info);
-+}
-+
- int register_framebuffer(struct fb_info *info)
- {
- 	int id = get_free_deviceid("fb");
-@@ -245,6 +290,8 @@ int register_framebuffer(struct fb_info *info)
- 	for (i = 0; i < info->edid_modes.num_modes; i++)
- 		names[i + info->modes.num_modes] = info->edid_modes.modes[i].name;
- 	dev_add_param_enum(dev, "mode_name", fb_set_modename, NULL, &info->current_mode, names, num_modes, info);
-+	info->shadowfb = 1;
-+	dev_add_param_bool(dev, "shadowfb", fb_set_shadowfb, NULL, &info->shadowfb, info);
++		gu_screen_blit_area(priv->sc, priv->x * priv->font_width,
++				priv->y * priv->font_height,
++				priv->font_width, priv->font_height);
  
- 	info->mode = fb_num_to_mode(info, 0);
+ 		priv->x++;
+ 		if (priv->x > priv->cols) {
+@@ -188,6 +194,7 @@ static void printchar(struct fbc_priv *priv, int c)
  
-diff --git a/include/fb.h b/include/fb.h
-index 311d5db..cf113c4 100644
---- a/include/fb.h
-+++ b/include/fb.h
-@@ -118,6 +118,7 @@ struct fb_info {
- 	struct device_d dev;		/* This is this fb device */
+ 		memcpy(buf, buf + line_height, line_height * (priv->rows + 1));
+ 		memset(buf + line_height * priv->rows, 0, line_height);
++		gu_screen_blit(priv->sc);
+ 		priv->y = priv->rows;
+ 	}
  
- 	void *screen_base;
-+	void *screen_base_shadow;
- 	unsigned long screen_size;
- 
- 	void *priv;
-@@ -141,6 +142,7 @@ struct fb_info {
- 	int register_simplefb;		/* If true a simplefb device node will
- 					 * be created.
- 					 */
-+	int shadowfb;
- };
- 
- struct display_timings *of_get_display_timings(struct device_node *np);
-@@ -167,5 +169,6 @@ void fb_edid_add_modes(struct fb_info *info);
- void fb_of_reserve_add_fixup(struct fb_info *info);
- 
- int register_fbconsole(struct fb_info *fb);
-+void *fb_get_screen_base(struct fb_info *info);
- 
- #endif /* __FB_H */
 -- 
 2.4.6
 
