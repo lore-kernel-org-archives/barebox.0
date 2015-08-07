@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZNhyG-00056n-2K
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:46:05 +0000
+ by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
+ id 1ZNhyK-0008Rr-OS
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:46:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Aug 2015 15:45:34 +0200
-Message-Id: <1438955141-8850-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Aug 2015 15:45:37 +0200
+Message-Id: <1438955141-8850-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1438955141-8850-1-git-send-email-s.hauer@pengutronix.de>
 References: <1438955141-8850-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,49 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] video: fbconsole: do not enter when we are already in
- fbconsole
+Subject: [PATCH 4/8] splash command: simplify offscreen rendering
 To: Barebox List <barebox@lists.infradead.org>
-
-Make it possible to issue console messages from inside the fbconsole
-code without entering the fbconsole again.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/fbconsole.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ commands/splash.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-index b368079..b798307 100644
---- a/drivers/video/fbconsole.c
-+++ b/drivers/video/fbconsole.c
-@@ -40,6 +40,7 @@ struct fbc_priv {
- 	u8 csi[256];
+diff --git a/commands/splash.c b/commands/splash.c
+index 90f0a0c..29e30ae 100644
+--- a/commands/splash.c
++++ b/commands/splash.c
+@@ -18,6 +18,7 @@ static int do_splash(int argc, char *argv[])
+ 	int offscreen = 0;
+ 	u32 bg_color = 0x00000000;
+ 	bool do_bg = false;
++	void *buf;
  
- 	int active;
-+	int in_console;
- };
+ 	memset(&s, 0, sizeof(s));
  
- static int fbc_getc(struct console_device *cdev)
-@@ -282,6 +283,10 @@ static void fbc_putc(struct console_device *cdev, char c)
- 	struct fbc_priv *priv = container_of(cdev,
- 					struct fbc_priv, cdev);
- 
-+	if (priv->in_console)
-+		return;
-+	priv->in_console = 1;
-+
- 	switch (priv->state) {
- 	case LIT:
- 		switch (c) {
-@@ -329,6 +334,7 @@ static void fbc_putc(struct console_device *cdev, char c)
- 		}
- 		break;
+@@ -58,15 +59,11 @@ static int do_splash(int argc, char *argv[])
+ 		return PTR_ERR(sc);
  	}
-+	priv->in_console = 0;
- }
  
- static int setup_font(struct fbc_priv *priv)
+-	if (sc->offscreenbuf) {
+-		if (do_bg)
+-			gu_memset_pixel(sc->info, sc->offscreenbuf, bg_color,
+-					sc->s.width * sc->s.height);
+-		else
+-			memcpy(sc->offscreenbuf, sc->fb, sc->fbsize);
+-	} else if (do_bg) {
+-		gu_memset_pixel(sc->info, sc->fb, bg_color, sc->s.width * sc->s.height);
+-	}
++	buf = gui_screen_render_buffer(sc);
++
++	if (do_bg)
++		gu_memset_pixel(sc->info, buf, bg_color,
++				sc->s.width * sc->s.height);
+ 
+ 	ret = image_renderer_file(sc, &s, image_file);
+ 	if (ret > 0)
 -- 
 2.4.6
 
