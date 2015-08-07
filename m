@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp32.i.mail.ru ([94.100.177.92])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZNdCT-0006rW-9d
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 08:40:27 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  7 Aug 2015 11:39:55 +0300
-Message-Id: <1438936795-5608-1-git-send-email-shc_work@mail.ru>
+ id 1ZNhog-0006Sl-J0
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:36:11 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1ZNhoJ-0008HG-Au
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 15:35:47 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86)
+ (envelope-from <sha@pengutronix.de>) id 1ZNhoI-0006le-Sy
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 15:35:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  7 Aug 2015 15:35:40 +0200
+Message-Id: <1438954545-24917-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: mmci: Fix status flags check
-To: barebox@lists.infradead.org
+Subject: [PATCH] PL310 support
+To: Barebox List <barebox@lists.infradead.org>
 
-Data transfer procedures should check _DATA_ flags instead of _CMD_.
----
- drivers/mci/mmci.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+This series has some fixes for the cache-l2x0 driver and implements PL310
+support. Finally the 2nd level cache on i.MX6 is enabled.
 
-diff --git a/drivers/mci/mmci.c b/drivers/mci/mmci.c
-index 608cac1..9d1e858 100644
---- a/drivers/mci/mmci.c
-+++ b/drivers/mci/mmci.c
-@@ -269,18 +269,18 @@ static int read_bytes(struct mci_host *mci, char *dest, unsigned int blkcount, u
- 		xfercount -= len;
- 		dest += len;
- 		status = mmci_readl(host, MMCISTATUS);
--		status_err = status & (MCI_CMDCRCFAIL | MCI_DATATIMEOUT |
--			       MCI_RXOVERRUN);
-+		status_err = status & (MCI_DATACRCFAIL | MCI_DATATIMEOUT |
-+			     MCI_RXOVERRUN);
- 	} while(xfercount && !status_err);
- 
- 	status_err = status &
--		(MCI_CMDCRCFAIL | MCI_DATATIMEOUT | MCI_DATABLOCKEND |
-+		(MCI_DATACRCFAIL | MCI_DATATIMEOUT | MCI_DATABLOCKEND |
- 		 MCI_RXOVERRUN);
- 
- 	while (!status_err) {
- 		status = mmci_readl(host, MMCISTATUS);
- 		status_err = status &
--			(MCI_CMDCRCFAIL | MCI_DATATIMEOUT | MCI_DATABLOCKEND |
-+			(MCI_DATACRCFAIL | MCI_DATATIMEOUT | MCI_DATABLOCKEND |
- 			 MCI_RXOVERRUN);
- 	}
- 
-@@ -288,7 +288,7 @@ static int read_bytes(struct mci_host *mci, char *dest, unsigned int blkcount, u
- 		dev_err(host->hw_dev, "Read data timed out, xfercount: %u, status: 0x%08X\n",
- 			xfercount, status);
- 		return -ETIMEDOUT;
--	} else if (status & MCI_CMDCRCFAIL) {
-+	} else if (status & MCI_DATACRCFAIL) {
- 		dev_err(host->hw_dev, "Read data bytes CRC error: 0x%x\n", status);
- 		return -EILSEQ;
- 	} else if (status & MCI_RXOVERRUN) {
-@@ -351,7 +351,7 @@ static int write_bytes(struct mci_host *mci, char *dest, unsigned int blkcount,
- 	dev_dbg(host->hw_dev, "write_bytes: blkcount=%u blksize=%u\n", blkcount, blksize);
- 
- 	status = mmci_readl(host, MMCISTATUS);
--	status_err = status & (MCI_CMDCRCFAIL | MCI_DATATIMEOUT);
-+	status_err = status & (MCI_DATACRCFAIL | MCI_DATATIMEOUT);
- 
- 	do {
- 		len = mmci_pio_write(host, dest, xfercount, status);
-@@ -359,11 +359,11 @@ static int write_bytes(struct mci_host *mci, char *dest, unsigned int blkcount,
- 		dest += len;
- 
- 		status = mmci_readl(host, MMCISTATUS);
--		status_err = status & (MCI_CMDCRCFAIL | MCI_DATATIMEOUT);
-+		status_err = status & (MCI_DATACRCFAIL | MCI_DATATIMEOUT);
- 	} while (!status_err && xfercount);
- 
- 	status_err = status &
--		(MCI_CMDCRCFAIL | MCI_DATATIMEOUT | MCI_DATABLOCKEND);
-+		(MCI_DATACRCFAIL | MCI_DATATIMEOUT | MCI_DATABLOCKEND);
- 	while (!status_err) {
- 		status = mmci_readl(host, MMCISTATUS);
- 		status_err = status &
-@@ -374,7 +374,7 @@ static int write_bytes(struct mci_host *mci, char *dest, unsigned int blkcount,
- 		dev_err(host->hw_dev, "Write data timed out, xfercount:%u,status:0x%08X\n",
- 		       xfercount, status);
- 		return -ETIMEDOUT;
--	} else if (status & MCI_CMDCRCFAIL) {
-+	} else if (status & MCI_DATACRCFAIL) {
- 		dev_err(host->hw_dev, "Write data CRC error\n");
- 		return -EILSEQ;
- 	}
--- 
-2.3.6
+----------------------------------------------------------------
+Sascha Hauer (5):
+      ARM: MMU: Fix order when flushing inner/outer cache
+      ARM: l2x0: Flush cache before disabling it
+      ARM: l2x0: Implement L310 support
+      ARM: l2x0: Add some informational debug messages
+      ARM: i.MX6: Enable l2 cache
 
+ arch/arm/cpu/cache-l2x0.c  | 48 +++++++++++++++++++++++++++++++++++++++++++---
+ arch/arm/cpu/cache.c       |  2 ++
+ arch/arm/cpu/cpu.c         |  3 +--
+ arch/arm/cpu/mmu.c         |  2 +-
+ arch/arm/include/asm/mmu.h |  1 +
+ arch/arm/mach-imx/Kconfig  |  1 +
+ arch/arm/mach-imx/imx6.c   | 35 +++++++++++++++++++++++++++++++++
+ 7 files changed, 86 insertions(+), 6 deletions(-)
 
 _______________________________________________
 barebox mailing list
