@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZNhoy-0006Z4-Ut
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:36:29 +0000
+ id 1ZNhp8-0006bk-VC
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:36:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Aug 2015 15:35:43 +0200
-Message-Id: <1438954545-24917-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Aug 2015 15:35:45 +0200
+Message-Id: <1438954545-24917-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1438954545-24917-1-git-send-email-s.hauer@pengutronix.de>
 References: <1438954545-24917-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: l2x0: Implement L310 support
+Subject: [PATCH 5/5] ARM: i.MX6: Enable l2 cache
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cache-l2x0.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ arch/arm/mach-imx/Kconfig |  1 +
+ arch/arm/mach-imx/imx6.c  | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
-index 43f296f..665f862 100644
---- a/arch/arm/cpu/cache-l2x0.c
-+++ b/arch/arm/cpu/cache-l2x0.c
-@@ -7,6 +7,7 @@
- #define CACHE_LINE_SIZE		32
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 0de2d3e..92b5652 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -175,6 +175,7 @@ config ARCH_IMX53
  
- static void __iomem *l2x0_base;
-+static uint32_t l2x0_way_mask; /* Bitmask of active ways */
+ config ARCH_IMX6
+ 	bool
++	select ARCH_HAS_L2X0
+ 	select ARCH_HAS_FEC_IMX
+ 	select CPU_V7
+ 	select PINCTRL_IMX_IOMUX_V3
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 7508964..ceabe19 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -22,6 +22,7 @@
+ #include <mach/imx6-anadig.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/generic.h>
++#include <asm/mmu.h>
  
- static inline void cache_wait(void __iomem *reg, unsigned long mask)
- {
-@@ -50,8 +51,8 @@ static inline void l2x0_flush_line(unsigned long addr)
- static inline void l2x0_inv_all(void)
- {
- 	/* invalidate all ways */
--	writel(0xff, l2x0_base + L2X0_INV_WAY);
--	cache_wait(l2x0_base + L2X0_INV_WAY, 0xff);
-+	writel(l2x0_way_mask, l2x0_base + L2X0_INV_WAY);
-+	cache_wait(l2x0_base + L2X0_INV_WAY, l2x0_way_mask);
- 	cache_sync();
+ #define SI_REV 0x260
+ 
+@@ -193,3 +194,37 @@ int imx6_devices_init(void)
+ 
+ 	return 0;
  }
- 
-@@ -129,9 +130,37 @@ static void l2x0_disable(void)
- void __init l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
- {
- 	__u32 aux;
-+	__u32 cache_id;
-+	int ways;
-+	const char *type;
- 
- 	l2x0_base = base;
- 
-+	cache_id = readl(l2x0_base + L2X0_CACHE_ID);
-+	aux = readl(l2x0_base + L2X0_AUX_CTRL);
 +
-+	/* Determine the number of ways */
-+	switch (cache_id & L2X0_CACHE_ID_PART_MASK) {
-+	case L2X0_CACHE_ID_PART_L310:
-+		if (aux & (1 << 16))
-+			ways = 16;
-+		else
-+			ways = 8;
-+		type = "L310";
-+		break;
-+	case L2X0_CACHE_ID_PART_L210:
-+		ways = (aux >> 13) & 0xf;
-+		type = "L210";
-+		break;
-+	default:
-+		/* Assume unknown chips have 8 ways */
-+		ways = 8;
-+		type = "L2x0 series";
-+		break;
-+	}
++#define L310_PREFETCH_CTRL		0xF60
 +
-+       l2x0_way_mask = (1 << ways) - 1;
++static int imx6_mmu_init(void)
++{
++	void __iomem *l2x0_base = IOMEM(0x00a02000);
++	u32 val;
 +
- 	/*
- 	 * Check if l2x0 controller is already enabled.
- 	 * If you are booting from non-secure mode
++	if (!cpu_is_mx6())
++		return 0;
++
++	/* Configure the L2 PREFETCH and POWER registers */
++	val = readl(l2x0_base + L310_PREFETCH_CTRL);
++	val |= 0x70800000;
++
++	/*
++	 * The L2 cache controller(PL310) version on the i.MX6D/Q is r3p1-50rel0
++	 * The L2 cache controller(PL310) version on the i.MX6DL/SOLO/SL is r3p2
++	 * But according to ARM PL310 errata: 752271
++	 * ID: 752271: Double linefill feature can cause data corruption
++	 * Fault Status: Present in: r3p0, r3p1, r3p1-50rel0. Fixed in r3p2
++	 * Workaround: The only workaround to this erratum is to disable the
++	 * double linefill feature. This is the default behavior.
++	 */
++	if (cpu_is_mx6q())
++		val &= ~(1 << 30 | 1 << 23);
++
++	writel(val, l2x0_base + L310_PREFETCH_CTRL);
++
++	l2x0_init(l2x0_base, 0x0, ~0UL);
++
++	return 0;
++}
++postmmu_initcall(imx6_mmu_init);
 -- 
 2.4.6
 
