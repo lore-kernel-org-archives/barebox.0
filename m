@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZNhp8-0006bk-VC
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:36:39 +0000
+ id 1ZNhok-0006UY-07
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:36:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Aug 2015 15:35:45 +0200
-Message-Id: <1438954545-24917-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Aug 2015 15:35:42 +0200
+Message-Id: <1438954545-24917-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1438954545-24917-1-git-send-email-s.hauer@pengutronix.de>
 References: <1438954545-24917-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,77 +21,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ARM: i.MX6: Enable l2 cache
+Subject: [PATCH 2/5] ARM: l2x0: Flush cache before disabling it
 To: Barebox List <barebox@lists.infradead.org>
+
+Otherwise entries may still be in the cache and never reach memory.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig |  1 +
- arch/arm/mach-imx/imx6.c  | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 36 insertions(+)
+ arch/arm/cpu/cache-l2x0.c  | 13 ++++++++++++-
+ arch/arm/cpu/cache.c       |  2 ++
+ arch/arm/cpu/cpu.c         |  3 +--
+ arch/arm/include/asm/mmu.h |  1 +
+ 4 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 0de2d3e..92b5652 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -175,6 +175,7 @@ config ARCH_IMX53
- 
- config ARCH_IMX6
- 	bool
-+	select ARCH_HAS_L2X0
- 	select ARCH_HAS_FEC_IMX
- 	select CPU_V7
- 	select PINCTRL_IMX_IOMUX_V3
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index 7508964..ceabe19 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -22,6 +22,7 @@
- #include <mach/imx6-anadig.h>
- #include <mach/imx6-regs.h>
- #include <mach/generic.h>
-+#include <asm/mmu.h>
- 
- #define SI_REV 0x260
- 
-@@ -193,3 +194,37 @@ int imx6_devices_init(void)
- 
- 	return 0;
+diff --git a/arch/arm/cpu/cache-l2x0.c b/arch/arm/cpu/cache-l2x0.c
+index 2be562d..43f296f 100644
+--- a/arch/arm/cpu/cache-l2x0.c
++++ b/arch/arm/cpu/cache-l2x0.c
+@@ -112,6 +112,13 @@ static void l2x0_flush_range(unsigned long start, unsigned long end)
+ 	cache_sync();
  }
-+
-+#define L310_PREFETCH_CTRL		0xF60
-+
-+static int imx6_mmu_init(void)
+ 
++static void l2x0_flush_all(void)
 +{
-+	void __iomem *l2x0_base = IOMEM(0x00a02000);
-+	u32 val;
-+
-+	if (!cpu_is_mx6())
-+		return 0;
-+
-+	/* Configure the L2 PREFETCH and POWER registers */
-+	val = readl(l2x0_base + L310_PREFETCH_CTRL);
-+	val |= 0x70800000;
-+
-+	/*
-+	 * The L2 cache controller(PL310) version on the i.MX6D/Q is r3p1-50rel0
-+	 * The L2 cache controller(PL310) version on the i.MX6DL/SOLO/SL is r3p2
-+	 * But according to ARM PL310 errata: 752271
-+	 * ID: 752271: Double linefill feature can cause data corruption
-+	 * Fault Status: Present in: r3p0, r3p1, r3p1-50rel0. Fixed in r3p2
-+	 * Workaround: The only workaround to this erratum is to disable the
-+	 * double linefill feature. This is the default behavior.
-+	 */
-+	if (cpu_is_mx6q())
-+		val &= ~(1 << 30 | 1 << 23);
-+
-+	writel(val, l2x0_base + L310_PREFETCH_CTRL);
-+
-+	l2x0_init(l2x0_base, 0x0, ~0UL);
-+
-+	return 0;
++	writel(l2x0_way_mask, l2x0_base + L2X0_CLEAN_INV_WAY);
++	cache_wait(l2x0_base + L2X0_CLEAN_INV_WAY, l2x0_way_mask);
++	cache_sync();
 +}
-+postmmu_initcall(imx6_mmu_init);
++
+ static void l2x0_disable(void)
+ {
+ 	writel(0xff, l2x0_base + L2X0_CLEAN_INV_WAY);
+@@ -149,5 +156,9 @@ void __init l2x0_init(void __iomem *base, __u32 aux_val, __u32 aux_mask)
+ 	outer_cache.clean_range = l2x0_clean_range;
+ 	outer_cache.flush_range = l2x0_flush_range;
+ 	outer_cache.disable = l2x0_disable;
+-}
++	outer_cache.flush_all = l2x0_flush_all;
+ 
++	pr_debug("%s cache controller enabled\n", type);
++	pr_debug("l2x0: %d ways, CACHE_ID 0x%08x, AUX_CTRL 0x%08x\n",
++			ways, cache_id, aux);
++}
+diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
+index 7b161d5..27ead1c 100644
+--- a/arch/arm/cpu/cache.c
++++ b/arch/arm/cpu/cache.c
+@@ -71,6 +71,8 @@ void __mmu_cache_flush(void)
+ {
+ 	if (cache_fns)
+ 		cache_fns->mmu_cache_flush();
++	if (outer_cache.flush_all)
++		outer_cache.flush_all();
+ }
+ 
+ int arm_set_cache_functions(void)
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index 5e70802..ff8f43d 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -79,10 +79,9 @@ struct outer_cache_fns outer_cache;
+  */
+ void mmu_disable(void)
+ {
++	__mmu_cache_flush();
+ 	if (outer_cache.disable)
+ 		outer_cache.disable();
+-
+-	__mmu_cache_flush();
+ 	__mmu_cache_off();
+ }
+ 
+diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
+index 97bb0db..3b19e9e 100644
+--- a/arch/arm/include/asm/mmu.h
++++ b/arch/arm/include/asm/mmu.h
+@@ -67,6 +67,7 @@ struct outer_cache_fns {
+ 	void (*inv_range)(unsigned long, unsigned long);
+ 	void (*clean_range)(unsigned long, unsigned long);
+ 	void (*flush_range)(unsigned long, unsigned long);
++	void (*flush_all)(void);
+ 	void (*disable)(void);
+ };
+ 
 -- 
 2.4.6
 
