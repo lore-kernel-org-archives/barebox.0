@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZNhyK-0008Rr-OS
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:46:09 +0000
+ id 1ZNhyX-0008SC-Db
+ for barebox@lists.infradead.org; Fri, 07 Aug 2015 13:46:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Aug 2015 15:45:37 +0200
-Message-Id: <1438955141-8850-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  7 Aug 2015 15:45:35 +0200
+Message-Id: <1438955141-8850-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1438955141-8850-1-git-send-email-s.hauer@pengutronix.de>
 References: <1438955141-8850-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,47 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] splash command: simplify offscreen rendering
+Subject: [PATCH 2/8] fb: return original fb_info in FBIOGET_SCREENINFO
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/splash.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/video/fb.c      | 4 +++-
+ lib/gui/graphic_utils.c | 6 ++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/commands/splash.c b/commands/splash.c
-index 90f0a0c..29e30ae 100644
---- a/commands/splash.c
-+++ b/commands/splash.c
-@@ -18,6 +18,7 @@ static int do_splash(int argc, char *argv[])
- 	int offscreen = 0;
- 	u32 bg_color = 0x00000000;
- 	bool do_bg = false;
-+	void *buf;
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 29b4c71..dbda8d4 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -11,10 +11,12 @@
+ static int fb_ioctl(struct cdev* cdev, int req, void *data)
+ {
+ 	struct fb_info *info = cdev->priv;
++	struct fb_info **fb;
  
- 	memset(&s, 0, sizeof(s));
+ 	switch (req) {
+ 	case FBIOGET_SCREENINFO:
+-		memcpy(data, info, sizeof(*info));
++		fb = data;
++		*fb = info;
+ 		break;
+ 	case FBIO_ENABLE:
+ 		info->fbops->fb_enable(info);
+diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+index 47003a0..f928ee1 100644
+--- a/lib/gui/graphic_utils.c
++++ b/lib/gui/graphic_utils.c
+@@ -281,7 +281,7 @@ struct screen *fb_open(const char * fbdev, bool offscreen)
  
-@@ -58,15 +59,11 @@ static int do_splash(int argc, char *argv[])
- 		return PTR_ERR(sc);
+ 	info = xzalloc(sizeof(*info));
+ 
+-	ret = ioctl(fd, FBIOGET_SCREENINFO, info);
++	ret = ioctl(fd, FBIOGET_SCREENINFO, &info);
+ 	if (ret) {
+ 		goto failed_screeninfo;
  	}
+@@ -310,10 +310,8 @@ void fb_close(struct screen *sc)
+ {
+ 	free(sc->offscreenbuf);
  
--	if (sc->offscreenbuf) {
--		if (do_bg)
--			gu_memset_pixel(sc->info, sc->offscreenbuf, bg_color,
--					sc->s.width * sc->s.height);
--		else
--			memcpy(sc->offscreenbuf, sc->fb, sc->fbsize);
--	} else if (do_bg) {
--		gu_memset_pixel(sc->info, sc->fb, bg_color, sc->s.width * sc->s.height);
+-	if (sc->fd > 0) {
++	if (sc->fd > 0)
+ 		close(sc->fd);
+-		free(sc->info);
 -	}
-+	buf = gui_screen_render_buffer(sc);
-+
-+	if (do_bg)
-+		gu_memset_pixel(sc->info, buf, bg_color,
-+				sc->s.width * sc->s.height);
  
- 	ret = image_renderer_file(sc, &s, image_file);
- 	if (ret > 0)
+ 	free(sc);
+ }
 -- 
 2.4.6
 
