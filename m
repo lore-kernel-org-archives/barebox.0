@@ -1,22 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.icid.cu ([200.55.133.90])
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]
+ helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZNmv7-0005xV-KX
- for barebox@lists.infradead.org; Fri, 07 Aug 2015 19:03:10 +0000
-Received: from icid.cu ([10.10.0.3])
- by mail.icid.cu (8.13.8/8.13.8) with ESMTP id t77I2hFK017762
- for <barebox@lists.infradead.org>; Fri, 7 Aug 2015 14:02:46 -0400
-Received: from [10.10.8.78] by icid.cu
- (Cipher TLSv1:RC4-MD5:128) (MDaemon PRO v9.6.1)
- with ESMTP id md50008241127.msg
- for <barebox@lists.infradead.org>; Fri, 07 Aug 2015 14:19:21 -0400
-Message-ID: <55C50118.3080202@icid.cu>
-Date: Fri, 07 Aug 2015 15:03:52 -0400
-From: Roberto Alejandro Espi Munoz <raespi@icid.cu>
-MIME-Version: 1.0
-References: <55C4C388.9060102@icid.cu>
- <20150807194104.b02642e26c441e906a1deeca@gmail.com>
-In-Reply-To: <20150807194104.b02642e26c441e906a1deeca@gmail.com>
+ id 1ZO0Ji-0005BG-0G
+ for barebox@lists.infradead.org; Sat, 08 Aug 2015 09:21:27 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Sat,  8 Aug 2015 11:17:08 +0200
+Message-Id: <1439025428-3163-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,58 +15,224 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: serial port weird chars ...
+Subject: [PATCH] ARM: pxa: zylonite: convert to generic default environment
 To: barebox@lists.infradead.org
 
-Both scenarios work well on another host.  On my host serial port when 
-interacting with one bootloader the communication is fine and with 
-barebox fails.  When using a USB-serial adapter there's no problem.   
-Perhaps there's a problem on my board but why does the first connection 
-work and with barebox doesn't ?
+Convert zylonite board to the generic environment, and make consistent
+with lubbock and mainstone boards.
 
-On 08/07/2015 12:41 PM, Antony Pavlov wrote:
-> On Fri, 07 Aug 2015 10:41:12 -0400
-> Roberto Alejandro Espi Munoz <raespi@icid.cu> wrote:
->
->> Hi ... I'm currently having some trouble with displaying characters
->> correctly in my terminal.  I'm using a board equivalent to the
->> mini2440.  This one has a NOR and a NAND.  I connect to it over a serial
->> port interface.  When I boot up the board in debug mode I'm able to see
->> clearly the messages displayed by the S3C2440A USB Downloader which is
->> copied in the NOR interface, I then download my barebox binary over the
->> USB interface and when it boots I get a lot of weird characters on
->> screen.  The console seems to respond correctly, I issue for example the
->> "reset" command and it resets but I can't make out what is displayed.
->> I was guessing at first a serial port configuration problem on my
->> operating system (I use Linux), tried it over on Windows and same
->> effect, the first bootloader works great and barebox when starting just
->> mangles the characters.
->>
->> The other weird problem is than when I use a USB-Serial converter to
->> connect to the board's serial port everything works !
->>
->> I'm currently using barebox 2012.09 and OpenSuse Linux 13.2
->>
->> Any ideas ? thanks
-> You have the problem if you use your host computer motherboard serial port (no matter, Linux or Windows),
-> isn't it?
-> And no problem if you use USB-Serial dongle. So it looks like host serial port problem.
->
-> Could you try to connect the board to another host computer?
->
-> -- 
-> Best regards,
->    Antony Pavlov
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ arch/arm/boards/zylonite/board.c                   |  3 +++
+ arch/arm/boards/zylonite/env/bin/init              | 25 ----------------------
+ arch/arm/boards/zylonite/env/bin/mtd_env_override  |  4 ----
+ arch/arm/boards/zylonite/env/boot/nand-ubi         |  5 +++++
+ arch/arm/boards/zylonite/env/config                |  6 ------
+ arch/arm/boards/zylonite/env/init/mtdparts-nand    | 11 ++++++++++
+ arch/arm/boards/zylonite/env/nv/hostname           |  1 +
+ .../arm/boards/zylonite/env/nv/linux.bootargs.base |  1 +
+ .../boards/zylonite/env/nv/linux.bootargs.console  |  1 +
+ arch/arm/configs/zylonite310_defconfig             | 12 ++---------
+ 10 files changed, 24 insertions(+), 45 deletions(-)
+ delete mode 100644 arch/arm/boards/zylonite/env/bin/init
+ delete mode 100644 arch/arm/boards/zylonite/env/bin/mtd_env_override
+ create mode 100644 arch/arm/boards/zylonite/env/boot/nand-ubi
+ delete mode 100644 arch/arm/boards/zylonite/env/config
+ create mode 100644 arch/arm/boards/zylonite/env/init/mtdparts-nand
+ create mode 100644 arch/arm/boards/zylonite/env/nv/hostname
+ create mode 100644 arch/arm/boards/zylonite/env/nv/linux.bootargs.base
+ create mode 100644 arch/arm/boards/zylonite/env/nv/linux.bootargs.console
 
+diff --git a/arch/arm/boards/zylonite/board.c b/arch/arm/boards/zylonite/board.c
+index dabc6ff..2caadbc 100644
+--- a/arch/arm/boards/zylonite/board.c
++++ b/arch/arm/boards/zylonite/board.c
+@@ -28,6 +28,7 @@
+ #include <net/smc91111.h>
+ #include <platform_data/mtd-nand-mrvl.h>
+ #include <pwm.h>
++#include <linux/sizes.h>
+ 
+ #include <mach/devices.h>
+ #include <mach/mfp-pxa3xx.h>
+@@ -66,6 +67,8 @@ static int zylonite_devices_init(void)
+ 			   &smsc91x_pdata);
+ 	add_generic_device("mrvl_nand", DEVICE_ID_DYNAMIC, NULL,
+ 			   0x43100000, 0x1000, IORESOURCE_MEM, &nand_pdata);
++	devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED,
++			    "env0");
+ 	return 0;
+ }
+ device_initcall(zylonite_devices_init);
+diff --git a/arch/arm/boards/zylonite/env/bin/init b/arch/arm/boards/zylonite/env/bin/init
+deleted file mode 100644
+index a6bc087..0000000
+--- a/arch/arm/boards/zylonite/env/bin/init
++++ /dev/null
+@@ -1,25 +0,0 @@
+-#!/bin/sh
+-
+-PATH=/env/bin
+-export PATH
+-
+-. /env/config
+-addpart /dev/nand0 $mtdparts
+-usbserial -s "Zylonite usb gadget"
+-
+-# Phase1: check for MTD override
+-mtd_env_override
+-if [ $? = 0 ]; then
+-    echo "Switching to custom environment"
+-    /env/init
+-    exit
+-fi
+-
+-# Phase2: initiate network
+-dhcp -H zylonite
+-
+-# Phase3: activate netconsole, broadcast everywhere
+-netconsole.ip=255.255.255.255
+-netconsole.active=ioe
+-netconsole.port=6666
+-
+diff --git a/arch/arm/boards/zylonite/env/bin/mtd_env_override b/arch/arm/boards/zylonite/env/bin/mtd_env_override
+deleted file mode 100644
+index 6ea253a..0000000
+--- a/arch/arm/boards/zylonite/env/bin/mtd_env_override
++++ /dev/null
+@@ -1,4 +0,0 @@
+-#!/bin/sh
+-
+-loadenv /dev/nand0.barebox-env
+-exit $?
+diff --git a/arch/arm/boards/zylonite/env/boot/nand-ubi b/arch/arm/boards/zylonite/env/boot/nand-ubi
+new file mode 100644
+index 0000000..2231738
+--- /dev/null
++++ b/arch/arm/boards/zylonite/env/boot/nand-ubi
+@@ -0,0 +1,5 @@
++#!/bin/sh
++
++global.bootm.image="/dev/nand0.kernel"
++#global.bootm.oftree="/env/oftree"
++global.linux.bootargs.dyn.root="root=ubi0:linux_root ubi.mtd=nand.root rootfstype=ubifs"
+diff --git a/arch/arm/boards/zylonite/env/config b/arch/arm/boards/zylonite/env/config
+deleted file mode 100644
+index ee66e37..0000000
+--- a/arch/arm/boards/zylonite/env/config
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#!/bin/sh
+-
+-autoboot_timeout=3
+-
+-mtdparts="128k@0(TIMH)ro,128k@128k(OBMI)ro,768k@256k(barebox),256k@1024k(barebox-env),12M@1280k(kernel),38016k@13568k(root)"
+-bootargs="$bootargs mtdparts=pxa3xx_nand-0:$mtdparts ubi.mtd=5 rootfstype=ubifs root=ubi0:root ro ram=64M console=ttyS0,115200"
+diff --git a/arch/arm/boards/zylonite/env/init/mtdparts-nand b/arch/arm/boards/zylonite/env/init/mtdparts-nand
+new file mode 100644
+index 0000000..9db4652
+--- /dev/null
++++ b/arch/arm/boards/zylonite/env/init/mtdparts-nand
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++        init-menu-add-entry "$0" "NAND partitions"
++        exit
++fi
++
++mtdparts="128k@0(TIMH)ro,128k@128k(OBMI)ro,768k@256k(barebox),256k@1024k(barebox-env),12M@1280k(kernel),38016k@13568k(root)"
++kernelname="pxa3xx_nand-0"
++
++mtdparts-add -d nand0 -k ${kernelname} -p ${mtdparts}
+diff --git a/arch/arm/boards/zylonite/env/nv/hostname b/arch/arm/boards/zylonite/env/nv/hostname
+new file mode 100644
+index 0000000..6e6d865
+--- /dev/null
++++ b/arch/arm/boards/zylonite/env/nv/hostname
+@@ -0,0 +1 @@
++zylonite
+diff --git a/arch/arm/boards/zylonite/env/nv/linux.bootargs.base b/arch/arm/boards/zylonite/env/nv/linux.bootargs.base
+new file mode 100644
+index 0000000..317f8b1
+--- /dev/null
++++ b/arch/arm/boards/zylonite/env/nv/linux.bootargs.base
+@@ -0,0 +1 @@
++ram=64M
+diff --git a/arch/arm/boards/zylonite/env/nv/linux.bootargs.console b/arch/arm/boards/zylonite/env/nv/linux.bootargs.console
+new file mode 100644
+index 0000000..476b1fb
+--- /dev/null
++++ b/arch/arm/boards/zylonite/env/nv/linux.bootargs.console
+@@ -0,0 +1 @@
++console=ttyS0,115200
+diff --git a/arch/arm/configs/zylonite310_defconfig b/arch/arm/configs/zylonite310_defconfig
+index fa6587c..ffe3215 100644
+--- a/arch/arm/configs/zylonite310_defconfig
++++ b/arch/arm/configs/zylonite310_defconfig
+@@ -8,17 +8,17 @@ CONFIG_ARM_UNWIND=y
+ # CONFIG_BANNER is not set
+ CONFIG_MMU=y
+ CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
+-CONFIG_MALLOC_SIZE=0x1000000
++CONFIG_MALLOC_SIZE=0x800000
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_MODULES=y
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="zylonite-barebox:"
+-CONFIG_GLOB=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/zylonite/env"
+ CONFIG_RESET_SOURCE=y
+ CONFIG_DEFAULT_LOGLEVEL=8
+@@ -27,8 +27,6 @@ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_MEMINFO=y
+-CONFIG_FLEXIBLE_BOOTARGS=y
+-CONFIG_CMD_BOOT=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_BOOTM_VERBOSE=y
+ CONFIG_CMD_BOOTM_INITRD=y
+@@ -40,26 +38,20 @@ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_SAVES=y
+ CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_AUTOMOUNT=y
+ CONFIG_CMD_UBIFORMAT=y
+ CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_GLOBAL=y
+ CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_BASENAME=y
+ CONFIG_CMD_CMP=y
+-CONFIG_CMD_DIRNAME=y
+ CONFIG_CMD_FILETYPE=y
+ CONFIG_CMD_LN=y
+-CONFIG_CMD_READLINK=y
+ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_CMD_LET=y
+ CONFIG_CMD_MSLEEP=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_DHCP=y
+ CONFIG_CMD_HOST=y
+-CONFIG_NET_CMD_IFUP=y
+ CONFIG_CMD_MIITOOL=y
+ CONFIG_CMD_PING=y
+ CONFIG_CMD_TFTP=y
+-- 
+2.1.4
 
 
 _______________________________________________
