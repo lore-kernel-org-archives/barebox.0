@@ -1,12 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp03.smtpout.orange.fr ([80.12.242.125]
- helo=smtp.smtpout.orange.fr)
+Received: from conssluserg003.nifty.com ([202.248.44.41]
+ helo=conssluserg003-v.nifty.com)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZOYc0-0008Mr-2s
- for barebox@lists.infradead.org; Sun, 09 Aug 2015 21:58:37 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Sun,  9 Aug 2015 23:54:18 +0200
-Message-Id: <1439157258-28579-1-git-send-email-robert.jarzmik@free.fr>
+ id 1ZOZff-0006u4-DU
+ for barebox@lists.infradead.org; Sun, 09 Aug 2015 23:06:28 +0000
+Received: from mail-yk0-f173.google.com (mail-yk0-f173.google.com
+ [209.85.160.173]) (authenticated)
+ by conssluserg003-v.nifty.com with ESMTP id t79N60b9017121
+ for <barebox@lists.infradead.org>; Mon, 10 Aug 2015 08:06:01 +0900
+Received: by ykdt205 with SMTP id t205so46330571ykd.1
+ for <barebox@lists.infradead.org>; Sun, 09 Aug 2015 16:05:59 -0700 (PDT)
+MIME-Version: 1.0
+Date: Mon, 10 Aug 2015 08:05:59 +0900
+Message-ID: <CAK7LNAQ5jJLpkszp5iT65zfcaQsfPqqvk0U=p+cB+E+tqN-oEQ@mail.gmail.com>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,47 +22,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand: mrvl-nand: create initial empty bbt
+Subject: [Question] device-tree-rebasing include path
 To: barebox@lists.infradead.org
 
-When creating an initial bad blocks table, create it empty. This is
-necessary because when the bad block table blocks are not
-initialized (all ff) while some partitions are, all the blocks which
-have an OOB data not beginning with 0xff 0xff will be marked as bad
-blocks in the initial bad blocks scan.
+Hi Sascha,
 
-As a consequence, any existing blocks are impossible to erase
-anymore. Fix this by fixing the BBT creation flag.
+I have a question about the include path
+of device-tree-rebasing.
 
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
- drivers/mtd/nand/nand_mrvl_nfc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-index 258ff75..1ec48cc 100644
---- a/drivers/mtd/nand/nand_mrvl_nfc.c
-+++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-@@ -881,8 +881,9 @@ static int mrvl_nand_scan(struct mtd_info *mtd)
- 		 * We'll use a bad block table stored in-flash and don't
- 		 * allow writing the bad block marker to the flash.
- 		 */
--		chip->bbt_options |= NAND_BBT_USE_FLASH |
--				     NAND_BBT_NO_OOB_BBM;
-+		chip->bbt_options |=
-+			NAND_BBT_USE_FLASH | NAND_BBT_NO_OOB_BBM |
-+			NAND_BBT_CREATE_EMPTY;
- 		chip->bbt_td = &bbt_main_descr;
- 		chip->bbt_md = &bbt_mirror_descr;
- 	}
+When I saw scripts/Makefile.lib, I noticed that
+"-I $(srctree)/dts/src" is included for pre-processor,
+whereas "-i $(srctree)/dts/src/$(SRCARCH)" for DTC-native.
+
+The root of device-tree-rebasing is dts/src/ when we use '#include',
+but dts/src/$(SRCARCH) when we use '/include/'
+
+
+Is this intentional?
+
+In my opinion, #include and /include/
+should be able to include files in the same way.
+
+
+Here,
+
+dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc  \
+     -I$(srctree)/arch/$(SRCARCH)/dts/include      \
+     -I$(srctree)/dts/include                      \
+     -I$(srctree)/dts/src/                         \
+     -undef -D__DTS__
+
+
+cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+      $(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+      -i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
+      -i $(srctree)/dts/src/$(SRCARCH) \
+      -d $(depfile).dtc $(dtc-tmp) ; \
+      cat $(depfile).pre $(depfile).dtc > $(depfile)
+
+
+
+
+
+
 -- 
-2.1.4
-
+Best Regards
+Masahiro Yamada
 
 _______________________________________________
 barebox mailing list
