@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg003.nifty.com ([202.248.44.41]
- helo=conssluserg003-v.nifty.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZOZff-0006u4-DU
- for barebox@lists.infradead.org; Sun, 09 Aug 2015 23:06:28 +0000
-Received: from mail-yk0-f173.google.com (mail-yk0-f173.google.com
- [209.85.160.173]) (authenticated)
- by conssluserg003-v.nifty.com with ESMTP id t79N60b9017121
- for <barebox@lists.infradead.org>; Mon, 10 Aug 2015 08:06:01 +0900
-Received: by ykdt205 with SMTP id t205so46330571ykd.1
- for <barebox@lists.infradead.org>; Sun, 09 Aug 2015 16:05:59 -0700 (PDT)
-MIME-Version: 1.0
-Date: Mon, 10 Aug 2015 08:05:59 +0900
-Message-ID: <CAK7LNAQ5jJLpkszp5iT65zfcaQsfPqqvk0U=p+cB+E+tqN-oEQ@mail.gmail.com>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
+ id 1ZOlrz-0004kh-0t
+ for barebox@lists.infradead.org; Mon, 10 Aug 2015 12:08:00 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 10 Aug 2015 14:07:33 +0200
+Message-Id: <1439208453-20375-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +14,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [Question] device-tree-rebasing include path
+Subject: [PATCH] clk: socfpga: don't register fixed clocks
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi Sascha,
+The fixed clocks are registered from devicetree. Therefore the code path is
+not needed, but would instead register the clocks twice, which leads to the
+error message:
 
-I have a question about the include path
-of device-tree-rebasing.
+	clk_register clk f2s_periph_ref_clk is already registered, skipping!
+	of_clk_init: failed to init clock for /soc/clkmgr@ffd04000/clocks/f2s_periph_ref_clk: 1
+	clk_register clk osc1 is already registered, skipping!
+	of_clk_init: failed to init clock for /soc/clkmgr@ffd04000/clocks/osc1: 1
 
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ drivers/clk/socfpga.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-When I saw scripts/Makefile.lib, I noticed that
-"-I $(srctree)/dts/src" is included for pre-processor,
-whereas "-i $(srctree)/dts/src/$(SRCARCH)" for DTC-native.
-
-The root of device-tree-rebasing is dts/src/ when we use '#include',
-but dts/src/$(SRCARCH) when we use '/include/'
-
-
-Is this intentional?
-
-In my opinion, #include and /include/
-should be able to include files in the same way.
-
-
-Here,
-
-dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc  \
-     -I$(srctree)/arch/$(SRCARCH)/dts/include      \
-     -I$(srctree)/dts/include                      \
-     -I$(srctree)/dts/src/                         \
-     -undef -D__DTS__
-
-
-cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
-      $(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
-      -i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
-      -i $(srctree)/dts/src/$(SRCARCH) \
-      -d $(depfile).dtc $(dtc-tmp) ; \
-      cat $(depfile).pre $(depfile).dtc > $(depfile)
-
-
-
-
-
-
+diff --git a/drivers/clk/socfpga.c b/drivers/clk/socfpga.c
+index be97d13fa68b..3387c0e63451 100644
+--- a/drivers/clk/socfpga.c
++++ b/drivers/clk/socfpga.c
+@@ -49,15 +49,6 @@
+ 
+ static void __iomem *clk_mgr_base_addr;
+ 
+-static struct clk *socfpga_fixed_clk(struct device_node *node)
+-{
+-	uint32_t f = 0;
+-
+-	of_property_read_u32(node, "clock-frequency", &f);
+-
+-	return clk_fixed(node->name, f);
+-}
+-
+ struct clk_pll {
+ 	struct clk clk;
+ 	const char *parent;
+@@ -338,9 +329,7 @@ static void socfpga_register_clocks(struct device_d *dev, struct device_node *no
+ 		socfpga_register_clocks(dev, child);
+ 	}
+ 
+-	if (of_device_is_compatible(node, "fixed-clock"))
+-		clk = socfpga_fixed_clk(node);
+-	else if (of_device_is_compatible(node, "altr,socfpga-pll-clock"))
++	if (of_device_is_compatible(node, "altr,socfpga-pll-clock"))
+ 		clk = socfpga_pll_clk(node);
+ 	else if (of_device_is_compatible(node, "altr,socfpga-perip-clk"))
+ 		clk = socfpga_periph_clk(node);
 -- 
-Best Regards
-Masahiro Yamada
+2.4.6
+
 
 _______________________________________________
 barebox mailing list
