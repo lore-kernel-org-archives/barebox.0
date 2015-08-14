@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZQC2t-0002at-Bv
+ id 1ZQC2t-0002av-Bt
  for barebox@lists.infradead.org; Fri, 14 Aug 2015 10:17:08 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1ZQC2X-0005zX-SA
- for barebox@lists.infradead.org; Fri, 14 Aug 2015 12:16:45 +0200
+ (envelope-from <l.stach@pengutronix.de>) id 1ZQC2X-0005zX-W9
+ for barebox@lists.infradead.org; Fri, 14 Aug 2015 12:16:46 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 14 Aug 2015 12:16:42 +0200
-Message-Id: <1439547405-12578-2-git-send-email-l.stach@pengutronix.de>
+Date: Fri, 14 Aug 2015 12:16:44 +0200
+Message-Id: <1439547405-12578-4-git-send-email-l.stach@pengutronix.de>
 In-Reply-To: <1439547405-12578-1-git-send-email-l.stach@pengutronix.de>
 References: <1439547405-12578-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,13 +25,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] video: mtl017: depend on GPIOLIB
+Subject: [PATCH 4/5] video: fbcon: needs console support
 To: barebox@lists.infradead.org
 
 Fixes:
-In file included from include/gpio.h:4:0,
-                 from drivers/video/simple-panel.c:26:
-fatal error: mach/gpio.h: No such file or directory
+In function `register_fbconsole':
+drivers/video/fbconsole.c:425: undefined reference to `console_register
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
@@ -39,17 +38,17 @@ Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 2f5069fb2640..9a520c586971 100644
+index 9a520c586971..bb8bbb539481 100644
 --- a/drivers/video/Kconfig
 +++ b/drivers/video/Kconfig
-@@ -120,6 +120,7 @@ config DRIVER_VIDEO_MTL017
- 	bool "MTL017 LVDS encoder"
- 	select VIDEO_VPL
- 	depends on I2C
-+	depends on GPIOLIB
- 	help
- 	  The MTL017 is a parallel to lvds video encoder chip found on the
- 	  Efika MX Smartbook.
+@@ -7,6 +7,7 @@ if VIDEO
+ 
+ config FRAMEBUFFER_CONSOLE
+ 	bool
++	depends on !CONSOLE_NONE
+ 	select IMAGE_RENDERER
+ 	select FONTS
+ 	prompt "framebuffer console support"
 -- 
 2.4.6
 
