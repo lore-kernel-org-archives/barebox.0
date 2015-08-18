@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZRc6a-00087e-2J
- for barebox@lists.infradead.org; Tue, 18 Aug 2015 08:18:49 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1ZRc6D-0005Cc-Nc
- for barebox@lists.infradead.org; Tue, 18 Aug 2015 10:18:25 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 18 Aug 2015 10:18:24 +0200
-Message-Id: <1439885905-4214-1-git-send-email-l.stach@pengutronix.de>
+ id 1ZRcna-00047b-MI
+ for barebox@lists.infradead.org; Tue, 18 Aug 2015 09:03:15 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Tue, 18 Aug 2015 11:02:41 +0200
+Message-Id: <1439888561-9841-2-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <1439888561-9841-1-git-send-email-p.zabel@pengutronix.de>
+References: <1439888561-9841-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] video: vpl: depend on OFTREE
+Subject: [PATCH 2/2] ARM: pbab01: align with and include mainline DT
 To: barebox@lists.infradead.org
 
-VPL uses the of_graph bindings, which are only available if OFTREE
-support is compiled in.
+Align with the mainline device tree, include it,
+and remove all unchanged nodes and properties.
 
-Also fix the drivers using VPL to depend on OFTREE.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- drivers/video/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/dts/imx6q-phytec-pbab01.dts    |  4 ----
+ arch/arm/dts/imx6qdl-phytec-pbab01.dtsi | 16 +---------------
+ 2 files changed, 1 insertion(+), 19 deletions(-)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index bb8bbb539481..5ecac4209696 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -13,6 +13,7 @@ config FRAMEBUFFER_CONSOLE
- 	prompt "framebuffer console support"
+diff --git a/arch/arm/dts/imx6q-phytec-pbab01.dts b/arch/arm/dts/imx6q-phytec-pbab01.dts
+index 580338d..2f816dd 100644
+--- a/arch/arm/dts/imx6q-phytec-pbab01.dts
++++ b/arch/arm/dts/imx6q-phytec-pbab01.dts
+@@ -16,8 +16,4 @@
+ / {
+ 	model = "Phytec phyFLEX-i.MX6 Quad Carrier-Board";
+ 	compatible = "phytec,imx6x-pbab01", "phytec,imx6q-pfla02", "fsl,imx6q";
+-
+-	chosen {
+-		linux,stdout-path = &uart4;
+-	};
+ };
+diff --git a/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi b/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
+index 157e130..86ab991 100644
+--- a/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
++++ b/arch/arm/dts/imx6qdl-phytec-pbab01.dtsi
+@@ -9,22 +9,8 @@
+  * http://www.gnu.org/copyleft/gpl.html
+  */
  
- config VIDEO_VPL
-+	depends on OFTREE
- 	bool
+-&fec {
+-	status = "okay";
+-};
++#include <arm/imx6qdl-phytec-pbab01.dtsi>
  
- config DRIVER_VIDEO_ATMEL
-@@ -122,6 +123,7 @@ config DRIVER_VIDEO_MTL017
- 	select VIDEO_VPL
- 	depends on I2C
- 	depends on GPIOLIB
-+	depends on OFTREE
- 	help
- 	  The MTL017 is a parallel to lvds video encoder chip found on the
- 	  Efika MX Smartbook.
-@@ -130,6 +132,7 @@ config DRIVER_VIDEO_SIMPLE_PANEL
- 	bool "Simple panel support"
- 	select VIDEO_VPL
- 	depends on GPIOLIB
-+	depends on OFTREE
- 	help
- 	  This enabled support for simple panels, i.e. panels which consist of
- 	  a mode definition and enable gpios in the devicetree. Unlike the
+ &uart1 {
+ 	status = "okay";
+ };
+-
+-&uart4 {
+-	status = "okay";
+-};
+-
+-&usdhc2 {
+-	status = "okay";
+-};
+-
+-&usdhc3 {
+-	status = "okay";
+-};
 -- 
 2.4.6
 
