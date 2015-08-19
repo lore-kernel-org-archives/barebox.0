@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZS4Ge-0005Pd-Bi
- for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:23:04 +0000
-Date: Wed, 19 Aug 2015 16:22:41 +0200
+ id 1ZS4I4-0005sl-6a
+ for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:24:33 +0000
+Date: Wed, 19 Aug 2015 16:24:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150819142241.GG18700@pengutronix.de>
-References: <1439662053-22341-1-git-send-email-festevam@gmail.com>
+Message-ID: <20150819142410.GH18700@pengutronix.de>
+References: <1439584319-4068-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1439662053-22341-1-git-send-email-festevam@gmail.com>
+In-Reply-To: <1439584319-4068-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi-nor: Align spi_nor_ids[] with kernel 4.1
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH v2] lib: libfile: Do not ignore errors in close()
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Sat, Aug 15, 2015 at 03:07:33PM -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam@freescale.com>
+On Fri, Aug 14, 2015 at 01:31:58PM -0700, Andrey Smirnov wrote:
+> Some character devices may perform meaningful operations in their
+> implementation of close() -- a good example would be socfpga.c which
+> checks if the FPGA was programmed succesfully in it's close() method
+> -- so ignoring return value of this call may cause false positives in
+> checking exit status for success.
 > 
-> Sync the spi_nor_ids[] struct with the one from kernel 4.1.
-> 
-> Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/mtd/spi-nor/spi-nor.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
+>  lib/libfile.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
