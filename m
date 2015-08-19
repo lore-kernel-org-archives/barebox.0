@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZS4EM-0005F3-UY
- for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:20:43 +0000
-Date: Wed, 19 Aug 2015 16:20:20 +0200
+ id 1ZS4Ge-0005Pd-Bi
+ for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:23:04 +0000
+Date: Wed, 19 Aug 2015 16:22:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150819142020.GF18700@pengutronix.de>
-References: <55CB2C1C.4000002@insync.tv>
+Message-ID: <20150819142241.GG18700@pengutronix.de>
+References: <1439662053-22341-1-git-send-email-festevam@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <55CB2C1C.4000002@insync.tv>
+In-Reply-To: <1439662053-22341-1-git-send-email-festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MTD with non-power-of-2 page size
-To: Dave Kitchen <dave.kitchen@insync.tv>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] spi-nor: Align spi_nor_ids[] with kernel 4.1
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
 
-Hi Dave,
-
-On Wed, Aug 12, 2015 at 12:21:00PM +0100, Dave Kitchen wrote:
+On Sat, Aug 15, 2015 at 03:07:33PM -0300, Fabio Estevam wrote:
+> From: Fabio Estevam <fabio.estevam@freescale.com>
 > 
-> I have just started to work with barebox on an Atmel at91sam9g45 processor.
-> The board has an Atmel AT45DB161 dataflash configured as 528-byte page size.
-> I find that eg saveenv command does not run as the page erase fails
-> with EINVAL. On tracing this is fired from the page size and offset
-> correction code [mtd/core,c mtd_erase_align()] which uses bit
-> masking to align the size and offset. Unfortunately bit-masking does
-> not work with non-power-of-2 pages. Has anyone else addressed this
-> problem?
+> Sync the spi_nor_ids[] struct with the one from kernel 4.1.
 > 
-> The 'trivial' exercise of replacing the bit masks by modulo [%]
-> operator does not succeed as the compiler I am using (gcc!) does not
-> support long-long divmod.
+> Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
+> ---
+>  drivers/mtd/spi-nor/spi-nor.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
 
-You could use do_div here which returns the remainder. Also see the
-mtd_div_by_eb() and mtd_mod_by_eb() functions which may be what you are
-looking for.
+Applied, thanks
 
 Sascha
 
