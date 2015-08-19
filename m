@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from tilbrook.insync.tv ([188.122.33.11] helo=mail.insync.tv)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZS4NF-0001Xi-Mu
- for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:29:54 +0000
-Message-ID: <55D492C1.3000003@insync.tv>
-Date: Wed, 19 Aug 2015 15:29:21 +0100
-From: Dave Kitchen <dave.kitchen@insync.tv>
+ id 1ZS4Tx-0004nt-Ch
+ for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:36:49 +0000
+Date: Wed, 19 Aug 2015 16:36:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150819143626.GJ18700@pengutronix.de>
+References: <CAK7LNAQ5jJLpkszp5iT65zfcaQsfPqqvk0U=p+cB+E+tqN-oEQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <55CB2C1C.4000002@insync.tv>
- <20150819142020.GF18700@pengutronix.de>
-In-Reply-To: <20150819142020.GF18700@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAQ5jJLpkszp5iT65zfcaQsfPqqvk0U=p+cB+E+tqN-oEQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MTD with non-power-of-2 page size
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [Question] device-tree-rebasing include path
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha
+Hi Masahiro,
 
-Thank you for the hint. I now have running code with the non-power-of-2 
-page size.
-Shall I try and generate/submit a patch for this? The code may be 
-marginally slower in the power-of-2 case than the original, but I defy 
-anyone to notice if they are using spi boot!
+On Mon, Aug 10, 2015 at 08:05:59AM +0900, Masahiro Yamada wrote:
+> Hi Sascha,
+> 
+> I have a question about the include path
+> of device-tree-rebasing.
+> 
+> 
+> When I saw scripts/Makefile.lib, I noticed that
+> "-I $(srctree)/dts/src" is included for pre-processor,
+> whereas "-i $(srctree)/dts/src/$(SRCARCH)" for DTC-native.
+> 
+> The root of device-tree-rebasing is dts/src/ when we use '#include',
+> but dts/src/$(SRCARCH) when we use '/include/'
+> 
+> 
+> Is this intentional?
 
-Regards
-Dave
+Nope, this is not intentional. Currently there is no user for /include/ for
+something in dts/, so we could change this to be consistent without
+breaking anything.
 
-On 19/08/15 15:20, Sascha Hauer wrote:
-> Hi Dave,
->
-> On Wed, Aug 12, 2015 at 12:21:00PM +0100, Dave Kitchen wrote:
->>
->> I have just started to work with barebox on an Atmel at91sam9g45 processor.
->> The board has an Atmel AT45DB161 dataflash configured as 528-byte page size.
->> I find that eg saveenv command does not run as the page erase fails
->> with EINVAL. On tracing this is fired from the page size and offset
->> correction code [mtd/core,c mtd_erase_align()] which uses bit
->> masking to align the size and offset. Unfortunately bit-masking does
->> not work with non-power-of-2 pages. Has anyone else addressed this
->> problem?
->>
->> The 'trivial' exercise of replacing the bit masks by modulo [%]
->> operator does not succeed as the compiler I am using (gcc!) does not
->> support long-long divmod.
->
-> You could use do_div here which returns the remainder. Also see the
-> mtd_div_by_eb() and mtd_mod_by_eb() functions which may be what you are
-> looking for.
->
-> Sascha
->
+Sascha
 
 -- 
-Dave Kitchen
-InSync technology Ltd
-Tilbrook House
-2-4 Grenehurst Way
-Petersfield
-GU31 4AZ
-+44(0) 1730 235117
--fwd
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
