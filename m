@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZS47V-0002Dn-OR
- for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:13:38 +0000
-Date: Wed, 19 Aug 2015 16:13:15 +0200
+ id 1ZS4EM-0005F3-UY
+ for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:20:43 +0000
+Date: Wed, 19 Aug 2015 16:20:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150819141315.GE18700@pengutronix.de>
-References: <1439369205-26787-1-git-send-email-l.stach@pengutronix.de>
- <1439369205-26787-4-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20150819142020.GF18700@pengutronix.de>
+References: <55CB2C1C.4000002@insync.tv>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1439369205-26787-4-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <55CB2C1C.4000002@insync.tv>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] video: backlight: add fallbacks for client functions
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: MTD with non-power-of-2 page size
+To: Dave Kitchen <dave.kitchen@insync.tv>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 12, 2015 at 10:46:45AM +0200, Lucas Stach wrote:
-> Add empty static inline function fallbacks if backlight support
-> is not enabled, so that drivers using the backlight don't fail to
-> build.
-> 
-> Fixes:
-> In function `simple_panel_ioctl':
-> undefined reference to `of_backlight_find'
-> undefined reference to `backlight_set_brightness_default'
-> undefined reference to `backlight_set_brightness'
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  include/video/backlight.h | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+Hi Dave,
 
-Applied, thanks
+On Wed, Aug 12, 2015 at 12:21:00PM +0100, Dave Kitchen wrote:
+> 
+> I have just started to work with barebox on an Atmel at91sam9g45 processor.
+> The board has an Atmel AT45DB161 dataflash configured as 528-byte page size.
+> I find that eg saveenv command does not run as the page erase fails
+> with EINVAL. On tracing this is fired from the page size and offset
+> correction code [mtd/core,c mtd_erase_align()] which uses bit
+> masking to align the size and offset. Unfortunately bit-masking does
+> not work with non-power-of-2 pages. Has anyone else addressed this
+> problem?
+> 
+> The 'trivial' exercise of replacing the bit masks by modulo [%]
+> operator does not succeed as the compiler I am using (gcc!) does not
+> support long-long divmod.
+
+You could use do_div here which returns the remainder. Also see the
+mtd_div_by_eb() and mtd_mod_by_eb() functions which may be what you are
+looking for.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
