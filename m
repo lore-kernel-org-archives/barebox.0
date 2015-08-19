@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZRz3S-00014P-KQ
- for barebox@lists.infradead.org; Wed, 19 Aug 2015 08:49:08 +0000
-Received: by lagz9 with SMTP id z9so115195615lag.3
- for <barebox@lists.infradead.org>; Wed, 19 Aug 2015 01:48:43 -0700 (PDT)
-Received: from [192.168.1.10] ([185.9.184.41])
- by smtp.googlemail.com with ESMTPSA id bx5sm5661849lbc.36.2015.08.19.01.48.42
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 19 Aug 2015 01:48:42 -0700 (PDT)
-Message-ID: <55D442E9.6030306@gmail.com>
-Date: Wed, 19 Aug 2015 11:48:41 +0300
-From: Igor Plyatov <plyatov@gmail.com>
+ id 1ZS3aN-0006ch-5l
+ for barebox@lists.infradead.org; Wed, 19 Aug 2015 13:39:23 +0000
+Date: Wed, 19 Aug 2015 15:39:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150819133900.GS18700@pengutronix.de>
+References: <1439888561-9841-1-git-send-email-p.zabel@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1439888561-9841-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Reply-To: plyatov@gmail.com
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: delay in the IMXCFG file
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: pfla02: align with and include mainline DT
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Dear all,
+On Tue, Aug 18, 2015 at 11:02:40AM +0200, Philipp Zabel wrote:
+> Align with the mainline device tree, include it,
+> and remove all unchanged nodes and properties.
+> 
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> ---
+>  arch/arm/dts/imx6dl-phytec-pfla02.dtsi  |   4 -
+>  arch/arm/dts/imx6q-phytec-pfla02.dtsi   |   4 -
+>  arch/arm/dts/imx6qdl-phytec-pfla02.dtsi | 136 +++-----------------------------
+>  3 files changed, 11 insertions(+), 133 deletions(-)
 
-for debugging purposes I need to add some delays into the <BOARD 
-NAME>.imxcfg file, but does not know which format it is. It looks like 
-some kind of C, but it is confusing.
+Applied, thanks
 
-Where is defined "wm 32", "soc", "dcdofs", "loadaddr" command and others?
+Sascha
 
-Which commands I can use in the IMXCFG file to create very early delay, 
-before initialization of DRAM?
-
-Please help to clarify these things.
-
-Best wishes.
---
-Igor Plyatov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
