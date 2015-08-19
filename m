@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZS4eS-00017Z-Kz
- for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:47:41 +0000
-Date: Wed, 19 Aug 2015 16:47:18 +0200
+ id 1ZS4fI-0001D2-6E
+ for barebox@lists.infradead.org; Wed, 19 Aug 2015 14:48:32 +0000
+Date: Wed, 19 Aug 2015 16:48:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150819144718.GL18700@pengutronix.de>
-References: <1438936795-5608-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20150819144810.GM18700@pengutronix.de>
+References: <1439025428-3163-1-git-send-email-robert.jarzmik@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1438936795-5608-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1439025428-3163-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,15 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: mmci: Fix status flags check
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] ARM: pxa: zylonite: convert to generic default environment
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 07, 2015 at 11:39:55AM +0300, Alexander Shiyan wrote:
-> Data transfer procedures should check _DATA_ flags instead of _CMD_.
-> ---
->  drivers/mci/mmci.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+On Sat, Aug 08, 2015 at 11:17:08AM +0200, Robert Jarzmik wrote:
+> Convert zylonite board to the generic environment, and make consistent
+> with lubbock and mainstone boards.
+> 
+> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 
 Applied, thanks
 
