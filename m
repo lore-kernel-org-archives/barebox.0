@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZSPGM-00018D-6A
- for barebox@lists.infradead.org; Thu, 20 Aug 2015 12:48:11 +0000
-Date: Thu, 20 Aug 2015 14:47:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150820124747.GR18700@pengutronix.de>
-References: <55D442E9.6030306@gmail.com>
- <20150819140443.GZ18700@pengutronix.de>
- <55D5C626.6020103@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <55D5C626.6020103@gmail.com>
+ id 1ZSRe0-0003pI-R8
+ for barebox@lists.infradead.org; Thu, 20 Aug 2015 15:20:45 +0000
+Received: by lbbtg9 with SMTP id tg9so26165321lbb.1
+ for <barebox@lists.infradead.org>; Thu, 20 Aug 2015 08:20:22 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu, 20 Aug 2015 18:22:18 +0300
+Message-Id: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,74 +16,125 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: delay in the IMXCFG file
-To: Igor Plyatov <plyatov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] RFC: include/usb/ch9.h: pad usb_endpoint_descriptor with 1
+ byte
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-On Thu, Aug 20, 2015 at 03:20:54PM +0300, Igor Plyatov wrote:
-> Dear Sascha,
-> 
-> >Hi Igor,
-> >
-> >On Wed, Aug 19, 2015 at 11:48:41AM +0300, Igor Plyatov wrote:
-> >>Dear all,
-> >>
-> >>for debugging purposes I need to add some delays into the <BOARD
-> >>NAME>.imxcfg file, but does not know which format it is. It looks
-> >>like some kind of C, but it is confusing.
-> >>
-> >>Where is defined "wm 32", "soc", "dcdofs", "loadaddr" command and others?
-> >They are interpreted in the imx-image tool, see scripts/imx/README and
-> >scripts/imx/imx-image.c. The imx-image tool converts the commands into a
-> >dcd table which is understood by the Freescale i.MX ROM Code. The ROM
-> >code does not provide a delay command, so what you are looking for does
-> >not exist. All the is is a nop command. This is currently not
-> >implemented in imx-image, you would have to add it.
-> >
-> >>Which commands I can use in the IMXCFG file to create very early
-> >>delay, before initialization of DRAM?
-> >As said, there is nop. Otherwise there is a 'check' command to poll for
-> >setting/clearing bits.
-> >See the i.MX reference manual in the "Device Configuration Data (DCD)"
-> >section for further information.
-> 
-> Thank you for explanation above!
-> 
-> Everywhere I see references to DCD in the Reference Manual, but I
-> can not find details about DCD in the MCIMX51RM.pdf Rev. 1 2/2010.
+This patch fixes "Ooops, address error on load or ifetch!",
+caused by "usb" command on MIPS architecture.
 
-On i.MX51 the DCD data is indeed much simpler, there are no 'check' or
-'nop' commands. Instead the only command is 'wm' for write memory. You
-can only choose the access width. The additional commands I mentioned
-only exist on i.MX53 and newer. I just realized that most of the system
-boot description is missing in the i.MX51 Reference Manual and wonder
-how I ever managed to boot this successfully. Have a look in the i.MX35
-Reference Manual, the DCD layout is described there. It should be
-identical on i.MX51.
+To reproduce the problem follow the following steps:
 
-> 
-> If you know, please give me a link to document where DCD explained
-> in details, because any attempt to setup GPIO output, fails. Device
-> just does not boot at all.
-> 
-> wm 32 0x73f88000 0x689c0319 /* hangup line in flash-header.imxcfg */
+1. Build barebox for MIPS target with -O0 optimization flag:
 
-Not all modules can be accessed with DCD data. Information again is
-missing in the i.MX51 Manual, but the i.MX35 Manual has "Table 7-11. DCD
-Valid Modules". GPIO is missing in this table, so you can't access it
-with DCD data. It's probably the same on i.MX51.
+diff --git a/Makefile b/Makefile
+index 5a7fd5f..da9a8be 100644
+--- a/Makefile
++++ b/Makefile
+@@ -301,7 +301,7 @@ CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffre
 
-Sascha
+ CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+                    -Werror-implicit-function-declaration \
+-                   -fno-strict-aliasing -fno-common -Os -pipe
++                   -fno-strict-aliasing -fno-common -O0 -pipe
+ AFLAGS          := -D__ASSEMBLY__
 
+ LDFLAGS_barebox        := -Map barebox.map
+
+2. Plug in a usb flash drive.
+
+3. Run the "usb" command:
+
+	barebox@QEMU DUNA:/ usb -s
+	USB: scanning bus for devices...
+	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a042732a
+	Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a0429f02
+	&(dev->config.interface[0].ep_desc[1].wMaxPacketSize) = a0429f0b
+
+	Ooops, address error on load or ifetch!
+
+	$ 0   : 00000000 00000000 a0429f0b a0429de4
+	$ 4   : 00000000 0000000a 00000000 000687e0
+	$ 8   : 00000000 00000000 00000000 fa000000
+	$12   : 00000001 00000004 00000000 00000000
+	$16   : 00000000 00000000 00000000 00000000
+	$20   : 00000000 00000000 00000000 00000000
+	$24   : 00000000 00000000
+	$28   : 00000000 a03ffb40 a03ffb40 a082e9f4
+	Hi    : 00000000
+	Lo    : 00000000
+	epc   : a082ea38
+	ra    : a082e9f4
+	Status: b4000002
+	Cause : 00008010
+	Config: 88d0c083
+
+	### ERROR ### Please RESET the board ###
+
+The source of the error is the following line of code from the usb_parse_config() function:
+
+			le16_to_cpus(&(dev->config.interface[ifno].ep_desc[epno].\
+							       wMaxPacketSize));
+
+Which tries to load half-word from an un-aligned address 0xa0429f0b stored in v0:
+
+a082ea38:       94420000        lhu     v0,0(v0)
+
+0xa0429f0b is an address of wMaxPacketSize member of a struct usb_endpoint_descriptor at offset 4:
+
+struct usb_endpoint_descriptor {
+	__u8  bLength;
+	__u8  bDescriptorType;
+	__u8  bEndpointAddress;
+	__u8  bmAttributes;
+	__le16 wMaxPacketSize;
+	__u8  bInterval;
+	__u8  bRefresh;
+	__u8  bSynchAddress;
+} __attribute__ ((packed));
+
+The instances of the usb_endpoint_descriptor are stored in a "ep_desc" array:
+
+struct usb_interface {
+	...
+	struct usb_endpoint_descriptor ep_desc[USB_MAXENDPOINTS];
+};
+
+Since the size of the usb_endpoint_descriptor is odd (9 bytes),
+the second element of the ep_desc array is un-aligned,
+as well as it's member wMaxPacketSize:
+
+Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a0429f02
+&(dev->config.interface[0].ep_desc[1].wMaxPacketSize) = a0429f0b
+
+A possible fix to this problem is to make the size of the usb_endpoint_descriptor even.
+---
+ include/usb/ch9.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/usb/ch9.h b/include/usb/ch9.h
+index ab5d531..5b261e6 100644
+--- a/include/usb/ch9.h
++++ b/include/usb/ch9.h
+@@ -379,6 +379,7 @@ struct usb_endpoint_descriptor {
+ 	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
+ 	__u8  bRefresh;
+ 	__u8  bSynchAddress;
++	__u8  fill;
+ } __attribute__ ((packed));
+ 
+ #define USB_DT_ENDPOINT_SIZE		7
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
