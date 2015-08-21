@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZSRe0-0003pI-R8
- for barebox@lists.infradead.org; Thu, 20 Aug 2015 15:20:45 +0000
-Received: by lbbtg9 with SMTP id tg9so26165321lbb.1
- for <barebox@lists.infradead.org>; Thu, 20 Aug 2015 08:20:22 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Thu, 20 Aug 2015 18:22:18 +0300
-Message-Id: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
+ id 1ZSi8T-00083U-AO
+ for barebox@lists.infradead.org; Fri, 21 Aug 2015 08:57:17 +0000
+Received: by lbcbn3 with SMTP id bn3so39392926lbc.2
+ for <barebox@lists.infradead.org>; Fri, 21 Aug 2015 01:56:54 -0700 (PDT)
+Date: Fri, 21 Aug 2015 12:04:48 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150821120448.b9303fc43382e0f871bd7fd1@gmail.com>
+In-Reply-To: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
+References: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,125 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] RFC: include/usb/ch9.h: pad usb_endpoint_descriptor with 1
- byte
-To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH] RFC: include/usb/ch9.h: pad usb_endpoint_descriptor
+ with 1 byte
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This patch fixes "Ooops, address error on load or ifetch!",
-caused by "usb" command on MIPS architecture.
+On Thu, 20 Aug 2015 18:22:18 +0300
+Peter Mamonov <pmamonov@gmail.com> wrote:
 
-To reproduce the problem follow the following steps:
+> This patch fixes "Ooops, address error on load or ifetch!",
+> caused by "usb" command on MIPS architecture.
+> =
 
-1. Build barebox for MIPS target with -O0 optimization flag:
+> To reproduce the problem follow the following steps:
+> =
 
-diff --git a/Makefile b/Makefile
-index 5a7fd5f..da9a8be 100644
---- a/Makefile
-+++ b/Makefile
-@@ -301,7 +301,7 @@ CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffre
+> 1. Build barebox for MIPS target with -O0 optimization flag:
+> =
 
- CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-                    -Werror-implicit-function-declaration \
--                   -fno-strict-aliasing -fno-common -Os -pipe
-+                   -fno-strict-aliasing -fno-common -O0 -pipe
- AFLAGS          := -D__ASSEMBLY__
+> diff --git a/Makefile b/Makefile
+> index 5a7fd5f..da9a8be 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -301,7 +301,7 @@ CPPFLAGS        :=3D -D__KERNEL__ -D__BAREBOX__ $(LIN=
+UXINCLUDE) -fno-builtin -ffre
+> =
 
- LDFLAGS_barebox        := -Map barebox.map
+>  CFLAGS          :=3D -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+>                     -Werror-implicit-function-declaration \
+> -                   -fno-strict-aliasing -fno-common -Os -pipe
+> +                   -fno-strict-aliasing -fno-common -O0 -pipe
+>  AFLAGS          :=3D -D__ASSEMBLY__
+> =
 
-2. Plug in a usb flash drive.
+>  LDFLAGS_barebox        :=3D -Map barebox.map
 
-3. Run the "usb" command:
+It's better to add some indentation here because the patches with patches i=
+n commit message make problem for 'git am'.
 
-	barebox@QEMU DUNA:/ usb -s
-	USB: scanning bus for devices...
-	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a042732a
-	Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a0429f02
-	&(dev->config.interface[0].ep_desc[1].wMaxPacketSize) = a0429f0b
+Also it's better to change the subject of the message. Use "[RFC]" instead =
+of "[PATCH] RFC:".
+Please see --subject-prefix git-format-patch option.
 
-	Ooops, address error on load or ifetch!
-
-	$ 0   : 00000000 00000000 a0429f0b a0429de4
-	$ 4   : 00000000 0000000a 00000000 000687e0
-	$ 8   : 00000000 00000000 00000000 fa000000
-	$12   : 00000001 00000004 00000000 00000000
-	$16   : 00000000 00000000 00000000 00000000
-	$20   : 00000000 00000000 00000000 00000000
-	$24   : 00000000 00000000
-	$28   : 00000000 a03ffb40 a03ffb40 a082e9f4
-	Hi    : 00000000
-	Lo    : 00000000
-	epc   : a082ea38
-	ra    : a082e9f4
-	Status: b4000002
-	Cause : 00008010
-	Config: 88d0c083
-
-	### ERROR ### Please RESET the board ###
-
-The source of the error is the following line of code from the usb_parse_config() function:
-
-			le16_to_cpus(&(dev->config.interface[ifno].ep_desc[epno].\
-							       wMaxPacketSize));
-
-Which tries to load half-word from an un-aligned address 0xa0429f0b stored in v0:
-
-a082ea38:       94420000        lhu     v0,0(v0)
-
-0xa0429f0b is an address of wMaxPacketSize member of a struct usb_endpoint_descriptor at offset 4:
-
-struct usb_endpoint_descriptor {
-	__u8  bLength;
-	__u8  bDescriptorType;
-	__u8  bEndpointAddress;
-	__u8  bmAttributes;
-	__le16 wMaxPacketSize;
-	__u8  bInterval;
-	__u8  bRefresh;
-	__u8  bSynchAddress;
-} __attribute__ ((packed));
-
-The instances of the usb_endpoint_descriptor are stored in a "ep_desc" array:
-
-struct usb_interface {
-	...
-	struct usb_endpoint_descriptor ep_desc[USB_MAXENDPOINTS];
-};
-
-Since the size of the usb_endpoint_descriptor is odd (9 bytes),
-the second element of the ep_desc array is un-aligned,
-as well as it's member wMaxPacketSize:
-
-Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a0429f02
-&(dev->config.interface[0].ep_desc[1].wMaxPacketSize) = a0429f0b
-
-A possible fix to this problem is to make the size of the usb_endpoint_descriptor even.
----
- include/usb/ch9.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/usb/ch9.h b/include/usb/ch9.h
-index ab5d531..5b261e6 100644
---- a/include/usb/ch9.h
-+++ b/include/usb/ch9.h
-@@ -379,6 +379,7 @@ struct usb_endpoint_descriptor {
- 	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
- 	__u8  bRefresh;
- 	__u8  bSynchAddress;
-+	__u8  fill;
- } __attribute__ ((packed));
- 
- #define USB_DT_ENDPOINT_SIZE		7
--- 
-2.1.4
-
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
