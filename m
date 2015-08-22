@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from guitar.tcltek.co.il ([192.115.133.116] helo=mx.tkos.co.il)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZTFDB-00065q-QI
- for barebox@lists.infradead.org; Sat, 22 Aug 2015 20:16:23 +0000
-Date: Sat, 22 Aug 2015 23:15:49 +0300
+ id 1ZTFeu-0004Zz-0V
+ for barebox@lists.infradead.org; Sat, 22 Aug 2015 20:45:00 +0000
+Date: Sat, 22 Aug 2015 23:44:35 +0300
 From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20150822201549.GA8919@tarshish>
+Message-ID: <20150822204435.GB8919@tarshish>
 References: <CABK+bQbSy874fLMu-M3Q9Wc8-r8YEus2NG9JC2s_uw47Rn80eA@mail.gmail.com>
+ <20150822201549.GA8919@tarshish>
+ <685C0643-E30B-457C-AADC-61D8AEBC00C7@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CABK+bQbSy874fLMu-M3Q9Wc8-r8YEus2NG9JC2s_uw47Rn80eA@mail.gmail.com>
+In-Reply-To: <685C0643-E30B-457C-AADC-61D8AEBC00C7@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,81 +20,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: partitions (your discussion at http://lists.infradead.org)
-To: =?iso-8859-1?Q?Zolt=E1n_Seb=F6k?= <zoli.s@gmx.de>
+To: =?utf-8?B?Wm9sdMOhbiBTZWLFkWs=?= <zoli.s@gmx.de>
 Cc: barebox@lists.infradead.org
 
-Hi Zoli,
-
-On Fri, Aug 21, 2015 at 02:32:31PM +0200, Zolt=E1n Seb=F6k wrote:
-> My issue is a bit different than this, but I don't know who to contact
-> instead. However, the same thing is, that I get this error message...
-> =
-
-> stat /dev/nand0.xload.bb: No such file or directory
-> =
-
-> ...when tying to erase the MLO partition (nand0.xload.bb) of the NAND
-> flash. This is from *inside a script, using this line:*
-> =
-
-> cp /boot/swm/MLO /dev/nand0.xload.bb
-> =
-
-> This is the first step my script does after mounting the SD card. It's
-> purpose is a complete NAND flash update task.
-> =
-
-> Maybe important: The script that I use for the flashing isn't starting
-> directly via /env/init. Instead of that it sits on the SD card's FAT
-> partition and is being invoked by another script which is located in
-> /env/init.
-> =
-
-> When I alter my script to your solution...
-> =
-
-> cp /boot/swm/MLO /dev/nand0.xload
-> =
-
-> ...it drops the same error. My script has error checking, so it stops at
-> this point.
-> =
-
-> Same on all other partitions:
-> cp /boot/swm/barebox.bin /dev/nand0.barebox.bb
-> cp /boot/swm/linuximage /dev/nand0.kernel.bb
-> =
-
-> When I invoke my original flash script manually inside barebox, everything
-> goes fine.
-> =
-
-> So, what's the matter with barebox?
-> =
-
-> I am new to linux especially learnt about barebox just a few days ago, so
-> please explain in details, what to do to get this working from inside a
-> script.
-
-Make sure that the 'addpart' command runs before any other command that =
-
-attempts to access /dev/nand0.*.bb.
-
-baruch
-
--- =
-
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=3D}------------------------------------------------ooO--U--Ooo------------=
-{=3D
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgWm9saSwKClBsZWFzZSBrZWVwIHRoZSBsaXN0IG9uIENjLgoKT24gU2F0LCBBdWcgMjIsIDIw
+MTUgYXQgMTA6Mjc6MjJQTSArMDIwMCwgWm9sdMOhbiBTZWLFkWsgd3JvdGU6Cj4gQ2FuIHlvdSBw
+bGVhc2UgZ2l2ZSBtb3JlIGRldGFpbHM/IEhvdyBkb2VzIHRoZSBzeW50YXggbG9vayBsaWtlPwoK
+U2VlIHRoZSBzeW50YXggYXQgCmh0dHA6Ly93d3cuYmFyZWJveC5vcmcvZG9jL2xhdGVzdC9jb21t
+YW5kcy9wYXJ0L2FkZHBhcnQuaHRtbC4KCj4gQXNzdW1pbmcgdGhhdCB0aGlzIGNvbW1hbmQgaXMg
+YmVpbmcgZXhlY3V0ZWQgYWZ0ZXIgbXkgc2NyaXB0cyBoYXZlIHJ1biwgCj4gdGhlcmUgYXJlIHNl
+dmVyYWwgb3RoZXIgc2NyaXB0cyBpbnNpZGUgL2Vudi9pbml0LiBVbmZvcnR1bmF0ZWx5LCBJIGRv
+bid0IAo+IGhhdmUgdGhlIGRldmljZSBoZXJlIHJpZ2h0IG5vdyB0byBsb29rLiBTbywgY291bGQg
+eW91IGdpdmUgbWUgYSBoaW50LCB3aGVyZSAKPiB0byBsb29rIGZvciBpdCwgd2hlbiBJIGNhbiBn
+ZXQgaGFuZHMgb24gdGhlIGRldmljZSBhZ2Fpbj8KClRoZXJlIGlzIG5vIHN0YW5kYXJkIGxvY2F0
+aW9uIG9mIHRoYXQgY29tbWFuZC4gSnVzdCBncmVwIHlvdXIgL2VudiBzY3JpcHRzIGZvciAKYWRk
+cGFydC4KCmJhcnVjaAoKPiBBbSAyMi4gQXVndXN0IDIwMTUgMjI6MTU6NDkgTUVTWiwgc2Nocmll
+YiBCYXJ1Y2ggU2lhY2ggPGJhcnVjaEB0a29zLmNvLmlsPjoKPiA+T24gRnJpLCBBdWcgMjEsIDIw
+MTUgYXQgMDI6MzI6MzFQTSArMDIwMCwgWm9sdMOhbiBTZWLDtmsgd3JvdGU6Cj4gPj4gTXkgaXNz
+dWUgaXMgYSBiaXQgZGlmZmVyZW50IHRoYW4gdGhpcywgYnV0IEkgZG9uJ3Qga25vdyB3aG8gdG8K
+PiA+Y29udGFjdAo+ID4+IGluc3RlYWQuIEhvd2V2ZXIsIHRoZSBzYW1lIHRoaW5nIGlzLCB0aGF0
+IEkgZ2V0IHRoaXMgZXJyb3IgbWVzc2FnZS4uLgo+ID4+IAo+ID4+IHN0YXQgL2Rldi9uYW5kMC54
+bG9hZC5iYjogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQo+ID4+IAo+ID4+IC4uLndoZW4gdHlp
+bmcgdG8gZXJhc2UgdGhlIE1MTyBwYXJ0aXRpb24gKG5hbmQwLnhsb2FkLmJiKSBvZiB0aGUgTkFO
+RAo+ID4+IGZsYXNoLiBUaGlzIGlzIGZyb20gKmluc2lkZSBhIHNjcmlwdCwgdXNpbmcgdGhpcyBs
+aW5lOioKPiA+PiAKPiA+PiBjcCAvYm9vdC9zd20vTUxPIC9kZXYvbmFuZDAueGxvYWQuYmIKPiA+
+PiAKPiA+PiBUaGlzIGlzIHRoZSBmaXJzdCBzdGVwIG15IHNjcmlwdCBkb2VzIGFmdGVyIG1vdW50
+aW5nIHRoZSBTRCBjYXJkLgo+ID5JdCdzCj4gPj4gcHVycG9zZSBpcyBhIGNvbXBsZXRlIE5BTkQg
+Zmxhc2ggdXBkYXRlIHRhc2suCj4gPj4gCj4gPj4gTWF5YmUgaW1wb3J0YW50OiBUaGUgc2NyaXB0
+IHRoYXQgSSB1c2UgZm9yIHRoZSBmbGFzaGluZyBpc24ndAo+ID5zdGFydGluZwo+ID4+IGRpcmVj
+dGx5IHZpYSAvZW52L2luaXQuIEluc3RlYWQgb2YgdGhhdCBpdCBzaXRzIG9uIHRoZSBTRCBjYXJk
+J3MgRkFUCj4gPj4gcGFydGl0aW9uIGFuZCBpcyBiZWluZyBpbnZva2VkIGJ5IGFub3RoZXIgc2Ny
+aXB0IHdoaWNoIGlzIGxvY2F0ZWQgaW4KPiA+PiAvZW52L2luaXQuCj4gPj4gCj4gPj4gV2hlbiBJ
+IGFsdGVyIG15IHNjcmlwdCB0byB5b3VyIHNvbHV0aW9uLi4uCj4gPj4gCj4gPj4gY3AgL2Jvb3Qv
+c3dtL01MTyAvZGV2L25hbmQwLnhsb2FkCj4gPj4gCj4gPj4gLi4uaXQgZHJvcHMgdGhlIHNhbWUg
+ZXJyb3IuIE15IHNjcmlwdCBoYXMgZXJyb3IgY2hlY2tpbmcsIHNvIGl0IHN0b3BzCj4gPmF0Cj4g
+Pj4gdGhpcyBwb2ludC4KPiA+PiAKPiA+PiBTYW1lIG9uIGFsbCBvdGhlciBwYXJ0aXRpb25zOgo+
+ID4+IGNwIC9ib290L3N3bS9iYXJlYm94LmJpbiAvZGV2L25hbmQwLmJhcmVib3guYmIKPiA+PiBj
+cCAvYm9vdC9zd20vbGludXhpbWFnZSAvZGV2L25hbmQwLmtlcm5lbC5iYgo+ID4+IAo+ID4+IFdo
+ZW4gSSBpbnZva2UgbXkgb3JpZ2luYWwgZmxhc2ggc2NyaXB0IG1hbnVhbGx5IGluc2lkZSBiYXJl
+Ym94LAo+ID5ldmVyeXRoaW5nCj4gPj4gZ29lcyBmaW5lLgo+ID4+IAo+ID4+IFNvLCB3aGF0J3Mg
+dGhlIG1hdHRlciB3aXRoIGJhcmVib3g/Cj4gPj4gCj4gPj4gSSBhbSBuZXcgdG8gbGludXggZXNw
+ZWNpYWxseSBsZWFybnQgYWJvdXQgYmFyZWJveCBqdXN0IGEgZmV3IGRheXMKPiA+YWdvLCBzbwo+
+ID4+IHBsZWFzZSBleHBsYWluIGluIGRldGFpbHMsIHdoYXQgdG8gZG8gdG8gZ2V0IHRoaXMgd29y
+a2luZyBmcm9tIGluc2lkZQo+ID5hCj4gPj4gc2NyaXB0Lgo+ID4KPiA+TWFrZSBzdXJlIHRoYXQg
+dGhlICdhZGRwYXJ0JyBjb21tYW5kIHJ1bnMgYmVmb3JlIGFueSBvdGhlciBjb21tYW5kIHRoYXQK
+PiA+Cj4gPmF0dGVtcHRzIHRvIGFjY2VzcyAvZGV2L25hbmQwLiouYmIuCj4gPgo+ID5iYXJ1Y2gK
+Ci0tIAogICAgIGh0dHA6Ly9iYXJ1Y2guc2lhY2gubmFtZS9ibG9nLyAgICAgICAgICAgICAgICAg
+IH4uIC5+ICAgVGsgT3BlbiBTeXN0ZW1zCj19LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tb29PLS1VLS1Pb28tLS0tLS0tLS0tLS17PQogICAtIGJhcnVjaEB0
+a29zLmNvLmlsIC0gdGVsOiArOTcyLjIuNjc5LjUzNjQsIGh0dHA6Ly93d3cudGtvcy5jby5pbCAt
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
