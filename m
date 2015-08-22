@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+Received: from guitar.tcltek.co.il ([192.115.133.116] helo=mx.tkos.co.il)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZSi8T-00083U-AO
- for barebox@lists.infradead.org; Fri, 21 Aug 2015 08:57:17 +0000
-Received: by lbcbn3 with SMTP id bn3so39392926lbc.2
- for <barebox@lists.infradead.org>; Fri, 21 Aug 2015 01:56:54 -0700 (PDT)
-Date: Fri, 21 Aug 2015 12:04:48 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150821120448.b9303fc43382e0f871bd7fd1@gmail.com>
-In-Reply-To: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
-References: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
-Mime-Version: 1.0
+ id 1ZTFDB-00065q-QI
+ for barebox@lists.infradead.org; Sat, 22 Aug 2015 20:16:23 +0000
+Date: Sat, 22 Aug 2015 23:15:49 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20150822201549.GA8919@tarshish>
+References: <CABK+bQbSy874fLMu-M3Q9Wc8-r8YEus2NG9JC2s_uw47Rn80eA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CABK+bQbSy874fLMu-M3Q9Wc8-r8YEus2NG9JC2s_uw47Rn80eA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +22,75 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] RFC: include/usb/ch9.h: pad usb_endpoint_descriptor
- with 1 byte
-To: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: partitions (your discussion at http://lists.infradead.org)
+To: =?iso-8859-1?Q?Zolt=E1n_Seb=F6k?= <zoli.s@gmx.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, 20 Aug 2015 18:22:18 +0300
-Peter Mamonov <pmamonov@gmail.com> wrote:
+Hi Zoli,
 
-> This patch fixes "Ooops, address error on load or ifetch!",
-> caused by "usb" command on MIPS architecture.
+On Fri, Aug 21, 2015 at 02:32:31PM +0200, Zolt=E1n Seb=F6k wrote:
+> My issue is a bit different than this, but I don't know who to contact
+> instead. However, the same thing is, that I get this error message...
 > =
 
-> To reproduce the problem follow the following steps:
+> stat /dev/nand0.xload.bb: No such file or directory
 > =
 
-> 1. Build barebox for MIPS target with -O0 optimization flag:
+> ...when tying to erase the MLO partition (nand0.xload.bb) of the NAND
+> flash. This is from *inside a script, using this line:*
 > =
 
-> diff --git a/Makefile b/Makefile
-> index 5a7fd5f..da9a8be 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -301,7 +301,7 @@ CPPFLAGS        :=3D -D__KERNEL__ -D__BAREBOX__ $(LIN=
-UXINCLUDE) -fno-builtin -ffre
+> cp /boot/swm/MLO /dev/nand0.xload.bb
 > =
 
->  CFLAGS          :=3D -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
->                     -Werror-implicit-function-declaration \
-> -                   -fno-strict-aliasing -fno-common -Os -pipe
-> +                   -fno-strict-aliasing -fno-common -O0 -pipe
->  AFLAGS          :=3D -D__ASSEMBLY__
+> This is the first step my script does after mounting the SD card. It's
+> purpose is a complete NAND flash update task.
 > =
 
->  LDFLAGS_barebox        :=3D -Map barebox.map
+> Maybe important: The script that I use for the flashing isn't starting
+> directly via /env/init. Instead of that it sits on the SD card's FAT
+> partition and is being invoked by another script which is located in
+> /env/init.
+> =
 
-It's better to add some indentation here because the patches with patches i=
-n commit message make problem for 'git am'.
+> When I alter my script to your solution...
+> =
 
-Also it's better to change the subject of the message. Use "[RFC]" instead =
-of "[PATCH] RFC:".
-Please see --subject-prefix git-format-patch option.
+> cp /boot/swm/MLO /dev/nand0.xload
+> =
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+> ...it drops the same error. My script has error checking, so it stops at
+> this point.
+> =
+
+> Same on all other partitions:
+> cp /boot/swm/barebox.bin /dev/nand0.barebox.bb
+> cp /boot/swm/linuximage /dev/nand0.kernel.bb
+> =
+
+> When I invoke my original flash script manually inside barebox, everything
+> goes fine.
+> =
+
+> So, what's the matter with barebox?
+> =
+
+> I am new to linux especially learnt about barebox just a few days ago, so
+> please explain in details, what to do to get this working from inside a
+> script.
+
+Make sure that the 'addpart' command runs before any other command that =
+
+attempts to access /dev/nand0.*.bb.
+
+baruch
+
+-- =
+
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=3D}------------------------------------------------ooO--U--Ooo------------=
+{=3D
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
