@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from guitar.tcltek.co.il ([192.115.133.116] helo=mx.tkos.co.il)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZTFeu-0004Zz-0V
- for barebox@lists.infradead.org; Sat, 22 Aug 2015 20:45:00 +0000
-Date: Sat, 22 Aug 2015 23:44:35 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20150822204435.GB8919@tarshish>
-References: <CABK+bQbSy874fLMu-M3Q9Wc8-r8YEus2NG9JC2s_uw47Rn80eA@mail.gmail.com>
- <20150822201549.GA8919@tarshish>
- <685C0643-E30B-457C-AADC-61D8AEBC00C7@gmail.com>
+ id 1ZTnRd-0007iA-U3
+ for barebox@lists.infradead.org; Mon, 24 Aug 2015 08:49:34 +0000
+Date: Mon, 24 Aug 2015 10:49:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150824084910.GG18700@pengutronix.de>
+References: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <685C0643-E30B-457C-AADC-61D8AEBC00C7@gmail.com>
+In-Reply-To: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,60 +18,146 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: partitions (your discussion at http://lists.infradead.org)
-To: =?utf-8?B?Wm9sdMOhbiBTZWLFkWs=?= <zoli.s@gmx.de>
+Subject: Re: [PATCH] RFC: include/usb/ch9.h: pad usb_endpoint_descriptor with
+ 1 byte
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SGkgWm9saSwKClBsZWFzZSBrZWVwIHRoZSBsaXN0IG9uIENjLgoKT24gU2F0LCBBdWcgMjIsIDIw
-MTUgYXQgMTA6Mjc6MjJQTSArMDIwMCwgWm9sdMOhbiBTZWLFkWsgd3JvdGU6Cj4gQ2FuIHlvdSBw
-bGVhc2UgZ2l2ZSBtb3JlIGRldGFpbHM/IEhvdyBkb2VzIHRoZSBzeW50YXggbG9vayBsaWtlPwoK
-U2VlIHRoZSBzeW50YXggYXQgCmh0dHA6Ly93d3cuYmFyZWJveC5vcmcvZG9jL2xhdGVzdC9jb21t
-YW5kcy9wYXJ0L2FkZHBhcnQuaHRtbC4KCj4gQXNzdW1pbmcgdGhhdCB0aGlzIGNvbW1hbmQgaXMg
-YmVpbmcgZXhlY3V0ZWQgYWZ0ZXIgbXkgc2NyaXB0cyBoYXZlIHJ1biwgCj4gdGhlcmUgYXJlIHNl
-dmVyYWwgb3RoZXIgc2NyaXB0cyBpbnNpZGUgL2Vudi9pbml0LiBVbmZvcnR1bmF0ZWx5LCBJIGRv
-bid0IAo+IGhhdmUgdGhlIGRldmljZSBoZXJlIHJpZ2h0IG5vdyB0byBsb29rLiBTbywgY291bGQg
-eW91IGdpdmUgbWUgYSBoaW50LCB3aGVyZSAKPiB0byBsb29rIGZvciBpdCwgd2hlbiBJIGNhbiBn
-ZXQgaGFuZHMgb24gdGhlIGRldmljZSBhZ2Fpbj8KClRoZXJlIGlzIG5vIHN0YW5kYXJkIGxvY2F0
-aW9uIG9mIHRoYXQgY29tbWFuZC4gSnVzdCBncmVwIHlvdXIgL2VudiBzY3JpcHRzIGZvciAKYWRk
-cGFydC4KCmJhcnVjaAoKPiBBbSAyMi4gQXVndXN0IDIwMTUgMjI6MTU6NDkgTUVTWiwgc2Nocmll
-YiBCYXJ1Y2ggU2lhY2ggPGJhcnVjaEB0a29zLmNvLmlsPjoKPiA+T24gRnJpLCBBdWcgMjEsIDIw
-MTUgYXQgMDI6MzI6MzFQTSArMDIwMCwgWm9sdMOhbiBTZWLDtmsgd3JvdGU6Cj4gPj4gTXkgaXNz
-dWUgaXMgYSBiaXQgZGlmZmVyZW50IHRoYW4gdGhpcywgYnV0IEkgZG9uJ3Qga25vdyB3aG8gdG8K
-PiA+Y29udGFjdAo+ID4+IGluc3RlYWQuIEhvd2V2ZXIsIHRoZSBzYW1lIHRoaW5nIGlzLCB0aGF0
-IEkgZ2V0IHRoaXMgZXJyb3IgbWVzc2FnZS4uLgo+ID4+IAo+ID4+IHN0YXQgL2Rldi9uYW5kMC54
-bG9hZC5iYjogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQo+ID4+IAo+ID4+IC4uLndoZW4gdHlp
-bmcgdG8gZXJhc2UgdGhlIE1MTyBwYXJ0aXRpb24gKG5hbmQwLnhsb2FkLmJiKSBvZiB0aGUgTkFO
-RAo+ID4+IGZsYXNoLiBUaGlzIGlzIGZyb20gKmluc2lkZSBhIHNjcmlwdCwgdXNpbmcgdGhpcyBs
-aW5lOioKPiA+PiAKPiA+PiBjcCAvYm9vdC9zd20vTUxPIC9kZXYvbmFuZDAueGxvYWQuYmIKPiA+
-PiAKPiA+PiBUaGlzIGlzIHRoZSBmaXJzdCBzdGVwIG15IHNjcmlwdCBkb2VzIGFmdGVyIG1vdW50
-aW5nIHRoZSBTRCBjYXJkLgo+ID5JdCdzCj4gPj4gcHVycG9zZSBpcyBhIGNvbXBsZXRlIE5BTkQg
-Zmxhc2ggdXBkYXRlIHRhc2suCj4gPj4gCj4gPj4gTWF5YmUgaW1wb3J0YW50OiBUaGUgc2NyaXB0
-IHRoYXQgSSB1c2UgZm9yIHRoZSBmbGFzaGluZyBpc24ndAo+ID5zdGFydGluZwo+ID4+IGRpcmVj
-dGx5IHZpYSAvZW52L2luaXQuIEluc3RlYWQgb2YgdGhhdCBpdCBzaXRzIG9uIHRoZSBTRCBjYXJk
-J3MgRkFUCj4gPj4gcGFydGl0aW9uIGFuZCBpcyBiZWluZyBpbnZva2VkIGJ5IGFub3RoZXIgc2Ny
-aXB0IHdoaWNoIGlzIGxvY2F0ZWQgaW4KPiA+PiAvZW52L2luaXQuCj4gPj4gCj4gPj4gV2hlbiBJ
-IGFsdGVyIG15IHNjcmlwdCB0byB5b3VyIHNvbHV0aW9uLi4uCj4gPj4gCj4gPj4gY3AgL2Jvb3Qv
-c3dtL01MTyAvZGV2L25hbmQwLnhsb2FkCj4gPj4gCj4gPj4gLi4uaXQgZHJvcHMgdGhlIHNhbWUg
-ZXJyb3IuIE15IHNjcmlwdCBoYXMgZXJyb3IgY2hlY2tpbmcsIHNvIGl0IHN0b3BzCj4gPmF0Cj4g
-Pj4gdGhpcyBwb2ludC4KPiA+PiAKPiA+PiBTYW1lIG9uIGFsbCBvdGhlciBwYXJ0aXRpb25zOgo+
-ID4+IGNwIC9ib290L3N3bS9iYXJlYm94LmJpbiAvZGV2L25hbmQwLmJhcmVib3guYmIKPiA+PiBj
-cCAvYm9vdC9zd20vbGludXhpbWFnZSAvZGV2L25hbmQwLmtlcm5lbC5iYgo+ID4+IAo+ID4+IFdo
-ZW4gSSBpbnZva2UgbXkgb3JpZ2luYWwgZmxhc2ggc2NyaXB0IG1hbnVhbGx5IGluc2lkZSBiYXJl
-Ym94LAo+ID5ldmVyeXRoaW5nCj4gPj4gZ29lcyBmaW5lLgo+ID4+IAo+ID4+IFNvLCB3aGF0J3Mg
-dGhlIG1hdHRlciB3aXRoIGJhcmVib3g/Cj4gPj4gCj4gPj4gSSBhbSBuZXcgdG8gbGludXggZXNw
-ZWNpYWxseSBsZWFybnQgYWJvdXQgYmFyZWJveCBqdXN0IGEgZmV3IGRheXMKPiA+YWdvLCBzbwo+
-ID4+IHBsZWFzZSBleHBsYWluIGluIGRldGFpbHMsIHdoYXQgdG8gZG8gdG8gZ2V0IHRoaXMgd29y
-a2luZyBmcm9tIGluc2lkZQo+ID5hCj4gPj4gc2NyaXB0Lgo+ID4KPiA+TWFrZSBzdXJlIHRoYXQg
-dGhlICdhZGRwYXJ0JyBjb21tYW5kIHJ1bnMgYmVmb3JlIGFueSBvdGhlciBjb21tYW5kIHRoYXQK
-PiA+Cj4gPmF0dGVtcHRzIHRvIGFjY2VzcyAvZGV2L25hbmQwLiouYmIuCj4gPgo+ID5iYXJ1Y2gK
-Ci0tIAogICAgIGh0dHA6Ly9iYXJ1Y2guc2lhY2gubmFtZS9ibG9nLyAgICAgICAgICAgICAgICAg
-IH4uIC5+ICAgVGsgT3BlbiBTeXN0ZW1zCj19LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tb29PLS1VLS1Pb28tLS0tLS0tLS0tLS17PQogICAtIGJhcnVjaEB0
-a29zLmNvLmlsIC0gdGVsOiArOTcyLjIuNjc5LjUzNjQsIGh0dHA6Ly93d3cudGtvcy5jby5pbCAt
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Thu, Aug 20, 2015 at 06:22:18PM +0300, Peter Mamonov wrote:
+> This patch fixes "Ooops, address error on load or ifetch!",
+> caused by "usb" command on MIPS architecture.
+> 
+> To reproduce the problem follow the following steps:
+> 
+> 1. Build barebox for MIPS target with -O0 optimization flag:
+> 
+> diff --git a/Makefile b/Makefile
+> index 5a7fd5f..da9a8be 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -301,7 +301,7 @@ CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builtin -ffre
+> 
+>  CFLAGS          := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+>                     -Werror-implicit-function-declaration \
+> -                   -fno-strict-aliasing -fno-common -Os -pipe
+> +                   -fno-strict-aliasing -fno-common -O0 -pipe
+>  AFLAGS          := -D__ASSEMBLY__
+> 
+>  LDFLAGS_barebox        := -Map barebox.map
+> 
+> 2. Plug in a usb flash drive.
+> 
+> 3. Run the "usb" command:
+> 
+> 	barebox@QEMU DUNA:/ usb -s
+> 	USB: scanning bus for devices...
+> 	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a042732a
+> 	Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> 	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a0429f02
+> 	&(dev->config.interface[0].ep_desc[1].wMaxPacketSize) = a0429f0b
+> 
+> 	Ooops, address error on load or ifetch!
+> 
+> 	$ 0   : 00000000 00000000 a0429f0b a0429de4
+> 	$ 4   : 00000000 0000000a 00000000 000687e0
+> 	$ 8   : 00000000 00000000 00000000 fa000000
+> 	$12   : 00000001 00000004 00000000 00000000
+> 	$16   : 00000000 00000000 00000000 00000000
+> 	$20   : 00000000 00000000 00000000 00000000
+> 	$24   : 00000000 00000000
+> 	$28   : 00000000 a03ffb40 a03ffb40 a082e9f4
+> 	Hi    : 00000000
+> 	Lo    : 00000000
+> 	epc   : a082ea38
+> 	ra    : a082e9f4
+> 	Status: b4000002
+> 	Cause : 00008010
+> 	Config: 88d0c083
+> 
+> 	### ERROR ### Please RESET the board ###
+> 
+> The source of the error is the following line of code from the usb_parse_config() function:
+> 
+> 			le16_to_cpus(&(dev->config.interface[ifno].ep_desc[epno].\
+> 							       wMaxPacketSize));
+> 
+> Which tries to load half-word from an un-aligned address 0xa0429f0b stored in v0:
+> 
+> a082ea38:       94420000        lhu     v0,0(v0)
+> 
+> 0xa0429f0b is an address of wMaxPacketSize member of a struct usb_endpoint_descriptor at offset 4:
+> 
+> struct usb_endpoint_descriptor {
+> 	__u8  bLength;
+> 	__u8  bDescriptorType;
+> 	__u8  bEndpointAddress;
+> 	__u8  bmAttributes;
+> 	__le16 wMaxPacketSize;
+> 	__u8  bInterval;
+> 	__u8  bRefresh;
+> 	__u8  bSynchAddress;
+> } __attribute__ ((packed));
+> 
+> The instances of the usb_endpoint_descriptor are stored in a "ep_desc" array:
+> 
+> struct usb_interface {
+> 	...
+> 	struct usb_endpoint_descriptor ep_desc[USB_MAXENDPOINTS];
+> };
+> 
+> Since the size of the usb_endpoint_descriptor is odd (9 bytes),
+> the second element of the ep_desc array is un-aligned,
+> as well as it's member wMaxPacketSize:
+> 
+> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> &(dev->config.interface[0].ep_desc[0].wMaxPacketSize) = a0429f02
+> &(dev->config.interface[0].ep_desc[1].wMaxPacketSize) = a0429f0b
+> 
+> A possible fix to this problem is to make the size of the usb_endpoint_descriptor even.
+> ---
+>  include/usb/ch9.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/usb/ch9.h b/include/usb/ch9.h
+> index ab5d531..5b261e6 100644
+> --- a/include/usb/ch9.h
+> +++ b/include/usb/ch9.h
+> @@ -379,6 +379,7 @@ struct usb_endpoint_descriptor {
+>  	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
+>  	__u8  bRefresh;
+>  	__u8  bSynchAddress;
+> +	__u8  fill;
+>  } __attribute__ ((packed));
+
+This doesn't look very nice since we modify a ch9 defined struct just for
+the sake of using it in an array somewhere else. We can fix it like
+this, but please add a comment why we need this.
+
+Another way to fix this would be to embed struct usb_endpoint_descriptor
+in another struct and use that one in an array, like this:
+
+struct usb_endpoint {
+	struct usb_endpoint_descriptor desc;
+};
+
+struct usb_configuration {
+	...
+	struct usb_endpoint ep_desc[USB_MAXENDPOINTS];
+};
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
