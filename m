@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZU0Jv-0001zO-P5
- for barebox@lists.infradead.org; Mon, 24 Aug 2015 22:34:28 +0000
-Received: by labgv11 with SMTP id gv11so19175055lab.2
- for <barebox@lists.infradead.org>; Mon, 24 Aug 2015 15:34:05 -0700 (PDT)
-Date: Tue, 25 Aug 2015 01:42:03 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150825014203.348246088910295c7c1d4cc6@gmail.com>
-In-Reply-To: <1440429055.3066.34.camel@pengutronix.de>
-References: <1440084138-3116-1-git-send-email-pmamonov@gmail.com>
- <20150824084910.GG18700@pengutronix.de>
- <20150824173544.6d665f45cf367ab87240997c@gmail.com>
- <1440429055.3066.34.camel@pengutronix.de>
-Mime-Version: 1.0
+ id 1ZU78S-0006vk-IV
+ for barebox@lists.infradead.org; Tue, 25 Aug 2015 05:51:05 +0000
+Date: Tue, 25 Aug 2015 07:50:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150825055040.GM18700@pengutronix.de>
+References: <1440415935-32674-1-git-send-email-d.schultz@phytec.de>
+ <1440415935-32674-3-git-send-email-d.schultz@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1440415935-32674-3-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,198 +19,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] RFC: include/usb/ch9.h: pad usb_endpoint_descriptor
- with 1 byte
-To: Lucas Stach <l.stach@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH 3/3] include: mci: Add new ext. CSD field defines
+To: Daniel Schultz <d.schultz@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, 24 Aug 2015 17:10:55 +0200
-Lucas Stach <l.stach@pengutronix.de> wrote:
+On Mon, Aug 24, 2015 at 01:32:15PM +0200, Daniel Schultz wrote:
+> Added missing defines for the extended CSD register until standard 5.1.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> ---
+>  include/mci.h | 188 ++++++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 143 insertions(+), 45 deletions(-)
+> 
+> diff --git a/include/mci.h b/include/mci.h
+> index a7bf8cd..dfeca46 100644
+> --- a/include/mci.h
+> +++ b/include/mci.h
+> @@ -137,51 +137,149 @@
+>   * EXT_CSD fields
+>   */
+>  
+> -#define EXT_CSD_FLUSH_CACHE		32      /* W */
+> -#define EXT_CSD_CACHE_CTRL		33      /* R/W */
+> -#define EXT_CSD_POWER_OFF_NOTIFICATION	34	/* R/W */
+> -#define EXT_CSD_GP_SIZE_MULT		143	/* R/W */
 
-> Am Montag, den 24.08.2015, 17:35 +0300 schrieb Antony Pavlov:
-> > On Mon, 24 Aug 2015 10:49:10 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+Please do not change the whitespaces in existing defines. Better some
+whitespaces inconstistencies but a better to review patch.
 
-> > > On Thu, Aug 20, 2015 at 06:22:18PM +0300, Peter Mamonov wrote:
-> > > > This patch fixes "Ooops, address error on load or ifetch!",
-> > > > caused by "usb" command on MIPS architecture.
-> > > > =
+Also you are using some of the defines in 1/3, so this patch should be
+before it, right?
 
-> > > > To reproduce the problem follow the following steps:
-> > > > =
+Sascha
 
-> > > > 1. Build barebox for MIPS target with -O0 optimization flag:
-> > > > =
-
-> > > > diff --git a/Makefile b/Makefile
-> > > > index 5a7fd5f..da9a8be 100644
-> > > > --- a/Makefile
-> > > > +++ b/Makefile
-> > > > @@ -301,7 +301,7 @@ CPPFLAGS        :=3D -D__KERNEL__ -D__BAREBOX__=
- $(LINUXINCLUDE) -fno-builtin -ffre
-> > > > =
-
-> > > >  CFLAGS          :=3D -Wall -Wundef -Wstrict-prototypes -Wno-trigra=
-phs \
-> > > >                     -Werror-implicit-function-declaration \
-> > > > -                   -fno-strict-aliasing -fno-common -Os -pipe
-> > > > +                   -fno-strict-aliasing -fno-common -O0 -pipe
-> > > >  AFLAGS          :=3D -D__ASSEMBLY__
-> > > > =
-
-> > > >  LDFLAGS_barebox        :=3D -Map barebox.map
-> > > > =
-
-> > > > 2. Plug in a usb flash drive.
-> > > > =
-
-> > > > 3. Run the "usb" command:
-> > > > =
-
-> > > > 	barebox@QEMU DUNA:/ usb -s
-> > > > 	USB: scanning bus for devices...
-> > > > 	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) =3D a042732a
-> > > > 	Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> > > > 	&(dev->config.interface[0].ep_desc[0].wMaxPacketSize) =3D a0429f02
-> > > > 	&(dev->config.interface[0].ep_desc[1].wMaxPacketSize) =3D a0429f0b
-> > > > =
-
-> > > > 	Ooops, address error on load or ifetch!
-> > > > =
-
-> > > > 	$ 0   : 00000000 00000000 a0429f0b a0429de4
-> > > > 	$ 4   : 00000000 0000000a 00000000 000687e0
-> > > > 	$ 8   : 00000000 00000000 00000000 fa000000
-> > > > 	$12   : 00000001 00000004 00000000 00000000
-> > > > 	$16   : 00000000 00000000 00000000 00000000
-> > > > 	$20   : 00000000 00000000 00000000 00000000
-> > > > 	$24   : 00000000 00000000
-> > > > 	$28   : 00000000 a03ffb40 a03ffb40 a082e9f4
-> > > > 	Hi    : 00000000
-> > > > 	Lo    : 00000000
-> > > > 	epc   : a082ea38
-> > > > 	ra    : a082e9f4
-> > > > 	Status: b4000002
-> > > > 	Cause : 00008010
-> > > > 	Config: 88d0c083
-> > > > =
-
-> > > > 	### ERROR ### Please RESET the board ###
-> > > > =
-
-> > > > The source of the error is the following line of code from the usb_=
-parse_config() function:
-> > > > =
-
-> > > > 			le16_to_cpus(&(dev->config.interface[ifno].ep_desc[epno].\
-> > > > 							       wMaxPacketSize));
-> > > > =
-
-> > > > Which tries to load half-word from an un-aligned address 0xa0429f0b=
- stored in v0:
-> > > > =
-
-> > > > a082ea38:       94420000        lhu     v0,0(v0)
-> > > > =
-
-> > > > 0xa0429f0b is an address of wMaxPacketSize member of a struct usb_e=
-ndpoint_descriptor at offset 4:
-> > > > =
-
-> > > > struct usb_endpoint_descriptor {
-> > > > 	__u8  bLength;
-> > > > 	__u8  bDescriptorType;
-> > > > 	__u8  bEndpointAddress;
-> > > > 	__u8  bmAttributes;
-> > > > 	__le16 wMaxPacketSize;
-> > > > 	__u8  bInterval;
-> > > > 	__u8  bRefresh;
-> > > > 	__u8  bSynchAddress;
-> > > > } __attribute__ ((packed));
-> > > > =
-
-> > > > The instances of the usb_endpoint_descriptor are stored in a "ep_de=
-sc" array:
-> > > > =
-
-> > > > struct usb_interface {
-> > > > 	...
-> > > > 	struct usb_endpoint_descriptor ep_desc[USB_MAXENDPOINTS];
-> > > > };
-> > > > =
-
-> > > > Since the size of the usb_endpoint_descriptor is odd (9 bytes),
-> > > > the second element of the ep_desc array is un-aligned,
-> > > > as well as it's member wMaxPacketSize:
-> > > > =
-
-> > > > Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-> > > > &(dev->config.interface[0].ep_desc[0].wMaxPacketSize) =3D a0429f02
-> > > > &(dev->config.interface[0].ep_desc[1].wMaxPacketSize) =3D a0429f0b
-> > > > =
-
-> > > > A possible fix to this problem is to make the size of the usb_endpo=
-int_descriptor even.
-> > > > ---
-> > > >  include/usb/ch9.h | 1 +
-> > > >  1 file changed, 1 insertion(+)
-> > > > =
-
-> > > > diff --git a/include/usb/ch9.h b/include/usb/ch9.h
-> > > > index ab5d531..5b261e6 100644
-> > > > --- a/include/usb/ch9.h
-> > > > +++ b/include/usb/ch9.h
-> > > > @@ -379,6 +379,7 @@ struct usb_endpoint_descriptor {
-> > > >  	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
-> > > >  	__u8  bRefresh;
-> > > >  	__u8  bSynchAddress;
-> > > > +	__u8  fill;
-> > > >  } __attribute__ ((packed));
-> > > =
-
-> > > This doesn't look very nice since we modify a ch9 defined struct just=
- for
-> > > the sake of using it in an array somewhere else. We can fix it like
-> > > this, but please add a comment why we need this.
-> > =
-
-> > We need some fix here to make EHCI works on MIPS architecture.
-> > On the other hand the ch9 header file is used in linux kernel and in U-=
-boot.
-> > I don't know, does U-boot EHCI driver works on mips (though AFAIR there=
- was a USB MIPS-related
-> > patch several days ago), but linux kernel work with this ch9 header suc=
-cesfully on MIPS.
-> > So another way to fix the problem is to port some code from modern U-bo=
-ot or linux.
-> > =
-
-> The question here is: why isn't the compiler emitting the correct
-> instruction?
-> =
-
-> Apparently MIPS has a "ulh" instruction to load (possibly) unaligned
-> halfwords. The placement of the wMaxPacketSize member is static and the
-> compiler should be able to figure out that it may be placed at an
-> unaligned position, as requested per the packed attribute attached to
-> struct usb_endpoint_descriptor.
-> =
-
-> This isn't a problem we should fix in the barebox code unless we know
-> exactly why the compiler is doing the wrong thing.
-
-wMaxPacketSize unaligned access is the most simple EHCI problem on MIPS :)
-I have my private AR9331 big-endian EHCI branch.
-I'll try to check it in several days and submit the patches.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
