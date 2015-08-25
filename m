@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZUBWr-0003DM-UD
- for barebox@lists.infradead.org; Tue, 25 Aug 2015 10:32:34 +0000
-Received: by labia3 with SMTP id ia3so30704047lab.3
- for <barebox@lists.infradead.org>; Tue, 25 Aug 2015 03:32:11 -0700 (PDT)
+ id 1ZUDpG-0001Et-VT
+ for barebox@lists.infradead.org; Tue, 25 Aug 2015 12:59:44 +0000
+Received: by labgv11 with SMTP id gv11so29801365lab.2
+ for <barebox@lists.infradead.org>; Tue, 25 Aug 2015 05:59:20 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 25 Aug 2015 13:33:56 +0300
-Message-Id: <1440498836-8650-1-git-send-email-pmamonov@gmail.com>
+Date: Tue, 25 Aug 2015 15:59:58 +0300
+Message-Id: <1440507598-18050-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,50 +21,137 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: ehci-hcd: initialize ehci->qh_list[] with zeros
+Subject: [PATCH] usb: ehci: prevent bad PORTSC register access
 To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Cc: Peter Mamonov <pmamonov@gmail.com>, Kuo-Jung Su <dantesu@faraday-tech.com>
 
-Without this initialization ehci->qh_list[0].qh_endpt2 is left uninitialized,
-which causes problems with some EHCI host controllers.
+From: Kuo-Jung Su <dantesu@faraday-tech.com>
 
-Das u-boot uses the same strategy:
+1. The 'index' of ehci_submit_root() is not always > 0.
 
-	static int ehci_common_init(struct ehci_ctrl *ctrl, uint tweaks)
-	{
-		...
-		qh_list = &ctrl->qh_list;
+   e.g.
+   While it gets invoked from usb_get_descriptor(),
+   the 'index' is always a '0'. (See ch.9 of USB2.0)
 
-		/* Set head of reclaim list */
-		memset(qh_list, 0, sizeof(*qh_list));
-		qh_list->qh_link = cpu_to_hc32((unsigned long)qh_list | QH_LINK_TYPE_QH);
-		qh_list->qh_endpt1 = cpu_to_hc32(QH_ENDPT1_H(1) |
-							QH_ENDPT1_EPS(USB_SPEED_HIGH));
-		qh_list->qh_overlay.qt_next = cpu_to_hc32(QT_NEXT_TERMINATE);
-		qh_list->qh_overlay.qt_altnext = cpu_to_hc32(QT_NEXT_TERMINATE);
-		qh_list->qh_overlay.qt_token =
-				cpu_to_hc32(QT_TOKEN_STATUS(QT_TOKEN_STATUS_HALTED));
-		...
-	}
+2. The PORTSC register is not always required, and thus it
+   should only report a port error when necessary.
+   It would cause a port scan failure if the ehci_submit_root()
+   always gets terminated by a port error.
 
+Signed-off-by: Kuo-Jung Su <dantesu@faraday-tech.com>
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/ehci-hcd.c | 38 ++++++++++++++++++++++++--------------
+ 1 file changed, 24 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index a9039c6..58c22db 100644
+index 58c22db..1146b71 100644
 --- a/drivers/usb/host/ehci-hcd.c
 +++ b/drivers/usb/host/ehci-hcd.c
-@@ -772,6 +772,8 @@ static int ehci_init(struct usb_host *host)
- 			return ret;
- 	}
+@@ -476,13 +476,8 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	int len, srclen;
+ 	uint32_t reg;
+ 	uint32_t *status_reg;
++	int port = le16_to_cpu(req->index);
  
-+	memset(ehci->qh_list, 0, sizeof(struct QH) * NUM_TD);
+-	if (le16_to_cpu(req->index) >= CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS) {
+-		dev_err(ehci->dev, "The request port(%d) is not configured\n",
+-			le16_to_cpu(req->index) - 1);
+-		return -1;
+-	}
+-	status_reg = (uint32_t *)&ehci->hcor->or_portsc[le16_to_cpu(req->index) - 1];
+ 	srclen = 0;
+ 
+ 	dev_dbg(ehci->dev, "req=%u (%#x), type=%u (%#x), value=%u, index=%u\n",
+@@ -493,6 +488,21 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	typeReq = req->request | (req->requesttype << 8);
+ 
+ 	switch (typeReq) {
++	case USB_REQ_GET_STATUS | ((USB_RT_PORT | USB_DIR_IN) << 8):
++	case USB_REQ_SET_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
++	case USB_REQ_CLEAR_FEATURE | ((USB_DIR_OUT | USB_RT_PORT) << 8):
++		if (!port || port > CONFIG_SYS_USB_EHCI_MAX_ROOT_PORTS) {
++			printf("The request port(%d) is not configured\n", port - 1);
++			return -1;
++		}
++		status_reg = (uint32_t *)&ehci->hcor->or_portsc[port - 1];
++		break;
++	default:
++		status_reg = NULL;
++		break;
++	}
 +
- 	ehci->qh_list->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
- 	ehci->qh_list->qh_endpt1 = cpu_to_hc32((1 << 15) | (USB_SPEED_HIGH << 12));
- 	ehci->qh_list->qh_curtd = cpu_to_hc32(QT_NEXT_TERMINATE);
++	switch (typeReq) {
+ 	case DeviceRequest | USB_REQ_GET_DESCRIPTOR:
+ 		switch (le16_to_cpu(req->value) >> 8) {
+ 		case USB_DT_DEVICE:
+@@ -571,7 +581,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		if (reg & EHCI_PS_OCA)
+ 			tmpbuf[0] |= USB_PORT_STAT_OVERCURRENT;
+ 		if (reg & EHCI_PS_PR &&
+-		    (ehci->portreset & (1 << le16_to_cpu(req->index)))) {
++		    (ehci->portreset & (1 << port))) {
+ 			int ret;
+ 			/* force reset to complete */
+ 			reg = reg & ~(EHCI_PS_PR | EHCI_PS_CLEAR);
+@@ -581,7 +591,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 				tmpbuf[0] |= USB_PORT_STAT_RESET;
+ 			else
+ 				dev_err(ehci->dev, "port(%d) reset error\n",
+-					le16_to_cpu(req->index) - 1);
++					port - 1);
+ 		}
+ 		if (reg & EHCI_PS_PP)
+ 			tmpbuf[1] |= USB_PORT_STAT_POWER >> 8;
+@@ -608,7 +618,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			tmpbuf[2] |= USB_PORT_STAT_C_ENABLE;
+ 		if (reg & EHCI_PS_OCC)
+ 			tmpbuf[2] |= USB_PORT_STAT_C_OVERCURRENT;
+-		if (ehci->portreset & (1 << le16_to_cpu(req->index)))
++		if (ehci->portreset & (1 << port))
+ 			tmpbuf[2] |= USB_PORT_STAT_C_RESET;
+ 
+ 		srcptr = tmpbuf;
+@@ -634,7 +644,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			    EHCI_PS_IS_LOWSPEED(reg)) {
+ 				/* Low speed device, give up ownership. */
+ 				dev_dbg(ehci->dev, "port %d low speed --> companion\n",
+-				      req->index - 1);
++				      port - 1);
+ 				reg |= EHCI_PS_PO;
+ 				ehci_writel(status_reg, reg);
+ 				break;
+@@ -651,7 +661,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 				 */
+ 				ehci_powerup_fixup(ehci);
+ 				mdelay(50);
+-				ehci->portreset |= 1 << le16_to_cpu(req->index);
++				ehci->portreset |= 1 << port;
+ 				/* terminate the reset */
+ 				ehci_writel(status_reg, reg & ~EHCI_PS_PR);
+ 				/*
+@@ -663,10 +673,10 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 						2 * 1000);
+ 				if (!ret)
+ 					ehci->portreset |=
+-						1 << le16_to_cpu(req->index);
++						1 << port;
+ 				else
+ 					dev_err(ehci->dev, "port(%d) reset error\n",
+-						le16_to_cpu(req->index) - 1);
++						port - 1);
+ 
+ 			}
+ 			break;
+@@ -698,7 +708,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 			reg |= EHCI_PS_OCC;
+ 			break;
+ 		case USB_PORT_FEAT_C_RESET:
+-			ehci->portreset &= ~(1 << le16_to_cpu(req->index));
++			ehci->portreset &= ~(1 << port);
+ 			break;
+ 		default:
+ 			dev_dbg(ehci->dev, "unknown feature %x\n", le16_to_cpu(req->value));
 -- 
 2.1.4
 
