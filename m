@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZUWUS-0007ur-J1
+ id 1ZUWUS-0007uo-J0
  for barebox@lists.infradead.org; Wed, 26 Aug 2015 08:55:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Aug 2015 10:55:05 +0200
-Message-Id: <1440579305-7794-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1440579305-7794-1-git-send-email-s.hauer@pengutronix.de>
-References: <1440579305-7794-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Aug 2015 10:55:04 +0200
+Message-Id: <1440579305-7794-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +19,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] serial: ns16550: Set linux_console_name
+Subject: [PATCH 1/2] ARM: socfpga: Configure console from device tree
 To: Barebox List <barebox@lists.infradead.org>
 
-The regular ns16450/ns16550 devices get the console name "ttyS" under
-Linux. Add this to the driver data.
+Add the missing stdout-path properties for the socfpga boards and
+enable CONFIG_CONSOLE_ACTIVATE_NONE.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/serial_ns16550.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/configs/socfpga_defconfig         | 1 +
+ arch/arm/dts/socfpga_cyclone5_sockit.dts   | 1 +
+ arch/arm/dts/socfpga_cyclone5_socrates.dts | 1 +
+ 3 files changed, 3 insertions(+)
 
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index c186ad4..1af226a 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -297,10 +297,12 @@ static void ns16550_probe_dt(struct device_d *dev, struct ns16550_priv *priv)
+diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+index ec369ae..414aa23 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -14,6 +14,7 @@ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
+ # CONFIG_TIMESTAMP is not set
++CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+diff --git a/arch/arm/dts/socfpga_cyclone5_sockit.dts b/arch/arm/dts/socfpga_cyclone5_sockit.dts
+index 1c3fb4d..d763117 100644
+--- a/arch/arm/dts/socfpga_cyclone5_sockit.dts
++++ b/arch/arm/dts/socfpga_cyclone5_sockit.dts
+@@ -22,6 +22,7 @@
+ 	compatible = "terasic,sockit", "altr,socfpga";
  
- static struct ns16550_drvdata ns16450_drvdata = {
- 	.init_port = ns16450_serial_init_port,
-+	.linux_console_name = "ttyS",
- };
+ 	chosen {
++		stdout-path = &uart0;
+ 	};
  
- static struct ns16550_drvdata ns16550_drvdata = {
- 	.init_port = ns16550_serial_init_port,
-+	.linux_console_name = "ttyS",
- };
+ 	memory {
+diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
+index 125ad1b..a1a7c63 100644
+--- a/arch/arm/dts/socfpga_cyclone5_socrates.dts
++++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
+@@ -22,6 +22,7 @@
+ 	compatible = "ebv,socrates", "altr,socfpga";
  
- static __maybe_unused struct ns16550_drvdata omap_drvdata = {
+ 	chosen {
++		stdout-path = &uart0;
+ 	};
+ 
+ 	memory {
 -- 
 2.4.6
 
