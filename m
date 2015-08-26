@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZUYi4-0004d4-ID
+ id 1ZUYi4-0004dB-IF
  for barebox@lists.infradead.org; Wed, 26 Aug 2015 11:17:42 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1ZUYhh-0005wf-4o
- for barebox@lists.infradead.org; Wed, 26 Aug 2015 13:17:17 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86)
- (envelope-from <sha@pengutronix.de>) id 1ZUYhg-0006pY-TJ
- for barebox@lists.infradead.org; Wed, 26 Aug 2015 13:17:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Aug 2015 13:17:09 +0200
-Message-Id: <1440587836-22105-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Aug 2015 13:17:16 +0200
+Message-Id: <1440587836-22105-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1440587836-22105-1-git-send-email-s.hauer@pengutronix.de>
+References: <1440587836-22105-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,117 +21,367 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Allow multiple restart/watchdog/reset-source handlers
+Subject: [PATCH 7/7] mfd: da9053: add da9053 watchdog and system restart driver
 To: Barebox List <barebox@lists.infradead.org>
+Cc: Juergen Borleis <jbe@pengutronix.de>
 
-Usually SoCs have internal watchdogs, provide a way to detect the reset
-source and provide a way to reset the system. Sometimes though, this
-is provided by external facilities aswell and which way to use is board
-specific. With this series barebox can handle multiple watchdogs,
-reset-source handlers and restart handlers. They can be prioritezed
-via the device tree with different *-priority properties.
+From: Juergen Borleis <jbe@pengutronix.de>
 
-Sascha
-
-----------------------------------------------------------------
-Juergen Borleis (1):
-      mfd: da9053: add da9053 watchdog and system restart driver
-
-Philipp Zabel (1):
-      mfd: da9063: add da9063 watchdog and system restart driver
-
-Sascha Hauer (5):
-      restart: replace reset_cpu with registered restart handlers
-      watchdog: Allow multiple watchdogs
-      watchdog: Give watchdogs a name
-      reset-source: Use globalvar_add_simple_enum
-      reset-source: Allow different priorities
-
- arch/arm/lib/bootm.c                             |   7 +-
- arch/arm/mach-at91/at91rm9200_time.c             |  14 +-
- arch/arm/mach-at91/at91sam9_reset.S              |   4 +-
- arch/arm/mach-at91/at91sam9g45_reset.S           |   4 +-
- arch/arm/mach-at91/bootstrap.c                   |   3 +-
- arch/arm/mach-at91/setup.c                       |   9 +
- arch/arm/mach-bcm2835/core.c                     |  21 +-
- arch/arm/mach-clps711x/reset.c                   |  12 +-
- arch/arm/mach-davinci/time.c                     |  14 +-
- arch/arm/mach-digic/Makefile                     |   2 +-
- arch/arm/mach-digic/core.c                       |  25 --
- arch/arm/mach-ep93xx/clocksource.c               |  19 +-
- arch/arm/mach-highbank/reset.c                   |  14 +-
- arch/arm/mach-mvebu/armada-370-xp.c              |   9 +-
- arch/arm/mach-mvebu/common.c                     |  13 -
- arch/arm/mach-mvebu/dove.c                       |   9 +-
- arch/arm/mach-mvebu/include/mach/common.h        |   1 -
- arch/arm/mach-mvebu/kirkwood.c                   |   9 +-
- arch/arm/mach-mxs/soc-imx23.c                    |   8 +-
- arch/arm/mach-mxs/soc-imx28.c                    |   9 +-
- arch/arm/mach-netx/generic.c                     |  23 +-
- arch/arm/mach-nomadik/reset.c                    |  15 +-
- arch/arm/mach-omap/am33xx_generic.c              |   4 +-
- arch/arm/mach-omap/include/mach/am33xx-generic.h |   2 +-
- arch/arm/mach-omap/include/mach/omap3-generic.h  |   2 +-
- arch/arm/mach-omap/include/mach/omap4-generic.h  |   2 +-
- arch/arm/mach-omap/omap3_generic.c               |   5 +-
- arch/arm/mach-omap/omap4_generic.c               |   4 +-
- arch/arm/mach-omap/omap_generic.c                |  12 +-
- arch/arm/mach-pxa/common.c                       |  14 +-
- arch/arm/mach-rockchip/core.c                    |  16 +-
- arch/arm/mach-samsung/generic.c                  |  15 +-
- arch/arm/mach-socfpga/reset-manager.c            |  14 +-
- arch/arm/mach-tegra/tegra20-pmc.c                |   8 +-
- arch/arm/mach-uemd/Makefile                      |   2 +-
- arch/arm/mach-uemd/reset.c                       |  24 --
- arch/arm/mach-versatile/core.c                   |   7 +-
- arch/arm/mach-vexpress/reset.c                   |  15 +-
- arch/arm/mach-zynq/zynq.c                        |  24 +-
- arch/blackfin/lib/cpu.c                          |  11 +-
- arch/blackfin/lib/traps.c                        |   5 +-
- arch/efi/efi/efi.c                               |  13 +-
- arch/mips/lib/bootm.c                            |   3 +-
- arch/mips/mach-ar231x/ar231x_reset.c             |   8 +-
- arch/mips/mach-ath79/reset.c                     |  15 +-
- arch/mips/mach-bcm47xx/reset.c                   |  16 +-
- arch/mips/mach-loongson/loongson1_reset.c        |  15 +-
- arch/mips/mach-malta/reset.c                     |  16 +-
- arch/nios2/cpu/cpu.c                             |  12 +-
- arch/openrisc/cpu/cpu.c                          |  11 +-
- arch/ppc/lib/ppclinux.c                          |   3 +-
- arch/ppc/mach-mpc5xxx/cpu.c                      |  11 +-
- arch/ppc/mach-mpc85xx/cpu.c                      |  14 +-
- arch/sandbox/board/Makefile                      |   1 +
- arch/sandbox/mach-sandbox/include/mach/linux.h   |   1 +
- arch/sandbox/os/common.c                         |   6 +-
- arch/x86/mach-i386/Makefile                      |   2 -
- arch/x86/mach-i386/reset.c                       |  30 ---
- commands/reset.c                                 |   3 +-
- common/Makefile                                  |   1 +
- common/misc.c                                    |   3 +-
- common/reset_source.c                            |  29 ++-
- common/restart.c                                 | 112 +++++++++
- drivers/mfd/Kconfig                              |  11 +
- drivers/mfd/Makefile                             |   2 +
- drivers/mfd/da9053.c                             | 308 +++++++++++++++++++++++
- drivers/mfd/da9063.c                             | 165 ++++++++++++
- drivers/usb/gadget/f_fastboot.c                  |   3 +-
- drivers/watchdog/davinci_wdt.c                   |   1 +
- drivers/watchdog/im28wd.c                        |   1 +
- drivers/watchdog/imxwd.c                         |  23 +-
- drivers/watchdog/jz4740.c                        |  32 +--
- drivers/watchdog/wd_core.c                       |  70 +++++-
- include/common.h                                 |   1 -
- include/reset_source.h                           |  14 +-
- include/restart.h                                |  21 ++
- include/watchdog.h                               |   8 +
- 77 files changed, 1119 insertions(+), 296 deletions(-)
- delete mode 100644 arch/arm/mach-digic/core.c
- delete mode 100644 arch/arm/mach-uemd/reset.c
- delete mode 100644 arch/x86/mach-i386/reset.c
- create mode 100644 common/restart.c
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mfd/Kconfig  |   7 ++
+ drivers/mfd/Makefile |   1 +
+ drivers/mfd/da9053.c | 308 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 316 insertions(+)
  create mode 100644 drivers/mfd/da9053.c
- create mode 100644 drivers/mfd/da9063.c
- create mode 100644 include/restart.h
+
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 3eb26b5..417c9ce 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -4,6 +4,13 @@ config MFD_ACT8846
+ 	depends on I2C
+ 	bool "ACT8846 driver"
+ 
++config MFD_DA9053
++	depends on I2C
++	bool "DA9053 PMIC driver"
++	help
++	  This power management controller provides configurable power supplies,
++	  a machine restart feature and a watchdog.
++
+ config MFD_DA9063
+ 	depends on I2C
+ 	bool "DA9063 PMIC driver"
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index 4eed247..041915a 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_MFD_ACT8846)	+= act8846.o
++obj-$(CONFIG_MFD_DA9053)	+= da9053.o
+ obj-$(CONFIG_MFD_DA9063)	+= da9063.o
+ obj-$(CONFIG_MFD_LP3972)	+= lp3972.o
+ obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx.o
+diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
+new file mode 100644
+index 0000000..3fb5295
+--- /dev/null
++++ b/drivers/mfd/da9053.c
+@@ -0,0 +1,308 @@
++/*
++ * Copyright (C) 2013 Jan Luebbe <jlu@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <watchdog.h>
++#include <reset_source.h>
++
++#include <i2c/i2c.h>
++#include <restart.h>
++
++#define DRIVERNAME		"da9053"
++
++/* STATUS REGISTERS */
++#define DA9053_STATUS_A_REG		1
++#define DA9053_STATUS_B_REG		2
++#define DA9053_STATUS_C_REG		3
++#define DA9053_STATUS_D_REG		4
++
++/* PARK REGISTER */
++#define DA9053_PARK_REGISTER		DA9053_STATUS_D_REG
++
++/* EVENT REGISTERS */
++#define DA9053_EVENT_A_REG		5
++#define DA9053_EVENT_B_REG		6
++#define DA9053_EVENT_C_REG		7
++#define DA9053_EVENT_D_REG		8
++#define DA9053_FAULTLOG_REG		9
++
++/* IRQ REGISTERS */
++#define DA9053_IRQ_MASK_A_REG		10
++#define DA9053_IRQ_MASK_B_REG		11
++#define DA9053_IRQ_MASK_C_REG		12
++#define DA9053_IRQ_MASK_D_REG		13
++
++/* CONTROL REGISTERS */
++#define DA9053_CONTROL_A_REG		14
++#define DA9053_CONTROL_B_REG		15
++#define DA9053_CONTROL_C_REG		16
++#define DA9053_CONTROL_D_REG		17
++
++#define DA9053_PDDIS_REG		18
++#define DA9053_INTERFACE_REG		19
++#define DA9053_RESET_REG		20
++
++/* FAULT LOG REGISTER BITS */
++#define DA9053_FAULTLOG_WAITSET		0X80
++#define DA9053_FAULTLOG_NSDSET		0X40
++#define DA9053_FAULTLOG_KEYSHUT		0X20
++#define DA9053_FAULTLOG_TEMPOVER	0X08
++#define DA9053_FAULTLOG_VDDSTART	0X04
++#define DA9053_FAULTLOG_VDDFAULT	0X02
++#define DA9053_FAULTLOG_TWDERROR	0X01
++
++/* CONTROL REGISTER B BITS */
++#define DA9053_CONTROLB_SHUTDOWN	0X80
++#define DA9053_CONTROLB_DEEPSLEEP	0X40
++#define DA9053_CONTROLB_WRITEMODE	0X20
++#define DA9053_CONTROLB_BBATEN		0X10
++#define DA9053_CONTROLB_OTPREADEN	0X08
++#define DA9053_CONTROLB_AUTOBOOT	0X04
++#define DA9053_CONTROLB_ACTDIODE	0X02
++#define DA9053_CONTROLB_BUCKMERGE	0X01
++
++/* CONTROL REGISTER D BITS */
++#define DA9053_CONTROLD_WATCHDOG	0X80
++#define DA9053_CONTROLD_ACCDETEN	0X40
++#define DA9053_CONTROLD_GPI1415SD	0X20
++#define DA9053_CONTROLD_NONKEYSD	0X10
++#define DA9053_CONTROLD_KEEPACTEN	0X08
++#define DA9053_CONTROLD_TWDSCALE	0X07
++
++struct da9053_priv {
++	struct watchdog		wd;
++	struct i2c_client	*client;
++	struct device_d		*dev;
++	struct restart_handler	restart;
++};
++
++#define wd_to_da9053_priv(x)	container_of(x, struct da9053_priv, wd)
++
++static int da9053_reg_read(struct da9053_priv *da9053, u32 reg, u8 *val)
++{
++	int ret;
++
++	ret = i2c_read_reg(da9053->client, reg, val, 1);
++
++	return ret == 1 ? 0 : ret;
++}
++
++static int da9053_reg_write(struct da9053_priv *da9053, u32 reg, u8 val)
++{
++	int ret;
++
++	ret = i2c_write_reg(da9053->client, reg, &val, 1);
++
++	return ret == 1 ? 0 : ret;
++}
++
++static int da9053_park(struct da9053_priv *da9053)
++{
++	int ret;
++	u8 val;
++
++	ret = i2c_read_reg(da9053->client, DA9053_PARK_REGISTER, &val, 1);
++
++	return ret == 1 ? 0 : ret;
++}
++
++static int da9053_enable_multiwrite(struct da9053_priv *da9053)
++{
++	int ret;
++	u8 val;
++
++	ret = da9053_reg_read(da9053, DA9053_CONTROL_B_REG, &val);
++	if (ret < 0)
++		return ret;
++
++	if (val & DA9053_CONTROLB_WRITEMODE) {
++		val &= ~DA9053_CONTROLB_WRITEMODE;
++		ret = da9053_reg_write(da9053, DA9053_CONTROL_B_REG, val);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = da9053_park(da9053);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static int da9053_set_timeout(struct watchdog *wd, unsigned timeout)
++{
++	struct da9053_priv *da9053 = wd_to_da9053_priv(wd);
++	struct device_d *dev = da9053->cdev.dev;
++	unsigned scale = 0;
++	int ret;
++	u8 val;
++
++	if (timeout > 131)
++		return -EINVAL;
++
++	if (timeout) {
++		timeout *= 1000; /* convert to ms */
++		scale = 0;
++		while (timeout > (2048 << scale) && scale <= 6)
++			scale++;
++		dev_dbg(dev, "calculated TWDSCALE=%u (req=%ims calc=%ims)\n",
++		        scale, timeout, 2048 << scale);
++		scale++; /* scale 0 disables the WD */
++	}
++
++	ret = da9053_reg_read(da9053, DA9053_CONTROL_D_REG, &val);
++	if (ret < 0)
++		return ret;
++
++	dev_dbg(dev, "read watchdog (val=0x%02x)\n", val);
++
++	if (scale && scale == (val & DA9053_CONTROLD_TWDSCALE)) {
++		/* trigger WD */
++		val |= DA9053_CONTROLD_WATCHDOG;
++		ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
++		if (ret < 0)
++			return ret;
++		dev_dbg(dev, "triggered watchdog (val=0x%02x)\n", val);
++	} else {
++		/* disable WD first */
++		val &= ~DA9053_CONTROLD_TWDSCALE;
++		ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
++		if (ret < 0)
++			return ret;
++
++		dev_dbg(dev, "disabled watchdog (val=0x%02x)\n", val);
++		if (scale) {
++			/* park before waiting */
++			ret = da9053_park(da9053);
++			if (ret < 0)
++				return ret;
++
++			/* wait required time */
++			udelay(150);
++
++			/* enable WD with new timeout */
++			val |= scale;
++			ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
++			if (ret < 0)
++				return ret;
++			dev_dbg(dev, "enabled watchdog (val=0x%02x)\n", val);
++		}
++	}
++
++	ret = da9053_park(da9053);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
++static void da9053_detect_reset_source(struct da9053_priv *da9053)
++{
++	unsigned int priority;
++	enum reset_src_type type;
++	int ret;
++	u8 val;
++
++	ret = da9053_reg_read(da9053, DA9053_FAULTLOG_REG, &val);
++	if (ret < 0)
++		return;
++
++	ret = da9053_park(da9053);
++	if (ret < 0)
++		return;
++
++	if (val & DA9053_FAULTLOG_TWDERROR)
++		type = RESET_WDG;
++	else if (val & DA9053_FAULTLOG_VDDFAULT)
++		type = RESET_POR;
++	else if (val & DA9053_FAULTLOG_NSDSET)
++		type = RESET_RST;
++	else
++		return;
++
++	priority = of_get_reset_source_priority(da9053->dev->device_node);
++
++	reset_source_set_priority(type, priority);
++}
++
++static void __noreturn da9053_force_system_reset(struct restart_handler *rst)
++{
++	struct da9053_priv *da9053 = container_of(rst, struct da9053_priv, restart);
++	u8 val;
++	int ret;
++
++	ret = da9053_reg_read(da9053, DA9053_CONTROL_B_REG, &val);
++	if (ret < 0)
++		hang();
++
++	val |= DA9053_CONTROLB_SHUTDOWN;
++	ret = da9053_reg_write(da9053, DA9053_CONTROL_B_REG, val);
++	if (ret < 0)
++		hang();
++
++	da9053_park(da9053);
++
++	hang();
++}
++
++static int da9053_probe(struct device_d *dev)
++{
++	struct da9053_priv *da9053;
++	int ret;
++
++	da9053 = xzalloc(sizeof(*da9053));
++	da9053->dev = dev;
++	da9053->cdev.name = DRIVERNAME;
++	da9053->client = to_i2c_client(dev);
++	da9053->wd.set_timeout = da9053_set_timeout;
++	da9053->wd.priority = of_get_watchdog_priority(dev->device_node);
++	da9053->wd.dev = dev;
++
++	ret = da9053_enable_multiwrite(da9053);
++	if (ret < 0)
++		return ret;
++
++	ret = watchdog_register(&da9053->wd);
++	if (ret)
++		return ret;
++
++	da9053_detect_reset_source(da9053);
++
++	da9053->restart.priority = of_get_restart_priority(dev->device_node);
++	da9053->restart.name = "da9063";
++	da9053->restart.restart = &da9053_force_system_reset;
++
++	restart_handler_register(&da9053->restart);
++
++	return 0;
++}
++
++static struct driver_d da9053_driver = {
++	.name  = DRIVERNAME,
++	.probe = da9053_probe,
++};
++
++static int da9053_init(void)
++{
++	i2c_driver_register(&da9053_driver);
++	return 0;
++}
++
++device_initcall(da9053_init);
+-- 
+2.5.0
+
 
 _______________________________________________
 barebox mailing list
