@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZUYi4-0004dB-IF
- for barebox@lists.infradead.org; Wed, 26 Aug 2015 11:17:42 +0000
+ id 1ZUYi4-0004d9-ID
+ for barebox@lists.infradead.org; Wed, 26 Aug 2015 11:17:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Aug 2015 13:17:16 +0200
-Message-Id: <1440587836-22105-8-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Aug 2015 13:17:15 +0200
+Message-Id: <1440587836-22105-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1440587836-22105-1-git-send-email-s.hauer@pengutronix.de>
 References: <1440587836-22105-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] mfd: da9053: add da9053 watchdog and system restart driver
+Subject: [PATCH 6/7] mfd: da9063: add da9063 watchdog and system restart driver
 To: Barebox List <barebox@lists.infradead.org>
-Cc: Juergen Borleis <jbe@pengutronix.de>
 
-From: Juergen Borleis <jbe@pengutronix.de>
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- drivers/mfd/Kconfig  |   7 ++
+ drivers/mfd/Kconfig  |   4 ++
  drivers/mfd/Makefile |   1 +
- drivers/mfd/da9053.c | 308 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 316 insertions(+)
- create mode 100644 drivers/mfd/da9053.c
+ drivers/mfd/da9063.c | 165 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 170 insertions(+)
+ create mode 100644 drivers/mfd/da9063.c
 
 diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 3eb26b5..417c9ce 100644
+index 3af904d..3eb26b5 100644
 --- a/drivers/mfd/Kconfig
 +++ b/drivers/mfd/Kconfig
-@@ -4,6 +4,13 @@ config MFD_ACT8846
+@@ -4,6 +4,10 @@ config MFD_ACT8846
  	depends on I2C
  	bool "ACT8846 driver"
  
-+config MFD_DA9053
++config MFD_DA9063
 +	depends on I2C
-+	bool "DA9053 PMIC driver"
-+	help
-+	  This power management controller provides configurable power supplies,
-+	  a machine restart feature and a watchdog.
++	bool "DA9063 PMIC driver"
 +
- config MFD_DA9063
+ config MFD_LP3972
  	depends on I2C
- 	bool "DA9063 PMIC driver"
+ 	bool "LP3972 driver"
 diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 4eed247..041915a 100644
+index 49b9e35..4eed247 100644
 --- a/drivers/mfd/Makefile
 +++ b/drivers/mfd/Makefile
 @@ -1,4 +1,5 @@
  obj-$(CONFIG_MFD_ACT8846)	+= act8846.o
-+obj-$(CONFIG_MFD_DA9053)	+= da9053.o
- obj-$(CONFIG_MFD_DA9063)	+= da9063.o
++obj-$(CONFIG_MFD_DA9063)	+= da9063.o
  obj-$(CONFIG_MFD_LP3972)	+= lp3972.o
  obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx.o
-diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
+ obj-$(CONFIG_MFD_MC34704)	+= mc34704.o
+diff --git a/drivers/mfd/da9063.c b/drivers/mfd/da9063.c
 new file mode 100644
-index 0000000..3fb5295
+index 0000000..b852b5d
 --- /dev/null
-+++ b/drivers/mfd/da9053.c
-@@ -0,0 +1,308 @@
++++ b/drivers/mfd/da9063.c
+@@ -0,0 +1,165 @@
 +/*
-+ * Copyright (C) 2013 Jan Luebbe <jlu@pengutronix.de>
++ * Copyright (C) 2015 Pengutronix, Philipp Zabel <p.zabel@pengutronix.de>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -84,146 +78,46 @@ index 0000000..3fb5295
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
-+ *
 + */
 +
 +#include <common.h>
-+#include <init.h>
 +#include <driver.h>
-+#include <xfuncs.h>
-+#include <errno.h>
-+#include <watchdog.h>
-+#include <reset_source.h>
-+
-+#include <i2c/i2c.h>
 +#include <restart.h>
++#include <init.h>
++#include <i2c/i2c.h>
++#include <malloc.h>
++#include <notifier.h>
++#include <reset_source.h>
++#include <watchdog.h>
 +
-+#define DRIVERNAME		"da9053"
-+
-+/* STATUS REGISTERS */
-+#define DA9053_STATUS_A_REG		1
-+#define DA9053_STATUS_B_REG		2
-+#define DA9053_STATUS_C_REG		3
-+#define DA9053_STATUS_D_REG		4
-+
-+/* PARK REGISTER */
-+#define DA9053_PARK_REGISTER		DA9053_STATUS_D_REG
-+
-+/* EVENT REGISTERS */
-+#define DA9053_EVENT_A_REG		5
-+#define DA9053_EVENT_B_REG		6
-+#define DA9053_EVENT_C_REG		7
-+#define DA9053_EVENT_D_REG		8
-+#define DA9053_FAULTLOG_REG		9
-+
-+/* IRQ REGISTERS */
-+#define DA9053_IRQ_MASK_A_REG		10
-+#define DA9053_IRQ_MASK_B_REG		11
-+#define DA9053_IRQ_MASK_C_REG		12
-+#define DA9053_IRQ_MASK_D_REG		13
-+
-+/* CONTROL REGISTERS */
-+#define DA9053_CONTROL_A_REG		14
-+#define DA9053_CONTROL_B_REG		15
-+#define DA9053_CONTROL_C_REG		16
-+#define DA9053_CONTROL_D_REG		17
-+
-+#define DA9053_PDDIS_REG		18
-+#define DA9053_INTERFACE_REG		19
-+#define DA9053_RESET_REG		20
-+
-+/* FAULT LOG REGISTER BITS */
-+#define DA9053_FAULTLOG_WAITSET		0X80
-+#define DA9053_FAULTLOG_NSDSET		0X40
-+#define DA9053_FAULTLOG_KEYSHUT		0X20
-+#define DA9053_FAULTLOG_TEMPOVER	0X08
-+#define DA9053_FAULTLOG_VDDSTART	0X04
-+#define DA9053_FAULTLOG_VDDFAULT	0X02
-+#define DA9053_FAULTLOG_TWDERROR	0X01
-+
-+/* CONTROL REGISTER B BITS */
-+#define DA9053_CONTROLB_SHUTDOWN	0X80
-+#define DA9053_CONTROLB_DEEPSLEEP	0X40
-+#define DA9053_CONTROLB_WRITEMODE	0X20
-+#define DA9053_CONTROLB_BBATEN		0X10
-+#define DA9053_CONTROLB_OTPREADEN	0X08
-+#define DA9053_CONTROLB_AUTOBOOT	0X04
-+#define DA9053_CONTROLB_ACTDIODE	0X02
-+#define DA9053_CONTROLB_BUCKMERGE	0X01
-+
-+/* CONTROL REGISTER D BITS */
-+#define DA9053_CONTROLD_WATCHDOG	0X80
-+#define DA9053_CONTROLD_ACCDETEN	0X40
-+#define DA9053_CONTROLD_GPI1415SD	0X20
-+#define DA9053_CONTROLD_NONKEYSD	0X10
-+#define DA9053_CONTROLD_KEEPACTEN	0X08
-+#define DA9053_CONTROLD_TWDSCALE	0X07
-+
-+struct da9053_priv {
++struct da9063 {
++	struct restart_handler	restart;
 +	struct watchdog		wd;
 +	struct i2c_client	*client;
 +	struct device_d		*dev;
-+	struct restart_handler	restart;
 +};
 +
-+#define wd_to_da9053_priv(x)	container_of(x, struct da9053_priv, wd)
++/* System Control and Event Registers */
++#define DA9063_REG_FAULT_LOG	0x05
++#define DA9063_REG_CONTROL_D	0x11
++#define DA9063_REG_CONTROL_F	0x13
 +
-+static int da9053_reg_read(struct da9053_priv *da9053, u32 reg, u8 *val)
++/* DA9063_REG_FAULT_LOG (addr=0x05) */
++#define DA9063_TWD_ERROR	0x01
++#define DA9063_POR		0x02
++#define DA9063_NSHUTDOWN	0x40
++
++/* DA9063_REG_CONTROL_D (addr=0x11) */
++#define DA9063_TWDSCALE_MASK	0x07
++
++/* DA9063_REG_CONTROL_F (addr=0x13) */
++#define DA9063_SHUTDOWN		0x02
++
++static int da9063_watchdog_set_timeout(struct watchdog *wd, unsigned timeout)
 +{
-+	int ret;
-+
-+	ret = i2c_read_reg(da9053->client, reg, val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+static int da9053_reg_write(struct da9053_priv *da9053, u32 reg, u8 val)
-+{
-+	int ret;
-+
-+	ret = i2c_write_reg(da9053->client, reg, &val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+static int da9053_park(struct da9053_priv *da9053)
-+{
-+	int ret;
-+	u8 val;
-+
-+	ret = i2c_read_reg(da9053->client, DA9053_PARK_REGISTER, &val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+
-+static int da9053_enable_multiwrite(struct da9053_priv *da9053)
-+{
-+	int ret;
-+	u8 val;
-+
-+	ret = da9053_reg_read(da9053, DA9053_CONTROL_B_REG, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (val & DA9053_CONTROLB_WRITEMODE) {
-+		val &= ~DA9053_CONTROLB_WRITEMODE;
-+		ret = da9053_reg_write(da9053, DA9053_CONTROL_B_REG, val);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	ret = da9053_park(da9053);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int da9053_set_timeout(struct watchdog *wd, unsigned timeout)
-+{
-+	struct da9053_priv *da9053 = wd_to_da9053_priv(wd);
-+	struct device_d *dev = da9053->cdev.dev;
-+	unsigned scale = 0;
++	struct da9063 *priv = container_of(wd, struct da9063, wd);
++	struct device_d *dev = priv->dev;
++	unsigned int scale = 0;
 +	int ret;
 +	u8 val;
 +
@@ -236,149 +130,106 @@ index 0000000..3fb5295
 +		while (timeout > (2048 << scale) && scale <= 6)
 +			scale++;
 +		dev_dbg(dev, "calculated TWDSCALE=%u (req=%ims calc=%ims)\n",
-+		        scale, timeout, 2048 << scale);
++				scale, timeout, 2048 << scale);
 +		scale++; /* scale 0 disables the WD */
 +	}
 +
-+	ret = da9053_reg_read(da9053, DA9053_CONTROL_D_REG, &val);
++	ret = i2c_read_reg(priv->client, DA9063_REG_CONTROL_D, &val, 1);
 +	if (ret < 0)
 +		return ret;
 +
-+	dev_dbg(dev, "read watchdog (val=0x%02x)\n", val);
++	val &= ~DA9063_TWDSCALE_MASK;
++	val |= scale;
 +
-+	if (scale && scale == (val & DA9053_CONTROLD_TWDSCALE)) {
-+		/* trigger WD */
-+		val |= DA9053_CONTROLD_WATCHDOG;
-+		ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
-+		if (ret < 0)
-+			return ret;
-+		dev_dbg(dev, "triggered watchdog (val=0x%02x)\n", val);
-+	} else {
-+		/* disable WD first */
-+		val &= ~DA9053_CONTROLD_TWDSCALE;
-+		ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
-+		if (ret < 0)
-+			return ret;
-+
-+		dev_dbg(dev, "disabled watchdog (val=0x%02x)\n", val);
-+		if (scale) {
-+			/* park before waiting */
-+			ret = da9053_park(da9053);
-+			if (ret < 0)
-+				return ret;
-+
-+			/* wait required time */
-+			udelay(150);
-+
-+			/* enable WD with new timeout */
-+			val |= scale;
-+			ret = da9053_reg_write(da9053, DA9053_CONTROL_D_REG, val);
-+			if (ret < 0)
-+				return ret;
-+			dev_dbg(dev, "enabled watchdog (val=0x%02x)\n", val);
-+		}
-+	}
-+
-+	ret = da9053_park(da9053);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
++	return i2c_write_reg(priv->client, DA9063_REG_CONTROL_D, &val, 1);
 +}
 +
-+static void da9053_detect_reset_source(struct da9053_priv *da9053)
++static void da9063_detect_reset_source(struct da9063 *priv)
 +{
-+	unsigned int priority;
-+	enum reset_src_type type;
 +	int ret;
 +	u8 val;
++	unsigned int priority;
++	enum reset_src_type type;
 +
-+	ret = da9053_reg_read(da9053, DA9053_FAULTLOG_REG, &val);
++	ret = i2c_read_reg(priv->client, DA9063_REG_FAULT_LOG, &val, 1);
 +	if (ret < 0)
 +		return;
 +
-+	ret = da9053_park(da9053);
-+	if (ret < 0)
-+		return;
++	/* Write one to clear */
++	i2c_write_reg(priv->client, DA9063_REG_FAULT_LOG, &val, 1);
 +
-+	if (val & DA9053_FAULTLOG_TWDERROR)
++	if (val & DA9063_TWD_ERROR)
 +		type = RESET_WDG;
-+	else if (val & DA9053_FAULTLOG_VDDFAULT)
++	else if (val & DA9063_POR)
 +		type = RESET_POR;
-+	else if (val & DA9053_FAULTLOG_NSDSET)
++	else if (val & DA9063_NSHUTDOWN)
 +		type = RESET_RST;
 +	else
 +		return;
 +
-+	priority = of_get_reset_source_priority(da9053->dev->device_node);
++	priority = of_get_reset_source_priority(priv->dev->device_node);
 +
 +	reset_source_set_priority(type, priority);
 +}
 +
-+static void __noreturn da9053_force_system_reset(struct restart_handler *rst)
++static void da9063_restart(struct restart_handler *rst)
 +{
-+	struct da9053_priv *da9053 = container_of(rst, struct da9053_priv, restart);
-+	u8 val;
-+	int ret;
++	struct da9063 *priv = container_of(rst, struct da9063, restart);
 +
-+	ret = da9053_reg_read(da9053, DA9053_CONTROL_B_REG, &val);
-+	if (ret < 0)
-+		hang();
++	u8 val = DA9063_SHUTDOWN;
 +
-+	val |= DA9053_CONTROLB_SHUTDOWN;
-+	ret = da9053_reg_write(da9053, DA9053_CONTROL_B_REG, val);
-+	if (ret < 0)
-+		hang();
-+
-+	da9053_park(da9053);
-+
-+	hang();
++	i2c_write_reg(priv->client, DA9063_REG_CONTROL_F, &val, 1);
 +}
 +
-+static int da9053_probe(struct device_d *dev)
++static int da9063_probe(struct device_d *dev)
 +{
-+	struct da9053_priv *da9053;
++	struct da9063 *priv = NULL;
 +	int ret;
 +
-+	da9053 = xzalloc(sizeof(*da9053));
-+	da9053->dev = dev;
-+	da9053->cdev.name = DRIVERNAME;
-+	da9053->client = to_i2c_client(dev);
-+	da9053->wd.set_timeout = da9053_set_timeout;
-+	da9053->wd.priority = of_get_watchdog_priority(dev->device_node);
-+	da9053->wd.dev = dev;
++	priv = xzalloc(sizeof(struct da9063));
++	priv->wd.priority = of_get_watchdog_priority(dev->device_node);
++	priv->wd.set_timeout = da9063_watchdog_set_timeout;
++	priv->wd.dev = dev;
++	priv->client = to_i2c_client(dev);
++	priv->dev = dev;
 +
-+	ret = da9053_enable_multiwrite(da9053);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = watchdog_register(&da9053->wd);
++	ret = watchdog_register(&priv->wd);
 +	if (ret)
-+		return ret;
++		goto on_error;
 +
-+	da9053_detect_reset_source(da9053);
++	da9063_detect_reset_source(priv);
 +
-+	da9053->restart.priority = of_get_restart_priority(dev->device_node);
-+	da9053->restart.name = "da9063";
-+	da9053->restart.restart = &da9053_force_system_reset;
++	priv->restart.priority = of_get_restart_priority(dev->device_node);
++	priv->restart.name = "da9063";
++	priv->restart.restart = &da9063_restart;
 +
-+	restart_handler_register(&da9053->restart);
++	restart_handler_register(&priv->restart);
 +
 +	return 0;
++
++on_error:
++	if (priv)
++		free(priv);
++	return ret;
 +}
 +
-+static struct driver_d da9053_driver = {
-+	.name  = DRIVERNAME,
-+	.probe = da9053_probe,
++static struct platform_device_id da9063_id[] = {
++        { "da9063", },
++	{ }
 +};
 +
-+static int da9053_init(void)
++static struct driver_d da9063_driver = {
++	.name = "da9063",
++	.probe = da9063_probe,
++	.id_table = da9063_id,
++};
++
++static int da9063_init(void)
 +{
-+	i2c_driver_register(&da9053_driver);
-+	return 0;
++	return i2c_driver_register(&da9063_driver);
 +}
 +
-+device_initcall(da9053_init);
++device_initcall(da9063_init);
 -- 
 2.5.0
 
