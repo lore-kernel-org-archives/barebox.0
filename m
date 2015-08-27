@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZV5bB-0004AB-MF
- for barebox@lists.infradead.org; Thu, 27 Aug 2015 22:24:47 +0000
-Received: by labia3 with SMTP id ia3so21640575lab.3
- for <barebox@lists.infradead.org>; Thu, 27 Aug 2015 15:24:23 -0700 (PDT)
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+ by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
+ id 1ZV5bH-0002Dx-9d
+ for barebox@lists.infradead.org; Thu, 27 Aug 2015 22:24:52 +0000
+Received: by laba3 with SMTP id a3so21657504lab.1
+ for <barebox@lists.infradead.org>; Thu, 27 Aug 2015 15:24:27 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 28 Aug 2015 01:24:05 +0300
-Message-Id: <1440714250-28080-5-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 28 Aug 2015 01:24:10 +0300
+Message-Id: <1440714250-28080-10-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
 References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,105 +23,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 4/9] MIPS: add trivial dma support
+Subject: [RFC 9/9] MIPS: tplink-mr3020_defconfig: enable usb stuff
 To: barebox@lists.infradead.org
-Cc: Antony Pavlov <antony@niisi.msk.ru>, Peter Mamonov <pmamonov@gmail.com>
-
-From: Antony Pavlov <antony@niisi.msk.ru>
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Kconfig                   |  1 +
- arch/mips/include/asm/dma-mapping.h |  1 +
- arch/mips/include/asm/dma.h         |  5 +++++
- arch/mips/lib/Makefile              |  1 +
- arch/mips/lib/dma-default.c         | 28 ++++++++++++++++++++++++++++
- 5 files changed, 36 insertions(+)
+ arch/mips/configs/tplink-mr3020_defconfig | 49 +++++++++++++++++++++----------
+ 1 file changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index aeb5c04..e806baa 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -6,6 +6,7 @@ config MIPS
- 	select HAS_KALLSYMS
- 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
- 	select HAVE_CONFIGURABLE_TEXT_BASE
-+	select HAS_DMA
- 	default y
- 
- config SYS_SUPPORTS_BIG_ENDIAN
-diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
-index 6395112..eb516a1 100644
---- a/arch/mips/include/asm/dma-mapping.h
-+++ b/arch/mips/include/asm/dma-mapping.h
-@@ -1,6 +1,7 @@
- #ifndef _ASM_DMA_MAPPING_H
- #define _ASM_DMA_MAPPING_H
- 
-+#include <common.h>
- #include <xfuncs.h>
- #include <asm/addrspace.h>
- #include <asm/types.h>
-diff --git a/arch/mips/include/asm/dma.h b/arch/mips/include/asm/dma.h
-index 30a58c7..f68df13 100644
---- a/arch/mips/include/asm/dma.h
-+++ b/arch/mips/include/asm/dma.h
-@@ -10,4 +10,9 @@
- 
- #include "asm/dma-mapping.h"
- 
-+void dma_sync_single_for_cpu(unsigned long address, size_t size,
-+					   enum dma_data_direction dir);
-+void dma_sync_single_for_device(unsigned long address, size_t size,
-+					      enum dma_data_direction dir);
-+
- #endif /* __ASM_DMA_H */
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 71c4f6b..d2fc3f8 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -6,6 +6,7 @@ obj-y += ashrdi3.o
- obj-y += cpu-probe.o
- obj-y += traps.o
- obj-y += genex.o
-+obj-y += dma-default.o
- 
- obj-$(CONFIG_CPU_MIPS32) += c-r4k.o
- obj-$(CONFIG_CPU_MIPS64) += c-r4k.o
-diff --git a/arch/mips/lib/dma-default.c b/arch/mips/lib/dma-default.c
-new file mode 100644
-index 0000000..5e77ae1
---- /dev/null
-+++ b/arch/mips/lib/dma-default.c
-@@ -0,0 +1,28 @@
-+/*
-+ * Copyright (C) 2015 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <dma.h>
-+
-+void dma_sync_single_for_cpu(unsigned long address, size_t size,
-+			     enum dma_data_direction dir)
-+{
-+}
-+
-+void dma_sync_single_for_device(unsigned long address, size_t size,
-+				enum dma_data_direction dir)
-+{
-+}
+diff --git a/arch/mips/configs/tplink-mr3020_defconfig b/arch/mips/configs/tplink-mr3020_defconfig
+index 9f81ce3..e8e3209 100644
+--- a/arch/mips/configs/tplink-mr3020_defconfig
++++ b/arch/mips/configs/tplink-mr3020_defconfig
+@@ -1,34 +1,51 @@
+ CONFIG_BUILTIN_DTB=y
+ CONFIG_BUILTIN_DTB_NAME="tplink-mr3020"
+ CONFIG_MACH_MIPS_ATH79=y
+-CONFIG_LONGHELP=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_LET=y
+-CONFIG_CMD_GLOBAL=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++# CONFIG_CMD_BOOTM is not set
++CONFIG_CMD_GO=y
+ CONFIG_CMD_LOADB=y
+ CONFIG_CMD_LOADY=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MM=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GLOBAL=y
+ CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_HOST=y
++CONFIG_NET_CMD_IFUP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
+ CONFIG_CMD_FLASH=y
+-# CONFIG_CMD_BOOTM is not set
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_SPI=y
+-CONFIG_CMD_CLK=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_AR933X=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_ASIX=y
++CONFIG_NET_USB_SMSC95XX=y
+ CONFIG_DRIVER_SPI_ATH79=y
+ CONFIG_MTD=y
+ # CONFIG_MTD_OOB_DEVICE is not set
+ CONFIG_MTD_M25P80=y
+-CONFIG_MD5=y
++CONFIG_USB_STORAGE=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_LFN=y
+ CONFIG_DIGEST_SHA224_GENERIC=y
+ CONFIG_DIGEST_SHA256_GENERIC=y
 -- 
 2.5.0
 
