@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZUz4k-0006fK-LR
- for barebox@lists.infradead.org; Thu, 27 Aug 2015 15:26:51 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Aug 2015 17:26:12 +0200
-Message-Id: <1440689174-731-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1440689174-731-1-git-send-email-s.hauer@pengutronix.de>
-References: <1440689174-731-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZV0Kb-0002GB-Hz
+ for barebox@lists.infradead.org; Thu, 27 Aug 2015 16:47:18 +0000
+Received: by lbbtg9 with SMTP id tg9so15202110lbb.1
+ for <barebox@lists.infradead.org>; Thu, 27 Aug 2015 09:46:55 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu, 27 Aug 2015 19:48:31 +0300
+Message-Id: <1440694111-1088-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] login: check return value of digest_alloc
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [RFC] usb: ehci-hcd: add OF bindings
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-digest_alloc can fail, check the return value.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- common/password.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/host/ehci-hcd.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/common/password.c b/common/password.c
-index 0cb79b8..43c5e0c 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -288,6 +288,10 @@ static int check_passwd(unsigned char *passwd, size_t length)
- 		hash_len = PBKDF2_LENGTH;
- 	} else {
- 		d = digest_alloc(PASSWD_SUM);
-+		if (!d) {
-+			pr_err("No such digest: %s\n", PASSWD_SUM);
-+			return -ENOENT;
-+		}
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 1146b71..ef555eb 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -940,12 +940,16 @@ static int ehci_probe(struct device_d *dev)
+ {
+ 	struct ehci_data data = {};
+ 	struct ehci_platform_data *pdata = dev->platform_data;
++	struct device_node *dn = dev->device_node;
++	uint32_t flags;
  
- 		hash_len = digest_length(d);
- 	}
+ 	/* default to EHCI_HAS_TT to not change behaviour of boards
+ 	 * without platform_data
+ 	 */
+ 	if (pdata)
+ 		data.flags = pdata->flags;
++	else if (dn && of_property_read_u32(dn, "flags", &flags) == 0)
++		data.flags = flags;
+ 	else
+ 		data.flags = EHCI_HAS_TT;
+ 
+@@ -967,9 +971,18 @@ static void ehci_remove(struct device_d *dev)
+ 	ehci_halt(ehci);
+ }
+ 
++static __maybe_unused struct of_device_id ehci_platform_dt_ids[] = {
++	{
++		.compatible = "generic-ehci",
++	}, {
++		/* sentinel */
++	}
++};
++
+ static struct driver_d ehci_driver = {
+ 	.name  = "ehci",
+ 	.probe = ehci_probe,
+ 	.remove = ehci_remove,
++	.of_compatible = DRV_OF_COMPAT(ehci_platform_dt_ids),
+ };
+ device_platform_driver(ehci_driver);
 -- 
-2.5.0
+2.1.4
 
 
 _______________________________________________
