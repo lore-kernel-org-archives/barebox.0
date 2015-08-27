@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZUz4Y-0005yh-Ep
+ id 1ZUz4Y-0005yg-Et
  for barebox@lists.infradead.org; Thu, 27 Aug 2015 15:26:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 27 Aug 2015 17:26:13 +0200
-Message-Id: <1440689174-731-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 27 Aug 2015 17:26:11 +0200
+Message-Id: <1440689174-731-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1440689174-731-1-git-send-email-s.hauer@pengutronix.de>
 References: <1440689174-731-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,126 +21,159 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] crypto: fix selecting of digests
+Subject: [PATCH 2/5] login: cleanup password code
 To: Barebox List <barebox@lists.infradead.org>
 
-SHA1 is meant as a boolean option which is true when sha1 support is available.
-This works because the providers (DIGEST_SHA1_GENERIC and DIGEST_SHA1_ARM) have
-a 'select SHA1'. However, consumers like the sha1sum command do a 'select SHA1'
-to enable SHA1 support. This of course does not work; selecting SHA1 will not
-select any of the SHA1 providers.
-
-This is broken for all digest consumers. We have to explicitly select a digest
-provider, that is DIGEST_*_GENERIC to enable the corresponding digest.
-
-This means now we will always have the generic digest in the binary, even
-when an optimized one is enabled. There is no sane way in Kconfig to
-"select provider for feature xy", so let's live with the overhead in the binary.
+- make some locally used functions static
+- remove read_passwd which is unused
+- some refactoring to make code pathes clearer
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig | 12 ++++++------
- common/Kconfig   |  8 ++++----
- crypto/Kconfig   |  2 +-
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ common/password.c  | 48 +++++++++---------------------------------------
+ include/password.h | 20 +-------------------
+ 2 files changed, 10 insertions(+), 58 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 133dcbf..c2c42cc 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -928,7 +928,7 @@ config CMD_LS
- config CMD_MD5SUM
- 	tristate
- 	select COMPILE_HASH
--	select MD5
-+	select DIGEST_MD5_GENERIC
- 	prompt "md5sum"
- 	help
- 	  Usage: md5sum FILE|AREA...
-@@ -993,7 +993,7 @@ config CMD_RMDIR
- config CMD_SHA1SUM
- 	tristate
- 	select COMPILE_HASH
--	select SHA1
-+	select DIGEST_SHA1_GENERIC
- 	prompt "sha1sum"
- 	help
- 	  Calculate SHA1 digest
-@@ -1005,7 +1005,7 @@ config CMD_SHA1SUM
- config CMD_SHA224SUM
- 	tristate
- 	select COMPILE_HASH
--	select SHA224
-+	select DIGEST_SHA224_GENERIC
- 	prompt "sha224sum"
- 	help
- 	  Calculate SHA224 digest
-@@ -1017,7 +1017,7 @@ config CMD_SHA224SUM
- config CMD_SHA256SUM
- 	tristate
- 	select COMPILE_HASH
--	select SHA256
-+	select DIGEST_SHA256_GENERIC
- 	prompt "sha256sum"
- 	help
- 	  sha256sum - calculate SHA256 digest
-@@ -1029,7 +1029,7 @@ config CMD_SHA256SUM
- config CMD_SHA384SUM
- 	tristate
- 	select COMPILE_HASH
--	select SHA384
-+	select DIGEST_SHA384_GENERIC
- 	prompt "sha384sum"
- 	help
- 	  Calculate SHA384 digest
-@@ -1041,7 +1041,7 @@ config CMD_SHA384SUM
- config CMD_SHA512SUM
- 	tristate
- 	select COMPILE_HASH
--	select SHA512
-+	select DIGEST_SHA512_GENERIC
- 	prompt "sha512sum"
- 	help
- 	  sha512sum - calculate SHA512 digest
-diff --git a/common/Kconfig b/common/Kconfig
-index 8c6ba7f..03a0dc9 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -460,19 +460,19 @@ choice
+diff --git a/common/password.c b/common/password.c
+index 6532143..0cb79b8 100644
+--- a/common/password.c
++++ b/common/password.c
+@@ -158,17 +158,7 @@ static unsigned char to_hexa(unsigned char c)
+ 	return c;
+ }
  
- config PASSWD_SUM_MD5
- 	bool "MD5"
--	select MD5
-+	select DIGEST_MD5_GENERIC
+-int read_passwd(unsigned char *sum, size_t length)
+-{
+-	if (is_passwd_env_enable())
+-		return read_env_passwd(sum, length);
+-	else if (is_passwd_default_enable())
+-		return read_default_passwd(sum, length);
+-	else
+-		return -EINVAL;
+-}
+-
+-int read_default_passwd(unsigned char *sum, size_t length)
++static int read_default_passwd(unsigned char *sum, size_t length)
+ {
+ 	int i = 0;
+ 	int len = strlen(default_passwd);
+@@ -195,7 +185,7 @@ int read_default_passwd(unsigned char *sum, size_t length)
+ }
+ EXPORT_SYMBOL(read_default_passwd);
  
- config PASSWD_SUM_SHA1
- 	bool "SHA1"
--	select SHA1
-+	select DIGEST_SHA1_GENERIC
+-int read_env_passwd(unsigned char *sum, size_t length)
++static int read_env_passwd(unsigned char *sum, size_t length)
+ {
+ 	int fd;
+ 	int ret = 0;
+@@ -286,7 +276,7 @@ exit:
+ }
+ EXPORT_SYMBOL(write_env_passwd);
  
- config PASSWD_SUM_SHA256
- 	bool "SHA256"
--	select SHA256
-+	select DIGEST_SHA256_GENERIC
+-static int __check_passwd(unsigned char* passwd, size_t length, int std)
++static int check_passwd(unsigned char *passwd, size_t length)
+ {
+ 	struct digest *d = NULL;
+ 	unsigned char *passwd1_sum;
+@@ -308,10 +298,12 @@ static int __check_passwd(unsigned char* passwd, size_t length, int std)
  
- config PASSWD_SUM_SHA512
- 	bool "SHA512"
--	select SHA512
-+	select DIGEST_SHA512_GENERIC
+ 	passwd2_sum = passwd1_sum + hash_len;
  
- config PASSWD_CRYPTO_PBKDF2
- 	bool "PBKDF2"
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 24f8b41..ef807de 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -82,5 +82,5 @@ endif
+-	if (std)
++	if (is_passwd_env_enable())
+ 		ret = read_env_passwd(passwd2_sum, hash_len);
+-	else
++	else if (is_passwd_default_enable())
+ 		ret = read_default_passwd(passwd2_sum, hash_len);
++	else
++		ret = -EINVAL;
  
- config CRYPTO_PBKDF2
- 	select DIGEST
--	select SHA1
-+	select DIGEST_SHA1_GENERIC
- 	bool
+ 	if (ret < 0)
+ 		goto err;
+@@ -345,28 +337,6 @@ err:
+ 	return ret;
+ }
+ 
+-int check_default_passwd(unsigned char* passwd, size_t length)
+-{
+-	return __check_passwd(passwd, length, 0);
+-}
+-EXPORT_SYMBOL(check_default_passwd);
+-
+-int check_env_passwd(unsigned char* passwd, size_t length)
+-{
+-	return __check_passwd(passwd, length, 1);
+-}
+-EXPORT_SYMBOL(check_env_passwd);
+-
+-int check_passwd(unsigned char* passwd, size_t length)
+-{
+-	if (is_passwd_env_enable())
+-		return check_env_passwd(passwd, length);
+-	else if (is_passwd_default_enable())
+-		return check_default_passwd(passwd, length);
+-	else
+-		return -EINVAL;
+-}
+-
+ int set_env_passwd(unsigned char* passwd, size_t length)
+ {
+ 	struct digest *d = NULL;
+@@ -423,7 +393,7 @@ EXPORT_SYMBOL(set_env_passwd);
+ #endif
+ 
+ static int logged_in;
+-static int login_timeout;
++static int login_timeout = 60;
+ static char *login_fail_command;
+ 
+ /**
+@@ -438,7 +408,7 @@ void login(void)
+ 	unsigned char passwd[PASSWD_MAX_LENGTH];
+ 	int ret;
+ 
+-	if (!is_passwd_enable())
++	if (!is_passwd_default_enable() && !is_passwd_env_enable())
+ 		return;
+ 
+ 	if (logged_in)
+diff --git a/include/password.h b/include/password.h
+index fec831f..8b99618 100644
+--- a/include/password.h
++++ b/include/password.h
+@@ -26,21 +26,8 @@
+ #define CLEAR	(1 << 2)
+ 
+ int password(unsigned char *passwd, size_t length, int flags, int timeout);
+-
+-int read_passwd(unsigned char *sum, size_t length);
+-int check_passwd(unsigned char* passwd, size_t length);
+-
+-int read_env_passwd(unsigned char *sum, size_t length);
+-int write_env_passwd(unsigned char *sum, size_t length);
+-
+-int read_default_passwd(unsigned char *sum, size_t length);
+-int is_passwd_default_enable(void);
+-int check_default_passwd(unsigned char* passwd, size_t length);
+-
+-int is_passwd_env_enable(void);
+ int passwd_env_disable(void);
+-int check_env_passwd(unsigned char* passwd, size_t length);
+-int set_env_passwd(unsigned char* passwd, size_t length);
++int set_env_passwd(unsigned char *passwd, size_t length);
+ 
+ #ifdef CONFIG_PASSWORD
+ void login(void);
+@@ -50,9 +37,4 @@ static inline void login(void)
+ }
+ #endif
+ 
+-static inline int is_passwd_enable(void)
+-{
+-	return is_passwd_default_enable() || is_passwd_env_enable();
+-}
+-
+ #endif /* __PASSWORD_H__ */
 -- 
 2.5.0
 
