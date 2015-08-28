@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZWQly-0001NP-6D
- for barebox@lists.infradead.org; Mon, 31 Aug 2015 15:13:26 +0000
+ id 1ZVFhz-0005vk-DN
+ for barebox@lists.infradead.org; Fri, 28 Aug 2015 09:12:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 31 Aug 2015 17:12:45 +0200
-Message-Id: <1441033966-14045-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1441033966-14045-1-git-send-email-s.hauer@pengutronix.de>
-References: <1441033966-14045-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Aug 2015 11:12:03 +0200
+Message-Id: <1440753123-26716-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,136 +19,136 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] spi: i.MX: create SoC specific transfer functions
+Subject: [PATCH] mtd: spi-nor: mostly drop lock/unlock code
 To: Barebox List <barebox@lists.infradead.org>
 
-There are SoC specific ways to optimize transfers. Make the way free
-to implement these by creating SoC specific transfer functions.
+The lock/unlock code is broken beyond repair.
+
+First of all the algorithm doesn't work properly. SPI NOR flashes
+can only protect a certain amount of blocks from the end of the device
+which is incompatible to the protect(start,len) API we have. The
+algorithm tries to be clever by doing protection only when it does
+not protect unrelated blocks and unprotection only when it does not
+unprotect unrelated blocks. This breaks for example when some code
+protects the last blocks (which may contain the bootloader), then
+protects the blocks before the last ones (which may contain the
+environment). Then if we try to overwrite the bootloader this won't
+work since it would unprotect the environment aswell, so the driver
+will not unprotect anything resulting in a failed erase/write later.
+
+Then the protection behaviour is different between different flashes.
+Some have three protection bits, some have four. For some the smallest
+protection are is 1/16 of the device, others have 1/256 or 1/64. Some
+have a bit which selects the lower area instead of upper area for
+protection. The position of this bit differs on different flashes.
+
+This patch removes the lock code completely and always unprotects
+the whole device. This way we can unprotect a device for writing to
+it and never protect it again.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/imx_spi.c | 45 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 14 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 74 +++++--------------------------------------
+ 1 file changed, 8 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 81fa3b0..9a3f05c 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -39,11 +39,18 @@ struct imx_spi {
- 	struct clk		*clk;
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index edf0dd5..32501a9 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -370,85 +370,27 @@ erase_err:
  
- 	unsigned int		(*xchg_single)(struct imx_spi *imx, u32 data);
-+	void			(*do_transfer)(struct spi_device *spi);
- 	void			(*chipselect)(struct spi_device *spi, int active);
-+
-+	const void *tx_buf;
-+	void *rx_buf;
-+	int xfer_len;
-+	int bits_per_word;
- };
- 
- struct spi_imx_devtype_data {
- 	unsigned int		(*xchg_single)(struct imx_spi *imx, u32 data);
-+	void			(*do_transfer)(struct spi_device *spi);
- 	void			(*chipselect)(struct spi_device *spi, int active);
- 	void			(*init)(struct imx_spi *imx);
- };
-@@ -332,38 +339,39 @@ static u32 imx_xchg_single(struct spi_device *spi, u32 tx_val)
- 	return imx_spi_maybe_reverse_bits(spi, rx_val);
+ static int spi_nor_lock(struct mtd_info *mtd, loff_t ofs, size_t len)
+ {
+-	struct spi_nor *nor = mtd_to_spi_nor(mtd);
+-	uint32_t offset = ofs;
+-	uint8_t status_old, status_new;
+-	int ret = 0;
+-
+-	ret = spi_nor_lock_and_prep(nor, SPI_NOR_OPS_LOCK);
+-	if (ret)
+-		return ret;
+-
+-	status_old = read_sr(nor);
+-
+-	if (offset < mtd->size - (mtd->size / 2))
+-		status_new = status_old | SR_BP2 | SR_BP1 | SR_BP0;
+-	else if (offset < mtd->size - (mtd->size / 4))
+-		status_new = (status_old & ~SR_BP0) | SR_BP2 | SR_BP1;
+-	else if (offset < mtd->size - (mtd->size / 8))
+-		status_new = (status_old & ~SR_BP1) | SR_BP2 | SR_BP0;
+-	else if (offset < mtd->size - (mtd->size / 16))
+-		status_new = (status_old & ~(SR_BP0 | SR_BP1)) | SR_BP2;
+-	else if (offset < mtd->size - (mtd->size / 32))
+-		status_new = (status_old & ~SR_BP2) | SR_BP1 | SR_BP0;
+-	else if (offset < mtd->size - (mtd->size / 64))
+-		status_new = (status_old & ~(SR_BP2 | SR_BP0)) | SR_BP1;
+-	else
+-		status_new = (status_old & ~(SR_BP2 | SR_BP1)) | SR_BP0;
+-
+-	/* Only modify protection if it will not unlock other areas */
+-	if ((status_new & (SR_BP2 | SR_BP1 | SR_BP0)) >
+-				(status_old & (SR_BP2 | SR_BP1 | SR_BP0))) {
+-		write_enable(nor);
+-		ret = write_sr(nor, status_new);
+-		if (ret)
+-			goto err;
+-	}
+-
+-err:
+-	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_LOCK);
+-	return ret;
++	return 0;
  }
  
--static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
-+static void imx_spi_do_transfer(struct spi_device *spi)
+ static int spi_nor_unlock(struct mtd_info *mtd, loff_t ofs, size_t len)
  {
-+	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
- 	unsigned i;
+ 	struct spi_nor *nor = mtd_to_spi_nor(mtd);
+-	uint32_t offset = ofs;
+-	uint8_t status_old, status_new;
+-	int ret = 0;
++	uint8_t status;
++	int ret;
  
--	if (spi->bits_per_word <= 8) {
--		const u8	*tx_buf = t->tx_buf;
--		u8		*rx_buf = t->rx_buf;
-+	if (imx->bits_per_word <= 8) {
-+		const u8	*tx_buf = imx->tx_buf;
-+		u8		*rx_buf = imx->rx_buf;
- 		u8		rx_val;
+ 	ret = spi_nor_lock_and_prep(nor, SPI_NOR_OPS_UNLOCK);
+ 	if (ret)
+ 		return ret;
  
--		for (i = 0; i < t->len; i++) {
-+		for (i = 0; i < imx->xfer_len; i++) {
- 			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
+-	status_old = read_sr(nor);
+-
+-	if (offset+len > mtd->size - (mtd->size / 64))
+-		status_new = status_old & ~(SR_BP2 | SR_BP1 | SR_BP0);
+-	else if (offset+len > mtd->size - (mtd->size / 32))
+-		status_new = (status_old & ~(SR_BP2 | SR_BP1)) | SR_BP0;
+-	else if (offset+len > mtd->size - (mtd->size / 16))
+-		status_new = (status_old & ~(SR_BP2 | SR_BP0)) | SR_BP1;
+-	else if (offset+len > mtd->size - (mtd->size / 8))
+-		status_new = (status_old & ~SR_BP2) | SR_BP1 | SR_BP0;
+-	else if (offset+len > mtd->size - (mtd->size / 4))
+-		status_new = (status_old & ~(SR_BP0 | SR_BP1)) | SR_BP2;
+-	else if (offset+len > mtd->size - (mtd->size / 2))
+-		status_new = (status_old & ~SR_BP1) | SR_BP2 | SR_BP0;
+-	else
+-		status_new = (status_old & ~SR_BP0) | SR_BP2 | SR_BP1;
++	status = read_sr(nor);
++	status &= ~(SR_BP2 | SR_BP1 | SR_BP0);
++	write_enable(nor);
  
- 			if (rx_buf)
- 				rx_buf[i] = rx_val;
- 		}
--	} else if (spi->bits_per_word <= 16) {
--		const u16	*tx_buf = t->tx_buf;
--		u16		*rx_buf = t->rx_buf;
-+	} else if (imx->bits_per_word <= 16) {
-+		const u16	*tx_buf = imx->tx_buf;
-+		u16		*rx_buf = imx->rx_buf;
- 		u16		rx_val;
+-	/* Only modify protection if it will not lock other areas */
+-	if ((status_new & (SR_BP2 | SR_BP1 | SR_BP0)) <
+-				(status_old & (SR_BP2 | SR_BP1 | SR_BP0))) {
+-		write_enable(nor);
+-		ret = write_sr(nor, status_new);
+-		if (ret)
+-			goto err;
+-	}
++	ret = write_sr(nor, status);
  
--		for (i = 0; i < t->len >> 1; i++) {
-+		for (i = 0; i < imx->xfer_len >> 1; i++) {
- 			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
- 
- 			if (rx_buf)
- 				rx_buf[i] = rx_val;
- 		}
--	} else if (spi->bits_per_word <= 32) {
--		const u32	*tx_buf = t->tx_buf;
--		u32		*rx_buf = t->rx_buf;
-+	} else if (imx->bits_per_word <= 32) {
-+		const u32	*tx_buf = imx->tx_buf;
-+		u32		*rx_buf = imx->rx_buf;
- 		u32		rx_val;
- 
--		for (i = 0; i < t->len >> 2; i++) {
-+		for (i = 0; i < imx->xfer_len >> 2; i++) {
- 			rx_val = imx_xchg_single(spi, tx_buf ? tx_buf[i] : 0);
- 
- 			if (rx_buf)
-@@ -395,7 +403,12 @@ static int imx_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
- 
- 		cs_change = t->cs_change;
- 
--		imx_spi_do_transfer(spi, t);
-+		imx->tx_buf = t->tx_buf;
-+		imx->rx_buf = t->rx_buf;
-+		imx->xfer_len = t->len;
-+		imx->bits_per_word = spi->bits_per_word;
-+		imx->do_transfer(spi);
+-err:
+ 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_UNLOCK);
 +
- 		mesg->actual_length += t->len;
+ 	return ret;
+ }
  
- 		if (cs_change)
-@@ -411,17 +424,20 @@ static int imx_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
- static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_0_0 = {
- 	.chipselect = cspi_0_0_chipselect,
- 	.xchg_single = cspi_0_0_xchg_single,
-+	.do_transfer = imx_spi_do_transfer,
- 	.init = cspi_0_0_init,
- };
- 
- static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_0_7 = {
- 	.chipselect = cspi_0_7_chipselect,
- 	.xchg_single = cspi_0_7_xchg_single,
-+	.do_transfer = imx_spi_do_transfer,
- 	.init = cspi_0_7_init,
- };
- 
- static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_2_3 = {
- 	.chipselect = cspi_2_3_chipselect,
-+	.do_transfer = imx_spi_do_transfer,
- 	.xchg_single = cspi_2_3_xchg_single,
- };
- 
-@@ -486,6 +502,7 @@ static int imx_spi_probe(struct device_d *dev)
- 
- 	imx->chipselect = devdata->chipselect;
- 	imx->xchg_single = devdata->xchg_single;
-+	imx->do_transfer = devdata->do_transfer;
- 	imx->regs = dev_request_mem_region(dev, 0);
- 
- 	if (devdata->init)
 -- 
 2.5.0
 
