@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZVHSi-000725-09
- for barebox@lists.infradead.org; Fri, 28 Aug 2015 11:04:48 +0000
-Received: by lbbtg9 with SMTP id tg9so28001747lbb.1
- for <barebox@lists.infradead.org>; Fri, 28 Aug 2015 04:04:25 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Fri, 28 Aug 2015 14:06:25 +0300
-Message-Id: <1440759985-17499-1-git-send-email-pmamonov@gmail.com>
+ id 1ZVLjb-0007pF-3G
+ for barebox@lists.infradead.org; Fri, 28 Aug 2015 15:38:31 +0000
+Received: by laba3 with SMTP id a3so34840961lab.1
+ for <barebox@lists.infradead.org>; Fri, 28 Aug 2015 08:38:09 -0700 (PDT)
+Date: Fri, 28 Aug 2015 18:46:14 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150828184614.d0ec3d17f1800be9093f7fa3@gmail.com>
+In-Reply-To: <20150828063432.GA18700@pengutronix.de>
+References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
+ <1440714250-28080-4-git-send-email-antonynpavlov@gmail.com>
+ <20150828063432.GA18700@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,69 +21,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] usb: ehci-hcd: add OF bindings
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [RFC 3/9] MIPS: add virt_to_phys() and phys_to_virt()
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
----
- drivers/usb/host/ehci-hcd.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+On Fri, 28 Aug 2015 08:34:32 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 1146b71..1077ac4 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -940,13 +940,18 @@ static int ehci_probe(struct device_d *dev)
- {
- 	struct ehci_data data = {};
- 	struct ehci_platform_data *pdata = dev->platform_data;
-+	struct device_node *dn = dev->device_node;
- 
--	/* default to EHCI_HAS_TT to not change behaviour of boards
--	 * without platform_data
--	 */
- 	if (pdata)
- 		data.flags = pdata->flags;
--	else
-+	else if (dn) {
-+		data.flags = 0;
-+		if (of_property_read_bool(dn, "has-transaction-translator"))
-+			data.flags |= EHCI_HAS_TT;
-+	} else
-+		/* default to EHCI_HAS_TT to not change behaviour of boards
-+		 * without platform_data
-+		 */
- 		data.flags = EHCI_HAS_TT;
- 
- 	data.hccr = dev_request_mem_region(dev, 0);
-@@ -967,9 +972,18 @@ static void ehci_remove(struct device_d *dev)
- 	ehci_halt(ehci);
- }
- 
-+static __maybe_unused struct of_device_id ehci_platform_dt_ids[] = {
-+	{
-+		.compatible = "generic-ehci",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
- static struct driver_d ehci_driver = {
- 	.name  = "ehci",
- 	.probe = ehci_probe,
- 	.remove = ehci_remove,
-+	.of_compatible = DRV_OF_COMPAT(ehci_platform_dt_ids),
- };
- device_platform_driver(ehci_driver);
--- 
-2.1.4
+> On Fri, Aug 28, 2015 at 01:24:04AM +0300, Antony Pavlov wrote:
+> > N.B. phys_to_virt() translates phys address
+> > to KSEG1 (uncached) address as barebox mips
+> > has no cache support.
+> =
 
+> What would it take to implement cache support for mips?
+lack of the cache support is critical problem for current barebox mips supp=
+ort.
+I'm planning to add cache support in several weeks.
+This task needs much test efforts for different boards.
+
+Anyway I can't carry out cache adding work at one.
+But adding virt_to_phys and DMA support will help to add cache support one =
+day anyway.
+
+> The u-boot mips
+> cache code seems quite straight forward.
+
+AFAIR u-boot has only mips L1 cache support.
+AFAIK Paul Burton works on adding L2 cache support but current mainline
+u-boot repo has no such code.
+
+> With cache support you could
+> use several drivers as they are and wouldn't have to introduce
+> physical/virtual translations. I'm afraid these translations will be
+> broken quite soon as they get tested only on Mips.
+
+I hope somebody will test my EHCI patch on ARM :)
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
