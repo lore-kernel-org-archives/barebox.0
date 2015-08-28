@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZVLjb-0007pF-3G
- for barebox@lists.infradead.org; Fri, 28 Aug 2015 15:38:31 +0000
-Received: by laba3 with SMTP id a3so34840961lab.1
- for <barebox@lists.infradead.org>; Fri, 28 Aug 2015 08:38:09 -0700 (PDT)
-Date: Fri, 28 Aug 2015 18:46:14 +0300
+ id 1ZVLmu-0001ZM-1Y
+ for barebox@lists.infradead.org; Fri, 28 Aug 2015 15:41:56 +0000
+Received: by laba3 with SMTP id a3so34909428lab.1
+ for <barebox@lists.infradead.org>; Fri, 28 Aug 2015 08:41:34 -0700 (PDT)
+Date: Fri, 28 Aug 2015 18:49:39 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150828184614.d0ec3d17f1800be9093f7fa3@gmail.com>
-In-Reply-To: <20150828063432.GA18700@pengutronix.de>
+Message-Id: <20150828184939.b90155d77eaa3333c44899be@gmail.com>
+In-Reply-To: <20150828061900.GZ18700@pengutronix.de>
 References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
- <1440714250-28080-4-git-send-email-antonynpavlov@gmail.com>
- <20150828063432.GA18700@pengutronix.de>
+ <1440714250-28080-8-git-send-email-antonynpavlov@gmail.com>
+ <20150828061900.GZ18700@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,42 +25,49 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/9] MIPS: add virt_to_phys() and phys_to_virt()
+Subject: Re: [RFC 7/9] usb: ehci: add big-endian registers support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Fri, 28 Aug 2015 08:34:32 +0200
+On Fri, 28 Aug 2015 08:19:00 +0200
 Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> On Fri, Aug 28, 2015 at 01:24:04AM +0300, Antony Pavlov wrote:
-> > N.B. phys_to_virt() translates phys address
-> > to KSEG1 (uncached) address as barebox mips
-> > has no cache support.
+> On Fri, Aug 28, 2015 at 01:24:08AM +0300, Antony Pavlov wrote:
+> > +
+> > +#ifdef CONFIG_USB_EHCI_BIG_ENDIAN_MMIO
+> > +#define ehci_big_endian_mmio(e)		((e)->big_endian_mmio)
+> > +#else
+> > +#define ehci_big_endian_mmio(e)		0
+> > +#endif
+> > +
+> > +static inline void ehci_writel(const struct ehci_priv *ehci,
+> > +				__u32 __iomem *regs, const unsigned int val)
+> >  {
+> > -	writel(val, regs);
+> > +	if (IS_ENABLED(CONFIG_USB_EHCI_BIG_ENDIAN_MMIO)) {
+> > +		ehci_big_endian_mmio(ehci) ?
+> > +			iowrite32be(val, regs) :
+> > +			writel(val, regs);
+> > +	} else
+> > +		writel(val, regs);
+> >  }
 > =
 
-> What would it take to implement cache support for mips?
-lack of the cache support is critical problem for current barebox mips supp=
-ort.
-I'm planning to add cache support in several weeks.
-This task needs much test efforts for different boards.
+> 	if (ehci_big_endian_mmio(ehci))
+> 		iowrite32be(val, regs);
+> 	else
+> 		writel(val, regs);
+> =
 
-Anyway I can't carry out cache adding work at one.
-But adding virt_to_phys and DMA support will help to add cache support one =
-day anyway.
+> is enough.
 
-> The u-boot mips
-> cache code seems quite straight forward.
+It looks you are right. :)
 
-AFAIR u-boot has only mips L1 cache support.
-AFAIK Paul Burton works on adding L2 cache support but current mainline
-u-boot repo has no such code.
+I have just stealed this code from linux kernel.
+I have some suspicions on redundancy of this code but I didn't proposed any=
+ good solution. =
 
-> With cache support you could
-> use several drivers as they are and wouldn't have to introduce
-> physical/virtual translations. I'm afraid these translations will be
-> broken quite soon as they get tested only on Mips.
-
-I hope somebody will test my EHCI patch on ARM :)
+Thanks!
 
 --=A0
 Best regards,
