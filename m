@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZVCti-0005m5-FR
- for barebox@lists.infradead.org; Fri, 28 Aug 2015 06:12:23 +0000
-Date: Fri, 28 Aug 2015 08:11:59 +0200
+ id 1ZVD0U-0007SM-Rw
+ for barebox@lists.infradead.org; Fri, 28 Aug 2015 06:19:23 +0000
+Date: Fri, 28 Aug 2015 08:19:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150828061159.GY18700@pengutronix.de>
+Message-ID: <20150828061900.GZ18700@pengutronix.de>
 References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
- <1440714250-28080-3-git-send-email-antonynpavlov@gmail.com>
+ <1440714250-28080-8-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1440714250-28080-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1440714250-28080-8-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,65 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/9] WIP: fix drivers/usb/core/usb.c
+Subject: Re: [RFC 7/9] usb: ehci: add big-endian registers support
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-On Fri, Aug 28, 2015 at 01:24:03AM +0300, Antony Pavlov wrote:
-> drivers/usb/core/usb.c: In function 'usb_parse_config':
-> drivers/usb/core/usb.c:194:28: error: 'struct usb_configuration' has no
-> member named 'wTotalLength'
->   le16_to_cpus(&(dev->config.wTotalLength));
->                             ^
-> ...
-> scripts/Makefile.build:249: recipe for target 'drivers/usb/core/usb.o'
-> failed
-> make[3]: *** [drivers/usb/core/usb.o] Error 1
-> scripts/Makefile.build:387: recipe for target 'drivers/usb/core' failed
-> make[2]: *** [drivers/usb/core] Error 2
-> scripts/Makefile.build:387: recipe for target 'drivers/usb' failed
-> make[1]: *** [drivers/usb] Error 2
-> Makefile:770: recipe for target 'drivers' failed
-> make: *** [drivers] Error 2
-> 
-> see also
-> 
-> commit 245069bcef15ecc19db616a967501349b76c84d0
-> Author: Sascha Hauer <s.hauer@pengutronix.de>
-> Date:   Thu Jul 10 11:36:12 2014 +0200
-> 
->     USB: introduce usb_interface/usb_configuration structs
-> 
->     Currently we have two conflicting definitions of struct
-> usb_config_descriptor
->     and struct usb_interface_descriptor in the tree. This is because the
-> USB code
->     uses additional fields in the structs for internal housekeeping. Add
->     struct usb_interface and struct struct usb_configuration with the
-> housekeeping
->     data and embed the corresponding hardware structs into them. This
-> frees the
->     way to use the definitions from ch9.h in the next step.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/usb/core/usb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-> index 9073fff..f8d6014 100644
-> --- a/drivers/usb/core/usb.c
-> +++ b/drivers/usb/core/usb.c
-> @@ -191,7 +191,7 @@ static int usb_parse_config(struct usb_device *dev, unsigned char *buffer, int c
->  		return -1;
->  	}
->  	memcpy(&dev->config, buffer, buffer[0]);
-> -	le16_to_cpus(&(dev->config.wTotalLength));
-> +	le16_to_cpus(&(dev->config.desc.wTotalLength));
->  	dev->config.no_of_if = 0;
+On Fri, Aug 28, 2015 at 01:24:08AM +0300, Antony Pavlov wrote:
+> +
+> +#ifdef CONFIG_USB_EHCI_BIG_ENDIAN_MMIO
+> +#define ehci_big_endian_mmio(e)		((e)->big_endian_mmio)
+> +#else
+> +#define ehci_big_endian_mmio(e)		0
+> +#endif
+> +
+> +static inline void ehci_writel(const struct ehci_priv *ehci,
+> +				__u32 __iomem *regs, const unsigned int val)
+>  {
+> -	writel(val, regs);
+> +	if (IS_ENABLED(CONFIG_USB_EHCI_BIG_ENDIAN_MMIO)) {
+> +		ehci_big_endian_mmio(ehci) ?
+> +			iowrite32be(val, regs) :
+> +			writel(val, regs);
+> +	} else
+> +		writel(val, regs);
+>  }
 
+	if (ehci_big_endian_mmio(ehci))
+		iowrite32be(val, regs);
+	else
+		writel(val, regs);
 
-What's WIP in this patch? It looks 100% correct.
+is enough.
 
 Sascha
 
