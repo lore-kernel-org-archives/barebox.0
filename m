@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZV5bD-0004Ap-6y
- for barebox@lists.infradead.org; Thu, 27 Aug 2015 22:24:48 +0000
-Received: by lbbsx3 with SMTP id sx3so20144251lbb.0
- for <barebox@lists.infradead.org>; Thu, 27 Aug 2015 15:24:25 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 28 Aug 2015 01:24:07 +0300
-Message-Id: <1440714250-28080-7-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZVCti-0005m5-FR
+ for barebox@lists.infradead.org; Fri, 28 Aug 2015 06:12:23 +0000
+Date: Fri, 28 Aug 2015 08:11:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150828061159.GY18700@pengutronix.de>
 References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
+ <1440714250-28080-3-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1440714250-28080-3-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +19,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 6/9] usb: ehci: drop unusable CONFIG_EHCI_MMIO_BIG_ENDIAN
- condition
-To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [RFC 2/9] WIP: fix drivers/usb/core/usb.c
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-The Kconfig EHCI_MMIO_BIG_ENDIAN option is nowhere defined,
-so we can safely drop it.
+On Fri, Aug 28, 2015 at 01:24:03AM +0300, Antony Pavlov wrote:
+> drivers/usb/core/usb.c: In function 'usb_parse_config':
+> drivers/usb/core/usb.c:194:28: error: 'struct usb_configuration' has no
+> member named 'wTotalLength'
+>   le16_to_cpus(&(dev->config.wTotalLength));
+>                             ^
+> ...
+> scripts/Makefile.build:249: recipe for target 'drivers/usb/core/usb.o'
+> failed
+> make[3]: *** [drivers/usb/core/usb.o] Error 1
+> scripts/Makefile.build:387: recipe for target 'drivers/usb/core' failed
+> make[2]: *** [drivers/usb/core] Error 2
+> scripts/Makefile.build:387: recipe for target 'drivers/usb' failed
+> make[1]: *** [drivers/usb] Error 2
+> Makefile:770: recipe for target 'drivers' failed
+> make: *** [drivers] Error 2
+> 
+> see also
+> 
+> commit 245069bcef15ecc19db616a967501349b76c84d0
+> Author: Sascha Hauer <s.hauer@pengutronix.de>
+> Date:   Thu Jul 10 11:36:12 2014 +0200
+> 
+>     USB: introduce usb_interface/usb_configuration structs
+> 
+>     Currently we have two conflicting definitions of struct
+> usb_config_descriptor
+>     and struct usb_interface_descriptor in the tree. This is because the
+> USB code
+>     uses additional fields in the structs for internal housekeeping. Add
+>     struct usb_interface and struct struct usb_configuration with the
+> housekeeping
+>     data and embed the corresponding hardware structs into them. This
+> frees the
+>     way to use the definitions from ch9.h in the next step.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  drivers/usb/core/usb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+> index 9073fff..f8d6014 100644
+> --- a/drivers/usb/core/usb.c
+> +++ b/drivers/usb/core/usb.c
+> @@ -191,7 +191,7 @@ static int usb_parse_config(struct usb_device *dev, unsigned char *buffer, int c
+>  		return -1;
+>  	}
+>  	memcpy(&dev->config, buffer, buffer[0]);
+> -	le16_to_cpus(&(dev->config.wTotalLength));
+> +	le16_to_cpus(&(dev->config.desc.wTotalLength));
+>  	dev->config.no_of_if = 0;
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/usb/host/ehci-hcd.c | 3 ---
- drivers/usb/host/ehci.h     | 5 -----
- 2 files changed, 8 deletions(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 9ce034e..49af642 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -162,9 +162,6 @@ static int ehci_reset(struct ehci_priv *ehci)
- 		reg_ptr = (uint32_t *)((u8 *)ehci->hcor + USBMODE);
- 		tmp = ehci_readl(reg_ptr);
- 		tmp |= USBMODE_CM_HC;
--#if defined(CONFIG_EHCI_MMIO_BIG_ENDIAN)
--		tmp |= USBMODE_BE;
--#endif
- 		ehci_writel(reg_ptr, tmp);
- 	}
- out:
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index d71d056..bda669b 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -80,13 +80,8 @@ static inline unsigned int ehci_readl(__u32 __iomem *regs)
- 	return readl(regs);
- }
- 
--#if defined CONFIG_EHCI_MMIO_BIG_ENDIAN
--#define hc32_to_cpu(x)		be32_to_cpu((x))
--#define cpu_to_hc32(x)		cpu_to_be32((x))
--#else
- #define hc32_to_cpu(x)		le32_to_cpu((x))
- #define cpu_to_hc32(x)		cpu_to_le32((x))
--#endif
- 
- #define EHCI_PS_WKOC_E		(1 << 22)	/* RW wake on over current */
- #define EHCI_PS_WKDSCNNT_E	(1 << 21)	/* RW wake on disconnect */
+What's WIP in this patch? It looks 100% correct.
+
+Sascha
+
 -- 
-2.5.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
