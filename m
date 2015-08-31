@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZWIqe-0002hj-UJ
- for barebox@lists.infradead.org; Mon, 31 Aug 2015 06:45:45 +0000
-Date: Mon, 31 Aug 2015 08:45:20 +0200
+ id 1ZWQlo-0001MV-6C
+ for barebox@lists.infradead.org; Mon, 31 Aug 2015 15:13:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150831064519.GC18700@pengutronix.de>
-References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
- <1440714250-28080-3-git-send-email-antonynpavlov@gmail.com>
- <20150828061159.GY18700@pengutronix.de>
- <20150828185104.301302fd1a2851809c7cd800@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150828185104.301302fd1a2851809c7cd800@gmail.com>
+Date: Mon, 31 Aug 2015 17:12:44 +0200
+Message-Id: <1441033966-14045-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,92 +14,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 2/9] WIP: fix drivers/usb/core/usb.c
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH 1/3] spi: i.MX: use start mode control bit
+To: Barebox List <barebox@lists.infradead.org>
 
-On Fri, Aug 28, 2015 at 06:51:04PM +0300, Antony Pavlov wrote:
-> On Fri, 28 Aug 2015 08:11:59 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Fri, Aug 28, 2015 at 01:24:03AM +0300, Antony Pavlov wrote:
-> > > drivers/usb/core/usb.c: In function 'usb_parse_config':
-> > > drivers/usb/core/usb.c:194:28: error: 'struct usb_configuration' has no
-> > > member named 'wTotalLength'
-> > >   le16_to_cpus(&(dev->config.wTotalLength));
-> > >                             ^
-> > > ...
-> > > scripts/Makefile.build:249: recipe for target 'drivers/usb/core/usb.o'
-> > > failed
-> > > make[3]: *** [drivers/usb/core/usb.o] Error 1
-> > > scripts/Makefile.build:387: recipe for target 'drivers/usb/core' failed
-> > > make[2]: *** [drivers/usb/core] Error 2
-> > > scripts/Makefile.build:387: recipe for target 'drivers/usb' failed
-> > > make[1]: *** [drivers/usb] Error 2
-> > > Makefile:770: recipe for target 'drivers' failed
-> > > make: *** [drivers] Error 2
-> > > 
-> > > see also
-> > > 
-> > > commit 245069bcef15ecc19db616a967501349b76c84d0
-> > > Author: Sascha Hauer <s.hauer@pengutronix.de>
-> > > Date:   Thu Jul 10 11:36:12 2014 +0200
-> > > 
-> > >     USB: introduce usb_interface/usb_configuration structs
-> > > 
-> > >     Currently we have two conflicting definitions of struct
-> > > usb_config_descriptor
-> > >     and struct usb_interface_descriptor in the tree. This is because the
-> > > USB code
-> > >     uses additional fields in the structs for internal housekeeping. Add
-> > >     struct usb_interface and struct struct usb_configuration with the
-> > > housekeeping
-> > >     data and embed the corresponding hardware structs into them. This
-> > > frees the
-> > >     way to use the definitions from ch9.h in the next step.
-> > > 
-> > > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > > ---
-> > >  drivers/usb/core/usb.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-> > > index 9073fff..f8d6014 100644
-> > > --- a/drivers/usb/core/usb.c
-> > > +++ b/drivers/usb/core/usb.c
-> > > @@ -191,7 +191,7 @@ static int usb_parse_config(struct usb_device *dev, unsigned char *buffer, int c
-> > >  		return -1;
-> > >  	}
-> > >  	memcpy(&dev->config, buffer, buffer[0]);
-> > > -	le16_to_cpus(&(dev->config.wTotalLength));
-> > > +	le16_to_cpus(&(dev->config.desc.wTotalLength));
-> > >  	dev->config.no_of_if = 0;
-> > 
-> > 
-> > What's WIP in this patch? It looks 100% correct.
-> 
-> WIP means that I don't understand why nobody but me detected this build problem.
-> Have you any idea?
+The i.MX SPI controller in version 2.3 can immediately start a transfer
+when the txfifo is written to. In this mode we no longer have to trigger
+the transfer with the xch bit which makes the code a bit simpler.
 
-Yeah, I wondered about this aswell at first, but it's quite easy if you
-look at it. le16_to_cpus converts the content of a pointer to le16 to
-cpu endianess.  On little endian systems like ARM this is a no op,
-defined as:
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/spi/imx_spi.c | 8 ++------
+ include/spi/imx-spi.h | 1 +
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-#define le16_to_cpus __le16_to_cpus
-#define __le16_to_cpus(x) do {} while (0)
-
-Sascha
-
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 6805d22..81fa3b0 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -230,14 +230,8 @@ static unsigned int cspi_2_3_xchg_single(struct imx_spi *imx, unsigned int data)
+ {
+ 	void __iomem *base = imx->regs;
+ 
+-	unsigned int cfg_reg = readl(base + CSPI_2_3_CTRL);
+-
+ 	writel(data, base + CSPI_2_3_TXDATA);
+ 
+-	cfg_reg |= CSPI_2_3_CTRL_XCH;
+-
+-	writel(cfg_reg, base + CSPI_2_3_CTRL);
+-
+ 	while (!(readl(base + CSPI_2_3_STAT) & CSPI_2_3_STAT_RR));
+ 
+ 	return readl(base + CSPI_2_3_RXDATA);
+@@ -306,6 +300,8 @@ static void cspi_2_3_chipselect(struct spi_device *spi, int is_active)
+ 
+ 	ctrl |= (spi->bits_per_word - 1) << CSPI_2_3_CTRL_BL_OFFSET;
+ 
++	ctrl |= CSPI_2_3_CTRL_SMC;
++
+ 	cfg |= CSPI_2_3_CONFIG_SBBCTRL(cs);
+ 
+ 	if (spi->mode & SPI_CPHA)
+diff --git a/include/spi/imx-spi.h b/include/spi/imx-spi.h
+index 560b092..5c89634 100644
+--- a/include/spi/imx-spi.h
++++ b/include/spi/imx-spi.h
+@@ -61,6 +61,7 @@
+ #define CSPI_2_3_CTRL		0x08
+ #define CSPI_2_3_CTRL_ENABLE		(1 <<  0)
+ #define CSPI_2_3_CTRL_XCH		(1 <<  2)
++#define CSPI_2_3_CTRL_SMC		(1 <<  3)
+ #define CSPI_2_3_CTRL_MODE(cs)	(1 << ((cs) +  4))
+ #define CSPI_2_3_CTRL_POSTDIV_OFFSET	8
+ #define CSPI_2_3_CTRL_PREDIV_OFFSET	12
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.5.0
+
 
 _______________________________________________
 barebox mailing list
