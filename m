@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZduIc-00042m-NV
- for barebox@lists.infradead.org; Mon, 21 Sep 2015 06:10:03 +0000
-Date: Mon, 21 Sep 2015 08:09:38 +0200
+ id 1ZWeqe-0007ct-RP
+ for barebox@lists.infradead.org; Tue, 01 Sep 2015 06:15:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150921060938.GA7858@pengutronix.de>
-References: <1442433644-1324-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1442433644-1324-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Date: Tue,  1 Sep 2015 08:14:47 +0200
+Message-Id: <1441088089-20649-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +14,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] video: imx: assert that image buffer doesn't cross a 4
- MiB boundary
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] cdev: Add function to find cdev by device_node
+To: Barebox List <barebox@lists.infradead.org>
 
-T24gV2VkLCBTZXAgMTYsIDIwMTUgYXQgMTA6MDA6NDRQTSArMDIwMCwgVXdlIEtsZWluZS1Lw7Zu
-aWcgd3JvdGU6Cj4gVGhlIHJlZmVyZW5jZSBtYW51YWwgKGZvciB0aGUgaS5NWDI1IGluIG15IGNh
-c2UpIHN0YXRlczoKPiAKPiAJVGhpcyBmaWVsZCBtdXN0IHN0YXJ0IGF0IGEgbG9jYXRpb24gdGhh
-dCBlbmFibGVzIGEgY29tcGxldGUKPiAJcGljdHVyZSB0byBiZSBzdG9yZWQgaW4gYSA0IE1ieXRl
-IG1lbW9yeSBib3VuZGFyeSAoQSBbMjE6MF0pLiBBCj4gCVszMToyMl0gaGFzIGEgZml4ZWQgdmFs
-dWUgZm9yIGEgcGljdHVyZeKAmXMgaW1hZ2UuCj4gCj4gQ2hlY2sgdGhpcyBjb25kaXRpb24gZm9y
-IHVzZXItc3VwcGxpZWQgZnJhbWVidWZmZXIgdmFsdWVzIGFuZCBlbmZvcmNlIGl0Cj4gZm9yIGRy
-aXZlci1hbGxvY2F0ZWQgYnVmZmVycy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvD
-tm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgoKQXBwbGllZCwgdGhhbmtzCgpT
-YXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAg
-ICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3Ry
-LiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6
-ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+This adds a device_node member to struct cdev and a function
+to find a cdev by device_node.
+This also removes the setting of cdev->dev->device_node in
+the of partition parser. We must not set the device since it
+may not refer to a partition but to a whole device with partitions.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/partition.c |  4 ++--
+ fs/devfs-core.c        | 13 +++++++++++++
+ include/driver.h       |  2 ++
+ 3 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+index 3dce844..6017897 100644
+--- a/drivers/of/partition.c
++++ b/drivers/of/partition.c
+@@ -64,8 +64,8 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+ 	if (IS_ERR(new))
+ 		new = NULL;
+ 
+-	if (new && new->dev)
+-		new->dev->device_node = node;
++	if (new)
++		new->device_node = node;;
+ 
+ 	free(filename);
+ 
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index f45f8ca..62571fb 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -57,6 +57,19 @@ struct cdev *cdev_by_name(const char *filename)
+ 	return NULL;
+ }
+ 
++struct cdev *cdev_by_device_node(struct device_node *node)
++{
++	struct cdev *cdev;
++
++	list_for_each_entry(cdev, &cdev_list, list) {
++		if (!cdev->device_node)
++			continue;
++		if (cdev->device_node == node)
++			return cdev;
++	}
++	return NULL;
++}
++
+ /**
+  * device_find_partition - find a partition belonging to a physical device
+  *
+diff --git a/include/driver.h b/include/driver.h
+index 728f8ab..046dd90 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -436,6 +436,7 @@ struct cdev {
+ 	struct file_operations *ops;
+ 	void *priv;
+ 	struct device_d *dev;
++	struct device_node *device_node;
+ 	struct list_head list;
+ 	struct list_head devices_list;
+ 	char *name; /* filename under /dev/ */
+@@ -456,6 +457,7 @@ int devfs_remove(struct cdev *);
+ int cdev_find_free_index(const char *);
+ struct cdev *device_find_partition(struct device_d *dev, const char *name);
+ struct cdev *cdev_by_name(const char *filename);
++struct cdev *cdev_by_device_node(struct device_node *node);
+ struct cdev *cdev_open(const char *name, unsigned long flags);
+ int cdev_do_open(struct cdev *, unsigned long flags);
+ void cdev_close(struct cdev *cdev);
+-- 
+2.5.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
