@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZWeqj-0007fd-P9
- for barebox@lists.infradead.org; Tue, 01 Sep 2015 06:15:18 +0000
+ id 1ZWeto-0001Sd-7O
+ for barebox@lists.infradead.org; Tue, 01 Sep 2015 06:18:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  1 Sep 2015 08:14:48 +0200
-Message-Id: <1441088089-20649-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1441088089-20649-1-git-send-email-s.hauer@pengutronix.de>
-References: <1441088089-20649-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  1 Sep 2015 08:18:04 +0200
+Message-Id: <1441088285-22965-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,77 +19,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] of_path: Allow pointing directly to the partition
+Subject: [PATCH 1/2] param_enum: Make name strings const
 To: Barebox List <barebox@lists.infradead.org>
 
-We could only point to partitions in the device tree by using
-&norflash, "partname:barebox-environment". Allow to point to the
-partition directly without having to parse the partition labels.
+Not only the array containing the pointers should be const but
+also the strings themselves, so instead of using const char **
+use const char * const *.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- .../devicetree/bindings/barebox/barebox,environment.rst    |  5 +++--
- drivers/of/of_path.c                                       | 14 +++++++++-----
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ include/globalvar.h | 4 ++--
+ include/param.h     | 4 ++--
+ lib/parameter.c     | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/barebox/barebox,environment.rst b/Documentation/devicetree/bindings/barebox/barebox,environment.rst
-index d472f66..d5e52ea 100644
---- a/Documentation/devicetree/bindings/barebox/barebox,environment.rst
-+++ b/Documentation/devicetree/bindings/barebox/barebox,environment.rst
-@@ -8,8 +8,9 @@ Required properties:
- * ``compatible``: should be ``barebox,environment``
- * ``device-path``: path to the environment
+diff --git a/include/globalvar.h b/include/globalvar.h
+index 6e10956..e77209b 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -60,7 +60,7 @@ static inline int globalvar_add_simple_bool(const char *name,
+ }
  
--The device-path is a multistring property. The first string should be a
--nodepath to the node containing the physical device of the environment.
-+The device-path is a multistring property. The first string should contain
-+a nodepath to the node containing the physical device of the environment or
-+a nodepath to a partition described by the OF partition binding.
- The subsequent strings are of the form <type>:<options> to further describe
- the path to the environment. Supported values for <type>:
- 
-diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index 2dc7848..992972c 100644
---- a/drivers/of/of_path.c
-+++ b/drivers/of/of_path.c
-@@ -117,7 +117,8 @@ out:
-  * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if available
-  *
-  * paths in the devicetree have the form of a multistring property. The first
-- * string contains the full path to the physical device containing the path.
-+ * string contains the full path to the physical device containing the path or
-+ * a full path to a partition described by the OF partition binding.
-  * The remaining strings have the form "<type>:<options>". Currently supported
-  * for <type> are:
-  *
-@@ -129,6 +130,7 @@ out:
-  *
-  * device-path = &mmc0, "partname:0";
-  * device-path = &norflash, "partname:barebox-environment";
-+ * device-path = &environment_nor;
-  */
- int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags)
+ static inline int globalvar_add_simple_enum(const char *name,
+-		int *value, const char **names, int max)
++		int *value, const char * const *names, int max)
  {
-@@ -147,13 +149,15 @@ int of_find_path(struct device_node *node, const char *propname, char **outpath,
- 		return -ENODEV;
+ 	struct param_d *p;
  
- 	op.dev = of_find_device_by_node_path(rnode->full_name);
--	if (!op.dev)
--		return -ENODEV;
-+	if (!op.dev) {
-+		op.dev = of_find_device_by_node_path(rnode->parent->full_name);
-+		if (!op.dev)
-+			return -ENODEV;
-+	}
+@@ -117,7 +117,7 @@ static inline int globalvar_add_simple_bool(const char *name,
+ }
  
- 	device_detect(op.dev);
+ static inline int globalvar_add_simple_enum(const char *name,
+-		int *value, const char **names, int max)
++		int *value, const char * const *names, int max)
+ {
+ 	return 0;
+ }
+diff --git a/include/param.h b/include/param.h
+index 3a851fc..3fb4740 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -50,7 +50,7 @@ struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
+ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char **names, int max, void *priv);
++		int *value, const char * const *names, int max, void *priv);
  
--	if (list_is_singular(&op.dev->cdevs))
--		op.cdev = list_first_entry(&op.dev->cdevs, struct cdev, devices_list);
-+	op.cdev = cdev_by_device_node(rnode);
+ struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
+ 		int value, const char *format);
+@@ -120,7 +120,7 @@ static inline struct param_d *dev_add_param_int(struct device_d *dev, const char
+ static inline struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char **names, int max, void *priv)
++		int *value, const char * const *names, int max, void *priv)
  
- 	i = 1;
- 
+ {
+ 	return ERR_PTR(-ENOSYS);
+diff --git a/lib/parameter.c b/lib/parameter.c
+index b238859..868b810 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -390,7 +390,7 @@ struct param_d *dev_add_param_int(struct device_d *dev, const char *name,
+ struct param_enum {
+ 	struct param_d param;
+ 	int *value;
+-	const char **names;
++	const char * const *names;
+ 	int num_names;
+ 	int (*set)(struct param_d *p, void *priv);
+ 	int (*get)(struct param_d *p, void *priv);
+@@ -467,7 +467,7 @@ static void param_enum_info(struct param_d *p)
+ struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-		int *value, const char **names, int num_names, void *priv)
++		int *value, const char * const *names, int num_names, void *priv)
+ {
+ 	struct param_enum *pe;
+ 	struct param_d *p;
 -- 
 2.5.0
 
