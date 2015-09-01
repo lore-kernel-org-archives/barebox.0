@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f42.google.com ([209.85.215.42])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZWkzR-00075p-EC
- for barebox@lists.infradead.org; Tue, 01 Sep 2015 12:48:42 +0000
-Received: by laboe4 with SMTP id oe4so65707633lab.0
- for <barebox@lists.infradead.org>; Tue, 01 Sep 2015 05:48:16 -0700 (PDT)
+ id 1ZWkzN-00075T-Oh
+ for barebox@lists.infradead.org; Tue, 01 Sep 2015 12:48:38 +0000
+Received: by lbvd4 with SMTP id d4so41916097lbv.3
+ for <barebox@lists.infradead.org>; Tue, 01 Sep 2015 05:48:15 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  1 Sep 2015 15:48:08 +0300
-Message-Id: <1441111688-25418-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1441111688-25418-1-git-send-email-antonynpavlov@gmail.com>
-References: <1441111688-25418-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  1 Sep 2015 15:48:07 +0300
+Message-Id: <1441111688-25418-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,85 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] endian: Always evaluate arguments
+Subject: [PATCH 1/2] usb: ehci: fix include/usb/usb.h:'struct
+ usb_configuration' misuse
 To: barebox@lists.infradead.org
-Cc: "David S. Miller" <davem@davemloft.net>
 
-From: "David S. Miller" <davem@davemloft.net>
+See the commit
 
-This patch is based on
+    commit 245069bcef15ecc19db616a967501349b76c84d0
+    Author: Sascha Hauer <s.hauer@pengutronix.de>
+    Date:   Thu Jul 10 11:36:12 2014 +0200
 
-    commit 3d6f4a20cc287a8980c6186624834cf10a70752b
-    Author: David Miller <davem@davemloft.net>
-    Date:   Thu Jul 24 23:38:31 2008 -0700
+        USB: introduce usb_interface/usb_configuration structs
 
-        endian: Always evaluate arguments.
+On little endian systems like ARM the le16_to_cpus() macro
+is a no op, defined as:
 
-In barebox.git/drivers/usb/core/usb.c,
-function usb_parse_config() we have had
+    #define le16_to_cpus __le16_to_cpus
+    #define __le16_to_cpus(x) do {} while (0)
 
-    le16_to_cpus(&(dev->config.wTotalLength));
+So struct usb_configuration field misuse was discovered
+on big-endian MIPS machine.
 
-which evaluates to "do { } while (0)" on little endian,
-so struct usb_configuration field misuse will never
-be discovered on little endian.
-
-Therefore, always evaluate the arguments to nop endian
-transformation operations.
-
-Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/linux/byteorder/big_endian.h    | 12 ++++++------
- include/linux/byteorder/little_endian.h | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/usb/core/usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/byteorder/big_endian.h b/include/linux/byteorder/big_endian.h
-index 09fb188..e560ef6 100644
---- a/include/linux/byteorder/big_endian.h
-+++ b/include/linux/byteorder/big_endian.h
-@@ -57,12 +57,12 @@
- #define __le32_to_cpus(x) __swab32s((x))
- #define __cpu_to_le16s(x) __swab16s((x))
- #define __le16_to_cpus(x) __swab16s((x))
--#define __cpu_to_be64s(x) do {} while (0)
--#define __be64_to_cpus(x) do {} while (0)
--#define __cpu_to_be32s(x) do {} while (0)
--#define __be32_to_cpus(x) do {} while (0)
--#define __cpu_to_be16s(x) do {} while (0)
--#define __be16_to_cpus(x) do {} while (0)
-+#define __cpu_to_be64s(x) do { (void)(x); } while (0)
-+#define __be64_to_cpus(x) do { (void)(x); } while (0)
-+#define __cpu_to_be32s(x) do { (void)(x); } while (0)
-+#define __be32_to_cpus(x) do { (void)(x); } while (0)
-+#define __cpu_to_be16s(x) do { (void)(x); } while (0)
-+#define __be16_to_cpus(x) do { (void)(x); } while (0)
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 9073fff..f8d6014 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -191,7 +191,7 @@ static int usb_parse_config(struct usb_device *dev, unsigned char *buffer, int c
+ 		return -1;
+ 	}
+ 	memcpy(&dev->config, buffer, buffer[0]);
+-	le16_to_cpus(&(dev->config.wTotalLength));
++	le16_to_cpus(&(dev->config.desc.wTotalLength));
+ 	dev->config.no_of_if = 0;
  
- #include <linux/byteorder/generic.h>
- 
-diff --git a/include/linux/byteorder/little_endian.h b/include/linux/byteorder/little_endian.h
-index 5870a6e..a821b27 100644
---- a/include/linux/byteorder/little_endian.h
-+++ b/include/linux/byteorder/little_endian.h
-@@ -51,12 +51,12 @@
- #define __be32_to_cpup(x) __swab32p((x))
- #define __cpu_to_be16p(x) __swab16p((x))
- #define __be16_to_cpup(x) __swab16p((x))
--#define __cpu_to_le64s(x) do {} while (0)
--#define __le64_to_cpus(x) do {} while (0)
--#define __cpu_to_le32s(x) do {} while (0)
--#define __le32_to_cpus(x) do {} while (0)
--#define __cpu_to_le16s(x) do {} while (0)
--#define __le16_to_cpus(x) do {} while (0)
-+#define __cpu_to_le64s(x) do { (void)(x); } while (0)
-+#define __le64_to_cpus(x) do { (void)(x); } while (0)
-+#define __cpu_to_le32s(x) do { (void)(x); } while (0)
-+#define __le32_to_cpus(x) do { (void)(x); } while (0)
-+#define __cpu_to_le16s(x) do { (void)(x); } while (0)
-+#define __le16_to_cpus(x) do { (void)(x); } while (0)
- #define __cpu_to_be64s(x) __swab64s((x))
- #define __be64_to_cpus(x) __swab64s((x))
- #define __cpu_to_be32s(x) __swab32s((x))
+ 	index = dev->config.desc.bLength;
 -- 
 2.5.0
 
