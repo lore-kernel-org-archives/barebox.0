@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.com ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZX1jm-0001NF-Mt
- for barebox@lists.infradead.org; Wed, 02 Sep 2015 06:41:39 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 22916A00259
- for <barebox@lists.infradead.org>; Wed,  2 Sep 2015 08:43:18 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Wed, 2 Sep 2015 08:38:48 +0200
-Message-Id: <1441175928-38242-2-git-send-email-d.schultz@phytec.de>
-In-Reply-To: <1441175928-38242-1-git-send-email-d.schultz@phytec.de>
-References: <1441175928-38242-1-git-send-email-d.schultz@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZX38m-0000JV-2k
+ for barebox@lists.infradead.org; Wed, 02 Sep 2015 08:11:32 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1ZX38P-00078q-8Q
+ for barebox@lists.infradead.org; Wed, 02 Sep 2015 10:11:09 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed,  2 Sep 2015 10:11:08 +0200
+Message-Id: <1441181469-18130-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,57 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: Include strip file to Phytec am335x MLOs
+Subject: [PATCH resend 1/2] video: vpl: depend on OFTREE
 To: barebox@lists.infradead.org
 
-This patch disables the clocks in the Phytec am335x MLOs and reduce the MLO
-size by 9kb.
+VPL uses the of_graph bindings, which are only available if OFTREE
+support is compiled in.
 
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Also fix the drivers using VPL to depend on OFTREE.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- arch/arm/dts/am335x-phytec-phycard-som-mlo.dts | 1 +
- arch/arm/dts/am335x-phytec-phycore-som-mlo.dts | 1 +
- arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts | 1 +
- 3 files changed, 3 insertions(+)
+ drivers/video/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
-index f9ed627..a1755fd 100644
---- a/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
-+++ b/arch/arm/dts/am335x-phytec-phycard-som-mlo.dts
-@@ -10,6 +10,7 @@
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycard-som.dtsi"
- #include "am33xx-strip.dtsi"
-+#include "am33xx-clocks-strip.dtsi"
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 501e9fa7d353..d31bdfe8f07a 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -13,6 +13,7 @@ config FRAMEBUFFER_CONSOLE
+ 	prompt "framebuffer console support"
  
- / {
- 	model = "Phytec phyCARD AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
-index f70835f..676001b 100644
---- a/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
-+++ b/arch/arm/dts/am335x-phytec-phycore-som-mlo.dts
-@@ -10,6 +10,7 @@
- #include "am33xx.dtsi"
- #include "am335x-phytec-phycore-som.dtsi"
- #include "am33xx-strip.dtsi"
-+#include "am33xx-clocks-strip.dtsi"
+ config VIDEO_VPL
++	depends on OFTREE
+ 	bool
  
- / {
- 	model = "Phytec phyCORE AM335x";
-diff --git a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
-index 736d7ef..e848a29 100644
---- a/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
-+++ b/arch/arm/dts/am335x-phytec-phyflex-som-mlo.dts
-@@ -10,6 +10,7 @@
- #include "am33xx.dtsi"
- #include "am335x-phytec-phyflex-som.dtsi"
- #include "am33xx-strip.dtsi"
-+#include "am33xx-clocks-strip.dtsi"
- 
- / {
- 	model = "Phytec phyFLEX AM335x";
+ config DRIVER_VIDEO_ATMEL
+@@ -121,6 +122,7 @@ config DRIVER_VIDEO_MTL017
+ 	bool "MTL017 LVDS encoder"
+ 	select VIDEO_VPL
+ 	depends on I2C
++	depends on OFTREE
+ 	help
+ 	  The MTL017 is a parallel to lvds video encoder chip found on the
+ 	  Efika MX Smartbook.
+@@ -128,6 +130,7 @@ config DRIVER_VIDEO_MTL017
+ config DRIVER_VIDEO_SIMPLE_PANEL
+ 	bool "Simple panel support"
+ 	select VIDEO_VPL
++	depends on OFTREE
+ 	help
+ 	  This enabled support for simple panels, i.e. panels which consist of
+ 	  a mode definition and enable gpios in the devicetree. Unlike the
 -- 
-1.9.1
+2.5.0
 
 
 _______________________________________________
