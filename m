@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-f169.google.com ([209.85.217.169])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZXPSQ-0005MQ-Rv
- for barebox@lists.infradead.org; Thu, 03 Sep 2015 08:01:20 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1ZXPS4-0004y9-Kh
- for barebox@lists.infradead.org; Thu, 03 Sep 2015 10:00:56 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu,  3 Sep 2015 10:00:54 +0200
-Message-Id: <1441267256-17522-1-git-send-email-l.stach@pengutronix.de>
+ id 1ZXUhS-0007Rg-Nn
+ for barebox@lists.infradead.org; Thu, 03 Sep 2015 13:37:11 +0000
+Received: by lbcao8 with SMTP id ao8so24390116lbc.3
+ for <barebox@lists.infradead.org>; Thu, 03 Sep 2015 06:36:45 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu,  3 Sep 2015 16:38:46 +0300
+Message-Id: <1441287526-2077-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mfd: da9053: remove references to nonexistent cdev member
+Subject: [PATCH] ata: intf_platform_ide: add OF bindings
 To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- drivers/mfd/da9053.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/intf_platform_ide.c | 35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/da9053.c b/drivers/mfd/da9053.c
-index 3fb5295cf910..250c0556ec3c 100644
---- a/drivers/mfd/da9053.c
-+++ b/drivers/mfd/da9053.c
-@@ -149,7 +149,7 @@ static int da9053_enable_multiwrite(struct da9053_priv *da9053)
- static int da9053_set_timeout(struct watchdog *wd, unsigned timeout)
- {
- 	struct da9053_priv *da9053 = wd_to_da9053_priv(wd);
--	struct device_d *dev = da9053->cdev.dev;
-+	struct device_d *dev = da9053->dev;
- 	unsigned scale = 0;
- 	int ret;
- 	u8 val;
-@@ -269,7 +269,6 @@ static int da9053_probe(struct device_d *dev)
+diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
+index 0d392d8..f20e0e0 100644
+--- a/drivers/ata/intf_platform_ide.c
++++ b/drivers/ata/intf_platform_ide.c
+@@ -29,6 +29,7 @@
+ #include <ata_drive.h>
+ #include <platform_ide.h>
+ #include <linux/err.h>
++#include <of.h>
  
- 	da9053 = xzalloc(sizeof(*da9053));
- 	da9053->dev = dev;
--	da9053->cdev.name = DRIVERNAME;
- 	da9053->client = to_i2c_client(dev);
- 	da9053->wd.set_timeout = da9053_set_timeout;
- 	da9053->wd.priority = of_get_watchdog_priority(dev->device_node);
+ /**
+  * Setup the register specific addresses for an ATA like divice
+@@ -85,10 +86,31 @@ static int platform_ide_probe(struct device_d *dev)
+ 	void *reg_base, *alt_base = NULL;
+ 	struct resource *reg, *alt;
+ 	int mmio = 0;
++	struct device_node *dn = dev->device_node;
++	u32 tmp32;
+ 
+ 	if (pdata == NULL) {
+-		dev_err(dev, "No platform data. Cannot continue\n");
+-		return -EINVAL;
++		/* try to get platform data from the device tree */
++		if (dn == NULL) {
++			dev_err(dev, "No platform data. Cannot continue\n");
++			return -EINVAL;
++		}
++
++		pdata = xzalloc(sizeof(struct ide_port_info));
++
++		if (!pdata) {
++			dev_err(dev, "Platform data allocation failed\n");
++			return -ENOMEM;
++		}
++		device_add_data(dev, pdata, sizeof(struct ide_port_info));
++
++		if (of_property_read_bool(dn, "dataif-be"))
++			pdata->dataif_be = 1;
++
++		if (of_property_read_u32(dn, "reg-shift", &tmp32) == 0)
++			pdata->ioport_shift = (unsigned)tmp32;
++
++		dev->platform_data = pdata;
+ 	}
+ 
+ 	reg_base = dev_request_mem_region(dev, 0);
+@@ -136,9 +158,18 @@ static int platform_ide_probe(struct device_d *dev)
+ 	return rc;
+ }
+ 
++static __maybe_unused struct of_device_id platform_ide_dt_ids[] = {
++	{
++		.compatible = "ata-generic",
++	}, {
++		/* sentinel */
++	}
++};
++
+ static struct driver_d platform_ide_driver = {
+ 	.name   = "ide_intf",
+ 	.probe  = platform_ide_probe,
++	.of_compatible = DRV_OF_COMPAT(platform_ide_dt_ids),
+ };
+ device_platform_driver(platform_ide_driver);
+ 
 -- 
-2.5.0
+2.1.4
 
 
 _______________________________________________
