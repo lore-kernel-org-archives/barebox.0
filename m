@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZXOmU-0004wY-4V
- for barebox@lists.infradead.org; Thu, 03 Sep 2015 07:17:59 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 17E97A00388
- for <barebox@lists.infradead.org>; Thu,  3 Sep 2015 09:19:32 +0200 (CEST)
-From: Daniel Schultz <d.schultz@phytec.de>
-Date: Thu, 3 Sep 2015 09:17:29 +0200
-Message-Id: <1441264649-44064-1-git-send-email-d.schultz@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZXPSQ-0005MR-Rw
+ for barebox@lists.infradead.org; Thu, 03 Sep 2015 08:01:20 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1ZXPS4-0004y9-Mk
+ for barebox@lists.infradead.org; Thu, 03 Sep 2015 10:00:56 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu,  3 Sep 2015 10:00:55 +0200
+Message-Id: <1441267256-17522-2-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1441267256-17522-1-git-send-email-l.stach@pengutronix.de>
+References: <1441267256-17522-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,90 +25,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: boards: Fix beaglebone enviroment
+Subject: [PATCH 2/3] wd: add stub for of_get_watchdog_priority
 To: barebox@lists.infradead.org
 
-This patch adds missing enviroment files to boot from different sources.
-Also adds the handling of default bootsources.
+Allow drivers to build even if WD core isn't enabled.
 
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- .../arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc |  6 ++++++
- arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc |  6 ++++++
- arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/net | 15 +++++++++++++++
- .../beaglebone/defaultenv-beaglebone/init/bootsource      | 13 +++++++++++++
- 4 files changed, 40 insertions(+)
- create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
- create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc
- create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/net
- create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource
+ include/watchdog.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
-new file mode 100644
-index 0000000..cc2bea2
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/emmc
-@@ -0,0 +1,6 @@
-+#!/bin/sh
+diff --git a/include/watchdog.h b/include/watchdog.h
+index 6fd896734b4b..3e8a487a4de9 100644
+--- a/include/watchdog.h
++++ b/include/watchdog.h
+@@ -25,6 +25,7 @@ struct watchdog {
+ int watchdog_register(struct watchdog *);
+ int watchdog_deregister(struct watchdog *);
+ int watchdog_set_timeout(unsigned);
++unsigned int of_get_watchdog_priority(struct device_node *node);
+ #else
+ static inline int watchdog_register(struct watchdog *w)
+ {
+@@ -40,10 +41,13 @@ static inline int watchdog_set_timeout(unsigned t)
+ {
+ 	return 0;
+ }
 +
-+mount /dev/mmc1.0 /mnt/
-+global.bootm.image=/mnt/linuximage
-+global.bootm.oftree=/mnt/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk1p2 rootwait rw"
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc
-new file mode 100644
-index 0000000..96255d5
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/mmc
-@@ -0,0 +1,6 @@
-+#!/bin/sh
-+
-+mount /dev/mmc0.0 /mnt/
-+global.bootm.image=/mnt/linuximage
-+global.bootm.oftree=/mnt/oftree
-+global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootwait rw"
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/net b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/net
-new file mode 100644
-index 0000000..5ca4bad
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/net
-@@ -0,0 +1,15 @@
-+#!/bin/sh
-+
-+path="/mnt/tftp"
-+
-+global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
-+
-+oftree="${path}/${global.user}-oftree-${global.hostname}"
-+if [ -f "${oftree}" ]; then
-+        global.bootm.oftree="$oftree"
-+fi
-+
-+nfsroot="/nfsroot/${global.hostname}"
-+bootargs-ip
-+/env/config-expansions
-+global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,vers=3,udp rw"
-diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource b/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource
-new file mode 100644
-index 0000000..c36d723
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/init/bootsource
-@@ -0,0 +1,13 @@
-+#!/bin/sh
-+
-+if [ -n "$nv.boot.default" ]; then
-+	exit
-+fi
-+
-+if [ $bootsource = mmc -a $bootsource_instance = 1 ]; then
-+	global.boot.default="emmc mmc net"
-+elif [ $bootsource = mmc -a $bootsource_instance = 0 ]; then
-+	global.boot.default="mmc emmc net"
-+elif [ $bootsource = net ]; then
-+	global.boot.default="net emmc mmc"
-+fi
++static inline unsigned int of_get_watchdog_priority(struct device_node *node)
++{
++	return 0;
++}
+ #endif
+ 
+ #define WATCHDOG_DEFAULT_PRIORITY 100
+ 
+-unsigned int of_get_watchdog_priority(struct device_node *node);
+-
+ #endif /* INCLUDE_WATCHDOG_H */
 -- 
-1.9.1
+2.5.0
 
 
 _______________________________________________
