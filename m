@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZXk5m-00040I-Df
- for barebox@lists.infradead.org; Fri, 04 Sep 2015 06:03:19 +0000
-Date: Fri, 4 Sep 2015 08:02:56 +0200
+ id 1ZXk97-0005KE-S1
+ for barebox@lists.infradead.org; Fri, 04 Sep 2015 06:06:46 +0000
+Date: Fri, 4 Sep 2015 08:06:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150904060256.GR18700@pengutronix.de>
-References: <1441267256-17522-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20150904060623.GS18700@pengutronix.de>
+References: <1440759985-17499-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1441267256-17522-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1440759985-17499-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,16 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] mfd: da9053: remove references to nonexistent cdev
- member
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [RFC] usb: ehci-hcd: add OF bindings
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 03, 2015 at 10:00:54AM +0200, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Fri, Aug 28, 2015 at 02:06:25PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 > ---
->  drivers/mfd/da9053.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/usb/host/ehci-hcd.c | 22 ++++++++++++++++++----
+>  1 file changed, 18 insertions(+), 4 deletions(-)
 
 Applied, thanks
 
