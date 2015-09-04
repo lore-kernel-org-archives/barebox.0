@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZXjh1-0001Vx-Jf
- for barebox@lists.infradead.org; Fri, 04 Sep 2015 05:37:44 +0000
-Date: Fri, 4 Sep 2015 07:37:21 +0200
+ id 1ZXjiq-0001nY-A3
+ for barebox@lists.infradead.org; Fri, 04 Sep 2015 05:39:36 +0000
+Date: Fri, 4 Sep 2015 07:39:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150904053721.GO18700@pengutronix.de>
-References: <1441181469-18130-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20150904053913.GP18700@pengutronix.de>
+References: <1441210850-14159-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1441181469-18130-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1441210850-14159-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,17 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH resend 1/2] video: vpl: depend on OFTREE
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] ata: ide-sff: fix integer overflow in ata_wait_ready()
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 02, 2015 at 10:11:08AM +0200, Lucas Stach wrote:
-> VPL uses the of_graph bindings, which are only available if OFTREE
-> support is compiled in.
-> 
-> Also fix the drivers using VPL to depend on OFTREE.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+On Wed, Sep 02, 2015 at 07:20:50PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  drivers/ata/ide-sff.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
