@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZXmbv-0001oH-8J
- for barebox@lists.infradead.org; Fri, 04 Sep 2015 08:44:40 +0000
-Date: Fri, 4 Sep 2015 10:44:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150904084415.GU18700@pengutronix.de>
-References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
- <1440714250-28080-4-git-send-email-antonynpavlov@gmail.com>
- <20150828063432.GA18700@pengutronix.de>
- <20150828184614.d0ec3d17f1800be9093f7fa3@gmail.com>
- <20150904062048.GT18700@pengutronix.de>
- <20150904102740.4a6f5b564126416e83c98a5b@gmail.com>
+ id 1ZXnS0-0001CB-3S
+ for barebox@lists.infradead.org; Fri, 04 Sep 2015 09:38:28 +0000
+Received: by lbbmp1 with SMTP id mp1so8144443lbb.1
+ for <barebox@lists.infradead.org>; Fri, 04 Sep 2015 02:38:06 -0700 (PDT)
+Date: Fri, 4 Sep 2015 12:40:22 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20150904124022.093ec9a7@berta>
+In-Reply-To: <1441295192.3102.9.camel@pengutronix.de>
+References: <1441287526-2077-1-git-send-email-pmamonov@gmail.com>
+ <1441295192.3102.9.camel@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20150904102740.4a6f5b564126416e83c98a5b@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,64 +24,123 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/9] MIPS: add virt_to_phys() and phys_to_virt()
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH] ata: intf_platform_ide: add OF bindings
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Fri, Sep 04, 2015 at 10:27:40AM +0300, Antony Pavlov wrote:
-> On Fri, 4 Sep 2015 08:20:48 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hi, Lucas!
+
+On Thu, 03 Sep 2015 17:46:32 +0200
+Lucas Stach <l.stach@pengutronix.de> wrote:
+
+> Hi Peter.
 > 
-> > On Fri, Aug 28, 2015 at 06:46:14PM +0300, Antony Pavlov wrote:
-> > > On Fri, 28 Aug 2015 08:34:32 +0200
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > 
-> > > > On Fri, Aug 28, 2015 at 01:24:04AM +0300, Antony Pavlov wrote:
-> > > > > N.B. phys_to_virt() translates phys address
-> > > > > to KSEG1 (uncached) address as barebox mips
-> > > > > has no cache support.
-> > > > 
-> > > > What would it take to implement cache support for mips?
-> > > lack of the cache support is critical problem for current barebox mips support.
-> > > I'm planning to add cache support in several weeks.
-> > > This task needs much test efforts for different boards.
-> > > 
-> > > Anyway I can't carry out cache adding work at one.
-> > > But adding virt_to_phys and DMA support will help to add cache support one day anyway.
+> Sorry, but this patch is wrong. You can't just make up completely
+> ad-hoc DT bindings. You are pushing platformdata 1:1 into the DT,
+> which is not how the conversion to DT should be done.
+
+Could you clarify your point? My current understanding is that drivers
+instantiation from a platform code and from a DT are equal approaches,
+which should mirror each other.
+
+> 
+> There is also no pre-existing binding for "ata-generic" in the Linux
+> kernel which would define any of those properties.
+> 
+> Most likely your IDE controller is inside some SoC specific block,
+> with a specific compatible, which may also handle clocks and other
+> required stuff and that one should instantiate the IDE driver if
+> needed.
+
+I've got your point. However, drivers/ata/pata_of_platform.c from Linux
+also lacks any clock/stuff initialization.
+
+Regards,
+Peter
+
+
+> 
+> Regards,
+> Lucas
+> 
+> Am Donnerstag, den 03.09.2015, 16:38 +0300 schrieb Peter Mamonov:
+> > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> > ---
+> >  drivers/ata/intf_platform_ide.c | 35
+> > +++++++++++++++++++++++++++++++++-- 1 file changed, 33
+> > insertions(+), 2 deletions(-)
 > > 
-> > Looking at this again the virt_to_phys/phys_to_virt macros are not
-> > necessary. dma_alloc_coherent() already returns both the virtual address
-> > and the DMA address. It should be possible to replace DMA_ADDRESS_BROKEN
-> > in the ehci driver with a real pointer and use it appropriatly in the
-> > driver.
+> > diff --git a/drivers/ata/intf_platform_ide.c
+> > b/drivers/ata/intf_platform_ide.c index 0d392d8..f20e0e0 100644
+> > --- a/drivers/ata/intf_platform_ide.c
+> > +++ b/drivers/ata/intf_platform_ide.c
+> > @@ -29,6 +29,7 @@
+> >  #include <ata_drive.h>
+> >  #include <platform_ide.h>
+> >  #include <linux/err.h>
+> > +#include <of.h>
+> >  
+> >  /**
+> >   * Setup the register specific addresses for an ATA like divice
+> > @@ -85,10 +86,31 @@ static int platform_ide_probe(struct device_d
+> > *dev) void *reg_base, *alt_base = NULL;
+> >  	struct resource *reg, *alt;
+> >  	int mmio = 0;
+> > +	struct device_node *dn = dev->device_node;
+> > +	u32 tmp32;
+> >  
+> >  	if (pdata == NULL) {
+> > -		dev_err(dev, "No platform data. Cannot
+> > continue\n");
+> > -		return -EINVAL;
+> > +		/* try to get platform data from the device tree */
+> > +		if (dn == NULL) {
+> > +			dev_err(dev, "No platform data. Cannot
+> > continue\n");
+> > +			return -EINVAL;
+> > +		}
+> > +
+> > +		pdata = xzalloc(sizeof(struct ide_port_info));
+> > +
+> > +		if (!pdata) {
+> > +			dev_err(dev, "Platform data allocation
+> > failed\n");
+> > +			return -ENOMEM;
+> > +		}
+> > +		device_add_data(dev, pdata, sizeof(struct
+> > ide_port_info)); +
+> > +		if (of_property_read_bool(dn, "dataif-be"))
+> > +			pdata->dataif_be = 1;
+> > +
+> > +		if (of_property_read_u32(dn, "reg-shift", &tmp32)
+> > == 0)
+> > +			pdata->ioport_shift = (unsigned)tmp32;
+> > +
+> > +		dev->platform_data = pdata;
+> >  	}
+> >  
+> >  	reg_base = dev_request_mem_region(dev, 0);
+> > @@ -136,9 +158,18 @@ static int platform_ide_probe(struct device_d
+> > *dev) return rc;
+> >  }
+> >  
+> > +static __maybe_unused struct of_device_id platform_ide_dt_ids[] = {
+> > +	{
+> > +		.compatible = "ata-generic",
+> > +	}, {
+> > +		/* sentinel */
+> > +	}
+> > +};
+> > +
+> >  static struct driver_d platform_ide_driver = {
+> >  	.name   = "ide_intf",
+> >  	.probe  = platform_ide_probe,
+> > +	.of_compatible = DRV_OF_COMPAT(platform_ide_dt_ids),
+> >  };
+> >  device_platform_driver(platform_ide_driver);
+> >  
 > 
-> Here is a fragment of drivers/usb/host/ehci-hcd.c:
-> 
->     while (td != (void *)QT_NEXT_TERMINATE) {
->            qh->qt_next = td->qt_next;
->            td = (void *)hc32_to_cpu(qh->qt_next);
->     }
-> 
-> 
-> qh->qt_next contains physical memory address for EHCI controller,
-> so after 'td = (void *)hc32_to_cpu(qh->qt_next)' contains physical address.
-> 
-> But latter we can use 'td->qt_next'. If physical address != virtual address
-> then we will fail. So we need addition phys_to_virt() call here.
 
-The problem with the ehci driver is that it uses qt_next pointers in the
-driver to iterate over the TDs. qt_next is meant for the ehci hardware,
-not for the software. What we need is an additional struct qTD *vqt_next
-field in both struct qTD and struct QH for software iteration over the
-list of TDs.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
