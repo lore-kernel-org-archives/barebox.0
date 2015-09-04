@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZXjZc-00075z-1f
- for barebox@lists.infradead.org; Fri, 04 Sep 2015 05:30:04 +0000
-Date: Fri, 4 Sep 2015 07:29:38 +0200
+ id 1ZXjar-0008IM-Eu
+ for barebox@lists.infradead.org; Fri, 04 Sep 2015 05:31:22 +0000
+Date: Fri, 4 Sep 2015 07:30:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150904052938.GM18700@pengutronix.de>
-References: <1441175817-37597-1-git-send-email-d.schultz@phytec.de>
+Message-ID: <20150904053059.GN18700@pengutronix.de>
+References: <1441175928-38242-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1441175817-37597-1-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <1441175928-38242-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: am33xx: Add barebox_update eMMC option
+Subject: Re: [PATCH 1/2] ARM: dts: Add include to strip am33xx clocks
 To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Sep 02, 2015 at 08:36:56AM +0200, Daniel Schultz wrote:
-> With this patch the barebox_update command will be extended by the possibility
-> to flash the MLO to eMMC devices.
+On Wed, Sep 02, 2015 at 08:38:47AM +0200, Daniel Schultz wrote:
+> Include this file to disable all clocks.
 > 
-> The MLO will be flashed to the following addresses:
-> 0x20000
-> 0x40000
-> 0x60000
-> 
-> The MBR at addr. 0x0 won't be overwritten.
-> Therefore it's necessary to remove the MLO in the boot partition.
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> ---
+>  arch/arm/dts/am33xx-clocks-strip.dtsi | 79 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>  create mode 100644 arch/arm/dts/am33xx-clocks-strip.dtsi
 
-Couldn't you instead write the MLO to 0x0 but keep the partition table?
-It seems the first 512 bytes from the MLO are unused execpt for the
-CHSETTINGS header which does not conflict with the partition table.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
