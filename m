@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZYzUf-0008K7-WD
- for barebox@lists.infradead.org; Mon, 07 Sep 2015 16:42:10 +0000
-Received: by lanb10 with SMTP id b10so54391736lan.3
- for <barebox@lists.infradead.org>; Mon, 07 Sep 2015 09:41:47 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Mon,  7 Sep 2015 19:43:53 +0300
-Message-Id: <1441644233-26311-1-git-send-email-pmamonov@gmail.com>
-In-Reply-To: <1441641223.28391.11.camel@pengutronix.de>
-References: <1441641223.28391.11.camel@pengutronix.de>
+ id 1ZZFL6-0004fB-JI
+ for barebox@lists.infradead.org; Tue, 08 Sep 2015 09:37:22 +0000
+Received: by lbpo4 with SMTP id o4so50172014lbp.2
+ for <barebox@lists.infradead.org>; Tue, 08 Sep 2015 02:36:57 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue,  8 Sep 2015 12:36:45 +0300
+Message-Id: <1441705005-29340-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,86 +21,285 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv3] ata: intf_platform_ide: add OF bindings
-To: l.stach@pengutronix.de, s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH] endian: sync {big,little}_endian.h with linux-4.2
+To: barebox@lists.infradead.org
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/ata/intf_platform_ide.c | 34 +++++++++++++++++++++++++++++-----
- 1 file changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
-index 0d392d8..ab633c0 100644
---- a/drivers/ata/intf_platform_ide.c
-+++ b/drivers/ata/intf_platform_ide.c
-@@ -29,6 +29,7 @@
- #include <ata_drive.h>
- #include <platform_ide.h>
- #include <linux/err.h>
-+#include <of.h>
+This patch makes ehci-hcd.c happy on big-endian MIPS
+by importing __constant_cpu_to_le16()
+from linux.git/include/uapi/linux/byteorder/big_endian.h
+
+ include/linux/byteorder/big_endian.h    | 118 +++++++++++++++++++++-----------
+ include/linux/byteorder/little_endian.h | 118 +++++++++++++++++++++-----------
+ 2 files changed, 156 insertions(+), 80 deletions(-)
+
+
+diff --git a/include/linux/byteorder/big_endian.h b/include/linux/byteorder/big_endian.h
+index e560ef6..539f710 100644
+--- a/include/linux/byteorder/big_endian.h
++++ b/include/linux/byteorder/big_endian.h
+@@ -9,48 +9,86 @@
+ #endif
+ #define	__BYTE_ORDER	__BIG_ENDIAN
  
- /**
-  * Setup the register specific addresses for an ATA like divice
-@@ -85,8 +86,22 @@ static int platform_ide_probe(struct device_d *dev)
- 	void *reg_base, *alt_base = NULL;
- 	struct resource *reg, *alt;
- 	int mmio = 0;
--
--	if (pdata == NULL) {
-+	struct device_node *dn = dev->device_node;
-+	unsigned ioport_shift = 0;
-+	int dataif_be = 0;
-+	void (*reset)(int) = NULL;
++#include <linux/types.h>
+ #include <linux/swab.h>
+ 
+-#define __constant_htonl(x) ((__u32)(x))
+-#define __constant_ntohl(x) ((__u32)(x))
+-#define __constant_htons(x) ((__u16)(x))
+-#define __constant_ntohs(x) ((__u16)(x))
+-#define __constant_cpu_to_le64(x) ___swab64((x))
+-#define __constant_le64_to_cpu(x) ___swab64((x))
+-#define __constant_cpu_to_le32(x) ___swab32((x))
+-#define __constant_le32_to_cpu(x) ___swab32((x))
+-#define __constant_cpu_to_le16(x) ___swab16((x))
+-#define __constant_le16_to_cpu(x) ___swab16((x))
+-#define __constant_cpu_to_be64(x) ((__u64)(x))
+-#define __constant_be64_to_cpu(x) ((__u64)(x))
+-#define __constant_cpu_to_be32(x) ((__u32)(x))
+-#define __constant_be32_to_cpu(x) ((__u32)(x))
+-#define __constant_cpu_to_be16(x) ((__u16)(x))
+-#define __constant_be16_to_cpu(x) ((__u16)(x))
+-#define __cpu_to_le64(x) __swab64((x))
+-#define __le64_to_cpu(x) __swab64((x))
+-#define __cpu_to_le32(x) __swab32((x))
+-#define __le32_to_cpu(x) __swab32((x))
+-#define __cpu_to_le16(x) __swab16((x))
+-#define __le16_to_cpu(x) __swab16((x))
+-#define __cpu_to_be64(x) ((__u64)(x))
+-#define __be64_to_cpu(x) ((__u64)(x))
+-#define __cpu_to_be32(x) ((__u32)(x))
+-#define __be32_to_cpu(x) ((__u32)(x))
+-#define __cpu_to_be16(x) ((__u16)(x))
+-#define __be16_to_cpu(x) ((__u16)(x))
+-#define __cpu_to_le64p(x) __swab64p((x))
+-#define __le64_to_cpup(x) __swab64p((x))
+-#define __cpu_to_le32p(x) __swab32p((x))
+-#define __le32_to_cpup(x) __swab32p((x))
+-#define __cpu_to_le16p(x) __swab16p((x))
+-#define __le16_to_cpup(x) __swab16p((x))
+-#define __cpu_to_be64p(x) (*(__u64*)(x))
+-#define __be64_to_cpup(x) (*(__u64*)(x))
+-#define __cpu_to_be32p(x) (*(__u32*)(x))
+-#define __be32_to_cpup(x) (*(__u32*)(x))
+-#define __cpu_to_be16p(x) (*(__u16*)(x))
+-#define __be16_to_cpup(x) (*(__u16*)(x))
++#define __constant_htonl(x) ((__force __be32)(__u32)(x))
++#define __constant_ntohl(x) ((__force __u32)(__be32)(x))
++#define __constant_htons(x) ((__force __be16)(__u16)(x))
++#define __constant_ntohs(x) ((__force __u16)(__be16)(x))
++#define __constant_cpu_to_le64(x) ((__force __le64)___constant_swab64((x)))
++#define __constant_le64_to_cpu(x) ___constant_swab64((__force __u64)(__le64)(x))
++#define __constant_cpu_to_le32(x) ((__force __le32)___constant_swab32((x)))
++#define __constant_le32_to_cpu(x) ___constant_swab32((__force __u32)(__le32)(x))
++#define __constant_cpu_to_le16(x) ((__force __le16)___constant_swab16((x)))
++#define __constant_le16_to_cpu(x) ___constant_swab16((__force __u16)(__le16)(x))
++#define __constant_cpu_to_be64(x) ((__force __be64)(__u64)(x))
++#define __constant_be64_to_cpu(x) ((__force __u64)(__be64)(x))
++#define __constant_cpu_to_be32(x) ((__force __be32)(__u32)(x))
++#define __constant_be32_to_cpu(x) ((__force __u32)(__be32)(x))
++#define __constant_cpu_to_be16(x) ((__force __be16)(__u16)(x))
++#define __constant_be16_to_cpu(x) ((__force __u16)(__be16)(x))
++#define __cpu_to_le64(x) ((__force __le64)__swab64((x)))
++#define __le64_to_cpu(x) __swab64((__force __u64)(__le64)(x))
++#define __cpu_to_le32(x) ((__force __le32)__swab32((x)))
++#define __le32_to_cpu(x) __swab32((__force __u32)(__le32)(x))
++#define __cpu_to_le16(x) ((__force __le16)__swab16((x)))
++#define __le16_to_cpu(x) __swab16((__force __u16)(__le16)(x))
++#define __cpu_to_be64(x) ((__force __be64)(__u64)(x))
++#define __be64_to_cpu(x) ((__force __u64)(__be64)(x))
++#define __cpu_to_be32(x) ((__force __be32)(__u32)(x))
++#define __be32_to_cpu(x) ((__force __u32)(__be32)(x))
++#define __cpu_to_be16(x) ((__force __be16)(__u16)(x))
++#define __be16_to_cpu(x) ((__force __u16)(__be16)(x))
 +
-+	if (pdata) {
-+		ioport_shift = pdata->ioport_shift;
-+		dataif_be = pdata->dataif_be;
-+		reset = pdata->reset;
-+	} else if (dn) {
-+		/* try to get platform data from the device tree */
-+		u32 tmp32;
++static inline __le64 __cpu_to_le64p(const __u64 *p)
++{
++	return (__force __le64)__swab64p(p);
++}
++static inline __u64 __le64_to_cpup(const __le64 *p)
++{
++	return __swab64p((__u64 *)p);
++}
++static inline __le32 __cpu_to_le32p(const __u32 *p)
++{
++	return (__force __le32)__swab32p(p);
++}
++static inline __u32 __le32_to_cpup(const __le32 *p)
++{
++	return __swab32p((__u32 *)p);
++}
++static inline __le16 __cpu_to_le16p(const __u16 *p)
++{
++	return (__force __le16)__swab16p(p);
++}
++static inline __u16 __le16_to_cpup(const __le16 *p)
++{
++	return __swab16p((__u16 *)p);
++}
++static inline __be64 __cpu_to_be64p(const __u64 *p)
++{
++	return (__force __be64)*p;
++}
++static inline __u64 __be64_to_cpup(const __be64 *p)
++{
++	return (__force __u64)*p;
++}
++static inline __be32 __cpu_to_be32p(const __u32 *p)
++{
++	return (__force __be32)*p;
++}
++static inline __u32 __be32_to_cpup(const __be32 *p)
++{
++	return (__force __u32)*p;
++}
++static inline __be16 __cpu_to_be16p(const __u16 *p)
++{
++	return (__force __be16)*p;
++}
++static inline __u16 __be16_to_cpup(const __be16 *p)
++{
++	return (__force __u16)*p;
++}
+ #define __cpu_to_le64s(x) __swab64s((x))
+ #define __le64_to_cpus(x) __swab64s((x))
+ #define __cpu_to_le32s(x) __swab32s((x))
+diff --git a/include/linux/byteorder/little_endian.h b/include/linux/byteorder/little_endian.h
+index a821b27..dfe9531 100644
+--- a/include/linux/byteorder/little_endian.h
++++ b/include/linux/byteorder/little_endian.h
+@@ -9,48 +9,86 @@
+ #endif
+ #define	__BYTE_ORDER	__LITTLE_ENDIAN
+ 
++#include <linux/types.h>
+ #include <linux/swab.h>
+ 
+-#define __constant_htonl(x) ___constant_swab32((x))
+-#define __constant_ntohl(x) ___constant_swab32((x))
+-#define __constant_htons(x) ___constant_swab16((x))
+-#define __constant_ntohs(x) ___constant_swab16((x))
+-#define __constant_cpu_to_le64(x) ((__u64)(x))
+-#define __constant_le64_to_cpu(x) ((__u64)(x))
+-#define __constant_cpu_to_le32(x) ((__u32)(x))
+-#define __constant_le32_to_cpu(x) ((__u32)(x))
+-#define __constant_cpu_to_le16(x) ((__u16)(x))
+-#define __constant_le16_to_cpu(x) ((__u16)(x))
+-#define __constant_cpu_to_be64(x) ___constant_swab64((x))
+-#define __constant_be64_to_cpu(x) ___constant_swab64((x))
+-#define __constant_cpu_to_be32(x) ___constant_swab32((x))
+-#define __constant_be32_to_cpu(x) ___constant_swab32((x))
+-#define __constant_cpu_to_be16(x) ___constant_swab16((x))
+-#define __constant_be16_to_cpu(x) ___constant_swab16((x))
+-#define __cpu_to_le64(x) ((__u64)(x))
+-#define __le64_to_cpu(x) ((__u64)(x))
+-#define __cpu_to_le32(x) ((__u32)(x))
+-#define __le32_to_cpu(x) ((__u32)(x))
+-#define __cpu_to_le16(x) ((__u16)(x))
+-#define __le16_to_cpu(x) ((__u16)(x))
+-#define __cpu_to_be64(x) __swab64((x))
+-#define __be64_to_cpu(x) __swab64((x))
+-#define __cpu_to_be32(x) __swab32((x))
+-#define __be32_to_cpu(x) __swab32((x))
+-#define __cpu_to_be16(x) __swab16((x))
+-#define __be16_to_cpu(x) __swab16((x))
+-#define __cpu_to_le64p(x) (*(__u64*)(x))
+-#define __le64_to_cpup(x) (*(__u64*)(x))
+-#define __cpu_to_le32p(x) (*(__u32*)(x))
+-#define __le32_to_cpup(x) (*(__u32*)(x))
+-#define __cpu_to_le16p(x) (*(__u16*)(x))
+-#define __le16_to_cpup(x) (*(__u16*)(x))
+-#define __cpu_to_be64p(x) __swab64p((x))
+-#define __be64_to_cpup(x) __swab64p((x))
+-#define __cpu_to_be32p(x) __swab32p((x))
+-#define __be32_to_cpup(x) __swab32p((x))
+-#define __cpu_to_be16p(x) __swab16p((x))
+-#define __be16_to_cpup(x) __swab16p((x))
++#define __constant_htonl(x) ((__force __be32)___constant_swab32((x)))
++#define __constant_ntohl(x) ___constant_swab32((__force __be32)(x))
++#define __constant_htons(x) ((__force __be16)___constant_swab16((x)))
++#define __constant_ntohs(x) ___constant_swab16((__force __be16)(x))
++#define __constant_cpu_to_le64(x) ((__force __le64)(__u64)(x))
++#define __constant_le64_to_cpu(x) ((__force __u64)(__le64)(x))
++#define __constant_cpu_to_le32(x) ((__force __le32)(__u32)(x))
++#define __constant_le32_to_cpu(x) ((__force __u32)(__le32)(x))
++#define __constant_cpu_to_le16(x) ((__force __le16)(__u16)(x))
++#define __constant_le16_to_cpu(x) ((__force __u16)(__le16)(x))
++#define __constant_cpu_to_be64(x) ((__force __be64)___constant_swab64((x)))
++#define __constant_be64_to_cpu(x) ___constant_swab64((__force __u64)(__be64)(x))
++#define __constant_cpu_to_be32(x) ((__force __be32)___constant_swab32((x)))
++#define __constant_be32_to_cpu(x) ___constant_swab32((__force __u32)(__be32)(x))
++#define __constant_cpu_to_be16(x) ((__force __be16)___constant_swab16((x)))
++#define __constant_be16_to_cpu(x) ___constant_swab16((__force __u16)(__be16)(x))
++#define __cpu_to_le64(x) ((__force __le64)(__u64)(x))
++#define __le64_to_cpu(x) ((__force __u64)(__le64)(x))
++#define __cpu_to_le32(x) ((__force __le32)(__u32)(x))
++#define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
++#define __cpu_to_le16(x) ((__force __le16)(__u16)(x))
++#define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
++#define __cpu_to_be64(x) ((__force __be64)__swab64((x)))
++#define __be64_to_cpu(x) __swab64((__force __u64)(__be64)(x))
++#define __cpu_to_be32(x) ((__force __be32)__swab32((x)))
++#define __be32_to_cpu(x) __swab32((__force __u32)(__be32)(x))
++#define __cpu_to_be16(x) ((__force __be16)__swab16((x)))
++#define __be16_to_cpu(x) __swab16((__force __u16)(__be16)(x))
 +
-+		if (of_property_read_u32(dn, "reg-shift", &tmp32) == 0)
-+			ioport_shift = (unsigned)tmp32;
-+	} else {
- 		dev_err(dev, "No platform data. Cannot continue\n");
- 		return -EINVAL;
- 	}
-@@ -123,9 +138,9 @@ static int platform_ide_probe(struct device_d *dev)
- 	ide = xzalloc(sizeof(*ide));
- 	ide->io.mmio = mmio;
- 
--	platform_ide_setup_port(reg_base, alt_base, &ide->io, pdata->ioport_shift);
--	ide->io.reset = pdata->reset;
--	ide->io.dataif_be = pdata->dataif_be;
-+	platform_ide_setup_port(reg_base, alt_base, &ide->io, ioport_shift);
-+	ide->io.reset = reset;
-+	ide->io.dataif_be = dataif_be;
- 
- 	rc = ide_port_register(ide);
- 	if (rc != 0) {
-@@ -136,9 +151,18 @@ static int platform_ide_probe(struct device_d *dev)
- 	return rc;
- }
- 
-+static __maybe_unused struct of_device_id platform_ide_dt_ids[] = {
-+	{
-+		.compatible = "ata-generic",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
- static struct driver_d platform_ide_driver = {
- 	.name   = "ide_intf",
- 	.probe  = platform_ide_probe,
-+	.of_compatible = DRV_OF_COMPAT(platform_ide_dt_ids),
- };
- device_platform_driver(platform_ide_driver);
- 
++static inline __le64 __cpu_to_le64p(const __u64 *p)
++{
++	return (__force __le64)*p;
++}
++static inline __u64 __le64_to_cpup(const __le64 *p)
++{
++	return (__force __u64)*p;
++}
++static inline __le32 __cpu_to_le32p(const __u32 *p)
++{
++	return (__force __le32)*p;
++}
++static inline __u32 __le32_to_cpup(const __le32 *p)
++{
++	return (__force __u32)*p;
++}
++static inline __le16 __cpu_to_le16p(const __u16 *p)
++{
++	return (__force __le16)*p;
++}
++static inline __u16 __le16_to_cpup(const __le16 *p)
++{
++	return (__force __u16)*p;
++}
++static inline __be64 __cpu_to_be64p(const __u64 *p)
++{
++	return (__force __be64)__swab64p(p);
++}
++static inline __u64 __be64_to_cpup(const __be64 *p)
++{
++	return __swab64p((__u64 *)p);
++}
++static inline __be32 __cpu_to_be32p(const __u32 *p)
++{
++	return (__force __be32)__swab32p(p);
++}
++static inline __u32 __be32_to_cpup(const __be32 *p)
++{
++	return __swab32p((__u32 *)p);
++}
++static inline __be16 __cpu_to_be16p(const __u16 *p)
++{
++	return (__force __be16)__swab16p(p);
++}
++static inline __u16 __be16_to_cpup(const __be16 *p)
++{
++	return __swab16p((__u16 *)p);
++}
+ #define __cpu_to_le64s(x) do { (void)(x); } while (0)
+ #define __le64_to_cpus(x) do { (void)(x); } while (0)
+ #define __cpu_to_le32s(x) do { (void)(x); } while (0)
 -- 
-2.1.4
+2.5.0
 
 
 _______________________________________________
