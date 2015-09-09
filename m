@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZZatb-0006xb-6n
- for barebox@lists.infradead.org; Wed, 09 Sep 2015 08:38:23 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1ZZatK-0001ql-HX
- for barebox@lists.infradead.org; Wed, 09 Sep 2015 10:38:06 +0200
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed,  9 Sep 2015 10:38:06 +0200
-Message-Id: <1441787886-10673-2-git-send-email-l.stach@pengutronix.de>
-In-Reply-To: <1441787886-10673-1-git-send-email-l.stach@pengutronix.de>
-References: <1441787886-10673-1-git-send-email-l.stach@pengutronix.de>
+ id 1ZZeto-0003Lw-Se
+ for barebox@lists.infradead.org; Wed, 09 Sep 2015 12:54:53 +0000
+Received: by lbbmp1 with SMTP id mp1so5093463lbb.1
+ for <barebox@lists.infradead.org>; Wed, 09 Sep 2015 05:54:30 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Wed,  9 Sep 2015 15:56:39 +0300
+Message-Id: <1441803399-1790-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,37 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] passwd: avoid NULL ptr usage
-To: barebox@lists.infradead.org
+Subject: [PATCH] usb: ehci-hcd: use is_timeout_non_interruptible()
+To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Fixes
-common/password.c: In function 'check_passwd':
-common/password.c:292:4: warning: reading through null pointer (argument 3)
-    pr_err("No such digest: %s\n", PASSWD_SUM);
+Use is_timeout_non_interruptible() intead of is_timeout()
+to avoid re-entering ehci-hcd functions from pollers,
+registered by usb drivers.
 
-if no algo is enabled in which case PASSWD_SUM is defined to NULL.
-
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- common/password.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/ehci-hcd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/password.c b/common/password.c
-index 43c5e0cc0e08..b5b7655a6435 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -289,7 +289,8 @@ static int check_passwd(unsigned char *passwd, size_t length)
- 	} else {
- 		d = digest_alloc(PASSWD_SUM);
- 		if (!d) {
--			pr_err("No such digest: %s\n", PASSWD_SUM);
-+			pr_err("No such digest: %s\n",
-+			       PASSWD_SUM ? PASSWD_SUM : "NULL");
- 			return -ENOENT;
- 		}
- 
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 1077ac4..7ca77bf 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -137,7 +137,7 @@ static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
+ 		result &= mask;
+ 		if (result == done)
+ 			return 0;
+-		if (is_timeout(start, usec * USECOND))
++		if (is_timeout_non_interruptible(start, usec * USECOND))
+ 			return -ETIMEDOUT;
+ 	}
+ }
+@@ -357,7 +357,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	do {
+ 		token = hc32_to_cpu(vtd->qt_token);
+ 		token = hc32_to_cpu(__raw_readl((void *)&vtd->qt_token));
+-		if (is_timeout(start, timeout_val)) {
++		if (is_timeout_non_interruptible(start, timeout_val)) {
+ 			/* Disable async schedule. */
+ 			cmd = ehci_readl(&ehci->hcor->or_usbcmd);
+ 			cmd &= ~CMD_ASE;
 -- 
-2.5.0
+2.1.4
 
 
 _______________________________________________
