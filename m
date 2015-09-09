@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZZhJh-0008WQ-Et
- for barebox@lists.infradead.org; Wed, 09 Sep 2015 15:29:46 +0000
-Received: by lbpo4 with SMTP id o4so7866973lbp.2
- for <barebox@lists.infradead.org>; Wed, 09 Sep 2015 08:29:22 -0700 (PDT)
-Date: Wed, 9 Sep 2015 18:37:42 +0300
+ id 1ZZhcr-000579-He
+ for barebox@lists.infradead.org; Wed, 09 Sep 2015 15:49:34 +0000
+Received: by lbpo4 with SMTP id o4so8207514lbp.2
+ for <barebox@lists.infradead.org>; Wed, 09 Sep 2015 08:49:12 -0700 (PDT)
+Date: Wed, 9 Sep 2015 18:57:34 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150909183742.10e5bdef1c534240caee6128@gmail.com>
+Message-Id: <20150909185734.bd271f2414a72ec9037fe2eb@gmail.com>
 In-Reply-To: <20150909064435.GE18700@pengutronix.de>
 References: <1441705005-29340-1-git-send-email-antonynpavlov@gmail.com>
  <20150909064435.GE18700@pengutronix.de>
@@ -57,27 +57,28 @@ Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > =
 
 > include/linux/byteorder/little_endian.h hasn't been changed since 2011.
+
+Hmm, I see a new endian related patch in pengutronix next branch. Please se=
+e below.
+
 > Do you have other patches in your tree?
 
-I have no other patches. Here is my 'git log -2' output:
+Do you have this patch in you local tree?
 
-commit 85e356fdff6e02dc7535b0dfcbe4bbf51604407e
-Author: Antony Pavlov <antonynpavlov@gmail.com>
-Date:   Wed Dec 3 23:44:54 2014 +0300
+commit d192ebe8bb78296d1d86b35cacb7aa3cd5414d7a
+Author: David S. Miller <davem@davemloft.net>
+Date:   Tue Sep 1 15:48:08 2015 +0300
 
-    endian: sync {big,little}_endian.h with linux-4.2
+    endian: Always evaluate arguments
 
+...
+
+    Signed-off-by: David S. Miller <davem@davemloft.net>
     Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 4d3a2a9b61388af4b27434c57ae3b6ca265830c5
-Merge: 9dd0e52 790584b
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Mon Sep 7 07:20:31 2015 +0200
-
-    Merge branch 'for-next/usb' into next
-
-I have just pushed my endian-related branch to github:
-  https://github.com/frantony/barebox/tree/20150908.endian
+ include/linux/byteorder/big_endian.h    | 12 ++++++------
+ include/linux/byteorder/little_endian.h | 12 ++++++------
 
 
 > Sascha
