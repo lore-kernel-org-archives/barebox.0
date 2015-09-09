@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZZZ8f-0006fq-5b
- for barebox@lists.infradead.org; Wed, 09 Sep 2015 06:45:49 +0000
-Date: Wed, 9 Sep 2015 08:45:27 +0200
+ id 1ZZZCV-0008Vz-5X
+ for barebox@lists.infradead.org; Wed, 09 Sep 2015 06:49:47 +0000
+Date: Wed, 9 Sep 2015 08:49:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150909064527.GF18700@pengutronix.de>
-References: <1441705400-2905-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20150909064924.GG18700@pengutronix.de>
+References: <1441619490-20589-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1441705400-2905-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1441619490-20589-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,15 +22,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: e1000: correct function signature of set_ethaddr
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH v4 4/4] commands: Add MMC ext. CSD register tool
+To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 08, 2015 at 11:43:20AM +0200, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  drivers/net/e1000.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Sep 07, 2015 at 11:51:30AM +0200, Daniel Schultz wrote:
+> This tools can read/write to the extended CSD register of MMC devices.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
 
 Applied, thanks
 
