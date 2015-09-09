@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZZZHA-0004tU-DJ
- for barebox@lists.infradead.org; Wed, 09 Sep 2015 06:54:37 +0000
-Date: Wed, 9 Sep 2015 08:54:14 +0200
+ id 1ZZZOC-00012H-Ei
+ for barebox@lists.infradead.org; Wed, 09 Sep 2015 07:01:53 +0000
+Date: Wed, 9 Sep 2015 09:01:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150909065414.GH18700@pengutronix.de>
-References: <1441641223.28391.11.camel@pengutronix.de>
- <1441644233-26311-1-git-send-email-pmamonov@gmail.com>
+Message-ID: <20150909070130.GI18700@pengutronix.de>
+References: <1441619994-22444-1-git-send-email-d.schultz@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1441644233-26311-1-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1441619994-22444-1-git-send-email-d.schultz@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,55 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv3] ata: intf_platform_ide: add OF bindings
-To: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH v2 1/2] ARM: am33xx: Add barebox_update eMMC option
+To: Daniel Schultz <d.schultz@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Peter,
-
-On Mon, Sep 07, 2015 at 07:43:53PM +0300, Peter Mamonov wrote:
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
->  drivers/ata/intf_platform_ide.c | 34 +++++++++++++++++++++++++++++-----
->  1 file changed, 29 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
-> index 0d392d8..ab633c0 100644
-> --- a/drivers/ata/intf_platform_ide.c
-> +++ b/drivers/ata/intf_platform_ide.c
-> @@ -29,6 +29,7 @@
->  #include <ata_drive.h>
->  #include <platform_ide.h>
->  #include <linux/err.h>
-> +#include <of.h>
->  
->  /**
->   * Setup the register specific addresses for an ATA like divice
-> @@ -85,8 +86,22 @@ static int platform_ide_probe(struct device_d *dev)
->  	void *reg_base, *alt_base = NULL;
->  	struct resource *reg, *alt;
->  	int mmio = 0;
-> -
-> -	if (pdata == NULL) {
-> +	struct device_node *dn = dev->device_node;
-> +	unsigned ioport_shift = 0;
-> +	int dataif_be = 0;
-> +	void (*reset)(int) = NULL;
+On Mon, Sep 07, 2015 at 11:59:53AM +0200, Daniel Schultz wrote:
+> +static int emmc_mlo_handler(struct bbu_handler *handler, struct bbu_data *data)
+> +{
+> +	int ret = 0;
+> +	int i = 0;
+> +	int fd;
+> +	const void *image = data->image;
+> +	size_t size = data->len;
+> +	u8 *part_table = 0;
 > +
-> +	if (pdata) {
-> +		ioport_shift = pdata->ioport_shift;
-> +		dataif_be = pdata->dataif_be;
-> +		reset = pdata->reset;
-> +	} else if (dn) {
-> +		/* try to get platform data from the device tree */
-> +		u32 tmp32;
+> +	if (file_detect_type(image, size) != filetype_ch_image) {
+> +		pr_err("%s is not a valid ch-image\n", data->imagefile);
+> +		return -EINVAL;
+> +	}
+> +	ret = bbu_confirm(data);
+> +	if (ret != 0)
+> +		return ret;
 > +
-> +		if (of_property_read_u32(dn, "reg-shift", &tmp32) == 0)
-> +			ioport_shift = (unsigned)tmp32;
+> +	fd = open(handler->devicefile, O_WRONLY);
+> +	if (fd < 0) {
+> +		pr_err("could not open %s: %s\n", handler->devicefile,
+> +			errno_str());
+> +		return fd;
+> +	}
+> +
+> +	/* save the partition table */
+> +	part_table = xmalloc(PART_TABLE_SIZE);
 
-Applied with one little change. We can simplify this by doing passing
-&ioport_shift directly to of_property_read_u32. We do not have to check
-the return value then.
+You forgot to free part_table later. I replaced part_table with a static
+array while applying.
 
 Sascha
 
