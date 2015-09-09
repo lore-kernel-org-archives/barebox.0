@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZZZCV-0008Vz-5X
- for barebox@lists.infradead.org; Wed, 09 Sep 2015 06:49:47 +0000
-Date: Wed, 9 Sep 2015 08:49:24 +0200
+ id 1ZZZHA-0004tU-DJ
+ for barebox@lists.infradead.org; Wed, 09 Sep 2015 06:54:37 +0000
+Date: Wed, 9 Sep 2015 08:54:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150909064924.GG18700@pengutronix.de>
-References: <1441619490-20589-1-git-send-email-d.schultz@phytec.de>
+Message-ID: <20150909065414.GH18700@pengutronix.de>
+References: <1441641223.28391.11.camel@pengutronix.de>
+ <1441644233-26311-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1441619490-20589-1-git-send-email-d.schultz@phytec.de>
+In-Reply-To: <1441644233-26311-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,16 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 4/4] commands: Add MMC ext. CSD register tool
-To: Daniel Schultz <d.schultz@phytec.de>
+Subject: Re: [PATCHv3] ata: intf_platform_ide: add OF bindings
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 07, 2015 at 11:51:30AM +0200, Daniel Schultz wrote:
-> This tools can read/write to the extended CSD register of MMC devices.
-> 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Hi Peter,
 
-Applied, thanks
+On Mon, Sep 07, 2015 at 07:43:53PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  drivers/ata/intf_platform_ide.c | 34 +++++++++++++++++++++++++++++-----
+>  1 file changed, 29 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
+> index 0d392d8..ab633c0 100644
+> --- a/drivers/ata/intf_platform_ide.c
+> +++ b/drivers/ata/intf_platform_ide.c
+> @@ -29,6 +29,7 @@
+>  #include <ata_drive.h>
+>  #include <platform_ide.h>
+>  #include <linux/err.h>
+> +#include <of.h>
+>  
+>  /**
+>   * Setup the register specific addresses for an ATA like divice
+> @@ -85,8 +86,22 @@ static int platform_ide_probe(struct device_d *dev)
+>  	void *reg_base, *alt_base = NULL;
+>  	struct resource *reg, *alt;
+>  	int mmio = 0;
+> -
+> -	if (pdata == NULL) {
+> +	struct device_node *dn = dev->device_node;
+> +	unsigned ioport_shift = 0;
+> +	int dataif_be = 0;
+> +	void (*reset)(int) = NULL;
+> +
+> +	if (pdata) {
+> +		ioport_shift = pdata->ioport_shift;
+> +		dataif_be = pdata->dataif_be;
+> +		reset = pdata->reset;
+> +	} else if (dn) {
+> +		/* try to get platform data from the device tree */
+> +		u32 tmp32;
+> +
+> +		if (of_property_read_u32(dn, "reg-shift", &tmp32) == 0)
+> +			ioport_shift = (unsigned)tmp32;
+
+Applied with one little change. We can simplify this by doing passing
+&ioport_shift directly to of_property_read_u32. We do not have to check
+the return value then.
 
 Sascha
 
