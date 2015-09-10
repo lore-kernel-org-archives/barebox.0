@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZZwRJ-0002Ry-NJ
- for barebox@lists.infradead.org; Thu, 10 Sep 2015 07:38:38 +0000
-Date: Thu, 10 Sep 2015 09:38:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150910073815.GQ18700@pengutronix.de>
+ id 1Za46T-0005yL-II
+ for barebox@lists.infradead.org; Thu, 10 Sep 2015 15:49:38 +0000
+Received: by lbpo4 with SMTP id o4so25626640lbp.2
+ for <barebox@lists.infradead.org>; Thu, 10 Sep 2015 08:49:15 -0700 (PDT)
+Date: Thu, 10 Sep 2015 18:51:33 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20150910185133.7a11e8f0@berta>
+In-Reply-To: <20150910073815.GQ18700@pengutronix.de>
 References: <1441816612-5471-1-git-send-email-pmamonov@gmail.com>
+ <20150910073815.GQ18700@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1441816612-5471-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +25,70 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] WIP: add usb keyboard driver
-To: Peter Mamonov <pmamonov@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Excellent! This makes the framebuffer console support complete :)
+On Thu, 10 Sep 2015 09:38:15 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-I have not much to say, the driver looks ok to me. I'll test it once I
-find time. Some smally comments inline.
+> Excellent! This makes the framebuffer console support complete :)
 
-On Wed, Sep 09, 2015 at 07:36:52PM +0300, Peter Mamonov wrote:
-> diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+I'm sorry to dissapoint you, but this implementation of the usb
+keyboard driver seems to be wrong. The driver employs the get_report
+request to poll the keyboard state via the control endpoint, however
+the "Device Class Definition for Human Interface Devices (HID)" states
+the following:
+"This request is not intended to be used for polling the device state
+on a regular basis. [...] The Interrupt In pipe should be used for
+recurring Input reports."
 
-Please add some copyright header and don't forget to put references in
-it where you got the code from.
+I guess this is the source of the problems with some keyboards: 2 of 4
+keyboards I've tested changed their state only on key down, but not
+on key up.
 
-> +	if (pressed == 1) {
-> +		if (scancode == NUM_LOCK) {
-> +			data->flags ^= USB_KBD_NUMLOCK;
-> +			return 1;
-> +		}
-> +
-> +		if (scancode == CAPS_LOCK) {
-> +			data->flags ^= USB_KBD_CAPSLOCK;
-> +			return 1;
-> +		}
-> +		if (scancode == SCROLL_LOCK) {
-> +			data->flags ^= USB_KBD_SCROLLLOCK;
-> +			return 1;
-> +		}
-> +	}
-> +
-> +	/* Report keycode if any */
-> +	if (keycode) {
-> +		pr_debug("%s: key pressed: '%c'\n", __FUNCTION__, keycode);
+So, according the standard, we need to poll a keyboard via interrupt
+endpoint. However, current implementation of EHCI driver doesn't support
+interrupt transactions: submit_int_msg() in ehci-hcd.c is a stub. I'll
+try to implement it.
 
-Please use __func__ rather than __FUNCTION__
+Peter
 
-Sascha
+> 
+> I have not much to say, the driver looks ok to me. I'll test it once I
+> find time. Some smally comments inline.
+> 
+> On Wed, Sep 09, 2015 at 07:36:52PM +0300, Peter Mamonov wrote:
+> > diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+> 
+> Please add some copyright header and don't forget to put references in
+> it where you got the code from.
+> 
+> > +	if (pressed == 1) {
+> > +		if (scancode == NUM_LOCK) {
+> > +			data->flags ^= USB_KBD_NUMLOCK;
+> > +			return 1;
+> > +		}
+> > +
+> > +		if (scancode == CAPS_LOCK) {
+> > +			data->flags ^= USB_KBD_CAPSLOCK;
+> > +			return 1;
+> > +		}
+> > +		if (scancode == SCROLL_LOCK) {
+> > +			data->flags ^= USB_KBD_SCROLLLOCK;
+> > +			return 1;
+> > +		}
+> > +	}
+> > +
+> > +	/* Report keycode if any */
+> > +	if (keycode) {
+> > +		pr_debug("%s: key pressed: '%c'\n", __FUNCTION__,
+> > keycode);
+> 
+> Please use __func__ rather than __FUNCTION__
+> 
+> Sascha
+> 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
