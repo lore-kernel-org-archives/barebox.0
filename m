@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZaS5U-00088q-9q
- for barebox@lists.infradead.org; Fri, 11 Sep 2015 17:26:13 +0000
-Received: by lahg1 with SMTP id g1so22289151lah.1
- for <barebox@lists.infradead.org>; Fri, 11 Sep 2015 10:25:50 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Fri, 11 Sep 2015 20:27:55 +0300
-Message-Id: <1441992476-11703-3-git-send-email-pmamonov@gmail.com>
-In-Reply-To: <1441992476-11703-1-git-send-email-pmamonov@gmail.com>
-References: <1441992476-11703-1-git-send-email-pmamonov@gmail.com>
+ id 1ZarVo-0006CC-E5
+ for barebox@lists.infradead.org; Sat, 12 Sep 2015 20:35:04 +0000
+Received: by lagj9 with SMTP id j9so66867319lag.2
+ for <barebox@lists.infradead.org>; Sat, 12 Sep 2015 13:34:42 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sat, 12 Sep 2015 23:34:29 +0300
+Message-Id: <1442090069-30186-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
+References: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,55 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 2/3] WIP: usb: ehci-hcd: use non-interruptible version of
- mdelay()
+Subject: [PATCH] usb: storage: fix warning: no previous prototype for
+ 'usb_stor_Bulk_clear_endpt_stall'
 To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/usb/host/ehci-hcd.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/usb/storage/transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index c9bf703..3d89ec5 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -133,6 +133,14 @@ static struct descriptor {
- 	},
- };
+diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
+index ac1fe79..4140991 100644
+--- a/drivers/usb/storage/transport.c
++++ b/drivers/usb/storage/transport.c
+@@ -54,7 +54,7 @@ static const unsigned char us_direction[256/8] = {
+  */
  
-+static inline void mdelay_ni(unsigned long msecs)
-+{
-+	uint64_t start = get_time_ns();
-+
-+	while (!is_timeout_non_interruptible(start, msecs * MSECOND))
-+		;
-+}
-+
- #define ehci_is_TDI()	(ehci->flags & EHCI_HAS_TT)
- 
- static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
-@@ -673,7 +681,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
- 				 * root
- 				 */
- 				ehci_powerup_fixup(ehci);
--				mdelay(50);
-+				mdelay_ni(50);
- 				ehci->portreset |= 1 << port;
- 				/* terminate the reset */
- 				ehci_writel(status_reg, reg & ~EHCI_PS_PR);
-@@ -736,7 +744,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
- 		goto unknown;
- 	}
- 
--	mdelay(1);
-+	mdelay_ni(1);
- 	len = min3(srclen, (int)le16_to_cpu(req->length), length);
- 	if (srcptr != NULL && len > 0)
- 		memcpy(buffer, srcptr, len);
+ /* Clear a stall on an endpoint - special for bulk-only devices */
+-int usb_stor_Bulk_clear_endpt_stall(struct us_data *us, unsigned int pipe)
++static int usb_stor_Bulk_clear_endpt_stall(struct us_data *us, unsigned int pipe)
+ {
+ 	return usb_clear_halt(us->pusb_dev, pipe);
+ }
 -- 
-2.1.4
+2.5.0
 
 
 _______________________________________________
