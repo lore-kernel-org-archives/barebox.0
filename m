@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZarVo-0006CC-E5
- for barebox@lists.infradead.org; Sat, 12 Sep 2015 20:35:04 +0000
-Received: by lagj9 with SMTP id j9so66867319lag.2
- for <barebox@lists.infradead.org>; Sat, 12 Sep 2015 13:34:42 -0700 (PDT)
+ id 1ZarVj-0006Bg-VZ
+ for barebox@lists.infradead.org; Sat, 12 Sep 2015 20:35:00 +0000
+Received: by lbcao8 with SMTP id ao8so53255870lbc.3
+ for <barebox@lists.infradead.org>; Sat, 12 Sep 2015 13:34:37 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 12 Sep 2015 23:34:29 +0300
-Message-Id: <1442090069-30186-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
-References: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 12 Sep 2015 23:34:28 +0300
+Message-Id: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,28 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: storage: fix warning: no previous prototype for
- 'usb_stor_Bulk_clear_endpt_stall'
+Subject: [PATCH] logo: Kconfig: make BAREBOX_LOGO_* depend on BAREBOX_LOGO
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/usb/storage/transport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/logo/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/storage/transport.c b/drivers/usb/storage/transport.c
-index ac1fe79..4140991 100644
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -54,7 +54,7 @@ static const unsigned char us_direction[256/8] = {
-  */
+diff --git a/lib/logo/Kconfig b/lib/logo/Kconfig
+index 5b40d75..0718053 100644
+--- a/lib/logo/Kconfig
++++ b/lib/logo/Kconfig
+@@ -5,6 +5,8 @@ menuconfig BAREBOX_LOGO
+ 	  dependencies. The logo can be found under /logo/barebox-logo-<width>.png
+ 	  in the running barebox.
  
- /* Clear a stall on an endpoint - special for bulk-only devices */
--int usb_stor_Bulk_clear_endpt_stall(struct us_data *us, unsigned int pipe)
-+static int usb_stor_Bulk_clear_endpt_stall(struct us_data *us, unsigned int pipe)
- {
- 	return usb_clear_halt(us->pusb_dev, pipe);
- }
++if BAREBOX_LOGO
++
+ config BAREBOX_LOGO_64
+ 	bool "include 64x32 pixel logo"
+ 
+@@ -19,3 +21,5 @@ config BAREBOX_LOGO_400
+ 
+ config BAREBOX_LOGO_640
+ 	bool "include 640x320 pixel logo"
++
++endif # BAREBOX_LOGO
 -- 
 2.5.0
 
