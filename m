@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZbNEz-0000ZY-NM
- for barebox@lists.infradead.org; Mon, 14 Sep 2015 06:27:51 +0000
-Date: Mon, 14 Sep 2015 08:27:27 +0200
+ id 1ZbNH3-0003nf-Ao
+ for barebox@lists.infradead.org; Mon, 14 Sep 2015 06:29:57 +0000
+Date: Mon, 14 Sep 2015 08:29:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150914062727.GV18700@pengutronix.de>
-References: <1441992476-11703-1-git-send-email-pmamonov@gmail.com>
- <1441992476-11703-3-git-send-email-pmamonov@gmail.com>
+Message-ID: <20150914062935.GW18700@pengutronix.de>
+References: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1441992476-11703-3-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +22,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC v2 2/3] WIP: usb: ehci-hcd: use non-interruptible version
- of mdelay()
-To: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH] logo: Kconfig: make BAREBOX_LOGO_* depend on BAREBOX_LOGO
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 11, 2015 at 08:27:55PM +0300, Peter Mamonov wrote:
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+On Sat, Sep 12, 2015 at 11:34:28PM +0300, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  drivers/usb/host/ehci-hcd.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index c9bf703..3d89ec5 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -133,6 +133,14 @@ static struct descriptor {
->  	},
->  };
->  
-> +static inline void mdelay_ni(unsigned long msecs)
-> +{
-> +	uint64_t start = get_time_ns();
-> +
-> +	while (!is_timeout_non_interruptible(start, msecs * MSECOND))
-> +		;
-> +}
+>  lib/logo/Kconfig | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Instead of introducing a new function I think the existing [mun]delay
-functions should be made noninterruptible.
+Applied, thanks
 
 Sascha
 
