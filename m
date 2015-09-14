@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZarVj-0006Bg-VZ
- for barebox@lists.infradead.org; Sat, 12 Sep 2015 20:35:00 +0000
-Received: by lbcao8 with SMTP id ao8so53255870lbc.3
- for <barebox@lists.infradead.org>; Sat, 12 Sep 2015 13:34:37 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 12 Sep 2015 23:34:28 +0300
-Message-Id: <1442090069-30186-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZbMoU-0002ST-QI
+ for barebox@lists.infradead.org; Mon, 14 Sep 2015 06:00:28 +0000
+Date: Mon, 14 Sep 2015 08:00:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150914060003.GT18700@pengutronix.de>
+References: <1441787886-10673-1-git-send-email-l.stach@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1441787886-10673-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,41 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] logo: Kconfig: make BAREBOX_LOGO_* depend on BAREBOX_LOGO
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: add implementation for dma_alloc_writecombine
+ for !CONFIG_MMU
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- lib/logo/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+On Wed, Sep 09, 2015 at 10:38:05AM +0200, Lucas Stach wrote:
+> This fixes build failures in builds without MMU support by providing
+> a fallback implementation.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/include/asm/dma.h | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-diff --git a/lib/logo/Kconfig b/lib/logo/Kconfig
-index 5b40d75..0718053 100644
---- a/lib/logo/Kconfig
-+++ b/lib/logo/Kconfig
-@@ -5,6 +5,8 @@ menuconfig BAREBOX_LOGO
- 	  dependencies. The logo can be found under /logo/barebox-logo-<width>.png
- 	  in the running barebox.
- 
-+if BAREBOX_LOGO
-+
- config BAREBOX_LOGO_64
- 	bool "include 64x32 pixel logo"
- 
-@@ -19,3 +21,5 @@ config BAREBOX_LOGO_400
- 
- config BAREBOX_LOGO_640
- 	bool "include 640x320 pixel logo"
-+
-+endif # BAREBOX_LOGO
+Applied, thanks
+
+Sascha
+
+
 -- 
-2.5.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
