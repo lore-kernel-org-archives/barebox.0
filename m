@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f51.google.com ([209.85.215.51])
+Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zc88I-0006Z2-Il
- for barebox@lists.infradead.org; Wed, 16 Sep 2015 08:32:03 +0000
-Received: by lamp12 with SMTP id p12so122631436lam.0
- for <barebox@lists.infradead.org>; Wed, 16 Sep 2015 01:31:37 -0700 (PDT)
+ id 1Zc88H-0006YW-Vl
+ for barebox@lists.infradead.org; Wed, 16 Sep 2015 08:32:02 +0000
+Received: by lbcao8 with SMTP id ao8so99038602lbc.3
+ for <barebox@lists.infradead.org>; Wed, 16 Sep 2015 01:31:40 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 16 Sep 2015 11:31:29 +0300
-Message-Id: <1442392292-15898-2-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 16 Sep 2015 11:31:32 +0300
+Message-Id: <1442392292-15898-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
 References: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,125 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 1/4] MIPS: ar933x: pbl: add pbl_ar9331_pll macro
+Subject: [RFC 4/4] MIPS: add black-swift_defconfig
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-From: Oleksij Rempel <linux@rempel-privat.de>
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/pbl_macros.h              | 21 ++++++++++++
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  5 +++
- arch/mips/mach-ath79/include/mach/pbl_macros.h  | 43 +++++++++++++++++++++++++
- 3 files changed, 69 insertions(+)
+ arch/mips/configs/black-swift_defconfig | 37 +++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index 1d9d6ab..db46d0d 100644
---- a/arch/mips/include/asm/pbl_macros.h
-+++ b/arch/mips/include/asm/pbl_macros.h
-@@ -28,6 +28,27 @@
- #include <generated/compile.h>
- #include <generated/utsrelease.h>
- 
-+	.macro	pbl_reg_writel val addr
-+	.set push
-+	.set noreorder
-+	li	t9, \addr
-+	li	t8, \val
-+	sw	t8, 0(t9)
-+	.set	pop
-+	.endm
-+
-+	.macro	pbl_reg_clr clr addr
-+	.set push
-+	.set noreorder
-+	li	t9, \addr
-+	li	t8, \clr
-+	lw	t7, 0(t9)
-+	not	t8, t8
-+	and	t7, t8
-+	sw	t7, 0(t9)
-+	.set	pop
-+	.endm
-+
- 	.macro	pbl_sleep reg count
- 	.set push
- 	.set noreorder
-diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-index 0c6ddd6..5082502 100644
---- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-+++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-@@ -15,7 +15,11 @@
- #ifndef __ASM_MACH_AR71XX_REGS_H
- #define __ASM_MACH_AR71XX_REGS_H
- 
-+#ifndef __ASSEMBLER__
- #include <linux/bitops.h>
-+#else
-+#define BIT(nr)  (1 << (nr))
-+#endif
- 
- #define AR71XX_APB_BASE		0x18000000
- 
-@@ -42,6 +46,7 @@
- #define AR933X_PLL_CPU_CONFIG_REFDIV_MASK	0x1f
- #define AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT	23
- #define AR933X_PLL_CPU_CONFIG_OUTDIV_MASK	0x7
-+#define AR933X_PLL_CPU_CONFIG_PLLPWD		BIT(30)
- 
- #define AR933X_PLL_CLOCK_CTRL_BYPASS		BIT(2)
- #define AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT	5
-diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+diff --git a/arch/mips/configs/black-swift_defconfig b/arch/mips/configs/black-swift_defconfig
 new file mode 100644
-index 0000000..1fc6eb5
+index 0000000..61c6f81
 --- /dev/null
-+++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-@@ -0,0 +1,43 @@
-+#ifndef __ASM_MACH_ATH79_PBL_MACROS_H
-+#define __ASM_MACH_ATH79_PBL_MACROS_H
-+
-+#include <asm/addrspace.h>
-+#include <asm/regdef.h>
-+#include <mach/ar71xx_regs.h>
-+
-+#define PLL_BASE		(KSEG1 | AR71XX_PLL_BASE)
-+#define PLL_CPU_CONFIG_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG_REG)
-+#define PLL_CPU_CONFIG2_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG2_REG)
-+#define PLL_CLOCK_CTRL_REG	(PLL_BASE | AR933X_PLL_CLOCK_CTRL_REG)
-+
-+#define DEF_25MHZ_PLL_CLOCK_CTRL \
-+				((2 - 1) << AR933X_PLL_CLOCK_CTRL_AHB_DIV_SHIFT \
-+				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_DDR_DIV_SHIFT \
-+				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT)
-+#define DEF_25MHZ_SETTLE_TIME	(34000 / 40)
-+#define DEF_25MHZ_PLL_CONFIG	( 1 << AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT \
-+				| 1 << AR933X_PLL_CPU_CONFIG_REFDIV_SHIFT \
-+				| 32 << AR933X_PLL_CPU_CONFIG_NINT_SHIFT)
-+
-+.macro	pbl_ar9331_pll
-+	.set	push
-+	.set	noreorder
-+
-+	/* Most devices have 25 MHz Ref clock. */
-+	pbl_reg_writel (DEF_25MHZ_PLL_CLOCK_CTRL | AR933X_PLL_CLOCK_CTRL_BYPASS), \
-+		PLL_CLOCK_CTRL_REG
-+	pbl_reg_writel DEF_25MHZ_SETTLE_TIME, PLL_CPU_CONFIG2_REG
-+	pbl_reg_writel (DEF_25MHZ_PLL_CONFIG | AR933X_PLL_CPU_CONFIG_PLLPWD), \
-+		PLL_CPU_CONFIG_REG
-+
-+	/* power on CPU PLL */
-+	pbl_reg_clr	AR933X_PLL_CPU_CONFIG_PLLPWD, PLL_CPU_CONFIG_REG
-+	/* disable PLL bypass */
-+	pbl_reg_clr	AR933X_PLL_CLOCK_CTRL_BYPASS, PLL_CLOCK_CTRL_REG
-+
-+	pbl_sleep	t2, 40
-+
-+	.set	pop
-+.endm
-+
-+#endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
++++ b/arch/mips/configs/black-swift_defconfig
+@@ -0,0 +1,37 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="black-swift"
++CONFIG_MACH_MIPS_ATH79=y
++CONFIG_BOARD_BLACK_SWIFT=y
++CONFIG_PBL_IMAGE=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_PARTITION=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++# CONFIG_CMD_BOOTM is not set
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_GLOBAL=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_OFDEVICE=y
++CONFIG_DRIVER_SERIAL_AR933X=y
++CONFIG_DRIVER_SPI_ATH79=y
++CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_M25P80=y
++CONFIG_DIGEST_SHA224_GENERIC=y
++CONFIG_DIGEST_SHA256_GENERIC=y
 -- 
 2.5.0
 
