@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from mail-la0-f51.google.com ([209.85.215.51])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zc88G-0006Xq-Ce
- for barebox@lists.infradead.org; Wed, 16 Sep 2015 08:32:01 +0000
-Received: by lanb10 with SMTP id b10so123471138lan.3
- for <barebox@lists.infradead.org>; Wed, 16 Sep 2015 01:31:38 -0700 (PDT)
+ id 1Zc88I-0006Z2-Il
+ for barebox@lists.infradead.org; Wed, 16 Sep 2015 08:32:03 +0000
+Received: by lamp12 with SMTP id p12so122631436lam.0
+ for <barebox@lists.infradead.org>; Wed, 16 Sep 2015 01:31:37 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 16 Sep 2015 11:31:30 +0300
-Message-Id: <1442392292-15898-3-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 16 Sep 2015 11:31:29 +0300
+Message-Id: <1442392292-15898-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
 References: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,153 +23,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 2/4] MIPS: ar933x: pbl: add pbl_ar9331_ddr2_config macro
+Subject: [RFC 1/4] MIPS: ar933x: pbl: add pbl_ar9331_pll macro
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <linux@rempel-privat.de>
+
+From: Oleksij Rempel <linux@rempel-privat.de>
 
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h | 20 ++++++
- arch/mips/mach-ath79/include/mach/pbl_macros.h  | 89 +++++++++++++++++++++++++
- 2 files changed, 109 insertions(+)
+ arch/mips/include/asm/pbl_macros.h              | 21 ++++++++++++
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  5 +++
+ arch/mips/mach-ath79/include/mach/pbl_macros.h  | 43 +++++++++++++++++++++++++
+ 3 files changed, 69 insertions(+)
 
+diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
+index 1d9d6ab..db46d0d 100644
+--- a/arch/mips/include/asm/pbl_macros.h
++++ b/arch/mips/include/asm/pbl_macros.h
+@@ -28,6 +28,27 @@
+ #include <generated/compile.h>
+ #include <generated/utsrelease.h>
+ 
++	.macro	pbl_reg_writel val addr
++	.set push
++	.set noreorder
++	li	t9, \addr
++	li	t8, \val
++	sw	t8, 0(t9)
++	.set	pop
++	.endm
++
++	.macro	pbl_reg_clr clr addr
++	.set push
++	.set noreorder
++	li	t9, \addr
++	li	t8, \clr
++	lw	t7, 0(t9)
++	not	t8, t8
++	and	t7, t8
++	sw	t7, 0(t9)
++	.set	pop
++	.endm
++
+ 	.macro	pbl_sleep reg count
+ 	.set push
+ 	.set noreorder
 diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-index 5082502..6f1bf8e 100644
+index 0c6ddd6..5082502 100644
 --- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
 +++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-@@ -23,6 +23,8 @@
+@@ -15,7 +15,11 @@
+ #ifndef __ASM_MACH_AR71XX_REGS_H
+ #define __ASM_MACH_AR71XX_REGS_H
+ 
++#ifndef __ASSEMBLER__
+ #include <linux/bitops.h>
++#else
++#define BIT(nr)  (1 << (nr))
++#endif
  
  #define AR71XX_APB_BASE		0x18000000
  
-+#define AR71XX_DDR_CTRL_BASE	(AR71XX_APB_BASE + 0x00000000)
-+#define AR71XX_DDR_CTRL_SIZE	0x100
- #define AR71XX_PLL_BASE		(AR71XX_APB_BASE + 0x00050000)
- #define AR71XX_PLL_SIZE		0x100
- #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
-@@ -32,6 +34,24 @@
- #define AR933X_UART_SIZE	0x14
+@@ -42,6 +46,7 @@
+ #define AR933X_PLL_CPU_CONFIG_REFDIV_MASK	0x1f
+ #define AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT	23
+ #define AR933X_PLL_CPU_CONFIG_OUTDIV_MASK	0x7
++#define AR933X_PLL_CPU_CONFIG_PLLPWD		BIT(30)
  
- /*
-+ * DDR_CTRL block
-+ */
-+#define AR933X_DDR_CONFIG		0x00
-+#define AR933X_DDR_CONFIG2		0x04
-+#define AR933X_DDR_MODE			0x08
-+#define AR933X_DDR_EXT_MODE		0x0c
-+#define AR933X_DDR_CTRL			0x10
-+#define AR933X_DDR_REFRESH		0x14
-+#define AR933X_DDR_RD_DATA		0x18
-+#define AR933X_DDR_TAP_CTRL0		0x1c
-+#define AR933X_DDR_TAP_CTRL1		0x20
-+#define AR933X_DDR_TAP_CTRL1		0x20
-+
-+#define AR933X_DDR_DDR_DDR2_CONFIG	0x8c
-+#define AR933X_DDR_DDR_EMR2		0x90
-+#define AR933X_DDR_DDR_EMR3		0x94
-+
-+/*
-  * PLL block
-  */
- #define AR933X_PLL_CPU_CONFIG_REG	0x00
+ #define AR933X_PLL_CLOCK_CTRL_BYPASS		BIT(2)
+ #define AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT	5
 diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-index 1fc6eb5..f0e0174 100644
---- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
+new file mode 100644
+index 0000000..1fc6eb5
+--- /dev/null
 +++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-@@ -40,4 +40,93 @@
- 	.set	pop
- .endm
- 
-+#define DDR_BASE		(KSEG1 | AR71XX_DDR_CTRL_BASE)
-+#define DDR_CONFIG		(DDR_BASE | AR933X_DDR_CONFIG)
-+#define DDR_CONFIG2		(DDR_BASE | AR933X_DDR_CONFIG2)
-+#define DDR_MODE		(DDR_BASE | AR933X_DDR_MODE)
-+#define DDR_EXT_MODE		(DDR_BASE | AR933X_DDR_EXT_MODE)
+@@ -0,0 +1,43 @@
++#ifndef __ASM_MACH_ATH79_PBL_MACROS_H
++#define __ASM_MACH_ATH79_PBL_MACROS_H
 +
-+#define DDR_CTRL		(DDR_BASE | AR933X_DDR_CTRL)
-+/* Forces an EMR3S (Extended Mode Register 3 Set) update cycle */
-+#define DDR_CTRL_EMR3		BIT(5)
-+/* Forces an EMR2S (Extended Mode Register 2 Set) update cycle */
-+#define DDR_CTRL_EMR2		BIT(4)
-+#define DDR_CTRL_PREA		BIT(3) /* Forces a PRECHARGE ALL cycle */
-+#define DDR_CTRL_REF		BIT(2) /* Forces an AUTO REFRESH cycle */
-+/* Forces an EMRS (Extended Mode Register 2 Set) update cycle */
-+#define DDR_CTRL_EMRS		BIT(1)
-+/* Forces a MRS (Mode Register Set) update cycle */
-+#define DDR_CTRL_MRS		BIT(0)
++#include <asm/addrspace.h>
++#include <asm/regdef.h>
++#include <mach/ar71xx_regs.h>
 +
-+#define DDR_REFRESH		(DDR_BASE | AR933X_DDR_REFRESH)
-+#define DDR_RD_DATA		(DDR_BASE | AR933X_DDR_RD_DATA)
-+#define DDR_TAP_CTRL0		(DDR_BASE | AR933X_DDR_TAP_CTRL0)
-+#define DDR_TAP_CTRL1		(DDR_BASE | AR933X_DDR_TAP_CTRL1)
++#define PLL_BASE		(KSEG1 | AR71XX_PLL_BASE)
++#define PLL_CPU_CONFIG_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG_REG)
++#define PLL_CPU_CONFIG2_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG2_REG)
++#define PLL_CLOCK_CTRL_REG	(PLL_BASE | AR933X_PLL_CLOCK_CTRL_REG)
 +
-+#define DDR_DDR2_CONFIG		(DDR_BASE | AR933X_DDR_DDR_DDR2_CONFIG)
-+#define DDR_EMR2		(DDR_BASE | AR933X_DDR_DDR_EMR2)
-+#define DDR_EMR3		(DDR_BASE | AR933X_DDR_DDR_EMR3)
++#define DEF_25MHZ_PLL_CLOCK_CTRL \
++				((2 - 1) << AR933X_PLL_CLOCK_CTRL_AHB_DIV_SHIFT \
++				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_DDR_DIV_SHIFT \
++				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT)
++#define DEF_25MHZ_SETTLE_TIME	(34000 / 40)
++#define DEF_25MHZ_PLL_CONFIG	( 1 << AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT \
++				| 1 << AR933X_PLL_CPU_CONFIG_REFDIV_SHIFT \
++				| 32 << AR933X_PLL_CPU_CONFIG_NINT_SHIFT)
 +
-+.macro	pbl_ar9331_ddr2_config
++.macro	pbl_ar9331_pll
 +	.set	push
 +	.set	noreorder
 +
-+	pbl_reg_writel	0x7fbc8cd0, DDR_CONFIG
-+	pbl_reg_writel	0x9dd0e6a8, DDR_CONFIG2
++	/* Most devices have 25 MHz Ref clock. */
++	pbl_reg_writel (DEF_25MHZ_PLL_CLOCK_CTRL | AR933X_PLL_CLOCK_CTRL_BYPASS), \
++		PLL_CLOCK_CTRL_REG
++	pbl_reg_writel DEF_25MHZ_SETTLE_TIME, PLL_CPU_CONFIG2_REG
++	pbl_reg_writel (DEF_25MHZ_PLL_CONFIG | AR933X_PLL_CPU_CONFIG_PLLPWD), \
++		PLL_CPU_CONFIG_REG
 +
-+	/* Enable DDR2 */
-+	pbl_reg_writel	0x00000a59, DDR_DDR2_CONFIG
-+	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
++	/* power on CPU PLL */
++	pbl_reg_clr	AR933X_PLL_CPU_CONFIG_PLLPWD, PLL_CPU_CONFIG_REG
++	/* disable PLL bypass */
++	pbl_reg_clr	AR933X_PLL_CLOCK_CTRL_BYPASS, PLL_CLOCK_CTRL_REG
 +
-+	/* Disable High Temperature Self-Refresh Rate */
-+	pbl_reg_writel	0x00000000, DDR_EMR2
-+	pbl_reg_writel	DDR_CTRL_EMR2, DDR_CTRL
-+
-+	pbl_reg_writel	0x00000000, DDR_EMR3
-+	pbl_reg_writel	DDR_CTRL_EMR3, DDR_CTRL
-+
-+	/* Enable DLL */
-+	pbl_reg_writel	0x00000000, DDR_EXT_MODE
-+	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
-+
-+	/* Reset DLL */
-+	pbl_reg_writel	0x00000100, DDR_MODE
-+	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
-+
-+	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
-+	pbl_reg_writel	DDR_CTRL_REF, DDR_CTRL
-+	pbl_reg_writel	DDR_CTRL_REF, DDR_CTRL
-+
-+	/* Write recovery (WR) 6 clock, CAS Latency 3, Burst Length 8 */
-+	pbl_reg_writel	0x00000a33, DDR_MODE
-+	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
-+
-+	/*
-+	 * DDR_EXT_MODE[9:7] = 0x7: (OCD Calibration defaults)
-+	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
-+	 * DDR_EXT_MODE[0] = 0: Enable DLL
-+	 */
-+	pbl_reg_writel	0x00000382, DDR_EXT_MODE
-+	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
-+
-+	/*
-+	 * DDR_EXT_MODE[9:7] = 0x0: (OCD exit)
-+	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
-+	 * DDR_EXT_MODE[0] = 0: Enable DLL
-+	 */
-+	pbl_reg_writel	0x00000402, DDR_EXT_MODE
-+	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
-+
-+	/* Refresh control. Bit 14 is enable. Bits <13:0> Refresh time */
-+	pbl_reg_writel	0x00004186, DDR_REFRESH
-+	/* DQS 0 Tap Control (needs tuning) */
-+	pbl_reg_writel	0x00000008, DDR_TAP_CTRL0
-+	/* DQS 1 Tap Control (needs tuning) */
-+	pbl_reg_writel	0x00000009, DDR_TAP_CTRL1
-+	/* For 16-bit DDR */
-+	pbl_reg_writel	0x000000ff, DDR_RD_DATA
++	pbl_sleep	t2, 40
 +
 +	.set	pop
 +.endm
 +
- #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
++#endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
 -- 
 2.5.0
 
