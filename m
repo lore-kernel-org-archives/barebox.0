@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zc88H-0006YA-5b
- for barebox@lists.infradead.org; Wed, 16 Sep 2015 08:32:02 +0000
-Received: by lagj9 with SMTP id j9so125799027lag.2
- for <barebox@lists.infradead.org>; Wed, 16 Sep 2015 01:31:39 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 16 Sep 2015 11:31:31 +0300
-Message-Id: <1442392292-15898-4-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
-References: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Zc8Bu-0001Cz-AN
+ for barebox@lists.infradead.org; Wed, 16 Sep 2015 08:35:47 +0000
+Date: Wed, 16 Sep 2015 10:35:23 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150916083523.GE4018@pengutronix.de>
+References: <1442385648-6063-1-git-send-email-u74147@gmail.com>
+ <20150916105033.d6d9a93ef5344d0c12ad4334@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20150916105033.d6d9a93ef5344d0c12ad4334@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,196 +19,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 3/4] MIPS: ath79: add black-swift board support
-To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH] MIPS: start.S depends on banner
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Kevin Du Huanpeng <u74147@gmail.com>
 
-Black Swift is a tiny coin-sized embedded computer based on AR9331 SoC.
-See http://www.black-swift.com/ for details.
+On Wed, Sep 16, 2015 at 10:50:33AM +0300, Antony Pavlov wrote:
+> On Wed, 16 Sep 2015 14:40:48 +0800
+> Kevin Du Huanpeng <u74147@gmail.com> wrote:
+> 
+> > Signed-off-by: Kevin Du Huanpeng <u74147@gmail.com>
+> > ---
+> >  arch/mips/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> > index aeb5c04..fde4c2e 100644
+> > --- a/arch/mips/Kconfig
+> > +++ b/arch/mips/Kconfig
+> > @@ -6,6 +6,7 @@ config MIPS
+> >  	select HAS_KALLSYMS
+> >  	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+> >  	select HAVE_CONFIGURABLE_TEXT_BASE
+> > +	select BANNER
+> >  	default y
+> >  
+> >  config SYS_SUPPORTS_BIG_ENDIAN
+> > -- 
+> > 1.9.1
+> > 
+> 
+> IMHO we can make banner use in start.S optional. E.g.:
+> 
+> diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
+> index 7e2ae5e..f3a6a00 100644
+> --- a/arch/mips/boot/start.S
+> +++ b/arch/mips/boot/start.S
+> @@ -22,8 +22,10 @@
+>  #include <asm/mipsregs.h>
+>  #include <asm/asm.h>
+>  #include <asm-generic/memory_layout.h>
+> +#ifdef CONFIG_BANNER
+>  #include <generated/compile.h>
+>  #include <generated/utsrelease.h>
+> +#endif
 
-See also Black Swift kickstarter page:
-  https://www.kickstarter.com/projects/1133560316/black-swift-tiny-wireless-computer
+CONFIG_BANNER and this compilation failure have nothing to do with each
+other.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/Makefile                                 |  1 +
- arch/mips/boards/black-swift/Makefile              |  1 +
- arch/mips/boards/black-swift/board.c               | 27 +++++++++++++
- .../black-swift/include/board/board_pbl_start.h    | 46 ++++++++++++++++++++++
- arch/mips/dts/black-swift.dts                      | 36 +++++++++++++++++
- arch/mips/mach-ath79/Kconfig                       |  5 +++
- 6 files changed, 116 insertions(+)
+The problem we have is that start.S may get compiled before
+generated/compile.h is generated. This is because there is no
+Make dependency from start.S to generated/compile.h. Look at
+common/Makefile. There we have:
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 6ef2bf7..75761b5 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -80,6 +80,7 @@ board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
- 
- machine-$(CONFIG_MACH_MIPS_ATH79)	:= ath79
- board-$(CONFIG_BOARD_TPLINK_MR3020)	:= tplink-mr3020
-+board-$(CONFIG_BOARD_BLACK_SWIFT)	:= black-swift
- 
- machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
- board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
-diff --git a/arch/mips/boards/black-swift/Makefile b/arch/mips/boards/black-swift/Makefile
-new file mode 100644
-index 0000000..dcfc293
---- /dev/null
-+++ b/arch/mips/boards/black-swift/Makefile
-@@ -0,0 +1 @@
-+obj-y += board.o
-diff --git a/arch/mips/boards/black-swift/board.c b/arch/mips/boards/black-swift/board.c
-new file mode 100644
-index 0000000..2e2ed20
---- /dev/null
-+++ b/arch/mips/boards/black-swift/board.c
-@@ -0,0 +1,27 @@
-+/*
-+ * Copyright (C) 2015 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+
-+static int model_hostname_init(void)
-+{
-+	barebox_set_hostname("black-swift");
-+
-+	return 0;
-+}
-+postcore_initcall(model_hostname_init);
-diff --git a/arch/mips/boards/black-swift/include/board/board_pbl_start.h b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-new file mode 100644
-index 0000000..176491f
---- /dev/null
-+++ b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-@@ -0,0 +1,46 @@
-+/*
-+ * Copyright (C) 2013, 2015 Antony Pavlov <antonynpavlov@gmail.com>
-+ * Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
-+
-+	.macro	board_pbl_start
-+	.set	push
-+	.set	noreorder
-+
-+	mips_barebox_10h
-+
-+	mips_disable_interrupts
-+
-+	pbl_ar9331_pll
-+	pbl_ar9331_ddr2_config
-+
-+	/*
-+	 * General Purpose I/O Function (GPIO_FUNCTION_1)
-+	 *
-+	 *  SPI_EN  (18) enables SPI SPA Interface signals
-+	 *               in GPIO_2, GPIO_3, GPIO_4 and GPIO_5.
-+	 *  RES     (15) reserved. This bit must be written with 1.
-+	 *  UART_EN  (2) enables UART I/O on GPIO_9 (SIN) and GPIO_10 (SOUT).
-+	 */
-+	pbl_reg_writel 0x48002, 0xb8040028
-+
-+	copy_to_link_location	pbl_start
-+
-+	.set	pop
-+	.endm
-diff --git a/arch/mips/dts/black-swift.dts b/arch/mips/dts/black-swift.dts
-new file mode 100644
-index 0000000..db13c73
---- /dev/null
-+++ b/arch/mips/dts/black-swift.dts
-@@ -0,0 +1,36 @@
-+/dts-v1/;
-+
-+#include "ar9331.dtsi"
-+
-+/ {
-+	model = "Black Swift";
-+	compatible = "smartlx,black-swift";
-+
-+	memory {
-+		reg = <0x00000000 0x4000000>;
-+	};
-+};
-+
-+&serial0 {
-+	status = "okay";
-+};
-+
-+&spi {
-+	num-chipselects = <1>;
-+	status = "okay";
-+
-+	/* Winbond W25Q128FV SPI flash */
-+	spiflash: m25p80@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "m25p80";
-+		spi-max-frequency = <104000000>;
-+		reg = <0>;
-+	};
-+};
-+
-+/ {
-+	aliases {
-+		spiflash = &spiflash;
-+	};
-+};
-diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
-index f730b37..09855e1 100644
---- a/arch/mips/mach-ath79/Kconfig
-+++ b/arch/mips/mach-ath79/Kconfig
-@@ -13,6 +13,11 @@ config BOARD_TPLINK_MR3020
- 	select HAVE_IMAGE_COMPRESSION
- 	select HAS_NMON
- 
-+config BOARD_BLACK_SWIFT
-+	bool "Black Swift"
-+	select HAVE_PBL_IMAGE
-+	select HAVE_IMAGE_COMPRESSION
-+
- endchoice
- 
- endif
+$(obj)/version.o: include/generated/compile.h
+
+This makes sure that generated/compile.h is generated before compiling
+version.c.
+
+In arch/mips/boot/Makefile we would need:
+
+$(obj)/start.o: include/generated/compile.h
+
+The problem is that we do not have the rule to generate compile.h
+available in this Makefile, so we would also need:
+
+       chk_compile.h = :
+ quiet_chk_compile.h = echo '  CHK     $@'
+silent_chk_compile.h = :
+include/generated/compile.h: FORCE
+	@$($(quiet)chk_compile.h)
+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkcompile_h $@ \
+	"$(UTS_MACHINE)" "$(CC) $(KBUILD_CFLAGS)"
+
+in arch/mips/boot/Makefile.
+
+Sascha
+
 -- 
-2.5.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
