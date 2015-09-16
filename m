@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zc7G2-0001CT-BS
- for barebox@lists.infradead.org; Wed, 16 Sep 2015 07:35:59 +0000
-Received: by lagj9 with SMTP id j9so124910100lag.2
- for <barebox@lists.infradead.org>; Wed, 16 Sep 2015 00:35:35 -0700 (PDT)
-Date: Wed, 16 Sep 2015 10:57:41 +0300
+ id 1Zc88G-0006Xq-Ce
+ for barebox@lists.infradead.org; Wed, 16 Sep 2015 08:32:01 +0000
+Received: by lanb10 with SMTP id b10so123471138lan.3
+ for <barebox@lists.infradead.org>; Wed, 16 Sep 2015 01:31:38 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20150916105741.897dffacd4102c19cb060933@gmail.com>
-In-Reply-To: <20150916105033.d6d9a93ef5344d0c12ad4334@gmail.com>
-References: <1442385648-6063-1-git-send-email-u74147@gmail.com>
- <20150916105033.d6d9a93ef5344d0c12ad4334@gmail.com>
-Mime-Version: 1.0
+Date: Wed, 16 Sep 2015 11:31:30 +0300
+Message-Id: <1442392292-15898-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
+References: <1442392292-15898-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,111 +18,161 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: start.S depends on banner
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Kevin Du Huanpeng <u74147@gmail.com>
+Subject: [RFC 2/4] MIPS: ar933x: pbl: add pbl_ar9331_ddr2_config macro
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-On Wed, 16 Sep 2015 10:50:33 +0300
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h | 20 ++++++
+ arch/mips/mach-ath79/include/mach/pbl_macros.h  | 89 +++++++++++++++++++++++++
+ 2 files changed, 109 insertions(+)
 
-> On Wed, 16 Sep 2015 14:40:48 +0800
-> Kevin Du Huanpeng <u74147@gmail.com> wrote:
-> =
+diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+index 5082502..6f1bf8e 100644
+--- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
++++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+@@ -23,6 +23,8 @@
+ 
+ #define AR71XX_APB_BASE		0x18000000
+ 
++#define AR71XX_DDR_CTRL_BASE	(AR71XX_APB_BASE + 0x00000000)
++#define AR71XX_DDR_CTRL_SIZE	0x100
+ #define AR71XX_PLL_BASE		(AR71XX_APB_BASE + 0x00050000)
+ #define AR71XX_PLL_SIZE		0x100
+ #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
+@@ -32,6 +34,24 @@
+ #define AR933X_UART_SIZE	0x14
+ 
+ /*
++ * DDR_CTRL block
++ */
++#define AR933X_DDR_CONFIG		0x00
++#define AR933X_DDR_CONFIG2		0x04
++#define AR933X_DDR_MODE			0x08
++#define AR933X_DDR_EXT_MODE		0x0c
++#define AR933X_DDR_CTRL			0x10
++#define AR933X_DDR_REFRESH		0x14
++#define AR933X_DDR_RD_DATA		0x18
++#define AR933X_DDR_TAP_CTRL0		0x1c
++#define AR933X_DDR_TAP_CTRL1		0x20
++#define AR933X_DDR_TAP_CTRL1		0x20
++
++#define AR933X_DDR_DDR_DDR2_CONFIG	0x8c
++#define AR933X_DDR_DDR_EMR2		0x90
++#define AR933X_DDR_DDR_EMR3		0x94
++
++/*
+  * PLL block
+  */
+ #define AR933X_PLL_CPU_CONFIG_REG	0x00
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index 1fc6eb5..f0e0174 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -40,4 +40,93 @@
+ 	.set	pop
+ .endm
+ 
++#define DDR_BASE		(KSEG1 | AR71XX_DDR_CTRL_BASE)
++#define DDR_CONFIG		(DDR_BASE | AR933X_DDR_CONFIG)
++#define DDR_CONFIG2		(DDR_BASE | AR933X_DDR_CONFIG2)
++#define DDR_MODE		(DDR_BASE | AR933X_DDR_MODE)
++#define DDR_EXT_MODE		(DDR_BASE | AR933X_DDR_EXT_MODE)
++
++#define DDR_CTRL		(DDR_BASE | AR933X_DDR_CTRL)
++/* Forces an EMR3S (Extended Mode Register 3 Set) update cycle */
++#define DDR_CTRL_EMR3		BIT(5)
++/* Forces an EMR2S (Extended Mode Register 2 Set) update cycle */
++#define DDR_CTRL_EMR2		BIT(4)
++#define DDR_CTRL_PREA		BIT(3) /* Forces a PRECHARGE ALL cycle */
++#define DDR_CTRL_REF		BIT(2) /* Forces an AUTO REFRESH cycle */
++/* Forces an EMRS (Extended Mode Register 2 Set) update cycle */
++#define DDR_CTRL_EMRS		BIT(1)
++/* Forces a MRS (Mode Register Set) update cycle */
++#define DDR_CTRL_MRS		BIT(0)
++
++#define DDR_REFRESH		(DDR_BASE | AR933X_DDR_REFRESH)
++#define DDR_RD_DATA		(DDR_BASE | AR933X_DDR_RD_DATA)
++#define DDR_TAP_CTRL0		(DDR_BASE | AR933X_DDR_TAP_CTRL0)
++#define DDR_TAP_CTRL1		(DDR_BASE | AR933X_DDR_TAP_CTRL1)
++
++#define DDR_DDR2_CONFIG		(DDR_BASE | AR933X_DDR_DDR_DDR2_CONFIG)
++#define DDR_EMR2		(DDR_BASE | AR933X_DDR_DDR_EMR2)
++#define DDR_EMR3		(DDR_BASE | AR933X_DDR_DDR_EMR3)
++
++.macro	pbl_ar9331_ddr2_config
++	.set	push
++	.set	noreorder
++
++	pbl_reg_writel	0x7fbc8cd0, DDR_CONFIG
++	pbl_reg_writel	0x9dd0e6a8, DDR_CONFIG2
++
++	/* Enable DDR2 */
++	pbl_reg_writel	0x00000a59, DDR_DDR2_CONFIG
++	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
++
++	/* Disable High Temperature Self-Refresh Rate */
++	pbl_reg_writel	0x00000000, DDR_EMR2
++	pbl_reg_writel	DDR_CTRL_EMR2, DDR_CTRL
++
++	pbl_reg_writel	0x00000000, DDR_EMR3
++	pbl_reg_writel	DDR_CTRL_EMR3, DDR_CTRL
++
++	/* Enable DLL */
++	pbl_reg_writel	0x00000000, DDR_EXT_MODE
++	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
++
++	/* Reset DLL */
++	pbl_reg_writel	0x00000100, DDR_MODE
++	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
++
++	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
++	pbl_reg_writel	DDR_CTRL_REF, DDR_CTRL
++	pbl_reg_writel	DDR_CTRL_REF, DDR_CTRL
++
++	/* Write recovery (WR) 6 clock, CAS Latency 3, Burst Length 8 */
++	pbl_reg_writel	0x00000a33, DDR_MODE
++	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
++
++	/*
++	 * DDR_EXT_MODE[9:7] = 0x7: (OCD Calibration defaults)
++	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
++	 * DDR_EXT_MODE[0] = 0: Enable DLL
++	 */
++	pbl_reg_writel	0x00000382, DDR_EXT_MODE
++	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
++
++	/*
++	 * DDR_EXT_MODE[9:7] = 0x0: (OCD exit)
++	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
++	 * DDR_EXT_MODE[0] = 0: Enable DLL
++	 */
++	pbl_reg_writel	0x00000402, DDR_EXT_MODE
++	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
++
++	/* Refresh control. Bit 14 is enable. Bits <13:0> Refresh time */
++	pbl_reg_writel	0x00004186, DDR_REFRESH
++	/* DQS 0 Tap Control (needs tuning) */
++	pbl_reg_writel	0x00000008, DDR_TAP_CTRL0
++	/* DQS 1 Tap Control (needs tuning) */
++	pbl_reg_writel	0x00000009, DDR_TAP_CTRL1
++	/* For 16-bit DDR */
++	pbl_reg_writel	0x000000ff, DDR_RD_DATA
++
++	.set	pop
++.endm
++
+ #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
+-- 
+2.5.0
 
-> > Signed-off-by: Kevin Du Huanpeng <u74147@gmail.com>
-> > ---
-> >  arch/mips/Kconfig | 1 +
-> >  1 file changed, 1 insertion(+)
-> > =
-
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > index aeb5c04..fde4c2e 100644
-> > --- a/arch/mips/Kconfig
-> > +++ b/arch/mips/Kconfig
-> > @@ -6,6 +6,7 @@ config MIPS
-> >  	select HAS_KALLSYMS
-> >  	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
-> >  	select HAVE_CONFIGURABLE_TEXT_BASE
-> > +	select BANNER
-> >  	default y
-> >  =
-
-> >  config SYS_SUPPORTS_BIG_ENDIAN
-> > -- =
-
-> > 1.9.1
-> > =
-
-> =
-
-> IMHO we can make banner use in start.S optional. E.g.:
-> =
-
-> diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-> index 7e2ae5e..f3a6a00 100644
-> --- a/arch/mips/boot/start.S
-> +++ b/arch/mips/boot/start.S
-> @@ -22,8 +22,10 @@
->  #include <asm/mipsregs.h>
->  #include <asm/asm.h>
->  #include <asm-generic/memory_layout.h>
-> +#ifdef CONFIG_BANNER
->  #include <generated/compile.h>
->  #include <generated/utsrelease.h>
-> +#endif
->  =
-
->         /*
->          * ADR macro instruction (inspired by ARM)
-> @@ -52,6 +54,7 @@ _pc:  addiu   \rd, ra, \label - _pc           # label i=
-s assumed to be
->  =
-
->  EXPORT(_start)
->  =
-
-> +#ifdef CONFIG_BANNER
->         b       __start
->          nop
->  =
-
-> @@ -60,6 +63,8 @@ EXPORT(_start)
->         .byte   0
->  =
-
->         .align 4
-> +#endif /* CONFIG_BANNER */
-
-I see just the same code in the mips_barebox_10h macro from arch/mips/inclu=
-de/asm/pbl_macros.h.
-
-
-
-
-> +
->  __start:
->         /* disable watchpoints */
->         mtc0    zero, CP0_WATCHLO
-> =
-
-> Or even add an separate option to include utsrelease information into sta=
-rt.S.
-> =
-
-> --=A0
-> Best regards,
-> =A0 Antony Pavlov
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
