@@ -1,11 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZVFhz-0005vk-DN
- for barebox@lists.infradead.org; Fri, 28 Aug 2015 09:12:28 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Aug 2015 11:12:03 +0200
-Message-Id: <1440753123-26716-1-git-send-email-s.hauer@pengutronix.de>
+ id 1ZcSPa-0002ba-Um
+ for barebox@lists.infradead.org; Thu, 17 Sep 2015 06:11:15 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
+ ident=Debian-exim)
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <ukl@pengutronix.de>) id 1ZcSPF-0004FX-Bv
+ for barebox@lists.infradead.org; Thu, 17 Sep 2015 08:10:53 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <ukl@pengutronix.de>) id 1ZcSPE-0008JO-Uu
+ for barebox@lists.infradead.org; Thu, 17 Sep 2015 08:10:52 +0200
+Date: Thu, 17 Sep 2015 08:10:52 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20150917061052.GM5327@pengutronix.de>
+References: <1442433644-1324-1-git-send-email-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1442433644-1324-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,146 +26,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: spi-nor: mostly drop lock/unlock code
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] video: imx: assert that image buffer doesn't cross a 4
+ MiB boundary
+To: barebox@lists.infradead.org
 
-The lock/unlock code is broken beyond repair.
-
-First of all the algorithm doesn't work properly. SPI NOR flashes
-can only protect a certain amount of blocks from the end of the device
-which is incompatible to the protect(start,len) API we have. The
-algorithm tries to be clever by doing protection only when it does
-not protect unrelated blocks and unprotection only when it does not
-unprotect unrelated blocks. This breaks for example when some code
-protects the last blocks (which may contain the bootloader), then
-protects the blocks before the last ones (which may contain the
-environment). Then if we try to overwrite the bootloader this won't
-work since it would unprotect the environment aswell, so the driver
-will not unprotect anything resulting in a failed erase/write later.
-
-Then the protection behaviour is different between different flashes.
-Some have three protection bits, some have four. For some the smallest
-protection are is 1/16 of the device, others have 1/256 or 1/64. Some
-have a bit which selects the lower area instead of upper area for
-protection. The position of this bit differs on different flashes.
-
-This patch removes the lock code completely and always unprotects
-the whole device. This way we can unprotect a device for writing to
-it and never protect it again.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/spi-nor/spi-nor.c | 74 +++++--------------------------------------
- 1 file changed, 8 insertions(+), 66 deletions(-)
-
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index edf0dd5..32501a9 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -370,85 +370,27 @@ erase_err:
- 
- static int spi_nor_lock(struct mtd_info *mtd, loff_t ofs, size_t len)
- {
--	struct spi_nor *nor = mtd_to_spi_nor(mtd);
--	uint32_t offset = ofs;
--	uint8_t status_old, status_new;
--	int ret = 0;
--
--	ret = spi_nor_lock_and_prep(nor, SPI_NOR_OPS_LOCK);
--	if (ret)
--		return ret;
--
--	status_old = read_sr(nor);
--
--	if (offset < mtd->size - (mtd->size / 2))
--		status_new = status_old | SR_BP2 | SR_BP1 | SR_BP0;
--	else if (offset < mtd->size - (mtd->size / 4))
--		status_new = (status_old & ~SR_BP0) | SR_BP2 | SR_BP1;
--	else if (offset < mtd->size - (mtd->size / 8))
--		status_new = (status_old & ~SR_BP1) | SR_BP2 | SR_BP0;
--	else if (offset < mtd->size - (mtd->size / 16))
--		status_new = (status_old & ~(SR_BP0 | SR_BP1)) | SR_BP2;
--	else if (offset < mtd->size - (mtd->size / 32))
--		status_new = (status_old & ~SR_BP2) | SR_BP1 | SR_BP0;
--	else if (offset < mtd->size - (mtd->size / 64))
--		status_new = (status_old & ~(SR_BP2 | SR_BP0)) | SR_BP1;
--	else
--		status_new = (status_old & ~(SR_BP2 | SR_BP1)) | SR_BP0;
--
--	/* Only modify protection if it will not unlock other areas */
--	if ((status_new & (SR_BP2 | SR_BP1 | SR_BP0)) >
--				(status_old & (SR_BP2 | SR_BP1 | SR_BP0))) {
--		write_enable(nor);
--		ret = write_sr(nor, status_new);
--		if (ret)
--			goto err;
--	}
--
--err:
--	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_LOCK);
--	return ret;
-+	return 0;
- }
- 
- static int spi_nor_unlock(struct mtd_info *mtd, loff_t ofs, size_t len)
- {
- 	struct spi_nor *nor = mtd_to_spi_nor(mtd);
--	uint32_t offset = ofs;
--	uint8_t status_old, status_new;
--	int ret = 0;
-+	uint8_t status;
-+	int ret;
- 
- 	ret = spi_nor_lock_and_prep(nor, SPI_NOR_OPS_UNLOCK);
- 	if (ret)
- 		return ret;
- 
--	status_old = read_sr(nor);
--
--	if (offset+len > mtd->size - (mtd->size / 64))
--		status_new = status_old & ~(SR_BP2 | SR_BP1 | SR_BP0);
--	else if (offset+len > mtd->size - (mtd->size / 32))
--		status_new = (status_old & ~(SR_BP2 | SR_BP1)) | SR_BP0;
--	else if (offset+len > mtd->size - (mtd->size / 16))
--		status_new = (status_old & ~(SR_BP2 | SR_BP0)) | SR_BP1;
--	else if (offset+len > mtd->size - (mtd->size / 8))
--		status_new = (status_old & ~SR_BP2) | SR_BP1 | SR_BP0;
--	else if (offset+len > mtd->size - (mtd->size / 4))
--		status_new = (status_old & ~(SR_BP0 | SR_BP1)) | SR_BP2;
--	else if (offset+len > mtd->size - (mtd->size / 2))
--		status_new = (status_old & ~SR_BP1) | SR_BP2 | SR_BP0;
--	else
--		status_new = (status_old & ~SR_BP0) | SR_BP2 | SR_BP1;
-+	status = read_sr(nor);
-+	status &= ~(SR_BP2 | SR_BP1 | SR_BP0);
-+	write_enable(nor);
- 
--	/* Only modify protection if it will not lock other areas */
--	if ((status_new & (SR_BP2 | SR_BP1 | SR_BP0)) <
--				(status_old & (SR_BP2 | SR_BP1 | SR_BP0))) {
--		write_enable(nor);
--		ret = write_sr(nor, status_new);
--		if (ret)
--			goto err;
--	}
-+	ret = write_sr(nor, status);
- 
--err:
- 	spi_nor_unlock_and_unprep(nor, SPI_NOR_OPS_UNLOCK);
-+
- 	return ret;
- }
- 
--- 
-2.5.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8KCk9uIFdlZCwgU2VwIDE2LCAyMDE1IGF0IDEwOjAwOjQ0UE0gKzAyMDAsIFV3ZSBLbGVp
+bmUtS8O2bmlnIHdyb3RlOgo+IFRoZSByZWZlcmVuY2UgbWFudWFsIChmb3IgdGhlIGkuTVgyNSBp
+biBteSBjYXNlKSBzdGF0ZXM6Cj4gCj4gCVRoaXMgZmllbGQgbXVzdCBzdGFydCBhdCBhIGxvY2F0
+aW9uIHRoYXQgZW5hYmxlcyBhIGNvbXBsZXRlCj4gCXBpY3R1cmUgdG8gYmUgc3RvcmVkIGluIGEg
+NCBNYnl0ZSBtZW1vcnkgYm91bmRhcnkgKEEgWzIxOjBdKS4gQQo+IAlbMzE6MjJdIGhhcyBhIGZp
+eGVkIHZhbHVlIGZvciBhIHBpY3R1cmXigJlzIGltYWdlLgo+IAo+IENoZWNrIHRoaXMgY29uZGl0
+aW9uIGZvciB1c2VyLXN1cHBsaWVkIGZyYW1lYnVmZmVyIHZhbHVlcyBhbmQgZW5mb3JjZSBpdAo+
+IGZvciBkcml2ZXItYWxsb2NhdGVkIGJ1ZmZlcnMuCgpNYXliZSBhZGQgaGVyZToKCi0tLS0tLT44
+LS0tLS0tCklmIHRoZSBidWZmZXIgY3Jvc3NlcyBhIDQgTWlCIGJvdW5kYXJ5IHRoZSBwaXhlbHMg
+dGhhdCBhcmUgIm91dCBvZgpib3VuZHMiIGp1c3QgYXBwZWFyIHdoaXRlIG9uIHRoZSBkaXNwbGF5
+LgotLS0tLS0+OC0tLS0tLQoKSSBkaWRuJ3QgY2hlY2sgaWYgdGhlIGNvdW50ZXIgb3ZlcmZsb3dz
+IGFuZCB0aGFuIHBpY2tzIHVwIGRhdGEgZnJvbSA0Ck1pQiBiZWxvdyB0aGUgZXhwZWN0ZWQgbWVt
+b3J5LCBidXQgSSB3b3VsZCBiZSBzdXJwcmlzZWQgaWYgSSBoYWQgb25seQoweGZmIHRoZXJlLgoK
+QmVzdCByZWdhcmRzClV3ZQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICB8IFV3ZSBLbGVpbmUtS8O2bmlnICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4
+IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAg
+fAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
+eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
+bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
