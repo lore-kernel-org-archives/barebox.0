@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.cvg.de ([62.153.82.30])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZcWhU-0000oA-F3
+ id 1ZcWhU-0000jt-F4
  for barebox@lists.infradead.org; Thu, 17 Sep 2015 10:46:01 +0000
 From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Thu, 17 Sep 2015 12:45:11 +0200
-Message-Id: <1442486711-6841-2-git-send-email-enrico.scholz@sigma-chemnitz.de>
+Date: Thu, 17 Sep 2015 12:45:10 +0200
+Message-Id: <1442486711-6841-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
 In-Reply-To: <lya8smdz5d.fsf@ensc-virt.intern.sigma-chemnitz.de>
 References: <lya8smdz5d.fsf@ensc-virt.intern.sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,35 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: MMU: fixed calculation of number of PTEs
+Subject: [PATCH 1/2] ARM: MMU: fixed dma_flush_range() call
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
-barebox uses 4KiB pages so that number of PTEs is 'size >> 12', not
-'size >> 10'.
-
-Thie 'size >> 10' limit is not an immediate problem because it allocates
-too much PTEs only which are not used.  But it can overflow an integer
-multiplication ('i * PAGE_SIZE') which causes undefined behaviour with
-gcc5.
+dma_flush_range() expects an address as second argument, not a size.
 
 Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 ---
- arch/arm/cpu/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/cpu/mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index 8ceb450..014bba2 100644
+index 37bfa05..8ceb450 100644
 --- a/arch/arm/cpu/mmu.c
 +++ b/arch/arm/cpu/mmu.c
-@@ -213,7 +213,7 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- 	unsigned long phys = (unsigned long)bank->start;
- 	unsigned long ttb_start = phys >> 20;
- 	unsigned long ttb_end = (phys >> 20) + (bank->size >> 20);
--	unsigned long num_ptes = bank->size >> 10;
-+	unsigned long num_ptes = bank->size >> 12;
- 	int i, pte;
- 	u32 *ptes;
+@@ -246,7 +246,8 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+ 	}
+ 
+ 	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
+-	dma_flush_range((unsigned long)ptes, num_ptes * sizeof(u32));
++	dma_flush_range((unsigned long)ptes,
++			(unsigned long)ptes + num_ptes * sizeof(u32));
+ 
+ 	tlb_invalidate();
  
 -- 
 2.4.3
