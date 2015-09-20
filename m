@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zdny4-0006Du-IK
- for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:25 +0000
-Received: by lamp12 with SMTP id p12so57503508lam.0
- for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:02 -0700 (PDT)
+ id 1Zdny8-0006Dz-62
+ for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:29 +0000
+Received: by lahg1 with SMTP id g1so58715663lah.1
+ for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:06 -0700 (PDT)
+Received: from localhost.localdomain (ppp79-139-254-180.pppoe.spdop.ru.
+ [79.139.254.180])
+ by smtp.gmail.com with ESMTPSA id x1sm3091424lbb.32.2015.09.20.16.24.05
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Sun, 20 Sep 2015 16:24:06 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 21 Sep 2015 02:23:45 +0300
-Message-Id: <1442791433-10892-3-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 21 Sep 2015 02:23:50 +0300
+Message-Id: <1442791433-10892-8-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
 References: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,153 +29,181 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 02/10] MIPS: ar933x: pbl: add pbl_ar9331_ddr2_config macro
+Subject: [RFC v2 07/10] gpio: add ath79-gpio driver for Atheros MIPS SoCs
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+This driver is based on linux-4.2 driver.
+
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h | 20 ++++++
- arch/mips/mach-ath79/include/mach/pbl_macros.h  | 89 +++++++++++++++++++++++++
- 2 files changed, 109 insertions(+)
+ drivers/gpio/Makefile     |   1 +
+ drivers/gpio/gpio-ath79.c | 146 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 147 insertions(+)
 
-diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-index 5082502..6f1bf8e 100644
---- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-+++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-@@ -23,6 +23,8 @@
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 1d94661..f39e8da 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -1,6 +1,7 @@
+ obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
  
- #define AR71XX_APB_BASE		0x18000000
- 
-+#define AR71XX_DDR_CTRL_BASE	(AR71XX_APB_BASE + 0x00000000)
-+#define AR71XX_DDR_CTRL_SIZE	0x100
- #define AR71XX_PLL_BASE		(AR71XX_APB_BASE + 0x00050000)
- #define AR71XX_PLL_SIZE		0x100
- #define AR71XX_RESET_BASE	(AR71XX_APB_BASE + 0x00060000)
-@@ -32,6 +34,24 @@
- #define AR933X_UART_SIZE	0x14
- 
- /*
-+ * DDR_CTRL block
-+ */
-+#define AR933X_DDR_CONFIG		0x00
-+#define AR933X_DDR_CONFIG2		0x04
-+#define AR933X_DDR_MODE			0x08
-+#define AR933X_DDR_EXT_MODE		0x0c
-+#define AR933X_DDR_CTRL			0x10
-+#define AR933X_DDR_REFRESH		0x14
-+#define AR933X_DDR_RD_DATA		0x18
-+#define AR933X_DDR_TAP_CTRL0		0x1c
-+#define AR933X_DDR_TAP_CTRL1		0x20
-+#define AR933X_DDR_TAP_CTRL1		0x20
-+
-+#define AR933X_DDR_DDR_DDR2_CONFIG	0x8c
-+#define AR933X_DDR_DDR_EMR2		0x90
-+#define AR933X_DDR_DDR_EMR3		0x94
-+
+ obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
++obj-$(CONFIG_MACH_MIPS_ATH79)	+= gpio-ath79.o
+ obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
+ obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
+ obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
+diff --git a/drivers/gpio/gpio-ath79.c b/drivers/gpio/gpio-ath79.c
+new file mode 100644
+index 0000000..353b520
+--- /dev/null
++++ b/drivers/gpio/gpio-ath79.c
+@@ -0,0 +1,146 @@
 +/*
-  * PLL block
-  */
- #define AR933X_PLL_CPU_CONFIG_REG	0x00
-diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-index 1fc6eb5..f0e0174 100644
---- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
-+++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-@@ -40,4 +40,93 @@
- 	.set	pop
- .endm
- 
-+#define DDR_BASE		(KSEG1 | AR71XX_DDR_CTRL_BASE)
-+#define DDR_CONFIG		(DDR_BASE | AR933X_DDR_CONFIG)
-+#define DDR_CONFIG2		(DDR_BASE | AR933X_DDR_CONFIG2)
-+#define DDR_MODE		(DDR_BASE | AR933X_DDR_MODE)
-+#define DDR_EXT_MODE		(DDR_BASE | AR933X_DDR_EXT_MODE)
++ *  Atheros AR71XX/AR724X/AR913X GPIO API support
++ *
++ *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
++ *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
++ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
++ *  Copyright (C) 2015 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ *  Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ */
 +
-+#define DDR_CTRL		(DDR_BASE | AR933X_DDR_CTRL)
-+/* Forces an EMR3S (Extended Mode Register 3 Set) update cycle */
-+#define DDR_CTRL_EMR3		BIT(5)
-+/* Forces an EMR2S (Extended Mode Register 2 Set) update cycle */
-+#define DDR_CTRL_EMR2		BIT(4)
-+#define DDR_CTRL_PREA		BIT(3) /* Forces a PRECHARGE ALL cycle */
-+#define DDR_CTRL_REF		BIT(2) /* Forces an AUTO REFRESH cycle */
-+/* Forces an EMRS (Extended Mode Register 2 Set) update cycle */
-+#define DDR_CTRL_EMRS		BIT(1)
-+/* Forces a MRS (Mode Register Set) update cycle */
-+#define DDR_CTRL_MRS		BIT(0)
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <gpio.h>
++#include <malloc.h>
 +
-+#define DDR_REFRESH		(DDR_BASE | AR933X_DDR_REFRESH)
-+#define DDR_RD_DATA		(DDR_BASE | AR933X_DDR_RD_DATA)
-+#define DDR_TAP_CTRL0		(DDR_BASE | AR933X_DDR_TAP_CTRL0)
-+#define DDR_TAP_CTRL1		(DDR_BASE | AR933X_DDR_TAP_CTRL1)
++#include <mach/ar71xx_regs.h>
++#include <mach/ath79.h>
 +
-+#define DDR_DDR2_CONFIG		(DDR_BASE | AR933X_DDR_DDR_DDR2_CONFIG)
-+#define DDR_EMR2		(DDR_BASE | AR933X_DDR_DDR_EMR2)
-+#define DDR_EMR3		(DDR_BASE | AR933X_DDR_DDR_EMR3)
++static void __iomem *ath79_gpio_base;
++static u32 ath79_gpio_count;
 +
-+.macro	pbl_ar9331_ddr2_config
-+	.set	push
-+	.set	noreorder
++static void __ath79_gpio_set_value(unsigned gpio, int value)
++{
++	void __iomem *base = ath79_gpio_base;
 +
-+	pbl_reg_writel	0x7fbc8cd0, DDR_CONFIG
-+	pbl_reg_writel	0x9dd0e6a8, DDR_CONFIG2
++	if (value)
++		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_SET);
++	else
++		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_CLEAR);
++}
 +
-+	/* Enable DDR2 */
-+	pbl_reg_writel	0x00000a59, DDR_DDR2_CONFIG
-+	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
++static int __ath79_gpio_get_value(unsigned gpio)
++{
++	return (__raw_readl(ath79_gpio_base + AR71XX_GPIO_REG_IN) >> gpio) & 1;
++}
 +
-+	/* Disable High Temperature Self-Refresh Rate */
-+	pbl_reg_writel	0x00000000, DDR_EMR2
-+	pbl_reg_writel	DDR_CTRL_EMR2, DDR_CTRL
++static int ath79_gpio_get_value(struct gpio_chip *chip, unsigned offset)
++{
++	return __ath79_gpio_get_value(offset);
++}
 +
-+	pbl_reg_writel	0x00000000, DDR_EMR3
-+	pbl_reg_writel	DDR_CTRL_EMR3, DDR_CTRL
++static void ath79_gpio_set_value(struct gpio_chip *chip,
++				  unsigned offset, int value)
++{
++	__ath79_gpio_set_value(offset, value);
++}
 +
-+	/* Enable DLL */
-+	pbl_reg_writel	0x00000000, DDR_EXT_MODE
-+	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
++static int ath79_gpio_direction_input(struct gpio_chip *chip,
++				       unsigned offset)
++{
++	void __iomem *base = ath79_gpio_base;
 +
-+	/* Reset DLL */
-+	pbl_reg_writel	0x00000100, DDR_MODE
-+	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
++	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) & ~(1 << offset),
++		     base + AR71XX_GPIO_REG_OE);
 +
-+	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
-+	pbl_reg_writel	DDR_CTRL_REF, DDR_CTRL
-+	pbl_reg_writel	DDR_CTRL_REF, DDR_CTRL
++	return 0;
++}
 +
-+	/* Write recovery (WR) 6 clock, CAS Latency 3, Burst Length 8 */
-+	pbl_reg_writel	0x00000a33, DDR_MODE
-+	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
++static int ath79_gpio_direction_output(struct gpio_chip *chip,
++					unsigned offset, int value)
++{
++	void __iomem *base = ath79_gpio_base;
 +
-+	/*
-+	 * DDR_EXT_MODE[9:7] = 0x7: (OCD Calibration defaults)
-+	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
-+	 * DDR_EXT_MODE[0] = 0: Enable DLL
-+	 */
-+	pbl_reg_writel	0x00000382, DDR_EXT_MODE
-+	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
++	if (value)
++		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_SET);
++	else
++		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_CLEAR);
 +
-+	/*
-+	 * DDR_EXT_MODE[9:7] = 0x0: (OCD exit)
-+	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
-+	 * DDR_EXT_MODE[0] = 0: Enable DLL
-+	 */
-+	pbl_reg_writel	0x00000402, DDR_EXT_MODE
-+	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
++	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) | (1 << offset),
++		     base + AR71XX_GPIO_REG_OE);
 +
-+	/* Refresh control. Bit 14 is enable. Bits <13:0> Refresh time */
-+	pbl_reg_writel	0x00004186, DDR_REFRESH
-+	/* DQS 0 Tap Control (needs tuning) */
-+	pbl_reg_writel	0x00000008, DDR_TAP_CTRL0
-+	/* DQS 1 Tap Control (needs tuning) */
-+	pbl_reg_writel	0x00000009, DDR_TAP_CTRL1
-+	/* For 16-bit DDR */
-+	pbl_reg_writel	0x000000ff, DDR_RD_DATA
++	return 0;
++}
 +
-+	.set	pop
-+.endm
++static struct gpio_ops ath79_gpio_ops = {
++	.get			= ath79_gpio_get_value,
++	.set			= ath79_gpio_set_value,
++	.direction_input	= ath79_gpio_direction_input,
++	.direction_output	= ath79_gpio_direction_output,
++};
 +
- #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
++static struct gpio_chip ath79_gpio_chip = {
++	.ops = &ath79_gpio_ops,
++	.base = 0,
++};
++
++static const struct of_device_id ath79_gpio_of_match[] = {
++	{ .compatible = "qca,ar7100-gpio" },
++	{},
++};
++
++static int ath79_gpio_probe(struct device_d *dev)
++{
++	struct device_node *np = dev->device_node;
++	int err;
++
++	if (!np) {
++		dev_err(dev, "No DT node or platform data found\n");
++		return -EINVAL;
++	}
++
++	err = of_property_read_u32(np, "ngpios", &ath79_gpio_count);
++	if (err) {
++		dev_err(dev, "ngpios property is not valid\n");
++		return err;
++	}
++	if (ath79_gpio_count >= 32) {
++		dev_err(dev, "ngpios must be less than 32\n");
++		return -EINVAL;
++	}
++
++	ath79_gpio_base = dev_request_mem_region(dev, 0);
++	if (IS_ERR(ath79_gpio_base)) {
++		dev_err(dev, "could not get memory region\n");
++		return PTR_ERR(ath79_gpio_base);
++	}
++
++	ath79_gpio_chip.dev = dev;
++	ath79_gpio_chip.ngpio = ath79_gpio_count;
++
++	err = gpiochip_add(&ath79_gpio_chip);
++	if (err) {
++		dev_err(dev, "cannot add AR71xx GPIO chip, error=%d", err);
++		return err;
++	}
++
++	return 0;
++}
++
++static struct driver_d ath79_gpio_driver = {
++	.name = "ath79-gpio",
++	.probe = ath79_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(ath79_gpio_of_match),
++};
++
++static int ath79_gpio_init(void)
++{
++	return platform_driver_register(&ath79_gpio_driver);
++}
++coredevice_initcall(ath79_gpio_init);
 -- 
 2.5.0
 
