@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zdny3-0006Dt-Tp
- for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:24 +0000
-Received: by lahg1 with SMTP id g1so58715147lah.1
- for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:02 -0700 (PDT)
+ id 1Zdny6-0006Dw-00
+ for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:26 +0000
+Received: by lagj9 with SMTP id j9so58799840lag.2
+ for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:04 -0700 (PDT)
+Received: from localhost.localdomain (ppp79-139-254-180.pppoe.spdop.ru.
+ [79.139.254.180])
+ by smtp.gmail.com with ESMTPSA id x1sm3091424lbb.32.2015.09.20.16.24.03
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Sun, 20 Sep 2015 16:24:03 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 21 Sep 2015 02:23:44 +0300
-Message-Id: <1442791433-10892-2-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 21 Sep 2015 02:23:47 +0300
+Message-Id: <1442791433-10892-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
 References: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,113 +29,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 01/10] MIPS: ar933x: pbl: add pbl_ar9331_pll macro
+Subject: [RFC v2 04/10] MIPS: mach-ath79: add debug_ll_ar9331_init macro
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-From: Oleksij Rempel <linux@rempel-privat.de>
-
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/pbl_macros.h              | 21 ++++++++++++
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  1 +
- arch/mips/mach-ath79/include/mach/pbl_macros.h  | 43 +++++++++++++++++++++++++
- 3 files changed, 65 insertions(+)
+ arch/mips/mach-ath79/include/mach/debug_ll.h | 29 ++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index 1d9d6ab..db46d0d 100644
---- a/arch/mips/include/asm/pbl_macros.h
-+++ b/arch/mips/include/asm/pbl_macros.h
-@@ -28,6 +28,27 @@
- #include <generated/compile.h>
- #include <generated/utsrelease.h>
+diff --git a/arch/mips/mach-ath79/include/mach/debug_ll.h b/arch/mips/mach-ath79/include/mach/debug_ll.h
+index d3813af..e0c3f79 100644
+--- a/arch/mips/mach-ath79/include/mach/debug_ll.h
++++ b/arch/mips/mach-ath79/include/mach/debug_ll.h
+@@ -63,6 +63,35 @@ static inline void PUTC_LL(int ch)
+  * Macros for use in assembly language code
+  */
  
-+	.macro	pbl_reg_writel val addr
-+	.set push
-+	.set noreorder
-+	li	t9, \addr
-+	li	t8, \val
-+	sw	t8, 0(t9)
-+	.set	pop
-+	.endm
++#define AR933X_UART_CS_REG		0x04
++#define UART_CS_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CS_REG)
++#define AR933X_UART_CS_IF_MODE_S	2
++#define	  AR933X_UART_CS_IF_MODE_DCE	2
++#define AR933X_UART_CS_TX_READY_ORIDE	BIT(7)
++#define AR933X_UART_CS_RX_READY_ORIDE	BIT(8)
 +
-+	.macro	pbl_reg_clr clr addr
-+	.set push
-+	.set noreorder
-+	li	t9, \addr
-+	li	t8, \clr
-+	lw	t7, 0(t9)
-+	not	t8, t8
-+	and	t7, t8
-+	sw	t7, 0(t9)
-+	.set	pop
-+	.endm
++/*
++ * simple uart clock setup
++ * from u-boot_mod/u-boot/cpu/mips/ar7240/hornet_serial.c
++ */
++#define BAUD_CLOCK 25000000
++#define CLOCK_SCALE ((BAUD_CLOCK / (16 * CONFIG_BAUDRATE)) - 1)
++#define CLOCK_STEP 0x2000
 +
- 	.macro	pbl_sleep reg count
- 	.set push
- 	.set noreorder
-diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-index 77138ab..5082502 100644
---- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-+++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-@@ -46,6 +46,7 @@
- #define AR933X_PLL_CPU_CONFIG_REFDIV_MASK	0x1f
- #define AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT	23
- #define AR933X_PLL_CPU_CONFIG_OUTDIV_MASK	0x7
-+#define AR933X_PLL_CPU_CONFIG_PLLPWD		BIT(30)
- 
- #define AR933X_PLL_CLOCK_CTRL_BYPASS		BIT(2)
- #define AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT	5
-diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-new file mode 100644
-index 0000000..1fc6eb5
---- /dev/null
-+++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-@@ -0,0 +1,43 @@
-+#ifndef __ASM_MACH_ATH79_PBL_MACROS_H
-+#define __ASM_MACH_ATH79_PBL_MACROS_H
++#define AR933X_UART_CLOCK_REG		0x08
++#define CLOCK_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CLOCK_REG)
 +
-+#include <asm/addrspace.h>
-+#include <asm/regdef.h>
-+#include <mach/ar71xx_regs.h>
++.macro debug_ll_ar9331_init
++#ifdef CONFIG_DEBUG_LL
 +
-+#define PLL_BASE		(KSEG1 | AR71XX_PLL_BASE)
-+#define PLL_CPU_CONFIG_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG_REG)
-+#define PLL_CPU_CONFIG2_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG2_REG)
-+#define PLL_CLOCK_CTRL_REG	(PLL_BASE | AR933X_PLL_CLOCK_CTRL_REG)
++	pbl_reg_writel ((AR933X_UART_CS_IF_MODE_DCE << AR933X_UART_CS_IF_MODE_S) \
++			| AR933X_UART_CS_TX_READY_ORIDE \
++			| AR933X_UART_CS_RX_READY_ORIDE), UART_CS_REG
++	pbl_reg_writel ((CLOCK_SCALE << 16) | CLOCK_STEP), CLOCK_REG
 +
-+#define DEF_25MHZ_PLL_CLOCK_CTRL \
-+				((2 - 1) << AR933X_PLL_CLOCK_CTRL_AHB_DIV_SHIFT \
-+				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_DDR_DIV_SHIFT \
-+				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT)
-+#define DEF_25MHZ_SETTLE_TIME	(34000 / 40)
-+#define DEF_25MHZ_PLL_CONFIG	( 1 << AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT \
-+				| 1 << AR933X_PLL_CPU_CONFIG_REFDIV_SHIFT \
-+				| 32 << AR933X_PLL_CPU_CONFIG_NINT_SHIFT)
-+
-+.macro	pbl_ar9331_pll
-+	.set	push
-+	.set	noreorder
-+
-+	/* Most devices have 25 MHz Ref clock. */
-+	pbl_reg_writel (DEF_25MHZ_PLL_CLOCK_CTRL | AR933X_PLL_CLOCK_CTRL_BYPASS), \
-+		PLL_CLOCK_CTRL_REG
-+	pbl_reg_writel DEF_25MHZ_SETTLE_TIME, PLL_CPU_CONFIG2_REG
-+	pbl_reg_writel (DEF_25MHZ_PLL_CONFIG | AR933X_PLL_CPU_CONFIG_PLLPWD), \
-+		PLL_CPU_CONFIG_REG
-+
-+	/* power on CPU PLL */
-+	pbl_reg_clr	AR933X_PLL_CPU_CONFIG_PLLPWD, PLL_CPU_CONFIG_REG
-+	/* disable PLL bypass */
-+	pbl_reg_clr	AR933X_PLL_CLOCK_CTRL_BYPASS, PLL_CLOCK_CTRL_REG
-+
-+	pbl_sleep	t2, 40
-+
-+	.set	pop
++#endif /* CONFIG_DEBUG_LL */
 +.endm
 +
-+#endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
+ /*
+  * output a character in a0
+  */
 -- 
 2.5.0
 
