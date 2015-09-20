@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zdny8-0006Dz-62
- for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:29 +0000
-Received: by lahg1 with SMTP id g1so58715663lah.1
- for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:06 -0700 (PDT)
+ id 1Zdny2-0006Ds-Sb
+ for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:24 +0000
+Received: by lamp12 with SMTP id p12so57503340lam.0
+ for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:01 -0700 (PDT)
 Received: from localhost.localdomain (ppp79-139-254-180.pppoe.spdop.ru.
  [79.139.254.180])
- by smtp.gmail.com with ESMTPSA id x1sm3091424lbb.32.2015.09.20.16.24.05
+ by smtp.gmail.com with ESMTPSA id x1sm3091424lbb.32.2015.09.20.16.24.00
  for <barebox@lists.infradead.org>
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Sun, 20 Sep 2015 16:24:06 -0700 (PDT)
+ Sun, 20 Sep 2015 16:24:00 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 21 Sep 2015 02:23:50 +0300
-Message-Id: <1442791433-10892-8-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
-References: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 21 Sep 2015 02:23:43 +0300
+Message-Id: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,181 +27,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 07/10] gpio: add ath79-gpio driver for Atheros MIPS SoCs
+Subject: [RFC v2 00/10] MIPS: barebox as a first stage loader on the Black
+ Swift board
 To: barebox@lists.infradead.org
 
-This driver is based on linux-4.2 driver.
+This patchseries adds necessary AR9331 SoC low level initialization routines.
+The patchseries makes it possible to use barebox as a first stage loader
+on the Black Swift board and, I suppose, other widespread AR9331-based boards.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/gpio/Makefile     |   1 +
- drivers/gpio/gpio-ath79.c | 146 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 147 insertions(+)
+The patchseries is heavily based on Oleksij Rempel's work on barebox for TP-Link MR3020.
 
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 1d94661..f39e8da 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -1,6 +1,7 @@
- obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
- 
- obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
-+obj-$(CONFIG_MACH_MIPS_ATH79)	+= gpio-ath79.o
- obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
- obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
-diff --git a/drivers/gpio/gpio-ath79.c b/drivers/gpio/gpio-ath79.c
-new file mode 100644
-index 0000000..353b520
---- /dev/null
-+++ b/drivers/gpio/gpio-ath79.c
-@@ -0,0 +1,146 @@
-+/*
-+ *  Atheros AR71XX/AR724X/AR913X GPIO API support
-+ *
-+ *  Copyright (C) 2010-2011 Jaiganesh Narayanan <jnarayanan@atheros.com>
-+ *  Copyright (C) 2008-2011 Gabor Juhos <juhosg@openwrt.org>
-+ *  Copyright (C) 2008 Imre Kaloz <kaloz@openwrt.org>
-+ *  Copyright (C) 2015 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ *  Parts of this file are based on Atheros' 2.6.15/2.6.31 BSP
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <gpio.h>
-+#include <malloc.h>
-+
-+#include <mach/ar71xx_regs.h>
-+#include <mach/ath79.h>
-+
-+static void __iomem *ath79_gpio_base;
-+static u32 ath79_gpio_count;
-+
-+static void __ath79_gpio_set_value(unsigned gpio, int value)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+
-+	if (value)
-+		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_SET);
-+	else
-+		__raw_writel(1 << gpio, base + AR71XX_GPIO_REG_CLEAR);
-+}
-+
-+static int __ath79_gpio_get_value(unsigned gpio)
-+{
-+	return (__raw_readl(ath79_gpio_base + AR71XX_GPIO_REG_IN) >> gpio) & 1;
-+}
-+
-+static int ath79_gpio_get_value(struct gpio_chip *chip, unsigned offset)
-+{
-+	return __ath79_gpio_get_value(offset);
-+}
-+
-+static void ath79_gpio_set_value(struct gpio_chip *chip,
-+				  unsigned offset, int value)
-+{
-+	__ath79_gpio_set_value(offset, value);
-+}
-+
-+static int ath79_gpio_direction_input(struct gpio_chip *chip,
-+				       unsigned offset)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) & ~(1 << offset),
-+		     base + AR71XX_GPIO_REG_OE);
-+
-+	return 0;
-+}
-+
-+static int ath79_gpio_direction_output(struct gpio_chip *chip,
-+					unsigned offset, int value)
-+{
-+	void __iomem *base = ath79_gpio_base;
-+
-+	if (value)
-+		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_SET);
-+	else
-+		__raw_writel(1 << offset, base + AR71XX_GPIO_REG_CLEAR);
-+
-+	__raw_writel(__raw_readl(base + AR71XX_GPIO_REG_OE) | (1 << offset),
-+		     base + AR71XX_GPIO_REG_OE);
-+
-+	return 0;
-+}
-+
-+static struct gpio_ops ath79_gpio_ops = {
-+	.get			= ath79_gpio_get_value,
-+	.set			= ath79_gpio_set_value,
-+	.direction_input	= ath79_gpio_direction_input,
-+	.direction_output	= ath79_gpio_direction_output,
-+};
-+
-+static struct gpio_chip ath79_gpio_chip = {
-+	.ops = &ath79_gpio_ops,
-+	.base = 0,
-+};
-+
-+static const struct of_device_id ath79_gpio_of_match[] = {
-+	{ .compatible = "qca,ar7100-gpio" },
-+	{},
-+};
-+
-+static int ath79_gpio_probe(struct device_d *dev)
-+{
-+	struct device_node *np = dev->device_node;
-+	int err;
-+
-+	if (!np) {
-+		dev_err(dev, "No DT node or platform data found\n");
-+		return -EINVAL;
-+	}
-+
-+	err = of_property_read_u32(np, "ngpios", &ath79_gpio_count);
-+	if (err) {
-+		dev_err(dev, "ngpios property is not valid\n");
-+		return err;
-+	}
-+	if (ath79_gpio_count >= 32) {
-+		dev_err(dev, "ngpios must be less than 32\n");
-+		return -EINVAL;
-+	}
-+
-+	ath79_gpio_base = dev_request_mem_region(dev, 0);
-+	if (IS_ERR(ath79_gpio_base)) {
-+		dev_err(dev, "could not get memory region\n");
-+		return PTR_ERR(ath79_gpio_base);
-+	}
-+
-+	ath79_gpio_chip.dev = dev;
-+	ath79_gpio_chip.ngpio = ath79_gpio_count;
-+
-+	err = gpiochip_add(&ath79_gpio_chip);
-+	if (err) {
-+		dev_err(dev, "cannot add AR71xx GPIO chip, error=%d", err);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static struct driver_d ath79_gpio_driver = {
-+	.name = "ath79-gpio",
-+	.probe = ath79_gpio_probe,
-+	.of_compatible = DRV_OF_COMPAT(ath79_gpio_of_match),
-+};
-+
-+static int ath79_gpio_init(void)
-+{
-+	return platform_driver_register(&ath79_gpio_driver);
-+}
-+coredevice_initcall(ath79_gpio_init);
+TODOs:
+
+  * add TP-Link MR3020 support (see http://openocd.zylin.com/gitweb?p=openocd.git;a=commitdiff;h=f59d2d9ecfee8899df531b87b7acaa468725f238);
+  * clean up Black Swift GPIO code (pbl_reg_set (1 << 18), 0xb80600ac);
+  * check macros names linux kernel source compartibility;
+  * DT compatible string vendor "smartlx" appears un-documented.
+     The site http://www.smartlx.ru/ is suspended.
+
+
+Changes since RFC v1:
+
+  * add UART initialization routune for DEBUG_LL and NMON;
+  * add macros for GPIO_FUNCTION_1 register initialization;
+  * add ar71xx GPIO driver.
+
+
+Antony Pavlov (9):
+  MIPS: ar933x: pbl: add pbl_ar9331_ddr2_config macro
+  MIPS: mach-ath79: add pbl_ar9331_uart_enable macro
+  MIPS: mach-ath79: add debug_ll_ar9331_init macro
+  MIPS: ath79: add black-swift board support
+  MIPS: add black-swift_defconfig
+  gpio: add ath79-gpio driver for Atheros MIPS SoCs
+  MIPS: ath79: use gpiolib
+  MIPS: dts: ar9331.dtsi: add gpio
+  WIP: MIPS: black-swift: use GPIO
+
+Oleksij Rempel (1):
+  MIPS: ar933x: pbl: add pbl_ar9331_pll macro
+
+ arch/mips/Kconfig                                  |   1 +
+ arch/mips/Makefile                                 |   1 +
+ arch/mips/boards/black-swift/Makefile              |   1 +
+ arch/mips/boards/black-swift/board.c               |  27 ++++
+ .../black-swift/include/board/board_pbl_start.h    |  41 ++++++
+ arch/mips/boot/start.S                             |   2 +
+ arch/mips/configs/black-swift_defconfig            |  45 +++++++
+ arch/mips/dts/ar9331.dtsi                          |  10 ++
+ arch/mips/dts/black-swift.dts                      |  60 +++++++++
+ arch/mips/include/asm/pbl_macros.h                 |  32 +++++
+ arch/mips/mach-ath79/Kconfig                       |   6 +
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h    |  41 ++++++
+ arch/mips/mach-ath79/include/mach/debug_ll.h       |  29 ++++
+ arch/mips/mach-ath79/include/mach/pbl_macros.h     | 139 ++++++++++++++++++++
+ drivers/gpio/Makefile                              |   1 +
+ drivers/gpio/gpio-ath79.c                          | 146 +++++++++++++++++++++
+ 16 files changed, 582 insertions(+)
+ create mode 100644 arch/mips/boards/black-swift/Makefile
+ create mode 100644 arch/mips/boards/black-swift/board.c
+ create mode 100644 arch/mips/boards/black-swift/include/board/board_pbl_start.h
+ create mode 100644 arch/mips/configs/black-swift_defconfig
+ create mode 100644 arch/mips/dts/black-swift.dts
+ create mode 100644 arch/mips/mach-ath79/include/mach/pbl_macros.h
+ create mode 100644 drivers/gpio/gpio-ath79.c
+
 -- 
 2.5.0
 
