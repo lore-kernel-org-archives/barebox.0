@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZdnRy-0002zN-Nm
- for barebox@lists.infradead.org; Sun, 20 Sep 2015 22:51:16 +0000
-Received: by lagj9 with SMTP id j9so58573087lag.2
- for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 15:50:51 -0700 (PDT)
+ id 1Zdny3-0006Dt-Tp
+ for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:24 +0000
+Received: by lahg1 with SMTP id g1so58715147lah.1
+ for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:02 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 21 Sep 2015 01:50:44 +0300
-Message-Id: <1442789445-10778-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1442789445-10778-1-git-send-email-antonynpavlov@gmail.com>
-References: <1442789445-10778-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 21 Sep 2015 02:23:44 +0300
+Message-Id: <1442791433-10892-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
+References: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,66 +23,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] MIPS: PBL: Add missing pieces for xz compressed PBL image
+Subject: [RFC v2 01/10] MIPS: ar933x: pbl: add pbl_ar9331_pll macro
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Also ignore piggy.shipped binary (CONFIG_IMAGE_COMPRESSION_NONE=y).
+From: Oleksij Rempel <linux@rempel-privat.de>
 
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/lib/Makefile       | 2 ++
- arch/mips/pbl/.gitignore     | 2 ++
- arch/mips/pbl/Makefile       | 1 +
- arch/mips/pbl/piggy.xzkern.S | 6 ++++++
- 4 files changed, 11 insertions(+)
+ arch/mips/include/asm/pbl_macros.h              | 21 ++++++++++++
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  1 +
+ arch/mips/mach-ath79/include/mach/pbl_macros.h  | 43 +++++++++++++++++++++++++
+ 3 files changed, 65 insertions(+)
 
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 71c4f6b..0145f35 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -12,3 +12,5 @@ obj-$(CONFIG_CPU_MIPS64) += c-r4k.o
+diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
+index 1d9d6ab..db46d0d 100644
+--- a/arch/mips/include/asm/pbl_macros.h
++++ b/arch/mips/include/asm/pbl_macros.h
+@@ -28,6 +28,27 @@
+ #include <generated/compile.h>
+ #include <generated/utsrelease.h>
  
- obj-$(CONFIG_CMD_MIPS_CPUINFO) += cpuinfo.o
- obj-$(CONFIG_CMD_BOOTM)	+= bootm.o
++	.macro	pbl_reg_writel val addr
++	.set push
++	.set noreorder
++	li	t9, \addr
++	li	t8, \val
++	sw	t8, 0(t9)
++	.set	pop
++	.endm
 +
-+pbl-y	+= ashldi3.o
-diff --git a/arch/mips/pbl/.gitignore b/arch/mips/pbl/.gitignore
-index 1b7f618..be604a8 100644
---- a/arch/mips/pbl/.gitignore
-+++ b/arch/mips/pbl/.gitignore
-@@ -1,6 +1,8 @@
- piggy.gzip
- piggy.lzo
- piggy.lz4
-+piggy.xzkern
-+piggy.shipped
- zbarebox
- zbarebox.bin
- zbarebox.lds
-diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
-index b03bca1..44ce3d1 100644
---- a/arch/mips/pbl/Makefile
-+++ b/arch/mips/pbl/Makefile
-@@ -2,6 +2,7 @@
- suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
-+suffix_$(CONFIG_IMAGE_COMPRESSION_XZKERN)	= xzkern
- suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
++	.macro	pbl_reg_clr clr addr
++	.set push
++	.set noreorder
++	li	t9, \addr
++	li	t8, \clr
++	lw	t7, 0(t9)
++	not	t8, t8
++	and	t7, t8
++	sw	t7, 0(t9)
++	.set	pop
++	.endm
++
+ 	.macro	pbl_sleep reg count
+ 	.set push
+ 	.set noreorder
+diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+index 77138ab..5082502 100644
+--- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
++++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+@@ -46,6 +46,7 @@
+ #define AR933X_PLL_CPU_CONFIG_REFDIV_MASK	0x1f
+ #define AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT	23
+ #define AR933X_PLL_CPU_CONFIG_OUTDIV_MASK	0x7
++#define AR933X_PLL_CPU_CONFIG_PLLPWD		BIT(30)
  
- OBJCOPYFLAGS_zbarebox.bin = -O binary
-diff --git a/arch/mips/pbl/piggy.xzkern.S b/arch/mips/pbl/piggy.xzkern.S
+ #define AR933X_PLL_CLOCK_CTRL_BYPASS		BIT(2)
+ #define AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT	5
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
 new file mode 100644
-index 0000000..edfa53b
+index 0000000..1fc6eb5
 --- /dev/null
-+++ b/arch/mips/pbl/piggy.xzkern.S
-@@ -0,0 +1,6 @@
-+#include <asm/asm.h>
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -0,0 +1,43 @@
++#ifndef __ASM_MACH_ATH79_PBL_MACROS_H
++#define __ASM_MACH_ATH79_PBL_MACROS_H
 +
-+	.section .data
-+EXPORT(input_data)
-+	.incbin	"arch/mips/pbl/piggy.xzkern"
-+EXPORT(input_data_end)
++#include <asm/addrspace.h>
++#include <asm/regdef.h>
++#include <mach/ar71xx_regs.h>
++
++#define PLL_BASE		(KSEG1 | AR71XX_PLL_BASE)
++#define PLL_CPU_CONFIG_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG_REG)
++#define PLL_CPU_CONFIG2_REG	(PLL_BASE | AR933X_PLL_CPU_CONFIG2_REG)
++#define PLL_CLOCK_CTRL_REG	(PLL_BASE | AR933X_PLL_CLOCK_CTRL_REG)
++
++#define DEF_25MHZ_PLL_CLOCK_CTRL \
++				((2 - 1) << AR933X_PLL_CLOCK_CTRL_AHB_DIV_SHIFT \
++				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_DDR_DIV_SHIFT \
++				| (1 - 1) << AR933X_PLL_CLOCK_CTRL_CPU_DIV_SHIFT)
++#define DEF_25MHZ_SETTLE_TIME	(34000 / 40)
++#define DEF_25MHZ_PLL_CONFIG	( 1 << AR933X_PLL_CPU_CONFIG_OUTDIV_SHIFT \
++				| 1 << AR933X_PLL_CPU_CONFIG_REFDIV_SHIFT \
++				| 32 << AR933X_PLL_CPU_CONFIG_NINT_SHIFT)
++
++.macro	pbl_ar9331_pll
++	.set	push
++	.set	noreorder
++
++	/* Most devices have 25 MHz Ref clock. */
++	pbl_reg_writel (DEF_25MHZ_PLL_CLOCK_CTRL | AR933X_PLL_CLOCK_CTRL_BYPASS), \
++		PLL_CLOCK_CTRL_REG
++	pbl_reg_writel DEF_25MHZ_SETTLE_TIME, PLL_CPU_CONFIG2_REG
++	pbl_reg_writel (DEF_25MHZ_PLL_CONFIG | AR933X_PLL_CPU_CONFIG_PLLPWD), \
++		PLL_CPU_CONFIG_REG
++
++	/* power on CPU PLL */
++	pbl_reg_clr	AR933X_PLL_CPU_CONFIG_PLLPWD, PLL_CPU_CONFIG_REG
++	/* disable PLL bypass */
++	pbl_reg_clr	AR933X_PLL_CLOCK_CTRL_BYPASS, PLL_CLOCK_CTRL_REG
++
++	pbl_sleep	t2, 40
++
++	.set	pop
++.endm
++
++#endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
 -- 
 2.5.0
 
