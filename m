@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ze11o-0002AY-Ea
- for barebox@lists.infradead.org; Mon, 21 Sep 2015 13:21:09 +0000
-Received: by lbcao8 with SMTP id ao8so50687875lbc.3
- for <barebox@lists.infradead.org>; Mon, 21 Sep 2015 06:20:46 -0700 (PDT)
-Received: from berta.oavm ([194.67.106.109])
- by smtp.gmail.com with ESMTPSA id l8sm1016924laf.40.2015.09.21.04.28.51
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Mon, 21 Sep 2015 04:28:51 -0700 (PDT)
+ id 1Ze143-0003Qe-1V
+ for barebox@lists.infradead.org; Mon, 21 Sep 2015 13:23:27 +0000
+Received: by lbpo4 with SMTP id o4so50947107lbp.2
+ for <barebox@lists.infradead.org>; Mon, 21 Sep 2015 06:23:05 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Mon, 21 Sep 2015 14:30:44 +0300
-Message-Id: <1442835049-20829-1-git-send-email-pmamonov@gmail.com>
+Date: Mon, 21 Sep 2015 14:30:47 +0300
+Message-Id: <1442835049-20829-4-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1442835049-20829-1-git-send-email-pmamonov@gmail.com>
+References: <1442835049-20829-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,20 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v5 0/2] WIP: add usb keyboard driver
+Subject: [PATCH 3/5] common: clock: introduce mdelay_non_interruptible()
 To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Changes since v4:
-	- usb: ehci-hcd: detect submit_*_msg() functions re-entrance
-	- common: clock: introduce non interruptible version of mdelay() function
-	- usb: ehci-hcd: use mdelay_non_inerruptible to avoid re-entrance
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ common/clock.c   | 8 ++++++++
+ include/clock.h  | 1 +
+ include/common.h | 1 +
+ 3 files changed, 10 insertions(+)
 
-Peter Mamonov (5):
-	usb: ehci-hcd: port periodic transactions implementation
-	usb: ehci-hcd: detect re-entrance
-	common: clock: introduce mdelay_non_interruptible()
-	usb: ehci-hcd: use mdelay_non_inerruptible()
-	input: port usb keyboard driver from the u-boot
+diff --git a/common/clock.c b/common/clock.c
+index 35c9e6c..51cf9e4 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -202,6 +202,14 @@ void mdelay(unsigned long msecs)
+ }
+ EXPORT_SYMBOL(mdelay);
+ 
++void mdelay_non_interruptible(unsigned long msecs)
++{
++	uint64_t start = get_time_ns();
++
++	while(!is_timeout_non_interruptible(start, msecs * MSECOND));
++}
++EXPORT_SYMBOL(mdelay_non_interruptible);
++
+ int init_clock(struct clocksource *cs)
+ {
+ 	current_clock = cs;
+diff --git a/include/clock.h b/include/clock.h
+index 691befc..68d71d7 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -38,6 +38,7 @@ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
+ 
+ void ndelay(unsigned long nsecs);
+ void mdelay(unsigned long msecs);
++void mdelay_non_interruptible (unsigned long msecs);
+ 
+ #define SECOND ((uint64_t)(1000 * 1000 * 1000))
+ #define MSECOND ((uint64_t)(1000 * 1000))
+diff --git a/include/common.h b/include/common.h
+index 553a7f4..c576908 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -72,6 +72,7 @@ void __noreturn poweroff(void);
+ /* lib_$(ARCH)/time.c */
+ void	udelay (unsigned long);
+ void	mdelay (unsigned long);
++void	mdelay_non_interruptible (unsigned long);
+ 
+ /* lib_generic/crc32.c */
+ uint32_t crc32(uint32_t, const void*, unsigned int);
+-- 
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
