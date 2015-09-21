@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZdnyA-0006E2-Es
- for barebox@lists.infradead.org; Sun, 20 Sep 2015 23:24:31 +0000
-Received: by lbpo4 with SMTP id o4so43633200lbp.2
- for <barebox@lists.infradead.org>; Sun, 20 Sep 2015 16:24:08 -0700 (PDT)
-Received: from localhost.localdomain (ppp79-139-254-180.pppoe.spdop.ru.
- [79.139.254.180])
- by smtp.gmail.com with ESMTPSA id x1sm3091424lbb.32.2015.09.20.16.24.08
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Sun, 20 Sep 2015 16:24:08 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 21 Sep 2015 02:23:53 +0300
-Message-Id: <1442791433-10892-11-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
-References: <1442791433-10892-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZduKs-0005br-5w
+ for barebox@lists.infradead.org; Mon, 21 Sep 2015 06:12:22 +0000
+Date: Mon, 21 Sep 2015 08:11:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150921061159.GB7858@pengutronix.de>
+References: <lya8smdz5d.fsf@ensc-virt.intern.sigma-chemnitz.de>
+ <1442486711-6841-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1442486711-6841-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,84 +19,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC v2 10/10] WIP: MIPS: black-swift: use GPIO
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: MMU: fixed dma_flush_range() call
+To: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/boot/start.S        |  2 ++
- arch/mips/dts/black-swift.dts | 26 ++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+On Thu, Sep 17, 2015 at 12:45:10PM +0200, Enrico Scholz wrote:
+> dma_flush_range() expects an address as second argument, not a size.
+> 
+> Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+> ---
+>  arch/arm/cpu/mmu.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+> index 37bfa05..8ceb450 100644
+> --- a/arch/arm/cpu/mmu.c
+> +++ b/arch/arm/cpu/mmu.c
+> @@ -246,7 +246,8 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+>  	}
+>  
+>  	dma_flush_range((unsigned long)ttb, (unsigned long)ttb + 0x4000);
+> -	dma_flush_range((unsigned long)ptes, num_ptes * sizeof(u32));
+> +	dma_flush_range((unsigned long)ptes,
+> +			(unsigned long)ptes + num_ptes * sizeof(u32));
 
-diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-index 1ddce95..d6449e1 100644
---- a/arch/mips/boot/start.S
-+++ b/arch/mips/boot/start.S
-@@ -34,6 +34,8 @@ EXPORT(_start)
- 
- 	mips_disable_interrupts
- 
-+	pbl_reg_set (1 << 18), 0xb80600ac
-+
- 	copy_to_link_location _start
- 
- 	stack_setup
-diff --git a/arch/mips/dts/black-swift.dts b/arch/mips/dts/black-swift.dts
-index 270374d..e2d1271 100644
---- a/arch/mips/dts/black-swift.dts
-+++ b/arch/mips/dts/black-swift.dts
-@@ -1,6 +1,8 @@
- /dts-v1/;
- 
- #include "ar9331.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
- 
- / {
- 	model = "Black Swift";
-@@ -13,6 +15,26 @@
- 	aliases {
- 		spiflash = &spiflash;
- 	};
-+
-+	buttons {
-+		compatible = "gpio-keys";
-+
-+		s1 {
-+			label = "S1";
-+			gpios = <&gpio 11 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_UP>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		s1 {
-+			label = "LED1";
-+			gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+	};
- };
- 
- &serial0 {
-@@ -32,3 +54,7 @@
- 		reg = <0>;
- 	};
- };
-+
-+&gpio {
-+	status = "okay";
-+};
+Applied both, thanks
+
+Sascha
+
 -- 
-2.5.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
