@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeHra-0004PN-Hp
+ id 1ZeHra-0004PQ-Hm
  for barebox@lists.infradead.org; Tue, 22 Sep 2015 07:19:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 22 Sep 2015 09:19:16 +0200
-Message-Id: <1442906359-17286-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 22 Sep 2015 09:19:18 +0200
+Message-Id: <1442906359-17286-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1442906359-17286-1-git-send-email-s.hauer@pengutronix.de>
+References: <1442906359-17286-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: video: imx-ipu-v3: ldb fixes
+Subject: [PATCH 2/3] video: ipuv3: imx-ldb: remove unused variable
 To: Barebox List <barebox@lists.infradead.org>
 
-As Holger noted the ldb no longer supports modes directly in the ldb
-device node, instead barebox crashes when the IPU driver tries to
-enable a non existent mode. This series replaces the crash with an
-error message and brings back the mode support to the ldb driver.
+endpoint is set but not used. Remove the code.
 
-Holger, please test. I did not have a board which uses the ldb handy,
-so I had to fake it. I verified that the mode is read from the device
-tree, but could not see if it's really used.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/video/imx-ipu-v3/imx-ldb.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-Sascha
+diff --git a/drivers/video/imx-ipu-v3/imx-ldb.c b/drivers/video/imx-ipu-v3/imx-ldb.c
+index db5f8b6..2f49ed2 100644
+--- a/drivers/video/imx-ipu-v3/imx-ldb.c
++++ b/drivers/video/imx-ipu-v3/imx-ldb.c
+@@ -308,7 +308,6 @@ static int imx_ldb_probe(struct device_d *dev)
+ 	for_each_child_of_node(np, child) {
+ 		struct imx_ldb_channel *channel;
+ 		struct device_node *port;
+-		struct device_node *endpoint;
+ 
+ 		ret = of_property_read_u32(child, "reg", &i);
+ 		if (ret || i < 0 || i > 1)
+@@ -334,12 +333,6 @@ static int imx_ldb_probe(struct device_d *dev)
+ 			continue;
+ 		}
+ 
+-		endpoint = of_get_child_by_name(port, "endpoint");
+-		if (!endpoint) {
+-			dev_warn(dev, "No endpoint found on %s\n", port->full_name);
+-			continue;
+-		}
+-
+ 		channel->vpl.node = child;
+ 		channel->vpl.ioctl = &imx_ldb_ioctl;
+ 		ret = vpl_register(&channel->vpl);
+-- 
+2.5.1
 
-----------------------------------------------------------------
-Sascha Hauer (3):
-      video: ipuv3: Do not crash when no mode is found
-      video: ipuv3: imx-ldb: remove unused variable
-      video: ipuv3: imx-ldb: Support video modes in ldb node
-
- drivers/video/imx-ipu-v3/imx-ldb.c | 31 ++++++++++++++++++++-----------
- drivers/video/imx-ipu-v3/ipufb.c   |  5 +++++
- 2 files changed, 25 insertions(+), 11 deletions(-)
 
 _______________________________________________
 barebox mailing list
