@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeQ2v-0005Wx-N2
- for barebox@lists.infradead.org; Tue, 22 Sep 2015 16:03:58 +0000
-Received: by lahg1 with SMTP id g1so18797395lah.1
- for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 09:03:35 -0700 (PDT)
+ id 1ZeQ3b-0005lK-7R
+ for barebox@lists.infradead.org; Tue, 22 Sep 2015 16:04:39 +0000
+Received: by lahg1 with SMTP id g1so18831483lah.1
+ for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 09:04:17 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 Sep 2015 18:58:30 +0300
-Message-Id: <1442937514-19675-2-git-send-email-pmamonov@gmail.com>
+Date: Tue, 22 Sep 2015 18:58:33 +0300
+Message-Id: <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
 In-Reply-To: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
 References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,60 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] common: clock: introduce mdelay_non_interruptible()
+Subject: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
 To: barebox@lists.infradead.org
 Cc: pmamonov@gmail.com
 
 Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- common/clock.c   | 8 ++++++++
- include/clock.h  | 1 +
- include/common.h | 1 +
- 3 files changed, 10 insertions(+)
+ drivers/usb/host/ehci-hcd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/common/clock.c b/common/clock.c
-index 35c9e6c..51cf9e4 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -202,6 +202,14 @@ void mdelay(unsigned long msecs)
- }
- EXPORT_SYMBOL(mdelay);
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index d6df7b8..03d6150 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -684,7 +684,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 				 * root
+ 				 */
+ 				ehci_powerup_fixup(ehci);
+-				mdelay(50);
++				mdelay_non_interruptible(50);
+ 				ehci->portreset |= 1 << port;
+ 				/* terminate the reset */
+ 				ehci_writel(status_reg, reg & ~EHCI_PS_PR);
+@@ -747,7 +747,7 @@ ehci_submit_root(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 		goto unknown;
+ 	}
  
-+void mdelay_non_interruptible(unsigned long msecs)
-+{
-+	uint64_t start = get_time_ns();
-+
-+	while(!is_timeout_non_interruptible(start, msecs * MSECOND));
-+}
-+EXPORT_SYMBOL(mdelay_non_interruptible);
-+
- int init_clock(struct clocksource *cs)
- {
- 	current_clock = cs;
-diff --git a/include/clock.h b/include/clock.h
-index 691befc..68d71d7 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -38,6 +38,7 @@ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
+-	mdelay(1);
++	mdelay_non_interruptible(1);
+ 	len = min3(srclen, (int)le16_to_cpu(req->length), length);
+ 	if (srcptr != NULL && len > 0)
+ 		memcpy(buffer, srcptr, len);
+@@ -889,7 +889,7 @@ static int ehci_init(struct usb_host *host)
+ 	ehci_writel(&ehci->hcor->or_configflag, cmd);
+ 	/* unblock posted write */
+ 	cmd = ehci_readl(&ehci->hcor->or_usbcmd);
+-	mdelay(5);
++	mdelay_non_interruptible(5);
  
- void ndelay(unsigned long nsecs);
- void mdelay(unsigned long msecs);
-+void mdelay_non_interruptible (unsigned long msecs);
+ 	ehci->rootdev = 0;
  
- #define SECOND ((uint64_t)(1000 * 1000 * 1000))
- #define MSECOND ((uint64_t)(1000 * 1000))
-diff --git a/include/common.h b/include/common.h
-index 553a7f4..c576908 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -72,6 +72,7 @@ void __noreturn poweroff(void);
- /* lib_$(ARCH)/time.c */
- void	udelay (unsigned long);
- void	mdelay (unsigned long);
-+void	mdelay_non_interruptible (unsigned long);
- 
- /* lib_generic/crc32.c */
- uint32_t crc32(uint32_t, const void*, unsigned int);
 -- 
 2.1.4
 
