@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
+Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeQIb-0007Tw-RP
- for barebox@lists.infradead.org; Tue, 22 Sep 2015 16:20:11 +0000
-Received: by lahg1 with SMTP id g1so19433435lah.1
- for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 09:19:47 -0700 (PDT)
-From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 Sep 2015 18:58:32 +0300
-Message-Id: <1442937514-19675-4-git-send-email-pmamonov@gmail.com>
-In-Reply-To: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
+ id 1ZeUZH-0000gy-NI
+ for barebox@lists.infradead.org; Tue, 22 Sep 2015 20:53:40 +0000
+Received: by lagj9 with SMTP id j9so28179301lag.2
+ for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 13:53:14 -0700 (PDT)
+Date: Wed, 23 Sep 2015 00:15:28 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150923001528.23b1ed1272b82433164e6850@gmail.com>
+In-Reply-To: <1442937514-19675-2-git-send-email-pmamonov@gmail.com>
 References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
+ <1442937514-19675-2-git-send-email-pmamonov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,125 +20,101 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] usb: ehci-hcd: detect re-entrance
-To: barebox@lists.infradead.org
-Cc: pmamonov@gmail.com
+Subject: Re: [PATCH 1/5] common: clock: introduce mdelay_non_interruptible()
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
----
- drivers/usb/host/ehci-hcd.c | 38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+On Tue, 22 Sep 2015 18:58:30 +0300
+Peter Mamonov <pmamonov@gmail.com> wrote:
 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index e6748b0..d6df7b8 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -51,6 +51,8 @@ struct ehci_priv {
- 	int periodic_schedules;
- 	struct QH *periodic_queue;
- 	uint32_t *periodic_list;
-+	int sem;
-+	struct device_d *usedby;
- };
- 
- struct int_queue {
-@@ -136,6 +138,16 @@ static struct descriptor {
- 
- #define ehci_is_TDI()	(ehci->flags & EHCI_HAS_TT)
- 
-+#define ehci_reentrance_detect(ehci) \
-+	if (ehci->sem) \
-+		dev_err(&dev->dev, "%s: re-entrance %d (%s:%s)\n", \
-+			__func__, \
-+			ehci->sem, \
-+			ehci->usedby->driver->name, \
-+			ehci->usedby->name); \
-+	ehci->sem++; \
-+	ehci->usedby = &dev->dev;
-+
- static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
- {
- 	uint32_t result;
-@@ -893,12 +905,18 @@ submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
- {
- 	struct usb_host *host = dev->host;
- 	struct ehci_priv *ehci = to_ehci(host);
-+	int ret;
-+
-+	ehci_reentrance_detect(ehci);
- 
- 	if (usb_pipetype(pipe) != PIPE_BULK) {
- 		dev_dbg(ehci->dev, "non-bulk pipe (type=%lu)", usb_pipetype(pipe));
-+		ehci->sem--;
- 		return -1;
- 	}
--	return ehci_submit_async(dev, pipe, buffer, length, NULL);
-+	ret = ehci_submit_async(dev, pipe, buffer, length, NULL);
-+	ehci->sem--;
-+	return ret;
- }
- 
- static int
-@@ -907,6 +925,9 @@ submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
- {
- 	struct usb_host *host = dev->host;
- 	struct ehci_priv *ehci = to_ehci(host);
-+	int ret;
-+
-+	ehci_reentrance_detect(ehci);
- 
- 	if (usb_pipetype(pipe) != PIPE_CONTROL) {
- 		dev_dbg(ehci->dev, "non-control pipe (type=%lu)", usb_pipetype(pipe));
-@@ -916,9 +937,13 @@ submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	if (usb_pipedevice(pipe) == ehci->rootdev) {
- 		if (ehci->rootdev == 0)
- 			dev->speed = USB_SPEED_HIGH;
--		return ehci_submit_root(dev, pipe, buffer, length, setup);
-+		ret = ehci_submit_root(dev, pipe, buffer, length, setup);
-+		ehci->sem--;
-+		return ret;
- 	}
--	return ehci_submit_async(dev, pipe, buffer, length, setup);
-+	ret = ehci_submit_async(dev, pipe, buffer, length, setup);
-+	ehci->sem--;
-+	return ret;
- }
- 
- static int
-@@ -1241,12 +1266,16 @@ submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	void *backbuffer;
- 	int result = 0, ret;
- 
-+	ehci_reentrance_detect(ehci);
-+
- 	dev_dbg(ehci->dev, "dev=%p, pipe=%lu, buffer=%p, length=%d, interval=%d",
- 	      dev, pipe, buffer, length, interval);
- 
- 	queue = ehci_create_int_queue(dev, pipe, 1, length, buffer, interval);
--	if (!queue)
-+	if (!queue) {
-+		ehci->sem--;
- 		return -EINVAL;
-+	}
- 
- 	start = get_time_ns();
- 	while ((backbuffer = ehci_poll_int_queue(dev, queue)) == NULL)
-@@ -1269,6 +1298,7 @@ submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
- 	ret = ehci_destroy_int_queue(dev, queue);
- 	if (!result)
- 		result = ret;
-+	ehci->sem--;
- 	return result;
- }
- 
--- 
-2.1.4
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  common/clock.c   | 8 ++++++++
+>  include/clock.h  | 1 +
+>  include/common.h | 1 +
+>  3 files changed, 10 insertions(+)
+> =
 
+> diff --git a/common/clock.c b/common/clock.c
+> index 35c9e6c..51cf9e4 100644
+> --- a/common/clock.c
+> +++ b/common/clock.c
+> @@ -202,6 +202,14 @@ void mdelay(unsigned long msecs)
+>  }
+>  EXPORT_SYMBOL(mdelay);
+>  =
+
+> +void mdelay_non_interruptible(unsigned long msecs)
+> +{
+> +	uint64_t start =3D get_time_ns();
+> +
+> +	while(!is_timeout_non_interruptible(start, msecs * MSECOND));
+
+ERROR: space required before the open parenthesis '('
+#107: FILE: common/clock.c:209:
++	while(!is_timeout_non_interruptible(start, msecs * MSECOND));
+
+ERROR: trailing statements should be on next line
+#107: FILE: common/clock.c:209:
++	while(!is_timeout_non_interruptible(start, msecs * MSECOND));
+
+
+> +}
+> +EXPORT_SYMBOL(mdelay_non_interruptible);
+> +
+>  int init_clock(struct clocksource *cs)
+>  {
+>  	current_clock =3D cs;
+> diff --git a/include/clock.h b/include/clock.h
+> index 691befc..68d71d7 100644
+> --- a/include/clock.h
+> +++ b/include/clock.h
+> @@ -38,6 +38,7 @@ int is_timeout_non_interruptible(uint64_t start_ns, uin=
+t64_t time_offset_ns);
+>  =
+
+>  void ndelay(unsigned long nsecs);
+>  void mdelay(unsigned long msecs);
+> +void mdelay_non_interruptible (unsigned long msecs);
+>  =
+
+>  #define SECOND ((uint64_t)(1000 * 1000 * 1000))
+>  #define MSECOND ((uint64_t)(1000 * 1000))
+> diff --git a/include/common.h b/include/common.h
+> index 553a7f4..c576908 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -72,6 +72,7 @@ void __noreturn poweroff(void);
+>  /* lib_$(ARCH)/time.c */
+>  void	udelay (unsigned long);
+>  void	mdelay (unsigned long);
+> +void	mdelay_non_interruptible (unsigned long);
+>  =
+
+>  /* lib_generic/crc32.c */
+>  uint32_t crc32(uint32_t, const void*, unsigned int);
+> -- =
+
+> 2.1.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
