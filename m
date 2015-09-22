@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeW98-0007MM-Eg
- for barebox@lists.infradead.org; Tue, 22 Sep 2015 22:34:47 +0000
-Received: by lagj9 with SMTP id j9so30572669lag.2
- for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 15:34:22 -0700 (PDT)
+ id 1ZeW95-0007MC-Im
+ for barebox@lists.infradead.org; Tue, 22 Sep 2015 22:34:44 +0000
+Received: by lacao8 with SMTP id ao8so7433604lac.3
+ for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 15:34:21 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 23 Sep 2015 01:34:12 +0300
-Message-Id: <1442961253-24762-6-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 23 Sep 2015 01:34:11 +0300
+Message-Id: <1442961253-24762-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1442961253-24762-1-git-send-email-antonynpavlov@gmail.com>
 References: <1442961253-24762-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,71 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] MIPS: dts: tplink-mr3020.dts: enable gpio & leds
+Subject: [PATCH 4/6] MIPS: dts: tplink-mr3020.dts: move aliases up
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/dts/tplink-mr3020.dts | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ arch/mips/dts/tplink-mr3020.dts | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/arch/mips/dts/tplink-mr3020.dts b/arch/mips/dts/tplink-mr3020.dts
-index e155de3..804d290 100644
+index 41be352..e155de3 100644
 --- a/arch/mips/dts/tplink-mr3020.dts
 +++ b/arch/mips/dts/tplink-mr3020.dts
-@@ -1,6 +1,7 @@
- /dts-v1/;
- 
- #include "ar9331.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
- 
- / {
- 	model = "TP-LINK MR3020";
-@@ -13,12 +14,44 @@
- 	aliases {
- 		spiflash = &spiflash;
+@@ -9,6 +9,10 @@
+ 	memory {
+ 		reg = <0x00000000 0x2000000>;
  	};
 +
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		wlan {
-+			label = "tp-link:green:wlan";
-+			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		lan {
-+			label = "tp-link:green:lan";
-+			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		wps {
-+			label = "tp-link:green:wps";
-+			gpios = <&gpio 26 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led3g {
-+			label = "tp-link:green:3g";
-+			gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
++	aliases {
++		spiflash = &spiflash;
 +	};
  };
  
  &serial0 {
- 	status = "okay";
+@@ -28,9 +32,3 @@
+ 		reg = <0>;
+ 	};
  };
- 
-+&gpio {
-+	status = "okay";
-+};
-+
- &spi {
- 	num-chipselects = <1>;
- 	status = "okay";
+-
+-/ {
+-	aliases {
+-		spiflash = &spiflash;
+-	};
+-};
 -- 
 2.5.0
 
