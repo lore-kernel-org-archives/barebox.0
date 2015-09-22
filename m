@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeW95-0007M9-Io
- for barebox@lists.infradead.org; Tue, 22 Sep 2015 22:34:44 +0000
-Received: by lacao8 with SMTP id ao8so7433366lac.3
- for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 15:34:21 -0700 (PDT)
+ id 1ZeW95-0007M7-5J
+ for barebox@lists.infradead.org; Tue, 22 Sep 2015 22:34:43 +0000
+Received: by lacao8 with SMTP id ao8so7432959lac.3
+ for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 15:34:19 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 23 Sep 2015 01:34:10 +0300
-Message-Id: <1442961253-24762-4-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 23 Sep 2015 01:34:08 +0300
+Message-Id: <1442961253-24762-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1442961253-24762-1-git-send-email-antonynpavlov@gmail.com>
 References: <1442961253-24762-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] MIPS: dts: ar9331.dtsi: add gpio
+Subject: [PATCH 1/6] MIPS: ath79: use gpiolib
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/dts/ar9331.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/mips/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
-index 8e7afcd..99ede9e 100644
---- a/arch/mips/dts/ar9331.dtsi
-+++ b/arch/mips/dts/ar9331.dtsi
-@@ -17,6 +17,16 @@
- 			status = "disabled";
- 		};
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index aeb5c04..a2d443f 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -68,6 +68,7 @@ config MACH_MIPS_ATH79
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select CLKDEV_LOOKUP
+ 	select OFTREE
++	select GPIOLIB
  
-+		gpio: gpio@18040000 {
-+			compatible = "qca,ar7100-gpio";
-+			gpio-controller;
-+			reg = <0x18040000 0x100>;
-+			#gpio-cells = <2>;
-+
-+			ngpios = <30>;
-+			status = "disabled";
-+		};
-+
- 		ar9331_clk: clock {
- 			compatible = "qca,ar933x-clk";
- 			reg = <0x18050000 0x48>;
+ config MACH_MIPS_BCM47XX
+ 	bool "Broadcom BCM47xx-based boards"
 -- 
 2.5.0
 
