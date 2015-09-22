@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeHra-0004PQ-Hm
- for barebox@lists.infradead.org; Tue, 22 Sep 2015 07:19:43 +0000
+ id 1ZeHrp-0004UT-FZ
+ for barebox@lists.infradead.org; Tue, 22 Sep 2015 07:19:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 22 Sep 2015 09:19:18 +0200
-Message-Id: <1442906359-17286-3-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 22 Sep 2015 09:19:17 +0200
+Message-Id: <1442906359-17286-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1442906359-17286-1-git-send-email-s.hauer@pengutronix.de>
 References: <1442906359-17286-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] video: ipuv3: imx-ldb: remove unused variable
+Subject: [PATCH 1/3] video: ipuv3: Do not crash when no mode is found
 To: Barebox List <barebox@lists.infradead.org>
 
-endpoint is set but not used. Remove the code.
+When something is missing in the device tree or not all necessary
+drivers are compiled in it may happen that no valid mode is found.
+Do not crash in this case but print an error message.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-v3/imx-ldb.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/video/imx-ipu-v3/ipufb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/video/imx-ipu-v3/imx-ldb.c b/drivers/video/imx-ipu-v3/imx-ldb.c
-index db5f8b6..2f49ed2 100644
---- a/drivers/video/imx-ipu-v3/imx-ldb.c
-+++ b/drivers/video/imx-ipu-v3/imx-ldb.c
-@@ -308,7 +308,6 @@ static int imx_ldb_probe(struct device_d *dev)
- 	for_each_child_of_node(np, child) {
- 		struct imx_ldb_channel *channel;
- 		struct device_node *port;
--		struct device_node *endpoint;
+diff --git a/drivers/video/imx-ipu-v3/ipufb.c b/drivers/video/imx-ipu-v3/ipufb.c
+index ea2e83b..401f8f7 100644
+--- a/drivers/video/imx-ipu-v3/ipufb.c
++++ b/drivers/video/imx-ipu-v3/ipufb.c
+@@ -189,6 +189,11 @@ static void ipufb_enable_controller(struct fb_info *info)
+ {
+ 	struct ipufb_info *fbi = container_of(info, struct ipufb_info, info);
  
- 		ret = of_property_read_u32(child, "reg", &i);
- 		if (ret || i < 0 || i > 1)
-@@ -334,12 +333,6 @@ static int imx_ldb_probe(struct device_d *dev)
- 			continue;
- 		}
++	if (!info->mode) {
++		dev_err(fbi->dev, "No valid mode found\n");
++		return;
++	}
++
+ 	vpl_ioctl_prepare(&fbi->vpl, 2 + fbi->dino, info->mode);
  
--		endpoint = of_get_child_by_name(port, "endpoint");
--		if (!endpoint) {
--			dev_warn(dev, "No endpoint found on %s\n", port->full_name);
--			continue;
--		}
--
- 		channel->vpl.node = child;
- 		channel->vpl.ioctl = &imx_ldb_ioctl;
- 		ret = vpl_register(&channel->vpl);
+ 	ipu_crtc_mode_set(fbi, info->mode, 0, 0);
 -- 
 2.5.1
 
