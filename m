@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeQ1l-000526-OS
- for barebox@lists.infradead.org; Tue, 22 Sep 2015 16:02:47 +0000
-Received: by lamp12 with SMTP id p12so17869849lam.0
- for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 09:02:23 -0700 (PDT)
+ id 1ZeQ2v-0005Wx-N2
+ for barebox@lists.infradead.org; Tue, 22 Sep 2015 16:03:58 +0000
+Received: by lahg1 with SMTP id g1so18797395lah.1
+ for <barebox@lists.infradead.org>; Tue, 22 Sep 2015 09:03:35 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Tue, 22 Sep 2015 18:58:29 +0300
-Message-Id: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
+Date: Tue, 22 Sep 2015 18:58:30 +0300
+Message-Id: <1442937514-19675-2-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
+References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v6 0/5] input: add usb keyboard driver
+Subject: [PATCH 1/5] common: clock: introduce mdelay_non_interruptible()
 To: barebox@lists.infradead.org
 Cc: pmamonov@gmail.com
 
-Changes since v5:
-	- Address issues reported here: 
-	  http://lists.infradead.org/pipermail/barebox/2015-September/024726.html
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+---
+ common/clock.c   | 8 ++++++++
+ include/clock.h  | 1 +
+ include/common.h | 1 +
+ 3 files changed, 10 insertions(+)
 
-	- input: usb_kbd: set idle time to minimum and limit polling rate
+diff --git a/common/clock.c b/common/clock.c
+index 35c9e6c..51cf9e4 100644
+--- a/common/clock.c
++++ b/common/clock.c
+@@ -202,6 +202,14 @@ void mdelay(unsigned long msecs)
+ }
+ EXPORT_SYMBOL(mdelay);
+ 
++void mdelay_non_interruptible(unsigned long msecs)
++{
++	uint64_t start = get_time_ns();
++
++	while(!is_timeout_non_interruptible(start, msecs * MSECOND));
++}
++EXPORT_SYMBOL(mdelay_non_interruptible);
++
+ int init_clock(struct clocksource *cs)
+ {
+ 	current_clock = cs;
+diff --git a/include/clock.h b/include/clock.h
+index 691befc..68d71d7 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -38,6 +38,7 @@ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
+ 
+ void ndelay(unsigned long nsecs);
+ void mdelay(unsigned long msecs);
++void mdelay_non_interruptible (unsigned long msecs);
+ 
+ #define SECOND ((uint64_t)(1000 * 1000 * 1000))
+ #define MSECOND ((uint64_t)(1000 * 1000))
+diff --git a/include/common.h b/include/common.h
+index 553a7f4..c576908 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -72,6 +72,7 @@ void __noreturn poweroff(void);
+ /* lib_$(ARCH)/time.c */
+ void	udelay (unsigned long);
+ void	mdelay (unsigned long);
++void	mdelay_non_interruptible (unsigned long);
+ 
+ /* lib_generic/crc32.c */
+ uint32_t crc32(uint32_t, const void*, unsigned int);
+-- 
+2.1.4
 
-	  Idle time is the amount of time, during which the usb device will wait before
-	  replying to the host interrupt packet. We don't want to waste that time, 
-	  so keep it as small as possible. In particular this resolves the problem of 
-	  very poor tftp performance, when the usb keyboard is enabled.
-
-Peter Mamonov (5):
-	common: clock: introduce mdelay_non_interruptible()
-	usb: ehci-hcd: port periodic transactions implementation
-	usb: ehci-hcd: detect re-entrance
-	usb: ehci-hcd: use mdelay_non_inerruptible()
-	input: port usb keyboard driver from the u-boot
 
 _______________________________________________
 barebox mailing list
