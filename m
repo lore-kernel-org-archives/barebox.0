@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ze5bG-0002aB-I2
- for barebox@lists.infradead.org; Mon, 21 Sep 2015 18:14:03 +0000
-Date: Mon, 21 Sep 2015 20:13:38 +0200
+ id 1ZeH7S-00060K-Da
+ for barebox@lists.infradead.org; Tue, 22 Sep 2015 06:32:03 +0000
+Date: Tue, 22 Sep 2015 08:31:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150921181338.GI7858@pengutronix.de>
-References: <87h9moclrw.fsf@gmail.com>
+Message-ID: <20150922063135.GJ7858@pengutronix.de>
+References: <1442835049-20829-1-git-send-email-pmamonov@gmail.com>
+ <1442835049-20829-2-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87h9moclrw.fsf@gmail.com>
+In-Reply-To: <1442835049-20829-2-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,127 +23,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: BUG, i.MX: broken LVDS display
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: [PATCH 1/5] usb: ehci-hcd: port periodic transactions
+ implementation from the u-boot
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 21, 2015 at 08:46:27AM +0200, Holger Schurig wrote:
-> Hi,
+On Mon, Sep 21, 2015 at 02:30:45PM +0300, Peter Mamonov wrote:
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  drivers/usb/host/ehci-hcd.c | 400 +++++++++++++++++++++++++++++++++++++++++++-
+>  drivers/usb/host/ehci.h     |  15 +-
+>  2 files changed, 413 insertions(+), 2 deletions(-)
 > 
-> on my i.MX6Q device barebox 2015-08.0 worked and I had an output on the splash screen, both in Barebox and later in Linux (there with CONFIG_STAGING, CONFIG_DRM_IMX, 
-> DRM_IMX_FB_HELPER, DRM_IMX_LDB, DRM_IMX_IPUV3).
-> 
-> This stopped with 2015-09.0. I even get a null-pointer exception:
-> 
-> 
-> Barebox: version 2015.09.0, DLoG 2015-09.1-9-g498cf3a
-> unable to handle NULL pointer dereference at address 0x00000008
-> pc : [<4fe1072a>]    lr : [<4fe10719>]
-> sp : 4ffffa18  ip : 4ffffa68  fp : 4ffffd80
-> r10: 3032678c  r9 : 00000000  r8 : 00000000
-> r7 : 30343904  r6 : 303438b8  r5 : 00000000  r4 : 303438b8
-> r3 : 00000000  r2 : 4fe31c78  r1 : 00000000  r0 : 00000006
-> Flags: nzcv  IRQs off  FIQs off  Mode SVC_32
-> [<4fe1072a>] (ipu_crtc_mode_set+0x2a/0x1cc) from [<4fe108f5>] (ipufb_enable_controller+0x29/0x44)
-> [<4fe108f5>] (ipufb_enable_controller+0x29/0x44) from [<4fe0e8e5>] (fb_enable_set+0x15/0x18)
-> [<4fe0e8e5>] (fb_enable_set+0x15/0x18) from [<4fe1bd6d>] (param_int_set+0x33/0x44)
-> [<4fe1bd6d>] (param_int_set+0x33/0x44) from [<4fe1bfab>] (dev_set_param+0x43/0x50)
-> [<4fe1bfab>] (dev_set_param+0x43/0x50) from [<4fe03257>] (setenv+0x37/0xac)
-> [<4fe03257>] (setenv+0x37/0xac) from [<4fe056cb>] (set_local_var.isra.3+0x37/0x4c)
-> [<4fe056cb>] (set_local_var.isra.3+0x37/0x4c) from [<4fe0622d>] (run_list_real+0x2ed/0x628)
-> [<4fe0622d>] (run_list_real+0x2ed/0x628) from [<4fe061c5>] (run_list_real+0x285/0x628)
-> 
-> [<4fe2d7cd>] (unwind_backtrace+0x1/0x74) from [<4fe00d65>] (panic+0x1d/0x2c)
-> [<4fe00d65>] (panic+0x1d/0x2c) from [<4fe2dca1>] (do_exception+0xd/0x10)
-> [<4fe2dca1>] (do_exception+0xd/0x10) from [<4fe2dd09>] (do_data_abort+0x21/0x2c)
-> [<4fe2dd09>] (do_data_abort+0x21/0x2c) from [<4fe2d9d4>] (do_abort_6+0x48/0x54)
-> 
-> 
-> 
-> 
-> 
-> I think (!) this is because of commit "video: ipuv3: Replace ipu_output with VPL".
+>  }
+>  
+>  static int
+> +disable_periodic(struct ehci_priv *ehci)
+> +{
+> +	uint32_t cmd;
+> +	struct ehci_hcor *hcor = ehci->hcor;
+> +	int ret;
+> +
+> +	cmd = ehci_readl(&hcor->or_usbcmd);
+> +	cmd &= ~CMD_PSE;
+> +	ehci_writel(&hcor->or_usbcmd, cmd);
+> +
+> +	ret = handshake((uint32_t *)&hcor->or_usbsts,
+> +			STS_PSS, 0, 100 * 1000);
+> +	if (ret < 0) {
+> +		printf("EHCI failed: timeout when disabling periodic list\n");
+> +		return -ETIMEDOUT;
+> +	}
+> +	return 0;
+> +}
+> +
+> +#define NEXT_QH(qh) (struct QH *)((0xa0000000 | (unsigned long)hc32_to_cpu((qh)->qh_link)) & ~0x1f)
 
-Without trying it I think that aswell ;)
+Ok, here's the reason it doesn't work on Arm. The 0xa0000000 is probably
+due to the cached/uncached address conversion on Mips. Without the
+0a0000000 this patch works fine on Arm.
 
-> 
-> 
-> My current device tree looks like this:
-> 
-> &ldb {
-> 	status = "okay";
-> 
-> 	lvds-channel@0 {
-> 		status = "okay";
-> 		crtc = "ipu1-di0";
-> 		fsl,data-mapping = "spwg";
-> 		fsl,data-width = <18>;
-> 		primary;
-> 
-> 		display-timings {
-> 			native-mode = <&timing0>;
-> 			timing0: AM-800600K1TMQW-01H-B {
-> 				// dot clock: 40 - 50 MHz
->                                 clock-frequency = <39701664>; // 72 Hz
-> 				hactive = <800>;
-> 				vactive = <600>;
-> 				hsync-len = <3>;      // 1 - 40
-> 				hback-porch = <46>;   // 46
-> 				hfront-porch = <18>;  // 16 - 354
-> 				vsync-len = <10>;     // 1 - 29
-> 				vback-porch = <23>;   // 23
-> 				vfront-porch = <3>;   // 1 - 77
-> 				hsync-active = <1>;
-> 			};
-> 		};
-> 	};
-> }
-> 
-> 
-> I experimented with barebox 2015.09.0 with several things, but so far haven't been successfull.
-> 
-> 
-> 
-> Any hint on how the device tree is now supposed to look like?
+> +
+> +static int
+> +enable_periodic(struct ehci_priv *ehci)
+> +{
+> +	uint32_t cmd;
+> +	struct ehci_hcor *hcor = ehci->hcor;
+> +	int ret;
+> +	uint64_t start;
+> +
+> +	cmd = ehci_readl(&hcor->or_usbcmd);
+> +	cmd |= CMD_PSE;
+> +	ehci_writel(&hcor->or_usbcmd, cmd);
+> +
+> +	ret = handshake((uint32_t *)&hcor->or_usbsts,
+> +			STS_PSS, STS_PSS, 100 * 1000);
+> +	if (ret < 0) {
+> +		printf("EHCI failed: timeout when enabling periodic list\n");
+> +		return -ETIMEDOUT;
+> +	}
+> +
+> +	start = get_time_ns();
+> +	while(!is_timeout_non_interruptible(start, 1 * MSECOND));
 
-Should be like:
+mdelay_non_interruptible?
 
-panel: panel {
-	compatible = "ampire,am800480r3tmqwa1h", "simple-panel";
-	enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-	backlight = <&backlight>;
+> +static int ehci_destroy_int_queue(struct usb_device *dev,
+> +				   struct int_queue *queue)
+> +{
+> +	int result = -EINVAL;
+> +	struct usb_host *host = dev->host;
+> +	struct ehci_priv *ehci = to_ehci(host);
+> +	struct QH *cur = ehci->periodic_queue;
+> +	uint64_t start;
+> +
+> +	if (disable_periodic(ehci) < 0) {
+> +		dev_err(&dev->dev,
+> +			"FATAL: periodic should never fail, but did\n");
+> +		goto out;
+> +	}
+> +	ehci->periodic_schedules--;
+> +
+> +	start = get_time_ns();
+> +	while (!(cur->qh_link & cpu_to_hc32(QH_LINK_TERMINATE))) {
+> +		dev_dbg(&dev->dev, 
+> +			"considering %p, with qh_link %x\n",
+> +			cur, cur->qh_link);
+> +		if (NEXT_QH(cur) == queue->first) {
+> +			dev_dbg(&dev->dev,
+> +				"found candidate. removing from chain\n");
+> +			cur->qh_link = queue->last->qh_link;
+> +			result = 0;
+> +			break;
+> +		}
+> +		cur = NEXT_QH(cur);
+> +		if (is_timeout_non_interruptible(start, 500 * MSECOND)) {
+> +			dev_err(&dev->dev,
+> +				"Timeout destroying interrupt endpoint queue\n");
+> +			result = -ETIMEDOUT;
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	if (ehci->periodic_schedules > 0) {
+> +		result = enable_periodic(ehci);
+> +		if (result < 0)
+> +			dev_err(&dev->dev,
+> +				"FATAL: periodic should never fail, but did");
+> +	}
+> +
+> +out:
+> +	free(queue->tds);
+> +	free(queue->first);
 
-	port {
-		panel_in: endpoint {
-			remote-endpoint = <&lvds0_out>;
-		};
-	};
-};
+You have to use dma_free_coherent here.
 
-&ldb {
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_lvds0>;
-	status = "okay";
+> +	free(queue);
+> +
+> +	return result;
+> +}
+> +
+>  submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+>  	       int length, int interval)
+>  {
+>  	struct usb_host *host = dev->host;
+>  	struct ehci_priv *ehci = to_ehci(host);
+> +	struct int_queue *queue;
+> +	uint64_t start;
+> +	void *backbuffer;
+> +	int result = 0, ret;
+>  
+>  	dev_dbg(ehci->dev, "dev=%p, pipe=%lu, buffer=%p, length=%d, interval=%d",
+>  	      dev, pipe, buffer, length, interval);
+> -	return -1;
+> +
+> +	queue = ehci_create_int_queue(dev, pipe, 1, length, buffer, interval);
+> +	if (!queue)
+> +		return -EINVAL;
+> +
+> +	start = get_time_ns();
+> +	while ((backbuffer = ehci_poll_int_queue(dev, queue)) == NULL)
+> +		if (is_timeout_non_interruptible(start, 
+> +						 USB_CNTL_TIMEOUT * MSECOND)) {
+> +			dev_err(&dev->dev,
+> +				"Timeout poll on interrupt endpoint\n");
+> +			result = -ETIMEDOUT;
+> +			break;
+> +		}
+> +
+> +	if (backbuffer != buffer) {
+> +		dev_err(&dev->dev,
+> +			"got wrong buffer back (%p instead of %p)\n",
+> +			backbuffer, buffer);
+> +		return -EINVAL;
 
-	lvds-channel@0 {
-		status = "okay";
-		fsl,data-mapping = "jeida";
-		fsl,data-width = <24>;
-
-		port@1 {
-			reg = <1>;
-
-			lvds0_out: endpoint {
-				remote-endpoint = <&panel_in>;
-			};
-		};
-	};
-};
-
-Copied from arch/arm/dts/imx53-guf-vincell.dts.
-
-Anyway, I don't think it's necessary to break the old binding and for
-sure we should not segfault. I'll have a look into this.
+Shouldn't we call ehci_destroy_int_queue() here aswell? Otherwise we
+leak the memory allocated from ehci_create_int_queue().
 
 Sascha
 
