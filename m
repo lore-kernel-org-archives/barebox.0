@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeiWh-0008DA-3s
- for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:47:55 +0000
+ id 1ZeiWl-0008Dd-Sj
+ for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:48:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Sep 2015 13:47:28 +0200
-Message-Id: <1443008851-26596-8-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 23 Sep 2015 13:47:30 +0200
+Message-Id: <1443008851-26596-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
 References: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] video: backlight-pwm: Add error message
+Subject: [PATCH 09/10] ARM: i.MX: GuF Santaro: enable PWM
 To: Barebox List <barebox@lists.infradead.org>
 
-Inform the user when we can't find a pwm for the backlight driver.
+The PWMs now have to be enabled to use them. Enable the backlight PWM.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/backlight-pwm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/dts/imx6q-guf-santaro.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
-index 91b1481..8f17f21 100644
---- a/drivers/video/backlight-pwm.c
-+++ b/drivers/video/backlight-pwm.c
-@@ -160,8 +160,10 @@ static int backlight_pwm_of_probe(struct device_d *dev)
- 	struct pwm_device *pwm;
+diff --git a/arch/arm/dts/imx6q-guf-santaro.dts b/arch/arm/dts/imx6q-guf-santaro.dts
+index d9bc7a5..4db9071 100644
+--- a/arch/arm/dts/imx6q-guf-santaro.dts
++++ b/arch/arm/dts/imx6q-guf-santaro.dts
+@@ -542,6 +542,10 @@
+ 	};
+ };
  
- 	pwm = of_pwm_request(dev->device_node, NULL);
--	if (IS_ERR(pwm))
-+	if (IS_ERR(pwm)) {
-+		dev_err(dev, "Cannot find PWM device\n");
- 		return PTR_ERR(pwm);
-+	}
- 
- 	pwm_backlight = xzalloc(sizeof(*pwm_backlight));
- 	pwm_backlight->pwm = pwm;
++&pwm1 {
++	status = "okay";
++};
++
+ &uart1 {
+ 	/* RS485 */
+ 	pinctrl-names = "default";
 -- 
 2.5.1
 
