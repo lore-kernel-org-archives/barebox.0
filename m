@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeiWh-0008DI-3v
- for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:47:56 +0000
+ id 1ZeiWv-0008Eh-Sl
+ for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:48:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Sep 2015 13:47:31 +0200
-Message-Id: <1443008851-26596-11-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 23 Sep 2015 13:47:22 +0200
+Message-Id: <1443008851-26596-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
 References: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] ARM: i.MX: GuF Santaro: Fix panel support
+Subject: [PATCH 01/10] video: ipuv3: Do not crash when no mode is found
 To: Barebox List <barebox@lists.infradead.org>
 
-The backlight enable gpio is in both the ldb node and the panel node.
-Remove it from the ldb node where is was unused and fix the polarity
-in the panel node. Also make the panel compatible to simple-panel to
-let the driver match it.
+When something is missing in the device tree or not all necessary
+drivers are compiled in it may happen that no valid mode is found.
+Do not crash in this case but print an error message.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx6q-guf-santaro.dts | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/video/imx-ipu-v3/ipufb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/dts/imx6q-guf-santaro.dts b/arch/arm/dts/imx6q-guf-santaro.dts
-index 4db9071..27f538a 100644
---- a/arch/arm/dts/imx6q-guf-santaro.dts
-+++ b/arch/arm/dts/imx6q-guf-santaro.dts
-@@ -60,9 +60,9 @@
- 	};
+diff --git a/drivers/video/imx-ipu-v3/ipufb.c b/drivers/video/imx-ipu-v3/ipufb.c
+index ea2e83b..401f8f7 100644
+--- a/drivers/video/imx-ipu-v3/ipufb.c
++++ b/drivers/video/imx-ipu-v3/ipufb.c
+@@ -189,6 +189,11 @@ static void ipufb_enable_controller(struct fb_info *info)
+ {
+ 	struct ipufb_info *fbi = container_of(info, struct ipufb_info, info);
  
- 	panel {
--		compatible = "unknown,the-display-on-the-garz-fricke-santaro";
-+		compatible = "simple-panel";
- 		backlight = <&backlight>;
--		enable-gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
-+		enable-gpios = <&gpio5 21 GPIO_ACTIVE_HIGH>;
++	if (!info->mode) {
++		dev_err(fbi->dev, "No valid mode found\n");
++		return;
++	}
++
+ 	vpl_ioctl_prepare(&fbi->vpl, 2 + fbi->dino, info->mode);
  
- 		port {
- 			panel_in: endpoint {
-@@ -515,7 +515,6 @@
- 		status = "okay";
- 		fsl,data-mapping = "spwg";
- 		fsl,data-width = <18>;
--		gpios = <&gpio5 21 GPIO_ACTIVE_HIGH>;
- 
- 		display-timings {
- 			timing0: 800x480 {
+ 	ipu_crtc_mode_set(fbi, info->mode, 0, 0);
 -- 
 2.5.1
 
