@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeiXA-0008JA-Sf
- for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:48:25 +0000
+ id 1ZeiYy-0000MP-O4
+ for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:50:17 +0000
+Date: Wed, 23 Sep 2015 13:49:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Sep 2015 13:47:25 +0200
-Message-Id: <1443008851-26596-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
-References: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20150923114954.GU7858@pengutronix.de>
+References: <87h9moclrw.fsf@gmail.com> <20150921181338.GI7858@pengutronix.de>
+ <CAOpc7mFYWzR0W1rRVFeJ3B0aO=Rs9B61NdntKG4QNUDHgB4GMA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAOpc7mFYWzR0W1rRVFeJ3B0aO=Rs9B61NdntKG4QNUDHgB4GMA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,107 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] video: simple-panel: Add debug/error messages
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: BUG, i.MX: broken LVDS display
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Let the driver be more informative when something goes wrong.
+On Tue, Sep 22, 2015 at 04:02:15PM +0200, Holger Schurig wrote:
+>    Hi Sascha,
+> =
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/video/simple-panel.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+>    imx-ipuv3 2400000.ipu: IPUv3H probed
+>    imx-ipuv3 2800000.ipu: IPUv3H probed
+>    Console activated
+>    ...
+>    imx-ipuv3-crtc imx-ipuv3-crtc0: register vpl for /soc/ipu@02400000
+>    imx-ipuv3-crtc imx-ipuv3-crtc0: probe failed: No such file or directory
+>    imx-ipuv3-crtc imx-ipuv3-crtc1: register vpl for /soc/ipu@02400000
+>    imx-ipuv3-crtc imx-ipuv3-crtc1: probe failed: No such file or directory
+>    imx-ipuv3-crtc imx-ipuv3-crtc2: register vpl for /soc/ipu@02800000
+>    imx-ipuv3-crtc imx-ipuv3-crtc2: probe failed: No such file or directory
+>    imx-ipuv3-crtc imx-ipuv3-crtc3: register vpl for /soc/ipu@02800000
+>    imx-ipuv3-crtc imx-ipuv3-crtc3: probe failed: No such file or directory
+>    running /env/bin/init...
+> =
 
-diff --git a/drivers/video/simple-panel.c b/drivers/video/simple-panel.c
-index 3dd760b..4775509 100644
---- a/drivers/video/simple-panel.c
-+++ b/drivers/video/simple-panel.c
-@@ -30,6 +30,7 @@
- #include <i2c/i2c.h>
- 
- struct simple_panel {
-+	struct device_d *dev;
- 	struct vpl vpl;
- 	int enable_gpio;
- 	int enable_active_high;
-@@ -44,10 +45,14 @@ static int simple_panel_enable(struct simple_panel *panel)
- {
- 	int ret;
- 
-+	dev_dbg(panel->dev, "enabling\n");
-+
- 	if (panel->backlight_node && !panel->backlight) {
- 		panel->backlight = of_backlight_find(panel->backlight_node);
--		if (!panel->backlight)
-+		if (!panel->backlight) {
-+			dev_err(panel->dev, "Cannot find backlight\n");
- 			return -ENODEV;
-+		}
- 	}
- 
- 	if (gpio_is_valid(panel->enable_gpio))
-@@ -68,6 +73,8 @@ static int simple_panel_enable(struct simple_panel *panel)
- 
- static int simple_panel_disable(struct simple_panel *panel)
- {
-+	dev_dbg(panel->dev, "disabling\n");
-+
- 	if (panel->backlight)
- 		backlight_set_brightness(panel->backlight, 0);
- 
-@@ -80,23 +87,33 @@ static int simple_panel_disable(struct simple_panel *panel)
- 
- static int simple_panel_get_modes(struct simple_panel *panel, struct display_timings *timings)
- {
--	int ret = -ENOENT;
-+	int ret;
- 
- 	if (panel->ddc_node && IS_ENABLED(CONFIG_DRIVER_VIDEO_EDID) &&
- 	    IS_ENABLED(CONFIG_I2C)) {
- 		struct i2c_adapter *i2c;
- 
-                 i2c = of_find_i2c_adapter_by_node(panel->ddc_node);
--		if (!i2c)
-+		if (!i2c) {
-+			dev_err(panel->dev, "cannot find edid i2c node\n");
- 			return -ENODEV;
-+		}
- 		timings->edid = edid_read_i2c(i2c);
--		if (!timings->edid)
-+		if (!timings->edid) {
-+			dev_err(panel->dev, "cannot read edid data\n");
- 			return -EINVAL;
-+		}
- 
- 		ret = edid_to_display_timings(timings, timings->edid);
-+		if (ret) {
-+			dev_err(panel->dev, "cannot convert edid data to timings\n");
-+			return ret;
-+		}
- 	}
- 
--	return ret;
-+	dev_err(panel->dev, "No modes found\n");
-+
-+	return -ENOENT;
- }
- 
- static int simple_panel_ioctl(struct vpl *vpl, unsigned int port,
-@@ -129,6 +146,7 @@ static int simple_panel_probe(struct device_d *dev)
- 	panel->enable_gpio = of_get_named_gpio_flags(node, "enable-gpios", 0, &flags);
- 	panel->vpl.node = node;
- 	panel->vpl.ioctl = simple_panel_ioctl;
-+	panel->dev = dev;
- 
- 	if (gpio_is_valid(panel->enable_gpio)) {
- 		if (!(flags & OF_GPIO_ACTIVE_LOW))
--- 
-2.5.1
+>    So I wonder where exactly barebox get's the timings on the GUF Vincell=
+ for
+>    the Ampire display? =A0 Probably the GuF board only sets up the displa=
+y for
+>    Linux, but doesn't in itself activate the framebuffer?=A0 I grepped for
+>    "Ampire" in Barebox git, and none of the files
+>    (dts/Bindings/panel/ampire,am800480r3tmqwa1h.txt,
 
+It seems the Vincell never worked in barebox. I just assumed it worked
+because the barebox specific dts enables the ldb.
+Please test the new version I just sent out. I tested this on the GuF
+Santaro board, so this is a better place to compare the device tree
+with.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
