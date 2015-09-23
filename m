@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZefXx-0002yB-Pz
- for barebox@lists.infradead.org; Wed, 23 Sep 2015 08:37:02 +0000
-Date: Wed, 23 Sep 2015 10:36:39 +0200
+ id 1ZeiWv-0008Eg-Sg
+ for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:48:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150923083639.GS7858@pengutronix.de>
-References: <1442844284-27870-1-git-send-email-ejo@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1442844284-27870-1-git-send-email-ejo@pengutronix.de>
+Date: Wed, 23 Sep 2015 13:47:23 +0200
+Message-Id: <1443008851-26596-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
+References: <1443008851-26596-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +16,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] New denali nand driver (ported from kernel)
-To: Enrico Jorns <ejo@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 02/10] video: ipuv3: imx-ldb: remove unused variable
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Sep 21, 2015 at 04:04:40PM +0200, Enrico Jorns wrote:
-> This series adds the denali NAND driver that is used, for example,
-> on socfpga platforms.
-> 
-> The driver is adapted from the mainline kernel driver with some bugfix patches
-> from Altera.
-> 
-> Enrico Jorns (4):
->   mtd nand: added 'bits_per_cell' property
->   mtd nand_denali: Add denali nand driver
->   mtd denali: pass col argument to READID operation
->   socfpga dts: set have-hw-ecc-fixup for nand
+endpoint is set but not used. Remove the code.
 
-Applied all but the last one which does not apply. We currently do not
-have the nand node you add a property to.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/video/imx-ipu-v3/imx-ldb.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-Sascha
-
-
+diff --git a/drivers/video/imx-ipu-v3/imx-ldb.c b/drivers/video/imx-ipu-v3/imx-ldb.c
+index db5f8b6..2f49ed2 100644
+--- a/drivers/video/imx-ipu-v3/imx-ldb.c
++++ b/drivers/video/imx-ipu-v3/imx-ldb.c
+@@ -308,7 +308,6 @@ static int imx_ldb_probe(struct device_d *dev)
+ 	for_each_child_of_node(np, child) {
+ 		struct imx_ldb_channel *channel;
+ 		struct device_node *port;
+-		struct device_node *endpoint;
+ 
+ 		ret = of_property_read_u32(child, "reg", &i);
+ 		if (ret || i < 0 || i > 1)
+@@ -334,12 +333,6 @@ static int imx_ldb_probe(struct device_d *dev)
+ 			continue;
+ 		}
+ 
+-		endpoint = of_get_child_by_name(port, "endpoint");
+-		if (!endpoint) {
+-			dev_warn(dev, "No endpoint found on %s\n", port->full_name);
+-			continue;
+-		}
+-
+ 		channel->vpl.node = child;
+ 		channel->vpl.ioctl = &imx_ldb_ioctl;
+ 		ret = vpl_register(&channel->vpl);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.5.1
+
 
 _______________________________________________
 barebox mailing list
