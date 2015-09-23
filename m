@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZelwU-0007LD-5h
- for barebox@lists.infradead.org; Wed, 23 Sep 2015 15:26:46 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 23 Sep 2015 17:26:11 +0200
-Message-Id: <1443021972-18223-1-git-send-email-s.hauer@pengutronix.de>
+ id 1Zely6-0007og-K7
+ for barebox@lists.infradead.org; Wed, 23 Sep 2015 15:28:27 +0000
+Date: Wed, 23 Sep 2015 17:28:03 +0200
+From: Michael Grzeschik <mgr@pengutronix.de>
+Message-ID: <20150923152803.GC12329@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,59 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] state: write names in enum32 variables to oftree again
-To: Barebox List <barebox@lists.infradead.org>
+Subject: boards: phytec-som-am335x: ethernet broken after reset
+To: t.remmet@phytec.de
+Cc: barebox@lists.infradead.org
 
-Commit 179b75a (state: fixup: only export default value during
-fixup if set) accidently removed writing the enum32 value names
-to the device tree. Add it back again
+Hi Teresa,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
----
- common/state.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+With the current code for the phytec-som-am335x, the ethernet works only
+after the first powerup. If you soft reset the module the network won't
+work anymore.
 
-diff --git a/common/state.c b/common/state.c
-index aa436fc..9f8ead1 100644
---- a/common/state.c
-+++ b/common/state.c
-@@ -259,13 +259,6 @@ static int state_enum32_export(struct state_variable *var,
- 			return ret;
- 	}
- 
--	if (conv == STATE_CONVERT_FIXUP)
--		return 0;
--
--	ret = of_property_write_u32(node, "value", enum32->value);
--	if (ret)
--		return ret;
--
- 	len = 0;
- 
- 	for (i = 0; i < enum32->num_names; i++)
-@@ -281,6 +274,13 @@ static int state_enum32_export(struct state_variable *var,
- 
- 	free(prop);
- 
-+	if (conv == STATE_CONVERT_FIXUP)
-+		return 0;
-+
-+	ret = of_property_write_u32(node, "value", enum32->value);
-+	if (ret)
-+		return ret;
-+
- 	return ret;
- }
- 
+...
+cpsw 4a100000.ethernet: detected phy mask 0x6
+mdio_bus: miibus0: probed
+cpsw 4a100000.ethernet: Failed to setup slave 0: I/O error
+...
+
+That happens in the second boot. The phy is probably in a wrong state and
+won't communicate over MDIO.
+
+Do you have any ideas?
+
+Thanks,
+Michael
+
 -- 
-2.5.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
