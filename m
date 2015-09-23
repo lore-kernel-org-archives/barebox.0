@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZeiYy-0000MP-O4
- for barebox@lists.infradead.org; Wed, 23 Sep 2015 11:50:17 +0000
-Date: Wed, 23 Sep 2015 13:49:54 +0200
+ id 1Zejsv-0005oF-ED
+ for barebox@lists.infradead.org; Wed, 23 Sep 2015 13:14:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150923114954.GU7858@pengutronix.de>
-References: <87h9moclrw.fsf@gmail.com> <20150921181338.GI7858@pengutronix.de>
- <CAOpc7mFYWzR0W1rRVFeJ3B0aO=Rs9B61NdntKG4QNUDHgB4GMA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAOpc7mFYWzR0W1rRVFeJ3B0aO=Rs9B61NdntKG4QNUDHgB4GMA@mail.gmail.com>
+Date: Wed, 23 Sep 2015 15:14:32 +0200
+Message-Id: <1443014072-19110-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +14,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: BUG, i.MX: broken LVDS display
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] clock: remove duplicate xdelay declarations
+To: Barebox List <barebox@lists.infradead.org>
 
-On Tue, Sep 22, 2015 at 04:02:15PM +0200, Holger Schurig wrote:
->    Hi Sascha,
-> =
+ndelay is declared in include/clock.h, udelay in include/common.h and
+mdelay in include/common.h and include/clock.h. Move them all to
+include/clock.h and remove duplicates.
 
->    imx-ipuv3 2400000.ipu: IPUv3H probed
->    imx-ipuv3 2800000.ipu: IPUv3H probed
->    Console activated
->    ...
->    imx-ipuv3-crtc imx-ipuv3-crtc0: register vpl for /soc/ipu@02400000
->    imx-ipuv3-crtc imx-ipuv3-crtc0: probe failed: No such file or directory
->    imx-ipuv3-crtc imx-ipuv3-crtc1: register vpl for /soc/ipu@02400000
->    imx-ipuv3-crtc imx-ipuv3-crtc1: probe failed: No such file or directory
->    imx-ipuv3-crtc imx-ipuv3-crtc2: register vpl for /soc/ipu@02800000
->    imx-ipuv3-crtc imx-ipuv3-crtc2: probe failed: No such file or directory
->    imx-ipuv3-crtc imx-ipuv3-crtc3: register vpl for /soc/ipu@02800000
->    imx-ipuv3-crtc imx-ipuv3-crtc3: probe failed: No such file or directory
->    running /env/bin/init...
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/clock.h  | 3 +--
+ include/common.h | 5 +----
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
->    So I wonder where exactly barebox get's the timings on the GUF Vincell=
- for
->    the Ampire display? =A0 Probably the GuF board only sets up the displa=
-y for
->    Linux, but doesn't in itself activate the framebuffer?=A0 I grepped for
->    "Ampire" in Barebox git, and none of the files
->    (dts/Bindings/panel/ampire,am800480r3tmqwa1h.txt,
+diff --git a/include/clock.h b/include/clock.h
+index 691befc..681e3ad 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -34,9 +34,8 @@ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant);
+ int is_timeout(uint64_t start_ns, uint64_t time_offset_ns);
+ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
+ 
+-// void udelay(unsigned long usecs);
+-
+ void ndelay(unsigned long nsecs);
++void udelay(unsigned long usecs);
+ void mdelay(unsigned long msecs);
+ 
+ #define SECOND ((uint64_t)(1000 * 1000 * 1000))
+diff --git a/include/common.h b/include/common.h
+index 553a7f4..03ceec2 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -23,6 +23,7 @@
+ #include <stdio.h>
+ #include <module.h>
+ #include <config.h>
++#include <clock.h>
+ #include <linux/bitops.h>
+ #include <linux/types.h>
+ #include <linux/string.h>
+@@ -69,10 +70,6 @@ long	get_ram_size  (volatile long *, long);
+ /* $(CPU)/cpu.c */
+ void __noreturn poweroff(void);
+ 
+-/* lib_$(ARCH)/time.c */
+-void	udelay (unsigned long);
+-void	mdelay (unsigned long);
+-
+ /* lib_generic/crc32.c */
+ uint32_t crc32(uint32_t, const void*, unsigned int);
+ uint32_t crc32_no_comp(uint32_t, const void*, unsigned int);
+-- 
+2.5.1
 
-It seems the Vincell never worked in barebox. I just assumed it worked
-because the barebox specific dts enables the ldb.
-Please test the new version I just sent out. I tested this on the GuF
-Santaro board, so this is a better place to compare the device tree
-with.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
