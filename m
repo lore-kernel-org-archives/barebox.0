@@ -1,22 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg003.nifty.com ([202.248.44.41]
- helo=conssluserg003-v.nifty.com)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zf300-0008AX-5Z
- for barebox@lists.infradead.org; Thu, 24 Sep 2015 09:39:33 +0000
-Received: from mail-yk0-f174.google.com (mail-yk0-f174.google.com
- [209.85.160.174]) (authenticated)
- by conssluserg003-v.nifty.com with ESMTP id t8O9d2uD021943
- for <barebox@lists.infradead.org>; Thu, 24 Sep 2015 18:39:02 +0900
-Received: by ykdt18 with SMTP id t18so70798807ykd.3
- for <barebox@lists.infradead.org>; Thu, 24 Sep 2015 02:39:01 -0700 (PDT)
+ id 1Zf7CI-0005EC-B7
+ for barebox@lists.infradead.org; Thu, 24 Sep 2015 14:08:31 +0000
+References: <1443021972-18223-1-git-send-email-s.hauer@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <560403BF.1010704@pengutronix.de>
+Date: Thu, 24 Sep 2015 16:07:59 +0200
 MIME-Version: 1.0
-In-Reply-To: <20150907052449.GV18700@pengutronix.de>
-References: <1441366031-856-1-git-send-email-yamada.masahiro@socionext.com>
- <20150907052449.GV18700@pengutronix.de>
-Date: Thu, 24 Sep 2015 18:39:01 +0900
-Message-ID: <CAK7LNASuti=BS38cL2QDbS9bdvjYh4=Ya3m_adj3STyuckeM9A@mail.gmail.com>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
+In-Reply-To: <1443021972-18223-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +17,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============2070320555465074389=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] console: use int rather than uint in printf() and friends
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] state: write names in enum32 variables to oftree again
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
 
-Hi Sascha,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============2070320555465074389==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="crTXnlqs9qJDhfdjm9NAl4XEN1PCHRI1M"
 
-2015-09-07 14:24 GMT+09:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Fri, Sep 04, 2015 at 08:27:11PM +0900, Masahiro Yamada wrote:
->> These functions and vsprintf() return int type.
->> No reason to use uint type.
->>
->> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
->> ---
->
-> Applied, thanks
->
-> Sascha
->
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--crTXnlqs9qJDhfdjm9NAl4XEN1PCHRI1M
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Looks like it was applied to  for-next/mci and for-next/misc.
+On 09/23/2015 05:26 PM, Sascha Hauer wrote:
+> Commit 179b75a (state: fixup: only export default value during
+> fixup if set) accidently removed writing the enum32 value names
+> to the device tree. Add it back again
+>=20
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-Perhaps, one of them is enough?
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
+--crTXnlqs9qJDhfdjm9NAl4XEN1PCHRI1M
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
--- 
-Best Regards
-Masahiro Yamada
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJWBAPAAAoJEP5prqPJtc/H+YwH/1nJUo7VHHp8QMBGFE99Wm6N
+C6Bx66FI8MKEdVN4x7TRgTNsQRl+14dzV9PwW7ogaC3ooOi6128z/PmlpsWM5Seo
+mwRLDW/PVG6gX6dnUkD9FhjgDlXqle49yKOOIljSOv6iAEEQoZoNmgzP5qIwgkVU
+u7aKcIaksU517cmIE0DZ94vXINFTioiP1vjvFRCyrny2p4pCcbiLAycch57OjqaT
++2ClyijdeZaOcK7fzXTJGi0tgVNrDvZFhZoBFYKUnH3uzjIqFCXQwbzCay/eER6p
+Kj1+ozU1zuoibLZKjLiJov6ivLiVmyaar9gRVRHl6MY+5dAwH/nI9w9fLsi3X5U=
+=5EfB
+-----END PGP SIGNATURE-----
+
+--crTXnlqs9qJDhfdjm9NAl4XEN1PCHRI1M--
+
+
+--===============2070320555465074389==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============2070320555465074389==--
