@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zf7Wi-0001Us-Qf
- for barebox@lists.infradead.org; Thu, 24 Sep 2015 14:29:40 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 188B0A0032D
- for <barebox@lists.infradead.org>; Thu, 24 Sep 2015 16:29:20 +0200 (CEST)
-From: Jan Remmet <j.remmet@phytec.de>
-Date: Thu, 24 Sep 2015 16:28:18 +0200
-Message-Id: <1443104898-11695-1-git-send-email-j.remmet@phytec.de>
+Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zf9EH-00062H-Nx
+ for barebox@lists.infradead.org; Thu, 24 Sep 2015 16:18:42 +0000
+Received: by lahh2 with SMTP id h2so68463189lah.0
+ for <barebox@lists.infradead.org>; Thu, 24 Sep 2015 09:18:19 -0700 (PDT)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Thu, 24 Sep 2015 19:20:26 +0300
+Message-Id: <1443111628-12758-4-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1443111628-12758-1-git-send-email-pmamonov@gmail.com>
+References: <1443111628-12758-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +23,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ubiformat: remove dead code
+Subject: [PATCH v7 3/5] usb: ehci-hcd: detect re-entrance
 To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-divisor isn't used.
-
-Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
- commands/ubiformat.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/usb/host/ehci-hcd.c | 42 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 38 insertions(+), 4 deletions(-)
 
-diff --git a/commands/ubiformat.c b/commands/ubiformat.c
-index f9d952c..8516e11 100644
---- a/commands/ubiformat.c
-+++ b/commands/ubiformat.c
-@@ -297,7 +297,7 @@ static int mark_bad(const struct mtd_dev_info *mtd, struct ubi_scan_info *si, in
- static int flash_image(const struct mtd_dev_info *mtd,
- 		       const struct ubigen_info *ui, struct ubi_scan_info *si)
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 72f7414..c5f2dda 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -51,6 +51,8 @@ struct ehci_priv {
+ 	int periodic_schedules;
+ 	struct QH *periodic_queue;
+ 	uint32_t *periodic_list;
++	int sem;
++	struct device_d *usedby;
+ };
+ 
+ struct int_queue {
+@@ -136,6 +138,20 @@ static struct descriptor {
+ 
+ #define ehci_is_TDI()	(ehci->flags & EHCI_HAS_TT)
+ 
++static void inline ehci_reentrance_detect(struct ehci_priv *ehci,
++					  struct usb_device *dev,
++					  const char *fname)
++{
++	if (ehci->sem)
++		dev_err(&dev->dev, "%s: re-entrance %d (%s:%s)\n",
++			fname,
++			ehci->sem,
++			ehci->usedby->driver->name,
++			ehci->usedby->name);
++	ehci->sem++;
++	ehci->usedby = &dev->dev;
++}
++
+ static int handshake(uint32_t *ptr, uint32_t mask, uint32_t done, int usec)
  {
--	int fd, img_ebs, eb, written_ebs = 0, divisor, ret = -1;
-+	int fd, img_ebs, eb, written_ebs = 0, ret = -1;
- 	off_t st_size;
- 	char *buf = NULL;
+ 	uint32_t result;
+@@ -893,12 +909,18 @@ submit_bulk_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ {
+ 	struct usb_host *host = dev->host;
+ 	struct ehci_priv *ehci = to_ehci(host);
++	int ret;
++
++	ehci_reentrance_detect(ehci, dev, __func__);
  
-@@ -332,7 +332,6 @@ static int flash_image(const struct mtd_dev_info *mtd,
+ 	if (usb_pipetype(pipe) != PIPE_BULK) {
+ 		dev_dbg(ehci->dev, "non-bulk pipe (type=%lu)", usb_pipetype(pipe));
++		ehci->sem--;
+ 		return -1;
  	}
+-	return ehci_submit_async(dev, pipe, buffer, length, NULL);
++	ret = ehci_submit_async(dev, pipe, buffer, length, NULL);
++	ehci->sem--;
++	return ret;
+ }
  
- 	verbose(args.verbose, "will write %d eraseblocks", img_ebs);
--	divisor = img_ebs;
- 	for (eb = 0; eb < mtd->eb_cnt; eb++) {
- 		int err, new_len;
- 		long long ec;
-@@ -342,10 +341,8 @@ static int flash_image(const struct mtd_dev_info *mtd,
- 			       eb, (eb + 1) * 100 / mtd->eb_cnt);
- 		}
+ static int
+@@ -907,6 +929,9 @@ submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ {
+ 	struct usb_host *host = dev->host;
+ 	struct ehci_priv *ehci = to_ehci(host);
++	int ret;
++
++	ehci_reentrance_detect(ehci, dev, __func__);
  
--		if (si->ec[eb] == EB_BAD) {
--			divisor += 1;
-+		if (si->ec[eb] == EB_BAD)
- 			continue;
--		}
+ 	if (usb_pipetype(pipe) != PIPE_CONTROL) {
+ 		dev_dbg(ehci->dev, "non-control pipe (type=%lu)", usb_pipetype(pipe));
+@@ -916,9 +941,13 @@ submit_control_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	if (usb_pipedevice(pipe) == ehci->rootdev) {
+ 		if (ehci->rootdev == 0)
+ 			dev->speed = USB_SPEED_HIGH;
+-		return ehci_submit_root(dev, pipe, buffer, length, setup);
++		ret = ehci_submit_root(dev, pipe, buffer, length, setup);
++		ehci->sem--;
++		return ret;
+ 	}
+-	return ehci_submit_async(dev, pipe, buffer, length, setup);
++	ret = ehci_submit_async(dev, pipe, buffer, length, setup);
++	ehci->sem--;
++	return ret;
+ }
  
- 		if (args.verbose) {
- 			normsg_cont("eraseblock %d: erase", eb);
+ static int
+@@ -1241,6 +1270,8 @@ submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	void *backbuffer;
+ 	int result = 0, ret;
+ 
++	ehci_reentrance_detect(ehci, dev, __func__);
++
+ 	dev_dbg(ehci->dev, "dev=%p, pipe=%lu, buffer=%p, length=%d, interval=%d",
+ 	      dev, pipe, buffer, length, interval);
+ 
+@@ -1248,8 +1279,10 @@ submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 				   DMA_BIDIRECTIONAL);
+ 
+ 	queue = ehci_create_int_queue(dev, pipe, 1, length, buffer, interval);
+-	if (!queue)
++	if (!queue) {
++		ehci->sem--;
+ 		return -EINVAL;
++	}
+ 
+ 	start = get_time_ns();
+ 	while ((backbuffer = ehci_poll_int_queue(dev, queue)) == NULL)
+@@ -1275,6 +1308,7 @@ submit_int_msg(struct usb_device *dev, unsigned long pipe, void *buffer,
+ 	ret = ehci_destroy_int_queue(dev, queue);
+ 	if (!result)
+ 		result = ret;
++	ehci->sem--;
+ 	return result;
+ }
+ 
 -- 
-1.9.1
+2.1.4
 
 
 _______________________________________________
