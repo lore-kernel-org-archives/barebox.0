@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZezbF-0003cm-PK
- for barebox@lists.infradead.org; Thu, 24 Sep 2015 06:01:46 +0000
-Date: Thu, 24 Sep 2015 08:01:16 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150924060116.GA7858@pengutronix.de>
-References: <1443021836-10430-1-git-send-email-s.hauer@pengutronix.de>
- <1724333.SSeDMqRqa0@dev2>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1724333.SSeDMqRqa0@dev2>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zf0AQ-0000I2-PW
+ for barebox@lists.infradead.org; Thu, 24 Sep 2015 06:38:07 +0000
+Message-ID: <1443076651.3184.5.camel@lws-tremmet.phytec.de>
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Thu, 24 Sep 2015 08:37:31 +0200
+In-Reply-To: <20150923152803.GC12329@pengutronix.de>
+References: <20150923152803.GC12329@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,26 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of_fix_tree: fo not fail when fixup fails
-To: Marc Reilly <marc@cpdesign.com.au>
+Subject: Re: boards: phytec-som-am335x: ethernet broken after reset
+To: Michael Grzeschik <mgr@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Marc,
+Hello Michael,
 
-On Thu, Sep 24, 2015 at 08:35:54AM +1000, Marc Reilly wrote:
-> Hi,
+can you give me a little bit more information about the hardware you
+are using? As the phytec-som-am335x, includes 3 different modules.
+Names of the images in use and hardware revision of the som whould be
+great.
+
+I have made a quick test it with a phycore som on master. It worked for
+me.
+
+Regards,
+Teresa
+
+Am Mittwoch, den 23.09.2015, 17:28 +0200 schrieb Michael Grzeschik:
+> Hi Teresa,
 > 
-> Should the subject be "do not fail .."  (s/fo/do) ?
+> With the current code for the phytec-som-am335x, the ethernet works only
+> after the first powerup. If you soft reset the module the network won't
+> work anymore.
+> 
+> ...
+> cpsw 4a100000.ethernet: detected phy mask 0x6
+> mdio_bus: miibus0: probed
+> cpsw 4a100000.ethernet: Failed to setup slave 0: I/O error
+> ...
+> 
+> That happens in the second boot. The phy is probably in a wrong state and
+> won't communicate over MDIO.
+> 
+> Do you have any ideas?
+> 
+> Thanks,
+> Michael
+> 
 
-Indeed, thanks. Fixed.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
