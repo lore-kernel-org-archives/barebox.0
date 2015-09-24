@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zex2i-0004BT-R6
- for barebox@lists.infradead.org; Thu, 24 Sep 2015 03:17:57 +0000
-Received: by pacgz1 with SMTP id gz1so9331155pac.3
- for <barebox@lists.infradead.org>; Wed, 23 Sep 2015 20:17:35 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Wed, 23 Sep 2015 20:17:25 -0700
-Message-Id: <1443064645-4007-1-git-send-email-andrew.smirnov@gmail.com>
+ id 1ZezbF-0003cm-PK
+ for barebox@lists.infradead.org; Thu, 24 Sep 2015 06:01:46 +0000
+Date: Thu, 24 Sep 2015 08:01:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150924060116.GA7858@pengutronix.de>
+References: <1443021836-10430-1-git-send-email-s.hauer@pengutronix.de>
+ <1724333.SSeDMqRqa0@dev2>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1724333.SSeDMqRqa0@dev2>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,77 +19,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: Disable unaligned access if MMU is switched off
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH] of_fix_tree: fo not fail when fixup fails
+To: Marc Reilly <marc@cpdesign.com.au>
+Cc: barebox@lists.infradead.org
 
-Form reading ARM architecture related documentation if appears that
-while unaligned memory access is supported by the processor in general
-it is not supported if MMU is disabled.
+Hi Marc,
 
-The problem in question can be easilty reproduced by building the code
-without this patch, MMU disabled and trying to run 'memtest'
-command. Which would in turn call mem_test() which would eventually
-call show_progress(). That last function, if build without
--mno-unaligned-access would result in unaligned memory access which
-would result in Barebox hanging.
+On Thu, Sep 24, 2015 at 08:35:54AM +1000, Marc Reilly wrote:
+> Hi,
+> 
+> Should the subject be "do not fail .."  (s/fo/do) ?
 
-This patch is a very conservative attempt to make sure that any code
-that can potentially be executed with MMU disabled is built with
-unaligned memory accesses disabled.
+Indeed, thanks. Fixed.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- arch/arm/Makefile      | 14 ++++++++++++++
- scripts/Makefile.build |  2 +-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+Sascha
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 721aa9b..9af4f3b 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -13,6 +13,20 @@ AS		+= -EL
- LD		+= -EL
- endif
- 
-+#
-+# Unaligned access is not supported when MMU is disabled, so if MMU is
-+# enabled early on, only PBL, part of which will be executed with MMU
-+# diabled, would have to be build with -mno-unaligned-accesses,
-+# otherwise set this flag globally
-+#
-+ifeq ($(CONFIG_MMU_EARLY),y)
-+ifneq ($(CONFIG_PBL_IMAGE),y)
-+PBL_CFLAGS += -mno-unaligned-access
-+endif
-+else
-+CFLAGS += -mno-unaligned-access
-+endif
-+
- # This selects which instruction set is used.
- # Note that GCC does not numerically define an architecture version
- # macro, but instead defines a whole series of macros which makes
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 56ee072..1624a7a 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -188,7 +188,7 @@ quiet_cmd_pbl_cc_o_c = PBLCC   $@
- 
- ifndef CONFIG_MODVERSIONS
- cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
--cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) $(PBL_CPPFLAGS) -c -o $@ $<
-+cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) $(PBL_CFLAGS) $(PBL_CPPFLAGS) -c -o $@ $<
- 
- else
- # When module versioning is enabled the following steps are executed:
 -- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
