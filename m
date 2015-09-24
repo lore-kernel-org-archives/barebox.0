@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zf0AQ-0000I2-PW
- for barebox@lists.infradead.org; Thu, 24 Sep 2015 06:38:07 +0000
-Message-ID: <1443076651.3184.5.camel@lws-tremmet.phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 24 Sep 2015 08:37:31 +0200
-In-Reply-To: <20150923152803.GC12329@pengutronix.de>
-References: <20150923152803.GC12329@pengutronix.de>
+Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zf214-0002bO-KJ
+ for barebox@lists.infradead.org; Thu, 24 Sep 2015 08:36:35 +0000
+Received: by lacao8 with SMTP id ao8so55441631lac.3
+ for <barebox@lists.infradead.org>; Thu, 24 Sep 2015 01:36:11 -0700 (PDT)
+Date: Thu, 24 Sep 2015 11:58:29 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20150924115829.62eef721bbcd7eeb0c9852aa@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -17,50 +17,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: boards: phytec-som-am335x: ethernet broken after reset
-To: Michael Grzeschik <mgr@pengutronix.de>
+Subject: Archos G9: barebox board env contains boot-entries-collect
+To: Vicente Bergas <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hello Michael,
+Hi Vicente!
 
-can you give me a little bit more information about the hardware you
-are using? As the phytec-som-am335x, includes 3 different modules.
-Names of the images in use and hardware revision of the som whould be
-great.
+In the current next branch Archos G9 board env contains boot-entries-collec=
+t call.
 
-I have made a quick test it with a phycore som on master. It worked for
-me.
+But the boot-entries-collect script was dropped by this commit.
 
-Regards,
-Teresa
+commit 294dc7160e55ffb6b940045fb00f01697dacd660
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Wed Sep 25 07:22:23 2013 +0200
 
-Am Mittwoch, den 23.09.2015, 17:28 +0200 schrieb Michael Grzeschik:
-> Hi Teresa,
-> 
-> With the current code for the phytec-som-am335x, the ethernet works only
-> after the first powerup. If you soft reset the module the network won't
-> work anymore.
-> 
-> ...
-> cpsw 4a100000.ethernet: detected phy mask 0x6
-> mdio_bus: miibus0: probed
-> cpsw 4a100000.ethernet: Failed to setup slave 0: I/O error
-> ...
-> 
-> That happens in the second boot. The phy is probably in a wrong state and
-> won't communicate over MDIO.
-> 
-> Do you have any ideas?
-> 
-> Thanks,
-> Michael
-> 
+    defenv-2: replace menu with menutree
 
-
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
