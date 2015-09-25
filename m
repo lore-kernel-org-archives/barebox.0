@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22d.google.com ([2a00:1450:400c:c05::22d])
+Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zfbgr-0003UK-Fa
- for barebox@lists.infradead.org; Fri, 25 Sep 2015 22:42:06 +0000
-Received: by wicge5 with SMTP id ge5so38725960wic.0
- for <barebox@lists.infradead.org>; Fri, 25 Sep 2015 15:41:43 -0700 (PDT)
+ id 1Zfbgs-0003VH-5w
+ for barebox@lists.infradead.org; Fri, 25 Sep 2015 22:42:07 +0000
+Received: by wiclk2 with SMTP id lk2so36803034wic.1
+ for <barebox@lists.infradead.org>; Fri, 25 Sep 2015 15:41:44 -0700 (PDT)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Fri, 25 Sep 2015 23:41:01 +0100
-Message-Id: <1443220863-24355-2-git-send-email-vicencb@gmail.com>
+Date: Fri, 25 Sep 2015 23:41:02 +0100
+Message-Id: <1443220863-24355-3-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1443220863-24355-1-git-send-email-vicencb@gmail.com>
 References: <1443220863-24355-1-git-send-email-vicencb@gmail.com>
 In-Reply-To: <20150924115829.62eef721bbcd7eeb0c9852aa@gmail.com>
@@ -25,146 +25,210 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] archosg9: re-generate defconfigs with "make savedefconfig"
+Subject: [PATCH 2/3] archosg9: Use defaultenv-2-menu
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org, Vicente Bergas <vicencb@gmail.com>
 
 Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/configs/archosg9_defconfig       | 60 +++++++++++++++----------------
- arch/arm/configs/archosg9_xload_defconfig |  4 ---
- 2 files changed, 28 insertions(+), 36 deletions(-)
+ arch/arm/boards/archosg9/env/bin/init              | 28 ----------------------
+ arch/arm/boards/archosg9/env/init/automount        | 28 ----------------------
+ arch/arm/boards/archosg9/env/init/automount2       |  7 ++++++
+ .../boards/archosg9/env/menu/11-boot-flash/action  |  4 ++++
+ .../boards/archosg9/env/menu/11-boot-flash/title   |  1 +
+ .../arm/boards/archosg9/env/menu/12-boot-sd/action |  4 ++++
+ arch/arm/boards/archosg9/env/menu/12-boot-sd/title |  1 +
+ .../boards/archosg9/env/menu/13-boot-usb/action    |  4 ++++
+ .../arm/boards/archosg9/env/menu/13-boot-usb/title |  1 +
+ arch/arm/boards/archosg9/env/menu/mainmenu         | 25 -------------------
+ arch/arm/configs/archosg9_defconfig                |  1 +
+ 11 files changed, 23 insertions(+), 81 deletions(-)
+ delete mode 100644 arch/arm/boards/archosg9/env/bin/init
+ delete mode 100644 arch/arm/boards/archosg9/env/init/automount
+ create mode 100644 arch/arm/boards/archosg9/env/init/automount2
+ create mode 100644 arch/arm/boards/archosg9/env/menu/11-boot-flash/action
+ create mode 100644 arch/arm/boards/archosg9/env/menu/11-boot-flash/title
+ create mode 100644 arch/arm/boards/archosg9/env/menu/12-boot-sd/action
+ create mode 100644 arch/arm/boards/archosg9/env/menu/12-boot-sd/title
+ create mode 100644 arch/arm/boards/archosg9/env/menu/13-boot-usb/action
+ create mode 100644 arch/arm/boards/archosg9/env/menu/13-boot-usb/title
+ delete mode 100644 arch/arm/boards/archosg9/env/menu/mainmenu
 
+diff --git a/arch/arm/boards/archosg9/env/bin/init b/arch/arm/boards/archosg9/env/bin/init
+deleted file mode 100644
+index 0b36299..0000000
+--- a/arch/arm/boards/archosg9/env/bin/init
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#!/bin/sh
+-
+-export PATH=/env/bin
+-
+-global hostname=generic
+-global user=none
+-global boot.default=net
+-global allow_color=true
+-global linux.bootargs.base
+-#linux.bootargs.dyn.* will be cleared at the beginning of boot
+-global linux.bootargs.dyn.ip
+-global linux.bootargs.dyn.root
+-global editcmd=sedit
+-
+-/env/config
+-
+-timeout -s -a 0
+-autoboot="$?"
+-
+-for i in /env/init/*; do
+-	. $i
+-done
+-
+-if [ "$autoboot" = 0 ]; then
+-	boot
+-fi
+-
+-/env/menu/mainmenu
+diff --git a/arch/arm/boards/archosg9/env/init/automount b/arch/arm/boards/archosg9/env/init/automount
+deleted file mode 100644
+index 700b5e4..0000000
+--- a/arch/arm/boards/archosg9/env/init/automount
++++ /dev/null
+@@ -1,28 +0,0 @@
+-#!/bin/sh
+-
+-if [ "$1" = menu ]; then
+-	init-menu-add-entry "$0" "Automountpoints"
+-	exit
+-fi
+-
+-# automount tftp server based on $eth0.serverip
+-
+-mkdir -p /mnt/tftp
+-automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
+-
+-# automount nfs server example
+-
+-#nfshost=somehost
+-#mkdir -p /mnt/${nfshost}
+-#automount /mnt/$nfshost "ifup eth0 && mount -t nfs ${nfshost}:/tftpboot /mnt/${nfshost}"
+-
+-# FAT on usb disk example
+-
+-#mkdir -p /mnt/fat
+-#automount -d /mnt/fat 'usb && [ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/fat'
+-
+-mkdir -p /mnt/sd
+-automount -d /mnt/sd 'mount /dev/disk0.0 /mnt/sd'
+-
+-mkdir -p /mnt/usb
+-automount -d /mnt/usb 'mount -t omap4_usbbootfs omap4_usbboot /mnt/usb'
+diff --git a/arch/arm/boards/archosg9/env/init/automount2 b/arch/arm/boards/archosg9/env/init/automount2
+new file mode 100644
+index 0000000..fa10439
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/init/automount2
+@@ -0,0 +1,7 @@
++#!/bin/sh
++
++mkdir -p /mnt/sd
++automount -d /mnt/sd '[ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/sd'
++
++mkdir -p /mnt/usb
++automount -d /mnt/usb 'mount -t omap4_usbbootfs omap4_usbboot /mnt/usb'
+diff --git a/arch/arm/boards/archosg9/env/menu/11-boot-flash/action b/arch/arm/boards/archosg9/env/menu/11-boot-flash/action
+new file mode 100644
+index 0000000..f83028b
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/menu/11-boot-flash/action
+@@ -0,0 +1,4 @@
++#!/bin/sh
++boot_order mmc2_1
++echo "Rebooting into internal flash..."
++reset
+diff --git a/arch/arm/boards/archosg9/env/menu/11-boot-flash/title b/arch/arm/boards/archosg9/env/menu/11-boot-flash/title
+new file mode 100644
+index 0000000..2628b5a
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/menu/11-boot-flash/title
+@@ -0,0 +1 @@
++${RED}Reboot into internal flash${NC}
+diff --git a/arch/arm/boards/archosg9/env/menu/12-boot-sd/action b/arch/arm/boards/archosg9/env/menu/12-boot-sd/action
+new file mode 100644
+index 0000000..19bc3ff
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/menu/12-boot-sd/action
+@@ -0,0 +1,4 @@
++#!/bin/sh
++boot_order mmc1
++echo "Rebooting into SD card..."
++reset
+diff --git a/arch/arm/boards/archosg9/env/menu/12-boot-sd/title b/arch/arm/boards/archosg9/env/menu/12-boot-sd/title
+new file mode 100644
+index 0000000..92e940f
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/menu/12-boot-sd/title
+@@ -0,0 +1 @@
++${RED}Reboot into SD card${NC}
+diff --git a/arch/arm/boards/archosg9/env/menu/13-boot-usb/action b/arch/arm/boards/archosg9/env/menu/13-boot-usb/action
+new file mode 100644
+index 0000000..885acba
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/menu/13-boot-usb/action
+@@ -0,0 +1,4 @@
++#!/bin/sh
++boot_order usb_1
++echo "Rebooting over usb..."
++reset
+diff --git a/arch/arm/boards/archosg9/env/menu/13-boot-usb/title b/arch/arm/boards/archosg9/env/menu/13-boot-usb/title
+new file mode 100644
+index 0000000..76edccd
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/menu/13-boot-usb/title
+@@ -0,0 +1 @@
++${RED}Reboot over usb${NC}
+diff --git a/arch/arm/boards/archosg9/env/menu/mainmenu b/arch/arm/boards/archosg9/env/menu/mainmenu
+deleted file mode 100644
+index 6856261..0000000
+--- a/arch/arm/boards/archosg9/env/menu/mainmenu
++++ /dev/null
+@@ -1,25 +0,0 @@
+-#!/bin/sh
+-
+-savepath=$PATH
+-export menupath=$PATH:/env/menu
+-
+-. /env/data/ansi-colors
+-
+-while true; do
+-	export PATH=${menupath}
+-
+-	echo $PATH
+-
+-	menu -a -m boot -d "${CYAN}Welcome to Barebox${NC}"
+-
+-	boot-entries-collect
+-
+-	menu -e -a -m boot -c "settings" -d "Settings"
+-	menu -e -a -m boot -c 'PATH=$savepath; echo "enter exit to return to menu"; sh' -d "${DARK_YELLOW}Shell${NC}"
+-	menu -e -a -m boot -c 'boot_order mmc2_1 && reset' -d "${RED}Reboot into internal flash${NC}"
+-	menu -e -a -m boot -c 'boot_order mmc1 && reset' -d "${RED}Reboot into SD card${NC}"
+-	menu -e -a -m boot -c 'boot_order usb_1 && reset' -d "${RED}Reboot over usb${NC}"
+-
+-	menu -s -m boot
+-	menu -r -m boot
+-done
 diff --git a/arch/arm/configs/archosg9_defconfig b/arch/arm/configs/archosg9_defconfig
-index 66fbf1a..c870209 100644
+index c870209..db80c38 100644
 --- a/arch/arm/configs/archosg9_defconfig
 +++ b/arch/arm/configs/archosg9_defconfig
-@@ -1,19 +1,15 @@
- CONFIG_ARCH_OMAP=y
--CONFIG_ARCH_OMAP4=y
- CONFIG_OMAP4_USBBOOT=y
- CONFIG_MACH_ARCHOSG9=y
- CONFIG_THUMB2_BAREBOX=y
- CONFIG_ARM_BOARD_APPEND_ATAG=y
--CONFIG_CMD_ARM_MMUINFO=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
--# CONFIG_MMU is not set
- CONFIG_TEXT_BASE=0x8f000000
- CONFIG_MALLOC_SIZE=0x2000000
- CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_PROMPT="barebox> "
--CONFIG_LONGHELP=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
-@@ -22,51 +18,51 @@ CONFIG_MENU=y
- CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/archosg9/env"
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_MSLEEP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_TIME=y
--CONFIG_CMD_DIRNAME=y
--CONFIG_CMD_LN=y
--CONFIG_CMD_READLINK=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_MEMINFO=y
-+CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MD5SUM=y
--CONFIG_CMD_FLASH=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_CMD_BOOT_ORDER=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_BOOTM_VERBOSE=y
- CONFIG_CMD_BOOTM_INITRD=y
- CONFIG_CMD_BOOTM_OFTREE=y
- CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
- CONFIG_CMD_BOOTM_AIMAGE=y
--CONFIG_CMD_UIMAGE=y
- # CONFIG_CMD_BOOTU is not set
--CONFIG_CMD_RESET=y
--CONFIG_CMD_BOOT_ORDER=y
- CONFIG_CMD_GO=y
--CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_MAGICVAR=y
- CONFIG_CMD_MAGICVAR_HELP=y
--CONFIG_CMD_GPIO=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
- CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
- CONFIG_CMD_I2C=y
- CONFIG_CMD_LED=y
- CONFIG_CMD_LED_TRIGGER=y
--CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_TIME=y
- CONFIG_NET=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_PING=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_SERIAL_NS16550=y
-diff --git a/arch/arm/configs/archosg9_xload_defconfig b/arch/arm/configs/archosg9_xload_defconfig
-index 24369b2..9660213 100644
---- a/arch/arm/configs/archosg9_xload_defconfig
-+++ b/arch/arm/configs/archosg9_xload_defconfig
-@@ -1,13 +1,10 @@
- CONFIG_ARCH_OMAP=y
- CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
--CONFIG_ARCH_OMAP4=y
- # CONFIG_OMAP_GPMC is not set
- CONFIG_OMAP_BUILD_IFT=y
- CONFIG_OMAP4_USBBOOT=y
- CONFIG_MACH_ARCHOSG9=y
- CONFIG_THUMB2_BAREBOX=y
--# CONFIG_CMD_ARM_CPUINFO is not set
--# CONFIG_MMU is not set
- # CONFIG_BANNER is not set
- # CONFIG_MEMINFO is not set
- CONFIG_TEXT_BASE=0x40300000
-@@ -21,7 +18,6 @@ CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
- CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
- # CONFIG_SPI is not set
--# CONFIG_DISK_WRITE is not set
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- # CONFIG_MCI_WRITE is not set
+@@ -52,6 +52,7 @@ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_MENUTREE=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CRC=y
 -- 
 2.5.3
 
