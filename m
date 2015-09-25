@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+Received: from smtp1-g21.free.fr ([212.27.42.1])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZfVFX-0001Ti-Fv
- for barebox@lists.infradead.org; Fri, 25 Sep 2015 15:49:29 +0000
+ id 1ZfVFX-0001Th-Ft
+ for barebox@lists.infradead.org; Fri, 25 Sep 2015 15:49:28 +0000
 From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Fri, 25 Sep 2015 17:48:49 +0200
-Message-Id: <1443196132-573-3-git-send-email-eric@eukrea.com>
-In-Reply-To: <1443196132-573-1-git-send-email-eric@eukrea.com>
-References: <1443196132-573-1-git-send-email-eric@eukrea.com>
+Date: Fri, 25 Sep 2015 17:48:47 +0200
+Message-Id: <1443196132-573-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,22 +19,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] imx25: register usb-misc by default
+Subject: [PATCH 1/6] eukrea-cpuimx25: fix boot
 To: barebox@lists.infradead.org
+Cc: Florian Vallee <fvallee@eukrea.fr>
 
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vbWFjaC1pbXgvaW14MjUuYyB8IDEgKwogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCsp
-CgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgvaW14MjUuYyBiL2FyY2gvYXJtL21hY2gt
-aW14L2lteDI1LmMKaW5kZXggZTg3ZDkzNC4uODc2MWQ2MyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
-bWFjaC1pbXgvaW14MjUuYworKysgYi9hcmNoL2FybS9tYWNoLWlteC9pbXgyNS5jCkBAIC03NCw2
-ICs3NCw3IEBAIGludCBpbXgyNV9kZXZpY2VzX2luaXQodm9pZCkKIAlhZGRfZ2VuZXJpY19kZXZp
-Y2UoImlteDMxLWdwaW8iLCAyLCBOVUxMLCBNWDI1X0dQSU8zX0JBU0VfQUREUiwgMHgxMDAwLCBJ
-T1JFU09VUkNFX01FTSwgTlVMTCk7CiAJYWRkX2dlbmVyaWNfZGV2aWNlKCJpbXgzMS1ncGlvIiwg
-MywgTlVMTCwgTVgyNV9HUElPNF9CQVNFX0FERFIsIDB4MTAwMCwgSU9SRVNPVVJDRV9NRU0sIE5V
-TEwpOwogCWFkZF9nZW5lcmljX2RldmljZSgiaW14MjEtd2R0IiwgMCwgTlVMTCwgTVgyNV9XRE9H
-X0JBU0VfQUREUiwgMHgxMDAwLCBJT1JFU09VUkNFX01FTSwgTlVMTCk7CisJYWRkX2dlbmVyaWNf
-ZGV2aWNlKCJpbXgyNS11c2ItbWlzYyIsIDAsIE5VTEwsIE1YMjVfVVNCX09UR19CQVNFX0FERFIg
-KyAweDYwMCwgMHgxMDAsIElPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKIAogCXJldHVybiAwOwogfQot
-LSAKMi40LjMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+RnJvbTogRmxvcmlhbiBWYWxsZWUgPGZ2YWxsZWVAZXVrcmVhLmZyPgoKd2UgbmVlZCB0byBkaXNh
+YmxlIHNlY29uZCBTRCBjaGlwIHNlbGVjdCBwcm9wZXJseSBlbHNlIHRoZSBTRFJBTSBzaXplCmRl
+dGVjdGlvbiB3aWxsIGRldGVjdCBpdCBidXQgdGhlcmUgaXMgbm8gbWVtb3J5IGNvbm5lY3RlZCBz
+byB0aGUgYm9vdAp3aWxsIGZhaWwKClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0Bl
+dWtyZWEuY29tPgpTaWduZWQtb2ZmLWJ5OiBGbG9yaWFuIFZhbGxlZSA8ZnZhbGxlZUBldWtyZWEu
+ZnI+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9mbGFzaC1oZWFkZXIuaW14
+Y2ZnIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1L2ZsYXNoLWhlYWRlci5pbXhjZmcgYi9hcmNo
+L2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1L2ZsYXNoLWhlYWRlci5pbXhjZmcKaW5kZXggOGVj
+OTA2Ny4uYjBjM2I2OSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgy
+NS9mbGFzaC1oZWFkZXIuaW14Y2ZnCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14
+MjUvZmxhc2gtaGVhZGVyLmlteGNmZwpAQCAtMiw2ICsyLDcgQEAgc29jIGlteDI1CiBsb2FkYWRk
+ciAweDgwMDAwMDAwCiBkY2RvZnMgMHg0MDAKIAord20gMzIgMHhiODAwMTAwOCAweDAwMDAwMDAw
+CiB3bSAzMiAweGI4MDAxMDEwIDB4MDAwMDAwMDQKIHdtIDMyIDB4YjgwMDEwMDAgMHg5MjEwMDAw
+MAogd20gOCAweDgwMDAwNDAwIDB4MTIzNDQzMjEKLS0gCjIuNC4zCgoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
