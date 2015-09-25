@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([212.27.42.1])
+Received: from mail-wi0-x22d.google.com ([2a00:1450:400c:c05::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZfVFX-0001Tn-BY
- for barebox@lists.infradead.org; Fri, 25 Sep 2015 15:49:28 +0000
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Fri, 25 Sep 2015 17:48:50 +0200
-Message-Id: <1443196132-573-4-git-send-email-eric@eukrea.com>
-In-Reply-To: <1443196132-573-1-git-send-email-eric@eukrea.com>
-References: <1443196132-573-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+ id 1Zfbgr-0003UK-Fa
+ for barebox@lists.infradead.org; Fri, 25 Sep 2015 22:42:06 +0000
+Received: by wicge5 with SMTP id ge5so38725960wic.0
+ for <barebox@lists.infradead.org>; Fri, 25 Sep 2015 15:41:43 -0700 (PDT)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Fri, 25 Sep 2015 23:41:01 +0100
+Message-Id: <1443220863-24355-2-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1443220863-24355-1-git-send-email-vicencb@gmail.com>
+References: <1443220863-24355-1-git-send-email-vicencb@gmail.com>
+In-Reply-To: <20150924115829.62eef721bbcd7eeb0c9852aa@gmail.com>
+References: <20150924115829.62eef721bbcd7eeb0c9852aa@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,71 +20,156 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] eukrea-cpuimx25: setup usb through chipidea-imx driver
-To: barebox@lists.infradead.org
-Cc: Florian Vallee <fvallee@eukrea.fr>
+Subject: [PATCH 1/3] archosg9: re-generate defconfigs with "make savedefconfig"
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Vicente Bergas <vicencb@gmail.com>
 
-RnJvbTogRmxvcmlhbiBWYWxsZWUgPGZ2YWxsZWVAZXVrcmVhLmZyPgoKT1RHIGFuZCBIT1NUIHBv
-cnQgYXJlIHRlc3RlZCB3aXRoIGEgbWFzcyBzdG9yYWdlIGRldmljZS4KClNpZ25lZC1vZmYtYnk6
-IEZsb3JpYW4gVmFsbGVlIDxmdmFsbGVlQGV1a3JlYS5mcj4KU2lnbmVkLW9mZi1ieTogRXJpYyBC
-w6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVp
-bXgyNS9ldWtyZWFfY3B1aW14MjUuYyB8IDY5ICsrKysrKysrKysrLS0tLS0tLS0tLS0tCiAxIGZp
-bGUgY2hhbmdlZCwgMzIgaW5zZXJ0aW9ucygrKSwgMzcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
-IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9ldWtyZWFfY3B1aW14MjUuYyBiL2Fy
-Y2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZXVrcmVhX2NwdWlteDI1LmMKaW5kZXggNzhk
-MmJkNC4uNGFiNWI5NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgy
-NS9ldWtyZWFfY3B1aW14MjUuYworKysgYi9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1
-L2V1a3JlYV9jcHVpbXgyNS5jCkBAIC04NywzNiArODcsNiBAQCBzdHJ1Y3QgZ3Bpb19sZWQgbGVk
-MCA9IHsKIAkuYWN0aXZlX2xvdyA9IDEsCiB9OwogCi0jaWZkZWYgQ09ORklHX1VTQgotc3RhdGlj
-IHZvaWQgaW14MjVfdXNiX2luaXQodm9pZCkKLXsKLQl1bnNpZ25lZCBpbnQgdG1wOwotCi0JLyog
-SG9zdCAxICovCi0JdG1wID0gcmVhZGwoTVgyNV9VU0JfT1RHX0JBU0VfQUREUiArIDB4NjAwKTsK
-LQl0bXAgJj0gfihNWDM1X0gxX1NJQ19NQVNLIHwgTVgzNV9IMV9QTV9CSVQgfCBNWDM1X0gxX1RM
-TF9CSVQgfAotCQlNWDM1X0gxX1VTQlRFX0JJVCB8IE1YMzVfSDFfSVBQVUVfRE9XTl9CSVQgfCBN
-WDM1X0gxX0lQUFVFX1VQX0JJVCk7Ci0JdG1wIHw9IChNWENfRUhDSV9JTlRFUkZBQ0VfU0lOR0xF
-X1VOSSkgPDwgTVgzNV9IMV9TSUNfU0hJRlQ7Ci0JdG1wIHw9IE1YMzVfSDFfVVNCVEVfQklUOwot
-CXRtcCB8PSBNWDM1X0gxX0lQUFVFX0RPV05fQklUOwotCXdyaXRlbCh0bXAsIE1YMjVfVVNCX09U
-R19CQVNFX0FERFIgKyAweDYwMCk7Ci0KLQl0bXAgPSByZWFkbChNWDI1X1VTQl9PVEdfQkFTRV9B
-RERSICsgMHg1ODQpOwotCXRtcCB8PSAzIDw8IDMwOwotCXdyaXRlbCh0bXAsIE1YMjVfVVNCX09U
-R19CQVNFX0FERFIgKyAweDU4NCk7Ci0KLQkvKiBTZXQgdG8gSG9zdCBtb2RlICovCi0JdG1wID0g
-cmVhZGwoTVgyNV9VU0JfT1RHX0JBU0VfQUREUiArIDB4NWE4KTsKLQl3cml0ZWwodG1wIHwgMHgz
-LCBNWDI1X1VTQl9PVEdfQkFTRV9BRERSICsgMHg1YTgpOwotfQotCi0jZW5kaWYKLQotc3RhdGlj
-IHN0cnVjdCBmc2xfdXNiMl9wbGF0Zm9ybV9kYXRhIHVzYl9wZGF0YSA9IHsKLQkub3BlcmF0aW5n
-X21vZGUJPSBGU0xfVVNCMl9EUl9ERVZJQ0UsCi0JLnBoeV9tb2RlCT0gRlNMX1VTQjJfUEhZX1VU
-TUksCi19OwotCiBzdGF0aWMgaW9tdXhfdjNfY2ZnX3QgZXVrcmVhX2NwdWlteDI1X3BhZHNbXSA9
-IHsKIAlNWDI1X1BBRF9GRUNfTURDX19GRUNfTURDLAogCU1YMjVfUEFEX0ZFQ19NRElPX19GRUNf
-TURJTywKQEAgLTE3Myw2ICsxNDMsMjggQEAgc3RhdGljIGlvbXV4X3YzX2NmZ190IGV1a3JlYV9j
-cHVpbXgyNV9wYWRzW10gPSB7CiAJTVgyNV9QQURfVlNUQllfQUNLX19HUElPXzNfMTgsCiB9Owog
-CisjaWZkZWYgQ09ORklHX1VTQgorI2lmbmRlZiBDT05GSUdfVVNCX0dBREdFVAorc3RydWN0IGlt
-eHVzYl9wbGF0Zm9ybWRhdGEgb3RnX3BkYXRhID0geworCS5mbGFncyA9IE1YQ19FSENJX0lOVEVS
-RkFDRV9ESUZGX1VOSSwKKwkubW9kZSA9IElNWF9VU0JfTU9ERV9IT1NULAorCS5waHltb2RlID0g
-VVNCUEhZX0lOVEVSRkFDRV9NT0RFX1VUTUksCit9OworI2VuZGlmCisKK3N0cnVjdCBpbXh1c2Jf
-cGxhdGZvcm1kYXRhIGhzX3BkYXRhID0geworCS5mbGFncyA9IE1YQ19FSENJX0lOVEVSRkFDRV9T
-SU5HTEVfVU5JIHwgTVhDX0VIQ0lfSU5URVJOQUxfUEhZIHwgTVhDX0VIQ0lfSVBQVUVfRE9XTiwK
-KwkubW9kZSA9IElNWF9VU0JfTU9ERV9IT1NULAorfTsKKyNlbmRpZgorCisjaWZkZWYgQ09ORklH
-X1VTQl9HQURHRVQKK3N0YXRpYyBzdHJ1Y3QgZnNsX3VzYjJfcGxhdGZvcm1fZGF0YSB1c2JfcGRh
-dGEgPSB7CisJLm9wZXJhdGluZ19tb2RlCT0gRlNMX1VTQjJfRFJfREVWSUNFLAorCS5waHlfbW9k
-ZQk9IEZTTF9VU0IyX1BIWV9VVE1JLAorfTsKKyNlbmRpZgorCiBzdGF0aWMgaW50IGV1a3JlYV9j
-cHVpbXgyNV9kZXZpY2VzX2luaXQodm9pZCkKIHsKIAlteGNfaW9tdXhfdjNfc2V0dXBfbXVsdGlw
-bGVfcGFkcyhldWtyZWFfY3B1aW14MjVfcGFkcywKQEAgLTIwNiwxMyArMTk4LDYgQEAgc3RhdGlj
-IGludCBldWtyZWFfY3B1aW14MjVfZGV2aWNlc19pbml0KHZvaWQpCiAKIAlpbXgyNV9hZGRfZmIo
-JmV1a3JlYV9jcHVpbXgyNV9mYl9kYXRhKTsKIAotCWlteDI1X2FkZF9pMmMwKE5VTEwpOwotCWlt
-eDI1X2FkZF9tbWMwKE5VTEwpOwotCi0jaWZkZWYgQ09ORklHX1VTQgotCWlteDI1X3VzYl9pbml0
-KCk7Ci0JYWRkX2dlbmVyaWNfdXNiX2VoY2lfZGV2aWNlKERFVklDRV9JRF9EWU5BTUlDLCBNWDI1
-X1VTQl9PVEdfQkFTRV9BRERSICsgMHg0MDAsIE5VTEwpOwotI2VuZGlmCiAjaWZkZWYgQ09ORklH
-X1VTQl9HQURHRVQKIAkvKiBXb3JrYXJvdW5kIEVOR2NtMDkxNTIgKi8KIAl3cml0ZWwocmVhZGwo
-TVgyNV9VU0JfT1RHX0JBU0VfQUREUiArIDB4NjA4KSB8ICgxIDw8IDIzKSwgTVgyNV9VU0JfT1RH
-X0JBU0VfQUREUiArIDB4NjA4KTsKQEAgLTIyMCw2ICsyMDUsMTYgQEAgc3RhdGljIGludCBldWty
-ZWFfY3B1aW14MjVfZGV2aWNlc19pbml0KHZvaWQpCiAJCQkgICBJT1JFU09VUkNFX01FTSwgJnVz
-Yl9wZGF0YSk7CiAjZW5kaWYKIAorI2lmZGVmIENPTkZJR19VU0IKKyNpZm5kZWYgQ09ORklHX1VT
-Ql9HQURHRVQKKwlpbXhfYWRkX3VzYigodm9pZCAqKU1YMjVfVVNCX09UR19CQVNFX0FERFIsIDAs
-ICZvdGdfcGRhdGEpOworI2VuZGlmCisJaW14X2FkZF91c2IoKHZvaWQgKilNWDI1X1VTQl9IU19C
-QVNFX0FERFIsIDEsICZoc19wZGF0YSk7CisjZW5kaWYKKworCWlteDI1X2FkZF9tbWMwKE5VTEwp
-OworCWlteDI1X2FkZF9pMmMwKE5VTEwpOworCiAJYXJtbGludXhfc2V0X2FyY2hpdGVjdHVyZShN
-QUNIX1RZUEVfRVVLUkVBX0NQVUlNWDI1U0QpOwogCiAJcmV0dXJuIDA7Ci0tIAoyLjQuMwoKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+---
+ arch/arm/configs/archosg9_defconfig       | 60 +++++++++++++++----------------
+ arch/arm/configs/archosg9_xload_defconfig |  4 ---
+ 2 files changed, 28 insertions(+), 36 deletions(-)
+
+diff --git a/arch/arm/configs/archosg9_defconfig b/arch/arm/configs/archosg9_defconfig
+index 66fbf1a..c870209 100644
+--- a/arch/arm/configs/archosg9_defconfig
++++ b/arch/arm/configs/archosg9_defconfig
+@@ -1,19 +1,15 @@
+ CONFIG_ARCH_OMAP=y
+-CONFIG_ARCH_OMAP4=y
+ CONFIG_OMAP4_USBBOOT=y
+ CONFIG_MACH_ARCHOSG9=y
+ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
+-CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+-# CONFIG_MMU is not set
+ CONFIG_TEXT_BASE=0x8f000000
+ CONFIG_MALLOC_SIZE=0x2000000
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="barebox> "
+-CONFIG_LONGHELP=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+@@ -22,51 +18,51 @@ CONFIG_MENU=y
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/archosg9/env"
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_MENU=y
+-CONFIG_CMD_MENU_MANAGEMENT=y
+-CONFIG_CMD_TIME=y
+-CONFIG_CMD_DIRNAME=y
+-CONFIG_CMD_LN=y
+-CONFIG_CMD_READLINK=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_MEMINFO=y
++CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_FLASH=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_CMD_BOOT_ORDER=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_BOOTM_VERBOSE=y
+ CONFIG_CMD_BOOTM_INITRD=y
+ CONFIG_CMD_BOOTM_OFTREE=y
+ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_CMD_BOOTM_AIMAGE=y
+-CONFIG_CMD_UIMAGE=y
+ # CONFIG_CMD_BOOTU is not set
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_BOOT_ORDER=y
+ CONFIG_CMD_GO=y
+-CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_PARTITION=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_GPIO=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
+ CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_LED=y
+ CONFIG_CMD_LED_TRIGGER=y
+-CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_PING=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+diff --git a/arch/arm/configs/archosg9_xload_defconfig b/arch/arm/configs/archosg9_xload_defconfig
+index 24369b2..9660213 100644
+--- a/arch/arm/configs/archosg9_xload_defconfig
++++ b/arch/arm/configs/archosg9_xload_defconfig
+@@ -1,13 +1,10 @@
+ CONFIG_ARCH_OMAP=y
+ CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
+-CONFIG_ARCH_OMAP4=y
+ # CONFIG_OMAP_GPMC is not set
+ CONFIG_OMAP_BUILD_IFT=y
+ CONFIG_OMAP4_USBBOOT=y
+ CONFIG_MACH_ARCHOSG9=y
+ CONFIG_THUMB2_BAREBOX=y
+-# CONFIG_CMD_ARM_CPUINFO is not set
+-# CONFIG_MMU is not set
+ # CONFIG_BANNER is not set
+ # CONFIG_MEMINFO is not set
+ CONFIG_TEXT_BASE=0x40300000
+@@ -21,7 +18,6 @@ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
+ # CONFIG_SPI is not set
+-# CONFIG_DISK_WRITE is not set
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ # CONFIG_MCI_WRITE is not set
+-- 
+2.5.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
