@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp1-g21.free.fr ([212.27.42.1])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZfAPV-00016p-8B
- for barebox@lists.infradead.org; Thu, 24 Sep 2015 17:34:21 +0000
-Date: Thu, 24 Sep 2015 19:33:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20150924173358.GD7858@pengutronix.de>
-References: <1441366031-856-1-git-send-email-yamada.masahiro@socionext.com>
- <20150907052449.GV18700@pengutronix.de>
- <CAK7LNASuti=BS38cL2QDbS9bdvjYh4=Ya3m_adj3STyuckeM9A@mail.gmail.com>
+ id 1ZfVFX-0001To-BY
+ for barebox@lists.infradead.org; Fri, 25 Sep 2015 15:49:28 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Fri, 25 Sep 2015 17:48:51 +0200
+Message-Id: <1443196132-573-5-git-send-email-eric@eukrea.com>
+In-Reply-To: <1443196132-573-1-git-send-email-eric@eukrea.com>
+References: <1443196132-573-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAK7LNASuti=BS38cL2QDbS9bdvjYh4=Ya3m_adj3STyuckeM9A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +17,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] console: use int rather than uint in printf() and friends
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/6] eukrea-cpuimx25: enable dfu sequence conditionaly
+To: barebox@lists.infradead.org
 
-Hi,
-
-On Thu, Sep 24, 2015 at 06:39:01PM +0900, Masahiro Yamada wrote:
-> Hi Sascha,
-> 
-> 2015-09-07 14:24 GMT+09:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> > On Fri, Sep 04, 2015 at 08:27:11PM +0900, Masahiro Yamada wrote:
-> >> These functions and vsprintf() return int type.
-> >> No reason to use uint type.
-> >>
-> >> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> >> ---
-> >
-> > Applied, thanks
-> >
-> > Sascha
-> >
-> 
-> Looks like it was applied to  for-next/mci and for-next/misc.
-> 
-> Perhaps, one of them is enough?
-
-Oops, indeed. I removed it from for-next/mci.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+dGhpcyBjYW4gYmUgdXNlZnVsIG9uIHRoZSBldmFsdWF0aW9uIGJvYXJkIGJ1dCB3ZSBkb24ndCB3
+YW50CnRoZSBzZXF1ZW5jZSB0byBsYXVuY2ggb24gY3VzdG9tIGJvYXJkIHdoZW4gdGhlcmUgaXMg
+bm90IHRoZQpzd2l0Y2ggYnV0dG9uIG9uIGdwaW8gODIKClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOp
+bmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14
+MjUvZW52L2Jpbi9pbml0X2JvYXJkIHwgMjYgKysrKysrKysrKysrLS0tLS0tLS0tLQogMSBmaWxl
+IGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
+L2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MjUvZW52L2Jpbi9pbml0X2JvYXJkIGIvYXJj
+aC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9lbnYvYmluL2luaXRfYm9hcmQKaW5kZXggNThl
+MDdlMC4uOGY0MTUxYyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgy
+NS9lbnYvYmluL2luaXRfYm9hcmQKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgy
+NS9lbnYvYmluL2luaXRfYm9hcmQKQEAgLTksMjQgKzksMjYgQEAgZWxpZiBbIC1mIC9lbnYvbG9n
+by5ibXAubHpvIF07IHRoZW4KIAlmYjAuZW5hYmxlPTEKIGZpCiAKLWdwaW9fZ2V0X3ZhbHVlIDgy
+Ci1pZiBbICQ/IC1lcSAwIF07IHRoZW4KLQlncGlvX3NldF92YWx1ZSA4MyAwCi0JdXNic2VyaWFs
+Ci0JdGltZW91dCAtcyAtYSAyCitpZiBbICEgLXogJHVzZV9kZnUgXTsgdGhlbgogCWdwaW9fZ2V0
+X3ZhbHVlIDgyCiAJaWYgWyAkPyAtZXEgMCBdOyB0aGVuCi0JCXVzYnNlcmlhbCAtZAotCQlkZnUg
+LVYgMHgxMjM0IC1QIDB4MTIzNCAvZGV2L25hbmQwLmJhcmVib3guYmIoYmFyZWJveClzciwvZGV2
+L25hbmQwLmtlcm5lbC5iYihrZXJuZWwpciwvZGV2L25hbmQwLnJvb3QuYmIocm9vdClyCisJCWdw
+aW9fc2V0X3ZhbHVlIDgzIDAKKwkJdXNic2VyaWFsCisJCXRpbWVvdXQgLXMgLWEgMgogCQlncGlv
+X2dldF92YWx1ZSA4MgogCQlpZiBbICQ/IC1lcSAwIF07IHRoZW4KLQkJCXVzYnNlcmlhbAotCQkJ
+YXV0b2Jvb3RfdGltZW91dD02MAorCQkJdXNic2VyaWFsIC1kCisJCQlkZnUgLVYgMHgxMjM0IC1Q
+IDB4MTIzNCAvZGV2L25hbmQwLmJhcmVib3guYmIoYmFyZWJveClzciwvZGV2L25hbmQwLmtlcm5l
+bC5iYihrZXJuZWwpciwvZGV2L25hbmQwLnJvb3QuYmIocm9vdClyCisJCQlncGlvX2dldF92YWx1
+ZSA4MgorCQkJaWYgWyAkPyAtZXEgMCBdOyB0aGVuCisJCQkJdXNic2VyaWFsCisJCQkJYXV0b2Jv
+b3RfdGltZW91dD02MAorCQkJZWxzZQorCQkJCXJlc2V0CisJCQlmaQogCQllbHNlCi0JCQlyZXNl
+dAorCQkJYXV0b2Jvb3RfdGltZW91dD0yOAogCQlmaQotCWVsc2UKLQkJYXV0b2Jvb3RfdGltZW91
+dD0yOAogCWZpCiBmaQogCi0tIAoyLjQuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
