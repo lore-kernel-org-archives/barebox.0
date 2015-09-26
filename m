@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
+Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zfbgr-0003UD-3U
- for barebox@lists.infradead.org; Fri, 25 Sep 2015 22:42:06 +0000
-Received: by wicge5 with SMTP id ge5so38725698wic.0
- for <barebox@lists.infradead.org>; Fri, 25 Sep 2015 15:41:43 -0700 (PDT)
-From: Vicente Bergas <vicencb@gmail.com>
-Date: Fri, 25 Sep 2015 23:41:00 +0100
-Message-Id: <1443220863-24355-1-git-send-email-vicencb@gmail.com>
-In-Reply-To: <20150924115829.62eef721bbcd7eeb0c9852aa@gmail.com>
-References: <20150924115829.62eef721bbcd7eeb0c9852aa@gmail.com>
+ id 1ZfiZY-0007Mk-22
+ for barebox@lists.infradead.org; Sat, 26 Sep 2015 06:03:00 +0000
+Received: by pacex6 with SMTP id ex6so124726592pac.0
+ for <barebox@lists.infradead.org>; Fri, 25 Sep 2015 23:02:38 -0700 (PDT)
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Fri, 25 Sep 2015 23:02:17 -0700
+Message-Id: <1443247338-29171-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,60 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] ArchosG9 updates.
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Vicente Bergas <vicencb@gmail.com>
+Subject: [PATCH 1/2] arm/cpu/start.c: Distil some common code in __start().
+To: barebox@lists.infradead.org
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Hello,
-This series of patches contain updates to the ArchosG9 code.
-  The first one is just regenerating the *_defconfig with "make savedefconfig"
-  The second fixes the issue spotted by Antony Pavlov.
-  The third adds the display. I had that change forgotten somewhere and
-    thought that it would be better to share it.
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ arch/arm/cpu/start.c | 49 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 35 insertions(+), 14 deletions(-)
 
-By the way, while checking the patches with "scripts/checkpatch.pl" the script
-itself reported several 'Unescaped left brace in regex is deprecated' warnings.
-The perl version is v5.22.0.
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 8e5097b..7ffde7c 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -53,6 +53,18 @@ void *barebox_arm_boot_dtb(void)
+ 	return barebox_boot_dtb;
+ }
 
-Regards,
-  Vicente.
++static uint32_t get_any_boarddata_magic(const void *boarddata)
++{
++	if (get_unaligned_be32(boarddata) == FDT_MAGIC)
++		return FDT_MAGIC;
++
++	if (((struct barebox_arm_boarddata *)boarddata)->magic ==
++	    BAREBOX_ARM_BOARDDATA_MAGIC)
++		return BAREBOX_ARM_BOARDDATA_MAGIC;
++
++	return 0;
++}
++
+ static noinline __noreturn void __start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
+ {
+@@ -89,21 +101,30 @@ static noinline __noreturn void __start(unsigned long membase,
+ 	}
 
-Vicente Bergas (3):
-  archosg9: re-generate defconfigs with "make  savedefconfig"
-  archosg9: Use defaultenv-2-menu
-  archosg9: add display
+ 	if (boarddata) {
+-		if (get_unaligned_be32(boarddata) == FDT_MAGIC) {
+-			uint32_t totalsize = get_unaligned_be32(boarddata + 4);
++		uint32_t totalsize;
++		void **var = NULL;
++		const char *name;
++
++		switch (get_any_boarddata_magic(boarddata)) {
++		case FDT_MAGIC:
++			totalsize = get_unaligned_be32(boarddata + 4);
++			var = &barebox_boot_dtb;
++			name = "DTB";
++			break;
++		case BAREBOX_ARM_BOARDDATA_MAGIC:
++			totalsize = sizeof(struct barebox_arm_boarddata);
++			var = &barebox_boarddata;
++			name = "machine type";
++			break;
++		default:
++			break;
++		}
++
++		if (var) {
+ 			endmem -= ALIGN(totalsize, 64);
+-			barebox_boot_dtb = (void *)endmem;
+-			pr_debug("found DTB in boarddata, copying to 0x%p\n",
+-					barebox_boot_dtb);
+-			memcpy(barebox_boot_dtb, boarddata, totalsize);
+-		} else if (((struct barebox_arm_boarddata *)boarddata)->magic ==
+-				BAREBOX_ARM_BOARDDATA_MAGIC) {
+-			endmem -= ALIGN(sizeof(struct barebox_arm_boarddata), 64);
+-			barebox_boarddata = (void *)endmem;
+-			pr_debug("found machine type in boarddata, copying to 0x%p\n",
+-					barebox_boarddata);
+-			memcpy(barebox_boarddata, boarddata,
+-					sizeof(struct barebox_arm_boarddata));
++			pr_debug("found %s in boarddata, copying to 0x%lu\n",
++				 name, endmem);
++			*var = memcpy((void *)endmem, boarddata, totalsize);
+ 		}
+ 	}
 
- arch/arm/boards/archosg9/board.c                   | 111 +++++++++++++++++++--
- arch/arm/boards/archosg9/env/bin/init              |  28 ------
- arch/arm/boards/archosg9/env/init/automount        |  28 ------
- arch/arm/boards/archosg9/env/init/automount2       |   7 ++
- arch/arm/boards/archosg9/env/init/splash           |   5 +
- .../boards/archosg9/env/menu/11-boot-flash/action  |   4 +
- .../boards/archosg9/env/menu/11-boot-flash/title   |   1 +
- .../arm/boards/archosg9/env/menu/12-boot-sd/action |   4 +
- arch/arm/boards/archosg9/env/menu/12-boot-sd/title |   1 +
- .../boards/archosg9/env/menu/13-boot-usb/action    |   4 +
- .../arm/boards/archosg9/env/menu/13-boot-usb/title |   1 +
- arch/arm/boards/archosg9/env/menu/mainmenu         |  25 -----
- arch/arm/boards/archosg9/mux.c                     |  20 ++--
- arch/arm/configs/archosg9_defconfig                |  68 +++++++------
- arch/arm/configs/archosg9_xload_defconfig          |   4 -
- 15 files changed, 174 insertions(+), 137 deletions(-)
- delete mode 100644 arch/arm/boards/archosg9/env/bin/init
- delete mode 100644 arch/arm/boards/archosg9/env/init/automount
- create mode 100644 arch/arm/boards/archosg9/env/init/automount2
- create mode 100644 arch/arm/boards/archosg9/env/init/splash
- create mode 100644 arch/arm/boards/archosg9/env/menu/11-boot-flash/action
- create mode 100644 arch/arm/boards/archosg9/env/menu/11-boot-flash/title
- create mode 100644 arch/arm/boards/archosg9/env/menu/12-boot-sd/action
- create mode 100644 arch/arm/boards/archosg9/env/menu/12-boot-sd/title
- create mode 100644 arch/arm/boards/archosg9/env/menu/13-boot-usb/action
- create mode 100644 arch/arm/boards/archosg9/env/menu/13-boot-usb/title
- delete mode 100644 arch/arm/boards/archosg9/env/menu/mainmenu
-
--- 
-2.5.3
-
+--
+2.1.4
 
 _______________________________________________
 barebox mailing list
