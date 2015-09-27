@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
+Received: from mail-wi0-x236.google.com ([2a00:1450:400c:c05::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZfiZY-0007Mt-23
- for barebox@lists.infradead.org; Sat, 26 Sep 2015 06:03:00 +0000
-Received: by padhy16 with SMTP id hy16so124860630pad.1
- for <barebox@lists.infradead.org>; Fri, 25 Sep 2015 23:02:41 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Fri, 25 Sep 2015 23:02:18 -0700
-Message-Id: <1443247338-29171-2-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1443247338-29171-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1443247338-29171-1-git-send-email-andrew.smirnov@gmail.com>
+ id 1ZgCeL-0007K1-FA
+ for barebox@lists.infradead.org; Sun, 27 Sep 2015 14:09:58 +0000
+Received: by wicge5 with SMTP id ge5so73494114wic.0
+ for <barebox@lists.infradead.org>; Sun, 27 Sep 2015 07:09:35 -0700 (PDT)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Sun, 27 Sep 2015 15:08:51 +0100
+Message-Id: <1443362931-1881-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] arm/cpu/start.c: Avoid copying device-tree when possible
+Subject: [PATCH] xload: be more flexible when searching for second stage
+ bootloader.
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-In case of non-relocatable image device-tree blob should already be
-preloaded into memory as a part of Barebox binary upload, so there is
-no need to 'memcpy' it again
+A first stage bootloader can read fat and ext4 filesystems, and
+even both can be compiled-in at the same time.
+But then xload has a hardcoded fat filesystem mount option which
+renders ext4 unusable.
+This patch tries to mount it as ext4 if the fat attempt fails.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Then, a typical use case of an ext4 formatted filesystem
+is it to be a standard linux filesystem, which contains
+boot-related files in /boot. So, when searching for the second stage
+bootloader, try /boot/barebox.bin after not finding it in /barebox.bin
+
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/cpu/start.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm/mach-omap/xload.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 7ffde7c..c461a73 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -107,6 +107,15 @@ static noinline __noreturn void __start(unsigned long membase,
+diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+index ebcbcbc..c5e29f8 100644
+--- a/arch/arm/mach-omap/xload.c
++++ b/arch/arm/mach-omap/xload.c
+@@ -118,6 +118,8 @@ static void *omap_xload_boot_mmc(void)
+ 	partname = asprintf("%s.0", diskdev);
+ 
+ 	ret = mount(partname, "fat", "/", NULL);
++	if (ret)
++		ret = mount(partname, "ext4", "/", NULL);
+ 
+ 	if (ret) {
+ 		printf("Unable to mount %s (%d)\n", partname, ret);
+@@ -128,6 +130,8 @@ static void *omap_xload_boot_mmc(void)
+ 	free(partname);
+ 
+ 	buf = read_file("/barebox.bin", &len);
++	if (!buf)
++		buf = read_file("/boot/barebox.bin", &len);
+ 	if (!buf) {
+ 		printf("could not read barebox.bin from sd card\n");
+ 		return NULL;
+-- 
+2.5.3
 
- 		switch (get_any_boarddata_magic(boarddata)) {
- 		case FDT_MAGIC:
-+			if (!IS_ENABLED(CONFIG_RELOCATABLE)) {
-+				/*
-+				  If Barebox is not relocatable
-+				  there's no need to move data around
-+				 */
-+				barebox_boot_dtb = boarddata;
-+				break;
-+			}
-+
- 			totalsize = get_unaligned_be32(boarddata + 4);
- 			var = &barebox_boot_dtb;
- 			name = "DTB";
---
-2.1.4
 
 _______________________________________________
 barebox mailing list
