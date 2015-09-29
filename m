@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZgVzu-0001QO-NF
- for barebox@lists.infradead.org; Mon, 28 Sep 2015 10:49:31 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 5C2CFA003ED
- for <barebox@lists.infradead.org>; Mon, 28 Sep 2015 12:49:14 +0200 (CEST)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Mon, 28 Sep 2015 12:48:00 +0200
-Message-Id: <1443437281-33316-2-git-send-email-w.egorov@phytec.de>
-In-Reply-To: <1443437281-33316-1-git-send-email-w.egorov@phytec.de>
-References: <1443437281-33316-1-git-send-email-w.egorov@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zgoaa-00035k-B5
+ for barebox@lists.infradead.org; Tue, 29 Sep 2015 06:40:37 +0000
+Date: Tue, 29 Sep 2015 08:40:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20150929064011.GK7858@pengutronix.de>
+References: <20150924115829.62eef721bbcd7eeb0c9852aa@gmail.com>
+ <1443220863-24355-1-git-send-email-vicencb@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1443220863-24355-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: am33xx: Enable ethernet node on NET boot
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] ArchosG9 updates.
+To: Vicente Bergas <vicencb@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- arch/arm/mach-omap/am33xx_generic.c | 3 +++
- 1 file changed, 3 insertions(+)
+Hi Vicente,
 
-diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
-index ae0ee58..5eead5c 100644
---- a/arch/arm/mach-omap/am33xx_generic.c
-+++ b/arch/arm/mach-omap/am33xx_generic.c
-@@ -505,6 +505,9 @@ int am33xx_of_register_bootdevice(void)
- 	case BOOTSOURCE_SPI:
- 		dev = of_device_enable_and_register_by_name("spi@48030000");
- 		break;
-+	case BOOTSOURCE_NET:
-+		dev = of_device_enable_and_register_by_name("ethernet@4a100000");
-+		break;
- 	default:
- 		/* Use nand fallback */
- 		dev = of_device_enable_and_register_by_name("gpmc@50000000");
+On Fri, Sep 25, 2015 at 11:41:00PM +0100, Vicente Bergas wrote:
+> Hello,
+> This series of patches contain updates to the ArchosG9 code.
+>   The first one is just regenerating the *_defconfig with "make savedefconfig"
+>   The second fixes the issue spotted by Antony Pavlov.
+>   The third adds the display. I had that change forgotten somewhere and
+>     thought that it would be better to share it.
+> 
+> By the way, while checking the patches with "scripts/checkpatch.pl" the script
+> itself reported several 'Unescaped left brace in regex is deprecated' warnings.
+> The perl version is v5.22.0.
+
+Wow, so we need a checkcheckpatch script :)
+Thanks for noting. There are probably checkpatch updates to find in the
+Linux Kernel.
+
+Applied all, thanks
+
+Sascha
+
 -- 
-1.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
