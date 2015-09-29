@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ig0-x233.google.com ([2607:f8b0:4001:c05::233])
+Received: from mail-io0-x22a.google.com ([2607:f8b0:4001:c06::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zgz56-0003ts-OI
- for barebox@lists.infradead.org; Tue, 29 Sep 2015 17:52:49 +0000
-Received: by igbkq10 with SMTP id kq10so82872740igb.0
- for <barebox@lists.infradead.org>; Tue, 29 Sep 2015 10:52:27 -0700 (PDT)
+ id 1Zgz5u-0004BK-4h
+ for barebox@lists.infradead.org; Tue, 29 Sep 2015 17:53:38 +0000
+Received: by iofb144 with SMTP id b144so19736749iof.1
+ for <barebox@lists.infradead.org>; Tue, 29 Sep 2015 10:53:17 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20150929065847.GO7858@pengutronix.de>
-References: <1443247338-29171-1-git-send-email-andrew.smirnov@gmail.com>
- <1443247338-29171-2-git-send-email-andrew.smirnov@gmail.com>
- <20150929065847.GO7858@pengutronix.de>
-Date: Tue, 29 Sep 2015 10:52:27 -0700
-Message-ID: <CAHQ1cqFEsiq7Qumi54aJv2C_nh7xkR0jkrBnU5Z6jyhWp3zmKQ@mail.gmail.com>
+In-Reply-To: <20150929073225.GQ7858@pengutronix.de>
+References: <1443064645-4007-1-git-send-email-andrew.smirnov@gmail.com>
+ <1443086443.8476.7.camel@pengutronix.de>
+ <20150929073225.GQ7858@pengutronix.de>
+Date: Tue, 29 Sep 2015 10:53:17 -0700
+Message-ID: <CAHQ1cqGL1_ge=xpv1n8AS5X0DAVXhPSevrXoT5761wARSNuvug@mail.gmail.com>
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,34 +25,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] arm/cpu/start.c: Avoid copying device-tree when
- possible
+Subject: Re: [PATCH] arm: Disable unaligned access if MMU is switched off
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
->> +                     }
->> +
 >
-> At this place it is unknown where in memory the fdt is. It could well be
-> somewhere in the malloc area space, so we need to move it to a safe
-> place before we setup malloc in the next step.
+> Even with MMU enabled in the config we still run some initial portions
+> of the code with MMU disabled, so it seems safer to enable this option
+> unconditionally.
+> On the other hand disabling unaligned accesses makes the image around
+> 1.5% bigger (tested with imx_v7_defconfig), so the compiler really makes
+> use of this option.
+> Ok, better safe than sorry, so I vote for always passing
+> -mno-unaligned-accesses.
 
-I didn't do an exhaustive search in the source but it seemed like all
-of the callers of barebox_arm_entry() were calling it either with NULL
-or some build-in address, so I assumed that this change shouldn't be a
-problem for non-relocatable binaries, but you are right, semantics of
-the functions does not restrict the location of fdt data.
-
-I'd still like to discuss the possibility of introducing a feature
-like that to the codebase. Right now I have a use-case where I use
-Barebox as a DDR memory tuning/testing tool on i.MX6Q where I upload
-the image to IRAM via JTAG and execute Barebox straight out of SRAM.
-With only 256K of total memory availible I just don't have enough RAM
-to do this precautionary step of copying ~30K or .dtb. Do you see a
-place for a feature like that in upstream code? Something like a
-Kconfig option, similar to CONFIG_PBL_FORCE_PIGGYDATA_COPY, that can
-be selected on per-board basis and would enable the shortcut?
-
+OK, sounds good, I'll update the patch and send the second version shortly.
 
 >
 > Sascha
