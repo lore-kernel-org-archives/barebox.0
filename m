@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhILH-0007K4-SY
- for barebox@lists.infradead.org; Wed, 30 Sep 2015 14:26:49 +0000
-Message-ID: <1443623176.4612.13.camel@lws-tremmet.phytec.de>
-From: Teresa Remmet <t.remmet@phytec.de>
-Date: Wed, 30 Sep 2015 16:26:16 +0200
-In-Reply-To: <20150929141202.GB1886@pengutronix.de>
-References: <20150923152803.GC12329@pengutronix.de>
- <1443076651.3184.5.camel@lws-tremmet.phytec.de>
- <20150929141202.GB1886@pengutronix.de>
-Mime-Version: 1.0
+Received: from mail-yk0-x22d.google.com ([2607:f8b0:4002:c07::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZhLVU-00077h-Ow
+ for barebox@lists.infradead.org; Wed, 30 Sep 2015 17:49:33 +0000
+Received: by ykdt18 with SMTP id t18so51837169ykd.3
+ for <barebox@lists.infradead.org>; Wed, 30 Sep 2015 10:49:11 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20150930071916.GZ7858@pengutronix.de>
+References: <1443362931-1881-1-git-send-email-vicencb@gmail.com>
+ <20150929070523.GP7858@pengutronix.de>
+ <CAAMcf8C9RmOCoGyRECFUk=Yn2x8UscTG=E_wpo7bcaGgYYqAVQ@mail.gmail.com>
+ <20150930071916.GZ7858@pengutronix.de>
+Date: Wed, 30 Sep 2015 18:49:11 +0100
+Message-ID: <CAAMcf8Deb_J79z+YzptSjw1_=5AN5ToX7c=SOhx+HSPPXcJjkg@mail.gmail.com>
+From: vj <vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +26,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: boards: phytec-som-am335x: ethernet broken after reset
-To: Michael Grzeschik <mgr@pengutronix.de>
+Subject: Re: [PATCH] xload: be more flexible when searching for second stage
+ bootloader.
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hello Michael,
+On Wed, Sep 30, 2015 at 8:19 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Sep 29, 2015 at 08:06:35PM +0100, vj wrote:
+>> On Tue, Sep 29, 2015 at 8:05 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> > On Sun, Sep 27, 2015 at 03:08:51PM +0100, Vicente Bergas wrote:
+>> >> A first stage bootloader can read fat and ext4 filesystems, and
+>> >> even both can be compiled-in at the same time.
+>> >> But then xload has a hardcoded fat filesystem mount option which
+>> >> renders ext4 unusable.
+>> >> This patch tries to mount it as ext4 if the fat attempt fails.
+>> >>
+>> >> Then, a typical use case of an ext4 formatted filesystem
+>> >> is it to be a standard linux filesystem, which contains
+>> >> boot-related files in /boot. So, when searching for the second stage
+>> >> bootloader, try /boot/barebox.bin after not finding it in /barebox.bin
+>> >>
+>> >> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+>> >> ---
+>> >>  arch/arm/mach-omap/xload.c | 4 ++++
+>> >>  1 file changed, 4 insertions(+)
+>> >>
+>> >> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+>> >> index ebcbcbc..c5e29f8 100644
+>> >> --- a/arch/arm/mach-omap/xload.c
+>> >> +++ b/arch/arm/mach-omap/xload.c
+>> >> @@ -118,6 +118,8 @@ static void *omap_xload_boot_mmc(void)
+>> >>       partname = asprintf("%s.0", diskdev);
+>> >>
+>> >>       ret = mount(partname, "fat", "/", NULL);
+>> >> +     if (ret)
+>> >> +             ret = mount(partname, "ext4", "/", NULL);
+>> >
+>> > It should also be possible to pass NULL as fs type in which case we
+>> > automatically detect the fs type. Could you check that?
+>>
+>> I didn't know that. This way it would be nicer and cleaner!
+>> So it has been tested but it didn't work :(
+>> mount calls detect_fs, detect_fs calls file_name_detect_type and
+>> file_name_detect_type calls open.
+>> open fails to open the "mmc0.0" file name
+>
+> Ok, I see. This indeed can't work as it depends on devfs being mounted
+> on /dev/. For this to work we would need a cdev_detect_filetype(const
+> char *name) which uses the cdev_* operations to read a buffer and pass
+> that to file_detect_type(). You're invited to implement that ;)
+>
+>> So, the first 128KB block can hold an MBR plus partition table, then a
+>> raw image of the MLO file can be present at offset 128KB followed by
+>> the disk partitions.
+>>
+>> In section 26.1.7.5.3 page 4939 figure 26-17 MMC/SD Booting
+>> states that raw mode detection is performed before searching for the
+>> MLO file in a filesystem.
+>>
+>> All in all, it is possible to have a "fat-free" SD-card.
+>
+> Now that you say it I remember having read about this before.
+>
+> Does this work well with the rest of barebox? In omap_env_init() we
+> mount the first mmc partition to /boot and put the environment to
+> /boot/barebox.env. That doesn't work when the first partition doesn't
+> contain a FAT. Do you put your environment somewhere else?
 
-Am Dienstag, den 29.09.2015, 16:12 +0200 schrieb Michael Grzeschik:
-> On Thu, Sep 24, 2015 at 08:37:31AM +0200, Teresa Remmet wrote:
-> > can you give me a little bit more information about the hardware you
-> > are using? As the phytec-som-am335x, includes 3 different modules.
-> > Names of the images in use and hardware revision of the som whould be
-> > great.
-> 
-> It is an 1358.3 som which uses the MT41K128M16JT memory instead of the
-> MT41J128M16125IT. I created an extra image, as it is used with an custom
-> baseboard.
+I was not using the environment save/restore feature and was unaware
+that it was broken.
+The environment retrieval could be improved in a similar way: try
+mounting all supported filesystems and search in "mountpoint/" and
+"mountpoint/boot/"
+But the environment save feature can't be easily supported on ext4
+because the driver does not support writes.
+Still I think that this patch is an improvement, is not the patch
+itself that broke the env save/restore, it was a new use case enabled
+by it.
 
-The MT41K128M16JT is a newer RAM. We tested that this also runs with the
-timings of MT41J128M16125IT. Maybe I should add a comment into the code
-as this leads to confusion.
-
-> 
-> > I have made a quick test it with a phycore som on master. It worked for
-> > me.
-> 
-> Ok, Than there must be some differences. Possibly another used phy on
-> the 1358.3 module.
-
-I have checked this now also on a 1358.3 with MT41K128M16JT and a SMSC
-LAN 8710A phy. It works with barebox master.
-
-Regards,
-Teresa
-
-> 
-> Thanks,
-> Michael
-> 
-
-
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
