@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.gnudd.com ([77.43.112.34])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhliG-00042X-8t
- for barebox@lists.infradead.org; Thu, 01 Oct 2015 21:48:29 +0000
-Date: Thu, 1 Oct 2015 23:48:01 +0200
-From: Alessandro Rubini <rubini@gnudd.com>
-Message-ID: <20151001214801.GA731@mail.gnudd.com>
+ id 1ZhltP-0000oI-2a
+ for barebox@lists.infradead.org; Thu, 01 Oct 2015 21:59:59 +0000
+Date: Thu, 1 Oct 2015 23:59:36 +0200
+From: Alessandro Rubini <rubini-list@gnudd.com>
+Message-ID: <20151001215936.GA1121@mail.gnudd.com>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20151001214801.GA731@mail.gnudd.com>
+References: <20151001214801.GA731@mail.gnudd.com> 
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91sam9x5: for ROM base address (bugfix for nand ECC)
+Subject: Re: [PATCH] at91sam9x5: for ROM base address (bugfix for nand ECC)
 To: barebox@lists.infradead.org
-Cc: Federico Braghiroli <braghiroli@amelchem.com>, Edoardo Scaglia <scaglia@amelchem.com>
+Cc: scaglia@amelchem.com, braghiroli@amelchem.com
 
-From: Edoardo Scaglia <scaglia@amelchem.com>
+> Subject: [PATCH] at91sam9x5: for ROM base address (bugfix for nand ECC)
 
-The ROM base address in the 9x5 processors lives at 1M, not 4M,
-where SMD is, as defined later in the same file.
+Argh! After a lot of editing, the subject line is wrong.
 
-The ROM includes some tables that are used to build error-correction data
-for NAND memory.  By using the wrong address, we get wrong data and
-the result is undetected bit flips (data at 0x408000 is all zeroes).
+   fix ROM base address (bugfix for nand ECC)
 
-Thus, even though our kernel was fixing bit errors in NAND, barebox
-was not fixing them. With UBI (our situation) we got I/O errors because
-the checksum verification for data nodes failed.
+Anyways, let me add this detail.  The current code considers the
+case where dev_request_mem_region() fails.
 
-Using the proper address corrects the problem: barebox reports a
-"bitflip" message, consistent with the kernel message for the same
-file, and the files are properly loaded and booted.
+        host->pmecc_rom_base = dev_request_mem_region(dev, 3);
+        if (!host->pmecc_rom_base) {
+                   [...]
 
-Note: the kernel has the same wrong define, but then the magic number
-0x00108000 as spelled in arch/arm/boot/dts/at91sam9x5.dtsi is used
-instead of the symbolic name.
+What it does in "[...]" is creating the tables with proper math..  I
+tried to skip the request_mem_region() above and ECC works perfectly,
+with the software-generated table.
 
-Signed-off-by: Edoardo Scaglia <scaglia@amelchem.com>
-Signed-off-by: Federico Braghiroli <braghiroli@amelchem.com>
-Signed-off-by: Alessndro Rubini <rubini@gnudd.com>
----
- arch/arm/mach-at91/include/mach/at91sam9x5.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+So I wonder whether it makes sense to just remove the declaration of
+the ROM are memory-region-3 for NAND, and just use the software-built
+tables.
 
-diff --git a/arch/arm/mach-at91/include/mach/at91sam9x5.h b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-index 7ba2e3b..e230577 100644
---- a/arch/arm/mach-at91/include/mach/at91sam9x5.h
-+++ b/arch/arm/mach-at91/include/mach/at91sam9x5.h
-@@ -144,7 +144,7 @@
- #define AT91SAM9X5_SRAM_BASE	0x00300000	/* Internal SRAM base address */
- #define AT91SAM9X5_SRAM_SIZE	SZ_32K		/* Internal SRAM size (32Kb) */
- 
--#define AT91SAM9X5_ROM_BASE	0x00400000	/* Internal ROM base address */
-+#define AT91SAM9X5_ROM_BASE	0x00100000	/* Internal ROM base address */
- #define AT91SAM9X5_ROM_SIZE	SZ_64K		/* Internal ROM size (64Kb) */
- 
- #define AT91SAM9X5_SMD_BASE	0x00400000	/* SMD Controller */
--- 
-1.7.7.2
+This wouldn't void the previous patch: the ROM address is wrong
+as defined, for all CPU types that fall under "at91sam9x5" (I checked
+the 5 data sheets: G15, G35, X25, G25, X35).
+
+thanks
+/alessandro
 
 _______________________________________________
 barebox mailing list
