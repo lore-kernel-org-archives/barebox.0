@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhXHU-0001Bd-79
- for barebox@lists.infradead.org; Thu, 01 Oct 2015 06:23:52 +0000
-Date: Thu, 1 Oct 2015 08:23:29 +0200
+ id 1ZhXWM-0006kC-7A
+ for barebox@lists.infradead.org; Thu, 01 Oct 2015 06:39:15 +0000
+Date: Thu, 1 Oct 2015 08:38:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151001062329.GI7858@pengutronix.de>
-References: <1443647262-21526-1-git-send-email-festevam@gmail.com>
+Message-ID: <20151001063851.GJ7858@pengutronix.de>
+References: <1443603534-15233-1-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1443647262-21526-1-git-send-email-festevam@gmail.com>
+In-Reply-To: <1443603534-15233-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] video: imx-hdmi: Remove unused 'regmap' structure
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] fs: syntax fix in ramfs.c
+To: Stefan Christ <s.christ@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Sep 30, 2015 at 06:07:42PM -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam@freescale.com>
-> 
-> As regmap is not used in Barebox we can remove this field
-> from the imx_hdmi struct.
-> 
-> Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
+On Wed, Sep 30, 2015 at 10:58:54AM +0200, Stefan Christ wrote:
+> Signed-off-by: Stefan Christ <s.christ@phytec.de>
 > ---
->  drivers/video/imx-ipu-v3/imx-hdmi.c | 1 -
->  1 file changed, 1 deletion(-)
+>  fs/ramfs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
