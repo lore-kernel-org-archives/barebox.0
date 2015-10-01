@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.gnudd.com ([77.43.112.34])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhltP-0000oI-2a
- for barebox@lists.infradead.org; Thu, 01 Oct 2015 21:59:59 +0000
-Date: Thu, 1 Oct 2015 23:59:36 +0200
-From: Alessandro Rubini <rubini-list@gnudd.com>
-Message-ID: <20151001215936.GA1121@mail.gnudd.com>
+Received: from down.free-electrons.com ([37.187.137.238]
+ helo=mail.free-electrons.com)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zhm9p-0005Td-Ht
+ for barebox@lists.infradead.org; Thu, 01 Oct 2015 22:16:58 +0000
+Date: Fri, 2 Oct 2015 00:16:35 +0200
+From: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Message-ID: <20151001221635.GB10444@piout.net>
+References: <20151001214801.GA731@mail.gnudd.com>
 MIME-Version: 1.0
 Content-Disposition: inline
 In-Reply-To: <20151001214801.GA731@mail.gnudd.com>
-References: <20151001214801.GA731@mail.gnudd.com> 
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +24,42 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] at91sam9x5: for ROM base address (bugfix for nand ECC)
-To: barebox@lists.infradead.org
-Cc: scaglia@amelchem.com, braghiroli@amelchem.com
+To: Alessandro Rubini <rubini@gnudd.com>
+Cc: barebox@lists.infradead.org, Edoardo Scaglia <scaglia@amelchem.com>, Federico Braghiroli <braghiroli@amelchem.com>
 
-> Subject: [PATCH] at91sam9x5: for ROM base address (bugfix for nand ECC)
+On 01/10/2015 at 23:48:01 +0200, Alessandro Rubini wrote :
+> From: Edoardo Scaglia <scaglia@amelchem.com>
+> 
+> The ROM base address in the 9x5 processors lives at 1M, not 4M,
+> where SMD is, as defined later in the same file.
+> 
+> The ROM includes some tables that are used to build error-correction data
+> for NAND memory.  By using the wrong address, we get wrong data and
+> the result is undetected bit flips (data at 0x408000 is all zeroes).
+> 
+> Thus, even though our kernel was fixing bit errors in NAND, barebox
+> was not fixing them. With UBI (our situation) we got I/O errors because
+> the checksum verification for data nodes failed.
+> 
+> Using the proper address corrects the problem: barebox reports a
+> "bitflip" message, consistent with the kernel message for the same
+> file, and the files are properly loaded and booted.
+> 
+> Note: the kernel has the same wrong define, but then the magic number
+> 0x00108000 as spelled in arch/arm/boot/dts/at91sam9x5.dtsi is used
+> instead of the symbolic name.
+> 
+> Signed-off-by: Edoardo Scaglia <scaglia@amelchem.com>
+> Signed-off-by: Federico Braghiroli <braghiroli@amelchem.com>
+> Signed-off-by: Alessndro Rubini <rubini@gnudd.com>
+                     ^
+Typo in your name here
 
-Argh! After a lot of editing, the subject line is wrong.
 
-   fix ROM base address (bugfix for nand ECC)
-
-Anyways, let me add this detail.  The current code considers the
-case where dev_request_mem_region() fails.
-
-        host->pmecc_rom_base = dev_request_mem_region(dev, 3);
-        if (!host->pmecc_rom_base) {
-                   [...]
-
-What it does in "[...]" is creating the tables with proper math..  I
-tried to skip the request_mem_region() above and ECC works perfectly,
-with the software-generated table.
-
-So I wonder whether it makes sense to just remove the declaration of
-the ROM are memory-region-3 for NAND, and just use the software-built
-tables.
-
-This wouldn't void the previous patch: the ROM address is wrong
-as defined, for all CPU types that fall under "at91sam9x5" (I checked
-the 5 data sheets: G15, G35, X25, G25, X35).
-
-thanks
-/alessandro
+-- 
+Alexandre Belloni, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
