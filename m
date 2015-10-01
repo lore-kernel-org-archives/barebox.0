@@ -1,13 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-ig0-f172.google.com ([209.85.213.172])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zha2i-0004pF-8T
- for barebox@lists.infradead.org; Thu, 01 Oct 2015 09:20:48 +0000
-Received: by lahh2 with SMTP id h2so70880496lah.0
- for <barebox@lists.infradead.org>; Thu, 01 Oct 2015 02:20:26 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  1 Oct 2015 12:20:16 +0300
-Message-Id: <1443691216-16936-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZhkQo-0006op-6O
+ for barebox@lists.infradead.org; Thu, 01 Oct 2015 20:26:22 +0000
+Received: by igbkq10 with SMTP id kq10so3406603igb.0
+ for <barebox@lists.infradead.org>; Thu, 01 Oct 2015 13:26:00 -0700 (PDT)
+Received: from mail-io0-f179.google.com (mail-io0-f179.google.com.
+ [209.85.223.179])
+ by smtp.gmail.com with ESMTPSA id j9sm2061949igx.3.2015.10.01.13.25.59
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 01 Oct 2015 13:25:59 -0700 (PDT)
+From: Geoff Cleary <gcleary1@sightlogix.com>
+Received: by iofh134 with SMTP id h134so99340992iof.0
+ for <barebox@lists.infradead.org>; Thu, 01 Oct 2015 13:25:59 -0700 (PDT)
+MIME-Version: 1.0
+Date: Thu, 1 Oct 2015 16:25:59 -0400
+Message-ID: <CAK+b6Lsn6xLG30xK5-9XVLaAGDyDYiPdkfSh-92HcO5fONm_HQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,35 +25,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: gcleary@sightlogix.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! common: clock: introduce mdelay_non_interruptible()
+Subject: booting kernel from ubi volume in nand flash
 To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
 
----
- include/clock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi,
 
-diff --git a/include/clock.h b/include/clock.h
-index fd8ff80..7f0f1ec 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -37,7 +37,7 @@ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
- void ndelay(unsigned long nsecs);
- void udelay(unsigned long usecs);
- void mdelay(unsigned long msecs);
--void mdelay_non_interruptible (unsigned long msecs);
-+void mdelay_non_interruptible(unsigned long msecs);
- 
- #define SECOND ((uint64_t)(1000 * 1000 * 1000))
- #define MSECOND ((uint64_t)(1000 * 1000))
--- 
-2.5.0
+I cannot find documentation regrading scrubbing of ubi volumes in barebox.
+Is this feature implemented in barebox?
 
+In the case where our kernel is stored in a ubi volume, should we expect
+the possibility that barebox may try to "scrub" (move) a block during boot
+of the kernel, if that block required ECC correction?
+
+Regards
+Geoff Cleary
+
+--
+
+ Geoff Cleary
+
+ Principal Software Engineer
+ http://www.sightlogix.com
 
 _______________________________________________
 barebox mailing list
