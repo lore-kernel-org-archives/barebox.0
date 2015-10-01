@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhXWM-0006kC-7A
- for barebox@lists.infradead.org; Thu, 01 Oct 2015 06:39:15 +0000
-Date: Thu, 1 Oct 2015 08:38:51 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151001063851.GJ7858@pengutronix.de>
-References: <1443603534-15233-1-git-send-email-s.christ@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1443603534-15233-1-git-send-email-s.christ@phytec.de>
+ id 1Zha2i-0004pF-8T
+ for barebox@lists.infradead.org; Thu, 01 Oct 2015 09:20:48 +0000
+Received: by lahh2 with SMTP id h2so70880496lah.0
+ for <barebox@lists.infradead.org>; Thu, 01 Oct 2015 02:20:26 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu,  1 Oct 2015 12:20:16 +0300
+Message-Id: <1443691216-16936-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: syntax fix in ramfs.c
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fixup! common: clock: introduce mdelay_non_interruptible()
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-On Wed, Sep 30, 2015 at 10:58:54AM +0200, Stefan Christ wrote:
-> Signed-off-by: Stefan Christ <s.christ@phytec.de>
-> ---
->  fs/ramfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+---
+ include/clock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks
-
-Sascha
-
+diff --git a/include/clock.h b/include/clock.h
+index fd8ff80..7f0f1ec 100644
+--- a/include/clock.h
++++ b/include/clock.h
+@@ -37,7 +37,7 @@ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
+ void ndelay(unsigned long nsecs);
+ void udelay(unsigned long usecs);
+ void mdelay(unsigned long msecs);
+-void mdelay_non_interruptible (unsigned long msecs);
++void mdelay_non_interruptible(unsigned long msecs);
+ 
+ #define SECOND ((uint64_t)(1000 * 1000 * 1000))
+ #define MSECOND ((uint64_t)(1000 * 1000))
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.5.0
+
 
 _______________________________________________
 barebox mailing list
