@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhvNQ-0008OK-DJ
- for barebox@lists.infradead.org; Fri, 02 Oct 2015 08:07:36 +0000
-Date: Fri, 2 Oct 2015 10:07:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151002080713.GQ7858@pengutronix.de>
-References: <1443770610-24469-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1443770610-24469-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZhzYh-00018n-Ku
+ for barebox@lists.infradead.org; Fri, 02 Oct 2015 12:35:32 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Fri,  2 Oct 2015 14:35:01 +0200
+Message-Id: <1443789301-25097-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +14,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: core: drop unnecessary le16_to_cpu() conversion
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] param: dev_add_param_mac() depends on CONFIG_NET
+To: barebox@lists.infradead.org
 
-On Fri, Oct 02, 2015 at 10:23:30AM +0300, Antony Pavlov wrote:
-> In drivers/usb/core/usb.c we already have le16_to_cpus() conversion
-> just after usb_get_descriptor():
-> 
->     390     /* correct le values */
->     391     le16_to_cpus(&dev->descriptor->bcdUSB);
->     392     le16_to_cpus(&dev->descriptor->idVendor);
->     393     le16_to_cpus(&dev->descriptor->idProduct);
->     394     le16_to_cpus(&dev->descriptor->bcdDevice);
-> 
-> so no additional idVendor/idProduct descriptor fields
-> le16_to_cpu() conversion is needed after that.
-> 
-> On the big-endian machines extra le16_to_cpu() conversion
-> leads to wrong idVendor/idProduct USB device parameters values
-> (e.g. see devinfo <usb-device> output), and to a much more
-> serious problem: idVendor/idProduct-based USB device detection
-> does not work.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/usb/core/usb.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+This patch adds the proper inline function for CONFIG_PARAMETER && !
+CONFIG_NET.
 
-Applied, thanks
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ include/param.h | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-Sascha
-
+diff --git a/include/param.h b/include/param.h
+index 3a851fc552a4..f8a2534ef3a8 100644
+--- a/include/param.h
++++ b/include/param.h
+@@ -63,10 +63,12 @@ struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
+ 		int (*get)(struct param_d *p, void *priv),
+ 		IPaddr_t *ip, void *priv);
+ 
++#ifdef CONFIG_NET
+ struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+ 		u8 *mac, void *priv);
++#endif
+ 
+ int dev_add_param_fixed(struct device_d *dev, const char *name, const char *value);
+ 
+@@ -154,14 +156,6 @@ static inline struct param_d *dev_add_param_ip(struct device_d *dev, const char
+ 	return ERR_PTR(-ENOSYS);
+ }
+ 
+-static inline struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
+-		int (*set)(struct param_d *p, void *priv),
+-		int (*get)(struct param_d *p, void *priv),
+-		u8 *mac, void *priv)
+-{
+-	return ERR_PTR(-ENOSYS);
+-}
+-
+ static inline int dev_add_param_fixed(struct device_d *dev, const char *name, const char *value)
+ {
+ 	return 0;
+@@ -178,4 +172,15 @@ static inline int dev_param_set_generic(struct device_d *dev, struct param_d *p,
+ }
+ #endif
+ 
++#if ! defined(CONFIG_PARAMETER) || ! defined(CONFIG_NET)
++static inline struct param_d *dev_add_param_mac(struct device_d *dev, const char *name,
++		int (*set)(struct param_d *p, void *priv),
++		int (*get)(struct param_d *p, void *priv),
++		u8 *mac, void *priv)
++{
++	return ERR_PTR(-ENOSYS);
++}
++
++#endif
++
+ #endif /* PARAM_H */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.0
+
 
 _______________________________________________
 barebox mailing list
