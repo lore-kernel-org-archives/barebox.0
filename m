@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhuaL-0006Fh-M8
- for barebox@lists.infradead.org; Fri, 02 Oct 2015 07:16:54 +0000
-Date: Fri, 2 Oct 2015 09:16:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151002071630.GP7858@pengutronix.de>
-References: <1443761811-15621-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1443761811-15621-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZhuhC-0002vf-M2
+ for barebox@lists.infradead.org; Fri, 02 Oct 2015 07:23:59 +0000
+Received: by lbbmp1 with SMTP id mp1so21870127lbb.1
+ for <barebox@lists.infradead.org>; Fri, 02 Oct 2015 00:23:36 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri,  2 Oct 2015 10:23:30 +0300
+Message-Id: <1443770610-24469-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +16,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: ls: use 14 digits for filesize
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] usb: core: drop unnecessary le16_to_cpu() conversion
+To: barebox@lists.infradead.org
 
-On Fri, Oct 02, 2015 at 07:56:51AM +0300, Antony Pavlov wrote:
-> 10 digits are not enough for modern SATA/USB storages. E.g.:
-> 
->     barebox> ls -l /dev/
->     cr-------- 500107862016 ata0
->     cr--------   33554432 ata0.0
->     cr-------- 500073258496 ata0.1
->     cr-------- 32224837632 disk0
->     cr--------   67108864 disk0.0
->     cr-------- 32156680192 disk0.1
-> 
-> 14 digits look much better. E.g.:
-> 
->     barebox> ls -l /dev/
->     cr--------   500107862016 ata0
->     cr--------       33554432 ata0.0
->     cr--------   500073258496 ata0.1
->     cr--------    32224837632 disk0
->     cr--------       67108864 disk0.0
->     cr--------    32156680192 disk0.1
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  commands/ls.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/commands/ls.c b/commands/ls.c
-> index 1a5925d..09437af 100644
-> --- a/commands/ls.c
-> +++ b/commands/ls.c
-> @@ -32,7 +32,7 @@ static void ls_one(const char *path, const char* fullname, struct stat *s)
->  	unsigned int namelen = strlen(path);
->  
->  	mkmodestr(s->st_mode, modestr);
-> -	printf("%s %10llu %*.*s", modestr, s->st_size, namelen, namelen, path);
-> +	printf("%s %14llu %*.*s", modestr, s->st_size, namelen, namelen, path);
+In drivers/usb/core/usb.c we already have le16_to_cpus() conversion
+just after usb_get_descriptor():
 
-Maybe we should autogenerate that number from the current compile year
-taking Moores law into account ;)
+    390     /* correct le values */
+    391     le16_to_cpus(&dev->descriptor->bcdUSB);
+    392     le16_to_cpus(&dev->descriptor->idVendor);
+    393     le16_to_cpus(&dev->descriptor->idProduct);
+    394     le16_to_cpus(&dev->descriptor->bcdDevice);
 
-Until that is done: Applied this one
+so no additional idVendor/idProduct descriptor fields
+le16_to_cpu() conversion is needed after that.
 
-Sascha
+On the big-endian machines extra le16_to_cpu() conversion
+leads to wrong idVendor/idProduct USB device parameters values
+(e.g. see devinfo <usb-device> output), and to a much more
+serious problem: idVendor/idProduct-based USB device detection
+does not work.
 
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/usb/core/usb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index f8d6014..a3fb1e8 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -445,9 +445,9 @@ int usb_new_device(struct usb_device *dev)
+ 	dev_add_param_fixed(&dev->dev, "Product", dev->prod);
+ 	dev_add_param_fixed(&dev->dev, "SerialNumber", dev->serial);
+ 	dev_add_param_int_ro(&dev->dev, "idVendor",
+-			le16_to_cpu(dev->descriptor->idVendor), "%04x");
++			dev->descriptor->idVendor, "%04x");
+ 	dev_add_param_int_ro(&dev->dev, "idProduct",
+-			le16_to_cpu(dev->descriptor->idProduct), "%04x");
++			dev->descriptor->idProduct, "%04x");
+ 	list_add_tail(&dev->list, &usb_device_list);
+ 	dev_count++;
+ 
+@@ -938,11 +938,11 @@ int usb_driver_register(struct usb_driver *drv)
+ static int usb_match_device(struct usb_device *dev, const struct usb_device_id *id)
+ {
+ 	if ((id->match_flags & USB_DEVICE_ID_MATCH_VENDOR) &&
+-	    id->idVendor != le16_to_cpu(dev->descriptor->idVendor))
++	    id->idVendor != dev->descriptor->idVendor)
+ 		return 0;
+ 
+ 	if ((id->match_flags & USB_DEVICE_ID_MATCH_PRODUCT) &&
+-	    id->idProduct != le16_to_cpu(dev->descriptor->idProduct))
++	    id->idProduct != dev->descriptor->idProduct)
+ 		return 0;
+ 
+ 	return 1;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.0
+
 
 _______________________________________________
 barebox mailing list
