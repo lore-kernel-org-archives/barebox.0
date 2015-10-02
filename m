@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhsPa-0001kQ-RS
- for barebox@lists.infradead.org; Fri, 02 Oct 2015 04:57:39 +0000
-Received: by lbwr8 with SMTP id r8so20453037lbw.2
- for <barebox@lists.infradead.org>; Thu, 01 Oct 2015 21:57:16 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  2 Oct 2015 07:56:51 +0300
-Message-Id: <1443761811-15621-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZhtFm-0000pz-H7
+ for barebox@lists.infradead.org; Fri, 02 Oct 2015 05:51:35 +0000
+Date: Fri, 2 Oct 2015 07:51:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151002055107.GL7858@pengutronix.de>
+References: <1443691216-16936-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1443691216-16936-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,55 +18,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: ls: use 14 digits for filesize
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] fixup! common: clock: introduce mdelay_non_interruptible()
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
 
-10 digits are not enough for modern SATA/USB storages. E.g.:
+On Thu, Oct 01, 2015 at 12:20:16PM +0300, Antony Pavlov wrote:
+> ---
+>  include/clock.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-    barebox> ls -l /dev/
-    cr-------- 500107862016 ata0
-    cr--------   33554432 ata0.0
-    cr-------- 500073258496 ata0.1
-    cr-------- 32224837632 disk0
-    cr--------   67108864 disk0.0
-    cr-------- 32156680192 disk0.1
+Applied, thanks
 
-14 digits look much better. E.g.:
+Sascha
 
-    barebox> ls -l /dev/
-    cr--------   500107862016 ata0
-    cr--------       33554432 ata0.0
-    cr--------   500073258496 ata0.1
-    cr--------    32224837632 disk0
-    cr--------       67108864 disk0.0
-    cr--------    32156680192 disk0.1
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- commands/ls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/commands/ls.c b/commands/ls.c
-index 1a5925d..09437af 100644
---- a/commands/ls.c
-+++ b/commands/ls.c
-@@ -32,7 +32,7 @@ static void ls_one(const char *path, const char* fullname, struct stat *s)
- 	unsigned int namelen = strlen(path);
- 
- 	mkmodestr(s->st_mode, modestr);
--	printf("%s %10llu %*.*s", modestr, s->st_size, namelen, namelen, path);
-+	printf("%s %14llu %*.*s", modestr, s->st_size, namelen, namelen, path);
- 
- 	if (S_ISLNK(s->st_mode)) {
- 		char realname[PATH_MAX];
 -- 
-2.6.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
