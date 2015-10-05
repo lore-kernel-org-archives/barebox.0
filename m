@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZhzZH-0001DV-IW
- for barebox@lists.infradead.org; Fri, 02 Oct 2015 12:36:08 +0000
+ id 1ZizCO-0007LF-UA
+ for barebox@lists.infradead.org; Mon, 05 Oct 2015 06:24:37 +0000
+Date: Mon, 5 Oct 2015 08:24:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  2 Oct 2015 14:35:44 +0200
-Message-Id: <1443789344-19110-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20151005062410.GX7858@pengutronix.de>
+References: <1443789301-25097-1-git-send-email-mpa@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1443789301-25097-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,41 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: core: Increase clock for SD highspeed mode
-To: Barebox List <barebox@lists.infradead.org>
-Cc: mol@pengutronix.de
+Subject: Re: [PATCH] param: dev_add_param_mac() depends on CONFIG_NET
+To: Markus Pargmann <mpa@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Putting a SD card into highspeed mode doesn't help much when we
-still clock the card with 25MHz. Increase the clock speed to 50MHz
-for high speed cards.
+On Fri, Oct 02, 2015 at 02:35:01PM +0200, Markus Pargmann wrote:
+> This patch adds the proper inline function for CONFIG_PARAMETER && !
+> CONFIG_NET.
+> 
+> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+> ---
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/mci-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+Applied, thanks
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 6d5a4bf..9000115 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -652,6 +652,9 @@ retry_scr:
- 	if ((__be32_to_cpu(switch_status[4]) & 0x0f000000) == 0x01000000)
- 		mci->card_caps |= MMC_CAP_SD_HIGHSPEED;
- 
-+	if (mci_caps(mci) & MMC_CAP_SD_HIGHSPEED)
-+		mci->tran_speed = 50000000;
-+
- 	return 0;
- }
- 
+Sascha
+
+
 -- 
-2.6.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
