@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zjruy-0007AL-4B
- for barebox@lists.infradead.org; Wed, 07 Oct 2015 16:50:17 +0000
-Received: by lbcao8 with SMTP id ao8so18711511lbc.3
- for <barebox@lists.infradead.org>; Wed, 07 Oct 2015 09:49:54 -0700 (PDT)
-Date: Wed, 7 Oct 2015 19:52:21 +0300
+ id 1Zjt2b-0002rn-JJ
+ for barebox@lists.infradead.org; Wed, 07 Oct 2015 18:02:14 +0000
+Received: by lbbwt4 with SMTP id wt4so20653074lbb.1
+ for <barebox@lists.infradead.org>; Wed, 07 Oct 2015 11:01:51 -0700 (PDT)
 From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20151007195221.7aaea4c6@berta>
-In-Reply-To: <20151007154024.GA14384@ns203013.ovh.net>
-References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
- <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
- <20151007134703.GA8288@ns203013.ovh.net>
- <20151007174016.00ac1be5@berta>
- <20151007154024.GA14384@ns203013.ovh.net>
-MIME-Version: 1.0
+Date: Wed,  7 Oct 2015 21:03:56 +0300
+Message-Id: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,92 +16,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [RFC] common: filetype: is_fat_or_mbr() considered harmful
+To: barebox@lists.infradead.org
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-On Wed, 7 Oct 2015 17:40:24 +0200
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+Deleted pieces of code detect MBR-containig device as a FAT-type device,
+if it's first partition contains a FAT filesystem. So, one can mount the first
+partition of a hard drive containing FAT FS using the following command:
+	barebox: mount /dev/ata0.0 /mnt/0
+as well as this one:
+	barebox: mount /dev/ata0 /mnt/1
+Both commands mount the same FS.
 
-> On 17:40 Wed 07 Oct     , Peter Mamonov wrote:
-> > On Wed, 7 Oct 2015 15:47:03 +0200
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> > 
-> > > On 18:58 Tue 22 Sep     , Peter Mamonov wrote:
-> > > > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > > > ---
-> > > >  drivers/usb/host/ehci-hcd.c | 6 +++---
-> > > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/usb/host/ehci-hcd.c
-> > > > b/drivers/usb/host/ehci-hcd.c index d6df7b8..03d6150 100644
-> > > > --- a/drivers/usb/host/ehci-hcd.c
-> > > > +++ b/drivers/usb/host/ehci-hcd.c
-> > > > @@ -684,7 +684,7 @@ ehci_submit_root(struct usb_device *dev,
-> > > > unsigned long pipe, void *buffer,
-> > > >  				 * root
-> > > >  				 */
-> > > >  				ehci_powerup_fixup(ehci);
-> > > > -				mdelay(50);
-> > > > +				mdelay_non_interruptible(50);
-> > > >  				ehci->portreset |= 1 << port;
-> > > >  				/* terminate the reset */
-> > > >  				ehci_writel(status_reg, reg &
-> > > > ~EHCI_PS_PR); @@ -747,7 +747,7 @@ ehci_submit_root(struct
-> > > > usb_device *dev, unsigned long pipe, void *buffer, goto unknown;
-> > > >  	}
-> > > >  
-> > > > -	mdelay(1);
-> > > > +	mdelay_non_interruptible(1);
-> > > >  	len = min3(srclen, (int)le16_to_cpu(req->length),
-> > > > length); if (srcptr != NULL && len > 0)
-> > > >  		memcpy(buffer, srcptr, len);
-> > > > @@ -889,7 +889,7 @@ static int ehci_init(struct usb_host *host)
-> > > >  	ehci_writel(&ehci->hcor->or_configflag, cmd);
-> > > >  	/* unblock posted write */
-> > > >  	cmd = ehci_readl(&ehci->hcor->or_usbcmd);
-> > > > -	mdelay(5);
-> > > > +	mdelay_non_interruptible(5);
-> > > why do you need that much non interruptible delau?
-> > 
-> > Non-interruptible delays are needed here to prevent ehci_* functions
-> > re-entrance. The re-entrance occurs during a usb bus scan, after
-> > detection of a usb keyboard. As soon as a USB keyboard is detected,
-> > it's driver starts the poller, which interferes with the process of
-> > usb bus scan. However that last one delay may be interruptible.
-> 
-> my problem is as soon as you start a usb control msg you block
-> everything
-> 
-> nothing else can run in barebox
-> 
-> can slow down barebox boot
-> 
-> I do think we need a real mdelay_non_interruptible feature but just
-> forbidden to recall usb control msg.
-> But the rest of barebox can run durring those 5ms
+This behaviour causes automount (mount -a) to mount FAT FS
+on a first partition twice:
+	barebox: mount
+	none on / type ramfs
+	none on /dev type devfs
+	/dev/ata0 on /mnt/ata0 type fat
+	/dev/ata0.0 on /mnt/ata0.0 type fat
+	/dev/ata0.1 on /mnt/ata0.1 type ext4
+---
+ common/filetype.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-Well, I think it can be done by returning -EAGAIN on re-entrance
-detection in ehci_* functions [1], and skipping the poll in the keyboard
-driver.
-
-By the way, could you clarify: do you really experience
-considerable barebox slowdown or you make an assumtion based on the
-code analysis?
-
-[1]
-http://lists.infradead.org/pipermail/barebox/2015-September/024715.html
-
-Regards,
-Peter
-
-> 
-> Best Regards,
-> J.
+diff --git a/common/filetype.c b/common/filetype.c
+index cc3099b..49a0c8d 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -345,21 +345,6 @@ enum filetype file_name_detect_type(const char *filename)
+ 
+ 	type = file_detect_type(buf, ret);
+ 
+-	if (type == filetype_mbr) {
+-		/*
+-		 * Get the first partition start sector
+-		 * and check for FAT in it
+-		 */
+-		is_fat_or_mbr(buf, &bootsec);
+-		ret = lseek(fd, (bootsec) * 512, SEEK_SET);
+-		if (ret < 0)
+-			goto err_out;
+-		ret = read(fd, buf, 512);
+-		if (ret < 0)
+-			goto err_out;
+-		type = is_fat_or_mbr((u8 *)buf, NULL);
+-	}
+-
+ err_out:
+ 	close(fd);
+ 	free(buf);
+@@ -384,21 +369,6 @@ enum filetype cdev_detect_type(const char *name)
+ 
+ 	type = file_detect_type(buf, ret);
+ 
+-	if (type == filetype_mbr) {
+-		unsigned long bootsec;
+-		/*
+-		 * Get the first partition start sector
+-		 * and check for FAT in it
+-		 */
+-		is_fat_or_mbr(buf, &bootsec);
+-
+-		ret = cdev_read(cdev, buf, 512, bootsec * 512, 0);
+-		if (ret < 0)
+-			goto err_out;
+-
+-		type = is_fat_or_mbr((u8 *)buf, NULL);
+-	}
+-
+ err_out:
+ 	free(buf);
+ 	return type;
+-- 
+2.1.4
 
 
 _______________________________________________
