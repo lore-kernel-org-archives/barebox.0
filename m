@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZkJKr-0001l4-Et
+ id 1ZkJKr-0001mP-Es
  for barebox@lists.infradead.org; Thu, 08 Oct 2015 22:06:52 +0000
-Received: by wicge5 with SMTP id ge5so44528961wic.0
- for <barebox@lists.infradead.org>; Thu, 08 Oct 2015 15:06:26 -0700 (PDT)
+Received: by wicfx3 with SMTP id fx3so43541938wic.0
+ for <barebox@lists.infradead.org>; Thu, 08 Oct 2015 15:06:30 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri,  9 Oct 2015 00:06:03 +0200
-Message-Id: <1444341979-19157-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri,  9 Oct 2015 00:06:13 +0200
+Message-Id: <1444341979-19157-12-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,12 +23,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/17] arm: pxa: Prepare for NAND clkdev lookup on PXA3xx
+Subject: [PATCH 11/17] mtd: nand_mrvl_nfc: Add hwflags to distinguish
+ different HW versions
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-To allow PXA3xx nand driver to be reused on Marvell Armada 370/XP,
-prepare to provide a common clock for the NAND driver on PXA3xx.
+Marvell PXA3xx NAND flash controller IP has been reused in later SoCs
+with additional HW features. Add HW BCH ECC as the first known HW
+difference.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -37,67 +39,53 @@ Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/Kconfig                 |  1 +
- arch/arm/mach-pxa/Kconfig        |  2 ++
- arch/arm/mach-pxa/speed-pxa3xx.c | 16 ++++++++++++++++
- 3 files changed, 19 insertions(+)
+ drivers/mtd/nand/nand_mrvl_nfc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 203f912e96e5..90af91819f08 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -147,6 +147,7 @@ config ARCH_PXA
- 	bool "Intel/Marvell PXA based"
- 	select GENERIC_GPIO
- 	select HAS_POWEROFF
-+	select HAVE_CLK
+diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
+index 5ff5ed72ff49..8a05fc88824b 100644
+--- a/drivers/mtd/nand/nand_mrvl_nfc.c
++++ b/drivers/mtd/nand/nand_mrvl_nfc.c
+@@ -142,6 +142,8 @@ struct mrvl_nand_host {
+ 	size_t			read_id_bytes;
  
- config ARCH_ROCKCHIP
- 	bool "Rockchip RX3xxx"
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index 54094f4ca0ed..1c0894892b17 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -17,6 +17,8 @@ config ARCH_PXA2XX
- config ARCH_PXA3XX
-        bool
-        select CPU_XSC3
-+       select CLKDEV_LOOKUP
-+       select COMMON_CLK
+ 	void __iomem		*mmio_base;
++	unsigned int		hwflags;
++#define HWFLAGS_ECC_BCH		BIT(0)
  
- config ARCH_PXA310
-        bool
-diff --git a/arch/arm/mach-pxa/speed-pxa3xx.c b/arch/arm/mach-pxa/speed-pxa3xx.c
-index 6a08ea78f065..91e03eae4a52 100644
---- a/arch/arm/mach-pxa/speed-pxa3xx.c
-+++ b/arch/arm/mach-pxa/speed-pxa3xx.c
-@@ -8,6 +8,9 @@
-  */
+ 	unsigned int		buf_start;
+ 	unsigned int		buf_count;
+@@ -234,9 +236,12 @@ static struct nand_ecclayout ecc_layout_2KB_hwecc = {
+ #define mtd_info_to_host(mtd) ((struct mrvl_nand_host *) \
+ 			       (((struct nand_chip *)((mtd)->priv))->priv))
  
- #include <common.h>
-+#include <init.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
- #include <mach/clock.h>
- #include <mach/pxa-regs.h>
++const unsigned int pxa3xx_hwflags;
++
+ static struct of_device_id mrvl_nand_dt_ids[] = {
+ 	{
+ 		.compatible = "marvell,pxa3xx-nand",
++		.data = &pxa3xx_hwflags,
+ 	},
+ 	{}
+ };
+@@ -1004,6 +1009,8 @@ static struct mrvl_nand_host *alloc_nand_resource(struct device_d *dev)
+ static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
+ {
+ 	struct device_node *np = host->dev->device_node;
++	const struct of_device_id *match =
++		of_match_node(mrvl_nand_dt_ids, np);
  
-@@ -31,3 +34,16 @@ unsigned long pxa_get_nandclk(void)
- 	else
- 		return 156000000;
+ 	of_property_read_u32(np, "num-cs", &host->num_cs);
+ 	if (of_get_nand_on_flash_bbt(np))
+@@ -1017,6 +1024,8 @@ static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
+ 	if (host->ecc_step < 0)
+ 		host->ecc_step = 0;
+ 
++	host->hwflags = ((unsigned int *)match->data)[0];
++
+ 	return 0;
  }
-+
-+static int pxa3xx_clock_init(void)
-+{
-+	unsigned long nand_rate = (cpu_is_pxa320()) ? 104000000 : 156000000;
-+	struct clk *clk;
-+
-+	clk = clk_fixed("nand", nand_rate);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
-+	return clk_register_clkdev(clk, NULL, "mrvl_nand");
-+}
-+postcore_initcall(pxa3xx_clock_init);
+ 
 -- 
 2.1.0
 
