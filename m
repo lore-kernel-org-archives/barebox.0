@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x235.google.com ([2a00:1450:400c:c05::235])
+Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZkJKq-0001l8-RD
- for barebox@lists.infradead.org; Thu, 08 Oct 2015 22:06:49 +0000
-Received: by wicfx3 with SMTP id fx3so46999265wic.1
+ id 1ZkJKr-0001lH-6z
+ for barebox@lists.infradead.org; Thu, 08 Oct 2015 22:06:50 +0000
+Received: by wicfx3 with SMTP id fx3so46999408wic.1
  for <barebox@lists.infradead.org>; Thu, 08 Oct 2015 15:06:27 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri,  9 Oct 2015 00:06:05 +0200
-Message-Id: <1444341979-19157-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri,  9 Oct 2015 00:06:04 +0200
+Message-Id: <1444341979-19157-3-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,12 +23,13 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/17] mtd: nand: Clarify Marvell Orion Kconfig prompt
+Subject: [PATCH 02/17] mtd: nand_mrvl_nfc: Use common clock for core clock
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-Kconfig prompt for Marvell Orion SoCs is missing a "Marvell"
-prefix, add it to the prompt.
+With PXA3xx now providing a common clock for the NAND clock, use it
+and get rid of the mach/clock.h. This will allow Marvell Armada 370/XP
+to reuse the same driver.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -37,22 +38,55 @@ Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 Cc: barebox@lists.infradead.org
 ---
- drivers/mtd/nand/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/nand_mrvl_nfc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
-index ff265848459a..3426ec055756 100644
---- a/drivers/mtd/nand/Kconfig
-+++ b/drivers/mtd/nand/Kconfig
-@@ -92,7 +92,7 @@ config NAND_OMAP_GPMC
+diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
+index 1ec48cc09e59..bdf949de0e7f 100644
+--- a/drivers/mtd/nand/nand_mrvl_nfc.c
++++ b/drivers/mtd/nand/nand_mrvl_nfc.c
+@@ -24,7 +24,6 @@
+ #include <linux/types.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+-#include <mach/clock.h>
+ #include <malloc.h>
+ #include <of_mtd.h>
+ #include <stmp-device.h>
+@@ -135,6 +134,7 @@ struct mrvl_nand_host {
+ 	struct nand_chip	chip;
+ 	struct mtd_partition	*parts;
+ 	struct device_d		*dev;
++	struct clk		*core_clk;
  
- config NAND_ORION
- 	bool
--	prompt "Orion NAND driver"
-+	prompt "Marvell Orion NAND driver"
- 	depends on ARCH_KIRKWOOD
- 	help
- 	  Support for the Orion NAND controller, present in Kirkwood SoCs.
+ 	/* calculated from mrvl_nand_flash data */
+ 	unsigned int		col_addr_cycles;
+@@ -281,10 +281,10 @@ static struct mrvl_nand_timing timings[] = {
+ static void mrvl_nand_set_timing(struct mrvl_nand_host *host, bool use_default)
+ {
+ 	struct mtd_info *mtd = &host->mtd;
++	unsigned long nand_clk = clk_get_rate(host->core_clk);
+ 	struct mrvl_nand_timing *t;
+ 	uint32_t ndtr0, ndtr1;
+ 	u16 id;
+-	unsigned long nand_clk = pxa_get_nandclk();
+ 
+ 	if (use_default) {
+ 		id = 0;
+@@ -954,6 +954,13 @@ static struct mrvl_nand_host *alloc_nand_resource(struct device_d *dev)
+ 		free(host);
+ 		return host->mmio_base;
+ 	}
++	host->core_clk = clk_get(dev, NULL);
++	if (IS_ERR(host->core_clk)) {
++		free(host);
++		return (void *)host->core_clk;
++	}
++	clk_enable(host->core_clk);
++
+ 	if (pdata) {
+ 		host->keep_config = pdata->keep_config;
+ 		host->flash_bbt = pdata->flash_bbt;
 -- 
 2.1.0
 
