@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZkJKx-0000WE-0M
- for barebox@lists.infradead.org; Thu, 08 Oct 2015 22:06:55 +0000
-Received: by wicge5 with SMTP id ge5so44531271wic.0
- for <barebox@lists.infradead.org>; Thu, 08 Oct 2015 15:06:32 -0700 (PDT)
+Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZkJKv-0001mq-Jh
+ for barebox@lists.infradead.org; Thu, 08 Oct 2015 22:06:58 +0000
+Received: by wiclk2 with SMTP id lk2so43824722wic.1
+ for <barebox@lists.infradead.org>; Thu, 08 Oct 2015 15:06:31 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri,  9 Oct 2015 00:06:18 +0200
-Message-Id: <1444341979-19157-17-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri,  9 Oct 2015 00:06:16 +0200
+Message-Id: <1444341979-19157-15-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,14 +23,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/17] mtd: nand_mrvl_nfc: Add support for Marvell Armada
- 370/XP
+Subject: [PATCH 14/17] mtd: nand_mrvl_nfc: Add support for HW BCH ECC
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-Marvell PXA3xx and Armada 370/XP share the same NAND controller IP
-with some minor differences. With support for controller IP v2, now
-allow to build the driver on Armada 370/XP.
+Add support for HW BCH ECC for those HW versions that support it.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -39,51 +36,70 @@ Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 Cc: barebox@lists.infradead.org
 ---
- drivers/mtd/nand/Kconfig         | 7 ++++---
- drivers/mtd/nand/nand_mrvl_nfc.c | 5 +++++
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/nand_mrvl_nfc.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
-index 3426ec055756..2b4a478a03dd 100644
---- a/drivers/mtd/nand/Kconfig
-+++ b/drivers/mtd/nand/Kconfig
-@@ -99,10 +99,11 @@ config NAND_ORION
- 
- config NAND_MRVL_NFC
- 	bool
--	prompt "Marvell NAND driver"
--	depends on ARCH_PXA3XX
-+	prompt "Marvell PXA3xx NAND driver"
-+	depends on ARCH_ARMADA_370 || ARCH_ARMADA_XP || ARCH_PXA3XX
- 	help
--	  Support for the PXA3xx NAND controller, present in pxa3xx SoCs.
-+	  Support for the PXA3xx NAND controller, present in Armada 370/XP and
-+	  PXA3xx SoCs.
- 
- config NAND_ATMEL
- 	bool
 diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-index 8594cf688d0c..07dc1bdbe6cf 100644
+index 7c26ad15874d..16752c1aa4d5 100644
 --- a/drivers/mtd/nand/nand_mrvl_nfc.c
 +++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-@@ -277,12 +277,17 @@ static struct nand_ecclayout ecc_layout_4KB_bch8bit = {
- 			       (((struct nand_chip *)((mtd)->priv))->priv))
+@@ -92,6 +92,8 @@
+ #define NDSR_RDDREQ		(0x1 << 1)
+ #define NDSR_WRCMDREQ		(0x1)
  
- const unsigned int pxa3xx_hwflags;
-+const unsigned int armada370_hwflags = HWFLAGS_ECC_BCH | HWFLAGS_HAS_NDCB3;
++#define NDECCCTRL_BCH_EN	BIT(0)
++
+ #define NDCB0_LEN_OVRD		(0x1 << 28)
+ #define NDCB0_ST_ROW_EN         (0x1 << 26)
+ #define NDCB0_AUTO_RS		(0x1 << 25)
+@@ -419,6 +421,17 @@ static void mrvl_nand_start(struct mrvl_nand_host *host)
+ {
+ 	uint32_t ndcr;
  
- static struct of_device_id mrvl_nand_dt_ids[] = {
- 	{
- 		.compatible = "marvell,pxa3xx-nand",
- 		.data = &pxa3xx_hwflags,
- 	},
-+	{
-+		.compatible = "marvell,armada370-nand",
-+		.data = &armada370_hwflags,
-+	},
- 	{}
- };
++	if (host->hwflags & HWFLAGS_ECC_BCH) {
++		uint32_t reg = nand_readl(host, NDECCCTRL);
++
++		if (host->use_ecc && host->ecc_bch)
++			reg |= NDECCCTRL_BCH_EN;
++		else
++			reg &= ~NDECCCTRL_BCH_EN;
++
++		nand_writel(host, NDECCCTRL, reg);
++	}
++
+ 	ndcr = host->reg_ndcr;
+ 	if (host->use_ecc)
+ 		ndcr |= NDCR_ECC_EN;
+@@ -787,8 +800,15 @@ static int mrvl_nand_read_page_hwecc(struct mtd_info *mtd,
+ 		else
+ 			ret = -EBADMSG;
+ 	}
+-	if (ndsr & NDSR_CORERR)
+-		ret = 1;
++	if (ndsr & NDSR_CORERR) {
++		if ((host->hwflags & HWFLAGS_ECC_BCH) && host->ecc_bch) {
++			ret = NDSR_ERR_CNT(ndsr);
++			ndsr &= ~(NDSR_ERR_CNT_MASK << NDSR_ERR_CNT_OFF);
++			nand_writel(host, NDSR, ndsr);
++		}
++		else
++			ret = 1;
++	}
+ 	dev_dbg(host->dev, "%s(buf=%p, page=%d, oob_required=%d) => %d\n",
+ 		__func__, buf, page, oob_required, ret);
+ 	return ret;
+@@ -1001,6 +1021,11 @@ static int mrvl_nand_scan(struct mtd_info *mtd)
+ 	ndcr |= NDCR_RD_ID_CNT(host->read_id_bytes);
+ 	host->reg_ndcr = ndcr;
  
++	/* Device detection must be done with BCH ECC disabled */
++	if (host->hwflags & HWFLAGS_ECC_BCH)
++		nand_writel(host, NDECCCTRL,
++			    nand_readl(host, NDECCCTRL) & ~NDECCCTRL_BCH_EN);
++
+ 	mrvl_nand_set_timing(host, true);
+ 	if (nand_scan_ident(mtd, 1, NULL)) {
+ 		host->reg_ndcr |= NDCR_DWIDTH_M | NDCR_DWIDTH_C;
 -- 
 2.1.0
 
