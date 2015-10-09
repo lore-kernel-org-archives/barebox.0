@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZkRDy-0001e8-5m
- for barebox@lists.infradead.org; Fri, 09 Oct 2015 06:32:15 +0000
-Date: Fri, 9 Oct 2015 08:31:49 +0200
+ id 1ZkShS-0000eL-MG
+ for barebox@lists.infradead.org; Fri, 09 Oct 2015 08:06:47 +0000
+Date: Fri, 9 Oct 2015 10:06:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151009063149.GD7858@pengutronix.de>
-References: <1444233177-21491-1-git-send-email-pmamonov@gmail.com>
+Message-ID: <20151009080624.GF7858@pengutronix.de>
+References: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1444233177-21491-1-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fixup! detect_fs: use device instead of file
+Subject: Re: [RFC] common: filetype: is_fat_or_mbr() considered harmful
 To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org, vicencb@gmail.com
+Cc: barebox@lists.infradead.org
 
-On Wed, Oct 07, 2015 at 06:52:57PM +0300, Peter Mamonov wrote:
-> ---
->  fs/fs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Peter,
+
+On Wed, Oct 07, 2015 at 09:03:56PM +0300, Peter Mamonov wrote:
+> Deleted pieces of code detect MBR-containig device as a FAT-type device,
+> if it's first partition contains a FAT filesystem. So, one can mount the first
+> partition of a hard drive containing FAT FS using the following command:
+> 	barebox: mount /dev/ata0.0 /mnt/0
+> as well as this one:
+> 	barebox: mount /dev/ata0 /mnt/1
+> Both commands mount the same FS.
 > 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index c041e41..6283cea 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -1201,7 +1201,7 @@ EXPORT_SYMBOL(register_fs_driver);
->  
->  static const char *detect_fs(const char *filename)
->  {
-> -	enum filetype type = cdev_detect_type(filename);
-> +	enum filetype type = cdev_detect_type(basename(filename));
+> This behaviour causes automount (mount -a) to mount FAT FS
+> on a first partition twice:
+> 	barebox: mount
+> 	none on / type ramfs
+> 	none on /dev type devfs
+> 	/dev/ata0 on /mnt/ata0 type fat
+> 	/dev/ata0.0 on /mnt/ata0.0 type fat
+> 	/dev/ata0.1 on /mnt/ata0.1 type ext4
 
-basename is not so nice since we do not know whether the the part of the
-path we drop is really what we expect. Can we rather have a:
-
-	if (!strncmp(filename, "/dev/", 5))
-		filename += 5;
+This is_fat_or_mbr mechanism never worked very well and had funny side
+effects. Would be nice to get rid of it.
+Simply removing this option is not a solution though, we have to find a
+proper way to keep the current feature and make it more sane.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
