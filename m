@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZkShS-0000eL-MG
- for barebox@lists.infradead.org; Fri, 09 Oct 2015 08:06:47 +0000
-Date: Fri, 9 Oct 2015 10:06:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151009080624.GF7858@pengutronix.de>
-References: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
+ id 1ZkVXq-0003jM-7h
+ for barebox@lists.infradead.org; Fri, 09 Oct 2015 11:09:03 +0000
+Received: by lbwr8 with SMTP id r8so76315302lbw.2
+ for <barebox@lists.infradead.org>; Fri, 09 Oct 2015 04:08:39 -0700 (PDT)
+Date: Fri, 9 Oct 2015 14:11:07 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20151009141107.39681df1@berta>
+In-Reply-To: <20151009063149.GD7858@pengutronix.de>
+References: <1444233177-21491-1-git-send-email-pmamonov@gmail.com>
+ <20151009063149.GD7858@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +24,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] common: filetype: is_fat_or_mbr() considered harmful
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] fixup! detect_fs: use device instead of file
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, vicencb@gmail.com
 
-Hi Peter,
+On Fri, 9 Oct 2015 08:31:49 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-On Wed, Oct 07, 2015 at 09:03:56PM +0300, Peter Mamonov wrote:
-> Deleted pieces of code detect MBR-containig device as a FAT-type device,
-> if it's first partition contains a FAT filesystem. So, one can mount the first
-> partition of a hard drive containing FAT FS using the following command:
-> 	barebox: mount /dev/ata0.0 /mnt/0
-> as well as this one:
-> 	barebox: mount /dev/ata0 /mnt/1
-> Both commands mount the same FS.
+> On Wed, Oct 07, 2015 at 06:52:57PM +0300, Peter Mamonov wrote:
+> > ---
+> >  fs/fs.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/fs/fs.c b/fs/fs.c
+> > index c041e41..6283cea 100644
+> > --- a/fs/fs.c
+> > +++ b/fs/fs.c
+> > @@ -1201,7 +1201,7 @@ EXPORT_SYMBOL(register_fs_driver);
+> >  
+> >  static const char *detect_fs(const char *filename)
+> >  {
+> > -	enum filetype type = cdev_detect_type(filename);
+> > +	enum filetype type = cdev_detect_type(basename(filename));
 > 
-> This behaviour causes automount (mount -a) to mount FAT FS
-> on a first partition twice:
-> 	barebox: mount
-> 	none on / type ramfs
-> 	none on /dev type devfs
-> 	/dev/ata0 on /mnt/ata0 type fat
-> 	/dev/ata0.0 on /mnt/ata0.0 type fat
-> 	/dev/ata0.1 on /mnt/ata0.1 type ext4
+> basename is not so nice since we do not know whether the the part of
+> the path we drop is really what we expect. Can we rather have a:
+> 
+> 	if (!strncmp(filename, "/dev/", 5))
+> 		filename += 5;
 
-This is_fat_or_mbr mechanism never worked very well and had funny side
-effects. Would be nice to get rid of it.
-Simply removing this option is not a solution though, we have to find a
-proper way to keep the current feature and make it more sane.
+What if devfs is mounted somehere else (not on /dev)?
 
-Sascha
+Let me clarify the situation. After applying "detect_fs: use device
+instead of file" the mount command becomes completely broken for me,
+since detect_fs() is supplied with the full path to the device file,
+while cdev_by_name() expects device file name rather than full path:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+static const char *detect_fs(const char *filename)
+{
+	enum filetype type = cdev_detect_type(filename);
+	...
+	if (type == filetype_unknown)
+		return NULL;
+	...
+}
+struct cdev *cdev_by_name(const char *filename)
+{
+	struct cdev *cdev;
+
+	list_for_each_entry(cdev, &cdev_list, list) {
+		if (!strcmp(cdev->name, filename)) <<<<<<< NO MATCH
+			return cdev;
+	}
+	return NULL;
+}
+struct cdev {
+	...
+	char *name; /* filename under /dev/ */
+	...
+}
+
+Can you explain how could it work for Vicente:
+http://lists.infradead.org/pipermail/barebox/2015-October/024832.html
+?
+
+Peter
+
+> 
+> Sascha
+> 
+> 
+
 
 _______________________________________________
 barebox mailing list
