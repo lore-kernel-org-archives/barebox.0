@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZkWwU-0002hT-SZ
- for barebox@lists.infradead.org; Fri, 09 Oct 2015 12:38:35 +0000
-Received: by lbbwt4 with SMTP id wt4so79161409lbb.1
- for <barebox@lists.infradead.org>; Fri, 09 Oct 2015 05:38:12 -0700 (PDT)
-Date: Fri, 9 Oct 2015 15:40:37 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20151009154037.389bb1ab@berta>
-In-Reply-To: <20151009080624.GF7858@pengutronix.de>
+ id 1ZkaH9-0004n1-Eu
+ for barebox@lists.infradead.org; Fri, 09 Oct 2015 16:12:08 +0000
+Date: Fri, 9 Oct 2015 18:11:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151009161143.GG7858@pengutronix.de>
 References: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
  <20151009080624.GF7858@pengutronix.de>
+ <20151009154037.389bb1ab@berta>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20151009154037.389bb1ab@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,94 +25,106 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] common: filetype: is_fat_or_mbr() considered harmful
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, 9 Oct 2015 10:06:24 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> Hi Peter,
+On Fri, Oct 09, 2015 at 03:40:37PM +0300, Peter Mamonov wrote:
+> On Fri, 9 Oct 2015 10:06:24 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> On Wed, Oct 07, 2015 at 09:03:56PM +0300, Peter Mamonov wrote:
-> > Deleted pieces of code detect MBR-containig device as a FAT-type
-> > device, if it's first partition contains a FAT filesystem. So, one
-> > can mount the first partition of a hard drive containing FAT FS
-> > using the following command: barebox: mount /dev/ata0.0 /mnt/0
-> > as well as this one:
-> > 	barebox: mount /dev/ata0 /mnt/1
-> > Both commands mount the same FS.
+> > Hi Peter,
 > > 
-> > This behaviour causes automount (mount -a) to mount FAT FS
-> > on a first partition twice:
-> > 	barebox: mount
-> > 	none on / type ramfs
-> > 	none on /dev type devfs
-> > 	/dev/ata0 on /mnt/ata0 type fat
-> > 	/dev/ata0.0 on /mnt/ata0.0 type fat
-> > 	/dev/ata0.1 on /mnt/ata0.1 type ext4
+> > On Wed, Oct 07, 2015 at 09:03:56PM +0300, Peter Mamonov wrote:
+> > > Deleted pieces of code detect MBR-containig device as a FAT-type
+> > > device, if it's first partition contains a FAT filesystem. So, one
+> > > can mount the first partition of a hard drive containing FAT FS
+> > > using the following command: barebox: mount /dev/ata0.0 /mnt/0
+> > > as well as this one:
+> > > 	barebox: mount /dev/ata0 /mnt/1
+> > > Both commands mount the same FS.
+> > > 
+> > > This behaviour causes automount (mount -a) to mount FAT FS
+> > > on a first partition twice:
+> > > 	barebox: mount
+> > > 	none on / type ramfs
+> > > 	none on /dev type devfs
+> > > 	/dev/ata0 on /mnt/ata0 type fat
+> > > 	/dev/ata0.0 on /mnt/ata0.0 type fat
+> > > 	/dev/ata0.1 on /mnt/ata0.1 type ext4
+> > 
+> > This is_fat_or_mbr mechanism never worked very well and had funny side
+> > effects. Would be nice to get rid of it.
+> > Simply removing this option is not a solution though, we have to find
+> > a proper way to keep the current feature and make it more sane.
 > 
-> This is_fat_or_mbr mechanism never worked very well and had funny side
-> effects. Would be nice to get rid of it.
-> Simply removing this option is not a solution though, we have to find
-> a proper way to keep the current feature and make it more sane.
-
-Ok, the patch comment is misleading a bit. I do not propose to get rid
-of the is_fat_or_mbr() completely. However, I do not see the point
-to check for a FAT FS, after the device was correctly detected as an
-MBR-type device:
-
-enum filetype file_name_detect_type(const char *filename)
-       ... 
-       type = file_detect_type(buf, ret);
- 
-       if (type == filetype_mbr) {
-               /*
-                * Get the first partition start sector
-                * and check for FAT in it
-                */
-               is_fat_or_mbr(buf, &bootsec);
-               ret = lseek(fd, (bootsec) * 512, SEEK_SET);
-               if (ret < 0)
-                       goto err_out;
-               ret = read(fd, buf, 512);
-               if (ret < 0)
-                       goto err_out;
-               type = is_fat_or_mbr((u8 *)buf, NULL);
-       }
-
-
-The deleted code snippet was introduced by this patch:
-
-commit 010ee209b75c5732ae4144e3ee9ce14158193c1f
-Author: Franck Jullien <franck.jullien@gmail.com>
-Date:   Wed Sep 19 13:09:01 2012 +0200
-
-    filetype: Improve FAT detection
-    
-    We may have some disk with MBR as a first sector. In this case, the
-    current FAT check returns an error. However, the FAT sector exist
-    and the MBR can tell us where it is.
-    
-    This patch add to file_name_detect_type function the ability to find
-    the FAT boot sector on the first sector of the first partition in
-    case it is not on sector 0.
-    
-    It also introduce is_fat_or_mbr to check if a buffer is a FAT boot
-    or MBR sector
-    
-    Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-According to the patch message it was introduced to workaround FAT
-detection. However, after deletion of the code I'm still able to detect
-and mount FAT-containig partiotions.
-
-Peter
-
+> Ok, the patch comment is misleading a bit. I do not propose to get rid
+> of the is_fat_or_mbr() completely. However, I do not see the point
+> to check for a FAT FS, after the device was correctly detected as an
+> MBR-type device:
 > 
-> Sascha
+> enum filetype file_name_detect_type(const char *filename)
+>        ... 
+>        type = file_detect_type(buf, ret);
+>  
+>        if (type == filetype_mbr) {
+>                /*
+>                 * Get the first partition start sector
+>                 * and check for FAT in it
+>                 */
+>                is_fat_or_mbr(buf, &bootsec);
+>                ret = lseek(fd, (bootsec) * 512, SEEK_SET);
+>                if (ret < 0)
+>                        goto err_out;
+>                ret = read(fd, buf, 512);
+>                if (ret < 0)
+>                        goto err_out;
+>                type = is_fat_or_mbr((u8 *)buf, NULL);
+>        }
 > 
+> 
+> The deleted code snippet was introduced by this patch:
+> 
+> commit 010ee209b75c5732ae4144e3ee9ce14158193c1f
+> Author: Franck Jullien <franck.jullien@gmail.com>
+> Date:   Wed Sep 19 13:09:01 2012 +0200
+> 
+>     filetype: Improve FAT detection
+>     
+>     We may have some disk with MBR as a first sector. In this case, the
+>     current FAT check returns an error. However, the FAT sector exist
+>     and the MBR can tell us where it is.
+>     
+>     This patch add to file_name_detect_type function the ability to find
+>     the FAT boot sector on the first sector of the first partition in
+>     case it is not on sector 0.
+>     
+>     It also introduce is_fat_or_mbr to check if a buffer is a FAT boot
+>     or MBR sector
+>     
+>     Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+>     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> According to the patch message it was introduced to workaround FAT
+> detection. However, after deletion of the code I'm still able to detect
+> and mount FAT-containig partiotions.
 
+But can you mount /dev/disk0 if this disk contains a partition table and
+the FAT is on /dev/disk0.0? This is what the patch is about. The problem
+the patches solved is that when you plug in a USB drive then you don't
+know whether a FAT is directly on the device or if the device is
+partitioned. You want to be able to mount both ways with the same
+command, so no matter if the FAT is on /dev/disk0 or /dev/disk0.0 you
+can mount both using /dev/disk0.
+The way this problem is solved currently is not very good, we should
+find a better way.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
