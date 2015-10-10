@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]
- helo=smtp.smtpout.orange.fr)
+Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zkqrw-0003AG-MY
- for barebox@lists.infradead.org; Sat, 10 Oct 2015 09:55:13 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
+ id 1Zkxmr-0004Ru-0W
+ for barebox@lists.infradead.org; Sat, 10 Oct 2015 17:18:25 +0000
+Received: by wicge5 with SMTP id ge5so105015299wic.0
+ for <barebox@lists.infradead.org>; Sat, 10 Oct 2015 10:18:02 -0700 (PDT)
+Message-ID: <56194847.5070908@gmail.com>
+Date: Sat, 10 Oct 2015 19:17:59 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1444341979-19157-8-git-send-email-sebastian.hesselbarth@gmail.com>
- <87a8rr864c.fsf@belgarion.home> <5618DC1F.90800@gmail.com>
-Date: Sat, 10 Oct 2015 11:49:27 +0200
-In-Reply-To: <5618DC1F.90800@gmail.com> (Sebastian Hesselbarth's message of
- "Sat, 10 Oct 2015 11:36:31 +0200")
-Message-ID: <87wpuv6ok8.fsf@belgarion.home>
-MIME-Version: 1.0
+ <1444341979-19157-16-git-send-email-sebastian.hesselbarth@gmail.com>
+ <87612f85yz.fsf@belgarion.home>
+In-Reply-To: <87612f85yz.fsf@belgarion.home>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +20,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/17] mtd: nand_mrvl_nfc: Use Auto Read Status on
- program/erase
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 15/17] mtd: nand_mrvl_nfc: Add support for NDCB3 register
+To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
-
-> And the reason why I didn't do any timing rework is that DT
-> infrastructure for passing timing information, ONFI parsing, aso
-> is still very vague. I really need more time to think about the
-> best way to deal with it.
+On 10.10.2015 10:48, Robert Jarzmik wrote:
+> Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
 >
-> For example, ONFI timings give you a set of timings but they do
-> not specify tPROG, tERASE and friends. Those have to be parsed
-> from some other ONFI commands. I really want to do this step
-> by step and it has to be in-sync with Linux mtd... something
-> that would stall NAND support on Armada a little while.
+>> Newer versions of PXA3xx NAND controller support a 4th Command Buffer
+>> register. Add the required HWFLAGS and additional write to NDCB0.
+>>
+>> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> Hi quite like the hwflags approach, this is something that would be good in
+> linux kernel too :)
+
+Definetely. I have the bad feeling that Berlin NAND IP is - as always -
+"same same but different" ;)
+
+> Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 >
-> Bottom-line: If the Auto RS feature doesn't break PXA, I'd
-> appreciate if it is enabled at least until I can confirm
-> proper timings are being read for the device I have.
-I'll make the test.
-And yes, if no breakage, that's a good reason, it even deserves a note in the
-commit message, at least that without it you have timeout issues on Armada.
+> Cheers.
+>
 
-Cheers.
-
--- 
-Robert
 
 _______________________________________________
 barebox mailing list
