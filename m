@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x231.google.com ([2607:f8b0:400e:c03::231])
+Received: from mail-pa0-x230.google.com ([2607:f8b0:400e:c03::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlLbd-0007rf-OU
- for barebox@lists.infradead.org; Sun, 11 Oct 2015 18:44:26 +0000
-Received: by padhy16 with SMTP id hy16so133243476pad.1
- for <barebox@lists.infradead.org>; Sun, 11 Oct 2015 11:44:08 -0700 (PDT)
+ id 1ZlLbb-0007ra-TN
+ for barebox@lists.infradead.org; Sun, 11 Oct 2015 18:44:24 +0000
+Received: by padhy16 with SMTP id hy16so133242340pad.1
+ for <barebox@lists.infradead.org>; Sun, 11 Oct 2015 11:44:03 -0700 (PDT)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 11 Oct 2015 11:43:40 -0700
-Message-Id: <1444589021-12727-7-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun, 11 Oct 2015 11:43:35 -0700
+Message-Id: <1444589021-12727-2-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1444589021-12727-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1444589021-12727-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,40 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] common/parser.c: Do not conflate error reporting
- disciplines
+Subject: [PATCH 2/8] arm: Disable unaligned accesses
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Run_command() uses 0 to indicate success and negative values to
-indicate errors, whereas execute_command() uses 0 for success and
-positive integers to represent error codes. Conflating the two breaks
-the code that calls run_command and then checks for error code sign to
-detect problems, so avoid that by doing a very simple transformation
-on the result of execute_command
+Form reading ARM architecture related documentation if appears that
+while unaligned memory access is supported by the processor in general
+it is not supported if MMU is disabled.
+
+The problem in question can be easilty reproduced by building the code
+without this patch, MMU disabled, and trying to run 'memtest'
+command. Which would in turn call mem_test() which would eventually
+call show_progress(). That last function, if build without
+-mno-unaligned-access would result in unaligned memory access which
+would result in Barebox hanging.
+
+This patch instructs the compiler to not generate any unaligned
+accesses to memory thus avoiding the problem.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- common/parser.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/Makefile | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/common/parser.c b/common/parser.c
-index ed414d0..2b95aed 100644
---- a/common/parser.c
-+++ b/common/parser.c
-@@ -253,7 +253,8 @@ int run_command(const char *cmd)
- 			continue;
- 		}
- 
--		rc = execute_command(argc, argv);
-+		if (execute_command(argc, argv) != COMMAND_SUCCESS)
-+			rc = -1;
- 	}
- 
- 	return rc;
--- 
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 721aa9b..cae05ff 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -13,6 +13,13 @@ AS		+= -EL
+ LD		+= -EL
+ endif
+
++# Unaligned access is not supported when MMU is disabled, so given how
++# at least some of the code would be executed with MMU off, lets be
++# conservative and instruct the compiler not to generate any unaligned
++# accesses
++CFLAGS += -mno-unaligned-access
++
++
+ # This selects which instruction set is used.
+ # Note that GCC does not numerically define an architecture version
+ # macro, but instead defines a whole series of macros which makes
+--
 2.1.4
-
 
 _______________________________________________
 barebox mailing list
