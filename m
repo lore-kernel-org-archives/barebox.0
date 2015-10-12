@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wi0-x22d.google.com ([2a00:1450:400c:c05::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlX6C-0001f7-El
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 07:00:46 +0000
-Date: Mon, 12 Oct 2015 09:00:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151012070021.GO7858@pengutronix.de>
-References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
- <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
- <20151007134703.GA8288@ns203013.ovh.net>
- <20151007174016.00ac1be5@berta>
- <20151007154024.GA14384@ns203013.ovh.net>
- <20151007195221.7aaea4c6@berta>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20151007195221.7aaea4c6@berta>
+ id 1ZlXbc-0003hI-PE
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 07:33:13 +0000
+Received: by wicge5 with SMTP id ge5so138449727wic.0
+ for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 00:32:51 -0700 (PDT)
+References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1444341979-19157-10-git-send-email-sebastian.hesselbarth@gmail.com>
+ <87h9lx6sx3.fsf@belgarion.home> <20151012062858.GM7858@pengutronix.de>
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Message-ID: <561B6220.7080805@gmail.com>
+Date: Mon, 12 Oct 2015 09:32:48 +0200
+In-Reply-To: <20151012062858.GM7858@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +20,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 09/17] mtd: nand_mrvl_nfc: Get ecc parameters from DT
+To: Sascha Hauer <s.hauer@pengutronix.de>, Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-On Wed, Oct 07, 2015 at 07:52:21PM +0300, Peter Mamonov wrote:
-> On Wed, 7 Oct 2015 17:40:24 +0200
-> > > Non-interruptible delays are needed here to prevent ehci_* functions
-> > > re-entrance. The re-entrance occurs during a usb bus scan, after
-> > > detection of a usb keyboard. As soon as a USB keyboard is detected,
-> > > it's driver starts the poller, which interferes with the process of
-> > > usb bus scan. However that last one delay may be interruptible.
-> > 
-> > my problem is as soon as you start a usb control msg you block
-> > everything
-> > 
-> > nothing else can run in barebox
-> > 
-> > can slow down barebox boot
-> > 
-> > I do think we need a real mdelay_non_interruptible feature but just
-> > forbidden to recall usb control msg.
-> > But the rest of barebox can run durring those 5ms
-> 
-> Well, I think it can be done by returning -EAGAIN on re-entrance
-> detection in ehci_* functions [1], and skipping the poll in the keyboard
-> driver.
-
-Could you tell us what you have done to get re-entrance problems? I have
-just replaced the mdelay_non_interruptible with regular mdelay in the
-ehci driver and didn't notice any problems. Could you verify the
-_non_interruptible is still needed?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMTIuMTAuMjAxNSAwODoyOCwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+IE9uIFN1biwgT2N0IDEx
+LCAyMDE1IGF0IDEwOjM5OjUyUE0gKzAyMDAsIFJvYmVydCBKYXJ6bWlrIHdyb3RlOgo+PiBTZWJh
+c3RpYW4gSGVzc2VsYmFydGggPHNlYmFzdGlhbi5oZXNzZWxiYXJ0aEBnbWFpbC5jb20+IHdyaXRl
+czoKPj4KPj4+IFdpdGggRFQgaGVscGVycyBmb3IgRUNDIHN0ZXAgc2l6ZSBhbmQgc3RyZW5ndGgs
+IG5vdyB1c2UgdGhlbSBvbgo+Pj4gTWFydmVsbCBOQU5EIGRyaXZlci4KPj4+Cj4+PiBTaWduZWQt
+b2ZmLWJ5OiBTZWJhc3RpYW4gSGVzc2VsYmFydGggPHNlYmFzdGlhbi5oZXNzZWxiYXJ0aEBnbWFp
+bC5jb20+Cj4+IFRoaXMgb25lIGJyZWFrIHRoZSBweGEgKHp5bG9uaXRlMzEwX2RlZmNvbmZpZykg
+YnVpbGQgOgo+PiBkcml2ZXJzL210ZC9uYW5kL25hbmRfbXJ2bF9uZmMuYzogSW4gZnVuY3Rpb24g
+4oCYbXJ2bF9uYW5kX3Byb2JlX2R04oCZOgo+PiBkcml2ZXJzL210ZC9uYW5kL25hbmRfbXJ2bF9u
+ZmMuYzoxMTYzOjI6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiDigJhv
+Zl9nZXRfbmFuZF9lY2Nfc3RyZW5ndGjigJkgWy1XZXJyb3I9aW1wbGljaXQtZnVuY3Rpb24tZGVj
+bGFyYXRpb25dCj4+ICAgIGhvc3QtPmVjY19zdHJlbmd0aCA9IG9mX2dldF9uYW5kX2VjY19zdHJl
+bmd0aChucCk7Cj4+ICAgIF4KPj4gZHJpdmVycy9tdGQvbmFuZC9uYW5kX21ydmxfbmZjLmM6MTE2
+NzoyOiBlcnJvcjogaW1wbGljaXQgZGVjbGFyYXRpb24gb2YgZnVuY3Rpb24g4oCYb2ZfZ2V0X25h
+bmRfZWNjX3N0ZXBfc2l6ZeKAmSBbLVdlcnJvcj1pbXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJhdGlv
+bl0KPj4gICAgaG9zdC0+ZWNjX3N0ZXAgPSBvZl9nZXRfbmFuZF9lY2Nfc3RlcF9zaXplKG5wKTsK
+Pj4gICAgXgo+PiBjYzE6IHNvbWUgd2FybmluZ3MgYmVpbmcgdHJlYXRlZCBhcyBlcnJvcnMKPgo+
+IFllcywgd2UgY3VycmVudGx5IGRvIG5vdCBoYXZlIHRoZXNlIGZ1bmN0aW9ucyBpbiBiYXJlYm94
+LgoKU29ycnksIEkgc2ltcGx5IGZhaWxlZCB0byBhZGQgdGhpcyBwYXRjaCB0byB0aGUgc2VyaWVz
+LiBJJ2xsCnNlbmQgdGhlIG1pc3NpbmcgcGF0Y2ggbGF0ZXIgdG9kYXkgYW5kIG1ha2Ugc3VyZSBp
+dCdsbCBiZQppbmNsdWRlZCBpbiB2MiBvbmNlIGFsbCBpc3N1ZXMgaGF2ZSBiZWVuIHdvcmtlZCBv
+dXQuCgpTZWJhc3RpYW4KCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
