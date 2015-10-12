@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]
- helo=smtp.smtpout.orange.fr)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlNUx-0004XW-4V
- for barebox@lists.infradead.org; Sun, 11 Oct 2015 20:45:39 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1444341979-19157-10-git-send-email-sebastian.hesselbarth@gmail.com>
-Date: Sun, 11 Oct 2015 22:39:52 +0200
-In-Reply-To: <1444341979-19157-10-git-send-email-sebastian.hesselbarth@gmail.com>
- (Sebastian Hesselbarth's message of "Fri, 9 Oct 2015 00:06:11 +0200")
-Message-ID: <87h9lx6sx3.fsf@belgarion.home>
+ id 1ZlWKe-0003nN-VV
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 06:11:38 +0000
+Date: Mon, 12 Oct 2015 08:11:12 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151012061112.GJ7858@pengutronix.de>
+References: <1444339185-17508-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1444339185-17508-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,29 +18,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/17] mtd: nand_mrvl_nfc: Get ecc parameters from DT
+Subject: Re: [PATCH] fs: Fix memcpy_sz for remaining count/rwsize
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Cc: barebox@lists.infradead.org
 
-U2ViYXN0aWFuIEhlc3NlbGJhcnRoIDxzZWJhc3RpYW4uaGVzc2VsYmFydGhAZ21haWwuY29tPiB3
-cml0ZXM6Cgo+IFdpdGggRFQgaGVscGVycyBmb3IgRUNDIHN0ZXAgc2l6ZSBhbmQgc3RyZW5ndGgs
-IG5vdyB1c2UgdGhlbSBvbgo+IE1hcnZlbGwgTkFORCBkcml2ZXIuCj4KPiBTaWduZWQtb2ZmLWJ5
-OiBTZWJhc3RpYW4gSGVzc2VsYmFydGggPHNlYmFzdGlhbi5oZXNzZWxiYXJ0aEBnbWFpbC5jb20+
-ClRoaXMgb25lIGJyZWFrIHRoZSBweGEgKHp5bG9uaXRlMzEwX2RlZmNvbmZpZykgYnVpbGQgOgpk
-cml2ZXJzL210ZC9uYW5kL25hbmRfbXJ2bF9uZmMuYzogSW4gZnVuY3Rpb24g4oCYbXJ2bF9uYW5k
-X3Byb2JlX2R04oCZOgpkcml2ZXJzL210ZC9uYW5kL25hbmRfbXJ2bF9uZmMuYzoxMTYzOjI6IGVy
-cm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiDigJhvZl9nZXRfbmFuZF9lY2Nf
-c3RyZW5ndGjigJkgWy1XZXJyb3I9aW1wbGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb25dCiAgaG9z
-dC0+ZWNjX3N0cmVuZ3RoID0gb2ZfZ2V0X25hbmRfZWNjX3N0cmVuZ3RoKG5wKTsKICBeCmRyaXZl
-cnMvbXRkL25hbmQvbmFuZF9tcnZsX25mYy5jOjExNjc6MjogZXJyb3I6IGltcGxpY2l0IGRlY2xh
-cmF0aW9uIG9mIGZ1bmN0aW9uIOKAmG9mX2dldF9uYW5kX2VjY19zdGVwX3NpemXigJkgWy1XZXJy
-b3I9aW1wbGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb25dCiAgaG9zdC0+ZWNjX3N0ZXAgPSBvZl9n
-ZXRfbmFuZF9lY2Nfc3RlcF9zaXplKG5wKTsKICBeCmNjMTogc29tZSB3YXJuaW5ncyBiZWluZyB0
-cmVhdGVkIGFzIGVycm9ycwoKQ2hlZXJzLgoKLS0KUm9iZXJ0CgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+On Thu, Oct 08, 2015 at 11:19:45PM +0200, Sebastian Hesselbarth wrote:
+> When using memcpy_sz with rwsize != 1 integer division of
+> count/rwsize may leave some bytes of the request uncopied if
+> count is not a multiple of rwsize.
+> 
+> Fix this behavior by decrementing count by rwsize instead of
+> integer division and use plain memcpy for the remaining bytes.
+> 
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+> Cc: barebox@lists.infradead.org
+> ---
+>  fs/fs.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/fs/fs.c b/fs/fs.c
+> index c041e41bb51b..ccbda22d2692 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -1580,9 +1580,7 @@ static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
+>  
+>  	rwsize = rwsize >> O_RWSIZE_SHIFT;
+>  
+> -	count /= rwsize;
+> -
+> -	while (count-- > 0) {
+> +	while (count > 0) {
+>  		switch (rwsize) {
+>  		case 1:
+>  			*((u8 *)dst) = *((u8 *)src);
+> @@ -1599,7 +1597,12 @@ static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
+>  		}
+>  		dst += rwsize;
+>  		src += rwsize;
+> +		count -= rwsize;
+>  	}
+
+This doesn't look correct. When count > 0 you are inside the loop, so
+
+> +
+> +	/* copy remaining bytes with plain memcpy */
+> +	if (count)
+> +		memcpy(dst, src, count);
+
+here count <= 0 which is no meaningful argument for the copy size.
+
+Should the loop start with while (count >= rwsize) instead?
+
+I wonder if the behaviour shouldn't rather be:
+- let memcpy_sz return the number of bytes copied and not copy the
+  remaining partial word.
+- return error from memcpy_sz when input count < rwsize
+
+This would allow us to catch wrongly aligned sizes.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
