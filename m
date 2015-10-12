@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]
- helo=smtp.smtpout.orange.fr)
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zlaab-00083s-7H
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 10:44:22 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
-Date: Mon, 12 Oct 2015 12:38:30 +0200
-In-Reply-To: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- (Sebastian Hesselbarth's message of "Fri, 9 Oct 2015 00:06:02 +0200")
-Message-ID: <87d1wk74nt.fsf@belgarion.home>
+ id 1ZlbTh-0001kh-Ji
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 11:41:18 +0000
+Received: by lbbk10 with SMTP id k10so27836965lbb.0
+ for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 04:40:55 -0700 (PDT)
+Date: Mon, 12 Oct 2015 14:43:25 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20151012144325.72d5b323@berta>
+In-Reply-To: <20151012070021.GO7858@pengutronix.de>
+References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
+ <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
+ <20151007134703.GA8288@ns203013.ovh.net>
+ <20151007174016.00ac1be5@berta>
+ <20151007154024.GA14384@ns203013.ovh.net>
+ <20151007195221.7aaea4c6@berta>
+ <20151012070021.GO7858@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,40 +29,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Subject: Re: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
+On Mon, 12 Oct 2015 09:00:21 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> This series is, of course, untested on mach-pxa and needs a
-> Tested-by. I have tested the new driver on Armada XP based
-> Lenovo ix4-300d and todays -next.
+> On Wed, Oct 07, 2015 at 07:52:21PM +0300, Peter Mamonov wrote:
+> > On Wed, 7 Oct 2015 17:40:24 +0200
+> > > > Non-interruptible delays are needed here to prevent ehci_*
+> > > > functions re-entrance. The re-entrance occurs during a usb bus
+> > > > scan, after detection of a usb keyboard. As soon as a USB
+> > > > keyboard is detected, it's driver starts the poller, which
+> > > > interferes with the process of usb bus scan. However that last
+> > > > one delay may be interruptible.
+> > > 
+> > > my problem is as soon as you start a usb control msg you block
+> > > everything
+> > > 
+> > > nothing else can run in barebox
+> > > 
+> > > can slow down barebox boot
+> > > 
+> > > I do think we need a real mdelay_non_interruptible feature but
+> > > just forbidden to recall usb control msg.
+> > > But the rest of barebox can run durring those 5ms
+> > 
+> > Well, I think it can be done by returning -EAGAIN on re-entrance
+> > detection in ehci_* functions [1], and skipping the poll in the
+> > keyboard driver.
+> 
+> Could you tell us what you have done to get re-entrance problems? I
+> have just replaced the mdelay_non_interruptible with regular mdelay
+> in the ehci driver and didn't notice any problems. Could you verify
+> the _non_interruptible is still needed?
 
-I tested the parial serie patches :
-* 7f109d9 (test-sebastian) mtd: nand_mrvl_nfc: Prepare for different HW ECC strengths
-* 1b791e9 mtd: nand_mrvl_nfc: Fix num-cs property parsing
-* 2b1b488 mtd: nand_mrvl_nfc: Use Auto Read Status on program/erase
-* b198e62 mtd: nand_mrvl_nfc: Clear OOB data with 0xff instead of 0x00
-* 56e0cfd mtd: nand_mrvl_nfc: Remove keep_config
-* 1a42d8e arm: pxa: Remove pxa_get_nandclk()
-* bc3db6f mtd: nand: Clarify Marvell Orion Kconfig prompt
-* 15577a6 mtd: nand_mrvl_nfc: Use common clock for core clock
-* 40debf2 arm: pxa: Prepare for NAND clkdev lookup on PXA3xx
-* ace2e99 (HEAD, tmp) net: netconsole: add puts
-* 0b8212a (tag: v2015.10.0) Release v2015.10.0
+If I revert the "usb: ehci-hcd: use mdelay_non_interruptible()" patch,
+while leaving the "usb: ehci-hcd: detect re-entrance" applied, I get
+the following messages after running the "usb" command:
 
-As a result I have :
-	mrvl_nand mrvl_nand0: alloc nand resource failed
-	mrvl_nand mrvl_nand0: probe failed: No such file or directory
+barebox:/ usb                                                         
+USB: scanning bus for devices...                                                
+Bus 001 Device 001: ID 0000:0000 EHCI Host Controller                           
+Bus 001 Device 002: ID 0424:2514                                                
+Bus 001 Device 003: ID 413c:2112 Dell USB Wired Multimedia Keybo                
+usb-keyboard usb1-0-0: USB keyboard found                                       
+Bus 001 Device 004: ID 8564:1000 Mass Storage Device                            
+Using index 0 for the new disk                                                  
+usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-hub:usb1)             
+usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-hub:usb1)             
+usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
+usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
+usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-hub:usb1)             
+usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
+usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
+Bus 001 Device 005: ID 0424:2514                                                
+5 USB Device(s) found                                                       
 
-This breaks zylonite support. Without the serie, the NAND works (ie. at "tmp"
-branch").
+According to the debug messages: submit_int_msg() is called by the usb-keyboard driver (from the poller function),
+while "usb-hub" driver is executing submit_control_msg() (which calls mdelay() and poller_call() subsequently).
+This occurs several times, until usb bus scan is completed.
+Probably the problem can be reproduced by adding more usb devices.
 
-Cheers.
+> 
+> Sascha
+> 
 
---
-Robert
 
 _______________________________________________
 barebox mailing list
