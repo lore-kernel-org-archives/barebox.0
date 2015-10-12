@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlZ2h-0006WR-R9
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 09:05:16 +0000
-Received: by lbbck17 with SMTP id ck17so15997205lbb.1
- for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 02:04:53 -0700 (PDT)
-Date: Mon, 12 Oct 2015 12:27:37 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151012122737.3c7d9de51a1d12ed6536a213@gmail.com>
-In-Reply-To: <20151012082417.GP7858@pengutronix.de>
-References: <CAO+PXKMVbPc5m2FqCcRudUz2Hxsu_UBxUSa-HZvvFA_uu+vDmA@mail.gmail.com>
- <20151012082417.GP7858@pengutronix.de>
-Mime-Version: 1.0
+ id 1ZlZY6-0000Tl-PF
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 09:37:43 +0000
+Date: Mon, 12 Oct 2015 11:37:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151012093719.GQ7858@pengutronix.de>
+References: <1444589021-12727-1-git-send-email-andrew.smirnov@gmail.com>
+ <1444589021-12727-4-git-send-email-andrew.smirnov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1444589021-12727-4-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,115 +19,109 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Beaglebone black issue loading booting kernel
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Mathieu =?ISO-8859-1?Q?T=E9treault?= <mathieu.alexandre.tetreault@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 4/8] arm/cpu: Avoid multiple definitions of
+ barebox_arm_entry
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, 12 Oct 2015 10:24:17 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Sun, Oct 11, 2015 at 11:43:37AM -0700, Andrey Smirnov wrote:
+> All versions of barebox_arm_entry (in uncompress.c, start.c and
+> start-pbl.c) appera to be doing exacty the same thing. So move the
+> definition into a separate file and use IS_ENABLED macro to avoid
+> re-definition.
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> ---
+>  arch/arm/cpu/Makefile     |  4 ++--
+>  arch/arm/cpu/entry.c      | 37 ++++++++++++++++++++++++++++++++++++
+>  arch/arm/cpu/entry.h      | 48 +++++++++++++++++++++++++++++++++++++++++++++++
+>  arch/arm/cpu/start-pbl.c  | 29 +---------------------------
+>  arch/arm/cpu/start.c      | 27 +-------------------------
+>  arch/arm/cpu/uncompress.c | 16 +---------------
+>  6 files changed, 90 insertions(+), 71 deletions(-)
+>  create mode 100644 arch/arm/cpu/entry.c
+>  create mode 100644 arch/arm/cpu/entry.h
+> 
+> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+> index fb3929c..418bcab 100644
+> --- a/arch/arm/cpu/Makefile
+> +++ b/arch/arm/cpu/Makefile
+> @@ -1,7 +1,7 @@
+>  obj-y += cpu.o
+>  obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
+>  obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
+> -obj-y += start.o setupc.o
+> +obj-y += start.o setupc.o entry.o
+>  
+>  #
+>  # Any variants can be called as start-armxyz.S
+> @@ -23,7 +23,7 @@ AFLAGS_pbl-cache-armv7.o       :=-Wa,-march=armv7-a
+>  pbl-$(CONFIG_CPU_32v7) += cache-armv7.o
+>  obj-$(CONFIG_CACHE_L2X0) += cache-l2x0.o
+>  
+> -pbl-y += setupc.o
+> +pbl-y += setupc.o entry.o
+>  pbl-$(CONFIG_PBL_SINGLE_IMAGE) += start-pbl.o
+>  pbl-$(CONFIG_PBL_MULTI_IMAGES) += uncompress.o
+>  
+> diff --git a/arch/arm/cpu/entry.c b/arch/arm/cpu/entry.c
+> new file mode 100644
+> index 0000000..adc4aec
+> --- /dev/null
+> +++ b/arch/arm/cpu/entry.c
+> @@ -0,0 +1,37 @@
+> +#include <types.h>
+> +#include <asm/cache.h>
+> +
+> +#include "entry.h"
+> +
+> +/*
+> + * Main ARM entry point. Call this with the memory region you can
+> + * spare for barebox. This doesn't necessarily have to be the full
+> + * SDRAM. The currently running binary can be inside or outside of
+> + * this region. TEXT_BASE can be inside or outside of this
+> + * region. boarddata will be preserved and can be accessed later with
+> + * barebox_arm_boarddata().
+> + *
+> + * -> membase + memsize
+> + *   STACK_SIZE              - stack
+> + *   16KiB, aligned to 16KiB - First level page table if early MMU support
+> + *                             is enabled
+> + *   128KiB                  - early memory space
+> + * -> maximum end of barebox binary
+> + *
+> + * Usually a TEXT_BASE of 1MiB below your lowest possible end of memory should
+> + * be fine.
+> + */
+> +
+> +void __naked __noreturn barebox_arm_entry(unsigned long membase,
+> +					  unsigned long memsize, void *boarddata)
+> +{
+> +	arm_setup_stack(membase + memsize - 16);
+> +	arm_early_mmu_cache_invalidate();
+> +
+> +	if (IS_ENABLED(CONFIG_PBL_MULTI_IMAGES))
+> +		uncompress_start_payload(membase, memsize, boarddata);
+> +	else if (IS_ENABLED(CONFIG_PBL_SINGLE_IMAGE))
+> +		__barebox_arm_entry(membase, memsize, boarddata);
+> +	else
+> +		__start(membase, memsize, boarddata);
+> +}
 
-> Hi Mathieu,
-> =
+I like the idea but I think to be exported the __barebox_arm_entry and
+__start functions should get a more meaningful name.
 
-> On Sun, Oct 11, 2015 at 06:51:06AM -0400, Mathieu T=E9treault wrote:
-> > I compiled barebox to run on the beaglebone black using the
-> > am335x_mlo_defconfig and am335x_defonfig which gaves me the
-> > barebox-am33xx-beaglebone.img(barebox.bin) and
-> > barebox-am33xx-beaglebone-mlo.img(MLO).
-> > =
+Sascha
 
-> > This part works fine since I'm able to get in barebox and the board is
-> > detected as beaglebone black
-> > =
-
-> > =3D=3D=3D log =3D=3D=3D
-> > barebox 2015.10.0-00084-g54bf386 #2 Fri Oct 9 15:18:17 EDT 2015
-> > =
-
-> > =
-
-> > Board: TI AM335x BeagleBone black
-> > detected 'BeagleBone Black'
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =
-
-> > If I let the autoboot start it always ends up looking for a NFS server
-> > which I don't have right now.
-> > =
-
-> > What I have right now is an SD card with a rootfs generated by Yocto.
-> > This rootfs is able to boot using the u-boot binary that yocto
-> > compiled.
-> > =
-
-> > When I use:
-> > =3D=3D=3D
-> > barebox@TI AM335x BeagleBone black:/ global.bootm.image=3D/boot/uImage
-> > barebox@TI AM335x BeagleBone black:/ global.bootm.oftree=3D/boot/bonebl=
-ack.dtb
-> > barebox@TI AM335x BeagleBone black:/
-> > global.linux.bootargs.dyn.root=3D"root=3D/dev/mmcblk0p2 rootfstype=3Dex=
-t4
-> > rootwait"
-> > =3D=3D=3D
-> > =
-
-> > I got the following log
-> > =3D=3D=3D
-> > barebox@TI AM335x BeagleBone black:/ bootm
-> >    Image Name:   Linux-3.14.19-yocto-standard
-> >    OS:           Linux
-> >    Architecture: ARM
-> >    Type:         Kernel Image
-> >    Compression:  uncompressed
-> >    Data Size:    5068000 Bytes =3D 4.8 MiB
-> >    Load Address: 80008000
-> >    Entry Point:  80008000
-> =
-
-> It seems we stumbled upon another bad image placement. What happens here
-> is:
-> =
-
-> - The uImage forces the load address to 0x80008000.
-> - We put the device tree binary somewhere behind that
-> - The Kernel uncompresses itself and overwrites the device tree
-> =
-
-> You have some options to work around this issue. You can use a zImage
-> rather than a uImage. That's my recommended approach. barebox will put
-> the zImage to a suitable place. If you insist on uImage you could also
-> specify the LOADADDR to 0xffffffff. If barebox finds this address it
-> picks a suitable address itself. The image won't work with U-Boot
-> though. The LOADADDR must be passed to the kernel during build. I don't
-> know though how Yocto handles this and how it could be overwritten.
-> =
-
-> Note that 0x80008000 is a bad choice anyway. This is exactly the place
-> where the kernel self extractor will place the final kernel. To do so it
-> must first move the compressed binary to another place, because
-> otherwise it would overwrite itself.
-> =
-
-> I would love to fix these load address issues, but unfortunately this
-> area is full of historic cruft where fixing one issue just raises
-> another one :(
-
-I see that ARM barebox suffering from kexec support absence.
-IMHO I have to revive my 'kexec support for MIPS' series.
-This series contain special post-barebox relocator
-so kernel load memory range can harmlessly overlap barebox memory ranges.
-At the long run kexec support can be beneficial for ARM too:
-I have just examinied ARM linux kernel, it has relocator too!
-(see linux.git/arch/arm/kernel/relocate_kernel.S), we can easely steal it.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
