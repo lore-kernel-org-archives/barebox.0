@@ -1,22 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZldOq-0005st-Gf
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 13:44:25 +0000
-Date: Mon, 12 Oct 2015 15:44:01 +0200
+ id 1ZldVf-0003Uh-Nm
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 13:51:28 +0000
+Date: Mon, 12 Oct 2015 15:51:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151012134400.GV7858@pengutronix.de>
-References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
- <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
- <20151007134703.GA8288@ns203013.ovh.net>
- <20151007174016.00ac1be5@berta>
- <20151007154024.GA14384@ns203013.ovh.net>
- <20151007195221.7aaea4c6@berta>
- <20151012070021.GO7858@pengutronix.de>
- <20151012144325.72d5b323@berta>
+Message-ID: <20151012135105.GW7858@pengutronix.de>
+References: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
+ <20151009080624.GF7858@pengutronix.de>
+ <20151009154037.389bb1ab@berta>
+ <20151009161143.GG7858@pengutronix.de>
+ <20151012132735.5f1a30ff@berta>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151012144325.72d5b323@berta>
+In-Reply-To: <20151012132735.5f1a30ff@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,80 +26,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
+Subject: Re: [RFC] common: filetype: is_fat_or_mbr() considered harmful
 To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 12, 2015 at 02:43:25PM +0300, Peter Mamonov wrote:
-> On Mon, 12 Oct 2015 09:00:21 +0200
+On Mon, Oct 12, 2015 at 01:27:35PM +0300, Peter Mamonov wrote:
+> On Fri, 9 Oct 2015 18:11:44 +0200
 > Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> > On Wed, Oct 07, 2015 at 07:52:21PM +0300, Peter Mamonov wrote:
-> > > On Wed, 7 Oct 2015 17:40:24 +0200
-> > > > > Non-interruptible delays are needed here to prevent ehci_*
-> > > > > functions re-entrance. The re-entrance occurs during a usb bus
-> > > > > scan, after detection of a usb keyboard. As soon as a USB
-> > > > > keyboard is detected, it's driver starts the poller, which
-> > > > > interferes with the process of usb bus scan. However that last
-> > > > > one delay may be interruptible.
-> > > > 
-> > > > my problem is as soon as you start a usb control msg you block
-> > > > everything
-> > > > 
-> > > > nothing else can run in barebox
-> > > > 
-> > > > can slow down barebox boot
-> > > > 
-> > > > I do think we need a real mdelay_non_interruptible feature but
-> > > > just forbidden to recall usb control msg.
-> > > > But the rest of barebox can run durring those 5ms
+> > On Fri, Oct 09, 2015 at 03:40:37PM +0300, Peter Mamonov wrote:
+> > > On Fri, 9 Oct 2015 10:06:24 +0200
+> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > > > 
-> > > Well, I think it can be done by returning -EAGAIN on re-entrance
-> > > detection in ehci_* functions [1], and skipping the poll in the
-> > > keyboard driver.
+> > > > Hi Peter,
+> > > > 
+> > > > On Wed, Oct 07, 2015 at 09:03:56PM +0300, Peter Mamonov wrote:
+> > > > > Deleted pieces of code detect MBR-containig device as a FAT-type
+> > > > > device, if it's first partition contains a FAT filesystem. So,
+> > > > > one can mount the first partition of a hard drive containing
+> > > > > FAT FS using the following command: barebox:
+> > > > > mount /dev/ata0.0 /mnt/0 as well as this one:
+> > > > > 	barebox: mount /dev/ata0 /mnt/1
+> > > > > Both commands mount the same FS.
+> > > > > 
+> > > > > This behaviour causes automount (mount -a) to mount FAT FS
+> > > > > on a first partition twice:
+> > > > > 	barebox: mount
+> > > > > 	none on / type ramfs
+> > > > > 	none on /dev type devfs
+> > > > > 	/dev/ata0 on /mnt/ata0 type fat
+> > > > > 	/dev/ata0.0 on /mnt/ata0.0 type fat
+> > > > > 	/dev/ata0.1 on /mnt/ata0.1 type ext4
+> > > > 
+> > > > This is_fat_or_mbr mechanism never worked very well and had funny
+> > > > side effects. Would be nice to get rid of it.
+> > > > Simply removing this option is not a solution though, we have to
+> > > > find a proper way to keep the current feature and make it more
+> > > > sane.
+> > > 
+> > > Ok, the patch comment is misleading a bit. I do not propose to get
+> > > rid of the is_fat_or_mbr() completely. However, I do not see the
+> > > point to check for a FAT FS, after the device was correctly
+> > > detected as an MBR-type device:
+> > > 
+> > > enum filetype file_name_detect_type(const char *filename)
+> > >        ... 
+> > >        type = file_detect_type(buf, ret);
+> > >  
+> > >        if (type == filetype_mbr) {
+> > >                /*
+> > >                 * Get the first partition start sector
+> > >                 * and check for FAT in it
+> > >                 */
+> > >                is_fat_or_mbr(buf, &bootsec);
+> > >                ret = lseek(fd, (bootsec) * 512, SEEK_SET);
+> > >                if (ret < 0)
+> > >                        goto err_out;
+> > >                ret = read(fd, buf, 512);
+> > >                if (ret < 0)
+> > >                        goto err_out;
+> > >                type = is_fat_or_mbr((u8 *)buf, NULL);
+> > >        }
+> > > 
+> > > 
+> > > The deleted code snippet was introduced by this patch:
+> > > 
+> > > commit 010ee209b75c5732ae4144e3ee9ce14158193c1f
+> > > Author: Franck Jullien <franck.jullien@gmail.com>
+> > > Date:   Wed Sep 19 13:09:01 2012 +0200
+> > > 
+> > >     filetype: Improve FAT detection
+> > >     
+> > >     We may have some disk with MBR as a first sector. In this case,
+> > > the current FAT check returns an error. However, the FAT sector
+> > > exist and the MBR can tell us where it is.
+> > >     
+> > >     This patch add to file_name_detect_type function the ability to
+> > > find the FAT boot sector on the first sector of the first partition
+> > > in case it is not on sector 0.
+> > >     
+> > >     It also introduce is_fat_or_mbr to check if a buffer is a FAT
+> > > boot or MBR sector
+> > >     
+> > >     Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> > >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > 
+> > > According to the patch message it was introduced to workaround FAT
+> > > detection. However, after deletion of the code I'm still able to
+> > > detect and mount FAT-containig partiotions.
 > > 
-> > Could you tell us what you have done to get re-entrance problems? I
-> > have just replaced the mdelay_non_interruptible with regular mdelay
-> > in the ehci driver and didn't notice any problems. Could you verify
-> > the _non_interruptible is still needed?
+> > But can you mount /dev/disk0 if this disk contains a partition table
+> > and the FAT is on /dev/disk0.0?
 > 
-> If I revert the "usb: ehci-hcd: use mdelay_non_interruptible()" patch,
-> while leaving the "usb: ehci-hcd: detect re-entrance" applied, I get
-> the following messages after running the "usb" command:
-> 
-> barebox:/ usb                                                         
-> USB: scanning bus for devices...                                                
-> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller                           
-> Bus 001 Device 002: ID 0424:2514                                                
-> Bus 001 Device 003: ID 413c:2112 Dell USB Wired Multimedia Keybo                
-> usb-keyboard usb1-0-0: USB keyboard found                                       
-> Bus 001 Device 004: ID 8564:1000 Mass Storage Device                            
-> Using index 0 for the new disk                                                  
-> usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-hub:usb1)             
-> usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-hub:usb1)             
-> usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
-> usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
-> usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-hub:usb1)             
-> usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
-> usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0)    
-> Bus 001 Device 005: ID 0424:2514                                                
-> 5 USB Device(s) found                                                       
-> 
-> According to the debug messages: submit_int_msg() is called by the usb-keyboard driver (from the poller function),
-> while "usb-hub" driver is executing submit_control_msg() (which calls mdelay() and poller_call() subsequently).
-> This occurs several times, until usb bus scan is completed.
-> Probably the problem can be reproduced by adding more usb devices.
+> No. This is actually the purpose of my patch, since I don't want
+> "mount -a" to mount the same partition (FAT on /dev/disk0.0) twice.
 
-I wonder why this does not happen here. I finally could reproduce this
-by adding some additional delays to the ehci driver.
+I know, and this is valid. It just conflicts with what Franck wants. He
+just wants to mount a USB device without having to know if the FAT is on
+the raw device or on the first partition.
 
-We should probably move the reentrance detection to the generic usb
-layer to usb_submit_int_msg, usb_control_msg and usb_bulk_msg. This
-would avoid running into the same problems in the other usb host
-drivers. If I understand the issue correctly we could just use regular
-*delay in the host drivers when we detect reentrancy correctly, right?
-I mean we don't have to print an error message when we detect
-reentrance, but instead just consider that a case that can happen.
+> 
+> > This is what the patch is about. The
+> > problem the patches solved is that when you plug in a USB drive then
+> > you don't know whether a FAT is directly on the device or if the
+> > device is partitioned. You want to be able to mount both ways with
+> > the same command, so no matter if the FAT is on /dev/disk0
+> > or /dev/disk0.0 you can mount both using /dev/disk0.
+> 
+> Ok. So what is the preferred way to prevent "mount -a" from mounting
+> /dev/disk0 and /dev/disk0.0 at the same time?
+
+Sorry, I do not have a solution currently. I'll have a look into it.
 
 Sascha
 
