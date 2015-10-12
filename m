@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zla8T-0004br-LI
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 10:15:18 +0000
-Date: Mon, 12 Oct 2015 12:14:54 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151012101454.GT7858@pengutronix.de>
-References: <CAO+PXKMVbPc5m2FqCcRudUz2Hxsu_UBxUSa-HZvvFA_uu+vDmA@mail.gmail.com>
- <20151012082417.GP7858@pengutronix.de>
- <20151012122737.3c7d9de51a1d12ed6536a213@gmail.com>
+ id 1ZlaIL-0000tk-BP
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 10:25:30 +0000
+Received: by lbbk10 with SMTP id k10so26046496lbb.0
+ for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 03:25:07 -0700 (PDT)
+Date: Mon, 12 Oct 2015 13:27:35 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20151012132735.5f1a30ff@berta>
+In-Reply-To: <20151009161143.GG7858@pengutronix.de>
+References: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
+ <20151009080624.GF7858@pengutronix.de>
+ <20151009154037.389bb1ab@berta>
+ <20151009161143.GG7858@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20151012122737.3c7d9de51a1d12ed6536a213@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,163 +22,120 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Beaglebone black issue loading booting kernel
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Mathieu =?iso-8859-15?Q?T=E9treault?= <mathieu.alexandre.tetreault@gmail.com>, barebox@lists.infradead.org
+Subject: Re: [RFC] common: filetype: is_fat_or_mbr() considered harmful
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Mon, Oct 12, 2015 at 12:27:37PM +0300, Antony Pavlov wrote:
-> On Mon, 12 Oct 2015 10:24:17 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> =
+On Fri, 9 Oct 2015 18:11:44 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> > Hi Mathieu,
-> > =
+> On Fri, Oct 09, 2015 at 03:40:37PM +0300, Peter Mamonov wrote:
+> > On Fri, 9 Oct 2015 10:06:24 +0200
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > 
+> > > Hi Peter,
+> > > 
+> > > On Wed, Oct 07, 2015 at 09:03:56PM +0300, Peter Mamonov wrote:
+> > > > Deleted pieces of code detect MBR-containig device as a FAT-type
+> > > > device, if it's first partition contains a FAT filesystem. So,
+> > > > one can mount the first partition of a hard drive containing
+> > > > FAT FS using the following command: barebox:
+> > > > mount /dev/ata0.0 /mnt/0 as well as this one:
+> > > > 	barebox: mount /dev/ata0 /mnt/1
+> > > > Both commands mount the same FS.
+> > > > 
+> > > > This behaviour causes automount (mount -a) to mount FAT FS
+> > > > on a first partition twice:
+> > > > 	barebox: mount
+> > > > 	none on / type ramfs
+> > > > 	none on /dev type devfs
+> > > > 	/dev/ata0 on /mnt/ata0 type fat
+> > > > 	/dev/ata0.0 on /mnt/ata0.0 type fat
+> > > > 	/dev/ata0.1 on /mnt/ata0.1 type ext4
+> > > 
+> > > This is_fat_or_mbr mechanism never worked very well and had funny
+> > > side effects. Would be nice to get rid of it.
+> > > Simply removing this option is not a solution though, we have to
+> > > find a proper way to keep the current feature and make it more
+> > > sane.
+> > 
+> > Ok, the patch comment is misleading a bit. I do not propose to get
+> > rid of the is_fat_or_mbr() completely. However, I do not see the
+> > point to check for a FAT FS, after the device was correctly
+> > detected as an MBR-type device:
+> > 
+> > enum filetype file_name_detect_type(const char *filename)
+> >        ... 
+> >        type = file_detect_type(buf, ret);
+> >  
+> >        if (type == filetype_mbr) {
+> >                /*
+> >                 * Get the first partition start sector
+> >                 * and check for FAT in it
+> >                 */
+> >                is_fat_or_mbr(buf, &bootsec);
+> >                ret = lseek(fd, (bootsec) * 512, SEEK_SET);
+> >                if (ret < 0)
+> >                        goto err_out;
+> >                ret = read(fd, buf, 512);
+> >                if (ret < 0)
+> >                        goto err_out;
+> >                type = is_fat_or_mbr((u8 *)buf, NULL);
+> >        }
+> > 
+> > 
+> > The deleted code snippet was introduced by this patch:
+> > 
+> > commit 010ee209b75c5732ae4144e3ee9ce14158193c1f
+> > Author: Franck Jullien <franck.jullien@gmail.com>
+> > Date:   Wed Sep 19 13:09:01 2012 +0200
+> > 
+> >     filetype: Improve FAT detection
+> >     
+> >     We may have some disk with MBR as a first sector. In this case,
+> > the current FAT check returns an error. However, the FAT sector
+> > exist and the MBR can tell us where it is.
+> >     
+> >     This patch add to file_name_detect_type function the ability to
+> > find the FAT boot sector on the first sector of the first partition
+> > in case it is not on sector 0.
+> >     
+> >     It also introduce is_fat_or_mbr to check if a buffer is a FAT
+> > boot or MBR sector
+> >     
+> >     Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+> >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > 
+> > According to the patch message it was introduced to workaround FAT
+> > detection. However, after deletion of the code I'm still able to
+> > detect and mount FAT-containig partiotions.
+> 
+> But can you mount /dev/disk0 if this disk contains a partition table
+> and the FAT is on /dev/disk0.0?
 
-> > On Sun, Oct 11, 2015 at 06:51:06AM -0400, Mathieu T=E9treault wrote:
-> > > I compiled barebox to run on the beaglebone black using the
-> > > am335x_mlo_defconfig and am335x_defonfig which gaves me the
-> > > barebox-am33xx-beaglebone.img(barebox.bin) and
-> > > barebox-am33xx-beaglebone-mlo.img(MLO).
-> > > =
+No. This is actually the purpose of my patch, since I don't want
+"mount -a" to mount the same partition (FAT on /dev/disk0.0) twice.
 
-> > > This part works fine since I'm able to get in barebox and the board is
-> > > detected as beaglebone black
-> > > =
+> This is what the patch is about. The
+> problem the patches solved is that when you plug in a USB drive then
+> you don't know whether a FAT is directly on the device or if the
+> device is partitioned. You want to be able to mount both ways with
+> the same command, so no matter if the FAT is on /dev/disk0
+> or /dev/disk0.0 you can mount both using /dev/disk0.
 
-> > > =3D=3D=3D log =3D=3D=3D
-> > > barebox 2015.10.0-00084-g54bf386 #2 Fri Oct 9 15:18:17 EDT 2015
-> > > =
+Ok. So what is the preferred way to prevent "mount -a" from mounting
+/dev/disk0 and /dev/disk0.0 at the same time?
 
-> > > =
+> The way this problem is solved currently is not very good, we should
+> find a better way.
+> 
+> Sascha
+> 
 
-> > > Board: TI AM335x BeagleBone black
-> > > detected 'BeagleBone Black'
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > =
-
-> > > If I let the autoboot start it always ends up looking for a NFS server
-> > > which I don't have right now.
-> > > =
-
-> > > What I have right now is an SD card with a rootfs generated by Yocto.
-> > > This rootfs is able to boot using the u-boot binary that yocto
-> > > compiled.
-> > > =
-
-> > > When I use:
-> > > =3D=3D=3D
-> > > barebox@TI AM335x BeagleBone black:/ global.bootm.image=3D/boot/uImage
-> > > barebox@TI AM335x BeagleBone black:/ global.bootm.oftree=3D/boot/bone=
-black.dtb
-> > > barebox@TI AM335x BeagleBone black:/
-> > > global.linux.bootargs.dyn.root=3D"root=3D/dev/mmcblk0p2 rootfstype=3D=
-ext4
-> > > rootwait"
-> > > =3D=3D=3D
-> > > =
-
-> > > I got the following log
-> > > =3D=3D=3D
-> > > barebox@TI AM335x BeagleBone black:/ bootm
-> > >    Image Name:   Linux-3.14.19-yocto-standard
-> > >    OS:           Linux
-> > >    Architecture: ARM
-> > >    Type:         Kernel Image
-> > >    Compression:  uncompressed
-> > >    Data Size:    5068000 Bytes =3D 4.8 MiB
-> > >    Load Address: 80008000
-> > >    Entry Point:  80008000
-> > =
-
-> > It seems we stumbled upon another bad image placement. What happens here
-> > is:
-> > =
-
-> > - The uImage forces the load address to 0x80008000.
-> > - We put the device tree binary somewhere behind that
-> > - The Kernel uncompresses itself and overwrites the device tree
-> > =
-
-> > You have some options to work around this issue. You can use a zImage
-> > rather than a uImage. That's my recommended approach. barebox will put
-> > the zImage to a suitable place. If you insist on uImage you could also
-> > specify the LOADADDR to 0xffffffff. If barebox finds this address it
-> > picks a suitable address itself. The image won't work with U-Boot
-> > though. The LOADADDR must be passed to the kernel during build. I don't
-> > know though how Yocto handles this and how it could be overwritten.
-> > =
-
-> > Note that 0x80008000 is a bad choice anyway. This is exactly the place
-> > where the kernel self extractor will place the final kernel. To do so it
-> > must first move the compressed binary to another place, because
-> > otherwise it would overwrite itself.
-> > =
-
-> > I would love to fix these load address issues, but unfortunately this
-> > area is full of historic cruft where fixing one issue just raises
-> > another one :(
-> =
-
-> I see that ARM barebox suffering from kexec support absence.
-> IMHO I have to revive my 'kexec support for MIPS' series.
-> This series contain special post-barebox relocator
-> so kernel load memory range can harmlessly overlap barebox memory ranges.
-
-This is not a real issue on ARM. I mean it's currently not supported
-that the kernel overlaps barebox memory regions, but we can work around
-it quite well.
-
-The issue on ARM is the various constraints where to place images some
-of which stated explicitly somewhere, others documented nowhere. Some of
-the constraints are:
-
-- With CONFIG_AUTO_ZRELADDR=3Dy the zImage has to be placed in the first
-  128MiB of lowmem. How do we know we are about to load a kernel with
-  this option enabled?
-
-- Documentation/arm/Booting states that:
-
- 	The dtb must be placed in a region of memory where the kernel
-	decompressor will not overwrite it, whilst remaining within the
-	region which will be covered by the kernel's low-memory mapping.
-
-  Aha. How do we know a place where the kernel decompressor will not
-  overwrite it? We can only guess that, so at some point we used to move
-  the dtb up in RAM, sometimes so high that we trapped into the "within
-  the region which be covered by the kernel's low-memory mapping"
-  constraint. The recommendation is:
-
-	A safe location is just above the 128MiB boundary from start of
-	RAM.
-
-  Apparently systems with less than 256MiB of memory are no longer
-  interesting.
-
-- With CONFIG_AUTO_ZRELADDR=3Dy the kernel could be placed anywhere in the
-  128MiB in RAM, but unfortunately the u-boot uImage format does not
-  allow to leave the load address unspecified. So while the kernel
-  supports runtime determined SDRAM addresses, the uImage format does
-  not and makes this feature unusable with uImages.
-
-IMO the Kernel decompressor overwriting the dtb is a bug that should be
-fixed. In the bootloader we have no way to know where the kernel will
-decompress itself and I think it should not have to know. The kernel
-should just move the dtb somewhere else if it's not happy with the
-current place. While this is really annoying I haven't been annoyed
-enough to come up with a patch :(
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
