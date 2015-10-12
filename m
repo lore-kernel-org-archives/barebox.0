@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22b.google.com ([2a00:1450:400c:c05::22b])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlXfJ-0005Uc-U0
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 07:37:02 +0000
-Received: by wieq12 with SMTP id q12so6531293wie.1
- for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 00:36:40 -0700 (PDT)
-References: <1444339185-17508-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20151012061112.GJ7858@pengutronix.de>
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Message-ID: <561B6305.40306@gmail.com>
-Date: Mon, 12 Oct 2015 09:36:37 +0200
-In-Reply-To: <20151012061112.GJ7858@pengutronix.de>
+ id 1ZlYPR-0003no-3C
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 08:24:41 +0000
+Date: Mon, 12 Oct 2015 10:24:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151012082417.GP7858@pengutronix.de>
+References: <CAO+PXKMVbPc5m2FqCcRudUz2Hxsu_UBxUSa-HZvvFA_uu+vDmA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAO+PXKMVbPc5m2FqCcRudUz2Hxsu_UBxUSa-HZvvFA_uu+vDmA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,84 +18,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: Fix memcpy_sz for remaining count/rwsize
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Beaglebone black issue loading booting kernel
+To: Mathieu =?iso-8859-15?Q?T=E9treault?= <mathieu.alexandre.tetreault@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 12.10.2015 08:11, Sascha Hauer wrote:
-> On Thu, Oct 08, 2015 at 11:19:45PM +0200, Sebastian Hesselbarth wrote:
->> When using memcpy_sz with rwsize != 1 integer division of
->> count/rwsize may leave some bytes of the request uncopied if
->> count is not a multiple of rwsize.
->>
->> Fix this behavior by decrementing count by rwsize instead of
->> integer division and use plain memcpy for the remaining bytes.
->>
->> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
->> ---
->> Cc: barebox@lists.infradead.org
->> ---
->>   fs/fs.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/fs/fs.c b/fs/fs.c
->> index c041e41bb51b..ccbda22d2692 100644
->> --- a/fs/fs.c
->> +++ b/fs/fs.c
->> @@ -1580,9 +1580,7 @@ static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
->>
->>   	rwsize = rwsize >> O_RWSIZE_SHIFT;
->>
->> -	count /= rwsize;
->> -
->> -	while (count-- > 0) {
->> +	while (count > 0) {
->>   		switch (rwsize) {
->>   		case 1:
->>   			*((u8 *)dst) = *((u8 *)src);
->> @@ -1599,7 +1597,12 @@ static void memcpy_sz(void *dst, const void *src, size_t count, int rwsize)
->>   		}
->>   		dst += rwsize;
->>   		src += rwsize;
->> +		count -= rwsize;
->>   	}
->
-> This doesn't look correct. When count > 0 you are inside the loop, so
->
->> +
->> +	/* copy remaining bytes with plain memcpy */
->> +	if (count)
->> +		memcpy(dst, src, count);
->
-> here count <= 0 which is no meaningful argument for the copy size.
->
-> Should the loop start with while (count >= rwsize) instead?
+Hi Mathieu,
 
-Dammit, last minute cosmetic change including breaking the
-whole patch. Sorry for that.
+On Sun, Oct 11, 2015 at 06:51:06AM -0400, Mathieu T=E9treault wrote:
+> I compiled barebox to run on the beaglebone black using the
+> am335x_mlo_defconfig and am335x_defonfig which gaves me the
+> barebox-am33xx-beaglebone.img(barebox.bin) and
+> barebox-am33xx-beaglebone-mlo.img(MLO).
+> =
 
-> I wonder if the behaviour shouldn't rather be:
-> - let memcpy_sz return the number of bytes copied and not copy the
->    remaining partial word.
-> - return error from memcpy_sz when input count < rwsize
->
-> This would allow us to catch wrongly aligned sizes.
+> This part works fine since I'm able to get in barebox and the board is
+> detected as beaglebone black
+> =
 
-I am open for any different resolution. I stumbled upon the odd
-behavior of memcpy_sz while writing to NAND using memcpy. Maybe
-it would be also good to always pick byte size for memcpy when
-no specific size has been passed. It took me a while until I
-realized it is not the NAND controller but memcpy that breaks
-the data written by leaving some bytes uncopied.
+> =3D=3D=3D log =3D=3D=3D
+> barebox 2015.10.0-00084-g54bf386 #2 Fri Oct 9 15:18:17 EDT 2015
+> =
 
-Sebastian
+> =
 
+> Board: TI AM335x BeagleBone black
+> detected 'BeagleBone Black'
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> =
 
+> If I let the autoboot start it always ends up looking for a NFS server
+> which I don't have right now.
+> =
+
+> What I have right now is an SD card with a rootfs generated by Yocto.
+> This rootfs is able to boot using the u-boot binary that yocto
+> compiled.
+> =
+
+> When I use:
+> =3D=3D=3D
+> barebox@TI AM335x BeagleBone black:/ global.bootm.image=3D/boot/uImage
+> barebox@TI AM335x BeagleBone black:/ global.bootm.oftree=3D/boot/boneblac=
+k.dtb
+> barebox@TI AM335x BeagleBone black:/
+> global.linux.bootargs.dyn.root=3D"root=3D/dev/mmcblk0p2 rootfstype=3Dext4
+> rootwait"
+> =3D=3D=3D
+> =
+
+> I got the following log
+> =3D=3D=3D
+> barebox@TI AM335x BeagleBone black:/ bootm
+>    Image Name:   Linux-3.14.19-yocto-standard
+>    OS:           Linux
+>    Architecture: ARM
+>    Type:         Kernel Image
+>    Compression:  uncompressed
+>    Data Size:    5068000 Bytes =3D 4.8 MiB
+>    Load Address: 80008000
+>    Entry Point:  80008000
+
+It seems we stumbled upon another bad image placement. What happens here
+is:
+
+- The uImage forces the load address to 0x80008000.
+- We put the device tree binary somewhere behind that
+- The Kernel uncompresses itself and overwrites the device tree
+
+You have some options to work around this issue. You can use a zImage
+rather than a uImage. That's my recommended approach. barebox will put
+the zImage to a suitable place. If you insist on uImage you could also
+specify the LOADADDR to 0xffffffff. If barebox finds this address it
+picks a suitable address itself. The image won't work with U-Boot
+though. The LOADADDR must be passed to the kernel during build. I don't
+know though how Yocto handles this and how it could be overwritten.
+
+Note that 0x80008000 is a bad choice anyway. This is exactly the place
+where the kernel self extractor will place the final kernel. To do so it
+must first move the compressed binary to another place, because
+otherwise it would overwrite itself.
+
+I would love to fix these load address issues, but unfortunately this
+area is full of historic cruft where fixing one issue just raises
+another one :(
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
