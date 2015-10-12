@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlWfz-0003kz-Be
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 06:33:40 +0000
-Date: Mon, 12 Oct 2015 08:33:16 +0200
+ id 1ZlX6C-0001f7-El
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 07:00:46 +0000
+Date: Mon, 12 Oct 2015 09:00:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151012063316.GN7858@pengutronix.de>
-References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1444341979-19157-12-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20151012070021.GO7858@pengutronix.de>
+References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
+ <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
+ <20151007134703.GA8288@ns203013.ovh.net>
+ <20151007174016.00ac1be5@berta>
+ <20151007154024.GA14384@ns203013.ovh.net>
+ <20151007195221.7aaea4c6@berta>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1444341979-19157-12-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <20151007195221.7aaea4c6@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,85 +27,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 11/17] mtd: nand_mrvl_nfc: Add hwflags to distinguish
- different HW versions
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Subject: Re: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, Oct 09, 2015 at 12:06:13AM +0200, Sebastian Hesselbarth wrote:
-> Marvell PXA3xx NAND flash controller IP has been reused in later SoCs
-> with additional HW features. Add HW BCH ECC as the first known HW
-> difference.
+On Wed, Oct 07, 2015 at 07:52:21PM +0300, Peter Mamonov wrote:
+> On Wed, 7 Oct 2015 17:40:24 +0200
+> > > Non-interruptible delays are needed here to prevent ehci_* functions
+> > > re-entrance. The re-entrance occurs during a usb bus scan, after
+> > > detection of a usb keyboard. As soon as a USB keyboard is detected,
+> > > it's driver starts the poller, which interferes with the process of
+> > > usb bus scan. However that last one delay may be interruptible.
+> > 
+> > my problem is as soon as you start a usb control msg you block
+> > everything
+> > 
+> > nothing else can run in barebox
+> > 
+> > can slow down barebox boot
+> > 
+> > I do think we need a real mdelay_non_interruptible feature but just
+> > forbidden to recall usb control msg.
+> > But the rest of barebox can run durring those 5ms
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> ---
-> Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-> Cc: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-> Cc: barebox@lists.infradead.org
-> ---
->  drivers/mtd/nand/nand_mrvl_nfc.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-> index 5ff5ed72ff49..8a05fc88824b 100644
-> --- a/drivers/mtd/nand/nand_mrvl_nfc.c
-> +++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-> @@ -142,6 +142,8 @@ struct mrvl_nand_host {
->  	size_t			read_id_bytes;
->  
->  	void __iomem		*mmio_base;
-> +	unsigned int		hwflags;
-> +#define HWFLAGS_ECC_BCH		BIT(0)
->  
->  	unsigned int		buf_start;
->  	unsigned int		buf_count;
-> @@ -234,9 +236,12 @@ static struct nand_ecclayout ecc_layout_2KB_hwecc = {
->  #define mtd_info_to_host(mtd) ((struct mrvl_nand_host *) \
->  			       (((struct nand_chip *)((mtd)->priv))->priv))
->  
-> +const unsigned int pxa3xx_hwflags;
+> Well, I think it can be done by returning -EAGAIN on re-entrance
+> detection in ehci_* functions [1], and skipping the poll in the keyboard
+> driver.
 
-Could you make this a struct type? That makes it a bit easier to read
-since it's a more common pattern. Also make it static.
+Could you tell us what you have done to get re-entrance problems? I have
+just replaced the mdelay_non_interruptible with regular mdelay in the
+ehci driver and didn't notice any problems. Could you verify the
+_non_interruptible is still needed?
 
 Sascha
-
-> +
->  static struct of_device_id mrvl_nand_dt_ids[] = {
->  	{
->  		.compatible = "marvell,pxa3xx-nand",
-> +		.data = &pxa3xx_hwflags,
->  	},
->  	{}
->  };
-> @@ -1004,6 +1009,8 @@ static struct mrvl_nand_host *alloc_nand_resource(struct device_d *dev)
->  static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
->  {
->  	struct device_node *np = host->dev->device_node;
-> +	const struct of_device_id *match =
-> +		of_match_node(mrvl_nand_dt_ids, np);
->  
->  	of_property_read_u32(np, "num-cs", &host->num_cs);
->  	if (of_get_nand_on_flash_bbt(np))
-> @@ -1017,6 +1024,8 @@ static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
->  	if (host->ecc_step < 0)
->  		host->ecc_step = 0;
->  
-> +	host->hwflags = ((unsigned int *)match->data)[0];
-> +
->  	return 0;
->  }
->  
-> -- 
-> 2.1.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
