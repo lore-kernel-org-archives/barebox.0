@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x230.google.com ([2607:f8b0:4001:c06::230])
+Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZleEO-0001JU-SB
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 14:37:42 +0000
-Received: by iodv82 with SMTP id v82so52563672iod.0
- for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 07:37:18 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20151012172156.526ede520dd2436118ae36f4@gmail.com>
-References: <1444241036-23622-1-git-send-email-pmamonov@gmail.com>
- <20151009080624.GF7858@pengutronix.de>
- <20151009154037.389bb1ab@berta>
- <20151009161143.GG7858@pengutronix.de>
- <20151012132735.5f1a30ff@berta>
- <20151012135105.GW7858@pengutronix.de>
- <20151012172156.526ede520dd2436118ae36f4@gmail.com>
-Date: Mon, 12 Oct 2015 16:37:18 +0200
-Message-ID: <CAJfOKBxKz5K865kE-6yo2kb+G-E_9yu3j9J32122w0YXx=+YTQ@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+ id 1ZlhKf-0002yY-Do
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 17:56:22 +0000
+Received: by wijq8 with SMTP id q8so69213547wij.0
+ for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 10:55:59 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Mon, 12 Oct 2015 19:55:52 +0200
+Message-Id: <1444672552-3097-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,145 +18,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] common: filetype: is_fat_or_mbr() considered harmful
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox <barebox@lists.infradead.org>, Peter Mamonov <pmamonov@gmail.com>
+Subject: [PATCH] of: mtd: Import of_get_nand_ecc_{step_size,
+ strength} from Linux
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-2015-10-12 16:21 GMT+02:00 Antony Pavlov <antonynpavlov@gmail.com>:
-> On Mon, 12 Oct 2015 15:51:05 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
->
->> On Mon, Oct 12, 2015 at 01:27:35PM +0300, Peter Mamonov wrote:
->> > On Fri, 9 Oct 2015 18:11:44 +0200
->> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> >
->> > > On Fri, Oct 09, 2015 at 03:40:37PM +0300, Peter Mamonov wrote:
->> > > > On Fri, 9 Oct 2015 10:06:24 +0200
->> > > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > > >
->> > > > > Hi Peter,
->> > > > >
->> > > > > On Wed, Oct 07, 2015 at 09:03:56PM +0300, Peter Mamonov wrote:
->> > > > > > Deleted pieces of code detect MBR-containig device as a FAT-type
->> > > > > > device, if it's first partition contains a FAT filesystem. So,
->> > > > > > one can mount the first partition of a hard drive containing
->> > > > > > FAT FS using the following command: barebox:
->> > > > > > mount /dev/ata0.0 /mnt/0 as well as this one:
->> > > > > >     barebox: mount /dev/ata0 /mnt/1
->> > > > > > Both commands mount the same FS.
->> > > > > >
->> > > > > > This behaviour causes automount (mount -a) to mount FAT FS
->> > > > > > on a first partition twice:
->> > > > > >     barebox: mount
->> > > > > >     none on / type ramfs
->> > > > > >     none on /dev type devfs
->> > > > > >     /dev/ata0 on /mnt/ata0 type fat
->> > > > > >     /dev/ata0.0 on /mnt/ata0.0 type fat
->> > > > > >     /dev/ata0.1 on /mnt/ata0.1 type ext4
->> > > > >
->> > > > > This is_fat_or_mbr mechanism never worked very well and had funny
->> > > > > side effects. Would be nice to get rid of it.
->> > > > > Simply removing this option is not a solution though, we have to
->> > > > > find a proper way to keep the current feature and make it more
->> > > > > sane.
->> > > >
->> > > > Ok, the patch comment is misleading a bit. I do not propose to get
->> > > > rid of the is_fat_or_mbr() completely. However, I do not see the
->> > > > point to check for a FAT FS, after the device was correctly
->> > > > detected as an MBR-type device:
->> > > >
->> > > > enum filetype file_name_detect_type(const char *filename)
->> > > >        ...
->> > > >        type = file_detect_type(buf, ret);
->> > > >
->> > > >        if (type == filetype_mbr) {
->> > > >                /*
->> > > >                 * Get the first partition start sector
->> > > >                 * and check for FAT in it
->> > > >                 */
->> > > >                is_fat_or_mbr(buf, &bootsec);
->> > > >                ret = lseek(fd, (bootsec) * 512, SEEK_SET);
->> > > >                if (ret < 0)
->> > > >                        goto err_out;
->> > > >                ret = read(fd, buf, 512);
->> > > >                if (ret < 0)
->> > > >                        goto err_out;
->> > > >                type = is_fat_or_mbr((u8 *)buf, NULL);
->> > > >        }
->> > > >
->> > > >
->> > > > The deleted code snippet was introduced by this patch:
->> > > >
->> > > > commit 010ee209b75c5732ae4144e3ee9ce14158193c1f
->> > > > Author: Franck Jullien <franck.jullien@gmail.com>
->> > > > Date:   Wed Sep 19 13:09:01 2012 +0200
->> > > >
->> > > >     filetype: Improve FAT detection
->> > > >
->> > > >     We may have some disk with MBR as a first sector. In this case,
->> > > > the current FAT check returns an error. However, the FAT sector
->> > > > exist and the MBR can tell us where it is.
->> > > >
->> > > >     This patch add to file_name_detect_type function the ability to
->> > > > find the FAT boot sector on the first sector of the first partition
->> > > > in case it is not on sector 0.
->> > > >
->> > > >     It also introduce is_fat_or_mbr to check if a buffer is a FAT
->> > > > boot or MBR sector
->> > > >
->> > > >     Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
->> > > >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->> > > >
->> > > > According to the patch message it was introduced to workaround FAT
->> > > > detection. However, after deletion of the code I'm still able to
->> > > > detect and mount FAT-containig partiotions.
->> > >
->> > > But can you mount /dev/disk0 if this disk contains a partition table
->> > > and the FAT is on /dev/disk0.0?
->> >
->> > No. This is actually the purpose of my patch, since I don't want
->> > "mount -a" to mount the same partition (FAT on /dev/disk0.0) twice.
->>
->> I know, and this is valid. It just conflicts with what Franck wants. He
->> just wants to mount a USB device without having to know if the FAT is on
->> the raw device or on the first partition.
->>
->> >
->> > > This is what the patch is about. The
->> > > problem the patches solved is that when you plug in a USB drive then
->> > > you don't know whether a FAT is directly on the device or if the
->> > > device is partitioned. You want to be able to mount both ways with
->> > > the same command, so no matter if the FAT is on /dev/disk0
->> > > or /dev/disk0.0 you can mount both using /dev/disk0.
->> >
->> > Ok. So what is the preferred way to prevent "mount -a" from mounting
->> > /dev/disk0 and /dev/disk0.0 at the same time?
->>
->> Sorry, I do not have a solution currently. I'll have a look into it.
->
-> Can we just add a .config option for disabling "Frank mode"?
->
-> --
-> Best regards,
->   Antony Pavlov
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+This imports DT helpers for MTD ECC step size and strength from
+Linux kernel.
 
-This is not important for me.
-I faced this situation when I was playing with SD cards controllers.
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Cc: barebox@lists.infradead.org
 
-However, if I had a problem it may arise for someone else.
+Just for completeness, the patch that will import of_mtd helpers
+for ECC from Linux. I'll make sure this is included in v2.
 
-Feel free to remove this detection or, as Antony suggested, add a config option.
+Sebastian
+---
+ drivers/of/of_mtd.c | 34 ++++++++++++++++++++++++++++++++++
+ include/of_mtd.h    |  2 ++
+ 2 files changed, 36 insertions(+)
 
-Franck.
+diff --git a/drivers/of/of_mtd.c b/drivers/of/of_mtd.c
+index 97f3095740f7..0956ee15d393 100644
+--- a/drivers/of/of_mtd.c
++++ b/drivers/of/of_mtd.c
+@@ -49,6 +49,40 @@ int of_get_nand_ecc_mode(struct device_node *np)
+ EXPORT_SYMBOL_GPL(of_get_nand_ecc_mode);
+ 
+ /**
++ * of_get_nand_ecc_step_size - Get ECC step size associated to
++ * the required ECC strength (see below).
++ * @np:	Pointer to the given device_node
++ *
++ * return the ECC step size, or errno in error case.
++ */
++int of_get_nand_ecc_step_size(struct device_node *np)
++{
++	int ret;
++	u32 val;
++
++	ret = of_property_read_u32(np, "nand-ecc-step-size", &val);
++	return ret ? ret : val;
++}
++EXPORT_SYMBOL_GPL(of_get_nand_ecc_step_size);
++
++/**
++ * of_get_nand_ecc_strength - Get required ECC strength over the
++ * correspnding step size as defined by 'nand-ecc-size'
++ * @np:	Pointer to the given device_node
++ *
++ * return the ECC strength, or errno in error case.
++ */
++int of_get_nand_ecc_strength(struct device_node *np)
++{
++	int ret;
++	u32 val;
++
++	ret = of_property_read_u32(np, "nand-ecc-strength", &val);
++	return ret ? ret : val;
++}
++EXPORT_SYMBOL_GPL(of_get_nand_ecc_strength);
++
++/**
+  * of_get_nand_bus_width - Get nand bus witdh for given device_node
+  * @np:	Pointer to the given device_node
+  *
+diff --git a/include/of_mtd.h b/include/of_mtd.h
+index a5a8f20daff6..9f5b8a2796a2 100644
+--- a/include/of_mtd.h
++++ b/include/of_mtd.h
+@@ -12,6 +12,8 @@
+ #include <of.h>
+ 
+ int of_get_nand_ecc_mode(struct device_node *np);
++int of_get_nand_ecc_step_size(struct device_node *np);
++int of_get_nand_ecc_strength(struct device_node *np);
+ int of_get_nand_bus_width(struct device_node *np);
+ bool of_get_nand_on_flash_bbt(struct device_node *np);
+ 
+-- 
+2.1.0
+
 
 _______________________________________________
 barebox mailing list
