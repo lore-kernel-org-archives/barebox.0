@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
+Received: from mail-wi0-x229.google.com ([2a00:1450:400c:c05::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zli2U-0008S8-Qu
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 18:41:39 +0000
-Received: by wicgb1 with SMTP id gb1so159940925wic.1
- for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 11:41:17 -0700 (PDT)
-Message-ID: <561BFECA.1010105@gmail.com>
-Date: Mon, 12 Oct 2015 20:41:14 +0200
+ id 1ZliCo-0005Ox-Ls
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 18:52:19 +0000
+Received: by wicgb1 with SMTP id gb1so61328247wic.1
+ for <barebox@lists.infradead.org>; Mon, 12 Oct 2015 11:51:56 -0700 (PDT)
+Message-ID: <561C014A.7010401@gmail.com>
+Date: Mon, 12 Oct 2015 20:51:54 +0200
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <87d1wk74nt.fsf@belgarion.home>
-In-Reply-To: <87d1wk74nt.fsf@belgarion.home>
+References: <1444339185-17508-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20151012061112.GJ7858@pengutronix.de> <561B6305.40306@gmail.com>
+In-Reply-To: <561B6305.40306@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,50 +24,95 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Subject: Re: [PATCH] fs: Fix memcpy_sz for remaining count/rwsize
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 12.10.2015 12:38, Robert Jarzmik wrote:
-> Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
+On 12.10.2015 09:36, Sebastian Hesselbarth wrote:
+> On 12.10.2015 08:11, Sascha Hauer wrote:
+>> On Thu, Oct 08, 2015 at 11:19:45PM +0200, Sebastian Hesselbarth wrote:
+>>> When using memcpy_sz with rwsize != 1 integer division of
+>>> count/rwsize may leave some bytes of the request uncopied if
+>>> count is not a multiple of rwsize.
+>>>
+>>> Fix this behavior by decrementing count by rwsize instead of
+>>> integer division and use plain memcpy for the remaining bytes.
+>>>
+>>> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+>>> ---
+>>> Cc: barebox@lists.infradead.org
+>>> ---
+>>>   fs/fs.c | 9 ++++++---
+>>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/fs/fs.c b/fs/fs.c
+>>> index c041e41bb51b..ccbda22d2692 100644
+>>> --- a/fs/fs.c
+>>> +++ b/fs/fs.c
+>>> @@ -1580,9 +1580,7 @@ static void memcpy_sz(void *dst, const void
+>>> *src, size_t count, int rwsize)
+>>>
+>>>       rwsize = rwsize >> O_RWSIZE_SHIFT;
+>>>
+>>> -    count /= rwsize;
+>>> -
+>>> -    while (count-- > 0) {
+>>> +    while (count > 0) {
+>>>           switch (rwsize) {
+>>>           case 1:
+>>>               *((u8 *)dst) = *((u8 *)src);
+>>> @@ -1599,7 +1597,12 @@ static void memcpy_sz(void *dst, const void
+>>> *src, size_t count, int rwsize)
+>>>           }
+>>>           dst += rwsize;
+>>>           src += rwsize;
+>>> +        count -= rwsize;
+>>>       }
+>>
+>> This doesn't look correct. When count > 0 you are inside the loop, so
+>>
+>>> +
+>>> +    /* copy remaining bytes with plain memcpy */
+>>> +    if (count)
+>>> +        memcpy(dst, src, count);
+>>
+>> here count <= 0 which is no meaningful argument for the copy size.
+>>
+>> Should the loop start with while (count >= rwsize) instead?
 >
->> This series is, of course, untested on mach-pxa and needs a
->> Tested-by. I have tested the new driver on Armada XP based
->> Lenovo ix4-300d and todays -next.
+> Dammit, last minute cosmetic change including breaking the
+> whole patch. Sorry for that.
 >
-> I tested the parial serie patches :
-> * 7f109d9 (test-sebastian) mtd: nand_mrvl_nfc: Prepare for different HW ECC strengths
-> * 1b791e9 mtd: nand_mrvl_nfc: Fix num-cs property parsing
-> * 2b1b488 mtd: nand_mrvl_nfc: Use Auto Read Status on program/erase
-> * b198e62 mtd: nand_mrvl_nfc: Clear OOB data with 0xff instead of 0x00
-> * 56e0cfd mtd: nand_mrvl_nfc: Remove keep_config
-> * 1a42d8e arm: pxa: Remove pxa_get_nandclk()
-> * bc3db6f mtd: nand: Clarify Marvell Orion Kconfig prompt
-> * 15577a6 mtd: nand_mrvl_nfc: Use common clock for core clock
-> * 40debf2 arm: pxa: Prepare for NAND clkdev lookup on PXA3xx
-> * ace2e99 (HEAD, tmp) net: netconsole: add puts
-> * 0b8212a (tag: v2015.10.0) Release v2015.10.0
+>> I wonder if the behaviour shouldn't rather be:
+>> - let memcpy_sz return the number of bytes copied and not copy the
+>>    remaining partial word.
+>> - return error from memcpy_sz when input count < rwsize
+>>
+>> This would allow us to catch wrongly aligned sizes.
 >
-> As a result I have :
-> 	mrvl_nand mrvl_nand0: alloc nand resource failed
-> 	mrvl_nand mrvl_nand0: probe failed: No such file or directory
->
-> This breaks zylonite support. Without the serie, the NAND works (ie. at "tmp"
-> branch").
+> I am open for any different resolution. I stumbled upon the odd
+> behavior of memcpy_sz while writing to NAND using memcpy. Maybe
+> it would be also good to always pick byte size for memcpy when
+> no specific size has been passed. It took me a while until I
+> realized it is not the NAND controller but memcpy that breaks
+> the data written by leaving some bytes uncopied.
 
-Ok, this is clk_get() failing to find the NAND clock. I have reworked
-speed-3xx.c and Zylonite's board.c.
+Ok, the issue is something different maybe.
 
-AFAIKS, clk_register_clkdev() does not link the clock to the nfc device,
-therefore we have to use clkdev_add_physbase() in board.c.
+I used
 
-I have prepared a branch for you based on above v2015.10.0 to ease
-testing with all comments included so far:
+memcpy -s /mnt/image.img -d /dev/nand0.u-boot.bb 0 0
 
-https://github.com/shesselba/barebox-dove.git testing/nfc-for-robert
+i.e. I did not specify any rwsize option. Looking at the code,
+mem_parse_options does initialize mode with 0 and memcpy_sz
+should use plain memcpy as fallback.
 
-Thanks,
-   Sebastian
+However, if I look at include/fcntl.h, I see that O_RWSIZE_8
+collides with O_CREAT. I think that is the root cause of the
+64b memcpy_sz issue I am suffering from?
+
+Sebastian
+
 
 _______________________________________________
 barebox mailing list
