@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlWOS-00058s-OC
- for barebox@lists.infradead.org; Mon, 12 Oct 2015 06:15:34 +0000
-Date: Mon, 12 Oct 2015 08:15:09 +0200
+ id 1ZlWOc-00059I-OA
+ for barebox@lists.infradead.org; Mon, 12 Oct 2015 06:15:43 +0000
+Date: Mon, 12 Oct 2015 08:15:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151012061509.GK7858@pengutronix.de>
-References: <1444339201-17552-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20151012061523.GL7858@pengutronix.de>
+References: <1444339211-17596-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1444339201-17552-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1444339211-17596-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,14 +22,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: mvebu: Add corediv clock driver for Armada 370/XP
+Subject: Re: [PATCH] net: mvneta: add Armada XP compatible
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-On Thu, Oct 08, 2015 at 11:20:01PM +0200, Sebastian Hesselbarth wrote:
-> Newer Marvell MVEBU SoC like Armada 370/XP have an additional core
-> clock divider for e.g. NAND clock. Add the corresponding driver based
-> on the Linux driver.
+On Thu, Oct 08, 2015 at 11:20:11PM +0200, Sebastian Hesselbarth wrote:
+> Marvell NETA Network Engine found in Armada 370 and XP SoCs
+> also has a different compatible for Armada XP. Add the compatible
+> to the of_device_id list.
 > 
 > Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 > ---
@@ -37,14 +37,23 @@ On Thu, Oct 08, 2015 at 11:20:01PM +0200, Sebastian Hesselbarth wrote:
 > Cc: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 > Cc: barebox@lists.infradead.org
 > ---
->  drivers/clk/mvebu/Makefile  |   4 +-
->  drivers/clk/mvebu/corediv.c | 262 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 264 insertions(+), 2 deletions(-)
->  create mode 100644 drivers/clk/mvebu/corediv.c
+>  drivers/net/mvneta.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/mvneta.c b/drivers/net/mvneta.c
+> index aab52c45deec..1690f3b576c7 100644
+> --- a/drivers/net/mvneta.c
+> +++ b/drivers/net/mvneta.c
+> @@ -761,6 +761,7 @@ static int mvneta_probe(struct device_d *dev)
+>  
+>  static struct of_device_id mvneta_dt_ids[] = {
+>  	{ .compatible = "marvell,armada-370-neta", },
+> +	{ .compatible = "marvell,armada-xp-neta" },
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
