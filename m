@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zluem-0008SZ-JU
- for barebox@lists.infradead.org; Tue, 13 Oct 2015 08:10:01 +0000
-Received: by wijq8 with SMTP id q8so19168413wij.0
- for <barebox@lists.infradead.org>; Tue, 13 Oct 2015 01:09:38 -0700 (PDT)
-References: <1444339185-17508-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20151012061112.GJ7858@pengutronix.de> <561B6305.40306@gmail.com>
- <561C014A.7010401@gmail.com> <20151013080058.GC7858@pengutronix.de>
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Message-ID: <561CBC3F.9040707@gmail.com>
-Date: Tue, 13 Oct 2015 10:09:35 +0200
-In-Reply-To: <20151013080058.GC7858@pengutronix.de>
+ id 1Zlumd-0003jO-Qc
+ for barebox@lists.infradead.org; Tue, 13 Oct 2015 08:18:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 13 Oct 2015 10:17:45 +0200
+Message-Id: <1444724265-15030-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +15,58 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fs: Fix memcpy_sz for remaining count/rwsize
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fcntl: Fix O_CREAT clashing with O_RWSIZE_8
+To: Barebox List <barebox@lists.infradead.org>
 
-On 13.10.2015 10:00, Sascha Hauer wrote:
-> On Mon, Oct 12, 2015 at 08:51:54PM +0200, Sebastian Hesselbarth wrote:
->> On 12.10.2015 09:36, Sebastian Hesselbarth wrote:
->> I used
->>
->> memcpy -s /mnt/image.img -d /dev/nand0.u-boot.bb 0 0
->>
->> i.e. I did not specify any rwsize option. Looking at the code,
->> mem_parse_options does initialize mode with 0 and memcpy_sz
->> should use plain memcpy as fallback.
->>
->> However, if I look at include/fcntl.h, I see that O_RWSIZE_8
->> collides with O_CREAT. I think that is the root cause of the
->> 64b memcpy_sz issue I am suffering from?
->
-> Oh Damned! /me hiding under a brown paper bag.
->
-> I don't know how you are calling memcpy_sz, but that could lead to
-> these kind problems.
+O_CREAT and O_RWSIZE_8 are both defined as 0100. Fix this by moving the
+O_RWSIZE_* flags to unused bits.
 
-memcpy_sz is called by fs/fs.c when using memcpy command above.
+This bug leads to incomplete writes when the destination file is created
+and mem_write is involved, for example with the memcpy command:
 
-Sebastian
+memcpy -s /some/file -d /dev/ram0 0 0 10
+
+In this case only 8 bytes will be copied and it will be done using 8
+byte accesses which may not work properly if the destination is not
+sufficiently aligned, i.e.:
+
+memcpy -s /some/file -d /dev/ram0 0 1 8
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reported-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+ include/fcntl.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/include/fcntl.h b/include/fcntl.h
+index 501b415..12f370a 100644
+--- a/include/fcntl.h
++++ b/include/fcntl.h
+@@ -17,12 +17,12 @@
+ #define O_NOFOLLOW	00400000	/* don't follow links */
+ 
+ /* barebox additional flags */
+-#define O_RWSIZE_MASK	00000170
+-#define O_RWSIZE_SHIFT	3
+-#define O_RWSIZE_1      00000010
+-#define O_RWSIZE_2      00000020
+-#define O_RWSIZE_4      00000040
+-#define O_RWSIZE_8      00000100
++#define O_RWSIZE_MASK	017000000
++#define O_RWSIZE_SHIFT	18
++#define O_RWSIZE_1	001000000
++#define O_RWSIZE_2	002000000
++#define O_RWSIZE_4	004000000
++#define O_RWSIZE_8	010000000
+ 
+ #define F_DUPFD		0	/* dup */
+ #define F_GETFD		1	/* get close_on_exec */
+-- 
+2.6.0
 
 
 _______________________________________________
