@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZluNj-0006v9-KZ
- for barebox@lists.infradead.org; Tue, 13 Oct 2015 07:52:24 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1ZluNO-0002Wu-26
- for barebox@lists.infradead.org; Tue, 13 Oct 2015 09:52:02 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86)
- (envelope-from <sha@pengutronix.de>) id 1ZluNN-0005Gv-Oh
- for barebox@lists.infradead.org; Tue, 13 Oct 2015 09:52:01 +0200
+ id 1ZluNo-0006w7-LN
+ for barebox@lists.infradead.org; Tue, 13 Oct 2015 07:52:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 13 Oct 2015 09:51:50 +0200
-Message-Id: <1444722714-30445-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 13 Oct 2015 09:51:51 +0200
+Message-Id: <1444722714-30445-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1444722714-30445-1-git-send-email-s.hauer@pengutronix.de>
+References: <1444722714-30445-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,34 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: devfs fixes
+Subject: [PATCH 1/4] fs: devfs: Allow mounting only on /dev/
 To: Barebox List <barebox@lists.infradead.org>
 
-We have some places in the code where we expect a cdev name, but
-also allow a full /dev/ path. We handle this by doing:
+We have places in the code where we assume that devfs is mounted on
+/dev/, so enforce this path to avoid surprises.
 
-	if (!strncmp(name, "/dev/", 5))
-		name += 5;
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/devfs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-As Peter noticed this of course only works when devfs is mounted on
-/dev/. With this series we actually enforce that to avoid surprises.
-Also we "officially" allow to pass a /dev/ path for opening a cdev
-by moving the above code to cdev_open.
+diff --git a/fs/devfs.c b/fs/devfs.c
+index c6db25c..5c96682 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -228,6 +228,13 @@ static int devfs_stat(struct device_d *_dev, const char *filename, struct stat *
+ 
+ static int devfs_probe(struct device_d *dev)
+ {
++	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++
++	if (strcmp(fsdev->path, "/dev")) {
++		dev_err(dev, "devfs can only be mounted on /dev/\n");
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.6.0
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (4):
-      fs: devfs: Allow mounting only on /dev/
-      fs: devfs: Allow mount path in cdev_open
-      filetype: Use cdev_open
-      fs: pass path directly to cdev_open
-
- common/filetype.c | 4 +++-
- fs/devfs-core.c   | 6 +++++-
- fs/devfs.c        | 7 +++++++
- fs/fs.c           | 9 +--------
- 4 files changed, 16 insertions(+), 10 deletions(-)
 
 _______________________________________________
 barebox mailing list
