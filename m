@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]
+ helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZlvGk-0006Gn-Mj
- for barebox@lists.infradead.org; Tue, 13 Oct 2015 08:49:15 +0000
-Received: by lbwr8 with SMTP id r8so11399276lbw.2
- for <barebox@lists.infradead.org>; Tue, 13 Oct 2015 01:48:52 -0700 (PDT)
-Date: Tue, 13 Oct 2015 12:11:38 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151013121138.9f05bde0f038a455c8383a09@gmail.com>
-In-Reply-To: <20151013020428.GB8288@ns203013.ovh.net>
-References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
- <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
- <20151007134703.GA8288@ns203013.ovh.net>
- <20151007174016.00ac1be5@berta>
- <20151007154024.GA14384@ns203013.ovh.net>
- <20151007195221.7aaea4c6@berta>
- <20151013020428.GB8288@ns203013.ovh.net>
-Mime-Version: 1.0
+ id 1Zlw4g-0000XY-NW
+ for barebox@lists.infradead.org; Tue, 13 Oct 2015 09:40:52 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <87d1wk74nt.fsf@belgarion.home> <561BFECA.1010105@gmail.com>
+ <87k2qr6go0.fsf@belgarion.home> <561C111E.7010106@gmail.com>
+Date: Tue, 13 Oct 2015 11:35:01 +0200
+In-Reply-To: <561C111E.7010106@gmail.com> (Sebastian Hesselbarth's message of
+ "Mon, 12 Oct 2015 21:59:26 +0200")
+Message-ID: <874mhv5cxm.fsf@belgarion.home>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,136 +21,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-On Tue, 13 Oct 2015 04:04:28 +0200
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
 
-> On 19:52 Wed 07 Oct     , Peter Mamonov wrote:
-> > On Wed, 7 Oct 2015 17:40:24 +0200
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> > =
+> On 12.10.2015 21:16, Robert Jarzmik wrote:
+>> Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
+>>
+>>> I have prepared a branch for you based on above v2015.10.0 to ease
+>>> testing with all comments included so far:
+>>>
+>>> https://github.com/shesselba/barebox-dove.git testing/nfc-for-robert
+>> That's cool, really.
+>>
+>> It doesn't work yet :
+>> 	clk = clk_get_sys("nand", NULL);
+>> 	printf("%s(): clk = %p\n", __func__, clk);
+>> =>
+>>          zylonite_devices_init(): clk = fffffffe
+>
+> Ok, thanks for testing.
+>
+> I've fast-forward pushed the branch with one last try for today again.
+> Misread clk_get, clk_find and clk_register_clkdev and friends.
+Well, I still have a probe error :
+	alloc_nand_resource(): clk_get() -> fffffffe
+	mrvl_nand mrvl_nand0: alloc nand resource failed
+	mrvl_nand mrvl_nand0: probe failed: No such file or directory
+	zylonite_devices_init(): clk = 83703328
 
-> > > On 17:40 Wed 07 Oct     , Peter Mamonov wrote:
-> > > > On Wed, 7 Oct 2015 15:47:03 +0200
-> > > > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> > > > =
+Cheers.
 
-> > > > > On 18:58 Tue 22 Sep     , Peter Mamonov wrote:
-> > > > > > Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> > > > > > ---
-> > > > > >  drivers/usb/host/ehci-hcd.c | 6 +++---
-> > > > > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > > > > =
-
-> > > > > > diff --git a/drivers/usb/host/ehci-hcd.c
-> > > > > > b/drivers/usb/host/ehci-hcd.c index d6df7b8..03d6150 100644
-> > > > > > --- a/drivers/usb/host/ehci-hcd.c
-> > > > > > +++ b/drivers/usb/host/ehci-hcd.c
-> > > > > > @@ -684,7 +684,7 @@ ehci_submit_root(struct usb_device *dev,
-> > > > > > unsigned long pipe, void *buffer,
-> > > > > >  				 * root
-> > > > > >  				 */
-> > > > > >  				ehci_powerup_fixup(ehci);
-> > > > > > -				mdelay(50);
-> > > > > > +				mdelay_non_interruptible(50);
-> > > > > >  				ehci->portreset |=3D 1 << port;
-> > > > > >  				/* terminate the reset */
-> > > > > >  				ehci_writel(status_reg, reg &
-> > > > > > ~EHCI_PS_PR); @@ -747,7 +747,7 @@ ehci_submit_root(struct
-> > > > > > usb_device *dev, unsigned long pipe, void *buffer, goto unknown;
-> > > > > >  	}
-> > > > > >  =
-
-> > > > > > -	mdelay(1);
-> > > > > > +	mdelay_non_interruptible(1);
-> > > > > >  	len =3D min3(srclen, (int)le16_to_cpu(req->length),
-> > > > > > length); if (srcptr !=3D NULL && len > 0)
-> > > > > >  		memcpy(buffer, srcptr, len);
-> > > > > > @@ -889,7 +889,7 @@ static int ehci_init(struct usb_host *host)
-> > > > > >  	ehci_writel(&ehci->hcor->or_configflag, cmd);
-> > > > > >  	/* unblock posted write */
-> > > > > >  	cmd =3D ehci_readl(&ehci->hcor->or_usbcmd);
-> > > > > > -	mdelay(5);
-> > > > > > +	mdelay_non_interruptible(5);
-> > > > > why do you need that much non interruptible delau?
-> > > > =
-
-> > > > Non-interruptible delays are needed here to prevent ehci_* functions
-> > > > re-entrance. The re-entrance occurs during a usb bus scan, after
-> > > > detection of a usb keyboard. As soon as a USB keyboard is detected,
-> > > > it's driver starts the poller, which interferes with the process of
-> > > > usb bus scan. However that last one delay may be interruptible.
-> > > =
-
-> > > my problem is as soon as you start a usb control msg you block
-> > > everything
-> > > =
-
-> > > nothing else can run in barebox
-> > > =
-
-> > > can slow down barebox boot
-> > > =
-
-> > > I do think we need a real mdelay_non_interruptible feature but just
-> > > forbidden to recall usb control msg.
-> > > But the rest of barebox can run durring those 5ms
-> > =
-
-> > Well, I think it can be done by returning -EAGAIN on re-entrance
-> > detection in ehci_* functions [1], and skipping the poll in the keyboard
-> > driver.
-> > =
-
-> > By the way, could you clarify: do you really experience
-> > considerable barebox slowdown or you make an assumtion based on the
-> > code analysis?
-> =
-
-> I've wrote similar code for barebox nearly 1 year ago and did notice it
-
-So you have not tested Peter's code.
-Could you please test latest next branch and sand a word on slowdown?
-
-
-> Best Regards,
-> J.
-> > =
-
-> > [1]
-> > http://lists.infradead.org/pipermail/barebox/2015-September/024715.html
-> > =
-
-> > Regards,
-> > Peter
-> > =
-
-> > > =
-
-> > > Best Regards,
-> > > J.
-> > =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
