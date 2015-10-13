@@ -1,24 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]
+ helo=smtp.smtpout.orange.fr)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zlwyl-0003AL-Id
- for barebox@lists.infradead.org; Tue, 13 Oct 2015 10:38:48 +0000
-Date: Tue, 13 Oct 2015 12:38:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151013103824.GI7858@pengutronix.de>
-References: <1442937514-19675-1-git-send-email-pmamonov@gmail.com>
- <1442937514-19675-5-git-send-email-pmamonov@gmail.com>
- <20151007134703.GA8288@ns203013.ovh.net>
- <20151007174016.00ac1be5@berta>
- <20151007154024.GA14384@ns203013.ovh.net>
- <20151007195221.7aaea4c6@berta>
- <20151012070021.GO7858@pengutronix.de>
- <20151012144325.72d5b323@berta>
- <20151012134400.GV7858@pengutronix.de>
- <20151013133733.79bd1446@berta>
+ id 1Zlx4V-0008O3-VW
+ for barebox@lists.infradead.org; Tue, 13 Oct 2015 10:44:45 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <87d1wk74nt.fsf@belgarion.home> <561BFECA.1010105@gmail.com>
+ <87k2qr6go0.fsf@belgarion.home> <561C111E.7010106@gmail.com>
+ <874mhv5cxm.fsf@belgarion.home> <561CD48A.9000301@gmail.com>
+ <20151013102725.GH7858@pengutronix.de>
+Date: Tue, 13 Oct 2015 12:38:51 +0200
+In-Reply-To: <20151013102725.GH7858@pengutronix.de> (Sascha Hauer's message of
+ "Tue, 13 Oct 2015 12:27:25 +0200")
+Message-ID: <87wpur3ves.fsf@belgarion.home>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20151013133733.79bd1446@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,103 +27,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] usb: ehci-hcd: use mdelay_non_inerruptible()
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-On Tue, Oct 13, 2015 at 01:37:33PM +0300, Peter Mamonov wrote:
-> On Mon, 12 Oct 2015 15:44:01 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Mon, Oct 12, 2015 at 02:43:25PM +0300, Peter Mamonov wrote:
-> > > On Mon, 12 Oct 2015 09:00:21 +0200
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > 
-> > > > On Wed, Oct 07, 2015 at 07:52:21PM +0300, Peter Mamonov wrote:
-> > > > > On Wed, 7 Oct 2015 17:40:24 +0200
-> > > > > > > Non-interruptible delays are needed here to prevent ehci_*
-> > > > > > > functions re-entrance. The re-entrance occurs during a usb
-> > > > > > > bus scan, after detection of a usb keyboard. As soon as a
-> > > > > > > USB keyboard is detected, it's driver starts the poller,
-> > > > > > > which interferes with the process of usb bus scan. However
-> > > > > > > that last one delay may be interruptible.
-> > > > > > 
-> > > > > > my problem is as soon as you start a usb control msg you block
-> > > > > > everything
-> > > > > > 
-> > > > > > nothing else can run in barebox
-> > > > > > 
-> > > > > > can slow down barebox boot
-> > > > > > 
-> > > > > > I do think we need a real mdelay_non_interruptible feature but
-> > > > > > just forbidden to recall usb control msg.
-> > > > > > But the rest of barebox can run durring those 5ms
-> > > > > 
-> > > > > Well, I think it can be done by returning -EAGAIN on re-entrance
-> > > > > detection in ehci_* functions [1], and skipping the poll in the
-> > > > > keyboard driver.
-> > > > 
-> > > > Could you tell us what you have done to get re-entrance problems?
-> > > > I have just replaced the mdelay_non_interruptible with regular
-> > > > mdelay in the ehci driver and didn't notice any problems. Could
-> > > > you verify the _non_interruptible is still needed?
-> > > 
-> > > If I revert the "usb: ehci-hcd: use mdelay_non_interruptible()"
-> > > patch, while leaving the "usb: ehci-hcd: detect re-entrance"
-> > > applied, I get the following messages after running the "usb"
-> > > command:
-> > > 
-> > > barebox:/
-> > > usb USB: scanning bus for
-> > > devices... Bus 001 Device 001: ID 0000:0000 EHCI Host
-> > > Controller Bus 001 Device 002: ID
-> > > 0424:2514 Bus 001 Device 003: ID 413c:2112 Dell USB Wired
-> > > Multimedia Keybo usb-keyboard usb1-0-0: USB keyboard
-> > > found Bus 001 Device 004: ID 8564:1000 Mass Storage
-> > > Device Using index 0 for the new
-> > > disk usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1
-> > > (usb-hub:usb1) usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1
-> > > (usb-hub:usb1) usb-keyboard usb1-0-0: submit_int_msg: re-entrance 1
-> > > (usb-keyboard:usb1-0-0) usb-keyboard usb1-0-0: submit_int_msg:
-> > > re-entrance 1 (usb-keyboard:usb1-0-0) usb-keyboard usb1-0-0:
-> > > submit_int_msg: re-entrance 1 (usb-hub:usb1) usb-keyboard usb1-0-0:
-> > > submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0) usb-keyboard
-> > > usb1-0-0: submit_int_msg: re-entrance 1 (usb-keyboard:usb1-0-0) Bus
-> > > 001 Device 005: ID 0424:2514 5 USB Device(s)
-> > > found                                                       
-> > > 
-> > > According to the debug messages: submit_int_msg() is called by the
-> > > usb-keyboard driver (from the poller function), while "usb-hub"
-> > > driver is executing submit_control_msg() (which calls mdelay() and
-> > > poller_call() subsequently). This occurs several times, until usb
-> > > bus scan is completed. Probably the problem can be reproduced by
-> > > adding more usb devices.
-> > 
-> > I wonder why this does not happen here. I finally could reproduce this
-> > by adding some additional delays to the ehci driver.
-> > 
-> > We should probably move the reentrance detection to the generic usb
-> > layer to usb_submit_int_msg, usb_control_msg and usb_bulk_msg. This
-> > would avoid running into the same problems in the other usb host
-> > drivers. If I understand the issue correctly we could just use regular
-> > *delay in the host drivers when we detect reentrancy correctly, right?
-> > I mean we don't have to print an error message when we detect
-> > reentrance, but instead just consider that a case that can happen.
-> 
-> We can return -EAGAIN on reentrance detection in usb_* functions, but
-> the usb device driver should distinguish this case and do sane
-> things, i.e. it should not fail, but skip the action.
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Yes, that sounds like a sane approach to me.
+> In your temporary patch you have:
+>
+>> @@ -67,6 +71,9 @@ static int zylonite_devices_init(void)
+>>  			   &smsc91x_pdata);
+>>  	add_generic_device("mrvl_nand", DEVICE_ID_DYNAMIC, NULL,
+>>  			   0x43100000, 0x1000, IORESOURCE_MEM, &nand_pdata);
+>> +	clk = clk_get_sys("nand", NULL);
+>> +	if (!IS_ERR(clk))
+>> +		clkdev_add_physbase(clk, 0x43100000, NULL);
+>
+> Could it be that you register the clk lookup after the nand driver is probed? This
+> hunk should be moved before the nand device registration.
+That's what I had thought, but changing the order gave me a panic, so I didn't
+push forward.
 
-Sascha
+This is what I had, decoded in [1].
 
+Cheers.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+Robert
+
+[1] My backtrace with the inversion :
+
+barebox@Zylonite:/ bootm /mnt/tftp/barebox.bin
+bootm /mnt/tftp/barebox.bin
+netconsole: netconsole initialized with 255.255.255.255:6662
+eth0: 100Mbps full duplex link detected
+DHCP client bound to address 192.168.1.232
+
+Loading ARM barebox image '/mnt/tftp/barebox.bin'
+commandline: ram=64M console=ttyS0,115200   mtdparts=pxa3xx_nand-0:128k@0(TIMH)ro,128k@128k(OBMI)ro,768k@256k(barebox),256k@1024k(barebox-env),12M@1280k(kernel),38016k@13568k(root)
+arch_number: 1233
+netconsole: port not set
+netconsole: registered as netconsole-1
+smc91c111 smc91c1110: chip is revision= 9, version= 2
+mdio_bus: miibus0: probed
+eth0: got preset MAC address: 00:0e:0c:a7:26:f7
+zylonite_devices_init(): clk = 83703328
+alloc_nand_resource(): clk_get() -> 83703328
+unable to handle NULL pointer dereference at address 0x00000004
+pc : [<83f15b9c>]    lr : [<83f15b90>]
+sp : 83fffed0  ip : 000001b0  fp : 00000000
+r10: 00000002  r9 : 83706888  r8 : 83f8c88c
+r7 : 00000000  r6 : 00000000  r5 : 83706948  r4 : 00000000
+r3 : 83706888  r2 : 43100000  r1 : 83f60783  r0 : 00000000
+Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
+(mrvl_nand_probe+0x1ac/0x650) from device_probe (/drivers/base/driver.c:93)
+(device_probe+0x30/0xb8) from match.part.3 (/drivers/base/driver.c:153)
+(match.part.3+0x44/0x54) from register_device (/drivers/base/driver.c:192)
+(register_device+0x120/0x15c) from add_generic_device (/drivers/base/resource.c:84)
+(add_generic_device+0x3c/0x48) from zylonite_devices_init (/arch/arm/boards/zylonite/board.c:78)
+(zylonite_devices_init+0x9c/0x108) from start_barebox (/common/startup.c:101)
+(start_barebox+0x30/0xe8) from __start (/arch/arm/cpu/start.c:142)
+(__start+0x124/0x13c) from 0x8386c290
+
+(unwind_backtrace+0x0/0x90) from panic (/common/misc.c:209)
+(panic+0x28/0x38) from do_exception (/arch/arm/cpu/interrupts.c:85)
+(do_exception+0x10/0x14) from do_data_abort (/arch/arm/cpu/interrupts.c:139)
+(do_data_abort+0x2c/0x38) from do_abort_6 (:?)
+### ERROR ### Please RESET the board ###
+
+And a special gift :
+rj@belgarion:~/mio_linux/barebox$ addr2line -i -e barebox 0x83f15b9c
+/home/rj/mio_linux/barebox/drivers/mtd/nand/nand_mrvl_nfc.c:1172
+/home/rj/mio_linux/barebox/drivers/mtd/nand/nand_mrvl_nfc.c:1202
 
 _______________________________________________
 barebox mailing list
