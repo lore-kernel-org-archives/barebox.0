@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZmMkF-0002xP-KP
- for barebox@lists.infradead.org; Wed, 14 Oct 2015 14:09:32 +0000
-Date: Wed, 14 Oct 2015 16:09:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151014140908.GS7858@pengutronix.de>
-References: <1444817749-20766-1-git-send-email-pmamonov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1444817749-20766-1-git-send-email-pmamonov@gmail.com>
+ id 1ZmMrL-0000mX-Qg
+ for barebox@lists.infradead.org; Wed, 14 Oct 2015 14:16:52 +0000
+Message-ID: <1444832190.13276.18.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 14 Oct 2015 16:16:30 +0200
+In-Reply-To: <1444829979-1100-4-git-send-email-s.trumtrar@pengutronix.de>
+References: <1444829979-1100-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1444829979-1100-4-git-send-email-s.trumtrar@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] usb: core: return -EAGAIN on usb_* functions
- reentrance
-To: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH 4/6] crypto: add i.MX6 CAAM support
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Peter,
-
-On Wed, Oct 14, 2015 at 01:15:47PM +0300, Peter Mamonov wrote:
-> The second patch of this patch set adds reentrance detection to 
-> the the following functions: usb_submit_int_msg, usb_control_msg and
-> usb_bulk_msg. These functions will return -EAGAIN if reentered. 
-> Other public usb_* functions call one of these three functions.
-> This patch enables one to use regular *delay() functions
-> throughout the ehci-hcd.c.
+Am Mittwoch, den 14.10.2015, 15:39 +0200 schrieb Steffen Trumtrar:
+> Add the i.MX6 crypto core CAAM.
 > 
-> The first patch adds check for -EAGAIN return value to the usb keyboard
-> driver. The driver will skip keyboard poll upon getting this error value
-> from either usb_submit_int_msg() or usb_get_report() functions.
+> The core itself works with jobrings in which descriptors can be
+> queued/dequeued for processing.
 > 
-> Peter Mamonov (2):
-> 	input: usb_kbd: skip poll on -EAGAIN error
-> 	usb: core: return -EAGAIN on usb_* functions reentrance
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  
+[...]
 
-Applied on -next. I believe we no longer need mdelay_non_interruptible
-in the ehci-hcd driver, right? Also we don't have to detect re-entrancy
-in the ehci driver anymore. I have applied some patches removing that
-to -next. Could you check the result?
+> +/*
+> + * Init JobR independent of platform property detection
+> + */
+> +static int caam_jr_init(struct device_d *dev)
+> +{
+> +	struct caam_drv_private_jr *jrp;
+> +	int i, error;
+> +
+> +	jrp = dev->priv;
+> +
+> +	error = caam_reset_hw_jr(dev);
+> +	if (error)
+> +		return -EINVAL;
+> +
+> +	error = -ENOMEM;
+> +	jrp->inpring = dma_alloc_coherent(sizeof(*jrp->inpring) * JOBR_DEPTH,
+> +					  DMA_ADDRESS_BROKEN);
+> +	if (!jrp->inpring)
+> +		return error;
+> +
+> +	jrp->outring = dma_alloc_coherent(sizeof(*jrp->outring) *
+> +					  JOBR_DEPTH, DMA_ADDRESS_BROKEN);
+> +	if (!jrp->outring)
+> +		goto out_free_inpring;
 
-Sascha
+No new code with DMA_ADDRESS_BROKEN please.
 
+> +
+> +	jrp->entinfo = xzalloc(sizeof(*jrp->entinfo) * JOBR_DEPTH);
+> +	if (!jrp->entinfo)
+> +		goto out_free_outring;
+> +
+> +	for (i = 0; i < JOBR_DEPTH; i++)
+> +		jrp->entinfo[i].desc_addr_dma = !0;
+> +
+> +	/* Setup rings */
+> +	jrp->inp_ring_write_index = 0;
+> +	jrp->out_ring_read_index = 0;
+> +	jrp->head = 0;
+> +	jrp->tail = 0;
+> +
+> +	wr_reg64(&jrp->rregs->inpring_base, (dma_addr_t) jrp->inpring);
+> +	wr_reg64(&jrp->rregs->outring_base, (dma_addr_t) jrp->outring);
+
+This should use the real DMA address, provided by dma_alloc_coherent
+above. Hint: it also gets rid of the cast. ;)
+
+> +	wr_reg32(&jrp->rregs->inpring_size, JOBR_DEPTH);
+> +	wr_reg32(&jrp->rregs->outring_size, JOBR_DEPTH);
+> +
+> +	jrp->ringsize = JOBR_DEPTH;
+> +
+> +	return 0;
+> +
+> +out_free_outring:
+> +	dma_free_coherent(jrp->outring, 0, sizeof(struct jr_outentry) * JOBR_DEPTH);
+> +out_free_inpring:
+> +	dma_free_coherent(jrp->inpring, 0, sizeof(dma_addr_t) * JOBR_DEPTH);
+> +	dev_err(dev, "can't allocate job rings for %d\n", jrp->ridx);
+> +	return error;
+> +}
+> +
+[...]
+
+Regards,
+Lucas
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
+
 
 _______________________________________________
 barebox mailing list
