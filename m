@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZmMHs-0004bg-9j
+ id 1ZmMHs-0004c0-9m
  for barebox@lists.infradead.org; Wed, 14 Oct 2015 13:40:13 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 14 Oct 2015 15:39:36 +0200
-Message-Id: <1444829979-1100-3-git-send-email-s.trumtrar@pengutronix.de>
+Date: Wed, 14 Oct 2015 15:39:38 +0200
+Message-Id: <1444829979-1100-5-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1444829979-1100-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1444829979-1100-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] ARM: imx6qdl: add caam clks
+Subject: [PATCH 5/6] ARM: i.MX6qdl: add caam node
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/mach-imx/clk-imx6.c                  | 4 ++++
- dts/include/dt-bindings/clock/imx6qdl-clock.h | 5 ++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ arch/arm/dts/imx6qdl.dtsi | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
-index f18ad402a67a..1161453e08a5 100644
---- a/arch/arm/mach-imx/clk-imx6.c
-+++ b/arch/arm/mach-imx/clk-imx6.c
-@@ -443,6 +443,9 @@ static int imx6_ccm_probe(struct device_d *dev)
+diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+index 828be9ce0dbb..d5e7ee2fe547 100644
+--- a/arch/arm/dts/imx6qdl.dtsi
++++ b/arch/arm/dts/imx6qdl.dtsi
+@@ -1,3 +1,4 @@
++#include <dt-bindings/clock/imx6qdl-clock.h>
  
- 	/*                                            name             parent_name          reg         shift */
- 	clks[IMX6QDL_CLK_APBH_DMA]     = imx_clk_gate2("apbh_dma",      "usdhc3",            base + 0x68, 4);
-+	clks[IMX6QDL_CAAM_MEM]         = imx_clk_gate2("caam_mem",      "ahb",               base + 0x68, 8);
-+	clks[IMX6QDL_CAAM_ACLK]        = imx_clk_gate2("caam_aclk",     "ahb",               base + 0x68, 10);
-+	clks[IMX6QDL_CAAM_IPG]         = imx_clk_gate2("caam_ipg",      "ipg",               base + 0x68, 12);
- 	clks[IMX6QDL_CLK_ECSPI1]       = imx_clk_gate2("ecspi1",        "ecspi_root",        base + 0x6c, 0);
- 	clks[IMX6QDL_CLK_ECSPI2]       = imx_clk_gate2("ecspi2",        "ecspi_root",        base + 0x6c, 2);
- 	clks[IMX6QDL_CLK_ECSPI3]       = imx_clk_gate2("ecspi3",        "ecspi_root",        base + 0x6c, 4);
-@@ -477,6 +480,7 @@ static int imx6_ccm_probe(struct device_d *dev)
- 	clks[IMX6QDL_CLK_USDHC2]       = imx_clk_gate2("usdhc2",        "usdhc2_podf",       base + 0x80, 4);
- 	clks[IMX6QDL_CLK_USDHC3]       = imx_clk_gate2("usdhc3",        "usdhc3_podf",       base + 0x80, 6);
- 	clks[IMX6QDL_CLK_USDHC4]       = imx_clk_gate2("usdhc4",        "usdhc4_podf",       base + 0x80, 8);
-+	clks[IMX6QDL_CLK_EIM_SLOW]     = imx_clk_gate2("eim_slow",      "eim_slow_podf",     base + 0x80, 10);
- 	clks[IMX6QDL_CLK_CKO1]         = imx_clk_gate("cko1",           "cko1_podf",         base + 0x60, 7);
- 	clks[IMX6QDL_CLK_CKO2]         = imx_clk_gate("cko2",           "cko2_podf",         base + 0x60, 24);
- 
-diff --git a/dts/include/dt-bindings/clock/imx6qdl-clock.h b/dts/include/dt-bindings/clock/imx6qdl-clock.h
-index 8780868458a0..f68e9252a322 100644
---- a/dts/include/dt-bindings/clock/imx6qdl-clock.h
-+++ b/dts/include/dt-bindings/clock/imx6qdl-clock.h
-@@ -251,6 +251,9 @@
- #define IMX6QDL_CLK_VIDEO_27M			238
- #define IMX6QDL_CLK_MIPI_CORE_CFG		239
- #define IMX6QDL_CLK_MIPI_IPG			240
--#define IMX6QDL_CLK_END				241
-+#define IMX6QDL_CAAM_MEM			241
-+#define IMX6QDL_CAAM_ACLK			242
-+#define IMX6QDL_CAAM_IPG			243
-+#define IMX6QDL_CLK_END				244
- 
- #endif /* __DT_BINDINGS_CLOCK_IMX6QDL_H */
+ / {
+ 	aliases {
+@@ -7,4 +8,26 @@
+ 		pwm3 = &pwm4;
+ 		ipu0 = &ipu1;
+ 	};
++
++	crypto: caam@2100000 {
++		compatible = "fsl,sec-v4.0", "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		reg = <0x2100000 0x1000>;
++		ranges = <0 0x2100000 0x40000>;
++		clocks = <&clks IMX6QDL_CAAM_MEM>,
++			 <&clks IMX6QDL_CAAM_ACLK>,
++			 <&clks IMX6QDL_CAAM_IPG>,
++			 <&clks IMX6QDL_CLK_EIM_SLOW>;
++		clock-names = "caam_mem", "caam_aclk", "caam_ipg", "caam_emi_slow";
++		interrupt-parent = <&intc>;
++
++		sec_jr0: jr0@1000 {
++			compatible = "fsl,sec-v4.0-job-ring";
++			reg = <0x1000 0x1000>;
++			interrupt-parent = <&intc>;
++			interrupts = <0 105 0x4>;
++		};
++
++	};
+ };
 -- 
 2.6.1
 
