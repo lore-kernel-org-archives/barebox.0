@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZmHoj-0005AN-3Y
- for barebox@lists.infradead.org; Wed, 14 Oct 2015 08:53:50 +0000
+ id 1ZmHof-0005AL-7D
+ for barebox@lists.infradead.org; Wed, 14 Oct 2015 08:53:46 +0000
 Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1ZmHoN-0005FH-Jn
+ (envelope-from <l.stach@pengutronix.de>) id 1ZmHoN-0005FH-H4
  for barebox@lists.infradead.org; Wed, 14 Oct 2015 10:53:27 +0200
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 14 Oct 2015 10:53:27 +0200
-Message-Id: <1444812807-2331-3-git-send-email-l.stach@pengutronix.de>
-In-Reply-To: <1444812807-2331-1-git-send-email-l.stach@pengutronix.de>
-References: <1444812807-2331-1-git-send-email-l.stach@pengutronix.de>
+Date: Wed, 14 Oct 2015 10:53:25 +0200
+Message-Id: <1444812807-2331-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] video: simple-panel: depend on OFDEVICE
+Subject: [PATCH 1/3] input: usb-kbd: depend on CONSOLE_FULL
 To: barebox@lists.infradead.org
 
 Fixes:
-In function `simple_panel_ioctl':
-undefined reference to `of_get_display_timings'
+In function `usb_kbd_probe':
+(usb_kbd_probe): undefined reference to `console_set_active'
 
 Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- drivers/video/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index d31bdfe8f07a..eabd246d535a 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -130,7 +130,7 @@ config DRIVER_VIDEO_MTL017
- config DRIVER_VIDEO_SIMPLE_PANEL
- 	bool "Simple panel support"
- 	select VIDEO_VPL
--	depends on OFTREE
-+	depends on OFTREE && OFDEVICE
+diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
+index 24a5d10f89bc..336b9f581406 100644
+--- a/drivers/input/Kconfig
++++ b/drivers/input/Kconfig
+@@ -49,6 +49,7 @@ config KEYBOARD_TWL6030
+ config KEYBOARD_USB
+ 	bool "USB keyboard"
+ 	depends on USB_HOST
++	depends on CONSOLE_FULL
+ 	select POLLER
  	help
- 	  This enabled support for simple panels, i.e. panels which consist of
- 	  a mode definition and enable gpios in the devicetree. Unlike the
+ 	  This driver implements support for usb keyboard.
 -- 
 2.6.1
 
