@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZmMrL-0000mX-Qg
- for barebox@lists.infradead.org; Wed, 14 Oct 2015 14:16:52 +0000
-Message-ID: <1444832190.13276.18.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 14 Oct 2015 16:16:30 +0200
-In-Reply-To: <1444829979-1100-4-git-send-email-s.trumtrar@pengutronix.de>
-References: <1444829979-1100-1-git-send-email-s.trumtrar@pengutronix.de>
- <1444829979-1100-4-git-send-email-s.trumtrar@pengutronix.de>
-Mime-Version: 1.0
+ id 1Zmdkv-0003QA-ES
+ for barebox@lists.infradead.org; Thu, 15 Oct 2015 08:19:22 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 15 Oct 2015 10:18:53 +0200
+Message-Id: <1444897136-25028-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,96 +14,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/6] crypto: add i.MX6 CAAM support
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: 
+To: Barebox List <barebox@lists.infradead.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Am Mittwoch, den 14.10.2015, 15:39 +0200 schrieb Steffen Trumtrar:
-> Add the i.MX6 crypto core CAAM.
-> 
-> The core itself works with jobrings in which descriptors can be
-> queued/dequeued for processing.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  
-[...]
+Here are some patches that fix mvebu for out of tree builds. These
+currently do not work because the kwbimage tools searches the files
+given to the BINARY option in the config file relative to the current
+directory rather than relative to the config file.
 
-> +/*
-> + * Init JobR independent of platform property detection
-> + */
-> +static int caam_jr_init(struct device_d *dev)
-> +{
-> +	struct caam_drv_private_jr *jrp;
-> +	int i, error;
-> +
-> +	jrp = dev->priv;
-> +
-> +	error = caam_reset_hw_jr(dev);
-> +	if (error)
-> +		return -EINVAL;
-> +
-> +	error = -ENOMEM;
-> +	jrp->inpring = dma_alloc_coherent(sizeof(*jrp->inpring) * JOBR_DEPTH,
-> +					  DMA_ADDRESS_BROKEN);
-> +	if (!jrp->inpring)
-> +		return error;
-> +
-> +	jrp->outring = dma_alloc_coherent(sizeof(*jrp->outring) *
-> +					  JOBR_DEPTH, DMA_ADDRESS_BROKEN);
-> +	if (!jrp->outring)
-> +		goto out_free_inpring;
+Sascha
 
-No new code with DMA_ADDRESS_BROKEN please.
+----------------------------------------------------------------
+Sascha Hauer (3):
+      scripts/kwbimage: Move configfile opening to the function that reads it
+      scripts/kwbimage: Make BINARY files relative to config file
+      ARM: mvebu: Lenovo IX4 300D: Fix pblb generation
 
-> +
-> +	jrp->entinfo = xzalloc(sizeof(*jrp->entinfo) * JOBR_DEPTH);
-> +	if (!jrp->entinfo)
-> +		goto out_free_outring;
-> +
-> +	for (i = 0; i < JOBR_DEPTH; i++)
-> +		jrp->entinfo[i].desc_addr_dma = !0;
-> +
-> +	/* Setup rings */
-> +	jrp->inp_ring_write_index = 0;
-> +	jrp->out_ring_read_index = 0;
-> +	jrp->head = 0;
-> +	jrp->tail = 0;
-> +
-> +	wr_reg64(&jrp->rregs->inpring_base, (dma_addr_t) jrp->inpring);
-> +	wr_reg64(&jrp->rregs->outring_base, (dma_addr_t) jrp->outring);
-
-This should use the real DMA address, provided by dma_alloc_coherent
-above. Hint: it also gets rid of the cast. ;)
-
-> +	wr_reg32(&jrp->rregs->inpring_size, JOBR_DEPTH);
-> +	wr_reg32(&jrp->rregs->outring_size, JOBR_DEPTH);
-> +
-> +	jrp->ringsize = JOBR_DEPTH;
-> +
-> +	return 0;
-> +
-> +out_free_outring:
-> +	dma_free_coherent(jrp->outring, 0, sizeof(struct jr_outentry) * JOBR_DEPTH);
-> +out_free_inpring:
-> +	dma_free_coherent(jrp->inpring, 0, sizeof(dma_addr_t) * JOBR_DEPTH);
-> +	dev_err(dev, "can't allocate job rings for %d\n", jrp->ridx);
-> +	return error;
-> +}
-> +
-[...]
-
-Regards,
-Lucas
-
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
-
+ arch/arm/boards/globalscale-mirabox/kwbimage.cfg   |  2 +-
+ arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg       |  2 +-
+ arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg  |  2 +-
+ .../boards/plathome-openblocks-ax3/kwbimage.cfg    |  2 +-
+ images/Makefile.mvebu                              |  2 +-
+ scripts/kwbimage.c                                 | 51 +++++++++++++---------
+ 6 files changed, 36 insertions(+), 25 deletions(-)
 
 _______________________________________________
 barebox mailing list
