@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+Received: from mail-lf0-x229.google.com ([2a00:1450:4010:c07::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zmhm8-0001Qa-GL
- for barebox@lists.infradead.org; Thu, 15 Oct 2015 12:36:53 +0000
-Received: by lbwr8 with SMTP id r8so67604235lbw.2
- for <barebox@lists.infradead.org>; Thu, 15 Oct 2015 05:36:29 -0700 (PDT)
-Date: Thu, 15 Oct 2015 15:38:56 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20151015153856.71d1506a@berta>
-In-Reply-To: <20151014140908.GS7858@pengutronix.de>
-References: <1444817749-20766-1-git-send-email-pmamonov@gmail.com>
- <20151014140908.GS7858@pengutronix.de>
-MIME-Version: 1.0
+ id 1Zmptu-0000Xr-La
+ for barebox@lists.infradead.org; Thu, 15 Oct 2015 21:17:27 +0000
+Received: by lfeh64 with SMTP id h64so47227742lfe.3
+ for <barebox@lists.infradead.org>; Thu, 15 Oct 2015 14:17:04 -0700 (PDT)
+Message-ID: <562017CD.4050105@gmail.com>
+Date: Thu, 15 Oct 2015 23:17:01 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <87d1wk74nt.fsf@belgarion.home> <561BFECA.1010105@gmail.com>
+ <87k2qr6go0.fsf@belgarion.home> <561C111E.7010106@gmail.com>
+ <874mhv5cxm.fsf@belgarion.home> <561CD48A.9000301@gmail.com>
+ <20151013102725.GH7858@pengutronix.de> <87wpur3ves.fsf@belgarion.home>
+In-Reply-To: <87wpur3ves.fsf@belgarion.home>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +22,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] usb: core: return -EAGAIN on usb_* functions
- reentrance
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
+To: Robert Jarzmik <robert.jarzmik@free.fr>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-On Wed, 14 Oct 2015 16:09:08 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On 13.10.2015 12:38, Robert Jarzmik wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> writes:
+>
+>> In your temporary patch you have:
+>>
+>>> @@ -67,6 +71,9 @@ static int zylonite_devices_init(void)
+>>>   			   &smsc91x_pdata);
+>>>   	add_generic_device("mrvl_nand", DEVICE_ID_DYNAMIC, NULL,
+>>>   			   0x43100000, 0x1000, IORESOURCE_MEM, &nand_pdata);
+>>> +	clk = clk_get_sys("nand", NULL);
+>>> +	if (!IS_ERR(clk))
+>>> +		clkdev_add_physbase(clk, 0x43100000, NULL);
+>>
+>> Could it be that you register the clk lookup after the nand driver is probed? This
+>> hunk should be moved before the nand device registration.
+> That's what I had thought, but changing the order gave me a panic, so I didn't
+> push forward.
 
-> Hi Peter,
-> 
-> On Wed, Oct 14, 2015 at 01:15:47PM +0300, Peter Mamonov wrote:
-> > The second patch of this patch set adds reentrance detection to 
-> > the the following functions: usb_submit_int_msg, usb_control_msg and
-> > usb_bulk_msg. These functions will return -EAGAIN if reentered. 
-> > Other public usb_* functions call one of these three functions.
-> > This patch enables one to use regular *delay() functions
-> > throughout the ehci-hcd.c.
-> > 
-> > The first patch adds check for -EAGAIN return value to the usb
-> > keyboard driver. The driver will skip keyboard poll upon getting
-> > this error value from either usb_submit_int_msg() or
-> > usb_get_report() functions.
-> > 
-> > Peter Mamonov (2):
-> > 	input: usb_kbd: skip poll on -EAGAIN error
-> > 	usb: core: return -EAGAIN on usb_* functions reentrance
-> 
-> Applied on -next. I believe we no longer need mdelay_non_interruptible
-> in the ehci-hcd driver, right? Also we don't have to detect
-> re-entrancy in the ehci driver anymore. I have applied some patches
-> removing that to -next. Could you check the result?
+Robert,
 
-Yes.
-Yes.
-I've tested the current "next" branch - the usb stuff works fine.
+I pushed another version of the patch set with the following changes:
 
-> 
-> Sascha
-> 
-> 
+- Bail out of mrvl_nand_probe_dt early if
+   !IS_ENABLED(CONFIG_OFTREE) || host->dev->platform_data
+
+- Move clkdev_add_physbase() before add_generic_device("mrvl_nand")
+   (Thanks Sascha!)
+
+I hope the issues are resolved now and thanks a lot for testing
+again!
+
+Sebastian
+
+> This is what I had, decoded in [1].
+>
+> Cheers.
+>
+> --
+> Robert
+>
+> [1] My backtrace with the inversion :
+>
+> barebox@Zylonite:/ bootm /mnt/tftp/barebox.bin
+> bootm /mnt/tftp/barebox.bin
+> netconsole: netconsole initialized with 255.255.255.255:6662
+> eth0: 100Mbps full duplex link detected
+> DHCP client bound to address 192.168.1.232
+>
+> Loading ARM barebox image '/mnt/tftp/barebox.bin'
+> commandline: ram=64M console=ttyS0,115200   mtdparts=pxa3xx_nand-0:128k@0(TIMH)ro,128k@128k(OBMI)ro,768k@256k(barebox),256k@1024k(barebox-env),12M@1280k(kernel),38016k@13568k(root)
+> arch_number: 1233
+> netconsole: port not set
+> netconsole: registered as netconsole-1
+> smc91c111 smc91c1110: chip is revision= 9, version= 2
+> mdio_bus: miibus0: probed
+> eth0: got preset MAC address: 00:0e:0c:a7:26:f7
+> zylonite_devices_init(): clk = 83703328
+> alloc_nand_resource(): clk_get() -> 83703328
+> unable to handle NULL pointer dereference at address 0x00000004
+> pc : [<83f15b9c>]    lr : [<83f15b90>]
+> sp : 83fffed0  ip : 000001b0  fp : 00000000
+> r10: 00000002  r9 : 83706888  r8 : 83f8c88c
+> r7 : 00000000  r6 : 00000000  r5 : 83706948  r4 : 00000000
+> r3 : 83706888  r2 : 43100000  r1 : 83f60783  r0 : 00000000
+> Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
+> (mrvl_nand_probe+0x1ac/0x650) from device_probe (/drivers/base/driver.c:93)
+> (device_probe+0x30/0xb8) from match.part.3 (/drivers/base/driver.c:153)
+> (match.part.3+0x44/0x54) from register_device (/drivers/base/driver.c:192)
+> (register_device+0x120/0x15c) from add_generic_device (/drivers/base/resource.c:84)
+> (add_generic_device+0x3c/0x48) from zylonite_devices_init (/arch/arm/boards/zylonite/board.c:78)
+> (zylonite_devices_init+0x9c/0x108) from start_barebox (/common/startup.c:101)
+> (start_barebox+0x30/0xe8) from __start (/arch/arm/cpu/start.c:142)
+> (__start+0x124/0x13c) from 0x8386c290
+>
+> (unwind_backtrace+0x0/0x90) from panic (/common/misc.c:209)
+> (panic+0x28/0x38) from do_exception (/arch/arm/cpu/interrupts.c:85)
+> (do_exception+0x10/0x14) from do_data_abort (/arch/arm/cpu/interrupts.c:139)
+> (do_data_abort+0x2c/0x38) from do_abort_6 (:?)
+> ### ERROR ### Please RESET the board ###
+>
+> And a special gift :
+> rj@belgarion:~/mio_linux/barebox$ addr2line -i -e barebox 0x83f15b9c
+> /home/rj/mio_linux/barebox/drivers/mtd/nand/nand_mrvl_nfc.c:1172
+> /home/rj/mio_linux/barebox/drivers/mtd/nand/nand_mrvl_nfc.c:1202
+>
 
 
 _______________________________________________
