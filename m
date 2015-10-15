@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zmdkv-0003QC-ER
- for barebox@lists.infradead.org; Thu, 15 Oct 2015 08:19:22 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 Oct 2015 10:18:55 +0200
-Message-Id: <1444897136-25028-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1444897136-25028-1-git-send-email-s.hauer@pengutronix.de>
+Received: from down.free-electrons.com ([37.187.137.238]
+ helo=mail.free-electrons.com)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZmePh-0007FC-2Q
+ for barebox@lists.infradead.org; Thu, 15 Oct 2015 09:01:29 +0000
+Date: Thu, 15 Oct 2015 11:00:37 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20151015110037.7bfef9ab@free-electrons.com>
+In-Reply-To: <1444897136-25028-3-git-send-email-s.hauer@pengutronix.de>
 References: <1444897136-25028-1-git-send-email-s.hauer@pengutronix.de>
+ <1444897136-25028-3-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,149 +19,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] scripts/kwbimage: Make BINARY files relative to config
- file
-To: Barebox List <barebox@lists.infradead.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Subject: Re: [PATCH 2/3] scripts/kwbimage: Make BINARY files relative to
+ config file
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-The BINARY files given in the config files are expected to be relative
-to the place kwbimage is called from. This is bad since it breaks where
-kwbimage is called from the build directory and not the source
-directory.
-It makes more sense to make the paths in the config files relative
-to the config files which works with out of tree builds and is also
-more what a user normally expects.
+Sascha,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/globalscale-mirabox/kwbimage.cfg     |  2 +-
- arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg         |  2 +-
- arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg    |  2 +-
- arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg |  2 +-
- scripts/kwbimage.c                                   | 17 +++++++++++++----
- 5 files changed, 17 insertions(+), 8 deletions(-)
+On Thu, 15 Oct 2015 10:18:55 +0200, Sascha Hauer wrote:
+> The BINARY files given in the config files are expected to be relative
+> to the place kwbimage is called from. This is bad since it breaks where
+> kwbimage is called from the build directory and not the source
+> directory.
+> It makes more sense to make the paths in the config files relative
+> to the config files which works with out of tree builds and is also
+> more what a user normally expects.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-diff --git a/arch/arm/boards/globalscale-mirabox/kwbimage.cfg b/arch/arm/boards/globalscale-mirabox/kwbimage.cfg
-index 16fb77c..3e20502 100644
---- a/arch/arm/boards/globalscale-mirabox/kwbimage.cfg
-+++ b/arch/arm/boards/globalscale-mirabox/kwbimage.cfg
-@@ -2,4 +2,4 @@ VERSION 1
- BOOT_FROM nand
- NAND_BLKSZ 00020000
- NAND_BADBLK_LOCATION 01
--BINARY arch/arm/boards/globalscale-mirabox/binary.0 0000005b 00000068
-+BINARY binary.0 0000005b 00000068
-diff --git a/arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg b/arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg
-index 713efb0..15b7fdd 100644
---- a/arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg
-+++ b/arch/arm/boards/lenovo-ix4-300d/kwbimage.cfg
-@@ -2,4 +2,4 @@ VERSION 1
- BOOT_FROM nand
- NAND_BLKSZ 00020000
- NAND_BADBLK_LOCATION 00
--BINARY arch/arm/boards/lenovo-ix4-300d/binary.0 0000005b 00000068
-+BINARY binary.0 0000005b 00000068
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg b/arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg
-index 3f66aa0..05d398c 100644
---- a/arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg
-+++ b/arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg
-@@ -1,3 +1,3 @@
- VERSION 1
- BOOT_FROM spi
--BINARY arch/arm/boards/marvell-armada-xp-gp/binary.0 0000005b 00000068
-+BINARY binary.0 0000005b 00000068
-diff --git a/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg b/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
-index 1d05715..05d398c 100644
---- a/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
-+++ b/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
-@@ -1,3 +1,3 @@
- VERSION 1
- BOOT_FROM spi
--BINARY arch/arm/boards/plathome-openblocks-ax3/binary.0 0000005b 00000068
-+BINARY binary.0 0000005b 00000068
-diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
-index 16be2dd..448ac2a 100644
---- a/scripts/kwbimage.c
-+++ b/scripts/kwbimage.c
-@@ -51,6 +51,7 @@
- #include <unistd.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <libgen.h>
- 
- #define ALIGN_SUP(x, a) (((x) + (a - 1)) & ~(a - 1))
- 
-@@ -187,7 +188,7 @@ struct image_cfg_element {
- 		unsigned int version;
- 		unsigned int bootfrom;
- 		struct {
--			const char *file;
-+			char *file;
- 			unsigned int args[BINARY_MAX_ARGS];
- 			unsigned int nargs;
- 		} binary;
-@@ -1003,7 +1004,8 @@ static void *image_create_v1(struct image_cfg_element *image_cfg,
- }
- 
- static int image_create_config_parse_oneline(char *line,
--					     struct image_cfg_element *el)
-+					     struct image_cfg_element *el,
-+					     char *configpath)
- {
- 	char *keyword, *saveptr;
- 
-@@ -1056,7 +1058,10 @@ static int image_create_config_parse_oneline(char *line,
- 		int argi = 0;
- 
- 		el->type = IMAGE_CFG_BINARY;
--		el->binary.file = strdup(value);
-+		if (*value == '/')
-+			el->binary.file = strdup(value);
-+		else
-+			asprintf(&el->binary.file, "%s/%s", configpath, value);
- 		while (1) {
- 			value = strtok_r(NULL, " ", &saveptr);
- 			if (!value)
-@@ -1105,11 +1110,13 @@ static int image_create_config_parse(const char *input,
- 	int ret;
- 	int cfgi = 0;
- 	FILE *fcfg;
-+	char *configpath = dirname(strdup(input));
- 
- 	fcfg = fopen(input, "r");
- 	if (!fcfg) {
- 		fprintf(stderr, "Could not open input file %s\n",
- 			input);
-+		free(configpath);
- 		return -1;
- 	}
- 
-@@ -1134,7 +1141,8 @@ static int image_create_config_parse(const char *input,
- 
- 		/* Parse the current line */
- 		ret = image_create_config_parse_oneline(line,
--							&image_cfg[cfgi]);
-+							&image_cfg[cfgi],
-+							configpath);
- 		if (ret)
- 			goto out;
- 
-@@ -1151,6 +1159,7 @@ static int image_create_config_parse(const char *input,
- 	*cfgn = cfgi;
- out:
- 	fclose(fcfg);
-+	free(configpath);
- 	return ret;
- }
- 
+In practice those binary.0 files are not really part of the Barebox
+source code. The binary.0 file has to be extracted from a vendor U-Boot
+binary prior to doing the Barebox build, so it isn't exactly part of
+the "source tree".
+
+Though I agree it is probably easier to extract them once and keep them
+around in the source tree (not checked-in, of course).
+
+Note that U-Boot now has a fully open-source implementation of this
+binary.0 thing, at least for Armada XP and Armada 38x. However, it's
+basically copy/pasted from the vendor U-Boot, so it's not very pretty
+to look at:
+
+ - http://git.denx.de/?p=u-boot.git;a=tree;f=drivers/ddr/marvell
+   for the DDR initialization code.
+
+ - http://git.denx.de/?p=u-boot.git;a=tree;f=arch/arm/mach-mvebu/serdes
+   for the SERDES lane initialization
+
+Best regards,
+
+Thomas
 -- 
-2.6.1
-
+Thomas Petazzoni, CTO, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
