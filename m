@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zo35n-00043I-Hq
- for barebox@lists.infradead.org; Mon, 19 Oct 2015 05:34:45 +0000
-Received: by pabrc13 with SMTP id rc13so179927137pab.0
- for <barebox@lists.infradead.org>; Sun, 18 Oct 2015 22:34:22 -0700 (PDT)
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 18 Oct 2015 22:33:57 -0700
-Message-Id: <1445232837-22317-1-git-send-email-andrew.smirnov@gmail.com>
+ id 1Zo3pu-0001al-EZ
+ for barebox@lists.infradead.org; Mon, 19 Oct 2015 06:22:24 +0000
+Date: Mon, 19 Oct 2015 08:21:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151019062158.GA14476@pengutronix.de>
+References: <1444829979-1100-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1444829979-1100-4-git-send-email-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1444829979-1100-4-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,600 +19,212 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Add support for semihosting
-To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 4/6] crypto: add i.MX6 CAAM support
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Add semihosting API implementation and implement a filesystem driver
-to access debugging host filesystem using it.
+On Wed, Oct 14, 2015 at 03:39:37PM +0200, Steffen Trumtrar wrote:
+> Add the i.MX6 crypto core CAAM.
+> 
+> The core itself works with jobrings in which descriptors can be
+> queued/dequeued for processing.
 
-Tested on Freescale SabreSD board (i.MX6Q) using OpenOCD
+Which upstream kernel version is this built upon? What changes did you
+make to the kernel code?
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
----
- Documentation/filesystems/smhfs.rst |  20 ++++
- arch/arm/Kconfig                    |   9 ++
- arch/arm/include/asm/semihosting.h  |  19 +++
- arch/arm/lib/Makefile               |   1 +
- arch/arm/lib/semihosting-trap.S     |  28 +++++
- arch/arm/lib/semihosting.c          | 227 ++++++++++++++++++++++++++++++++++++
- fs/Kconfig                          |   9 ++
- fs/Makefile                         |   1 +
- fs/smhfs.c                          | 177 ++++++++++++++++++++++++++++
- 9 files changed, 491 insertions(+)
- create mode 100644 Documentation/filesystems/smhfs.rst
- create mode 100644 arch/arm/include/asm/semihosting.h
- create mode 100644 arch/arm/lib/semihosting-trap.S
- create mode 100644 arch/arm/lib/semihosting.c
- create mode 100644 fs/smhfs.c
+The answers should be part of the commit message.
 
-diff --git a/Documentation/filesystems/smhfs.rst b/Documentation/filesystems/smhfs.rst
-new file mode 100644
-index 0000000..06b24b7
---- /dev/null
-+++ b/Documentation/filesystems/smhfs.rst
-@@ -0,0 +1,20 @@
-+.. index:: smhfs (filesystem)
-+
-+.. _filesystems_smhfs:
-+
-+File I/O over ARM semihosting support
-+=====================================
-+
-+barebox can communicate with debug programms attached via SWD/JTAG by
-+means of ARM semihosting protocol.
-+
-+Not all of the I/O primitives neccessary to implement a full
-+filesystem are exposed in ARM semihosting API and because of that some
-+aspects of filesystem funcionality are missing. Implementation does
-+not have support for listing directories. This means a
-+:ref:`command_ls` to a SMHFS-mounted path will show an empty
-+directory. Nevertheless, the files are there.
-+
-+Example::
-+
-+  mount -t smhfs /dev/null /mnt/smhfs
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 304b6e6..1bccca3 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -326,6 +326,15 @@ config ARM_UNWIND
- 	  the performance is not affected. Currently, this feature
- 	  only works with EABI compilers. If unsure say Y.
+> +static void caam_remove(struct device_d *dev)
+> +{
+> +	struct caam_drv_private *ctrlpriv = dev->priv;
+> +	struct caam_ctrl __iomem *ctrl;
+> +
+> +	ctrl = (struct caam_ctrl __iomem *)ctrlpriv->ctrl;
 
-+config ARM_SEMIHOSTING
-+	bool "enable ARM semihosting support"
-+	help
-+	  This option enables ARM semihosting support in barebox. ARM
-+	  semihosting is a communication discipline that allows code
-+	  running on target ARM cpu perform system calls and access
-+	  the data on the host computer connected to the target via
-+	  debugging channel (JTAG, SWD). If unsure say N
-+
- endmenu
+This variable is unused.
 
- source common/Kconfig
-diff --git a/arch/arm/include/asm/semihosting.h b/arch/arm/include/asm/semihosting.h
-new file mode 100644
-index 0000000..b478dad
---- /dev/null
-+++ b/arch/arm/include/asm/semihosting.h
-@@ -0,0 +1,19 @@
-+#ifndef __ASM_ARM_SEMIHOSTING_H
-+#define __ASM_ARM_SEMIHOSTING_H
-+
-+int semihosting_open(const char *fname, int flags);
-+int semihosting_close(int fd);
-+int semihosting_writec(char c);
-+int semihosting_write0(const char *str);
-+ssize_t semihosting_write(int fd, const void *buf, size_t count);
-+ssize_t semihosting_read(int fd, void *buf, size_t count);
-+int semihosting_readc(void);
-+int semihosting_isatty(int fd);
-+int semihosting_seek(int fd, loff_t pos);
-+int semihosting_flen(int fd);
-+int semihosting_remove(const char *fname);
-+int semihosting_rename(const char *fname1, const char *fname2);
-+int semihosting_errno(void);
-+int semihosting_system(const char *command);
-+
-+#endif
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index a328795..e1c6f5b 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -20,6 +20,7 @@ pbl-y	+= runtime-offset.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
- obj-$(CONFIG_ARM_UNWIND) += unwind.o
-+obj-$(CONFIG_ARM_SEMIHOSTING) += semihosting-trap.o semihosting.o
- obj-$(CONFIG_MODULES) += module.o
- extra-y += barebox.lds
+> +
+> +	/* De-initialize RNG state handles initialized by this driver. */
+> +	if (ctrlpriv->rng4_sh_init)
+> +		deinstantiate_rng(dev, ctrlpriv->rng4_sh_init);
+> +
+> +	/* shut clocks off before finalizing shutdown */
+> +	clk_disable(ctrlpriv->caam_ipg);
+> +	clk_disable(ctrlpriv->caam_mem);
+> +	clk_disable(ctrlpriv->caam_aclk);
+> +	clk_disable(ctrlpriv->caam_emi_slow);
+> +}
+> +
+> +
+> +	/*
+> +	 * ERRATA:  mx6 devices have an issue wherein AXI bus transactions
+> +	 * may not occur in the correct order. This isn't a problem running
+> +	 * single descriptors, but can be if running multiple concurrent
+> +	 * descriptors. Reworking the driver to throttle to single requests
+> +	 * is impractical, thus the workaround is to limit the AXI pipeline
+> +	 * to a depth of 1 (from it's default of 4) to preclude this situation
+> +	 * from occurring.
+> +	 */
+> +	wr_reg32(&ctrl->mcr,
+> +		 (rd_reg32(&ctrl->mcr) & ~(MCFGR_AXIPIPE_MASK)) |
+> +		 ((1 << MCFGR_AXIPIPE_SHIFT) & MCFGR_AXIPIPE_MASK));
+> +
+> +	wr_reg32(&ctrl->mcr, 0x40002110);
 
-diff --git a/arch/arm/lib/semihosting-trap.S b/arch/arm/lib/semihosting-trap.S
-new file mode 100644
-index 0000000..9e40ebf
---- /dev/null
-+++ b/arch/arm/lib/semihosting-trap.S
-@@ -0,0 +1,28 @@
-+/*
-+ * semihosting-trap.S -- Assembly code needed to make a semihosting call
-+ *
-+ * Copyright (c) 2015 Zodiac Inflight Innovations
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <linux/linkage.h>
-+#include <asm/unified.h>
-+
-+.section .text.semihosting_trap
-+ENTRY(semihosting_trap)
-+	@ In supervisor mode SVC would clobber LR
-+	push	{lr}
-+	ARM(	svc	#0x123456	)
-+	THUMB(	svc	#0xAB		)
-+	pop	{pc}
-+ENDPROC(semihosting_trap)
-diff --git a/arch/arm/lib/semihosting.c b/arch/arm/lib/semihosting.c
-new file mode 100644
-index 0000000..a735196
---- /dev/null
-+++ b/arch/arm/lib/semihosting.c
-@@ -0,0 +1,227 @@
-+/*
-+ * semihosting.c -- ARM Semihoting API implementation
-+ *
-+ * Copyright (c) 2015 Zodiac Inflight Innovations
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * based on a smiliar code from U-Boot
-+ * Copyright (c) 2014 Broadcom Corporation
-+ *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <command.h>
-+#include <fcntl.h>
-+
-+#ifndef O_BINARY
-+#define O_BINARY	0
-+#endif
-+
-+
-+enum {
-+	SEMIHOSTING_SYS_OPEN	= 0x01,
-+	SEMIHOSTING_SYS_CLOSE	= 0x02,
-+	SEMIHOSTING_SYS_WRITEC	= 0x03,
-+	SEMIHOSTING_SYS_WRITE0	= 0x04,
-+	SEMIHOSTING_SYS_WRITE	= 0x05,
-+	SEMIHOSTING_SYS_READ	= 0x06,
-+	SEMIHOSTING_SYS_READC	= 0x07,
-+	/* SYS_ISERROR is not implemented  */
-+	SEMIHOSTING_SYS_ISATTY	= 0x09,
-+	SEMIHOSTING_SYS_SEEK	= 0x0a,
-+	SEMIHOSTING_SYS_FLEN	= 0x0c,
-+	SEMIHOSTING_SYS_REMOVE	= 0x0e,
-+	SEMIHOSTING_SYS_RENAME	= 0x0f,
-+	SEMIHOSTING_SYS_TIME	= 0x11,
-+	SEMIHOSTING_SYS_ERRNO	= 0x13,
-+	/* SYS_GET_CMDLINE is not implemented */
-+	/* SYS_HEAPINFO is not implemented */
-+	/* angel_SWIreason_ReportException is not implemented */
-+	SEMIHOSTING_SYS_SYSTEM	= 0x12,
-+};
-+
-+uint32_t semihosting_trap(uint32_t sysnum, void *addr);
-+
-+static uint32_t semihosting_flags_to_mode(int flags)
-+{
-+	static const int semihosting_open_modeflags[12] = {
-+		O_RDONLY,
-+		O_RDONLY | O_BINARY,
-+		O_RDWR,
-+		O_RDWR | O_BINARY,
-+		O_WRONLY | O_CREAT | O_TRUNC,
-+		O_WRONLY | O_CREAT | O_TRUNC | O_BINARY,
-+		O_RDWR | O_CREAT | O_TRUNC,
-+		O_RDWR | O_CREAT | O_TRUNC | O_BINARY,
-+		O_WRONLY | O_CREAT | O_APPEND,
-+		O_WRONLY | O_CREAT | O_APPEND | O_BINARY,
-+		O_RDWR | O_CREAT | O_APPEND,
-+		O_RDWR | O_CREAT | O_APPEND | O_BINARY
-+	};
-+
-+	int i;
-+	for (i = 0; i < ARRAY_SIZE(semihosting_open_modeflags); i++) {
-+		if (semihosting_open_modeflags[i] == flags)
-+			return i;
-+	}
-+
-+	return 0;
-+}
-+
-+int semihosting_open(const char *fname, int flags)
-+{
-+	struct __packed {
-+		uint32_t fname;
-+		uint32_t mode;
-+		uint32_t len;
-+	} open = {
-+		.fname = (uint32_t)fname,
-+		.len = strlen(fname),
-+		.mode = semihosting_flags_to_mode(flags),
-+	};
-+
-+	return semihosting_trap(SEMIHOSTING_SYS_OPEN, &open);
-+}
-+EXPORT_SYMBOL(semihosting_open);
-+
-+int semihosting_close(int fd)
-+{
-+	return semihosting_trap(SEMIHOSTING_SYS_CLOSE, &fd);
-+}
-+EXPORT_SYMBOL(semihosting_close);
-+
-+int semihosting_writec(char c)
-+{
-+	return semihosting_trap(SEMIHOSTING_SYS_WRITEC, &c);
-+}
-+EXPORT_SYMBOL(semihosting_writec);
-+
-+int semihosting_write0(const char *str)
-+{
-+	return semihosting_trap(SEMIHOSTING_SYS_WRITE0, (void *)str);
-+}
-+EXPORT_SYMBOL(semihosting_write0);
-+
-+struct __packed semihosting_file_io {
-+	uint32_t fd;
-+	uint32_t memp;
-+	uint32_t len;
-+};
-+
-+ssize_t semihosting_write(int fd, const void *buf, size_t count)
-+{
-+	struct semihosting_file_io write = {
-+		.fd = fd,
-+		.memp = (uint32_t)buf,
-+		.len = count,
-+	};
-+
-+	return semihosting_trap(SEMIHOSTING_SYS_WRITE, &write);
-+}
-+EXPORT_SYMBOL(semihosting_write);
-+
-+ssize_t semihosting_read(int fd, void *buf, size_t count)
-+{
-+	struct semihosting_file_io read = {
-+		.fd = fd,
-+		.memp = (uint32_t)buf,
-+		.len = count,
-+	};
-+
-+	return semihosting_trap(SEMIHOSTING_SYS_READ, &read);
-+}
-+EXPORT_SYMBOL(semihosting_read);
-+
-+int semihosting_readc(void)
-+{
-+	return semihosting_trap(SEMIHOSTING_SYS_READC, NULL);
-+}
-+EXPORT_SYMBOL(semihosting_readc);
-+
-+int semihosting_isatty(int fd)
-+{
-+	return semihosting_trap(SEMIHOSTING_SYS_ISATTY, &fd);
-+}
-+EXPORT_SYMBOL(semihosting_isatty);
-+
-+int semihosting_seek(int fd, off_t pos)
-+{
-+	struct __packed {
-+		uint32_t fd;
-+		uint32_t pos;
-+	} seek = {
-+		.fd = fd,
-+		.pos = pos,
-+	};
-+
-+	return semihosting_trap(SEMIHOSTING_SYS_SEEK, &seek);
-+}
-+EXPORT_SYMBOL(semihosting_seek);
-+
-+int semihosting_flen(int fd)
-+{
-+	return semihosting_trap(SEMIHOSTING_SYS_FLEN, &fd);
-+}
-+EXPORT_SYMBOL(semihosting_flen);
-+
-+int semihosting_remove(const char *fname)
-+{
-+	struct __packed {
-+		uint32_t fname;
-+		uint32_t fname_length;
-+	} remove = {
-+		.fname = (uint32_t)fname,
-+		.fname_length = strlen(fname),
-+	};
-+
-+	return semihosting_trap(SEMIHOSTING_SYS_REMOVE, &remove);
-+}
-+EXPORT_SYMBOL(semihosting_remove);
-+
-+int semihosting_rename(const char *fname1, const char *fname2)
-+{
-+	struct __packed {
-+		uint32_t fname1;
-+		uint32_t fname1_length;
-+		uint32_t fname2;
-+		uint32_t fname2_length;
-+	} rename = {
-+		.fname1 = (uint32_t)fname1,
-+		.fname1_length = strlen(fname1),
-+		.fname2 = (uint32_t)fname2,
-+		.fname2_length = strlen(fname2),
-+	};
-+
-+	return semihosting_trap(SEMIHOSTING_SYS_RENAME, &rename);
-+}
-+EXPORT_SYMBOL(semihosting_rename);
-+
-+int semihosting_errno(void)
-+{
-+	return semihosting_trap(SEMIHOSTING_SYS_ERRNO, NULL);
-+}
-+EXPORT_SYMBOL(semihosting_errno);
-+
-+
-+int semihosting_system(const char *command)
-+{
-+	struct __packed {
-+		uint32_t cmd;
-+		uint32_t cmd_len;
-+	} system = {
-+		.cmd = (uint32_t)command,
-+		.cmd_len = strlen(command),
-+	};
-+
-+	return semihosting_trap(SEMIHOSTING_SYS_SYSTEM, &system);
-+}
-+EXPORT_SYMBOL(semihosting_system);
-diff --git a/fs/Kconfig b/fs/Kconfig
-index feab537..9217bc8 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -80,4 +80,13 @@ config FS_UIMAGEFS
- 	select CRC32
- 	prompt "uImage FS support"
+Hm, first modify some bits and then overwrite the register with some
+hardcoded value?
 
-+config FS_SMHFS
-+	depends on ARM_SEMIHOSTING
-+	bool
-+	prompt "Semihosting FS support"
-+	help
-+	  If enabled this filesystem provides access to the files
-+	  located on a debugging host connected to the target running
-+	  Barebox
-+
- endmenu
-diff --git a/fs/Makefile b/fs/Makefile
-index f5aae91..4693205 100644
---- a/fs/Makefile
-+++ b/fs/Makefile
-@@ -13,3 +13,4 @@ obj-$(CONFIG_FS_BPKFS) += bpkfs.o
- obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
- obj-$(CONFIG_FS_EFI)	 += efi.o
- obj-$(CONFIG_FS_EFIVARFS) += efivarfs.o
-+obj-$(CONFIG_FS_SMHFS) += smhfs.o
-diff --git a/fs/smhfs.c b/fs/smhfs.c
-new file mode 100644
-index 0000000..d38afe6
---- /dev/null
-+++ b/fs/smhfs.c
-@@ -0,0 +1,177 @@
-+/*
-+ * smhfs.c -- Driver implementing pseudo FS interface on top of ARM
-+ *            semihosting
-+ *
-+ * Copyright (c) 2015 Zodiac Inflight Innovations
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * This software is licensed under the terms of the GNU General Public
-+ * License version 2, as published by the Free Software Foundation, and
-+ * may be copied, distributed, and modified under those terms.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <command.h>
-+#include <init.h>
-+#include <fs.h>
-+#include <errno.h>
-+#include <linux/stat.h>
-+#include <asm/semihosting.h>
-+
-+static int file_to_fd(const FILE *f)
-+{
-+	return (int)f->priv;
-+}
-+
-+static int smhfs_create(struct device_d __always_unused *dev,
-+			const char __always_unused *pathname,
-+			mode_t __always_unused mode)
-+{
-+	return 0;
-+}
-+
-+static int smhfs_mkdir(struct device_d __always_unused *dev,
-+		       const char __always_unused *pathname)
-+{
-+	return -ENOSYS;
-+}
-+
-+static int smhfs_remove(struct device_d __always_unused *dev,
-+			const char *pathname)
-+{
-+	/* Get rid of leading '/' */
-+	pathname = &pathname[1];
-+
-+	if (semihosting_remove(pathname) != 0)
-+		return semihosting_errno();
-+	else
-+		return 0
-+}
-+
-+static int smhfs_truncate(struct device_d __always_unused *dev,
-+			  FILE __always_unused *f,
-+			  ulong __always_unused size)
-+{
-+	return -ENOSYS;
-+}
-+
-+static int smhfs_open(struct device_d __always_unused *dev,
-+		      FILE *file, const char *filename)
-+{
-+	/* Get rid of leading '/' */
-+	filename = &filename[1];
-+
-+	const int fd = semihosting_open(filename, file->flags);
-+	if (fd < 0)
-+		goto error;
-+
-+	file->priv = (void *)fd;
-+	file->size = semihosting_flen(fd);
-+	if (file->size < 0)
-+		goto error;
-+
-+	return 0;
-+error:
-+	return semihosting_errno();
-+}
-+
-+static int smhfs_close(struct device_d __always_unused *dev,
-+		       FILE *f)
-+{
-+	if (semihosting_close(file_to_fd(f)))
-+		return semihosting_errno();
-+	else
-+		return 0;
-+}
-+
-+static int smhfs_write(struct device_d __always_unused *dev,
-+		       FILE *f, const void *inbuf, size_t insize)
-+{
-+	if (semihosting_write(file_to_fd(f), inbuf, insize))
-+		return semihosting_errno();
-+	else
-+		return insize;
-+}
-+
-+static int smhfs_read(struct device_d __always_unused *dev,
-+		      FILE *f, void *buf, size_t insize)
-+{
-+	if (!semihosting_read(file_to_fd(f), buf, insize))
-+		return insize;
-+	else
-+		return semihosting_errno();
-+}
-+
-+static loff_t smhfs_lseek(struct device_d __always_unused *dev,
-+			  FILE *f, loff_t pos)
-+{
-+	if (semihosting_seek(file_to_fd(f), pos)) {
-+		return semihosting_errno();
-+	} else {
-+		file->pos = pos;
-+		return file->pos;
-+	}
-+}
-+
-+static DIR* smhfs_opendir(struct device_d __always_unused *dev,
-+			  const char __always_unused *pathname)
-+{
-+	return NULL;
-+}
-+
-+static int smhfs_stat(struct device_d __always_unused *dev,
-+		      const char *filename, struct stat *s)
-+{
-+	FILE file;
-+
-+	if (smhfs_open(NULL, &file, filename) == 0) {
-+		s->st_mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
-+		s->st_size = file.size;
-+	}
-+	smhfs_close(NULL, &file);
-+
-+	return 0;
-+}
-+
-+static int smhfs_probe(struct device_d __always_unused *dev)
-+{
-+	/* TODO: Add provisions to detect if debugger is connected */
-+	return 0;
-+}
-+
-+static void smhfs_remove(struct device_d __always_unused *dev)
-+{
-+}
-+
-+static struct fs_driver_d smhfs_driver = {
-+	.open      = smhfs_open,
-+	.close     = smhfs_close,
-+	.read      = smhfs_read,
-+	.lseek     = smhfs_lseek,
-+	.opendir   = smhfs_opendir,
-+	.stat      = smhfs_stat,
-+	.create    = smhfs_create,
-+	.unlink    = smhfs_remove,
-+	.mkdir     = smhfs_mkdir,
-+	.rmdir     = smhfs_remove,
-+	.write     = smhfs_write,
-+	.truncate  = smhfs_truncate,
-+	.flags     = FS_DRIVER_NO_DEV,
-+	.drv = {
-+		.probe  = smhfs_probe,
-+		.remove = smhfs_remove,
-+		.name = "smhfs",
-+	}
-+};
-+
-+static int smhfs_init(void)
-+{
-+	return register_fs_driver(&smhfs_driver);
-+}
-+coredevice_initcall(smhfs_init);
---
-2.1.4
+> +
+> +	/*
+> +	 * Detect and enable JobRs
+> +	 * First, find out how many ring spec'ed, allocate references
+> +	 * for all, then go probe each one.
+> +	 */
+> +	rspec = 0;
+> +	for_each_available_child_of_node(nprop, np)
+> +		if (of_device_is_compatible(np, "fsl,sec-v4.0-job-ring") ||
+> +		    of_device_is_compatible(np, "fsl,sec4.0-job-ring"))
+> +			rspec++;
+> +
+> +	ctrlpriv->jrpdev = xzalloc(sizeof(struct device_d *) * rspec);
+> +	if (ctrlpriv->jrpdev == NULL)
+> +		return -ENOMEM;
+
+xzalloc does not fail. Several more of these in the code.
+
+> +
+> +	ring = 0;
+> +	ctrlpriv->total_jobrs = 0;
+> +	for_each_available_child_of_node(nprop, np)
+> +		if (of_device_is_compatible(np, "fsl,sec-v4.0-job-ring") ||
+> +		    of_device_is_compatible(np, "fsl,sec4.0-job-ring")) {
+> +			struct device_d *jrdev;
+> +
+> +			jrdev = xzalloc(sizeof(*jrdev));
+> +
+> +			strcpy(jrdev->name, np->name);
+> +			jrdev->parent = dev;
+> +			jrdev->device_node = np;
+> +			jrdev->id = DEVICE_ID_SINGLE;
+> +
+> +			ret = register_device(jrdev);
+> +
+> +			if (ret) {
+> +				pr_warn("JR%d Platform device creation error\n",
+> +					ring);
+
+dev_warn
+
+> diff --git a/drivers/crypto/caam/intern.h b/drivers/crypto/caam/intern.h
+> new file mode 100644
+> index 000000000000..326bda532b83
+> --- /dev/null
+> +++ b/drivers/crypto/caam/intern.h
+> @@ -0,0 +1,105 @@
+> +/*
+> + * CAAM/SEC 4.x driver backend
+> + * Private/internal definitions between modules
+> + *
+> + * Copyright 2008-2011 Freescale Semiconductor, Inc.
+> + *
+> + */
+> +
+> +#ifndef INTERN_H
+> +#define INTERN_H
+> +
+> +struct device;
+
+Is this needed?
+
+> +
+> +/* Currently comes from Kconfig param as a ^2 (driver-required) */
+> +#define JOBR_DEPTH (1 << CONFIG_CRYPTO_DEV_FSL_CAAM_RINGSIZE)
+> +
+> +#define JOBR_INTC 0
+> +#define JOBR_INTC_TIME_THLD 0
+> +#define JOBR_INTC_COUNT_THLD 0
+> +
+> +#define pr_hex_dump_debug(prefix_str, prefix_type, rowsize, groupsize, buf, len, ascii) \
+> +	({ \
+> +		(7) <= LOGLEVEL ? print_hex_dump(KERN_DEBUG, prefix_str, prefix_type, rowsize, groupsize, buf, len, ascii) : 0; \
+> +	})
+
+
+This is unused.
+
+> diff --git a/drivers/crypto/caam/jr.c b/drivers/crypto/caam/jr.c
+> new file mode 100644
+> index 000000000000..3a82d0559898
+> --- /dev/null
+> +++ b/drivers/crypto/caam/jr.c
+> @@ -0,0 +1,363 @@
+> +/*
+> +* CAAM/SEC 4.x transport/backend driver
+> +* JobR backend functionality
+> + *
+> + * Copyright 2008-2015 Freescale Semiconductor, Inc.
+> + */
+> +
+> +#include <common.h>
+> +#include <clock.h>
+> +#include <dma.h>
+> +#include <driver.h>
+> +#include <init.h>
+> +#include <linux/barebox-wrapper.h>
+> +#include <linux/circ_buf.h>
+> +#include <linux/compiler.h>
+> +#include <linux/err.h>
+> +
+> +#include "regs.h"
+> +#include "jr.h"
+> +#include "desc.h"
+> +#include "desc_constr.h"
+> +#include "error.h"
+> +#include "intern.h"
+> +
+> +static int caam_reset_hw_jr(struct device_d *dev)
+> +{
+> +	struct caam_drv_private_jr *jrp = dev->priv;
+> +	unsigned int timeout = 10000000;
+> +	unsigned int val;
+> +
+> +	/* initiate flush (required prior to reset) */
+> +	wr_reg32(&jrp->rregs->jrcommand, JRCR_RESET);
+> +	do {
+> +		val = rd_reg32(&jrp->rregs->jrintstatus);
+> +		if ((val & JRINT_ERR_HALT_MASK) != JRINT_ERR_HALT_INPROGRESS)
+> +			break;
+> +	} while (--timeout);
+
+is_timeout() loop please. Several more loops of this kind throughout the
+code.
+
+> +	dev->priv = jrpriv;
+> +	jrpriv->dev = dev;
+> +
+> +	/* save ring identity relative to detection */
+> +	jrpriv->ridx = total_jobrs++;
+> +
+> +	nprop = dev->device_node;
+> +	/* Get configuration properties from device tree */
+> +	/* First, get register page */
+> +	ctrl = dev_request_mem_region(dev, 0);
+> +	if (IS_ERR(ctrl))
+> +		return -ENOMEM;
+
+		return PTR_ERR(ctrl);
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
