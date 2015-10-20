@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZoSSE-0001CW-Rn
- for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:38 +0000
+ id 1ZoSSE-0001CT-Rr
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:37 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 20 Oct 2015 10:39:12 +0200
-Message-Id: <1445330352-30153-9-git-send-email-mkl@pengutronix.de>
+Date: Tue, 20 Oct 2015 10:39:09 +0200
+Message-Id: <1445330352-30153-6-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,269 +21,198 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 8/8] state: backend_raw: add hamc support
+Subject: [PATCH v2 5/8] state: disable load command
 To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-This patch adds hmac support to the raw backend.
+From: Enrico Jorns <ejo@pengutronix.de>
 
-With this patch, modifications of the header or data of a state partition can
-be detected, as the hmac woudln't match anymore. The hmac relies on a shared
-secret, which is requested from the keystore, with keystore_get_secret() using
-the name of the state partition as the "name" of the secret.
+Explicitly loading environment is not required as it will be loaded if
+available during device probing
 
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- common/state.c | 117 +++++++++++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 109 insertions(+), 8 deletions(-)
+ commands/state.c     | 19 +++++--------------
+ common/state.c       | 45 ++++++++++++++++++---------------------------
+ drivers/misc/state.c |  1 -
+ include/state.h      |  1 -
+ 4 files changed, 23 insertions(+), 43 deletions(-)
 
-diff --git a/common/state.c b/common/state.c
-index d37f4ab4b539..234b4c01244c 100644
---- a/common/state.c
-+++ b/common/state.c
-@@ -15,6 +15,7 @@
-  */
+diff --git a/commands/state.c b/commands/state.c
+index 59d1eb850215..4b51759e3ecd 100644
+--- a/commands/state.c
++++ b/commands/state.c
+@@ -21,26 +21,20 @@ static int do_state(int argc, char *argv[])
+ {
+ 	int opt, ret = 0;
+ 	struct state *state = NULL;
+-	int do_save = 0, do_load = 0;
++	int do_save = 0;
+ 	const char *statename = "state";
  
- #include <common.h>
-+#include <digest.h>
- #include <environment.h>
- #include <errno.h>
- #include <fcntl.h>
-@@ -28,6 +29,8 @@
- #include <state.h>
- #include <xfuncs.h>
- 
-+#include <crypto/keystore.h>
-+
- #include <linux/mtd/mtd-abi.h>
- #include <linux/mtd/mtd.h>
- #include <linux/list.h>
-@@ -41,7 +44,7 @@ struct state_backend;
- 
- struct state {
- 	struct device_d dev;
--	const struct device_node *root;
-+	struct device_node *root;
- 	struct list_head variables;
- 	const char *name;
- 	struct list_head list;
-@@ -55,6 +58,7 @@ struct state_backend {
- 	const char *name;
- 	const char *of_path;
- 	const char *path;
-+	struct digest *digest;
- };
- 
- enum state_variable_type {
-@@ -948,6 +952,16 @@ static int of_state_fixup(struct device_node *root, void *ctx)
- 	if (ret)
- 		goto out;
- 
-+	if (state->backend->digest) {
-+		p = of_new_property(new_node, "algo",
-+				    digest_name(state->backend->digest),
-+				    strlen(digest_name(state->backend->digest)) + 1);
-+		if (!p) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+	}
-+
- 	/* address-cells + size-cells */
- 	ret = of_property_write_u32(new_node, "#address-cells", 1);
- 	if (ret)
-@@ -1230,7 +1244,7 @@ int state_backend_dtb_file(struct state *state, const char *of_path, const char
- struct state_backend_raw {
- 	struct state_backend backend;
- 	unsigned long size_data; /* The raw data size (without header) */
--	unsigned long size_full; /* The size header + raw data */
-+	unsigned long size_full; /* The size header + raw data + hmac */
- 	unsigned long stride; /* The stride size in bytes of the copies */
- 	off_t offset; /* offset in the storage file */
- 	size_t size; /* size of the storage area */
-@@ -1253,8 +1267,9 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
- 	struct state_variable *sv;
- 	struct backend_raw_header header = {};
- 	unsigned long max_len;
-+	int d_len = 0;
- 	int ret;
--	void *buf, *data;
-+	void *buf, *data, *hmac;
- 
- 	max_len = backend_raw->stride;
- 
-@@ -1285,6 +1300,11 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
- 		return -EINVAL;
- 	}
- 
-+	if (backend_raw->backend.digest) {
-+		d_len = digest_length(backend_raw->backend.digest);
-+		max_len -= d_len;
-+	}
-+
- 	if (header.data_len > max_len) {
- 		dev_err(&state->dev,
- 			"invalid data_len %u in header, max is %lu\n",
-@@ -1292,14 +1312,15 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
- 		return -EINVAL;
- 	}
- 
--	buf = xzalloc(sizeof(header) + header.data_len);
-+	buf = xzalloc(sizeof(header) + header.data_len + d_len);
- 	data = buf + sizeof(header);
-+	hmac = data + header.data_len;
- 
- 	ret = lseek(fd, offset, SEEK_SET);
- 	if (ret < 0)
- 		goto out_free;
- 
--	ret = read_full(fd, buf, sizeof(header) + header.data_len);
-+	ret = read_full(fd, buf, sizeof(header) + header.data_len + d_len);
- 	if (ret < 0)
- 		goto out_free;
- 
-@@ -1312,6 +1333,23 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
- 		goto out_free;
- 	}
- 
-+	if (backend_raw->backend.digest) {
-+		struct digest *d = backend_raw->backend.digest;
-+
-+		ret = digest_init(d);
-+		if (ret)
-+			goto out_free;
-+
-+		/* hmac over header and data */
-+		ret = digest_update(d, buf, sizeof(header) + header.data_len);
-+		if (ret)
-+			goto out_free;
-+
-+		ret = digest_verify(d, hmac);
-+		if (ret < 0)
-+			goto out_free;
-+	}
-+
- 	list_for_each_entry(sv, &state->variables, list) {
- 		if (sv->start + sv->size > header.data_len)
+-	while ((opt = getopt(argc, argv, "sl")) > 0) {
++	while ((opt = getopt(argc, argv, "s")) > 0) {
+ 		switch (opt) {
+ 		case 's':
+ 			do_save = 1;
  			break;
-@@ -1392,7 +1430,7 @@ static int state_backend_raw_save(struct state_backend *backend,
- 	struct state_backend_raw *backend_raw = container_of(backend,
- 			struct state_backend_raw, backend);
- 	int ret = 0, fd, i;
--	void *buf, *data;
-+	void *buf, *data, *hmac;
- 	struct backend_raw_header *header;
- 	struct state_variable *sv;
+-		case 'l':
+-			do_load = 1;
+-			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+ 	}
  
-@@ -1400,6 +1438,7 @@ static int state_backend_raw_save(struct state_backend *backend,
+-	if (do_save && do_load)
+-		return COMMAND_ERROR_USAGE;
+-
+-	if (!do_save && !do_load) {
++	if (!do_save) {
+ 		state_info();
+ 		return 0;
+ 	}
+@@ -56,8 +50,6 @@ static int do_state(int argc, char *argv[])
  
- 	header = buf;
- 	data = buf + sizeof(*header);
-+	hmac = data + backend_raw->size_data;
+ 	if (do_save)
+ 		ret = state_save(state);
+-	else if (do_load)
+-		ret = state_load(state);
  
- 	list_for_each_entry(sv, &state->variables, list)
- 		memcpy(data + sv->start, sv->raw, sv->size);
-@@ -1410,6 +1449,23 @@ static int state_backend_raw_save(struct state_backend *backend,
- 	header->header_crc = crc32(0, header,
- 				   sizeof(*header) - sizeof(uint32_t));
- 
-+	if (backend_raw->backend.digest) {
-+		struct digest *d = backend_raw->backend.digest;
-+
-+		ret = digest_init(d);
-+		if (ret)
-+			goto out_free;
-+
-+		/* hmac over header and data */
-+		ret = digest_update(d, buf, sizeof(*header) + backend_raw->size_data);
-+		if (ret)
-+			goto out_free;
-+
-+		ret = digest_final(d, hmac);
-+		if (ret < 0)
-+			goto out_free;
-+	}
-+
- 	fd = open(backend->path, O_WRONLY);
- 	if (fd < 0)
- 		goto out_free;
-@@ -1494,6 +1550,43 @@ static int state_backend_raw_file_get_size(const char *path, size_t *out_size)
  	return ret;
  }
+@@ -67,13 +59,12 @@ BAREBOX_CMD_HELP_TEXT("Usage: state [OPTIONS] [STATENAME]")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("options:")
+ BAREBOX_CMD_HELP_OPT ("-s", "save state")
+-BAREBOX_CMD_HELP_OPT ("-l", "load state")
+ BAREBOX_CMD_HELP_END
  
-+static int state_backend_raw_file_init_digest(struct state *state, struct state_backend_raw *backend_raw)
-+{
-+	struct digest *digest;
-+	const char *algo;
-+	const unsigned char *key;
-+	int key_len, ret;
-+
-+	ret = of_property_read_string(state->root, "algo", &algo);
-+	if (ret == -EINVAL)	/* -EINVAL == does not exist */
-+		return 0;
-+	else if (ret)
-+		return ret;
-+
-+	ret = keystore_get_secret(state->name, &key, &key_len);
-+	if (ret == -ENOENT)	/* -ENOENT == does not exist */
-+		return -EPROBE_DEFER;
-+	else if (ret)
-+		return ret;
-+
-+	digest = digest_alloc(algo);
-+	if (!digest) {
-+		dev_info(&state->dev, "algo %s not found - probe deferred\n", algo);
-+		return -EPROBE_DEFER;
-+	}
-+
-+	ret = digest_set_key(digest, key, key_len);
-+	if (ret) {
-+		digest_free(digest);
-+		return ret;
-+	}
-+
-+	backend_raw->backend.digest = digest;
-+	backend_raw->size_full = digest_length(digest);
-+
-+	return 0;
-+}
-+
+ BAREBOX_CMD_START(state)
+ 	.cmd		= do_state,
+-	BAREBOX_CMD_DESC("load and save state information")
+-	BAREBOX_CMD_OPTS("[-sl] [STATENAME]")
++	BAREBOX_CMD_DESC("save state information")
++	BAREBOX_CMD_OPTS("[-s] [STATENAME]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+ 	BAREBOX_CMD_HELP(cmd_state_help)
+ BAREBOX_CMD_END
+diff --git a/common/state.c b/common/state.c
+index 117a6867597d..fdb5564af3bd 100644
+--- a/common/state.c
++++ b/common/state.c
+@@ -51,7 +51,6 @@ struct state {
+ };
+ 
+ struct state_backend {
+-	int (*load)(struct state_backend *backend, struct state *state);
+ 	int (*save)(struct state_backend *backend, struct state *state);
+ 	const char *name;
+ 	const char *of_path;
+@@ -1049,30 +1048,6 @@ int state_get_name(const struct state *state, char const **name)
+ }
+ 
  /*
-  * state_backend_raw_file - create a raw file backend store for a state instance
+- * state_load - load a state from the backing store
+- *
+- * @state	The state instance to load
+- */
+-int state_load(struct state *state)
+-{
+-	int ret;
+-
+-	if (!state->backend)
+-		return -ENOSYS;
+-
+-	ret = state->backend->load(state->backend, state);
+-	if (ret) {
+-		dev_warn(&state->dev, "load failed\n");
+-		state->dirty = 1;
+-	} else {
+-		dev_info(&state->dev, "load successful\n");
+-		state->dirty = 0;
+-	}
+-
+-	return ret;
+-}
+-
+-/*
+  * state_save - save a state to the backing store
   *
-@@ -1534,8 +1627,14 @@ int state_backend_raw_file(struct state *state, const char *of_path,
- 		return -EINVAL;
+  * @state	The state instance to save
+@@ -1226,7 +1201,6 @@ int state_backend_dtb_file(struct state *state, const char *of_path, const char
+ 	backend_dtb = xzalloc(sizeof(*backend_dtb));
+ 	backend = &backend_dtb->backend;
  
- 	backend_raw = xzalloc(sizeof(*backend_raw));
--	backend = &backend_raw->backend;
+-	backend->load = state_backend_dtb_load;
+ 	backend->save = state_backend_dtb_save;
+ 	backend->of_path = xstrdup(of_path);
+ 	backend->path = xstrdup(path);
+@@ -1238,6 +1212,15 @@ int state_backend_dtb_file(struct state *state, const char *of_path, const char
+ 	if (!ret && !(meminfo.flags & MTD_NO_ERASE))
+ 		backend_dtb->need_erase = true;
  
-+	ret = state_backend_raw_file_init_digest(state, backend_raw);
++	ret = state_backend_dtb_load(backend, state);
 +	if (ret) {
-+		free(backend_raw);
-+		return ret;
++		dev_warn(&state->dev, "load failed - using defaults\n");
++	} else {
++		dev_info(&state->dev, "load successful\n");
++		state->dirty = 0;
 +	}
 +
-+	backend = &backend_raw->backend;
++	/* ignore return value of load() */
+ 	return 0;
+ }
+ 
+@@ -1548,7 +1531,6 @@ int state_backend_raw_file(struct state *state, const char *of_path,
+ 	backend_raw = xzalloc(sizeof(*backend_raw));
+ 	backend = &backend_raw->backend;
+ 
+-	backend->load = state_backend_raw_load;
  	backend->save = state_backend_raw_save;
  	backend->of_path = xstrdup(of_path);
  	backend->path = xstrdup(path);
-@@ -1545,7 +1644,7 @@ int state_backend_raw_file(struct state *state, const char *of_path,
- 	backend_raw->size_data = sv->start + sv->size;
- 	backend_raw->offset = offset;
- 	backend_raw->size = size;
--	backend_raw->size_full = backend_raw->size_data +
-+	backend_raw->size_full += backend_raw->size_data +
- 		sizeof(struct backend_raw_header);
+@@ -1583,6 +1565,15 @@ int state_backend_raw_file(struct state *state, const char *of_path,
+ 		goto err;
+ 	}
  
- 	state->backend = backend;
-@@ -1581,6 +1680,8 @@ int state_backend_raw_file(struct state *state, const char *of_path,
- 	/* ignore return value of load() */
++	ret = state_backend_raw_load(backend, state);
++	if (ret) {
++		dev_warn(&state->dev, "load failed - using defaults\n");
++	} else {
++		dev_info(&state->dev, "load successful\n");
++		state->dirty = 0;
++	}
++
++	/* ignore return value of load() */
  	return 0;
  err:
-+	digest_free(backend_raw->backend.digest);
-+
  	free(backend_raw);
- 	return ret;
- }
+diff --git a/drivers/misc/state.c b/drivers/misc/state.c
+index e056b28f96c2..d519cb7fffdd 100644
+--- a/drivers/misc/state.c
++++ b/drivers/misc/state.c
+@@ -78,7 +78,6 @@ static int state_probe(struct device_d *dev)
+ 	dev_info(dev, "backend: %s, path: %s, of_path: %s\n", backend_type, path, of_path);
+ 	free(path);
+ 
+-	state_load(state);
+ 	return 0;
+ 
+  out_free:
+diff --git a/include/state.h b/include/state.h
+index 08c4e8654b9e..b3966fd99e79 100644
+--- a/include/state.h
++++ b/include/state.h
+@@ -17,7 +17,6 @@ struct state *state_by_name(const char *name);
+ struct state *state_by_node(const struct device_node *node);
+ int state_get_name(const struct state *state, char const **name);
+ 
+-int state_load(struct state *state);
+ int state_save(struct state *state);
+ void state_info(void);
+ 
 -- 
 2.6.1
 
