@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZoSSE-0001CO-Rs
- for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:37 +0000
+ id 1ZoSSE-0001CN-Rl
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:35 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 20 Oct 2015 10:39:06 +0200
-Message-Id: <1445330352-30153-3-git-send-email-mkl@pengutronix.de>
+Date: Tue, 20 Oct 2015 10:39:05 +0200
+Message-Id: <1445330352-30153-2-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,123 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/8] of_path: add of_find_path_by_phandle()
+Subject: [PATCH v2 1/8] of_path: of_find_path() factor out device detection
+ logic into separate function
 To: barebox@lists.infradead.org
 
-This patch adds the function of_find_path_by_phandle(), which is similar to
-of_find_path(), but it takes a phandle not a barebox path description.
+This patch factors out the device detection logic into separate function, so
+that it can be used from another function.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/of/of_path.c | 22 ++++++++++++++++++++++
- include/of.h         |  1 +
- 2 files changed, 23 insertions(+)
+ drivers/of/of_path.c | 81 ++++++++++++++++++++++++++++------------------------
+ 1 file changed, 44 insertions(+), 37 deletions(-)
 
 diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index b3ef26c6a50d..dae7eb628acb 100644
+index 992972c9b52e..b3ef26c6a50d 100644
 --- a/drivers/of/of_path.c
 +++ b/drivers/of/of_path.c
-@@ -149,6 +149,28 @@ int __of_find_path(struct device_node *node, const char *propname, char **outpat
+@@ -106,6 +106,48 @@ out:
+ 	return ret;
  }
  
- /**
-+ * of_find_path_by_phandle - translate a phanle in the devicetree to a
-+ *                           barebox device path
-+ *
-+ * @node: the node containing the phandle pointing to the device tree node
-+ * @phandle: the phandle pointing to the devicetree node
-+ * @outpath: if this function returns 0 outpath will contain the path belonging
-+ *           to the input path description. Must be freed with free().
-+ * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if available
-+ *
-+ */
-+int of_find_path_by_phandle(struct device_node *node, const char *phandle, char **outpath, unsigned flags)
++int __of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags)
 +{
-+	struct device_node *rnode;
++	struct of_path op = {};
++	const char *str;
++	bool add_bb = false;
++	int i, ret;
 +
-+	rnode = of_parse_phandle(node, phandle, 0);
-+	if (!rnode)
-+		return -EINVAL;
++	op.dev = of_find_device_by_node_path(node->full_name);
++	if (!op.dev) {
++		op.dev = of_find_device_by_node_path(node->parent->full_name);
++		if (!op.dev)
++			return -ENODEV;
++	}
 +
-+	return __of_find_path(rnode, NULL, outpath, flags);
++	device_detect(op.dev);
++
++	op.cdev = cdev_by_device_node(node);
++
++	i = 1;
++
++	while (propname) {
++		ret = of_property_read_string_index(node, propname, i++, &str);
++		if (ret)
++			break;
++
++		ret = of_path_parse_one(&op, str);
++		if (ret)
++			return ret;
++	}
++
++	if (!op.cdev)
++		return -ENOENT;
++
++	if ((flags & OF_FIND_PATH_FLAGS_BB) && op.cdev->mtd &&
++	    mtd_can_have_bb(op.cdev->mtd))
++		add_bb = true;
++
++	*outpath = asprintf("/dev/%s%s", op.cdev->name, add_bb ? ".bb" : "");
++
++	return 0;
 +}
 +
-+/**
+ /**
   * of_find_path - translate a path description in the devicetree to a barebox
   *                path
-  *
-diff --git a/include/of.h b/include/of.h
-index e0ebc39b742d..c1c17e70b389 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -246,6 +246,7 @@ void of_add_memory_bank(struct device_node *node, bool dump, int r,
- struct device_d *of_find_device_by_node_path(const char *path);
- #define OF_FIND_PATH_FLAGS_BB 1		/* return .bb device if available */
- int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags);
-+int of_find_path_by_phandle(struct device_node *node, const char *phandle, char **outpath, unsigned flags);
- int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context);
- int of_unregister_fixup(int (*fixup)(struct device_node *, void *), void *context);
- struct device_node *of_find_node_by_alias(struct device_node *root,
+@@ -134,11 +176,8 @@ out:
+  */
+ int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags)
+ {
+-	struct of_path op = {};
+ 	struct device_node *rnode;
+-	const char *path, *str;
+-	bool add_bb = false;
+-	int i, ret;
++	const char *path;
+ 
+ 	path = of_get_property(node, propname, NULL);
+ 	if (!path)
+@@ -148,37 +187,5 @@ int of_find_path(struct device_node *node, const char *propname, char **outpath,
+ 	if (!rnode)
+ 		return -ENODEV;
+ 
+-	op.dev = of_find_device_by_node_path(rnode->full_name);
+-	if (!op.dev) {
+-		op.dev = of_find_device_by_node_path(rnode->parent->full_name);
+-		if (!op.dev)
+-			return -ENODEV;
+-	}
+-
+-	device_detect(op.dev);
+-
+-	op.cdev = cdev_by_device_node(rnode);
+-
+-	i = 1;
+-
+-	while (1) {
+-		ret = of_property_read_string_index(node, propname, i++, &str);
+-		if (ret)
+-			break;
+-
+-		ret = of_path_parse_one(&op, str);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	if (!op.cdev)
+-		return -ENOENT;
+-
+-	if ((flags & OF_FIND_PATH_FLAGS_BB) && op.cdev->mtd &&
+-	    mtd_can_have_bb(op.cdev->mtd))
+-		add_bb = true;
+-
+-	*outpath = asprintf("/dev/%s%s", op.cdev->name, add_bb ? ".bb" : "");
+-
+-	return 0;
++	return __of_find_path(rnode, propname, outpath, flags);
+ }
 -- 
 2.6.1
 
