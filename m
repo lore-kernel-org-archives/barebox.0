@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZoLXV-00034x-V9
- for barebox@lists.infradead.org; Tue, 20 Oct 2015 01:16:34 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Tue, 20 Oct 2015 01:15:44 +0000
-Message-ID: <1445303748.13196.89.camel@rtred1test09.kymetacorp.com>
-Content-Language: en-US
-Content-ID: <99DDA5EDF75836478FF7E3E81CE1D27D@kymetacorp.com>
-MIME-Version: 1.0
+ id 1ZoSSE-0001CU-Rq
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:36 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 20 Oct 2015 10:39:10 +0200
+Message-Id: <1445330352-30153-7-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
+References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,48 +16,171 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: In flash vs compiled environment for omap, rasp-pi, socfpga
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH v2 6/8] crypto: add simple keystore
+To: barebox@lists.infradead.org
 
-On most boards, it seems the in flash environment is at some fixed
-location, and board code will create /dev/env0 from it using
-devfs_add_partition().  But a few boards don't work this way, and
-instead use a file located in a FAT filesystem in a flash partition.
-This is done for omap, raspberry-pi, and socfpga.  The ROM bootloader
-supporting partition tables probably has a lot to do with adding this
-feature.
+This patch adds a simple keystore to barebox. The keystore implements a simple
+key-value store to hold arbitrary values.
 
-It looks like the ability to load the env from a FAT file was first
-added in a7b2114, "ARM omap4: panda board", in 2011.  In this patch it
-was made to depend on CONFIG_DEFAULT_ENVIRONMENT.
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ crypto/Kconfig            |  6 ++++
+ crypto/Makefile           |  1 +
+ crypto/keystore.c         | 80 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/crypto/keystore.h | 26 +++++++++++++++
+ 4 files changed, 113 insertions(+)
+ create mode 100644 crypto/keystore.c
+ create mode 100644 include/crypto/keystore.h
 
-But DEFAULT_ENVIRONMENT is "Compile in default environment".  It causes
-the default environment to be compiled into the barebox binary, to be
-used if the in flash env can not be used for some reason.  It's an
-orthogonal issue to where in flash the environment should come from, a
-fixed sector or a file in FAT partition.  It's possible to compile in or
-not compile in a default env with either method of storing the flash
-env.
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index ef807dec68de..10b34912b007 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -84,3 +84,9 @@ config CRYPTO_PBKDF2
+ 	select DIGEST
+ 	select DIGEST_SHA1_GENERIC
+ 	bool
++
++config CRYPTO_KEYSTORE
++	bool "Keystore"
++	help
++	  This is a simple keystore, which can be used to pass keys
++	  between several components via simple interface.
+diff --git a/crypto/Makefile b/crypto/Makefile
+index f39de718e5e7..c6d17787ca4e 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -11,3 +11,4 @@ obj-$(CONFIG_DIGEST_SHA384_GENERIC)	+= sha4.o
+ obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
+ 
+ obj-$(CONFIG_CRYPTO_PBKDF2)	+= pbkdf2.o
++obj-$(CONFIG_CRYPTO_KEYSTORE)	+= keystore.o
+diff --git a/crypto/keystore.c b/crypto/keystore.c
+new file mode 100644
+index 000000000000..90b470fe6717
+--- /dev/null
++++ b/crypto/keystore.c
+@@ -0,0 +1,80 @@
++/*
++ * Copyright (C) 2015 Pengutronix, Marc Kleine-Budde <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU General Public License version 2 as published by the
++ * Free Software Foundation.
++ */
++
++#include <common.h>
++#include <linux/kernel.h>
++#include <linux/list.h>
++
++static LIST_HEAD(keystore_list);
++
++#define for_each_key(key) list_for_each_entry(key, &keystore_list, list)
++
++struct keystore_key {
++	struct list_head list;
++	const char *name;
++	const u8 *secret;
++	int secret_len;
++};
++
++static int keystore_compare(struct list_head *a, struct list_head *b)
++{
++	const char *na = list_entry(a, struct keystore_key, list)->name;
++	const char *nb = list_entry(b, struct keystore_key, list)->name;
++
++	return strcmp(na, nb);
++}
++
++/**
++ * @param[in] name Name of the secret to get
++ * @param[out] secret Double pointer to memory representing the secret, do _not_ free() after use
++ * @param[out] secret_len Pointer to length of the secret
++ */
++int keystore_get_secret(const char *name, const u8 **secret, int *secret_len)
++{
++	struct keystore_key *key;
++
++	for_each_key(key) {
++		if (!strcmp(name, key->name)) {
++			if (!secret || !secret_len)
++				return 0;
++
++			*secret = key->secret;
++			*secret_len = key->secret_len;
++
++			return 0;
++		}
++	}
++
++	return -ENOENT;
++}
++
++/**
++ * @param[in] name Name of the secret to set
++ * @param[in] secret Pointer to memory holding the secret
++ * @param[in] secret_len Length of the secret
++ */
++int keystore_set_secret(const char *name, const u8 *secret, int secret_len)
++{
++	struct keystore_key *key;
++	int ret;
++
++	/* check if key is already in store */
++	ret = keystore_get_secret(name, NULL, NULL);
++	if (!ret)
++		return -EBUSY;
++
++	key = xzalloc(sizeof(*key));
++	INIT_LIST_HEAD(&key->list);
++	key->name = xstrdup(name);
++	key->secret = xmemdup(secret, secret_len);
++	key->secret_len = secret_len;
++
++	list_add_sort(&key->list, &keystore_list, keystore_compare);
++
++	return 0;
++}
+diff --git a/include/crypto/keystore.h b/include/crypto/keystore.h
+new file mode 100644
+index 000000000000..29915854b851
+--- /dev/null
++++ b/include/crypto/keystore.h
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2015 Pengutronix, Marc Kleine-Budde <kernel@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU General Public License version 2 as published by the
++ * Free Software Foundation.
++ */
++
++#ifndef __CRYPTO_KEYSTORE_H
++#define __CRYPTO_KEYSTORE_H
++
++#ifdef CONFIG_CRYPTO_KEYSTORE
++int keystore_get_secret(const char *name, const u8 **secret, int *secret_len);
++int keystore_set_secret(const char *name, const u8 *secret, int secret_len);
++#else
++static inline int keystore_get_secret(const char *name, const u8 **secret, int *secret_len)
++{
++	return -EINVAL;
++}
++static inline int keystore_set_secret(const char *name, const u8 *secret, int secret_len)
++{
++	return 0;
++}
++#endif
++
++#endif
+-- 
+2.6.1
 
-So why does loading the env from a FAT partition depend on
-DEFAULT_ENVIRONMENT?  It does in the omap and socfpga code, but in the
-rasp-pi code it doesn't.
-
-If one tries to build socfpga with DEFAULT_ENVIRONMENT off, you get no
-env at all, i.e. a broken barebox.  The env code tries to load
-from /dev/env0, which doesn't exist since there is no board code to
-create it for socfpga.  And no compiled in default since that was turned
-off.
-
-If you turn it on, then you get the env in the FAT partition.  But you
-also get the env compiled into the barebox binary.  If there are large
-FPGA images stored in the env, this is very undesirable!  A too large
-barebox binary would seem to be the primary reason compiling in the env
-is supposed to be an optional setting.
 
 _______________________________________________
 barebox mailing list
