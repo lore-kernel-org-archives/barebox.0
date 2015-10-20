@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZoSSE-0001CU-Rq
- for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:36 +0000
+ id 1ZoSSE-0001CO-Rs
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:37 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 20 Oct 2015 10:39:10 +0200
-Message-Id: <1445330352-30153-7-git-send-email-mkl@pengutronix.de>
+Date: Tue, 20 Oct 2015 10:39:06 +0200
+Message-Id: <1445330352-30153-3-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,163 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/8] crypto: add simple keystore
+Subject: [PATCH v2 2/8] of_path: add of_find_path_by_phandle()
 To: barebox@lists.infradead.org
 
-This patch adds a simple keystore to barebox. The keystore implements a simple
-key-value store to hold arbitrary values.
+This patch adds the function of_find_path_by_phandle(), which is similar to
+of_find_path(), but it takes a phandle not a barebox path description.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- crypto/Kconfig            |  6 ++++
- crypto/Makefile           |  1 +
- crypto/keystore.c         | 80 +++++++++++++++++++++++++++++++++++++++++++++++
- include/crypto/keystore.h | 26 +++++++++++++++
- 4 files changed, 113 insertions(+)
- create mode 100644 crypto/keystore.c
- create mode 100644 include/crypto/keystore.h
+ drivers/of/of_path.c | 22 ++++++++++++++++++++++
+ include/of.h         |  1 +
+ 2 files changed, 23 insertions(+)
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index ef807dec68de..10b34912b007 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -84,3 +84,9 @@ config CRYPTO_PBKDF2
- 	select DIGEST
- 	select DIGEST_SHA1_GENERIC
- 	bool
-+
-+config CRYPTO_KEYSTORE
-+	bool "Keystore"
-+	help
-+	  This is a simple keystore, which can be used to pass keys
-+	  between several components via simple interface.
-diff --git a/crypto/Makefile b/crypto/Makefile
-index f39de718e5e7..c6d17787ca4e 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -11,3 +11,4 @@ obj-$(CONFIG_DIGEST_SHA384_GENERIC)	+= sha4.o
- obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
+diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+index b3ef26c6a50d..dae7eb628acb 100644
+--- a/drivers/of/of_path.c
++++ b/drivers/of/of_path.c
+@@ -149,6 +149,28 @@ int __of_find_path(struct device_node *node, const char *propname, char **outpat
+ }
  
- obj-$(CONFIG_CRYPTO_PBKDF2)	+= pbkdf2.o
-+obj-$(CONFIG_CRYPTO_KEYSTORE)	+= keystore.o
-diff --git a/crypto/keystore.c b/crypto/keystore.c
-new file mode 100644
-index 000000000000..90b470fe6717
---- /dev/null
-+++ b/crypto/keystore.c
-@@ -0,0 +1,80 @@
-+/*
-+ * Copyright (C) 2015 Pengutronix, Marc Kleine-Budde <kernel@pengutronix.de>
+ /**
++ * of_find_path_by_phandle - translate a phanle in the devicetree to a
++ *                           barebox device path
 + *
-+ * This program is free software; you can redistribute it and/or modify it under
-+ * the terms of the GNU General Public License version 2 as published by the
-+ * Free Software Foundation.
++ * @node: the node containing the phandle pointing to the device tree node
++ * @phandle: the phandle pointing to the devicetree node
++ * @outpath: if this function returns 0 outpath will contain the path belonging
++ *           to the input path description. Must be freed with free().
++ * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if available
++ *
 + */
-+
-+#include <common.h>
-+#include <linux/kernel.h>
-+#include <linux/list.h>
-+
-+static LIST_HEAD(keystore_list);
-+
-+#define for_each_key(key) list_for_each_entry(key, &keystore_list, list)
-+
-+struct keystore_key {
-+	struct list_head list;
-+	const char *name;
-+	const u8 *secret;
-+	int secret_len;
-+};
-+
-+static int keystore_compare(struct list_head *a, struct list_head *b)
++int of_find_path_by_phandle(struct device_node *node, const char *phandle, char **outpath, unsigned flags)
 +{
-+	const char *na = list_entry(a, struct keystore_key, list)->name;
-+	const char *nb = list_entry(b, struct keystore_key, list)->name;
++	struct device_node *rnode;
 +
-+	return strcmp(na, nb);
++	rnode = of_parse_phandle(node, phandle, 0);
++	if (!rnode)
++		return -EINVAL;
++
++	return __of_find_path(rnode, NULL, outpath, flags);
 +}
 +
 +/**
-+ * @param[in] name Name of the secret to get
-+ * @param[out] secret Double pointer to memory representing the secret, do _not_ free() after use
-+ * @param[out] secret_len Pointer to length of the secret
-+ */
-+int keystore_get_secret(const char *name, const u8 **secret, int *secret_len)
-+{
-+	struct keystore_key *key;
-+
-+	for_each_key(key) {
-+		if (!strcmp(name, key->name)) {
-+			if (!secret || !secret_len)
-+				return 0;
-+
-+			*secret = key->secret;
-+			*secret_len = key->secret_len;
-+
-+			return 0;
-+		}
-+	}
-+
-+	return -ENOENT;
-+}
-+
-+/**
-+ * @param[in] name Name of the secret to set
-+ * @param[in] secret Pointer to memory holding the secret
-+ * @param[in] secret_len Length of the secret
-+ */
-+int keystore_set_secret(const char *name, const u8 *secret, int secret_len)
-+{
-+	struct keystore_key *key;
-+	int ret;
-+
-+	/* check if key is already in store */
-+	ret = keystore_get_secret(name, NULL, NULL);
-+	if (!ret)
-+		return -EBUSY;
-+
-+	key = xzalloc(sizeof(*key));
-+	INIT_LIST_HEAD(&key->list);
-+	key->name = xstrdup(name);
-+	key->secret = xmemdup(secret, secret_len);
-+	key->secret_len = secret_len;
-+
-+	list_add_sort(&key->list, &keystore_list, keystore_compare);
-+
-+	return 0;
-+}
-diff --git a/include/crypto/keystore.h b/include/crypto/keystore.h
-new file mode 100644
-index 000000000000..29915854b851
---- /dev/null
-+++ b/include/crypto/keystore.h
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (C) 2015 Pengutronix, Marc Kleine-Budde <kernel@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it under
-+ * the terms of the GNU General Public License version 2 as published by the
-+ * Free Software Foundation.
-+ */
-+
-+#ifndef __CRYPTO_KEYSTORE_H
-+#define __CRYPTO_KEYSTORE_H
-+
-+#ifdef CONFIG_CRYPTO_KEYSTORE
-+int keystore_get_secret(const char *name, const u8 **secret, int *secret_len);
-+int keystore_set_secret(const char *name, const u8 *secret, int secret_len);
-+#else
-+static inline int keystore_get_secret(const char *name, const u8 **secret, int *secret_len)
-+{
-+	return -EINVAL;
-+}
-+static inline int keystore_set_secret(const char *name, const u8 *secret, int secret_len)
-+{
-+	return 0;
-+}
-+#endif
-+
-+#endif
+  * of_find_path - translate a path description in the devicetree to a barebox
+  *                path
+  *
+diff --git a/include/of.h b/include/of.h
+index e0ebc39b742d..c1c17e70b389 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -246,6 +246,7 @@ void of_add_memory_bank(struct device_node *node, bool dump, int r,
+ struct device_d *of_find_device_by_node_path(const char *path);
+ #define OF_FIND_PATH_FLAGS_BB 1		/* return .bb device if available */
+ int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags);
++int of_find_path_by_phandle(struct device_node *node, const char *phandle, char **outpath, unsigned flags);
+ int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context);
+ int of_unregister_fixup(int (*fixup)(struct device_node *, void *), void *context);
+ struct device_node *of_find_node_by_alias(struct device_node *root,
 -- 
 2.6.1
 
