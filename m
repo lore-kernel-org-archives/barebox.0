@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x230.google.com ([2607:f8b0:4001:c06::230])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZoEY0-0005uG-D7
- for barebox@lists.infradead.org; Mon, 19 Oct 2015 17:48:36 +0000
-Received: by iodv82 with SMTP id v82so202688173iod.0
- for <barebox@lists.infradead.org>; Mon, 19 Oct 2015 10:48:15 -0700 (PDT)
+ id 1ZoLXV-00034x-V9
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 01:16:34 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Tue, 20 Oct 2015 01:15:44 +0000
+Message-ID: <1445303748.13196.89.camel@rtred1test09.kymetacorp.com>
+Content-Language: en-US
+Content-ID: <99DDA5EDF75836478FF7E3E81CE1D27D@kymetacorp.com>
 MIME-Version: 1.0
-In-Reply-To: <20151019102626.9d840af3e7f91508b1aaf45a@gmail.com>
-References: <1445232837-22317-1-git-send-email-andrew.smirnov@gmail.com>
- <20151019102626.9d840af3e7f91508b1aaf45a@gmail.com>
-Date: Mon, 19 Oct 2015 10:48:15 -0700
-Message-ID: <CAHQ1cqHr4KK4Qbvt83-wqGetSgMAFgctceizBrFk+LKCzC5i1A@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,20 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Add support for semihosting
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: In flash vs compiled environment for omap, rasp-pi, socfpga
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
->> +.. _filesystems_smhfs:
->> +
->> +File I/O over ARM semihosting support
->> +=====================================
->> +
->> +barebox can communicate with debug programms attached via SWD/JTAG by
->                                       ^^^^^^^^^ programs?
->
+On most boards, it seems the in flash environment is at some fixed
+location, and board code will create /dev/env0 from it using
+devfs_add_partition().  But a few boards don't work this way, and
+instead use a file located in a FAT filesystem in a flash partition.
+This is done for omap, raspberry-pi, and socfpga.  The ROM bootloader
+supporting partition tables probably has a lot to do with adding this
+feature.
 
-Oops, yes, thank you. Will fix.
+It looks like the ability to load the env from a FAT file was first
+added in a7b2114, "ARM omap4: panda board", in 2011.  In this patch it
+was made to depend on CONFIG_DEFAULT_ENVIRONMENT.
+
+But DEFAULT_ENVIRONMENT is "Compile in default environment".  It causes
+the default environment to be compiled into the barebox binary, to be
+used if the in flash env can not be used for some reason.  It's an
+orthogonal issue to where in flash the environment should come from, a
+fixed sector or a file in FAT partition.  It's possible to compile in or
+not compile in a default env with either method of storing the flash
+env.
+
+So why does loading the env from a FAT partition depend on
+DEFAULT_ENVIRONMENT?  It does in the omap and socfpga code, but in the
+rasp-pi code it doesn't.
+
+If one tries to build socfpga with DEFAULT_ENVIRONMENT off, you get no
+env at all, i.e. a broken barebox.  The env code tries to load
+from /dev/env0, which doesn't exist since there is no board code to
+create it for socfpga.  And no compiled in default since that was turned
+off.
+
+If you turn it on, then you get the env in the FAT partition.  But you
+also get the env compiled into the barebox binary.  If there are large
+FPGA images stored in the env, this is very undesirable!  A too large
+barebox binary would seem to be the primary reason compiling in the env
+is supposed to be an optional setting.
 
 _______________________________________________
 barebox mailing list
