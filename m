@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZoSSE-0001CQ-Rp
- for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:37 +0000
+ id 1ZoSSE-0001CM-Rq
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 08:39:35 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <mkl@pengutronix.de>) id 1ZoSRt-0007Se-B2
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 10:39:13 +0200
+Received: from mkl by dude.hi.pengutronix.de with local (Exim 4.86)
+ (envelope-from <mkl@pengutronix.de>) id 1ZoSRt-0008Ha-3B
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 10:39:13 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 20 Oct 2015 10:39:08 +0200
-Message-Id: <1445330352-30153-5-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
-References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
+Date: Tue, 20 Oct 2015 10:39:04 +0200
+Message-Id: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +26,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/8] state: use name of device node as name if alias is not
- available
+Subject: [PATCH v2 1/8] state framework enhancements
 To: barebox@lists.infradead.org
 
-Wihtout this patch, when using more than one state device an alias is
-mandatory, otherwise the there will be two state devices with the name state.
+Hello,
 
-This patch fixes the limitation by using the device node's name if no alias is
-defined.
+this series fixes some problems and enhances the state support in barebox.
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/misc/state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Marc
 
-diff --git a/drivers/misc/state.c b/drivers/misc/state.c
-index 4cda55b6efc6..e056b28f96c2 100644
---- a/drivers/misc/state.c
-+++ b/drivers/misc/state.c
-@@ -36,7 +36,7 @@ static int state_probe(struct device_d *dev)
- 
- 	alias = of_alias_get(np);
- 	if (!alias)
--		alias = "state";
-+		alias = np->name;
- 
- 	state = state_new_from_node(alias, np);
- 	if (IS_ERR(state))
--- 
-2.6.1
+changes since v1:
+* 1+2: add of_find_path_by_phandle()
+* 3: don't open code OF to device path conversion in state_probe use of_find_path_by_phandle() instead
 
 
 _______________________________________________
