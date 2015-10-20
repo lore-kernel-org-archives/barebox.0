@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]
- helo=smtp.smtpout.orange.fr)
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZocdY-00074c-Vd
- for barebox@lists.infradead.org; Tue, 20 Oct 2015 19:31:58 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <87d1wk74nt.fsf@belgarion.home> <561BFECA.1010105@gmail.com>
- <87k2qr6go0.fsf@belgarion.home> <561C111E.7010106@gmail.com>
- <874mhv5cxm.fsf@belgarion.home> <561CD48A.9000301@gmail.com>
- <20151013102725.GH7858@pengutronix.de> <87wpur3ves.fsf@belgarion.home>
- <562017CD.4050105@gmail.com> <877fmm3bea.fsf@belgarion.home>
-Date: Tue, 20 Oct 2015 21:25:49 +0200
-In-Reply-To: <877fmm3bea.fsf@belgarion.home> (Robert Jarzmik's message of
- "Fri, 16 Oct 2015 20:40:13 +0200")
-Message-ID: <874mhlz6iq.fsf@belgarion.home>
+ id 1Zoem1-0001GJ-FV
+ for barebox@lists.infradead.org; Tue, 20 Oct 2015 21:48:50 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Tue, 20 Oct 2015 21:47:30 +0000
+Message-ID: <1445377655.13196.99.camel@rtred1test09.kymetacorp.com>
+Content-Language: en-US
+Content-ID: <7A77CF4CD0E078429256D8A32D9E510C@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -28,26 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Subject: [PATCH] Make barebox flashable image link for "multi-image" targets
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Robert Jarzmik <robert.jarzmik@free.fr> writes:
+For a target with multi-image support, no barebox-flash-image link is
+made pointing to the finished flashable image.  This makes it hard for
+buildroot to figure out which file is the barebox image.  And one has
+to assume this link is generally useful and convenient to users of
+barebox, or why would it have been created in the first place?
 
-> Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
->
->> Robert,
->>
->> I pushed another version of the patch set with the following changes:
+This patch to the multi-image build will create that link.
 
-Okay, with the latest version (a6400be (HEAD, test-sebastian) mtd:
-nand_mrvl_nfc: Add optimized timings for Samsung K9K8G08U) zylonite is working
-all right.
+It only works when a single image is made.  If one is making multiple
+images, then the concept of a single finished image no longer applies,
+and no link is made.
 
-Cheers.
+Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+---
+ images/Makefile | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---
-Robert
+diff --git a/images/Makefile b/images/Makefile
+index a5f589b..fcdf404 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -121,10 +121,16 @@ targets += $(foreach m, $(image-y), $(FILE_$(m)))
+ 
+ SECONDARY: $(addprefix $(obj)/,$(targets))
+ 
+-images: $(addprefix $(obj)/, $(image-y)) FORCE
++# Set if there is only one image in image-y
++flash-link := $(if $(filter 1,$(words $(image-y))),$(obj)/../barebox-flash-image)
++
++images: $(addprefix $(obj)/, $(image-y)) $(flash-link) FORCE
+ 	@echo "images built:"
+ 	@for i in $(image-y); do echo $$i; done
+ 
++$(flash-link): $(addprefix $(obj)/, $(image-y)) FORCE
++	$(call if_changed,ln)
++
+ clean-files := *.pbl *.pblb *.pblx *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+ 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
+ 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd
+-- 
+1.8.3.1
+
 
 _______________________________________________
 barebox mailing list
