@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZozDd-0002c1-5Q
- for barebox@lists.infradead.org; Wed, 21 Oct 2015 19:38:41 +0000
+ id 1Zp3DZ-0004Ma-KH
+ for barebox@lists.infradead.org; Wed, 21 Oct 2015 23:54:54 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Wed, 21 Oct 2015 19:38:16 +0000
-Message-ID: <1445456302.13196.124.camel@rtred1test09.kymetacorp.com>
+Date: Wed, 21 Oct 2015 23:54:23 +0000
+Message-ID: <1445471669.13196.152.camel@rtred1test09.kymetacorp.com>
+References: <1445303748.13196.89.camel@rtred1test09.kymetacorp.com>
+ <20151021053000.GU14476@pengutronix.de>
+In-Reply-To: <20151021053000.GU14476@pengutronix.de>
 Content-Language: en-US
-Content-ID: <BBBB6DE498E10F4EA97DE4AA8C162D44@kymetacorp.com>
+Content-ID: <088E06EBE1EE864684E2D9F6213602A4@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,65 +24,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2 v2] net: eth: Fixup OF tree with registered MAC
- addresses too
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: In flash vs compiled environment for omap, rasp-pi, socfpga
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-The eth code registers an OF tree fixup that looks for any nodes in
-the Linux oftree that match eth devices loaded in barebox and sets the
-mac-address property in those nodes.  The purpose is to pass MAC
-addresses to the Linux kernel for drivers that expect the MAC address
-to be in the device tree.
+On Wed, 2015-10-21 at 07:30 +0200, Sascha Hauer wrote:
+> > So why does loading the env from a FAT partition depend on
+> > DEFAULT_ENVIRONMENT?  It does in the omap and socfpga code, but in the
+> > rasp-pi code it doesn't.
+> 
+> It seems we just picked the wrong define to depend on. Maybe the ifdef
+> CONFIG_DEFAULT_ENVIRONMENT in the omap code should just be dropped.
 
-If barebox does not have a driver for the network device, either
-because it has been disabled or because one does not exist, then the
-OF tree will not be fixed up to include a MAC address.
+I've changed socfpga to depend on the xloader option instead, so that
+the env loading function is not present in the xloader.  This seems to
+work and gives me a booting xloader and main barebox with the in-flash
+env.
 
-The eth code also has a list of MAC addresses which board code has
-registered, usually done when it reads the address from an EEPROM or
-on-chip memory.  If an eth device is created later in the boot, it
-will look here for an address.
+> > If you turn it on, then you get the env in the FAT partition.  But you
+> > also get the env compiled into the barebox binary.  If there are large
+> > FPGA images stored in the env, this is very undesirable!
+> 
+> I do not really understand you here. Do you mean you compile the FPGA
+> images into the default environment so that they end up being part of
+> the barebox image, or do you mean you store the FPGA image in the
+> environment in the FAT partition?
 
-The registered MAC address list is not used for the OF tree fix up,
-and this patch changes that.  This way barebox can place a MAC address
-in the device-tree without needing a driver for the network device.
-
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
----
- net/eth.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/net/eth.c b/net/eth.c
-index befa8d8..8bfb6b1 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -323,12 +323,20 @@ static void eth_of_fixup_node(struct device_node *root,
- 
- static int eth_of_fixup(struct device_node *root, void *unused)
- {
-+	struct eth_ethaddr *addr;
- 	struct eth_device *edev;
- 
- 	/*
--	 * Add the mac-address property for each network device we
--	 * find a nodepath for and which has a valid mac address.
-+	 * Add the mac-address property for each ethaddr and then each network
-+	 * device we find a node path for and which has a valid mac address.
-+	 * This will find both network devices barebox was told about as well as
-+	 * addresses registered by boards but for which no network device was
-+	 * ever loaded.
- 	 */
-+	list_for_each_entry(addr, &ethaddr_list, list)
-+		eth_of_fixup_node(root, addr->node ? addr->node->full_name : NULL,
-+				  addr->ethid, addr->ethaddr);
-+
- 	list_for_each_entry(edev, &netdev_list, list)
- 		eth_of_fixup_node(root, edev->nodepath, edev->dev.id, edev->ethaddr);
- 
--- 
-1.8.3.1
+The latter.  But turning on DEFAULT_ENVIRONMENT will also try to give
+you the former.  This may very well not be the best way to present fpga
+images to barebox to load, but it still seems like the flash env loading
+code is using the wrong config option.
 
 
+> I think the environment specific config options are in most cases either
+> all turned on or all turned off. Normally you want to have them turned
+> on, but in some cases like omap xloader there's no environment at all
+> and the options are all turned off. That could be the reason the
+> dependencies are a bit inconsistent, nobody really tries to enable half
+> of them. Anyway, patches welcome.
+
+A survey of the defconfigs shows that 25 do not have
+DEFAULT_ENVIRONMENT.  Of these 14 are omap, socfpga, imx, or at91
+xloaders.  Of the remaining eleven, 5 have env commands enabled, 3 have
+selected the simple shell which turns on environment variables, and the
+remaining 3 get the HUSH shell by default which also has environment
+variables.
+
+So it seems there are just a handful of boards (11) that do have env
+support but don't compile in a default environment.
+
+Three are OMAP boards, omap3530_beagle_per_uart,
+omap3430_sdp3430_per_uart, and omap3_evm.  AFAICT, they have no env in
+flash anywhere, since they have turned off the generic env in FAT
+support in omap (by turning off compiled in support), have no board
+calls to default_environment_path_set() to change the env partition
+from /dev/env0, have no calls to devfs_add_partition() to
+create /dev/env0, and have OF tree support to create a partition that
+way.
+
+Is a barebox config with no compiled in env and no in flash env yet with
+env support valid?  One does get an error message from barebox if you do
+this.  I wonder if these three boards really want to disable the generic
+OMAP env in FAT support without substituting anything in its place.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
