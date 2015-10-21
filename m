@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZozCR-0002Vf-UW
- for barebox@lists.infradead.org; Wed, 21 Oct 2015 19:37:28 +0000
+ id 1ZozDd-0002c1-5Q
+ for barebox@lists.infradead.org; Wed, 21 Oct 2015 19:38:41 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Wed, 21 Oct 2015 19:37:00 +0000
-Message-ID: <1445456225.13196.122.camel@rtred1test09.kymetacorp.com>
+Date: Wed, 21 Oct 2015 19:38:16 +0000
+Message-ID: <1445456302.13196.124.camel@rtred1test09.kymetacorp.com>
 Content-Language: en-US
-Content-ID: <5E4A0517446E4B4288964F2014143051@kymetacorp.com>
+Content-ID: <BBBB6DE498E10F4EA97DE4AA8C162D44@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,99 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2 v2] net: eth: Refactor OF tree fixup of one node into
- new function
+Subject: [PATCH 2/2 v2] net: eth: Fixup OF tree with registered MAC
+ addresses too
 To: barebox <barebox@lists.infradead.org>
 
-Code that fixes up one node with a new MAC address is refactored into
-a new function that eth_of_fixup() calls in a loop.
+The eth code registers an OF tree fixup that looks for any nodes in
+the Linux oftree that match eth devices loaded in barebox and sets the
+mac-address property in those nodes.  The purpose is to pass MAC
+addresses to the Linux kernel for drivers that expect the MAC address
+to be in the device tree.
+
+If barebox does not have a driver for the network device, either
+because it has been disabled or because one does not exist, then the
+OF tree will not be fixed up to include a MAC address.
+
+The eth code also has a list of MAC addresses which board code has
+registered, usually done when it reads the address from an EEPROM or
+on-chip memory.  If an eth device is created later in the boot, it
+will look here for an address.
+
+The registered MAC address list is not used for the OF tree fix up,
+and this patch changes that.  This way barebox can place a MAC address
+in the device-tree without needing a driver for the network device.
 
 Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
 ---
- net/eth.c | 62 ++++++++++++++++++++++++++++++++++----------------------------
- 1 file changed, 34 insertions(+), 28 deletions(-)
+ net/eth.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/net/eth.c b/net/eth.c
-index b22e556..befa8d8 100644
+index befa8d8..8bfb6b1 100644
 --- a/net/eth.c
 +++ b/net/eth.c
-@@ -289,42 +289,48 @@ static int eth_param_set_ethaddr(struct param_d *param, void *priv)
- }
+@@ -323,12 +323,20 @@ static void eth_of_fixup_node(struct device_node *root,
  
- #ifdef CONFIG_OFTREE
--static int eth_of_fixup(struct device_node *root, void *unused)
-+static void eth_of_fixup_node(struct device_node *root,
-+			      const char *node_path, int ethid,
-+			      const u8 ethaddr[6])
+ static int eth_of_fixup(struct device_node *root, void *unused)
  {
--	struct eth_device *edev;
- 	struct device_node *node;
- 	int ret;
++	struct eth_ethaddr *addr;
+ 	struct eth_device *edev;
  
-+	if (!is_valid_ether_addr(ethaddr)) {
-+		pr_debug("%s: no valid mac address, cannot fixup\n",
-+			 __func__);
-+		return;
-+	}
-+
-+	if (node_path) {
-+		node = of_find_node_by_path_from(root, node_path);
-+	} else {
-+		char eth[12];
-+		sprintf(eth, "ethernet%d", ethid);
-+		node = of_find_node_by_alias(root, eth);
-+	}
-+
-+	if (!node) {
-+		pr_debug("%s: no node to fixup\n", __func__);
-+		return;
-+	}
-+
-+	ret = of_set_property(node, "mac-address", ethaddr, 6, 1);
-+	if (ret)
-+		pr_err("Setting mac-address property of %s failed with: %s\n",
-+		       node->full_name, strerror(-ret));
-+}
-+
-+static int eth_of_fixup(struct device_node *root, void *unused)
-+{
-+	struct eth_device *edev;
-+
  	/*
- 	 * Add the mac-address property for each network device we
- 	 * find a nodepath for and which has a valid mac address.
+-	 * Add the mac-address property for each network device we
+-	 * find a nodepath for and which has a valid mac address.
++	 * Add the mac-address property for each ethaddr and then each network
++	 * device we find a node path for and which has a valid mac address.
++	 * This will find both network devices barebox was told about as well as
++	 * addresses registered by boards but for which no network device was
++	 * ever loaded.
  	 */
--	list_for_each_entry(edev, &netdev_list, list) {
--		if (!is_valid_ether_addr(edev->ethaddr)) {
--			dev_dbg(&edev->dev,
--				"%s: no valid mac address, cannot fixup\n",
--				__func__);
--			continue;
--		}
--
--		if (edev->nodepath) {
--			node = of_find_node_by_path_from(root, edev->nodepath);
--		} else {
--			char eth[12];
--			sprintf(eth, "ethernet%d", edev->dev.id);
--			node = of_find_node_by_alias(root, eth);
--		}
--
--		if (!node) {
--			dev_dbg(&edev->dev, "%s: no node to fixup\n", __func__);
--			continue;
--		}
--
--		ret = of_set_property(node, "mac-address", edev->ethaddr, 6, 1);
--		if (ret)
--			pr_err("Setting mac-address property of %s failed with: %s\n",
--					node->full_name, strerror(-ret));
--	}
-+	list_for_each_entry(edev, &netdev_list, list)
-+		eth_of_fixup_node(root, edev->nodepath, edev->dev.id, edev->ethaddr);
++	list_for_each_entry(addr, &ethaddr_list, list)
++		eth_of_fixup_node(root, addr->node ? addr->node->full_name : NULL,
++				  addr->ethid, addr->ethaddr);
++
+ 	list_for_each_entry(edev, &netdev_list, list)
+ 		eth_of_fixup_node(root, edev->nodepath, edev->dev.id, edev->ethaddr);
  
- 	return 0;
- }
 -- 
 1.8.3.1
 
