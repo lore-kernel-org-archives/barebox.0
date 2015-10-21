@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x22a.google.com ([2607:f8b0:4001:c06::22a])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZohzF-0002xk-Br
- for barebox@lists.infradead.org; Wed, 21 Oct 2015 01:14:42 +0000
-Received: by iodv82 with SMTP id v82so41800656iod.0
- for <barebox@lists.infradead.org>; Tue, 20 Oct 2015 18:14:19 -0700 (PDT)
+ id 1Zolyi-00064t-QE
+ for barebox@lists.infradead.org; Wed, 21 Oct 2015 05:30:26 +0000
+Date: Wed, 21 Oct 2015 07:30:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151021053000.GU14476@pengutronix.de>
+References: <1445303748.13196.89.camel@rtred1test09.kymetacorp.com>
 MIME-Version: 1.0
-In-Reply-To: <20151019073643.GI14476@pengutronix.de>
-References: <1445232837-22317-1-git-send-email-andrew.smirnov@gmail.com>
- <20151019073643.GI14476@pengutronix.de>
-Date: Tue, 20 Oct 2015 18:14:19 -0700
-Message-ID: <CAHQ1cqH=X8gACCkY5rnmg+y46za1zRD6bjk9j2x8PoWC+0LJjA@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1445303748.13196.89.camel@rtred1test09.kymetacorp.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,57 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Add support for semihosting
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: In flash vs compiled environment for omap, rasp-pi, socfpga
+To: Trent Piepho <tpiepho@kymetacorp.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
->> +Not all of the I/O primitives neccessary to implement a full
->> +filesystem are exposed in ARM semihosting API and because of that some
->> +aspects of filesystem funcionality are missing. Implementation does
->> +not have support for listing directories. This means a
->> +:ref:`command_ls` to a SMHFS-mounted path will show an empty
->> +directory. Nevertheless, the files are there.
->
-> Is adding ls support a matter of implementing it? Does the semihosting
-> protocol support ls?
+Hi Trent,
 
-Unfortunately the protocol doesn't support any directory related
-operations. It is possible to implement custom semihosting "syscalls"
-and it wouldn't be that hard to add support of those to OpenOCD, but
-that would leave out other debugging tools.
+On Tue, Oct 20, 2015 at 01:15:44AM +0000, Trent Piepho wrote:
+> On most boards, it seems the in flash environment is at some fixed
+> location, and board code will create /dev/env0 from it using
+> devfs_add_partition().  But a few boards don't work this way, and
+> instead use a file located in a FAT filesystem in a flash partition.
+> This is done for omap, raspberry-pi, and socfpga.  The ROM bootloader
+> supporting partition tables probably has a lot to do with adding this
+> feature.
+> 
+> It looks like the ability to load the env from a FAT file was first
+> added in a7b2114, "ARM omap4: panda board", in 2011.  In this patch it
+> was made to depend on CONFIG_DEFAULT_ENVIRONMENT.
+> 
+> But DEFAULT_ENVIRONMENT is "Compile in default environment".  It causes
+> the default environment to be compiled into the barebox binary, to be
+> used if the in flash env can not be used for some reason.  It's an
+> orthogonal issue to where in flash the environment should come from, a
+> fixed sector or a file in FAT partition.  It's possible to compile in or
+> not compile in a default env with either method of storing the flash
+> env.
+> 
+> So why does loading the env from a FAT partition depend on
+> DEFAULT_ENVIRONMENT?  It does in the omap and socfpga code, but in the
+> rasp-pi code it doesn't.
 
+It seems we just picked the wrong define to depend on. Maybe the ifdef
+CONFIG_DEFAULT_ENVIRONMENT in the omap code should just be dropped.
 
->
->> +
->> +Example::
->> +
->> +  mount -t smhfs /dev/null /mnt/smhfs
->
-> Are actions on the host required to do that? Maybe some example for
-> using this with openocd would be useful.
+> 
+> If one tries to build socfpga with DEFAULT_ENVIRONMENT off, you get no
+> env at all, i.e. a broken barebox.  The env code tries to load
+> from /dev/env0, which doesn't exist since there is no board code to
+> create it for socfpga.  And no compiled in default since that was turned
+> off.
+> 
+> If you turn it on, then you get the env in the FAT partition.  But you
+> also get the env compiled into the barebox binary.  If there are large
+> FPGA images stored in the env, this is very undesirable!
 
-I completely forgot to add that to the documentation. Will fix that in
-the next version of the patch.
+I do not really understand you here. Do you mean you compile the FPGA
+images into the default environment so that they end up being part of
+the barebox image, or do you mean you store the FPGA image in the
+environment in the FAT partition?
 
->> +
->> +     if (semihosting_remove(pathname) != 0)
->> +             return semihosting_errno();
->
-> Are the errnos semihosting returns compatible with the barebox errnos?
+> A too large
+> barebox binary would seem to be the primary reason compiling in the env
+> is supposed to be an optional setting.
 
-I can't speak for any implementation other that OpenOCD's, but what
-that tool does is it returns the value of host's 'errno' after
-executing a corresponding syscall.
+I think the environment specific config options are in most cases either
+all turned on or all turned off. Normally you want to have them turned
+on, but in some cases like omap xloader there's no environment at all
+and the options are all turned off. That could be the reason the
+dependencies are a bit inconsistent, nobody really tries to enable half
+of them. Anyway, patches welcome.
 
+Sascha
 
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
