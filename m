@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZopRl-0005R5-06
- for barebox@lists.infradead.org; Wed, 21 Oct 2015 09:12:37 +0000
-Date: Wed, 21 Oct 2015 11:12:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151021091215.GD14476@pengutronix.de>
-References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
- <1445330352-30153-9-git-send-email-mkl@pengutronix.de>
- <20151021071314.GZ14476@pengutronix.de>
- <56275321.40107@pengutronix.de>
+ id 1ZoxqJ-0005sk-LF
+ for barebox@lists.infradead.org; Wed, 21 Oct 2015 18:10:32 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Wed, 21 Oct 2015 18:09:10 +0000
+Message-ID: <1445450956.13196.120.camel@rtred1test09.kymetacorp.com>
+References: <1445377655.13196.99.camel@rtred1test09.kymetacorp.com>
+ <20151021060123.GW14476@pengutronix.de>
+In-Reply-To: <20151021060123.GW14476@pengutronix.de>
+Content-Language: en-US
+Content-ID: <50137290AD167F40BB40DA252025BB6B@kymetacorp.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <56275321.40107@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,95 +24,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 8/8] state: backend_raw: add hamc support
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Make barebox flashable image link for "multi-image"
+ targets
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Oct 21, 2015 at 10:56:01AM +0200, Marc Kleine-Budde wrote:
-> On 10/21/2015 09:13 AM, Sascha Hauer wrote:
-> >> +static int state_backend_raw_file_init_digest(struct state *state, struct state_backend_raw *backend_raw)
-> >> +{
-> >> +	struct digest *digest;
-> >> +	const char *algo;
-> >> +	const unsigned char *key;
-> >> +	int key_len, ret;
-> >> +
-> >> +	ret = of_property_read_string(state->root, "algo", &algo);
+On Wed, 2015-10-21 at 08:01 +0200, Sascha Hauer wrote:
+> On Tue, Oct 20, 2015 at 09:47:30PM +0000, Trent Piepho wrote:
+> > For a target with multi-image support, no barebox-flash-image link is
+> > made pointing to the finished flashable image.  This makes it hard for
+> > buildroot to figure out which file is the barebox image.  And one has
+> > to assume this link is generally useful and convenient to users of
+> > barebox, or why would it have been created in the first place?
+> 
+> Creating the barebox-flash-image link predates the multiimage support,
+> so by the time it was introduced it was not clear to me that there will
+> be no single image later anymore.
+
+I imagine having multiple images is used far more often by developers of
+barebox than developers of a device that uses barebox.  So I wouldn't
+say the concept of a single image is dead.
+
 > > 
-> > This needs an update to Documentation/devicetree/bindings/barebox/barebox,state.rst
-> 
-> ok
-> 
-> >> +	if (ret == -EINVAL)	/* -EINVAL == does not exist */
-> >> +		return 0;
+> > This patch to the multi-image build will create that link.
 > > 
-> > -EINVAL is such a widespread error value. Maybe better explicitly test
-> > for existence with of_find_property?
+> > It only works when a single image is made.  If one is making multiple
+> > images, then the concept of a single finished image no longer applies,
+> > and no link is made.
 > 
-> ok
-> 
-> >> +	else if (ret)
-> >> +		return ret;
-> >> +
-> >> +	ret = keystore_get_secret(state->name, &key, &key_len);
-> >> +	if (ret == -ENOENT)	/* -ENOENT == does not exist */
-> >> +		return -EPROBE_DEFER;
-> >> +	else if (ret)
-> >> +		return ret;
-> >> +
-> >> +	digest = digest_alloc(algo);
-> >> +	if (!digest) {
-> >> +		dev_info(&state->dev, "algo %s not found - probe deferred\n", algo);
-> >> +		return -EPROBE_DEFER;
-> >> +	}
-> >> +
-> >> +	ret = digest_set_key(digest, key, key_len);
-> >> +	if (ret) {
-> >> +		digest_free(digest);
-> >> +		return ret;
-> >> +	}
-> >> +
-> >> +	backend_raw->backend.digest = digest;
-> >> +	backend_raw->size_full = digest_length(digest);
-> >> +
-> >> +	return 0;
-> >> +}
-> >> +
-> >>  /*
-> >>   * state_backend_raw_file - create a raw file backend store for a state instance
-> >>   *
-> >> @@ -1534,8 +1627,14 @@ int state_backend_raw_file(struct state *state, const char *of_path,
-> >>  		return -EINVAL;
-> >>  
-> >>  	backend_raw = xzalloc(sizeof(*backend_raw));
-> >> -	backend = &backend_raw->backend;
-> >>  
-> >> +	ret = state_backend_raw_file_init_digest(state, backend_raw);
-> >> +	if (ret) {
-> >> +		free(backend_raw);
-> >> +		return ret;
-> >> +	}
-> > 
-> > Maybe better make this configurable with correct dependencies
-> > (CONFIG_CRYPTO_KEYSTORE, CONFIG_DIGEST) rather than depending on the
-> > user selecting the implicit dependencies manually?
-> 
-> There are noops so that it compile even if KEYSTORE and DIGEST is not
-> selected.
+> Can't you make the image a config option in buildroot? Depending on only
+> having a single image selected in barebox doesn't sound like a good
+> idea.
 
-I know, but letting the probe defer indefinitely is not a nice way to
-tell the user that he misconfigured barebox. Also it's easy to add
-something to the HMAC state code that doesn't have noops in the next
-step without realizing it.
+buildroot doesn't have an option that for that.  It uses
+barebox-flash-image if it exists and then falls back to barebox.bin.
+The latter will still exist in a multi-image build, but is not the
+correct file!
 
-Sascha
+My first thought was to add an option to buildroot for the name of the
+flash image file.  But barebox is the one choosing this name and it
+knows what it is.  So why should I have to manually copy this data out
+of barebox and into buildroot and keep to up to date when it chages?
+Barebox knows the value, have it tell buildroot what it is.  And there
+is already the barebox-flash-image symlink system that does just this.
+This way buildroot (and any other buildsystem or flash or test script
+that uses a barebox image) gets told what file to use straight from the
+authoritative source: the barebox build system that made the file.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+So, that's why I did it this way.  And it's not like I'm adding a new
+feature for this, just making an existing one work in more cases that it
+did before.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
