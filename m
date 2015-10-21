@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zonnd-0006WE-IJ
- for barebox@lists.infradead.org; Wed, 21 Oct 2015 07:27:06 +0000
-Date: Wed, 21 Oct 2015 09:26:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151021072643.GA14476@pengutronix.de>
-References: <1445232837-22317-1-git-send-email-andrew.smirnov@gmail.com>
- <20151019073643.GI14476@pengutronix.de>
- <CAHQ1cqH=X8gACCkY5rnmg+y46za1zRD6bjk9j2x8PoWC+0LJjA@mail.gmail.com>
+ id 1ZopCE-0003pu-3v
+ for barebox@lists.infradead.org; Wed, 21 Oct 2015 08:56:35 +0000
+References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
+ <1445330352-30153-9-git-send-email-mkl@pengutronix.de>
+ <20151021071314.GZ14476@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <56275321.40107@pengutronix.de>
+Date: Wed, 21 Oct 2015 10:56:01 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqH=X8gACCkY5rnmg+y46za1zRD6bjk9j2x8PoWC+0LJjA@mail.gmail.com>
+In-Reply-To: <20151021071314.GZ14476@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,72 +19,136 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1874173645565071016=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Add support for semihosting
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 8/8] state: backend_raw: add hamc support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Oct 20, 2015 at 06:14:19PM -0700, Andrey Smirnov wrote:
-> >> +Not all of the I/O primitives neccessary to implement a full
-> >> +filesystem are exposed in ARM semihosting API and because of that some
-> >> +aspects of filesystem funcionality are missing. Implementation does
-> >> +not have support for listing directories. This means a
-> >> +:ref:`command_ls` to a SMHFS-mounted path will show an empty
-> >> +directory. Nevertheless, the files are there.
-> >
-> > Is adding ls support a matter of implementing it? Does the semihosting
-> > protocol support ls?
-> 
-> Unfortunately the protocol doesn't support any directory related
-> operations.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============1874173645565071016==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="ApkVXhRi0KMEt8iX1t0tauHvvwMh847OW"
 
-What a pitty.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--ApkVXhRi0KMEt8iX1t0tauHvvwMh847OW
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> It is possible to implement custom semihosting "syscalls"
-> and it wouldn't be that hard to add support of those to OpenOCD, but
-> that would leave out other debugging tools.
+On 10/21/2015 09:13 AM, Sascha Hauer wrote:
+>> +static int state_backend_raw_file_init_digest(struct state *state, st=
+ruct state_backend_raw *backend_raw)
+>> +{
+>> +	struct digest *digest;
+>> +	const char *algo;
+>> +	const unsigned char *key;
+>> +	int key_len, ret;
+>> +
+>> +	ret =3D of_property_read_string(state->root, "algo", &algo);
+>=20
+> This needs an update to Documentation/devicetree/bindings/barebox/bareb=
+ox,state.rst
 
-Would be nice to have, but not worth the hassle of creating custom
-extensions to the spec.
+ok
 
-> 
-> 
-> >
-> >> +
-> >> +Example::
-> >> +
-> >> +  mount -t smhfs /dev/null /mnt/smhfs
-> >
-> > Are actions on the host required to do that? Maybe some example for
-> > using this with openocd would be useful.
-> 
-> I completely forgot to add that to the documentation. Will fix that in
-> the next version of the patch.
-> 
-> >> +
-> >> +     if (semihosting_remove(pathname) != 0)
-> >> +             return semihosting_errno();
-> >
-> > Are the errnos semihosting returns compatible with the barebox errnos?
-> 
-> I can't speak for any implementation other that OpenOCD's, but what
-> that tool does is it returns the value of host's 'errno' after
-> executing a corresponding syscall.
+>> +	if (ret =3D=3D -EINVAL)	/* -EINVAL =3D=3D does not exist */
+>> +		return 0;
+>=20
+> -EINVAL is such a widespread error value. Maybe better explicitly test
+> for existence with of_find_property?
 
-Ok, then we should be able to reuse it as error code.
+ok
 
-Sascha
+>> +	else if (ret)
+>> +		return ret;
+>> +
+>> +	ret =3D keystore_get_secret(state->name, &key, &key_len);
+>> +	if (ret =3D=3D -ENOENT)	/* -ENOENT =3D=3D does not exist */
+>> +		return -EPROBE_DEFER;
+>> +	else if (ret)
+>> +		return ret;
+>> +
+>> +	digest =3D digest_alloc(algo);
+>> +	if (!digest) {
+>> +		dev_info(&state->dev, "algo %s not found - probe deferred\n", algo)=
+;
+>> +		return -EPROBE_DEFER;
+>> +	}
+>> +
+>> +	ret =3D digest_set_key(digest, key, key_len);
+>> +	if (ret) {
+>> +		digest_free(digest);
+>> +		return ret;
+>> +	}
+>> +
+>> +	backend_raw->backend.digest =3D digest;
+>> +	backend_raw->size_full =3D digest_length(digest);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>  /*
+>>   * state_backend_raw_file - create a raw file backend store for a sta=
+te instance
+>>   *
+>> @@ -1534,8 +1627,14 @@ int state_backend_raw_file(struct state *state,=
+ const char *of_path,
+>>  		return -EINVAL;
+>> =20
+>>  	backend_raw =3D xzalloc(sizeof(*backend_raw));
+>> -	backend =3D &backend_raw->backend;
+>> =20
+>> +	ret =3D state_backend_raw_file_init_digest(state, backend_raw);
+>> +	if (ret) {
+>> +		free(backend_raw);
+>> +		return ret;
+>> +	}
+>=20
+> Maybe better make this configurable with correct dependencies
+> (CONFIG_CRYPTO_KEYSTORE, CONFIG_DIGEST) rather than depending on the
+> user selecting the implicit dependencies manually?
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+There are noops so that it compile even if KEYSTORE and DIGEST is not
+selected.
+
+Marc
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--ApkVXhRi0KMEt8iX1t0tauHvvwMh847OW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJWJ1MkAAoJEP5prqPJtc/HaEQH/2XQZXnBAfacon7PyjpShUmD
+fvntNnc8s52O51M1lY4SnOURTzgAi10+ggrKdTGNxhlHlw59e214AE35xphk4mD0
+ti73o+tVhkcFSyhKpIgalDmB9sV50MUkVXsmP986YkHDwisGErrqC6nhT8y1ph27
+BCQeqx9y4WipGUAGXP4c44nw1YwoKeSeMuBg7muGWCJAL/HZ3JBtE4VWtadJcXhf
+BkSNRreFrpKswYCnih60BVygdKdHbPfWMUBbH73g4L/Xi753ckfM2P+OTIgbEP4O
+I+dvIQBLJLWAl3qWij151OPOvEx7S/npO3P4an1ha/8zFfZhblJeT20wTHIxsNw=
+=E7Jb
+-----END PGP SIGNATURE-----
+
+--ApkVXhRi0KMEt8iX1t0tauHvvwMh847OW--
+
+
+--===============1874173645565071016==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============1874173645565071016==--
