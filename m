@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22c.google.com ([2a00:1450:4010:c07::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZpB7R-0003Vg-5z
- for barebox@lists.infradead.org; Thu, 22 Oct 2015 08:21:05 +0000
-Received: by lfaz124 with SMTP id z124so38963723lfa.1
- for <barebox@lists.infradead.org>; Thu, 22 Oct 2015 01:20:43 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 22 Oct 2015 11:20:38 +0300
-Message-Id: <1445502038-2566-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZpFk5-0008OX-O0
+ for barebox@lists.infradead.org; Thu, 22 Oct 2015 13:17:21 +0000
+Date: Thu, 22 Oct 2015 15:16:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151022131655.GP14356@pengutronix.de>
+References: <1445484848-32599-1-git-send-email-yamada.masahiro@socionext.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1445484848-32599-1-git-send-email-yamada.masahiro@socionext.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,42 +18,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fixup! commands: clk_dump: use COMMAND_SUCCESS instead of 0
- return code
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] kbuild: fix DTC-native include path for dts/ directory
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: barebox@lists.infradead.org
 
-Sorry, I have missed that occurence.
-So we can change original patch subject line to
+On Thu, Oct 22, 2015 at 12:34:06PM +0900, Masahiro Yamada wrote:
+> For the pre-processor to include sources below dts/ directory,
+> -I$(srctree)/dts/src is specified as an include path.  On the other
+> hand, for the DTC-native, -i $(srctree)/dts/src/$(SRCARCH) is
+> currently specified.
+> 
+> Theoretically, the pre-processor style (#include) and DTC-native
+> style (/include/) should work with the same include paths.
+> 
+> Currently, there are no users for the latter, so we can fix it safely.
+> 
+> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> ---
+> 
+>  scripts/Makefile.lib | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index e991f33..c529d15 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -258,7 +258,7 @@ quiet_cmd_dtc = DTC     $@
+>  cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
+>  	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+>  		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
+> -		-i $(srctree)/dts/src/$(SRCARCH) \
+> +		-i $(srctree)/dts/src/ \
+>  		-d $(depfile).dtc $(dtc-tmp) ; \
+>  	cat $(depfile).pre $(depfile).dtc > $(depfile)
+
+Seems there are indeed users for this. This patch breaks these defconfigs:
+
+ config:     arm              am335x_defconfig
+FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
+scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-bone-common.dtb' failed
+make[1]: *** [arch/arm/dts/am335x-bone-common.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
+scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-afi-gf.dtb' failed
+make[1]: *** [arch/arm/dts/am335x-afi-gf.dtb] Error 1
+Makefile:772: recipe for target 'arch/arm/dts' failed
+make: *** [arch/arm/dts] Error 2
+make: *** Waiting for unfinished jobs....
 
 
-  commands: clk: use COMMAND_SUCCESS instead of 0
+ config:     arm              am335x_mlo_defconfig
+FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
+scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-afi-gf.dtb' failed
+make[1]: *** [arch/arm/dts/am335x-afi-gf.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
+scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-bone-common.dtb' failed
+make[1]: *** [arch/arm/dts/am335x-bone-common.dtb] Error 1
+Makefile:772: recipe for target 'arch/arm/dts' failed
+make: *** [arch/arm/dts] Error 2
+make: *** Waiting for unfinished jobs....
 
 
----
- commands/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ config:     arm              mvebu_defconfig
+FATAL ERROR: Couldn't open "skeleton64.dtsi": No such file or directory
+scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/armada-xp-gp-bb.dtb' failed
+make[1]: *** [arch/arm/dts/armada-xp-gp-bb.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+FATAL ERROR: Couldn't open "skeleton64.dtsi": No such file or directory
+scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/armada-xp-lenovo-ix4-300d-bb.dtb' failed
+make[1]: *** [arch/arm/dts/armada-xp-lenovo-ix4-300d-bb.dtb] Error 1
+FATAL ERROR: Couldn't open "skeleton64.dtsi": No such file or directory
+scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/armada-370-mirabox-bb.dtb' failed
+make[1]: *** [arch/arm/dts/armada-370-mirabox-bb.dtb] Error 1
+Makefile:772: recipe for target 'arch/arm/dts' failed
+make: *** [arch/arm/dts] Error 2
+make: *** Waiting for unfinished jobs....
 
-diff --git a/commands/clk.c b/commands/clk.c
-index 2bfdfdf..e9459a3 100644
---- a/commands/clk.c
-+++ b/commands/clk.c
-@@ -40,7 +40,7 @@ static int do_clk_disable(int argc, char *argv[])
- 
- 	clk_disable(clk);
- 
--	return 0;
-+	return COMMAND_SUCCESS;
- }
- 
- BAREBOX_CMD_START(clk_disable)
 -- 
-2.6.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
