@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zp9zL-0004BW-4v
- for barebox@lists.infradead.org; Thu, 22 Oct 2015 07:08:40 +0000
-Date: Thu, 22 Oct 2015 09:08:17 +0200
+ id 1ZpALg-0004jg-MW
+ for barebox@lists.infradead.org; Thu, 22 Oct 2015 07:31:45 +0000
+Date: Thu, 22 Oct 2015 09:31:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151022070817.GI14476@pengutronix.de>
-References: <1445456225.13196.122.camel@rtred1test09.kymetacorp.com>
+Message-ID: <20151022073122.GJ14476@pengutronix.de>
+References: <1445303748.13196.89.camel@rtred1test09.kymetacorp.com>
+ <20151021053000.GU14476@pengutronix.de>
+ <1445471669.13196.152.camel@rtred1test09.kymetacorp.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1445456225.13196.122.camel@rtred1test09.kymetacorp.com>
+In-Reply-To: <1445471669.13196.152.camel@rtred1test09.kymetacorp.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,115 +24,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2 v2] net: eth: Refactor OF tree fixup of one node into
- new function
+Subject: Re: In flash vs compiled environment for omap, rasp-pi, socfpga
 To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, Oct 21, 2015 at 07:37:00PM +0000, Trent Piepho wrote:
-> Code that fixes up one node with a new MAC address is refactored into
-> a new function that eth_of_fixup() calls in a loop.
+On Wed, Oct 21, 2015 at 11:54:23PM +0000, Trent Piepho wrote:
+> On Wed, 2015-10-21 at 07:30 +0200, Sascha Hauer wrote:
+> > > So why does loading the env from a FAT partition depend on
+> > > DEFAULT_ENVIRONMENT?  It does in the omap and socfpga code, but in the
+> > > rasp-pi code it doesn't.
+> > 
+> > It seems we just picked the wrong define to depend on. Maybe the ifdef
+> > CONFIG_DEFAULT_ENVIRONMENT in the omap code should just be dropped.
 > 
-> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
-> ---
->  net/eth.c | 62 ++++++++++++++++++++++++++++++++++----------------------------
->  1 file changed, 34 insertions(+), 28 deletions(-)
+> I've changed socfpga to depend on the xloader option instead, so that
+> the env loading function is not present in the xloader.  This seems to
+> work and gives me a booting xloader and main barebox with the in-flash
+> env.
+> 
+> > > If you turn it on, then you get the env in the FAT partition.  But you
+> > > also get the env compiled into the barebox binary.  If there are large
+> > > FPGA images stored in the env, this is very undesirable!
+> > 
+> > I do not really understand you here. Do you mean you compile the FPGA
+> > images into the default environment so that they end up being part of
+> > the barebox image, or do you mean you store the FPGA image in the
+> > environment in the FAT partition?
+> 
+> The latter.  But turning on DEFAULT_ENVIRONMENT will also try to give
+> you the former.  This may very well not be the best way to present fpga
+> images to barebox to load, but it still seems like the flash env loading
+> code is using the wrong config option.
+> 
+> 
+> > I think the environment specific config options are in most cases either
+> > all turned on or all turned off. Normally you want to have them turned
+> > on, but in some cases like omap xloader there's no environment at all
+> > and the options are all turned off. That could be the reason the
+> > dependencies are a bit inconsistent, nobody really tries to enable half
+> > of them. Anyway, patches welcome.
+> 
+> A survey of the defconfigs shows that 25 do not have
+> DEFAULT_ENVIRONMENT.  Of these 14 are omap, socfpga, imx, or at91
+> xloaders.  Of the remaining eleven, 5 have env commands enabled, 3 have
+> selected the simple shell which turns on environment variables, and the
+> remaining 3 get the HUSH shell by default which also has environment
+> variables.
 
-Applied, thanks. Also applied 2/2.
+Environment variables and the thing called "the environment" are
+different things and do not depend on each other. Environment variables
+are the variables in the shell (var=10...), getenv/setenv and stuff.
+This has nothing to do with the saveable files we are talking about
+here. Having one enabled without the other is perfectly valid.
 
 Sascha
 
-> 
-> diff --git a/net/eth.c b/net/eth.c
-> index b22e556..befa8d8 100644
-> --- a/net/eth.c
-> +++ b/net/eth.c
-> @@ -289,42 +289,48 @@ static int eth_param_set_ethaddr(struct param_d *param, void *priv)
->  }
->  
->  #ifdef CONFIG_OFTREE
-> -static int eth_of_fixup(struct device_node *root, void *unused)
-> +static void eth_of_fixup_node(struct device_node *root,
-> +			      const char *node_path, int ethid,
-> +			      const u8 ethaddr[6])
->  {
-> -	struct eth_device *edev;
->  	struct device_node *node;
->  	int ret;
->  
-> +	if (!is_valid_ether_addr(ethaddr)) {
-> +		pr_debug("%s: no valid mac address, cannot fixup\n",
-> +			 __func__);
-> +		return;
-> +	}
-> +
-> +	if (node_path) {
-> +		node = of_find_node_by_path_from(root, node_path);
-> +	} else {
-> +		char eth[12];
-> +		sprintf(eth, "ethernet%d", ethid);
-> +		node = of_find_node_by_alias(root, eth);
-> +	}
-> +
-> +	if (!node) {
-> +		pr_debug("%s: no node to fixup\n", __func__);
-> +		return;
-> +	}
-> +
-> +	ret = of_set_property(node, "mac-address", ethaddr, 6, 1);
-> +	if (ret)
-> +		pr_err("Setting mac-address property of %s failed with: %s\n",
-> +		       node->full_name, strerror(-ret));
-> +}
-> +
-> +static int eth_of_fixup(struct device_node *root, void *unused)
-> +{
-> +	struct eth_device *edev;
-> +
->  	/*
->  	 * Add the mac-address property for each network device we
->  	 * find a nodepath for and which has a valid mac address.
->  	 */
-> -	list_for_each_entry(edev, &netdev_list, list) {
-> -		if (!is_valid_ether_addr(edev->ethaddr)) {
-> -			dev_dbg(&edev->dev,
-> -				"%s: no valid mac address, cannot fixup\n",
-> -				__func__);
-> -			continue;
-> -		}
-> -
-> -		if (edev->nodepath) {
-> -			node = of_find_node_by_path_from(root, edev->nodepath);
-> -		} else {
-> -			char eth[12];
-> -			sprintf(eth, "ethernet%d", edev->dev.id);
-> -			node = of_find_node_by_alias(root, eth);
-> -		}
-> -
-> -		if (!node) {
-> -			dev_dbg(&edev->dev, "%s: no node to fixup\n", __func__);
-> -			continue;
-> -		}
-> -
-> -		ret = of_set_property(node, "mac-address", edev->ethaddr, 6, 1);
-> -		if (ret)
-> -			pr_err("Setting mac-address property of %s failed with: %s\n",
-> -					node->full_name, strerror(-ret));
-> -	}
-> +	list_for_each_entry(edev, &netdev_list, list)
-> +		eth_of_fixup_node(root, edev->nodepath, edev->dev.id, edev->ethaddr);
->  
->  	return 0;
->  }
-> -- 
-> 1.8.3.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
