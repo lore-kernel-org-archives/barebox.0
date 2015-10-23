@@ -1,22 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from conssluserg002.nifty.com ([202.248.44.40]
- helo=conssluserg002-v.nifty.com)
+Received: from mail-pa0-x236.google.com ([2607:f8b0:400e:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZpWEL-0001ei-Kc
- for barebox@lists.infradead.org; Fri, 23 Oct 2015 06:53:38 +0000
-Received: from mail-yk0-f172.google.com (mail-yk0-f172.google.com
- [209.85.160.172]) (authenticated)
- by conssluserg002-v.nifty.com with ESMTP id t9N6r5Si026984
- for <barebox@lists.infradead.org>; Fri, 23 Oct 2015 15:53:06 +0900
-Received: by ykaz22 with SMTP id z22so109926460yka.2
- for <barebox@lists.infradead.org>; Thu, 22 Oct 2015 23:53:04 -0700 (PDT)
+ id 1ZpWmT-000609-Rv
+ for barebox@lists.infradead.org; Fri, 23 Oct 2015 07:28:54 +0000
+Received: by pabrc13 with SMTP id rc13so110622519pab.0
+ for <barebox@lists.infradead.org>; Fri, 23 Oct 2015 00:28:32 -0700 (PDT)
+Received: from L64 ([183.15.243.202])
+ by smtp.gmail.com with ESMTPSA id ci2sm17350072pbc.66.2015.10.23.00.28.28
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
+ Fri, 23 Oct 2015 00:28:32 -0700 (PDT)
+Date: Fri, 23 Oct 2015 15:28:18 +0800
+From: Kevin Du Huanpeng <u74147@gmail.com>
+Message-ID: <20151023072818.GA11271@L64>
 MIME-Version: 1.0
-In-Reply-To: <20151022131655.GP14356@pengutronix.de>
-References: <1445484848-32599-1-git-send-email-yamada.masahiro@socionext.com>
- <20151022131655.GP14356@pengutronix.de>
-Date: Fri, 23 Oct 2015 15:53:04 +0900
-Message-ID: <CAK7LNATvFkEKXmKYNpvwHt8cXxHZ=Lj+hrA5kUz=em5+ix6dyw@mail.gmail.com>
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Content-Type: multipart/mixed; boundary="MGYHOYXEY6WxJCY8"
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,121 +24,164 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] kbuild: fix DTC-native include path for dts/ directory
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-
-Sascha,
+Subject: [vedio] support no-ascii fonts?
+To: barebox@lists.infradead.org
 
 
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment
 
-Sorry, this problems seem to happen both #include and /include/
-are used in mixture.
+Hi, How about add a index before get fontdata?
+so, we will able to support non-ascii fonts.
+like:
+	drivers/video/fbconsole.c
+	-->	static void drawchar(struct fbc_priv *priv, int x, int y, char c)
+		{
+			...
+	-		inbuf = &priv->fontdata[c * priv->font_height];
+	+		if(priv->index) {
+	+			inbuf = look up index in the table.
+	+		}
+	+		else {
+	+			inbuf = &priv->fontdata[c * priv->font_height];
+	+		}
+the index table like:
+	struct font_index fontname_index = {
+		{ 0xXXXX, 0xYYYY },	/* where, 0xXXXX is the unioncode of the char     */
+		{ 0xXXXX, 0xYYYY },	/* the 0xYYYY is the index of the fontdata array. */
+		{ 0xXXXX, 0xYYYY },	/* normally, we don't need a full char set.       */
+		{ 0xXXXX, 0xYYYY },	/* just put the used chars in the table.          */
+		{ 0xXXXX, 0xYYYY },	/* we also have a tool to generate fontdata array.*/
+	};
 
-I will re-consider how they should be handled.
-
-Disregard my patches for now.
-
-Masahiro
-
-
-
-2015-10-22 22:16 GMT+09:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Thu, Oct 22, 2015 at 12:34:06PM +0900, Masahiro Yamada wrote:
->> For the pre-processor to include sources below dts/ directory,
->> -I$(srctree)/dts/src is specified as an include path.  On the other
->> hand, for the DTC-native, -i $(srctree)/dts/src/$(SRCARCH) is
->> currently specified.
->>
->> Theoretically, the pre-processor style (#include) and DTC-native
->> style (/include/) should work with the same include paths.
->>
->> Currently, there are no users for the latter, so we can fix it safely.
->>
->> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
->> ---
->>
->>  scripts/Makefile.lib | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
->> index e991f33..c529d15 100644
->> --- a/scripts/Makefile.lib
->> +++ b/scripts/Makefile.lib
->> @@ -258,7 +258,7 @@ quiet_cmd_dtc = DTC     $@
->>  cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ; \
->>       $(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
->>               -i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
->> -             -i $(srctree)/dts/src/$(SRCARCH) \
->> +             -i $(srctree)/dts/src/ \
->>               -d $(depfile).dtc $(dtc-tmp) ; \
->>       cat $(depfile).pre $(depfile).dtc > $(depfile)
->
-> Seems there are indeed users for this. This patch breaks these defconfigs:
->
->  config:     arm              am335x_defconfig
-> FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
-> scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-bone-common.dtb' failed
-> make[1]: *** [arch/arm/dts/am335x-bone-common.dtb] Error 1
-> make[1]: *** Waiting for unfinished jobs....
-> FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
-> scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-afi-gf.dtb' failed
-> make[1]: *** [arch/arm/dts/am335x-afi-gf.dtb] Error 1
-> Makefile:772: recipe for target 'arch/arm/dts' failed
-> make: *** [arch/arm/dts] Error 2
-> make: *** Waiting for unfinished jobs....
->
->
->  config:     arm              am335x_mlo_defconfig
-> FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
-> scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-afi-gf.dtb' failed
-> make[1]: *** [arch/arm/dts/am335x-afi-gf.dtb] Error 1
-> make[1]: *** Waiting for unfinished jobs....
-> FATAL ERROR: Couldn't open "am33xx-clocks.dtsi": No such file or directory
-> scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/am335x-bone-common.dtb' failed
-> make[1]: *** [arch/arm/dts/am335x-bone-common.dtb] Error 1
-> Makefile:772: recipe for target 'arch/arm/dts' failed
-> make: *** [arch/arm/dts] Error 2
-> make: *** Waiting for unfinished jobs....
->
->
->  config:     arm              mvebu_defconfig
-> FATAL ERROR: Couldn't open "skeleton64.dtsi": No such file or directory
-> scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/armada-xp-gp-bb.dtb' failed
-> make[1]: *** [arch/arm/dts/armada-xp-gp-bb.dtb] Error 1
-> make[1]: *** Waiting for unfinished jobs....
-> FATAL ERROR: Couldn't open "skeleton64.dtsi": No such file or directory
-> scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/armada-xp-lenovo-ix4-300d-bb.dtb' failed
-> make[1]: *** [arch/arm/dts/armada-xp-lenovo-ix4-300d-bb.dtb] Error 1
-> FATAL ERROR: Couldn't open "skeleton64.dtsi": No such file or directory
-> scripts/Makefile.lib:266: recipe for target 'arch/arm/dts/armada-370-mirabox-bb.dtb' failed
-> make[1]: *** [arch/arm/dts/armada-370-mirabox-bb.dtb] Error 1
-> Makefile:772: recipe for target 'arch/arm/dts' failed
-> make: *** [arch/arm/dts] Error 2
-> make: *** Waiting for unfinished jobs....
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+diff --git a/include/linux/font.h b/include/linux/font.h
+index 62b1879..885935f 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -12,11 +12,18 @@
+ #define _VIDEO_FONT_H
+ 
+ #include <param.h>
++#include <wchar.h>
++
++struct font_index {
++	wchar_t wch;
++	short index;
++};
+ 
+ struct font_desc {
+ 	const char *name;
+ 	int width, height;
+ 	const void *data;
++	const struct font_index *index;
+ };
+ 
+ extern const struct font_desc	font_vga_8x16,
+diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
+index fe99871..60cb57e 100644
+--- a/lib/fonts/font_7x14.c
++++ b/lib/fonts/font_7x14.c
+@@ -4113,4 +4113,5 @@ const struct font_desc font_7x14 = {
+ 	.width	= 7,
+ 	.height	= 14,
+ 	.data	= fontdata_7x14,
++	.index	= NULL,
+ };
+diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
+index 4717ead..0ba2921 100644
+--- a/lib/fonts/font_8x16.c
++++ b/lib/fonts/font_8x16.c
+@@ -4626,5 +4626,6 @@ const struct font_desc font_vga_8x16 = {
+ 	.width	= 8,
+ 	.height	= 16,
+ 	.data	= fontdata_8x16,
++	.index	= NULL,
+ };
+ EXPORT_SYMBOL(font_vga_8x16);
+diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
+index 3ecb4fb..733d20a 100644
+--- a/lib/fonts/font_mini_4x6.c
++++ b/lib/fonts/font_mini_4x6.c
+@@ -2152,4 +2152,5 @@ const struct font_desc font_mini_4x6 = {
+ 	.width	= 4,
+ 	.height	= 6,
+ 	.data	= fontdata_mini_4x6,
++	.index	= NULL,
+ };
 
 
 
--- 
-Best Regards
-Masahiro Yamada
+--MGYHOYXEY6WxJCY8
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: inline; filename="font.diff"
+
+diff --git a/include/linux/font.h b/include/linux/font.h
+index 62b1879..885935f 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -12,11 +12,18 @@
+ #define _VIDEO_FONT_H
+ 
+ #include <param.h>
++#include <wchar.h>
++
++struct font_index {
++	wchar_t wch;
++	short index;
++};
+ 
+ struct font_desc {
+ 	const char *name;
+ 	int width, height;
+ 	const void *data;
++	const struct font_index *index;
+ };
+ 
+ extern const struct font_desc	font_vga_8x16,
+diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
+index fe99871..60cb57e 100644
+--- a/lib/fonts/font_7x14.c
++++ b/lib/fonts/font_7x14.c
+@@ -4113,4 +4113,5 @@ const struct font_desc font_7x14 = {
+ 	.width	= 7,
+ 	.height	= 14,
+ 	.data	= fontdata_7x14,
++	.index	= NULL,
+ };
+diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
+index 4717ead..0ba2921 100644
+--- a/lib/fonts/font_8x16.c
++++ b/lib/fonts/font_8x16.c
+@@ -4626,5 +4626,6 @@ const struct font_desc font_vga_8x16 = {
+ 	.width	= 8,
+ 	.height	= 16,
+ 	.data	= fontdata_8x16,
++	.index	= NULL,
+ };
+ EXPORT_SYMBOL(font_vga_8x16);
+diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
+index 3ecb4fb..733d20a 100644
+--- a/lib/fonts/font_mini_4x6.c
++++ b/lib/fonts/font_mini_4x6.c
+@@ -2152,4 +2152,5 @@ const struct font_desc font_mini_4x6 = {
+ 	.width	= 4,
+ 	.height	= 6,
+ 	.data	= fontdata_mini_4x6,
++	.index	= NULL,
+ };
+
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--MGYHOYXEY6WxJCY8--
