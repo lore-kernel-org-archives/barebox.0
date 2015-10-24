@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x233.google.com ([2a00:1450:4010:c07::233])
+Received: from mail-lf0-x235.google.com ([2a00:1450:4010:c07::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zpsim-0001E9-5J
- for barebox@lists.infradead.org; Sat, 24 Oct 2015 06:54:34 +0000
-Received: by lfbn126 with SMTP id n126so69244221lfb.2
- for <barebox@lists.infradead.org>; Fri, 23 Oct 2015 23:54:08 -0700 (PDT)
+ id 1Zpw4s-0002Oj-Vi
+ for barebox@lists.infradead.org; Sat, 24 Oct 2015 10:29:36 +0000
+Received: by lfbn126 with SMTP id n126so71729828lfb.2
+ for <barebox@lists.infradead.org>; Sat, 24 Oct 2015 03:29:12 -0700 (PDT)
 From: Du Huanpeng <u74147@gmail.com>
-Date: Sat, 24 Oct 2015 10:02:55 +0300
-Message-Id: <1445670175-23909-1-git-send-email-u74147@gmail.com>
+Date: Sat, 24 Oct 2015 13:38:08 +0300
+Message-Id: <1445683088-25675-1-git-send-email-u74147@gmail.com>
 In-Reply-To: <u74147@gmail.com>
 References: <u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,16 +29,16 @@ Cc: Du Huanpeng <u74147@gmail.com>
 
 Signed-off-by: Du Huanpeng <u74147@gmail.com>
 ---
- drivers/video/fbconsole.c   |  39 +++++----
- include/linux/font.h        |  10 ++-
+ drivers/video/fbconsole.c   |  39 ++++-----
+ include/linux/font.h        |  11 ++-
  lib/fonts/Kconfig           |   5 ++
- lib/fonts/Makefile          |   1 +
+ lib/fonts/Makefile          |   4 +
  lib/fonts/font_7x14.c       |   1 +
  lib/fonts/font_8x16.c       |   1 +
- lib/fonts/font_custom_16x.c | 204 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/fonts/font_custom_16x.c | 206 ++++++++++++++++++++++++++++++++++++++++++++
  lib/fonts/font_mini_4x6.c   |   1 +
- lib/fonts/fonts.c           |  33 +++++++
- 9 files changed, 274 insertions(+), 21 deletions(-)
+ lib/fonts/fonts.c           |  32 +++++++
+ 9 files changed, 279 insertions(+), 21 deletions(-)
  create mode 100644 lib/fonts/font_custom_16x.c
 
 diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
@@ -146,10 +146,10 @@ index b10503e..dad45c3 100644
  	return 0;
  }
 diff --git a/include/linux/font.h b/include/linux/font.h
-index 62b1879..14af0d9 100644
+index 62b1879..f9eabfe 100644
 --- a/include/linux/font.h
 +++ b/include/linux/font.h
-@@ -12,20 +12,28 @@
+@@ -12,20 +12,29 @@
  #define _VIDEO_FONT_H
  
  #include <param.h>
@@ -164,6 +164,7 @@ index 62b1879..14af0d9 100644
  	int width, height;
 +	struct font_index *index;
  	const void *data;
++	int num_chars;
  };
  
  extern const struct font_desc	font_vga_8x16,
@@ -196,10 +197,10 @@ index 715d5e5..d23b283 100644
  	def_bool y
  	depends on !FONT_MINI_4x6
 diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
-index b7d4765..98245b3 100644
+index b7d4765..cacb721 100644
 --- a/lib/fonts/Makefile
 +++ b/lib/fonts/Makefile
-@@ -5,6 +5,7 @@ font-objs := fonts.o
+@@ -5,7 +5,11 @@ font-objs := fonts.o
  font-objs-$(CONFIG_FONT_8x16)      += font_8x16.o
  font-objs-$(CONFIG_FONT_7x14)      += font_7x14.o
  font-objs-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
@@ -207,6 +208,10 @@ index b7d4765..98245b3 100644
  
  font-objs += $(font-objs-y)
  
+ obj-$(CONFIG_FONTS)         += font.o
++
++hostprogs-y += hello
++
 diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
 index fe99871..60cb57e 100644
 --- a/lib/fonts/font_7x14.c
@@ -230,10 +235,10 @@ index 4717ead..0ba2921 100644
  EXPORT_SYMBOL(font_vga_8x16);
 diff --git a/lib/fonts/font_custom_16x.c b/lib/fonts/font_custom_16x.c
 new file mode 100644
-index 0000000..7ad5a78
+index 0000000..2e677e6
 --- /dev/null
 +++ b/lib/fonts/font_custom_16x.c
-@@ -0,0 +1,204 @@
+@@ -0,0 +1,206 @@
 +/* we have only ten chars, add more if needed.
 + * the first char alway means, not supported char.
 + *
@@ -435,7 +440,9 @@ index 0000000..7ad5a78
 +	.width	= 16,
 +	.height	= 16,
 +	.data	= fontdata_custom_16x,
-+	.index	= NULL,
++	.index	= fontdata_custom_16x_index,
++	.num_chars = 10,
++
 +};
 +
 diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
@@ -449,7 +456,7 @@ index 3ecb4fb..733d20a 100644
 +	.index	= NULL,
  };
 diff --git a/lib/fonts/fonts.c b/lib/fonts/fonts.c
-index 5a9d3f1..8d4df71 100644
+index 5a9d3f1..946e82c 100644
 --- a/lib/fonts/fonts.c
 +++ b/lib/fonts/fonts.c
 @@ -7,6 +7,10 @@
@@ -474,7 +481,7 @@ index 5a9d3f1..8d4df71 100644
  };
  
  #define num_fonts ARRAY_SIZE(fonts)
-@@ -51,6 +59,31 @@ const struct font_desc *find_font_enum(int n)
+@@ -51,6 +59,30 @@ const struct font_desc *find_font_enum(int n)
  	return fonts[n];
  }
  
@@ -489,11 +496,10 @@ index 5a9d3f1..8d4df71 100644
 +	}
 +	else {
 +		/*
-+		* FIXME:
-+		* 1. use binary search instead!
-+		* 2. how many chars in this font?
++		* FIXME: use binary search instead!
 +		*/
-+		index = 10 - 1;
++		index = font->num_chars - 1;
++
 +		while (index && font->index[index].wc != ch) index--;
 +
 +		/* return 0 if not found. */
