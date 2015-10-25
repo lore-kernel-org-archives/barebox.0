@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZqSSN-0008Er-Dr
- for barebox@lists.infradead.org; Sun, 25 Oct 2015 21:04:02 +0000
+ id 1ZqSSN-0008F4-Dm
+ for barebox@lists.infradead.org; Sun, 25 Oct 2015 21:04:00 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sun, 25 Oct 2015 22:03:28 +0100
-Message-Id: <1445807016-6637-2-git-send-email-mkl@pengutronix.de>
+Date: Sun, 25 Oct 2015 22:03:35 +0100
+Message-Id: <1445807016-6637-9-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1445807016-6637-1-git-send-email-mkl@pengutronix.de>
 References: <1445807016-6637-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,123 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/9] of_path: of_find_path() factor out device detection
- logic into separate function
+Subject: [PATCH v3 8/9] state: prepare raw backend for hmac support
 To: barebox@lists.infradead.org
 
-This patch factors out the device detection logic into separate function, so
-that it can be used from another function.
+This patch cleans up the raw backend, so that adding hmac support in the next
+patch is easier.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/of/of_path.c | 81 ++++++++++++++++++++++++++++------------------------
- 1 file changed, 44 insertions(+), 37 deletions(-)
+ common/state.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index 992972c9b52e..ad64bee08af9 100644
---- a/drivers/of/of_path.c
-+++ b/drivers/of/of_path.c
-@@ -106,6 +106,48 @@ out:
- 	return ret;
- }
+diff --git a/common/state.c b/common/state.c
+index fdb5564af3bd..d37f4ab4b539 100644
+--- a/common/state.c
++++ b/common/state.c
+@@ -1254,7 +1254,7 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
+ 	struct backend_raw_header header = {};
+ 	unsigned long max_len;
+ 	int ret;
+-	void *buf;
++	void *buf, *data;
  
-+static int __of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags)
-+{
-+	struct of_path op = {};
-+	const char *str;
-+	bool add_bb = false;
-+	int i, ret;
-+
-+	op.dev = of_find_device_by_node_path(node->full_name);
-+	if (!op.dev) {
-+		op.dev = of_find_device_by_node_path(node->parent->full_name);
-+		if (!op.dev)
-+			return -ENODEV;
-+	}
-+
-+	device_detect(op.dev);
-+
-+	op.cdev = cdev_by_device_node(node);
-+
-+	i = 1;
-+
-+	while (1) {
-+		ret = of_property_read_string_index(node, propname, i++, &str);
-+		if (ret)
-+			break;
-+
-+		ret = of_path_parse_one(&op, str);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (!op.cdev)
-+		return -ENOENT;
-+
-+	if ((flags & OF_FIND_PATH_FLAGS_BB) && op.cdev->mtd &&
-+	    mtd_can_have_bb(op.cdev->mtd))
-+		add_bb = true;
-+
-+	*outpath = asprintf("/dev/%s%s", op.cdev->name, add_bb ? ".bb" : "");
-+
-+	return 0;
-+}
-+
- /**
-  * of_find_path - translate a path description in the devicetree to a barebox
-  *                path
-@@ -134,11 +176,8 @@ out:
-  */
- int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags)
- {
--	struct of_path op = {};
- 	struct device_node *rnode;
--	const char *path, *str;
--	bool add_bb = false;
--	int i, ret;
-+	const char *path;
+ 	max_len = backend_raw->stride;
  
- 	path = of_get_property(node, propname, NULL);
- 	if (!path)
-@@ -148,37 +187,5 @@ int of_find_path(struct device_node *node, const char *propname, char **outpath,
- 	if (!rnode)
- 		return -ENODEV;
+@@ -1292,13 +1292,18 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
+ 		return -EINVAL;
+ 	}
  
--	op.dev = of_find_device_by_node_path(rnode->full_name);
--	if (!op.dev) {
--		op.dev = of_find_device_by_node_path(rnode->parent->full_name);
--		if (!op.dev)
--			return -ENODEV;
--	}
--
--	device_detect(op.dev);
--
--	op.cdev = cdev_by_device_node(rnode);
--
--	i = 1;
--
--	while (1) {
--		ret = of_property_read_string_index(node, propname, i++, &str);
--		if (ret)
--			break;
--
--		ret = of_path_parse_one(&op, str);
--		if (ret)
--			return ret;
--	}
--
--	if (!op.cdev)
--		return -ENOENT;
--
--	if ((flags & OF_FIND_PATH_FLAGS_BB) && op.cdev->mtd &&
--	    mtd_can_have_bb(op.cdev->mtd))
--		add_bb = true;
--
--	*outpath = asprintf("/dev/%s%s", op.cdev->name, add_bb ? ".bb" : "");
--
--	return 0;
-+	return __of_find_path(rnode, propname, outpath, flags);
- }
+-	buf = xzalloc(header.data_len);
++	buf = xzalloc(sizeof(header) + header.data_len);
++	data = buf + sizeof(header);
++
++	ret = lseek(fd, offset, SEEK_SET);
++	if (ret < 0)
++		goto out_free;
+ 
+-	ret = read_full(fd, buf, header.data_len);
++	ret = read_full(fd, buf, sizeof(header) + header.data_len);
+ 	if (ret < 0)
+ 		goto out_free;
+ 
+-	crc = crc32(0, buf, header.data_len);
++	crc = crc32(0, data, header.data_len);
+ 	if (crc != header.data_crc) {
+ 		dev_err(&state->dev,
+ 			"invalid crc, calculated 0x%08x, found 0x%08x\n",
+@@ -1310,7 +1315,7 @@ static int backend_raw_load_one(struct state_backend_raw *backend_raw,
+ 	list_for_each_entry(sv, &state->variables, list) {
+ 		if (sv->start + sv->size > header.data_len)
+ 			break;
+-		memcpy(sv->raw, buf + sv->start, sv->size);
++		memcpy(sv->raw, data + sv->start, sv->size);
+ 	}
+ 
+ 	free(buf);
 -- 
 2.6.1
 
