@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZqbRL-0004LM-DF
- for barebox@lists.infradead.org; Mon, 26 Oct 2015 06:39:32 +0000
-Date: Mon, 26 Oct 2015 07:39:09 +0100
+ id 1ZqbfF-0002PA-PL
+ for barebox@lists.infradead.org; Mon, 26 Oct 2015 06:53:54 +0000
+Date: Mon, 26 Oct 2015 07:53:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151026063909.GR14476@pengutronix.de>
-References: <20151023072818.GA11271@L64>
+Message-ID: <20151026065331.GS14476@pengutronix.de>
+References: <1445629784-2024-1-git-send-email-eric@nelint.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151023072818.GA11271@L64>
+In-Reply-To: <1445629784-2024-1-git-send-email-eric@nelint.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [vedio] support no-ascii fonts?
-To: Kevin Du Huanpeng <u74147@gmail.com>
+Subject: Re: [PATCH] imx6-mmdc: fix automatic power down enable in write
+ level calibration
+To: Eric Nelson <eric@nelint.com>
 Cc: barebox@lists.infradead.org
 
-Hi Kevin,
+Hi Eric,
 
-On Fri, Oct 23, 2015 at 03:28:18PM +0800, Kevin Du Huanpeng wrote:
-> Hi, How about add a index before get fontdata?
-> so, we will able to support non-ascii fonts.
-> like:
-> 	drivers/video/fbconsole.c
-> 	-->	static void drawchar(struct fbc_priv *priv, int x, int y, char c)
-> 		{
-> 			...
-> 	-		inbuf = &priv->fontdata[c * priv->font_height];
-> 	+		if(priv->index) {
-> 	+			inbuf = look up index in the table.
-> 	+		}
-> 	+		else {
-> 	+			inbuf = &priv->fontdata[c * priv->font_height];
-> 	+		}
-> the index table like:
-> 	struct font_index fontname_index = {
-> 		{ 0xXXXX, 0xYYYY },	/* where, 0xXXXX is the unioncode of the char     */
-> 		{ 0xXXXX, 0xYYYY },	/* the 0xYYYY is the index of the fontdata array. */
-> 		{ 0xXXXX, 0xYYYY },	/* normally, we don't need a full char set.       */
-> 		{ 0xXXXX, 0xYYYY },	/* just put the used chars in the table.          */
-> 		{ 0xXXXX, 0xYYYY },	/* we also have a tool to generate fontdata array.*/
-> 	};
+On Fri, Oct 23, 2015 at 12:49:44PM -0700, Eric Nelson wrote:
+> Bit 0 of the MAPSR register controls auto power down.
+> 
+> Explicitly clear this bit instead of reserved bit when
+> exiting from mmdc_do_write_level_calibration().
+> 
+> Signed-off-by: Eric Nelson <eric@nelint.com>
 
-If you want to support non-ascii fonts then why don't you simply add
-one? Or is your concern that too much binary size is used when you only
-need a small fraction of a font but you always have to provide 256
-chars?
+Looks good, applied. Did this bug have any practical impacts?
 
 Sascha
+
+> ---
+>  arch/arm/mach-imx/imx6-mmdc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
+> index 64fb624..40fe0cf 100644
+> --- a/arch/arm/mach-imx/imx6-mmdc.c
+> +++ b/arch/arm/mach-imx/imx6-mmdc.c
+> @@ -103,9 +103,9 @@ int mmdc_do_write_level_calibration(void)
+>  	val |= 0x00005500;
+>  	writel(val, (P0_IPS + MDPDC));
+>  
+> -	/* enable Adopt power down timer: */
+> +	/* enable auto power down timer: */
+>  	val = readl(P0_IPS + MAPSR);
+> -	val &= 0xfffffff7;
+> +	val &= ~1;
+>  	writel(val, (P0_IPS + MAPSR));
+>  
+>  	/* clear CON_REQ */
+> -- 
+> 2.6.2
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
