@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zqkiq-0006Yf-Nd
- for barebox@lists.infradead.org; Mon, 26 Oct 2015 16:34:13 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1ZqkiT-0006Pe-Q3
- for barebox@lists.infradead.org; Mon, 26 Oct 2015 17:33:49 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 26 Oct 2015 17:33:49 +0100
-Message-Id: <1445877229-14319-1-git-send-email-l.stach@pengutronix.de>
+ id 1ZqmEb-0004ou-II
+ for barebox@lists.infradead.org; Mon, 26 Oct 2015 18:11:06 +0000
+Received: by wicll6 with SMTP id ll6so126505025wic.0
+ for <barebox@lists.infradead.org>; Mon, 26 Oct 2015 11:10:43 -0700 (PDT)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Mon, 26 Oct 2015 19:10:28 +0100
+Message-Id: <1445883029-23173-2-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1445883029-23173-1-git-send-email-alex.aring@gmail.com>
+References: <1445883029-23173-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +23,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx6: add OF fixup to delete nonexistent CPU cores
+Subject: [PATCH 2/3] checkpatch: fix left brace warning
 To: barebox@lists.infradead.org
 
-Make sure that the DT passed to Linux reflects the actual number of CPU
-cores present in the system by reading the SCU configuration. As both
-the Q and DL variants of the MX6 have versions with cores fused away,
-but the DTs have the maximum number of cores specified, this just deletes
-any nonexistent CPU core nodes.
+Running checkpatch with perl version 5.22 occur the following warnings:
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Unescaped left brace in regex is deprecated, ... checkpatch.pl line 2017.
+Unescaped left brace in regex is deprecated, ... checkpatch.pl line 2267.
+Unescaped left brace in regex is deprecated, ... checkpatch.pl line 2268.
+...
+lot of weird things
+...
+)\(.*\).*\s{ <-- HERE / at ./scripts/checkpatch.pl line 2016.
+
+This patch fix these warning, an similar commit was done in linux kernel
+commit: 4e5d56bdf892e18832a6540b63ebf709966bce2a ("checkpatch: fix left
+brace warning").
+
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/arm/mach-imx/imx6.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ scripts/checkpatch.pl | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-index c49de49209f3..c2a4d62c51da 100644
---- a/arch/arm/mach-imx/imx6.c
-+++ b/arch/arm/mach-imx/imx6.c
-@@ -238,3 +238,37 @@ static int imx6_mmu_init(void)
- 	return 0;
- }
- postmmu_initcall(imx6_mmu_init);
-+
-+#define SCU_CONFIG	0x04
-+
-+static int imx6_fixup_cpus(struct device_node *root, void *context)
-+{
-+	struct device_node *cpus_node, *np, *tmp;
-+	unsigned long scu_phys_base;
-+	unsigned int max_core_index;
-+
-+	cpus_node = of_find_node_by_name(root, "cpus");
-+	if (!cpus_node)
-+		return 0;
-+
-+	/* get actual number of available CPU cores from SCU */
-+	asm("mrc p15, 4, %0, c15, c0, 0" : "=r" (scu_phys_base));
-+	max_core_index = (readl(IOMEM(scu_phys_base) + SCU_CONFIG) & 0x03);
-+
-+	for_each_child_of_node_safe(cpus_node, tmp, np) {
-+		u32 cpu_index;
-+
-+		if (of_property_read_u32(np, "reg", &cpu_index))
-+			continue;
-+
-+		if (cpu_index > max_core_index)
-+			of_delete_node(np);
-+	}
-+
-+	return 0;
-+}
-+
-+static int imx6_fixup_cpus_register(void) {
-+	return of_register_fixup(imx6_fixup_cpus, NULL);
-+}
-+device_initcall(imx6_fixup_cpus_register);
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 8d96434..f3fd339 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -2013,8 +2013,8 @@ sub process {
+ 
+ # function brace can't be on same line, except for #defines of do while,
+ # or if closed on same line
+-		if (($line=~/$Type\s*$Ident\(.*\).*\s{/) and
+-		    !($line=~/\#\s*define.*do\s{/) and !($line=~/}/)) {
++		if (($line=~/$Type\s*$Ident\(.*\).*\s\{/) and
++		    !($line=~/\#\s*define.*do\s\{/) and !($line=~/}/)) {
+ 			ERROR("open brace '{' following function declarations go on the next line\n" . $herecurr);
+ 		}
+ 
+@@ -2264,8 +2264,8 @@ sub process {
+ ## 		}
+ 
+ #need space before brace following if, while, etc
+-		if (($line =~ /\(.*\){/ && $line !~ /\($Type\){/) ||
+-		    $line =~ /do{/) {
++		if (($line =~ /\(.*\)\{/ && $line !~ /\($Type\){/) ||
++		    $line =~ /do\{/) {
+ 			ERROR("space required before the open brace '{'\n" . $herecurr);
+ 		}
+ 
 -- 
 2.6.1
 
