@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZqzeD-0000E3-Cx
- for barebox@lists.infradead.org; Tue, 27 Oct 2015 08:30:28 +0000
+ id 1ZqzeD-0000DN-Cy
+ for barebox@lists.infradead.org; Tue, 27 Oct 2015 08:30:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Oct 2015 09:30:02 +0100
-Message-Id: <1445934602-25903-10-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Oct 2015 09:29:59 +0100
+Message-Id: <1445934602-25903-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1445934602-25903-1-git-send-email-s.hauer@pengutronix.de>
 References: <1445934602-25903-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,95 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] memtest: Make cached/uncached test configurable
+Subject: [PATCH 6/9] memtest: move ctrlc check / progress showing into
+ separate function
 To: Barebox List <barebox@lists.infradead.org>
 
-Add options to explicitly test cached/uncached tests. Without these
-options still both cached and uncached is tested if remapping is
-supported.
+To make the actual test a bit better visible in the code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/memtest.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ common/memtest.c | 39 +++++++++++++++++++++++----------------
+ 1 file changed, 23 insertions(+), 16 deletions(-)
 
-diff --git a/commands/memtest.c b/commands/memtest.c
-index 7853cc5..42bc0b2 100644
---- a/commands/memtest.c
-+++ b/commands/memtest.c
-@@ -88,10 +88,11 @@ static int do_memtest(int argc, char *argv[])
- 	uint32_t i, max_i = 1;
- 	struct list_head memtest_used_regions;
- 	int (*memtest)(struct list_head *, int, unsigned);
-+	int cached = 0, uncached = 0;
+diff --git a/common/memtest.c b/common/memtest.c
+index 9bd9025..dc7d032 100644
+--- a/common/memtest.c
++++ b/common/memtest.c
+@@ -331,6 +331,20 @@ int mem_test_bus_integrity(resource_size_t _start,
+ 	return 0;
+ }
  
- 	memtest = do_memtest_biggest;
++static int update_progress(resource_size_t offset)
++{
++	/* Only check every 4k to reduce overhead */
++	if (offset & (SZ_4K - 1))
++		return 0;
++
++	if (ctrlc())
++		return -EINTR;
++
++	show_progress(offset);
++
++	return 0;
++}
++
+ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
+ {
+ 	volatile resource_size_t *start, num_words, offset, temp, anti_pattern;
+@@ -362,22 +376,17 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
  
--	while ((opt = getopt(argc, argv, "i:bt")) > 0) {
-+	while ((opt = getopt(argc, argv, "i:btcu")) > 0) {
- 		switch (opt) {
- 		case 'i':
- 			max_i = simple_strtoul(optarg, NULL, 0);
-@@ -102,11 +103,22 @@ static int do_memtest(int argc, char *argv[])
- 		case 't':
- 			memtest = do_memtest_thorough;
- 			break;
-+		case 'c':
-+			cached = 1;
-+			break;
-+		case 'u':
-+			uncached = 1;
-+			break;
- 		default:
- 			return COMMAND_ERROR_USAGE;
- 		}
+ 	/* Fill memory with a known pattern */
+ 	for (offset = 0; offset < num_words; offset++) {
+-		/* Every 4K we update the progressbar */
+-		if (!(offset & (SZ_4K - 1))) {
+-			if (ctrlc())
+-				return -EINTR;
+-			show_progress(offset);
+-		}
++		ret = update_progress(offset);
++		if (ret)
++			return ret;
+ 		start[offset] = offset + 1;
  	}
  
-+	if (!arch_can_remap() && (cached || uncached)) {
-+		printf("Cannot map cached or uncached\n");
-+		return -EINVAL;
-+	}
-+
- 	if (optind > argc)
- 		return COMMAND_ERROR_USAGE;
+ 	/* Check each location and invert it for the second pass */
+ 	for (offset = 0; offset < num_words; offset++) {
+-		if (!(offset & (SZ_4K - 1))) {
+-			if (ctrlc())
+-				return -EINTR;
+-			show_progress(num_words + offset);
+-		}
++		ret = update_progress(num_words + offset);
++		if (ret)
++			return ret;
  
-@@ -120,21 +132,23 @@ static int do_memtest(int argc, char *argv[])
- 		if (max_i)
- 			printf("Start iteration %u of %u.\n", i, max_i);
+ 		temp = start[offset];
+ 		if (temp != (offset + 1)) {
+@@ -394,11 +403,9 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
  
--		if (arch_can_remap()) {
--			/* First do a memtest with caching enabled. */
-+		if (cached) {
- 			printf("Do memtest with caching enabled.\n");
- 			ret = memtest(&memtest_used_regions,
- 					bus_only, MAP_CACHED);
- 			if (ret < 0)
- 				goto out;
-+		}
+ 	/* Check each location for the inverted pattern and zero it */
+ 	for (offset = 0; offset < num_words; offset++) {
+-		if (!(offset & (SZ_4K - 1))) {
+-			if (ctrlc())
+-				return -EINTR;
+-			show_progress(2 * num_words + offset);
+-		}
++		ret = update_progress(2 * num_words + offset);
++		if (ret)
++			return ret;
  
--			/* Second do a memtest with caching disabled. */
-+		if (uncached) {
- 			printf("Do memtest with caching disabled.\n");
- 			ret = memtest(&memtest_used_regions,
- 					bus_only, MAP_UNCACHED);
- 			if (ret < 0)
- 				goto out;
--		} else {
-+		}
-+
-+		if (!cached && !uncached) {
- 			ret = memtest(&memtest_used_regions,
- 					bus_only, MAP_DEFAULT);
- 			if (ret < 0)
-@@ -166,6 +180,8 @@ BAREBOX_CMD_HELP_START(memtest)
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-i ITERATIONS", "perform number of iterations (default 1, 0 is endless)")
- BAREBOX_CMD_HELP_OPT("-b", "perform only a test on bus lines")
-+BAREBOX_CMD_HELP_OPT("-c", "cached. Test using cached memory")
-+BAREBOX_CMD_HELP_OPT("-u", "uncached. Test using uncached memory")
- BAREBOX_CMD_HELP_OPT("-t", "thorough. test all free areas. If unset, only test biggest free area")
- BAREBOX_CMD_HELP_END
- 
+ 		anti_pattern = ~(offset + 1);
+ 		temp = start[offset];
 -- 
 2.6.1
 
