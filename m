@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZqzeI-0000z3-0u
- for barebox@lists.infradead.org; Tue, 27 Oct 2015 08:30:33 +0000
+ id 1ZqzeI-0000z2-24
+ for barebox@lists.infradead.org; Tue, 27 Oct 2015 08:30:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 27 Oct 2015 09:30:00 +0100
-Message-Id: <1445934602-25903-8-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 27 Oct 2015 09:29:58 +0100
+Message-Id: <1445934602-25903-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1445934602-25903-1-git-send-email-s.hauer@pengutronix.de>
 References: <1445934602-25903-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,87 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] memtest: move error handling to end of function
+Subject: [PATCH 5/9] memtest: Make comments single line when appropriate
 To: Barebox List <barebox@lists.infradead.org>
 
-Move error handling out of the test code to make the actual test
-better visible.
+Make the comments single line when they fit into a single line
+to make the code a bit shorter.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/memtest.c | 38 ++++++++++++++++++--------------------
- 1 file changed, 18 insertions(+), 20 deletions(-)
+ common/memtest.c | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
 diff --git a/common/memtest.c b/common/memtest.c
-index dc7d032..026fd0d 100644
+index 0559359..9bd9025 100644
 --- a/common/memtest.c
 +++ b/common/memtest.c
-@@ -347,7 +347,8 @@ static int update_progress(resource_size_t offset)
+@@ -360,14 +360,9 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
  
- int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
- {
--	volatile resource_size_t *start, num_words, offset, temp, anti_pattern;
-+	volatile resource_size_t *start, num_words, offset, pattern, expected;
-+	int ret;
+ 	init_progression_bar(3 * num_words);
  
- 	_start = ALIGN(_start, sizeof(resource_size_t));
- 	_end = ALIGN_DOWN(_end, sizeof(resource_size_t)) - 1;
-@@ -388,17 +389,13 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
- 		if (ret)
- 			return ret;
- 
--		temp = start[offset];
--		if (temp != (offset + 1)) {
--			printf("\n");
--			mem_test_report_failure("read/write",
--						(offset + 1),
--						temp, &start[offset]);
--			return -EIO;
--		}
-+		pattern = start[offset];
-+		expected = offset + 1;
-+
-+		if (pattern != expected)
-+			goto mem_err;
- 
--		anti_pattern = ~(offset + 1);
--		start[offset] = anti_pattern;
-+		start[offset] = ~start[offset];
+-	/*
+-	 * Fill memory with a known pattern.
+-	 */
++	/* Fill memory with a known pattern */
+ 	for (offset = 0; offset < num_words; offset++) {
+-		/*
+-		 * Every 4K we update the progressbar.
+-		 */
+-
++		/* Every 4K we update the progressbar */
+ 		if (!(offset & (SZ_4K - 1))) {
+ 			if (ctrlc())
+ 				return -EINTR;
+@@ -376,9 +371,7 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
+ 		start[offset] = offset + 1;
  	}
  
- 	/* Check each location for the inverted pattern and zero it */
-@@ -407,16 +404,11 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
- 		if (ret)
- 			return ret;
- 
--		anti_pattern = ~(offset + 1);
--		temp = start[offset];
-+		pattern = start[offset];
-+		expected = ~(offset + 1);
- 
--		if (temp != anti_pattern) {
--			printf("\n");
--			mem_test_report_failure("read/write",
--						anti_pattern,
--						temp, &start[offset]);
--			return -EIO;
--		}
-+		if (pattern != expected)
-+			goto mem_err;
- 
- 		start[offset] = 0;
+-	/*
+-	 * Check each location and invert it for the second pass.
+-	 */
++	/* Check each location and invert it for the second pass */
+ 	for (offset = 0; offset < num_words; offset++) {
+ 		if (!(offset & (SZ_4K - 1))) {
+ 			if (ctrlc())
+@@ -399,9 +392,7 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
+ 		start[offset] = anti_pattern;
  	}
-@@ -426,4 +418,10 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
+ 
+-	/*
+-	 * Check each location for the inverted pattern and zero it.
+-	 */
++	/* Check each location for the inverted pattern and zero it */
+ 	for (offset = 0; offset < num_words; offset++) {
+ 		if (!(offset & (SZ_4K - 1))) {
+ 			if (ctrlc())
+@@ -424,9 +415,7 @@ int mem_test_moving_inversions(resource_size_t _start, resource_size_t _end)
+ 	}
+ 	show_progress(3 * num_words);
+ 
+-	/*
+-	 * end of progressbar
+-	 */
++	/* end of progressbar */
  	printf("\n");
  
  	return 0;
-+
-+mem_err:
-+	printf("\n");
-+	mem_test_report_failure("read/write", expected, pattern, &start[offset]);
-+
-+	return -EIO;
- }
 -- 
 2.6.1
 
