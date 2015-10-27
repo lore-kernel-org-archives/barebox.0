@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zr6SB-0003WC-Ho
- for barebox@lists.infradead.org; Tue, 27 Oct 2015 15:46:28 +0000
-Date: Tue, 27 Oct 2015 16:46:05 +0100
+ id 1Zr6i5-0002JY-NZ
+ for barebox@lists.infradead.org; Tue, 27 Oct 2015 16:02:57 +0000
+Date: Tue, 27 Oct 2015 17:02:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151027154605.GM25308@pengutronix.de>
-References: <1445883029-23173-1-git-send-email-alex.aring@gmail.com>
+Message-ID: <20151027160231.GN25308@pengutronix.de>
+References: <1445892950.4488.20.camel@localhost>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1445883029-23173-1-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1445892950.4488.20.camel@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +22,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] loadb: add missing brackets in help
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] Make list of flash images and fix link all single
+ image cases
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Mon, Oct 26, 2015 at 07:10:27PM +0100, Alexander Aring wrote:
-> This patch adds missing brackets in the help text of loadb command.
+Hi Trent,
+
+On Mon, Oct 26, 2015 at 08:55:30PM +0000, Trent Piepho wrote:
+> Create a new file named 'barebox-flash-images' in the top level output
+> directory that lists each image generated, one per line.  Paths will
+> be relative to the top level output directory.  This works if multiple
+> images are generated as well as for a single image.
 > 
-> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+> Also update the existing barebox-flash-image symlink to point to the
+> image in all cases where there is a single image generated.  If
+> multiple images are generated, it will point to the non-existent file
+> 'multi-image-build'.
 
-Applied, thanks
+Nice. The result looks consistent. I just talked to our ptxdist
+authority and he is happy with that change aswell, so: Applied, thanks
 
 Sascha
 
-> ---
->  commands/loadb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/commands/loadb.c b/commands/loadb.c
-> index be5830d..aabb00a 100644
-> --- a/commands/loadb.c
-> +++ b/commands/loadb.c
-> @@ -681,9 +681,9 @@ static int do_load_serial_bin(int argc, char *argv[])
->  BAREBOX_CMD_HELP_START(loadb)
->  BAREBOX_CMD_HELP_TEXT("")
->  BAREBOX_CMD_HELP_TEXT("Options:")
-> -BAREBOX_CMD_HELP_OPT("-f FILE", "download to FILE (default image.bin")
-> +BAREBOX_CMD_HELP_OPT("-f FILE", "download to FILE (default image.bin)")
->  BAREBOX_CMD_HELP_OPT("-o OFFS", "destination file OFFSet (default 0)")
-> -BAREBOX_CMD_HELP_OPT("-b BAUD", "baudrate for download (default: console baudrate")
-> +BAREBOX_CMD_HELP_OPT("-b BAUD", "baudrate for download (default: console baudrate)")
->  BAREBOX_CMD_HELP_END
->  
->  BAREBOX_CMD_START(loadb)
-> -- 
-> 2.6.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
