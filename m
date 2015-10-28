@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x232.google.com ([2607:f8b0:4002:c07::232])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZrLyR-0007RQ-T0
- for barebox@lists.infradead.org; Wed, 28 Oct 2015 08:20:50 +0000
-Received: by ykdr3 with SMTP id r3so112523ykd.1
- for <barebox@lists.infradead.org>; Wed, 28 Oct 2015 01:20:26 -0700 (PDT)
+ id 1ZrM4K-0002fM-O3
+ for barebox@lists.infradead.org; Wed, 28 Oct 2015 08:26:53 +0000
+References: <1445807016-6637-1-git-send-email-mkl@pengutronix.de>
+ <1445807016-6637-3-git-send-email-mkl@pengutronix.de>
+ <20151028062054.GQ25308@pengutronix.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <563086AF.10706@pengutronix.de>
+Date: Wed, 28 Oct 2015 09:26:23 +0100
 MIME-Version: 1.0
-In-Reply-To: <20151028065902.GT25308@pengutronix.de>
-References: <u74147@gmail.com>
- <1445683088-25675-1-git-send-email-u74147@gmail.com>
- <20151026071836.GQ14356@pengutronix.de>
- <20151026204056.GA23323@L64>
- <20151028065902.GT25308@pengutronix.de>
-Date: Wed, 28 Oct 2015 16:20:26 +0800
-Message-ID: <CANvTkNZSvJnaB=BXDTGO8-r-0r7YBHmqxJzrKt25oXcdiAU6uQ@mail.gmail.com>
-From: Kevin Du Huanpeng <u74147@gmail.com>
+In-Reply-To: <20151028062054.GQ25308@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,56 +19,104 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5300773552401115248=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib:font:fbconsole: add custom font support for review
+Subject: Re: [PATCH v3 2/9] of_path: add of_find_path_by_node()
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-2015-10-28 14:59 GMT+08:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi,
->
-> On Tue, Oct 27, 2015 at 04:40:56AM +0800, Kevin Du Huanpeng wrote:
->> On Mon, Oct 26, 2015 at 08:18:36AM +0100, Sascha Hauer wrote:
->> >
->> > This patch has several hunks without changes which makes it hard to look
->> > at.
->> >
->> > Somehow this looks like beginning unicode support. Wouldn't it be better
->> > to pick the relevant parts we need from unicode and support them?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============5300773552401115248==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="mORsMtI7N2AbTXrcbfBqaJqwC40jbv4bQ"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--mORsMtI7N2AbTXrcbfBqaJqwC40jbv4bQ
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 10/28/2015 07:20 AM, Sascha Hauer wrote:
+> On Sun, Oct 25, 2015 at 10:03:29PM +0100, Marc Kleine-Budde wrote:
+>> This patch adds the function of_find_path_by_node(), which is similar =
+to
+>> of_find_path(), but it translates a device tree node into a barebox de=
+vice path
+>> directly.
 >>
+>> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+>> ---
+>>  drivers/of/of_path.c | 17 ++++++++++++++++-
+>>  include/of.h         |  1 +
+>>  2 files changed, 17 insertions(+), 1 deletion(-)
 >>
->> How about store the font data externally, for reasons
->>   1. the font data maybe hurge, it take time to burn it to flash make barebox fat.
->>   2. the part of font data namally don't change durning the devolopment.
->>   3. 'custom' means usless for other application.
->>   4. the fontdata maybe stored in a external spi flash and share with OS.
->> just pass the base address of index and fontdata or tell barebox how to get the
->> font data.
->
-> Do you know the pf2 font format? That may be the right candidate for a
-> font format. See: http://grub.gibibit.com/New_font_format
-> If we could read this font format we could throw arbitrary unicode fonts
-> into barebox.
->
+>> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+>> index ad64bee08af9..690390525919 100644
+>> --- a/drivers/of/of_path.c
+>> +++ b/drivers/of/of_path.c
+>> @@ -126,7 +126,7 @@ static int __of_find_path(struct device_node *node=
+, const char *propname, char *
+>> =20
+>>  	i =3D 1;
+>> =20
+>> -	while (1) {
+>> +	while (propname) {
+>>  		ret =3D of_property_read_string_index(node, propname, i++, &str);
+>>  		if (ret)
+>>  			break;
+>=20
+> Is this hunk intentional? Is this a fix for something?
 
-Nice font! it designed for bootloader!
-but it needs more learning, if being a bootloader user, for supportting several
-dozens of chars. the barebox user have to get font data from some .ttf or
-other format font, or hardware font(hardware font chip). and convert it
-to pf2 format. need more work.
-but maybe some people use barebox as a bare-metal application, not a bootloader,
-it will be useful. I guess.
-How about simply support the 'bitmap' font, simple and friendly to barebox user.
-next step, support pf2.
+Yes, it's called with propname =3D=3D NULL by int of_find_path_by_node():=
 
-----
-Du Huanpeng
-+86.13719074147
+
+> +int of_find_path_by_node(struct device_node *node, char **outpath, uns=
+igned flags)=20
+> +{=20
+> +	return __of_find_path(node, NULL, outpath, flags);
+                                    ^^^^
+
+> +}=20
+> +=20
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--mORsMtI7N2AbTXrcbfBqaJqwC40jbv4bQ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJWMIavAAoJEP5prqPJtc/HkM8H/1r+mM7YuNpjn0AeEL59eDAM
+FsxXD9MX6DN0QHMBMRa+kIv/Jx8ksEBIGez+nZeAYUor6avdRK3EtgtMYcRtUA8r
+amA8Spw3RnSg/voLXp6zxdFwB39x/HadpNvKEjZ0DpQEl/N9Xa00QjkcnwQBI8rK
+ZB51K7ascEIkcpfzRS3pxzIVwSm9zm4ko47Kx7z7aMCkikP6D9sNFRF4FiJun6XN
+mQVbbKMiMmMSkBzFn000Xkitc1bZhbersS1Gg3dIcqNAbyXX9Nw5A0a+glSQY1jM
+M+7KJ4qeSnVCPAC/AI9QacuSgp1Pp7W/32wWX+eK6cZqGv3Ffq6V/IXUiIL4ACA=
+=7uiL
+-----END PGP SIGNATURE-----
+
+--mORsMtI7N2AbTXrcbfBqaJqwC40jbv4bQ--
+
+
+--===============5300773552401115248==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============5300773552401115248==--
