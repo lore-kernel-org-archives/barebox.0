@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZrK3u-0006Zt-Bo
- for barebox@lists.infradead.org; Wed, 28 Oct 2015 06:18:19 +0000
-Date: Wed, 28 Oct 2015 07:17:55 +0100
+ id 1ZrK6m-0007wC-Ny
+ for barebox@lists.infradead.org; Wed, 28 Oct 2015 06:21:17 +0000
+Date: Wed, 28 Oct 2015 07:20:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151028061755.GP25308@pengutronix.de>
-References: <1445934602-25903-1-git-send-email-s.hauer@pengutronix.de>
- <20151027165459.GA4592@omega>
+Message-ID: <20151028062054.GQ25308@pengutronix.de>
+References: <1445807016-6637-1-git-send-email-mkl@pengutronix.de>
+ <1445807016-6637-3-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151027165459.GA4592@omega>
+In-Reply-To: <1445807016-6637-3-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: memtest updates
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v3 2/9] of_path: add of_find_path_by_node()
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Oct 27, 2015 at 05:55:04PM +0100, Alexander Aring wrote:
-> On Tue, Oct 27, 2015 at 09:29:53AM +0100, Sascha Hauer wrote:
-> > This series has some updates for the memory test. The output and the
-> > code are made more compact and some additional options are added. Also
-> > the remap_range function is reworked.
-> > 
+On Sun, Oct 25, 2015 at 10:03:29PM +0100, Marc Kleine-Budde wrote:
+> This patch adds the function of_find_path_by_node(), which is similar to
+> of_find_path(), but it translates a device tree node into a barebox device path
+> directly.
 > 
-> I currently try to build next with memtest, I got the following issue:
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  drivers/of/of_path.c | 17 ++++++++++++++++-
+>  include/of.h         |  1 +
+>  2 files changed, 17 insertions(+), 1 deletion(-)
 > 
-> commands/memtest.c: In function 'do_test_one_area':
-> commands/memtest.c:50:2: error: implicit declaration of function 'mem_test_moving_inversions_pattern' [-Werror=implicit-function-declaration]
->   ret = mem_test_moving_inversions_pattern(r->r->start, r->r->end, 0xdeadbeef);
-> 
-> after running grep I realized and there is no
-> "mem_test_moving_inversions_pattern" function. :-(
-> 
-> Then:
-> 
-> after cutting some words from this function and running grep again, then
-> I found a "mem_test_moving_inversions" function. :-)
-> 
-> It seems it's a different function and you passed a "0xdeadbeef" there,
-> otherwise the function fits.
-> 
-> What means 0xdeadbeef here?
+> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+> index ad64bee08af9..690390525919 100644
+> --- a/drivers/of/of_path.c
+> +++ b/drivers/of/of_path.c
+> @@ -126,7 +126,7 @@ static int __of_find_path(struct device_node *node, const char *propname, char *
+>  
+>  	i = 1;
+>  
+> -	while (1) {
+> +	while (propname) {
+>  		ret = of_property_read_string_index(node, propname, i++, &str);
+>  		if (ret)
+>  			break;
 
-For a customer I need a moving inversions test with a fixed pattern
-instead of the own address written to the address. That's a leftover
-here.
-
-I already fixed that one up.
+Is this hunk intentional? Is this a fix for something?
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
