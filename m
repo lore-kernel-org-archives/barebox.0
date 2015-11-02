@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x236.google.com ([2a00:1450:4010:c07::236])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZslWr-0002YQ-FZ
- for barebox@lists.infradead.org; Sun, 01 Nov 2015 05:50:10 +0000
-Received: by lfbn126 with SMTP id n126so49695839lfb.2
- for <barebox@lists.infradead.org>; Sat, 31 Oct 2015 22:49:46 -0700 (PDT)
-Date: Sun, 1 Nov 2015 09:12:58 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151101091258.42b5fa76f90ea1e9dee76ffe@gmail.com>
-In-Reply-To: <1446209700-21282-1-git-send-email-tritel59@gmail.com>
-References: <1446209700-21282-1-git-send-email-tritel59@gmail.com>
-Mime-Version: 1.0
+ id 1Zt94h-0002AD-8w
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 06:58:40 +0000
+Date: Mon, 2 Nov 2015 07:58:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151102065814.GC25308@pengutronix.de>
+References: <1446199245-15646-1-git-send-email-pmamonov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1446199245-15646-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +18,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] login: make some locally used functions static
-To: Sergey Koshechkin <tritel59@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ata: disk_ata_drive: remove obsolete check for ID validity
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org, jbe@pengutronix.de
 
-T24gRnJpLCAzMCBPY3QgMjAxNSAxNTo1NTowMCArMDMwMApTZXJnZXkgS29zaGVjaGtpbiA8dHJp
-dGVsNTlAZ21haWwuY29tPiB3cm90ZToKCj4gVGhpcyBwYXRjaCBjb250aW51ZXMgY2xlYW51cCBw
-YXNzd29yZCBjb2RlIGZyb20KPiAKPiAgIGNvbW1pdCA0MDU5NmI4NTZmNjFjMjgxZmIzNGY4MDRi
-ZjQyNTUwYzA5OWYyNmMzCj4gICBBdXRob3I6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRy
-b25peC5kZT4KPiAgIERhdGU6ICAgVGh1IEF1ZyAyNyAxNTo1ODo1MCAyMDE1ICswMjAwCj4gCj4g
-ICAgICAgbG9naW46IGNsZWFudXAgcGFzc3dvcmQgY29kZQoKCi4uLiBhbmQgdGhpcyBwYXRjaCBm
-aXhlcyBzb21lICdubyBwcmV2aW91cyBwcm90b3R5cGUnIHdhcm5pbmdzOgoKY29tbW9uL3Bhc3N3
-b3JkLmM6MTE0OjU6IHdhcm5pbmc6IG5vIHByZXZpb3VzIHByb3RvdHlwZSBmb3Ig4oCYaXNfcGFz
-c3dkX2RlZmF1bHRfZW5hYmxl4oCZIFstV21pc3NpbmctcHJvdG90eXBlc10KIGludCBpc19wYXNz
-d2RfZGVmYXVsdF9lbmFibGUodm9pZCkKICAgICBeCmNvbW1vbi9wYXNzd29yZC5jOjEyMDo1OiB3
-YXJuaW5nOiBubyBwcmV2aW91cyBwcm90b3R5cGUgZm9yIOKAmGlzX3Bhc3N3ZF9lbnZfZW5hYmxl
-4oCZIFstV21pc3NpbmctcHJvdG90eXBlc10KIGludCBpc19wYXNzd2RfZW52X2VuYWJsZSh2b2lk
-KQogICAgIF4KY29tbW9uL3Bhc3N3b3JkLmM6MjMwOjU6IHdhcm5pbmc6IG5vIHByZXZpb3VzIHBy
-b3RvdHlwZSBmb3Ig4oCYd3JpdGVfZW52X3Bhc3N3ZOKAmSBbLVdtaXNzaW5nLXByb3RvdHlwZXNd
-CiBpbnQgd3JpdGVfZW52X3Bhc3N3ZCh1bnNpZ25lZCBjaGFyICpzdW0sIHNpemVfdCBsZW5ndGgp
-CiAgICAgXgoKPiAKPiBTaWduZWQtb2ZmLWJ5OiBTZXJnZXkgS29zaGVjaGtpbiA8dHJpdGVsNTlA
-Z21haWwuY29tPgo+IC0tLQo+ICBjb21tb24vcGFzc3dvcmQuYyB8IDkgKysrLS0tLS0tCj4gIDEg
-ZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAt
-LWdpdCBhL2NvbW1vbi9wYXNzd29yZC5jIGIvY29tbW9uL3Bhc3N3b3JkLmMKPiBpbmRleCBiNWI3
-NjU1Li41Yjc1NGQ5IDEwMDY0NAo+IC0tLSBhL2NvbW1vbi9wYXNzd29yZC5jCj4gKysrIGIvY29t
-bW9uL3Bhc3N3b3JkLmMKPiBAQCAtMTExLDEzICsxMTEsMTIgQEAgaW50IHBhc3N3b3JkKHVuc2ln
-bmVkIGNoYXIgKnBhc3N3ZCwgc2l6ZV90IGxlbmd0aCwgaW50IGZsYWdzLCBpbnQgdGltZW91dCkK
-PiAgfQo+ICBFWFBPUlRfU1lNQk9MKHBhc3N3b3JkKTsKPiAgCj4gLWludCBpc19wYXNzd2RfZGVm
-YXVsdF9lbmFibGUodm9pZCkKPiArc3RhdGljIGludCBpc19wYXNzd2RfZGVmYXVsdF9lbmFibGUo
-dm9pZCkKPiAgewo+ICAJcmV0dXJuIHN0cmxlbihkZWZhdWx0X3Bhc3N3ZCkgPiAwOwo+ICB9Cj4g
-LUVYUE9SVF9TWU1CT0woaXNfcGFzc3dkX2RlZmF1bHRfZW5hYmxlKTsKPiAgCj4gLWludCBpc19w
-YXNzd2RfZW52X2VuYWJsZSh2b2lkKQo+ICtzdGF0aWMgaW50IGlzX3Bhc3N3ZF9lbnZfZW5hYmxl
-KHZvaWQpCj4gIHsKPiAgCWludCBmZDsKPiAgCj4gQEAgLTEzMCw3ICsxMjksNiBAQCBpbnQgaXNf
-cGFzc3dkX2Vudl9lbmFibGUodm9pZCkKPiAgCj4gIAlyZXR1cm4gMTsKPiAgfQo+IC1FWFBPUlRf
-U1lNQk9MKGlzX3Bhc3N3ZF9lbnZfZW5hYmxlKTsKPiAgCj4gIGludCBwYXNzd2RfZW52X2Rpc2Fi
-bGUodm9pZCkKPiAgewo+IEBAIC0yMjcsNyArMjI1LDcgQEAgZXhpdDoKPiAgfQo+ICBFWFBPUlRf
-U1lNQk9MKHJlYWRfZW52X3Bhc3N3ZCk7Cj4gIAo+IC1pbnQgd3JpdGVfZW52X3Bhc3N3ZCh1bnNp
-Z25lZCBjaGFyICpzdW0sIHNpemVfdCBsZW5ndGgpCj4gK3N0YXRpYyBpbnQgd3JpdGVfZW52X3Bh
-c3N3ZCh1bnNpZ25lZCBjaGFyICpzdW0sIHNpemVfdCBsZW5ndGgpCj4gIHsKPiAgCWludCBmZDsK
-PiAgCXVuc2lnbmVkIGNoYXIgYzsKPiBAQCAtMjc0LDcgKzI3Miw2IEBAIGV4aXQ6Cj4gIAo+ICAJ
-cmV0dXJuIHJldDsKPiAgfQo+IC1FWFBPUlRfU1lNQk9MKHdyaXRlX2Vudl9wYXNzd2QpOwo+ICAK
-PiAgc3RhdGljIGludCBjaGVja19wYXNzd2QodW5zaWduZWQgY2hhciAqcGFzc3dkLCBzaXplX3Qg
-bGVuZ3RoKQo+ICB7Cj4gLS0gCj4gMi42LjEKPiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9iYXJlYm94CgoKLS0gCi0twqAKQmVzdCByZWdhcmRzLArCoCBBbnRvbnkgUGF2
-bG92CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Fri, Oct 30, 2015 at 01:00:45PM +0300, Peter Mamonov wrote:
+> Acked-by: Juergen Borleis <jbe@pengutronix.de>
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> ---
+>  drivers/ata/disk_ata_drive.c | 17 -----------------
+>  1 file changed, 17 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
+> index ee1709e..d30d0ad 100644
+> --- a/drivers/ata/disk_ata_drive.c
+> +++ b/drivers/ata/disk_ata_drive.c
+> @@ -26,16 +26,6 @@
+>  #include <disks.h>
+>  #include <dma.h>
+>  
+> -static int ata_id_is_valid(const uint16_t *id)
+> -{
+> -	if ((id[ATA_ID_FIELD_VALID] & 1) == 0) {
+> -		pr_debug("Drive's ID seems invalid\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static uint64_t ata_id_n_sectors(uint16_t *id)
+>  {
+>  	if (ata_id_has_lba(id)) {
+> @@ -244,13 +234,6 @@ static int ata_port_init(struct ata_port *port)
+>  
+>  	ata_fix_endianess(port->id, SECTOR_SIZE / sizeof(uint16_t));
+>  
+> -	rc = ata_id_is_valid(port->id);
+> -	if (rc) {
+> -		dev_err(dev, "ata id invalid\n");
+> -		free(port->id);
+> -		return rc;
+> -	}
+> -
+>  #ifdef DEBUG
+>  	ata_dump_id(port->id);
+>  #endif
+> -- 
+> 2.1.4
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
