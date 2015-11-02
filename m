@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x233.google.com ([2a00:1450:4010:c07::233])
+Received: from mail-lf0-x235.google.com ([2a00:1450:4010:c07::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtIGt-0006cq-Lg
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 16:47:52 +0000
-Received: by lffz202 with SMTP id z202so64529932lff.3
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 08:47:30 -0800 (PST)
+ id 1ZtIGr-0006cg-TA
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 16:47:50 +0000
+Received: by lfbf136 with SMTP id f136so50216366lfb.0
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 08:47:28 -0800 (PST)
+Received: from berta.oavm ([194.67.106.109])
+ by smtp.gmail.com with ESMTPSA id kk6sm4047141lbc.48.2015.11.02.08.47.27
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Mon, 02 Nov 2015 08:47:27 -0800 (PST)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Mon,  2 Nov 2015 19:50:00 +0300
-Message-Id: <1446483000-25715-3-git-send-email-pmamonov@gmail.com>
-In-Reply-To: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
-References: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
+Date: Mon,  2 Nov 2015 19:49:58 +0300
+Message-Id: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +26,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH resend 2/2] mips: cpuinfo: report secondary cache configuration
+Subject: [PATCH resend 0/2] mips: c-r4k: detect secondary cache
 To: barebox@lists.infradead.org
-Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
----
- arch/mips/lib/cpuinfo.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+These two patches implement secondary cache detection and report its 
+configuration via cpuinfo command.
 
-diff --git a/arch/mips/lib/cpuinfo.c b/arch/mips/lib/cpuinfo.c
-index 1b17169..fb02a4d 100644
---- a/arch/mips/lib/cpuinfo.c
-+++ b/arch/mips/lib/cpuinfo.c
-@@ -28,7 +28,7 @@ static char *way_string[] = { NULL, "direct mapped", "2-way",
- 
- static int do_cpuinfo(int argc, char *argv[])
- {
--	unsigned int icache_size, dcache_size;
-+	unsigned int icache_size, dcache_size, scache_size;
- 	struct cpuinfo_mips *c = &current_cpu_data;
- 
- 	printk(KERN_INFO "CPU revision is: %08x (%s)\n",
-@@ -48,6 +48,15 @@ static int do_cpuinfo(int argc, char *argv[])
- 	       (c->dcache.flags & MIPS_CACHE_ALIASES) ?
- 			"cache aliases" : "no aliases",
- 	       c->dcache.linesz);
-+	if (c->scache.flags & MIPS_CACHE_NOT_PRESENT)
-+		return 0;
-+	scache_size = c->scache.sets * c->scache.ways * c->scache.linesz;
-+	printk("Secondary data cache %ldkB, %s, %s, %s, linesize %d bytes\n",
-+	       scache_size >> 10, way_string[c->scache.ways],
-+	       (c->scache.flags & MIPS_CACHE_PINDEX) ? "PIPT" : "VIPT",
-+	       (c->scache.flags & MIPS_CACHE_ALIASES) ?
-+			"cache aliases" : "no aliases",
-+	       c->scache.linesz);
- 
- 	return 0;
- }
--- 
-2.1.4
-
+Peter Mamonov (2):
+	[PATCH resend 1/2] mips: c-r4k: detect secondary cache
+	[PATCH resend 2/2] mips: cpuinfo: report secondary cache
 
 _______________________________________________
 barebox mailing list
