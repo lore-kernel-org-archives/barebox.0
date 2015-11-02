@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x22b.google.com ([2a00:1450:4010:c07::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtDcA-0007JU-9C
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 11:49:30 +0000
-From: Markus Pargmann <mpa@pengutronix.de>
-Date: Mon,  2 Nov 2015 12:49:01 +0100
-Message-Id: <1446464941-22009-1-git-send-email-mpa@pengutronix.de>
+ id 1ZtHy9-00057A-IK
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 16:28:30 +0000
+Received: by lfbn126 with SMTP id n126so63840151lfb.2
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 08:28:07 -0800 (PST)
+Received: from berta.oavm ([194.67.106.109])
+ by smtp.gmail.com with ESMTPSA id i3sm4047784lbj.0.2015.11.02.08.28.05
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Mon, 02 Nov 2015 08:28:05 -0800 (PST)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Mon,  2 Nov 2015 19:30:28 +0300
+Message-Id: <1446481830-25052-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +26,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] defaultenv: boot/net: Boot initramfs from tftp if present
+Subject: mips: detect and report secondary cache configuration
 To: barebox@lists.infradead.org
 
-Use an 'initrd' file if it exists instead of nfsroot. This offers the
-possibility to quickly boot complete filesystems as initramfs without
-the need to flash a SD-card or similar. If the initrd does not exist,
-it uses the default nfsroot mechanism.
+These two patches implement secondary cache detection and report its 
+configuration via cpuinfo command.
 
-Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
----
- defaultenv/defaultenv-2-base/boot/net | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
-index ced2fadba212..fb8531ae1fbe 100644
---- a/defaultenv/defaultenv-2-base/boot/net
-+++ b/defaultenv/defaultenv-2-base/boot/net
-@@ -11,4 +11,11 @@ fi
- 
- nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
- bootargs-ip
--global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-+
-+initrd="${path}/${global.user}-initrd-${global.hostname}"
-+if [ -f "${initrd}" ]; then
-+	global.bootm.initrd="$initrd"
-+	global.linux.bootargs.dyn.root="rdinit=/sbin/init"
-+else
-+	global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-+fi
--- 
-2.6.1
-
+Peter Mamonov (2):
+	[PATCH 1/2] mips: c-r4k: detect secondary cache
+	[PATCH 2/2] mips: cpuinfo: report secondary cache configuration
 
 _______________________________________________
 barebox mailing list
