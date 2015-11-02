@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x229.google.com ([2a00:1450:4010:c07::229])
+Received: from mail-lf0-x235.google.com ([2a00:1450:4010:c07::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtMtk-000096-OZ
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:17 +0000
-Received: by lfgh9 with SMTP id h9so21808704lfg.1
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:43:54 -0800 (PST)
-Received: from localhost.localdomain (ppp91-79-39-184.pppoe.mtu-net.ru.
- [91.79.39.184])
- by smtp.gmail.com with ESMTPSA id 78sm4325125lfs.35.2015.11.02.13.43.53
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Mon, 02 Nov 2015 13:43:54 -0800 (PST)
+ id 1ZtMtn-0000AA-GQ
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:21 +0000
+Received: by lfbn126 with SMTP id n126so68275162lfb.2
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:44:00 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  3 Nov 2015 00:43:36 +0300
-Message-Id: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  3 Nov 2015 00:43:43 +0300
+Message-Id: <1446500625-27907-8-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
+References: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,54 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] MIPS: add ar9331 pbl support
+Subject: [PATCH 7/9] MIPS: mach-ath79: add pbl_ar9331_ddr1_config macro
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-This patchseries add full clock and RAM initialization
-for AR9331-based boards: now barebox can start
-without any other bootloader's help.
+See also u-boot_mod/u-boot/cpu/mips/ar7240/hornet_ddr_init.S
 
-This series tested with TP-Link MR3020 (DDR1 RAM)
-and Black Swift (DDR2 RAM) boards.
+See also this openocd commit:
 
-See also
-  https://github.com/pepe2k/u-boot_mod
+    commit f59d2d9ecfee8899df531b87b7acaa468725f238
+    Author: Oleksij Rempel <linux@rempel-privat.de>
+    Date:   Fri Jan 30 13:05:31 2015 +0100
 
+        tcl/target|board: add config Atheros ar9331
 
-Antony Pavlov (8):
-  MIPS: ar933x: pbl: add pbl_ar9331_ddr2_config macro
-  MIPS: mach-ath79: add pbl_ar9331_uart_enable macro
-  MIPS: mach-ath79: add debug_ll_ar9331_init macro
-  MIPS: ath79: add black-swift board support
-  MIPS: mach-ath79: add black-swift_defconfig
-  MIPS: mach-ath79: add pbl_ar9331_ddr1_config macro
-  MIPS: tplink-mr3020: add pbl low level init
-  MIPS: tplink-mr3020_defconfig: enable pbl; make image shorter
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/mach-ath79/include/mach/pbl_macros.h | 43 ++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-Oleksij Rempel (1):
-  MIPS: ar933x: pbl: add pbl_ar9331_pll macro
-
- arch/mips/Makefile                                 |   1 +
- arch/mips/boards/black-swift/Makefile              |   1 +
- arch/mips/boards/black-swift/board.c               |  27 +++
- .../black-swift/include/board/board_pbl_start.h    |  41 +++++
- .../tplink-mr3020/include/board/board_pbl_start.h  |   6 +
- arch/mips/configs/black-swift_defconfig            |  46 ++++++
- arch/mips/configs/tplink-mr3020_defconfig          |   3 +
- arch/mips/dts/black-swift.dts                      |  34 ++++
- arch/mips/include/asm/pbl_macros.h                 |  32 ++++
- arch/mips/mach-ath79/Kconfig                       |   6 +
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h    |  24 +++
- arch/mips/mach-ath79/include/mach/debug_ll.h       |  29 ++++
- arch/mips/mach-ath79/include/mach/pbl_macros.h     | 182 +++++++++++++++++++++
- 13 files changed, 432 insertions(+)
- create mode 100644 arch/mips/boards/black-swift/Makefile
- create mode 100644 arch/mips/boards/black-swift/board.c
- create mode 100644 arch/mips/boards/black-swift/include/board/board_pbl_start.h
- create mode 100644 arch/mips/configs/black-swift_defconfig
- create mode 100644 arch/mips/dts/black-swift.dts
- create mode 100644 arch/mips/mach-ath79/include/mach/pbl_macros.h
-
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index 4ef90dc..c00dd28 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -67,6 +67,49 @@
+ #define DDR_EMR2		(DDR_BASE | AR933X_DDR_DDR_EMR2)
+ #define DDR_EMR3		(DDR_BASE | AR933X_DDR_DDR_EMR3)
+ 
++.macro	pbl_ar9331_ddr1_config
++	.set	push
++	.set	noreorder
++
++	pbl_reg_writel	0x7fbc8cd0, DDR_CONFIG
++	pbl_reg_writel	0x9dd0e6a8, DDR_CONFIG2
++
++	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
++
++	/* 0x133: on reset Mode Register value */
++	pbl_reg_writel	0x133, DDR_MODE
++	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
++
++	/*
++	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
++	 * DDR_EXT_MODE[0] = 0: Enable DLL
++	 */
++	pbl_reg_writel	0x2, DDR_EXT_MODE
++	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
++
++	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
++
++	/* DLL out of reset, CAS Latency 3 */
++	pbl_reg_writel	0x33, DDR_MODE
++	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
++
++	/* Refresh control. Bit 14 is enable. Bits<13:0> Refresh time */
++	pbl_reg_writel	0x4186, DDR_REFRESH
++	/* This register is used along with DQ Lane 0; DQ[7:0], DQS_0 */
++	pbl_reg_writel	0x8, DDR_TAP_CTRL0
++	/* This register is used along with DQ Lane 1; DQ[15:8], DQS_1 */
++	pbl_reg_writel	0x9, DDR_TAP_CTRL1
++
++	/*
++	 * DDR read and capture bit mask.
++	 * Each bit represents a cycle of valid data.
++	 * 0xff: use 16-bit DDR
++	 */
++	pbl_reg_writel	0xff, DDR_RD_DATA
++
++	.set	pop
++.endm
++
+ .macro	pbl_ar9331_ddr2_config
+ 	.set	push
+ 	.set	noreorder
 -- 
 2.6.2
 
