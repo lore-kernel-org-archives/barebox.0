@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zt9Cy-0005nl-Pt
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 07:07:13 +0000
-Date: Mon, 2 Nov 2015 08:06:50 +0100
+ id 1Zt9cO-0007Vl-J7
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 07:33:29 +0000
+Date: Mon, 2 Nov 2015 08:33:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151102070650.GE25308@pengutronix.de>
-References: <1446209700-21282-1-git-send-email-tritel59@gmail.com>
- <20151101091258.42b5fa76f90ea1e9dee76ffe@gmail.com>
+Message-ID: <20151102073306.GH25308@pengutronix.de>
+References: <1446261143-11472-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151101091258.42b5fa76f90ea1e9dee76ffe@gmail.com>
+In-Reply-To: <1446261143-11472-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] login: make some locally used functions static
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Sergey Koshechkin <tritel59@gmail.com>
+Subject: Re: [PATCH v3 1/2] arm/cpu/start.c: Distil some common code in
+ __start().
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Sun, Nov 01, 2015 at 09:12:58AM +0300, Antony Pavlov wrote:
-> On Fri, 30 Oct 2015 15:55:00 +0300
-> Sergey Koshechkin <tritel59@gmail.com> wrote:
+On Fri, Oct 30, 2015 at 08:12:22PM -0700, Andrey Smirnov wrote:
+> Both barebox_boarddata and barebox_boot_dtb perform essentially the
+> same function -- hold a pointer to a chunk of private data. Since only
+> one variable is ever used at any given time we may as well merge those
+> two variable into one. This also allows us to share more code between
+> two boot paths (board data vs. device tree)
 > 
-> > This patch continues cleanup password code from
-> > 
-> >   commit 40596b856f61c281fb34f804bf42550c099f26c3
-> >   Author: Sascha Hauer <s.hauer@pengutronix.de>
-> >   Date:   Thu Aug 27 15:58:50 2015 +0200
-> > 
-> >       login: cleanup password code
-> 
-> 
-> ... and this patch fixes some 'no previous prototype' warnings:
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Which by the way are only enabled on Mips. The other architectueres do
-not enable -Wmissing-prototypes. I just tried setting this on Arm and
-got many warnings. Maybe we should set this everywhere (in the toplevel
-Makefile?). That would help fixing these earlier.
+Applied with a small change.
+
+> ---
+> 
+> Changes since v2:
+> 
+> 	- Restored original function semantics for
+>           barebox_arm_machine() and barebox_arm_boot_dtb()
+> 
+> 	- Removed now unnecessary swith statement and auxiliary
+>           function that was needed to support its usage
+> 
+> 
+>  arch/arm/cpu/start.c | 65 +++++++++++++++++++++++++++++++---------------------
+>  1 file changed, 39 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> index 8e5097b..bfe08cc 100644
+> --- a/arch/arm/cpu/start.c
+> +++ b/arch/arm/cpu/start.c
+> @@ -32,25 +32,37 @@
+>  #include "mmu-early.h"
+> 
+>  unsigned long arm_stack_top;
+> -static void *barebox_boarddata;
+> +static void *barebox_private_data;
+
+I renamed this back to barebox_boarddata since it's data that comes
+from the board code.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
