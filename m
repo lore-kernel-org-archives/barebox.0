@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x230.google.com ([2a00:1450:4010:c07::230])
+Received: from mail-lf0-x22e.google.com ([2a00:1450:4010:c07::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtHyA-00057C-2Q
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 16:28:31 +0000
-Received: by lfbn126 with SMTP id n126so63840412lfb.2
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 08:28:08 -0800 (PST)
+ id 1ZtIGs-0006cm-JE
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 16:47:51 +0000
+Received: by lfbf136 with SMTP id f136so50216511lfb.0
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 08:47:28 -0800 (PST)
 From: Peter Mamonov <pmamonov@gmail.com>
-Date: Mon,  2 Nov 2015 19:30:29 +0300
-Message-Id: <1446481830-25052-2-git-send-email-pmamonov@gmail.com>
-In-Reply-To: <1446481830-25052-1-git-send-email-pmamonov@gmail.com>
-References: <1446481830-25052-1-git-send-email-pmamonov@gmail.com>
+Date: Mon,  2 Nov 2015 19:49:59 +0300
+Message-Id: <1446483000-25715-2-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
+References: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,10 +23,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mips: c-r4k: detect secondary cache
+Subject: [PATCH resend 1/2] mips: c-r4k: detect secondary cache
 To: barebox@lists.infradead.org
 Cc: Peter Mamonov <pmamonov@gmail.com>
 
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
 ---
  arch/mips/lib/c-r4k.c     | 31 +++++++++++++++++++++++++++++++
  arch/mips/lib/cpu-probe.c |  2 --
