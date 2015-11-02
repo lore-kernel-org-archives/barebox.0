@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtAOi-00022i-W3
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 08:23:25 +0000
-Date: Mon, 2 Nov 2015 09:23:03 +0100
+ id 1ZtAVZ-0006MT-VL
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 08:30:30 +0000
+Date: Mon, 2 Nov 2015 09:30:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151102082303.GB17132@pengutronix.de>
-References: <1446297909-2001-1-git-send-email-anton.bondarenko.sama@gmail.com>
- <1446297909-2001-4-git-send-email-anton.bondarenko.sama@gmail.com>
+Message-ID: <20151102083007.GC17132@pengutronix.de>
+References: <1446352242-8053-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1446297909-2001-4-git-send-email-anton.bondarenko.sama@gmail.com>
+In-Reply-To: <1446352242-8053-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,126 +22,118 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] embedsky-e9: cleanup and reorder DTS nodes
-To: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Subject: Re: [PATCH] i2c: Add support for DesignWare controllers
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Oct 31, 2015 at 02:25:09PM +0100, Anton Bondarenko wrote:
-> Removed duplicate ldb node. Removed disabled nodes
+On Sat, Oct 31, 2015 at 09:30:41PM -0700, Andrey Smirnov wrote:
+> Add a driver for DesignWare I2C controller IP block found on several
+> SoCs including Altera SoC products
 > 
-> Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+> Tested using Terrasic SoCKit board and GPIO expander board with I2C
+> EEPROM on it
+> 
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  arch/arm/dts/imx6q-embedsky-e9.dtsi | 77 ++++++++++++++++---------------------
->  1 file changed, 33 insertions(+), 44 deletions(-)
 
-Applied, thanks
+Looks mostly fine. Two small nitpicks inside.
+
+
+> +static int i2c_dw_probe(struct device_d *pdev)
+> +{
+> +	struct dw_i2c_dev *dw;
+> +	struct i2c_platform_data *pdata;
+> +	int ret, bitrate;
+> +	uint32_t ic_con, ic_comp_type_value;
+> +
+> +	pdata = pdev->platform_data;
+> +
+> +	dw = kzalloc(sizeof(*dw), GFP_KERNEL);
+
+kzalloc can fail. You should use xzalloc here which cannot fail.
+
+> +
+> +	if (IS_ENABLED(CONFIG_COMMON_CLK)) {
+> +		dw->clk = clk_get(pdev, NULL);
+> +		if (IS_ERR(dw->clk)) {
+> +			ret = PTR_ERR(dw->clk);
+> +			goto fail;
+> +		}
+> +	}
+> +
+> +	dw->adapter.master_xfer = i2c_dw_xfer;
+> +	dw->adapter.nr = pdev->id;
+> +	dw->adapter.dev.parent = pdev;
+> +	dw->adapter.dev.device_node = pdev->device_node;
+> +
+> +	dw->base = dev_request_mem_region(pdev, 0);
+> +	if (IS_ERR(dw->base)) {
+> +		ret = PTR_ERR(dw->base);
+> +		goto fail;
+> +	}
+> +
+> +	ic_comp_type_value = readl(dw->base + DW_IC_COMP_TYPE);
+> +	if (ic_comp_type_value != DW_IC_COMP_TYPE_VALUE) {
+> +		dev_err(pdev,
+> +			"unknown DesignWare IP block 0x%08x",
+> +			ic_comp_type_value);
+> +		ret = -ENODEV;
+> +		goto fail;
+> +	}
+> +
+> +	i2c_dw_enable(dw, false);
+> +
+> +	if (IS_ENABLED(CONFIG_COMMON_CLK))
+> +		i2c_dw_setup_timings(dw);
+> +
+> +	bitrate = (pdata && pdata->bitrate) ? pdata->bitrate : DW_I2C_BIT_RATE;
+> +
+> +	/*
+> +	 * We have to clear 'ic_10bitaddr_master' in 'ic_tar'
+> +	 * register, otherwise 'ic_10bitaddr_master' in 'ic_con'
+> +	 * wouldn't clear. We don't care about preserving the contents
+> +	 * of that register so we set it to zero.
+> +	 */
+> +	writel(0, dw->base + DW_IC_TAR);
+> +
+> +	switch (bitrate) {
+> +	case 400000:
+> +		ic_con = DW_IC_CON_SPEED_FAST;
+> +		break;
+> +	default:
+> +		dev_warn(pdev, "requested bitrate (%d) is not supported."
+> +			 " Falling back to 100kHz", bitrate);
+> +	case 100000:		/* FALLTHROUGH */
+> +		ic_con = DW_IC_CON_SPEED_STD;
+> +		break;
+> +	}
+> +
+> +	ic_con |= DW_IC_CON_MASTER | DW_IC_CON_SLAVE_DISABLE;
+> +
+> +	writel(ic_con, dw->base + DW_IC_CON);
+> +
+> +	/*
+> +	 * Since we will be working in polling mode set both
+> +	 * thresholds to their minimum
+> +	 */
+> +	writel(0, dw->base + DW_IC_RX_TL);
+> +	writel(0, dw->base + DW_IC_TX_TL);
+> +
+> +	/* Disable and clear all interrrupts */
+> +	writel(0, dw->base + DW_IC_INTR_MASK);
+> +	readl(dw->base + DW_IC_CLR_INTR);
+> +
+> +	i2c_dw_enable(dw, true);
+> +
+> +	ret = i2c_add_numbered_adapter(&dw->adapter);
+> +fail:
+> +	if (ret < 0) {
+> +		dev_err(pdev, "registration failed\n");
+
+This message is unnecessary. The driver core will warn you when probe
+fails anyway.
 
 Sascha
-
-> 
-> diff --git a/arch/arm/dts/imx6q-embedsky-e9.dtsi b/arch/arm/dts/imx6q-embedsky-e9.dtsi
-> index f117cae..e4d9c12 100644
-> --- a/arch/arm/dts/imx6q-embedsky-e9.dtsi
-> +++ b/arch/arm/dts/imx6q-embedsky-e9.dtsi
-> @@ -91,41 +91,6 @@
->  
->  };
->  
-> -&audmux {
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&pinctrl_audmux>;
-> -	status = "okay";
-> -};
-> -
-> -&fec {
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&pinctrl_enet>;
-> -	phy-mode = "rgmii";
-> -	phy-supply=<&reg_3p3v>;
-> -	status = "okay";
-> -};
-> -
-> -&i2c1 {
-> -	clock-frequency = <100000>;
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&pinctrl_i2c1>;
-> -	status = "okay";
-> -
-> -};
-> -
-> -&i2c2 {
-> -	clock-frequency = <100000>;
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&pinctrl_i2c2>;
-> -	status = "okay";
-> -};
-> -
-> -&i2c3 {
-> -	clock-frequency = <100000>;
-> -	pinctrl-names = "default";
-> -	pinctrl-0 = <&pinctrl_i2c3>;
-> -	status = "okay";
-> -};
->  
->  &iomuxc {
->  	pinctrl-names = "default";
-> @@ -302,7 +267,39 @@
->  	};
->  };
->  
-> -&ldb {
-> +&audmux {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_audmux>;
-> +	status = "okay";
-> +};
-> +
-> +&fec {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_enet>;
-> +	phy-mode = "rgmii";
-> +	phy-supply=<&reg_3p3v>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c1 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_i2c1>;
-> +	status = "okay";
-> +
-> +};
-> +
-> +&i2c2 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_i2c2>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c3 {
-> +	clock-frequency = <100000>;
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_i2c3>;
->  	status = "okay";
->  };
->  
-> @@ -382,11 +379,3 @@
->  &sata {
->  	status = "okay";
->  };
-> -
-> -&usdhc3 {
-> -	status = "disabled";
-> -};
-> -
-> -&ecspi1 {
-> -	status = "disabled";
-> -};
-> -- 
-> 2.6.2
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
