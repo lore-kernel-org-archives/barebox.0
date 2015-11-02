@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22e.google.com ([2a00:1450:4010:c07::22e])
+Received: from mail-lf0-x22b.google.com ([2a00:1450:4010:c07::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtMtm-00009d-RF
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:21 +0000
-Received: by lfbf136 with SMTP id f136so54373758lfb.0
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:43:57 -0800 (PST)
+ id 1ZtMtr-0000AU-4T
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:24 +0000
+Received: by lffz202 with SMTP id z202so68724909lff.3
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:44:01 -0800 (PST)
+Received: from localhost.localdomain (ppp91-79-39-184.pppoe.mtu-net.ru.
+ [91.79.39.184])
+ by smtp.gmail.com with ESMTPSA id 78sm4325125lfs.35.2015.11.02.13.44.00
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Mon, 02 Nov 2015 13:44:00 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  3 Nov 2015 00:43:39 +0300
-Message-Id: <1446500625-27907-4-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  3 Nov 2015 00:43:45 +0300
+Message-Id: <1446500625-27907-10-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
 References: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,70 +29,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] MIPS: mach-ath79: add pbl_ar9331_uart_enable macro
+Subject: [PATCH 9/9] MIPS: tplink-mr3020_defconfig: enable pbl;
+ make image shorter
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/pbl_macros.h              | 11 +++++++++++
- arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  3 +++
- arch/mips/mach-ath79/include/mach/pbl_macros.h  |  7 +++++++
- 3 files changed, 21 insertions(+)
+ arch/mips/configs/tplink-mr3020_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index db46d0d..681b40a 100644
---- a/arch/mips/include/asm/pbl_macros.h
-+++ b/arch/mips/include/asm/pbl_macros.h
-@@ -37,6 +37,17 @@
- 	.set	pop
- 	.endm
- 
-+	.macro	pbl_reg_set val addr
-+	.set push
-+	.set noreorder
-+	li	t9, \addr
-+	li	t8, \val
-+	lw	t7, 0(t9)
-+	or	t7, t8
-+	sw	t7, 0(t9)
-+	.set	pop
-+	.endm
-+
- 	.macro	pbl_reg_clr clr addr
- 	.set push
- 	.set noreorder
-diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-index 0b84c55..4cbe94a 100644
---- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-+++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
-@@ -67,6 +67,9 @@
- #define AR71XX_GPIO_REG_INT_PENDING	0x20
- #define AR71XX_GPIO_REG_INT_ENABLE	0x24
- #define AR71XX_GPIO_REG_FUNC		0x28
-+/* Warning! GPIO_FUNC[15] must be written with 1 */
-+#define AR933X_GPIO_FUNC_RSRV15			BIT(15)
-+#define AR933X_GPIO_FUNC_UART_EN		BIT(1)
- 
- /*
-  * PLL block
-diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-index f0e0174..4ef90dc 100644
---- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
-+++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
-@@ -129,4 +129,11 @@
- 	.set	pop
- .endm
- 
-+#define GPIO_FUNC	((KSEG1 | AR71XX_GPIO_BASE) | AR71XX_GPIO_REG_FUNC)
-+
-+.macro	pbl_ar9331_uart_enable
-+	pbl_reg_set AR933X_GPIO_FUNC_UART_EN \
-+			| AR933X_GPIO_FUNC_RSRV15, GPIO_FUNC
-+.endm
-+
- #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
+diff --git a/arch/mips/configs/tplink-mr3020_defconfig b/arch/mips/configs/tplink-mr3020_defconfig
+index b675993..f2ba2da 100644
+--- a/arch/mips/configs/tplink-mr3020_defconfig
++++ b/arch/mips/configs/tplink-mr3020_defconfig
+@@ -1,6 +1,9 @@
+ CONFIG_BUILTIN_DTB=y
+ CONFIG_BUILTIN_DTB_NAME="tplink-mr3020"
+ CONFIG_MACH_MIPS_ATH79=y
++CONFIG_PBL_IMAGE=y
++CONFIG_IMAGE_COMPRESSION_XZKERN=y
++CONFIG_MALLOC_TLSF=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_LONGHELP=y
 -- 
 2.6.2
 
