@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
+Received: from mail-lf0-x22e.google.com ([2a00:1450:4010:c07::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtMto-00009x-94
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:22 +0000
-Received: by lfgh9 with SMTP id h9so21810165lfg.1
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:43:58 -0800 (PST)
-Received: from localhost.localdomain (ppp91-79-39-184.pppoe.mtu-net.ru.
- [91.79.39.184])
- by smtp.gmail.com with ESMTPSA id 78sm4325125lfs.35.2015.11.02.13.43.57
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Mon, 02 Nov 2015 13:43:58 -0800 (PST)
+ id 1ZtMtm-00009d-RF
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:21 +0000
+Received: by lfbf136 with SMTP id f136so54373758lfb.0
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:43:57 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  3 Nov 2015 00:43:41 +0300
-Message-Id: <1446500625-27907-6-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  3 Nov 2015 00:43:39 +0300
+Message-Id: <1446500625-27907-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
 References: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,181 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] MIPS: ath79: add black-swift board support
+Subject: [PATCH 3/9] MIPS: mach-ath79: add pbl_ar9331_uart_enable macro
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-Black Swift is a tiny coin-sized embedded computer based on AR9331 SoC.
-See http://www.black-swift.com/ for details.
-
-See also Black Swift kickstarter page:
-  https://www.kickstarter.com/projects/1133560316/black-swift-tiny-wireless-computer
-
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Makefile                                 |  1 +
- arch/mips/boards/black-swift/Makefile              |  1 +
- arch/mips/boards/black-swift/board.c               | 27 ++++++++++++++
- .../black-swift/include/board/board_pbl_start.h    | 41 ++++++++++++++++++++++
- arch/mips/dts/black-swift.dts                      | 34 ++++++++++++++++++
- arch/mips/mach-ath79/Kconfig                       |  6 ++++
- 6 files changed, 110 insertions(+)
+ arch/mips/include/asm/pbl_macros.h              | 11 +++++++++++
+ arch/mips/mach-ath79/include/mach/ar71xx_regs.h |  3 +++
+ arch/mips/mach-ath79/include/mach/pbl_macros.h  |  7 +++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 6ef2bf7..75761b5 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -80,6 +80,7 @@ board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
+diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
+index db46d0d..681b40a 100644
+--- a/arch/mips/include/asm/pbl_macros.h
++++ b/arch/mips/include/asm/pbl_macros.h
+@@ -37,6 +37,17 @@
+ 	.set	pop
+ 	.endm
  
- machine-$(CONFIG_MACH_MIPS_ATH79)	:= ath79
- board-$(CONFIG_BOARD_TPLINK_MR3020)	:= tplink-mr3020
-+board-$(CONFIG_BOARD_BLACK_SWIFT)	:= black-swift
- 
- machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
- board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
-diff --git a/arch/mips/boards/black-swift/Makefile b/arch/mips/boards/black-swift/Makefile
-new file mode 100644
-index 0000000..dcfc293
---- /dev/null
-+++ b/arch/mips/boards/black-swift/Makefile
-@@ -0,0 +1 @@
-+obj-y += board.o
-diff --git a/arch/mips/boards/black-swift/board.c b/arch/mips/boards/black-swift/board.c
-new file mode 100644
-index 0000000..2e2ed20
---- /dev/null
-+++ b/arch/mips/boards/black-swift/board.c
-@@ -0,0 +1,27 @@
-+/*
-+ * Copyright (C) 2015 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+
-+static int model_hostname_init(void)
-+{
-+	barebox_set_hostname("black-swift");
-+
-+	return 0;
-+}
-+postcore_initcall(model_hostname_init);
-diff --git a/arch/mips/boards/black-swift/include/board/board_pbl_start.h b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-new file mode 100644
-index 0000000..f78e0d9
---- /dev/null
-+++ b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-@@ -0,0 +1,41 @@
-+/*
-+ * Copyright (C) 2013, 2015 Antony Pavlov <antonynpavlov@gmail.com>
-+ * Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
-+#include <asm/pbl_nmon.h>
-+
-+	.macro	board_pbl_start
-+	.set	push
-+	.set	noreorder
-+
-+	mips_barebox_10h
-+
-+	mips_disable_interrupts
-+
-+	pbl_ar9331_pll
-+	pbl_ar9331_ddr2_config
-+
-+	pbl_ar9331_uart_enable
-+	debug_ll_ar9331_init
-+	mips_nmon
-+
-+	copy_to_link_location	pbl_start
-+
++	.macro	pbl_reg_set val addr
++	.set push
++	.set noreorder
++	li	t9, \addr
++	li	t8, \val
++	lw	t7, 0(t9)
++	or	t7, t8
++	sw	t7, 0(t9)
 +	.set	pop
 +	.endm
-diff --git a/arch/mips/dts/black-swift.dts b/arch/mips/dts/black-swift.dts
-new file mode 100644
-index 0000000..270374d
---- /dev/null
-+++ b/arch/mips/dts/black-swift.dts
-@@ -0,0 +1,34 @@
-+/dts-v1/;
 +
-+#include "ar9331.dtsi"
-+
-+/ {
-+	model = "Black Swift";
-+	compatible = "smartlx,black-swift";
-+
-+	memory {
-+		reg = <0x00000000 0x4000000>;
-+	};
-+
-+	aliases {
-+		spiflash = &spiflash;
-+	};
-+};
-+
-+&serial0 {
-+	status = "okay";
-+};
-+
-+&spi {
-+	num-chipselects = <1>;
-+	status = "okay";
-+
-+	/* Winbond W25Q128FV SPI flash */
-+	spiflash: m25p80@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "m25p80";
-+		spi-max-frequency = <104000000>;
-+		reg = <0>;
-+	};
-+};
-diff --git a/arch/mips/mach-ath79/Kconfig b/arch/mips/mach-ath79/Kconfig
-index f730b37..9b8e394 100644
---- a/arch/mips/mach-ath79/Kconfig
-+++ b/arch/mips/mach-ath79/Kconfig
-@@ -13,6 +13,12 @@ config BOARD_TPLINK_MR3020
- 	select HAVE_IMAGE_COMPRESSION
- 	select HAS_NMON
+ 	.macro	pbl_reg_clr clr addr
+ 	.set push
+ 	.set noreorder
+diff --git a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+index 0b84c55..4cbe94a 100644
+--- a/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
++++ b/arch/mips/mach-ath79/include/mach/ar71xx_regs.h
+@@ -67,6 +67,9 @@
+ #define AR71XX_GPIO_REG_INT_PENDING	0x20
+ #define AR71XX_GPIO_REG_INT_ENABLE	0x24
+ #define AR71XX_GPIO_REG_FUNC		0x28
++/* Warning! GPIO_FUNC[15] must be written with 1 */
++#define AR933X_GPIO_FUNC_RSRV15			BIT(15)
++#define AR933X_GPIO_FUNC_UART_EN		BIT(1)
  
-+config BOARD_BLACK_SWIFT
-+	bool "Black Swift"
-+	select HAVE_PBL_IMAGE
-+	select HAVE_IMAGE_COMPRESSION
-+	select HAS_NMON
-+
- endchoice
+ /*
+  * PLL block
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index f0e0174..4ef90dc 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -129,4 +129,11 @@
+ 	.set	pop
+ .endm
  
- endif
++#define GPIO_FUNC	((KSEG1 | AR71XX_GPIO_BASE) | AR71XX_GPIO_REG_FUNC)
++
++.macro	pbl_ar9331_uart_enable
++	pbl_reg_set AR933X_GPIO_FUNC_UART_EN \
++			| AR933X_GPIO_FUNC_RSRV15, GPIO_FUNC
++.endm
++
+ #endif /* __ASM_MACH_ATH79_PBL_MACROS_H */
 -- 
 2.6.2
 
