@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x232.google.com ([2a00:1450:4010:c07::232])
+Received: from mail-lf0-x235.google.com ([2a00:1450:4010:c07::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtMtq-0000AN-EC
- for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:23 +0000
-Received: by lfbn126 with SMTP id n126so68275426lfb.2
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:44:00 -0800 (PST)
+ id 1ZtMtn-00009t-GS
+ for barebox@lists.infradead.org; Mon, 02 Nov 2015 21:44:21 +0000
+Received: by lfbf136 with SMTP id f136so54374005lfb.0
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 13:43:57 -0800 (PST)
 Received: from localhost.localdomain (ppp91-79-39-184.pppoe.mtu-net.ru.
  [91.79.39.184])
- by smtp.gmail.com with ESMTPSA id 78sm4325125lfs.35.2015.11.02.13.44.00
+ by smtp.gmail.com with ESMTPSA id 78sm4325125lfs.35.2015.11.02.13.43.57
  for <barebox@lists.infradead.org>
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Mon, 02 Nov 2015 13:44:00 -0800 (PST)
+ Mon, 02 Nov 2015 13:43:57 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  3 Nov 2015 00:43:44 +0300
-Message-Id: <1446500625-27907-9-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  3 Nov 2015 00:43:40 +0300
+Message-Id: <1446500625-27907-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
 References: <1446500625-27907-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,38 +29,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] MIPS: tplink-mr3020: add pbl low level init
+Subject: [PATCH 4/9] MIPS: mach-ath79: add debug_ll_ar9331_init macro
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/mach-ath79/include/mach/debug_ll.h | 29 ++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-index 944a510..08204fe 100644
---- a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
-@@ -17,6 +17,7 @@
+diff --git a/arch/mips/mach-ath79/include/mach/debug_ll.h b/arch/mips/mach-ath79/include/mach/debug_ll.h
+index d3813af..e0c3f79 100644
+--- a/arch/mips/mach-ath79/include/mach/debug_ll.h
++++ b/arch/mips/mach-ath79/include/mach/debug_ll.h
+@@ -63,6 +63,35 @@ static inline void PUTC_LL(int ch)
+  * Macros for use in assembly language code
   */
  
- #include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
- #include <asm/pbl_nmon.h>
- 
- 	.macro	board_pbl_start
-@@ -27,6 +28,11 @@
- 
- 	mips_disable_interrupts
- 
-+	pbl_ar9331_pll
-+	pbl_ar9331_ddr1_config
++#define AR933X_UART_CS_REG		0x04
++#define UART_CS_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CS_REG)
++#define AR933X_UART_CS_IF_MODE_S	2
++#define	  AR933X_UART_CS_IF_MODE_DCE	2
++#define AR933X_UART_CS_TX_READY_ORIDE	BIT(7)
++#define AR933X_UART_CS_RX_READY_ORIDE	BIT(8)
 +
-+	pbl_ar9331_uart_enable
-+	debug_ll_ar9331_init
- 	mips_nmon
- 
- 	copy_to_link_location	pbl_start
++/*
++ * simple uart clock setup
++ * from u-boot_mod/u-boot/cpu/mips/ar7240/hornet_serial.c
++ */
++#define BAUD_CLOCK 25000000
++#define CLOCK_SCALE ((BAUD_CLOCK / (16 * CONFIG_BAUDRATE)) - 1)
++#define CLOCK_STEP 0x2000
++
++#define AR933X_UART_CLOCK_REG		0x08
++#define CLOCK_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CLOCK_REG)
++
++.macro debug_ll_ar9331_init
++#ifdef CONFIG_DEBUG_LL
++
++	pbl_reg_writel ((AR933X_UART_CS_IF_MODE_DCE << AR933X_UART_CS_IF_MODE_S) \
++			| AR933X_UART_CS_TX_READY_ORIDE \
++			| AR933X_UART_CS_RX_READY_ORIDE), UART_CS_REG
++	pbl_reg_writel ((CLOCK_SCALE << 16) | CLOCK_STEP), CLOCK_REG
++
++#endif /* CONFIG_DEBUG_LL */
++.endm
++
+ /*
+  * output a character in a0
+  */
 -- 
 2.6.2
 
