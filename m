@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22f.google.com ([2a00:1450:4010:c07::22f])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtVpy-0006Zv-Qn
- for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:16:59 +0000
-Received: by lfbf136 with SMTP id f136so7508940lfb.0
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 23:16:36 -0800 (PST)
-Date: Tue, 3 Nov 2015 10:39:48 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151103103948.d0d3ebcdddbb148da1efe81f@gmail.com>
-In-Reply-To: <20151103065158.GC25416@pengutronix.de>
-References: <20151103012055.1fd914dbb7d224a0c56fb0d4@gmail.com>
- <20151103065158.GC25416@pengutronix.de>
-Mime-Version: 1.0
+ id 1ZtVqp-0006kO-Pi
+ for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:17:52 +0000
+Date: Tue, 3 Nov 2015 08:17:28 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151103071728.GD25416@pengutronix.de>
+References: <1445303748.13196.89.camel@rtred1test09.kymetacorp.com>
+ <20151021053000.GU14476@pengutronix.de>
+ <1445471669.13196.152.camel@rtred1test09.kymetacorp.com>
+ <20151022073122.GJ14476@pengutronix.de>
+ <1446495967.4488.81.camel@localhost>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1446495967.4488.81.camel@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,73 +22,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: some patches are missed in the next branch
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: In flash vs compiled environment for omap, rasp-pi, socfpga
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Tue, 3 Nov 2015 07:51:58 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, Nov 02, 2015 at 08:25:39PM +0000, Trent Piepho wrote:
+> On Thu, 2015-10-22 at 09:31 +0200, Sascha Hauer wrote:
+> > On Wed, Oct 21, 2015 at 11:54:23PM +0000, Trent Piepho wrote:
+> > > A survey of the defconfigs shows that 25 do not have
+> > > DEFAULT_ENVIRONMENT.  Of these 14 are omap, socfpga, imx, or at91
+> > > xloaders.  Of the remaining eleven, 5 have env commands enabled, 3 have
+> > > selected the simple shell which turns on environment variables, and the
+> > > remaining 3 get the HUSH shell by default which also has environment
+> > > variables.
+> > 
+> > Environment variables and the thing called "the environment" are
+> > different things and do not depend on each other. Environment variables
+> > are the variables in the shell (var=10...), getenv/setenv and stuff.
+> > This has nothing to do with the saveable files we are talking about
+> > here. Having one enabled without the other is perfectly valid.
+> 
+> This would be ENVIRONMENT_VARIABLES enabled but ENV_HANDLING not.  Which
+> does seem to be perfectly valid.  If you have ENV_HANDLING but neither a
+> compiled in env nor a in flash env, then you get an error when booting.
+> 
+> It also appears that if you have COMMAND_SUPPORT enabled, but do not
+> have an env (compiled or flash), then you get errors from startup.c when
+> it tries to read /env/bin/init.  And it won't run barebox_main in this
+> case.  So I think if you had an xloader and turned on command support it
+> wouldn't boot properly, since it would error out because of no env and
+> not run the xload main.
 
-> Hi Antony,
-> =
+I agree that this configuration is not really useful, but in the end
+that's what the user asked for and that's what he gets.
 
-> On Tue, Nov 03, 2015 at 01:20:55AM +0300, Antony Pavlov wrote:
-> > Hi!
-> > =
+> 
+> But I don't really care about that.  What I'm interested in is having a
+> flash env but no compiled in env.  It looks like there is a mistake in
+> the omap & socfpga code that uses the config option for the latter to
+> control the former.
 
-> > These patches were added to the next branch last month:
-> > =
+yes.
 
-> >   ARM: mvebu: Lenovo IX4 300D: Fix pblb generation
-> >   scripts/kwbimage: Make BINARY files relative to config file
-> >   scripts/kwbimage: Move configfile opening to the function that reads =
-it
-> >   usb: ehci-hcd: Use regular mdelay()
-> >   Revert "usb: ehci-hcd: detect re-entrance"
-> >   Revert "usb: ehci-hcd: use mdelay_non_interruptible()"
-> >   usb: core: return -EAGAIN on usb_* functions reentrance
-> >   input: usb_kbd: skip poll on -EAGAIN error
-> >   net: mvneta: add Armada XP compatible
-> >   clk: mvebu: Add corediv clock driver for Armada 370/XP
-> > =
+> 
+> If I just remove DEFAULT_ENVIRONMENT from controlling the flash env code
+> (and I don't see any other boards with a config option to control their
+> in flash env code), then some omap/socfpga boards will gain an in flash
+> env they don't have now.  Most of these are xloader configs.  So maybe
+> the flash env code should depend on !XLOADER?
+> 
+> If I do that, then only three configs gain in flash env that don't have
+> it, omap3430_sdp3430_per_uart, omap3530_beagle_per_uart, and omap3_evm.
+> 
+> The first two are odd ones and I'm not sure if they are even supposed to
+> work.  The last one seems like it might be broken.  It has
+> COMMAND_SUPPORT enabled but no env, which gives that error from
+> common/startup.c I mentioned above.
 
-> > Now they have gone away! Why?
+These configs haven't been touched actively for a long time. I doubt
+they still do what they are once supposed to, maybe we should even
+remove at least the *_per_uart configs.
 
-I have just pushed missed commits on top of yesterday next branch to github.
-Please see https://github.com/frantony/barebox/tree/20151103.missed-patches
+> 
+> Another option would be make the in flash env code depend on
+> ENV_HANDLING.  That will not change any boards, as no boards without the
+> in flash env want ENV_HANDLING.
 
+I think this should be done. This would at least let the code depend on
+the right config option. Does this solve your issues or are there other
+things missing then?
 
+Sascha
 
-> =
-
-> I remember that I accidently did some desastrous git command like git
-> reset --hard and haven't been on the branch I assumed I was on. I
-> thought I recovered that, but it seems I haven't. Do you by accident
-> have the patches in one of your branches? I cannot find them in my
-> repository. I just picked them from the mailing list, but I would prefer
-> to get the original patches again.
-> =
-
-> Sascha
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
