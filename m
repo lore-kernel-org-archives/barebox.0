@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22c.google.com ([2a00:1450:4010:c07::22c])
+Received: from mail-lf0-x235.google.com ([2a00:1450:4010:c07::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtU53-0005y9-78
- for barebox@lists.infradead.org; Tue, 03 Nov 2015 05:24:26 +0000
-Received: by lfbn126 with SMTP id n126so5416156lfb.2
- for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 21:24:05 -0800 (PST)
-Received: from localhost.localdomain (ppp91-79-39-184.pppoe.mtu-net.ru.
- [91.79.39.184])
- by smtp.gmail.com with ESMTPSA id dz9sm4494605lbc.40.2015.11.02.21.24.04
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Mon, 02 Nov 2015 21:24:05 -0800 (PST)
+ id 1ZtU57-0005yE-Ve
+ for barebox@lists.infradead.org; Tue, 03 Nov 2015 05:24:32 +0000
+Received: by lffz202 with SMTP id z202so5447741lff.3
+ for <barebox@lists.infradead.org>; Mon, 02 Nov 2015 21:24:08 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  3 Nov 2015 08:23:51 +0300
-Message-Id: <1446528236-30236-5-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  3 Nov 2015 08:23:54 +0300
+Message-Id: <1446528236-30236-8-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1446528236-30236-1-git-send-email-antonynpavlov@gmail.com>
 References: <1446528236-30236-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,54 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/9] MIPS: ath79: add debug_ll_ar9331_init macro
+Subject: [PATCH v2 7/9] MIPS: ath79: add pbl_ar9331_ddr1_config macro
 To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <linux@rempel-privat.de>
 
+See also u-boot_mod/u-boot/cpu/mips/ar7240/hornet_ddr_init.S
+
+See also this openocd commit:
+
+    commit f59d2d9ecfee8899df531b87b7acaa468725f238
+    Author: Oleksij Rempel <linux@rempel-privat.de>
+    Date:   Fri Jan 30 13:05:31 2015 +0100
+
+        tcl/target|board: add config Atheros ar9331
+
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/mach-ath79/include/mach/debug_ll.h | 29 ++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/mips/mach-ath79/include/mach/pbl_macros.h | 43 ++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/arch/mips/mach-ath79/include/mach/debug_ll.h b/arch/mips/mach-ath79/include/mach/debug_ll.h
-index d3813af..e0c3f79 100644
---- a/arch/mips/mach-ath79/include/mach/debug_ll.h
-+++ b/arch/mips/mach-ath79/include/mach/debug_ll.h
-@@ -63,6 +63,35 @@ static inline void PUTC_LL(int ch)
-  * Macros for use in assembly language code
-  */
+diff --git a/arch/mips/mach-ath79/include/mach/pbl_macros.h b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+index 4ef90dc..c00dd28 100644
+--- a/arch/mips/mach-ath79/include/mach/pbl_macros.h
++++ b/arch/mips/mach-ath79/include/mach/pbl_macros.h
+@@ -67,6 +67,49 @@
+ #define DDR_EMR2		(DDR_BASE | AR933X_DDR_DDR_EMR2)
+ #define DDR_EMR3		(DDR_BASE | AR933X_DDR_DDR_EMR3)
  
-+#define AR933X_UART_CS_REG		0x04
-+#define UART_CS_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CS_REG)
-+#define AR933X_UART_CS_IF_MODE_S	2
-+#define	  AR933X_UART_CS_IF_MODE_DCE	2
-+#define AR933X_UART_CS_TX_READY_ORIDE	BIT(7)
-+#define AR933X_UART_CS_RX_READY_ORIDE	BIT(8)
++.macro	pbl_ar9331_ddr1_config
++	.set	push
++	.set	noreorder
 +
-+/*
-+ * simple uart clock setup
-+ * from u-boot_mod/u-boot/cpu/mips/ar7240/hornet_serial.c
-+ */
-+#define BAUD_CLOCK 25000000
-+#define CLOCK_SCALE ((BAUD_CLOCK / (16 * CONFIG_BAUDRATE)) - 1)
-+#define CLOCK_STEP 0x2000
++	pbl_reg_writel	0x7fbc8cd0, DDR_CONFIG
++	pbl_reg_writel	0x9dd0e6a8, DDR_CONFIG2
 +
-+#define AR933X_UART_CLOCK_REG		0x08
-+#define CLOCK_REG	((KSEG1 | AR933X_UART_BASE) | AR933X_UART_CLOCK_REG)
++	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
 +
-+.macro debug_ll_ar9331_init
-+#ifdef CONFIG_DEBUG_LL
++	/* 0x133: on reset Mode Register value */
++	pbl_reg_writel	0x133, DDR_MODE
++	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
 +
-+	pbl_reg_writel ((AR933X_UART_CS_IF_MODE_DCE << AR933X_UART_CS_IF_MODE_S) \
-+			| AR933X_UART_CS_TX_READY_ORIDE \
-+			| AR933X_UART_CS_RX_READY_ORIDE), UART_CS_REG
-+	pbl_reg_writel ((CLOCK_SCALE << 16) | CLOCK_STEP), CLOCK_REG
++	/*
++	 * DDR_EXT_MODE[1] = 1: Reduced Drive Strength
++	 * DDR_EXT_MODE[0] = 0: Enable DLL
++	 */
++	pbl_reg_writel	0x2, DDR_EXT_MODE
++	pbl_reg_writel	DDR_CTRL_EMRS, DDR_CTRL
 +
-+#endif /* CONFIG_DEBUG_LL */
++	pbl_reg_writel	DDR_CTRL_PREA, DDR_CTRL
++
++	/* DLL out of reset, CAS Latency 3 */
++	pbl_reg_writel	0x33, DDR_MODE
++	pbl_reg_writel	DDR_CTRL_MRS, DDR_CTRL
++
++	/* Refresh control. Bit 14 is enable. Bits<13:0> Refresh time */
++	pbl_reg_writel	0x4186, DDR_REFRESH
++	/* This register is used along with DQ Lane 0; DQ[7:0], DQS_0 */
++	pbl_reg_writel	0x8, DDR_TAP_CTRL0
++	/* This register is used along with DQ Lane 1; DQ[15:8], DQS_1 */
++	pbl_reg_writel	0x9, DDR_TAP_CTRL1
++
++	/*
++	 * DDR read and capture bit mask.
++	 * Each bit represents a cycle of valid data.
++	 * 0xff: use 16-bit DDR
++	 */
++	pbl_reg_writel	0xff, DDR_RD_DATA
++
++	.set	pop
 +.endm
 +
- /*
-  * output a character in a0
-  */
+ .macro	pbl_ar9331_ddr2_config
+ 	.set	push
+ 	.set	noreorder
 -- 
 2.6.2
 
