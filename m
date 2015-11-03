@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtVzQ-0003ED-Kd
- for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:26:45 +0000
-Date: Tue, 3 Nov 2015 08:26:22 +0100
+ id 1ZtVzp-0003Fn-F7
+ for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:27:09 +0000
+Date: Tue, 3 Nov 2015 08:26:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151103072622.GF25416@pengutronix.de>
-References: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
+Message-ID: <20151103072647.GG25416@pengutronix.de>
+References: <1446528236-30236-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1446528236-30236-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH resend 0/2] mips: c-r4k: detect secondary cache
-To: Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: [PATCH v2 0/9] MIPS: ath79: add ar9331 pbl support
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 02, 2015 at 07:49:58PM +0300, Peter Mamonov wrote:
-> These two patches implement secondary cache detection and report its 
-> configuration via cpuinfo command.
+On Tue, Nov 03, 2015 at 08:23:47AM +0300, Antony Pavlov wrote:
+> This patchseries adds full clock and RAM initialization
+> for AR9331-based boards: now barebox can start
+> without any other bootloader's help.
 > 
-> Peter Mamonov (2):
-> 	[PATCH resend 1/2] mips: c-r4k: detect secondary cache
-> 	[PATCH resend 2/2] mips: cpuinfo: report secondary cache
+> This series tested with TP-Link MR3020 (DDR1 RAM)
+> and Black Swift (DDR2 RAM) boards.
+> 
+> See also
+>   https://github.com/pepe2k/u-boot_mod
+> 
+> 
+> Future works:
+> 
+>   * add 'check run from ROM' commit by Oleksij Rempel (do 0xbfc test);
+>   * enable more GPIO features (see 'pbl_reg_set (1 << 18), 0xb80600ac').
+> 
+> 
+> Changes since v1:
+> 
+>   * make commit messages more consistent;
+>   * add 'Future works' to cover letter.
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
