@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtVzp-0003Fn-F7
- for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:27:09 +0000
-Date: Tue, 3 Nov 2015 08:26:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151103072647.GG25416@pengutronix.de>
-References: <1446528236-30236-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1446528236-30236-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZtWQY-0003uf-Rc
+ for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:54:48 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 1367BA0017A
+ for <barebox@lists.infradead.org>; Tue,  3 Nov 2015 08:54:42 +0100 (CET)
+From: Teresa Remmet <t.remmet@phytec.de>
+Date: Tue, 3 Nov 2015 08:51:47 +0100
+Message-Id: <1446537108-15386-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +17,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/9] MIPS: ath79: add ar9331 pbl support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] dts: phyFLEX-AM335x: Disable second ethernet interface
+To: barebox@lists.infradead.org
 
-On Tue, Nov 03, 2015 at 08:23:47AM +0300, Antony Pavlov wrote:
-> This patchseries adds full clock and RAM initialization
-> for AR9331-based boards: now barebox can start
-> without any other bootloader's help.
-> 
-> This series tested with TP-Link MR3020 (DDR1 RAM)
-> and Black Swift (DDR2 RAM) boards.
-> 
-> See also
->   https://github.com/pepe2k/u-boot_mod
-> 
-> 
-> Future works:
-> 
->   * add 'check run from ROM' commit by Oleksij Rempel (do 0xbfc test);
->   * enable more GPIO features (see 'pbl_reg_set (1 << 18), 0xb80600ac').
-> 
-> 
-> Changes since v1:
-> 
->   * make commit messages more consistent;
->   * add 'Future works' to cover letter.
+There are phyFLEX modules with only the first eth phy mounted.
+As barebox only supports the first interface anyway, disable
+the second interface for now.
 
-Applied, thanks
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+---
+ arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+index 6d488fa..c60943c 100644
+--- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
++++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+@@ -224,12 +224,13 @@
+ 	phy_id = <&davinci_mdio>, <2>;
+ 	phy-mode = "rmii";
+ 	dual_emac_res_vlan = <2>;
++	status = "disabled";
+ };
+ 
+ &mac {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&emac_rgmii1_pins &emac_rmii2_pins>;
+-	dual_emac;
++	slaves = <1>;
++	pinctrl-0 = <&emac_rgmii1_pins>;
+ 	status = "okay";
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
