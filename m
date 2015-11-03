@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZtVwm-0000b7-HX
- for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:24:01 +0000
-Date: Tue, 3 Nov 2015 08:23:38 +0100
+ id 1ZtVzQ-0003ED-Kd
+ for barebox@lists.infradead.org; Tue, 03 Nov 2015 07:26:45 +0000
+Date: Tue, 3 Nov 2015 08:26:22 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151103072338.GE25416@pengutronix.de>
-References: <20151103012055.1fd914dbb7d224a0c56fb0d4@gmail.com>
- <20151103065158.GC25416@pengutronix.de>
- <20151103103948.d0d3ebcdddbb148da1efe81f@gmail.com>
+Message-ID: <20151103072622.GF25416@pengutronix.de>
+References: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151103103948.d0d3ebcdddbb148da1efe81f@gmail.com>
+In-Reply-To: <1446483000-25715-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: some patches are missed in the next branch
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH resend 0/2] mips: c-r4k: detect secondary cache
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 03, 2015 at 10:39:48AM +0300, Antony Pavlov wrote:
-> On Tue, 3 Nov 2015 07:51:58 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, Nov 02, 2015 at 07:49:58PM +0300, Peter Mamonov wrote:
+> These two patches implement secondary cache detection and report its 
+> configuration via cpuinfo command.
 > 
-> > Hi Antony,
-> > 
-> > On Tue, Nov 03, 2015 at 01:20:55AM +0300, Antony Pavlov wrote:
-> > > Hi!
-> > > 
-> > > These patches were added to the next branch last month:
-> > > 
-> > >   ARM: mvebu: Lenovo IX4 300D: Fix pblb generation
-> > >   scripts/kwbimage: Make BINARY files relative to config file
-> > >   scripts/kwbimage: Move configfile opening to the function that reads it
-> > >   usb: ehci-hcd: Use regular mdelay()
-> > >   Revert "usb: ehci-hcd: detect re-entrance"
-> > >   Revert "usb: ehci-hcd: use mdelay_non_interruptible()"
-> > >   usb: core: return -EAGAIN on usb_* functions reentrance
-> > >   input: usb_kbd: skip poll on -EAGAIN error
-> > >   net: mvneta: add Armada XP compatible
-> > >   clk: mvebu: Add corediv clock driver for Armada 370/XP
-> > > 
-> > > Now they have gone away! Why?
-> 
-> I have just pushed missed commits on top of yesterday next branch to github.
-> Please see https://github.com/frantony/barebox/tree/20151103.missed-patches
+> Peter Mamonov (2):
+> 	[PATCH resend 1/2] mips: c-r4k: detect secondary cache
+> 	[PATCH resend 2/2] mips: cpuinfo: report secondary cache
 
-Ouch, everything fine. I just rebased this branch on my current next and
-it turned out to be empty afterwards. The patches are still there and in
-current next.
+Applied, thanks
 
 Sascha
 
