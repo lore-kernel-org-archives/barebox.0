@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZttYZ-0001hN-HS
- for barebox@lists.infradead.org; Wed, 04 Nov 2015 08:36:37 +0000
-Date: Wed, 4 Nov 2015 09:36:09 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151104083609.GJ25416@pengutronix.de>
-References: <20151104110433.696aef0a00e53bb950e97674@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20151104110433.696aef0a00e53bb950e97674@gmail.com>
+ id 1ZtvrR-0001yK-9f
+ for barebox@lists.infradead.org; Wed, 04 Nov 2015 11:04:13 +0000
+From: Enrico Jorns <ejo@pengutronix.de>
+Date: Wed,  4 Nov 2015 12:03:24 +0100
+Message-Id: <1446635004-26896-1-git-send-email-ejo@pengutronix.de>
+In-Reply-To: <1446567541-21731-1-git-send-email-ejo@pengutronix.de>
+References: <1446567541-21731-1-git-send-email-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,89 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: memcpy strange behaviour
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Peter Mamonov <piton@cs.niisi.ras.ru>, barebox@lists.infradead.org
+Subject: [PATCH v2] edit: Return error when save_file failed
+To: barebox@lists.infradead.org
+Cc: Enrico Jorns <ejo@pengutronix.de>
 
-On Wed, Nov 04, 2015 at 11:04:33AM +0300, Antony Pavlov wrote:
-> Hi!
-> 
-> Peter has reported on strange barebox memcpy command behaviour on his MIPS board:
-> 
->   he copies a file to memory using memcpy and then copyies appropriate memory contents
->   back to another file. Next he checks files md5sum and the sums are differ.
-> 
-> I have reproduced the problem on Qemu VersatilePB ARM board.
-> 
-> Here is an instruction.
-> 
-> Configure barebox:
-> 
-> $ cd barebox.git
-> $ export ARCH=arm
-> $ export CROSS_COMPILE=<your cross compiler prefix>
-> $ make versatilepb_defconfig
-> $ sed -i "s/^# CONFIG_CMD_MD5SUM.*$/CONFIG_CMD_MD5SUM=y/" .config
-> 
-> Prepare testfile on host and compile:
-> 
-> $ dd if=/dev/zero bs=1 count=4414 | tr "\000" "\377" > defaultenv/defaultenv-2-base/testfile
-> $ make
-> ...
-> 
-> Run barebox under qemu:
-> 
-> $ qemu-system-arm -M versatilepb -nographic -monitor null -kernel arch/arm/pbl/zbarebox -serial stdio
-> ...
-> barebox# memcpy -s /env/testfile 0 0x01000000
-> 
-> barebox# memcpy -d _testfile 0x01000000 0 4414
-> 
-> barebox# md5sum /env/testfile _testfile
-> bf8278051ba8de868def083bcc209002  /env/testfile 0x00000000 ... 0xffffffffffffffff
-> e295c2bfe32498e03531017443120e89  _testfile     0x00000000 ... 0xffffffffffffffff
-> 
-> barebox# memcmp -s /env/testfile -d _testfile 0 0
-> files differ at offset 4408
-> 
-> barebox# md -s /env/testfile 4400
-> 00001130: ffffffff ffffffff ffffffff ffffffff                ..............
-> 
-> barebox# md -s _testfile 4400
-> 00001130: ffffffff ffffffff 00000000 ffff0000                ..............
-> 
-> barebox# md -b 0x01001130+0xe
-> 01001130: ff ff ff ff ff ff ff ff 00 00 00 00 00 00          ..............
-> 
-> barebox# md -b -s /env/testfile 0x1130+0xe
-> 00001130: ff ff ff ff ff ff ff ff ff ff ff ff ff ff          ..............
-> 
-> So you see that last 6 bytes have not been copied.
-> 
-> Please comment this report!
+When writing a file failed (e.g. due to a read-only file system), no
+error was reported by the 'edit' tool. To be valid (and to not confuse
+the poor user) at least '1' should be returned to indicate an error.
 
-This is fixed by:
+Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+---
+ commands/edit.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-http://www.spinics.net/lists/u-boot-v2/msg24850.html
-
-Which I forgot to apply, but did now. The problem is that the newly
-introduced O_RWSIZE_8 flag clashed with the O_CREAT flag. This means
-that when a file is created (it's always set in memcpy) then we also do
-8byte reads/writes which of course leads to the last bytes missing when
-the length is not 8byte aligned. Fixed in current master.
-
-Sascha
-
-
+diff --git a/commands/edit.c b/commands/edit.c
+index b28e2b9..3b653b7 100644
+--- a/commands/edit.c
++++ b/commands/edit.c
+@@ -375,6 +375,7 @@ static int do_edit(int argc, char *argv[])
+ 	int i;
+ 	int linepos;
+ 	int c;
++	int ret = 0;
+ 
+ 	if (argc != 2)
+ 		return COMMAND_ERROR_USAGE;
+@@ -533,7 +534,7 @@ static int do_edit(int argc, char *argv[])
+ 			}
+ 			break;
+ 		case 4:
+-			save_file(argv[1]);
++			ret = save_file(argv[1]);
+ 			goto out;
+ 		case 3:
+ 			goto out;
+@@ -546,7 +547,7 @@ out:
+ 	free_buffer();
+ 	printf("%c[2J%c[r", 27, 27);
+ 	printf("\n");
+-	return 0;
++	return ret;
+ }
+ 
+ static const char *edit_aliases[] = { "sedit", NULL};
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.1
+
 
 _______________________________________________
 barebox mailing list
