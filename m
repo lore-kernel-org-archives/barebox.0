@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ztyzz-0005hh-9r
- for barebox@lists.infradead.org; Wed, 04 Nov 2015 14:25:16 +0000
-Received: by lbbes7 with SMTP id es7so17381350lbb.2
- for <barebox@lists.infradead.org>; Wed, 04 Nov 2015 06:24:53 -0800 (PST)
-Date: Wed, 4 Nov 2015 17:48:10 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151104174810.64907d909a0c3196fe6778e0@gmail.com>
-In-Reply-To: <20151104133053.GP25416@pengutronix.de>
-References: <1446567541-21731-1-git-send-email-ejo@pengutronix.de>
- <1446635004-26896-1-git-send-email-ejo@pengutronix.de>
- <20151104152321.1f2d9e673c1b259c8373148c@gmail.com>
- <20151104133053.GP25416@pengutronix.de>
-Mime-Version: 1.0
+ id 1ZtzwZ-0007R1-J6
+ for barebox@lists.infradead.org; Wed, 04 Nov 2015 15:25:51 +0000
+Received: by lfbn126 with SMTP id n126so40710343lfb.2
+ for <barebox@lists.infradead.org>; Wed, 04 Nov 2015 07:25:25 -0800 (PST)
+From: Du Huanpeng <u74147@gmail.com>
+Date: Wed,  4 Nov 2015 23:24:58 +0800
+Message-Id: <1446650698-9706-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,127 +16,358 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] edit: Return error when save_file failed
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Enrico Jorns <ejo@pengutronix.de>
+Subject: [PATCH] lib: font: fbconsole: add custom font support
+To: barebox@lists.infradead.org
+Cc: Du Huanpeng <u74147@gmail.com>
 
-On Wed, 4 Nov 2015 14:30:53 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+this patch enable you to add new char support. with customer char
+set(no need to be full char set), font size.
 
-> On Wed, Nov 04, 2015 at 03:23:21PM +0300, Antony Pavlov wrote:
-> > On Wed,  4 Nov 2015 12:03:24 +0100
-> > Enrico Jorns <ejo@pengutronix.de> wrote:
-> > =
+Signed-off-by: Du Huanpeng <u74147@gmail.com>
+---
+ drivers/video/fbconsole.c   | 43 +++++++++++++++++++++----------------------
+ include/linux/font.h        | 11 ++++++++++-
+ lib/fonts/Kconfig           |  5 +++++
+ lib/fonts/Makefile          |  2 ++
+ lib/fonts/font_7x14.c       |  1 +
+ lib/fonts/font_8x16.c       |  1 +
+ lib/fonts/font_custom_16x.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/fonts/font_mini_4x6.c   |  1 +
+ lib/fonts/fonts.c           | 38 +++++++++++++++++++++++++++++++++++---
+ 9 files changed, 120 insertions(+), 26 deletions(-)
+ create mode 100644 lib/fonts/font_custom_16x.c
 
-> > > When writing a file failed (e.g. due to a read-only file system), no
-> > > error was reported by the 'edit' tool. To be valid (and to not confuse
-> > > the poor user) at least '1' should be returned to indicate an error.
-> > > =
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index b10503e..4c4fc67 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -22,10 +22,10 @@ struct fbc_priv {
+ 	struct param_d *par_font;
+ 	int par_font_val;
+ 
+-	int font_width, font_height;
+-	const u8 *fontdata;
+-	unsigned int cols, rows;
+-	unsigned int x, y; /* cursor position */
++	const struct font_desc *font;
++
++	unsigned int cols, rows;	/*FIXME: different width chars? */
++	unsigned int x, y;		/* cursor position */
+ 
+ 	enum state_t state;
+ 
+@@ -84,7 +84,7 @@ static struct rgb colors[] = {
+ 	{ 255, 255, 255 },
+ };
+ 
+-static void drawchar(struct fbc_priv *priv, int x, int y, char c)
++static void drawchar(struct fbc_priv *priv, int x, int y, int c)
+ {
+ 	void *buf;
+ 	int bpp = priv->fb->bits_per_pixel >> 3;
+@@ -97,7 +97,8 @@ static void drawchar(struct fbc_priv *priv, int x, int y, char c)
+ 
+ 	buf = gui_screen_render_buffer(priv->sc);
+ 
+-	inbuf = &priv->fontdata[c * priv->font_height];
++	i = find_font_index(priv->font, c);
++	inbuf = priv->font->data + i;
+ 
+ 	line_length = priv->fb->line_length;
+ 
+@@ -113,13 +114,13 @@ static void drawchar(struct fbc_priv *priv, int x, int y, char c)
+ 	rgb = &colors[bgcolor];
+ 	bgcolor = gu_rgb_to_pixel(priv->fb, rgb->r, rgb->g, rgb->b, 0xff);
+ 
+-	for (i = 0; i < priv->font_height; i++) {
++	for (i = 0; i < priv->font->height; i++) {
+ 		uint8_t t = inbuf[i];
+ 		int j;
+ 
+-		adr = buf + line_length * (y * priv->font_height + i) + x * priv->font_width * bpp;
++		adr = buf + line_length * (y * priv->font->height + i) + x * priv->font->width * bpp;
+ 
+-		for (j = 0; j < priv->font_width; j++) {
++		for (j = 0; j < priv->font->width; j++) {
+ 			if (t & 0x80)
+ 				gu_set_pixel(priv->fb, adr, color);
+ 			else
+@@ -137,10 +138,10 @@ static void video_invertchar(struct fbc_priv *priv, int x, int y)
+ 
+ 	buf = gui_screen_render_buffer(priv->sc);
+ 
+-	gu_invert_area(priv->fb, buf, x * priv->font_width, y * priv->font_height,
+-			priv->font_width, priv->font_height);
+-	gu_screen_blit_area(priv->sc, x * priv->font_width, y * priv->font_height,
+-			priv->font_width, priv->font_height);
++	gu_invert_area(priv->fb, buf, x * priv->font->width, y * priv->font->height,
++			priv->font->width, priv->font->height);
++	gu_screen_blit_area(priv->sc, x * priv->font->width, y * priv->font->height,
++			priv->font->width, priv->font->height);
+ }
+ 
+ static void printchar(struct fbc_priv *priv, int c)
+@@ -174,9 +175,9 @@ static void printchar(struct fbc_priv *priv, int c)
+ 	default:
+ 		drawchar(priv, priv->x, priv->y, c);
+ 
+-		gu_screen_blit_area(priv->sc, priv->x * priv->font_width,
+-				priv->y * priv->font_height,
+-				priv->font_width, priv->font_height);
++		gu_screen_blit_area(priv->sc, priv->x * priv->font->width,
++				priv->y * priv->font->height,
++				priv->font->width, priv->font->height);
+ 
+ 		priv->x++;
+ 		if (priv->x > priv->cols) {
+@@ -188,7 +189,7 @@ static void printchar(struct fbc_priv *priv, int c)
+ 	if (priv->y > priv->rows) {
+ 		void *buf;
+ 		u32 line_length = priv->fb->line_length;
+-		int line_height = line_length * priv->font_height;
++		int line_height = line_length * priv->font->height;
+ 
+ 		buf = gui_screen_render_buffer(priv->sc);
+ 
+@@ -355,12 +356,10 @@ static int setup_font(struct fbc_priv *priv)
+ 		return -ENOENT;
+ 	}
+ 
+-	priv->font_width = font->width;
+-	priv->font_height = font->height;
+-	priv->fontdata = font->data;
++	priv->font = font;
+ 
+-	priv->rows = fb->yres / priv->font_height - 1;
+-	priv->cols = fb->xres / priv->font_width - 1;
++	priv->rows = fb->yres / priv->font->height - 1;
++	priv->cols = fb->xres / priv->font->width - 1;
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/font.h b/include/linux/font.h
+index 62b1879..d7fb415 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -12,20 +12,29 @@
+ #define _VIDEO_FONT_H
+ 
+ #include <param.h>
++#include <wchar.h>
+ 
++struct font_index {
++	wchar_t wc;	/* code of the char. */
++	short index;	/* offset of the char in the bitmap. */
++};
+ struct font_desc {
+ 	const char *name;
+ 	int width, height;
++	struct font_index *index;
+ 	const void *data;
++	int num_chars;
+ };
+ 
+ extern const struct font_desc	font_vga_8x16,
+ 			font_7x14,
+-			font_mini_4x6;
++			font_mini_4x6,
++			font_custom_16x;
+ 
+ /* Max. length for the name of a predefined font */
+ #define MAX_FONT_NAME	32
+ 
++extern int find_font_index(const struct font_desc *font, int ch);
+ extern const struct font_desc *find_font_enum(int n);
+ extern struct param_d *add_param_font(struct device_d *dev,
+ 		int (*set)(struct param_d *p, void *priv),
+diff --git a/lib/fonts/Kconfig b/lib/fonts/Kconfig
+index 715d5e5..d23b283 100644
+--- a/lib/fonts/Kconfig
++++ b/lib/fonts/Kconfig
+@@ -20,6 +20,11 @@ config FONT_7x14
+ config FONT_MINI_4x6
+ 	bool "Mini 4x6 font"
+ 
++config FONT_CUSTOM_16X
++	bool "Custom 16x16 font"
++	help
++	  This font is useful for Chinese and other non ascii chars.
++
+ config FONT_AUTOSELECT
+ 	def_bool y
+ 	depends on !FONT_MINI_4x6
+diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
+index b7d4765..7de5c76 100644
+--- a/lib/fonts/Makefile
++++ b/lib/fonts/Makefile
+@@ -5,7 +5,9 @@ font-objs := fonts.o
+ font-objs-$(CONFIG_FONT_8x16)      += font_8x16.o
+ font-objs-$(CONFIG_FONT_7x14)      += font_7x14.o
+ font-objs-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
++font-objs-$(CONFIG_FONT_CUSTOM_16X)+= font_custom_16x.o
+ 
+ font-objs += $(font-objs-y)
+ 
+ obj-$(CONFIG_FONTS)         += font.o
++
+diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
+index fe99871..60cb57e 100644
+--- a/lib/fonts/font_7x14.c
++++ b/lib/fonts/font_7x14.c
+@@ -4113,4 +4113,5 @@ const struct font_desc font_7x14 = {
+ 	.width	= 7,
+ 	.height	= 14,
+ 	.data	= fontdata_7x14,
++	.index	= NULL,
+ };
+diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
+index 4717ead..0ba2921 100644
+--- a/lib/fonts/font_8x16.c
++++ b/lib/fonts/font_8x16.c
+@@ -4626,5 +4626,6 @@ const struct font_desc font_vga_8x16 = {
+ 	.width	= 8,
+ 	.height	= 16,
+ 	.data	= fontdata_8x16,
++	.index	= NULL,
+ };
+ EXPORT_SYMBOL(font_vga_8x16);
+diff --git a/lib/fonts/font_custom_16x.c b/lib/fonts/font_custom_16x.c
+new file mode 100644
+index 0000000..b83387d
+--- /dev/null
++++ b/lib/fonts/font_custom_16x.c
+@@ -0,0 +1,44 @@
++/*
++ * by Du Huanpeng <u74147@gmail.com>
++ */
++
++#include <linux/font.h>
++#include <common.h>
++
++/* place real font data here or set fontdata_custom_16x points to
++ * the address of font data and also setup the index.
++ */
++
++static const unsigned char fontdata_custom_16x[] = {
++	0xFF, 0xFF,	/*OOOOOOOOOOOOOOOO*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0x80, 0x01,	/*O              O*/
++	0xFF, 0xFF,	/*OOOOOOOOOOOOOOOO*/
++};
++
++static struct font_index fontdata_custom_16x_index[] = {
++	{ 0x0000, 0x0000 },
++};
++
++const struct font_desc font_custom_16x = {
++	.name	= "CUSTOM-16x",
++	.width	= 16,
++	.height	= 16,
++	.data	= fontdata_custom_16x,
++	.index	= fontdata_custom_16x_index,
++	.num_chars = ARRAY_SIZE(fontdata_custom_16x_index),
++
++};
++
+diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
+index 3ecb4fb..733d20a 100644
+--- a/lib/fonts/font_mini_4x6.c
++++ b/lib/fonts/font_mini_4x6.c
+@@ -2152,4 +2152,5 @@ const struct font_desc font_mini_4x6 = {
+ 	.width	= 4,
+ 	.height	= 6,
+ 	.data	= fontdata_mini_4x6,
++	.index	= NULL,
+ };
+diff --git a/lib/fonts/fonts.c b/lib/fonts/fonts.c
+index 5a9d3f1..6bc2af1 100644
+--- a/lib/fonts/fonts.c
++++ b/lib/fonts/fonts.c
+@@ -7,6 +7,10 @@
+  *	2001 - Documented with DocBook
+  *	- Brad Douglas <brad@neruo.com>
+  *
++ *	2015 - Add custom font supports
++ *	- Du Huanpeng <u74147@gmail.com>
++ *
++ *
+  * This file is subject to the terms and conditions of the GNU General Public
+  * License.  See the file COPYING in the main directory of this archive
+  * for more details.
+@@ -23,15 +27,19 @@
+ static const struct font_desc *fonts[] = {
+ #ifdef CONFIG_FONT_8x16
+ #undef NO_FONTS
+-    &font_vga_8x16,
++	&font_vga_8x16,
+ #endif
+ #ifdef CONFIG_FONT_7x14
+ #undef NO_FONTS
+-    &font_7x14,
++	&font_7x14,
+ #endif
+ #ifdef CONFIG_FONT_MINI_4x6
+ #undef NO_FONTS
+-    &font_mini_4x6,
++	&font_mini_4x6,
++#endif
++#ifdef CONFIG_FONT_CUSTOM_16X
++#undef NO_FONTS
++	&font_custom_16x,
+ #endif
+ };
+ 
+@@ -51,6 +59,30 @@ const struct font_desc *find_font_enum(int n)
+ 	return fonts[n];
+ }
+ 
++int find_font_index(const struct font_desc *font, int ch)
++{
++	int index;
++	if (font->index == NULL) {
++		index  = font->width + 7;
++		index /= 8;
++		index *= font->height;
++		index *= ch;
++	} else {
++		/*
++		* FIXME: use binary search instead!
++		*/
++		index = font->num_chars - 1;
++
++		while (index && font->index[index].wc != ch)
++			index--;
++
++		/* return 0 if not found. */
++		index = font->index->index;
++	}
++
++	return index;
++}
++
+ struct param_d *add_param_font(struct device_d *dev,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
+-- 
+1.9.1
 
-> > > Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> > > ---
-> > >  commands/edit.c | 5 +++--
-> > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > =
-
-> > > diff --git a/commands/edit.c b/commands/edit.c
-> > > index b28e2b9..3b653b7 100644
-> > > --- a/commands/edit.c
-> > > +++ b/commands/edit.c
-> > > @@ -375,6 +375,7 @@ static int do_edit(int argc, char *argv[])
-> > >  	int i;
-> > >  	int linepos;
-> > >  	int c;
-> > > +	int ret =3D 0;
-> > =
-
-> > Can we use COMMAND_SUCCESS insted of 0?
-> > =
-
-> > =
-
-> > >  =
-
-> > >  	if (argc !=3D 2)
-> > >  		return COMMAND_ERROR_USAGE;
-> > > @@ -533,7 +534,7 @@ static int do_edit(int argc, char *argv[])
-> > >  			}
-> > >  			break;
-> > >  		case 4:
-> > > -			save_file(argv[1]);
-> > > +			ret =3D save_file(argv[1]);
-> > =
-
-> > Actually save_file() returns open()'s error. We have to convert it to C=
-OMMAND_ERROR, e.g.:
-> =
-
-> If we return an error code from a command then the caller will print the
-> corresponding error string to the console which might be what we want
-> here.
-> =
-
-> > =
-
-> > if (save_file(argv[1]) !=3D 0)
-> > 	ret =3D COMMAND_ERROR;
-> > =
-
-
-At the moment the only cmd() caller is inside of execute_command():
-
-        ret =3D cmdtp->cmd(argc, argv);
-        if (ret =3D=3D COMMAND_ERROR_USAGE) {
-                barebox_cmd_usage(cmdtp);
-                ret =3D COMMAND_ERROR;
-        }
-        ...
-        return ret;
-
-
-But we brop execute_command() result in run_command():
-        if (execute_command(argc, argv) !=3D COMMAND_SUCCESS)
-	        rc =3D -1;
-
-We have a chance to see error message only if we call execute_command()
-from run_pipe_real():
-
-        ret =3D execute_binfmt(globbuf.gl_pathc, globbuf.gl_pathv);
-        if (ret < 0) {
-            printf("%s: %s\n", globbuf.gl_pathv[0], strerror(-ret));
-            ret =3D 127;
-        }
-
-So, yes, you are right we have no reason to convert open()'s error into COM=
-MAND_ERROR,
-but for consistency we have toadd strerror() print to run_command() code.
-
-> > Also save_file() does not check write()'s error.
-> Indeed, this could be fixed while touching this code.
-> =
-
-> Sascha
-> =
-
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
