@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zu0CR-0001sE-NJ
- for barebox@lists.infradead.org; Wed, 04 Nov 2015 15:42:12 +0000
-Received: by wijp11 with SMTP id p11so94920015wij.0
- for <barebox@lists.infradead.org>; Wed, 04 Nov 2015 07:41:49 -0800 (PST)
-Received: from gmail.com (p578a7230.dip0.t-ipconnect.de. [87.138.114.48])
- by smtp.gmail.com with ESMTPSA id 186sm29356912wmp.10.2015.11.04.07.41.48
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=AES128-SHA bits=128/128);
- Wed, 04 Nov 2015 07:41:48 -0800 (PST)
-Date: Wed, 4 Nov 2015 16:41:42 +0100
-From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-Message-ID: <20151104154142.GA27677@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1Zu0vj-0000aa-87
+ for barebox@lists.infradead.org; Wed, 04 Nov 2015 16:29:00 +0000
+Received: by lbblt2 with SMTP id lt2so1186874lbb.3
+ for <barebox@lists.infradead.org>; Wed, 04 Nov 2015 08:28:36 -0800 (PST)
+Date: Wed, 4 Nov 2015 19:51:49 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20151104195149.0883221bdb2163bd9fc82cb5@gmail.com>
+In-Reply-To: <20151104154142.GA27677@gmail.com>
+References: <20151104154142.GA27677@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,17 +19,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Source command with zero-sized files
-To: barebox@lists.infradead.org
+Subject: Re: Source command with zero-sized files
+To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Cc: barebox@lists.infradead.org
 
-Using source command (source <file> or . <file>) on zero-sized files crash barebox.
-Can anyone confirm this?
+On Wed, 4 Nov 2015 16:41:42 +0100
+Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com> wrote:
 
-Thanks
+> Using source command (source <file> or . <file>) on zero-sized files cras=
+h barebox.
+> Can anyone confirm this?
+
+I can confirm this!
+
+Here is sandbox log:
+
+barebox@barebox sandbox:/ ls -l env/empty
+-rwxrwxrwx              0 env/empty
+barebox@barebox sandbox:/ source env/empty
+Segmentation fault
+
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
