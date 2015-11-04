@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZtwkJ-0000Y5-4k
- for barebox@lists.infradead.org; Wed, 04 Nov 2015 12:00:56 +0000
-Date: Wed, 4 Nov 2015 13:00:32 +0100
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zty9k-0006Gw-91
+ for barebox@lists.infradead.org; Wed, 04 Nov 2015 13:31:17 +0000
+Date: Wed, 4 Nov 2015 14:30:53 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151104120032.GM25416@pengutronix.de>
-References: <1446450818-19106-1-git-send-email-u74147@gmail.com>
+Message-ID: <20151104133053.GP25416@pengutronix.de>
+References: <1446567541-21731-1-git-send-email-ejo@pengutronix.de>
+ <1446635004-26896-1-git-send-email-ejo@pengutronix.de>
+ <20151104152321.1f2d9e673c1b259c8373148c@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1446450818-19106-1-git-send-email-u74147@gmail.com>
+In-Reply-To: <20151104152321.1f2d9e673c1b259c8373148c@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +24,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib: font: fbconsole: add custom font support
-To: Du Huanpeng <u74147@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] edit: Return error when save_file failed
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Enrico Jorns <ejo@pengutronix.de>
 
-Hi,
-
-On Mon, Nov 02, 2015 at 03:53:38PM +0800, Du Huanpeng wrote:
-> this patch enable you to add new char support. with customer char
-> set(no need to be full char set), font size.
+On Wed, Nov 04, 2015 at 03:23:21PM +0300, Antony Pavlov wrote:
+> On Wed,  4 Nov 2015 12:03:24 +0100
+> Enrico Jorns <ejo@pengutronix.de> wrote:
 > 
-> Signed-off-by: Du Huanpeng <u74147@gmail.com>
-> ---
->  drivers/video/fbconsole.c   | 39 +++++++++++++++++++--------------------
->  include/linux/font.h        | 11 ++++++++++-
->  lib/fonts/Kconfig           |  5 +++++
->  lib/fonts/Makefile          |  2 ++
->  lib/fonts/font_7x14.c       |  1 +
->  lib/fonts/font_8x16.c       |  1 +
->  lib/fonts/font_custom_16x.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/fonts/font_mini_4x6.c   |  1 +
->  lib/fonts/fonts.c           | 38 +++++++++++++++++++++++++++++++++++---
->  9 files changed, 118 insertions(+), 24 deletions(-)
->  create mode 100644 lib/fonts/font_custom_16x.c
+> > When writing a file failed (e.g. due to a read-only file system), no
+> > error was reported by the 'edit' tool. To be valid (and to not confuse
+> > the poor user) at least '1' should be returned to indicate an error.
+> > 
+> > Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
+> > ---
+> >  commands/edit.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/commands/edit.c b/commands/edit.c
+> > index b28e2b9..3b653b7 100644
+> > --- a/commands/edit.c
+> > +++ b/commands/edit.c
+> > @@ -375,6 +375,7 @@ static int do_edit(int argc, char *argv[])
+> >  	int i;
+> >  	int linepos;
+> >  	int c;
+> > +	int ret = 0;
 > 
-> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-> index b10503e..dad45c3 100644
-> --- a/drivers/video/fbconsole.c
-> +++ b/drivers/video/fbconsole.c
-> @@ -22,8 +22,8 @@ struct fbc_priv {
->  	struct param_d *par_font;
->  	int par_font_val;
->  
-> -	int font_width, font_height;
-> -	const u8 *fontdata;
-> +	struct font_desc font;
-> +
+> Can we use COMMAND_SUCCESS insted of 0?
+> 
+> 
+> >  
+> >  	if (argc != 2)
+> >  		return COMMAND_ERROR_USAGE;
+> > @@ -533,7 +534,7 @@ static int do_edit(int argc, char *argv[])
+> >  			}
+> >  			break;
+> >  		case 4:
+> > -			save_file(argv[1]);
+> > +			ret = save_file(argv[1]);
+> 
+> Actually save_file() returns open()'s error. We have to convert it to COMMAND_ERROR, e.g.:
 
-Could you split the change of putting a struct font_desc into struct
-fbc_priv into a separate patch? That would make the addition of custom
-fonts better reviewable. Also, can we use a struct font_desc *font
-rather than struct font_desc font?
+If we return an error code from a command then the caller will print the
+corresponding error string to the console which might be what we want
+here.
 
-Otherwise I think the patch is fine.
+> 
+> if (save_file(argv[1]) != 0)
+> 	ret = COMMAND_ERROR;
+> 
+> Also save_file() does not check write()'s error.
+
+Indeed, this could be fixed while touching this code.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
