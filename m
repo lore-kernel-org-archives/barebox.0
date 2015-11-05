@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZuFT7-0003wG-Pv
- for barebox@lists.infradead.org; Thu, 05 Nov 2015 08:00:27 +0000
-Date: Thu, 5 Nov 2015 09:00:03 +0100
+ id 1ZuFUT-0004ir-Ge
+ for barebox@lists.infradead.org; Thu, 05 Nov 2015 08:01:50 +0000
+Date: Thu, 5 Nov 2015 09:01:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151105080003.GB8526@pengutronix.de>
-References: <1446537108-15386-1-git-send-email-t.remmet@phytec.de>
+Message-ID: <20151105080126.GC8526@pengutronix.de>
+References: <1446667356.4553.1.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1446537108-15386-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1446667356.4553.1.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] dts: phyFLEX-AM335x: Disable second ethernet interface
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] mci: Print versions with micro levels correctly
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Tue, Nov 03, 2015 at 08:51:47AM +0100, Teresa Remmet wrote:
-> There are phyFLEX modules with only the first eth phy mounted.
-> As barebox only supports the first interface anyway, disable
-> the second interface for now.
+On Wed, Nov 04, 2015 at 08:02:36PM +0000, Trent Piepho wrote:
+> The version is stored as BCD, e.g. 0x40 -> ".4" and 0x41 -> ".41".
+> The latter was getting printed as ".65".  Simplify the logic a bit to
+> not split the minor into nybbles just to re-assemble it into a byte
+> again.
 > 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/mci/mci-core.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 > 
-> diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-> index 6d488fa..c60943c 100644
-> --- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-> +++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
-> @@ -224,12 +224,13 @@
->  	phy_id = <&davinci_mdio>, <2>;
->  	phy-mode = "rmii";
->  	dual_emac_res_vlan = <2>;
-> +	status = "disabled";
->  };
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index 9000115..29c0d54 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -947,14 +947,13 @@ out:
+>  static char *mci_version_string(struct mci *mci)
+>  {
+>  	static char version[sizeof("x.xx")];
+> -	unsigned major, minor, micro;
+> +	unsigned major, minor;
 >  
->  &mac {
->  	pinctrl-names = "default";
-> -	pinctrl-0 = <&emac_rgmii1_pins &emac_rmii2_pins>;
-> -	dual_emac;
-> +	slaves = <1>;
-> +	pinctrl-0 = <&emac_rgmii1_pins>;
->  	status = "okay";
->  };
+>  	major = (mci->version >> 8) & 0xf;
+> -	minor = (mci->version >> 4) & 0xf;
+> -	micro = mci->version & 0xf;
+> +	minor = mci->version & 0xff;
 >  
+> -	sprintf(version, "%u.%u", major,
+> -			micro ? (minor << 4) | micro : minor);
+> +	/* Shift off last digit of minor if it's 0 */
+> +	sprintf(version, "%u.%x", major, minor & 0xf ? minor : minor >> 4);
+>  
+>  	return version;
+>  }
 > -- 
-> 1.9.1
+> 1.8.3.1
 > 
 > 
 > _______________________________________________
