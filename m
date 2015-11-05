@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zu6MT-0005XT-DH
- for barebox@lists.infradead.org; Wed, 04 Nov 2015 22:16:58 +0000
-Received: by lbblt2 with SMTP id lt2so3811557lbb.3
- for <barebox@lists.infradead.org>; Wed, 04 Nov 2015 14:16:36 -0800 (PST)
-From: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
-Date: Wed,  4 Nov 2015 23:16:32 +0100
-Message-Id: <1446675393-402-2-git-send-email-anton.bondarenko.sama@gmail.com>
-In-Reply-To: <1446675393-402-1-git-send-email-anton.bondarenko.sama@gmail.com>
-References: <1446675393-402-1-git-send-email-anton.bondarenko.sama@gmail.com>
+ id 1ZuEWh-00078d-EH
+ for barebox@lists.infradead.org; Thu, 05 Nov 2015 07:00:04 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  5 Nov 2015 07:59:38 +0100
+Message-Id: <1446706778-30658-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20151104154142.GA27677@gmail.com>
+References: <20151104154142.GA27677@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] embedsky-e9: enable barebox_update command for booter
- update
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Subject: [PATCH] hush: Add missing initialize_context() in some places
+To: Barebox List <barebox@lists.infradead.org>
 
-Simplify booter update with barebox_update command using special
-IMX6 MMC BBU handler.
+Before a context can be used it must be initialized. This was forgotten
+in several places. Add the missing calls to initialize_context().
+This fixes crashes when sourcing empty files
 
-Signed-off-by: Anton Bondarenko <anton.bondarenko.sama@gmail.com>
+Reported-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/embedsky-e9/board.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm/boards/embedsky-e9/board.c b/arch/arm/boards/embedsky-e9/board.c
-index e8aac0c..23bfec1 100644
---- a/arch/arm/boards/embedsky-e9/board.c
-+++ b/arch/arm/boards/embedsky-e9/board.c
-@@ -41,6 +41,8 @@
- #include <mach/usb.h>
- #include <envfs.h>
- #include <bootsource.h>
-+#include <bbu.h>
-+#include <mach/bbu.h>
+This patch should fix this issue.
+
+ common/hush.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/common/hush.c b/common/hush.c
+index abe8713..084dd85 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -814,6 +814,8 @@ static int run_pipe_real(struct p_context *ctx, struct pipe *pi)
+ 		char * str = NULL;
+ 		struct p_context ctx1;
  
- #define PHY_ID_RTL8211E	0x001cc915
- #define PHY_ID_MASK	0xffffffff
-@@ -81,6 +83,12 @@ static int e9_devices_init(void)
- 
- 	defaultenv_append_directory(defaultenv_e9);
- 
-+	imx6_bbu_internal_mmc_register_handler("sd", "/dev/mmc1",
-+		BBU_HANDLER_FLAG_DEFAULT);
++		initialize_context(&ctx1);
 +
-+	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc3",
-+		BBU_HANDLER_FLAG_DEFAULT);
+ 		str = make_string((child->argv + i));
+ 		rcode = parse_string_outer(&ctx1, str, FLAG_EXIT_FROM_LOOP | FLAG_REPARSING);
+ 		release_context(&ctx1);
+@@ -1866,6 +1868,8 @@ int run_command(const char *cmd)
+ 	struct p_context ctx;
+ 	int ret;
+ 
++	initialize_context(&ctx);
 +
- 	return 0;
- }
- device_initcall(e9_devices_init);
+ 	ret = parse_string_outer(&ctx, cmd, FLAG_PARSE_SEMICOLON);
+ 	release_context(&ctx);
+ 
+@@ -1889,6 +1893,8 @@ static int source_script(const char *path, int argc, char *argv[])
+ 	char *script;
+ 	int ret;
+ 
++	initialize_context(&ctx);
++
+ 	ctx.global_argc = argc;
+ 	ctx.global_argv = argv;
+ 
 -- 
-2.6.2
+2.6.1
 
 
 _______________________________________________
