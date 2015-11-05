@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZuEWh-00078d-EH
- for barebox@lists.infradead.org; Thu, 05 Nov 2015 07:00:04 +0000
+ id 1ZuFT7-0003wG-Pv
+ for barebox@lists.infradead.org; Thu, 05 Nov 2015 08:00:27 +0000
+Date: Thu, 5 Nov 2015 09:00:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  5 Nov 2015 07:59:38 +0100
-Message-Id: <1446706778-30658-1-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <20151104154142.GA27677@gmail.com>
-References: <20151104154142.GA27677@gmail.com>
+Message-ID: <20151105080003.GB8526@pengutronix.de>
+References: <1446537108-15386-1-git-send-email-t.remmet@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1446537108-15386-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,61 +18,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] hush: Add missing initialize_context() in some places
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] dts: phyFLEX-AM335x: Disable second ethernet interface
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Before a context can be used it must be initialized. This was forgotten
-in several places. Add the missing calls to initialize_context().
-This fixes crashes when sourcing empty files
+On Tue, Nov 03, 2015 at 08:51:47AM +0100, Teresa Remmet wrote:
+> There are phyFLEX modules with only the first eth phy mounted.
+> As barebox only supports the first interface anyway, disable
+> the second interface for now.
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 
-Reported-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
+Applied, thanks
 
-This patch should fix this issue.
+Sascha
 
- common/hush.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> ---
+>  arch/arm/dts/am335x-phytec-phyflex-som.dtsi | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+> index 6d488fa..c60943c 100644
+> --- a/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+> +++ b/arch/arm/dts/am335x-phytec-phyflex-som.dtsi
+> @@ -224,12 +224,13 @@
+>  	phy_id = <&davinci_mdio>, <2>;
+>  	phy-mode = "rmii";
+>  	dual_emac_res_vlan = <2>;
+> +	status = "disabled";
+>  };
+>  
+>  &mac {
+>  	pinctrl-names = "default";
+> -	pinctrl-0 = <&emac_rgmii1_pins &emac_rmii2_pins>;
+> -	dual_emac;
+> +	slaves = <1>;
+> +	pinctrl-0 = <&emac_rgmii1_pins>;
+>  	status = "okay";
+>  };
+>  
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-diff --git a/common/hush.c b/common/hush.c
-index abe8713..084dd85 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -814,6 +814,8 @@ static int run_pipe_real(struct p_context *ctx, struct pipe *pi)
- 		char * str = NULL;
- 		struct p_context ctx1;
- 
-+		initialize_context(&ctx1);
-+
- 		str = make_string((child->argv + i));
- 		rcode = parse_string_outer(&ctx1, str, FLAG_EXIT_FROM_LOOP | FLAG_REPARSING);
- 		release_context(&ctx1);
-@@ -1866,6 +1868,8 @@ int run_command(const char *cmd)
- 	struct p_context ctx;
- 	int ret;
- 
-+	initialize_context(&ctx);
-+
- 	ret = parse_string_outer(&ctx, cmd, FLAG_PARSE_SEMICOLON);
- 	release_context(&ctx);
- 
-@@ -1889,6 +1893,8 @@ static int source_script(const char *path, int argc, char *argv[])
- 	char *script;
- 	int ret;
- 
-+	initialize_context(&ctx);
-+
- 	ctx.global_argc = argc;
- 	ctx.global_argv = argv;
- 
 -- 
-2.6.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
