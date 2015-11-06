@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x231.google.com ([2a00:1450:4010:c07::231])
+Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZuZxC-0003d5-01
- for barebox@lists.infradead.org; Fri, 06 Nov 2015 05:52:51 +0000
-Received: by lfbn126 with SMTP id n126so67733259lfb.2
+ id 1ZuZxC-0003dG-Ma
+ for barebox@lists.infradead.org; Fri, 06 Nov 2015 05:52:52 +0000
+Received: by lfbf136 with SMTP id f136so67342374lfb.0
  for <barebox@lists.infradead.org>; Thu, 05 Nov 2015 21:52:28 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  6 Nov 2015 08:52:18 +0300
-Message-Id: <1446789139-4781-3-git-send-email-antonynpavlov@gmail.com>
+Date: Fri,  6 Nov 2015 08:52:19 +0300
+Message-Id: <1446789139-4781-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1446789139-4781-1-git-send-email-antonynpavlov@gmail.com>
 References: <1446789139-4781-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,57 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] fb: satisfy semantics for shadowfb's alloc/free
+Subject: [PATCH 3/3] fb: alloc or free shadowfb whether fb enabled or disabled
 To: barebox@lists.infradead.org
 Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
 From: Aleksey Kuleshov <rndfax@yandex.ru>
 
-Console enable -> alloc shadowfb.
-Console disable -> free shadowfb.
-Otherwise, if resolution gets changed, shadowfb will not be affected.
+Resolution can't be changed anyway once fb_enable() has been called,
+since no corresponding fb_disable() call appears in the code.
 
 Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
 ---
- drivers/video/fb.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/video/fb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index 3672c44..bd8bab0 100644
+index bd8bab0..d159d60 100644
 --- a/drivers/video/fb.c
 +++ b/drivers/video/fb.c
-@@ -31,6 +31,12 @@ static int fb_ioctl(struct cdev* cdev, int req, void *data)
+@@ -99,9 +99,9 @@ static int fb_enable_set(struct param_d *param, void *priv)
+ 	enable = info->p_enable;
+ 
+ 	if (enable)
+-		info->fbops->fb_enable(info);
++		fb_enable(info);
+ 	else
+-		info->fbops->fb_disable(info);
++		fb_disable(info);
+ 
  	return 0;
  }
- 
-+static void fb_release_shadowfb(struct fb_info *info)
-+{
-+	free(info->screen_base_shadow);
-+	info->screen_base_shadow = NULL;
-+}
-+
- static int fb_alloc_shadowfb(struct fb_info *info)
- {
- 	if (info->screen_base_shadow && info->shadowfb)
-@@ -47,8 +53,7 @@ static int fb_alloc_shadowfb(struct fb_info *info)
- 		memcpy(info->screen_base_shadow, info->screen_base,
- 				info->line_length * info->yres);
- 	} else {
--		free(info->screen_base_shadow);
--		info->screen_base_shadow = NULL;
-+		fb_release_shadowfb(info);
- 	}
- 
- 	return 0;
-@@ -79,6 +84,8 @@ int fb_disable(struct fb_info *info)
- 
- 	info->fbops->fb_disable(info);
- 
-+	fb_release_shadowfb(info);
-+
- 	info->enabled = false;
- 
- 	return 0;
 -- 
 2.6.2
 
