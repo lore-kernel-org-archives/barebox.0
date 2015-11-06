@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
+Received: from mail-lf0-x233.google.com ([2a00:1450:4010:c07::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZuZxC-0003dG-Ma
- for barebox@lists.infradead.org; Fri, 06 Nov 2015 05:52:52 +0000
-Received: by lfbf136 with SMTP id f136so67342374lfb.0
- for <barebox@lists.infradead.org>; Thu, 05 Nov 2015 21:52:28 -0800 (PST)
+ id 1ZuZxA-0003cs-R2
+ for barebox@lists.infradead.org; Fri, 06 Nov 2015 05:52:49 +0000
+Received: by lfs39 with SMTP id 39so37458058lfs.3
+ for <barebox@lists.infradead.org>; Thu, 05 Nov 2015 21:52:27 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri,  6 Nov 2015 08:52:19 +0300
-Message-Id: <1446789139-4781-4-git-send-email-antonynpavlov@gmail.com>
+Date: Fri,  6 Nov 2015 08:52:17 +0300
+Message-Id: <1446789139-4781-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1446789139-4781-1-git-send-email-antonynpavlov@gmail.com>
 References: <1446789139-4781-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,36 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] fb: alloc or free shadowfb whether fb enabled or disabled
+Subject: [PATCH 1/3] fbconsole: no need to copy extra line
 To: barebox@lists.infradead.org
 Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
 From: Aleksey Kuleshov <rndfax@yandex.ru>
 
-Resolution can't be changed anyway once fb_enable() has been called,
-since no corresponding fb_disable() call appears in the code.
-
 Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
 ---
- drivers/video/fb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbconsole.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index bd8bab0..d159d60 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -99,9 +99,9 @@ static int fb_enable_set(struct param_d *param, void *priv)
- 	enable = info->p_enable;
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index b10503e..c38d13c 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -192,8 +192,9 @@ static void printchar(struct fbc_priv *priv, int c)
  
- 	if (enable)
--		info->fbops->fb_enable(info);
-+		fb_enable(info);
- 	else
--		info->fbops->fb_disable(info);
-+		fb_disable(info);
+ 		buf = gui_screen_render_buffer(priv->sc);
  
- 	return 0;
- }
+-		memcpy(buf, buf + line_height, line_height * (priv->rows + 1));
++		memcpy(buf, buf + line_height, line_height * priv->rows);
+ 		memset(buf + line_height * priv->rows, 0, line_height);
++
+ 		gu_screen_blit(priv->sc);
+ 		priv->y = priv->rows;
+ 	}
 -- 
 2.6.2
 
