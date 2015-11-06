@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x231.google.com ([2a00:1450:4010:c07::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZuFkT-0004OZ-86
- for barebox@lists.infradead.org; Thu, 05 Nov 2015 08:18:22 +0000
-Date: Thu, 5 Nov 2015 09:17:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151105081758.GG8526@pengutronix.de>
-References: <1446567541-21731-1-git-send-email-ejo@pengutronix.de>
- <1446635004-26896-1-git-send-email-ejo@pengutronix.de>
- <20151104152321.1f2d9e673c1b259c8373148c@gmail.com>
- <20151104133053.GP25416@pengutronix.de>
- <20151104174810.64907d909a0c3196fe6778e0@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20151104174810.64907d909a0c3196fe6778e0@gmail.com>
+ id 1ZuZxC-0003d5-01
+ for barebox@lists.infradead.org; Fri, 06 Nov 2015 05:52:51 +0000
+Received: by lfbn126 with SMTP id n126so67733259lfb.2
+ for <barebox@lists.infradead.org>; Thu, 05 Nov 2015 21:52:28 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri,  6 Nov 2015 08:52:18 +0300
+Message-Id: <1446789139-4781-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1446789139-4781-1-git-send-email-antonynpavlov@gmail.com>
+References: <1446789139-4781-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,102 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] edit: Return error when save_file failed
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Enrico Jorns <ejo@pengutronix.de>
+Subject: [PATCH 2/3] fb: satisfy semantics for shadowfb's alloc/free
+To: barebox@lists.infradead.org
+Cc: Aleksey Kuleshov <rndfax@yandex.ru>
 
-On Wed, Nov 04, 2015 at 05:48:10PM +0300, Antony Pavlov wrote:
-> On Wed, 4 Nov 2015 14:30:53 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> 
-> > On Wed, Nov 04, 2015 at 03:23:21PM +0300, Antony Pavlov wrote:
-> > > On Wed,  4 Nov 2015 12:03:24 +0100
-> > > Enrico Jorns <ejo@pengutronix.de> wrote:
-> > > 
-> > > > When writing a file failed (e.g. due to a read-only file system), no
-> > > > error was reported by the 'edit' tool. To be valid (and to not confuse
-> > > > the poor user) at least '1' should be returned to indicate an error.
-> > > > 
-> > > > Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> > > > ---
-> > > >  commands/edit.c | 5 +++--
-> > > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/commands/edit.c b/commands/edit.c
-> > > > index b28e2b9..3b653b7 100644
-> > > > --- a/commands/edit.c
-> > > > +++ b/commands/edit.c
-> > > > @@ -375,6 +375,7 @@ static int do_edit(int argc, char *argv[])
-> > > >  	int i;
-> > > >  	int linepos;
-> > > >  	int c;
-> > > > +	int ret = 0;
-> > > 
-> > > Can we use COMMAND_SUCCESS insted of 0?
-> > > 
-> > > 
-> > > >  
-> > > >  	if (argc != 2)
-> > > >  		return COMMAND_ERROR_USAGE;
-> > > > @@ -533,7 +534,7 @@ static int do_edit(int argc, char *argv[])
-> > > >  			}
-> > > >  			break;
-> > > >  		case 4:
-> > > > -			save_file(argv[1]);
-> > > > +			ret = save_file(argv[1]);
-> > > 
-> > > Actually save_file() returns open()'s error. We have to convert it to COMMAND_ERROR, e.g.:
-> > 
-> > If we return an error code from a command then the caller will print the
-> > corresponding error string to the console which might be what we want
-> > here.
-> > 
-> > > 
-> > > if (save_file(argv[1]) != 0)
-> > > 	ret = COMMAND_ERROR;
-> > > 
-> 
-> At the moment the only cmd() caller is inside of execute_command():
-> 
->         ret = cmdtp->cmd(argc, argv);
->         if (ret == COMMAND_ERROR_USAGE) {
->                 barebox_cmd_usage(cmdtp);
->                 ret = COMMAND_ERROR;
->         }
->         ...
->         return ret;
-> 
-> 
-> But we brop execute_command() result in run_command():
->         if (execute_command(argc, argv) != COMMAND_SUCCESS)
-> 	        rc = -1;
-> 
-> We have a chance to see error message only if we call execute_command()
-> from run_pipe_real():
-> 
->         ret = execute_binfmt(globbuf.gl_pathc, globbuf.gl_pathv);
->         if (ret < 0) {
->             printf("%s: %s\n", globbuf.gl_pathv[0], strerror(-ret));
->             ret = 127;
->         }
-> 
-> So, yes, you are right we have no reason to convert open()'s error into COMMAND_ERROR,
-> but for consistency we have toadd strerror() print to run_command() code.
+From: Aleksey Kuleshov <rndfax@yandex.ru>
 
-Yes, right.
+Console enable -> alloc shadowfb.
+Console disable -> free shadowfb.
+Otherwise, if resolution gets changed, shadowfb will not be affected.
 
-Sascha
+Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
+---
+ drivers/video/fb.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 3672c44..bd8bab0 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -31,6 +31,12 @@ static int fb_ioctl(struct cdev* cdev, int req, void *data)
+ 	return 0;
+ }
+ 
++static void fb_release_shadowfb(struct fb_info *info)
++{
++	free(info->screen_base_shadow);
++	info->screen_base_shadow = NULL;
++}
++
+ static int fb_alloc_shadowfb(struct fb_info *info)
+ {
+ 	if (info->screen_base_shadow && info->shadowfb)
+@@ -47,8 +53,7 @@ static int fb_alloc_shadowfb(struct fb_info *info)
+ 		memcpy(info->screen_base_shadow, info->screen_base,
+ 				info->line_length * info->yres);
+ 	} else {
+-		free(info->screen_base_shadow);
+-		info->screen_base_shadow = NULL;
++		fb_release_shadowfb(info);
+ 	}
+ 
+ 	return 0;
+@@ -79,6 +84,8 @@ int fb_disable(struct fb_info *info)
+ 
+ 	info->fbops->fb_disable(info);
+ 
++	fb_release_shadowfb(info);
++
+ 	info->enabled = false;
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.2
+
 
 _______________________________________________
 barebox mailing list
