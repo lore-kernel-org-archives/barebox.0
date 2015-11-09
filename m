@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oi0-x230.google.com ([2607:f8b0:4003:c06::230])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zvhhi-0008BP-MD
- for barebox@lists.infradead.org; Mon, 09 Nov 2015 08:21:31 +0000
-Received: by oiad129 with SMTP id d129so95452113oia.0
- for <barebox@lists.infradead.org>; Mon, 09 Nov 2015 00:21:09 -0800 (PST)
-Received: from mail.tkernel.org ([69.16.145.45])
- by smtp.gmail.com with ESMTPSA id mj8sm4266072obc.25.2015.11.09.00.21.07
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
- Mon, 09 Nov 2015 00:21:08 -0800 (PST)
-Date: Mon, 9 Nov 2015 00:21:01 -0800
-From: Du Huanpeng <u74147@gmail.com>
-Message-ID: <20151109082101.GA5169@mail.tkernel.org>
-References: <1446952576-2228-1-git-send-email-u74147@gmail.com>
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zvi9x-0003mb-4z
+ for barebox@lists.infradead.org; Mon, 09 Nov 2015 08:50:42 +0000
+Date: Mon, 9 Nov 2015 09:50:08 +0100
+From: Stefan Christ <s.christ@phytec.de>
+Message-ID: <20151109085008.GE2347@lws-christ>
+References: <1446805318-26691-1-git-send-email-s.christ@phytec.de>
+ <1446805318-26691-11-git-send-email-s.christ@phytec.de>
+ <20151109064526.GT8526@pengutronix.de>
 MIME-Version: 1.0
+In-Reply-To: <20151109064526.GT8526@pengutronix.de>
 Content-Disposition: inline
-In-Reply-To: <1446952576-2228-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fbconsole: move font variable into struct font_desc
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 10/10] ARM: imx6dl: Add support for Phytec phyCORE-i.MX6
+ SOM
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Sat, Nov 07, 2015 at 07:16:16PM -0800, Du Huanpeng wrote:
-thanks!
-because my next patch will change this line to:
-
-+	int index;
-+	if (font->index == NULL) {
-+		index  = font->width + 7;
-+		index /= 8;
-+		index *= font->height;
-+		index *= ch;
-
-so, I didn't fix this warning.
-
-- - -
-Du Huanpeng
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgo+IAo+IEFwcGxpZWQgYWxsIGV4Y2VwdCB0aGlzIG9uZS4KPiAKPiBUaGlzIHBhdGNoIG1p
+c3NlcyBzb21ldGhpbmcuIENvbXBpbGF0aW9uIGZhaWxzIHdpdGg6Cj4gCj4gRXJyb3I6IC9wdHgv
+d29yay9kdWRlL1dPUktfQS9zaGEvYmFja3VwL2JhcmVib3gvYmFyZWJveC9hcmNoL2FybS9kdHMv
+aW14NnFkbC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaTozOC4xLTggTGFiZWwgb3IgcGF0aCBlY3Nw
+aTEgbm90IGZvdW5kCj4gRXJyb3I6IC9wdHgvd29yay9kdWRlL1dPUktfQS9zaGEvYmFja3VwL2Jh
+cmVib3gvYmFyZWJveC9hcmNoL2FybS9kdHMvaW14NnFkbC1waHl0ZWMtcGh5Y29yZS1zb20uZHRz
+aTo3NS4xLTUgTGFiZWwgb3IgcGF0aCBmZWMgbm90IGZvdW5kCj4gRXJyb3I6IC9wdHgvd29yay9k
+dWRlL1dPUktfQS9zaGEvYmFja3VwL2JhcmVib3gvYmFyZWJveC9hcmNoL2FybS9kdHMvaW14NnFk
+bC1waHl0ZWMtcGh5Y29yZS1zb20uZHRzaTo4MS4xLTYgTGFiZWwgb3IgcGF0aCBncG1pIG5vdCBm
+b3VuZAo+IEVycm9yOiAvcHR4L3dvcmsvZHVkZS9XT1JLX0Evc2hhL2JhY2t1cC9iYXJlYm94L2Jh
+cmVib3gvYXJjaC9hcm0vZHRzL2lteDZxZGwtcGh5dGVjLXBoeWNvcmUtc29tLmR0c2k6MTE1LjEt
+NiBMYWJlbCBvciBwYXRoIGkyYzMgbm90IGZvdW5kCj4gRXJyb3I6IC9wdHgvd29yay9kdWRlL1dP
+UktfQS9zaGEvYmFja3VwL2JhcmVib3gvYmFyZWJveC9hcmNoL2FybS9kdHMvaW14NnFkbC1waHl0
+ZWMtcGh5Y29yZS1zb20uZHRzaToxMzQuNS02IHN5bnRheCBlcnJvcgo+IAo+IFNhc2NoYQoKVXBz
+LiBJJ2xsIHNlbmQgYSB2Mi4KCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4gLyBLaW5kIHJlZ2Fy
+ZHMsCglTdGVmYW4gQ2hyaXN0CgpPbiBNb24sIE5vdiAwOSwgMjAxNSBhdCAwNzo0NToyNkFNICsw
+MTAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4gT24gRnJpLCBOb3YgMDYsIDIwMTUgYXQgMTE6MjE6
+NThBTSArMDEwMCwgU3RlZmFuIENocmlzdCB3cm90ZToKPiA+IEZyb206IENocmlzdGlhbiBIZW1w
+IDxjLmhlbXBAcGh5dGVjLmRlPgo+ID4gCj4gPiBBZGQgUGh5dGVjIHBoeUNPUkUtaS5NWDYgU09N
+Lgo+ID4gICAgICAtIGlteDZkbC1waHl0ZWMtcGh5Y29yZS1zb20tbmFuZAo+ID4gICAgICAgICAt
+IDI1NkdCIFJBTSBvbiAxIEJhbmsgd2l0aCAzMkJpdAo+ID4gICAgICAgICAtIDEwLzEwME1CaXQg
+RXRoZXJuZXQKPiA+ICAgICAgICAgLSBOQU5ECj4gPiAgICAgICAgIC0gU0QKPiA+ICAgICAgICAg
+LSBVQVJUCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IFN0ZWZhbiBDaHJpc3QgPHMuY2hyaXN0QHBo
+eXRlYy5kZT4KPiA+IFNpZ25lZC1vZmYtYnk6IENocmlzdGlhbiBIZW1wIDxjLmhlbXBAcGh5dGVj
+LmRlPgo+ID4gLS0tCj4gCj4gQXBwbGllZCBhbGwgZXhjZXB0IHRoaXMgb25lLgo+IAo+IFRoaXMg
+cGF0Y2ggbWlzc2VzIHNvbWV0aGluZy4gQ29tcGlsYXRpb24gZmFpbHMgd2l0aDoKPiAKPiBFcnJv
+cjogL3B0eC93b3JrL2R1ZGUvV09SS19BL3NoYS9iYWNrdXAvYmFyZWJveC9iYXJlYm94L2FyY2gv
+YXJtL2R0cy9pbXg2cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpOjM4LjEtOCBMYWJlbCBvciBw
+YXRoIGVjc3BpMSBub3QgZm91bmQKPiBFcnJvcjogL3B0eC93b3JrL2R1ZGUvV09SS19BL3NoYS9i
+YWNrdXAvYmFyZWJveC9iYXJlYm94L2FyY2gvYXJtL2R0cy9pbXg2cWRsLXBoeXRlYy1waHljb3Jl
+LXNvbS5kdHNpOjc1LjEtNSBMYWJlbCBvciBwYXRoIGZlYyBub3QgZm91bmQKPiBFcnJvcjogL3B0
+eC93b3JrL2R1ZGUvV09SS19BL3NoYS9iYWNrdXAvYmFyZWJveC9iYXJlYm94L2FyY2gvYXJtL2R0
+cy9pbXg2cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpOjgxLjEtNiBMYWJlbCBvciBwYXRoIGdw
+bWkgbm90IGZvdW5kCj4gRXJyb3I6IC9wdHgvd29yay9kdWRlL1dPUktfQS9zaGEvYmFja3VwL2Jh
+cmVib3gvYmFyZWJveC9hcmNoL2FybS9kdHMvaW14NnFkbC1waHl0ZWMtcGh5Y29yZS1zb20uZHRz
+aToxMTUuMS02IExhYmVsIG9yIHBhdGggaTJjMyBub3QgZm91bmQKPiBFcnJvcjogL3B0eC93b3Jr
+L2R1ZGUvV09SS19BL3NoYS9iYWNrdXAvYmFyZWJveC9iYXJlYm94L2FyY2gvYXJtL2R0cy9pbXg2
+cWRsLXBoeXRlYy1waHljb3JlLXNvbS5kdHNpOjEzNC41LTYgc3ludGF4IGVycm9yCj4gCj4gU2Fz
+Y2hhCj4gCj4gLS0gCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0
+aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBl
+aW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEy
+MS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAg
+ICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
