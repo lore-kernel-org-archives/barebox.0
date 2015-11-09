@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZvgD7-0002UV-0k
- for barebox@lists.infradead.org; Mon, 09 Nov 2015 06:45:50 +0000
-Date: Mon, 9 Nov 2015 07:45:26 +0100
+ id 1ZvgGw-0002jS-Eg
+ for barebox@lists.infradead.org; Mon, 09 Nov 2015 06:49:47 +0000
+Date: Mon, 9 Nov 2015 07:49:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151109064526.GT8526@pengutronix.de>
+Message-ID: <20151109064924.GU8526@pengutronix.de>
 References: <1446805318-26691-1-git-send-email-s.christ@phytec.de>
- <1446805318-26691-11-git-send-email-s.christ@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1446805318-26691-11-git-send-email-s.christ@phytec.de>
+In-Reply-To: <1446805318-26691-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/10] ARM: imx6dl: Add support for Phytec phyCORE-i.MX6
- SOM
+Subject: Re: [PATCH 00/10] Rework towards phytec-som-imx6 and new variants
 To: Stefan Christ <s.christ@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 06, 2015 at 11:21:58AM +0100, Stefan Christ wrote:
-> From: Christian Hemp <c.hemp@phytec.de>
+Hi Stefan,
+
+On Fri, Nov 06, 2015 at 11:21:48AM +0100, Stefan Christ wrote:
+> Hi,
 > 
-> Add Phytec phyCORE-i.MX6 SOM.
->      - imx6dl-phytec-phycore-som-nand
->         - 256GB RAM on 1 Bank with 32Bit
->         - 10/100MBit Ethernet
->         - NAND
->         - SD
->         - UART
-> 
-> Signed-off-by: Stefan Christ <s.christ@phytec.de>
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> ---
+> the patchstack first refactors the phyCARD-i.MX6 and phyFLEX-i.MX6 to a common
+> phytec-som-imx6. Then some phyFLEX-i.MX6 variants and the new phyCORE-i.MX6 are
+> added plus some environment updates and one image rename patch.
+>
 
-Applied all except this one.
-
-This patch misses something. Compilation fails with:
-
-Error: /ptx/work/dude/WORK_A/sha/backup/barebox/barebox/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi:38.1-8 Label or path ecspi1 not found
-Error: /ptx/work/dude/WORK_A/sha/backup/barebox/barebox/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi:75.1-5 Label or path fec not found
-Error: /ptx/work/dude/WORK_A/sha/backup/barebox/barebox/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi:81.1-6 Label or path gpmi not found
-Error: /ptx/work/dude/WORK_A/sha/backup/barebox/barebox/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi:115.1-6 Label or path i2c3 not found
-Error: /ptx/work/dude/WORK_A/sha/backup/barebox/barebox/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi:134.5-6 syntax error
+The Phytec i.MX6 boards all have an EEPROM, right? Does it have the
+memory setup encoded somewhere? It gets increasingly hard picking the
+right image for the Phytec boards.
 
 Sascha
 
