@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x244.google.com ([2a00:1450:4010:c04::244])
+Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZvjOC-00073T-Ga
- for barebox@lists.infradead.org; Mon, 09 Nov 2015 10:09:29 +0000
-Received: by lbvs9 with SMTP id s9so2587262lbv.1
- for <barebox@lists.infradead.org>; Mon, 09 Nov 2015 02:09:07 -0800 (PST)
-From: Sergey Koshechkin <serge.koshechkin@gmail.com>
-Date: Mon,  9 Nov 2015 13:09:01 +0300
-Message-Id: <1447063741-23881-1-git-send-email-serge.koshechkin@gmail.com>
+ id 1Zvjiu-0003Mj-MW
+ for barebox@lists.infradead.org; Mon, 09 Nov 2015 10:30:53 +0000
+Received: by lbces9 with SMTP id es9so25573547lbc.2
+ for <barebox@lists.infradead.org>; Mon, 09 Nov 2015 02:30:30 -0800 (PST)
+From: Peter Mamonov <pmamonov@gmail.com>
+Date: Mon,  9 Nov 2015 13:32:51 +0300
+Message-Id: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mk-omap-image: make some locally used functions static
+Subject: [PATCH] common: filetype: do not redetect MBR-type devices as a
+ FAT-type
 To: barebox@lists.infradead.org
-Cc: Sergey Koshechkin <serge.koshechkin@gmail.com>, antony@niisi.msk.ru
+Cc: Peter Mamonov <pmamonov@gmail.com>
 
-Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
+Deleted pieces of code detect MBR-containig device as a FAT-type device,
+if it's first partition contains a FAT filesystem. This behaviour enabled one
+to mount the FAT FS which is either directly on the device (disk0) or on
+the first partition (disk0.0) using the same command:
+    mount /dev/disk0 /fat
+However, the desired behaviour can be reached with a:
+    mount /dev/disk0 /fat || mount /dev/disk0.0 /fat || echo "Mounting failed"
+
+Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/mk-omap-image.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/filetype.c | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-diff --git a/scripts/mk-omap-image.c b/scripts/mk-omap-image.c
-index 1d61a34..234b7e3 100644
---- a/scripts/mk-omap-image.c
-+++ b/scripts/mk-omap-image.c
-@@ -49,7 +49,7 @@
- #include <getopt.h>
- #include <endian.h>
+diff --git a/common/filetype.c b/common/filetype.c
+index c59441d..f9e03f7 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -345,21 +345,6 @@ enum filetype file_name_detect_type(const char *filename)
  
--void usage(char *prgname)
-+static void usage(char *prgname)
- {
- 	printf("usage: %s [OPTION] FILE > IMAGE\n"
- 	       "\n"
+ 	type = file_detect_type(buf, ret);
+ 
+-	if (type == filetype_mbr) {
+-		/*
+-		 * Get the first partition start sector
+-		 * and check for FAT in it
+-		 */
+-		is_fat_or_mbr(buf, &bootsec);
+-		ret = lseek(fd, (bootsec) * 512, SEEK_SET);
+-		if (ret < 0)
+-			goto err_out;
+-		ret = read(fd, buf, 512);
+-		if (ret < 0)
+-			goto err_out;
+-		type = is_fat_or_mbr((u8 *)buf, NULL);
+-	}
+-
+ err_out:
+ 	close(fd);
+ 	free(buf);
+@@ -385,21 +370,6 @@ enum filetype cdev_detect_type(const char *name)
+ 
+ 	type = file_detect_type(buf, ret);
+ 
+-	if (type == filetype_mbr) {
+-		unsigned long bootsec;
+-		/*
+-		 * Get the first partition start sector
+-		 * and check for FAT in it
+-		 */
+-		is_fat_or_mbr(buf, &bootsec);
+-
+-		ret = cdev_read(cdev, buf, 512, bootsec * 512, 0);
+-		if (ret < 0)
+-			goto err_out;
+-
+-		type = is_fat_or_mbr((u8 *)buf, NULL);
+-	}
+-
+ err_out:
+ 	free(buf);
+ 	cdev_close(cdev);
 -- 
-2.6.1
+2.1.4
 
 
 _______________________________________________
