@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZvlGe-00083m-FA
- for barebox@lists.infradead.org; Mon, 09 Nov 2015 12:09:49 +0000
-Date: Mon, 9 Nov 2015 13:09:20 +0100
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20151109120920.GG2347@lws-christ>
-References: <1446805318-26691-1-git-send-email-s.christ@phytec.de>
- <20151109064924.GU8526@pengutronix.de>
+Received: from mail.kymetacorp.com ([192.81.58.21])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZvrWa-0007at-Vv
+ for barebox@lists.infradead.org; Mon, 09 Nov 2015 18:50:41 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Mon, 9 Nov 2015 18:49:53 +0000
+Message-ID: <1447094995.4553.50.camel@rtred1test09.kymeta.local>
+References: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
+Content-Language: en-US
+Content-ID: <54CF981387A16E429EA2E3D79CDFAC75@kymetacorp.com>
 MIME-Version: 1.0
-In-Reply-To: <20151109064924.GU8526@pengutronix.de>
-Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/10] Rework towards phytec-som-imx6 and new variants
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] common: filetype: do not redetect MBR-type devices as a
+ FAT-type
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGkgU2FzY2hhLAoKPiA+IHRoZSBwYXRjaHN0YWNrIGZpcnN0IHJlZmFjdG9ycyB0aGUgcGh5Q0FS
-RC1pLk1YNiBhbmQgcGh5RkxFWC1pLk1YNiB0byBhIGNvbW1vbgo+ID4gcGh5dGVjLXNvbS1pbXg2
-LiBUaGVuIHNvbWUgcGh5RkxFWC1pLk1YNiB2YXJpYW50cyBhbmQgdGhlIG5ldyBwaHlDT1JFLWku
-TVg2IGFyZQo+ID4gYWRkZWQgcGx1cyBzb21lIGVudmlyb25tZW50IHVwZGF0ZXMgYW5kIG9uZSBp
-bWFnZSByZW5hbWUgcGF0Y2guCj4gPgo+Cj4gVGhlIFBoeXRlYyBpLk1YNiBib2FyZHMgYWxsIGhh
-dmUgYW4gRUVQUk9NLCByaWdodD8KCk5vLCBpdCdzIHBvc3NpYmxlIHRvIGdldCBhIGJvYXJkIHdp
-dGhvdXQgYW4gRUVQUk9NIGFuZCB3ZSBoYXZlIHNvbWUgb2YgdGhlbQpseWluZyBhcm91bmQgaGVy
-ZS4KCj4gRG9lcyBpdCBoYXZlIHRoZSBtZW1vcnkgc2V0dXAgZW5jb2RlZCBzb21ld2hlcmU/CgpT
-byBubywgdGhlIG1lbW9yeSBpcyBub3QgZW5jb2RlZCBhbnl3aGVyZSBvbiB0aGUgbW9kdWxlLgoK
-PiBJdCBnZXRzIGluY3JlYXNpbmdseSBoYXJkIHBpY2tpbmcgdGhlIHJpZ2h0IGltYWdlIGZvciB0
-aGUgUGh5dGVjIGJvYXJkcy4KClllYWguIFdlIGFyZSBkaXNjdXNzaW5nIHNvbWUgc29sdXRpb25z
-IGZvciB0aGF0IGxpa2UgR1BJT3MsIEVFUFJPTSBvciBFRnVzZXMsCmJ1dCBub3RoaW5nIGhhcyBl
-bWVyZ2VkIGZyb20gdGhhdCBhbmQgdGhleSBhcmUgb25seSB2aWFibGUgZm9yIG5ldyBwcm9kdWN0
-cy4KCk9uZSBzaW1wbGUgdGhpbmcgd291bGQgYmUgdG8gZW5jb2RlIHRoZSBtZW1vcnkgY29uZmln
-dXJhdGlvbiBpbnRvIHRoZSBiYXJlYm94CmltYWdlIGZpbGVuYW1lLiBTbyBhIHVzZXIgY2FuIGxv
-b2sgYXQgdGhlIG1vZHVsZSwgY291bnQgdGhlIG1lbW9yeSBjaGlwcyBhbmQKYmFua3MsIGFuZCBw
-aWNrIHRoZSBjb3JyZWN0IGltYWdlIGZvciB0aGF0LgoKTWl0IGZyZXVuZGxpY2hlbiBHcsO8w59l
-biAvIEtpbmQgcmVnYXJkcywKCVN0ZWZhbiBDaHJpc3QKCk9uIE1vbiwgTm92IDA5LCAyMDE1IGF0
-IDA3OjQ5OjI0QU0gKzAxMDAsIFNhc2NoYSBIYXVlciB3cm90ZToKPiBIaSBTdGVmYW4sCj4gCj4g
-T24gRnJpLCBOb3YgMDYsIDIwMTUgYXQgMTE6MjE6NDhBTSArMDEwMCwgU3RlZmFuIENocmlzdCB3
-cm90ZToKPiA+IEhpLAo+ID4gCj4gPiB0aGUgcGF0Y2hzdGFjayBmaXJzdCByZWZhY3RvcnMgdGhl
-IHBoeUNBUkQtaS5NWDYgYW5kIHBoeUZMRVgtaS5NWDYgdG8gYSBjb21tb24KPiA+IHBoeXRlYy1z
-b20taW14Ni4gVGhlbiBzb21lIHBoeUZMRVgtaS5NWDYgdmFyaWFudHMgYW5kIHRoZSBuZXcgcGh5
-Q09SRS1pLk1YNiBhcmUKPiA+IGFkZGVkIHBsdXMgc29tZSBlbnZpcm9ubWVudCB1cGRhdGVzIGFu
-ZCBvbmUgaW1hZ2UgcmVuYW1lIHBhdGNoLgo+ID4KPiAKPiBUaGUgUGh5dGVjIGkuTVg2IGJvYXJk
-cyBhbGwgaGF2ZSBhbiBFRVBST00sIHJpZ2h0PyBEb2VzIGl0IGhhdmUgdGhlCj4gbWVtb3J5IHNl
-dHVwIGVuY29kZWQgc29tZXdoZXJlPyBJdCBnZXRzIGluY3JlYXNpbmdseSBoYXJkIHBpY2tpbmcg
-dGhlCj4gcmlnaHQgaW1hZ2UgZm9yIHRoZSBQaHl0ZWMgYm9hcmRzLgo+IAo+IFNhc2NoYQo+IAo+
-IC0tIAo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAg
-ICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3Ry
-LiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZh
-eDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+On Mon, 2015-11-09 at 13:32 +0300, Peter Mamonov wrote:
+> Deleted pieces of code detect MBR-containig device as a FAT-type device,
+> if it's first partition contains a FAT filesystem. This behaviour enabled one
+> to mount the FAT FS which is either directly on the device (disk0) or on
+> the first partition (disk0.0) using the same command:
+>     mount /dev/disk0 /fat
+> However, the desired behaviour can be reached with a:
+>     mount /dev/disk0 /fat || mount /dev/disk0.0 /fat || echo "Mounting failed"
+
+The in flash env for omap is found by mounting a FAT filesystem and
+reading an env file from it.  The code that does this uses the disk as
+the device, rather than the partition.  Which I thought was odd and
+wondered why/if that worked correctly....
+
+Anyway, this change would break that code.  I suspect than instead of
+coding the disk0 || disk0.0 method it could just mount disk0.0.  Because
+the code does this (edited):
+
+partname = asprintf("/dev/%s.0", diskdev);
+ret = stat(partname, &s);
+if (ret) {
+  pr_err("Failed to load environment: no device '%s'\n", diskdev);
+  return 0;
+}
+ret = mount(diskdev, "fat", "/boot", NULL);
+
+
+If disk0.0 didn't exist then it wouldn't try to mount it in the 1st
+place, so the ability of trying both disk0 and disk0.0 wouldn't be used.
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
