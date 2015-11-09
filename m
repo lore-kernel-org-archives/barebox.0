@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZviM9-0003Ux-2f
- for barebox@lists.infradead.org; Mon, 09 Nov 2015 09:03:18 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 9772DA001AB
- for <barebox@lists.infradead.org>; Mon,  9 Nov 2015 10:03:20 +0100 (CET)
-From: Stefan Christ <s.christ@phytec.de>
-Date: Mon, 9 Nov 2015 10:02:51 +0100
-Message-Id: <1447059771-21793-1-git-send-email-s.christ@phytec.de>
+Received: from mail-lb0-x244.google.com ([2a00:1450:4010:c04::244])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZvjN6-0006oL-QJ
+ for barebox@lists.infradead.org; Mon, 09 Nov 2015 10:08:22 +0000
+Received: by lbvs9 with SMTP id s9so2585579lbv.1
+ for <barebox@lists.infradead.org>; Mon, 09 Nov 2015 02:07:58 -0800 (PST)
+From: Sergey Koshechkin <serge.koshechkin@gmail.com>
+Date: Mon,  9 Nov 2015 13:06:33 +0300
+Message-Id: <1447063593-23825-1-git-send-email-serge.koshechkin@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,290 +21,592 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] ARM: imx6dl: Add support for Phytec phyCORE-i.MX6 SOM
+Subject: [PATCH] docproc: sync with linux-4.3 kernel
 To: barebox@lists.infradead.org
+Cc: Sergey Koshechkin <serge.koshechkin@gmail.com>, antony@niisi.msk.ru
 
-From: Christian Hemp <c.hemp@phytec.de>
-
-Add Phytec phyCORE-i.MX6 SOM.
-     - imx6dl-phytec-phycore-som-nand
-        - 256GB RAM on 1 Bank with 32Bit
-        - 10/100MBit Ethernet
-        - NAND
-        - SD
-        - UART
-
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
 ---
-v2: add '#include <arm/imx6dl.dtsi>' in dts to fix compile error
----
- arch/arm/boards/phytec-som-imx6/board.c            |  6 +-
- .../flash-header-phytec-pcm058dl-256mb.imxcfg      |  8 ++
- .../phytec-som-imx6/flash-header-phytec-pcm058dl.h | 98 ++++++++++++++++++++++
- arch/arm/boards/phytec-som-imx6/lowlevel.c         |  1 +
- arch/arm/dts/Makefile                              |  3 +-
- arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts    | 63 ++++++++++++++
- images/Makefile.imx                                |  5 ++
- 7 files changed, 181 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
- create mode 100644 arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h
- create mode 100644 arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
+ scripts/basic/docproc.c | 334 +++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 256 insertions(+), 78 deletions(-)
 
-diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
-index 639a562..9aefa55 100644
---- a/arch/arm/boards/phytec-som-imx6/board.c
-+++ b/arch/arm/boards/phytec-som-imx6/board.c
-@@ -112,7 +112,8 @@ static int physom_imx6_devices_init(void)
- 		default_envdev = "NAND flash";
+diff --git a/scripts/basic/docproc.c b/scripts/basic/docproc.c
+index 9f6535d..73c32d6 100644
+--- a/scripts/basic/docproc.c
++++ b/scripts/basic/docproc.c
+@@ -10,8 +10,10 @@
+  *	documentation-frontend
+  *		Scans the template file and call kernel-doc for
+  *		all occurrences of ![EIF]file
+- *		Beforehand each referenced file are scanned for
+- *		any exported sympols "EXPORT_SYMBOL()" statements.
++ *		Beforehand each referenced file is scanned for
++ *		any symbols that are exported via these macros:
++ *			EXPORT_SYMBOL(), EXPORT_SYMBOL_GPL(), &
++ *			EXPORT_SYMBOL_GPL_FUTURE()
+  *		This is used to create proper -function and
+  *		-nofunction arguments in calls to kernel-doc.
+  *		Usage: docproc doc file.tmpl
+@@ -28,15 +30,18 @@
+  *		!Ifilename
+  *		!Dfilename
+  *		!Ffilename
++ *		!Pfilename
+  *
+  */
  
- 	} else if (of_machine_is_compatible("phytec,imx6q-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")) {
-+		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
-+		|| of_machine_is_compatible("phytec,imx6dl-pcm058-nand")) {
++#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <ctype.h>
+ #include <unistd.h>
+ #include <limits.h>
++#include <errno.h>
+ #include <sys/types.h>
+ #include <sys/wait.h>
  
- 		barebox_set_hostname("phyCORE-i.MX6");
- 		default_environment_path = "/chosen/environment-spinor";
-@@ -157,7 +158,8 @@ static int physom_imx6_devices_init(void)
+@@ -51,45 +56,71 @@ typedef void FILEONLY(char * file);
+ FILEONLY *internalfunctions;
+ FILEONLY *externalfunctions;
+ FILEONLY *symbolsonly;
++FILEONLY *findall;
  
- 	/* Overwrite file /env/init/automount */
- 	if (of_machine_is_compatible("phytec,imx6q-pcm058-nand")
--		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")) {
-+		|| of_machine_is_compatible("phytec,imx6q-pcm058-emmc")
-+		|| of_machine_is_compatible("phytec,imx6dl-pcm058-nand")) {
- 		defaultenv_append_directory(defaultenv_physom_imx6_mira);
+ typedef void FILELINE(char * file, char * line);
+ FILELINE * singlefunctions;
+ FILELINE * entity_system;
++FILELINE * docsection;
+ 
+ #define MAXLINESZ     2048
+ #define MAXFILES      250
+ #define KERNELDOCPATH "scripts/"
+ #define KERNELDOC     "kernel-doc"
+ #define DOCBOOK       "-docbook"
++#define LIST          "-list"
+ #define FUNCTION      "-function"
+ #define NOFUNCTION    "-nofunction"
++#define NODOCSECTIONS "-no-doc-sections"
++#define SHOWNOTFOUND  "-show-not-found"
+ 
+-void usage (void)
++static char *srctree, *kernsrctree;
++
++static char **all_list = NULL;
++static int all_list_len = 0;
++
++static void consume_symbol(const char *sym)
++{
++	int i;
++
++	for (i = 0; i < all_list_len; i++) {
++		if (!all_list[i])
++			continue;
++		if (strcmp(sym, all_list[i]))
++			continue;
++		all_list[i] = NULL;
++		break;
++	}
++}
++
++static void usage (void)
+ {
+ 	fprintf(stderr, "Usage: docproc {doc|depend} file\n");
+ 	fprintf(stderr, "Input is read from file.tmpl. Output is sent to stdout\n");
+ 	fprintf(stderr, "doc: frontend when generating kernel documentation\n");
+ 	fprintf(stderr, "depend: generate list of files referenced within file\n");
++	fprintf(stderr, "Environment variable SRCTREE: absolute path to sources.\n");
++	fprintf(stderr, "                     KBUILD_SRC: absolute path to kernel source tree.\n");
+ }
+ 
+ /*
+- * Execute kernel-doc with parameters givin in svec
++ * Execute kernel-doc with parameters given in svec
+  */
+-void exec_kernel_doc(char **svec)
++static void exec_kernel_doc(char **svec)
+ {
+ 	pid_t pid;
+ 	int ret;
+ 	char real_filename[PATH_MAX + 1];
+ 	/* Make sure output generated so far are flushed */
+ 	fflush(stdout);
+-	switch(pid=fork()) {
++	switch (pid=fork()) {
+ 		case -1:
+ 			perror("fork");
+ 			exit(1);
+ 		case  0:
+ 			memset(real_filename, 0, sizeof(real_filename));
+-			strncat(real_filename, getenv("SRCTREE"), PATH_MAX);
+-			strncat(real_filename, KERNELDOCPATH KERNELDOC,
++			strncat(real_filename, kernsrctree, PATH_MAX);
++			strncat(real_filename, "/" KERNELDOCPATH KERNELDOC,
+ 					PATH_MAX - strlen(real_filename));
+ 			execvp(real_filename, svec);
+ 			fprintf(stderr, "exec ");
+@@ -120,24 +151,22 @@ struct symfile
+ struct symfile symfilelist[MAXFILES];
+ int symfilecnt = 0;
+ 
+-void add_new_symbol(struct symfile *sym, char * symname)
++static void add_new_symbol(struct symfile *sym, char * symname)
+ {
+-	sym->symbollist = realloc(sym->symbollist, (sym->symbolcnt + 1) * sizeof(char *));
+-	if (!sym->symbollist) {
+-		fprintf(stderr, "docproc: out of memory\n");
+-		exit(1);
+-	}
++	sym->symbollist =
++	  realloc(sym->symbollist, (sym->symbolcnt + 1) * sizeof(char *));
+ 	sym->symbollist[sym->symbolcnt++].name = strdup(symname);
+ }
+ 
+ /* Add a filename to the list */
+-struct symfile * add_new_file(char * filename)
++static struct symfile * add_new_file(char * filename)
+ {
+ 	symfilelist[symfilecnt++].filename = strdup(filename);
+ 	return &symfilelist[symfilecnt - 1];
+ }
++
+ /* Check if file already are present in the list */
+-struct symfile * filename_exist(char * filename)
++static struct symfile * filename_exist(char * filename)
+ {
+ 	int i;
+ 	for (i=0; i < symfilecnt; i++)
+@@ -150,20 +179,20 @@ struct symfile * filename_exist(char * filename)
+  * List all files referenced within the template file.
+  * Files are separated by tabs.
+  */
+-void adddep(char * file)		   { printf("\t%s", file); }
+-void adddep2(char * file, char * line)     { line = line; adddep(file); }
+-void noaction(char * line)		   { line = line; }
+-void noaction2(char * file, char * line)   { file = file; line = line; }
++static void adddep(char * file)		   { printf("\t%s", file); }
++static void adddep2(char * file, char * line)     { line = line; adddep(file); }
++static void noaction(char * line)		   { line = line; }
++static void noaction2(char * file, char * line)   { file = file; line = line; }
+ 
+ /* Echo the line without further action */
+-void printline(char * line)               { printf("%s", line); }
++static void printline(char * line)               { printf("%s", line); }
+ 
+ /*
+- * Find all symbols exported with EXPORT_SYMBOL and EXPORT_SYMBOL_GPL
+- * in filename.
++ * Find all symbols in filename that are exported with EXPORT_SYMBOL &
++ * EXPORT_SYMBOL_GPL (& EXPORT_SYMBOL_GPL_FUTURE implicitly).
+  * All symbols located are stored in symfilelist.
+  */
+-void find_export_symbols(char * filename)
++static void find_export_symbols(char * filename)
+ {
+ 	FILE * fp;
+ 	struct symfile *sym;
+@@ -171,26 +200,26 @@ void find_export_symbols(char * filename)
+ 	if (filename_exist(filename) == NULL) {
+ 		char real_filename[PATH_MAX + 1];
+ 		memset(real_filename, 0, sizeof(real_filename));
+-		strncat(real_filename, getenv("SRCTREE"), PATH_MAX);
++		strncat(real_filename, srctree, PATH_MAX);
++		strncat(real_filename, "/", PATH_MAX - strlen(real_filename));
+ 		strncat(real_filename, filename,
+ 				PATH_MAX - strlen(real_filename));
+ 		sym = add_new_file(filename);
+ 		fp = fopen(real_filename, "r");
+-		if (fp == NULL)
+-		{
++		if (fp == NULL)	{
+ 			fprintf(stderr, "docproc: ");
+ 			perror(real_filename);
+ 			exit(1);
+ 		}
+-		while(fgets(line, MAXLINESZ, fp)) {
++		while (fgets(line, MAXLINESZ, fp)) {
+ 			char *p;
+ 			char *e;
+-			if (((p = strstr(line, "EXPORT_SYMBOL_GPL")) != 0) ||
+-                            ((p = strstr(line, "EXPORT_SYMBOL")) != 0)) {
++			if (((p = strstr(line, "EXPORT_SYMBOL_GPL")) != NULL) ||
++			    ((p = strstr(line, "EXPORT_SYMBOL")) != NULL)) {
+ 				/* Skip EXPORT_SYMBOL{_GPL} */
+ 				while (isalnum(*p) || *p == '_')
+ 					p++;
+-				/* Remove paranteses and additional ws */
++				/* Remove parentheses & additional whitespace */
+ 				while (isspace(*p))
+ 					p++;
+ 				if (*p != '(')
+@@ -214,12 +243,12 @@ void find_export_symbols(char * filename)
+  * Document all external or internal functions in a file.
+  * Call kernel-doc with following parameters:
+  * kernel-doc -docbook -nofunction function_name1 filename
+- * function names are obtained from all the the src files
++ * Function names are obtained from all the src files
+  * by find_export_symbols.
+  * intfunc uses -nofunction
+  * extfunc uses -function
+  */
+-void docfunctions(char * filename, char * type)
++static void docfunctions(char * filename, char * type)
+ {
+ 	int i,j;
+ 	int symcnt = 0;
+@@ -228,17 +257,19 @@ void docfunctions(char * filename, char * type)
+ 
+ 	for (i=0; i <= symfilecnt; i++)
+ 		symcnt += symfilelist[i].symbolcnt;
+-	vec = malloc((2 + 2 * symcnt + 2) * sizeof(char*));
++	vec = malloc((2 + 2 * symcnt + 3) * sizeof(char *));
+ 	if (vec == NULL) {
+ 		perror("docproc: ");
+ 		exit(1);
  	}
+ 	vec[idx++] = KERNELDOC;
+ 	vec[idx++] = DOCBOOK;
++	vec[idx++] = NODOCSECTIONS;
+ 	for (i=0; i < symfilecnt; i++) {
+ 		struct symfile * sym = &symfilelist[i];
+ 		for (j=0; j < sym->symbolcnt; j++) {
+ 			vec[idx++]     = type;
++			consume_symbol(sym->symbollist[j].name);
+ 			vec[idx++] = sym->symbollist[j].name;
+ 		}
+ 	}
+@@ -249,53 +280,171 @@ void docfunctions(char * filename, char * type)
+ 	fflush(stdout);
+ 	free(vec);
+ }
+-void intfunc(char * filename) {	docfunctions(filename, NOFUNCTION); }
+-void extfunc(char * filename) { docfunctions(filename, FUNCTION);   }
++static void intfunc(char * filename) {	docfunctions(filename, NOFUNCTION); }
++static void extfunc(char * filename) { docfunctions(filename, FUNCTION);   }
  
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-new file mode 100644
-index 0000000..bf50190
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-@@ -0,0 +1,8 @@
-+#define SETUP_MDCFG0			\
-+	wm 32 0x021b000c 0x3c409b85
-+
-+#define SETUP_MDASP_MDCTL		\
-+	wm 32 0x021b0040 0x0000000F;	\
-+	wm 32 0x021b0000 0x82190000
-+
-+#include "flash-header-phytec-pcm058dl.h"
-diff --git a/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h
-new file mode 100644
-index 0000000..c7df790
---- /dev/null
-+++ b/arch/arm/boards/phytec-som-imx6/flash-header-phytec-pcm058dl.h
-@@ -0,0 +1,98 @@
-+soc imx6
-+loadaddr 0x10000000
-+dcdofs 0x400
-+
-+wm 32 0x020e0774 0x000C0000
-+wm 32 0x020e0754 0x00000000
-+wm 32 0x020e04ac 0x00000030
-+wm 32 0x020e04b0 0x00000030
-+wm 32 0x020e0464 0x00000030
-+wm 32 0x020e0490 0x00000030
-+wm 32 0x020e074c 0x00000030
-+wm 32 0x020e0494 0x00000030
-+wm 32 0x020e04a0 0x00000000
-+wm 32 0x020e04b4 0x00000030
-+wm 32 0x020e04b8 0x00000030
-+wm 32 0x020e04a4 0x00003000
-+wm 32 0x020e04a8 0x00003000
-+wm 32 0x020e076c 0x00000030
-+wm 32 0x020e0750 0x00020000
-+wm 32 0x020e04bc 0x00000028
-+wm 32 0x020e04c0 0x00000028
-+wm 32 0x020e04c4 0x00000028
-+wm 32 0x020e04c8 0x00000028
-+wm 32 0x020e04cc 0x00000028
-+wm 32 0x020e04d0 0x00000028
-+wm 32 0x020e04d4 0x00000028
-+wm 32 0x020e04d8 0x00000028
-+wm 32 0x020e0760 0x00020000
-+wm 32 0x020e0764 0x00000028
-+wm 32 0x020e0770 0x00000028
-+wm 32 0x020e0778 0x00000028
-+wm 32 0x020e077c 0x00000028
-+wm 32 0x020e0780 0x00000028
-+wm 32 0x020e0784 0x00000028
-+wm 32 0x020e078c 0x00000028
-+wm 32 0x020e0748 0x00000028
-+wm 32 0x020e0470 0x00000028
-+wm 32 0x020e0474 0x00000028
-+wm 32 0x020e0478 0x00000028
-+wm 32 0x020e047c 0x00000028
-+wm 32 0x020e0480 0x00000028
-+wm 32 0x020e0484 0x00000028
-+wm 32 0x020e0488 0x00000028
-+wm 32 0x020e048c 0x00000028
-+wm 32 0x021b0800 0xa1390003
-+wm 32 0x021b4800 0xa1380003
-+wm 32 0x021b080c 0x0032003A
-+wm 32 0x021b0810 0x00350037
-+wm 32 0x021b480c 0x00260038
-+wm 32 0x021b4810 0x002C0038
-+wm 32 0x021b083c 0x42630244
-+wm 32 0x021b0840 0x02300238
-+wm 32 0x021b483c 0x02540258
-+wm 32 0x021b4840 0x0236021e
-+wm 32 0x021b0848 0x46484446
-+wm 32 0x021b4848 0x302d2c35
-+wm 32 0x021b0850 0x36342630
-+wm 32 0x021b4850 0x3423372d
-+wm 32 0x021b081c 0x33333333
-+wm 32 0x021b0820 0x33333333
-+wm 32 0x021b0824 0x33333333
-+wm 32 0x021b0828 0x33333333
-+wm 32 0x021b481c 0x33333333
-+wm 32 0x021b4820 0x33333333
-+wm 32 0x021b4824 0x33333333
-+wm 32 0x021b4828 0x33333333
-+wm 32 0x021b08b8 0x00000800
-+wm 32 0x021b48b8 0x00000800
-+wm 32 0x021b0004 0x00025576
-+wm 32 0x021b0008 0x09444040
-+
-+SETUP_MDCFG0
-+
-+wm 32 0x021b0010 0xff538f64
-+wm 32 0x021b0014 0x01ff0124
-+wm 32 0x021b0018 0x00091740
-+wm 32 0x021b001c 0x00008000
-+wm 32 0x021b002c 0x000026d2
-+wm 32 0x021b0030 0x003F1023
-+
-+SETUP_MDASP_MDCTL
-+
-+wm 32 0x021b001c 0x04088032
-+wm 32 0x021b001c 0x0408803a
-+wm 32 0x021b001c 0x00008033
-+wm 32 0x021b001c 0x0000803b
-+wm 32 0x021b001c 0x00428031
-+wm 32 0x021b001c 0x00428039
-+wm 32 0x021b001c 0x09408030
-+wm 32 0x021b001c 0x09408038
-+wm 32 0x021b001c 0x04008040
-+wm 32 0x021b001c 0x04008048
-+wm 32 0x021b0020 0x00007800
-+wm 32 0x021b0818 0x00011117
-+wm 32 0x021b4818 0x00011117
-+wm 32 0x021b0004 0x00025576
-+wm 32 0x021b0404 0x00011006
-+wm 32 0x021b001c 0x00000000
-diff --git a/arch/arm/boards/phytec-som-imx6/lowlevel.c b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-index 555487b..eb796e7 100644
---- a/arch/arm/boards/phytec-som-imx6/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx6/lowlevel.c
-@@ -92,5 +92,6 @@ PHYTEC_ENTRY(start_phytec_pbab01s_512mb_1bank, imx6s_phytec_pbab01, SZ_512M, fal
- PHYTEC_ENTRY(start_phytec_phyboard_alcor_1gib, imx6q_phytec_phyboard_alcor, SZ_1G, false);
- PHYTEC_ENTRY(start_phytec_phyboard_subra_512mb_1bank, imx6dl_phytec_phyboard_subra, SZ_512M, false);
+ /*
+  * Document specific function(s) in a file.
+  * Call kernel-doc with the following parameters:
+  * kernel-doc -docbook -function function1 [-function function2]
+  */
+-void singfunc(char * filename, char * line)
++static void singfunc(char * filename, char * line)
+ {
+ 	char *vec[200]; /* Enough for specific functions */
+-        int i, idx = 0;
+-        int startofsym = 1;
++	int i, idx = 0;
++	int startofsym = 1;
+ 	vec[idx++] = KERNELDOC;
+ 	vec[idx++] = DOCBOOK;
++	vec[idx++] = SHOWNOTFOUND;
  
-+PHYTEC_ENTRY(start_phytec_phycore_imx6dl_som_nand_256mb, imx6dl_phytec_phycore_som_nand, SZ_256M, true);
- PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_nand_1gib, imx6q_phytec_phycore_som_nand, SZ_1G, true);
- PHYTEC_ENTRY(start_phytec_phycore_imx6q_som_emmc_1gib, imx6q_phytec_phycore_som_emmc, SZ_1G, true);
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 6c26c32..1c73c71 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -45,7 +45,8 @@ pbl-dtb-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-pbaa03.dtb.o \
- 				imx6q-phytec-phyboard-alcor.dtb.o \
- 				imx6dl-phytec-phyboard-subra.dtb.o \
- 				imx6q-phytec-phycore-som-nand.dtb.o \
--				imx6q-phytec-phycore-som-emmc.dtb.o
-+				imx6q-phytec-phycore-som-emmc.dtb.o \
-+				imx6dl-phytec-phycore-som-nand.dtb.o
- pbl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
- pbl-dtb-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
- pbl-dtb-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
-diff --git a/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-new file mode 100644
-index 0000000..2324f3a
---- /dev/null
-+++ b/arch/arm/dts/imx6dl-phytec-phycore-som-nand.dts
-@@ -0,0 +1,63 @@
-+/*
-+ * Copyright 2015 Christian Hemp, Phytec Messtechnik GmbH
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
+-        /* Split line up in individual parameters preceeded by FUNCTION */
+-        for (i=0; line[i]; i++) {
+-                if (isspace(line[i])) {
+-                        line[i] = '\0';
+-                        startofsym = 1;
+-                        continue;
+-                }
+-                if (startofsym) {
+-                        startofsym = 0;
+-                        vec[idx++] = FUNCTION;
+-                        vec[idx++] = &line[i];
+-                }
+-        }
++	/* Split line up in individual parameters preceded by FUNCTION */
++	for (i=0; line[i]; i++) {
++		if (isspace(line[i])) {
++			line[i] = '\0';
++			startofsym = 1;
++			continue;
++		}
++		if (startofsym) {
++			startofsym = 0;
++			vec[idx++] = FUNCTION;
++			vec[idx++] = &line[i];
++		}
++	}
++	for (i = 0; i < idx; i++) {
++		if (strcmp(vec[i], FUNCTION))
++			continue;
++		consume_symbol(vec[i + 1]);
++	}
+ 	vec[idx++] = filename;
+ 	vec[idx] = NULL;
+ 	exec_kernel_doc(vec);
+ }
+ 
+ /*
++ * Insert specific documentation section from a file.
++ * Call kernel-doc with the following parameters:
++ * kernel-doc -docbook -function "doc section" filename
 + */
++static void docsect(char *filename, char *line)
++{
++	/* kerneldoc -docbook -show-not-found -function "section" file NULL */
++	char *vec[7];
++	char *s;
 +
-+/dts-v1/;
++	for (s = line; *s; s++)
++		if (*s == '\n')
++			*s = '\0';
 +
-+#include <arm/imx6dl.dtsi>
-+#include "imx6dl.dtsi"
-+#include "imx6qdl-phytec-phycore-som.dtsi"
++	if (asprintf(&s, "DOC: %s", line) < 0) {
++		perror("asprintf");
++		exit(1);
++	}
++	consume_symbol(s);
++	free(s);
 +
-+/ {
-+	model = "Phytec phyCORE-i.MX6 Duallite/SOLO with NAND";
-+	compatible = "phytec,imx6dl-pcm058-nand", "fsl,imx6dl";
-+};
++	vec[0] = KERNELDOC;
++	vec[1] = DOCBOOK;
++	vec[2] = SHOWNOTFOUND;
++	vec[3] = FUNCTION;
++	vec[4] = line;
++	vec[5] = filename;
++	vec[6] = NULL;
++	exec_kernel_doc(vec);
++}
 +
-+&eeprom {
-+	status = "okay";
-+};
++static void find_all_symbols(char *filename)
++{
++	char *vec[4]; /* kerneldoc -list file NULL */
++	pid_t pid;
++	int ret, i, count, start;
++	char real_filename[PATH_MAX + 1];
++	int pipefd[2];
++	char *data, *str;
++	size_t data_len = 0;
 +
-+&fec {
-+	status = "okay";
-+	phy-handle = <&ethphy>;
-+	phy-mode = "rgmii";
-+	phy-reset-gpios = <&gpio1 14 1>;
++	vec[0] = KERNELDOC;
++	vec[1] = LIST;
++	vec[2] = filename;
++	vec[3] = NULL;
 +
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++	if (pipe(pipefd)) {
++		perror("pipe");
++		exit(1);
++	}
 +
-+		ethphy: ethernet-phy@3 {
-+			reg = <3>;
-+			max-speed = <100>;
-+		};
-+	};
-+};
++	switch (pid=fork()) {
++		case -1:
++			perror("fork");
++			exit(1);
++		case  0:
++			close(pipefd[0]);
++			dup2(pipefd[1], 1);
++			memset(real_filename, 0, sizeof(real_filename));
++			strncat(real_filename, kernsrctree, PATH_MAX);
++			strncat(real_filename, "/" KERNELDOCPATH KERNELDOC,
++					PATH_MAX - strlen(real_filename));
++			execvp(real_filename, vec);
++			fprintf(stderr, "exec ");
++			perror(real_filename);
++			exit(1);
++		default:
++			close(pipefd[1]);
++			data = malloc(4096);
++			do {
++				while ((ret = read(pipefd[0],
++						   data + data_len,
++						   4096)) > 0) {
++					data_len += ret;
++					data = realloc(data, data_len + 4096);
++				}
++			} while (ret == -EAGAIN);
++			if (ret != 0) {
++				perror("read");
++				exit(1);
++			}
++			waitpid(pid, &ret ,0);
++	}
++	if (WIFEXITED(ret))
++		exitstatus |= WEXITSTATUS(ret);
++	else
++		exitstatus = 0xff;
 +
-+&gpmi {
-+	status = "okay";
-+};
++	count = 0;
++	/* poor man's strtok, but with counting */
++	for (i = 0; i < data_len; i++) {
++		if (data[i] == '\n') {
++			count++;
++			data[i] = '\0';
++		}
++	}
++	start = all_list_len;
++	all_list_len += count;
++	all_list = realloc(all_list, sizeof(char *) * all_list_len);
++	str = data;
++	for (i = 0; i < data_len && start != all_list_len; i++) {
++		if (data[i] == '\0') {
++			all_list[start] = str;
++			str = data + i + 1;
++			start++;
++		}
++	}
++}
 +
-+&usdhc1 {
-+	status = "okay";
++/*
+  * Parse file, calling action specific functions for:
+  * 1) Lines containing !E
+  * 2) Lines containing !I
+  * 3) Lines containing !D
+  * 4) Lines containing !F
+- * 5) Default lines - lines not matching the above
++ * 5) Lines containing !P
++ * 6) Lines containing !C
++ * 7) Default lines - lines not matching the above
+  */
+-void parse_file(FILE *infile)
++static void parse_file(FILE *infile)
+ {
+ 	char line[MAXLINESZ];
+ 	char * s;
+-	while(fgets(line, MAXLINESZ, infile)) {
++	while (fgets(line, MAXLINESZ, infile)) {
+ 		if (line[0] == '!') {
+ 			s = line + 2;
+ 			switch (line[1]) {
+@@ -311,23 +460,37 @@ void parse_file(FILE *infile)
+ 					break;
+ 				case 'D':
+ 					while (*s && !isspace(*s)) s++;
+-                                        *s = '\0';
+-                                        symbolsonly(line+2);
+-                                        break;
++					*s = '\0';
++					symbolsonly(line+2);
++					break;
+ 				case 'F':
+ 					/* filename */
+ 					while (*s && !isspace(*s)) s++;
+ 					*s++ = '\0';
+-                                        /* function names */
++					/* function names */
+ 					while (isspace(*s))
+ 						s++;
+ 					singlefunctions(line +2, s);
+ 					break;
++				case 'P':
++					/* filename */
++					while (*s && !isspace(*s)) s++;
++					*s++ = '\0';
++					/* DOC: section name */
++					while (isspace(*s))
++						s++;
++					docsection(line + 2, s);
++					break;
++				case 'C':
++					while (*s && !isspace(*s)) s++;
++					*s = '\0';
++					if (findall)
++						findall(line+2);
++					break;
+ 				default:
+ 					defaultline(line);
+ 			}
+-		}
+-		else {
++		} else {
+ 			defaultline(line);
+ 		}
+ 	}
+@@ -338,25 +501,32 @@ void parse_file(FILE *infile)
+ int main(int argc, char *argv[])
+ {
+ 	FILE * infile;
++	int i;
 +
-+	#address-cells = <1>;
-+	#size-cells = <1>;
++	srctree = getenv("SRCTREE");
++	if (!srctree)
++		srctree = getcwd(NULL, 0);
++	kernsrctree = getenv("KBUILD_SRC");
++	if (!kernsrctree || !*kernsrctree)
++		kernsrctree = srctree;
+ 	if (argc != 3) {
+ 		usage();
+ 		exit(1);
+ 	}
+ 	/* Open file, exit on error */
+ 	infile = fopen(argv[2], "r");
+-        if (infile == NULL) {
+-                fprintf(stderr, "docproc: ");
+-                perror(argv[2]);
+-                exit(2);
+-        }
+-
+-	if (strcmp("doc", argv[1]) == 0)
+-	{
++	if (infile == NULL) {
++		fprintf(stderr, "docproc: ");
++		perror(argv[2]);
++		exit(2);
++	}
 +
-+	partition@0 {
-+		label = "barebox";
-+		reg = <0x0 0x80000>;
-+	};
-+
-+	partition@1 {
-+		label = "barebox-environment";
-+		reg = <0x80000 0x80000>;
-+	};
-+};
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 5cd76c3..dcf4c17 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -312,6 +312,11 @@ CFG_start_phytec_phycore_imx6q_som_emmc_1gib.pblx.imximg = $(board)/phytec-som-i
- FILE_barebox-phytec-phycore-imx6q-som-emmc-1gib.img = start_phytec_phycore_imx6q_som_emmc_1gib.pblx.imximg
- image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6q-som-emmc-1gib.img
++	if (strcmp("doc", argv[1]) == 0) {
+ 		/* Need to do this in two passes.
+ 		 * First pass is used to collect all symbols exported
+-		 * in the various files.
++		 * in the various files;
+ 		 * Second pass generate the documentation.
+-		 * This is required because function are declared
++		 * This is required because some functions are declared
+ 		 * and exported in different files :-((
+ 		 */
+ 		/* Collect symbols */
+@@ -365,6 +535,8 @@ int main(int argc, char *argv[])
+ 		externalfunctions = find_export_symbols;
+ 		symbolsonly       = find_export_symbols;
+ 		singlefunctions   = noaction2;
++		docsection        = noaction2;
++		findall           = find_all_symbols;
+ 		parse_file(infile);
  
-+pblx-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += start_phytec_phycore_imx6dl_som_nand_256mb
-+CFG_start_phytec_phycore_imx6dl_som_nand_256mb.pblx.imximg = $(board)/phytec-som-imx6/flash-header-phytec-pcm058dl-256mb.imxcfg
-+FILE_barebox-phytec-phycore-imx6dl-som-nand-256mb.img = start_phytec_phycore_imx6dl_som_nand_256mb.pblx.imximg
-+image-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += barebox-phytec-phycore-imx6dl-som-nand-256mb.img
+ 		/* Rewind to start from beginning of file again */
+@@ -374,11 +546,18 @@ int main(int argc, char *argv[])
+ 		externalfunctions = extfunc;
+ 		symbolsonly       = printline;
+ 		singlefunctions   = singfunc;
++		docsection        = docsect;
++		findall           = NULL;
+ 
+ 		parse_file(infile);
+-	}
+-	else if (strcmp("depend", argv[1]) == 0)
+-	{
 +
- pblx-$(CONFIG_MACH_GW_VENTANA) += start_imx6q_gw54xx_1gx64
- CFG_start_imx6q_gw54xx_1gx64.pblx.imximg = $(board)/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
- FILE_barebox-gateworks-imx6q-ventana-1gx64.img = start_imx6q_gw54xx_1gx64.pblx.imximg
++		for (i = 0; i < all_list_len; i++) {
++			if (!all_list[i])
++				continue;
++			fprintf(stderr, "Warning: didn't use docs for %s\n",
++				all_list[i]);
++		}
++	} else if (strcmp("depend", argv[1]) == 0) {
+ 		/* Create first part of dependency chain
+ 		 * file.tmpl */
+ 		printf("%s\t", argv[2]);
+@@ -387,11 +566,11 @@ int main(int argc, char *argv[])
+ 		externalfunctions = adddep;
+ 		symbolsonly       = adddep;
+ 		singlefunctions   = adddep2;
++		docsection        = adddep2;
++		findall           = adddep;
+ 		parse_file(infile);
+ 		printf("\n");
+-	}
+-	else
+-	{
++	} else {
+ 		fprintf(stderr, "Unknown option: %s\n", argv[1]);
+ 		exit(1);
+ 	}
+@@ -399,4 +578,3 @@ int main(int argc, char *argv[])
+ 	fflush(stdout);
+ 	return exitstatus;
+ }
+-
 -- 
-1.9.1
+2.6.1
 
 
 _______________________________________________
