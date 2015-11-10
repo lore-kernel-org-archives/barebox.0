@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwHOG-0002B7-8N
- for barebox@lists.infradead.org; Tue, 10 Nov 2015 22:27:49 +0000
+ id 1ZwHf8-0008G8-G0
+ for barebox@lists.infradead.org; Tue, 10 Nov 2015 22:45:15 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Tue, 10 Nov 2015 22:27:23 +0000
-Message-ID: <1447194444.4553.88.camel@rtred1test09.kymeta.local>
+Date: Tue, 10 Nov 2015 22:44:50 +0000
+Message-ID: <1447195492.4553.95.camel@rtred1test09.kymeta.local>
 Content-Language: en-US
-Content-ID: <4FAF82727FA2DC4895F697D609A8DC3D@kymetacorp.com>
+Content-ID: <99A422BF0FA25645B04F1F15B4B413BF@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,175 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] firmware: socfpga: Add parameter "programmed" to fpgamgr
- driver
+Subject: [PATCH] net: designware: Don't hang in reset with powered down phy
 To: barebox <barebox@lists.infradead.org>
 
-This boolean parameter tells you if the FPGA is programmed or not.  It
-can be accessed from the shell as "$fpga.programmed".  One could use
-this to not program the FPGA if it's already programmed.
+The dw MAC requires that all clock domains to be running for it to
+finish a MAC reset.  This include the clock provided by the PHY.
 
-There is an annoying limitation of the way barebox puts parameters
-into the shell env: it requires they have no periods in the device
-name.  It uses the first period to divide the variable name into a
-device and parameter name, which doesn't work correctly if the device
-name has a period in it.
+If the PHY is powered down, bit BMCR_PDOWN set, then it won't be
+generating a clock.  And so the MAC never comes out of reset.  On
+shutdown, Linux will put the PHY in powerdown mode, so it can easily
+be the case that the PHY is powered down on boot.
 
-Since the names of any devices created from the OF device tree have a
-period in them, this is a problem.
+See Linux kernel commit 2d871aa07136fe6e576bde63072cf33e2c664e95.
 
-So what I did here was create a new device.  Its parent will be the OF
-device for the fpgamgr and it will in turn be the parent of the
-firmware cdev.  Previously the cdev's parent was the OF device.  This
-device won't have period in the name and the parameter is attached to
-it.  Even without the period limitation, doing this gives a nicer name
-"fpga.programmed" instead of "ff706000.fpgamgr.programmed".
+Currently the MAC reset is done before the phy is probed.  We can't
+power up the phy until it's probed, so the resets must be in the
+opposite order.  The MAC reset is in device init but the PHY probe is
+in device open.  Device init is done first, always, while open is done
+later, and only if the device is used.
 
-The fpgamgr code had a pointer to the OF device in its private state.
-I changed this to be a struct for the new "fpga" device, which is then
-used in all the places the former pointer was (nothing but dev_dbg,
-etc. calls).
+Rather than move the phy probe to init, this moves the MAC reset to
+open.  It seems better to speed up boots that don't use ethernet by
+skipping MAC reset than to slow them down by adding PHY probe.
 
 Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
 ---
- drivers/firmware/socfpga.c | 46 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
+ drivers/net/designware.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-Here is what devinfo tree looks like after:
-      `-- ff706000.fpgamgr
-         `-- fpga
-            `-- 0x00000000-0xfffffffffffffffe (    16 EiB): /dev/socfpga-fpga
+Instead of phy call in the designware driver, it would be nicer to
+use the phylib layer to abstract it.  Except that the barebox
+phylib has no support for power management and doesn't need it.
 
-Here is what it looked like before:
-      `-- ff706000.fpgamgr
-         `-- 0x00000000-0xfffffffffffffffe (    16 EiB): /dev/socfpga-fpga
+So one either adds general PM support just to clear one bit in one
+register, which seems like a bloated and overly complex solution.
+Or comes up with a generalized method to clear one bit, which seems
+pointless.
 
-devinfo fpga
-Parameters:
-  programmed: 1
-
-
-diff --git a/drivers/firmware/socfpga.c b/drivers/firmware/socfpga.c
-index 14a7a14..159644b 100644
---- a/drivers/firmware/socfpga.c
-+++ b/drivers/firmware/socfpga.c
-@@ -79,9 +79,10 @@
- 
- struct fpgamgr {
- 	struct firmware_handler fh;
--	struct device_d *dev;
-+	struct device_d dev;
- 	void __iomem *regs;
- 	void __iomem *regs_data;
-+	int programmed;
- };
- 
- /* Get the FPGA mode */
-@@ -303,12 +304,12 @@ static int fpgamgr_program_start(struct firmware_handler *fh)
- 	/* unmap the bridges from NIC-301 */
- 	writel(0x1, CYCLONE5_L3REGS_ADDRESS);
- 
--	dev_dbg(mgr->dev, "start programming...\n");
-+	dev_dbg(&mgr->dev, "start programming...\n");
- 
- 	/* initialize the FPGA Manager */
- 	status = fpgamgr_program_init(mgr);
- 	if (status) {
--		dev_err(mgr->dev, "program init failed with: %s\n",
-+		dev_err(&mgr->dev, "program init failed with: %s\n",
- 				strerror(-status));
- 		return status;
- 	}
-@@ -356,27 +357,27 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
- 	/* Ensure the FPGA entering config done */
- 	status = fpgamgr_program_poll_cd(mgr);
- 	if (status) {
--		dev_err(mgr->dev, "poll for config done failed with: %s\n",
-+		dev_err(&mgr->dev, "poll for config done failed with: %s\n",
- 				strerror(-status));
- 		return status;
- 	}
- 
--	dev_dbg(mgr->dev, "waiting for init phase...\n");
-+	dev_dbg(&mgr->dev, "waiting for init phase...\n");
- 
- 	/* Ensure the FPGA entering init phase */
- 	status = fpgamgr_program_poll_initphase(mgr);
- 	if (status) {
--		dev_err(mgr->dev, "poll for init phase failed with: %s\n",
-+		dev_err(&mgr->dev, "poll for init phase failed with: %s\n",
- 				strerror(-status));
- 		return status;
- 	}
- 
--	dev_dbg(mgr->dev, "waiting for user mode...\n");
-+	dev_dbg(&mgr->dev, "waiting for user mode...\n");
- 
- 	/* Ensure the FPGA entering user mode */
- 	status = fpgamgr_program_poll_usermode(mgr);
- 	if (status) {
--		dev_err(mgr->dev, "poll for user mode with: %s\n",
-+		dev_err(&mgr->dev, "poll for user mode with: %s\n",
- 				strerror(-status));
- 		return status;
- 	}
-@@ -384,12 +385,21 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
- 	return 0;
- }
- 
-+/* Get current programmed state of fpga and put in "programmed" parameter */
-+static int programmed_get(struct param_d *p, void *priv)
-+{
-+	struct fpgamgr *mgr = priv;
-+	mgr->programmed = fpgamgr_get_mode(mgr) == FPGAMGRREGS_MODE_USERMODE;
-+	return 0;
-+}
+diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+index 8006527..7109e97 100644
+--- a/drivers/net/designware.c
++++ b/drivers/net/designware.c
+@@ -218,6 +218,16 @@ static int dwc_ether_init(struct eth_device *dev)
+ 	struct dw_eth_dev *priv = dev->priv;
+ 	struct eth_mac_regs *mac_p = priv->mac_regs_p;
+ 	struct eth_dma_regs *dma_p = priv->dma_regs_p;
++	int bmcr;
 +
- static int fpgamgr_probe(struct device_d *dev)
- {
- 	struct fpgamgr *mgr;
- 	struct firmware_handler *fh;
- 	const char *alias = of_alias_get(dev->device_node);
- 	const char *model = NULL;
-+	struct param_d *p;
- 	int ret;
- 
- 	dev_dbg(dev, "Probing FPGA firmware programmer\n");
-@@ -422,17 +432,31 @@ static int fpgamgr_probe(struct device_d *dev)
- 		fh->model = xstrdup(model);
- 	fh->dev = dev;
- 
--	mgr->dev = dev;
--
- 	dev_dbg(dev, "Registering FPGA firmware programmer\n");
- 
-+	mgr->dev.id = DEVICE_ID_SINGLE;
-+	strcpy(mgr->dev.name, "fpga");
-+	mgr->dev.parent = dev;
-+	ret = register_device(&mgr->dev);
-+	if (ret)
-+		goto out;
-+
-+	p = dev_add_param_bool(&mgr->dev, "programmed", NULL, programmed_get, &mgr->programmed, mgr);
-+	if (IS_ERR(p)) {
-+		ret = PTR_ERR(p);
-+		goto out_unreg;
++	/* Before we reset the mac, we must insure the PHY is not powered down
++	 * as the dw controller needs all clock domains to be running, including
++	 * the PHY clock, to come out of a mac reset.  */
++	bmcr = phy_read(dev->phydev, MII_BMCR);
++	if (bmcr & BMCR_PDOWN) {
++		bmcr &= ~BMCR_PDOWN;
++		phy_write(dev->phydev, MII_BMCR, bmcr);
 +	}
-+
-+	fh->dev = &mgr->dev;
- 	ret = firmwaremgr_register(fh);
- 	if (ret != 0) {
- 		free(mgr);
--		goto out;
-+		goto out_unreg;
- 	}
  
- 	return 0;
-+out_unreg:
-+	unregister_device(&mgr->dev);
- out:
- 	free(fh->id);
- 	free(mgr);
+ 	if (mac_reset(dev) < 0)
+ 		return -1;
+@@ -275,6 +285,8 @@ static int dwc_ether_open(struct eth_device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	dwc_ether_init(dev);
++
+ 	descs_init(dev);
+ 
+ 	/*
+@@ -468,7 +480,6 @@ static int dwc_ether_probe(struct device_d *dev)
+ 	edev->priv = priv;
+ 
+ 	edev->parent = dev;
+-	edev->init = dwc_ether_init;
+ 	edev->open = dwc_ether_open;
+ 	edev->send = dwc_ether_send;
+ 	edev->recv = dwc_ether_rx;
 -- 
 1.8.3.1
 
