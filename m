@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from mail-yk0-x241.google.com ([2607:f8b0:4002:c07::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwDuh-0008HJ-VL
- for barebox@lists.infradead.org; Tue, 10 Nov 2015 18:45:04 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Tue, 10 Nov 2015 18:44:38 +0000
-Message-ID: <1447181079.4553.82.camel@rtred1test09.kymeta.local>
-References: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
- <1447094995.4553.50.camel@rtred1test09.kymeta.local>
- <20151110080423.GE8526@pengutronix.de>
-In-Reply-To: <20151110080423.GE8526@pengutronix.de>
-Content-Language: en-US
-Content-ID: <3E4C355AFCA7A94C8ECBE47E684A3F82@kymetacorp.com>
+ id 1ZwFAB-0008PK-JC
+ for barebox@lists.infradead.org; Tue, 10 Nov 2015 20:05:08 +0000
+Received: by ykba77 with SMTP id a77so1223976ykb.2
+ for <barebox@lists.infradead.org>; Tue, 10 Nov 2015 12:04:46 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <20151110074043.GC8526@pengutronix.de>
+References: <1447063593-23825-1-git-send-email-serge.koshechkin@gmail.com>
+ <20151110074043.GC8526@pengutronix.de>
+Date: Tue, 10 Nov 2015 23:04:46 +0300
+Message-ID: <CAJgjPtDfO=59Q=nxBd6uKyy-hujyz9CBWg4HsQ22teksTfyMdw@mail.gmail.com>
+From: Sergey Koshechkin <serge.koshechkin@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +24,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: filetype: do not redetect MBR-type devices as a
- FAT-type
+Subject: Re: [PATCH] docproc: sync with linux-4.3 kernel
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org, "Antony N. Pavlov" <antony@niisi.msk.ru>
 
-On Tue, 2015-11-10 at 09:04 +0100, Sascha Hauer wrote:
+Hi Sascha,
 
-> From 98fb34f2aa271138eab28a36aec733fe6572339c Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Tue, 10 Nov 2015 08:58:16 +0100
-> Subject: [PATCH] ARM: omap: Use correct device to mount on /boot
-> 
-> The current code tests if a partition (i.e. disk0.0) exists and instead
-> of mounting boot from this partition it uses the whole device (disk0).
-> This only works because the the FAT code accepts a MBR as input and
-> automatically skips it.
+On Tue, Nov 10, 2015 at 10:40 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Hi Sergey,
+>
+> On Mon, Nov 09, 2015 at 01:06:33PM +0300, Sergey Koshechkin wrote:
+>> Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
+>> ---
+>>  scripts/basic/docproc.c | 334 +++++++++++++++++++++++++++++++++++++-----------
+>>  1 file changed, 256 insertions(+), 78 deletions(-)
+>
+> What's the motivation for updating this file? Is it even used in
+> barebox?
 
-I agree, this should fix it.
+The motivation was to defeat "missing prototypes".
+But It seems you are right. I tryied to compile docs without docproc.c
+and everything looks fine.
+Can we drop it then?
 
-> 
-> Let the code use the partition to mount /boot instead as it was
-> intended. We don't have to stat() the partition device, since this
-> error will be caught by mount() anyway, so remove the unnecessary
-> stat().
-
-There are copies of this code in rpi.c and socfpga/generic.c.  They
-don't suffer from the whole disk flaw, but they do stat() first as well.
+-- 
+Best regards,
+Sergey Koshechkin
 
 _______________________________________________
 barebox mailing list
