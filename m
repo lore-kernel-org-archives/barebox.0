@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zw4Qe-0007we-IM
- for barebox@lists.infradead.org; Tue, 10 Nov 2015 08:37:25 +0000
-Date: Tue, 10 Nov 2015 09:36:22 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151110083622.GG8526@pengutronix.de>
-References: <1446805318-26691-1-git-send-email-s.christ@phytec.de>
- <20151109064924.GU8526@pengutronix.de>
- <20151109120920.GG2347@lws-christ>
+ id 1ZwDuh-0008HJ-VL
+ for barebox@lists.infradead.org; Tue, 10 Nov 2015 18:45:04 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Tue, 10 Nov 2015 18:44:38 +0000
+Message-ID: <1447181079.4553.82.camel@rtred1test09.kymeta.local>
+References: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
+ <1447094995.4553.50.camel@rtred1test09.kymeta.local>
+ <20151110080423.GE8526@pengutronix.de>
+In-Reply-To: <20151110080423.GE8526@pengutronix.de>
+Content-Language: en-US
+Content-ID: <3E4C355AFCA7A94C8ECBE47E684A3F82@kymetacorp.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20151109120920.GG2347@lws-christ>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,43 +25,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/10] Rework towards phytec-som-imx6 and new variants
-To: Stefan Christ <s.christ@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] common: filetype: do not redetect MBR-type devices as a
+ FAT-type
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Peter Mamonov <pmamonov@gmail.com>
 
-On Mon, Nov 09, 2015 at 01:09:20PM +0100, Stefan Christ wrote:
-> Hi Sascha,
-> 
-> > > the patchstack first refactors the phyCARD-i.MX6 and phyFLEX-i.MX6 to a common
-> > > phytec-som-imx6. Then some phyFLEX-i.MX6 variants and the new phyCORE-i.MX6 are
-> > > added plus some environment updates and one image rename patch.
-> > >
-> >
-> > The Phytec i.MX6 boards all have an EEPROM, right?
-> 
-> No, it's possible to get a board without an EEPROM and we have some of them
-> lying around here.
-> 
-> > Does it have the memory setup encoded somewhere?
-> 
-> So no, the memory is not encoded anywhere on the module.
-> 
-> > It gets increasingly hard picking the right image for the Phytec boards.
-> 
-> Yeah. We are discussing some solutions for that like GPIOs, EEPROM or EFuses,
-> but nothing has emerged from that and they are only viable for new products.
+On Tue, 2015-11-10 at 09:04 +0100, Sascha Hauer wrote:
 
-Yeah, I think it's worth solving this issue somehow, it would make using
-the Phytec boards a lot easier, even if it's only for new products.
+> From 98fb34f2aa271138eab28a36aec733fe6572339c Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Tue, 10 Nov 2015 08:58:16 +0100
+> Subject: [PATCH] ARM: omap: Use correct device to mount on /boot
+> 
+> The current code tests if a partition (i.e. disk0.0) exists and instead
+> of mounting boot from this partition it uses the whole device (disk0).
+> This only works because the the FAT code accepts a MBR as input and
+> automatically skips it.
 
-Sascha
+I agree, this should fix it.
 
+> 
+> Let the code use the partition to mount /boot instead as it was
+> intended. We don't have to stat() the partition device, since this
+> error will be caught by mount() anyway, so remove the unnecessary
+> stat().
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+There are copies of this code in rpi.c and socfpga/generic.c.  They
+don't suffer from the whole disk flaw, but they do stat() first as well.
 
 _______________________________________________
 barebox mailing list
