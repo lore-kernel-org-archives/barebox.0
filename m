@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zwb6X-0006QK-Oz
- for barebox@lists.infradead.org; Wed, 11 Nov 2015 19:30:50 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Wed, 11 Nov 2015 19:30:14 +0000
-Message-ID: <1447270216.4553.116.camel@rtred1test09.kymeta.local>
-References: <1447195492.4553.95.camel@rtred1test09.kymeta.local>
- <20151111080300.GO8526@pengutronix.de>
-In-Reply-To: <20151111080300.GO8526@pengutronix.de>
-Content-Language: en-US
-Content-ID: <40151BFC48511843A3447732453B7B1B@kymetacorp.com>
-MIME-Version: 1.0
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZwbTQ-0007TO-KF
+ for barebox@lists.infradead.org; Wed, 11 Nov 2015 19:54:29 +0000
+Received: from tellur.intern.lynxeye.de (p57B5FBB9.dip0.t-ipconnect.de
+ [87.181.251.185]) by lynxeye.de (Postfix) with ESMTPA id 99AD826C2001
+ for <barebox@lists.infradead.org>; Wed, 11 Nov 2015 20:53:33 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Wed, 11 Nov 2015 20:53:29 +0100
+Message-Id: <1447271609-13292-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,97 +17,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] net: designware: Don't hang in reset with powered down phy
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: ventana: remove unneeded clock init in DCD
+To: barebox@lists.infradead.org
 
-The dw MAC requires that all clock domains to be running for it to
-finish a MAC reset.  This include the clock provided by the PHY.
+The clock driver will overwrite those values anyway, so no
+point in setting them in the DCD.
 
-If the PHY is powered down, bit BMCR_PDOWN set, then it won't be
-generating a clock.  And so the MAC never comes out of reset.  On
-shutdown, Linux will put the PHY in powerdown mode, so it can easily
-be the case that the PHY is powered down on boot.
-
-See Linux kernel commit 2d871aa07136fe6e576bde63072cf33e2c664e95.
-
-Currently the MAC reset is done before the phy is probed.  We can't
-power up the phy until it's probed, so the resets must be in the
-opposite order.  The MAC reset is in device init but the PHY probe is
-in device open.  Device init is done first, always, while open is done
-later, and only if the device is used.
-
-Rather than move the phy probe to init, this moves the MAC reset to
-open.  It seems better to speed up boots that doesn't use ethernet by
-skipping MAC reset than to slow them down by adding PHY probe.
-
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/net/designware.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ arch/arm/boards/gateworks-ventana/clocks.imxcfg                   | 8 --------
+ .../gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg      | 1 -
+ 2 files changed, 9 deletions(-)
+ delete mode 100644 arch/arm/boards/gateworks-ventana/clocks.imxcfg
 
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index 8006527..04b6e7e 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -213,11 +213,34 @@ static void descs_init(struct eth_device *dev)
- 	rx_descs_init(dev);
- }
+diff --git a/arch/arm/boards/gateworks-ventana/clocks.imxcfg b/arch/arm/boards/gateworks-ventana/clocks.imxcfg
+deleted file mode 100644
+index bfd5331..0000000
+--- a/arch/arm/boards/gateworks-ventana/clocks.imxcfg
++++ /dev/null
+@@ -1,8 +0,0 @@
+-wm 32 MX6_CCM_CCGR0	0x00C03F3F
+-wm 32 MX6_CCM_CCGR1	0x0030FC03
+-wm 32 MX6_CCM_CCGR2	0x0FFFC000
+-wm 32 MX6_CCM_CCGR3	0x3FF00000
+-wm 32 MX6_CCM_CCGR4	0xFFFFF300
+-wm 32 MX6_CCM_CCGR5	0x0F0000C3
+-wm 32 MX6_CCM_CCGR6	0x000003FF
+-wm 32 MX6_CCM_CCOSR	0x000000FB
+diff --git a/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg b/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
+index 75271e4..f4506f1 100644
+--- a/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
++++ b/arch/arm/boards/gateworks-ventana/flash-header-ventana-quad-1gx64.imxcfg
+@@ -8,4 +8,3 @@ dcdofs 0x400
  
-+/* Get PHY out of power saving mode.  If this is needed elsewhere then
-+ * consider making it part of phy-core and adding a resume method to
-+ * the phy device ops.  */
-+static int phy_resume(struct phy *phy)
-+{
-+	int bmcr;
-+
-+	bmcr = phy_read(phy, MII_BMCR);
-+	if (bmcr < 0)
-+		return bmcr;
-+	if (bmcr & BMCR_PDOWN) {
-+		bmcr &= ~BMCR_PDOWN;
-+		return phy_write(phy, MII_BMCR, bmcr);
-+	}
-+	return 0;
-+}
-+
- static int dwc_ether_init(struct eth_device *dev)
- {
- 	struct dw_eth_dev *priv = dev->priv;
- 	struct eth_mac_regs *mac_p = priv->mac_regs_p;
- 	struct eth_dma_regs *dma_p = priv->dma_regs_p;
-+	int bmcr;
-+
-+	/* Before we reset the mac, we must insure the PHY is not powered down
-+	 * as the dw controller needs all clock domains to be running, including
-+	 * the PHY clock, to come out of a mac reset.  */
-+	phy_resume(dev->phydev);
- 
- 	if (mac_reset(dev) < 0)
- 		return -1;
-@@ -275,6 +298,8 @@ static int dwc_ether_open(struct eth_device *dev)
- 	if (ret)
- 		return ret;
- 
-+	dwc_ether_init(dev);
-+
- 	descs_init(dev);
- 
- 	/*
-@@ -468,7 +493,6 @@ static int dwc_ether_probe(struct device_d *dev)
- 	edev->priv = priv;
- 
- 	edev->parent = dev;
--	edev->init = dwc_ether_init;
- 	edev->open = dwc_ether_open;
- 	edev->send = dwc_ether_send;
- 	edev->recv = dwc_ether_rx;
+ #include "ram-base.imxcfg"
+ #include "quad_128x64.imxcfg"
+-#include "clocks.imxcfg"
 -- 
-1.8.3.1
+2.5.0
 
 
 _______________________________________________
