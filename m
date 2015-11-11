@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x235.google.com ([2607:f8b0:4002:c07::235])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwQ3L-0000Zy-Bw
- for barebox@lists.infradead.org; Wed, 11 Nov 2015 07:42:48 +0000
-Received: by ykba77 with SMTP id a77so36604757ykb.2
- for <barebox@lists.infradead.org>; Tue, 10 Nov 2015 23:42:26 -0800 (PST)
+ id 1ZwQB2-00053v-7F
+ for barebox@lists.infradead.org; Wed, 11 Nov 2015 07:50:45 +0000
+Date: Wed, 11 Nov 2015 08:50:20 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151111075020.GN8526@pengutronix.de>
+References: <1447194444.4553.88.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
-In-Reply-To: <1447204155-16773-3-git-send-email-antonynpavlov@gmail.com>
-References: <1447204155-16773-1-git-send-email-antonynpavlov@gmail.com>
- <1447204155-16773-3-git-send-email-antonynpavlov@gmail.com>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Wed, 11 Nov 2015 08:42:06 +0100
-Message-ID: <CAGm1_kvW8McKJ4SHKvdGJN_Xy-cyJupXarMCWAdX=hvh=gWx5w@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1447194444.4553.88.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,40 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] MIPS: black-swift: skip pbl lowlevel init if running
- from RAM
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] firmware: socfpga: Add parameter "programmed" to fpgamgr
+ driver
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Nov 11, 2015 at 2:09 AM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> Black Swift has 16 MiB flash boot ROM that can be remapped to 0xbf000000.
->
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/boards/black-swift/include/board/board_pbl_start.h | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/mips/boards/black-swift/include/board/board_pbl_start.h b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-> index f78e0d9..7394092 100644
-> --- a/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-> +++ b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-> @@ -28,9 +28,12 @@
->
->         mips_disable_interrupts
->
-> +       pbl_blt 0xbf000000 skip_pll_ram_config t8
-> +
->         pbl_ar9331_pll
->         pbl_ar9331_ddr2_config
->
-> +skip_pll_ram_config:
->         pbl_ar9331_uart_enable
->         debug_ll_ar9331_init
->         mips_nmon
-> --
-> 2.6.2
+On Tue, Nov 10, 2015 at 10:27:23PM +0000, Trent Piepho wrote:
+> This boolean parameter tells you if the FPGA is programmed or not.  It
+> can be accessed from the shell as "$fpga.programmed".  One could use
+> this to not program the FPGA if it's already programmed.
+> 
+> There is an annoying limitation of the way barebox puts parameters
+> into the shell env: it requires they have no periods in the device
+> name.  It uses the first period to divide the variable name into a
+> device and parameter name, which doesn't work correctly if the device
+> name has a period in it.
 
-Tested-by: Yegor Yefremov <yegorslists@googlemail.com>
+Yeah, that's really annoying, and so far I haven't found a good way to
+work around this issue.
+
+> 
+> Since the names of any devices created from the OF device tree have a
+> period in them, this is a problem.
+
+They not only have a period in them, they can also begin with a number
+which makes the string invalid as a variable name.
+
+> 
+> So what I did here was create a new device.
+
+Yes, that's what I did in this case sometimes aswell.
+
+
+> Its parent will be the OF
+> device for the fpgamgr and it will in turn be the parent of the
+> firmware cdev.  Previously the cdev's parent was the OF device.  This
+> device won't have period in the name and the parameter is attached to
+> it.  Even without the period limitation, doing this gives a nicer name
+> "fpga.programmed" instead of "ff706000.fpgamgr.programmed".
+> 
+> The fpgamgr code had a pointer to the OF device in its private state.
+> I changed this to be a struct for the new "fpga" device, which is then
+> used in all the places the former pointer was (nothing but dev_dbg,
+> etc. calls).
+> 
+> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+
+Patch looks good, applied.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
