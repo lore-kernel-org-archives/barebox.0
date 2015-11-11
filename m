@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwQsz-0007bM-Sp
+ id 1ZwQt0-0007bR-Je
  for barebox@lists.infradead.org; Wed, 11 Nov 2015 08:36:11 +0000
-Received: by lbces9 with SMTP id es9so12795027lbc.2
- for <barebox@lists.infradead.org>; Wed, 11 Nov 2015 00:35:47 -0800 (PST)
+Received: by lbbkw15 with SMTP id kw15so12920523lbb.0
+ for <barebox@lists.infradead.org>; Wed, 11 Nov 2015 00:35:48 -0800 (PST)
 Received: from localhost.localdomain (ppp91-79-57-136.pppoe.mtu-net.ru.
  [91.79.57.136])
  by smtp.gmail.com with ESMTPSA id 64sm1280884lfu.35.2015.11.11.00.35.47
  for <barebox@lists.infradead.org>
  (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 11 Nov 2015 00:35:47 -0800 (PST)
+ Wed, 11 Nov 2015 00:35:48 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 11 Nov 2015 11:35:41 +0300
-Message-Id: <1447230942-24098-3-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 11 Nov 2015 11:35:42 +0300
+Message-Id: <1447230942-24098-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1447230942-24098-1-git-send-email-antonynpavlov@gmail.com>
 References: <1447230942-24098-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -29,23 +29,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/3] MIPS: black-swift: skip pbl lowlevel init if running
+Subject: [PATCH v2 3/3] MIPS: tplink-mr3020: skip pbl lowlevel init if running
  from RAM
 To: barebox@lists.infradead.org
 
-Black Swift has 16 MiB flash boot ROM. The standard board's
-bootloader (U-Boot_mod) remaps boot ROM to 0xbf000000.
+TP-Link MR3020 has 4 MiB flash boot ROM.
+Usually boot ROM is mapped to 0xbfc00000.
+However, as AR9331 allows to remap boot ROM to 0xbf000000
+it's better to assume that boot ROM starts at 0xbf000000.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Tested-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- arch/mips/boards/black-swift/include/board/board_pbl_start.h | 3 +++
+ arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/boards/black-swift/include/board/board_pbl_start.h b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-index f78e0d9..7394092 100644
---- a/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
+diff --git a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
+index 08204fe..d25f5aa 100644
+--- a/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
++++ b/arch/mips/boards/tplink-mr3020/include/board/board_pbl_start.h
 @@ -28,9 +28,12 @@
  
  	mips_disable_interrupts
@@ -53,7 +54,7 @@ index f78e0d9..7394092 100644
 +	pbl_blt 0xbf000000 skip_pll_ram_config t8
 +
  	pbl_ar9331_pll
- 	pbl_ar9331_ddr2_config
+ 	pbl_ar9331_ddr1_config
  
 +skip_pll_ram_config:
  	pbl_ar9331_uart_enable
