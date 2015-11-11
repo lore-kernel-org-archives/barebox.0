@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwJuz-0006pq-DD
- for barebox@lists.infradead.org; Wed, 11 Nov 2015 01:09:45 +0000
-Received: by lbces9 with SMTP id es9so8579287lbc.2
- for <barebox@lists.infradead.org>; Tue, 10 Nov 2015 17:09:23 -0800 (PST)
-Received: from localhost.localdomain (ppp91-79-57-136.pppoe.mtu-net.ru.
- [91.79.57.136])
- by smtp.gmail.com with ESMTPSA id j11sm981248lbz.21.2015.11.10.17.09.22
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Tue, 10 Nov 2015 17:09:22 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 11 Nov 2015 04:09:14 +0300
-Message-Id: <1447204155-16773-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1447204155-16773-1-git-send-email-antonynpavlov@gmail.com>
-References: <1447204155-16773-1-git-send-email-antonynpavlov@gmail.com>
+ id 1ZwPwW-0004z9-3I
+ for barebox@lists.infradead.org; Wed, 11 Nov 2015 07:35:45 +0000
+Date: Wed, 11 Nov 2015 08:35:22 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151111073522.GJ8526@pengutronix.de>
+References: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,42 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] MIPS: black-swift: skip pbl lowlevel init if running from
- RAM
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] common: filetype: do not redetect MBR-type devices as a
+ FAT-type
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Black Swift has 16 MiB flash boot ROM that can be remapped to 0xbf000000.
+On Mon, Nov 09, 2015 at 01:32:51PM +0300, Peter Mamonov wrote:
+> Deleted pieces of code detect MBR-containig device as a FAT-type device,
+> if it's first partition contains a FAT filesystem. This behaviour enabled one
+> to mount the FAT FS which is either directly on the device (disk0) or on
+> the first partition (disk0.0) using the same command:
+>     mount /dev/disk0 /fat
+> However, the desired behaviour can be reached with a:
+>     mount /dev/disk0 /fat || mount /dev/disk0.0 /fat || echo "Mounting failed"
+> 
+> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
+> Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/boards/black-swift/include/board/board_pbl_start.h | 3 +++
- 1 file changed, 3 insertions(+)
+Please don't add Acked-by for patches the person has never seen. I
+agreed to the approach of removing the check here, but I can only ever
+ack a patch that I have seen.
 
-diff --git a/arch/mips/boards/black-swift/include/board/board_pbl_start.h b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-index f78e0d9..7394092 100644
---- a/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/black-swift/include/board/board_pbl_start.h
-@@ -28,9 +28,12 @@
- 
- 	mips_disable_interrupts
- 
-+	pbl_blt 0xbf000000 skip_pll_ram_config t8
-+
- 	pbl_ar9331_pll
- 	pbl_ar9331_ddr2_config
- 
-+skip_pll_ram_config:
- 	pbl_ar9331_uart_enable
- 	debug_ll_ar9331_init
- 	mips_nmon
+Applied this with my ack removed.
+
+Sascha
+
+
 -- 
-2.6.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
