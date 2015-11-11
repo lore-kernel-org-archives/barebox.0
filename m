@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwJuy-0006po-Fe
- for barebox@lists.infradead.org; Wed, 11 Nov 2015 01:09:45 +0000
-Received: by lbbkw15 with SMTP id kw15so8676294lbb.0
- for <barebox@lists.infradead.org>; Tue, 10 Nov 2015 17:09:22 -0800 (PST)
+ id 1ZwJux-0006pj-Q3
+ for barebox@lists.infradead.org; Wed, 11 Nov 2015 01:09:44 +0000
+Received: by lbblt2 with SMTP id lt2so8627044lbb.3
+ for <barebox@lists.infradead.org>; Tue, 10 Nov 2015 17:09:21 -0800 (PST)
+Received: from localhost.localdomain (ppp91-79-57-136.pppoe.mtu-net.ru.
+ [91.79.57.136])
+ by smtp.gmail.com with ESMTPSA id j11sm981248lbz.21.2015.11.10.17.09.20
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Tue, 10 Nov 2015 17:09:21 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 11 Nov 2015 04:09:13 +0300
-Message-Id: <1447204155-16773-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1447204155-16773-1-git-send-email-antonynpavlov@gmail.com>
-References: <1447204155-16773-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 11 Nov 2015 04:09:12 +0300
+Message-Id: <1447204155-16773-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,58 +27,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] MIPS: pbl: add pbl_blt macro
+Subject: [PATCH 0/3] MIPS: ath79: skip pbl lowlevel init if running from RAM
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <linux@rempel-privat.de>
 
-From: Oleksij Rempel <linux@rempel-privat.de>
+Antony Pavlov (2):
+  MIPS: black-swift: skip pbl lowlevel init if running from RAM
+  MIPS: tplink-mr3020: skip pbl lowlevel init if running from RAM
 
-Barebox' PBL can initialize memory controller of the board.
-But we can use memory controller initialization routine
-only if PBL runs from ROM or on-chip SRAM.
-MIPS architecture standard boot vector is 0xbfc00000
-so on most MIPS SoCs all addresses higher than 0xbfc00000
-belong to boot ROM or on-chip SRAM. Well then we have
-simple criterion to check if PBL run from ROM: just
-check if current PC is higher than 0xbfc00000.
-Some MIPS boards have ROM start address lower than 0xbfc00000
-so it's reasonable we have to make ROM start address
-board dependend.
+Oleksij Rempel (1):
+  MIPS: pbl: add pbl_blt macro
 
-The pbl_blt macro checks if current pc is lower than
-the first argument (ROM start address). If so then
-next instruction executed is defined by the second argument
-of the macro.
+ arch/mips/boards/black-swift/include/board/board_pbl_start.h |  3 +++
+ .../boards/tplink-mr3020/include/board/board_pbl_start.h     |  3 +++
+ arch/mips/include/asm/pbl_macros.h                           | 12 ++++++++++++
+ 3 files changed, 18 insertions(+)
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/include/asm/pbl_macros.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index c4ae6a2..dbe3410 100644
---- a/arch/mips/include/asm/pbl_macros.h
-+++ b/arch/mips/include/asm/pbl_macros.h
-@@ -60,6 +60,18 @@
- 	.set	pop
- 	.endm
- 
-+	.macro	pbl_blt addr label tmp
-+	.set	push
-+	.set	noreorder
-+	move	\tmp, ra			# preserve ra beforehand
-+	bal	253f
-+	 nop
-+253:
-+	bltu	ra, \addr, \label
-+	 move	ra, \tmp			# restore ra
-+	.set	pop
-+	.endm
-+
- 	.macro	pbl_sleep reg count
- 	.set push
- 	.set noreorder
 -- 
 2.6.2
 
