@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwPwW-0004z9-3I
- for barebox@lists.infradead.org; Wed, 11 Nov 2015 07:35:45 +0000
-Date: Wed, 11 Nov 2015 08:35:22 +0100
+ id 1ZwPxg-0005Xg-4B
+ for barebox@lists.infradead.org; Wed, 11 Nov 2015 07:36:56 +0000
+Date: Wed, 11 Nov 2015 08:36:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151111073522.GJ8526@pengutronix.de>
-References: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
+Message-ID: <20151111073634.GK8526@pengutronix.de>
+References: <1447063593-23825-1-git-send-email-serge.koshechkin@gmail.com>
+ <20151110074043.GC8526@pengutronix.de>
+ <CAJgjPtDfO=59Q=nxBd6uKyy-hujyz9CBWg4HsQ22teksTfyMdw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1447065171-31571-1-git-send-email-pmamonov@gmail.com>
+In-Reply-To: <CAJgjPtDfO=59Q=nxBd6uKyy-hujyz9CBWg4HsQ22teksTfyMdw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,28 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: filetype: do not redetect MBR-type devices as a
- FAT-type
-To: Peter Mamonov <pmamonov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] docproc: sync with linux-4.3 kernel
+To: Sergey Koshechkin <serge.koshechkin@gmail.com>
+Cc: barebox@lists.infradead.org, "Antony N. Pavlov" <antony@niisi.msk.ru>
 
-On Mon, Nov 09, 2015 at 01:32:51PM +0300, Peter Mamonov wrote:
-> Deleted pieces of code detect MBR-containig device as a FAT-type device,
-> if it's first partition contains a FAT filesystem. This behaviour enabled one
-> to mount the FAT FS which is either directly on the device (disk0) or on
-> the first partition (disk0.0) using the same command:
->     mount /dev/disk0 /fat
-> However, the desired behaviour can be reached with a:
->     mount /dev/disk0 /fat || mount /dev/disk0.0 /fat || echo "Mounting failed"
+On Tue, Nov 10, 2015 at 11:04:46PM +0300, Sergey Koshechkin wrote:
+> Hi Sascha,
 > 
-> Signed-off-by: Peter Mamonov <pmamonov@gmail.com>
-> Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+> On Tue, Nov 10, 2015 at 10:40 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > Hi Sergey,
+> >
+> > On Mon, Nov 09, 2015 at 01:06:33PM +0300, Sergey Koshechkin wrote:
+> >> Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
+> >> ---
+> >>  scripts/basic/docproc.c | 334 +++++++++++++++++++++++++++++++++++++-----------
+> >>  1 file changed, 256 insertions(+), 78 deletions(-)
+> >
+> > What's the motivation for updating this file? Is it even used in
+> > barebox?
+> 
+> The motivation was to defeat "missing prototypes".
+> But It seems you are right. I tryied to compile docs without docproc.c
+> and everything looks fine.
+> Can we drop it then?
 
-Please don't add Acked-by for patches the person has never seen. I
-agreed to the approach of removing the check here, but I can only ever
-ack a patch that I have seen.
-
-Applied this with my ack removed.
+Yes, docproc.c should be removed.
 
 Sascha
 
