@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zwqqd-0002Xt-N5
- for barebox@lists.infradead.org; Thu, 12 Nov 2015 12:19:28 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 01CE8A002CE
- for <barebox@lists.infradead.org>; Thu, 12 Nov 2015 13:19:26 +0100 (CET)
-From: Stefan Christ <s.christ@phytec.de>
-Date: Thu, 12 Nov 2015 13:18:55 +0100
-Message-Id: <1447330735-7568-1-git-send-email-s.christ@phytec.de>
+ id 1ZwxVj-0001ZV-Oz
+ for barebox@lists.infradead.org; Thu, 12 Nov 2015 19:26:20 +0000
+Received: from tellur.intern.lynxeye.de (p57B5FBB9.dip0.t-ipconnect.de
+ [87.181.251.185]) by lynxeye.de (Postfix) with ESMTPA id E168D26C2001
+ for <barebox@lists.infradead.org>; Thu, 12 Nov 2015 20:25:23 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Thu, 12 Nov 2015 20:25:20 +0100
+Message-Id: <1447356320-6931-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +22,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] wdog: imx-wd: watchdog cannot be disabled again
+Subject: [PATCH] net: rtl8169: get rid of DMA_ADDRESS_BROKEN
 To: barebox@lists.infradead.org
 
-The i.MX21/i.MX6 watchdog cannot be disabled after it was activated.
-Bit 2 (WDE) cannot be set to 0 again. Notify the user about that by
-returning -ENOSYS.
+Don't assume a 1:1 virt to phys mapping, but use the real physical
+address returned by the dma alloc function.
 
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/watchdog/imxwd.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/rtl8169.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index dd11a62..bb0d2db 100644
---- a/drivers/watchdog/imxwd.c
-+++ b/drivers/watchdog/imxwd.c
-@@ -97,14 +97,14 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, int timeout)
+diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
+index 47d5e4a8..9ec0178 100644
+--- a/drivers/net/rtl8169.c
++++ b/drivers/net/rtl8169.c
+@@ -51,10 +51,12 @@ struct rtl8169_priv {
+ 	int			chipset;
  
- 	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+ 	volatile struct bufdesc	*tx_desc;
++	dma_addr_t		tx_desc_phys;
+ 	void			*tx_buf;
+ 	unsigned int		cur_tx;
  
--	if (!timeout || timeout > 128)
-+	if (timeout < 0 || timeout > 128)
- 		return -EINVAL;
+ 	volatile struct bufdesc	*rx_desc;
++	dma_addr_t		rx_desc_phys;
+ 	void			*rx_buf;
+ 	unsigned int		cur_rx;
  
--	if (timeout > 0)
--		val = ((timeout * 2 - 1) << 8) | IMX21_WDOG_WCR_SRS |
--			IMX21_WDOG_WCR_WDA;
--	else
--		val = 0;
-+	if (timeout == 0) /* bit 2 (WDE) cannot be set to 0 again */
-+		return -ENOSYS;
-+
-+	val = ((timeout * 2 - 1) << 8) | IMX21_WDOG_WCR_SRS |
-+		IMX21_WDOG_WCR_WDA;
+@@ -228,10 +230,10 @@ static void rtl8169_init_ring(struct rtl8169_priv *priv)
+ 	priv->cur_rx = priv->cur_tx = 0;
  
- 	writew(val, priv->base + IMX21_WDOG_WCR);
- 	writew(IMX21_WDOG_WCR_WDE | val, priv->base + IMX21_WDOG_WCR);
+ 	priv->tx_desc = dma_alloc_coherent(NUM_TX_DESC *
+-				sizeof(struct bufdesc), DMA_ADDRESS_BROKEN);
++				sizeof(struct bufdesc), &priv->tx_desc_phys);
+ 	priv->tx_buf = malloc(NUM_TX_DESC * PKT_BUF_SIZE);
+ 	priv->rx_desc = dma_alloc_coherent(NUM_RX_DESC *
+-				sizeof(struct bufdesc), DMA_ADDRESS_BROKEN);
++				sizeof(struct bufdesc), &priv->rx_desc_phys);
+ 	priv->rx_buf = malloc(NUM_RX_DESC * PKT_BUF_SIZE);
+ 	dma_sync_single_for_device((unsigned long)priv->rx_buf,
+ 				   NUM_RX_DESC * PKT_BUF_SIZE, DMA_FROM_DEVICE);
+@@ -275,9 +277,9 @@ static void rtl8169_hw_start(struct rtl8169_priv *priv)
+ 	/* Set DMA burst size and Interframe Gap Time */
+ 	RTL_W32(priv, TxConfig, (6 << TxDMAShift) | (3 << TxInterFrameGapShift));
+ 
+-	RTL_W32(priv, TxDescStartAddrLow, virt_to_phys(priv->tx_desc));
++	RTL_W32(priv, TxDescStartAddrLow, priv->tx_desc_phys);
+ 	RTL_W32(priv, TxDescStartAddrHigh, 0);
+-	RTL_W32(priv, RxDescStartAddrLow, virt_to_phys(priv->rx_desc));
++	RTL_W32(priv, RxDescStartAddrLow, priv->rx_desc_phys);
+ 	RTL_W32(priv, RxDescStartAddrHigh, 0);
+ 
+ 	/* RTL-8169sc/8110sc or later version */
 -- 
-1.9.1
+2.5.0
 
 
 _______________________________________________
