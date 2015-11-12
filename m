@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from mail-pa0-x22e.google.com ([2607:f8b0:400e:c03::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZwcPU-0004IV-LB
- for barebox@lists.infradead.org; Wed, 11 Nov 2015 20:54:29 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Wed, 11 Nov 2015 20:54:01 +0000
-Message-ID: <1447275243.4553.119.camel@rtred1test09.kymeta.local>
-References: <1447195492.4553.95.camel@rtred1test09.kymeta.local>
- <20151111080300.GO8526@pengutronix.de>
- <1447270216.4553.116.camel@rtred1test09.kymeta.local>
-In-Reply-To: <1447270216.4553.116.camel@rtred1test09.kymeta.local>
-Content-Language: en-US
-Content-ID: <6228CD150E99BE4C9A85B6E86A024014@kymetacorp.com>
-MIME-Version: 1.0
+ id 1ZwotY-0000HJ-Ox
+ for barebox@lists.infradead.org; Thu, 12 Nov 2015 10:14:22 +0000
+Received: by pabfh17 with SMTP id fh17so61092878pab.0
+ for <barebox@lists.infradead.org>; Thu, 12 Nov 2015 02:13:57 -0800 (PST)
+From: Du Huanpeng <u74147@gmail.com>
+Date: Thu, 12 Nov 2015 02:13:25 -0800
+Message-Id: <1447323205-10743-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,102 +16,258 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] net: designware: Don't hang in reset with powered
- down phy
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] font: fbconsole: add custom font support
+To: barebox@lists.infradead.org
+Cc: Du Huanpeng <u74147@gmail.com>
 
-The dw MAC requires that all clock domains to be running for it to
-finish a MAC reset.  This include the clock provided by the PHY.
+add custom font and charset support. useful for
+non ascii chars, e.g. Chinese and others.
 
-If the PHY is powered down, bit BMCR_PDOWN set, then it won't be
-generating a clock.  And so the MAC never comes out of reset.  On
-shutdown, Linux will put the PHY in powerdown mode, so it can easily
-be the case that the PHY is powered down on boot.
-
-See Linux kernel commit 2d871aa07136fe6e576bde63072cf33e2c664e95.
-
-Currently the MAC reset is done before the phy is probed.  We can't
-power up the phy until it's probed, so the resets must be in the
-opposite order.  The MAC reset is in device init but the PHY probe is
-in device open.  Device init is done first, always, while open is done
-later, and only if the device is used.
-
-Rather than move the phy probe to init, this moves the MAC reset to
-open.  It seems better to speed up boots that doesn't use ethernet by
-skipping MAC reset than to slow them down by adding PHY probe.
-
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+Signed-off-by: Du Huanpeng <u74147@gmail.com>
 ---
+ drivers/video/fbconsole.c   |  5 +++--
+ include/linux/font.h        | 11 ++++++++++-
+ lib/fonts/Kconfig           |  5 +++++
+ lib/fonts/Makefile          |  1 +
+ lib/fonts/font_7x14.c       |  1 +
+ lib/fonts/font_8x16.c       |  1 +
+ lib/fonts/font_custom_16x.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/fonts/font_mini_4x6.c   |  1 +
+ lib/fonts/fonts.c           | 32 ++++++++++++++++++++++++++++++++
+ 9 files changed, 98 insertions(+), 3 deletions(-)
+ create mode 100644 lib/fonts/font_custom_16x.c
 
-Ignore v2, I missed a bunch of compiler warnings that scrolled off the
-screen and barebox doesn't seem to be using -Werror.
-
- drivers/net/designware.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index 8006527..966f64f 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -213,12 +213,34 @@ static void descs_init(struct eth_device *dev)
- 	rx_descs_init(dev);
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index 60f3c48..7fd4047 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -84,7 +84,7 @@ static struct rgb colors[] = {
+ 	{ 255, 255, 255 },
+ };
+ 
+-static void drawchar(struct fbc_priv *priv, int x, int y, char c)
++static void drawchar(struct fbc_priv *priv, int x, int y, int c)
+ {
+ 	void *buf;
+ 	int bpp = priv->fb->bits_per_pixel >> 3;
+@@ -97,7 +97,8 @@ static void drawchar(struct fbc_priv *priv, int x, int y, char c)
+ 
+ 	buf = gui_screen_render_buffer(priv->sc);
+ 
+-	inbuf = &priv->font->data[c * priv->font->height];
++	i = find_font_index(priv->font, c);
++	inbuf = priv->font->data + i;
+ 
+ 	line_length = priv->fb->line_length;
+ 
+diff --git a/include/linux/font.h b/include/linux/font.h
+index 62b1879..d7fb415 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -12,20 +12,29 @@
+ #define _VIDEO_FONT_H
+ 
+ #include <param.h>
++#include <wchar.h>
+ 
++struct font_index {
++	wchar_t wc;	/* code of the char. */
++	short index;	/* offset of the char in the bitmap. */
++};
+ struct font_desc {
+ 	const char *name;
+ 	int width, height;
++	struct font_index *index;
+ 	const void *data;
++	int num_chars;
+ };
+ 
+ extern const struct font_desc	font_vga_8x16,
+ 			font_7x14,
+-			font_mini_4x6;
++			font_mini_4x6,
++			font_custom_16x;
+ 
+ /* Max. length for the name of a predefined font */
+ #define MAX_FONT_NAME	32
+ 
++extern int find_font_index(const struct font_desc *font, int ch);
+ extern const struct font_desc *find_font_enum(int n);
+ extern struct param_d *add_param_font(struct device_d *dev,
+ 		int (*set)(struct param_d *p, void *priv),
+diff --git a/lib/fonts/Kconfig b/lib/fonts/Kconfig
+index 715d5e5..d23b283 100644
+--- a/lib/fonts/Kconfig
++++ b/lib/fonts/Kconfig
+@@ -20,6 +20,11 @@ config FONT_7x14
+ config FONT_MINI_4x6
+ 	bool "Mini 4x6 font"
+ 
++config FONT_CUSTOM_16X
++	bool "Custom 16x16 font"
++	help
++	  This font is useful for Chinese and other non ascii chars.
++
+ config FONT_AUTOSELECT
+ 	def_bool y
+ 	depends on !FONT_MINI_4x6
+diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
+index b7d4765..98245b3 100644
+--- a/lib/fonts/Makefile
++++ b/lib/fonts/Makefile
+@@ -5,6 +5,7 @@ font-objs := fonts.o
+ font-objs-$(CONFIG_FONT_8x16)      += font_8x16.o
+ font-objs-$(CONFIG_FONT_7x14)      += font_7x14.o
+ font-objs-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
++font-objs-$(CONFIG_FONT_CUSTOM_16X)+= font_custom_16x.o
+ 
+ font-objs += $(font-objs-y)
+ 
+diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
+index fe99871..60cb57e 100644
+--- a/lib/fonts/font_7x14.c
++++ b/lib/fonts/font_7x14.c
+@@ -4113,4 +4113,5 @@ const struct font_desc font_7x14 = {
+ 	.width	= 7,
+ 	.height	= 14,
+ 	.data	= fontdata_7x14,
++	.index	= NULL,
+ };
+diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
+index 4717ead..0ba2921 100644
+--- a/lib/fonts/font_8x16.c
++++ b/lib/fonts/font_8x16.c
+@@ -4626,5 +4626,6 @@ const struct font_desc font_vga_8x16 = {
+ 	.width	= 8,
+ 	.height	= 16,
+ 	.data	= fontdata_8x16,
++	.index	= NULL,
+ };
+ EXPORT_SYMBOL(font_vga_8x16);
+diff --git a/lib/fonts/font_custom_16x.c b/lib/fonts/font_custom_16x.c
+new file mode 100644
+index 0000000..103dbe8
+--- /dev/null
++++ b/lib/fonts/font_custom_16x.c
+@@ -0,0 +1,44 @@
++/*
++ * by Du Huanpeng <u74147@gmail.com>
++ */
++
++#include <linux/font.h>
++#include <common.h>
++
++/* place real font data here or set fontdata_custom_16x points to
++ * the address of font data and also setup the index.
++ */
++
++static const unsigned char fontdata_custom_16x[] = {
++	0xFF, 0xFF,	/*OOOOOOOOOOOOOOOO*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0x80, 0x01,	/*O______________O*/
++	0xFF, 0xFF,	/*OOOOOOOOOOOOOOOO*/
++};
++
++static struct font_index fontdata_custom_16x_index[] = {
++	{ 0x0000, 0x0000 },
++};
++
++const struct font_desc font_custom_16x = {
++	.name	= "CUSTOM-16x",
++	.width	= 16,
++	.height	= 16,
++	.data	= fontdata_custom_16x,
++	.index	= fontdata_custom_16x_index,
++	.num_chars = ARRAY_SIZE(fontdata_custom_16x_index),
++
++};
++
+diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
+index 3ecb4fb..733d20a 100644
+--- a/lib/fonts/font_mini_4x6.c
++++ b/lib/fonts/font_mini_4x6.c
+@@ -2152,4 +2152,5 @@ const struct font_desc font_mini_4x6 = {
+ 	.width	= 4,
+ 	.height	= 6,
+ 	.data	= fontdata_mini_4x6,
++	.index	= NULL,
+ };
+diff --git a/lib/fonts/fonts.c b/lib/fonts/fonts.c
+index 39efb61..6bc2af1 100644
+--- a/lib/fonts/fonts.c
++++ b/lib/fonts/fonts.c
+@@ -7,6 +7,10 @@
+  *	2001 - Documented with DocBook
+  *	- Brad Douglas <brad@neruo.com>
+  *
++ *	2015 - Add custom font supports
++ *	- Du Huanpeng <u74147@gmail.com>
++ *
++ *
+  * This file is subject to the terms and conditions of the GNU General Public
+  * License.  See the file COPYING in the main directory of this archive
+  * for more details.
+@@ -33,6 +37,10 @@ static const struct font_desc *fonts[] = {
+ #undef NO_FONTS
+ 	&font_mini_4x6,
+ #endif
++#ifdef CONFIG_FONT_CUSTOM_16X
++#undef NO_FONTS
++	&font_custom_16x,
++#endif
+ };
+ 
+ #define num_fonts ARRAY_SIZE(fonts)
+@@ -51,6 +59,30 @@ const struct font_desc *find_font_enum(int n)
+ 	return fonts[n];
  }
  
-+/* Get PHY out of power saving mode.  If this is needed elsewhere then
-+ * consider making it part of phy-core and adding a resume method to
-+ * the phy device ops.  */
-+static int phy_resume(struct phy_device *phydev)
++int find_font_index(const struct font_desc *font, int ch)
 +{
-+	int bmcr;
++	int index;
++	if (font->index == NULL) {
++		index  = font->width + 7;
++		index /= 8;
++		index *= font->height;
++		index *= ch;
++	} else {
++		/*
++		* FIXME: use binary search instead!
++		*/
++		index = font->num_chars - 1;
 +
-+	bmcr = phy_read(phydev, MII_BMCR);
-+	if (bmcr < 0)
-+		return bmcr;
-+	if (bmcr & BMCR_PDOWN) {
-+		bmcr &= ~BMCR_PDOWN;
-+		return phy_write(phydev, MII_BMCR, bmcr);
++		while (index && font->index[index].wc != ch)
++			index--;
++
++		/* return 0 if not found. */
++		index = font->index->index;
 +	}
-+	return 0;
++
++	return index;
 +}
 +
- static int dwc_ether_init(struct eth_device *dev)
- {
- 	struct dw_eth_dev *priv = dev->priv;
- 	struct eth_mac_regs *mac_p = priv->mac_regs_p;
- 	struct eth_dma_regs *dma_p = priv->dma_regs_p;
- 
-+	/* Before we reset the mac, we must insure the PHY is not powered down
-+	 * as the dw controller needs all clock domains to be running, including
-+	 * the PHY clock, to come out of a mac reset.  */
-+	phy_resume(dev->phydev);
-+
- 	if (mac_reset(dev) < 0)
- 		return -1;
- 
-@@ -275,6 +297,8 @@ static int dwc_ether_open(struct eth_device *dev)
- 	if (ret)
- 		return ret;
- 
-+	dwc_ether_init(dev);
-+
- 	descs_init(dev);
- 
- 	/*
-@@ -468,7 +492,6 @@ static int dwc_ether_probe(struct device_d *dev)
- 	edev->priv = priv;
- 
- 	edev->parent = dev;
--	edev->init = dwc_ether_init;
- 	edev->open = dwc_ether_open;
- 	edev->send = dwc_ether_send;
- 	edev->recv = dwc_ether_rx;
+ struct param_d *add_param_font(struct device_d *dev,
+ 		int (*set)(struct param_d *p, void *priv),
+ 		int (*get)(struct param_d *p, void *priv),
 -- 
-1.8.3.1
+1.9.1
 
 
 _______________________________________________
