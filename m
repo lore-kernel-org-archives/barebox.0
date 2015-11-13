@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zx8H5-00040C-6k
- for barebox@lists.infradead.org; Fri, 13 Nov 2015 06:55:55 +0000
-Date: Fri, 13 Nov 2015 07:55:33 +0100
+ id 1Zx8Hr-000495-69
+ for barebox@lists.infradead.org; Fri, 13 Nov 2015 06:56:44 +0000
+Date: Fri, 13 Nov 2015 07:56:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151113065533.GV8526@pengutronix.de>
-References: <1447228156-48887-1-git-send-email-t.remmet@phytec.de>
+Message-ID: <20151113065621.GW8526@pengutronix.de>
+References: <1447235435-27140-1-git-send-email-serge.koshechkin@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1447228156-48887-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1447235435-27140-1-git-send-email-serge.koshechkin@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,26 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] driver: watchdog: Add support for omap_wdt
-To: Teresa Remmet <t.remmet@phytec.de>
+Subject: Re: [PATCH] docproc: drop unused utility
+To: Sergey Koshechkin <serge.koshechkin@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 11, 2015 at 08:49:16AM +0100, Teresa Remmet wrote:
-> Add support for OMAP Watchdog driver.
-> 
-> Based on omap_wdt Linux driver (v4.3-rc1).
-> 
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+On Wed, Nov 11, 2015 at 12:50:35PM +0300, Sergey Koshechkin wrote:
+> Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
 > ---
->  drivers/watchdog/Kconfig    |   6 ++
->  drivers/watchdog/Makefile   |   1 +
->  drivers/watchdog/omap_wdt.c | 199 ++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 206 insertions(+)
->  create mode 100644 drivers/watchdog/omap_wdt.c
+>  scripts/basic/.gitignore |   1 -
+>  scripts/basic/Makefile   |   3 +-
+>  scripts/basic/docproc.c  | 402 -----------------------------------------------
+>  3 files changed, 1 insertion(+), 405 deletions(-)
+>  delete mode 100644 scripts/basic/docproc.c
 
 Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
