@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22c.google.com ([2a00:1450:4010:c07::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZxCHU-0007lP-QM
- for barebox@lists.infradead.org; Fri, 13 Nov 2015 11:12:37 +0000
-Received: by lffz63 with SMTP id z63so50577029lff.0
- for <barebox@lists.infradead.org>; Fri, 13 Nov 2015 03:12:14 -0800 (PST)
-Date: Fri, 13 Nov 2015 14:35:44 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151113143544.05def88a37e14a4722eaad1b@gmail.com>
-In-Reply-To: <CAGm1_ktg_gmMN41X0v5h_ShO8FpYPFE_NHvhx=on8tZ8G-HtMA@mail.gmail.com>
+ id 1ZxDsJ-0007QK-Ff
+ for barebox@lists.infradead.org; Fri, 13 Nov 2015 12:54:44 +0000
+Date: Fri, 13 Nov 2015 13:54:18 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151113125418.GH8526@pengutronix.de>
 References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
  <CAGm1_ktg_gmMN41X0v5h_ShO8FpYPFE_NHvhx=on8tZ8G-HtMA@mail.gmail.com>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAGm1_ktg_gmMN41X0v5h_ShO8FpYPFE_NHvhx=on8tZ8G-HtMA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,17 +19,15 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC 0/4] FIT Support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Yegor Yefremov <yegorslists@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, 11 Nov 2015 12:39:14 +0100
-Yegor Yefremov <yegorslists@googlemail.com> wrote:
-
+On Wed, Nov 11, 2015 at 12:39:14PM +0100, Yegor Yefremov wrote:
 > On Thu, Mar 12, 2015 at 3:39 PM, Jan Luebbe <jlu@pengutronix.de> wrote:
 > > Hi,
 > >
@@ -48,8 +45,7 @@ Yegor Yefremov <yegorslists@googlemail.com> wrote:
 > > add file key.dtb()
 > > add file sign-configs.itb()
 > >
-> > barebox 2015.03.0-00005-g574d35e191f7-dirty #81 Thu Mar 12 14:57:13 CET=
- 2015
+> > barebox 2015.03.0-00005-g574d35e191f7-dirty #81 Thu Mar 12 14:57:13 CET 2015
 > >
 > > Board: barebox sandbox
 > > ...
@@ -80,8 +76,7 @@ Yegor Yefremov <yegorslists@googlemail.com> wrote:
 > >  common/Kconfig                         |   7 +
 > >  common/Makefile                        |   1 +
 > >  common/digest.c                        |   8 +-
-> >  common/image-fit.c                     | 585 +++++++++++++++++++++++++=
-++++++++
+> >  common/image-fit.c                     | 585 +++++++++++++++++++++++++++++++++
 > >  crypto/Kconfig                         |   3 +
 > >  crypto/Makefile                        |   1 +
 > >  crypto/rsa.c                           | 411 +++++++++++++++++++++++
@@ -103,18 +98,25 @@ Yegor Yefremov <yegorslists@googlemail.com> wrote:
 > >
 > > --
 > > 2.1.4
-> =
-
+> 
 > What the state of FIT support in Barebox?
 
-Sascha!
+The state is: We have and use these patches, the newest version is based
+on v2015.09. I don't know what's different in our current version
+compared to this posted version.
 
-Could you tell us, please,
-is there any interest in FIT support in Barebox?
+I think we should mainline them quite soon, they are more helpful
+in-tree.
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+Steffen, Marc, Markus? Any volunteers to resend them?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
