@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZxDsJ-0007QK-Ff
- for barebox@lists.infradead.org; Fri, 13 Nov 2015 12:54:44 +0000
-Date: Fri, 13 Nov 2015 13:54:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151113125418.GH8526@pengutronix.de>
-References: <1426171199-2729-1-git-send-email-jlu@pengutronix.de>
- <CAGm1_ktg_gmMN41X0v5h_ShO8FpYPFE_NHvhx=on8tZ8G-HtMA@mail.gmail.com>
+ id 1ZxJVD-0006bi-EW
+ for barebox@lists.infradead.org; Fri, 13 Nov 2015 18:56:18 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Fri, 13 Nov 2015 18:54:14 +0000
+Message-ID: <1447440856.4553.139.camel@rtred1test09.kymeta.local>
+References: <1447374984.4553.133.camel@rtred1test09.kymeta.local>
+ <20151113102851.GF8526@pengutronix.de>
+In-Reply-To: <20151113102851.GF8526@pengutronix.de>
+Content-Language: en-US
+Content-ID: <E633146F715312418E5C578DFC833309@kymetacorp.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGm1_ktg_gmMN41X0v5h_ShO8FpYPFE_NHvhx=on8tZ8G-HtMA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,100 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/4] FIT Support
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: MCI bus-width host caps via device tree don't work properly for
+ dw and imx
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Nov 11, 2015 at 12:39:14PM +0100, Yegor Yefremov wrote:
-> On Thu, Mar 12, 2015 at 3:39 PM, Jan Luebbe <jlu@pengutronix.de> wrote:
-> > Hi,
-> >
-> > this is the current work-in-progress state of my FIT support patches.
-> > The FIT loading code has basically been rewritten from scratch, as the
-> > original U-Boot code uses libfdt and barebox's DT support works on an
-> > in-memory tree.
-> >
-> > These patches apply on v2015.03.0.
-> > The two patches from Sascha are required for the basic RSA support.
-> > The third patch adds FIT support.
-> > The fourth patch contains some test data to use in the sandbox.
-> >
-> > $ ./barebox -i key.dtb -i sign-configs.itb
-> > add file key.dtb()
-> > add file sign-configs.itb()
-> >
-> > barebox 2015.03.0-00005-g574d35e191f7-dirty #81 Thu Mar 12 14:57:13 CET 2015
-> >
-> > Board: barebox sandbox
-> > ...
-> > Hit any key to stop autoboot:  3
-> > barebox@barebox sandbox:/ oftree -l /dev/fd0
-> > barebox@barebox sandbox:/ bootm /dev/fd1
-> >
-> > Loading open firmware Device Tree flattened Binary '/dev/fd1'
-> > FIT '/dev/fd1': 'Chrome OS kernel image with one or more FDT blobs'
-> > FIT configuration 'conf@1' (no description)
-> > sig OK
-> > FIT image 'kernel@1' (no description)
-> > hash OK
-> > FIT image 'fdt@1': 'snow'
-> > hash OK
-> >
-> > Jan Luebbe (2):
-> >   FIT: add FIT image support
-> >   FIT: add test config and data [do not merge]
-> >
-> > Sascha Hauer (2):
-> >   digest: Make filename arguments const
-> >   Add rsa support
-> >
-> >  arch/arm/lib/bootm.c                   |  74 +++++
-> >  arch/sandbox/configs/sandbox_defconfig |  33 +-
-> >  commands/Kconfig                       |   8 +
-> >  common/Kconfig                         |   7 +
-> >  common/Makefile                        |   1 +
-> >  common/digest.c                        |   8 +-
-> >  common/image-fit.c                     | 585 +++++++++++++++++++++++++++++++++
-> >  crypto/Kconfig                         |   3 +
-> >  crypto/Makefile                        |   1 +
-> >  crypto/rsa.c                           | 411 +++++++++++++++++++++++
-> >  include/asm-generic/errno.h            |   5 +
-> >  include/digest.h                       |   8 +-
-> >  include/image-fit.h                    |  42 +++
-> >  include/rsa.h                          |  54 +++
-> >  key.dtb                                | Bin 0 -> 1023 bytes
-> >  key.dts                                |  27 ++
-> >  sign-configs.itb                       | Bin 0 -> 2453 bytes
-> >  17 files changed, 1247 insertions(+), 20 deletions(-)
-> >  create mode 100644 common/image-fit.c
-> >  create mode 100644 crypto/rsa.c
-> >  create mode 100644 include/image-fit.h
-> >  create mode 100644 include/rsa.h
-> >  create mode 100644 key.dtb
-> >  create mode 100644 key.dts
-> >  create mode 100644 sign-configs.itb
-> >
-> > --
-> > 2.1.4
+On Fri, 2015-11-13 at 11:28 +0100, Sascha Hauer wrote:
+> > The mci_of_parse call will not remove the 4 and 8 bits caps.  There is
+> > the same problem in imx-esdhc.c.  The other two users of mci_of_parse,
+> > mxs.c and tegra-sdmmc.c, don't have this problem, since they don't set
+> > any bus-width host_caps in the driver and depend on the DT or
+> > platform_data to have this info.
+> > 
+> > With drivers split 50/50, which is the right way?  Don't have the driver
+> > report what bits it supports and depend on the device tree to have that
+> > information?  Or have of_mci_parse remove widths that aren't indicated
+> > as supported in the DT, so that the DT can remove widths the hardware
+> > indicates it supports.
 > 
-> What the state of FIT support in Barebox?
+> I think the resulting flags should be the subset of what all components
+> can do, that is (driver_flags & devicetree_flags & card_flags).
+> 
+> So mci_of_parse() should IMO clear the MMC_CAP_8_BIT_DATA flag if the
+> bus-width property is set to 4.
+> 
+> You should encounter the same problem under Linux, right?
 
-The state is: We have and use these patches, the newest version is based
-on v2015.09. I don't know what's different in our current version
-compared to this posted version.
+Don't have the problem on Linux.  The OF parsing works the same way, but
+the dw driver stats with 0 bus-width caps, like how mxs and tegra-sdmmc
+work.
 
-I think we should mainline them quite soon, they are more helpful
-in-tree.
-
-Steffen, Marc, Markus? Any volunteers to resend them?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+The linux dw_mmc driver allows "sub-drivers" to supply caps, and the
+Exynos4/5 driver adds CAP_8_BIT.  Which is probably broken, as it
+doesn't add 4_BIT as well and will have the same problem with the device
+tree not being able to remove bus widths.
 
 _______________________________________________
 barebox mailing list
