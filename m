@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZyDLN-00045Z-HE
- for barebox@lists.infradead.org; Mon, 16 Nov 2015 06:32:50 +0000
-Date: Mon, 16 Nov 2015 07:32:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151116063223.GI8526@pengutronix.de>
-References: <1447374984.4553.133.camel@rtred1test09.kymeta.local>
- <20151113102851.GF8526@pengutronix.de>
- <1447440856.4553.139.camel@rtred1test09.kymeta.local>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1447440856.4553.139.camel@rtred1test09.kymeta.local>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZyFf1-0006Nl-8K
+ for barebox@lists.infradead.org; Mon, 16 Nov 2015 09:01:29 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 3EB3FA0041B
+ for <barebox@lists.infradead.org>; Mon, 16 Nov 2015 10:01:17 +0100 (CET)
+From: Stefan Christ <s.christ@phytec.de>
+Date: Mon, 16 Nov 2015 10:00:45 +0100
+Message-Id: <1447664445-19282-3-git-send-email-s.christ@phytec.de>
+In-Reply-To: <1447664445-19282-1-git-send-email-s.christ@phytec.de>
+References: <1447664445-19282-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +19,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: MCI bus-width host caps via device tree don't work properly for
- dw and imx
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 3/3] net: fec: fix indentation and whitspaces
+To: barebox@lists.infradead.org
 
-On Fri, Nov 13, 2015 at 06:54:14PM +0000, Trent Piepho wrote:
-> On Fri, 2015-11-13 at 11:28 +0100, Sascha Hauer wrote:
-> > > The mci_of_parse call will not remove the 4 and 8 bits caps.  There is
-> > > the same problem in imx-esdhc.c.  The other two users of mci_of_parse,
-> > > mxs.c and tegra-sdmmc.c, don't have this problem, since they don't set
-> > > any bus-width host_caps in the driver and depend on the DT or
-> > > platform_data to have this info.
-> > > 
-> > > With drivers split 50/50, which is the right way?  Don't have the driver
-> > > report what bits it supports and depend on the device tree to have that
-> > > information?  Or have of_mci_parse remove widths that aren't indicated
-> > > as supported in the DT, so that the DT can remove widths the hardware
-> > > indicates it supports.
-> > 
-> > I think the resulting flags should be the subset of what all components
-> > can do, that is (driver_flags & devicetree_flags & card_flags).
-> > 
-> > So mci_of_parse() should IMO clear the MMC_CAP_8_BIT_DATA flag if the
-> > bus-width property is set to 4.
-> > 
-> > You should encounter the same problem under Linux, right?
-> 
-> Don't have the problem on Linux.  The OF parsing works the same way, but
-> the dw driver stats with 0 bus-width caps, like how mxs and tegra-sdmmc
-> work.
-> 
-> The linux dw_mmc driver allows "sub-drivers" to supply caps, and the
-> Exynos4/5 driver adds CAP_8_BIT.  Which is probably broken, as it
-> doesn't add 4_BIT as well and will have the same problem with the device
-> tree not being able to remove bus widths.
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
+---
+ drivers/net/fec_imx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Ok, it seems the rationale behind the MMC_CAP_x_BIT_DATA is another one
-than thought it is. The host driver cannot know how a card is actually
-connected, so it should rely purely on the device tree bus-width
-property. So dw_mmc.c should start with host->mci.host_caps = 0 in the
-device tree case.
-If this is changed we'll also have to fix the platform_data for dw_mmc,
-it now needs a bus_width field to let ./arch/arm/mach-socfpga/xload.c
-work in 4 bit mode.
-
-Sascha
-
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 39a5cea..37e28d9 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -259,7 +259,7 @@ static int fec_set_hwaddr(struct eth_device *dev, const unsigned char *mac)
+ 	writel((mac[0] << 24) + (mac[1] << 16) + (mac[2] << 8) + mac[3], fec->regs + FEC_PADDR1);
+ 	writel((mac[4] << 24) + (mac[5] << 16) + 0x8808, fec->regs + FEC_PADDR2);
+ 
+-        return 0;
++	return 0;
+ }
+ 
+ static int fec_init(struct eth_device *dev)
+@@ -647,8 +647,8 @@ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
+ #endif
+ static int fec_probe(struct device_d *dev)
+ {
+-        struct fec_platform_data *pdata = (struct fec_platform_data *)dev->platform_data;
+-        struct eth_device *edev;
++	struct fec_platform_data *pdata = (struct fec_platform_data *)dev->platform_data;
++	struct eth_device *edev;
+ 	struct fec_priv *fec;
+ 	void *base;
+ 	int ret;
+@@ -781,7 +781,7 @@ static __maybe_unused struct of_device_id imx_fec_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,imx6q-fec",
+ 		.data = (void *)FEC_TYPE_IMX6,
+-	},  {
++	}, {
+ 		.compatible = "fsl,imx6sx-fec",
+ 		.data = (void *)FEC_TYPE_IMX6,
+ 	}, {
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
