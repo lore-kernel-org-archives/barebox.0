@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x230.google.com ([2a00:1450:4010:c07::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZyeAQ-0004WI-Bk
- for barebox@lists.infradead.org; Tue, 17 Nov 2015 11:11:19 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 17 Nov 2015 12:10:48 +0100
-Message-Id: <1447758651-26575-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1447758651-26575-1-git-send-email-s.hauer@pengutronix.de>
-References: <1447758651-26575-1-git-send-email-s.hauer@pengutronix.de>
+ id 1ZyfA8-0004eL-NH
+ for barebox@lists.infradead.org; Tue, 17 Nov 2015 12:15:05 +0000
+Received: by lfaz4 with SMTP id z4so4241558lfa.0
+ for <barebox@lists.infradead.org>; Tue, 17 Nov 2015 04:14:41 -0800 (PST)
+From: Sergey Koshechkin <serge.koshechkin@gmail.com>
+Date: Tue, 17 Nov 2015 15:14:12 +0300
+Message-Id: <1447762452-13433-1-git-send-email-serge.koshechkin@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] loadb: deactivate console before using it for loadb
-To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH 1/3] crypto: crc32: fix warnings: no previous prototype for
+ 'crc32', 'crc32_no_comp', 'file_crc'
+To: barebox@lists.infradead.org
+Cc: Sergey Koshechkin <serge.koshechkin@gmail.com>
 
-Remove the console device we are about using for loadb from the
-console layer by deactivating it. This makes sure that no printf output
-disturbs the current file transfer.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
 ---
- commands/loadb.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ crypto/crc32.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/commands/loadb.c b/commands/loadb.c
-index bdf1710..6710665 100644
---- a/commands/loadb.c
-+++ b/commands/loadb.c
-@@ -617,6 +617,7 @@ static int do_load_serial_bin(int argc, char *argv[])
- 	int rcode = 0, ret;
- 	int opt;
- 	char *output_file = NULL;
-+	int current_active;
+diff --git a/crypto/crc32.c b/crypto/crc32.c
+index e7b1bd7..58637bd 100644
+--- a/crypto/crc32.c
++++ b/crypto/crc32.c
+@@ -16,6 +16,9 @@
+ #include <malloc.h>
+ #include <linux/ctype.h>
+ #include <errno.h>
++#define STATIC
++#else
++#define STATIC static inline
+ #endif
  
- 	while ((opt = getopt(argc, argv, "f:b:o:c")) > 0) {
- 		switch (opt) {
-@@ -641,6 +642,7 @@ static int do_load_serial_bin(int argc, char *argv[])
- 		return -ENODEV;
- 	}
- 	current_baudrate = console_get_baudrate(cdev);
-+	current_active = console_get_active(cdev);
+ #ifdef CONFIG_DYNAMIC_CRC_TABLE
+@@ -138,7 +141,7 @@ static const ulong crc_table[256] = {
+ #define DO8(buf)  DO4(buf); DO4(buf);
  
- 	/* Load Defaults */
- 	if (load_baudrate == 0)
-@@ -665,13 +667,15 @@ static int do_load_serial_bin(int argc, char *argv[])
- 		}
- 	}
+ /* ========================================================================= */
+-uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
++STATIC uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
+ {
+     const unsigned char *buf = _buf;
  
-+	printf("## Ready for binary (kermit) download "
-+	       "to 0x%08lX offset on %s device at %d bps...\n", offset,
-+	       output_file, load_baudrate);
-+
-+	console_set_active(cdev, 0);
- 	ret = console_set_baudrate(cdev, load_baudrate);
- 	if (ret)
- 		return ret;
+@@ -164,7 +167,7 @@ EXPORT_SYMBOL(crc32);
+ /* No ones complement version. JFFS2 (and other things ?)
+  * don't use ones compliment in their CRC calculations.
+  */
+-uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
++STATIC uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
+ {
+    const unsigned char *buf = _buf;
  
--	printf("## Ready for binary (kermit) download "
--	       "to 0x%08lX offset on %s device at %d bps...\n", offset,
--	       output_file, load_baudrate);
- 	addr = load_serial_bin();
- 	if (addr == 0) {
- 		printf("## Binary (kermit) download aborted\n");
-@@ -682,6 +686,8 @@ static int do_load_serial_bin(int argc, char *argv[])
- 	if (ret)
- 		return ret;
+@@ -184,7 +187,7 @@ uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
+     return crc;
+ }
  
-+	console_set_active(cdev, current_active);
-+
- 	close(ofd);
- 	ofd = 0;
- 	return rcode;
+-int file_crc(char *filename, ulong start, ulong size, ulong *crc,
++STATIC int file_crc(char *filename, ulong start, ulong size, ulong *crc,
+ 		    ulong *total)
+ {
+ 	int fd, now;
 -- 
 2.6.2
 
