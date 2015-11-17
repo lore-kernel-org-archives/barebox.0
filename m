@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZyeAL-0004To-EF
- for barebox@lists.infradead.org; Tue, 17 Nov 2015 11:11:14 +0000
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZyeAN-00043S-0V
+ for barebox@lists.infradead.org; Tue, 17 Nov 2015 11:11:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 17 Nov 2015 12:10:49 +0100
-Message-Id: <1447758651-26575-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 17 Nov 2015 12:10:50 +0100
+Message-Id: <1447758651-26575-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1447758651-26575-1-git-send-email-s.hauer@pengutronix.de>
 References: <1447758651-26575-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] console: Set baudrate during registration
+Subject: [PATCH 4/5] loadb: Allow to specify device to use
 To: Barebox List <barebox@lists.infradead.org>
 
-This makes sure that the cdev->baudrate field is always consistent with
-the hardware state.
+The port we want to have the console on may not necessarily be the port
+we want to transfer files on. Make the port configurable with a
+commandline option.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/console.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ commands/loadb.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index 84d4ea7..4a1d257 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -67,12 +67,6 @@ int console_set_active(struct console_device *cdev, unsigned flag)
- 	if (!cdev->putc)
- 		flag &= ~(CONSOLE_STDOUT | CONSOLE_STDERR);
+diff --git a/commands/loadb.c b/commands/loadb.c
+index 6710665..6223512 100644
+--- a/commands/loadb.c
++++ b/commands/loadb.c
+@@ -618,8 +618,9 @@ static int do_load_serial_bin(int argc, char *argv[])
+ 	int opt;
+ 	char *output_file = NULL;
+ 	int current_active;
++	char *console_dev_name = NULL;
  
--	if (flag && !cdev->f_active) {
--		/* The device is being activated, set its baudrate */
--		if (cdev->setbrg)
--			cdev->setbrg(cdev, cdev->baudrate);
--	}
--
- 	if (!flag && cdev->f_active && cdev->flush)
- 		cdev->flush(cdev);
+-	while ((opt = getopt(argc, argv, "f:b:o:c")) > 0) {
++	while ((opt = getopt(argc, argv, "f:b:o:c:")) > 0) {
+ 		switch (opt) {
+ 		case 'f':
+ 			output_file = optarg;
+@@ -630,16 +631,27 @@ static int do_load_serial_bin(int argc, char *argv[])
+ 		case 'o':
+ 			offset = (int)simple_strtoul(optarg, NULL, 10);
+ 			break;
++		case 'c':
++			console_dev_name = optarg;
++			break;
+ 		default:
+ 			perror(argv[0]);
+ 			return 1;
+ 		}
+ 	}
  
-@@ -240,7 +234,7 @@ static int __console_puts(struct console_device *cdev, const char *s)
- int console_register(struct console_device *newcdev)
- {
- 	struct device_d *dev = &newcdev->class_dev;
--	int activate = 0;
-+	int activate = 0, ret;
+-	cdev = console_get_first_active();
+-	if (NULL == cdev) {
+-		printf("%s:No console device with STDIN and STDOUT\n", argv[0]);
+-		return -ENODEV;
++	if (console_dev_name) {
++		cdev = console_get_by_name(console_dev_name);
++		if (!cdev) {
++			printf("Console %s not found\n", console_dev_name);
++			return -ENODEV;
++		}
++	} else {
++		cdev = console_get_first_active();
++		if (!cdev) {
++			printf("No console device with STDIN and STDOUT\n");
++			return -ENODEV;
++		}
+ 	}
+ 	current_baudrate = console_get_baudrate(cdev);
+ 	current_active = console_get_active(cdev);
+@@ -699,6 +711,7 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT("-f FILE", "download to FILE (default image.bin)")
+ BAREBOX_CMD_HELP_OPT("-o OFFS", "destination file OFFSet (default 0)")
+ BAREBOX_CMD_HELP_OPT("-b BAUD", "baudrate for download (default: console baudrate)")
++BAREBOX_CMD_HELP_OPT("-c CONSOLE", "Specify console (default: first active console")
+ BAREBOX_CMD_HELP_END
  
- 	if (initialized == CONSOLE_UNINITIALIZED)
- 		console_init_early();
-@@ -258,6 +252,9 @@ int console_register(struct console_device *newcdev)
- 	platform_device_register(dev);
- 
- 	if (newcdev->setbrg) {
-+		ret = newcdev->setbrg(newcdev, CONFIG_BAUDRATE);
-+		if (ret)
-+			return ret;
- 		newcdev->baudrate = CONFIG_BAUDRATE;
- 		dev_add_param_int(dev, "baudrate", console_baudrate_set,
- 			NULL, &newcdev->baudrate_param, "%u", newcdev);
+ BAREBOX_CMD_START(loadb)
 -- 
 2.6.2
 
