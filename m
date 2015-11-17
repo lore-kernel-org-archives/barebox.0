@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZyhtD-0003Nv-8M
- for barebox@lists.infradead.org; Tue, 17 Nov 2015 15:09:48 +0000
-Message-ID: <1447772964.3144.50.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 17 Nov 2015 16:09:24 +0100
-In-Reply-To: <1447762522-13533-1-git-send-email-serge.koshechkin@gmail.com>
-References: <1447762522-13533-1-git-send-email-serge.koshechkin@gmail.com>
-Mime-Version: 1.0
+ id 1Zylmd-0007fy-DO
+ for barebox@lists.infradead.org; Tue, 17 Nov 2015 19:19:16 +0000
+Date: Tue, 17 Nov 2015 20:18:53 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151117191853.GQ8526@pengutronix.de>
+References: <1447664445-19282-1-git-send-email-s.christ@phytec.de>
+ <1447664445-19282-2-git-send-email-s.christ@phytec.de>
+ <CAOpc7mGnHmYOVvOWygYUs+1dqdsZYtW-T=8ruNwDt-U1bQNvMg@mail.gmail.com>
+ <20151116101705.GA19657@lws-christ>
+ <20151117093213.GO8526@pengutronix.de>
+ <20151117143843.GC2696@lws-christ>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20151117143843.GC2696@lws-christ>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +27,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] Makefile: set -Wmissing-prototypes on all
- architechtures (was only on mips)
-To: Sergey Koshechkin <serge.koshechkin@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] net: fec: implement dtb property phy-reset-durationy
+To: Stefan Christ <s.christ@phytec.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Am Dienstag, den 17.11.2015, 15:15 +0300 schrieb Sergey Koshechkin:
-> Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
-> ---
->  Makefile           | 2 +-
->  arch/mips/Makefile | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+On Tue, Nov 17, 2015 at 03:38:43PM +0100, Stefan Christ wrote:
+> Hi,
 > 
-> diff --git a/Makefile b/Makefile
-> index 1029dc1..9a54a44 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -183,7 +183,7 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
->  
->  HOSTCC       = gcc
->  HOSTCXX      = g++
-> -HOSTCFLAGS   = -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
-> +HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
->  HOSTCXXFLAGS = -O2
->  
->  # Decide whether to build built-in, modular, or both.
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 75761b5..b003945 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -12,7 +12,7 @@ endif
->  CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
->  
->  cflags-y += -G 0 -mno-abicalls -fno-pic -pipe
-> -cflags-y += -Wall -Wmissing-prototypes -Wstrict-prototypes \
-> +cflags-y += -Wall -Wstrict-prototypes \
+> > > Yeah, that would be the obvious and plausible thing to do, but the driver in
+> > > the linux kernel does it this way and it's documented in the device tree
+> > > bindings.  So I'm not sure if we can change the default behavior here.
+> > 
+> > Yes, we can ;)
+> > 
+> > The rationale behind this code may be: The reset duration is
+> > unreasonably high (>1s), so that it to a sane default (1ms).
+> > 
+> > I suggest to drop the check completely. If someone ever starts barebox
+> > with an insanely high value (maybe he thought the value is in us) then
+> > he won't notice the mistake if barebox silently falls back to 1ms as
+> > duration. If instead barebox waits for multiple seconds then he will
+> > notice and it the device tree which is what we want.
+> 
+> Ok. So what about printing a warn message that case? Then everybody should
+> notice.
 
-Wstrict-prototypes is already set for all architectures, as seen above.
-Can you remove it here?
+No, I don't think that's necessary. Such an overlong delay should be
+noticeable already and give the right hint. Let's save the binary space.
 
->  	-Wno-uninitialized -Wno-format -Wno-main
->  
->  ifdef CONFIG_32BIT
+> 
+> When I send a v2 patch, should the description in the device tree binding be
+> updated, too?
+
+No, the bindings docs are directly taken from the kernel and changes
+will be lost the next I update them.
+
+Sascha
 
 -- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
