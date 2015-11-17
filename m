@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZyhPd-00023U-3C
- for barebox@lists.infradead.org; Tue, 17 Nov 2015 14:39:14 +0000
-Date: Tue, 17 Nov 2015 15:38:43 +0100
-From: Stefan Christ <s.christ@phytec.de>
-Message-ID: <20151117143843.GC2696@lws-christ>
-References: <1447664445-19282-1-git-send-email-s.christ@phytec.de>
- <1447664445-19282-2-git-send-email-s.christ@phytec.de>
- <CAOpc7mGnHmYOVvOWygYUs+1dqdsZYtW-T=8ruNwDt-U1bQNvMg@mail.gmail.com>
- <20151116101705.GA19657@lws-christ>
- <20151117093213.GO8526@pengutronix.de>
-MIME-Version: 1.0
-In-Reply-To: <20151117093213.GO8526@pengutronix.de>
-Content-Disposition: inline
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZyhtD-0003Nv-8M
+ for barebox@lists.infradead.org; Tue, 17 Nov 2015 15:09:48 +0000
+Message-ID: <1447772964.3144.50.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 17 Nov 2015 16:09:24 +0100
+In-Reply-To: <1447762522-13533-1-git-send-email-serge.koshechkin@gmail.com>
+References: <1447762522-13533-1-git-send-email-serge.koshechkin@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,66 +17,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] net: fec: implement dtb property phy-reset-durationy
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 3/3] Makefile: set -Wmissing-prototypes on all
+ architechtures (was only on mips)
+To: Sergey Koshechkin <serge.koshechkin@gmail.com>
+Cc: barebox@lists.infradead.org
 
-SGksCgo+ID4gWWVhaCwgdGhhdCB3b3VsZCBiZSB0aGUgb2J2aW91cyBhbmQgcGxhdXNpYmxlIHRo
-aW5nIHRvIGRvLCBidXQgdGhlIGRyaXZlciBpbgo+ID4gdGhlIGxpbnV4IGtlcm5lbCBkb2VzIGl0
-IHRoaXMgd2F5IGFuZCBpdCdzIGRvY3VtZW50ZWQgaW4gdGhlIGRldmljZSB0cmVlCj4gPiBiaW5k
-aW5ncy4gIFNvIEknbSBub3Qgc3VyZSBpZiB3ZSBjYW4gY2hhbmdlIHRoZSBkZWZhdWx0IGJlaGF2
-aW9yIGhlcmUuCj4gCj4gWWVzLCB3ZSBjYW4gOykKPiAKPiBUaGUgcmF0aW9uYWxlIGJlaGluZCB0
-aGlzIGNvZGUgbWF5IGJlOiBUaGUgcmVzZXQgZHVyYXRpb24gaXMKPiB1bnJlYXNvbmFibHkgaGln
-aCAoPjFzKSwgc28gdGhhdCBpdCB0byBhIHNhbmUgZGVmYXVsdCAoMW1zKS4KPiAKPiBJIHN1Z2dl
-c3QgdG8gZHJvcCB0aGUgY2hlY2sgY29tcGxldGVseS4gSWYgc29tZW9uZSBldmVyIHN0YXJ0cyBi
-YXJlYm94Cj4gd2l0aCBhbiBpbnNhbmVseSBoaWdoIHZhbHVlIChtYXliZSBoZSB0aG91Z2h0IHRo
-ZSB2YWx1ZSBpcyBpbiB1cykgdGhlbgo+IGhlIHdvbid0IG5vdGljZSB0aGUgbWlzdGFrZSBpZiBi
-YXJlYm94IHNpbGVudGx5IGZhbGxzIGJhY2sgdG8gMW1zIGFzCj4gZHVyYXRpb24uIElmIGluc3Rl
-YWQgYmFyZWJveCB3YWl0cyBmb3IgbXVsdGlwbGUgc2Vjb25kcyB0aGVuIGhlIHdpbGwKPiBub3Rp
-Y2UgYW5kIGl0IHRoZSBkZXZpY2UgdHJlZSB3aGljaCBpcyB3aGF0IHdlIHdhbnQuCgpPay4gU28g
-d2hhdCBhYm91dCBwcmludGluZyBhIHdhcm4gbWVzc2FnZSB0aGF0IGNhc2U/IFRoZW4gZXZlcnli
-b2R5IHNob3VsZApub3RpY2UuCgpXaGVuIEkgc2VuZCBhIHYyIHBhdGNoLCBzaG91bGQgdGhlIGRl
-c2NyaXB0aW9uIGluIHRoZSBkZXZpY2UgdHJlZSBiaW5kaW5nIGJlCnVwZGF0ZWQsIHRvbz8KCk1p
-dCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4gLyBLaW5kIHJlZ2FyZHMsCglTdGVmYW4gQ2hyaXN0CgpP
-biBUdWUsIE5vdiAxNywgMjAxNSBhdCAxMDozMjoxM0FNICswMTAwLCBTYXNjaGEgSGF1ZXIgd3Jv
-dGU6Cj4gT24gTW9uLCBOb3YgMTYsIDIwMTUgYXQgMTE6MTc6MDVBTSArMDEwMCwgU3RlZmFuIENo
-cmlzdCB3cm90ZToKPiA+IEhpLAo+ID4gICAKPiA+ID4gc2hvdWxkbid0IHRoaXMgYmUgbXNlYyA9
-IDEwMDAuCj4gPiA+IAo+ID4gPiBIZXJlIHlvdSBzZXQgaXQgdG8gMW1zIGlmIGl0IHVzZWQgdG8g
-YmUgb3ZlciAxcy4KPiA+IAo+ID4gWWVhaCwgdGhhdCB3b3VsZCBiZSB0aGUgb2J2aW91cyBhbmQg
-cGxhdXNpYmxlIHRoaW5nIHRvIGRvLCBidXQgdGhlIGRyaXZlciBpbgo+ID4gdGhlIGxpbnV4IGtl
-cm5lbCBkb2VzIGl0IHRoaXMgd2F5IGFuZCBpdCdzIGRvY3VtZW50ZWQgaW4gdGhlIGRldmljZSB0
-cmVlCj4gPiBiaW5kaW5ncy4gIFNvIEknbSBub3Qgc3VyZSBpZiB3ZSBjYW4gY2hhbmdlIHRoZSBk
-ZWZhdWx0IGJlaGF2aW9yIGhlcmUuCj4gCj4gWWVzLCB3ZSBjYW4gOykKPiAKPiBUaGUgcmF0aW9u
-YWxlIGJlaGluZCB0aGlzIGNvZGUgbWF5IGJlOiBUaGUgcmVzZXQgZHVyYXRpb24gaXMKPiB1bnJl
-YXNvbmFibHkgaGlnaCAoPjFzKSwgc28gdGhhdCBpdCB0byBhIHNhbmUgZGVmYXVsdCAoMW1zKS4K
-PiAKPiBJIHN1Z2dlc3QgdG8gZHJvcCB0aGUgY2hlY2sgY29tcGxldGVseS4gSWYgc29tZW9uZSBl
-dmVyIHN0YXJ0cyBiYXJlYm94Cj4gd2l0aCBhbiBpbnNhbmVseSBoaWdoIHZhbHVlIChtYXliZSBo
-ZSB0aG91Z2h0IHRoZSB2YWx1ZSBpcyBpbiB1cykgdGhlbgo+IGhlIHdvbid0IG5vdGljZSB0aGUg
-bWlzdGFrZSBpZiBiYXJlYm94IHNpbGVudGx5IGZhbGxzIGJhY2sgdG8gMW1zIGFzCj4gZHVyYXRp
-b24uIElmIGluc3RlYWQgYmFyZWJveCB3YWl0cyBmb3IgbXVsdGlwbGUgc2Vjb25kcyB0aGVuIGhl
-IHdpbGwKPiBub3RpY2UgYW5kIGl0IHRoZSBkZXZpY2UgdHJlZSB3aGljaCBpcyB3aGF0IHdlIHdh
-bnQuCj4gCj4gU2FzY2hhCj4gCj4gCj4gPiAKPiA+IE1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4g
-LyBLaW5kIHJlZ2FyZHMsCj4gPiAJU3RlZmFuIENocmlzdAo+ID4gCj4gPiBPbiBNb24sIE5vdiAx
-NiwgMjAxNSBhdCAxMTowMzozMkFNICswMTAwLCBIb2xnZXIgU2NodXJpZyB3cm90ZToKPiA+ID4g
-MjAxNS0xMS0xNiAxMDowMCBHTVQrMDE6MDAgU3RlZmFuIENocmlzdCA8cy5jaHJpc3RAcGh5dGVj
-LmRlPjoKPiA+ID4gCj4gPiA+ID4gKyAgICAgICAgICAgICAgIC8qIEEgc2FuZSByZXNldCBkdXJh
-dGlvbiBzaG91bGQgbm90IGJlIGxvbmdlciB0aGFuIDFzICovCj4gPiA+ID4gKyAgICAgICAgICAg
-ICAgIGlmIChtc2VjID4gMTAwMCkKPiA+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICBtc2Vj
-ID0gMTsKPiA+ID4gPgo+ID4gPiAKPiA+ID4gSGkgU3RlZmFuLAo+ID4gPiAKPiA+ID4gc2hvdWxk
-bid0IHRoaXMgYmUgbXNlYyA9IDEwMDAuCj4gPiA+IAo+ID4gPiBIZXJlIHlvdSBzZXQgaXQgdG8g
-MW1zIGlmIGl0IHVzZWQgdG8gYmUgb3ZlciAxcy4KPiA+IAo+ID4gX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4g
-PiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+IAo+IC0tIAo+IFBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0s
-IEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhp
-bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
-NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Am Dienstag, den 17.11.2015, 15:15 +0300 schrieb Sergey Koshechkin:
+> Signed-off-by: Sergey Koshechkin <serge.koshechkin@gmail.com>
+> ---
+>  Makefile           | 2 +-
+>  arch/mips/Makefile | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index 1029dc1..9a54a44 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -183,7 +183,7 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+>  
+>  HOSTCC       = gcc
+>  HOSTCXX      = g++
+> -HOSTCFLAGS   = -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
+> +HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
+>  HOSTCXXFLAGS = -O2
+>  
+>  # Decide whether to build built-in, modular, or both.
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index 75761b5..b003945 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -12,7 +12,7 @@ endif
+>  CPPFLAGS += -D__MIPS__ -fno-strict-aliasing -fno-merge-constants
+>  
+>  cflags-y += -G 0 -mno-abicalls -fno-pic -pipe
+> -cflags-y += -Wall -Wmissing-prototypes -Wstrict-prototypes \
+> +cflags-y += -Wall -Wstrict-prototypes \
+
+Wstrict-prototypes is already set for all architectures, as seen above.
+Can you remove it here?
+
+>  	-Wno-uninitialized -Wno-format -Wno-main
+>  
+>  ifdef CONFIG_32BIT
+
+-- 
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
