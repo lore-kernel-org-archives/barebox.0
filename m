@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from mail-lf0-x231.google.com ([2a00:1450:4010:c07::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzA46-0002BC-Oe
- for barebox@lists.infradead.org; Wed, 18 Nov 2015 21:14:55 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Wed, 18 Nov 2015 21:14:30 +0000
-Message-ID: <1447881271.4553.176.camel@rtred1test09.kymeta.local>
-References: <1447880807.4553.171.camel@rtred1test09.kymeta.local>
-In-Reply-To: <1447880807.4553.171.camel@rtred1test09.kymeta.local>
-Content-Language: en-US
-Content-ID: <9D050B85094D3944BB5F8D57E86DE1C6@kymetacorp.com>
-MIME-Version: 1.0
+ id 1ZzB9L-0003G9-LV
+ for barebox@lists.infradead.org; Wed, 18 Nov 2015 22:24:25 +0000
+Received: by lfs39 with SMTP id 39so36297212lfs.3
+ for <barebox@lists.infradead.org>; Wed, 18 Nov 2015 14:24:01 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 19 Nov 2015 01:23:54 +0300
+Message-Id: <1447885436-30683-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +16,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] mci: dw_mmc: Add support for high speed modes
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 0/2] add multiplexed I2C bus support
+To: barebox@lists.infradead.org
 
-The Synopsys DesignWare core supports 52 MHz MMC mode and 50 MHz SD
-mode, so add the cap flags so they are used.
+This patchseries adds multiplexed I2C bus support to barebox
+and a driver for pca954x bus multiplexer.
 
-This works on socfpga.  The other user of this driver is Rockchip and
-the datasheet I found for the RK30xx indicated it supported highspeed
-modes as well.
+Changes since RFC version:
 
-The Linux kernel has DT properties, e.g. "cap-mmc-highspeed", but none
-of the drivers in barebox support this at all.  They all specify flags
-in their code.
+  * rename drivers/i2c/muxes/pca954x.c -> drivers/i2c/muxes/i2c-mux-pca954x.c;
+  * remove adapter numbering hack in drivers/i2c/i2c-mux.c;
+  * add copyright comments;
+  * sync with linux-v4.4-rc1.
 
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
----
- drivers/mci/dw_mmc.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mci/dw_mmc.c b/drivers/mci/dw_mmc.c
-index 18ddd16..cbd3f00 100644
---- a/drivers/mci/dw_mmc.c
-+++ b/drivers/mci/dw_mmc.c
-@@ -706,6 +706,8 @@ static int dw_mmc_probe(struct device_d *dev)
- 	host->mci.hw_dev = dev;
- 	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
- 	host->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA;
-+	host->mci.host_caps |= MMC_CAP_MMC_HIGHSPEED | MMC_CAP_MMC_HIGHSPEED_52MHZ |
-+			       MMC_CAP_SD_HIGHSPEED;
- 
- 	if (pdata) {
- 		host->ciu_div = pdata->ciu_div;
+Antony Pavlov (2):
+  i2c: import multiplexed I2C bus core support from linux kernel
+  i2c: add pca954x bus multiplexer driver
+
+ drivers/i2c/Kconfig                 |   9 ++
+ drivers/i2c/Makefile                |   3 +-
+ drivers/i2c/i2c-mux.c               | 148 +++++++++++++++++++++
+ drivers/i2c/muxes/Kconfig           |  14 ++
+ drivers/i2c/muxes/Makefile          |   4 +
+ drivers/i2c/muxes/i2c-mux-pca954x.c | 251 ++++++++++++++++++++++++++++++++++++
+ include/i2c/i2c-mux.h               |  40 ++++++
+ include/i2c/i2c.h                   |  19 ++-
+ 8 files changed, 486 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/i2c/i2c-mux.c
+ create mode 100644 drivers/i2c/muxes/Kconfig
+ create mode 100644 drivers/i2c/muxes/Makefile
+ create mode 100644 drivers/i2c/muxes/i2c-mux-pca954x.c
+ create mode 100644 include/i2c/i2c-mux.h
+
 -- 
-1.8.3.1
+2.6.2
 
 
 _______________________________________________
