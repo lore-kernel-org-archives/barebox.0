@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
+Received: from mail-lf0-x231.google.com ([2a00:1450:4010:c07::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzB9M-0003GQ-FS
- for barebox@lists.infradead.org; Wed, 18 Nov 2015 22:24:28 +0000
-Received: by lfs39 with SMTP id 39so36297385lfs.3
- for <barebox@lists.infradead.org>; Wed, 18 Nov 2015 14:24:02 -0800 (PST)
+ id 1ZzB9L-0003Gb-LU
+ for barebox@lists.infradead.org; Wed, 18 Nov 2015 22:24:29 +0000
+Received: by lfs39 with SMTP id 39so36297559lfs.3
+ for <barebox@lists.infradead.org>; Wed, 18 Nov 2015 14:24:03 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 19 Nov 2015 01:23:55 +0300
-Message-Id: <1447885436-30683-2-git-send-email-antonynpavlov@gmail.com>
+Date: Thu, 19 Nov 2015 01:23:56 +0300
+Message-Id: <1447885436-30683-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1447885436-30683-1-git-send-email-antonynpavlov@gmail.com>
 References: <1447885436-30683-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,66 +23,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] i2c: import multiplexed I2C bus core support from linux
- kernel
+Subject: [PATCH 2/2] i2c: add pca954x bus multiplexer driver
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/i2c/Kconfig   |   7 +++
- drivers/i2c/Makefile  |   1 +
- drivers/i2c/i2c-mux.c | 148 ++++++++++++++++++++++++++++++++++++++++++++++++++
- include/i2c/i2c-mux.h |  40 ++++++++++++++
- include/i2c/i2c.h     |   6 +-
- 5 files changed, 201 insertions(+), 1 deletion(-)
+ drivers/i2c/Kconfig                 |   2 +
+ drivers/i2c/Makefile                |   2 +-
+ drivers/i2c/muxes/Kconfig           |  14 ++
+ drivers/i2c/muxes/Makefile          |   4 +
+ drivers/i2c/muxes/i2c-mux-pca954x.c | 251 ++++++++++++++++++++++++++++++++++++
+ include/i2c/i2c.h                   |  13 ++
+ 6 files changed, 285 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/i2c/Kconfig b/drivers/i2c/Kconfig
-index 0c6aec3..21cf0ec 100644
+index 21cf0ec..56259d8 100644
 --- a/drivers/i2c/Kconfig
 +++ b/drivers/i2c/Kconfig
-@@ -6,4 +6,11 @@ if I2C
- source drivers/i2c/algos/Kconfig
- source drivers/i2c/busses/Kconfig
+@@ -13,4 +13,6 @@ config I2C_MUX
+ 	  handle multiplexed I2C bus topologies, by presenting each
+ 	  multiplexed segment as a I2C adapter.
  
-+config I2C_MUX
-+	tristate "I2C bus multiplexing support"
-+	help
-+	  Say Y here if you want the I2C core to support the ability to
-+	  handle multiplexed I2C bus topologies, by presenting each
-+	  multiplexed segment as a I2C adapter.
++source drivers/i2c/muxes/Kconfig
 +
  endif
 diff --git a/drivers/i2c/Makefile b/drivers/i2c/Makefile
-index 648d844..5ce0d0a 100644
+index 5ce0d0a..c936534 100644
 --- a/drivers/i2c/Makefile
 +++ b/drivers/i2c/Makefile
-@@ -1 +1,2 @@
- obj-$(CONFIG_I2C) += i2c.o i2c-smbus.o busses/ algos/
-+obj-$(CONFIG_I2C_MUX) += i2c-mux.o
-diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+@@ -1,2 +1,2 @@
+-obj-$(CONFIG_I2C) += i2c.o i2c-smbus.o busses/ algos/
++obj-$(CONFIG_I2C) += i2c.o i2c-smbus.o busses/ algos/ muxes/
+ obj-$(CONFIG_I2C_MUX) += i2c-mux.o
+diff --git a/drivers/i2c/muxes/Kconfig b/drivers/i2c/muxes/Kconfig
 new file mode 100644
-index 0000000..f87e1fa
+index 0000000..74b7345
 --- /dev/null
-+++ b/drivers/i2c/i2c-mux.c
-@@ -0,0 +1,148 @@
++++ b/drivers/i2c/muxes/Kconfig
+@@ -0,0 +1,14 @@
++#
++# Multiplexer I2C chip drivers configuration
++#
++
++menu "Multiplexer I2C Chip support"
++	depends on I2C_MUX
++
++config I2C_MUX_PCA954x
++	tristate "Philips PCA954x I2C Mux/switches"
++	help
++	  If you say yes here you get support for the Philips PCA954x
++	  I2C mux/switch devices.
++
++endmenu
+diff --git a/drivers/i2c/muxes/Makefile b/drivers/i2c/muxes/Makefile
+new file mode 100644
+index 0000000..f35d40d
+--- /dev/null
++++ b/drivers/i2c/muxes/Makefile
+@@ -0,0 +1,4 @@
++#
++# Makefile for multiplexer I2C chip drivers.
++
++obj-$(CONFIG_I2C_MUX_PCA954x)	+= i2c-mux-pca954x.o
+diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
+new file mode 100644
+index 0000000..baeae7b
+--- /dev/null
++++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
+@@ -0,0 +1,251 @@
 +/*
-+ * Multiplexed I2C bus driver.
++ * I2C multiplexer
 + *
 + * Copyright (c) 2008-2009 Rodolfo Giometti <giometti@linux.it>
 + * Copyright (c) 2008-2009 Eurotech S.p.A. <info@eurotech.it>
-+ * Copyright (c) 2009-2010 NSN GmbH & Co KG <michael.lawnick.ext@nsn.com>
 + *
 + * Ported to barebox from linux-v4.4-rc1
 + * Copyright (C) 2015 Antony Pavlov <antonynpavlov@gmail.com>
 + *
-+ * Simplifies access to complex multiplexed I2C bus topologies, by presenting
-+ * each multiplexed bus segment as an additional I2C adapter.
-+ * Supports multi-level mux'ing (mux behind a mux).
++ * This module supports the PCA954x series of I2C multiplexer/switch chips
++ * made by Philips Semiconductors.
++ * This includes the:
++ *	 PCA9540, PCA9542, PCA9543, PCA9544, PCA9545, PCA9546, PCA9547
++ *	 and PCA9548.
++ *
++ * These chips are all controlled via the I2C bus itself, and all have a
++ * single 8-bit register. The upstream "parent" bus fans out to two,
++ * four, or eight downstream busses or channels; which of these
++ * are selected is determined by the chip type and register contents. A
++ * mux can select only one sub-bus at a time; a switch can select any
++ * combination simultaneously.
 + *
 + * Based on:
-+ *	i2c-virt.c from Kumar Gala <galak@kernel.crashing.org>
-+ *	i2c-virtual.c from Ken Harrenstien, Copyright (c) 2004 Google, Inc.
-+ *	i2c-virtual.c from Brian Kuschak <bkuschak@yahoo.com>
++ *	pca954x.c from Kumar Gala <galak@kernel.crashing.org>
++ * Copyright (C) 2006
++ *
++ * Based on:
++ *	pca954x.c from Ken Harrenstien
++ * Copyright (C) 2004 Google, Inc. (Ken Harrenstien)
++ *
++ * Based on:
++ *	i2c-virtual_cb.c from Brian Kuschak <bkuschak@yahoo.com>
++ * and
++ *	pca9540.c from Jean Delvare <jdelvare@suse.de>.
 + *
 + * This file is licensed under the terms of the GNU General Public
 + * License version 2. This program is licensed "as is" without any
@@ -90,192 +132,249 @@ index 0000000..f87e1fa
 + */
 +
 +#include <common.h>
++#include <driver.h>
 +#include <malloc.h>
-+#include <xfuncs.h>
-+#include <of.h>
 +#include <i2c/i2c.h>
++#include <i2c/i2c-algo-bit.h>
 +#include <i2c/i2c-mux.h>
++#include <init.h>
 +
-+/* multiplexer per channel data */
-+struct i2c_mux_priv {
-+	struct i2c_adapter adap;
++#define PCA954X_MAX_NCHANS 8
 +
-+	struct i2c_adapter *parent;
-+	struct device_d *mux_dev;
-+	void *mux_priv;
-+	u32 chan_id;
-+
-+	int (*select)(struct i2c_adapter *, void *mux_priv, u32 chan_id);
-+	int (*deselect)(struct i2c_adapter *, void *mux_priv, u32 chan_id);
++enum pca_type {
++	pca_9540,
++	pca_9542,
++	pca_9543,
++	pca_9544,
++	pca_9545,
++	pca_9546,
++	pca_9547,
++	pca_9548,
 +};
 +
-+static int i2c_mux_master_xfer(struct i2c_adapter *adap,
-+			       struct i2c_msg msgs[], int num)
++struct pca954x {
++	enum pca_type type;
++	struct i2c_adapter *virt_adaps[PCA954X_MAX_NCHANS];
++
++	u8 last_chan;		/* last register value */
++};
++
++struct chip_desc {
++	u8 nchans;
++	u8 enable;	/* used for muxes only */
++	enum muxtype {
++		pca954x_ismux = 0,
++		pca954x_isswi
++	} muxtype;
++};
++
++/* Provide specs for the PCA954x types we know about */
++static const struct chip_desc chips[] = {
++	[pca_9540] = {
++		.nchans = 2,
++		.enable = 0x4,
++		.muxtype = pca954x_ismux,
++	},
++	[pca_9543] = {
++		.nchans = 2,
++		.muxtype = pca954x_isswi,
++	},
++	[pca_9544] = {
++		.nchans = 4,
++		.enable = 0x4,
++		.muxtype = pca954x_ismux,
++	},
++	[pca_9545] = {
++		.nchans = 4,
++		.muxtype = pca954x_isswi,
++	},
++	[pca_9547] = {
++		.nchans = 8,
++		.enable = 0x8,
++		.muxtype = pca954x_ismux,
++	},
++	[pca_9548] = {
++		.nchans = 8,
++		.muxtype = pca954x_isswi,
++	},
++};
++
++static const struct platform_device_id pca954x_id[] = {
++	{ "pca9540", pca_9540 },
++	{ "pca9542", pca_9540 },
++	{ "pca9543", pca_9543 },
++	{ "pca9544", pca_9544 },
++	{ "pca9545", pca_9545 },
++	{ "pca9546", pca_9545 },
++	{ "pca9547", pca_9547 },
++	{ "pca9548", pca_9548 },
++	{ }
++};
++
++/* Write to mux register. Don't use i2c_transfer()/i2c_smbus_xfer()
++   for this as they will try to lock adapter a second time */
++static int pca954x_reg_write(struct i2c_adapter *adap,
++			     struct i2c_client *client, u8 val)
 +{
-+	struct i2c_mux_priv *priv = adap->algo_data;
-+	struct i2c_adapter *parent = priv->parent;
-+	int ret;
++	int ret = -ENODEV;
 +
-+	/* Switch to the right mux port and perform the transfer. */
++	if (adap->master_xfer) {
++		struct i2c_msg msg;
++		char buf[1];
 +
-+	ret = priv->select(parent, priv->mux_priv, priv->chan_id);
-+	if (ret >= 0)
-+		ret = parent->master_xfer(parent, msgs, num);
-+	if (priv->deselect)
-+		priv->deselect(parent, priv->mux_priv, priv->chan_id);
++		msg.addr = client->addr;
++		msg.flags = 0;
++		msg.len = 1;
++		buf[0] = val;
++		msg.buf = buf;
++		ret = adap->master_xfer(adap, &msg, 1);
++	} else {
++		union i2c_smbus_data data;
++		ret = i2c_smbus_xfer(adap, client->addr,
++					     0 /* client->flags */,
++					     I2C_SMBUS_WRITE,
++					     val, I2C_SMBUS_BYTE, &data);
++	}
 +
 +	return ret;
 +}
 +
-+struct i2c_adapter *i2c_add_mux_adapter(struct i2c_adapter *parent,
-+				struct device_d *mux_dev,
-+				void *mux_priv, u32 force_nr, u32 chan_id,
-+				int (*select) (struct i2c_adapter *,
-+					       void *, u32),
-+				int (*deselect) (struct i2c_adapter *,
-+						 void *, u32))
++static int pca954x_select_chan(struct i2c_adapter *adap,
++			       void *client, u32 chan)
 +{
-+	struct i2c_mux_priv *priv;
-+	int ret;
++	struct pca954x *data = i2c_get_clientdata(client);
++	const struct chip_desc *chip = &chips[data->type];
++	u8 regval;
++	int ret = 0;
 +
-+	priv = kzalloc(sizeof(struct i2c_mux_priv), GFP_KERNEL);
-+	if (!priv)
-+		return NULL;
++	/* we make switches look like muxes, not sure how to be smarter */
++	if (chip->muxtype == pca954x_ismux)
++		regval = chan | chip->enable;
++	else
++		regval = 1 << chan;
 +
-+	/* Set up private adapter data */
-+	priv->parent = parent;
-+	priv->mux_dev = mux_dev;
-+	priv->mux_priv = mux_priv;
-+	priv->chan_id = chan_id;
-+	priv->select = select;
-+	priv->deselect = deselect;
++	/* Only select the channel if its different from the last channel */
++	if (data->last_chan != regval) {
++		ret = pca954x_reg_write(adap, client, regval);
++		data->last_chan = regval;
++	}
 +
-+	/* Need to do algo dynamically because we don't know ahead
-+	 * of time what sort of physical adapter we'll be dealing with.
++	return ret;
++}
++
++/*
++ * I2C init/probing/exit functions
++ */
++static int pca954x_probe(struct device_d *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	struct i2c_adapter *adap = to_i2c_adapter(client->dev.parent);
++	int num, force;
++	struct pca954x *data;
++	int ret = -ENODEV;
++
++	data = kzalloc(sizeof(struct pca954x), GFP_KERNEL);
++	if (!data) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	i2c_set_clientdata(client, data);
++
++	/* Read the mux register at addr to verify
++	 * that the mux is in fact present.
 +	 */
-+	if (parent->master_xfer)
-+		priv->adap.master_xfer = i2c_mux_master_xfer;
++	if (i2c_smbus_read_byte(client) < 0) {
++		dev_warn(&client->dev, "probe failed\n");
++		goto exit_free;
++	}
 +
-+	/* Now fill out new adapter structure */
-+	priv->adap.algo_data = priv;
-+	priv->adap.dev.parent = &parent->dev;
-+	priv->adap.retries = parent->retries;
++	ret = dev_get_drvdata(dev, (const void **)&data->type);
++	if (ret)
++		goto exit_free;
 +
-+	/*
-+	 * Try to populate the mux adapter's device_node, expands to
-+	 * nothing if !CONFIG_OF.
-+	 */
-+	if (mux_dev->device_node) {
-+		struct device_node *child;
-+		u32 reg;
++	data->last_chan = 0;		   /* force the first selection */
 +
-+		for_each_child_of_node(mux_dev->device_node, child) {
-+			ret = of_property_read_u32(child, "reg", &reg);
-+			if (ret)
-+				continue;
-+			if (chan_id == reg) {
-+				priv->adap.dev.device_node = child;
-+				break;
-+			}
++	/* Now create an adapter for each channel */
++	for (num = 0; num < chips[data->type].nchans; num++) {
++
++		data->virt_adaps[num] =
++			i2c_add_mux_adapter(adap, &client->dev, client,
++				0, num, pca954x_select_chan, NULL);
++
++		if (data->virt_adaps[num] == NULL) {
++			ret = -ENODEV;
++			dev_err(&client->dev,
++				"failed to register multiplexed adapter"
++				" %d as bus %d\n", num, force);
++			goto virt_reg_failed;
 +		}
 +	}
 +
-+	if (force_nr) {
-+		priv->adap.nr = force_nr;
-+	} else {
-+		priv->adap.nr = -1;
-+	}
++	dev_info(&client->dev,
++		 "registered %d multiplexed busses for I2C %s\n",
++		 num, chips[data->type].muxtype == pca954x_ismux
++				? "mux" : "switch");
 +
-+	ret = i2c_add_numbered_adapter(&priv->adap);
-+	if (ret < 0) {
-+		dev_err(&parent->dev,
-+			"failed to add mux-adapter (error=%d)\n",
-+			ret);
-+		kfree(priv);
-+		return NULL;
-+	}
++	return 0;
 +
-+	dev_info(&parent->dev, "Added multiplexed i2c bus %d\n",
-+		 i2c_adapter_id(&priv->adap));
-+
-+	return &priv->adap;
++virt_reg_failed:
++	for (num--; num >= 0; num--)
++		i2c_del_mux_adapter(data->virt_adaps[num]);
++exit_free:
++	kfree(data);
++err:
++	return ret;
 +}
-+EXPORT_SYMBOL_GPL(i2c_add_mux_adapter);
 +
-+void i2c_del_mux_adapter(struct i2c_adapter *adap)
++static struct driver_d pca954x_driver = {
++	.name	= "pca954x",
++	.probe		= pca954x_probe,
++	.id_table	= pca954x_id,
++};
++
++static int __init pca954x_init(void)
 +{
-+	struct i2c_mux_priv *priv = adap->algo_data;
-+
-+	free(priv);
++	return i2c_driver_register(&pca954x_driver);
 +}
-+EXPORT_SYMBOL_GPL(i2c_del_mux_adapter);
++device_initcall(pca954x_init);
 +
 +MODULE_AUTHOR("Rodolfo Giometti <giometti@linux.it>");
-+MODULE_DESCRIPTION("I2C driver for multiplexed I2C busses");
++MODULE_DESCRIPTION("PCA954x I2C mux/switch driver");
 +MODULE_LICENSE("GPL v2");
-diff --git a/include/i2c/i2c-mux.h b/include/i2c/i2c-mux.h
-new file mode 100644
-index 0000000..8022399
---- /dev/null
-+++ b/include/i2c/i2c-mux.h
-@@ -0,0 +1,40 @@
-+/*
-+ *
-+ * i2c-mux.h - functions for the i2c-bus mux support
-+ *
-+ * Copyright (c) 2008-2009 Rodolfo Giometti <giometti@linux.it>
-+ * Copyright (c) 2008-2009 Eurotech S.p.A. <info@eurotech.it>
-+ * Michael Lawnick <michael.lawnick.ext@nsn.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef _LINUX_I2C_MUX_H
-+#define _LINUX_I2C_MUX_H
-+
-+/*
-+ * Called to create a i2c bus on a multiplexed bus segment.
-+ * The mux_dev and chan_id parameters are passed to the select
-+ * and deselect callback functions to perform hardware-specific
-+ * mux control.
-+ */
-+struct i2c_adapter *i2c_add_mux_adapter(struct i2c_adapter *parent,
-+				struct device_d *mux_dev,
-+				void *mux_priv, u32 force_nr, u32 chan_id,
-+				int (*select) (struct i2c_adapter *,
-+					       void *mux_dev, u32 chan_id),
-+				int (*deselect) (struct i2c_adapter *,
-+						 void *mux_dev, u32 chan_id));
-+
-+void i2c_del_mux_adapter(struct i2c_adapter *adap);
-+
-+#endif /* _LINUX_I2C_MUX_H */
 diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index 3fab76d9..8f7aae9 100644
+index 8f7aae9..33a4791 100644
 --- a/include/i2c/i2c.h
 +++ b/include/i2c/i2c.h
-@@ -245,7 +245,11 @@ extern struct list_head i2c_adapter_list;
- extern struct i2c_client *
- i2c_new_dummy(struct i2c_adapter *adap, u16 address);
+@@ -121,15 +121,28 @@ struct i2c_adapter {
+ 	struct i2c_bus_recovery_info *bus_recovery_info;
+ };
  
--
-+/* Return the adapter number for a specific adapter */
-+static inline int i2c_adapter_id(struct i2c_adapter *adap)
++#define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+ 
+ struct i2c_client {
+ 	struct device_d		dev;
+ 	struct i2c_adapter	*adapter;
+ 	unsigned short		addr;
++	void			*driver_data;	/* Driver data, set and get with
++							dev_set/get_drvdata */
+ };
+ 
+ #define to_i2c_client(a)	container_of(a, struct i2c_client, dev)
+ 
++static inline void *i2c_get_clientdata(const struct i2c_client *dev)
 +{
-+	return adap->nr;
++	return dev->driver_data;
 +}
- 
- extern int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num);
- extern int i2c_master_send(struct i2c_client *client, const char *buf, int count);
++
++static inline void i2c_set_clientdata(struct i2c_client *dev, void *data)
++{
++	dev->driver_data = data;
++}
++
+ /*flags for the client struct: */
+ #define I2C_CLIENT_PEC	0x04		/* Use Packet Error Checking */
+ #define I2C_CLIENT_SCCB	0x9000		/* Use Omnivision SCCB protocol */
 -- 
 2.6.2
 
