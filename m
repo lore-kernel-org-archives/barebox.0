@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-pa0-x232.google.com ([2607:f8b0:400e:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zylmd-0007fy-DO
- for barebox@lists.infradead.org; Tue, 17 Nov 2015 19:19:16 +0000
-Date: Tue, 17 Nov 2015 20:18:53 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151117191853.GQ8526@pengutronix.de>
-References: <1447664445-19282-1-git-send-email-s.christ@phytec.de>
- <1447664445-19282-2-git-send-email-s.christ@phytec.de>
- <CAOpc7mGnHmYOVvOWygYUs+1dqdsZYtW-T=8ruNwDt-U1bQNvMg@mail.gmail.com>
- <20151116101705.GA19657@lws-christ>
- <20151117093213.GO8526@pengutronix.de>
- <20151117143843.GC2696@lws-christ>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20151117143843.GC2696@lws-christ>
+ id 1ZyuLM-00029H-J7
+ for barebox@lists.infradead.org; Wed, 18 Nov 2015 04:27:41 +0000
+Received: by padhx2 with SMTP id hx2so31217760pad.1
+ for <barebox@lists.infradead.org>; Tue, 17 Nov 2015 20:27:19 -0800 (PST)
+From: Jason Cobham <cobham.jason@gmail.com>
+Date: Tue, 17 Nov 2015 20:27:04 -0800
+Message-Id: <1447820824-12471-4-git-send-email-cobham.jason@gmail.com>
+In-Reply-To: <1447820824-12471-1-git-send-email-cobham.jason@gmail.com>
+References: <1447820824-12471-1-git-send-email-cobham.jason@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,52 +18,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] net: fec: implement dtb property phy-reset-durationy
-To: Stefan Christ <s.christ@phytec.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 4/4] ARM: ccxmx53: Formatting changes and remove un-used code.
+To: barebox@lists.infradead.org
+Cc: cobham.jason@gmail.com
 
-On Tue, Nov 17, 2015 at 03:38:43PM +0100, Stefan Christ wrote:
-> Hi,
-> 
-> > > Yeah, that would be the obvious and plausible thing to do, but the driver in
-> > > the linux kernel does it this way and it's documented in the device tree
-> > > bindings.  So I'm not sure if we can change the default behavior here.
-> > 
-> > Yes, we can ;)
-> > 
-> > The rationale behind this code may be: The reset duration is
-> > unreasonably high (>1s), so that it to a sane default (1ms).
-> > 
-> > I suggest to drop the check completely. If someone ever starts barebox
-> > with an insanely high value (maybe he thought the value is in us) then
-> > he won't notice the mistake if barebox silently falls back to 1ms as
-> > duration. If instead barebox waits for multiple seconds then he will
-> > notice and it the device tree which is what we want.
-> 
-> Ok. So what about printing a warn message that case? Then everybody should
-> notice.
+Tested with a 512M and 1GB module on a JSK dev board.
+Signed-off-by: Jason Cobham <cobham.jason@gmail.com>
+---
+ arch/arm/boards/ccxmx53/board.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-No, I don't think that's necessary. Such an overlong delay should be
-noticeable already and give the right hint. Let's save the binary space.
-
-> 
-> When I send a v2 patch, should the description in the device tree binding be
-> updated, too?
-
-No, the bindings docs are directly taken from the kernel and changes
-will be lost the next I update them.
-
-Sascha
-
+diff --git a/arch/arm/boards/ccxmx53/board.c b/arch/arm/boards/ccxmx53/board.c
+index 721eb0d..a6d37e2 100644
+--- a/arch/arm/boards/ccxmx53/board.c
++++ b/arch/arm/boards/ccxmx53/board.c
+@@ -70,12 +70,9 @@ static void ccwmx53_fec_reset(void)
+ 	gpio_set_value(ccwmx53_FEC_PHY_RST, 1);
+ }
+ 
+-/*
+- * Configure this board for 256Mb. The real
+- * size is determined by the board id read from the IIM module
+- * and added as ram1.
+- */
+-
++/* On these boards, memory information is encoded in the MAC address.
++ * Print device memory, and option info from lookup table.
++ * */
+ static int ccwmx53_devices_init(void)
+ {
+ 	u8 hwid[6] = {0};
+@@ -108,10 +105,7 @@ static int ccwmx53_devices_init(void)
+ 		}
+ 		printf("Module Serial : %c%d\n", manloc, ((hwid[2] & 0x3f) << 24) | (hwid[3] << 16) | (hwid[4] << 8) | hwid[5]);
+ 		printf("Module RAM    : %dK\n", (ccwmx53_id->mem_sz)/1024);
+-		if ((ccwmx53_id->mem_sz - SZ_512M) > 0)
+-		{
+-			//arm_add_mem_device("ram1", MX53_CSD0_BASE_ADDR + SZ_512M, (ccwmx53_id->mem_sz)-SZ_512M);
+-		}
++
+ 	} else {
+ 		return -ENOSYS;
+ 	}
+@@ -146,7 +140,7 @@ static int ccxmx53_reg_init(void)
+ 	client.adapter = adapter;
+ 	client.addr = addr;
+ 
+-	/* Enable 3.3V ext regulator. This is not supported in dt */
++	/* Enable 3.3V ext regulator. */
+ 	value = 0xfa;
+ 	if (i2c_write_reg(&client, 0x19, &value, 1) < 0){
+ 		printf("****I2C write failed\n");
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
