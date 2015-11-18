@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zyyjr-0006ER-HA
- for barebox@lists.infradead.org; Wed, 18 Nov 2015 09:09:16 +0000
+ id 1ZyyqD-0001Wb-Pl
+ for barebox@lists.infradead.org; Wed, 18 Nov 2015 09:15:50 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 6625CA004F2
- for <barebox@lists.infradead.org>; Wed, 18 Nov 2015 10:09:18 +0100 (CET)
+ by root.phytec.de (Postfix) with ESMTP id B4C6FA004EE
+ for <barebox@lists.infradead.org>; Wed, 18 Nov 2015 10:15:56 +0100 (CET)
+Date: Wed, 18 Nov 2015 10:15:24 +0100
 From: Stefan Christ <s.christ@phytec.de>
-Date: Wed, 18 Nov 2015 10:08:45 +0100
-Message-Id: <1447837725-21625-3-git-send-email-s.christ@phytec.de>
-In-Reply-To: <1447837725-21625-1-git-send-email-s.christ@phytec.de>
+Message-ID: <20151118091524.GA2509@lws-christ>
 References: <1447837725-21625-1-git-send-email-s.christ@phytec.de>
+ <1447837725-21625-2-git-send-email-s.christ@phytec.de>
+MIME-Version: 1.0
+In-Reply-To: <1447837725-21625-2-git-send-email-s.christ@phytec.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +22,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/3] net: fec: fix indentation and whitspaces
+Subject: Re: [PATCH v2 2/3] net: fec: implement dtb property phy-reset-duration
 To: barebox@lists.infradead.org
 
-Signed-off-by: Stefan Christ <s.christ@phytec.de>
----
- drivers/net/fec_imx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 70087ad..5418034 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -259,7 +259,7 @@ static int fec_set_hwaddr(struct eth_device *dev, const unsigned char *mac)
- 	writel((mac[0] << 24) + (mac[1] << 16) + (mac[2] << 8) + mac[3], fec->regs + FEC_PADDR1);
- 	writel((mac[4] << 24) + (mac[5] << 16) + 0x8808, fec->regs + FEC_PADDR2);
- 
--        return 0;
-+	return 0;
- }
- 
- static int fec_init(struct eth_device *dev)
-@@ -647,8 +647,8 @@ static int fec_probe_dt(struct device_d *dev, struct fec_priv *fec)
- #endif
- static int fec_probe(struct device_d *dev)
- {
--        struct fec_platform_data *pdata = (struct fec_platform_data *)dev->platform_data;
--        struct eth_device *edev;
-+	struct fec_platform_data *pdata = (struct fec_platform_data *)dev->platform_data;
-+	struct eth_device *edev;
- 	struct fec_priv *fec;
- 	void *base;
- 	int ret;
-@@ -778,7 +778,7 @@ static __maybe_unused struct of_device_id imx_fec_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,imx6q-fec",
- 		.data = (void *)FEC_TYPE_IMX6,
--	},  {
-+	}, {
- 		.compatible = "fsl,imx6sx-fec",
- 		.data = (void *)FEC_TYPE_IMX6,
- 	}, {
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgp1cHMuIENoYW5nZSBpbmZvcm1hdGlvbiBpcyBtaXNzaW5nOgoKdjI6IFJlbW92ZSB1cHBl
+ciBib3VuZCBjaGVjayBvZiByZXNldCBkdXJhdGlvbiBhbmQgdXBkYXRlIGNvbW1pdCBtZXNzYWdl
+CgpNaXQgZnJldW5kbGljaGVuIEdyw7zDn2VuIC8gS2luZCByZWdhcmRzLAoJU3RlZmFuIENocmlz
+dAoKT24gV2VkLCBOb3YgMTgsIDIwMTUgYXQgMTA6MDg6NDRBTSArMDEwMCwgU3RlZmFuIENocmlz
+dCB3cm90ZToKPiBJbXBsZW1lbnQgZGV2aWNlIHRyZWUgcHJvcGVydHkgcGh5LXJlc2V0LWR1cmF0
+aW9uIHRvIGFkanVzdCBsZW5ndGggb2YKPiBwaHkgcmVzZXQuCj4gCj4gU2lnbmVkLW9mZi1ieTog
+U3RlZmFuIENocmlzdCA8cy5jaHJpc3RAcGh5dGVjLmRlPgo+IC0tLQo+ICBkcml2ZXJzL25ldC9m
+ZWNfaW14LmMgfCA1ICsrKystCj4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDEg
+ZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZmVjX2lteC5jIGIvZHJp
+dmVycy9uZXQvZmVjX2lteC5jCj4gaW5kZXggZjE5ZDA0Ni4uNzAwODdhZCAxMDA2NDQKPiAtLS0g
+YS9kcml2ZXJzL25ldC9mZWNfaW14LmMKPiArKysgYi9kcml2ZXJzL25ldC9mZWNfaW14LmMKPiBA
+QCAtNjU0LDYgKzY1NCw3IEBAIHN0YXRpYyBpbnQgZmVjX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAq
+ZGV2KQo+ICAJaW50IHJldDsKPiAgCWVudW0gZmVjX3R5cGUgdHlwZTsKPiAgCWludCBwaHlfcmVz
+ZXQ7Cj4gKwl1MzIgbXNlYyA9IDE7Cj4gIAo+ICAJcmV0ID0gZGV2X2dldF9kcnZkYXRhKGRldiwg
+KGNvbnN0IHZvaWQgKiopJnR5cGUpOwo+ICAJaWYgKHJldCkKPiBAQCAtNjg0LDYgKzY4NSw4IEBA
+IHN0YXRpYyBpbnQgZmVjX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQo+ICAKPiAgCXBoeV9y
+ZXNldCA9IG9mX2dldF9uYW1lZF9ncGlvKGRldi0+ZGV2aWNlX25vZGUsICJwaHktcmVzZXQtZ3Bp
+b3MiLCAwKTsKPiAgCWlmIChncGlvX2lzX3ZhbGlkKHBoeV9yZXNldCkpIHsKPiArCQlvZl9wcm9w
+ZXJ0eV9yZWFkX3UzMihkZXYtPmRldmljZV9ub2RlLCAicGh5LXJlc2V0LWR1cmF0aW9uIiwgJm1z
+ZWMpOwo+ICsKPiAgCQlyZXQgPSBncGlvX3JlcXVlc3QocGh5X3Jlc2V0LCAicGh5LXJlc2V0Iik7
+Cj4gIAkJaWYgKHJldCkKPiAgCQkJZ290byBlcnJfZnJlZTsKPiBAQCAtNjkyLDcgKzY5NSw3IEBA
+IHN0YXRpYyBpbnQgZmVjX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQo+ICAJCWlmIChyZXQp
+Cj4gIAkJCWdvdG8gZXJyX2ZyZWU7Cj4gIAo+IC0JCW1kZWxheSgxKTsKPiArCQltZGVsYXkobXNl
+Yyk7Cj4gIAkJZ3Bpb19zZXRfdmFsdWUocGh5X3Jlc2V0LCAxKTsKPiAgCX0KPiAgCj4gLS0gCj4g
+MS45LjEKPiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
