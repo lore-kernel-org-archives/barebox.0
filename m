@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzK4s-0001kJ-V8
- for barebox@lists.infradead.org; Thu, 19 Nov 2015 07:56:23 +0000
-Date: Thu, 19 Nov 2015 08:56:00 +0100
+ id 1ZzK86-000235-0Y
+ for barebox@lists.infradead.org; Thu, 19 Nov 2015 07:59:42 +0000
+Date: Thu, 19 Nov 2015 08:59:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151119075600.GD11966@pengutronix.de>
-References: <1447885436-30683-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20151119075917.GE11966@pengutronix.de>
+References: <1447028327-20277-1-git-send-email-andrew.smirnov@gmail.com>
+ <20151109062001.GO8526@pengutronix.de>
+ <1447896407.4553.181.camel@rtred1test09.kymeta.local>
+ <CAHQ1cqEcG+omZDR+M01ONoPGzGEB3qvFddM5UdcVmojaw_Wh=g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1447885436-30683-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <CAHQ1cqEcG+omZDR+M01ONoPGzGEB3qvFddM5UdcVmojaw_Wh=g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] add multiplexed I2C bus support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] i2c: Add support for DesignWare controllers
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Trent Piepho <tpiepho@kymetacorp.com>
 
-On Thu, Nov 19, 2015 at 01:23:54AM +0300, Antony Pavlov wrote:
-> This patchseries adds multiplexed I2C bus support to barebox
-> and a driver for pca954x bus multiplexer.
+On Wed, Nov 18, 2015 at 08:09:05PM -0800, Andrey Smirnov wrote:
+> On Wed, Nov 18, 2015 at 5:26 PM, Trent Piepho <tpiepho@kymetacorp.com> wrote:
+> > On Mon, 2015-11-09 at 07:20 +0100, Sascha Hauer wrote:
+> >> On Sun, Nov 08, 2015 at 04:18:46PM -0800, Andrey Smirnov wrote:
+> >> > Add a driver for DesignWare I2C controller IP block found on several
+> >> > SoCs including Altera SoC products
+> >> >
+> >> > Tested using Terrasic SoCKit board and GPIO expander board with I2C
+> >> > EEPROM on it
+> >> >
+> >> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> >
+> >> > +   uint32_t ic_con, ic_comp_type_value;
+> >> > +
+> >> > +   pdata = pdev->platform_data;
+> >> > +
+> >> > +   dw = xzalloc(sizeof(*dw), GFP_KERNEL);
+> >> > +
+> >
+> > Doesn't compile, xzalloc() has one argument, no page flags.
 > 
-> Changes since RFC version:
-> 
->   * rename drivers/i2c/muxes/pca954x.c -> drivers/i2c/muxes/i2c-mux-pca954x.c;
->   * remove adapter numbering hack in drivers/i2c/i2c-mux.c;
->   * add copyright comments;
->   * sync with linux-v4.4-rc1.
-> 
-> 
-> Antony Pavlov (2):
->   i2c: import multiplexed I2C bus core support from linux kernel
->   i2c: add pca954x bus multiplexer driver
+> *Sigh* Looks like I didn't do a good job testing v2 patchset, my bad,
+> sorry. I'll submit a patch to fix this, unless either of you guys
+> already did so.
 
-Looks good, thanks applied.
+Just did that, everything fine now.
 
 Sascha
 
