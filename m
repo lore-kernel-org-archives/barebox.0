@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzK86-000235-0Y
- for barebox@lists.infradead.org; Thu, 19 Nov 2015 07:59:42 +0000
-Date: Thu, 19 Nov 2015 08:59:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151119075917.GE11966@pengutronix.de>
-References: <1447028327-20277-1-git-send-email-andrew.smirnov@gmail.com>
- <20151109062001.GO8526@pengutronix.de>
- <1447896407.4553.181.camel@rtred1test09.kymeta.local>
- <CAHQ1cqEcG+omZDR+M01ONoPGzGEB3qvFddM5UdcVmojaw_Wh=g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqEcG+omZDR+M01ONoPGzGEB3qvFddM5UdcVmojaw_Wh=g@mail.gmail.com>
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZzOqz-00046n-3S
+ for barebox@lists.infradead.org; Thu, 19 Nov 2015 13:02:22 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 79272A001ED
+ for <barebox@lists.infradead.org>; Thu, 19 Nov 2015 14:02:30 +0100 (CET)
+From: Jan Remmet <j.remmet@phytec.de>
+Date: Thu, 19 Nov 2015 13:58:51 +0100
+Message-Id: <1447937931-15724-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,48 +17,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] i2c: Add support for DesignWare controllers
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: [PATCH] net: eth: Remove ethaddr_param
+To: barebox@lists.infradead.org
 
-On Wed, Nov 18, 2015 at 08:09:05PM -0800, Andrey Smirnov wrote:
-> On Wed, Nov 18, 2015 at 5:26 PM, Trent Piepho <tpiepho@kymetacorp.com> wrote:
-> > On Mon, 2015-11-09 at 07:20 +0100, Sascha Hauer wrote:
-> >> On Sun, Nov 08, 2015 at 04:18:46PM -0800, Andrey Smirnov wrote:
-> >> > Add a driver for DesignWare I2C controller IP block found on several
-> >> > SoCs including Altera SoC products
-> >> >
-> >> > Tested using Terrasic SoCKit board and GPIO expander board with I2C
-> >> > EEPROM on it
-> >> >
-> >> > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> >
-> >> > +   uint32_t ic_con, ic_comp_type_value;
-> >> > +
-> >> > +   pdata = pdev->platform_data;
-> >> > +
-> >> > +   dw = xzalloc(sizeof(*dw), GFP_KERNEL);
-> >> > +
-> >
-> > Doesn't compile, xzalloc() has one argument, no page flags.
-> 
-> *Sigh* Looks like I didn't do a good job testing v2 patchset, my bad,
-> sorry. I'll submit a patch to fix this, unless either of you guys
-> already did so.
+commit d00db554 introduce ethaddr_param. But it is not initialized, so
+devinfo fails to show the mac. Remove it and use edev->ethaddr.
 
-Just did that, everything fine now.
+Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+---
+ include/net.h | 1 -
+ net/eth.c     | 4 ++--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-Sascha
-
+diff --git a/include/net.h b/include/net.h
+index d7a4751..2a37a43 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -60,7 +60,6 @@ struct eth_device {
+ 	IPaddr_t serverip;
+ 	IPaddr_t netmask;
+ 	IPaddr_t gateway;
+-	char ethaddr_param[6];
+ 	char ethaddr[6];
+ };
+ 
+diff --git a/net/eth.c b/net/eth.c
+index 8bfb6b1..fb3f22f 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -285,7 +285,7 @@ static int eth_param_set_ethaddr(struct param_d *param, void *priv)
+ {
+ 	struct eth_device *edev = priv;
+ 
+-	return eth_set_ethaddr(edev, edev->ethaddr_param);
++	return eth_set_ethaddr(edev, edev->ethaddr);
+ }
+ 
+ #ifdef CONFIG_OFTREE
+@@ -383,7 +383,7 @@ int eth_register(struct eth_device *edev)
+ 	dev_add_param_ip(dev, "gateway", NULL, NULL, &edev->gateway, edev);
+ 	dev_add_param_ip(dev, "netmask", NULL, NULL, &edev->netmask, edev);
+ 	dev_add_param_mac(dev, "ethaddr", eth_param_set_ethaddr, NULL,
+-			edev->ethaddr_param, edev);
++			edev->ethaddr, edev);
+ 
+ 	if (edev->init)
+ 		edev->init(edev);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
