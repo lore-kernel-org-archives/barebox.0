@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzJqY-000309-C2
- for barebox@lists.infradead.org; Thu, 19 Nov 2015 07:41:34 +0000
-Date: Thu, 19 Nov 2015 08:41:12 +0100
+ id 1ZzJrl-0003Nr-5Z
+ for barebox@lists.infradead.org; Thu, 19 Nov 2015 07:42:49 +0000
+Date: Thu, 19 Nov 2015 08:42:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151119074112.GA11966@pengutronix.de>
-References: <1447851604-18072-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20151119074227.GB11966@pengutronix.de>
+References: <1447876675-3291-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1447851604-18072-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1447876675-3291-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +22,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/2] add multiplexed I2C bus support
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 1/2] ARM: mx6sx-sabresdb: drop unneeded makefile rules
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 18, 2015 at 04:00:02PM +0300, Antony Pavlov wrote:
-> This patchseries adds multiplexed I2C bus support to barebox
-> and a driver for pca954x bus multiplexer.
-> 
-> This series has the "RFC" status mostly because of these
-> adapter numbering hack in drivers/i2c/i2c-mux.c:
-> 
->     /* FIXME */
-> //  priv->adap.nr = mux_dev->id;
->     priv->adap.nr = -1;
->     ret = i2c_add_numbered_adapter(&priv->adap);
+On Wed, Nov 18, 2015 at 08:57:54PM +0100, Lucas Stach wrote:
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/boards/freescale-mx6sx-sabresdb/Makefile | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-What's wrong with -1 as adapter nr? Why do consider this a hack?
+Applied, thanks
 
 Sascha
 
