@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]
- helo=smtp.smtpout.orange.fr)
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zzfya-000207-0G
- for barebox@lists.infradead.org; Fri, 20 Nov 2015 07:19:21 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <87d1wk74nt.fsf@belgarion.home> <561BFECA.1010105@gmail.com>
- <87k2qr6go0.fsf@belgarion.home> <561C111E.7010106@gmail.com>
- <874mhv5cxm.fsf@belgarion.home> <561CD48A.9000301@gmail.com>
- <20151013102725.GH7858@pengutronix.de> <87wpur3ves.fsf@belgarion.home>
- <562017CD.4050105@gmail.com> <877fmm3bea.fsf@belgarion.home>
- <874mhlz6iq.fsf@belgarion.home> <564E5842.9010700@gmail.com>
-Date: Fri, 20 Nov 2015 08:18:53 +0100
-In-Reply-To: <564E5842.9010700@gmail.com> (Sebastian Hesselbarth's message of
- "Fri, 20 Nov 2015 00:16:18 +0100")
-Message-ID: <87twoh6sv6.fsf@belgarion.home>
+ id 1Zzg8A-0006um-7S
+ for barebox@lists.infradead.org; Fri, 20 Nov 2015 07:29:15 +0000
+Date: Fri, 20 Nov 2015 08:28:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151120072849.GF11966@pengutronix.de>
+References: <1447937931-15724-1-git-send-email-j.remmet@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1447937931-15724-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,41 +22,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Subject: Re: [PATCH] net: eth: Remove ethaddr_param
+To: Jan Remmet <j.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
+On Thu, Nov 19, 2015 at 01:58:51PM +0100, Jan Remmet wrote:
+> commit d00db554 introduce ethaddr_param. But it is not initialized, so
+> devinfo fails to show the mac. Remove it and use edev->ethaddr.
+> 
+> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
 
-> On 20.10.2015 21:25, Robert Jarzmik wrote:
->> Robert Jarzmik <robert.jarzmik@free.fr> writes:
->> 
->>> Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
->>>
->>>> Robert,
->>>>
->>>> I pushed another version of the patch set with the following changes:
->> 
->> Okay, with the latest version (a6400be (HEAD, test-sebastian) mtd:
->> nand_mrvl_nfc: Add optimized timings for Samsung K9K8G08U) zylonite is working
->> all right.
->
-> Robert,
->
-> thanks again for patient testing. I ran out of time before
-> vacation but now I plan to resend the series rebased on
-> latest barebox.
->
-> I assume you are fine with me adding your Tested-by on the
-> next version?
-Sure.
+Applied to master. Sorry, I should have taken a closer look before
+applying this patch
 
-Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Sascha
 
-Cheers.
+
+> ---
+>  include/net.h | 1 -
+>  net/eth.c     | 4 ++--
+>  2 files changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/net.h b/include/net.h
+> index d7a4751..2a37a43 100644
+> --- a/include/net.h
+> +++ b/include/net.h
+> @@ -60,7 +60,6 @@ struct eth_device {
+>  	IPaddr_t serverip;
+>  	IPaddr_t netmask;
+>  	IPaddr_t gateway;
+> -	char ethaddr_param[6];
+>  	char ethaddr[6];
+>  };
+>  
+> diff --git a/net/eth.c b/net/eth.c
+> index 8bfb6b1..fb3f22f 100644
+> --- a/net/eth.c
+> +++ b/net/eth.c
+> @@ -285,7 +285,7 @@ static int eth_param_set_ethaddr(struct param_d *param, void *priv)
+>  {
+>  	struct eth_device *edev = priv;
+>  
+> -	return eth_set_ethaddr(edev, edev->ethaddr_param);
+> +	return eth_set_ethaddr(edev, edev->ethaddr);
+>  }
+>  
+>  #ifdef CONFIG_OFTREE
+> @@ -383,7 +383,7 @@ int eth_register(struct eth_device *edev)
+>  	dev_add_param_ip(dev, "gateway", NULL, NULL, &edev->gateway, edev);
+>  	dev_add_param_ip(dev, "netmask", NULL, NULL, &edev->netmask, edev);
+>  	dev_add_param_mac(dev, "ethaddr", eth_param_set_ethaddr, NULL,
+> -			edev->ethaddr_param, edev);
+> +			edev->ethaddr, edev);
+>  
+>  	if (edev->init)
+>  		edev->init(edev);
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
-Robert
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
