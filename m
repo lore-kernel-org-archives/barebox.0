@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x233.google.com ([2a00:1450:400c:c09::233])
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzrUD-00040C-B7
+ id 1ZzrUD-00040g-Jg
  for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:53 +0000
-Received: by wmdw130 with SMTP id w130so31971770wmd.0
- for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:23 -0800 (PST)
+Received: by wmec201 with SMTP id c201so86267116wme.0
+ for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:24 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 20 Nov 2015 20:36:01 +0100
-Message-Id: <1448048172-10080-9-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 20 Nov 2015 20:36:02 +0100
+Message-Id: <1448048172-10080-10-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,46 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/19] mtd: nand_mrvl_nfc: Use Auto Read Status on
- program/erase
+Subject: [PATCH v2 09/19] mtd: nand_mrvl_nfc: Protect mrvl_nand_probe_dt
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-Marvell NAND controller allows to enable an Auto Read Status feature
-that will automatically monitor NAND status during Erase and Program
-operations. Ready bit in status register will be set after the
-controller is sure the NAND device has finished the operation and
-saves us from guessing the real timeout values.
-
-Using the Auto Read Status feature prevents timeout issues on the
-two operations with none or wrong timing register setup.
+Parsing DT nodes if CONFIG_OFTREE isn't enabled is pointless, also
+we should prefer potential platform_data passed earlier.
+Protect mrvl_nand_probe_dt by bailing out early if either
+CONFIG_OFTREE is not enabled or dev's platform_data is non-NULL.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mtd/nand/nand_mrvl_nfc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mtd/nand/nand_mrvl_nfc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-index 60c34c21af25..ac530fc62499 100644
+index ac530fc62499..95abd4ddf243 100644
 --- a/drivers/mtd/nand/nand_mrvl_nfc.c
 +++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-@@ -562,6 +562,7 @@ static int prepare_set_command(struct mrvl_nand_host *host, int command,
+@@ -983,6 +983,9 @@ static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
+ {
+ 	struct device_node *np = host->dev->device_node;
  
- 	case NAND_CMD_PAGEPROG:
- 		host->ndcb0 |= NDCB0_CMD_TYPE(0x1)
-+				| NDCB0_AUTO_RS
- 				| NDCB0_DBC
- 				| (NAND_CMD_PAGEPROG << 8)
- 				| NAND_CMD_SEQIN
-@@ -599,6 +600,7 @@ static int prepare_set_command(struct mrvl_nand_host *host, int command,
- 
- 	case NAND_CMD_ERASE1:
- 		host->ndcb0 |= NDCB0_CMD_TYPE(2)
-+				| NDCB0_AUTO_RS
- 				| NDCB0_ADDR_CYC(3)
- 				| NDCB0_DBC
- 				| (NAND_CMD_ERASE2 << 8)
++	if (!IS_ENABLED(CONFIG_OFTREE) || host->dev->platform_data)
++		return 0;
++
+ 	if (of_get_property(np, "marvell,nand-keep-config", NULL))
+ 		host->keep_config = 1;
+ 	of_property_read_u32(np, "num-cs", &host->cs);
 -- 
 2.1.4
 
