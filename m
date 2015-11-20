@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzrUB-0003zB-Lk
- for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:50 +0000
-Received: by wmdw130 with SMTP id w130so31971070wmd.0
- for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:22 -0800 (PST)
+ id 1ZzrUB-00042N-Lj
+ for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:51 +0000
+Received: by wmww144 with SMTP id w144so31709090wmw.1
+ for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:26 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 20 Nov 2015 20:35:56 +0100
-Message-Id: <1448048172-10080-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 20 Nov 2015 20:36:11 +0100
+Message-Id: <1448048172-10080-19-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,80 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/19] arm: pxa: Prepare for NAND clkdev lookup on PXA3xx
+Subject: [PATCH v2 18/19] mtd: nand_mrvl_nfc: Add support for Marvell Armada
+ 370/XP
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-To allow PXA3xx nand driver to be reused on Marvell Armada 370/XP,
-prepare to provide a common clock for the NAND driver on PXA3xx.
+Marvell PXA3xx and Armada 370/XP share the same NAND controller IP
+with some minor differences. With support for controller IP v2, now
+allow to build the driver on Armada 370/XP.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- arch/arm/Kconfig                 |  1 +
- arch/arm/mach-pxa/Kconfig        |  2 ++
- arch/arm/mach-pxa/speed-pxa3xx.c | 18 ++++++++++++++++++
- 3 files changed, 21 insertions(+)
+ drivers/mtd/nand/Kconfig         | 7 ++++---
+ drivers/mtd/nand/nand_mrvl_nfc.c | 8 ++++++++
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c03f7dc8830b..9f4d8e958794 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -152,6 +152,7 @@ config ARCH_PXA
- 	bool "Intel/Marvell PXA based"
- 	select GENERIC_GPIO
- 	select HAS_POWEROFF
-+	select HAVE_CLK
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 3426ec055756..2b4a478a03dd 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -99,10 +99,11 @@ config NAND_ORION
  
- config ARCH_ROCKCHIP
- 	bool "Rockchip RX3xxx"
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index 54094f4ca0ed..1c0894892b17 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -17,6 +17,8 @@ config ARCH_PXA2XX
- config ARCH_PXA3XX
-        bool
-        select CPU_XSC3
-+       select CLKDEV_LOOKUP
-+       select COMMON_CLK
+ config NAND_MRVL_NFC
+ 	bool
+-	prompt "Marvell NAND driver"
+-	depends on ARCH_PXA3XX
++	prompt "Marvell PXA3xx NAND driver"
++	depends on ARCH_ARMADA_370 || ARCH_ARMADA_XP || ARCH_PXA3XX
+ 	help
+-	  Support for the PXA3xx NAND controller, present in pxa3xx SoCs.
++	  Support for the PXA3xx NAND controller, present in Armada 370/XP and
++	  PXA3xx SoCs.
  
- config ARCH_PXA310
-        bool
-diff --git a/arch/arm/mach-pxa/speed-pxa3xx.c b/arch/arm/mach-pxa/speed-pxa3xx.c
-index 6a08ea78f065..102951736dc0 100644
---- a/arch/arm/mach-pxa/speed-pxa3xx.c
-+++ b/arch/arm/mach-pxa/speed-pxa3xx.c
-@@ -8,6 +8,9 @@
-  */
+ config NAND_ATMEL
+ 	bool
+diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
+index fec18d1fc95a..ce5786c01920 100644
+--- a/drivers/mtd/nand/nand_mrvl_nfc.c
++++ b/drivers/mtd/nand/nand_mrvl_nfc.c
+@@ -285,11 +285,19 @@ static const struct mrvl_nand_variant pxa3xx_variant = {
+ 	.hwflags	= 0,
+ };
  
- #include <common.h>
-+#include <init.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
- #include <mach/clock.h>
- #include <mach/pxa-regs.h>
- 
-@@ -31,3 +34,18 @@ unsigned long pxa_get_nandclk(void)
- 	else
- 		return 156000000;
- }
++static const struct mrvl_nand_variant armada370_variant = {
++	.hwflags	= HWFLAGS_ECC_BCH | HWFLAGS_HAS_NDCB3,
++};
 +
-+static int pxa3xx_clock_init(void)
-+{
-+	unsigned long nand_rate = (cpu_is_pxa320()) ? 104000000 : 156000000;
-+	struct clk *clk;
-+	int ret;
-+
-+	clk = clk_fixed("nand", nand_rate);
-+	ret = clk_register_clkdev(clk, NULL, "nand");
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+postcore_initcall(pxa3xx_clock_init);
+ static struct of_device_id mrvl_nand_dt_ids[] = {
+ 	{
+ 		.compatible = "marvell,pxa3xx-nand",
+ 		.data = &pxa3xx_variant,
+ 	},
++	{
++		.compatible = "marvell,armada370-nand",
++		.data = &armada370_variant,
++	},
+ 	{}
+ };
+ 
 -- 
 2.1.4
 
