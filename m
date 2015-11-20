@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Zzheh-0000P1-7U
- for barebox@lists.infradead.org; Fri, 20 Nov 2015 09:06:56 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 3BE76A00264
- for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 10:07:00 +0100 (CET)
-From: Jan Remmet <j.remmet@phytec.de>
-Date: Fri, 20 Nov 2015 10:03:18 +0100
-Message-Id: <1448010198-23247-1-git-send-email-j.remmet@phytec.de>
+Received: from mail-wm0-x229.google.com ([2a00:1450:400c:c09::229])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Zzk8X-0005v0-8s
+ for barebox@lists.infradead.org; Fri, 20 Nov 2015 11:45:54 +0000
+Received: by wmww144 with SMTP id w144so17598553wmw.0
+ for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 03:45:31 -0800 (PST)
+Received: from gmail.com (p578a7230.dip0.t-ipconnect.de. [87.138.114.48])
+ by smtp.gmail.com with ESMTPSA id wh10sm12267582wjb.45.2015.11.20.03.45.30
+ for <barebox@lists.infradead.org>
+ (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+ Fri, 20 Nov 2015 03:45:30 -0800 (PST)
+Date: Fri, 20 Nov 2015 12:45:25 +0100
+From: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Message-ID: <20151120114515.GA3731@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,34 +23,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] state: make type check error verbose
+Subject: [PATCH] readline: Kconfig: fix typo
 To: barebox@lists.infradead.org
 
-Wrong type let state probe fail with ENOENT.
-
-Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
 ---
- common/state.c | 2 ++
- 1 file changed, 2 insertions(+)
+ commands/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/state.c b/common/state.c
-index 117a686..a161b94 100644
---- a/common/state.c
-+++ b/common/state.c
-@@ -716,6 +716,8 @@ static int state_convert_node_variable(struct state *state,
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 0853ffd..1743670 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1493,9 +1493,9 @@ config CMD_SPLASH
  
- 	vtype = state_find_type_by_name(type_name);
- 	if (!vtype) {
-+		dev_err(&state->dev, "unkown type: %s in %s\n", type_name,
-+			node->full_name);
- 		ret = -ENOENT;
- 		goto out_free;
- 	}
+ config CMD_READLINE
+ 	tristate
+-	prompt "Readline"
++	prompt "readline"
+ 	help
+-	  rompt for user input
++	  Prompt for user input
+ 
+ 	  Usage: readline PROMPT VAR
+ 
 -- 
 1.9.1
 
