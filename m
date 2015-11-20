@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
+Received: from mail-wm0-x22d.google.com ([2a00:1450:400c:c09::22d])
  by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZzrUF-0000IB-SV
+ id 1ZzrUF-0000IA-Pg
  for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:48 +0000
-Received: by wmww144 with SMTP id w144so33997271wmw.0
+Received: by wmec201 with SMTP id c201so34169902wme.1
  for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:25 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 20 Nov 2015 20:36:06 +0100
-Message-Id: <1448048172-10080-14-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 20 Nov 2015 20:36:05 +0100
+Message-Id: <1448048172-10080-13-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,87 +23,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 13/19] mtd: nand_mrvl_nfc: Add hwflags to distinguish
- different HW versions
+Subject: [PATCH v2 12/19] mtd: nand_mrvl_nfc: Prepare for different HW ECC
+ strengths
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-Marvell PXA3xx NAND flash controller IP has been reused in later SoCs
-with additional HW features. Add HW BCH ECC as the first known HW
-difference.
+Newer versions of Marvell PXA3xx NFC also support BCH and therefore
+higher ECC strengths than 1. Prepare for different ECC strength by
+factoring out ECC init into separate functions by strength. Also,
+add a new host variable that indicates BCH ECC.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mtd/nand/nand_mrvl_nfc.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/mtd/nand/nand_mrvl_nfc.c | 36 +++++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-index 217aacd7201a..ac1cb3fa9ae3 100644
+index 8dcbc3dc045e..217aacd7201a 100644
 --- a/drivers/mtd/nand/nand_mrvl_nfc.c
 +++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-@@ -129,6 +129,10 @@
- #define nand_readsl(host, off, buf, nbbytes)		\
- 	readsl((host)->mmio_base + (off), buf, nbbytes)
+@@ -156,6 +156,7 @@ struct mrvl_nand_host {
+ 	int			num_cs;		/* avaiable CS signals */
+ 	int			cs;		/* selected chip 0/1 */
+ 	int			use_ecc;	/* use HW ECC ? */
++	int			ecc_bch;	/* HW ECC is BCH */
+ 	int			use_spare;	/* use spare ? */
+ 	int			flash_bbt;
  
-+struct mrvl_nand_variant {
-+	unsigned int	hwflags;
-+};
-+
- struct mrvl_nand_host {
- 	struct mtd_info		mtd;
- 	struct nand_chip	chip;
-@@ -142,6 +146,8 @@ struct mrvl_nand_host {
- 	size_t			read_id_bytes;
- 
- 	void __iomem		*mmio_base;
-+	unsigned int		hwflags;
-+#define HWFLAGS_ECC_BCH		BIT(0)
- 
- 	unsigned int		buf_start;
- 	unsigned int		buf_count;
-@@ -235,9 +241,14 @@ static struct nand_ecclayout ecc_layout_2KB_hwecc = {
- #define mtd_info_to_host(mtd) ((struct mrvl_nand_host *) \
- 			       (((struct nand_chip *)((mtd)->priv))->priv))
- 
-+static const struct mrvl_nand_variant pxa3xx_variant = {
-+	.hwflags	= 0,
-+};
-+
- static struct of_device_id mrvl_nand_dt_ids[] = {
- 	{
- 		.compatible = "marvell,pxa3xx-nand",
-+		.data = &pxa3xx_variant,
- 	},
- 	{}
- };
-@@ -1006,10 +1017,17 @@ static struct mrvl_nand_host *alloc_nand_resource(struct device_d *dev)
- static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
- {
- 	struct device_node *np = host->dev->device_node;
-+	const struct of_device_id *match;
-+	const struct mrvl_nand_variant *variant;
- 
- 	if (!IS_ENABLED(CONFIG_OFTREE) || host->dev->platform_data)
- 		return 0;
- 
-+	match = of_match_node(mrvl_nand_dt_ids, np);
-+	if (!match)
-+		return -EINVAL;
-+	variant = match->data;
-+
- 	if (of_get_property(np, "marvell,nand-keep-config", NULL))
- 		host->keep_config = 1;
- 	of_property_read_u32(np, "num-cs", &host->num_cs);
-@@ -1024,6 +1042,8 @@ static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
- 	if (host->ecc_step < 0)
- 		host->ecc_step = 0;
- 
-+	host->hwflags = variant->hwflags;
-+
- 	return 0;
+@@ -824,32 +825,53 @@ static void mrvl_nand_config_flash(struct mrvl_nand_host *host)
+ 	host->reg_ndcr = ndcr;
  }
  
+-static int pxa_ecc_init(struct mrvl_nand_host *host,
+-			struct nand_ecc_ctrl *ecc,
+-			int strength, int ecc_stepsize, int page_size)
++static int pxa_ecc_strength1(struct mrvl_nand_host *host,
++		struct nand_ecc_ctrl *ecc, int ecc_stepsize, int page_size)
+ {
+-	if (strength == 1 && ecc_stepsize == 512 && page_size == 2048) {
++	if (ecc_stepsize == 512 && page_size == 2048) {
+ 		host->chunk_size = 2048;
+ 		host->spare_size = 40;
+ 		host->ecc_size = 24;
++		host->ecc_bch = 0;
+ 		ecc->mode = NAND_ECC_HW;
+ 		ecc->size = 512;
+ 		ecc->strength = 1;
+ 		ecc->layout = &ecc_layout_2KB_hwecc;
++		return 0;
++	}
+ 
+-	} else if (strength == 1 && ecc_stepsize == 512 && page_size == 512) {
++	if (ecc_stepsize == 512 && page_size == 512) {
+ 		host->chunk_size = 512;
+ 		host->spare_size = 8;
+ 		host->ecc_size = 8;
++		host->ecc_bch = 0;
+ 		ecc->mode = NAND_ECC_HW;
+ 		ecc->size = 512;
+ 		ecc->layout = &ecc_layout_512B_hwecc;
+ 		ecc->strength = 1;
+-	} else {
++		return 0;
++	}
++
++	return -ENODEV;
++}
++
++static int pxa_ecc_init(struct mrvl_nand_host *host,
++			struct nand_ecc_ctrl *ecc,
++			int strength, int ecc_stepsize, int page_size)
++{
++	int ret = -ENODEV;
++
++	switch (strength) {
++	case 1:
++		ret = pxa_ecc_strength1(host, ecc, ecc_stepsize, page_size);
++		break;
++	}
++
++	if (ret) {
+ 		dev_err(host->dev,
+ 			"ECC strength %d at page size %d is not supported\n",
+ 			strength, page_size);
+-		return -ENODEV;
++		return ret;
+ 	}
+ 
+ 	dev_info(host->dev, "ECC strength %d, ECC step size %d\n",
 -- 
 2.1.4
 
