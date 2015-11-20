@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
+Received: from mail-wm0-f47.google.com ([74.125.82.47])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzrUD-00040g-Jg
+ id 1ZzrUD-000404-Jk
  for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:53 +0000
-Received: by wmec201 with SMTP id c201so86267116wme.0
- for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:24 -0800 (PST)
+Received: by wmvv187 with SMTP id v187so86248398wmv.1
+ for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:23 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 20 Nov 2015 20:36:02 +0100
-Message-Id: <1448048172-10080-10-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 20 Nov 2015 20:36:00 +0100
+Message-Id: <1448048172-10080-8-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,35 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/19] mtd: nand_mrvl_nfc: Protect mrvl_nand_probe_dt
+Subject: [PATCH v2 07/19] mtd: nand_mrvl_nfc: Clear OOB data with 0xff instead
+ of 0x00
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-Parsing DT nodes if CONFIG_OFTREE isn't enabled is pointless, also
-we should prefer potential platform_data passed earlier.
-Protect mrvl_nand_probe_dt by bailing out early if either
-CONFIG_OFTREE is not enabled or dev's platform_data is non-NULL.
+If OOB data is not required on page program, we have to clear
+the corresponding data with 0xff instead of 0x00.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mtd/nand/nand_mrvl_nfc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mtd/nand/nand_mrvl_nfc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-index ac530fc62499..95abd4ddf243 100644
+index bdf949de0e7f..60c34c21af25 100644
 --- a/drivers/mtd/nand/nand_mrvl_nfc.c
 +++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-@@ -983,6 +983,9 @@ static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
- {
- 	struct device_node *np = host->dev->device_node;
- 
-+	if (!IS_ENABLED(CONFIG_OFTREE) || host->dev->platform_data)
-+		return 0;
-+
- 	if (of_get_property(np, "marvell,nand-keep-config", NULL))
- 		host->keep_config = 1;
- 	of_property_read_u32(np, "num-cs", &host->cs);
+@@ -719,7 +719,7 @@ static int mrvl_nand_write_page_hwecc(struct mtd_info *mtd,
+ 		memcpy(host->data_buff + mtd->writesize, chip->oob_poi,
+ 		       mtd->oobsize);
+ 	else
+-		memset(host->data_buff + mtd->writesize, 0, mtd->oobsize);
++		memset(host->data_buff + mtd->writesize, 0xff, mtd->oobsize);
+ 	dev_dbg(host->dev, "%s(buf=%p, oob_required=%d) => 0\n",
+ 		__func__, buf, oob_required);
+ 	return 0;
 -- 
 2.1.4
 
