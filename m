@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x230.google.com ([2a00:1450:400c:c09::230])
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzrUA-0003yb-KI
- for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:49 +0000
-Received: by wmww144 with SMTP id w144so33994998wmw.0
+ id 1ZzrU9-0003yJ-TX
+ for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:45 +0000
+Received: by wmww144 with SMTP id w144so33994789wmw.0
  for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:20 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 20 Nov 2015 20:35:53 +0100
-Message-Id: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 20 Nov 2015 20:35:54 +0100
+Message-Id: <1448048172-10080-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,69 +23,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/19] Armada 370/XP NAND driver
+Subject: [PATCH v2 01/19] of: mtd: Import of_get_nand_ecc_{step_size,
+ strength} from Linux
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-This is v2 of the patch set that adds support for the NAND flash
-controller found on Marvell Armada 370/XP SoCs. The IP is the same
-as for PXA3xx SoCs, so we can also reuse the driver. However, this
-needs some rework of the existing driver.
+This imports DT helpers for MTD ECC step size and strength from
+Linux kernel.
 
-Patch 1 imports some mtd OF helpers from Linux for ECC propery
-parsing.
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+ drivers/of/of_mtd.c | 34 ++++++++++++++++++++++++++++++++++
+ include/of_mtd.h    |  2 ++
+ 2 files changed, 36 insertions(+)
 
-Patch 2 clarifies Marvell Orion NAND Kconfig entry to distinguish
-it from Armada 370/XP NAND support in PXA3xx NAND.
-
-Patches 3-6 free nand_mrvl_nfc from mach-pxa dependency by
-adding common clock support to mach-pxa and rework the driver
-to get rid of pxa_get_nandclk().
-
-Patches 7-13 comprise cleanup and preparation for the
-addition of Armada 370/XP version of the NAND controller IP.
-
-Patches 14-18 add features found on Armada XP NAND controller
-only.
-
-Finally, Patch 19 adds optimized timings for the NAND flash
-found on Lenovo ix4-300d.
-
-The series is based on today's next with Robert's patiently
-confirmed Tested-by on mach-pxa. I have tested this on IX4.
-
-Sebastian Hesselbarth (19):
-  of: mtd: Import of_get_nand_ecc_{step_size,strength} from Linux
-  mtd: nand: Clarify Marvell Orion Kconfig prompt
-  arm: pxa: Prepare for NAND clkdev lookup on PXA3xx
-  arm: pxa: Add clock for Zylonite NFC
-  mtd: nand_mrvl_nfc: Use common clock for core clock
-  arm: pxa: Remove pxa_get_nandclk()
-  mtd: nand_mrvl_nfc: Clear OOB data with 0xff instead of 0x00
-  mtd: nand_mrvl_nfc: Use Auto Read Status on program/erase
-  mtd: nand_mrvl_nfc: Protect mrvl_nand_probe_dt
-  mtd: nand_mrvl_nfc: Fix num-cs property parsing
-  mtd: nand_mrvl_nfc: Get ecc parameters from DT
-  mtd: nand_mrvl_nfc: Prepare for different HW ECC strengths
-  mtd: nand_mrvl_nfc: Add hwflags to distinguish different HW versions
-  mtd: nand_mrvl_nfc: Add support for 4bit BCH HW ECC
-  mtd: nand_mrvl_nfc: Add support for 8bit BCH HW ECC
-  mtd: nand_mrvl_nfc: Add support for HW BCH ECC
-  mtd: nand_mrvl_nfc: Add support for NDCB3 register
-  mtd: nand_mrvl_nfc: Add support for Marvell Armada 370/XP
-  mtd: nand_mrvl_nfc: Add optimized timings for Samsung K9K8G08U
-
- arch/arm/Kconfig                       |   1 +
- arch/arm/boards/zylonite/board.c       |   7 +
- arch/arm/mach-pxa/Kconfig              |   2 +
- arch/arm/mach-pxa/include/mach/clock.h |   1 -
- arch/arm/mach-pxa/speed-pxa3xx.c       |  20 ++-
- drivers/mtd/nand/Kconfig               |   9 +-
- drivers/mtd/nand/nand_mrvl_nfc.c       | 236 +++++++++++++++++++++++++++++++--
- drivers/of/of_mtd.c                    |  34 +++++
- include/of_mtd.h                       |   2 +
- 9 files changed, 289 insertions(+), 23 deletions(-)
-
+diff --git a/drivers/of/of_mtd.c b/drivers/of/of_mtd.c
+index 97f3095740f7..0956ee15d393 100644
+--- a/drivers/of/of_mtd.c
++++ b/drivers/of/of_mtd.c
+@@ -49,6 +49,40 @@ int of_get_nand_ecc_mode(struct device_node *np)
+ EXPORT_SYMBOL_GPL(of_get_nand_ecc_mode);
+ 
+ /**
++ * of_get_nand_ecc_step_size - Get ECC step size associated to
++ * the required ECC strength (see below).
++ * @np:	Pointer to the given device_node
++ *
++ * return the ECC step size, or errno in error case.
++ */
++int of_get_nand_ecc_step_size(struct device_node *np)
++{
++	int ret;
++	u32 val;
++
++	ret = of_property_read_u32(np, "nand-ecc-step-size", &val);
++	return ret ? ret : val;
++}
++EXPORT_SYMBOL_GPL(of_get_nand_ecc_step_size);
++
++/**
++ * of_get_nand_ecc_strength - Get required ECC strength over the
++ * correspnding step size as defined by 'nand-ecc-size'
++ * @np:	Pointer to the given device_node
++ *
++ * return the ECC strength, or errno in error case.
++ */
++int of_get_nand_ecc_strength(struct device_node *np)
++{
++	int ret;
++	u32 val;
++
++	ret = of_property_read_u32(np, "nand-ecc-strength", &val);
++	return ret ? ret : val;
++}
++EXPORT_SYMBOL_GPL(of_get_nand_ecc_strength);
++
++/**
+  * of_get_nand_bus_width - Get nand bus witdh for given device_node
+  * @np:	Pointer to the given device_node
+  *
+diff --git a/include/of_mtd.h b/include/of_mtd.h
+index a5a8f20daff6..9f5b8a2796a2 100644
+--- a/include/of_mtd.h
++++ b/include/of_mtd.h
+@@ -12,6 +12,8 @@
+ #include <of.h>
+ 
+ int of_get_nand_ecc_mode(struct device_node *np);
++int of_get_nand_ecc_step_size(struct device_node *np);
++int of_get_nand_ecc_strength(struct device_node *np);
+ int of_get_nand_bus_width(struct device_node *np);
+ bool of_get_nand_on_flash_bbt(struct device_node *np);
+ 
 -- 
 2.1.4
 
