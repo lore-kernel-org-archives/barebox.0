@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b])
+Received: from mail-lf0-x244.google.com ([2a00:1450:4010:c07::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ZzYRY-00030I-Bn
- for barebox@lists.infradead.org; Thu, 19 Nov 2015 23:16:44 +0000
-Received: by wmww144 with SMTP id w144so137385253wmw.0
- for <barebox@lists.infradead.org>; Thu, 19 Nov 2015 15:16:21 -0800 (PST)
-References: <1444341979-19157-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <87d1wk74nt.fsf@belgarion.home> <561BFECA.1010105@gmail.com>
- <87k2qr6go0.fsf@belgarion.home> <561C111E.7010106@gmail.com>
- <874mhv5cxm.fsf@belgarion.home> <561CD48A.9000301@gmail.com>
- <20151013102725.GH7858@pengutronix.de> <87wpur3ves.fsf@belgarion.home>
- <562017CD.4050105@gmail.com> <877fmm3bea.fsf@belgarion.home>
- <874mhlz6iq.fsf@belgarion.home>
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Message-ID: <564E5842.9010700@gmail.com>
-Date: Fri, 20 Nov 2015 00:16:18 +0100
-In-Reply-To: <874mhlz6iq.fsf@belgarion.home>
+ id 1Zzcav-0007iV-7s
+ for barebox@lists.infradead.org; Fri, 20 Nov 2015 03:42:42 +0000
+Received: by lfdo63 with SMTP id o63so5661819lfd.0
+ for <barebox@lists.infradead.org>; Thu, 19 Nov 2015 19:42:18 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1447869408.4553.168.camel@rtred1test09.kymeta.local>
+References: <1447820824-12471-1-git-send-email-cobham.jason@gmail.com>
+ <1447869408.4553.168.camel@rtred1test09.kymeta.local>
+Date: Thu, 19 Nov 2015 19:42:18 -0800
+Message-ID: <CAKu_b=JyDL8jdW3iq0XYTqZnz_5VV3tfPDCdvB08_g=oOzrqDQ@mail.gmail.com>
+From: Jason Cobham <cobham.jason@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,39 +20,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/17] Armada 370/XP NAND driver
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+Subject: Re: [PATCH 1/4] ARM: ccxmx53: Add support for Digi ccxmx53 board.
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 20.10.2015 21:25, Robert Jarzmik wrote:
-> Robert Jarzmik <robert.jarzmik@free.fr> writes:
-> 
->> Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com> writes:
->>
->>> Robert,
->>>
->>> I pushed another version of the patch set with the following changes:
-> 
-> Okay, with the latest version (a6400be (HEAD, test-sebastian) mtd:
-> nand_mrvl_nfc: Add optimized timings for Samsung K9K8G08U) zylonite is working
-> all right.
+On Wed, Nov 18, 2015 at 9:56 AM, Trent Piepho <tpiepho@kymetacorp.com> wrote:
+> On Tue, 2015-11-17 at 20:27 -0800, Jason Cobham wrote:
+>
+>> +
+>> +&esdhc3 {
+>> +     pinctrl-names = "default";
+>> +     pinctrl-0 = <&pinctrl_esdhc3>;
+>> +     bus-width = <4>,<8>;
+>> +     non-removable;
+>> +     status = "okay";
+>> +};
+>
+>
+> Neither barebox nor the kernel support a list of values for bus-width.
 
-Robert,
-
-thanks again for patient testing. I ran out of time before
-vacation but now I plan to resend the series rebased on
-latest barebox.
-
-I assume you are fine with me adding your Tested-by on the
-next version?
-
-Sebastian
-
+Thanks, I'll fix this in v2.
 
 _______________________________________________
 barebox mailing list
