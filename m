@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1ZzrUG-0000IE-4b
- for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:49 +0000
-Received: by wmvv187 with SMTP id v187so86249975wmv.1
- for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:26 -0800 (PST)
+Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ZzrUB-0003zB-Lk
+ for barebox@lists.infradead.org; Fri, 20 Nov 2015 19:36:50 +0000
+Received: by wmdw130 with SMTP id w130so31971070wmd.0
+ for <barebox@lists.infradead.org>; Fri, 20 Nov 2015 11:36:22 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Fri, 20 Nov 2015 20:36:08 +0100
-Message-Id: <1448048172-10080-16-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Fri, 20 Nov 2015 20:35:56 +0100
+Message-Id: <1448048172-10080-4-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,82 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 15/19] mtd: nand_mrvl_nfc: Add support for 8bit BCH HW ECC
+Subject: [PATCH v2 03/19] arm: pxa: Prepare for NAND clkdev lookup on PXA3xx
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-Add support for 8bit HW ECC modes supported by later IP versions.
+To allow PXA3xx nand driver to be reused on Marvell Armada 370/XP,
+prepare to provide a common clock for the NAND driver on PXA3xx.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Acked-by: Robert Jarzmik <robert.jarzmik@free.fr>
 Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- drivers/mtd/nand/nand_mrvl_nfc.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ arch/arm/Kconfig                 |  1 +
+ arch/arm/mach-pxa/Kconfig        |  2 ++
+ arch/arm/mach-pxa/speed-pxa3xx.c | 18 ++++++++++++++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/nand_mrvl_nfc.c
-index 3e9fccdffefe..f43200dcf2c7 100644
---- a/drivers/mtd/nand/nand_mrvl_nfc.c
-+++ b/drivers/mtd/nand/nand_mrvl_nfc.c
-@@ -252,6 +252,17 @@ static struct nand_ecclayout ecc_layout_4KB_bch4bit = {
- 	.oobfree = { {1, 4}, {6, 26}, {64, 32} }
- };
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index c03f7dc8830b..9f4d8e958794 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -152,6 +152,7 @@ config ARCH_PXA
+ 	bool "Intel/Marvell PXA based"
+ 	select GENERIC_GPIO
+ 	select HAS_POWEROFF
++	select HAVE_CLK
  
-+static struct nand_ecclayout ecc_layout_4KB_bch8bit = {
-+	.eccbytes = 64,
-+	.eccpos = {
-+		32,  33,  34,  35,  36,  37,  38,  39,
-+		40,  41,  42,  43,  44,  45,  46,  47,
-+		48,  49,  50,  51,  52,  53,  54,  55,
-+		56,  57,  58,  59,  60,  61,  62,  63},
-+	/* Bootrom looks in bytes 0 & 5 for bad blocks */
-+	.oobfree = { {1, 4}, {6, 26} }
-+};
-+
- #define NDTR0_tCH(c)	(min((c), 7) << 19)
- #define NDTR0_tCS(c)	(min((c), 7) << 16)
- #define NDTR0_tWH(c)	(min((c), 7) << 11)
-@@ -928,6 +939,31 @@ static int pxa_ecc_strength4(struct mrvl_nand_host *host,
- 	return -ENODEV;
+ config ARCH_ROCKCHIP
+ 	bool "Rockchip RX3xxx"
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index 54094f4ca0ed..1c0894892b17 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -17,6 +17,8 @@ config ARCH_PXA2XX
+ config ARCH_PXA3XX
+        bool
+        select CPU_XSC3
++       select CLKDEV_LOOKUP
++       select COMMON_CLK
+ 
+ config ARCH_PXA310
+        bool
+diff --git a/arch/arm/mach-pxa/speed-pxa3xx.c b/arch/arm/mach-pxa/speed-pxa3xx.c
+index 6a08ea78f065..102951736dc0 100644
+--- a/arch/arm/mach-pxa/speed-pxa3xx.c
++++ b/arch/arm/mach-pxa/speed-pxa3xx.c
+@@ -8,6 +8,9 @@
+  */
+ 
+ #include <common.h>
++#include <init.h>
++#include <linux/clk.h>
++#include <linux/clkdev.h>
+ #include <mach/clock.h>
+ #include <mach/pxa-regs.h>
+ 
+@@ -31,3 +34,18 @@ unsigned long pxa_get_nandclk(void)
+ 	else
+ 		return 156000000;
  }
- 
-+static int pxa_ecc_strength8(struct mrvl_nand_host *host,
-+		struct nand_ecc_ctrl *ecc, int ecc_stepsize, int page_size)
++
++static int pxa3xx_clock_init(void)
 +{
-+	if (!(host->hwflags & HWFLAGS_ECC_BCH))
-+		return -ENODEV;
++	unsigned long nand_rate = (cpu_is_pxa320()) ? 104000000 : 156000000;
++	struct clk *clk;
++	int ret;
 +
-+	/*
-+	 * Required ECC: 8-bit correction per 512 bytes
-+	 * Select: 16-bit correction per 1024 bytes
-+	 */
-+	if (ecc_stepsize == 512 && page_size == 4096) {
-+		host->chunk_size = 1024;
-+		host->spare_size = 0;
-+		host->ecc_size = 32;
-+		host->ecc_bch = 1;
-+		ecc->mode = NAND_ECC_HW;
-+		ecc->size = 1024;
-+		ecc->layout = &ecc_layout_4KB_bch8bit;
-+		ecc->strength = 16;
-+		return 0;
-+	}
++	clk = clk_fixed("nand", nand_rate);
++	ret = clk_register_clkdev(clk, NULL, "nand");
++	if (ret)
++		return ret;
 +
-+	return -ENODEV;
++	return 0;
 +}
-+
- static int pxa_ecc_init(struct mrvl_nand_host *host,
- 			struct nand_ecc_ctrl *ecc,
- 			int strength, int ecc_stepsize, int page_size)
-@@ -941,6 +977,9 @@ static int pxa_ecc_init(struct mrvl_nand_host *host,
- 	case 4:
- 		ret = pxa_ecc_strength4(host, ecc, ecc_stepsize, page_size);
- 		break;
-+	case 8:
-+		ret = pxa_ecc_strength8(host, ecc, ecc_stepsize, page_size);
-+		break;
- 	}
- 
- 	if (ret) {
++postcore_initcall(pxa3xx_clock_init);
 -- 
 2.1.4
 
