@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a0nMg-0001v8-Pq
- for barebox@lists.infradead.org; Mon, 23 Nov 2015 09:24:51 +0000
+ id 1a0nb5-0002ZC-J6
+ for barebox@lists.infradead.org; Mon, 23 Nov 2015 09:39:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 23 Nov 2015 10:24:30 +0100
-Message-Id: <1448270671-24307-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1448270671-24307-1-git-send-email-s.hauer@pengutronix.de>
-References: <1448270671-24307-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 23 Nov 2015 10:39:25 +0100
+Message-Id: <1448271565-2374-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] reset: Remove unused *_optional functions
+Subject: [PATCH] mtd: core: initialize *retlen in mtd_write()
 To: Barebox List <barebox@lists.infradead.org>
 
-Since we now have dummy reset controllers we no longer need the
-*_optional functions. These have been unused anyway, so just remove
-them.
+Some mtd drivers like the spi-nor driver do not assign a value
+to the retlen pointer but instead only add the bytes written
+to *retlen. Users of mtd_write expect the variable to be initialized
+by the mtd core though, so we have to do it in mtd_write(). The
+same is done in mtd_read already.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/linux/reset.h | 22 ----------------------
- 1 file changed, 22 deletions(-)
+ drivers/mtd/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/reset.h b/include/linux/reset.h
-index f6c475c..3f810bd 100644
---- a/include/linux/reset.h
-+++ b/include/linux/reset.h
-@@ -15,17 +15,6 @@ void reset_control_put(struct reset_control *rstc);
- 
- int __must_check device_reset(struct device_d *dev);
- 
--static inline int device_reset_optional(struct device_d *dev)
--{
--	return device_reset(dev);
--}
--
--static inline struct reset_control *reset_control_get_optional(
--					struct device_d *dev, const char *id)
--{
--	return reset_control_get(dev, id);
--}
--
- #else
- 
- static inline int reset_control_reset(struct reset_control *rstc)
-@@ -51,17 +40,6 @@ static inline void reset_control_put(struct reset_control *rstc)
- 	WARN_ON(1);
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index d873369..62307db 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -340,6 +340,8 @@ int mtd_read(struct mtd_info *mtd, loff_t from, size_t len, size_t *retlen,
+ int mtd_write(struct mtd_info *mtd, loff_t to, size_t len, size_t *retlen,
+ 		const u_char *buf)
+ {
++	*retlen = 0;
++
+ 	return mtd->write(mtd, to, len, retlen, buf);
  }
  
--static inline int device_reset_optional(struct device_d *dev)
--{
--	return -ENOSYS;
--}
--
--static inline struct reset_control *reset_control_get_optional(
--					struct device_d *dev, const char *id)
--{
--	return ERR_PTR(-ENOSYS);
--}
--
- #endif /* CONFIG_RESET_CONTROLLER */
- 
- #endif
 -- 
 2.6.2
 
