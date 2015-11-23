@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x233.google.com ([2a00:1450:4010:c07::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a0lh0-0001J0-7Z
- for barebox@lists.infradead.org; Mon, 23 Nov 2015 07:37:42 +0000
-Date: Mon, 23 Nov 2015 08:37:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151123073723.GV11966@pengutronix.de>
-References: <1448221792-14823-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1448221792-14823-1-git-send-email-antonynpavlov@gmail.com>
+ id 1a0lyo-0002Xa-Tm
+ for barebox@lists.infradead.org; Mon, 23 Nov 2015 07:56:07 +0000
+Received: by lfdl133 with SMTP id l133so20842564lfd.2
+ for <barebox@lists.infradead.org>; Sun, 22 Nov 2015 23:55:44 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 23 Nov 2015 10:55:35 +0300
+Message-Id: <1448265336-15862-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1448265336-15862-1-git-send-email-antonynpavlov@gmail.com>
+References: <1448265336-15862-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,54 +18,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: usb: asix: fix 'no previous prototype' warning
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [just RFC 1/2] serial: ns16550: introduce custom divisor latch setter
+To: barebox@lists.infradead.org
 
-On Sun, Nov 22, 2015 at 10:49:52PM +0300, Antony Pavlov wrote:
-> Here is the warning message:
-> 
->     drivers/net/usb/asix.c:427:5: warning: no previous prototype for 'asix_rx_fixup_internal' [-Wmissing-prototypes]
->      int asix_rx_fixup_internal(struct usbnet *dev, void *buf, int len,
->          ^
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/net/usb/asix.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/serial/serial_ns16550.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-Applied, thanks
-
-Sascha
-
-> 
-> diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
-> index ff80398..3ca27ff 100644
-> --- a/drivers/net/usb/asix.c
-> +++ b/drivers/net/usb/asix.c
-> @@ -424,7 +424,7 @@ static int ax88172_get_ethaddr(struct eth_device *edev, unsigned char *adr)
->  	return 0;
->  }
->  
-> -int asix_rx_fixup_internal(struct usbnet *dev, void *buf, int len,
-> +static int asix_rx_fixup_internal(struct usbnet *dev, void *buf, int len,
->  			   struct asix_rx_fixup_info *rx)
->  {
->  	int offset = 0;
-> -- 
-> 2.6.2
-> 
-> 
-
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 1af226a..6a5e013 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -52,6 +52,7 @@ struct ns16550_priv {
+ 	unsigned iobase;
+ 	void (*write_reg)(struct ns16550_priv *, uint8_t val, unsigned offset);
+ 	uint8_t (*read_reg)(struct ns16550_priv *, unsigned offset);
++	void (*dl_write)(struct ns16550_priv *, unsigned baud_divisor);
+ };
+ 
+ struct ns16550_drvdata {
+@@ -188,9 +189,14 @@ static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
+ 	unsigned int baud_divisor = ns16550_calc_divisor(cdev, baud_rate);
+ 	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+ 
+-	ns16550_write(cdev, LCR_BKSE, lcr);
+-	ns16550_write(cdev, baud_divisor & 0xff, dll);
+-	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
++	if (priv->dl_write) {
++		priv->dl_write(priv, baud_divisor);
++	} else {
++		ns16550_write(cdev, LCR_BKSE, lcr);
++		ns16550_write(cdev, baud_divisor & 0xff, dll);
++		ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
++	}
++
+ 	ns16550_write(cdev, LCRVAL, lcr);
+ 	ns16550_write(cdev, MCRVAL, mcr);
+ 	ns16550_write(cdev, priv->fcrval, fcr);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.2
+
 
 _______________________________________________
 barebox mailing list
