@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a0l0Q-0003pH-En
- for barebox@lists.infradead.org; Mon, 23 Nov 2015 06:53:43 +0000
-Date: Mon, 23 Nov 2015 07:53:20 +0100
+ id 1a0lOb-0006yq-Kn
+ for barebox@lists.infradead.org; Mon, 23 Nov 2015 07:18:42 +0000
+Date: Mon, 23 Nov 2015 08:18:16 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151123065320.GO11966@pengutronix.de>
-References: <20151120114515.GA3731@gmail.com>
+Message-ID: <20151123071816.GP11966@pengutronix.de>
+References: <1448048172-10080-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1448048172-10080-13-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1448051909.4553.191.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151120114515.GA3731@gmail.com>
+In-Reply-To: <1448051909.4553.191.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] readline: Kconfig: fix typo
-To: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 12/19] mtd: nand_mrvl_nfc: Prepare for different HW
+ ECC strengths
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
 
-On Fri, Nov 20, 2015 at 12:45:25PM +0100, Wjatscheslaw Stoljarski wrote:
-> Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
-> ---
->  commands/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Fri, Nov 20, 2015 at 08:38:28PM +0000, Trent Piepho wrote:
+> On Fri, 2015-11-20 at 20:36 +0100, Sebastian Hesselbarth wrote:
+> 
+> > +
+> > +static int pxa_ecc_init(struct mrvl_nand_host *host,
+> > +			struct nand_ecc_ctrl *ecc,
+> > +			int strength, int ecc_stepsize, int page_size)
+> > +{
+> > +	int ret = -ENODEV;
+> > +
+> > +	switch (strength) {
+> > +	case 1:
+> > +		ret = pxa_ecc_strength1(host, ecc, ecc_stepsize, page_size);
+> > +		break;
+> > +	}
+> 
+> It would be a bit more clear to write this as:
+> 
+> switch (strength) {
+> case 1:
+>         ret = pxa_ecc_strength1(...);
+>         break;
+> default:
+>         ret = -ENODEV;
+>         break;
+> }
 
-Applied, thanks
+Indeed. Changed that while applying.
 
 Sascha
-
-> 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 0853ffd..1743670 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -1493,9 +1493,9 @@ config CMD_SPLASH
->  
->  config CMD_READLINE
->  	tristate
-> -	prompt "Readline"
-> +	prompt "readline"
->  	help
-> -	  rompt for user input
-> +	  Prompt for user input
->  
->  	  Usage: readline PROMPT VAR
->  
-> -- 
-> 1.9.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
