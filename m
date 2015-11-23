@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a0aeQ-00051g-CT
- for barebox@lists.infradead.org; Sun, 22 Nov 2015 19:50:19 +0000
-Received: by lbblt2 with SMTP id lt2so86129318lbb.3
- for <barebox@lists.infradead.org>; Sun, 22 Nov 2015 11:49:56 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 22 Nov 2015 22:49:52 +0300
-Message-Id: <1448221792-14823-1-git-send-email-antonynpavlov@gmail.com>
+ id 1a0kyP-0003fG-1y
+ for barebox@lists.infradead.org; Mon, 23 Nov 2015 06:51:38 +0000
+Date: Mon, 23 Nov 2015 07:51:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151123065112.GM11966@pengutronix.de>
+References: <1447992968-14149-1-git-send-email-cobham.jason@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1447992968-14149-1-git-send-email-cobham.jason@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,41 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: usb: asix: fix 'no previous prototype' warning
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] Add support for Digi ConnectCore ccxmx53 board.
+To: Jason Cobham <cobham.jason@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Here is the warning message:
+Hi Jason,
 
-    drivers/net/usb/asix.c:427:5: warning: no previous prototype for 'asix_rx_fixup_internal' [-Wmissing-prototypes]
-     int asix_rx_fixup_internal(struct usbnet *dev, void *buf, int len,
-         ^
+On Thu, Nov 19, 2015 at 08:16:08PM -0800, Jason Cobham wrote:
+> Based on the i.MX53 SoC. Tested with a 512M and 1GB module on a JSK dev board.
+> 
+> This v2 patch addresses the suggested v1 comments:
+> - device tree mmc bus width is configured correctly
+> - ARCH_TEXT_BASE define is not necessary
+> - fec phy reset pin configured in device tree
+> - simplify board_init
+> - single patch
+> 
+> Signed-off-by: Jason Cobham <cobham.jason@gmail.com>
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/net/usb/asix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
-index ff80398..3ca27ff 100644
---- a/drivers/net/usb/asix.c
-+++ b/drivers/net/usb/asix.c
-@@ -424,7 +424,7 @@ static int ax88172_get_ethaddr(struct eth_device *edev, unsigned char *adr)
- 	return 0;
- }
- 
--int asix_rx_fixup_internal(struct usbnet *dev, void *buf, int len,
-+static int asix_rx_fixup_internal(struct usbnet *dev, void *buf, int len,
- 			   struct asix_rx_fixup_info *rx)
- {
- 	int offset = 0;
+I cleaned up several whitespace issues. Please run through
+scripts/checkpatch.pl next time before posting.
+
+Sascha
+
+
+
 -- 
-2.6.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
