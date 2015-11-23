@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a0kyP-0003fG-1y
- for barebox@lists.infradead.org; Mon, 23 Nov 2015 06:51:38 +0000
-Date: Mon, 23 Nov 2015 07:51:12 +0100
+ id 1a0kzt-0003lp-Vn
+ for barebox@lists.infradead.org; Mon, 23 Nov 2015 06:53:10 +0000
+Date: Mon, 23 Nov 2015 07:52:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151123065112.GM11966@pengutronix.de>
-References: <1447992968-14149-1-git-send-email-cobham.jason@gmail.com>
+Message-ID: <20151123065248.GN11966@pengutronix.de>
+References: <1448010198-23247-1-git-send-email-j.remmet@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1447992968-14149-1-git-send-email-cobham.jason@gmail.com>
+In-Reply-To: <1448010198-23247-1-git-send-email-j.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] Add support for Digi ConnectCore ccxmx53 board.
-To: Jason Cobham <cobham.jason@gmail.com>
+Subject: Re: [PATCH] state: make type check error verbose
+To: Jan Remmet <j.remmet@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Jason,
-
-On Thu, Nov 19, 2015 at 08:16:08PM -0800, Jason Cobham wrote:
-> Based on the i.MX53 SoC. Tested with a 512M and 1GB module on a JSK dev board.
+On Fri, Nov 20, 2015 at 10:03:18AM +0100, Jan Remmet wrote:
+> Wrong type let state probe fail with ENOENT.
 > 
-> This v2 patch addresses the suggested v1 comments:
-> - device tree mmc bus width is configured correctly
-> - ARCH_TEXT_BASE define is not necessary
-> - fec phy reset pin configured in device tree
-> - simplify board_init
-> - single patch
-> 
-> Signed-off-by: Jason Cobham <cobham.jason@gmail.com>
+> Signed-off-by: Jan Remmet <j.remmet@phytec.de>
+> ---
+>  common/state.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
-I cleaned up several whitespace issues. Please run through
-scripts/checkpatch.pl next time before posting.
-
 Sascha
 
-
+> 
+> diff --git a/common/state.c b/common/state.c
+> index 117a686..a161b94 100644
+> --- a/common/state.c
+> +++ b/common/state.c
+> @@ -716,6 +716,8 @@ static int state_convert_node_variable(struct state *state,
+>  
+>  	vtype = state_find_type_by_name(type_name);
+>  	if (!vtype) {
+> +		dev_err(&state->dev, "unkown type: %s in %s\n", type_name,
+> +			node->full_name);
+>  		ret = -ENOENT;
+>  		goto out_free;
+>  	}
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
