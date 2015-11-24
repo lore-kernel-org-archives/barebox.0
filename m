@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a18S6-00011v-Vk
- for barebox@lists.infradead.org; Tue, 24 Nov 2015 07:55:51 +0000
-Date: Tue, 24 Nov 2015 08:55:29 +0100
+ id 1a18kQ-0004Gv-5H
+ for barebox@lists.infradead.org; Tue, 24 Nov 2015 08:14:46 +0000
+Date: Tue, 24 Nov 2015 09:14:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151124075529.GA11966@pengutronix.de>
-References: <1448277281-24391-1-git-send-email-s.hauer@pengutronix.de>
- <20151124070726.GD19888@pengutronix.de>
+Message-ID: <20151124081423.GB11966@pengutronix.de>
+References: <1448265336-15862-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151124070726.GD19888@pengutronix.de>
+In-Reply-To: <1448265336-15862-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: i.MX: optimize transfers for ECSPI v2.3
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [just RFC 0/2] serial: ns16550: add Ralink UART support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, Nov 24, 2015 at 08:07:26AM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello Sascha,
-> =
+Hi Antony,
 
-> On Mon, Nov 23, 2015 at 12:14:41PM +0100, Sascha Hauer wrote:
-> > Instead of writing one word to the txfifo and then wait until
-> > one is received in the rxfifo we can write until the txfifos
-> =
+On Mon, Nov 23, 2015 at 10:55:34AM +0300, Antony Pavlov wrote:
+> Please dont apply this patchseries! It's for review only!
+> 
+> This patchseries adds support for ns16550-like UART
+> used in Ralink/Mediatek SoCs. This UART uses non-standard
+> register addresses.
 
-> My German feeling for English recommends s/until/while/
-
-If you mean the second 'until' then I am with you.
+I'm getting unsure how much sense it makes to expand the ns16550 driver
+like this and like we've done with Omap, Tegra and others. It's always a
+little weight that we add to the driver and maybe we have reached the
+point where we should split the driver into several SoC specific drivers
+and some common library helper code for the general ns16550 support.
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
