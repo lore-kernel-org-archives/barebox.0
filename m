@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a10jd-0001mL-Eh
- for barebox@lists.infradead.org; Mon, 23 Nov 2015 23:41:26 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Mon, 23 Nov 2015 23:40:53 +0000
-Message-ID: <1448322055.4553.195.camel@rtred1test09.kymeta.local>
-Content-Language: en-US
-Content-ID: <D390D92CCFBE324292D0F050748EFA5E@kymetacorp.com>
+ id 1a17hd-0002x2-QT
+ for barebox@lists.infradead.org; Tue, 24 Nov 2015 07:07:50 +0000
+Date: Tue, 24 Nov 2015 08:07:26 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20151124070726.GD19888@pengutronix.de>
+References: <1448277281-24391-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1448277281-24391-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,78 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] eeprom: Add support for 24c1025 EEPROM
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] spi: i.MX: optimize transfers for ECSPI v2.3
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-This is the Microchip version of the Atmel 24c1024, which is already
-supported.  The key difference between them is that the I2C address
-bit used to select between the two banks is bit 2 for the 1025 and not
-bit 0 as in the 1024.
+Hello Sascha,
 
-Add a flag to describe this difference.
+On Mon, Nov 23, 2015 at 12:14:41PM +0100, Sascha Hauer wrote:
+> Instead of writing one word to the txfifo and then wait until
+> one is received in the rxfifo we can write until the txfifos
 
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
----
- drivers/eeprom/at24.c | 8 ++++++--
- include/i2c/at24.h    | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+My German feeling for English recommends s/until/while/
 
-diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-index bb2dd53..9c322a9 100644
---- a/drivers/eeprom/at24.c
-+++ b/drivers/eeprom/at24.c
-@@ -80,7 +80,9 @@ static unsigned io_limit = 128;
-  */
- static unsigned write_timeout = 25;
- 
-+/* number of bits in driver_data reserved for eeprom byte length */
- #define AT24_SIZE_BYTELEN 5
-+/* number of bits in driver_data reserved for flags */
- #define AT24_SIZE_FLAGS 8
- 
- #define AT24_BITMASK(x) (BIT(x) - 1)
-@@ -109,6 +111,7 @@ static struct platform_device_id at24_ids[] = {
- 	{ "24c256", AT24_DEVICE_MAGIC(262144 / 8, AT24_FLAG_ADDR16) },
- 	{ "24c512", AT24_DEVICE_MAGIC(524288 / 8, AT24_FLAG_ADDR16) },
- 	{ "24c1024", AT24_DEVICE_MAGIC(1048576 / 8, AT24_FLAG_ADDR16) },
-+	{ "24c1025", AT24_DEVICE_MAGIC(1048576 / 8, AT24_FLAG_ADDR16 | AT24_FLAG_BANK_BIT_2) },
- 	{ "at24", 0 },
- 	{ /* END OF LIST */ }
- };
-@@ -423,11 +426,12 @@ static int at24_probe(struct device_d *dev)
- 
- 	/* use dummy devices for multiple-address chips */
- 	for (i = 1; i < num_addresses; i++) {
-+		const int shift = (chip.flags & AT24_FLAG_BANK_BIT_2) ? 2 : 0;
- 		at24->client[i] = i2c_new_dummy(client->adapter,
--					client->addr + i);
-+					client->addr + (i << shift));
- 		if (!at24->client[i]) {
- 			dev_err(&client->dev, "address 0x%02x unavailable\n",
--					client->addr + i);
-+					client->addr + (i << shift));
- 			err = -EADDRINUSE;
- 			goto err_clients;
- 		}
-diff --git a/include/i2c/at24.h b/include/i2c/at24.h
-index 1013308..44a64a0 100644
---- a/include/i2c/at24.h
-+++ b/include/i2c/at24.h
-@@ -30,6 +30,7 @@ struct at24_platform_data {
- #define AT24_FLAG_READONLY	0x40	/* sysfs-entry will be read-only */
- #define AT24_FLAG_IRUGO		0x20	/* sysfs-entry will be world-readable */
- #define AT24_FLAG_TAKE8ADDR	0x10	/* take always 8 addresses (24c00) */
-+#define AT24_FLAG_BANK_BIT_2	0x08	/* blank select at bit 2 (vs lsb) */
- };
- 
- #endif /* _LINUX_AT24_H */
--- 
-1.8.3.1
+> are not full and read as long the rxfifos contain data. This
+> makes transfers for the m25p80 driver around 7 times faster
+> here.
 
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
