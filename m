@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x235.google.com ([2a00:1450:4010:c07::235])
+Received: from mail-lf0-x22a.google.com ([2a00:1450:4010:c07::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a1Wdd-0008F7-5X
- for barebox@lists.infradead.org; Wed, 25 Nov 2015 09:45:24 +0000
-Received: by lfaz4 with SMTP id z4so53580852lfa.0
- for <barebox@lists.infradead.org>; Wed, 25 Nov 2015 01:44:59 -0800 (PST)
-Date: Wed, 25 Nov 2015 13:08:46 +0300
+ id 1a1Z6p-0008ED-Az
+ for barebox@lists.infradead.org; Wed, 25 Nov 2015 12:23:41 +0000
+Received: by lfaz4 with SMTP id z4so58271604lfa.0
+ for <barebox@lists.infradead.org>; Wed, 25 Nov 2015 04:23:16 -0800 (PST)
+Date: Wed, 25 Nov 2015 15:47:04 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151125130846.3fa41b83b9a3f0deab377b38@gmail.com>
+Message-Id: <20151125154704.b6907125d65c6287ef676d79@gmail.com>
 In-Reply-To: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
 References: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
 Mime-Version: 1.0
@@ -32,15 +32,15 @@ Aleksey Kuleshov <rndfax@yandex.ru> wrote:
 
 > 10x performance gain according to simple test on QEMU malta:
 > barebox:/ time memcpy 0xa0000000 0xa0001000 0x100000
-
-Next time please add a version tag when resending patches, see this for det=
-ails:
-   http://wiki.qemu.org/Contribute/SubmitAPatch#When_resending_patches_add_=
-a_version_tag
-
-I need some time to examine this patch against latest linux kernel sources.
+> =
 
 > Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
+
+Patch looks good. In linux there is prefetch support, but we can add it to =
+barebox in the future.
+
+Acked-by: Antony Pavlov <antonynpavlov@gmail.com>
+
 > ---
 >  arch/mips/Kconfig              |   8 ++
 >  arch/mips/include/asm/string.h |   9 +-
