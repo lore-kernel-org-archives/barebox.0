@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a1rbK-0008TO-8T
- for barebox@lists.infradead.org; Thu, 26 Nov 2015 08:08:22 +0000
-Date: Thu, 26 Nov 2015 09:07:59 +0100
+ id 1a1s4Q-0005ql-TI
+ for barebox@lists.infradead.org; Thu, 26 Nov 2015 08:38:27 +0000
+Date: Thu, 26 Nov 2015 09:38:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151126080759.GH11966@pengutronix.de>
-References: <1448394839.4553.203.camel@rtred1test09.kymeta.local>
+Message-ID: <20151126083804.GI11966@pengutronix.de>
+References: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1448394839.4553.203.camel@rtred1test09.kymeta.local>
+In-Reply-To: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] eeprom: Support pagesize OF device tree property
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] MIPS: import optimized string functions from Linux
+To: Aleksey Kuleshov <rndfax@yandex.ru>
+Cc: barebox@lists.infradead.org
 
-On Tue, Nov 24, 2015 at 07:53:56PM +0000, Trent Piepho wrote:
-> Allows specifying the page size when the eeproms are in the device
-> tree.  Same as the Linux kernel device-tree bindings for at24.
+On Wed, Nov 25, 2015 at 03:23:22PM +0300, Aleksey Kuleshov wrote:
+> 10x performance gain according to simple test on QEMU malta:
+> barebox:/ time memcpy 0xa0000000 0xa0001000 0x100000
 > 
-> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+> Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
 
-Applied, thanks
+Applied with Antonys Ack
 
 Sascha
+
+
 
 -- 
 Pengutronix e.K.                           |                             |
