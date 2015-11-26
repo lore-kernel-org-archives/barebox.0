@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22a.google.com ([2a00:1450:4010:c07::22a])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a1Z6p-0008ED-Az
- for barebox@lists.infradead.org; Wed, 25 Nov 2015 12:23:41 +0000
-Received: by lfaz4 with SMTP id z4so58271604lfa.0
- for <barebox@lists.infradead.org>; Wed, 25 Nov 2015 04:23:16 -0800 (PST)
-Date: Wed, 25 Nov 2015 15:47:04 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151125154704.b6907125d65c6287ef676d79@gmail.com>
-In-Reply-To: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
-References: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
-Mime-Version: 1.0
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1a1rYK-0006nn-CJ
+ for barebox@lists.infradead.org; Thu, 26 Nov 2015 08:05:21 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id CA5B3A0017A
+ for <barebox@lists.infradead.org>; Thu, 26 Nov 2015 09:05:16 +0100 (CET)
+Date: Thu, 26 Nov 2015 09:04:46 +0100
+From: Jan Remmet <J.Remmet@phytec.de>
+Message-ID: <20151126080445.GA3245@lws-weitzel2@phytec.de>
+References: <1432740178-7799-1-git-send-email-mkl@pengutronix.de>
+MIME-Version: 1.0
+In-Reply-To: <1432740178-7799-1-git-send-email-mkl@pengutronix.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,553 +21,1476 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: Jan Remmet <J.Remmet@phytec.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: import optimized string functions from Linux
-To: Aleksey Kuleshov <rndfax@yandex.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] bootstate: add framework for redundant boot scenarios
+To: barebox@lists.infradead.org
 
-On Wed, 25 Nov 2015 15:23:22 +0300
-Aleksey Kuleshov <rndfax@yandex.ru> wrote:
+On Wed, May 27, 2015 at 05:22:58PM +0200, Marc Kleine-Budde wrote:
+> There are several use cases where a redundant Linux system is needed. The
+> barebox,bootstate framework provides the building blocks to model different
+> use cases without the need to start from the scratch over and over again.
+Hello,
+is there any reason why this wasn't applied? I tested it and it works fine.
+There is also a watchdog handling now in commands/boot.c so we can rework the
+bootchooser.
 
-> 10x performance gain according to simple test on QEMU malta:
-> barebox:/ time memcpy 0xa0000000 0xa0001000 0x100000
-> =
-
-> Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
-
-Patch looks good. In linux there is prefetch support, but we can add it to =
-barebox in the future.
-
-Acked-by: Antony Pavlov <antonynpavlov@gmail.com>
-
+Jan
+> 
+> For more information see the included
+> Documentation/devicetree/bindings/barebox/barebox,bootstate.rst file.
+> 
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 > ---
->  arch/mips/Kconfig              |   8 ++
->  arch/mips/include/asm/string.h |   9 +-
->  arch/mips/lib/Makefile         |   3 +
->  arch/mips/lib/memcpy.S         | 276 +++++++++++++++++++++++++++++++++++=
-++++++
->  arch/mips/lib/memset.S         | 146 ++++++++++++++++++++++
->  5 files changed, 441 insertions(+), 1 deletion(-)
->  create mode 100644 arch/mips/lib/memcpy.S
->  create mode 100644 arch/mips/lib/memset.S
-> =
-
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index a2d443f..fdf62e8 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -331,6 +331,14 @@ config NMON_HELP
->  	  Say yes here to get the nmon commands message on
->  	  every nmon start.
->  =
-
-> +config MIPS_OPTIMIZED_STRING_FUNCTIONS
-> +	bool "use assembler optimized string functions"
-> +	default y
-> +	help
-> +	  Say yes here to use assembler optimized memcpy / memset functions.
-> +	  These functions work much faster than the normal versions but
-> +	  increase your binary size.
+>  .../bindings/barebox/barebox,bootstate.rst         | 237 +++++++
+>  arch/sandbox/dts/sandbox.dts                       |  83 +++
+>  commands/Kconfig                                   |   5 +
+>  commands/Makefile                                  |   1 +
+>  commands/bootchooser.c                             | 101 +++
+>  common/Kconfig                                     |   7 +
+>  common/Makefile                                    |   1 +
+>  common/bootstate.c                                 | 776 +++++++++++++++++++++
+>  drivers/misc/Kconfig                               |   3 +
+>  drivers/misc/Makefile                              |   1 +
+>  drivers/misc/bootstate.c                           |  68 ++
+>  include/bootstate.h                                |  38 +
+>  12 files changed, 1321 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/barebox/barebox,bootstate.rst
+>  create mode 100644 commands/bootchooser.c
+>  create mode 100644 common/bootstate.c
+>  create mode 100644 drivers/misc/bootstate.c
+>  create mode 100644 include/bootstate.h
+> 
+> diff --git a/Documentation/devicetree/bindings/barebox/barebox,bootstate.rst b/Documentation/devicetree/bindings/barebox/barebox,bootstate.rst
+> new file mode 100644
+> index 000000000000..dd44e31ced80
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/barebox/barebox,bootstate.rst
+> @@ -0,0 +1,237 @@
+> +barebox bootstate
+> +=================
+> +
+> +Overview
+> +--------
+> +
+> +There are several use cases where a redundant Linux system is needed.
+> +The ``barebox,bootstate`` framework provides the building blocks to
+> +model different use cases without the need to start from the scratch
+> +over and over again.
+> +
+> +The ``barebox,bootstate`` works on abstract boot targets, each with a
+> +set of properties and implements an algorithm which selects the
+> +highest priority target to boot.
+> +
+> +A set of boot targets can be described in a devicetree node. This
+> +node could be part of the regular devicetree blob or it could be an
+> +extra devicetree for the bootstate.
+> +
+> +A bootstate node contains a description of a set of boot targets along
+> +with a place where to store the mutable state. Currently implemented
+> +backends are :ref:`barebox,state` and ``nv`` (:ref:`command_nv`)
+> +variables.
+> +
+> +Required properties:
+> +
+> +* ``compatible``: should be ``barebox,bootstate``;
+> +* ``backend-type``: should be ``state`` or ``nv``.
+> +
+> +Optional properties:
+> +
+> +* ``backend``: phandle to the :ref:`barebox,state` backend
+> +
+> +
+> +boot target nodes - immutable description
+> +-----------------------------------------
+> +
+> +These are subnodes of a bootstate node, each describing a boot
+> +target. The node name may end with ``@<ADDRESS>``, but the suffix is
+> +sripped from the target name.
+> +
+> +Optional properties:
+> +
+> +* ``default_attempts``: If the boot attempts counter is reset, this
+> +  value is used.
+> +
+> +Example::
+> +
+> +  bootstate: bootstate {
+> +  	compatible = "barebox,bootstate";
+> +  	backend-type = "state";
+> +  	backend = <&state>;
+> +
+> +  	system0 {
+> +  		default_attempts = <3>;
+> +  	};
+> +
+> +  	system1 {
+> +  		default_attempts = <3>;
+> +  	};
+> +  };
+> +
+> +In this example a bootstate, using a :ref:`barebox,state` backend with
+> +two boot target ``system0`` and ``system1`` is defined. When the boot
+> +attempts counter is reset, the default value of ``3`` is used for both
+> +targets.
+> +
+> +
+> +boot target nodes - mutable state
+> +---------------------------------
+> +
+> +The above example uses a :ref:`barebox,state` backend, which requires
+> +some additional configuration to hold the mutable
+> +state. :ref:`barebox,state` has to be explicidly configured, while
+> +``nv`` (:ref:`command_nv`) variables are created on the fly.
+> +
+> +The state of each boot target consists of the following ``uint32``
+> +varibles:
+> +
+> +* ``remaining_attempts``: holds the number of remaining boot
+> +  attempts. This variable is changed the the bootstate algorithm
+> +  during boot.
+> +* ``priority``: defines the priority of the boot target. Higher number
+> +  indicate a higher priority, If two boot target have the same
+> +  priority the one defined first in the device tree has precedence.
+> +  The ``priority`` can optionally be changed by the algorithm to 0, if
+> +  the boot target is decremented to ``0`` remaining boot attempts. A
+> +  ``priority`` of ``0`` means the boot target is **deactivated** and
+> +  will not be considered a valid target during further boots. If the
+> +  remaining attempts counter is reset, a target with priority 0 is
+> +  **not** changed.
+> +* ``ok``: this is an opaque value, it's not accessed by the bootstate
+> +  algorithm. It can be used be the Linux system to track the first
+> +  boot after an update.
+> +
+> +The bootstate can also hold a default watchdog timeout (in seconds),
+> +which can be activated by the bootstate algorithm.
+> +
+> +Example::
+> +
+> +  state: state {
+> +  	magic = <0x4d433230>;
+> +  	compatible = "barebox,state";
+> +  	backend-type = "raw";
+> +  	backend = <&backend_state>;
+> +  	#address-cells = <1>;
+> +  	#size-cells = <1>;
+> +
+> +  	bootstate {
+> +  		#address-cells = <1>;
+> +  		#size-cells = <1>;
+> +
+> +  		system0 {
+> +  			#address-cells = <1>;
+> +  			#size-cells = <1>;
+> +
+> +  			remaining_attempts {
+> +  				reg = <0x0 0x4>;
+> +  				type = "uint32";
+> +  			};
+> +  			priority {
+> +  				reg = <0x4 0x4>;
+> +  				type = "uint32";
+> +  			};
+> +  			ok {
+> +  				reg = <0x8 0x4>;
+> +  				type = "uint32";
+> +  			};
+> +  		};
+> +
+> +  		system1 {
+> +  			#address-cells = <1>;
+> +  			#size-cells = <1>;
+> +
+> +  			remaining_attempts {
+> +  				reg = <0x10 0x4>;
+> +  				type = "uint32";
+> +  			};
+> +  			priority {
+> +  				reg = <0x14 0x4>;
+> +  				type = "uint32";
+> +  			};
+> +  			ok {
+> +  				reg = <0x18 0x4>;
+> +  				type = "uint32";
+> +  			};
+> +  		};
+> +
+> +  		watchdog_timeout {
+> +  			reg = <0x20 0x4>;
+> +  			type = "uint32";
+> +  			default = <60>;
+> +  		};
+> +  	};
+> +  };
+> +
+> +This example defines two boot target (``system0`` and ``system1``) and
+> +a watchdog timeout of ``60`` seconds.
+> +
+> +
+> +Backends
+> +--------
+> +
+> +Currently two backends exist. The :ref:`barebox,state` backend is a
+> +bit more complicated to setup, as all boot target have to be described
+> +in the referenced :ref:`barebox,state` in the device tree. On the
+> +upside, the advantages of the (possible redundant storage, etc...) of
+> +the :ref:`barebox,state` is gained for free.
+> +
+> +The :ref:`command_nv` backend is a lot simpler, no special setup is
+> +needed, it should run on every board, which already implements a
+> +read/writeable barebox environment.
+> +
+> +
+> +Algorithm
+> +---------
+> +
+> +The low level algorithm is implemented by the
+> +``bootstate_get_target()`` function. Its job is to iterate over all
+> +boot sources and return the name (as a string) of the choosen boot
+> +target.
+> +
+> +The algorithm iterates over all boot target defined under the
+> +associated device tree node and picks the one with the highest
+> +``priority`` (higher number have a higher priority) where the
+> +``remaining_attempts`` is greater than zero. A pointer to the name of
+> +the boot target is returned, the string should be freed via ``free()``.
+> +
+> +The behaviour can be modified with the flags paramter. The following
+> +flags are currently supported:
+> +
+> +* ``BOOTCHOOSER_FLAG_ATTEMPTS_KEEP``: the ``remaining_attempts``
+> +  counter of the choosen boot target is not changed.
+> +* ``BOOTCHOOSER_FLAG_ATTEMPTS_DEC``: the ``remaining_attempts``
+> +  counter of the choosen boot target is decremented by one.
+> +* ``BOOTCHOOSER_FLAG_ATTEMPTS_RESET``: the ``remaining_attempts``
+> +  counter of all *active* boot targets (those with ``priority > 0``)
+> +  are reset to their default values as defined in the immutable
+> +  description by ``default_attempts``.
+> +* ``BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS``: if used together
+> +  with ``BOOTCHOOSER_FLAG_ATTEMPTS_DEC`` and the
+> +  ``remaining_attempts`` counter of the choosen boot target is
+> +  decremented to ``0``, the boot target is deactivated for further
+> +  boot attempts (although *this* boot is attemped as usual). This is
+> +  done by setting the ``priority`` to ``0``.
+> +* ``BOOTCHOOSER_FLAG_VERBOSE``: increases the verbosity of the output
+> +
+> +
+> +Frontend
+> +--------
+> +
+> +The shell command ``bootchooser`` (:ref:`command_bootchooser`) can be
+> +used to choose and start a boot target by a shell one-liner. The
+> +command picks the boot target with the highes priority and calls the
+> +``boot`` (:ref:`command_boot`) command with the selected boot target
+> +as its first and only parameter.
+> +
+> +The ``bootchooser`` command implements command line paramter versions
+> +of the above described flags:
+> +
+> +* ``-k``: keep boot attempts
+> +* ``-d``: decrement boot attempts
+> +* ``-r``: reset boot attempts
+> +* ``-z``: deactivate on zero remaining attempts
+> +* ``-v``: verbose output
+> +
+> +Next to the standard parameters, these additional options are
+> +implemented:
+> +
+> +* ``-D``: dryrun - do not boot (all other functionality is active) - a
+> +  specified watchdog timeout will be activated.
+> +* ``-R``: retry - if booting fails, the chose next target, but
+> +  decrement its attemts. Note: if the current target has still the
+> +  highes priority and remaining attemts, it will be selected again.
+> +* ``-w <TIMEOUT_IN_SEC>``: activate watchdog - if no parameter is
+> +  given, the timeout from the device tree is used. A given parameter
+> +  overwrites the device tree default.
+> diff --git a/arch/sandbox/dts/sandbox.dts b/arch/sandbox/dts/sandbox.dts
+> index 2595aa13fa62..e2bc8f76c2e3 100644
+> --- a/arch/sandbox/dts/sandbox.dts
+> +++ b/arch/sandbox/dts/sandbox.dts
+> @@ -3,5 +3,88 @@
+>  #include "skeleton.dtsi"
+>  
+>  / {
+> +	aliases {
+> +		state = &state;
+> +	};
+>  
+> +	state: state {
+> +		magic = <0x4d433230>;
+> +		compatible = "barebox,state";
+> +		backend-type = "dtb";
+> +		backend = "/fd0";
+> +
+> +		bootstate {
+> +			system0 {
+> +				#address-cells = <1>;
+> +				#size-cells = <1>;
+> +
+> +				remaining_attempts {
+> +					reg = <0x0 0x4>;
+> +					type = "uint32";
+> +				};
+> +				priority {
+> +					reg = <0x4 0x4>;
+> +					type = "uint32";
+> +				};
+> +				ok {
+> +					reg = <0x8 0x4>;
+> +					type = "uint32";
+> +				};
+> +			};
+> +
+> +			system1 {
+> +				#address-cells = <1>;
+> +				#size-cells = <1>;
+> +
+> +				remaining_attempts {
+> +					reg = <0x10 0x4>;
+> +					type = "uint32";
+> +				};
+> +				priority {
+> +					reg = <0x14 0x4>;
+> +					type = "uint32";
+> +				};
+> +				ok {
+> +					reg = <0x18 0x4>;
+> +					type = "uint32";
+> +				};
+> +			};
+> +
+> +			factory {
+> +				#address-cells = <1>;
+> +				#size-cells = <1>;
+> +
+> +				remaining_attempts {
+> +					reg = <0x20 0x4>;
+> +					type = "uint32";
+> +				};
+> +				priority {
+> +					reg = <0x24 0x4>;
+> +					type = "uint32";
+> +				};
+> +				ok {
+> +					reg = <0x28 0x4>;
+> +					type = "uint32";
+> +				};
+> +			};
+> +		};
+> +	};
+> +
+> +	bootstate: bootstate {
+> +		compatible = "barebox,bootstate";
+> +		backend-type = "state"; // or "nv", or "efivar"
+> +		backend = <&state>;
+> +
+> +		system0 {
+> +			default_attempts = <3>;
+> +		};
+> +
+> +		system1 {
+> +			default_attempts = <3>;
+> +		};
+> +
+> +		factory {
+> +			default_attempts = <3>;
+> +		};
+> +	};
+>  };
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 25c77a85c5dc..85dd88f7615c 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -2101,6 +2101,11 @@ config CMD_STATE
+>  	depends on STATE
+>  	prompt "state"
+>  
+> +config CMD_BOOTCHOOSER
+> +	tristate
+> +	depends on BOOTSTATE
+> +	prompt "bootchooser"
+> +
+>  # end Miscellaneous commands
+>  endmenu
+>  
+> diff --git a/commands/Makefile b/commands/Makefile
+> index b902f58ec5cc..f51cfb6ed492 100644
+> --- a/commands/Makefile
+> +++ b/commands/Makefile
+> @@ -111,3 +111,4 @@ obj-$(CONFIG_CMD_CMP)		+= cmp.o
+>  obj-$(CONFIG_CMD_NV)		+= nv.o
+>  obj-$(CONFIG_CMD_DEFAULTENV)	+= defaultenv.o
+>  obj-$(CONFIG_CMD_STATE)		+= state.o
+> +obj-$(CONFIG_CMD_BOOTCHOOSER)	+= bootchooser.o
+> diff --git a/commands/bootchooser.c b/commands/bootchooser.c
+> new file mode 100644
+> index 000000000000..34006175818f
+> --- /dev/null
+> +++ b/commands/bootchooser.c
+> @@ -0,0 +1,101 @@
+> +/*
+> + * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
+> + * Copyright (C) 2015 Marc Kleine-Budde <mkl@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <bootstate.h>
+> +#include <command.h>
+> +#include <common.h>
+> +#include <getopt.h>
+> +#include <malloc.h>
+> +#include <stdio.h>
+> +
+> +static int do_bootchooser(int argc, char *argv[])
+> +{
+> +	unsigned flags = 0, timeout = 0;
+> +	char *name = NULL;
+> +	int opt, ret;
+> +
+> +	while ((opt = getopt(argc, argv, "kdrzvDRw::")) > 0) {
+> +		switch (opt) {
+> +		case 'k':
+> +			flags |= BOOTCHOOSER_FLAG_ATTEMPTS_KEEP;
+> +			break;
+> +		case 'd':
+> +			flags |= BOOTCHOOSER_FLAG_ATTEMPTS_DEC;
+> +			break;
+> +		case 'r':
+> +			flags |= BOOTCHOOSER_FLAG_ATTEMPTS_RESET;
+> +			break;
+> +		case 'z':
+> +			flags |= BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS;
+> +			break;
+> +		case 'v':
+> +			flags |= BOOTCHOOSER_FLAG_VERBOSE;
+> +			break;
+> +		case 'D':
+> +			flags |= BOOTCHOOSER_FLAG_DRYRUN;
+> +			break;
+> +		case 'R':
+> +			flags |= BOOTCHOOSER_FLAG_RETRY_WITH_DEC;
+> +			break;
+> +		case 'w':
+> +			if (optarg)
+> +				timeout = simple_strtoul(optarg, NULL, 0);
+> +			else
+> +				flags |= BOOTCHOOSER_FLAG_WATCHDOG_TIMEOUT_FROM_STATE;
+> +			flags |= BOOTCHOOSER_FLAG_WATCHDOG_ENABLE;
+> +			break;
+> +		default:
+> +			return COMMAND_ERROR_USAGE;
+> +		}
+> +	}
+> +
+> +	if (optind < argc)
+> +		name = argv[optind];
+> +
+> +	if (!(flags & (BOOTCHOOSER_FLAG_ATTEMPTS_KEEP |
+> +		       BOOTCHOOSER_FLAG_ATTEMPTS_DEC |
+> +		       BOOTCHOOSER_FLAG_ATTEMPTS_RESET))) {
+> +		bootstate_info();
+> +		return 0;
+> +	}
+> +
+> +	if ((flags & BOOTCHOOSER_FLAG_ATTEMPTS_KEEP) &&
+> +	    (flags & (BOOTCHOOSER_FLAG_ATTEMPTS_DEC | BOOTCHOOSER_FLAG_ATTEMPTS_RESET)))
+> +		return COMMAND_ERROR_USAGE;
+> +
+> +	ret = bootstate_bootchooser(name, flags, timeout);
+> +
+> +	return ret ? COMMAND_ERROR : COMMAND_SUCCESS;
+> +}
+> +
+> +BAREBOX_CMD_HELP_START(bootchooser)
+> +BAREBOX_CMD_HELP_TEXT("Options:")
+> +BAREBOX_CMD_HELP_OPT ("-k","keep - boot, don't modify attempts counter")
+> +BAREBOX_CMD_HELP_OPT ("-d","decrement - boot, but decrement attempts counter by one")
+> +BAREBOX_CMD_HELP_OPT ("-r","reset - boot, but reset _all_ attempts counter to default")
+> +BAREBOX_CMD_HELP_OPT ("-z","deactivate choosen target in on zero remaining boot attemts")
+> +BAREBOX_CMD_HELP_OPT ("-v","verbose output")
+> +BAREBOX_CMD_HELP_OPT ("-D","dryrun. Do not boot - but handle watchdog and reset.")
+> +BAREBOX_CMD_HELP_OPT ("-R","retry - boot, retry next boot target and decrement attempts")
+> +BAREBOX_CMD_HELP_OPT ("-w","activate watchdog, use timeout specified in <BOOTSTATE>.watchdog_timeout")
+> +BAREBOX_CMD_HELP_END
+> +
+> +BAREBOX_CMD_START(bootchooser)
+> +	.cmd = do_bootchooser,
+> +	BAREBOX_CMD_DESC("automatically select a boot target and boot")
+> +	BAREBOX_CMD_OPTS("[-kdrzvDR] -w <TIMEOUT> [BOOTSTATE]")
+> +	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+> +	BAREBOX_CMD_HELP(cmd_bootchooser_help)
+> +BAREBOX_CMD_END
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 3dfb5ac19494..791fd89d4c1e 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -716,6 +716,13 @@ config STATE
+>  	select OFTREE
+>  	select PARAMETER
+>  
+> +config BOOTSTATE
+> +	bool "bootstate infrastructure"
+> +	depends on OF_BAREBOX_DRIVERS
+> +	select ENVIRONMENT_VARIABLES
+> +	select OFTREE
+> +	select PARAMETER
+> +
+>  config RESET_SOURCE
+>  	bool "detect Reset cause"
+>  	depends on GLOBALVAR
+> diff --git a/common/Makefile b/common/Makefile
+> index 2738238c67a8..ed336e257e33 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -44,6 +44,7 @@ obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
+>  obj-$(CONFIG_SHELL_HUSH)	+= hush.o
+>  obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
+>  obj-$(CONFIG_STATE)		+= state.o
+> +obj-$(CONFIG_BOOTSTATE)		+= bootstate.o
+>  obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
+>  obj-$(CONFIG_MENUTREE)		+= menutree.o
+>  obj-$(CONFIG_EFI_GUID)		+= efi-guid.o
+> diff --git a/common/bootstate.c b/common/bootstate.c
+> new file mode 100644
+> index 000000000000..5baaf03b7bfe
+> --- /dev/null
+> +++ b/common/bootstate.c
+> @@ -0,0 +1,776 @@
+> +/*
+> + * Copyright (C) 2012 Jan Luebbe <j.luebbe@pengutronix.de>
+> + * Copyright (C) 2015 Marc Kleine-Budde <mkl@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <bootstate.h>
+> +#include <common.h>
+> +#include <envfs.h>
+> +#include <environment.h>
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <fs.h>
+> +#include <globalvar.h>
+> +#include <init.h>
+> +#include <ioctl.h>
+> +#include <libbb.h>
+> +#include <libfile.h>
+> +#include <malloc.h>
+> +#include <net.h>
+> +#include <printk.h>
+> +#include <state.h>
+> +#include <stdio.h>
+> +#include <watchdog.h>
+> +#include <xfuncs.h>
+> +
+> +#include <linux/err.h>
+> +#include <linux/kernel.h>
+> +#include <linux/list.h>
+> +#include <linux/mtd/mtd-abi.h>
+> +#include <linux/mtd/mtd.h>
+> +
+> +#include <asm/unaligned.h>
+> +
+> +/* list of all registered bootstate instances */
+> +static LIST_HEAD(bootstate_list);
+> +
+> +struct state_backend;
+> +
+> +struct bootstate {
+> +	struct device_d dev;
+> +	const char *name;
+> +	struct list_head list;
+> +	struct list_head targets;
+> +	struct list_head targets_unsorted;
+> +	struct bootstate_backend *backend;
+> +	bool dirty;
+> +};
+> +
+> +struct bootstate_backend {
+> +	int (*load)(struct bootstate_backend *backend, struct bootstate *bootstate);
+> +	int (*save)(struct bootstate_backend *backend, struct bootstate *bootstate);
+> +	const char *name;
+> +	const char *path;
+> +};
+> +
+> +struct bootstate_target {
+> +	struct list_head list;
+> +	struct list_head list_unsorted;
+> +
+> +	/* state */
+> +	unsigned int priority;
+> +	unsigned int remaining_attempts;
+> +	bool ok;
+> +
+> +	/* spec */
+> +	const char *name;
+> +	unsigned int default_attempts;
+> +};
+> +
+> +static void pr_target(struct bootstate *bootstate, struct bootstate_target *target)
+> +{
+> +	printf("%s: target: name=%s prio=%u, ok=%d, rem=%u, def=%u\n",
+> +	       bootstate->name, target->name, target->priority, target->ok,
+> +	       target->remaining_attempts, target->default_attempts);
+> +}
+> +
+> +static struct bootstate *bootstate_new(const char *name)
+> +{
+> +	struct bootstate *bootstate;
+> +	int ret;
+> +
+> +	bootstate = xzalloc(sizeof(*bootstate));
+> +	safe_strncpy(bootstate->dev.name, name, MAX_DRIVER_NAME);
+> +	bootstate->name = bootstate->dev.name;
+> +	bootstate->dev.id = DEVICE_ID_DYNAMIC;
+> +	INIT_LIST_HEAD(&bootstate->targets);
+> +	INIT_LIST_HEAD(&bootstate->targets_unsorted);
+> +
+> +	ret = register_device(&bootstate->dev);
+> +	if (ret) {
+> +		free(bootstate);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	list_add_tail(&bootstate->list, &bootstate_list);
+> +
+> +	return bootstate;
+> +}
+> +
+> +static void bootstate_release(struct bootstate *bootstate)
+> +{
+> +	unregister_device(&bootstate->dev);
+> +	free(bootstate);
+> +}
+> +
+> +static int bootstate_target_compare(struct list_head *a, struct list_head *b)
+> +{
+> +	struct bootstate_target *bootstate_a = list_entry(a, struct bootstate_target, list);
+> +	struct bootstate_target *bootstate_b = list_entry(b, struct bootstate_target, list);
+> +
+> +	/* order descending */
+> +	return bootstate_a->priority >= bootstate_b->priority ? -1 : 1;
+> +}
+> +
+> +static void bootstate_target_add(struct bootstate *bootstate, struct bootstate_target *target)
+> +{
+> +	list_del(&target->list);
+> +	list_add_sort(&target->list, &bootstate->targets, bootstate_target_compare);
+> +}
+> +
+> +static int bootstate_variable_read_u32(const struct bootstate *bootstate,
+> +				       const char *name, uint32_t *out_val)
+> +{
+> +	char *var;
+> +	int ret;
+> +
+> +	var = asprintf("%s.%s.%s", bootstate->backend->path, bootstate->name, name);
+> +	ret = getenv_uint(var, out_val);
+> +	free(var);
+> +
+> +	return ret;
+> +}
+> +
+> +static int bootstate_backend_variable_read_target_u32(const struct bootstate_backend *backend,
+> +						      const struct bootstate *bootstate,
+> +						      const struct bootstate_target *target,
+> +						      const char *name, uint32_t *out_val)
+> +{
+> +	char *var;
+> +	int ret;
+> +
+> +	var = asprintf("%s.%s.%s.%s", backend->path, bootstate->name,
+> +		       target->name, name);
+> +	ret = getenv_uint(var, out_val);
+> +	free(var);
+> +
+> +	return ret;
+> +}
+> +
+> +static int bootstate_backend_variable_write_target_u32(const struct bootstate_backend *backend,
+> +						       const struct bootstate *bootstate,
+> +						       const struct bootstate_target *target,
+> +						       const char *name, uint32_t in_val)
+> +{
+> +	char *var;
+> +	char *val;
+> +	int ret;
+> +
+> +	var = asprintf("%s.%s.%s.%s", backend->path, bootstate->name,
+> +		       target->name, name);
+> +	val = asprintf("%d", in_val);
+> +	ret = setenv(var, val);
+> +	free(val);
+> +	free(var);
+> +
+> +	return ret;
+> +}
+> +
+> +static int bootstate_variable_nv_init_u32(const struct bootstate_backend *backend,
+> +					  const struct bootstate *bootstate,
+> +					  const struct bootstate_target *target,
+> +					  const char *name)
+> +{
+> +	char *var;
+> +	int ret;
+> +
+> +	var = asprintf("%s.%s.%s", bootstate->name, target->name, name);
+> +	ret = nvvar_add(var, "0");
+> +	free(var);
+> +
+> +	return ret;
+> +}
+> +
+> +static struct bootstate_target *bootstate_target_find(const struct bootstate *bootstate,
+> +						      const char *name)
+> +{
+> +	struct bootstate_target *target;
+> +
+> +	list_for_each_entry(target, &bootstate->targets, list) {
+> +		if (!strcmp(target->name, name))
+> +			return target;
+> +	}
+> +
+> +	return ERR_PTR(-ENOENT);
+> +}
+> +
+> +static int bootstate_target_from_node(struct bootstate *bootstate, const struct device_node *node, bool create)
+> +{
+> +	struct bootstate_target *target;
+> +	char *name, *indexs;
+> +	int ret;
+> +
+> +	name = xstrdup(node->name);
+> +	indexs = strchr(name, '@');
+> +	if (indexs)
+> +		*indexs++ = 0;
+> +
+> +	if (create) {
+> +		/* create*/
+> +		target = xzalloc(sizeof(*target));
+> +
+> +		target->name = xstrdup(name);
+> +		list_add_tail(&target->list, &bootstate->targets);
+> +		list_add_tail(&target->list_unsorted,
+> +			      &bootstate->targets_unsorted);
+> +	} else {
+> +		target = bootstate_target_find(bootstate, name);
+> +		if (IS_ERR(target)) {
+> +			int ret = PTR_ERR(target);
+> +			pr_err("no such boot target: %s: %s\n",
+> +			       name, strerror(-ret));
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	/* init */
+> +	ret = of_property_read_u32(node, "default_attempts",
+> +				   &target->default_attempts);
+> +	if (ret)
+> +		return ret;
+> +
+> +	free(name);
+> +
+> +	return 0;
+> +}
+> +
+> +static int bootstate_from_node(struct bootstate *bootstate,
+> +			       const struct device_node *node, bool create)
+> +{
+> +	struct device_node *child;
+> +	int ret;
+> +
+> +	for_each_child_of_node(node, child) {
+> +		ret = bootstate_target_from_node(bootstate, child, create);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int bootstate_backend_load_one(const struct bootstate_backend *backend,
+> +				      const struct bootstate *bootstate,
+> +				      struct bootstate_target *target)
+> +{
+> +	uint32_t tmp;
+> +	int ret;
+> +
+> +	ret = bootstate_backend_variable_read_target_u32(backend, bootstate, target,
+> +							 "remaining_attempts",
+> +							 &target->remaining_attempts);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bootstate_backend_variable_read_target_u32(backend, bootstate, target,
+> +							 "priority", &target->priority);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bootstate_backend_variable_read_target_u32(backend, bootstate, target,
+> +							 "ok", &tmp);
+> +	if (ret)
+> +		return ret;
+> +
+> +	target->ok = !!tmp;
+> +
+> +	return ret;
+> +}
+> +
+> +static int bootstate_backend_load(struct bootstate_backend *backend,
+> +				  struct bootstate *bootstate)
+> +{
+> +	struct bootstate_target *target;
+> +	int ret;
+> +
+> +	list_for_each_entry(target, &bootstate->targets_unsorted, list_unsorted) {
+> +		ret = bootstate_backend_load_one(backend, bootstate, target);
+> +		if (ret)
+> +			return ret;
+> +		bootstate_target_add(bootstate, target);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int bootstate_backend_save_one(const struct bootstate_backend *backend,
+> +				      const struct bootstate *bootstate,
+> +				      struct bootstate_target *target)
+> +{
+> +	int ret;
+> +
+> +	ret = bootstate_backend_variable_write_target_u32(backend, bootstate, target,
+> +							  "remaining_attempts",
+> +							  target->remaining_attempts);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bootstate_backend_variable_write_target_u32(backend, bootstate, target,
+> +							  "priority", target->priority);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bootstate_backend_variable_write_target_u32(backend, bootstate, target,
+> +							  "ok", target->ok);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int bootstate_backend_save(const struct bootstate_backend *backend,
+> +				  const struct bootstate *bootstate)
+> +{
+> +	struct bootstate_target *target;
+> +	int ret;
+> +
+> +	list_for_each_entry(target, &bootstate->targets, list) {
+> +		ret = bootstate_backend_save_one(backend, bootstate, target);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int bootstate_backend_nv_init_one(const struct bootstate_backend *backend,
+> +					 const struct bootstate *bootstate,
+> +					 struct bootstate_target *target)
+> +{
+> +	int ret;
+> +
+> +	ret = bootstate_variable_nv_init_u32(backend, bootstate, target,
+> +					     "remaining_attempts");
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bootstate_variable_nv_init_u32(backend, bootstate, target,
+> +					     "priority");
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = bootstate_variable_nv_init_u32(backend, bootstate, target,
+> +					     "ok");
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int bootstate_backend_nv_init(struct bootstate_backend *backend,
+> +				     struct bootstate *bootstate)
+> +{
+> +	struct bootstate_target *target;
+> +	int ret;
+> +
+> +	list_for_each_entry(target, &bootstate->targets_unsorted, list_unsorted) {
+> +		ret = bootstate_backend_nv_init_one(backend, bootstate, target);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int bootstate_backend_nv_save(struct bootstate_backend *backend,
+> +				     struct bootstate *bootstate)
+> +{
+> +	int ret;
+> +
+> +	ret = bootstate_backend_save(backend, bootstate);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return envfs_save(NULL, NULL, 0);
+> +}
+> +
+> +static int bootstate_backend_nv_load(struct bootstate_backend *backend,
+> +				     struct bootstate *bootstate)
+> +{
+> +	return bootstate_backend_load(backend, bootstate);
+> +}
+> +
+> +struct bootstate_backend_nv {
+> +	struct bootstate_backend backend;
+> +};
+> +
+> +int bootstate_backend_nv(struct bootstate *bootstate)
+> +{
+> +	struct bootstate_backend_nv *backend_nv;
+> +	struct bootstate_backend *backend;
+> +
+> +	if (bootstate->backend)
+> +		return -EBUSY;
+> +
+> +	backend_nv = xzalloc(sizeof(*backend_nv));
+> +	backend = &backend_nv->backend;
+> +
+> +	backend->load = bootstate_backend_nv_load;
+> +	backend->save = bootstate_backend_nv_save;
+> +	backend->name = "nv";
+> +	backend->path = "nv";
+> +
+> +	bootstate->backend = backend;
+> +
+> +	return bootstate_backend_nv_init(backend, bootstate);
+> +}
+> +
+> +struct bootstate_backend_state {
+> +	struct bootstate_backend backend;
+> +	struct state *state;
+> +};
+> +
+> +static int bootstate_backend_state_save(struct bootstate_backend *backend,
+> +					struct bootstate *bootstate)
+> +{
+> +	struct bootstate_backend_state *backend_state =
+> +		container_of(backend, struct bootstate_backend_state, backend);
+> +	int ret;
+> +
+> +	ret = bootstate_backend_save(backend, bootstate);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return state_save(backend_state->state);
+> +}
+> +
+> +static int bootstate_backend_state_load(struct bootstate_backend *backend,
+> +					struct bootstate *bootstate)
+> +{
+> +	return bootstate_backend_load(backend, bootstate);
+> +}
+> +
+> +int bootstate_backend_state(struct bootstate *bootstate, const struct device_node *node)
+> +{
+> +	struct bootstate_backend_state *backend_state;
+> +	struct bootstate_backend *backend;
+> +	const struct device_node *state_node;
+> +
+> +	if (bootstate->backend)
+> +		return -EBUSY;
+> +
+> +	backend_state = xzalloc(sizeof(*backend_state));
+> +	backend = &backend_state->backend;
+> +
+> +	backend->load = bootstate_backend_state_load;
+> +	backend->save = bootstate_backend_state_save;
+> +	backend->name = "state";
+> +
+> +	bootstate->backend = backend;
+> +
+> +	state_node = of_parse_phandle(node, "backend", 0);
+> +	if (!state_node)
+> +		return -EINVAL;
+> +
+> +	backend_state->state = state_by_node(state_node);
+> +	if (!backend_state->state)
+> +		return -EINVAL;
+> +
+> +	return state_get_name(backend_state->state, &backend->path);
+> +}
+> +
+> +/*
+> + * bootstate_new_from_node - create a new bootstate instance from a device_node
+> + *
+> + * @name	The name of the new bootstate instance
+> + * @node	The device_node describing the new bootstate instance
+> + */
+> +struct bootstate *bootstate_new_from_node(const char *name, const struct device_node *node)
+> +{
+> +	struct bootstate *bootstate;
+> +	int ret;
+> +
+> +	pr_debug("%s: node=%s, name=%s\n", __func__, node->full_name, name);
+> +
+> +	bootstate = bootstate_new(name);
+> +	if (!bootstate)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	ret = bootstate_from_node(bootstate, node, true);
+> +	if (ret) {
+> +		bootstate_release(bootstate);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	return bootstate;
+> +}
+> +
+> +/*
+> + * bootstate_by_name - find a bootstate instance by name
+> + *
+> + * @name	The name of the state instance
+> + */
+> +struct bootstate *bootstate_by_name(const char *name)
+> +{
+> +	struct bootstate *bs;
+> +
+> +	list_for_each_entry(bs, &bootstate_list, list) {
+> +		if (!strcmp(name, bs->name))
+> +			return bs;
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +/*
+> + * bootstate_load - load a bootstate from the backing store
+> + *
+> + * @bootstate	The state instance to load
+> + */
+> +static int bootstate_load(struct bootstate *bootstate)
+> +{
+> +	int ret;
+> +
+> +	if (!bootstate->backend)
+> +		return -ENOSYS;
+> +
+> +	ret = bootstate->backend->load(bootstate->backend, bootstate);
+> +	if (ret)
+> +		bootstate->dirty = 1;
+> +	else
+> +		bootstate->dirty = 0;
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + * bootstate_save - save a bootstate to the backing store
+> + *
+> + * @bootstate	The bootstate instance to save
+> + */
+> +static int bootstate_save(struct bootstate *bootstate)
+> +{
+> +	int ret;
+> +
+> +	if (!bootstate->dirty)
+> +		return 0;
+> +
+> +	if (!bootstate->backend)
+> +		return -ENOSYS;
+> +
+> +	ret = bootstate->backend->save(bootstate->backend, bootstate);
+> +	if (ret)
+> +		return ret;
+> +
+> +	bootstate->dirty = 0;
+> +
+> +	return 0;
+> +}
+> +
+> +void bootstate_info(void)
+> +{
+> +	struct bootstate *bootstate;
+> +
+> +	printf("registered bootstate instances:\n");
+> +
+> +	list_for_each_entry(bootstate, &bootstate_list, list) {
+> +		printf("%-20s ", bootstate->name);
+> +		printf("(backend: %s, path: %s)\n",
+> +		       bootstate->backend->name, bootstate->backend->path);
+> +	}
+> +}
+> +
+> +#define __BF(arg) [__BOOTCHOOSER_FLAG_##arg##_SHIFT] = __stringify(arg)
+> +
+> +static const char * const bootstate_flags_str[] = {
+> +	__BF(ATTEMPTS_KEEP),
+> +	__BF(ATTEMPTS_DEC),
+> +	__BF(ATTEMPTS_RESET),
+> +	__BF(DEACTIVATE_ON_ZERO_ATTEMPTS),
+> +	__BF(VERBOSE),
+> +	__BF(DRYRUN),
+> +	__BF(RETRY_WITH_DEC),
+> +	__BF(WATCHDOG_ENABLE),
+> +	__BF(WATCHDOG_TIMEOUT_FROM_STATE),
+> +};
+> +
+> +#undef __BF
+> +
+> +#define pr(verbose, format, args...) \
+> +	({ \
+> +		(verbose) ? pr_info((format), ##args) : 0; \
+> +	})
+> +
+> +void _pr_flags(struct bootstate *bootstate, unsigned flags)
+> +{
+> +	int i;
+> +
+> +	pr_info("%s: flags=0x%08x\n", bootstate->name, flags);
+> +
+> +	for (i = 0; i < ARRAY_SIZE(bootstate_flags_str); i++) {
+> +		if (flags & (1 << i))
+> +			pr_info("%s: -> %s\n", bootstate->name,
+> +				bootstate_flags_str[i]);
+> +	}
+> +}
+> +
+> +#define pr_flags(verbose, bootstate, flags) \
+> +	({ \
+> +		(verbose) ? _pr_flags(bootstate, flags) : 0; \
+> +	})
+> +
+> +/*
+> + * bootstate_get_target - create a new state instance from a device_node
+> + *
+> + * @bootstate	the bootstate instance to work in
+> + * @flags	supported flags:
+> + *		BOOTCHOOSER_FLAG_VERBOSE
+> + *		BOOTCHOOSER_FLAG_ATTEMPTS_KEEP
+> + *		BOOTCHOOSER_FLAG_ATTEMPTS_DEC
+> + *		BOOTCHOOSER_FLAG_ATTEMPTS_RESET
+> + *		BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS
+> + * @target_out	a string to the choosen boot target is returned via
+> + *		this paramater
+> + */
+> +int bootstate_get_target(struct bootstate *bootstate, unsigned flags, char **target_out)
+> +{
+> +	struct bootstate_target *target;
+> +	int ret;
+> +	bool found = false;
+> +	bool v = flags & BOOTCHOOSER_FLAG_VERBOSE;
+> +
+> +	pr_flags(v, bootstate, flags);
+> +
+> +	ret = bootstate_load(bootstate);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (flags & BOOTCHOOSER_FLAG_ATTEMPTS_RESET) {
+> +		list_for_each_entry(target, &bootstate->targets, list) {
+> +			if (target->priority ==  0)
+> +				continue;
+> +
+> +			target->remaining_attempts = target->default_attempts;
+> +			bootstate->dirty = true;
+> +
+> +			pr(v, "%s: target: name=%s setting rem to %d due to %s\n",
+> +			   bootstate->name, target->name, target->default_attempts,
+> +			   bootstate_flags_str[__BOOTCHOOSER_FLAG_ATTEMPTS_RESET_SHIFT]);
+> +		}
+> +		pr(v, "%s: --------\n", bootstate->name);
+> +	}
+> +
+> +	list_for_each_entry(target, &bootstate->targets, list) {
+> +		pr_target(bootstate, target);
+> +
+> +		if (found)
+> +			continue;
+> +
+> +		if (target->priority == 0) {
+> +			pr(v, "%s: name=%s prio=%d - trying next\n",
+> +			   bootstate->name, target->name, target->priority);
+> +			continue;
+> +		}
+> +
+> +		if (target->remaining_attempts == 0) {
+> +			pr(v, "%s: name=%s remaining attempts == 0 - trying next\n",
+> +			   bootstate->name, target->name);
+> +			continue;
+> +		}
+> +
+> +		if (flags & BOOTCHOOSER_FLAG_ATTEMPTS_DEC) {
+> +			bootstate->dirty = true;
+> +			target->remaining_attempts--;
+> +
+> +			pr(v, "%s: name=%s decrementing remaining_attempts to %d due to %s\n",
+> +			   bootstate->name, target->name,
+> +			   target->remaining_attempts,
+> +			   bootstate_flags_str[__BOOTCHOOSER_FLAG_ATTEMPTS_DEC_SHIFT]);
+> +
+> +			if ((target->remaining_attempts == 0) &&
+> +			    (flags & BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS)) {
+> +				target->priority = 0;
+> +
+> +				pr(v, "%s: name=%s deactivating target (setting priority = 0) due to %s\n",
+> +				   bootstate->name, target->name,
+> +				   bootstate_flags_str[__BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS_SHIFT]);
+> +			}
+> +		}
+> +
+> +		found = true;
+> +		*target_out = strdup(target->name);
+> +		pr_debug("%s: selected target '%s'\n", __func__, target->name);
+> +		if (!v)
+> +			goto out;
+> +
+> +		pr(v, "%s: --- other bootsources ---\n", bootstate->name);
+> +	}
+> +
+> + out:
+> +	bootstate_save(bootstate);
+> +
+> +	if (!found)
+> +		return -ENOENT;
+> +
+> +	return 0;
+> +}
+> +
+> +int bootstate_bootchooser(char *name, unsigned flags, unsigned timeout)
+> +{
+> +	struct bootstate *bootstate;
+> +	bool v = flags & BOOTCHOOSER_FLAG_VERBOSE;
+> +	char *target;
+> +	int ret;
+> +
+> +	if (!name)
+> +		name = "bootstate";
+> +
+> +	bootstate = bootstate_by_name(name);
+> +	if (!bootstate)
+> +		return -ENOENT;
+> +
+> +	if (flags & BOOTCHOOSER_FLAG_WATCHDOG_ENABLE) {
+> +		if (flags & BOOTCHOOSER_FLAG_WATCHDOG_TIMEOUT_FROM_STATE) {
+> +			ret = bootstate_variable_read_u32(bootstate, "watchdog_timeout",
+> +							  &timeout);
+> +			if (ret)
+> +				return ret;
+> +		}
+> +
+> +		if (timeout != 0) {
+> +			pr(v, "%s: starting watchdog with timeout=%ds\n",
+> +			   __func__, timeout);
+> +
+> +			ret = watchdog_set_timeout(timeout);
+> +			if (ret)
+> +				return ret;
+> +		}
+> +	}
+> +
+> +	while (true) {
+> +		char *cmd;
+> +
+> +		ret = bootstate_get_target(bootstate, flags, &target);
+> +		if (ret)
+> +			return ret;
+> +
+> +		cmd = asprintf("boot %s", target);
+> +		free(target);
+> +		pr_info("%srunning: %s...\n",
+> +			flags & BOOTCHOOSER_FLAG_DRYRUN ? "not " : "", cmd);
+> +		if (!(flags & BOOTCHOOSER_FLAG_DRYRUN))
+> +			ret = run_command(cmd);
+> +		free(cmd);
+> +
+> +		if (flags & BOOTCHOOSER_FLAG_RETRY_WITH_DEC) {
+> +			flags |= BOOTCHOOSER_FLAG_ATTEMPTS_DEC;
+> +			flags &= ~(BOOTCHOOSER_FLAG_ATTEMPTS_RESET |
+> +				   BOOTCHOOSER_FLAG_ATTEMPTS_KEEP);
+> +			continue;
+> +		}
+> +
+> +		return ret;
+> +	}
+> +
+> +	return -ENOENT;
+> +}
+> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+> index 7a5b14697efd..9b3ac244832b 100644
+> --- a/drivers/misc/Kconfig
+> +++ b/drivers/misc/Kconfig
+> @@ -19,4 +19,7 @@ config STATE_DRV
+>  	tristate "state driver"
+>  	depends on STATE
+>  
+> +config BOOTSTATE_DRV
+> +	tristate "bootstate driver"
 > +
 >  endmenu
->  =
-
->  source common/Kconfig
-> diff --git a/arch/mips/include/asm/string.h b/arch/mips/include/asm/strin=
-g.h
-> index 3a32d18..a797a74 100644
-> --- a/arch/mips/include/asm/string.h
-> +++ b/arch/mips/include/asm/string.h
-> @@ -22,6 +22,13 @@
->  #ifndef __ASM_MIPS_STRING_H
->  #define __ASM_MIPS_STRING_H
->  =
-
-> -/* nothing special yet */
-> +#ifdef CONFIG_MIPS_OPTIMIZED_STRING_FUNCTIONS
-> +
-> +#define __HAVE_ARCH_MEMCPY
-> +extern void *memcpy(void *, const void *, __kernel_size_t);
-> +#define __HAVE_ARCH_MEMSET
-> +extern void *memset(void *, int, __kernel_size_t);
-> +
-> +#endif
->  =
-
->  #endif
-> diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-> index 0145f35..02ee189 100644
-> --- a/arch/mips/lib/Makefile
-> +++ b/arch/mips/lib/Makefile
-> @@ -7,6 +7,9 @@ obj-y +=3D cpu-probe.o
->  obj-y +=3D traps.o
->  obj-y +=3D genex.o
->  =
-
-> +obj-$(CONFIG_MIPS_OPTIMIZED_STRING_FUNCTIONS) +=3D memcpy.o
-> +obj-$(CONFIG_MIPS_OPTIMIZED_STRING_FUNCTIONS) +=3D memset.o
-> +
->  obj-$(CONFIG_CPU_MIPS32) +=3D c-r4k.o
->  obj-$(CONFIG_CPU_MIPS64) +=3D c-r4k.o
->  =
-
-> diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+> diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+> index 487e4b8ba2e5..603e14ebb5de 100644
+> --- a/drivers/misc/Makefile
+> +++ b/drivers/misc/Makefile
+> @@ -5,3 +5,4 @@
+>  obj-$(CONFIG_JTAG)		+= jtag.o
+>  obj-$(CONFIG_SRAM)		+= sram.o
+>  obj-$(CONFIG_STATE_DRV)		+= state.o
+> +obj-$(CONFIG_BOOTSTATE_DRV)	+= bootstate.o
+> diff --git a/drivers/misc/bootstate.c b/drivers/misc/bootstate.c
 > new file mode 100644
-> index 0000000..a5af0c9
+> index 000000000000..96b9f23c44da
 > --- /dev/null
-> +++ b/arch/mips/lib/memcpy.S
-> @@ -0,0 +1,276 @@
+> +++ b/drivers/misc/bootstate.c
+> @@ -0,0 +1,68 @@
 > +/*
-> + * This file is subject to the terms and conditions of the GNU General P=
-ublic
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
+> + * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
+> + * Copyright (C) 2015 Marc Kleine-Budde <mkl@pengutronix.de>
 > + *
-> + * Copyright (C) 1998, 99, 2000, 01, 2002 Ralf Baechle (ralf@gnu.org)
-> + * Copyright (C) 1999, 2000, 01, 2002 Silicon Graphics, Inc.
-> + * Copyright (C) 2002 Broadcom, Inc.
-> + *   memcpy/copy_user author: Mark Vandevoorde
-> + * Copyright (C) 2007  Maciej W. Rozycki
-> + * Copyright (C) 2014 Imagination Technologies Ltd.
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
 > + *
-> + * Kernel-mode memcpy function without exceptions for _some_ MIPS CPUs
-> + * by Aleksey Kuleshov (rndfax@yandex.ru), 2015
-> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
 > + */
 > +
-> +#include <asm/asm.h>
-> +#include <asm/asm-offsets.h>
-> +#include <asm/regdef.h>
+> +#include <bootstate.h>
+> +#include <driver.h>
+> +#include <init.h>
+> +#include <malloc.h>
+> +#include <of.h>
+> +#include <string.h>
 > +
-> +#define dst a0
-> +#define src a1
-> +#define len a2
+> +#include <linux/err.h>
 > +
-> +#define LOADK lw /* No exception */
-> +#define LOAD(reg, addr)		lw reg, addr
-> +#define LOADL(reg, addr)	lwl reg, addr
-> +#define LOADR(reg, addr)	lwr reg, addr
-> +#define STOREL(reg, addr)	swl reg, addr
-> +#define STORER(reg, addr)	swr reg, addr
-> +#define STORE(reg, addr)	sw reg, addr
-> +#define ADD    addu
-> +#define SUB    subu
-> +#define SRL    srl
-> +#define SLL    sll
-> +#define SRA    sra
-> +#define SLLV   sllv
-> +#define SRLV   srlv
-> +#define NBYTES 4
-> +#define LOG_NBYTES 2
+> +static int bootstate_probe(struct device_d *dev)
+> +{
+> +	struct device_node *np = dev->device_node;
+> +	struct bootstate *bootstate;
+> +	const char *alias;
+> +	const char *backend_type = NULL;
+> +	int ret;
 > +
-> +#define LOADB(reg, addr)	lb reg, addr
-> +#define STOREB(reg, addr)	sb reg, addr
+> +	if (!np)
+> +		return -EINVAL;
 > +
-> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> +#define LDFIRST LOADR
-> +#define LDREST	LOADL
-> +#define STFIRST STORER
-> +#define STREST	STOREL
-> +#define SHIFT_DISCARD SLLV
-> +#else
-> +#define LDFIRST LOADL
-> +#define LDREST	LOADR
-> +#define STFIRST STOREL
-> +#define STREST	STORER
-> +#define SHIFT_DISCARD SRLV
-> +#endif
+> +	alias = of_alias_get(np);
+> +	if (!alias)
+> +		alias = "bootstate";
 > +
-> +#define FIRST(unit) ((unit)*NBYTES)
-> +#define REST(unit)  (FIRST(unit)+NBYTES-1)
-> +#define UNIT(unit)  FIRST(unit)
+> +	bootstate = bootstate_new_from_node(alias, np);
+> +	if (IS_ERR(bootstate))
+> +		return PTR_ERR(bootstate);
 > +
-> +#define ADDRMASK (NBYTES-1)
+> +	of_property_read_string(np, "backend-type", &backend_type);
+> +	if (!strcmp(backend_type, "state"))
+> +		ret = bootstate_backend_state(bootstate, np);
+> +	else if (!strcmp(backend_type, "nv"))
+> +		ret = bootstate_backend_nv(bootstate);
+> +	else
+> +		return -EINVAL;
 > +
-> +	.text
-> +	.align	5
-> +	.set	noreorder
-> +LEAF(memcpy)					/* a0=3Ddst a1=3Dsrc a2=3Dlen */
-> +	move	v0, dst				/* return value */
+> +	return ret;
+> +}
 > +
-> +	/*
-> +	 * Note: dst & src may be unaligned, len may be 0
-> +	 * Temps
-> +	 */
-> +#define rem t8
+> +static __maybe_unused struct of_device_id bootstate_ids[] = {
+> +	{
+> +		.compatible = "barebox,bootstate",
+> +	}, {
+> +		/* sentinel */
+> +	}
+> +};
 > +
-> +	/*
-> +	 * The "issue break"s below are very approximate.
-> +	 * Issue delays for dcache fills will perturb the schedule, as will
-> +	 * load queue full replay traps, etc.
-> +	 *
-> +	 * If len < NBYTES use byte operations.
-> +	 */
-> +	sltu	t2, len, NBYTES
-> +	and	t1, dst, ADDRMASK
-> +	bnez	t2, .Lcopy_bytes_checklen
-> +	 and	t0, src, ADDRMASK
-> +	bnez	t1, .Ldst_unaligned
-> +	 nop
-> +	bnez	t0, .Lsrc_unaligned_dst_aligned
-> +	/*
-> +	 * use delay slot for fall-through
-> +	 * src and dst are aligned; need to compute rem
-> +	 */
-> +.Lboth_aligned:
-> +	 SRL	t0, len, LOG_NBYTES+3	 # +3 for 8 units/iter
-> +	beqz	t0, .Lcleanup_both_aligned # len < 8*NBYTES
-> +	 and	rem, len, (8*NBYTES-1)	 # rem =3D len % (8*NBYTES)
-> +	.align	4
-> +1:
-> +	LOAD(t0, UNIT(0)(src))
-> +	LOAD(t1, UNIT(1)(src))
-> +	LOAD(t2, UNIT(2)(src))
-> +	LOAD(t3, UNIT(3)(src))
-> +	SUB	len, len, 8*NBYTES
-> +	LOAD(t4, UNIT(4)(src))
-> +	LOAD(t7, UNIT(5)(src))
-> +	STORE(t0, UNIT(0)(dst))
-> +	STORE(t1, UNIT(1)(dst))
-> +	LOAD(t0, UNIT(6)(src))
-> +	LOAD(t1, UNIT(7)(src))
-> +	ADD	src, src, 8*NBYTES
-> +	ADD	dst, dst, 8*NBYTES
-> +	STORE(t2, UNIT(-6)(dst))
-> +	STORE(t3, UNIT(-5)(dst))
-> +	STORE(t4, UNIT(-4)(dst))
-> +	STORE(t7, UNIT(-3)(dst))
-> +	STORE(t0, UNIT(-2)(dst))
-> +	STORE(t1, UNIT(-1)(dst))
-> +	bne	len, rem, 1b
-> +	 nop
-> +
-> +	/*
-> +	 * len =3D=3D rem =3D=3D the number of bytes left to copy < 8*NBYTES
-> +	 */
-> +.Lcleanup_both_aligned:
-> +	beqz	len, .Ldone
-> +	 sltu	t0, len, 4*NBYTES
-> +	bnez	t0, .Lless_than_4units
-> +	 and	rem, len, (NBYTES-1)	# rem =3D len % NBYTES
-> +	/*
-> +	 * len >=3D 4*NBYTES
-> +	 */
-> +	LOAD( t0, UNIT(0)(src))
-> +	LOAD( t1, UNIT(1)(src))
-> +	LOAD( t2, UNIT(2)(src))
-> +	LOAD( t3, UNIT(3)(src))
-> +	SUB	len, len, 4*NBYTES
-> +	ADD	src, src, 4*NBYTES
-> +	STORE(t0, UNIT(0)(dst))
-> +	STORE(t1, UNIT(1)(dst))
-> +	STORE(t2, UNIT(2)(dst))
-> +	STORE(t3, UNIT(3)(dst))
-> +	.set	reorder				/* DADDI_WAR */
-> +	ADD	dst, dst, 4*NBYTES
-> +	beqz	len, .Ldone
-> +	.set	noreorder
-> +.Lless_than_4units:
-> +	/*
-> +	 * rem =3D len % NBYTES
-> +	 */
-> +	beq	rem, len, .Lcopy_bytes
-> +	 nop
-> +1:
-> +	LOAD(t0, 0(src))
-> +	ADD	src, src, NBYTES
-> +	SUB	len, len, NBYTES
-> +	STORE(t0, 0(dst))
-> +	.set	reorder				/* DADDI_WAR */
-> +	ADD	dst, dst, NBYTES
-> +	bne	rem, len, 1b
-> +	.set	noreorder
-> +
-> +	/*
-> +	 * src and dst are aligned, need to copy rem bytes (rem < NBYTES)
-> +	 * A loop would do only a byte at a time with possible branch
-> +	 * mispredicts.	 Can't do an explicit LOAD dst,mask,or,STORE
-> +	 * because can't assume read-access to dst.  Instead, use
-> +	 * STREST dst, which doesn't require read access to dst.
-> +	 *
-> +	 * This code should perform better than a simple loop on modern,
-> +	 * wide-issue mips processors because the code has fewer branches and
-> +	 * more instruction-level parallelism.
-> +	 */
-> +#define bits t2
-> +	beqz	len, .Ldone
-> +	 ADD	t1, dst, len	# t1 is just past last byte of dst
-> +	li	bits, 8*NBYTES
-> +	SLL	rem, len, 3	# rem =3D number of bits to keep
-> +	LOAD(t0, 0(src))
-> +	SUB	bits, bits, rem # bits =3D number of bits to discard
-> +	SHIFT_DISCARD t0, t0, bits
-> +	STREST(t0, -1(t1))
-> +	jr	ra
-> +	 move	len, zero
-> +.Ldst_unaligned:
-> +	/*
-> +	 * dst is unaligned
-> +	 * t0 =3D src & ADDRMASK
-> +	 * t1 =3D dst & ADDRMASK; T1 > 0
-> +	 * len >=3D NBYTES
-> +	 *
-> +	 * Copy enough bytes to align dst
-> +	 * Set match =3D (src and dst have same alignment)
-> +	 */
-> +#define match rem
-> +	LDFIRST(t3, FIRST(0)(src))
-> +	ADD	t2, zero, NBYTES
-> +	LDREST(t3, REST(0)(src))
-> +	SUB	t2, t2, t1	# t2 =3D number of bytes copied
-> +	xor	match, t0, t1
-> +	STFIRST(t3, FIRST(0)(dst))
-> +	beq	len, t2, .Ldone
-> +	 SUB	len, len, t2
-> +	ADD	dst, dst, t2
-> +	beqz	match, .Lboth_aligned
-> +	 ADD	src, src, t2
-> +
-> +.Lsrc_unaligned_dst_aligned:
-> +	SRL	t0, len, LOG_NBYTES+2	 # +2 for 4 units/iter
-> +	beqz	t0, .Lcleanup_src_unaligned
-> +	 and	rem, len, (4*NBYTES-1)	 # rem =3D len % 4*NBYTES
-> +1:
-> +/*
-> + * Avoid consecutive LD*'s to the same register since some mips
-> + * implementations can't issue them in the same cycle.
-> + * It's OK to load FIRST(N+1) before REST(N) because the two addresses
-> + * are to the same unit (unless src is aligned, but it's not).
-> + */
-> +	LDFIRST(t0, FIRST(0)(src))
-> +	LDFIRST(t1, FIRST(1)(src))
-> +	SUB	len, len, 4*NBYTES
-> +	LDREST(t0, REST(0)(src))
-> +	LDREST(t1, REST(1)(src))
-> +	LDFIRST(t2, FIRST(2)(src))
-> +	LDFIRST(t3, FIRST(3)(src))
-> +	LDREST(t2, REST(2)(src))
-> +	LDREST(t3, REST(3)(src))
-> +	ADD	src, src, 4*NBYTES
-> +	STORE(t0, UNIT(0)(dst))
-> +	STORE(t1, UNIT(1)(dst))
-> +	STORE(t2, UNIT(2)(dst))
-> +	STORE(t3, UNIT(3)(dst))
-> +	.set	reorder				/* DADDI_WAR */
-> +	ADD	dst, dst, 4*NBYTES
-> +	bne	len, rem, 1b
-> +	.set	noreorder
-> +
-> +.Lcleanup_src_unaligned:
-> +	beqz	len, .Ldone
-> +	 and	rem, len, NBYTES-1  # rem =3D len % NBYTES
-> +	beq	rem, len, .Lcopy_bytes
-> +	 nop
-> +1:
-> +	LDFIRST(t0, FIRST(0)(src))
-> +	LDREST(t0, REST(0)(src))
-> +	ADD	src, src, NBYTES
-> +	SUB	len, len, NBYTES
-> +	STORE(t0, 0(dst))
-> +	.set	reorder				/* DADDI_WAR */
-> +	ADD	dst, dst, NBYTES
-> +	bne	len, rem, 1b
-> +	.set	noreorder
-> +
-> +.Lcopy_bytes_checklen:
-> +	beqz	len, .Ldone
-> +	 nop
-> +.Lcopy_bytes:
-> +	/* 0 < len < NBYTES  */
-> +#define COPY_BYTE(N)			\
-> +	LOADB(t0, N(src));	\
-> +	SUB	len, len, 1;		\
-> +	beqz	len, .Ldone;		\
-> +	STOREB(t0, N(dst))
-> +
-> +	COPY_BYTE(0)
-> +	COPY_BYTE(1)
-> +	LOADB(t0, NBYTES-2(src))
-> +	SUB	len, len, 1
-> +	jr	ra
-> +	STOREB(t0, NBYTES-2(dst))
-> +.Ldone:
-> +	jr	ra
-> +	 nop
-> +	END(memcpy)
-> diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
+> +static struct driver_d bootstate_driver = {
+> +	.name = "bootstate",
+> +	.probe = bootstate_probe,
+> +	.of_compatible = DRV_OF_COMPAT(bootstate_ids),
+> +};
+> +device_platform_driver(bootstate_driver);
+> diff --git a/include/bootstate.h b/include/bootstate.h
 > new file mode 100644
-> index 0000000..d3c1c72
+> index 000000000000..53102c527060
 > --- /dev/null
-> +++ b/arch/mips/lib/memset.S
-> @@ -0,0 +1,146 @@
-> +/*
-> + * This file is subject to the terms and conditions of the GNU General P=
-ublic
-> + * License.  See the file "COPYING" in the main directory of this archive
-> + * for more details.
-> + *
-> + * Copyright (C) 1998, 1999, 2000 by Ralf Baechle
-> + * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-> + * Copyright (C) 2007 by Maciej W. Rozycki
-> + * Copyright (C) 2011, 2012 MIPS Technologies, Inc.
-> + *
-> + * Kernel-mode memset function without exceptions
-> + * by Aleksey Kuleshov (rndfax@yandex.ru), 2015
-> + */
-> +#include <asm/asm.h>
-> +#include <asm/asm-offsets.h>
-> +#include <asm/regdef.h>
+> +++ b/include/bootstate.h
+> @@ -0,0 +1,38 @@
+> +#ifndef __BOOTSTATE_H
+> +#define __BOOTSTATE_H
 > +
-> +#if LONGSIZE =3D=3D 4
-> +#define LONG_S_L swl
-> +#define LONG_S_R swr
-> +#else
-> +#define LONG_S_L sdl
-> +#define LONG_S_R sdr
-> +#endif
+> +#include <of.h>
 > +
-> +#define STORSIZE LONGSIZE
-> +#define STORMASK LONGMASK
-> +#define FILL64RG a1
-> +#define FILLPTRG t0
+> +struct bootstate *bootstate_new_from_node(const char *name, const struct device_node *node);
+> +struct bootstate *bootstate_find_by_name(const char *name);
+> +struct bootstate *bootstate_by_name(const char *name);
+> +void bootstate_info(void);
+> +int bootstate_backend_nv(struct bootstate *bootstate);
+> +int bootstate_backend_state(struct bootstate *bootstate, const struct device_node *node);
 > +
-> +/*
-> + * memset(void *s, int c, size_t n)
-> + *
-> + * a0: start of area to clear
-> + * a1: char to fill with
-> + * a2: size of area to clear
-> + */
+> +enum {
+> +	__BOOTCHOOSER_FLAG_ATTEMPTS_KEEP_SHIFT,
+> +	__BOOTCHOOSER_FLAG_ATTEMPTS_DEC_SHIFT,
+> +	__BOOTCHOOSER_FLAG_ATTEMPTS_RESET_SHIFT,
+> +	__BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS_SHIFT,
+> +	__BOOTCHOOSER_FLAG_VERBOSE_SHIFT,
+> +	__BOOTCHOOSER_FLAG_DRYRUN_SHIFT,
+> +	__BOOTCHOOSER_FLAG_RETRY_WITH_DEC_SHIFT,
+> +	__BOOTCHOOSER_FLAG_WATCHDOG_ENABLE_SHIFT,
+> +	__BOOTCHOOSER_FLAG_WATCHDOG_TIMEOUT_FROM_STATE_SHIFT,
+> +};
 > +
-> +LEAF(memset)
-> +	beqz		a1, 1f
-> +	move		v0, a0			/* result */
+> +#define BOOTCHOOSER_FLAG_ATTEMPTS_KEEP (1 << __BOOTCHOOSER_FLAG_ATTEMPTS_KEEP_SHIFT)
+> +#define BOOTCHOOSER_FLAG_ATTEMPTS_DEC (1 << __BOOTCHOOSER_FLAG_ATTEMPTS_DEC_SHIFT)
+> +#define BOOTCHOOSER_FLAG_ATTEMPTS_RESET (1 << __BOOTCHOOSER_FLAG_ATTEMPTS_RESET_SHIFT)
+> +#define BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS (1 << __BOOTCHOOSER_FLAG_DEACTIVATE_ON_ZERO_ATTEMPTS_SHIFT)
+> +#define BOOTCHOOSER_FLAG_VERBOSE (1 << __BOOTCHOOSER_FLAG_VERBOSE_SHIFT)
+> +#define BOOTCHOOSER_FLAG_DRYRUN (1 << __BOOTCHOOSER_FLAG_DRYRUN_SHIFT)
+> +#define BOOTCHOOSER_FLAG_RETRY_WITH_DEC (1 << __BOOTCHOOSER_FLAG_RETRY_WITH_DEC_SHIFT)
+> +#define BOOTCHOOSER_FLAG_WATCHDOG_ENABLE (1 << __BOOTCHOOSER_FLAG_WATCHDOG_ENABLE_SHIFT)
+> +#define BOOTCHOOSER_FLAG_WATCHDOG_TIMEOUT_FROM_STATE (1 << __BOOTCHOOSER_FLAG_WATCHDOG_TIMEOUT_FROM_STATE_SHIFT)
 > +
-> +	andi		a1, 0xff		/* spread fillword */
-> +	LONG_SLL		t1, a1, 8
-> +	or		a1, t1
-> +	LONG_SLL		t1, a1, 16
-> +#if LONGSIZE =3D=3D 8
-> +	or		a1, t1
-> +	LONG_SLL		t1, a1, 32
-> +#endif
-> +	or		a1, t1
+> +int bootstate_get_target(struct bootstate *bootstate, unsigned flags, char **target_out);
+> +int bootstate_bootchooser(char *name, unsigned flags, unsigned watchdog_timeout_s);
 > +
-> +	.macro	f_fill64 dst, offset, val
-> +	LONG_S	\val, (\offset +  0 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  1 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  2 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  3 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  4 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  5 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  6 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  7 * STORSIZE)(\dst)
-> +#if (LONGSIZE =3D=3D 4)
-> +	LONG_S	\val, (\offset +  8 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset +  9 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset + 10 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset + 11 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset + 12 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset + 13 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset + 14 * STORSIZE)(\dst)
-> +	LONG_S	\val, (\offset + 15 * STORSIZE)(\dst)
-> +#endif
-> +	.endm
-> +
-> +	.set	noreorder
-> +	.align	5
-> +
-> +1:
-> +	sltiu		t0, a2, STORSIZE	/* very small region? */
-> +	bnez		t0, .Lsmall_memset
-> +	andi		t0, a0, STORMASK	/* aligned? */
-> +
-> +	beqz		t0, 1f
-> +	PTR_SUBU	t0, STORSIZE		/* alignment in bytes */
-> +
-> +#ifdef __MIPSEB__
-> +	LONG_S_L	a1, (a0)		/* make word/dword aligned */
-> +#else
-> +	LONG_S_R	a1, (a0)		/* make word/dword aligned */
-> +#endif
-> +	PTR_SUBU	a0, t0			/* long align ptr */
-> +	PTR_ADDU	a2, t0			/* correct size */
-> +
-> +1:	ori		t1, a2, 0x3f		/* # of full blocks */
-> +	xori		t1, 0x3f
-> +	beqz		t1, .Lmemset_partial	/* no block to fill */
-> +	andi		t0, a2, 0x40-STORSIZE
-> +
-> +	PTR_ADDU	t1, a0			/* end address */
-> +	.set		reorder
-> +1:	PTR_ADDIU	a0, 64
-> +	f_fill64 a0, -64, FILL64RG
-> +	bne		t1, a0, 1b
-> +	.set		noreorder
-> +
-> +.Lmemset_partial:
-> +	PTR_LA		t1, 2f			/* where to start */
-> +#if LONGSIZE =3D=3D 4
-> +	PTR_SUBU	t1, FILLPTRG
-> +#else
-> +	.set		noat
-> +	LONG_SRL	AT, FILLPTRG, 1
-> +	PTR_SUBU	t1, AT
-> +	.set		at
-> +#endif
-> +	jr		t1
-> +	PTR_ADDU	a0, t0			/* dest ptr */
-> +
-> +	.set		push
-> +	.set		noreorder
-> +	.set		nomacro
-> +	/* ... but first do longs ... */
-> +	f_fill64 a0, -64, FILL64RG
-> +2:	.set		pop
-> +	andi		a2, STORMASK		/* At most one long to go */
-> +
-> +	beqz		a2, 1f
-> +	PTR_ADDU	a0, a2			/* What's left */
-> +#ifdef __MIPSEB__
-> +	LONG_S_R	a1, -1(a0)
-> +#else
-> +	LONG_S_L	a1, -1(a0)
-> +#endif
-> +1:	jr		ra
-> +	move		a2, zero
-> +
-> +.Lsmall_memset:
-> +	beqz		a2, 2f
-> +	PTR_ADDU	t1, a0, a2
-> +
-> +1:	PTR_ADDIU	a0, 1			/* fill bytewise */
-> +	bne		t1, a0, 1b
-> +	sb		a1, -1(a0)
-> +
-> +2:	jr		ra			/* done */
-> +	move		a2, zero
-> +	END(memset)
-> -- =
-
-> 2.6.2
-> =
-
-> =
-
+> +#endif /* __BOOTSTATE_H */
+> -- 
+> 2.1.4
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
