@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x22d.google.com ([2a00:1450:4010:c07::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a1s4Q-0005ql-TI
- for barebox@lists.infradead.org; Thu, 26 Nov 2015 08:38:27 +0000
-Date: Thu, 26 Nov 2015 09:38:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151126083804.GI11966@pengutronix.de>
-References: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1448454202-1133-1-git-send-email-rndfax@yandex.ru>
+ id 1a2D6Z-0004g8-Cw
+ for barebox@lists.infradead.org; Fri, 27 Nov 2015 07:06:04 +0000
+Received: by lffu14 with SMTP id u14so119217865lff.1
+ for <barebox@lists.infradead.org>; Thu, 26 Nov 2015 23:05:41 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 27 Nov 2015 10:05:35 +0300
+Message-Id: <1448607935-25129-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +16,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: import optimized string functions from Linux
-To: Aleksey Kuleshov <rndfax@yandex.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] environment: support env on at24 eeprom
+To: barebox@lists.infradead.org
 
-On Wed, Nov 25, 2015 at 03:23:22PM +0300, Aleksey Kuleshov wrote:
-> 10x performance gain according to simple test on QEMU malta:
-> barebox:/ time memcpy 0xa0000000 0xa0001000 0x100000
-> 
-> Signed-off-by: Aleksey Kuleshov <rndfax@yandex.ru>
+unprotect(), erase() and protect() return EOPNOTSUPP errno code
+for at24 I2C eeproms, so envfs_save() doesn't store data
+to these eeproms without this patch.
 
-Applied with Antonys Ack
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ common/environment.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Sascha
-
-
-
+diff --git a/common/environment.c b/common/environment.c
+index f6fd781..f412e62 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -324,16 +324,16 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 
+ 	ret = protect(envfd, ~0, 0, 0);
+ 
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != ENOSYS) {
++	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
++	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
+ 		printf("could not unprotect %s: %s\n", filename, errno_str());
+ 		goto out;
+ 	}
+ 
+ 	ret = erase(envfd, ~0, 0);
+ 
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != ENOSYS) {
++	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
++	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
+ 		printf("could not erase %s: %s\n", filename, errno_str());
+ 		goto out;
+ 	}
+@@ -355,8 +355,8 @@ int envfs_save(const char *filename, const char *dirname, unsigned flags)
+ 
+ 	ret = protect(envfd, ~0, 0, 1);
+ 
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != ENOSYS) {
++	/* ENOSYS and EOPNOTSUPP aren't errors here, many devices don't need it */
++	if (ret && errno != ENOSYS && errno != EOPNOTSUPP) {
+ 		printf("could not protect %s: %s\n", filename, errno_str());
+ 		goto out;
+ 	}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.2
+
 
 _______________________________________________
 barebox mailing list
