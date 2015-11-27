@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a2EXw-0000hO-Ih
- for barebox@lists.infradead.org; Fri, 27 Nov 2015 08:38:25 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 27 Nov 2015 08:37:02 +0000
-Message-ID: <9f78f663546849718c1a3bb80d0cbaad@srred1mail01.kymeta.local>
-References: <1448609386-25753-1-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1448609386-25753-1-git-send-email-antonynpavlov@gmail.com>
-Content-Language: en-US
-MIME-Version: 1.0
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1a2Ig2-0000lm-0l
+ for barebox@lists.infradead.org; Fri, 27 Nov 2015 13:03:03 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id E0DCBA00424
+ for <barebox@lists.infradead.org>; Fri, 27 Nov 2015 14:03:03 +0100 (CET)
+From: Stefan Christ <s.christ@phytec.de>
+Date: Fri, 27 Nov 2015 14:02:32 +0100
+Message-Id: <1448629352-10702-1-git-send-email-s.christ@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +17,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: [RFC] at24: get devfs name from dt aliase
-To: Antony Pavlov <antonynpavlov@gmail.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] wdog: imx-wd: Fix imx soc reset
+To: barebox@lists.infradead.org
 
-> -----Original Message-----
-> From: Antony Pavlov [mailto:antonynpavlov@gmail.com]
-> 
-> At the moment barebox can't work correctly with more that one at24
-> eeprom because drivers/eeprom/at24.c tries to register all eeproms as
-> /dev/eeprom0.
+From: Christian Hemp <c.hemp@phytec.de>
 
-I had this same problem with my system.  It is because different types of EEPROMs have different names and the IDs are assigned sequentially for each different name.  So if you have two 24c02 and one 24c1025, they would have the ids 0, 1, and 0.  The code that produces the IDs for the i2c devices (24c020, 24c021, 2401250) does not know that the eeprom driver will try to make cdevs with the same name pattern from all of them.
+On i.MX6 boards the reset command doesn't work, after the commit "wdog:
+imx-wd: watchdog cannot be disabled again". This commit doesn't allow
+negative values, but the imx reset handler passes -1 to the
+imx21_watchdog_set_timeout function for a reset in 0.5 seconds.
+This patch allows -1 as timeout to set the watchdog to 0.5 seconds.
 
-I did a different solution, see below, but didn't send it out as I'm not happy with it.  I thought also of an alias like this, but feel like there are also problems with that approach.
-
-1. It seems like it should not be necessary to add aliases to get the system to work at all.
-2. My system also has <64 kB xloader which does not use OF to save space.  So alias will not work.  I don't know of an alternative to the alias system when using i2c_register_board_info().
-
-Subject: [PATCH] eeprom: Number eeproms sequentially
-
-eeprom cdevs were being enumerated using the id of the underlying
-device.  The problem with this is that the I2C core assigns IDs
-separately for each different type of device.  So if one has two
-different types of eeprom both will start with IDs of zero.  This
-results in cdev names that conflict.
-
-So just assign IDs sequentially to eeproms as they are probed.
+Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+Signed-off-by: Stefan Christ <s.christ@phytec.de>
 ---
- drivers/eeprom/at24.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Hi,
 
-diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-index 23c3faa..8121b79 100644
---- a/drivers/eeprom/at24.c
-+++ b/drivers/eeprom/at24.c
-@@ -356,6 +356,7 @@ static int at24_probe(struct device_d *dev)
-        struct at24_data *at24;
-        int err;
-        unsigned i, num_addresses;
-+       static int eeprom_id = 0;
+I'm sending this patch on behalf of Christian Hemp. The patch fixes a
+regression currently in the next branch.
 
-        if (dev->platform_data) {
-                chip = *(struct at24_platform_data *)dev->platform_data;
-@@ -406,7 +407,7 @@ static int at24_probe(struct device_d *dev)
+Best regards,
+	Stefan Christ
+---
+ drivers/watchdog/imxwd.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-        at24->chip = chip;
-        at24->num_addresses = num_addresses;
--       at24->cdev.name = asprintf("eeprom%d", dev->id);
-+       at24->cdev.name = asprintf("eeprom%d", eeprom_id++);
-        at24->cdev.priv = at24;
-        at24->cdev.dev = dev;
-        at24->cdev.ops = &at24->fops;
---
-1.8.3.1
+diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+index bb0d2db..1952548 100644
+--- a/drivers/watchdog/imxwd.c
++++ b/drivers/watchdog/imxwd.c
+@@ -97,14 +97,17 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, int timeout)
+ 
+ 	dev_dbg(priv->dev, "%s: %d\n", __func__, timeout);
+ 
+-	if (timeout < 0 || timeout > 128)
++	if (timeout < -1 || timeout > 128)
+ 		return -EINVAL;
+ 
+ 	if (timeout == 0) /* bit 2 (WDE) cannot be set to 0 again */
+ 		return -ENOSYS;
+ 
+-	val = ((timeout * 2 - 1) << 8) | IMX21_WDOG_WCR_SRS |
+-		IMX21_WDOG_WCR_WDA;
++	if (timeout > 0)
++		val = ((timeout * 2 - 1) << 8) | IMX21_WDOG_WCR_SRS |
++			IMX21_WDOG_WCR_WDA;
++	else
++		val = 0;
+ 
+ 	writew(val, priv->base + IMX21_WDOG_WCR);
+ 	writew(IMX21_WDOG_WCR_WDE | val, priv->base + IMX21_WDOG_WCR);
+-- 
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
