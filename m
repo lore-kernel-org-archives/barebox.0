@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232])
+Received: from mail-wm0-x235.google.com ([2a00:1450:400c:c09::235])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3JbW-0006fX-Rd
- for barebox@lists.infradead.org; Mon, 30 Nov 2015 08:14:36 +0000
-Received: by wmec201 with SMTP id c201so142748532wme.0
- for <barebox@lists.infradead.org>; Mon, 30 Nov 2015 00:14:12 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20151130072810.GT11966@pengutronix.de>
-References: <1448810137.537439642@matrix.start.ca>
- <20151130072810.GT11966@pengutronix.de>
-Date: Mon, 30 Nov 2015 09:14:12 +0100
-Message-ID: <CAOQ7t2aPeKjW5kdZJw8v4iFb_LZ+fDb9dp37G89S7=FzFHBosw@mail.gmail.com>
-From: Carlo Caione <carlo@caione.org>
+ id 1a3K1H-0007G8-CA
+ for barebox@lists.infradead.org; Mon, 30 Nov 2015 08:41:12 +0000
+Received: by wmww144 with SMTP id w144so127253463wmw.0
+ for <barebox@lists.infradead.org>; Mon, 30 Nov 2015 00:40:49 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Mon, 30 Nov 2015 09:40:04 +0100
+Message-Id: <1448872804-18942-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +16,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: rpi 2 support ?
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Dave Thompson <dthompson@nexusisp.com>, barebox@lists.infradead.org
+Subject: [PATCH] driver: make all dev_request_mem_region_* routines MIPS
+ compatible
+To: barebox@lists.infradead.org
 
-On Mon, Nov 30, 2015 at 8:28 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi Dave,
->
-> On Sun, Nov 29, 2015 at 10:15:37AM -0500, Dave Thompson wrote:
->> Good day
->> This seems to be an active list so my question is
->> Is there raspberry pi 2B support,,  BCM2836?
->> from looking at the rpi config it seem to only mention 2835,
->> I am not sure that it would compile (native) on a 2836
->> since memory for example is different
->> Not wanting to insult,,
->> why I am interested is to make it a boot manager,
->> to load the start elf, then bareboot.bin and run a script
->> to choose what to boot.. Sort of like smart boot manager,
->> maybe not so smoothly,, that is what starts this computer
->> And how to add the kernel configs?
->
-> Currently there is no rpi2 support for barebox. I don't know what's
-> missing to add support since I'm not familiar with the rpi and don't
-> know how much it differs from the rpi2. Added Carlo Caione to Cc who
-> added the rpi support initially. Maybe he has a few words for us.
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Hi Sasha,
-no idea about the rpi2 support. The rpi support was very basic, just
-UART and timers IIRC.
+Use IOMEM() macro in all dev_request_mem_region_* routines to allow
+the proper mapping on all platforms.
 
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ drivers/base/driver.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 943deb4..a70fbb2 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -380,7 +380,7 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
+ 	if (IS_ERR(res))
+ 		return ERR_CAST(res);
+ 
+-	return (void __force __iomem *)res->start;
++	return IOMEM(res->start);
+ }
+ EXPORT_SYMBOL(dev_request_mem_region_by_name);
+ 
+@@ -396,7 +396,7 @@ void __iomem *dev_request_mem_region_err_null(struct device_d *dev, int num)
+ 	if (IS_ERR(res))
+ 		return NULL;
+ 
+-	return (void __force __iomem *)res->start;
++	return IOMEM(res->start);
+ }
+ EXPORT_SYMBOL(dev_request_mem_region_err_null);
+ 
 -- 
-Carlo Caione
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
