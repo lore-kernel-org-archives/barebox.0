@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from mail-io0-x22d.google.com ([2607:f8b0:4001:c06::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3Suv-0007AY-Bg
- for barebox@lists.infradead.org; Mon, 30 Nov 2015 18:11:13 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Mon, 30 Nov 2015 18:10:41 +0000
-Message-ID: <1448907044.4553.215.camel@rtred1test09.kymeta.local>
-References: <1448609386-25753-1-git-send-email-antonynpavlov@gmail.com>
- <9f78f663546849718c1a3bb80d0cbaad@srred1mail01.kymeta.local>
- <20151130071651.GR11966@pengutronix.de>
-In-Reply-To: <20151130071651.GR11966@pengutronix.de>
-Content-Language: en-US
-Content-ID: <07A7DA36A687C24A900087FAFE44DCBC@kymetacorp.com>
+ id 1a3Td5-0005ZO-Oo
+ for barebox@lists.infradead.org; Mon, 30 Nov 2015 18:56:52 +0000
+Received: by iofh3 with SMTP id h3so184922241iof.3
+ for <barebox@lists.infradead.org>; Mon, 30 Nov 2015 10:56:30 -0800 (PST)
 MIME-Version: 1.0
+Date: Mon, 30 Nov 2015 10:56:30 -0800
+Message-ID: <CAHQ1cqFvLA2UnRBcsdUk05-4OJP33D1E=R7i0tkBtrGX_SvoFQ@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,46 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] at24: get devfs name from dt aliase
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: i.MX6 PCIe support
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, 2015-11-30 at 08:16 +0100, Sascha Hauer wrote:
-> On Fri, Nov 27, 2015 at 08:37:02AM +0000, Trent Piepho wrote:
-> > > -----Original Message-----
-> > > From: Antony Pavlov [mailto:antonynpavlov@gmail.com]
-> > > 
-> > > At the moment barebox can't work correctly with more that one at24
-> > > eeprom because drivers/eeprom/at24.c tries to register all eeproms as
-> > > /dev/eeprom0.
-> > 
-> > I had this same problem with my system.  It is because different types of EEPROMs have different names and the IDs are assigned sequentially for each different name.  So if you have two 24c02 and one 24c1025, they would have the ids 0, 1, and 0.  The code that produces the IDs for the i2c devices (24c020, 24c021, 2401250) does not know that the eeprom driver will try to make cdevs with the same name pattern from all of them.
-> > 
-> > I did a different solution, see below, but didn't send it out as I'm not happy with it.  I thought also of an alias like this, but feel like there are also problems with that approach.
-> > 
-> > 1. It seems like it should not be necessary to add aliases to get the system to work at all.
-> 
-> Antonys patch falls back to dynamic numbering if no alias is found.
+Hi All,
 
-But still some eeproms will not show up with no error message.  It seems
-like dynamic numbering should work better than that.
+I am working on adding EEPROM programming capabilities to e1000 driver
+on a custom i.MX6Q (automotive) board with i210 (8086:1531) connected
+over PCIe link. Unfortunately I am observing some bad/unexpected
+behavior that might indicate PCIe issues.
 
-> > 2. My system also has <64 kB xloader which does not use OF to save
-> > space.  So alias will not work.  I don't know of an alternative to the
-> > alias system when using i2c_register_board_info().
-> 
-> We also have the approach of putting the name into platform_data, this
-> is done with some MMC controllers. However, with an xloader wouldn't it
-> be possible to just register the device which you need? You don't need
-> all EEPROMs in the xloader, right?
+What I am seeing is device(i210) enumerating on PCIe bus, however any
+accesses to its registers via its memory "window" result in either
+0xFFFFFFFF or 0xDEADBEEF. I tried accessing various PCIe configuration
+registers of that device and it seem to work fine (as a part of that
+test I read out some AER registers and they didn't indicate presence
+of any PCIe link related errors).
 
-Remains to be seen.  At this point of three types on the board, I'm
-using two in the xloader.  It could change with further development.
+However when I boot Linux kernel (with 'igb' driver patched to
+recognize 8086:1531 VID:PID) on that board and run 'eepromARMtool'
+(Intel provided EEPROM programming tool) I can see it reading various
+registers correctly
 
-I suppose adding the name to the platform data would be the best way to
-get OF alias like naming.  Though I'd be fine with just dynamic
-numbering that works, hence my simple patch to add that.
+My questions are:
+   - Is anyone currently using i.MX6 PCIe driver in 'next' branch?
+   - Has anyone seen similar behavior on this particular controller
+and discovered the root cause?
 
+Any thought or advise are greatly appreciated.
+
+Thanks,
+Andrey Smirnov
 
 _______________________________________________
 barebox mailing list
