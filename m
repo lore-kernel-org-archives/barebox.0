@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3MHN-0003qg-Fa
- for barebox@lists.infradead.org; Mon, 30 Nov 2015 11:05:58 +0000
-Received: by wmec201 with SMTP id c201so132821400wme.1
- for <barebox@lists.infradead.org>; Mon, 30 Nov 2015 03:05:35 -0800 (PST)
-Date: Mon, 30 Nov 2015 12:05:28 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20151130110522.GA7006@omega>
-References: <1448878678.1471428558@matrix.start.ca>
+ id 1a3Suv-0007AY-Bg
+ for barebox@lists.infradead.org; Mon, 30 Nov 2015 18:11:13 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Mon, 30 Nov 2015 18:10:41 +0000
+Message-ID: <1448907044.4553.215.camel@rtred1test09.kymeta.local>
+References: <1448609386-25753-1-git-send-email-antonynpavlov@gmail.com>
+ <9f78f663546849718c1a3bb80d0cbaad@srred1mail01.kymeta.local>
+ <20151130071651.GR11966@pengutronix.de>
+In-Reply-To: <20151130071651.GR11966@pengutronix.de>
+Content-Language: en-US
+Content-ID: <07A7DA36A687C24A900087FAFE44DCBC@kymetacorp.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1448878678.1471428558@matrix.start.ca>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,100 +25,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: rpi2 support
-To: Dave Thompson <dthompson@nexusisp.com>
-Cc: barebox@lists.infradead.org, carlo.caione@gmail.com
+Subject: Re: [RFC] at24: get devfs name from dt aliase
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
-
-On Mon, Nov 30, 2015 at 05:17:58AM -0500, Dave Thompson wrote:
-> Thanks for the quick replies
-> rpi have only sold 7M, so not that big in the grand scheme of things
-> But the rpi2 has only been out for 8 months, 
-> I am sure it will be popular
+On Mon, 2015-11-30 at 08:16 +0100, Sascha Hauer wrote:
+> On Fri, Nov 27, 2015 at 08:37:02AM +0000, Trent Piepho wrote:
+> > > -----Original Message-----
+> > > From: Antony Pavlov [mailto:antonynpavlov@gmail.com]
+> > > 
+> > > At the moment barebox can't work correctly with more that one at24
+> > > eeprom because drivers/eeprom/at24.c tries to register all eeproms as
+> > > /dev/eeprom0.
+> > 
+> > I had this same problem with my system.  It is because different types of EEPROMs have different names and the IDs are assigned sequentially for each different name.  So if you have two 24c02 and one 24c1025, they would have the ids 0, 1, and 0.  The code that produces the IDs for the i2c devices (24c020, 24c021, 2401250) does not know that the eeprom driver will try to make cdevs with the same name pattern from all of them.
+> > 
+> > I did a different solution, see below, but didn't send it out as I'm not happy with it.  I thought also of an alias like this, but feel like there are also problems with that approach.
+> > 
+> > 1. It seems like it should not be necessary to add aliases to get the system to work at all.
 > 
-> And now,, out only a few days,, the pizero, a $5 board
-> Essentially an "A" without networking but 40 GPIO pin header
-> I bet they will sell a lot of them  (BCM2835)
+> Antonys patch falls back to dynamic numbering if no alias is found.
+
+But still some eeproms will not show up with no error message.  It seems
+like dynamic numbering should work better than that.
+
+> > 2. My system also has <64 kB xloader which does not use OF to save
+> > space.  So alias will not work.  I don't know of an alternative to the
+> > alias system when using i2c_register_board_info().
 > 
-> For me, I think I will do some version of kexec,
-> there are 3
-> A bootloader is kind of overkill, sledgehammer to kill flies
-> thanks
-> dave thompson
-> 
+> We also have the approach of putting the name into platform_data, this
+> is done with some MMC controllers. However, with an xloader wouldn't it
+> be possible to just register the device which you need? You don't need
+> all EEPROMs in the xloader, right?
 
-I tried a dirty hack, because bcm2835 and bcm2836 are very similar:
+Remains to be seen.  At this point of three types on the board, I'm
+using two in the xloader.  It could change with further development.
 
-diff --git a/arch/arm/mach-bcm2835/Kconfig b/arch/arm/mach-bcm2835/Kconfig
-index 134ad9b..aa610da 100644
---- a/arch/arm/mach-bcm2835/Kconfig
-+++ b/arch/arm/mach-bcm2835/Kconfig
-@@ -9,6 +9,7 @@ choice
- 
- config MACH_RPI
-        bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
-+       select CPU_V7
- 
- endchoice
- 
-diff --git a/arch/arm/mach-bcm2835/include/mach/platform.h b/arch/arm/mach-bcm2835/include/mach/platform.h
-index e55085a..ee77f1e 100644
---- a/arch/arm/mach-bcm2835/include/mach/platform.h
-+++ b/arch/arm/mach-bcm2835/include/mach/platform.h
-@@ -28,7 +28,7 @@
-  * This file is manually generated.
-  */
- 
--#define BCM2835_PERI_BASE      0x20000000
-+#define BCM2835_PERI_BASE      0x3f000000
- #define BCM2835_ST_BASE                (BCM2835_PERI_BASE + 0x3000)    /* System Timer */
- #define BCM2835_DMA_BASE       (BCM2835_PERI_BASE + 0x7000)    /* DMA controller */
- #define BCM2835_ARM_BASE       (BCM2835_PERI_BASE + 0xB000)    /* BCM2708 ARM control block */
+I suppose adding the name to the platform data would be the best way to
+get OF alias like naming.  Though I'd be fine with just dynamic
+numbering that works, hence my simple patch to add that.
 
----
-
-After that I get some printout:
-
-# mbox: Timeout waiting for response
-bcm2835: Could not query board revision
-mbox: Timeout waiting for response
-regulator-bcm2835 regulator-bcm2835: bcm2835: Could not set module 1 power state
-uart-pl011 uart0-pl0110: probe failed: Connection timed out
-mbox: Timeout waiting for response
-mbox: Timeout waiting for response
-could not query ARM memory size
-initcall rpi_mem_init+0x0/0x7c failed: Connection timed out
-bcm2835-gpio bcm2835-gpio0: probed gpiochip0 with base 0
-malloc space: 0x03c00000 -> 0x03ffffff (size 4 MiB)
-bcm2835_mci bcm2835_mci0: clock not found: -2
-bcm2835_mci bcm2835_mci0: probe failed: No such file or directory
-no /dev/disk0.0. using default env
-environment load /dev/env0: No such file or directory
-Maybe you have to create the partition.
-running /env/bin/init...
-
-Hit m for menu or any other key to stop autoboot:  0
-blspec: blspec_scan_directory: net loader/entries
-ifup: No such file or directory
-running automount command 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp' failed
-global: set parameter dhcp.vendor_id: Invalid argument
-ifup: No such file or directory
-running automount command 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp' failed
-could not open /mnt/tftp/none-linux-rpi: No such file or directory
-Booting net failed: No such file or directory
-booting net failed: No such file or directory
-boot: No such file or directory
-
-type exit to get to the menu
-                            barebox@<NULL>:/
-# 
-
----
-
-Maybe a good point to start. :-)
-
-- Alex
 
 _______________________________________________
 barebox mailing list
