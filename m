@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3htY-00075Y-3j
- for barebox@lists.infradead.org; Tue, 01 Dec 2015 10:10:48 +0000
-Message-ID: <1448964622.8275.40.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 01 Dec 2015 11:10:22 +0100
-In-Reply-To: <CAHQ1cqFvLA2UnRBcsdUk05-4OJP33D1E=R7i0tkBtrGX_SvoFQ@mail.gmail.com>
-References: <CAHQ1cqFvLA2UnRBcsdUk05-4OJP33D1E=R7i0tkBtrGX_SvoFQ@mail.gmail.com>
-Mime-Version: 1.0
+ id 1a3lHR-0005xd-H0
+ for barebox@lists.infradead.org; Tue, 01 Dec 2015 13:47:42 +0000
+Received: by wmvv187 with SMTP id v187so207452332wmv.1
+ for <barebox@lists.infradead.org>; Tue, 01 Dec 2015 05:47:22 -0800 (PST)
+From: Florian Vallee <fvallee@eukrea.fr>
+Date: Tue,  1 Dec 2015 14:46:47 +0100
+Message-Id: <1448977608-4950-2-git-send-email-fvallee@eukrea.fr>
+In-Reply-To: <1448977608-4950-1-git-send-email-fvallee@eukrea.fr>
+References: <1448977608-4950-1-git-send-email-fvallee@eukrea.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,57 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX6 PCIe support
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] eukrea-cpuimx35: setup usb through chipidea-imx driver
+To: barebox@lists.infradead.org
+Cc: Florian Vallee <fvallee@eukrea.fr>, =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
 
-Hi Andrey,
-
-Am Montag, den 30.11.2015, 10:56 -0800 schrieb Andrey Smirnov:
-> Hi All,
-> 
-> I am working on adding EEPROM programming capabilities to e1000 driver
-> on a custom i.MX6Q (automotive) board with i210 (8086:1531) connected
-> over PCIe link. Unfortunately I am observing some bad/unexpected
-> behavior that might indicate PCIe issues.
-> 
-> What I am seeing is device(i210) enumerating on PCIe bus, however any
-> accesses to its registers via its memory "window" result in either
-> 0xFFFFFFFF or 0xDEADBEEF. I tried accessing various PCIe configuration
-> registers of that device and it seem to work fine (as a part of that
-> test I read out some AER registers and they didn't indicate presence
-> of any PCIe link related errors).
-> 
-> However when I boot Linux kernel (with 'igb' driver patched to
-> recognize 8086:1531 VID:PID) on that board and run 'eepromARMtool'
-> (Intel provided EEPROM programming tool) I can see it reading various
-> registers correctly
-> 
-> My questions are:
->    - Is anyone currently using i.MX6 PCIe driver in 'next' branch?
-
-I didn't try the latest revision, but with v2015.10.0 PCIe on i.MX6 was
-working fine.
-
->    - Has anyone seen similar behavior on this particular controller
-> and discovered the root cause?
-> 
-The symptoms you describe do look to me like the firmware on the i210
-device doesn't get initialized. Unfortunately I don't have any specific
-pointers where to start searching for the root cause.
-
-Regards,
-Lucas
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T1RHIGFuZCBIT1NUIHBvcnQgYXJlIHRlc3RlZCB3aXRoIGEgbWFzcyBzdG9yYWdlIGRldmljZS4K
+ClNpZ25lZC1vZmYtYnk6IEZsb3JpYW4gVmFsbGVlIDxmdmFsbGVlQGV1a3JlYS5mcj4KU2lnbmVk
+LW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9hcm0vYm9h
+cmRzL2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFfY3B1aW14MzUuYyB8IDM4ICsrKysrKysrKystLS0t
+LS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTYgaW5zZXJ0aW9ucygrKSwgMjIgZGVsZXRpb25z
+KC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFf
+Y3B1aW14MzUuYyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvZXVrcmVhX2NwdWlt
+eDM1LmMKaW5kZXggMzc4ZjRlOC4uN2IzOTkzZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRz
+L2V1a3JlYV9jcHVpbXgzNS9ldWtyZWFfY3B1aW14MzUuYworKysgYi9hcmNoL2FybS9ib2FyZHMv
+ZXVrcmVhX2NwdWlteDM1L2V1a3JlYV9jcHVpbXgzNS5jCkBAIC05MSwyNyArOTEsMTggQEAgc3Rh
+dGljIHN0cnVjdCBpbXhfaXB1X2ZiX3BsYXRmb3JtX2RhdGEgaXB1X2ZiX2RhdGEgPSB7CiB9Owog
+CiAjaWZkZWYgQ09ORklHX1VTQgotc3RhdGljIHZvaWQgaW14MzVfdXNiX2luaXQodm9pZCkKLXsK
+LQl1bnNpZ25lZCBpbnQgdG1wOworI2lmbmRlZiBDT05GSUdfVVNCX0dBREdFVAorc3RydWN0IGlt
+eHVzYl9wbGF0Zm9ybWRhdGEgb3RnX3BkYXRhID0geworCS5mbGFncyA9IE1YQ19FSENJX0lOVEVS
+RkFDRV9ESUZGX1VOSSwKKwkubW9kZSA9IElNWF9VU0JfTU9ERV9IT1NULAorCS5waHltb2RlID0g
+VVNCUEhZX0lOVEVSRkFDRV9NT0RFX1VUTUksCit9OworI2VuZGlmCiAKLQkvKiBIb3N0IDEgKi8K
+LQl0bXAgPSByZWFkbChNWDM1X1VTQl9PVEdfQkFTRV9BRERSICsgMHg2MDApOwotCXRtcCAmPSB+
+KE1YMzVfSDFfU0lDX01BU0sgfCBNWDM1X0gxX1BNX0JJVCB8IE1YMzVfSDFfVExMX0JJVCB8Ci0J
+CU1YMzVfSDFfVVNCVEVfQklUIHwgTVgzNV9IMV9JUFBVRV9ET1dOX0JJVCB8IE1YMzVfSDFfSVBQ
+VUVfVVBfQklUKTsKLQl0bXAgfD0gKE1YQ19FSENJX0lOVEVSRkFDRV9TSU5HTEVfVU5JKSA8PCBN
+WDM1X0gxX1NJQ19TSElGVDsKLQl0bXAgfD0gTVgzNV9IMV9VU0JURV9CSVQgfCBNWDM1X0gxX1BN
+X0JJVCB8IE1YMzVfSDFfVExMX0JJVCA7Ci0JdG1wIHw9IE1YMzVfSDFfSVBQVUVfRE9XTl9CSVQ7
+Ci0Jd3JpdGVsKHRtcCwgTVgzNV9VU0JfT1RHX0JBU0VfQUREUiArIDB4NjAwKTsKLQotCXRtcCA9
+IHJlYWRsKE1YMzVfVVNCX09UR19CQVNFX0FERFIgKyAweDU4NCk7Ci0JdG1wIHw9IDMgPDwgMzA7
+Ci0Jd3JpdGVsKHRtcCwgTVgzNV9VU0JfT1RHX0JBU0VfQUREUiArIDB4NTg0KTsKLQotCS8qIFNl
+dCB0byBIb3N0IG1vZGUgKi8KLQl0bXAgPSByZWFkbChNWDM1X1VTQl9PVEdfQkFTRV9BRERSICsg
+MHg1YTgpOwotCXdyaXRlbCh0bXAgfCAweDMsIE1YMzVfVVNCX09UR19CQVNFX0FERFIgKyAweDVh
+OCk7Ci19CitzdHJ1Y3QgaW14dXNiX3BsYXRmb3JtZGF0YSBoc19wZGF0YSA9IHsKKwkuZmxhZ3Mg
+PSBNWENfRUhDSV9JTlRFUkZBQ0VfU0lOR0xFX1VOSSB8IE1YQ19FSENJX0lOVEVSTkFMX1BIWSB8
+IE1YQ19FSENJX0lQUFVFX0RPV04sCisJLm1vZGUgPSBJTVhfVVNCX01PREVfSE9TVCwKK307CiAj
+ZW5kaWYKIAogI2lmZGVmIENPTkZJR19VU0JfR0FER0VUCkBAIC0yMDYsOSArMTk3LDEyIEBAIHN0
+YXRpYyBpbnQgZXVrcmVhX2NwdWlteDM1X2RldmljZXNfaW5pdCh2b2lkKQogCWdwaW9fZGlyZWN0
+aW9uX291dHB1dCgxLCAwKTsKIAogI2lmZGVmIENPTkZJR19VU0IKLQlpbXgzNV91c2JfaW5pdCgp
+OwotCWFkZF9nZW5lcmljX3VzYl9laGNpX2RldmljZShERVZJQ0VfSURfRFlOQU1JQywgTVgzNV9V
+U0JfSFNfQkFTRV9BRERSLCBOVUxMKTsKKyNpZm5kZWYgQ09ORklHX1VTQl9HQURHRVQKKwlpbXhf
+YWRkX3VzYigodm9pZCAqKU1YMzVfVVNCX09UR19CQVNFX0FERFIsIDAsICZvdGdfcGRhdGEpOwog
+I2VuZGlmCisJaW14X2FkZF91c2IoKHZvaWQgKilNWDM1X1VTQl9IU19CQVNFX0FERFIsIDEsICZo
+c19wZGF0YSk7CisjZW5kaWYKKwogI2lmZGVmIENPTkZJR19VU0JfR0FER0VUCiAJLyogV29ya2Fy
+b3VuZCBFTkdjbTA5MTUyICovCiAJdG1wID0gcmVhZGwoTVgzNV9VU0JfT1RHX0JBU0VfQUREUiAr
+IDB4NjA4KTsKLS0gCjIuMS40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
