@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x230.google.com ([2a00:1450:400c:c09::230])
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3lHW-0005y2-2h
- for barebox@lists.infradead.org; Tue, 01 Dec 2015 13:47:46 +0000
-Received: by wmww144 with SMTP id w144so173588858wmw.1
- for <barebox@lists.infradead.org>; Tue, 01 Dec 2015 05:47:24 -0800 (PST)
+ id 1a3lHN-0005vQ-52
+ for barebox@lists.infradead.org; Tue, 01 Dec 2015 13:47:38 +0000
+Received: by wmvv187 with SMTP id v187so207446758wmv.1
+ for <barebox@lists.infradead.org>; Tue, 01 Dec 2015 05:47:14 -0800 (PST)
 From: Florian Vallee <fvallee@eukrea.fr>
-Date: Tue,  1 Dec 2015 14:46:48 +0100
-Message-Id: <1448977608-4950-3-git-send-email-fvallee@eukrea.fr>
-In-Reply-To: <1448977608-4950-1-git-send-email-fvallee@eukrea.fr>
-References: <1448977608-4950-1-git-send-email-fvallee@eukrea.fr>
+Date: Tue,  1 Dec 2015 14:46:46 +0100
+Message-Id: <1448977608-4950-1-git-send-email-fvallee@eukrea.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +17,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] eukrea-cpuimx35: update defconfig
+Subject: [PATCH 1/3] imx35: register usb-misc by default
 To: barebox@lists.infradead.org
-Cc: Florian Vallee <fvallee@eukrea.fr>
+Cc: Florian Vallee <fvallee@eukrea.fr>, =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
 
-enable chipidea usb driver
-
-Signed-off-by: Florian Vallee <fvallee@eukrea.fr>
----
- arch/arm/configs/eukrea_cpuimx35_defconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/configs/eukrea_cpuimx35_defconfig b/arch/arm/configs/eukrea_cpuimx35_defconfig
-index 4c83102..c163827 100644
---- a/arch/arm/configs/eukrea_cpuimx35_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx35_defconfig
-@@ -77,6 +77,7 @@ CONFIG_NAND_ALLOW_ERASE_BAD=y
- CONFIG_NAND_IMX=y
- CONFIG_NAND_IMX_BBM=y
- CONFIG_USB_HOST=y
-+CONFIG_USB_IMX_CHIPIDEA=y
- CONFIG_USB_EHCI=y
- CONFIG_USB_STORAGE=y
- CONFIG_USB_GADGET=y
--- 
-2.1.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRmxvcmlhbiBWYWxsZWUgPGZ2YWxsZWVAZXVrcmVhLmZyPgpTaWduZWQt
+b2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBhcmNoL2FybS9tYWNo
+LWlteC9pbXgzNS5jIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRpZmYg
+LS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9pbXgzNS5jIGIvYXJjaC9hcm0vbWFjaC1pbXgvaW14
+MzUuYwppbmRleCA2OWQ0NWViLi4zZTFhYTk3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLWlt
+eC9pbXgzNS5jCisrKyBiL2FyY2gvYXJtL21hY2gtaW14L2lteDM1LmMKQEAgLTczLDYgKzczLDcg
+QEAgaW50IGlteDM1X2RldmljZXNfaW5pdCh2b2lkKQogCWFkZF9nZW5lcmljX2RldmljZSgiaW14
+MzEtZ3BpbyIsIDEsIE5VTEwsIE1YMzVfR1BJTzJfQkFTRV9BRERSLCAweDEwMDAsIElPUkVTT1VS
+Q0VfTUVNLCBOVUxMKTsKIAlhZGRfZ2VuZXJpY19kZXZpY2UoImlteDMxLWdwaW8iLCAyLCBOVUxM
+LCBNWDM1X0dQSU8zX0JBU0VfQUREUiwgMHgxMDAwLCBJT1JFU09VUkNFX01FTSwgTlVMTCk7CiAJ
+YWRkX2dlbmVyaWNfZGV2aWNlKCJpbXgyMS13ZHQiLCAwLCBOVUxMLCBNWDM1X1dET0dfQkFTRV9B
+RERSLCAweDQwMDAsIElPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKKwlhZGRfZ2VuZXJpY19kZXZpY2Uo
+ImlteDM1LXVzYi1taXNjIiwgMCwgTlVMTCwgTVgzNV9VU0JfT1RHX0JBU0VfQUREUiArIDB4NjAw
+LCAweDEwMCwgSU9SRVNPVVJDRV9NRU0sIE5VTEwpOwogCiAJcmV0dXJuIDA7CiB9Ci0tIAoyLjEu
+NAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
+b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
+aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
