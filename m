@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b])
+Received: from mail-wm0-x230.google.com ([2a00:1450:400c:c09::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3lXk-0001e3-Dh
- for barebox@lists.infradead.org; Tue, 01 Dec 2015 14:04:57 +0000
-Received: by wmuu63 with SMTP id u63so174242811wmu.0
- for <barebox@lists.infradead.org>; Tue, 01 Dec 2015 06:04:10 -0800 (PST)
+ id 1a3mpS-0004GK-GE
+ for barebox@lists.infradead.org; Tue, 01 Dec 2015 15:26:58 +0000
+Received: by wmww144 with SMTP id w144so177702250wmw.1
+ for <barebox@lists.infradead.org>; Tue, 01 Dec 2015 07:26:32 -0800 (PST)
 From: Florian Vallee <fvallee@eukrea.fr>
-Date: Tue,  1 Dec 2015 15:03:59 +0100
-Message-Id: <1448978639-12375-1-git-send-email-fvallee@eukrea.fr>
+Date: Tue,  1 Dec 2015 16:26:23 +0100
+Message-Id: <1448983584-14939-2-git-send-email-fvallee@eukrea.fr>
+In-Reply-To: <1448983584-14939-1-git-send-email-fvallee@eukrea.fr>
+References: <1448983584-14939-1-git-send-email-fvallee@eukrea.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,461 +23,645 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] GPIO: add Microchip MCP23017 / MCP23008 GPIO driver
+Subject: [RFC 1/2] drivers: imx_adc: import and adapt imx_adc from linux
 To: barebox@lists.infradead.org
 Cc: Florian Vallee <fvallee@eukrea.fr>
 
-This is based on the I2C implementation of the corresponding linux
-driver. The SPI part was left out.
-
-Tested with an MCP23017.
-
-Signed-off-by: Florian Vallee <fvallee@eukrea.fr>
 ---
- drivers/gpio/Kconfig             |  11 +-
- drivers/gpio/Makefile            |   1 +
- drivers/gpio/gpio-mcp23s08.c     | 351 +++++++++++++++++++++++++++++++++++++++
- include/platform_data/mcp23s08.h |  43 +++++
- 4 files changed, 405 insertions(+), 1 deletion(-)
- create mode 100644 drivers/gpio/gpio-mcp23s08.c
- create mode 100644 include/platform_data/mcp23s08.h
+ arch/arm/mach-imx/include/mach/imx25-regs.h |   1 +
+ drivers/misc/Kconfig                        |   4 +
+ drivers/misc/Makefile                       |   1 +
+ drivers/misc/imx_adc.c                      | 214 ++++++++++++++++++++++++
+ drivers/misc/imx_adc.h                      | 110 +++++++++++++
+ drivers/misc/imx_adc_reg.h                  | 247 ++++++++++++++++++++++++++++
+ 6 files changed, 577 insertions(+)
+ create mode 100644 drivers/misc/imx_adc.c
+ create mode 100644 drivers/misc/imx_adc.h
+ create mode 100644 drivers/misc/imx_adc_reg.h
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 9cb2261..6428f2b 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -121,6 +121,15 @@ config GPIO_DESIGNWARE
- 	help
- 	  Say Y or M here to build support for the Synopsys DesignWare APB
- 	  GPIO block.
--endmenu
+diff --git a/arch/arm/mach-imx/include/mach/imx25-regs.h b/arch/arm/mach-imx/include/mach/imx25-regs.h
+index 7181276..30ca4b2 100644
+--- a/arch/arm/mach-imx/include/mach/imx25-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx25-regs.h
+@@ -58,6 +58,7 @@
  
-+config GPIO_MCP23S08
-+	tristate "Microchip MCP23xxx I/O expander"
-+	depends on I2C
-+	help
-+	  I2C driver for Microchip MCP23008/MCP23017
-+	  I/O expanders.
-+	  This provides a GPIO interface supporting inputs and outputs.
-+	  The I2C versions of the chips can be used as interrupt-controller.
+ #define MX25_CSPI3_BASE_ADDR		0x50004000
+ #define MX25_CSPI2_BASE_ADDR		0x50010000
++#define MX25_TSC_BASE_ADDR              0x50030000
+ #define MX25_FEC_BASE_ADDR		0x50038000
+ #define MX25_SSI2_BASE_ADDR		0x50014000
+ #define MX25_SSI1_BASE_ADDR		0x50034000
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 7a5b146..e37e0b1 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -19,4 +19,8 @@ config STATE_DRV
+ 	tristate "state driver"
+ 	depends on STATE
+ 
++config IMX_ADC
++	bool "IMX ADC driver"
++	depends on ARCH_IMX25
 +
-+endmenu
- endif
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 1d94661..bce1c0d 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -17,3 +17,4 @@ obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
- obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
- obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
- obj-$(CONFIG_GPIO_DESIGNWARE)	+= gpio-dw.o
-+obj-$(CONFIG_GPIO_MCP23S08)	+= gpio-mcp23s08.o
-diff --git a/drivers/gpio/gpio-mcp23s08.c b/drivers/gpio/gpio-mcp23s08.c
+ endmenu
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index 487e4b8..9b00f82 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -5,3 +5,4 @@
+ obj-$(CONFIG_JTAG)		+= jtag.o
+ obj-$(CONFIG_SRAM)		+= sram.o
+ obj-$(CONFIG_STATE_DRV)		+= state.o
++obj-$(CONFIG_IMX_ADC)		+= imx_adc.o
+diff --git a/drivers/misc/imx_adc.c b/drivers/misc/imx_adc.c
 new file mode 100644
-index 0000000..080d20f
+index 0000000..3e5ee88
 --- /dev/null
-+++ b/drivers/gpio/gpio-mcp23s08.c
-@@ -0,0 +1,351 @@
-+/*
-+ * MCP23S08 SPI/I2C GPIO gpio expander driver
-+ *
-+ * The inputs and outputs of the mcp23008 and mcp23017 are
-+ * supported.
-+ */
-+
++++ b/drivers/misc/imx_adc.c
+@@ -0,0 +1,214 @@
 +#include <common.h>
 +#include <init.h>
-+#include <malloc.h>
-+#include <driver.h>
-+#include <xfuncs.h>
-+#include <errno.h>
-+#include <i2c/i2c.h>
++#include <io.h>
++#include <mach/imx25-regs.h>
 +
-+#include <gpio.h>
-+#include <platform_data/mcp23s08.h>
++#include "imx_adc.h"
++#include "imx_adc_reg.h"
 +
-+/**
-+ * MCP types supported by driver
-+ */
-+#define MCP_TYPE_S08	0
-+#define MCP_TYPE_S17	1
-+#define MCP_TYPE_008	2
-+#define MCP_TYPE_017	3
++unsigned long tsc_base;
 +
-+/* Registers are all 8 bits wide.
++enum IMX_ADC_STATUS imx_adc_read_general(unsigned short *result)
++{
++	unsigned long reg;
++	unsigned int data_num = 0;
++
++	reg = __raw_readl(tsc_base + GCQCR);
++	reg |= CQCR_FQS;
++	__raw_writel(reg, tsc_base + GCQCR);
++
++	while (!(__raw_readl(tsc_base + GCQSR) & CQSR_EOQ))
++		continue;
++	reg = __raw_readl(tsc_base + GCQCR);
++	reg &= ~CQCR_FQS;
++	__raw_writel(reg, tsc_base + GCQCR);
++	reg = __raw_readl(tsc_base + GCQSR);
++	reg |= CQSR_EOQ;
++	__raw_writel(reg, tsc_base + GCQSR);
++
++	while (!(__raw_readl(tsc_base + GCQSR) & CQSR_EMPT)) {
++		result[data_num] = __raw_readl(tsc_base + GCQFIFO) >>
++				 GCQFIFO_ADCOUT_SHIFT;
++		data_num++;
++	}
++	printf("data_num = %x\n", data_num);
++
++	return IMX_ADC_SUCCESS;
++}
++
++/*!
++ * This function triggers a conversion and returns one sampling result of one
++ * channel.
 + *
-+ * The mcp23s17 has twice as many bits, and can be configured to work
-+ * with either 16 bit registers or with two adjacent 8 bit banks.
++ * @param        channel   The channel to be sampled
++ * @param        result    The pointer to the conversion result. The memory
++ *                         should be allocated by the caller of this function.
++ *
++ * @return       This function returns IMX_ADC_SUCCESS if successful.
 + */
-+#define MCP_IODIR	0x00		/* init/reset:  all ones */
-+#define MCP_IPOL	0x01
-+#define MCP_GPINTEN	0x02
-+#define MCP_DEFVAL	0x03
-+#define MCP_INTCON	0x04
-+#define MCP_IOCON	0x05
-+#	define IOCON_MIRROR	(1 << 6)
-+#	define IOCON_SEQOP	(1 << 5)
-+#	define IOCON_HAEN	(1 << 3)
-+#	define IOCON_ODR	(1 << 2)
-+#	define IOCON_INTPOL	(1 << 1)
-+#define MCP_GPPU	0x06
-+#define MCP_INTF	0x07
-+#define MCP_INTCAP	0x08
-+#define MCP_GPIO	0x09
-+#define MCP_OLAT	0x0a
-+
-+struct mcp23s08;
-+
-+struct mcp23s08_ops {
-+	int	(*read)(struct mcp23s08 *mcp, unsigned reg);
-+	int	(*write)(struct mcp23s08 *mcp, unsigned reg, unsigned val);
-+	int	(*read_regs)(struct mcp23s08 *mcp, unsigned reg,
-+			     u16 *vals, unsigned n);
-+};
-+
-+struct mcp23s08 {
-+	u8			addr;
-+
-+	u16			cache[11];
-+
-+	struct gpio_chip	chip;
-+
-+	const struct mcp23s08_ops	*ops;
-+	void			*data; /* ops specific data */
-+};
-+
-+/* A given spi_device can represent up to eight mcp23sxx chips
-+ * sharing the same chipselect but using different addresses
-+ * (e.g. chips #0 and #3 might be populated, but not #1 or $2).
-+ * Driver data holds all the per-chip data.
-+ */
-+struct mcp23s08_driver_data {
-+	unsigned		ngpio;
-+	struct mcp23s08		*mcp[8];
-+	struct mcp23s08		chip[];
-+};
-+
-+/*----------------------------------------------------------------------*/
-+
-+#if IS_ENABLED(CONFIG_I2C)
-+
-+static int mcp23008_read(struct mcp23s08 *mcp, unsigned reg)
++enum IMX_ADC_STATUS imx_adc_convert(enum t_channel channel,
++				    unsigned short *result)
 +{
-+	return i2c_smbus_read_byte_data(mcp->data, reg);
-+}
++	unsigned long reg;
++	int lastitemid;
 +
-+static int mcp23008_write(struct mcp23s08 *mcp, unsigned reg, unsigned val)
-+{
-+	return i2c_smbus_write_byte_data(mcp->data, reg, val);
-+}
++	switch (channel) {
++	case GER_PURPOSE_ADC0:
++		lastitemid = 0;
++		reg = (0xf << CQCR_FIFOWATERMARK_SHIFT) |
++		      (lastitemid << CQCR_LAST_ITEM_ID_SHIFT) | CQCR_QSM_FQS;
++		__raw_writel(reg, tsc_base + GCQCR);
 +
-+static int
-+mcp23008_read_regs(struct mcp23s08 *mcp, unsigned reg, u16 *vals, unsigned n)
-+{
-+	while (n--) {
-+		int ret = mcp23008_read(mcp, reg++);
-+		if (ret < 0)
-+			return ret;
-+		*vals++ = ret;
-+	}
++		reg = TSC_GENERAL_ADC_GCC0;
++		reg |= (15 << CC_NOS_SHIFT) | (16 << CC_SETTLING_TIME_SHIFT);
++		__raw_writel(reg, tsc_base + GCC0);
 +
-+	return 0;
-+}
-+
-+static int mcp23017_read(struct mcp23s08 *mcp, unsigned reg)
-+{
-+	return i2c_smbus_read_word_data(mcp->data, reg << 1);
-+}
-+
-+static int mcp23017_write(struct mcp23s08 *mcp, unsigned reg, unsigned val)
-+{
-+	return i2c_smbus_write_word_data(mcp->data, reg << 1, val);
-+}
-+
-+static int
-+mcp23017_read_regs(struct mcp23s08 *mcp, unsigned reg, u16 *vals, unsigned n)
-+{
-+	while (n--) {
-+		int ret = mcp23017_read(mcp, reg++);
-+		if (ret < 0)
-+			return ret;
-+		*vals++ = ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct mcp23s08_ops mcp23008_ops = {
-+	.read		= mcp23008_read,
-+	.write		= mcp23008_write,
-+	.read_regs	= mcp23008_read_regs,
-+};
-+
-+static const struct mcp23s08_ops mcp23017_ops = {
-+	.read		= mcp23017_read,
-+	.write		= mcp23017_write,
-+	.read_regs	= mcp23017_read_regs,
-+};
-+
-+#endif /* CONFIG_I2C */
-+
-+/*----------------------------------------------------------------------*/
-+
-+static int mcp23s08_direction_input(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
-+	int status;
-+
-+	mcp->cache[MCP_IODIR] |= (1 << offset);
-+	status = mcp->ops->write(mcp, MCP_IODIR, mcp->cache[MCP_IODIR]);
-+	return status;
-+}
-+
-+static int mcp23s08_get(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
-+	int status;
-+
-+	status = mcp->ops->read(mcp, MCP_GPIO);
-+	if (status < 0)
-+		status = 0;
-+	else {
-+		mcp->cache[MCP_GPIO] = status;
-+		status = !!(status & (1 << offset));
-+	}
-+
-+	return status;
-+}
-+
-+static int __mcp23s08_set(struct mcp23s08 *mcp, unsigned mask, int value)
-+{
-+	unsigned olat = mcp->cache[MCP_OLAT];
-+
-+	if (value)
-+		olat |= mask;
-+	else
-+		olat &= ~mask;
-+	mcp->cache[MCP_OLAT] = olat;
-+	return mcp->ops->write(mcp, MCP_OLAT, olat);
-+}
-+
-+static void mcp23s08_set(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
-+	unsigned mask = 1 << offset;
-+
-+	__mcp23s08_set(mcp, mask, value);
-+}
-+
-+static int
-+mcp23s08_direction_output(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
-+	unsigned mask = 1 << offset;
-+	int status;
-+
-+	status = __mcp23s08_set(mcp, mask, value);
-+	if (status == 0) {
-+		mcp->cache[MCP_IODIR] &= ~mask;
-+		status = mcp->ops->write(mcp, MCP_IODIR, mcp->cache[MCP_IODIR]);
-+	}
-+	return status;
-+}
-+
-+static int mcp23s08_get_direction(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
-+	unsigned mask = 1 << offset;
-+
-+	if (mcp->cache[MCP_IODIR] & mask)
-+		return GPIOF_DIR_IN;
-+
-+	return GPIOF_DIR_OUT;
-+}
-+
-+
-+/*----------------------------------------------------------------------*/
-+
-+static struct gpio_ops mcp23s08x_gpio_ops = {
-+	.direction_input = mcp23s08_direction_input,
-+	.direction_output = mcp23s08_direction_output,
-+	.get_direction = mcp23s08_get_direction,
-+	.get = mcp23s08_get,
-+	.set = mcp23s08_set,
-+};
-+
-+static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device_d *dev,
-+			      void *data, unsigned addr, unsigned type,
-+			      struct mcp23s08_platform_data *pdata, int cs)
-+{
-+	int status;
-+
-+	mcp->data = data;
-+	mcp->addr = addr;
-+
-+	switch (type) {
-+#if IS_ENABLED(CONFIG_I2C)
-+	case MCP_TYPE_008:
-+		mcp->ops = &mcp23008_ops;
-+		mcp->chip.ngpio = 8;
++		imx_adc_read_general(result);
 +		break;
 +
-+	case MCP_TYPE_017:
-+		mcp->ops = &mcp23017_ops;
-+		mcp->chip.ngpio = 16;
-+		break;
-+#endif /* CONFIG_I2C */
++	case GER_PURPOSE_ADC1:
++		lastitemid = 0;
++		reg = (0xf << CQCR_FIFOWATERMARK_SHIFT) |
++		      (lastitemid << CQCR_LAST_ITEM_ID_SHIFT) | CQCR_QSM_FQS;
++		__raw_writel(reg, tsc_base + GCQCR);
 +
++		reg = TSC_GENERAL_ADC_GCC1;
++		reg |= (3 << CC_NOS_SHIFT) | (16 << CC_SETTLING_TIME_SHIFT);
++		__raw_writel(reg, tsc_base + GCC0);
++
++		imx_adc_read_general(result);
++		break;
++
++	case GER_PURPOSE_ADC2:
++		lastitemid = 0;
++		reg = (0xf << CQCR_FIFOWATERMARK_SHIFT) |
++		      (lastitemid << CQCR_LAST_ITEM_ID_SHIFT) | CQCR_QSM_FQS;
++		__raw_writel(reg, tsc_base + GCQCR);
++
++		reg = TSC_GENERAL_ADC_GCC2;
++		reg |= (3 << CC_NOS_SHIFT) | (16 << CC_SETTLING_TIME_SHIFT);
++		__raw_writel(reg, tsc_base + GCC0);
++
++		imx_adc_read_general(result);
++		break;
++
++	case GER_PURPOSE_MULTICHNNEL:
++		reg = TSC_GENERAL_ADC_GCC0;
++		reg |= (3 << CC_NOS_SHIFT) | (16 << CC_SETTLING_TIME_SHIFT);
++		__raw_writel(reg, tsc_base + GCC0);
++
++		reg = TSC_GENERAL_ADC_GCC1;
++		reg |= (3 << CC_NOS_SHIFT) | (16 << CC_SETTLING_TIME_SHIFT);
++		__raw_writel(reg, tsc_base + GCC1);
++
++		reg = TSC_GENERAL_ADC_GCC2;
++		reg |= (3 << CC_NOS_SHIFT) | (16 << CC_SETTLING_TIME_SHIFT);
++		__raw_writel(reg, tsc_base + GCC2);
++
++		reg = (GCQ_ITEM_GCC2 << GCQ_ITEM2_SHIFT) |
++		      (GCQ_ITEM_GCC1 << GCQ_ITEM1_SHIFT) |
++		      (GCQ_ITEM_GCC0 << GCQ_ITEM0_SHIFT);
++		__raw_writel(reg, tsc_base + GCQ_ITEM_7_0);
++
++		lastitemid = 2;
++		reg = (0xf << CQCR_FIFOWATERMARK_SHIFT) |
++		      (lastitemid << CQCR_LAST_ITEM_ID_SHIFT) | CQCR_QSM_FQS;
++		__raw_writel(reg, tsc_base + GCQCR);
++
++		imx_adc_read_general(result);
++		break;
 +	default:
-+		dev_err(dev, "invalid device type (%d)\n", type);
-+		return -EINVAL;
++		printf("%s: bad channel number\n", __func__);
++		return IMX_ADC_ERROR;
 +	}
 +
-+	mcp->chip.ops = &mcp23s08x_gpio_ops;
-+	mcp->chip.base = pdata->base;
-+	mcp->chip.dev = dev;
-+
-+	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work,
-+	 * and MCP_IOCON.HAEN = 1, so we work with all chips.
-+	 */
-+
-+	status = mcp->ops->read(mcp, MCP_IOCON);
-+	if (status < 0)
-+		goto fail;
-+
-+	status = mcp->ops->read_regs(mcp, 0, mcp->cache, ARRAY_SIZE(mcp->cache));
-+	if (status < 0)
-+		goto fail;
-+
-+	/* disable inverter on input */
-+	if (mcp->cache[MCP_IPOL] != 0) {
-+		mcp->cache[MCP_IPOL] = 0;
-+		status = mcp->ops->write(mcp, MCP_IPOL, 0);
-+		if (status < 0)
-+			goto fail;
-+	}
-+
-+	/* disable irqs */
-+	if (mcp->cache[MCP_GPINTEN] != 0) {
-+		mcp->cache[MCP_GPINTEN] = 0;
-+		status = mcp->ops->write(mcp, MCP_GPINTEN, 0);
-+		if (status < 0)
-+			goto fail;
-+	}
-+
-+	status = gpiochip_add(&mcp->chip);
-+	if (status < 0)
-+		goto fail;
-+
-+fail:
-+	if (status < 0)
-+		dev_dbg(dev, "can't setup chip %d, --> %d\n",
-+			addr, status);
-+	return status;
++	return IMX_ADC_SUCCESS;
 +}
 +
-+/*----------------------------------------------------------------------*/
-+
-+static int mcp230xx_probe(struct device_d *dev)
++void tsc_clk_enable(void)
 +{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	unsigned long driver_data;
-+	struct mcp23s08_platform_data *pdata;
-+	struct mcp23s08 *mcp;
-+	int status;
++	unsigned long reg;
 +
-+	driver_data = 0;
-+	pdata = dev->platform_data;
-+	if (pdata) {
-+		pdata->base = -1;
-+	} else {
-+		int err;
++	// clk_enable(adc_data->adc_clk);
 +
-+		err = dev_get_drvdata(dev, (const void **) &driver_data);
-+		if (err)
-+			return err;
-+
-+		pdata = xzalloc(sizeof(struct mcp23s08_platform_data));
-+		pdata->base = -1;
-+	}
-+
-+	mcp = xzalloc(sizeof(*mcp));
-+	if (!mcp)
-+		return -ENOMEM;
-+
-+	status = mcp23s08_probe_one(mcp, &client->dev, client, client->addr,
-+				    driver_data, pdata, 0);
-+
-+	return status;
++	reg = __raw_readl(tsc_base + TGCR);
++	reg |= TGCR_IPG_CLK_EN;
++	__raw_writel(reg, tsc_base + TGCR);
 +}
 +
-+static struct platform_device_id mcp230xx_id[] = {
-+	{ "mcp23008", MCP_TYPE_008 },
-+	{ "mcp23017", MCP_TYPE_017 },
-+	{ },
-+};
-+
-+static struct driver_d mcp230xx_driver = {
-+	.name	= "mcp230xx",
-+	.probe		= mcp230xx_probe,
-+	.id_table	= mcp230xx_id,
-+};
-+
-+static int __init mcp23s08_i2c_init(void)
++void tsc_clk_disable(void)
 +{
-+	return i2c_driver_register(&mcp230xx_driver);
++	unsigned long reg;
++
++	// clk_disable(adc_data->adc_clk);
++
++	reg = __raw_readl(tsc_base + TGCR);
++	reg &= ~TGCR_IPG_CLK_EN;
++	__raw_writel(reg, tsc_base + TGCR);
 +}
 +
-+device_initcall(mcp23s08_i2c_init);
-diff --git a/include/platform_data/mcp23s08.h b/include/platform_data/mcp23s08.h
++void tsc_self_reset(void)
++{
++	unsigned long reg;
++
++	reg = __raw_readl(tsc_base + TGCR);
++	reg |= TGCR_TSC_RST;
++	__raw_writel(reg, tsc_base + TGCR);
++
++	while (__raw_readl(tsc_base + TGCR) & TGCR_TSC_RST)
++		continue;
++}
++
++/* Internal reference */
++void tsc_intref_enable(void)
++{
++	unsigned long reg;
++
++	reg = __raw_readl(tsc_base + TGCR);
++	reg |= TGCR_INTREFEN;
++	__raw_writel(reg, tsc_base + TGCR);
++}
++
++/*!
++ * This function initializes all ADC registers with default values. This
++ * function also registers the interrupt events.
++ *
++ * @return       This function returns IMX_ADC_SUCCESS if successful.
++ */
++int imx_adc_init(void)
++{
++	unsigned long reg;
++
++	printf("imx_adc_init()\n");
++
++	tsc_base = MX25_TSC_BASE_ADDR;
++
++	tsc_clk_enable();
++
++	/* Reset */
++	tsc_self_reset();
++
++	/* Internal reference */
++	tsc_intref_enable();
++
++	/* Set power mode */
++	reg = __raw_readl(tsc_base + TGCR) & ~TGCR_POWER_MASK;
++	reg |= TGCR_POWER_SAVE;
++	__raw_writel(reg, tsc_base + TGCR);
++
++	return 0;
++}
++
++/*!
++ * This function disables the ADC, de-registers the interrupt events.
++ *
++ * @return       This function returns IMX_ADC_SUCCESS if successful.
++ */
++enum IMX_ADC_STATUS imx_adc_deinit(void)
++{
++	printf("imx_adc_deinit()\n");
++
++	return IMX_ADC_SUCCESS;
++}
++
++device_initcall(imx_adc_init);
+diff --git a/drivers/misc/imx_adc.h b/drivers/misc/imx_adc.h
 new file mode 100644
-index 0000000..aa07d7b
+index 0000000..7cc59ff
 --- /dev/null
-+++ b/include/platform_data/mcp23s08.h
-@@ -0,0 +1,43 @@
++++ b/drivers/misc/imx_adc.h
+@@ -0,0 +1,110 @@
++/*
++ * Copyright 2009 Freescale Semiconductor, Inc. All Rights Reserved.
++ */
 +
-+/* FIXME driver should be able to handle IRQs...  */
++/*
++ * The code contained herein is licensed under the GNU Lesser General
++ * Public License.  You may obtain a copy of the GNU Lesser General
++ * Public License Version 2.1 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/lgpl-license.html
++ * http://www.gnu.org/copyleft/lgpl.html
++ */
 +
-+struct mcp23s08_chip_info {
-+	bool		is_present;	/* true if populated */
-+	unsigned	pullups;	/* BIT(x) means enable pullup x */
++#ifndef __ASM_ARCH_IMX_ADC_H__
++#define __ASM_ARCH_IMX_ADC_H__
++
++/*!
++ * @defgroup IMX_ADC Digitizer Driver
++ * @ingroup IMX_DRVRS
++ */
++
++/*!
++ * @file arch-mxc/imx_adc.h
++ * @brief This is the header of IMX ADC driver.
++ *
++ * @ingroup IMX_ADC
++ */
++
++/*!
++ * @enum IMX_ADC_STATUS
++ * @brief Define return values for all IMX_ADC APIs.
++ *
++ * These return values are used by all of the IMX_ADC APIs.
++ *
++ * @ingroup IMX_ADC
++ */
++enum IMX_ADC_STATUS {
++	/*! The requested operation was successfully completed. */
++	IMX_ADC_SUCCESS = 0,
++	/*! The requested operation could not be completed due to an error. */
++	IMX_ADC_ERROR = -1,
++	/*!
++	 * The requested operation failed because one or more of the
++	 * parameters was invalid.
++	 */
++	IMX_ADC_PARAMETER_ERROR = -2,
++	/*!
++	 * The requested operation could not be completed because the ADC
++	 * hardware does not support it.
++	 */
++	IMX_ADC_NOT_SUPPORTED = -3,
++	/*! Error in malloc function */
++	IMX_ADC_MALLOC_ERROR = -5,
++	/*! Error in un-subscribe event */
++	IMX_ADC_UNSUBSCRIBE_ERROR = -6,
++	/*! Event occur and not subscribed */
++	IMX_ADC_EVENT_NOT_SUBSCRIBED = -7,
++	/*! Error - bad call back */
++	IMX_ADC_EVENT_CALL_BACK = -8,
++	/*!
++	 * The requested operation could not be completed because there
++	 * are too many ADC client requests
++	 */
++	IMX_ADC_CLIENT_NBOVERFLOW = -9,
 +};
 +
-+struct mcp23s08_platform_data {
-+	/* For mcp23s08, up to 4 slaves (numbered 0..3) can share one SPI
-+	 * chipselect, each providing 1 gpio_chip instance with 8 gpios.
-+	 * For mpc23s17, up to 8 slaves (numbered 0..7) can share one SPI
-+	 * chipselect, each providing 1 gpio_chip (port A + port B) with
-+	 * 16 gpios.
-+	 */
-+	struct mcp23s08_chip_info	chip[8];
++/*! @} */
++/*!
++ * This enumeration defines input channels for IMX ADC
++ */
 +
-+	/* "base" is the number of the first GPIO.  Dynamic assignment is
-+	 * not currently supported, and even if there are gaps in chip
-+	 * addressing the GPIO numbers are sequential .. so for example
-+	 * if only slaves 0 and 3 are present, their GPIOs range from
-+	 * base to base+15 (or base+31 for s17 variant).
-+	 */
-+	unsigned	base;
-+	/* Marks the device as a interrupt controller.
-+	 * NOTE: The interrupt functionality is only supported for i2c
-+	 * versions of the chips. The spi chips can also do the interrupts,
-+	 * but this is not supported by the linux driver yet.
-+	 */
-+	bool		irq_controller;
-+
-+	/* Sets the mirror flag in the IOCON register. Devices
-+	 * with two interrupt outputs (these are the devices ending with 17 and
-+	 * those that have 16 IOs) have two IO banks: IO 0-7 form bank 1 and
-+	 * IO 8-15 are bank 2. These chips have two different interrupt outputs:
-+	 * One for bank 1 and another for bank 2. If irq-mirror is set, both
-+	 * interrupts are generated regardless of the bank that an input change
-+	 * occurred on. If it is not set, the interrupt are only generated for
-+	 * the bank they belong to.
-+	 * On devices with only one interrupt output this property is useless.
-+	 */
-+	bool		mirror;
++enum t_channel {
++	TS_X_POS,
++	TS_Y_POS,
++	GER_PURPOSE_ADC0,
++	GER_PURPOSE_ADC1,
++	GER_PURPOSE_ADC2,
++	GER_PURPOSE_MULTICHNNEL,
 +};
++
++/* EXPORTED FUNCTIONS */
++
++/*!
++ * This function initializes all ADC registers with default values. This
++ * function also registers the interrupt events.
++ */
++int imx_adc_init(void);
++
++/*!
++ * This function disables the ADC, de-registers the interrupt events.
++ *
++ * @return       This function returns IMX_ADC_SUCCESS if successful.
++ */
++enum IMX_ADC_STATUS imx_adc_deinit(void);
++
++/*!
++ * This function triggers a conversion and returns one sampling result of one
++ * channel.
++ *
++ * @param        channel   The channel to be sampled
++ * @param        result    The pointer to the conversion result. The memory
++ *                         should be allocated by the caller of this function.
++ *
++ * @return       This function returns IMX_ADC_SUCCESS if successful.
++ */
++
++enum IMX_ADC_STATUS imx_adc_convert(enum t_channel channel,
++				    unsigned short *result);
++
++#endif				/* __ASM_ARCH_IMX_ADC_H__ */
+diff --git a/drivers/misc/imx_adc_reg.h b/drivers/misc/imx_adc_reg.h
+new file mode 100644
+index 0000000..00f4792
+--- /dev/null
++++ b/drivers/misc/imx_adc_reg.h
+@@ -0,0 +1,247 @@
++/*
++ * Copyright 2009 Freescale Semiconductor, Inc. All Rights Reserved.
++ */
++
++/*
++ * The code contained herein is licensed under the GNU Lesser General
++ * Public License.  You may obtain a copy of the GNU Lesser General
++ * Public License Version 2.1 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/lgpl-license.html
++ * http://www.gnu.org/copyleft/lgpl.html
++ */
++
++#ifndef __IMX_ADC_H__
++#define __IMX_ADC_H__
++
++/* TSC General Config Register */
++#define TGCR                  0x000
++#define TGCR_IPG_CLK_EN       (1 << 0)
++#define TGCR_TSC_RST          (1 << 1)
++#define TGCR_FUNC_RST         (1 << 2)
++#define TGCR_SLPC             (1 << 4)
++#define TGCR_STLC             (1 << 5)
++#define TGCR_HSYNC_EN         (1 << 6)
++#define TGCR_HSYNC_POL        (1 << 7)
++#define TGCR_POWERMODE_SHIFT  8
++#define TGCR_POWER_OFF        (0x0 << TGCR_POWERMODE_SHIFT)
++#define TGCR_POWER_SAVE       (0x1 << TGCR_POWERMODE_SHIFT)
++#define TGCR_POWER_ON         (0x3 << TGCR_POWERMODE_SHIFT)
++#define TGCR_POWER_MASK       (0x3 << TGCR_POWERMODE_SHIFT)
++#define TGCR_INTREFEN         (1 << 10)
++#define TGCR_ADCCLKCFG_SHIFT  16
++#define TGCR_PD_EN            (1 << 23)
++#define TGCR_PDB_EN           (1 << 24)
++#define TGCR_PDBTIME_SHIFT    25
++#define TGCR_PDBTIME128       (0x3f << TGCR_PDBTIME_SHIFT)
++#define TGCR_PDBTIME_MASK     (0x7f << TGCR_PDBTIME_SHIFT)
++
++/* TSC General Status Register */
++#define TGSR                  0x004
++#define TCQ_INT               (1 << 0)
++#define GCQ_INT               (1 << 1)
++#define SLP_INT               (1 << 2)
++#define TCQ_DMA               (1 << 16)
++#define GCQ_DMA               (1 << 17)
++
++/* TSC IDLE Config Register */
++#define TICR                  0x008
++
++/* TouchScreen Convert Queue FIFO Register */
++#define TCQFIFO               0x400
++/* TouchScreen Convert Queue Control Register */
++#define TCQCR                 0x404
++#define CQCR_QSM_SHIFT        0
++#define CQCR_QSM_STOP         (0x0 << CQCR_QSM_SHIFT)
++#define CQCR_QSM_PEN          (0x1 << CQCR_QSM_SHIFT)
++#define CQCR_QSM_FQS          (0x2 << CQCR_QSM_SHIFT)
++#define CQCR_QSM_FQS_PEN      (0x3 << CQCR_QSM_SHIFT)
++#define CQCR_QSM_MASK         (0x3 << CQCR_QSM_SHIFT)
++#define CQCR_FQS              (1 << 2)
++#define CQCR_RPT              (1 << 3)
++#define CQCR_LAST_ITEM_ID_SHIFT   4
++#define CQCR_LAST_ITEM_ID_MASK    (0xf << CQCR_LAST_ITEM_ID_SHIFT)
++#define CQCR_FIFOWATERMARK_SHIFT  8
++#define CQCR_FIFOWATERMARK_MASK   (0xf << CQCR_FIFOWATERMARK_SHIFT)
++#define CQCR_REPEATWAIT_SHIFT     12
++#define CQCR_REPEATWAIT_MASK      (0xf << CQCR_REPEATWAIT_SHIFT)
++#define CQCR_QRST             (1 << 16)
++#define CQCR_FRST             (1 << 17)
++#define CQCR_PD_MSK           (1 << 18)
++#define CQCR_PD_CFG           (1 << 19)
++
++/* TouchScreen Convert Queue Status Register */
++#define TCQSR                 0x408
++#define CQSR_PD               (1 << 0)
++#define CQSR_EOQ              (1 << 1)
++#define CQSR_FOR              (1 << 4)
++#define CQSR_FUR              (1 << 5)
++#define CQSR_FER              (1 << 6)
++#define CQSR_EMPT             (1 << 13)
++#define CQSR_FULL             (1 << 14)
++#define CQSR_FDRY             (1 << 15)
++
++/* TouchScreen Convert Queue Mask Register */
++#define TCQMR                 0x40c
++#define TCQMR_PD_IRQ_MSK      (1 << 0)
++#define TCQMR_EOQ_IRQ_MSK     (1 << 1)
++#define TCQMR_FOR_IRQ_MSK     (1 << 4)
++#define TCQMR_FUR_IRQ_MSK     (1 << 5)
++#define TCQMR_FER_IRQ_MSK     (1 << 6)
++#define TCQMR_PD_DMA_MSK      (1 << 16)
++#define TCQMR_EOQ_DMA_MSK     (1 << 17)
++#define TCQMR_FOR_DMA_MSK     (1 << 20)
++#define TCQMR_FUR_DMA_MSK     (1 << 21)
++#define TCQMR_FER_DMA_MSK     (1 << 22)
++#define TCQMR_FDRY_DMA_MSK    (1 << 31)
++
++/* TouchScreen Convert Queue ITEM 7~0 */
++#define TCQ_ITEM_7_0          0x420
++
++/* TouchScreen Convert Queue ITEM 15~8 */
++#define TCQ_ITEM_15_8         0x424
++
++#define TCQ_ITEM7_SHIFT       28
++#define TCQ_ITEM6_SHIFT       24
++#define TCQ_ITEM5_SHIFT       20
++#define TCQ_ITEM4_SHIFT       16
++#define TCQ_ITEM3_SHIFT       12
++#define TCQ_ITEM2_SHIFT       8
++#define TCQ_ITEM1_SHIFT       4
++#define TCQ_ITEM0_SHIFT       0
++
++#define TCQ_ITEM_TCC0         0x0
++#define TCQ_ITEM_TCC1         0x1
++#define TCQ_ITEM_TCC2         0x2
++#define TCQ_ITEM_TCC3         0x3
++#define TCQ_ITEM_TCC4         0x4
++#define TCQ_ITEM_TCC5         0x5
++#define TCQ_ITEM_TCC6         0x6
++#define TCQ_ITEM_TCC7         0x7
++#define TCQ_ITEM_GCC7         0x8
++#define TCQ_ITEM_GCC6         0x9
++#define TCQ_ITEM_GCC5         0xa
++#define TCQ_ITEM_GCC4         0xb
++#define TCQ_ITEM_GCC3         0xc
++#define TCQ_ITEM_GCC2         0xd
++#define TCQ_ITEM_GCC1         0xe
++#define TCQ_ITEM_GCC0         0xf
++
++/* TouchScreen Convert Config 0-7 */
++#define TCC0                  0x440
++#define TCC1                  0x444
++#define TCC2                  0x448
++#define TCC3                  0x44c
++#define TCC4                  0x450
++#define TCC5                  0x454
++#define TCC6                  0x458
++#define TCC7                  0x45c
++#define CC_PEN_IACK           (1 << 1)
++#define CC_SEL_REFN_SHIFT     2
++#define CC_SEL_REFN_YNLR      (0x1 << CC_SEL_REFN_SHIFT)
++#define CC_SEL_REFN_AGND      (0x2 << CC_SEL_REFN_SHIFT)
++#define CC_SEL_REFN_MASK      (0x3 << CC_SEL_REFN_SHIFT)
++#define CC_SELIN_SHIFT        4
++#define CC_SELIN_XPUL         (0x0 << CC_SELIN_SHIFT)
++#define CC_SELIN_YPLL         (0x1 << CC_SELIN_SHIFT)
++#define CC_SELIN_XNUR         (0x2 << CC_SELIN_SHIFT)
++#define CC_SELIN_YNLR         (0x3 << CC_SELIN_SHIFT)
++#define CC_SELIN_WIPER        (0x4 << CC_SELIN_SHIFT)
++#define CC_SELIN_INAUX0       (0x5 << CC_SELIN_SHIFT)
++#define CC_SELIN_INAUX1       (0x6 << CC_SELIN_SHIFT)
++#define CC_SELIN_INAUX2       (0x7 << CC_SELIN_SHIFT)
++#define CC_SELIN_MASK         (0x7 << CC_SELIN_SHIFT)
++#define CC_SELREFP_SHIFT      7
++#define CC_SELREFP_YPLL       (0x0 << CC_SELREFP_SHIFT)
++#define CC_SELREFP_XPUL       (0x1 << CC_SELREFP_SHIFT)
++#define CC_SELREFP_EXT        (0x2 << CC_SELREFP_SHIFT)
++#define CC_SELREFP_INT        (0x3 << CC_SELREFP_SHIFT)
++#define CC_SELREFP_MASK       (0x3 << CC_SELREFP_SHIFT)
++#define CC_XPULSW             (1 << 9)
++#define CC_XNURSW_SHIFT       10
++#define CC_XNURSW_HIGH        (0x0 << CC_XNURSW_SHIFT)
++#define CC_XNURSW_OFF         (0x1 << CC_XNURSW_SHIFT)
++#define CC_XNURSW_LOW         (0x3 << CC_XNURSW_SHIFT)
++#define CC_XNURSW_MASK        (0x3 << CC_XNURSW_SHIFT)
++#define CC_YPLLSW_SHIFT       12
++#define CC_YPLLSW_MASK        (0x3 << CC_YPLLSW_SHIFT)
++#define CC_YNLRSW             (1 << 14)
++#define CC_WIPERSW            (1 << 15)
++#define CC_NOS_SHIFT          16
++#define CC_YPLLSW_HIGH        (0x0 << CC_NOS_SHIFT)
++#define CC_YPLLSW_OFF         (0x1 << CC_NOS_SHIFT)
++#define CC_YPLLSW_LOW         (0x3 << CC_NOS_SHIFT
++#define CC_NOS_MASK           (0xf << CC_NOS_SHIFT)
++#define CC_IGS                (1 << 20)
++#define CC_SETTLING_TIME_SHIFT 24
++#define CC_SETTLING_TIME_MASK (0xff << CC_SETTLING_TIME_SHIFT)
++
++#define TSC_4WIRE_PRECHARGE    0x158c
++#define TSC_4WIRE_TOUCH_DETECT 0x578e
++
++#define TSC_4WIRE_X_MEASUMENT  0x1c90
++#define TSC_4WIRE_Y_MEASUMENT  0x4604
++
++#define TSC_GENERAL_ADC_XP     0x170c
++#define TSC_GENERAL_ADC_YP     0x171c
++#define TSC_GENERAL_ADC_XN     0x172c
++#define TSC_GENERAL_ADC_YN     0x173c
++#define TSC_GENERAL_ADC_WIPER  0x174c
++#define TSC_GENERAL_ADC_GCC0   0x175c
++#define TSC_GENERAL_ADC_GCC1   0x176c
++#define TSC_GENERAL_ADC_GCC2   0x177c
++
++/* GeneralADC Convert Queue FIFO Register */
++#define GCQFIFO                0x800
++#define GCQFIFO_ADCOUT_SHIFT   4
++#define GCQFIFO_ADCOUT_MASK    (0xfff << GCQFIFO_ADCOUT_SHIFT)
++/* GeneralADC Convert Queue Control Register */
++#define GCQCR                  0x804
++/* GeneralADC Convert Queue Status Register */
++#define GCQSR                  0x808
++/* GeneralADC Convert Queue Mask Register */
++#define GCQMR                  0x80c
++
++/* GeneralADC Convert Queue ITEM 7~0 */
++#define GCQ_ITEM_7_0           0x820
++/* GeneralADC Convert Queue ITEM 15~8 */
++#define GCQ_ITEM_15_8          0x824
++
++#define GCQ_ITEM7_SHIFT        28
++#define GCQ_ITEM6_SHIFT        24
++#define GCQ_ITEM5_SHIFT        20
++#define GCQ_ITEM4_SHIFT        16
++#define GCQ_ITEM3_SHIFT        12
++#define GCQ_ITEM2_SHIFT        8
++#define GCQ_ITEM1_SHIFT        4
++#define GCQ_ITEM0_SHIFT        0
++
++#define GCQ_ITEM_GCC0          0x0
++#define GCQ_ITEM_GCC1          0x1
++#define GCQ_ITEM_GCC2          0x2
++#define GCQ_ITEM_GCC3          0x3
++
++/* GeneralADC Convert Config 0-7 */
++#define GCC0                   0x840
++#define GCC1                   0x844
++#define GCC2                   0x848
++#define GCC3                   0x84c
++#define GCC4                   0x850
++#define GCC5                   0x854
++#define GCC6                   0x858
++#define GCC7                   0x85c
++
++/* TSC Test Register R/W */
++#define TTR                    0xc00
++/* TSC Monitor Register 1, 2 */
++#define MNT1                   0xc04
++#define MNT2                   0xc04
++
++#define DETECT_ITEM_ID_1       1
++#define DETECT_ITEM_ID_2       5
++#define TS_X_ITEM_ID           2
++#define TS_Y_ITEM_ID           3
++#define TSI_DATA               1
++#define FQS_DATA               0
++
++#endif				/* __IMX_ADC_H__ */
 -- 
 2.1.4
 
