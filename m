@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x22d.google.com ([2607:f8b0:4001:c06::22d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3Td5-0005ZO-Oo
- for barebox@lists.infradead.org; Mon, 30 Nov 2015 18:56:52 +0000
-Received: by iofh3 with SMTP id h3so184922241iof.3
- for <barebox@lists.infradead.org>; Mon, 30 Nov 2015 10:56:30 -0800 (PST)
+ id 1a3gG1-00034c-Bt
+ for barebox@lists.infradead.org; Tue, 01 Dec 2015 08:25:54 +0000
+Date: Tue, 1 Dec 2015 09:25:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151201082530.GD11966@pengutronix.de>
+References: <1448872804-18942-1-git-send-email-yegorslists@googlemail.com>
 MIME-Version: 1.0
-Date: Mon, 30 Nov 2015 10:56:30 -0800
-Message-ID: <CAHQ1cqFvLA2UnRBcsdUk05-4OJP33D1E=R7i0tkBtrGX_SvoFQ@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1448872804-18942-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX6 PCIe support
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] driver: make all dev_request_mem_region_* routines MIPS
+ compatible
+To: yegorslists@googlemail.com
+Cc: barebox@lists.infradead.org
 
-Hi All,
+On Mon, Nov 30, 2015 at 09:40:04AM +0100, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> Use IOMEM() macro in all dev_request_mem_region_* routines to allow
+> the proper mapping on all platforms.
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> ---
+>  drivers/base/driver.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-I am working on adding EEPROM programming capabilities to e1000 driver
-on a custom i.MX6Q (automotive) board with i210 (8086:1531) connected
-over PCIe link. Unfortunately I am observing some bad/unexpected
-behavior that might indicate PCIe issues.
+Applied, thanks
 
-What I am seeing is device(i210) enumerating on PCIe bus, however any
-accesses to its registers via its memory "window" result in either
-0xFFFFFFFF or 0xDEADBEEF. I tried accessing various PCIe configuration
-registers of that device and it seem to work fine (as a part of that
-test I read out some AER registers and they didn't indicate presence
-of any PCIe link related errors).
+Sascha
 
-However when I boot Linux kernel (with 'igb' driver patched to
-recognize 8086:1531 VID:PID) on that board and run 'eepromARMtool'
-(Intel provided EEPROM programming tool) I can see it reading various
-registers correctly
-
-My questions are:
-   - Is anyone currently using i.MX6 PCIe driver in 'next' branch?
-   - Has anyone seen similar behavior on this particular controller
-and discovered the root cause?
-
-Any thought or advise are greatly appreciated.
-
-Thanks,
-Andrey Smirnov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
