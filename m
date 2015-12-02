@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a47mQ-0001J2-O4
- for barebox@lists.infradead.org; Wed, 02 Dec 2015 13:49:12 +0000
+ id 1a47mQ-0001JH-Nn
+ for barebox@lists.infradead.org; Wed, 02 Dec 2015 13:49:15 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Wed,  2 Dec 2015 14:48:45 +0100
-Message-Id: <1449064131-12659-4-git-send-email-mpa@pengutronix.de>
+Date: Wed,  2 Dec 2015 14:48:49 +0100
+Message-Id: <1449064131-12659-8-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1449064131-12659-1-git-send-email-mpa@pengutronix.de>
 References: <1449064131-12659-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,37 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] printk: Add missing include/declaration
+Subject: [PATCH 7/9] arm: start: Add visible sdram region for barebox board
+ data
 To: barebox@lists.infradead.org
 
-There are functions or structs used that do need these.
+This helps to understand and find problems with the memory layout of
+barebox. It adds another entry for the board data that barebox
+allocated.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- include/printk.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/cpu/start.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/include/printk.h b/include/printk.h
-index a27ad514cfe1..822f64c61f7d 100644
---- a/include/printk.h
-+++ b/include/printk.h
-@@ -1,6 +1,8 @@
- #ifndef __PRINTK_H
- #define __PRINTK_H
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index e06c4c8f37a0..4ad64b61e86a 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -34,6 +34,8 @@
+ #include "mmu-early.h"
  
-+#include <linux/list.h>
+ unsigned long arm_stack_top;
++static unsigned long arm_head_bottom;
++static unsigned long arm_barebox_size;
+ static void *barebox_boarddata;
+ 
+ static bool blob_is_fdt(const void *blob)
+@@ -116,6 +118,18 @@ static inline unsigned long arm_mem_boarddata(unsigned long membase,
+ 	return mem;
+ }
+ 
++static int barebox_memory_areas_init(void)
++{
++	unsigned long start = arm_head_bottom;
++	unsigned long size = arm_mem_barebox_image(0, arm_stack_top,
++						   arm_barebox_size) -
++			     arm_head_bottom;
++	request_sdram_region("board data", start, size);
 +
- #define MSG_EMERG      0    /* system is unusable */
- #define MSG_ALERT      1    /* action must be taken immediately */
- #define MSG_CRIT       2    /* critical conditions */
-@@ -20,6 +22,7 @@
- #endif
++	return 0;
++}
++device_initcall(barebox_memory_areas_init);
++
+ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
+ {
+@@ -123,7 +137,6 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 	unsigned long malloc_start, malloc_end;
+ 	unsigned long barebox_size = barebox_image_size +
+ 		((unsigned long)&__bss_stop - (unsigned long)&__bss_start);
+-	unsigned long arm_head_bottom;
  
- /* debugging and troubleshooting/diagnostic helpers. */
-+struct device_d;
+ 	if (IS_ENABLED(CONFIG_RELOCATABLE)) {
+ 		unsigned long barebox_base = arm_mem_barebox_image(membase,
+@@ -139,6 +152,9 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
  
- #ifndef CONFIG_CONSOLE_NONE
- int dev_printf(int level, const struct device_d *dev, const char *format, ...)
+ 	arm_stack_top = endmem;
++	arm_barebox_size = barebox_size;
++	arm_head_bottom = arm_mem_barebox_image(membase, endmem,
++						arm_barebox_size);
+ 
+ 	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
+ 		unsigned long ttb = arm_mem_ttb(membase, endmem);
+@@ -175,6 +191,7 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 				 name, mem);
+ 			barebox_boarddata = memcpy((void *)mem, boarddata,
+ 						   totalsize);
++			arm_head_bottom = mem;
+ 		}
+ 	}
+ 
 -- 
 2.6.2
 
