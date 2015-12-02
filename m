@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a3mpR-0004GB-CU
- for barebox@lists.infradead.org; Tue, 01 Dec 2015 15:26:54 +0000
-Received: by wmuu63 with SMTP id u63so177690951wmu.0
- for <barebox@lists.infradead.org>; Tue, 01 Dec 2015 07:26:31 -0800 (PST)
-From: Florian Vallee <fvallee@eukrea.fr>
-Date: Tue,  1 Dec 2015 16:26:22 +0100
-Message-Id: <1448983584-14939-1-git-send-email-fvallee@eukrea.fr>
+ id 1a41Ln-0003B0-4K
+ for barebox@lists.infradead.org; Wed, 02 Dec 2015 06:57:16 +0000
+Date: Wed, 2 Dec 2015 07:56:52 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151202065652.GK11966@pengutronix.de>
+References: <1448977608-4950-1-git-send-email-fvallee@eukrea.fr>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1448977608-4950-1-git-send-email-fvallee@eukrea.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,44 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 0/2] imx_adc command for barebox
-To: barebox@lists.infradead.org
-Cc: Florian Vallee <fvallee@eukrea.fr>
+Subject: Re: [PATCH 1/3] imx35: register usb-misc by default
+To: Florian Vallee <fvallee@eukrea.fr>
+Cc: barebox@lists.infradead.org, Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 
-The two following patches import the out-of-tree imx_adc driver from Freescale
-in barebox.
+On Tue, Dec 01, 2015 at 02:46:46PM +0100, Florian Vallee wrote:
+> Signed-off-by: Florian Vallee <fvallee@eukrea.fr>
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  arch/arm/mach-imx/imx35.c | 1 +
+>  1 file changed, 1 insertion(+)
 
-The original driver was interfaced with userspace through IOCTLs, this simple
-port exposes a barebox command "imx_adc" which returns converted values in mV.
-As such it's more a command since it doesn't register itself anywhere and is
-accessed that way only.
+Applied, thanks
 
-There doesn't seem to be any ADC driver in barebox right now, Is there any
-interest in cleaning this up for inclusion ?
+Sascha
 
-Florian Vallee (2):
-  drivers: imx_adc: import and adapt imx_adc from linux
-  drivers: imx_adc: repurpose driver as pure ADC
+-- =
 
- arch/arm/mach-imx/include/mach/imx25-regs.h |   1 +
- drivers/misc/Kconfig                        |   4 +
- drivers/misc/Makefile                       |   1 +
- drivers/misc/imx_adc.c                      | 248 ++++++++++++++++++++++++++++
- drivers/misc/imx_adc.h                      | 112 +++++++++++++
- drivers/misc/imx_adc_reg.h                  | 247 +++++++++++++++++++++++++++
- 6 files changed, 613 insertions(+)
- create mode 100644 drivers/misc/imx_adc.c
- create mode 100644 drivers/misc/imx_adc.h
- create mode 100644 drivers/misc/imx_adc_reg.h
-
--- 
-2.1.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
