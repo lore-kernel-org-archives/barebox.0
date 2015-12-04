@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a4g8F-0001Bj-8v
- for barebox@lists.infradead.org; Fri, 04 Dec 2015 02:29:59 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 4 Dec 2015 02:28:40 +0000
-Message-ID: <1449196125.26955.13.camel@rtred1test09.kymeta.local>
-References: <1449105900.26955.1.camel@rtred1test09.kymeta.local>
-In-Reply-To: <1449105900.26955.1.camel@rtred1test09.kymeta.local>
-Content-Language: en-US
-Content-ID: <3DA14F4B7569D04EA37CF3E7B28C6026@kymetacorp.com>
+ id 1a4kTL-0002H9-UT
+ for barebox@lists.infradead.org; Fri, 04 Dec 2015 07:08:04 +0000
+Date: Fri, 4 Dec 2015 08:07:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151204070740.GQ11966@pengutronix.de>
+References: <1449064131-12659-1-git-send-email-mpa@pengutronix.de>
+ <1449064131-12659-9-git-send-email-mpa@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1449064131-12659-9-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,34 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Remove kernel booting call for thumb2 mode
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 8/9] arm: Add RAMOOPS memory area
+To: Markus Pargmann <mpa@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Thu, 2015-12-03 at 01:24 +0000, Trent Piepho wrote:
-> The asm code to do the actual call into the kernel (or another
-> barebox) when compiled in thumb2 mode isn't necessary.  gcc generates
-> a perfectly good calling sequence from a normal function pointer call.
-> If it didn't, the code in bootstrap_boot() that uses a function
-> pointer to jump to the 2nd stage barebox from an xloader wouldn't
-> work.
+On Wed, Dec 02, 2015 at 02:48:50PM +0100, Markus Pargmann wrote:
+> RAMOOPS is a driver that uses a reserved static memory region to store
+> the data from the last panic or boot. This helps to debug crashes at the
+> next boot while preserving the boot messages.
+> 
+> To guarantee a memory area that is not altered by barebox or the kernel,
+> this area is located at the end of the RAM right after barebox and
+> before the STACK. This ensures that changing barebox sizes do not
+> interfere with RAMOOPS.
+> 
+> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+> ---
+>  arch/arm/cpu/start.c               |  6 ++++++
+>  arch/arm/include/asm/barebox-arm.h | 14 +++++++++++++-
+>  2 files changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> index 4ad64b61e86a..d03d1edfaf18 100644
+> --- a/arch/arm/cpu/start.c
+> +++ b/arch/arm/cpu/start.c
+> @@ -118,6 +118,12 @@ static inline unsigned long arm_mem_boarddata(unsigned long membase,
+>  	return mem;
+>  }
+>  
+> +unsigned long arm_mem_ramoops_get(void)
+> +{
+> +	return arm_mem_ramoops(0, arm_stack_top);
+> +}
+> +EXPORT_SYMBOL_GPL(arm_mem_ramoops_get);
+> +
+>  static int barebox_memory_areas_init(void)
+>  {
+>  	unsigned long start = arm_head_bottom;
+> diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+> index da7717538b61..91f1747d2df4 100644
+> --- a/arch/arm/include/asm/barebox-arm.h
+> +++ b/arch/arm/include/asm/barebox-arm.h
+> @@ -122,11 +122,23 @@ static inline unsigned long arm_mem_early_malloc_end(unsigned long membase,
+>  	return arm_mem_ttb(membase, endmem);
+>  }
+>  
+> +static inline unsigned long arm_mem_ramoops(unsigned long membase,
+> +					    unsigned long endmem)
+> +{
+> +	endmem = arm_mem_ttb(membase, endmem);
+> +#ifdef CONFIG_FS_PSTORE_RAMOOPS
+> +	endmem -= CONFIG_FS_PSTORE_RAMOOPS_SIZE;
+> +	endmem &= ~(SZ_4K - 1); /* Align to 4K */
+> +#endif
 
-The same commit that originally added this code also added
-thumb2_execute(), which is used by the go command in a thumb2 build.
+if (IS_ENABLED(CONFIG_FS_PSTORE_RAMOOPS)) please
 
-This doesn't seem necessary for the same reason as the code in
-start_linux.  THUMB2 selects AEABI, which in turn turns on the aapcs
-abi, which requires interworking safe indirect calls.  And again, the
-bootstrap code doesn't use a special call sequence so if it didn't work
-that would be broken too.
+Sascha
 
-The code for thumb2_execute() is also odd in that it subtracts one from
-argc, drops the 1st argv entry, and supplies zero for the first function
-argument.  I.e., "go" in arm mode (and all non-arm arches) does this:
-	func(argc - 1, &argv[1]);
-and in thumb2 mode does this:
-	func(0, argc - 2, &argv[2]);
-
-I don't see why one would want this difference.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
