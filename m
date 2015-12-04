@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a4kfJ-00066Y-GK
- for barebox@lists.infradead.org; Fri, 04 Dec 2015 07:20:26 +0000
-Date: Fri, 4 Dec 2015 08:20:02 +0100
+ id 1a4kpi-000222-RW
+ for barebox@lists.infradead.org; Fri, 04 Dec 2015 07:31:12 +0000
+Date: Fri, 4 Dec 2015 08:30:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151204072002.GU11966@pengutronix.de>
+Message-ID: <20151204073048.GV11966@pengutronix.de>
 References: <1449105900.26955.1.camel@rtred1test09.kymeta.local>
+ <1449196125.26955.13.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449105900.26955.1.camel@rtred1test09.kymeta.local>
+In-Reply-To: <1449196125.26955.13.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,30 +27,39 @@ Subject: Re: [PATCH] ARM: Remove kernel booting call for thumb2 mode
 To: Trent Piepho <tpiepho@kymetacorp.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-On Thu, Dec 03, 2015 at 01:24:56AM +0000, Trent Piepho wrote:
-> The asm code to do the actual call into the kernel (or another
-> barebox) when compiled in thumb2 mode isn't necessary.  gcc generates
-> a perfectly good calling sequence from a normal function pointer call.
-> If it didn't, the code in bootstrap_boot() that uses a function
-> pointer to jump to the 2nd stage barebox from an xloader wouldn't
-> work.
+On Fri, Dec 04, 2015 at 02:28:40AM +0000, Trent Piepho wrote:
+> On Thu, 2015-12-03 at 01:24 +0000, Trent Piepho wrote:
+> > The asm code to do the actual call into the kernel (or another
+> > barebox) when compiled in thumb2 mode isn't necessary.  gcc generates
+> > a perfectly good calling sequence from a normal function pointer call.
+> > If it didn't, the code in bootstrap_boot() that uses a function
+> > pointer to jump to the 2nd stage barebox from an xloader wouldn't
+> > work.
 > 
-> It appears to be allowed that the call to kernel() could return, as
-> neither start_linux() nor kernel() are marked noreturn, and there is
-> code after calls to start_linux().
+> The same commit that originally added this code also added
+> thumb2_execute(), which is used by the go command in a thumb2 build.
 > 
-> The asm code has a bug in this case, as it uses bx and not blx, and
-> thus doesn't set the link register.  Since it's a tail call, this
-> would be okay, but only if the LR value from the start of
-> start_linux() (and the callee-saved registers) are restored
-> beforehand, which isn't done.  The gcc generated call sequence will do
-> this.
+> This doesn't seem necessary for the same reason as the code in
+> start_linux.  THUMB2 selects AEABI, which in turn turns on the aapcs
+> abi, which requires interworking safe indirect calls.  And again, the
+> bootstrap code doesn't use a special call sequence so if it didn't work
+> that would be broken too.
+> 
+> The code for thumb2_execute() is also odd in that it subtracts one from
+> argc, drops the 1st argv entry, and supplies zero for the first function
+> argument.  I.e., "go" in arm mode (and all non-arm arches) does this:
+> 	func(argc - 1, &argv[1]);
+> and in thumb2 mode does this:
+> 	func(0, argc - 2, &argv[2]);
+> 
+> I don't see why one would want this difference.
 
-The kernel won't return, so this bug shouldn't hit us. Anyway, nice
-cleanup. Tested and applied, thanks
+This is a bug. We want to shift argv[] by one, not by two. I must
+accidently have done this twice.
+As you note the thumb2 execution code is unnecessary anyway, we can
+remove the bug by removing the code.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
