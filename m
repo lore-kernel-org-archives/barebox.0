@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a4kZP-00044x-5S
- for barebox@lists.infradead.org; Fri, 04 Dec 2015 07:14:19 +0000
-Date: Fri, 4 Dec 2015 08:13:57 +0100
+ id 1a4kfJ-00066Y-GK
+ for barebox@lists.infradead.org; Fri, 04 Dec 2015 07:20:26 +0000
+Date: Fri, 4 Dec 2015 08:20:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151204071357.GT11966@pengutronix.de>
-References: <1449126229-11256-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20151204072002.GU11966@pengutronix.de>
+References: <1449105900.26955.1.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449126229-11256-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1449105900.26955.1.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] net: tap: trivial fixes
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: Remove kernel booting call for thumb2 mode
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Thu, Dec 03, 2015 at 10:03:47AM +0300, Antony Pavlov wrote:
-> Antony Pavlov (2):
->   net: tap: make locally used functions static
->   net: tap: fix whitespaces
+On Thu, Dec 03, 2015 at 01:24:56AM +0000, Trent Piepho wrote:
+> The asm code to do the actual call into the kernel (or another
+> barebox) when compiled in thumb2 mode isn't necessary.  gcc generates
+> a perfectly good calling sequence from a normal function pointer call.
+> If it didn't, the code in bootstrap_boot() that uses a function
+> pointer to jump to the 2nd stage barebox from an xloader wouldn't
+> work.
 > 
->  drivers/net/tap.c | 17 +++++++++--------
->  1 file changed, 9 insertions(+), 8 deletions(-)
+> It appears to be allowed that the call to kernel() could return, as
+> neither start_linux() nor kernel() are marked noreturn, and there is
+> code after calls to start_linux().
+> 
+> The asm code has a bug in this case, as it uses bx and not blx, and
+> thus doesn't set the link register.  Since it's a tail call, this
+> would be okay, but only if the LR value from the start of
+> start_linux() (and the callee-saved registers) are restored
+> beforehand, which isn't done.  The gcc generated call sequence will do
+> this.
 
-Applied, thanks
+The kernel won't return, so this bug shouldn't hit us. Anyway, nice
+cleanup. Tested and applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
