@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a5rto-0008DG-Cn
- for barebox@lists.infradead.org; Mon, 07 Dec 2015 09:16:01 +0000
-Date: Mon, 7 Dec 2015 10:15:38 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151207091538.GZ11966@pengutronix.de>
-References: <1449064131-12659-1-git-send-email-mpa@pengutronix.de>
- <1449064131-12659-9-git-send-email-mpa@pengutronix.de>
- <20151204070740.GQ11966@pengutronix.de>
- <7121603.NNX0sY4RtQ@adelgunde>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7121603.NNX0sY4RtQ@adelgunde>
+ id 1a5s6G-000698-W0
+ for barebox@lists.infradead.org; Mon, 07 Dec 2015 09:28:53 +0000
+Message-ID: <1449480510.3118.4.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 07 Dec 2015 10:28:30 +0100
+In-Reply-To: <CAHQ1cqGG-3uW53YH6bJGya60hBzrMrqgvc-_hCPapLpfcL2pRQ@mail.gmail.com>
+References: <CAHQ1cqFvLA2UnRBcsdUk05-4OJP33D1E=R7i0tkBtrGX_SvoFQ@mail.gmail.com>
+ <1448964622.8275.40.camel@pengutronix.de>
+ <CAHQ1cqGG-3uW53YH6bJGya60hBzrMrqgvc-_hCPapLpfcL2pRQ@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,81 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] arm: Add RAMOOPS memory area
-To: Markus Pargmann <mpa@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: i.MX6 PCIe support
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, Dec 04, 2015 at 02:30:34PM +0100, Markus Pargmann wrote:
-> Hi,
+Am Sonntag, den 06.12.2015, 22:03 -0800 schrieb Andrey Smirnov:
+> >> However when I boot Linux kernel (with 'igb' driver patched to
+> >> recognize 8086:1531 VID:PID) on that board and run 'eepromARMtool'
+> >> (Intel provided EEPROM programming tool) I can see it reading various
+> >> registers correctly
+> >>
+> >> My questions are:
+> >>    - Is anyone currently using i.MX6 PCIe driver in 'next' branch?
+> >
+> > I didn't try the latest revision, but with v2015.10.0 PCIe on i.MX6 was
+> > working fine.
+> >
+> >>    - Has anyone seen similar behavior on this particular controller
+> >> and discovered the root cause?
+> >>
+> > The symptoms you describe do look to me like the firmware on the i210
+> > device doesn't get initialized. Unfortunately I don't have any specific
+> > pointers where to start searching for the root cause.
+> >
 > 
-> On Friday 04 December 2015 08:07:40 Sascha Hauer wrote:
-> > On Wed, Dec 02, 2015 at 02:48:50PM +0100, Markus Pargmann wrote:
-> > > RAMOOPS is a driver that uses a reserved static memory region to store
-> > > the data from the last panic or boot. This helps to debug crashes at the
-> > > next boot while preserving the boot messages.
-> > > 
-> > > To guarantee a memory area that is not altered by barebox or the kernel,
-> > > this area is located at the end of the RAM right after barebox and
-> > > before the STACK. This ensures that changing barebox sizes do not
-> > > interfere with RAMOOPS.
-> > > 
-> > > Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
-> > > ---
-> > >  arch/arm/cpu/start.c               |  6 ++++++
-> > >  arch/arm/include/asm/barebox-arm.h | 14 +++++++++++++-
-> > >  2 files changed, 19 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> > > index 4ad64b61e86a..d03d1edfaf18 100644
-> > > --- a/arch/arm/cpu/start.c
-> > > +++ b/arch/arm/cpu/start.c
-> > > @@ -118,6 +118,12 @@ static inline unsigned long arm_mem_boarddata(unsigned long membase,
-> > >  	return mem;
-> > >  }
-> > >  
-> > > +unsigned long arm_mem_ramoops_get(void)
-> > > +{
-> > > +	return arm_mem_ramoops(0, arm_stack_top);
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(arm_mem_ramoops_get);
-> > > +
-> > >  static int barebox_memory_areas_init(void)
-> > >  {
-> > >  	unsigned long start = arm_head_bottom;
-> > > diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-> > > index da7717538b61..91f1747d2df4 100644
-> > > --- a/arch/arm/include/asm/barebox-arm.h
-> > > +++ b/arch/arm/include/asm/barebox-arm.h
-> > > @@ -122,11 +122,23 @@ static inline unsigned long arm_mem_early_malloc_end(unsigned long membase,
-> > >  	return arm_mem_ttb(membase, endmem);
-> > >  }
-> > >  
-> > > +static inline unsigned long arm_mem_ramoops(unsigned long membase,
-> > > +					    unsigned long endmem)
-> > > +{
-> > > +	endmem = arm_mem_ttb(membase, endmem);
-> > > +#ifdef CONFIG_FS_PSTORE_RAMOOPS
-> > > +	endmem -= CONFIG_FS_PSTORE_RAMOOPS_SIZE;
-> > > +	endmem &= ~(SZ_4K - 1); /* Align to 4K */
-> > > +#endif
-> > 
-> > if (IS_ENABLED(CONFIG_FS_PSTORE_RAMOOPS)) please
+> I kept looking into the issue and noticed one thing that Linux kernel
+> does differently -- when handling PCI bridges it allocates bridge
+> window before that PCI bridge's BAR windows in address space as can be
+> seen below:
 > 
-> This doesn't work here. If CONFIG_FS_PSTORE_RAMOOPS is not defined,
-> CONFIG_FS_PSTORE_RAMOOPS_SIZE is undefined as well and compiling fails.
+> [    0.831099] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+> [    0.837480] pci_bus 0000:00: root bus resource [io  0x1000-0x10000]
+> [    0.843878] pci_bus 0000:00: root bus resource [mem 0x01000000-0x01efffff]
+> [    0.850881] pci_bus 0000:00: root bus resource [bus 00-ff]
+> [    0.856913] PCI: bus0: Fast back to back transfers disabled
+> [    0.880182] PCI: bus1: Fast back to back transfers disabled
+> [    0.885980] pci 0000:00:00.0: BAR 8: assigned [mem 0x01000000-0x01bfffff]
+> [    0.892902] pci 0000:00:00.0: BAR 0: assigned [mem 0x01c00000-0x01cfffff]
+> [    0.899806] pci 0000:00:00.0: BAR 6: assigned [mem
+> 0x01d00000-0x01d0ffff pref]
+> [    0.907154] pci 0000:00:00.0: BAR 7: assigned [io  0x1000-0x1fff]
+> [    0.913387] pci 0000:01:00.0: BAR 0: assigned [mem 0x01000000-0x017fffff]
+> [    0.920324] pci 0000:01:00.0: BAR 3: assigned [mem 0x01800000-0x01803fff]
+> [    0.927241] pci 0000:01:00.0: BAR 2: assigned [io  0x1000-0x101f]
+> [    0.933480] pci 0000:00:00.0: PCI bridge to [bus 01]
+> [    0.938553] pci 0000:00:00.0:   bridge window [io  0x1000-0x1fff]
+> [    0.944772] pci 0000:00:00.0:   bridge window [mem 0x01000000-0x01bfffff]
+> [    0.951984] pcieport 0000:00:00.0: Signaling PME through PCIe PME interrupt
+> [    0.959056] pci 0000:01:00.0: Signaling PME through PCIe PME interrupt
 > 
-> Is there any macro I should use for _SIZE here or any Kconfig setup that is
-> preferred for this situation?
+> 
+> When I tried emulating this behavior in Barebox by moving
+> "setup_device(dev, 2)" from line 384 to be right after
+> "postscan_setup_bridge(dev)" in "drivers/pci/pci.c" I was able to
+> communicate with i210.
+> 
+> I am bit hesitant to make a patch yet, since for the life of me I
+> cannot explain this behavior, any thoughts on why this can be
+> happening?
+> 
+Can you please compile barebox with config PCI_DEBUG set and provide the
+output of that? Mybe with and without your change applied?
 
-Not that I know of. Just keep it as it is now.
-
-Sascha
+Thanks,
+Lucas
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
+
 
 _______________________________________________
 barebox mailing list
