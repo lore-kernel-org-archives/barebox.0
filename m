@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a5sOW-0002My-Sg
- for barebox@lists.infradead.org; Mon, 07 Dec 2015 09:47:45 +0000
-Date: Mon, 7 Dec 2015 10:47:23 +0100
+ id 1a5sPS-0002eP-7P
+ for barebox@lists.infradead.org; Mon, 07 Dec 2015 09:48:42 +0000
+Date: Mon, 7 Dec 2015 10:48:20 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151207094723.GE11966@pengutronix.de>
-References: <1449352680-18650-1-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20151207094820.GF11966@pengutronix.de>
+References: <1449355025-20972-1-git-send-email-robert.jarzmik@free.fr>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449352680-18650-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1449355025-20972-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: smc1111: fix ethernet mac setting
+Subject: Re: [PATCH] ARM: pxa: pxa2xx use PSPR for resume address
 To: Robert Jarzmik <robert.jarzmik@free.fr>
 Cc: barebox@lists.infradead.org
 
-On Sat, Dec 05, 2015 at 10:58:00PM +0100, Robert Jarzmik wrote:
-> Even if the setting of the MAC address does work correctly, the function
-> return an error.
+On Sat, Dec 05, 2015 at 11:37:05PM +0100, Robert Jarzmik wrote:
+> Both lubbock and mainstone suspend to RAM were broken by the same
+> typo. The linux kernel saves the resume address to PSPR, ie. the scratch
+> pad register, while it was PSSR which was checked in barebox.
 > 
-> In the former barebox version, this didn't seem to be a problem. In
-> v2015.11.0 version, the "ifup eth0" command fails because of this, and
-> as a consequence the network interface doesn't work.
-> 
-> The fix is straightforward.
+> Fixing this typo was tested on mainstone where resume from S3 works.
 > 
 > Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 > ---
->  drivers/net/smc91111.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm/boards/lubbock/lowlevel.c   | 2 +-
+>  arch/arm/boards/mainstone/lowlevel.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
