@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x234.google.com ([2a00:1450:4010:c07::234])
+Received: from mail-io0-x22f.google.com ([2607:f8b0:4001:c06::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a5aHO-0006vB-H6
- for barebox@lists.infradead.org; Sun, 06 Dec 2015 14:27:11 +0000
-Received: by lffu14 with SMTP id u14so137915637lff.1
- for <barebox@lists.infradead.org>; Sun, 06 Dec 2015 06:26:48 -0800 (PST)
-Date: Sun, 6 Dec 2015 17:50:51 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20151206175051.e4a017449d741f3989cdc161@gmail.com>
-In-Reply-To: <20150904062048.GT18700@pengutronix.de>
-References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
- <1440714250-28080-4-git-send-email-antonynpavlov@gmail.com>
- <20150828063432.GA18700@pengutronix.de>
- <20150828184614.d0ec3d17f1800be9093f7fa3@gmail.com>
- <20150904062048.GT18700@pengutronix.de>
-Mime-Version: 1.0
+ id 1a5oth-0005dU-Gv
+ for barebox@lists.infradead.org; Mon, 07 Dec 2015 06:03:42 +0000
+Received: by ioir85 with SMTP id r85so171166191ioi.1
+ for <barebox@lists.infradead.org>; Sun, 06 Dec 2015 22:03:20 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1448964622.8275.40.camel@pengutronix.de>
+References: <CAHQ1cqFvLA2UnRBcsdUk05-4OJP33D1E=R7i0tkBtrGX_SvoFQ@mail.gmail.com>
+ <1448964622.8275.40.camel@pengutronix.de>
+Date: Sun, 6 Dec 2015 22:03:19 -0800
+Message-ID: <CAHQ1cqGG-3uW53YH6bJGya60hBzrMrqgvc-_hCPapLpfcL2pRQ@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,109 +20,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 3/9] MIPS: add virt_to_phys() and phys_to_virt()
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Peter Mamonov <pmamonov@gmail.com>
+Subject: Re: i.MX6 PCIe support
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, 4 Sep 2015 08:20:48 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>> However when I boot Linux kernel (with 'igb' driver patched to
+>> recognize 8086:1531 VID:PID) on that board and run 'eepromARMtool'
+>> (Intel provided EEPROM programming tool) I can see it reading various
+>> registers correctly
+>>
+>> My questions are:
+>>    - Is anyone currently using i.MX6 PCIe driver in 'next' branch?
+>
+> I didn't try the latest revision, but with v2015.10.0 PCIe on i.MX6 was
+> working fine.
+>
+>>    - Has anyone seen similar behavior on this particular controller
+>> and discovered the root cause?
+>>
+> The symptoms you describe do look to me like the firmware on the i210
+> device doesn't get initialized. Unfortunately I don't have any specific
+> pointers where to start searching for the root cause.
+>
 
-> On Fri, Aug 28, 2015 at 06:46:14PM +0300, Antony Pavlov wrote:
-> > On Fri, 28 Aug 2015 08:34:32 +0200
-> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+I kept looking into the issue and noticed one thing that Linux kernel
+does differently -- when handling PCI bridges it allocates bridge
+window before that PCI bridge's BAR windows in address space as can be
+seen below:
 
-> > > On Fri, Aug 28, 2015 at 01:24:04AM +0300, Antony Pavlov wrote:
-> > > > N.B. phys_to_virt() translates phys address
-> > > > to KSEG1 (uncached) address as barebox mips
-> > > > has no cache support.
-> > > =
-
-> > > What would it take to implement cache support for mips?
-> > lack of the cache support is critical problem for current barebox mips =
-support.
-> > I'm planning to add cache support in several weeks.
-> > This task needs much test efforts for different boards.
-> > =
-
-> > Anyway I can't carry out cache adding work at one.
-> > But adding virt_to_phys and DMA support will help to add cache support =
-one day anyway.
-> =
-
-> Looking at this again the virt_to_phys/phys_to_virt macros are not
-> necessary. dma_alloc_coherent() already returns both the virtual address
-> and the DMA address. It should be possible to replace DMA_ADDRESS_BROKEN
-> in the ehci driver with a real pointer and use it appropriatly in the
-> driver.
-> =
-
-
-I have tried to get physical address from dma_alloc_coherent(),
-here is a small part of my patch (just for demonstration):
-
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -41,6 +41,7 @@ struct ehci_priv {
- 	struct ehci_hcor *hcor;
- 	struct usb_host host;
- 	struct QH *qh_list;
-+	dma_addr_t qh_list_dma;
- 	struct qTD *td;
- 	int portreset;
- 	unsigned long flags;
-@@ -403,7 +410,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long=
- pipe, void *buffer,
- 		goto fail;
- 	}
- =
-
--	ehci->qh_list->qh_link =3D cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_=
-TYPE_QH);
-+	ehci->qh_list->qh_link =3D cpu_to_hc32(ehci->qh_list_dma | QH_LINK_TYPE_Q=
-H);
- =
-
- 	token =3D hc32_to_cpu(qh->qt_token);
- 	if (!(token & 0x80)) {
-@@ -1306,7 +1313,7 @@ int ehci_register(struct device_d *dev, struct ehci_d=
-ata *data)
- 	ehci->post_init =3D data->post_init;
- =
-
- 	ehci->qh_list =3D dma_alloc_coherent(sizeof(struct QH) * NUM_TD,
--					   DMA_ADDRESS_BROKEN);
-+					   &ehci->qh_list_dma);
- 	ehci->periodic_queue =3D dma_alloc_coherent(sizeof(struct QH),
- 						  DMA_ADDRESS_BROKEN);
- 	ehci->td =3D dma_alloc_coherent(sizeof(struct qTD) * NUM_TD,
+[    0.831099] imx6q-pcie 1ffc000.pcie: PCI host bridge to bus 0000:00
+[    0.837480] pci_bus 0000:00: root bus resource [io  0x1000-0x10000]
+[    0.843878] pci_bus 0000:00: root bus resource [mem 0x01000000-0x01efffff]
+[    0.850881] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    0.856913] PCI: bus0: Fast back to back transfers disabled
+[    0.880182] PCI: bus1: Fast back to back transfers disabled
+[    0.885980] pci 0000:00:00.0: BAR 8: assigned [mem 0x01000000-0x01bfffff]
+[    0.892902] pci 0000:00:00.0: BAR 0: assigned [mem 0x01c00000-0x01cfffff]
+[    0.899806] pci 0000:00:00.0: BAR 6: assigned [mem
+0x01d00000-0x01d0ffff pref]
+[    0.907154] pci 0000:00:00.0: BAR 7: assigned [io  0x1000-0x1fff]
+[    0.913387] pci 0000:01:00.0: BAR 0: assigned [mem 0x01000000-0x017fffff]
+[    0.920324] pci 0000:01:00.0: BAR 3: assigned [mem 0x01800000-0x01803fff]
+[    0.927241] pci 0000:01:00.0: BAR 2: assigned [io  0x1000-0x101f]
+[    0.933480] pci 0000:00:00.0: PCI bridge to [bus 01]
+[    0.938553] pci 0000:00:00.0:   bridge window [io  0x1000-0x1fff]
+[    0.944772] pci 0000:00:00.0:   bridge window [mem 0x01000000-0x01bfffff]
+[    0.951984] pcieport 0000:00:00.0: Signaling PME through PCIe PME interrupt
+[    0.959056] pci 0000:01:00.0: Signaling PME through PCIe PME interrupt
 
 
-However ehci_td_buffer() gets buf pointer outside of ehci driver (e.g. via =
-usb_bulk_msg()),
-so it is difficult to avoid virt_to_phys() in ehci_td_buffer(), e.g.:
+When I tried emulating this behavior in Barebox by moving
+"setup_device(dev, 2)" from line 384 to be right after
+"postscan_setup_bridge(dev)" in "drivers/pci/pci.c" I was able to
+communicate with i210.
 
-@@ -195,7 +197,7 @@ static int ehci_td_buffer(struct qTD *td, void *buf, si=
-ze_t sz)
- =
+I am bit hesitant to make a patch yet, since for the life of me I
+cannot explain this behavior, any thoughts on why this can be
+happening?
 
-        idx =3D 0;
-        while (idx < 5) {
--               td->qt_buffer[idx] =3D cpu_to_hc32(addr);
-+               td->qt_buffer[idx] =3D cpu_to_hc32(virt_to_phys(addr));
-                next =3D (addr + 4096) & ~4095;
-                delta =3D next - addr;
-                if (delta >=3D sz)
-
-Have you any idea?
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+Andrey
 
 _______________________________________________
 barebox mailing list
