@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6EDW-00037K-Sv
- for barebox@lists.infradead.org; Tue, 08 Dec 2015 09:05:55 +0000
+ id 1a6EDa-0003AO-HD
+ for barebox@lists.infradead.org; Tue, 08 Dec 2015 09:05:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  8 Dec 2015 10:05:38 +0100
-Message-Id: <1449565539-29374-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  8 Dec 2015 10:05:37 +0100
+Message-Id: <1449565539-29374-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
 References: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,306 +21,309 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] misc: Add Microchip MCP342x support
+Subject: [PATCH 2/4] misc: Add basic LM75 temperature driver
 To: Barebox List <barebox@lists.infradead.org>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/misc/Kconfig   |   5 +
- drivers/misc/Makefile  |   2 +
- drivers/misc/mcp342x.c | 259 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 266 insertions(+)
- create mode 100644 drivers/misc/mcp342x.c
+ drivers/misc/Kconfig  |   5 +
+ drivers/misc/Makefile |   1 +
+ drivers/misc/lm75.c   | 262 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 268 insertions(+)
+ create mode 100644 drivers/misc/lm75.c
 
 diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index b95a7f6..8d44a5c 100644
+index 250b205..b95a7f6 100644
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
-@@ -27,4 +27,9 @@ config LM75
- 	depends on I2C
- 	depends on IODEVICE
+@@ -22,4 +22,9 @@ config STATE_DRV
+ config IODEVICE
+ 	bool "IO device support"
  
-+config MCP342X
-+	tristate "Microchip MCP342x ADC driver"
++config LM75
++	tristate "LM75 driver"
 +	depends on I2C
 +	depends on IODEVICE
 +
  endmenu
 diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index a257dfb..6680334 100644
+index 127504e..a257dfb 100644
 --- a/drivers/misc/Makefile
 +++ b/drivers/misc/Makefile
-@@ -7,3 +7,5 @@ obj-$(CONFIG_SRAM)		+= sram.o
+@@ -6,3 +6,4 @@ obj-$(CONFIG_JTAG)		+= jtag.o
+ obj-$(CONFIG_SRAM)		+= sram.o
  obj-$(CONFIG_STATE_DRV)		+= state.o
  obj-$(CONFIG_IODEVICE)		+= iodevice.o
- obj-$(CONFIG_LM75)		+= lm75.o
-+obj-$(CONFIG_IODEVICE)		+= iodevice.o
-+obj-$(CONFIG_MCP342X)		+= mcp342x.o
-diff --git a/drivers/misc/mcp342x.c b/drivers/misc/mcp342x.c
++obj-$(CONFIG_LM75)		+= lm75.o
+diff --git a/drivers/misc/lm75.c b/drivers/misc/lm75.c
 new file mode 100644
-index 0000000..e498078
+index 0000000..d9e5580
 --- /dev/null
-+++ b/drivers/misc/mcp342x.c
-@@ -0,0 +1,259 @@
++++ b/drivers/misc/lm75.c
+@@ -0,0 +1,262 @@
 +/*
-+ * mcp3422.c - driver for the Microchip mcp3422/3/4/6/7/8 chip family
-+ *
-+ * Copyright (C) 2013, Angelo Compagnucci
-+ * Author: Angelo Compagnucci <angelo.compagnucci@gmail.com>
-+ *
-+ * Datasheet: http://ww1.microchip.com/downloads/en/devicedoc/22088b.pdf
-+ *            http://ww1.microchip.com/downloads/en/DeviceDoc/22226a.pdf
-+ *
-+ * This driver exports the value of analog input voltage to sysfs, the
-+ * voltage unit is nV.
++ * lm75.c - Part of lm_sensors, Linux kernel modules for hardware
++ *	 monitoring
++ * Copyright (c) 1998, 1999  Frodo Looijaard <frodol@dds.nl>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
 + * the Free Software Foundation; either version 2 of the License, or
 + * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 + */
 +
 +#include <common.h>
 +#include <init.h>
-+#include <iodevice.h>
-+#include <malloc.h>
 +#include <driver.h>
 +#include <xfuncs.h>
 +#include <i2c/i2c.h>
++#include <iodevice.h>
 +
-+/* Masks */
-+#define MCP3422_CHANNEL_MASK	0x60
-+#define MCP3422_PGA_MASK	0x03
-+#define MCP3422_SRATE_MASK	0x0C
-+#define MCP3422_SRATE_240	0x0
-+#define MCP3422_SRATE_60	0x1
-+#define MCP3422_SRATE_15	0x2
-+#define MCP3422_SRATE_3		0x3
-+#define MCP3422_PGA_1	0
-+#define MCP3422_PGA_2	1
-+#define MCP3422_PGA_4	2
-+#define MCP3422_PGA_8	3
-+#define MCP3422_CONT_SAMPLING	0x10
++/*
++ * This driver handles the LM75 and compatible digital temperature sensors.
++ */
 +
-+#define MCP3422_CHANNEL(config)	(((config) & MCP3422_CHANNEL_MASK) >> 5)
-+#define MCP3422_PGA(config)	((config) & MCP3422_PGA_MASK)
-+#define MCP3422_SAMPLE_RATE(config)	(((config) & MCP3422_SRATE_MASK) >> 2)
++/* straight from the datasheet */
++#define LM75_TEMP_MIN (-55000)
++#define LM75_TEMP_MAX 125000
++#define LM75_SHUTDOWN 0x01
 +
-+#define MCP3422_CHANNEL_VALUE(value) (((value) << 5) & MCP3422_CHANNEL_MASK)
-+#define MCP3422_PGA_VALUE(value) ((value) & MCP3422_PGA_MASK)
-+#define MCP3422_SAMPLE_RATE_VALUE(value) ((value << 2) & MCP3422_SRATE_MASK)
-+
-+/* Constant msleep times for data acquisitions */
-+static const int mcp3422_read_times[4] = {
-+	[MCP3422_SRATE_240] = 1000 / 240,
-+	[MCP3422_SRATE_60] = 1000 / 60,
-+	[MCP3422_SRATE_15] = 1000 / 15,
-+	[MCP3422_SRATE_3] = 1000 / 3 };
-+
-+static const int mcp3422_sample_rate_scales[4] = {
-+	[MCP3422_SRATE_240] = 8000,
-+	[MCP3422_SRATE_60] = 2000,
-+	[MCP3422_SRATE_15] = 500,
-+	[MCP3422_SRATE_3] =  125};
-+
-+static const char *mcp342x_sample_rate_str[] = {
-+	"240", "60", "15", "3"
++enum lm75_type {		/* keep sorted in alphabetical order */
++	adt75,
++	ds1775,
++	ds75,
++	ds7505,
++	g751,
++	lm75,
++	lm75a,
++	lm75b,
++	max6625,
++	max6626,
++	mcp980x,
++	stds75,
++	tcn75,
++	tmp100,
++	tmp101,
++	tmp105,
++	tmp112,
++	tmp175,
++	tmp275,
++	tmp75,
++	tmp75c,
 +};
 +
-+static const char *mcp342x_gain_str[] = {
-+	"1", "2", "4", "8"
++/* The LM75 registers */
++#define LM75_REG_CONF		0x01
++static const u8 LM75_REG_TEMP[3] = {
++	0x00,		/* input */
++	0x03,		/* max */
++	0x02,		/* hyst */
 +};
 +
-+/* sample rates to sign extension table */
-+static const int mcp3422_sign_extend[4] = {
-+	[MCP3422_SRATE_240] = 11,
-+	[MCP3422_SRATE_60] = 13,
-+	[MCP3422_SRATE_15] = 15,
-+	[MCP3422_SRATE_3] = 17 };
-+
-+struct mcp342x_channel {
-+	int num;
-+	int voltage;
-+	int temp;
-+	struct mcp342x *mcp342x;
-+	struct iochannel iochan;
-+	unsigned int gain;
++/* Each client has this additional data */
++struct lm75_data {
++	struct i2c_client	*client;
++	struct device_d		dev;
++	u8			resolution;	/* In bits, between 9 and 12 */
++	struct iochannel	iochan;
++	struct iodevice		iodev;
 +};
 +
-+struct mcp342x {
-+	struct i2c_client *i2c;
-+	struct iodevice iodev;
-+	unsigned int sps;
-+	u8 id;
-+	u8 config;
-+	u8 pga[4];
-+	int num_channels;
-+	struct mcp342x_channel *channel[4];
-+	char *unit;
-+};
-+
-+static int mcp3422_update_config(struct mcp342x *adc, u8 newconfig)
++static int lm75_read_value(struct lm75_data *data, u8 reg)
 +{
-+	int ret;
-+
-+	ret = i2c_master_send(adc->i2c, &newconfig, 1);
-+	if (ret > 0) {
-+		adc->config = newconfig;
-+		ret = 0;
-+	}
-+
-+	return ret;
++	if (reg == LM75_REG_CONF)
++		return i2c_smbus_read_byte_data(data->client, reg);
++	else
++		return i2c_smbus_read_word_swapped(data->client, reg);
 +}
 +
-+static int mcp3422_read(struct mcp342x_channel *channel)
++static int lm75_write_value(struct lm75_data *data, u8 reg, u16 value)
 +{
-+	struct mcp342x *adc = channel->mcp342x;
-+	int ret = 0;
-+	u8 sample_rate = MCP3422_SAMPLE_RATE(adc->config);
-+	u8 buf[4] = {0, 0, 0, 0};
-+	u32 temp;
-+
-+	if (sample_rate == MCP3422_SRATE_3) {
-+		ret = i2c_master_recv(adc->i2c, buf, 4);
-+		temp = buf[0] << 16 | buf[1] << 8 | buf[2];
-+	} else {
-+		ret = i2c_master_recv(adc->i2c, buf, 3);
-+		temp = buf[0] << 8 | buf[1];
-+	}
-+
-+	channel->voltage = sign_extend32(temp, mcp3422_sign_extend[sample_rate]) *
-+			mcp3422_sample_rate_scales[sample_rate] / (1 << channel->gain) / 8;
-+
-+	return ret;
++	if (reg == LM75_REG_CONF)
++		return i2c_smbus_write_byte_data(data->client, reg, value);
++	else
++		return i2c_smbus_write_word_swapped(data->client, reg, value);
 +}
 +
-+static int mcp342x_get_voltage(struct iochannel *iochan, int *value)
++static long lm75_reg_to_mc(s16 temp, u8 resolution)
 +{
-+	struct mcp342x_channel *channel = container_of(iochan, struct mcp342x_channel, iochan);
-+	struct mcp342x *adc = channel->mcp342x;
-+	u8 config;
-+	int ret;
++	return ((temp >> (16 - resolution)) * 1000) >> (resolution - 8);
++}
 +
-+	config = MCP3422_CONT_SAMPLING |
-+		MCP3422_CHANNEL_VALUE(channel->num) |
-+		MCP3422_PGA_VALUE(channel->gain) |
-+		MCP3422_SAMPLE_RATE_VALUE(adc->sps);
++static int lm75_get_temp(struct iochannel *iochan, int *val)
++{
++	struct lm75_data *data = container_of(iochan, struct lm75_data, iochan);
++	int status;
 +
-+	if (config != adc->config) {
-+		ret = mcp3422_update_config(adc, config);
-+		if (ret < 0)
-+			return ret;
-+
-+		mdelay(mcp3422_read_times[MCP3422_SAMPLE_RATE(adc->config)]);
++	status = lm75_read_value(data, LM75_REG_TEMP[0]);
++	if (status < 0) {
++		dev_err(&data->client->dev,
++			"LM75: Failed to read value: reg %d, error %d\n",
++			LM75_REG_TEMP[0], status);
++		return status;
 +	}
 +
-+	mcp3422_read(channel);
-+
-+	*value = channel->voltage;
++	*val = lm75_reg_to_mc(status, data->resolution);
 +
 +	return 0;
 +}
 +
-+static int mcp342x_probe(struct device_d *dev)
++static int lm75_probe(struct device_d *dev)
 +{
-+	struct mcp342x *adc;
-+	int id , ret, i, num_channels;
++	struct lm75_data *data;
++	int status;
++	u8 set_mask, clr_mask;
++	int new, ret;
++	enum lm75_type kind;
 +
-+	ret = dev_get_drvdata(dev, (const void **)&id);
++	ret = dev_get_drvdata(dev, (const void **)&kind);
 +	if (ret)
 +		return ret;
 +
-+	adc = xzalloc(sizeof(*adc));
++	data = xzalloc(sizeof(*data));
 +
-+	adc->i2c = to_i2c_client(dev);
-+	adc->id = id;
-+	adc->unit = "uV";
++	data->client = to_i2c_client(dev);
 +
-+	switch (id) {
-+	case 1:
-+		num_channels = 1;
++	/* Set to LM75 resolution (9 bits, 1/2 degree C) and range.
++	 * Then tweak to be more precise when appropriate.
++	 */
++	set_mask = 0;
++	clr_mask = LM75_SHUTDOWN;		/* continuous conversions */
++
++	switch (kind) {
++	case adt75:
++		clr_mask |= 1 << 5;		/* not one-shot mode */
++		data->resolution = 12;
 +		break;
-+	case 2:
-+	case 3:
-+	case 6:
-+	case 7:
-+		num_channels = 2;
++	case ds1775:
++	case ds75:
++	case stds75:
++		clr_mask |= 3 << 5;
++		set_mask |= 2 << 5;		/* 11-bit mode */
++		data->resolution = 11;
 +		break;
-+	case 4:
-+	case 8:
-+		num_channels = 4;
++	case ds7505:
++		set_mask |= 3 << 5;		/* 12-bit mode */
++		data->resolution = 12;
 +		break;
-+	default:
-+		return -EINVAL;
++	case g751:
++	case lm75:
++	case lm75a:
++		data->resolution = 9;
++		break;
++	case lm75b:
++		data->resolution = 11;
++		break;
++	case max6625:
++		data->resolution = 9;
++		break;
++	case max6626:
++		data->resolution = 12;
++		break;
++	case tcn75:
++		data->resolution = 9;
++		break;
++	case mcp980x:
++		/* fall through */
++	case tmp100:
++	case tmp101:
++		set_mask |= 3 << 5;		/* 12-bit mode */
++		data->resolution = 12;
++		clr_mask |= 1 << 7;		/* not one-shot mode */
++		break;
++	case tmp112:
++		set_mask |= 3 << 5;		/* 12-bit mode */
++		clr_mask |= 1 << 7;		/* not one-shot mode */
++		data->resolution = 12;
++		break;
++	case tmp105:
++	case tmp175:
++	case tmp275:
++	case tmp75:
++		set_mask |= 3 << 5;		/* 12-bit mode */
++		clr_mask |= 1 << 7;		/* not one-shot mode */
++		data->resolution = 12;
++		break;
++	case tmp75c:
++		clr_mask |= 1 << 5;		/* not one-shot mode */
++		data->resolution = 12;
++		break;
 +	}
 +
-+	adc->num_channels = num_channels;
-+
-+	adc->sps = MCP3422_SRATE_15;
-+
-+	adc->iodev.hwdev = dev;
-+
-+	adc->iodev.channels = xmalloc(sizeof(void *) * num_channels);
-+	adc->iodev.num_channels = num_channels;
-+	adc->iodev.read = mcp342x_get_voltage;
-+
-+	for (i = 0; i < num_channels; i++) {
-+		struct mcp342x_channel *channel;
-+
-+		channel = xzalloc(sizeof(*channel));
-+		adc->iodev.channels[i] = &channel->iochan;
-+		channel->iochan.unit = "uV";
-+		adc->channel[i] = channel;
-+		channel->num = i;
-+		channel->mcp342x = adc;
++	/* configure as specified */
++	status = lm75_read_value(data, LM75_REG_CONF);
++	if (status < 0) {
++		dev_dbg(dev, "Can't read config? %d\n", status);
++		return status;
 +	}
 +
-+	ret = iodevice_register(&adc->iodev);
++	new = status & ~clr_mask;
++	new |= set_mask;
++	if (status != new)
++		lm75_write_value(data, LM75_REG_CONF, new);
++
++	data->iodev.num_channels = 1;
++	data->iodev.hwdev = dev;
++	data->iodev.read = lm75_get_temp;
++	data->iodev.channels = xmalloc(sizeof(void *));
++	data->iodev.channels[0] = &data->iochan;
++	data->iochan.unit = "mC";
++
++	ret = iodevice_register(&data->iodev);
 +	if (ret)
 +		return ret;
 +
-+	dev_add_param_enum(&adc->iodev.dev, "in_sps", NULL, NULL, &adc->sps,
-+			   mcp342x_sample_rate_str,
-+			   ARRAY_SIZE(mcp342x_sample_rate_str), NULL);
-+
-+	for (i = 0; i < num_channels; i++) {
-+		struct mcp342x_channel *channel = adc->channel[i];
-+		char *name;
-+
-+		name = asprintf("in_gain%d", i);
-+		dev_add_param_enum(&adc->iodev.dev, name, NULL, NULL, &channel->gain,
-+			   mcp342x_gain_str,
-+			   ARRAY_SIZE(mcp342x_gain_str), NULL);
-+		free(name);
-+	}
-+
 +	return 0;
 +}
 +
-+static const struct platform_device_id mcp342x_ids[] = {
-+	{ "mcp3421", 1 },
-+	{ "mcp3422", 2 },
-+	{ "mcp3423", 3 },
-+	{ "mcp3424", 4 },
-+	{ "mcp3426", 6 },
-+	{ "mcp3427", 7 },
-+	{ "mcp3428", 8 },
-+	{ }
++static const struct platform_device_id lm75_ids[] = {
++	{ .name = "adt75", .driver_data = adt75, },
++	{ .name = "ds1775", .driver_data = ds1775, },
++	{ .name = "ds75", .driver_data = ds75, },
++	{ .name = "ds7505", .driver_data = ds7505, },
++	{ .name = "g751", .driver_data = g751, },
++	{ .name = "lm75", .driver_data = lm75, },
++	{ .name = "lm75a", .driver_data = lm75a, },
++	{ .name = "lm75b", .driver_data = lm75b, },
++	{ .name = "max6625", .driver_data = max6625, },
++	{ .name = "max6626", .driver_data = max6626, },
++	{ .name = "mcp980x", .driver_data = mcp980x, },
++	{ .name = "stds75", .driver_data = stds75, },
++	{ .name = "tcn75", .driver_data = tcn75, },
++	{ .name = "tmp100", .driver_data = tmp100, },
++	{ .name = "tmp101", .driver_data = tmp101, },
++	{ .name = "tmp105", .driver_data = tmp105, },
++	{ .name = "tmp112", .driver_data = tmp112, },
++	{ .name = "tmp175", .driver_data = tmp175, },
++	{ .name = "tmp275", .driver_data = tmp275, },
++	{ .name = "tmp75", .driver_data = tmp75, },
++	{ .name = "tmp75c", .driver_data = tmp75c, },
++	{ /* LIST END */ }
 +};
 +
-+static struct driver_d mcp342x_driver = {
-+	.name  = "mcp342x",
-+	.probe = mcp342x_probe,
-+	.id_table = mcp342x_ids,
++static struct driver_d lm75_driver = {
++	.name  = "lm75",
++	.probe = lm75_probe,
++	.id_table = lm75_ids,
 +};
 +
-+static int mcp342x_init(void)
++static int lm75_init(void)
 +{
-+	i2c_driver_register(&mcp342x_driver);
++	i2c_driver_register(&lm75_driver);
 +	return 0;
 +}
 +
-+device_initcall(mcp342x_init);
++device_initcall(lm75_init);
+\ No newline at end of file
 -- 
 2.6.2
 
