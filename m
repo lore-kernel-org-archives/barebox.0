@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-lf0-x22c.google.com ([2a00:1450:4010:c07::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6FfR-0004KF-JQ
- for barebox@lists.infradead.org; Tue, 08 Dec 2015 10:38:46 +0000
-From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue, 08 Dec 2015 11:38:23 +0100
-Message-ID: <1563794.ZGoa3k9mEj@adelgunde>
-In-Reply-To: <20151208133552.eded730b31053a53a7115a53@gmail.com>
-References: <1449567572-21758-1-git-send-email-mpa@pengutronix.de>
- <1449567572-21758-10-git-send-email-mpa@pengutronix.de>
- <20151208133552.eded730b31053a53a7115a53@gmail.com>
+ id 1a6Ggl-0005Ae-FI
+ for barebox@lists.infradead.org; Tue, 08 Dec 2015 11:44:12 +0000
+Received: by lfaz4 with SMTP id z4so10894082lfa.0
+ for <barebox@lists.infradead.org>; Tue, 08 Dec 2015 03:43:49 -0800 (PST)
+Date: Tue, 8 Dec 2015 14:46:37 +0300
+From: Peter Mamonov <pmamonov@gmail.com>
+Message-ID: <20151208144637.4c30ad2a@berta>
+In-Reply-To: <20151207102744.GH11966@pengutronix.de>
+References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
+ <1440714250-28080-4-git-send-email-antonynpavlov@gmail.com>
+ <20150828063432.GA18700@pengutronix.de>
+ <20150828184614.d0ec3d17f1800be9093f7fa3@gmail.com>
+ <20150904062048.GT18700@pengutronix.de>
+ <20151206175051.e4a017449d741f3989cdc161@gmail.com>
+ <20151207102744.GH11966@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,173 +25,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2310187454417216171=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 9/9] fs: Add pstore filesystem
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [RFC 3/9] MIPS: add virt_to_phys() and phys_to_virt()
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+On Mon, 7 Dec 2015 11:27:44 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
---===============2310187454417216171==
-Content-Type: multipart/signed; boundary="nextPart2569050.WXKUEc6y4t"; micalg="pgp-sha256"; protocol="application/pgp-signature"
+> On Sun, Dec 06, 2015 at 05:50:51PM +0300, Antony Pavlov wrote:
+> > On Fri, 4 Sep 2015 08:20:48 +0200
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > 
+> > > On Fri, Aug 28, 2015 at 06:46:14PM +0300, Antony Pavlov wrote:
+> > > > On Fri, 28 Aug 2015 08:34:32 +0200
+> > > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > > 
+> > > > > On Fri, Aug 28, 2015 at 01:24:04AM +0300, Antony Pavlov wrote:
+> > > > > > N.B. phys_to_virt() translates phys address
+> > > > > > to KSEG1 (uncached) address as barebox mips
+> > > > > > has no cache support.
+> > > > > 
+> > > > > What would it take to implement cache support for mips?
+> > > > lack of the cache support is critical problem for current
+> > > > barebox mips support. I'm planning to add cache support in
+> > > > several weeks. This task needs much test efforts for different
+> > > > boards.
+> > > > 
+> > > > Anyway I can't carry out cache adding work at one.
+> > > > But adding virt_to_phys and DMA support will help to add cache
+> > > > support one day anyway.
+> > > 
+> > > Looking at this again the virt_to_phys/phys_to_virt macros are not
+> > > necessary. dma_alloc_coherent() already returns both the virtual
+> > > address and the DMA address. It should be possible to replace
+> > > DMA_ADDRESS_BROKEN in the ehci driver with a real pointer and use
+> > > it appropriatly in the driver.
+> > > 
+> > 
+> > I have tried to get physical address from dma_alloc_coherent(),
+> > here is a small part of my patch (just for demonstration):
+> > 
+> > --- a/drivers/usb/host/ehci-hcd.c
+> > +++ b/drivers/usb/host/ehci-hcd.c
+> > @@ -41,6 +41,7 @@ struct ehci_priv {
+> >  	struct ehci_hcor *hcor;
+> >  	struct usb_host host;
+> >  	struct QH *qh_list;
+> > +	dma_addr_t qh_list_dma;
+> >  	struct qTD *td;
+> >  	int portreset;
+> >  	unsigned long flags;
+> > @@ -403,7 +410,7 @@ ehci_submit_async(struct usb_device *dev,
+> > unsigned long pipe, void *buffer, goto fail;
+> >  	}
+> >  
+> > -	ehci->qh_list->qh_link =
+> > cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
+> > +	ehci->qh_list->qh_link = cpu_to_hc32(ehci->qh_list_dma |
+> > QH_LINK_TYPE_QH); 
+> >  	token = hc32_to_cpu(qh->qt_token);
+> >  	if (!(token & 0x80)) {
+> > @@ -1306,7 +1313,7 @@ int ehci_register(struct device_d *dev,
+> > struct ehci_data *data) ehci->post_init = data->post_init;
+> >  
+> >  	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) *
+> > NUM_TD,
+> > -					   DMA_ADDRESS_BROKEN);
+> > +					   &ehci->qh_list_dma);
+> >  	ehci->periodic_queue = dma_alloc_coherent(sizeof(struct
+> > QH), DMA_ADDRESS_BROKEN);
+> >  	ehci->td = dma_alloc_coherent(sizeof(struct qTD) * NUM_TD,
+> > 
+> > 
+> > However ehci_td_buffer() gets buf pointer outside of ehci driver
+> > (e.g. via usb_bulk_msg()), so it is difficult to avoid
+> > virt_to_phys() in ehci_td_buffer(), e.g.:
+> > 
+> > @@ -195,7 +197,7 @@ static int ehci_td_buffer(struct qTD *td, void
+> > *buf, size_t sz) 
+> >         idx = 0;
+> >         while (idx < 5) {
+> > -               td->qt_buffer[idx] = cpu_to_hc32(addr);
+> > +               td->qt_buffer[idx] =
+> > cpu_to_hc32(virt_to_phys(addr)); next = (addr + 4096) & ~4095;
+> >                 delta = next - addr;
+> >                 if (delta >= sz)
+> > 
+> > Have you any idea?
+> 
+> No. Translating this addres into a physical address seems unavoidable
+> here. 
 
+The other solution is to allocate private buffer using
+dma_alloc_coherent(), use the returned dma address to fill the qt_buffer
+field, copy data from the supplied buffer to the private buffer before
+the transaction and copy back after the transaction is done.
 
---nextPart2569050.WXKUEc6y4t
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+> I would still prefer a real cache implementation for MIPS
+> though. Have you looked further into that? The current MIPS
+> cached/uncached memory windows seem to be a constant source of
+> problems we could avoid.
+> 
+> Sascha
+> 
+> 
 
-Hi,
-
-On Tuesday 08 December 2015 13:35:52 Antony Pavlov wrote:
-> On Tue,  8 Dec 2015 10:39:32 +0100
-> Markus Pargmann <mpa@pengutronix.de> wrote:
->=20
-> > pstore is a persistent storage filesystem used for RAMOOPS. It is u=
-sed
-> > to store console logs, panics, ftrace and other information in case=
- of a
-> > crash/panic/oops/reboot.
-> >=20
-> > pstore is implemented for barebox as a read-only filesystem at the
-> > moment. It may be extended later on. The idea is to provide a way t=
-o
-> > extract essential data from the last running kernel.
-> >=20
-> > Most of the code is copied from the kernel. However this is only a
-> > lightweight implementation without real write support yet.
-> >=20
-> > Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
-> > ---
-> >=20
-> > Notes:
-> >     Changes in v2:
-> >     - Moved the config symbol from the pstore Makefile to the upper=
- level Makefile
-> >=20
-> >  common/startup.c           |   5 +
-> >  fs/Kconfig                 |   2 +
-> >  fs/Makefile                |   1 +
-> >  fs/pstore/Kconfig          |  86 ++++++++
-> >  fs/pstore/Makefile         |   9 +
-> >  fs/pstore/fs.c             | 280 +++++++++++++++++++++++++
-> >  fs/pstore/internal.h       |  19 ++
-> >  fs/pstore/platform.c       | 138 ++++++++++++
-> >  fs/pstore/ram.c            | 507 +++++++++++++++++++++++++++++++++=
-++++++++++++
-> >  fs/pstore/ram_core.c       | 426 +++++++++++++++++++++++++++++++++=
-++++
-> >  include/linux/pstore.h     |  90 ++++++++
-> >  include/linux/pstore_ram.h |  87 ++++++++
-> >  12 files changed, 1650 insertions(+)
-> >  create mode 100644 fs/pstore/Kconfig
-> >  create mode 100644 fs/pstore/Makefile
-> >  create mode 100644 fs/pstore/fs.c
-> >  create mode 100644 fs/pstore/internal.h
-> >  create mode 100644 fs/pstore/platform.c
-> >  create mode 100644 fs/pstore/ram.c
-> >  create mode 100644 fs/pstore/ram_core.c
-> >  create mode 100644 include/linux/pstore.h
-> >  create mode 100644 include/linux/pstore_ram.h
-> >=20
-> > --- /dev/null
-> > +++ b/fs/pstore/fs.c
-> > @@ -0,0 +1,280 @@
-> > +/*
-> > + * Persistent Storage Barebox filesystem layer
-> > + * Copyright =A9 2015 Pengutronix, Markus Pargmann <mpa@pengutroni=
-x.de>
-> > + *
-> > + * This program is free software; you can redistribute it and/or m=
-odify
-> > + * it under the terms of the GNU General Public License as publish=
-ed by
-> > + * the Free Software Foundation; either version 2 of the License, =
-or
-> > + * (at your option) any later version.
-> > + *
-> > + * This program is distributed in the hope that it will be useful,=
-
-> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-> > + * GNU General Public License for more details.
-> > + *
-> > + * You should have received a copy of the GNU General Public Licen=
-se
-> > + * along with this program; if not, see <http://www.gnu.org/licens=
-es/>.
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <driver.h>
-> > +#include <fs.h>
-> > +#include <errno.h>
-> > +#include <fcntl.h>
-> > +#include <fs.h>
-> > +#include <malloc.h>
-> > +#include <init.h>
-> > +#include <linux/stat.h>
-> > +#include <linux/err.h>
-> > +#include <linux/pstore.h>
-> > +#include <libbb.h>
-> > +#include <rtc.h>
-> > +#include <libfile.h>
-> > +#include <linux/pstore.h>
->=20
-> <linux/psstore.h> and <fs.h> are included twice.
-
-Oh thanks. Removed these and sorted the includes.
-
-Best Regards,
-
-Markus
-
-=2D-=20
-Pengutronix e.K.                           |                           =
-  |
-Industrial Linux Solutions                 | http://www.pengutronix.de/=
-  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0  =
-  |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-555=
-5 |
-
---nextPart2569050.WXKUEc6y4t
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAABCAAGBQJWZrMfAAoJEEpcgKtcEGQQ46MP/AqxwT70xlCB4XY+ynI5NkaV
-dyls0vh5HL7W3lXcQICzJnld9dAOqyOUZQd4RaJnU7DI5pKAZnily68us7WKD/lr
-CuiVGf7tX7dYRykTi6BLhkO64I9GmR9eQXGwVN/W36YYRjyY7aEVVObN5yLauw9p
-BGBnUPXWRb2Wy0cIZYd//jY89jb/INWybTGT8kIZmTr/rHltp8Mj76sDZJF4WtzL
-fzEwGhRGeaPxUEppnPa1afn7XgX131CzcyokOMZKFGdajQS5K5AgDuIFfZPlGzfv
-vJ5oW9p2ia0vyhLZXEIvpxaQNpajAY438yLWI/OCxCV28/aLLtVRtto3x1FVQzwx
-G6TStnBAjWisYG3qjaw7pvuIzdj++W39GARWW4QpdDZ210/kfiaTAggy9tINmM7J
-OFOMSRKxpUUlCzH8/fHDtbzUs/3waQkjAYI1Vtl9kP4Wc3ba67PyWLevPa8bj8f9
-1MRn5+odyS+z4ZUO/c8fTMcYTLFlkhaHmbS1X17b9GltHMIn4rAie1EkbxdiDrnI
-vdFuUV0Lfds85O2ZwMI1FaV+s4pB0WlUlKxgTHLfVeMXGHRdY0i3I+A8nAhDMLkc
-+kC9Rv58Wkvox8FNiA7KB9MOjES+NFnqhRPU4gQiPqLWaMyh15gE1QB6sEW3DpYm
-HqVx7/5ePuJfgxv6u2Tu
-=K8Bp
------END PGP SIGNATURE-----
-
---nextPart2569050.WXKUEc6y4t--
-
-
-
---===============2310187454417216171==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2310187454417216171==--
