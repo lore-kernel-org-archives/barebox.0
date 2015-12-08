@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6EkO-0002fX-Ix
- for barebox@lists.infradead.org; Tue, 08 Dec 2015 09:39:51 +0000
+ id 1a6EkO-0002ff-Iz
+ for barebox@lists.infradead.org; Tue, 08 Dec 2015 09:39:54 +0000
 From: Markus Pargmann <mpa@pengutronix.de>
-Date: Tue,  8 Dec 2015 10:39:27 +0100
-Message-Id: <1449567572-21758-5-git-send-email-mpa@pengutronix.de>
+Date: Tue,  8 Dec 2015 10:39:30 +0100
+Message-Id: <1449567572-21758-8-git-send-email-mpa@pengutronix.de>
 In-Reply-To: <1449567572-21758-1-git-send-email-mpa@pengutronix.de>
 References: <1449567572-21758-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,62 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/9] vsprintf: Add scnprintf from kernel
+Subject: [PATCH v2 7/9] arm: start: Add visible sdram region for barebox board
+ data
 To: barebox@lists.infradead.org
+
+This helps to understand and find problems with the memory layout of
+barebox. It adds another entry for the board data that barebox
+allocated.
 
 Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 ---
- include/stdio.h |  1 +
- lib/vsprintf.c  | 24 ++++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ arch/arm/cpu/start.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/include/stdio.h b/include/stdio.h
-index f1909117621d..d0817bd0715a 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -13,6 +13,7 @@ void	serial_printf(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index e06c4c8f37a0..4ad64b61e86a 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -34,6 +34,8 @@
+ #include "mmu-early.h"
  
- int	sprintf(char *buf, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
- int	snprintf(char *buf, size_t size, const char *fmt, ...) __attribute__ ((format(__printf__, 3, 4)));
-+int	scnprintf(char *buf, size_t size, const char *fmt, ...) __attribute__ ((format(__printf__, 3, 4)));
- int	vsprintf(char *buf, const char *fmt, va_list args);
- char	*asprintf(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2)));
- char	*vasprintf(const char *fmt, va_list ap);
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 800ded7939eb..9b8e8cf5f8e3 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -595,6 +595,30 @@ int snprintf(char *buf, size_t size, const char *fmt, ...)
+ unsigned long arm_stack_top;
++static unsigned long arm_head_bottom;
++static unsigned long arm_barebox_size;
+ static void *barebox_boarddata;
+ 
+ static bool blob_is_fdt(const void *blob)
+@@ -116,6 +118,18 @@ static inline unsigned long arm_mem_boarddata(unsigned long membase,
+ 	return mem;
  }
- EXPORT_SYMBOL(snprintf);
  
-+/**
-+ * scnprintf - Format a string and place it in a buffer
-+ * @buf: The buffer to place the result into
-+ * @size: The size of the buffer, including the trailing null space
-+ * @fmt: The format string to use
-+ * @...: Arguments for the format string
-+ *
-+ * The return value is the number of characters written into @buf not including
-+ * the trailing '\0'. If @size is == 0 the function returns 0.
-+ */
-+
-+int scnprintf(char *buf, size_t size, const char *fmt, ...)
++static int barebox_memory_areas_init(void)
 +{
-+	va_list args;
-+	int i;
++	unsigned long start = arm_head_bottom;
++	unsigned long size = arm_mem_barebox_image(0, arm_stack_top,
++						   arm_barebox_size) -
++			     arm_head_bottom;
++	request_sdram_region("board data", start, size);
 +
-+	va_start(args, fmt);
-+	i = vscnprintf(buf, size, fmt, args);
-+	va_end(args);
-+
-+	return i;
++	return 0;
 +}
-+EXPORT_SYMBOL(scnprintf);
++device_initcall(barebox_memory_areas_init);
 +
- /* Simplified asprintf. */
- char *vasprintf(const char *fmt, va_list ap)
+ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 		unsigned long memsize, void *boarddata)
  {
+@@ -123,7 +137,6 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 	unsigned long malloc_start, malloc_end;
+ 	unsigned long barebox_size = barebox_image_size +
+ 		((unsigned long)&__bss_stop - (unsigned long)&__bss_start);
+-	unsigned long arm_head_bottom;
+ 
+ 	if (IS_ENABLED(CONFIG_RELOCATABLE)) {
+ 		unsigned long barebox_base = arm_mem_barebox_image(membase,
+@@ -139,6 +152,9 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+ 
+ 	arm_stack_top = endmem;
++	arm_barebox_size = barebox_size;
++	arm_head_bottom = arm_mem_barebox_image(membase, endmem,
++						arm_barebox_size);
+ 
+ 	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
+ 		unsigned long ttb = arm_mem_ttb(membase, endmem);
+@@ -175,6 +191,7 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+ 				 name, mem);
+ 			barebox_boarddata = memcpy((void *)mem, boarddata,
+ 						   totalsize);
++			arm_head_bottom = mem;
+ 		}
+ 	}
+ 
 -- 
 2.6.2
 
