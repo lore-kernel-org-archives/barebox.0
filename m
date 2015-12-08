@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6Kf7-0000jw-1K
- for barebox@lists.infradead.org; Tue, 08 Dec 2015 15:58:45 +0000
-Received: from weser.hi.pengutronix.de ([2001:67c:670:100:fa0f:41ff:fe58:4010])
+ id 1a6M8w-0007Dw-1d
+ for barebox@lists.infradead.org; Tue, 08 Dec 2015 17:33:38 +0000
+Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
  by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1a6Kek-0007s9-3W
- for barebox@lists.infradead.org; Tue, 08 Dec 2015 16:58:22 +0100
-Message-ID: <1449590302.3118.20.camel@pengutronix.de>
+ (envelope-from <l.stach@pengutronix.de>) id 1a6M8a-0007Sm-9D
+ for barebox@lists.infradead.org; Tue, 08 Dec 2015 18:33:16 +0100
 From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 08 Dec 2015 16:58:22 +0100
-Mime-Version: 1.0
+Date: Tue,  8 Dec 2015 18:33:28 +0100
+Message-Id: <1449596009-26508-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,28 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Messed up commit in master
+Subject: [PATCH 1/2] ARM: ccxmx53: properly guard initcall for multiimage
 To: barebox@lists.infradead.org
 
-Hi Sascha,
+Make sure to not run this board specific initcall on any
+other board.
 
-I've just stumbled across a messed up commit that landed in barebox
-master. It seems you squashed other unrelated commits into commit
-e7a8519963fcb235a123dfe5e7dd59d6fb2eaf9e (ARM: mx6sx-sabresdb: set
-proper hostname).
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/ccxmx53/board.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-I know its against the master stability rules, but I think it would be
-justified to split this commit properly and re-push a fixed master.
-
-Regards,
-Lucas
+diff --git a/arch/arm/boards/ccxmx53/board.c b/arch/arm/boards/ccxmx53/board.c
+index 0031aed772e4..9d81cd80a373 100644
+--- a/arch/arm/boards/ccxmx53/board.c
++++ b/arch/arm/boards/ccxmx53/board.c
+@@ -85,6 +85,9 @@ static int ccwmx53_devices_init(void)
+ 	u8 hwid[6] = {0};
+ 	char manloc = 0;
+ 
++	if (!of_machine_is_compatible("digi,imx53-ccxmx53"))
++		return 0;
++
+ 	if ((imx_iim_read(1, 9, hwid, sizeof(hwid)) != sizeof(hwid)) ||
+ 	    (hwid[0] < 0x02) ||
+ 	    (hwid[0] >= ARRAY_SIZE(ccwmx53_ids))) {
 -- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
+2.6.2
 
 
 _______________________________________________
