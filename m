@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6M8w-0007Dx-1a
- for barebox@lists.infradead.org; Tue, 08 Dec 2015 17:33:38 +0000
-Received: from dude.hi.4.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de.)
- by metis.ext.pengutronix.de with esmtp (Exim 4.80)
- (envelope-from <l.stach@pengutronix.de>) id 1a6M8a-0007Sm-Bh
- for barebox@lists.infradead.org; Tue, 08 Dec 2015 18:33:16 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue,  8 Dec 2015 18:33:29 +0100
-Message-Id: <1449596009-26508-2-git-send-email-l.stach@pengutronix.de>
-In-Reply-To: <1449596009-26508-1-git-send-email-l.stach@pengutronix.de>
-References: <1449596009-26508-1-git-send-email-l.stach@pengutronix.de>
+ id 1a6ePR-0005zq-BO
+ for barebox@lists.infradead.org; Wed, 09 Dec 2015 13:03:54 +0000
+Date: Wed, 9 Dec 2015 14:03:28 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151209130328.GW11966@pengutronix.de>
+References: <1440714250-28080-1-git-send-email-antonynpavlov@gmail.com>
+ <1440714250-28080-4-git-send-email-antonynpavlov@gmail.com>
+ <20150828063432.GA18700@pengutronix.de>
+ <20150828184614.d0ec3d17f1800be9093f7fa3@gmail.com>
+ <20150904062048.GT18700@pengutronix.de>
+ <20151206175051.e4a017449d741f3989cdc161@gmail.com>
+ <20151207102744.GH11966@pengutronix.de>
+ <20151208144637.4c30ad2a@berta>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20151208144637.4c30ad2a@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +25,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] MCI: init device_node for MCI mainarea cdev
-To: barebox@lists.infradead.org
+Subject: Re: [RFC 3/9] MIPS: add virt_to_phys() and phys_to_virt()
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This fixes a regression, where boards specifying the environment
-path using the form device-path = &phandle, "partname:part" would
-be unable to find their env.
+On Tue, Dec 08, 2015 at 02:46:37PM +0300, Peter Mamonov wrote:
+> On Mon, 7 Dec 2015 11:27:44 +0100
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > On Sun, Dec 06, 2015 at 05:50:51PM +0300, Antony Pavlov wrote:
+> > > On Fri, 4 Sep 2015 08:20:48 +0200
+> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > 
+> > > > On Fri, Aug 28, 2015 at 06:46:14PM +0300, Antony Pavlov wrote:
+> > > > > On Fri, 28 Aug 2015 08:34:32 +0200
+> > > > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > > > 
+> > > > > > On Fri, Aug 28, 2015 at 01:24:04AM +0300, Antony Pavlov wrote:
+> > > > > > > N.B. phys_to_virt() translates phys address
+> > > > > > > to KSEG1 (uncached) address as barebox mips
+> > > > > > > has no cache support.
+> > > > > > 
+> > > > > > What would it take to implement cache support for mips?
+> > > > > lack of the cache support is critical problem for current
+> > > > > barebox mips support. I'm planning to add cache support in
+> > > > > several weeks. This task needs much test efforts for different
+> > > > > boards.
+> > > > > 
+> > > > > Anyway I can't carry out cache adding work at one.
+> > > > > But adding virt_to_phys and DMA support will help to add cache
+> > > > > support one day anyway.
+> > > > 
+> > > > Looking at this again the virt_to_phys/phys_to_virt macros are not
+> > > > necessary. dma_alloc_coherent() already returns both the virtual
+> > > > address and the DMA address. It should be possible to replace
+> > > > DMA_ADDRESS_BROKEN in the ehci driver with a real pointer and use
+> > > > it appropriatly in the driver.
+> > > > 
+> > > 
+> > > I have tried to get physical address from dma_alloc_coherent(),
+> > > here is a small part of my patch (just for demonstration):
+> > > 
+> > > --- a/drivers/usb/host/ehci-hcd.c
+> > > +++ b/drivers/usb/host/ehci-hcd.c
+> > > @@ -41,6 +41,7 @@ struct ehci_priv {
+> > >  	struct ehci_hcor *hcor;
+> > >  	struct usb_host host;
+> > >  	struct QH *qh_list;
+> > > +	dma_addr_t qh_list_dma;
+> > >  	struct qTD *td;
+> > >  	int portreset;
+> > >  	unsigned long flags;
+> > > @@ -403,7 +410,7 @@ ehci_submit_async(struct usb_device *dev,
+> > > unsigned long pipe, void *buffer, goto fail;
+> > >  	}
+> > >  
+> > > -	ehci->qh_list->qh_link =
+> > > cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
+> > > +	ehci->qh_list->qh_link = cpu_to_hc32(ehci->qh_list_dma |
+> > > QH_LINK_TYPE_QH); 
+> > >  	token = hc32_to_cpu(qh->qt_token);
+> > >  	if (!(token & 0x80)) {
+> > > @@ -1306,7 +1313,7 @@ int ehci_register(struct device_d *dev,
+> > > struct ehci_data *data) ehci->post_init = data->post_init;
+> > >  
+> > >  	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) *
+> > > NUM_TD,
+> > > -					   DMA_ADDRESS_BROKEN);
+> > > +					   &ehci->qh_list_dma);
+> > >  	ehci->periodic_queue = dma_alloc_coherent(sizeof(struct
+> > > QH), DMA_ADDRESS_BROKEN);
+> > >  	ehci->td = dma_alloc_coherent(sizeof(struct qTD) * NUM_TD,
+> > > 
+> > > 
+> > > However ehci_td_buffer() gets buf pointer outside of ehci driver
+> > > (e.g. via usb_bulk_msg()), so it is difficult to avoid
+> > > virt_to_phys() in ehci_td_buffer(), e.g.:
+> > > 
+> > > @@ -195,7 +197,7 @@ static int ehci_td_buffer(struct qTD *td, void
+> > > *buf, size_t sz) 
+> > >         idx = 0;
+> > >         while (idx < 5) {
+> > > -               td->qt_buffer[idx] = cpu_to_hc32(addr);
+> > > +               td->qt_buffer[idx] =
+> > > cpu_to_hc32(virt_to_phys(addr)); next = (addr + 4096) & ~4095;
+> > >                 delta = next - addr;
+> > >                 if (delta >= sz)
+> > > 
+> > > Have you any idea?
+> > 
+> > No. Translating this addres into a physical address seems unavoidable
+> > here. 
+> 
+> The other solution is to allocate private buffer using
+> dma_alloc_coherent(), use the returned dma address to fill the qt_buffer
+> field, copy data from the supplied buffer to the private buffer before
+> the transaction and copy back after the transaction is done.
 
-This is due to of_find_path() switching to cdev_by_device_node()
-internally, which expects the device_node member of the main
-area cdev to be initialized.
+Yes, that would work aswell, but would is neither nice nor efficient.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- drivers/mci/mci-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+Sascha
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 4e6b83be5f43..24f57f9da9a4 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -437,6 +437,9 @@ static void mci_part_add(struct mci *mci, uint64_t size,
- 	part->area_type = area_type;
- 	part->part_cfg = part_cfg;
- 
-+	if (area_type == MMC_BLK_DATA_AREA_MAIN)
-+		part->blk.cdev.device_node = mci->host->hw_dev->device_node;
-+
- 	mci->nr_parts++;
- }
- 
 -- 
-2.6.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
