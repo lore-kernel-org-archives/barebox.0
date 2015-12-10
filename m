@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a784Y-0005eE-KS
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 20:44:19 +0000
+ id 1a797x-00006T-S7
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 21:51:54 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Thu, 10 Dec 2015 20:42:42 +0000
-Message-ID: <1449780168.26955.81.camel@rtred1test09.kymeta.local>
-References: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
- <1449565539-29374-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1449565539-29374-2-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 10 Dec 2015 21:50:51 +0000
+Message-ID: <1449784257.26955.82.camel@rtred1test09.kymeta.local>
 Content-Language: en-US
-Content-ID: <BB2AAC1BA2174A47AFA6F346D3E6B5D8@kymetacorp.com>
+Content-ID: <5A8FC7B931BD2C45829C4C3785466962@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,51 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] misc: Add iodevice support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] bootstrap: constify strings
+To: barebox <barebox@lists.infradead.org>
 
-On Tue, 2015-12-08 at 10:05 +0100, Sascha Hauer wrote:
-> +int iodevice_register(struct iodevice *iodev)
-> +{
-> +	const char *devname = NULL;
-> +	int i, ret;
-> +
-> +	if (iodev->hwdev->device_node) {
-> +		devname = of_alias_get(iodev->hwdev->device_node);
-> +		iodev->dev.id = DEVICE_ID_SINGLE;
-> +	}
-> +
-> +	if (!devname) {
-> +		devname = "io";
-> +		iodev->dev.id = DEVICE_ID_DYNAMIC;
-> +	}
-> +
-> +	strcpy(iodev->dev.name, devname);
-> +
-> +	iodev->dev.parent = iodev->hwdev;
-> +
-> +	ret = register_device(&iodev->dev);
+Various parameters for device names, etc.  should be const strings.
 
-Why does every driver/subsystem need to implement its own alias
-support?  
+Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+---
+ include/bootstrap.h   | 8 ++++----
+ lib/bootstrap/devfs.c | 2 +-
+ lib/bootstrap/disk.c  | 4 ++--
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-Since register_device() has access to
-(&iodev->dev)->parent->device_node, couldn't it do the alias lookup
-instead, so that each driver doesn't need to?
+diff --git a/include/bootstrap.h b/include/bootstrap.h
+index 9863ff4..d3ee6be 100644
+--- a/include/bootstrap.h
++++ b/include/bootstrap.h
+@@ -15,10 +15,10 @@ typedef void (*kernel_entry_func)(int zero, int arch, void *params);
+ void bootstrap_boot(kernel_entry_func func, bool barebox);
+ 
+ #ifdef CONFIG_BOOTSTRAP_DEVFS
+-void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
++void* bootstrap_read_devfs(const char *devname, bool use_bb, int offset,
+ 			   int default_size, int max_size);
+ #else
+-static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
++static inline void* bootstrap_read_devfs(const char *devname, bool use_bb, int offset,
+ 			   int default_size, int max_size)
+ {
+ 	return NULL;
+@@ -26,9 +26,9 @@ static inline void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+ #endif
+ 
+ #ifdef CONFIG_BOOTSTRAP_DISK
+-void* bootstrap_read_disk(char *devname, char *fstype);
++void* bootstrap_read_disk(const char *devname, const char *fstype);
+ #else
+-static inline void* bootstrap_read_disk(char *devname, char *fstype)
++static inline void* bootstrap_read_disk(const char *devname, const char *fstype)
+ {
+ 	return NULL;
+ }
+diff --git a/lib/bootstrap/devfs.c b/lib/bootstrap/devfs.c
+index 5a64477..6a3dd76 100644
+--- a/lib/bootstrap/devfs.c
++++ b/lib/bootstrap/devfs.c
+@@ -80,7 +80,7 @@ static unsigned int get_image_size(void *head)
+ }
+ #endif
+ 
+-void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
++void* bootstrap_read_devfs(const char *devname, bool use_bb, int offset,
+ 			   int default_size, int max_size)
+ {
+ 	int ret;
+diff --git a/lib/bootstrap/disk.c b/lib/bootstrap/disk.c
+index ebf9ee5..a55d5d7 100644
+--- a/lib/bootstrap/disk.c
++++ b/lib/bootstrap/disk.c
+@@ -14,12 +14,12 @@
+ #include <libfile.h>
+ #include <bootstrap.h>
+ 
+-void* bootstrap_read_disk(char *dev, char *fstype)
++void* bootstrap_read_disk(const char *dev, const char *fstype)
+ {
+ 	int ret;
+ 	void *buf;
+ 	int len;
+-	char *path = "/";
++	const char *path = "/";
+ 
+ 	ret = mount(dev, fstype, path, NULL);
+ 	if (ret) {
+-- 
+1.8.3.1
 
-Then one could write:
 
-iodev->dev.parent = iodev->hwdev;
-strcpy(iodev->dev.name, "io");
-iodev->dev.id = DEVICE_ID_DYNAMIC;
-ret = register_device(&iodev->dev);
-
-I guess this doesn't work exactly for net drivers, since they want to do
-s/ethernet(\d+)/eth\1/ on the alias name.
-
-And some drivers create a cdev the alias should be applied to instead of
-a dev.  Though I supposed devfs_create() could do the same thing.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
