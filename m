@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ig0-x22d.google.com ([2607:f8b0:4001:c05::22d])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6uew-00083Z-7e
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 06:24:59 +0000
-Received: by mail-ig0-x22d.google.com with SMTP id mv3so9542238igc.0
- for <barebox@lists.infradead.org>; Wed, 09 Dec 2015 22:24:37 -0800 (PST)
+ id 1a6vzq-0005AZ-DI
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 07:50:38 +0000
+Date: Thu, 10 Dec 2015 08:50:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151210075016.GB11966@pengutronix.de>
+References: <1449567572-21758-1-git-send-email-mpa@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
-References: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
-Date: Wed, 9 Dec 2015 22:24:37 -0800
-Message-ID: <CAHQ1cqEiW3czDqrRWcSZ=3KWYe-yM=wCMJrF3JzgkXnADzRMRA@mail.gmail.com>
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1449567572-21758-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] iodevice support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 0/9] RAMOOPS read support for Barebox
+To: Markus Pargmann <mpa@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, Dec 8, 2015 at 1:05 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> The following is something like a mixture of Linux IIO and hwmon support
-> for the poor. I called it iodevice, but better names are appreciated.
-> A iodevice has multiple channels, each providing a value like for
-> example a temperature or a voltage. For each iodevice we provide device
-> parameters to access the values from the commandline. The C API for a
-> consumer consists of iochannel_get() to get a iochannel, and
-> iochannel_get_value() to actually read a value.
-> As drivers we currently have a LM75 temperature driver and a MCP342x ADC
-> driver. Also there is a PT100 driver which itself is a consumer of
-> another iodevice, a MCP342x in my case. This is more meant as an example
-> since the voltage to temperature conversion function is board specific.
+On Tue, Dec 08, 2015 at 10:39:23AM +0100, Markus Pargmann wrote:
+> Hi,
+> 
+> This is v2 with some smaller fixes. Changes are described at the individual
+> patches.
+> 
+> Best Regards,
+> 
+> Markus
+
+Applied, thanks
+
+Sascha
 
 
-One feature that I would like to suggest/request in this API is
-ability to give custom names to individual channels via DT. AFAIU, as
-of right now, that the names are hard coded and assigned automatically
-by the subsystem.
 
-The reason why I am asking is because a fair number of use-cases for
-Barebox that I see is as a board verification tool and as such it is
-often used by people who may not be as familiar (if at all) with
-Barebox, it's code and how "in_value%d_%s" relates to the actual
-parameter reading they are trying to verify.
-
-Thanks,
-Andrey
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
