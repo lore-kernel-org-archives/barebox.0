@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6w4M-0006fq-2D
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 07:55:18 +0000
-Date: Thu, 10 Dec 2015 08:54:56 +0100
+ id 1a6w9j-0002MJ-Ud
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 08:00:52 +0000
+Date: Thu, 10 Dec 2015 09:00:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151210075456.GD11966@pengutronix.de>
-References: <1449590302.3118.20.camel@pengutronix.de>
+Message-ID: <20151210080029.GE11966@pengutronix.de>
+References: <1449698135.26955.58.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449590302.3118.20.camel@pengutronix.de>
+In-Reply-To: <1449698135.26955.58.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Messed up commit in master
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] partitions: UUID was missing from partitions by name
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Tue, Dec 08, 2015 at 04:58:22PM +0100, Lucas Stach wrote:
-> Hi Sascha,
+On Wed, Dec 09, 2015 at 09:55:29PM +0000, Trent Piepho wrote:
+> The partition code registers one or two cdevs for each partition.  The
+> 2nd one is used if the partition has a name.  The block of code for
+> each cdev is duplicated twice, and the 2nd copy is missing the bit
+> that copies the partition uuid and the dos partition type to the cdev.
 > 
-> I've just stumbled across a messed up commit that landed in barebox
-> master. It seems you squashed other unrelated commits into commit
-> e7a8519963fcb235a123dfe5e7dd59d6fb2eaf9e (ARM: mx6sx-sabresdb: set
-> proper hostname).
-> 
-> I know its against the master stability rules, but I think it would be
-> justified to split this commit properly and re-push a fixed master.
+> Refactor the register cdev out to a new function that is called twice.
+> This way each cdev is done correctly.
 
-I messed it up, but unfortunately we have to live with it. I won't
-rebase master. In the end nothing bad has happened, only that one commit
-has the wrong commit message.
+Nice. Besides of fixing a bug this makes intention of the code is much
+clearer. Thanks, applied.
 
 Sascha
 
