@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from mail-ig0-x22d.google.com ([2607:f8b0:4001:c05::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6oJz-0004X8-OU
- for barebox@lists.infradead.org; Wed, 09 Dec 2015 23:38:56 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Wed, 9 Dec 2015 23:38:31 +0000
-Message-ID: <1449704317.26955.62.camel@rtred1test09.kymeta.local>
-References: <1449698135.26955.58.camel@rtred1test09.kymeta.local>
- <1449698677.26955.59.camel@rtred1test09.kymeta.local>
-In-Reply-To: <1449698677.26955.59.camel@rtred1test09.kymeta.local>
-Content-Language: en-US
-Content-ID: <4610968DD6F102429F91D1B51406789A@kymetacorp.com>
+ id 1a6uew-00083Z-7e
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 06:24:59 +0000
+Received: by mail-ig0-x22d.google.com with SMTP id mv3so9542238igc.0
+ for <barebox@lists.infradead.org>; Wed, 09 Dec 2015 22:24:37 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
+References: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 9 Dec 2015 22:24:37 -0800
+Message-ID: <CAHQ1cqEiW3czDqrRWcSZ=3KWYe-yM=wCMJrF3JzgkXnADzRMRA@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,52 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2 v2] partitions/efi: Add partuuid to partition
- description
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [RFC] iodevice support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-In commit bc31d85c6e23d724664e76bcfc3b2eda778012a3 the partition UUID
-was added to the partition struct and thence to the cdev(s) for the
-partition.  But just for DOS partitions.  Do this for GPT aka EFI
-partitions too.
+On Tue, Dec 8, 2015 at 1:05 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> The following is something like a mixture of Linux IIO and hwmon support
+> for the poor. I called it iodevice, but better names are appreciated.
+> A iodevice has multiple channels, each providing a value like for
+> example a temperature or a voltage. For each iodevice we provide device
+> parameters to access the values from the commandline. The C API for a
+> consumer consists of iochannel_get() to get a iochannel, and
+> iochannel_get_value() to actually read a value.
+> As drivers we currently have a LM75 temperature driver and a MCP342x ADC
+> driver. Also there is a PT100 driver which itself is a consumer of
+> another iodevice, a MCP342x in my case. This is more meant as an example
+> since the voltage to temperature conversion function is board specific.
 
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
----
-Changes from v1:
-  Turns out the default is to print the UUID in big-endian format
-  but the kernel and everyone else uses little-endian for GPT UUIDs.
 
- common/partitions/Kconfig | 1 +
- common/partitions/efi.c   | 1 +
- 2 files changed, 2 insertions(+)
+One feature that I would like to suggest/request in this API is
+ability to give custom names to individual channels via DT. AFAIU, as
+of right now, that the names are hard coded and assigned automatically
+by the subsystem.
 
-diff --git a/common/partitions/Kconfig b/common/partitions/Kconfig
-index 90238ad..be9405a 100644
---- a/common/partitions/Kconfig
-+++ b/common/partitions/Kconfig
-@@ -16,6 +16,7 @@ config PARTITION_DISK_DOS
- config PARTITION_DISK_EFI
- 	depends on PARTITION_DISK
- 	select CRC32
-+	select PRINTF_UUID
- 	bool "EFI: GPT partition support"
- 	help
- 	  Add support to handle partitions in GUID Partition Table style.
-diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-index 61abf00..a9945dd 100644
---- a/common/partitions/efi.c
-+++ b/common/partitions/efi.c
-@@ -457,6 +457,7 @@ static void efi_partition(void *buf, struct block_device *blk,
- 		pentry->size = le64_to_cpu(ptes[i].ending_lba) - pentry->first_sec;
- 		pentry->size++;
- 		part_set_efi_name(&ptes[i], pentry->name);
-+		snprintf(pentry->partuuid, sizeof(pentry->partuuid), "%pUl", &ptes[i].unique_partition_guid);
- 		pd->used_entries++;
- 	}
- 
--- 
-1.8.3.1
+The reason why I am asking is because a fair number of use-cases for
+Barebox that I see is as a board verification tool and as such it is
+often used by people who may not be as familiar (if at all) with
+Barebox, it's code and how "in_value%d_%s" relates to the actual
+parameter reading they are trying to verify.
 
+Thanks,
+Andrey
 
 _______________________________________________
 barebox mailing list
