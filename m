@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from forward19o.cmail.yandex.net ([37.9.109.217])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a76mL-0005WQ-1o
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 19:21:26 +0000
-Received: from smtp2o.mail.yandex.net (smtp2o.mail.yandex.net
- [IPv6:2a02:6b8:0:1a2d::26])
- by forward19o.cmail.yandex.net (Yandex) with ESMTP id 51FA021216
- for <barebox@lists.infradead.org>; Thu, 10 Dec 2015 22:20:59 +0300 (MSK)
-From: Andrey Panov <rockford@yandex.ru>
-Date: Thu, 10 Dec 2015 22:20:12 +0300
-Message-Id: <1449775212-17571-1-git-send-email-rockford@yandex.ru>
+ id 1a76pi-0006T8-CH
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 19:24:54 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Thu, 10 Dec 2015 19:23:33 +0000
+Message-ID: <1449775419.26955.68.camel@rtred1test09.kymeta.local>
+References: <1449742046-20906-1-git-send-email-s.hauer@pengutronix.de>
+ <1449742046-20906-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1449742046-20906-3-git-send-email-s.hauer@pengutronix.de>
+Content-Language: en-US
+Content-ID: <D281C4EBB437714CA7BAD82114ACCD73@kymetacorp.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX6Q: Embedsky E9: Convert environment paths in DTS to
- a new bindings
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] linux/barebox-wrapper: Silence gcc5 warning
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-Signed-off-by: Andrey Panov <rockford@yandex.ru>
----
- arch/arm/dts/imx6q-embedsky-e9.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On Thu, 2015-12-10 at 11:07 +0100, Sascha Hauer wrote:
+> gcc5 warns about using flags uninitialized in spin_lock_irqsave,
+> although it could look into the static inline spin_lock_irqsave
+> implementation and see it's not used at all. An empty define instead
+> of the static inline wrapper would lead to a "unused variable" warning.
+> Let's create a macro and fake some usage of the flags variable. This
+> probably helps until gcc6 is out.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  include/linux/barebox-wrapper.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
+> index 3859185..5fe7971 100644
+> --- a/include/linux/barebox-wrapper.h
+> +++ b/include/linux/barebox-wrapper.h
+> @@ -39,8 +39,8 @@ typedef int   spinlock_t;
+>  #define spin_lock_init(...)
+>  #define spin_lock(...)
+>  #define spin_unlock(...)
+> -static inline void spin_lock_irqsave(spinlock_t *lock, unsigned long flags) {}
+> -static inline void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags) {}
+> +#define spin_lock_irqsave(lock, flags) do { flags = 0; } while (0)
+> +#define spin_unlock_irqrestore(lock, flags) do { flags = flags; } while (0)
 
-diff --git a/arch/arm/dts/imx6q-embedsky-e9.dts b/arch/arm/dts/imx6q-embedsky-e9.dts
-index 4514d4e..726d620 100644
---- a/arch/arm/dts/imx6q-embedsky-e9.dts
-+++ b/arch/arm/dts/imx6q-embedsky-e9.dts
-@@ -22,13 +22,13 @@
- 
- 		environment-mmc1 {
- 			compatible = "barebox,environment";
--			device-path = &usdhc2, "partname:barebox-environment";
-+			device-path = &environment_mmc1;
- 			status = "disabled";
- 		};
- 
- 		environment-mmc3 {
- 			compatible = "barebox,environment";
--			device-path = &usdhc4, "partname:barebox-environment";
-+			device-path = &environment_mmc3;
- 			status = "disabled";
- 		};
- 
-@@ -43,7 +43,7 @@
- 		label = "barebox";
- 		reg = <0x0 0x80000>;
- 	};
--	partition@1 {
-+	environment_mmc1: partition@1 {
- 		label = "barebox-environment";
- 		reg = <0x80000 0x80000>;
- 	};
-@@ -57,7 +57,7 @@
- 		label = "barebox";
- 		reg = <0x0 0x80000>;
- 	};
--	partition@1 {
-+	environment_mmc3: partition@1 {
- 		label = "barebox-environment";
- 		reg = <0x80000 0x80000>;
- 	};
--- 
-2.6.2
+It's more complex, but one would still get compiler type checking of the
+arguments if one did:
+
+static inline void _slis(spinlock_t *lock, unsigned long flags) {}
+static inline void _slir(spinlock_t *lock, unsigned long flags) {}
+#define spin_lock_irqsave(lock, flags) _slis(lock, flags = 0)
+#define spin_lock_irqrestore(lock, flags) _slir(lock, flags = flags)
+
+It think that would make gcc happy too?
+
 
 
 _______________________________________________
