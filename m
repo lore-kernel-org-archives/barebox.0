@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6vzq-0005AZ-DI
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 07:50:38 +0000
-Date: Thu, 10 Dec 2015 08:50:16 +0100
+ id 1a6w1Y-0005Kw-4n
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 07:52:24 +0000
+Date: Thu, 10 Dec 2015 08:52:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151210075016.GB11966@pengutronix.de>
-References: <1449567572-21758-1-git-send-email-mpa@pengutronix.de>
+Message-ID: <20151210075202.GC11966@pengutronix.de>
+References: <1449596009-26508-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449567572-21758-1-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1449596009-26508-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/9] RAMOOPS read support for Barebox
-To: Markus Pargmann <mpa@pengutronix.de>
+Subject: Re: [PATCH 1/2] ARM: ccxmx53: properly guard initcall for multiimage
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 08, 2015 at 10:39:23AM +0100, Markus Pargmann wrote:
-> Hi,
+On Tue, Dec 08, 2015 at 06:33:28PM +0100, Lucas Stach wrote:
+> Make sure to not run this board specific initcall on any
+> other board.
 > 
-> This is v2 with some smaller fixes. Changes are described at the individual
-> patches.
-> 
-> Best Regards,
-> 
-> Markus
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> ---
+>  arch/arm/boards/ccxmx53/board.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
 Applied, thanks
 
 Sascha
-
 
 
 -- 
