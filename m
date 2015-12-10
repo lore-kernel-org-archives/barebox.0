@@ -1,21 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp684.redcondor.net ([208.80.206.84])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a739I-00030H-Ih
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 15:28:54 +0000
-Received: from astoria.ccjclearline.com ([64.235.106.9])
- by smtp684.redcondor.net ({700db0a8-6fb7-4c8b-9b2a-6812225182d8})
- via TCP (outbound) with ESMTPS id 20151210152828010_0684
- for <barebox@lists.infradead.org>; Thu, 10 Dec 2015 15:28:28 +0000
-Received: from [66.46.196.8] (port=34564 helo=crashcourse.ca)
- by astoria.ccjclearline.com with esmtpsa (TLSv1:AES128-SHA:128)
- (Exim 4.80) (envelope-from <rpjday@crashcourse.ca>)
- id 1a739k-0005AB-BV
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 10:29:20 -0500
-Date: Thu, 10 Dec 2015 10:28:18 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Message-ID: <alpine.LFD.2.20.1512101025310.13554@localhost>
-MIME-Version: 1.0
+ id 1a73Hw-0001cI-Oe
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 15:37:50 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Thu, 10 Dec 2015 16:37:34 +0100
+Message-Id: <1449761854-25635-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +14,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: "make distclean" leaves a pile of arch/arm/dts/*.lzo files
-To: barebox mailing list <barebox@lists.infradead.org>
+Subject: [PATCH] Documentation: Document pstore/RAMOOPS
+To: barebox@lists.infradead.org
 
+Add some documentation about behaviour and setup of pstore/RAMOOPS.
 
-  just did a configure and build for a beaglebone black, then ran
-"make distclean" and ...
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ Documentation/filesystems/pstore.rst | 76 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+ create mode 100644 Documentation/filesystems/pstore.rst
 
-$ git status --ignored
-On branch master
-Your branch is up-to-date with 'origin/master'.
-Ignored files:
-  (use "git add -f <file>..." to include in what will be committed)
-
-	arch/arm/dts/am335x-afi-gf.dtb.lzo
-	arch/arm/dts/am335x-bone-common.dtb.lzo
-	arch/arm/dts/am335x-bone.dtb.lzo
-	arch/arm/dts/am335x-boneblack.dtb.lzo
-	arch/arm/dts/am335x-phytec-phycard-som-mlo.dtb.lzo
-	arch/arm/dts/am335x-phytec-phycard-som.dtb.lzo
-	arch/arm/dts/am335x-phytec-phycore-som-mlo.dtb.lzo
-	arch/arm/dts/am335x-phytec-phycore-som-no-eeprom.dtb.lzo
-        arch/arm/dts/am335x-phytec-phycore-som-no-spi-no-eeprom.dtb.lzo
-	arch/arm/dts/am335x-phytec-phycore-som-no-spi.dtb.lzo
-	arch/arm/dts/am335x-phytec-phycore-som.dtb.lzo
-	arch/arm/dts/am335x-phytec-phyflex-som-mlo.dtb.lzo
-	arch/arm/dts/am335x-phytec-phyflex-som-no-eeprom.dtb.lzo
-	arch/arm/dts/am335x-phytec-phyflex-som-no-spi-no-eeprom.dtb.lzo
-	arch/arm/dts/am335x-phytec-phyflex-som-no-spi.dtb.lzo
-	arch/arm/dts/am335x-phytec-phyflex-som.dtb.lzo
-	barebox-flash-images
-
-nothing to commit, working directory clean
-$
-
-  so i'm guessing building for other targets will also leave .lzo
-files lying around.
-
-rday
-
-
+diff --git a/Documentation/filesystems/pstore.rst b/Documentation/filesystems/pstore.rst
+new file mode 100644
+index 000000000000..2d16753fce7e
+--- /dev/null
++++ b/Documentation/filesystems/pstore.rst
+@@ -0,0 +1,76 @@
++.. index:: pstore (filesystem)
++
++pstore filesystem with RAM backend (RAMOOPS)
++============================================
++
++Barebox supports the pstore filesystem known from the kernel. The main backend 
++implementation is RAM. All other backends are currently not implemented by 
++Barebox.
++
++pstore is a filesystem to store kernel log or kernel panic messages. These 
++messages are stored by the kernel in a specified RAM area which is never 
++overwritten by any user. This data can be accessed after a reboot through 
++/pstore in Barebox or the kernel. The pstore filesystem is automatically mounted 
++at boot::
++	none on / type ramfs
++	none on /dev type devfs
++	none on /pstore type pstore
++
++pstore may add additional warnings during boot due to wrong ECCs (no data 
++written)::
++
++	persistent_ram: found existing invalid buffer, size 791282217, start 1116786789
++	persistent_ram: uncorrectable error in header
++	persistent_ram: found existing invalid buffer, size 791282281, start 1133564005
++	persistent_ram: uncorrectable error in header
++	persistent_ram: found existing invalid buffer, size 791347753, start 1133564005
++	persistent_ram: uncorrectable error in header
++	persistent_ram: found existing invalid buffer, size 791347753, start 1133572197
++	persistent_ram: uncorrectable error in header
++	persistent_ram: found existing invalid buffer, size 774505001, start 1133564005
++	persistent_ram: uncorrectable error in header
++	persistent_ram: found existing invalid buffer, size 791282281, start 1133564005
++	persistent_ram: uncorrectable error in header
++	persistent_ram: found existing invalid buffer, size 791282217, start 1133564005
++	pstore: Registered ramoops as persistent store backend
++	ramoops: attached 0x200000@0x1fdf4000, ecc: 16/0
++
++To use pstore/RAMOOPS both Barebox and Kernel have to be compiled with pstore 
++and RAM backend support. The kernel receives the parameters describing the 
++layout over the kernel command line. These parameters are automatically 
++generated by Barebox. You can change these parameters in Barebox menuconfig. The 
++RAMOOPS parameters for the Kernel are stored in the variable 
++global.linux.bootargs.ramoops::
++
++To see where the RAMOOPS area is located, you can execute iomem in Barebox. The 
++RAMOOPS area is listed as 'persistent ram'::
++
++  0x10000000 - 0x1fffffff (size 0x10000000) ram0
++    0x17e7c0c0 - 0x1fcf817f (size 0x07e7c0c0) malloc space
++    0x1fcf8180 - 0x1fcfffff (size 0x00007e80) board data
++    0x1fd00000 - 0x1fd6eeff (size 0x0006ef00) barebox
++    0x1fd6ef00 - 0x1fd88dff (size 0x00019f00) barebox data
++    0x1fd88e00 - 0x1fd8c3db (size 0x000035dc) bss
++    0x1fdf4000 - 0x1fe13fff (size 0x00020000) persistent ram
++    0x1fe14000 - 0x1fe33fff (size 0x00020000) persistent ram
++    0x1fe34000 - 0x1fe53fff (size 0x00020000) persistent ram
++    0x1fe54000 - 0x1fe73fff (size 0x00020000) persistent ram
++    0x1fe74000 - 0x1fe93fff (size 0x00020000) persistent ram
++    0x1fe94000 - 0x1feb3fff (size 0x00020000) persistent ram
++    0x1feb4000 - 0x1fed3fff (size 0x00020000) persistent ram
++    0x1fed4000 - 0x1fef3fff (size 0x00020000) persistent ram
++    0x1fef4000 - 0x1ff13fff (size 0x00020000) persistent ram
++    0x1ff14000 - 0x1ff33fff (size 0x00020000) persistent ram
++    0x1ff34000 - 0x1ff53fff (size 0x00020000) persistent ram
++    0x1ff54000 - 0x1ff73fff (size 0x00020000) persistent ram
++    0x1ff74000 - 0x1ff93fff (size 0x00020000) persistent ram
++    0x1ff94000 - 0x1ffb3fff (size 0x00020000) persistent ram
++    0x1ffb4000 - 0x1ffd3fff (size 0x00020000) persistent ram
++    0x1ffd4000 - 0x1fff3fff (size 0x00020000) persistent ram
++    0x1fff4000 - 0x1fff7fff (size 0x00004000) ttb
++    0x1fff8000 - 0x1fffffff (size 0x00008000) stack
++
++All pstore files that could be found are added to the /pstore directory. This is 
++a read-only filesystem. If you disable the Kconfig option FS_PSTORE_RAMOOPS_RO, 
++the RAMOOPS area is reset and its ECC recalculated. But that does not allow any 
++writes from Barebox into that area.
 -- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+2.6.2
 
 
 _______________________________________________
