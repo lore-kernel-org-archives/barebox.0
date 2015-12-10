@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a6w9j-0002MJ-Ud
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 08:00:52 +0000
-Date: Thu, 10 Dec 2015 09:00:29 +0100
+ id 1a6y8R-0007Ck-51
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 10:07:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151210080029.GE11966@pengutronix.de>
-References: <1449698135.26955.58.camel@rtred1test09.kymeta.local>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1449698135.26955.58.camel@rtred1test09.kymeta.local>
+Date: Thu, 10 Dec 2015 11:07:25 +0100
+Message-Id: <1449742046-20906-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1449742046-20906-1-git-send-email-s.hauer@pengutronix.de>
+References: <1449742046-20906-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,33 +16,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] partitions: UUID was missing from partitions by name
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] linux/barebox-wrapper: Silence gcc5 warning
+To: Barebox List <barebox@lists.infradead.org>
 
-On Wed, Dec 09, 2015 at 09:55:29PM +0000, Trent Piepho wrote:
-> The partition code registers one or two cdevs for each partition.  The
-> 2nd one is used if the partition has a name.  The block of code for
-> each cdev is duplicated twice, and the 2nd copy is missing the bit
-> that copies the partition uuid and the dos partition type to the cdev.
-> 
-> Refactor the register cdev out to a new function that is called twice.
-> This way each cdev is done correctly.
+gcc5 warns about using flags uninitialized in spin_lock_irqsave,
+although it could look into the static inline spin_lock_irqsave
+implementation and see it's not used at all. An empty define instead
+of the static inline wrapper would lead to a "unused variable" warning.
+Let's create a macro and fake some usage of the flags variable. This
+probably helps until gcc6 is out.
 
-Nice. Besides of fixing a bug this makes intention of the code is much
-clearer. Thanks, applied.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/linux/barebox-wrapper.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
+index 3859185..5fe7971 100644
+--- a/include/linux/barebox-wrapper.h
++++ b/include/linux/barebox-wrapper.h
+@@ -39,8 +39,8 @@ typedef int   spinlock_t;
+ #define spin_lock_init(...)
+ #define spin_lock(...)
+ #define spin_unlock(...)
+-static inline void spin_lock_irqsave(spinlock_t *lock, unsigned long flags) {}
+-static inline void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags) {}
++#define spin_lock_irqsave(lock, flags) do { flags = 0; } while (0)
++#define spin_unlock_irqrestore(lock, flags) do { flags = flags; } while (0)
+ 
+ #define mutex_init(...)
+ #define mutex_lock(...)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.6.2
+
 
 _______________________________________________
 barebox mailing list
