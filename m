@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a76pi-0006T8-CH
- for barebox@lists.infradead.org; Thu, 10 Dec 2015 19:24:54 +0000
+ id 1a77P3-0006PY-60
+ for barebox@lists.infradead.org; Thu, 10 Dec 2015 20:01:26 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Thu, 10 Dec 2015 19:23:33 +0000
-Message-ID: <1449775419.26955.68.camel@rtred1test09.kymeta.local>
-References: <1449742046-20906-1-git-send-email-s.hauer@pengutronix.de>
- <1449742046-20906-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1449742046-20906-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 10 Dec 2015 20:00:50 +0000
+Message-ID: <1449777657.26955.70.camel@rtred1test09.kymeta.local>
 Content-Language: en-US
-Content-ID: <D281C4EBB437714CA7BAD82114ACCD73@kymetacorp.com>
+Content-ID: <F849D2663B6DD94C87DDAF99B99149B3@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,46 +21,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] linux/barebox-wrapper: Silence gcc5 warning
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] bootstrap: Boot barebox with kernel calling convention
+To: barebox <barebox@lists.infradead.org>
 
-On Thu, 2015-12-10 at 11:07 +0100, Sascha Hauer wrote:
-> gcc5 warns about using flags uninitialized in spin_lock_irqsave,
-> although it could look into the static inline spin_lock_irqsave
-> implementation and see it's not used at all. An empty define instead
-> of the static inline wrapper would lead to a "unused variable" warning.
-> Let's create a macro and fake some usage of the flags variable. This
-> probably helps until gcc6 is out.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  include/linux/barebox-wrapper.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
-> index 3859185..5fe7971 100644
-> --- a/include/linux/barebox-wrapper.h
-> +++ b/include/linux/barebox-wrapper.h
-> @@ -39,8 +39,8 @@ typedef int   spinlock_t;
->  #define spin_lock_init(...)
->  #define spin_lock(...)
->  #define spin_unlock(...)
-> -static inline void spin_lock_irqsave(spinlock_t *lock, unsigned long flags) {}
-> -static inline void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags) {}
-> +#define spin_lock_irqsave(lock, flags) do { flags = 0; } while (0)
-> +#define spin_unlock_irqrestore(lock, flags) do { flags = flags; } while (0)
+In commit 8e3ddc13eb8239177ed20f119e3a3d02518b941d the bootm code was
+changed to boot barebox using the same calling convention as the
+kernel.  Which on ARM is to pass three arguments which are zero, an
+architecture code, and a params pointer.
 
-It's more complex, but one would still get compiler type checking of the
-arguments if one did:
+A 2nd stage barebox can be booted using lib/bootstrap, which is
+different code from bootm.  This code just leaves garbage in the first
+three parameters and so doesn't follow the convention.
 
-static inline void _slis(spinlock_t *lock, unsigned long flags) {}
-static inline void _slir(spinlock_t *lock, unsigned long flags) {}
-#define spin_lock_irqsave(lock, flags) _slis(lock, flags = 0)
-#define spin_lock_irqrestore(lock, flags) _slir(lock, flags = flags)
+Change it to be compatible with the ARM kernel booting convention.
+This just sends a zero for the architecture, since the code for
+architectures depends on boot[zmu] and something using bootstrap
+wouldn't have those too.  And it just passes NULL for the params since
+we don't have a way to pass a device tree from the preloader.
 
-It think that would make gcc happy too?
+All users of bootstrap are ARM based, but the code is in lib so a
+non-ARM board might someday make use of it.  If the current code would
+work for them, then the change here will be ok too.
 
+Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+---
+ include/bootstrap.h    | 3 ++-
+ lib/bootstrap/common.c | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/include/bootstrap.h b/include/bootstrap.h
+index 28852c0..9863ff4 100644
+--- a/include/bootstrap.h
++++ b/include/bootstrap.h
+@@ -11,7 +11,8 @@
+ 
+ #define bootstrap_err(fmt, arg...) printf(fmt, ##arg)
+ 
+-void bootstrap_boot(int (*func)(void), bool barebox);
++typedef void (*kernel_entry_func)(int zero, int arch, void *params);
++void bootstrap_boot(kernel_entry_func func, bool barebox);
+ 
+ #ifdef CONFIG_BOOTSTRAP_DEVFS
+ void* bootstrap_read_devfs(char *devname, bool use_bb, int offset,
+diff --git a/lib/bootstrap/common.c b/lib/bootstrap/common.c
+index 38ec272..4a61992 100644
+--- a/lib/bootstrap/common.c
++++ b/lib/bootstrap/common.c
+@@ -9,7 +9,7 @@
+ #include <bootstrap.h>
+ #include <filetype.h>
+ 
+-void bootstrap_boot(int (*func)(void), bool barebox)
++void bootstrap_boot(kernel_entry_func func, bool barebox)
+ {
+ 	if (!func)
+ 		return;
+@@ -18,7 +18,7 @@ void bootstrap_boot(int (*func)(void), bool barebox)
+ 		return;
+ 
+ 	shutdown_barebox();
+-	func();
++	func(0, 0, NULL);
+ 
+ 	while (1);
+ }
+-- 
+1.8.3.1
 
 
 _______________________________________________
