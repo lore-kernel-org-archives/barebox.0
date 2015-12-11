@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a7BVM-0002cT-EU
- for barebox@lists.infradead.org; Fri, 11 Dec 2015 00:24:13 +0000
+ id 1a7DEH-0000Al-3L
+ for barebox@lists.infradead.org; Fri, 11 Dec 2015 02:14:41 +0000
 From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 11 Dec 2015 00:23:11 +0000
-Message-ID: <1449793397.26955.94.camel@rtred1test09.kymeta.local>
+Date: Fri, 11 Dec 2015 02:13:21 +0000
+Message-ID: <1449800007.26955.96.camel@rtred1test09.kymeta.local>
 Content-Language: en-US
-Content-ID: <A6FA4DC3820AAB4DBE533B71105D2ED5@kymetacorp.com>
+Content-ID: <FAE4A0DF525F9D4E8FEBADCC2C21509F@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,57 +21,108 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] cdev: When creating a new cdev, initialize device_node
+Subject: [PATCH] socfpga: Find partition with environment via device tree
 To: barebox <barebox@lists.infradead.org>
 
-If a new cdev doesn't have a device_node defined when passed to
-devfs_create(), set it to the device_node of the parent device, if one
-exists.
+socfpga loads the environment from a file named "barebox.env" located
+on the device "/dev/mmc0.1".  Both those names are hard-coded in the
+socfpga code and can't be changed.
 
-For non-partitions, like ocotp or eeprom devices, this is the correct
-thing to do.  Partitions need to use, and do use, a different node.
+Barebox supports selecting the location of the environment using a
+"barebox,environment" node in device tree's "chosen" node.
 
-The code from commit 274e0b8dc48956babeaa2faf70bf8066e656b621 to set
-device_node in ocotp can be removed.
+Change socfpga to use this mechanism by looking for barebox.env in the
+device or partition specified in the device tree.
+
+The filename is still hard-coded.  Someone who wants to change it
+could put that into the device tree too (new file-name property?  3rd
+string in device-path?).
+
+Remove the stat() call in socfpga_env_init(), as mount() already
+checks if the device exists.  Also remove device_detect_by_name() call
+as the barebox env device code now takes care of that for us.
 
 Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
 ---
-Tested this to work for loading the env from an at24 eeprom.  Should work
-for any other non-partitioned device too.
 
- arch/arm/mach-imx/ocotp.c | 1 -
- fs/devfs-core.c           | 5 ++++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+OMAP could do the same thing...
 
-diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index 6ff5ee4..c99a003 100644
---- a/arch/arm/mach-imx/ocotp.c
-+++ b/arch/arm/mach-imx/ocotp.c
-@@ -426,7 +426,6 @@ static int imx_ocotp_probe(struct device_d *dev)
- 	cdev->priv	= priv;
- 	cdev->size	= 192;
- 	cdev->name	= "imx-ocotp";
--	cdev->device_node = dev->device_node;
+ arch/arm/dts/socfpga.dtsi       |  7 +++++++
+ arch/arm/mach-socfpga/generic.c | 37 +++++++++++++------------------------
+ 2 files changed, 20 insertions(+), 24 deletions(-)
+
+diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
+index d4d498b..1d0d6ff 100644
+--- a/arch/arm/dts/socfpga.dtsi
++++ b/arch/arm/dts/socfpga.dtsi
+@@ -1,4 +1,11 @@
+ / {
++	chosen {
++                environment@0 {
++                        compatible = "barebox,environment";
++                        device-path = &mmc, "partname:1";
++                };
++	};
++
+ 	aliases {
+ 		mmc0 = &mmc;
+ 	};
+diff --git a/arch/arm/mach-socfpga/generic.c b/arch/arm/mach-socfpga/generic.c
+index 2d4afd0..46f9415 100644
+--- a/arch/arm/mach-socfpga/generic.c
++++ b/arch/arm/mach-socfpga/generic.c
+@@ -105,38 +105,27 @@ static int socfpga_init(void)
+ core_initcall(socfpga_init);
  
- 	ret = devfs_create(cdev);
+ #if defined(CONFIG_ENV_HANDLING)
+-#define ENV_PATH "/boot/barebox.env"
++#define ENV_PATH "/boot"		/* Where to mount env device */
++#define ENV_FILE "barebox.env"		/* File on device to use */
++
+ static int socfpga_env_init(void)
+ {
+-	struct stat s;
+-	char *diskdev, *partname;
++	const char *device;
+ 	int ret;
  
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 2541ea3..a5ac5a3 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -260,8 +260,11 @@ int devfs_create(struct cdev *new)
- 		return -EEXIST;
+-	diskdev = "mmc0";
+-
+-	device_detect_by_name(diskdev);
+-
+-	partname = asprintf("/dev/%s.1", diskdev);
+-
+-	ret = stat(partname, &s);
+-
+-	if (ret) {
+-		pr_err("Failed to load environment: no device '%s'\n", diskdev);
+-		goto out_free;
+-	}
+-
+-	mkdir("/boot", 0666);
+-	ret = mount(partname, "fat", "/boot", NULL);
++	/* Get device env is on and mount it */
++	device = default_environment_path_get();
++	mkdir(ENV_PATH, 0777);
++	ret = mount(device, "fat", ENV_PATH, NULL);
+ 	if (ret) {
+-		pr_err("Failed to load environment: mount %s failed (%d)\n", partname, ret);
+-		goto out_free;
++		pr_err("Failed to load environment: mount %s failed (%d)\n", device, ret);
++		return ret;
+ 	}
  
- 	list_add_tail(&new->list, &cdev_list);
--	if (new->dev)
-+	if (new->dev) {
- 		list_add_tail(&new->devices_list, &new->dev->cdevs);
-+		if (!new->device_node)
-+			new->device_node = new->dev->device_node;
-+	}
+-	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, diskdev);
+-	default_environment_path_set(ENV_PATH);
++	/* Change env to be in a file on the now mounted device */
++	pr_debug("Loading default env from %s on device %s\n", ENV_FILE, device);
++	default_environment_path_set(ENV_PATH "/" ENV_FILE);
  
+-out_free:
+-	free(partname);
  	return 0;
  }
+ late_initcall(socfpga_env_init);
 -- 
 1.8.3.1
 
