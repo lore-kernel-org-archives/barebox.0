@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp484.redcondor.net ([208.80.204.84])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a7M7Z-0000Bj-Q7
- for barebox@lists.infradead.org; Fri, 11 Dec 2015 11:44:23 +0000
-Date: Fri, 11 Dec 2015 06:43:36 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-In-Reply-To: <20151211070330.GP11966@pengutronix.de>
-Message-ID: <alpine.LFD.2.20.1512110643001.4943@localhost>
-References: <alpine.LFD.2.20.1512101025310.13554@localhost>
- <20151211070330.GP11966@pengutronix.de>
+ id 1a7So3-0007zQ-GR
+ for barebox@lists.infradead.org; Fri, 11 Dec 2015 18:52:40 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Fri, 11 Dec 2015 18:51:26 +0000
+Message-ID: <1449859892.26955.98.camel@rtred1test09.kymeta.local>
+References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
+ <1445330352-30153-2-git-send-email-mkl@pengutronix.de>
+ <1449787121.26955.89.camel@rtred1test09.kymeta.local>
+ <1449792460.26955.91.camel@rtred1test09.kymeta.local>
+ <20151211093549.GY11966@pengutronix.de>
+In-Reply-To: <20151211093549.GY11966@pengutronix.de>
+Content-Language: en-US
+Content-ID: <D1C8B091C3F58A42862158B9D055ADF3@kymetacorp.com>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,67 +27,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: "make distclean" leaves a pile of arch/arm/dts/*.lzo files
+Subject: Re: [PATCH] of_path: Fix bug with partitions, simply code
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox mailing list <barebox@lists.infradead.org>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Fri, 11 Dec 2015, Sascha Hauer wrote:
+On Fri, 2015-12-11 at 10:35 +0100, Sascha Hauer wrote:
+> On Fri, Dec 11, 2015 at 12:07:34AM +0000, Trent Piepho wrote:
+> > In commit f72b64815619b41e026dd3eb9d53bf9855f84628 using a path that
+> > has a partition description broke.
+> > 
+> > Fix this and simplify the code some.
+> 
+> Could you please separate the fix from the cleanup?
 
-> Hi Robert,
->
-> On Thu, Dec 10, 2015 at 10:28:18AM -0500, Robert P. J. Day wrote:
-> >
-> >   just did a configure and build for a beaglebone black, then ran
-> > "make distclean" and ...
-> >
-> > $ git status --ignored
-> > On branch master
-> > Your branch is up-to-date with 'origin/master'.
-> > Ignored files:
-> >   (use "git add -f <file>..." to include in what will be committed)
-> >
-> > 	arch/arm/dts/am335x-afi-gf.dtb.lzo
-> > 	arch/arm/dts/am335x-bone-common.dtb.lzo
-> > 	arch/arm/dts/am335x-bone.dtb.lzo
-> > 	arch/arm/dts/am335x-boneblack.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phycard-som-mlo.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phycard-som.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phycore-som-mlo.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phycore-som-no-eeprom.dtb.lzo
-> >         arch/arm/dts/am335x-phytec-phycore-som-no-spi-no-eeprom.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phycore-som-no-spi.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phycore-som.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phyflex-som-mlo.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phyflex-som-no-eeprom.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phyflex-som-no-spi-no-eeprom.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phyflex-som-no-spi.dtb.lzo
-> > 	arch/arm/dts/am335x-phytec-phyflex-som.dtb.lzo
-> > 	barebox-flash-images
-> >
-> > nothing to commit, working directory clean
-> > $
-> >
-> >   so i'm guessing building for other targets will also leave .lzo
-> > files lying around.
->
-> Added the following patch, this should fix this issue. Thanks for
-> noting.
-
-  what about that last line, "barebox-flash-images"? should that also
-be cleaned out?
-
-rday
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                        http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
-
+The fix would be to add an unnecessary extra parameter to
+__of_find_path() that just gets deleted in the cleanup.
 
 _______________________________________________
 barebox mailing list
