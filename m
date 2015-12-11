@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a7IGi-0006Aq-37
- for barebox@lists.infradead.org; Fri, 11 Dec 2015 07:37:32 +0000
-Date: Fri, 11 Dec 2015 08:37:09 +0100
+ id 1a7IsU-0002uy-Jp
+ for barebox@lists.infradead.org; Fri, 11 Dec 2015 08:16:35 +0000
+Date: Fri, 11 Dec 2015 09:16:12 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151211073709.GU11966@pengutronix.de>
-References: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
- <1449565539-29374-2-git-send-email-s.hauer@pengutronix.de>
- <1449780168.26955.81.camel@rtred1test09.kymeta.local>
+Message-ID: <20151211081612.GV11966@pengutronix.de>
+References: <1449784257.26955.82.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449780168.26955.81.camel@rtred1test09.kymeta.local>
+In-Reply-To: <1449784257.26955.82.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,69 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] misc: Add iodevice support
+Subject: Re: [PATCH] bootstrap: constify strings
 To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Thu, Dec 10, 2015 at 08:42:42PM +0000, Trent Piepho wrote:
-> On Tue, 2015-12-08 at 10:05 +0100, Sascha Hauer wrote:
-> > +int iodevice_register(struct iodevice *iodev)
-> > +{
-> > +	const char *devname = NULL;
-> > +	int i, ret;
-> > +
-> > +	if (iodev->hwdev->device_node) {
-> > +		devname = of_alias_get(iodev->hwdev->device_node);
-> > +		iodev->dev.id = DEVICE_ID_SINGLE;
-> > +	}
-> > +
-> > +	if (!devname) {
-> > +		devname = "io";
-> > +		iodev->dev.id = DEVICE_ID_DYNAMIC;
-> > +	}
-> > +
-> > +	strcpy(iodev->dev.name, devname);
-> > +
-> > +	iodev->dev.parent = iodev->hwdev;
-> > +
-> > +	ret = register_device(&iodev->dev);
+On Thu, Dec 10, 2015 at 09:50:51PM +0000, Trent Piepho wrote:
+> Various parameters for device names, etc.  should be const strings.
 > 
-> Why does every driver/subsystem need to implement its own alias
-> support?
+> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+> ---
+>  include/bootstrap.h   | 8 ++++----
+>  lib/bootstrap/devfs.c | 2 +-
+>  lib/bootstrap/disk.c  | 4 ++--
+>  3 files changed, 7 insertions(+), 7 deletions(-)
 
-I think that has historic reasons. When beginning with device tree we
-didn't want to change the behaviours of all unrelated drivers. Now that
-we are more familiar with device tree and adopt the aliases approach to
-more and more drivers you are right: We can push the alias resolving
-out of the drivers and more to the framework level.
-
-> 
-> Since register_device() has access to
-> (&iodev->dev)->parent->device_node, couldn't it do the alias lookup
-> instead, so that each driver doesn't need to?
-> 
-> Then one could write:
-> 
-> iodev->dev.parent = iodev->hwdev;
-> strcpy(iodev->dev.name, "io");
-> iodev->dev.id = DEVICE_ID_DYNAMIC;
-> ret = register_device(&iodev->dev);
-> 
-> I guess this doesn't work exactly for net drivers, since they want to do
-> s/ethernet(\d+)/eth\1/ on the alias name.
-
-The network drivers already do something similar. They pick only the
-number from the "ethernetx" alias, see net/eth.c:
-
-	edev->dev.id = of_alias_get_id(edev->dev.parent->device_node, "ethernet");
-
-> 
-> And some drivers create a cdev the alias should be applied to instead of
-> a dev.  Though I supposed devfs_create() could do the same thing.
-
-I'm not sure if we should handle aliases in devfs_create(), but at least
-we should handle it in the subsystem so that the individual drivers no
-longer have to care about it.
+Applied, thanks
 
 Sascha
 
