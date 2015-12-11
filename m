@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a7DEH-0000Al-3L
- for barebox@lists.infradead.org; Fri, 11 Dec 2015 02:14:41 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Fri, 11 Dec 2015 02:13:21 +0000
-Message-ID: <1449800007.26955.96.camel@rtred1test09.kymeta.local>
-Content-Language: en-US
-Content-ID: <FAE4A0DF525F9D4E8FEBADCC2C21509F@kymetacorp.com>
+ id 1a7HkC-0007k2-6W
+ for barebox@lists.infradead.org; Fri, 11 Dec 2015 07:03:57 +0000
+Date: Fri, 11 Dec 2015 08:03:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151211070330.GP11966@pengutronix.de>
+References: <alpine.LFD.2.20.1512101025310.13554@localhost>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.2.20.1512101025310.13554@localhost>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,111 +22,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] socfpga: Find partition with environment via device tree
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: "make distclean" leaves a pile of arch/arm/dts/*.lzo files
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: barebox mailing list <barebox@lists.infradead.org>
 
-socfpga loads the environment from a file named "barebox.env" located
-on the device "/dev/mmc0.1".  Both those names are hard-coded in the
-socfpga code and can't be changed.
+Hi Robert,
 
-Barebox supports selecting the location of the environment using a
-"barebox,environment" node in device tree's "chosen" node.
+On Thu, Dec 10, 2015 at 10:28:18AM -0500, Robert P. J. Day wrote:
+> 
+>   just did a configure and build for a beaglebone black, then ran
+> "make distclean" and ...
+> 
+> $ git status --ignored
+> On branch master
+> Your branch is up-to-date with 'origin/master'.
+> Ignored files:
+>   (use "git add -f <file>..." to include in what will be committed)
+> 
+> 	arch/arm/dts/am335x-afi-gf.dtb.lzo
+> 	arch/arm/dts/am335x-bone-common.dtb.lzo
+> 	arch/arm/dts/am335x-bone.dtb.lzo
+> 	arch/arm/dts/am335x-boneblack.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phycard-som-mlo.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phycard-som.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phycore-som-mlo.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phycore-som-no-eeprom.dtb.lzo
+>         arch/arm/dts/am335x-phytec-phycore-som-no-spi-no-eeprom.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phycore-som-no-spi.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phycore-som.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phyflex-som-mlo.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phyflex-som-no-eeprom.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phyflex-som-no-spi-no-eeprom.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phyflex-som-no-spi.dtb.lzo
+> 	arch/arm/dts/am335x-phytec-phyflex-som.dtb.lzo
+> 	barebox-flash-images
+> 
+> nothing to commit, working directory clean
+> $
+> 
+>   so i'm guessing building for other targets will also leave .lzo
+> files lying around.
 
-Change socfpga to use this mechanism by looking for barebox.env in the
-device or partition specified in the device tree.
+Added the following patch, this should fix this issue. Thanks for
+noting.
 
-The filename is still hard-coded.  Someone who wants to change it
-could put that into the device tree too (new file-name property?  3rd
-string in device-path?).
+Sascha
 
-Remove the stat() call in socfpga_env_init(), as mount() already
-checks if the device exists.  Also remove device_detect_by_name() call
-as the barebox env device code now takes care of that for us.
+---------------------------8<-------------------------------
 
-Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+From a9e7e68279de3aec38b038211a15a80cfc612c4e Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 11 Dec 2015 08:02:02 +0100
+Subject: [PATCH] ARM: dts: Add *.dtb.lzo to clean files
+
+*.dtb.lzo are generated during compilatiion, delete them.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
+ arch/arm/dts/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-OMAP could do the same thing...
-
- arch/arm/dts/socfpga.dtsi       |  7 +++++++
- arch/arm/mach-socfpga/generic.c | 37 +++++++++++++------------------------
- 2 files changed, 20 insertions(+), 24 deletions(-)
-
-diff --git a/arch/arm/dts/socfpga.dtsi b/arch/arm/dts/socfpga.dtsi
-index d4d498b..1d0d6ff 100644
---- a/arch/arm/dts/socfpga.dtsi
-+++ b/arch/arm/dts/socfpga.dtsi
-@@ -1,4 +1,11 @@
- / {
-+	chosen {
-+                environment@0 {
-+                        compatible = "barebox,environment";
-+                        device-path = &mmc, "partname:1";
-+                };
-+	};
-+
- 	aliases {
- 		mmc0 = &mmc;
- 	};
-diff --git a/arch/arm/mach-socfpga/generic.c b/arch/arm/mach-socfpga/generic.c
-index 2d4afd0..46f9415 100644
---- a/arch/arm/mach-socfpga/generic.c
-+++ b/arch/arm/mach-socfpga/generic.c
-@@ -105,38 +105,27 @@ static int socfpga_init(void)
- core_initcall(socfpga_init);
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 49a2f99..2da930e 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -71,4 +71,4 @@ pbl-dtb-$(CONFIG_MACH_UDOO) += imx6q-udoo.dtb.o
+ pbl-dtb-$(CONFIG_MACH_USI_TOPKICK) += kirkwood-topkick-bb.dtb.o
+ pbl-dtb-$(CONFIG_MACH_VARISCITE_MX6) += imx6q-var-custom.dtb.o
  
- #if defined(CONFIG_ENV_HANDLING)
--#define ENV_PATH "/boot/barebox.env"
-+#define ENV_PATH "/boot"		/* Where to mount env device */
-+#define ENV_FILE "barebox.env"		/* File on device to use */
-+
- static int socfpga_env_init(void)
- {
--	struct stat s;
--	char *diskdev, *partname;
-+	const char *device;
- 	int ret;
- 
--	diskdev = "mmc0";
--
--	device_detect_by_name(diskdev);
--
--	partname = asprintf("/dev/%s.1", diskdev);
--
--	ret = stat(partname, &s);
--
--	if (ret) {
--		pr_err("Failed to load environment: no device '%s'\n", diskdev);
--		goto out_free;
--	}
--
--	mkdir("/boot", 0666);
--	ret = mount(partname, "fat", "/boot", NULL);
-+	/* Get device env is on and mount it */
-+	device = default_environment_path_get();
-+	mkdir(ENV_PATH, 0777);
-+	ret = mount(device, "fat", ENV_PATH, NULL);
- 	if (ret) {
--		pr_err("Failed to load environment: mount %s failed (%d)\n", partname, ret);
--		goto out_free;
-+		pr_err("Failed to load environment: mount %s failed (%d)\n", device, ret);
-+		return ret;
- 	}
- 
--	pr_debug("Loading default env from %s on device %s\n", ENV_PATH, diskdev);
--	default_environment_path_set(ENV_PATH);
-+	/* Change env to be in a file on the now mounted device */
-+	pr_debug("Loading default env from %s on device %s\n", ENV_FILE, device);
-+	default_environment_path_set(ENV_PATH "/" ENV_FILE);
- 
--out_free:
--	free(partname);
- 	return 0;
- }
- late_initcall(socfpga_env_init);
+-clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts
++clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.lzo
 -- 
-1.8.3.1
+2.6.2
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
