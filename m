@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a7I5B-0001Ze-OR
- for barebox@lists.infradead.org; Fri, 11 Dec 2015 07:25:38 +0000
-Date: Fri, 11 Dec 2015 08:25:15 +0100
+ id 1a7IGi-0006Aq-37
+ for barebox@lists.infradead.org; Fri, 11 Dec 2015 07:37:32 +0000
+Date: Fri, 11 Dec 2015 08:37:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151211072515.GT11966@pengutronix.de>
-References: <1449777657.26955.70.camel@rtred1test09.kymeta.local>
+Message-ID: <20151211073709.GU11966@pengutronix.de>
+References: <1449565539-29374-1-git-send-email-s.hauer@pengutronix.de>
+ <1449565539-29374-2-git-send-email-s.hauer@pengutronix.de>
+ <1449780168.26955.81.camel@rtred1test09.kymeta.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449777657.26955.70.camel@rtred1test09.kymeta.local>
+In-Reply-To: <1449780168.26955.81.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +24,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] bootstrap: Boot barebox with kernel calling convention
+Subject: Re: [PATCH 1/4] misc: Add iodevice support
 To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Thu, Dec 10, 2015 at 08:00:50PM +0000, Trent Piepho wrote:
-> In commit 8e3ddc13eb8239177ed20f119e3a3d02518b941d the bootm code was
-> changed to boot barebox using the same calling convention as the
-> kernel.  Which on ARM is to pass three arguments which are zero, an
-> architecture code, and a params pointer.
+On Thu, Dec 10, 2015 at 08:42:42PM +0000, Trent Piepho wrote:
+> On Tue, 2015-12-08 at 10:05 +0100, Sascha Hauer wrote:
+> > +int iodevice_register(struct iodevice *iodev)
+> > +{
+> > +	const char *devname = NULL;
+> > +	int i, ret;
+> > +
+> > +	if (iodev->hwdev->device_node) {
+> > +		devname = of_alias_get(iodev->hwdev->device_node);
+> > +		iodev->dev.id = DEVICE_ID_SINGLE;
+> > +	}
+> > +
+> > +	if (!devname) {
+> > +		devname = "io";
+> > +		iodev->dev.id = DEVICE_ID_DYNAMIC;
+> > +	}
+> > +
+> > +	strcpy(iodev->dev.name, devname);
+> > +
+> > +	iodev->dev.parent = iodev->hwdev;
+> > +
+> > +	ret = register_device(&iodev->dev);
 > 
-> A 2nd stage barebox can be booted using lib/bootstrap, which is
-> different code from bootm.  This code just leaves garbage in the first
-> three parameters and so doesn't follow the convention.
-> 
-> Change it to be compatible with the ARM kernel booting convention.
-> This just sends a zero for the architecture, since the code for
-> architectures depends on boot[zmu] and something using bootstrap
-> wouldn't have those too.  And it just passes NULL for the params since
-> we don't have a way to pass a device tree from the preloader.
-> 
-> All users of bootstrap are ARM based, but the code is in lib so a
-> non-ARM board might someday make use of it.  If the current code would
-> work for them, then the change here will be ok too.
-> 
-> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
-> ---
+> Why does every driver/subsystem need to implement its own alias
+> support?
 
-Applied, thanks
+I think that has historic reasons. When beginning with device tree we
+didn't want to change the behaviours of all unrelated drivers. Now that
+we are more familiar with device tree and adopt the aliases approach to
+more and more drivers you are right: We can push the alias resolving
+out of the drivers and more to the framework level.
+
+> 
+> Since register_device() has access to
+> (&iodev->dev)->parent->device_node, couldn't it do the alias lookup
+> instead, so that each driver doesn't need to?
+> 
+> Then one could write:
+> 
+> iodev->dev.parent = iodev->hwdev;
+> strcpy(iodev->dev.name, "io");
+> iodev->dev.id = DEVICE_ID_DYNAMIC;
+> ret = register_device(&iodev->dev);
+> 
+> I guess this doesn't work exactly for net drivers, since they want to do
+> s/ethernet(\d+)/eth\1/ on the alias name.
+
+The network drivers already do something similar. They pick only the
+number from the "ethernetx" alias, see net/eth.c:
+
+	edev->dev.id = of_alias_get_id(edev->dev.parent->device_node, "ethernet");
+
+> 
+> And some drivers create a cdev the alias should be applied to instead of
+> a dev.  Though I supposed devfs_create() could do the same thing.
+
+I'm not sure if we should handle aliases in devfs_create(), but at least
+we should handle it in the subsystem so that the individual drivers no
+longer have to care about it.
 
 Sascha
 
