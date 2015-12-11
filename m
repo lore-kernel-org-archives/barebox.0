@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a7Hlx-0000eu-06
- for barebox@lists.infradead.org; Fri, 11 Dec 2015 07:05:45 +0000
-Date: Fri, 11 Dec 2015 08:05:23 +0100
+ id 1a7Hmw-0000pu-4t
+ for barebox@lists.infradead.org; Fri, 11 Dec 2015 07:06:48 +0000
+Date: Fri, 11 Dec 2015 08:06:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151211070523.GQ11966@pengutronix.de>
-References: <1449761854-25635-1-git-send-email-mpa@pengutronix.de>
+Message-ID: <20151211070624.GR11966@pengutronix.de>
+References: <1449775212-17571-1-git-send-email-rockford@yandex.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1449761854-25635-1-git-send-email-mpa@pengutronix.de>
+In-Reply-To: <1449775212-17571-1-git-send-email-rockford@yandex.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,20 +22,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Documentation: Document pstore/RAMOOPS
-To: Markus Pargmann <mpa@pengutronix.de>
+Subject: Re: [PATCH] ARM: i.MX6Q: Embedsky E9: Convert environment paths in
+ DTS to a new bindings
+To: Andrey Panov <rockford@yandex.ru>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 10, 2015 at 04:37:34PM +0100, Markus Pargmann wrote:
-> Add some documentation about behaviour and setup of pstore/RAMOOPS.
-> 
-> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+On Thu, Dec 10, 2015 at 10:20:12PM +0300, Andrey Panov wrote:
+> Signed-off-by: Andrey Panov <rockford@yandex.ru>
 > ---
->  Documentation/filesystems/pstore.rst | 76 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 76 insertions(+)
->  create mode 100644 Documentation/filesystems/pstore.rst
+>  arch/arm/dts/imx6q-embedsky-e9.dts | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-Removed a few trailing whitespaces and applied, thanks
+Applied, thanks
 
 Sascha
 
