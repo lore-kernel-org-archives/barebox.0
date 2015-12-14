@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-io0-x230.google.com ([2607:f8b0:4001:c06::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a8RiY-00078u-ND
- for barebox@lists.infradead.org; Mon, 14 Dec 2015 11:55:03 +0000
-Received: by iofo67 with SMTP id o67so40294174iof.3
- for <barebox@lists.infradead.org>; Mon, 14 Dec 2015 03:54:41 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1450093411-13885-1-git-send-email-s.hauer@pengutronix.de>
+ id 1a8RqH-0001nn-7k
+ for barebox@lists.infradead.org; Mon, 14 Dec 2015 12:03:01 +0000
+Date: Mon, 14 Dec 2015 13:02:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151214120239.GH11966@pengutronix.de>
 References: <1450093411-13885-1-git-send-email-s.hauer@pengutronix.de>
-Date: Mon, 14 Dec 2015 09:54:40 -0200
-Message-ID: <CAOMZO5BMFcccs=NBv2_4e40-MCKQmdoximVNHp4vDtCdAoMSWA@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
+ <CAOMZO5BMFcccs=NBv2_4e40-MCKQmdoximVNHp4vDtCdAoMSWA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAOMZO5BMFcccs=NBv2_4e40-MCKQmdoximVNHp4vDtCdAoMSWA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,18 +24,31 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/7] hwclock command: use format like the Linux tool does
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Fabio Estevam <festevam@gmail.com>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Dec 14, 2015 at 9:43 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mon, Dec 14, 2015 at 09:54:40AM -0200, Fabio Estevam wrote:
+> On Mon, Dec 14, 2015 at 9:43 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > +const char *time_str(struct rtc_time *tm)
+> > +{
+> > +       const char *weekdays[] = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+> > +       const char *months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+> > +                                "Sep", "Okt", "Nov", "Dec" };
+> 
+> The 'Okt' one looks like German ;-)
 
-> +const char *time_str(struct rtc_time *tm)
-> +{
-> +       const char *weekdays[] = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
-> +       const char *months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-> +                                "Sep", "Okt", "Nov", "Dec" };
+Uh, indeed. I hoped nobody would notice ;-)
 
-The 'Okt' one looks like German ;-)
+Fixed, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
