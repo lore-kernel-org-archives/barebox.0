@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a8RXr-0001Og-Gh
- for barebox@lists.infradead.org; Mon, 14 Dec 2015 11:44:01 +0000
+ id 1a8RXn-0001LE-Jj
+ for barebox@lists.infradead.org; Mon, 14 Dec 2015 11:43:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 14 Dec 2015 12:43:28 +0100
-Message-Id: <1450093411-13885-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 14 Dec 2015 12:43:26 +0100
+Message-Id: <1450093411-13885-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1450093411-13885-1-git-send-email-s.hauer@pengutronix.de>
 References: <1450093411-13885-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] rtc: Fill in weekdays before setting time
+Subject: [PATCH 2/7] hwclock command: forward return value of rtc_set_time
 To: Barebox List <barebox@lists.infradead.org>
 
-Some rtcs store the weekday. Make sure it's filled in correctly before
-passinf the time to the driver. This is easily done by converting it to
-seconds-since-epoch and back to struct rtc_time.
+rtc_set_time can fail, forward the error to the user.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/rtc/class.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ commands/hwclock.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
-index e87f5f7..8b047a6 100644
---- a/drivers/rtc/class.c
-+++ b/drivers/rtc/class.c
-@@ -46,10 +46,16 @@ EXPORT_SYMBOL(rtc_read_time);
+diff --git a/commands/hwclock.c b/commands/hwclock.c
+index 49569a9..3f89cce 100644
+--- a/commands/hwclock.c
++++ b/commands/hwclock.c
+@@ -124,8 +124,7 @@ static int do_hwclock(int argc, char *argv[])
+ 		return PTR_ERR(r);
  
- int rtc_set_time(struct rtc_device *rtc, struct rtc_time *tm)
- {
-+	struct rtc_time time;
-+	unsigned long secs;
-+
- 	if (rtc_valid_tm(tm))
- 		return -EINVAL;
+ 	if (set) {
+-		rtc_set_time(r, &stm);
+-		return 0;
++		return rtc_set_time(r, &stm);
+ 	}
  
--	return rtc->ops->set_time(rtc, tm);
-+	rtc_tm_to_time(tm, &secs);
-+	rtc_time_to_tm(secs, &time);
-+
-+	return rtc->ops->set_time(rtc, &time);
- }
- EXPORT_SYMBOL(rtc_set_time);
- 
+ 	rtc_read_time(r, &tm);
 -- 
 2.6.2
 
