@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x22f.google.com ([2a00:1450:400c:c09::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a8jle-00037P-SA
- for barebox@lists.infradead.org; Tue, 15 Dec 2015 07:11:28 +0000
-Date: Tue, 15 Dec 2015 08:11:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151215071103.GL11966@pengutronix.de>
-References: <1449800007.26955.96.camel@rtred1test09.kymeta.local>
- <20151211093050.GX11966@pengutronix.de>
- <1449864307.26955.136.camel@rtred1test09.kymeta.local>
- <20151214100110.GF11966@pengutronix.de>
- <1450121066.26955.167.camel@rtred1test09.kymeta.local>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1450121066.26955.167.camel@rtred1test09.kymeta.local>
+ id 1a8tOy-0003bk-7G
+ for barebox@lists.infradead.org; Tue, 15 Dec 2015 17:28:42 +0000
+Received: by mail-wm0-x22f.google.com with SMTP id l126so4378763wml.1
+ for <barebox@lists.infradead.org>; Tue, 15 Dec 2015 09:28:19 -0800 (PST)
+From: Florian Vallee <fvallee@eukrea.fr>
+Date: Tue, 15 Dec 2015 18:28:10 +0100
+Message-Id: <1450200490-4488-1-git-send-email-fvallee@eukrea.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,158 +16,421 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] socfpga: Find partition with environment via device tree
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v2] GPIO: add Microchip MCP23017 / MCP23008 GPIO driver
+To: barebox@lists.infradead.org
+Cc: Florian Vallee <fvallee@eukrea.fr>
 
-On Mon, Dec 14, 2015 at 07:24:19PM +0000, Trent Piepho wrote:
-> On Mon, 2015-12-14 at 11:01 +0100, Sascha Hauer wrote:
-> > On Fri, Dec 11, 2015 at 08:05:00PM +0000, Trent Piepho wrote:
-> > > On Fri, 2015-12-11 at 10:30 +0100, Sascha Hauer wrote:
-> > > > On Fri, Dec 11, 2015 at 02:13:21AM +0000, Trent Piepho wrote:
-> > > > The "barebox,environment" compatible describes a binding which takes
-> > > > partition described in device-path as a raw file containing a barebox
-> > > > envfs.
-> > > 
-> > > Well, I redefined it to have the device-path be the device containing
-> > > the environment as raw data or the one containing a filesystem with the
-> > > environment as a file if the architecture expects that.
-> > > 
-> > > That doesn't seem like a bad definition.
-> > 
-> > No, indeed not. It's more the implementation I have a problem with. The
-> > implementation should be done in the environment driver.
-> 
-> Ok, my second attempt moved it to the barebox env OF driver.  This seems
-> better as it unifies the boards that have an env on a device and those
-> that put it in a file.
-> 
-> > > > What you have here is a partition which contains a FAT which has a
-> > > > barebox envfs in a file. I think it's fine to extend the binding (and
-> > > > the barebox env driver) to handle that case.  What you are doing here is
-> > > > to smuggle code behind the driver and bend the environment path to
-> > > > somewhere else. That is not ok. I think what we can do is to add some
-> > > > file-path property which contains the path and tells the barebox
-> > > > environment driver to not use the whole partition but instead to mount
-> > > > it and use the file specified in the file-path property.
-> > > > 
-> > > > As an alternative which I might even like better is to extend the
-> > > > partition binding to be able to describe a file in a partition, like:
-> > > 
-> > > This won't work.  mmc devices, which all boards that use a file for the
-> > > env are using, don't have partitions in the device tree, since they are
-> > > created dynamically from the partition table.  There is nowhere to put
-> > > the file node.
-> > 
-> > Just because they are dynamically created from information found on the
-> > MMC card doesn't mean we can't describe them in the device tree. We can
-> > for example specify "The second partition" or "The partition with UUID
-> > xy".
-> 
-> That would be hard to do in practice, as the UUID of a partition is
-> normally generated at random when the partition is made.  It would be
-> hard to keep the UUID in the device table matching the partition table.
-> I suppose one could go by partition number or by name too.  Which is
-> really no different than the partname: syntax but in a different
-> location.
+This is based on the I2C implementation of the corresponding linux driver
 
-Yes, the UUID may be a bad example, replace that with anything else that
-is able to identify the partition.
+v2:
+ - cleanup unused platform_data
+ - fix base gpio number handling
 
-> 
-> > > It is also problematic for my board.  I need to change the env path
-> > > based on data in an eeprom that selects which partition to use.  Other
-> > > boards that have multiple environments select them in a
-> > > postcore_initcall using boot strapping pins that aren't part of a
-> > > device.  I'm using an eeprom so I need to do the selection later in the
-> > > init process.
-> > 
-> > Ok, so you couldn't you do the same?
-> 
-> Yes, I made it work with my second attempt.  The env driver is a
-> late_initcall so I was able to have board code modify the OF tree so
-> that it points to the correct partition.
-> 
-> > > Maybe extend load_environment to do the mount?  const char
-> > > *default_environment_path would have to change to something that could
-> > > support the concept of a device + optional filename.  This way one could
-> > > change the env path upto environment_initcall() time.
-> > 
-> > My original plan was to extend this:
-> > 
-> > 	device-path = &mmc, "partname:1";
-> > 
-> > with a filename, like this:
-> > 
-> > 	device-path = &mmc, "partname:1", "/bla/env";
-> > 
-> > I found out that this is not how the device tree should be like. It
-> > looks and feels better when the phandle directly points to a node and
-> > the node describes a partition (or file in this case).
-> 
-> I thought the env code was intentionally not using phandles so that it
-> could be in a different DT than the DT describing the hardware.  Thus
-> the path instead of a phandle.
+Signed-off-by: Florian Vallee <fvallee@eukrea.fr>
+---
+ drivers/gpio/Kconfig             |  11 +-
+ drivers/gpio/Makefile            |   1 +
+ drivers/gpio/gpio-mcp23s08.c     | 341 +++++++++++++++++++++++++++++++++++++++
+ include/platform_data/mcp23s08.h |   4 +
+ 4 files changed, 356 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/gpio/gpio-mcp23s08.c
+ create mode 100644 include/platform_data/mcp23s08.h
 
-Sorry, mixed that up. &mmc is a path, not a phandle.
-
-> 
-> I didn't want to extend device-path with an optional 3rd string since
-> device-path is already IMHO too complex supporting both a path to a
-> partition or a path to a device and then a partition description.
-
-I tend to agree. When I created the binding it seemed like a good idea
-to be able to chain together strings like describing the device, the
-partition and then the filename. The problems I had implementing it
-should have shown me that idea wasn't the best.
-
-> So
-> one would also want to support device-path = &eeprom, "/bla/env" and now
-> you've got to guess if the 2nd string is a file or partition name.
-> 
-> So I've guess we have:
-> 
-> {
->   compatible = "barebox,environment";
->   device-path = &foo, "partname:bar";
->   file-path = "baz";
-> }
-> 
-> OR
-> 
-> {
->   compatible = "barebox,environment";
->   env-path = &environment;
-> }
-> 
-> &foo {
->   partition@0 {
->     label = "bar";
->     environment: file@0 {
->       path = "baz";
->     };
->   };
-> }
-> 
-> So the same information but in a different layout.  The latter layout is
-> more complex and I'm not sure how the code would properly tell if the
-> node path refers to a device or a partition or a file.
-
-Your current "Support env from file in a file-system via device tree"
-patch indeed has a straight forward implementation. Maybe we should go
-that way. I'll have a closer look at it.
-
-Sascha
-
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 9cb2261..6428f2b 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -121,6 +121,15 @@ config GPIO_DESIGNWARE
+ 	help
+ 	  Say Y or M here to build support for the Synopsys DesignWare APB
+ 	  GPIO block.
+-endmenu
+ 
++config GPIO_MCP23S08
++	tristate "Microchip MCP23xxx I/O expander"
++	depends on I2C
++	help
++	  I2C driver for Microchip MCP23008/MCP23017
++	  I/O expanders.
++	  This provides a GPIO interface supporting inputs and outputs.
++	  The I2C versions of the chips can be used as interrupt-controller.
++
++endmenu
+ endif
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index f39e8da..715a4bb 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -18,3 +18,4 @@ obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
+ obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
+ obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
+ obj-$(CONFIG_GPIO_DESIGNWARE)	+= gpio-dw.o
++obj-$(CONFIG_GPIO_MCP23S08)	+= gpio-mcp23s08.o
+diff --git a/drivers/gpio/gpio-mcp23s08.c b/drivers/gpio/gpio-mcp23s08.c
+new file mode 100644
+index 0000000..1d7e9d6
+--- /dev/null
++++ b/drivers/gpio/gpio-mcp23s08.c
+@@ -0,0 +1,341 @@
++/*
++ * MCP23S08 SPI/I2C GPIO gpio expander driver
++ *
++ * The inputs and outputs of the mcp23008 and mcp23017 are
++ * supported.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <malloc.h>
++#include <driver.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <i2c/i2c.h>
++
++#include <gpio.h>
++#include <platform_data/mcp23s08.h>
++
++/**
++ * MCP types supported by driver
++ */
++#define MCP_TYPE_S08	0
++#define MCP_TYPE_S17	1
++#define MCP_TYPE_008	2
++#define MCP_TYPE_017	3
++
++/* Registers are all 8 bits wide.
++ *
++ * The mcp23s17 has twice as many bits, and can be configured to work
++ * with either 16 bit registers or with two adjacent 8 bit banks.
++ */
++#define MCP_IODIR	0x00		/* init/reset:  all ones */
++#define MCP_IPOL	0x01
++#define MCP_GPINTEN	0x02
++#define MCP_DEFVAL	0x03
++#define MCP_INTCON	0x04
++#define MCP_IOCON	0x05
++#	define IOCON_MIRROR	(1 << 6)
++#	define IOCON_SEQOP	(1 << 5)
++#	define IOCON_HAEN	(1 << 3)
++#	define IOCON_ODR	(1 << 2)
++#	define IOCON_INTPOL	(1 << 1)
++#define MCP_GPPU	0x06
++#define MCP_INTF	0x07
++#define MCP_INTCAP	0x08
++#define MCP_GPIO	0x09
++#define MCP_OLAT	0x0a
++
++struct mcp23s08;
++
++struct mcp23s08_ops {
++	int	(*read)(struct mcp23s08 *mcp, unsigned reg);
++	int	(*write)(struct mcp23s08 *mcp, unsigned reg, unsigned val);
++	int	(*read_regs)(struct mcp23s08 *mcp, unsigned reg,
++			     u16 *vals, unsigned n);
++};
++
++struct mcp23s08 {
++	u8			addr;
++
++	u16			cache[11];
++
++	struct gpio_chip	chip;
++
++	const struct mcp23s08_ops	*ops;
++	void			*data; /* ops specific data */
++};
++
++/* A given spi_device can represent up to eight mcp23sxx chips
++ * sharing the same chipselect but using different addresses
++ * (e.g. chips #0 and #3 might be populated, but not #1 or $2).
++ * Driver data holds all the per-chip data.
++ */
++struct mcp23s08_driver_data {
++	unsigned		ngpio;
++	struct mcp23s08		*mcp[8];
++	struct mcp23s08		chip[];
++};
++
++/*----------------------------------------------------------------------*/
++
++#if IS_ENABLED(CONFIG_I2C)
++
++static int mcp23008_read(struct mcp23s08 *mcp, unsigned reg)
++{
++	return i2c_smbus_read_byte_data(mcp->data, reg);
++}
++
++static int mcp23008_write(struct mcp23s08 *mcp, unsigned reg, unsigned val)
++{
++	return i2c_smbus_write_byte_data(mcp->data, reg, val);
++}
++
++static int
++mcp23008_read_regs(struct mcp23s08 *mcp, unsigned reg, u16 *vals, unsigned n)
++{
++	while (n--) {
++		int ret = mcp23008_read(mcp, reg++);
++		if (ret < 0)
++			return ret;
++		*vals++ = ret;
++	}
++
++	return 0;
++}
++
++static int mcp23017_read(struct mcp23s08 *mcp, unsigned reg)
++{
++	return i2c_smbus_read_word_data(mcp->data, reg << 1);
++}
++
++static int mcp23017_write(struct mcp23s08 *mcp, unsigned reg, unsigned val)
++{
++	return i2c_smbus_write_word_data(mcp->data, reg << 1, val);
++}
++
++static int
++mcp23017_read_regs(struct mcp23s08 *mcp, unsigned reg, u16 *vals, unsigned n)
++{
++	while (n--) {
++		int ret = mcp23017_read(mcp, reg++);
++		if (ret < 0)
++			return ret;
++		*vals++ = ret;
++	}
++
++	return 0;
++}
++
++static const struct mcp23s08_ops mcp23008_ops = {
++	.read		= mcp23008_read,
++	.write		= mcp23008_write,
++	.read_regs	= mcp23008_read_regs,
++};
++
++static const struct mcp23s08_ops mcp23017_ops = {
++	.read		= mcp23017_read,
++	.write		= mcp23017_write,
++	.read_regs	= mcp23017_read_regs,
++};
++
++#endif /* CONFIG_I2C */
++
++/*----------------------------------------------------------------------*/
++
++static int mcp23s08_direction_input(struct gpio_chip *chip, unsigned offset)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	int status;
++
++	mcp->cache[MCP_IODIR] |= (1 << offset);
++	status = mcp->ops->write(mcp, MCP_IODIR, mcp->cache[MCP_IODIR]);
++	return status;
++}
++
++static int mcp23s08_get(struct gpio_chip *chip, unsigned offset)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	int status;
++
++	status = mcp->ops->read(mcp, MCP_GPIO);
++	if (status < 0)
++		status = 0;
++	else {
++		mcp->cache[MCP_GPIO] = status;
++		status = !!(status & (1 << offset));
++	}
++
++	return status;
++}
++
++static int __mcp23s08_set(struct mcp23s08 *mcp, unsigned mask, int value)
++{
++	unsigned olat = mcp->cache[MCP_OLAT];
++
++	if (value)
++		olat |= mask;
++	else
++		olat &= ~mask;
++	mcp->cache[MCP_OLAT] = olat;
++	return mcp->ops->write(mcp, MCP_OLAT, olat);
++}
++
++static void mcp23s08_set(struct gpio_chip *chip, unsigned offset, int value)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	unsigned mask = 1 << offset;
++
++	__mcp23s08_set(mcp, mask, value);
++}
++
++static int
++mcp23s08_direction_output(struct gpio_chip *chip, unsigned offset, int value)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	unsigned mask = 1 << offset;
++	int status;
++
++	status = __mcp23s08_set(mcp, mask, value);
++	if (status == 0) {
++		mcp->cache[MCP_IODIR] &= ~mask;
++		status = mcp->ops->write(mcp, MCP_IODIR, mcp->cache[MCP_IODIR]);
++	}
++	return status;
++}
++
++static int mcp23s08_get_direction(struct gpio_chip *chip, unsigned offset)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	unsigned mask = 1 << offset;
++
++	if (mcp->cache[MCP_IODIR] & mask)
++		return GPIOF_DIR_IN;
++
++	return GPIOF_DIR_OUT;
++}
++
++
++/*----------------------------------------------------------------------*/
++
++static struct gpio_ops mcp23s08x_gpio_ops = {
++	.direction_input = mcp23s08_direction_input,
++	.direction_output = mcp23s08_direction_output,
++	.get_direction = mcp23s08_get_direction,
++	.get = mcp23s08_get,
++	.set = mcp23s08_set,
++};
++
++static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device_d *dev,
++			      void *data, unsigned addr, unsigned type,
++			      struct mcp23s08_platform_data *pdata, int cs)
++{
++	int status;
++
++	mcp->data = data;
++	mcp->addr = addr;
++
++	switch (type) {
++#if IS_ENABLED(CONFIG_I2C)
++	case MCP_TYPE_008:
++		mcp->ops = &mcp23008_ops;
++		mcp->chip.ngpio = 8;
++		break;
++
++	case MCP_TYPE_017:
++		mcp->ops = &mcp23017_ops;
++		mcp->chip.ngpio = 16;
++		break;
++#endif /* CONFIG_I2C */
++
++	default:
++		dev_err(dev, "invalid device type (%d)\n", type);
++		return -EINVAL;
++	}
++
++	mcp->chip.ops = &mcp23s08x_gpio_ops;
++
++	if (pdata)
++		mcp->chip.base = pdata->base;
++	else
++		mcp->chip.base = -1;
++	mcp->chip.dev = dev;
++
++	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work,
++	 * and MCP_IOCON.HAEN = 1, so we work with all chips.
++	 */
++
++	status = mcp->ops->read(mcp, MCP_IOCON);
++	if (status < 0)
++		goto fail;
++
++	status = mcp->ops->read_regs(mcp, 0, mcp->cache, ARRAY_SIZE(mcp->cache));
++	if (status < 0)
++		goto fail;
++
++	/* disable inverter on input */
++	if (mcp->cache[MCP_IPOL] != 0) {
++		mcp->cache[MCP_IPOL] = 0;
++		status = mcp->ops->write(mcp, MCP_IPOL, 0);
++		if (status < 0)
++			goto fail;
++	}
++
++	/* disable irqs */
++	if (mcp->cache[MCP_GPINTEN] != 0) {
++		mcp->cache[MCP_GPINTEN] = 0;
++		status = mcp->ops->write(mcp, MCP_GPINTEN, 0);
++		if (status < 0)
++			goto fail;
++	}
++
++	status = gpiochip_add(&mcp->chip);
++	if (status < 0)
++		goto fail;
++
++fail:
++	if (status < 0)
++		dev_dbg(dev, "can't setup chip %d, --> %d\n",
++			addr, status);
++	return status;
++}
++
++/*----------------------------------------------------------------------*/
++
++static int mcp230xx_probe(struct device_d *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	unsigned long driver_data;
++	struct mcp23s08 *mcp;
++	int status;
++
++	status = dev_get_drvdata(dev, (const void **) &driver_data);
++	if (status)
++		return status;
++
++	mcp = xzalloc(sizeof(*mcp));
++
++	status = mcp23s08_probe_one(mcp, &client->dev, client, client->addr,
++				    driver_data, dev->platform_data, 0);
++
++	return status;
++}
++
++static struct platform_device_id mcp230xx_id[] = {
++	{ "mcp23008", MCP_TYPE_008 },
++	{ "mcp23017", MCP_TYPE_017 },
++	{ },
++};
++
++static struct driver_d mcp230xx_driver = {
++	.name	= "mcp230xx",
++	.probe		= mcp230xx_probe,
++	.id_table	= mcp230xx_id,
++};
++
++static int __init mcp23s08_i2c_init(void)
++{
++	return i2c_driver_register(&mcp230xx_driver);
++}
++
++device_initcall(mcp23s08_i2c_init);
+diff --git a/include/platform_data/mcp23s08.h b/include/platform_data/mcp23s08.h
+new file mode 100644
+index 0000000..b5289ab
+--- /dev/null
++++ b/include/platform_data/mcp23s08.h
+@@ -0,0 +1,4 @@
++struct mcp23s08_platform_data {
++	/* "base" is the number of the first GPIO. */
++	unsigned	base;
++};
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
