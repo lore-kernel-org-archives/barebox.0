@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a98gT-0003uM-OB
+ id 1a98gT-0003uN-OA
  for barebox@lists.infradead.org; Wed, 16 Dec 2015 09:47:46 +0000
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1a98g7-0003Xm-Pb
- for barebox@lists.infradead.org; Wed, 16 Dec 2015 10:47:23 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86)
- (envelope-from <sha@pengutronix.de>) id 1a98g7-00040a-Dm
- for barebox@lists.infradead.org; Wed, 16 Dec 2015 10:47:23 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 16 Dec 2015 10:47:20 +0100
-Message-Id: <1450259242-13801-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 16 Dec 2015 10:47:22 +0100
+Message-Id: <1450259242-13801-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1450259242-13801-1-git-send-email-s.hauer@pengutronix.de>
+References: <1450259242-13801-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Symlink support for devfs
+Subject: [PATCH 2/2] partition: Create links with partition names
 To: Barebox List <barebox@lists.infradead.org>
 
-This adds symlink support for devfs and uses it to create named
-partition aliases.
+When a partition has a name create a link to the original partition
+rather than registering a second cdev.
 
-Changes since v1:
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/partitions.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-- Put links to a cdev onto a list on that cdev to be able to show them
-  in devinfo output
+diff --git a/common/partitions.c b/common/partitions.c
+index 4f50bfe..82ec508 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -71,20 +71,14 @@ static int register_one_partition(struct block_device *blk,
+ 	if (!part->name[0])
+ 		return 0;
+ 
+-	partition_name = asprintf("%s.%s", blk->cdev.name, part->name);
+-	if (!partition_name)
+-		return -ENOMEM;
+-
+-	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+-				partition_name, blk->cdev.name);
+-	cdev = devfs_add_partition(blk->cdev.name,
+-				start, size, 0, partition_name);
+-
+-	if (IS_ERR(cdev))
+-		dev_warn(blk->dev, "Registering partition %s on drive %s failed\n",
+-				partition_name, blk->cdev.name);
++	partition_name = xasprintf("%s.%s", blk->cdev.name, part->name);
++	ret = devfs_create_link(cdev, partition_name);
++	if (ret)
++		dev_warn(blk->dev, "Failed to create link from %s to %s\n",
++			 partition_name, blk->cdev.name);
++	free(partition_name);
+ 
+-	ret = 0;
++	return 0;
+ out:
+ 	free(partition_name);
+ 	return ret;
+-- 
+2.6.2
 
-----------------------------------------------------------------
-Sascha Hauer (2):
-      devfs: Add symlink support
-      partition: Create links with partition names
-
- commands/devinfo.c  |  7 +++--
- common/partitions.c | 20 +++++---------
- fs/devfs-core.c     | 76 ++++++++++++++++++++++++++++++++++++++++++++---------
- fs/devfs.c          | 27 ++++++++++++++++++-
- include/driver.h    |  5 ++++
- 5 files changed, 106 insertions(+), 29 deletions(-)
 
 _______________________________________________
 barebox mailing list
