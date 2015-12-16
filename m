@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a98gT-0003uN-OA
- for barebox@lists.infradead.org; Wed, 16 Dec 2015 09:47:46 +0000
+ id 1a99Z0-0002aX-02
+ for barebox@lists.infradead.org; Wed, 16 Dec 2015 10:44:06 +0000
+Date: Wed, 16 Dec 2015 11:43:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 16 Dec 2015 10:47:22 +0100
-Message-Id: <1450259242-13801-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1450259242-13801-1-git-send-email-s.hauer@pengutronix.de>
-References: <1450259242-13801-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20151216104340.GC14356@pengutronix.de>
+References: <1445330352-30153-1-git-send-email-mkl@pengutronix.de>
+ <1445330352-30153-2-git-send-email-mkl@pengutronix.de>
+ <1449787121.26955.89.camel@rtred1test09.kymeta.local>
+ <1449792460.26955.91.camel@rtred1test09.kymeta.local>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1449792460.26955.91.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,57 +21,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] partition: Create links with partition names
-To: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] of_path: Fix bug with partitions, simply code
+To: Trent Piepho <tpiepho@kymetacorp.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-When a partition has a name create a link to the original partition
-rather than registering a second cdev.
+On Fri, Dec 11, 2015 at 12:07:34AM +0000, Trent Piepho wrote:
+> In commit f72b64815619b41e026dd3eb9d53bf9855f84628 using a path that
+> has a partition description broke.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/partitions.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+Strange, I don't have this commit. Where is it, could you add the
+Subject to this commit?
 
-diff --git a/common/partitions.c b/common/partitions.c
-index 4f50bfe..82ec508 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -71,20 +71,14 @@ static int register_one_partition(struct block_device *blk,
- 	if (!part->name[0])
- 		return 0;
- 
--	partition_name = asprintf("%s.%s", blk->cdev.name, part->name);
--	if (!partition_name)
--		return -ENOMEM;
--
--	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
--				partition_name, blk->cdev.name);
--	cdev = devfs_add_partition(blk->cdev.name,
--				start, size, 0, partition_name);
--
--	if (IS_ERR(cdev))
--		dev_warn(blk->dev, "Registering partition %s on drive %s failed\n",
--				partition_name, blk->cdev.name);
-+	partition_name = xasprintf("%s.%s", blk->cdev.name, part->name);
-+	ret = devfs_create_link(cdev, partition_name);
-+	if (ret)
-+		dev_warn(blk->dev, "Failed to create link from %s to %s\n",
-+			 partition_name, blk->cdev.name);
-+	free(partition_name);
- 
--	ret = 0;
-+	return 0;
- out:
- 	free(partition_name);
- 	return ret;
+Sascha
+
 -- 
-2.6.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
