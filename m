@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b])
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aAMLK-0001Jo-89
- for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:35:03 +0000
-Received: by mail-wm0-x22b.google.com with SMTP id l126so23418547wml.1
- for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:37 -0800 (PST)
+ id 1aAMLJ-0001Jd-8W
+ for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:35:02 +0000
+Received: by mail-wm0-x22e.google.com with SMTP id l126so23223869wml.0
+ for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:36 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Sat, 19 Dec 2015 19:34:03 +0100
-Message-Id: <1450550044-14674-7-git-send-email-alex.aring@gmail.com>
+Date: Sat, 19 Dec 2015 19:34:02 +0100
+Message-Id: <1450550044-14674-6-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 References: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,45 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] rpi: sync revision detection with u-boot
+Subject: [PATCH 5/7] bcm283x: mbox: align to cachesize
 To: barebox@lists.infradead.org
 Cc: dthompson@nexusisp.com, carlo.caione@gmail.com
 
-This patch adds parts from u-boot code for doing RPi revision detection
-and take care about the "warranty bit". I got this bit on my RPi2.
+This patch change the align of mbox stack resource to 32. The reason is
+that I had some experience with bcm2836 and the mbox implementation,
+after setting the align to 64(on bcm2836) the issues was gone.
+
+I found these values inside the u-boot implementation, they use 32
+(bcm2835) and 64 (bcm2836).
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/arm/boards/raspberry-pi/rpi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/arm/mach-bcm283x/include/mach/mbox.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
-index f9406d4..faf48a5 100644
---- a/arch/arm/boards/raspberry-pi/rpi.c
-+++ b/arch/arm/boards/raspberry-pi/rpi.c
-@@ -203,7 +203,22 @@ static void rpi_get_board_rev(void)
- 		return;
- 	}
+diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
+index 4c3fd77..09b31f2 100644
+--- a/arch/arm/mach-bcm283x/include/mach/mbox.h
++++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
+@@ -73,8 +73,10 @@ struct bcm2835_mbox_hdr {
+ #define BCM2835_MBOX_REQ_CODE		0
+ #define BCM2835_MBOX_RESP_CODE_SUCCESS	0x80000000
  
-+	/* Comments from u-boot:
-+	 * For details of old-vs-new scheme, see:
-+	 * https://github.com/pimoroni/RPi.version/blob/master/RPi/version.py
-+	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=99293&p=690282
-+	 * (a few posts down)
-+	 *
-+	 * For the RPi 1, bit 24 is the "warranty bit", so we mask off just the
-+	 * lower byte to use as the board rev:
-+	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=98367&start=250
-+	 * http://www.raspberrypi.org/forums/viewtopic.php?f=31&t=20594
-+	 */
- 	rpi_board_rev = msg->get_board_rev.body.resp.rev;
-+	if (rpi_board_rev & 0x800000)
-+		rpi_board_rev = (rpi_board_rev >> 4) & 0xff;
-+	else
-+		rpi_board_rev &= 0xff;
- 	if (rpi_board_rev >= ARRAY_SIZE(models)) {
- 		printf("RPI: Board rev %u outside known range\n",
- 		       rpi_board_rev);
++#define BCM2835_CACHELINE_SIZE		32
++
+ #define BCM2835_MBOX_STACK_ALIGN(type, name) \
+-	STACK_ALIGN_ARRAY(type, name, 1, BCM2835_CHAN_MASK + 1)
++	STACK_ALIGN_ARRAY(type, name, 1, BCM2835_CACHELINE_SIZE)
+ 
+ #define BCM2835_MBOX_INIT_HDR(_m_) { \
+ 		memset((_m_), 0, sizeof(*(_m_))); \
 -- 
 2.6.1
 
