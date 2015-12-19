@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x231.google.com ([2a00:1450:400c:c09::231])
+Received: from mail-wm0-x22b.google.com ([2a00:1450:400c:c09::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aAMLG-0001JT-0l
- for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:34:54 +0000
-Received: by mail-wm0-x231.google.com with SMTP id p187so22961830wmp.1
- for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:32 -0800 (PST)
+ id 1aAMLK-0001Jo-89
+ for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:35:03 +0000
+Received: by mail-wm0-x22b.google.com with SMTP id l126so23418547wml.1
+ for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:37 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Sat, 19 Dec 2015 19:33:59 +0100
-Message-Id: <1450550044-14674-3-git-send-email-alex.aring@gmail.com>
+Date: Sat, 19 Dec 2015 19:34:03 +0100
+Message-Id: <1450550044-14674-7-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 References: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,33 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/7] led: add missing includes
+Subject: [PATCH 6/7] rpi: sync revision detection with u-boot
 To: barebox@lists.infradead.org
 Cc: dthompson@nexusisp.com, carlo.caione@gmail.com
 
-The led header use some parts which are missing when include the this
-header. This patch adds them.
+This patch adds parts from u-boot code for doing RPi revision detection
+and take care about the "warranty bit". I got this bit on my RPi2.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- include/led.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boards/raspberry-pi/rpi.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/led.h b/include/led.h
-index ddf8d90..000267c 100644
---- a/include/led.h
-+++ b/include/led.h
-@@ -1,7 +1,10 @@
- #ifndef __LED_H
- #define __LED_H
+diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+index f9406d4..faf48a5 100644
+--- a/arch/arm/boards/raspberry-pi/rpi.c
++++ b/arch/arm/boards/raspberry-pi/rpi.c
+@@ -203,7 +203,22 @@ static void rpi_get_board_rev(void)
+ 		return;
+ 	}
  
-+#include <linux/list.h>
-+
- #include <errno.h>
-+#include <of.h>
- 
- struct led {
- 	void (*set)(struct led *, unsigned int value);
++	/* Comments from u-boot:
++	 * For details of old-vs-new scheme, see:
++	 * https://github.com/pimoroni/RPi.version/blob/master/RPi/version.py
++	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=99293&p=690282
++	 * (a few posts down)
++	 *
++	 * For the RPi 1, bit 24 is the "warranty bit", so we mask off just the
++	 * lower byte to use as the board rev:
++	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=98367&start=250
++	 * http://www.raspberrypi.org/forums/viewtopic.php?f=31&t=20594
++	 */
+ 	rpi_board_rev = msg->get_board_rev.body.resp.rev;
++	if (rpi_board_rev & 0x800000)
++		rpi_board_rev = (rpi_board_rev >> 4) & 0xff;
++	else
++		rpi_board_rev &= 0xff;
+ 	if (rpi_board_rev >= ARRAY_SIZE(models)) {
+ 		printf("RPI: Board rev %u outside known range\n",
+ 		       rpi_board_rev);
 -- 
 2.6.1
 
