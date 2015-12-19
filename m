@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
+Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aAMLJ-0001Jd-8W
- for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:35:02 +0000
-Received: by mail-wm0-x22e.google.com with SMTP id l126so23223869wml.0
- for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:36 -0800 (PST)
+ id 1aAMLE-0001J9-EZ
+ for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:34:53 +0000
+Received: by mail-wm0-x236.google.com with SMTP id l126so23222459wml.0
+ for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:31 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Sat, 19 Dec 2015 19:34:02 +0100
-Message-Id: <1450550044-14674-6-git-send-email-alex.aring@gmail.com>
+Date: Sat, 19 Dec 2015 19:33:58 +0100
+Message-Id: <1450550044-14674-2-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 References: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,38 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] bcm283x: mbox: align to cachesize
+Subject: [PATCH 1/7] memtest: fix missing arguments in help string
 To: barebox@lists.infradead.org
 Cc: dthompson@nexusisp.com, carlo.caione@gmail.com
 
-This patch change the align of mbox stack resource to 32. The reason is
-that I had some experience with bcm2836 and the mbox implementation,
-after setting the align to 64(on bcm2836) the issues was gone.
-
-I found these values inside the u-boot implementation, they use 32
-(bcm2835) and 64 (bcm2836).
+This patch adds some missing arguments in help string of memtest.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/arm/mach-bcm283x/include/mach/mbox.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ commands/memtest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
-index 4c3fd77..09b31f2 100644
---- a/arch/arm/mach-bcm283x/include/mach/mbox.h
-+++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
-@@ -73,8 +73,10 @@ struct bcm2835_mbox_hdr {
- #define BCM2835_MBOX_REQ_CODE		0
- #define BCM2835_MBOX_RESP_CODE_SUCCESS	0x80000000
- 
-+#define BCM2835_CACHELINE_SIZE		32
-+
- #define BCM2835_MBOX_STACK_ALIGN(type, name) \
--	STACK_ALIGN_ARRAY(type, name, 1, BCM2835_CHAN_MASK + 1)
-+	STACK_ALIGN_ARRAY(type, name, 1, BCM2835_CACHELINE_SIZE)
- 
- #define BCM2835_MBOX_INIT_HDR(_m_) { \
- 		memset((_m_), 0, sizeof(*(_m_))); \
+diff --git a/commands/memtest.c b/commands/memtest.c
+index d784a5c..99d4864 100644
+--- a/commands/memtest.c
++++ b/commands/memtest.c
+@@ -191,7 +191,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(memtest)
+ 	.cmd		= do_memtest,
+ 	BAREBOX_CMD_DESC("extensive memory test")
+-	BAREBOX_CMD_OPTS("[-ib]")
++	BAREBOX_CMD_OPTS("[-ibcut]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_MEM)
+ 	BAREBOX_CMD_HELP(cmd_memtest_help)
+ BAREBOX_CMD_END
 -- 
 2.6.1
 
