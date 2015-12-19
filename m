@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1a9pWu-0008HZ-Qz
- for barebox@lists.infradead.org; Fri, 18 Dec 2015 07:32:45 +0000
-Date: Fri, 18 Dec 2015 08:32:22 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20151218073222.GH11966@pengutronix.de>
-References: <1450313304.26955.188.camel@rtred1test09.kymeta.local>
- <1450313640.26955.192.camel@rtred1test09.kymeta.local>
- <20151217100733.GD11966@pengutronix.de>
- <1450386805.26955.221.camel@rtred1test09.kymeta.local>
+ id 1aA5AU-0001ya-5R
+ for barebox@lists.infradead.org; Sat, 19 Dec 2015 00:14:38 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Sat, 19 Dec 2015 00:13:59 +0000
+Message-ID: <1450484040.26955.228.camel@rtred1test09.kymeta.local>
+Content-Language: en-US
+Content-ID: <B38B79F90374414081565DBA9150CE4C@kymetacorp.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1450386805.26955.221.camel@rtred1test09.kymeta.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,47 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/4] socfpga: Find partition with environment via device
- tree
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] of: Add for_each_compatible_node_from iterator
+To: barebox <barebox@lists.infradead.org>
 
-On Thu, Dec 17, 2015 at 09:13:25PM +0000, Trent Piepho wrote:
-> On Thu, 2015-12-17 at 11:07 +0100, Sascha Hauer wrote:
-> > >  / {
-> > > +	chosen {
-> > > +		environment@0 {
-> > > +			compatible = "barebox,environment";
-> > > +			device-path = &mmc, "partname:1";
-> > > +			file-path = "barebox.env";
-> > > +		};
-> > > +	};
-> > > +
-> > 
-> > I applied this series as is. We might have to move this to the board dts
-> > files later as putting this into the SoC dtsi file does not allow the
-> > boards to put the environment somewhere else. That was not possible
-> > before this patch either, so this doesn't change much at the moment.
-> 
-> It's possible to change in the board dts by adding a
-> "/chosen/environment@0" node to the dts with whatever properties should
-> be overridden from the dtsi file's values.  Like how status = "disabled"
-> in dtsi is changed to status = "okay" in the board file.  I do this for
-> my board as "partname:1" isn't correct for me.
+The existing iterator for_each_compatible_node() searches for each
+compatible node starting from the root of the loaded device tree.
+This means it only works on the barebox device tree and not the tree
+to be passed to the Linux kernel, which is what an of_fixup would
+probably want to use.
 
-We might also have to delete the file-path property in a board dts. I
-just learned that this indeed works with /delete-property/ in dtc, but I
-am not sure if we should really use this, the deep levels of device tree
-includes are already hard enough to track (Not necessarily for socfpga,
-but have a look at some i.MX6 SoMs)
+This adds for_each_compatible_node_from(), which takes an additional
+parameter of a root to search from.  This could be the device tree to
+be used for the kernel.  It could also be used to search just a
+subtree.
 
-Sascha
+Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+---
 
+It's possible the fixups in cm_cogent_fixup() and hb_fixup() should
+be using this.  It's not clear to me if they want to modify the barebox
+device tree or the Linux device tree or both.
+
+ include/of.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/include/of.h b/include/of.h
+index e60fe89..e65a8e8 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -641,9 +641,13 @@ static inline struct device_node *of_find_node_by_path_or_alias(
+ #define for_each_node_by_name_from(dn, root, name) \
+ 	for (dn = of_find_node_by_name(root, name); dn; \
+ 	     dn = of_find_node_by_name(dn, name))
+-#define for_each_compatible_node(dn, type, compatible) \
+-	for (dn = of_find_compatible_node(NULL, type, compatible); dn; \
++/* Iterate over compatible nodes starting from given root */
++#define for_each_compatible_node_from(dn, root, type, compatible) \
++	for (dn = of_find_compatible_node(root, type, compatible); dn; \
+ 	     dn = of_find_compatible_node(dn, type, compatible))
++/* Iterate over compatible nodes in default device tree */
++#define for_each_compatible_node(dn, type, compatible) \
++        for_each_compatible_node_from(dn, NULL, type, compatible
+ static inline struct device_node *of_find_matching_node(
+ 	struct device_node *from,
+ 	const struct of_device_id *matches)
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.3.1
+
 
 _______________________________________________
 barebox mailing list
