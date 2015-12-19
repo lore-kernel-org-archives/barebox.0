@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22d.google.com ([2a00:1450:400c:c09::22d])
+Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aAMLH-0001Jb-Ql
- for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:35:00 +0000
-Received: by mail-wm0-x22d.google.com with SMTP id l126so23223560wml.0
- for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:35 -0800 (PST)
+ id 1aAMLG-0001Jp-PZ
+ for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:35:02 +0000
+Received: by mail-wm0-x232.google.com with SMTP id l126so23419038wml.1
+ for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:38 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Sat, 19 Dec 2015 19:34:01 +0100
-Message-Id: <1450550044-14674-5-git-send-email-alex.aring@gmail.com>
+Date: Sat, 19 Dec 2015 19:34:04 +0100
+Message-Id: <1450550044-14674-8-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 References: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,177 +23,788 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] bcm2835: introduce mach-bcm283x
+Subject: [PATCH 7/7] arm: bcm283x: add rpi2 support
 To: barebox@lists.infradead.org
 Cc: dthompson@nexusisp.com, carlo.caione@gmail.com
 
-This patch changes the most part of mach-bcm2835 to mach-bcm283x. This
-prepares to add RPi2 support which is a bcm2836. This patch changes the
-Kconfig entry namens to BCM283X for drivers only. These drivers should
-working the same in bcm2836.
-
-While updating defconfig I added LED support/trigger option.
+This patch adds Raspberry Pi 2 support in barebox. The features should
+be the same like the current RPi status in barebox.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/arm/Kconfig                                   | 18 +++---
- arch/arm/Makefile                                  |  2 +-
- arch/arm/configs/rpi_defconfig                     | 70 ++++++++++++----------
- arch/arm/{mach-bcm2835 => mach-bcm283x}/Kconfig    |  5 +-
- arch/arm/{mach-bcm2835 => mach-bcm283x}/Makefile   |  0
- arch/arm/{mach-bcm2835 => mach-bcm283x}/core.c     |  0
- .../include/mach/core.h                            |  0
- .../include/mach/debug_ll.h                        |  0
- .../include/mach/mbox.h                            |  0
- .../include/mach/platform.h                        |  0
- .../include/mach/wd.h                              |  0
- arch/arm/{mach-bcm2835 => mach-bcm283x}/mbox.c     |  0
- drivers/clocksource/Kconfig                        |  4 +-
- drivers/clocksource/Makefile                       |  2 +-
- drivers/gpio/Kconfig                               |  6 +-
- drivers/gpio/Makefile                              |  2 +-
- drivers/mci/Kconfig                                |  6 +-
- drivers/mci/Makefile                               |  2 +-
- drivers/regulator/Kconfig                          |  4 +-
- drivers/regulator/Makefile                         |  2 +-
- drivers/video/Kconfig                              |  8 +--
- drivers/video/Makefile                             |  2 +-
- 22 files changed, 71 insertions(+), 62 deletions(-)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/Kconfig (70%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/Makefile (100%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/core.c (100%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/include/mach/core.h (100%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/include/mach/debug_ll.h (100%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/include/mach/mbox.h (100%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/include/mach/platform.h (100%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/include/mach/wd.h (100%)
- rename arch/arm/{mach-bcm2835 => mach-bcm283x}/mbox.c (100%)
+ arch/arm/Kconfig                              |   5 +
+ arch/arm/boards/Makefile                      |   2 +-
+ arch/arm/boards/raspberry-pi/Makefile         |   2 +
+ arch/arm/boards/raspberry-pi/rpi-common.c     | 294 ++++++++++++++++++++++++++
+ arch/arm/boards/raspberry-pi/rpi.c            | 292 +------------------------
+ arch/arm/boards/raspberry-pi/rpi.h            |  28 +++
+ arch/arm/boards/raspberry-pi/rpi2.c           |  21 ++
+ arch/arm/configs/rpi2_defconfig               |  72 +++++++
+ arch/arm/mach-bcm283x/Kconfig                 |   9 +
+ arch/arm/mach-bcm283x/include/mach/mbox.h     |   9 +-
+ arch/arm/mach-bcm283x/include/mach/platform.h |   9 +
+ 11 files changed, 453 insertions(+), 290 deletions(-)
+ create mode 100644 arch/arm/boards/raspberry-pi/rpi-common.c
+ create mode 100644 arch/arm/boards/raspberry-pi/rpi.h
+ create mode 100644 arch/arm/boards/raspberry-pi/rpi2.c
+ create mode 100644 arch/arm/configs/rpi2_defconfig
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 9f4d8e9..4e7c1fd 100644
+index 4e7c1fd..71d4336 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -22,6 +22,15 @@ config ARM_USE_COMPRESSED_DTB
- 	select UNCOMPRESS
- 	select LZO_DECOMPRESS
- 
-+config ARCH_BCM283X
-+	bool
-+	select GPIOLIB
-+	select CLKDEV_LOOKUP
-+	select COMMON_CLK
-+	select CLOCKSOURCE_BCM283X
-+	select ARM_AMBA
-+	select HAS_DEBUG_LL
-+
- menu "System Type"
- 
- config BUILTIN_DTB
-@@ -52,13 +61,8 @@ config ARCH_AT91
- 
- config ARCH_BCM2835
- 	bool "Broadcom BCM2835 boards"
--	select GPIOLIB
-+	select ARCH_BCM283X
+@@ -64,6 +64,11 @@ config ARCH_BCM2835
+ 	select ARCH_BCM283X
  	select CPU_ARM1176
--	select CLKDEV_LOOKUP
--	select COMMON_CLK
--	select CLOCKSOURCE_BCM2835
--	select ARM_AMBA
--	select HAS_DEBUG_LL
  
++config ARCH_BCM2836
++	bool "Broadcom BCM2836 boards"
++	select ARCH_BCM283X
++	select CPU_V7
++
  config ARCH_CLPS711X
  	bool "Cirrus Logic EP711x/EP721x/EP731x"
-@@ -251,7 +255,7 @@ endchoice
+ 	select CLKDEV_LOOKUP
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 2e58f15..1029e8f 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -95,7 +95,7 @@ obj-$(CONFIG_MACH_QIL_A9260)			+= qil-a926x/
+ obj-$(CONFIG_MACH_QIL_A9G20)			+= qil-a926x/
+ obj-$(CONFIG_MACH_RADXA_ROCK)			+= radxa-rock/
+ obj-$(CONFIG_MACH_REALQ7)			+= datamodul-edm-qmx6/
+-obj-$(CONFIG_MACH_RPI)				+= raspberry-pi/
++obj-$(CONFIG_MACH_RPI_COMMON)			+= raspberry-pi/
+ obj-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite/
+ obj-$(CONFIG_MACH_SABRESD)			+= freescale-mx6-sabresd/
+ obj-$(CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB)	+= freescale-mx6sx-sabresdb/
+diff --git a/arch/arm/boards/raspberry-pi/Makefile b/arch/arm/boards/raspberry-pi/Makefile
+index 978383a..7a3d7de 100644
+--- a/arch/arm/boards/raspberry-pi/Makefile
++++ b/arch/arm/boards/raspberry-pi/Makefile
+@@ -1,2 +1,4 @@
++obj-$(CONFIG_MACH_RPI_COMMON) += rpi-common.o
+ obj-$(CONFIG_MACH_RPI) += rpi.o
++obj-$(CONFIG_MACH_RPI2) += rpi2.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+new file mode 100644
+index 0000000..0e17587
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -0,0 +1,294 @@
++/*
++ * Copyright (C) 2009 Carlo Caione <carlo@carlocaione.org>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <fs.h>
++#include <linux/stat.h>
++#include <linux/clk.h>
++#include <linux/clkdev.h>
++#include <envfs.h>
++#include <malloc.h>
++#include <gpio.h>
++#include <net.h>
++#include <led.h>
++#include <asm/armlinux.h>
++#include <generated/mach-types.h>
++
++#include <mach/core.h>
++#include <mach/mbox.h>
++
++#include "rpi.h"
++
++struct msg_get_arm_mem {
++	struct bcm2835_mbox_hdr hdr;
++	struct bcm2835_mbox_tag_get_arm_mem get_arm_mem;
++	u32 end_tag;
++};
++
++struct msg_get_clock_rate {
++	struct bcm2835_mbox_hdr hdr;
++	struct bcm2835_mbox_tag_get_clock_rate get_clock_rate;
++	u32 end_tag;
++};
++
++struct msg_get_board_rev {
++	struct bcm2835_mbox_hdr hdr;
++	struct bcm2835_mbox_tag_get_board_rev get_board_rev;
++	u32 end_tag;
++};
++
++struct msg_get_mac_address {
++	struct bcm2835_mbox_hdr hdr;
++	struct bcm2835_mbox_tag_get_mac_address get_mac_address;
++	u32 end_tag;
++};
++
++static int rpi_get_arm_mem(u32 *size)
++{
++	BCM2835_MBOX_STACK_ALIGN(struct msg_get_arm_mem, msg);
++	int ret;
++
++	BCM2835_MBOX_INIT_HDR(msg);
++	BCM2835_MBOX_INIT_TAG(&msg->get_arm_mem, GET_ARM_MEMORY);
++
++	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
++	if (ret)
++		return ret;
++
++	*size = msg->get_arm_mem.body.resp.mem_size;
++
++	return 0;
++}
++
++static int rpi_register_clkdev(u32 clock_id, const char *name)
++{
++	BCM2835_MBOX_STACK_ALIGN(struct msg_get_clock_rate, msg);
++	struct clk *clk;
++	int ret;
++
++	BCM2835_MBOX_INIT_HDR(msg);
++	BCM2835_MBOX_INIT_TAG(&msg->get_clock_rate, GET_CLOCK_RATE);
++	msg->get_clock_rate.body.req.clock_id = clock_id;
++
++	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
++	if (ret)
++		return ret;
++
++	clk = clk_fixed(name, msg->get_clock_rate.body.resp.rate_hz);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	if (!clk_register_clkdev(clk, NULL, name))
++		return -ENODEV;
++
++	return 0;
++}
++
++void rpi_set_usbethaddr(void)
++{
++	BCM2835_MBOX_STACK_ALIGN(struct msg_get_mac_address, msg);
++	int ret;
++
++	BCM2835_MBOX_INIT_HDR(msg);
++	BCM2835_MBOX_INIT_TAG(&msg->get_mac_address, GET_MAC_ADDRESS);
++
++	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
++	if (ret) {
++		printf("bcm2835: Could not query MAC address\n");
++		/* Ignore error; not critical */
++		return;
++	}
++
++	eth_register_ethaddr(0, msg->get_mac_address.body.resp.mac);
++}
++
++struct gpio_led rpi_leds[] = {
++	{
++		.gpio	= -EINVAL,
++		.led	= {
++			.name = "ACT",
++		},
++	}, {
++		.gpio	= -EINVAL,
++		.led	= {
++			.name = "PWR",
++		},
++	},
++};
++
++void rpi_add_led(void)
++{
++	int i;
++	struct gpio_led *l;
++
++	for (i = 0; i < ARRAY_SIZE(rpi_leds); i++) {
++		l = &rpi_leds[i];
++
++		if (gpio_is_valid(l->gpio))
++			led_gpio_register(l);
++	}
++
++	l = &rpi_leds[0];
++	if (gpio_is_valid(l->gpio))
++		led_set_trigger(LED_TRIGGER_HEARTBEAT, &l->led);
++}
++
++void rpi_b_plus_init(void)
++{
++	rpi_leds[0].gpio = 47;
++	rpi_leds[1].gpio = 35;
++	rpi_set_usbethaddr();
++}
++
++static int rpi_board_rev = 0;
++
++static void rpi_get_board_rev(void)
++{
++	int ret;
++	char *name;
++
++	BCM2835_MBOX_STACK_ALIGN(struct msg_get_board_rev, msg);
++	BCM2835_MBOX_INIT_HDR(msg);
++	BCM2835_MBOX_INIT_TAG(&msg->get_board_rev, GET_BOARD_REV);
++
++	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
++	if (ret) {
++		printf("bcm2835: Could not query board revision\n");
++		/* Ignore error; not critical */
++		return;
++	}
++
++	/* Comments from u-boot:
++	 * For details of old-vs-new scheme, see:
++	 * https://github.com/pimoroni/RPi.version/blob/master/RPi/version.py
++	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=99293&p=690282
++	 * (a few posts down)
++	 *
++	 * For the RPi 1, bit 24 is the "warranty bit", so we mask off just the
++	 * lower byte to use as the board rev:
++	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=98367&start=250
++	 * http://www.raspberrypi.org/forums/viewtopic.php?f=31&t=20594
++	 */
++	rpi_board_rev = msg->get_board_rev.body.resp.rev;
++	if (rpi_board_rev & 0x800000)
++		rpi_board_rev = (rpi_board_rev >> 4) & 0xff;
++	else
++		rpi_board_rev &= 0xff;
++	if (rpi_board_rev >= rpi_models_size) {
++		printf("RPI: Board rev %u outside known range\n",
++		       rpi_board_rev);
++		goto unknown_rev;
++	}
++
++	if (!rpi_models[rpi_board_rev].name) {
++		printf("RPI: Board rev %u unknown\n", rpi_board_rev);
++		goto unknown_rev;
++	}
++
++	if (!rpi_board_rev)
++		goto unknown_rev;
++
++	name = asprintf("RaspberryPi %s %s", rpi_models[rpi_board_rev].name,
++			rpi_model_string);
++	barebox_set_model(name);
++	free(name);
++
++	return;
++
++unknown_rev:
++	rpi_board_rev = 0;
++	name = asprintf("RaspberryPi %s", rpi_model_string);
++	barebox_set_model(name);
++	free(name);
++}
++
++static void rpi_model_init(void)
++{
++	if (!rpi_models[rpi_board_rev].init)
++		return;
++
++	rpi_models[rpi_board_rev].init();
++	rpi_add_led();
++}
++
++static int rpi_mem_init(void)
++{
++	u32 size = 0;
++	int ret;
++
++	ret = rpi_get_arm_mem(&size);
++	if (ret)
++		printf("could not query ARM memory size\n");
++
++	bcm2835_add_device_sdram(size);
++
++	return ret;
++}
++mem_initcall(rpi_mem_init);
++
++static int rpi_console_init(void)
++{
++	rpi_get_board_rev();
++	barebox_set_hostname("rpi");
++
++	bcm2835_register_uart();
++	return 0;
++}
++console_initcall(rpi_console_init);
++
++static int rpi_clock_init(void)
++{
++	rpi_register_clkdev(BCM2835_MBOX_CLOCK_ID_EMMC, "bcm2835_mci0");
++	return 0;
++}
++postconsole_initcall(rpi_clock_init);
++
++static int rpi_env_init(void)
++{
++	struct stat s;
++	const char *diskdev = "/dev/disk0.0";
++	int ret;
++
++	device_detect_by_name("mci0");
++
++	ret = stat(diskdev, &s);
++	if (ret) {
++		printf("no %s. using default env\n", diskdev);
++		return 0;
++	}
++
++	mkdir("/boot", 0666);
++	ret = mount(diskdev, "fat", "/boot", NULL);
++	if (ret) {
++		printf("failed to mount %s\n", diskdev);
++		return 0;
++	}
++
++	default_environment_path_set("/boot/barebox.env");
++
++	return 0;
++}
++
++static int rpi_devices_init(void)
++{
++	rpi_model_init();
++	bcm2835_register_mci();
++	bcm2835_register_fb();
++	armlinux_set_architecture(MACH_TYPE_BCM2708);
++	rpi_env_init();
++	return 0;
++}
++late_initcall(rpi_devices_init);
+diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+index faf48a5..dd2ad7f 100644
+--- a/arch/arm/boards/raspberry-pi/rpi.c
++++ b/arch/arm/boards/raspberry-pi/rpi.c
+@@ -13,161 +13,17 @@
+  *
+  */
  
- source arch/arm/cpu/Kconfig
- source arch/arm/mach-at91/Kconfig
--source arch/arm/mach-bcm2835/Kconfig
-+source arch/arm/mach-bcm283x/Kconfig
- source arch/arm/mach-clps711x/Kconfig
- source arch/arm/mach-davinci/Kconfig
- source arch/arm/mach-digic/Kconfig
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index cae05ff..9ce16b9 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -57,7 +57,7 @@ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
- # Machine directory name.  This list is sorted alphanumerically
- # by CONFIG_* macro name.
- machine-$(CONFIG_ARCH_AT91)		:= at91
--machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
-+machine-$(CONFIG_ARCH_BCM283X)		:= bcm283x
- machine-$(CONFIG_ARCH_CLPS711X)		:= clps711x
- machine-$(CONFIG_ARCH_DAVINCI)		:= davinci
- machine-$(CONFIG_ARCH_DIGIC)		:= digic
-diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-index 25770a0..f7b5910 100644
---- a/arch/arm/configs/rpi_defconfig
-+++ b/arch/arm/configs/rpi_defconfig
-@@ -6,7 +6,6 @@ CONFIG_MMU=y
- CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_PROMPT="R-Pi> "
--CONFIG_LONGHELP=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
-@@ -14,52 +13,57 @@ CONFIG_MENU=y
- CONFIG_BLSPEC=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/raspberry-pi/env"
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_MSLEEP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_LET=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_LOGIN=y
--CONFIG_CMD_PASSWD=y
--CONFIG_CMD_TIME=y
--CONFIG_CMD_LN=y
--CONFIG_CMD_FILETYPE=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_LOADY=y
--CONFIG_CMD_MEMINFO=y
+-#include <common.h>
+-#include <init.h>
+-#include <fs.h>
+-#include <linux/stat.h>
+-#include <linux/clk.h>
+-#include <linux/clkdev.h>
+-#include <envfs.h>
+-#include <malloc.h>
+-#include <gpio.h>
+-#include <net.h>
+-#include <led.h>
+-#include <asm/armlinux.h>
+-#include <generated/mach-types.h>
+-
+-#include <mach/core.h>
+-#include <mach/mbox.h>
+-
+-struct msg_get_arm_mem {
+-	struct bcm2835_mbox_hdr hdr;
+-	struct bcm2835_mbox_tag_get_arm_mem get_arm_mem;
+-	u32 end_tag;
+-};
+-
+-struct msg_get_clock_rate {
+-	struct bcm2835_mbox_hdr hdr;
+-	struct bcm2835_mbox_tag_get_clock_rate get_clock_rate;
+-	u32 end_tag;
+-};
+-
+-struct msg_get_board_rev {
+-	struct bcm2835_mbox_hdr hdr;
+-	struct bcm2835_mbox_tag_get_board_rev get_board_rev;
+-	u32 end_tag;
+-};
+-
+-struct msg_get_mac_address {
+-	struct bcm2835_mbox_hdr hdr;
+-	struct bcm2835_mbox_tag_get_mac_address get_mac_address;
+-	u32 end_tag;
+-};
+-
+-static int rpi_get_arm_mem(u32 *size)
+-{
+-	BCM2835_MBOX_STACK_ALIGN(struct msg_get_arm_mem, msg);
+-	int ret;
+-
+-	BCM2835_MBOX_INIT_HDR(msg);
+-	BCM2835_MBOX_INIT_TAG(&msg->get_arm_mem, GET_ARM_MEMORY);
+-
+-	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
+-	if (ret)
+-		return ret;
+-
+-	*size = msg->get_arm_mem.body.resp.mem_size;
+-
+-	return 0;
+-}
+-
+-static int rpi_register_clkdev(u32 clock_id, const char *name)
+-{
+-	BCM2835_MBOX_STACK_ALIGN(struct msg_get_clock_rate, msg);
+-	struct clk *clk;
+-	int ret;
+-
+-	BCM2835_MBOX_INIT_HDR(msg);
+-	BCM2835_MBOX_INIT_TAG(&msg->get_clock_rate, GET_CLOCK_RATE);
+-	msg->get_clock_rate.body.req.clock_id = clock_id;
+-
+-	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
+-	if (ret)
+-		return ret;
+-
+-	clk = clk_fixed(name, msg->get_clock_rate.body.resp.rate_hz);
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
+-
+-	if (!clk_register_clkdev(clk, NULL, name))
+-		return -ENODEV;
+-
+-	return 0;
+-}
+-
+-static void rpi_set_usbethaddr(void)
+-{
+-	BCM2835_MBOX_STACK_ALIGN(struct msg_get_mac_address, msg);
+-	int ret;
+-
+-	BCM2835_MBOX_INIT_HDR(msg);
+-	BCM2835_MBOX_INIT_TAG(&msg->get_mac_address, GET_MAC_ADDRESS);
+-
+-	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
+-	if (ret) {
+-		printf("bcm2835: Could not query MAC address\n");
+-		/* Ignore error; not critical */
+-		return;
+-	}
+-
+-	eth_register_ethaddr(0, msg->get_mac_address.body.resp.mac);
+-}
+-
+-static struct gpio_led leds[] = {
+-	{
+-		.gpio	= -EINVAL,
+-		.led	= {
+-			.name = "ACT",
+-		},
+-	}, {
+-		.gpio	= -EINVAL,
+-		.led	= {
+-			.name = "PWR",
+-		},
+-	},
+-};
+-
+-static void rpi_add_led(void)
+-{
+-	int i;
+-	struct gpio_led *l;
+-
+-	for (i = 0; i < ARRAY_SIZE(leds); i++) {
+-		l = &leds[i];
+-
+-		if (gpio_is_valid(l->gpio))
+-			led_gpio_register(l);
+-	}
+-
+-	l = &leds[0];
+-	if (gpio_is_valid(l->gpio))
+-		led_set_trigger(LED_TRIGGER_HEARTBEAT, &l->led);
+-}
+-
+-static void rpi_b_plus_init(void)
+-{
+-	leds[0].gpio = 47;
+-	leds[1].gpio = 35;
+-	rpi_set_usbethaddr();
+-}
++#include "rpi.h"
+ 
+ static void rpi_b_init(void)
+ {
+-	leds[0].gpio = 16;
+-	leds[0].active_low = 1;
++	rpi_leds[0].gpio = 16;
++	rpi_leds[0].active_low = 1;
+ 	rpi_set_usbethaddr();
+ }
+ 
+-#define RPI_MODEL(_id, _name, _init)	\
+-	[_id] = {				\
+-		.name			= _name,\
+-		.init			= _init,\
+-	}
+ /* See comments in mbox.h for data source */
+-static const struct {
+-	const char *name;
+-	void (*init)(void);
+-} models[] = {
++const struct rpi_model rpi_models[] = {
+ 	RPI_MODEL(0, "Unknown model", NULL),
+ 	RPI_MODEL(BCM2835_BOARD_REV_B_I2C0_2, "Model B (no P5)", rpi_b_init),
+ 	RPI_MODEL(BCM2835_BOARD_REV_B_I2C0_3, "Model B (no P5)", rpi_b_init),
+@@ -184,141 +40,5 @@ static const struct {
+ 	RPI_MODEL(BCM2835_BOARD_REV_CM, "Compute Module", NULL),
+ 	RPI_MODEL(BCM2835_BOARD_REV_A_PLUS, "Model A+", NULL),
+ };
+-
+-static int rpi_board_rev = 0;
+-
+-static void rpi_get_board_rev(void)
+-{
+-	int ret;
+-	char *name;
+-
+-	BCM2835_MBOX_STACK_ALIGN(struct msg_get_board_rev, msg);
+-	BCM2835_MBOX_INIT_HDR(msg);
+-	BCM2835_MBOX_INIT_TAG(&msg->get_board_rev, GET_BOARD_REV);
+-
+-	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
+-	if (ret) {
+-		printf("bcm2835: Could not query board revision\n");
+-		/* Ignore error; not critical */
+-		return;
+-	}
+-
+-	/* Comments from u-boot:
+-	 * For details of old-vs-new scheme, see:
+-	 * https://github.com/pimoroni/RPi.version/blob/master/RPi/version.py
+-	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=99293&p=690282
+-	 * (a few posts down)
+-	 *
+-	 * For the RPi 1, bit 24 is the "warranty bit", so we mask off just the
+-	 * lower byte to use as the board rev:
+-	 * http://www.raspberrypi.org/forums/viewtopic.php?f=63&t=98367&start=250
+-	 * http://www.raspberrypi.org/forums/viewtopic.php?f=31&t=20594
+-	 */
+-	rpi_board_rev = msg->get_board_rev.body.resp.rev;
+-	if (rpi_board_rev & 0x800000)
+-		rpi_board_rev = (rpi_board_rev >> 4) & 0xff;
+-	else
+-		rpi_board_rev &= 0xff;
+-	if (rpi_board_rev >= ARRAY_SIZE(models)) {
+-		printf("RPI: Board rev %u outside known range\n",
+-		       rpi_board_rev);
+-		goto unknown_rev;
+-	}
+-
+-	if (!models[rpi_board_rev].name) {
+-		printf("RPI: Board rev %u unknown\n", rpi_board_rev);
+-		goto unknown_rev;
+-	}
+-
+-	if (!rpi_board_rev)
+-		goto unknown_rev;
+-
+-	name = asprintf("RaspberryPi %s (BCM2835/ARM1176JZF-S)",
+-			models[rpi_board_rev].name);
+-	barebox_set_model(name);
+-	free(name);
+-
+-	return;
+-
+-unknown_rev:
+-	rpi_board_rev = 0;
+-	barebox_set_model("RaspberryPi (BCM2835/ARM1176JZF-S)");
+-}
+-
+-static void rpi_model_init(void)
+-{
+-	if (!models[rpi_board_rev].init)
+-		return;
+-
+-	models[rpi_board_rev].init();
+-	rpi_add_led();
+-}
+-
+-static int rpi_mem_init(void)
+-{
+-	u32 size = 0;
+-	int ret;
+-
+-	ret = rpi_get_arm_mem(&size);
+-	if (ret)
+-		printf("could not query ARM memory size\n");
+-
+-	bcm2835_add_device_sdram(size);
+-
+-	return ret;
+-}
+-mem_initcall(rpi_mem_init);
+-
+-static int rpi_console_init(void)
+-{
+-	rpi_get_board_rev();
+-	barebox_set_hostname("rpi");
+-
+-	bcm2835_register_uart();
+-	return 0;
+-}
+-console_initcall(rpi_console_init);
+-
+-static int rpi_clock_init(void)
+-{
+-	rpi_register_clkdev(BCM2835_MBOX_CLOCK_ID_EMMC, "bcm2835_mci0");
+-	return 0;
+-}
+-postconsole_initcall(rpi_clock_init);
+-
+-static int rpi_env_init(void)
+-{
+-	struct stat s;
+-	const char *diskdev = "/dev/disk0.0";
+-	int ret;
+-
+-	device_detect_by_name("mci0");
+-
+-	ret = stat(diskdev, &s);
+-	if (ret) {
+-		printf("no %s. using default env\n", diskdev);
+-		return 0;
+-	}
+-
+-	mkdir("/boot", 0666);
+-	ret = mount(diskdev, "fat", "/boot", NULL);
+-	if (ret) {
+-		printf("failed to mount %s\n", diskdev);
+-		return 0;
+-	}
+-
+-	default_environment_path_set("/boot/barebox.env");
+-
+-	return 0;
+-}
+-
+-static int rpi_devices_init(void)
+-{
+-	rpi_model_init();
+-	bcm2835_register_mci();
+-	bcm2835_register_fb();
+-	armlinux_set_architecture(MACH_TYPE_BCM2708);
+-	rpi_env_init();
+-	return 0;
+-}
+-late_initcall(rpi_devices_init);
++const size_t rpi_models_size = ARRAY_SIZE(rpi_models);
++const char *rpi_model_string = "(BCM2835/ARM1176JZF-S)";
+diff --git a/arch/arm/boards/raspberry-pi/rpi.h b/arch/arm/boards/raspberry-pi/rpi.h
+new file mode 100644
+index 0000000..739cdee
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/rpi.h
+@@ -0,0 +1,28 @@
++#ifndef __ARCH_ARM_BOARDS_RPI_H__
++#define __ARCH_ARM_BOARDS_RPI_H__
++
++#include <types.h>
++#include <led.h>
++
++#include <mach/mbox.h>
++
++#define RPI_MODEL(_id, _name, _init)	\
++	[_id] = {				\
++		.name			= _name,\
++		.init			= _init,\
++	}
++
++struct rpi_model {
++	const char *name;
++	void (*init)(void);
++};
++
++extern const struct rpi_model rpi_models[];
++extern const size_t rpi_models_size;
++extern const char *rpi_model_string;
++extern struct gpio_led rpi_leds[];
++
++void rpi_b_plus_init(void);
++void rpi_set_usbethaddr(void);
++
++#endif /* __ARCH_ARM_BOARDS_RPI_H__ */
+diff --git a/arch/arm/boards/raspberry-pi/rpi2.c b/arch/arm/boards/raspberry-pi/rpi2.c
+new file mode 100644
+index 0000000..2cfc06f
+--- /dev/null
++++ b/arch/arm/boards/raspberry-pi/rpi2.c
+@@ -0,0 +1,21 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include "rpi.h"
++
++const struct rpi_model rpi_models[] = {
++	RPI_MODEL(0, "Unknown model", NULL),
++	RPI_MODEL(BCM2836_BOARD_REV_2_B, "2 Model B", rpi_b_plus_init),
++};
++const size_t rpi_models_size = ARRAY_SIZE(rpi_models);
++const char *rpi_model_string = "(BCM2836/CORTEX-A7)";
+diff --git a/arch/arm/configs/rpi2_defconfig b/arch/arm/configs/rpi2_defconfig
+new file mode 100644
+index 0000000..81f821a
+--- /dev/null
++++ b/arch/arm/configs/rpi2_defconfig
+@@ -0,0 +1,72 @@
++CONFIG_ARCH_BCM2836=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_MMU=y
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_PROMPT="R-Pi> "
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_BLSPEC=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/raspberry-pi/env"
 +CONFIG_LONGHELP=y
- CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MM=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_IOMEM=y
 +CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_BOOTM_VERBOSE=y
- CONFIG_CMD_BOOTM_INITRD=y
- CONFIG_CMD_BOOTM_OFTREE=y
--CONFIG_CMD_UIMAGE=y
--CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_GO=y
 +CONFIG_CMD_LOADB=y
 +CONFIG_CMD_LOADY=y
 +CONFIG_CMD_RESET=y
 +CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_PARTITION=y
++CONFIG_CMD_PARTITION=y
 +CONFIG_CMD_EXPORT=y
 +CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_MAGICVAR=y
- CONFIG_CMD_MAGICVAR_HELP=y
--CONFIG_CMD_GPIO=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
 +CONFIG_CMD_SAVEENV=y
 +CONFIG_CMD_FILETYPE=y
 +CONFIG_CMD_LN=y
 +CONFIG_CMD_MD5SUM=y
- CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_UNCOMPRESS=y
 +CONFIG_CMD_LET=y
 +CONFIG_CMD_MSLEEP=y
 +CONFIG_CMD_SLEEP=y
@@ -208,227 +819,115 @@ index 25770a0..f7b5910 100644
 +CONFIG_CMD_CRC=y
 +CONFIG_CMD_CRC_CMP=y
 +CONFIG_CMD_MM=y
- CONFIG_CMD_CLK=y
- CONFIG_CMD_DETECT=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
 +CONFIG_CMD_GPIO=y
 +CONFIG_CMD_OF_NODE=y
 +CONFIG_CMD_OF_PROPERTY=y
 +CONFIG_CMD_OFTREE=y
 +CONFIG_CMD_TIME=y
- CONFIG_SERIAL_AMBA_PL011=y
- CONFIG_MCI=y
--CONFIG_MCI_BCM2835=y
--CONFIG_GPIO_BCM2835=y
++CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_MCI=y
 +CONFIG_MCI_BCM283X=y
 +CONFIG_LED=y
 +CONFIG_LED_GPIO=y
 +CONFIG_LED_TRIGGERS=y
 +CONFIG_GPIO_BCM283X=y
 +CONFIG_REGULATOR=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
-diff --git a/arch/arm/mach-bcm2835/Kconfig b/arch/arm/mach-bcm283x/Kconfig
-similarity index 70%
-rename from arch/arm/mach-bcm2835/Kconfig
-rename to arch/arm/mach-bcm283x/Kconfig
-index 134ad9b..f4a7e67 100644
---- a/arch/arm/mach-bcm2835/Kconfig
++CONFIG_FS_EXT4=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_DIGEST_SHA1_GENERIC=y
++CONFIG_DIGEST_SHA256_GENERIC=y
+diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
+index f4a7e67..e861268 100644
+--- a/arch/arm/mach-bcm283x/Kconfig
 +++ b/arch/arm/mach-bcm283x/Kconfig
-@@ -1,14 +1,15 @@
--if ARCH_BCM2835
-+if ARCH_BCM283X
- 
- config ARCH_TEXT_BASE
+@@ -4,12 +4,21 @@ config ARCH_TEXT_BASE
  	hex
--	default 0x04000000 if MACH_RPI
-+	default 0x04000000
+ 	default 0x04000000
  
++config MACH_RPI_COMMON
++	bool
++
  choice
  	prompt "Broadcom Board type"
  
  config MACH_RPI
  	bool "RaspberryPi (BCM2835/ARM1176JZF-S)"
-+	depends on ARCH_BCM2835
+ 	depends on ARCH_BCM2835
++	select MACH_RPI_COMMON
++
++config MACH_RPI2
++	bool "RaspberryPi 2 (BCM2836/CORTEX-A7)"
++	depends on ARCH_BCM2836
++	select MACH_RPI_COMMON
  
  endchoice
  
-diff --git a/arch/arm/mach-bcm2835/Makefile b/arch/arm/mach-bcm283x/Makefile
-similarity index 100%
-rename from arch/arm/mach-bcm2835/Makefile
-rename to arch/arm/mach-bcm283x/Makefile
-diff --git a/arch/arm/mach-bcm2835/core.c b/arch/arm/mach-bcm283x/core.c
-similarity index 100%
-rename from arch/arm/mach-bcm2835/core.c
-rename to arch/arm/mach-bcm283x/core.c
-diff --git a/arch/arm/mach-bcm2835/include/mach/core.h b/arch/arm/mach-bcm283x/include/mach/core.h
-similarity index 100%
-rename from arch/arm/mach-bcm2835/include/mach/core.h
-rename to arch/arm/mach-bcm283x/include/mach/core.h
-diff --git a/arch/arm/mach-bcm2835/include/mach/debug_ll.h b/arch/arm/mach-bcm283x/include/mach/debug_ll.h
-similarity index 100%
-rename from arch/arm/mach-bcm2835/include/mach/debug_ll.h
-rename to arch/arm/mach-bcm283x/include/mach/debug_ll.h
-diff --git a/arch/arm/mach-bcm2835/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
-similarity index 100%
-rename from arch/arm/mach-bcm2835/include/mach/mbox.h
-rename to arch/arm/mach-bcm283x/include/mach/mbox.h
-diff --git a/arch/arm/mach-bcm2835/include/mach/platform.h b/arch/arm/mach-bcm283x/include/mach/platform.h
-similarity index 100%
-rename from arch/arm/mach-bcm2835/include/mach/platform.h
-rename to arch/arm/mach-bcm283x/include/mach/platform.h
-diff --git a/arch/arm/mach-bcm2835/include/mach/wd.h b/arch/arm/mach-bcm283x/include/mach/wd.h
-similarity index 100%
-rename from arch/arm/mach-bcm2835/include/mach/wd.h
-rename to arch/arm/mach-bcm283x/include/mach/wd.h
-diff --git a/arch/arm/mach-bcm2835/mbox.c b/arch/arm/mach-bcm283x/mbox.c
-similarity index 100%
-rename from arch/arm/mach-bcm2835/mbox.c
-rename to arch/arm/mach-bcm283x/mbox.c
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 598edc9..3fb09fb 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -6,9 +6,9 @@ config ARM_SMP_TWD
- 	bool
- 	depends on ARM && CPU_V7
+diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
+index 09b31f2..cd9ee1f 100644
+--- a/arch/arm/mach-bcm283x/include/mach/mbox.h
++++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
+@@ -11,6 +11,8 @@
  
--config CLOCKSOURCE_BCM2835
-+config CLOCKSOURCE_BCM283X
- 	bool
--	depends on ARCH_BCM2835
-+	depends on ARCH_BCM283X
+ #include <common.h>
  
- config CLOCKSOURCE_CLPS711X
- 	bool
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index f5f5141..4eb1656 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -1,6 +1,6 @@
- obj-$(CONFIG_AMBA_SP804) += amba-sp804.o
- obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
--obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
-+obj-$(CONFIG_CLOCKSOURCE_BCM283X) += bcm2835.o
- obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
- obj-$(CONFIG_CLOCKSOURCE_DIGIC)   += digic.o
- obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 9cb2261..d839d7a 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -21,9 +21,9 @@ config GPIO_74164
- 	  shift registers. This driver can be used to provide access
- 	  to more gpio outputs.
++#include <mach/platform.h>
++
+ /*
+  * The BCM2835 SoC contains (at least) two CPUs; the VideoCore (a/k/a "GPU")
+  * and the ARM CPU. The ARM CPU is often thought of as the main CPU.
+@@ -40,7 +42,7 @@
  
--config GPIO_BCM2835
--	bool "GPIO support for BCM2835"
--	depends on ARCH_BCM2835
-+config GPIO_BCM283X
-+	bool "GPIO support for BCM283X"
-+	depends on ARCH_BCM283X
+ /* Raw mailbox HW */
  
- config GPIO_CLPS711X
- 	bool "GPIO support for CLPS711X"
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index f39e8da..8767eed 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -2,7 +2,7 @@ obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
+-#define BCM2835_MBOX_PHYSADDR	0x2000b880
++#define BCM2835_MBOX_PHYSADDR		(BCM2835_ARM_BASE + 0x880)
  
- obj-$(CONFIG_GPIO_74164)	+= gpio-74164.o
- obj-$(CONFIG_MACH_MIPS_ATH79)	+= gpio-ath79.o
--obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
-+obj-$(CONFIG_GPIO_BCM283X)	+= gpio-bcm2835.o
- obj-$(CONFIG_GPIO_DAVINCI)	+= gpio-davinci.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
- obj-$(CONFIG_GPIO_DIGIC)	+= gpio-digic.o
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index ebd8da9..0f3504c 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -62,9 +62,9 @@ config MCI_S3C
- 	  Enable this entry to add support to read and write SD cards on a
- 	  Samsung S3C24xx based system.
+ struct bcm2835_mbox_regs {
+ 	u32 read;
+@@ -73,8 +75,6 @@ struct bcm2835_mbox_hdr {
+ #define BCM2835_MBOX_REQ_CODE		0
+ #define BCM2835_MBOX_RESP_CODE_SUCCESS	0x80000000
  
--config MCI_BCM2835
--	bool "MCI support for BCM2835"
--	depends on ARCH_BCM2835
-+config MCI_BCM283X
-+	bool "MCI support for BCM283X"
-+	depends on ARCH_BCM283X
+-#define BCM2835_CACHELINE_SIZE		32
+-
+ #define BCM2835_MBOX_STACK_ALIGN(type, name) \
+ 	STACK_ALIGN_ARRAY(type, name, 1, BCM2835_CACHELINE_SIZE)
  
- config MCI_IMX
- 	bool "i.MX"
-diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-index 1e8443c..88ec456 100644
---- a/drivers/mci/Makefile
-+++ b/drivers/mci/Makefile
-@@ -1,6 +1,6 @@
- obj-$(CONFIG_MCI)		+= mci-core.o
- obj-$(CONFIG_MCI_ATMEL)		+= atmel_mci.o
--obj-$(CONFIG_MCI_BCM2835)	+= mci-bcm2835.o
-+obj-$(CONFIG_MCI_BCM283X)	+= mci-bcm2835.o
- obj-$(CONFIG_MCI_IMX)		+= imx.o
- obj-$(CONFIG_MCI_IMX_ESDHC)	+= imx-esdhc.o
- obj-$(CONFIG_MCI_MXS)		+= mxs.o
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 05c3f48..4b41252 100644
---- a/drivers/regulator/Kconfig
-+++ b/drivers/regulator/Kconfig
-@@ -11,9 +11,9 @@ config REGULATOR_FIXED
- 	  This enables a simple fixed regulator. It is used for regulators
- 	  which are not software controllable or controllable via gpio.
+@@ -128,6 +128,9 @@ struct bcm2835_mbox_tag_hdr {
  
--config REGULATOR_BCM2835
-+config REGULATOR_BCM283X
- 	bool
--	depends on ARCH_BCM2835
-+	depends on ARCH_BCM283X
- 	default y
+ #define BCM2835_MBOX_TAG_GET_BOARD_REV	0x00010002
  
- endif
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index d663c16..a8dd9bd 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -1,3 +1,3 @@
- obj-$(CONFIG_REGULATOR) += core.o
- obj-$(CONFIG_REGULATOR_FIXED) += fixed.o
--obj-$(CONFIG_REGULATOR_BCM2835) += bcm2835.o
-+obj-$(CONFIG_REGULATOR_BCM283X) += bcm2835.o
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index eabd246..7ff67e5 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -82,11 +82,11 @@ config DRIVER_VIDEO_PXA
- 	  Add support for the frame buffer device found on the PXA270
- 	  CPU.
++/* RPi 2 */
++#define BCM2836_BOARD_REV_2_B		0x4
++
+ /*
+  * 0x2..0xf from:
+  * http://raspberryalphaomega.org.uk/2013/02/06/automatic-raspberry-pi-board-revision-detection-model-a-b1-and-b2/
+diff --git a/arch/arm/mach-bcm283x/include/mach/platform.h b/arch/arm/mach-bcm283x/include/mach/platform.h
+index e55085a..3b73831 100644
+--- a/arch/arm/mach-bcm283x/include/mach/platform.h
++++ b/arch/arm/mach-bcm283x/include/mach/platform.h
+@@ -28,7 +28,16 @@
+  * This file is manually generated.
+  */
  
--config DRIVER_VIDEO_BCM2835
--	bool "BCM2835 framebuffer driver"
--	depends on ARCH_BCM2835
-+config DRIVER_VIDEO_BCM283X
-+	bool "BCM283X framebuffer driver"
-+	depends on ARCH_BCM283X
- 	help
--	  Add support for the BCM2835/VideoCore frame buffer device.
-+	  Add support for the BCM283X/VideoCore frame buffer device.
- 
- source drivers/video/imx-ipu-v3/Kconfig
- 
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 57e4864..a64fc5f 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -17,6 +17,6 @@ obj-$(CONFIG_DRIVER_VIDEO_S3C24XX) += s3c24xx.o
- obj-$(CONFIG_DRIVER_VIDEO_PXA) += pxa.o
- obj-$(CONFIG_DRIVER_VIDEO_SDL) += sdl.o
- obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
--obj-$(CONFIG_DRIVER_VIDEO_BCM2835) += bcm2835.o
-+obj-$(CONFIG_DRIVER_VIDEO_BCM283X) += bcm2835.o
- obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB) += simplefb.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
++#ifdef CONFIG_ARCH_BCM2835
+ #define BCM2835_PERI_BASE	0x20000000
++#define BCM2835_CACHELINE_SIZE	32
++#elif defined CONFIG_ARCH_BCM2836
++#define BCM2835_PERI_BASE	0x3f000000
++#define BCM2835_CACHELINE_SIZE	64
++#else
++#error "no CONFIG_ARCH_BCM283X defined"
++#endif
++
+ #define BCM2835_ST_BASE		(BCM2835_PERI_BASE + 0x3000)	/* System Timer */
+ #define BCM2835_DMA_BASE	(BCM2835_PERI_BASE + 0x7000)	/* DMA controller */
+ #define BCM2835_ARM_BASE	(BCM2835_PERI_BASE + 0xB000)	/* BCM2708 ARM control block */
 -- 
 2.6.1
 
