@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x236.google.com ([2a00:1450:400c:c09::236])
+Received: from mail-wm0-x232.google.com ([2a00:1450:400c:c09::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aAMLE-0001J9-EZ
- for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:34:53 +0000
-Received: by mail-wm0-x236.google.com with SMTP id l126so23222459wml.0
- for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:31 -0800 (PST)
+ id 1aAMLG-0001Ja-PY
+ for barebox@lists.infradead.org; Sat, 19 Dec 2015 18:34:55 +0000
+Received: by mail-wm0-x232.google.com with SMTP id l126so23290397wml.1
+ for <barebox@lists.infradead.org>; Sat, 19 Dec 2015 10:34:33 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Sat, 19 Dec 2015 19:33:58 +0100
-Message-Id: <1450550044-14674-2-git-send-email-alex.aring@gmail.com>
+Date: Sat, 19 Dec 2015 19:34:00 +0100
+Message-Id: <1450550044-14674-4-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 References: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] memtest: fix missing arguments in help string
+Subject: [PATCH 3/7] arm: bcm2835: fix indentation
 To: barebox@lists.infradead.org
 Cc: dthompson@nexusisp.com, carlo.caione@gmail.com
 
-This patch adds some missing arguments in help string of memtest.
+This patch fix indentation in core.h of mach-bcm2835.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- commands/memtest.c | 2 +-
+ arch/arm/mach-bcm2835/include/mach/core.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/commands/memtest.c b/commands/memtest.c
-index d784a5c..99d4864 100644
---- a/commands/memtest.c
-+++ b/commands/memtest.c
-@@ -191,7 +191,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(memtest)
- 	.cmd		= do_memtest,
- 	BAREBOX_CMD_DESC("extensive memory test")
--	BAREBOX_CMD_OPTS("[-ib]")
-+	BAREBOX_CMD_OPTS("[-ibcut]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_MEM)
- 	BAREBOX_CMD_HELP(cmd_memtest_help)
- BAREBOX_CMD_END
+diff --git a/arch/arm/mach-bcm2835/include/mach/core.h b/arch/arm/mach-bcm2835/include/mach/core.h
+index 477ecb9..b0bed80 100644
+--- a/arch/arm/mach-bcm2835/include/mach/core.h
++++ b/arch/arm/mach-bcm2835/include/mach/core.h
+@@ -24,7 +24,7 @@ void bcm2835_add_device_sdram(u32 size);
+ static void inline bcm2835_register_mci(void)
+ {
+ 	add_generic_device("bcm2835_mci", 0, NULL, BCM2835_EMMC_BASE, 0xFC,
+-			IORESOURCE_MEM, NULL);
++			   IORESOURCE_MEM, NULL);
+ }
+ 
+ static void inline bcm2835_register_fb(void)
 -- 
 2.6.1
 
