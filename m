@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ig0-x230.google.com ([2607:f8b0:4001:c05::230])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aAyVp-0003Nm-3A
- for barebox@lists.infradead.org; Mon, 21 Dec 2015 11:20:21 +0000
-Received: by mail-ig0-x230.google.com with SMTP id ph11so35039247igc.1
- for <barebox@lists.infradead.org>; Mon, 21 Dec 2015 03:20:00 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1450206947.26955.174.camel@rtred1test09.kymeta.local>
-References: <1450200490-4488-1-git-send-email-fvallee@eukrea.fr>
- <1450206947.26955.174.camel@rtred1test09.kymeta.local>
-Date: Mon, 21 Dec 2015 12:19:59 +0100
-Message-ID: <CADgCO28bA+FbpaTGij_0VE4wY+QiCOSKf-D3bSYECxcuL1QFvA@mail.gmail.com>
-From: =?UTF-8?Q?Florian_Vall=C3=A9e?= <fvallee@eukrea.fr>
+ id 1aB1fV-0006zd-Of
+ for barebox@lists.infradead.org; Mon, 21 Dec 2015 14:42:36 +0000
+From: Markus Pargmann <mpa@pengutronix.de>
+Date: Mon, 21 Dec 2015 15:42:00 +0100
+Message-Id: <1450708921-8367-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +14,183 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] GPIO: add Microchip MCP23017 / MCP23008 GPIO driver
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/2] mtd: nand: Add erased page bitflip check helper functions
+To: barebox@lists.infradead.org
 
-On 15 December 2015 at 20:15, Trent Piepho <tpiepho@kymetacorp.com> wrote:
-> On Tue, 2015-12-15 at 18:28 +0100, Florian Vallee wrote:
->> +
->> +/* A given spi_device can represent up to eight mcp23sxx chips
->> + * sharing the same chipselect but using different addresses
->> + * (e.g. chips #0 and #3 might be populated, but not #1 or $2).
->> + * Driver data holds all the per-chip data.
->> + */
->> +struct mcp23s08_driver_data {
->> +     unsigned                ngpio;
->> +     struct mcp23s08         *mcp[8];
->> +     struct mcp23s08         chip[];
->> +};
->
-> It doesn't look like anything uses this struct.
->
->> +static int
->> +mcp23008_read_regs(struct mcp23s08 *mcp, unsigned reg, u16 *vals, unsigned n)
->> +{
->> +     while (n--) {
->> +             int ret = mcp23008_read(mcp, reg++);
->
-> This could use mcp->ops->read(mcp, reg++) instead of mcp23008_read().
-> Which would make it exactly the same as this function:
->
->> +static int
->> +mcp23017_read_regs(struct mcp23s08 *mcp, unsigned reg, u16 *vals, unsigned n)
->> +{
->> +     while (n--) {
->> +             int ret = mcp23017_read(mcp, reg++);
->> +             if (ret < 0)
->> +                     return ret;
->> +             *vals++ = ret;
->> +     }
->> +
->> +     return 0;
->> +}
->
-> So just one read_regs fuction is needed.  Which also would allow
-> read_regs to be removed from the ops struct since it's the same for both
-> chips.
->
+This adds the bitflip check helper functions from the kernel. They are
+used to check for bitflips in erased pages and correct them in the
+buffer so that UBI can work with it. Unfortunately most nand controllers
+do not have ECC for erased pages and don't do this on their own.
 
-Should we go as far as removing the read_regs ops ? Doing so will
-specialize "mcp23s08_probe_one" for the i2c version of the chip. If we
-ever want to integrate back the SPI part of the linux driver, leaving
-the op has a minimal cost while enabling us to keep mcp23s08_probe_one
-in sync with the linux's version.
+Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+---
+ drivers/mtd/nand/nand_base.c | 128 +++++++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/nand.h     |   5 ++
+ 2 files changed, 133 insertions(+)
+
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index ca48f59de1b1..554d3d2f96d4 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -907,6 +907,134 @@ out:
+ EXPORT_SYMBOL(nand_lock);
+ 
+ /**
++ * nand_check_erased_buf - check if a buffer contains (almost) only 0xff data
++ * @buf: buffer to test
++ * @len: buffer length
++ * @bitflips_threshold: maximum number of bitflips
++ *
++ * Check if a buffer contains only 0xff, which means the underlying region
++ * has been erased and is ready to be programmed.
++ * The bitflips_threshold specify the maximum number of bitflips before
++ * considering the region is not erased.
++ * Note: The logic of this function has been extracted from the memweight
++ * implementation, except that nand_check_erased_buf function exit before
++ * testing the whole buffer if the number of bitflips exceed the
++ * bitflips_threshold value.
++ *
++ * Returns a positive number of bitflips less than or equal to
++ * bitflips_threshold, or -ERROR_CODE for bitflips in excess of the
++ * threshold.
++ */
++static int nand_check_erased_buf(void *buf, int len, int bitflips_threshold)
++{
++	const unsigned char *bitmap = buf;
++	int bitflips = 0;
++	int weight;
++
++	for (; len && ((uintptr_t)bitmap) % sizeof(long);
++	     len--, bitmap++) {
++		weight = hweight8(*bitmap);
++		bitflips += BITS_PER_BYTE - weight;
++		if (unlikely(bitflips > bitflips_threshold))
++			return -EBADMSG;
++	}
++
++	for (; len >= sizeof(long);
++	     len -= sizeof(long), bitmap += sizeof(long)) {
++		weight = hweight_long(*((unsigned long *)bitmap));
++		bitflips += BITS_PER_LONG - weight;
++		if (unlikely(bitflips > bitflips_threshold))
++			return -EBADMSG;
++	}
++
++	for (; len > 0; len--, bitmap++) {
++		weight = hweight8(*bitmap);
++		bitflips += BITS_PER_BYTE - weight;
++		if (unlikely(bitflips > bitflips_threshold))
++			return -EBADMSG;
++	}
++
++	return bitflips;
++}
++
++/**
++ * nand_check_erased_ecc_chunk - check if an ECC chunk contains (almost) only
++ *				 0xff data
++ * @data: data buffer to test
++ * @datalen: data length
++ * @ecc: ECC buffer
++ * @ecclen: ECC length
++ * @extraoob: extra OOB buffer
++ * @extraooblen: extra OOB length
++ * @bitflips_threshold: maximum number of bitflips
++ *
++ * Check if a data buffer and its associated ECC and OOB data contains only
++ * 0xff pattern, which means the underlying region has been erased and is
++ * ready to be programmed.
++ * The bitflips_threshold specify the maximum number of bitflips before
++ * considering the region as not erased.
++ *
++ * Note:
++ * 1/ ECC algorithms are working on pre-defined block sizes which are usually
++ *    different from the NAND page size. When fixing bitflips, ECC engines will
++ *    report the number of errors per chunk, and the NAND core infrastructure
++ *    expect you to return the maximum number of bitflips for the whole page.
++ *    This is why you should always use this function on a single chunk and
++ *    not on the whole page. After checking each chunk you should update your
++ *    max_bitflips value accordingly.
++ * 2/ When checking for bitflips in erased pages you should not only check
++ *    the payload data but also their associated ECC data, because a user might
++ *    have programmed almost all bits to 1 but a few. In this case, we
++ *    shouldn't consider the chunk as erased, and checking ECC bytes prevent
++ *    this case.
++ * 3/ The extraoob argument is optional, and should be used if some of your OOB
++ *    data are protected by the ECC engine.
++ *    It could also be used if you support subpages and want to attach some
++ *    extra OOB data to an ECC chunk.
++ *
++ * Returns a positive number of bitflips less than or equal to
++ * bitflips_threshold, or -ERROR_CODE for bitflips in excess of the
++ * threshold. In case of success, the passed buffers are filled with 0xff.
++ */
++int nand_check_erased_ecc_chunk(void *data, int datalen,
++				void *ecc, int ecclen,
++				void *extraoob, int extraooblen,
++				int bitflips_threshold)
++{
++	int data_bitflips = 0, ecc_bitflips = 0, extraoob_bitflips = 0;
++
++	data_bitflips = nand_check_erased_buf(data, datalen,
++					      bitflips_threshold);
++	if (data_bitflips < 0)
++		return data_bitflips;
++
++	bitflips_threshold -= data_bitflips;
++
++	ecc_bitflips = nand_check_erased_buf(ecc, ecclen, bitflips_threshold);
++	if (ecc_bitflips < 0)
++		return ecc_bitflips;
++
++	bitflips_threshold -= ecc_bitflips;
++
++	extraoob_bitflips = nand_check_erased_buf(extraoob, extraooblen,
++						  bitflips_threshold);
++	if (extraoob_bitflips < 0)
++		return extraoob_bitflips;
++
++	if (data_bitflips)
++		memset(data, 0xff, datalen);
++
++	if (ecc_bitflips)
++		memset(ecc, 0xff, ecclen);
++
++	if (extraoob_bitflips)
++		memset(extraoob, 0xff, extraooblen);
++
++	return data_bitflips + ecc_bitflips + extraoob_bitflips;
++}
++EXPORT_SYMBOL(nand_check_erased_ecc_chunk);
++
++/**
+  * nand_read_page_raw - [INTERN] read raw page data without ecc
+  * @mtd: mtd info structure
+  * @chip: nand chip info structure
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index f126cd9fbfbb..83d664e7ee06 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -46,6 +46,11 @@ extern int nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len);
+ /* unlocks specified locked blocks */
+ extern int nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len);
+ 
++extern int nand_check_erased_ecc_chunk(void *data, int datalen,
++				       void *ecc, int ecclen,
++				       void *extraoob, int extraooblen,
++				       int bitflips_threshold);
++
+ /* The maximum number of NAND chips in an array */
+ #define NAND_MAX_CHIPS		8
+ 
+-- 
+2.6.2
+
 
 _______________________________________________
 barebox mailing list
