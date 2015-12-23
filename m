@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aBmqc-00034h-AI
- for barebox@lists.infradead.org; Wed, 23 Dec 2015 17:05:11 +0000
-Received: by mail-wm0-x22c.google.com with SMTP id l126so153744064wml.1
- for <barebox@lists.infradead.org>; Wed, 23 Dec 2015 09:04:50 -0800 (PST)
-Date: Wed, 23 Dec 2015 18:04:43 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20151223170438.GA3791@omega>
-References: <20151223191058.4ffb07f4@berta> <20151223163532.GA1068@omega>
- <20151223195644.73537fb9@berta>
+ id 1aBpMh-0001a5-Au
+ for barebox@lists.infradead.org; Wed, 23 Dec 2015 19:46:28 +0000
+Date: Wed, 23 Dec 2015 20:46:02 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20151223194602.GJ11966@pengutronix.de>
+References: <20151223191058.4ffb07f4@berta>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20151223195644.73537fb9@berta>
+In-Reply-To: <20151223191058.4ffb07f4@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,48 +26,27 @@ Subject: Re: [RFC] device probe order
 To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Dec 23, 2015 at 07:56:44PM +0300, Peter Mamonov wrote:
-> On Wed, 23 Dec 2015 17:35:51 +0100
-> Alexander Aring <alex.aring@gmail.com> wrote:
+Hi Peter,
+
+On Wed, Dec 23, 2015 at 07:10:58PM +0300, Peter Mamonov wrote:
+> Dear All,
 > 
-> > On Wed, Dec 23, 2015 at 07:10:58PM +0300, Peter Mamonov wrote:
-> > > Dear All,
-> > > 
-> > > I've ported an UHCI driver from the u-boot to the barebox (WIP). To
-> > > interoperate with the EHCI driver, the UHCI driver should be probed
-> > > ater the EHCI driver. Both drivers are binded via the device tree
-> > > mechanism. How can i achieve the correct probe order?
-> > > 
-> > 
-> > Normally this should done by returning "-EPROBE_DEFER" inside the
-> > probe function. There was some RFC last years for supporting
-> > EPROBE_DEFER [0] and it seems these are mainline.
-> > 
-> > However you need some bool which indicates that the EHCI driver is
-> > probed.
-> 
-> Thanks, Alex. As i understand, this is the linux-way solution.
-> 
-> Sasha, is it ok to add a global variable to indicate the EHCI presence?
-> Or should we follow the way proposed by the mentioned RFCs, i.e.
-> introduce dependencies between drivers?
-> 
+> I've ported an UHCI driver from the u-boot to the barebox (WIP). To
+> interoperate with the EHCI driver, the UHCI driver should be probed
+> ater the EHCI driver. Both drivers are binded via the device tree
+> mechanism. How can i achieve the correct probe order?
 
-mhhh, maybe a simple "get_device_by_name" works here.
+Do you have an example binding to look at? Normally I would assume that
+the binding makes sure somehow that the uhci driver has to be probed.
 
-If returning NULL then return -EPROBE_DEFER. Don't know if this is a
-good solution, name need to be unique then.
+Sascha
 
 
-btw:
-Just found that "of_find_device_by_node" returns -EPROBE_DEFER when
-nothing was found. This was introduced by the patch series.
-
-Maybe it helps to look how the current use-cases deals with
--EPROBE_DEFER or get_device_by_name is enough.
-
-- Alex
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
