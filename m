@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x22b.google.com ([2a00:1450:4010:c07::22b])
+Received: from mail-wm0-x22c.google.com ([2a00:1450:400c:c09::22c])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aBlxi-00032m-F0
- for barebox@lists.infradead.org; Wed, 23 Dec 2015 16:08:27 +0000
-Received: by mail-lf0-x22b.google.com with SMTP id p203so151226142lfa.0
- for <barebox@lists.infradead.org>; Wed, 23 Dec 2015 08:08:04 -0800 (PST)
-Received: from berta ([194.67.106.109])
- by smtp.gmail.com with ESMTPSA id l5sm6510624lbc.36.2015.12.23.08.08.02
- for <barebox@lists.infradead.org>
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 23 Dec 2015 08:08:02 -0800 (PST)
-Date: Wed, 23 Dec 2015 19:10:58 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20151223191058.4ffb07f4@berta>
+ id 1aBmOk-00009m-3M
+ for barebox@lists.infradead.org; Wed, 23 Dec 2015 16:36:22 +0000
+Received: by mail-wm0-x22c.google.com with SMTP id p187so152850282wmp.1
+ for <barebox@lists.infradead.org>; Wed, 23 Dec 2015 08:36:01 -0800 (PST)
+Date: Wed, 23 Dec 2015 17:35:51 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20151223163532.GA1068@omega>
+References: <20151223191058.4ffb07f4@berta>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20151223191058.4ffb07f4@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,18 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] device probe order
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [RFC] device probe order
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-Dear All,
+On Wed, Dec 23, 2015 at 07:10:58PM +0300, Peter Mamonov wrote:
+> Dear All,
+> 
+> I've ported an UHCI driver from the u-boot to the barebox (WIP). To
+> interoperate with the EHCI driver, the UHCI driver should be probed
+> ater the EHCI driver. Both drivers are binded via the device tree
+> mechanism. How can i achieve the correct probe order?
+> 
 
-I've ported an UHCI driver from the u-boot to the barebox (WIP). To
-interoperate with the EHCI driver, the UHCI driver should be probed
-ater the EHCI driver. Both drivers are binded via the device tree
-mechanism. How can i achieve the correct probe order?
+Normally this should done by returning "-EPROBE_DEFER" inside the probe
+function. There was some RFC last years for supporting EPROBE_DEFER [0]
+and it seems these are mainline.
 
-Regards,
-Peter
+However you need some bool which indicates that the EHCI driver is probed.
+
+int uhci_probe(foobar) {
+
+if (!indicate_ehci_is_probed(foobar)
+	return -EPROBE_DEFER;
+}
+
+- Alex
+
+[0] http://barebox.infradead.narkive.com/ZWIXXU0R/patch-v2-0-6-introduce-deferred-probing
 
 _______________________________________________
 barebox mailing list
