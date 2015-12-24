@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from mail-wm0-x22a.google.com ([2a00:1450:400c:c09::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aC67U-0007cZ-Ku
- for barebox@lists.infradead.org; Thu, 24 Dec 2015 13:39:53 +0000
-Received: by mail-lb0-x230.google.com with SMTP id oh2so60579305lbb.3
- for <barebox@lists.infradead.org>; Thu, 24 Dec 2015 05:39:31 -0800 (PST)
-Date: Thu, 24 Dec 2015 16:42:25 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20151224164225.25665d7f@berta>
-In-Reply-To: <20151224124837.0fcc6fce@berta>
-References: <20151223191058.4ffb07f4@berta> <20151223163532.GA1068@omega>
- <20151223195644.73537fb9@berta> <20151223170438.GA3791@omega>
- <20151224124837.0fcc6fce@berta>
+ id 1aC6zW-0006lt-7h
+ for barebox@lists.infradead.org; Thu, 24 Dec 2015 14:35:43 +0000
+Received: by mail-wm0-x22a.google.com with SMTP id p187so184698532wmp.0
+ for <barebox@lists.infradead.org>; Thu, 24 Dec 2015 06:35:21 -0800 (PST)
+Date: Thu, 24 Dec 2015 15:35:15 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20151224143513.GA3084@omega>
+References: <20151223191058.4ffb07f4@berta>
+ <20151223194602.GJ11966@pengutronix.de>
+ <20151224134653.101687ad@berta>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20151224134653.101687ad@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,69 +27,82 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [RFC] device probe order
-To: Alexander Aring <alex.aring@gmail.com>
+To: Peter Mamonov <pmamonov@gmail.com>
 Cc: barebox <barebox@lists.infradead.org>
 
-On Thu, 24 Dec 2015 12:48:37 +0300
-Peter Mamonov <pmamonov@gmail.com> wrote:
-
-> On Wed, 23 Dec 2015 18:04:43 +0100
-> Alexander Aring <alex.aring@gmail.com> wrote:
+On Thu, Dec 24, 2015 at 01:46:53PM +0300, Peter Mamonov wrote:
+> On Wed, 23 Dec 2015 20:46:02 +0100
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> > On Wed, Dec 23, 2015 at 07:56:44PM +0300, Peter Mamonov wrote:
-> > > On Wed, 23 Dec 2015 17:35:51 +0100
-> > > Alexander Aring <alex.aring@gmail.com> wrote:
-> > > 
-> > > > On Wed, Dec 23, 2015 at 07:10:58PM +0300, Peter Mamonov wrote:
-> > > > > Dear All,
-> > > > > 
-> > > > > I've ported an UHCI driver from the u-boot to the barebox
-> > > > > (WIP). To interoperate with the EHCI driver, the UHCI driver
-> > > > > should be probed ater the EHCI driver. Both drivers are binded
-> > > > > via the device tree mechanism. How can i achieve the correct
-> > > > > probe order?
-> > > > > 
-> > > > 
-> > > > Normally this should done by returning "-EPROBE_DEFER" inside
-> > > > the probe function. There was some RFC last years for supporting
-> > > > EPROBE_DEFER [0] and it seems these are mainline.
-> > > > 
-> > > > However you need some bool which indicates that the EHCI driver
-> > > > is probed.
-> > > 
-> > > Thanks, Alex. As i understand, this is the linux-way solution.
-> > > 
-> > > Sasha, is it ok to add a global variable to indicate the EHCI
-> > > presence? Or should we follow the way proposed by the mentioned
-> > > RFCs, i.e. introduce dependencies between drivers?
-> > > 
+> > Hi Peter,
 > > 
-> > mhhh, maybe a simple "get_device_by_name" works here.
+> > On Wed, Dec 23, 2015 at 07:10:58PM +0300, Peter Mamonov wrote:
+> > > Dear All,
+> > > 
+> > > I've ported an UHCI driver from the u-boot to the barebox (WIP). To
+> > > interoperate with the EHCI driver, the UHCI driver should be probed
+> > > ater the EHCI driver. Both drivers are binded via the device tree
+> > > mechanism. How can i achieve the correct probe order?
 > > 
-> > If returning NULL then return -EPROBE_DEFER. Don't know if this is a
-> > good solution, name need to be unique then.
-> > 
-> > 
-> > btw:
-> > Just found that "of_find_device_by_node" returns -EPROBE_DEFER when
-> > nothing was found. This was introduced by the patch series.
+> > Do you have an example binding to look at? Normally I would assume
+> > that the binding makes sure somehow that the uhci driver has to be
+> > probed.
 > 
-> I like this approach better, than introducing a global variable.
-> Will look further into it.
-
-Unfortunately of_find_device_by_node() returns a valid pointer to
-the device before the device probe function is called. I guess
-get_device_by_name() behaves in the same way.
-
 > 
-> > 
-> > Maybe it helps to look how the current use-cases deals with
-> > -EPROBE_DEFER or get_device_by_name is enough.
-> > 
-> > - Alex
-> > 
+> At the moment the binding is quite straightforward:
+> 
+> 		ehci: ehci@1ba00200 {
+> 			compatible = "generic-ehci";
+> 			reg = <0x00000000 0x20 0x00000000 0x100>;
+> 			status = "disabled";
+> 		};
+> 
+> 		uhci: uhci@1ba00000 {
+> 			compatible = "generic-uhci";
+> 			reg = <0x00000000 0x200>;
+> 			status = "disabled";
+> 		};
+> 
+> Probably, we can add "companion = <&ehci>;" into the uhci node and
+> check if the ehci has been probed by calling of_find_device_by_node(),
+> as  Alexander Aring proposed.
 > 
 
+I mentioned the -EPROBE_DEFER because we do the same way at handling rpi
+power domains, which requires the firmware module at first. See [0].
+
+There we use:
+
+fw_np = of_parse_phandle(pdev->dev.of_node, "firmware", 0);
+
+in you case it would be:
+
+ehci_np = of_parse_phandle(pdev->dev.of_node, "companion", 0);
+where "pdev->dev.of_node" is uhci device node.
+
+If this fails then we return -ENODEV, but you better don't do nothing
+then because "companion" is optional then.
+
+Back to Linux solution at [0]:
+
+After that function "rpi_firmware_get" tries to get some driver data and
+this driver data is available only when the firmware is successful probed.
+Means: return -EPROBE_DEFER when function "rpi_firmware_get" returns
+NULL, otherwise you can be sure that ehci is probed.
+
+Note:
+This is the linux way and I don't know if this works under barebox. :-)
+Maybe there exists a better way, what Sascha said, that the device-tree
+will do low-level handling of -EPROBE_DEFER somehow. I know that some
+subsystems e.g. power domains will do that somehow in special
+power-domain device-tree handling and magic handle the device probing in
+the correct order (but at the end it's really some handling with
+-EPROBE_DEFER).
+
+- Alex
+
+[0] https://github.com/anholt/linux/blob/b936d16077b18a575c5b892c8fe21a6ca67fc31a/arch/arm/mach-bcm/raspberrypi-power.c#L175
+[1] https://github.com/anholt/linux/blob/rpi-4.2.y/drivers/firmware/raspberrypi.c#L251
 
 _______________________________________________
 barebox mailing list
