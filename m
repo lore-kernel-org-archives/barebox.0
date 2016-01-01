@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x22d.google.com ([2607:f8b0:400e:c03::22d])
+Received: from mail-pf0-x22b.google.com ([2607:f8b0:400e:c00::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aEskV-0008Ah-2S
- for barebox@lists.infradead.org; Fri, 01 Jan 2016 05:59:39 +0000
-Received: by mail-pa0-x22d.google.com with SMTP id uo6so139350016pac.1
- for <barebox@lists.infradead.org>; Thu, 31 Dec 2015 21:59:18 -0800 (PST)
+ id 1aEskY-0008Ai-4U
+ for barebox@lists.infradead.org; Fri, 01 Jan 2016 05:59:43 +0000
+Received: by mail-pf0-x22b.google.com with SMTP id q63so128530638pfb.0
+ for <barebox@lists.infradead.org>; Thu, 31 Dec 2015 21:59:21 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Thu, 31 Dec 2015 21:58:33 -0800
-Message-Id: <1451627918-31967-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Thu, 31 Dec 2015 21:58:34 -0800
+Message-Id: <1451627918-31967-2-git-send-email-andrew.smirnov@gmail.com>
+In-Reply-To: <1451627918-31967-1-git-send-email-andrew.smirnov@gmail.com>
+References: <1451627918-31967-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] ARM: asm: Add convenience fucntions to access VBAR
+Subject: [PATCH 2/6] ARM: mmu: Add VBAR setup
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add two functions to get/set VBAR register.
+Add code to make sure that normal vector exception table, when it is
+used due to unavailability of the high vector table, was not re-mapped
+from 0x0 via VBAR by someone else before us.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- arch/arm/include/asm/system.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/arm/cpu/mmu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
-index 26fb18c..2e37675 100644
---- a/arch/arm/include/asm/system.h
-+++ b/arch/arm/include/asm/system.h
-@@ -71,6 +71,31 @@ static inline void set_cr(unsigned int val)
- 	isb();
- }
+diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+index 784221c..e32523b 100644
+--- a/arch/arm/cpu/mmu.c
++++ b/arch/arm/cpu/mmu.c
+@@ -302,6 +302,12 @@ static void vectors_init(void)
+ 		 * live without being able to catch NULL pointer dereferences
+ 		 */
+ 		exc = arm_create_pte(0x0);
++
++		/*
++		  Make sure that vecotrs are not re-mapped from 0x0
++		  via VBAR (no-op on non-ARMv7)
++		 */
++		set_vbar(0x0);
+ 	}
 
-+#if __LINUX_ARM_ARCH__ >= 7
-+static inline unsigned int get_vbar(void)
-+{
-+	unsigned int vbar;
-+	asm volatile("mrc p15, 0, %0, c12, c0, 0 @ get VBAR"
-+		     : "=r" (vbar) : : "cc");
-+	return vbar;
-+}
-+
-+static inline void set_vbar(unsigned int vbar)
-+{
-+	asm volatile("mcr p15, 0, %0, c12, c0, 0 @ set VBAR"
-+		     : : "r" (vbar) : "cc");
-+	isb();
-+}
-+#else
-+/*
-+   Pre ARMv7 CPUs do not implement Security Extensions so normal
-+   exceptions base address cannot be re-mapped from 0x00000000
-+ */
-+static inline unsigned int get_vbar(void) { return 0; }
-+static inline void set_vbar(u32 vbar) {}
-+#endif
-+
-+
- #endif
-
- #endif /* __ASM_ARM_SYSTEM_H */
+ 	arm_fixup_vectors();
 --
 2.5.0
 
