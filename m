@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aG0fj-0004H6-An
- for barebox@lists.infradead.org; Mon, 04 Jan 2016 08:39:23 +0000
-Date: Mon, 4 Jan 2016 09:38:59 +0100
+ id 1aG0wM-0005Nz-4M
+ for barebox@lists.infradead.org; Mon, 04 Jan 2016 08:56:35 +0000
+Date: Mon, 4 Jan 2016 09:56:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160104083859.GB13058@pengutronix.de>
-References: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
+Message-ID: <20160104085611.GC13058@pengutronix.de>
+References: <20151223191058.4ffb07f4@berta> <20151223163532.GA1068@omega>
+ <20151223195644.73537fb9@berta> <20151223170438.GA3791@omega>
+ <20151224124837.0fcc6fce@berta> <20151224164225.25665d7f@berta>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <20151224164225.25665d7f@berta>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +24,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] bcm283x: add support for raspberry pi 2
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: dthompson@nexusisp.com, barebox@lists.infradead.org, carlo.caione@gmail.com
+Subject: Re: [RFC] device probe order
+To: Peter Mamonov <pmamonov@gmail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Sat, Dec 19, 2015 at 07:33:57PM +0100, Alexander Aring wrote:
-> This patch series contains at first small cleanups which I detected by
-> supporting/testing raspberry pi 2 and initial support for rpi2.
+On Thu, Dec 24, 2015 at 04:42:25PM +0300, Peter Mamonov wrote:
+> On Thu, 24 Dec 2015 12:48:37 +0300
+> Peter Mamonov <pmamonov@gmail.com> wrote:
 > 
-> It introduced the mach-bcm283x which contains bcm2835 and bcm2836, because
-> these are mostly the same. I didn't rename everything from bcm2835 to
-> bcm283x, what I changed are the Kconfig entries only.
+> > On Wed, 23 Dec 2015 18:04:43 +0100
+> > Alexander Aring <alex.aring@gmail.com> wrote:
+> > 
+> > > On Wed, Dec 23, 2015 at 07:56:44PM +0300, Peter Mamonov wrote:
+> > > > On Wed, 23 Dec 2015 17:35:51 +0100
+> > > > Alexander Aring <alex.aring@gmail.com> wrote:
+> > > > 
+> > > > > On Wed, Dec 23, 2015 at 07:10:58PM +0300, Peter Mamonov wrote:
+> > > > > > Dear All,
+> > > > > > 
+> > > > > > I've ported an UHCI driver from the u-boot to the barebox
+> > > > > > (WIP). To interoperate with the EHCI driver, the UHCI driver
+> > > > > > should be probed ater the EHCI driver. Both drivers are binded
+> > > > > > via the device tree mechanism. How can i achieve the correct
+> > > > > > probe order?
+> > > > > > 
+> > > > > 
+> > > > > Normally this should done by returning "-EPROBE_DEFER" inside
+> > > > > the probe function. There was some RFC last years for supporting
+> > > > > EPROBE_DEFER [0] and it seems these are mainline.
+> > > > > 
+> > > > > However you need some bool which indicates that the EHCI driver
+> > > > > is probed.
+> > > > 
+> > > > Thanks, Alex. As i understand, this is the linux-way solution.
+> > > > 
+> > > > Sasha, is it ok to add a global variable to indicate the EHCI
+> > > > presence? Or should we follow the way proposed by the mentioned
+> > > > RFCs, i.e. introduce dependencies between drivers?
+> > > > 
+> > > 
+> > > mhhh, maybe a simple "get_device_by_name" works here.
+> > > 
+> > > If returning NULL then return -EPROBE_DEFER. Don't know if this is a
+> > > good solution, name need to be unique then.
+> > > 
+> > > 
+> > > btw:
+> > > Just found that "of_find_device_by_node" returns -EPROBE_DEFER when
+> > > nothing was found. This was introduced by the patch series.
+> > 
+> > I like this approach better, than introducing a global variable.
+> > Will look further into it.
 > 
-> The complete mach-bcm283x doesn't support devicetree handling which may
-> be the next step. Also there is still no support for dwc2 usb.
+> Unfortunately of_find_device_by_node() returns a valid pointer to
+> the device before the device probe function is called. I guess
+> get_device_by_name() behaves in the same way.
 
-Applied, thanks.
-
-Device tree support would indeed be very appreciated ;)
+This looks buggy. There should be a way to tell if a device has been
+probed or not before working with the device returned by
+of_find_device_by_node() or get_device_by_name(). The easiest way is
+probably to check for dev->driver. This is not enough though to tell if
+the device probe has failed, not yet executed, or deferred. Maybe we
+could store the probe status of a device in struct device_d itself.
 
 Sascha
 
