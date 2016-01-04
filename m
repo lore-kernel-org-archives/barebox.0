@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aG0Zu-0002V3-Cp
- for barebox@lists.infradead.org; Mon, 04 Jan 2016 08:33:23 +0000
-Date: Mon, 4 Jan 2016 09:32:57 +0100
+ id 1aG0fj-0004H6-An
+ for barebox@lists.infradead.org; Mon, 04 Jan 2016 08:39:23 +0000
+Date: Mon, 4 Jan 2016 09:38:59 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160104083257.GA13058@pengutronix.de>
-References: <1450484040.26955.228.camel@rtred1test09.kymeta.local>
+Message-ID: <20160104083859.GB13058@pengutronix.de>
+References: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1450484040.26955.228.camel@rtred1test09.kymeta.local>
+In-Reply-To: <1450550044-14674-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] of: Add for_each_compatible_node_from iterator
-To: Trent Piepho <tpiepho@kymetacorp.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH 0/7] bcm283x: add support for raspberry pi 2
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: dthompson@nexusisp.com, barebox@lists.infradead.org, carlo.caione@gmail.com
 
-On Sat, Dec 19, 2015 at 12:13:59AM +0000, Trent Piepho wrote:
-> The existing iterator for_each_compatible_node() searches for each
-> compatible node starting from the root of the loaded device tree.
-> This means it only works on the barebox device tree and not the tree
-> to be passed to the Linux kernel, which is what an of_fixup would
-> probably want to use.
+On Sat, Dec 19, 2015 at 07:33:57PM +0100, Alexander Aring wrote:
+> This patch series contains at first small cleanups which I detected by
+> supporting/testing raspberry pi 2 and initial support for rpi2.
 > 
-> This adds for_each_compatible_node_from(), which takes an additional
-> parameter of a root to search from.  This could be the device tree to
-> be used for the kernel.  It could also be used to search just a
-> subtree.
+> It introduced the mach-bcm283x which contains bcm2835 and bcm2836, because
+> these are mostly the same. I didn't rename everything from bcm2835 to
+> bcm283x, what I changed are the Kconfig entries only.
 > 
-> Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
+> The complete mach-bcm283x doesn't support devicetree handling which may
+> be the next step. Also there is still no support for dwc2 usb.
 
-Applied, thanks
+Applied, thanks.
 
-> ---
-> 
-> It's possible the fixups in cm_cogent_fixup() and hb_fixup() should
-> be using this.  It's not clear to me if they want to modify the barebox
-> device tree or the Linux device tree or both.
-
-It's always the Linux device tree that is fixed up in the OF fixups.
+Device tree support would indeed be very appreciated ;)
 
 Sascha
 
