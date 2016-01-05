@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from asavdk3.altibox.net ([109.247.116.14])
+Received: from mail.kymetacorp.com ([192.81.58.21])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aGUsb-000337-Jv
- for barebox@lists.infradead.org; Tue, 05 Jan 2016 16:54:42 +0000
-Date: Tue, 5 Jan 2016 17:54:10 +0100
-From: Sam Ravnborg <sam@ravnborg.org>
-Message-ID: <20160105165410.GA6132@ravnborg.org>
-References: <1451981463-23604-1-git-send-email-mkl@pengutronix.de>
- <1451981463-23604-2-git-send-email-mkl@pengutronix.de>
+ id 1aGWox-0003BY-0e
+ for barebox@lists.infradead.org; Tue, 05 Jan 2016 18:59:03 +0000
+From: Trent Piepho <tpiepho@kymetacorp.com>
+Date: Tue, 5 Jan 2016 18:58:01 +0000
+Message-ID: <1452020291.4474.13.camel@rtred1test09.kymeta.local>
+References: <1450484040.26955.228.camel@rtred1test09.kymeta.local>
+ <20160104083257.GA13058@pengutronix.de>
+ <1451934452.26955.281.camel@rtred1test09.kymeta.local>
+ <20160105075831.GO13058@pengutronix.de>
+In-Reply-To: <20160105075831.GO13058@pengutronix.de>
+Content-Language: en-US
+Content-ID: <2EB3F1A44E3E2F41911A9AAAAEC0A331@kymetacorp.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1451981463-23604-2-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,74 +26,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] crypto: add enum
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox@lists.infradead.org, kernel@pengutronix.de
+Subject: Re: [PATCH 1/2] of: Add for_each_compatible_node_from iterator
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Tue, Jan 05, 2016 at 09:11:01AM +0100, Marc Kleine-Budde wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
+On Tue, 2016-01-05 at 08:58 +0100, Sascha Hauer wrote:
+> On Mon, Jan 04, 2016 at 07:07:27PM +0000, Trent Piepho wrote: 
+> > Couldn't one also use the of fixup system to modify the barebox DT?  In
+> > order to support multiple board variants, I added DT nodes that specify
+> > what nodes should be enabled and/or disabled for different board
+> > versions.  An OF fixup applies this to the Linux DT.  I haven't had to
+> > modify the barebox DT for different boards but anticipate that happening
+> > for the next board and I was planning to use the same system.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> I think you don't need the fixup system to accomplish that. Just hook up
+> to an initcall early enough and modify the barebox device tree. It
+> shouldn't be necessary to register a callback first and then wait for
+> its execution.
 
-The subject and the patch description could use some
-more love and care.
+My thought was that the fixup already registered for the Linux device
+tree would also cover the barebox tree, including things like oftree -l
+to load a new one.  Calling the fixup function from an initcall wouldn't
+get that.  I guess I'll see what happens when I need that feature.
 
+> Are you aware of device tree overlays? We planned to merge support for
+> them into barebox once the official device tree compiler supports them.
+> Unfortunately this hasn't happened yet.
 
-> diff --git a/crypto/digest.c b/crypto/digest.c
-> index a90e4ff79f89..46600f246ece 100644
-> --- a/crypto/digest.c
-> +++ b/crypto/digest.c
-> @@ -116,7 +116,27 @@ static struct digest_algo *digest_algo_get_by_name(const char *name)
->  	list_for_each_entry(tmp, &digests, list) {
->  		if (strcmp(tmp->base.name, name) != 0)
->  			continue;
-> -		
-> +
-> +		if (tmp->base.priority <= priority)
-> +			continue;
-> +
-> +		d = tmp;
-> +		priority = tmp->base.priority;
-> +	}
-> +
-> +	return d;
-> +}
-> +
-> +static struct digest_algo *digest_algo_get_by_algo(enum hash_algo algo)
-> +{
-> +	struct digest_algo *d = NULL;
-> +	struct digest_algo *tmp;
-> +	int priority = -1;
-> +
-> +	list_for_each_entry(tmp, &digests, list) {
-> +		if (tmp->base.algo != algo)
-> +			continue;
-> +
->  		if (tmp->base.priority <= priority)
->  			continue;
->  
-> @@ -160,6 +180,27 @@ struct digest *digest_alloc(const char *name)
->  }
->  EXPORT_SYMBOL_GPL(digest_alloc);
->  
-> +struct digest *digest_alloc_by_algo(enum hash_algo hash_algo)
-> +{
-> +	struct digest *d;
-> +	struct digest_algo *algo;
-> +
-> +	algo = digest_algo_get_by_algo(hash_algo);
-> +	if (!algo)
-> +		return NULL;
-> +
-> +	d = xzalloc(sizeof(*d));
-> +	d->algo = algo;
-> +	d->ctx = xzalloc(algo->ctx_length);
+I thought of that, and also using include files and generating a bunch
+of device trees, but decided against it.  It would be a lot of work to
+add support for generating multiple device trees into the kernel build
+system and buildroot which is driving everything.  And then you have a
+pile of device tree/overlay files to keep track of.  And barebox has to
+figure out which one to load for the kernel.
 
-Neither allocations are checked for failure.
+So I made a system where everything is supported by one device tree.
 
-	Sam
-
+I also added support for specifying a tree to boot barebox with, hence
+my patches for arm boot calling convention, but decided having the
+xloader find a device tree fragment and pass it to the main barebox was
+going to be too much of a pain.  Thus the one tree to rule them all
+solution.
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
