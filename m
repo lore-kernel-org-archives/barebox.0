@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x22b.google.com ([2607:f8b0:400d:c04::22b])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aGN1E-0003OP-11
- for barebox@lists.infradead.org; Tue, 05 Jan 2016 08:31:05 +0000
-Received: by mail-qg0-x22b.google.com with SMTP id o11so273310103qge.2
- for <barebox@lists.infradead.org>; Tue, 05 Jan 2016 00:30:43 -0800 (PST)
+ id 1aGOvQ-00026T-F8
+ for barebox@lists.infradead.org; Tue, 05 Jan 2016 10:33:13 +0000
+References: <1451981463-23604-1-git-send-email-mkl@pengutronix.de>
+ <1451981463-23604-4-git-send-email-mkl@pengutronix.de>
+ <CAGm1_kunZqatbVbE3AgS-wQdx-gUqeShE2PrHYwxgLX74DRRLw@mail.gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <568B9BCD.9070509@pengutronix.de>
+Date: Tue, 5 Jan 2016 11:32:45 +0100
 MIME-Version: 1.0
-In-Reply-To: <20160105082048.GQ13058@pengutronix.de>
-References: <1450484040.26955.228.camel@rtred1test09.kymeta.local>
- <20160104083257.GA13058@pengutronix.de>
- <1451934452.26955.281.camel@rtred1test09.kymeta.local>
- <20160105075831.GO13058@pengutronix.de>
- <CAGm1_kvkpiO4thVWarCYcqQWAWD5zj1BQ3B4+pKHGJf3dHESkQ@mail.gmail.com>
- <20160105082048.GQ13058@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Tue, 5 Jan 2016 09:30:22 +0100
-Message-ID: <CAGm1_ktkkQA7v3tQZx54zrxHipz6QqdnD6L2+HjN-7YZwP1toQ@mail.gmail.com>
+In-Reply-To: <CAGm1_kunZqatbVbE3AgS-wQdx-gUqeShE2PrHYwxgLX74DRRLw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,73 +19,91 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7925169712620211546=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] of: Add for_each_compatible_node_from iterator
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: Re: [PATCH 3/3] bootm: add initial FIT support
+To: Yegor Yefremov <yegorslists@googlemail.com>
+Cc: barebox <barebox@lists.infradead.org>, kernel@pengutronix.de
 
-On Tue, Jan 5, 2016 at 9:20 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Tue, Jan 05, 2016 at 09:05:35AM +0100, Yegor Yefremov wrote:
->> On Tue, Jan 5, 2016 at 8:58 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > On Mon, Jan 04, 2016 at 07:07:27PM +0000, Trent Piepho wrote:
->> >> On Mon, 2016-01-04 at 09:32 +0100, Sascha Hauer wrote:
->> >> > On Sat, Dec 19, 2015 at 12:13:59AM +0000, Trent Piepho wrote:
->> >> > > The existing iterator for_each_compatible_node() searches for each
->> >> > > compatible node starting from the root of the loaded device tree.
->> >> > > This means it only works on the barebox device tree and not the tree
->> >> > > to be passed to the Linux kernel, which is what an of_fixup would
->> >> > > probably want to use.
->> >> > >
->> >> > > This adds for_each_compatible_node_from(), which takes an additional
->> >> > > parameter of a root to search from.  This could be the device tree to
->> >> > > be used for the kernel.  It could also be used to search just a
->> >> > > subtree.
->> >> > >
->> >> > > Signed-off-by: Trent Piepho <tpiepho@kymetacorp.com>
->> >> >
->> >> > Applied, thanks
->> >> >
->> >> > > ---
->> >> > >
->> >> > > It's possible the fixups in cm_cogent_fixup() and hb_fixup() should
->> >> > > be using this.  It's not clear to me if they want to modify the barebox
->> >> > > device tree or the Linux device tree or both.
->> >> >
->> >> > It's always the Linux device tree that is fixed up in the OF fixups.
->> >>
->> >> Sent patch to fix them.
->> >>
->> >> Couldn't one also use the of fixup system to modify the barebox DT?  In
->> >> order to support multiple board variants, I added DT nodes that specify
->> >> what nodes should be enabled and/or disabled for different board
->> >> versions.  An OF fixup applies this to the Linux DT.  I haven't had to
->> >> modify the barebox DT for different boards but anticipate that happening
->> >> for the next board and I was planning to use the same system.
->> >
->> > I think you don't need the fixup system to accomplish that. Just hook up
->> > to an initcall early enough and modify the barebox device tree. It
->> > shouldn't be necessary to register a callback first and then wait for
->> > its execution.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============7925169712620211546==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="33otTVOX79iJJ2L6kSfIjGRlxeRuv0gF9"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--33otTVOX79iJJ2L6kSfIjGRlxeRuv0gF9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On 01/05/2016 11:28 AM, Yegor Yefremov wrote:
+> Hi Marc,
+>=20
+> thanks for reposting the patches.
+>=20
+> On Tue, Jan 5, 2016 at 9:11 AM, Marc Kleine-Budde <mkl@pengutronix.de> =
+wrote:
+>> From: Jan Luebbe <jlu@pengutronix.de>
 >>
->> What initcall can be used to change the device tree, that is already
->> loaded into memory and before Linux is started?
->
-> You want to change the device tree that is passed to Linux, right? In
-> this case you can use of_register_fixup(). We were talking about
-> changing the device tree that barebox uses for itself. For this
-> everything after core_initcall will work. It should be early enough
-> though so that the device that is ought to be changed has not probed, so
-> I suggest doing it as early as possible, that would be
-> postcore_initcall.
+>> This implementation is inspired by U-Boot's FIT support. Instead of
+>> using libfdt (which does not exist in barebox), configuration signatur=
+es
+>> are verified by using a simplified DT parser based on barebox's own
+>> code.
+>>
+>> Currently, only signed configurations with hashed images are supported=
+,
+>> as the other variants are less useful for verified boot. Compatible FI=
+T
+>> images can be created using U-Boot's mkimage tool.
+>=20
+> What about unsigned images?
 
-OK. Thanks.
+That's not our use case. We use plain zImages instead.
 
-Yegor
+> I also get: unsupported algo crc32
+> Is it intended to be supported?
+
+Not for our usecase - feel free to add crc32 support.
+
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
+
+
+--33otTVOX79iJJ2L6kSfIjGRlxeRuv0gF9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEcBAEBCgAGBQJWi5vNAAoJEP5prqPJtc/HYYwIAKWSH1bscJe0/iyotTM4+ZhB
+i+nPmwemSeE6dpwEslfCme6A/tJAxCyLqsHzd7KeDzCa3apsFH1T1LXq5DE+oCdH
+revSGsiOGkNmp9O+5PLlKTWWFTY5I2mqQpP886LjEMa3YkCJwRSQKEZtFalaIKBy
+3G2uZjgsY+7GQIN7XrzfUWdWqBUcaggTuKl4HKD5WxUx4Syzp8NTZDFEW3GOCJsW
+ZhmCVXI5FGOPLjL5yhbPNawIn0vWKE4UD3boyWDeiz8neAxIEvl60AojsPJlea8o
+bkGKAXeEeAqvnNhShNDWnFuJ74jYbgEnzvlhDIH/9xB6jnJ8updT4Z56nQ0fp+8=
+=5wN6
+-----END PGP SIGNATURE-----
+
+--33otTVOX79iJJ2L6kSfIjGRlxeRuv0gF9--
+
+
+--===============7925169712620211546==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7925169712620211546==--
