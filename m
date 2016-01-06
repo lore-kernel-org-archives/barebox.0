@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x231.google.com ([2607:f8b0:400d:c04::231])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aGmC0-0004cf-TS
- for barebox@lists.infradead.org; Wed, 06 Jan 2016 11:23:53 +0000
-Received: by mail-qg0-x231.google.com with SMTP id 6so221436653qgy.1
- for <barebox@lists.infradead.org>; Wed, 06 Jan 2016 03:23:32 -0800 (PST)
+ id 1aGpG5-0008JV-7H
+ for barebox@lists.infradead.org; Wed, 06 Jan 2016 14:40:18 +0000
+References: <1451981463-23604-1-git-send-email-mkl@pengutronix.de>
+ <1451981463-23604-2-git-send-email-mkl@pengutronix.de>
+ <20160105165410.GA6132@ravnborg.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Message-ID: <568D2733.4040304@pengutronix.de>
+Date: Wed, 6 Jan 2016 15:39:47 +0100
 MIME-Version: 1.0
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Wed, 6 Jan 2016 12:23:11 +0100
-Message-ID: <CAGm1_ksapGAKivaixu925Kuz9tdk_W5LzYMdR52C+SyQo=C+GA@mail.gmail.com>
+In-Reply-To: <20160105165410.GA6132@ravnborg.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,96 +19,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============4888296516199832709=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: FIT support: node syntax
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>, Trent Piepho <tpiepho@kymetacorp.com>
+Subject: Re: [PATCH 1/3] crypto: add enum
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: barebox@lists.infradead.org, kernel@pengutronix.de
 
-Hi Marc,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--===============4888296516199832709==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="6Vw8TxHFbsKf2MmtQSUM2M6ndiBbO1Ui7"
 
-I've looked at U-Boot source code to get the idea, how to pass configuration id.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--6Vw8TxHFbsKf2MmtQSUM2M6ndiBbO1Ui7
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-See this definition:
+On 01/05/2016 05:54 PM, Sam Ravnborg wrote:
+> On Tue, Jan 05, 2016 at 09:11:01AM +0100, Marc Kleine-Budde wrote:
+>> From: Sascha Hauer <s.hauer@pengutronix.de>
+>>
+>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+>=20
+> The subject and the patch description could use some
+> more love and care.
 
-kernel@1 {
-description = "Vanilla Linux kernel";
-data = /incbin/("zImage");
-type = "kernel";
-arch = "arm";
-os = "linux";
-compression = "none";
-load = <0x80200000>;
-entry = <0x80200000>;
-hash@1 {
-algo = "crc32";
-};
-hash@2 {
-algo = "sha1";
-};
-};
+Good idea.
 
-One can see two hash nodes: hash@1 and hash@2.
+>> diff --git a/crypto/digest.c b/crypto/digest.c
+>> index a90e4ff79f89..46600f246ece 100644
+>> --- a/crypto/digest.c
+>> +++ b/crypto/digest.c
+>> @@ -116,7 +116,27 @@ static struct digest_algo *digest_algo_get_by_nam=
+e(const char *name)
+>>  	list_for_each_entry(tmp, &digests, list) {
+>>  		if (strcmp(tmp->base.name, name) !=3D 0)
+>>  			continue;
+>> -	=09
+>> +
+>> +		if (tmp->base.priority <=3D priority)
+>> +			continue;
+>> +
+>> +		d =3D tmp;
+>> +		priority =3D tmp->base.priority;
+>> +	}
+>> +
+>> +	return d;
+>> +}
+>> +
+>> +static struct digest_algo *digest_algo_get_by_algo(enum hash_algo alg=
+o)
+>> +{
+>> +	struct digest_algo *d =3D NULL;
+>> +	struct digest_algo *tmp;
+>> +	int priority =3D -1;
+>> +
+>> +	list_for_each_entry(tmp, &digests, list) {
+>> +		if (tmp->base.algo !=3D algo)
+>> +			continue;
+>> +
+>>  		if (tmp->base.priority <=3D priority)
+>>  			continue;
+>> =20
+>> @@ -160,6 +180,27 @@ struct digest *digest_alloc(const char *name)
+>>  }
+>>  EXPORT_SYMBOL_GPL(digest_alloc);
+>> =20
+>> +struct digest *digest_alloc_by_algo(enum hash_algo hash_algo)
+>> +{
+>> +	struct digest *d;
+>> +	struct digest_algo *algo;
+>> +
+>> +	algo =3D digest_algo_get_by_algo(hash_algo);
+>> +	if (!algo)
+>> +		return NULL;
+>> +
+>> +	d =3D xzalloc(sizeof(*d));
+>> +	d->algo =3D algo;
+>> +	d->ctx =3D xzalloc(algo->ctx_length);
+>=20
+> Neither allocations are checked for failure.
 
-See this routine, that extracts mandatory fields at first and then
-just iterates over all nodes and prints hashes and signs:
+If xzalloc fails barebox will go into OOM and throw a backtrace.
 
-http://git.denx.de/cgi-bin/gitweb.cgi?p=u-boot.git;a=blob;f=common/image-fit.c;h=c531ee74d7fde55c5ac52edb3949fb824954e750;hb=HEAD#l342
-
-According to this routine nodes just need to be unique and you can use
-the number after '@' to distinguish between nodes of the same type.
-
-static void fit_image_print_verification_data(const void *fit, int noffset,
-                                       const char *p)
-{
-        const char *name;
-
-        /*
-         * Check subnode name, must be equal to "hash" or "signature".
-         * Multiple hash/signature nodes require unique unit node
-         * names, e.g. hash@1, hash@2, signature@1, signature@2, etc.
-         */
-        name = fit_get_name(fit, noffset, NULL);
-        if (!strncmp(name, FIT_HASH_NODENAME, strlen(FIT_HASH_NODENAME))) {
-                fit_image_print_data(fit, noffset, p, "Hash");
-        } else if (!strncmp(name, FIT_SIG_NODENAME,
-                                strlen(FIT_SIG_NODENAME))) {
-                fit_image_print_data(fit, noffset, p, "Sign");
+Marc
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
-So configuration node is also just a string. So we must pass the
-stuff, that comes after '@' in bootm command as a "char *" to
-fit_open():
+--6Vw8TxHFbsKf2MmtQSUM2M6ndiBbO1Ui7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
->bootm /boot/kernel-fit.itb@conf_name_string
+-----BEGIN PGP SIGNATURE-----
 
-So snprintf(unit_name, sizeof(unit_name), "conf%d@1", num); should be
-something like:
+iQEcBAEBCgAGBQJWjSczAAoJEP5prqPJtc/HwgsH+wUZIoyocX4dVJ3hM7RtYRVj
+O5iS04kIsbivzC8IWoowtNdcjhdaMGdkgfvuOWcs7ynXlKrcZkdKprEjHhRXIoRe
+GMwJnd+YLWYKGF6TDoGLzjVByeMQbW85ZqyQ8t38RU6fWKg6Bj58m+0aEXtscely
+rm4mJ1KRcFFOw8Dx4b/P2siL0lZicgGA/PywTzGkU2NzDZHQIUZo7oCu+PaYUjj+
+xiQMkVqMJf9xyoRJKIyUps6d+eyhw2LYuT69rfCthWbKwrzzECMjXQuqaTOTcqlf
+CD40Qq6EkmJJH9joR9RbVwio6Sq9f6NFV6wtnF46caTC1ffZfD/oeYFEUUDjHiw=
+=MX0F
+-----END PGP SIGNATURE-----
 
-snprintf(unit_name, sizeof(unit_name), "%s@1", conf_name_string);
+--6Vw8TxHFbsKf2MmtQSUM2M6ndiBbO1Ui7--
 
-or even complicated, if we allow to pass conf_name_string@number to
-bootm command.
 
-configurations {
-default = "conf210@1";
-conf210@1 {
-description = "Boot Linux kernel with FDT blob (210)";
-kernel = "kernel@1";
-fdt = "fdt210@1";
-};
-conf211@1 {
-description = "Boot Linux kernel with FDT blob (211)";
-kernel = "kernel@1";
-fdt = "fdt211@1";
-};
-};
-
-Yegor
+--===============4888296516199832709==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============4888296516199832709==--
