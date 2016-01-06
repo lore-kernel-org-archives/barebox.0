@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from asavdk4.altibox.net ([109.247.116.15])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aGrT8-0000Gv-QT
- for barebox@lists.infradead.org; Wed, 06 Jan 2016 17:01:55 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed,  6 Jan 2016 18:01:28 +0100
-Message-Id: <1452099691-28645-1-git-send-email-mkl@pengutronix.de>
+ id 1aGrNf-0006mr-7g
+ for barebox@lists.infradead.org; Wed, 06 Jan 2016 16:56:16 +0000
+Date: Wed, 6 Jan 2016 17:55:50 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20160106165550.GA8743@ravnborg.org>
+References: <1451981463-23604-1-git-send-email-mkl@pengutronix.de>
+ <1451981463-23604-2-git-send-email-mkl@pengutronix.de>
+ <20160105165410.GA6132@ravnborg.org>
+ <568D2733.4040304@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <568D2733.4040304@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,37 +21,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/3] FIT Support
-To: barebox@lists.infradead.org
-Cc: kernel@pengutronix.de
+Subject: Re: [PATCH 1/3] crypto: add enum
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org, kernel@pengutronix.de
 
-Hello,
+> >>  
+> >> +struct digest *digest_alloc_by_algo(enum hash_algo hash_algo)
+> >> +{
+> >> +	struct digest *d;
+> >> +	struct digest_algo *algo;
+> >> +
+> >> +	algo = digest_algo_get_by_algo(hash_algo);
+> >> +	if (!algo)
+> >> +		return NULL;
+> >> +
+> >> +	d = xzalloc(sizeof(*d));
+> >> +	d->algo = algo;
+> >> +	d->ctx = xzalloc(algo->ctx_length);
+> > 
+> > Neither allocations are checked for failure.
+> 
+> If xzalloc fails barebox will go into OOM and throw a backtrace.
+Makes sense. I thought about this, but failed to go back
+and check this myself.
 
-taking over Jan's work. This is the current state of the FIT support patches,
-which are used in production on a custom mx6 board. The FIT loading code has
-basically been rewritten from scratch, as the original U-Boot code uses libfdt
-and barebox's DT support works on an in-memory tree.
-
-These patches apply on origin/next.
-The two patches from Sascha are required for the basic RSA support.
-The third patch adds FIT support.
-
-Changes since v1:
-- do_bootm_arm_fit(): remove NULL check in cleanup path
-- Kconfig: add pointer to u-boot documentation
-- fit_verify_signature(): make pr_info message more descriptive
-- fit_verify_hash(): streamlined return values
-- fit_open_image(): simplified description printing
-
-regards,
-Marc
-
-
+	Sam
 
 _______________________________________________
 barebox mailing list
