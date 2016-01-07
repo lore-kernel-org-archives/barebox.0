@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lf0-x232.google.com ([2a00:1450:4010:c07::232])
+Received: from mail-lf0-x22e.google.com ([2a00:1450:4010:c07::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aH47k-0005W2-Dg
- for barebox@lists.infradead.org; Thu, 07 Jan 2016 06:32:41 +0000
-Received: by mail-lf0-x232.google.com with SMTP id z124so321261455lfa.3
- for <barebox@lists.infradead.org>; Wed, 06 Jan 2016 22:32:19 -0800 (PST)
-Date: Thu, 7 Jan 2016 09:57:02 +0300
+ id 1aH49M-0005xh-G2
+ for barebox@lists.infradead.org; Thu, 07 Jan 2016 06:34:21 +0000
+Received: by mail-lf0-x22e.google.com with SMTP id z124so321278889lfa.3
+ for <barebox@lists.infradead.org>; Wed, 06 Jan 2016 22:34:00 -0800 (PST)
+Date: Thu, 7 Jan 2016 09:58:37 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160107095702.3791e54792c00077a6c6349e@gmail.com>
-In-Reply-To: <1452147455-26524-3-git-send-email-andrew.smirnov@gmail.com>
+Message-Id: <20160107095837.b6b8f97b5c99d8ff19010e47@gmail.com>
+In-Reply-To: <1452147455-26524-6-git-send-email-andrew.smirnov@gmail.com>
 References: <1452147455-26524-1-git-send-email-andrew.smirnov@gmail.com>
- <1452147455-26524-3-git-send-email-andrew.smirnov@gmail.com>
+ <1452147455-26524-6-git-send-email-andrew.smirnov@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,47 +24,61 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] rtc-lib: Check tm_wday for validity in rtc_valid_tm()
+Subject: Re: [PATCH 6/6] commands/hwclock: Check return value of
+ rtc_read_time()
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed,  6 Jan 2016 22:17:32 -0800
+On Wed,  6 Jan 2016 22:17:35 -0800
 Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
 
-> RTC drivers rely on rtc_valid_tm() in order to make sure that no bogus
-> values from uninitialized HW registers get passed to the uppper layers.
-> =
-
-> A somewhat contrived way to reproduce this problem with DS1307 RTC
-> would be to do the following:
-> =
-
-> > rtc_write -b <bus> -a <addr> -r 3 0x00
-
-    rtc_write? Do you mean i2c_write here?
-
-> > hwclock
+> It is possible for rtc_read_time() to fill struct rtc_time it returns
+> with invalid values, so we have to check for its return value before
+> using returned time.
 > =
 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/rtc/rtc-lib.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  commands/hwclock.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > =
 
-> diff --git a/drivers/rtc/rtc-lib.c b/drivers/rtc/rtc-lib.c
-> index 1b23458..83d8045 100644
-> --- a/drivers/rtc/rtc-lib.c
-> +++ b/drivers/rtc/rtc-lib.c
-> @@ -90,6 +90,8 @@ int rtc_valid_tm(struct rtc_time *tm)
->  {
->  	if (tm->tm_year < 70
->  		|| ((unsigned)tm->tm_mon) >=3D 12
-> +		|| tm->tm_wday < 0
-> +		|| tm->tm_wday > 6
->  		|| tm->tm_mday < 1
->  		|| tm->tm_mday > rtc_month_days(tm->tm_mon, tm->tm_year + 1900)
->  		|| ((unsigned)tm->tm_hour) >=3D 24
+> diff --git a/commands/hwclock.c b/commands/hwclock.c
+> index 7633132..737df11 100644
+> --- a/commands/hwclock.c
+> +++ b/commands/hwclock.c
+> @@ -93,11 +93,12 @@ static int do_hwclock(int argc, char *argv[])
+>  	char *env_name =3D NULL;
+>  	int opt;
+>  	int set =3D 0;
+> +	int ret;
+>  	int ntp_to_hw =3D 0;
+>  	char *ntpserver =3D NULL;
+> =
+
+>  	while ((opt =3D getopt(argc, argv, "f:s:e:n:")) > 0) {
+> -		int ret;
+> +
+> =
+
+
+Extra empty line here.
+
+>  		switch (opt) {
+>  		case 'f':
+> @@ -151,7 +152,9 @@ static int do_hwclock(int argc, char *argv[])
+>  		return rtc_set_time(r, &stm);
+>  	}
+> =
+
+> -	rtc_read_time(r, &tm);
+> +	ret =3D rtc_read_time(r, &tm);
+> +	if (ret < 0)
+> +		return ret;
+> =
+
+>  	if (env_name) {
+>  		unsigned long time;
 > --
 > 2.5.0
 > =
@@ -73,6 +87,9 @@ Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
 
 --=A0
 Best regards,
