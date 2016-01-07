@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aH5LF-0003TH-HI
- for barebox@lists.infradead.ORg; Thu, 07 Jan 2016 07:50:42 +0000
-Date: Thu, 7 Jan 2016 08:50:19 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160107075019.GW13058@pengutronix.de>
-References: <1452147455-26524-1-git-send-email-andrew.smirnov@gmail.com>
- <1452147455-26524-5-git-send-email-andrew.smirnov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1452147455-26524-5-git-send-email-andrew.smirnov@gmail.com>
+ id 1aH6Un-00073t-G1
+ for barebox@lists.infradead.ORg; Thu, 07 Jan 2016 09:04:38 +0000
+Message-ID: <1452157454.21272.7.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 07 Jan 2016 10:04:14 +0100
+In-Reply-To: <1451627918-31967-4-git-send-email-andrew.smirnov@gmail.com>
+References: <1451627918-31967-1-git-send-email-andrew.smirnov@gmail.com>
+ <1451627918-31967-4-git-send-email-andrew.smirnov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/6] common/date.c: Fix off-by-one error
+Subject: Re: [PATCH 4/6] i.MX6: pci: Replace magic number with a named constant
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 06, 2016 at 10:17:34PM -0800, Andrey Smirnov wrote:
-> As per http://pubs.opengroup.org/onlinepubs/007908775/xsh/time.h.html
-> 'tm_wday' is zero indexed with zero representing Sunday, this is also
-> corroborated by the code in rtc_time_to_tm() which used 4 to represent
-> Thursday.
-> 
+Am Donnerstag, den 31.12.2015, 21:58 -0800 schrieb Andrey Smirnov:
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  common/date.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-I squashed this into the original commit introducing this bug.
-
-Sascha
+>  drivers/pci/pci-imx6.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/pci-imx6.c b/drivers/pci/pci-imx6.c
+> index eaa5f0e..84a937f 100644
+> --- a/drivers/pci/pci-imx6.c
+> +++ b/drivers/pci/pci-imx6.c
+> @@ -51,6 +51,8 @@ struct imx6_pcie {
+>  #define PCIE_RC_LCR_MAX_LINK_SPEEDS_GEN2	0x2
+>  #define PCIE_RC_LCR_MAX_LINK_SPEEDS_MASK	0xf
+> 
+> +#define PCIE_RC_LCSR				0x80
+> +
+>  /* PCIe Port Logic registers (memory-mapped) */
+>  #define PL_OFFSET 0x700
+>  #define PCIE_PL_PFLR (PL_OFFSET + 0x08)
+> @@ -418,7 +420,7 @@ static int imx6_pcie_start_link(struct pcie_port *pp)
+>  	if (ret) {
+>  		dev_err(pp->dev, "Failed to bring link up!\n");
+>  	} else {
+> -		tmp = readl(pp->dbi_base + 0x80);
+> +		tmp = readl(pp->dbi_base + PCIE_RC_LCSR);
+>  		dev_dbg(pp->dev, "Link up, Gen=%i\n", (tmp >> 16) & 0xf);
+>  	}
+> 
+> --
+> 2.5.0
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.             | Lucas Stach                 |
+Industrial Linux Solutions   | http://www.pengutronix.de/  |
+
 
 _______________________________________________
 barebox mailing list
