@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
+Received: from mail-lf0-x232.google.com ([2a00:1450:4010:c07::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aH427-0003bT-9v
- for barebox@lists.infradead.org; Thu, 07 Jan 2016 06:26:51 +0000
-Received: by mail-lb0-x232.google.com with SMTP id bc4so201861485lbc.2
- for <barebox@lists.infradead.org>; Wed, 06 Jan 2016 22:26:30 -0800 (PST)
-Date: Thu, 7 Jan 2016 09:51:15 +0300
+ id 1aH47k-0005W2-Dg
+ for barebox@lists.infradead.org; Thu, 07 Jan 2016 06:32:41 +0000
+Received: by mail-lf0-x232.google.com with SMTP id z124so321261455lfa.3
+ for <barebox@lists.infradead.org>; Wed, 06 Jan 2016 22:32:19 -0800 (PST)
+Date: Thu, 7 Jan 2016 09:57:02 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20160107095115.b80e0ba5d601f78e74e40d2f@gmail.com>
-In-Reply-To: <1452147455-26524-1-git-send-email-andrew.smirnov@gmail.com>
+Message-Id: <20160107095702.3791e54792c00077a6c6349e@gmail.com>
+In-Reply-To: <1452147455-26524-3-git-send-email-andrew.smirnov@gmail.com>
 References: <1452147455-26524-1-git-send-email-andrew.smirnov@gmail.com>
+ <1452147455-26524-3-git-send-email-andrew.smirnov@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,43 +24,55 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] rtc: ds1307: Add code to support ds1337/1341
+Subject: Re: [PATCH 3/6] rtc-lib: Check tm_wday for validity in rtc_valid_tm()
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed,  6 Jan 2016 22:17:30 -0800
+On Wed,  6 Jan 2016 22:17:32 -0800
 Andrey Smirnov <andrew.smirnov@gmail.com> wrote:
 
-> Port DS1337 specific bits from corresponding Linux driver and add
-> small changes needed for DS1341.
+> RTC drivers rely on rtc_valid_tm() in order to make sure that no bogus
+> values from uninitialized HW registers get passed to the uppper layers.
+> =
+
+> A somewhat contrived way to reproduce this problem with DS1307 RTC
+> would be to do the following:
+> =
+
+> > rtc_write -b <bus> -a <addr> -r 3 0x00
+
+    rtc_write? Do you mean i2c_write here?
+
+> > hwclock
 > =
 
 > Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
->  drivers/rtc/rtc-ds1307.c | 91 ++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 91 insertions(+)
+>  drivers/rtc/rtc-lib.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > =
 
-> diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-> index d78faa8..2b46ae5 100644
-> --- a/drivers/rtc/rtc-ds1307.c
-> +++ b/drivers/rtc/rtc-ds1307.c
-...
-> @@ -263,6 +299,61 @@ static int ds1307_probe(struct device_d *dev)
->  	ds1307->read_block_data =3D ds1307_read_block_data;
->  	ds1307->write_block_data =3D ds1307_write_block_data;
+> diff --git a/drivers/rtc/rtc-lib.c b/drivers/rtc/rtc-lib.c
+> index 1b23458..83d8045 100644
+> --- a/drivers/rtc/rtc-lib.c
+> +++ b/drivers/rtc/rtc-lib.c
+> @@ -90,6 +90,8 @@ int rtc_valid_tm(struct rtc_time *tm)
+>  {
+>  	if (tm->tm_year < 70
+>  		|| ((unsigned)tm->tm_mon) >=3D 12
+> +		|| tm->tm_wday < 0
+> +		|| tm->tm_wday > 6
+>  		|| tm->tm_mday < 1
+>  		|| tm->tm_mday > rtc_month_days(tm->tm_mon, tm->tm_year + 1900)
+>  		|| ((unsigned)tm->tm_hour) >=3D 24
+> --
+> 2.5.0
 > =
 
-> +
-
-Extra empty line here.
-
-> +	switch (ds1307->type) {
-> +	case ds_1337:
-> +	case ds_1341:
-
-...
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 --=A0
 Best regards,
