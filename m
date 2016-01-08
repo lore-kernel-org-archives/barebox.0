@@ -1,23 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qk0-x242.google.com ([2607:f8b0:400d:c09::242])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aHUQL-0004bs-2b
- for barebox@lists.infradead.org; Fri, 08 Jan 2016 10:37:37 +0000
-Received: by mail-qk0-x242.google.com with SMTP id e124so5519508qkc.3
- for <barebox@lists.infradead.org>; Fri, 08 Jan 2016 02:37:16 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1452186568.2915.52.camel@pengutronix.de>
-References: <1451981463-23604-1-git-send-email-mkl@pengutronix.de>
- <1451981463-23604-4-git-send-email-mkl@pengutronix.de>
- <CAGm1_kunZqatbVbE3AgS-wQdx-gUqeShE2PrHYwxgLX74DRRLw@mail.gmail.com>
- <568B9BCD.9070509@pengutronix.de>
- <CAGm1_ktRkoqmP4j3AWch1KJqwWzvCqix8c7EUEiZmRd+vh8qKQ@mail.gmail.com>
- <568BAF11.4090009@pengutronix.de>
- <CAGm1_kuAijx2ZqpJ7aSyLZvSoYDv306QyvtsSA8pRCpFrWM+3Q@mail.gmail.com>
- <568BCA39.6010208@pengutronix.de> <1452186568.2915.52.camel@pengutronix.de>
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Fri, 8 Jan 2016 11:36:56 +0100
-Message-ID: <CAGm1_kveM2Mbe++jW1sHvwcvJahMU3btQj1_93MdfMgkTbzrnQ@mail.gmail.com>
+ id 1aHUzw-0003KW-5d
+ for barebox@lists.infradead.ORg; Fri, 08 Jan 2016 11:14:28 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri,  8 Jan 2016 12:13:52 +0100
+Message-Id: <1452251635-14689-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1452251635-14689-1-git-send-email-s.hauer@pengutronix.de>
+References: <1452251635-14689-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,56 +16,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] bootm: add initial FIT support
-To: =?UTF-8?Q?Jan_L=C3=BCbbe?= <jlu@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>, Sascha Hauer <sha@pengutronix.de>, kernel@pengutronix.de, joelagnel <joelagnel@ti.com>
+Subject: [PATCH 5/8] pyserial: decrease timeouts
+To: Barebox List <barebox@lists.infradead.org>
 
-T24gVGh1LCBKYW4gNywgMjAxNiBhdCA2OjA5IFBNLCBKYW4gTMO8YmJlIDxqbHVAcGVuZ3V0cm9u
-aXguZGU+IHdyb3RlOgo+IE9uIERpLCAyMDE2LTAxLTA1IGF0IDE0OjUwICswMTAwLCBNYXJjIEts
-ZWluZS1CdWRkZSB3cm90ZToKPj4gPj4gPiArc3RhdGljIGludCBmaXRfb3Blbl9jb25maWd1cmF0
-aW9uKHN0cnVjdCBmaXRfaGFuZGxlICpoYW5kbGUsIGludAo+PiBudW0pCj4+ID4+ID4gK3sKPj4g
-Pj4gPiArICAgICAgIHN0cnVjdCBkZXZpY2Vfbm9kZSAqY29uZl9ub2RlID0gTlVMTCwgKnNpZ19u
-b2RlOwo+PiA+PiA+ICsgICAgICAgY2hhciB1bml0X25hbWVbMTBdOwo+PiA+PiA+ICsgICAgICAg
-Y29uc3QgY2hhciAqdW5pdCwgKmRlc2M7Cj4+ID4+ID4gKyAgICAgICBpbnQgcmV0LCBsZXZlbDsK
-Pj4gPj4gPiArCj4+ID4+ID4gKyAgICAgICBjb25mX25vZGUgPSBvZl9nZXRfY2hpbGRfYnlfbmFt
-ZShoYW5kbGUtPnJvb3QsCj4+ICJjb25maWd1cmF0aW9ucyIpOwo+PiA+PiA+ICsgICAgICAgaWYg
-KCFjb25mX25vZGUpCj4+ID4+ID4gKyAgICAgICAgICAgICAgIHJldHVybiAtRU5PRU5UOwo+PiA+
-PiA+ICsKPj4gPj4gPiArICAgICAgIGlmIChudW0pIHsKPj4gPj4gPiArICAgICAgICAgICAgICAg
-c25wcmludGYodW5pdF9uYW1lLCBzaXplb2YodW5pdF9uYW1lKSwgImNvbmZAJWQiLAo+PiBudW0p
-Owo+PiA+Cj4+ID4gVGhpcyBpcyBub3Qgd29ya2luZyBmb3IgbXkgKi5pdHMgZmlsZToKPj4gPgo+
-PiBodHRwczovL2dpdGh1Yi5jb20vdmlzaW9uc3lzdGVtc2dtYmgvb25yaXNjX2JyX2JzcC9ibG9i
-L21hc3Rlci9ib2FyZC92c2NvbS9iYWx0b3Mva2VybmVsLWZpdC5pdHMKPj4gPiBVLUJvb3QgaXMg
-d29ya2luZyB3aXRoIGJvb3RtICR7bG9hZGFkZHJ9I2NvbmYke2JvYXJkX25hbWV9Cj4+ID4KPj4g
-PiBGb3IgQmFyZWJveCBJJ3ZlIGNoYW5nZWQgdGhpcyBsaW5lIHRvCj4+ID4KPj4gPiBzbnByaW50
-Zih1bml0X25hbWUsIHNpemVvZih1bml0X25hbWUpLCAiY29uZiVkQDEiLCBudW0pCj4+ID4KPj4g
-PiBUaGlzIGlzIGhvdyBJIHN0YXJ0IExpbnV4OiBib290bSAvYm9vdC9rZXJuZWwtZml0Lml0YkAK
-Pj4gJGdsb2JhbC5ib2FyZC5pZAo+PiA+Cj4+ID4gV2hhdCBpcyB0aGUgc3RhbmRhcmQgZm9yIHBy
-b3ZpZGluZyBGSVQgY29uZmlndXJhdGlvbj8KPj4KPj4gRG9uJ3Qga25vdy4gSXMgdGhlcmUgYSBz
-cGVjIGluIHRoZSB1LWJvb3Qgc291cmNlcywgb3RoZXJ3aXNlIHVzZSB0aGUKPj4gY29kZS4KPgo+
-IEkgdXNlZCB0aGUgdS1ib290IGV4YW1wbGUgSVRTIGZvciByZWZlcmVuY2UgKGRvYy91SW1hZ2Uu
-RklUL211bHRpLml0cykuCj4gVGhlIGhhdmUgdGhlIG51bWJlciBhZnRlciB0aGUgQCwgc28gSSB1
-c2VkIHRoZSBzYW1lLiBCYXJlYm94J3MgYm9vdG0KPiBjdXJyZW50bHkgb25seSBzdXBwb3J0cyBh
-IG51bWJlciB0byBzZWxlY3QgYmV0d2VlbiBkaWZmZXJlbnQgInN1YmltYWdlcyIKPiBhcyBhIGxl
-Z2FjeSBmcm9tIHVJbWFnZXMuCgpCdXQgdG8gYmUgY29tcGF0aWJsZSB3aXRoIFUtQm9vdCBCYXJl
-Ym94IHNob3VsZCBhbHNvIGFjY2VwdCBzdHJpbmdzCmFmdGVyIGJvb3RtLiBTZWUgSm9lbCdzIHNs
-aWRlcy4KCj4gWW91ciBJVFMgaGFzIGEgQDEgZm9yIGV2ZXJ5IGNvbmZpZy9mZHQuIFdoeT8KCkkg
-dXNlZCBodHRwOi8vZWxpbnV4Lm9yZy9pbWFnZXMvZi9mNC9FbGMyMDEzX0Zlcm5hbmRlcy5wZGYg
-Y3JlYXRpbmcgbXkKKi5pdHMgZmlsZS4gSSBkb24ndCBrbm93IHdoeSwgYnV0IEpvZWwgdXNlZCBA
-MSBldmVyeXdoZXJlLiBJJ3ZlCnJlbW92ZWQgJ0AxJyBhbmQgaXQgaXMgd29ya2luZy4gQXMgZmFy
-IGFzIEkgdW5kZXJzdGFuZCB5b3UgbmVlZCB0aGlzCnJlYWxseSBvbmx5IHRvIGNyZWF0ZSB1bmlx
-dWUgbm9kZXMgb2YgdGhlIHNhbWUgInR5cGUiLgoKPiBGb3Igc2VsZWN0aW5nIGJldHdlZW4gZGlm
-ZmVyZW50IGNvbmZpZ3VyYXRpb25zIGRlcGVuZGluZyBvbiB0aGUgYm9hcmQsCj4gaXQgd291bGQg
-YmUgbmljZSB0byBiZSBhYmxlIHRvIHJldXNlIHRoZSBEVCBib2FyZCBjb21wYXRpYmxlcy4KPgo+
-IFJlZ2FyZHMsCj4gSmFuCj4KPiAtLQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBM
-aW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
-ZS8gIHwKPiBQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9u
-ZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
-Njg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cj4KCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+pyserial has very generous timeouts which introduces quite big latencies
+at least when used on rfc2217 ports. Decrease timeouts to make it more
+reactive.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/serial/rfc2217.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/scripts/serial/rfc2217.py b/scripts/serial/rfc2217.py
+index 4fe1a72..b65edd5 100644
+--- a/scripts/serial/rfc2217.py
++++ b/scripts/serial/rfc2217.py
+@@ -341,9 +341,9 @@ class TelnetSubnegotiation(object):
+         """
+         timeout_time = time.time() + timeout
+         while time.time() < timeout_time:
+-            time.sleep(0.05)    # prevent 100% CPU load
+             if self.isReady():
+                 break
++            time.sleep(0.001)    # prevent 100% CPU load
+         else:
+             raise SerialException("timeout while waiting for option %r" % (self.name))
+ 
+@@ -443,9 +443,9 @@ class RFC2217Serial(SerialBase):
+         # now wait until important options are negotiated
+         timeout_time = time.time() + self._network_timeout
+         while time.time() < timeout_time:
+-            time.sleep(0.05)    # prevent 100% CPU load
+             if sum(o.active for o in mandadory_options) == sum(o.state != INACTIVE for o in mandadory_options):
+                 break
++            time.sleep(0.001)    # prevent 100% CPU load
+         else:
+             raise SerialException("Remote does not seem to support RFC2217 or BINARY mode %r" % mandadory_options)
+         if self.logger:
+@@ -488,9 +488,9 @@ class RFC2217Serial(SerialBase):
+             self.logger.debug("Negotiating settings: %s" % (items,))
+         timeout_time = time.time() + self._network_timeout
+         while time.time() < timeout_time:
+-            time.sleep(0.05)    # prevent 100% CPU load
+             if sum(o.active for o in items) == len(items):
+                 break
++            time.sleep(0.001)    # prevent 100% CPU load
+         else:
+             raise SerialException("Remote does not accept parameter change (RFC2217): %r" % items)
+         if self.logger:
+@@ -865,13 +865,13 @@ class RFC2217Serial(SerialBase):
+             self.rfc2217SendSubnegotiation(NOTIFY_MODEMSTATE)
+             timeout_time = time.time() + self._network_timeout
+             while time.time() < timeout_time:
+-                time.sleep(0.05)    # prevent 100% CPU load
+                 # when expiration time is updated, it means that there is a new
+                 # value
+                 if self._modemstate_expires > time.time():
+                     if self.logger:
+                         self.logger.warning('poll for modem state failed')
+                     break
++                time.sleep(0.001)    # prevent 100% CPU load
+             # even when there is a timeout, do not generate an error just
+             # return the last known value. this way we can support buggy
+             # servers that do not respond to polls, but send automatic
+-- 
+2.6.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
