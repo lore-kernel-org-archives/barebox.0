@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aIXHz-0004of-ML
- for barebox@lists.infradead.org; Mon, 11 Jan 2016 07:53:20 +0000
-Date: Mon, 11 Jan 2016 08:52:57 +0100
+ id 1aIXST-0002a9-D8
+ for barebox@lists.infradead.org; Mon, 11 Jan 2016 08:04:09 +0000
+Date: Mon, 11 Jan 2016 09:03:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160111075257.GK13058@pengutronix.de>
-References: <1452251635-14689-1-git-send-email-s.hauer@pengutronix.de>
- <1452251635-14689-3-git-send-email-s.hauer@pengutronix.de>
- <CAHQ1cqE_vUNr-9Eh_TO8yr-19pt2THbSRUdGrtMOkJTdCzO=gA@mail.gmail.com>
+Message-ID: <20160111080346.GL13058@pengutronix.de>
+References: <1452259447-32006-1-git-send-email-yegorslists@googlemail.com>
+ <568FDF95.2080302@pengutronix.de>
+ <CAGm1_ku4Q=diLnYF+d8vRUFPJcFCiGt1rrFvuik7xWC0JNLk1g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAHQ1cqE_vUNr-9Eh_TO8yr-19pt2THbSRUdGrtMOkJTdCzO=gA@mail.gmail.com>
+In-Reply-To: <CAGm1_ku4Q=diLnYF+d8vRUFPJcFCiGt1rrFvuik7xWC0JNLk1g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,64 +24,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/8] barebox remote control
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] FIT: make RSA signature verification configurable
+To: Yegor Yefremov <yegorslists@googlemail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Sun, Jan 10, 2016 at 06:10:12PM -0800, Andrey Smirnov wrote:
-> On Fri, Jan 8, 2016 at 3:13 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > +#include <ratp.h>
-> > +#include <command.h>
-> > +#include <byteorder.h>
-> > +#include <environment.h>
-> > +#include <kfifo.h>
-> > +#include <poller.h>
-> > +#include <linux/sizes.h>
-> > +#include <ratp_bb.h>
-> 
-> It looks like this file is missing from the patchset
-> 
+Hi Yegor,
 
-Sorry. Here comes:
+On Fri, Jan 08, 2016 at 05:43:56PM +0100, Yegor Yefremov wrote:
+> On Fri, Jan 8, 2016 at 5:11 PM, Marc Kleine-Budde <mkl@pengutronix.de> wrote:
+> > On 01/08/2016 02:24 PM, yegorslists@googlemail.com wrote:
+> >> From: Yegor Yefremov <yegorslists@googlemail.com>
+> >> diff --git a/common/image-fit.c b/common/image-fit.c
+> >> index 296285b..96cc3e2 100644
+> >> --- a/common/image-fit.c
+> >> +++ b/common/image-fit.c
+> >> @@ -40,6 +40,7 @@
+> >>  #define CHECK_LEVEL_SIG 2
+> >>  #define CHECK_LEVEL_MAX 3
+> >>
+> >> +#ifdef CONFIG_CMD_BOOTM_FITIMAGE_SIGNATURE
+> >>  static uint32_t dt_struct_advance(struct fdt_header *f, uint32_t dt, int size)
+> >
+> > remove the ifdef.
+> 
+> What about compile warnings, i.e. function defined, but not used?
+
+This won't happen when you use IS_ENABLED().
 
 Sascha
-
------------------------------8<-------------------
-
-From e4bea815fad4cecb14cf8361f50cd10ab6e3ebb1 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Jan 2016 08:48:53 +0100
-Subject: [PATCH] fixup! barebox remote control
-
----
- include/ratp_bb.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
- create mode 100644 include/ratp_bb.h
-
-diff --git a/include/ratp_bb.h b/include/ratp_bb.h
-new file mode 100644
-index 0000000..2885731
---- /dev/null
-+++ b/include/ratp_bb.h
-@@ -0,0 +1,14 @@
-+#ifndef __RATP_BB_H
-+#define __RATP_BB_H
-+
-+struct ratp_bb_pkt {
-+	struct list_head list;
-+
-+	unsigned int len;
-+	uint8_t data[];
-+};
-+
-+int barebox_ratp_fs_call(struct ratp_bb_pkt *tx, struct ratp_bb_pkt **rx);
-+int barebox_ratp_fs_mount(const char *path);
-+
-+#endif /* __RATP_BB_H */
--- 
-2.6.4
-
-
 
 -- 
 Pengutronix e.K.                           |                             |
