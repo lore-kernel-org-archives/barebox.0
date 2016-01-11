@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aIXST-0002a9-D8
- for barebox@lists.infradead.org; Mon, 11 Jan 2016 08:04:09 +0000
-Date: Mon, 11 Jan 2016 09:03:46 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160111080346.GL13058@pengutronix.de>
-References: <1452259447-32006-1-git-send-email-yegorslists@googlemail.com>
- <568FDF95.2080302@pengutronix.de>
- <CAGm1_ku4Q=diLnYF+d8vRUFPJcFCiGt1rrFvuik7xWC0JNLk1g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAGm1_ku4Q=diLnYF+d8vRUFPJcFCiGt1rrFvuik7xWC0JNLk1g@mail.gmail.com>
+ id 1aIXYB-0004rb-1R
+ for barebox@lists.infradead.org; Mon, 11 Jan 2016 08:10:04 +0000
+Received: by mail-wm0-x244.google.com with SMTP id l65so25075593wmf.3
+ for <barebox@lists.infradead.org>; Mon, 11 Jan 2016 00:09:42 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Mon, 11 Jan 2016 09:09:25 +0100
+Message-Id: <1452499765-14013-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +16,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] FIT: make RSA signature verification configurable
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH v2] FIT: make RSA signature verification configurable
+To: barebox@lists.infradead.org
 
-Hi Yegor,
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-On Fri, Jan 08, 2016 at 05:43:56PM +0100, Yegor Yefremov wrote:
-> On Fri, Jan 8, 2016 at 5:11 PM, Marc Kleine-Budde <mkl@pengutronix.de> wrote:
-> > On 01/08/2016 02:24 PM, yegorslists@googlemail.com wrote:
-> >> From: Yegor Yefremov <yegorslists@googlemail.com>
-> >> diff --git a/common/image-fit.c b/common/image-fit.c
-> >> index 296285b..96cc3e2 100644
-> >> --- a/common/image-fit.c
-> >> +++ b/common/image-fit.c
-> >> @@ -40,6 +40,7 @@
-> >>  #define CHECK_LEVEL_SIG 2
-> >>  #define CHECK_LEVEL_MAX 3
-> >>
-> >> +#ifdef CONFIG_CMD_BOOTM_FITIMAGE_SIGNATURE
-> >>  static uint32_t dt_struct_advance(struct fdt_header *f, uint32_t dt, int size)
-> >
-> > remove the ifdef.
-> 
-> What about compile warnings, i.e. function defined, but not used?
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+Changes:
+	v2: get rid of #ifdefs, modify option description
 
-This won't happen when you use IS_ENABLED().
+ commands/Kconfig   | 10 ++++++++++
+ common/image-fit.c | 32 +++++++++++++++++++-------------
+ 2 files changed, 29 insertions(+), 13 deletions(-)
 
-Sascha
-
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 3e4a32a..e2e3127 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -428,6 +428,16 @@ config CMD_BOOTM_FITIMAGE
+ 	  tree in the "doc/uImage.FIT" folder for more information:
+ 	  http://git.denx.de/?p=u-boot.git;a=tree;f=doc/uImage.FIT
+ 
++config CMD_BOOTM_FITIMAGE_SIGNATURE
++	bool
++	prompt "Make signature verification mandatory"
++	depends on CMD_BOOTM_FITIMAGE
++	help
++	  This option enables signature verification of FIT uImages,
++	  using a hash signed and verified using RSA. If
++	  CONFIG_SHA_PROG_HW_ACCEL is defined, i.e support for progressive
++	  hashing is available using hardware, RSA library will use it.
++
+ config CMD_BOOTU
+ 	tristate
+ 	default y
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 296285b..f943081 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -456,7 +456,7 @@ static int fit_open_configuration(struct fit_handle *handle, int num)
+ 	struct device_node *conf_node = NULL, *sig_node;
+ 	char unit_name[10];
+ 	const char *unit, *desc;
+-	int ret, level;
++	int level;
+ 
+ 	conf_node = of_get_child_by_name(handle->root, "configurations");
+ 	if (!conf_node)
+@@ -482,19 +482,25 @@ static int fit_open_configuration(struct fit_handle *handle, int num)
+ 	}
+ 
+ 	level = CHECK_LEVEL_MAX;
+-	for_each_child_of_node(conf_node, sig_node) {
+-		if (handle->verbose)
+-			of_print_nodes(sig_node, 0);
+-		ret = fit_verify_signature(sig_node, handle->fit);
+-		if (ret < 0)
+-			return ret;
+-		level = min(level, ret);
+-	}
+-	if (level == CHECK_LEVEL_MAX)
+-		return -EINVAL;
+ 
+-	if (level != CHECK_LEVEL_SIG)
+-		return -EINVAL;
++	if (IS_ENABLED(CONFIG_CMD_BOOTM_FITIMAGE_SIGNATURE)) {
++		for_each_child_of_node(conf_node, sig_node) {
++			int ret;
++			if (handle->verbose)
++				of_print_nodes(sig_node, 0);
++			ret = fit_verify_signature(sig_node, handle->fit);
++			if (ret < 0)
++				return ret;
++			level = min(level, ret);
++		}
++		if (level == CHECK_LEVEL_MAX)
++			return -EINVAL;
++
++		if (level != CHECK_LEVEL_SIG)
++			return -EINVAL;
++	} else {
++		level = CHECK_LEVEL_SIG;
++	}
+ 
+ 	if (of_property_read_string(conf_node, "kernel", &unit) == 0)
+ 		level = min(level, fit_open_image(handle, unit));
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
