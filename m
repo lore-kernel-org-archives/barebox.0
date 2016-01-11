@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aIZgY-0001pl-54
- for barebox@lists.infradead.org; Mon, 11 Jan 2016 10:26:50 +0000
-Date: Mon, 11 Jan 2016 11:26:28 +0100
+ id 1aIa3B-0006fa-5J
+ for barebox@lists.infradead.org; Mon, 11 Jan 2016 10:50:13 +0000
+Date: Mon, 11 Jan 2016 11:49:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160111102628.GO13058@pengutronix.de>
-References: <1452461760-10390-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20160111104951.GP13058@pengutronix.de>
+References: <1452473892-19791-1-git-send-email-andrew.smirnov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1452461760-10390-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1452473892-19791-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] reset: fix non GPIO reset
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH v2 1/3] ARM: asm: Add convenience fucntions to access VBAR
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jan 10, 2016 at 10:36:00PM +0100, Lucas Stach wrote:
-> The reset controller structure is zero initialized in the OF
-> reset case, but as 0 is also a valid GPIO number the current
-> code tries to assert/deassert the GPIO instead of calling into
-> the reset controller device.
+On Sun, Jan 10, 2016 at 04:58:10PM -0800, Andrey Smirnov wrote:
+> Add two functions to get/set VBAR register.
 > 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 > ---
-> Sascha, please apply this to master, as without this change
-> Tegra is broken there.
+> 
+> Changes since v1 (http://lists.infradead.org/pipermail/barebox/2015-December/025685.html):
+> 
+>  - Use CONFIG_CPU_32v7 instead of __LINUX_ARM_ARCH__
+> 
+> ---
+>  arch/arm/include/asm/system.h | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
