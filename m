@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
+Received: from mail-ig0-x243.google.com ([2607:f8b0:4001:c05::243])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aIkqB-00011A-3R
- for barebox@lists.infradead.org; Mon, 11 Jan 2016 22:21:31 +0000
-Received: by mail-lb0-x22d.google.com with SMTP id oh2so262918350lbb.3
- for <barebox@lists.infradead.org>; Mon, 11 Jan 2016 14:21:10 -0800 (PST)
-Date: Tue, 12 Jan 2016 01:21:06 +0300
-From: Peter Mamonov <pmamonov@gmail.com>
-Message-ID: <20160112012106.5f86adf5@zacate>
-In-Reply-To: <CAOMZO5BJMXM+JA9wYxEOJU=1kUAGmAcaM7JFLn6_qxfXnC4smQ@mail.gmail.com>
-References: <20160112005532.479fce9d@zacate>
- <CAOMZO5BJMXM+JA9wYxEOJU=1kUAGmAcaM7JFLn6_qxfXnC4smQ@mail.gmail.com>
+ id 1aImLy-0003n3-R5
+ for barebox@lists.infradead.org; Mon, 11 Jan 2016 23:58:27 +0000
+Received: by mail-ig0-x243.google.com with SMTP id y8so14219457igw.0
+ for <barebox@lists.infradead.org>; Mon, 11 Jan 2016 15:58:04 -0800 (PST)
 MIME-Version: 1.0
+In-Reply-To: <20160111104951.GP13058@pengutronix.de>
+References: <1452473892-19791-1-git-send-email-andrew.smirnov@gmail.com>
+ <20160111104951.GP13058@pengutronix.de>
+Date: Mon, 11 Jan 2016 15:58:03 -0800
+Message-ID: <CAHQ1cqFRxR3U61KO73oqk-P4Mp3q7nfdN_QqVk1amQ5Mv2Ay4w@mail.gmail.com>
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,28 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [BUG] barebox won't boot from SD card on iMX233-OLinuXino-MAXI
-To: Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH v2 1/3] ARM: asm: Add convenience fucntions to access VBAR
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-0JIgTW9uLCAxMSBKYW4gMjAxNiAyMDowMjoxMSAtMDIwMApGYWJpbyBFc3RldmFtIDxmZXN0ZXZh
-bUBnbWFpbC5jb20+INC/0LjRiNC10YI6Cgo+IE9uIE1vbiwgSmFuIDExLCAyMDE2IGF0IDc6NTUg
-UE0sIFBldGVyIE1hbW9ub3YgPHBtYW1vbm92QGdtYWlsLmNvbT4gd3JvdGU6Cj4gPiBBdCBsZWFz
-dCBub3RoaW5nIGlzIHByaW50ZWQgdG8gdGhlIERlYnVnIFVBUlQuCj4gPgo+ID4gZ2l0LWJpc2Vj
-dCBwb2ludHMgdG8gdGhlIGZvbGxvd2luZyBwYXRjaDoKPiA+IDRkNzBkYTYgQVJNOiBNWFM6IHBv
-d2VyLWluaXQ6IEFkZCBwYXJhbWV0ZXJzIHRvIG14MjhfcG93ZXJfaW5pdCgpCj4gPgo+ID4gUmV2
-ZXJ0aW5nIHRoaXMgcGF0Y2ggZml4ZXMgdGhlIGlzc3VlLgo+IAo+IERvZXMgdGhpcyBoZWxwPyBI
-YXZlbid0IHRlc3RlZCBpdDoKPiAKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvaW14MjMzLW9saW51
-eGluby9sb3dsZXZlbC5jCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL2lteDIzMy1vbGludXhpbm8v
-bG93bGV2ZWwuYwo+IEBAIC0xNTQsNyArMTU0LDcgQEAgc3RhdGljIG5vaW5saW5lIHZvaWQgaW14
-MjNfb2xpbnV4aW5vX2luaXQodm9pZCkKPiAKPiAgICAgICAgIHByX2RlYnVnKCJpbml0aWFsaXpp
-bmcgcG93ZXIuLi5cbiIpOwo+IAo+IC0gICAgICAgbXgyM19wb3dlcl9pbml0KDAsIDEsIDApOwo+
-ICsgICAgICAgbXgyM19wb3dlcl9pbml0KDAsIDAsIDEpOwo+IAo+ICAgICAgICAgcHJfZGVidWco
-ImluaXRpYWxpemluZyBTRFJBTS4uLlxuIik7CgpZZXMsIHlvdXIgcGF0Y2ggZG9lcyBoZWxwID0p
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, Jan 11, 2016 at 2:49 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Sun, Jan 10, 2016 at 04:58:10PM -0800, Andrey Smirnov wrote:
+>> Add two functions to get/set VBAR register.
+>>
+>> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+>> ---
+>>
+>> Changes since v1 (http://lists.infradead.org/pipermail/barebox/2015-December/025685.html):
+>>
+>>  - Use CONFIG_CPU_32v7 instead of __LINUX_ARM_ARCH__
+>>
+>> ---
+>>  arch/arm/include/asm/system.h | 20 ++++++++++++++++++++
+>>  1 file changed, 20 insertions(+)
+>
+> Applied, thanks
+
+Sacha, I screwed up that subject line for two other patches in this
+series (forgot to put v2), did you apply them as well or should I
+resend them?
+
+Thanks,
+Andrey
+
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
