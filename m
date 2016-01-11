@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aIbOO-0007mW-2U
- for barebox@lists.infradead.org; Mon, 11 Jan 2016 12:16:12 +0000
+ id 1aIbeG-0008IX-Vf
+ for barebox@lists.infradead.org; Mon, 11 Jan 2016 12:32:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Jan 2016 13:15:49 +0100
-Message-Id: <1452514549-23584-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Jan 2016 13:32:13 +0100
+Message-Id: <1452515533-26114-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +19,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] hush: Initialize struct p_context
+Subject: [PATCH] hush: fix indentation
 To: Barebox List <barebox@lists.infradead.org>
-
-The hush context must be initialized before it is used. Add
-initialization where necessary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/hush.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ common/hush.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
 diff --git a/common/hush.c b/common/hush.c
-index 084dd85..832bc7b 100644
+index 832bc7b..d3f7bf3 100644
 --- a/common/hush.c
 +++ b/common/hush.c
-@@ -1865,7 +1865,7 @@ static char * make_string(char ** inp)
- 
- int run_command(const char *cmd)
- {
--	struct p_context ctx;
-+	struct p_context ctx = {};
- 	int ret;
- 
- 	initialize_context(&ctx);
-@@ -1889,7 +1889,7 @@ static int execute_script(const char *path, int argc, char *argv[])
- 
- static int source_script(const char *path, int argc, char *argv[])
- {
--	struct p_context ctx;
-+	struct p_context ctx = {};
- 	char *script;
- 	int ret;
- 
-@@ -1918,7 +1918,7 @@ int run_shell(void)
- {
- 	int rcode;
- 	struct in_str input;
--	struct p_context ctx;
-+	struct p_context ctx = {};
- 	int exit = 0;
- 
- 	login();
+@@ -863,29 +863,29 @@ static int run_list_real(struct p_context *ctx, struct pipe *pi)
+ 		if ((rpipe->r_mode == RES_IN ||
+ 		    rpipe->r_mode == RES_FOR) &&
+ 		    (rpipe->next == NULL)) {
+-				syntax();
+-				return 1;
++			syntax();
++			return 1;
+ 		}
+ 		if ((rpipe->r_mode == RES_IN &&
+-			(rpipe->next->r_mode == RES_IN &&
+-			rpipe->next->progs->argv != NULL))||
+-			(rpipe->r_mode == RES_FOR &&
+-			rpipe->next->r_mode != RES_IN)) {
+-				syntax();
+-				return 1;
++				(rpipe->next->r_mode == RES_IN &&
++				rpipe->next->progs->argv != NULL))||
++				(rpipe->r_mode == RES_FOR &&
++				rpipe->next->r_mode != RES_IN)) {
++			syntax();
++			return 1;
+ 		}
+ 	}
+ 	for (; pi; pi = (flag_restore != 0) ? rpipe : pi->next) {
+ 		if (pi->r_mode == RES_WHILE || pi->r_mode == RES_UNTIL ||
+-			pi->r_mode == RES_FOR) {
+-				/* check Ctrl-C */
+-				if (ctrlc())
+-					return 1;
+-				flag_restore = 0;
+-				if (!rpipe) {
+-					flag_rep = 0;
+-					rpipe = pi;
+-				}
++				pi->r_mode == RES_FOR) {
++			/* check Ctrl-C */
++			if (ctrlc())
++				return 1;
++			flag_restore = 0;
++			if (!rpipe) {
++				flag_rep = 0;
++				rpipe = pi;
++			}
+ 		}
+ 		rmode = pi->r_mode;
+ 		debug("rmode=%d  if_code=%d  next_if_code=%d skip_more=%d\n",
 -- 
 2.6.4
 
