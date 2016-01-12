@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aIw0t-0004W9-7Y
- for barebox@lists.infradead.org; Tue, 12 Jan 2016 10:17:20 +0000
-Received: by mail-wm0-x241.google.com with SMTP id f206so30494034wmf.2
- for <barebox@lists.infradead.org>; Tue, 12 Jan 2016 02:17:00 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Tue, 12 Jan 2016 11:16:39 +0100
-Message-Id: <1452593799-21408-2-git-send-email-yegorslists@googlemail.com>
-In-Reply-To: <1452593799-21408-1-git-send-email-yegorslists@googlemail.com>
-References: <1452593799-21408-1-git-send-email-yegorslists@googlemail.com>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aJ5EO-0005cq-Rv
+ for barebox@lists.infradead.org; Tue, 12 Jan 2016 20:07:54 +0000
+Received: from tellur.intern.lynxeye.de (p57B5F3A9.dip0.t-ipconnect.de
+ [87.181.243.169]) by lynxeye.de (Postfix) with ESMTPA id B05DA26C2001
+ for <barebox@lists.infradead.org>; Tue, 12 Jan 2016 21:06:54 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Tue, 12 Jan 2016 21:06:51 +0100
+Message-Id: <1452629211-30125-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,169 +22,223 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] FIT: bootm: accept configuration name as string
+Subject: [PATCH] ARM: tegra: clean up lowlevel entry
 To: barebox@lists.infradead.org
-Cc: tpiepho@kymetacorp.com
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+The lowlevel startup function jumps directly to the main
+cluster if we are already running there. This allows for a
+significant cleanup of the board startup code by directly
+using the FDT address available there.
 
-In U-Boot configuration name is passed as a string after
-address in bootm command after '#' separator. In Barebox
-a string coming after '@' separator will be converted to
-integer.
-
-This patch adds additional field os_conf to the image_data
-structure in order to save the string after '@' as is and pass
-it to fit_open() routine.
-
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
-Changes:
-	v2: move of_node_cmp() rework into a separate patch
+ arch/arm/boards/nvidia-beaver/entry.c        | 11 ++---------
+ arch/arm/boards/nvidia-jetson-tk1/entry.c    | 11 ++---------
+ arch/arm/boards/toradex-colibri-t20/entry.c  | 11 ++---------
+ arch/arm/boards/toshiba-ac100/entry.c        | 11 ++---------
+ arch/arm/mach-tegra/include/mach/lowlevel.h  |  9 +++++----
+ arch/arm/mach-tegra/tegra_avp_init.c         |  5 +----
+ arch/arm/mach-tegra/tegra_maincomplex_init.c |  5 ++---
+ 7 files changed, 16 insertions(+), 47 deletions(-)
 
- arch/arm/lib/bootm.c |  2 +-
- common/bootm.c       | 11 +++++++----
- common/image-fit.c   | 12 ++++++------
- include/boot.h       |  3 +++
- include/image-fit.h  |  2 +-
- 5 files changed, 18 insertions(+), 12 deletions(-)
-
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 9a78ee8..10745a7 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -562,7 +562,7 @@ static int do_bootm_arm_fit(struct image_data *data)
- 	unsigned long mem_free;
- 	unsigned long mem_start, mem_size;
+diff --git a/arch/arm/boards/nvidia-beaver/entry.c b/arch/arm/boards/nvidia-beaver/entry.c
+index 9b7e253..0f487bb 100644
+--- a/arch/arm/boards/nvidia-beaver/entry.c
++++ b/arch/arm/boards/nvidia-beaver/entry.c
+@@ -15,9 +15,6 @@
+  */
  
--	handle = fit_open(data->os_file, data->os_num, data->verbose);
-+	handle = fit_open(data->os_file, data->os_conf, data->verbose);
- 	if (!handle)
- 		return -EINVAL;
+ #include <common.h>
+-#include <linux/sizes.h>
+-#include <asm/barebox-arm.h>
+-#include <asm/barebox-arm-head.h>
+ #include <mach/lowlevel.h>
+ #include <mach/lowlevel-dvc.h>
  
-diff --git a/common/bootm.c b/common/bootm.c
-index 08125e7..c827033 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -351,7 +351,7 @@ static void bootm_print_info(struct image_data *data)
+@@ -25,15 +22,11 @@ extern char __dtb_tegra30_beaver_start[];
+ 
+ ENTRY_FUNCTION(start_nvidia_beaver, r0, r1, r2)
+ {
+-	uint32_t fdt;
+-
+-	tegra_cpu_lowlevel_setup();
++	tegra_cpu_lowlevel_setup(__dtb_tegra30_beaver_start);
+ 
+ 	tegra_dvc_init();
+ 	tegra30_tps62366a_ramp_vddcore();
+ 	tegra30_tps65911_cpu_rail_enable();
+ 
+-	fdt = (uint32_t)__dtb_tegra30_beaver_start - get_runtime_offset();
+-
+-	tegra_avp_reset_vector(fdt);
++	tegra_avp_reset_vector();
+ }
+diff --git a/arch/arm/boards/nvidia-jetson-tk1/entry.c b/arch/arm/boards/nvidia-jetson-tk1/entry.c
+index 8f112a3..da40f74 100644
+--- a/arch/arm/boards/nvidia-jetson-tk1/entry.c
++++ b/arch/arm/boards/nvidia-jetson-tk1/entry.c
+@@ -15,9 +15,6 @@
+  */
+ 
+ #include <common.h>
+-#include <linux/sizes.h>
+-#include <asm/barebox-arm.h>
+-#include <asm/barebox-arm-head.h>
+ #include <mach/lowlevel.h>
+ #include <mach/lowlevel-dvc.h>
+ 
+@@ -25,15 +22,11 @@ extern char __dtb_tegra124_jetson_tk1_start[];
+ 
+ ENTRY_FUNCTION(start_nvidia_jetson, r0, r1, r2)
+ {
+-	uint32_t fdt;
+-
+-	tegra_cpu_lowlevel_setup();
++	tegra_cpu_lowlevel_setup(__dtb_tegra124_jetson_tk1_start);
+ 
+ 	tegra_dvc_init();
+ 	tegra124_dvc_pinmux();
+ 	tegra124_as3722_enable_essential_rails(0x3c00);
+ 
+-	fdt = (uint32_t)__dtb_tegra124_jetson_tk1_start - get_runtime_offset();
+-
+-	tegra_avp_reset_vector(fdt);
++	tegra_avp_reset_vector();
+ }
+diff --git a/arch/arm/boards/toradex-colibri-t20/entry.c b/arch/arm/boards/toradex-colibri-t20/entry.c
+index a25958f..9557b13 100644
+--- a/arch/arm/boards/toradex-colibri-t20/entry.c
++++ b/arch/arm/boards/toradex-colibri-t20/entry.c
+@@ -15,22 +15,15 @@
+  */
+ 
+ #include <common.h>
+-#include <linux/sizes.h>
+-#include <asm/barebox-arm.h>
+-#include <asm/barebox-arm-head.h>
+ #include <mach/lowlevel.h>
+ 
+ extern char __dtb_tegra20_colibri_iris_start[];
+ 
+ static void common_toradex_colibri_t20_iris_start(void)
+ {
+-	uint32_t fdt;
++	tegra_cpu_lowlevel_setup(__dtb_tegra20_colibri_iris_start);
+ 
+-	tegra_cpu_lowlevel_setup();
+-
+-	fdt = (uint32_t)__dtb_tegra20_colibri_iris_start - get_runtime_offset();
+-
+-	tegra_avp_reset_vector(fdt);
++	tegra_avp_reset_vector();
+ }
+ 
+ ENTRY_FUNCTION(start_colibri_t20_256_usbload, r0, r1, r2)
+diff --git a/arch/arm/boards/toshiba-ac100/entry.c b/arch/arm/boards/toshiba-ac100/entry.c
+index fb695c3..56979c9 100644
+--- a/arch/arm/boards/toshiba-ac100/entry.c
++++ b/arch/arm/boards/toshiba-ac100/entry.c
+@@ -15,20 +15,13 @@
+  */
+ 
+ #include <common.h>
+-#include <linux/sizes.h>
+-#include <asm/barebox-arm.h>
+-#include <asm/barebox-arm-head.h>
+ #include <mach/lowlevel.h>
+ 
+ extern char __dtb_tegra20_paz00_start[];
+ 
+ ENTRY_FUNCTION(start_toshiba_ac100, r0, r1, r2)
+ {
+-	uint32_t fdt;
++	tegra_cpu_lowlevel_setup(__dtb_tegra20_paz00_start);
+ 
+-	tegra_cpu_lowlevel_setup();
+-
+-	fdt = (uint32_t)__dtb_tegra20_paz00_start - get_runtime_offset();
+-
+-	tegra_avp_reset_vector(fdt);
++	tegra_avp_reset_vector();
+ }
+diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
+index 0c76b88..f70688e 100644
+--- a/arch/arm/mach-tegra/include/mach/lowlevel.h
++++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
+@@ -24,6 +24,7 @@
+ #ifndef __TEGRA_LOWLEVEL_H
+ #define __TEGRA_LOWLEVEL_H
+ 
++#include <asm/barebox-arm.h>
+ #include <linux/compiler.h>
+ #include <linux/sizes.h>
+ #include <io.h>
+@@ -244,18 +245,18 @@ void tegra_ll_delay_usec(int delay)
+ }
+ 
+ /* reset vector for the AVP, to be called from board reset vector */
+-void tegra_avp_reset_vector(uint32_t boarddata);
++void tegra_avp_reset_vector(void);
+ 
+ /* reset vector for the main CPU complex */
+-void tegra_maincomplex_entry(void);
++void tegra_maincomplex_entry(char *fdt);
+ 
+ static __always_inline
+-void tegra_cpu_lowlevel_setup(void)
++void tegra_cpu_lowlevel_setup(char *fdt)
+ {
+ 	uint32_t r;
+ 
+ 	if (tegra_cpu_is_maincomplex())
+-		tegra_maincomplex_entry();
++		tegra_maincomplex_entry(fdt - get_runtime_offset());
+ 
+ 	/* set the cpu to SVC32 mode */
+ 	__asm__ __volatile__("mrs %0, cpsr":"=r"(r));
+diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
+index 20fcf3f..16dc65b 100644
+--- a/arch/arm/mach-tegra/tegra_avp_init.c
++++ b/arch/arm/mach-tegra/tegra_avp_init.c
+@@ -257,14 +257,11 @@ static void tegra_cluster_switch_hp(void)
+ 	writel(reg, TEGRA_FLOW_CTRL_BASE + FLOW_CLUSTER_CONTROL);
+ }
+ 
+-void tegra_avp_reset_vector(uint32_t boarddata)
++void tegra_avp_reset_vector(void)
+ {
+ 	int num_cores;
+ 	unsigned int entry_address = 0;
+ 
+-	/* put boarddata in scratch reg, for main CPU to fetch after startup */
+-	writel(boarddata, TEGRA_PMC_BASE + PMC_SCRATCH(10));
+-
+ 	/* we want to bring up the high performance CPU complex */
+ 	if (tegra_get_chiptype() >= TEGRA30)
+ 		tegra_cluster_switch_hp();
+diff --git a/arch/arm/mach-tegra/tegra_maincomplex_init.c b/arch/arm/mach-tegra/tegra_maincomplex_init.c
+index 6c6bdf6..27bb336 100644
+--- a/arch/arm/mach-tegra/tegra_maincomplex_init.c
++++ b/arch/arm/mach-tegra/tegra_maincomplex_init.c
+@@ -23,7 +23,7 @@
+ #include <mach/tegra20-pmc.h>
+ #include <mach/tegra20-car.h>
+ 
+-void tegra_maincomplex_entry(void)
++void tegra_maincomplex_entry(char *fdt)
+ {
+ 	uint32_t rambase, ramsize;
+ 	enum tegra_chiptype chiptype;
+@@ -79,6 +79,5 @@ void tegra_maincomplex_entry(void)
+ 		unreachable();
  	}
+ 
+-	barebox_arm_entry(rambase, ramsize,
+-			  (void *)readl(TEGRA_PMC_BASE + PMC_SCRATCH(10)));
++	barebox_arm_entry(rambase, ramsize, fdt);
  }
- 
--static char *bootm_image_name_and_no(const char *name, int *no)
-+static char *bootm_image_name_and_no(const char *name, int *no, char **conf)
- {
- 	char *at, *ret;
- 
-@@ -359,6 +359,7 @@ static char *bootm_image_name_and_no(const char *name, int *no)
- 		return NULL;
- 
- 	*no = 0;
-+	*conf = NULL;
- 
- 	ret = xstrdup(name);
- 	at = strchr(ret, '@');
-@@ -369,6 +370,8 @@ static char *bootm_image_name_and_no(const char *name, int *no)
- 
- 	*no = simple_strtoul(at, NULL, 10);
- 
-+	*conf = xstrdup(at);
-+
- 	return ret;
- }
- 
-@@ -390,9 +393,9 @@ int bootm_boot(struct bootm_data *bootm_data)
- 
- 	data = xzalloc(sizeof(*data));
- 
--	data->os_file = bootm_image_name_and_no(bootm_data->os_file, &data->os_num);
--	data->oftree_file = bootm_image_name_and_no(bootm_data->oftree_file, &data->oftree_num);
--	data->initrd_file = bootm_image_name_and_no(bootm_data->initrd_file, &data->initrd_num);
-+	data->os_file = bootm_image_name_and_no(bootm_data->os_file, &data->os_num, &data->os_conf);
-+	data->oftree_file = bootm_image_name_and_no(bootm_data->oftree_file, &data->oftree_num, &data->os_conf);
-+	data->initrd_file = bootm_image_name_and_no(bootm_data->initrd_file, &data->initrd_num, &data->os_conf);
- 	data->verbose = bootm_data->verbose;
- 	data->verify = bootm_data->verify;
- 	data->force = bootm_data->force;
-diff --git a/common/image-fit.c b/common/image-fit.c
-index f943081..490974d 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -451,7 +451,7 @@ static int fit_open_image(struct fit_handle *handle, const char* unit)
- 	return level;
- }
- 
--static int fit_open_configuration(struct fit_handle *handle, int num)
-+static int fit_open_configuration(struct fit_handle *handle, const char *conf)
- {
- 	struct device_node *conf_node = NULL, *sig_node;
- 	char unit_name[10];
-@@ -462,8 +462,8 @@ static int fit_open_configuration(struct fit_handle *handle, int num)
- 	if (!conf_node)
- 		return -ENOENT;
- 
--	if (num) {
--		snprintf(unit_name, sizeof(unit_name), "conf@%d", num);
-+	if (conf) {
-+		snprintf(unit_name, sizeof(unit_name), "%s", conf);
- 		unit = unit_name;
- 	} else if (of_property_read_string(conf_node, "default", &unit)) {
- 		unit = "conf@1";
-@@ -519,7 +519,7 @@ static int fit_open_configuration(struct fit_handle *handle, int num)
- 	return 0;
- }
- 
--struct fit_handle *fit_open(const char *filename, int num, bool verbose)
-+struct fit_handle *fit_open(const char *filename, const char *conf, bool verbose)
- {
- 	struct fit_handle *handle = NULL;
- 	const char *desc;
-@@ -545,7 +545,7 @@ struct fit_handle *fit_open(const char *filename, int num, bool verbose)
- 		pr_info("FIT '%s': '%s'\n", filename, desc);
- 	}
- 
--	if (fit_open_configuration(handle, num))
-+	if (fit_open_configuration(handle, conf))
- 		goto err;
- 
- 	return handle;
-@@ -571,7 +571,7 @@ void fit_close(struct fit_handle *handle)
- static int do_bootm_sandbox_fit(struct image_data *data)
- {
- 	struct fit_handle *handle;
--	handle = fit_open(data->os_file, data->os_num, data->verbose);
-+	handle = fit_open(data->os_file, data->os_conf, data->verbose);
- 	if (handle)
- 		fit_close(handle);
- 	return 0;
-diff --git a/include/boot.h b/include/boot.h
-index bdd5477..6c695b2 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -30,6 +30,9 @@ struct image_data {
- 	struct uimage_handle *os;
- 	int os_num;
- 
-+	/* if we have FIT image, configuration name will be provided */
-+	char *os_conf;
-+
- 	/* otherwise only the filename will be provided */
- 	char *os_file;
- 
-diff --git a/include/image-fit.h b/include/image-fit.h
-index bcbc859..671bee8 100644
---- a/include/image-fit.h
-+++ b/include/image-fit.h
-@@ -36,7 +36,7 @@ struct fit_handle {
- 	unsigned long initrd_size;
- };
- 
--struct fit_handle *fit_open(const char *filename, int num, bool verbose);
-+struct fit_handle *fit_open(const char *filename, const char *conf, bool verbose);
- void fit_close(struct fit_handle *handle);
- 
- #endif	/* __IMAGE_FIT_H__ */
 -- 
-2.1.4
+2.5.0
 
 
 _______________________________________________
