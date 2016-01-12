@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aIuXA-0002Zj-28
- for barebox@lists.infradead.org; Tue, 12 Jan 2016 08:42:33 +0000
-Date: Tue, 12 Jan 2016 09:42:08 +0100
+ id 1aIua3-0004FF-R6
+ for barebox@lists.infradead.org; Tue, 12 Jan 2016 08:45:35 +0000
+Date: Tue, 12 Jan 2016 09:45:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160112084208.GU13058@pengutronix.de>
-References: <1452557300-30090-1-git-send-email-festevam@gmail.com>
+Message-ID: <20160112084509.GV13058@pengutronix.de>
+References: <1452473892-19791-1-git-send-email-andrew.smirnov@gmail.com>
+ <20160111104951.GP13058@pengutronix.de>
+ <CAHQ1cqFRxR3U61KO73oqk-P4Mp3q7nfdN_QqVk1amQ5Mv2Ay4w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1452557300-30090-1-git-send-email-festevam@gmail.com>
+In-Reply-To: <CAHQ1cqFRxR3U61KO73oqk-P4Mp3q7nfdN_QqVk1amQ5Mv2Ay4w@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx233-olinuxino: Fix mx23_power_init() arguments
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Fabio Estevam <fabio.estevam@nxp.com>, barebox@lists.infradead.org, pmamonov@gmail.com
+Subject: Re: [PATCH v2 1/3] ARM: asm: Add convenience fucntions to access VBAR
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Mon, Jan 11, 2016 at 10:08:20PM -0200, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam@nxp.com>
+On Mon, Jan 11, 2016 at 03:58:03PM -0800, Andrey Smirnov wrote:
+> On Mon, Jan 11, 2016 at 2:49 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > On Sun, Jan 10, 2016 at 04:58:10PM -0800, Andrey Smirnov wrote:
+> >> Add two functions to get/set VBAR register.
+> >>
+> >> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+> >> ---
+> >>
+> >> Changes since v1 (http://lists.infradead.org/pipermail/barebox/2015-December/025685.html):
+> >>
+> >>  - Use CONFIG_CPU_32v7 instead of __LINUX_ARM_ARCH__
+> >>
+> >> ---
+> >>  arch/arm/include/asm/system.h | 20 ++++++++++++++++++++
+> >>  1 file changed, 20 insertions(+)
+> >
+> > Applied, thanks
 > 
-> Commit 4d70da6 ("ARM: MXS: power-init: Add parameters to
-> mx28_power_init()") causes imx233-olinuxino to not boot anymore.
-> 
-> imx233-olinuxino is commonly powered from external input supply,
-> so adjust the mx23_power_init() arguments to reflect that.
-> 
-> Reported-by: Peter Mamonov <pmamonov@gmail.com>
-> Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
-> Tested-by: Peter Mamonov <pmamonov@gmail.com>
-> ---
->  arch/arm/boards/imx233-olinuxino/lowlevel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Sacha, I screwed up that subject line for two other patches in this
+> series (forgot to put v2), did you apply them as well or should I
+> resend them?
 
-Applied to master, thanks
+I applied the whole series, no need to resend anything.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
