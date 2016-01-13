@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aJNUn-0004J6-IZ
+ id 1aJNUn-0004J3-IR
  for barebox@lists.infradead.org; Wed, 13 Jan 2016 15:38:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 13 Jan 2016 16:37:27 +0100
-Message-Id: <1452699456-1025-7-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 13 Jan 2016 16:37:24 +0100
+Message-Id: <1452699456-1025-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,122 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/15] keymap: Add keymap for keys with shift pressed
+Subject: [PATCH 03/15] keymap: remove exotic and nonprintable keys
 To: Barebox List <barebox@lists.infradead.org>
 
-When converting keys to ascii for the console we also need the
-keymap with shift pressed.
+We do not need these keys and they do not produce a usable result
+either.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/input/keymap.c   | 82 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/input/keyboard.h |  1 +
- 2 files changed, 83 insertions(+)
+ drivers/input/keymap.c | 49 -------------------------------------------------
+ 1 file changed, 49 deletions(-)
 
 diff --git a/drivers/input/keymap.c b/drivers/input/keymap.c
-index 73dd112..a07b3a8 100644
+index eb3d4cf..2e603f4 100644
 --- a/drivers/input/keymap.c
 +++ b/drivers/input/keymap.c
-@@ -81,6 +81,88 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
- 	[KEY_DOWN] =		BB_KEY_DOWN,
+@@ -34,7 +34,6 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
+ 	[KEY_LEFTBRACE] =	'[',
+ 	[KEY_RIGHTBRACE] =	']',
+ 	[KEY_ENTER] =		'\n',
+-	[KEY_LEFTCTRL] =	0xff,
+ 	[KEY_A] =		'a',
+ 	[KEY_S] =		's',
+ 	[KEY_D] =		'd',
+@@ -47,7 +46,6 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
+ 	[KEY_SEMICOLON] =	';',
+ 	[KEY_APOSTROPHE] =	0xff,
+ 	[KEY_GRAVE] =		'^',
+-	[KEY_LEFTSHIFT] =	0xff,
+ 	[KEY_BACKSLASH] =	0xff,
+ 	[KEY_Z] =		'z',
+ 	[KEY_X] =		'x',
+@@ -59,23 +57,7 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
+ 	[KEY_COMMA] =		',',
+ 	[KEY_DOT] =		'.',
+ 	[KEY_SLASH] =		'/',
+-	[KEY_RIGHTSHIFT] =	0xff,
+-	[KEY_KPASTERISK] =	0xff,
+-	[KEY_LEFTALT] =		0xff,
+ 	[KEY_SPACE] =		' ',
+-	[KEY_CAPSLOCK] =	0xff,
+-	[KEY_F1] =		0xff,
+-	[KEY_F2] =		0xff,
+-	[KEY_F3] =		0xff,
+-	[KEY_F4] =		0xff,
+-	[KEY_F5] =		0xff,
+-	[KEY_F6] =		0xff,
+-	[KEY_F7] =		0xff,
+-	[KEY_F8] =		0xff,
+-	[KEY_F9] =		0xff,
+-	[KEY_F10] =		0xff,
+-	[KEY_NUMLOCK] =		0xff,
+-	[KEY_SCROLLLOCK] =	0xff,
+ 	[KEY_KP7] =		0xff,
+ 	[KEY_KP8] =		0xff,
+ 	[KEY_KP9] =		0xff,
+@@ -89,23 +71,7 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
+ 	[KEY_KP3] =		0xff,
+ 	[KEY_KP0] =		0xff,
+ 	[KEY_KPDOT] =		0xff,
+-	[KEY_ZENKAKUHANKAKU] =	0xff,
+-	[KEY_102ND] =		0xff,
+-	[KEY_F11] =		0xff,
+-	[KEY_F12] =		0xff,
+-	[KEY_RO] =		0xff,
+-	[KEY_KATAKANA] =	0xff,
+-	[KEY_HIRAGANA] =	0xff,
+-	[KEY_HENKAN] =		0xff,
+-	[KEY_KATAKANAHIRAGANA] =0xff,
+-	[KEY_MUHENKAN] =	0xff,
+-	[KEY_KPJPCOMMA] =	0xff,
+ 	[KEY_KPENTER] =		0xff,
+-	[KEY_RIGHTCTRL] =	0xff,
+-	[KEY_KPSLASH] =		0xff,
+-	[KEY_SYSRQ] =		0xff,
+-	[KEY_RIGHTALT] =	0xff,
+-	[KEY_LINEFEED] =	0xff,
+ 	[KEY_HOME] =		0xff,
+ 	[KEY_UP] =		BB_KEY_UP,
+ 	[KEY_PAGEUP] =		BB_KEY_PAGEUP,
+@@ -116,21 +82,6 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
  	[KEY_PAGEDOWN] =	BB_KEY_PAGEDOWN,
  	[KEY_INSERT] =		BB_KEY_INSERT,
-+	[KEY_DELETE] =		BB_KEY_DEL,
-+	[KEY_KPEQUAL] =		'=',
-+	[KEY_KPCOMMA] =		',',
-+};
-+
-+uint8_t keycode_bb_shift_keys[NR_KEYS] = {
-+	[KEY_RESERVED] =	0xff,
-+	[KEY_ESC] =		0x1b,
-+	[KEY_1] =		'!',
-+	[KEY_2] =		'@',
-+	[KEY_3] =		'#',
-+	[KEY_4] =		'$',
-+	[KEY_5] =		'%',
-+	[KEY_6] =		'^',
-+	[KEY_7] =		'&',
-+	[KEY_8] =		'*',
-+	[KEY_9] =		'(',
-+	[KEY_0] =		')',
-+	[KEY_MINUS] =		'_',
-+	[KEY_EQUAL] =		'+',
-+	[KEY_BACKSPACE] =	0xff,
-+	[KEY_TAB] =		'\t',
-+	[KEY_Q] =		'Q',
-+	[KEY_W] =		'W',
-+	[KEY_E] =		'E',
-+	[KEY_R] =		'R',
-+	[KEY_T] =		'T',
-+	[KEY_Y] =		'Y',
-+	[KEY_U] =		'U',
-+	[KEY_I] =		'I',
-+	[KEY_O] =		'O',
-+	[KEY_P] =		'P',
-+	[KEY_LEFTBRACE] =	'{',
-+	[KEY_RIGHTBRACE] =	'}',
-+	[KEY_ENTER] =		'\n',
-+	[KEY_A] =		'A',
-+	[KEY_S] =		'S',
-+	[KEY_D] =		'D',
-+	[KEY_F] =		'F',
-+	[KEY_G] =		'G',
-+	[KEY_H] =		'H',
-+	[KEY_J] =		'J',
-+	[KEY_K] =		'K',
-+	[KEY_L] =		'L',
-+	[KEY_SEMICOLON] =	':',
-+	[KEY_APOSTROPHE] =	'~',
-+	[KEY_GRAVE] =		'^',
-+	[KEY_BACKSLASH] =	'|',
-+	[KEY_Z] =		'Z',
-+	[KEY_X] =		'X',
-+	[KEY_C] =		'C',
-+	[KEY_V] =		'V',
-+	[KEY_B] =		'B',
-+	[KEY_N] =		'N',
-+	[KEY_M] =		'M',
-+	[KEY_COMMA] =		'<',
-+	[KEY_DOT] =		'>',
-+	[KEY_SLASH] =		'?',
-+	[KEY_SPACE] =		' ',
-+	[KEY_KP7] =		'7',
-+	[KEY_KP8] =		'8',
-+	[KEY_KP9] =		'9',
-+	[KEY_KP4] =		'4',
-+	[KEY_KP5] =		'5',
-+	[KEY_KP6] =		'6',
-+	[KEY_KPPLUS] =		'+',
-+	[KEY_KP1] =		'1',
-+	[KEY_KP2] =		'2',
-+	[KEY_KP3] =		'3',
-+	[KEY_KP0] =		'4',
-+	[KEY_KPDOT] =		'.',
-+	[KEY_KPENTER] =		'\n',
-+	[KEY_KPSLASH] =		'/',
-+	[KEY_HOME] =		BB_KEY_HOME,
-+	[KEY_UP] =		BB_KEY_UP,
-+	[KEY_PAGEUP] =		BB_KEY_PAGEUP,
-+	[KEY_LEFT] =		BB_KEY_LEFT,
-+	[KEY_RIGHT] =		BB_KEY_RIGHT,
-+	[KEY_END] =		BB_KEY_END,
-+	[KEY_DOWN] =		BB_KEY_DOWN,
-+	[KEY_PAGEDOWN] =	BB_KEY_PAGEDOWN,
-+	[KEY_INSERT] =		BB_KEY_INSERT,
  	[KEY_DELETE] =		BB_KEY_DEL7,
- 	[KEY_KPEQUAL] =		'=',
- 	[KEY_KPCOMMA] =		',',
-diff --git a/include/input/keyboard.h b/include/input/keyboard.h
-index dd04690..d1f5bf5 100644
---- a/include/input/keyboard.h
-+++ b/include/input/keyboard.h
-@@ -6,5 +6,6 @@
- #define NR_KEYS	256
- 
- extern uint8_t keycode_bb_keys[NR_KEYS];
-+extern uint8_t keycode_bb_shift_keys[NR_KEYS];
- 
- #endif
+-	[KEY_MACRO] =		0xff,
+-	[KEY_MUTE] =		0xff,
+-	[KEY_VOLUMEDOWN] =	0xff,
+-	[KEY_VOLUMEUP] =	0xff,
+-	[KEY_POWER] =		0xff,
+ 	[KEY_KPEQUAL] =		0xff,
+-	[KEY_KPPLUSMINUS] =	0xff,
+-	[KEY_PAUSE] =		0xff,
+-	[KEY_SCALE] =		0xff,
+ 	[KEY_KPCOMMA] =		0xff,
+-	[KEY_HANGEUL] =		0xff,
+-	[KEY_HANGUEL] =		KEY_HANGEUL,
+-	[KEY_HANJA] =		0xff,
+-	[KEY_YEN] =		0xff,
+-	[KEY_LEFTMETA] =	0xff,
+-	[KEY_RIGHTMETA] =	0xff,
+-	[KEY_COMPOSE] =		0xff,
+ };
 -- 
 2.6.4
 
