@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aJNUn-0004J4-I4
- for barebox@lists.infradead.org; Wed, 13 Jan 2016 15:38:04 +0000
+ id 1aJNUn-0004JD-TM
+ for barebox@lists.infradead.org; Wed, 13 Jan 2016 15:38:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 13 Jan 2016 16:37:25 +0100
-Message-Id: <1452699456-1025-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 13 Jan 2016 16:37:34 +0100
+Message-Id: <1452699456-1025-14-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,64 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/15] keymap: Add keypad keys
+Subject: [PATCH 13/15] input: imx-keypad: Add device tree support
 To: Barebox List <barebox@lists.infradead.org>
 
-Allow to use the number keypad keys.
+The preparations are done in previous patches, now we only have
+to add the device tree compatible and drio the check for platform_data.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/input/keymap.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/input/imx_keypad.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/input/keymap.c b/drivers/input/keymap.c
-index 2e603f4..fdc04f7 100644
---- a/drivers/input/keymap.c
-+++ b/drivers/input/keymap.c
-@@ -58,20 +58,20 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
- 	[KEY_DOT] =		'.',
- 	[KEY_SLASH] =		'/',
- 	[KEY_SPACE] =		' ',
--	[KEY_KP7] =		0xff,
--	[KEY_KP8] =		0xff,
--	[KEY_KP9] =		0xff,
--	[KEY_KPMINUS] =		0xff,
--	[KEY_KP4] =		0xff,
--	[KEY_KP5] =		0xff,
--	[KEY_KP6] =		0xff,
--	[KEY_KPPLUS] =		0xff,
--	[KEY_KP1] =		0xff,
--	[KEY_KP2] =		0xff,
--	[KEY_KP3] =		0xff,
--	[KEY_KP0] =		0xff,
--	[KEY_KPDOT] =		0xff,
--	[KEY_KPENTER] =		0xff,
-+	[KEY_KP7] =		'7',
-+	[KEY_KP8] =		'8',
-+	[KEY_KP9] =		'9',
-+	[KEY_KPMINUS] =		'-',
-+	[KEY_KP4] =		'4',
-+	[KEY_KP5] =		'5',
-+	[KEY_KP6] =		'6',
-+	[KEY_KPPLUS] =		'+',
-+	[KEY_KP1] =		'1',
-+	[KEY_KP2] =		'2',
-+	[KEY_KP3] =		'3',
-+	[KEY_KP0] =		'0',
-+	[KEY_KPDOT] =		'.',
-+	[KEY_KPENTER] =		'\n',
- 	[KEY_HOME] =		0xff,
- 	[KEY_UP] =		BB_KEY_UP,
- 	[KEY_PAGEUP] =		BB_KEY_PAGEUP,
-@@ -82,6 +82,6 @@ uint8_t keycode_bb_keys[NR_KEYS] = {
- 	[KEY_PAGEDOWN] =	BB_KEY_PAGEDOWN,
- 	[KEY_INSERT] =		BB_KEY_INSERT,
- 	[KEY_DELETE] =		BB_KEY_DEL7,
--	[KEY_KPEQUAL] =		0xff,
--	[KEY_KPCOMMA] =		0xff,
-+	[KEY_KPEQUAL] =		'=',
-+	[KEY_KPCOMMA] =		',',
+diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
+index d3b5a85..000e176 100644
+--- a/drivers/input/imx_keypad.c
++++ b/drivers/input/imx_keypad.c
+@@ -366,12 +366,7 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ {
+ 	struct imx_keypad *keypad;
+ 	const struct matrix_keymap_data *keymap_data = dev->platform_data;
+-	int i, ret;
+-
+-	if (!keymap_data) {
+-		dev_err(dev, "no keymap defined\n");
+-		return -ENODEV;
+-	}
++	int i, ret, row, col;
+ 
+ 	keypad = xzalloc(sizeof(struct imx_keypad));
+ 
+@@ -380,10 +375,20 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ 	if (IS_ERR(keypad->mmio_base))
+ 		return PTR_ERR(keypad->mmio_base);
+ 
++	ret = matrix_keypad_build_keymap(dev, keymap_data, MATRIX_ROW_SHIFT,
++				keypad->keycodes);
++	if (ret)
++		return ret;
++
+ 	/* Search for rows and cols enabled */
+-	for (i = 0; i < keymap_data->keymap_size; i++) {
+-		keypad->rows_en_mask |= 1 << KEY_ROW(keymap_data->keymap[i]);
+-		keypad->cols_en_mask |= 1 << KEY_COL(keymap_data->keymap[i]);
++	for (row = 0; row < MAX_MATRIX_KEY_ROWS; row++) {
++		for (col = 0; col < MAX_MATRIX_KEY_COLS; col++) {
++			i = MATRIX_SCAN_CODE(row, col, MATRIX_ROW_SHIFT);
++			if (keypad->keycodes[i] != KEY_RESERVED) {
++				keypad->rows_en_mask |= 1 << row;
++				keypad->cols_en_mask |= 1 << col;
++			}
++		}
+ 	}
+ 
+ 	if (keypad->rows_en_mask > ((1 << MAX_MATRIX_KEY_ROWS) - 1) ||
+@@ -396,11 +401,6 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ 	dev_dbg(dev, "enabled rows mask: %x\n", keypad->rows_en_mask);
+ 	dev_dbg(dev, "enabled cols mask: %x\n", keypad->cols_en_mask);
+ 
+-	ret = matrix_keypad_build_keymap(dev, keymap_data, MATRIX_ROW_SHIFT,
+-				keypad->keycodes);
+-	if (ret)
+-		return ret;
+-
+ 	imx_keypad_config(keypad);
+ 
+ 	/* Ensure that the keypad will stay dormant until opened */
+@@ -419,8 +419,14 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
++static __maybe_unused struct of_device_id imx_keypad_dt_ids[] = {
++        { .compatible = "fsl,imx21-kpp", },
++        { }
++};
++
+ static struct driver_d imx_keypad_driver = {
+ 	.name   = "imx-kpp",
+ 	.probe  = imx_keypad_probe,
++	.of_compatible = DRV_OF_COMPAT(imx_keypad_dt_ids),
  };
+ device_platform_driver(imx_keypad_driver);
 -- 
 2.6.4
 
