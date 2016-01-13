@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aJNUn-0004JD-TM
- for barebox@lists.infradead.org; Wed, 13 Jan 2016 15:38:08 +0000
+ id 1aJNUn-0004J1-IQ
+ for barebox@lists.infradead.org; Wed, 13 Jan 2016 15:38:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 13 Jan 2016 16:37:34 +0100
-Message-Id: <1452699456-1025-14-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 13 Jan 2016 16:37:22 +0100
+Message-Id: <1452699456-1025-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,86 +21,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/15] input: imx-keypad: Add device tree support
+Subject: [PATCH 01/15] poller: Fix async poller
 To: Barebox List <barebox@lists.infradead.org>
 
-The preparations are done in previous patches, now we only have
-to add the device tree compatible and drio the check for platform_data.
+The async poller does not work as expected since it can happen that
+the async poller is removed from the list of pollers while we are
+iterating over the list. Even list_for_each_entry_safe does not help
+here since we may remove the next list element, but
+list_for_each_entry_safe only allows to remove the current list element.
+
+Rework the async poller so that it is registered with the poller
+framework on registration and then is only marked as active with
+poller_call_async(). This way we do not have to do list manipulations
+while running the pollers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/input/imx_keypad.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ common/poller.c  | 26 ++++++++++++++++++++++----
+ include/poller.h |  4 ++++
+ 2 files changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
-index d3b5a85..000e176 100644
---- a/drivers/input/imx_keypad.c
-+++ b/drivers/input/imx_keypad.c
-@@ -366,12 +366,7 @@ static int __init imx_keypad_probe(struct device_d *dev)
- {
- 	struct imx_keypad *keypad;
- 	const struct matrix_keymap_data *keymap_data = dev->platform_data;
--	int i, ret;
--
--	if (!keymap_data) {
--		dev_err(dev, "no keymap defined\n");
--		return -ENODEV;
--	}
-+	int i, ret, row, col;
+diff --git a/common/poller.c b/common/poller.c
+index 496636d..32795b6 100644
+--- a/common/poller.c
++++ b/common/poller.c
+@@ -32,6 +32,7 @@ int poller_unregister(struct poller_struct *poller)
+ 	if (!poller->registered)
+ 		return -ENODEV;
  
- 	keypad = xzalloc(sizeof(struct imx_keypad));
- 
-@@ -380,10 +375,20 @@ static int __init imx_keypad_probe(struct device_d *dev)
- 	if (IS_ERR(keypad->mmio_base))
- 		return PTR_ERR(keypad->mmio_base);
- 
-+	ret = matrix_keypad_build_keymap(dev, keymap_data, MATRIX_ROW_SHIFT,
-+				keypad->keycodes);
-+	if (ret)
-+		return ret;
 +
- 	/* Search for rows and cols enabled */
--	for (i = 0; i < keymap_data->keymap_size; i++) {
--		keypad->rows_en_mask |= 1 << KEY_ROW(keymap_data->keymap[i]);
--		keypad->cols_en_mask |= 1 << KEY_COL(keymap_data->keymap[i]);
-+	for (row = 0; row < MAX_MATRIX_KEY_ROWS; row++) {
-+		for (col = 0; col < MAX_MATRIX_KEY_COLS; col++) {
-+			i = MATRIX_SCAN_CODE(row, col, MATRIX_ROW_SHIFT);
-+			if (keypad->keycodes[i] != KEY_RESERVED) {
-+				keypad->rows_en_mask |= 1 << row;
-+				keypad->cols_en_mask |= 1 << col;
-+			}
-+		}
- 	}
+ 	list_del(&poller->list);
+ 	poller->registered = 0;
  
- 	if (keypad->rows_en_mask > ((1 << MAX_MATRIX_KEY_ROWS) - 1) ||
-@@ -396,11 +401,6 @@ static int __init imx_keypad_probe(struct device_d *dev)
- 	dev_dbg(dev, "enabled rows mask: %x\n", keypad->rows_en_mask);
- 	dev_dbg(dev, "enabled cols mask: %x\n", keypad->cols_en_mask);
+@@ -42,12 +43,14 @@ static void poller_async_callback(struct poller_struct *poller)
+ {
+ 	struct poller_async *pa = container_of(poller, struct poller_async, poller);
  
--	ret = matrix_keypad_build_keymap(dev, keymap_data, MATRIX_ROW_SHIFT,
--				keypad->keycodes);
--	if (ret)
--		return ret;
--
- 	imx_keypad_config(keypad);
++	if (!pa->active)
++		return;
++
+ 	if (get_time_ns() < pa->end)
+ 		return;
  
- 	/* Ensure that the keypad will stay dormant until opened */
-@@ -419,8 +419,14 @@ static int __init imx_keypad_probe(struct device_d *dev)
- 	return 0;
++	pa->active = 0;
+ 	pa->fn(pa->ctx);
+-	pa->fn = NULL;
+-	poller_unregister(&pa->poller);
  }
  
-+static __maybe_unused struct of_device_id imx_keypad_dt_ids[] = {
-+        { .compatible = "fsl,imx21-kpp", },
-+        { }
-+};
+ /*
+@@ -62,7 +65,9 @@ static void poller_async_callback(struct poller_struct *poller)
+  */
+ int poller_async_cancel(struct poller_async *pa)
+ {
+-	return poller_unregister(&pa->poller);
++	pa->active = 0;
 +
- static struct driver_d imx_keypad_driver = {
- 	.name   = "imx-kpp",
- 	.probe  = imx_keypad_probe,
-+	.of_compatible = DRV_OF_COMPAT(imx_keypad_dt_ids),
++	return 0;
+ }
+ 
+ /*
+@@ -80,13 +85,26 @@ int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
+ 		void (*fn)(void *), void *ctx)
+ {
+ 	pa->ctx = ctx;
+-	pa->poller.func = poller_async_callback;
+ 	pa->end = get_time_ns() + delay_ns;
+ 	pa->fn = fn;
++	pa->active = 1;
++
++	return 0;
++}
++
++int poller_async_register(struct poller_async *pa)
++{
++	pa->poller.func = poller_async_callback;
++	pa->active = 0;
+ 
+ 	return poller_register(&pa->poller);
+ }
+ 
++int poller_async_unregister(struct poller_async *pa)
++{
++	return poller_unregister(&pa->poller);
++}
++
+ void poller_call(void)
+ {
+ 	struct poller_struct *poller, *tmp;
+diff --git a/include/poller.h b/include/poller.h
+index cda5b57..35a2271 100644
+--- a/include/poller.h
++++ b/include/poller.h
+@@ -26,8 +26,12 @@ struct poller_async {
+ 	void (*fn)(void *);
+ 	void *ctx;
+ 	uint64_t end;
++	int active;
  };
- device_platform_driver(imx_keypad_driver);
+ 
++int poller_async_register(struct poller_async *pa);
++int poller_async_unregister(struct poller_async *pa);
++
+ int poller_call_async(struct poller_async *pa, uint64_t delay_ns,
+ 		void (*fn)(void *), void *ctx);
+ int poller_async_cancel(struct poller_async *pa);
 -- 
 2.6.4
 
