@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aJNUn-0004J8-IU
- for barebox@lists.infradead.org; Wed, 13 Jan 2016 15:38:10 +0000
+ id 1aJNUn-0004JB-Q8
+ for barebox@lists.infradead.org; Wed, 13 Jan 2016 15:38:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 13 Jan 2016 16:37:28 +0100
-Message-Id: <1452699456-1025-8-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 13 Jan 2016 16:37:32 +0100
+Message-Id: <1452699456-1025-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452699456-1025-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,305 +21,143 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/15] input: Add input core
+Subject: [PATCH 11/15] input: imx-keypad: convert to input framework
 To: Barebox List <barebox@lists.infradead.org>
 
-Currently all input driver register themselves as consoles. Consoles are
-fine for typing text, but they do not allow to ask for the current
-pressed state of buttons or keypads. They also do not support non
-printable keys like the function keys.
-
-This patch adds a simple input core. On the driver side it supports
-input_report_key_event() to report events (button presses and releases).
-On the consumer side it allows getting the current button status via
-input_key_get_status(). Also an event driven interface is available
-which calls a callback whenever an input event is received.
-The input core also registers a console for all registered input
-devices which handles passing events to the console and stuff like key
-repetition, so this can be removed from the drivers once they are
-converted to the input core.
+To make it possible to ask for the button state.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/input/Kconfig  |   3 +
- drivers/input/Makefile |   1 +
- drivers/input/input.c  | 202 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/input/input.h  |  34 +++++++++
- 4 files changed, 240 insertions(+)
- create mode 100644 drivers/input/input.c
- create mode 100644 include/input/input.h
+ drivers/input/Kconfig      |  1 +
+ drivers/input/imx_keypad.c | 55 ++++++++++------------------------------------
+ 2 files changed, 13 insertions(+), 43 deletions(-)
 
 diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
-index 336b9f5..e0368b2 100644
+index 24c3bd7..7cc98f2 100644
 --- a/drivers/input/Kconfig
 +++ b/drivers/input/Kconfig
-@@ -5,6 +5,9 @@
- menu "Input device support"
- 	depends on !CONSOLE_NONE
- 
-+config INPUT
-+	bool
-+
- config KEYBOARD_GPIO
- 	bool "GPIO Buttons"
- 	depends on GENERIC_GPIO
-diff --git a/drivers/input/Makefile b/drivers/input/Makefile
-index 40b898c..b9e5a5d 100644
---- a/drivers/input/Makefile
-+++ b/drivers/input/Makefile
-@@ -1,3 +1,4 @@
-+obj-$(CONFIG_INPUT) += input.o
- obj-$(CONFIG_KEYBOARD_USB) += usb_kbd.o
- obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
- obj-$(CONFIG_KEYBOARD_TWL6030) += twl6030_pwrbtn.o
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-new file mode 100644
-index 0000000..ad7400f
---- /dev/null
-+++ b/drivers/input/input.c
-@@ -0,0 +1,202 @@
-+/*
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; version 2.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-+ * General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <kfifo.h>
-+#include <poller.h>
-+#include <clock.h>
+@@ -29,6 +29,7 @@ config KEYBOARD_IMX_KEYPAD
+ 	depends on ARCH_IMX
+ 	select INPUT_MATRIXKMAP
+ 	select POLLER
++	select INPUT
+ 	help
+ 	  This driver implements support for buttons connected
+ 	  to the IMX keypad matrix.
+diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
+index b0282f2..bc74d7d 100644
+--- a/drivers/input/imx_keypad.c
++++ b/drivers/input/imx_keypad.c
+@@ -48,6 +48,7 @@
+ #include <malloc.h>
+ #include <input/matrix_keypad.h>
+ #include <linux/err.h>
 +#include <input/input.h>
-+#include <linux/bitmap.h>
-+#include <input/keyboard.h>
-+#include <dt-bindings/input/linux-event-codes.h>
-+
-+static LIST_HEAD(input_consumers);
-+
-+int input_register_notfier(struct input_notifier *in)
-+{
-+	list_add_tail(&in->list, &input_consumers);
-+
+ 
+ /*
+  * Keypad Controller registers (halfword)
+@@ -73,15 +74,11 @@
+ #define MAX_MATRIX_KEY_NUM	(MAX_MATRIX_KEY_ROWS * MAX_MATRIX_KEY_COLS)
+ 
+ struct imx_keypad {
++	struct input_device input;
+ 	struct clk *clk;
+ 	struct device_d *dev;
+-	struct console_device cdev;
+ 	void __iomem *mmio_base;
+ 
+-	/* optional */
+-	int fifo_size;
+-
+-	struct kfifo *recv_fifo;
+ 	struct poller_struct poller;
+ 
+ 	/*
+@@ -112,28 +109,6 @@ poller_to_imx_kp_pdata(struct poller_struct *poller)
+ 	return container_of(poller, struct imx_keypad, poller);
+ }
+ 
+-static inline struct imx_keypad *
+-cdev_to_imx_kp_pdata(struct console_device *cdev)
+-{
+-	return container_of(cdev, struct imx_keypad, cdev);
+-}
+-
+-static int imx_keypad_tstc(struct console_device *cdev)
+-{
+-	struct imx_keypad *kp = cdev_to_imx_kp_pdata(cdev);
+-
+-	return (kfifo_len(kp->recv_fifo) == 0) ? 0 : 1;
+-}
+-
+-static int imx_keypad_getc(struct console_device *cdev)
+-{
+-	int code = 0;
+-	struct imx_keypad *kp = cdev_to_imx_kp_pdata(cdev);
+-
+-	kfifo_get(kp->recv_fifo, (u_char*)&code, sizeof(int));
+-	return code;
+-}
+-
+ /* Scan the matrix and return the new state in *matrix_volatile_state. */
+ static void imx_keypad_scan_matrix(struct imx_keypad *keypad,
+ 				  unsigned short *matrix_volatile_state)
+@@ -226,7 +201,8 @@ static void imx_keypad_fire_events(struct imx_keypad *keypad,
+ 
+ 			code = MATRIX_SCAN_CODE(row, col, MATRIX_ROW_SHIFT);
+ 
+-			kfifo_put(keypad->recv_fifo, (u_char*)(&keypad->keycodes[code]), sizeof(int));
++			input_report_key_event(&keypad->input, keypad->keycodes[code],
++					       matrix_volatile_state[col] & (1 << row));
+ 
+ 			dev_dbg(keypad->dev, "Event code: %d, val: %d",
+ 				keypad->keycodes[code],
+@@ -390,8 +366,7 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ {
+ 	struct imx_keypad *keypad;
+ 	const struct matrix_keymap_data *keymap_data = dev->platform_data;
+-	struct console_device *cdev;
+-	int i;
++	int i, ret;
+ 
+ 	if (!keymap_data) {
+ 		dev_err(dev, "no keymap defined\n");
+@@ -405,11 +380,6 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ 	if (IS_ERR(keypad->mmio_base))
+ 		return PTR_ERR(keypad->mmio_base);
+ 
+-	if(!keypad->fifo_size)
+-		keypad->fifo_size = 50;
+-
+-	keypad->recv_fifo = kfifo_alloc(keypad->fifo_size);
+-
+ 	/* Search for rows and cols enabled */
+ 	for (i = 0; i < keymap_data->keymap_size; i++) {
+ 		keypad->rows_en_mask |= 1 << KEY_ROW(keymap_data->keymap[i]);
+@@ -436,16 +406,15 @@ static int __init imx_keypad_probe(struct device_d *dev)
+ 
+ 	keypad->poller.func = imx_keypad_check_for_events;
+ 
+-	cdev = &keypad->cdev;
+-	dev->type_data = cdev;
+-	cdev->dev = dev;
+-	cdev->tstc = imx_keypad_tstc;
+-	cdev->getc = imx_keypad_getc;
+-	cdev->f_active = CONSOLE_STDIN;
++	ret = poller_register(&keypad->poller);
++	if (ret)
++		return ret;
+ 
+-	console_register(&keypad->cdev);
++	ret = input_device_register(&keypad->input);
++	if (ret)
++		return ret;
+ 
+-	return poller_register(&keypad->poller);
 +	return 0;
-+}
-+
-+void input_unregister_notfier(struct input_notifier *in)
-+{
-+	list_del(&in->list);
-+}
-+
-+void input_report_key_event(struct input_device *idev, unsigned int code, int value)
-+{
-+	struct input_event event;
-+	struct input_notifier *in;
-+
-+	if (code > KEY_MAX)
-+		return;
-+
-+	if (value)
-+		set_bit(code, &idev->keys);
-+	else
-+		clear_bit(code, &idev->keys);
-+
-+	event.code = code;
-+	event.value = value;
-+
-+	list_for_each_entry(in, &input_consumers, list)
-+		in->notify(in, &event);
-+}
-+
-+static LIST_HEAD(input_devices);
-+
-+int input_device_register(struct input_device *idev)
-+{
-+	list_add_tail(&idev->list, &input_devices);
-+
-+	return 0;
-+}
-+
-+void input_device_unregister(struct input_device *idev)
-+{
-+	list_del(&idev->list);
-+}
-+
-+void input_key_get_status(unsigned long *keys, int bits)
-+{
-+	struct input_device *idev;
-+
-+	bitmap_zero(keys, bits);
-+
-+	if (bits > KEY_MAX)
-+		bits = KEY_MAX;
-+
-+	list_for_each_entry(idev, &input_devices, list)
-+		bitmap_or(keys, keys, idev->keys, bits);
-+}
-+
-+struct input_console {
-+	struct console_device console;
-+	struct input_notifier notifier;
-+	struct kfifo *fifo;
-+	struct poller_async poller;
-+	uint8_t current_key;
-+	uint8_t modstate[6];
-+};
-+
-+static int input_console_tstc(struct console_device *cdev)
-+{
-+	struct input_console *ic = container_of(cdev, struct input_console, console);
-+
-+	return kfifo_len(ic->fifo) ? 1 : 0;
-+}
-+
-+static int input_console_getc(struct console_device *cdev)
-+{
-+	struct input_console *ic = container_of(cdev, struct input_console, console);
-+	uint8_t c;
-+
-+	kfifo_getc(ic->fifo, &c);
-+
-+	return c;
-+}
-+
-+static void input_console_repeat(void *ctx)
-+{
-+	struct input_console *ic = ctx;
-+
-+	if (ic->current_key) {
-+		kfifo_putc(ic->fifo, ic->current_key);
-+		poller_call_async(&ic->poller, 40 * MSECOND,
-+				  input_console_repeat, ic);
-+	}
-+}
-+
-+struct keycode {
-+	unsigned char key;
-+	unsigned char ascii;
-+};
-+
-+static void input_console_notify(struct input_notifier *in,
-+				 struct input_event *ev)
-+{
-+	struct input_console *ic = container_of(in, struct input_console, notifier);
-+	uint8_t modstate = 0;
-+	unsigned char ascii;
-+
-+	switch (ev->code) {
-+	case KEY_LEFTSHIFT:
-+		ic->modstate[0] = ev->value;
-+		return;
-+	case KEY_RIGHTSHIFT:
-+		ic->modstate[1] = ev->value;
-+		return;
-+	case KEY_LEFTCTRL:
-+		ic->modstate[2] = ev->value;
-+		return;
-+	case KEY_RIGHTCTRL:
-+		ic->modstate[3] = ev->value;
-+		return;
-+	case KEY_LEFTALT:
-+		ic->modstate[4] = ev->value;
-+		return;
-+	case KEY_RIGHTALT:
-+		ic->modstate[5] = ev->value;
-+		return;
-+	case KEY_LEFTMETA:
-+	case KEY_RIGHTMETA:
-+		return;
-+	default:
-+		break;
-+	}
-+
-+	if (ic->modstate[0] || ic->modstate[1])
-+		modstate |= 1 << 0;
-+
-+	if (ic->modstate[2] || ic->modstate[3])
-+		modstate |= 1 << 1;
-+
-+	if (ic->modstate[4] || ic->modstate[5])
-+		modstate |= 1 << 2;
-+
-+	if (modstate & (1 << 0))
-+		ascii = keycode_bb_shift_keys[ev->code];
-+	else
-+		ascii = keycode_bb_keys[ev->code];
-+
-+	pr_debug("map %02x KEY: 0x%04x code: %d\n", modstate, ascii, ev->code);
-+
-+	if (ev->value) {
-+		kfifo_putc(ic->fifo, ascii);
-+		ic->current_key = ascii;
-+		poller_call_async(&ic->poller, 400 * MSECOND,
-+				  input_console_repeat, ic);
-+	} else {
-+		ic->current_key = 0;
-+		poller_async_cancel(&ic->poller);
-+	}
-+}
-+
-+static struct input_console input_console;
-+
-+static int input_init(void)
-+{
-+	struct input_console *ic = &input_console;
-+
-+	ic->console.tstc = input_console_tstc;
-+	ic->console.getc = input_console_getc;
-+	ic->console.f_active = CONSOLE_STDIN;
-+
-+	ic->fifo = kfifo_alloc(32);
-+	ic->notifier.notify = input_console_notify;
-+	input_register_notfier(&ic->notifier);
-+	poller_async_register(&ic->poller);
-+
-+	return console_register(&ic->console);
-+}
-+console_initcall(input_init);
-diff --git a/include/input/input.h b/include/input/input.h
-new file mode 100644
-index 0000000..dbf3e7f
---- /dev/null
-+++ b/include/input/input.h
-@@ -0,0 +1,34 @@
-+#ifndef __INPUT_H
-+#define __INPUT_H
-+
-+#include <linux/types.h>
-+#include <linux/list.h>
-+#include <dt-bindings/input/linux-event-codes.h>
-+
-+struct input_event {
-+	uint16_t code;
-+	uint16_t value;
-+};
-+
-+struct input_device {
-+	struct list_head list;
-+	DECLARE_BITMAP(keys, KEY_CNT);
-+};
-+
-+void input_report_key_event(struct input_device *idev, unsigned int code, int value);
-+
-+int input_device_register(struct input_device *);
-+void input_device_unregister(struct input_device *);
-+
-+void input_key_get_status(unsigned long *keys, int bits);
-+
-+struct input_notifier {
-+	void (*notify)(struct input_notifier *in, struct input_event *event);
-+	struct list_head list;
-+};
-+
-+int input_register_notfier(struct input_notifier *in);
-+void input_unregister_notfier(struct input_notifier *in);
-+
-+#endif /* __INPUT_H */
-+
+ }
+ 
+ static struct driver_d imx_keypad_driver = {
 -- 
 2.6.4
 
