@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aK5yX-0002Z6-AR
- for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:46 +0000
+ id 1aK5yX-0002Z8-AU
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Jan 2016 16:07:11 +0100
-Message-Id: <1452870438-29656-7-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 15 Jan 2016 16:07:13 +0100
+Message-Id: <1452870438-29656-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,172 +21,265 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/13] bootm: Push dryrun to handlers
+Subject: [PATCH 08/13] bootm: move oftree code together
 To: Barebox List <barebox@lists.infradead.org>
 
-We can make the dryrun option more useful by calling into the handlers.
-With this we can detect more cases that can go wrong during boot.
+The device tree code is distributed in several places in the bootm code.
+Move it all together in bootm_load_devicetree().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootm.c               | 3 +++
- arch/arm/mach-omap/omap_generic.c  | 5 +++++
- arch/blackfin/lib/blackfin_linux.c | 3 +++
- arch/efi/efi/efi-image.c           | 9 ++++++++-
- arch/mips/lib/bootm.c              | 5 +++++
- arch/nios2/lib/bootm.c             | 3 +++
- arch/ppc/lib/ppclinux.c            | 3 +++
- commands/bootm.c                   | 3 ---
- common/bootm.c                     | 6 +++---
- 9 files changed, 33 insertions(+), 7 deletions(-)
+ common/bootm.c | 193 +++++++++++++++++++++++++--------------------------------
+ 1 file changed, 86 insertions(+), 107 deletions(-)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 010b668..eef906a 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -110,6 +110,9 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
- 		printf("...\n");
- 	}
- 
-+	if (data->dryrun)
-+		return 0;
-+
- 	start_linux((void *)kernel, swap, initrd_start, initrd_size, data->oftree);
- 
- 	restart_machine();
-diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
-index 4e26c6b..2221acf 100644
---- a/arch/arm/mach-omap/omap_generic.c
-+++ b/arch/arm/mach-omap/omap_generic.c
-@@ -79,6 +79,11 @@ static int do_bootm_omap_barebox(struct image_data *data)
- 	if (!barebox)
- 		return -EINVAL;
- 
-+	if (data->dryrun) {
-+		free(barebox)
-+		return 0;
-+	}
-+
- 	omap_start_barebox(barebox);
+diff --git a/common/bootm.c b/common/bootm.c
+index 06f1f8a..e399a6a 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -199,6 +199,47 @@ done:
+ 	return 0;
  }
  
-diff --git a/arch/blackfin/lib/blackfin_linux.c b/arch/blackfin/lib/blackfin_linux.c
-index 2561a7e..da2f78b 100644
---- a/arch/blackfin/lib/blackfin_linux.c
-+++ b/arch/blackfin/lib/blackfin_linux.c
-@@ -50,6 +50,9 @@ static int do_bootm_linux(struct image_data *idata)
- 	appl = (void *)(idata->os_address + idata->os_entry);
- 	printf("Starting Kernel at 0x%p\n", appl);
- 
-+	if (idata->dryrun)
-+		return 0;
++static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
++				    struct fdt_header **fdt)
++{
++	enum filetype ft;
++	const char *oftree = data->oftree_file;
++	int num = simple_strtoul(data->oftree_part, NULL, 0);
++	struct uimage_handle *of_handle;
++	int release = 0;
 +
- 	icache_disable();
- 
- 	strncpy(cmdlinedest, cmdline, 0x1000);
-diff --git a/arch/efi/efi/efi-image.c b/arch/efi/efi/efi-image.c
-index b6437f4..c78043b 100644
---- a/arch/efi/efi/efi-image.c
-+++ b/arch/efi/efi/efi-image.c
-@@ -190,7 +190,7 @@ static inline void linux_efi_handover(efi_handle_t handle,
- static int do_bootm_efi(struct image_data *data)
++	printf("Loading devicetree from '%s'@%d\n", oftree, num);
++
++	if (!IS_ENABLED(CONFIG_CMD_BOOTM_OFTREE_UIMAGE))
++		return -EINVAL;
++
++	if (!strcmp(data->os_file, oftree)) {
++		of_handle = data->os;
++	} else if (!strcmp(data->initrd_file, oftree)) {
++		of_handle = data->initrd;
++	} else {
++		of_handle = uimage_open(oftree);
++		if (!of_handle)
++			return -ENODEV;
++		uimage_print_contents(of_handle);
++		release = 1;
++	}
++
++	*fdt = uimage_load_to_buf(of_handle, num, size);
++
++	if (release)
++		uimage_close(of_handle);
++
++	ft = file_detect_type(*fdt, *size);
++	if (ft != filetype_oftree) {
++		printf("%s is not an oftree but %s\n",
++			data->oftree_file, file_type_to_string(ft));
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ /*
+  * bootm_load_devicetree() - load devicetree
+  *
+@@ -212,8 +253,10 @@ done:
+  */
+ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
  {
- 	void *tmp;
--	void *initrd;
-+	void *initrd = NULL;
- 	size_t size;
- 	efi_handle_t handle;
++	enum filetype type;
+ 	int fdt_size;
+ 	struct fdt_header *oftree;
++	int ret;
+ 
+ 	if (data->oftree)
+ 		return 0;
+@@ -221,8 +264,49 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
+ 	if (!IS_ENABLED(CONFIG_OFTREE))
+ 		return 0;
+ 
+-	if (!data->of_root_node)
+-		return 0;
++	if (data->oftree_file) {
++		size_t size;
++
++		type = file_name_detect_type(data->oftree_file);
++
++		if ((int)type < 0) {
++			printf("could not open %s: %s\n", data->oftree_file,
++					strerror(-type));
++			return (int)type;
++		}
++
++		switch (type) {
++		case filetype_uimage:
++			ret = bootm_open_oftree_uimage(data, &size, &oftree);
++			break;
++		case filetype_oftree:
++			ret = read_file_2(data->oftree_file, &size, (void *)&oftree,
++					  FILESIZE_MAX);
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		if (ret)
++			return ret;
++
++		data->of_root_node = of_unflatten_dtb(oftree);
++
++		free(oftree);
++
++		if (!data->of_root_node) {
++			pr_err("unable to unflatten devicetree\n");
++			return -EINVAL;
++		}
++
++	} else {
++		data->of_root_node = of_get_root_node();
++		if (!data->of_root_node)
++			return 0;
++
++		if (bootm_verbose(data) > 1 && data->of_root_node)
++			printf("using internal devicetree\n");
++	}
+ 
+ 	if (data->initrd_res) {
+ 		of_add_initrd(data->of_root_node, data->initrd_res->start,
+@@ -311,84 +395,6 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 	return 0;
+ }
+ 
+-static int bootm_open_oftree_uimage(struct image_data *data)
+-{
+-	struct fdt_header *fdt;
+-	enum filetype ft;
+-	const char *oftree = data->oftree_file;
+-	int num = simple_strtoul(data->oftree_part, NULL, 0);
+-	struct uimage_handle *of_handle;
+-	int release = 0;
+-	size_t size;
+-
+-	printf("Loading devicetree from '%s'@%d\n", oftree, num);
+-
+-	if (IS_ENABLED(CONFIG_CMD_BOOTM_OFTREE_UIMAGE)) {
+-		if (!strcmp(data->os_file, oftree)) {
+-			of_handle = data->os;
+-		} else if (!strcmp(data->initrd_file, oftree)) {
+-			of_handle = data->initrd;
+-		} else {
+-			of_handle = uimage_open(oftree);
+-			if (!of_handle)
+-				return -ENODEV;
+-			uimage_print_contents(of_handle);
+-			release = 1;
+-		}
+-
+-		fdt = uimage_load_to_buf(of_handle, num, &size);
+-
+-		if (release)
+-			uimage_close(of_handle);
+-
+-		ft = file_detect_type(fdt, size);
+-		if (ft != filetype_oftree) {
+-			printf("%s is not an oftree but %s\n",
+-				data->oftree_file, file_type_to_string(ft));
+-			return -EINVAL;
+-		}
+-
+-		data->of_root_node = of_unflatten_dtb(fdt);
+-		if (!data->of_root_node) {
+-			pr_err("unable to unflatten devicetree\n");
+-			free(fdt);
+-			return -EINVAL;
+-		}
+-
+-		free(fdt);
+-
+-		return 0;
+-	} else {
+-		return -EINVAL;
+-	}
+-}
+-
+-static int bootm_open_oftree(struct image_data *data)
+-{
+-	struct fdt_header *fdt;
+-	const char *oftree = data->oftree_file;
+-	size_t size;
+-
+-	printf("Loading devicetree from '%s'\n", oftree);
+-
+-	fdt = read_file(oftree, &size);
+-	if (!fdt) {
+-		perror("open");
+-		return -ENODEV;
+-	}
+-
+-	data->of_root_node = of_unflatten_dtb(fdt);
+-	if (!data->of_root_node) {
+-		pr_err("unable to unflatten devicetree\n");
+-		free(fdt);
+-		return -EINVAL;
+-	}
+-
+-	free(fdt);
+-
+-	return 0;
+-}
+-
+ static void bootm_print_info(struct image_data *data)
+ {
+ 	if (data->os_res)
+@@ -431,7 +437,6 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	struct image_handler *handler;
  	int ret;
-@@ -244,6 +244,13 @@ static int do_bootm_efi(struct image_data *data)
- 		printf("...\n");
- 	}
+ 	enum filetype os_type;
+-	enum filetype oftree_type = filetype_unknown;
  
-+	if (data->dryrun) {
-+		BS->unload_image(handle);
-+		free(boot_header);
-+		free(initrd);
-+		return 0;
-+	}
-+
- 	efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
- 			      get_time_ns()/1000);
- 
-diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
-index 84f72f5..ce1521f 100644
---- a/arch/mips/lib/bootm.c
-+++ b/arch/mips/lib/bootm.c
-@@ -17,6 +17,11 @@ static int do_bootm_barebox(struct image_data *data)
- 	if (!barebox)
- 		return -EINVAL;
- 
-+	if (data->dryrun) {
-+		free(barebox)
-+		return 0;
-+	}
-+
- 	shutdown_barebox();
- 
- 	barebox();
-diff --git a/arch/nios2/lib/bootm.c b/arch/nios2/lib/bootm.c
-index 77da119..231568f 100644
---- a/arch/nios2/lib/bootm.c
-+++ b/arch/nios2/lib/bootm.c
-@@ -42,6 +42,9 @@ static int do_bootm_linux(struct image_data *idata)
- 	if (ret)
- 		return ret;
- 
-+	if (data->dryrun)
-+		return 0;
-+
- 	kernel = (void *)(idata->os_address + idata->os_entry);
- 
- 	/* kernel parameters passing
-diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-index 409c0cf..a36682c 100644
---- a/arch/ppc/lib/ppclinux.c
-+++ b/arch/ppc/lib/ppclinux.c
-@@ -60,6 +60,9 @@ static int do_bootm_linux(struct image_data *data)
- 		return -EINVAL;
- 	}
- 
-+	if (data->dryrun)
-+		return 0;
-+
- 	/* Relocate the device tree if outside the initial
- 	 * Linux mapped TLB.
- 	 */
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 75849a1..063da62 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -133,9 +133,6 @@ static int do_bootm(int argc, char *argv[])
+ 	if (!bootm_data->os_file) {
+ 		printf("no image given\n");
+@@ -465,17 +470,6 @@ int bootm_boot(struct bootm_data *bootm_data)
  		goto err_out;
  	}
  
--	if (data.dryrun)
--		printf("Dryrun. Aborted\n");
+-	if (IS_ENABLED(CONFIG_OFTREE) && data->oftree_file) {
+-		oftree_type = file_name_detect_type(data->oftree_file);
 -
- err_out:
- 	return ret ? 1 : 0;
- }
-diff --git a/common/bootm.c b/common/bootm.c
-index f8d9330..7f6533b 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -526,10 +526,10 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		printf("Passing control to %s handler\n", handler->name);
- 	}
+-		if ((int)oftree_type < 0) {
+-			printf("could not open %s: %s\n", data->oftree_file,
+-					strerror(-oftree_type));
+-			ret = (int) oftree_type;
+-			goto err_out;
+-		}
+-	}
+-
+ 	if (os_type == filetype_uimage) {
+ 		ret = bootm_open_os_uimage(data);
+ 		if (ret) {
+@@ -492,21 +486,6 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		printf(", multifile image %s", data->os_part);
+ 	printf("\n");
  
-+	ret = handler->bootm(data);
- 	if (data->dryrun)
--		ret = 0;
--	else
--		ret = handler->bootm(data);
-+		printf("Dryrun. Aborted\n");
-+
- err_out:
- 	if (data->os_res)
- 		release_sdram_region(data->os_res);
+-	if (IS_ENABLED(CONFIG_OFTREE)) {
+-		if (data->oftree_file) {
+-			if (oftree_type == filetype_uimage)
+-				ret = bootm_open_oftree_uimage(data);
+-			if (oftree_type == filetype_oftree)
+-				ret = bootm_open_oftree(data);
+-			if (ret)
+-				goto err_out;
+-		} else {
+-			data->of_root_node = of_get_root_node();
+-			if (bootm_verbose(data) > 1 && data->of_root_node)
+-				printf("using internal devicetree\n");
+-		}
+-	}
+-
+ 	if (data->os_address == UIMAGE_SOME_ADDRESS)
+ 		data->os_address = UIMAGE_INVALID_ADDRESS;
+ 
 -- 
 2.6.4
 
