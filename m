@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aK5yc-0002az-6c
- for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:49 +0000
+ id 1aK5yX-0002Z7-AT
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Jan 2016 16:07:09 +0100
-Message-Id: <1452870438-29656-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 15 Jan 2016 16:07:12 +0100
+Message-Id: <1452870438-29656-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,168 +21,271 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/13] bootm: use names instead of numbers for image parts
+Subject: [PATCH 07/13] bootm: move initrd code together
 To: Barebox List <barebox@lists.infradead.org>
 
-The uImage format uses numbers for to identify the different
-parts of a image, but the FIT image format uses names. To better
-integrate the FIT image format into bootm always use names and
-convert them to numbers when necessary.
+The initrd code is distributed in several places in the bootm code.
+Move it all together in bootm_load_initrd().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootm.c | 43 +++++++++++++++++++++++++++----------------
- include/boot.h |  6 +++---
- 2 files changed, 30 insertions(+), 19 deletions(-)
+ arch/arm/lib/bootm.c |   8 ++-
+ common/bootm.c       | 151 +++++++++++++++++++++++++--------------------------
+ include/boot.h       |   3 +
+ 3 files changed, 83 insertions(+), 79 deletions(-)
 
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index eef906a..4dfe148 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -86,9 +86,11 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
+ 		}
+ 	}
+ 
+-	ret = bootm_load_initrd(data, initrd_start);
+-	if (ret)
+-		return ret;
++	if (bootm_has_initrd(data)) {
++		ret = bootm_load_initrd(data, initrd_start);
++		if (ret)
++			return ret;
++	}
+ 
+ 	if (data->initrd_res) {
+ 		initrd_start = data->initrd_res->start;
 diff --git a/common/bootm.c b/common/bootm.c
-index a38d7e0..f8d9330 100644
+index 7f6533b..06f1f8a 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -68,8 +68,12 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
- 		return -EINVAL;
+@@ -91,6 +91,41 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 	return -EINVAL;
+ }
  
- 	if (data->os) {
-+		int num;
++bool bootm_has_initrd(struct image_data *data)
++{
++	if (!IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
++		return false;
 +
-+		num = simple_strtoul(data->os_part, NULL, 0);
++	if (data->initrd_file)
++		return true;
 +
- 		data->os_res = uimage_load_to_sdram(data->os,
--			data->os_num, load_address);
-+			num, load_address);
- 		if (!data->os_res)
- 			return -ENOMEM;
- 
-@@ -106,8 +110,12 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
++	return false;
++}
++
++static int bootm_open_initrd_uimage(struct image_data *data)
++{
++	int ret;
++
++	if (strcmp(data->os_file, data->initrd_file)) {
++		data->initrd = uimage_open(data->initrd_file);
++		if (!data->initrd)
++			return -EINVAL;
++
++		if (data->verify) {
++			ret = uimage_verify(data->initrd);
++			if (ret) {
++				printf("Checking data crc failed with %s\n",
++					strerror(-ret));
++			}
++		}
++		uimage_print_contents(data->initrd);
++	} else {
++		data->initrd = data->os;
++	}
++
++	return 0;
++}
++
+ /*
+  * bootm_load_initrd() - load initrd to RAM
+  *
+@@ -106,11 +141,34 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+  */
+ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ {
++	enum filetype type;
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
++		return -ENOSYS;
++
++	if (!bootm_has_initrd(data))
++		return -EINVAL;
++
+ 	if (data->initrd_res)
  		return 0;
  
- 	if (data->initrd) {
-+		int num;
+-	if (data->initrd) {
++	type = file_name_detect_type(data->initrd_file);
 +
-+		num = simple_strtoul(data->initrd_part, NULL, 0);
++	if ((int)type < 0) {
++		printf("could not open %s: %s\n", data->initrd_file,
++				strerror(-type));
++		return (int)type;
++	}
 +
- 		data->initrd_res = uimage_load_to_sdram(data->initrd,
--			data->initrd_num, load_address);
-+			num, load_address);
++	if (type == filetype_uimage) {
+ 		int num;
++		ret = bootm_open_initrd_uimage(data);
++		if (ret) {
++			printf("loading initrd failed with %s\n",
++					strerror(-ret));
++			return ret;
++		}
+ 
+ 		num = simple_strtoul(data->initrd_part, NULL, 0);
+ 
+@@ -119,16 +177,24 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
  		if (!data->initrd_res)
  			return -ENOMEM;
  
-@@ -191,7 +199,8 @@ int bootm_get_os_size(struct image_data *data)
- 	int ret;
- 
- 	if (data->os)
--		return uimage_get_size(data->os, data->os_num);
-+		return uimage_get_size(data->os,
-+				       simple_strtoul(data->os_part, NULL, 0));
- 
- 	if (data->os_file) {
- 		struct stat s;
-@@ -268,7 +277,7 @@ static int bootm_open_oftree_uimage(struct image_data *data)
- 	struct fdt_header *fdt;
- 	enum filetype ft;
- 	const char *oftree = data->oftree_file;
--	int num = data->oftree_num;
-+	int num = simple_strtoul(data->oftree_part, NULL, 0);
- 	struct uimage_handle *of_handle;
- 	int release = 0;
- 	size_t size;
-@@ -358,7 +367,7 @@ static void bootm_print_info(struct image_data *data)
- 				data->initrd_file);
- 		if (initrd_type == filetype_uimage &&
- 				data->initrd->header.ih_type == IH_TYPE_MULTI)
--			printf(", multifile image %d", data->initrd_num);
-+			printf(", multifile image %s", data->initrd_part);
- 		printf("\n");
- 		if (data->initrd_res)
- 			printf("initrd is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
-@@ -369,25 +378,27 @@ static void bootm_print_info(struct image_data *data)
+-		return 0;
++		goto done;
  	}
+ 
+-	if (data->initrd_file) {
+-		data->initrd_res = file_to_sdram(data->initrd_file, load_address);
+-		if (!data->initrd_res)
+-			return -ENOMEM;
++	data->initrd_res = file_to_sdram(data->initrd_file, load_address);
++	if (!data->initrd_res)
++		return -ENOMEM;
+ 
+-		return 0;
+-	}
++done:
++
++	printf("Loaded initrd %s '%s'", file_type_to_string(type),
++	       data->initrd_file);
++	if (type == filetype_uimage && data->initrd->header.ih_type == IH_TYPE_MULTI)
++		printf(", multifile image %s", data->initrd_part);
++	printf("\n");
++
++	printf("initrd is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
++		data->initrd_res->start,
++		data->initrd_res->end);
+ 
+ 	return 0;
+ }
+@@ -245,33 +311,6 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 	return 0;
  }
  
--static char *bootm_image_name_and_no(const char *name, int *no)
-+static int bootm_image_name_and_part(const char *name, char **filename, char **part)
- {
- 	char *at, *ret;
- 
- 	if (!name || !*name)
--		return NULL;
+-static int bootm_open_initrd_uimage(struct image_data *data)
+-{
+-	int ret;
 -
--	*no = 0;
-+		return -EINVAL;
- 
- 	ret = xstrdup(name);
-+
-+	*filename = ret;
-+	*part = NULL;
-+
- 	at = strchr(ret, '@');
- 	if (!at)
--		return ret;
-+		return 0;
- 
- 	*at++ = 0;
- 
--	*no = simple_strtoul(at, NULL, 10);
-+	*part = at;
- 
--	return ret;
-+	return 0;
+-	if (!data->initrd_file)
+-		return 0;
+-
+-	if (strcmp(data->os_file, data->initrd_file)) {
+-		data->initrd = uimage_open(data->initrd_file);
+-		if (!data->initrd)
+-			return -EINVAL;
+-
+-		if (data->verify) {
+-			ret = uimage_verify(data->initrd);
+-			if (ret) {
+-				printf("Checking data crc failed with %s\n",
+-					strerror(-ret));
+-			}
+-		}
+-		uimage_print_contents(data->initrd);
+-	} else {
+-		data->initrd = data->os;
+-	}
+-
+-	return 0;
+-}
+-
+ static int bootm_open_oftree_uimage(struct image_data *data)
+ {
+ 	struct fdt_header *fdt;
+@@ -358,24 +397,6 @@ static void bootm_print_info(struct image_data *data)
+ 				data->os_res->end);
+ 	else
+ 		printf("OS image not yet relocated\n");
+-
+-	if (data->initrd_file) {
+-		enum filetype initrd_type = file_name_detect_type(data->initrd_file);
+-
+-		printf("Loading initrd %s '%s'",
+-				file_type_to_string(initrd_type),
+-				data->initrd_file);
+-		if (initrd_type == filetype_uimage &&
+-				data->initrd->header.ih_type == IH_TYPE_MULTI)
+-			printf(", multifile image %s", data->initrd_part);
+-		printf("\n");
+-		if (data->initrd_res)
+-			printf("initrd is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
+-				data->initrd_res->start,
+-				data->initrd_res->end);
+-		else
+-			printf("initrd image not yet relocated\n");
+-	}
  }
  
- /*
-@@ -408,9 +419,9 @@ int bootm_boot(struct bootm_data *bootm_data)
+ static int bootm_image_name_and_part(const char *name, char **filename, char **part)
+@@ -409,7 +430,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	struct image_data *data;
+ 	struct image_handler *handler;
+ 	int ret;
+-	enum filetype os_type, initrd_type = filetype_unknown;
++	enum filetype os_type;
+ 	enum filetype oftree_type = filetype_unknown;
  
- 	data = xzalloc(sizeof(*data));
+ 	if (!bootm_data->os_file) {
+@@ -444,17 +465,6 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		goto err_out;
+ 	}
  
--	data->os_file = bootm_image_name_and_no(bootm_data->os_file, &data->os_num);
--	data->oftree_file = bootm_image_name_and_no(bootm_data->oftree_file, &data->oftree_num);
--	data->initrd_file = bootm_image_name_and_no(bootm_data->initrd_file, &data->initrd_num);
-+	bootm_image_name_and_part(bootm_data->os_file, &data->os_file, &data->os_part);
-+	bootm_image_name_and_part(bootm_data->oftree_file, &data->oftree_part, &data->os_part);
-+	bootm_image_name_and_part(bootm_data->initrd_file, &data->initrd_part, &data->os_part);
- 	data->verbose = bootm_data->verbose;
- 	data->verify = bootm_data->verify;
- 	data->force = bootm_data->force;
-@@ -479,7 +490,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+-	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
+-		initrd_type = file_name_detect_type(data->initrd_file);
+-
+-		if ((int)initrd_type < 0) {
+-			printf("could not open %s: %s\n", data->initrd_file,
+-					strerror(-initrd_type));
+-			ret = (int)initrd_type;
+-			goto err_out;
+-		}
+-	}
+-
+ 	if (IS_ENABLED(CONFIG_OFTREE) && data->oftree_file) {
+ 		oftree_type = file_name_detect_type(data->oftree_file);
+ 
+@@ -475,17 +485,6 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		}
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
+-		if (initrd_type == filetype_uimage) {
+-			ret = bootm_open_initrd_uimage(data);
+-			if (ret) {
+-				printf("loading initrd failed with %s\n",
+-						strerror(-ret));
+-				goto err_out;
+-			}
+-		}
+-	}
+-
+ 	printf("\nLoading %s '%s'", file_type_to_string(os_type),
  			data->os_file);
  	if (os_type == filetype_uimage &&
- 			data->os->header.ih_type == IH_TYPE_MULTI)
--		printf(", multifile image %d", data->os_num);
-+		printf(", multifile image %s", data->os_part);
- 	printf("\n");
- 
- 	if (IS_ENABLED(CONFIG_OFTREE)) {
 diff --git a/include/boot.h b/include/boot.h
-index b172c05..9ddb18b 100644
+index 9ddb18b..7c6d9c8 100644
 --- a/include/boot.h
 +++ b/include/boot.h
-@@ -28,7 +28,7 @@ struct image_data {
+@@ -110,7 +110,10 @@ static inline int linux_bootargs_overwrite(const char *bootargs)
+ #endif
  
- 	/* if os is an uImage this will be provided */
- 	struct uimage_handle *os;
--	int os_num;
-+	char *os_part;
+ int bootm_load_os(struct image_data *data, unsigned long load_address);
++
++bool bootm_has_initrd(struct image_data *data);
+ int bootm_load_initrd(struct image_data *data, unsigned long load_address);
++
+ int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
+ int bootm_get_os_size(struct image_data *data);
  
- 	/* otherwise only the filename will be provided */
- 	char *os_file;
-@@ -49,7 +49,7 @@ struct image_data {
- 
- 	/* if initrd is an uImage this will be provided */
- 	struct uimage_handle *initrd;
--	int initrd_num;
-+	char *initrd_part;
- 
- 	/* otherwise only the filename will be provided */
- 	char *initrd_file;
-@@ -57,7 +57,7 @@ struct image_data {
- 	unsigned long initrd_address;
- 
- 	char *oftree_file;
--	int oftree_num;
-+	char *oftree_part;
- 
- 	struct device_node *of_root_node;
- 	struct fdt_header *oftree;
 -- 
 2.6.4
 
