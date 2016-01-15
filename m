@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aK5yX-0002ZA-AQ
- for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:46 +0000
+ id 1aK5yX-0002Yw-AN
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:42 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+ (Exim 4.80) (envelope-from <sha@pengutronix.de>) id 1aK5yB-0001f4-Nt
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 16:07:19 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.86)
+ (envelope-from <sha@pengutronix.de>) id 1aK5yB-0003Gk-GF
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 16:07:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Jan 2016 16:07:14 +0100
-Message-Id: <1452870438-29656-10-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
-References: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 15 Jan 2016 16:07:05 +0100
+Message-Id: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,164 +26,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/13] bootm: Initialize bootm_data defaults in single place
+Subject: [PATCH v3] FIT support
 To: Barebox List <barebox@lists.infradead.org>
 
-Both the bootm and the boot code initialize the struct bootm_data
-with defaults from the bootm global variables. Create a common
-function for doing this.
+This is the third version of the FIT image support. Changes
+to last series include:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/boot.c  | 14 ++------------
- commands/bootm.c | 31 +++++--------------------------
- common/bootm.c   | 11 +++++++++++
- include/boot.h   |  2 ++
- 4 files changed, 20 insertions(+), 38 deletions(-)
+- Integrate FIT support more deeply into bootm remove complexity
+  from the architecture handlers
+- Cleanup bootm support
+- Add support for configuration names as suggested by Yegor Yefremov
+- Allow to boot unsigned FIT images
 
-diff --git a/commands/boot.c b/commands/boot.c
-index fd58824..f403010 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -42,13 +42,9 @@ static int timeout;
- static int boot_script(char *path)
- {
- 	int ret;
--	struct bootm_data data = {
--		.os_address = UIMAGE_SOME_ADDRESS,
--		.initrd_address = UIMAGE_SOME_ADDRESS,
--	};
-+	struct bootm_data data = {};
- 
- 	globalvar_set_match("linux.bootargs.dyn.", "");
--	globalvar_set_match("bootm.", "");
- 
- 	ret = run_command(path);
- 	if (ret) {
-@@ -56,15 +52,9 @@ static int boot_script(char *path)
- 		goto out;
- 	}
- 
--	data.initrd_address = UIMAGE_INVALID_ADDRESS;
--	data.os_address = UIMAGE_SOME_ADDRESS;
--	data.oftree_file = getenv_nonempty("global.bootm.oftree");
--	data.os_file = getenv_nonempty("global.bootm.image");
--	getenv_ul("global.bootm.image.loadaddr", &data.os_address);
--	getenv_ul("global.bootm.initrd.loadaddr", &data.initrd_address);
--	data.initrd_file = getenv_nonempty("global.bootm.initrd");
- 	data.verbose = verbose;
- 	data.dryrun = dryrun;
-+	bootm_data_init_defaults(&data);
- 
- 	ret = bootm_boot(&data);
- 	if (ret)
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 063da62..6db0e65 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -59,19 +59,8 @@ static int do_bootm(int argc, char *argv[])
- 	int opt;
- 	struct bootm_data data = {};
- 	int ret = 1;
--	const char *oftree = NULL, *initrd_file = NULL, *os_file = NULL;
- 
--	data.initrd_address = UIMAGE_INVALID_ADDRESS;
--	data.os_address = UIMAGE_SOME_ADDRESS;
--	data.verify = 0;
--	data.verbose = 0;
--
--	oftree = getenv("global.bootm.oftree");
--	os_file = getenv("global.bootm.image");
--	getenv_ul("global.bootm.image.loadaddr", &data.os_address);
--	getenv_ul("global.bootm.initrd.loadaddr", &data.initrd_address);
--	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
--		initrd_file = getenv("global.bootm.initrd");
-+	bootm_data_init_defaults(&data);
- 
- 	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
- 		switch(opt) {
-@@ -83,7 +72,7 @@ static int do_bootm(int argc, char *argv[])
- 			data.initrd_address = simple_strtoul(optarg, NULL, 0);
- 			break;
- 		case 'r':
--			initrd_file = optarg;
-+			data.initrd_file = optarg;
- 			break;
- #endif
- 		case 'a':
-@@ -96,7 +85,7 @@ static int do_bootm(int argc, char *argv[])
- 			data.verbose++;
- 			break;
- 		case 'o':
--			oftree = optarg;
-+			data.oftree_file = optarg;
- 			break;
- 		case 'f':
- 			data.force = 1;
-@@ -110,23 +99,13 @@ static int do_bootm(int argc, char *argv[])
- 	}
- 
- 	if (optind != argc)
--		os_file = argv[optind];
-+		data.os_file = argv[optind];
- 
--	if (!os_file || !*os_file) {
-+	if (!data.os_file) {
- 		printf("no boot image given\n");
- 		goto err_out;
- 	}
- 
--	if (initrd_file && !*initrd_file)
--		initrd_file = NULL;
--
--	if (oftree && !*oftree)
--		oftree = NULL;
--
--	data.os_file = os_file;
--	data.oftree_file = oftree;
--	data.initrd_file = initrd_file;
--
- 	ret = bootm_boot(&data);
- 	if (ret) {
- 		printf("handler failed with: %s\n", strerror(-ret));
-diff --git a/common/bootm.c b/common/bootm.c
-index e399a6a..4409a8b 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -47,6 +47,17 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
- 	return NULL;
- }
- 
-+void bootm_data_init_defaults(struct bootm_data *data)
-+{
-+	data->initrd_address = UIMAGE_INVALID_ADDRESS;
-+	data->os_address = UIMAGE_SOME_ADDRESS;
-+	data->oftree_file = getenv_nonempty("global.bootm.oftree");
-+	data->os_file = getenv_nonempty("global.bootm.image");
-+	getenv_ul("global.bootm.image.loadaddr", &data->os_address);
-+	getenv_ul("global.bootm.initrd.loadaddr", &data->initrd_address);
-+	data->initrd_file = getenv_nonempty("global.bootm.initrd");
-+}
-+
- /*
-  * bootm_load_os() - load OS to RAM
-  *
-diff --git a/include/boot.h b/include/boot.h
-index 7c6d9c8..0c0febe 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -109,6 +109,8 @@ static inline int linux_bootargs_overwrite(const char *bootargs)
- }
- #endif
- 
-+void bootm_data_init_defaults(struct bootm_data *data);
-+
- int bootm_load_os(struct image_data *data, unsigned long load_address);
- 
- bool bootm_has_initrd(struct image_data *data);
--- 
-2.6.4
+It's time for a weekend now, so I send out what I have now. This series
+could use some more testing before it gets merged, so I'll do that next
+week before merging it. In the meantime everyone else is invited for
+testing aswell ;)
 
+Sascha
+
+----------------------------------------------------------------
+Jan Luebbe (1):
+      bootm: add initial FIT support
+
+Sascha Hauer (12):
+      ARM: zImage: add missing free() in appended device tree code
+      bootm: Do not call uimage_close twice
+      bootm: introduce bootm_get_os_size
+      bootm: use names instead of numbers for image parts
+      ARM: bootm: Use kernel handler to start barebox image
+      bootm: Push dryrun to handlers
+      bootm: move initrd code together
+      bootm: move oftree code together
+      bootm: Initialize bootm_data defaults in single place
+      crypto: add digest_alloc_by_algo()
+      crypto: add RSA support
+      bootm: make verifying/hashing configurable
+
+ arch/arm/crypto/sha1_glue.c        |   1 +
+ arch/arm/crypto/sha256_glue.c      |   2 +
+ arch/arm/lib/bootm.c               |  52 ++--
+ arch/arm/mach-omap/omap_generic.c  |   5 +
+ arch/blackfin/lib/blackfin_linux.c |   3 +
+ arch/efi/efi/efi-image.c           |   9 +-
+ arch/mips/lib/bootm.c              |   5 +
+ arch/nios2/lib/bootm.c             |   3 +
+ arch/ppc/lib/ppclinux.c            |   3 +
+ commands/Kconfig                   |  22 ++
+ commands/boot.c                    |  14 +-
+ commands/bootm.c                   |  46 +--
+ common/Kconfig                     |   9 +
+ common/Makefile                    |   1 +
+ common/bootm.c                     | 469 +++++++++++++++++-------------
+ common/image-fit.c                 | 581 +++++++++++++++++++++++++++++++++++++
+ crypto/Kconfig                     |   3 +
+ crypto/Makefile                    |   1 +
+ crypto/digest.c                    |  43 ++-
+ crypto/md5.c                       |   1 +
+ crypto/rsa.c                       | 420 +++++++++++++++++++++++++++
+ crypto/sha1.c                      |   1 +
+ crypto/sha2.c                      |   2 +
+ crypto/sha4.c                      |   2 +
+ include/asm-generic/errno.h        |   5 +
+ include/boot.h                     |  28 +-
+ include/digest.h                   |  23 ++
+ include/image-fit.h                |  45 +++
+ include/rsa.h                      |  54 ++++
+ 29 files changed, 1575 insertions(+), 278 deletions(-)
+ create mode 100644 common/image-fit.c
+ create mode 100644 crypto/rsa.c
+ create mode 100644 include/image-fit.h
+ create mode 100644 include/rsa.h
 
 _______________________________________________
 barebox mailing list
