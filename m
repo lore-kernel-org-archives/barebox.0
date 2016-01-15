@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aK5yX-0002Z8-AU
- for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:48 +0000
+ id 1aK5yc-0002az-6c
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Jan 2016 16:07:13 +0100
-Message-Id: <1452870438-29656-9-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 15 Jan 2016 16:07:09 +0100
+Message-Id: <1452870438-29656-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,265 +21,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/13] bootm: move oftree code together
+Subject: [PATCH 04/13] bootm: use names instead of numbers for image parts
 To: Barebox List <barebox@lists.infradead.org>
 
-The device tree code is distributed in several places in the bootm code.
-Move it all together in bootm_load_devicetree().
+The uImage format uses numbers for to identify the different
+parts of a image, but the FIT image format uses names. To better
+integrate the FIT image format into bootm always use names and
+convert them to numbers when necessary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootm.c | 193 +++++++++++++++++++++++++--------------------------------
- 1 file changed, 86 insertions(+), 107 deletions(-)
+ common/bootm.c | 43 +++++++++++++++++++++++++++----------------
+ include/boot.h |  6 +++---
+ 2 files changed, 30 insertions(+), 19 deletions(-)
 
 diff --git a/common/bootm.c b/common/bootm.c
-index 06f1f8a..e399a6a 100644
+index a38d7e0..f8d9330 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -199,6 +199,47 @@ done:
- 	return 0;
- }
+@@ -68,8 +68,12 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+ 		return -EINVAL;
  
-+static int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
-+				    struct fdt_header **fdt)
-+{
-+	enum filetype ft;
-+	const char *oftree = data->oftree_file;
-+	int num = simple_strtoul(data->oftree_part, NULL, 0);
-+	struct uimage_handle *of_handle;
-+	int release = 0;
+ 	if (data->os) {
++		int num;
 +
-+	printf("Loading devicetree from '%s'@%d\n", oftree, num);
++		num = simple_strtoul(data->os_part, NULL, 0);
 +
-+	if (!IS_ENABLED(CONFIG_CMD_BOOTM_OFTREE_UIMAGE))
-+		return -EINVAL;
-+
-+	if (!strcmp(data->os_file, oftree)) {
-+		of_handle = data->os;
-+	} else if (!strcmp(data->initrd_file, oftree)) {
-+		of_handle = data->initrd;
-+	} else {
-+		of_handle = uimage_open(oftree);
-+		if (!of_handle)
-+			return -ENODEV;
-+		uimage_print_contents(of_handle);
-+		release = 1;
-+	}
-+
-+	*fdt = uimage_load_to_buf(of_handle, num, size);
-+
-+	if (release)
-+		uimage_close(of_handle);
-+
-+	ft = file_detect_type(*fdt, *size);
-+	if (ft != filetype_oftree) {
-+		printf("%s is not an oftree but %s\n",
-+			data->oftree_file, file_type_to_string(ft));
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * bootm_load_devicetree() - load devicetree
-  *
-@@ -212,8 +253,10 @@ done:
-  */
- int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
- {
-+	enum filetype type;
- 	int fdt_size;
- 	struct fdt_header *oftree;
-+	int ret;
+ 		data->os_res = uimage_load_to_sdram(data->os,
+-			data->os_num, load_address);
++			num, load_address);
+ 		if (!data->os_res)
+ 			return -ENOMEM;
  
- 	if (data->oftree)
- 		return 0;
-@@ -221,8 +264,49 @@ int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
- 	if (!IS_ENABLED(CONFIG_OFTREE))
+@@ -106,8 +110,12 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
  		return 0;
  
--	if (!data->of_root_node)
--		return 0;
-+	if (data->oftree_file) {
-+		size_t size;
+ 	if (data->initrd) {
++		int num;
 +
-+		type = file_name_detect_type(data->oftree_file);
++		num = simple_strtoul(data->initrd_part, NULL, 0);
 +
-+		if ((int)type < 0) {
-+			printf("could not open %s: %s\n", data->oftree_file,
-+					strerror(-type));
-+			return (int)type;
-+		}
-+
-+		switch (type) {
-+		case filetype_uimage:
-+			ret = bootm_open_oftree_uimage(data, &size, &oftree);
-+			break;
-+		case filetype_oftree:
-+			ret = read_file_2(data->oftree_file, &size, (void *)&oftree,
-+					  FILESIZE_MAX);
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		if (ret)
-+			return ret;
-+
-+		data->of_root_node = of_unflatten_dtb(oftree);
-+
-+		free(oftree);
-+
-+		if (!data->of_root_node) {
-+			pr_err("unable to unflatten devicetree\n");
-+			return -EINVAL;
-+		}
-+
-+	} else {
-+		data->of_root_node = of_get_root_node();
-+		if (!data->of_root_node)
-+			return 0;
-+
-+		if (bootm_verbose(data) > 1 && data->of_root_node)
-+			printf("using internal devicetree\n");
-+	}
+ 		data->initrd_res = uimage_load_to_sdram(data->initrd,
+-			data->initrd_num, load_address);
++			num, load_address);
+ 		if (!data->initrd_res)
+ 			return -ENOMEM;
  
- 	if (data->initrd_res) {
- 		of_add_initrd(data->of_root_node, data->initrd_res->start,
-@@ -311,84 +395,6 @@ static int bootm_open_os_uimage(struct image_data *data)
- 	return 0;
- }
- 
--static int bootm_open_oftree_uimage(struct image_data *data)
--{
--	struct fdt_header *fdt;
--	enum filetype ft;
--	const char *oftree = data->oftree_file;
--	int num = simple_strtoul(data->oftree_part, NULL, 0);
--	struct uimage_handle *of_handle;
--	int release = 0;
--	size_t size;
--
--	printf("Loading devicetree from '%s'@%d\n", oftree, num);
--
--	if (IS_ENABLED(CONFIG_CMD_BOOTM_OFTREE_UIMAGE)) {
--		if (!strcmp(data->os_file, oftree)) {
--			of_handle = data->os;
--		} else if (!strcmp(data->initrd_file, oftree)) {
--			of_handle = data->initrd;
--		} else {
--			of_handle = uimage_open(oftree);
--			if (!of_handle)
--				return -ENODEV;
--			uimage_print_contents(of_handle);
--			release = 1;
--		}
--
--		fdt = uimage_load_to_buf(of_handle, num, &size);
--
--		if (release)
--			uimage_close(of_handle);
--
--		ft = file_detect_type(fdt, size);
--		if (ft != filetype_oftree) {
--			printf("%s is not an oftree but %s\n",
--				data->oftree_file, file_type_to_string(ft));
--			return -EINVAL;
--		}
--
--		data->of_root_node = of_unflatten_dtb(fdt);
--		if (!data->of_root_node) {
--			pr_err("unable to unflatten devicetree\n");
--			free(fdt);
--			return -EINVAL;
--		}
--
--		free(fdt);
--
--		return 0;
--	} else {
--		return -EINVAL;
--	}
--}
--
--static int bootm_open_oftree(struct image_data *data)
--{
--	struct fdt_header *fdt;
--	const char *oftree = data->oftree_file;
--	size_t size;
--
--	printf("Loading devicetree from '%s'\n", oftree);
--
--	fdt = read_file(oftree, &size);
--	if (!fdt) {
--		perror("open");
--		return -ENODEV;
--	}
--
--	data->of_root_node = of_unflatten_dtb(fdt);
--	if (!data->of_root_node) {
--		pr_err("unable to unflatten devicetree\n");
--		free(fdt);
--		return -EINVAL;
--	}
--
--	free(fdt);
--
--	return 0;
--}
--
- static void bootm_print_info(struct image_data *data)
- {
- 	if (data->os_res)
-@@ -431,7 +437,6 @@ int bootm_boot(struct bootm_data *bootm_data)
- 	struct image_handler *handler;
+@@ -191,7 +199,8 @@ int bootm_get_os_size(struct image_data *data)
  	int ret;
- 	enum filetype os_type;
--	enum filetype oftree_type = filetype_unknown;
  
- 	if (!bootm_data->os_file) {
- 		printf("no image given\n");
-@@ -465,17 +470,6 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		goto err_out;
+ 	if (data->os)
+-		return uimage_get_size(data->os, data->os_num);
++		return uimage_get_size(data->os,
++				       simple_strtoul(data->os_part, NULL, 0));
+ 
+ 	if (data->os_file) {
+ 		struct stat s;
+@@ -268,7 +277,7 @@ static int bootm_open_oftree_uimage(struct image_data *data)
+ 	struct fdt_header *fdt;
+ 	enum filetype ft;
+ 	const char *oftree = data->oftree_file;
+-	int num = data->oftree_num;
++	int num = simple_strtoul(data->oftree_part, NULL, 0);
+ 	struct uimage_handle *of_handle;
+ 	int release = 0;
+ 	size_t size;
+@@ -358,7 +367,7 @@ static void bootm_print_info(struct image_data *data)
+ 				data->initrd_file);
+ 		if (initrd_type == filetype_uimage &&
+ 				data->initrd->header.ih_type == IH_TYPE_MULTI)
+-			printf(", multifile image %d", data->initrd_num);
++			printf(", multifile image %s", data->initrd_part);
+ 		printf("\n");
+ 		if (data->initrd_res)
+ 			printf("initrd is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
+@@ -369,25 +378,27 @@ static void bootm_print_info(struct image_data *data)
  	}
+ }
  
--	if (IS_ENABLED(CONFIG_OFTREE) && data->oftree_file) {
--		oftree_type = file_name_detect_type(data->oftree_file);
+-static char *bootm_image_name_and_no(const char *name, int *no)
++static int bootm_image_name_and_part(const char *name, char **filename, char **part)
+ {
+ 	char *at, *ret;
+ 
+ 	if (!name || !*name)
+-		return NULL;
 -
--		if ((int)oftree_type < 0) {
--			printf("could not open %s: %s\n", data->oftree_file,
--					strerror(-oftree_type));
--			ret = (int) oftree_type;
--			goto err_out;
--		}
--	}
--
- 	if (os_type == filetype_uimage) {
- 		ret = bootm_open_os_uimage(data);
- 		if (ret) {
-@@ -492,21 +486,6 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		printf(", multifile image %s", data->os_part);
+-	*no = 0;
++		return -EINVAL;
+ 
+ 	ret = xstrdup(name);
++
++	*filename = ret;
++	*part = NULL;
++
+ 	at = strchr(ret, '@');
+ 	if (!at)
+-		return ret;
++		return 0;
+ 
+ 	*at++ = 0;
+ 
+-	*no = simple_strtoul(at, NULL, 10);
++	*part = at;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ /*
+@@ -408,9 +419,9 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 
+ 	data = xzalloc(sizeof(*data));
+ 
+-	data->os_file = bootm_image_name_and_no(bootm_data->os_file, &data->os_num);
+-	data->oftree_file = bootm_image_name_and_no(bootm_data->oftree_file, &data->oftree_num);
+-	data->initrd_file = bootm_image_name_and_no(bootm_data->initrd_file, &data->initrd_num);
++	bootm_image_name_and_part(bootm_data->os_file, &data->os_file, &data->os_part);
++	bootm_image_name_and_part(bootm_data->oftree_file, &data->oftree_part, &data->os_part);
++	bootm_image_name_and_part(bootm_data->initrd_file, &data->initrd_part, &data->os_part);
+ 	data->verbose = bootm_data->verbose;
+ 	data->verify = bootm_data->verify;
+ 	data->force = bootm_data->force;
+@@ -479,7 +490,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 			data->os_file);
+ 	if (os_type == filetype_uimage &&
+ 			data->os->header.ih_type == IH_TYPE_MULTI)
+-		printf(", multifile image %d", data->os_num);
++		printf(", multifile image %s", data->os_part);
  	printf("\n");
  
--	if (IS_ENABLED(CONFIG_OFTREE)) {
--		if (data->oftree_file) {
--			if (oftree_type == filetype_uimage)
--				ret = bootm_open_oftree_uimage(data);
--			if (oftree_type == filetype_oftree)
--				ret = bootm_open_oftree(data);
--			if (ret)
--				goto err_out;
--		} else {
--			data->of_root_node = of_get_root_node();
--			if (bootm_verbose(data) > 1 && data->of_root_node)
--				printf("using internal devicetree\n");
--		}
--	}
--
- 	if (data->os_address == UIMAGE_SOME_ADDRESS)
- 		data->os_address = UIMAGE_INVALID_ADDRESS;
+ 	if (IS_ENABLED(CONFIG_OFTREE)) {
+diff --git a/include/boot.h b/include/boot.h
+index b172c05..9ddb18b 100644
+--- a/include/boot.h
++++ b/include/boot.h
+@@ -28,7 +28,7 @@ struct image_data {
  
+ 	/* if os is an uImage this will be provided */
+ 	struct uimage_handle *os;
+-	int os_num;
++	char *os_part;
+ 
+ 	/* otherwise only the filename will be provided */
+ 	char *os_file;
+@@ -49,7 +49,7 @@ struct image_data {
+ 
+ 	/* if initrd is an uImage this will be provided */
+ 	struct uimage_handle *initrd;
+-	int initrd_num;
++	char *initrd_part;
+ 
+ 	/* otherwise only the filename will be provided */
+ 	char *initrd_file;
+@@ -57,7 +57,7 @@ struct image_data {
+ 	unsigned long initrd_address;
+ 
+ 	char *oftree_file;
+-	int oftree_num;
++	char *oftree_part;
+ 
+ 	struct device_node *of_root_node;
+ 	struct fdt_header *oftree;
 -- 
 2.6.4
 
