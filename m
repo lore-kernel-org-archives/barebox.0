@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aK5yX-0002Yy-AP
- for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:43 +0000
+ id 1aK5yX-0002Z5-AY
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 15:07:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Jan 2016 16:07:06 +0100
-Message-Id: <1452870438-29656-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 15 Jan 2016 16:07:10 +0100
+Message-Id: <1452870438-29656-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 References: <1452870438-29656-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/13] ARM: zImage: add missing free() in appended device tree
- code
+Subject: [PATCH 05/13] ARM: bootm: Use kernel handler to start barebox image
 To: Barebox List <barebox@lists.infradead.org>
 
-oftree must be freed when the tree is successfully unflattened.
+barebox can be called with the kernel calling convention, so
+we can reuse the handler instead of creating a barebox specific
+handler.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootm.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/lib/bootm.c | 30 +-----------------------------
+ 1 file changed, 1 insertion(+), 29 deletions(-)
 
 diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 7bb9b43..2439c36 100644
+index 0855907..010b668 100644
 --- a/arch/arm/lib/bootm.c
 +++ b/arch/arm/lib/bootm.c
-@@ -223,6 +223,7 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
- 			ret = -EINVAL;
- 			goto err_free;
- 		}
-+		free(oftree);
- 	} else {
- 		data->oftree = oftree;
- 	}
+@@ -355,37 +355,9 @@ static struct image_handler zimage_handler = {
+ 	.filetype = filetype_arm_zimage,
+ };
+ 
+-static int do_bootm_barebox(struct image_data *data)
+-{
+-	void *barebox;
+-
+-	barebox = read_file(data->os_file, NULL);
+-	if (!barebox)
+-		return -EINVAL;
+-
+-	if (IS_ENABLED(CONFIG_OFTREE) && data->of_root_node) {
+-		data->oftree = of_get_fixed_tree(data->of_root_node);
+-		fdt_add_reserve_map(data->oftree);
+-		of_print_cmdline(data->of_root_node);
+-		if (bootm_verbose(data) > 1)
+-			of_print_nodes(data->of_root_node, 0);
+-	}
+-
+-	if (bootm_verbose(data)) {
+-		printf("\nStarting barebox at 0x%p", barebox);
+-		if (data->oftree)
+-			printf(", oftree at 0x%p", data->oftree);
+-		printf("...\n");
+-	}
+-
+-	start_linux(barebox, 0, 0, 0, data->oftree);
+-
+-	restart_machine();
+-}
+-
+ static struct image_handler barebox_handler = {
+ 	.name = "ARM barebox",
+-	.bootm = do_bootm_barebox,
++	.bootm = do_bootm_linux,
+ 	.filetype = filetype_arm_barebox,
+ };
+ 
 -- 
 2.6.4
 
