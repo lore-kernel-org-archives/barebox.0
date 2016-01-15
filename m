@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aJzsI-0000sW-1z
- for barebox@lists.infradead.org; Fri, 15 Jan 2016 08:36:51 +0000
-Message-ID: <1452846986.2915.110.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 15 Jan 2016 09:36:26 +0100
-In-Reply-To: <5697FF03.1060702@pengutronix.de>
-References: <CAPnjgZ187+14Fn-aeBkzV9Yv7MXOYPbTJjzCrHByuO04=OoAww@mail.gmail.com>
- <5697FF03.1060702@pengutronix.de>
-Mime-Version: 1.0
+ id 1aK5Si-0002P4-Lq
+ for barebox@lists.infradead.org; Fri, 15 Jan 2016 14:34:49 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 15 Jan 2016 15:34:15 +0100
+Message-Id: <1452868456-2057-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +14,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Verified boot support with FIT
-To: Marc Kleine-Budde <mkl@pengutronix.de>, Simon Glass <sjg@chromium.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] vsprintf: Add support for %pa
+To: Barebox List <barebox@lists.infradead.org>
 
-T24gRG8sIDIwMTYtMDEtMTQgYXQgMjE6MDMgKzAxMDAsIE1hcmMgS2xlaW5lLUJ1ZGRlIHdyb3Rl
-Ogo+IE9uIDAxLzE0LzIwMTYgMDg6MzAgUE0sIFNpbW9uIEdsYXNzIHdyb3RlOgo+ID4gU29tZW9u
-ZSBwb2ludGVkIG1lIHRvIHRoaXMgc3VwcG9ydCB0aGF0IGlzIGJlaW5nIGFkZGVkIGluIEJhcmVi
-b3guIEkgc2VlCj4gPiB0aGF0IGl0IHN0aWxsIGhhcyB0aGUgY29weXJpZ2h0IGJ1dCBkb2VzIG5v
-dCBhdHRyaWJ1dGUgVS1Cb290LiBJJ20ganVzdAo+ID4gY2hlY2tpbmcgaWYgdGhhdCBpcyB0aGF0
-IGFuIG92ZXJzaWdodD8KPiAKPiBJJ3ZlIENjJ2VkIEphbiwgd2hvIGhhcyB3cml0dGVuIHRoZSBj
-b2RlLiBRdW90aW5nIGZyb20gaGlzIGZpcnN0IHBhdGNoCj4gdG8gdGhlIGJhcmVib3ggbWFpbGlu
-Z2xpc3Q6Cj4gCj4gPiB0aGlzIGlzIHRoZSBjdXJyZW50IHdvcmstaW4tcHJvZ3Jlc3Mgc3RhdGUg
-b2YgbXkgRklUIHN1cHBvcnQgcGF0Y2hlcy4KPiA+IFRoZSBGSVQgbG9hZGluZyBjb2RlIGhhcyBi
-YXNpY2FsbHkgYmVlbiByZXdyaXR0ZW4gZnJvbSBzY3JhdGNoLCBhcyB0aGUKPiA+IG9yaWdpbmFs
-IFUtQm9vdCBjb2RlIHVzZXMgbGliZmR0IGFuZCBiYXJlYm94J3MgRFQgc3VwcG9ydCB3b3JrcyBv
-biBhbgo+ID4gaW4tbWVtb3J5IHRyZWUuCgpZZXMsIHRoaXMgaXMgc3RpbGwgY29ycmVjdCBmb3Ig
-dGhlIHJlY2VudCBzdWJtaXNzaW9ucy4KClRoZSBiYXJlYm94IGNvZGUgb25seSBzdXBwb3J0cyB0
-aGUgc2lnbmVkIGNvbmZpZ3VyYXRpb25zIHdpdGggaGFzaGVkCmltYWdlcywgYXMgdGhlIGdvYWwg
-d2FzIHRvIHVzZSB0aGlzIGZvciB2ZXJpZmllZCBib290LiBTdXBwb3J0aW5nIG9ubHkKdGhpcyBt
-b2RlIGtlZXBzIHRoZSBjb21wbGV4aXR5IGRvd24uCgpTaW1vbiwgZG8geW91IHRoaW5rIGl0IGlz
-IGEgZGVyaXZlZCB3b3JrIG9mIHRoZSBVLUJvb3QgRklUIGNvZGU/CgpSZWdhcmRzLApKYW4gTMO8
-YmJlCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAg
-ICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2
-LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAg
-ICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAg
-KzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+Add support for the %pa format specifier to print phys_addr_t,
+dma_addr_t and resource_size_t.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/vsprintf.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 9b8e8cf..00b8863 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -237,6 +237,29 @@ char *uuid_string(char *buf, char *end, const u8 *addr, int field_width,
+ 	return string(buf, end, uuid, field_width, precision, flags);
+ }
+ 
++static noinline_for_stack
++char *address_val(char *buf, char *end, const void *addr,
++		int field_width, int precision, int flags, const char *fmt)
++{
++	unsigned long long num;
++
++	flags |= SPECIAL | SMALL | ZEROPAD;
++
++	switch (fmt[1]) {
++	case 'd':
++		num = *(const dma_addr_t *)addr;
++		field_width = sizeof(dma_addr_t) * 2 + 2;
++		break;
++	case 'p':
++	default:
++		num = *(const phys_addr_t *)addr;
++		field_width = sizeof(phys_addr_t) * 2 + 2;
++		break;
++	}
++
++	return number(buf, end, num, 16, field_width, precision, flags);
++}
++
+ /*
+  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+  * by an extra set of alphanumeric characters that are extended format
+@@ -256,6 +279,8 @@ char *uuid_string(char *buf, char *end, const u8 *addr, int field_width,
+  *             [0][1][2][3]-[4][5]-[6][7]-[8][9]-[10][11][12][13][14][15]
+  *           little endian output byte order is:
+  *             [3][2][1][0]-[5][4]-[7][6]-[8][9]-[10][11][12][13][14][15]
++ * - 'a[pd]' For address types [p] phys_addr_t, [d] dma_addr_t and derivatives
++ *           (default assumed to be phys_addr_t, passed by reference)
+  *
+  * Note: The difference between 'S' and 'F' is that on ia64 and ppc64
+  * function pointers are really function descriptors, which contain a
+@@ -270,6 +295,8 @@ static char *pointer(const char *fmt, char *buf, char *end, void *ptr, int field
+ 		if (IS_ENABLED(CONFIG_PRINTF_UUID))
+ 			return uuid_string(buf, end, ptr, field_width, precision, flags, fmt);
+ 		break;
++	case 'a':
++		return address_val(buf, end, ptr, field_width, precision, flags, fmt);
+ 	}
+ 	flags |= SMALL;
+ 	if (field_width == -1) {
+-- 
+2.6.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
