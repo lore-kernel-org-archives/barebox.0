@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x241.google.com ([2607:f8b0:400e:c00::241])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aL0su-0004ys-4S
+Received: from mail-pa0-x241.google.com ([2607:f8b0:400e:c03::241])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aL0sy-00028l-Ik
  for barebox@lists.infradead.org; Mon, 18 Jan 2016 03:53:45 +0000
-Received: by mail-pf0-x241.google.com with SMTP id n128so11156694pfn.3
- for <barebox@lists.infradead.org>; Sun, 17 Jan 2016 19:53:19 -0800 (PST)
+Received: by mail-pa0-x241.google.com with SMTP id gi1so39409628pac.2
+ for <barebox@lists.infradead.org>; Sun, 17 Jan 2016 19:53:23 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 17 Jan 2016 19:52:34 -0800
-Message-Id: <1453089161-6697-13-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun, 17 Jan 2016 19:52:37 -0800
+Message-Id: <1453089161-6697-16-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1453089161-6697-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1453089161-6697-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,104 +23,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/20] e1000: Fix a bug in e1000_probe()
+Subject: [PATCH 16/20] e1000: Add functions for register polling
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-There are several reasons why that code in e1000_probe had to be
-changed:
-
- - It reads from chip variant specific register (present only on
-   i210) in a chip variant agnostic codepath
-
- - It makes no sense to check for FLUPD bit to make a decision weither
-   to validate EEPROM or not since its function per datasheet is:
-
-   " ... Flash Update.
-
-     Writing 1b to this bit causes the content of the internal 4 KB
-     shadow RAM to be written into one of the first two 4 KB sectors
-     of the Flash device (Sector 0 or Sector 1). The bit is
-     self-cleared immediately... "
-
-   and it is only through sheer serendipity the defined value for
-   bitmask for FLUPD is equivalent to bitmask for FLASH_DETECTED bit
-   which is the bit we actually care about and need to test against
-   (FLUPD for i210 has a different bitmask)
-
-Fix those problems by replacing the i210 specific check inside of
-e1000_validate_eeprom_checksum() with a chip agnostic one and using
-correct bitmask.
-
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/e1000.h  |  1 +
- drivers/net/e1000/eeprom.c | 18 ++++++++++++++++--
- drivers/net/e1000/main.c   |  3 +--
- 3 files changed, 18 insertions(+), 4 deletions(-)
+ drivers/net/e1000/e1000.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-index 8ec45a7..92e2100 100644
+index 291e64d..5e24758 100644
 --- a/drivers/net/e1000/e1000.h
 +++ b/drivers/net/e1000/e1000.h
-@@ -800,6 +800,7 @@ struct e1000_eeprom_info {
- #define E1000_EECD_SELSHAD   0x00020000 /* Select Shadow RAM */
- #define E1000_EECD_INITSRAM  0x00040000 /* Initialize Shadow RAM */
- #define E1000_EECD_FLUPD     0x00080000 /* Update FLASH */
-+#define E1000_EECD_I210_FLASH_DETECTED	(1 << 19) /* FLASH detected */
- #define E1000_EECD_AUPDEN    0x00100000 /* Enable Autonomous FLASH update */
- #define E1000_EECD_SHADV     0x00200000 /* Shadow RAM Data Valid */
- #define E1000_EECD_SEC1VAL   0x00400000 /* Sector One Valid */
-diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index 87ea82f..4a1c7e6 100644
---- a/drivers/net/e1000/eeprom.c
-+++ b/drivers/net/e1000/eeprom.c
-@@ -359,8 +359,13 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 		eeprom->use_eerd = true;
- 		break;
- 	case e1000_igb:
--		/* i210 has 4k of iNVM mapped as EEPROM */
--		eeprom->type = e1000_eeprom_invm;
-+		if (eecd & E1000_EECD_I210_FLASH_DETECTED) {
-+			eeprom->type = e1000_eeprom_flash;
-+			eeprom->word_size = 2048;
-+		} else {
-+			eeprom->type = e1000_eeprom_invm;
-+		}
+@@ -2176,5 +2176,24 @@ static inline uint32_t e1000_read_reg(struct e1000_hw *hw, uint32_t reg)
+ }
+
+
++static inline int e1000_poll_reg(struct e1000_hw *hw, uint32_t reg,
++				 uint32_t mask, uint32_t value,
++				 uint64_t timeout)
++{
++	const uint64_t start = get_time_ns();
 +
- 		eeprom->use_eerd = true;
- 		break;
- 	default:
-@@ -661,6 +666,15 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
-
- 	DEBUGFUNC();
-
-+	/*
-+	  Only the following three 'types' of EEPROM can be expected
-+	  to have correct EEPROM checksum
-+	*/
-+	if (hw->eeprom.type != e1000_eeprom_spi &&
-+	    hw->eeprom.type != e1000_eeprom_microwire &&
-+	    hw->eeprom.type != e1000_eeprom_flash)
-+		return 0;
++	do {
++		const uint32_t v = e1000_read_reg(hw, reg);
 +
- 	/* Read the EEPROM */
- 	if (e1000_read_eeprom(hw, 0, EEPROM_CHECKSUM_REG + 1, buf) < 0) {
- 		dev_err(&hw->edev.dev, "Unable to read EEPROM!\n");
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 9791b60..4518be8 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -3558,8 +3558,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		dev_err(&pdev->dev, "EEPROM is invalid!\n");
- 		return -EINVAL;
- 	}
--	if ((E1000_READ_REG(hw, EECD) & E1000_EECD_FLUPD) &&
--	    e1000_validate_eeprom_checksum(hw))
-+	if (e1000_validate_eeprom_checksum(hw))
- 		return -EINVAL;
++		if ((v & mask) == value)
++			return 0;
++
++	} while (!is_timeout(start, timeout));
++
++	return -ETIMEDOUT;
++}
++
++#define E1000_POLL_REG(a, reg, mask, value, timeout)	\
++	e1000_poll_reg((a), E1000_##reg, (mask), (value), (timeout))
 
- 	e1000_get_ethaddr(edev, edev->ethaddr);
+ #endif	/* _E1000_HW_H_ */
 --
 2.5.0
 
