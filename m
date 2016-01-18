@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aL6Ba-0003oU-S8
- for barebox@lists.infradead.org; Mon, 18 Jan 2016 09:33:19 +0000
-Message-ID: <1453109575.2915.156.camel@pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Mon, 18 Jan 2016 10:32:55 +0100
-In-Reply-To: <CAHQ1cqE6aBaCw3D-KXy3=xNgdPKZQBdV4smA8q0vie-THmPJLg@mail.gmail.com>
-References: <1452251635-14689-1-git-send-email-s.hauer@pengutronix.de>
- <1452251635-14689-7-git-send-email-s.hauer@pengutronix.de>
- <CAHQ1cqE6aBaCw3D-KXy3=xNgdPKZQBdV4smA8q0vie-THmPJLg@mail.gmail.com>
-Mime-Version: 1.0
+ id 1aL6uU-0002OX-2o
+ for barebox@lists.infradead.org; Mon, 18 Jan 2016 10:19:43 +0000
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7]
+ helo=dude.pengutronix.de.)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.80)
+ (envelope-from <l.stach@pengutronix.de>) id 1aL6u8-0007MS-Fm
+ for barebox@lists.infradead.org; Mon, 18 Jan 2016 11:19:20 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 18 Jan 2016 11:19:20 +0100
+Message-Id: <1453112360-25670-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,25 +19,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/8] host side for barebox remote control
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Jan =?ISO-8859-1?Q?L=FCbbe?= <j.luebbe@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: PXA: move HAVE_CLK select
+To: barebox@lists.infradead.org
 
-T24gU28sIDIwMTYtMDEtMTcgYXQgMTc6MDcgLTA4MDAsIEFuZHJleSBTbWlybm92IHdyb3RlOgo+
-ID4KPiA+IFNpZ25lZC1vZmYtYnk6IEphbiBMw7xiYmUgPGoubHVlYmJlQHBlbmd1dHJvbml4LmRl
-Pgo+ID4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRl
-Pgo+IAo+IFdpdGggZml4ZXMgYWJvdmUsCj4gCj4gVGVzdGVkLWJ5OiBBbmRyZXkgU21pcm5vdiA8
-YW5kcmV3LnNtaXJub3ZAZ21haWwuY29tPgoKVGhlc2UgZml4ZXMgbG9vayBmaW5lLAoKQWNrZWQt
-Ynk6IEphbiBMw7xiYmUgPGoubHVlYmJlQHBlbmd1dHJvbml4LmRlPgotLSAKUGVuZ3V0cm9uaXgg
-ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDov
-L3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWlt
-LCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGls
-ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
-IHwKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Claiming that all of PXA has CLK implemented, while only PXA3XX
+selects the relevant clock implementations causes lots of build
+failures for the other PXA architectures.
+
+Fix it by moving the HAVE_CLK select to the one PXA arch, that
+actually has it.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/Kconfig          | 1 -
+ arch/arm/mach-pxa/Kconfig | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 71d4336d2a70..1fc887ba5971 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -161,7 +161,6 @@ config ARCH_PXA
+ 	bool "Intel/Marvell PXA based"
+ 	select GENERIC_GPIO
+ 	select HAS_POWEROFF
+-	select HAVE_CLK
+ 
+ config ARCH_ROCKCHIP
+ 	bool "Rockchip RX3xxx"
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index 1c0894892b17..06ad1885a622 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -17,6 +17,7 @@ config ARCH_PXA2XX
+ config ARCH_PXA3XX
+        bool
+        select CPU_XSC3
++       select HAVE_CLK
+        select CLKDEV_LOOKUP
+        select COMMON_CLK
+ 
+-- 
+2.6.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
