@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
- by merlin.infradead.org with esmtps (Exim 4.85 #2 (Red Hat Linux))
- id 1aL0t0-0004IN-K7
- for barebox@lists.infradead.org; Mon, 18 Jan 2016 03:53:47 +0000
-Received: by mail-pa0-x244.google.com with SMTP id pv5so33075598pac.0
+Received: from mail-pf0-x243.google.com ([2607:f8b0:400e:c00::243])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1aL0sy-0004zr-Rb
+ for barebox@lists.infradead.org; Mon, 18 Jan 2016 03:53:49 +0000
+Received: by mail-pf0-x243.google.com with SMTP id n128so11156745pfn.3
  for <barebox@lists.infradead.org>; Sun, 17 Jan 2016 19:53:24 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Sun, 17 Jan 2016 19:52:40 -0800
-Message-Id: <1453089161-6697-19-git-send-email-andrew.smirnov@gmail.com>
+Date: Sun, 17 Jan 2016 19:52:41 -0800
+Message-Id: <1453089161-6697-20-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1453089161-6697-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1453089161-6697-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,562 +23,400 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/20] e1000: Expose i210's external flash as MTD
+Subject: [PATCH 20/20] e1000: Expose i210's iNVM as a cdev
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add code needed to access SPI-NOR flash attached to i210 as a regular
-MTD device.
+Add code needed to expose iNVM memory on the chip as a cdev. The
+driver also registers a dummy "invm" device that exposes "locked"
+property which is used to implement iNMV line locking feature.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/e1000/e1000.h  |  36 +++-
- drivers/net/e1000/eeprom.c | 398 ++++++++++++++++++++++++++++++++++++++++++++-
- drivers/net/e1000/main.c   |   7 +
- 3 files changed, 438 insertions(+), 3 deletions(-)
+ drivers/net/e1000/e1000.h  |  35 ++++++
+ drivers/net/e1000/eeprom.c | 303 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 338 insertions(+)
 
 diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-index cb6c914..dc38ce1 100644
+index dc38ce1..a47f808 100644
 --- a/drivers/net/e1000/e1000.h
 +++ b/drivers/net/e1000/e1000.h
-@@ -17,6 +17,7 @@
-  */
+@@ -1990,6 +1990,11 @@ struct e1000_eeprom_info {
+ #define ICH_FLASH_LINEAR_ADDR_MASK 0x00FFFFFF
 
- #include <io.h>
-+#include <linux/mtd/mtd.h>
+ #define E1000_SW_FW_SYNC 0x05B5C /* Software-Firmware Synchronization - RW */
++#define E1000_PCIEMISC	 0x05BB8
++#define E1000_PCIEMISC_DMA_IDLE		(1 << 9)
++#define E1000_PCIEMISC_RESERVED_MASK    (~(E1000_PCIEMISC_DMA_IDLE))
++#define E1000_PCIEMISC_RESERVED_PATTERN1 0x8A
++#define E1000_PCIEMISC_RESERVED_PATTERN2 (0x122 << 10)
 
- #ifndef _E1000_HW_H_
- #define _E1000_HW_H_
-@@ -453,8 +454,11 @@ struct e1000_tx_desc {
- #define E1000_EEWR     0x0102C  /* EEPROM Write Register - RW */
- #define E1000_I210_EEWR     0x12018  /* EEPROM Write Register - RW */
- #define E1000_FLSWCTL  0x01030  /* FLASH control register */
-+#define E1000_I210_FLSWCTL 0x12048  /* FLASH control register */
- #define E1000_FLSWDATA 0x01034  /* FLASH data register */
-+#define E1000_I210_FLSWDATA 0x1204C  /* FLASH data register */
- #define E1000_FLSWCNT  0x01038  /* FLASH Access Counter */
-+#define E1000_I210_FLSWCNT  0x12050  /* FLASH Access Counter */
- #define E1000_FLOP     0x0103C  /* FLASH Opcode Register */
- #define E1000_ERT      0x02008  /* Early Rx Threshold - RW */
- #define E1000_FCRTL    0x02160	/* Flow Control Receive Threshold Low - RW */
-@@ -697,7 +701,7 @@ struct e1000_hw;
+ /* SPI EEPROM Status Register */
+ #define EEPROM_STATUS_RDY_SPI  0x01
+@@ -2126,6 +2131,29 @@ struct e1000_eeprom_info {
+ #define E1000_FLSWCTL_DONE		(1 << 30)
+ #define E1000_FLSWCTL_GLDONE		(1 << 31)
 
- struct e1000_eeprom_info {
- 	e1000_eeprom_type type;
--	uint16_t word_size;
-+	size_t word_size;
- 	uint16_t opcode_bits;
- 	uint16_t address_bits;
- 	uint16_t delay_usec;
-@@ -811,6 +815,8 @@ struct e1000_eeprom_info {
- #define E1000_EECD_AUPDEN    0x00100000 /* Enable Autonomous FLASH update */
- #define E1000_EECD_SHADV     0x00200000 /* Shadow RAM Data Valid */
- #define E1000_EECD_SEC1VAL   0x00400000 /* Sector One Valid */
-+#define E1000_EECD_I210_FLUPD (1 << 23)
-+#define E1000_EECD_I210_FLUDONE (1 << 26)
- #define E1000_EECD_SECVAL_SHIFT      22
- #define E1000_STM_OPCODE     0xDB00
- #define E1000_HICR_FW_RESET  0xC0
-@@ -2097,6 +2103,28 @@ struct e1000_eeprom_info {
- #define E1000_CTRL_EXT_INT_TIMER_CLR  0x20000000 /* Clear Interrupt timers
- 							after IMS clear */
-
-+#define E1000_FLA			0x1201C
-+#define E1000_FLA_FL_SIZE_SHIFT		17
-+#define E1000_FLA_FL_SIZE_MASK		(0b111 << E1000_FLA_FL_SIZE_SHIFT) /* EEprom Size */
-+#define E1000_FLA_FL_SIZE_2MB		0b101
-+#define E1000_FLA_FL_SIZE_4MB		0b110
-+#define E1000_FLA_FL_SIZE_8MB		0b111
++
++#define E1000_INVM_TEST(n)		(0x122A0 + 4 * (n))
++#define E1000_INVM_DATA_(n)		(0x12120 + 4 * (n))
++#if 0
++#define E1000_INVM_DATA(n)		E1000_INVM_TEST(n)
++#else
++#define E1000_INVM_DATA(n)		E1000_INVM_DATA_(n)
++#endif
++
++#define E1000_INVM_LOCK(n)		(0x12220 + 4 * (n))
++#define E1000_INVM_LOCK_BIT		(1 << 0)
++
++#define E1000_INVM_PROTECT		0x12324
++#define E1000_INVM_PROTECT_CODE		(0xABACADA << 4)
++#define E1000_INVM_PROTECT_BUSY		(1 << 2)
++#define E1000_INVM_PROTECT_WRITE_ERROR	(1 << 1)
++#define E1000_INVM_PROTECT_ALLOW_WRITE	(1 << 0)
++
++#define E1000_INVM_DATA_MAX_N		63
++
++#define E1000_EEMNGCTL_CFG_DONE		(1 << 18)
 +
 +
-+#define E1000_FLSWCTL_ADDR(a)		((a) & 0x00FFFFFF)
-+#define E1000_FLSWCTL_CMD_READ		0b0000
-+#define E1000_FLSWCTL_CMD_WRITE		0b0001
-+#define E1000_FLSWCTL_CMD_ERASE_SECTOR	0b0010
-+#define E1000_FLSWCTL_CMD_ERASE_DEVICE	0b0011
-+#define E1000_FLSWCTL_CMD_(c)		((0b1111 & (c)) << 24)
-+#define E1000_FLSWCTL_CMD(c)	        E1000_FLSWCTL_CMD_(E1000_FLSWCTL_CMD_##c)
-+
-+#define E1000_FLSWCTL_CMD_ADDR_MASK	0x0FFFFFFF
-+
-+#define E1000_FLSWCTL_CMDV		(1 << 28)
-+#define E1000_FLSWCTL_FLBUSY		(1 << 29)
-+#define E1000_FLSWCTL_DONE		(1 << 30)
-+#define E1000_FLSWCTL_GLDONE		(1 << 31)
-
  struct e1000_hw {
  	struct eth_device edev;
-@@ -2112,6 +2140,7 @@ struct e1000_hw {
- 	e1000_media_type media_type;
+
+@@ -2141,6 +2169,13 @@ struct e1000_hw {
  	e1000_fc_type fc;
  	struct e1000_eeprom_info eeprom;
-+	struct mtd_info mtd;
+ 	struct mtd_info mtd;
++
++	struct {
++		struct cdev cdev;
++		struct device_d dev;
++		int line;
++	} invm;
++
  	uint32_t phy_id;
  	uint32_t phy_revision;
  	uint32_t original_fc;
-@@ -2150,6 +2179,9 @@ static inline uint32_t e1000_true_offset(struct e1000_hw *hw, uint32_t reg)
- 		unsigned int i;
-
- 		const struct e1000_fixup_table fixup_table[] = {
-+			{ E1000_FLSWCTL,  E1000_I210_FLSWCTL  },
-+			{ E1000_FLSWDATA, E1000_I210_FLSWDATA },
-+			{ E1000_FLSWCNT,  E1000_I210_FLSWCNT  },
- 			{ E1000_EEWR,     E1000_I210_EEWR     },
- 			{ E1000_PHY_CTRL, E1000_I210_PHY_CTRL },
- 		        { E1000_EEMNGCTL, E1000_I210_EEMNGCTL },
-@@ -2197,4 +2229,6 @@ static inline int e1000_poll_reg(struct e1000_hw *hw, uint32_t reg,
- #define E1000_POLL_REG(a, reg, mask, value, timeout)	\
- 	e1000_poll_reg((a), E1000_##reg, (mask), (value), (timeout))
-
-+int e1000_register_eeprom(struct e1000_hw *hw);
-+
- #endif	/* _E1000_HW_H_ */
 diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-index aca16f7..4ea7128 100644
+index 4ea7128..1f7d630 100644
 --- a/drivers/net/e1000/eeprom.c
 +++ b/drivers/net/e1000/eeprom.c
-@@ -2,6 +2,8 @@
- #include <init.h>
- #include <net.h>
- #include <malloc.h>
-+#include <linux/math64.h>
-+#include <linux/sizes.h>
+@@ -1132,12 +1132,315 @@ fail:
+ 	return ret;
+ }
 
- #include "e1000.h"
-
-@@ -407,9 +409,29 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
- 		break;
- 	case e1000_igb:
- 		if (eecd & E1000_EECD_I210_FLASH_DETECTED) {
--			eeprom->type = e1000_eeprom_flash;
--			eeprom->word_size = 2048;
-+			uint32_t fla;
 +
-+			fla  = E1000_READ_REG(hw, FLA);
-+			fla &= E1000_FLA_FL_SIZE_MASK;
-+			fla >>= E1000_FLA_FL_SIZE_SHIFT;
++static ssize_t e1000_invm_cdev_read(struct cdev *cdev, void *buf,
++				    size_t count, loff_t offset, unsigned long flags)
++{
++	uint8_t n, bnr;
++	uint32_t line;
++	size_t chunk, residue = count;
++	struct e1000_hw *hw = container_of(cdev, struct e1000_hw, invm.cdev);
 +
-+			switch (fla) {
-+			case E1000_FLA_FL_SIZE_8MB:
-+				eeprom->word_size = SZ_8M / 2;
-+				break;
-+			case E1000_FLA_FL_SIZE_4MB:
-+				eeprom->word_size = SZ_4M / 2;
-+				break;
-+			case E1000_FLA_FL_SIZE_2MB:
-+				eeprom->word_size = SZ_2M / 2;
-+				break;
-+			default:
-+				eeprom->word_size = 2048;
-+				dev_info(hw->dev, "Unprogrammed Flash detected, "
-+					 "limiting access to first 4KB\n");
++	n = offset / sizeof(line);
++	if (n > E1000_INVM_DATA_MAX_N)
++		return -EINVAL;
++
++	bnr = offset % sizeof(line);
++	if (bnr) {
++		/*
++		 * if bnr in not zero it means we have a non 4-byte
++		 * aligned start and need to do a partial read
++		 */
++		const uint8_t *bptr;
++
++		bptr  = (uint8_t *)&line + bnr;
++		chunk = min(bnr - sizeof(line), count);
++		line  = e1000_read_reg(hw, E1000_INVM_DATA(n));
++		line  = cpu_to_le32(line); /* to account for readl */
++		memcpy(buf, bptr, chunk);
++
++		goto start_adjusted;
++	}
++
++	do {
++		if (n > E1000_INVM_DATA_MAX_N)
++			return -EINVAL;
++
++		chunk = min(sizeof(line), residue);
++		line = e1000_read_reg(hw, E1000_INVM_DATA(n));
++		line = cpu_to_le32(line); /* to account for readl */
++
++		/*
++		 * by using memcpy in conjunction with min should get
++		 * dangling tail reads as well as aligned reads
++		 */
++		memcpy(buf, &line, chunk);
++
++	start_adjusted:
++		residue -= chunk;
++		buf += chunk;
++		n++;
++	} while (residue);
++
++	return count;
++}
++
++static int e1000_invm_program(struct e1000_hw *hw, u32 offset, u32 value,
++			      unsigned int delay)
++{
++	int retries = 400;
++	do {
++		if ((e1000_read_reg(hw, offset) & value) == value)
++			return E1000_SUCCESS;
++
++		e1000_write_reg(hw, offset, value);
++
++		if (delay) {
++			udelay(delay);
++		} else {
++			int ret;
++
++			if (E1000_READ_REG(hw, INVM_PROTECT) &
++			    E1000_INVM_PROTECT_WRITE_ERROR) {
++				dev_err(hw->dev, "Error while writing to %x\n", offset);
++				return -EIO;
 +			}
-
-+			eeprom->type = e1000_eeprom_flash;
- 			eeprom->acquire = e1000_acquire_eeprom_flash;
- 			eeprom->release = e1000_release_eeprom_flash;
- 		} else {
-@@ -686,6 +708,257 @@ static int32_t e1000_spi_eeprom_ready(struct e1000_hw *hw)
- 	return E1000_SUCCESS;
- }
-
-+static int e1000_flash_mode_wait_for_idle(struct e1000_hw *hw)
-+{
-+	/* Strictly speaking we need to poll FLSWCTL.DONE only if we
-+	 * are executing this code after a reset event, but it
-+	 * shouldn't hurt to do this everytime, besided we need to
-+	 * poll got FLSWCTL.GLDONE to make sure that back to back
-+	 * calls to that function work correctly, since we finish
-+	 * execution by polling only FLSWCTL.DONE */
 +
-+	const int ret = E1000_POLL_REG(hw, FLSWCTL,
-+				       E1000_FLSWCTL_DONE | E1000_FLSWCTL_GLDONE,
-+				       E1000_FLSWCTL_DONE | E1000_FLSWCTL_GLDONE,
-+				       SECOND);
-+	if (ret < 0)
-+		dev_err(hw->dev,
-+			"Timeout waiting for FLSWCTL.DONE to be set\n");
-+	return ret;
++			ret = E1000_POLL_REG(hw, INVM_PROTECT,
++					     E1000_INVM_PROTECT_BUSY,
++					     0,  SECOND);
++			if (ret < 0) {
++				dev_err(hw->dev,
++					"Timeout while waiting for INVM_PROTECT.BUSY\n");
++				return ret;
++			}
++		}
++	} while (retries--);
++
++	return -ETIMEDOUT;
 +}
 +
-+static int e1000_flash_mode_check_command_valid(struct e1000_hw *hw)
++static int e1000_invm_set_lock(struct param_d *param, void *priv)
 +{
-+	const uint32_t flswctl = E1000_READ_REG(hw, FLSWCTL);
-+	if (!(flswctl & E1000_FLSWCTL_CMDV)) {
-+		dev_err(hw->dev, "FLSWCTL.CMDV was cleared");
++	struct e1000_hw *hw = priv;
++
++	if (hw->invm.line > 31)
++		return -EINVAL;
++
++	return e1000_invm_program(hw,
++				  E1000_INVM_LOCK(hw->invm.line),
++				  E1000_INVM_LOCK_BIT,
++				  10);
++}
++
++static int e1000_invm_unlock(struct e1000_hw *hw)
++{
++	E1000_WRITE_REG(hw, INVM_PROTECT, E1000_INVM_PROTECT_CODE);
++	/*
++	   If we were successful at unlocking iNVM for programming we
++	   should see ALLOW_WRITE bit toggle to 1
++	 */
++	if (!(E1000_READ_REG(hw, INVM_PROTECT) &
++	      E1000_INVM_PROTECT_ALLOW_WRITE))
 +		return -EIO;
-+	}
-+
-+	return E1000_SUCCESS;
-+}
-+
-+#define E1000_FLASH_CMD(hw, cmd, offset)				\
-+	do {								\
-+		uint32_t ___flswctl = E1000_READ_REG(hw, FLSWCTL);	\
-+		___flswctl &= ~E1000_FLSWCTL_CMD_ADDR_MASK;		\
-+		___flswctl |= E1000_FLSWCTL_CMD(cmd) | E1000_FLSWCTL_ADDR(offset); \
-+		E1000_WRITE_REG(hw, FLSWCTL, ___flswctl);		\
-+	} while (0)
-+
-+static int e1000_flash_mode_read_chunk(struct e1000_hw *hw, loff_t offset,
-+				       size_t size, void *data)
-+{
-+	int ret;
-+	size_t chunk, residue = size;
-+	uint32_t flswdata;
-+
-+	DEBUGFUNC();
-+
-+	if (size > SZ_4K ||
-+	    E1000_FLSWCTL_ADDR(offset) != offset)
-+		return -EINVAL;
-+
-+	ret = e1000_flash_mode_wait_for_idle(hw);
-+	if (ret < 0)
-+		return ret;
-+
-+	E1000_WRITE_REG(hw, FLSWCNT, size);
-+	E1000_FLASH_CMD(hw, READ, offset);
-+
-+	do {
-+		ret = e1000_flash_mode_check_command_valid(hw);
-+		if (ret < 0)
-+			return -EIO;
-+
-+		chunk = min(sizeof(flswdata), residue);
-+
-+		ret = E1000_POLL_REG(hw, FLSWCTL,
-+				     E1000_FLSWCTL_DONE, E1000_FLSWCTL_DONE,
-+				     SECOND);
-+		if (ret < 0) {
-+			dev_err(hw->dev,
-+				"Timeout waiting for FLSWCTL.DONE to be set\n");
-+			return ret;
-+		}
-+
-+		flswdata = E1000_READ_REG(hw, FLSWDATA);
-+		/*
-+		 * Readl does le32_to_cpu, so we need to undo that
-+		 */
-+		flswdata = cpu_to_le32(flswdata);
-+		memcpy(data, &flswdata, chunk);
-+
-+		data += chunk;
-+		residue -= chunk;
-+	} while (residue);
-+
-+	return E1000_SUCCESS;
-+}
-+
-+static int e1000_flash_mode_write_chunk(struct e1000_hw *hw, loff_t offset,
-+					size_t size, const void *data)
-+{
-+	int ret;
-+	size_t chunk, residue = size;
-+	uint32_t flswdata;
-+
-+	if (size > 256 ||
-+	    E1000_FLSWCTL_ADDR(offset) != offset)
-+		return -EINVAL;
-+
-+	ret = e1000_flash_mode_wait_for_idle(hw);
-+	if (ret < 0)
-+		return ret;
-+
-+
-+	E1000_WRITE_REG(hw, FLSWCNT, size);
-+	E1000_FLASH_CMD(hw, WRITE, offset);
-+
-+	do {
-+		chunk = min(sizeof(flswdata), residue);
-+		memcpy(&flswdata, data, chunk);
-+		/*
-+		 * writel does cpu_to_le32, so we do the inverse in
-+		 * order to account for that
-+		 */
-+		flswdata = le32_to_cpu(flswdata);
-+		E1000_WRITE_REG(hw, FLSWDATA, flswdata);
-+
-+		ret = e1000_flash_mode_check_command_valid(hw);
-+		if (ret < 0)
-+			return -EIO;
-+
-+		ret = E1000_POLL_REG(hw, FLSWCTL,
-+				     E1000_FLSWCTL_DONE, E1000_FLSWCTL_DONE,
-+				     SECOND);
-+		if (ret < 0) {
-+			dev_err(hw->dev,
-+				"Timeout waiting for FLSWCTL.DONE to be set\n");
-+			return ret;
-+		}
-+
-+		data += chunk;
-+		residue -= chunk;
-+
-+	} while (residue);
-+
-+	return E1000_SUCCESS;
-+}
-+
-+
-+static int e1000_flash_mode_erase_chunk(struct e1000_hw *hw, loff_t offset,
-+					size_t size)
-+{
-+	int ret;
-+
-+	ret = e1000_flash_mode_wait_for_idle(hw);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!size && !offset)
-+		E1000_FLASH_CMD(hw, ERASE_DEVICE, 0);
 +	else
-+		E1000_FLASH_CMD(hw, ERASE_SECTOR, offset);
-+
-+	ret = e1000_flash_mode_check_command_valid(hw);
-+	if (ret < 0)
-+		return -EIO;
-+
-+	ret = E1000_POLL_REG(hw, FLSWCTL,
-+			     E1000_FLSWCTL_DONE | E1000_FLSWCTL_FLBUSY,
-+			     E1000_FLSWCTL_DONE,
-+			     SECOND);
-+	if (ret < 0) {
-+		dev_err(hw->dev,
-+			"Timeout waiting for FLSWCTL.DONE to be set\n");
-+		return ret;
-+	}
-+
-+	return E1000_SUCCESS;
++		return E1000_SUCCESS;
 +}
 +
-+enum {
-+	E1000_FLASH_MODE_OP_READ = 0,
-+	E1000_FLASH_MODE_OP_WRITE = 1,
-+	E1000_FLASH_MODE_OP_ERASE = 2,
-+};
++static void e1000_invm_lock(struct e1000_hw *hw)
++{
++	E1000_WRITE_REG(hw, INVM_PROTECT, 0);
++}
 +
-+
-+static int e1000_flash_mode_io(struct e1000_hw *hw, int op, size_t granularity,
-+			       loff_t offset, size_t size, void *data)
++static int e1000_invm_write_prepare(struct e1000_hw *hw)
 +{
 +	int ret;
-+	size_t residue = size;
-+
-+	do {
-+		const size_t chunk = min(granularity, residue);
-+
-+		switch (op) {
-+		case E1000_FLASH_MODE_OP_READ:
-+			ret = e1000_flash_mode_read_chunk(hw, offset,
-+							  chunk, data);
-+			break;
-+		case E1000_FLASH_MODE_OP_WRITE:
-+			ret = e1000_flash_mode_write_chunk(hw, offset,
-+							   chunk, data);
-+			break;
-+		case E1000_FLASH_MODE_OP_ERASE:
-+			ret = e1000_flash_mode_erase_chunk(hw, offset,
-+							   chunk);
-+			break;
-+		default:
-+			return -ENOTSUPP;
-+		}
-+
-+		if (ret < 0)
-+			return ret;
-+
-+		offset += chunk;
-+		residue -= chunk;
-+		data += chunk;
-+	} while (residue);
-+
-+	return E1000_SUCCESS;
-+}
-+
-+
-+static int e1000_flash_mode_read(struct e1000_hw *hw, loff_t offset,
-+				 size_t size, void *data)
-+{
-+	return e1000_flash_mode_io(hw,
-+				   E1000_FLASH_MODE_OP_READ, SZ_4K,
-+				   offset, size, data);
-+}
-+
-+static int e1000_flash_mode_write(struct e1000_hw *hw, loff_t offset,
-+				  size_t size, const void *data)
-+{
-+	int ret;
-+
-+	ret = e1000_flash_mode_io(hw,
-+				  E1000_FLASH_MODE_OP_WRITE, 256,
-+				  offset, size, (void *)data);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = E1000_POLL_REG(hw, FLSWCTL, E1000_FLSWCTL_FLBUSY,
-+			     0,  SECOND);
-+	if (ret < 0)
-+		dev_err(hw->dev, "Timout while waiting for FLSWCTL.FLBUSY\n");
-+
-+	return ret;
-+}
-+
-+static int e1000_flash_mode_erase(struct e1000_hw *hw, loff_t offset,
-+				  size_t size)
-+{
-+	return e1000_flash_mode_io(hw,
-+				   E1000_FLASH_MODE_OP_ERASE, SZ_4K,
-+				   offset, size, NULL);
-+}
-+
-+
- /******************************************************************************
-  * Reads a 16 bit word from the EEPROM.
-  *
-@@ -774,3 +1047,124 @@ int e1000_validate_eeprom_checksum(struct e1000_hw *hw)
-
- 	return -E1000_ERR_EEPROM;
- }
-+
-+static int e1000_mtd_read_or_write(bool read,
-+				   struct mtd_info *mtd, loff_t off, size_t len,
-+				   size_t *retlen, u_char *buf)
-+{
-+	int ret;
-+	struct e1000_hw *hw = container_of(mtd, struct e1000_hw, mtd);
-+
-+	DEBUGFUNC();
-+
-+	if (e1000_acquire_eeprom(hw) == E1000_SUCCESS) {
-+		if (read)
-+			ret = e1000_flash_mode_read(hw, off,
-+						    len, buf);
-+		else
-+			ret = e1000_flash_mode_write(hw, off,
-+						     len, buf);
-+		if (ret == E1000_SUCCESS)
-+			*retlen = len;
-+
-+		e1000_release_eeprom(hw);
-+	} else {
-+		ret = -E1000_ERR_EEPROM;
-+	}
-+
-+	return ret;
-+
-+}
-+
-+static int e1000_mtd_read(struct mtd_info *mtd, loff_t from, size_t len,
-+				 size_t *retlen, u_char *buf)
-+{
-+	return e1000_mtd_read_or_write(true,
-+				       mtd, from, len, retlen, buf);
-+}
-+
-+static int e1000_mtd_write(struct mtd_info *mtd, loff_t to, size_t len,
-+			   size_t *retlen, const u_char *buf)
-+{
-+	return e1000_mtd_read_or_write(false,
-+				       mtd, to, len, retlen, (u_char *)buf);
-+}
-+
-+static int e1000_mtd_erase(struct mtd_info *mtd, struct erase_info *instr)
-+{
-+	uint32_t rem;
-+	struct e1000_hw *hw = container_of(mtd, struct e1000_hw, mtd);
-+	int ret;
-+
-+	div_u64_rem(instr->len, mtd->erasesize, &rem);
-+	if (rem)
-+		return -EINVAL;
-+
-+	ret = e1000_acquire_eeprom(hw);
-+	if (ret != E1000_SUCCESS)
-+		goto fail;
++	/*
++	  This needs to be done accorging to the datasheet p. 541 and
++	  p. 79
++	*/
++	E1000_WRITE_REG(hw, PCIEMISC,
++			E1000_PCIEMISC_RESERVED_PATTERN1 |
++			E1000_PCIEMISC_DMA_IDLE          |
++			E1000_PCIEMISC_RESERVED_PATTERN2);
 +
 +	/*
-+	 * If mtd->size is 4096 it means we are dealing with
-+	 * unprogrammed flash and we don't really know its size to
-+	 * make an informed decision wheither to erase the whole chip or
-+	 * just a number of its sectors
++	  Needed for programming iNVM on devices with Flash with valid
++	  contents attached
 +	 */
-+	if (mtd->size > SZ_4K &&
-+	    instr->len == mtd->size)
-+		ret = e1000_flash_mode_erase(hw, 0, 0);
-+	else
-+		ret = e1000_flash_mode_erase(hw,
-+					     instr->addr, instr->len);
-+
-+	e1000_release_eeprom(hw);
-+
-+	if (ret < 0)
-+		goto fail;
-+
-+	instr->state = MTD_ERASE_DONE;
-+	mtd_erase_callback(instr);
-+
-+	return 0;
-+
-+fail:
-+	instr->state = MTD_ERASE_FAILED;
-+	return ret;
-+}
-+
-+int e1000_register_eeprom(struct e1000_hw *hw)
-+{
-+	int ret = E1000_SUCCESS;
-+	struct e1000_eeprom_info *eeprom = &hw->eeprom;
-+
-+	switch (eeprom->type) {
-+	case e1000_eeprom_flash:
-+		if (hw->mac_type != e1000_igb)
-+			break;
-+
-+		hw->mtd.parent = hw->dev;
-+		hw->mtd.read = e1000_mtd_read;
-+		hw->mtd.write = e1000_mtd_write;
-+		hw->mtd.erase = e1000_mtd_erase;
-+		hw->mtd.size = eeprom->word_size * 2;
-+		hw->mtd.writesize = 1;
-+		hw->mtd.subpage_sft = 0;
-+
-+		hw->mtd.eraseregions = xzalloc(sizeof(struct mtd_erase_region_info));
-+		hw->mtd.erasesize = SZ_4K;
-+		hw->mtd.eraseregions[0].erasesize = SZ_4K;
-+		hw->mtd.eraseregions[0].numblocks = hw->mtd.size / SZ_4K;
-+		hw->mtd.numeraseregions = 1;
-+
-+		hw->mtd.flags = MTD_CAP_NORFLASH;
-+		hw->mtd.type = MTD_NORFLASH;
-+
-+		ret = add_mtd_device(&hw->mtd, "e1000-nor",
-+				     DEVICE_ID_DYNAMIC);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return ret;
-+}
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 05d38ac..473d121 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -3588,6 +3588,13 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		dev_err(&pdev->dev, "EEPROM is invalid!\n");
- 		return -EINVAL;
- 	}
-+
-+	ret = e1000_register_eeprom(hw);
++	ret = E1000_POLL_REG(hw, EEMNGCTL,
++			     E1000_EEMNGCTL_CFG_DONE,
++			     E1000_EEMNGCTL_CFG_DONE, SECOND);
 +	if (ret < 0) {
-+		dev_err(&pdev->dev, "failed to register EEPROM devices!\n");
++		dev_err(hw->dev,
++			"Timeout while waiting for EEMNGCTL.CFG_DONE\n");
 +		return ret;
 +	}
 +
- 	if (e1000_validate_eeprom_checksum(hw))
- 		return -EINVAL;
++	udelay(15);
++
++	return E1000_SUCCESS;
++}
++
++static ssize_t e1000_invm_cdev_write(struct cdev *cdev, const void *buf,
++				     size_t count, loff_t offset, unsigned long flags)
++{
++	int ret;
++	uint8_t n, bnr;
++	uint32_t line;
++	size_t chunk, residue = count;
++	struct e1000_hw *hw = container_of(cdev, struct e1000_hw, invm.cdev);
++
++	ret = e1000_invm_write_prepare(hw);
++	if (ret < 0)
++		return ret;
++
++	ret = e1000_invm_unlock(hw);
++	if (ret < 0)
++		goto exit;
++
++	n = offset / sizeof(line);
++	if (n > E1000_INVM_DATA_MAX_N) {
++		ret = -EINVAL;
++		goto exit;
++	}
++
++	bnr = offset % sizeof(line);
++	if (bnr) {
++		uint8_t *bptr;
++		/*
++		 * if bnr in not zero it means we have a non 4-byte
++		 * aligned start and need to do a read-modify-write
++		 * sequence
++		 */
++
++		/* Read */
++		line = e1000_read_reg(hw, E1000_INVM_DATA(n));
++
++		/* Modify */
++		/*
++		 * We need to ensure that line is LE32 in order for
++		 * memcpy to copy byte from least significant to most
++		 * significant, since that's how i210 will write the
++		 * 32-bit word out to OTP
++		 */
++		line = cpu_to_le32(line);
++		bptr  = (uint8_t *)&line + bnr;
++		chunk = min(sizeof(line) - bnr, count);
++		memcpy(bptr, buf, chunk);
++		line = le32_to_cpu(line);
++
++		/* Jumping inside of the loop to take care of the
++		 * Write */
++		goto start_adjusted;
++	}
++
++	do {
++		if (n > E1000_INVM_DATA_MAX_N) {
++			ret = -EINVAL;
++			goto exit;
++		}
++
++		chunk = min(sizeof(line), residue);
++		if (chunk != sizeof(line)) {
++			/*
++			 * If chunk is smaller that sizeof(line), which
++			 * should be 4 bytes, we have a "dangling"
++			 * chunk and we should read the unchanged
++			 * portion of the 4-byte word from iNVM and do
++			 * a read-modify-write sequence
++			 */
++			line = e1000_read_reg(hw, E1000_INVM_DATA(n));
++		}
++
++		line = cpu_to_le32(line);
++		memcpy(&line, buf, chunk);
++		line = le32_to_cpu(line);
++
++	start_adjusted:
++		/*
++		 * iNVM is organized in 32 64-bit lines and each of
++		 * those lines can be locked to prevent any further
++		 * modification, so for every i-th 32-bit word we need
++		 * to check INVM_LINE[i/2] register to see if that word
++		 * can be modified
++		 */
++		if (e1000_read_reg(hw, E1000_INVM_LOCK(n / 2)) &
++		    E1000_INVM_LOCK_BIT) {
++			dev_err(hw->dev, "line %d is locked\n", n / 2);
++			ret = -EIO;
++			goto exit;
++		}
++
++		ret = e1000_invm_program(hw,
++					 E1000_INVM_DATA(n),
++					 line,
++					 0);
++		if (ret < 0)
++			goto exit;
++
++		residue -= chunk;
++		buf += chunk;
++		n++;
++	} while (residue);
++
++	ret = E1000_SUCCESS;
++exit:
++	e1000_invm_lock(hw);
++	return ret;
++}
++
++static struct file_operations e1000_invm_ops = {
++	.read	= e1000_invm_cdev_read,
++	.write	= e1000_invm_cdev_write,
++	.lseek	= dev_lseek_default,
++};
++
+ int e1000_register_eeprom(struct e1000_hw *hw)
+ {
+ 	int ret = E1000_SUCCESS;
++	u16 word;
++	struct param_d *p;
++
+ 	struct e1000_eeprom_info *eeprom = &hw->eeprom;
 
+ 	switch (eeprom->type) {
++	case e1000_eeprom_invm:
++		ret = e1000_read_eeprom(hw, 0x0A, 1, &word);
++		if (ret < 0)
++			return ret;
++
++		if (word & (1 << 15))
++			dev_warn(hw->dev, "iNVM lockout mechanism is active\n");
++
++		hw->invm.cdev.dev = hw->dev;
++		hw->invm.cdev.ops = &e1000_invm_ops;
++		hw->invm.cdev.priv = hw;
++		hw->invm.cdev.name = xasprintf("e1000-invm%d", hw->dev->id);
++		hw->invm.cdev.size = 32 * E1000_INVM_DATA_MAX_N;
++
++		ret = devfs_create(&hw->invm.cdev);
++		if (ret < 0)
++			break;
++
++		strcpy(hw->invm.dev.name, "invm");
++		hw->invm.dev.parent = hw->dev;
++		ret = register_device(&hw->invm.dev);
++		if (ret < 0) {
++			devfs_remove(&hw->invm.cdev);
++			break;
++		}
++
++		p = dev_add_param_int(&hw->invm.dev, "lock", e1000_invm_set_lock,
++				      NULL, &hw->invm.line, "%u", hw);
++		if (IS_ERR(p)) {
++			unregister_device(&hw->invm.dev);
++			devfs_remove(&hw->invm.cdev);
++			break;
++		}
++
++		break;
++
+ 	case e1000_eeprom_flash:
+ 		if (hw->mac_type != e1000_igb)
+ 			break;
 --
 2.5.0
 
