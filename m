@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aLRhk-0007py-Ad
+ id 1aLRhk-0007px-Ab
  for barebox@lists.infradead.org; Tue, 19 Jan 2016 08:31:57 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id D97DEA0039D
+ by root.phytec.de (Postfix) with ESMTP id D16E3A0030E
  for <barebox@lists.infradead.org>; Tue, 19 Jan 2016 09:31:41 +0100 (CET)
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Tue, 19 Jan 2016 09:30:54 +0100
-Message-Id: <1453192254-8266-2-git-send-email-t.remmet@phytec.de>
-In-Reply-To: <1453192254-8266-1-git-send-email-t.remmet@phytec.de>
-References: <1453192254-8266-1-git-send-email-t.remmet@phytec.de>
+Date: Tue, 19 Jan 2016 09:30:53 +0100
+Message-Id: <1453192254-8266-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,121 +22,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] arm: am33xx: Master Osc clock speed handling
+Subject: [PATCH 1/2] arm: am33xx: Move function to read from Master OSC
 To: barebox@lists.infradead.org
 
 From: Daniel Schultz <d.schultz@phytec.de>
 
-Setup the plls with Master Osc. clock speed from the SYSBOOT
-Configuration Pin.
+Move the function to read the Master OSC speed from
+the SYSBOOT Configuration Pin for reuse.
 
 Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- arch/arm/boards/afi-gf/lowlevel.c              |  2 +-
- arch/arm/boards/beaglebone/lowlevel.c          |  4 ++--
- arch/arm/boards/phytec-som-am335x/lowlevel.c   |  4 +---
- arch/arm/mach-omap/am33xx_clock.c              | 10 +++++++++-
- arch/arm/mach-omap/include/mach/am33xx-clock.h |  2 +-
- 5 files changed, 14 insertions(+), 8 deletions(-)
+ arch/arm/mach-omap/am33xx_clock.c              | 24 ++++++++++++++++++++++++
+ arch/arm/mach-omap/dmtimer.c                   | 19 ++-----------------
+ arch/arm/mach-omap/include/mach/am33xx-clock.h |  1 +
+ 3 files changed, 27 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm/boards/afi-gf/lowlevel.c b/arch/arm/boards/afi-gf/lowlevel.c
-index 4aaecb9..efe15ec 100644
---- a/arch/arm/boards/afi-gf/lowlevel.c
-+++ b/arch/arm/boards/afi-gf/lowlevel.c
-@@ -222,7 +222,7 @@ static noinline int gf_sram_init(void)
- 	while(__raw_readl(AM33XX_WDT_REG(WWPS)) != 0x0);
- 
- 	/* Setup the PLLs and the clocks for the peripherals */
--	am33xx_pll_init(MPUPLL_M_500, 24, DDRPLL_M_200);
-+	am33xx_pll_init(MPUPLL_M_500, DDRPLL_M_200);
- 
- 	board_config_ddr();
- 
-diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-index 05b3e5f..79d5985 100644
---- a/arch/arm/boards/beaglebone/lowlevel.c
-+++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -138,11 +138,11 @@ static noinline int beaglebone_sram_init(void)
- 
- 	/* Setup the PLLs and the clocks for the peripherals */
- 	if (is_beaglebone_black()) {
--		am33xx_pll_init(MPUPLL_M_500, 24, DDRPLL_M_400);
-+		am33xx_pll_init(MPUPLL_M_500, DDRPLL_M_400);
- 		am335x_sdram_init(0x18B, &ddr3_cmd_ctrl, &ddr3_regs,
- 				&ddr3_data);
- 	} else {
--		am33xx_pll_init(MPUPLL_M_500, 24, DDRPLL_M_266);
-+		am33xx_pll_init(MPUPLL_M_500, DDRPLL_M_266);
- 		am335x_sdram_init(0x18B, &ddr2_cmd_ctrl, &ddr2_regs,
- 				&ddr2_data);
- 	}
-diff --git a/arch/arm/boards/phytec-som-am335x/lowlevel.c b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-index 64c1c53..d7afbb6 100644
---- a/arch/arm/boards/phytec-som-am335x/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-am335x/lowlevel.c
-@@ -32,7 +32,6 @@
- 
- #include "ram-timings.h"
- 
--#define CLK_M_OSC_MHZ	25
- #define DDR_IOCTRL	0x18B
- 
- static const struct am33xx_cmd_control physom_cmd = {
-@@ -67,11 +66,10 @@ static noinline void physom_board_init(int sdram, void *fdt)
- 	writel(WDT_DISABLE_CODE1, AM33XX_WDT_REG(WSPR));
- 	while (readl(AM33XX_WDT_REG(WWPS)) != 0x0);
- 
--
- 	writel(WDT_DISABLE_CODE2, AM33XX_WDT_REG(WSPR));
- 	while (readl(AM33XX_WDT_REG(WWPS)) != 0x0);
- 
--	am33xx_pll_init(MPUPLL_M_600, CLK_M_OSC_MHZ, DDRPLL_M_400);
-+	am33xx_pll_init(MPUPLL_M_600, DDRPLL_M_400);
- 
- 	am335x_sdram_init(DDR_IOCTRL, &physom_cmd,
- 			&timing->regs,
 diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
-index 19aeb59..23666f2 100644
+index 6d8adde..19aeb59 100644
 --- a/arch/arm/mach-omap/am33xx_clock.c
 +++ b/arch/arm/mach-omap/am33xx_clock.c
-@@ -15,6 +15,7 @@
- #include <common.h>
- #include <asm/io.h>
- #include <mach/am33xx-clock.h>
-+#include <asm-generic/div64.h>
+@@ -318,3 +318,27 @@ void am33xx_pll_init(int mpupll_M, int osc, int ddrpll_M)
+ 	/* Enable the required peripherals */
+ 	am33xx_enable_per_clocks();
+ }
++
++u64 am33xx_get_osc_clock(void)
++{
++	u64 osc;
++	u32 sysboot;
++
++	sysboot = (readl(AM33XX_CTRL_STATUS) >> 22) & 3;
++	switch (sysboot) {
++	case 0:
++		osc = 19200000;
++		break;
++	case 1:
++		osc = 24000000;
++		break;
++	case 2:
++		osc = 25000000;
++		break;
++	case 3:
++		osc = 26000000;
++		break;
++	}
++
++	return osc;
++}
+diff --git a/arch/arm/mach-omap/dmtimer.c b/arch/arm/mach-omap/dmtimer.c
+index 56adda0..7fd4f4d 100644
+--- a/arch/arm/mach-omap/dmtimer.c
++++ b/arch/arm/mach-omap/dmtimer.c
+@@ -31,6 +31,7 @@
+ #include <init.h>
+ #include <io.h>
+ #include <mach/am33xx-silicon.h>
++#include <mach/am33xx-clock.h>
  
- #define PRCM_MOD_EN		0x2
- #define	PRCM_FORCE_WAKEUP	0x2
-@@ -304,8 +305,15 @@ void am33xx_enable_ddr_clocks(void)
- /*
-  * Configure the PLL/PRCM for necessary peripherals
-  */
--void am33xx_pll_init(int mpupll_M, int osc, int ddrpll_M)
-+void am33xx_pll_init(int mpupll_M, int ddrpll_M)
+ #include <stdio.h>
+ 
+@@ -82,24 +83,8 @@ static struct clocksource dmtimer_cs = {
+ static int dmtimer_init(void)
  {
-+	int osc;
-+	u64 tmp;
-+
-+	tmp = am33xx_get_osc_clock();
-+	do_div(tmp, 1000000);
-+	osc = tmp;
-+
- 	mpu_pll_config(mpupll_M, osc);
- 	core_pll_config(osc);
- 	per_pll_config(osc);
+ 	u64 clk_speed;
+-	int sysboot;
+-
+-	sysboot = (readl(AM33XX_CTRL_STATUS) >> 22) & 3;
+-	switch (sysboot) {
+-	case 0:
+-		clk_speed = 19200000;
+-		break;
+-	case 1:
+-		clk_speed = 24000000;
+-		break;
+-	case 2:
+-		clk_speed = 25000000;
+-		break;
+-	case 3:
+-		clk_speed = 26000000;
+-		break;
+-	}
+ 
++	clk_speed = am33xx_get_osc_clock();
+ 	dmtimer_cs.mult = clocksource_hz2mult(clk_speed, dmtimer_cs.shift);
+ 
+ 	/* Enable counter */
 diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-index a458ccd..95a147f 100644
+index 2d6a727..a458ccd 100644
 --- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
 +++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-@@ -183,7 +183,7 @@
+@@ -185,5 +185,6 @@
  
- #define CM_ALWON_GPMC_CLKCTRL           CM_PER_GPMC_CLKCTRL
- 
--void am33xx_pll_init(int mpupll_M, int osc, int ddrpll_M);
-+void am33xx_pll_init(int mpupll_M, int ddrpll_M);
+ void am33xx_pll_init(int mpupll_M, int osc, int ddrpll_M);
  void am33xx_enable_ddr_clocks(void);
- u64 am33xx_get_osc_clock(void);
++u64 am33xx_get_osc_clock(void);
  
+ #endif  /* endif _AM33XX_CLOCKS_H_ */
 -- 
 1.9.1
 
