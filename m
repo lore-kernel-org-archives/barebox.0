@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aLR6S-0005o6-BJ
- for barebox@lists.infradead.org; Tue, 19 Jan 2016 07:53:25 +0000
-Date: Tue, 19 Jan 2016 08:53:02 +0100
+ id 1aLR8e-0007ls-68
+ for barebox@lists.infradead.org; Tue, 19 Jan 2016 07:55:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160119075302.GI13058@pengutronix.de>
-References: <1453112360-25670-1-git-send-email-l.stach@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1453112360-25670-1-git-send-email-l.stach@pengutronix.de>
+Date: Tue, 19 Jan 2016 08:55:17 +0100
+Message-Id: <1453190117-27933-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,28 +14,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: PXA: move HAVE_CLK select
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] bootm: Add option to force booting signed images
+To: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jan 18, 2016 at 11:19:20AM +0100, Lucas Stach wrote:
-> Claiming that all of PXA has CLK implemented, while only PXA3XX
-> selects the relevant clock implementations causes lots of build
-> failures for the other PXA architectures.
+With CONFIG_BOOTM_FORCE_SIGNED_IMAGES the bootm code will refuse to boot
+unsigned images. Since currently FIT is the only image type which
+supports signing this means we with this option we enforce using FIT
+images. All additionally passed in device trees and initrds will be
+ignored so that only the ones from the FIT image can be used.
 
-I can't see any build failures here. which config/branch are you using?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/bootm.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-Sascha
-
+diff --git a/common/bootm.c b/common/bootm.c
+index d8acff8..3efc17e 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -68,8 +68,10 @@ enum bootm_verify bootm_get_verify_mode(void)
+ }
+ 
+ static const char * const bootm_verify_names[] = {
++#ifndef CONFIG_BOOTM_FORCE_SIGNED_IMAGES
+ 	[BOOTM_VERIFY_NONE] = "none",
+ 	[BOOTM_VERIFY_HASH] = "hash",
++#endif
+ 	[BOOTM_VERIFY_SIGNATURE] = "signature",
+ };
+ 
+@@ -526,6 +528,23 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		goto err_out;
+ 	}
+ 
++	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
++		data->verify = BOOTM_VERIFY_SIGNATURE;
++
++		/*
++		 * When we only allow booting signed images make sure everything
++		 * we boot is in the OS image and not given separately.
++		 */
++		data->oftree = NULL;
++		data->oftree_file = NULL;
++		data->initrd_file = NULL;
++		if (os_type != filetype_oftree) {
++			printf("Signed boot and image is no FIT image, aborting\n");
++			ret = -EINVAL;
++			goto err_out;
++		}
++	}
++
+ 	if (IS_ENABLED(CONFIG_FITIMAGE) && os_type == filetype_oftree) {
+ 		struct fit_handle *fit;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.7.0.rc3
+
 
 _______________________________________________
 barebox mailing list
