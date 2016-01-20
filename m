@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from arcturus.kleine-koenig.org ([78.47.169.190])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aLndb-00085U-O4
- for barebox@lists.infradead.org; Wed, 20 Jan 2016 07:57:08 +0000
-Date: Wed, 20 Jan 2016 08:56:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160120075645.GM13058@pengutronix.de>
-References: <1453276010-4669-1-git-send-email-uwe@kleine-koenig.org>
+ id 1aLnvJ-0008Tg-E4
+ for barebox@lists.infradead.org; Wed, 20 Jan 2016 08:15:26 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Date: Wed, 20 Jan 2016 09:15:01 +0100
+Message-Id: <1453277701-10367-1-git-send-email-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1453276010-4669-1-git-send-email-uwe@kleine-koenig.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,90 +15,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] kwboot: do a filetype check before sending the image
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] kwboot: do a filetype check before sending the image
+To: barebox@lists.infradead.org
 
-On Wed, Jan 20, 2016 at 08:46:50AM +0100, Uwe Kleine-K=F6nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <uwe@kleine-koenig.org>
-> ---
->  scripts/kwboot.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
-> =
-
-> diff --git a/scripts/kwboot.c b/scripts/kwboot.c
-> index 46328d8ed006..61f807d163f7 100644
-> --- a/scripts/kwboot.c
-> +++ b/scripts/kwboot.c
-> @@ -546,6 +546,49 @@ out:
->  	return rc;
->  }
->  =
-
-> +static void
-> +kwboot_check_image(unsigned char *img, size_t size)
-> +{
-> +	size_t i;
-> +	size_t header_size, image_size;
-> +	unsigned char csum =3D 0;
-> +
-> +	switch (img[0x0]) {
-> +		case 0x5a: /* SPI/NOR */
-> +		case 0x69: /* UART0 */
-> +		case 0x78: /* SATA */
-> +		case 0x8b: /* NAND */
-> +		case 0x9c: /* PCIe */
-> +			break;
-> +		default:
-> +			printf("Unknown boot source: 0x%hhx\n", img[0x0]);
-> +	}
-> +
-> +	if (img[0x8] !=3D 1)
-> +		printf("Unknown version: 0x%hhx\n", img[0x8]);
-> +
-> +	image_size =3D img[0x4] | (img[0x5] << 8) |
-> +		(img[0x6] << 16) | (img[0x7] << 24);
-> +
-> +	header_size =3D (img[0x9] << 16) | img[0xa] | (img[0xb] << 8);
-> +
-> +	if (header_size + image_size !=3D size) {
-> +		printf("Size mismatch (%zu + %zu !=3D %zu)\n",
-> +		       header_size, image_size, size);
-> +	} else {
-> +		for (i =3D 0; i < header_size; ++i)
-> +			csum +=3D img[i];
-> +
-> +		csum -=3D img[0x1f];
-> +
-> +		if (csum !=3D img[0x1f])
-> +			printf("Checksum mismatch: header: 0x%02hhx, calculated: 0x%02hhx\n",
-> +			       img[0x1f], csum);
-> +	}
-
-Shouldn't these failures have any consequences like exiting the program
-with an error?
-
-> +}
-> +
-> +
-> +
-
-Please drop the multiple blank lines.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGltYWdlcyB0aGF0IGNhbiBiZSBzZW50IHRvIGEgTWFydmVsbCBDUFUgaGF2ZSBhIGZpeGVk
+IGZvcm1hdC4gRG8Kc29tZSBzYW5pdHkgY2hlY2tzIGJlZm9yZSBhY3R1YWxseSBzZW5kaW5nIGFu
+IGltYWdlIGZvciBlYXNpZXIgZGlhZ25vc2lzCm9mIGJyb2tlbiBmaWxlcy4KClNpZ25lZC1vZmYt
+Ynk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1d2VAa2xlaW5lLWtvZW5pZy5vcmc+Ci0tLQpDaGFuZ2Vz
+IHNpbmNlIChpbXBsaWNpdCkgdjEsIHNlbnQgd2l0aApNZXNzYWdlLUlkOiAxNDUzMjc2MDEwLTQ2
+NjktMS1naXQtc2VuZC1lbWFpbC11d2VAa2xlaW5lLWtvZW5pZy5vcmc6CgogLSB3aGl0ZXNwYWNl
+IGZpeAogLSBlcnJvciBvdXQgaWYgYSBwcm9ibGVtIGlzIGRldGVjdGVkCiAtIGFkZCBhIGNvbW1p
+dCBsb2cKCiBzY3JpcHRzL2t3Ym9vdC5jIHwgNTUgKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDU1IGluc2VydGlv
+bnMoKykKCmRpZmYgLS1naXQgYS9zY3JpcHRzL2t3Ym9vdC5jIGIvc2NyaXB0cy9rd2Jvb3QuYwpp
+bmRleCA0NjMyOGQ4ZWQwMDYuLjA2ZTU4ZjZhN2UzYiAxMDA2NDQKLS0tIGEvc2NyaXB0cy9rd2Jv
+b3QuYworKysgYi9zY3JpcHRzL2t3Ym9vdC5jCkBAIC01NDYsNiArNTQ2LDU5IEBAIG91dDoKIAly
+ZXR1cm4gcmM7CiB9CiAKK3N0YXRpYyBpbnQKK2t3Ym9vdF9jaGVja19pbWFnZSh1bnNpZ25lZCBj
+aGFyICppbWcsIHNpemVfdCBzaXplKQoreworCXNpemVfdCBpOworCXNpemVfdCBoZWFkZXJfc2l6
+ZSwgaW1hZ2Vfc2l6ZTsKKwl1bnNpZ25lZCBjaGFyIGNzdW0gPSAwOworCisJc3dpdGNoIChpbWdb
+MHgwXSkgeworCQljYXNlIDB4NWE6IC8qIFNQSS9OT1IgKi8KKwkJY2FzZSAweDY5OiAvKiBVQVJU
+MCAqLworCQljYXNlIDB4Nzg6IC8qIFNBVEEgKi8KKwkJY2FzZSAweDhiOiAvKiBOQU5EICovCisJ
+CWNhc2UgMHg5YzogLyogUENJZSAqLworCQkJYnJlYWs7CisJCWRlZmF1bHQ6CisJCQlwcmludGYo
+IlVua25vd24gYm9vdCBzb3VyY2U6IDB4JWhoeFxuIiwgaW1nWzB4MF0pOworCQkJZ290byBlcnI7
+CisJfQorCisJaWYgKGltZ1sweDhdICE9IDEpIHsKKwkJcHJpbnRmKCJVbmtub3duIHZlcnNpb246
+IDB4JWhoeFxuIiwgaW1nWzB4OF0pOworCQlnb3RvIGVycjsKKwl9CisKKwlpbWFnZV9zaXplID0g
+aW1nWzB4NF0gfCAoaW1nWzB4NV0gPDwgOCkgfAorCQkoaW1nWzB4Nl0gPDwgMTYpIHwgKGltZ1sw
+eDddIDw8IDI0KTsKKworCWhlYWRlcl9zaXplID0gKGltZ1sweDldIDw8IDE2KSB8IGltZ1sweGFd
+IHwgKGltZ1sweGJdIDw8IDgpOworCisJaWYgKGhlYWRlcl9zaXplICsgaW1hZ2Vfc2l6ZSAhPSBz
+aXplKSB7CisJCXByaW50ZigiU2l6ZSBtaXNtYXRjaCAoJXp1ICsgJXp1ICE9ICV6dSlcbiIsCisJ
+CSAgICAgICBoZWFkZXJfc2l6ZSwgaW1hZ2Vfc2l6ZSwgc2l6ZSk7CisJCWdvdG8gZXJyOworCX0g
+ZWxzZSB7CisJCWZvciAoaSA9IDA7IGkgPCBoZWFkZXJfc2l6ZTsgKytpKQorCQkJY3N1bSArPSBp
+bWdbaV07CisKKwkJY3N1bSAtPSBpbWdbMHgxZl07CisKKwkJaWYgKGNzdW0gIT0gaW1nWzB4MWZd
+KSB7CisJCQlwcmludGYoIkNoZWNrc3VtIG1pc21hdGNoOiBoZWFkZXI6IDB4JTAyaGh4LCBjYWxj
+dWxhdGVkOiAweCUwMmhoeFxuIiwKKwkJCSAgICAgICBpbWdbMHgxZl0sIGNzdW0pOworCQkJZ290
+byBlcnI7CisJCX0KKwl9CisKKwlyZXR1cm4gMDsKKworZXJyOgorCWVycm5vID0gRUlOVkFMOwor
+CXJldHVybiAxOworfQorCiBzdGF0aWMgdm9pZCAqCiBrd2Jvb3RfbW1hcF9pbWFnZShjb25zdCBj
+aGFyICpwYXRoLCBzaXplX3QgKnNpemUsIGludCBwcm90KQogewpAQCAtNTc0LDYgKzYyNyw4IEBA
+IGt3Ym9vdF9tbWFwX2ltYWdlKGNvbnN0IGNoYXIgKnBhdGgsIHNpemVfdCAqc2l6ZSwgaW50IHBy
+b3QpCiAKIAlyYyA9IDA7CiAJKnNpemUgPSBzdC5zdF9zaXplOworCisJcmMgPSBrd2Jvb3RfY2hl
+Y2tfaW1hZ2UoaW1nLCAqc2l6ZSk7CiBvdXQ6CiAJaWYgKHJjICYmIGltZykgewogCQltdW5tYXAo
+aW1nLCBzdC5zdF9zaXplKTsKLS0gCjIuNy4wLnJjMwoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
