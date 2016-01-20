@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from arcturus.kleine-koenig.org ([2a01:4f8:d12:1f44::2])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aLnUb-0002bh-1h
- for barebox@lists.infradead.org; Wed, 20 Jan 2016 07:47:50 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-Date: Wed, 20 Jan 2016 08:47:22 +0100
-Message-Id: <1453276042-4721-1-git-send-email-uwe@kleine-koenig.org>
+ id 1aLndb-00085U-O4
+ for barebox@lists.infradead.org; Wed, 20 Jan 2016 07:57:08 +0000
+Date: Wed, 20 Jan 2016 08:56:45 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160120075645.GM13058@pengutronix.de>
+References: <1453276010-4669-1-git-send-email-uwe@kleine-koenig.org>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1453276010-4669-1-git-send-email-uwe@kleine-koenig.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,129 +18,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Add initial support for Netgear ReadyNAS 104
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] kwboot: do a filetype check before sending the image
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Cc: barebox@lists.infradead.org
 
-Q3VycmVudGx5IG9ubHkgc2Vjb25kIHN0YWdlIGJvb3RpbmcgZnJvbSB0aGUgdmVuZG9yIFUtQm9v
-dCBpcyB0ZXN0ZWQuIEkKZG9uJ3Qgd2FudCB0byBmbGFzaCBiYXJlYm94IGludG8gTkFORCB5ZXQg
-YmVjYXVzZSBVQVJULWJvb3RpbmcgZm9yCnJlY292ZXJ5IGRvZXNuJ3Qgd29yayBmb3IgbWUuCgpX
-b3JraW5nIHNvIGZhciBhcmU6CgogLSBVQVJUCiAtIG5ldHdvcmtpbmcKIC0gbmFuZCBmbGFzaAoK
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHV3ZUBrbGVpbmUta29lbmlnLm9yZz4K
-LS0tCiBhcmNoL2FybS9ib2FyZHMvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgfCAgMSArCiBh
-cmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjEwNC9NYWtlZmlsZSAgICAgfCAgMiArKwogYXJjaC9h
-cm0vYm9hcmRzL25ldGdlYXItcm4xMDQvYm9hcmQuYyAgICAgIHwgIDEgKwogYXJjaC9hcm0vYm9h
-cmRzL25ldGdlYXItcm4xMDQva3diaW1hZ2UuY2ZnIHwgIDcgKysrKysrKwogYXJjaC9hcm0vYm9h
-cmRzL25ldGdlYXItcm4xMDQvbG93bGV2ZWwuYyAgIHwgMjIgKysrKysrKysrKysrKysrKysrKysr
-KwogYXJjaC9hcm0vY29uZmlncy9tdmVidV9kZWZjb25maWcgICAgICAgICAgIHwgIDEgKwogYXJj
-aC9hcm0vZHRzL01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgIHwgIDEgKwogYXJjaC9hcm0v
-ZHRzL2FybWFkYS0zNzAtcm4xMDQtYmIuZHRzICAgICAgIHwgMTEgKysrKysrKysrKysKIGFyY2gv
-YXJtL21hY2gtbXZlYnUvS2NvbmZpZyAgICAgICAgICAgICAgICB8ICA0ICsrKysKIGltYWdlcy9N
-YWtlZmlsZS5tdmVidSAgICAgICAgICAgICAgICAgICAgICB8IDExICsrKysrKysrKysrCiAxMCBm
-aWxlcyBjaGFuZ2VkLCA2MSBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9h
-cm0vYm9hcmRzL25ldGdlYXItcm4xMDQvTWFrZWZpbGUKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNo
-L2FybS9ib2FyZHMvbmV0Z2Vhci1ybjEwNC9ib2FyZC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
-aC9hcm0vYm9hcmRzL25ldGdlYXItcm4xMDQva3diaW1hZ2UuY2ZnCiBjcmVhdGUgbW9kZSAxMDA2
-NDQgYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4xMDQvbG93bGV2ZWwuYwogY3JlYXRlIG1vZGUg
-MTAwNjQ0IGFyY2gvYXJtL2R0cy9hcm1hZGEtMzcwLXJuMTA0LWJiLmR0cwoKZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSBiL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQppbmRl
-eCAxMDI5ZThmNDZmM2EuLjVhNzU1Yzk2MzYwYiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRz
-L01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQpAQCAtNzAsNiArNzAsNyBA
-QCBvYmotJChDT05GSUdfTUFDSF9NWDIzRVZLKQkJCSs9IGZyZWVzY2FsZS1teDIzLWV2ay8KIG9i
-ai0kKENPTkZJR19NQUNIX01YMjhFVkspCQkJKz0gZnJlZXNjYWxlLW14MjgtZXZrLwogb2JqLSQo
-Q09ORklHX01BQ0hfTVgzMU1PQk9BUkQpCQkJKz0gbXgzMW1vYm9hcmQvCiBvYmotJChDT05GSUdf
-TUFDSF9ORVNPKQkJCQkrPSBndWYtbmVzby8KK29iai0kKENPTkZJR19NQUNIX05FVEdFQVJfUk4x
-MDQpCQkrPSBuZXRnZWFyLXJuMTA0Lwogb2JqLSQoQ09ORklHX01BQ0hfTk9NQURJS184ODE1TkhL
-KQkJKz0gbmhrODgxNS8KIG9iai0kKENPTkZJR19NQUNIX05WSURJQV9CRUFWRVIpCQkrPSBudmlk
-aWEtYmVhdmVyLwogb2JqLSQoQ09ORklHX01BQ0hfTlZJRElBX0pFVFNPTikJCSs9IG52aWRpYS1q
-ZXRzb24tdGsxLwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4xMDQvTWFr
-ZWZpbGUgYi9hcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjEwNC9NYWtlZmlsZQpuZXcgZmlsZSBt
-b2RlIDEwMDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjAxYzdhMjU5ZTlhNQotLS0gL2Rldi9udWxs
-CisrKyBiL2FyY2gvYXJtL2JvYXJkcy9uZXRnZWFyLXJuMTA0L01ha2VmaWxlCkBAIC0wLDAgKzEs
-MiBAQAorb2JqLXkgKz0gYm9hcmQubworbHdsLXkgKz0gbG93bGV2ZWwubwpkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4xMDQvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9u
-ZXRnZWFyLXJuMTA0L2JvYXJkLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAw
-MDAwLi40MGE4YzE3OGYxMGQKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9ib2FyZHMvbmV0
-Z2Vhci1ybjEwNC9ib2FyZC5jCkBAIC0wLDAgKzEgQEAKKy8qIGVtcHR5ICovCmRpZmYgLS1naXQg
-YS9hcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjEwNC9rd2JpbWFnZS5jZmcgYi9hcmNoL2FybS9i
-b2FyZHMvbmV0Z2Vhci1ybjEwNC9rd2JpbWFnZS5jZmcKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5k
-ZXggMDAwMDAwMDAwMDAwLi44M2E0MTQ5MDUzZDAKLS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL2Fy
-bS9ib2FyZHMvbmV0Z2Vhci1ybjEwNC9rd2JpbWFnZS5jZmcKQEAgLTAsMCArMSw3IEBACitWRVJT
-SU9OIDEKK0JPT1RfRlJPTSBuYW5kCitERVNUQUREUiAwMDYwMDAwMAorRVhFQ0FERFIgMDA2YTAw
-MDAKK05BTkRfQkxLU1ogMDAwMjAwMDAKK05BTkRfQkFEQkxLX0xPQ0FUSU9OIDAxCitCSU5BUlkg
-YmluYXJ5LjAgMDAwMDAwNWIgMDAwMDAwNjgKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9u
-ZXRnZWFyLXJuMTA0L2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvbmV0Z2Vhci1ybjEwNC9s
-b3dsZXZlbC5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uZjBkNmRm
-MGRhNjQ1Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRzL25ldGdlYXItcm4xMDQv
-bG93bGV2ZWwuYwpAQCAtMCwwICsxLDIyIEBACisvKgorICogQ29weXJpZ2h0IChDKSAyMDE0ICBV
-d2UgS2xlaW5lLUtvZW5pZyA8dXdlQGtsZWluZS1rb2VuaWcub3JnPgorICovCisKKyNpbmNsdWRl
-IDxjb21tb24uaD4KKyNpbmNsdWRlIDxhc20vYmFyZWJveC1hcm0uaD4KKyNpbmNsdWRlIDxhc20v
-YmFyZWJveC1hcm0taGVhZC5oPgorI2luY2x1ZGUgPG1hY2gvbG93bGV2ZWwuaD4KKworZXh0ZXJu
-IGNoYXIgX19kdGJfYXJtYWRhXzM3MF9ybjEwNF9iYl9zdGFydFtdOworCitFTlRSWV9GVU5DVElP
-TihzdGFydF9uZXRnZWFyX3JuMTA0LCByMCwgcjEsIHIyKQoreworCXZvaWQgKmZkdDsKKworCWFy
-bV9jcHVfbG93bGV2ZWxfaW5pdCgpOworCisJZmR0ID0gX19kdGJfYXJtYWRhXzM3MF9ybjEwNF9i
-Yl9zdGFydCAtCisJCWdldF9ydW50aW1lX29mZnNldCgpOworCisJbXZlYnVfYmFyZWJveF9lbnRy
-eShmZHQpOworfQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9tdmVidV9kZWZjb25maWcg
-Yi9hcmNoL2FybS9jb25maWdzL212ZWJ1X2RlZmNvbmZpZwppbmRleCA2ZDFiMDIxNzY4ZGYuLjM5
-MzcyZmQ5M2I1ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY29uZmlncy9tdmVidV9kZWZjb25maWcK
-KysrIGIvYXJjaC9hcm0vY29uZmlncy9tdmVidV9kZWZjb25maWcKQEAgLTEsNSArMSw2IEBACiBD
-T05GSUdfQVJDSF9NVkVCVT15CiBDT05GSUdfTUFDSF9HTE9CQUxTQ0FMRV9NSVJBQk9YPXkKK0NP
-TkZJR19NQUNIX05FVEdFQVJfUk4xMDQ9eQogQ09ORklHX01BQ0hfTEVOT1ZPX0lYNF8zMDBEPXkK
-IENPTkZJR19NQUNIX01BUlZFTExfQVJNQURBX1hQX0dQPXkKIENPTkZJR19NQUNIX1BMQVRIT01F
-X09QRU5CTE9DS1NfQVgzPXkKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9NYWtlZmlsZSBiL2Fy
-Y2gvYXJtL2R0cy9NYWtlZmlsZQppbmRleCAyZGE5MzBlYjkxMDguLmQ4NWMyMzc2OGUyMiAxMDA2
-NDQKLS0tIGEvYXJjaC9hcm0vZHRzL01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL2R0cy9NYWtlZmls
-ZQpAQCAtMjgsNiArMjgsNyBAQCBwYmwtZHRiLSQoQ09ORklHX01BQ0hfR1VGX1ZJTkNFTEwpICs9
-IGlteDUzLWd1Zi12aW5jZWxsLmR0Yi5vIGlteDUzLWd1Zi12aW5jZWxsLQogcGJsLWR0Yi0kKENP
-TkZJR19NQUNIX0dXX1ZFTlRBTkEpICs9IGlteDZxLWd3NTR4eC5kdGIubwogcGJsLWR0Yi0kKENP
-TkZJR19NQUNIX0xFTk9WT19JWDRfMzAwRCkgKz0gYXJtYWRhLXhwLWxlbm92by1peDQtMzAwZC1i
-Yi5kdGIubwogcGJsLWR0Yi0kKENPTkZJR19NQUNIX01BUlZFTExfQVJNQURBX1hQX0dQKSArPSBh
-cm1hZGEteHAtZ3AtYmIuZHRiLm8KK3BibC1kdGItJChDT05GSUdfTUFDSF9ORVRHRUFSX1JOMTA0
-KSArPSBhcm1hZGEtMzcwLXJuMTA0LWJiLmR0Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfTklU
-Uk9HRU42WCkgKz0gaW14NnEtbml0cm9nZW42eC5kdGIubyBpbXg2ZGwtbml0cm9nZW42eC5kdGIu
-bwogcGJsLWR0Yi0kKENPTkZJR19NQUNIX05WSURJQV9CRUFWRVIpICs9IHRlZ3JhMzAtYmVhdmVy
-LmR0Yi5vCiBwYmwtZHRiLSQoQ09ORklHX01BQ0hfTlZJRElBX0pFVFNPTikgKz0gdGVncmExMjQt
-amV0c29uLXRrMS5kdGIubwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2FybWFkYS0zNzAtcm4x
-MDQtYmIuZHRzIGIvYXJjaC9hcm0vZHRzL2FybWFkYS0zNzAtcm4xMDQtYmIuZHRzCm5ldyBmaWxl
-IG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMDAwMC4uMzJmOTYxZTUyOTJlCi0tLSAvZGV2L251
-bGwKKysrIGIvYXJjaC9hcm0vZHRzL2FybWFkYS0zNzAtcm4xMDQtYmIuZHRzCkBAIC0wLDAgKzEs
-MTEgQEAKKy8qCisgKiBCYXJlYm94IHNwZWNpZmljIERUIG92ZXJsYXkgZm9yIE5ldGdlYXIgUmVh
-ZHlOQVMgMTA0CisgKi8KKworI2luY2x1ZGUgImFybS9hcm1hZGEtMzcwLW5ldGdlYXItcm4xMDQu
-ZHRzIgorCisvIHsKKwljaG9zZW4geworCQlzdGRvdXQtcGF0aCA9ICIvc29jL2ludGVybmFsLXJl
-Z3Mvc2VyaWFsQDEyMDAwIjsKKwl9OworfTsKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXZl
-YnUvS2NvbmZpZyBiL2FyY2gvYXJtL21hY2gtbXZlYnUvS2NvbmZpZwppbmRleCA1ZTk2ZjE2ZThj
-ZjQuLjc5ZmNjOGQzYWMzNiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1tdmVidS9LY29uZmln
-CisrKyBiL2FyY2gvYXJtL21hY2gtbXZlYnUvS2NvbmZpZwpAQCAtMzcsNiArMzcsMTAgQEAgY29u
-ZmlnIE1BQ0hfR0xPQkFMU0NBTEVfTUlSQUJPWAogCWJvb2wgIkdsb2JhbHNjYWxlIE1pcmFib3gi
-CiAJc2VsZWN0IEFSQ0hfQVJNQURBXzM3MAogCitjb25maWcgTUFDSF9ORVRHRUFSX1JOMTA0CisJ
-Ym9vbCAiTmV0Z2VhciBSZWFkeU5BUyAxMDQiCisJc2VsZWN0IEFSQ0hfQVJNQURBXzM3MAorCiAj
-CiAjIEFybWFkYSBYUCBTb0MgYm9hcmRzCiAjCmRpZmYgLS1naXQgYS9pbWFnZXMvTWFrZWZpbGUu
-bXZlYnUgYi9pbWFnZXMvTWFrZWZpbGUubXZlYnUKaW5kZXggMDMyNWY5OTYxNTk0Li4xOTVmNDhk
-NDcwNzMgMTAwNjQ0Ci0tLSBhL2ltYWdlcy9NYWtlZmlsZS5tdmVidQorKysgYi9pbWFnZXMvTWFr
-ZWZpbGUubXZlYnUKQEAgLTIzLDYgKzIzLDE3IEBAIGltYWdlLSQoQ09ORklHX01BQ0hfR0xPQkFM
-U0NBTEVfTUlSQUJPWCkgKz0gYmFyZWJveC1nbG9iYWxzY2FsZS1taXJhYm94LmltZwogaW1hZ2Ut
-JChDT05GSUdfTUFDSF9HTE9CQUxTQ0FMRV9NSVJBQk9YKSArPSBiYXJlYm94LWdsb2JhbHNjYWxl
-LW1pcmFib3gtdWFydC5pbWcKIGltYWdlLSQoQ09ORklHX01BQ0hfR0xPQkFMU0NBTEVfTUlSQUJP
-WCkgKz0gYmFyZWJveC1nbG9iYWxzY2FsZS1taXJhYm94LTJuZC5pbWcKIAorTkVUR0VBUl9STjEw
-NF9LV0JPUFRTID0gJHtLV0JPUFRTfSAtaSAkKGJvYXJkKS9uZXRnZWFyLXJuMTA0L2t3YmltYWdl
-LmNmZworT1BUU19zdGFydF9uZXRnZWFyX3JuMTA0LnBibHgua3diaW1nID0gJChORVRHRUFSX1JO
-MTA0X0tXQk9QVFMpCitPUFRTX3N0YXJ0X25ldGdlYXJfcm4xMDQucGJseC5rd2J1YXJ0aW1nID0g
-LW0gdWFydCAkKE5FVEdFQVJfUk4xMDRfS1dCT1BUUykKK0ZJTEVfYmFyZWJveC1uZXRnZWFyLXJu
-MTA0LmltZwk9IHN0YXJ0X25ldGdlYXJfcm4xMDQucGJseC5rd2JpbWcKK0ZJTEVfYmFyZWJveC1u
-ZXRnZWFyLXJuMTA0LXVhcnQuaW1nID0gc3RhcnRfbmV0Z2Vhcl9ybjEwNC5wYmx4Lmt3YnVhcnRp
-bWcKK0ZJTEVfYmFyZWJveC1uZXRnZWFyLXJuMTA0LTJuZC5pbWcgPSBzdGFydF9uZXRnZWFyX3Ju
-MTA0LnBibHgKK3BibHgtJChDT05GSUdfTUFDSF9ORVRHRUFSX1JOMTA0KSArPSBzdGFydF9uZXRn
-ZWFyX3JuMTA0CitpbWFnZS0kKENPTkZJR19NQUNIX05FVEdFQVJfUk4xMDQpICs9IGJhcmVib3gt
-bmV0Z2Vhci1ybjEwNC5pbWcKK2ltYWdlLSQoQ09ORklHX01BQ0hfTkVUR0VBUl9STjEwNCkgKz0g
-YmFyZWJveC1uZXRnZWFyLXJuMTA0LXVhcnQuaW1nCitpbWFnZS0kKENPTkZJR19NQUNIX05FVEdF
-QVJfUk4xMDQpICs9IGJhcmVib3gtbmV0Z2Vhci1ybjEwNC0ybmQuaW1nCisKICMgLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0gQXJtYWRhIFhQIGJhc2VkIGJvYXJkcyAtLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KIExFTk9WT19JWDRfMzAwRF9LV0JPUFRTID0gJHtLV0JPUFRTfSAtaSAkKGJvYXJk
-KS9sZW5vdm8taXg0LTMwMGQva3diaW1hZ2UuY2ZnCiBPUFRTX3N0YXJ0X2xlbm92b19peDRfMzAw
-ZC5wYmx4Lmt3YmltZyA9ICQoTEVOT1ZPX0lYNF8zMDBEX0tXQk9QVFMpCi0tIAoyLjcuMC5yYzMK
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
-IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
-ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Jan 20, 2016 at 08:46:50AM +0100, Uwe Kleine-K=F6nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <uwe@kleine-koenig.org>
+> ---
+>  scripts/kwboot.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+> =
+
+> diff --git a/scripts/kwboot.c b/scripts/kwboot.c
+> index 46328d8ed006..61f807d163f7 100644
+> --- a/scripts/kwboot.c
+> +++ b/scripts/kwboot.c
+> @@ -546,6 +546,49 @@ out:
+>  	return rc;
+>  }
+>  =
+
+> +static void
+> +kwboot_check_image(unsigned char *img, size_t size)
+> +{
+> +	size_t i;
+> +	size_t header_size, image_size;
+> +	unsigned char csum =3D 0;
+> +
+> +	switch (img[0x0]) {
+> +		case 0x5a: /* SPI/NOR */
+> +		case 0x69: /* UART0 */
+> +		case 0x78: /* SATA */
+> +		case 0x8b: /* NAND */
+> +		case 0x9c: /* PCIe */
+> +			break;
+> +		default:
+> +			printf("Unknown boot source: 0x%hhx\n", img[0x0]);
+> +	}
+> +
+> +	if (img[0x8] !=3D 1)
+> +		printf("Unknown version: 0x%hhx\n", img[0x8]);
+> +
+> +	image_size =3D img[0x4] | (img[0x5] << 8) |
+> +		(img[0x6] << 16) | (img[0x7] << 24);
+> +
+> +	header_size =3D (img[0x9] << 16) | img[0xa] | (img[0xb] << 8);
+> +
+> +	if (header_size + image_size !=3D size) {
+> +		printf("Size mismatch (%zu + %zu !=3D %zu)\n",
+> +		       header_size, image_size, size);
+> +	} else {
+> +		for (i =3D 0; i < header_size; ++i)
+> +			csum +=3D img[i];
+> +
+> +		csum -=3D img[0x1f];
+> +
+> +		if (csum !=3D img[0x1f])
+> +			printf("Checksum mismatch: header: 0x%02hhx, calculated: 0x%02hhx\n",
+> +			       img[0x1f], csum);
+> +	}
+
+Shouldn't these failures have any consequences like exiting the program
+with an error?
+
+> +}
+> +
+> +
+> +
+
+Please drop the multiple blank lines.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
