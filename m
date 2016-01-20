@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from arcturus.kleine-koenig.org ([2a01:4f8:d12:1f44::2])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aLnFy-0002eR-DT
- for barebox@lists.infradead.org; Wed, 20 Jan 2016 07:32:43 +0000
-Date: Wed, 20 Jan 2016 08:32:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160120073218.GL13058@pengutronix.de>
-References: <1453089161-6697-1-git-send-email-andrew.smirnov@gmail.com>
- <1453089161-6697-16-git-send-email-andrew.smirnov@gmail.com>
- <20160119082149.GJ13058@pengutronix.de>
- <CAHQ1cqHB6=OLR0vBNK8UA1ty0t1LpBsoJ95H9m=GqYy7ZKOuNw@mail.gmail.com>
+ id 1aLnUE-0002Zd-Rc
+ for barebox@lists.infradead.org; Wed, 20 Jan 2016 07:47:27 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Date: Wed, 20 Jan 2016 08:46:50 +0100
+Message-Id: <1453276010-4669-1-git-send-email-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHQ1cqHB6=OLR0vBNK8UA1ty0t1LpBsoJ95H9m=GqYy7ZKOuNw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +15,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 16/20] e1000: Add functions for register polling
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH] kwboot: do a filetype check before sending the image
+To: barebox@lists.infradead.org
 
-On Tue, Jan 19, 2016 at 10:53:07AM -0800, Andrey Smirnov wrote:
-> On Tue, Jan 19, 2016 at 12:21 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > On Sun, Jan 17, 2016 at 07:52:37PM -0800, Andrey Smirnov wrote:
-> >> Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-> >> ---
-> >>  drivers/net/e1000/e1000.h | 19 +++++++++++++++++++
-> >>  1 file changed, 19 insertions(+)
-> >>
-> >> diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-> >> index 291e64d..5e24758 100644
-> >> --- a/drivers/net/e1000/e1000.h
-> >> +++ b/drivers/net/e1000/e1000.h
-> >> @@ -2176,5 +2176,24 @@ static inline uint32_t e1000_read_reg(struct e1000_hw *hw, uint32_t reg)
-> >>  }
-> >>
-> >>
-> >> +static inline int e1000_poll_reg(struct e1000_hw *hw, uint32_t reg,
-> >> +                              uint32_t mask, uint32_t value,
-> >> +                              uint64_t timeout)
-> >
-> > We should let the compiler decide whether to inline this or not. Can we
-> > remove the inline?
-> 
-> In general the reason I put "inline" when defining functions in
-> headers -- that is not to say that it applies in this case -- is
-> because that tells the compiler that the code for function doesn't
-> have to put in the object file if no one is using it. Otherwise when
-> .c that doesn't reference includes .h with static non-inline function
-> that nobody uses GCC might emit a warning about unused function.
-
-I didn't realize this function is in the header file. Can we put it in
-the C file?
-
-> 
-> I'd love to do that. How do you feel about getting rid of
-> E1000_READ_REG and E1000_WRITE_REG?
-
-Good idea. I'm all in for that.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHV3ZUBrbGVpbmUta29lbmlnLm9yZz4K
+LS0tCiBzY3JpcHRzL2t3Ym9vdC5jIHwgNDUgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgNDUgaW5zZXJ0aW9ucygrKQoKZGlmZiAt
+LWdpdCBhL3NjcmlwdHMva3dib290LmMgYi9zY3JpcHRzL2t3Ym9vdC5jCmluZGV4IDQ2MzI4ZDhl
+ZDAwNi4uNjFmODA3ZDE2M2Y3IDEwMDY0NAotLS0gYS9zY3JpcHRzL2t3Ym9vdC5jCisrKyBiL3Nj
+cmlwdHMva3dib290LmMKQEAgLTU0Niw2ICs1NDYsNDkgQEAgb3V0OgogCXJldHVybiByYzsKIH0K
+IAorc3RhdGljIHZvaWQKK2t3Ym9vdF9jaGVja19pbWFnZSh1bnNpZ25lZCBjaGFyICppbWcsIHNp
+emVfdCBzaXplKQoreworCXNpemVfdCBpOworCXNpemVfdCBoZWFkZXJfc2l6ZSwgaW1hZ2Vfc2l6
+ZTsKKwl1bnNpZ25lZCBjaGFyIGNzdW0gPSAwOworCisJc3dpdGNoIChpbWdbMHgwXSkgeworCQlj
+YXNlIDB4NWE6IC8qIFNQSS9OT1IgKi8KKwkJY2FzZSAweDY5OiAvKiBVQVJUMCAqLworCQljYXNl
+IDB4Nzg6IC8qIFNBVEEgKi8KKwkJY2FzZSAweDhiOiAvKiBOQU5EICovCisJCWNhc2UgMHg5Yzog
+LyogUENJZSAqLworCQkJYnJlYWs7CisJCWRlZmF1bHQ6CisJCQlwcmludGYoIlVua25vd24gYm9v
+dCBzb3VyY2U6IDB4JWhoeFxuIiwgaW1nWzB4MF0pOworCX0KKworCWlmIChpbWdbMHg4XSAhPSAx
+KQorCQlwcmludGYoIlVua25vd24gdmVyc2lvbjogMHglaGh4XG4iLCBpbWdbMHg4XSk7CisKKwlp
+bWFnZV9zaXplID0gaW1nWzB4NF0gfCAoaW1nWzB4NV0gPDwgOCkgfAorCQkoaW1nWzB4Nl0gPDwg
+MTYpIHwgKGltZ1sweDddIDw8IDI0KTsKKworCWhlYWRlcl9zaXplID0gKGltZ1sweDldIDw8IDE2
+KSB8IGltZ1sweGFdIHwgKGltZ1sweGJdIDw8IDgpOworCisJaWYgKGhlYWRlcl9zaXplICsgaW1h
+Z2Vfc2l6ZSAhPSBzaXplKSB7CisJCXByaW50ZigiU2l6ZSBtaXNtYXRjaCAoJXp1ICsgJXp1ICE9
+ICV6dSlcbiIsCisJCSAgICAgICBoZWFkZXJfc2l6ZSwgaW1hZ2Vfc2l6ZSwgc2l6ZSk7CisJfSBl
+bHNlIHsKKwkJZm9yIChpID0gMDsgaSA8IGhlYWRlcl9zaXplOyArK2kpCisJCQljc3VtICs9IGlt
+Z1tpXTsKKworCQljc3VtIC09IGltZ1sweDFmXTsKKworCQlpZiAoY3N1bSAhPSBpbWdbMHgxZl0p
+CisJCQlwcmludGYoIkNoZWNrc3VtIG1pc21hdGNoOiBoZWFkZXI6IDB4JTAyaGh4LCBjYWxjdWxh
+dGVkOiAweCUwMmhoeFxuIiwKKwkJCSAgICAgICBpbWdbMHgxZl0sIGNzdW0pOworCX0KK30KKwor
+CisKIHN0YXRpYyB2b2lkICoKIGt3Ym9vdF9tbWFwX2ltYWdlKGNvbnN0IGNoYXIgKnBhdGgsIHNp
+emVfdCAqc2l6ZSwgaW50IHByb3QpCiB7CkBAIC01NzQsNiArNjE3LDggQEAga3dib290X21tYXBf
+aW1hZ2UoY29uc3QgY2hhciAqcGF0aCwgc2l6ZV90ICpzaXplLCBpbnQgcHJvdCkKIAogCXJjID0g
+MDsKIAkqc2l6ZSA9IHN0LnN0X3NpemU7CisKKwlrd2Jvb3RfY2hlY2tfaW1hZ2UoaW1nLCAqc2l6
+ZSk7CiBvdXQ6CiAJaWYgKHJjICYmIGltZykgewogCQltdW5tYXAoaW1nLCBzdC5zdF9zaXplKTsK
+LS0gCjIuNy4wLnJjMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
