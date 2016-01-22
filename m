@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aMWDb-0003sc-4F
- for barebox@lists.infradead.org; Fri, 22 Jan 2016 07:33:20 +0000
+ id 1aMWDl-0003ux-4L
+ for barebox@lists.infradead.org; Fri, 22 Jan 2016 07:33:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jan 2016 08:32:30 +0100
-Message-Id: <1453447952-30818-13-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jan 2016 08:32:22 +0100
+Message-Id: <1453447952-30818-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1453447952-30818-1-git-send-email-s.hauer@pengutronix.de>
 References: <1453447952-30818-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,161 +21,168 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/14] bootm: make verifying/hashing configurable
+Subject: [PATCH 04/14] bootm: use names instead of numbers for image parts
 To: Barebox List <barebox@lists.infradead.org>
 
-So long struct bootm_data.verify is a bool which enables CRC checking
-(hashing). Extend this to a enum and add support for signature checking
-in the same option. This also adds the corresponding globalvar and a
--s option to bootm.
+The uImage format uses numbers for to identify the different
+parts of a image, but the FIT image format uses names. To better
+integrate the FIT image format into bootm always use names and
+convert them to numbers when necessary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c | 12 +++++++++---
- common/bootm.c   | 20 ++++++++++++++++++--
- include/boot.h   | 12 ++++++++++--
- 3 files changed, 37 insertions(+), 7 deletions(-)
+ common/bootm.c | 43 +++++++++++++++++++++++++++----------------
+ include/boot.h |  6 +++---
+ 2 files changed, 30 insertions(+), 19 deletions(-)
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 6db0e65..7a19fa2 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -46,7 +46,7 @@
- #include <magicvar.h>
- #include <asm-generic/memory_layout.h>
- 
--#define BOOTM_OPTS_COMMON "ca:e:vo:fd"
-+#define BOOTM_OPTS_COMMON "sca:e:vo:fd"
- 
- #ifdef CONFIG_CMD_BOOTM_INITRD
- #define BOOTM_OPTS BOOTM_OPTS_COMMON "L:r:"
-@@ -65,7 +65,11 @@ static int do_bootm(int argc, char *argv[])
- 	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
- 		switch(opt) {
- 		case 'c':
--			data.verify = 1;
-+			if (data.verify < BOOTM_VERIFY_HASH)
-+				data.verify = BOOTM_VERIFY_HASH;
-+			break;
-+		case 's':
-+			data.verify = BOOTM_VERIFY_SIGNATURE;
- 			break;
- #ifdef CONFIG_CMD_BOOTM_INITRD
- 		case 'L':
-@@ -118,7 +122,8 @@ err_out:
- 
- BAREBOX_CMD_HELP_START(bootm)
- BAREBOX_CMD_HELP_TEXT("Options:")
--BAREBOX_CMD_HELP_OPT ("-c\t",  "crc check uImage data")
-+BAREBOX_CMD_HELP_OPT ("-c\t",  "hash check image integrity")
-+BAREBOX_CMD_HELP_OPT ("-s\t",  "check signature of image")
- BAREBOX_CMD_HELP_OPT ("-d\t",  "dry run: check data, but do not run")
- BAREBOX_CMD_HELP_OPT ("-f\t",  "load images even if type is undetectable")
- #ifdef CONFIG_CMD_BOOTM_INITRD
-@@ -160,6 +165,7 @@ BAREBOX_MAGICVAR_NAMED(global_bootm_image_loadaddr, global.bootm.image.loadaddr,
- BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default initrd");
- BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
- BAREBOX_MAGICVAR_NAMED(global_bootm_oftree, global.bootm.oftree, "bootm default oftree");
-+BAREBOX_MAGICVAR_NAMED(global_bootm_verify, global.bootm.verify, "bootm default verify level");
- 
- static struct binfmt_hook binfmt_uimage_hook = {
- 	.type = filetype_uimage,
 diff --git a/common/bootm.c b/common/bootm.c
-index 4409a8b..78a6bb5 100644
+index a38d7e0..f8d9330 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -56,8 +56,22 @@ void bootm_data_init_defaults(struct bootm_data *data)
- 	getenv_ul("global.bootm.image.loadaddr", &data->os_address);
- 	getenv_ul("global.bootm.initrd.loadaddr", &data->initrd_address);
- 	data->initrd_file = getenv_nonempty("global.bootm.initrd");
-+	data->verify = bootm_get_verify_mode();
- }
- 
-+static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_HASH;
-+
-+enum bootm_verify bootm_get_verify_mode(void)
-+{
-+	return bootm_verify_mode;
-+}
-+
-+static const char * const bootm_verify_names[] = {
-+	[BOOTM_VERIFY_NONE] = "none",
-+	[BOOTM_VERIFY_HASH] = "hash",
-+	[BOOTM_VERIFY_SIGNATURE] = "signature",
-+};
-+
- /*
-  * bootm_load_os() - load OS to RAM
-  *
-@@ -122,7 +136,7 @@ static int bootm_open_initrd_uimage(struct image_data *data)
- 		if (!data->initrd)
- 			return -EINVAL;
- 
--		if (data->verify) {
-+		if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
- 			ret = uimage_verify(data->initrd);
- 			if (ret) {
- 				printf("Checking data crc failed with %s\n",
-@@ -382,7 +396,7 @@ static int bootm_open_os_uimage(struct image_data *data)
- 	if (!data->os)
+@@ -68,8 +68,12 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
  		return -EINVAL;
  
--	if (data->verify) {
-+	if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
- 		ret = uimage_verify(data->os);
- 		if (ret) {
- 			printf("Checking data crc failed with %s\n",
-@@ -550,6 +564,8 @@ static int bootm_init(void)
- 		globalvar_add_simple("bootm.initrd", NULL);
- 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
- 	}
-+	globalvar_add_simple_enum("bootm.verify", (unsigned int *)&bootm_verify_mode,
-+				  bootm_verify_names, ARRAY_SIZE(bootm_verify_names));
+ 	if (data->os) {
++		int num;
++
++		num = simple_strtoul(data->os_part, NULL, 0);
++
+ 		data->os_res = uimage_load_to_sdram(data->os,
+-			data->os_num, load_address);
++			num, load_address);
+ 		if (!data->os_res)
+ 			return -ENOMEM;
  
- 	return 0;
+@@ -106,8 +110,12 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 		return 0;
+ 
+ 	if (data->initrd) {
++		int num;
++
++		num = simple_strtoul(data->initrd_part, NULL, 0);
++
+ 		data->initrd_res = uimage_load_to_sdram(data->initrd,
+-			data->initrd_num, load_address);
++			num, load_address);
+ 		if (!data->initrd_res)
+ 			return -ENOMEM;
+ 
+@@ -191,7 +199,8 @@ int bootm_get_os_size(struct image_data *data)
+ 	int ret;
+ 
+ 	if (data->os)
+-		return uimage_get_size(data->os, data->os_num);
++		return uimage_get_size(data->os,
++				       simple_strtoul(data->os_part, NULL, 0));
+ 
+ 	if (data->os_file) {
+ 		struct stat s;
+@@ -268,7 +277,7 @@ static int bootm_open_oftree_uimage(struct image_data *data)
+ 	struct fdt_header *fdt;
+ 	enum filetype ft;
+ 	const char *oftree = data->oftree_file;
+-	int num = data->oftree_num;
++	int num = simple_strtoul(data->oftree_part, NULL, 0);
+ 	struct uimage_handle *of_handle;
+ 	int release = 0;
+ 	size_t size;
+@@ -358,7 +367,7 @@ static void bootm_print_info(struct image_data *data)
+ 				data->initrd_file);
+ 		if (initrd_type == filetype_uimage &&
+ 				data->initrd->header.ih_type == IH_TYPE_MULTI)
+-			printf(", multifile image %d", data->initrd_num);
++			printf(", multifile image %s", data->initrd_part);
+ 		printf("\n");
+ 		if (data->initrd_res)
+ 			printf("initrd is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
+@@ -369,25 +378,27 @@ static void bootm_print_info(struct image_data *data)
+ 	}
  }
+ 
+-static char *bootm_image_name_and_no(const char *name, int *no)
++static int bootm_image_name_and_part(const char *name, char **filename, char **part)
+ {
+ 	char *at, *ret;
+ 
+ 	if (!name || !*name)
+-		return NULL;
+-
+-	*no = 0;
++		return -EINVAL;
+ 
+ 	ret = xstrdup(name);
++
++	*filename = ret;
++	*part = NULL;
++
+ 	at = strchr(ret, '@');
+ 	if (!at)
+-		return ret;
++		return 0;
+ 
+ 	*at++ = 0;
+ 
+-	*no = simple_strtoul(at, NULL, 10);
++	*part = at;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ /*
+@@ -408,9 +419,9 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 
+ 	data = xzalloc(sizeof(*data));
+ 
+-	data->os_file = bootm_image_name_and_no(bootm_data->os_file, &data->os_num);
+-	data->oftree_file = bootm_image_name_and_no(bootm_data->oftree_file, &data->oftree_num);
+-	data->initrd_file = bootm_image_name_and_no(bootm_data->initrd_file, &data->initrd_num);
++	bootm_image_name_and_part(bootm_data->os_file, &data->os_file, &data->os_part);
++	bootm_image_name_and_part(bootm_data->oftree_file, &data->oftree_part, &data->os_part);
++	bootm_image_name_and_part(bootm_data->initrd_file, &data->initrd_part, &data->os_part);
+ 	data->verbose = bootm_data->verbose;
+ 	data->verify = bootm_data->verify;
+ 	data->force = bootm_data->force;
+@@ -479,7 +490,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 			data->os_file);
+ 	if (os_type == filetype_uimage &&
+ 			data->os->header.ih_type == IH_TYPE_MULTI)
+-		printf(", multifile image %d", data->os_num);
++		printf(", multifile image %s", data->os_part);
+ 	printf("\n");
+ 
+ 	if (IS_ENABLED(CONFIG_OFTREE)) {
 diff --git a/include/boot.h b/include/boot.h
-index 0c0febe..363a02a 100644
+index b172c05..9ddb18b 100644
 --- a/include/boot.h
 +++ b/include/boot.h
-@@ -7,12 +7,18 @@
- #include <linux/list.h>
- #include <environment.h>
+@@ -28,7 +28,7 @@ struct image_data {
  
-+enum bootm_verify {
-+	BOOTM_VERIFY_NONE,
-+	BOOTM_VERIFY_HASH,
-+	BOOTM_VERIFY_SIGNATURE,
-+};
-+
- struct bootm_data {
- 	const char *os_file;
- 	const char *initrd_file;
- 	const char *oftree_file;
- 	int verbose;
--	bool verify;
-+	enum bootm_verify verify;
- 	bool force;
- 	bool dryrun;
+ 	/* if os is an uImage this will be provided */
+ 	struct uimage_handle *os;
+-	int os_num;
++	char *os_part;
+ 
+ 	/* otherwise only the filename will be provided */
+ 	char *os_file;
+@@ -49,7 +49,7 @@ struct image_data {
+ 
+ 	/* if initrd is an uImage this will be provided */
+ 	struct uimage_handle *initrd;
+-	int initrd_num;
++	char *initrd_part;
+ 
+ 	/* otherwise only the filename will be provided */
+ 	char *initrd_file;
+@@ -57,7 +57,7 @@ struct image_data {
  	unsigned long initrd_address;
-@@ -63,7 +69,7 @@ struct image_data {
+ 
+ 	char *oftree_file;
+-	int oftree_num;
++	char *oftree_part;
+ 
+ 	struct device_node *of_root_node;
  	struct fdt_header *oftree;
- 	struct resource *oftree_res;
- 
--	int verify;
-+	enum bootm_verify verify;
- 	int verbose;
- 	int force;
- 	int dryrun;
-@@ -119,6 +125,8 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address);
- int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
- int bootm_get_os_size(struct image_data *data);
- 
-+enum bootm_verify bootm_get_verify_mode(void);
-+
- #define UIMAGE_SOME_ADDRESS (UIMAGE_INVALID_ADDRESS - 1)
- 
- #endif /* __BOOT_H */
 -- 
 2.7.0.rc3
 
