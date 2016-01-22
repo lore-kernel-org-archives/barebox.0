@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.kymetacorp.com ([192.81.58.21])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aMLbH-00045Z-11
- for barebox@lists.infradead.org; Thu, 21 Jan 2016 20:12:59 +0000
-From: Trent Piepho <tpiepho@kymetacorp.com>
-Date: Thu, 21 Jan 2016 20:12:35 +0000
-Message-ID: <1453407176.4474.305.camel@rtred1test09.kymeta.local>
-References: <1453277701-10367-1-git-send-email-uwe@kleine-koenig.org>
- <1453318040.4474.287.camel@rtred1test09.kymeta.local>
- <56A0AF31.3040904@kleine-koenig.org>
-In-Reply-To: <56A0AF31.3040904@kleine-koenig.org>
-Content-Language: en-US
-Content-ID: <EDC55107F84C3C44A998304B35E24FEB@kymetacorp.com>
+ id 1aMVkq-00017s-1n
+ for barebox@lists.infradead.org; Fri, 22 Jan 2016 07:03:33 +0000
+Date: Fri, 22 Jan 2016 08:03:08 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160122070308.GN13058@pengutronix.de>
+References: <1453192254-8266-1-git-send-email-t.remmet@phytec.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1453192254-8266-1-git-send-email-t.remmet@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,50 +18,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] kwboot: do a filetype check before sending the image
-To: =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <uwe@kleine-koenig.org>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 1/2] arm: am33xx: Move function to read from Master OSC
+To: Teresa Remmet <t.remmet@phytec.de>
+Cc: barebox@lists.infradead.org
 
-T24gVGh1LCAyMDE2LTAxLTIxIGF0IDExOjEzICswMTAwLCBVd2UgS2xlaW5lLUvDtm5pZyB3cm90
-ZToNCg0KPiA+IEFuZCBoYXZpbmcgY29tcGFyZWQgdGhlIHZlcnNpb24gdGFnIHRvIDEsIGNvdWxk
-bid0IHlvdSB0aGVuIGNhc3QgaW1nDQo+ID4gaW50byBhIHN0cnVjdCBtYWluX2hkcl92MSAqPyAg
-VGhhdCB3b3VsZCBhdm9pZCBhbGwgdGhlIGhhcmQgY29kZWQgbWFnaWMNCj4gPiBvZmZzZXRzIGlu
-IHRoZSByZXN0IG9mIHRoZSBjb2RlLiAgVW5sZXNzIGltZyBpc24ndCBhbGlnbmVkPw0KPiANCj4g
-Li4uIG9yIHRoZSBidWlsZCBtYWNoaW5lIGlzIGJpZyBlbmRpYW4uIChOb3RlIGluIHRoaXMgY2Fz
-ZSBrd2JpbWFnZSBpcw0KPiBicm9rZW4sIHRvby4gQW5kIGdpdmVuIHRoYXQgY2F0Y2hpbmcgc3Vj
-aCBhbiBlcnJvciBpbmRlcGVuZGVudGx5IGlzIElNSE8NCj4gYSBmZWF0dXJlLikgSSdkIHByZWZl
-ciB0byBrZWVwIGl0IGFzIGlzIGF0IGxlYXN0IGZvciBub3cgZm9yIGEgZmV3DQo+IHJlYXNvbnMg
-KGVuZGlhbmVzcywgYWxpZ25tZW50LCBiaWdnZXIgcmVzaHVmZmxpbmcgb2YgY29kZSBiZWNhdXNl
-IHNhaWQNCj4gc3RydWN0IGlzIGRlZmluZWQgaW4gYSBkaWZmZXJlbnQgLmMgZmlsZSkNCg0KRW5k
-aWFuZXNzIHNob3VsZG4ndCBtYWtlIGEgZGlmZmVyZW5jZSB3aGVuIGl0IGNvbWVzIHRvIHVzaW5n
-IHRoZSBzdHJ1Y3QuDQpTZWVtcyBsaWtlIGl0IHdvdWxkIGJlIG5pY2UgdG8gaGF2ZSBhIGNvbW1v
-biBkZWZpbml0aW9uIG9mIHRoZSBzdHJ1Y3RzDQpiZXR3ZWVuIHRoZSBjb2RlIHRoYXQgbWFrZXMg
-dGhlIGltYWdlIGFuZCB0aGUgY29kZSB0aGUgcmVhZHMgaXQuDQoNCg0KPiA+PiArDQo+ID4+ICsJ
-aW1hZ2Vfc2l6ZSA9IGltZ1sweDRdIHwgKGltZ1sweDVdIDw8IDgpIHwNCj4gPj4gKwkJKGltZ1sw
-eDZdIDw8IDE2KSB8IChpbWdbMHg3XSA8PCAyNCk7DQo+ID4gDQo+ID4gc3RydWN0IG1haW5faGRy
-X3YxICpoZHIgPSAoY29uc3Qgc3RydWN0IG1haW5faGRyDQo+ID4gaW1hZ2Vfc2l6ZSA9IGxlMzJf
-dG9fY3B1KGhkci0+YmxvY2tzaXplKTsNCj4gPiBvciBpZiB1bmFsaWduZWQ6DQo+ID4gaW1hZ2Vf
-c2l6ZSA9IGdldF91bmFsaWduZWRfbGUzMigmaW1nWzB4NF0pOw0KPiANCj4gT2YgdGhlIHRocmVl
-IG9mZmVyZWQgdmVyc2lvbnMgSSdkIHByZWZlciBtaW5lIC4uLiBJdCdzIHNpbXBsZSBhbmQgZWFz
-eQ0KPiB0byB2ZXJpZnkgd2hlbiBjb21wYXJpbmcgdG8gdGhlIHJlZmVyZW5jZSBtYW51YWwuDQo+
-IA0KPiA+PiArDQo+ID4+ICsJaGVhZGVyX3NpemUgPSAoaW1nWzB4OV0gPDwgMTYpIHwgaW1nWzB4
-YV0gfCAoaW1nWzB4Yl0gPDwgOCk7DQo+ID4gDQo+ID4gaGVhZGVyX3NpemUgPSBoZHItPmhlYWRl
-cnN6X21zYiA8PCAxNiB8IGxlMTZfdG9fY3B1KGhkci0+aGVhZGVyc3pfbHNiKTsNCj4gPiANCj4g
-Pj4gKw0KPiA+PiArCWlmIChoZWFkZXJfc2l6ZSArIGltYWdlX3NpemUgIT0gc2l6ZSkgew0KPiA+
-PiArCQlwcmludGYoIlNpemUgbWlzbWF0Y2ggKCV6dSArICV6dSAhPSAlenUpXG4iLA0KPiA+PiAr
-CQkgICAgICAgaGVhZGVyX3NpemUsIGltYWdlX3NpemUsIHNpemUpOw0KPiA+PiArCQlnb3RvIGVy
-cjsNCj4gPj4gKwl9IGVsc2Ugew0KPiA+IA0KPiA+IERvbid0IHJlYWxseSBuZWVkIHRoZSBlbHNl
-IGJsb2NrIGhlcmUgc2luY2UgdGhlIGZhaWx1cmUgYWJvdmUgZXhpdHMsDQo+ID4ganVzdCBsaWtl
-IHRoZSB0d28gZmFpbHVyZSBjaGVja3MgYmVmb3JlIHRoaXMgb25lLg0KPiANCj4gcmlnaHQsIHRo
-aXMgaXMgYSByZWxpY3Qgb2YgdjEgd2hlcmUgSSBkaWRuJ3QganVtcCBpbiB0aGUgZmlyc3QgYmxv
-Y2suDQo+IA0KPiA+PiArCQlmb3IgKGkgPSAwOyBpIDwgaGVhZGVyX3NpemU7ICsraSkNCj4gPj4g
-KwkJCWNzdW0gKz0gaW1nW2ldOw0KPiA+IA0KPiA+IGNzdW0gPSBpbWFnZV9jaGVja3N1bTgoaW1n
-LCBoZWFkZXJfc2l6ZSkNCj4gDQo+IFRoaXMgaXMgYWdhaW4gaW4ga3diaW1hZ2UuYw0KPiANCj4g
-QmVzdCByZWdhcmRzDQo+IFV3ZQ0KPiANCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+Hi Teresa,
+
+On Tue, Jan 19, 2016 at 09:30:53AM +0100, Teresa Remmet wrote:
+> From: Daniel Schultz <d.schultz@phytec.de>
+> 
+> Move the function to read the Master OSC speed from
+> the SYSBOOT Configuration Pin for reuse.
+> 
+> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> ---
+>  arch/arm/mach-omap/am33xx_clock.c              | 24 ++++++++++++++++++++++++
+>  arch/arm/mach-omap/dmtimer.c                   | 19 ++-----------------
+>  arch/arm/mach-omap/include/mach/am33xx-clock.h |  1 +
+>  3 files changed, 27 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
+> index 6d8adde..19aeb59 100644
+> --- a/arch/arm/mach-omap/am33xx_clock.c
+> +++ b/arch/arm/mach-omap/am33xx_clock.c
+> @@ -318,3 +318,27 @@ void am33xx_pll_init(int mpupll_M, int osc, int ddrpll_M)
+>  	/* Enable the required peripherals */
+>  	am33xx_enable_per_clocks();
+>  }
+> +
+> +u64 am33xx_get_osc_clock(void)
+
+Rather use a 32bit type.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
