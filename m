@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aMWGI-0006LB-4H
- for barebox@lists.infradead.org; Fri, 22 Jan 2016 07:36:02 +0000
-Date: Fri, 22 Jan 2016 08:35:40 +0100
+ id 1aMWLQ-0000E5-NO
+ for barebox@lists.infradead.org; Fri, 22 Jan 2016 07:41:21 +0000
+Date: Fri, 22 Jan 2016 08:40:58 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160122073540.GP13058@pengutronix.de>
-References: <1453190117-27933-1-git-send-email-s.hauer@pengutronix.de>
- <CAGm1_kvriwy-P1VHiq91cEmJHOpWR3VHu9q4SQWGU+PjRkJoTQ@mail.gmail.com>
+Message-ID: <20160122074058.GQ13058@pengutronix.de>
+References: <1453375359-22142-1-git-send-email-p.zabel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAGm1_kvriwy-P1VHiq91cEmJHOpWR3VHu9q4SQWGU+PjRkJoTQ@mail.gmail.com>
+In-Reply-To: <1453375359-22142-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,32 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] bootm: Add option to force booting signed images
-To: Yegor Yefremov <yegorslists@googlemail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: cm-fx6: set proper hostname
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Yegor,
+On Thu, Jan 21, 2016 at 12:22:39PM +0100, Philipp Zabel wrote:
+> Set the hostname to "utilite" or "cm-fx6".
+> 
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> ---
+>  arch/arm/boards/cm-fx6/board.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-On Tue, Jan 19, 2016 at 09:03:17AM +0100, Yegor Yefremov wrote:
-> Hi Sascha,
-> 
-> On Tue, Jan 19, 2016 at 8:55 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > With CONFIG_BOOTM_FORCE_SIGNED_IMAGES the bootm code will refuse to boot
-> > unsigned images. Since currently FIT is the only image type which
-> > supports signing this means we with this option we enforce using FIT
-> 
-> comma is missing after "supports signing", "we" after "means" must go away
-> 
-> > images. All additionally passed in device trees and initrds will be
-> 
-> a word is missing between "All" and "additionally"
-
-I think not, I reread the sentence and it still makes sense to me.
-
-I fixed the other things you mentioned.
+Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
