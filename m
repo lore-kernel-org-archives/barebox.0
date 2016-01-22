@@ -1,24 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from arcturus.kleine-koenig.org ([78.47.169.190])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aMazC-0008FZ-EK
- for barebox@lists.infradead.org; Fri, 22 Jan 2016 12:38:43 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0]
- ident=Debian-exim)
- by metis.ext.pengutronix.de with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
- (Exim 4.80) (envelope-from <str@pengutronix.de>) id 1aMayq-0005dp-Jl
- for barebox@lists.infradead.org; Fri, 22 Jan 2016 13:38:20 +0100
-Received: from str by ptx.hi.pengutronix.de with local (Exim 4.84)
- (envelope-from <str@pengutronix.de>) id 1aMayq-0008G9-CJ
- for barebox@lists.infradead.org; Fri, 22 Jan 2016 13:38:20 +0100
-Date: Fri, 22 Jan 2016 13:38:20 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20160122123820.GC17901@pengutronix.de>
-References: <1453388151-8424-1-git-send-email-s.trumtrar@pengutronix.de>
- <1453388151-8424-3-git-send-email-s.trumtrar@pengutronix.de>
+ id 1aMhTD-0002IE-PL
+ for barebox@lists.infradead.org; Fri, 22 Jan 2016 19:34:08 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Date: Fri, 22 Jan 2016 20:33:40 +0100
+Message-Id: <1453491220-25044-1-git-send-email-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1453388151-8424-3-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,29 +15,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/3] crypto: add i.MX6 CAAM support
+Subject: [PATCH v3] kwboot: do a filetype check before sending the image
 To: barebox@lists.infradead.org
+Cc: Trent Piepho <tpiepho@kymetacorp.com>
 
-Hi!
-
-As I just noticed, the ctrl.c has a bug in one of the timeout loops.
-Seems like I will have to send a v3.
-
-Regards,
-
-Steffen
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHV3ZUBrbGVpbmUta29lbmlnLm9yZz4K
+LS0tCkNoYW5nZXMgc2luY2UgKGltcGxpY2l0KSB2MSwgc2VudCB3aXRoCk1lc3NhZ2UtSWQ6IDE0
+NTMyNzYwMTAtNDY2OS0xLWdpdC1zZW5kLWVtYWlsLXV3ZUBrbGVpbmUta29lbmlnLm9yZzoKCi0g
+d2hpdGVzcGFjZSBmaXgKLSBlcnJvciBvdXQgaWYgYSBwcm9ibGVtIGlzIGRldGVjdGVkCi0gYWRk
+IGEgY29tbWl0IGxvZwoKQ2hhbmdlcyBzaW5jZSB2Miwgc2VudCB3aXRoCk1lc3NhZ2UtSWQ6IDE0
+NTMyNzc3MDEtMTAzNjctMS1naXQtc2VuZC1lbWFpbC11d2VAa2xlaW5lLWtvZW5pZy5vcmc6Cgot
+IGFkZCAtZiB0byBub3QgcXVpdCBvbiBmYWlsZWQgdGVzdAotIGFkZCBjb25zdCB0byBpbWcgcGFy
+YW1ldGVyCi0gY2hlY2sgaW1hZ2UgbGVuZ3RoIGZpcnN0Ci0gd3JpdGUgZXJyb3IgbWVzc2FnZXMg
+dG8gc3RkZXJyIGluc3RlYWQgb2Ygc3Rkb3V0Ci0gc2ltcGxpZnkgbG9naWMKClRoYW5rcyB0byBT
+YXNjaGEsIFNlYmFzdGlhbiBhbmQgVHJlbmQgZm9yIHRoZSBmZWVkYmFjay4KCiBzY3JpcHRzL2t3
+Ym9vdC5jIHwgNzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrLS0KIDEgZmlsZSBjaGFuZ2VkLCA3MCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
+cygtKQoKZGlmZiAtLWdpdCBhL3NjcmlwdHMva3dib290LmMgYi9zY3JpcHRzL2t3Ym9vdC5jCmlu
+ZGV4IDQ2MzI4ZDhlZDAwNi4uOWIwZDFkMDYwMmEwIDEwMDY0NAotLS0gYS9zY3JpcHRzL2t3Ym9v
+dC5jCisrKyBiL3NjcmlwdHMva3dib290LmMKQEAgLTU0Niw2ICs1NDYsNjMgQEAgb3V0OgogCXJl
+dHVybiByYzsKIH0KIAorc3RhdGljIGludAora3dib290X2NoZWNrX2ltYWdlKGNvbnN0IHVuc2ln
+bmVkIGNoYXIgKmltZywgc2l6ZV90IHNpemUpCit7CisJc2l6ZV90IGk7CisJc2l6ZV90IGhlYWRl
+cl9zaXplLCBpbWFnZV9zaXplOworCXVuc2lnbmVkIGNoYXIgY3N1bSA9IDA7CisKKwlpZiAoc2l6
+ZSA8IDB4MjApIHsKKwkJZnByaW50ZihzdGRlcnIsCisJCQkiSW1hZ2UgdG9vIHNtYWxsIHRvIGV2
+ZW4gY29udGFpbiBhIE1haW4gSGVhZGVyXG4iKTsKKwkJcmV0dXJuIDE7CisJfQorCisJc3dpdGNo
+IChpbWdbMHgwXSkgeworCQljYXNlIDB4NWE6IC8qIFNQSS9OT1IgKi8KKwkJY2FzZSAweDY5OiAv
+KiBVQVJUMCAqLworCQljYXNlIDB4Nzg6IC8qIFNBVEEgKi8KKwkJY2FzZSAweDhiOiAvKiBOQU5E
+ICovCisJCWNhc2UgMHg5YzogLyogUENJZSAqLworCQkJYnJlYWs7CisJCWRlZmF1bHQ6CisJCQlm
+cHJpbnRmKHN0ZGVyciwKKwkJCQkiVW5rbm93biBib290IHNvdXJjZTogMHglaGh4XG4iLCBpbWdb
+MHgwXSk7CisJCQlyZXR1cm4gMTsKKwl9CisKKwlpZiAoaW1nWzB4OF0gIT0gMSkgeworCQlmcHJp
+bnRmKHN0ZGVyciwgIlVua25vd24gdmVyc2lvbjogMHglaGh4XG4iLCBpbWdbMHg4XSk7CisJCXJl
+dHVybiAxOworCX0KKworCWltYWdlX3NpemUgPSBpbWdbMHg0XSB8IChpbWdbMHg1XSA8PCA4KSB8
+CisJCShpbWdbMHg2XSA8PCAxNikgfCAoaW1nWzB4N10gPDwgMjQpOworCisJaGVhZGVyX3NpemUg
+PSAoaW1nWzB4OV0gPDwgMTYpIHwgaW1nWzB4YV0gfCAoaW1nWzB4Yl0gPDwgOCk7CisKKwlpZiAo
+aGVhZGVyX3NpemUgKyBpbWFnZV9zaXplICE9IHNpemUpIHsKKwkJZnByaW50ZihzdGRlcnIsICJT
+aXplIG1pc21hdGNoICglenUgKyAlenUgIT0gJXp1KVxuIiwKKwkJCWhlYWRlcl9zaXplLCBpbWFn
+ZV9zaXplLCBzaXplKTsKKwkJcmV0dXJuIDE7CisJfQorCisJZm9yIChpID0gMDsgaSA8IGhlYWRl
+cl9zaXplOyArK2kpCisJCWNzdW0gKz0gaW1nW2ldOworCisJY3N1bSAtPSBpbWdbMHgxZl07CisK
+KwlpZiAoY3N1bSAhPSBpbWdbMHgxZl0pIHsKKwkJZnByaW50ZihzdGRlcnIsCisJCQkiQ2hlY2tz
+dW0gbWlzbWF0Y2g6IHNwZWNpZmllZDogMHglMDJoaHgsIGNhbGN1bGF0ZWQ6IDB4JTAyaGh4XG4i
+LAorCQkJaW1nWzB4MWZdLCBjc3VtKTsKKwkJcmV0dXJuIDE7CisJfQorCisJcmV0dXJuIDA7Cit9
+CisKIHN0YXRpYyB2b2lkICoKIGt3Ym9vdF9tbWFwX2ltYWdlKGNvbnN0IGNoYXIgKnBhdGgsIHNp
+emVfdCAqc2l6ZSwgaW50IHByb3QpCiB7CkBAIC02MDgsNyArNjY1LDcgQEAgaW50CiBtYWluKGlu
+dCBhcmdjLCBjaGFyICoqYXJndikKIHsKIAljb25zdCBjaGFyICp0dHlwYXRoLCAqaW1ncGF0aDsK
+LQlpbnQgcnYsIHJjLCB0dHksIHRlcm07CisJaW50IHJ2LCByYywgdHR5LCB0ZXJtLCBmb3JjZSA9
+IDA7CiAJdm9pZCAqYm9vdG1zZzsKIAl2b2lkICpkZWJ1Z21zZzsKIAl2b2lkICppbWc7CkBAIC02
+MjgsNyArNjg1LDcgQEAgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJa3dib290X3ZlcmJv
+c2UgPSBpc2F0dHkoU1RET1VUX0ZJTEVOTyk7CiAKIAlkbyB7Ci0JCWludCBjID0gZ2V0b3B0KGFy
+Z2MsIGFyZ3YsICJoYjpkdEI6RDoiKTsKKwkJaW50IGMgPSBnZXRvcHQoYXJnYywgYXJndiwgImI6
+ZGZodEI6RDoiKTsKIAkJaWYgKGMgPCAwKQogCQkJYnJlYWs7CiAKQEAgLTY1MSw2ICs3MDgsMTAg
+QEAgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJCQl0ZXJtID0gMTsKIAkJCWJyZWFrOwog
+CisJCWNhc2UgJ2YnOgorCQkJZm9yY2UgPSAxOworCQkJYnJlYWs7CisKIAkJY2FzZSAnQic6CiAJ
+CQlzcGVlZCA9IGt3Ym9vdF90dHlfc3BlZWQoYXRvaShvcHRhcmcpKTsKIAkJCWlmIChzcGVlZCA9
+PSAtMSkKQEAgLTY4NCw2ICs3NDUsMTMgQEAgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJ
+CQlwZXJyb3IoaW1ncGF0aCk7CiAJCQlnb3RvIG91dDsKIAkJfQorCisJCXJjID0ga3dib290X2No
+ZWNrX2ltYWdlKGltZywgc2l6ZSk7CisJCWlmIChyYyAmJiAhZm9yY2UpIHsKKwkJCWZwcmludGYo
+c3RkZXJyLAorCQkJCSJJbWFnZSBjaGVjayBmYWlsZWQsIHJlc3RhcnQgd2l0aCAtZiB0byBpZ25v
+cmVcbiIpOworCQkJZ290byBvdXQ7CisJCX0KIAl9CiAKIAlpZiAoZGVidWdtc2cpIHsKLS0gCjIu
+Ny4wLnJjMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
