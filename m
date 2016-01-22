@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aMWDl-0003ux-4L
- for barebox@lists.infradead.org; Fri, 22 Jan 2016 07:33:26 +0000
+ id 1aMWDv-0003zQ-4L
+ for barebox@lists.infradead.org; Fri, 22 Jan 2016 07:33:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Jan 2016 08:32:22 +0100
-Message-Id: <1453447952-30818-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Jan 2016 08:32:24 +0100
+Message-Id: <1453447952-30818-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1453447952-30818-1-git-send-email-s.hauer@pengutronix.de>
 References: <1453447952-30818-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,168 +21,172 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/14] bootm: use names instead of numbers for image parts
+Subject: [PATCH 06/14] bootm: Push dryrun to handlers
 To: Barebox List <barebox@lists.infradead.org>
 
-The uImage format uses numbers for to identify the different
-parts of a image, but the FIT image format uses names. To better
-integrate the FIT image format into bootm always use names and
-convert them to numbers when necessary.
+We can make the dryrun option more useful by calling into the handlers.
+With this we can detect more cases that can go wrong during boot.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootm.c | 43 +++++++++++++++++++++++++++----------------
- include/boot.h |  6 +++---
- 2 files changed, 30 insertions(+), 19 deletions(-)
+ arch/arm/lib/bootm.c               | 3 +++
+ arch/arm/mach-omap/omap_generic.c  | 5 +++++
+ arch/blackfin/lib/blackfin_linux.c | 3 +++
+ arch/efi/efi/efi-image.c           | 9 ++++++++-
+ arch/mips/lib/bootm.c              | 5 +++++
+ arch/nios2/lib/bootm.c             | 3 +++
+ arch/ppc/lib/ppclinux.c            | 3 +++
+ commands/bootm.c                   | 3 ---
+ common/bootm.c                     | 6 +++---
+ 9 files changed, 33 insertions(+), 7 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index a38d7e0..f8d9330 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -68,8 +68,12 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index 010b668..eef906a 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -110,6 +110,9 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem, int
+ 		printf("...\n");
+ 	}
+ 
++	if (data->dryrun)
++		return 0;
++
+ 	start_linux((void *)kernel, swap, initrd_start, initrd_size, data->oftree);
+ 
+ 	restart_machine();
+diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+index 4e26c6b..34ed940 100644
+--- a/arch/arm/mach-omap/omap_generic.c
++++ b/arch/arm/mach-omap/omap_generic.c
+@@ -79,6 +79,11 @@ static int do_bootm_omap_barebox(struct image_data *data)
+ 	if (!barebox)
  		return -EINVAL;
  
- 	if (data->os) {
-+		int num;
-+
-+		num = simple_strtoul(data->os_part, NULL, 0);
-+
- 		data->os_res = uimage_load_to_sdram(data->os,
--			data->os_num, load_address);
-+			num, load_address);
- 		if (!data->os_res)
- 			return -ENOMEM;
- 
-@@ -106,8 +110,12 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
- 		return 0;
- 
- 	if (data->initrd) {
-+		int num;
-+
-+		num = simple_strtoul(data->initrd_part, NULL, 0);
-+
- 		data->initrd_res = uimage_load_to_sdram(data->initrd,
--			data->initrd_num, load_address);
-+			num, load_address);
- 		if (!data->initrd_res)
- 			return -ENOMEM;
- 
-@@ -191,7 +199,8 @@ int bootm_get_os_size(struct image_data *data)
- 	int ret;
- 
- 	if (data->os)
--		return uimage_get_size(data->os, data->os_num);
-+		return uimage_get_size(data->os,
-+				       simple_strtoul(data->os_part, NULL, 0));
- 
- 	if (data->os_file) {
- 		struct stat s;
-@@ -268,7 +277,7 @@ static int bootm_open_oftree_uimage(struct image_data *data)
- 	struct fdt_header *fdt;
- 	enum filetype ft;
- 	const char *oftree = data->oftree_file;
--	int num = data->oftree_num;
-+	int num = simple_strtoul(data->oftree_part, NULL, 0);
- 	struct uimage_handle *of_handle;
- 	int release = 0;
- 	size_t size;
-@@ -358,7 +367,7 @@ static void bootm_print_info(struct image_data *data)
- 				data->initrd_file);
- 		if (initrd_type == filetype_uimage &&
- 				data->initrd->header.ih_type == IH_TYPE_MULTI)
--			printf(", multifile image %d", data->initrd_num);
-+			printf(", multifile image %s", data->initrd_part);
- 		printf("\n");
- 		if (data->initrd_res)
- 			printf("initrd is at " PRINTF_CONVERSION_RESOURCE "-" PRINTF_CONVERSION_RESOURCE "\n",
-@@ -369,25 +378,27 @@ static void bootm_print_info(struct image_data *data)
- 	}
- }
- 
--static char *bootm_image_name_and_no(const char *name, int *no)
-+static int bootm_image_name_and_part(const char *name, char **filename, char **part)
- {
- 	char *at, *ret;
- 
- 	if (!name || !*name)
--		return NULL;
--
--	*no = 0;
-+		return -EINVAL;
- 
- 	ret = xstrdup(name);
-+
-+	*filename = ret;
-+	*part = NULL;
-+
- 	at = strchr(ret, '@');
- 	if (!at)
--		return ret;
++	if (data->dryrun) {
++		free(barebox);
 +		return 0;
- 
- 	*at++ = 0;
- 
--	*no = simple_strtoul(at, NULL, 10);
-+	*part = at;
- 
--	return ret;
-+	return 0;
++	}
++
+ 	omap_start_barebox(barebox);
  }
  
- /*
-@@ -408,9 +419,9 @@ int bootm_boot(struct bootm_data *bootm_data)
+diff --git a/arch/blackfin/lib/blackfin_linux.c b/arch/blackfin/lib/blackfin_linux.c
+index 2561a7e..da2f78b 100644
+--- a/arch/blackfin/lib/blackfin_linux.c
++++ b/arch/blackfin/lib/blackfin_linux.c
+@@ -50,6 +50,9 @@ static int do_bootm_linux(struct image_data *idata)
+ 	appl = (void *)(idata->os_address + idata->os_entry);
+ 	printf("Starting Kernel at 0x%p\n", appl);
  
- 	data = xzalloc(sizeof(*data));
++	if (idata->dryrun)
++		return 0;
++
+ 	icache_disable();
  
--	data->os_file = bootm_image_name_and_no(bootm_data->os_file, &data->os_num);
--	data->oftree_file = bootm_image_name_and_no(bootm_data->oftree_file, &data->oftree_num);
--	data->initrd_file = bootm_image_name_and_no(bootm_data->initrd_file, &data->initrd_num);
-+	bootm_image_name_and_part(bootm_data->os_file, &data->os_file, &data->os_part);
-+	bootm_image_name_and_part(bootm_data->oftree_file, &data->oftree_part, &data->os_part);
-+	bootm_image_name_and_part(bootm_data->initrd_file, &data->initrd_part, &data->os_part);
- 	data->verbose = bootm_data->verbose;
- 	data->verify = bootm_data->verify;
- 	data->force = bootm_data->force;
-@@ -479,7 +490,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 			data->os_file);
- 	if (os_type == filetype_uimage &&
- 			data->os->header.ih_type == IH_TYPE_MULTI)
--		printf(", multifile image %d", data->os_num);
-+		printf(", multifile image %s", data->os_part);
- 	printf("\n");
+ 	strncpy(cmdlinedest, cmdline, 0x1000);
+diff --git a/arch/efi/efi/efi-image.c b/arch/efi/efi/efi-image.c
+index b6437f4..c78043b 100644
+--- a/arch/efi/efi/efi-image.c
++++ b/arch/efi/efi/efi-image.c
+@@ -190,7 +190,7 @@ static inline void linux_efi_handover(efi_handle_t handle,
+ static int do_bootm_efi(struct image_data *data)
+ {
+ 	void *tmp;
+-	void *initrd;
++	void *initrd = NULL;
+ 	size_t size;
+ 	efi_handle_t handle;
+ 	int ret;
+@@ -244,6 +244,13 @@ static int do_bootm_efi(struct image_data *data)
+ 		printf("...\n");
+ 	}
  
- 	if (IS_ENABLED(CONFIG_OFTREE)) {
-diff --git a/include/boot.h b/include/boot.h
-index b172c05..9ddb18b 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -28,7 +28,7 @@ struct image_data {
++	if (data->dryrun) {
++		BS->unload_image(handle);
++		free(boot_header);
++		free(initrd);
++		return 0;
++	}
++
+ 	efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
+ 			      get_time_ns()/1000);
  
- 	/* if os is an uImage this will be provided */
- 	struct uimage_handle *os;
--	int os_num;
-+	char *os_part;
+diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
+index 84f72f5..ce1521f 100644
+--- a/arch/mips/lib/bootm.c
++++ b/arch/mips/lib/bootm.c
+@@ -17,6 +17,11 @@ static int do_bootm_barebox(struct image_data *data)
+ 	if (!barebox)
+ 		return -EINVAL;
  
- 	/* otherwise only the filename will be provided */
- 	char *os_file;
-@@ -49,7 +49,7 @@ struct image_data {
++	if (data->dryrun) {
++		free(barebox)
++		return 0;
++	}
++
+ 	shutdown_barebox();
  
- 	/* if initrd is an uImage this will be provided */
- 	struct uimage_handle *initrd;
--	int initrd_num;
-+	char *initrd_part;
+ 	barebox();
+diff --git a/arch/nios2/lib/bootm.c b/arch/nios2/lib/bootm.c
+index 77da119..231568f 100644
+--- a/arch/nios2/lib/bootm.c
++++ b/arch/nios2/lib/bootm.c
+@@ -42,6 +42,9 @@ static int do_bootm_linux(struct image_data *idata)
+ 	if (ret)
+ 		return ret;
  
- 	/* otherwise only the filename will be provided */
- 	char *initrd_file;
-@@ -57,7 +57,7 @@ struct image_data {
- 	unsigned long initrd_address;
++	if (data->dryrun)
++		return 0;
++
+ 	kernel = (void *)(idata->os_address + idata->os_entry);
  
- 	char *oftree_file;
--	int oftree_num;
-+	char *oftree_part;
+ 	/* kernel parameters passing
+diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
+index 409c0cf..a36682c 100644
+--- a/arch/ppc/lib/ppclinux.c
++++ b/arch/ppc/lib/ppclinux.c
+@@ -60,6 +60,9 @@ static int do_bootm_linux(struct image_data *data)
+ 		return -EINVAL;
+ 	}
  
- 	struct device_node *of_root_node;
- 	struct fdt_header *oftree;
++	if (data->dryrun)
++		return 0;
++
+ 	/* Relocate the device tree if outside the initial
+ 	 * Linux mapped TLB.
+ 	 */
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 75849a1..063da62 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -133,9 +133,6 @@ static int do_bootm(int argc, char *argv[])
+ 		goto err_out;
+ 	}
+ 
+-	if (data.dryrun)
+-		printf("Dryrun. Aborted\n");
+-
+ err_out:
+ 	return ret ? 1 : 0;
+ }
+diff --git a/common/bootm.c b/common/bootm.c
+index f8d9330..7f6533b 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -526,10 +526,10 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		printf("Passing control to %s handler\n", handler->name);
+ 	}
+ 
++	ret = handler->bootm(data);
+ 	if (data->dryrun)
+-		ret = 0;
+-	else
+-		ret = handler->bootm(data);
++		printf("Dryrun. Aborted\n");
++
+ err_out:
+ 	if (data->os_res)
+ 		release_sdram_region(data->os_res);
 -- 
 2.7.0.rc3
 
