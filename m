@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x244.google.com ([2a00:1450:400c:c09::244])
+Received: from mail-wm0-x242.google.com ([2a00:1450:400c:c09::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aO11z-0005Ys-Vz
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 10:39:30 +0000
-Received: by mail-wm0-x244.google.com with SMTP id u188so16557006wmu.0
- for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 02:39:07 -0800 (PST)
+ id 1aO122-0005aA-I0
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 10:39:32 +0000
+Received: by mail-wm0-x242.google.com with SMTP id 123so16572789wmz.2
+ for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 02:39:10 -0800 (PST)
 From: yegorslists@googlemail.com
-Date: Tue, 26 Jan 2016 11:38:36 +0100
-Message-Id: <1453804717-6563-2-git-send-email-yegorslists@googlemail.com>
+Date: Tue, 26 Jan 2016 11:38:37 +0100
+Message-Id: <1453804717-6563-3-git-send-email-yegorslists@googlemail.com>
 In-Reply-To: <1453804717-6563-1-git-send-email-yegorslists@googlemail.com>
 References: <1453804717-6563-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,306 +23,170 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] fs: introduce include/linux/fs.h
+Subject: [PATCH 3/3] fs: import magic.h from Linux kernel
 To: barebox@lists.infradead.org
 
 From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Move Linux file system structs from UBIFS to central place.
+include/linux/magic.h provides MAGIC numbers for various
+file systems.
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 ---
- fs/ubifs/ubifs.h   | 128 +--------------------------------------------------
- include/linux/fs.h | 133 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 134 insertions(+), 127 deletions(-)
- create mode 100644 include/linux/fs.h
+ fs/cramfs/cramfs.c         |  1 +
+ fs/ext4/ext4_common.c      |  3 +-
+ fs/ext4/ext_common.h       |  2 --
+ include/cramfs/cramfs_fs.h |  1 -
+ include/linux/magic.h      | 82 ++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 85 insertions(+), 4 deletions(-)
+ create mode 100644 include/linux/magic.h
 
-diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
-index 6b7139c..2d0cd4c 100644
---- a/fs/ubifs/ubifs.h
-+++ b/fs/ubifs/ubifs.h
-@@ -34,8 +34,8 @@
- #include <common.h>
- #include <malloc.h>
- #include <lzo.h>
-+#include <linux/fs.h>
- #include <linux/ctype.h>
--#include <linux/time.h>
- #include <linux/math64.h>
- #include <linux/rbtree.h>
- #include <linux/err.h>
-@@ -92,132 +92,6 @@ struct qstr {
- 	const char *name;
- };
+diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
+index 97f028a..988fa7e 100644
+--- a/fs/cramfs/cramfs.c
++++ b/fs/cramfs/cramfs.c
+@@ -34,6 +34,7 @@
  
--struct inode {
--	struct hlist_node	i_hash;
--	struct list_head	i_list;
--	struct list_head	i_sb_list;
--	struct list_head	i_dentry;
--	unsigned long		i_ino;
--	unsigned int		i_nlink;
--	uid_t			i_uid;
--	gid_t			i_gid;
--	dev_t			i_rdev;
--	u64			i_version;
--	loff_t			i_size;
--#ifdef __NEED_I_SIZE_ORDERED
--	seqcount_t		i_size_seqcount;
--#endif
--	struct timespec		i_atime;
--	struct timespec		i_mtime;
--	struct timespec		i_ctime;
--	unsigned int		i_blkbits;
--	unsigned short          i_bytes;
--	umode_t			i_mode;
--	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
--	struct mutex		i_mutex;
--	struct rw_semaphore	i_alloc_sem;
--	const struct inode_operations	*i_op;
--	const struct file_operations	*i_fop;	/* former ->i_op->default_file_ops */
--	struct super_block	*i_sb;
--	struct file_lock	*i_flock;
--#ifdef CONFIG_QUOTA
--	struct dquot		*i_dquot[MAXQUOTAS];
--#endif
--	struct list_head	i_devices;
--	int			i_cindex;
--
--	__u32			i_generation;
--
--#ifdef CONFIG_DNOTIFY
--	unsigned long		i_dnotify_mask; /* Directory notify events */
--	struct dnotify_struct	*i_dnotify; /* for directory notifications */
--#endif
--
--#ifdef CONFIG_INOTIFY
--	struct list_head	inotify_watches; /* watches on this inode */
--	struct mutex		inotify_mutex;	/* protects the watches list */
--#endif
--
--	unsigned long		i_state;
--	unsigned long		dirtied_when;	/* jiffies of first dirtying */
--
--	unsigned int		i_flags;
--
--#ifdef CONFIG_SECURITY
--	void			*i_security;
--#endif
--	void			*i_private; /* fs or device private pointer */
--};
--
--struct super_block {
--	struct list_head	s_list;		/* Keep this first */
--	dev_t			s_dev;		/* search index; _not_ kdev_t */
--	unsigned long		s_blocksize;
--	unsigned char		s_blocksize_bits;
--	unsigned char		s_dirt;
--	unsigned long long	s_maxbytes;	/* Max file size */
--	struct file_system_type	*s_type;
--	const struct super_operations	*s_op;
--	struct dquot_operations	*dq_op;
--	struct quotactl_ops	*s_qcop;
--	const struct export_operations *s_export_op;
--	unsigned long		s_flags;
--	unsigned long		s_magic;
--	struct dentry		*s_root;
--	struct rw_semaphore	s_umount;
--	struct mutex		s_lock;
--	int			s_count;
--	int			s_syncing;
--	int			s_need_sync_fs;
--#ifdef CONFIG_SECURITY
--	void                    *s_security;
--#endif
--	struct xattr_handler	**s_xattr;
--
--	struct list_head	s_inodes;	/* all inodes */
--	struct list_head	s_dirty;	/* dirty inodes */
--	struct list_head	s_io;		/* parked for writeback */
--	struct list_head	s_more_io;	/* parked for more writeback */
--	struct hlist_head	s_anon;		/* anonymous dentries for (nfs) exporting */
--	struct list_head	s_files;
--	/* s_dentry_lru and s_nr_dentry_unused are protected by dcache_lock */
--	struct list_head	s_dentry_lru;	/* unused dentry lru */
--	int			s_nr_dentry_unused;	/* # of dentry on lru */
--
--	struct block_device	*s_bdev;
--	struct mtd_info		*s_mtd;
--	struct list_head	s_instances;
--
--	int			s_frozen;
--	wait_queue_head_t	s_wait_unfrozen;
--
--	char s_id[32];				/* Informational name */
--
--	void 			*s_fs_info;	/* Filesystem private info */
--
--	/*
--	 * The next field is for VFS *only*. No filesystems have any business
--	 * even looking at it. You had been warned.
--	 */
--	struct mutex s_vfs_rename_mutex;	/* Kludge */
--
--	/* Granularity of c/m/atime in ns.
--	   Cannot be worse than a second */
--	u32		   s_time_gran;
--
--	/*
--	 * Filesystem subtype.  If non-empty the filesystem type field
--	 * in /proc/mounts will be "type.subtype"
--	 */
--	char *s_subtype;
--
--	/*
--	 * Saved mount options for lazy filesystems using
--	 * generic_show_options()
--	 */
--	char *s_options;
--};
--
- struct file_system_type {
- 	const char *name;
- 	int fs_flags;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
+ #include <asm/byteorder.h>
+ #include <linux/stat.h>
++#include <linux/magic.h>
+ #include <cramfs/cramfs_fs.h>
+ 
+ /* These two macros may change in future, to provide better st_ino
+diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
+index 04b1915..590f54d 100644
+--- a/fs/ext4/ext4_common.c
++++ b/fs/ext4/ext4_common.c
+@@ -32,6 +32,7 @@
+ #include <malloc.h>
+ #include <linux/stat.h>
+ #include <linux/time.h>
++#include <linux/magic.h>
+ #include <asm/byteorder.h>
+ #include <dma.h>
+ 
+@@ -499,7 +500,7 @@ int ext4fs_mount(struct ext_filesystem *fs)
+ 		goto fail;
+ 
+ 	/* Make sure this is an ext2 filesystem. */
+-	if (__le16_to_cpu(data->sblock.magic) != EXT2_MAGIC) {
++	if (__le16_to_cpu(data->sblock.magic) != EXT2_SUPER_MAGIC) {
+ 		ret = -EINVAL;
+ 		goto fail;
+ 	}
+diff --git a/fs/ext4/ext_common.h b/fs/ext4/ext_common.h
+index 517a1c1..704d8e6 100644
+--- a/fs/ext4/ext_common.h
++++ b/fs/ext4/ext_common.h
+@@ -33,8 +33,6 @@
+ #define SECTOR_SIZE		0x200
+ #define SECTOR_BITS		9
+ 
+-/* Magic value used to identify an ext2 filesystem.  */
+-#define	EXT2_MAGIC			0xEF53
+ /* Amount of indirect blocks in an inode.  */
+ #define INDIRECT_BLOCKS			12
+ /* Maximum lenght of a pathname.  */
+diff --git a/include/cramfs/cramfs_fs.h b/include/cramfs/cramfs_fs.h
+index 8c53fc7..d2b67c5 100644
+--- a/include/cramfs/cramfs_fs.h
++++ b/include/cramfs/cramfs_fs.h
+@@ -1,7 +1,6 @@
+ #ifndef __CRAMFS_H
+ #define __CRAMFS_H
+ 
+-#define CRAMFS_MAGIC		0x28cd3d45	/* some random number */
+ #define CRAMFS_SIGNATURE	"Compressed ROMFS"
+ 
+ /*
+diff --git a/include/linux/magic.h b/include/linux/magic.h
 new file mode 100644
-index 0000000..9db334c
+index 0000000..0de181a
 --- /dev/null
-+++ b/include/linux/fs.h
-@@ -0,0 +1,133 @@
-+#ifndef _LINUX_FS_H
-+#define _LINUX_FS_H
++++ b/include/linux/magic.h
+@@ -0,0 +1,82 @@
++#ifndef __LINUX_MAGIC_H__
++#define __LINUX_MAGIC_H__
 +
-+#include <linux/barebox-wrapper.h>
-+#include <linux/list.h>
-+#include <linux/time.h>
++#define ADFS_SUPER_MAGIC	0xadf5
++#define AFFS_SUPER_MAGIC	0xadff
++#define AFS_SUPER_MAGIC                0x5346414F
++#define AUTOFS_SUPER_MAGIC	0x0187
++#define CODA_SUPER_MAGIC	0x73757245
++#define CRAMFS_MAGIC		0x28cd3d45	/* some random number */
++#define CRAMFS_MAGIC_WEND	0x453dcd28	/* magic number with the wrong endianess */
++#define DEBUGFS_MAGIC          0x64626720
++#define SECURITYFS_MAGIC	0x73636673
++#define SELINUX_MAGIC		0xf97cff8c
++#define SMACK_MAGIC		0x43415d53	/* "SMAC" */
++#define RAMFS_MAGIC		0x858458f6	/* some random number */
++#define TMPFS_MAGIC		0x01021994
++#define HUGETLBFS_MAGIC 	0x958458f6	/* some random number */
++#define SQUASHFS_MAGIC		0x73717368
++#define ECRYPTFS_SUPER_MAGIC	0xf15f
++#define EFS_SUPER_MAGIC		0x414A53
++#define EXT2_SUPER_MAGIC	0xEF53
++#define EXT3_SUPER_MAGIC	0xEF53
++#define XENFS_SUPER_MAGIC	0xabba1974
++#define EXT4_SUPER_MAGIC	0xEF53
++#define BTRFS_SUPER_MAGIC	0x9123683E
++#define NILFS_SUPER_MAGIC	0x3434
++#define F2FS_SUPER_MAGIC	0xF2F52010
++#define HPFS_SUPER_MAGIC	0xf995e849
++#define ISOFS_SUPER_MAGIC	0x9660
++#define JFFS2_SUPER_MAGIC	0x72b6
++#define PSTOREFS_MAGIC		0x6165676C
++#define EFIVARFS_MAGIC		0xde5e81e4
++#define HOSTFS_SUPER_MAGIC	0x00c0ffee
++#define OVERLAYFS_SUPER_MAGIC	0x794c7630
 +
-+struct inode {
-+	struct hlist_node	i_hash;
-+	struct list_head	i_list;
-+	struct list_head	i_sb_list;
-+	struct list_head	i_dentry;
-+	unsigned long		i_ino;
-+	unsigned int		i_nlink;
-+	uid_t			i_uid;
-+	gid_t			i_gid;
-+	dev_t			i_rdev;
-+	u64			i_version;
-+	loff_t			i_size;
-+#ifdef __NEED_I_SIZE_ORDERED
-+	seqcount_t		i_size_seqcount;
-+#endif
-+	struct timespec		i_atime;
-+	struct timespec		i_mtime;
-+	struct timespec		i_ctime;
-+	unsigned int		i_blkbits;
-+	unsigned short          i_bytes;
-+	umode_t			i_mode;
-+	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
-+	struct mutex		i_mutex;
-+	struct rw_semaphore	i_alloc_sem;
-+	const struct inode_operations	*i_op;
-+	const struct file_operations	*i_fop;	/* former ->i_op->default_file_ops */
-+	struct super_block	*i_sb;
-+	struct file_lock	*i_flock;
-+#ifdef CONFIG_QUOTA
-+	struct dquot		*i_dquot[MAXQUOTAS];
-+#endif
-+	struct list_head	i_devices;
-+	int			i_cindex;
++#define MINIX_SUPER_MAGIC	0x137F		/* minix v1 fs, 14 char names */
++#define MINIX_SUPER_MAGIC2	0x138F		/* minix v1 fs, 30 char names */
++#define MINIX2_SUPER_MAGIC	0x2468		/* minix v2 fs, 14 char names */
++#define MINIX2_SUPER_MAGIC2	0x2478		/* minix v2 fs, 30 char names */
++#define MINIX3_SUPER_MAGIC	0x4d5a		/* minix v3 fs, 60 char names */
 +
-+	__u32			i_generation;
++#define MSDOS_SUPER_MAGIC	0x4d44		/* MD */
++#define NCP_SUPER_MAGIC		0x564c		/* Guess, what 0x564c is :-) */
++#define NFS_SUPER_MAGIC		0x6969
++#define OPENPROM_SUPER_MAGIC	0x9fa1
++#define QNX4_SUPER_MAGIC	0x002f		/* qnx4 fs detection */
++#define QNX6_SUPER_MAGIC	0x68191122	/* qnx6 fs detection */
 +
-+#ifdef CONFIG_DNOTIFY
-+	unsigned long		i_dnotify_mask; /* Directory notify events */
-+	struct dnotify_struct	*i_dnotify; /* for directory notifications */
-+#endif
++#define REISERFS_SUPER_MAGIC	0x52654973	/* used by gcc */
++					/* used by file system utilities that
++	                                   look at the superblock, etc.  */
++#define REISERFS_SUPER_MAGIC_STRING	"ReIsErFs"
++#define REISER2FS_SUPER_MAGIC_STRING	"ReIsEr2Fs"
++#define REISER2FS_JR_SUPER_MAGIC_STRING	"ReIsEr3Fs"
 +
-+#ifdef CONFIG_INOTIFY
-+	struct list_head	inotify_watches; /* watches on this inode */
-+	struct mutex		inotify_mutex;	/* protects the watches list */
-+#endif
++#define SMB_SUPER_MAGIC		0x517B
++#define CGROUP_SUPER_MAGIC	0x27e0eb
++#define CGROUP2_SUPER_MAGIC	0x63677270
 +
-+	unsigned long		i_state;
-+	unsigned long		dirtied_when;	/* jiffies of first dirtying */
 +
-+	unsigned int		i_flags;
++#define STACK_END_MAGIC		0x57AC6E9D
 +
-+#ifdef CONFIG_SECURITY
-+	void			*i_security;
-+#endif
-+	void			*i_private; /* fs or device private pointer */
-+};
++#define TRACEFS_MAGIC          0x74726163
 +
-+struct super_block {
-+	struct list_head	s_list;		/* Keep this first */
-+	dev_t			s_dev;		/* search index; _not_ kdev_t */
-+	unsigned long		s_blocksize;
-+	unsigned char		s_blocksize_bits;
-+	unsigned char		s_dirt;
-+	unsigned long long	s_maxbytes;	/* Max file size */
-+	struct file_system_type	*s_type;
-+	const struct super_operations	*s_op;
-+	struct dquot_operations	*dq_op;
-+	struct quotactl_ops	*s_qcop;
-+	const struct export_operations *s_export_op;
-+	unsigned long		s_flags;
-+	unsigned long		s_magic;
-+	struct dentry		*s_root;
-+	struct rw_semaphore	s_umount;
-+	struct mutex		s_lock;
-+	int			s_count;
-+	int			s_syncing;
-+	int			s_need_sync_fs;
-+#ifdef CONFIG_SECURITY
-+	void                    *s_security;
-+#endif
-+	struct xattr_handler	**s_xattr;
++#define V9FS_MAGIC		0x01021997
 +
-+	struct list_head	s_inodes;	/* all inodes */
-+	struct list_head	s_dirty;	/* dirty inodes */
-+	struct list_head	s_io;		/* parked for writeback */
-+	struct list_head	s_more_io;	/* parked for more writeback */
-+	struct hlist_head	s_anon;		/* anonymous dentries for (nfs) exporting */
-+	struct list_head	s_files;
-+	/* s_dentry_lru and s_nr_dentry_unused are protected by dcache_lock */
-+	struct list_head	s_dentry_lru;	/* unused dentry lru */
-+	int			s_nr_dentry_unused;	/* # of dentry on lru */
++#define BDEVFS_MAGIC            0x62646576
++#define BINFMTFS_MAGIC          0x42494e4d
++#define DEVPTS_SUPER_MAGIC	0x1cd1
++#define FUTEXFS_SUPER_MAGIC	0xBAD1DEA
++#define PIPEFS_MAGIC            0x50495045
++#define PROC_SUPER_MAGIC	0x9fa0
++#define SOCKFS_MAGIC		0x534F434B
++#define SYSFS_MAGIC		0x62656572
++#define USBDEVICE_SUPER_MAGIC	0x9fa2
++#define MTD_INODE_FS_MAGIC      0x11307854
++#define ANON_INODE_FS_MAGIC	0x09041934
++#define BTRFS_TEST_MAGIC	0x73727279
++#define NSFS_MAGIC		0x6e736673
++#define BPF_FS_MAGIC		0xcafe4a11
 +
-+	struct block_device	*s_bdev;
-+	struct mtd_info		*s_mtd;
-+	struct list_head	s_instances;
-+
-+	int			s_frozen;
-+	wait_queue_head_t	s_wait_unfrozen;
-+
-+	char s_id[32];				/* Informational name */
-+
-+	void 			*s_fs_info;	/* Filesystem private info */
-+
-+	/*
-+	 * The next field is for VFS *only*. No filesystems have any business
-+	 * even looking at it. You had been warned.
-+	 */
-+	struct mutex s_vfs_rename_mutex;	/* Kludge */
-+
-+	/* Granularity of c/m/atime in ns.
-+	   Cannot be worse than a second */
-+	u32		   s_time_gran;
-+
-+	/*
-+	 * Filesystem subtype.  If non-empty the filesystem type field
-+	 * in /proc/mounts will be "type.subtype"
-+	 */
-+	char *s_subtype;
-+
-+	/*
-+	 * Saved mount options for lazy filesystems using
-+	 * generic_show_options()
-+	 */
-+	char *s_options;
-+};
-+#endif /* _LINUX_FS_H */
++#endif /* __LINUX_MAGIC_H__ */
 -- 
 2.1.4
 
