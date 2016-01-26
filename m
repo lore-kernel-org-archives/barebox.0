@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aO6IA-0007He-G8
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 16:16:31 +0000
-Date: Tue, 26 Jan 2016 17:16:07 +0100
+ id 1aOBN1-0004ip-Ix
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 21:41:52 +0000
+Date: Tue, 26 Jan 2016 22:41:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160126161607.GB13058@pengutronix.de>
-References: <1453802107-29600-1-git-send-email-yegorslists@googlemail.com>
+Message-ID: <20160126214128.GC13058@pengutronix.de>
+References: <CAGm1_ksgdg933-MmgmX7a3H2m5HPf-y+pdZybX9+ahLEA_J+tg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1453802107-29600-1-git-send-email-yegorslists@googlemail.com>
+In-Reply-To: <CAGm1_ksgdg933-MmgmX7a3H2m5HPf-y+pdZybX9+ahLEA_J+tg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] bootm: add missing curly brace
-To: yegorslists@googlemail.com
-Cc: barebox@lists.infradead.org
+Subject: Re: Linux headers
+To: Yegor Yefremov <yegorslists@googlemail.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Tue, Jan 26, 2016 at 10:55:07AM +0100, yegorslists@googlemail.com wrote:
-> From: Yegor Yefremov <yegorslists@googlemail.com>
+Hi Yegor,
+
+On Tue, Jan 26, 2016 at 04:17:39PM +0100, Yegor Yefremov wrote:
+> AFAIK include/linux/barebox-wrapper.h was introduced to simplify Linux
+> driver porting. During my current effort to port SquashFS driver I had
+> to repeatedly remove such includes like:
 > 
-> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
-> ---
->  common/bootm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> #include <linux/vfs.h>
+> #include <linux/slab.h>
+> #include <linux/vmalloc.h>
+> #include <linux/sched.h>
+> #include <linux/spinlock.h>
+> #include <linux/wait.h>
+> 
+> and so on.
+> 
+> Would it be better to provide such headers even if they would almost
+> always include dummy code? Though it would pollute the include folder
+> somehow, but it will be easier to port/sync Linux drivers and it will
+> help to preserve the structure of this drivers.
+> 
+> What do you think about this?
 
-Squashed into the original commit breaking it.
+What would you add to these header files? I mean for spinlock.h it's
+clear, it would contain dummy spinlocks. For other files I'm not sure
+how much useful stuff we can put in there. For example wait.h contains
+much stuff that - when it's used in the code you are porting - cannot
+simply be replaced with dummy code but must be handled somehow. So if we
+create the Linux header files there should be more gain than only the
+ability to keep the include list untouched. I don't know for how many
+files this is the case.
+
+Porting over Linux code to barebox is often a balancing act. We can put
+much effort into creating header files which make it possible to (almost)
+blindly copy over code or we can keenly modify the Linux code to fit
+into barebox. One extreme leads to easily portable but probably
+inefficient code, the other leads to hard to update but probably better
+understandable code. The truth is probably somewhere between both
+extremes.
+
+Anyway, to put it short, I think it makes sense to at least move the
+stuff we already have in barebox-wrapper.h to their original places.
 
 Sascha
-
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 7e7d2a9..79833e0 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -528,7 +528,7 @@ int bootm_boot(struct bootm_data *bootm_data)
->  		goto err_out;
->  	}
->  
-> -	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
-> +	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
->  		data->verify = BOOTM_VERIFY_SIGNATURE;
->  
->  		/*
-> -- 
-> 2.1.4
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
