@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
+Received: from mail-pf0-x242.google.com ([2607:f8b0:400e:c00::242])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aNwcN-0004iK-7H
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 05:56:44 +0000
-Received: by mail-pa0-x244.google.com with SMTP id yy13so7442934pab.1
- for <barebox@lists.infradead.org>; Mon, 25 Jan 2016 21:56:22 -0800 (PST)
+ id 1aNwcJ-0004hr-ON
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 05:56:41 +0000
+Received: by mail-pf0-x242.google.com with SMTP id 65so7780936pfd.1
+ for <barebox@lists.infradead.org>; Mon, 25 Jan 2016 21:56:19 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 25 Jan 2016 21:55:57 -0800
-Message-Id: <1453787758-12688-6-git-send-email-andrew.smirnov@gmail.com>
-In-Reply-To: <1453787758-12688-1-git-send-email-andrew.smirnov@gmail.com>
-References: <1453787758-12688-1-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 25 Jan 2016 21:55:52 -0800
+Message-Id: <1453787758-12688-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] miitool: Don't print negative parent IDs
+Subject: [PATCH 1/7] include/linux/phy.h: Add MII_ADDR_C45
 To: barebox@lists.infradead.org
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Andrey Smirnov <andrew.smirnov@gmail.com>, Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 
-Do not include ID of the parent to mii_bus if that ID is negative since
-it produces a rather confusing string (e.g. "mdio.11-1", which is very
-likely to be interpreted as "mdio.11<dash>1").
+Add MII_ADDR_C45 used by bitbanged MDIO
 
+Signed-off-by: Andrey Gusakov <andrey.gusakov@cogentembedded.com>
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- commands/miitool.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/phy.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/commands/miitool.c b/commands/miitool.c
-index 9ee3597..9ea5ab5 100644
---- a/commands/miitool.c
-+++ b/commands/miitool.c
-@@ -115,8 +115,9 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 	for (i = 0; i < 32; i++)
- 		mii_val[i] = mii->read(mii, phydev->addr, i);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index a64b9b5..58e69da 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -69,6 +69,10 @@ typedef enum {
+  */
+ #define MII_BUS_ID_SIZE	(20 - 3)
  
--	printf("%s: %s%d: ", phydev->cdev.name,
--		mii->parent->name, mii->parent->id);
-+	printf((mii->parent->id) < 0 ? "%s: %s:" : "%s: %s%d: ",
-+	       phydev->cdev.name, mii->parent->name, mii->parent->id);
++/* Or MII_ADDR_C45 into regnum for read/write on mii_bus to enable the 21 bit
++   IEEE 802.3ae clause 45 addressing mode used by 10GIGE phy chips. */
++#define MII_ADDR_C45 (1<<30)
 +
- 
- 	if (mii_val[MII_BMCR] == 0xffff || mii_val[MII_BMSR] == 0x0000) {
- 		fprintf(stderr, "  No MII transceiver present!.\n");
+ #define PHYLIB_FORCE_10		(1 << 0)
+ #define PHYLIB_FORCE_100	(1 << 1)
+ #define PHYLIB_FORCE_LINK	(1 << 2)
 -- 
 2.5.0
 
