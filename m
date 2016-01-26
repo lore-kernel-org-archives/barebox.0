@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aNxha-0005PP-2B
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 07:06:10 +0000
-Date: Tue, 26 Jan 2016 08:05:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160126070548.GA13058@pengutronix.de>
-References: <1453719967-17358-1-git-send-email-ejo@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1453719967-17358-1-git-send-email-ejo@pengutronix.de>
+ id 1aO0Ln-0001pP-2x
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 09:55:51 +0000
+Received: by mail-wm0-x22e.google.com with SMTP id n5so121001439wmn.0
+ for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 01:55:30 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Tue, 26 Jan 2016 10:55:07 +0100
+Message-Id: <1453802107-29600-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: imx53-guf-vincell-lt: dts: do not specfiy fixed
- memory information
-To: Enrico Jorns <ejo@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] bootm: add missing curly brace
+To: barebox@lists.infradead.org
 
-On Mon, Jan 25, 2016 at 12:06:07PM +0100, Enrico Jorns wrote:
-> Setting a fixed memory size prevents from using the different board
-> variants with different memories equipped.
-> 
-> barebox is able to read RAM size informations from the imx53 RAM
-> controller and thus does not require this information passed via dts.
-> 
-> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
-> ---
->  arch/arm/dts/imx53-guf-vincell-lt.dts | 4 ----
->  arch/arm/dts/imx53-guf-vincell.dts    | 4 ----
->  2 files changed, 8 deletions(-)
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Applied, thanks
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ common/bootm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/common/bootm.c b/common/bootm.c
+index 7e7d2a9..79833e0 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -528,7 +528,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		goto err_out;
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
++	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
+ 		data->verify = BOOTM_VERIFY_SIGNATURE;
+ 
+ 		/*
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.1.4
+
 
 _______________________________________________
 barebox mailing list
