@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pf0-x244.google.com ([2607:f8b0:400e:c00::244])
+Received: from mail-pa0-x244.google.com ([2607:f8b0:400e:c03::244])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aNwcM-0004iJ-Js
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 05:56:45 +0000
-Received: by mail-pf0-x244.google.com with SMTP id e65so7868400pfe.0
+ id 1aNwcN-0004iK-7H
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 05:56:44 +0000
+Received: by mail-pa0-x244.google.com with SMTP id yy13so7442934pab.1
  for <barebox@lists.infradead.org>; Mon, 25 Jan 2016 21:56:22 -0800 (PST)
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Mon, 25 Jan 2016 21:55:56 -0800
-Message-Id: <1453787758-12688-5-git-send-email-andrew.smirnov@gmail.com>
+Date: Mon, 25 Jan 2016 21:55:57 -0800
+Message-Id: <1453787758-12688-6-git-send-email-andrew.smirnov@gmail.com>
 In-Reply-To: <1453787758-12688-1-git-send-email-andrew.smirnov@gmail.com>
 References: <1453787758-12688-1-git-send-email-andrew.smirnov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,61 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] mdio_bus: Add mdiobus_get_bus() function
+Subject: [PATCH 6/7] miitool: Don't print negative parent IDs
 To: barebox@lists.infradead.org
 Cc: Andrey Smirnov <andrew.smirnov@gmail.com>
 
-Add mdiobus_get_bus() -- a function to get a MDIO bus by its number
+Do not include ID of the parent to mii_bus if that ID is negative since
+it produces a rather confusing string (e.g. "mdio.11-1", which is very
+likely to be interpreted as "mdio.11<dash>1").
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- drivers/net/phy/mdio_bus.c | 19 +++++++++++++++++++
- include/linux/phy.h        |  2 ++
- 2 files changed, 21 insertions(+)
+ commands/miitool.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 54d2f8f..b74b27e 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -187,6 +187,25 @@ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr)
- }
- EXPORT_SYMBOL(mdiobus_scan);
+diff --git a/commands/miitool.c b/commands/miitool.c
+index 9ee3597..9ea5ab5 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -115,8 +115,9 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
+ 	for (i = 0; i < 32; i++)
+ 		mii_val[i] = mii->read(mii, phydev->addr, i);
  
+-	printf("%s: %s%d: ", phydev->cdev.name,
+-		mii->parent->name, mii->parent->id);
++	printf((mii->parent->id) < 0 ? "%s: %s:" : "%s: %s%d: ",
++	       phydev->cdev.name, mii->parent->name, mii->parent->id);
 +
-+/**
-+ *
-+ * mdio_get_bus - get a MDIO bus from its busnum
-+ *
-+ * @param	busnum	the desired bus number
-+ *
-+ */
-+struct mii_bus *mdiobus_get_bus(int busnum)
-+{
-+	struct mii_bus *mii;
-+
-+	for_each_mii_bus(mii)
-+		if (mii->dev.id == busnum)
-+			return mii;
-+
-+	return NULL;
-+}
-+
- /**
-  * mdio_bus_match - determine if given PHY driver supports the given PHY device
-  * @dev: target PHY device
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 58e69da..4e88936 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -114,6 +114,8 @@ int mdiobus_detect(struct device_d *dev);
- #define for_each_mii_bus(mii) \
- 	list_for_each_entry(mii, &mii_bus_list, list)
  
-+struct mii_bus *mdiobus_get_bus(int busnum);
-+
- /**
-  * mdiobus_read - Convenience function for reading a given MII mgmt register
-  * @bus: the mii_bus struct
+ 	if (mii_val[MII_BMCR] == 0xffff || mii_val[MII_BMSR] == 0x0000) {
+ 		fprintf(stderr, "  No MII transceiver present!.\n");
 -- 
 2.5.0
 
