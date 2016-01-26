@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aNxdT-0003gw-3I
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 07:01:55 +0000
-Date: Tue, 26 Jan 2016 08:01:33 +0100
+ id 1aNxha-0005PP-2B
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 07:06:10 +0000
+Date: Tue, 26 Jan 2016 08:05:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20160126070133.GZ13058@pengutronix.de>
-References: <1453707854-34145-1-git-send-email-t.remmet@phytec.de>
+Message-ID: <20160126070548.GA13058@pengutronix.de>
+References: <1453719967-17358-1-git-send-email-ejo@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1453707854-34145-1-git-send-email-t.remmet@phytec.de>
+In-Reply-To: <1453719967-17358-1-git-send-email-ejo@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] arm: am33xx: Move function to read from Master OSC
-To: Teresa Remmet <t.remmet@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm: imx53-guf-vincell-lt: dts: do not specfiy fixed
+ memory information
+To: Enrico Jorns <ejo@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
 
-On Mon, Jan 25, 2016 at 08:44:13AM +0100, Teresa Remmet wrote:
-> From: Daniel Schultz <d.schultz@phytec.de>
+On Mon, Jan 25, 2016 at 12:06:07PM +0100, Enrico Jorns wrote:
+> Setting a fixed memory size prevents from using the different board
+> variants with different memories equipped.
 > 
-> Move the function to read the Master OSC speed from
-> the SYSBOOT Configuration Pin for reuse.
+> barebox is able to read RAM size informations from the imx53 RAM
+> controller and thus does not require this information passed via dts.
 > 
-> Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
-> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
+> Signed-off-by: Enrico Jorns <ejo@pengutronix.de>
 > ---
-> Changes in v2:
-> - Return kHz instead of Hz to be able to use a 32bit type
-> 
->  arch/arm/mach-omap/am33xx_clock.c              | 27 ++++++++++++++++++++++++++
->  arch/arm/mach-omap/dmtimer.c                   | 20 +++----------------
->  arch/arm/mach-omap/include/mach/am33xx-clock.h |  1 +
->  3 files changed, 31 insertions(+), 17 deletions(-)
+>  arch/arm/dts/imx53-guf-vincell-lt.dts | 4 ----
+>  arch/arm/dts/imx53-guf-vincell.dts    | 4 ----
+>  2 files changed, 8 deletions(-)
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
