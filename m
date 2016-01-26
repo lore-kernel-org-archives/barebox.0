@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x22c.google.com ([2607:f8b0:400d:c04::22c])
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aO5Nr-00083h-OC
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 15:18:20 +0000
-Received: by mail-qg0-x22c.google.com with SMTP id b35so140523996qge.0
- for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 07:17:59 -0800 (PST)
+ id 1aO6IA-0007He-G8
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 16:16:31 +0000
+Date: Tue, 26 Jan 2016 17:16:07 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20160126161607.GB13058@pengutronix.de>
+References: <1453802107-29600-1-git-send-email-yegorslists@googlemail.com>
 MIME-Version: 1.0
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Tue, 26 Jan 2016 16:17:39 +0100
-Message-ID: <CAGm1_ksgdg933-MmgmX7a3H2m5HPf-y+pdZybX9+ahLEA_J+tg@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1453802107-29600-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Linux headers
-To: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH] bootm: add missing curly brace
+To: yegorslists@googlemail.com
+Cc: barebox@lists.infradead.org
 
-AFAIK include/linux/barebox-wrapper.h was introduced to simplify Linux
-driver porting. During my current effort to port SquashFS driver I had
-to repeatedly remove such includes like:
+On Tue, Jan 26, 2016 at 10:55:07AM +0100, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> ---
+>  common/bootm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-#include <linux/vfs.h>
-#include <linux/slab.h>
-#include <linux/vmalloc.h>
-#include <linux/sched.h>
-#include <linux/spinlock.h>
-#include <linux/wait.h>
+Squashed into the original commit breaking it.
 
-and so on.
+Sascha
 
-Would it be better to provide such headers even if they would almost
-always include dummy code? Though it would pollute the include folder
-somehow, but it will be easier to port/sync Linux drivers and it will
-help to preserve the structure of this drivers.
+> 
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 7e7d2a9..79833e0 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -528,7 +528,7 @@ int bootm_boot(struct bootm_data *bootm_data)
+>  		goto err_out;
+>  	}
+>  
+> -	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
+> +	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
+>  		data->verify = BOOTM_VERIFY_SIGNATURE;
+>  
+>  		/*
+> -- 
+> 2.1.4
+> 
+> 
 
-What do you think about this?
-
-Yegor
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
