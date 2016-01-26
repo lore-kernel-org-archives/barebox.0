@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x232.google.com ([2607:f8b0:400d:c04::232])
+Received: from mail-wm0-x241.google.com ([2a00:1450:400c:c09::241])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aO0V3-0005av-Ur
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 10:05:26 +0000
-Received: by mail-qg0-x232.google.com with SMTP id b35so132180884qge.0
- for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 02:05:05 -0800 (PST)
-MIME-Version: 1.0
-From: Yegor Yefremov <yegorslists@googlemail.com>
-Date: Tue, 26 Jan 2016 11:04:45 +0100
-Message-ID: <CAGm1_kv9-A_HrydZRODtzf-00deEoakxY7r8nSEmO6DcnjGZag@mail.gmail.com>
+ id 1aO11w-0005XE-F5
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 10:39:25 +0000
+Received: by mail-wm0-x241.google.com with SMTP id u188so16556707wmu.0
+ for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 02:39:03 -0800 (PST)
+From: yegorslists@googlemail.com
+Date: Tue, 26 Jan 2016 11:38:35 +0100
+Message-Id: <1453804717-6563-1-git-send-email-yegorslists@googlemail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,26 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: scripts/remote: make clean leftovers
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 1/3] fs: move struct timespec to include/linux/time.h
+To: barebox@lists.infradead.org
 
-After performing make distclean I've discovered following files being removed:
+From: Yegor Yefremov <yegorslists@googlemail.com>
 
-Changes not staged for commit:
-  (use "git add/rm <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ fs/ubifs/ubifs.h     | 7 -------
+ include/linux/time.h | 5 +++++
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-        deleted:    scripts/remote/__init__.py
-        deleted:    scripts/serial/tools/__init__.py
-        deleted:    scripts/serial/urlhandler/__init__.py
+diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
+index c025d34..6b7139c 100644
+--- a/fs/ubifs/ubifs.h
++++ b/fs/ubifs/ubifs.h
+@@ -77,13 +77,6 @@ void iput(struct inode *inode);
+ #define atomic_long_dec(a)
+ #define	atomic_long_sub(a, b)
+ 
+-/* linux/include/time.h */
+-
+-struct timespec {
+-	time_t	tv_sec;		/* seconds */
+-	long	tv_nsec;	/* nanoseconds */
+-};
+-
+ /* linux/include/dcache.h */
+ 
+ /*
+diff --git a/include/linux/time.h b/include/linux/time.h
+index 3942e82..3a1bb50 100644
+--- a/include/linux/time.h
++++ b/include/linux/time.h
+@@ -5,4 +5,9 @@
+ 
+ #define NSEC_PER_SEC	1000000000L
+ 
++struct timespec {
++	time_t	tv_sec;		/* seconds */
++	long	tv_nsec;	/* nanoseconds */
++};
++
+ #endif
+-- 
+2.1.4
 
-What should actually happen to these files?
-
-Yegor
 
 _______________________________________________
 barebox mailing list
