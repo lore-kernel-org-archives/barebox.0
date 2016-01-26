@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wm0-x22e.google.com ([2a00:1450:400c:c09::22e])
+Received: from mail-qg0-x232.google.com ([2607:f8b0:400d:c04::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1aO0Ln-0001pP-2x
- for barebox@lists.infradead.org; Tue, 26 Jan 2016 09:55:51 +0000
-Received: by mail-wm0-x22e.google.com with SMTP id n5so121001439wmn.0
- for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 01:55:30 -0800 (PST)
-From: yegorslists@googlemail.com
-Date: Tue, 26 Jan 2016 10:55:07 +0100
-Message-Id: <1453802107-29600-1-git-send-email-yegorslists@googlemail.com>
+ id 1aO0V3-0005av-Ur
+ for barebox@lists.infradead.org; Tue, 26 Jan 2016 10:05:26 +0000
+Received: by mail-qg0-x232.google.com with SMTP id b35so132180884qge.0
+ for <barebox@lists.infradead.org>; Tue, 26 Jan 2016 02:05:05 -0800 (PST)
+MIME-Version: 1.0
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Tue, 26 Jan 2016 11:04:45 +0100
+Message-ID: <CAGm1_kv9-A_HrydZRODtzf-00deEoakxY7r8nSEmO6DcnjGZag@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,37 +17,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bootm: add missing curly brace
-To: barebox@lists.infradead.org
+Subject: scripts/remote: make clean leftovers
+To: barebox <barebox@lists.infradead.org>
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+After performing make distclean I've discovered following files being removed:
 
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
----
- common/bootm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 7e7d2a9..79833e0 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -528,7 +528,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		goto err_out;
- 	}
- 
--	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES))
-+	if (IS_ENABLED(CONFIG_BOOTM_FORCE_SIGNED_IMAGES)) {
- 		data->verify = BOOTM_VERIFY_SIGNATURE;
- 
- 		/*
--- 
-2.1.4
+        deleted:    scripts/remote/__init__.py
+        deleted:    scripts/serial/tools/__init__.py
+        deleted:    scripts/serial/urlhandler/__init__.py
 
+What should actually happen to these files?
+
+Yegor
 
 _______________________________________________
 barebox mailing list
